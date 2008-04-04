@@ -626,7 +626,7 @@ ALTER IGNORE TABLE `jos_vm_product_reviews` ADD `review_id` INT( 11 ) NOT NULL A
 ALTER IGNORE TABLE `jos_vm_product_reviews` ADD UNIQUE ( `product_id` , `userid` );
 
 ALTER IGNORE TABLE `jos_vm_product_votes` ADD PRIMARY KEY ( `product_id` ) ;
-ALTER IGNORE TABLE `jos_vm_zone_shipping` DROP INDEX `zone_id` 
+ALTER IGNORE TABLE `jos_vm_zone_shipping` DROP INDEX `zone_id`;
 
 # 13.04.2006 for JoomFish
 ALTER IGNORE TABLE `jos_vm_product_attribute` ADD `attribute_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
