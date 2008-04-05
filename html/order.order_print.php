@@ -351,13 +351,13 @@ $order_id = vmRequest::getInt('order_id');
 		  } 
 		  ?> 
 		  <tr> 
-			<td colspan="6">&nbsp; </td>
+			<td colspan="7">&nbsp; </td>
 		  </tr>
 		  <tr> 
 			<td width="5%">&nbsp;</td>
 			<td width="42%">&nbsp;</td>
-			<td colspan="3"><div align="right"><strong> <?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SUBTOTAL') ?>: </strong></div></td>
-			<td width="19%"><div align="right"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_subtotal"), 5, $db->f('order_currency')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
+			<td colspan="4"><div align="right"><strong> <?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SUBTOTAL') ?>: </strong></div></td>
+			<td width="19%"><div align="right"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_subtotal"), '', $db->f('order_currency')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 		  </tr>
   <?php
 		  /* COUPON DISCOUNT */
@@ -370,7 +370,7 @@ $order_id = vmRequest::getInt('order_id');
 		  <tr>
 			 <td width="5%">&nbsp;</td>
 			<td width="42%">&nbsp;</td>
-			<td colspan="3"><div  align="right"><strong><?php 
+			<td colspan="4"><div  align="right"><strong><?php 
 			  if( $db->f("order_discount") > 0)
 				echo $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT');
 			  else
@@ -389,7 +389,7 @@ $order_id = vmRequest::getInt('order_id');
 		  if( $coupon_discount > 0 || $coupon_discount < 0) {
   ?>
 		  <tr>
-			<td colspan="5"><div align="right"><?php echo $VM_LANG->_('PHPSHOP_COUPON_DISCOUNT') ?>:</div>
+			<td colspan="6"><div align="right"><?php echo $VM_LANG->_('PHPSHOP_COUPON_DISCOUNT') ?>:</div>
 			</td> 
 			<td><div align="right"><?php
 			  echo "- ".$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
@@ -403,19 +403,19 @@ $order_id = vmRequest::getInt('order_id');
 		  <tr> 
 			<td width="5%">&nbsp;</td>
 			<td width="42%">&nbsp;</td>
-			<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_TOTAL_TAX') ?>: </div></strong></td>
+			<td colspan="4"><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_TOTAL_TAX') ?>: </div></strong></td>
 			<td width="19%"><div align="right"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_tax"), '', $db->f('order_currency')) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 		  </tr>
 		  <tr> 
 			<td width="5%">&nbsp;</td>
 			<td width="42%">&nbsp;</td>
-			<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING') ?>: </div></strong></td>
+			<td colspan="4"><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING') ?>: </div></strong></td>
 			<td width="19%"><div align="right"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_shipping"), '', $db->f('order_currency')) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 		  </tr>
 		  <tr> 
 			<td width="5%">&nbsp;</td>
 			<td width="42%">&nbsp;</td>
-			<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING_TAX') ?>: </div></strong></td>
+			<td colspan="4"><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING_TAX') ?>: </div></strong></td>
 			<td width="19%"><div align="right"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_shipping_tax"), '', $db->f('order_currency')) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
 		  </tr>
   <?php
@@ -425,7 +425,7 @@ $order_id = vmRequest::getInt('order_id');
 		  <tr> 
 			<td width="5%">&nbsp;</td>
 			<td width="42%">&nbsp;</td>
-			<td colspan="3"><div align="right"><strong><?php 
+			<td colspan="4"><div align="right"><strong><?php 
 			  if( $db->f("order_discount") > 0)
 				echo $VM_LANG->_('PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT');
 			  else
@@ -446,7 +446,7 @@ $order_id = vmRequest::getInt('order_id');
 		  <tr> 
 			<td width="5%">&nbsp;</td>
 			<td width="42%">&nbsp;</td>
-			<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_COUPON_DISCOUNT') ?>:</div></strong>
+			<td colspan="4"><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_COUPON_DISCOUNT') ?>:</div></strong>
 			</td> 
 			<td><div align="right"><?php
 			  echo "- ".$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
@@ -459,14 +459,14 @@ $order_id = vmRequest::getInt('order_id');
 		  <tr>
 			<td width="5%">&nbsp;</td>
 			<td width="42%">&nbsp;</td>
-			<td colspan="3"><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_CART_TOTAL') ?>:</div> </strong></td>
+			<td colspan="4"><div align="right"><strong><?php echo $VM_LANG->_('PHPSHOP_CART_TOTAL') ?>:</div> </strong></td>
 			<td width="19%"><div align="right"><strong><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_total"), '', $db->f('order_currency')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></strong>
 			  </td>
 		  </tr>
 		  <tr>
 			<td width="5%">&nbsp;</td>
 			<td width="42%">&nbsp;</td>
-			<td colspan="3">&nbsp;</td>
+			<td colspan="4">&nbsp;</td>
 			<td width="19%"><?php echo ps_checkout::show_tax_details( $db->f('order_tax_details'), $db->f('order_currency') ); ?></td>
 		  </tr>
 		  </table>
