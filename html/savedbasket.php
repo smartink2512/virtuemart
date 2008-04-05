@@ -108,7 +108,7 @@ else {
 			$product_price = $price["product_price"];
 		}
 
-		$product_price = round( $product_price, 2 );
+		$product_price = round( $product_price, 5 );
 		$product_rows[$i]['product_price'] = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($product_price);
 
 		/* SUBTOTAL CALCULATION */
@@ -153,7 +153,7 @@ else {
   </form>';
 	} // End of for loop through the Cart
 
-	$total = $total_undiscounted = round($total, 2);
+	$total = $total_undiscounted = round($total, 5);
 	$vars["total"] = $total;
 	$subtotal_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($total);
 
@@ -172,7 +172,7 @@ else {
 			$tax_total *= $discount_factor;
 		}
 		$tax_total += $shipping_tax;
-		$tax_total = round( $tax_total, 2 );
+		$tax_total = round( $tax_total, 5 );
 		$tax_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($tax_total);
 
 		$tax_display .= ps_checkout::show_tax_details( $order_tax_details );

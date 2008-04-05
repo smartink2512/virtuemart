@@ -74,7 +74,7 @@ else {
 			$my_taxrate = $ps_product->get_product_taxrate($cart[$i]["product_id"] );
 			$price["product_price"] *= ($my_taxrate+1);
 		}
-		$subtotal = round( $price["product_price"], 2 ) * $cart[$i]["quantity"];
+		$subtotal = round( $price["product_price"], 5 ) * $cart[$i]["quantity"];
 		$total += $subtotal;
 		$flypage_id = $product_parent_id;
 		if($flypage_id == 0) {

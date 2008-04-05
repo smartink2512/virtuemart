@@ -840,7 +840,7 @@ class ps_checkout {
 		// make sure Total doesn't become negative
 		if( $order_total < 0 ) $order_total = 0;
 
-		$order_total = round( $order_total, 2);
+		$order_total = round( $order_total, 5);
 
 
 		$vmLogger->debug( '-- Checkout Debug--
@@ -1213,16 +1213,16 @@ Order Total: '.$order_total.'
 		if( $totals['order_taxable'] < 0 ) $totals['order_taxable'] = 0;
 
 		// from now on we have $order_tax_details
-		$d['order_tax'] = $totals['order_tax'] = round( $this->calc_order_tax($totals['order_taxable'], $d), 2 );
+		$d['order_tax'] = $totals['order_tax'] = round( $this->calc_order_tax($totals['order_taxable'], $d), 5 );
 		
 		if( is_object($this->_SHIPPING) ) {
 			/* sets _shipping */
-			$d['order_shipping'] = $totals['order_shipping'] = round( $this->calc_order_shipping( $d ), 2 );
+			$d['order_shipping'] = $totals['order_shipping'] = round( $this->calc_order_shipping( $d ), 5 );
 
 			/* sets _shipping_tax
 			* btw: This is WEIRD! To get an exactly rounded value we have to convert
 			* the amount to a String and call "round" with the string. */
-			$d['order_shipping_tax'] = $totals['order_shipping_tax'] = round( strval($this->calc_order_shipping_tax($d)), 2 );
+			$d['order_shipping_tax'] = $totals['order_shipping_tax'] = round( strval($this->calc_order_shipping_tax($d)), 5 );
 		}
 		else {
 			$d['order_shipping'] = $totals['order_shipping'] = $totals['order_shipping_tax'] = $d['order_shipping_tax'] = 0.00;
@@ -1300,7 +1300,7 @@ Order Total: '.$order_total.'
 			$product_price = $product_price_tmp = $GLOBALS['CURRENCY']->convert( $price["product_price"], @$price["product_currency"] );
 			
 			if( $auth["show_price_including_tax"] == 1 ) {
-				$product_price = round( ($product_price *($my_taxrate+1)), 2 );
+				$product_price = round( ($product_price *($my_taxrate+1)), 5 );
 				$product_price *= $cart[$i]["quantity"];
 				
 				$d['order_subtotal_withtax'] += $product_price;
@@ -1311,7 +1311,7 @@ Order Total: '.$order_total.'
 			else {
 				$order_subtotal += $product_price * $cart[$i]["quantity"];
 				
-				$product_price = round( ($product_price *($my_taxrate+1)), 2 );
+				$product_price = round( ($product_price *($my_taxrate+1)), 5 );
 				$product_price *= $cart[$i]["quantity"];
 				$d['order_subtotal_withtax'] += $product_price;
 				$product_price = $product_price /($my_taxrate+1);
@@ -1485,7 +1485,7 @@ Order Total: '.$order_total.'
 
 
 		}
-		return( round( $order_tax, 2 ) );
+		return( round( $order_tax, 5 ) );
 	}
   
 	/**************************************************************************

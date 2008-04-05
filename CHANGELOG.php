@@ -37,6 +37,7 @@ VirtueMart 1.1.x
 *************************************
 05.04.2008 gregdev
 # Fixed blank cells and subtotal rounding on order.order_print
+# Task #1249 - Improper price rounding
 
 04.04.2008 soeren
 # Task #1969 - Can't remove customer group and something is wrong, and Vendor problem.

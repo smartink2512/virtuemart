@@ -96,7 +96,7 @@ else {
 		} else {
 			$product_price = $price["product_price"];
 		}
-		$product_price = round( $product_price, 2 );
+		$product_price = round( $product_price, 5 );
 		$product_rows[$i]['product_price'] = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($product_price);
 
 		/* Quantity Box */
@@ -141,7 +141,7 @@ else {
       </form>";
 	} // End of for loop through the Cart
 
-	$total = $total_undiscounted = round($total, 2);
+	$total = $total_undiscounted = round($total, 5);
 	$subtotal_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($total);
 
 
@@ -185,16 +185,16 @@ else {
 	if( !empty($shipping_rate_id) && (NO_SHIPPING != '1')) {
 		$shipping = true;
 		$vars["weight"] = $weight_total;
-		$shipping_total = round( $ps_checkout->_SHIPPING->get_rate ( $vars ), 2 );
+		$shipping_total = round( $ps_checkout->_SHIPPING->get_rate ( $vars ), 5 );
 		$shipping_taxrate = $ps_checkout->_SHIPPING->get_tax_rate();
 
 		// When the Shipping rate is shown including Tax
 		// we have to extract the Tax from the Shipping Total
 		if( $auth["show_price_including_tax"] == 1 ) {
-			$shipping_tax = round( $shipping_total- ($shipping_total / (1+$shipping_taxrate)), 2);
+			$shipping_tax = round( $shipping_total- ($shipping_total / (1+$shipping_taxrate)), 5);
 		}
 		else {
-			$shipping_tax = round( $shipping_total * $shipping_taxrate, 2);
+			$shipping_tax = round( $shipping_total * $shipping_taxrate, 5);
 		}
 		$shipping_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($shipping_total);
 	}
@@ -217,7 +217,7 @@ else {
 			$tax_total *= $discount_factor;
 		}
 		$tax_total += $shipping_tax;
-		$tax_total = round( $tax_total, 2 );
+		$tax_total = round( $tax_total, 5 );
 		$tax_display = $GLOBALS['CURRENCY_DISPLAY']->getFullValue($tax_total);
 
 		$tax_display .= ps_checkout::show_tax_details( $order_tax_details );
