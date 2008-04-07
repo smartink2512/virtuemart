@@ -50,7 +50,7 @@ class ps_product extends vmAbstractObject {
 			if( $d['product_discount_id'] == "override" ) {
 
 				$d['is_percent'] = "0";
-				$d['amount'] = (float)$d['product_price_incl_tax'] - (float)$d['discounted_price_override'];
+				$d['amount'] = (float)$d['product_price'] - (float)$d['discounted_price_override'];
 
 				require_once( CLASSPATH. 'ps_product_discount.php' );
 				$ps_product_discount = new ps_product_discount;
@@ -1775,7 +1775,7 @@ class ps_product extends vmAbstractObject {
 		$my_taxrate = $this->get_product_taxrate($product_id);
 
 		if( !empty($discount_info["amount"])) {
-			if( $auth["show_price_including_tax"] == 1 ) {
+			if( $auth["show_price_including_tax"] != 1 ) {
 				switch( $discount_info["is_percent"] ) {
 					case 0: $price["product_price"] = (($price["product_price"]*($my_taxrate+1))-$discount_info["amount"])/($my_taxrate+1); break;
 					case 1: $price["product_price"] = ($price["product_price"] - $discount_info["amount"]/100*$price["product_price"]); break;
@@ -1983,8 +1983,15 @@ class ps_product extends vmAbstractObject {
 				if( !empty($discount_info["amount"])) {
 					$undiscounted_price = $base_price;
 					switch( $discount_info["is_percent"] ) {
-						case 0: $base_price -= $discount_info["amount"]; break;
-						case 1: $base_price *= (100 - $discount_info["amount"])/100; break;
+						case 0:
+							if( $auth["show_price_including_tax"] == 1 ) {
+								$discount_info['amount'] += ($my_taxrate*$discount_info['amount']);
+							} 
+							$base_price -= $discount_info["amount"];
+							break;
+						case 1:
+							$base_price *= (100 - $discount_info["amount"])/100;
+							break;
 					}
 				}
 				$text_including_tax = "";
