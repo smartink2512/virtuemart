@@ -1,8 +1,9 @@
 <?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); ?>
-
+<?php if( empty($recent_products)) return; 
+?>
 <!-- List of recent products -->
 <h3><?php echo $VM_LANG->_('VM_RECENT_PRODUCTS') ?></h3>
-
+<ul class="vmRecentDetail">
 <?php 
 foreach( $recent_products as $recent ) { // Loop through all recent products
 	foreach( $recent as $attr => $val ) {
@@ -21,13 +22,12 @@ foreach( $recent_products as $recent ) { // Loop through all recent products
 	 * 
 	 */
 	?>
-	<div class="vmRecentDetail">
+	<li>
 	<a href="<?php echo $recent["product_url"]; ?>" >
-	&nbsp;
 	<?php echo $recent["product_name"]; ?></a>&nbsp;(<?php echo $VM_LANG->_('PHPSHOP_CATEGORY') ?>:&nbsp;
 	<a href="<?php echo $recent["category_url"]; ?>" ><?php echo $recent["category_name"]; ?></a>)
-	</div>
+	</li>
 	<?php
 }
-
 ?>
+</ul>

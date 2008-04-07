@@ -283,7 +283,7 @@ class vmLog_file extends vmLog
      */
     function flush()
     {
-        return fflush($this->_fp);
+        return is_resource($this->_fp) ? fflush($this->_fp) : false;
     }
 
     /**

@@ -40,6 +40,11 @@ VirtueMart 1.1.x
 # Task # 1687 -  Discount price calculated wrongly (fixed for VM 1.1.x - not VM 1.0.x)
 # Task #1969 - Can't remove customer group and something is wrong, and Vendor problem.
 
+06.04.2008 soeren
+# initially hide vendor module from administration menu
+# Task #1982 - Lost password link is still wrong in joomla 1.0.15
+# Task #1986 - Recently Viewed Products are not aligned left
+
 05.04.2008 gregdev
 # Fixed blank cells and subtotal rounding on order.order_print
 # Task #1249 - Improper price rounding

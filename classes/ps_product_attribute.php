@@ -204,7 +204,7 @@ class ps_product_attribute {
 			}
 			
 			$quantity_options = ps_product::get_quantity_options( $product_id ) ;
-			if( ! empty( $quantity_options ) ) {
+			if( ! empty( $quantity_options['quantity_box'] ) ) {
 				$display_type = $quantity_options['quantity_box'] ;
 			}
 			$child_option_ids = ps_product::get_field( $product_id, 'child_option_ids' ) ;

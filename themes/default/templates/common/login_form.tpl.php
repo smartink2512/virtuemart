@@ -17,12 +17,12 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 if( vmIsJoomla('1.5')) {
 	if(vmGet($_REQUEST,'tmpl') == 'component') {
-		$lostPwUrl =  JRoute::_( 'index.php?option=com_user&view=remind&tmpl=component' );
+		$lostPwUrl =  JRoute::_( 'index.php?option=com_user&view=reset&tmpl=component' );
 	} else {
-		$lostPwUrl =  JRoute::_( 'index.php?option=com_user&view=remind' );
+		$lostPwUrl =  JRoute::_( 'index.php?option=com_user&view=reset' );
 	}
 } else {
-	$lostPwUrl = sefRelToAbs( 'index2.php?option=com_registration&amp;task=lostPassword' );
+	$lostPwUrl = sefRelToAbs( basename($_SERVER['PHP_SELF']).'?option=com_registration&amp;task=lostPassword' );
 }
 ?>
 <form action="<?php echo $action ?>" method="post" name="login" style="margin-left:20px;">
