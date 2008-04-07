@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+07.04.2008 gregdev
+# Task #1978 - If Show Manufacturer Link? is selected increasing product quantity, shifts product detail to left
+
 05.04.2008 gregdev
 # Fixed blank cells and subtotal rounding on order.order_print
 # Task #1249 - Improper price rounding

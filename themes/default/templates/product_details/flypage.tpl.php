@@ -19,7 +19,8 @@ if( $this->get_cfg( 'product_navigation', 1 )) {
 <table border="0" style="width: 100%;">
   <tbody>
 	<tr>
-	  <td rowspan="5" valign="top"><br/>
+<?php  if( $this->get_cfg('showManufacturerLink') ) { $rowspan = 5; } else { $rowspan = 4; } ?>
+	  <td width="33%" rowspan="<?php echo $rowspan; ?>" valign="top"><br/>
 	  	<?php echo $product_image ?><br/><br/><?php echo $this->vmlistAdditionalImages( $product_id, $images ) ?></td>
 	  <td rowspan="1" colspan="2">
 	  <h1><?php echo $product_name ?> <?php echo $edit_link ?></h1>
