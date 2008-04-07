@@ -38,6 +38,7 @@ VirtueMart 1.1.x
 07.04.2008 gregdev
 # Task #1978 - If Show Manufacturer Link? is selected increasing product quantity, shifts product detail to left
 # Task # 1687 -  Discount price calculated wrongly (fixed for VM 1.1.x - not VM 1.0.x)
+# Task #1969 - Can't remove customer group and something is wrong, and Vendor problem.
 
 05.04.2008 gregdev
 # Fixed blank cells and subtotal rounding on order.order_print

@@ -153,13 +153,14 @@ class ps_shopper_group extends vmAbstractObject  {
 					);
 		$db->buildQuery( 'INSERT', '#__{vm}_shopper_group', $fields );
 		if( $db->query() !== false ) {
-			$_REQUEST['shopper_group_id'] = $db->last_insert_id();
+			$shopper_group_id = $db->last_insert_id();
+			vmRequest::setVar( 'shopper_group_id', $shopper_group_id );
 			$vmLogger->info('The Shopper Group has been added.');
 			// Set all other shopper groups to be non-default, if this new shopper group shall be "default"	
 			if ($default == "1") {
 				$q = "UPDATE #__{vm}_shopper_group ";
 				$q .= "SET `default`=0 ";
-				$q .= "WHERE shopper_group_id !=" . $d["shopper_group_id"];
+				$q .= "WHERE shopper_group_id !=" . $shopper_group_id;
 				$q .= " AND vendor_id =$vendor_id";
 				$db->query($q);
 				$db->next_record();
@@ -201,7 +202,6 @@ class ps_shopper_group extends vmAbstractObject  {
 					);
 		$db->buildQuery( 'UPDATE', '#__{vm}_shopper_group', $fields, 'WHERE shopper_group_id=' . (int)$d["shopper_group_id"] );
 		if( $db->query() ) {
-			$_REQUEST['shopper_group_id'] = $db->last_insert_id();
 			$GLOBALS['vmLogger']->info('The Shopper Group has been updated.');
 			
 			if ($default == "1") {
