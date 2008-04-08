@@ -840,7 +840,7 @@ class ps_checkout {
 		// make sure Total doesn't become negative
 		if( $order_total < 0 ) $order_total = 0;
 
-		$order_total = round( $order_total, 5);
+		$order_total = round( $order_total, 2);
 
 
 		$vmLogger->debug( '-- Checkout Debug--
