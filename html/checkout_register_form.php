@@ -34,6 +34,8 @@ if ($mosConfig_allowUserRegistration == "0") {
 if( vmIsJoomla( '1.5' ) ) {
 	// Set the validation value
 	$validate = JUtility::getToken();
+} else {
+	$validate =  function_exists( 'josspoofvalue' ) ? josSpoofValue(1) : vmSpoofValue(1);
 }
 
 $fields = ps_userfield::getUserFields('registration', false, '', false );

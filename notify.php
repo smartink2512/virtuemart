@@ -86,6 +86,7 @@ if ($_POST) {
         	require_once($mosConfig_absolute_path. '/includes/joomla.php');
         	require_once($mosConfig_absolute_path. '/includes/database.php');
         	$database = new database( $mosConfig_host, $mosConfig_user, $mosConfig_password, $mosConfig_db, $mosConfig_dbprefix );
+        	$mainframe = new mosMainFrame($database, 'com_virtuemart', $mosConfig_absolute_path );
         }
 
         // load Joomla Language File
@@ -318,7 +319,7 @@ if ($_POST) {
       debug_msg( "4. Connection successful. Now posting to $hostname"."$uri" );
       
       fwrite($fp, $header . $workstring);
-      
+      $res = '';
       while (!feof($fp)) {
            $res .= fgets ($fp, 1024);
       }

@@ -96,6 +96,7 @@ if( $db->f('order_number')) {
 	        </tr>
 	        <?php 
 		foreach( $registrationfields as $field ) {
+			if( $field->type == 'captcha') continue;
 			if( $field->name == 'email') $field->name = 'user_email';
 			?>
 		  <tr> 
