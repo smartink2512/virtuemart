@@ -50,7 +50,15 @@ class ps_product extends vmAbstractObject {
 			if( $d['product_discount_id'] == "override" ) {
 
 				$d['is_percent'] = "0";
-				$d['amount'] = (float)$d['product_price'] - (float)$d['discounted_price_override'];
+				
+				// If discount are applied before tax then base the discount on the untaxed price
+				if( PAYMENT_DISCOUNT_BEFORE == '1' ) {
+					$d['amount'] = (float)$d['product_price'] - (float)$d['discounted_price_override'];
+				}
+				// Otherwise, base the discount on the taxed price
+				else {
+					$d['amount'] = (float)$d['product_price_incl_tax'] - (float)$d['discounted_price_override'];
+				}
 
 				require_once( CLASSPATH. 'ps_product_discount.php' );
 				$ps_product_discount = new ps_product_discount;

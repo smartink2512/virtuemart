@@ -23,7 +23,7 @@ global $error, $page, $ps_product, $ps_product_category;
 $product_id = vmGet( $_REQUEST, 'product_id' );
 $module_id = vmGet( $_REQUEST, 'module_id', 0 );
 
-if( is_array( $product_id )) {
+if( is_array( $product_id ) || $page == 'product.product_list' ) {
     $recent_product_id = "";
 }
 else {
@@ -269,6 +269,7 @@ if( vmIsJoomla('1.0') && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 							</ul>
 				            <?php 
 						} ?>
+						<li><hr /></li>
 		            <?php 
 		            }
 		            elseif (!empty($_REQUEST['product_parent_id'])) { ?> 

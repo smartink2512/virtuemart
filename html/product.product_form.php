@@ -1351,7 +1351,11 @@ function updateDiscountedPrice() {
 		try {
 			var selected_discount = document.adminForm.product_discount_id.selectedIndex;
 			var discountCalc = document.adminForm.product_discount_id[selected_discount].id;
+			<?php if( PAYMENT_DISCOUNT_BEFORE == '1' ) : ?>
 			var origPrice = document.adminForm.product_price.value;
+			<?php else : ?>
+			var origPrice = document.adminForm.product_price_incl_tax.value;
+			<?php endif; ?>
 
 			if( discountCalc ) {
 				eval( 'var discPrice = ' + origPrice + discountCalc );
