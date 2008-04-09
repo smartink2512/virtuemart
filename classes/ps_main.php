@@ -888,7 +888,7 @@ function vmSpoofCheck( $header=NULL, $alt=NULL ) {
  * @return string Validation Hash
  */
 function vmSpoofValue($alt=NULL) {
-	global $mainframe, $_VERSION;
+	global $auth, $mainframe, $_VERSION;
 	
 	if ($alt) {
 		if ( $alt == 1 ) {
@@ -899,7 +899,7 @@ function vmSpoofValue($alt=NULL) {
 	} else {		
 		$random		= date( 'dmY' );
 	}
-	$validate 	= vmCreateHash( $mainframe->getCfg( 'db' ) . $random );
+	$validate 	= vmCreateHash( $mainframe->getCfg( 'db' ) . $random . $auth['user_id']);
 	
 	if( $_VERSION->DEV_LEVEL >= 11 ) {
 		// Joomla 1.0.11 compatibility workaround

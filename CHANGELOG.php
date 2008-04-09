@@ -36,6 +36,9 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 09.04.2008 soeren
+- checkbox for "Disable Shipping ..." in the configuration form, tab "shipping". 
+# Task #1933 - Security Token Error when submitting form after a while
+# Task #2002 - Related products shows only 10 products
 # Task #1981 - please make sure the form is complete and valid - error (removed the configuration parameter MUST_AGREE_TO_TOS, handled by the userfield manager!)
 ^ it's possible to place an order without having a Joomla! user account now (registration type: NO_REGISTRATION and OPTIONAL_REGISTRATION)
 	the user will be logged out after having placed the order 

@@ -85,7 +85,7 @@ switch( $task ) {
 		require_once(CLASSPATH . 'JSON.php');
 		$db =& new ps_DB;
 		$keyword = vmGet( $_REQUEST, 'query' );
-		$q = "SELECT #__{vm}_product.product_id,category_name,product_name
+		$q = "SELECT SQL_CALC_FOUND_ROWS #__{vm}_product.product_id,category_name,product_name
 			FROM #__{vm}_product,#__{vm}_product_category_xref,#__{vm}_category ";
 		if( empty($_REQUEST['show_items']) ) {
 			$q .= "WHERE product_parent_id='0'
@@ -105,7 +105,7 @@ switch( $task ) {
 		$q .= ' ORDER BY category_name,#__{vm}_category.category_id,product_name';
 		$q .= ' LIMIT '.(int)$_REQUEST['start'].', '.$_REQUEST['limit'];
 		$db->query( $q );
-		$response['totalCount'] = $db->num_rows();
+		
 		while( $db->next_record() ) {
 			$response['products'][] = array( 'product_id' => $db->f("product_id"),
 									'category' => htmlspecialchars($db->f("category_name")),
@@ -113,6 +113,9 @@ switch( $task ) {
 									);
 			
 		}
+		$db->query('SELECT FOUND_ROWS() as num_rows');
+		$db->next_record();
+		$response['totalCount'] = $db->f('num_rows');
 		error_reporting(0);
 		while( @ob_end_clean() );
 		$json = new Services_JSON();

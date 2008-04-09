@@ -931,7 +931,7 @@ require_once( CLASSPATH. "ps_shipping_method.php" );
 $ps_shipping_method = new ps_shipping_method;
 $rows = $ps_shipping_method->method_list();
 $i = 0;
-echo '<input type="hidden" name="shippingMethodCount" value="'.count($rows).'" />';
+echo '<input type="hidden" name="shippingMethodCount" value="'.(count($rows)-1 ). '" />';
 ?>
 <fieldset>
 	<legend><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD') ?></legend>
@@ -1004,14 +1004,6 @@ foreach( $rows as $row ) {
 }
 
 		?>
-		<tr><td colspan="2"><hr /></td></tr>
-			<tr>
-                <td>
-                    <input type="checkbox" id="sh<?php echo $i ?>" name="conf_SHIPPING[]" onclick="unCheckAndDisable( this.checked );" <?php if (NO_SHIPPING == '1') echo "checked=\"checked\""; ?> value="no_shipping" />
-                </td>
-                <td><label for="sh<?php echo $i ?>"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_DISABLE') ?></label>
-                </td>
-            </tr>
         </table>
 </fieldset>
 <?php

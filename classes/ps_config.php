@@ -57,7 +57,7 @@ class ps_config {
 			else {
 				$d['conf_NO_SHIPTO'] = '';
 			}
-			if( $d['conf_SHIPPING'][0] == "no_shipping" || empty($d['VM_CHECKOUT_MODULES']['CHECK_OUT_GET_SHIPPING_METHOD']['enabled']) ) {
+			if( empty( $d['conf_SHIPPING'] ) || empty($d['VM_CHECKOUT_MODULES']['CHECK_OUT_GET_SHIPPING_METHOD']['enabled']) ) {
 				$d['VM_CHECKOUT_MODULES']['CHECK_OUT_GET_SHIPPING_METHOD']['enabled'] = '';
 				$d['conf_NO_SHIPPING'] = '1';
 			}
@@ -243,6 +243,7 @@ define( 'IMAGEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/shop_
 				elseif( $key == "PSHOP_SHIPPING_MODULE" ) {
 					$config .= "\n/* Shipping Methods Definition */\nglobal \$PSHOP_SHIPPING_MODULES;\n";
 					$i = 0;
+					if( empty( $d['conf_SHIPPING'] )) $d['conf_SHIPPING'] = array('no_shipping');
 					foreach( $d['conf_SHIPPING'] as $shipping_module) {
 						$config.= "\$PSHOP_SHIPPING_MODULES[$i] = \"$shipping_module\";\n";
 						$i++;
