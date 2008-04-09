@@ -689,6 +689,28 @@ class ps_user {
 			$db->query();
 		}
 	}
+	/**
+	 * Logs in a customer
+	 *
+	 * @param unknown_type $username
+	 * @param unknown_type $password
+	 */
+	function login($username, $password) {
+		//not used
+	}
+	/**
+	 * Logs out a customer from the store
+	 *
+	 */
+	function logout($complete_logout=true) {
+		global $auth, $mainframe;
+		$auth = array();
+		$_SESSION['auth'] = array();
+		if( $complete_logout ) {
+			$mainframe->logout();
+		}
+		return true;
+	}
 }
 
 ?>

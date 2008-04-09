@@ -82,7 +82,7 @@ class zw_waiting_list {
 	* returns:
 	**************************************************************************/
 	function add(&$d) {
-		global $my;
+		global $auth;
 		$db = new ps_DB;
 
 		if (!$this->validate_add($d)) {
@@ -91,7 +91,7 @@ class zw_waiting_list {
 		$q = "INSERT INTO #__{vm}_waiting_list (product_id, user_id, notify_email)";
 		$q .= " VALUES ('";
 		$q .= $d["product_id"] . "','";
-		$q .= $my->id . "','";
+		$q .= $auth['user_id'] . "','";
 		$q .= $d["notify_email"] . "')";
 		$db->query($q);
 		$db->next_record();

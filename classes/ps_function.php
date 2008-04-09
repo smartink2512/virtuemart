@@ -260,7 +260,7 @@ class ps_function extends vmAbstractObject {
 	 * @param string $func the function name
 	 * @return mixed
 	 */
-	function checkFuncPermissions( $func ) {
+	function getFuncPermissions( $func ) {
 
 		global $page, $perm, $VM_LANG, $vmLogger;
 
@@ -288,6 +288,23 @@ class ps_function extends vmAbstractObject {
 		
 		return true;
 		
+	}
+	/**
+	 * Checks if the currently logged in user is allowed to execute the function specified by $func
+	 *
+	 * @param string $func
+	 * @return boolean
+	 */
+	function userCanExecuteFunc($func) {
+		global $perm;
+		if (!empty($func)) {
+			// Retrieve the function attributes
+			$funcParams = $this->get_function($func);
+			if (is_array($funcParams) && $perm->check($funcParams["perms"])) {
+				return true;
+			}
+		}
+		return false;
 	}
 	/**
 	 * Updates the function permissions for all functions given

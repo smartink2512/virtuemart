@@ -100,7 +100,6 @@ define('TAX_MODE', '1');
 define('MULTIPLE_TAXRATES_ENABLE', '');
 define('PAYMENT_DISCOUNT_BEFORE', '');
 define('PSHOP_ALLOW_REVIEWS', '1');
-define('MUST_AGREE_TO_TOS', '1');
 define('PSHOP_AGREE_TO_TOS_ONORDER', '');
 define('SHOW_CHECKOUT_BAR', '1');
 define('CHECK_STOCK', '');

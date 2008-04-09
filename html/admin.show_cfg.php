@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -326,7 +326,7 @@ $tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_GLOBAL'), "global-page");
 			else {
 				echo '<span style="color:red;font-weight:bold;">'.$VM_LANG->_('PHPSHOP_ADMIN_CFG_NO').'</span>';
 			}
-			echo ' <a href="'.$_SERVER['PHP_SELF'].'?option=com_config&amp;hidemainmenu=1"> ['.$VM_LANG->_('PHPSHOP_UPDATE').']</a>';
+			echo ' <a href="'.$mosConfig_live_site.'/administrator/index2.php?option=com_config&amp;hidemainmenu=1"> ['.$VM_LANG->_('PHPSHOP_UPDATE').']</a>';
 			?></td>
 		</tr>
 		<tr>
@@ -340,21 +340,10 @@ $tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_GLOBAL'), "global-page");
 			else {
 				echo '<span style="color:red;font-weight:bold;">'.$VM_LANG->_('PHPSHOP_ADMIN_CFG_YES').'</span>';
 			}
-			echo ' <a href="'.$_SERVER['PHP_SELF'].'?option=com_config&amp;hidemainmenu=1"> ['.$VM_LANG->_('PHPSHOP_UPDATE').']</a>';
+			echo ' <a href="'.$mosConfig_live_site.'/administrator/index2.php?option=com_config&amp;hidemainmenu=1"> ['.$VM_LANG->_('PHPSHOP_UPDATE').']</a>';
 			?></td>
 		</tr>
 		
-		<tr>
-			<td class="labelcell">
-				<label for="conf_MUST_AGREE_TO_TOS"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AGREE_TERMS') ?></label>
-				
-			</td>
-			<td>
-				<input type="checkbox" id="conf_MUST_AGREE_TO_TOS" name="conf_MUST_AGREE_TO_TOS" class="inputbox" <?php if (MUST_AGREE_TO_TOS == '1') echo "checked=\"checked\""; ?> value="1" />
-			</td>
-			<td><?php echo vmToolTip( $VM_LANG->_('PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN') ) ?>
-			</td>
-		</tr>
 		<tr>
 			<td class="labelcell">
 				<label for="conf_PSHOP_AGREE_TO_TOS_ONORDER"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER') ?></label>

@@ -31,12 +31,12 @@ class ps_user_address {
 	 * @return boolean
 	 */
 	function validate_add(&$d) {
-		global $my, $VM_LANG, $vmLogger, $vmInputFilter;
+		global $auth, $VM_LANG, $vmLogger, $vmInputFilter;
 		$valid = true;
 
 		$d['missing'] = "";
 
-		if (!$my->id) {
+		if (empty($auth['user_id'])) {
 			$vmLogger->err( $VM_LANG->_('MUST_NOT_USE') );
 			$valid = false;
 			return $valid;

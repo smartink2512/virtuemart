@@ -6,17 +6,6 @@
 # DATABASE STRUCTURE AND CORE DATA FOR VirtueMart
 ############################################################
 
-## phpMyAdmin SQL Dump
-## version 2.6.2-pl1
-## http://www.phpmyadmin.net
-## 
-## Host: localhost
-## Generation Time: Oct 01, 2005 at 05:54 PM
-## Server version: 4.1.12
-## PHP Version: 5.0.4
-## 
-## Database: `joomla1`
-## 
 
 ## --------------------------------------------------------
 
@@ -706,7 +695,6 @@ CREATE TABLE IF NOT EXISTS `mos_vm_function` (
 INSERT INTO `mos_vm_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'admin,storeadmin'),
 (2, 1, 'userDelete', 'ps_user', 'delete', '', 'admin,storeadmin'),
 (3, 1, 'userUpdate', 'ps_user', 'update', '', 'admin,storeadmin'),
-(4, 1, 'adminPasswdUpdate', 'ps_user', 'update_admin_passwd', 'Updates Site Administrator Password', 'admin'),
 (31, 2, 'productAdd', 'ps_product', 'add', '', 'admin,storeadmin'),
 (6, 1, 'functionAdd', 'ps_function', 'add', '', 'admin'),
 (7, 1, 'functionUpdate', 'ps_function', 'update', '', 'admin'),
@@ -731,7 +719,6 @@ INSERT INTO `mos_vm_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'ad
 (26, 4, 'shopperGroupAdd', 'ps_shopper_group', 'add', '', 'admin,storeadmin'),
 (27, 4, 'shopperGroupUpdate', 'ps_shopper_group', 'update', '', 'admin,storeadmin'),
 (28, 4, 'shopperGroupDelete', 'ps_shopper_group', 'delete', '', 'admin,storeadmin'),
-(29, 5, 'orderSearch', 'ps_order', 'find', '', 'admin,storeadmin,demo'),
 (30, 5, 'orderStatusSet', 'ps_order', 'order_status_update', '', 'admin,storeadmin'),
 (32, 2, 'productDelete', 'ps_product', 'delete', '', 'admin,storeadmin'),
 (33, 2, 'productUpdate', 'ps_product', 'update', '', 'admin,storeadmin'),
@@ -748,7 +735,6 @@ INSERT INTO `mos_vm_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'ad
 (44, 7, 'cartUpdate', 'ps_cart', 'update', '', 'none'),
 (45, 7, 'cartDelete', 'ps_cart', 'delete', '', 'none'),
 (46, 10, 'checkoutComplete', 'ps_checkout', 'add', '', 'shopper,storeadmin,admin'),
-(47, 1, 'setLanguage', 'ps_module', 'set_language', '', 'none'),
 (48, 8, 'paymentMethodUpdate', 'ps_payment_method', 'update', '', 'admin,storeadmin'),
 (49, 8, 'paymentMethodAdd', 'ps_payment_method', 'add', '', 'admin,storeadmin'),
 (50, 8, 'paymentMethodDelete', 'ps_payment_method', 'delete', '', 'admin,storeadmin'),
@@ -779,8 +765,8 @@ INSERT INTO `mos_vm_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'ad
 (119, 12839, 'rateAdd', 'ps_shipping', 'rate_add', '', 'admin,storeadmin'),
 (120, 12839, 'rateUpdate', 'ps_shipping', 'rate_update', '', 'admin,shopadmin'),
 (121, 12839, 'rateDelete', 'ps_shipping', 'rate_delete', '', 'admin,storeadmin'),
-(122, 10, 'checkoutProcess', 'ps_checkout', 'process', '', 'shopper,storeadmin,admin,demo'),
-(123, 5, 'downloadRequest', 'ps_order', 'download_request', 'This checks if the download request is valid and sends the file to the browser as file download if the request was successful, otherwise echoes an error', 'admin,storeadmin,shopper'),
+(122, 10, 'checkoutProcess', 'ps_checkout', 'process', '', 'none'),
+(123, 5, 'downloadRequest', 'ps_order', 'download_request', 'This checks if the download request is valid and sends the file to the browser as file download if the request was successful, otherwise echoes an error', 'none'),
 (124, 98, 'affiliateAdd', 'ps_affiliate', 'add', '', 'admin,storeadmin'),
 (125, 98, 'affiliateUpdate', 'ps_affiliate', 'update', '', 'admin,storeadmin'),
 (126, 98, 'affiliateDelete', 'ps_affiliate', 'delete', '', 'admin,storeadmin'),
@@ -796,7 +782,7 @@ INSERT INTO `mos_vm_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'ad
 (136, 8, 'creditcardAdd', 'ps_creditcard', 'add', 'Adds a Credit Card entry.', 'admin,storeadmin'),
 (137, 8, 'creditcardUpdate', 'ps_creditcard', 'update', 'Updates a Credit Card entry.', 'admin,storeadmin'),
 (138, 8, 'creditcardDelete', 'ps_creditcard', 'delete', 'Deletes a Credit Card entry.', 'admin,storeadmin'),
-(139, 2, 'changePublishState', 'vmAbstractObject.class', 'handlePublishState', 'Changes the publish field, so that a record can be published or unpublished easily.', 'admin,storeadmin'),
+(139, 2, 'changePublishState', 'vmAbstractObject.class', 'handlePublishState', 'Changes the publish field of an item, so that it can be published or unpublished easily.', 'admin,storeadmin'),
 (140, 2, 'export_csv', 'ps_csv', 'export_csv', 'This function exports all relevant product data to CSV.', 'admin,storeadmin'),
 (141, 2, 'reorder', 'ps_product_category', 'reorder', 'Changes the list order of a category.', 'admin,storeadmin'),
 (142, 2, 'discountAdd', 'ps_product_discount', 'add', 'Adds a discount.', 'admin,storeadmin'),
@@ -843,7 +829,7 @@ INSERT INTO `mos_vm_function` VALUES (1, 1, 'userAdd', 'ps_user', 'add', '', 'ad
 (183, 1, 'setModulePermissions', 'ps_module', 'update_permissions', '', 'admin'),
 (184, 1, 'setFunctionPermissions', 'ps_function', 'update_permissions', '', 'admin'),
 (185, 2, 'insertDownloadsForProduct', 'ps_order', 'insert_downloads_for_product', '', 'admin'),
-(186, 5, 'mailDownloadId', 'ps_order', 'mail_download_id', '', 'storeadmin,admin'),
+(186, 5, 'mailDownloadId', 'ps_order', 'mail_download_id', '', 'storeadmin,admin'), 
 (187, 7, 'replaceSavedCart', 'ps_cart', 'replaceCart', 'Replace cart with saved cart', 'none'),
 (188, 7, 'mergeSavedCart', 'ps_cart', 'mergeSaved', 'Merge saved cart with cart', 'none'),
 (189, 7, 'deleteSavedCart', 'ps_cart', 'deleteCart', 'Delete saved cart', 'none'),

@@ -319,13 +319,13 @@ class ps_shopper_group extends vmAbstractObject  {
 	 * @return array
 	 */
   	function get_shoppergroup_by_id($id, $default_group = false) {
-    	global $my;
+    	global $auth;
     	$ps_vendor_id = vmGet($_SESSION, 'ps_vendor_id', 1 );
     	$db = new ps_DB;
 
     	$q =  "SELECT #__{vm}_shopper_group.shopper_group_id, show_price_including_tax, `default`, shopper_group_discount 
     		FROM `#__{vm}_shopper_group`";
-    	if( !empty( $my->id ) && !$default_group) {
+    	if( !empty( $auth['user_id'] ) && !$default_group) {
       		$q .= ",`#__{vm}_shopper_vendor_xref`";
       		$q .= " WHERE #__{vm}_shopper_vendor_xref.user_id='" . $id . "' AND ";
       		$q .= "#__{vm}_shopper_group.shopper_group_id=#__{vm}_shopper_vendor_xref.shopper_group_id";

@@ -366,7 +366,7 @@ if ($_POST) {
                 }
                 
                 // AMOUNT and CURRENCY CODE CHECK
-				$amount_check = $db->f("order_total");
+				$amount_check = round($db->f("order_total"), 2 );
                                 
                 if( $mc_gross != $amount_check 
                    || $currency_code != $db->f('order_currency') ) {

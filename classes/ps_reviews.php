@@ -85,12 +85,14 @@ class ps_reviews {
 	function product_reviews( $product_id, $limit=0 ) {
 		global $db, $my, $VM_LANG;
 
-		$tpl = new $GLOBALS['VM_THEMECLASS']();
+		$tpl = vmTemplate::getInstance();
 
 		$dbc = new ps_DB;
 		$showall = vmGet( $_REQUEST, 'showall', 0);
-		$q = "SELECT comment, time, userid, user_rating FROM #__{vm}_product_reviews WHERE product_id='$product_id' AND published='Y' ORDER BY `time` DESC ";
-		$count = "SELECT COUNT(*) as num_rows FROM #__{vm}_product_reviews WHERE product_id='$product_id' AND published='Y'";
+		$q = "SELECT comment, time, userid, user_rating FROM #__{vm}_product_reviews 
+					WHERE product_id='$product_id' AND published='Y' ORDER BY `time` DESC ";
+		$count = "SELECT COUNT(*) as num_rows FROM #__{vm}_product_reviews 
+						WHERE product_id='$product_id' AND published='Y'";
 
 		if( $limit > 0 ) {
 			$q .= " LIMIT ".intval($limit);
@@ -159,11 +161,11 @@ class ps_reviews {
 	 * @return string
 	 */
 	function reviewform( $product_id ) {
-		global $db, $my, $VM_LANG;
+		global $db, $auth, $VM_LANG;
 		
 		$tpl = new $GLOBALS['VM_THEMECLASS']();
 
-		$db->query("SELECT userid FROM #__{vm}_product_reviews WHERE product_id='$product_id' AND userid=".(int)$my->id);
+		$db->query("SELECT userid FROM #__{vm}_product_reviews WHERE product_id='$product_id' AND userid=".(int)$auth['user_id']);
 		$db->next_record();
 		$alreadycommented = $db->num_rows() > 0;
 
@@ -183,9 +185,9 @@ class ps_reviews {
 	 * @return boolean
 	 */
 	function process_vote( &$d ) {
-		global $db, $my, $VM_LANG;
+		global $db, $auth;
 
-		if (PSHOP_ALLOW_REVIEWS == "1" && !empty($my->id)) {
+		if (PSHOP_ALLOW_REVIEWS == "1" && !empty($auth['user_id'])) {
 
 			if (($d["user_rating"]>=0) && ($d["user_rating"]<=5)) {
 				$sql = "SELECT votes,allvotes FROM #__{vm}_product_votes WHERE product_id = '". $d["product_id"]."'";
@@ -225,9 +227,9 @@ class ps_reviews {
 	 * @return boolean
 	 */
 	function process_review( &$d ) {
-		global $db, $my, $VM_LANG, $vmLogger;
+		global $db, $auth, $VM_LANG, $vmLogger;
 
-		if (PSHOP_ALLOW_REVIEWS == "1" && !empty($my->id) ) {
+		if (PSHOP_ALLOW_REVIEWS == "1" && !empty($auth['user_id']) ) {
 			$d["comment"] = trim($d["comment"]);
 			if( strlen( $d["comment"] ) < VM_REVIEWS_MINIMUM_COMMENT_LENGTH ) {
 				$vmLogger->err($VM_LANG->_('PHPSHOP_REVIEW_ERR_COMMENT1',false));
@@ -247,7 +249,7 @@ class ps_reviews {
 
 			while( $db->next_record() ) {
 				$uid = $db->f("userid");
-				if ($db->f("userid") == $my->id){
+				if ($db->f("userid") == $auth['user_id']){
 					$commented=true;
 					break;
 				}

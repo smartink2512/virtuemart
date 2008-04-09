@@ -6,7 +6,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -25,7 +25,7 @@ $Itemid = $sess->getShopItemid();
 global $vendor_currency, $user;
 
 // Order_id is returned by checkoutComplete function
-$order_id = $db->getEscaped($vars["order_id"] );
+$order_id = $db->getEscaped(vmGet($vars, 'order_id' ) );
 
 $print = vmRequest::getInt('print', 0);
 
@@ -50,20 +50,17 @@ $q .= "WHERE `#__{vm}_order_payment`.`order_id`='$order_id' ";
 $q .= "AND `#__{vm}_orders`.`user_id`=" . $auth["user_id"] . " ";
 $q .= "AND `#__{vm}_orders`.`order_id`='$order_id' ";
 $db->query($q);
-
-if ($db->next_record()) {
 	
-	$tpl = new $GLOBALS['VM_THEMECLASS']();
-	$tpl->set( 'order_id', $order_id );
-	$tpl->set( 'ps_product', $ps_product );
-	$tpl->set( 'vendor_currency', $vendor_currency );
-	$tpl->set( 'user', $user );
-	$tpl->set( 'dbbt', $dbbt );
-	$tpl->set( 'db', $db );
+$tpl = new $GLOBALS['VM_THEMECLASS']();
+$tpl->set( 'order_id', $order_id );
+$tpl->set( 'ps_product', $ps_product );
+$tpl->set( 'vendor_currency', $vendor_currency );
+$tpl->set( 'user', $user );
+$tpl->set( 'dbbt', $dbbt );
+$tpl->set( 'db', $db );
 	
-	echo $tpl->fetch( "pages/$page.tpl.php" );
+echo $tpl->fetch( "pages/$page.tpl.php" );
 
-} // End of security check
 
 if( !empty($old_user) && is_object($old_user)) {
 	$user = $old_user;

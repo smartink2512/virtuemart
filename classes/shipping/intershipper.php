@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage shipping
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2009 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -15,11 +15,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * http://virtuemart.net
 */
+/**
+ * Class to connect to Intershipper and fetch live rates
+ *
+ */
 class intershipper {
 	var $classname = "intershipper";
 	
 	function list_rates( &$d ) {	
-	  global $weight_total, $CURRENCY_DISPLAY;
+	  global $weight_total, $CURRENCY_DISPLAY, $vmLogger;
 	  $d["ship_to_info_id"] = vmGet( $_REQUEST, "ship_to_info_id" );
       /** Read current Configuration ***/
       require_once(CLASSPATH ."shipping/".$this->classname.".cfg.php");
@@ -222,7 +226,7 @@ class intershipper {
 	  // once encountered it sticks the quote into the hash $quotes
 	  // for easy access later
 	  function endElement($Parser, $Elem) {
-		  global $state;	
+		  global $state, $vmLogger;	
 		  $states = join (' ',$state);	
 		  if ($states == "SHIPMENT PACKAGE QUOTE") {
 			  global $quote;

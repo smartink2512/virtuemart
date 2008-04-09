@@ -402,8 +402,7 @@ class ps_order {
 	 * @return boolean
 	 */
 	function download_request(&$d) {
-		global  $return_success, $download_id, $VM_LANG, $vmLogger;
-		$auth  = $_SESSION['auth'];
+		global  $download_id, $VM_LANG, $vmLogger;
 
 		$db = new ps_DB;
 		$download_id = $db->getEscaped( vmGet( $d, "download_id" ) );

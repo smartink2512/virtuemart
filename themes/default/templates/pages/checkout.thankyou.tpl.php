@@ -8,7 +8,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage themes
-* @copyright Copyright (C) 2004-2006 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -36,7 +36,9 @@ global $VM_LANG;
   
 <!-- Begin Payment Information -->
 <?php
-
+if( empty($auth['user_id'])) {
+	return;
+}
 if ($db->f("order_status") == "P" ) {
 	// Copy the db object to prevent it gets altered
 	$db_temp = ps_DB::_clone( $db );

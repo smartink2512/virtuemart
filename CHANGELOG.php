@@ -35,6 +35,14 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+09.04.2008 soeren
+# Task #1981 - please make sure the form is complete and valid - error (removed the configuration parameter MUST_AGREE_TO_TOS, handled by the userfield manager!)
+^ it's possible to place an order without having a Joomla! user account now (registration type: NO_REGISTRATION and OPTIONAL_REGISTRATION)
+	the user will be logged out after having placed the order 
+# Task #1998 -  Unable to save Joomla registration update in extended layout.
+^ removed the requirement of being logged in to make downloads (the function downloadRequest has permissions set to "none" by default now)
+
+
 08.04.2008 gregdev
 # Task # 1687 -  Discount price calculated wrongly (fixed for VM 1.1.x - not VM 1.0.x)
 ^ In Simple Layout, the product form opens into the full browser window, not a new window

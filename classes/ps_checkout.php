@@ -274,12 +274,12 @@ class ps_checkout {
 	 * @return boolean
 	 */
 	function validate_add(&$d) {
-		global $my, $VM_LANG, $vmLogger;
+		global $auth, $VM_LANG, $vmLogger;
 
 		require_once(CLASSPATH.'ps_payment_method.php');
 		$ps_payment_method = new ps_payment_method;
 		
-		if( empty( $my->id ) ) {
+		if( empty( $auth['user_id'] ) ) {
 			$vmLogger->err('Sorry, but it is not possible to order without a User ID. 
 										Please contact the Store Administrator if this Error occurs again.');
 			return false;
@@ -317,6 +317,9 @@ class ps_checkout {
 		return True;
 	}
 
+	function validate_shipto(&$d) {
+		//TODO to be implemented
+	}
 	/**
 	 * Called to validate the shipping_method
 	 *
@@ -687,12 +690,12 @@ class ps_checkout {
 	 * @param string $shipping_method_id
 	 */
 	function list_shipping_methods( $ship_to_info_id=null, $shipping_method_id=null ) {
-		global $PSHOP_SHIPPING_MODULES, $vmLogger, $my, $weight_total;
+		global $PSHOP_SHIPPING_MODULES, $vmLogger, $auth, $weight_total;
 		
 		if( empty( $ship_to_info_id )) {
 		    // Get the Bill to user_info_id
 		    $database = new ps_DB();
-		    $database->setQuery( "SELECT user_info_id FROM #__{vm}_user_info WHERE user_id=".$my->id." AND address_type='BT'" );
+		    $database->setQuery( "SELECT user_info_id FROM #__{vm}_user_info WHERE user_id=".$auth['user_id']." AND address_type='BT'" );
 		    $vars["ship_to_info_id"] = $_REQUEST['ship_to_info_id'] = $database->loadResult();
 		} else {
 			$vars['ship_to_info_id'] = $ship_to_info_id;
@@ -800,7 +803,7 @@ class ps_checkout {
 	 * @return boolean
 	 */
 	function add( &$d ) {
-		global $order_tax_details, $afid, $VM_LANG, $mosConfig_debug, $mosConfig_offset,
+		global $order_tax_details, $afid, $VM_LANG, $auth, $my, $mosConfig_offset,
 		$vmLogger, $vmInputFilter, $discount_factor;
 
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
@@ -1143,6 +1146,10 @@ Order Total: '.$order_total.'
 		$_POST["order_payment_expire"] = "";
 		$_POST["order_payment_name"] = "";
 		
+		if( empty($my->id) && !empty( $auth['user_id'])) {
+			require_once(CLASSPATH.'ps_user.php');
+			ps_user::logout();
+		}
 		return True;
 	}
 
@@ -1213,16 +1220,16 @@ Order Total: '.$order_total.'
 		if( $totals['order_taxable'] < 0 ) $totals['order_taxable'] = 0;
 
 		// from now on we have $order_tax_details
-		$d['order_tax'] = $totals['order_tax'] = round( $this->calc_order_tax($totals['order_taxable'], $d), 5 );
+		$d['order_tax'] = $totals['order_tax'] = round( $this->calc_order_tax($totals['order_taxable'], $d), 2 );
 		
 		if( is_object($this->_SHIPPING) ) {
 			/* sets _shipping */
-			$d['order_shipping'] = $totals['order_shipping'] = round( $this->calc_order_shipping( $d ), 5 );
+			$d['order_shipping'] = $totals['order_shipping'] = round( $this->calc_order_shipping( $d ), 2 );
 
 			/* sets _shipping_tax
 			* btw: This is WEIRD! To get an exactly rounded value we have to convert
 			* the amount to a String and call "round" with the string. */
-			$d['order_shipping_tax'] = $totals['order_shipping_tax'] = round( strval($this->calc_order_shipping_tax($d)), 5 );
+			$d['order_shipping_tax'] = $totals['order_shipping_tax'] = round( strval($this->calc_order_shipping_tax($d)), 2 );
 		}
 		else {
 			$d['order_shipping'] = $totals['order_shipping'] = $totals['order_shipping_tax'] = $d['order_shipping_tax'] = 0.00;
@@ -1300,7 +1307,7 @@ Order Total: '.$order_total.'
 			$product_price = $product_price_tmp = $GLOBALS['CURRENCY']->convert( $price["product_price"], @$price["product_currency"] );
 			
 			if( $auth["show_price_including_tax"] == 1 ) {
-				$product_price = round( ($product_price *($my_taxrate+1)), 5 );
+				$product_price = round( ($product_price *($my_taxrate+1)), 2 );
 				$product_price *= $cart[$i]["quantity"];
 				
 				$d['order_subtotal_withtax'] += $product_price;
@@ -1311,7 +1318,7 @@ Order Total: '.$order_total.'
 			else {
 				$order_subtotal += $product_price * $cart[$i]["quantity"];
 				
-				$product_price = round( ($product_price *($my_taxrate+1)), 5 );
+				$product_price = round( ($product_price *($my_taxrate+1)), 2 );
 				$product_price *= $cart[$i]["quantity"];
 				$d['order_subtotal_withtax'] += $product_price;
 				$product_price = $product_price /($my_taxrate+1);
@@ -1485,7 +1492,7 @@ Order Total: '.$order_total.'
 
 
 		}
-		return( round( $order_tax, 5 ) );
+		return( round( $order_tax, 2 ) );
 	}
   
 	/**************************************************************************

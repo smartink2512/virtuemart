@@ -17,12 +17,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 mm_showMyFileName( __FILE__ );
 
-if ($perm->check("admin")) {
 $product_id = vmGet( $_REQUEST, 'product_id' );
 $userid = vmGet( $_REQUEST, 'userid' );
 $nextpage = vmGet( $_REQUEST, 'nextpage', 'product.review_list' );
 $review_id = intval( vmGet( $_REQUEST, 'review_id' ) );
 
+$funcname = $review_id ? "reviewUpdate" : "addReview";
+
+if ($ps_function->userCanExecuteFunc($funcname)) {
+	
 if( empty($userid )) {
 	$userid = $my->id;
 }
@@ -106,7 +109,6 @@ $rating_table = "<table cellpadding=\"5\" summary=\"".$VM_LANG->_('PHPSHOP_REVIE
 
 // Write common hidden input fields
 // and close the form
-$funcname = $review_id ? "reviewUpdate" : "addReview";
 $formObj->finishForm( $funcname, $nextpage);
 }
 ?>

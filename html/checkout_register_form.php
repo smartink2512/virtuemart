@@ -51,10 +51,7 @@ if ( $my->id > 0 || (VM_REGISTRATION_TYPE != 'NORMAL_REGISTRATION' && VM_REGISTR
 		$skip_fields[] = 'email';
 	}
 }
-// Does the customer have to agree to your Terms & Conditions?
-if (MUST_AGREE_TO_TOS != '1') {
-	$skip_fields[] = 'agreed';
-}
+
 // This is the part that prints out ALL registration fields!
 ps_userfield::listUserFields( $fields, $skip_fields );
 

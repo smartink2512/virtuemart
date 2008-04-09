@@ -29,9 +29,7 @@ class ps_shopper {
 	 * @return boolean
 	 */
 	function validate_add(&$d) {
-		global $my, $perm, $mosConfig_absolute_path;
-
-		$db = new ps_DB;
+		global $my, $mosConfig_absolute_path;
 
 		$provided_required = true;
 		$missing = "";
@@ -251,8 +249,8 @@ class ps_shopper {
 	 * @return boolean
 	 */
 	function add( &$d ) {
-		global $my, $ps_user, $mainframe, $mosConfig_absolute_path, $sess,
-		$VM_LANG, $vmLogger, $database, $option, $mosConfig_useractivation;
+		global $my, $auth, $mainframe, $mosConfig_absolute_path, $sess,
+		$VM_LANG, $vmLogger, $database, $mosConfig_useractivation;
 
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
 		$hash_secret = "VirtueMartIsCool";
@@ -274,7 +272,7 @@ class ps_shopper {
 				} else {
 					$username_length = 25;
 				}
-				$silent_username = substr( str_replace( '-', '_', $d['email'] ), 0, $username_length );
+				$silent_username = substr( str_replace( '-', '_', vmGet($d,'email') ), 0, $username_length );
 				$db->query( 'SELECT username FROM `#__users` WHERE username=\''.$silent_username.'\'');
 				$i = 0;
 				while( $db->next_record()) {
@@ -286,20 +284,29 @@ class ps_shopper {
 				$_POST['password'] = $d['password'] = vmGenRandomPassword();
 				$_POST['password2'] = $_POST['password'];
 			}
-
-			// Process the CMS registration
-			if( vmIsJoomla( '1.5' ) ) {
-				if( !$this->register_save() ) {
-					return false;
-				}
-			} else {
-				if( !$this->saveRegistration() ) {
-					return false;
-				}
-			}
 			
-			$database->setQuery( "SELECT id FROM #__users WHERE username='".$d['username']."'" );
-			$uid = $database->loadResult();
+			if( VM_REGISTRATION_TYPE == 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account'] ) ) ) {
+				// If no user shall be registered into the global user table, we just add the registration info into the vm_user_info table
+				$db->query( "SELECT MAX(user_id)+1 as uid FROM `jos_vm_user_info`" );
+				$db->next_record();
+				$uid = $db->f('uid');
+				
+ 			} else {
+				// Process the CMS registration
+				
+				if( vmIsJoomla( '1.5' ) ) {
+					if( !$this->register_save() ) {
+						return false;
+					}
+				} else {
+					if( !$this->saveRegistration() ) {
+						return false;
+					}
+				}
+				$database->setQuery( "SELECT id FROM #__users WHERE username='".$d['username']."'" );
+				$uid = $database->loadResult();
+ 			}
+			
 			
 		}
 		else {
@@ -308,11 +315,13 @@ class ps_shopper {
 			$d['username'] = $_POST['username'] = $my->username;
 
 		}
-		$db->query( 'SELECT user_id FROM #__{vm}_user_info WHERE user_id='.$my->id );
-		$db->next_record();
-
-		if( $db->f('user_id')) {
-			return $this->update( $d );
+		if( !empty($auth['user_id'])) {
+			$db->query( 'SELECT user_id FROM #__{vm}_user_info WHERE user_id='.$auth['user_id'] );
+			$db->next_record();
+	
+			if( $db->f('user_id')) {
+				return $this->update( $d );
+			}
 		}
 		// Get all fields which where shown to the user
 		$userFields = ps_userfield::getUserFields('registration', false, '', true );
@@ -405,19 +414,29 @@ class ps_shopper {
 					}
 			}
 		}
-		
-		if( !$my->id && $mosConfig_useractivation == '0') {
+		if( VM_REGISTRATION_TYPE == 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account'] ) ) ) {
+			$auth['user_id'] = $uid;
+			$auth['username'] = $d['email'];
+			$_SESSION['auth'] = $auth;
+		}
+		elseif( !$my->id && $mosConfig_useractivation == '0') {
+			// HANDLE LOGIN
 			if( vmIsJoomla('1.5') ) {
 				// Username and password must be passed in an array
-				$credentials = array();
-				$credentials['username'] = $d['username'];
-				$credentials['password'] = $d['password'];
+				$credentials = array('username'  => vmGet($d,'username'),
+													'password' => vmGet($d,'password')
+											);
 				$mainframe->login( $credentials );
-			} elseif( class_exists('mambocore') || ( vmIsJoomla('1.0.13', '>=', false ) ) ) {
+			} 
+			elseif( class_exists('mambocore') || ( vmIsJoomla('1.0.13', '>=', false ) ) ) {
+				// Login for Mambo 4.6.x and Joomla >= 1.0.13 
 				$mainframe->login($d['username'], $d['password'] );
-			} else {
+			} 
+			else {
+				// Login for Joomla < 1.0.13 (and Mambo 4.5.2.3)
 				$mainframe->login($d['username'], md5( $d['password'] ));
 			}
+			// Redirect to the Checkout Page if the cart is not empty
 			if( !empty( $_SESSION['cart']['idx'])) {
 				$redirect_to_page = 'checkout.index';
 			} else {
@@ -425,7 +444,8 @@ class ps_shopper {
 			}
 			vmRedirect( $sess->url( 'index.php?page='.$redirect_to_page, false, false ), $VM_LANG->_('REG_COMPLETE') );
 		}
-		elseif( $my->id ) {
+		
+		if( !empty($my->id) || !empty($auth['user_id']) ) {
 			vmRedirect( $sess->url( 'index.php?page=checkout.index', false, false ) );
 		}
 		else {

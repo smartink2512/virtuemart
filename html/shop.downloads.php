@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,11 +17,9 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 mm_showMyFileName( __FILE__ );
 
-if( isset($_VERSION)) {
-	$mainframe->setPageTitle( $VM_LANG->_('PHPSHOP_DOWNLOADS_TITLE') );
-}
+$mainframe->setPageTitle( $VM_LANG->_('PHPSHOP_DOWNLOADS_TITLE') );
 
-if ($perm->check("admin,storeadmin,shopper")) { ?>
+if ($ps_function->userCanExecuteFunc('downloadRequest')) { ?>
 
 	<h3><?php echo $VM_LANG->_('PHPSHOP_DOWNLOADS_TITLE') ?></h3>
     <img src="<?php echo VM_THEMEURL ?>images/downloads.gif" alt="downloads" border="0" align="center" />
@@ -45,7 +43,9 @@ if ($perm->check("admin,storeadmin,shopper")) { ?>
 	}
 }
 else {
-	$vmLogger->info( $VM_LANG->_('NOT_AUTH',false)."; ".$VM_LANG->_('DO_LOGIN',false) );
+	$vmLogger->info( $VM_LANG->_('NOT_AUTH',false)
+								.($auth['user_id'] ? '' : ' ' . $VM_LANG->_('DO_LOGIN',false)) 
+								);
 }
 
 ?>

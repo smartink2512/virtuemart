@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -17,22 +17,10 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 
 /**
- * CLASS DESCRIPTION
- *                   
- * ps_cart
- *
  * The cart class is used to store products and carry them through the user's
  * session in the store.
- * properties:  
- * 	item() - an array of items
- *       idx - the current count of items in the cart
- *       error - the error message returned by validation if any
- * methods:
- *       add()
- *       update()
- *       delete()
-*************************************************************************/
-
+ *
+ */
 class ps_cart {
 
 	/**
@@ -41,13 +29,13 @@ class ps_cart {
 	 * @return array A fresh, empty cart or the old cart of a registered user
 	 */
 	function initCart() {
-		global $my, $cart, $sess;
+		global $cart;
 
 		$db = new ps_DB();
 		// If the user is logged in, we can try to retrieve the current cart from the database
         // We store the items in a new SESSION var
-		if( $my->id > 0 && empty($_SESSION['savedcart'])) {
-			$q = 'SELECT `cart_content` FROM `#__{vm}_cart` WHERE `user_id`='.$my->id;
+		if( $GLOBALS['auth']['user_id'] > 0 && empty($_SESSION['savedcart'])) {
+			$q = 'SELECT `cart_content` FROM `#__{vm}_cart` WHERE `user_id`='.$GLOBALS['auth']['user_id'];
 			$db->query( $q );
 			if( $db->next_record() ) {
 				// Fill the cart from the contents of the field cart_content, which holds a serialized array
@@ -86,8 +74,8 @@ class ps_cart {
 			return $cart;
 		}
 		else {
-			//echo 'auth::user_id: '.$_SESSION['auth']['user_id'] . '; $my->id: '.print_r($my);
-			if( ( @$_SESSION['auth']['user_id'] != $my->id ) && empty( $my->id )
+			//echo 'auth::user_id: '.$_SESSION['auth']['user_id'] . '; $GLOBALS['auth']['user_id']: '.print_r($my);
+			if( ( @$_SESSION['auth']['user_id'] != $GLOBALS['auth']['user_id'] ) && empty( $GLOBALS['auth']['user_id'] )
 			&& @$_GET['cartReset'] != 'N') {
 				// If the user ID has changed (after logging out)
 				// empty the cart!
@@ -104,7 +92,7 @@ class ps_cart {
  	* @param array $d
  	*/
 	function add(&$d) {
-		global $sess, $VM_LANG, $cart, $option, $vmLogger,$func, $mm_action_url;
+		global $sess, $VM_LANG, $cart, $vmLogger,$func;
 		
 		$d = $GLOBALS['vmInputFilter']->process( $d );
 		
@@ -500,7 +488,7 @@ class ps_cart {
 	 * @return boolean result of the update
 	 */
 	function updateSaved(&$d) {
-		global $sess,$VM_LANG, $vmLogger, $func, $page;
+		global $VM_LANG, $vmLogger, $page;
 		$d = $GLOBALS['vmInputFilter']->process( $d );
 		include_class("product");
 
@@ -582,11 +570,11 @@ class ps_cart {
 	 *
 	 */
 	function saveCart() {
-		global $db, $my, $mosConfig_lifetime, $func;
-		if( $my->id > 0 ) {
+		global $db;
+		if( $GLOBALS['auth']['user_id'] > 0 ) {
 			$cart_contents = serialize( $_SESSION['cart'] );
 			//$cart_contents = mysql_real_escape_string( $cart_contents );
-			$q = "REPLACE INTO `#__{vm}_cart` (`user_id`, `cart_content` ) VALUES ( ".$my->id.", '$cart_contents' )";
+			$q = "REPLACE INTO `#__{vm}_cart` (`user_id`, `cart_content` ) VALUES ( ".$GLOBALS['auth']['user_id'].", '$cart_contents' )";
 			$db->query( $q );
 		}
 	}
@@ -596,8 +584,8 @@ class ps_cart {
 	 *
 	 */
 	function replaceCart(&$d) {
-		global $my, $cart,$page;
-		if( $my->id > 0 ) {
+		global $cart,$page;
+		if( $GLOBALS['auth']['user_id'] > 0 ) {
 			$this->reset();
             $_SESSION['cart'] = $_SESSION['savedcart'];
             $page = "shop.cart";
@@ -614,7 +602,7 @@ class ps_cart {
 	 */
 	function mergeSaved(&$d) {
 		global $my, $cart,$page,$func;
-		if( $my->id > 0 ) {
+		if( $GLOBALS['auth']['user_id'] > 0 ) {
             // Iterate through saved cart
             for($i=0;$i<$_SESSION['savedcart']['idx'];$i++) {
                 $updated = false;
@@ -652,7 +640,7 @@ class ps_cart {
 	 */
 	function deleteCart(&$d) {
 		global $my, $page;
-		if( $my->id > 0 ) {
+		if( $GLOBALS['auth']['user_id'] > 0 ) {
             $page = "shop.cart";
             $_SESSION['savedcart']['idx']=0;
             return True;

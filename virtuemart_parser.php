@@ -188,7 +188,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		
 		// Check if we have to run a Shop Function
 		// and if the user is allowed to execute it
-		$funcParams = $ps_function->checkFuncPermissions( $func );
+		$funcParams = $ps_function->getFuncPermissions( $func );
 
 		/**********************************************
 		** Get Page/Directory Permissions
@@ -245,8 +245,9 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 				}
 				if ($ok == false) {
 					$no_last = 1;
-					if( $_SESSION['last_page'] != HOMEPAGE && empty($_REQUEST['ignore_last_page']) ) {
-						$page = $_SESSION['last_page'];
+					$last_page = vmGet( $_SESSION, 'last_page' );
+					if( $last_page != HOMEPAGE && !empty( $last_page ) && empty($_REQUEST['ignore_last_page']) ) {
+						$page = $last_page;
 					}
 					$my_page= explode ( '.', $page );
 					$modulename = $my_page[0];
@@ -273,7 +274,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 			$no_last = 0;
 			//$error="";
 		}
-	
+		
 		// If this is an asynchronous page load,
 		// we clear the output buffer and just send the log messages.
 		// the variable named 'ajax_request' has to be set to 1.
@@ -299,7 +300,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		$vmLogger->flush();
 		
 		// Now we can switch to implicit flushing
-		$vmLogger->_buffering = false;
+		$vmDisplayLogger->_buffering = false;
 	}
 	
 	define( '_VM_PARSER_LOADED', 1 );

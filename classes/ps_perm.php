@@ -49,7 +49,8 @@ class ps_perm {
 
 		global $my, $acl, $user;
 		$db = new ps_DB;
-		$auth = array();
+		$auth = !empty( $_SESSION['auth']) ? $_SESSION['auth'] : array();
+		
 		if( class_exists('jfactory')) {
 			$vmUser = JFactory::getUser();
 		} else {
@@ -85,14 +86,15 @@ class ps_perm {
 			$auth['show_prices'] = 1;
 		}
 		
-		if (!empty($vmUser->id)) { // user has already logged in
-
-			$auth["user_id"]   = $vmUser->id;
-			$auth["username"] = $vmUser->username;
+		if (!empty($vmUser->id) || !empty( $auth['user_id'])) { // user has already logged in
+			
+			if( $vmUser->id > 0 ) {
+				$auth["user_id"]   = $vmUser->id;
+				$auth["username"] = $vmUser->username;
+			}
+			if ($this->is_registered_customer($auth["user_id"])) {
 	
-			if ($this->is_registered_customer($vmUser->id)) {
-	
-				$q = "SELECT perms,first_name,last_name,country,zip FROM #__{vm}_user_info WHERE user_id='".$vmUser->id."'";
+				$q = "SELECT perms,first_name,last_name,country,zip FROM #__{vm}_user_info WHERE user_id='".$auth["user_id"]."'";
 				$db->query($q);
 				$db->next_record();
 	
@@ -139,7 +141,7 @@ class ps_perm {
 			}
 
 		} // user is not logged in
-		else {
+		elseif( empty( $auth['user_id']) ) {
 
 			$auth["user_id"] = 0;
 			$auth["username"] = "demo";
@@ -273,19 +275,13 @@ class ps_perm {
 		else {
 		*/
 			$db_check = new ps_DB;
-			$q  = "SELECT #__users.id, #__{vm}_user_info.user_id from #__users, #__{vm}_user_info 
-					WHERE #__users.id='" . $user_id . "' AND #__users.id=#__{vm}_user_info.user_id 
-					AND #__{vm}_user_info.address_type='BT' AND #__{vm}_user_info.first_name != '' 
-					AND #__{vm}_user_info.last_name != '' AND #__{vm}_user_info.city != ''";
+			$q  = "SELECT COUNT(user_id) as num_rows FROM `#__{vm}_user_info` 
+					WHERE #__{vm}_user_info.user_id='" . $user_id . "'  
+					AND #__{vm}_user_info.address_type='BT'";
 			$db_check->query($q);
-			
+			$db_check->next_record();
 			// Query failed or not?
-			if ($db_check->num_rows() > 0) {
-				return true;
-			}
-			else {
-				return false;
-			}
+			return $db_check->f('num_rows') > 0;
 		//}
 	}
 	

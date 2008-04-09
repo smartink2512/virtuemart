@@ -348,7 +348,7 @@ if (PSHOP_ALLOW_REVIEWS == '1') {
 	$product_reviews = ps_reviews::product_reviews( $product_id );
 	/*** Show a form for writing a review ***/
 
-	if( $my->id ) {
+	if( $auth['user_id'] > 0 ) {
 		$product_reviewform = ps_reviews::reviewform( $product_id );
 	}
 }

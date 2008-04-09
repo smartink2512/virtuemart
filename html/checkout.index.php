@@ -41,7 +41,7 @@ $Itemid = $sess->getShopItemid();
 * -CHECK_OUT_GET_FINAL_CONFIRMATION
 * shows a total summary including all payments, taxes, fees etc. and let the user confirm
 */
-if( $my->id ) {
+if( $auth['user_id'] > 0 ) {
 	$show_basket = true;
 } else {
 	$show_basket = false;
@@ -95,7 +95,7 @@ if ($cart["idx"] > 0) {
 		
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="Itemid" value="'. $Itemid .'" />
-	<input type="hidden" name="user_id" value="'. $my->id .'" />
+	<input type="hidden" name="user_id" value="'. $auth['user_id'] .'" />
 	<input type="hidden" name="page" value="'. $next_page .'" />
 	<input type="hidden" name="func" value="checkoutProcess" />
 		
@@ -165,7 +165,7 @@ if ($cart["idx"] > 0) {
         
         else {
 			
-          if (!empty($my->id)) {
+          if (!empty($auth['user_id'])) {
             // USER IS LOGGED IN, BUT NO REGISTERED CUSTOMER
             // WE NEED SOME ADDITIONAL INFORMATION HERE,
             // SO REDIRECT HIM TO shop/shopper_add

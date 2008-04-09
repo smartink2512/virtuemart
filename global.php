@@ -153,8 +153,8 @@ if( vmShouldDebug() ) {   /*@MWM1: Log/Debug enhancements */
 // Benjamin: change this using a dynamic global variable...
 $default_vendor = 1;
 
-if( $my->id ) {
-	$db->query( 'SELECT `vendor_id` FROM `#__{vm}_auth_user_vendor` WHERE `user_id` ='.$my->id );
+if( $auth['user_id'] > 0 ) {
+	$db->query( 'SELECT `vendor_id` FROM `#__{vm}_auth_user_vendor` WHERE `user_id` ='.$auth['user_id'] );
 	$db->next_record();
 	if( $db->f( 'vendor_id' ) ) {
 		$default_vendor = $db->f( 'vendor_id' );
