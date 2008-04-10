@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -91,6 +91,9 @@ class ps_perm {
 			if( $vmUser->id > 0 ) {
 				$auth["user_id"]   = $vmUser->id;
 				$auth["username"] = $vmUser->username;
+			} elseif( !empty( $auth['user_id']) && VM_REGISTRATION_TYPE != 'NO_REGISTRATION' && VM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION') {
+				$auth["user_id"] = 0;
+				$auth["username"] = "demo";
 			}
 			if ($this->is_registered_customer($auth["user_id"])) {
 	

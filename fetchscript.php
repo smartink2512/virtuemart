@@ -244,8 +244,8 @@ if( $processed_files == 0 ) {
 	  	exit;
 	}
 }
-// Tell the user agent to cache this script/stylesheet for an hour
-$age = 3600;
+// Tell the user agent to cache this script/stylesheet for a week
+$age = 604800;
 header( 'Expires: '.gmdate( 'D, d M Y H:i:s', time()+ $age ) . ' GMT' );
 header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', @filemtime( $file ) ) . ' GMT' );
 header( 'Cache-Control: public, max-age='.$age.', must-revalidate, post-check=0, pre-check=0' );

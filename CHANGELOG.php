@@ -39,6 +39,7 @@ VirtueMart 1.1.x
 # Task # 1687 -  Discount price calculated wrongly (fixed for VM 1.1.x - not VM 1.0.x)
 
 09.04.2008 soeren
+# Task #2007 - Account Maintenance alway visible after first login
 - checkbox for "Disable Shipping ..." in the configuration form, tab "shipping". 
 # Task #1933 - Security Token Error when submitting form after a while
 # Task #2002 - Related products shows only 10 products
