@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+09.04.2008 gregdev
+# Task # 1687 -  Discount price calculated wrongly (fixed for VM 1.1.x - not VM 1.0.x)
+
 09.04.2008 soeren
 - checkbox for "Disable Shipping ..." in the configuration form, tab "shipping". 
 # Task #1933 - Security Token Error when submitting form after a while
@@ -44,7 +47,6 @@ VirtueMart 1.1.x
 	the user will be logged out after having placed the order 
 # Task #1998 -  Unable to save Joomla registration update in extended layout.
 ^ removed the requirement of being logged in to make downloads (the function downloadRequest has permissions set to "none" by default now)
-
 
 08.04.2008 gregdev
 # Task # 1687 -  Discount price calculated wrongly (fixed for VM 1.1.x - not VM 1.0.x)
