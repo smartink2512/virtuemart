@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+12.04.2008 gregdev
+# Corrected syntax errors (%s) in common/french.php.
+
 09.04.2008 gregdev
 # Task # 1687 -  Discount price calculated wrongly (fixed for VM 1.1.x - not VM 1.0.x)
 

@@ -594,7 +594,7 @@ Mot de passe - %s
 	'VM_MANAGE_USER_FIELDS' => 'Gérer les champs utilisateur',
 	'VM_FIELDMANAGER_REORDER' => 'Réorganiser',
 	'VM_PRODUCTS_MOVE_TOOLBAR' => 'Déplacer les produits',
-	'VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP' => 'Lorsque cette option est activée, elle vous permet de tester vos scripts Notify File% s par le biais de ce formulaire de test: <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank"> www.eliteweaver. Co.uk / testing / ipntest.php </ a>',
+	'VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP' => 'Lorsque cette option est activée, elle vous permet de tester vos scripts Notify File %s par le biais de ce formulaire de test: <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank"> www.eliteweaver. Co.uk / testing / ipntest.php </ a>',
 	'VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN' => 'Etat des commandes qui n\'ont pas terminé la transaction de paiement. 
 La transaction n\'a pas été annulée dans le cas présent, mais elle est en suspens et en attente d\'achèvement.',
 	'VM_ADMIN_CFG_PAYPAL_STATUS_PENDING' => 'Etat de la commande pour les paiements en attente',
@@ -605,7 +605,7 @@ La transaction n\'a pas été annulée dans le cas présent, mais elle est en suspen
 	'VM_HELP_TOPICS' => 'Help Topics',
 	'VM_COMMUNITY_FORUM' => 'Forum',
 	'VM_CONFIGURATION_CHANGE_SUCCESS' => 'La configuration ont été mises à jour',
-	'VM_CONFIGURATION_CHANGE_FAILURE' => 'Impossible d\'écrire dans le fichier de configuration% s',
+	'VM_CONFIGURATION_CHANGE_FAILURE' => 'Impossible d\'écrire dans le fichier de configuration %s',
 	'VM_WRITABLE' => 'Modifiable',
 	'VM_UNWRITABLE' => 'Non modifiable',
 	'VM_FEDEX_ACCOUNT_NUMBER' => 'Numéro de compte FedEx',
@@ -657,7 +657,7 @@ You can return new, unopened items from a cancelled order within 2 weeks after t
 delivered to you. Items should be returned in their original packaging.
 For more information on cancelling orders and returning items, see the <a href="%s" onclick="%s" target="_blank">Our Returns Policy</a> page.',
 	'VM_SESSION_SAVEPATH_UNWRITABLE_TMPFIX' => 'Le répertoire pour stocker les données de session n\'est pas modifiable. S?il vous plaît corriger ceci ou contactez votre hébergeur.',
-	'VM_SESSION_SAVEPATH_UNWRITABLE' => 'Le chemain de sauvegarde de la Session (Session Save Path) %s n\'est pas inscriptible. S?il vous plaît corriger cela! La boutique  essaye d\'utiliser le % s à la place.',
+	'VM_SESSION_SAVEPATH_UNWRITABLE' => 'Le chemain de sauvegarde de la Session (Session Save Path) %s n\'est pas inscriptible. S?il vous plaît corriger cela! La boutique  essaye d\'utiliser le %s à la place.',
 	'VM_SESSION_COOKIES_NOT_ACCEPTED_TIP' => 'Votre navigateur n\'accepte pas les cookies. Pour mettre les produits dans votre panier d\'achat et les acheter, vous devez activer les cookies.',
 	'BUTTON_SEND_REG' => 'S\'inscrire',
 	'CONTACT_FORM_NC' => 'S\'il vous plaît assurez-vous que le formulaire est complet et correct.',
@@ -742,21 +742,21 @@ For more information on cancelling orders and returning items, see the <a href="
 	'REGWARN_PASS' => 'S\'il vous plaît, entrez un mot de passe valide. Pas d\'espaces, de plus de 6 caractères et contenir 0-9, az, AZ',
 	'REGWARN_VPASS1' => 'S?il vous plaît vérifier le mot de passe.',
 	'REGWARN_VPASS2' => 'Mot de passe et la vérification ne correspondent pas, réessayez s?il vous plaît.',
-	'USEND_MSG_ACTIVATE' => 'Bonjour% s, 
+	'USEND_MSG_ACTIVATE' => 'Bonjour %s, 
 
-Merci de vous identifier à% s. Votre compte est créé et doit être activée avant de pouvoir l\'utiliser. 
+Merci de vous identifier à %s. Votre compte est créé et doit être activée avant de pouvoir l\'utiliser. 
 Pour activer le compte, cliquez sur le lien ci-dessous ou copiez-collez-le dans votre navigateur: 
-% S 
+%s 
 
-Après l\'activation, vous pouvez vous connecter à% s en utilisant le nom d\'utilisateur et le mot de passe suivant: 
+Après l\'activation, vous pouvez vous connecter à %s en utilisant le nom d\'utilisateur et le mot de passe suivant: 
 
-Nom d\'utilisateur -% s 
-Password -% s',
-	'USEND_MSG' => 'Bonjour% s, 
+Nom d\'utilisateur - %s 
+Password - %s',
+	'USEND_MSG' => 'Bonjour %s, 
 
-Merci de vous identifier à% s. 
+Merci de vous identifier à %s. 
 
-Vous pouvez maintenant vous connecter à% s en utilisant le nom d\'utilisateur et le mot de passe que vous avez donné lors de votre enregistrement.',
+Vous pouvez maintenant vous connecter à %s en utilisant le nom d\'utilisateur et le mot de passe que vous avez donné lors de votre enregistrement.',
 	'HI' => 'Bonjour',
 	'NEW_USER_MESSAGE_SUBJECT' => 'Ficher nouvel utilisateur',
 	'NEW_USER_MESSAGE' => 'Bonjour %s,
