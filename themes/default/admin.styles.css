@@ -166,6 +166,10 @@ div.toolbar {
 .button {
 	border: 0 !important;
 }
+a.vmaccordion {
+	margin: 3px 0px 3px 5px;
+	font-weight: bold;
+}
 .vmicon {
 	background-repeat: no-repeat;
 }

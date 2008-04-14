@@ -364,8 +364,7 @@ class formFactory {
 * Tab Creation handler
 * @package VirtueMart
 * @subpackage core
-* @author Phil Taylor
-* @author Soeren Eberhardt
+* @author soeren
 * Modified to use Panel-in-Panel functionality
 */
 class vmTabPanel {
@@ -405,7 +404,31 @@ class vmTabPanel {
 		echo "</div>";
 		$scripttag = "
 Ext.onReady( function() { 
-	var tabs_{$this->panel_id} = new Ext.TabPanel('{$this->pane_id}');";
+	Ext.QuickTips.init();
+	var tabs_{$this->panel_id} = new Ext.TabPanel({
+		renderTo: '{$this->pane_id}',
+		activeTab: 0,
+		deferredRender: false,
+		items: [";
+		
+		$num = 0;
+		$numTabs = count( $this->tabs );
+		foreach ( $this->tabs as $id => $title ) {
+			$scripttag .= "{ contentEl: '$id', title: '".addslashes($title)."' , tabTip: '".addslashes(strip_tags($title))."' }";
+			$num++;
+			if( $num < $numTabs ) {
+				$scripttag .= ",\n";
+			}
+		}
+		$scripttag .= "]
+		});";
+		reset($this->tabs);
+		if( $this->useCookies ) {
+			$scripttag .= "tabs_{$this->panel_id}.activate(state.get('{$this->panel_id}-active', '".key($this->tabs)."')); \n});";
+		} else {
+			$scripttag .= "tabs_{$this->panel_id}.activate( '".key($this->tabs)."'); \n});";
+		}
+		
 		if( $this->useCookies ) {
 			$scripttag .= "
 	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
@@ -414,18 +437,6 @@ Ext.onReady( function() {
      state.set('{$this->panel_id}-active', tab.id);
      });
 	";
-		}
-		$num = 0;
-		foreach ( $this->tabs as $id => $title ) {
-			$scripttag .= "tabItem$num = tabs_{$this->panel_id}.addTab('$id', '".addslashes($title)."' );\n";
-			$scripttag .= "tabItem$num.setTooltip( '".addslashes(strip_tags($title))."' );\n";
-			$num++;
-		}
-		reset($this->tabs);
-		if( $this->useCookies ) {
-			$scripttag .= "tabs_{$this->panel_id}.activate(state.get('{$this->panel_id}-active', '".key($this->tabs)."')); \n});";
-		} else {
-			$scripttag .= "tabs_{$this->panel_id}.activate( '".key($this->tabs)."'); \n});";
 		}
 		
 		echo vmCommonHTML::scriptTag('', $scripttag );
@@ -837,7 +848,7 @@ class vmCommonHTML {
 	function loadYUI( ) {
 		global $mosConfig_live_site, $vm_mainframe;
 		if( !defined( "_YUI_LOADED" )) {
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs/yui-utilities.js' );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/yui-utilities.js' );
 			define ( "_YUI_LOADED", "1" );
 		}
 	}
@@ -846,10 +857,13 @@ class vmCommonHTML {
 		vmCommonHTML::loadYUI();
 		if( !defined( "_EXTJS_LOADED" )) {
 			
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs/ext-yui-adapter.js' );
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs/ext-all.js' );
-			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs/css/ext-all.css' );
-			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs/css/xtheme-gray.css' );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/ext-yui-adapter.js' );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/ext-all.js' );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/Menubar.js' );
+			//$vm_mainframe->addScriptDeclaration( 'Ext.BLANK_IMAGE_URL = "'.$mosConfig_live_site.'/components/'. VM_COMPONENT_NAME .'/js/extjs2/images/default/s.gif";' );
+			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/css/ext-all.css' );
+			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/css/xtheme-gray.css' );
+			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/css/Menubar.css' );
 			define ( "_EXTJS_LOADED", "1" );
 		}
 	}

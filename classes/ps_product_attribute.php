@@ -260,18 +260,19 @@ class ps_product_attribute {
 		$tpl->set( "custom_attribute", $this->list_custom_attribute( $product_id, $db->f( "product_id" ) ) ) ;
 		// Get list of children
 		$q = "SELECT product_id,product_name FROM #__{vm}_product WHERE product_parent_id='$product_id' AND product_publish='Y'" ;
-		$db->setQuery( $q ) ;
-		$db->query() ;
+		$db->query($q);
+		
 		if( $db->num_rows() < 1 ) {
+			// Must be a child then
+			$child_id = $product_id;
 			// Try to Get list of sisters & brothers
-			$q = "SELECT product_parent_id FROM #__{vm}_product WHERE product_id='$product_id'" ;
-			$db->setQuery( $q ) ;
-			$db->query() ;
-			$child_id = $product_id ;
-			$product_id = $db->f( "product_parent_id" ) != "0" ? $db->f( "product_parent_id" ) : $product_id ;
-			$q = "SELECT product_id,product_name FROM #__{vm}_product WHERE product_parent_id='" . $db->f( "product_parent_id" ) . "' AND product_parent_id<>0 AND product_publish='Y'" ;
-			$db->setQuery( $q ) ;
-			$db->query() ;
+			$product_parent_id = $ps_product->get_field( $product_id, 'product_parent_id' ) ;
+			if( $product_parent_id != "0" ) {
+				$product_id = $product_parent_id;
+				$q = "SELECT product_id,product_name FROM #__{vm}_product WHERE product_parent_id=$product_id AND product_parent_id<>0 AND product_publish='Y'" ;
+				$db->setQuery( $q ) ;
+				$db->query() ;
+			}
 		}
 		if( $db->num_rows() > 0 ) {
 			$flypage = $ps_product->get_flypage( $product_id ) ;
@@ -280,11 +281,12 @@ class ps_product_attribute {
 			$html .= "<select class=\"inputbox\" onchange=\"var id = $('product_id_field')[selectedIndex].value; if(id != '') { loadNewPage( 'vmMainPage', '" . $mm_action_url . "index2.php?option=com_virtuemart&amp;page=shop.product_details&amp;flypage=$flypage&amp;Itemid=$Itemid&amp;category_id=$category_id&amp;product_id=' + id ); }\" id=\"product_id_field\" name=\"prod_id[]\">\n" ;
 			$html .= "<option value=\"$product_id\">" . $VM_LANG->_( 'PHPSHOP_SELECT' ) . "</option>" ;
 			while( $db->next_record() ) {
-				$selected = isset( $child_id ) ? ($db->f( "product_id" ) == $child_id ? "selected=\"selected\"" : "") : "" ;
+				$selected = isset( $_REQUEST['product_id'] ) ? ($db->f( "product_id" ) == $_REQUEST['product_id'] ? 'selected="selected"' : '') : '' ;
+				
 				
 				// Start row for this child
 				$html .= "<option value=\"" . $db->f( "product_id" ) . "\" $selected>" ;
-				$html .= $db->f( "product_name" ) . " - " ;
+				$html .= $db->f( "product_name" ) ." - " ;
 				
 				// For each child get attribute values by looping through attribute list
 				$q = "SELECT product_id, attribute_name FROM #__{vm}_product_attribute_sku " ;

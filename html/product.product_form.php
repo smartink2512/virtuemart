@@ -1417,19 +1417,23 @@ var searchField = function(){
     
 
     // Custom rendering Template
-    var resultTpl = new Ext.Template(
-        '<div class="search-item">{category} / {product}</div>'
+    var resultTpl = new Ext.XTemplate(
+    	'<tpl for=".">',
+        	'<div class="x-combo-list-item">{category} / {product}</div>',
+        '</tpl>'
     );
     relatedSelection = document.getElementById('relatedSelection');
     related_products = document.adminForm.related_products;
-    var search = new Ext.form.ComboBox({
+    var relProdSearch = new Ext.form.ComboBox({
+    	applyTo: 'relatedProductSearch',
         store: relds,
         title: '<?php echo addslashes($VM_LANG->_('VM_PRODUCT_SELECT_ONE_OR_MORE')); ?>',
         displayField:'product',
         typeAhead: false,
         loadingText: '<?php echo addslashes($VM_LANG->_('VM_PRODUCT_SEARCHING')); ?>',
         width: 270,
-        pageSize:20,
+        minListWidth: 270,
+        pageSize:15,
         hideTrigger:true,
         tpl: resultTpl,
         onSelect: function(record) {
@@ -1447,9 +1451,6 @@ var searchField = function(){
         	}
         }
     });
-	
-	// apply it to the exsting input element
-    search.applyTo('relatedProductSearch');
 	
 };
 if( Ext.isIE ) {

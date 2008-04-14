@@ -38,6 +38,11 @@ VirtueMart 1.1.x
 12.04.2008 gregdev
 # Corrected syntax errors (%s) in common/french.php.
 
+10.04.2008 soeren
+^ switched from ExtJS 1.1.1 to ExtJS 2.0.2 
+# product list doesn't filter by parent ID when a category was selected
+# dropdown list of child products had no pre-selection after selecting a child product
+
 09.04.2008 gregdev
 # Task # 1687 -  Discount price calculated wrongly (fixed for VM 1.1.x - not VM 1.0.x)
 

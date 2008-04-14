@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -29,6 +29,11 @@ include( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/inst
 // Load the virtuemart main parse code
 require( $mosConfig_absolute_path.'/components/'.$option.'/virtuemart_parser.php' );
 
+$task = vmGet( $_GET, 'task', null);
+if( $task == 'extlayout') {
+	include( $mosConfig_absolute_path.'/components/'.$option.'/js/extlayout.js.php');
+	exit;
+}
 // Include The Version File
 include_once( ADMINPATH. 'version.php' );
 if( !isset( $VMVERSION ) || !is_object( $VMVERSION ) ) {
@@ -43,6 +48,7 @@ if( !empty( $_GET['vmLayout'])) {
 	$vmLayout = $_GET['vmLayout'] == 'standard' ? $_GET['vmLayout'] : 'extended';
 }
 // Remember the Cookie for 1 Week
+ob_get_level() or ob_start();
 setcookie('vmLayout', $vmLayout, time()+604800);
 
 // pages, which are called through index3.php are PopUps, they should not need a menu (but it can be overridden by $_REQUEST['no_menu'])
@@ -71,8 +77,8 @@ if( empty( $page ) || empty( $_REQUEST['page'])) {
 		
 	}
 }
-$limit = $mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', $mosConfig_list_limit );
-$limitstart = $mainframe->getUserStateFromRequest( "view{$page}{$product_id}{$category_id}limitstart", 'limitstart', 0 );
+$limit = $vm_mainframe->getUserStateFromRequest( "viewlistlimit", 'limit', $mosConfig_list_limit );
+$limitstart = $vm_mainframe->getUserStateFromRequest( "view{$page}{$product_id}{$category_id}limitstart", 'limitstart', 0 );
 
 if (defined('_DONT_VIEW_PAGE') && !isset($install_type) ) {
     echo "<script type=\"text/javascript\">alert('$error. Your permissions: ".$_SESSION['auth']['perms']."')</script>\n";
@@ -99,17 +105,20 @@ $vm_mainframe->addStyleSheet( VM_THEMEURL.'admin.styles.css' );
 $vm_mainframe->addStyleSheet( VM_THEMEURL.'theme.css' );
 $vm_mainframe->addScript( $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/functions.js' );
 
-if( $no_menu != 1 ) {
+if( $no_menu != 1 && $vmLayout != 'extended' ) {
 	include(ADMINPATH.'header.php');
 }
+
 if( $only_page != 1 && $vmLayout == 'extended') {
 	
 	vmCommonHTML::loadExtjs();
-	$vm_mainframe->addScript( $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/extlayout.js.php' );
-	$phpscript_url = str_replace( 'index2.php', 'index3.php', str_replace('index.php', 'index3.php', $_SERVER['PHP_SELF'])); 
+	$vm_mainframe->addScript( $_SERVER['PHP_SELF'].'?option='.$option.'&task=extlayout' );
+	$phpscript_url = str_replace( 'index2.php', 'index3.php', str_replace('index.php', 'index3.php', $_SERVER['PHP_SELF']));
+	echo '<div id="viewport"></div>';
 	echo '<iframe id="vmPage" src="'.$phpscript_url.'?option=com_virtuemart&amp;page='.$_SESSION['last_page'].'&amp;only_page=1&amp;no_menu=1" style="width:100%;height: 100%; display: block;min-height:500px; border: 1px solid silver;padding:4px;"></iframe>';
 
 } else {
+
 	if( $vmLayout == 'extended' ) {
 		echo '<div id="vm-toolbar"></div>';
 	
@@ -133,6 +142,7 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 		if( $only_page ) {
 			if( @$_REQUEST['format'] == 'raw' ) while( @ob_end_clean());
 			if( $func ) echo vmCommonHTML::getSuccessIndicator( $ok, $vmDisplayLogger );
+
 			include( PAGEPATH.$modulename.".".$pagename.".php" );
 			if( @$_REQUEST['format'] == 'raw' ) {
 				$vm_mainframe->close(true);
@@ -173,5 +183,7 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 		echo '</td></tr></table>';
 	}
 }
+// Render the script and style resources into the document head
 $vm_mainframe->close();
+
 ?>

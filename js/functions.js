@@ -53,7 +53,7 @@ function vm_submitButton(pressbutton, frmName, pageName) {
 * Submit the admin form
 */
 function vm_submitForm(pressbutton, frmName, pageName){
-
+	
 	var f = eval( "document."+frmName );
 	if( pressbutton == "cancel" ) {
 		if( parent.closePanel ){
@@ -135,29 +135,32 @@ function getURLParam( strParamName, myWindow){
   }
   return strReturn;
 }
-var panelArr = new Object();
 
 function addSimplePanel( title, link ) {
-	if( typeof vmLayout != 'undefined') {
+	if( Ext.getCmp('center-panel')) {
 		myId = title.replace( /\W/, '' );
-		if( vmLayout.layout.showPanel( panelArr[myId] ) ) {
+		if( Ext.getCmp('center-panel').getComponent( myId )) {
+			Ext.getCmp('center-panel').activate( panelArr[myId] );
 			return false;
 		}
-		var iframe = Ext.DomHelper.append(document.body, {tag: 'iframe', frameBorder: 0 });	
-		var panel = new Ext.ContentPanel( iframe, {title: title, fitToFrame:true, closable:true });	
-		vmLayout.layout.add('center', panel);
-		iframe.src= link + '&panelId=' + panel.getId();
-		panelArr[myId] = panel.getId();
+
+		var panel = new Ext.BoxComponent( { id: myId, autoEl: {tag: "iframe", frameBorder: 0, height: 450, src: link+"&panelId="+myId }, title: title, fitToFrame:true, closable:true });	
+		Ext.getCmp('center-panel').add( panel );		
 		
-		vmLayout.layout.showPanel(panel);
+		Ext.getCmp('center-panel').activate(panel);
 		return false;
 	}
 	return true;
 }
 function closePanel( id ) {
-	if( typeof vmLayout != 'undefined') {
-		vmLayout.layout.remove('center', id );
+
+	if( Ext.getCmp('center-panel')) {
+		if( Ext.getCmp('center-panel').items.getCount() > 1 ) {
+			Ext.getCmp('center-panel').remove( Ext.getCmp('center-panel').getActiveTab() );
+			return true;
+		}
+		return false;
 	} else {
-		submitbutton( 'cancel' );
+		return false;
 	}
 }
