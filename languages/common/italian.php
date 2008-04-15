@@ -299,10 +299,10 @@ $langvars = array (
 	'PHPSHOP_CHECKOUT_ERR_CCDATE_INV' => 'La data di scadenza non è valida.',
 	'PHPSHOP_CHECKOUT_ERR_NO_SHIPTO' => 'Scegli un Indirizzo di Spedizione.',
 	'PHPSHOP_CHECKOUT_ERR_CCNUM_INV' => 'Numero account non valido.',
-	'PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND' => 'ERRORE: Impossibile trovare la Tariffa specificata!',
-	'PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND' => 'ERRORE: Il tuo Indirizzo di Spedizione non è stato trovato!',
-	'PHPSHOP_CHECKOUT_ERR_NO_CCDATA' => 'ERRORE: Non ci sono i dati della Carta di Credito...',
-	'PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND' => 'ERRORE: Numero della Carta di Credito non trovato!',
+	'PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND' => 'Impossibile trovare la Tariffa specificata!',
+	'PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND' => 'Il tuo Indirizzo di Spedizione non è stato trovato!',
+	'PHPSHOP_CHECKOUT_ERR_NO_CCDATA' => 'Non ci sono i dati della Carta di Credito...',
+	'PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND' => 'Numero della Carta di Credito non trovato!',
 	'PHPSHOP_CHECKOUT_ERR_TEST' => 'Siamo spiacenti, ma hai usato un numero di Carta di Credito di prova!',
 	'PHPSHOP_CHECKOUT_ERR_NO_USER_DATA' => 'Impossibile trovare l\'utente nel database!',
 	'PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME' => 'Non hai inserito il nome del titolare del conto.',
@@ -1303,6 +1303,11 @@ check with your hosting company to see if you can access this port first',
 	'PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_0' => 'Don\'t send authemail to customer',
 	'PHPSHOP_ADMIN_CFG_EPAY_EXTRAINFO_RESET_EXPLAIN' => 'IF THE PAYMENT EXTRA INFO FIELD IS BLANK YOU MUST CLICK THIS BUTTON BELOW!',
 	'PHPSHOP_ADMIN_CFG_EPAY_EXTRAINFO_RESET' => 'Reset Payment Extra Info',
-	'PHPSHOP_ADMIN_CFG_EPAY_ERR_CONFIGFILE' => 'Could not write to configuration file'
+	'PHPSHOP_ADMIN_CFG_EPAY_ERR_CONFIGFILE' => 'Impossibile scrivere il file di configurazione',
+	'VM_CHECKOUT_ERR_CCTYPE' => 'Tipo Carta di Credito non trovato.',
+	'VM_ENQUIRY_MAIL_CUSTOMER_QUESTION' => 'Domanda Cliente',
+	'VM_ENQUIRY_MAIL_HAS_REQUESTED' => 'ha richiesto maggiori informazioni su',
+	'VM_ENQUIRY_MAIL_PRODUCT_SKU' => 'Codice-Prodotto',
+	'VM_ENQUIRY_MAIL_QUESTION' => 'Domanda'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>

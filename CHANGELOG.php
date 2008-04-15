@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+15.04.2008 thepisu
+# Task #1976 hardcoded language string in ps_checkout.php
+# Task #2010 backslash in token text hides all text
+# Task #2018 Hard coded strings shipping files and emails (partially: only enquiry_email.tpl.php)
+
 14.04.2008 gregdev
 # Task #2017 - ps_coupon.php 'gif' instead of 'gift'
 

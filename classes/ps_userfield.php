@@ -308,7 +308,7 @@ class ps_userfield extends vmAbstractObject {
 	   		}
 	   		if( $field->name == 'agreed') {
 	   			$field->title = '<script type="text/javascript">//<![CDATA[
-				document.write(\'<label for="agreed_field">'. $VM_LANG->_('PHPSHOP_I_AGREE_TO_TOS') .'</label><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
+				document.write(\'<label for="agreed_field">'. str_replace("'","\\'",$VM_LANG->_('PHPSHOP_I_AGREE_TO_TOS')) .'</label><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
 				document.write(\' ('.$VM_LANG->_('PHPSHOP_STORE_FORM_TOS') .')</a>\');
 				//]]></script>
 				<noscript>
@@ -688,7 +688,7 @@ class ps_userfield extends vmAbstractObject {
 	    
 	   		echo '
 			if( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(form.email.value))) {
-				alert( \''. $VM_LANG->_('REGWARN_MAIL',false) .'\');
+				alert( \''. str_replace("'","\\'",$VM_LANG->_('REGWARN_MAIL',false)) .'\');
 				return false;
 			}';
 

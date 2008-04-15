@@ -299,10 +299,10 @@ $langvars = array (
 	'PHPSHOP_CHECKOUT_ERR_CCDATE_INV' => 'The expiration date is invalid.',
 	'PHPSHOP_CHECKOUT_ERR_NO_SHIPTO' => 'Please select a Ship To address.',
 	'PHPSHOP_CHECKOUT_ERR_CCNUM_INV' => 'Invalid account number.',
-	'PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND' => 'ERROR: The selected Shipping Rate was not found!',
-	'PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND' => 'ERROR: Your Shipping Address was not found!',
-	'PHPSHOP_CHECKOUT_ERR_NO_CCDATA' => 'ERROR: There\'s no CreditCard data...',
-	'PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND' => 'ERROR: Credit Card Number not found!',
+	'PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND' => 'The selected Shipping Rate was not found!',
+	'PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND' => 'Your Shipping Address was not found!',
+	'PHPSHOP_CHECKOUT_ERR_NO_CCDATA' => 'There\'s no CreditCard data...',
+	'PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND' => 'Credit Card Number not found!',
 	'PHPSHOP_CHECKOUT_ERR_TEST' => 'Sorry, but the Credit Card Number you\'ve used is a testing number!',
 	'PHPSHOP_CHECKOUT_ERR_NO_USER_DATA' => 'The user_id was not found in the database!',
 	'PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME' => 'You have actually not provided your bank account holder name.',
@@ -1311,6 +1311,11 @@ check with your hosting company to see if you can access this port first',
 	'PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_0' => 'Don\'t send authemail to customer',
 	'PHPSHOP_ADMIN_CFG_EPAY_EXTRAINFO_RESET_EXPLAIN' => 'IF THE PAYMENT EXTRA INFO FIELD IS BLANK YOU MUST CLICK THIS BUTTON BELOW!',
 	'PHPSHOP_ADMIN_CFG_EPAY_EXTRAINFO_RESET' => 'Reset Payment Extra Info',
-	'PHPSHOP_ADMIN_CFG_EPAY_ERR_CONFIGFILE' => 'Could not write to configuration file'
+	'PHPSHOP_ADMIN_CFG_EPAY_ERR_CONFIGFILE' => 'Could not write to configuration file',
+	'VM_CHECKOUT_ERR_CCTYPE' => 'Credit Card Type not found.',
+	'VM_ENQUIRY_MAIL_CUSTOMER_QUESTION' => 'Customer Question',
+	'VM_ENQUIRY_MAIL_HAS_REQUESTED' => 'has requested more information on',
+	'VM_ENQUIRY_MAIL_PRODUCT_SKU' => 'Product-SKU',
+	'VM_ENQUIRY_MAIL_QUESTION' => 'Question'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>

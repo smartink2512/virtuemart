@@ -373,7 +373,7 @@ class ps_checkout {
 				return true;
 			}
 		}
-		if (!isset($d["payment_method_id"]) ) {
+		if (!isset($d["payment_method_id"]) || $d["payment_method_id"]==0 ) {
 			$vmLogger->err( $VM_LANG->_('PHPSHOP_CHECKOUT_ERR_NO_PAYM',false) );
 			return false;
 		}
@@ -394,7 +394,7 @@ class ps_checkout {
 
 			// Creditcard
 			if (empty( $_SESSION['ccdata']['creditcard_code']) ) {
-				$vmLogger->err( "Credit Card Type not found." );
+				$vmLogger->err( $VM_LANG->_('VM_CHECKOUT_ERR_CCTYPE') );
 				return false;
 			}
 

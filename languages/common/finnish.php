@@ -1310,6 +1310,11 @@ check with your hosting company to see if you can access this port first',
 	'PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_0' => 'Don\'t send authemail to customer',
 	'PHPSHOP_ADMIN_CFG_EPAY_EXTRAINFO_RESET_EXPLAIN' => 'IF THE PAYMENT EXTRA INFO FIELD IS BLANK YOU MUST CLICK THIS BUTTON BELOW!',
 	'PHPSHOP_ADMIN_CFG_EPAY_EXTRAINFO_RESET' => 'Reset Payment Extra Info',
-	'PHPSHOP_ADMIN_CFG_EPAY_ERR_CONFIGFILE' => 'Could not write to configuration file'
+	'PHPSHOP_ADMIN_CFG_EPAY_ERR_CONFIGFILE' => 'Could not write to configuration file',
+	'VM_CHECKOUT_ERR_CCTYPE' => 'Credit Card Type not found.',
+	'VM_ENQUIRY_MAIL_CUSTOMER_QUESTION' => 'Customer Question',
+	'VM_ENQUIRY_MAIL_HAS_REQUESTED' => 'has requested more information on',
+	'VM_ENQUIRY_MAIL_PRODUCT_SKU' => 'Product-SKU',
+	'VM_ENQUIRY_MAIL_QUESTION' => 'Question'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>
