@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+14.04.2008 gregdev
+# Task #2017 - ps_coupon.php 'gif' instead of 'gift'
+
 12.04.2008 gregdev
 # Corrected syntax errors (%s) in common/french.php.
 

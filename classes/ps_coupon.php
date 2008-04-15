@@ -87,7 +87,7 @@ class ps_coupon {
         $fields = array(
 					        'coupon_code' => vmGet($d,'coupon_code'),
 					        'percent_or_total' => strtolower($d['percent_or_total']) == 'percent' ? 'percent' : 'total',
-					        'coupon_type' => strtolower($d['coupon_type']) == 'gift' ? 'gif' : 'permanent',
+					        'coupon_type' => strtolower($d['coupon_type']) == 'gift' ? 'gift' : 'permanent',
 					        'coupon_value' => (float)$d['coupon_value']
 				        );
         $coupon_db->buildQuery( 'INSERT', '#__{vm}_coupons', $fields );
@@ -115,7 +115,7 @@ class ps_coupon {
         $fields = array(
 					        'coupon_code' => vmGet($d,'coupon_code'),
 					        'percent_or_total' => strtolower($d['percent_or_total']) == 'percent' ? 'percent' : 'total',
-					        'coupon_type' => strtolower($d['coupon_type']) == 'gift' ? 'gif' : 'permanent',
+					        'coupon_type' => strtolower($d['coupon_type']) == 'gift' ? 'gift' : 'permanent',
 					        'coupon_value' => (float)$d['coupon_value']
 				        );
         $coupon_db->buildQuery( 'UPDATE', '#__{vm}_coupons', $fields, 'WHERE coupon_id = '.(int)$d['coupon_id'] );
