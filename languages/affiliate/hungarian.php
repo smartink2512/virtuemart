@@ -34,7 +34,7 @@ $langvars = array (
 	'PHPSHOP_AFFILIATE_EMAIL_WHO' => 'Kinek akar e-mailt küldeni (* = mind)?',
 	'PHPSHOP_AFFILIATE_EMAIL_CONTENT' => 'E-mail címe',
 	'PHPSHOP_AFFILIATE_EMAIL_SUBJECT' => 'Tárgy',
-	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Kurrens statisztikák is befoglalva',
+	'PHPSHOP_AFFILIATE_EMAIL_STATS' => 'Jelen statisztikák belefoglalva',
 	'PHPSHOP_AFFILIATE_FORM_RATE' => 'Jutalék (százalék)',
 	'PHPSHOP_AFFILIATE_FORM_ACTIVE' => 'Aktív?',
 	'VM_AFFILIATE_SHOWINGDETAILS_FOR' => 'Részletek:',

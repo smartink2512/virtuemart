@@ -2,10 +2,11 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
+* @version : hungarian.php 1247 2008-02-13 08:42:28Z pedrohsi $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
-* @translator soeren
+* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @translator soeren, pedrohsi
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -37,7 +38,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_FORM_PRODUCT_IMAGES_LBL' => 'Termék képek',
 	'PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL' => 'Tétel frissítése',
 	'PHPSHOP_PRODUCT_FORM_ITEM_INFO_LBL' => 'Tétel információk',
-	'PHPSHOP_PRODUCT_FORM_ITEM_STATUS_LBL' => 'Tétel státusa',
+	'PHPSHOP_PRODUCT_FORM_ITEM_STATUS_LBL' => 'Tétel státusza',
 	'PHPSHOP_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL' => 'Tétel méretei és súlya',
 	'PHPSHOP_PRODUCT_FORM_ITEM_IMAGES_LBL' => 'Tétel képek',
 	'PHPSHOP_PRODUCT_FORM_IMAGE_UPDATE_LBL' => 'A kép frissítéséhez írja be az új kép elérési útvonalát.',
@@ -51,7 +52,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_FORM_NAME' => 'Név',
 	'PHPSHOP_PRODUCT_FORM_CATEGORY' => 'Kategória',
 	'PHPSHOP_PRODUCT_FORM_AVAILABLE_DATE' => 'Szállítható',
-	'PHPSHOP_PRODUCT_FORM_SPECIAL' => 'Akciós termék',
+	'PHPSHOP_PRODUCT_FORM_SPECIAL' => 'Kiemelt termék',
 	'PHPSHOP_PRODUCT_FORM_DISCOUNT_TYPE' => 'Árengedmény típus',
 	'PHPSHOP_PRODUCT_FORM_PUBLISH' => 'Közzétesz?',
 	'PHPSHOP_PRODUCT_FORM_LENGTH' => 'Hosszúság',
@@ -66,11 +67,11 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_FORM_PACKAGING_DESCRIPTION' => 'Itt adhatja meg a dobozonkénti egységek számát. (max. 65535)',
 	'PHPSHOP_PRODUCT_FORM_BOX' => 'Ládánkénti darabszám',
 	'PHPSHOP_PRODUCT_FORM_BOX_DESCRIPTION' => 'Itt adhatja meg a csomagonkénti egységek számát. (max. 65535)',
-	'PHPSHOP_PRODUCT_DISPLAY_ADD_PRODUCT_LBL' => 'Termék hozzáadás eredménye',
-	'PHPSHOP_PRODUCT_DISPLAY_UPDATE_PRODUCT_LBL' => 'Termék frissítés eredménye',
-	'PHPSHOP_PRODUCT_DISPLAY_ADD_ITEM_LBL' => 'Tétel hozzáadás eredménye',
-	'PHPSHOP_PRODUCT_DISPLAY_UPDATE_ITEM_LBL' => 'Tétel frissítés eredménye',
-	'PHPSHOP_CATEGORY_FORM_LBL' => 'Kategória információ',
+	'PHPSHOP_PRODUCT_DISPLAY_ADD_PRODUCT_LBL' => 'Termék hozzáadás',
+	'PHPSHOP_PRODUCT_DISPLAY_UPDATE_PRODUCT_LBL' => 'Termék frissítés',
+	'PHPSHOP_PRODUCT_DISPLAY_ADD_ITEM_LBL' => 'Tétel hozzáadás',
+	'PHPSHOP_PRODUCT_DISPLAY_UPDATE_ITEM_LBL' => 'Tétel frissítés',
+	'PHPSHOP_CATEGORY_FORM_LBL' => 'Új kategória',
 	'PHPSHOP_CATEGORY_FORM_NAME' => 'Kategória neve',
 	'PHPSHOP_CATEGORY_FORM_PARENT' => 'Szülő',
 	'PHPSHOP_CATEGORY_FORM_DESCRIPTION' => 'Kategória leírása',
@@ -79,7 +80,7 @@ $langvars = array (
 	'PHPSHOP_ATTRIBUTE_LIST_LBL' => 'Attribútum listázás',
 	'PHPSHOP_ATTRIBUTE_LIST_NAME' => 'Attribútum neve',
 	'PHPSHOP_ATTRIBUTE_LIST_ORDER' => 'Megrendelés listázás',
-	'PHPSHOP_ATTRIBUTE_FORM_LBL' => 'Attribútum űrlap',
+	'PHPSHOP_ATTRIBUTE_FORM_LBL' => 'Új attribútum',
 	'PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_PRODUCT' => 'Új termék-attribútum',
 	'PHPSHOP_ATTRIBUTE_FORM_UPDATE_FOR_PRODUCT' => 'Termék-attribútum frissítése',
 	'PHPSHOP_ATTRIBUTE_FORM_NEW_FOR_ITEM' => 'Új tétel-attribútum',
@@ -125,6 +126,15 @@ $langvars = array (
 	'PHPSHOP_FILES_FORM_FILE_URL' => 'Állomány URL (opcionális)',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP1' => 'Bármely olyan szöveg, amit meg akar jeleníteni a vásárlók számára a termék röplapján.<br />példa.: 24h, 48 óra, 3 - 5 nap, Megrendelésre.....',
 	'PHPSHOP_PRODUCT_FORM_AVAILABILITY_TOOLTIP2' => 'VAGY válasszon ki egy képet amely a Termék részletek oldalon (FLYPAGE - röplap) lesz megjelenítve.<br />A képek az alábbi könyvtárban találhatók<i>%s</i><br />',
+	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Példák a tulajdonságok lista formájához:</h4>
+
+        <pre>Méret,XL[+1.99],M,S[-2.99];szín,piros,zöld,sárga,drágaszínváltozat[=24.00];ésatöbbi,..,..</pre>
+        <h4>Inline ármódosítás a haladó attribútum-módosítás használatakor:</h4>
+        <pre>
+        + == Hozzáadja ezt a mennyiséget a beállított árhoz.<br />
+        - == Vonja ki ezt a beállított árból.<br />
+        = == Állítsa be  a termék árát erre.
+      </pre>',
 	'PHPSHOP_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Példák az egyéni termék-attribútum lista formátumokhoz:</h4>
 
         <pre>Név;Extrák;</strong>...</pre>',
@@ -137,7 +147,7 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_TYPE_FORM_NAME' => 'Terméktípus név',
 	'PHPSHOP_PRODUCT_TYPE_FORM_DESCRIPTION' => 'Terméktípus leírása',
 	'PHPSHOP_PRODUCT_TYPE_FORM_PARAMETERS' => 'Paraméterek',
-	'PHPSHOP_PRODUCT_TYPE_FORM_LBL' => 'Terméktípus információ',
+	'PHPSHOP_PRODUCT_TYPE_FORM_LBL' => 'Új terméktípus',
 	'PHPSHOP_PRODUCT_TYPE_FORM_PUBLISH' => 'Közzétesz?',
 	'PHPSHOP_PRODUCT_TYPE_FORM_BROWSEPAGE' => 'Terméktípus oldal',
 	'PHPSHOP_PRODUCT_TYPE_FORM_FLYPAGE' => 'Terméktípus röplap',
@@ -227,9 +237,9 @@ $langvars = array (
 	'VM_REVIEW_LIST_NAMEDATE' => 'Név/Dátum',
 	'VM_PRODUCT_SELECT_ONE_OR_MORE' => 'Termékek kiválasztása',
 	'VM_PRODUCT_SEARCHING' => 'Keresés...',
-	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Examples for the Attribute List Format:</h4>
-Title = Color, Property = Red ; Click on New Property to add a new color: Green ; Then click on New attribute to add a new attribute, and so on.
-<h4>Inline price adjustments for using the Advanced Attributes modification:</h4>
-Price = +10 to add this amount to the configured price.<br />  Price = -10 to subtract this amount from the configured price.<br />  Price = 10 to set the product\'s price to this amount.'
+	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Attribútum lista formátum példák:</h4>
+Név = Szín, Tulajdonság = Vörös ; Kattintson az Új Tulajdonságra az új szín hozzáadásához: Zöld ; Ezután az Új attribútumra egy új attribútum létrehozásához, és így tovább.
+<h4>Inline ár változtatás a További attribútum módosításhoz:</h4>
+Ár = +10 a megadott értékkel növeli az árat.<br />  Ár = -10 a megadott értékkel csökkenti az árat.<br />  Ár = 10 a fix ár beállításához.'
 ); $VM_LANG->initModule( 'product', $langvars );
 ?>

@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version $Id: russian.php 1071 2008-02-03 08:42:28Z alex_rus $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -15,11 +14,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
-* http://www.alex-rus.com
-* http://www.virtuemart.ru
-* http://www.joomlaforum.ru
 */
-
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'utf-8',
@@ -78,6 +73,8 @@ $langvars = array (
 	'VM_RECOVER_CART_REPLACE' => 'Заменить содержимое корзины на содержимое сохраненной корзины',
 	'VM_RECOVER_CART_MERGE' => 'Добавить содержимое сохраненной корзины к содержимому текущей корзины',
 	'VM_RECOVER_CART_DELETE' => 'Удалить содержимое сохраненной корзины',
-	'VM_EMPTY_YOUR_CART_TIP' => 'Очистить корзину от всего содержимого'
+	'VM_EMPTY_YOUR_CART_TIP' => 'Очистить корзину от всего содержимого',
+	'VM_SAVED_CART_TITLE' => 'Saved Cart',
+	'VM_SAVED_CART_RETURN' => 'Return'
 ); $VM_LANG->initModule( 'shop', $langvars );
 ?>

@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 mm_showMyFileName( __FILE__ );
 
-echo '<h2>Saved '. $VM_LANG->_('PHPSHOP_CART_TITLE') .'</h2>
+echo '<h2>'. $VM_LANG->_('VM_SAVED_CART_TITLE') .'</h2>
 <!-- Cart Begins here -->
 ';
 include(PAGEPATH. 'savedbasket.php');
@@ -36,7 +36,7 @@ if ($cart["idx"]) {
     if( $continue_link != '') {
 		?>
 		 <a href="<?php echo $continue_link ?>" class="continue_link">
-		 	<?php echo "Return"; ?>
+		 	<?php echo $VM_LANG->_('VM_SAVED_CART_RETURN'); ?>
 		 </a>
 		<?php
     }

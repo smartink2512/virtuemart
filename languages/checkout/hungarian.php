@@ -34,7 +34,7 @@ $langvars = array (
 	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_PHONE' => 'Telefon',
 	'PHPSHOP_CHECKOUT_CONF_SHIPINFO_FAX' => 'Fax',
 	'PHPSHOP_CHECKOUT_CONF_PAYINFO_METHOD' => 'Kifizetési eljárás',
-	'PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO' => 'kért információ amikor hitelkártyás kifizetés van kiválasztva',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_REQINFO' => 'kért információ hitelkártyás kifizetés esetén',
 	'PHPSHOP_PAYPAL_THANKYOU' => 'Köszönjük a kifizetést. A tranzakció sikeres volt. A PayPal e-mailben fogja értesíteni a tranzakció részleteiről. Most folytathatja, vagy bejelentkezhet a <a href=http://www.paypal.com>www.paypal.com</a> -ra hogy megtekintse a tranzakció részleteit.',
 	'PHPSHOP_PAYPAL_ERROR' => 'A tranzakció feldolgozása közben hiba történt. A megrendelése státusát nem lehet frissíteni.',
 	'PHPSHOP_THANKYOU_SUCCESS' => 'A megrendelése sikeresen megérkezett!',
@@ -48,13 +48,13 @@ $langvars = array (
 	'VM_CHECKOUT_CCV_CODE_TIPTITLE' => 'Mi a hitelkártya ellenőrző szám?',
 	'VM_CHECKOUT_MD5_FAILED' => 'MD5 azonosítási hiba',
 	'VM_CHECKOUT_ORDERNOTFOUND' => 'Rendelés nem található',
-	'VM_CHECKOUT_PBS_APPROVED_ORDERCOMMENT' => '                A PBS jóváhagyta a Paypal Tranzakciót. n
+	'VM_CHECKOUT_PBS_APPROVED_ORDERCOMMENT' => '	              A PBS jóváhagyta a Paypal Tranzakciót. n
                 A tranzakció a következő azonosítószámot kapta:nn
                 Tranzakció száma: {transactionnumber}n',
-	'VM_CHECKOUT_PBS_NOTAPPROVED_ORDERCOMMENT' => '                A PBS nem hagyta jóvá a Paypal Tranzakciót. n
+	'VM_CHECKOUT_PBS_NOTAPPROVED_ORDERCOMMENT' => '	             A PBS nem hagyta jóvá a Paypal Tranzakciót. n
                 A tranzakció a következő azonosítószámot kapta:nn
                 Tranzakció száma: {transactionnumber}n',
-	'VM_CHECKOUT_DD_ERROR_0' => 'Merchant/forretningsnummer ugyldigt',
+	'VM_CHECKOUT_DD_ERROR_0' => 'Kereskedő azonosító',
 	'VM_CHECKOUT_DD_ERROR_1' => 'Ugyldigt kreditkortnummer',
 	'VM_CHECKOUT_DD_ERROR_2' => 'Ugyldigt belob',
 	'VM_CHECKOUT_DD_ERROR_3' => 'OrderID mangler eller er ugyldig',
@@ -74,21 +74,20 @@ $langvars = array (
 	'VM_CHECKOUT_FP_ERROR_10' => 'Hiba: Kártya nincs regisztrálva',
 	'VM_CHECKOUT_FP_ERROR_DEFAULT' => 'Hiba: Ismeretlen Hiba',
 	'VM_CHECKOUT_WF_ERROR_1' => 'Hiba: Tranzakció elutasítva',
-	'VM_CHECKOUT_WF_ERROR_2' => 'Mulig snyd',
+	'VM_CHECKOUT_WF_ERROR_2' => 'Csalási kísérlet',
 	'VM_CHECKOUT_WF_ERROR_3' => 'Kommunikációs hiba',
 	'VM_CHECKOUT_WF_ERROR_4' => 'Kártya lejárt',
 	'VM_CHECKOUT_WF_ERROR_5' => 'Belső hiba',
 	'VM_CHECKOUT_WF_ERROR_6' => 'Helytelen tranzakció',
 	'VM_CHECKOUT_WF_ERROR_7' => 'Rendszerhiba',
-	'VM_CHECKOUT_WF_ERROR_8' => 'Helytelen számformátum',
+	'VM_CHECKOUT_WF_ERROR_8' => 'Helytelen kereskedőszám',
 	'VM_CHECKOUT_WF_ERROR_9' => 'Kártya nincs regisztrálva',
-	'VM_CHECKOUT_WF_ERROR_10' => 'Kort l?ngen er for kort.',
-	'VM_CHECKOUT_WF_ERROR_11' => 'Transaktion kan ikke gennemfores igennem denne terminal',
-	'VM_CHECKOUT_WF_ERROR_12' => 'Kortejeren har ikke rettigheder til at gennemfore denne transaktion.',
+	'VM_CHECKOUT_WF_ERROR_10' => 'Kártya kód túl rövid.',
+	'VM_CHECKOUT_WF_ERROR_11' => 'A tranzakció nem teljesíthető ezen a terminálon keresztül.',
+	'VM_CHECKOUT_WF_ERROR_12' => 'A kártyatulajdonos nem rendelkezik megfelelő jogosultsággal a tranzakcióhoz.',
 	'VM_CHECKOUT_WF_ERROR_13' => 'Kártya nincs regisztrálva',
 	'VM_CHECKOUT_WF_ERROR_14' => 'Ismeretlen hiba',
-	'PHPSHOP_EPAY_PAYMENT_CARDTYPE' => 'The payment is
-created by %s <img
+	'PHPSHOP_EPAY_PAYMENT_CARDTYPE' => '%s kifizetés létrehozva <img
 src="/components/com_virtuemart/shop_image/ps_image/epay_images/%s"
 border="0">'
 ); $VM_LANG->initModule( 'checkout', $langvars );

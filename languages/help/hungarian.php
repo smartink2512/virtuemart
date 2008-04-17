@@ -19,12 +19,12 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'UTF-8',
-	'VM_HELP_YOURVERSION' => 'A {product} verziója',
+	'VM_HELP_YOURVERSION' => '{product} verzió',
 	'VM_HELP_ABOUT' => 'A <span style="font-weight: bold;">
-		VirtueMart</span> a teljeskörű nyílt forráskódú e-kereskedelmi megoldás a Mambóhoz és Joomlához!. 
-		A komponenst számos modul és plugin teszi teljessé. Gyökerei a "phpShop" nevű Shopping Cart Script mélyén húzódnak meg  (Készítők: Edikon Corp. & the <a href="http://www.virtuemart.org/" target="_blank">phpShop</a> community).',
+		VirtueMart</span> teljeskörű nyílt forráskódú e-kereskedelmi megoldás Mambóhoz és Joomlához!. 
+		A komponenst számos modul és plugin teszi teljessé. Gyökerei a "phpShop" nevű Shopping Cart Script-ig nyúlnak vissza (készítők: Edikon Corp. és a <a href="http://www.virtuemart.org/" target="_blank">phpShop</a> közösség).',
 	'VM_HELP_LICENSE_DESC' => 'VirtueMart licenc: <a href="{licenseurl}" target="_blank">{licensename} Licenc</a>.',
-	'VM_HELP_TEAM' => 'Fejlesztők kis csoportja dolgozik folyamatosan a Shopping Cart Script körül.',
+	'VM_HELP_TEAM' => 'Fejlesztők egy kis csoportja dolgozik folyamatosan a Shopping Cart Script-en.',
 	'VM_HELP_PROJECTLEADER' => 'Projektvezető',
 	'VM_HELP_HOMEPAGE' => 'Honlap',
 	'VM_HELP_DONATION_DESC' => 'Kérjük, vegye fontolóra egy kisebb adomány elküldését a VirtueMart Project számára, hogy ezzel is támogassa a további fejlesztést.',

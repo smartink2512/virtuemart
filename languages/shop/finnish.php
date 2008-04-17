@@ -74,6 +74,8 @@ $langvars = array (
 	'VM_RECOVER_CART_REPLACE' => 'Korvaa ostoskori tallennetulla ostoskorilla',
 	'VM_RECOVER_CART_MERGE' => 'Lisää tallennettu ostoskori nykyiseen ostoskoriin',
 	'VM_RECOVER_CART_DELETE' => 'Poista tallennettu ostoskori',
-	'VM_EMPTY_YOUR_CART_TIP' => 'Tyhjennä ostoskori'
+	'VM_EMPTY_YOUR_CART_TIP' => 'Tyhjennä ostoskori',
+	'VM_SAVED_CART_TITLE' => 'Saved Cart',
+	'VM_SAVED_CART_RETURN' => 'Return'
 ); $VM_LANG->initModule( 'shop', $langvars );
 ?>

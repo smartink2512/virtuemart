@@ -68,6 +68,8 @@ $langvars = array (
 	'VM_RECOVER_CART_REPLACE' => 'Elmentett Kosár használata',
 	'VM_RECOVER_CART_MERGE' => 'Elmentett Kosár hozzáadása',
 	'VM_RECOVER_CART_DELETE' => 'Mentett Kosár törlése',
-	'VM_EMPTY_YOUR_CART_TIP' => 'Kosár teljes ürítése'
+	'VM_EMPTY_YOUR_CART_TIP' => 'Kosár teljes ürítése',
+	'VM_SAVED_CART_TITLE' => 'Saved Cart',
+	'VM_SAVED_CART_RETURN' => 'Return'
 ); $VM_LANG->initModule( 'shop', $langvars );
 ?>

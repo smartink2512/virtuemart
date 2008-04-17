@@ -19,8 +19,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'Show Prices including tax?',
-	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Sets the flag whether the shoppers sees prices including tax or excluding tax.',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'Mostrar Preços com IVA Incluido?',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'Define se os clientes vêem os preços com IVA incluindo ou excluido .',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'Morada 2',
 	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'Lista de Grupos de Clientes',
 	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'Nome',
@@ -28,7 +28,7 @@ $langvars = array (
 	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'Formulário de Grupos de Clientes',
 	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'Nome',
 	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'Descrição',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Price Discount on default Shopper Group (in %)',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'A positive amount X means: If the Product has no Price assigned to THIS Shopper Group, the default Price is decreased by X %. A negative amount has the opposite effect'
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'Desconto sobre padrão no grupo de Clientes (em %)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => 'Um valor positivo X significa: Se o produto não tem preço atribuído ao Grupo de clientes PRESENTE, o Preço Padrão é diminuiudo X%. Um montante negativo tem o efeito oposto'
 ); $VM_LANG->initModule( 'shopper', $langvars );
 ?>

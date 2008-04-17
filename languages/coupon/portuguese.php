@@ -19,15 +19,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_COUPON_EDIT_HEADER' => 'Update Coupon',
-	'PHPSHOP_COUPON_CODE_HEADER' => 'Code',
-	'PHPSHOP_COUPON_PERCENT_TOTAL' => 'Percent or Total',
-	'PHPSHOP_COUPON_TYPE' => 'Coupon Type',
-	'PHPSHOP_COUPON_TYPE_TOOLTIP' => 'A Gift Coupon is deleted after it was used for discounting an order. A permanent coupon can be used as often as the customer wants to.',
-	'PHPSHOP_COUPON_TYPE_GIFT' => 'Gift Coupon',
-	'PHPSHOP_COUPON_TYPE_PERMANENT' => 'Permanent Coupon',
-	'PHPSHOP_COUPON_VALUE_HEADER' => 'Value',
-	'PHPSHOP_COUPON_PERCENT' => 'Percent',
-	'PHPSHOP_COUPON_TOTAL' => 'Total'
+	'PHPSHOP_COUPON_EDIT_HEADER' => 'Atualização do Cupom',
+	'PHPSHOP_COUPON_CODE_HEADER' => 'Codigo',
+	'PHPSHOP_COUPON_PERCENT_TOTAL' => 'Percentagem or Valor',
+	'PHPSHOP_COUPON_TYPE' => 'Tipo de Cupom',
+	'PHPSHOP_COUPON_TYPE_TOOLTIP' => 'Um Cupom de Oferta é apagado após ter sido utilizado para desconto na encomenda. Um Cupom Permanente pode ser utilizado quantas vezes o cliente quiser.',
+	'PHPSHOP_COUPON_TYPE_GIFT' => 'Cupom de Oferta',
+	'PHPSHOP_COUPON_TYPE_PERMANENT' => 'Cupom Permanente',
+	'PHPSHOP_COUPON_VALUE_HEADER' => 'Valor',
+	'PHPSHOP_COUPON_PERCENT' => 'Percentagem',
+	'PHPSHOP_COUPON_TOTAL' => 'Valor'
 ); $VM_LANG->initModule( 'coupon', $langvars );
 ?>

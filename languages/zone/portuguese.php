@@ -31,8 +31,8 @@ $langvars = array (
 	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'Descrição da Zona',
 	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'Custo da Zona Por Artigo',
 	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'Límite de Custo da Zona',
-	'VM_ZONE_ASSIGN_PERITEM' => 'Per Item',
-	'VM_ZONE_ASSIGN_LIMIT' => 'Limit',
-	'VM_ZONE_EDITZONE' => 'Edit This Zone'
+	'VM_ZONE_ASSIGN_PERITEM' => 'Pero Item',
+	'VM_ZONE_ASSIGN_LIMIT' => 'Limite',
+	'VM_ZONE_EDITZONE' => 'Alterar Esta Zona'
 ); $VM_LANG->initModule( 'zone', $langvars );
 ?>

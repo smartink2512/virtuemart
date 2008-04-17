@@ -24,7 +24,7 @@ $langvars = array (
 	'PHPSHOP_ACC_UPD_SHIP' => 'Aqui pode adicionar ou actualizar a morada para envio.',
 	'PHPSHOP_ACC_ACCOUNT_INFO' => 'Informação de Conta',
 	'PHPSHOP_ACC_SHIP_INFO' => 'Informação de Envio',
-	'PHPSHOP_DOWNLOADS_CLICK' => 'Click on Product Name to Download File(s).',
-	'PHPSHOP_DOWNLOADS_EXPIRED' => 'You have already downloaded the file(s) the maximum number of times, or the download period has expired.'
+	'PHPSHOP_DOWNLOADS_CLICK' => 'Clique no nome do produto para efectuar o Download.',
+	'PHPSHOP_DOWNLOADS_EXPIRED' => 'Já efectuou o downlod a quantidade maxima de vezes, ou o periodo de download terminou.'
 ); $VM_LANG->initModule( 'account', $langvars );
 ?>

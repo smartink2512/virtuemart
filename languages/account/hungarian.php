@@ -20,8 +20,8 @@ global $VM_LANG;
 $langvars = array (
 	'CHARSET' => 'UTF-8',
 	'PHPSHOP_ACC_CUSTOMER_ACCOUNT' => 'Ügyfélszámla:',
-	'PHPSHOP_ACC_UPD_BILL' => 'Számlázási adataim módosítása.',
-	'PHPSHOP_ACC_UPD_SHIP' => 'Szállítási címek hozzáadása vagy módosítása.',
+	'PHPSHOP_ACC_UPD_BILL' => 'Számlázási adatok módosítása.',
+	'PHPSHOP_ACC_UPD_SHIP' => 'Szállítási cím hozzáadása/módosítása.',
 	'PHPSHOP_ACC_ACCOUNT_INFO' => 'Ügyfél adatok',
 	'PHPSHOP_ACC_SHIP_INFO' => 'Szállítási adatok',
 	'PHPSHOP_DOWNLOADS_CLICK' => 'Klikk a névre a letöltéshez.',

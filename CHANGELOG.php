@@ -35,6 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+17.04.2008 thepisu
+# Task #2025 Hard coded label
+^ updated portuguese translation (uploaded by Puppycare)
+^ updated german translation (uploaded by iamalive)
+^ updated hungarian translation (uploaded by pedrohsi)
+
 15.04.2008 thepisu
 # Task #1976 hardcoded language string in ps_checkout.php
 # Task #2010 backslash in token text hides all text
