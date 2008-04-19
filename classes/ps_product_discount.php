@@ -246,8 +246,11 @@ class ps_product_discount {
 				$selected = $db->f( "discount_id" ) == $discount_id ? "selected=\"selected\"" : "" ;
 				$html .= "<option id=\"$id\" value=\"" . $db->f( "discount_id" ) . "\" $selected>" . $db->f( "amount" ) ;
 				$html .= $db->f( "is_percent" ) == "1" ? "%" : $_SESSION['vendor_currency'] ;
+				
+				$start_date = $db->f('start_date') ? strftime( '%Y-%m-%d', $db->f('start_date') ) : '*';
+				$end_date = $db->f('end_date') ? strftime( '%Y-%m-%d', $db->f('end_date') ) : '*';
 				if( $show_dates ) {
-					$html .= ' (' . strftime('%Y-%m-%d', $db->f('start_date')) . ' - ' . strftime('%Y-%m-%d', $db->f('end_date')) . ')';
+					$html .= ' (' . $start_date . ' - ' . $end_date . ')';
 				}
 				$html .= "</option>\n" ;
 			}

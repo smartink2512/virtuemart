@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 
 function addPaymentLog($dbConn, $log, $order_id)
 {
-	$dbConn->query( "UPDATE #__{vm}_order_payment SET order_payment_log = concat('" . $dbConn->getEscaped($log.) "<br>', order_payment_log) where order_id = '" .$dbConn->getEscaped( $order_id .) "'");
+	$dbConn->query( "UPDATE #__{vm}_order_payment SET order_payment_log = concat('" . $dbConn->getEscaped($log) . "<br>', order_payment_log) where order_id = '" .$dbConn->getEscaped( $order_id ) . "'");
 }
 
 function orderPaymentNotYetUpdated($dbConn, $order_id, $tid)

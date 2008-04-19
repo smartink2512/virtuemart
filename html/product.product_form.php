@@ -1361,6 +1361,8 @@ function updateDiscountedPrice() {
 				eval( 'var discPrice = ' + origPrice + discountCalc );
 				if( discPrice != origPrice ) {
 					document.adminForm.discounted_price_override.value = discPrice.toFixed( 2 );
+				} else {
+					document.adminForm.discounted_price_override.value = '';
 				}
 			}
 		}

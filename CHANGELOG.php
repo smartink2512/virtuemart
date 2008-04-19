@@ -37,6 +37,10 @@ VirtueMart 1.1.x
 *************************************
 19.04.2008 gregdev
 # Task #1999 - $zone_qty variable is not set
+# Task #1687 -  Discount price calculated wrongly (fixed for VM 1.1.x - not VM 1.0.x)
+# Fixed typo in checkout.epay_result
+^ Add start date to discounts created through override method
+# Choosing '0 -none-' as the product discount should clear the product discount price
 
 19.04.2008 soeren
 # Task #2024 - user id not set when writting review
@@ -66,7 +70,7 @@ VirtueMart 1.1.x
 # dropdown list of child products had no pre-selection after selecting a child product
 
 09.04.2008 gregdev
-# Task # 1687 -  Discount price calculated wrongly (fixed for VM 1.1.x - not VM 1.0.x)
+# Task #1687 -  Discount price calculated wrongly (fixed for VM 1.1.x - not VM 1.0.x)
 
 09.04.2008 soeren
 # Task #2007 - Account Maintenance alway visible after first login

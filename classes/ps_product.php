@@ -59,6 +59,9 @@ class ps_product extends vmAbstractObject {
 				else {
 					$d['amount'] = (float)$d['product_price_incl_tax'] - (float)$d['discounted_price_override'];
 				}
+				
+				// Set the discount start date as today
+				$d['start_date'] = date( 'Y-m-d' );
 
 				require_once( CLASSPATH. 'ps_product_discount.php' );
 				$ps_product_discount = new ps_product_discount;
@@ -1781,8 +1784,59 @@ class ps_product extends vmAbstractObject {
 		$discount_info = $this->get_discount( $product_id );
 
 		$my_taxrate = $this->get_product_taxrate($product_id);
+		
+		// If discounts are applied after tax, but prices are shown without tax,
+		// then ps_product::get_product_taxrate() returns 0, so $my_taxrate = 0.
+		// But, the discount still needs to be reduced by the shopper's tax rate, so we obtain it here:
+		if( PAYMENT_DISCOUNT_BEFORE != '1'  && $auth["show_price_including_tax"] != 1 ) {
+			$db = new ps_DB;
+			$ps_vendor_id = $_SESSION["ps_vendor_id"];
+			require_once( CLASSPATH . 'ps_checkout.php' );
+			if (! ps_checkout::tax_based_on_vendor_address ()) {
+				if( $auth["user_id"] > 0 ) {
 
+					$q = "SELECT state, country FROM #__{vm}_user_info WHERE user_id='". $auth["user_id"] . "'";
+					$db->query($q);
 
+					$db->next_record();
+					$state = $db->f("state");
+					$country = $db->f("country");
+
+					$q = "SELECT tax_rate FROM #__{vm}_tax_rate WHERE tax_country='$country' ";
+					if( !empty($state)) {
+						$q .= "AND tax_state='$state'";
+					}
+					$db->query($q);
+					if ($db->next_record()) {
+						$my_taxrate = $db->f("tax_rate");
+					}
+					else {
+						$my_taxrate = 0;
+					}
+				}
+				else {
+					$my_taxrate = 0;
+				}
+
+			}
+			else {
+				if( empty( $_SESSION['taxrate'][$ps_vendor_id] )) {
+					// let's get the store's tax rate
+					$q = "SELECT `tax_rate` FROM #__{vm}_vendor, #__{vm}_tax_rate ";
+					$q .= "WHERE tax_country=vendor_country AND #__{vm}_vendor.vendor_id=1 ";
+					// !! Important !! take the highest available tax rate for the store's country
+					$q .= "ORDER BY `tax_rate` DESC";
+					$db->query($q);
+					if ($db->next_record()) {
+						$my_taxrate = $db->f("tax_rate");
+					}
+					else {
+						$my_taxrate = 0;
+					}
+				}
+			}
+		}
+		
 		// Apply the discount
 		if( !empty($discount_info["amount"])) {
 			$undiscounted_price = $base_price;
