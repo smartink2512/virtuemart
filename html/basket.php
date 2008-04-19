@@ -152,6 +152,8 @@ else {
   	<input type="image" name="delete" title="'. $VM_LANG->_('PHPSHOP_CART_DELETE') .'" src="'. VM_THEMEURL .'images/remove_from_cart.png" border="0" alt="'. $VM_LANG->_('PHPSHOP_CART_DELETE') .'" align="absmiddle" />
   </form>';
 	} // End of for loop through the Cart
+	
+	vmRequest::setVar( 'zone_qty', $vars['zone_qty'] );
 
 	$total = $total_undiscounted = round($total, 5);
 	$vars["total"] = $total;

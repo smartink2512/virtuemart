@@ -702,6 +702,7 @@ class ps_checkout {
 		}
 		$vars['shipping_rate_id'] = $shipping_method_id;
 		$vars["weight"] = $weight_total;
+		$vars['zone_qty'] = vmRequest::getInt( 'zone_qty', 0 );
 		$i = 0;
 
 		$theme = new $GLOBALS['VM_THEMECLASS']();

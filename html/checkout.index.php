@@ -19,7 +19,6 @@ mm_showMyFileName( __FILE__ );
 
 require_once( CLASSPATH . "ps_checkout.php" );
 
-$zone_qty = vmGet( $_REQUEST, 'zone_qty');
 $ship_to_info_id = vmGet( $_REQUEST, 'ship_to_info_id');
 $shipping_rate_id = urldecode(vmGet( $_REQUEST, "shipping_rate_id", null ));
 $payment_method_id = vmGet( $_REQUEST, 'payment_method_id');
@@ -61,6 +60,9 @@ if( in_array('CHECK_OUT_GET_FINAL_CONFIRMATION', $checkout_steps[$current_stage]
 	$next_page = 'checkout.index';	
 	include_once( PAGEPATH . 'basket.php' );
 }
+
+// Get the zone quantity after it has been calculated in the basket 
+$zone_qty = vmGet( $_REQUEST, 'zone_qty');
 
 $theme = new $GLOBALS['VM_THEMECLASS']();
 

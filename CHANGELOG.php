@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+19.04.2008 gregdev
+# Task #1999 - $zone_qty variable is not set
+
 19.04.2008 soeren
 # Task #2024 - user id not set when writting review
 # Task #2028 - button_ok.png in ps_image is missing
