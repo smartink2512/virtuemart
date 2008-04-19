@@ -42,6 +42,7 @@ VirtueMart 1.1.x
 ^ Add start date to discounts created through override method
 # Choosing '0 -none-' as the product discount should clear the product discount price
 # Fixed typo in English
+^ Right align prices in the basket
 
 19.04.2008 soeren
 # Task #2024 - user id not set when writting review

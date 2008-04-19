@@ -28,55 +28,55 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
   <tr valign="top" class="<?php echo $product['row_color'] ?>">
 	<td><?php echo $product['product_name'] . $product['product_attributes'] ?></td>
     <td><?php echo $product['product_sku'] ?></td>
-    <td><?php echo $product['product_price'] ?></td>
+    <td align="right"><?php echo $product['product_price'] ?></td>
     <td><?php echo $product['quantity'] ?></td>
-    <td><?php echo $product['subtotal'] ?></td>
+    <td align="right"><?php echo $product['subtotal'] ?></td>
   </tr>
 <?php } ?>
 <!--Begin of SubTotal, Tax, Shipping, Coupon Discount and Total listing -->
-  <tr class="sectiontableentry2">
+  <tr class="sectiontableentry1">
     <td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_CART_SUBTOTAL') ?>:</td> 
-    <td><?php echo $subtotal_display ?></td>
+    <td align="right"><?php echo $subtotal_display ?></td>
   </tr>
 <?php if( $payment_discount_before ) { ?>
-  <tr class="sectiontableentry2">
+  <tr class="sectiontableentry1">
     <td colspan="4" align="right"><?php echo $discount_word ?>:
     </td> 
-    <td><?php echo $payment_discount_display ?></td>
+    <td align="right"><?php echo $payment_discount_display ?></td>
   </tr>
 <?php } 
 if( $coupon_discount_before ) { ?>
-  <tr>
+  <tr class="sectiontableentry1">
     <td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_COUPON_DISCOUNT') ?>:
     </td> 
-    <td><?php echo $coupon_display ?></td>
+    <td align="right"><?php echo $coupon_display ?></td>
   </tr>
 <?php 
 }
 if( $shipping ) { ?>
   <tr class="sectiontableentry1">
 	<td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING') ?>: </td> 
-	<td><?php echo $shipping_display ?></td>
+	<td align="right"><?php echo $shipping_display ?></td>
   </tr>
 <?php } 
 if ( $tax ) { ?>
-  <tr class="sectiontableentry2">
+  <tr class="sectiontableentry1">
         <td colspan="4" align="right" valign="top"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_TOTAL_TAX') ?>: </td> 
-        <td><?php echo $tax_display ?></td>
+        <td align="right"><?php echo $tax_display ?></td>
   </tr>
 <?php }
 if( $payment_discount_after ) { ?>
-  <tr class="sectiontableentry2">
+  <tr class="sectiontableentry1">
     <td colspan="4" align="right"><?php echo $discount_word ?>:
     </td> 
-    <td><?php echo $payment_discount_display ?></td>
+    <td align="right"><?php echo $payment_discount_display ?></td>
   </tr>
 <?php } 
 if( $coupon_discount_after ) { ?>
-  <tr>
+  <tr class="sectiontableentry1">
     <td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_COUPON_DISCOUNT') ?>:
     </td> 
-    <td><?php echo $coupon_display ?></td>
+    <td align="right"><?php echo $coupon_display ?></td>
   </tr>
 <?php 
 }
@@ -85,9 +85,9 @@ if( $coupon_discount_after ) { ?>
     <td colspan="3">&nbsp;</td>
     <td colspan="2"><hr /></td>
   </tr>
-  <tr>
+  <tr class="sectiontableentry1">
     <td colspan="4" align="right"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_TOTAL') ?>: </td>
-    <td><strong><?php echo $order_total_display ?></strong>
+    <td align="right"><strong><?php echo $order_total_display ?></strong>
     </td>
   </tr>
   <tr>
