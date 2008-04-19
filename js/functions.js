@@ -144,7 +144,7 @@ function addSimplePanel( title, link ) {
 			return false;
 		}
 
-		var panel = new Ext.BoxComponent( { id: myId, autoEl: {tag: "iframe", frameBorder: 0, height: 450, src: link+"&panelId="+myId }, title: title, fitToFrame:true, closable:true });	
+		var panel = new Ext.BoxComponent( { id: myId, autoEl: {tag: "iframe", frameBorder: 0, height: "100%", src: link+"&panelId="+myId }, title: title, fitToFrame:true, closable:true });	
 		Ext.getCmp('center-panel').add( panel );		
 		
 		Ext.getCmp('center-panel').activate(panel);

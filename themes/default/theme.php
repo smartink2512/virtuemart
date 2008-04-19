@@ -8,7 +8,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage themes
-* @copyright Copyright (C) 2006 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2006-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -22,7 +22,7 @@ global $mainframe;
 
 // include the stylesheet for this template
 
-if( vmIsJoomla(1.0) && mosGetParam($_REQUEST,'option') != VM_COMPONENT_NAME) {
+if( vmIsJoomla('1.0') && mosGetParam($_REQUEST,'option') != VM_COMPONENT_NAME) {
 	// This can only be a call from a module or mambot
 	// In Joomla 1.0 it is not possible to add a JS or CSS into the HEAD from a module or content mambot,
 	// using addcustomheadtag, that's why we just print the tags here

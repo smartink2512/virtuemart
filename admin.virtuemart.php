@@ -114,8 +114,8 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 	vmCommonHTML::loadExtjs();
 	$vm_mainframe->addScript( $_SERVER['PHP_SELF'].'?option='.$option.'&task=extlayout' );
 	$phpscript_url = str_replace( 'index2.php', 'index3.php', str_replace('index.php', 'index3.php', $_SERVER['PHP_SELF']));
-	echo '<div id="viewport"></div>';
-	echo '<iframe id="vmPage" src="'.$phpscript_url.'?option=com_virtuemart&amp;page='.$_SESSION['last_page'].'&amp;only_page=1&amp;no_menu=1" style="width:100%;height: 100%; display: block;min-height:500px; border: 1px solid silver;padding:4px;"></iframe>';
+
+	echo '<iframe id="vmPage" src="'.$phpscript_url.'?option=com_virtuemart&amp;page='.$_SESSION['last_page'].'&amp;only_page=1&amp;no_menu=1" style="width:100%; height: 100%; overflow:auto; border: none;padding-left:4px;" name="vmPage"></iframe>';
 
 } else {
 
@@ -177,6 +177,7 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 	   		}  
 	    } catch(e) {}
 	};
+	
 	Ext.get("vmPage").mon("click", listItemClicked );');
 		}
 	} else {

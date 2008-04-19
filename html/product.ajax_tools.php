@@ -84,7 +84,7 @@ switch( $task ) {
 	case 'getproducts':
 		require_once(CLASSPATH . 'JSON.php');
 		$db =& new ps_DB;
-		$keyword = vmGet( $_REQUEST, 'query' );
+		$keyword = $db->getEscaped(vmGet( $_REQUEST, 'query' ));
 		$q = "SELECT SQL_CALC_FOUND_ROWS #__{vm}_product.product_id,category_name,product_name
 			FROM #__{vm}_product,#__{vm}_product_category_xref,#__{vm}_category ";
 		if( empty($_REQUEST['show_items']) ) {

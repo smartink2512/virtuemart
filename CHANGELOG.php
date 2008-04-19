@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+19.04.2008 soeren
+# Task #2024 - user id not set when writting review
+# Task #2028 - button_ok.png in ps_image is missing
+# Task #1922 - No related products list
+
 17.04.2008 thepisu
 # Task #2025 Hard coded label
 ^ updated portuguese translation (uploaded by Puppycare)

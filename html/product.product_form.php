@@ -1400,7 +1400,7 @@ var searchField = function(){
 
     var relds = new Ext.data.Store({
         proxy: new Ext.data.HttpProxy({
-            url: '<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&page=product.ajax_tools&task=getproducts&no_html=1&product_id=<?php echo $product_id ?>',
+            url: 'index2.php?option=com_virtuemart&page=product.ajax_tools&task=getproducts&ajax_request=1&func=&no_menu=1&only_page=1&no_html=1&product_id=<?php echo $product_id ?>',
             method: 'GET'
             
         }),
@@ -1414,13 +1414,10 @@ var searchField = function(){
 	            {name: 'product_id'}
 	        ])
     });
-    
-
+   
     // Custom rendering Template
     var resultTpl = new Ext.XTemplate(
-    	'<tpl for=".">',
-        	'<div class="x-combo-list-item">{category} / {product}</div>',
-        '</tpl>'
+    	'<tpl for="."><div class="x-combo-list-item">{category} / {product}</div></tpl>'
     );
     relatedSelection = document.getElementById('relatedSelection');
     related_products = document.adminForm.related_products;

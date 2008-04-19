@@ -227,7 +227,7 @@ class ps_reviews {
 	 * @return boolean
 	 */
 	function process_review( &$d ) {
-		global $db, $auth, $VM_LANG, $vmLogger;
+		global $db, $auth, $perm, $VM_LANG, $vmLogger, $mosConfig_offset;
 
 		if (PSHOP_ALLOW_REVIEWS == "1" && !empty($auth['user_id']) ) {
 			$d["comment"] = trim($d["comment"]);
@@ -254,12 +254,17 @@ class ps_reviews {
 					break;
 				}
 			}
+			if( !$perm->check('admin,storeadmin')) {
+				$userid = $auth['user_id'];
+			} else {
+				$userid = vmRequest::getInt('userid', $auth['user_id']);
+			}
 			if ($commented==false) {
 				$comment= nl2br(htmlspecialchars(vmGet($d, 'comment' )));
 				$published = VM_REVIEWS_AUTOPUBLISH ? 'Y' : 'N';
 				$time = time() + $mosConfig_offset*60*60;
 				$fields = array('product_id' => $d['product_id'], 
-											'userid' => vmRequest::getInt('userid'),
+											'userid' => $userid,
 											'comment' => $comment,
 											'user_rating' => vmRequest::getInt('user_rating'), 
 											'published' => $published,

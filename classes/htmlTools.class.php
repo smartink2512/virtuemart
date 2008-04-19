@@ -403,8 +403,9 @@ class vmTabPanel {
 	function endPane() {
 		echo "</div>";
 		$scripttag = "
-Ext.onReady( function() { 
+Ext.onReady( function() {
 	Ext.QuickTips.init();
+	var state = Ext.state.Manager;
 	var tabs_{$this->panel_id} = new Ext.TabPanel({
 		renderTo: '{$this->pane_id}',
 		activeTab: 0,
@@ -424,20 +425,22 @@ Ext.onReady( function() {
 		});";
 		reset($this->tabs);
 		if( $this->useCookies ) {
-			$scripttag .= "tabs_{$this->panel_id}.activate(state.get('{$this->panel_id}-active', '".key($this->tabs)."')); \n});";
+			$scripttag .= "tabs_{$this->panel_id}.activate(state.get('{$this->panel_id}-active', '".key($this->tabs)."'));"; 
 		} else {
-			$scripttag .= "tabs_{$this->panel_id}.activate( '".key($this->tabs)."'); \n});";
+			$scripttag .= "tabs_{$this->panel_id}.activate( '".key($this->tabs)."'); ";
 		}
 		
 		if( $this->useCookies ) {
 			$scripttag .= "
-	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
-	var state = Ext.state.Manager;
+	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());	
 	tabs_{$this->panel_id}.on('tabchange', function(tp, tab){
      state.set('{$this->panel_id}-active', tab.id);
      });
 	";
+			
 		}
+		
+		$scripttag .= "});";
 		
 		echo vmCommonHTML::scriptTag('', $scripttag );
 
@@ -859,11 +862,10 @@ class vmCommonHTML {
 			
 			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/ext-yui-adapter.js' );
 			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/ext-all.js' );
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/Menubar.js' );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/miframe-min.js' );
 			//$vm_mainframe->addScriptDeclaration( 'Ext.BLANK_IMAGE_URL = "'.$mosConfig_live_site.'/components/'. VM_COMPONENT_NAME .'/js/extjs2/images/default/s.gif";' );
 			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/css/ext-all.css' );
 			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/css/xtheme-gray.css' );
-			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/css/Menubar.css' );
 			define ( "_EXTJS_LOADED", "1" );
 		}
 	}

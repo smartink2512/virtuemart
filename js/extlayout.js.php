@@ -88,7 +88,7 @@ function vmLayoutInit() {
 				$title = isset( $link['title'] ) ? ' title="'.$link['title'].'"' : '';
 				$html .= "{ text: \"{$link['text']}\",
 								itemCls: \"{$link['iconCls']}\",
-								style: \"padding-left: 0px;font-weight: bold;\",
+								style: \"padding-left: 0px;font-weight: bold;background-repeat: no-repeat;\",
 								handler: new Function(\"loadPage( \'$url\' )\")
 							}";
 			}
@@ -109,40 +109,34 @@ function vmLayoutInit() {
 			    region:"center",
 			    layout:"fit",
 			    items:[{
-			        layout:"border",
+			        layout:"fit",
 			        items:[{
-			            region:"center",
-			            items:[{
 							xtype:"tabpanel",
+					        deferredRender:false,
 					        activeTab:0,
 					        id: "center-panel",
 					    	listeners: {
-							    "panelactivated" : {
-							        fn: function(region, panel) { document.title=panel.getTitle() },
+							    "tabchange" : {
+							        fn: function(tabpanel, panel) { parent.document.title=panel.title },
 							        scope: this
 							    }
 							 },
 					        items:[{
-								xtype: "panel",
+					        	xtype: "panel",
+								layout: "fit",
+								id: "vmpage-panel",
 								title: "'.addslashes($VM_LANG->_('VM_ADMIN_PANELTITLE')).'",
 								closable:false,
 								contentEl: "vmPage"
 							}]
-			              }]
-			          },{
-			            region:"north",
-			            title:"",
-			            height:25,
-			            items:[{
-			                xtype:"toolbar",
-			                height:60,
-			                items: toolbarItems
-			              }]
+			              
 			          }]
 			      }]
 			  },{
+	        	xtype: "panel",
+	        	bbar: toolbarItems,
 			    region:"north",
-			    height: 85,
+			    height: 105,
 			    html:"<div style=\"background: url('.VM_THEMEURL.'/images/administration/header_bg.png) repeat-x;\">"
 			    		+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 			    		+ "<a href=\"http://virtuemart.net\" target=\"_blank\"><img src=\"'.VM_THEMEURL.'/images/administration/header_logo.png\" alt=\"VirtueMart Logo\" /></a>"
