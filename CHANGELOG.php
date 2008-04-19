@@ -41,6 +41,7 @@ VirtueMart 1.1.x
 # Fixed typo in checkout.epay_result
 ^ Add start date to discounts created through override method
 # Choosing '0 -none-' as the product discount should clear the product discount price
+# Fixed typo in English
 
 19.04.2008 soeren
 # Task #2024 - user id not set when writting review
