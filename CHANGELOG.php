@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+20.04.2008 soeren
+# Task #2032 - In Internet Explorer 7 width of layout in administration is to wide.
+
 19.04.2008 gregdev
 # Task #1999 - $zone_qty variable is not set
 # Task #1687 -  Discount price calculated wrongly (fixed for VM 1.1.x - not VM 1.0.x)

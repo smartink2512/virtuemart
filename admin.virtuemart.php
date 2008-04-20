@@ -106,7 +106,9 @@ $vm_mainframe->addStyleSheet( VM_THEMEURL.'theme.css' );
 $vm_mainframe->addScript( $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/functions.js' );
 
 if( $no_menu != 1 && $vmLayout != 'extended' ) {
+	echo '<table style="width:100%;table-layout:fixed;"><tr><td style="vertical-align:top;">';
 	include(ADMINPATH.'header.php');
+	echo '</td>';
 }
 
 if( $only_page != 1 && $vmLayout == 'extended') {
@@ -128,7 +130,7 @@ if( $only_page != 1 && $vmLayout == 'extended') {
 		}
 		echo '<div id="vmPage">';
 	} else {
-		echo '<table width="78%"><tr><td id="vmPage">';
+		echo '<td id="vmPage" style="width:78%;vertical-align:top;">';
 	}
 	// Load PAGE
 	if( !$pagePermissionsOK ) {

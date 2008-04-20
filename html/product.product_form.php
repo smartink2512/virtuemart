@@ -1433,7 +1433,7 @@ var searchField = function(){
         width: 270,
         minListWidth: 270,
         pageSize:15,
-        hideTrigger:true,
+        //hideTrigger:true,
         tpl: resultTpl,
         onSelect: function(record) {
         	for(var i=0;i<relatedSelection.options.length;i++) {
