@@ -39,6 +39,7 @@ VirtueMart 1.1.x
 # Task #1687 -  Refactored for simplicity. It is equivalent to the previous version.
 
 21.04.2008 soeren
+# Task #2009 - Session not handed over when switching to shared SSL
 # Task #2033 - Number of products will be shown even though the function is disabled.
 ^ updated ExtJS to version 2.1
 

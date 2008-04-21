@@ -63,13 +63,14 @@ if( vmIsJoomla('1.0') && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 			<br /><br />'; 
 		} else {
 			if( $vmLayout == 'standard') {
+				$tmpl = vmIsJoomla('1.5', '>=') ? 'component' : '';
 				?>
 				[ <strong><?php echo $VM_LANG->_('VM_ADMIN_SIMPLE_LAYOUT') ?></strong> | 
-				<a href="<?php echo $_SERVER['PHP_SELF'].'?'.( !empty( $_SERVER['QUERY_STRING'] ) ? $_SERVER['QUERY_STRING'] : 'option=com_virtuemart&amp;page='.$page ) ?>&amp;vmLayout=extended"><?php echo $VM_LANG->_('VM_ADMIN_EXTENDED_LAYOUT') ?></a> ]<br />
+				<a href="<?php echo vmGet($_SERVER,'PHP_SELF').'?'.( !empty( $_SERVER['QUERY_STRING'] ) ? vmGet($_SERVER,'QUERY_STRING') : 'option=com_virtuemart&amp;page='.$page ).'&amp;tmpl='.$tmpl ?>&amp;vmLayout=extended"><?php echo $VM_LANG->_('VM_ADMIN_EXTENDED_LAYOUT') ?></a> ]<br />
 				<?php
 			} else { 
 				?>
-				[ <a href="<?php echo $_SERVER['PHP_SELF'].'?'.(!empty( $_SERVER['QUERY_STRING'] ) ? $_SERVER['QUERY_STRING'] : 'option=com_virtuemart&amp;page='.$page ) ?>&amp;vmLayout=standard"><?php echo $VM_LANG->_('VM_ADMIN_SIMPLE_LAYOUT') ?></a> 
+				[ <a href="<?php echo vmGet($_SERVER,'PHP_SELF').'?'.(!empty( $_SERVER['QUERY_STRING'] ) ? vmGet($_SERVER,'QUERY_STRING') : 'option=com_virtuemart&amp;page='.$page ) ?>&amp;vmLayout=standard"><?php echo $VM_LANG->_('VM_ADMIN_SIMPLE_LAYOUT') ?></a> 
 				| <strong><?php echo $VM_LANG->_('VM_ADMIN_EXTENDED_LAYOUT') ?></strong> ]<br /><br />
 				<?php
 			}

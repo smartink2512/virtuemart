@@ -30,7 +30,7 @@ class ps_config {
 	 * @return boolean
 	 */
 	function writeconfig(&$d) {
-		global $my, $db, $vmLogger, $VM_LANG;
+		global $my, $db, $vmLogger, $VM_LANG, $mosConfig_live_site;
 
 		$group_id = intval( $d['conf_VM_PRICE_ACCESS_LEVEL'] );
 // TODO: (J! 1.5) Is there a better way to handle this difference between Joomla versions?
@@ -160,7 +160,11 @@ class ps_config {
 			"VM_CHECKOUT_MODULES"	=>	"VM_CHECKOUT_MODULES",
 			"PSHOP_SHIPPING_MODULE"     =>      "conf_SHIPPING"
 			);
-
+			if( !vmisJoomla('1.5')) {
+				$url = '$mosConfig_live_site.$app';
+			} else {
+				$url = "'".$db->getEscaped(vmGet($d,'conf_URL', $mosConfig_live_site ))."'";
+			}
 			$config = "<?php
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
@@ -195,7 +199,7 @@ else {
 	\$app = '/';
 }
 // these path and url definitions here are based on the Joomla! Configuration
-define( 'URL', \$mosConfig_live_site.\$app );
+define( 'URL', $url );
 define( 'SECUREURL', '".$db->getEscaped($d['conf_SECUREURL'])."' );
 
 if ( @\$_SERVER['HTTPS'] == 'on' ) {

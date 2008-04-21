@@ -41,11 +41,12 @@ if( typeof Ext == \"undefined\" ) {
 	document.location=\"index2.php?option=".VM_COMPONENT_NAME."&vmLayout=standard&usefetchscript=0\";
 }
 // Check if this Window is a duplicate and opens in an iframe
-if( parent.vmLayout )
+if( parent.vmLayout ) {
 	if( typeof parent.vmLayout.loadPage == \"function\" ) {
 		// then load the pure page, not again the whole VirtueMart Admin interface
 		parent.vmLayout.loadPage();
 	}
+}
 function classClicked(e, target) {
     alert( 'klick!');
 	if (target.target!='_top' && target.target!='_blank') {
@@ -137,13 +138,13 @@ function vmLayoutInit() {
 	        	bbar: toolbarItems,
 			    region:"north",
 			    height: 105,
-			    html:"<div style=\"background: url('.VM_THEMEURL.'/images/administration/header_bg.png) repeat-x;\">"
-			    		+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-			    		+ "<a href=\"http://virtuemart.net\" target=\"_blank\"><img src=\"'.VM_THEMEURL.'/images/administration/header_logo.png\" alt=\"VirtueMart Logo\" /></a>"
-						+ "<a href=\"index2.php\" title=\"'.$VM_LANG->_('VM_ADMIN_BACKTOJOOMLA').'\" class=\"vmicon vmicon-16-back\" style=\"vertical-align: middle;font-weight:bold;\">'.$VM_LANG->_('VM_ADMIN_BACKTOJOOMLA').'</a>"
-						+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-			 			+ "[ <a href=\"index2.php?option=com_virtuemart&amp;vmLayout=standard\">'. $VM_LANG->_('VM_ADMIN_SIMPLE_LAYOUT') .'</a> | <strong>'. $VM_LANG->_('VM_ADMIN_EXTENDED_LAYOUT').'</strong> ]"
-						+ "</div>"
+			    html:"<div style=\"background: url('.VM_THEMEURL.'/images/administration/header_bg.png) repeat-x;\">" +
+			    		 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + 
+			    		 "<a href=\"http://virtuemart.net\" target=\"_blank\"><img src=\"'.VM_THEMEURL.'/images/administration/header_logo.png\" alt=\"VirtueMart Logo\" /></a>" +
+						"<a href=\"index2.php\" title=\"'.$VM_LANG->_('VM_ADMIN_BACKTOJOOMLA').'\" class=\"vmicon vmicon-16-back\" style=\"vertical-align: middle;font-weight:bold;\">'.$VM_LANG->_('VM_ADMIN_BACKTOJOOMLA').'</a>" +
+						"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+			 			"[ <a href=\"index2.php?option=com_virtuemart&amp;vmLayout=standard\">'. $VM_LANG->_('VM_ADMIN_SIMPLE_LAYOUT') .'</a> | <strong>'. $VM_LANG->_('VM_ADMIN_EXTENDED_LAYOUT').'</strong> ]" +
+						"</div>"
 			  }]
 			}
     );

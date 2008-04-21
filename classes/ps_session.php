@@ -238,7 +238,7 @@ class ps_session {
 		if( VM_GENERALLY_PREVENT_HTTPS == '1' 
 			&& vmIsHttpsMode() && $redirected != 1
 			&& $ssl_redirect == 0 && !vmIsAdminMode()
-			&& vmIsJoomla('1.0')
+			&& URL != SECUREURL
 			&& @$_REQUEST['option']=='com_virtuemart') {
 				
 			$pagearr = explode( '.', $page );

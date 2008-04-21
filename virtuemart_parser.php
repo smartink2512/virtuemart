@@ -68,6 +68,8 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// the configuration file for the Shop
 	require_once( $mosConfig_absolute_path. "/administrator/components/com_virtuemart/virtuemart.cfg.php" );
 	
+	$GLOBALS['mosConfig_live_site'] = $mosConfig_live_site = substr( URL, 0, strlen(URL)-1);
+	
 	// the global file for VirtueMart
 	require_once( ADMINPATH . 'global.php' );
 

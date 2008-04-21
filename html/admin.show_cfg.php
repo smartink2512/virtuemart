@@ -570,6 +570,18 @@ $tabs->startTab( $VM_LANG->_('VM_ADMIN_SECURITY'), "security-page");
 <fieldset style="width:48%;float:left;">
 	<legend><?php echo $VM_LANG->_('VM_ADMIN_SECURITY_SETTINGS') ?></legend>
 	<table class="adminform">
+	<?php
+	if( vmisJoomla('1.5')) {
+		?><tr>
+			<td class="labelcell">Site URL</td>
+			<td>
+				<input size="40" type="text" name="conf_URL" class="inputbox" value="<?php echo URL ?>" />
+			</td>
+			<td>&nbsp;</td>
+		</tr>
+		<?php
+	}
+	?>
 		<tr>
 			<td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_URLSECURE') ?></td>
 			<td>
