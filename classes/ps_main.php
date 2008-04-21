@@ -777,13 +777,14 @@ function vmSafeFileName( $filename ) {
 }
 function vmIsAdminMode() {
 	global $page;
-	return ( defined( '_VM_IS_BACKEND' ) 
+	return ( (defined( '_VM_IS_BACKEND' ) 
 	|| @$_REQUEST['pshop_mode'] == 'admin' 
 	|| stristr($page,"form")
 	|| stristr($page, "list")
 	|| stristr($page, "cfg")
 	|| stristr($page, "print")
-	|| stristr($page, "display"));
+	|| stristr($page, "display"))
+	&& strncmp('shop.',$page, 5) !== 0);
 }
 
 

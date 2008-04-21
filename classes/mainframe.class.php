@@ -114,13 +114,17 @@ class vmMainFrame {
 	 * @access   public
 	 */
 	function addScript($url, $type="text/javascript") {
+		static $included_scripts = array();
 		if( vmIsJoomla('1.0') && strstr($_SERVER['PHP_SELF'],'index3.php') || 
 			!vmIsJoomla() && defined('_VM_IS_BACKEND')) {
 			echo vmCommonHTML::scriptTag($url);
 			return;
 		}
-		if( isset($this->_scripts[$url])) return;
-		$this->_scripts[$url] = $type;
+		if( isset($included_scripts[$url])) return;
+		else $included_scripts[$url] = 1;
+		$this->_scripts[] = array( 'url' => $url,
+												'content' => '',
+												'type' => $type);
 	}
 
 	/**
@@ -137,7 +141,9 @@ class vmMainFrame {
 			echo vmCommonHTML::scriptTag('', $content);
 			return;
 		}
-		$this->_script[][strtolower($type)] =& $content;
+		$this->_scripts[] = array( 'url' => '',
+												'content' => $content,
+												'type' => strtolower($type));
 	}
 
 	/**
@@ -212,14 +218,6 @@ class vmMainFrame {
 	function render( $print = false ) {
 		global $mainframe, $mosConfig_gzip, $mosConfig_live_site;
 		
-		foreach ( $this->_script as $script ) {
-			$tag = '<script type="'.key($script).'">'.current($script).'</script>';
-			if( $print ) {
-				echo $tag;
-			} else {
-				$mainframe->addCustomHeadTag( $tag );
-			}
-		}
 		foreach ( $this->_style as $style ) {
 			$tag = '<style type="'.key($style).'">'.current($style).'</style>';
 			if( $print ) {
@@ -238,7 +236,10 @@ class vmMainFrame {
 		$i = 0;
 		$appendix = '';
 		$otherscripts = array();
-		foreach( $this->_scripts as $src => $type ) {
+		foreach( $this->_scripts as $script ) {
+			$src = $script['url'];
+			$type = $script['type'];
+			$content = $script['content'];
 			$urlpos = strpos( $src, '?' );			
 			$url_params = '';
 			
@@ -254,7 +255,7 @@ class vmMainFrame {
 				$appendix .= '&amp;subdir['.$i.']='.dirname( $base_source ) . '&amp;file['.$i.']=' . basename( $src );
 				$i++;
 			} else {
-				$otherscripts[] = array('type'=>$type, 'src'=>$src);
+				$otherscripts[] = array('type'=>$type, 'src'=>$src, 'content' => $content);
 			}
 		}
 		if( $i> 0 ) {
@@ -268,7 +269,11 @@ class vmMainFrame {
 			}
 		}
 		foreach( $otherscripts as $otherscript ) {
-			$tag = '<script type="'.$otherscript['type'].'" src="'.$otherscript['src'].'"></script>';
+			if( !empty($otherscript['src'])) {
+				$tag = '<script type="'.$otherscript['type'].'" src="'.$otherscript['src'].'"></script>';
+			} else {
+				$tag = '<script type="'.$otherscript['type'].'">'.$otherscript['content'].'</script>';
+			}
 			if( $print ) {
 				echo $tag;
 			} else {

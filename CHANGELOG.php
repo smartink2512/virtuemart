@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+21.04.2008 soeren
+# Task #2033 - Number of products will be shown even though the function is disabled.
+^ updated ExtJS to version 2.1
 20.04.2008 soeren
 # Task #2032 - In Internet Explorer 7 width of layout in administration is to wide.
 
