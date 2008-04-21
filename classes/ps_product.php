@@ -1842,39 +1842,15 @@ class ps_product extends vmAbstractObject {
 			$undiscounted_price = $base_price;
 			switch( $discount_info["is_percent"] ) {
 				case 0:
-					// If we subtract discounts BEFORE tax
 					if( PAYMENT_DISCOUNT_BEFORE == '1' ) {
-						// and if our prices will be shown with tax
-						if( $auth["show_price_including_tax"] == 1) {
-							// then we just subtract the discount
-							$price["product_price"] -= $discount_info["amount"];
-						}
-						// but if our prices will be shown without tax
-						else {
-							// We add tax to the price
-							$price["product_price"] += $price["product_price"]*$my_taxrate;
-							// then subtract the discount from the taxed price
-							$price["product_price"] -= $discount_info["amount"];
-							// and, finally, we remove the tax from the discounted price
-							$price["product_price"] /= $my_taxrate + 1;
-						}
+						// If we subtract discounts BEFORE tax
+						// Subtract the whole discount
+						$price["product_price"] -= $discount_info["amount"];
 					}
-					// But, if we subtract discounts AFTER tax
 					else {
-						// and if our prices are shown with tax
-						if( $auth["show_price_including_tax"] == 1) {
-							// We add tax to the price
-							$price["product_price"] += $price["product_price"]*$my_taxrate;
-							// then subtract the discount from the taxed price
-							$price["product_price"] -= $discount_info["amount"];
-							// and, finally, we remove the tax from the discounted price
-							$price["product_price"] /= $my_taxrate + 1;
-						}
-						// but if our prices are shown without tax
-						else {
-							// subtract the untaxed portion of the discount
-							$price["product_price"] -= $discount_info["amount"]/($my_taxrate + 1);
-						}
+						// But, if we subtract discounts AFTER tax
+						// Subtract the untaxed portion of the discount
+						$price["product_price"] -= $discount_info["amount"]/($my_taxrate + 1);
 					}
 					break;
 				case 1:
