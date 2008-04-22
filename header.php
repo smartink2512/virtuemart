@@ -396,7 +396,7 @@ if( vmIsJoomla('1.0') && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 				break;
 				
 				
-				case 'report':
+				case 'reportbasic':
 					?>
 					<h3 class="title-smenu" title="report" onclick="SwitchMenu('<?php echo $modCount ?>')">
 					<?php echo $VM_LANG->_('PHPSHOP_REPORTBASIC_MOD')

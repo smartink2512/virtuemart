@@ -423,7 +423,7 @@ function assembleMenuItems( $mods ) {
 				break;
 			
 			
-			case 'report':
+			case 'reportbasic':
 				$modules[$module]['title'] = $VM_LANG->_('PHPSHOP_REPORTBASIC_MOD');
 				$modules[$module]['links'][] = array('iconCls' => 'vmicon vmicon-16-info',
 																			'href' => 'page=reportbasic.index',
