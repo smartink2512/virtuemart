@@ -1453,7 +1453,7 @@ class ps_product extends vmAbstractObject {
 
 		elseif( ps_checkout::tax_based_on_vendor_address () ) {
 
-			if( empty( $_SESSION['product_sess'][$product_id]['tax_rate'] ) ) {
+//			if( empty( $_SESSION['product_sess'][$product_id]['tax_rate'] ) ) {
 				$db = new ps_DB;
 				// Product's tax rate id has priority!
 				$q = "SELECT product_weight, tax_rate FROM #__{vm}_product, #__{vm}_tax_rate ";
@@ -1478,10 +1478,10 @@ class ps_product extends vmAbstractObject {
 					$_SESSION['product_sess'][$product_id]['tax_rate'] = 0;
 					return 0;
 				}
-			}
-			else {
-				return $_SESSION['product_sess'][$product_id]['tax_rate'];
-			}
+//			}
+//			else {
+//				return $_SESSION['product_sess'][$product_id]['tax_rate'];
+//			}
 		}
 		return 0;
 	}
@@ -1786,9 +1786,10 @@ class ps_product extends vmAbstractObject {
 		$my_taxrate = $this->get_product_taxrate($product_id);
 		
 		// If discounts are applied after tax, but prices are shown without tax,
+		// AND tax is EU mode and shopper is not in the EU,
 		// then ps_product::get_product_taxrate() returns 0, so $my_taxrate = 0.
 		// But, the discount still needs to be reduced by the shopper's tax rate, so we obtain it here:
-		if( PAYMENT_DISCOUNT_BEFORE != '1'  && $auth["show_price_including_tax"] != 1 ) {
+		if( PAYMENT_DISCOUNT_BEFORE != '1'  && $auth["show_price_including_tax"] != 1 && !ps_checkout::tax_based_on_vendor_address() ) {
 			$db = new ps_DB;
 			$ps_vendor_id = $_SESSION["ps_vendor_id"];
 			require_once( CLASSPATH . 'ps_checkout.php' );

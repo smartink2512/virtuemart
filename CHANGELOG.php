@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+22.04.2008 gregdev
+# Task #1687 -  Don't do extra lookup for tax when in EU mode and with EU shopper; always refresh tax calculation
+
 21.04.2008 gregdev
 # Task #1687 -  Refactored for simplicity. It is equivalent to the previous version.
 
