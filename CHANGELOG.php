@@ -35,6 +35,8 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+22.04.2008 soeren
+# Task #2036 - add/edit user information page
 22.04.2008 gregdev
 # Task #1687 -  Don't do extra lookup for tax when in EU mode and with EU shopper; always refresh tax calculation
 # Task #2037 - Fatal error using coupon submit without coupon code or with non-existent coupon code

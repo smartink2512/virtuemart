@@ -53,11 +53,8 @@ class ps_user {
 					if( empty( $d[$field->name]) && $field->sys == 1 ) {
 						$valid = false;
 						$fieldtitle = $field->title;
-						if( substr( $fieldtitle, 0, 1) == '_') {
-							$fieldkey = substr($fieldtitle, 1, strlen($fieldtitle)-1);
-							if( $VM_LANG->exists($fieldkey) ) {
-								$fieldtitle = $VM_LANG->_($fieldkey);
-							}
+						if( $VM_LANG->exists($fieldtitle) ) {
+							$fieldtitle = $VM_LANG->_($fieldtitle);
 						}
 						$vmLogger->err( sprintf($VM_LANG->_('VM_USER_ERR_MISSINGVALUE'), $fieldtitle) );
 					}

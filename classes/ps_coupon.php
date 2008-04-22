@@ -231,7 +231,7 @@ class ps_coupon {
         else
         {
             /* no record, so coupon_code entered was not valid */
-            $_REQUEST['coupon_error'] = $VM_LANG->_('PHPSHOP_COUPON_CODE_INVALID');
+            $GLOBALS['coupon_error'] = $VM_LANG->_('PHPSHOP_COUPON_CODE_INVALID');
             return false;
             
         }
