@@ -28,7 +28,7 @@ if (@$_SESSION['invalid_coupon'] == true) {
 	echo "<strong>" . $VM_LANG->_('PHPSHOP_COUPON_CODE_INVALID') . "</strong><br />";
 }
 if( !empty($_REQUEST['coupon_error']) ) {
-	echo mosGetParam($_REQUEST, 'coupon_error', '')."<br />";
+	echo vmGet($_REQUEST, 'coupon_error', '')."<br />";
 }
 // If you have a coupon code, please enter it here:
 echo $VM_LANG->_('PHPSHOP_COUPON_ENTER_HERE') . '<br />';
