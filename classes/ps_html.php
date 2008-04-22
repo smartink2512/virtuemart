@@ -272,7 +272,7 @@ class ps_html {
 	 * @return string HTML code containing the dynamic state list
 	 */
 	function dynamic_state_lists( $country_list_name, $state_list_name, $selected_country_code="", $selected_state_code="" ) {
-		global $vendor_country_3_code, $VM_LANG, $vm_mainframe, $mm_action_url;
+		global $vendor_country_3_code, $VM_LANG, $vm_mainframe, $mm_action_url, $page;
 		$db = new ps_DB;
 		if( empty( $selected_country_code )) {
 			$selected_country_code = $vendor_country_3_code;
@@ -302,10 +302,16 @@ class ps_html {
 			$script .= "var originalPos = '$selected_country_code';\n";
 			$script .= "var states = new Array();	// array in the format [key,value,text]\n";
 			$i = 0;
-
+			
 			while( $db->next_record() ) {
 
 				if( $db->f('state_name') ) {
+					// Add 'none' to the list of countries that have states:
+					if( isset($prev_country) && $prev_country != $db->f("country_3_code")  && $page == 'tax.tax_form' ) {
+						$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."',' - ','".$VM_LANG->_('PHPSHOP_NONE')."' );\n";
+					}
+					$prev_country = $db->f("country_3_code");
+
 					// array in the format [key,value,text]
 					$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."','".$db->f("state_2_code")."','".addslashes($db->f("state_name"))."' );\n";
 				}
