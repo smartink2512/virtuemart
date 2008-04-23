@@ -6,7 +6,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 * @version $Id$
 * @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -25,7 +25,7 @@ Complete Package for Joomla! 1.0.x, Joomla! 1.5 and Mambo >= 4.5.1
 You can't use this software on an earlier Mambo version than 4.5.2 (e.g. Mambo 4.5 1.0.9) 
 without running into serious problems.
 
-Copyright (C) 2004-2007 soeren - All rights reserved.
+Copyright (C) 2004-2008 soeren - All rights reserved.
 License: http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 VirtueMart is free software. This version may have been modified pursuant
 to the GNU General Public License, and as distributed it includes or
@@ -40,10 +40,10 @@ Community Home: http://virtuemart.net
 Package Contents:
 ##########################
 
- * 1 Component (com_virtuemart_1.1.0_beta2.zip)
+ * 1 Component (com_virtuemart_1.1.0.zip)
    INSTALLATION REQUIRED!
    
- * 1 Main module (mod_virtuemart_1.1.0_beta2.tar.gz)
+ * 1 Main module (mod_virtuemart_1.1.0.tar.gz)
    INSTALLATION REQUIRED!
    
  * 8 additional Modules
@@ -73,7 +73,7 @@ This package was tested on
 - Mambo 4.5.3h
 - Mambo 4.6.2
 - Joomla 1.0.x
-- Joomla 1.5 RC4
+- Joomla 1.5.2
 
  -- IMPORTANT --
 Please note that module and component SHOULD be used together! 

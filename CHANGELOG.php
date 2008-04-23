@@ -35,6 +35,8 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+--- VirtueMart 1.1.0 released ---
+
 22.04.2008 soeren
 # Task #2036 - add/edit user information page
 
