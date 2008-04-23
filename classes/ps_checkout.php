@@ -224,8 +224,8 @@ class ps_checkout {
 	 * @author gday
 	 * @author soeren
 	 * 
-	 * @param unknown_type $d
-	 * @return unknown
+	 * @param array $d
+	 * @return boolean
 	 */
 	function validate_form(&$d) {
 		global $VM_LANG, $PSHOP_SHIPPING_MODULES, $vmLogger;
@@ -258,7 +258,18 @@ class ps_checkout {
 		if ( !$this->validate_payment_method( $d, false )) {
 			return false;
 		}
+		if( CHECK_STOCK == '1' ) {
+			for($i = 0; $i < $cart["idx"]; $i++) {
 
+				$quantity_in_stock = ps_product::get_field($cart[$i]["product_id"], 'product_in_stock');
+				$product_name = ps_product::get_field($cart[$i]["product_id"], 'product_name');
+				if( $cart[$i]["quantity"] > $quantity_in_stock ) {
+					$vmLogger->err( 'The Quantity for the Product "'.$product_name.'" in your Cart ('.$cart[$i]["quantity"].') exceeds the Quantity in Stock ('.$quantity_in_stock.'). 
+												We are very sorry for this Inconvenience, but you you need to lower the Quantity in Cart for this Product.');
+					return false;
+				}
+			}
+		}
 		// calculate the unix timestamp for the specified expiration date
 		// default the day to the 1st
 		$expire_timestamp = @mktime(0,0,0,$_SESSION["ccdata"]["order_payment_expire_month"], 1,$_SESSION["ccdata"]["order_payment_expire_year"]);

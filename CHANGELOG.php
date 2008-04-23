@@ -35,7 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+
 --- VirtueMart 1.1.0 released ---
+
+23.04.2008 soeren
+# quantity in stock is checked against quantity in cart only on cartAdd and cartUpdate events, not on checkout
 
 22.04.2008 soeren
 # Task #2036 - add/edit user information page

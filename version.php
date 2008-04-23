@@ -34,8 +34,8 @@ class vmVersion {
 	/** @var string Development Status */
 	var $DEV_STATUS = 'stable';
 	/** @var string Codename */
-	// http://en.wikipedia.org/wiki/Grey%27s_Anatomy_episodes_%28Season_4%29#A_Change_Is_Gonna_Come
-	var $CODENAME = 'A Change Is Gonna Come';
+	// Relaxed Song by Boards of Canada (http://en.wikipedia.org/wiki/The_Campfire_Headphase#Track_listing)
+	var $CODENAME = 'Hey Saturday Sun';
 	/** @var string Date */
 	var $RELDATE = '23/04/2008';
 	/** @var string Time */

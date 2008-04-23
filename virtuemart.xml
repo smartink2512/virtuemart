@@ -1,5 +1,6 @@
-<?xml version="1.0" ?>
-<mosinstall type="component">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
+<install type="component" version="1.5.0">
 	<name>VirtueMart</name>
 	<creationDate>23.04.2008</creationDate>
 	<author>The VirtueMart Development Team</author>
@@ -12,19 +13,15 @@
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version>1.1.0</version>
 	<description>Online-Shop / E-Commerce Component</description>
+	<installfile>install.virtuemart.php</installfile>
+	<uninstallfile>uninstall.virtuemart.php</uninstallfile>
+	<!-- Site Main File Copy Section -->
 	<files>
 		<filename>frontend_files.tar.gz</filename>
 	</files>
-	<install>
-		<queries></queries>
-	</install>
-	<uninstall>
-		<queries></queries>
-	</uninstall>
-	<installfile>install.virtuemart.php</installfile>
-	<uninstallfile>uninstall.virtuemart.php</uninstallfile>
+
 	<administration>
-		<menu>VirtueMart</menu>
+		<menu img="../components/com_virtuemart/shop_image/ps_image/menu_icon.png">VirtueMart</menu>
 		<files>
 			<filename>2checkout_notify.php</filename>
 			<filename>admin_files.tar.gz</filename>
@@ -33,6 +30,7 @@
 			<filename>cart.gif</filename>
 			<filename>CHANGELOG.php</filename>
 			<filename>compat.joomla1.5.php</filename>
+			<filename>config.xml</filename>
 			<filename>COPYRIGHT.php</filename>
 			<filename>global.php</filename>
 			<filename>header.php</filename>
@@ -58,11 +56,4 @@
 			<filename>export.php</filename>
 		</files>
 	</administration>
-	<params>
-		<param name="product_id" type="text" default="" label="Product  ID" description="A product ID" />
-		<param name="category_id" type="text" default="" label="Category ID" description="A category ID" />
-		<param name="flypage" type="text" default="" label="Flypage" description="The filename of a flypage to used when a category is chosen" />
-		<param name="@spacer" type="spacer" default="" label=" " description="" />
-		<param name="page" type="text" default="" label="Page" description="A shop page to display (e.g. shop.browse, account.index)" />
-	</params>
-</mosinstall>
+</install>

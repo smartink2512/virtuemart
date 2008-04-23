@@ -148,9 +148,9 @@ class vmAbstractLanguage {
 	 * @return string
 	 */
 	function safe_utf8_encode( $text, $charset ) {
-		if( strtolower($charset) == 'utf-8') {
+		if( strtolower($charset) == 'utf-8' &&  !vmAbstractLanguage::seems_utf8( $text )) {
 			// safely decode and reencode the string
-			$text = utf8_encode(utf8_decode($text));
+			$text = utf8_encode($text);
 		}
 		// This converts the currency symbol from HTML entity to the utf-8 symbol
 		// example:  &euro; => €

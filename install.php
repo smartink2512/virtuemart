@@ -108,7 +108,13 @@ function installvirtuemart( $install_type, $install_sample_data=false ){
 		What's wrong? Either YOU unpack all the files and upload them or I do that (I can do that when Safe Mode is OFF).
 		</span>" );
 	}
-	
+	if( !file_exists( $admin_dir .'/classes/ps_database.php' ) || !file_exists( $admin_dir.'/sql/sql.virtuemart.php' ) ) {
+		echo '<h2>Critical Error:</h2>
+		<p class="message">Some Core Files for VirtueMart are missing, but they are required for installing and running VirtueMart. If you see this message
+		it\'s recommended to attempt the <a href="http://virtuemart.net/documentation/User_Manual/Manual_Installation.html" target="_blank">Manual Installation</a> of VirtueMart!</p>
+		<p><a href="index2.php">Click here to return to Joomla!</a></p>';
+		exit;
+	}
 	require( $admin_dir .'/classes/ps_database.php' );
 	$db = new ps_DB;
 	defined( 'VM_TABLEPREFIX' ) or define( 'VM_TABLEPREFIX', 'vm' );
