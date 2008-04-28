@@ -15,7 +15,7 @@ function loadNewPage( el, url ) {
 	}
 	var opt = {
 	    // Use POST
-	    method: 'post',
+	    method: 'get',
 	    // Handle successful response
 	    onComplete: callback.success
     }
@@ -53,7 +53,7 @@ function handleAddToCart( formId, parameters ) {
 	    evalScripts: true
 	}
 
-	new Ajax('index2.php?ajax_request=1', opt).request();
+	new Ajax(formCartAdd.action, opt).request();
 }
 /**
 * This function searches for all elements with the class name "vmCartModule" and
@@ -90,8 +90,8 @@ function updateMiniCarts() {
 			} catch(e) {}
 		}
 	}
-	option = { method: 'POST', onComplete: callbackCart }
-	new Ajax('index2.php?only_page=1&page=shop.basket_short&option=com_virtuemart', option).request();
+	option = { method: 'post', onComplete: callbackCart, data: { only_page:1,page: "shop.basket_short", option: "com_virtuemart" } }
+	new Ajax( live_site + '/index2.php', option).request();
 }
 /**
 * This function allows you to present contents of a URL in a really nice stylish dhtml Window

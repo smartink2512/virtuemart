@@ -8,7 +8,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct access to '.
 * @package VirtueMart
 * @subpackage modules
 * 
-* @copyright (C) 2004-2007 Soeren Eberhardt
+* @copyright (C) 2004-2008 soeren - All Rights reserved
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 *
 * VirtueMart is Free Software.
@@ -170,7 +170,7 @@ if ($perm->is_registered_customer($auth["user_id"]) && $show_accountlink == 'yes
 if ( $show_login_form == "yes" ) {
 	
     if ($my->id) {
-		if( vmIsJoomla(1.5) ) {
+		if( vmIsJoomla('1.5') ) {
 			// Logout URL
 			$action =  $mm_action_url . 'index.php?option=com_user&task=logout';
 
@@ -203,7 +203,7 @@ if ( $show_login_form == "yes" ) {
 	}
 	else
 	{
-		if( vmIsJoomla(1.5) ) {
+		if( vmIsJoomla('1.5') ) {
 			// Login URL
 			$action =  $mm_action_url . 'index.php?option=com_user&task=login';
 			
@@ -297,6 +297,19 @@ if ( $show_login_form == "yes" ) {
 			</tr>
 <?php
 	}
+  }
+  // ALTERNATIVE LOGOUT LINK (when Registratrion Type is NO_REGISTRATION or OPTIONAL_REGISTRATION (and no user account was created))
+  if( empty( $my->id) && !empty( $auth['user_id'])) {
+  		// This is the case when a customer is logged in on the store, but not into Joomla!/Mambo
+	  	?>
+	  <tr> 
+	    <td colspan="2">
+	        <a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index.php?page=$page&func=userLogout");?>">
+	        <?php echo $VM_LANG->_('BUTTON_LOGOUT') ?>
+	        </a>
+	    </td>
+	  </tr>
+	  <?php
   }
   
 

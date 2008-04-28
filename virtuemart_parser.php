@@ -114,7 +114,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	}
 	$page = vmRequest::getVar('page', $defaultpage );
 	$func = vmRequest::getVar('func');
-	$ajax_request = vmRequest::getVar('ajax_request', '0' );
+	$ajax_request = strtolower(vmGet($_SERVER,'HTTP_X_REQUESTED_WITH')) == 'xmlhttprequest' || vmGet($_REQUEST,'ajax_request') == '1';
 	$option = vmRequest::getVar('option');
 
 	// This makes it possible to use Shared SSL
@@ -184,7 +184,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
     // The Page will change with every different parameter / argument, so provide this for identification
     // "call" will call the function load_that_shop_page when it is not yet cached with exactly THESE parameters
     // or the caching time range has expired
-	$GLOBALS['cache_id'] = 'vm_' . @md5( $modulename. $pagename. $product_id. $category_id .$manufacturer_id. $auth["shopper_group_id"]. $limitstart. $limit. @$_REQUEST['orderby']. @$_REQUEST['DescOrderBy'] );
+	$GLOBALS['cache_id'] = vmTemplate::getCacheId();
 		
 	if( $option == "com_virtuemart" ) {
 		

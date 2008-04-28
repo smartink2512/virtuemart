@@ -978,6 +978,15 @@ function vmIsHttpsMode() {
 	return ($_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on');
 }
 /**
+ * Checks if the Request is a XML HTTP Request (via Ajax)
+ * @since 1.1.1
+ * @return boolean
+ */
+function vmIsXHR() {
+	return strtolower(vmGet($_SERVER,'HTTP_X_REQUESTED_WITH')) == 'xmlhttprequest'
+		|| vmGet($_POST,'ajax_request') == '1';
+}
+/**
 * Utility function redirect the browser location to another url
 *
 * Can optionally provide a message.

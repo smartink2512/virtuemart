@@ -39,7 +39,7 @@ foreach( $products as $product ) {
 		
 		// Parse the product template (usually 'browse_x') for each product
 		// and store it in our $data array 
-		echo $this->fetch_cache( 'browse/'.$templatefile .'.php' );
+		echo $this->fetch( 'browse/'.$templatefile .'.php' );
 		
 		$i++;
 		if ( ($i) % $products_per_row == 0) {

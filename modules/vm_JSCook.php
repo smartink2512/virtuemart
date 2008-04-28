@@ -77,7 +77,7 @@ class vmCategoryMenu {
 			if( $ibg != 0 )
 			$mymenu_content.= ",";
 
-			$mymenu_content.= "\n['<img src=\"$mosConfig_live_site/components/com_virtuemart/js/ThemeXP/darrow.png\">','".$db->f("category_name",false)."','".sefRelToAbs('index.php?option=com_virtuemart&page=shop.browse&category_id='.$db->f("category_id").$itemid)."',null,'".$db->f("category_name",false)."'\n ";
+			$mymenu_content.= "\n[ '<img src=\"' + ctThemeXPBase + 'darrow.png\" alt=\"arr\" />','".$db->f("category_name",false)."','".sefRelToAbs('index.php?option=com_virtuemart&page=shop.browse&category_id='.$db->f("category_id").$itemid)."',null,'".$db->f("category_name",false)."'\n ";
 
 			$ibg++;
 

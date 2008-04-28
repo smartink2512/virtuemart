@@ -35,7 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-
+28.04.2008
+# Task #1840 - Ajax call does not work with full SEF URL
+# Task #2014 - group Discounts are not calculated after rev. 1368
+# extra bracket in admin.styles.css
+# Task #2052 - mod_product_categories images link to old location
+# when caching is enabled, products don't show up in listing (but drop down lists instead)
 
 --- VirtueMart 1.1.0 released ---
 

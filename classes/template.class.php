@@ -39,7 +39,7 @@ class vmTemplate {
 	 * @var $config
 	 */
 	var $config;
-	var $cache_id;
+	var $cache_filename;
 	var $expire;
 	var $cached = false;
 	
@@ -52,7 +52,7 @@ class vmTemplate {
     *
     * @return void
     */
-	function vmTemplate($path='', $cacheId = null, $expire = 0 ) {
+	function vmTemplate($path='', $expire = 0 ) {
 		global $mosConfig_live_site, $mosConfig_cachepath, $mosConfig_cachetime;
 			
 		$this->path = empty($path) ?  VM_THEMEPATH.'templates/' : $path;
@@ -63,7 +63,7 @@ class vmTemplate {
 			global $$global;
 			$this->vars[$global] = $GLOBALS[$global];
 		}
-		$this->cache_id = $cacheId ? $mosConfig_cachepath.'/' . $cacheId : $mosConfig_cachepath.'/' . $GLOBALS['cache_id'];
+		$this->cache_filename = $mosConfig_cachepath.'/' . $GLOBALS['cache_id'];
 		$this->expire   = $expire == 0 ? $mosConfig_cachetime : $expire;
 		
 		// the theme configuration needs to be available to the templates! (so you can use $this->get_cfg('showManufacturerLink') for example )
@@ -73,6 +73,15 @@ class vmTemplate {
 		}
 		$this->config =& $GLOBALS['vmThemeConfig'];
 		
+	}
+	/**
+	 * Returns a unique Cache ID
+	 * @static 
+	 * @return string
+	 */
+	function getCacheId() {
+		global $modulename, $pagename, $product_id, $category_id, $manufacturer_id, $auth, $limitstart, $limit;
+		return 'vm_' . @md5( 'vm_' . @md5( $modulename. $pagename. $product_id. $category_id .$manufacturer_id. $auth["shopper_group_id"]. $limitstart. $limit. @$_REQUEST['orderby']. @$_REQUEST['DescOrderBy'] ). @$_REQUEST['orderby']. @$_REQUEST['DescOrderBy'] );
 	}
 	/**
 	 * @static 
@@ -85,40 +94,44 @@ class vmTemplate {
 	/**
     * Test to see whether the currently loaded cache_id has a valid
     * corresponding cache file.
-    *
-    * @return bool
+    * @param string the name of the template file (relative path to the theme dir)
+    * @return array
     */
-	function is_cached() {
-		if($this->cached) {			
-			return true;
+	function get_cached( $templateFile ) {
+		global $mosConfig_cachepath;
+		
+		// Passed a cache_id?
+		if(!$GLOBALS['cache_id']) {
+			$GLOBALS['cache_id'] = $this->getCacheId();
+		}
+		
+		$returnArr['cache_file_id'] = md5($templateFile . $GLOBALS['cache_id']);
+		$returnArr['cache_file_name'] = $mosConfig_cachepath.'/'.$returnArr['cache_file_id'];
+		// Cache file exists?
+		if(!@file_exists($returnArr['cache_file_name'])) {
+			$returnArr['isCached'] = false;
+			return $returnArr;
+		}
+		if( @filesize($returnArr['cache_file_name']) == 0) {
+			$returnArr['isCached'] = false;
+			return $returnArr;
 		}
 
-		// Passed a cache_id?
-		if(!$this->cache_id) return false;
-
-		// Cache file exists?
-		if(!@file_exists($this->cache_id)) return false;
-		if( @filesize($this->cache_id) == 0) return false;
-
 		// Can get the time of the file?
-		if(!($mtime = filemtime($this->cache_id))) return false;
+		if(!($mtime = filemtime($returnArr['cache_file_name']))) {
+			$returnArr['isCached'] = false;
+			return $returnArr;
+		}
 
 		// Cache expired?
 		if(($mtime + $this->expire) < time()) {
-			@unlink($this->cache_id);
-			return false;
+			@unlink($returnArr['cache_file_name']);
+			$returnArr['isCached'] = false;
+			return $returnArr;
 		}
-		else {
-			/**
-            * Cache the results of this is_cached() call.  Why?  So
-            * we don't have to double the overhead for each template.
-            * If we didn't cache, it would be hitting the file system
-            * twice as much (file_exists() & filemtime() [twice each]).
-            */
-			$this->cached = true;
-			return true;
-			//
-		}
+		$returnArr['isCached'] = true;
+		return $returnArr;
+		
 	}
 	
 	/**
@@ -216,23 +229,21 @@ class vmTemplate {
     */
 	function fetch_cache($file) {
 		global $mosConfig_caching;
-		if($this->is_cached() && $fp = @fopen($this->cache_id, 'r') ) {
+		
+		$cacheFileArr = $this->get_cached( $file );
+		
+		if( $cacheFileArr['isCached'] !== false ) {
 			
-			$contents = fread($fp, filesize($this->cache_id));
-			fclose($fp);
+			$contents = file_get_contents($cacheFileArr['cache_file_name']);
 			return $contents;
 		}
 		else {
 			$contents = $this->fetch($file);
 			if( $mosConfig_caching ) {
 				// Write the cache
-				if($fp = @fopen($this->cache_id, 'w')) {
-					fwrite($fp, $contents);
-					fclose($fp);
-				}
-				else {
-					die('Unable to write cache.');
-				}
+				if( !file_put_contents($cacheFileArr['cache_file_name'], $contents ) ) {
+					$vmLogger->crit('Failed to write to Cache!');
+				}				
 			}
 			return $contents;
 		}
