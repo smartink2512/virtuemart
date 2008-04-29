@@ -35,7 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-28.04.2008
+29.04.2008 soeren
+# Task #2052 - mod_product_categories images link to old location
+28.04.2008 soeren
 # Task #1840 - Ajax call does not work with full SEF URL
 # Task #2014 - group Discounts are not calculated after rev. 1368
 # extra bracket in admin.styles.css

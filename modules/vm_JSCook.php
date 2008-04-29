@@ -96,9 +96,9 @@ $Itemid = vmRequest::getInt( 'Itemid' );
 $TreeId = vmRequest::getInt( 'TreeId' );
 
 if( vmIsJoomla('1.5')) {
-	$js_src = $mosConfig_live_site.'/modules/mod_virtuemart';
+	$js_src = 'modules/mod_virtuemart';
 } else {
-	$js_src = $mosConfig_live_site.'/modules';
+	$js_src = 'modules';
 }
 echo vmCommonHTML::scriptTag( '', 'var ctThemeXPBase = "'.$js_src.'/ThemeXP/";' );
 if( $jscook_type == "tree" ) {
