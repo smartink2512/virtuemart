@@ -819,7 +819,7 @@ class ps_checkout {
 		$vmLogger, $vmInputFilter, $discount_factor;
 
 		$ps_vendor_id = $_SESSION["ps_vendor_id"];
-		$auth = $_SESSION['auth'];
+		
 		$cart = $_SESSION['cart'];
 
 		require_once(CLASSPATH. 'ps_payment_method.php' );
@@ -1157,11 +1157,12 @@ Order Total: '.$order_total.'
 		$_POST["order_payment_number"] = "";
 		$_POST["order_payment_expire"] = "";
 		$_POST["order_payment_name"] = "";
-		
+		/*
 		if( empty($my->id) && !empty( $auth['user_id'])) {
 			require_once(CLASSPATH.'ps_user.php');
 			ps_user::logout();
 		}
+		*/
 		return True;
 	}
 
@@ -1786,8 +1787,10 @@ Order Total: '.$order_total.'
 		}
 		//Shopper Footer
 		$shopper_footer = "\n\n".$VM_LANG->_('PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2',false)."\n";
-		$shopper_footer .= "\n\n".$VM_LANG->_('PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5',false)."\n";
-		$shopper_footer .= $shopper_order_link;
+		if( VM_REGISTRATION_TYPE != 'NO_REGISTRATION' ) {
+			$shopper_footer .= "\n\n".$VM_LANG->_('PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER5',false)."\n";
+			$shopper_footer .= $shopper_order_link;
+		}
 		$shopper_footer .= "\n\n".$VM_LANG->_('PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3',false)."\n";
 		$shopper_footer .= "Email: " . $from_email;
 		// New in version 1.0.5

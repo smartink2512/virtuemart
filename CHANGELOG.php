@@ -35,6 +35,14 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+02.05.2008 soeren
+# Task #2055 - Orders date not locale language
+# Task #2060 - When registration method is 'No Account Creation' PayPal is not working.
+# Task #2061 - When registration method is 'No Account Creation' no need of link in order email
+# Task #2062 - USPS and UPS conflict
+# Order form layout too broad [http://forum.virtuemart.net/index.php?topic=38926.0]
+# Task #2064 - Vendor Address 2 and URL missing from confiramtion email and order page.
+
 29.04.2008 soeren
 # Task #2052 - mod_product_categories images link to old location
 28.04.2008 soeren

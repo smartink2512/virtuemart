@@ -37,10 +37,10 @@ $order_id = vmRequest::getInt('order_id');
 	  $dbc->query( $q );
 	  $order_events = $dbc->record;
 	  ?>
-  <table class="adminlist">
+  <table class="adminlist" style="width:100%; table-layout: fixed;">
 	<tr> 
 	  <td valign="top" width="35%"> 
-		<table width="100%" border="0" cellspacing="0" cellpadding="1">
+		<table border="0" cellspacing="0" cellpadding="1">
 		  <tr class="sectiontableheader"> 
 			<th colspan="2"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_LBL') ?></th>
 		  </tr>

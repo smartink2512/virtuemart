@@ -271,6 +271,7 @@ class ps_perm {
 	 */
 	function is_registered_customer($user_id) {
 		global $page, $func, $auth;
+		if( $user_id == 0 ) return false;
 		/**
 		if( @is_bool( $auth["is_registered_customer"]) && ($page!="checkout.index" && strtolower($func)!="shopperupdate")) {
 			return $auth["is_registered_customer"];

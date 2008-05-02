@@ -15,7 +15,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 
 global $vendor_image,$vendor_country_2_code ,$vendor_country_3_code, $vendor_image_url, $vendor_name, 
-		$vendor_address, $vendor_city,$vendor_country,$vendor_mail,$vendor_store_name, $vm_mainframe,
+		$vendor_address,$vendor_address_2, $vendor_url, $vendor_city,$vendor_country,$vendor_mail,$vendor_store_name, $vm_mainframe,
         $vendor_state, $vendor_zip, $vendor_phone, $vendor_currency, $vendor_store_desc, $vendor_freeshipping,
         $module_description, $VM_LANG, $vendor_currency_display_style, $vendor_full_image, $vendor_accepted_currencies,
         $vendor_address_format, $vendor_date_format;

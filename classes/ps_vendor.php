@@ -437,7 +437,7 @@ class ps_vendor {
 	function get_vendor_details($vendor_id) {
 		$db = new ps_DB();
 		$q = "SELECT vendor_id, vendor_min_pov,vendor_name,vendor_store_name,contact_email,vendor_full_image, vendor_freeshipping,
-					vendor_address_1, vendor_city, vendor_state, vendor_country, country_2_code, country_3_code,
+					vendor_address_1,vendor_address_2, vendor_url, vendor_city, vendor_state, vendor_country, country_2_code, country_3_code,
 					vendor_zip, vendor_phone, vendor_store_desc, vendor_currency, vendor_currency_display_style,
 					vendor_accepted_currencies, vendor_address_format, vendor_date_format
 				FROM (`#__{vm}_vendor`, `#__{vm}_country`)

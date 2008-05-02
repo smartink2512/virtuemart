@@ -779,12 +779,11 @@ function vmIsAdminMode() {
 	global $page;
 	return ( (defined( '_VM_IS_BACKEND' ) 
 	|| @$_REQUEST['pshop_mode'] == 'admin' 
-	|| stristr($page,"form")
-	|| stristr($page, "list")
-	|| stristr($page, "cfg")
-	|| stristr($page, "print")
-	|| stristr($page, "display"))
-	&& strncmp('shop.',$page, 5) !== 0);
+	|| ( strncmp('account.',$page, 8) !== 0
+		&& strncmp('checkout.',$page, 9) !== 0
+		&& strncmp('shop.',$page, 5) !== 0
+		)
+		));
 }
 
 

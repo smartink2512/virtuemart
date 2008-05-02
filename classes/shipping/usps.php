@@ -536,7 +536,7 @@ class usps {
 
 			$shipping_rate_id = urlencode(__CLASS__."|USPS|".$ship_service[$i]."|".$charge[$i]);
 			//$checked = (@$d["shipping_rate_id"] == $value) ? "checked=\"checked\"" : "";
-			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" />\n";
+			$html .= "\n<input type=\"radio\" name=\"shipping_rate_id\" checked=\"checked\" value=\"$shipping_rate_id\" id=\"$shipping_rate_id\" />\n";
 
 			$_SESSION[$shipping_rate_id] = 1;
 
@@ -548,10 +548,10 @@ class usps {
 			}
 			$html .= "<br />";
 			if ($dest_country_name == "United States" && $usps_ship[$i] == "TRUE") {
-			echo $html;
+				echo $html;
 			}
 			else if ($dest_country_name != "United States" && $usps_intl[$i] == "TRUE") {
-			echo $html;
+				echo $html;
 			}
 			$i++;
 			}
@@ -647,7 +647,6 @@ class usps {
 		<td>
             <?php echo mm_ToolTip($VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PATH_TOOLTIP')) ?>
         </td>
-	</tr>
 	</tr>
 	<tr>
 		<td><strong><?php echo $VM_LANG->_('PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_USPS_PACKAGESIZE') ?></strong>
