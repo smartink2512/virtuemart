@@ -33,13 +33,13 @@ else {
 		$order_status = $db->f("order_status");
 		if($order_status == PAYPAL_VERIFIED_STATUS
       || $order_status == PAYPAL_PENDING_STATUS) {  ?> 
-        <img src="<?php echo IMAGEURL ?>ps_image/button_ok.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_SUCCESS'); ?>" border="0" />
+        <img src="<?php echo VM_THEMEURL ?>images/button_ok.png" align="middle" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_SUCCESS'); ?>" border="0" />
         <h2><?php echo $VM_LANG->_('PHPSHOP_PAYPAL_THANKYOU') ?></h2>
     
     <?php
       }
       else { ?>
-        <img src="<?php echo IMAGEURL ?>ps_image/button_cancel.png" align="center" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_FAILURE'); ?>" border="0" />
+        <img src="<?php echo VM_THEMEURL ?>images/button_cancel.png" align="middle" alt="<?php echo $VM_LANG->_('VM_CHECKOUT_FAILURE'); ?>" border="0" />
         <span class="message"><?php echo $VM_LANG->_('PHPSHOP_PAYPAL_ERROR') ?></span>
     
     <?php

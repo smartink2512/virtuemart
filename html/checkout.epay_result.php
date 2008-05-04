@@ -154,7 +154,7 @@ if(($order_ekey == md5( $order_amount . $order_id . $tid  . EPAY_MD5_KEY)) || EP
 	        }
   
 ?> 
-            <img src="<?php echo IMAGEURL ?>ps_image/epay_images/button_ok.png" align="center" alt="Success" border="0" />
+            <img src="<?php echo VM_THEMEURL ?>images/button_ok.png" align="middle" alt="Success" border="0" />
             <h2><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_TRANSACTION_SUCCESS'); ?></h2>
 <?php
         }
@@ -174,7 +174,7 @@ if(($order_ekey == md5( $order_amount . $order_id . $tid  . EPAY_MD5_KEY)) || EP
             $ps_order->order_status_update($d);
             
 ?> 
-            <img src="<?php echo IMAGEURL ?>ps_image/epay_images/button_cancel.png" align="center" alt="Failure" border="0" />
+            <img src="<?php echo VM_THEMEURL ?>images/button_cancel.png" align="middle" alt="Failure" border="0" />
             <h2><?php echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') ?></h2>
 <?php
 		
@@ -191,13 +191,13 @@ if(($order_ekey == md5( $order_amount . $order_id . $tid  . EPAY_MD5_KEY)) || EP
       }
       else {
         ?>
-        <img src="<?php echo IMAGEURL ?>ps_image/epay_images/button_cancel.png" align="center" alt="Failure" border="0" />
+        <img src="<?php echo VM_THEMEURL ?>images/button_cancel.png" align="middle" alt="Failure" border="0" />
         <span class="message"><? echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') . $VM_LANG->_('PHPSHOP_EPAY_PAYMENT_ORDER_NOT_FOUND') ?> </span><?php
       }
 }
 else{
         ?>
-        <img src="<?php echo IMAGEURL ?>ps_image/epay_images/button_cancel.png" align="center" alt="Failure" border="0" />
+        <img src="<?php echo VM_THEMEURL ?>images/button_cancel.png" align="middle" alt="Failure" border="0" />
         <span class="message"><? echo $VM_LANG->_('PHPSHOP_PAYMENT_ERROR') . $VM_LANG->_('PHPSHOP_EPAY_PAYMENT_MD5_CHECK_FAILURE') ?> </span><?php
   }
   ?>

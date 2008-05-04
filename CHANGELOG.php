@@ -35,6 +35,8 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+04.05.2008 soeren
+# Task #2075 - Last Page remembered in Frontend
 02.05.2008 soeren
 # Task #2055 - Orders date not locale language
 # Task #2060 - When registration method is 'No Account Creation' PayPal is not working.
