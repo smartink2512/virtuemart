@@ -427,6 +427,9 @@ class ps_DB {
 	function getErrorMsg() {
 		return $this->_database->getErrorMsg();
 	}
+	function getErrorNum() {
+		return $this->_database->getErrorNum();
+	}
 	function stderr() {
 		return $this->_database->stderr();
 	}
