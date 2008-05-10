@@ -51,7 +51,7 @@
 	ob_end_clean();
 	if( !empty( $avail ) ) { 
 		?>
-		<div style="availabilityHeader"><?php echo $VM_LANG->_('PHPSHOP_AVAILABILITY') ?></div>
+		<div class="availabilityHeader"><?php echo $VM_LANG->_('PHPSHOP_AVAILABILITY') ?></div>
 		<br />
 		<?php
 		echo $avail;

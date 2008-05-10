@@ -35,8 +35,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+09.05.2008 gregdev
+# Task #2089 - "Membergroup to show prices to" non-funtionsla with Joomla 1.5.3
+# Task #2086 - HTML error in availability.tpl.php for the Availability line
+
 04.05.2008 soeren
 # Task #2075 - Last Page remembered in Frontend
+
 02.05.2008 soeren
 # Task #2055 - Orders date not locale language
 # Task #2060 - When registration method is 'No Account Creation' PayPal is not working.
@@ -47,6 +52,7 @@ VirtueMart 1.1.x
 
 29.04.2008 soeren
 # Task #2052 - mod_product_categories images link to old location
+
 28.04.2008 soeren
 # Task #1840 - Ajax call does not work with full SEF URL
 # Task #2014 - group Discounts are not calculated after rev. 1368

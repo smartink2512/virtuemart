@@ -65,7 +65,7 @@ class ps_perm {
 				else {
 					$gid = $vmUser->gid;
 				}
-				$fieldname = vmIsJoomla(1.5) ? 'id' : 'group_id';
+				$fieldname = vmIsJoomla( '1.5' ) ? 'id' : 'group_id';
 				$db->query( 'SELECT `name` FROM `#__core_acl_aro_groups` WHERE `'.$fieldname.'` ='.$gid );
 				$db->next_record();
 				$vmUser->usertype = $db->f( 'name' );
@@ -326,14 +326,18 @@ class ps_perm {
 		$root = new stdClass();
 		$root->lft = 0;
 		$root->rgt = 0;
-		if( $_VERSION->PRODUCT == 'Joomla!' && $_VERSION->RELEASE >= 1.1 ) {
+		if( vmIsJoomla( '1.5' ) ) {
 			$fields = str_replace( 'group_id', 'id', $fields );
 		}
 		
 		if ($root_id) {
 		} else if ($root_name) {
 			$database->setQuery( "SELECT `lft`, `rgt` FROM `$table` WHERE `name`='$root_name'" );
-			$database->loadObject( $root );
+			if( vmIsJoomla( '1.5' ) && !defined( '_JLEGACY' ) ) {
+				$root = $database->loadObject();
+			} else {
+				$database->loadObject( $root );
+			}
 		}
 
 		$where = '';
