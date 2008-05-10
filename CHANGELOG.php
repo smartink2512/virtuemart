@@ -38,6 +38,7 @@ VirtueMart 1.1.x
 09.05.2008 gregdev
 # Task #2089 - "Membergroup to show prices to" non-funtionsla with Joomla 1.5.3
 # Task #2086 - HTML error in availability.tpl.php for the Availability line
+# Task #2088 - When VM extended search plug-in is enabled in backend Joomla search gives error.
 
 04.05.2008 soeren
 # Task #2075 - Last Page remembered in Frontend

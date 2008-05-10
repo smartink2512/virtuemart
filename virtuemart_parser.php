@@ -73,7 +73,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// the global file for VirtueMart
 	require_once( ADMINPATH . 'global.php' );
 
-	if( !vmIsAdminMode() && !isset( $_REQUEST['page'])) {
+	if( !vmIsAdminMode() && !is_a($mainframe, 'JAdministrator') && !isset( $_REQUEST['page']) ) {
 
 		// Get the menu parameters, if any
 		if( vmIsJoomla( '1.5' ) ) {
