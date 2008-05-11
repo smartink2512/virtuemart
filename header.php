@@ -267,7 +267,6 @@ if( vmIsJoomla('1.0') && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 							<li class="item-smenu vmicon vmicon-16-editadd">
 							<a href="<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_form&product_parent_id=$recent_product_id"); ?>"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_ADD_ITEM_MNU') ?></a>
 							</li>
-							</ul>
 				            <?php 
 						} ?>
 						<li><hr /></li>
@@ -336,6 +335,7 @@ if( vmIsJoomla('1.0') && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 					 <li class="item-smenu vmicon vmicon-16-editadd">
 					<a href="<?php $sess->purl($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_category_form") ?>"><?php echo $VM_LANG->_('PHPSHOP_CATEGORY_FORM_MNU') ?></a>
 					</li>
+					</ul>
 					</div>
 				<?php 
 				$modCount++;

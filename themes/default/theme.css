@@ -97,7 +97,7 @@ input.addtocart_button_module:hover  {
 
 /* This is the text box informing customers about your returns policy */
 .legalinfo {
-	background: lightgray;
+	background: #d3d3d3;
 	border: 2px solid gray;
 	margin: 10px;
 	padding: 0px 0px 10px 10px;
@@ -332,7 +332,7 @@ width: 100%;
 	clear:both;
 }
 .vmRowOne { /* Odd Row One styling */
-	background: lightgray;	
+	background: #d3d3d3;	
 }
 
 .vmRowTwo { /* Even Row Styling */
@@ -447,7 +447,7 @@ width: 100%;
 	clear:both;
 }
 .vmRowOne_2up { /* Odd Row One styling */
-	background: lightgray;	
+	background: #d3d3d3;	
 }
 
 .vmRowTwo_2up { /* Even Row Styling */

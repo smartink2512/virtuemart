@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+10.05.2008 gregdev (for k0nan)
+# Task #2057 - Extra Bullets / dots in navigation menu when in attribute or product type section
+# Task #2038 - Extended Layout view, menu icons are shown twice
+# Task #2074 - W3C css 3 errors: lightgray
+
 09.05.2008 gregdev
 # Task #2089 - "Membergroup to show prices to" non-funtionsla with Joomla 1.5.3
 # Task #2086 - HTML error in availability.tpl.php for the Availability line
