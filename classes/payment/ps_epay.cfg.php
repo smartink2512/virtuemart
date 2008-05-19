@@ -1,16 +1,16 @@
 <?php
-define ('EPAY_MERCHANTNUMBER', 'Enter merchantnumber here');
+define ('EPAY_MERCHANTNUMBER', 'Enter Your Merchant Number Here');
 define ('EPAY_LANGUAGE', '2');
 define ('EPAY_CALLBACK', '0');
 define ('EPAY_VERIFIED_STATUS', 'C');
 define ('EPAY_INVALID_STATUS', 'X');
 define ('EPAY_INSTANT_CAPTURE', '0');
-define ('EPAY_GROUP', 'test group');
-define ('EPAY_MD5_TYPE', '2');
-define ('EPAY_MD5_KEY', 'epay123');
+define ('EPAY_GROUP', '');
+define ('EPAY_MD5_TYPE', '0');
+define ('EPAY_MD5_KEY', '');
 define ('EPAY_AUTH_SMS', '');
 define ('EPAY_AUTH_MAIL', '');
-define ('EPAY_WINDOW_STATE', '2');
+define ('EPAY_WINDOW_STATE', '1');
 define ('EPAY_3DSECURE', '1');
 define ('EPAY_SUBSCRIPTION', '0');
 define ('EPAY_ADDFEE', '0');

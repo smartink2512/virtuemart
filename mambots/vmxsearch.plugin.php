@@ -43,10 +43,9 @@ function vmExtendedSearch( $text, $phrase = '', $ordering = '' ) {
 	// check if param query has previously been processed
 	if( ! isset( $GLOBALS['_search_mambot_params']['vmxsearch'] ) ) {
 		// load mambot params info
-		$query = "SELECT params FROM #__plugins WHERE element = 'vmxsearch.searchbot' AND folder = 'search'" ;
+		$query = "SELECT params FROM #__plugins WHERE element = 'vmxsearch.plugin' AND folder = 'search'" ;
 		$database->setQuery( $query ) ;
 		$mambot = $database->loadObject() ;
-		
 		// save query to class variable
 		$GLOBALS['_search_mambot_params']['vmxsearch'] = $mambot ;
 	}
@@ -140,15 +139,29 @@ function vmExtendedSearch( $text, $phrase = '', $ordering = '' ) {
 	}
 	
 	//Get Virtuemart module ID
-	
-
 	$database->setQuery( " SELECT id, name FROM  `#__menu` WHERE link LIKE '%com_virtuemart%' AND published=1 AND access=0" ) ;
 	$Item = $database->loadObject() ;
 	$ItemName = ! empty( $Item->name ) ? $Item->name : "Shop" ;
 	$Itemid = ! empty( $Item->id ) ? $Item->id : "1" ;
 	
-	$query = "SELECT p.product_name as title," ;
-	$query .= "\n    FROM_UNIXTIME( p.cdate, '%Y-%m-%d %H:%i:%s'  ) AS created," . "\n    p.product_s_desc AS text," . "\n    CONCAT('$ItemName/',c.category_name) as section," . "\n    CONCAT('index.php?option=com_virtuemart&page=shop.product_details&flypage=',IFNULL(c.category_flypage,'" . FLYPAGE . "'),'&category_id=',IFNULL(c.category_id,''),'&product_id=',p.product_id,'&Itemid='," . $Itemid . ") as href," . "\n    '2' as browsernav " . $whole_text . "\n FROM #__vm_product p" . "\n LEFT JOIN #__vm_product_reviews r ON (r.product_id = p.product_id) " . "\n LEFT JOIN #__vm_product_mf_xref mx ON (mx.product_id = p.product_id) LEFT JOIN #__vm_manufacturer m ON (m.manufacturer_id = mx.manufacturer_id), " . "\n #__vm_product_category_xref cx, #__vm_category c" . "\n WHERE ($where)" . "\n AND cx.product_id = p.product_id" . "\n AND cx.category_id = c.category_id" . "\n $parent_where" . "\n AND c.category_publish='Y'" . "\n AND p.product_publish='Y'" . "\n $oos_where" . "\n ORDER BY $order" ;
+	$query = "SELECT DISTINCT p.product_id, p.product_name as title,
+					FROM_UNIXTIME( p.cdate, '%Y-%m-%d %H:%i:%s'  ) AS created,
+					p.product_s_desc AS text,
+					CONCAT('$ItemName/',c.category_name) as section,
+					CONCAT('index.php?option=com_virtuemart&page=shop.product_details&flypage=',IFNULL(c.category_flypage,'" . FLYPAGE . "'),'&category_id=',IFNULL(c.category_id,''),'&product_id=',p.product_id,'&Itemid='," . $Itemid . ") as href,
+					'2' as browsernav 
+					$whole_text 
+					FROM #__vm_product p
+					LEFT JOIN #__vm_product_reviews r ON (r.product_id = p.product_id) 
+					LEFT JOIN #__vm_product_mf_xref mx ON (mx.product_id = p.product_id) 
+					LEFT JOIN #__vm_manufacturer m ON (m.manufacturer_id = mx.manufacturer_id),
+						#__vm_product_category_xref cx, #__vm_category c
+						WHERE ($where)" . "\n AND cx.product_id = p.product_id
+							AND cx.category_id = c.category_id $parent_where
+							AND c.category_publish='Y'
+							AND p.product_publish='Y'
+					$oos_where
+					ORDER BY $order" ;
 	//echo "\n-QUERY:\n$query\n";
 	$database->setQuery( $query ) ;
 	

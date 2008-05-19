@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+19.05.2008 soeren
+#  the order number in ps_checkout:add ($order_number) is 34 characters long- instead of the allowed 32 chars.
+
 10.05.2008 gregdev (for k0nan)
 # Task #2057 - Extra Bullets / dots in navigation menu when in attribute or product type section
 # Task #2038 - Extended Layout view, menu icons are shown twice
@@ -45,6 +48,8 @@ VirtueMart 1.1.x
 # Task #2086 - HTML error in availability.tpl.php for the Availability line
 # Task #2088 - When VM extended search plug-in is enabled in backend Joomla search gives error.
 # Task #2085 - ps_DB : Function getErrorNum from not inherited from JDatabase object
+09.05.2008 soeren
+# Task #2086 - HTML error in availability.tpl.php for the Availability line
 
 04.05.2008 soeren
 # Task #2075 - Last Page remembered in Frontend

@@ -1182,7 +1182,7 @@ Order Total: '.$order_total.'
 
 		$order_number = $auth['user_id'] .'_'. md5($str);
 
-		return($order_number);
+		return substr($order_number, 0, 32);
 	}
 	/**
          * Stores the md5 hash of the recent cart in the var _cartHash
