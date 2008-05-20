@@ -230,6 +230,9 @@ A loja irá criar um novo registo de desconto, o desconto no preço.',
 	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Exemplos para o formato da lista de atributos:</h4>
 Titulo = Cor, Propriedade = Vermelho ; Clique em Nova Propriedade para adicionar uma nova cor: Verde ; Em seguida, clique em Novo atributo para adicionar um novo atributo, e assim por diante.
 <h4>Ajustes do preço do produto usando atributos:</h4>
-Preço = +10 para adicionar este valor ao preço configurado.<br />  Preço = -10 para subtrair este valor ao preço configurado.<br />  Preço = 10 para alterar o preço configurado para este valor.'
+Preço = +10 para adicionar este valor ao preço configurado.<br />  Preço = -10 para subtrair este valor ao preço configurado.<br />  Preço = 10 para alterar o preço configurado para este valor.',
+	'VM_FILES_FORM_PRODUCT_IMAGE' => 'Product Image (full and thumb)',
+	'VM_FILES_FORM_DOWNLOADABLE' => 'Downloadable Product File (to be sold!)',
+	'VM_FILES_FORM_RESIZE_IMAGE' => 'Resize Full Image File?'
 ); $VM_LANG->initModule( 'product', $langvars );
 ?>

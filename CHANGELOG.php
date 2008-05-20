@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+20.05.2008 thepisu
+# Task #2092 OFFLINE MODE hard coded (new string added to "common" module)
+# Task #1908 list of hard coded strings (new strings added to "product" module)
+
 19.05.2008 soeren
 #  the order number in ps_checkout:add ($order_number) is 34 characters long- instead of the allowed 32 chars.
 

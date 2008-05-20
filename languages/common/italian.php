@@ -1308,6 +1308,7 @@ check with your hosting company to see if you can access this port first',
 	'VM_ENQUIRY_MAIL_CUSTOMER_QUESTION' => 'Domanda Cliente',
 	'VM_ENQUIRY_MAIL_HAS_REQUESTED' => 'ha richiesto maggiori informazioni su',
 	'VM_ENQUIRY_MAIL_PRODUCT_SKU' => 'Codice-Prodotto',
-	'VM_ENQUIRY_MAIL_QUESTION' => 'Domanda'
+	'VM_ENQUIRY_MAIL_QUESTION' => 'Domanda',
+	'OFFLINE_MODE' => 'MODALITA\' OFFLINE'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>

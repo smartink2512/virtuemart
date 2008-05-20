@@ -117,10 +117,10 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
       <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_FILES_LIST_FILETYPE') ?>:</td>
       <td> 
         <select name="file_type" onchange="checkThumbnailing();" class="inputbox">
-        	<option value="product_images" <?php echo $selected_type[0] ?>><?php echo 'Product Image (full and thumb)' ?></option>
+        	<option value="product_images" <?php echo $selected_type[0] ?>><?php echo $VM_LANG->_('VM_FILES_FORM_PRODUCT_IMAGE'); ?></option>
 	        <option value="product_full_image" <?php echo $selected_type[1] ?>><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_FULL_IMAGE') ?></option>
 	        <option value="product_thumb_image" <?php echo $selected_type[2] ?>><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_THUMB_IMAGE') ?></option>
-	        <option value="downloadable_file" <?php echo $selected_type[3] ?>><?php echo 'Downloadable Product File (to be sold!)' ?></option>
+	        <option value="downloadable_file" <?php echo $selected_type[3] ?>><?php echo $VM_LANG->_('VM_FILES_FORM_DOWNLOADABLE') ?></option>
 	        <option value="image" <?php echo $selected_type[4] ?>><?php echo $VM_LANG->_('PHPSHOP_FILES_FORM_IMAGE') ?></option>
 	        <option value="file" <?php echo $selected_type[5] ?>><?php echo $VM_LANG->_('PHPSHOP_FILES_FORM_FILE') ?></option>
         </select>
@@ -140,13 +140,13 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
     </tr>
     <tr> 
       <td class="labelcell">
-      		<label for="file_resize_fullimage"><?php echo 'Resize Full Image File?' ?></label>
+      		<label for="file_resize_fullimage"><?php echo $VM_LANG->_('VM_FILES_FORM_RESIZE_IMAGE'); ?></label>
       	</td>
       <td> 
         <input type="checkbox" class="inputbox" id="file_resize_fullimage" name="file_resize_fullimage" checked="checked" value="1" />
         <div id="fullsizes">&nbsp;&nbsp;&nbsp;
-        Height: <input type="text" name="fullimage_height" value="500" class="inputbox" />&nbsp;&nbsp;&nbsp;
-        Width: <input type="text" name="fullimage_width" value="500" class="inputbox" /></div>
+        <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_HEIGHT');?>: <input type="text" name="fullimage_height" value="500" class="inputbox" />&nbsp;&nbsp;&nbsp;
+        <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_WIDTH');?>: <input type="text" name="fullimage_width" value="500" class="inputbox" /></div>
       </td>
     </tr>
     <tr> 
@@ -156,8 +156,8 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
       <td> 
         <input type="checkbox" class="inputbox" id="file_create_thumbnail" name="file_create_thumbnail" checked="checked" value="1" />
         <div id="thumbsizes">&nbsp;&nbsp;&nbsp;
-        Height: <input type="text" name="thumbimage_height" value="<?php echo PSHOP_IMG_HEIGHT ?>" class="inputbox" />&nbsp;&nbsp;&nbsp;
-        Width: <input type="text" name="thumbimage_width" value="<?php echo PSHOP_IMG_WIDTH ?>" class="inputbox" /></div>
+        <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_HEIGHT');?>: <input type="text" name="thumbimage_height" value="<?php echo PSHOP_IMG_HEIGHT ?>" class="inputbox" />&nbsp;&nbsp;&nbsp;
+        <?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_WIDTH');?>: <input type="text" name="thumbimage_width" value="<?php echo PSHOP_IMG_WIDTH ?>" class="inputbox" /></div>
         </td>
     </tr>
 

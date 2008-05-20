@@ -229,6 +229,9 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Esempi per il formato Lista Attributi:</h4>
 Titolo = Colore, Proprietà = Rosso ; Click su Nuova Proprietà per aggiungere un nuovo colore: Verde ; Quindi clicca su Nuovo attributo per aggiungere un nuovo attributo, e così via.
 <h4>Regolazioni prezzo per gli Attributi:</h4>
-Prezzo = +10 per aggiungere questo importo al prezzo configurato.<br />  Prezzo = -10 per sottrarre questo importo dal prezzo configurato.<br />  Prezzo = 10 per impostare il prezzo del prodotto a questo importo.'
+Prezzo = +10 per aggiungere questo importo al prezzo configurato.<br />  Prezzo = -10 per sottrarre questo importo dal prezzo configurato.<br />  Prezzo = 10 per impostare il prezzo del prodotto a questo importo.',
+	'VM_FILES_FORM_PRODUCT_IMAGE' => 'Immagine prodotto (grande e miniatura)',
+	'VM_FILES_FORM_DOWNLOADABLE' => 'File Prodotto Scaricabile (da vendere!)',
+	'VM_FILES_FORM_RESIZE_IMAGE' => 'Ridimensionare File Immagine?'
 ); $VM_LANG->initModule( 'product', $langvars );
 ?>

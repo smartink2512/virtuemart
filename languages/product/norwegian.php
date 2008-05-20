@@ -232,6 +232,9 @@ Nettbutikken vil automatisk generere en ny Record ut fra den rabatterte prisen.'
 	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES' => '<h4>Examples for the Attribute List Format:</h4>
 Title = Color, Property = Red ; Click on New Property to add a new color: Green ; Then click on New attribute to add a new attribute, and so on.
 <h4>Inline price adjustments for using the Advanced Attributes modification:</h4>
-Price = +10 to add this amount to the configured price.<br />  Price = -10 to subtract this amount from the configured price.<br />  Price = 10 to set the product\'s price to this amount.'
+Price = +10 to add this amount to the configured price.<br />  Price = -10 to subtract this amount from the configured price.<br />  Price = 10 to set the product\'s price to this amount.',
+	'VM_FILES_FORM_PRODUCT_IMAGE' => 'Product Image (full and thumb)',
+	'VM_FILES_FORM_DOWNLOADABLE' => 'Downloadable Product File (to be sold!)',
+	'VM_FILES_FORM_RESIZE_IMAGE' => 'Resize Full Image File?'
 ); $VM_LANG->initModule( 'product', $langvars );
 ?>

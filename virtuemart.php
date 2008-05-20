@@ -41,7 +41,7 @@ if( PSHOP_IS_OFFLINE == '1' && !$perm->hasHigherPerms('storeadmin') ) {
 }
 else {
 	if( PSHOP_IS_OFFLINE == '1' ) {
-		echo '<h2>OFFLINE MODE</h2>';
+		echo '<h2>'.$VM_LANG->_('OFFLINE_MODE').'</h2>';
 	}
 	if( $is_popup ) {
 		echo "<style type='text/css' media='print'>.vmNoPrint { display: none }</style>";

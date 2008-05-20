@@ -1299,6 +1299,7 @@ lépjen kapcsolatba szolgáltatójával a megoldásért.',
 	'VM_ENQUIRY_MAIL_CUSTOMER_QUESTION' => 'Customer Question',
 	'VM_ENQUIRY_MAIL_HAS_REQUESTED' => 'has requested more information on',
 	'VM_ENQUIRY_MAIL_PRODUCT_SKU' => 'Product-SKU',
-	'VM_ENQUIRY_MAIL_QUESTION' => 'Question'
+	'VM_ENQUIRY_MAIL_QUESTION' => 'Question',
+	'OFFLINE_MODE' => 'OFFLINE MODE'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>
