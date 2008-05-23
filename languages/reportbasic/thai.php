@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version : thai.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -18,26 +18,26 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_RB_INDIVIDUAL' => 'à©¾ÒÐÃÒÂ¡ÒÃÊÔ¹¤éÒ',
-	'PHPSHOP_RB_SALE_TITLE' => 'ÃÒÂ§Ò¹ÂÍ´¢ÒÂ',
-	'PHPSHOP_RB_SALES_PAGE_TITLE' => 'ÃÒÂ§Ò¹ÂÍ´¢ÒÂ',
-	'PHPSHOP_RB_INTERVAL_TITLE' => '¡ÓË¹´ÃÐÂÐàÇÅÒ',
-	'PHPSHOP_RB_INTERVAL_MONTHLY_TITLE' => 'ÃÒÂà´×Í¹',
-	'PHPSHOP_RB_INTERVAL_WEEKLY_TITLE' => 'ÃÒÂÊÑ»´ÒËì',
-	'PHPSHOP_RB_INTERVAL_DAILY_TITLE' => 'ÃÒÂÇÑ¹',
-	'PHPSHOP_RB_THISMONTH_BUTTON' => 'à´×Í¹¹Õé',
-	'PHPSHOP_RB_LASTMONTH_BUTTON' => 'à´×Í¹·ÕèáÅéÇ',
-	'PHPSHOP_RB_LAST60_BUTTON' => '60 ÇÑ¹ÊØ´·éÒÂ',
-	'PHPSHOP_RB_LAST90_BUTTON' => '90 ÇÑ¹ÊØ´·éÒÂ',
-	'PHPSHOP_RB_START_DATE_TITLE' => 'àÔÃÔèÁÇÑ¹·Õè',
-	'PHPSHOP_RB_END_DATE_TITLE' => '¶Ö§ÇÑ¹·Õè',
-	'PHPSHOP_RB_SHOW_SEL_RANGE' => 'áÊ´§ÃÒÂ¡ÒÃµÒÁ·ÕèàÅ×Í¡',
-	'PHPSHOP_RB_REPORT_FOR' => 'ÃÒÂ§Ò¹ÊÓËÃÑº ',
-	'PHPSHOP_RB_DATE' => 'ÇÑ¹·Õè',
-	'PHPSHOP_RB_ORDERS' => 'ÃÒÂ¡ÒÃÊÑè§«×éÍ',
-	'PHPSHOP_RB_TOTAL_ITEMS' => 'ÃÒÂ¡ÒÃ¢ÒÂÃÇÁ',
-	'PHPSHOP_RB_REVENUE' => 'ÃÒÂä´é',
-	'PHPSHOP_RB_PRODLIST' => 'ÃÒÂ¡ÒÃÊÔ¹¤éÒ'
+	'CHARSET' => 'UTF-8',
+	'PHPSHOP_RB_INDIVIDUAL' => 'à¹€à¸‰à¸žà¸²à¸°à¸£à¸²à¸¢à¸à¸²à¸£à¸ªà¸´à¸™à¸„à¹‰à¸²',
+	'PHPSHOP_RB_SALE_TITLE' => 'à¸£à¸²à¸¢à¸‡à¸²à¸™à¸¢à¸­à¸”à¸‚à¸²à¸¢',
+	'PHPSHOP_RB_SALES_PAGE_TITLE' => 'à¸£à¸²à¸¢à¸‡à¸²à¸™à¸¢à¸­à¸”à¸‚à¸²à¸¢',
+	'PHPSHOP_RB_INTERVAL_TITLE' => 'à¸à¸³à¸«à¸™à¸”à¸£à¸°à¸¢à¸°à¹€à¸§à¸¥à¸²',
+	'PHPSHOP_RB_INTERVAL_MONTHLY_TITLE' => 'à¸£à¸²à¸¢à¹€à¸”à¸·à¸­à¸™',
+	'PHPSHOP_RB_INTERVAL_WEEKLY_TITLE' => 'à¸£à¸²à¸¢à¸ªà¸±à¸›à¸”à¸²à¸«à¹Œ',
+	'PHPSHOP_RB_INTERVAL_DAILY_TITLE' => 'à¸£à¸²à¸¢à¸§à¸±à¸™',
+	'PHPSHOP_RB_THISMONTH_BUTTON' => 'à¹€à¸”à¸·à¸­à¸™à¸™à¸µà¹‰',
+	'PHPSHOP_RB_LASTMONTH_BUTTON' => 'à¹€à¸”à¸·à¸­à¸™à¸—à¸µà¹ˆà¹à¸¥à¹‰à¸§',
+	'PHPSHOP_RB_LAST60_BUTTON' => '60 à¸§à¸±à¸™à¸ªà¸¸à¸”à¸—à¹‰à¸²à¸¢',
+	'PHPSHOP_RB_LAST90_BUTTON' => '90 à¸§à¸±à¸™à¸ªà¸¸à¸”à¸—à¹‰à¸²à¸¢',
+	'PHPSHOP_RB_START_DATE_TITLE' => 'à¹€à¸£à¸´à¹ˆà¸¡à¸§à¸±à¸™à¸—à¸µà¹ˆ',
+	'PHPSHOP_RB_END_DATE_TITLE' => 'à¸–à¸¶à¸‡à¸§à¸±à¸™à¸—à¸µà¹ˆ',
+	'PHPSHOP_RB_SHOW_SEL_RANGE' => 'à¹à¸ªà¸”à¸‡à¸£à¸²à¸¢à¸à¸²à¸£à¸•à¸²à¸¡à¸—à¸µà¹ˆà¹€à¸¥à¸·à¸­à¸',
+	'PHPSHOP_RB_REPORT_FOR' => 'à¸£à¸²à¸¢à¸‡à¸²à¸™à¸ªà¸³à¸«à¸£à¸±à¸š ',
+	'PHPSHOP_RB_DATE' => 'à¸§à¸±à¸™à¸—à¸µà¹ˆ',
+	'PHPSHOP_RB_ORDERS' => 'à¸£à¸²à¸¢à¸à¸²à¸£à¸ªà¸±à¹ˆà¸‡à¸‹à¸·à¹‰à¸­',
+	'PHPSHOP_RB_TOTAL_ITEMS' => 'à¸£à¸²à¸¢à¸à¸²à¸£à¸‚à¸²à¸¢à¸£à¸§à¸¡',
+	'PHPSHOP_RB_REVENUE' => 'à¸£à¸²à¸¢à¹„à¸”à¹‰',
+	'PHPSHOP_RB_PRODLIST' => 'à¸£à¸²à¸¢à¸à¸²à¸£à¸ªà¸´à¸™à¸„à¹‰à¸²'
 ); $VM_LANG->initModule( 'reportbasic', $langvars );
 ?>

@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version : thai.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -18,16 +18,16 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_COUPON_EDIT_HEADER' => '���',
-	'PHPSHOP_COUPON_CODE_HEADER' => '���ʤٻͧ',
-	'PHPSHOP_COUPON_PERCENT_TOTAL' => '�����繵� ���� ������',
-	'PHPSHOP_COUPON_TYPE' => '�������ٻͧ',
-	'PHPSHOP_COUPON_TYPE_TOOLTIP' => '- �ٻͧ�ͧ��ѭ��ź��ѧ�ҡ�١���š��ǹŴ����<br />- �ٻͧ���è�����ö������ҷ���١��ҵ�ͧ���',
-	'PHPSHOP_COUPON_TYPE_GIFT' => '�ٻͧ�ͧ��ѭ',
-	'PHPSHOP_COUPON_TYPE_PERMANENT' => '�ٻͧ����',
-	'PHPSHOP_COUPON_VALUE_HEADER' => '��Ť��',
-	'PHPSHOP_COUPON_PERCENT' => '�����繵�',
-	'PHPSHOP_COUPON_TOTAL' => '������'
+	'CHARSET' => 'UTF-8',
+	'PHPSHOP_COUPON_EDIT_HEADER' => 'แก้ไข',
+	'PHPSHOP_COUPON_CODE_HEADER' => 'รหัสคูปอง',
+	'PHPSHOP_COUPON_PERCENT_TOTAL' => 'เปอร์เซ็นต์ หรือ ทั้งหมด',
+	'PHPSHOP_COUPON_TYPE' => 'ประเภทคูปอง',
+	'PHPSHOP_COUPON_TYPE_TOOLTIP' => '- คูปองของขวัญจะลบหลังจากถูกใช้แลกส่วนลดแล้ว<br />- คูปองถาวรจะสามารถใช้ได้เท่าที่ลูกค้าต้องการ',
+	'PHPSHOP_COUPON_TYPE_GIFT' => 'คูปองของขวัญ',
+	'PHPSHOP_COUPON_TYPE_PERMANENT' => 'คูปองถาวร',
+	'PHPSHOP_COUPON_VALUE_HEADER' => 'มูลค่า',
+	'PHPSHOP_COUPON_PERCENT' => 'เปอร์เซ็นต์',
+	'PHPSHOP_COUPON_TOTAL' => 'ทั้งหมด'
 ); $VM_LANG->initModule( 'coupon', $langvars );
 ?>

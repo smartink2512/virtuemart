@@ -18,19 +18,19 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_MANUFACTURER_LIST_LBL' => 'âÃ§§Ò¹',
-	'PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME' => 'ª×èÍâÃ§§Ò¹',
-	'PHPSHOP_MANUFACTURER_FORM_LBL' => 'ÃÐºØÃÒÂÅÐàÍÕÂ´',
-	'PHPSHOP_MANUFACTURER_FORM_CATEGORY' => 'ËÁÇ´âÃ§§Ò¹',
-	'PHPSHOP_MANUFACTURER_FORM_EMAIL' => 'ÍÕàÁÅì',
-	'PHPSHOP_MANUFACTURER_CAT_LIST_LBL' => 'ËÁÇ´âÃ§§Ò¹',
-	'PHPSHOP_MANUFACTURER_CAT_NAME' => 'ª×èÍËÁÇ´',
-	'PHPSHOP_MANUFACTURER_CAT_DESCRIPTION' => 'ÃÒÂÅÐàÍÕÂ´',
-	'PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS' => 'âÃ§§Ò¹',
-	'PHPSHOP_MANUFACTURER_CAT_FORM_LBL' => 'áºº¿ÍÃìÁËÁÇ´âÃ§§Ò¹',
-	'PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL' => 'ÃÐºØ¢éÍÁÙÅ',
-	'PHPSHOP_MANUFACTURER_CAT_FORM_NAME' => 'ª×èÍËÁÇ´',
-	'PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION' => 'ÃÒÂÅÐàÍÕÂ´'
+	'CHARSET' => 'UTF-8',
+	'PHPSHOP_MANUFACTURER_LIST_LBL' => 'à¹‚à¸£à¸‡à¸‡à¸²à¸™',
+	'PHPSHOP_MANUFACTURER_LIST_MANUFACTURER_NAME' => 'à¸Šà¸·à¹ˆà¸­à¹‚à¸£à¸‡à¸‡à¸²à¸™',
+	'PHPSHOP_MANUFACTURER_FORM_LBL' => 'à¸£à¸°à¸šà¸¸à¸£à¸²à¸¢à¸¥à¸°à¹€à¸­à¸µà¸¢à¸”',
+	'PHPSHOP_MANUFACTURER_FORM_CATEGORY' => 'à¸«à¸¡à¸§à¸”à¹‚à¸£à¸‡à¸‡à¸²à¸™',
+	'PHPSHOP_MANUFACTURER_FORM_EMAIL' => 'à¸­à¸µà¹€à¸¡à¸¥à¹Œ',
+	'PHPSHOP_MANUFACTURER_CAT_LIST_LBL' => 'à¸«à¸¡à¸§à¸”à¹‚à¸£à¸‡à¸‡à¸²à¸™',
+	'PHPSHOP_MANUFACTURER_CAT_NAME' => 'à¸Šà¸·à¹ˆà¸­à¸«à¸¡à¸§à¸”',
+	'PHPSHOP_MANUFACTURER_CAT_DESCRIPTION' => 'à¸£à¸²à¸¢à¸¥à¸°à¹€à¸­à¸µà¸¢à¸”',
+	'PHPSHOP_MANUFACTURER_CAT_MANUFACTURERS' => 'à¹‚à¸£à¸‡à¸‡à¸²à¸™',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_LBL' => 'à¹à¸šà¸šà¸Ÿà¸­à¸£à¹Œà¸¡à¸«à¸¡à¸§à¸”à¹‚à¸£à¸‡à¸‡à¸²à¸™',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_INFO_LBL' => 'à¸£à¸°à¸šà¸¸à¸‚à¹‰à¸­à¸¡à¸¹à¸¥',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_NAME' => 'à¸Šà¸·à¹ˆà¸­à¸«à¸¡à¸§à¸”',
+	'PHPSHOP_MANUFACTURER_CAT_FORM_DESCRIPTION' => 'à¸£à¸²à¸¢à¸¥à¸°à¹€à¸­à¸µà¸¢à¸”'
 ); $VM_LANG->initModule( 'manufacturer', $langvars );
 ?>

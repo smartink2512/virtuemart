@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version : thai.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -18,44 +18,44 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL' => '�ѹ�֡��ê����Թ',
-	'PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL' => '��Ң���',
-	'PHPSHOP_ORDER_STATUS_LIST_CODE' => '����ʶҹ�',
-	'PHPSHOP_ORDER_STATUS_LIST_NAME' => '����ʶҹ�',
-	'PHPSHOP_ORDER_STATUS_FORM_LBL' => 'ʶҹС����觫���',
-	'PHPSHOP_ORDER_STATUS_FORM_CODE' => '����ʶҹ�',
-	'PHPSHOP_ORDER_STATUS_FORM_NAME' => '����ʶҹ�',
-	'PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER' => '���§�ӴѺ',
-	'PHPSHOP_COMMENT' => '�����˵�',
-	'PHPSHOP_ORDER_LIST_NOTIFY' => '���١�������Һ?',
-	'PHPSHOP_ORDER_LIST_NOTIFY_ERR' => '��س�����¹ʶҹС����觫��͡�͹!',
-	'PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT' => 'Include this comment?',
-	'PHPSHOP_ORDER_HISTORY_DATE_ADDED' => 'Date Added',
-	'PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED' => 'Customer Notified?',
-	'PHPSHOP_ORDER_STATUS_CHANGE' => 'Order Status Change',
-	'PHPSHOP_ORDER_LIST_PRINT_LABEL' => 'Print Label',
+	'CHARSET' => 'UTF-8',
+	'PHPSHOP_ORDER_PRINT_PAYMENT_LOG_LBL' => 'บันทึกการชำระเงิน',
+	'PHPSHOP_ORDER_PRINT_SHIPPING_PRICE_LBL' => 'ค่าขนส่ง',
+	'PHPSHOP_ORDER_STATUS_LIST_CODE' => 'รหัสสถานะ',
+	'PHPSHOP_ORDER_STATUS_LIST_NAME' => 'ชื่อสถานะ',
+	'PHPSHOP_ORDER_STATUS_FORM_LBL' => 'สถานะการสั่งซื้อ',
+	'PHPSHOP_ORDER_STATUS_FORM_CODE' => 'รหัสสถานะ',
+	'PHPSHOP_ORDER_STATUS_FORM_NAME' => 'ชื่อสถานะ',
+	'PHPSHOP_ORDER_STATUS_FORM_LIST_ORDER' => 'เรียงลำดับ',
+	'PHPSHOP_COMMENT' => 'หมายเหตุ',
+	'PHPSHOP_ORDER_LIST_NOTIFY' => 'แจ้งลูกค้าให้ทราบ?',
+	'PHPSHOP_ORDER_LIST_NOTIFY_ERR' => 'กรุณาเปลี่ยนสถานะการสั่งซื้อก่อน!',
+	'PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT' => 'รวมไว้ในคอมเมนท์?',
+	'PHPSHOP_ORDER_HISTORY_DATE_ADDED' => 'เพิ่มวัน',
+	'PHPSHOP_ORDER_HISTORY_CUSTOMER_NOTIFIED' => 'แจ้งลูกค้า?',
+	'PHPSHOP_ORDER_STATUS_CHANGE' => 'เปลี่ยนสถานะรายการ',
+	'PHPSHOP_ORDER_LIST_PRINT_LABEL' => 'พิมพ์ป้าย',
 	'PHPSHOP_ORDER_LIST_VOID_LABEL' => 'Void Label',
-	'PHPSHOP_ORDER_LIST_TRACK' => 'Track',
-	'VM_DOWNLOAD_STATS' => 'DOWNLOAD STATS',
-	'VM_DOWNLOAD_NOTHING_LEFT' => 'no downloads remaining',
-	'VM_DOWNLOAD_REENABLE' => 'Re-Enable Download',
-	'VM_DOWNLOAD_REMAINING_DOWNLOADS' => 'Remaining Downloads',
-	'VM_DOWNLOAD_RESEND_ID' => 'Resend Download ID',
-	'VM_EXPIRY' => 'Expiry',
-	'VM_UPDATE_STATUS' => 'Update Status',
-	'VM_ORDER_LABEL_ORDERID_NOTVALID' => 'Please provide a valid, numeric, Order ID, not "{order_id}"',
-	'VM_ORDER_LABEL_NOTFOUND' => 'Order record not found in shipping label database.',
-	'VM_ORDER_LABEL_NEVERGENERATED' => 'Label has not been generated yet',
+	'PHPSHOP_ORDER_LIST_TRACK' => 'แทร็ค',
+	'VM_DOWNLOAD_STATS' => 'สถานะการดาวน์โหลด',
+	'VM_DOWNLOAD_NOTHING_LEFT' => 'ไม่มีการดาวน์โหลดเหลืออยู่',
+	'VM_DOWNLOAD_REENABLE' => 'เปิดการดาวน์โหลดอีกครั้ง',
+	'VM_DOWNLOAD_REMAINING_DOWNLOADS' => 'ดาวน์โหลดที่ยังเหลืออยู่',
+	'VM_DOWNLOAD_RESEND_ID' => 'ส่งกลับ ID ดาวน์โหลด',
+	'VM_EXPIRY' => 'หมดอายุ',
+	'VM_UPDATE_STATUS' => 'อัพเดจสถานะ',
+	'VM_ORDER_LABEL_ORDERID_NOTVALID' => 'กรุณาจัดเตรียมตัวเลข Order ID ที่สมบูรณ์, ไม่ใช่ "{order_id}',
+	'VM_ORDER_LABEL_NOTFOUND' => 'ไม่สามารถค้นพบรายการสินค้าของรายการซื้อขายในฐานข้อมูลได้.',
+	'VM_ORDER_LABEL_NEVERGENERATED' => 'ไม่สามารถสร้างป้ายชื่อได้',
 	'VM_ORDER_LABEL_CLASSCANNOT' => 'Class {ship_class} cannot get label images, why are we here?',
-	'VM_ORDER_LABEL_SHIPPINGLABEL_LBL' => 'Shipping Label',
-	'VM_ORDER_LABEL_SIGNATURENEVER' => 'Signature was never retrieved',
-	'VM_ORDER_LABEL_TRACK_TITLE' => 'Track',
+	'VM_ORDER_LABEL_SHIPPINGLABEL_LBL' => 'ป้ายที่อยู่ส่งของ',
+	'VM_ORDER_LABEL_SIGNATURENEVER' => 'ลายเซ็นท์ไม่สามารถซ่อมแซมได้',
+	'VM_ORDER_LABEL_TRACK_TITLE' => 'แทร็ค',
 	'VM_ORDER_LABEL_VOID_TITLE' => 'Void Label',
 	'VM_ORDER_LABEL_VOIDED_MSG' => 'Label for waybill {tracking_number} has been voided.',
 	'VM_ORDER_PRINT_PO_IPADDRESS' => 'IP-ADDRESS',
-	'VM_ORDER_STATUS_ICON_ALT' => 'Status Icon',
-	'VM_ORDER_PAYMENT_CCV_CODE' => 'CVV Code',
-	'VM_ORDER_NOTFOUND' => 'Order not found! It may have been deleted.'
+	'VM_ORDER_STATUS_ICON_ALT' => 'สถานะ ไอคอน',
+	'VM_ORDER_PAYMENT_CCV_CODE' => 'โค้ด CVV',
+	'VM_ORDER_NOTFOUND' => 'ไม่พบรายการ อาจจะถูกลบไปแล้ว.'
 ); $VM_LANG->initModule( 'order', $langvars );
 ?>

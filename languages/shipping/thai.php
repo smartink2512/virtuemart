@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version : thai.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -18,28 +18,28 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_CARRIER_LIST_LBL' => '��颹��',
-	'PHPSHOP_RATE_LIST_LBL' => '�ѵ�Ҥ�Ң���',
-	'PHPSHOP_CARRIER_LIST_NAME_LBL' => '����',
-	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => '���§�ӴѺ',
-	'PHPSHOP_CARRIER_FORM_LBL' => '���ҧ / ��䢼�颹��',
-	'PHPSHOP_RATE_FORM_LBL' => '���� / ����ѵ�Ҥ�Ң���',
-	'PHPSHOP_RATE_FORM_NAME' => '��������´�ѵ�Ҥ�Ң���',
-	'PHPSHOP_RATE_FORM_CARRIER' => '��颹��',
-	'PHPSHOP_RATE_FORM_COUNTRY' => '�����:<br /><br /><i>���͡������¡��: ������ Shift ���� Ctrl ��Ф�����ҷ�</i>',
-	'PHPSHOP_RATE_FORM_ZIP_START' => '��ǧ������ɳ���ҡ',
-	'PHPSHOP_RATE_FORM_ZIP_END' => '�֧',
-	'PHPSHOP_RATE_FORM_WEIGHT_START' => '���˹ѡ����ش',
-	'PHPSHOP_RATE_FORM_WEIGHT_END' => '���˹ѡ�٧�ش',
-	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => '��Һ�è��պ���',
-	'PHPSHOP_RATE_FORM_CURRENCY' => 'ʡ���Թ',
-	'PHPSHOP_RATE_FORM_LIST_ORDER' => '���§�ӴѺ',
-	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => '��颹��',
-	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => '��������´�ѵ�Ҥ�Ң���',
-	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => '���˹ѡ��鹵�� ...',
-	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... �֧',
-	'PHPSHOP_CARRIER_FORM_NAME' => '����ѷ��颹��',
-	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => '����§�ӴѺ'
+	'CHARSET' => 'UTF-8',
+	'PHPSHOP_CARRIER_LIST_LBL' => 'ผู้ขนส่ง',
+	'PHPSHOP_RATE_LIST_LBL' => 'อัตราค่าขนส่ง',
+	'PHPSHOP_CARRIER_LIST_NAME_LBL' => 'ชื่อ',
+	'PHPSHOP_CARRIER_LIST_ORDER_LBL' => 'เรียงลำดับ',
+	'PHPSHOP_CARRIER_FORM_LBL' => 'สร้าง / แก้ไขผู้ขนส่ง',
+	'PHPSHOP_RATE_FORM_LBL' => 'เพิ่ม / แก้ไขอัตราค่าขนส่ง',
+	'PHPSHOP_RATE_FORM_NAME' => 'รายละเอียดอัตราค่าขนส่ง',
+	'PHPSHOP_RATE_FORM_CARRIER' => 'ผู้ขนส่ง',
+	'PHPSHOP_RATE_FORM_COUNTRY' => 'ประเทศ:<br /><br /><i>เลือกหลายรายการ: กดปุ่ม Shift หรือ Ctrl และคลิ๊กเมาท์</i>',
+	'PHPSHOP_RATE_FORM_ZIP_START' => 'ช่วงรหัสไปรษณีย์จาก',
+	'PHPSHOP_RATE_FORM_ZIP_END' => 'ถึง',
+	'PHPSHOP_RATE_FORM_WEIGHT_START' => 'น้ำหนักต่ำสุด',
+	'PHPSHOP_RATE_FORM_WEIGHT_END' => 'น้ำหนักสูงสุด',
+	'PHPSHOP_RATE_FORM_PACKAGE_FEE' => 'ค่าบรรจุหีบห่อ',
+	'PHPSHOP_RATE_FORM_CURRENCY' => 'สกุลเงิน',
+	'PHPSHOP_RATE_FORM_LIST_ORDER' => 'เรียงลำดับ',
+	'PHPSHOP_SHIPPING_RATE_LIST_CARRIER_LBL' => 'ผู้ขนส่ง',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_NAME' => 'รายละเอียดอัตราค่าขนส่ง',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WSTART' => 'น้ำหนักขั้นต่ำ ...',
+	'PHPSHOP_SHIPPING_RATE_LIST_RATE_WEND' => '... ถึง',
+	'PHPSHOP_CARRIER_FORM_NAME' => 'บริษัทผู้ขนส่ง',
+	'PHPSHOP_CARRIER_FORM_LIST_ORDER' => 'เรียงลำดับ'
 ); $VM_LANG->initModule( 'shipping', $langvars );
 ?>

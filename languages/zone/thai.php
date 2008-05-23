@@ -18,21 +18,21 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL' => '�����',
-	'PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL' => '�к�⫹',
-	'PHPSHOP_ASSIGN_ZONE_PG_LBL' => '�к�⫹',
-	'PHPSHOP_ZONE_FORM_NAME_LBL' => '����⫹',
-	'PHPSHOP_ZONE_FORM_DESC_LBL' => '��������´⫹',
-	'PHPSHOP_ZONE_FORM_COST_PER_LBL' => '�������µ����¡��',
-	'PHPSHOP_ZONE_FORM_COST_LIMIT_LBL' => 'ǧ�Թ��������',
-	'PHPSHOP_ZONE_LIST_LBL' => '⫹',
-	'PHPSHOP_ZONE_LIST_NAME_LBL' => '����⫹',
-	'PHPSHOP_ZONE_LIST_DESC_LBL' => '��������´⫹',
-	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => '�������µ����¡��',
-	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'ǧ�Թ��������',
-	'VM_ZONE_ASSIGN_PERITEM' => 'Per Item',
-	'VM_ZONE_ASSIGN_LIMIT' => 'Limit',
-	'VM_ZONE_EDITZONE' => 'Edit This Zone'
+	'CHARSET' => 'UTF-8',
+	'PHPSHOP_ZONE_ASSIGN_COUNTRY_LBL' => 'ประเทศ',
+	'PHPSHOP_ZONE_ASSIGN_ASSIGN_LBL' => 'ระบุโซน',
+	'PHPSHOP_ASSIGN_ZONE_PG_LBL' => 'ระบุโซน',
+	'PHPSHOP_ZONE_FORM_NAME_LBL' => 'ชื่อโซน',
+	'PHPSHOP_ZONE_FORM_DESC_LBL' => 'รายละเอียดโซน',
+	'PHPSHOP_ZONE_FORM_COST_PER_LBL' => 'ค่าใช้จ่ายต่อรายการ',
+	'PHPSHOP_ZONE_FORM_COST_LIMIT_LBL' => 'วงเงินค่าใช้จ่าย',
+	'PHPSHOP_ZONE_LIST_LBL' => 'โซน',
+	'PHPSHOP_ZONE_LIST_NAME_LBL' => 'ชื่อโซน',
+	'PHPSHOP_ZONE_LIST_DESC_LBL' => 'รายละเอียดโซน',
+	'PHPSHOP_ZONE_LIST_COST_PER_LBL' => 'ค่าใช้จ่ายต่อรายการ',
+	'PHPSHOP_ZONE_LIST_COST_LIMIT_LBL' => 'วงเงินค่าใช้จ่าย',
+	'VM_ZONE_ASSIGN_PERITEM' => 'ต่อชิ้น',
+	'VM_ZONE_ASSIGN_LIMIT' => 'จำกัด',
+	'VM_ZONE_EDITZONE' => 'แก้ไข Zone นี้'
 ); $VM_LANG->initModule( 'zone', $langvars );
 ?>

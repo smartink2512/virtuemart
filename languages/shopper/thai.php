@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version : thai.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -18,17 +18,17 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'áÊ´§ÃÒ¤ÒÃÇÁÀÒÉÕ?',
-	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => '¡ÓË¹´à¾×èÍáÊ´§ãËéÅÙ¡¤éÒàËç¹ÃÒ¤ÒÃÇÁÀÒÉÕ ËÃ×ÍÂ¡àÇé¹ÀÒÉÕ',
-	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'ª×èÍàÃÕÂ¡',
-	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => '¡ÅØèÁ¼Ùé«×éÍ',
-	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'ª×èÍ¡ÅØèÁ',
-	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'ÃÒÂÅÐàÍÕÂ´¡ÅØèÁ',
-	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'áºº¿ÍÃìÁ¡ÅØèÁ¼Ùé«×éÍ',
-	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'ª×èÍ¡ÅØèÁ',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'ÃÒÂÅÐàÍÕÂ´¡ÅØèÁ',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'ÊèÇ¹Å´ÊÓËÃÑº¡ÅØèÁ¼Ùé«×éÍ·ÑèÇä» (%)',
-	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => ' X ·Õèà»ç¹¤èÒºÇ¡ ËÁÒÂ¶Ö§: ¶éÒÊÔ¹¤éÒäÁèä´éÁÕ¡ÒÃÃÐºØÃÒ¤ÒÊÓËÃÑº¡ÅØèÁ¼Ùé«×éÍ ÃÒ¤Ò¨ÐÅ´µÒÁ¨Ó¹Ç¹ X % ¨Ó¹Ç¹µÔ´Åº¨ÐÁÕ¼ÅµÃ§¢éÒÁ'
+	'CHARSET' => 'UTF-8',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX' => 'à¹à¸ªà¸”à¸‡à¸£à¸²à¸„à¸²à¸£à¸§à¸¡à¸ à¸²à¸©à¸µ?',
+	'PHPSHOP_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN' => 'à¸à¸³à¸«à¸™à¸”à¹€à¸žà¸·à¹ˆà¸­à¹à¸ªà¸”à¸‡à¹ƒà¸«à¹‰à¸¥à¸¹à¸à¸„à¹‰à¸²à¹€à¸«à¹‡à¸™à¸£à¸²à¸„à¸²à¸£à¸§à¸¡à¸ à¸²à¸©à¸µ à¸«à¸£à¸·à¸­à¸¢à¸à¹€à¸§à¹‰à¸™à¸ à¸²à¸©à¸µ',
+	'PHPSHOP_SHOPPER_FORM_ADDRESS_LABEL' => 'à¸Šà¸·à¹ˆà¸­à¹€à¸£à¸µà¸¢à¸',
+	'PHPSHOP_SHOPPER_GROUP_LIST_LBL' => 'à¸à¸¥à¸¸à¹ˆà¸¡à¸œà¸¹à¹‰à¸‹à¸·à¹‰à¸­',
+	'PHPSHOP_SHOPPER_GROUP_LIST_NAME' => 'à¸Šà¸·à¹ˆà¸­à¸à¸¥à¸¸à¹ˆà¸¡',
+	'PHPSHOP_SHOPPER_GROUP_LIST_DESCRIPTION' => 'à¸£à¸²à¸¢à¸¥à¸°à¹€à¸­à¸µà¸¢à¸”à¸à¸¥à¸¸à¹ˆà¸¡',
+	'PHPSHOP_SHOPPER_GROUP_FORM_LBL' => 'à¹à¸šà¸šà¸Ÿà¸­à¸£à¹Œà¸¡à¸à¸¥à¸¸à¹ˆà¸¡à¸œà¸¹à¹‰à¸‹à¸·à¹‰à¸­',
+	'PHPSHOP_SHOPPER_GROUP_FORM_NAME' => 'à¸Šà¸·à¹ˆà¸­à¸à¸¥à¸¸à¹ˆà¸¡',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DESC' => 'à¸£à¸²à¸¢à¸¥à¸°à¹€à¸­à¸µà¸¢à¸”à¸à¸¥à¸¸à¹ˆà¸¡',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT' => 'à¸ªà¹ˆà¸§à¸™à¸¥à¸”à¸ªà¸³à¸«à¸£à¸±à¸šà¸à¸¥à¸¸à¹ˆà¸¡à¸œà¸¹à¹‰à¸‹à¸·à¹‰à¸­à¸—à¸±à¹ˆà¸§à¹„à¸› (%)',
+	'PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP' => ' X à¸—à¸µà¹ˆà¹€à¸›à¹‡à¸™à¸„à¹ˆà¸²à¸šà¸§à¸ à¸«à¸¡à¸²à¸¢à¸–à¸¶à¸‡: à¸–à¹‰à¸²à¸ªà¸´à¸™à¸„à¹‰à¸²à¹„à¸¡à¹ˆà¹„à¸”à¹‰à¸¡à¸µà¸à¸²à¸£à¸£à¸°à¸šà¸¸à¸£à¸²à¸„à¸²à¸ªà¸³à¸«à¸£à¸±à¸šà¸à¸¥à¸¸à¹ˆà¸¡à¸œà¸¹à¹‰à¸‹à¸·à¹‰à¸­ à¸£à¸²à¸„à¸²à¸ˆà¸°à¸¥à¸”à¸•à¸²à¸¡à¸ˆà¸³à¸™à¸§à¸™ X % à¸ˆà¸³à¸™à¸§à¸™à¸•à¸´à¸”à¸¥à¸šà¸ˆà¸°à¸¡à¸µà¸œà¸¥à¸•à¸£à¸‡à¸‚à¹‰à¸²à¸¡'
 ); $VM_LANG->initModule( 'shopper', $langvars );
 ?>

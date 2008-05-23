@@ -18,13 +18,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_TAX_LIST_LBL' => 'ÍÑµÃÒÀÒÉÕ',
-	'PHPSHOP_TAX_LIST_STATE' => 'â«¹ÀÒÉÕ',
-	'PHPSHOP_TAX_LIST_COUNTRY' => '»ÃÐà·È',
-	'PHPSHOP_TAX_FORM_LBL' => 'ÃÒÂÅÐàÍÕÂ´ÍÑµÃÒÀÒÉÕ',
-	'PHPSHOP_TAX_FORM_STATE' => 'â«¹ÀÒÉÕ',
-	'PHPSHOP_TAX_FORM_COUNTRY' => '»ÃÐà·È',
-	'PHPSHOP_TAX_FORM_RATE' => 'ÍÑµÃÒÀÒÉÕ (àªè¹ 16% => ÃÐºØ 0.16)'
+	'CHARSET' => 'UTF-8',
+	'PHPSHOP_TAX_LIST_LBL' => 'à¸­à¸±à¸•à¸£à¸²à¸ à¸²à¸©à¸µ',
+	'PHPSHOP_TAX_LIST_STATE' => 'à¹‚à¸‹à¸™à¸ à¸²à¸©à¸µ',
+	'PHPSHOP_TAX_LIST_COUNTRY' => 'à¸›à¸£à¸°à¹€à¸—à¸¨',
+	'PHPSHOP_TAX_FORM_LBL' => 'à¸£à¸²à¸¢à¸¥à¸°à¹€à¸­à¸µà¸¢à¸”à¸­à¸±à¸•à¸£à¸²à¸ à¸²à¸©à¸µ',
+	'PHPSHOP_TAX_FORM_STATE' => 'à¹‚à¸‹à¸™à¸ à¸²à¸©à¸µ',
+	'PHPSHOP_TAX_FORM_COUNTRY' => 'à¸›à¸£à¸°à¹€à¸—à¸¨',
+	'PHPSHOP_TAX_FORM_RATE' => 'à¸­à¸±à¸•à¸£à¸²à¸ à¸²à¸©à¸µ (à¹€à¸Šà¹ˆà¸™ 7% => à¸£à¸°à¸šà¸¸ 0.07)'
 ); $VM_LANG->initModule( 'tax', $langvars );
 ?>

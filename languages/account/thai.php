@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version : thai.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 VirtueMart.net - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -18,13 +18,13 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 global $VM_LANG;
 $langvars = array (
-	'CHARSET' => 'ISO-8859-1',
-	'PHPSHOP_ACC_CUSTOMER_ACCOUNT' => '�ѭ���١���:',
-	'PHPSHOP_ACC_UPD_BILL' => '�س����ö�����������´���˹��',
-	'PHPSHOP_ACC_UPD_SHIP' => '�س����ö�����������´ʶҹ���Ѵ��',
-	'PHPSHOP_ACC_ACCOUNT_INFO' => '��������´�ѭ��',
-	'PHPSHOP_ACC_SHIP_INFO' => '��������´ʶҹ���Ѵ��',
-	'PHPSHOP_DOWNLOADS_CLICK' => 'Click on Product Name to Download File(s).',
-	'PHPSHOP_DOWNLOADS_EXPIRED' => 'You have already downloaded the file(s) the maximum number of times, or the download period has expired.'
+	'CHARSET' => 'UTF-8',
+	'PHPSHOP_ACC_CUSTOMER_ACCOUNT' => 'บัญชีลูกค้า:',
+	'PHPSHOP_ACC_UPD_BILL' => 'คุณสามารถแก้ไขรายละเอียดใบแจ้งหนี้',
+	'PHPSHOP_ACC_UPD_SHIP' => 'คุณสามารถแก้ไขรายละเอียดสถานที่จัดส่ง',
+	'PHPSHOP_ACC_ACCOUNT_INFO' => 'รายละเอียดบัญชี',
+	'PHPSHOP_ACC_SHIP_INFO' => 'รายละเอียดสถานที่จัดส่ง',
+	'PHPSHOP_DOWNLOADS_CLICK' => 'คลิกที่สินค้าเพื่อดาวน์โหลดไฟล์.',
+	'PHPSHOP_DOWNLOADS_EXPIRED' => 'คุณได้ทำการดาวน์โหลดไฟล์เกินจำนวนในเวลาที่กำหนด,  หรือระยะเวลาการดาวน์โหลดได้หมดอายุ.'
 ); $VM_LANG->initModule( 'account', $langvars );
 ?>
