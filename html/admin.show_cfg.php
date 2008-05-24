@@ -784,6 +784,7 @@ $tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_SITE'), "site-page");
         <td class="labelcell"><?php echo $VM_LANG->_('VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL') ?></td>
         <td>
                 <select class="inputbox" name="conf_VM_BROWSE_ORDERBY_FIELD">
+                        <option value="product_list" <?php if (@VM_BROWSE_ORDERBY_FIELD == 'product_list') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('PHPSHOP_DEFAULT') ?></option>
                         <option value="product_name" <?php if (@VM_BROWSE_ORDERBY_FIELD == 'product_name') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_NAME_TITLE') ?></option>
                         <option value="product_price" <?php if (@VM_BROWSE_ORDERBY_FIELD == 'product_price') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_PRICE_TITLE') ?></option>
                         <option value="product_sku" <?php if (@VM_BROWSE_ORDERBY_FIELD == 'product_sku') echo "selected=\"selected\""; ?>><?php echo $VM_LANG->_('PHPSHOP_CART_SKU') ?></option>
@@ -795,6 +796,9 @@ $tabs->startTab( $VM_LANG->_('PHPSHOP_ADMIN_CFG_SITE'), "site-page");
     <tr>
         <td class="labelcell"><?php echo $VM_LANG->_('VM_BROWSE_ORDERBY_FIELDS_LBL') ?></td>
         <td>
+                        <input name="conf_VM_BROWSE_ORDERBY_FIELDS[]" type="checkbox" value="product_list" <?php if (in_array( 'product_list', $VM_BROWSE_ORDERBY_FIELDS )) echo "checked=\"checked\""; ?> id="conf_VM_BROWSE_ORDERBY_FIELDS0" />
+                        <label for="conf_VM_BROWSE_ORDERBY_FIELDS0"><?php echo $VM_LANG->_('PHPSHOP_DEFAULT');?></label><br />
+
                         <input name="conf_VM_BROWSE_ORDERBY_FIELDS[]" type="checkbox" value="product_name" <?php if (in_array( 'product_name', $VM_BROWSE_ORDERBY_FIELDS )) echo "checked=\"checked\""; ?> id="conf_VM_BROWSE_ORDERBY_FIELDS1" />
                         <label for="conf_VM_BROWSE_ORDERBY_FIELDS1"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_NAME_TITLE') ?></label><br />
             

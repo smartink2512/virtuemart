@@ -23,9 +23,8 @@ mm_showMyFileName( __FILE__ );
 $DescOrderBy = $vmInputFilter->safeSQL( $vm_mainframe->getUserStateFromRequest( "browse{$keyword}{$category_id}{$manufacturer_id}DescOrderBy", 'DescOrderBy', "ASC" ) );
 
 // Sort by which factor? possible values: 
-// product_name, product_price, product_sku, product_cdate (=latest additions)
+// product_list, product_name, product_price, product_sku, product_cdate (=latest additions)
 $orderby = $vmInputFilter->safeSQL( $vm_mainframe->getUserStateFromRequest( "browse{$keyword}{$category_id}{$manufacturer_id}orderby", 'orderby', VM_BROWSE_ORDERBY_FIELD ));
-
 
 $featured = vmGet($_REQUEST, 'featured', 'N' );
 $discounted = vmGet($_REQUEST, 'discounted', 'N' );
@@ -44,6 +43,8 @@ $join_array = array( 'LEFT JOIN `#__{vm}_product_price` ON `#__{vm}_product`.`pr
 $where_clause = array();
 
 switch( $orderby ) {
+	case 'product_list':
+		$orderbyField = '`#__{vm}_product_category_xref`.`product_list`'; break;
 	case 'product_name':
 		$orderbyField = '`#__{vm}_product`.`product_name`'; break;
 	case 'product_price':

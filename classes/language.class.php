@@ -16,6 +16,35 @@
 */
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 
+function utf8_to_cp1251($s)	{
+	for ($c=0;$c<strlen($s);$c++)
+	{
+	   $i=ord($s[$c]);
+	   if ($i<=127) $out.=$s[$c];
+		   if ($byte2){
+			   $new_c2=($c1&3)*64+($i&63);
+			   $new_c1=($c1>>2)&5;
+			   $new_i=$new_c1*256+$new_c2;
+		   if ($new_i==1025){
+			   $out_i=168;
+		   } else {
+			   if ($new_i==1105){
+				   $out_i=184;
+			   } else {
+				   $out_i=$new_i-848;
+			   }
+		   }
+		   $out.=chr($out_i);
+		   $byte2=false;
+		   }
+	   if (($i>>5)==6) {
+		   $c1=$i;
+		   $byte2=true;
+	   }
+	}
+	return $out;
+}
+
 /**
 * Abstract lanuages/translation handler class
 */
@@ -241,6 +270,8 @@ class vmAbstractLanguage {
 			$this->modules[$module]['CONVERT_FUNC'] = 'utf8_encode';
 		} elseif( stristr($charset, 'iso-8859-1') && strtolower($this->modules[$module]['CHARSET'])=='utf-8' ) {
 			$this->modules[$module]['CONVERT_FUNC'] = 'utf8_decode';
+		} elseif( strpos($charset, '1251') && strtolower($this->modules[$module]['CHARSET'])=='utf-8' ) {
+			$this->modules[$module]['CONVERT_FUNC'] = 'utf8_to_cp1251';
 		}
 	}
 }

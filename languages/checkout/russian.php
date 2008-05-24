@@ -50,47 +50,6 @@ $langvars = array (
 	'VM_CHECKOUT_CCV_CODE_TIPTITLE' => 'Что такое проверочный (CCV) код кредитной карты?',
 	'VM_CHECKOUT_MD5_FAILED' => 'Контрольная сумма MD5 не совпадает',
 	'VM_CHECKOUT_ORDERNOTFOUND' => 'Заказ не найдет',
-	'VM_CHECKOUT_PBS_APPROVED_ORDERCOMMENT' => '
-                Оплата одобрена PBS. \n
-                Транзакции присвоен следующий номер:\n\n
-                Номер транзакции: {transactionnumber}\n',
-	'VM_CHECKOUT_PBS_NOTAPPROVED_ORDERCOMMENT' => '
-                Оплата не одобрена PBS. \n
-                Транзакции присвоен следующий номер:\n\n
-                Номер транзакции: {transactionnumber}\n',
-	'VM_CHECKOUT_DD_ERROR_0' => 'Merchant/forretningsnummer ugyldigt',
-	'VM_CHECKOUT_DD_ERROR_1' => 'Ugyldigt kreditkortnummer',
-	'VM_CHECKOUT_DD_ERROR_2' => 'Ugyldigt belob',
-	'VM_CHECKOUT_DD_ERROR_3' => 'OrderID mangler eller er ugyldig',
-	'VM_CHECKOUT_DD_ERROR_4' => 'PBS afvisning - (Oftest - ugyldig kortdata, sp?rret kort osv...)',
-	'VM_CHECKOUT_DD_ERROR_5' => 'Intern server fejl hos DanDomain eller PBS',
-	'VM_CHECKOUT_DD_ERROR_6' => 'E-dankort ikke tilladt. Kontakt DanDomain',
-	'VM_CHECKOUT_DD_ERROR_DEFAULT' => 'System fejl',
-	'VM_CHECKOUT_FP_ERROR_1' => 'Ошибка: Транзакция отклонена',
-	'VM_CHECKOUT_FP_ERROR_2' => 'Ошибка: Транзакция отклонена',
-	'VM_CHECKOUT_FP_ERROR_3' => 'Ошибка: неправильный формат чисел',
-	'VM_CHECKOUT_FP_ERROR_4' => 'Ошибка: нелегальная транзакция',
-	'VM_CHECKOUT_FP_ERROR_5' => 'Ошибка: нет ответа',
-	'VM_CHECKOUT_FP_ERROR_6' => 'Error_system_failure',
-	'VM_CHECKOUT_FP_ERROR_7' => 'Ошибка: Срок действия карты истек',
-	'VM_CHECKOUT_FP_ERROR_8' => 'Ошибка: Ошибка связи',
-	'VM_CHECKOUT_FP_ERROR_9' => 'Ошибка: Внутренняя ошибка',
-	'VM_CHECKOUT_FP_ERROR_10' => 'Ошибка: Карта не зарегистрирована',
-	'VM_CHECKOUT_FP_ERROR_DEFAULT' => 'Ошибка: неизвестная ошибка',
-	'VM_CHECKOUT_WF_ERROR_1' => 'Transaktionen blev ikke godkendt',
-	'VM_CHECKOUT_WF_ERROR_2' => 'Mulig snyd',
-	'VM_CHECKOUT_WF_ERROR_3' => 'Kommunikations fejl',
-	'VM_CHECKOUT_WF_ERROR_4' => 'Kort udlobet',
-	'VM_CHECKOUT_WF_ERROR_5' => 'Intern fejl',
-	'VM_CHECKOUT_WF_ERROR_6' => 'Invalid Transaktion',
-	'VM_CHECKOUT_WF_ERROR_7' => 'System fejl',
-	'VM_CHECKOUT_WF_ERROR_8' => 'Forkert forretningsnummer',
-	'VM_CHECKOUT_WF_ERROR_9' => 'Kortet eksistere ikke',
-	'VM_CHECKOUT_WF_ERROR_10' => 'Kort l?ngen er for kort.',
-	'VM_CHECKOUT_WF_ERROR_11' => 'Transaktion kan ikke gennemfores igennem denne terminal',
-	'VM_CHECKOUT_WF_ERROR_12' => 'Kortejeren har ikke rettigheder til at gennemfore denne transaktion.',
-	'VM_CHECKOUT_WF_ERROR_13' => 'Kortnummeret eksistere ikke',
-	'VM_CHECKOUT_WF_ERROR_14' => 'Ошибка неизвестна',
 	'PHPSHOP_EPAY_PAYMENT_CARDTYPE' => 'The payment is
 created by %s <img
 src="/components/com_virtuemart/shop_image/ps_image/epay_images/%s"

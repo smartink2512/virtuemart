@@ -7,8 +7,14 @@ if( sizeof($VM_BROWSE_ORDERBY_FIELDS) < 2 ) {
 ?>
 <?php echo $VM_LANG->_('PHPSHOP_ORDERBY') ?>: 
 <select class="inputbox" name="orderby" onchange="order.submit()">
-<option value="product_name" ><?php echo $VM_LANG->_('PHPSHOP_SELECT') ?></option>
+<option value="product_list" ><?php echo $VM_LANG->_('PHPSHOP_SELECT') ?></option>
 <?php
+// SORT BY PRODUCT LIST
+if( in_array( 'product_list', $VM_BROWSE_ORDERBY_FIELDS)) { ?>
+        <option value="product_list" <?php echo $orderby=="product_list" ? "selected=\"selected\"" : "";?>>
+        <?php echo $VM_LANG->_('PHPSHOP_DEFAULT') ?></option>
+<?php
+}
 // SORT BY PRODUCT NAME
 if( in_array( 'product_name', $VM_BROWSE_ORDERBY_FIELDS)) { ?>
         <option value="product_name" <?php echo $orderby=="product_name" ? "selected=\"selected\"" : "";?>>

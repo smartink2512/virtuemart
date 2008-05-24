@@ -2,7 +2,6 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : thai.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
@@ -1315,6 +1314,8 @@ check with your hosting company to see if you can access this port first',
 	'VM_ENQUIRY_MAIL_HAS_REQUESTED' => 'has requested more information on',
 	'VM_ENQUIRY_MAIL_PRODUCT_SKU' => 'Product-SKU',
 	'VM_ENQUIRY_MAIL_QUESTION' => 'Question',
-	'OFFLINE_MODE' => 'OFFLINE MODE'
+	'OFFLINE_MODE' => 'OFFLINE MODE',
+	'VM_STORE_UPDATED' => 'Your Store has been updated.',
+	'VM_VENDOR_UPDATED' => 'The Vendor has been updated.'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>

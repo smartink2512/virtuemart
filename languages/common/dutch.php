@@ -32,7 +32,7 @@ $langvars = array (
 	'PHPSHOP_UPDATE' => 'Update',
 	'PHPSHOP_DELETE' => 'Verwijder',
 	'PHPSHOP_SELECT' => 'Selecteer',
-	'PHPSHOP_SUBMIT' => 'Submit',
+	'PHPSHOP_SUBMIT' => 'Toevoegen',
 	'PHPSHOP_LATEST' => 'Nieuwste producten',
 	'PHPSHOP_CART_TITLE' => 'Mandje',
 	'PHPSHOP_CHECKOUT_TITLE' => 'Afrekenen',
@@ -120,24 +120,24 @@ $langvars = array (
 	'PHPSHOP_ORDER_PRINT_TOTAL' => 'Totaal',
 	'PHPSHOP_ORDER_PRINT_SUBTOTAL' => 'SubTotaal',
 	'PHPSHOP_ORDER_PRINT_TOTAL_TAX' => 'BTW',
-	'PHPSHOP_ORDER_PRINT_SHIPPING' => 'Verzending- en afhandelingskosten',
-	'PHPSHOP_ORDER_PRINT_SHIPPING_TAX' => 'Verzendingsbelasting',
-	'PHPSHOP_ORDER_PRINT_PAYMENT_LBL' => 'Betalingsmethode',
+	'PHPSHOP_ORDER_PRINT_SHIPPING' => 'Verzend- en handlingskosten',
+	'PHPSHOP_ORDER_PRINT_SHIPPING_TAX' => 'Verzend-belasting',
+	'PHPSHOP_ORDER_PRINT_PAYMENT_LBL' => 'Betaalmethode',
 	'PHPSHOP_ORDER_PRINT_ACCOUNT_NAME' => 'Accountnaam',
 	'PHPSHOP_ORDER_PRINT_ACCOUNT_NUMBER' => 'Accountnummer',
 	'PHPSHOP_ORDER_PRINT_EXPIRE_DATE' => 'Verloopdatum',
-	'PHPSHOP_ORDER_PRINT_SHIPPING_LBL' => 'Verzend informatie',
+	'PHPSHOP_ORDER_PRINT_SHIPPING_LBL' => 'Verzendinformatie',
 	'PHPSHOP_ORDER_PRINT_PAYINFO_LBL' => 'Betalingsinformatie',
 	'PHPSHOP_ORDER_PRINT_SHIPPING_CARRIER_LBL' => 'Vervoerder',
-	'PHPSHOP_ORDER_PRINT_SHIPPING_MODE_LBL' => 'Verzendingsmethode',
+	'PHPSHOP_ORDER_PRINT_SHIPPING_MODE_LBL' => 'Verzendmethode',
 	'PHPSHOP_ORDER_STATUS_LIST_MNU' => 'Bekijk orderstatus types',
 	'PHPSHOP_ORDER_STATUS_FORM_MNU' => 'Orderstatus types toevoegen',
 	'PHPSHOP_PRODUCT_MOD' => 'Producten',
 	'PHPSHOP_PRODUCT_INVENTORY_MNU' => 'Bekijk inventaris',
 	'PHPSHOP_PRODUCT_INVENTORY_PRICE' => 'Prijs',
 	'PHPSHOP_PRODUCT_LIST_MNU' => 'Bekijk producten',
-	'PHPSHOP_PRODUCT_LIST_LBL' => 'Producten lijst',
-	'PHPSHOP_PRODUCT_LIST_NAME' => 'Producten naam',
+	'PHPSHOP_PRODUCT_LIST_LBL' => 'Producten',
+	'PHPSHOP_PRODUCT_LIST_NAME' => 'Productnaam',
 	'PHPSHOP_PRODUCT_LIST_SKU' => 'Art. nr.',
 	'PHPSHOP_PRODUCT_FORM_MNU' => 'Product toevoegen',
 	'PHPSHOP_PRODUCT_FORM_ADD_ITEM_MNU' => 'Voeg item toe',
@@ -153,12 +153,12 @@ $langvars = array (
 	'PHPSHOP_PRODUCT_FORM_IN_STOCK' => 'In voorraad',
 	'PHPSHOP_PRODUCT_FORM_WEIGHT' => 'Gewicht',
 	'PHPSHOP_PRODUCT_FORM_THUMB_IMAGE' => 'Kleine afbeelding',
-	'PHPSHOP_PRODUCT_FORM_UNIT' => 'Eenheid',
-	'PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT' => 'stuk',
+	'PHPSHOP_PRODUCT_FORM_UNIT' => 'eenheid',
+	'PHPSHOP_PRODUCT_FORM_UNIT_DEFAULT' => 'stuks',
 	'PHPSHOP_PRODUCT_CSV_UPLOAD' => 'Gebruik CSV upload',
-	'PHPSHOP_PRODUCT_FOLDERS' => 'Product mappen',
-	'PHPSHOP_CATEGORY_LIST_MNU' => 'Bekijk Categorieën',
-	'PHPSHOP_CATEGORY_LIST_LBL' => 'Categorie overzicht',
+	'PHPSHOP_PRODUCT_FOLDERS' => 'Productmappen',
+	'PHPSHOP_CATEGORY_LIST_MNU' => 'Bekijk categorieën',
+	'PHPSHOP_CATEGORY_LIST_LBL' => 'Categorieën',
 	'PHPSHOP_CATEGORY_FORM_MNU' => 'Categorie toevoegen',
 	'PHPSHOP_ATTRIBUTE_LIST_MNU' => 'Bekijk opties',
 	'PHPSHOP_ATTRIBUTE_FORM_MNU' => 'Optie toevoegen',
@@ -171,7 +171,7 @@ $langvars = array (
 	'PHPSHOP_SHOPPER_LIST_USERNAME' => 'Gebruikersnaam',
 	'PHPSHOP_SHOPPER_LIST_NAME' => 'Volledige naam',
 	'PHPSHOP_SHOPPER_LIST_GROUP' => 'Groep',
-	'PHPSHOP_SHOPPER_FORM_LBL' => 'Klant informatie',
+	'PHPSHOP_SHOPPER_FORM_LBL' => 'Klantinformatie',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_INFO_LBL' => 'Informatie',
 	'PHPSHOP_SHOPPER_FORM_SHIPTO_LBL' => 'Verzendingsgegevens',
 	'PHPSHOP_SHOPPER_FORM_FIRST_NAME' => 'Voornaam',
@@ -180,7 +180,7 @@ $langvars = array (
 	'PHPSHOP_SHOPPER_FORM_TITLE' => 'Titel',
 	'PHPSHOP_SHOPPER_FORM_PASSWORD_1' => 'Wachtwoord',
 	'PHPSHOP_SHOPPER_FORM_PASSWORD_2' => 'Bevestig wachtwoord',
-	'PHPSHOP_SHOPPER_FORM_GROUP' => 'Klantgroep',
+	'PHPSHOP_SHOPPER_FORM_GROUP' => 'Klantengroep',
 	'PHPSHOP_SHOPPER_FORM_COMPANY_NAME' => 'Bedrijfsnaam',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_1' => 'Adres 1',
 	'PHPSHOP_SHOPPER_FORM_ADDRESS_2' => 'Adres 2',
@@ -202,35 +202,35 @@ $langvars = array (
 	'PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_1' => 'AAA',
 	'PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_2' => 'BBB',
 	'PHPSHOP_SHOPPER_FORM_EXTRA_FIELD_5_3' => 'CCC',
-	'PHPSHOP_SHOPPER_GROUP_LIST_MNU' => 'Bekijk klantgroepen',
-	'PHPSHOP_SHOPPER_GROUP_FORM_MNU' => 'Klantgroep toevoegen',
+	'PHPSHOP_SHOPPER_GROUP_LIST_MNU' => 'Bekijk klantengroepen',
+	'PHPSHOP_SHOPPER_GROUP_FORM_MNU' => 'Klantengroep toevoegen',
 	'PHPSHOP_STORE_MOD' => 'Winkel',
-	'PHPSHOP_STORE_FORM_MNU' => 'Bewerk winkel',
-	'PHPSHOP_STORE_FORM_LBL' => 'Winkel informatie',
-	'PHPSHOP_STORE_FORM_CONTACT_LBL' => 'Contact informatie',
+	'PHPSHOP_STORE_FORM_MNU' => 'Winkel bewerken',
+	'PHPSHOP_STORE_FORM_LBL' => 'Winkelinformatie',
+	'PHPSHOP_STORE_FORM_CONTACT_LBL' => 'Contactgegevens',
 	'PHPSHOP_STORE_FORM_PHONE' => 'Telefoon',
 	'PHPSHOP_STORE_FORM_FAX' => 'Fax',
 	'PHPSHOP_STORE_FORM_EMAIL' => 'E-mail',
 	'PHPSHOP_PAYMENT' => 'Betaling',
-	'PHPSHOP_PAYMENT_METHOD_LIST_MNU' => 'Bekijk betalingsmethode',
+	'PHPSHOP_PAYMENT_METHOD_LIST_MNU' => 'Betaalmethodes',
 	'PHPSHOP_PAYMENT_METHOD_LIST_DISCOUNT' => 'Korting',
-	'PHPSHOP_PAYMENT_METHOD_FORM_MNU' => 'Betalingsmethode toevoegen',
+	'PHPSHOP_PAYMENT_METHOD_FORM_MNU' => 'Betaalmethode toevoegen',
 	'PHPSHOP_TAX_MOD' => 'Belasting',
 	'PHPSHOP_TAX_LIST_MNU' => 'Bekijk Belastingstarieven',
 	'PHPSHOP_TAX_LIST_RATE' => 'Belastingstarief',
 	'PHPSHOP_TAX_FORM_MNU' => 'Belastingstarief toevoegen',
 	'PHPSHOP_VENDOR_MOD' => 'Verkoper',
 	'PHPSHOP_VENDOR_LIST_MNU' => 'Bekijk verkopers',
-	'PHPSHOP_VENDOR_LIST_VENDOR_NAME' => 'Verkoper naam',
+	'PHPSHOP_VENDOR_LIST_VENDOR_NAME' => 'Naam verkoper',
 	'PHPSHOP_VENDOR_FORM_MNU' => 'Verkoper toevoegen',
-	'PHPSHOP_VENDOR_FORM_INFO_LBL' => 'Verkoper informatie',
-	'PHPSHOP_VENDOR_CAT_LIST_MNU' => 'Bekijk verkoper categorieën',
+	'PHPSHOP_VENDOR_FORM_INFO_LBL' => 'Gegevens verkoper',
+	'PHPSHOP_VENDOR_CAT_LIST_MNU' => 'Bekijk categorieën verkoper',
 	'PHPSHOP_VENDOR_CAT_FORM_MNU' => 'Verkoper categorie toevoegen',
 	'PHPSHOP_MANUFACTURER_MOD' => 'Fabrikant',
 	'PHPSHOP_MANUFACTURER_LIST_MNU' => 'Bekijk fabrikanten',
 	'PHPSHOP_MANUFACTURER_LIST_ADMIN' => 'Administratie',
 	'PHPSHOP_MANUFACTURER_FORM_MNU' => 'Fabrikant toevoegen',
-	'PHPSHOP_MANUFACTURER_FORM_INFO_LBL' => 'Fabrikant informatie',
+	'PHPSHOP_MANUFACTURER_FORM_INFO_LBL' => 'Fabrikantinformatie',
 	'PHPSHOP_MANUFACTURER_FORM_DESCRIPTION' => 'Omschrijving',
 	'PHPSHOP_MANUFACTURER_CAT_LIST_MNU' => 'Bekijk fabrikant categorieën',
 	'PHPSHOP_MANUFACTURER_CAT_FORM_MNU' => 'Fabrikant categorie toevoegen',
@@ -245,7 +245,7 @@ $langvars = array (
 	'PHPSHOP_CHECKOUT_CONF_FAX' => 'Fax',
 	'PHPSHOP_CHECKOUT_CONF_PAYINFO' => 'Facturatiegegevens',
 	'PHPSHOP_CHECKOUT_CONF_PAYINFO_NAMECARD' => 'Naam creditcard houder',
-	'PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM' => 'Creditcard nummer',
+	'PHPSHOP_CHECKOUT_CONF_PAYINFO_CCNUM' => 'Creditcardnummer',
 	'PHPSHOP_CHECKOUT_CONF_PAYINFO_EXDATE' => 'Geldig tot',
 	'PHPSHOP_CHECKOUT_CONF_PAYINFO_COMPORDER' => 'Bestelling versturen',
 	'PHPSHOP_ZONE_MOD' => 'Zone verzendkosten',
@@ -253,31 +253,31 @@ $langvars = array (
 	'PHPSHOP_ZONE_FORM_MNU' => 'Zone toevoegen',
 	'PHPSHOP_ZONE_ASSIGN_MNU' => 'Zone toewijzen',
 	'PHPSHOP_ZONE_ASSIGN_CURRENT_LBL' => 'Huidige zone',
-	'PHPSHOP_STORE_FORM_TOS' => 'Leverings voorwaarden',
+	'PHPSHOP_STORE_FORM_TOS' => 'Leveringsvoorwaarden',
 	'PHPSHOP_AGREE_TO_TOS' => 'Ga a.u.b. eerst akkoord met onze leveringsvoorwaarden.',
 	'PHPSHOP_I_AGREE_TO_TOS' => 'Ik ga akkoord met de leveringsvoorwaarden',
 	'PHPSHOP_RETURN_LOGIN' => 'Als terugkerende klant kunt u hier inloggen.',
 	'PHPSHOP_NEW_CUSTOMER' => 'Nieuw hier? Vul hier a.u.b. eerst uw gegevens in',
-	'PHPSHOP_ACC_ORDER_INFO' => 'Order informatie',
-	'PHPSHOP_ACC_NO_ORDERS' => 'Geen orders aanwezig',
+	'PHPSHOP_ACC_ORDER_INFO' => 'Orderinformatie',
+	'PHPSHOP_ACC_NO_ORDERS' => 'Geen bestellingen aanwezig',
 	'PHPSHOP_ACC_BILL_DEF' => '- Standaard (hetzelfde als facturatiegegevens)',
-	'PHPSHOP_SHIPTO_TEXT' => 'U kan verzendadressen toevoegen aan uw account. Bedenk een geschikte code of sleutelwoord (adreslabel) voor uw verzend adres.',
+	'PHPSHOP_SHIPTO_TEXT' => 'U kunt verzendadressen toevoegen aan uw account. Bedenk een geschikte code of sleutelwoord (adreslabel) voor uw verzend adres.',
 	'PHPSHOP_CONFIG' => 'Configuratie',
 	'PHPSHOP_USERS' => 'Klanten',
 	'PHPSHOP_SHIPPING_MOD' => 'Verzending',
 	'PHPSHOP_CARRIER_LIST_MNU' => 'Bekijk vervoerders',
-	'PHPSHOP_RATE_LIST_MNU' => 'Bekijk verzendingstarieven',
+	'PHPSHOP_RATE_LIST_MNU' => 'Bekijk verzendtarieven',
 	'PHPSHOP_CARRIER_FORM_MNU' => 'Vervoerder toevoegen',
 	'PHPSHOP_RATE_FORM_MNU' => 'Verzendtarief toevoegen',
 	'PHPSHOP_RATE_FORM_VALUE' => 'Kosten',
-	'PHPSHOP_RATE_FORM_VAT_ID' => 'BTW nr.',
+	'PHPSHOP_RATE_FORM_VAT_ID' => 'BTW',
 	'PHPSHOP_ERR_MSG_CARRIER_EXIST' => 'FOUT: Vervoerders ID bestaat reeds.',
 	'PHPSHOP_ERR_MSG_CARRIER_ID_REQ' => 'FOUT: Kies een vervoerder.',
-	'PHPSHOP_ERR_MSG_CARRIER_INUSE' => 'FOUT: Tenminste één verzendtarief bestaat, verwijder deze voor het verwijderen van de vervoerder.',
+	'PHPSHOP_ERR_MSG_CARRIER_INUSE' => 'FOUT: Tenminste ï¿½ï¿½n verzendtarief bestaat, verwijder deze voor het verwijderen van de vervoerder.',
 	'PHPSHOP_ERR_MSG_CARRIER_NOTFOUND' => 'FOUT: Kan geen vervoerder vinden met deze ID.',
 	'PHPSHOP_ERR_MSG_RATE_CARRIER_ID_REQ' => 'FOUT: Kies een vervoerder.',
 	'PHPSHOP_ERR_MSG_RATE_CARRIER_ID_INV' => 'FOUT: Kan geen vervoerder vinden met deze ID.',
-	'PHPSHOP_ERR_MSG_RATE_NAME_REQ' => 'FOUT: Een beschrijving van het verzendingstarief is nodig.',
+	'PHPSHOP_ERR_MSG_RATE_NAME_REQ' => 'FOUT: Een beschrijving van het verzendtarief is nodig.',
 	'PHPSHOP_ERR_MSG_RATE_COUNTRY_CODE_INV' => 'FOUT: Het land van bestemming is verkeerd. Meerdere landen moeten gescheiden worden door gebruik te maken van ";".',
 	'PHPSHOP_ERR_MSG_RATE_WEIGHT_START_REQ' => 'FOUT: Minimum gewicht is nodig',
 	'PHPSHOP_ERR_MSG_RATE_WEIGHT_END_REQ' => 'FOUT: Maximum gewicht is nodig',
@@ -285,39 +285,39 @@ $langvars = array (
 	'PHPSHOP_ERR_MSG_RATE_WEIGHT_VALUE_REQ' => 'FOUT: Een pakketgewicht is nodig',
 	'PHPSHOP_ERR_MSG_RATE_CURRENCY_ID_INV' => 'FOUT: Kies een valuta',
 	'PHPSHOP_INFO_MSG_CARRIER' => 'Vervoerder',
-	'PHPSHOP_INFO_MSG_SHIPPING_METHOD' => 'Verzendingstarief',
+	'PHPSHOP_INFO_MSG_SHIPPING_METHOD' => 'Verzendtarief',
 	'PHPSHOP_INFO_MSG_SHIPPING_PRICE' => 'Prijs',
 	'PHPSHOP_INFO_MSG_VAT_ZERO_LBL' => '0 (-geen-)',
-	'PHPSHOP_CHECKOUT_MSG_4' => 'Selecteer een betalingsmethode!',
+	'PHPSHOP_CHECKOUT_MSG_4' => 'Selecteer een betaalmethode!',
 	'PHPSHOP_CHECKOUT_ERR_NO_SHIP' => 'Selecteer een verzendmethode.',
 	'PHPSHOP_CHECKOUT_ERR_OTHER_SHIP' => 'Selecteer een andere verzendmethode.',
-	'PHPSHOP_CHECKOUT_ERR_NO_PAYM' => 'Selecteer een betalingsmethode.',
-	'PHPSHOP_CHECKOUT_ERR_NO_CCNR' => 'Vul uw creditcard nummer in.',
-	'PHPSHOP_CHECKOUT_ERR_NO_CCDATE' => 'Het creditcard nummer dat U ingaf is ongeldig',
-	'PHPSHOP_CHECKOUT_ERR_NO_CCMON' => 'Vul de vervalmaand van Uw creditcard in.',
-	'PHPSHOP_CHECKOUT_ERR_NO_CCYEAR' => 'Vul het vervaljaar van Uw creditcard in.',
+	'PHPSHOP_CHECKOUT_ERR_NO_PAYM' => 'Selecteer een betaalmethode.',
+	'PHPSHOP_CHECKOUT_ERR_NO_CCNR' => 'Vul uw creditcardnummer in.',
+	'PHPSHOP_CHECKOUT_ERR_NO_CCDATE' => 'Het creditcardnummer dat u ingaf is ongeldig',
+	'PHPSHOP_CHECKOUT_ERR_NO_CCMON' => 'Vul de vervalmaand van uw creditcard in.',
+	'PHPSHOP_CHECKOUT_ERR_NO_CCYEAR' => 'Vul het vervaljaar van uw creditcard in.',
 	'PHPSHOP_CHECKOUT_ERR_CCDATE_INV' => 'De vervaldatum is ongeldig.',
-	'PHPSHOP_CHECKOUT_ERR_NO_SHIPTO' => 'Selecteer het leveringsadres.',
-	'PHPSHOP_CHECKOUT_ERR_CCNUM_INV' => 'Verkeerd rekeningsnummer.',
+	'PHPSHOP_CHECKOUT_ERR_NO_SHIPTO' => 'Selecteer het leveradres.',
+	'PHPSHOP_CHECKOUT_ERR_CCNUM_INV' => 'Verkeerd rekeningnummer.',
 	'PHPSHOP_CHECKOUT_ERR_RATE_NOT_FOUND' => 'FOUT: Het geselecteerde verzendtarief was niet gevonden!',
 	'PHPSHOP_CHECKOUT_ERR_SHIPTO_NOT_FOUND' => 'FOUT: Uw afleveradres werd niet gevonden',
 	'PHPSHOP_CHECKOUT_ERR_NO_CCDATA' => 'FOUT: Er zijn geen creditcard gegevens...',
-	'PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND' => 'FOUT: creditcard nummer niet gevonden',
-	'PHPSHOP_CHECKOUT_ERR_TEST' => 'Sorry, maar het creditcard nummer dat U gebruikte is een Test nummer!',
-	'PHPSHOP_CHECKOUT_ERR_NO_USER_DATA' => 'De gebruikers id werd niet gevonden in de databank',
+	'PHPSHOP_CHECKOUT_ERR_NO_CCNR_FOUND' => 'FOUT: creditcardnummer niet gevonden',
+	'PHPSHOP_CHECKOUT_ERR_TEST' => 'Sorry, maar het creditcardnummer dat u gebruikte is een testnummer!',
+	'PHPSHOP_CHECKOUT_ERR_NO_USER_DATA' => 'De gebruikers-id werd niet gevonden in de databank',
 	'PHPSHOP_CHECKOUT_ERR_NO_BA_HOLDER_NAME' => 'U heeft geen eigenaarsnaam van de bankrekening opgegeven.',
 	'PHPSHOP_CHECKOUT_ERR_NO_IBAN' => 'U heeft geen IBAN nummer opgegeven.',
-	'PHPSHOP_CHECKOUT_ERR_NO_BA_NUM' => 'U heeft uw banknummer niet opgegeven',
+	'PHPSHOP_CHECKOUT_ERR_NO_BA_NUM' => 'U heeft uw bankrekeningnummer niet opgegeven',
 	'PHPSHOP_CHECKOUT_ERR_NO_BANK_SORT' => 'U heeft geen BIC code opgegeven',
 	'PHPSHOP_CHECKOUT_ERR_NO_BANK_NAME' => 'U heeft de banknaam niet opgegeven',
 	'PHPSHOP_CHECKOUT_ERR_NO_VALID_STEP' => 'De uitcheck module heeft een geldige stap nodig!',
-	'PHPSHOP_CHECKOUT_MSG_LOG' => 'Betalings informatie opgeslagen voor latere verwerking.<BR>',
-	'PHPSHOP_CHECKOUT_ERR_MIN_POV' => 'Minimum bestedings bedrag voor onze winkel is nog niet bereikt',
+	'PHPSHOP_CHECKOUT_MSG_LOG' => 'Betaalinformatie opgeslagen voor latere verwerking.<BR>',
+	'PHPSHOP_CHECKOUT_ERR_MIN_POV' => 'Minimaal bestedingsbedrag voor onze winkel is nog niet bereikt',
 	'PHPSHOP_CHECKOUT_ERR_MIN_POV2' => 'Het minimum bestedingsbedrag voor deze winkel is:',
 	'PHPSHOP_CHECKOUT_PAYMENT_CC' => 'Creditcard betaling',
-	'PHPSHOP_CHECKOUT_PAYMENT_OTHER' => 'andere betalingsmethoden',
-	'PHPSHOP_STORE_FORM_MPOV' => 'Minimum bestedingsbedrag voor Uw winkel',
-	'PHPSHOP_ACCOUNT_BANK_TITLE' => 'Bankrekening informatie',
+	'PHPSHOP_CHECKOUT_PAYMENT_OTHER' => 'andere betaalmethodes',
+	'PHPSHOP_STORE_FORM_MPOV' => 'Minimaal bestedingsbedrag voor Uw winkel',
+	'PHPSHOP_ACCOUNT_BANK_TITLE' => 'Rekeninggegevens',
 	'PHPSHOP_ACCOUNT_LBL_BANK_ACCOUNT_NR' => 'Rekeningnummer',
 	'PHPSHOP_ACCOUNT_LBL_BANK_SORT_CODE' => 'BIC nummer',
 	'PHPSHOP_ACCOUNT_LBL_BANK_NAME' => 'Naam van de bank',
@@ -328,8 +328,8 @@ $langvars = array (
 	'PHPSHOP_ORDER_PRINT_CUSTOMER_NOTE' => 'Opmerking / Vraag van de klant',
 	'PHPSHOP_INCLUDING_TAX' => '(incl. $tax % btw)',
 	'PHPSHOP_PLEASE_SEL_ITEM' => 'Selecteer a.u.b. een item',
-	'PHPSHOP_DOWNLOADS_TITLE' => 'Download omgeving',
-	'PHPSHOP_DOWNLOADS_ERR_EXP' => 'Sorry, maar uw download periode is verlopen.',
+	'PHPSHOP_DOWNLOADS_TITLE' => 'Downloadomgeving',
+	'PHPSHOP_DOWNLOADS_ERR_EXP' => 'Sorry, maar uw downloadperiode is verlopen.',
 	'PHPSHOP_DOWNLOADS_ERR_MAX' => 'Sorry, maar het maximaal aantal downloads is bereikt',
 	'PHPSHOP_DOWNLOADS_ERR_INV' => 'Ongeldig Download-ID!',
 	'PHPSHOP_DOWNLOADS_ERR_SEND' => 'Kan geen bericht verzenden naar',
@@ -337,11 +337,11 @@ $langvars = array (
 	'PHPSHOP_DOWNLOADS_SEND_SUBJ' => 'Download-info',
 	'PHPSHOP_DOWNLOADS_SEND_MSG_1' => 'Uw bestelling is klaar om te downloaden',
 	'PHPSHOP_DOWNLOADS_SEND_MSG_2' => 'Gebruikt de volgende download-ID(s) in onze download omgeving: ',
-	'PHPSHOP_DOWNLOADS_SEND_MSG_3' => 'het maximale aantal downloads voor elk bestand is:',
+	'PHPSHOP_DOWNLOADS_SEND_MSG_3' => 'het maximaal aantal downloads voor elk bestand is:',
 	'PHPSHOP_DOWNLOADS_SEND_MSG_4' => 'Download tot {expire} dagen na de eerste download',
 	'PHPSHOP_DOWNLOADS_SEND_MSG_5' => 'Vragen? Problemen?',
 	'PHPSHOP_DOWNLOADS_SEND_MSG_6' => 'Download-info van ',
-	'PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER1' => 'Dank U voor de bestelling. De informatie van uw bestelling volgt.',
+	'PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER1' => 'Dank u voor uw bestelling. De informatie van uw bestelling volgt.',
 	'PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER2' => 'Nogmaals bedankt voor uw bezoek.',
 	'PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER3' => 'Vragen? Problemen?',
 	'PHPSHOP_CHECKOUT_EMAIL_SHOPPER_HEADER4' => 'De volgende bestelling is ontvangen.',
@@ -364,12 +364,12 @@ $langvars = array (
 	'PHPSHOP_STATISTIC_SUMMARY' => 'Samenvatting',
 	'PHPSHOP_STATISTIC_SUM' => 'Som',
 	'PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW' => 'Print scherm',
-	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD' => 'Kies de verzendingsmethode van Uw winkel',
+	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD' => 'Kies de verzendmethode voor uw winkel',
 	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS' => '<a href="http://www.ups.com" target="_blank">UPS Online Tools</a> Shipping calculation',
 	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE' => 'UPS toegangs code',
 	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_ACCESS_CODE_EXPLAIN' => 'Uw UPS toegangs code',
 	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID' => 'UPS gebruikersnaam',
-	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID_EXPLAIN' => 'De gebruikersnaam die U van UPS gekregen heeft',
+	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_USER_ID_EXPLAIN' => 'De gebruikersnaam die u van UPS gekregen heeft',
 	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD' => 'UPS wachtwoord',
 	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_UPS_PASSWORD_EXPLAIN' => 'Het wachtwoord voor Uw UPS account',
 	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER' => 'InterShipper Module. Alleen kiezen als U een <a href="http://www.intershipper.com" target="_blank">Intershipper.com</a> account heeft.',
@@ -379,9 +379,9 @@ $langvars = array (
 	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_INTERSHIPPER_EMAIL_EXPLAIN' => 'Uw e-mail adres voor uw InterShipper account',
 	'PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL' => 'PayPal e-mail:',
 	'PHPSHOP_ADMIN_CFG_PAYPAL_EMAIL_EXPLAIN' => 'Het e-mail adres dat U gebruikt voor PayPal betalingen.Dit adres wordt ook gebruikt als ontvanger_email.',
-	'PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS' => 'Order status voor succesvolle transacties',
+	'PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS' => 'Orderstatus voor succesvolle transacties',
 	'PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_SUCCESS_EXPLAIN' => 'Selecteer de order status die de bestelling krijgt nar een succesvolle PayPal betaling. Indien U downloadable producten gebruikt: selecteer de status die de download toelaat (de klant wordt onmiddelijk op de hoogte gebracht via e-mail.',
-	'PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED' => 'Order status voor mislukte PayPal transacties',
+	'PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED' => 'Orderstatus voor mislukte PayPal transacties',
 	'PHPSHOP_ADMIN_CFG_PAYPAL_STATUS_FAILED_EXPLAIN' => 'Selecteer de order status voor mislukte PayPal transacties',
 	'PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME' => 'PayMate gebruikersnaam:',
 	'PHPSHOP_ADMIN_CFG_PAYMATE_USERNAME_EXPLAIN' => 'Uw gebruikersaccount voor PayMate.',
@@ -440,7 +440,7 @@ $langvars = array (
 	'PHPSHOP_FLYPAGE_ENLARGE_IMAGE' => 'Bekijk grote afbeelding',
 	'PHPSHOP_CURRENCY_DISPLAY' => 'Valuta weergave stijl',
 	'PHPSHOP_CURRENCY_SYMBOL' => 'Valuta symbool',
-	'PHPSHOP_CURRENCY_SYMBOL_TOOLTIP' => 'U kunt ook HTML Entities gebruiken (e.g. €,£,¥,...)',
+	'PHPSHOP_CURRENCY_SYMBOL_TOOLTIP' => 'U kunt ook HTML Entities gebruiken (e.g. ï¿½,ï¿½,ï¿½,...)',
 	'PHPSHOP_CURRENCY_DECIMALS' => 'Decimalen',
 	'PHPSHOP_CURRENCY_DECIMALS_TOOLTIP' => 'Aantal getoonde decimalen (mag 0 zijn)<br><b>Wordt afgerond wanneer getal is ingegeven met een ander aantal decimalen</b>',
 	'PHPSHOP_CURRENCY_DECIMALSYMBOL' => 'Decimaal symbool',
@@ -482,8 +482,10 @@ $langvars = array (
 	'PHPSHOP_FREE_SHIPPING_CUSTOMER_TEXT' => 'Er zijn geen verzendkosten bij deze bestelling!',
 	'PHPSHOP_FREE_SHIPPING_AMOUNT' => 'Minimum Bedrag voor gratis verzending',
 	'PHPSHOP_FREE_SHIPPING_AMOUNT_TOOLTIP' => 'Het bedrag (INCL. BTW!) vanwaar geen verzendkosten worden berekend 
+
                                                 (bijvoorbeeld: <strong>50</strong> betekent geen verzendkosten wanneer een klant een bestelling plaatst
-                                                van € 50 (incl. BTW) of meer.',
+
+                                                van ï¿½ 50 (incl. BTW) of meer.',
 	'PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE' => 'Bankrekening type',
 	'PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_CHECKING' => 'Zichtrekening',
 	'PHPSHOP_ACCOUNT_LBL_ACCOUNT_TYPE_BUSINESSCHECKING' => 'Zichtrekening',
@@ -568,14 +570,21 @@ $langvars = array (
 	'PHPSHOP_BACK_TO_COUNTRY' => 'Terug naar het land',
 	'PHPSHOP_ADD_STATE' => 'Voeg een provincie toe',
 	'PHPSHOP_LIST_STATES' => 'Toon provincies',
-	'PHPSHOP_SHOW_FEATURED' => 'producten in aanbieding',
+	'PHPSHOP_SHOW_FEATURED' => 'producten in de aanbieding',
 	'PHPSHOP_USER_SEND_REGISTRATION_DETAILS' => 'Hallo %s,
 
-Dank U om te registeren bij %s. Uw gebruikers account is net gecreëerd.
+
+
+Dank U om te registeren bij %s. Uw gebruikers account is net gecreï¿½erd.
+
 U kunt zich aanmelden bij %s door gebruik te maken van de volgende gebruikersnaam en wachtwoord:
 
+
+
 Gebruikersnaam - %s
+
 Wachtwoord - %s
+
 ',
 	'PEAR_LOG_CRIT' => 'Kritisch',
 	'PEAR_LOG_ERR' => 'Fout',
@@ -586,15 +595,16 @@ Wachtwoord - %s
 	'PEAR_LOG_EMERG' => 'Noodgeval',
 	'PEAR_LOG_NOTICE' => 'Opmerking',
 	'PEAR_LOG_DEBUG' => 'Foutopsporing',
-	'PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE' => 'Test mode ?',
+	'PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE' => 'Test mode?',
 	'PHPSHOP_ADMIN_CFG_ENABLE_PFP_TESTMODE_EXPLAIN' => 'Selecteer \'Ja\' om te testen. Selecteer \'Nee\' om live transacties in te schakelen.',
 	'PHPSHOP_ADMIN_CFG_PFP_PARTNER' => 'VeriSign verwerking Partner ID',
-	'PHPSHOP_ADMIN_CFG_PFP_PARTNET_EXPLAIN' => 'De Partner ID die u verkregen hebt van de geautoriseerde VeriSign verkoper welke u geregistreerd heeft voor de PayFlow Pro service',
-	'VM_MANAGE_USER_FIELDS' => 'Beheer gebruikers velden',
+	'PHPSHOP_ADMIN_CFG_PFP_PARTNET_EXPLAIN' => 'Het Partner ID dat u verkregen heeft van de geautoriseerde VeriSign verkoper welke u geregistreerd heeft voor de PayFlow Pro service',
+	'VM_MANAGE_USER_FIELDS' => 'Beheer gebruikersvelden',
 	'VM_FIELDMANAGER_REORDER' => 'Herschikken',
 	'VM_PRODUCTS_MOVE_TOOLBAR' => 'Verplaats producten',
-	'VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP' => 'Wanneer ingeschakeld, kan u het notificatiescript %s testen via dit formulier: <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank">www.eliteweaver.co.uk/testing/ipntest.php</a>',
+	'VM_ADMIN_CFG_PAYPAL_NOTIFYSCRIPT_TIP' => 'Wanneer ingeschakeld, kunt u het notificatiescript %s testen via dit formulier: <a href="http://www.eliteweaver.co.uk/testing/ipntest.php" target="_blank">www.eliteweaver.co.uk/testing/ipntest.php</a>',
 	'VM_ADMIN_CFG_PAYPAL_STATUS_PENDING_EXPLAIN' => 'De status van de bestellingen, waarvan de betaling nog niet goedgekeurd of de betaalprocedure afgerond is. 
+
 De transactie is in dit geval niet afgewezen, er wordt gewacht op goedkeuring of afronding.',
 	'VM_ADMIN_CFG_PAYPAL_STATUS_PENDING' => 'Status van de betalingen die wachten op goedkeuring of afronding.',
 	'VM_SHIPPING_MODULE_LIST_LBL' => 'Verzendingsmodulen lijst',
@@ -603,7 +613,7 @@ De transactie is in dit geval niet afgewezen, er wordt gewacht op goedkeuring of
 	'VM_ABOUT' => 'Over',
 	'VM_HELP_TOPICS' => 'Hulp topics',
 	'VM_COMMUNITY_FORUM' => 'Forum',
-	'VM_CONFIGURATION_CHANGE_SUCCESS' => 'De configuratie instellingen zijn bijgewerkt!',
+	'VM_CONFIGURATION_CHANGE_SUCCESS' => 'De configuratieinstellingen zijn bijgewerkt!',
 	'VM_CONFIGURATION_CHANGE_FAILURE' => 'Niet mogelijk om naar het configuratiebestand weg te schrijven %s!',
 	'VM_WRITABLE' => 'Beschrijfbaar',
 	'VM_UNWRITABLE' => 'Onbeschrijfbaar',
@@ -612,6 +622,7 @@ De transactie is in dit geval niet afgewezen, er wordt gewacht op goedkeuring of
 	'VM_FEDEX_METER_NUMBER_TIP' => 'Het FSM Software ID/Meter-nummer dat u ontvangen heeft van FedEx',
 	'VM_FEDEX_URI' => 'FedEx serveradres',
 	'VM_FEDEX_URI_TIP' => 'Op verzoek van FedEx zijn de FedEx\'s API servers niet toegevoegd (FEDEX_URI). Registreer u alstublieft om deze informatie te ontvangen (<a href="http://www.fedex.com/globaldeveloper/shipapi/">www.fedex.com/globaldeveloper/shipapi/</a>).
+
 <br/>Standaard voor testen is: <strong>https://gatewaybeta.fedex.com/GatewayDC</strong>',
 	'VM_ORDER_EXPORT' => 'Order Export',
 	'VM_ORDER_EXPORT_MODULE_LIST_MNU' => 'Order Export Modules weergeven',
@@ -621,29 +632,51 @@ De transactie is in dit geval niet afgewezen, er wordt gewacht op goedkeuring of
 	'VM_RECOMMEND_FORM_MESSAGE' => 'Uw boodschap',
 	'VM_RECOMMEND_MESSAGE' => 'Hallo,
 
-Ik heb een product gevonden waar je wellicht geïnteresseerd in bent.
+
+
+Ik heb een product gevonden waar je wellicht geï¿½nteresseerd in bent.
+
+
 
 Je kan het hier vinden:
+
 %s
+
+
 
 Groeten.',
 	'VM_ENQUIRY_SHOPPER_EMAIL_SUBJECT' => '%s - Bevestiging van uw informatieaanvraag',
 	'VM_ENQUIRY_VENDOR_EMAIL_SUBJECT' => '%s - Informatieaanvraag m.b.t. het navolgende product: %s',
 	'VM_ENQUIRY_SHOPPER_EMAIL_MESSAGE' => 'Ontvangstbevestiging van uw informatieaanvraag
 
+
+
 Bedankt voor uw informatieaanvraag aan {vendor_name} betreffende:
+
 Product: {product_name}
+
 Artikelnummer: {product_sku}
+
 Link: {product_url}
 
+
+
 We zullen op korte termijn contact met u opnemen.
+
 (Antwoord alstublieft niet op deze email)',
 	'VM_ENQUIRY_VENDOR_EMAIL_MESSAGE' => 'U heeft een informatieaanvraag ontvangen van {shopper_name} m.b.t. het navolgende product: 
+
 Product: {product_name}
+
 Artikelnummer : {product_sku}
 
+
+
 Vraag: {shopper_message}
+
 Link naar product: {product_url}
+
+
 
 Email naar: {shopper_email}',
 	'VM_RECOMMEND_SUBJECT' => 'Productaanbeveling bij %s',
@@ -651,9 +684,14 @@ Email naar: {shopper_email}',
 	'VM_RECOMMEND_FAILED' => 'Productaanbeveling kon niet verzonden worden!',
 	'VM_LEGALINFO_SHORTTEXT' => '<h5>Retourneer voorwaarden</h5>
 
+
+
 U kunt deze bestelling binnen twee weken annuleren.
+
 U kunt uitsluitend nieuwe producten, in de ongeopende originele verpakking retourneren en dan wel binnen twee weken na ontvangst.
+
 Voor retournering dient u ten alle tijden eerst contact met ons op te nemen.
+
 Voor meer informatie over annulering en retournering, zie onze <a href="%s" onclick="%s" target="_blank">Algemene voorwaarden</a> page.',
 	'VM_SESSION_SAVEPATH_UNWRITABLE_TMPFIX' => 'De directory waar de sessie data wordt opgeslagen is niet beschrijfbaar. Corrigeer dit via de bestandsrechten, of neem contact op met uw webhost.',
 	'VM_SESSION_SAVEPATH_UNWRITABLE' => 'Het path %s waar uw sessies worden opgeslagen is niet beschrijfbaar. Corrigeer dit! De webwinkel probeert tijdelijk de %s hiervoor in plaats te gebruiken.',
@@ -691,17 +729,26 @@ Voor meer informatie over annulering en retournering, zie onze <a href="%s" oncl
 	'REGWARN_MAIL' => 'Voer een geldig e-mail adres in.',
 	'SEND_SUB' => 'Gebruikersdetails van %s voor %s',
 	'ASEND_MSG' => 'Hallo %s,
+
         
+
    Een nieuwe gebruiker heeft zich geregistreerd op %s.
+
    Dit zijn de gegevens van de gebruiker:
 
+
+
    Naam - %s
+
    E-mail - %s
+
    Gebruikersnaam - %s
+
+
 
    Dit is een automatisch gegenereerde e-mail, u kunt hier niet op reageren.',
 	'REG_COMPLETE' => '<div class="componentheading">Registratie voltooid!</div><br />U kunt nu inloggen.',
-	'REG_COMPLETE_ACTIVATE' => '<div class="componentheading">Registratie voltooid!</div><br />Uw account is gemaakt en een activatie link is per e-mail verstuurd naar uw e-mail adres. Nadat u deze activatie link gebruikt heeft kunt u inloggen.',
+	'REG_COMPLETE_ACTIVATE' => '<div class="componentheading">Registratie voltooid!</div><br />Uw account is gemaakt en een activatie link is per e-mail verstuurd naar uw emailadres. Nadat u deze activatie link gebruikt heeft kunt u inloggen.',
 	'DATE_FORMAT_LC' => '%A, %d %B %Y',
 	'VM_CART_PRODUCT_ADDED' => 'Het product is toegevoegd aan het mandje.',
 	'VM_CART_PRODUCT_UPDATED' => 'Het productaantal is aangepast.',
@@ -709,11 +756,11 @@ Voor meer informatie over annulering en retournering, zie onze <a href="%s" oncl
 	'CMN_CONTINUE' => 'Doorgaan',
 	'CMN_CANCEL' => 'Annuleren',
 	'VM_USERGROUP_LBL' => 'Gebruikers groepen',
-	'VM_CART_MIN_ORDER' => 'Het minimale bestelaantal voor dit product is $min stuks.',
-	'VM_CART_MAX_ORDER' => 'Het maximale bestelaantal voor dit product is $max stuks.',
+	'VM_CART_MIN_ORDER' => 'De minimale besteleenheid voor dit product is $min stuks.',
+	'VM_CART_MAX_ORDER' => 'De maximale besteleenheid voor dit product is $max stuks.',
 	'ITEM_PREVIOUS' => 'vorige',
 	'ITEM_NEXT' => 'volgende',
-	'VM_ORDER_EDIT_ACTIONS' => 'Actions',
+	'VM_ORDER_EDIT_ACTIONS' => 'Acties',
 	'VM_ORDER_EDIT' => 'Aanpassen bestelling',
 	'VM_ORDER_EDIT_ADD' => 'Toevoegen',
 	'VM_ORDER_EDIT_ADD_PRODUCT' => 'Toevoegen product',
@@ -725,8 +772,8 @@ Voor meer informatie over annulering en retournering, zie onze <a href="%s" oncl
 	'VM_ORDER_EDIT_RETURN_PARENTS' => 'Terug naar het hoofdproduct',
 	'VM_ORDER_EDIT_CHOOSE_PRODUCT' => 'Kies een product',
 	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_NEW' => 'Nieuwe optie',
-	'PHPSHOP_PRODUCT_FORM_PROPERTY_NEW' => 'New Property',
-	'PHPSHOP_PRODUCT_FORM_PROPERTY' => 'Property',
+	'PHPSHOP_PRODUCT_FORM_PROPERTY_NEW' => 'Nieuwe eigenschappen',
+	'PHPSHOP_PRODUCT_FORM_PROPERTY' => 'eigenschappen',
 	'PHPSHOP_PRODUCT_FORM_ATTRIBUTE_DELETE' => 'Verwijderd optie',
 	'LAST_UPDATED' => 'Laatste update',
 	'NOT_AUTH' => 'U heeft geen toegang tot deze bron.',
@@ -745,11 +792,23 @@ Voor meer informatie over annulering en retournering, zie onze <a href="%s" oncl
 
 
 
+
+
+
+
 Bedankt voor uw registratie op %s. Uw account is aangemaakt maar moet eerst geactiveerd worden.
 
-Om uw account te activeren dient u op onderstaande link te klikken, of deze te kopieren naar uw browser.
+
+
+Om uw account te activeren dient u onderstaande link aan te klikken, of deze te kopiï¿½ren naar uw browser.
+
+
 
 %s
+
+
+
+
 
 
 
@@ -757,14 +816,28 @@ Na activatie kunt u inloggen op %s met de volgende gebruikersnaam en wachtwoord:
 
 
 
+
+
+
+
 Gebruikersnaam - %s
+
+
 
 Wachtwoord - %s',
 	'USEND_MSG' => 'Geachte heer/mevrouw %s,
 
 
 
+
+
+
+
 Bedankt voor uw registratie op %s.
+
+
+
+
 
 
 
@@ -774,13 +847,25 @@ U kunt nu inloggen op %s met de door u ingevoerde gebruikersnaam en het bijbehor
 	'NEW_USER_MESSAGE' => 'Geachte heer/mevrouw %s,
 
 
+
+
+
 Er is voor u een gebruikersaccount aangemaakt bij %s door de website beheerder.
+
+
 
 Deze e-mail bevat uw gebruikersnaam en wachtwoord voor %s
 
+
+
 Gebruikersnaam - %s
 
+
+
 Wachtwoord - %s
+
+
+
 
 
 Deze e-mail is automatisch gegenereerd en reacties hierop worden door ons niet gelezen',
@@ -801,6 +886,7 @@ Deze e-mail is automatisch gegenereerd en reacties hierop worden door ons niet g
 	'VM_DOWNLOAD_FILE_NOTFOUND' => 'Sorry, het gevraagde bestand kan niet gevonden worden. Waarschijnlijke oorzaak: Verkeerd path',
 	'VALID_EUVATID' => 'Vul alstublieft een geldig BTW nummer in',
 	'VM_REGISTER_ACCOUNT' => 'Registreren als klant?<br />
+
 Een registratie stelt u in staat, in te loggen in de winkel en de bestellingen die u heeft gemaakt te bekijken.',
 	'RELOAD' => 'Opnieuw laden',
 	'VM_FEED_SUBSCRIBE_TITLE' => 'Schrijf u in om bericht te ontvangen over nieuwe producten!',
@@ -925,7 +1011,7 @@ Een registratie stelt u in staat, in te loggen in de winkel en de bestellingen d
 	'PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_LOF' => 'LOF Left per Letter on File at Station',
 	'PHPSHOP_SHIPPING_METHOD_DHL_TRACKING_LEGEND_LPN' => 'LPN Left per Signed not or Attempted Delivery Notice',
 	'FORGOT_YOUR_USERNAME' => 'Gebruikersnaam vergeten?',
-	'EMAIL_FRIEND' => 'E-mail dit naar een friend.',
+	'EMAIL_FRIEND' => 'E-mail dit naar een vriend.',
 	'EMAIL_FRIEND_ADDR' => 'Uw vriend\'s e-mail:',
 	'EMAIL_YOUR_NAME' => 'Uw naam:',
 	'EMAIL_YOUR_MAIL' => 'Uw e-mail:',
@@ -937,35 +1023,49 @@ Een registratie stelt u in staat, in te loggen in de winkel en de bestellingen d
 	'CMN_PLEASESELECT_DELETE' => 'Maak een selectie uit de lijst om te verwijderen',
 	'CMN_PLEASESELECT_TO' => 'Maak een selectie uit de lijst om te',
 	'CMN_CONFIRM_DELETE_ITEMS' => 'Bent u er zeker van dat u de geslecteerde items wilt verwijderen?',
-	'NO_RESTRICTION' => 'Geen beperking',
+	'NO_RESTRICTION' => 'Geen beperkingen',
 	'CMN_ORDER_UP' => 'Van beneden naar boven',
 	'CMN_ORDER_DOWN' => 'Van boven naar beneden',
 	'PRODUCT_WAITING_LIST_EMAIL_SUBJECT' => '%s is gearriveerd',
 	'PRODUCT_WAITING_LIST_EMAIL_TEXT' => 'Bedankt voor uw geduld.
 
+
+
 Onze %s is nu op voorraad en kan besteld worden op de navolgende link:
+
 %s
+
+
 
  Dit is een eenmalig bericht, u zult deze email niet nogmaals ontvangen.',
 	'PHPSHOP_CART_GOTO_WAITING_LIST' => 'Op de volgende pagina kunt u uw notificatie aanvraag doen.',
-	'PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC' => 'Order status voor succesvolle transacties',
-	'PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN' => 'Selecteer de order status welke u wilt weergeven, wanneer de betaaltransactie geslaagd is. 
+	'PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC' => 'Orderstatus voor succesvolle transacties',
+	'PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_SUCC_EXPLAIN' => 'Selecteer de orderstatus welke u wilt weergeven, wanneer de betaaltransactie geslaagd is. 
+
 Indien u downloads gebruikt als verkoopmethode: selecteer dan de status die de download activeerd (De klant wordt dan onmiddelijk hiervan per email op de hoogte gebracht).',
-	'PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL' => 'Order Status voor mislukte transacties',
-	'PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN' => 'Selecteer een order status voor mislukte betaaltransacties.',
-	'PHPSHOP_ADMIN_CFG_AUTORIZENET_RESPCODES' => 'Laat retour codes zien voor mislukte transacties?',
-	'PHPSHOP_ADMIN_CFG_AUTORIZENET_RESPCODES_EXPLAIN' => 'Indien JA is ingesteld, dan krijgt de klant de Authorize.net transactie retour codes te zien(Response Code - 
+	'PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL' => 'OrderStatus voor mislukte transacties',
+	'PHPSHOP_ADMIN_CFG_PAYMENT_ORDERSTATUS_FAIL_EXPLAIN' => 'Selecteer een orderstatus voor mislukte betaaltransacties.',
+	'PHPSHOP_ADMIN_CFG_AUTORIZENET_RESPCODES' => 'Laat retourcodes zien voor mislukte transacties?',
+	'PHPSHOP_ADMIN_CFG_AUTORIZENET_RESPCODES_EXPLAIN' => 'Indien JA is ingesteld, dan krijgt de klant de Authorize.net transactie retourcodes te zien(Response Code - 
+
 Response Subcode - Response Reason Code - AVS Result Code - Card Code (CVV2/CVC2/CID) Response Code - 
+
 Cardholder Authentication Verification Value (CAVV) Response Code - in a format like: 2-2-65-Y-N--)
+
 tensamen met de retour uitleg tekst. Dit kan bruikbaar zijn voor het onderzoeken van mislukte of afgewezen transacties.
+
 Voor meer details zie de <a href="http://www.authorize.net/support/AIM_guide.pdf">Authorize.net Advanced Integration Method (AIM) Implementation Guide</a>',
 	'PHPSHOP_ADMIN_CFG_AUTORIZENET_EMAIL_MERCHANT' => 'Email bevestiging van Gateway naar de webwinkeleigenaar?',
 	'PHPSHOP_ADMIN_CFG_AUTORIZENET_EMAIL_MERCHANT_EXPLAIN' => 'Stuur een kopie van de emailbevestiging die de klant ontvangt, naar de winkeleigenaar? Indien JA dan zal er een email
+
 gestuurd worden naar zowel het adres van de winkeleigenaar als het adres / de adressen die ingesteld zijn bij het autorizenet controlepaneel van de winkeleigenaar.
+
 <em> Opmerking: Deze email is verzonden vanaf de Authorize.net gateway en is onafhankelijk van enige mail verzonden door VirtueMart.</em>',
-	'PHPSHOP_ADMIN_CFG_AUTORIZENET_EMAIL_CUSTOMER' => 'Email bevestiging van Gateway naar de klant?',
+	'PHPSHOP_ADMIN_CFG_AUTORIZENET_EMAIL_CUSTOMER' => 'Emailbevestiging van Gateway naar de klant?',
 	'PHPSHOP_ADMIN_CFG_AUTORIZENET_EMAIL_CUSTOMER_EXPLAIN' => 'Verstuur een bevestigingsemail naar de klant? Indien JA dan zal er een email
+
 verstuurd worden vanuit het autorizenet controlepaneel van de winkeleigenaar.
+
 <em> Opmerking: Deze email is verzonden vanaf de Authorize.net gateway en is onafhankelijk van enige mail verzonden door VirtueMart.</em> ',
 	'PHPSHOP_ADMIN_CFG_PFP_VENDOR' => 'Inloggen winkeleigenaar / Eigenaars naam',
 	'PHPSHOP_ADMIN_CFG_PFP_VENDOR_EXPLAIN' => 'Uw winkeleigenaar inlognaam',
@@ -975,41 +1075,42 @@ verstuurd worden vanuit het autorizenet controlepaneel van de winkeleigenaar.
 	'PHPSHOP_ADMIN_CFG_PFP_PASSWORD_SETCHANGE' => 'Instellen / veranderen van het wachtwoord',
 	'PHPSHOP_ADMIN_CFG_ECHECK_USERNAME' => 'eCheck.net inlog ID',
 	'PHPSHOP_ADMIN_CFG_ECHECK_USERNAME_EXPLAIN' => 'Dit is uw eCheck.Net inlog ID',
-	'PHPSHOP_ADMIN_CFG_ECHECK_KEY' => 'eCheck.net Transactie sleutel',
-	'PHPSHOP_ADMIN_CFG_ECHECK_KEY_EXPLAIN' => 'Dit is uw eCheck.net Transactie sleutel',
+	'PHPSHOP_ADMIN_CFG_ECHECK_KEY' => 'eCheck.net transactiesleutel',
+	'PHPSHOP_ADMIN_CFG_ECHECK_KEY_EXPLAIN' => 'Dit is uw eCheck.net transactiesleutel',
 	'PHPSHOP_ADMIN_CFG_ECHECK_AUTENTICATIONTYPE' => 'Authenticatie Type',
 	'PHPSHOP_ADMIN_CFG_ECHECK_AUTENTICATIONTYPE_EXPLAIN' => 'Dit is het eCheck.Net authenticatie type.',
-	'PHPSHOP_ADMIN_CFG_ECHECK_TRANSACTIONTYPE' => 'eCheck.net Transactie Type',
-	'PHPSHOP_ADMIN_CFG_ECHECK_TRANSACTIONTYPE_EXPLAIN' => 'Dit is het eCheck.Net transactie type.',
+	'PHPSHOP_ADMIN_CFG_ECHECK_TRANSACTIONTYPE' => 'eCheck.net transactietype',
+	'PHPSHOP_ADMIN_CFG_ECHECK_TRANSACTIONTYPE_EXPLAIN' => 'Dit is het eCheck.Net transactietype.',
 	'PHPSHOP_ADMIN_CFG_EWAY_CUSTID' => 'eWay klanten ID',
 	'PHPSHOP_ADMIN_CFG_EWAY_CUSTID_EXPLAIN' => 'Het klanten ID wat u heeft ontvangen van eWay.',
 	'PHPSHOP_ADMIN_CFG_NOCHEX_EMAIL' => 'NoChex Email',
-	'PHPSHOP_ADMIN_CFG_NOCHEX_EMAIL_EXPLAIN' => 'De email-account vooor uw NoChex betalingen.',
+	'PHPSHOP_ADMIN_CFG_NOCHEX_EMAIL_EXPLAIN' => 'De emailaccount vooor uw NoChex betalingen.',
 	'PHPSHOP_ADMIN_CFG_PN_LOGIN' => 'PayMeNow ID',
 	'PHPSHOP_ADMIN_CFG_PN_LOGIN_EXPLAIN' => 'Het PayMeNow Login/Account ID',
 	'PHPSHOP_ADMIN_CFG_PAYPAL_ONLYVERIFIED' => 'Accepteer alleen geverifieerde kopers?',
 	'PHPSHOP_ADMIN_CFG_PAYPAL_ONLYVERIFIED_EXPLAIN' => 'Hier kunt u kiezen of u alleen betalingen wilt ontvangen van klanten met een
+
 <strong>geverifieerde</strong> PayPal account (Wanneer een account niet geverifieerd is dan maakt PayPal wel het bedrag over, maar garandeerd niet de geldigheid van de verkoop).',
 	'PHPSHOP_ADMIN_CFG_2CHECKOUT_LOGIN' => '2Checkout.com verkopers ID',
 	'PHPSHOP_ADMIN_CFG_2CHECKOUT_LOGIN_EXPLAIN' => 'Uw 2Checkout.com verkopers ID',
-	'PHPSHOP_ADMIN_CFG_2CHECKOUT_SECRETWORD' => '2Checkout.com geheime woord',
-	'PHPSHOP_ADMIN_CFG_2CHECKOUT_SECRETWORD_EXPLAIN' => 'Uw geheime woord voor 2Checkout.com. Maakt de transacties veiliger.',
+	'PHPSHOP_ADMIN_CFG_2CHECKOUT_SECRETWORD' => '2Checkout.com geheim woord',
+	'PHPSHOP_ADMIN_CFG_2CHECKOUT_SECRETWORD_EXPLAIN' => 'Uw geheim woord voor 2Checkout.com. Maakt de transacties veiliger.',
 	'PHPSHOP_ADMIN_CFG_2CHECKOUT_MERCHANT_NOTIF' => 'Verkopers notificaties',
-	'PHPSHOP_ADMIN_CFG_2CHECKOUT_MERCHANT_NOTIF_EXPLAIN' => 'Moet 2CheckOut een transactie ontvangst e-mail sturen aan de winkeleigenaar?',
+	'PHPSHOP_ADMIN_CFG_2CHECKOUT_MERCHANT_NOTIF_EXPLAIN' => 'Moet 2CheckOut een transactie ontvangst email sturen aan de winkeleigenaar?',
 	'PHPSHOP_EPAY_FRAUD' => 'Der er blevet lavet: %s betaling(er) med dette kort de sidste 24 timer',
 	'PHPSHOP_EPAY_PAYMENT_DATE' => 'Dato for betalingen: ',
-	'PHPSHOP_EPAY_PAYMENT_FEE' => 'Gebyr pålagt betalingen: ',
+	'PHPSHOP_EPAY_PAYMENT_FEE' => 'Gebyr pï¿½lagt betalingen: ',
 	'PHPSHOP_EPAY_PAYMENT_CALLBACK' => '<b>Ordre betalingsinfo blev opdateret via callback!</b>',
-	'PHPSHOP_EPAY_PAYMENT_ORDER_COMMENT' => 'Betalingen blev godkendt af ePay / PBS. \nBetalingen har fået følgende transaktionsnummer i ePay.: ',
-	'PHPSHOP_EPAY_PAYMENT_RETRY_PAYMENT' => '<br/><br><br><b>Tryk på nederstående link for at forsøg betaling igen:</b><br>',
+	'PHPSHOP_EPAY_PAYMENT_ORDER_COMMENT' => 'Betalingen blev godkendt af ePay / PBS. nBetalingen har fï¿½et fï¿½lgende transaktionsnummer i ePay.: ',
+	'PHPSHOP_EPAY_PAYMENT_RETRY_PAYMENT' => '<br/><br><br><b>Tryk pï¿½ nederstï¿½ende link for at forsï¿½g betaling igen:</b><br>',
 	'PHPSHOP_EPAY_PAYMENT_ORDER_NOT_FOUND' => '(Ordren blev ikke fundet - Intern fejl)',
 	'PHPSHOP_EPAY_PAYMENT_MD5_CHECK_FAILURE' => '(Fejl i MD5 validering - Intern fejl - konfigurations fejl)',
-	'PHPSHOP_EPAY_PAYMENT_DECLINE' => 'Betalingen blev ikke godkendt af ePay / PBS. Betalingen blev afvist pga. følgende fejlkode: ',
+	'PHPSHOP_EPAY_PAYMENT_DECLINE' => 'Betalingen blev ikke godkendt af ePay / PBS. Betalingen blev afvist pga. fï¿½lgende fejlkode: ',
 	'PHPSHOP_EPAY_PAYMENT_LOG_TID' => 'Betalingen er oprettet med transaktionsnummer: ',
-	'PHPSHOP_EPAY_PAYMENT_EPAY_LINK' => '. Betalingen kan behandles på: <a href="https://ssl.ditonlinebetalingssystem.dk/admin" target="_new">www.epay.dk</a>',
-	'VM_CHECKOUT_EPAY_PAYMENT_CHECKOUT_HEADER' => 'Du har nu bekræftet ordren og skal nu vælge hvordan ordren betales. Dette gøres ved at klikke på den ønskede betalingsmetode nedenfor. Betalingen vil ske i et SSL sikret vindue hos ePay (<a href="http://www.epay.dk" target="_new">www.epay.dk</a>).<br><br>',
-	'VM_CHECKOUT_EPAY_PAYMENT_CHECKOUT_FOOTER' => 'Hvis ikke Standard Betalingsvinduet åbner op automatisk, så klik på knappen for at aktivere det. <br><br> Bemærk! Hvis I benytter en pop-up stopper, skal I holde CTRL tasten nede, mens I trykker på knappen.',
-	'VM_CHECKOUT_EPAY_BUTTON_OPEN_WINDOW' => 'ÅBEN BETALINGSVINDUET',
+	'PHPSHOP_EPAY_PAYMENT_EPAY_LINK' => '. Betalingen kan behandles pï¿½: <a href="https://ssl.ditonlinebetalingssystem.dk/admin" target="_new">www.epay.dk</a>',
+	'VM_CHECKOUT_EPAY_PAYMENT_CHECKOUT_HEADER' => 'You have now confirmed the order and must now choose how the order have to be paid. This is done by clicking the required payment method below. The payment will happen in a SSL secure window at ePay (<a href="http://www.epay.dk" target="_new">www.epay.dk</a>).<br><br>',
+	'VM_CHECKOUT_EPAY_PAYMENT_CHECKOUT_FOOTER' => 'If the Standard Payment window does not open automatically , then click the button to activate it. Notice! If you are using a pop-up blocker, you must press the CTRL key while clicking the button.',
+	'VM_CHECKOUT_EPAY_BUTTON_OPEN_WINDOW' => 'OPEN PAYMENT WINDOW',
 	'PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER' => 'PBS Merchant ID',
 	'PHPSHOP_ADMIN_CFG_EPAY_MERCHANTNUMBER_EXPLAIN' => 'The Merchant ID you have reveived from PBS. For testing purpose a test Merchant ID can be obtained by contacting ePay (sales@epay.dk)',
 	'PHPSHOP_ADMIN_CFG_EPAY_CARDTYPES' => 'Cardtypes',
@@ -1028,8 +1129,8 @@ verstuurd worden vanuit het autorizenet controlepaneel van de winkeleigenaar.
 	'PHPSHOP_ADMIN_CFG_EPAY_AUTHSMS' => 'Auth SMS',
 	'PHPSHOP_ADMIN_CFG_EPAY_AUTHSMS_EXPLAIN' => 'Enter a mobile number here to receive a SMS message when the payment is verified by ePay. <b>Notice! each SMS costs DKK 0.25.</b>',
 	'PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL' => 'Auth EMAIL',
-	'PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_EXPLAIN' => 'Enter one or more email adresses to receive an email when the payment is verified by ePay. For multiple receivers seperate the email addresses by semicolon (;).',
-	'PHPSHOP_ADMIN_CFG_EPAY_WINDOWSTATE' => 'Window State',
+	'PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_EXPLAIN' => 'Enter one or more email adresses to receive an email when the payment is verified by ePay. For multiple receivers seperate the email addresses by semicolon',
+	'PHPSHOP_ADMIN_CFG_EPAY_WINDOWSTATE' => 'Window state',
 	'PHPSHOP_ADMIN_CFG_EPAY_WINDOWSTATE_1' => 'Popup',
 	'PHPSHOP_ADMIN_CFG_EPAY_WINDOWSTATE_2' => 'Same window (full screen)',
 	'PHPSHOP_ADMIN_CFG_EPAY_3DSECURE' => '3D secure',
@@ -1040,12 +1141,15 @@ verstuurd worden vanuit het autorizenet controlepaneel van de winkeleigenaar.
 	'PHPSHOP_ADMIN_CFG_EPAY_CALLBACK_0' => 'Callback is disabled',
 	'PHPSHOP_ADMIN_CFG_EPAY_CALLBACK_1' => 'Enable callback',
 	'PHPSHOP_ADMIN_CFG_EPAY_CALLBACK_EXPLAIN' => 'Callback is used to avoid missing update of the shopping system if
+
 the user closes the browser before redirect to the shop from ePay is made. <b>(It is recommented that callback is enabled to update the
+
 shop even if the customer during the payment process closes the browser)</b>',
 	'PHPSHOP_ADMIN_CFG_EPAY_ADDFEE' => 'Transaction Fee',
 	'PHPSHOP_ADMIN_CFG_EPAY_ADDFEE_0' => 'Customer does not pay for the transaction fee',
 	'PHPSHOP_ADMIN_CFG_EPAY_ADDFEE_1' => 'The customer paies for the transaction fee',
 	'PHPSHOP_ADMIN_CFG_EPAY_ADDFEE_EXPLAIN' => 'Often it is necessary to put the transaction fee to the customer.
+
 ePay will calculate the fee and put it on the payment before the payment is made.',
 	'PHPSHOP_ADMIN_CFG_EPAY_SUBSCRIPTION' => 'Subscription',
 	'PHPSHOP_ADMIN_CFG_EPAY_SUBSCRIPTION_0' => 'Disable subscription',
@@ -1067,20 +1171,26 @@ ePay will calculate the fee and put it on the payment before the payment is made
 	'VM_ORDER_EXPORT_MODULE_FORM_DESC' => 'Beschrijving',
 	'VM_ORDER_EXPORT_CLASS_NAME' => 'Export Module klasse Naam',
 	'VM_ORDER_EXPORT_CLASS_NAME_TIP' => '(e.g. <strong>ps_olsi</strong>) :<br />
+
 default: ps_xmlexport<br />
+
 <i>Laat leeg indien u er niet zeker van bent, wat in te vullen!</i>',
 	'VM_ORDER_EXPORT_CONFIG' => 'Order Export configuratie',
 	'VM_ORDER_EXPORT_CONFIG_TIP' => 'Hier kunt u uw order export configureren.
+
 Het moet geldige PHP Code zijn!
+
 ',
 	'VM_REGISTER_BEFORE' => 'Registreer alstublieft om van deze optie gebruik te maken',
 	'VM_RECOMMEND_MESSAGE_PREFACE' => 'De navolgende aanbeveling van de website "%s" is u gestuurd door %s (%s).
 
+
+
 _____________________',
 	'VM_CFG_BROWSE_STYLE' => 'Selecteer een productoverzicht layout',
 	'VM_CFG_BROWSE_STYLE_TIP' => 'Verander de layout van een productoverzicht met deze instellingen.<br />De tabelloze layout is uitermate geschikt voor uw tabelloze XHTML/CSS site. Probeer de andere layouts als uw layout een rommeltje wordt.',
-	'PHPSHOP_CHECKOUT_MSG_2' => 'Selecteer een Leveringsadres!',
-	'PHPSHOP_CHECKOUT_MSG_3' => 'Selecteer een verzendings methode!',
+	'PHPSHOP_CHECKOUT_MSG_2' => 'Selecteer een leveradres!',
+	'PHPSHOP_CHECKOUT_MSG_3' => 'Selecteer een verzendmethode!',
 	'PHPSHOP_CHECKOUT_MSG_99' => 'Controleer de gegevens en bevestig de bestelling!',
 	'PROMPT_PASSWORD' => 'Wachtwoord vergeten?',
 	'REGISTER_TITLE' => 'Registratie',
@@ -1091,11 +1201,11 @@ _____________________',
 	'VM_RECOVER_CART' => 'Herstel opgeslagen winkelwagen',
 	'VM_CART_PRODUCT_NOTEXIST' => 'Het geselecteerde product bestaat niet.',
 	'VM_COOKIE_MISSING' => 'Cookie ontbreekt',
-	'EMAIL_ERR_ONLYONE' => 'U kunt niet meer dan één emailadres invoegen',
+	'EMAIL_ERR_ONLYONE' => 'U kunt niet meer dan ï¿½ï¿½n emailadres invoegen',
 	'VM_ENQUIRY_TEMPLATE_NOT_FOUND' => 'Informatieaanvraag template niet gevonden!',
 	'VM_PRODUCT_MISSING_SKU' => 'U dient een artikelnummer in te vullen.',
 	'VM_PRODUCT_MISSING_NAME' => 'U dient een productnaam in te vullen.',
-	'VM_PRODUCT_MISSING_AVAILDATE' => 'U moet een beschikbaarheids datum invullen.',
+	'VM_PRODUCT_MISSING_AVAILDATE' => 'U moet een beschikbaarheidsdatum invullen.',
 	'VM_PRODUCT_MISSING_CATEGORY' => 'U moet een categorie selecteren.',
 	'VM_PRODUCT_IMAGEURL_MUSTBEGIN' => 'Link van een afbeelding behoort te beginnen met http.',
 	'VM_PRODUCT_SPECIFY_DELETE' => 'Specificeer het te verwijderen product!',
@@ -1105,12 +1215,12 @@ _____________________',
 	'VM_PRODUCT_UPDATED' => 'Het product is succesvol gewijzigd',
 	'VM_PRODUCT_ADDING_FAILED' => 'Toevoegen van het product mislukt!',
 	'VM_PRODUCT_MOVE_NOTFOUND' => 'Geen product gevonden om te verplaatsen.',
-	'VM_PRODUCT_MUSTSELECT_ONE_CAT' => 'U moet ÉÉN categorie selecteren!',
+	'VM_PRODUCT_MUSTSELECT_ONE_CAT' => 'U moet <strong>ï¿½ï¿½n</strong> categorie selecteren!',
 	'VM_PRODUCT_DELETED' => 'Verwijderd product ID: {product_id}',
 	'VM_PRODUCT_ID_MISSING' => 'Een product ID ontbreekt.',
 	'VM_PRODUCT_PRICE_MISSING' => 'Er dient een prijs te worden ingegeven.',
 	'VM_PRODUCT_PRICE_CURRENCY_MISSING' => 'Een valuta moet worden ingegeven.',
-	'VM_PRODUCT_PRICE_QEND_LESS' => 'De ingegeven eindhoeveelheid is lager dan de ingegeven beginhoeveelheid.',
+	'VM_PRODUCT_PRICE_QEND_LESS' => 'Het ingegeven eindtotaal is lager dan het ingegeven begintotaal.',
 	'VM_PRODUCT_PRICE_ALREADY' => 'Dit product heeft al een prijs voor de geselecteerde kopersgroep en de aangegeven hoeveelheid.',
 	'VM_PRODUCT_PRICE_NOTENTERED' => 'U heeft geen prijs ingegeven.',
 	'VM_PRODUCT_PRICE_ADDED' => 'De nieuwe prijs voor het product is toegevoegd.',
@@ -1118,44 +1228,44 @@ _____________________',
 	'VM_PRODUCT_PRICE_UPDATED' => 'De prijs van het product is aangepast.',
 	'VM_PRODUCT_PRICE_UPDATING_FAILED' => 'De prijs van het product kon niet aangepast worden.',
 	'VM_PRODUCT_PRICE_DELETED' => 'De prijs van het product is verwijderd.',
-	'VM_ORDER_DELETE_ERR_ID' => 'Unable to delete without the order id.',
-	'VM_ORDERSTATUS_CHANGE_ERR_CORE' => 'This Order Status Code cannot be changed, it is one of the core status codes.',
-	'VM_ORDERSTATUS_DELETE_ERR_SELECT' => 'Please select an order status type to delete.',
-	'VM_ORDERSTATUS_DELETE_ERR_CORE' => 'This Order Status cannot be deleted, it is one of the core status codes.',
-	'VM_ORDERSTATUS_DELETE_ERR_STILL' => 'This Order Status cannot be deleted, there are still Orders with this Status.',
-	'VM_ORDERSTATUS_ADDED' => 'The Order Status Type has been added.',
-	'VM_ORDERSTATUS_ADD_FAILED' => 'Adding the Order Status Type has failed.',
-	'VM_ORDERSTATUS_UPDATED' => 'The Order Status Type has been updated.',
-	'VM_PAYMENTMETHOD_ERR_NAME' => 'Please enter a payment method name.',
-	'VM_PAYMENTMETHOD_ERR_CODE' => 'Please enter a payment method code.',
-	'VM_PAYMENTMETHOD_UPDATE_SELECT' => 'Please select a payment method to update.',
-	'VM_PAYMENTMETHOD_DELETE_SELECT' => 'Please select a payment method to delete.',
-	'VM_PAYMENTMETHOD_CLASS_NOT_EXIST' => 'The selected Payment Class can\'t be instantiated because it doesn\'t exist.',
-	'VM_USER_ERR_MISSINGVALUE' => 'Missing value for field "%s".',
-	'VM_USER_ERR_GROUP' => 'You must assign the user to a group.',
-	'VM_USER_ADD_ERR_NOPERMS' => 'You have no permission to add a user of that usertype: %s.',
-	'VM_USER_DELETE_SELECT' => 'Please select a user to delete.',
-	'VM_USER_DELETE_ERR_NOPERMS' => 'You have no permission to delete a user of that usertype: %s.',
-	'VM_USER_DELETE_ERR_YOURSELF' => 'Very funny, but you cannot delete yourself.',
-	'VM_USER_ADD_FAILED' => 'New User couldn\'t be added',
-	'VM_USER_ADDED' => 'The user has been added.',
-	'VM_USER_UPDATED' => 'The user details have been updated.',
-	'VM_USER_ERR_ONLYSUPERADMIN' => 'You cannot change this user\'s group as the user is the only active Super Administrator for your site.',
-	'VM_USER_DELETE_ERR_SUPERADMIN' => 'You cannot delete a Super Administrator',
-	'VM_USER_DELETE_ERR_ADMIN' => 'You cannot delete another `Administrator` only `Super Administrators` have this power',
-	'MUST_NOT_USE' => 'You must not use this function.',
-	'VM_USERADDRESS_ERR_LABEL_EXISTS' => 'The given address label already exists.',
-	'VM_USERADDRESS_DELETE_SELECT' => 'Please select a user address to delete.',
-	'VM_USERADDRESS_ADDED' => 'The Address was added to the user.',
-	'VM_USERADDRESS_ADD_FAILED' => 'Something went wrong while adding the new address.',
-	'VM_USERADDRESS_UPDATED' => 'The Address has been updated.',
-	'VM_USERADDRESS_UPDATED_FAILED' => 'Something went wrong when updating the address.',
-	'VM_USERFIELD_ERR_ALREADY' => 'The field name %s is already in use!',
-	'VM_USERFIELD_SAVED' => 'The Field has been saved.',
-	'VM_USERFIELD_DELETE_SELECT' => 'Please select a Field to delete.',
-	'VM_USERFIELD_DELETE_ERR_SYSTEM' => '"%s" cannot be deleted, because it is a system field.',
-	'VM_USERFIELD_DELETED' => 'Deleted Field "%s"',
-	'PHPSHOP_PRODUCT_DISCOUNT_FORM_MNU' => 'Add Product Discount',
+	'VM_ORDER_DELETE_ERR_ID' => 'Kon niet verwijderd worden zonder het order id.',
+	'VM_ORDERSTATUS_CHANGE_ERR_CORE' => 'Deze orderstatus code kan niet gewijzigd worden, het is een status code die toebehoort daan de core.',
+	'VM_ORDERSTATUS_DELETE_ERR_SELECT' => 'Selecteer een te verwijderen orderstatus type.',
+	'VM_ORDERSTATUS_DELETE_ERR_CORE' => 'Deze orderstatus kan niet verwijderd worden, het is een status code die toebehoort daan de core.',
+	'VM_ORDERSTATUS_DELETE_ERR_STILL' => 'Deze orderstatus kan niet verwijderd worden, er zijn nog bestellingen met deze status.',
+	'VM_ORDERSTATUS_ADDED' => 'Het orderstatus type is toegevoegd.',
+	'VM_ORDERSTATUS_ADD_FAILED' => 'Toevoegen van  het orderstatus type mislukt.',
+	'VM_ORDERSTATUS_UPDATED' => 'Het orderstatus type is geupdate.',
+	'VM_PAYMENTMETHOD_ERR_NAME' => 'Geef een naam in voor de betaalmethode.',
+	'VM_PAYMENTMETHOD_ERR_CODE' => 'Geef een code in voor de betaalmethode.',
+	'VM_PAYMENTMETHOD_UPDATE_SELECT' => 'Selecteer een te updaten betaalmethode.',
+	'VM_PAYMENTMETHOD_DELETE_SELECT' => 'Selecteer een te verwijderen betaalmethode.',
+	'VM_PAYMENTMETHOD_CLASS_NOT_EXIST' => 'De geselecteerde betaalklasse kan niet geï¿½nitieerd worden omdat deze niet bestaat.',
+	'VM_USER_ERR_MISSINGVALUE' => 'Er missen gegevens in het veld "%s".',
+	'VM_USER_ERR_GROUP' => 'U behoort de gebruiker aan een groep toe te voegen.',
+	'VM_USER_ADD_ERR_NOPERMS' => 'U heeft geen machtiging om een gebruiker toe te voegen van dit gebruikerstype: %s.',
+	'VM_USER_DELETE_SELECT' => 'Selecteer een te verwijderen gebruiker.',
+	'VM_USER_DELETE_ERR_NOPERMS' => 'U heeft geen machtiging een gebruiker te verwijderen van dit gebruikerstype: %s.',
+	'VM_USER_DELETE_ERR_YOURSELF' => 'Leuk geprobeerd, u kunt uzelf niet verwijderen.',
+	'VM_USER_ADD_FAILED' => 'Nieuwe gebruiker kon niet worden toegevoegd',
+	'VM_USER_ADDED' => 'De gebruiker is toegevoegd.',
+	'VM_USER_UPDATED' => 'De gebruikersdetails zijn geupdate.',
+	'VM_USER_ERR_ONLYSUPERADMIN' => 'U kunt deze groep niet wijzigen daar deze gebruiker de enige actieve superadministrator is.',
+	'VM_USER_DELETE_ERR_SUPERADMIN' => 'U kunt een superadministrator niet verwijderen.',
+	'VM_USER_DELETE_ERR_ADMIN' => 'U kunt geen andere administrators verwijderen, alleen super administrators zijn hiertoe gemachtigd.',
+	'MUST_NOT_USE' => 'U kunt deze functie beter niet gebruiken.',
+	'VM_USERADDRESS_ERR_LABEL_EXISTS' => 'Het betreffende adreslabel bestaat reeds.',
+	'VM_USERADDRESS_DELETE_SELECT' => 'Selecteer een te verwijderen adreslabel.',
+	'VM_USERADDRESS_ADDED' => 'Het adres is toegevoegd aan de gebruiker.',
+	'VM_USERADDRESS_ADD_FAILED' => 'Er is iets fout gegaan tijdens het toevoegen van het nieuwe adres.',
+	'VM_USERADDRESS_UPDATED' => 'Het adres is geupdate.',
+	'VM_USERADDRESS_UPDATED_FAILED' => 'Er is iets fout gegaan tijdens het updaten van het adres.',
+	'VM_USERFIELD_ERR_ALREADY' => 'De veldnaam %s is al in gebruik!',
+	'VM_USERFIELD_SAVED' => 'Het veld is opgeslagen.',
+	'VM_USERFIELD_DELETE_SELECT' => 'Selecteer een te verwijderen veld.',
+	'VM_USERFIELD_DELETE_ERR_SYSTEM' => '"%s" kan niet verwijderd worden, omdat het een systeemveld is.',
+	'VM_USERFIELD_DELETED' => 'Verwijderd veld "%s"',
+	'PHPSHOP_PRODUCT_DISCOUNT_FORM_MNU' => 'Voeg productkorting toe',
 	'VM_CANADAPOST_SEND_LANGUAGE_CODE' => 'EN',
 	'VM_CANADAPOST_FORM_HANDLING_DATE' => 'Expected Date of Arrival',
 	'VM_CANADAPOST_FORM_HANDLING_LBL' => 'Handling Charge',
@@ -1165,8 +1275,11 @@ _____________________',
 	'VM_SHIPPING_METHOD_CANADAPOST_CP_SERVER_EXPLAIN' => 'This is the Canada Post Server IP Address - default is 206.191.4.228',
 	'VM_SHIPPING_METHOD_CANADAPOST_CP_PORT' => 'Canada Post Server Port',
 	'VM_SHIPPING_METHOD_CANADAPOST_CP_PORT_EXPLAIN' => 'This is the Canada Post Server Port<br />
+
 The server port must be 30000<br />
+
 If you cannot use this port, you will not be able to use this module<br />
+
 check with your hosting company to see if you can access this port first',
 	'VM_SHIPPING_METHOD_CANADAPOST_CP_FEDERAL_TAX' => 'Canada Post Federal Tax Amount',
 	'VM_SHIPPING_METHOD_CANADAPOST_CP_FEDERAL_TAX_EXPLAIN' => 'Federal Tax Amount goes here',
@@ -1176,160 +1289,162 @@ check with your hosting company to see if you can access this port first',
 	'VM_SHIPPING_METHOD_CANADAPOST_ARRIVAL_DATE_EXPLAIN_I' => 'Description for Arrival Dates',
 	'VM_SHIPPING_METHOD_CANADAPOST_HANDLING_CHARGE_EXPLAIN' => 'Handling Charge Description',
 	'VM_SHIPPING_METHOD_CANADAPOST_HANDLING_CHARGE_EXPLAIN_I' => 'Description for Handling Carges',
-	'PHPSHOP_PRODUCT_FORM_TITLE' => 'Title',
-	'VM_PRODUCT_ATTRIBUTE_ERR_ATTRNAME' => 'An attribute name must be entered.',
-	'VM_PRODUCT_ATTRIBUTE_ERR_ATTRUNIQ' => 'A unique attribute name must be entered.',
-	'VM_PRODUCT_ATTRIBUTE_ERR_DELITEMS' => 'Cannot delete last attribute while product has Items. Delete all Items first.',
-	'VM_PRODUCT_ATTRIBUTE_ERR_SAVING' => 'Saving the attribute failed.',
-	'VM_PRODUCT_ATTRIBUTE_SAVED' => 'The Attribute has been saved.',
-	'VM_PRODUCT_ATTRIBUTE_ERR_UPDATING' => 'Updating the attribute failed.',
-	'VM_PRODUCT_ATTRIBUTE_UPDATED' => 'The Attribute has been updated.',
-	'VM_CHECK_UPDATES_MNU' => 'Check for Updates',
-	'VM_PRODUCT_TYPE_ERR_NAME' => 'You must enter a name for the Product Type.',
-	'VM_PRODUCT_TYPE_DELETE_SELECT' => 'Please select a Product Type to delete.',
-	'VM_PRODUCT_TYPE_ADD_FAILED' => 'Failed to create a new table for this Product Type!!',
-	'VM_PRODUCT_TYPE_ADDED' => 'The product type has been added.',
-	'VM_PRODUCT_TYPE_PARAMETER_ERR_NAME' => 'You must enter a name for the Parameter.',
-	'VM_PRODUCT_TYPE_PARAMETER_ERR_LABEL' => 'You must enter a label for the Parameter.',
-	'VM_PRODUCT_TYPE_PARAMETER_ERR_VALUES' => 'If You checked Multiple select you must enter a Possible Values.',
-	'VM_PRODUCT_TYPE_PARAMETER_ERR_EXIST' => 'The Parameter with this name in this Product Type already exist.',
-	'VM_PRODUCT_TYPE_PARAMETER_DELETE_SELECT' => 'Please select a Parameter to delete.',
-	'VM_PRODUCT_TYPE_PARAMETER_ADDING_FAILED' => 'Adding the new parameter field to the table failed.',
-	'VM_PRODUCT_TYPE_PARAMETER_ADDED' => 'The Parameter has been added.',
-	'VM_UPDATE_PACKAGE_EXISTS' => 'A file with the same name as the package to download already exists. Using the file:',
-	'VM_UPDATE_ERR_STORE_FAILED' => 'Failed to store the Update Package. Please make the Cache Directory writable.',
-	'VM_UPDATE_ERR_RETRIEVE_FAILED' => 'Failed to retrieve the location of the Patch Package virtuemart.net Server. Probably there\'s no Patch Package available for your Version. Try again later if you think it\'s a network problem.',
-	'VM_UPDATE_ERR_EXTRACT_FAILED' => 'Failed to extract the Update Package Contents to',
-	'VM_UPDATE_ERR_PARSE_FAILED' => 'Failed to parse the XML Update File.',
-	'VM_UPDATE_ERR_FILE_MISSING' => 'The file %s is missing in the Update Package.',
-	'VM_UPDATE_ERR_DOWNLOAD' => 'The Update Package could not be downloaded.',
-	'VM_UPDATE_ERR_FILE_UNWRITABLE' => 'The File %s must be writable.',
-	'VM_UPDATE_ERR_DIR_UNWRITABLE' => 'The Directory %s must be writable.',
-	'VM_UPDATE_ERR_OVERWRITE_FAILED' => 'Failed to overwrite the file "%s"',
-	'VM_UPDATE_FILE_OVERWROTE' => 'Successfully overwrote the file "%s"',
-	'VM_UPDATE_ERR_QUERY_FAILED' => 'The following query failed: "%s". This may not be fatal, but please copy + save this error message for better problem handling.',
-	'VM_UPDATE_QUERY_EXECUTED' => 'Successfully executed the Query "%s"',
-	'VM_UPDATE_SUCCESS' => 'Your previous VirtueMart Version (%s) has successfully been updated to Version %s.',
-	'VM_UPDATE_ERR_NOTMATCHING' => 'This Patch Package is not matching to your VirtueMart Version.',
-	'VM_UPDATE_STEP_1' => 'Check for Updates',
-	'VM_UPDATE_STEP_2' => 'Preview/Apply Update',
-	'VM_UPDATE_STEP_3' => 'View Results',
-	'VM_PRODUCT_TYPE_ERR_SELECT' => 'Please select a Product Type.',
-	'VM_PRODUCT_TYPE_ERR_SELECT_PRODUCT' => 'Please select a Product.',
-	'VM_PRODUCT_TYPE_ERR_ALREADY' => 'This Product is already assigned to this Product Type.',
-	'VM_PRODUCT_PRODUCT_TYPE_DELETE_SELECT_PT' => 'Please select a Product Type to delete a Product from this Product Type.',
-	'VM_PRODUCT_PRODUCT_TYPE_DELETE_SELECT_PR' => 'Please select a Product to delete from Product Type.',
-	'VM_PRODUCT_PRODUCT_TYPE_ASSIGNED' => 'The Product was assigned to this product type.',
-	'VM_WAITING_LIST_ERR_ALREADY' => 'You are already being notified of this product.',
-	'VM_WAITING_LIST_ERR_EMAIL_ENTER' => 'You must enter an e-mail address to be on the waiting list.',
-	'VM_WAITING_LIST_ERR_EMAIL_NOTVALID' => 'Please provide a valid email address.',
-	'VM_WAITING_LIST_ERR_PRODUCT' => 'You must enter a product to be on the waiting list.',
-	'VM_WAITING_LIST_DELETE_SELECT' => 'Please select a waiting list id to delete.',
-	'VM_WAITING_LIST_DELETE_ERR_PRODUCT' => 'You must enter a product id.',
-	'VM_USER_GROUP_ERR_PROTECTED' => 'The group %s cannot be removed or modified!',
-	'VM_USER_GROUP_ERR_STILLUSERS' => 'The group %s still has users assigned to it and cannot be removed!',
-	'VM_USER_GROUP_ADDED' => 'The new user group has been added.',
-	'VM_USER_GROUP_UPDATED' => 'The user group has been updated.',
-	'VM_ABSTRACTOBJECT_VALIDATE_ERR_ID' => 'Please specify an ID to validate',
-	'VM_ABSTRACTOBJECT_VALIDATE_ERR_FIELD' => 'A value for the field "%s" is missing.',
-	'VM_ABSTRACTOBJECT_VALIDATE_NOTUNIQUE' => 'A record with the same value "%s" for "%s" already exists. Please choose another value.',
-	'VM_ABSTRACTOBJECT_REORDER_ERR_TYPE' => 'Could not determine the item type that is to be reordered.',
-	'VM_ABSTRACTOBJECT_PUBLISH_ERR_TYPE' => 'Could not determine the item type that is to be (un)published.',
-	'VM_ABSTRACTOBJECT_TASK_OK' => '{field_name}(s) {set} was/were {task}.',
-	'CMN_YEARS' => 'Years',
-	'VM_SORT_ALPHA_CONFIRM' => 'Are you sure to sort this list alphabetically? This cannot be undone.',
-	'VM_SORT_SAVE_ORDER' => 'Save Order',
-	'VM_SORT_ALPHA' => 'Sort Alphabetically',
-	'VM_PRODUCT_DISCOUNT_ERR_AMOUNT' => 'You must enter an amount for the discount.',
-	'VM_PRODUCT_DISCOUNT_ERR_TYPE' => 'You must select a discount type.',
-	'VM_PRODUCT_DISCOUNT_START_END_DATE' => 'The start date must occur before the end date.',
-	'VM_PRODUCT_DISCOUNT_ERR_UPDATE' => 'You must specify a discount to update.',
-	'VM_PRODUCT_DISCOUNT_ERR_DELETE' => 'Please select a discount to delete.',
-	'VM_PRODUCT_DISCOUNT_ADDED' => 'The product discount has been added.',
-	'VM_PRODUCT_DISCOUNT_UPDATED' => 'The product discount has been updated.',
+	'PHPSHOP_PRODUCT_FORM_TITLE' => 'Titel',
+	'VM_PRODUCT_ATTRIBUTE_ERR_ATTRNAME' => 'Een attribuutnaam moet ingegeven worden.',
+	'VM_PRODUCT_ATTRIBUTE_ERR_ATTRUNIQ' => 'Een unieke attribuutnaam moet worden ingegeven.',
+	'VM_PRODUCT_ATTRIBUTE_ERR_DELITEMS' => 'Kan het laatste attribuut niet verwijderen, omdat het product al items heeft. Verwijder eerst alle items.',
+	'VM_PRODUCT_ATTRIBUTE_ERR_SAVING' => 'Opslaan van het attribuut mislukt.',
+	'VM_PRODUCT_ATTRIBUTE_SAVED' => 'Het attribuut is opgeslagen.',
+	'VM_PRODUCT_ATTRIBUTE_ERR_UPDATING' => 'Updaten van het attribuut mislukt.',
+	'VM_PRODUCT_ATTRIBUTE_UPDATED' => 'Het attribuut is geupdate.',
+	'VM_CHECK_UPDATES_MNU' => 'Controleer voor updates.',
+	'VM_PRODUCT_TYPE_ERR_NAME' => 'U moet een naam ingeven voor het producttype.',
+	'VM_PRODUCT_TYPE_DELETE_SELECT' => 'Selecteer een te verwijderen producttype.',
+	'VM_PRODUCT_TYPE_ADD_FAILED' => 'Het creï¿½eren van een nieuwe tabel voor dit producttype is mislukt!!',
+	'VM_PRODUCT_TYPE_ADDED' => 'Het producttype is toegevoegd.',
+	'VM_PRODUCT_TYPE_PARAMETER_ERR_NAME' => 'U moet voor de parameter een naam ingeven.',
+	'VM_PRODUCT_TYPE_PARAMETER_ERR_LABEL' => 'U moet voor de parameter een label ingeven.',
+	'VM_PRODUCT_TYPE_PARAMETER_ERR_VALUES' => 'Indien u "meerdere" heeft geselecteerd, dient u mogelijke waardes in te geven.',
+	'VM_PRODUCT_TYPE_PARAMETER_ERR_EXIST' => 'Een parameter met deze naam bestaat reeds in dit producttype.',
+	'VM_PRODUCT_TYPE_PARAMETER_DELETE_SELECT' => 'Selecteer een te verwijderen parameter.',
+	'VM_PRODUCT_TYPE_PARAMETER_ADDING_FAILED' => 'Het toevoegen van een nieuw parameterveld aan de tabel is mislukt.',
+	'VM_PRODUCT_TYPE_PARAMETER_ADDED' => 'De parameter is toegevoegd.',
+	'VM_UPDATE_PACKAGE_EXISTS' => 'Een bestand met dezelfde naam als het te downloaden bestand bestaat al. Gebruik bestand:',
+	'VM_UPDATE_ERR_STORE_FAILED' => 'Opslaan van het update pakket mislukt, zorg a.u.b. dat de cache-map schrijfbaar is.',
+	'VM_UPDATE_ERR_RETRIEVE_FAILED' => 'Het achterhalen van de locatie van de patch op de virtuemart.net server is mislukt. Er is waarschijnlijk geen patch beschikbaar voor uw versie. Probeer het later nog eens wanneer u denkt dat het een netwerk probleem is.',
+	'VM_UPDATE_ERR_EXTRACT_FAILED' => 'Het uitpakken van het update pakket is mislukt naar',
+	'VM_UPDATE_ERR_PARSE_FAILED' => 'Het uitvoeren van het XML Update bestand is mislukt.',
+	'VM_UPDATE_ERR_FILE_MISSING' => 'Het bestand %s ontbreekt  in het update pakket.',
+	'VM_UPDATE_ERR_DOWNLOAD' => 'Het update pakket kon niet worden gedownload,',
+	'VM_UPDATE_ERR_FILE_UNWRITABLE' => 'Het bestand %s moet schrijfbaar zijn.',
+	'VM_UPDATE_ERR_DIR_UNWRITABLE' => 'De map %s moet schrijfbaar zijn.',
+	'VM_UPDATE_ERR_OVERWRITE_FAILED' => 'Overschrijven van het bestand "%s" mislukt.',
+	'VM_UPDATE_FILE_OVERWROTE' => 'Het bestand "%s" is succesvol overschreven.',
+	'VM_UPDATE_ERR_QUERY_FAILED' => 'De navolgende query is mislukt: "%s". Dit behoeft niet fataal te zijn, kopieer en sla deze foutmelding op om deze nadien na te kijken. ',
+	'VM_UPDATE_QUERY_EXECUTED' => 'Succesvol de query "%s" uitgevoerd.',
+	'VM_UPDATE_SUCCESS' => 'Uw vorige VirtueMart versie (%s) is succesvol geupdate naar versie %s.',
+	'VM_UPDATE_ERR_NOTMATCHING' => 'Deze patch is niet uw VirtueMart versie bedoeld.',
+	'VM_UPDATE_STEP_1' => 'Controleer voor updates',
+	'VM_UPDATE_STEP_2' => 'Bekijk/voer update uit.',
+	'VM_UPDATE_STEP_3' => 'Bekijk resultaten',
+	'VM_PRODUCT_TYPE_ERR_SELECT' => 'Selecteer een producttype.',
+	'VM_PRODUCT_TYPE_ERR_SELECT_PRODUCT' => 'Selecteer een product.',
+	'VM_PRODUCT_TYPE_ERR_ALREADY' => 'Dit product is reeds toegewezen aan dit product type. ',
+	'VM_PRODUCT_PRODUCT_TYPE_DELETE_SELECT_PT' => 'Selecteer een producttype om een hier een product uit te verwijderen.',
+	'VM_PRODUCT_PRODUCT_TYPE_DELETE_SELECT_PR' => 'Selecteer een te verwijderen product uit het producttype. ',
+	'VM_PRODUCT_PRODUCT_TYPE_ASSIGNED' => 'Het product was toegewezen aan dit producttype.',
+	'VM_WAITING_LIST_ERR_ALREADY' => 'U heeft al een notificatie aangevraagd voor dit product.',
+	'VM_WAITING_LIST_ERR_EMAIL_ENTER' => 'U moet een emailadres vermelden om op de wachtlijst te kunnen komen.',
+	'VM_WAITING_LIST_ERR_EMAIL_NOTVALID' => 'Geef alstublieft een geldig emailadres op.',
+	'VM_WAITING_LIST_ERR_PRODUCT' => 'U moet een product vermelden om op de wachtlijst te kunnen komen.',
+	'VM_WAITING_LIST_DELETE_SELECT' => 'Selecteer een te verwijderen wachtlijst',
+	'VM_WAITING_LIST_DELETE_ERR_PRODUCT' => 'U moet een product id vermelden.',
+	'VM_USER_GROUP_ERR_PROTECTED' => 'De groep %s kan niet verwijderd, of verplaatst worden.',
+	'VM_USER_GROUP_ERR_STILLUSERS' => 'In de groep %s zijn nog gebruikers en kan niet verplaatst worden!',
+	'VM_USER_GROUP_ADDED' => 'De nieuwe gebruikersgroep is toegevoegd.',
+	'VM_USER_GROUP_UPDATED' => 'De gebruikersgroep is bijgewerkt.',
+	'VM_ABSTRACTOBJECT_VALIDATE_ERR_ID' => 'Specificeer een  ID om te valideren',
+	'VM_ABSTRACTOBJECT_VALIDATE_ERR_FIELD' => 'Een waarde voor het veld "%s" ontbreekt.',
+	'VM_ABSTRACTOBJECT_VALIDATE_NOTUNIQUE' => 'Een regel met dezelfde waarde "%s" voor "%s" bestaat al. Kies alstublieft een andere waarde.',
+	'VM_ABSTRACTOBJECT_REORDER_ERR_TYPE' => 'Kon het itemtype niet bepalen wat opnieuw gerangschikt moet worden.',
+	'VM_ABSTRACTOBJECT_PUBLISH_ERR_TYPE' => 'Kon het itemtype niet bepalen wat gedepubliceerd moet worden.',
+	'VM_ABSTRACTOBJECT_TASK_OK' => '{field_name}(s) {set} is {task}.',
+	'CMN_YEARS' => 'Jaren',
+	'VM_SORT_ALPHA_CONFIRM' => 'Bent u er zeker van dat dit veld alfabetisch gerangschikt moet worden? Dit kan niet ongedaan gemaakt worden.',
+	'VM_SORT_SAVE_ORDER' => 'Sla volgorde op',
+	'VM_SORT_ALPHA' => 'Sorteer alfabetisch',
+	'VM_PRODUCT_DISCOUNT_ERR_AMOUNT' => 'U moet een hoeveelheid ingeven voor de korting.',
+	'VM_PRODUCT_DISCOUNT_ERR_TYPE' => 'U moet een kortingstype selecteren.',
+	'VM_PRODUCT_DISCOUNT_START_END_DATE' => 'De begindatum moet plaatsvinden voor de einddatum.',
+	'VM_PRODUCT_DISCOUNT_ERR_UPDATE' => 'U moet een bij te werken korting specficeren. ',
+	'VM_PRODUCT_DISCOUNT_ERR_DELETE' => 'Selecteer een te verwijderen korting.',
+	'VM_PRODUCT_DISCOUNT_ADDED' => 'De productkorting is toegevoegd.',
+	'VM_PRODUCT_DISCOUNT_UPDATED' => 'De productkorting is bijgewerkt.',
 	'VM_PRODUCT_DISCOUNT_OVERRIDE' => 'Override',
 	'PHPSHOP_ITEM' => 'Item',
-	'VM_PRODUCT_CATEGORY_ERR_NAME' => 'You must enter a name for the category.',
+	'VM_PRODUCT_CATEGORY_ERR_NAME' => 'U moet een naam opgeven voor de categorie.',
 	'VM_PRODUCT_CATEGORY_ERR_PARENT' => 'Category parent cannot be same category.',
-	'VM_PRODUCT_CATEGORY_ERR_DELETE_SELECT' => 'Please select a category to delete.',
-	'VM_PRODUCT_CATEGORY_ERR_DELETE_CHILDREN' => 'This category has children - please delete those children first.',
-	'VM_PRODUCT_CATEGORY_ERR_DELETE_IMAGES' => 'Failed deleting Category Images!',
-	'VM_PRODUCT_CATEGORY_ADDED' => 'Successfully added new category',
-	'VM_PRODUCT_CATEGORY_UPDATED' => 'Successfully updated category',
-	'VM_PRODUCT_CATEGORY_DELETED' => 'Successfully deleted category ID',
-	'VM_DELETE_RECORD' => 'Delete this record',
-	'VM_DEFAULT_TOP_LEVEL' => 'Default-Top Level',
-	'VM_SORT_ERR_NUMBERS_ONLY' => 'Error: Please use numbers only for ordering the list!',
-	'VM_PRODUCT_FILES_ERR_PROVIDE' => 'You must either Upload a File or provide a File URL.',
-	'VM_PRODUCT_FILES_ERR_ID' => 'A product ID must be specified.',
-	'VM_PRODUCT_FILES_ERR_DELETE' => 'Please select a file to delete.',
-	'VM_PRODUCT_FILES_IMAGES_SET' => 'The Product Images have been set.',
-	'VM_PRODUCT_FILES_ADDED' => 'The new file has been added.',
-	'VM_PRODUCT_FILES_ERR_TOOBIG' => 'The file you are trying to upload is too big.',
-	'VM_PRODUCT_FILES_ERR_PARTIALLY' => 'The file you are trying upload was only partially uploaded.',
-	'VM_TAX_ERR_STATE_LISTED' => 'This state is already listed.',
-	'VM_TAX_ERR_COUNTRY' => 'You must enter a country for this tax rate.',
-	'VM_TAX_ERR_COUNTRY_NOTEXIST' => 'The Country you have selected does not exist.',
-	'VM_TAX_ERR_TAXRATE' => 'You must enter a tax rate.',
-	'VM_TAX_ERR_UPDATE_SELECT' => 'You must select a tax rate to update.',
-	'VM_TAX_ERR_DELETE_SELECT' => 'Please select a tax rate to delete.',
-	'VM_TAX_ADDED' => 'The Tax Rate has been added.',
-	'VM_TAX_ADD_FAILED' => 'Failed to add the Tax Rate.',
-	'VM_TAX_UPDATED' => 'The Tax Rate has been updated.',
-	'VM_TAX_UPDATE_FAILED' => 'Failed to update the Tax Rate.',
-	'VM_ENTER_VALUE_FIELD' => 'Please enter a value into the Field',
-	'VM_COUPON_ADDED' => 'A new coupon has been added.',
-	'VM_COUPON_UPDATED' => 'The coupon has been updated.',
-	'VM_COUPON_GREATER_TOTAL_SETTO' => 'The Value of the Coupon is greater than the current Order Total, so the Coupon Value was temporarily set to {value}',
-	'VM_CREDITCARD_ERR_NAME' => 'You must enter a name for the Credit Card Type.',
-	'VM_CREDITCARD_ERR_CODE' => 'You must enter a code for the Credit Card Type.',
-	'VM_CREDITCARD_EXISTS' => 'The given Credit Card Name/Code already exists.',
-	'VM_CREDITCARD_ERR_DELETE_SELECT' => 'Please select a Credit Card Type to delete.',
-	'VM_CREDITCARD_ADDED' => 'The Credit Card Type has been added.',
-	'VM_CREDITCARD_UPDATED' => 'The Credit Card Type has been updated.',
-	'VM_CURRENCY_ERR_NAME' => 'You must enter a name for the currency.',
-	'VM_CURRENCY_ERR_CODE' => 'You must enter a code for the currency.',
-	'VM_CURRENCY_ERR_EXISTS' => 'The given currency name already exists.',
-	'VM_CURRENCY_ERR_DELETE_SELECT' => 'Please select a currency to delete.',
-	'VM_CURRENCY_ADDED' => 'The Currency has been added.',
-	'VM_CURRENCY_UPDATED' => 'The Currency has been updated.',
-	'VM_EXPORT_ERR_MODULE_NAME' => 'You must enter a name for the order export module.',
-	'VM_EXPORT_ERR_CLASS_NOT_EXIST' => 'Export Class does not exist.',
-	'VM_EXPORT_ERR_DELETE_SELECT' => 'Please select an export module to delete.',
-	'VM_EXPORT_ERR_UPDATE_SELECT' => 'You must select an export module to update.',
-	'VM_FUNCTION_ERR_DELETE_SELECT' => 'Please select a function to delete.',
-	'VM_FUNCTION_ERR_DELETE_NOTALLOWED_MOD' => 'You are not allowed to delete this function (Module Restrictions: {module_perms}, Your Perms: {perms}).',
-	'VM_FUNCTION_ERR_DELETE_NOTALLOWED_FUNC' => 'You are not allowed to delete this function (Function Restrictions: {function_perms}, Your Perms: {perms}).',
-	'VM_MANUF_CAT_ERR_NAME' => 'You must enter a name for the manufacturer category.',
-	'VM_MANUF_CAT_ERR_EXISTS' => 'The given manufacturer category name already exists.',
+	'VM_PRODUCT_CATEGORY_ERR_DELETE_SELECT' => 'Selecteer een te verwijderen categorie.',
+	'VM_PRODUCT_CATEGORY_ERR_DELETE_CHILDREN' => 'Deze categorie heeft subproducten, verwijder deze eerst.',
+	'VM_PRODUCT_CATEGORY_ERR_DELETE_IMAGES' => 'Verwijderen van de categorieafbeeldingen mislukt!',
+	'VM_PRODUCT_CATEGORY_ADDED' => 'Succesvol een nieuwe categorie toegevoegd.',
+	'VM_PRODUCT_CATEGORY_UPDATED' => 'Succesvol categorie bijgewerkt.',
+	'VM_PRODUCT_CATEGORY_DELETED' => 'Succesvol het categorie ID verwijderd.',
+	'VM_DELETE_RECORD' => 'Verwijder deze regel.',
+	'VM_DEFAULT_TOP_LEVEL' => 'Standaard -Top Level',
+	'VM_SORT_ERR_NUMBERS_ONLY' => 'Fout: Gebruik alleen getallen voor de lijstvolgorde!',
+	'VM_PRODUCT_FILES_ERR_PROVIDE' => 'U moet; of een bestand uploaden, of een link (url) naar het bestand opgeven. ',
+	'VM_PRODUCT_FILES_ERR_ID' => 'Er moet een product ID geselecteerd zijn.',
+	'VM_PRODUCT_FILES_ERR_DELETE' => 'Selecteer een te verwijderen bestand.',
+	'VM_PRODUCT_FILES_IMAGES_SET' => 'De productafbeeldingen zijn ingesteld.',
+	'VM_PRODUCT_FILES_ADDED' => 'Het nieuwe bestand is toegevoegd.',
+	'VM_PRODUCT_FILES_ERR_TOOBIG' => 'Het bestand wat u probeert te uploaden, is te groot!',
+	'VM_PRODUCT_FILES_ERR_PARTIALLY' => 'Het bestand wat u probeerde te uploaden, is slechts gedeeltelijk geupload.',
+	'VM_TAX_ERR_STATE_LISTED' => 'De staat is reeds vermeld.',
+	'VM_TAX_ERR_COUNTRY' => 'U moet een land opgeven voor dit belastingpercentage.',
+	'VM_TAX_ERR_COUNTRY_NOTEXIST' => 'Het land wat u heeft geselecteerd bestaat niet',
+	'VM_TAX_ERR_TAXRATE' => 'U moet een belastingpercentage opgeven.',
+	'VM_TAX_ERR_UPDATE_SELECT' => 'U moet een belastingpercentage opgeven dat bijgewerkt moet worden.',
+	'VM_TAX_ERR_DELETE_SELECT' => 'Selecteer een te verwijderen belastingpercentage.',
+	'VM_TAX_ADDED' => 'Het belastingpercentage is verwijderd.',
+	'VM_TAX_ADD_FAILED' => 'Toevoegen van belastingpercentage mislukt',
+	'VM_TAX_UPDATED' => 'Het belastingpercentage is bijgewerkt.',
+	'VM_TAX_UPDATE_FAILED' => 'Bijwerken van het belastingpercentage mislukt.',
+	'VM_ENTER_VALUE_FIELD' => 'Vermeld een waarde in het veld.',
+	'VM_COUPON_ADDED' => 'Een nieuwe coupon is toegevoegd.',
+	'VM_COUPON_UPDATED' => 'De coupon is bijgewerkt.',
+	'VM_COUPON_GREATER_TOTAL_SETTO' => 'De waarde van de coupon was hoger als het huidige ordertotaal, hierom is de waarde van de coupon tijdelijk teruggesteld naar {value}',
+	'VM_CREDITCARD_ERR_NAME' => 'U moet een naam opgeven voor het type creditcard. ',
+	'VM_CREDITCARD_ERR_CODE' => 'U moet een code opgeven voor het type creditcard.',
+	'VM_CREDITCARD_EXISTS' => 'De opgegeven creditcardnaam/code bestaat al.',
+	'VM_CREDITCARD_ERR_DELETE_SELECT' => 'Selecteer een te verwijderen type creditcard.',
+	'VM_CREDITCARD_ADDED' => 'Het type creditcard is toegevoegd.',
+	'VM_CREDITCARD_UPDATED' => 'Het type creditcard is bijgewerkt.',
+	'VM_CURRENCY_ERR_NAME' => 'U moet een naam voor de valuta opgeven.',
+	'VM_CURRENCY_ERR_CODE' => 'U moet een code voor de valuta opgeven.',
+	'VM_CURRENCY_ERR_EXISTS' => 'De opgegeven valutanaam bestaat reeds.',
+	'VM_CURRENCY_ERR_DELETE_SELECT' => 'Selecteer een te verwijderen valuta.',
+	'VM_CURRENCY_ADDED' => 'De valuta is toegevoegd.',
+	'VM_CURRENCY_UPDATED' => 'De valuta is bijgewerkt.',
+	'VM_EXPORT_ERR_MODULE_NAME' => 'U moet een naam opgeven voor de order export module.',
+	'VM_EXPORT_ERR_CLASS_NOT_EXIST' => 'Export klasse bestaat niet.',
+	'VM_EXPORT_ERR_DELETE_SELECT' => 'Selecteer een te verwijderen export module.',
+	'VM_EXPORT_ERR_UPDATE_SELECT' => 'U moet een bij te werken export module selecteren.',
+	'VM_FUNCTION_ERR_DELETE_SELECT' => 'Selecteer een te verwijderen functie.',
+	'VM_FUNCTION_ERR_DELETE_NOTALLOWED_MOD' => 'U bent niet gemachtigd deze module te verwijderen (module restricties: {module_perms}, uw machtigingen: {perms}).',
+	'VM_FUNCTION_ERR_DELETE_NOTALLOWED_FUNC' => 'U bent niet gemachtigd deze functie te verwijderen (module restricties: {module_perms}, uw machtigingen: {perms})',
+	'VM_MANUF_CAT_ERR_NAME' => 'U moet een naam opgeven voor de categorie van de farbrikant.',
+	'VM_MANUF_CAT_ERR_EXISTS' => 'De vermelde naam voor de categorie van de fabrikant bestaat reeds. ',
 	'VM_MANUF_CAT_ERR_DELETE_SELECT' => 'Please select a manufacturer category to delete.',
-	'VM_MANUF_CAT_ADDED' => 'The Manufacturer Category has been added.',
-	'VM_MANUF_CAT_UPDATED' => 'The Manufacturer Category has been updated.',
-	'VM_MODULE_ERR_NAME' => 'You must enter a name for the module.',
-	'VM_MODULE_ERR_EXISTS' => 'The given module name already exists.',
-	'VM_MODULE_ERR_PERMS' => 'You must enter permissions for the module.',
-	'VM_MODULE_ERR_DELETE_SELECT' => 'Please select a module to delete.',
-	'VM_MODULE_ERR_DELETE_CORE' => 'The module {name} is a core module. It cannot be deleted.',
-	'VM_MODULE_ADDED' => 'The Module has been added.',
-	'VM_MODULE_UPDATED' => 'The Module has been updated.',
-	'VM_MANUF_ERR_NAME' => 'You must enter a name for the manufacturer.',
-	'VM_MANUF_ERR_EXISTS' => 'The given manufacturer name already exists.',
-	'VM_MANUF_ERR_DELETE_SELECT' => 'Please select a manufacturer to delete.',
-	'VM_MANUF_ERR_DELETE_STILLPRODUCTS' => 'This Manufacturer still has products assigned to it.',
-	'VM_MANUF_ADDED' => 'The Manufacturer has been added.',
-	'VM_MANUF_UPDATED' => 'The Manufacturer has been updated.',
-	'PHPSHOP_CUSTOMER_CVV2_TOOLTIP_TITLE' => 'Credit Card Security Code',
-	'VM_CREDIT_CARD_TYPE' => 'Credit Card Type',
+	'VM_MANUF_CAT_ADDED' => 'De categorie van de fabrikant is toegevoegd.',
+	'VM_MANUF_CAT_UPDATED' => 'De categorie van de fabrikant is bijgewerkt.',
+	'VM_MODULE_ERR_NAME' => 'U moet een naam opgeven voor de module.',
+	'VM_MODULE_ERR_EXISTS' => 'De opgegeven modulenaam bestaat reeds.',
+	'VM_MODULE_ERR_PERMS' => 'U moet rechten opgeven voor de module.',
+	'VM_MODULE_ERR_DELETE_SELECT' => 'Selecteer een te verwijderen module.',
+	'VM_MODULE_ERR_DELETE_CORE' => 'De module {name} is een core module. Deze kan niet verwijderd worden.',
+	'VM_MODULE_ADDED' => 'De module is toegevoegd.',
+	'VM_MODULE_UPDATED' => 'De module is bijgewerkt.',
+	'VM_MANUF_ERR_NAME' => 'U moet een naam opgeven voor de fabrikant.',
+	'VM_MANUF_ERR_EXISTS' => 'De opgegeven fabrikantnaam bestaat reeds.',
+	'VM_MANUF_ERR_DELETE_SELECT' => 'Selecteer een te verwijderen fabrikant.',
+	'VM_MANUF_ERR_DELETE_STILLPRODUCTS' => 'De fabrikant heeft nog immer toegevoegde producten.',
+	'VM_MANUF_ADDED' => 'De fabrikant is toegevoegd',
+	'VM_MANUF_UPDATED' => 'De fabrikant is bijgewerkt.',
+	'PHPSHOP_CUSTOMER_CVV2_TOOLTIP_TITLE' => 'Creditcard beveiligingscode',
+	'VM_CREDIT_CARD_TYPE' => 'Type creditcard',
 	'PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_1' => 'Send authemail to customer',
-	'PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_0' => 'Don\'t send authemail to customer',
+	'PHPSHOP_ADMIN_CFG_EPAY_AUTHEMAIL_0' => 'Dont send authemail to customer',
 	'PHPSHOP_ADMIN_CFG_EPAY_EXTRAINFO_RESET_EXPLAIN' => 'IF THE PAYMENT EXTRA INFO FIELD IS BLANK YOU MUST CLICK THIS BUTTON BELOW!',
 	'PHPSHOP_ADMIN_CFG_EPAY_EXTRAINFO_RESET' => 'Reset Payment Extra Info',
 	'PHPSHOP_ADMIN_CFG_EPAY_ERR_CONFIGFILE' => 'Could not write to configuration file',
-	'VM_CHECKOUT_ERR_CCTYPE' => 'Credit Card Type not found.',
-	'VM_ENQUIRY_MAIL_CUSTOMER_QUESTION' => 'Customer Question',
-	'VM_ENQUIRY_MAIL_HAS_REQUESTED' => 'has requested more information on',
-	'VM_ENQUIRY_MAIL_PRODUCT_SKU' => 'Product-SKU',
-	'VM_ENQUIRY_MAIL_QUESTION' => 'Question',
-	'OFFLINE_MODE' => 'OFFLINE MODE'
+	'VM_CHECKOUT_ERR_CCTYPE' => 'Creditkaart soort niet gevonden',
+	'VM_ENQUIRY_MAIL_CUSTOMER_QUESTION' => 'Kopers vraag',
+	'VM_ENQUIRY_MAIL_HAS_REQUESTED' => 'vraagt meer informatie over',
+	'VM_ENQUIRY_MAIL_PRODUCT_SKU' => 'Artikel nummer',
+	'VM_ENQUIRY_MAIL_QUESTION' => 'Vraag',
+	'OFFLINE_MODE' => 'OFFLINE MODE',
+	'VM_STORE_UPDATED' => 'Your Store has been updated.',
+	'VM_VENDOR_UPDATED' => 'The Vendor has been updated.'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>

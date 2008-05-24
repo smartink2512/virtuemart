@@ -1309,6 +1309,8 @@ check with your hosting company to see if you can access this port first',
 	'VM_ENQUIRY_MAIL_HAS_REQUESTED' => 'ha richiesto maggiori informazioni su',
 	'VM_ENQUIRY_MAIL_PRODUCT_SKU' => 'Codice-Prodotto',
 	'VM_ENQUIRY_MAIL_QUESTION' => 'Domanda',
-	'OFFLINE_MODE' => 'MODALITA\' OFFLINE'
+	'OFFLINE_MODE' => 'MODALITA\' OFFLINE',
+	'VM_STORE_UPDATED' => 'Il tuo Negozio è stato aggiornato.',
+	'VM_VENDOR_UPDATED' => 'Il Venditore è stato aggiornato.'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>

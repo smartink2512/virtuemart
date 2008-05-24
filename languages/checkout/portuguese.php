@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : portuguese.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -50,47 +49,6 @@ Pode continuar ou fazer log in em <a href=http://www.paypal.com>www.paypal.com</
 	'VM_CHECKOUT_CCV_CODE' => 'Código de validação do cartão de crédito',
 	'VM_CHECKOUT_CCV_CODE_TIPTITLE' => 'O que é o código de validação do cartão de crédito?',
 	'VM_CHECKOUT_MD5_FAILED' => 'Consulta MD5 falhou',
-	'VM_CHECKOUT_ORDERNOTFOUND' => 'Encomenda não encontrada',
-	'VM_CHECKOUT_PBS_APPROVED_ORDERCOMMENT' => '
-                O pagamento foi aprovada pela PBS. \n
-                A transação recebeu o seguinte número de transação:\n\n
-                Número Transação: {transactionnumber}\n',
-	'VM_CHECKOUT_PBS_NOTAPPROVED_ORDERCOMMENT' => '
-                O pagamento não foi aprovado pela PBS. \n
-                A transação recebeu o seguinte número de transação:\n\n
-                Número Transação: {transactionnumber}\n',
-	'VM_CHECKOUT_DD_ERROR_0' => 'Merchant/forretningsnummer ugyldigt',
-	'VM_CHECKOUT_DD_ERROR_1' => 'Ugyldigt kreditkortnummer',
-	'VM_CHECKOUT_DD_ERROR_2' => 'Ugyldigt belob',
-	'VM_CHECKOUT_DD_ERROR_3' => 'OrderID mangler eller er ugyldig',
-	'VM_CHECKOUT_DD_ERROR_4' => 'PBS afvisning - (Oftest - ugyldig kortdata, sp?rret kort osv...)',
-	'VM_CHECKOUT_DD_ERROR_5' => 'Intern server fejl hos DanDomain eller PBS',
-	'VM_CHECKOUT_DD_ERROR_6' => 'E-dankort ikke tilladt. Kontakt DanDomain',
-	'VM_CHECKOUT_DD_ERROR_DEFAULT' => 'System fejl',
-	'VM_CHECKOUT_FP_ERROR_1' => 'Erro: Transação recusada',
-	'VM_CHECKOUT_FP_ERROR_2' => 'Erro: Transação recusada',
-	'VM_CHECKOUT_FP_ERROR_3' => 'Erro: Formato errado no número',
-	'VM_CHECKOUT_FP_ERROR_4' => 'Erro: Operação ilegal',
-	'VM_CHECKOUT_FP_ERROR_5' => 'Erro: Sem resposta',
-	'VM_CHECKOUT_FP_ERROR_6' => 'Error_system_failure',
-	'VM_CHECKOUT_FP_ERROR_7' => 'Erro: Cartão vencido',
-	'VM_CHECKOUT_FP_ERROR_8' => 'Erro: fracasso na Comunicação',
-	'VM_CHECKOUT_FP_ERROR_9' => 'Erro: Fracasso Interno',
-	'VM_CHECKOUT_FP_ERROR_10' => 'Erro: Card não registrado',
-	'VM_CHECKOUT_FP_ERROR_DEFAULT' => 'Erro: Erro Desconhecido',
-	'VM_CHECKOUT_WF_ERROR_1' => 'Transaktionen blev ikke godkendt',
-	'VM_CHECKOUT_WF_ERROR_2' => 'Mulig snyd',
-	'VM_CHECKOUT_WF_ERROR_3' => 'Kommunikations fejl',
-	'VM_CHECKOUT_WF_ERROR_4' => 'Kort udlobet',
-	'VM_CHECKOUT_WF_ERROR_5' => 'Intern fejl',
-	'VM_CHECKOUT_WF_ERROR_6' => 'Invalid Transaktion',
-	'VM_CHECKOUT_WF_ERROR_7' => 'System fejl',
-	'VM_CHECKOUT_WF_ERROR_8' => 'Forkert forretningsnummer',
-	'VM_CHECKOUT_WF_ERROR_9' => 'Kortet eksistere ikke',
-	'VM_CHECKOUT_WF_ERROR_10' => 'Kort l?ngen er for kort.',
-	'VM_CHECKOUT_WF_ERROR_11' => 'Transaktion kan ikke gennemfores igennem denne terminal',
-	'VM_CHECKOUT_WF_ERROR_12' => 'Kortejeren har ikke rettigheder til at gennemfore denne transaktion.',
-	'VM_CHECKOUT_WF_ERROR_13' => 'Kortnummeret eksistere ikke',
-	'VM_CHECKOUT_WF_ERROR_14' => 'Error unknown'
+	'VM_CHECKOUT_ORDERNOTFOUND' => 'Encomenda não encontrada'
 ); $VM_LANG->initModule( 'checkout', $langvars );
 ?>

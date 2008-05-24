@@ -1300,6 +1300,8 @@ lépjen kapcsolatba szolgáltatójával a megoldásért.',
 	'VM_ENQUIRY_MAIL_HAS_REQUESTED' => 'has requested more information on',
 	'VM_ENQUIRY_MAIL_PRODUCT_SKU' => 'Product-SKU',
 	'VM_ENQUIRY_MAIL_QUESTION' => 'Question',
-	'OFFLINE_MODE' => 'OFFLINE MODE'
+	'OFFLINE_MODE' => 'OFFLINE MODE',
+	'VM_STORE_UPDATED' => 'Your Store has been updated.',
+	'VM_VENDOR_UPDATED' => 'The Vendor has been updated.'
 ); $VM_LANG->initModule( 'common', $langvars );
 ?>

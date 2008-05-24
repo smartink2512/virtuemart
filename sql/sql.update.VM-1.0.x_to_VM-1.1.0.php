@@ -392,7 +392,7 @@ $db->query( "INSERT INTO `#__{vm}_state` VALUES (1, 223, 'Alabama', 'ALA', 'AL')
 (NULL, 175, 'Tulcea', 'TUL', 'TL'),
 (NULL, 175, 'Valcea', 'VAL', 'VL'),
 (NULL, 175, 'Vaslui', 'VAS', 'VS'),
-(NULL, 175, 'Vreancea', 'VRA', 'VN'),
+(NULL, 175, 'Vrancea', 'VRA', 'VN'),
 (NULL, 105, 'Agrigento', 'AGR', 'AG'),
 (NULL, 105, 'Alessandria', 'ALE', 'AL'),
 (NULL, 105, 'Ancona', 'ANC', 'AN'), 

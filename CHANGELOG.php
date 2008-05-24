@@ -35,6 +35,18 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+24.05.2008 thepisu
+# addslahed javascript-driven text in order.order_list
++ added "default" ordering option for frontend (using the already working product_list field)
+# Task #2047 Missing conversion from utf-8 to cp1251
+# Task #1893 Strings hard coded 
+- removed language strings related to old PBS (danish) payment module
+# Updated Dutch translation (by Tonslag)
+# Romanian state Vreancea corrected to Vrancea
+
+23.05.2008 joomlacorner
+# Updated Thai translation
+
 20.05.2008 thepisu
 # Task #2092 OFFLINE MODE hard coded (new string added to "common" module)
 # Task #1908 list of hard coded strings (new strings added to "product" module)

@@ -2,10 +2,9 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : dutch.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @translator soeren
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
@@ -14,19 +13,17 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * other free or open source software licenses.
 * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* Dutch Translation for Dutchjoomla.org by Frans and Ton  
-*
 * http://virtuemart.net
 */
 global $VM_LANG;
 $langvars = array (
-        'CHARSET' => 'ISO-8859-1',
-        'PHPSHOP_TAX_LIST_LBL' => 'Belasting tarievenlijst',
-        'PHPSHOP_TAX_LIST_STATE' => 'Belasting regio',
-        'PHPSHOP_TAX_LIST_COUNTRY' => 'Belasting land',
-        'PHPSHOP_TAX_FORM_LBL' => 'Belastinginformatie toevoegen',
-        'PHPSHOP_TAX_FORM_STATE' => 'Belasting regio',
-        'PHPSHOP_TAX_FORM_COUNTRY' => 'Belasting land',
-        'PHPSHOP_TAX_FORM_RATE' => 'Belastingstarief (voor 19% => vul 0.19 in)'
+	'CHARSET' => 'ISO-8859-1',
+	'PHPSHOP_TAX_LIST_LBL' => 'Belasting tarievenlijst',
+	'PHPSHOP_TAX_LIST_STATE' => 'Belasting regio',
+	'PHPSHOP_TAX_LIST_COUNTRY' => 'Belasting land',
+	'PHPSHOP_TAX_FORM_LBL' => 'Belastinginformatie toevoegen',
+	'PHPSHOP_TAX_FORM_STATE' => 'Belasting regio',
+	'PHPSHOP_TAX_FORM_COUNTRY' => 'Belasting land',
+	'PHPSHOP_TAX_FORM_RATE' => 'Belastingstarief (voor 19% => vul 0.19 in)'
 ); $VM_LANG->initModule( 'tax', $langvars );
 ?>

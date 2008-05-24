@@ -228,7 +228,7 @@ class ps_vendor {
 	 * @return boolean
 	 */
 	function update(&$d) {
-		global $vendor_currency;
+		global $vendor_currency, $VM_LANG;
 		$db = new ps_DB;
 		$timestamp = time();
 
@@ -291,9 +291,9 @@ class ps_vendor {
 		$db->buildQuery( 'UPDATE', '#__{vm}_vendor', $fields, 'WHERE vendor_id = '.$d["vendor_id"] );
 		$db->query();
 		if( $d['vendor_id'] == 1 ) {
-			$GLOBALS['vmLogger']->info('Your Store has been updated.');
+			$GLOBALS['vmLogger']->info($VM_LANG->_('VM_STORE_UPDATED'));
 		} else {
-			$GLOBALS['vmLogger']->info('The Vendor has been updated.');
+			$GLOBALS['vmLogger']->info($VM_LANG->_('VM_VENDOR_UPDATED'));
 		}
 		
 		return True;

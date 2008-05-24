@@ -2,7 +2,6 @@
 if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
 /**
 *
-* @version : thai.php 1071 2007-12-03 08:42:28Z thepisu $
 * @package VirtueMart
 * @subpackage languages
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
@@ -49,45 +48,6 @@ $langvars = array (
 	'VM_CHECKOUT_CCV_CODE_TIPTITLE' => 'What\'s the Credit Card Validation Code?',
 	'VM_CHECKOUT_MD5_FAILED' => 'MD5 Check failed',
 	'VM_CHECKOUT_ORDERNOTFOUND' => 'ไม่พบรายการสั่งซื้อ',
-	'VM_CHECKOUT_PBS_APPROVED_ORDERCOMMENT' => ' การติดต่อการชำระเงิน ถูกตรวจสอบโดย PBS. n
-                การติดต่อ ได้รับหมายเลขการติดต่อดังนี้ :nn
-                หมายเลขการติดต่อ: {transactionnumber}n',
-	'VM_CHECKOUT_PBS_NOTAPPROVED_ORDERCOMMENT' => ' การติดต่อการชำระเงิน ไม่ถูกตรวจสอบโดย PBS. n
-                การติดต่อ ได้รับหมายเลขการติดต่อดังนี้ :nn
-                หมายเลขการติดต่อ: {transactionnumber}n',
-	'VM_CHECKOUT_DD_ERROR_0' => 'ตระกร้า/forretningsnummer ugyldigt',
-	'VM_CHECKOUT_DD_ERROR_1' => 'Ugyldigt kreditkortnummer',
-	'VM_CHECKOUT_DD_ERROR_2' => 'Ugyldigt belob',
-	'VM_CHECKOUT_DD_ERROR_3' => 'OrderID mangler eller er ugyldig',
-	'VM_CHECKOUT_DD_ERROR_4' => 'PBS afvisning - (Oftest - ugyldig kortdata, sp?rret kort osv...)',
-	'VM_CHECKOUT_DD_ERROR_5' => 'Intern server fejl hos DanDomain eller PBS',
-	'VM_CHECKOUT_DD_ERROR_6' => 'E-dankort ikke tilladt. Kontakt DanDomain',
-	'VM_CHECKOUT_DD_ERROR_DEFAULT' => 'System fejl',
-	'VM_CHECKOUT_FP_ERROR_1' => 'Error: ปฏิเสธการติดต่อ',
-	'VM_CHECKOUT_FP_ERROR_2' => 'Error: ปฏิเสธการติดต่อ',
-	'VM_CHECKOUT_FP_ERROR_3' => 'Error: รูปแบบตัวเลขผิด',
-	'VM_CHECKOUT_FP_ERROR_4' => 'Error: รูปแบบไม่ถูกต้องตามกฎ',
-	'VM_CHECKOUT_FP_ERROR_5' => 'Error: ไม่มีคำตอบรับ',
-	'VM_CHECKOUT_FP_ERROR_6' => 'Error_system_failure',
-	'VM_CHECKOUT_FP_ERROR_7' => 'Error: Card หมดอายุ',
-	'VM_CHECKOUT_FP_ERROR_8' => 'Error: ระบบติดต่อล้มเหลว',
-	'VM_CHECKOUT_FP_ERROR_9' => 'Error: ระบบภายในล้มเหลว',
-	'VM_CHECKOUT_FP_ERROR_10' => 'Error: Card ไม่ได้ลงทะเบียน',
-	'VM_CHECKOUT_FP_ERROR_DEFAULT' => 'ผิดพลาด: ไม่พบข้อผิดพลาด',
-	'VM_CHECKOUT_WF_ERROR_1' => 'Transaktionen blev ikke godkendt',
-	'VM_CHECKOUT_WF_ERROR_2' => 'Mulig snyd',
-	'VM_CHECKOUT_WF_ERROR_3' => 'Kommunikations fejl',
-	'VM_CHECKOUT_WF_ERROR_4' => 'Kort udlobet',
-	'VM_CHECKOUT_WF_ERROR_5' => 'Intern fejl',
-	'VM_CHECKOUT_WF_ERROR_6' => 'Invalid Transaktion',
-	'VM_CHECKOUT_WF_ERROR_7' => 'System fejl',
-	'VM_CHECKOUT_WF_ERROR_8' => 'Forkert forretningsnummer',
-	'VM_CHECKOUT_WF_ERROR_9' => 'Kortet eksistere ikke',
-	'VM_CHECKOUT_WF_ERROR_10' => 'Kort l?ngen er for kort.',
-	'VM_CHECKOUT_WF_ERROR_11' => 'Transaktion kan ikke gennemfores igennem denne terminal',
-	'VM_CHECKOUT_WF_ERROR_12' => 'Kortejeren har ikke rettigheder til at gennemfore denne transaktion.',
-	'VM_CHECKOUT_WF_ERROR_13' => 'Kortnummeret eksistere ikke',
-	'VM_CHECKOUT_WF_ERROR_14' => 'ไม่ทราบข้อผิดพลาด',
 	'PHPSHOP_EPAY_PAYMENT_CARDTYPE' => 'การชำระเงิน สร้างขึ้นโดย %s <img
 src="/components/com_virtuemart/shop_image/ps_image/epay_images/%s"
 border="0">'
