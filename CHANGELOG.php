@@ -35,8 +35,15 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+24.05.2008 soeren
+^ updated "Order Edit" feature, thanks to kaltokri!
+# Task #2109 - Captcha is shown on invoice 
+# Task #2111 - Payflow Pro - Call to undefined function mosgetparam error 
+^ updated wz_tooltip to version 5.0
+
 24.05.2008 thepisu
-# addslahed javascript-driven text in order.order_list
+# addslashed javascript-driven text in order.order_list
 + added "default" ordering option for frontend (using the already working product_list field)
 # Task #2047 Missing conversion from utf-8 to cp1251
 # Task #1893 Strings hard coded 

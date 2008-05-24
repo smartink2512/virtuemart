@@ -56,7 +56,7 @@ function vm_submitForm(pressbutton, frmName, pageName){
 	
 	var f = eval( "document."+frmName );
 	if( pressbutton == "cancel" ) {
-		if( parent.closePanel ){
+		if( parent.closePanel && parent.Ext ){
 			parent.closePanel( getURLParam('panelid') );
 		}
 		f.func.value = "";

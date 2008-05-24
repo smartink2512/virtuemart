@@ -56,6 +56,23 @@ $langvars = array (
 	'VM_ORDER_PRINT_PO_IPADDRESS' => 'IP-ADDRESS',
 	'VM_ORDER_STATUS_ICON_ALT' => 'Status Icon',
 	'VM_ORDER_PAYMENT_CCV_CODE' => 'CVV Code',
-	'VM_ORDER_NOTFOUND' => 'Order not found! It may have been deleted.'
+	'VM_ORDER_NOTFOUND' => 'Order not found! It may have been deleted.',
+
+/* Order Edit entries */
+  'PHPSHOP_ORDER_EDIT_ACTIONS' => 'Actions',
+  'PHPSHOP_ORDER_EDIT' => 'Change Order Details',
+  'PHPSHOP_ORDER_EDIT_ADD' => 'Add',
+  'PHPSHOP_ORDER_EDIT_ADD_PRODUCT' => 'Add Product',
+  'PHPSHOP_ORDER_EDIT_EDIT_ORDER' => 'Change Order',
+  'PHPSHOP_ORDER_EDIT_ERROR_QUANTITY_MUST_BE_HIGHER_THAN_0' => 'Quantity must be greater than 0.',
+  'PHPSHOP_ORDER_EDIT_PRODUCT_ADDED' => 'The Product was added to the Order',
+  'PHPSHOP_ORDER_EDIT_PRODUCT_DELETED' => 'The Product was removed from this Order',
+  'PHPSHOP_ORDER_EDIT_QUANTITY_UPDATED' => 'Quantity has been updated',
+  'PHPSHOP_ORDER_EDIT_RETURN_PARENTS' => 'back to Parent Product',
+  'PHPSHOP_ORDER_EDIT_CHOOSE_PRODUCT' => 'Select a Product',
+	'PHPSHOP_ORDER_CHANGE_UPD_BILL' => 'Change Billto Address',
+  'PHPSHOP_ORDER_CHANGE_UPD_SHIP' => 'Change Shipto Address',
+  'PHPSHOP_ORDER_EDIT_SOMETHING_HAS_CHANGED' => ' has been changed',
+  'PHPSHOP_ORDER_EDIT_CHOOSE_PRODUCT_BY_SKU' => 'Select SKU'
 ); $VM_LANG->initModule( 'order', $langvars );
 ?>

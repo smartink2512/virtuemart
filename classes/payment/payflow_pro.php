@@ -7,7 +7,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage payment
-* @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2007-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -32,7 +32,7 @@ class payflow_pro {
 
 		global $VM_LANG, $sess;
 		$db =& new ps_DB;
-		$payment_method_id = mosGetParam( $_REQUEST, 'payment_method_id', null );
+		$payment_method_id = vmGet( $_REQUEST, 'payment_method_id', null );
 		/** Read current Configuration ***/
 		require_once(CLASSPATH ."payment/".$this->classname.".cfg.php");
     ?>
@@ -319,10 +319,10 @@ class payflow_pro {
 		
 		$vmLogger->debug('Beginning to analyse the response from '.$host);
 		
-		$RESULT_CODE = mosGetParam( $pfpro, 'RESULT' );
-		$TRANSACTION_ID = mosGetParam( $pfpro, 'PNREF' );
-		$RESPMSG = mosGetParam( $pfpro, 'RESPMSG', '' );
-		$CVV2MATCH = mosGetParam( $pfpro, 'CVV2MATCH', '' );
+		$RESULT_CODE = vmGet( $pfpro, 'RESULT' );
+		$TRANSACTION_ID = vmGet( $pfpro, 'PNREF' );
+		$RESPMSG = vmGet( $pfpro, 'RESPMSG', '' );
+		$CVV2MATCH = vmGet( $pfpro, 'CVV2MATCH', '' );
 		
 		$success = false;
 		
@@ -495,10 +495,10 @@ class payflow_pro {
 		
 		$vmLogger->debug('Beginning to analyse the response from '.$host);
 		
-		$RESULT_CODE = mosGetParam( $pfpro, 'RESULT' );
-		$TRANSACTION_ID = mosGetParam( $pfpro, 'PNREF' );
-		$RESPMSG = mosGetParam( $pfpro, 'RESPMSG', '' );
-		$CVV2MATCH = mosGetParam( $pfpro, 'CVV2MATCH', '' );
+		$RESULT_CODE = vmGet( $pfpro, 'RESULT' );
+		$TRANSACTION_ID = vmGet( $pfpro, 'PNREF' );
+		$RESPMSG = vmGet( $pfpro, 'RESPMSG', '' );
+		$CVV2MATCH = vmGet( $pfpro, 'CVV2MATCH', '' );
 		
 		$success = false;
 		
@@ -673,10 +673,10 @@ class payflow_pro {
 		
 		$vmLogger->debug('Beginning to analyse the response from '.$host);
 		
-		$RESULT_CODE = mosGetParam( $pfpro, 'RESULT' );
-		$TRANSACTION_ID = mosGetParam( $pfpro, 'PNREF' );
-		$RESPMSG = mosGetParam( $pfpro, 'RESPMSG', '' );
-		$CVV2MATCH = mosGetParam( $pfpro, 'CVV2MATCH', '' );
+		$RESULT_CODE = vmGet( $pfpro, 'RESULT' );
+		$TRANSACTION_ID = vmGet( $pfpro, 'PNREF' );
+		$RESPMSG = vmGet( $pfpro, 'RESPMSG', '' );
+		$CVV2MATCH = vmGet( $pfpro, 'CVV2MATCH', '' );
 		
 		$success = false;
 		

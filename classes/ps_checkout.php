@@ -1828,7 +1828,7 @@ Order Total: '.$order_total.'
 		$registrationfields = ps_userfield::getUserFields('registration', false, '', false, true );
 		foreach( $registrationfields as $field ) {
 			if( $field->name == 'email') $field->name = 'user_email';
-			if( $field->name == 'delimiter_sendregistration') continue;
+			if( $field->name == 'delimiter_sendregistration' || $field->type == 'captcha') continue;
 			
 			if( $field->type == 'delimiter') {
 				$shopper_message .= ($VM_LANG->_($field->title) != '' ? $VM_LANG->_($field->title) : $field->title)."\n";

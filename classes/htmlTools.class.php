@@ -1292,7 +1292,7 @@ class vmCommonHTML {
  * @param string $link
  * @return string HTML code for ToolTip
  */
-function vmToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/images/M_images/con_info.png", $width='', $text='', $href='#', $link=false ) {
+function vmToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/images/M_images/con_info.png", $width='350', $text='', $href='#', $link=false ) {
 	global $mosConfig_live_site, $database;
 	
 	defined( 'vmToolTipCalled') or define('vmToolTipCalled', 1);
@@ -1302,10 +1302,10 @@ function vmToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/ima
 	$tooltip = str_replace("&#039;","\&#039;",$tooltip);
 	
 	if ( !empty($width) ) {
-		$width = 'this.T_WIDTH=\''.$width .'\';';
+		$width = ',WIDTH, -'.$width;
 	}
 	if ( $title ) {
-		$title = 'this.T_TITLE=\''.$title .'\';';
+		$title = ',TITLE,\''.$title .'\'';
 	}
 	$image = str_replace( "{mosConfig_live_site}", $mosConfig_live_site, $image);
 	if( $image != '' ) {
@@ -1317,9 +1317,9 @@ function vmToolTip( $tooltip, $title='Tip!', $image = "{mosConfig_live_site}/ima
 		$style = '';
 	}
 	if ( $link ) {
-		$tip = vmCommonHTML::hyperLink( $href, $text, '','', "onmouseover=\"return escape( '$tooltip' );\" ". $style );
+		$tip = vmCommonHTML::hyperLink( $href, $text, '','', "onmouseover=\"Tip( '$tooltip' );\" onmouseout=\"UnTip()\" ". $style );
 	} else {
-		$tip = "<span onmouseover=\"$width $title return escape( '$tooltip' );\" ". $style .">". $text ."</span>";
+		$tip = "<span onmouseover=\"Tip( '$tooltip' $width $title );\" onmouseout=\"UnTip()\" ". $style .">". $text ."</span>";
 	}
 
 	return $tip;

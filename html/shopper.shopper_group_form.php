@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -91,7 +91,7 @@ if (!empty($shopper_group_id)) {
       </td>
       <td width="77%" > 
         <input type="text" class="inputbox" name="shopper_group_discount" size="18" value="<?php $db->sp('shopper_group_discount') ?>" />
-        <?php echo mm_ToolTip( $VM_LANG->_('PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP') ); ?>
+        <?php echo vmToolTip( $VM_LANG->_('PHPSHOP_SHOPPER_GROUP_FORM_DISCOUNT_TIP') ); ?>
       </td>
     </tr> 
     <tr> 
