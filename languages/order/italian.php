@@ -56,6 +56,21 @@ $langvars = array (
 	'VM_ORDER_PRINT_PO_IPADDRESS' => 'Indirizzo IP',
 	'VM_ORDER_STATUS_ICON_ALT' => 'Icona Stato',
 	'VM_ORDER_PAYMENT_CCV_CODE' => 'Codice CVV',
-	'VM_ORDER_NOTFOUND' => 'Ordine non trovao! Potrebbe essere stato eliminato.'
+	'VM_ORDER_NOTFOUND' => 'Ordine non trovato! Potrebbe essere stato eliminato.',
+	'PHPSHOP_ORDER_EDIT_ACTIONS' => 'Azioni',
+	'PHPSHOP_ORDER_EDIT' => 'Modifica Dettagli Ordine',
+	'PHPSHOP_ORDER_EDIT_ADD' => 'Aggiungi',
+	'PHPSHOP_ORDER_EDIT_ADD_PRODUCT' => 'Aggiungi Prodotto',
+	'PHPSHOP_ORDER_EDIT_EDIT_ORDER' => 'Modifica Ordine',
+	'PHPSHOP_ORDER_EDIT_ERROR_QUANTITY_MUST_BE_HIGHER_THAN_0' => 'La quantità deve essere maggiore di 0.',
+	'PHPSHOP_ORDER_EDIT_PRODUCT_ADDED' => 'Il Prodotto è stato aggiunto all\'Ordine',
+	'PHPSHOP_ORDER_EDIT_PRODUCT_DELETED' => 'Il Prodotto è stato eliminato dall\'Ordine',
+	'PHPSHOP_ORDER_EDIT_QUANTITY_UPDATED' => 'La quantità è stata aggiornata',
+	'PHPSHOP_ORDER_EDIT_RETURN_PARENTS' => 'torna al Prodotto Padre',
+	'PHPSHOP_ORDER_EDIT_CHOOSE_PRODUCT' => 'Scegli un Prodotto',
+	'PHPSHOP_ORDER_CHANGE_UPD_BILL' => 'Cambia Indirizzo Fatturazione',
+	'PHPSHOP_ORDER_CHANGE_UPD_SHIP' => 'Cambia Indirizzo Spedizione',
+	'PHPSHOP_ORDER_EDIT_SOMETHING_HAS_CHANGED' => ' è stato modificato',
+	'PHPSHOP_ORDER_EDIT_CHOOSE_PRODUCT_BY_SKU' => 'Seleziona SKU'
 ); $VM_LANG->initModule( 'order', $langvars );
 ?>

@@ -57,23 +57,21 @@ $langvars = array (
 	'VM_ORDER_STATUS_ICON_ALT' => 'Status Icon',
 	'VM_ORDER_PAYMENT_CCV_CODE' => 'CVV Code',
 	'VM_ORDER_NOTFOUND' => 'Order not found! It may have been deleted.'
-	
-	/* Order Edit entries */
 	'PHPSHOP_ORDER_CHANGE_UPD_BILL' => 'Rechnungsadresse ändern',
-  'PHPSHOP_ORDER_EDIT_ACTIONS' => 'Aktionen',
-  'PHPSHOP_ORDER_EDIT' => 'Bestellung ändern',
-  'PHPSHOP_ORDER_EDIT_ADD' => 'Hinzufügen',
-  'PHPSHOP_ORDER_EDIT_ADD_PRODUCT' => 'Produkt hinzufügen',
-  'PHPSHOP_ORDER_EDIT_EDIT_ORDER' => 'Bestellung ändern',
-  'PHPSHOP_ORDER_EDIT_ERROR_QUANTITY_MUST_BE_HIGHER_THAN_0' => 'Die Menge muss größer 0 sein',
-  'PHPSHOP_ORDER_EDIT_PRODUCT_ADDED' => 'Produkt erfolgreich zur Bestellung hinzugefügt',
-  'PHPSHOP_ORDER_EDIT_PRODUCT_DELETED' => 'Produkt erfolgreich aus der Bestellung gelöscht',
-  'PHPSHOP_ORDER_EDIT_QUANTITY_UPDATED' => 'Menge erfolgreich geändert',
-  'PHPSHOP_ORDER_EDIT_RETURN_PARENTS' => 'Zurück zum übergeordneten Produkt',
-  'PHPSHOP_ORDER_EDIT_CHOOSE_PRODUCT' => 'Produktnamen auswählen',
-  'PHPSHOP_ORDER_CHANGE_UPD_BILL' => 'Rechnungsadresse ändern',
-  'PHPSHOP_ORDER_CHANGE_UPD_SHIP' => 'Lieferadresse ändern',
-  'PHPSHOP_ORDER_EDIT_SOMETHING_HAS_CHANGED' => ' wurde geändert',
-  'PHPSHOP_ORDER_EDIT_CHOOSE_PRODUCT_BY_SKU' => 'Art.-Nr. auswählen'
+	'PHPSHOP_ORDER_EDIT_ACTIONS' => 'Aktionen',
+	'PHPSHOP_ORDER_EDIT' => 'Bestellung ändern',
+	'PHPSHOP_ORDER_EDIT_ADD' => 'Hinzufügen',
+	'PHPSHOP_ORDER_EDIT_ADD_PRODUCT' => 'Produkt hinzufügen',
+	'PHPSHOP_ORDER_EDIT_EDIT_ORDER' => 'Bestellung ändern',
+	'PHPSHOP_ORDER_EDIT_ERROR_QUANTITY_MUST_BE_HIGHER_THAN_0' => 'Die Menge muss größer 0 sein',
+	'PHPSHOP_ORDER_EDIT_PRODUCT_ADDED' => 'Produkt erfolgreich zur Bestellung hinzugefügt',
+	'PHPSHOP_ORDER_EDIT_PRODUCT_DELETED' => 'Produkt erfolgreich aus der Bestellung gelöscht',
+	'PHPSHOP_ORDER_EDIT_QUANTITY_UPDATED' => 'Menge erfolgreich geändert',
+	'PHPSHOP_ORDER_EDIT_RETURN_PARENTS' => 'Zurück zum übergeordneten Produkt',
+	'PHPSHOP_ORDER_EDIT_CHOOSE_PRODUCT' => 'Produktnamen auswählen',
+	'PHPSHOP_ORDER_CHANGE_UPD_BILL' => 'Rechnungsadresse ändern',
+	'PHPSHOP_ORDER_CHANGE_UPD_SHIP' => 'Lieferadresse ändern',
+	'PHPSHOP_ORDER_EDIT_SOMETHING_HAS_CHANGED' => ' wurde geändert',
+	'PHPSHOP_ORDER_EDIT_CHOOSE_PRODUCT_BY_SKU' => 'Art.-Nr. auswählen'
 ); $VM_LANG->initModule( 'order', $langvars );
 ?>

@@ -36,6 +36,9 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 
+25.05.2008 thepisu
++ added language strings for updated "Order Edit" feature
+
 24.05.2008 soeren
 ^ updated "Order Edit" feature, thanks to kaltokri!
 # Task #2109 - Captcha is shown on invoice 
