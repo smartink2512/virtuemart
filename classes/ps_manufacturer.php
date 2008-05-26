@@ -78,10 +78,7 @@ class ps_manufacturer {
 			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_MANUF_ERR_DELETE_SELECT') );
 			return False;
 		}
-		$db->query( "SELECT jos_vm_product.product_id, manufacturer_id
-						FROM jos_vm_product, jos_vm_product_mf_xref
-						WHERE manufacturer_id =".intval($mf_id)."
-						AND jos_vm_product.product_id = jos_vm_product_mf_xref.product_id" );
+				$db->query( "SELECT `#__{vm}_product`.product_id, manufacturer_id  	FROM `#__{vm}_product`, `#__{vm}_product_mf_xref` WHERE manufacturer_id =".intval($mf_id)." AND `#__{vm}_product`.product_id = `#__{vm}_product_mf_xref`.product_id" );				
 		if( $db->num_rows() > 0 ) {
 			$GLOBALS['vmLogger']->err( $VM_LANG->_('VM_MANUF_ERR_DELETE_STILLPRODUCTS') );
 			return false;
