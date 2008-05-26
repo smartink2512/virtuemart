@@ -35,6 +35,8 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+26.05.2008 soeren
+# Task #2117 - Call-time pass-by-reference error in ps_order_change.php
 
 25.05.2008 thepisu
 + added language strings for updated "Order Edit" feature
