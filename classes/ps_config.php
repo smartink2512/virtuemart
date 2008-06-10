@@ -204,11 +204,12 @@ define( 'SECUREURL', '".$db->getEscaped($d['conf_SECUREURL'])."' );
 
 if ( @\$_SERVER['HTTPS'] == 'on' ) {
 	define( 'IMAGEURL', SECUREURL .'components/com_virtuemart/shop_image/' );
+	define( 'VM_THEMEURL', SECUREURL.'components/com_virtuemart/themes/".$db->getEscaped($d['conf_THEME'])."/' );
 } else {
 	define( 'IMAGEURL', URL .'components/com_virtuemart/shop_image/' );
+	define( 'VM_THEMEURL', URL.'components/com_virtuemart/themes/".$db->getEscaped($d['conf_THEME'])."/' );
 }
 define( 'VM_THEMEPATH', \$mosConfig_absolute_path.'/components/com_virtuemart/themes/".$db->getEscaped($d['conf_THEME'])."/' );
-define( 'VM_THEMEURL', \$mosConfig_live_site.'/components/com_virtuemart/themes/".$db->getEscaped($d['conf_THEME'])."/' );
 
 define( 'COMPONENTURL', URL .'administrator/components/com_virtuemart/' );
 define( 'ADMINPATH', \$mosConfig_absolute_path.'/administrator/components/com_virtuemart/' );

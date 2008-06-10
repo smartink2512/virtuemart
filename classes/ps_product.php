@@ -2531,7 +2531,7 @@ class ps_product extends vmAbstractObject {
 	        $q .= 'ORDER BY RAND() LIMIT 0, '.(int)$products;
         }
         else {
-	        $q  = "SELECT DISTINCT product_sku,product_id,product_name,product_s_desc,product_thumb_image FROM #__{vm}_product WHERE ";
+	        $q  = "SELECT DISTINCT product_sku,product_id,product_name,product_s_desc,product_thumb_image, product_in_stock FROM #__{vm}_product WHERE ";
 	        $q .= "(#__{vm}_product.product_parent_id='' OR #__{vm}_product.product_parent_id='0') AND vendor_id='".$_SESSION['ps_vendor_id']."' ";
 	        $q .= "AND #__{vm}_product.product_publish='Y' ";
 	        $q .= "AND #__{vm}_product.product_special='Y' ";
@@ -2562,12 +2562,13 @@ class ps_product extends vmAbstractObject {
                 $featured_products[$i]['flypage'] = $flypage;
                 $featured_products[$i]['form_addtocart'] = "";
                 if (USE_AS_CATALOGUE != '1' && $price != "" 
-                && !stristr( $price, $VM_LANG->_('PHPSHOP_PRODUCT_CALL') )
-                && !$this->product_has_attributes( $db->f('product_id'), true )
-                && $tpl->get_cfg( 'showAddtocartButtonOnProductList' ) ) {
+	                && !stristr( $price, $VM_LANG->_('PHPSHOP_PRODUCT_CALL') )
+	                && !$this->product_has_attributes( $db->f('product_id'), true )
+	                && $tpl->get_cfg( 'showAddtocartButtonOnProductList' ) ) {
 			        $tpl->set( 'i', $i );
 			        $tpl->set( 'product_id', $db->f('product_id') );
 			        $tpl->set( 'ps_product_attribute', $ps_product_attribute );
+			        $tpl->set( 'product_in_stock', $db->f('product_in_stock'));
 			        $featured_products[$i]['form_addtocart'] = $tpl->fetch( 'browse/includes/addtocart_form.tpl.php' );
 			        $featured_products[$i]['has_addtocart'] = true;
 		        }

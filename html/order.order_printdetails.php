@@ -98,6 +98,7 @@ echo vmCommonHTML::PrintIcon();
 	        <?php 
 		foreach( $registrationfields as $field ) {
 			if( $field->name == 'email') $field->name = 'user_email';
+			if($field->type == 'captcha') continue;
 			?>
 		  <tr> 
 			<td align="right"><?php echo $VM_LANG->_($field->title) ? $VM_LANG->_($field->title) : $field->title ?>:</td>

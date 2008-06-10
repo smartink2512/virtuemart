@@ -35,6 +35,15 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+09.06.2008 soeren
+# Task #2120 - Cookie check not showing warning when cookies are disabled
+# Task #2119 - Product descriptions are truncated at the first instance of "&nbsp;"
+# Task #2116 - Search in Country, State list not working
+# Task #2109 - Captcha is shown on invoice (attempt #2)
+# Task #2108 - Spaces removed form alt and title of images inserted in product descriptions 
+# Task #2107 - Feature Product on shop page shows 'Notify Me' button even when product is in stock
+
 26.05.2008 soeren
 # Task #2117 - Call-time pass-by-reference error in ps_order_change.php
 

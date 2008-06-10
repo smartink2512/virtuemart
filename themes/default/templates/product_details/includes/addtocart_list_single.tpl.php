@@ -35,10 +35,12 @@ foreach( $products as $product ) {
             <span class="vmChildDetail<?php echo $cls_suffix ?>" style="width :20%;" />
                 <?php echo $product['product_title'] ?></span>
             <?php // Ouput Each Attribute
-            foreach($product['attrib_value'] as $attribute) { ?>
-                <span class="vmChildDetail<?php echo $cls_suffix ?>" style="width :<?php echo $attrib_width ?>;" />
-	            <?php echo " ".$attribute ?></span>
-            <?php 
+			if( !empty( $product['attrib_value'] )) {
+				foreach($product['attrib_value'] as $attribute) { ?>
+					<span class="vmChildDetail<?php echo $cls_suffix ?>" style="width :<?php echo $attrib_width ?>;" />
+					<?php echo " ".$attribute ?></span>
+				<?php 
+				}
 			}
 			?></label>
 			<?php 

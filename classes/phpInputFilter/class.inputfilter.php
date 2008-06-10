@@ -480,8 +480,9 @@ class vmInputFilter {
 			{
 				// strips unicode, hex, etc
 				$attrSubSet[1] = str_replace('&#', '', $attrSubSet[1]);
-				// strip normal newline within attr value
-				$attrSubSet[1] = preg_replace('/\s+/', '', $attrSubSet[1]);
+				// strip normal newline and multiple space chars within attr value
+				$attrSubSet[1] = str_replace(array("\r\n", "\r", "\n"), array(' ', ' ',' '), $attrSubSet[1]);
+				$attrSubSet[1] = preg_replace('/\s\s+/', ' ', $attrSubSet[1]);
 				// strip slashes
 				$attrSubSet[1] = stripslashes($attrSubSet[1]);
 				// strip double quotes
@@ -562,7 +563,7 @@ class vmInputFilter {
 	function decode($source) {
 		if( $source != "" ) { //bypass php html_entity_decode bug # 21338 on systems where unable to upgrade php
 			// url decode
-			$source = html_entity_decode($source, ENT_QUOTES );
+			$source = html_entity_decode($source, ENT_QUOTES, vmGetCharset() );
 			// convert decimal
 			$source = preg_replace('/&#(\d+);/me',"chr(\\1)", $source);				// decimal notation
 			// convert hex

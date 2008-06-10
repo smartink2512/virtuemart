@@ -168,6 +168,7 @@ else {
 		<?php 
 		foreach( $userfields as $field ) {
 			if( $field->name == 'email') $field->name = 'user_email';
+			if($field->type == 'captcha') continue;
 			?>
 		  <tr> 
 			<td width="35%" align="right">&nbsp;<?php echo $VM_LANG->_($field->title) ? $VM_LANG->_($field->title) : $field->title ?>:</td>
