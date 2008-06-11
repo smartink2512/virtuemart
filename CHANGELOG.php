@@ -36,6 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 11.06.2008 soeren
+^ changed product form to display a "category search form" instead of a select-list with all categories when more than 200 categories are present in the store
 # Task #2069 - Wrong URL in Order Status Change email when using PayPal
 # Task #2166 - Add to cart broken in SVN 1408 
  

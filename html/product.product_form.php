@@ -258,16 +258,42 @@ $tabs->startTab( $info_label, "info-page");
       <td width="79%" ><?php ps_manufacturer::list_manufacturer(@$manufacturer_id);  ?></td>
     </tr>
     <?php
-    if (!$product_parent_id) { ?>
-    <tr class="row0"> 
-      <td width="29%" valign="top"><div style="text-align:right;font-weight:bold;">
-       <?php echo $VM_LANG->_('PHPSHOP_CATEGORIES') ?>:<br/><br/>
-       <?php echo vmToolTip( $VM_LANG->_('PHPSHOP_MULTISELECT') ) ?></div>
-       </td>
-      <td width="71%" ><?php 
-        $ps_product_category->list_all("product_categories[]", "", $my_categories, 10, false, true); ?></td>
-    </tr>
-    <?php
+    if (!$product_parent_id) { 
+    	?><tr class="row0"> 
+    	<?php
+    	$number_of_categories = ps_product_category::count_categories();
+    	if( $number_of_categories > 2 ) {
+    		?>
+			<td style="vertical-align:top;">
+			<?php echo $VM_LANG->_('PHPSHOP_CATEGORIES') ?>:<br/>
+			<input type="text" size="40" name="catsearch" id="categorySearch" value="" />
+			</td>
+			<td>
+			<input style="vertical-align: top;" type="button" name="remove_category" onclick="removeSelectedOptions(relatedCatSelection)" value="&nbsp; &lt; &nbsp;" />
+			<?php			
+			foreach( array_keys($my_categories) as $cat_id ) {
+				$categoriesArr[$cat_id] = ps_product_category::get_name_by_catid( $cat_id );
+			}
+			echo ps_html::selectList('relCats', '', $categoriesArr, 10, 'multiple="multiple"', 'id="relatedCatSelection" ondblclick="removeSelectedOptions(relatedCatSelection);"');
+			?>
+			<input type="hidden" name="category_ids" value="<?php echo implode('|', array_keys($my_categories) ) ?>" />
+			</td>	
+			<?php
+    	} else {
+		    	?>		    
+		      <td width="29%" valign="top"><div style="text-align:right;font-weight:bold;">
+		       <?php echo $VM_LANG->_('PHPSHOP_CATEGORIES') ?>:<br/><br/>
+		       <?php echo vmToolTip( $VM_LANG->_('PHPSHOP_MULTISELECT') ) ?></div>
+		       </td>
+		      <td width="71%" ><?php 
+		        $ps_product_category->list_all("product_categories[]", "", $my_categories, 10, false, true); 
+		        ?>
+		        </td>		    
+		    <?php
+    	}
+    	?>
+    	</tr>
+    	<?php
     }
     ?>
   </table>
@@ -1398,14 +1424,12 @@ if( @$_REQUEST['no_menu'] != '1') {
 	<?php
 }
 ?>
-var searchField = function(){
+var productSearchField = function(){
 
     var relds = new Ext.data.Store({
         proxy: new Ext.data.HttpProxy({
             url: 'index2.php?option=com_virtuemart&page=product.ajax_tools&task=getproducts&ajax_request=1&func=&no_menu=1&only_page=1&no_html=1&product_id=<?php echo $product_id ?>',
-            method: 'GET'
-            
-        }),
+            method: 'GET' }),
         reader: new Ext.data.JsonReader({
             root: 'products',
             totalProperty: 'totalCount',
@@ -1415,12 +1439,9 @@ var searchField = function(){
 	            {name: 'category'},
 	            {name: 'product_id'}
 	        ])
-    });
-   
+    });   
     // Custom rendering Template
-    var resultTpl = new Ext.XTemplate(
-    	'<tpl for="."><div class="x-combo-list-item">{category} / {product}</div></tpl>'
-    );
+    var resultTpl = new Ext.XTemplate( '<tpl for="."><div class="x-combo-list-item">{category} / {product}</div></tpl>' );
     relatedSelection = document.getElementById('relatedSelection');
     related_products = document.adminForm.related_products;
     var relProdSearch = new Ext.form.ComboBox({
@@ -1433,7 +1454,7 @@ var searchField = function(){
         width: 270,
         minListWidth: 270,
         pageSize:15,
-        //hideTrigger:true,
+        emptyText: "<?php  echo addslashes($VM_LANG->_('PHPSHOP_SEARCH_TITLE')); ?>",
         tpl: resultTpl,
         onSelect: function(record) {
         	for(var i=0;i<relatedSelection.options.length;i++) {
@@ -1452,11 +1473,71 @@ var searchField = function(){
     });
 	
 };
+var categorySearchField = function(){
+
+    var relds = new Ext.data.Store({
+        proxy: new Ext.data.HttpProxy({
+            url: 'index2.php?option=com_virtuemart&page=product.ajax_tools&task=getcategories&ajax_request=1&func=&no_menu=1&only_page=1&no_html=1',
+            method: 'GET'            
+        }),
+        reader: new Ext.data.JsonReader({
+            root: 'categories',
+            totalProperty: 'totalCount',
+            id: 'category_id'
+	        }, [
+	            {name: 'category'},
+	            {name: 'category_id'}
+	        ])
+    });
+   
+    // Custom rendering Template
+    var resultTpl = new Ext.XTemplate(
+    	'<tpl for="."><div class="x-combo-list-item">{category} (ID: {category_id})</div></tpl>'
+    );
+    relatedCatSelection = document.getElementById('relatedCatSelection');
+    category_ids = document.adminForm.category_ids;
+    var relProdSearch = new Ext.form.ComboBox({
+    	applyTo: "categorySearch",
+        store: relds,
+        title: '<?php echo addslashes($VM_LANG->_('VM_PRODUCT_SELECT_ONE_OR_MORE')); ?>',
+        displayField:'category',
+        typeAhead: false,
+        loadingText: '<?php echo addslashes($VM_LANG->_('VM_PRODUCT_SEARCHING')); ?>',
+        width: 170,
+        minListWidth: 170,
+        pageSize:15,
+        emptyText: "<?php  echo addslashes($VM_LANG->_('PHPSHOP_SEARCH_TITLE')); ?>",
+        tpl: resultTpl,
+        onSelect: function(record) {
+        	for(var i=0;i<relatedCatSelection.options.length;i++) {
+        		if(relatedCatSelection.options[i].value==record.id) {
+        			return;
+        		}
+        	}
+        	o = new Option( record.data.category, record.id );
+        	
+        	relatedCatSelection.options[relatedCatSelection.options.length] = o;
+        	if( category_ids.value != '') {
+        		category_ids.value += '|' + record.id;
+        	} else {
+        		category_ids.value += record.id;
+        	}
+        	alert(  document.adminForm.category_ids.value );
+        }
+    });
+	
+};
 if( Ext.isIE ) {
-	Ext.EventManager.addListener( window, 'load', searchField );
+	Ext.EventManager.addListener( window, 'load', productSearchField );
+	if( Ext.get("categorySearch") ) {
+		Ext.EventManager.addListener( window, 'load', categorySearchField );
+	}
 }
 else {
-	Ext.onReady( searchField );
+	Ext.onReady( productSearchField );
+	if( Ext.get("categorySearch") ) {
+		Ext.onReady( categorySearchField );
+	}
 }
 function removeSelectedOptions(from) {
 	// Delete them from original

@@ -94,6 +94,9 @@ class ps_product extends vmAbstractObject {
 
 		/** Validate Product Specific Fields **/
 		if (!$d["product_parent_id"]) {
+			if( empty( $d['product_categories']) || !is_array(@$d['product_categories'])) {
+				$d['product_categories'] = explode('|', $d['category_ids'] );
+			}
 			if (sizeof(@$d["product_categories"]) < 1) {
 				$vmLogger->err( $VM_LANG->_('VM_PRODUCT_MISSING_CATEGORY') );
 				$valid = false;
@@ -326,7 +329,10 @@ class ps_product extends vmAbstractObject {
 			}
 		}
 		else {
-			/* If is Product, Insert category ids */
+			// If is Product, Insert category ids
+			if( empty( $d['product_categories']) || !is_array(@$d['product_categories'])) {
+				$d['product_categories'] = explode('|', $d['category_ids'] );
+			}
 			foreach( $d["product_categories"] as $category_id ) {
 				$db->query('SELECT MAX(`product_list`) as list_order FROM `#__{vm}_product_category_xref` WHERE `category_id`='.$category_id );
 				$db->next_record();
@@ -542,14 +548,19 @@ class ps_product extends vmAbstractObject {
 			}
 			// NOW Insert new categories
 			$new_categories = array();
+			
+			if( empty( $d['product_categories']) || !is_array(@$d['product_categories'])) {
+				$d['product_categories'] = explode('|', $d['category_ids'] );
+			}
+			
 			foreach( $d["product_categories"] as $category_id ) {
 				if( !in_array( $category_id, $old_categories ) ) {
-					$db->query('SELECT MAX(`product_list`) as list_order FROM `#__{vm}_product_category_xref` WHERE `category_id`='.$category_id );
+					$db->query('SELECT MAX(`product_list`) as list_order FROM `#__{vm}_product_category_xref` WHERE `category_id`='.(int)$category_id );
 					$db->next_record();
 
 					$q  = "INSERT INTO #__{vm}_product_category_xref ";
 					$q .= "(category_id,product_id,product_list) ";
-					$q .= "VALUES ('$category_id','". $d["product_id"] . "', ".intval($db->f('max') +1 ) . ")";
+					$q .= "VALUES ('".(int)$category_id."','". $d["product_id"] . "', ".intval($db->f('max') +1 ) . ")";
 					$db->setQuery($q); $db->query();
 					$new_categories[$category_id] = $category_id;
 				}

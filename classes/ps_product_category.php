@@ -1275,7 +1275,17 @@ class ps_product_category extends vmAbstractObject {
 		
 		return $category_list;
 	}
-
+	/**
+	 * Returns the number of categories in the whole store.
+	 * @static
+	 * @return int
+	 */
+	function count_categories() {
+		$db = new ps_DB();
+		$db->query('SELECT COUNT(category_id) as num_rows FROM #__{vm}_category');
+		$db->next_record();
+		return (int)$db->f('num_rows');
+	}
 	/**
 	 * Changes the category List Order
 	 * @author soeren

@@ -103,13 +103,42 @@ switch( $task ) {
 			$q .= ' OR category_name LIKE \'%'.$keyword.'%\')';
 		}
 		$q .= ' ORDER BY category_name,#__{vm}_category.category_id,product_name';
-		$q .= ' LIMIT '.(int)$_REQUEST['start'].', '.$_REQUEST['limit'];
+		$q .= ' LIMIT '.(int)$_REQUEST['start'].', '.(int)$_REQUEST['limit'];
 		$db->query( $q );
 		
 		while( $db->next_record() ) {
 			$response['products'][] = array( 'product_id' => $db->f("product_id"),
 									'category' => htmlspecialchars($db->f("category_name")),
 									'product' => htmlspecialchars($db->f("product_name"))
+									);
+			
+		}
+		$db->query('SELECT FOUND_ROWS() as num_rows');
+		$db->next_record();
+		$response['totalCount'] = $db->f('num_rows');
+		error_reporting(0);
+		while( @ob_end_clean() );
+		$json = new Services_JSON();
+		echo $json->encode( $response );
+		$vm_mainframe->close(true);
+		
+		break;
+	case 'getcategories':
+		require_once(CLASSPATH . 'JSON.php');
+		$db =& new ps_DB;
+		$keyword = $db->getEscaped(vmGet( $_REQUEST, 'query' ));
+		$q = "SELECT SQL_CALC_FOUND_ROWS #__{vm}_category.category_id,category_name
+			FROM `#__{vm}_category` ";
+		if( $keyword ) {
+			$q .= ' WHERE category_name LIKE \'%'.$keyword.'%\'';
+		}
+		$q .= ' ORDER BY category_name,#__{vm}_category.category_id';
+		$q .= ' LIMIT '.(int)$_REQUEST['start'].', '.(int)$_REQUEST['limit'];
+		$db->query( $q );
+		
+		while( $db->next_record() ) {
+			$response['categories'][] = array( 'category_id' => $db->f("category_id"),
+									'category' => htmlspecialchars($db->f("category_name"))
 									);
 			
 		}
