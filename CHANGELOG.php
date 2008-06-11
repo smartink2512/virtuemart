@@ -35,8 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-
+11.06.2008 soeren
+# Task #2069 - Wrong URL in Order Status Change email when using PayPal
+# Task #2166 - Add to cart broken in SVN 1408 
+ 
 09.06.2008 soeren
+# Task #1840 - Ajax call does not work with full SEF URL
 # Task #2120 - Cookie check not showing warning when cookies are disabled
 # Task #2119 - Product descriptions are truncated at the first instance of "&nbsp;"
 # Task #2116 - Search in Country, State list not working

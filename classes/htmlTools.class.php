@@ -973,7 +973,7 @@ class vmCommonHTML {
 	function EmailIcon( $product_id, $use_icon=true ) {
 		global $VM_LANG, $mosConfig_live_site, $sess;
 		if ( @VM_SHOW_EMAILFRIEND == '1' && !vmGet( $_REQUEST, 'pop' ) && $product_id > 0  ) {
-			$link = $sess->url( 'index2.php?page=shop.recommend&amp;product_id='.$product_id.'&amp;pop=1' );
+			$link = $sess->url( 'index2.php?page=shop.recommend&amp;product_id='.$product_id.'&amp;pop=1'.(vmIsJoomla('1.5') ? '&amp;tmpl=component' : '') );
 			if ( $use_icon ) {
 				$text = vmCommonHTML::ImageCheck( 'emailButton.png', '/images/M_images/', NULL, NULL, $VM_LANG->_('CMN_EMAIL'), $VM_LANG->_('CMN_EMAIL') );
 			} else {
@@ -988,7 +988,7 @@ class vmCommonHTML {
 		if ( @VM_SHOW_PRINTICON == '1' ) {
 			if( !$link ) {
 				$query_string = str_replace( 'only_page=1', 'only_page=0', vmAmpReplace(vmGet($_SERVER,'QUERY_STRING')) );
-				$link = 'index2.php?'.$query_string.'&amp;pop=1';
+				$link = 'index2.php?'.$query_string.'&amp;pop=1'.(vmIsJoomla('1.5') ? '&amp;tmpl=component' : '');
 			}
 			// checks template image directory for image, if non found default are loaded
 			if ( $use_icon ) {

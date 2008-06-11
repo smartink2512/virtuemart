@@ -88,18 +88,13 @@ class ps_session {
 		global $mm_action_url, $VM_LANG;
 		
 		$doCheck = vmGet( $_REQUEST, 'vmcchk', 0 );
+		$isOK = vmGet( $_SESSION, 'VMCHECK' );
 		
-		if( $doCheck ) {
-			$isOK = vmGet( $_COOKIE, 'VMCHECK' );
-			if( $isOK != 'OK' ) {
-				$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_SESSION_COOKIES_NOT_ACCEPTED_TIP',false) );
-			} else {
-				// Delete the cookie
-				setcookie( 'VMCHECK', '', false );
-			}
+		if( $doCheck && $isOK != 'OK' ) {
+			$GLOBALS['vmLogger']->info( $VM_LANG->_('VM_SESSION_COOKIES_NOT_ACCEPTED_TIP',false) );
 		}
-		else {
-			setcookie( 'VMCHECK', 'OK' );
+		elseif( empty( $isOK )) {
+			$_SESSION['VMCHECK'] = 'OK';
 			vmRedirect( $this->url( $mm_action_url . 'index.php?' . vmGet($_SERVER,'QUERY_STRING').'&vmcchk=1', true, false ));
 		}
 	}

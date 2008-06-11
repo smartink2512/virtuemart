@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -213,9 +213,9 @@ class ps_order {
 	 */
 	function mail_download_id( &$d ){
 
-		global $mosConfig_live_site, $sess,	$VM_LANG, $vmLogger;
+		global $sess,	$VM_LANG, $vmLogger;
 
-		$url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
+		$url = URL."index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
 		
 		$db = new ps_DB();
 		$db->query( 'SELECT order_status FROM #__{vm}_orders WHERE order_id='.(int)$d['order_id'] );
@@ -259,7 +259,7 @@ class ps_order {
 				$message .= str_replace("{expire}", $expire, $VM_LANG->_('PHPSHOP_DOWNLOADS_SEND_MSG_4',false));
 				$message .= "\n\n____________________________________________________________\n";
 				$message .= $VM_LANG->_('PHPSHOP_DOWNLOADS_SEND_MSG_5',false)."\n";
-				$message .= $dbv->f("vendor_name") . " \n" . $mosConfig_live_site."\n\n".$dbv->f("contact_email") . "\n";
+				$message .= $dbv->f("vendor_name") . " \n" . URL."\n\n".$dbv->f("contact_email") . "\n";
 				$message .= "____________________________________________________________\n";
 				$message .= $VM_LANG->_('PHPSHOP_DOWNLOADS_SEND_MSG_6',false) . $dbv->f("vendor_name");
 
@@ -294,9 +294,9 @@ class ps_order {
 	 */
 	function notify_customer( &$d ){
 
-		global $mosConfig_live_site, $sess, $VM_LANG, $vmLogger;
+		global  $sess, $VM_LANG, $vmLogger;
 
-		$url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=account.order_details&order_id=".urlencode($d["order_id"]).'&Itemid='.$sess->getShopItemid();
+		$url = SECUREURL."index.php?option=com_virtuemart&page=account.order_details&order_id=".urlencode($d["order_id"]).'&Itemid='.$sess->getShopItemid();
 
 		$db = new ps_DB;
 		$dbv = new ps_DB;
@@ -331,7 +331,7 @@ class ps_order {
 		$message .= $url;
 		$message .= "\n\n____________________________________________________________\n";
 		$message .= $dbv->f("vendor_name") . " \n";
-		$message .= $mosConfig_live_site."\n";
+		$message .= URL."\n";
 		$message .= $dbv->f("contact_email");
 
 		$message = str_replace( "{order_id}", $d["order_id"], $message );

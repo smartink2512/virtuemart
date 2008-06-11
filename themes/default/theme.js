@@ -22,7 +22,7 @@ function loadNewPage( el, url ) {
 	new Ajax( url + '&only_page=1', opt ).request();
 }
 
-function handleGoToCart() { document.location = 'index.php?option=com_virtuemart&page=shop.cart&product_id=' + formCartAdd.product_id.value ; }
+function handleGoToCart() { document.location = live_site + '/index.php?option=com_virtuemart&page=shop.cart&product_id=' + formCartAdd.product_id.value ; }
 
 function handleAddToCart( formId, parameters ) {
 	formCartAdd = document.getElementById( formId );
