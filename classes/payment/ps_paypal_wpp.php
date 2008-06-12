@@ -75,6 +75,14 @@ class ps_paypal_wpp {
             <td><?php echo PP_WPP_TEXT_SIGNATURE_EXPLAIN ?>
             </td>
         </tr>
+        <tr>
+            <td><strong><?php echo PP_WPP_TEXT_CERTIFICATE_PATH ?></strong></td>
+            <td>
+                <input type="text" name="PP_WPP_CERTIFICATE_PATH" class="inputbox" value="<?php echo PP_WPP_CERTIFICATE_PATH ?>" size="40" />
+            </td>
+            <td><?php echo PP_WPP_TEXT_CERTIFICATE_PATH_EXPLAIN ?>
+            </td>
+        </tr>
 		<tr>
             <td><strong><?php echo PP_WPP_TEXT_ACCOUNT ?></strong></td>
             <td>
@@ -113,7 +121,7 @@ class ps_paypal_wpp {
             <td><?php echo PP_WPP_TEXT_PROXY_PORT_EXPLAIN ?></td>
         </tr> 
         <tr><td><strong><?php echo PP_WPP_TEXT_STATUS_SUCCESS ?></strong></td>
-            <td><select name="PP_WPP_SUCCESS_STATUS" class="inputbox" >
+            <td><select name="PP_WPP_VERIFIED_STATUS" class="inputbox" >
                 <?php
                     $q = "SELECT order_status_name,order_status_code FROM #__{vm}_order_status ORDER BY list_order";
                     $db->query($q);
@@ -126,7 +134,7 @@ class ps_paypal_wpp {
                     }
                     for ($i = 0; $i < sizeof($order_status_code); $i++) {
                       echo "<option value=\"" . $order_status_code[$i];
-                      if (PP_WPP_SUCCESS_STATUS == $order_status_code[$i]) 
+                      if (PP_WPP_VERIFIED_STATUS == $order_status_code[$i]) 
                          echo "\" selected=\"selected\">";
                       else
                          echo "\">";
@@ -197,9 +205,10 @@ class ps_paypal_wpp {
 								 "PP_WPP_USERNAME" => $d['PP_WPP_USERNAME'],
 								 "PP_WPP_PASSWORD" => $d['PP_WPP_PASSWORD'],
 								 "PP_WPP_SIGNATURE" => $d['PP_WPP_SIGNATURE'],
+								 "PP_WPP_CERTIFICATE_PATH" => $d['PP_WPP_CERTIFICATE_PATH'],
 								 "PP_WPP_ACCOUNT" => $d['PP_WPP_ACCOUNT'],
 								 "PP_WPP_CHECK_CARD_CODE" => $d['PP_WPP_CHECK_CARD_CODE'],
-								 "PP_WPP_SUCCESS_STATUS" => $d['PP_WPP_SUCCESS_STATUS'],
+								 "PP_WPP_VERIFIED_STATUS" => $d['PP_WPP_VERIFIED_STATUS'],
 								 "PP_WPP_PENDING_STATUS" => $d['PP_WPP_PENDING_STATUS'],
 								 "PP_WPP_FAILED_STATUS" => $d['PP_WPP_FAILED_STATUS'],
 								 "PP_WPP_USE_PROXY" => $d['PP_WPP_USE_PROXY'],
@@ -209,7 +218,7 @@ class ps_paypal_wpp {
 								 "PP_WPP_PAYMENT_ACTION" => $d['PP_WPP_PAYMENT_ACTION']
                             );
       $config = "<?php\n";
-      $config .= "defined('_VALID_MOS') or die('Direct Access to this location is not allowed.'); \n";
+      $config .= "if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); \n";
 	  $config .= "
 define('PP_WPP_TEXT_CREDIT_CARD_TYPE', 'Credit Card Type:');
 define('PP_WPP_TEXT_CREDIT_CARD_FIRSTNAME', 'Owner First Name:');
@@ -222,13 +231,15 @@ define ('PP_WPP_TEXT_DECLINED_MESSAGE', 'Your credit card was declined. Please t
 define ('PP_WPP_TEXT_PROCESS_ERROR', 'There was an error processing your card.');
 
 define ('PP_WPP_TEXT_ACCOUNT', 'Paypal Email Address:');
-define ('PP_WPP_TEXT_ACCOUNT_EXPLAIN', 'This is your PayPal email address. (This will differ between Sandbox and Live)');
-define ('PP_WPP_TEXT_USERNAME', 'API account name:');
-define ('PP_WPP_TEXT_USERNAME_EXPLAIN', 'This is your API username. (This will differ between Sandbox and Live)');
+define ('PP_WPP_TEXT_ACCOUNT_EXPLAIN', 'This is your PayPal email address. (This will differ between Sandbox and Live.)');
+define ('PP_WPP_TEXT_USERNAME', 'API username:');
+define ('PP_WPP_TEXT_USERNAME_EXPLAIN', 'This is your API username. (This will differ between Sandbox and Live.)');
 define ('PP_WPP_TEXT_PASSWORD', 'API password:');
-define ('PP_WPP_TEXT_PASSWORD_EXPLAIN', 'This is your API password. (This will differ between Sandbox and Live)');
+define ('PP_WPP_TEXT_PASSWORD_EXPLAIN', 'This is your API password. (This will differ between Sandbox and Live.)');
 define ('PP_WPP_TEXT_SIGNATURE', 'API Signature:');
-define ('PP_WPP_TEXT_SIGNATURE_EXPLAIN', 'This is the API signature generated for you. (This will differ between Sandbox and Live)');
+define ('PP_WPP_TEXT_SIGNATURE_EXPLAIN', 'This is the API signature generated for you. (This will differ between Sandbox and Live.)');
+define ('PP_WPP_TEXT_CERTIFICATE_PATH', 'Path to API Certificate');
+define ('PP_WPP_TEXT_CERTIFICATE_PATH_EXPLAIN', 'This is the path to the certificate downloaded from PayPal. Leave blank if using the signature method.');
 
 define ('PP_WPP_TEXT_STATUS_SUCCESS', 'Order status for successful transactions');
 define ('PP_WPP_TEXT_STATUS_SUCCESS_EXPLAIN', 'Select the status you want the order set to for successful transactions.');
@@ -316,6 +327,7 @@ define ('PP_WPP_TEXT_ACCEPT_VERIFIED_EXPLAIN','Here you can choose if you want t
 		$apiusername = PP_WPP_USERNAME;
 		$apipassword = PP_WPP_PASSWORD;
 		$apiemail = PP_WPP_EMAIL;
+		$apicertificate = PP_WPP_CERTIFICATE_PATH;
 		$apisignature = PP_WPP_SIGNATURE;
 		$apiurl = PP_WPP_SANDBOX;
 		$payment_action = PP_WPP_PAYMENT_ACTION;
@@ -323,10 +335,10 @@ define ('PP_WPP_TEXT_ACCEPT_VERIFIED_EXPLAIN','Here you can choose if you want t
 		if ($apiurl == '1'){
 			$apiurl = "https://api.sandbox.paypal.com/2.0/";  
 		} else {
-			$apiurl = "https://api-3t.paypal.com/2.0";  	
+			$apiurl = "https://api-3t.paypal.com/2.0/";  	
 		}
 		
-		$soapData = SOAP_DoDirectPaymentRequest($apiusername, $apipassword, $apisignature, $apiemail, $d, $dbbt, $dbst, $order_array, $ip_address, $payment_action);
+		$soapData = SOAP_DoDirectPaymentRequest($apiusername, $apipassword, $apisignature, $apicertificate, $apiemail, $d, $dbbt, $dbst, $order_array, $ip_address, $payment_action);
 		$paypalResponse = SendSoap($apiurl, $soapData);
 		$arr_val = xml2php($paypalResponse);
 

@@ -13,12 +13,14 @@ define ('PP_WPP_TEXT_PROCESS_ERROR', 'There was an error processing your card.')
 
 define ('PP_WPP_TEXT_ACCOUNT', 'Paypal Email Address:');
 define ('PP_WPP_TEXT_ACCOUNT_EXPLAIN', 'This is your PayPal email address. (This will differ between Sandbox and Live)');
-define ('PP_WPP_TEXT_USERNAME', 'API account name:');
+define ('PP_WPP_TEXT_USERNAME', 'API username:');
 define ('PP_WPP_TEXT_USERNAME_EXPLAIN', 'This is your API username. (This will differ between Sandbox and Live)');
 define ('PP_WPP_TEXT_PASSWORD', 'API password:');
 define ('PP_WPP_TEXT_PASSWORD_EXPLAIN', 'This is your API password. (This will differ between Sandbox and Live)');
 define ('PP_WPP_TEXT_SIGNATURE', 'API Signature:');
 define ('PP_WPP_TEXT_SIGNATURE_EXPLAIN', 'This is the API signature generated for you. (This will differ between Sandbox and Live)');
+define ('PP_WPP_TEXT_CERTIFICATE_PATH', 'Path to API Certificate');
+define ('PP_WPP_TEXT_CERTIFICATE_PATH_EXPLAIN', 'This is the path to the certificate downloaded from PayPal. Leave blank if using the signature method.');
 
 define ('PP_WPP_TEXT_STATUS_SUCCESS', 'Order status for successful transactions');
 define ('PP_WPP_TEXT_STATUS_SUCCESS_EXPLAIN', 'Select the status you want the order set to for successful transactions.');
@@ -54,10 +56,11 @@ define ('PP_WPP_TEXT_ACCEPT_VERIFIED_EXPLAIN','Here you can choose if you want t
 define ('PP_WPP_SANDBOX', '0');
 define ('PP_WPP_USERNAME', '');
 define ('PP_WPP_PASSWORD', '');
+define ('PP_WPP_CERTIFICATE_PATH', '');
 define ('PP_WPP_SIGNATURE', '');
 define ('PP_WPP_ACCOUNT', '');
 define ('PP_WPP_CHECK_CARD_CODE', 'YES');
-define ('PP_WPP_SUCCESS_STATUS', 'C');
+define ('PP_WPP_VERIFIED_STATUS', 'C');
 define ('PP_WPP_PENDING_STATUS', 'P');
 define ('PP_WPP_FAILED_STATUS', 'X');
 define ('PP_WPP_USE_PROXY', '0');

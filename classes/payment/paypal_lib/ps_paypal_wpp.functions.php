@@ -17,6 +17,13 @@ function SendSoap($url, $api_data) {
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $api_data);
+
+	if( stristr( $api_data, '<Signature>' ) === FALSE ) {
+		// Use certificate
+		curl_setopt($ch, CURLOPT_SSLCERTTYPE, "PEM"); 
+		curl_setopt($ch, CURLOPT_SSLCERT, '/opt/lampp/htdocs/vm/vm110/j153/cert_key_pem.txt');
+	}
+
 	$temp = curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	$returnData = curl_exec ($ch);
     $error = curl_error( $ch );
@@ -446,7 +453,7 @@ END;
 	return $doExpressCheckoutPaymentRequest;
 }
 
-function SOAP_DoDirectPaymentRequest($username, $password, $signature, $accountEmail, &$d, $dbbt, $dbst, $order_array, $REMOTE_ADDR, $payment_action){
+function SOAP_DoDirectPaymentRequest($username, $password, $signature, $certificate, $accountEmail, &$d, $dbbt, $dbst, $order_array, $REMOTE_ADDR, $payment_action){
 	global $vendor_mail, $vendor_currency, $VM_LANG, $database;
 	require_once( CLASSPATH . "ps_checkout.php" );
 	$checkout =& new ps_checkout();
@@ -494,12 +501,12 @@ function SOAP_DoDirectPaymentRequest($username, $password, $signature, $accountE
 	$first_name = substr($dbst->f("first_name"), 0, 50);
 	$last_name = substr($dbst->f("last_name"), 0, 50);
 	$currency_type = "USD";
-    $order_total = round($d['order_total'],2);
-    $tax_total = round($d['tax_total'],2);
+    $order_total = number_format( $order_array['amount'], 2, '.', '' );
+    $tax_total = ( $d['tax_total'] == 0 ) ? '0.00' : round($d['tax_total'], 2);
 	$shipping = round($d['shipping_total'],2);
 	$shipping_tax = round($d['shipping_tax'],2);
     $ship_total = $shipping + $shipping_tax;
-    $item_total = round($order_total - ($tax_total+$ship_total), 2);
+    $item_total = number_format( round($order_total - ($tax_total+$ship_total), 2), 2, '.', '' );
 
 
     $db_new = new ps_DB;
@@ -530,6 +537,14 @@ function SOAP_DoDirectPaymentRequest($username, $password, $signature, $accountE
 	if ( (!empty($ship_street1)) && ($ship_street1 != "") ) {
 		$no_shipping = true;
  	}
+ 	
+ 	// Use the certificate method?
+ 	$use_certificate = false;
+ 	if( !empty( $certificate ) && empty( $signature ) ) {
+ 		if ( file_exists( $certificate ) ) {
+ 			$use_certificate = true;
+ 		}
+ 	}
 
 	//BUILD SOAP
 	$doDirectPaymentRequest = <<<END
@@ -546,7 +561,14 @@ function SOAP_DoDirectPaymentRequest($username, $password, $signature, $accountE
 				<Credentials xmlns="urn:ebay:apis:eBLBaseComponents">
 					<Username>$username</Username>
 					<Password>$password</Password>
-					<Signature>$signature</Signature>
+END;
+
+	// If not using the certificate method, add the signature
+	if( !$use_certificate ) {
+		$doDirectPaymentRequest .= "\t\t\t\t\t<Signature>$signature</Signature>";
+	}
+
+	$doDirectPaymentRequest .= <<<END
 					<Subject/>
 				</Credentials>
 			</RequesterCredentials>
@@ -591,7 +613,7 @@ END;
 
 	for($i = 0; $i < $cart["idx"]; $i++) {
 		$price = $ps_product->get_adjusted_attribute_price($cart[$i]["product_id"], $cart[$i]["description"]);
-		$product_price = $price["product_price"];
+		$product_price = number_format( round( $price["product_price"], 2 ), 2, '.', '' );
 		$product_name = $ps_product->get_field($cart[$i]["product_id"], "product_name");
 		$product_number = $cart[$i]["product_id"];
 		$product_quantity = $cart[$i]["quantity"];

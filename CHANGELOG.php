@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+12.06.2008 gregdev
+# Task #2110 - Fixes for PayPal Website Payments Pro
+
 12.06.2008 kaltokri
 # Fix the divide by zero bug in "Order Edit"
 
@@ -975,7 +978,7 @@ because Joomla! 1.5 doesn't know a $mainframe->getCfg('live_site') value other t
 
 09.10.2007 soeren
 ^ removed "eval"s from the image processing function, fixed using the disableToggle function in the product form
-# fixed Mambo 4.6.2 login issue (+CSV Upload Error) - thanks to Andr� ¹s
+# fixed Mambo 4.6.2 login issue (+CSV Upload Error) - thanks to Andr� ¹s
 
 06.10.2007 gregdev
 # Joomla! 1.5 compatibility: Set $my->gid
