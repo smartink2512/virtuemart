@@ -54,7 +54,11 @@ class ps_order_change {
 			$product_item_price = $db->f( "product_item_price" ) ;
 			$product_quantity = $db->f( "product_quantity" ) ;
 			
-			$my_taxrate = strval( round( ($product_final_price / $product_item_price) - 1, 2 ) . "00" ) ;
+			if ($product_item_price > 0) {
+				$my_taxrate = strval(round(($product_final_price / $product_item_price) - 1,2)."00");
+			} else {
+				$my_taxrate = 0;
+			}
 			$order_tax += ($product_final_price - $product_item_price) * $product_quantity ;
 			$order_subtotal += $product_item_price * $product_quantity ;
 			
