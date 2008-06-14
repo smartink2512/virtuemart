@@ -37,6 +37,7 @@ VirtueMart 1.1.x
 *************************************
 14.06.2008 gregdev
 # Task #2168 - Bankaccount informations of customers are not shown in Backend
+# Task #2068 - No link in email when order status changes
 
 12.06.2008 gregdev
 # Task #2110 - Fixes for PayPal Website Payments Pro

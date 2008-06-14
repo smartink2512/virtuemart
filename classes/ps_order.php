@@ -326,9 +326,12 @@ class ps_order {
 		$message .= $VM_LANG->_('PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_2',false)."\n";
 		$message .= "____________________________________________________________\n\n";
 		$message .= $db->f("order_status_name");
-		$message .= "\n____________________________________________________________\n\n";
-		$message .= $VM_LANG->_('PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3',false)."\n";
-		$message .= $url;
+
+		if( VM_REGISTRATION_TYPE != 'NO_REGISTRATION' ) {
+			$message .= "\n____________________________________________________________\n\n";
+			$message .= $VM_LANG->_('PHPSHOP_ORDER_STATUS_CHANGE_SEND_MSG_3',false)."\n";
+			$message .= $url;
+		}
 		$message .= "\n\n____________________________________________________________\n";
 		$message .= $dbv->f("vendor_name") . " \n";
 		$message .= URL."\n";
