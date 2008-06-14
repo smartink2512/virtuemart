@@ -78,7 +78,7 @@ if( vmIsJoomla('1.5') ) {
 		$url = $uri->toString();
 	} elseif( $redirect == 'vmhome' ) {
 		// The VirtueMart home page
-		$url = JRoute::_( 'index.php?option=com_virtuemart&page='.HOMEPAGE );
+		$url = JRoute::_( 'index.php?option=com_virtuemart&page='.HOMEPAGE.'&Itemid='.$sess->getShopItemid(), false );
 	} else {
 		// The same page
 		$uri = JFactory::getURI();
