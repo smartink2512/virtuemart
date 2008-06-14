@@ -299,6 +299,54 @@ class ps_order_change {
 	}
 	
 	/**************************************************************************
+	 * name: change_shipping
+	 * created by: Greg
+	 * description: Change order shipping
+	 * parameters:
+	 * returns:
+	 **************************************************************************/
+	function change_shipping( $order_id, $shipping ) {
+		
+		if( ! is_numeric( $shipping ) ) {
+			return - 1 ;
+		}
+		
+		$db = new ps_DB( ) ;
+		$q = "UPDATE #__{vm}_orders SET " ;
+		$q .= "order_shipping =  '" . $shipping . "' " ;
+		$q .= "WHERE order_id = '" . $order_id . "'" ;
+		$db->query( $q ) ;
+		$db->next_record() ;
+		
+		$this->recalc_order( $order_id ) ;
+		$this->reload_from_db = 1 ;
+	}
+
+	/**************************************************************************
+	 * name: change_shipping_tax
+	 * created by: Greg
+	 * description: Change order shipping tax
+	 * parameters:
+	 * returns:
+	 **************************************************************************/
+	function change_shipping_tax( $order_id, $shipping_tax ) {
+		
+		if( ! is_numeric( $shipping_tax ) ) {
+			return - 1 ;
+		}
+		
+		$db = new ps_DB( ) ;
+		$q = "UPDATE #__{vm}_orders SET " ;
+		$q .= "order_shipping_tax =  '" . $shipping_tax . "' " ;
+		$q .= "WHERE order_id = '" . $order_id . "'" ;
+		$db->query( $q ) ;
+		$db->next_record() ;
+		
+		$this->recalc_order( $order_id ) ;
+		$this->reload_from_db = 1 ;
+	}
+
+	/**************************************************************************
 	 * name: change_discount
 	 * created by: ingemar
 	 * description: Change order discount
@@ -1011,7 +1059,10 @@ if( vmGet( $_REQUEST, 'page' ) == 'order.order_print' ) {
 		$ps_order_change->change_customer_note() ;
 	elseif( vmGet( $_REQUEST, 'change_standard_shipping' ) != '' )
 		$ps_order_change->change_standard_shipping() ;
-	
+	elseif( vmGet( $_REQUEST, 'change_shipping' ) != '' )
+		$ps_order_change->change_shipping( $order_id, vmRequest::getFloat( 'order_shipping' ) );
+	elseif( vmGet( $_REQUEST, 'change_shipping_tax' ) != '' )
+		$ps_order_change->change_shipping_tax( $order_id, vmRequest::getFloat( 'order_shipping_tax' ) );
 	elseif( vmGet( $_REQUEST, 'change_discount' ) != '' )
 		if( $ps_order_change->change_discount( $order_id, trim( vmGet( $_REQUEST, 'order_discount' ) ) ) ) {
 			$vmLogger->err( "Invalid Order Item ID!" ) ;
