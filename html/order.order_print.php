@@ -354,7 +354,7 @@ else {
 				<td align="right">
           <?php $ps_order_change_html->html_change_product_final_price($dbt->f("order_item_id"), $dbt->f("product_final_price")) ?>
         </td>
-				<td width="5%" align="right"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($t, '', $db->f('order_currency')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($t, '', $db->f('order_currency')); ?></td>
 			  </tr>
 			  <?php 
 			  } 
@@ -364,7 +364,7 @@ else {
 			  <table  class="adminlist">
 			  <tr> 
 				  <td align="right" colspan="7"><div align="right"><strong> <?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SUBTOTAL') ?>: </strong></div></td>
-				  <td width="5%" align="right""><div align="right"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_subtotal"), '', $db->f('order_currency')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				  <td width="5%" align="right" style="padding-right: 5px;"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_subtotal"), '', $db->f('order_currency')); ?></td>
 			  </tr>
 	  <?php
 			  /* COUPON DISCOUNT */
@@ -381,11 +381,11 @@ else {
 				  else
 					 echo $VM_LANG->_('PHPSHOP_FEE');
 					?>:</strong></td>
-				<td width="5%" align="right"><?php
+				<td width="5%" align="right" style="padding-right: 5px;"><?php
 					  if ($db->f("order_discount") > 0 )
 					 echo "-" . $GLOBALS['CURRENCY_DISPLAY']->getFullValue(abs($db->f("order_discount")), '', $db->f('order_currency'));
 				elseif ($db->f("order_discount") < 0 )
-					 echo "+" . $GLOBALS['CURRENCY_DISPLAY']->getFullValue(abs($db->f("order_discount")), '', $db->f('order_currency')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					 echo "+" . $GLOBALS['CURRENCY_DISPLAY']->getFullValue(abs($db->f("order_discount")), '', $db->f('order_currency')); ?>
 				  </td>
 			  </tr>
 			  
@@ -395,8 +395,8 @@ else {
 	  ?>
 			  <tr>
 				<td align="right" colspan="7"><strong><?php echo $VM_LANG->_('PHPSHOP_COUPON_DISCOUNT') ?>:</strong></td> 
-				<td width="5%" align="right"><?php
-				  echo "- ".$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<td  width="5%" align="right" style="padding-right: 5px;"><?php
+				  echo "- ".$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?>
 				</td>
 			  </tr>
 			  <?php
@@ -406,15 +406,15 @@ else {
 			  
 			  <tr> 
   				<td align="right" colspan="7"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_TOTAL_TAX') ?>:</strong></td>
-  				<td width="19%"><div align="right"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_tax"), '', $db->f('order_currency')) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
+  				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_tax"), '', $db->f('order_currency')) ?></td>
 			  </tr>
 			  <tr> 
 				<td align="right" colspan="7"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING') ?>:</strong></td>
-				<td width="19%"><div align="right"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_shipping"), '', $db->f('order_currency')) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
+				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_shipping"), '', $db->f('order_currency')) ?></td>
 			  </tr>
 			  <tr> 
 				<td align="right" colspan="7"><strong><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_SHIPPING_TAX') ?>:</strong></td>
-				<td width="19%"><div align="right"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_shipping_tax"), '', $db->f('order_currency')) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></td>
+				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_shipping_tax"), '', $db->f('order_currency')) ?></td>
 			  </tr>
 	  <?php
 			if( PAYMENT_DISCOUNT_BEFORE != '1') {
@@ -427,11 +427,11 @@ else {
 				  else
 					echo $VM_LANG->_('PHPSHOP_FEE');
 					?>:</strong></td>
-				<td width="5%" align="right"><?php
+				<td width="5%" align="right" style="padding-right: 5px;"><?php
 					  if ($db->f("order_discount") > 0 )
 					 echo "-" . $GLOBALS['CURRENCY_DISPLAY']->getFullValue(abs($db->f("order_discount")), '', $db->f('order_currency'));
 				elseif ($db->f("order_discount") < 0 )
-					 echo "+" . $GLOBALS['CURRENCY_DISPLAY']->getFullValue(abs($db->f("order_discount")), '', $db->f('order_currency')); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					 echo "+" . $GLOBALS['CURRENCY_DISPLAY']->getFullValue(abs($db->f("order_discount")), '', $db->f('order_currency')); ?>
 				  </td>
 			  </tr>
 			  
@@ -441,7 +441,7 @@ else {
 	  ?>
 			  <tr> 
   				<td align="right" colspan="7"><strong><?php echo $VM_LANG->_('PHPSHOP_COUPON_DISCOUNT') ?>:</strong></td> 
-  				<td width="5%" align="right"><?php echo "- ".$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  				<td width="5%" align="right" style="padding-right: 5px;"><?php echo "- ".$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?></td>
 			  </tr>
 			  <?php
 			  }
@@ -449,13 +449,18 @@ else {
 	  ?>
 			  <tr>
 				<td align="right" colspan="7"><strong><?php echo $VM_LANG->_('PHPSHOP_CART_TOTAL') ?>:</strong></td>
-				<td width="5%" align="right" style="padding-right: 15px;"><strong><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_total"), '', $db->f('order_currency')); ?></strong>
+				<td width="5%" align="right" style="padding-right: 5px;"><strong><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_total"), '', $db->f('order_currency')); ?></strong>
 				  </td>
 			  </tr>
+			  <?php
+				  // Get the tax details, if any
+				  $tax_details = ps_checkout::show_tax_details( $db->f('order_tax_details'), $db->f('order_currency') );
+			  ?>
+			  <?php if( !empty( $tax_details ) ) : ?>
 			  <tr>
-				<td colspan="6">&nbsp;</td>
-				<td width="5%" align="right"><?php ps_checkout::show_tax_details( $db->f('order_tax_details'), $db->f('order_currency') ); ?></td>
+				<td colspan="8" align="right"><?php echo $tax_details; ?></td>
 			  </tr>
+			  <?php endif; ?>
 			  </table>
         <?php $ps_order_change_html->html_change_add_item() ?>  
 		  </td>

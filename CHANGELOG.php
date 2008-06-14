@@ -45,6 +45,7 @@ VirtueMart 1.1.x
 # Task #2062 - USPS and UPS conflict
 # Need to instantiate ps_country.
 ^ Reformat FedEx shipping options to match UPS and USPS.
+^ Clean up the order details (VM admin) page.
 
 12.06.2008 gregdev
 # Task #2110 - Fixes for PayPal Website Payments Pro
