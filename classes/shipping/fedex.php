@@ -169,15 +169,7 @@ class fedex {
 		}
 		
 		// Write out the shipping rates
-		$html = '';
-?>
-		<table width="100%">
-			<tr class="sectiontableheader">
-				<th><?php echo $VM_LANG->_('VM_FEDEX_LBL_METHOD') ?></th>
-				<th style="text-align:right;"><?php echo $VM_LANG->_('VM_FEDEX_LBL_PRICE') ?></th>
-			</tr>
-
-<?php
+		$html = '<span class="fedex_header">' . $VM_LANG->_('VM_FEDEX_LBL_METHOD') . '</span><br />';
 		
 		// Get a sort order array (by cost)
 		$cost_array = array();
@@ -220,8 +212,8 @@ class fedex {
 				
 				$checked = (@$d["shipping_rate_id"] == $shipping_rate_id) ? "checked=\"checked\"" : "";
 				
-				$html .= "\n<tr class=\"sectiontableentry".(2-$i%2)."\">";
-				$html .= "\n<td ><input type=\"radio\" id=\"$shipping_rate_id\" name=\"shipping_rate_id\" $checked value=\"$shipping_rate_id\" />\n";
+				$html .= "\n<span class=\"ssectiontableentry".(2-$i%2)."\">";
+				$html .= "\n<input type=\"radio\" id=\"$shipping_rate_id\" name=\"shipping_rate_id\" $checked value=\"$shipping_rate_id\" />\n";
 				  
 				$_SESSION[$shipping_rate_id] = 1;
 				  
@@ -230,17 +222,15 @@ class fedex {
 	//				$html .= ", expected delivery: ".$rate_Ret['194-'.$i].', '.$rate_Ret['409-'.$i];
 	//			}
 	
-				$html .= "</label>";
-				$html .= "\n</td>";
-				$html .= "\n<td style=\"text-align:right;\">$charge_display</td>";
-//				$html .= "\n<td style=\"text-align:right;\" width=\"40%\">&nbsp;</td>";
-				$html .= "\n</tr>";
+				$html .= "<strong>($charge_display)</strong>";
+				$html .= "</label>\n";
+				$html .= "</span>\n";
+				$html .= "<br />\n";
 			}
 		}
+
 		echo $html;
-?>
-		</table>
-<?php
+
 		return true;
     }
     
