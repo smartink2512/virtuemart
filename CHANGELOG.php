@@ -43,6 +43,7 @@ VirtueMart 1.1.x
 # Task #1889 - Publish button not working in filemanager
 # Task #2118 - Shipping value doesn't change in new order change file
 # Task #2062 - USPS and UPS conflict
+# Need to instantiate ps_country.
 
 12.06.2008 gregdev
 # Task #2110 - Fixes for PayPal Website Payments Pro

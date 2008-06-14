@@ -50,7 +50,8 @@ class ps_tax extends vmAbstractObject  {
 			$valid = False ;
 		}
 		require_once( CLASSPATH.'ps_country.php');
-		$country_db = ps_country::get_country_by_code($d["tax_country"]);
+		$ps_country = new ps_country();
+		$country_db = $ps_country->get_country_by_code($d["tax_country"]);
 		if( $country_db === false ) {
 			$vmLogger->err( $VM_LANG->_('VM_TAX_ERR_COUNTRY_NOTEXIST') );
 			return false;
@@ -91,7 +92,8 @@ class ps_tax extends vmAbstractObject  {
 			return False ;
 		}
 		require_once( CLASSPATH.'ps_country.php');
-		$country_db = ps_country::get_country_by_code($d["tax_country"]);
+		$ps_country = new ps_country();
+		$country_db = $ps_country->get_country_by_code($d["tax_country"]);
 		if( $country_db === false ) {
 			$vmLogger->err( $VM_LANG->_('VM_TAX_ERR_COUNTRY_NOTEXIST') );
 			return false;
