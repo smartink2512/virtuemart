@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+14.06.2008 gregdev
+# Task #2168 - Bankaccount informations of customers are not shown in Backend
+
 12.06.2008 gregdev
 # Task #2110 - Fixes for PayPal Website Payments Pro
 

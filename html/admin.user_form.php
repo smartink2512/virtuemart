@@ -420,8 +420,8 @@ if( $db->f("user_id") ) {
 
 require_once( CLASSPATH.'ps_userfield.php');
 // Get only those fields that are NOT system fields
-$userFields = ps_userfield::getUserFields( 'registration' );
-$skipFields = array('username', 'email', 'password', 'password2', 'agreed');
+$userFields = ps_userfield::getUserFields( 'account' );
+$skipFields = array( 'delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed' );
 
 echo '<table class="adminform"><tr><td>';
 ps_userfield::listUserFields( $userFields, $skipFields, $db, false );
