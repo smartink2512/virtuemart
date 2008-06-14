@@ -20,7 +20,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  * The class is is used to manage product files and associated images.
  *
  */
-class ps_product_files {
+class ps_product_files extends vmAbstractObject {
 
 	/*@param boolean Wether filename already exists or not */
 	var $fileexists = false;

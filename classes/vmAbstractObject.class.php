@@ -372,36 +372,42 @@ class vmAbstractObject {
 	function handlePublishState( $d ) {
 		global $vmLogger, $VM_LANG;
 		$has_vendor = true;
-		if( !empty($d['product_id']) && empty( $d['review_id'])) {
-				$table_name = "#__{vm}_product";
-				$publish_field_name = 'product_publish';
-				$field_name = 'product_id';
+		if( !empty($d['product_id']) && empty( $d['review_id'] ) && empty( $d['file_id'] ) ) {
+			$table_name = "#__{vm}_product";
+			$publish_field_name = 'product_publish';
+			$field_name = 'product_id';
 		}
 		elseif( !empty($d['category_id'])) {
-				$table_name = "#__{vm}_category";
-				$publish_field_name = 'category_publish';
-				$field_name = 'category_id';
+			$table_name = "#__{vm}_category";
+			$publish_field_name = 'category_publish';
+			$field_name = 'category_id';
 		}
 		elseif( !empty( $d['payment_method_id'])) {
-				$table_name = "#__{vm}_payment_method";
-				$publish_field_name = 'payment_enabled';
-				$field_name = 'payment_method_id';
+			$table_name = "#__{vm}_payment_method";
+			$publish_field_name = 'payment_enabled';
+			$field_name = 'payment_method_id';
 		}	
 		elseif( !empty( $d['order_export_id'])) {
-				$table_name = "#__{vm}_order_export";
-				$publish_field_name = 'export_enabled';
-				$field_name = 'order_export_id';
+			$table_name = "#__{vm}_order_export";
+			$publish_field_name = 'export_enabled';
+			$field_name = 'order_export_id';
 		}
 		elseif( !empty( $d['review_id'])) {
-				$table_name = "#__{vm}_product_reviews";
-				$publish_field_name = 'published';
-				$field_name = 'review_id';
-				$has_vendor = false;
+			$table_name = "#__{vm}_product_reviews";
+			$publish_field_name = 'published';
+			$field_name = 'review_id';
+			$has_vendor = false;
 		}		
 		elseif( !empty( $d['fieldid'])) {
-				$table_name = "#__{vm}_userfield";
-				$publish_field_name = empty($d['item']) ? 'published' : vmget( $d, 'item' );
-				$field_name = 'fieldid';
+			$table_name = "#__{vm}_userfield";
+			$publish_field_name = empty($d['item']) ? 'published' : vmget( $d, 'item' );
+			$field_name = 'fieldid';
+		}
+		elseif( !empty( $d['file_id'] ) ) {
+			$table_name = "#__{vm}_product_files";
+			$publish_field_name = 'file_published';
+			$field_name = 'file_id';
+			$has_vendor = false;
 		}
 		else {
 			$vmLogger->err( $VM_LANG->_('VM_ABSTRACTOBJECT_PUBLISH_ERR_TYPE') );
@@ -426,7 +432,7 @@ class vmAbstractObject {
 		global $vmLogger, $VM_LANG;
 		
 		$db = new ps_DB();
-		if( $field_name == 'fieldid') {
+		if( $field_name == 'fieldid' || $field_name == 'file_id' ) {
 			$value = ($task == 'unpublish') ? '0' : '1';
 		}
 		else {

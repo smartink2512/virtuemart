@@ -40,6 +40,7 @@ VirtueMart 1.1.x
 # Task #2068 - No link in email when order status changes
 # Task #1742 - Wrong redirection with virtuemart login module
 # Task #2034 - Wrong URL after logging out
+# Task #1889 - Publish button not working in filemanager
 
 12.06.2008 gregdev
 # Task #2110 - Fixes for PayPal Website Payments Pro

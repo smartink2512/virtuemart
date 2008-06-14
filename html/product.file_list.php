@@ -193,14 +193,27 @@ while ($db->next_record()) {
 	$listObj->addCell( $db->f("file_extension") );
 
 
-	if ($db->f("file_published")=="0") { 
-		$tmp_cell = '<img src="'. $mosConfig_live_site .'/administrator/images/publish_x.png" border="0" alt="' . $VM_LANG->_('CMN_PUBLISH') . '" />';
-	} 
-	else { 
-		$tmp_cell = '<img src="'. $mosConfig_live_site .'/administrator/images/tick.png" border="0" alt="' . $VM_LANG->_('CMN_UNPUBLISH') . '" />';
-	} 
-	$listObj->addCell( $tmp_cell );
-	
+	if( $db->f('file_id') == 'product_images' ) {
+		if ($db->f("file_published")=="0") { 
+			$tmp_cell = '<img src="'. $mosConfig_live_site .'/administrator/images/publish_x.png" border="0" alt="' . $VM_LANG->_('CMN_PUBLISH') . '" />';
+		} 
+		else { 
+			$tmp_cell = '<img src="'. $mosConfig_live_site .'/administrator/images/tick.png" border="0" alt="' . $VM_LANG->_('CMN_UNPUBLISH') . '" />';
+		} 
+		$listObj->addCell( $tmp_cell );
+	} else {
+		$tmpcell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=product.file_list&file_id=" . $db->f("file_id") . "&product_id=$product_id&func=changePublishState" );
+		if ($db->f("file_published")=='0') {
+			$tmpcell .= "&task=publish\">";
+		}
+		else {
+			$tmpcell .= "&task=unpublish\">";
+		}
+		$tmpcell .= vmCommonHTML::getYesNoIcon( $db->f("file_published"), $VM_LANG->_('CMN_PUBLISH'), $VM_LANG->_('CMN_UNPUBLISH') );
+		$tmpcell .= "</a>";
+		$listObj->addCell( $tmpcell );
+	}
+
 	$listObj->addCell( $ps_html->deleteButton( "file_id", $db->f("file_id"), "deleteProductFile", $keyword, $limitstart, "&product_id=$product_id" ) );
 		
 	$i++;
