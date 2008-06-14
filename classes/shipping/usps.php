@@ -540,12 +540,14 @@ class usps {
 
 			$_SESSION[$shipping_rate_id] = 1;
 
+			$html .= "<label for=\"$shipping_rate_id\">";
 			$html .= "USPS ".$ship_service[$i]." ";
 			
 			$html .= "<strong>(".$ship_postage[$i].")</strong>";
 			if (USPS_SHOW_DELIVERY_QUOTE == 1) {
 				$html .= "&nbsp;&nbsp;-&nbsp;&nbsp;".$ship_commit[$i];
 			}
+			$html .= "</label>";
 			$html .= "<br />";
 			if ($dest_country_name == "United States" && $usps_ship[$i] == "TRUE") {
 				echo $html;

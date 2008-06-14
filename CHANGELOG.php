@@ -42,6 +42,7 @@ VirtueMart 1.1.x
 # Task #2034 - Wrong URL after logging out
 # Task #1889 - Publish button not working in filemanager
 # Task #2118 - Shipping value doesn't change in new order change file
+# Task #2062 - USPS and UPS conflict
 
 12.06.2008 gregdev
 # Task #2110 - Fixes for PayPal Website Payments Pro
