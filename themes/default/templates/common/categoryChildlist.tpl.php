@@ -1,4 +1,5 @@
 <?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
+mm_showMyFileName(__FILE__);
 
 $iCol = 1;
 if( !isset( $categories_per_row )) {

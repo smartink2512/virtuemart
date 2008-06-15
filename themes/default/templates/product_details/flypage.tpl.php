@@ -1,4 +1,6 @@
-<?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); ?>
+<?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+mm_showMyFileName(__FILE__);
+ ?>
 
 <?php echo $buttons_header // The PDF, Email and Print buttons ?>
 

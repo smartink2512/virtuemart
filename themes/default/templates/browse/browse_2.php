@@ -1,4 +1,7 @@
-<div style="width:100%;padding: 0px 3px 3px 3px;">
+<?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+mm_showMyFileName(__FILE__);
+ ?>
+ <div style="width:100%;padding: 0px 3px 3px 3px;">
   <h2>
   <a style="font-size:16px; font-weight:bold;" href="<?php echo $product_flypage ?>"><?php echo $product_name ?></a>
   </h2>

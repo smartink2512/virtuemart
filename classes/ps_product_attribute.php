@@ -192,7 +192,7 @@ class ps_product_attribute {
 	 * @param int $product_id
 	 * @return string HTML code with Items, attributes & price
 	 */
-	function list_attribute( $product_id, $product_price, $extra_ids = null ) {
+	function list_attribute( $product_id, $extra_ids = null ) {
 		// The default listing method
 		$product_list = "N" ;
 		$display_use_parent = 'N';
@@ -223,10 +223,10 @@ class ps_product_attribute {
 		
 		switch( $product_list) {
 			case "Y" :
-				return $this->list_attribute_list( $product_id, $display_use_parent, $product_list_child, $display_type, $class_suffix, $child_option_ids, $dw, $aw, $display_header, $product_list_type, $product_list, $product_price ) ;
+				return $this->list_attribute_list( $product_id, $display_use_parent, $product_list_child, $display_type, $class_suffix, $child_option_ids, $dw, $aw, $display_header, $product_list_type, $product_list ) ;
 			break ;
 			case "YM" :
-				return $this->list_attribute_list( $product_id, $display_use_parent, $product_list_child, $display_type, $class_suffix, $child_option_ids, $dw, $aw, $display_header, $product_list_type, $product_list, $product_price ) ;
+				return $this->list_attribute_list( $product_id, $display_use_parent, $product_list_child, $display_type, $class_suffix, $child_option_ids, $dw, $aw, $display_header, $product_list_type, $product_list ) ;
 			break ;
 			case "N" :
 			default :
@@ -311,7 +311,7 @@ class ps_product_attribute {
 				// Attributes for this item are done.
 				// Now get item price
 				if( $_SESSION['auth']['show_prices'] && _SHOW_PRICES ) {
-					$price = $ps_product->get_price( $db->f( "product_id" ) ) ;
+					$price = $ps_product->get_adjusted_attribute_price( $db->f( "product_id" ) ) ;
 					$price["product_price"] = $GLOBALS['CURRENCY']->convert( $price["product_price"], $price["product_currency"] ) ;
 					if( $_SESSION["auth"]["show_price_including_tax"] == 1 ) {
 						$tax_rate = 1 + $ps_product->get_product_taxrate( $db->f( "product_id" ) ) ;
@@ -434,7 +434,7 @@ class ps_product_attribute {
 	 * @return string HTML code with Items, attributes & price
 	 */
 	
-	function list_attribute_list( $product_id, $display_use_parent, $child_link, $display_type, $cls_sfuffix, $child_ids, $dw, $aw, $display_header, $product_list_type, $product_list, $product_price ) {
+	function list_attribute_list( $product_id, $display_use_parent, $child_link, $display_type, $cls_sfuffix, $child_ids, $dw, $aw, $display_header, $product_list_type, $product_list ) {
 		global $CURRENCY_DISPLAY, $mm_action_url ;
 		require_once (CLASSPATH . 'ps_product.php') ;
 		$ps_product = new ps_product( ) ;
@@ -447,13 +447,16 @@ class ps_product_attribute {
 		$db = new ps_DB( ) ;
 		$db_sku = new ps_DB( ) ;
 		$db_item = new ps_DB( ) ;
-		$tpl = new $GLOBALS['VM_THEMECLASS']( ) ;
+		$tpl = vmTemplate::getInstance();
+		
+		$price = $ps_product->get_adjusted_attribute_price($product_id);
+		
 		$tpl->set( "cls_suffix", $cls_sfuffix ) ;
 		$tpl->set( "product_id", $product_id ) ;
 		$tpl->set( "display_header", $display_header ) ;
 		$tpl->set( "display_product_type", $product_list_type ) ;
-		$tpl->set( "product_price", $product_price ) ;
-		$html = "" ;
+		$tpl->set( "product_price", $price['product_price'] ) ;
+		$html = '';
 		// Get list of children
 		$pp = $ps_product->parent_has_children( $product_id ) ;
 		if( $pp ) {

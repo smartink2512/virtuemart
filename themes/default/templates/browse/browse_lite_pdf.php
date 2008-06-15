@@ -1,4 +1,7 @@
-<table><tr><td></td></tr></table>
+<?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+mm_showMyFileName(__FILE__);
+ ?>
+ <table><tr><td></td></tr></table>
 <table width="100%">
   <tr>
 	<td><?php echo ps_product::image_tag( $product_thumb_image, 'class="browseProductImage" border="0" title="'.$product_name.'" alt="'.$product_name .'"' ) ?>

@@ -1,4 +1,7 @@
-<div class="browseProductContainer">
+<?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+mm_showMyFileName(__FILE__);
+ ?>
+ <div class="browseProductContainer">
         
         
         <h3 class="browseProductTitle"><a title="<?php echo $product_name ?>" href="<?php echo $product_flypage ?>">

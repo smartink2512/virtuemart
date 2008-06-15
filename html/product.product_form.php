@@ -67,7 +67,7 @@ if( !empty($_REQUEST['product_categories']) && is_array($_REQUEST['product_categ
 }
 $related_products = Array();
 
-if ($product_parent_id) {
+if ($product_parent_id > 0) {
 	if ($product_id) {
 		$action = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_UPDATE_ITEM_LBL');
 	}
@@ -262,19 +262,19 @@ $tabs->startTab( $info_label, "info-page");
     	?><tr class="row0"> 
     	<?php
     	$number_of_categories = ps_product_category::count_categories();
-    	if( $number_of_categories > 2 ) {
+    	if( $number_of_categories > 200 ) {
     		?>
 			<td style="vertical-align:top;">
 			<?php echo $VM_LANG->_('PHPSHOP_CATEGORIES') ?>:<br/>
 			<input type="text" size="40" name="catsearch" id="categorySearch" value="" />
 			</td>
 			<td>
-			<input style="vertical-align: top;" type="button" name="remove_category" onclick="removeSelectedOptions(relatedCatSelection)" value="&nbsp; &lt; &nbsp;" />
+			<input style="vertical-align: top;" type="button" name="remove_category" onclick="removeSelectedOptions(relatedCatSelection, 'category_ids' )" value="&nbsp; &lt; &nbsp;" />
 			<?php			
 			foreach( array_keys($my_categories) as $cat_id ) {
 				$categoriesArr[$cat_id] = ps_product_category::get_name_by_catid( $cat_id );
 			}
-			echo ps_html::selectList('relCats', '', $categoriesArr, 10, 'multiple="multiple"', 'id="relatedCatSelection" ondblclick="removeSelectedOptions(relatedCatSelection);"');
+			echo ps_html::selectList('relCats', '', $categoriesArr, 10, 'multiple="multiple"', 'id="relatedCatSelection" ondblclick="removeSelectedOptions(relatedCatSelection, \'category_ids\');"');
 			?>
 			<input type="hidden" name="category_ids" value="<?php echo implode('|', array_keys($my_categories) ) ?>" />
 			</td>	
@@ -1009,14 +1009,14 @@ $tabs->startTab( $VM_LANG->_('PHPSHOP_RELATED_PRODUCTS'), "related-page");
 			<?php echo $VM_LANG->_('VM_PRODUCT_RELATED_SEARCH'); ?>
 			<input type="text" size="40" name="search" id="relatedProductSearch" value="" />
 			</td>
-			<td><input type="button" name="remove_related" onclick="removeSelectedOptions(relatedSelection);" value="&nbsp; &lt; &nbsp;" /></td>
+			<td><input type="button" name="remove_related" onclick="removeSelectedOptions(relatedSelection, 'related_products');" value="&nbsp; &lt; &nbsp;" /></td>
 			<td>
 			<?php
 			$relProducts = array();
 			foreach( $related_products as $relProd ) {
 				$relProducts[$relProd] = $ps_product->get_field( $relProd, 'product_name');
 			}
-			echo ps_html::selectList('relProds', '', $relProducts, 10, 'multiple="multiple"', 'id="relatedSelection" ondblclick="removeSelectedOptions(relatedSelection);"');
+			echo ps_html::selectList('relProds', '', $relProducts, 10, 'multiple="multiple"', 'id="relatedSelection" ondblclick="removeSelectedOptions(relatedSelection, \'related_products\');"');
 			?>
 			<input type="hidden" name="related_products" value="<?php echo implode('|', $related_products ) ?>" />
 			</td>			
@@ -1539,7 +1539,8 @@ else {
 		Ext.onReady( categorySearchField );
 	}
 }
-function removeSelectedOptions(from) {
+function removeSelectedOptions(from, hiddenField ) {
+	field = eval( "document.adminForm." + hiddenField );
 	// Delete them from original
 	var newOptions = [];
 	for (var i=(from.options.length-1); i>=0; i--) {
@@ -1550,7 +1551,8 @@ function removeSelectedOptions(from) {
 			newOptions.push(o.value);
 		}
 	}
-	related_products.value = newOptions.join('|');
+	field.value = newOptions.join('|');
+	alert( field.value );
 }
 //-->
 </script>

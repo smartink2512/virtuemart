@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -64,7 +64,7 @@ class ps_session {
 			}
 		}
 		else {
-			if( empty( $_COOKIE['virtuemart'])) {
+			if( empty( $_COOKIE['virtuemart']) && !vmIsJoomla('1.5', '>=')) {
 				$_COOKIE['virtuemart'] = $this->getSessionId();			
 				if( USE_AS_CATALOGUE == '' ) {
 					$vmLogger->debug( 'A Cookie had to be set to keep the session (there was none - does your Browser keep the Cookie?) although a Session already has been started! If you see this message on each page load, your browser doesn\'t accept Cookies from this site.' );

@@ -1,4 +1,7 @@
-<table width="100%" cellspacing="0" cellpadding="0" border="0" >
+<?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+mm_showMyFileName(__FILE__);
+ ?>
+ <table width="100%" cellspacing="0" cellpadding="0" border="0" >
   <tr>
     <td >
         <a style="font-size: 16px; font-weight: bold;" href="<?php echo $product_flypage ?>"><?php echo $product_name ?></a>

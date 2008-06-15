@@ -58,6 +58,7 @@ input.addtocart_button_module:hover  {
 	height:10px;
 	background-repeat: no-repeat;
 	background-position: center;
+   border:1px solid #000;
 }
 .quantity_box_button_down {
 	background-image: url(images/down_small.gif);

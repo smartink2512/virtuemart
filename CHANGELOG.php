@@ -35,6 +35,7 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
 14.06.2008 gregdev
 # Task #2168 - Bankaccount informations of customers are not shown in Backend
 # Task #2068 - No link in email when order status changes
@@ -47,12 +48,19 @@ VirtueMart 1.1.x
 ^ Reformat FedEx shipping options to match UPS and USPS.
 ^ Clean up the order details (VM admin) page.
 
+12.06.2008 soeren
+# Task #2104 - Add to Cart 'Up' and 'Down' buttons don't display correctly in IE6 
++ added Filename-Display to all important template files (shows file names in DEBUG mode then!)
+# Item Dropdown List didn't reflect actual discounted prices, but normal prices
+# Task #2165 - e-mail address of customer as from in vendor_mail
+
 12.06.2008 gregdev
 # Task #2110 - Fixes for PayPal Website Payments Pro
 
 12.06.2008 kaltokri
 # Fix the divide by zero bug in "Order Edit"
 
+>>>>>>> .r1421
 11.06.2008 soeren
 ^ changed product form to display a "category search form" instead of a select-list with all categories when more than 200 categories are present in the store
 # Task #2069 - Wrong URL in Order Status Change email when using PayPal

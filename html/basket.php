@@ -10,7 +10,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -171,7 +171,7 @@ else {
 	if( !empty($shipping_rate_id) && (NO_SHIPPING =='')) {
 		$shipping = true;
 		$vars["weight"] = $weight_total;
-		$shipping_total = round( $GLOBALS['CURRENCY']->convert($ps_checkout->_SHIPPING->get_rate ( $vars )), 5 );
+		$shipping_total = round( $ps_checkout->_SHIPPING->get_rate ( $vars ), 5 );
 		$shipping_taxrate = $ps_checkout->_SHIPPING->get_tax_rate();
 
 		// When the Shipping rate is shown including Tax

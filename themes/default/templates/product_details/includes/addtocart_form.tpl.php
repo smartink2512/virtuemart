@@ -3,11 +3,11 @@
 <div class="vmCartContainer">
     
 <?php
-
+mm_showMyFileName(__FILE__);
 // This function lists all product children ( = Items)
 // or, when not children are defined, the product_id
 // SO LEAVE THIS IN HERE!
-list($html,$children) = $ps_product_attribute->list_attribute( ( $product_parent_id > 0 )  ? $product_parent_id : $product_id, $product_price);
+list($html,$children) = $ps_product_attribute->list_attribute( ( $product_parent_id > 0 )  ? $product_parent_id : $product_id );
 
 if ($children != "multi") { 
 ?>

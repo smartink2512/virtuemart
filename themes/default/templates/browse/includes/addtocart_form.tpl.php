@@ -1,4 +1,5 @@
 <?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); 
+mm_showMyFileName(__FILE__);
 
 $button_lbl = $VM_LANG->_('PHPSHOP_CART_ADD_TO');
 $button_cls = 'addtocart_button';
