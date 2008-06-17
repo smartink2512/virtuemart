@@ -35,6 +35,8 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+17.06.2008 gregdev
+^ Added ability to print order from order details page in backend
 
 14.06.2008 gregdev
 # Task #2168 - Bankaccount informations of customers are not shown in Backend

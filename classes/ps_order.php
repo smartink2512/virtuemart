@@ -713,7 +713,7 @@ class ps_order {
 
 		$navi_db =& new ps_DB;
 
-		$navigation = "<br /><div align=\"center\">\n<strong>\n";
+		$navigation = "<div align=\"center\">\n<strong>\n";
 		$q = "SELECT order_id FROM #__{vm}_orders WHERE ";
 		$q .= "order_id < '$order_id' ORDER BY order_id DESC";
 		$navi_db->query($q);

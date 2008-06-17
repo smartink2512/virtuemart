@@ -36,12 +36,29 @@ else {
 	$db->query($q);
 	if( $db->next_record() ) {
 	
+	  // Print View Icon
+	  $print_url = $sess->url( $_SERVER['PHP_SELF']."?page=order.order_printdetails&amp;order_id=$order_id&amp;no_menu=1&pop=1");
+	  $print_url = defined( '_VM_IS_BACKEND' ) ? str_replace( "index2.php", "index3.php", $print_url ) : str_replace( "index.php", "index2.php", $print_url );
+?>
+	  <div style="float: right;">
+	  	<span class="pagenav" style="font-weight: bold;">
+	  		<a href="javascript:void window.open('<?php echo $print_url ?>', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');">
+	  			<img src="<?php echo $mosConfig_live_site ?>/images/M_images/printButton.png" align="ABSMIDDLE" height="16" width="16" border="0" />
+	  			<?php echo $VM_LANG->_('PHPSHOP_CHECK_OUT_THANK_YOU_PRINT_VIEW') ?>
+	  		</a>
+	  	</span>
+	  </div>
+
+<?php
+
+	  // Navigation
 	  echo ps_order::order_print_navigation( $order_id );
-	  
+	
 	  $q = "SELECT * FROM #__{vm}_order_history WHERE order_id='$order_id' ORDER BY order_status_history_id ASC";
 	  $dbc->query( $q );
 	  $order_events = $dbc->record;
 	  ?>
+	  <br />
 	  <table class="adminlist" style="table-layout: fixed;">
 		<tr> 
 		  <td valign="top"> 
