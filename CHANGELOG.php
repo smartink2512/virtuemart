@@ -37,6 +37,7 @@ VirtueMart 1.1.x
 *************************************
 17.06.2008 gregdev
 ^ Added ability to print order from order details page in backend
+^ Added ability to publish/unpublish products from the inventory page; also changed product link to match product list
 
 14.06.2008 gregdev
 # Task #2168 - Bankaccount informations of customers are not shown in Backend

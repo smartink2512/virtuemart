@@ -96,6 +96,7 @@ $columns = Array(  "#" => "width=\"20\"",
 					$VM_LANG->_('PHPSHOP_PRODUCT_INVENTORY_STOCK') => '',
 					$VM_LANG->_('PHPSHOP_PRODUCT_INVENTORY_PRICE') => '',
 					$VM_LANG->_('PHPSHOP_PRODUCT_INVENTORY_WEIGHT') => '',
+					$VM_LANG->_('CMN_PUBLISHED') => 'width="5%"',
 				);
 $listObj->writeTableHeader( $columns );
 
@@ -107,12 +108,25 @@ while ($db->next_record()) {
 	// The row number
 	$listObj->addCell( $pageNav->rowNumber( $i ) );
 	
-	$url = $_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=$modulename.product_form&product_id=" . $db->f("product_id");
-	if ($db->f("product_parent_id")) {
-		$url .= "&product_parent_id=" . $db->f("product_parent_id");
+	// The product name and link
+	$link = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&limitstart=$limitstart&keyword=".urlencode($keyword) . 
+					"&product_id=" . $db->f("product_id")."&product_parent_id=".$product_parent_id;
+	if( $vmLayout != 'standard' ) {
+		$link .= "&no_menu=1&tmpl=component";
+		$link = defined('_VM_IS_BACKEND') 
+						? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
+						: str_replace('index.php', 'index2.php', $link );
 	}
-	$tmp_cell = "<a href=\"" . $sess->url($url) . "\">". $db->f("product_name"). "</a>";
-	$listObj->addCell( $tmp_cell );
+	$link = $sess->url( $link );
+	$text = shopMakeHtmlSafe($db->f("product_name"));
+
+	if( $vmLayout == 'standard') {
+		$tmpcell = vmCommonHTML::hyperLink( $link, $text, '', 'Edit: '.$text );
+	} else {
+		$tmpcell = vmCommonHTML::hyperLink($link, $text, '', 'Edit: '.$text, 'onclick="parent.addSimplePanel( \''.$db->getEscaped($db->f("product_name")).'\', \''.$link.'\' );return false;"');
+	}
+	
+	$listObj->addCell( $tmpcell );
 	
 	$listObj->addCell( $db->f("product_sku") );
 	$listObj->addCell( $db->f("product_in_stock") );
@@ -131,6 +145,19 @@ while ($db->next_record()) {
 	$listObj->addCell( $tmp_cell );
        
 	$listObj->addCell( $db->f("product_weight") );
+	
+	// The "Published" column
+	$tmpcell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=product.product_inventory&product_id=".$db->f("product_id")."&func=changePublishState&allproducts=$allproducts" );
+	if ($db->f("product_publish")=='N') {
+		$tmpcell .= "&task=publish\">";
+	}
+	else {
+		$tmpcell .= "&task=unpublish\">";
+	}
+	$tmpcell .= vmCommonHTML::getYesNoIcon( $db->f("product_publish"), $VM_LANG->_('CMN_PUBLISH'), $VM_LANG->_('CMN_UNPUBLISH') );
+	$tmpcell .= "</a>";
+	$listObj->addCell( $tmpcell, 'align="center"' );
+	
 
 	$i++;
 }
