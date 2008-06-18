@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+18.06.2008 gregdev
+- Removed PayPal Website Payments Pro (will restore in later release)
+
 17.06.2008 gregdev
 ^ Added ability to print order from order details page in backend
 ^ Added ability to publish/unpublish products from the inventory page; also changed product link to match product list
