@@ -34,7 +34,7 @@ class vmUpdate {
 			return $_SESSION['vmLatestVersion'];
 		}
 		$VMVERSION =& new vmVersion();
-		$url = "http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion={$VMVERSION->RELEASE}&task=latestversionastext";
+		$url = "http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion={$VMVERSION->RELEASE}&task=latestversionastext&j=".(vmIsJoomla('1.5')?'1.5':'1.0');
 		$result = vmConnector::handleCommunication($url);
 		if( $result !== false ) {
 			// Cache the result for later use
@@ -58,7 +58,7 @@ class vmUpdate {
 			require_once( ADMINPATH.'version.php');
 			$VMVERSION =& new vmVersion();
 			// This URL should return a string - the direct URL to the matching patch package
-			$url = "http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion={$VMVERSION->RELEASE}&task=listpatchpackages";
+			$url = "http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion={$VMVERSION->RELEASE}&task=listpatchpackages&j=".(vmIsJoomla('1.5')?'1.5':'1.0');
 			$result = vmConnector::handleCommunication($url);
 			if( !empty( $result )
 			 	&& (strncmp('http://dev.virtuemart.net', $result, 25)===0 || strncmp('http://virtuemart.net', $result, 21)===0)
@@ -112,7 +112,7 @@ class vmUpdate {
 		$update_manifest = $extractdir.'/update.xml';
 		
 		$result = true;
-		if( !is_dir($extractdir) && !file_exists($update_manifest)) {
+		if( !file_exists($update_manifest)) {
 			if(vmIsJoomla('1.5', '>=')) {
 				jimport('joomla.filesystem.archive');
 				if( !JArchive::extract($updatepackage, $extractdir )) {
@@ -158,6 +158,7 @@ class vmUpdate {
 			if( $result === false ) {
 				return $result;
 			}
+			if( !empty( $xml->queries->query ) && is_array($xml->queries->query) )
 			foreach( $xml->queries->query as $query ) {
 				$queryArr[] = (string)$query;
 			}
@@ -190,8 +191,10 @@ class vmUpdate {
 			if( $result === false ) {
 				return $result;
 			}
-			foreach( $xml->queries[0]->query as $query ) {
-				$queryArr[] = $query->data();
+			if( !empty( $xml->queries[0]->query ) && is_object($xml->queries[0]->query) ) {
+				foreach( $xml->queries[0]->query as $query ) {
+					$queryArr[] = $query->data();
+				}
 			}
 		}
 		$returnArr['toversion'] = $toversion;
@@ -224,13 +227,22 @@ class vmUpdate {
 		}
 		$errors = 0;
 		foreach( $packageContents['fileArr'] as $file ) {
-		  	if( file_exists($mosConfig_absolute_path.'/'.$file)) {
-		  		if( !is_writable($mosConfig_absolute_path.'/'.$file ) ) {
+			$patch_file = $patchdir.'/'.$file;
+			$orig_file = $mosConfig_absolute_path.'/'.$file;
+			
+		  	if( file_exists($orig_file)) {
+		  		if( !is_writable($orig_file ) && !@chmod($orig_file, 0644 ) ) {
 		  			$vmLogger->err( sprintf($VM_LANG->_('VM_UPDATE_ERR_FILE_UNWRITABLE'),$mosConfig_absolute_path.'/'.$file) );
 		  			$errors++;
 		  		}
 		  	} else {
-		  		if( !is_writable($mosConfig_absolute_path.'/'.dirname($file) )) {
+		  		$dirname =  is_dir($patch_file) ? $orig_file : dirname($orig_file);
+		  		if( (is_dir($patch_file) || !file_exists($dirname)) ) {  					
+		  			if( !vmUpdate::mkdirR($dirname, 755 )) {
+		  				$vmLogger->err( sprintf($VM_LANG->_('VM_UPDATE_ERR_DIR_UNWRITABLE'),$dirname) );
+		  				$errors++;
+		  			}
+		  		} elseif( !is_writable($mosConfig_absolute_path.'/'.dirname($file) ) && !@chmod($mosConfig_absolute_path.'/'.dirname($file), 0755) ) {
 		  			$vmLogger->err( sprintf($VM_LANG->_('VM_UPDATE_ERR_DIR_UNWRITABLE'),$mosConfig_absolute_path.'/'.$file) );
 		  			$errors++;
 		  		}
@@ -243,7 +255,13 @@ class vmUpdate {
   			$patch_file = $patchdir.'/'.$file;
   			$orig_file = $mosConfig_absolute_path.'/'.$file;
   			//TODO: Make a backup file before overwriting the original ? rename( $orig_file, $orig_file.'~' );
-  			if( !@copy( $patch_file, $orig_file ) ) {
+  			if( (is_dir($patch_file) || !file_exists(dirname($patch_file))) ) {
+  				$dirname =  is_dir($patch_file) ? $patch_file : dirname($patch_file);
+  				if( !vmUpdate::mkdirR($dirname, 755 )) {
+  					$vmLogger->crit( 'Failed to create a necessary directory' );
+  				}
+  			}
+  			elseif( !@copy( $patch_file, $orig_file ) ) {
   				$vmLogger->crit( sprintf($VM_LANG->_('VM_UPDATE_ERR_OVERWRITE_FAILED'),$file) );
   				return false;  				
   			} else {
@@ -298,6 +316,7 @@ class vmUpdate {
 	 * @return boolean
 	 */
 	function removePackageFile( &$d ) {
+		global $vmLogger;
 		$packageFile = vmGet( $_SESSION,'vm_updatepackage');
 		if( empty( $packageFile ) || !file_exists($packageFile)) {
 			return true;
@@ -353,6 +372,30 @@ class vmUpdate {
 			echo '<td width="'.$cellwidth.'%" style="'.$style.'border:1px solid gray;">'.$num.'<br />'.$label.'</td>';			
 		}
 		echo '</tr></table>';
+	}
+	/**
+	 * Recursively creates a new directory
+	 *
+	 * @param string $path
+	 * @param octal $rights
+	 * @return boolean
+	 */
+	function mkdirR($path, $rights = 0777) {
+		
+		$folder_path = array(strstr($path, '.') ? dirname($path) : $path);
+	
+		while(!@is_dir(dirname(end($folder_path)))
+			&& dirname(end($folder_path)) != '/'
+			&& dirname(end($folder_path)) != '.'
+			&& dirname(end($folder_path)) != '') {
+			array_push($folder_path, dirname(end($folder_path)));
+		}
+	
+		while($parent_folder_path = array_pop($folder_path)) {
+			@mkdir($parent_folder_path, $rights);
+		}
+		@mkdir( $path );
+		return is_dir( $path );
 	}
 }
 ?>

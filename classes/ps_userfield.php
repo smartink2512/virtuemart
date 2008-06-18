@@ -47,6 +47,8 @@ class ps_userfield extends vmAbstractObject {
 				break;
 			case 'euvatid':
 				$d['params'] = 'shopper_group_id='.$d['shopper_group_id']."\n";
+				$d['cType']='VARCHAR(255)';
+				break;
 			case 'age_verification':
 				$d['params'] = 'minimum_age='.(int)$d['minimum_age']."\n";
 			default:

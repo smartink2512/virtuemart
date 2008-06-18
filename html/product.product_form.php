@@ -1522,7 +1522,6 @@ var categorySearchField = function(){
         	} else {
         		category_ids.value += record.id;
         	}
-        	alert(  document.adminForm.category_ids.value );
         }
     });
 	
@@ -1552,7 +1551,7 @@ function removeSelectedOptions(from, hiddenField ) {
 		}
 	}
 	field.value = newOptions.join('|');
-	alert( field.value );
+	
 }
 //-->
 </script>

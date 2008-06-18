@@ -89,16 +89,17 @@ function handleUpdateCheckResult( o ) {
 
 	$("checkingindicator").setStyle("display", "none");
 	$("checkbutton").setStyle("display", "none");
+
 	if( typeof o != "undefined" ) {
 		$("versioncheckresult").setText( o );
 		if( isNaN( o ) ) {
 			$("checkbutton").setStyle("display", "");
 			$("checkbutton").value= "<?php echo $VM_LANG->_('VM_UPDATE_CHECK_CHECKNOW' ); ?>";
 		}
-		else if( o == "<?php echo $VMVERSION->RELEASE ?>" ) {
+		else if( o == "<?php echo number_format($VMVERSION->RELEASE, 2 ) ?>" ) {
 			$("versioncheckresult").setStyle( "color", "green" );
 		} 
-		else if( o > "<?php echo $VMVERSION->RELEASE ?>" ) {
+		else if( o > "<?php echo number_format($VMVERSION->RELEASE, 2 ) ?>" ) {
 			$("versioncheckresult").setStyle( "color", "red" );
 			$("downloadbutton").setStyle("display", "");
 		} else {

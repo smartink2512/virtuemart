@@ -82,19 +82,19 @@ class vmTheme extends vmTemplate  {
 				/* Build the "See Bigger Image" Link */
 				if( @$_REQUEST['output'] != "pdf" && $this->get_cfg('useLightBoxImages', 1 ) ) {
 					$link = $imageurl;
-					$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)."<br/>".$VM_LANG->_('PHPSHOP_FLYPAGE_ENLARGE_IMAGE');
+					$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 0)."<br/>".$VM_LANG->_('PHPSHOP_FLYPAGE_ENLARGE_IMAGE');
 
 					$product_image = vmCommonHTML::getLightboxImageLink( $link, $text, $product['product_name'], 'product'.$product['product_id'] );
 				}
 				elseif( @$_REQUEST['output'] != "pdf" ) {
 					$link = $imageurl;
-					$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)."<br/>".$VM_LANG->_('PHPSHOP_FLYPAGE_ENLARGE_IMAGE');
+					$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 0)."<br/>".$VM_LANG->_('PHPSHOP_FLYPAGE_ENLARGE_IMAGE');
 					// vmPopupLink can be found in: htmlTools.class.php
 					$product_image = vmPopupLink( $link, $text, $width, $height );
 				}
 				else {
 					$product_image = "<a href=\"$imageurl\" target=\"_blank\">"
-									. ps_product::image_tag($product['product_thumb_image'], $img_attributes, 1)
+									. ps_product::image_tag($product['product_thumb_image'], $img_attributes, 0)
 									. "</a>";
 				}
 			}
@@ -114,7 +114,7 @@ class vmTheme extends vmTemplate  {
 		$html = '';
 		$i = 0;
 		foreach( $images as $image ) { 
-			$thumbtag = ps_product::image_tag( $image->file_name, 'class="browseProductImage"', 1, 'product', $image->file_image_thumb_height, $image->file_image_thumb_width );
+			$thumbtag = ps_product::image_tag( $image->file_name, 'class="browseProductImage"', 1, 'product', $image->file_image_thumb_width, $image->file_image_thumb_height );
 			$fulladdress = $sess->url( 'index2.php?page=shop.view_images&amp;image_id='.$image->file_id.'&amp;product_id='.$product_id.'&amp;pop=1' );
 			
 			if( $this->get_cfg('useLightBoxImages', 1 )) {
@@ -123,7 +123,7 @@ class vmTheme extends vmTemplate  {
 			else {
 				$html .= vmPopupLink( $fulladdress, $thumbtag, 640, 550 );
 			}
-			
+			$html .= ' ';
 			if( ++$i > $limit ) break;
 		}
 		return $html;
@@ -142,41 +142,7 @@ class vmTheme extends vmTemplate  {
 		
 		return vmPopupLink( $url, $image.'<br />'.$text, 640, 550, '_blank', '', 'screenX=100,screenY=100' );
 	}
-	/**
-	 * This is a function to silently add a product into cart
-	 * and notify the user with a nice dhtml window
-	 *
-	 * @param string $class
-	 * @param string $id
-	 * @param string $updateElement
-	 * @param string $onComplete
-	 */
-	function vmThemeAjaxSubmitter( $class='', $id='', $updateElement='vmCartModule', $onComplete='showMessagesinLightBox' ) {
-		global $mm_action_url, $sess;
-		if( $id ) {
-			$element = '#'.$id;
-		}
-		else {
-			$element = $class;
-		}
-		vmCommonHTML::loadMooTools();
-		vmCommonHTML::loadLightBox('_gw');
-		$script = "\$S('$element').action( {
-				onsubmit: function(){
-					showLoadingLightbox();
-					var cForm = $(this.id);
-					cForm.page.value = 'shop.basket_short';
-					";
-		$cartUpdateURL = $sess->url( $mm_action_url.'index.php?only_page=1&ignore_last_page=1' );
-		$script .= vmMooAjax::getAjaxUpdater( $cartUpdateURL, $updateElement, $onComplete, 'post', array( 'formName' => 'cForm.id' ) );
-		$script .= "		
-					return false;
-				}
-			} );
-		";
-		
-		echo vmCommonHTML::scriptTag('', $script );
-	}
+
 	
 	// Your code here please...
 

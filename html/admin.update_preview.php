@@ -64,8 +64,20 @@ $valid = true;
 foreach( $packageContents['fileArr'] as $file ) {
   	if( file_exists($mosConfig_absolute_path.'/'.$file)) {
   		$is_writable = is_writable($mosConfig_absolute_path.'/'.$file );
+  		if( !$is_writable ) {
+  			$is_writable = is_dir($mosConfig_absolute_path.'/'.$file) ? @chmod($mosConfig_absolute_path.'/'.$file, 0755):chmod($mosConfig_absolute_path.'/'.$file,0644);
+  		}
   	} else {
-  		$is_writable = is_writable($mosConfig_absolute_path.'/'.dirname($file) );
+  		$check_dir = $mosConfig_absolute_path.'/'.dirname($file);
+  		$is_writable = is_writable($check_dir);
+  		if( !$is_writable ) {
+  			while( !file_exists($check_dir)) {
+  				$check_dir = dirname( $check_dir );
+				$is_writable = is_writable($check_dir ) || @chmod($checkdir, 0755);  				
+  				
+  			}
+  			
+  		}
   	}
   	if( !$is_writable ) {
   		$valid = false;

@@ -102,24 +102,57 @@ function vmValidateName( $string ) {
  * @param string $euvat EU-vat number to validate
  * @return boolean The result of the validation
  */
-function vmValidateEUVat( $euvat ){
+function vmValidateEUVat( &$euvat ){
 	require_once( CLASSPATH . 'connectionTools.class.php' );
 	
-	$eurl = "http://ec.europa.eu/taxation_customs/vies/cgi-bin/viesquer";
-	if(!ereg("([a-zA-Z][a-zA-Z])[- ]*([0-9]*)", $euvat, $r)){
+   // Remove all special characters
+   $myStr = "";
+   $myLen = strlen( $euvat);
+   for ( $i=0; $i<$myLen; $i++)
+   {
+      $c = substr( $euvat, $i, 1);
+      // If digit or letter
+      if ( preg_match( "/([0-9]|[a-z]|[A-Z])/i", $c, $parts))
+      {
+         $myStr .= $c;
+      }
+   } // Next i
+	
+	// $eurl = "http://ec.europa.eu/taxation_customs/vies/cgi-bin/viesquer";
+	$eurl = "http://ec.europa.eu/taxation_customs/vies/viesquer.do";
+	if(!ereg("([a-zA-Z][a-zA-Z])[- ]*([0-9]*)", $myStr, $r)){
 		return false;
 	}
-	$CountryCode = $r[1];
+	$CountryCode = strtoupper( $r[1]);
 	$VAT = $r[2];
-	$query = "Lang=EN&MS=$CountryCode&ISO=$CountryCode&VAT=$VAT";
+	
+	if ( ($CountryCode == 'BE') && (strlen( $VAT) == 9)) $VAT = '0' . $VAT;
+	
+//	$query = "Lang=EN&MS=$CountryCode&ISO=$CountryCode&VAT=$VAT";
+	$query = "ms=$CountryCode&iso=$CountryCode&vat=$VAT&BtnSubmitVat=Verify";
 	
 	$ret = vmConnector::handleCommunication($eurl, $query);
 	
 	if (strstr( $ret, "Yes, valid VAT number" )) {
+      $euvat = $CountryCode . $VAT;  // Use the reformatted EU Vat
+		return true;
+	}
+	else if ( strstr( $ret, "No, invalid VAT number" )
+	       || strstr( $ret, "Error" )
+	        )
+	{
+		return false;
+	}
+	// Here, assume that Check Digit verification performed on client side is valid
+	else if ( strstr( $ret, "Service unavailable" )
+	       || strstr( $ret, "Member State service unavailable" )
+	       || strstr( $ret, "Request time-out" )
+	        )
+	{
+      $euvat = $CountryCode . $VAT;  // Use the reformatted EU Vat
 		return true;
 	}
 	return false;
-
 }
 
 /**
@@ -1180,7 +1213,7 @@ function vmRemoveDirectoryR( $dirname ) {
 		}
 		closedir($dirHandle);
 		chdir($old_cwd);
-		if (!rmdir($dirname)) return false;
+		if (!@rmdir($dirname)) return false;
 		return true;
 	}else{
 		return false;

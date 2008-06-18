@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+18.06.2008 soeren
+# updater class not able to create new subdirectories
+
 18.06.2008 gregdev
 - Removed PayPal Website Payments Pro (will restore in later release)
 # Hide the Joomla admin menu in Joomla! 1.5 for the order print details
@@ -42,6 +45,10 @@ VirtueMart 1.1.x
 17.06.2008 gregdev
 ^ Added ability to print order from order details page in backend
 ^ Added ability to publish/unpublish products from the inventory page; also changed product link to match product list
+
+16.06.2008 soeren
+# no space between additional Images in Internet Explorer 7 
+# fix for EU VAT ID check
 
 14.06.2008 gregdev
 # Task #2168 - Bankaccount informations of customers are not shown in Backend
@@ -67,7 +74,6 @@ VirtueMart 1.1.x
 12.06.2008 kaltokri
 # Fix the divide by zero bug in "Order Edit"
 
->>>>>>> .r1421
 11.06.2008 soeren
 ^ changed product form to display a "category search form" instead of a select-list with all categories when more than 200 categories are present in the store
 # Task #2069 - Wrong URL in Order Status Change email when using PayPal

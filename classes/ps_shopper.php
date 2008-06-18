@@ -48,69 +48,79 @@ class ps_shopper {
 		if( $my->id ) {
 			$skipFields[] = 'email';
 		}
+		$d['isValidVATID'] = false;
 		foreach( $registrationFields as $field ) {
-			if( $field->required == 0 ) continue;
-			if( in_array( $field->name, $skipFields )) {
-				continue;
-			}
-			switch( $field->type ) {
-				case 'age_verification':
-					// The Age Verification here is just a simple check if the selected date
-					// is a birthday older than the minimum age (default: 18)
-					$d[$field->name] = vmRequest::getInt('birthday_selector_year')
-															.'-'.vmRequest::getInt('birthday_selector_month')
-															.'-'.vmRequest::getInt('birthday_selector_day');
-					$params = new vmParameters( $field->params );
-					$min_age = $params->get('minimum_age', 18 );
-					$min_date = (date('Y') - $min_age).'-'.date('n').'-'.date('j');
-					
-					if( $d[$field->name] > $min_date ) {
-						// User too young!
+			/* Special checking for EU VAT ID */
+			if ($field->type == 'euvatid') {
+				if( $field->required == 0 && empty( $d[$field->name])) {
+					break; // Do nothing when the EU VAT ID field was left empty
+				}
+				if( $field->required == 1 && empty( $d[$field->name])) {
 						$provided_required = false;
 						$missing .= $field->name . ",";
-					}
-					break;
-				case 'captcha':
-					if( file_exists($mosConfig_absolute_path.'/administrator/components/com_securityimages/server.php')) {
-						include_once( $mosConfig_absolute_path.'/administrator/components/com_securityimages/server.php');
-						$packageName = 'securityVMRegistrationCheck';
-						$security_refid = vmGet($_POST, $packageName.'_refid');
-						$security_try = vmGet($_POST, $packageName.'_try');
-						$security_reload = vmGet($_POST, $packageName.'_reload');
-						$checkSecurity = checkSecurityImage($security_refid, $security_try );
+				}
+				// Check the VAT ID against the validation server of the European Union
+				$d['isValidVATID'] = vmValidateEUVat( $d[$field->name] );
+				if( !$d['isValidVATID'] ) {
+					//TODO: Roland - insert your error message here
+				}
+				if( !$d['isValidVATID'] && $field->required == 1) {
+					$provided_required = false;
+					$missing .= $field->name . ",";
+				}
+				$d['__euvatid_field'] = $field;
+			}
+			else {
+				if( $field->required == 0 ) continue;
+				if( in_array( $field->name, $skipFields )) {
+					continue;
+				}
+				switch( $field->type ) {
+					case 'age_verification':
+						// The Age Verification here is just a simple check if the selected date
+						// is a birthday older than the minimum age (default: 18)
+						$d[$field->name] = vmRequest::getInt('birthday_selector_year')
+																.'-'.vmRequest::getInt('birthday_selector_month')
+																.'-'.vmRequest::getInt('birthday_selector_day');
+						$params = new vmParameters( $field->params );
+						$min_age = $params->get('minimum_age', 18 );
+						$min_date = (date('Y') - $min_age).'-'.date('n').'-'.date('j');
 						
-						if( !$checkSecurity ) {
+						if( $d[$field->name] > $min_date ) {
+							// User too young!
 							$provided_required = false;
 							$missing .= $field->name . ",";
 						}
-					}
-					break;
-					
-				case 'euvatid':
-					if( empty( $d[$field->name])) break; // Do nothing when the EU VAT ID field was left empty
-					
-					// Check the VAT ID against the validation server of the European Union
-					$d['isValidVATID'] = vmValidateEUVat( $d[$field->name] );
-					$d['__euvatid_field'] = $field;
-					
-					break; // We don't need to go further in the loop
-				
-				default:
-					if ( empty( $d[$field->name])) {
-						$provided_required = false;
-						$missing .= $field->name . ",";
-					}
-					break;
+						break;
+					case 'captcha':
+						if( file_exists($mosConfig_absolute_path.'/administrator/components/com_securityimages/server.php')) {
+							include_once( $mosConfig_absolute_path.'/administrator/components/com_securityimages/server.php');
+							$packageName = 'securityVMRegistrationCheck';
+							$security_refid = vmGet($_POST, $packageName.'_refid');
+							$security_try = vmGet($_POST, $packageName.'_try');
+							$security_reload = vmGet($_POST, $packageName.'_reload');
+							$checkSecurity = checkSecurityImage($security_refid, $security_try );
+							
+							if( !$checkSecurity ) {
+								$provided_required = false;
+								$missing .= $field->name . ",";
+							}
+						}
+						break;
+						
+					default:
+						if ( empty( $d[$field->name])) {
+							$provided_required = false;
+							$missing .= $field->name . ",";
+						}
+						break;
+				}
 			}
 		}
 
 		if (!$provided_required) {
 			$_REQUEST['missing'] = $missing;
 			return false;
-		}
-		$d['isValidVATID'] = false;
-		foreach( $registrationFields as $field ) {
-			
 		}
 		
 		$d['user_email'] = vmGet( $d, 'email', $my->email );
