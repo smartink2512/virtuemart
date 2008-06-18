@@ -202,7 +202,14 @@ while ($db->next_record()) {
 		$listObj->addCell($vl_link);
 	}
 	
-	$details_url = $sess->url( $_SERVER['PHP_SELF']."?page=order.order_printdetails&amp;order_id=".$db->f("order_id")."&amp;no_menu=1&pop=1");
+	// Print view URL
+	$details_url = $_SERVER['PHP_SELF']."?page=order.order_printdetails&amp;order_id=".$db->f("order_id")."&amp;no_menu=1&pop=1";
+
+	if( vmIsJoomla( '1.5', '>=' ) ) {
+		$details_url .= "&amp;tmpl=component";
+	}
+	
+	$details_url = $sess->url( $details_url );
     $details_url = defined( '_VM_IS_BACKEND' ) ? str_replace( "index2.php", "index3.php", $details_url ) : str_replace( "index.php", "index2.php", $details_url );
 	
     // Print View Icon

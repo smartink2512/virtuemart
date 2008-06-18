@@ -37,7 +37,12 @@ else {
 	if( $db->next_record() ) {
 	
 	  // Print View Icon
-	  $print_url = $sess->url( $_SERVER['PHP_SELF']."?page=order.order_printdetails&amp;order_id=$order_id&amp;no_menu=1&pop=1");
+	  $print_url = $_SERVER['PHP_SELF']."?page=order.order_printdetails&amp;order_id=$order_id&amp;no_menu=1&pop=1";
+	  if( vmIsJoomla( '1.5', '>=' ) ) {
+	  	$print_url .= "&amp;tmpl=component";
+	  }
+	  
+	  $print_url = $sess->url( $print_url );
 	  $print_url = defined( '_VM_IS_BACKEND' ) ? str_replace( "index2.php", "index3.php", $print_url ) : str_replace( "index.php", "index2.php", $print_url );
 ?>
 	  <div style="float: right;">
