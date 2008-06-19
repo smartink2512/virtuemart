@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+--- VirtueMart 1.1.1 released ---
+
 18.06.2008 soeren
 # updater class not able to create new subdirectories
 

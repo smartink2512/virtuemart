@@ -20,7 +20,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) {
 ****************
 VirtueMart 1.1
 ****************
-Complete Package for Joomla! 1.0.x, Joomla! 1.5 and Mambo >= 4.5.1
+Complete Package for Joomla! 1.0.x, Joomla! 1.5.x and Mambo >= 4.5.1
 
 You can't use this software on an earlier Mambo version than 4.5.2 (e.g. Mambo 4.5 1.0.9) 
 without running into serious problems.
@@ -40,17 +40,26 @@ Community Home: http://virtuemart.net
 Package Contents:
 ##########################
 
- * 1 Component (com_virtuemart_1.1.0.zip)
+ * 1 component (com_virtuemart_1.1.1.zip for Joomla! 1.0.x and Mambo or com_virtuemart_1.1.1.j15.zip for Joomla! 1.5)
    INSTALLATION REQUIRED!
    
- * 1 Main module (mod_virtuemart_1.1.0.tar.gz)
+ * 1 main module (mod_virtuemart_1.1.1.zip for Joomla! 1.0.x and Mambo or mod_virtuemart_1.1.1.j15.zip for Joomla! 1.5)
    INSTALLATION REQUIRED!
    
- * 8 additional Modules
+ * 12 additional modules
  
- * 2 Mambots 
-   - 1 SearchBot for Integration into the site search (virtuemart.searchbot.tar.gz), 
-   - 1 Content Mambot for displaying product details in content items (mosproductsnap.tar.gz)
+ * Mambots / plugins
+ 
+ * 3 mambots for Jooma! 1.0.x or mambo
+   - 2 search mambots for integration into the site search (virtuemart.searchbot and vmxsearch.searchbot), 
+   - 1 content mambot for displaying product details in content items (vmproductproductsnapshots)
+
+-OR-
+
+ * 2 plugins for Jooma! 1.5.x
+   - 1 search plugin for integration into the site search (vmxsearch.plugin), 
+   - 1 content mambot for displaying product details in content items (vmproductproductsnapshots)
+   
 
 ##########################
    ABOUT
@@ -73,7 +82,7 @@ This package was tested on
 - Mambo 4.5.3h
 - Mambo 4.6.2
 - Joomla 1.0.x
-- Joomla 1.5.2
+- Joomla 1.5.3
 
  -- IMPORTANT --
 Please note that module and component SHOULD be used together! 
@@ -90,9 +99,9 @@ You don't need to unpack any of the archives in this complete package!
 
 1. If you have unpacked this archive (VirtueMart_x.x_COMPLETE_PACKAGE.zip), 
 	you'll see a lot of other archives.
-	- com_virtuemart_x.xxx.tar.gz, 
-	- some files beginning with mod_*.tar.gz 
-	- 2 other Packages (these are the so-called Mambots).
+	- com_virtuemart_x.xxx.zip, 
+	- some files beginning with mod_*.zip 
+	- other packages (these are the mambots/plugins).
     
 2. Login to the Administration Backend (/administrator on your site).
         
@@ -112,7 +121,7 @@ You don't need to unpack any of the archives in this complete package!
         Go to "Installers" => "Modules"
         (or - if you're using an older Mambo version: "Modules" => "Install/Uninstall"), 
         and select the file 
-        - mod_virtuemart_x.xx.tar.gz 
+        - mod_virtuemart_x.xx.zip
         and then click 'Upload module'.
     
 4. The module is installed, but it still is not published!
@@ -187,7 +196,7 @@ You don't need to unpack any of the archives in this complete package!
 
 
 ############################
-   WHAT'S NEW IN VM 1.1?
+   WHAT'S NEW IN VM 1.1.1?
 ###########################
 
 //TODO

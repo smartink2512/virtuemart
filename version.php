@@ -30,14 +30,14 @@ class vmVersion {
 	/** @var string Product */
 	var $PRODUCT = 'VirtueMart';
 	/** @var int Release Number */
-	var $RELEASE = '1.1.0';
+	var $RELEASE = '1.1.1';
 	/** @var string Development Status */
 	var $DEV_STATUS = 'stable';
 	/** @var string Codename */
 	// Relaxed Song by Boards of Canada (http://en.wikipedia.org/wiki/The_Campfire_Headphase#Track_listing)
 	var $CODENAME = 'Hey Saturday Sun';
 	/** @var string Date */
-	var $RELDATE = '23/04/2008';
+	var $RELDATE = '19/06/2008';
 	/** @var string Time */
 	var $RELTIME = '20:00';
 	/** @var string Timezone */
