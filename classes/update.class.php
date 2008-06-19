@@ -97,7 +97,7 @@ class vmUpdate {
 			}
 			// Handle the uploaded package file- the integrity validation is done in another function
 			if( move_uploaded_file( $_FILES['uploaded_package']['tmp_name'], $mosConfig_cachepath.'/'.$filename )) {
-				$_SESSION['vm_updatepackage'] = $mosConfig_cachepath.'/'.$filename;;
+				$_SESSION['vm_updatepackage'] = $mosConfig_cachepath.'/'.$filename;
 				return true;
 			} else {
 				$vmLogger->err( 'Failed to store the uploaded patch package file.');
@@ -107,6 +107,7 @@ class vmUpdate {
 	}
 	function &getPatchContents( $updatepackage ) {
 		global $vmLogger, $mosConfig_absolute_path, $VM_LANG;
+		
 		
 		$extractdir = vmUpdate::getPackageDir( $updatepackage);
 		$update_manifest = $extractdir.'/update.xml';
@@ -120,13 +121,34 @@ class vmUpdate {
 					$result= false;return $result;
 				}
 			} else {
-				require_once( ADMINPATH.'Tar.php' );
-				$package_archive = new Archive_Tar( $updatepackage, "gz" );
-				$result = $package_archive->extract($extractdir.'/');
-				if( !$result ) {
-					$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_EXTRACT_FAILED')." ".$extractdir);
-					$result= false;return $result;
+				$file_info = pathinfo($updatepackage);
+				switch( $file_info['extension']) {
+					case 'gz':
+						require_once( ADMINPATH.'Tar.php' );
+						$package_archive = new Archive_Tar( $updatepackage, "gz" );
+						$result = $package_archive->extract($extractdir.'/');
+						if( !$result ) {
+							$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_EXTRACT_FAILED')." ".$extractdir);
+							$result= false;return $result;
+						}
+						break;
+					case 'zip':
+						// Extract functions
+						require_once( $mosConfig_absolute_path . '/administrator/includes/pcl/pclzip.lib.php' );
+						require_once( $mosConfig_absolute_path . '/administrator/includes/pcl/pclerror.lib.php' );
+						$zipfile = new PclZip( $updatepackage );
+			
+						$ret = $zipfile->extract( PCLZIP_OPT_PATH, $extractdir );
+						if($ret == 0) {
+							$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_EXTRACT_FAILED')." ".$extractdir.' ('.$zipfile->errorName(true).')' );
+							return false;
+						}
+						break;
+					default:
+						$vmLogger->err( 'An invalid patch package extension was detected. Allowed Types: tar.gz and zip');
+						return false;
 				}
+
 			}
 		}
 		
@@ -136,7 +158,7 @@ class vmUpdate {
 		
 		// Can we use the PHP5 SimpleXML Extension ?
 		if( function_exists('simplexml_load_file')) {
-			$xml = simplexml_load_file($update_manifest);
+			$xml = @simplexml_load_file($update_manifest);
 			if( $xml === false ) {
 				$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_PARSE_FAILED') );
 				return false;

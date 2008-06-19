@@ -1208,7 +1208,7 @@ function vmRemoveDirectoryR( $dirname ) {
 			if (is_dir($file)){
 				if (!vmRemoveDirectoryR($file)) return false;
 			}else{
-				if (!unlink($file)) return false;
+				if (!@unlink($file)) return false;
 			}
 		}
 		closedir($dirHandle);

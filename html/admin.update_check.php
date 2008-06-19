@@ -79,11 +79,11 @@ function performUpdateCheck() {
 	form = document.adminForm;
 	$("checkingindicator").setStyle("display", "inline");
 	form.checkbutton.value="<?php echo $VM_LANG->_('VM_UPDATE_CHECK_CHECKING'); ?>";
-	var myAjax = new Ajax("<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&task=checkForUpdate&page=admin.ajax_tools&only_page=1&no_html=1", 
+	var vRequest = new Json.Remote("<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&task=checkForUpdate&page=admin.ajax_tools&only_page=1&no_html=1", 
 										{
 											method: 'get',
 											onComplete: handleUpdateCheckResult
-											}).request();
+											}).send();
 }
 function handleUpdateCheckResult( o ) {
 
@@ -91,15 +91,16 @@ function handleUpdateCheckResult( o ) {
 	$("checkbutton").setStyle("display", "none");
 
 	if( typeof o != "undefined" ) {
-		$("versioncheckresult").setText( o );
-		if( isNaN( o ) ) {
+		$("versioncheckresult").setText( o.version_string );
+		
+		if( isNaN( o.version ) ) {
 			$("checkbutton").setStyle("display", "");
 			$("checkbutton").value= "<?php echo $VM_LANG->_('VM_UPDATE_CHECK_CHECKNOW' ); ?>";
 		}
-		else if( o == "<?php echo number_format($VMVERSION->RELEASE, 2 ) ?>" ) {
+		else if( o.version == "<?php echo number_format($VMVERSION->RELEASE, 2 ) ?>" ) {
 			$("versioncheckresult").setStyle( "color", "green" );
 		} 
-		else if( o > "<?php echo number_format($VMVERSION->RELEASE, 2 ) ?>" ) {
+		else if( o.version > "<?php echo number_format($VMVERSION->RELEASE, 2 ) ?>" ) {
 			$("versioncheckresult").setStyle( "color", "red" );
 			$("downloadbutton").setStyle("display", "");
 		} else {

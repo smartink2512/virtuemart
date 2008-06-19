@@ -14,7 +14,7 @@ function isValidVATID (toCheck) {
   var defCCode = "GB";
 
   vatexp.push (/^(AT)U(\d{8})$/);                           //** Austria
-  vatexp.push (/^(BE)(\d{9}\d?)$/);                         //** Belgium 
+  vatexp.push (/^(BE)(\d{9,10}\d?)$/);                      //** Belgium 
   vatexp.push (/^(CY)\d{8}[A-Z]$/);                         // Cyprus 
   vatexp.push (/^(CZ)(\d{8,10})(\d{3})?$/);                 //** Czech Republic
   vatexp.push (/^(DK)((\d{8}))$/);                          //** Denmark 

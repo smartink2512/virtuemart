@@ -46,8 +46,12 @@ switch( $task ) {
 	case 'checkforupdate':
 		require_once( CLASSPATH.'update.class.php');
 		$result = vmUpdate::checkLatestVersion();
+		
 		if( !empty($result) ) {
-			vmConnector::sendHeaderAndContent('200', $result );
+			// Convert a String like "1.1.1" => "1.11", so we can use it as float in Javascript
+			$version_as_float = substr($result, 0, 3 ) . substr( $result, 4 );
+			$version_as_json = '{version_string:"'.$result.'",version:"'.$version_as_float.'"}';
+			vmConnector::sendHeaderAndContent('200', $version_as_json );
 		} else {
 			vmConnector::sendHeaderAndContent('200', 'Connection Failed' );
 		}
