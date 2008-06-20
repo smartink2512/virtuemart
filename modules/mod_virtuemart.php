@@ -21,7 +21,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct access to '.
 if( !isset( $mosConfig_absolute_path ) ) {
 	$mosConfig_absolute_path = $GLOBALS['mosConfig_absolute_path']	= JPATH_SITE;
 }
-global $mosConfig_absolute_path;
+global $mosConfig_absolute_path, $page;
 require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php' );
 
 require_once(CLASSPATH.'ps_product_category.php');

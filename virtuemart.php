@@ -123,7 +123,7 @@ else {
 		$vm_mainframe->addStyleSheet( VM_THEMEURL .'admin.css' );
 		$vm_mainframe->addStyleSheet( VM_THEMEURL .'admin.styles.css' );
 		$vm_mainframe->addScript( "$mosConfig_live_site/components/$option/js/functions.js" );
-		echo '<table width="100%" align="left"><tr>';
+		echo '<table style="width:100%;table-layout:fixed;"><tr>';
 		if( $no_menu != "1" ) {
 			$vmLayout = 'standard';
 			echo '<td valign="top" width="15%">';

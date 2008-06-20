@@ -28,7 +28,8 @@ if( !empty( $_SESSION['vmupdatemessage'] )) {
 	unset($_SESSION['vmupdatemessage']);
 	require_once( ADMINPATH. 'version.php' );
 	
-	echo $myVersion;
+	echo $myVersion.'<br /><br />
+	<input class="vmicon vmicon32 vmicon-32-apply" type="button" onclick="document.location=\''.$sess->url($_SERVER['PHP_SELF'].'?page=store.index').'\';" value="' . $VM_LANG->_('CMN_CONTINUE') . '" name="submitbutton" />';
 	echo '</div>';
 } 
 else {

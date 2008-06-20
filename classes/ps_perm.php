@@ -270,23 +270,27 @@ class ps_perm {
 	 * @return boolean
 	 */
 	function is_registered_customer($user_id) {
-		global $page, $func, $auth;
+		
 		if( $user_id == 0 ) return false;
-		/**
-		if( @is_bool( $auth["is_registered_customer"]) && ($page!="checkout.index" && strtolower($func)!="shopperupdate")) {
-			return $auth["is_registered_customer"];
-		}
-		else {
-		*/
-			$db_check = new ps_DB;
+
+		$db_check = new ps_DB;
+		// If the registration type is neither "no registration" nor "optional registration", there *must* be a related Joomla! user, we can join
+		if( VM_REGISTRATION_TYPE != 'NO_REGISTRATION' && VM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION' ) {
+			$q  = "SELECT COUNT(user_id) as num_rows FROM `#__{vm}_user_info`, `#__users` 
+				WHERE `id`=`user_id`
+				AND #__{vm}_user_info.user_id='" . $user_id . "'
+				AND #__{vm}_user_info.address_type='BT'";
+		} else {
 			$q  = "SELECT COUNT(user_id) as num_rows FROM `#__{vm}_user_info` 
-					WHERE #__{vm}_user_info.user_id='" . $user_id . "'  
-					AND #__{vm}_user_info.address_type='BT'";
-			$db_check->query($q);
-			$db_check->next_record();
-			// Query failed or not?
-			return $db_check->f('num_rows') > 0;
-		//}
+				WHERE #__{vm}_user_info.user_id='" . $user_id . "'  
+				AND #__{vm}_user_info.address_type='BT'";
+			
+		}
+		$db_check->query($q);
+		$db_check->next_record();
+		// Query failed or not?
+		return $db_check->f('num_rows') > 0;
+		
 	}
 	
 	/**

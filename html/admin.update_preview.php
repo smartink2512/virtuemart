@@ -105,7 +105,7 @@ if( $valid ) {
 	<input type="checkbox" name="confirm_update" id="confirm_update">
 		<label for="confirm_update">' . $VM_LANG->_('VM_UPDATE_PATCH_CONFIRM_TEXT') . '</label>
 		<br /><br />
-	<input class="vmicon vmicon32 vmicon-32-apply" type="submit" onclick="return checkConfirm()" value="' . $VM_LANG->_('VM_UPDATE_PATCH_APPLY') . '" name="submitbutton">
+	<input class="vmicon vmicon32 vmicon-32-apply" type="submit" onclick="return checkConfirm()" value="' . $VM_LANG->_('VM_UPDATE_PATCH_APPLY') . '" name="submitbutton" />
 	<input type="button" onclick="document.adminForm.page.value=\'store.index\';document.adminForm.func.value=\'removePatchPackage\';submitform(\'save\');" class="vmicon vmicon32 vmicon-32-cancel" value="'.$VM_LANG->_('CMN_CANCEL').'" />
 	</div>';
 } else {

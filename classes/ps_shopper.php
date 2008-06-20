@@ -297,8 +297,8 @@ class ps_shopper {
 			
 			if( VM_REGISTRATION_TYPE == 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account'] ) ) ) {
 				// If no user shall be registered into the global user table, we just add the registration info into the vm_user_info table
-				//$db->query( "SELECT MAX(user_id)+1 as uid FROM `jos_vm_user_info`" );
-				$db->query( "SELECT MAX(user_id)+1 as uid FROM `#__{vm}_user_info`" );
+				// Make sure that "dummy" entries for non-existing Joomla! users won't ever have the same user_id as a future Joomla! user
+				$db->query( "SELECT MIN(user_id)-1 as uid FROM `#__{vm}_user_info`" );
 				$db->next_record();
 				$uid = $db->f('uid');
 				

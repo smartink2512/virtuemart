@@ -241,7 +241,7 @@ class vmUpdate {
 			$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_DOWNLOAD') );
 			return;
 		}
-		$patchdir = dirname($updatepackage).'/'. str_replace('.tar.gz', '', basename($updatepackage) );
+		$patchdir = vmUpdate::getPackageDir($updatepackage);
 		$packageContents = vmUpdate::getPatchContents($updatepackage);
 		
 		if( !vmUpdate::verifyPackage( $packageContents ) ) {
@@ -316,7 +316,7 @@ class vmUpdate {
 	 * @return boolean
 	 */
 	function verifyPackage( &$packageContents ) {
-		global $VM_LANG;
+		global $VM_LANG, $vmLogger;
 		
 		if( $packageContents === false ) {
 			return false;
@@ -365,7 +365,10 @@ class vmUpdate {
 	 * @return string
 	 */
 	function getPackageDir( $updatepackage ) {
-		return dirname($updatepackage).'/'. str_replace('.tar.gz', '', basename($updatepackage) );
+		$fileinfo = pathinfo($updatepackage);
+		$extension = strtolower($fileinfo['extension']);
+		if( $extension == 'gz' ) $extension = 'tar.gz';
+		return dirname($updatepackage).'/'. str_replace('.' . $extension, '', basename($updatepackage) );
 	}
 	/**
 	 * Shows the Step-1-2-3 Bar at the Top of the Updater

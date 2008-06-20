@@ -35,8 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-
---- VirtueMart 1.1.1 released ---
+19.09.2008 soeren
+# new Joomla! users find Billto information of other customers (dummy user_info entries could mix up with Joomla! user records)
+# fixed "operation aborted" error on some pages (due to wz_tooltip.js)
+# fixed Updater to handle float numbers
 
 18.06.2008 soeren
 # updater class not able to create new subdirectories
