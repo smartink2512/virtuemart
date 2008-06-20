@@ -34,10 +34,10 @@ class vmVersion {
 	/** @var string Development Status */
 	var $DEV_STATUS = 'stable';
 	/** @var string Codename */
-	// Relaxed Song by Boards of Canada (http://en.wikipedia.org/wiki/The_Campfire_Headphase#Track_listing)
-	var $CODENAME = 'Hey Saturday Sun';
+	// Song by Linkin' Park
+	var $CODENAME = 'One Step Closer';
 	/** @var string Date */
-	var $RELDATE = '19/06/2008';
+	var $RELDATE = '20/06/2008';
 	/** @var string Time */
 	var $RELTIME = '20:00';
 	/** @var string Timezone */
