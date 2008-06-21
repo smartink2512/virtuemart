@@ -49,7 +49,7 @@ class vmUpdate {
 	 * @return boolean
 	 */
 	function getPatchPackage( &$d) {
-		global $vmLogger, $mosConfig_cachepath, $VM_LANG;
+		global $vm_mainframe, $vmLogger, $mosConfig_cachepath, $VM_LANG;
 		
 		$allowed_extensions = array('gz', 'zip');
 		
@@ -86,6 +86,9 @@ class vmUpdate {
 				$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_RETRIEVE_FAILED') );
 				return false;
 			}
+			if( vmIsXHR() ) {
+				$vm_mainframe->addResponseScript('parent.loadPage("'.$GLOBALS['sess']->url($_SERVER['PHP_SELF'].'?page=admin.update_preview', false, false).'");');
+			}
 			return true;
 		} else {
 			// make sure the file name is safe for storage.
@@ -98,7 +101,9 @@ class vmUpdate {
 			// Handle the uploaded package file- the integrity validation is done in another function
 			if( move_uploaded_file( $_FILES['uploaded_package']['tmp_name'], $mosConfig_cachepath.'/'.$filename )) {
 				$_SESSION['vm_updatepackage'] = $mosConfig_cachepath.'/'.$filename;
-				return true;
+				if( vmIsXHR() ) {
+					$vm_mainframe->addResponseScript('parent.loadPage("'.$GLOBALS['sess']->url($_SERVER['PHP_SELF'].'?page=admin.update_preview', false, false).'");');
+				}
 			} else {
 				$vmLogger->err( 'Failed to store the uploaded patch package file.');
 				return false;
@@ -234,12 +239,12 @@ class vmUpdate {
 	 * @return boolean
 	 */
 	function applyPatch( &$d ) {
-		global $vmLogger, $mosConfig_absolute_path, $db, $sess, $VM_LANG;
+		global $vm_mainframe, $vmLogger, $mosConfig_absolute_path, $db, $sess, $VM_LANG;
 		
 		$updatepackage = vmget($_SESSION,'vm_updatepackage');
 		if( empty( $updatepackage ) ) {
 			$vmLogger->err( $VM_LANG->_('VM_UPDATE_ERR_DOWNLOAD') );
-			return;
+			return false;
 		}
 		$patchdir = vmUpdate::getPackageDir($updatepackage);
 		$packageContents = vmUpdate::getPatchContents($updatepackage);
@@ -305,9 +310,12 @@ class vmUpdate {
   		// Delete the patch package file
   		vmUpdate::removePackageFile($d);
   		
-  		// Redirect to the Result Page and display the Update Message there
-		vmRedirect($sess->url($_SERVER['PHP_SELF'].'?page=admin.update_result', false, false) );
-  		
+		if( vmIsXHR() ) {
+			$vm_mainframe->addResponseScript('parent.loadPage("'.$GLOBALS['sess']->url($_SERVER['PHP_SELF'].'?page=admin.update_result', false, false).'");');
+		} else {
+	  		// Redirect to the Result Page and display the Update Message there
+			vmRedirect($sess->url($_SERVER['PHP_SELF'].'?page=admin.update_result', false, false) );
+		}
 	}
 	/**
 	 * Verifies the integrity of the Patch Package.
@@ -338,7 +346,7 @@ class vmUpdate {
 	 * @return boolean
 	 */
 	function removePackageFile( &$d ) {
-		global $vmLogger;
+		global $vm_mainframe, $vmLogger;
 		$packageFile = vmGet( $_SESSION,'vm_updatepackage');
 		if( empty( $packageFile ) || !file_exists($packageFile)) {
 			return true;
@@ -355,6 +363,9 @@ class vmUpdate {
 				return false;
 			}
 			unset( $_SESSION['vm_updatepackage']);
+		}
+		if( vmIsXHR() ) {
+			$vm_mainframe->addResponseScript('parent.loadPage("'.$GLOBALS['sess']->url($_SERVER['PHP_SELF'].'?page=admin.update_check', false, false).'");');
 		}
 		return true;
 	}
