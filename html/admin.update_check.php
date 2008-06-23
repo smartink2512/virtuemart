@@ -79,7 +79,7 @@ function performUpdateCheck() {
 	form = document.adminForm;
 	$("checkingindicator").setStyle("display", "inline");
 	form.checkbutton.value="<?php echo $VM_LANG->_('VM_UPDATE_CHECK_CHECKING'); ?>";
-	var vRequest = new Json.Remote("<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&task=checkForUpdate&page=admin.ajax_tools&only_page=1&no_html=1", 
+	var vRequest = new Json.Remote("<?php echo $mosConfig_live_site ?>/administrator/index2.php?option=com_virtuemart&task=checkForUpdate&page=admin.ajax_tools&only_page=1&no_html=1", 
 										{
 											method: 'get',
 											onComplete: handleUpdateCheckResult

@@ -61,20 +61,28 @@ vmUpdate::stepBar(2);
 	  <tbody>
   <?php
 $valid = true;
-foreach( $packageContents['fileArr'] as $file ) {
+foreach( $packageContents['fileArr'] as $fileentry ) {
+	$file = $fileentry['filename']; 
+	
   	if( file_exists($mosConfig_absolute_path.'/'.$file)) {
   		$is_writable = is_writable($mosConfig_absolute_path.'/'.$file );
   		if( !$is_writable ) {
-  			$is_writable = is_dir($mosConfig_absolute_path.'/'.$file) ? @chmod($mosConfig_absolute_path.'/'.$file, 0755):@chmod($mosConfig_absolute_path.'/'.$file,0644);
+  			$is_writable = is_dir($mosConfig_absolute_path.'/'.$file) ? @chmod($mosConfig_absolute_path.'/'.$file, 0755):chmod($mosConfig_absolute_path.'/'.$file,0644);
   		}
   	} else {
+  	  	if( $fileentry['copy_policy'] == 'only_if_exists') {
+  			$is_writable = true;
+  			continue;
+  		}
   		$check_dir = $mosConfig_absolute_path.'/'.dirname($file);
   		$is_writable = is_writable($check_dir);
   		if( !$is_writable ) {
   			while( !file_exists($check_dir)) {
   				$check_dir = dirname( $check_dir );
+				$is_writable = is_writable($check_dir ) || @chmod($checkdir, 0755);  				
+  				
   			}
-  			$is_writable = is_writable($check_dir ) || @chmod($checkdir, 0755);
+  			
   		}
   	}
   	if( !$is_writable ) {

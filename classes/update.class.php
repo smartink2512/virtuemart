@@ -176,7 +176,9 @@ class vmUpdate {
  			
 			foreach( $xml->files->file as $file ) {
 				if( file_exists($extractdir.'/'.$file )) {
-					$fileArr[] = (string)$file;
+					$fileArr[] = array('filename' => (string)$file,
+												'copy_policy' => (string)@$file['copy']
+										);
 				} else {
 					$vmLogger->err( sprintf($VM_LANG->_('VM_UPDATE_ERR_FILE_MISSING'),$file) );
 					$result = false;
@@ -209,7 +211,9 @@ class vmUpdate {
  			
 			foreach( $xml->files[0]->file as $file ) {
 				if( file_exists($extractdir.'/'.$file->data() )) {
-					$fileArr[] = $file->data();
+					$fileArr[] = array('filename' => $file->data(),
+													'copy_policy' => $file->attributes('copy')
+												);
 				} else {
 					$vmLogger->err( sprintf($VM_LANG->_('VM_UPDATE_ERR_FILE_MISSING'),$file) );
 					$result = false;
@@ -253,7 +257,8 @@ class vmUpdate {
 			return false;
 		}
 		$errors = 0;
-		foreach( $packageContents['fileArr'] as $file ) {
+		foreach( $packageContents['fileArr'] as $fileentry ) {
+			$file = $fileentry['filename'];
 			$patch_file = $patchdir.'/'.$file;
 			$orig_file = $mosConfig_absolute_path.'/'.$file;
 			
@@ -263,6 +268,9 @@ class vmUpdate {
 		  			$errors++;
 		  		}
 		  	} else {
+		  		if( $fileentry['copy_policy'] == 'only_if_exists') {
+		  			continue;
+		  		}
 		  		$dirname =  is_dir($patch_file) ? $orig_file : dirname($orig_file);
 		  		if( (is_dir($patch_file) || !file_exists($dirname)) ) {  					
 		  			if( !vmUpdate::mkdirR($dirname, 755 )) {
@@ -278,12 +286,17 @@ class vmUpdate {
 	  	if( $errors > 0 ) {
 	  		return false;
   		}
-  		foreach( $packageContents['fileArr'] as $file ) {
+  		foreach( $packageContents['fileArr'] as $fileentry ) {
+  			$file = $fileentry['filename'];
   			$patch_file = $patchdir.'/'.$file;
   			$orig_file = $mosConfig_absolute_path.'/'.$file;
-  			//TODO: Make a backup file before overwriting the original ? rename( $orig_file, $orig_file.'~' );
-  			if( (is_dir($patch_file) || !file_exists(dirname($patch_file))) ) {
-  				$dirname =  is_dir($patch_file) ? $patch_file : dirname($patch_file);
+  			
+			if( !file_exists($orig_file) && $fileentry['copy_policy'] == 'only_if_exists') {
+		  		continue;
+		  	}
+		  		
+  			if( (is_dir($patch_file) || !file_exists(dirname($orig_file))) ) {
+  				$dirname =  is_dir($patch_file) ? $orig_file : dirname($orig_file);
   				if( !vmUpdate::mkdirR($dirname, 755 )) {
   					$vmLogger->crit( 'Failed to create a necessary directory' );
   				}
