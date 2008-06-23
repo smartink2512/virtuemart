@@ -37,7 +37,7 @@ class vmVersion {
 	// Song by Linkin' Park
 	var $CODENAME = 'One Step Closer';
 	/** @var string Date */
-	var $RELDATE = '20/06/2008';
+	var $RELDATE = '23/06/2008';
 	/** @var string Time */
 	var $RELTIME = '20:00';
 	/** @var string Timezone */
