@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+24.06.2008 gregdev
+# Fixed vmSimpleXML to not inherit from JObject (for Joomla! 1.0.x and PHP4)
+
 19.09.2008 soeren
 # new Joomla! users find Billto information of other customers (dummy user_info entries could mix up with Joomla! user records)
 # fixed "operation aborted" error on some pages (due to wz_tooltip.js)

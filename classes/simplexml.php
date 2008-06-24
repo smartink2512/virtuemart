@@ -82,7 +82,7 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
  * @subpackage	Utilities
  * @since 1.5
  */
-class vmSimpleXML extends JObject {
+class vmSimpleXML {
 	/**
 	 * The XML parser
 	 *
@@ -110,6 +110,22 @@ class vmSimpleXML extends JObject {
 	 * @var array
 	 */
 	var $_stack = array( ) ;
+
+	/**
+	 * A hack to support __construct() on PHP 4
+	 *
+	 * Hint: descendant classes have no PHP4 class_name() constructors,
+	 * so this constructor gets called first and calls the top-layer __construct()
+	 * which (if present) should call parent::__construct()
+	 *
+	 * @access	public
+	 * @return	Object
+	 */
+	function vmSimpleXML()
+	{
+		$args = func_get_args();
+		call_user_func_array(array(&$this, '__construct'), $args);
+	}
 	
 	/**
 	 * Constructor.
@@ -335,7 +351,7 @@ class vmSimpleXML extends JObject {
  * @subpackage	Utilities
  * @since 1.5
  */
-class vmSimpleXMLElement extends JObject {
+class vmSimpleXMLElement {
 	/**
 	 * Array with the attributes of this XML element
 	 *
@@ -370,7 +386,23 @@ class vmSimpleXMLElement extends JObject {
 	 * @var int
 	 */
 	var $_level = 0 ;
-	
+
+	/**
+	 * A hack to support __construct() on PHP 4
+	 *
+	 * Hint: descendant classes have no PHP4 class_name() constructors,
+	 * so this constructor gets called first and calls the top-layer __construct()
+	 * which (if present) should call parent::__construct()
+	 *
+	 * @access	public
+	 * @return	Object
+	 */
+	function vmSimpleXMLElement()
+	{
+		$args = func_get_args();
+		call_user_func_array(array(&$this, '__construct'), $args);
+	}
+		
 	/**
 	 * Constructor, sets up all the default values
 	 *
