@@ -74,8 +74,7 @@ function vmLayoutInit() {
 	$itemCount = count( $menu_items );
 	foreach( $menu_items as $item ) {
 		$html .= '{ xtype:"tbbutton",
-		                listeners: {"mouseover": { fn: showButtonMenu }
-									},
+		                //listeners: {"mouseover": { fn: showButtonMenu }},
 	                    text:"'.$item['title'].'",
 			           menu: new Ext.menu.Menu({
 			            	items: [';
