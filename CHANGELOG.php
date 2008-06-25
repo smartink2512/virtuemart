@@ -35,8 +35,17 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+24.06-2008 soeren
+# Task #2175 - Minimum Purchase Order Value not updated according to new currency set in Currency Selector
+# Task #2178 - Missing back button on adding additional image 
+# Task #2179 - changed varname in virtuemart_parser.php
+# Task #2129 - Billing address is not shown on checkout page
+# Task #2182 - Please add - Select State - to beginning of State drop down list.
+
 24.06.2008 gregdev
 # Fixed vmSimpleXML to not inherit from JObject (for Joomla! 1.0.x and PHP4)
+
+--- VirtueMart 1.1.1 released (Rev. 1436 2008-06-24) ---
 
 19.09.2008 soeren
 # new Joomla! users find Billto information of other customers (dummy user_info entries could mix up with Joomla! user records)

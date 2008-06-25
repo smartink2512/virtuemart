@@ -79,7 +79,27 @@ class vmMenuBar extends mosMenuBar {
 		</td>' );
 		
 	}
-	
+	/**
+	* Writes a back button
+	* @param string An override for the task
+	* @param string An override for the alt text
+	*/
+	function back( $task='back', $alt='' ) {
+		global $VM_LANG;
+		if( $alt == '') {
+			$alt = $VM_LANG->_('BACK');
+		}
+		
+		$bar =& JToolBar::getInstance('toolbar');
+		
+		$bar->appendButton('Custom', '<td class="button">
+		<a class="toolbar" href="#" onclick="window.history.back();return false;">
+		<div class="vmicon-32-'. $task.'" type="Standard"></div>'
+		. $alt .'
+		</a>
+		</td>' );
+		
+	}
 	/**
 	* Writes a save button for a given option
 	* Save operation leads to a save and then close action

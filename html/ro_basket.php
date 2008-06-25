@@ -254,7 +254,7 @@ else {
 
 	/* check if the minimum purchase order value has already been reached */
 	if (round($_SESSION['minimum_pov'], 2) > 0.00) {
-		if ($total_undiscounted >= $_SESSION['minimum_pov']) {
+		if ($total_undiscounted >= $GLOBALS['CURRENCY']->convert( $_SESSION['minimum_pov'] ) ) {
 			// OKAY!
 			define ('_MIN_POV_REACHED', '1');
 		}

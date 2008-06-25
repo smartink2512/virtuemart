@@ -376,6 +376,7 @@ class vmUpdate {
 				return false;
 			}
 			unset( $_SESSION['vm_updatepackage']);
+			unset( $_SESSION['vmLatestVersion']);
 		}
 		if( vmIsXHR() ) {
 			$vm_mainframe->addResponseScript('parent.loadPage("'.$GLOBALS['sess']->url($_SERVER['PHP_SELF'].'?page=admin.update_check', false, false).'");');

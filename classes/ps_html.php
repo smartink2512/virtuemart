@@ -302,21 +302,24 @@ class ps_html {
 			$script .= "var originalPos = '$selected_country_code';\n";
 			$script .= "var states = new Array();	// array in the format [key,value,text]\n";
 			$i = 0;
-			
+			$prev_country = '';
 			while( $db->next_record() ) {
-
+				$country_3_code = $db->f("country_3_code");
 				if( $db->f('state_name') ) {
 					// Add 'none' to the list of countries that have states:
-					if( isset($prev_country) && $prev_country != $db->f("country_3_code")  && $page == 'tax.tax_form' ) {
-						$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."',' - ','".$VM_LANG->_('PHPSHOP_NONE')."' );\n";
+					if( $prev_country != $country_3_code  && $page == 'tax.tax_form' ) {
+						$script .= "states[".$i++."] = new Array( '".$country_3_code."',' - ','".$VM_LANG->_('PHPSHOP_NONE')."' );\n";
 					}
-					$prev_country = $db->f("country_3_code");
+					elseif( $prev_country != $country_3_code ) {
+						$script .= "states[".$i++."] = new Array( '".$country_3_code."','',' -= ".$VM_LANG->_('PHPSHOP_SELECT')." =-' );\n";
+					}
+					$prev_country = $country_3_code;
 
 					// array in the format [key,value,text]
-					$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."','".$db->f("state_2_code")."','".addslashes($db->f("state_name"))."' );\n";
+					$script .= "states[".$i++."] = new Array( '".$country_3_code."','".$db->f("state_2_code")."','".addslashes($db->f("state_name"))."' );\n";
 				}
 				else {
-					$script .= "states[".$i++."] = new Array( '".$db->f("country_3_code")."',' - ','".$VM_LANG->_('PHPSHOP_NONE')."' );\n";
+					$script .= "states[".$i++."] = new Array( '".$country_3_code."',' - ','".$VM_LANG->_('PHPSHOP_NONE')."' );\n";
 				}
 
 			}

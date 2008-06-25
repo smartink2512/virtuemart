@@ -82,8 +82,8 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 			$Itemid = (int) vmRequest::getInt( 'Itemid', '' );
 			$query = "SELECT params FROM #__menu WHERE id='".$Itemid."'";
 			$database->setQuery( $query );
-			$row = $database->loadResult();
-			$menuparams = new mosParameters( $row );
+			$itemparams = $database->loadResult();
+			$menuparams = new mosParameters( $itemparams );
 		}
 		
 		$tmp_product_id = $menuparams->get( 'product_id' );
