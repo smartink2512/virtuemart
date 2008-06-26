@@ -68,6 +68,9 @@ class vmConnector {
 		if( !isset( $urlParts['port'] )) $urlParts['port'] = 80;
 		if( !isset( $urlParts['scheme'] )) $urlParts['scheme'] = 'http';
 
+		if( isset( $urlParts['query'] )) $urlParts['query'] = '?'.$urlParts['query'];
+		if( isset( $urlParts['path'] )) $urlParts['path'] = $urlParts['path'].$urlParts['query'];
+
 		// Check proxy
 		if( trim( @VM_PROXY_URL ) != '') {
 			if( !stristr(VM_PROXY_URL, 'http')) {
@@ -81,7 +84,7 @@ class vmConnector {
 			$proxyURL = '';
 		}
 
-		if( function_exists( "curl_init" )) {
+		if( function_exists( "curl_init" ) && function_exists( 'curl_exec' ) ) {
 
 			$vmLogger->debug( 'Using the cURL library for communicating with '.$urlParts['host'] );
 
