@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+26.06.2008 gregdev
+# Task #2184 - Missing 'Yes' in show in shipping form in user filed. 
+
 24.06-2008 soeren
 # Task #2175 - Minimum Purchase Order Value not updated according to new currency set in Currency Selector
 # Task #2178 - Missing back button on adding additional image 

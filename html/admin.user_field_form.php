@@ -108,7 +108,7 @@ if( in_array( $db->f('name'), ps_userfield::getSkipFields() )) {
 }
 $lists['readonly'] = ps_html::yesnoSelectList( 'readonly', $db->sf('readonly') != '' ? $db->sf('readonly') : '0' );
 
-$lists['shipping'] = ps_html::yesnoSelectList( 'shipping', $db->sf('shipping'), 0 );
+$lists['shipping'] = ps_html::yesnoSelectList( 'shipping', $db->sf('shipping') != '' ? $db->sf('shipping') : '0' );
 
 $lists['account'] = ps_html::yesnoSelectList( 'account', $db->sf('account') );
 
