@@ -38,7 +38,9 @@ VirtueMart 1.1.x
 26.06.2008 gregdev
 # Task #2184 - Missing 'Yes' in show in shipping form in user filed.
 # Task #2188 - curl_exec() has been disabled fix
-# Task #2187 - Missing url in connectionTools.class.php  
+# Task #2187 - Missing url in connectionTools.class.php
+# Task #2181 - Membergroup to show prices to not working without legacy plugin
+^ Remove "Select" from Joomla! user groups list on user form 
 
 24.06-2008 soeren
 # Task #2175 - Minimum Purchase Order Value not updated according to new currency set in Currency Selector

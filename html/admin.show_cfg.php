@@ -38,8 +38,8 @@ if( $_VERSION->PRODUCT == 'Joomla!' && $_VERSION->RELEASE >= 1.5 ) {
 }
 $db->query( 'SELECT `'.$fieldname.'` FROM #__core_acl_aro_groups WHERE name=\''.VM_PRICE_ACCESS_LEVEL.'\'' );
 $db->next_record();
-$gtree = ps_perm::getGroupChildrenTree( null, 'USERS', false );
-$access_group_list = ps_html::selectList( 'conf_VM_PRICE_ACCESS_LEVEL', $db->f($fieldname), $gtree, '4'  );
+$gtree = $acl->get_group_children_tree( null, 'USERS', false );
+$access_group_list = vmCommonHTML::selectList( $gtree, 'conf_VM_PRICE_ACCESS_LEVEL', 'size="4"', 'value', 'text', $db->f($fieldname), true );
 
 $title = '&nbsp;&nbsp;<img src="'. VM_THEMEURL .'images/administration/header/icon-48-config.png" align="middle" border="0" alt="'.$VM_LANG->_('PHPSHOP_CONFIG').'" />&nbsp;';
 $title .= $VM_LANG->_('PHPSHOP_CONFIG');

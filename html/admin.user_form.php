@@ -92,7 +92,7 @@ if ( $my_group == 'super administrator' && $my->gid != 25 ) {
 		}
 	}
 
-	$lists['gid'] 		= vmCommonHTML::selectList( $gtree, 'gid', 'size="10"', 'value', 'text', $row->gid );
+	$lists['gid'] 		= vmCommonHTML::selectList( $gtree, 'gid', 'size="10"', 'value', 'text', $row->gid, true );
 }
 
 // build the html select list
