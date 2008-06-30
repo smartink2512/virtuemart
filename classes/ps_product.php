@@ -918,7 +918,28 @@ class ps_product extends vmAbstractObject {
 		$product_parent_id = ps_product::get_field($product_id, 'product_parent_id');
 		return $product_parent_id == 0;
 	}
-
+	/**
+	 * Checks if a product is a downloadable product
+	 *
+	 * @param int $product_id
+	 * @return boolean
+	 */
+	function is_downloadable($product_id) {
+		if( empty( $GLOBALS['product_info'][$product_id]['is_downloadable'] )) {
+		    $db_check = new ps_DB;
+	        $q_dl = "SELECT attribute_name,attribute_value 
+	        				FROM #__{vm}_product_attribute WHERE
+							product_id ".(int)$product_id." AND attribute_name='download'";
+			$db_check->query($q_dl);
+			$db_check->next_record();
+			if( $db_check->num_rows() > 0 ) {
+				$GLOBALS['product_info'][$product_id]['is_downloadable'] = 'Y';
+			} else {
+				$GLOBALS['product_info'][$product_id]['is_downloadable'] = 'N';
+			}
+		}
+		return $GLOBALS['product_info'][$product_id]['is_downloadable'] == 'Y';
+	}
 	/**
 	 * Function to create a DB object that holds all information
 	 * from the attribute tables about item $item_id AND/OR product $product_id

@@ -563,7 +563,7 @@ class vmInputFilter {
 	function decode($source) {
 		if( $source != "" ) { //bypass php html_entity_decode bug # 21338 on systems where unable to upgrade php
 			// url decode
-			$source = html_entity_decode($source, ENT_QUOTES, vmGetCharset() );
+			$source = @html_entity_decode($source, ENT_QUOTES, vmGetCharset() );
 			// convert decimal
 			$source = preg_replace('/&#(\d+);/me',"chr(\\1)", $source);				// decimal notation
 			// convert hex

@@ -145,7 +145,7 @@ else {
 	if (!empty($product_type_id) && @$_REQUEST['output'] != "pdf") {
 		$tpl->set( 'ps_product_type', $ps_product_type);
 		$tpl->set( 'product_type_id', $product_type_id);
-		$parameter_form = $tpl->fetch( 'browse/includes/browse_searchparameterform.tpl.php' );
+		$parameter_form = $tpl->fetch( 'browse/includes/browse_searchparameter_form.tpl.php' );
 	}
 	else {
 		$parameter_form = '';

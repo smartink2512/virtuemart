@@ -29,6 +29,7 @@ echo mm_writeWithJS('&nbsp;<input type="hidden" name="DescOrderBy" value="'.$asc
     
 <?php
 if( !empty( $product_type_id )) {
+	echo '<input type="hidden" name="product_type_id" value="'.$product_type_id.'" />'; 
 	echo $ps_product_type->get_parameter_form($product_type_id);
 }
 

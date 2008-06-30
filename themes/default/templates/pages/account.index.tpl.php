@@ -16,7 +16,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 
-if ($perm->is_registered_customer($auth['user_id'])) {
+if ($perm->is_registered_customer($auth['user_id']) ) {
 
 ?>
   <strong><?php echo $VM_LANG->_('PHPSHOP_ACC_CUSTOMER_ACCOUNT') ?></strong>
@@ -24,7 +24,7 @@ if ($perm->is_registered_customer($auth['user_id'])) {
   <br />
   <table border="0" cellspacing="0" cellpadding="10" width="100%" align="center">
   
-          
+<?php if( $my->id > 0)  { ?>
     <tr>
       <td>
       <strong><a href="<?php $sess->purl(SECUREURL . "index.php?page=account.billing") ?>">
@@ -52,7 +52,7 @@ if ($perm->is_registered_customer($auth['user_id'])) {
 	}
 	?>
     <tr><td>&nbsp;</td></tr>
-    
+<?php } ?>
     <tr>
       <td>
       	<hr />

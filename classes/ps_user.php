@@ -700,13 +700,13 @@ class ps_user {
 	 *
 	 */
 	function logout($complete_logout=true) {
-		global $auth, $mainframe;
+		global $auth, $sess, $mainframe, $page;
 		$auth = array();
 		$_SESSION['auth'] = array();
 		if( $complete_logout ) {
 			$mainframe->logout();
 		}
-		return true;
+		vmRedirect($sess->url('index.php?page='.HOMEPAGE, true, false));
 	}
 }
 

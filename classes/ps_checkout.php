@@ -75,7 +75,7 @@ class ps_checkout {
 			}
 		}
 		//$steps = ps_checkout::get_checkout_steps();
-		if(empty($_REQUEST['ship_to_info_id']) && NO_SHIPTO=='1') {
+		if(empty($_REQUEST['ship_to_info_id']) && ps_checkout::noShipToNecessary()) {
 
 			$db = new ps_DB();
 
@@ -91,7 +91,48 @@ class ps_checkout {
 			$_REQUEST['ship_to_info_id'] = $db->f("user_info_id");
 		}
 	}
-	
+	/**
+	 * Checks if Ship To can be skipped
+	 *
+	 * @return boolean
+	 */
+	function noShipToNecessary() {
+		global $cart, $only_downloadable_products;
+		if( NO_SHIPTO == '1') {
+			return true;
+		}
+		if( ENABLE_DOWNLOADS == '1') {
+			$only_downloadable_products = true;
+			for($i = 0; $i < $cart["idx"]; $i++) {
+				if( !ps_product::is_downloadable($cart[$i]['product_id']) ) {
+					$only_downloadable_products = false;
+					break;
+				}
+			}
+			return $only_downloadable_products;
+		}
+		return false;
+	}
+	function noShippingMethodNecessary() {
+		global $cart, $only_downloadable_products;
+		if( NO_SHIPPING == '1') {
+			return true;
+		}
+		if( ENABLE_DOWNLOADS == '1') {
+			$only_downloadable_products = true;
+			for($i = 0; $i < $cart["idx"]; $i++) {
+				if( !ps_product::is_downloadable($cart[$i]['product_id']) ) {
+					$only_downloadable_products = false;
+					break;
+				}
+			}
+			return $only_downloadable_products;
+		}
+		return false;
+	}
+	function noShippingNecessary() {
+		return $this->noShipToNecessary() && $this->noShippingMethodNecessary();
+	}
 	/**
 	 * Retrieve an array with all order steps and their details
 	 *
@@ -107,6 +148,16 @@ class ps_checkout {
 			// Get the stepname from the array key
 			$stepname = current($stepnames);
 			next($stepnames);
+			
+			switch( $stepname ) {
+				case 'CHECK_OUT_GET_SHIPPING_ADDR':
+					if( ps_checkout::noShipToNecessary() ) $step['enabled'] = 0;
+					break;
+				case 'CHECK_OUT_GET_SHIPPING_METHOD':
+					if( ps_checkout::noShippingMethodNecessary() ) $step['enabled'] = 0;
+					break;
+			}
+			
 			
 			if( $step['enabled'] == 1 ) {
 				$steps[$step['order']][] = $stepname;
@@ -250,7 +301,7 @@ class ps_checkout {
 			}
 		}
 
-		if ( NO_SHIPPING != '1' ) {
+		if ( !ps_checkout::noShippingMethodNecessary() ) {
 			if ( !$this->validate_shipping_method($d) ) {
 				return False;
 			}
@@ -295,7 +346,7 @@ class ps_checkout {
 										Please contact the Store Administrator if this Error occurs again.');
 			return false;
 		}
-		if (NO_SHIPTO != '1') {
+		if (!ps_checkout::noShipToNecessary()) {
 			if (empty($d["ship_to_info_id"])) {
 				$vmLogger->err( $VM_LANG->_('PHPSHOP_CHECKOUT_ERR_NO_SHIPTO',false) );
 				return False;
@@ -727,7 +778,7 @@ class ps_checkout {
 	}
 	/**
 	 * Lists the payment methods of all available payment modules
-	 *
+	 * @static 
 	 * @param int $payment_method_id
 	 */
 	function list_payment_methods( $payment_method_id=0 ) {
@@ -1114,20 +1165,23 @@ Order Total: '.$order_total.'
 		// "Use Payment Processor", because:
 		// Payment Processors return false on any error
 		// Only completed payments return true!
+		$update_order = false;
 		if( $enable_processor == "Y" ) {
 			if( defined($_PAYMENT->payment_code.'_VERIFIED_STATUS')) {
               	$d['order_status'] = constant($_PAYMENT->payment_code.'_VERIFIED_STATUS');
               	$update_order = true;
             }
-            else {
-            	$update_order = false;
-            }
-			if ( $update_order ) {
-				require_once(CLASSPATH."ps_order.php");
-				$ps_order =& new ps_order();
-				$ps_order->order_status_update($d);
-			}
+        } elseif( $order_total == 0.00 ) {
+        	// If the Order Total is zero, we can confirm the order to automatically enable the download
+        	$d['order_status'] = ENABLE_DOWNLOAD_STATUS;
+        	$update_order = true;
+        }
+		if ( $update_order ) {
+			require_once(CLASSPATH."ps_order.php");
+			$ps_order =& new ps_order();
+			$ps_order->order_status_update($d);
 		}
+		
 
 		// Send the e-mail confirmation messages
 		$this->email_receipt($order_id);

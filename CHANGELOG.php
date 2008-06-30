@@ -35,6 +35,14 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+30.06.2008 soeren
++ implemented "Shipping Bypass" for downloadable products
+^ re-enabled Payment Bypass for checking out with zero-priced products 
+
+26.06.2008 soeren
+# Task #2189 - Tigra Tree not SEF compatible with fix
+# Task #2185 - Advanced Search according to Parameters bug and fix
+ 
 26.06.2008 gregdev
 # Task #2184 - Missing 'Yes' in show in shipping form in user filed.
 # Task #2188 - curl_exec() has been disabled fix

@@ -28,7 +28,7 @@ require_once(CLASSPATH. 'ps_checkout.php' );
 $ps_checkout = new ps_checkout;
 require_once(CLASSPATH . 'ps_shipping_method.php' );
 
-global $weight_total, $total, $tax_total, $order_tax_details, $discount_factor;
+global $weight_total, $total, $tax_total, $order_tax_details, $discount_factor, $order_total;
 
 /* make sure this is the checkout screen */
 if ($cart["idx"] == 0) {
@@ -168,7 +168,7 @@ else {
 	}
 
 	/* HANDLE SHIPPING COSTS */
-	if( !empty($shipping_rate_id) && (NO_SHIPPING =='')) {
+	if( !empty($shipping_rate_id) && !ps_checkout::noShippingMethodNecessary() ) {
 		$shipping = true;
 		$vars["weight"] = $weight_total;
 		$shipping_total = round( $ps_checkout->_SHIPPING->get_rate ( $vars ), 5 );

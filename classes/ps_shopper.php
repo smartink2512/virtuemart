@@ -326,6 +326,13 @@ class ps_shopper {
 			$d['username'] = $_POST['username'] = $my->username;
 
 		}
+		
+		// Prevent empty USER ID
+		if( empty( $uid )) {
+			$vmLogger->crit("Failed to retrieve a valid USER ID when attempting to add a new user");
+			return false;
+		}
+		
 		if( !empty($auth['user_id'])) {
 			$db->query( 'SELECT user_id FROM #__{vm}_user_info WHERE user_id='.$auth['user_id'] );
 			$db->next_record();

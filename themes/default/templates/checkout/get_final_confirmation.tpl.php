@@ -27,7 +27,7 @@ $db = new ps_DB();
 
 echo '<table>';
 // Begin with Shipping Address
-if(NO_SHIPTO=='') {
+if(!ps_checkout::noShipToNecessary()) {
 
 	$db->query("SELECT * FROM #__{vm}_user_info WHERE user_info_id='".strip_tags($_REQUEST['ship_to_info_id'])."'");
 	$db->next_record();
@@ -47,7 +47,7 @@ if(NO_SHIPTO=='') {
 }
 
 // Print out the Selected Shipping Method
-if(NO_SHIPPING=='') {
+if(!ps_checkout::noShippingMethodNecessary()) {
 
 	echo '<tr><td valign="top"><strong>'.$VM_LANG->_('PHPSHOP_INFO_MSG_SHIPPING_METHOD') . ":</strong></td>";
 	$rate_details = explode( "|", urldecode(urldecode(vmGet($_REQUEST,'shipping_rate_id'))) );
