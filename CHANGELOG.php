@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+01.07.2008 soeren
+# Task #2198 - 0 rating doesn't work for review system. 
++ added Roland's massively improved SOAP-based EU VAT ID validitation code (thank you!)
+# Task #2196 - Protected property accessed directly in class.inputfilter.php
+  
 30.06.2008 soeren
 + implemented "Shipping Bypass" for downloadable products
 ^ re-enabled Payment Bypass for checking out with zero-priced products 

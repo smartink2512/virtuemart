@@ -239,7 +239,7 @@ class ps_reviews {
 				$vmLogger->err($VM_LANG->_('PHPSHOP_REVIEW_ERR_COMMENT2',false));
 				return true;
 			}
-			if( empty( $d["user_rating"] ) || intval( $d["user_rating"] ) < 0 || intval( $d["user_rating"] ) > 5) {
+			if( !isset( $d["user_rating"] ) || intval( $d["user_rating"] ) < 0 || intval( $d["user_rating"] ) > 5) {
 				$vmLogger->err($VM_LANG->_('PHPSHOP_REVIEW_ERR_RATE',false));
 				return true;
 			}

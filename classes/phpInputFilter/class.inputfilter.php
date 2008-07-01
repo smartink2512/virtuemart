@@ -4,7 +4,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage phpInputFilter
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -269,7 +269,7 @@ class vmInputFilter {
 			 * Do we have a nested tag?
 			 */
 			$tagOpen_nested = strpos($fromTagOpen, '<');
-			$tagOpen_nested_end	= strpos(substr($postTag, $tagOpen_end), '>');
+			//$tagOpen_nested_end	= strpos(substr($postTag, $tagOpen_end), '>');
 			if (($tagOpen_nested !== false) && ($tagOpen_nested < $tagOpen_end))
 			{
 				$preTag		   .= substr($postTag, 0, ($tagOpen_nested +1));
@@ -580,18 +580,17 @@ class vmInputFilter {
 	  * @return String $source - 'cleaned' version of input parameter
 	  */
 	function safeSQL($source) {
-		global $database;
-		$connection =& $database->_resource;
+		
 		// clean all elements in this array
 		if (is_array($source)) {
 			foreach($source as $key => $value)
 				// filter element for SQL injection
-				if (is_string($value)) $source[$key] = $this->quoteSmart($this->decode($value), $connection);
+				if (is_string($value)) $source[$key] = $this->quoteSmart($this->decode($value));
 			return $source;
 		// clean this string
 		} else if (is_string($source)) {
 			// filter source for SQL injection
-			if (is_string($source)) return $this->quoteSmart($this->decode($source), $connection);
+			if (is_string($source)) return $this->quoteSmart($this->decode($source));
 		// return parameter as given
 		} else return $source;
 	}
@@ -604,11 +603,11 @@ class vmInputFilter {
 	  * @param Resource $connection - An open MySQL connection
 	  * @return String $source
 	  */
-	function quoteSmart($source, &$connection) {
+	function quoteSmart($source) {
 		// strip slashes
 		if (get_magic_quotes_gpc()) $source = stripslashes($source);
 		// quote both numeric and text
-		$source = $this->escapeString($source, $connection);
+		$source = $this->escapeString($source);
 		return $source;
 	}
 
@@ -620,7 +619,7 @@ class vmInputFilter {
 	  * @param Resource $connection - An open MySQL connection
 	  * @return String $source
 	  */
-	function escapeString($string, &$connection) {
+	function escapeString($string) {
 		global $database;
 		return $database->getEscaped( $string );
 		

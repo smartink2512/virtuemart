@@ -335,16 +335,15 @@ class ps_product_files extends vmAbstractObject {
 	 */
 	function delete(&$d) {
 
-		$record_id = intval($d["file_id"]);
-		if( is_array( $record_id)) {
-			foreach( $record_id as $record) {
+		if( is_array( $d['file_id'])) {
+			foreach( $d['file_id'] as $record) {
 				if( !$this->delete_record( $record, $d ))
 				return false;
 			}
 			return true;
 		}
 		else {
-			return $this->delete_record( $record_id, $d );
+			return $this->delete_record( $d['file_id'], $d );
 		}
 	}
 
@@ -359,7 +358,7 @@ class ps_product_files extends vmAbstractObject {
 
 		global $VM_LANG, $vmLogger, $mosConfig_absolute_path;
 		$dbf = new ps_DB;
-
+		
 		if (!$this->validate_delete($record_id, $d)) {
 			return False;
 		}
@@ -367,7 +366,7 @@ class ps_product_files extends vmAbstractObject {
 			// Internal Product Images must be handled with care
 			return $this->deleteProductImages($d);
 		}
-		
+		$record_id = (int)$record_id;
 		// get the info for the additional file or image
 		$q = "SELECT file_id,file_product_id, file_name,file_is_image, file_image_thumb_height, file_image_thumb_width FROM `#__{vm}_product_files` WHERE file_id='$record_id'";
 		$dbf->query($q);
@@ -395,10 +394,11 @@ class ps_product_files extends vmAbstractObject {
 				$vmLogger->info( $VM_LANG->_('PHPSHOP_FILES_FULLIMG_DELETE_SUCCESS',false) );
 			}
 		
-			$thumb = $info["dirname"]."/resized/".basename($fullfilepath, ".".$info["extension"])."_".$dbf->f("file_image_thumb_height")."x".$dbf->f("file_image_thumb_width").".".$info["extension"];
-			if( file_exists($thumb) ) {
-				if( !@unlink( realpath($thumb) ) ) {	
-					$vmLogger->err( $VM_LANG->_('PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE',false)." ". $thumb );
+			$thumb1 = $info["dirname"]."/resized/".basename($fullfilepath, ".".$info["extension"])."_".$dbf->f("file_image_thumb_height")."x".$dbf->f("file_image_thumb_width").".".$info["extension"];
+			$thumb2 = $info["dirname"]."/resized/".basename($fullfilepath, ".".$info["extension"])."_".PSHOP_IMG_HEIGHT."x".PSHOP_IMG_WIDTH.".".$info["extension"];
+			if( file_exists($thumb1) || file_exists($thumb2) ) {
+				if( !@unlink( realpath($thumb1)) && !@unlink( realpath($thumb2) ))  {	
+					$vmLogger->err( $VM_LANG->_('PHPSHOP_FILES_THUMBIMG_DELETE_FAILURE',false)." ". $thumb1 );
 				} else {
 					$vmLogger->info( $VM_LANG->_('PHPSHOP_FILES_THUMBIMG_DELETE_SUCCESS',false) );
 				}
@@ -416,7 +416,7 @@ class ps_product_files extends vmAbstractObject {
 		$q_del .= "product_id='".$dbf->f('file_product_id')."' AND attribute_name='download' AND attribute_value='".basename($dbf->f('file_name', false ))."'";
 		$dbf->query($q_del);
 				
-		$q = "DELETE FROM #__{vm}_product_files WHERE file_id='$record_id'";
+		$q = 'DELETE FROM #__{vm}_product_files WHERE file_id='.$record_id;
 		$dbf->setQuery($q);
 		$dbf->query();
 
