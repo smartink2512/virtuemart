@@ -17,6 +17,11 @@
 		<filename plugin="vmproductsnapshots">vmproductsnapshots.php</filename>
 	</files>
 	<params>
+		<param name="enabled" type="radio" default="1"
+			label="Enable Plugin" description="Enable this plugin.">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 		<param name="showname" type="radio" default="n"
 			label="Show product name?"
 			description="Defines whether or not to show the name of the product">

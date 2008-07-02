@@ -36,7 +36,9 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 01.07.2008 gregdev
-# Task #2183 - VM productsnapshots not working in J1.5 when legacy plugin enabled. 
+# Task #2183 - VM productsnapshots not working in J1.5 when legacy plugin enabled.
+# Task #2180 - mosproductsnap mambot executed even if unpublished
+# Fixed vmproductsnapshot to use parameters in Joomla! 1.5.x
 
 01.07.2008 soeren
 # Task #2198 - 0 rating doesn't work for review system. 

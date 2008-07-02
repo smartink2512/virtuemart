@@ -66,15 +66,10 @@ function botProductSnap( $published, &$row, &$params, $page = 0 ) {
 function handleProductSnapShot( &$row, &$params, $page = 0, $published = true ) {
 	global $mosConfig_absolute_path, $mosConfig_live_site, $database ;
 	
-	if( ! $published ) {
-		$row->text = preg_replace( "/{product_snapshot:.+?}/", '', $row->text ) ;
-		return true ;
-	}
-	
 	// load default parameters
-	if( vmIsJoomla( '1.5' ) ) {
+	if( vmIsJoomla( '1.5', '>=' ) ) {
 		$db = JFactory::getDBO() ;
-		$plugin = & JPluginHelper::getPlugin( 'content', 'loadmodule' ) ;
+		$plugin = & JPluginHelper::getPlugin( 'content', 'vmproductsnapshots' ) ;
 		$parameters = $plugin->params ;
 	} else {
 		$query = "SELECT id,params FROM #__mambots WHERE element = 'vmproductsnapshots' AND folder = 'content'" ;
@@ -84,6 +79,7 @@ function handleProductSnapShot( &$row, &$params, $page = 0, $published = true ) 
 	}
 	$bot_params = & new vmParameters( $parameters ) ;
 	$param_defaults = array( 'id' => '0' , 
+												'enabled' => '1',
 												'showname' => 'y' , 
 												'showimage' => 'y' , 
 												'showdesc' => 'n' , 
@@ -100,7 +96,13 @@ function handleProductSnapShot( &$row, &$params, $page = 0, $published = true ) 
 	foreach( $param_defaults as $key => $value ) {
 		$param_defaults[$key] = $bot_params->get( $key, $value ) ;
 	}
-	
+
+	$enabled = $param_defaults['enabled'];
+	if( !$published || !$enabled ) {
+		$row->text = preg_replace( "/{product_snapshot:.+?}/", '', $row->text );
+		return true ;
+	}
+
 	$vm_productsnap_entrytext = $row->text ;
 	$vm_productsnap_matches = array( ) ;
 	if( preg_match_all( "/{product_snapshot:.+?}/", $vm_productsnap_entrytext, $vm_productsnap_matches, PREG_PATTERN_ORDER ) > 0 ) {
