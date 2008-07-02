@@ -102,10 +102,10 @@ class ps_checkout {
 			return true;
 		}
 		if( ENABLE_DOWNLOADS == '1') {
-			$only_downloadable_products = true;
+			$only_downloadable_products = false;
 			for($i = 0; $i < $cart["idx"]; $i++) {
-				if( !ps_product::is_downloadable($cart[$i]['product_id']) ) {
-					$only_downloadable_products = false;
+				if( ps_product::is_downloadable($cart[$i]['product_id']) ) {
+					$only_downloadable_products = true;
 					break;
 				}
 			}
@@ -119,10 +119,10 @@ class ps_checkout {
 			return true;
 		}
 		if( ENABLE_DOWNLOADS == '1') {
-			$only_downloadable_products = true;
+			$only_downloadable_products = false;
 			for($i = 0; $i < $cart["idx"]; $i++) {
-				if( !ps_product::is_downloadable($cart[$i]['product_id']) ) {
-					$only_downloadable_products = false;
+				if( ps_product::is_downloadable($cart[$i]['product_id']) ) {
+					$only_downloadable_products = true;
 					break;
 				}
 			}
