@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+01.07.2008 gregdev
+# Task #2183 - VM productsnapshots not working in J1.5 when legacy plugin enabled. 
+
 01.07.2008 soeren
 # Task #2198 - 0 rating doesn't work for review system. 
 + added Roland's massively improved SOAP-based EU VAT ID validitation code (thank you!)
