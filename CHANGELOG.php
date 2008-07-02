@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+02.07.2008 gregdev
+# Task #2059 - Plugins not working in child product.
+
 01.07.2008 gregdev
 # Task #2183 - VM productsnapshots not working in J1.5 when legacy plugin enabled.
 # Task #2180 - mosproductsnap mambot executed even if unpublished

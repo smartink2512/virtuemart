@@ -31,7 +31,7 @@ class ps_product_attribute {
 	 * @return boolean True when successful, false when not
 	 */
 	function validate( &$d ) {
-		global $vmLogger, $VM_LANG ;
+		global $vmLogger, $VM_LANG;
 		$valid = true ;
 		if( $d["attribute_name"] == "" ) {
 			$vmLogger->err( $VM_LANG->_( 'VM_PRODUCT_ATTRIBUTE_ERR_ATTRNAME' ) ) ;
@@ -277,8 +277,15 @@ class ps_product_attribute {
 		if( $db->num_rows() > 0 ) {
 			$flypage = $ps_product->get_flypage( $product_id ) ;
 			$html = "<input type=\"hidden\" name=\"product_id\" value=\"$product_id\" />" ;
-			$html .= "<label for=\"product_id_field\">" . $VM_LANG->_( 'PHPSHOP_PLEASE_SEL_ITEM' ) . "</label>: <br />" ;
-			$html .= "<select class=\"inputbox\" onchange=\"var id = $('product_id_field')[selectedIndex].value; if(id != '') { loadNewPage( 'vmMainPage', '" . $mm_action_url . "index2.php?option=com_virtuemart&amp;page=shop.product_details&amp;flypage=$flypage&amp;Itemid=$Itemid&amp;category_id=$category_id&amp;product_id=' + id ); }\" id=\"product_id_field\" name=\"prod_id[]\">\n" ;
+			$html .= "<label for=\"product_id_field\">" . $VM_LANG->_( 'PHPSHOP_PLEASE_SEL_ITEM' ) . "</label>: <br />\n" ;
+			
+			// If content plugins are enabled, reload the whole page; otherwise, use ajax 
+			if( VM_CONTENT_PLUGINS_ENABLE == '1' ) {
+				$html .= "<select class=\"inputbox\" onchange=\"var id = $('product_id_field')[selectedIndex].value; if(id != '') { document.location = '" . $mm_action_url . "index.php?option=com_virtuemart&amp;page=shop.product_details&amp;flypage=$flypage&amp;Itemid=$Itemid&amp;category_id=$category_id&amp;product_id=' + id; }\" id=\"product_id_field\" name=\"prod_id[]\">\n" ;
+			} else {
+				$html .= "<select class=\"inputbox\" onchange=\"var id = $('product_id_field')[selectedIndex].value; if(id != '') { loadNewPage( 'vmMainPage', '" . $mm_action_url . "index2.php?option=com_virtuemart&amp;page=shop.product_details&amp;flypage=$flypage&amp;Itemid=$Itemid&amp;category_id=$category_id&amp;product_id=' + id ); }\" id=\"product_id_field\" name=\"prod_id[]\">\n" ;
+			}
+			
 			$html .= "<option value=\"$product_id\">" . $VM_LANG->_( 'PHPSHOP_SELECT' ) . "</option>" ;
 			while( $db->next_record() ) {
 				$selected = isset( $_REQUEST['product_id'] ) ? ($db->f( "product_id" ) == $_REQUEST['product_id'] ? 'selected="selected"' : '') : '' ;
@@ -374,7 +381,14 @@ class ps_product_attribute {
 			$flypage = $ps_product->get_flypage( $product_id ) ;
 			$html = "<input type=\"hidden\" name=\"product_id\" value=\"$product_id\" />" ;
 			$html .= "<label for=\"product_id_field\">" . $VM_LANG->_( 'PHPSHOP_PLEASE_SEL_ITEM' ) . "</label>: <br />" ;
-			$html .= "<select class=\"inputbox\" onchange=\"var id = $('product_id_field')[selectedIndex].value; if(id != '') { loadNewPage( 'vmMainPage', '" . $mm_action_url . "index2.php?option=com_virtuemart&amp;page=shop.product_details&amp;flypage=$flypage&amp;Itemid=$Itemid&amp;category_id=$category_id&amp;product_id=' + id ); }\" id=\"product_id_field\" name=\"prod_id[]\">\n" ;
+
+			// If content plugins are enabled, reload the whole page; otherwise, use ajax 
+			if( VM_CONTENT_PLUGINS_ENABLE == '1' ) {
+				$html .= "<select class=\"inputbox\" onchange=\"var id = $('product_id_field')[selectedIndex].value; if(id != '') { document.location = '" . $mm_action_url . "index.php?option=com_virtuemart&amp;page=shop.product_details&amp;flypage=$flypage&amp;Itemid=$Itemid&amp;category_id=$category_id&amp;product_id=' + id; }\" id=\"product_id_field\" name=\"prod_id[]\">\n" ;
+			} else {
+				$html .= "<select class=\"inputbox\" onchange=\"var id = $('product_id_field')[selectedIndex].value; if(id != '') { loadNewPage( 'vmMainPage', '" . $mm_action_url . "index2.php?option=com_virtuemart&amp;page=shop.product_details&amp;flypage=$flypage&amp;Itemid=$Itemid&amp;category_id=$category_id&amp;product_id=' + id ); }\" id=\"product_id_field\" name=\"prod_id[]\">\n" ;
+			}
+
 			$html .= "<option value=\"$product_id\">" . $VM_LANG->_( 'PHPSHOP_SELECT' ) . "</option>" ;
 			while( $db->next_record() ) {
 				$selected = isset( $child_id ) ? ($db->f( "product_id" ) == $child_id ? "selected=\"selected\"" : "") : "" ;
@@ -588,7 +602,13 @@ class ps_product_attribute {
 				$link = "" ;
 				if( ($child_link == "Y") && ! @$child_id ) {
 					$link = "<input type=\"hidden\" id=\"index_id" . $db->f( "product_id" ) . "\" value=\"" . $db->f( "product_id" ) . "\" />\n" ;
-					$link .= "<a name=\"" . $db->f( "product_name" ) . $db->f( "product_id" ) . "\"  onclick=\"var id = $('index_id" . $db->f( "product_id" ) . "').value; if(id != '') { loadNewPage( 'vmMainPage', '" . $mm_action_url . "index2.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id ); }\" >" ;
+					// If content plugins are enabled, reload the whole page; otherwise, use ajax 
+					if( VM_CONTENT_PLUGINS_ENABLE == '1' ) {
+						$link .= "<a name=\"" . $db->f( "product_name" ) . $db->f( "product_id" ) . "\"  onclick=\"var id = $('index_id" . $db->f( "product_id" ) . "').value; if(id != '') { document.location = '" . $mm_action_url . "index.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id; }\" >" ;
+					} else {
+						$link .= "<a name=\"" . $db->f( "product_name" ) . $db->f( "product_id" ) . "\"  onclick=\"var id = $('index_id" . $db->f( "product_id" ) . "').value; if(id != '') { loadNewPage( 'vmMainPage', '" . $mm_action_url . "index2.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id ); }\" >" ;
+					}
+
 				}
 				$html1 = $db->f( "product_name" ) ;
 				if( ($child_link == "Y") && ! @$child_id ) {
