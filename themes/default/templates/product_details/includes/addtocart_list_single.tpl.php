@@ -31,7 +31,9 @@ foreach( $products as $product ) {
         <div class="vmCartChildElement<?php echo $cls_suffix ?>">
             <input type="hidden" name="prod_id[]" value="<?php echo $product['product_id'] ?>" />
             <input type="hidden" name="product_id" value="<?php echo $product['parent_id'] ?>" />
+            <?php if( $child_link ) : ?>
             <label for="selItem<?php echo $product['product_id'] ?>">
+            <?php endif; ?>
             <span class="vmChildDetail<?php echo $cls_suffix ?>" style="width :20%;" />
                 <?php echo $product['product_title'] ?></span>
             <?php // Ouput Each Attribute
@@ -42,7 +44,10 @@ foreach( $products as $product ) {
 				<?php 
 				}
 			}
-			?></label>
+			?>
+			 <?php if( $child_link ) : ?>
+			</label>
+			<?php endif; ?>
 			<?php 
             // Output Quantity Box 
             if (USE_AS_CATALOGUE != '1' ) { ?>

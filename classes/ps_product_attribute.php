@@ -608,8 +608,12 @@ class ps_product_attribute {
 					} else {
 						$link .= "<a name=\"" . $db->f( "product_name" ) . $db->f( "product_id" ) . "\"  onclick=\"var id = $('index_id" . $db->f( "product_id" ) . "').value; if(id != '') { loadNewPage( 'vmMainPage', '" . $mm_action_url . "index2.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id ); }\" >" ;
 					}
-
+					
+					$tpl->set( 'child_link', true );
+				} else {
+					$tpl->set( 'child_link', false );
 				}
+				
 				$html1 = $db->f( "product_name" ) ;
 				if( ($child_link == "Y") && ! @$child_id ) {
 					$html1 .= "</a>" ;
