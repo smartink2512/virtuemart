@@ -101,15 +101,19 @@ class ps_checkout {
 		if( NO_SHIPTO == '1') {
 			return true;
 		}
+		if( !isset( $cart)) $cart = ps_cart::initCart();
+		
 		if( ENABLE_DOWNLOADS == '1') {
-			$only_downloadable_products = false;
+			$not_downloadable = false;
+			require_once( CLASSPATH .'ps_product.php');
 			for($i = 0; $i < $cart["idx"]; $i++) {
-				if( ps_product::is_downloadable($cart[$i]['product_id']) ) {
-					$only_downloadable_products = true;
+				
+				if( !ps_product::is_downloadable($cart[$i]['product_id']) ) {					
+					$not_downloadable = true;
 					break;
 				}
 			}
-			return $only_downloadable_products;
+			return !$not_downloadable;
 		}
 		return false;
 	}
@@ -118,15 +122,19 @@ class ps_checkout {
 		if( NO_SHIPPING == '1') {
 			return true;
 		}
+		
+		if( !isset( $cart)) $cart = ps_cart::initCart();
+		
 		if( ENABLE_DOWNLOADS == '1') {
-			$only_downloadable_products = false;
+			$not_downloadable = false;
+			require_once( CLASSPATH .'ps_product.php');
 			for($i = 0; $i < $cart["idx"]; $i++) {
-				if( ps_product::is_downloadable($cart[$i]['product_id']) ) {
-					$only_downloadable_products = true;
+				if( !ps_product::is_downloadable($cart[$i]['product_id']) ) {
+					$not_downloadable = true;
 					break;
 				}
 			}
-			return $only_downloadable_products;
+			return !$not_downloadable;
 		}
 		return false;
 	}

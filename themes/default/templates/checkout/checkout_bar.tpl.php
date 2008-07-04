@@ -20,9 +20,15 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 <?php
 // CSS style for the <td> tag of the cell which is actually highlighted
 $highlighted_style = 'style="font-weight: bold;"';
-
-echo '
-<table style="background: url( '. VM_THEMEURL .'images/checkout/checkout'. $step_count.'_'.min( count($steps_to_do), $highlighted_step ) .'.png ) top right; background-repeat: no-repeat; height:115px;text-align:center;" border="0" cellspacing="0" cellpadding="0" align="center">
+$i = 1;
+foreach ($steps_to_do as $step ) {
+	if( $highlighted_step==$step[0]['step_order'] ) {
+		$current_step = $i;
+		break;
+	}
+	$i++;
+}
+echo '<table style="background: url( '. VM_THEMEURL .'images/checkout/checkout'. $step_count.'_'.$current_step .'.png ) top right; background-repeat: no-repeat; height:115px;text-align:center;" border="0" cellspacing="0" cellpadding="0" align="center">
   <tr>';
 
 foreach ($steps_to_do as $step ) {

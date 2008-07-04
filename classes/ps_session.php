@@ -491,7 +491,7 @@ class ps_session {
 	 * @return string The reformatted URL
 	 */
 	function url($text, $createAbsoluteURI=false, $encodeAmpersands=true, $ignoreSEF=false ) {
-		global $mm_action_url, $page;
+		global $mm_action_url, $page, $mainframe;
 		
 		if( !defined( '_VM_IS_BACKEND' )) {
 			$Itemid = "&Itemid=".$this->getShopItemid();
@@ -531,10 +531,13 @@ class ps_session {
 					}
 	
 					$appendix = $script.substr($text, $limiter, strlen($text)).$appendix;
-					if( function_exists('sefRelToAbs') && !$ignoreSEF && !defined( '_JLEGACY' ) ) {
+					if( class_exists('JRoute') && !$ignoreSEF && $mainframe->getCfg('sef') ) {
+						$appendix = JRoute::_( str_replace( $script.'&', $script.'?', $appendix ) );
+					} 
+					else if( function_exists('sefRelToAbs') && !$ignoreSEF && !defined( '_JLEGACY' ) ) {
 						$appendix = sefRelToAbs( str_replace( $script.'&', $script.'?', $appendix ) );
 					}
-
+					
 					if( $createAbsoluteURI && substr($appendix,0,4)!='http' ) {
 						$appendix = URL . $appendix;
 					}

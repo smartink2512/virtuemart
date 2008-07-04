@@ -1307,5 +1307,14 @@ function vmArrayToInts( &$array, $default=null ) {
 		}
 	}
 }
-
+function vmRoute( $nonSefUrl) {
+	if (class_exists('JApplication')) {  // J 1.5
+	  $nonSefUrl = str_replace( '&amp;', '&', $nonSefUrl);  
+	  $nonSefUrl = str_replace( JURI::base(), '', $nonSefUrl); // you are adding &amp; and mosConfig_live_site to urls, but it is actually the role of the sef function to do this. So we have to remove them, otherwise Joomla router will not accept to sef-y the url
+	  $url = JRoute::_( $nonSefUrl);
+	} else { // J 1.0
+	  $url = sefRelToAbs( $nonSefUrl);
+	}
+	return $url;
+	}
 ?>

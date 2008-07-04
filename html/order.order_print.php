@@ -323,7 +323,7 @@ else {
   			  			<input type="hidden" name="page" value="'.$page.'" />
   			  			<input type="hidden" name="order_id" value="'.$order_id.'" />
   			  			<input type="hidden" name="product_id" value="'.$dbt->f('product_id').'" />
-  			  			<input type="hidden" name="user_id" value="'.$dbt->f('user_id').'" />
+  			  			<input type="hidden" name="user_id" value="'.$db->f('user_id').'" />
   			  			<input type="hidden" name="func" value="insertDownloadsForProduct" />
   						  <input type="hidden" name="vmtoken" value="'. vmSpoofValue($sess->getSessionId()) .'" />
   			  			<input type="hidden" name="option" value="'.$option.'" />

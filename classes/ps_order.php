@@ -473,6 +473,8 @@ class ps_order {
 			} else {
 				$download_count = false;
 			}
+		} else {
+			$download_count = false;
 		}
 		if( $download_count ) {
 			// If this is not a the request to resume a download,

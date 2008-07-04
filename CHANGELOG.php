@@ -35,6 +35,12 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+04.07.2008 soeren
+# Task #2209 - Picture checkout2_1.png not in use
+# shipping bypass didn't work
+# re-enabling a product download made it impossible to resend the Download ID (user_id was set to 0)
+^ adapted SEF pageNavigation.class.php by shumisha of sh404SEF
+
 02.07.2008 gregdev
 # Task #2059 - Plugins not working in child product.
 ^ Don't use <label> for child product titles when there is no child link

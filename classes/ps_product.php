@@ -929,7 +929,7 @@ class ps_product extends vmAbstractObject {
 		    $db_check = new ps_DB;
 	        $q_dl = "SELECT attribute_name,attribute_value 
 	        				FROM #__{vm}_product_attribute WHERE
-							product_id ".(int)$product_id." AND attribute_name='download'";
+							product_id=".(int)$product_id." AND attribute_name='download'";
 			$db_check->query($q_dl);
 			$db_check->next_record();
 			if( $db_check->num_rows() > 0 ) {
