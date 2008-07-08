@@ -7,7 +7,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage html
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -18,8 +18,6 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 
-$product_type_id = vmGet($_REQUEST, 'product_type_id', 0);
-
 $q  = "SELECT * FROM #__{vm}_product_type ";
 $q .= "WHERE product_type_id='$product_type_id' ";
 $q .= "AND product_type_publish='Y'";
@@ -27,8 +25,9 @@ $db->query($q);
 
 $browsepage = $db->f("product_type_browsepage");
 
-$mainframe->setPageTitle( $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH') );
-$mainframe->appendPathWay( $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH') );
+$vm_mainframe->setPageTitle( $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH') );
+$pathway[] = $vm_mainframe->vmPathwayItem( $VM_LANG->_('PHPSHOP_PARAMETER_SEARCH') );
+$vm_mainframe->vmAppendPathway($pathway);
 
 echo "<h2>".$VM_LANG->_('PHPSHOP_PARAMETER_SEARCH')."</h2>";
 

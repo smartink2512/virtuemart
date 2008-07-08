@@ -416,7 +416,7 @@ class ps_product extends vmAbstractObject {
 					$new_product_id = $db->last_insert_id();
 
 					$q = "INSERT INTO #__{vm}_product_attribute
-			                  SELECT '$new_product_id', attribute_name, attribute_value
+			                  SELECT NULL, '$new_product_id', attribute_name, attribute_value
 			                  FROM #__{vm}_product_attribute WHERE product_id='$child_id'";
 					$db->query( $q );
 
@@ -468,6 +468,8 @@ class ps_product extends vmAbstractObject {
 		else {
 			$vendor_id = $ps_vendor_id;
 		}
+		$old_vendor_id = $this->get_field($d['product_id'], 'vendor_id');
+		
         // Insert into DB
 		$fields = array ( 'vendor_id' => $vendor_id,
 						'product_sku' => vmGet($d,'product_sku'),
@@ -500,7 +502,7 @@ class ps_product extends vmAbstractObject {
 						'child_option_ids' => vmGet($d,'included_product_id'),
 						'product_order_levels' => $d['order_levels'] );
 						
-		$db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  'WHERE product_id='. (int)$d["product_id"] . ' AND vendor_id=' . (int)$d['vendor_id'] );
+		$db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  'WHERE product_id='. (int)$d["product_id"] . ' AND vendor_id=' . (int)$old_vendor_id );
 		$db->query();
 
 		/* notify the shoppers that the product is here */

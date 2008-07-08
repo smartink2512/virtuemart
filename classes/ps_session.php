@@ -175,7 +175,7 @@ class ps_session {
 		$url = $toSecure ? SECUREURL : URL;
 		
 		// Redirect and send the Cookie Values within the variable martID
-		vmRedirect( $this->url( $url . basename($_SERVER['PHP_SELF']).'?'.vmGet($_SERVER,'QUERY_STRING')."&martID=$martID&redirected=1", true, false ) );
+		vmRedirect( $this->url( $url . basename($_SERVER['PHP_SELF']).'?'.vmGet($_SERVER,'QUERY_STRING')."&martID=$martID&redirected=1", true, false, true ) );
 	}
 	/**
 	 * It does what the name says. It starts a session again (with a certain ID when a $sid is given)
@@ -247,7 +247,7 @@ class ps_session {
 				if( $this->check_Shared_SSL($ssl_domain)) {
 					$this->saveSessionAndRedirect( false );
 				}
-				vmRedirect( $this->url( URL.basename( $_SERVER['PHP_SELF']).'?'.vmGet($_SERVER,'QUERY_STRING').'&redirected=1', true, false ));
+				vmRedirect( $this->url( URL.basename( $_SERVER['PHP_SELF']).'?'.vmGet($_SERVER,'QUERY_STRING').'&redirected=1', true, false, true ));
 			}
 		}
 		
@@ -264,13 +264,13 @@ class ps_session {
 			// check_Shared_SSL compares the normal http domain name
 			// and the https Domain Name. If both do not match, we move on
 			// else we leave this function.
-			if( $this->check_Shared_SSL( $ssl_domain ) && !vmIsHttpsMode()) {
+			if( $this->check_Shared_SSL( $ssl_domain ) && !vmIsHttpsMode() && $redirected == 0) {
 				
 				$this->saveSessionAndRedirect( true );
 			}
 			// do nothing but redirect
 			elseif( !vmIsHttpsMode() && $redirected == 0 ) {
-				vmRedirect( $this->url(SECUREURL . basename($_SERVER['PHP_SELF'])."?".vmGet($_SERVER,'QUERY_STRING').'&redirected=1', true, false ) );
+				vmRedirect( $this->url(SECUREURL . basename($_SERVER['PHP_SELF'])."?".vmGet($_SERVER,'QUERY_STRING').'&redirected=1', true, false, true ) );
 			}
 		}
 		/**
@@ -349,7 +349,7 @@ class ps_session {
 					if( !empty( $_GET['martID'] )) {
 						$query_string = substr_replace( vmGet($_SERVER,'QUERY_STRING'), '', strpos( vmGet($_SERVER,'QUERY_STRING'), '&martID'));
 						$url = vmIsHttpsMode() ? SECUREURL : URL;
-						vmRedirect( $this->url( $url . "index.php?$query_string&cartReset=N&redirected=1", true, false) );
+						vmRedirect( $this->url( $url . "index.php?$query_string&cartReset=N&redirected=1", true, false, true) );
 					}
 	
 				}
@@ -502,15 +502,15 @@ class ps_session {
 
 		switch ($text) {
 			case SECUREURL:
-				$text =  SECUREURL.basename( $_SERVER['PHP_SELF'] )."?".$this->component_name.$Itemid;
+				$text =  SECUREURL.basename( $_SERVER['SCRIPT_NAME'] )."?".$this->component_name.$Itemid;
 				break;
 			case URL:
-				$text =  URL.basename( $_SERVER['PHP_SELF'] )."?".$this->component_name.$Itemid;
+				$text =  URL.basename( $_SERVER['SCRIPT_NAME'] )."?".$this->component_name.$Itemid;
 				break;
 				
 			default:
 				$limiter = strpos($text, '?');
-				if( !stristr( $text, $_SERVER['PHP_SELF']) && $limiter === false ) {
+				if( !stristr( $text, $_SERVER['SCRIPT_NAME']) && $limiter === false ) {
 					$text = '?'.$text;
 				}
 				$appendix = "";
@@ -522,7 +522,7 @@ class ps_session {
 				
 				$script = basename( substr( $text, 0, $limiter ));
 				if( $script == '' ) {
-					$script = basename( $_SERVER['PHP_SELF'] );
+					$script = basename( $_SERVER['SCRIPT_NAME'] );
 				}
 				
 				if (!defined( '_VM_IS_BACKEND' )) {
@@ -531,16 +531,18 @@ class ps_session {
 					}
 	
 					$appendix = $script.substr($text, $limiter, strlen($text)).$appendix;
+				
 					if( class_exists('JRoute') && !$ignoreSEF && $mainframe->getCfg('sef') ) {
 						$appendix = JRoute::_( str_replace( $script.'&', $script.'?', $appendix ) );
+						
 					} 
 					else if( function_exists('sefRelToAbs') && !$ignoreSEF && !defined( '_JLEGACY' ) ) {
 						$appendix = sefRelToAbs( str_replace( $script.'&', $script.'?', $appendix ) );
 					}
-					
-					if( $createAbsoluteURI && substr($appendix,0,4)!='http' ) {
+					if( $createAbsoluteURI && substr($appendix,0,4)!='http'  && ($ignoreSEF || !$mainframe->getCfg('sef')) ) {
 						$appendix = URL . $appendix;
 					}
+					
 					
 				}
 				elseif( $_SERVER['SERVER_PORT'] == 443 ) {

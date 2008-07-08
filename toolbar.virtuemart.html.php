@@ -44,16 +44,16 @@ class MENU_virtuemart {
 	*/
     function FORMS_MENU_SAVE_CANCEL() {     
         global $mosConfig_absolute_path,$mosConfig_live_site, $mosConfig_lang, $VM_LANG, 
-        		$page, $limitstart,	$mosConfig_editor, $vmIcons;
+        		$product_id, page, $limitstart,	$mosConfig_editor, $vmIcons;
 
 		$bar = & JToolBar::getInstance('toolbar');
 		
         $no_menu = vmGet( $_REQUEST, 'no_menu', 0 );
         $is_iframe = vmGet( $_REQUEST, 'is_iframe', 0 );
         $product_parent_id = vmGet( $_REQUEST, 'product_parent_id', 0 );
-        $product_id = vmGet( $_REQUEST, 'product_id' );
-        $script = '';
         
+        $script = '';
+        $clone_product = vmRequest::getInt( 'clone_product', 0 );
 		if( is_array( $product_id )) {
 			$product_id = "";
 		}
@@ -169,7 +169,7 @@ class MENU_virtuemart {
 		
 		vmMenuBar::startTable();
 		
-		if ($page == "product.product_form" && !empty($product_id)) {
+		if ($page == "product.product_form" && !empty($product_id) && $clone_product!=1) {
 			if( empty($product_parent_id) ) { 
 				// add new attribute
 				$href=$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_attribute_form&product_id=". $product_id ."&limitstart=". $limitstart."&no_menu=$no_menu";

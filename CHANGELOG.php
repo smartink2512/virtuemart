@@ -35,6 +35,13 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+08.07.2008 soeren
+# Product Form: fixed Attribute Form becoming inaccessible when many attributes are added (overflow not visible)
+# fixed hidden (inaccessible) Tabs when too many tabs are in the tab panel (scrolls like in FF now)
+# Task #2185 - Advanced Search according to Parameters bug and fix
+# Task #2214 - XTHTML Error in LoginScript
+# Task #2215 -  Problems with ps_session.php after rev 1451
+
 04.07.2008 soeren
 # Task #2209 - Picture checkout2_1.png not in use
 # shipping bypass didn't work

@@ -393,7 +393,7 @@ class vmTabPanel {
 	* @param string The Tab Pane Name
 	*/
 	function startPane($id) {		
-		echo "<div class=\"tab-page\" id=\"".$id."\">";
+		echo '<div class="tab-page" id="'.$id.'">';
 		$this->pane_id = $id;
 	}
 
@@ -410,12 +410,15 @@ Ext.onReady( function() {
 		renderTo: '{$this->pane_id}',
 		activeTab: 0,
 		deferredRender: false,
+		enableTabScroll: true,
+		autoScroll: true,
+		autoWidth: true,
 		items: [";
 		
 		$num = 0;
 		$numTabs = count( $this->tabs );
 		foreach ( $this->tabs as $id => $title ) {
-			$scripttag .= "{ contentEl: '$id', title: '".addslashes($title)."' , tabTip: '".addslashes(strip_tags($title))."' }";
+			$scripttag .= "{ autoHeight: true, contentEl: '$id', title: '".addslashes($title)."' , tabTip: '".addslashes(strip_tags($title))."' }";
 			$num++;
 			if( $num < $numTabs ) {
 				$scripttag .= ",\n";
