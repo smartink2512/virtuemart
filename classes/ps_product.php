@@ -2552,7 +2552,7 @@ class ps_product extends vmAbstractObject {
 	        $category_id = vmRequest::getInt('category_id');
 	    }
         if ( $category_id ) {
-	        $q  = "SELECT DISTINCT product_sku,#__{vm}_product.product_id,product_name,product_s_desc,product_thumb_image FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE \n";
+	        $q  = "SELECT DISTINCT product_sku,#__{vm}_product.product_id,product_name,product_s_desc,product_thumb_image, product_in_stock FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE \n";
 	        $q .= "(#__{vm}_product.product_parent_id='' OR #__{vm}_product.product_parent_id='0') \n";
 	        $q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id \n";
 	        $q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id \n";
