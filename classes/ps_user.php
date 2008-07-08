@@ -157,7 +157,7 @@ class ps_user {
 		}
 		
 		// Get all fields which where shown to the user
-		$userFields = ps_userfield::getUserFields('registration', false, '', true);
+		$userFields = ps_userfield::getUserFields('account', false, '', true);
 		$skipFields = ps_userfield::getSkipFields();
 		
 		// Insert billto;
@@ -236,7 +236,7 @@ class ps_user {
 		// Update Bill To
 
 		// Get all fields which where shown to the user
-		$userFields = ps_userfield::getUserFields('registration', false, '', true);
+		$userFields = ps_userfield::getUserFields('account', false, '', true);
 
 		$user_id = intval( $d['id'] );
 

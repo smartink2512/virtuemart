@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+08.07.2008 gregdev
+# Task #2168 - Fixed bank account information not saved in backend user form
+
 08.07.2008 soeren
 # Product Form: fixed Attribute Form becoming inaccessible when many attributes are added (overflow not visible)
 # fixed hidden (inaccessible) Tabs when too many tabs are in the tab panel (scrolls like in FF now)
