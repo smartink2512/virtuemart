@@ -2314,9 +2314,8 @@ class ps_product extends vmAbstractObject {
 			$cid = $ps_product_category->get_cid( $product_id );
 
 			$tpl->set( 'product_id', $product_id);
-			if( $show_product_name ) {
-				$tpl->set( 'product_name', $db->f("product_name") );
-			}
+			$tpl->set( 'product_name', $db->f("product_name") );
+			$tpl->set( 'show_product_name', $show_product_name );
 			
 			if ($db->f("product_parent_id")) {
 				$url = "?page=shop.product_details&category_id=$cid&flypage=".$this->get_flypage($db->f("product_parent_id"));
