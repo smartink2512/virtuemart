@@ -211,6 +211,7 @@ if( !class_exists('productScroller')) { // Prevent double class declaration
                         scrolldelay=\"".$this->ScrollDelay."\"
                         truespeed=\"true\" onmouseover=\"this.stop()\" onmouseout=\"this.start()\">"; 
 			}
+			$show_product_name = ( $this->show_product_name == "yes" ) ? true : false;
 			$show_addtocart = ( $this->show_addtocart == "yes" ) ? true : false;
 			$show_price = ( $this->show_price == "yes" ) ? true : false;
 			if (($this->ScrollDirection=='left') || ($this->ScrollDirection=='right')) {
@@ -220,7 +221,7 @@ if( !class_exists('productScroller')) { // Prevent double class declaration
 				if (($this->ScrollDirection=='left') || ($this->ScrollDirection=='right')) {
 					echo '<td style="vertical-align:top;padding: 2px 5px 2px 5px;">';
 				}
-				$ps_product->show_snapshot( $row->product_sku, $show_price, $show_addtocart );
+				$ps_product->show_snapshot( $row->product_sku, $show_price, $show_addtocart, $show_product_name );
 				if (($this->ScrollDirection=='left') || ($this->ScrollDirection=='right')) {
 					echo '</td>';
 

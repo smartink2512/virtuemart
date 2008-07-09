@@ -2280,12 +2280,12 @@ class ps_product extends vmAbstractObject {
 	 * @param string $product_sku The SKU identifying the product
 	 * @param boolean $show_price Show the product price?
 	 * @param boolean $show_addtocart Show the add-to-cart link?
+	 * @param boolean $show_product_name Show the product name?
 	 */
-	function show_snapshot($product_sku, $show_price=true, $show_addtocart=true ) {
-
-		echo $this->product_snapshot($product_sku, $show_price, $show_addtocart);
-
+	function show_snapshot($product_sku, $show_price=true, $show_addtocart=true, $show_product_name = true ) {
+		echo $this->product_snapshot( $product_sku, $show_price, $show_addtocart, $show_product_name );
 	}
+
 	/**
 	 * Returns HTML code for a snapshot of a product based on the product sku.
 	 * This was written to provide a quick way to display a product inside of modules
@@ -2293,8 +2293,9 @@ class ps_product extends vmAbstractObject {
 	 * @param string $product_sku The SKU identifying the product
 	 * @param boolean $show_price Show the product price?
 	 * @param boolean $show_addtocart Show the add-to-cart link?
+	 * @param boolean $show_product_name Show the product name?
 	 */
-	function product_snapshot( $product_sku, $show_price=true, $show_addtocart=true ) {
+	function product_snapshot( $product_sku, $show_price=true, $show_addtocart=true, $show_product_name = true ) {
 
 		global $sess, $mm_action_url;
 
@@ -2313,7 +2314,9 @@ class ps_product extends vmAbstractObject {
 			$cid = $ps_product_category->get_cid( $product_id );
 
 			$tpl->set( 'product_id', $product_id);
-			$tpl->set( 'product_name', $db->f("product_name"));
+			if( $show_product_name ) {
+				$tpl->set( 'product_name', $db->f("product_name") );
+			}
 			
 			if ($db->f("product_parent_id")) {
 				$url = "?page=shop.product_details&category_id=$cid&flypage=".$this->get_flypage($db->f("product_parent_id"));

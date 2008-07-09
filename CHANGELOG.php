@@ -42,6 +42,7 @@ VirtueMart 1.1.x
 # Task #2093 - Show Pagination only when needed
 # Task #2220 - Add to Cart for each child is not saving
 ^ Added optional $force parameter to ps_product::get_field() to force reload from the database
+# Task #2204 - Cannot remove product name in mod_productscroller
 
 08.07.2008 soeren
 # Product Form: fixed Attribute Form becoming inaccessible when many attributes are added (overflow not visible)

@@ -1,7 +1,9 @@
 <?php if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); ?>
  
+ <?php if( isset( $product_name ) ) : ?>
 <span style="font-weight:bold;"><?php echo $product_name ?></span>
 <br />
+<?php endif; ?>
 
 <a title="<?php echo $product_name ?>" href="<?php echo $product_link ?>">
 	<?php
