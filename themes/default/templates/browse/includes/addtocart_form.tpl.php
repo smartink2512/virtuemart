@@ -6,10 +6,13 @@ $button_cls = 'addtocart_button';
 if( CHECK_STOCK == '1' && !$product_in_stock ) {
 	$button_lbl = $VM_LANG->_('VM_CART_NOTIFY');
 	$button_cls = 'notify_button';
+	$notify = true;
+} else {
+	$notify = false;
 }
 ?>
 
-<form action="<?php echo $mm_action_url ?>index.php" method="post" name="addtocart" id="addtocart<?php echo $i ?>" class="addtocart_form" <?php if( $this->get_cfg( 'useAjaxCartActions', 1 )) { echo 'onsubmit="handleAddToCart( this.id );return false;"'; } ?>>
+<form action="<?php echo $mm_action_url ?>index.php" method="post" name="addtocart" id="addtocart<?php echo $i ?>" class="addtocart_form" <?php if( $this->get_cfg( 'useAjaxCartActions', 1 ) && !$notify ) { echo 'onsubmit="handleAddToCart( this.id );return false;"'; } ?>>
     <?php echo $ps_product_attribute->show_quantity_box($product_id,$product_id); ?><br />
 	<input type="submit" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl	?>" title="<?php echo $button_lbl ?>" />
     <input type="hidden" name="category_id" value="<?php echo  @$_REQUEST['category_id'] ?>" />

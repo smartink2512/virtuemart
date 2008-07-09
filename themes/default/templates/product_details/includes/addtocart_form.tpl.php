@@ -10,8 +10,15 @@ mm_showMyFileName(__FILE__);
 list($html,$children) = $ps_product_attribute->list_attribute( ( $product_parent_id > 0 )  ? $product_parent_id : $product_id );
 
 if ($children != "multi") { 
+
+    if( CHECK_STOCK == '1' && !$product_in_stock ) {
+     	$notify = true;
+    } else {
+    	$notify = false;
+    }
+
 ?>
-    <form action="<?php echo $mm_action_url ?>index.php" method="post" name="addtocart" id="<?php echo uniqid('addtocart_') ?>" class="addtocart_form" <?php if( $this->get_cfg( 'useAjaxCartActions', 1 )) { echo 'onsubmit="handleAddToCart( this.id );return false;"'; } ?>>
+    <form action="<?php echo $mm_action_url ?>index.php" method="post" name="addtocart" id="<?php echo uniqid('addtocart_') ?>" class="addtocart_form" <?php if( $this->get_cfg( 'useAjaxCartActions', 1 ) && !$notify ) { echo 'onsubmit="handleAddToCart( this.id );return false;"'; } ?>>
 
 <?php
 }

@@ -265,7 +265,7 @@ class ps_cart {
 			// Comment out the following line to turn off msg i.e. //$vmLogger->tip( $msg );
 			$vmLogger->info( $msg );
 		}
-        else if (@$request_stock) {
+        else if (@$request_stock && vmIsXHR() ) {
             $vmLogger->tip( $VM_LANG->_('PHPSHOP_CART_GOTO_WAITING_LIST',false) );
 		} else {
             $vmLogger->tip( $VM_LANG->_('PHPSHOP_CART_SELECT_ITEM',false) );
@@ -285,7 +285,11 @@ class ps_cart {
 				$_SESSION['notify']['idx']++;
 				$k++;
 			}
-			$GLOBALS['vm_mainframe']->scriptRedirect( $sess->url( 'index.php?page=shop.waiting_list&product_id='.$product_id, true, false ) );
+			if( vmIsXHR() ) {
+				$GLOBALS['vm_mainframe']->scriptRedirect( $sess->url( 'index.php?page=shop.waiting_list&product_id='.$product_id, true, false ) );
+			} else {
+				vmRedirect( $sess->url( 'index.php?page=shop.waiting_list&product_id='.$product_id, true, false ) );
+			}
 		}
 
 		return True;
