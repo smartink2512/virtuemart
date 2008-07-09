@@ -39,6 +39,7 @@ VirtueMart 1.1.x
 # Task #2224 - Don't show up ajax pop-up when click "Notify me"
 ^ Dates supplied to the browse templates are formatted now, rather plain UNIX timestamps
 # Task #2204 - Fixed logic error for showing product name in product snapshot template
+# Fixed missing $product_parent_id in header.php
 
 08.07.2008 gregdev
 # Task #2168 - Fixed bank account information not saved in backend user form

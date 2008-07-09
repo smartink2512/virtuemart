@@ -21,6 +21,7 @@ include_once( ADMINPATH . "version.php" );
 
 global $error, $page, $ps_product, $ps_product_category;
 $product_id = vmGet( $_REQUEST, 'product_id' );
+$product_parent_id = vmGet( $_REQUEST, 'product_parent_id' );
 $module_id = vmGet( $_REQUEST, 'module_id', 0 );
 
 if( is_array( $product_id ) || $page == 'product.product_list' ) {
@@ -272,7 +273,7 @@ if( vmIsJoomla('1.0') && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 						<li><hr /></li>
 		            <?php 
 		            }
-		            elseif (!empty($_REQUEST['product_parent_id'])) { ?> 
+		            elseif (!empty($product_parent_id)) { ?> 
 						<li class="item-smenu vmicon vmicon-16-editadd">
 						<a href="<?php @$sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_price_list&product_id=$recent_product_id&product_parent_id=$product_parent_id&return_args=" . urlencode($return_args)); ?>"><?php echo $VM_LANG->_('PHPSHOP_PRICE_FORM_MNU') ?></a>
 						</li>
@@ -285,6 +286,7 @@ if( vmIsJoomla('1.0') && strstr( $_SERVER['PHP_SELF'], 'index3.php')) {
 						<li class="item-smenu vmicon vmicon-16-content">
 						<a href="<?php $sess->purl($_SERVER['PHP_SELF'] . "?pshop_mode=admin&page=product.product_form&product_id=" . $product_parent_id); ?>"><?php echo $VM_LANG->_('PHPSHOP_PRODUCT_FORM_RETURN_LBL') ?></a>
 						</li>
+						<li><hr /></li>
 			            <?php 
 		            } ?>
 		            
