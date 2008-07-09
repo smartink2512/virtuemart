@@ -151,14 +151,23 @@ else {
 		$parameter_form = '';
 	}
 	$tpl->set( 'parameter_form', $parameter_form );
+	
+	// Decide whether to show the limit box
+	$show_limitbox = ( $num_rows > 5 && @$_REQUEST['output'] != "pdf" );
+	$tpl->set( 'show_limitbox', $show_limitbox );
+
+	// Decide whether to show the top navigation
+	$show_top_navigation = ( PSHOP_SHOW_TOP_PAGENAV =='1' && $num_rows > $limit );
+	$tpl->set( 'show_top_navigation', $show_top_navigation );
+
+	// Prepare Page Navigation
+	require_once( CLASSPATH . 'pageNavigation.class.php' );
+	$pagenav = new vmPageNav( $num_rows, $limitstart, $limit );
+	$tpl->set( 'pagenav', $pagenav );
+
 	$search_string = '';
 	if ( $num_rows > 1 && @$_REQUEST['output'] != "pdf") {
-						
-		// Prepare Page Navigation
 		if ( $num_rows > $limit  || $num_rows > 5 ) {
-			require_once( CLASSPATH.'pageNavigation.class.php');
-			$pagenav = new vmPageNav( $num_rows, $limitstart, $limit );
-
 			$search_string = $mm_action_url."index.php?option=com_virtuemart&amp;page=$modulename.browse&amp;category_id=$category_id&amp;keyword=".urlencode( $keyword )."&amp;manufacturer_id=$manufacturer_id&amp;Itemid=$Itemid";
 			$search_string .= !empty($orderby) ? "&amp;orderby=".urlencode($orderby) : "";
 
@@ -212,14 +221,10 @@ else {
 		$tpl->set( 'keyword2', urlencode( $keyword2 ) );
 		$tpl->set( 'Itemid', $Itemid );
 		
-		if( PSHOP_SHOW_TOP_PAGENAV =='1' && ($num_rows > $limit || $num_rows > 5)) {
-			$tpl->set( 'show_top_navigation', true );
+		if( $show_top_navigation ) {
 			$tpl->set( 'search_string', $search_string );
-			$tpl->set( 'pagenav', $pagenav );
 		}
-		else {
-			$tpl->set( 'show_top_navigation', false );
-		}
+
 		$orderby_form = $tpl->fetch( 'browse/includes/browse_orderbyform.tpl.php' );
 		$tpl->set( 'orderby_form', $orderby_form );
     }
@@ -439,10 +444,11 @@ else {
 		$products[$i]['product_height'] = $db_browse->f("product_height");
 		$products[$i]['product_lwh_uom'] = $db_browse->f("product_lwh_uom");
 		$products[$i]['product_in_stock'] = $db_browse->f("product_in_stock");
-		$products[$i]['product_availability_date'] = $db_browse->f("product_availability_date");
+		$products[$i]['product_available_date'] = $db_browse->f("product_available_date");
 		$products[$i]['product_availability'] = $db_browse->f("product_availability");
 		$products[$i]['cdate'] = $db_browse->f("cdate");
 		$products[$i]['mdate'] = $db_browse->f("mdate");
+		$products[$i]['product_url'] = $db_browse->f("product_url");
 
 	} // END OF while loop
 	
@@ -461,17 +467,7 @@ else {
 ?>
 
 <?php
-if( !isset($pagenav) ) {
-	require_once( CLASSPATH.'pageNavigation.class.php');
-	$pagenav = new vmPageNav( $num_rows, $limitstart, $limit);
-}
-$tpl->set( 'pagenav', $pagenav );
 
-if( $num_rows > 5 && @$_REQUEST['output'] != "pdf") {
-	$tpl->set( 'show_limitbox', true );
-} else {
-	$tpl->set( 'show_limitbox', false );
-}
 $browsepage_footer = $tpl->fetch( 'browse/includes/browse_pagenav.tpl.php' );
 $tpl->set( 'browsepage_footer', $browsepage_footer );
 
