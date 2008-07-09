@@ -393,7 +393,7 @@ class ps_shopper {
 		if( $d['isValidVATID'] ) {
 			
 			if( trim($d['__euvatid_field']->params) != '' ) {
-				$shopper_group = new mosParameters( $d['__euvatid_field']->params );
+				$shopper_group = new vmParameters( $d['__euvatid_field']->params );
 				$d['shopper_group_id'] = $shopper_group->get('shopper_group_id');
 			}
 		}
