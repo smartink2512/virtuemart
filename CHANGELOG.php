@@ -37,6 +37,7 @@ VirtueMart 1.1.x
 *************************************
 09.07.2008 gregdev
 # Task #2224 - Don't show up ajax pop-up when click "Notify me"
+^ Dates supplied to the browse templates are formatted now, rather plain UNIX timestamps
 
 08.07.2008 gregdev
 # Task #2168 - Fixed bank account information not saved in backend user form

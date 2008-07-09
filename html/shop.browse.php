@@ -444,10 +444,10 @@ else {
 		$products[$i]['product_height'] = $db_browse->f("product_height");
 		$products[$i]['product_lwh_uom'] = $db_browse->f("product_lwh_uom");
 		$products[$i]['product_in_stock'] = $db_browse->f("product_in_stock");
-		$products[$i]['product_available_date'] = $db_browse->f("product_available_date");
+		$products[$i]['product_available_date'] = $VM_LANG->convert( vmFormatDate($db_browse->f("product_available_date"), $VM_LANG->_('DATE_FORMAT_LC') ));
 		$products[$i]['product_availability'] = $db_browse->f("product_availability");
-		$products[$i]['cdate'] = $db_browse->f("cdate");
-		$products[$i]['mdate'] = $db_browse->f("mdate");
+		$products[$i]['cdate'] = $VM_LANG->convert( vmFormatDate($db_browse->f("cdate"), $VM_LANG->_('DATE_FORMAT_LC') ));
+		$products[$i]['mdate'] = $VM_LANG->convert( vmFormatDate($db_browse->f("mdate"), $VM_LANG->_('DATE_FORMAT_LC') ));
 		$products[$i]['product_url'] = $db_browse->f("product_url");
 
 	} // END OF while loop
