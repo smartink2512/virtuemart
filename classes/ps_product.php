@@ -178,7 +178,7 @@ class ps_product extends vmAbstractObject {
         
         if (@$d['product_list'] =="Y") {
             if($d['list_style'] == "one")
-                $d['product_list'] = "Y"; 
+                $d['product_list'] = "Y";
             else
                 $d['product_list'] = "YM";            
         }
@@ -1071,11 +1071,11 @@ class ps_product extends vmAbstractObject {
 	 * @param string $field_name
 	 * @return string The value of the field $field_name for that product
 	 */
-	function get_field( $product_id, $field_name ) {
+	function get_field( $product_id, $field_name, $force = false ) {
 		if( $product_id == 0 ) return '';
 		$db = new ps_DB;
 		
-		if( !isset($GLOBALS['product_info'][$product_id][$field_name] )) {
+		if( !isset($GLOBALS['product_info'][$product_id][$field_name] ) || $force ) {
 			$q = 'SELECT product_id, `#__{vm}_product`.* FROM `#__{vm}_product` WHERE `product_id`='.(int)$product_id;
 			$db->query($q);
 			if ($db->next_record()) {
@@ -2432,12 +2432,12 @@ class ps_product extends vmAbstractObject {
      * @param unknown_type $d
      * @return unknown
      */
-    function set_child_options( $d) {
+    function set_child_options( $d ) {
 		if($d["product_parent_id"] !=0) {
 			$child_options = null;
         } else {
 			$child_options = vmrequest::getYesOrNo('display_use_parent').","
-										.vmrequest::getYesOrNo('product_list').","
+										.vmGet( $d, 'product_list', 'N' ).","
 										.vmrequest::getYesOrNo('display_headers').","
 										.vmrequest::getYesOrNo('product_list_child').","
 										.vmrequest::getYesOrNo('product_list_type').","
@@ -2451,7 +2451,7 @@ class ps_product extends vmAbstractObject {
     
     function &get_child_options( $product_id ) {
     	$child_options= array();
-    	$child_options_string = ps_product::get_field($product_id, 'child_options'); 
+    	$child_options_string = ps_product::get_field( $product_id, 'child_options', true ); 
 		$fields=explode(',',$child_options_string);
 		if( !empty( $fields)) {
 			$child_options['display_use_parent'] =array_shift($fields);

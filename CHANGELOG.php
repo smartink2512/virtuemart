@@ -39,7 +39,9 @@ VirtueMart 1.1.x
 # Task #2168 - Fixed bank account information not saved in backend user form
 # Task #2210 - product_availability_date typo in shop.browse.php 
 # Task #2211 - product_url missing in shop.browse.php
-# Task #2093 - Show Pagination only when needed 
+# Task #2093 - Show Pagination only when needed
+# Task #2220 - Add to Cart for each child is not saving
+^ Added optional $force parameter to ps_product::get_field() to force reload from the database
 
 08.07.2008 soeren
 # Product Form: fixed Attribute Form becoming inaccessible when many attributes are added (overflow not visible)
