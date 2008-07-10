@@ -40,6 +40,7 @@ VirtueMart 1.1.x
 ^ Dates supplied to the browse templates are formatted now, rather plain UNIX timestamps
 # Task #2204 - Fixed logic error for showing product name in product snapshot template
 # Fixed missing $product_parent_id in header.php
+# Task #2041 - Renamed Subtotal column to Total (English only) on order list
 
 08.07.2008 gregdev
 # Task #2168 - Fixed bank account information not saved in backend user form
