@@ -626,6 +626,7 @@ class ps_product_attribute {
 				
 				//Show the quantity Box
 				$products[$ci]['quantity_box'] = $this->show_quantity_box( $master_id, $db->f( "product_id" ), $product_list, $display_use_parent ) ;
+				
 				// Attributes for this item are done.
 				// Now get item price
 				$price = $ps_product->get_price( $db->f( "product_id" ) ) ;
@@ -650,6 +651,15 @@ class ps_product_attribute {
 					$product_type = $ps_product_type->list_product_type( $db->f( "product_id" ) ) ;
 				}
 				$products[$ci]['product_type'] = $product_type ;
+				
+				// Child stock
+				if( $display_use_parent == 'Y' && !empty($master_id)) {
+					$id = $master_id ;
+				} else {
+					$id = $db->f( "product_id" );
+				}
+				$products[$ci]['product_in_stock'] = ps_product::get_field( $id, 'product_in_stock' ) ;
+				
 				// Output Advanced Attributes
 				$products[$ci]['advanced_attribute'] = $this->list_advanced_attribute( $product_id, $db->f( "product_id" ) ) ;
 				$products[$ci]['custom_attribute'] = $this->list_custom_attribute( $product_id, $db->f( "product_id" ) ) ;

@@ -29,10 +29,17 @@ foreach( $products as $product ) {
 			// translated example: $this->set( 'product_name', $product_name );
 			$this->set( $attr, $val );
     }
+    
+    if( CHECK_STOCK == '1' && !$product['product_in_stock'] ) {
+     	$notify = true;
+    } else {
+    	$notify = false;
+    }
+    
     ?>
 
     <div class="vmCartChild<?php echo $cls_suffix." ".$product['bgcolor'].$cls_suffix ?>">
-        <form action="<?php echo $mm_action_url ?>index.php" method="post" name="addtocart" id="addtocart<?php echo $product['product_id'] ?>" class="addtocart_form" onsubmit="handleAddToCart( this.id );return false;">
+        <form action="<?php echo $mm_action_url ?>index.php" method="post" name="addtocart" id="addtocart<?php echo $product['product_id'] ?>" class="addtocart_form" <?php if( $this->get_cfg( 'useAjaxCartActions', 1 ) && !$notify ) { echo 'onsubmit="handleAddToCart( this.id );return false;"'; } ?>>
             <div class="vmCartChildElement<?php echo $cls_suffix ?>">
                 <input type="hidden" name="prod_id[]" value="<?php echo $product['product_id'] ?>" />
                 <input type="hidden" name="product_id" value="<?php echo $product['parent_id'] ?>" />
@@ -46,9 +53,18 @@ foreach( $products as $product ) {
 	                <?php 
 					}
 				} 
-                if (USE_AS_CATALOGUE != '1'  && $product_price != "" && !stristr( $product_price, $VM_LANG->_('PHPSHOP_PRODUCT_CALL'))) { ?>
+                if (USE_AS_CATALOGUE != '1'  && $product_price != "" && !stristr( $product_price, $VM_LANG->_('PHPSHOP_PRODUCT_CALL'))) { 
+
+					$button_lbl = $VM_LANG->_('PHPSHOP_CART_ADD_TO');
+					$button_cls = 'addtocart_button';
+					if( CHECK_STOCK == '1' && !$product['product_in_stock'] ) {
+						$button_lbl = $VM_LANG->_('VM_CART_NOTIFY');
+						$button_cls = 'notify_button';
+					}
+
+                	?>
                     <span class="vmChildDetail<?php echo $cls_suffix ?>" style="float: right;text-align: right;margin-top: 0px;">
-                    <input type="submit" class="addtocart_button" value="<?php echo $VM_LANG->_('PHPSHOP_CART_ADD_TO') ?>" title="<?php echo $VM_LANG->_('PHPSHOP_CART_ADD_TO') ?>" /></span>
+                    <input type="submit" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" /></span>
                 <?php } 
                 // Output Quantity Box 
                 if (USE_AS_CATALOGUE != '1' ) { ?>
