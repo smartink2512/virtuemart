@@ -439,10 +439,11 @@ class ps_vendor {
 		$q = "SELECT vendor_id, vendor_min_pov,vendor_name,vendor_store_name,contact_email,vendor_full_image, vendor_freeshipping,
 					vendor_address_1,vendor_address_2, vendor_url, vendor_city, vendor_state, vendor_country, country_2_code, country_3_code,
 					vendor_zip, vendor_phone, vendor_store_desc, vendor_currency, vendor_currency_display_style,
-					vendor_accepted_currencies, vendor_address_format, vendor_date_format
-				FROM (`#__{vm}_vendor`, `#__{vm}_country`)
-				WHERE `vendor_id`=".(int)$vendor_id."
-				AND (vendor_country=country_2_code OR vendor_country=country_3_code);";
+					vendor_accepted_currencies, vendor_address_format, vendor_date_format, state_name
+				FROM (`#__{vm}_vendor` v, `#__{vm}_country` c)
+				LEFT JOIN #__{vm}_state s ON (v.vendor_state=s.state_2_code AND s.country_id=c.country_id)
+				WHERE `v`.`vendor_id`=".(int)$vendor_id."
+				AND (`v`.`vendor_country`=`c`.`country_2_code` OR `v`.`vendor_country`=`c`.`country_3_code`);";
 		
 		$db->query($q);
 		$db->next_record();
@@ -602,13 +603,14 @@ class ps_vendor {
 	 * @return String
 	 */
 	function formatted_store_address( $use_html=false ) {
-		global $vendor_store_name, $vendor_address, $vendor_address_2, $vendor_city,
+		global $vendor_store_name, $vendor_address, $vendor_address_2, $vendor_city, $vendor_state_name,
 		$vendor_state, $vendor_zip, $vendor_phone, $vendor_fax, $vendor_mail, $vendor_country, $vendor_url;
 		
 		$address_details['name'] = $vendor_store_name;
 		$address_details['address_1'] = $vendor_address;
 		$address_details['address_2'] = $vendor_address_2;
 		$address_details['state'] = $vendor_state;
+		$address_details['state_name'] = $vendor_state_name;
 		$address_details['city'] = $vendor_city;
 		$address_details['zip'] = $vendor_zip;
 		$address_details['country'] = $vendor_country;

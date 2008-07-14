@@ -124,6 +124,8 @@ else {
 		
 		$browsepage_lbl = shopMakeHtmlSafe( $db->f("mf_name") );
 		$tpl->set( 'browsepage_lbl', $browsepage_lbl );
+		$browsepage_lbltext = $db->f("mf_desc");
+		$tpl->set( 'browsepage_lbltext', $browsepage_lbltext );
 		$browsepage_header = $tpl->fetch( 'browse/includes/browse_header_manufacturer.tpl.php' );
 	}
 	elseif( $keyword ) {

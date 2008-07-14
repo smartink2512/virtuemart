@@ -14,7 +14,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 
-global $vendor_image,$vendor_country_2_code ,$vendor_country_3_code, $vendor_image_url, $vendor_name, 
+global $vendor_image,$vendor_country_2_code ,$vendor_country_3_code, $vendor_image_url, $vendor_name, $vendor_state_name,
 		$vendor_address,$vendor_address_2, $vendor_url, $vendor_city,$vendor_country,$vendor_mail,$vendor_store_name, $vm_mainframe,
         $vendor_state, $vendor_zip, $vendor_phone, $vendor_currency, $vendor_store_desc, $vendor_freeshipping,
         $module_description, $VM_LANG, $vendor_currency_display_style, $vendor_full_image, $vendor_accepted_currencies,
@@ -178,6 +178,7 @@ $vendor_address = $db->f("vendor_address_1");
 $vendor_address_2 = $db->f("vendor_address_2");
 $vendor_city = $db->f("vendor_city");
 $vendor_state = $db->f("vendor_state");
+$vendor_state_name = $db->f("state_name");
 $vendor_state = empty($vendor_state) ? "" : $db->f("vendor_state");
 $vendor_country = $db->f("vendor_country");
 $vendor_country_2_code = $db->f("country_2_code");
@@ -229,7 +230,7 @@ function vmGetGlobalsArray() {
 	static $vm_globals = array(  'perm', 'page', 'sess', 'func', 'cart', 'VM_LANG', 'PSHOP_SHIPPING_MODULES', 'VM_BROWSE_ORDERBY_FIELDS', 
 					'VM_MODULES_FORCE_HTTPS', 'vmLogger', 'CURRENCY_DISPLAY', 'CURRENCY', 'ps_html', 
 					'ps_vendor_id', 'keyword', 'ps_payment_method', 'pagename', 'modulename', 
-					'vars', 'auth', 'ps_checkout', 'vendor_image','vendor_country_2_code','vendor_country_3_code', 
+					'vars', 'auth', 'ps_checkout', 'vendor_image','vendor_country_2_code','vendor_country_3_code', 'vendor_state_name',
 					'vendor_image_url', 'vendor_name', 'vendor_address', 'vendor_address_2', 'vendor_city','vendor_country','vendor_mail',
 					'vendor_store_name', 'vendor_state', 'vendor_zip', 'vendor_phone', 'vendor_currency', 'vendor_store_desc', 
 					'vendor_freeshipping', 'vendor_currency_display_style', 'vendor_freeshipping', 'vendor_date_format', 'vendor_address_format',

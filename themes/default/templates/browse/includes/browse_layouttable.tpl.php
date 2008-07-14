@@ -19,7 +19,7 @@ foreach( $products as $product ) {
 		
 		// Parse the product template (usually 'browse_x') for each product
 		// and store it in our $data array 
-		$data[$row][] = $this->fetch_cache( 'browse/'.$templatefile .'.php' );
+		$data[$row][] = $this->fetch( 'browse/'.$templatefile .'.php' );
 		
 		// Start a new row ?
 		if ( ($i % $products_per_row) == 0) {

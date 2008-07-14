@@ -1436,6 +1436,7 @@ function vmFormatAddress( $address_details, $use_html=false ) {
 	$store_address = str_replace( '{address_1}', @$address_details['address_1'], $store_address );
 	$store_address = str_replace( '{address_2}', @$address_details['address_2'], $store_address );
 	$store_address = str_replace( '{state}', @$address_details['state'], $store_address );
+	$store_address = str_replace( '{statename}', @$address_details['state_name'], $store_address );
 	$store_address = str_replace( '{city}', @$address_details['city'], $store_address );
 	$store_address = str_replace( '{zip}', @$address_details['zip'], $store_address );
 	$store_address = str_replace( '{country}', @$address_details['country'], $store_address );

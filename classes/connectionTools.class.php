@@ -69,7 +69,7 @@ class vmConnector {
 		if( !isset( $urlParts['scheme'] )) $urlParts['scheme'] = 'http';
 
 		if( isset( $urlParts['query'] )) $urlParts['query'] = '?'.$urlParts['query'];
-		if( isset( $urlParts['path'] )) $urlParts['path'] = $urlParts['path'].$urlParts['query'];
+		if( isset( $urlParts['path'] )) $urlParts['path'] = $urlParts['path'].vmGet($urlParts,'query');
 
 		// Check proxy
 		if( trim( @VM_PROXY_URL ) != '') {

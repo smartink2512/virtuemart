@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id$
 * @package VirtueMart
 * @subpackage themes
-* @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.
+* @copyright Copyright (C) 2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -16,6 +16,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * http://virtuemart.net
 */
 mm_showMyFileName( __FILE__ );
+require_once( CLASSPATH . 'ps_vendor.php');
 ?>
 <h3><?php echo $v_name;?></h3>
 <br />
@@ -33,12 +34,7 @@ mm_showMyFileName( __FILE__ );
         </tr>
         <tr valign="top">
 	<td align="center" colspan="2"><br />
-        <?php echo vmFormatAddress( array('name' => $v_name,
-        								'address_1' => $v_address_1,
-        								'address_2' => $v_address_2,
-        								'zip' => $v_zip,
-        								'city' => $v_city
-        							), true ); ?>
+        <?php echo ps_vendor::formatted_store_address( true ); ?>
         <br /><br /></td>
   </tr>
 

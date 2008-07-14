@@ -35,12 +35,20 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+
+14.07.2008 soeren
+^ Task #2240 - mf description also in shop.browse.php and browse_header_manufacturer.tpl.php 
+# Task #2227 - When Joomla cache is enabled Product list with table doesn't work 
+# Task #2232 -  Wrong currency code value for Polish Zloty  
+^ Task #2234 - added "statename" to the list of placeholders which can be used in the vendor address format. It holds the actual state name.
+
 14.07.2008 gregdev
 # Fixed product_url for featured products
 # Fixed </li> typo in pageNavigation.class.php
 # Xhtml compliance issues in shop.search.php
 # Don't show the browse page footer when there are no products
 
+>>>>>>> .r1470
 11.07.2008 gregdev
 # Task #2226 - Instead of 'Notify Me' button 'add to cart' button is shown when list box for child products is selected.
 
