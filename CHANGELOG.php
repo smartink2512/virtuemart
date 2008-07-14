@@ -37,7 +37,9 @@ VirtueMart 1.1.x
 *************************************
 14.07.2008 gregdev
 # Fixed product_url for featured products
-# Fixed </li> typo in pageNavigation.class.php 
+# Fixed </li> typo in pageNavigation.class.php
+# Xhtml compliance issues in shop.search.php
+# Don't show the browse page footer when there are no products
 
 11.07.2008 gregdev
 # Task #2226 - Instead of 'Notify Me' button 'add to cart' button is shown when list box for child products is selected.

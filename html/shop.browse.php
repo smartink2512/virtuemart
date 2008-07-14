@@ -464,18 +464,20 @@ else {
 	}
 	$tpl->set( 'products', $products );
 	$tpl->set( 'search_string', $search_string );
-?>
 
-<?php
-
-$browsepage_footer = $tpl->fetch( 'browse/includes/browse_pagenav.tpl.php' );
-$tpl->set( 'browsepage_footer', $browsepage_footer );
-
-$recent_products = $ps_product->recentProducts(null,$tpl->get_cfg('showRecent', 5));
-$tpl->set('recent_products',$recent_products);
-
-$tpl->set('ps_product',$ps_product);
-
-echo $tpl->fetch( $tpl->config->get( 'productListStyle' ) );
+	if ( $num_rows > 1 ) {
+		$browsepage_footer = $tpl->fetch( 'browse/includes/browse_pagenav.tpl.php' );
+		$tpl->set( 'browsepage_footer', $browsepage_footer );
+	} else {
+		$tpl->set( 'browsepage_footer', '' );
+	}
+	
+	
+	$recent_products = $ps_product->recentProducts(null,$tpl->get_cfg('showRecent', 5));
+	$tpl->set('recent_products',$recent_products);
+	
+	$tpl->set('ps_product',$ps_product);
+	
+	echo $tpl->fetch( $tpl->config->get( 'productListStyle' ) );
 }
 ?>

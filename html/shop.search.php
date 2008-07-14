@@ -80,7 +80,7 @@ $mainframe->appendPathWay( $VM_LANG->_('PHPSHOP_ADVANCED_SEARCH') );
             </select>
             <br /><br />
             
-            <input type="submit" class="button" name="search" value="<?php echo $VM_LANG->_('PHPSHOP_SEARCH_TITLE') ?>">
+            <input type="submit" class="button" name="search" value="<?php echo $VM_LANG->_('PHPSHOP_SEARCH_TITLE') ?>" />
             <br />
 			</td>
 			<td valign="top">
@@ -101,7 +101,7 @@ $mainframe->appendPathWay( $VM_LANG->_('PHPSHOP_ADVANCED_SEARCH') );
 	</tr>
 	</table>
 			</form>
-      <script>
+      <script type="text/javascript">
       document.adv_search.keyword1.select();
       document.adv_search.keyword1.focus();
       </script>
