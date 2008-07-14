@@ -2554,7 +2554,7 @@ class ps_product extends vmAbstractObject {
 	        $category_id = vmRequest::getInt('category_id');
 	    }
         if ( $category_id ) {
-	        $q  = "SELECT DISTINCT product_sku,#__{vm}_product.product_id,product_name,product_s_desc,product_thumb_image, product_in_stock FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE \n";
+	        $q  = "SELECT DISTINCT product_sku,#__{vm}_product.product_id,product_name,product_s_desc,product_thumb_image, product_full_image, product_in_stock, product_url FROM #__{vm}_product, #__{vm}_product_category_xref, #__{vm}_category WHERE \n";
 	        $q .= "(#__{vm}_product.product_parent_id='' OR #__{vm}_product.product_parent_id='0') \n";
 	        $q .= "AND #__{vm}_product.product_id=#__{vm}_product_category_xref.product_id \n";
 	        $q .= "AND #__{vm}_category.category_id=#__{vm}_product_category_xref.category_id \n";
@@ -2567,7 +2567,7 @@ class ps_product extends vmAbstractObject {
 	        $q .= 'ORDER BY RAND() LIMIT 0, '.(int)$products;
         }
         else {
-	        $q  = "SELECT DISTINCT product_sku,product_id,product_name,product_s_desc,product_thumb_image, product_in_stock FROM #__{vm}_product WHERE ";
+	        $q  = "SELECT DISTINCT product_sku,product_id,product_name,product_s_desc,product_thumb_image, product_full_image, product_in_stock, product_url FROM #__{vm}_product WHERE ";
 	        $q .= "(#__{vm}_product.product_parent_id='' OR #__{vm}_product.product_parent_id='0') AND vendor_id='".$_SESSION['ps_vendor_id']."' ";
 	        $q .= "AND #__{vm}_product.product_publish='Y' ";
 	        $q .= "AND #__{vm}_product.product_special='Y' ";
@@ -2592,8 +2592,9 @@ class ps_product extends vmAbstractObject {
 			    }
                 $featured_products[$i]['product_price'] = $price;
                 $featured_products[$i]['product_s_desc'] = $db->f("product_s_desc");
-                $featured_products[$i]['product_url'] = $db->f("product_name");
+                $featured_products[$i]['product_url'] = $db->f("product_url");
                 $featured_products[$i]['product_thumb'] = $db->f("product_thumb_image");
+                $featured_products[$i]['product_full_image'] = $db->f("product_full_image");
                 $featured_products[$i]['product_id'] = $db->f("product_id");
                 $featured_products[$i]['flypage'] = $flypage;
                 $featured_products[$i]['form_addtocart'] = "";

@@ -162,7 +162,7 @@ class vmPageNav {
       }
     } else {
       $html .= "\n<li><span class=\"pagenav\">".$VM_LANG->_('PN_NEXT')." &raquo;</span></li>";
-      $html .= "\n<li><span class=\"pagenav\">".$VM_LANG->_('PN_END')." &raquo;&raquo;</span><li>";
+      $html .= "\n<li><span class=\"pagenav\">".$VM_LANG->_('PN_END')." &raquo;&raquo;</span></li>";
     }
     $html .= "\n</ul>";
     return $html;
