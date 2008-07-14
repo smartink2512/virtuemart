@@ -36,7 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 11.07.2008 gregdev
-# Task #2226 - Instead of 'Notify Me' button 'add to cart' button is shown when list box for child products is selected.
+# Task #2226 - Instead of 'Notify Me' button 'add to cart' button is shown when list box for child products is selected
 
 09.07.2008 gregdev
 # Task #2224 - Don't show up ajax pop-up when click "Notify me"
