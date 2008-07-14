@@ -140,7 +140,7 @@ class vmPageNav {
     for ($i=$start_loop; $i <= $stop_loop; $i++) {
       $page = ($i - 1) * $this->limit;
       if ($i == $this_page) {
-        $html .= "\n<li><span class=\"pagenav\"> $i </span><li>";
+        $html .= "\n<li><span class=\"pagenav\"> $i </span></li>";
       } else {
         if( $link != '') {
           $html .= "\n<li><a href=\"".vmRoute($link.'&limitstart='.$page)."\" class=\"pagenav\"><strong>$i</strong></a></li>";

@@ -48,7 +48,6 @@ VirtueMart 1.1.x
 # Xhtml compliance issues in shop.search.php
 # Don't show the browse page footer when there are no products
 
->>>>>>> .r1470
 11.07.2008 gregdev
 # Task #2226 - Instead of 'Notify Me' button 'add to cart' button is shown when list box for child products is selected.
 
