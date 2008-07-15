@@ -137,9 +137,9 @@ class ps_shopper {
 	** returns:
 	***************************************************************************/
 	function validate_update(&$d) {
-		global $my, $perm, $vmLogger, $mosConfig_absolute_path;
+		global $my, $perm, $vmLogger, $mosConfig_absolute_path, $auth;
 
-		if ($my->id == 0){
+		if ( $my->id == 0 && $auth['user_id'] == 0 ){
 			$vmLogger->err( "Please Login first." );
 
 			return false;
@@ -633,7 +633,7 @@ class ps_shopper {
 		$auth = $_SESSION['auth'];
 		$db = new ps_DB;
 
-		if (@$d["user_id"] != $my->id && $auth["perms"] != "admin") {
+		if ( @$d["user_id"] != $my->id && @$d["user_id"] != $auth['user_id'] && $auth["perms"] != "admin") {
 			$vmLogger->crit( "Tricky tricky, but we know about this one." );
 			return False;
 		}
@@ -650,12 +650,15 @@ class ps_shopper {
 		$_POST['gid'] = $my->gid;
 		$d['error'] = "";
 
-		ps_user::saveUser( $d );
+		if ( VM_REGISTRATION_TYPE != 'NO_REGISTRATION' ) {
+			ps_user::saveUser( $d );
+		}
+		
 		if( !empty( $d['error']) ) {
 
 			return false;
 		}
-
+		
 		if (!$this->validate_update($d)) {
 			return false;
 		}

@@ -32,7 +32,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 </div>
 
 <?php
-ps_userfield::listUserFields( $fields, array(), $db );
+ps_userfield::listUserFields( $fields, $skip_fields, $db );
 ?>
 
 <div align="center">	

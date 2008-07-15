@@ -29,10 +29,17 @@ $missing = vmGet( $vars, 'missing' );
 if (!empty($missing)) {
 	echo "<script type=\"text/javascript\"> alert('".$VM_LANG->_('CONTACT_FORM_NC')."'); </script>\n";
 }
-$q =  "SELECT * FROM #__users, #__{vm}_user_info 
-		WHERE user_id='" . $auth["user_id"] . "' 
-		AND user_id = id
-		AND address_type='BT' ";
+
+if ( VM_REGISTRATION_TYPE == 'NO_REGISTRATION' ) {
+	$q =  "SELECT * FROM #__{vm}_user_info 
+			WHERE user_id='" . $auth["user_id"] . "' 
+			AND address_type='BT' ";
+} else {
+	$q =  "SELECT * FROM #__users, #__{vm}_user_info 
+			WHERE user_id='" . $auth["user_id"] . "' 
+			AND user_id = id
+			AND address_type='BT' ";
+}
 $db->query($q);
 $db->next_record();
 
@@ -55,6 +62,14 @@ $tpl->set( 'pathway', $pathway );
 $vmPathway = $tpl->fetch( 'common/pathway.tpl.php' );
 $tpl->set( 'vmPathway', $vmPathway );
 
+// Handle NO_REGISTRATION
+$skip_fields = array();
+if ( VM_REGISTRATION_TYPE == 'NO_REGISTRATION' ) {
+	global $default;
+	$default['email'] = $db->f('user_email');
+	$skip_fields = array( 'username', 'password', 'password2' );
+}
+
 $fields = ps_userfield::getUserFields( 'account' );
 
 $tpl->set_vars( array(
@@ -62,7 +77,8 @@ $tpl->set_vars( array(
 					'db' => $db,
 					'next_page' => $next_page,
 					'missing' => $missing,
-					'Itemid' => $Itemid
+					'Itemid' => $Itemid,
+					'skip_fields' => $skip_fields
 					));
 echo $tpl->fetch('pages/'.$page.'.tpl.php');
 
