@@ -25,9 +25,6 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 		if( $bt_user_info_id == $value || empty($value)) {
 			$checked = 'checked="checked" ';
 		}
-		if( $db->num_rows() > 0 ) {
-			$checked .= 'onchange="document.adminForm.submit();" ';
-		}
 		echo '<input type="radio" name="'.$name.'" id="'.$bt_user_info_id.'" value="'.$bt_user_info_id.'" '.$checked.'/>'."\n";
 	
 		?></td>
@@ -42,7 +39,7 @@ while($db->next_record()) {
 	if ( $value == $db->f("user_info_id")) {
 		$checked = 'checked="checked" ';
 	}
-	echo '<input type="radio" name="'.$name.'" id="' . $db->f("user_info_id") . '" value="' . $db->f("user_info_id") . '" '.$checked.' onchange="document.adminForm.submit();" />'."\n";
+	echo '<input type="radio" name="'.$name.'" id="' . $db->f("user_info_id") . '" value="' . $db->f("user_info_id") . '" '.$checked.' />'."\n";
 	
 	echo '</td>'."\n";
 	echo '<td>'."\n";

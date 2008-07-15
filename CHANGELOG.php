@@ -37,6 +37,7 @@ VirtueMart 1.1.x
 *************************************
 15.08.2008 gregdev
 # Task #2243 - User prompted for username & password when Virtuemart in "No Account Creation"
+# Task #2245 - Shipping Address Selection - switching back to default address
 
 14.07.2008 soeren
 ^ Task #2240 - mf description also in shop.browse.php and browse_header_manufacturer.tpl.php 

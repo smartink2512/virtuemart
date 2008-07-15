@@ -140,6 +140,9 @@ class ps_user_address {
 			return false;
 		}
 		$GLOBALS['vmLogger']->info($VM_LANG->_('VM_USERADDRESS_ADDED'));
+		
+		vmRequest::setVar( 'ship_to_info_id', $fields['user_info_id'] );
+		
 		return true;
 	}
 	
@@ -181,6 +184,9 @@ class ps_user_address {
 			return false;
 		}
 		$GLOBALS['vmLogger']->info($VM_LANG->_('VM_USERADDRESS_UPDATED'));
+		
+		vmRequest::setVar( 'ship_to_info_id', $d['user_info_id'] );
+		
 		return true;
 		
 	}
