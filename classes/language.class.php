@@ -52,6 +52,7 @@ class vmAbstractLanguage {
 /** @var boolean If true, highlights string not found */
 	var $_debug = false;
 	var $modules = array();
+	var $key_varname = '';
 	
 	function vmAbstractLanguage() {
 		$this->setDebug();
@@ -73,21 +74,15 @@ class vmAbstractLanguage {
 			$this->load($module);
 		}
 		$text = false;
-	    if (isset($this->modules[$module][$key])) {
-			$text = $this->modules[$module][$key];
-		} elseif (isset($this->modules['common'][$key])) {
-			$text = $this->modules['common'][$key];
-			$module = 'common';
-		} elseif( $key[0] == '_' ) {
+		
+	    $module = $this->exists($key);
+		if( $module === false && $key[0] == '_' ) {
 			$key = substr( $key, 1 );
-		    if (isset($this->modules[$module][$key])) {
-				$text = $this->modules[$module][$key];
-			} elseif (isset($this->modules['common'][$key])) {
-				$text = $this->modules['common'][$key];
-				$module = 'common';
-			}
+		    $module = $this->exists($key);
 		}
-		if ($text!==false) {
+		
+		if ($module!==false) {
+			$text = $this->modules[$module][$key];
 			if( $htmlentities ) {
 				$text = htmlentities( $text, ENT_QUOTES, $this->getCharset($module));
 				// some symbols are not converted correctly... doing manually
@@ -214,17 +209,22 @@ class vmAbstractLanguage {
 	/**
 	* Check if a language variable exists in current language file
 	* @param string Name of the Class Variable
-	* @return boolean True if exists, false is non exists
+	* @return mixed the name of the module if exists, false is not exists
 	*/
 	function exists($var,$module=false) {
 		global $modulename;
 		if (!$module) $module=$modulename;
 	    $key = strtoupper( $var );
 	    if (isset($this->modules[$module][$key])) {
-			return true;
+			return $module;
 		} elseif (isset($this->modules['common'][$key])) {
-			return true;
+			return 'common';
 		} else {
+			foreach ( $this->modules as $lang_module ) {
+				if( isset( $lang_module[$key])) {
+					return $lang_module[$this->key_varname];
+				}
+			}
 			return false;
 		}
 	}
@@ -259,6 +259,7 @@ class vmAbstractLanguage {
 	*/
 	function initModule($module,&$vars) {
 		$this->modules[$module] =& $vars;
+		$this->modules[$module][$this->key_varname] = $module;
 		$this->modules[$module]['CONVERT_FUNC'] = 'strval';
 		if( empty( $this->modules[$module]['CHARSET'] )) $this->setCharset($module);
 		// get global charset setting

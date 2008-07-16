@@ -443,16 +443,7 @@ class ps_order {
 			//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 		}
 
-		elseif ($end_date=="0") {
-			$end_date=time('u') + DOWNLOAD_EXPIRE;
-			$q ="UPDATE #__{vm}_product_download SET";
-			$q .=" end_date=$end_date";
-			$q .=" WHERE download_id = '" . $download_id . "'";
-			$db->query($q);
-			$db->next_record();
-		}
-
-		elseif ($zeit > $end_date) {
+		elseif ($end_date!="0" && $zeit > $end_date) {
 			$q ="DELETE FROM #__{vm}_product_download";
 			$q .=" WHERE download_id = '" . $download_id . "'";
 			$db->query($q);
@@ -469,6 +460,7 @@ class ps_order {
 			// Check if this is a request for a special range of the file (=Resume Download)
 			$range_request = vmConnector::http_rangeRequest( filesize($datei), false );
 			if( $range_request[0] == 0 ) {
+				// this is not a request to resume a download,
 				$download_count = true;
 			} else {
 				$download_count = false;
@@ -476,15 +468,7 @@ class ps_order {
 		} else {
 			$download_count = false;
 		}
-		if( $download_count ) {
-			// If this is not a the request to resume a download,
-			// decrease the download_max to limit the number of downloads
-			$q ="UPDATE `#__{vm}_product_download` SET";
-			$q .=" `download_max`=`download_max` - 1";
-			$q .=" WHERE download_id = '" .$download_id. "'";
-			$db->query($q);
-			$db->next_record();
-		}
+
 		// Parameter to check if the file should be removed after download, which is only true,
 		// if we have a remote file, which was transferred to this server into a temporary file
 		$unlink = false;
@@ -514,6 +498,24 @@ class ps_order {
 				//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
 			}
 		}
+		if( $download_count ) {
+			// decrement the download_max to limit the number of downloads
+			$q ="UPDATE `#__{vm}_product_download` SET";
+			$q .=" `download_max`=`download_max` - 1";
+			$q .=" WHERE download_id = '" .$download_id. "'";
+			$db->query($q);
+			$db->next_record();
+		}
+		if ($end_date=="0") {
+			// Set the Download Expiry Date, so the download can expire after DOWNLOAD_EXPIRE seconds
+			$end_date=time('u') + DOWNLOAD_EXPIRE;
+			$q ="UPDATE #__{vm}_product_download SET";
+			$q .=" end_date=$end_date";
+			$q .=" WHERE download_id = '" . $download_id . "'";
+			$db->query($q);
+			$db->next_record();
+		}
+		
 		if (ereg('Opera(/| )([0-9].[0-9]{1,2})', $_SERVER['HTTP_USER_AGENT'])) {
 			$UserBrowser = "Opera";
 		}

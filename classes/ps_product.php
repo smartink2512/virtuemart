@@ -921,6 +921,18 @@ class ps_product extends vmAbstractObject {
 		return $product_parent_id == 0;
 	}
 	/**
+	 * Function to check whether a product is published
+	 *
+	 *
+	 * @param int $product_id
+	 * @return boolean True when the product is a parent product, false when product is a child item
+	 */
+	function is_published($product_id, $check_stock=false) {
+		if( CHECK_STOCK != '1') $check_stock=false;
+		return ps_product::get_field($product_id, 'product_publish') == 'Y';
+
+	}
+	/**
 	 * Checks if a product is a downloadable product
 	 *
 	 * @param int $product_id

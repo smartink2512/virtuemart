@@ -20,6 +20,7 @@ mm_showMyFileName( __FILE__ );
 include_class( "vendor" );
 global $ps_vendor, $ps_vendor_id;
 
+$VM_LANG->load('admin');
 $option = empty($option)?vmGet( $_REQUEST, 'option', 'com_virtuemart'):$option;
 
 $currency_style_positive = array('00Symb', '00 Symb', 'Symb00', 'Symb 00' );
@@ -109,11 +110,13 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"' );
 			    </tr>
 			    <tr> 
 			      <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_STORE_ADDRESS_FORMAT') ?>:<br />
-					<?php echo vmToolTip($VM_LANG->_('PHPSHOP_STORE_ADDRESS_FORMAT_TIP') . ':<br />
+					<?php
+					echo vmToolTip($VM_LANG->_('PHPSHOP_STORE_ADDRESS_FORMAT_TIP') . ':<br />
 			        		<strong>{storename}</strong>: '.$VM_LANG->_('PHPSHOP_STORE_FORM_STORE_NAME').'<br />
 			        		<strong>{address_1}</strong>: '.$VM_LANG->_('PHPSHOP_STORE_FORM_ADDRESS_1').'<br />
 			        		<strong>{address_2}</strong>: '.$VM_LANG->_('PHPSHOP_STORE_FORM_ADDRESS_2').'<br />
 			        		<strong>{state}</strong>: '.$VM_LANG->_('PHPSHOP_STORE_FORM_STATE').'<br />
+			        		<strong>{statename}</strong>: '.$VM_LANG->_('PHPSHOP_STATE_LIST_2_CODE').'<br />
 			        		<strong>{city}</strong>: '.$VM_LANG->_('PHPSHOP_STORE_FORM_CITY').'<br />
 			        		<strong>{zip}</strong>: '.$VM_LANG->_('PHPSHOP_STORE_FORM_ZIP').'<br />
 			        		<strong>{country}</strong>: '.$VM_LANG->_('PHPSHOP_STORE_FORM_COUNTRY').'<br />

@@ -35,6 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+16.07.2008 soeren
+# Task #2246 - Download count and expiration still modified if file missing or unreadable when download requested.
+^ language class: added the ability to retrieve a key from an arbitrary module, whose language file was loaded from within a page
+	Example: $VM_LANG->load('mymodule') now gives you access to that language keys even if the current "page" belongs to a different module (e.g. "store")
+
 15.08.2008 gregdev
 # Task #2243 - User prompted for username & password when Virtuemart in "No Account Creation"
 # Task #2245 - Shipping Address Selection - switching back to default address
