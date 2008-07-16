@@ -300,7 +300,9 @@ class ps_shopper {
 				// Make sure that "dummy" entries for non-existing Joomla! users won't ever have the same user_id as a future Joomla! user
 				$db->query( "SELECT MIN(user_id)-1 as uid FROM `#__{vm}_user_info`" );
 				$db->next_record();
-				$uid = $db->f('uid');
+
+				// Don't allow a user id of zero
+				$uid = ( $db->f('uid') == 0 ) ? -1 : $db->f('uid');
 				
  			} else {
 				// Process the CMS registration
