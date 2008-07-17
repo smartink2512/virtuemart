@@ -37,7 +37,8 @@ VirtueMart 1.1.x
 *************************************
 17.07.2008 gregdev
 # Task #2256 - When Joomla Allow User Registration is set to No, VM template breaks.
-^ Changed vmRedirect to use $mainframe->redirect($url, $msg) on Joomla! >= 1.5 
+^ Changed vmRedirect to use $mainframe->redirect($url, $msg) on Joomla! >= 1.5
+# Task #2258 - Bottom page navigation is placed in wrong location for two product list styles.
 
 16.07.2008 gregdev
 # Task #2195 - Don't allow a user id of zero

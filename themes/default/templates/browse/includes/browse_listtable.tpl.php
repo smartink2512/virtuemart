@@ -69,6 +69,7 @@ foreach($data as $key => $value) {
 echo $table->toHtml();
 ?>
 <br class="clr" /><br />
+<?php echo $browsepage_footer ?>
 <?php 
 // Show Featured Products
 if( $this->get_cfg( 'showFeatured', 1 )) {
@@ -77,4 +78,3 @@ if( $this->get_cfg( 'showFeatured', 1 )) {
     echo $ps_product->featuredProducts(true,10,true);
 } ?>
 <?php echo $recent_products ?>
-<?php echo $browsepage_footer ?>
