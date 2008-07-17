@@ -985,9 +985,12 @@ function vmIsXHR() {
 function vmRedirect( $url, $msg='' ) {
 	if( function_exists('mosRedirect')) {
 		mosRedirect($url, $msg );
+	} elseif( vmIsJoomla( '1.5', '>=' ) ) {
+	   global $mainframe;
+	   $mainframe->redirect( $url, $msg );
 	} else {
 	   global $mainframe;
-	
+	   
 	    // specific filters
 		$iFilter = vmInputFilter::getInstance();
 		$url = $iFilter->process( $url );
