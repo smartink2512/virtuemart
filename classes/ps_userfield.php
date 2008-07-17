@@ -394,8 +394,21 @@ class ps_userfield extends vmAbstractObject {
 	   			default:
 	   				
 	   				switch( $field->type ) {
-	   					case 'text':
 	   					case 'date':
+							echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/includes/js/calendar/calendar.js');
+							if( vmIsJoomla( '1.5', '>=' ) ) {
+								// in Joomla 1.5, the name of calendar lang file is changed...
+								echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/includes/js/calendar/lang/calendar-en-GB.js');
+							} else {
+								echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/includes/js/calendar/lang/calendar-en.js');
+							}
+							echo vmCommonHTML::linkTag( $mosConfig_live_site .'/includes/js/calendar/calendar-mos.css');
+	   					
+	   						$maxlength = $field->maxlength ? 'maxlength="'.$field->maxlength.'"' : '';
+					        echo '<input type="text" id="'.$field->name.'_field" name="'.$field->name.'" size="'.$field->size.'" value="'. ($db->sf($field->name)?$db->sf($field->name):'') .'" class="inputbox" '.$maxlength . $readonly . ' />'."\n";
+					        echo '<input name="reset" type="reset" class="button" onclick="return showCalendar(\''.$field->name.'_field\', \'y-mm-dd\');" value="..." />';
+	   						break;
+	   					case 'text':
 	   					case 'emailaddress':
 	   					case 'webaddress':
 	   					case 'euvatid':	   						
@@ -510,11 +523,11 @@ class ps_userfield extends vmAbstractObject {
 	}
 	
 	function prepareFieldDataSave($fieldType,$fieldName,$value=null) {
-		global $ueConfig,$_POST;
+		global $_POST;
 		$sqlFormat = "Y-m-d";
 		switch($fieldType) {
 			case 'date': 
-				$value=dateConverter(vmGetUnEscaped($value),$ueConfig['date_format'],$sqlFormat);
+				$value=vmGetUnEscaped($value);
 				break;
 			case 'webaddress':
 				if (isset($_POST[$fieldName."Text"]) && ($_POST[$fieldName."Text"])) {

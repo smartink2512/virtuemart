@@ -37,6 +37,7 @@ VirtueMart 1.1.x
 *************************************
 16.07.2008 gregdev
 # Task #2195 - Don't allow a user id of zero
+# Fix fatal error for date-type userfield
 
 16.07.2008 soeren
 # Task #2246 - Download count and expiration still modified if file missing or unreadable when download requested.
