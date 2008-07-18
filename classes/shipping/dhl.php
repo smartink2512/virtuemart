@@ -354,11 +354,31 @@ class dhl {
 
 			$recv =& $xmlReq->createElement('Receiver');
 			$addr =& $xmlReq->createElement('Address');
+			
+			// Handle address_1
+			$address_1 = $db->f('address_1');
+			if( strlen( $address_1 ) > 35 ) {
+				$address_1 = substr( $address_1, 0, 35 );
+				$vmLogger->debug( 'Address 1 too long. Shortened to 35 characters.' );
+			}
+			$street_addr =& $xmlReq->createCDATASection( $address_1 );
+
 			$street =& $xmlReq->createElement('Street');
-			$street_addr =& $xmlReq->createCDATASection(
-			    $db->f('address_1') . "\n" . $db->f('address_2'));
 			$street->appendChild($street_addr);
 			$addr->appendChild($street);
+
+			// Handle address_2
+			$address_2 = $db->f('address_2');
+			if( strlen( $address_2 ) > 35 ) {
+				$address_2 = substr( $address_2, 0, 35 );
+				$vmLogger->debug( 'Address 2 too long. Shortened to 35 characters.' );
+			}
+			$street_addr2 =& $xmlReq->createCDATASection( $address_2 );
+
+			$street2 = & $xmlReq->CreateElement( 'StreetLine2' );
+			$street2->appendChild($street_addr2);
+			$addr->appendChild($street2);
+
 			$city =& $xmlReq->createElement('City');
 			$city_name =& $xmlReq->createCDATASection($db->f('city'));
 			$city->appendChild($city_name);

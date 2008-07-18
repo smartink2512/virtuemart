@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+18.07.2008 gregdev
+# Task #2260 - DHL shipping error when address 2 is present 
+
 17.07.2008 gregdev
 # Task #2256 - When Joomla Allow User Registration is set to No, VM template breaks.
 ^ Changed vmRedirect to use $mainframe->redirect($url, $msg) on Joomla! >= 1.5
