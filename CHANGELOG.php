@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+21.07.2008 soeren
+# Task #2081 - add product page tabs empty
+
 18.07.2008 gregdev
 # Task #2260 - DHL shipping error when address 2 is present 
 

@@ -40,8 +40,6 @@ $next_page = vmGet( $_REQUEST, 'next_page', "product.product_display" );
 $option = empty($option)?vmGet( $_REQUEST, 'option', 'com_virtuemart'):$option;
 $clone_product = vmGet( $_REQUEST, 'clone_product', 0 );
 $extra_ids = '';
-$dl_checked = "";
-$curr_filename = "";
 $display_use_parent="";
 $product_list="";
 $display_header="";
@@ -145,16 +143,9 @@ if (!empty($product_id)) {
 		$related_products = explode("|", $db2->f("related_products"));
 	}
 
-	// Look if the Product is downloadable
-	$q_dl = "SELECT attribute_name,attribute_value AS filename FROM #__{vm}_product_attribute WHERE ";
-	$q_dl .= "product_id='$product_id' AND attribute_name='download'";
-	$db2->query($q_dl);
-	if ($db2->next_record())
-	$dl_checked = "checked=\"checked\"";
-	$curr_filename = $db2->f("filename");
-
 }
-
+// Get some "default" values, which are used when no other values where provided through _REQUEST
+$default['attribute'] = ps_product_attribute::formatAttributeX();
 $default["product_publish"] = "Y";
 $default["product_weight_uom"] = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_WEIGHT_UOM_DEFAULT');
 $default["product_lwh_uom"] = $VM_LANG->_('PHPSHOP_PRODUCT_FORM_DIMENSION_UOM_DEFAULT');
@@ -653,7 +644,7 @@ $tabs->startTab( $status_label, "status-page");
 		<td width="79%" id="attribute_container">
 			<?php 
 			// ATTRIBUTE EXTENSION by Tobias (eaxs)
-			ps_product_attribute::loadAttributeExtension($db->f("attribute"));
+			ps_product_attribute::loadAttributeExtension($db->sf("attribute"));
 			?>
     </tr>
     <tr class="row0">

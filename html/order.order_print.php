@@ -104,13 +104,14 @@ else {
 		$tab->startTab(  $VM_LANG->_('PHPSHOP_ORDER_STATUS_CHANGE'), "order_change_page" );
 			?>
 			<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-			<table class="adminlist">
+			<table class="adminform">
 			 <tr>
-			  <th colspan="3"><?php echo $VM_LANG->_('PHPSHOP_ORDER_STATUS_CHANGE') ?></th>
+			  <th colspan="2"><?php echo $VM_LANG->_('PHPSHOP_ORDER_STATUS_CHANGE') ?></th>
 			 </tr>
 			 <tr>
-			  <td colspan="3"><?php echo "<strong>".$VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_STATUS') .": </strong>";
-				  $ps_order_status->list_order_status($db->f("order_status")); ?>
+			  <td class="labelcell"><?php echo $VM_LANG->_('PHPSHOP_ORDER_PRINT_PO_STATUS') .":"; ?>
+			  </td>
+			  <td><?php $ps_order_status->list_order_status($db->f("order_status")); ?>
 				  <input type="submit" class="button" name="Submit" value="<?php echo $VM_LANG->_('PHPSHOP_UPDATE') ?>" />
 					<input type="hidden" name="page" value="order.order_print" />
 					<input type="hidden" name="func" value="orderStatusSet" />
@@ -121,18 +122,22 @@ else {
 			  </td>
 			 </tr>
 			 <tr>
-			  <td valign="top"><?php echo "<strong>".$VM_LANG->_('PHPSHOP_COMMENT') .": </strong>"; ?>
+			  <td class="labelcell" valign="top"><?php echo $VM_LANG->_('PHPSHOP_COMMENT') .":"; ?>
 			  </td>
 			  <td>
-				<textarea name="order_comment" rows="4" cols="35"></textarea>
+				<textarea name="order_comment" rows="5" cols="25"></textarea>
+			  </td>
+			  <tr>
+			  <tr>
+			  <td class="labelcell"><label for="notify_customer"><?php echo $VM_LANG->_('PHPSHOP_ORDER_LIST_NOTIFY') ?></label></td>
+			  <td><input type="checkbox" name="notify_customer" id="notify_customer" checked="checked" value="Y" /></td> 
+				  </tr>
+				  <tr>
+				<td class="labelcell"><label for="include_comment"><?php echo $VM_LANG->_('PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT') ?></label>
 			  </td>
 			  <td>
-			  <input type="checkbox" name="notify_customer" id="notify_customer" checked="checked" value="Y" /> 
-				  <label for="notify_customer"><?php echo $VM_LANG->_('PHPSHOP_ORDER_LIST_NOTIFY') ?></label>
-				<br/>
 			  <input type="checkbox" name="include_comment" id="include_comment" checked="checked" value="Y" /> 
-				  <label for="include_comment"><?php echo $VM_LANG->_('PHPSHOP_ORDER_HISTORY_INCLUDE_COMMENT') ?></label>
-			  </td>
+				  </td>
 			 </tr>
 			</table>
 			</form>
