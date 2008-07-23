@@ -1271,30 +1271,6 @@ $tabs->startTab( $VM_LANG->_('VM_ADMIN_CFG_FEED_CONFIGURATION'), "feed-page");
 ?>   
 <br style="clear:both;" />
 <script type="text/javascript">
-function unCheckAndDisable( disable ) {
-
-	var n = document.adminForm.shippingMethodCount.value;
-	var fldName = 'sh';
-	var f = document.adminForm;
-	var n2 = 0;
-	if( disable )
-	for (i=0; i < n; i++) {
-		cb = eval( 'f.' + fldName + '' + i );
-		if (cb) {
-			cb.disabled = true;
-			n2++;
-		}
-	}
-	else
-	for (i=0; i < n; i++) {
-		cb = eval( 'f.' + fldName + '' + i );
-		if (cb) {
-			cb.disabled = false;
-			n2++;
-		}
-	}
-}
-
 function validateForm(pressbutton) {
 	var form = document.adminForm;
 
@@ -1330,7 +1306,6 @@ function toggleVisibility( makeVisible, ID ) {
 }
 var count = document.adminForm.shippingMethodCount.value;
 var elem = eval( 'document.adminForm.sh' + count );
-unCheckAndDisable( elem.checked );
 var checkStock = document.adminForm.conf_CHECK_STOCK.checked;
 toggleVisibility( checkStock, 'cs1' );toggleVisibility( checkStock, 'cs2' );toggleVisibility( checkStock, 'cs3' );
 <?php

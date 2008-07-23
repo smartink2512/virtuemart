@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+23.07.2008 gregdev
+# Fix disabled shipping methods when last option is chosen (http://forum.virtuemart.net/index.php?topic=40580.15 - thanks Joseph)
+
 21.07.2008 soeren
 # Task #2081 - add product page tabs empty
 
