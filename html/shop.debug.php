@@ -72,7 +72,7 @@ $tabs->startTab( "Shop Core Variables", "shop-variables" );
           <td align="right" valign="top"><b>Username:</b></td>
           <td valign="top"><?php echo $auth["username"]; ?>&nbsp;</td>
           <td align="right" valign="top"><b>Function:</b></td>
-          <td valign="top"><?php echo $func;?>&nbsp;</b></td>
+          <td valign="top"><?php echo $func;?>&nbsp;</td>
         </tr>
         
         <tr class="sectiontableentry1" > 
@@ -190,7 +190,9 @@ $tabs->startTab( "Global Variables", "global-variables");
           <td align="right" valign="top"><b>$vars:</b></td>
           <td colspan="3"><?php   
             while (list($val,$key) = each($vars)) {
-              echo "$val=>$key<br/>";
+            	if( !is_object($key) && !is_array($key)) {
+            		echo "$val =&gt; $key<br/>";
+            	}
             }
             ?>
           </td>

@@ -46,4 +46,7 @@ ps_userfield::listUserFields( $fields, $skip_fields, $db );
   <input type="hidden" name="id" value="<?php echo $auth["user_id"] ?>" />
   <input type="hidden" name="user_id" value="<?php echo $auth["user_id"] ?>" />
   <input type="hidden" name="address_type" value="BT" />
+  <noscript>
+  <input type="submit" class="inputbox" value="<?php echo $VM_LANG->_('CMN_SAVE') ?>" />
+  </noscript>
 </form>

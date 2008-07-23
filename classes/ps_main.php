@@ -105,7 +105,7 @@ function vmValidateName( $string ) {
 function vmValidateEUVat( $euvat ){
 	require_once( CLASSPATH . 'nusoap/nusoap.php' );
 	require_once( CLASSPATH . 'euvatcheck.class.php' );
-	
+	$GLOBALS['vmLogger']->debug( 'Checking for valid EU VAT ID' );
 	$vatcheck = new VmEUVatCheck($euvat);
 	return $vatcheck->validvatid;
 }

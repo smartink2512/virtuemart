@@ -80,17 +80,19 @@ class VmEUVatCheck {
 			
 			/* Check if anything has gone wrong */
 			if ($this->client->fault) {
-				/* There was a problem, return false as we cannot check the VAT ID */
+				$vmLogger->debug( 'There was a problem with the VAT ID Check!' );
 				return false;
 			}
 			else {
 				/* See if we received an error */
 				if ($this->client->getError()) {
-					/* There was an error, return false as we cannot check the VAT ID */
+					// There was an error, return false as we cannot check the VAT ID
+					$vmLogger->debug( $this->client->getError() ); 
 					return false;
 				} 
 				/* We have a valid response, process the response */
 				else {
+					$vmLogger->debug( 'EU VAT ID Check completed.' );
 					/* Strip all garbage before the actual XML content */
 					$xmltxt = trim(substr($this->client->response, strpos ($this->client->response, '<?xml')));
 					

@@ -162,7 +162,10 @@ class ps_shopper {
 			$skipFields[] = 'email';
 		}
 		foreach( $accountFields as $field )  {
-			if( $field->required == 0 ) continue;
+			if( $field->required == 0 ) {
+				if( $field->type == 'euvatid' && !empty($d[$field->name])) {}
+				else continue;
+			}
 			if( in_array( $field->name, $skipFields )) {
 				continue;
 			}
