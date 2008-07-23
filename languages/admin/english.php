@@ -118,7 +118,7 @@ $langvars = array (
 	'PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE' => 'Category Template',
 	'PHPSHOP_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN' => 'This defines the default category template for displaying products in a category.<br />
 		You can create new templates by customizing existing template files <br />
-		(which reside in the directory <strong>COMPONENTPATH/html/templates/</strong> and begin with browse_)',
+		(which reside in the directory <strong>COMPONENTPATH/themes/default/templates/browse/</strong> and begin with browse_)',
 	'PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW' => 'Default number of products in a row',
 	'PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN' => 'This defines the number of products in a row. <br />
 		Example: If you set it to 4, the category template will display 4 products per row',
