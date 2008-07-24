@@ -161,6 +161,20 @@ function return_snapshot( &$params ) {
 			FROM #__{vm}_product
 			WHERE product_id IN ({$params['id']})" ;
 	$db->query( $q ) ;
+
+    $ordering=explode(",",$params['id']);
+    $db->recordx = array();
+    foreach($ordering as $key1 => $value1) {
+        foreach ($db->record as $key2 => $value2) {
+            $a = "'" . $value2->product_id . "'";
+            if ($a == $value1) {
+                $db->recordx[] = $value2;
+            }
+        }
+    }
+    foreach($db->record as $key => $value) {
+        $db->record[$key] = $db->recordx[$key];
+    }
 	
 	$product_count = $db->num_rows() ;
 	if( $product_count > 0 ) {
