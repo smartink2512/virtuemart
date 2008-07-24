@@ -39,6 +39,7 @@ class ps_userfield extends vmAbstractObject {
 			case 'letterman_subscription':
 			case 'yanc_subscription':
 			case 'anjel_subscription':
+			case 'ccnewsletter_subscription':
 				// Set params = 
 				$d['params'] = 'newsletter='.substr($d['type'],0,strpos($d['type'], '_') )."\n";
 				$d['type'] = 'checkbox';

@@ -90,6 +90,9 @@ else {
 	if( file_exists($mosConfig_absolute_path.'/components/com_letterman/letterman.php')) {
 		$types['letterman_subscription'] = $VM_LANG->_('VM_FIELDS_NEWSLETTER').' (Letterman)';
 	}
+	if( file_exists($mosConfig_absolute_path.'/components/com_ccnewsletter/ccnewsletter.php')) {
+		$types['ccnewsletter_subscription'] = $VM_LANG->_('VM_FIELDS_NEWSLETTER').' (ccNewsletter)';
+	}
 	$types['delimiter'] = $VM_LANG->_('VM_FIELDS_DELIMITER');
 	
 	$lists['type'] = ps_html::selectList( 'type', $db->f('type'), $types, 1, '', 'onchange="toggleType(this.options[this.selectedIndex].value);"' );

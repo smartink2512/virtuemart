@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+24.07.2008 soeren
+# Task #2272 - added ccNewsletter Integration for VM
+
 23.07.2008 gregdev
 # Fix disabled shipping methods when last option is chosen (http://forum.virtuemart.net/index.php?topic=40580.15 - thanks Joseph)
 

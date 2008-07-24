@@ -427,7 +427,9 @@ class ps_shopper {
 		if( !empty( $subscribeTo ) && strtolower(get_class($subscribeTo))=='mosparameters') {
 			switch( $subscribeTo->get('newsletter', 'letterman')) {
 				// TODO:
-				// case 'yanc':
+				case 'ccnewsletter':
+					$db->query( "INSERT INTO `#__ccnewsletter_subscribers` ( `name`, `email`, `plainText`, `enabled`, `sdate`) 
+							VALUES('".$d['first_name']." ". $d['last_name']."','".$d['email']."', '0', '1', NOW())" );
 				// case 'anjel':
 				case 'letterman':
 				default:
