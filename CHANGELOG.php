@@ -35,8 +35,15 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+25.07.2008 aravot
+Minor CSS fix lightblue to #0000FF (thank you Phil)
+
 24.07.2008 soeren
 # Task #2272 - added ccNewsletter Integration for VM
+
+24.0.7.2008 aravot
+# Fix productsnapshots output order when displaying a row of products (http://forum.virtuemart.net/index.php?topic=43001.0 - thanks donmarvin)
+# 2176  Error in Infotip for Cofig/Layout/Category template.
 
 23.07.2008 gregdev
 # Fix disabled shipping methods when last option is chosen (http://forum.virtuemart.net/index.php?topic=40580.15 - thanks Joseph)
