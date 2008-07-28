@@ -36,7 +36,7 @@ Legend:
 VirtueMart 1.1.x
 *************************************
 25.07.2008 aravot
-Minor CSS fix lightblue to #0000FF (thank you Phil)
+Minor CSS fix lightblue to #ADD8E6 (thank you Phil)
 
 24.07.2008 soeren
 # Task #2272 - added ccNewsletter Integration for VM

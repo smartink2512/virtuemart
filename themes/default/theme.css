@@ -268,7 +268,7 @@ table.adminform td.labelcell {
 .vmCartContainer { /* Cart Container */
 	width: auto;
 	float: left;
-	background: #0000FF;
+	background: #ADD8E6;
 	border: 1px solid #000;
 	padding: 3px;
 }
@@ -380,7 +380,7 @@ width: 100%;
 .vmCartContainer_2up { /* Cart Container */
 	width: 100%;
 	float: left;
-	background: #0000FF;
+	background: #ADD8E6;
 	border: 1px solid #000;
 	padding: 3px;
 }
@@ -432,7 +432,7 @@ width: 100%;
 }
 
 .vmChildType_2up { /* Product type div*/
-	background: #0000FF;
+	background: #ADD8E6;
 	padding: 0px 5px 5px 5px;
 	margin: 0px 5px 5px 5px;
 	float: left;
