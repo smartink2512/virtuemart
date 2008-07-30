@@ -79,7 +79,7 @@ elseif( $num_rows == 0 && empty($product_type_id) && !empty($child_list)) {
 	echo $VM_LANG->_('EMPTY_CATEGORY');
 }
 
-elseif( $num_rows == 1 ) {
+elseif( $num_rows == 1 && ( !empty($keyword) || !empty($keyword1) ) ) {
 	// If just one product has been found, we directly show the details page of it
 	$db_browse->query( $list );
 	$db_browse->next_record();
