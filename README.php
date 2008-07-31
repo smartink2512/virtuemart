@@ -40,10 +40,10 @@ Community Home: http://virtuemart.net
 Package Contents:
 ##########################
 
- * 1 component (com_virtuemart_1.1.1.zip for Joomla! 1.0.x and Mambo or com_virtuemart_1.1.1.j15.zip for Joomla! 1.5)
+ * 1 component (com_virtuemart_1.1.x.zip for Joomla! 1.0.x and Mambo or com_virtuemart_1.1.x.j15.zip for Joomla! 1.5)
    INSTALLATION REQUIRED!
    
- * 1 main module (mod_virtuemart_1.1.1.zip for Joomla! 1.0.x and Mambo or mod_virtuemart_1.1.1.j15.zip for Joomla! 1.5)
+ * 1 main module (mod_virtuemart_1.1.x.zip for Joomla! 1.0.x and Mambo or mod_virtuemart_1.1.x.j15.zip for Joomla! 1.5)
    INSTALLATION REQUIRED!
    
  * 12 additional modules
@@ -82,7 +82,7 @@ This package was tested on
 - Mambo 4.5.3h
 - Mambo 4.6.2
 - Joomla 1.0.x
-- Joomla 1.5.3
+- Joomla 1.5.4
 
  -- IMPORTANT --
 Please note that module and component SHOULD be used together! 
@@ -196,7 +196,7 @@ You don't need to unpack any of the archives in this complete package!
 
 
 ############################
-   WHAT'S NEW IN VM 1.1.1?
+   WHAT'S NEW IN VM 1.1.2?
 ###########################
 
 //TODO

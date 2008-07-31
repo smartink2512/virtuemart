@@ -30,14 +30,14 @@ class vmVersion {
 	/** @var string Product */
 	var $PRODUCT = 'VirtueMart';
 	/** @var int Release Number */
-	var $RELEASE = '1.1.1';
+	var $RELEASE = '1.1.2';
 	/** @var string Development Status */
 	var $DEV_STATUS = 'stable';
 	/** @var string Codename */
-	// Song by Linkin' Park
-	var $CODENAME = 'One Step Closer';
+	// Song by James Taylor
+	var $CODENAME = 'Another Day';
 	/** @var string Date */
-	var $RELDATE = '23/06/2008';
+	var $RELDATE = '31/07/2008';
 	/** @var string Time */
 	var $RELTIME = '20:00';
 	/** @var string Timezone */

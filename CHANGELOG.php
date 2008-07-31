@@ -35,6 +35,8 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+--- VirtueMart 1.1.2 released (Rev. 1493 2008-07-31) ---
+
 30.07.2008 gregdev
 # Task #2277 - Subcategories are not show if category has only one product
 # Task #2219 - Attributes of Childproduct are not shown
