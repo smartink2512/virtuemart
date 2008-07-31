@@ -115,7 +115,7 @@ if( $valid ) {
 	<input type="button" onclick="document.adminForm.page.value=\'store.index\';document.adminForm.func.value=\'removePatchPackage\';submitform(\'save\');" class="vmicon vmicon32 vmicon-32-cancel" value="'.$VM_LANG->_('CMN_CANCEL').'" />
 	</div>';
 } else {
-	echo '<div class="shop_error">' . $VM_LANG->_('VM_UPDATE_PATCH_ERR_UNWRITABLE');
+	echo '<div class="shop_error">' . $VM_LANG->_('VM_UPDATE_PATCH_ERR_UNWRITABLE').'</div>';
 }
 $formObj->finishForm('applypatchpackage', 'admin.update_result');
  ?>

@@ -35,7 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
---- VirtueMart 1.1.2 released (Rev. 1493 2008-07-31) ---
+--- VirtueMart 1.1.2 released (Rev. 1495 2008-07-31) ---
+
+31.07.2008 soeren
+# added missing </div> in update preview
 
 31.07.2008 gregdev
 # Change mkdir permissions from 755 to 0755 in updater.
