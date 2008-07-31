@@ -290,6 +290,11 @@ class ps_product_attribute {
 			while( $db->next_record() ) {
 				$selected = isset( $_REQUEST['product_id'] ) ? ($db->f( "product_id" ) == $_REQUEST['product_id'] ? 'selected="selected"' : '') : '' ;
 				
+				// Use the child product's attributes instead of the parent's
+				if( $selected ) {
+					$tpl->set( "advanced_attribute", $this->list_advanced_attribute( $db->f( "product_id" ) ) ) ;
+					$tpl->set( "custom_attribute", $this->list_custom_attribute( $db->f( "product_id" ) ) ) ;
+				}
 				
 				// Start row for this child
 				$html .= "<option value=\"" . $db->f( "product_id" ) . "\" $selected>" ;
@@ -661,8 +666,8 @@ class ps_product_attribute {
 				$products[$ci]['product_in_stock'] = ps_product::get_field( $id, 'product_in_stock' ) ;
 				
 				// Output Advanced Attributes
-				$products[$ci]['advanced_attribute'] = $this->list_advanced_attribute( $product_id, $db->f( "product_id" ) ) ;
-				$products[$ci]['custom_attribute'] = $this->list_custom_attribute( $product_id, $db->f( "product_id" ) ) ;
+				$products[$ci]['advanced_attribute'] = $this->list_advanced_attribute( $db->f( "product_id" ) ) ;
+				$products[$ci]['custom_attribute'] = $this->list_custom_attribute( $db->f( "product_id" ) ) ;
 				$ci ++ ;
 			}
 			if( $display_type == "radio" ) {
