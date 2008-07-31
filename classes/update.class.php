@@ -273,7 +273,7 @@ class vmUpdate {
 		  		}
 		  		$dirname =  is_dir($patch_file) ? $orig_file : dirname($orig_file);
 		  		if( (is_dir($patch_file) || !file_exists($dirname)) ) {  					
-		  			if( !vmUpdate::mkdirR($dirname, 755 )) {
+		  			if( !vmUpdate::mkdirR($dirname, 0755 )) {
 		  				$vmLogger->err( sprintf($VM_LANG->_('VM_UPDATE_ERR_DIR_UNWRITABLE'),$dirname) );
 		  				$errors++;
 		  			}
