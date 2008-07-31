@@ -38,6 +38,7 @@ VirtueMart 1.1.x
 30.07.2008 gregdev
 # Task #2277 - Subcategories are not show if category has only one product
 # Task #2219 - Attributes of Childproduct are not shown
+- Removed 1.1.1->1.1.2 sql update script.
 
 25.07.2008 aravot
 Minor CSS fix lightblue to #ADD8E6 (thank you Phil)
