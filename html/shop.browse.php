@@ -118,7 +118,7 @@ else {
 		
 	}
 	elseif( $manufacturer_id) {
-		$db->query( "SELECT manufacturer_id, mf_name FROM #__{vm}_manufacturer WHERE manufacturer_id='$manufacturer_id'");
+		$db->query( "SELECT manufacturer_id, mf_name, mf_desc FROM #__{vm}_manufacturer WHERE manufacturer_id='$manufacturer_id'");
 		$db->next_record();
 		$mainframe->setPageTitle( $db->f("mf_name") );
 		

@@ -35,6 +35,10 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+03.08.2008
+
+# Task #2286 - Manufacturer Description missing query mf_desc in shop.browse.php on line 121
+
 --- VirtueMart 1.1.2 released (Rev. 1495 2008-07-31) ---
 
 31.07.2008 soeren
