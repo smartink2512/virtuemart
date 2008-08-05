@@ -172,7 +172,7 @@ if ( $show_login_form == "yes" ) {
     if ($my->id) {
 		if( vmIsJoomla('1.5') ) {
 			// Logout URL
-			$action =  $mm_action_url . 'index.php?option=com_user&task=logout';
+			$action =  $mm_action_url . 'index.php?option=com_user&amp;task=logout';
 
 			// Logout return URL
 			$uri = JFactory::getURI();
@@ -205,7 +205,7 @@ if ( $show_login_form == "yes" ) {
 	{
 		if( vmIsJoomla('1.5') ) {
 			// Login URL
-			$action =  $mm_action_url . 'index.php?option=com_user&task=login';
+			$action =  $mm_action_url . 'index.php?option=com_user&amp;task=login';
 			
 			// Login return URL
 			$uri = JFactory::getURI();

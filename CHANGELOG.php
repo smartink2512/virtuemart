@@ -35,8 +35,11 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
-03.08.2008
+05.08.2008 aravot
+Changes made to mod_virtuemart_login to make xhtml w3c compliance (http://forum.virtuemart.net/index.php?topic=44009.0 - thank you Phil)
+Changes made to mod_virtuemart to make xhtml w3c compliance (http://forum.virtuemart.net/index.php?topic=44008.0 - thank you Phil)
 
+03.08.2008
 # Task #2286 - Manufacturer Description missing query mf_desc in shop.browse.php on line 121
 
 --- VirtueMart 1.1.2 released (Rev. 1495 2008-07-31) ---

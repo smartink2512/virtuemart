@@ -67,7 +67,7 @@ if( vmIsJoomla('1.5') ) {
 	}
 	
 	// Post action
-	$action =  $mm_action_url. 'index.php?option=com_user&task='.$type;
+	$action =  $mm_action_url. 'index.php?option=com_user&amp;task='.$type;
 
 	// Set the redirection URL
 	if( $redirect == 'home' ) {
