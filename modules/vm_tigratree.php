@@ -108,7 +108,7 @@ class vmTigraTreeMenu {
 					$mymenu_content.= ",";
 				}
 				$mymenu_content.= "['".$category->cname;
-				$mymenu_content.= "','".sefRelToAbs('index.php?option=com_virtuemart&page=shop.browse&category_id='.$category->cid.'&Treeid='.$Treeid.$itemid)."'\n ";
+				$mymenu_content.= "','href=\"".sefRelToAbs('index.php?option=com_virtuemart&page=shop.browse&category_id='.$category->cid.'&Treeid='.$Treeid.$itemid)."\"'\n ";
 				
 				/* recurse through the subcategories */
 				$this->traverse_tree_down($mymenu_content, $category->ccid, $level);
