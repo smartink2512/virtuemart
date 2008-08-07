@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+07.08.2008 aravot
+Fix compatibility issues with jomcomment system plugin (http://forum.virtuemart.net/index.php?topic=42558.0 - thank you azrulrhm)
+
 05.08.2008 aravot
 Changes made to mod_virtuemart_login to make xhtml w3c compliance (http://forum.virtuemart.net/index.php?topic=44009.0 - thank you Phil)
 Changes made to mod_virtuemart to make xhtml w3c compliance (http://forum.virtuemart.net/index.php?topic=44008.0 - thank you Phil)
