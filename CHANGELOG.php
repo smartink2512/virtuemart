@@ -35,6 +35,9 @@ Legend:
 
 VirtueMart 1.1.x
 *************************************
+13.08.2008 aravot
+Corrected few spelling mistakes in English language (http://forum.virtuemart.net/index.php?topic=44169.0 - thank you Phil)
+
 07.08.2008 aravot
 Fix compatibility issues with jomcomment system plugin (http://forum.virtuemart.net/index.php?topic=42558.0 - thank you azrulrhm)
 

@@ -88,14 +88,14 @@ $langvars = array (
 	'PHPSHOP_ADMIN_CFG_REVIEW' => 'Enable Customer Review/Rating System',
 	'PHPSHOP_ADMIN_CFG_REVIEW_EXPLAIN' => 'If enabled, you allow customers to <strong>rate products</strong> and <strong>write reviews</strong> about them. <br />
 		So customers can write down their experiences with the product for other customers.<br />',
-	'PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN' => 'Sets the flag whether to subtract the Discount for the selected payment BEFORE (checked) or AFTER tax and shipping.',
+	'PHPSHOP_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN' => 'Sets the flag for whether to subtract the Discount for the selected payment BEFORE (checked) or AFTER tax and shipping.',
 	'PHPSHOP_ADMIN_CFG_AGREE_TERMS' => 'Must agree to Terms of Service?',
 	'PHPSHOP_ADMIN_CFG_AGREE_TERMS_EXPLAIN' => 'Check if you want a shopper to agree to your terms of service before registering to the shop.',
 	'PHPSHOP_ADMIN_CFG_CHECK_STOCK' => 'Check Stock?',
 	'PHPSHOP_ADMIN_CFG_CHECK_STOCK_EXPLAIN' => 'Sets whether to check the stock level when a user adds an item to the shopping cart. 
-		If set, this will not allow user to add more items to the cart than are available in stock.',
+		If set, this will not allow a user to add more items to the cart than are available in stock.',
 	'PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE' => 'Enable Affiliate Program?',
-	'PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE_EXPLAIN' => 'This enables the affiliate tracking in the shop-frontend. Enable if you have added affiliates in the backend..',
+	'PHPSHOP_ADMIN_CFG_ENABLE_AFFILIATE_EXPLAIN' => 'This enables the affiliate tracking in the shop-frontend. Enable if you have added affiliates in the backend.',
 	'PHPSHOP_ADMIN_CFG_MAIL_FORMAT' => 'Order-mail format:',
 	'PHPSHOP_ADMIN_CFG_MAIL_FORMAT_TEXT' => 'Text mail',
 	'PHPSHOP_ADMIN_CFG_MAIL_FORMAT_HTML' => 'HTML mail',
@@ -120,13 +120,13 @@ $langvars = array (
 		You can create new templates by customizing existing template files <br />
 		(which reside in the directory <strong>COMPONENTPATH/themes/default/templates/browse/</strong> and begin with browse_)',
 	'PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW' => 'Default number of products in a row',
-	'PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN' => 'This defines the number of products in a row. <br />
+	'PHPSHOP_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN' => 'This defines the number of products in a row.<br />
 		Example: If you set it to 4, the category template will display 4 products per row',
 	'PHPSHOP_ADMIN_CFG_NOIMAGEPAGE' => '"no image" image',
 	'PHPSHOP_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN' => 'This image will be shown when no product image is available.',
 	'PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION' => 'Show footer ',
 	'PHPSHOP_ADMIN_CFG_SHOWPHPSHOP_VERSION_EXPLAIN' => 'Displays a powered-by-VirtueMart footer image.',
-	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD' => 'Standard Shipping module with indiviual configured carriers and rates. <strong>RECOMMENDED !</strong>',
+	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_STANDARD' => 'Standard Shipping module with individual configured carriers and rates. <strong>RECOMMENDED !</strong>',
 	'PHPSHOP_ADMIN_CFG_STORE_SHIPPING_METHOD_ZONE' => '  	Zone Shipping Module Country Version 1.0<br />
 		For more information on this module please visit <a href="http://ZephWare.com">http://ZephWare.com</a><br />
 		for details or contact <a href="mailto:zephware@devcompany.com">ZephWare.com</a><br /> Check this to enable the zone shipping module',
@@ -135,13 +135,13 @@ $langvars = array (
 	'PHPSHOP_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN' => 'Check this, if you want the \'checkout-bar\' to be displayed to the customer during checkout process ( 1 - 2 - 3 - 4 with graphics).',
 	'PHPSHOP_ADMIN_CFG_CHECKOUT_PROCESS' => 'Choose your store\'s checkout process',
 	'PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS' => 'Enable Downloads',
-	'PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN' => 'Check to enable the download capability. Only If you want sell downloadable goods.',
+	'PHPSHOP_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN' => 'Check to enable the download capability. Only if you want to sell downloadable goods.',
 	'PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS' => 'Order Status which enables download',
 	'PHPSHOP_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN' => 'Select the order status at which the customer is notified about the download via e-mail.',
 	'PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS' => 'Order Status which disables downloads',
 	'PHPSHOP_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN' => 'Sets the order status at which the download is disabled for the customer.',
 	'PHPSHOP_ADMIN_CFG_DOWNLOADROOT' => 'DOWNLOADROOT',
-	'PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN' => 'The physical path to the files for the custumer download. (trailing slash at the end!)<br>
+	'PHPSHOP_ADMIN_CFG_DOWNLOADROOT_EXPLAIN' => 'The physical path to the files for the customer download. (trailing slash at the end!)<br>
         <span class="message">For your own shop\'s security: If you can, please use a directory ANYWHERE OUTSIDE OF THE WEBROOT</span>',
 	'PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX' => 'Download Maximum',
 	'PHPSHOP_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN' => 'Sets the number of downloads which can be made with one Download-ID, (for one order)',
@@ -156,7 +156,7 @@ $langvars = array (
 	'PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER' => 'Must agree to Terms of Service on EVERY ORDER?',
 	'PHPSHOP_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN' => 'Check if you want a shopper to agree to your terms of service on EVERY ORDER (before placing the order).',
 	'PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS' => 'Show Products that are out of Stock',
-	'PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN' => 'When enabled, Products that are currently not in Stock are displayed. Otherwise such Products are hidden.',
+	'PHPSHOP_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN' => 'When enabled, Products that are currently not in Stock are displayed. Otherwise, such Products are hidden.',
 	'PHPSHOP_ADMIN_CFG_SHOP_OFFLINE' => 'Shop is offline?',
 	'PHPSHOP_ADMIN_CFG_SHOP_OFFLINE_TIP' => 'If you check this, the Shop will display an Offline Message.',
 	'PHPSHOP_ADMIN_CFG_SHOP_OFFLINE_MSG' => 'Offline Message',
@@ -230,7 +230,7 @@ $langvars = array (
 	'VM_ADMIN_CFG_PROXY_PASS' => 'Proxy password',
 	'VM_ADMIN_CFG_PROXY_PASS_TIP' => 'If the proxy requires authentication please fill in the correct password here.',
 	'VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO' => 'Show information about "Return Policy" on the order confirmation page?',
-	'VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP' => 'Store owners are required by law to inform their customers about return and order cancellation policies in most european countries. So this should be enabled in most cases.',
+	'VM_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP' => 'Store owners are required by law to inform their customers about return and order cancellation policies in most European countries. So this should be enabled in most cases.',
 	'VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT' => 'Legal information text (short version).',
 	'VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT_TIP' => 'This text instructs your customers in short about your return and order cancellation policy. It is shown on the last page of checkout, just above the "Confirm Order" button.',
 	'VM_ADMIN_ONCHECKOUT_LEGALINFO_LINK' => 'Long version of the return policy (link to a content item).',
@@ -251,16 +251,16 @@ $langvars = array (
 	'VM_USERGROUP_LEVEL_TIP' => 'Important! A bigger number means <b>less</b> permissions. The <b>admin</b> group is <em>level 0</em>, storeadmin is level 250, users are level 500.',
 	'VM_USERGROUP_LIST_LBL' => 'User Group List',
 	'VM_ADMIN_CFG_COOKIE_CHECK' => 'Enable the Cookie Check?',
-	'VM_ADMIN_CFG_COOKIE_CHECK_EXPLAIN' => 'If enabled, VirtueMart checks wether the browser of the customer accepts cookies or not. This is user-friendly, but it can have negative consequences on the Search-Engine-Friendlyness of your shop.',
+	'VM_ADMIN_CFG_COOKIE_CHECK_EXPLAIN' => 'If enabled, VirtueMart checks whether the browser of the customer accepts cookies or not. This is user-friendly, but it can have negative consequences on the Search-Engine-Friendliness of your shop.',
 	'VM_CFG_REGISTRATION_TYPE' => 'User Registration Type',
 	'VM_CFG_REGISTRATION_TYPE_TIP' => 'Choose the type of User Registration for your store!<br />
 		<strong>Normal Registration</strong><br />
-		This is the standard registration type where the customer must register and choose an username and password<br /><br />
+		This is the standard registration type where the customer must register and choose a username and password<br /><br />
 		<strong>Silent Registration</strong><br />
-		Silent Registration means the customer doesn\'t need to choose username and password, but those are created automatically during registration and sent to the provided email address.
+		Silent Registration means the customer doesn\'t need to choose a username and password, but those are created automatically during registration and sent to the provided email address.
 		<br /><br />
 		<strong>Optional Registration</strong><br />
-		Opotional Registration let\'s the customer choose wether he/she wants to create an account or not. If the customer wants to create an account, a username and password must be chosen.
+		Optional Registration let\'s the customer choose whether he/she wants to create an account or not. If the customer wants to create an account, a username and password must be chosen.
 		<br /><br />
 		<strong>No Registration</strong><br />
 		Customers don\'t need to and are not able to register in this type of registration.',
@@ -305,7 +305,7 @@ $langvars = array (
 	'VM_USERFIELDS_HYPERTEXT_URL' => 'Hypertext and URL',
 	'VM_FIELDS_TEXTFIELD' => 'Text Field',
 	'VM_FIELDS_CHECKBOX_SINGLE' => 'Check Box (Single)',
-	'VM_FIELDS_CHECKBOX_MULTIPLE' => 'Check Box (Muliple)',
+	'VM_FIELDS_CHECKBOX_MULTIPLE' => 'Check Box (Multiple)',
 	'VM_FIELDS_DATE' => 'Date',
 	'VM_FIELDS_DROPDOWN_SINGLE' => 'Drop Down (Single Select)',
 	'VM_FIELDS_DROPDOWN_MULTIPLE' => 'Drop Down (Multi-Select)',
