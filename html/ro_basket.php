@@ -182,7 +182,7 @@ else {
 		}
 	}
 	/* SHOW SHIPPING COSTS */
-	if( !empty($shipping_rate_id) && !ps_checkout::noShippingMethodNecessary() ) {
+	if( !empty($shipping_rate_id) && !ps_checkout::noShippingMethodNecessary() && !is_null($ps_checkout->_SHIPPING) ) {
 		$shipping = true;
 		$vars["weight"] = $weight_total;
 		$shipping_total = round( $ps_checkout->_SHIPPING->get_rate ( $vars ), 5 );
