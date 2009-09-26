@@ -1,0 +1,212 @@
+<?php defined('_JEXEC') or die('Restricted access'); ?>
+<table class="adminform">
+	<tr>
+		<td valign="top">
+			<table width="100%" border="0">
+				<tr>
+					<td align="left" colspan="2"><?php echo "<h2 >".$this->action."</h2>"; ?></td>
+				</tr>
+				<tr class="row0">
+					<td  width="21%" ><div style="text-align:right;font-weight:bold;">
+						<?php echo JText::_('JM_PRODUCT_FORM_PUBLISH') ?>:</div>
+					</td>
+					<td width="79%">
+						<?php
+							$checked = '';
+							if (strtoupper($this->product->product_publish) == "Y") $checked = 'checked="checked"';
+							echo '<input type="checkbox" name="product_publish" value="Y" '.$checked.' />';
+						?> 
+					</td>
+				</tr>
+				<tr class="row1">
+					<td width="21%" >
+						<div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_SKU') ?>:</div>
+					</td>
+					<td width="79%" height="2">
+						<input type="text" class="inputbox"  name="product_sku" value="<?php $this->product->product_sku; ?>" size="32" maxlength="64" />
+					</td>
+				</tr>
+				<tr class="row0">
+					<td width="21%" height="18"><div style="text-align:right;font-weight:bold;">
+						<?php echo JText::_('JM_PRODUCT_FORM_NAME') ?>:</div>
+					</td>
+					<td width="79%" height="18" >
+						<input type="text" class="inputbox"  name="product_name" value="<?php echo $this->product->product_name; ?>" size="32" maxlength="255" />
+					</td>
+				</tr>
+				<tr class="row1">
+					<td width="21%"><div style="text-align:right;font-weight:bold;">
+						<?php echo JText::_('JM_PRODUCT_FORM_URL') ?>:</div>
+					</td>
+					<td width="79%">
+						<input type="text" class="inputbox"  name="product_url" value="<?php $this->product->product_url; ?>" size="32" maxlength="255" />
+					</td>
+				</tr>
+				<tr class="row0">
+					<td width="21%"><div style="text-align:right;font-weight:bold;">
+						<?php echo JText::_('JM_PRODUCT_FORM_VENDOR') ?>:</div>
+					</td>
+				<td width="79%">
+					<?php
+					// 		ps_vendor::list_ornot_vendor($db->sf("vendor_id"),$vendor_id);
+					// 		$hVendor->list_ornot_vendor($vendor_id,$this->product->vendor_id);
+					?>
+				</td>
+			</tr>
+			<tr class="row1">
+				<td width="21%" ><div style="text-align:right;font-weight:bold;">
+					<?php echo JText::_('JM_PRODUCT_FORM_MANUFACTURER') ?>:</div>
+				</td>
+				<td width="79%">
+					<?php echo $this->manufacturers;?>
+				</td>
+			</tr>
+			<?php if (!$this->product->product_parent_id) { ?>
+			<tr class="row0">
+				<td width="29%" valign="top">
+					<div style="text-align:right;font-weight:bold;">
+					<?php echo JText::_('JM_CATEGORIES') ?>:</div>
+				</td>
+				<td width="71%" >
+					<select class="inputbox" id="category_id" name="category_id" multiple="multiple" size="10">
+						<?php echo $this->category_tree; ?>
+					</select>
+				</td>
+			</tr>
+			<?php } ?>
+		</table>
+	</td>
+	<td>
+		<table class="adminform">
+			<tr class="row0">
+				<td width="29%" >
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_PRICE_NET') ?>:</div>
+				</td>
+				<td width="71%" >
+					<table border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td>
+								<input type="text" value="<?php echo $this->product->product_price; ?>" class="inputbox" name="product_price" onkeyup="updateGross();" size="10" maxlength="10" />
+								<input type="hidden" name="product_price_id" value="<?php echo $this->product->product_price_id; ?>" />
+								<input type="hidden" name="price_quantity_start" value="<?php echo $this->product->price_quantity_start; ?>" />
+								<input type="hidden" name="price_quantity_end" value="<?php echo $this->product->price_quantity_end; ?>" />
+							</td>
+							<td>
+								<?php echo $this->currencies; ?>
+							</td>
+							<td>
+								<input type="hidden" name="shopper_group_id" value="<?php echo $this->product->shopper_group_id ?>" />
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr class="row1">
+				<td width="29%">
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_PRICE_GROSS') ?>:</div>
+				</td>
+				<td width="71%">
+					<input type="text" class="inputbox" onkeyup="updateNet();" name="product_price_incl_tax" size="10" />
+				</td>
+			</tr>
+			<tr class="row0">
+				<td width="29%" ><div style="text-align:right;font-weight:bold;">
+					<?php echo JText::_('JM_RATE_FORM_VAT_ID') ?>:</div>
+				</td>
+				<td width="71%" >
+					<?php echo $this->taxrates; ?>
+				</td>
+			</tr>
+			<tr class="row1">
+				<td width="21%" ><div style="text-align:right;font-weight:bold;">
+					<?php echo JText::_('JM_PRODUCT_FORM_DISCOUNT_TYPE') ?>:</div>
+				</td>
+				<td width="79%">
+					<?php echo $this->discounts; ?>
+				</td>
+			</tr>
+			<tr class="row0">
+				<td width="21%" >
+					<div style="text-align:right;font-weight:bold;">
+					<?php echo JText::_('JM_PRODUCT_FORM_DISCOUNTED_PRICE') ?>:</div>
+				</td>
+				<td width="79%" >
+					<input type="text" size="10" name="discounted_price_override" onchange="try { document.adminForm.product_discount_id[document.adminForm.product_discount_id.length-1].selected=true; } catch( e ) {}" />&nbsp;&nbsp;
+					<?php 
+					// echo vmToolTip( JText::_('JM_PRODUCT_FORM_DISCOUNTED_PRICE_TIP') ) 
+					?>
+				</td>
+			</tr>
+			<tr>
+				<td width="29%" valign="top">
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_ORDER_PRINT_INTNOTES'); ?>:</div>
+				</td>
+				<td width="71%" valign="top">
+					<textarea class="inputbox" name="intnotes" id="intnotes" cols="35" rows="6" ><?php echo $this->product->intnotes; ?></textarea>
+				</td>
+			</tr>
+			<tr class="row1">
+				<td colspan="2">&nbsp;</td>
+			</tr>
+			<tr class="row1">
+				<td width="29%" valign="top">
+					<div style="text-align:right;font-weight:bold;">
+					<?php echo JText::_('JM_PRODUCT_FORM_S_DESC') ?>:</div>
+				</td>
+				<td width="71%"  valign="top">
+					<textarea class="inputbox" name="product_s_desc" id="short_desc" cols="35" rows="6" ><?php echo $this->product->product_s_desc; ?></textarea>
+				</td>
+			</tr>
+		</table>
+	</td>
+	</tr>
+</table>
+<table class="adminform">
+	<tr class="row1">
+		<td valign="top" width="20%"><div style="font-weight:bold;">
+			<?php echo JText::_('JM_PRODUCT_FORM_DESCRIPTION') ?>:</div>
+		</td>
+		<td width="60%">
+			<?php
+			echo $this->editor->display( 'product_desc',  $this->product->product_desc, '100%;', '550', '75', '20', array('pagebreak', 'readmore') ) ;
+			?>
+		</td>
+		<td valign="top">
+			<fieldset>
+				<legend><?php echo JText::_('JM_META_INFORMATION') ?></legend>		
+				<table valign="top">
+					<tr>
+						<td vlaign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_META_DESC'); ?>: </div></td>
+						<td valign="top">
+							<textarea class="inputbox" name="metadesc" id="meta_desc" cols="30" rows="6"><?php echo $this->product->metadesc; ?></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td >
+							<div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_META_KEYWORDS'); ?>: </div>
+						</td>
+						<td valign="top">
+							<textarea class="inputbox" name="metakeyword" id="meta_keyword" cols="30" rows="6"><?php echo $this->product->metakey; ?></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td >
+							<div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_META_ROBOTS'); ?>: </div>
+						</td>
+						<td valign="top">
+							<input type="text" class="inputbox" size="20" name="metarobot" value="<?php echo $this->product->metarobot ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td >
+							<div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_META_AUTHOR'); ?>: </div>
+						</td>
+						<td valign="top">
+							<input type="text" class="inputbox" size="20" name="metaauthor" value="<?php echo $this->product->metaauthor ?>" />
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+		</td>
+	</tr>
+</table>

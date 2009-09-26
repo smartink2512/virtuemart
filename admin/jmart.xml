@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
+<install type="component" version="1.5.0">
+	<name>JMart</name>
+	<creationDate>May 2009</creationDate>
+	<author>The JMart Team</author>
+	<authorEmail></authorEmail>
+	<authorUrl>http://joomlacode.org/gf/project/jmart/</authorUrl>
+	<copyright>Copyright (C) 2009 The JMart Team. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.0.0</version>
+	<description>Complete E-Commerce system for Joomla 1.5</description>
+
+	<!-- Custom installer -->
+	<installfile>install/install.jmart.php</installfile>
+	
+	<!-- Custom uninstaller -->
+	<uninstallfile>install/install.jmart.php</uninstallfile>
+	
+	<!-- SQL queries -->
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install/install.sql</file>
+			<file charset="utf8" driver="mysql">install/install_required_data.sql</file>
+		</sql>
+	</install>
+	
+	<!-- Uninstall SQL queries -->
+	<uninstall>
+		<sql>
+			<file charset="utf8" driver="mysql">install/uninstall.sql</file>
+		</sql>
+	</uninstall>
+	
+	<!-- Site Main File Copy Section -->
+	<files folder="components/com_jmart">
+		<filename>controller.php</filename>
+		<filename>fetchscript.php</filename>
+		<filename>jmart.php</filename>
+		<filename>router.php</filename>
+		<filename>show_image_in_imgtag.php</filename>
+		<filename>virtuemart.php</filename>
+		<filename>virtuemart_parser.php</filename>
+		<filename>index.html</filename>
+		
+		<folder>js</folder>
+		<folder>models</folder>
+		<folder>shop_image</folder>
+		<folder>themes</folder>
+		<folder>views</folder>	
+	</files>
+	
+	<!-- Language files -->
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.com_jmart.ini</language>
+	</languages>
+	
+	<administration>
+		<!-- Administration Menu Section -->
+		<menu>JMart</menu>
+ 		<menu img="../components/com_jmart/shop_image/ps_image/menu_icon.png">JMart</menu>
+		<!-- Administration Main File Copy Section -->
+		<files folder="administrator/components/com_jmart">
+			<filename>admin.jmart.php</filename>
+			<filename>admin.vm.php</filename>
+			<filename>cart.gif</filename>
+			<filename>compat.joomla1.5.php</filename>
+			<filename>controller.php</filename>
+			<filename>COPYRIGHT.php</filename>
+			<filename>global.php</filename>
+			<filename>header.php</filename>
+			<filename>index.html</filename>					
+			<filename>install.virtuemart.php</filename>
+			<filename>jmart.cfg.php</filename>
+			<filename>pear.php</filename>				
+			<filename>toolbar.html.php</filename>
+			<filename>toolbar.php</filename>
+			<filename>version.php</filename>
+			
+			<folder>assets</folder>
+			<folder>classes</folder>
+			<folder>controllers</folder>
+			<folder>helpers</folder>
+			<folder>html</folder>
+			<folder>install</folder>
+   		<folder>libraries</folder>			
+			<folder>models</folder>
+			<folder>plugins</folder>
+			<folder>tables</folder>	    		
+   		<folder>views</folder>
+
+		</files>
+		
+		<!-- Language files -->
+		<languages folder="administrator/language">
+			<language tag="en-GB">en-GB/en-GB.com_jmart.ini</language>
+		</languages>
+	</administration>
+	
+</install>
