@@ -84,7 +84,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  * http://joomlacode.org/gf/project/jmart/
  */
 
-// bass28 8/24/09 - Hack to keep this code working without jmart.cfg
+// bass28 8/24/09 - Hack to keep this code working without virtuemart.cfg
 $classPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jmart'.DS.'classes'.DS;
 
 require_once($classPath."Log/Log.php");

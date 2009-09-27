@@ -17,7 +17,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 */
 
 /* Load the configuration file */
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'jmart.cfg.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php');
 
 // Require the base controller
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'controller.php');

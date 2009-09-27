@@ -49,7 +49,7 @@ $formObj = &new formFactory( $title );
 //Then Start the form
 $formObj->startForm();
 
-$ps_html->writableIndicator( $mosConfig_absolute_path.'/administrator/components/com_jmart/jmart.cfg.php' );
+$ps_html->writableIndicator( $mosConfig_absolute_path.'/administrator/components/com_jmart/virtuemart.cfg.php' );
 
 $tabs = new vmTabPanel(1, 1, "vmconfiguration");
 $tabs->startPane("content-pane");

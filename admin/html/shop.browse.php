@@ -349,7 +349,7 @@ else {
 		}
 
 		// Set the flypage for this product based on the category.
-		// If no flypage is set then use the default as set in jmart.cfg.php
+		// If no flypage is set then use the default as set in virtuemart.cfg.php
 		$flypage = $db_browse->sf("category_flypage");
 
 		if (empty($flypage)) {

@@ -80,13 +80,13 @@ function virtuemart_is_installed() {
 		}
 		
 		@unlink( $installfile );
-		if( ( file_exists($installfile)) || !file_exists(dirname( __FILE__ ) . "/jmart.cfg.php")) {
+		if( ( file_exists($installfile)) || !file_exists(dirname( __FILE__ ) . "/virtuemart.cfg.php")) {
 			die('<h2>Virtuemart Installation Notice</h2>
 			<p>You already have installed JMart.</p>
 			<p>You MUST 
 			<ol>
 				<li>DELETE the file <strong>'.$installfile.'</strong>,</li>
-				<li>RENAME the file <strong>jmart.cfg-dist.php</strong> to <strong>jmart.cfg.php</strong></li>
+				<li>RENAME the file <strong>virtuemart.cfg-dist.php</strong> to <strong>virtuemart.cfg.php</strong></li>
 			</ol>before you can use JMart.
 			</p>');
 		}

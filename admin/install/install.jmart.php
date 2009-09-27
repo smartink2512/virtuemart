@@ -17,7 +17,7 @@ function com_installSampleData($user_id){
 	
 		$backendPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jmart'; 
 			//Add store information
-		require_once($backendPath.DS."jmart.cfg.php" );
+		require_once($backendPath.DS."virtuemart.cfg.php" );
 		require_once($backendPath.DS."classes".DS."vmAbstractObject.class.php");
 		require_once($backendPath.DS."classes".DS."ps_main.php");
 		$vmLogIdentifier = 'JMart';

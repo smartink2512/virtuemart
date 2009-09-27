@@ -42,7 +42,7 @@ if( !defined('JM_COMPONENT_NAME')) {
 	defined('JM_THEMEURL') or define('JM_THEMEURL', $mosConfig_live_site. '/components/com_jmart/themes/default/');
 }
 
-// bass28 8/24/09 - Hack to keep this code working without jmart.cfg
+// bass28 8/24/09 - Hack to keep this code working without virtuemart.cfg
 $adminPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jmart'.DS;
 $classPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jmart'.DS.'classes'.DS;
 

@@ -496,7 +496,7 @@ INSERT INTO `#__jmart_function` (`function_id`, `module_id`, `function_name`, `f
 (112, 13, 'updatezone', 'ps_zone', 'update', 'This will update a zone', 'admin,storeadmin'),
 (113, 13, 'deletezone', 'ps_zone', 'delete', 'This will delete a zone', 'admin,storeadmin'),
 (114, 13, 'zoneassign', 'ps_zone', 'assign', 'This will assign a country to a zone', 'admin,storeadmin'),
-(115, 1, 'writeConfig', 'ps_config', 'writeconfig', 'This will write the configuration details to jmart.cfg.php', 'admin'),
+(115, 1, 'writeConfig', 'ps_config', 'writeconfig', 'This will write the configuration details to virtuemart.cfg.php', 'admin'),
 (116, 12839, 'carrierAdd', 'ps_shipping', 'add', '', 'admin,storeadmin'),
 (117, 12839, 'carrierDelete', 'ps_shipping', 'delete', '', 'admin,storeadmin'),
 (118, 12839, 'carrierUpdate', 'ps_shipping', 'update', '', 'admin,storeadmin'),

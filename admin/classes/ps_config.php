@@ -23,7 +23,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 class ps_config {
 
 	/**
-	 * writes the jmart.cfg.php
+	 * writes the virtuemart.cfg.php
 	 * @author soeren
 	 * @static
 	 * @param array $d
@@ -42,8 +42,8 @@ class ps_config {
 		$db->next_record();
 		$d['conf_JM_PRICE_ACCESS_LEVEL'] = $db->f('name');
 
-		if (!$fp = fopen(ADMINPATH ."jmart.cfg.php", "w")) {
-			$vmLogger->err( JText::_('JM_CONFIGURATION_CHANGE_FAILURE',false).' ('. ADMINPATH ."jmart.cfg.php)" );
+		if (!$fp = fopen(ADMINPATH ."virtuemart.cfg.php", "w")) {
+			$vmLogger->err( JText::_('JM_CONFIGURATION_CHANGE_FAILURE',false).' ('. ADMINPATH ."virtuemart.cfg.php)" );
 			return false;
 		}
 

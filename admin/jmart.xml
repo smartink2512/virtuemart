@@ -71,7 +71,7 @@
 			<filename>header.php</filename>
 			<filename>index.html</filename>					
 			<filename>install.virtuemart.php</filename>
-			<filename>jmart.cfg.php</filename>
+			<filename>virtuemart.cfg.php</filename>
 			<filename>pear.php</filename>				
 			<filename>toolbar.html.php</filename>
 			<filename>toolbar.php</filename>
