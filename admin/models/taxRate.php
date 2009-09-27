@@ -84,7 +84,7 @@ class JMartModelTaxRate extends JModel {
      	$db = JFactory::getDBO();
      	
      	/* Build the query */
-     	$q = "SELECT tax_rate_id, vendor_id, tax_state, tax_country, mdate, CONCAT((tax_rate*100), '%') AS tax_rate
+     	$q = "SELECT tax_rate_id, vendor_id, tax_state, tax_country, mdate, tax_rate, CONCAT((tax_rate*100), '%') AS tax_rate_show
      		FROM #__jmart_tax_rate";
      	$db->setQuery($q);
      	return $db->loadObjectList();

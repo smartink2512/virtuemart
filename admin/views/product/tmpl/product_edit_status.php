@@ -3,16 +3,13 @@
 	<tr>
 		<td width="50%">
 			<table class="adminform">
-				<tr class="row1">
-					<td align="left" colspan="2"><?php echo '<h2>'.$this->status_label.'</h2>'; ?></td>
-				</tr>
 				<tr class="row0">
 					<td width="21%">
 						<div style="text-align:right;font-weight:bold;">
 						<?php echo JText::_('JM_PRODUCT_FORM_IN_STOCK') ?>:</div>
 					</td>
 					<td width="79%">
-						<input type="text" class="inputbox"  name="product_in_stock" value="<?php $this->product->product_in_stock; ?>" size="10" />
+						<input type="text" class="inputbox"  name="product_in_stock" value="<?php echo $this->product->product_in_stock; ?>" size="10" />
 					</td>
 				</tr>
 				<!-- low stock notification -->
@@ -23,7 +20,7 @@
 						</div>
 					</td>
 					<td width="79%">
-						<input type="text" class="inputbox" name="low_stock_notification" value="<?php $this->product->low_stock_notification; ?>" size="3" />
+						<input type="text" class="inputbox" name="low_stock_notification" value="<?php echo $this->product->low_stock_notification; ?>" size="3" />
 					</td>
 				</tr>
 				<!-- end low stock notification -->
@@ -54,11 +51,9 @@
 						</div>
 					</td>
 					<td width="79%" >
-						<input class="inputbox" type="text" name="product_available_date" id="product_available_date" size="20" maxlength="19" value="<?php echo date('Y-m-d', $this->product->product_available_date ); ?>" />
-						<input name="reset" type="reset" class="button" onClick="return showCalendar('product_available_date', 'y-mm-dd');" value="..." />
+						<?php echo JHTML::_('calendar', date('Y-m-d', $this->product->product_available_date), "product_available_date", "product_available_date"); ?>
 					</td>
 				</tr>
-				<tr class="row1"><td colspan="2">&nbsp;</td></tr>
 				<tr>
 					<td valign="top" width="21%" >
 						<div style="text-align:right;font-weight:bold;">
@@ -66,13 +61,23 @@
 						</div>
 					</td>
 					<td width="79%" >
-						<input type="text" class="inputbox" name="product_availability" value="<?php $this->product->product_availability; ?>" />
+						<input type="text" class="inputbox" id="product_availability" name="product_availability" value="<?php echo $this->product->product_availability; ?>" />
 						<?php
-						$path = JM_THEMEPATH."images/availability";
-						echo JHTML::_('list.images', 'image', $this->product->product_availability, null, $path); 
-							// echo vmToolTip(JText::_('JM_PRODUCT_FORM_AVAILABILITY_TOOLTIP1'));
+						echo JHTML::tooltip(JText::_('JM_PRODUCT_FORM_AVAILABILITY_TOOLTIP1'), JText::_('JM_AVAILABILITY'), 'tooltip.png', '', '', false);
+						$path = str_replace('\\', '/', JM_THEMEPATH)."images/availability/";
 						?>
+						<script type="text/javascript">
+							jQuery('#image').live('click', function() { jQuery('#product_availability').val(jQuery('#image').val()); })
+						</script>
+						<?php
+						echo JHTML::_('list.images', 'image', $this->product->product_availability, null, $path);
+						echo JHTML::tooltip(str_replace('%s', $path, JText::_('JM_PRODUCT_FORM_AVAILABILITY_TOOLTIP2')), JText::_('JM_AVAILABILITY'), 'tooltip.png', '', '', false); 
+						?> 
 					</td>
+				</tr>
+				<tr>
+					<td width="21%">&nbsp;</td>
+					<td width="79%"><img border="0" id="imagelib" alt="<?php echo JText::_('PREVIEW'); ?>" name="imagelib" src="<?php echo JURI::root().$path.$this->product->product_availability;?>"/></td>
 				</tr>
 				<tr class="row1">
 					<td width="21%" >
@@ -100,24 +105,49 @@
 					<td style="vertical-align:top;"><br />
 						<?php echo JText::_('JM_PRODUCT_RELATED_SEARCH'); ?>
 						<input type="text" size="40" name="search" id="relatedProductSearch" value="" />
+						<div class="jsonSuggestResults" style="width: 322px; display: none;"/>
 					</td>
 					<td>
-						<input type="button" name="remove_related" onclick="removeSelectedOptions(relatedSelection, 'related_products');" value="&nbsp; &lt; &nbsp;" />
+						<input type="button" name="remove_related" onclick="removeSelectedOptions('related_products');" value="&nbsp; &lt; &nbsp;" />
 					</td>
 					<td>
-						<?php
-						if (0) {
-						$relProducts = array();
-						foreach( $this->related_products as $relProd ) {
-							$relProducts[$relProd] = $ps_product->get_field( $relProd, 'product_sku'). ", ". $ps_product->get_field( $relProd, 'product_name');
-						}
-						echo ps_html::selectList('relProds', '', $relProducts, 10, 'multiple="multiple"', 'id="relatedSelection" ondblclick="removeSelectedOptions(relatedSelection, \'related_products\');"');
-						}
-						?>
-						<input type="hidden" name="related_products" value="<?php echo implode('|', $related_products ) ?>" />
+						<?php echo $this->lists['related_products']; ?>
 					</td>
 				</tr>
 			</table>
 		</td>
 	</tr>
 </table>
+<script type="text/javascript">
+jQuery('input#relatedProductSearch').autocomplete('index.php?option=com_jmart&view=product&task=getData&format=json&type=relatedproducts', {
+		mustMatch: false,
+		dataType: "json",
+		parse: function(data) {
+			return jQuery.map(data, function(row) {
+				return {
+					data: row,
+					value: row.value,
+					result: row.value
+				}
+			});
+		},
+		formatItem: function(item) {
+			return item.value;
+		}
+	}).result(function(e, item) {
+		/* Check if the item is already there */
+		var items = [];
+		jQuery('select#related_products').children().each(function() {
+			items[items.length++] = jQuery(this).val();
+		})
+	
+		if (jQuery.inArray(item.id, items) >= 0) {
+			return;
+		}
+		jQuery("select#related_products").append('<option value="'+item.id+'">'+item.value+'</option>');
+	});
+
+function removeSelectedOptions(from) {
+	jQuery('select#'+from+' :selected').remove()
+}
+</script>

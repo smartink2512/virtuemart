@@ -31,6 +31,7 @@ class JmartControllerProduct extends JController
 		$this->registerTask('saveorder','product');
 		$this->registerTask('orderup','product');
 		$this->registerTask('orderdown','product');
+		$this->registerTask('edit','add');
 	}
 	
 	/**
@@ -69,6 +70,8 @@ class JmartControllerProduct extends JController
 		$view->setModel( $this->getModel( 'media', 'JMartModel' ));
 		/* Product category functions */
 		$view->setModel( $this->getModel( 'category', 'JMartModel' ));
+		/* Vendor functions */
+		$view->setModel( $this->getModel( 'vendor', 'JMartModel' ));
 		/* Manufacturer functions */
 		$view->setModel( $this->getModel( 'manufacturer', 'JMartModel' ));
 		/* Currency functions */
@@ -80,6 +83,22 @@ class JmartControllerProduct extends JController
 		
 		/* Set the layout */
 		$view->setLayout('product_edit');
+		
+		/* Now display the view. */
+		$view->display();
+	}
+	
+	/**
+	* Get a list of related products
+	*/
+	public function getData() {
+		/* Create the view object */
+		$view = $this->getView('product', 'json');
+				
+		/* Default model */
+		$view->setModel( $this->getModel( 'product', 'JMartModel' ), true );
+		
+		$view->setLayout('product');
 		
 		/* Now display the view. */
 		$view->display();

@@ -74,7 +74,7 @@ class JMartModelProduct extends JModel {
      	 if ($product_id > 0) {
 			 $db = JFactory::getDBO();
 			 $q = "SELECT p.*, pf.manufacturer_id, pp.product_price_id, pp.product_price, pp.product_currency,
-			 	pp.product_price_quantity_start, pp.product_price_quantity_end 
+			 	pp.price_quantity_start, pp.price_quantity_end 
 				FROM #__jmart_product AS p
 				LEFT JOIN #__jmart_product_mf_xref AS pf
 				ON p.product_id = pf.product_id
@@ -376,7 +376,16 @@ class JMartModelProduct extends JModel {
 			$db = JFactory::getDBO();
 			$q = "SELECT related_products FROM #__jmart_product_relations WHERE product_id='".$product_id."'";
 			$db->setQuery($q);
-			return explode("|", $db->loadResult());
+			$results = explode("|", $db->loadResult());
+			if (count($results) > 0) {
+				$ids = 'product_id=' . implode( ' OR product =', $results );
+				$q = "SELECT product_id AS id, CONCAT(product_name, '::', product_sku) AS text
+					FROM #__jmart_product
+					WHERE (".$ids.")";
+				$db->setQuery($q);
+				return $db->loadObjectList();
+			}
+			else return false;
 		 }
 	 }
 	 
@@ -432,7 +441,7 @@ class JMartModelProduct extends JModel {
 	 * @param int $product_id
 	 * @return ps_DB object that holds all items of product $product_id
 	 */
-	function getAttributeItems($product_id) {
+	public function getAttributeItems($product_id) {
 		$db = JFactory::getDBO();
 		if( !empty($product_id) ) {
 			$q  = "SELECT * FROM #__jmart_product ";
@@ -441,6 +450,16 @@ class JMartModelProduct extends JModel {
 
 			$db->setQuery($q); 
 		}
+		return $db->loadObjectList();
+	}
+	
+	public function getProductListJson() {
+		$db = JFactory::getDBO();
+		$filter = JRequest::getVar('q', false);
+		$q = "SELECT product_id AS id, CONCAT(product_name, '::', product_sku) AS value
+			FROM #__jmart_product";
+		if ($filter) $q .= " WHERE product_name LIKE '%".$filter."%'";
+		$db->setQuery($q);
 		return $db->loadObjectList();
 	}
 }

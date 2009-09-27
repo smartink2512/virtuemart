@@ -92,7 +92,8 @@ $pagination = $this->pagination;
 				<td><?php echo $checked; ?></td>
 				<!-- Product name -->
 				<?php 
-				$link = "index.php?page=product.product_form&limitstart=$pagination->limitstart&keyword=".urlencode($keyword)."&product_id=".$product->product_id."&product_parent_id=".$product->product_parent_id."&option=".$option;
+				//$link = "index.php?page=product.product_form&limitstart=$pagination->limitstart&keyword=".urlencode($keyword)."&product_id=".$product->product_id."&product_parent_id=".$product->product_parent_id."&option=".$option;
+				$link = 'index.php?option='.$option.'&view=product&task=edit&product_id='.$product->product_id.'&product_parent_id='.$product->product_parent_id;
 				$child_link = '';
 				if ($product->product_parent_id == 0 && $product->haschildren) {
 					$child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product->product_id.'&option='.$option), '[ '.JText::_('JM_PRODUCT_FORM_ITEM_INFO_LBL').' ]');

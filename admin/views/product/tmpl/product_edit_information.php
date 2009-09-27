@@ -1,11 +1,9 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 <table class="adminform">
+<tr><th>TODO: Price update calculations</th></tr>
 	<tr>
 		<td valign="top">
 			<table width="100%" border="0">
-				<tr>
-					<td align="left" colspan="2"><?php echo "<h2 >".$this->action."</h2>"; ?></td>
-				</tr>
 				<tr class="row0">
 					<td  width="21%" ><div style="text-align:right;font-weight:bold;">
 						<?php echo JText::_('JM_PRODUCT_FORM_PUBLISH') ?>:</div>
@@ -23,7 +21,7 @@
 						<div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_SKU') ?>:</div>
 					</td>
 					<td width="79%" height="2">
-						<input type="text" class="inputbox"  name="product_sku" value="<?php $this->product->product_sku; ?>" size="32" maxlength="64" />
+						<input type="text" class="inputbox" name="product_sku" value="<?php echo $this->product->product_sku; ?>" size="32" maxlength="64" />
 					</td>
 				</tr>
 				<tr class="row0">
@@ -39,7 +37,7 @@
 						<?php echo JText::_('JM_PRODUCT_FORM_URL') ?>:</div>
 					</td>
 					<td width="79%">
-						<input type="text" class="inputbox"  name="product_url" value="<?php $this->product->product_url; ?>" size="32" maxlength="255" />
+						<input type="text" class="inputbox"  name="product_url" value="<?php echo $this->product->product_url; ?>" size="32" maxlength="255" />
 					</td>
 				</tr>
 				<tr class="row0">
@@ -47,10 +45,7 @@
 						<?php echo JText::_('JM_PRODUCT_FORM_VENDOR') ?>:</div>
 					</td>
 				<td width="79%">
-					<?php
-					// 		ps_vendor::list_ornot_vendor($db->sf("vendor_id"),$vendor_id);
-					// 		$hVendor->list_ornot_vendor($vendor_id,$this->product->vendor_id);
-					?>
+					<?php echo $this->lists['vendors'];?>
 				</td>
 			</tr>
 			<tr class="row1">
@@ -114,7 +109,7 @@
 					<?php echo JText::_('JM_RATE_FORM_VAT_ID') ?>:</div>
 				</td>
 				<td width="71%" >
-					<?php echo $this->taxrates; ?>
+					<?php echo $this->lists['taxrates']; ?>
 				</td>
 			</tr>
 			<tr class="row1">
@@ -122,7 +117,7 @@
 					<?php echo JText::_('JM_PRODUCT_FORM_DISCOUNT_TYPE') ?>:</div>
 				</td>
 				<td width="79%">
-					<?php echo $this->discounts; ?>
+					<?php echo $this->lists['discounts']; ?>
 				</td>
 			</tr>
 			<tr class="row0">
@@ -168,7 +163,7 @@
 		</td>
 		<td width="60%">
 			<?php
-			echo $this->editor->display( 'product_desc',  $this->product->product_desc, '100%;', '550', '75', '20', array('pagebreak', 'readmore') ) ;
+			echo $this->editor->display('product_desc',  $this->product->product_desc, '100%;', '550', '75', '20', array('pagebreak', 'readmore') ) ;
 			?>
 		</td>
 		<td valign="top">
@@ -210,3 +205,86 @@
 		</td>
 	</tr>
 </table>
+<script type="text/javascript">
+var tax_rates = new Array();
+<?php
+foreach( $this->taxrates as $key => $tax_rate ) {
+	echo 'tax_rates["'.$tax_rate->tax_rate_id.'"] = '.$tax_rate->tax_rate."\n";
+}
+?>
+function doRound(x, places) {
+	return Math.round(x * Math.pow(10, places)) / Math.pow(10, places);
+}
+
+function getTaxRate() {
+	var selected_value = document.adminForm.product_tax_id.selectedIndex;
+	var parameterVal = document.adminForm.product_tax_id[selected_value].value;
+	
+
+	if ( (parameterVal > 0) && (tax_rates[parameterVal] > 0) ) {
+		return tax_rates[parameterVal];
+	} else {
+		return 0;
+	}
+}
+
+function updateGross() {
+	if( document.adminForm.product_price.value != '' ) {
+		var taxRate = getTaxRate();
+
+		var r = new RegExp("\,", "i");
+		document.adminForm.product_price.value = document.adminForm.product_price.value.replace( r, "." );
+
+		var grossValue = document.adminForm.product_price.value;
+
+		if (taxRate > 0) {
+			grossValue = grossValue * (taxRate + 1);
+		}
+
+		document.adminForm.product_price_incl_tax.value = doRound(grossValue, 5);
+	}
+}
+
+function updateNet() {
+	if( document.adminForm.product_price_incl_tax.value != '' ) {
+		var taxRate = getTaxRate();
+
+		var r = new RegExp("\,", "i");
+		document.adminForm.product_price_incl_tax.value = document.adminForm.product_price_incl_tax.value.replace( r, "." );
+
+		var netValue = document.adminForm.product_price_incl_tax.value;
+
+		if (taxRate > 0) {
+			netValue = netValue / (taxRate + 1);
+		}
+
+		document.adminForm.product_price.value = doRound(netValue, 5);
+	}
+}
+
+function updateDiscountedPrice() {
+	if( document.adminForm.product_price.value != '' ) {
+		try {
+			var selected_discount = document.adminForm.product_discount_id.selectedIndex;
+			var discountCalc = document.adminForm.product_discount_id[selected_discount].id;
+			<?php if( PAYMENT_DISCOUNT_BEFORE == '1' ) : ?>
+			var origPrice = document.adminForm.product_price.value;
+			<?php else : ?>
+			var origPrice = document.adminForm.product_price_incl_tax.value;
+			<?php endif; ?>
+
+			if( discountCalc ) {
+				eval( 'var discPrice = ' + origPrice + discountCalc );
+				if( discPrice != origPrice ) {
+					document.adminForm.discounted_price_override.value = discPrice.toFixed( 2 );
+				} else {
+					document.adminForm.discounted_price_override.value = '';
+				}
+			}
+		}
+		catch( e ) { }
+	}
+}
+updateGross();
+updateDiscountedPrice();
+</script>

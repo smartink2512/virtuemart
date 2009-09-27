@@ -1,5 +1,5 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
-<h2><?php echo $display_label ?></h2>
+<h2><?php echo $this->display_label ?></h2>
 
   <table class="adminform">
     <tr>

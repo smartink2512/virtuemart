@@ -79,11 +79,20 @@ class JMartModelVendor extends JModel
             
             $this->_vendor = $db->loadObject();
         }
-
         return $this->_vendor;   
 	}
-
-
-
+	
+	/**
+	* Retrieve a list of vendors
+	* 
+	* @author: RolandD
+	* @return object List of vendors
+	*/
+	public function getVendors() {
+		$db = JFactory::getDBO();
+		$q = 'SELECT * FROM `#__jmart_vendor`';
+		$db->setQuery($q);
+		return $db->loadObjectList();
+	}
 }
 ?>

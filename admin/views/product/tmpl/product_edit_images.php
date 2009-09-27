@@ -17,7 +17,7 @@
               <label for="product_full_image_action0"><?php echo JText::_('JM_NONE'); ?></label><br/>
               <?php
               // Check if GD library is available
-              if( function_exists('imagecreatefromjpeg')) { ?>
+              if (function_exists('imagecreatefromjpeg')) { ?>
 	              <input type="radio" class="inputbox" id="product_full_image_action1" name="product_full_image_action" value="auto_resize" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
 	              <label for="product_full_image_action1"><?php echo JText::_('JM_FILES_FORM_AUTO_THUMBNAIL') . "</label><br />";
               }
@@ -71,7 +71,7 @@
               <input type="radio" class="inputbox" id="product_thumb_image_action0" name="product_thumb_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
               <label for="product_thumb_image_action0"><?php echo JText::_('JM_NONE') ?></label><br/>
               <?php
-              if ($this->product->product_id and $db->f("product_thumb_image")) { ?>
+              if ($this->product->product_id and $this->product->product_thumb_image) { ?>
                 <input type="radio" class="inputbox" id="product_thumb_image_action1" name="product_thumb_image_action" value="delete" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
                 <label for="product_thumb_image_action1"><?php echo JText::_('JM_PRODUCT_FORM_IMAGE_DELETE_LBL') . "</label><br />";
               } ?>
