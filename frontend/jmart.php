@@ -18,12 +18,12 @@ defined('_JEXEC') or die('Restricted access');
 require_once (JPATH_COMPONENT.DS.'controller.php');
 
 //Include the JMart configuration file
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR.DS.'jmart.cfg.php')) {
-    $errorMsg = '<h3>The configuration file for JMart is missing!</h3>It should be here: <strong>'.JPATH_COMPONENT_ADMINISTRATOR.DS.'jmart.cfg.php</strong>';
+if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php')) {
+    $errorMsg = '<h3>The configuration file for JMart is missing!</h3>It should be here: <strong>'.JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php</strong>';
     die( $errorMsg);
 }
 //else {
-//   require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'jmart.cfg.php');
+//   require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php');
 //}
 
 

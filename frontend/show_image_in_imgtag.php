@@ -30,7 +30,7 @@ if( !isset( $mosConfig_absolute_path ) ) {
 	$mosConfig_absolute_path = dirname( $config_file );
 }
 
-include_once("../../administrator/components/com_jmart/jmart.cfg.php");
+include_once("../../administrator/components/com_jmart/virtuemart.cfg.php");
 
 //	Image2Thumbnail - Klasse einbinden 
 include( CLASSPATH . "ps_main.php");

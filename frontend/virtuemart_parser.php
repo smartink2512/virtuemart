@@ -63,7 +63,7 @@ if( !defined( '_JM_PARSER_LOADED' )) {
 	}
 
 	// the configuration file for the Shop
-	require_once( JPATH_ROOT. "/administrator/components/com_jmart/jmart.cfg.php" );
+	require_once( JPATH_ROOT. "/administrator/components/com_jmart/virtuemart.cfg.php" );
 	
 	$GLOBALS['mosConfig_live_site'] = $mosConfig_live_site = substr( URL, 0, strlen(URL)-1);
 	
