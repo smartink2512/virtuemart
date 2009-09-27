@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
 <install type="component" version="1.5.0">
-	<name>JMart</name>
+	<name>VirtueMart</name>
 	<creationDate>May 2009</creationDate>
-	<author>The JMart Team</author>
-	<authorEmail></authorEmail>
-	<authorUrl>http://joomlacode.org/gf/project/jmart/</authorUrl>
-	<copyright>Copyright (C) 2009 The JMart Team. All rights reserved.</copyright>
+	<author>The VirtueMart Development Team</author>
+	<authorEmail>soeren|at|virtuemart.net</authorEmail>
+	<authorUrl>http://www.virtuemart.net</authorUrl>
+	<copyright>	Copyright (C) 2004-2008 Soeren Eberhardt-Biermann. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<version>1.0.0</version>
-	<description>Complete E-Commerce system for Joomla 1.5</description>
+	<version>1.5.0</version>
+	<description>Online-Shop / Complete E-Commerce system for Joomla 1.5</description>
 
 	<!-- Custom installer -->
-	<installfile>install/install.jmart.php</installfile>
+	<installfile>install/install.virtuemart.php</installfile>
 	
 	<!-- Custom uninstaller -->
-	<uninstallfile>install/install.jmart.php</uninstallfile>
+	<uninstallfile>install/install.virtuemart.php</uninstallfile>
 	
 	<!-- SQL queries -->
 	<install>
@@ -52,15 +52,15 @@
 	
 	<!-- Language files -->
 	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.com_jmart.ini</language>
+		<language tag="en-GB">en-GB/en-GB.com_virtuemart.ini</language>
 	</languages>
 	
 	<administration>
 		<!-- Administration Menu Section -->
-		<menu>JMart</menu>
- 		<menu img="../components/com_jmart/shop_image/ps_image/menu_icon.png">JMart</menu>
+		<menu>VirtueMart</menu>
+ 		<menu img="../components/com_virtuemart/shop_image/ps_image/menu_icon.png">VirtueMart</menu>
 		<!-- Administration Main File Copy Section -->
-		<files folder="administrator/components/com_jmart">
+		<files folder="administrator/components/com_virtuemart">
 			<filename>admin.jmart.php</filename>
 			<filename>admin.vm.php</filename>
 			<filename>cart.gif</filename>
@@ -93,7 +93,7 @@
 		
 		<!-- Language files -->
 		<languages folder="administrator/language">
-			<language tag="en-GB">en-GB/en-GB.com_jmart.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_virtuemart.ini</language>
 		</languages>
 	</administration>
 	

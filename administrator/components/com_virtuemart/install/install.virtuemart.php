@@ -1,13 +1,13 @@
 <?php
 /**
- * JMart installation file.
+ * VirtueMart installation file.
  *
  * This installation file is executed after the XML manifest file is complete.
  * This installation function extracts some of the frontend and backend files
  * need for this component.
  *
  * @author Rick Glunt, Max Milbers
- * @package JMart
+ * @package VirtueMart
  */
 defined('_JEXEC') or die('Restricted access');
 
@@ -15,12 +15,12 @@ global $option;
 
 function com_installSampleData($user_id){
 	
-		$backendPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jmart'; 
+		$backendPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'; 
 			//Add store information
 		require_once($backendPath.DS."virtuemart.cfg.php" );
 		require_once($backendPath.DS."classes".DS."vmAbstractObject.class.php");
 		require_once($backendPath.DS."classes".DS."ps_main.php");
-		$vmLogIdentifier = 'JMart';
+		$vmLogIdentifier = 'VirtueMart';
 		require_once($backendPath.DS."classes".DS."Log".DS."LogInit.php");
 
 		require_once($backendPath.DS."classes".DS."ps_database.php");
@@ -63,7 +63,7 @@ function com_installSampleData($user_id){
 		$fields['vendor_currency '] =  "EUR";
 		$fields['vendor_accepted_currencies'] = $currencyFields;
 		$fields['vendor_currency_display_style'] =  "1|&euro;|2|,|.|0|0";
-		$fields['vendor_terms_of_service'] =  "<h5>You haven''t configured any terms of service yet. Click <a href=administrator/index2.php?page=store.store_form&option=com_jmart>here</a> to change this text.</h5>";
+		$fields['vendor_terms_of_service'] =  "<h5>You haven''t configured any terms of service yet. Click <a href=administrator/index2.php?page=store.store_form&option=com_virtuemart>here</a> to change this text.</h5>";
 		$fields['vendor_url'] = JURI::root();
 		
 		$fields['vendor_name'] =  "Washupito";
@@ -103,9 +103,9 @@ function com_install(){
     //Must be adjusted to the given data
     $sampleData = true;
     
-    echo('Start with JM installation script </br>');
-    $frontendPath = JPATH_ROOT.DS.'components'.DS.'com_jmart';
-    $backendPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jmart';    
+    echo('Start with VirtueM installation script </br>');
+    $frontendPath = JPATH_ROOT.DS.'components'.DS.'com_virtuemart';
+    $backendPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart';    
     $installOk = true;
 
 	$db = JFactory::getDBO();
@@ -178,7 +178,7 @@ function com_install(){
 
     
     if ($installOk) {
-        include($backendPath.DS.'install'.DS.'install.jmart.html.php');
+        include($backendPath.DS.'install'.DS.'install.virtuemart.html.php');
     }
     
     return $installOk;
