@@ -1,16 +1,16 @@
 <?php
 /**
- * @package		JMart
+ * @package		VirtueMart
  */
 
 jimport('joomla.application.component.controller');
 
 /**
- * JMart Component Controller
+ * VirtueMart Component Controller
  *
- * @package		JMart
+ * @package		VirtueMart
  */
-class JMartController extends JController
+class VirtueMartController extends JController
 {
     
 	function __construct()
@@ -18,7 +18,7 @@ class JMartController extends JController
 		parent::__construct();
 				
 		$document =& JFactory::getDocument();				
-		$viewName = JRequest::getVar('view', 'jmart');
+		$viewName = JRequest::getVar('view', 'virtuemart');
 		$viewType	= $document->getType();
 		$view =& $this->getView($viewName, $viewType);
 

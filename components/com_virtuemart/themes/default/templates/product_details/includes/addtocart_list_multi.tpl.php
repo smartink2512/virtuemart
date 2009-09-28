@@ -9,15 +9,15 @@ mm_showMyFileName(__FILE__);
 <!-- Output The heading -->
 <?php if($display_header == "Y") { ?>
     <div class="vmCartChildHeading<?php echo $cls_suffix ?>">
-        <span style="float: left;width: <?php echo $desc_width ?>;"><?php echo JText::_('JM_PRODUCT_DESC_TITLE') ?></span >
+        <span style="float: left;width: <?php echo $desc_width ?>;"><?php echo JText::_('VM_PRODUCT_DESC_TITLE') ?></span >
         <?php //Ouput Each Attribute Heading
         if( !empty( $headings )) {
 	        foreach($headings as $key => $value) { ?>
 	            <span style="float: left;width: <?php echo $attrib_width ?>;" ><?php echo $headings[$key] ?></span>
 	        <?php } ?>
 	        <span style="float: right;width: 15%;">&nbsp;</span>
-	        <span style="float: right;width: 10%;"><?php echo JText::_('JM_CART_QUANTITY') ?></span>
-	        <span style="float: right;width: 12%;"><?php echo JText::_('JM_PRODUCT_INVENTORY_PRICE') ?></span>
+	        <span style="float: right;width: 10%;"><?php echo JText::_('VM_CART_QUANTITY') ?></span>
+	        <span style="float: right;width: 12%;"><?php echo JText::_('VM_PRODUCT_INVENTORY_PRICE') ?></span>
 	    </div><br/>
 	<?php }
 		}
@@ -53,12 +53,12 @@ foreach( $products as $product ) {
 	                <?php 
 					}
 				} 
-                if (USE_AS_CATALOGUE != '1'  && $product_price != "" && !stristr( $product_price, JText::_('JM_PRODUCT_CALL'))) { 
+                if (USE_AS_CATALOGUE != '1'  && $product_price != "" && !stristr( $product_price, JText::_('VM_PRODUCT_CALL'))) { 
 
-					$button_lbl = JText::_('JM_CART_ADD_TO');
+					$button_lbl = JText::_('VM_CART_ADD_TO');
 					$button_cls = 'addtocart_button';
 					if( CHECK_STOCK == '1' && !$product['product_in_stock'] ) {
-						$button_lbl = JText::_('JM_CART_NOTIFY');
+						$button_lbl = JText::_('VM_CART_NOTIFY');
 						$button_cls = 'notify_button';
 					}
 
@@ -85,7 +85,7 @@ foreach( $products as $product ) {
             <input type="hidden" name="category_id" value="<?php echo $product['category_id'] ?>" />
             <input type="hidden" name="page" value="shop.cart" />
             <input type="hidden" name="func" value="cartAdd" />
-            <input type="hidden" name="option" value="com_jmart" />
+            <input type="hidden" name="option" value="com_virtuemart" />
             <input type="hidden" name="Itemid" value="<?php echo $product['Itemid'] ?>" />
             <input type="hidden" name="set_price[]" value="" />
             <input type="hidden" name="adjust_price[]" value="" />

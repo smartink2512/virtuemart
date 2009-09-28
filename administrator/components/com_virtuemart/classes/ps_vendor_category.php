@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
  *
  * @version $Id: ps_vendor_category.php 1760 2009-05-03 22:58:57Z Aravot $
- * @package JMart
+ * @package VirtueMart
  * @subpackage classes
  * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * JMart is free software. This version may have been modified pursuant
+ * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+ * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
  *
- * http://joomlacode.org/gf/project/jmart/
+ * http://virtuemart.org
  */
 
 class ps_vendor_category extends vmAbstractObject {
@@ -126,7 +126,7 @@ class ps_vendor_category extends vmAbstractObject {
 				FROM #__{vm}_vendor_category 
 				ORDER BY vendor_category_name" ;
 		$db->query( $q ) ;
-		$array = array('0' => JText::_('JM_SELECT'));
+		$array = array('0' => JText::_('VM_SELECT'));
 
 		while( $db->next_record() ) {
 			$array[$db->f( "vendor_category_id" )] = $db->f( "vendor_category_name" );

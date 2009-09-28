@@ -2,10 +2,10 @@
 /**
  * Credit Card View
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage CreditCard
  * @author Rick Glunt
- * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
 jimport( 'joomla.application.component.view');
@@ -14,7 +14,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
 /**
  * HTML View class for maintaining the list of Credit Cards
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage CreditCard
  * @author Rick Glunt 
  */
@@ -30,13 +30,13 @@ class JmartViewCreditcard extends JView {
 		
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('JM_CREDITCARD_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'jm_credit_48');
+				JToolBarHelper::title(  JText::_('VM_CREDITCARD_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'jm_credit_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 			}
 			else {
-				JToolBarHelper::title( JText::_('JM_CREDITCARD_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'jm_credit_48');
+				JToolBarHelper::title( JText::_('VM_CREDITCARD_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'jm_credit_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
@@ -44,7 +44,7 @@ class JmartViewCreditcard extends JView {
 			$this->assignRef('creditcard',	$creditcard);
         }
         else {
-			JToolBarHelper::title( JText::_( 'JM_CREDITCARD_LIST_LBL' ), 'jm_credit_48' );
+			JToolBarHelper::title( JText::_( 'VM_CREDITCARD_LIST_LBL' ), 'jm_credit_48' );
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();	

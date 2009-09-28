@@ -6,7 +6,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * and allows to keep the current Session.
 *
 * @version $Id: compat.joomla1.5.php 1133 2008-01-08 20:40:56Z gregdev $
-* @package JMart
+* @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -14,7 +14,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -35,7 +35,7 @@ include( ADMINPATH.'version.php');
 
 echo '
 if( typeof Ext == "undefined" ) {
-	document.location="index2.php?option='.JM_COMPONENT_NAME.'&usefetchscript=0";
+	document.location="index2.php?option='.VM_COMPONENT_NAME.'&usefetchscript=0";
 }
 // Check if this Window is a duplicate and opens in an iframe
 if( typeof parent.Ext !== "undefined" && typeof parent.loadPage == "function" ) {
@@ -109,7 +109,7 @@ function vmLayoutInit() {
 					        	xtype: "panel",
 								layout: "fit",
 								id: "vmpage-panel",
-								title: "'.addslashes(JText::_('JM_ADMIN_PANELTITLE')).'",
+								title: "'.addslashes(JText::_('VM_ADMIN_PANELTITLE')).'",
 								tbar: [{ xtype: "tbspacer" }],
 								closable:false,
 								contentEl: "vmPage"
@@ -127,10 +127,10 @@ function vmLayoutInit() {
 					xtype: "panel",
 					autoHeight: true,
 					html:"<div style=\"margin-bottom: 5px;\">" +
-			    		 "<img src=\"'.JM_THEMEURL.'images/administration/header_logo.png\" alt=\"JMart Logo\" /> " +
-						"<a href=\"'.(!empty($_REQUEST['frontend'])&&vmisjoomla('1.5')?'index.php':'index2.php').'\" title=\"'.JText::_('JM_ADMIN_BACKTOJOOMLA').'\" class=\"vmicon vmicon-16-back\" style=\"vertical-align: middle;font-weight:bold;margin-top: 3px;\">'.JText::_('JM_ADMIN_BACKTOJOOMLA').'</a>" +
+			    		 "<img src=\"'.VM_THEMEURL.'images/administration/header_logo.png\" alt=\"VirtueMart Logo\" /> " +
+						"<a href=\"'.(!empty($_REQUEST['frontend'])&&vmisjoomla('1.5')?'index.php':'index2.php').'\" title=\"'.JText::_('VM_ADMIN_BACKTOJOOMLA').'\" class=\"vmicon vmicon-16-back\" style=\"vertical-align: middle;font-weight:bold;margin-top: 3px;\">'.JText::_('VM_ADMIN_BACKTOJOOMLA').'</a>" +
 						"<br />" +
-						"<a href=\"index2.php?option=com_jmart&amp;vmLayout=standard\" class=\"vmicon vmicon-16-back\" style=\"vertical-align: middle;font-weight:bold;margin-top: 3px;\">'. JText::_('JM_ADMIN_SIMPLE_LAYOUT') .'</a>" +
+						"<a href=\"index2.php?option=com_virtuemart&amp;vmLayout=standard\" class=\"vmicon vmicon-16-back\" style=\"vertical-align: middle;font-weight:bold;margin-top: 3px;\">'. JText::_('VM_ADMIN_SIMPLE_LAYOUT') .'</a>" +
 						"</div>"
 					},
 					{
@@ -164,7 +164,7 @@ echo '
 function loadPage(page){
 	
 	if( !page || page == "" ) {
-        defaultpage = "'.$script.'&option=com_jmart&page=store.index";
+        defaultpage = "'.$script.'&option=com_virtuemart&page=store.index";
         page = Ext.state.Manager.get( "vmlastpage", defaultpage );
 	}
 	if( page.indexOf( "virtuemart.net" ) == -1 ) {
@@ -210,7 +210,7 @@ else {
 		$db->query($q);
 		
 		while( $db->next_record() ) {
-		    $menuArr[$db->f('module_name')]['title'] = $GLOBALS['JM_LANG']->_('JM_'.strtoupper($db->f('module_name')).'_MOD');
+		    $menuArr[$db->f('module_name')]['title'] = $GLOBALS['VM_LANG']->_('VM_'.strtoupper($db->f('module_name')).'_MOD');
 			$menuArr[$db->f('module_name')]['items'][] = array('name' => $db->f('name'),
 																		'link' => $db->f('link'),
 																		'depends' => $db->f('depends'),

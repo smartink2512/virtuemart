@@ -2,10 +2,10 @@
 /**
  * Store View
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage Store
  * @author Rick Glunt
- * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
 jimport( 'joomla.application.component.view');
@@ -13,7 +13,7 @@ jimport( 'joomla.application.component.view');
 /**
  * HTML View class for maintaining the store
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage Store
  * @author RolandD
  */

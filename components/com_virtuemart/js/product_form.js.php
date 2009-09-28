@@ -11,7 +11,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
 * http://virtuemart.net
 */
@@ -151,7 +151,7 @@ var productSearchField = function(){
 
     var relds = new Ext.data.Store({
         proxy: new Ext.data.HttpProxy({
-            url: 'index2.php?option=com_jmart&page=product.ajax_tools&task=getproducts&ajax_request=1&func=&no_menu=1&only_page=1&no_html=1&product_id=<?php echo $product_id ?>',
+            url: 'index2.php?option=com_virtuemart&page=product.ajax_tools&task=getproducts&ajax_request=1&func=&no_menu=1&only_page=1&no_html=1&product_id=<?php echo $product_id ?>',
             method: 'GET' }),
         reader: new Ext.data.JsonReader({
             root: 'products',
@@ -171,14 +171,14 @@ var productSearchField = function(){
     var relProdSearch = new Ext.form.ComboBox({
     	applyTo: 'relatedProductSearch',
         store: relds,
-        title: '<?php echo addslashes(JText::_('JM_PRODUCT_SELECT_ONE_OR_MORE')); ?>',
+        title: '<?php echo addslashes(JText::_('VM_PRODUCT_SELECT_ONE_OR_MORE')); ?>',
         displayField:'product',
         typeAhead: false,
-        loadingText: '<?php echo addslashes(JText::_('JM_PRODUCT_SEARCHING')); ?>',
+        loadingText: '<?php echo addslashes(JText::_('VM_PRODUCT_SEARCHING')); ?>',
         width: 270,
         minListWidth: 270,
         pageSize:15,
-        emptyText: "<?php  echo addslashes(JText::_('JM_SEARCH_TITLE')); ?>",
+        emptyText: "<?php  echo addslashes(JText::_('VM_SEARCH_TITLE')); ?>",
         tpl: resultTpl,
         onSelect: function(record) {
         	for(var i=0;i<relatedSelection.options.length;i++) {
@@ -201,7 +201,7 @@ var categorySearchField = function(){
 
     var relds = new Ext.data.Store({
         proxy: new Ext.data.HttpProxy({
-            url: 'index2.php?option=com_jmart&page=product.ajax_tools&task=getcategories&ajax_request=1&func=&no_menu=1&only_page=1&no_html=1',
+            url: 'index2.php?option=com_virtuemart&page=product.ajax_tools&task=getcategories&ajax_request=1&func=&no_menu=1&only_page=1&no_html=1',
             method: 'GET'
         }),
         reader: new Ext.data.JsonReader({
@@ -223,14 +223,14 @@ var categorySearchField = function(){
     var relProdSearch = new Ext.form.ComboBox({
     	applyTo: "categorySearch",
         store: relds,
-        title: '<?php echo addslashes(JText::_('JM_PRODUCT_SELECT_ONE_OR_MORE')); ?>',
+        title: '<?php echo addslashes(JText::_('VM_PRODUCT_SELECT_ONE_OR_MORE')); ?>',
         displayField:'category',
         typeAhead: false,
-        loadingText: '<?php echo addslashes(JText::_('JM_PRODUCT_SEARCHING')); ?>',
+        loadingText: '<?php echo addslashes(JText::_('VM_PRODUCT_SEARCHING')); ?>',
         width: 170,
         minListWidth: 170,
         pageSize:15,
-        emptyText: "<?php  echo addslashes(JText::_('JM_SEARCH_TITLE')); ?>",
+        emptyText: "<?php  echo addslashes(JText::_('VM_SEARCH_TITLE')); ?>",
         tpl: resultTpl,
         onSelect: function(record) {
         	for(var i=0;i<relatedCatSelection.options.length;i++) {
@@ -279,7 +279,7 @@ function removeSelectedOptions(from, hiddenField ) {
 function loadProductTypeForm(ptype_id) {
 	Ext.get("ProductTypeFormContainer").load( {
 		url: "index.php",
-	    params: {option: "com_jmart",
+	    params: {option: "com_virtuemart",
 	    				product_type_id: ptype_id,
 	    				page: "product.ajax_tools",
 	    				task: "getProductTypeForm",

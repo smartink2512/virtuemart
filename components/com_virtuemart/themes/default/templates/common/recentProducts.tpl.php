@@ -8,7 +8,7 @@ if ($this->recentProducts) {
     <?php
 	for ($i=0, $n=count($this->recentProducts); $i < $n; $i++) {       
 	    $product =& $this->recentProducts[$i];
-		$productURL = JRoute::_( 'index.php?option=com_jmart&view=browse&catid=' . $category->category_id ); 
+		$productURL = JRoute::_( 'index.php?option=com_virtuemart&view=browse&catid=' . $category->category_id ); 
 		?>
 		
 		product here 

@@ -2,14 +2,14 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /*
  * @version $Id: order.label_print.php 1755 2009-05-01 22:45:17Z rolandd $
- * @package JMart
+ * @package VirtueMart
  * @subpackage html
  */
 mm_showMyFileName(__FILE__);
 
 $order_id = JRequest::getVar('order_id', null);
 if (!is_numeric($order_id))
-	die(str_replace('order_id',$order_id,JText::_('JM_ORDER_LABEL_ORDERID_NOTVALID')));
+	die(str_replace('order_id',$order_id,JText::_('VM_ORDER_LABEL_ORDERID_NOTVALID')));
 
 $db =& new ps_DB;
 
@@ -17,12 +17,12 @@ $q = "SELECT shipper_class FROM #__{vm}_shipping_label ";
 $q .= "WHERE order_id='" . $order_id . "'";
 $db->query($q);
 if (!$db->next_record())
-	die(JText::_('JM_ORDER_LABEL_NOTFOUND'));
+	die(JText::_('VM_ORDER_LABEL_NOTFOUND'));
 
 include_once(CLASSPATH . "shipping/" . $db->f("shipper_class") . ".php");
 eval("\$ship_class =& new " . $db->f("shipper_class") . "();");
 if (!is_callable(array($ship_class, 'generate_label')))
-	die(str_replace('{ship_class}',$ship_class,JText::_('JM_ORDER_LABEL_CLASSCANNOT')));
+	die(str_replace('{ship_class}',$ship_class,JText::_('VM_ORDER_LABEL_CLASSCANNOT')));
 
 $ship_class->generate_label($order_id);
 $dim = $ship_class->get_label_dimensions($order_id);
@@ -39,7 +39,7 @@ $image_url = stristr($image_url, "index2.php") ?
     str_replace("index2.php", "index3.php", $image_url) :
     str_replace("index.php", "index2.php", $image_url);
 
-echo "<h2>" . JText::_('JM_ORDER_LABEL_SHIPPINGLABEL_LBL') . ":</h2>\n";
+echo "<h2>" . JText::_('VM_ORDER_LABEL_SHIPPINGLABEL_LBL') . ":</h2>\n";
 echo '<img src="' . $image_url . '" height="' .  $dim_y . '" width="' . $dim_x . '" />' . "\n";
 
 ?>

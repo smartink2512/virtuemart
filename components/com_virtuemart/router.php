@@ -3,25 +3,25 @@ if(  !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not
 /**
 *
 * @version $Id: 
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
-define('JM_SHOP_BROWSE','category');
-define('JM_SHOP_FEED','feed');
-define('JM_PRODUCT_DETAILS','details');
-define('JM_PRODUCT_ENQUIRY','enquiry');
-define('JM_CHECKOUT_INDEX','checkout');
-define('JM_ADVANCE_SEARCH','search');
+define('VM_SHOP_BROWSE','category');
+define('VM_SHOP_FEED','feed');
+define('VM_PRODUCT_DETAILS','details');
+define('VM_PRODUCT_ENQUIRY','enquiry');
+define('VM_CHECKOUT_INDEX','checkout');
+define('VM_ADVANCE_SEARCH','search');
 
 function virtuemartBuildRoute(&$query)
 {
@@ -41,7 +41,7 @@ function virtuemartBuildRoute(&$query)
 		// Shop browse/catgory page 
 		case 'shop.browse';	
 			if(isset($query['category_id'])){
-				$segments[] = JM_SHOP_BROWSE;
+				$segments[] = VM_SHOP_BROWSE;
 				$segments[] = $query['category_id'];				
 				$segments[] = getCategoryName($query['category_id']);		
 				unset($query['category_id']);
@@ -53,7 +53,7 @@ function virtuemartBuildRoute(&$query)
 
 		// Shop rss feed page 
 		case 'shop.feed';			
-			$segments[] = JM_SHOP_FEED;
+			$segments[] = VM_SHOP_FEED;
 			if(isset($query['category_id'])){
 				$segments[] = $query['category_id'];
 				$segments[] = getCategoryName($query['category_id']);		
@@ -63,7 +63,7 @@ function virtuemartBuildRoute(&$query)
 
 		// Shop product details page 
 		case 'shop.product_details';			
-			$segments[] = JM_PRODUCT_DETAILS;			
+			$segments[] = VM_PRODUCT_DETAILS;			
 			$product_id_exists = false;
 			if(isset($query['product_id']))	{
 				$segments[] = $query['product_id'];
@@ -86,7 +86,7 @@ function virtuemartBuildRoute(&$query)
 			
 		// Shop ASK A QUESTION ABOUT THIS PRODUCT 
 		case 'shop.ask';
-			$segments[] =JM_PRODUCT_ENQUIRY;				
+			$segments[] =VM_PRODUCT_ENQUIRY;				
 			if(isset($query['category_id']))	{
 				$segments[] = $query['category_id'];
 				unset($query['category_id']);
@@ -104,7 +104,7 @@ function virtuemartBuildRoute(&$query)
 
 		// Checkout Index page			
 		case 'checkout.index';
-		$segments[] = JM_CHECKOUT_INDEX;
+		$segments[] = VM_CHECKOUT_INDEX;
 		
 		if(isset($query['ssl_redirect']))	{
 			$segments[] = "ssl_redirect";
@@ -199,7 +199,7 @@ function virtuemartBuildRoute(&$query)
 		break;
 
 		case 'shop.search';
-			$segments[] =JM_ADVANCE_SEARCH;			
+			$segments[] =VM_ADVANCE_SEARCH;			
 		break;
 
 		case 'store.index';
@@ -216,7 +216,7 @@ function virtuemartParseRoute($segments)
 
 	$firstSegment = $segments[0]; 
 	switch($firstSegment){		
-		case JM_SHOP_BROWSE:
+		case VM_SHOP_BROWSE:
 			$vars['page'] = "shop.browse";
 			if(isset($segments[1])){
 				$vars['category_id'] = $segments[1];
@@ -229,14 +229,14 @@ function virtuemartParseRoute($segments)
 			$vars['category'] = "";	
 		break;
 		
-		case JM_SHOP_FEED:
+		case VM_SHOP_FEED:
 			$vars['page'] = "shop.feed";
 			if(isset($segments[1])){
 				$vars['category_id'] = $segments[1];
 			}			
 		break;
 
-		case JM_PRODUCT_DETAILS:
+		case VM_PRODUCT_DETAILS:
 			$vars['page'] = "shop.product_details";			
 			if(isset($segments[1])){
 				$vars['product_id'] = $segments[1];
@@ -246,13 +246,13 @@ function virtuemartParseRoute($segments)
 			}			
 		break;
 
-		case JM_PRODUCT_ENQUIRY:
+		case VM_PRODUCT_ENQUIRY:
 			$vars['page'] = "shop.ask";
 			$vars['category_id'] = $segments[1];
 			$vars['product_id'] = $segments[2];
 		break; 
 
-		case JM_CHECKOUT_INDEX:
+		case VM_CHECKOUT_INDEX:
 			$vars['page'] = "checkout.index";		
 			if(isset($segments[1]) && ($segments[1]=="ssl_redirect")){
 				$vars['ssl_redirect'] = 1;
@@ -321,7 +321,7 @@ function virtuemartParseRoute($segments)
 			$vars['product_id'] = $segments[1];				
 		break;
 
-		case JM_ADVANCE_SEARCH:
+		case VM_ADVANCE_SEARCH:
 			$vars['page'] = "shop.search";					
 		break;
 
@@ -344,7 +344,7 @@ function getCategoryName($id){
 	// End of need to change
 	$q = "SELECT GROUP_CONCAT( `category_name`
 			SEPARATOR  '/' ) 
-			FROM `#__jmart_category`
+			FROM `#__vm_category`
 			WHERE `category_id` IN (".$catIdsList.")";
 
 	$db->setQuery($q);
@@ -370,7 +370,7 @@ function getCategoryRecurse($category_id,$first ) {
 	//
 	$db			= & JFactory::getDBO();	
 	$q = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
-			FROM  #__jmart_category_xref AS `xref`
+			FROM  #__vm_category_xref AS `xref`
 			WHERE `xref`.`category_child_id`= ".$category_id;
 	$db->setQuery($q);
 	$ids = $db->loadObject();
@@ -388,7 +388,7 @@ function getCategoryRecurse($category_id,$first ) {
 function getProductName($id){
 
 	$db			= & JFactory::getDBO();
-	$query = 'SELECT `product_name` FROM `#__jmart_product`  ' .
+	$query = 'SELECT `product_name` FROM `#__vm_product`  ' .
 	' WHERE `product_id` = ' . (int) $id;
 
 	$db->setQuery($query);

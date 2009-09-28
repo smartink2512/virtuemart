@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: order.order_list.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 global $page, $ps_order_status;
@@ -74,7 +74,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('JM_ORDER_LIST_LBL'), JM_ADMIN_ICON_URL.'icon_48/jm_orders_48.png', $modulename, "order_list");
+$listObj->writeSearchHeader(JText::_('VM_ORDER_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/jm_orders_48.png', $modulename, "order_list");
 
 ?>
 <div align="center">
@@ -95,7 +95,7 @@ while ($navi_db->next_record()) {  ?>
 } 
 ?>
     <a href="<?php $sess->purl($_SERVER['PHP_SELF']."?page=$modulename.order_list&show=")?>"><b>
-    <?php echo JText::_('JM_ALL') ?></b></a>
+    <?php echo JText::_('VM_ALL') ?></b></a>
 </div>
 <br />
 <?php 
@@ -106,17 +106,17 @@ $listObj->startTable();
 $checklimit = ($num_rows < $limit) ? $num_rows : $limit;
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$checklimit.")\" />" => "width=\"20\"",
-					JText::_('JM_ORDER_LIST_ID') => '',
-					JText::_('JM_ORDER_PRINT_NAME') => '',
-					JText::_('JM_ORDER_LIST_PRINT_LABEL') => '',
-					JText::_('JM_ORDER_LIST_TRACK') => '',
-					JText::_('JM_ORDER_LIST_VOID_LABEL') => '',
-					JText::_('JM_CHECK_OUT_THANK_YOU_PRINT_VIEW') => '',
-					JText::_('JM_ORDER_LIST_CDATE') => '',
-					JText::_('JM_ORDER_LIST_MDATE') => '',
-					JText::_('JM_ORDER_LIST_STATUS') => '',
-					JText::_('JM_UPDATE') => '',
-					JText::_('JM_ORDER_LIST_TOTAL') => '',
+					JText::_('VM_ORDER_LIST_ID') => '',
+					JText::_('VM_ORDER_PRINT_NAME') => '',
+					JText::_('VM_ORDER_LIST_PRINT_LABEL') => '',
+					JText::_('VM_ORDER_LIST_TRACK') => '',
+					JText::_('VM_ORDER_LIST_VOID_LABEL') => '',
+					JText::_('VM_CHECK_OUT_THANK_YOU_PRINT_VIEW') => '',
+					JText::_('VM_ORDER_LIST_CDATE') => '',
+					JText::_('VM_ORDER_LIST_MDATE') => '',
+					JText::_('VM_ORDER_LIST_STATUS') => '',
+					JText::_('VM_UPDATE') => '',
+					JText::_('VM_ORDER_LIST_TOTAL') => '',
 					JText::_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
@@ -141,7 +141,7 @@ while ($db->next_record()) {
 
 		
 	$tmp_cell = $db->f('first_name').' '.$db->f('last_name');
-	if( $perm->check('admin') && defined('_JM_IS_BACKEND')) {
+	if( $perm->check('admin') && defined('_VM_IS_BACKEND')) {
 		$url = $_SERVER['PHP_SELF']."?page=admin.user_form&amp;user_id=". $db->f("user_id");
 		$tmp_cell = '<a href="'.$sess->url( $url ).'">'.$tmp_cell.'</a>';
 	}
@@ -234,7 +234,7 @@ while ($db->next_record()) {
 //	}
 	
 	$details_url = $sess->url( $details_url );
-    $details_url = defined( '_JM_IS_BACKEND' ) ? str_replace( "index2.php", "index3.php", $details_url ) : str_replace( "index.php", "index2.php", $details_url );
+    $details_url = defined( '_VM_IS_BACKEND' ) ? str_replace( "index2.php", "index3.php", $details_url ) : str_replace( "index.php", "index2.php", $details_url );
 	
     // Print View Icon
     $details_link = "&nbsp;<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">";
@@ -250,8 +250,8 @@ while ($db->next_record()) {
 	
 	// Notify Customer checkbox
 	$listObj->addCell( '<input type="checkbox" class="inputbox" onclick="if(this.checked==true) {document.adminForm'. $i .'.notify_customer.value = \'Y\';} else {document.adminForm'. $i .'.notify_customer.value = \'N\';}" value="Y" />'
-						.JText::_('JM_ORDER_LIST_NOTIFY') .'<br />
-					<input type="button" class="button" onclick="if(document.adminForm'. $i .'.changed.value!=\'1\') { alert(\''. addslashes(JText::_('JM_ORDER_LIST_NOTIFY_ERR')) .'\'); return false;} else adminForm'.$i.'.submit();" name="Submit" value="'.JText::_('JM_UPDATE_STATUS').'" />' );
+						.JText::_('VM_ORDER_LIST_NOTIFY') .'<br />
+					<input type="button" class="button" onclick="if(document.adminForm'. $i .'.changed.value!=\'1\') { alert(\''. addslashes(JText::_('VM_ORDER_LIST_NOTIFY_ERR')) .'\'); return false;} else adminForm'.$i.'.submit();" name="Submit" value="'.JText::_('VM_UPDATE_STATUS').'" />' );
 
 	$listObj->addCell( $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_total"), '', $db->f('order_currency')));
 	// Change Order Status form
@@ -262,7 +262,7 @@ while ($db->next_record()) {
 		<input type="hidden" name="func" value="orderStatusSet" />
 		<input type="hidden" name="vmtoken" value="'. vmSpoofValue($sess->getSessionId()) .'" />
 		<input type="hidden" name="changed" value="0" />
-		<input type="hidden" name="option" value="com_jmart" />
+		<input type="hidden" name="option" value="com_virtuemart" />
 		<input type="hidden" name="order_id" value="'. $db->f("order_id") .'" />
 		<input type="hidden" name="current_order_status" value="'. $db->f("order_status").'" />
 		</form>';

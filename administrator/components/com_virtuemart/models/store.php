@@ -2,10 +2,10 @@
 /**
  * Data module for vendro stores
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage Store
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
 // no direct access
@@ -16,11 +16,11 @@ jimport( 'joomla.application.component.model');
 /**
  * Model class for vendor stores
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage Vendor 
  * @author Rick Glunt  
  */
-class JMartModelStore extends JModel
+class VirtueMartModelStore extends JModel
 {    
 	/** @var integer Primary key (vendor_id) */
     var $_id;          
@@ -95,7 +95,7 @@ class JMartModelStore extends JModel
 	function _getTotal() 
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `vendor_id` FROM `#__jmart_vendor`';	  		
+			$query = 'SELECT `vendor_id` FROM `#__vm_vendor`';	  		
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -113,7 +113,7 @@ class JMartModelStore extends JModel
 					
 		if (empty($this->_data)) {					
 			$query = 'SELECT * ';
-			$query .= 'FROM `#__jmart_vendor` ';
+			$query .= 'FROM `#__vm_vendor` ';
 			$query .= 'WHERE `vendor_id` = ' . (int)$this->_id;
 			$db->setQuery($query);
 			$this->_data = $db->loadObject();
@@ -192,8 +192,8 @@ class JMartModelStore extends JModel
 	 */
 	function getStores()
 	{		
-		$query = 'SELECT * FROM `#__jmart_vendor` ';
-		$query .= 'ORDER BY `#__jmart_vendor`.`vendor_id`';
+		$query = 'SELECT * FROM `#__vm_vendor` ';
+		$query .= 'ORDER BY `#__vm_vendor`.`vendor_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}	

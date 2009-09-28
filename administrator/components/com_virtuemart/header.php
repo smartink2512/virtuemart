@@ -5,16 +5,16 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * shows all modules that are available to the user in a dropdown menu
 *
 * @version $Id: header.php 1702 2009-03-15 02:23:33Z rolandd $
-* @package JMart
+* @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 include_once( ADMINPATH . "version.php" );
@@ -54,11 +54,11 @@ while ($db->next_record()) {
 	}
 }
 
-$vm_mainframe->addStyleSheet( $mosConfig_live_site.'/components/com_jmart/js/admin_menu/css/menu.css');
-$vm_mainframe->addScript($mosConfig_live_site.'/components/com_jmart/js/admin_menu/js/virtuemart_menu.js');
-$vm_mainframe->addScript($mosConfig_live_site.'/components/com_jmart/js/admin_menu/js/nifty.js');
-$vm_mainframe->addScript($mosConfig_live_site.'/components/com_jmart/js/admin_menu/js/fat.js');
-$vm_mainframe->addScript($mosConfig_live_site.'/components/com_jmart/js/functions.js');
+$vm_mainframe->addStyleSheet( $mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/css/menu.css');
+$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/virtuemart_menu.js');
+$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/nifty.js');
+$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/admin_menu/js/fat.js');
+$vm_mainframe->addScript($mosConfig_live_site.'/components/com_virtuemart/js/functions.js');
 
 $menu_items = getAdminMenu($module_id);
 ?>
@@ -69,9 +69,9 @@ $menu_items = getAdminMenu($module_id);
     <div class="sidemenu-pad">
 		<center>
 		<?php
-		echo JHTML::_('link', 'http://joomlacode.org/gf/project/jmart/', JHTML::_('image', JM_ADMIN_ICON_URL.'icon_48/jm_logo_48.png', 'J!Mart Cart Logo'), array('target' => '_blank'));
+		echo JHTML::_('link', 'http://virtuemart.org', JHTML::_('image', VM_ADMIN_ICON_URL.'icon_48/jm_logo_48.png', 'J!Mart Cart Logo'), array('target' => '_blank'));
 		?>
-			<h2><?php echo JText::_('JM_ADMIN')	?></h2>
+			<h2><?php echo JText::_('VM_ADMIN')	?></h2>
 		</center>
 		<div class="status-divider">
 		</div>
@@ -96,13 +96,13 @@ $menu_items = getAdminMenu($module_id);
                     }
                     else {
                     	if ($link['view']) {			                       				                      
-                        	$url = 'index.php?option=com_jmart&view='.$link['view'];
+                        	$url = 'index.php?option=com_virtuemart&view='.$link['view'];
 	                    	$url .= $link['task'] ? "&task=".$link['task'] : '';
 	                    	// $url .= $link['extra'] ? $link['extra'] : '';
 	                    	$url = strncmp($link['view'], 'http', 4 ) === 0 ? $link['view'] : $url;
 	                	}
 	                    else {
-                        	$url = 'index2.php?option=com_jmart&pshop_mode=admin&'.$link['link'];
+                        	$url = 'index2.php?option=com_virtuemart&pshop_mode=admin&'.$link['link'];
                     	}
                     }			
                     // end rjg
@@ -117,8 +117,8 @@ $menu_items = getAdminMenu($module_id);
 			<?php $modCount++;
 		} ?></div>
 	<div style="text-align:center;">
-	<h5><?php echo JText::_('JM_YOUR_VERSION') ?></h5>
-	<a href="http://joomlacode.org/gf/project/jmart//index2.php?option=com_versions&amp;catid=1&amp;myVersion=<?php echo @$VMVERSION->RELEASE ?>" onclick="javascript:void window.open(this.href, 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no'); return false;" title="<?php echo JText::_('JM_VERSIONCHECK_TITLE') ?>" target="_blank">
+	<h5><?php echo JText::_('VM_YOUR_VERSION') ?></h5>
+	<a href="http://virtuemart.org/index2.php?option=com_versions&amp;catid=1&amp;myVersion=<?php echo @$VMVERSION->RELEASE ?>" onclick="javascript:void window.open(this.href, 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no'); return false;" title="<?php echo JText::_('VM_VERSIONCHECK_TITLE') ?>" target="_blank">
 	<?php echo $VMVERSION->PRODUCT .'&nbsp;' . $VMVERSION->RELEASE .'&nbsp;'. $VMVERSION->DEV_STATUS
 	?>
 	</a>
@@ -163,15 +163,15 @@ function getAdminMenu($filter_by_module_id=0) {
 		
 		// rjg - 7/14/09 Change to read view and task
 		$q = "SELECT jmmod.module_id,module_name,module_perms,id,name,link,depends,icon_class,view,task 
-					FROM #__jmart_module jmmod 
-					LEFT JOIN #__jmart_menu_admin item ON jmmod.module_id=item.module_id 
+					FROM #__vm_module jmmod 
+					LEFT JOIN #__vm_menu_admin item ON jmmod.module_id=item.module_id 
 					WHERE  ".implode(' AND ', $filter )."   
 					ORDER BY jmmod.list_order,item.ordering";
 		$db = new ps_DB();
 		$db->query($q);
 		
 		while( $db->next_record() ) {
-		    $menuArr[$db->f('module_name')]['title'] = 'JM_'.strtoupper($db->f('module_name')).'_MOD';
+		    $menuArr[$db->f('module_name')]['title'] = 'VM_'.strtoupper($db->f('module_name')).'_MOD';
 		    // rjg - 7/14/09 Change to read view and task
 			$menuArr[$db->f('module_name')]['items'][] = array('name' => $db->f('name'),
 																		'link' => $db->f('link'),

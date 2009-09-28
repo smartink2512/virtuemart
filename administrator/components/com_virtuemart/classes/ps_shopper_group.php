@@ -3,20 +3,20 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_shopper_group.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 /**
- * JMart Shopper Group Handler
+ * VirtueMart Shopper Group Handler
  *
  */
 class ps_shopper_group extends vmAbstractObject  {
@@ -40,7 +40,7 @@ class ps_shopper_group extends vmAbstractObject  {
 //		$vendor_id = $_SESSION["ps_vendor_id"];
 
 		if (empty($d["shopper_group_name"])) {
-			$GLOBALS['vmLogger']->err(JText::_('JM_SHOPPER_GROUP_MISSING_NAME'));
+			$GLOBALS['vmLogger']->err(JText::_('VM_SHOPPER_GROUP_MISSING_NAME'));
 			return False;
 		}
 		else {
@@ -52,7 +52,7 @@ class ps_shopper_group extends vmAbstractObject  {
 			$db->query($q);
 			$db->next_record();
 			if ($db->f("num_rows") > 0) {
-				$GLOBALS['vmLogger']->err(JText::_('JM_SHOPPER_GROUP_ALREADY_EXISTS'));
+				$GLOBALS['vmLogger']->err(JText::_('VM_SHOPPER_GROUP_ALREADY_EXISTS'));
 				return False;
 			}
 		}
@@ -76,7 +76,7 @@ class ps_shopper_group extends vmAbstractObject  {
 		
 
 		if (!$d["shopper_group_name"]) {
-			$GLOBALS['vmLogger']->err(JText::_('JM_SHOPPER_GROUP_MISSING_NAME'));
+			$GLOBALS['vmLogger']->err(JText::_('VM_SHOPPER_GROUP_MISSING_NAME'));
 			return False;
 		}
 		if (empty($d["shopper_group_discount"])) {
@@ -100,21 +100,21 @@ class ps_shopper_group extends vmAbstractObject  {
 		$db = new ps_DB;
 		$shopper_group_id = intval( $shopper_group_id );
 		if (empty($shopper_group_id)) {
-			$GLOBALS['vmLogger']->err(JText::_('JM_SHOPPER_GROUP_DELETE_SELECT'));
+			$GLOBALS['vmLogger']->err(JText::_('VM_SHOPPER_GROUP_DELETE_SELECT'));
 			return False;
 		}
 		// Check if the Shopper Group still has Payment Methods assigned to it
 		// Move to payment?
 		$db->query( "SELECT `payment_method_id` FROM `#__{vm}_payment_method` WHERE `shopper_group_id`=".$shopper_group_id);
 		if( $db->next_record()) {
-			$GLOBALS['vmLogger']->err(str_replace('{id}',$shopper_group_id,JText::_('JM_SHOPPER_GROUP_DELETE_PAYMENT_METHODS_ASS')));
+			$GLOBALS['vmLogger']->err(str_replace('{id}',$shopper_group_id,JText::_('VM_SHOPPER_GROUP_DELETE_PAYMENT_METHODS_ASS')));
 			return False;
 		}
 		// Check if there are Users in this Shopper Group
 		// mvoe to vendor?
 		$db->query( "SELECT `user_id` FROM `#__{vm}_shopper_vendor_xref` WHERE `shopper_group_id`=".$shopper_group_id);
 		if( $db->next_record()) {
-			$GLOBALS['vmLogger']->err(str_replace('{id}',$shopper_group_id,JText::_('JM_SHOPPER_GROUP_DELETE_USERS_ASS')));
+			$GLOBALS['vmLogger']->err(str_replace('{id}',$shopper_group_id,JText::_('VM_SHOPPER_GROUP_DELETE_USERS_ASS')));
 			return False;
 		}
 
@@ -122,7 +122,7 @@ class ps_shopper_group extends vmAbstractObject  {
 					. " AND `default`='1'";
 		$db->query($q);
 		if ($db->next_record()) {
-			$GLOBALS['vmLogger']->err(JText::_('JM_SHOPPER_GROUP_DELETE_DEFAULT'));
+			$GLOBALS['vmLogger']->err(JText::_('VM_SHOPPER_GROUP_DELETE_DEFAULT'));
 			return False;
 		}
 
@@ -194,20 +194,20 @@ class ps_shopper_group extends vmAbstractObject  {
 			if( $db->query() !== false ) {
 				$shopper_group_id = $db->last_insert_id();
 				vmRequest::setVar( 'shopper_group_id', $shopper_group_id );
-				$vmLogger->info(JText::_('JM_SHOPPER_GROUP_ADDED'));
+				$vmLogger->info(JText::_('VM_SHOPPER_GROUP_ADDED'));
 				$answer = $_REQUEST['shopper_group_id'];
 			} else {
-				$vmLogger->err(JText::_('JM_SHOPPER_GROUP_ADD_FAILED'));
+				$vmLogger->err(JText::_('VM_SHOPPER_GROUP_ADD_FAILED'));
 			}
 		} else { // UPDATE
 			$db->buildQuery( 'UPDATE', '#__{vm}_shopper_group', $fields, 'WHERE `shopper_group_id`=' . (int)$d["shopper_group_id"] );
 
 			if( $db->query() ) {
-				$GLOBALS['vmLogger']->info(JText::_('JM_SHOPPER_GROUP_UPDATED'));
+				$GLOBALS['vmLogger']->info(JText::_('VM_SHOPPER_GROUP_UPDATED'));
 
 				$answer = True;
 			} else {
-				$GLOBALS['vmLogger']->err(JText::_('JM_SHOPPER_GROUP_UPDATE_FAILED'));
+				$GLOBALS['vmLogger']->err(JText::_('VM_SHOPPER_GROUP_UPDATE_FAILED'));
 			}
 			if($answer) {
 				if ($default == "1") {

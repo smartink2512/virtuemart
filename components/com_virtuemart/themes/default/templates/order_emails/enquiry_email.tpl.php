@@ -3,22 +3,22 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id
-* @package JMart
+* @package VirtueMart
 * @copyright Copyright (C) 2008 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 ?>
 <html> 
 <head>
-<title><?php echo JText::_('JM_ENQUIRY_MAIL_CUSTOMER_QUESTION');?></title>
+<title><?php echo JText::_('VM_ENQUIRY_MAIL_CUSTOMER_QUESTION');?></title>
 <style type="text/css">
 <!--
 .Stil1 {
@@ -39,8 +39,8 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
         </tr>
         <tr>
             <td colspan="2">
-                <?php echo $contact_name . " " . JText::_('JM_ENQUIRY_MAIL_HAS_REQUESTED') ?>
-                <a href="<?php echo $product_url ?>" title="<?php echo $product_name ?>"><?php echo $product_name ?></a>&nbsp;(<?php echo JText::_('JM_ENQUIRY_MAIL_PRODUCT_SKU') ?>:&nbsp;<?php echo $product_sku ?>)
+                <?php echo $contact_name . " " . JText::_('VM_ENQUIRY_MAIL_HAS_REQUESTED') ?>
+                <a href="<?php echo $product_url ?>" title="<?php echo $product_name ?>"><?php echo $product_name ?></a>&nbsp;(<?php echo JText::_('VM_ENQUIRY_MAIL_PRODUCT_SKU') ?>:&nbsp;<?php echo $product_sku ?>)
             </td>
         </tr>
         <tr>
@@ -54,7 +54,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
         <tr><td>&nbsp;</td></tr>
         <tr align="left" bgcolor="#CCCCCC">
             <td class="Stil2" colspan="2">
-                <b><?php echo JText::_('JM_ENQUIRY_MAIL_QUESTION');?></b>
+                <b><?php echo JText::_('VM_ENQUIRY_MAIL_QUESTION');?></b>
             </td>
         </tr>
         <tr><td>&nbsp;</td></tr>

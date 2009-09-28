@@ -55,7 +55,7 @@ AdminMenuHelper::startAdminArea();
 	</fieldset>
 </div>
 
-	<input type="hidden" name="option" value="com_jmart" />
+	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="country_id" value="<?php echo $this->state->country_id; ?>" />
 	<input type="hidden" name="state_id" value="<?php echo $this->state->state_id; ?>" />
 	<input type="hidden" name="published" value="<?php echo $this->state->published; ?>" />

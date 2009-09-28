@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: admin.function_form.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 
@@ -21,7 +21,7 @@ vmCommonHTML::loadMooTools();
 
 $function_id = JRequest::getVar(  'function_id');
 $module_id = JRequest::getVar(  'module_id');
-$option = empty($option)?JRequest::getVar(  'option', 'com_jmart'):$option;
+$option = empty($option)?JRequest::getVar(  'option', 'com_virtuemart'):$option;
 
 if (!empty($function_id)) {
   $q = "SELECT * from #__{vm}_function where function_id='$function_id'";
@@ -29,7 +29,7 @@ if (!empty($function_id)) {
   $db->next_record();
 }
 //First create the object and let it print a form heading
-$formObj = &new formFactory( JText::_('JM_FUNCTION_FORM_LBL') );
+$formObj = &new formFactory( JText::_('VM_FUNCTION_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 ?> 
@@ -38,19 +38,19 @@ $formObj->startForm();
       <td colspan="2">&nbsp;</td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo JText::_('JM_FUNCTION_FORM_NAME') ?>:</td>
+      <td width="24%" align="right"><?php echo JText::_('VM_FUNCTION_FORM_NAME') ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="function_name" value="<?php $db->sp("function_name") ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo JText::_('JM_FUNCTION_FORM_CLASS') ?>:</td>
+      <td width="24%" align="right"><?php echo JText::_('VM_FUNCTION_FORM_CLASS') ?>:</td>
       <td width="76%"> 
         <?php echo $ps_module->list_classes( 'function_class', $db->sf("function_class") ) ?>
       </td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo JText::_('JM_FUNCTION_FORM_METHOD') ?>:</td>
+      <td width="24%" align="right"><?php echo JText::_('VM_FUNCTION_FORM_METHOD') ?>:</td>
       <td width="76%">
       	<div id="function_method_container">
         <input type="text" class="inputbox" id="function_method" name="function_method" value="<?php $db->sp("function_method") ?>" />
@@ -58,7 +58,7 @@ $formObj->startForm();
       </td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo JText::_('JM_FUNCTION_FORM_PERMS') ?>:</td>
+      <td width="24%" align="right"><?php echo JText::_('VM_FUNCTION_FORM_PERMS') ?>:</td>
       <td width="76%"> 
         <?php $perm->list_perms( 'function_perms', explode( ',', $db->f("function_perms")), 5, true ) ?>
       </td>
@@ -67,7 +67,7 @@ $formObj->startForm();
       <td valign="top" colspan="2" align="right">&nbsp; </td>
     </tr>
     <tr> 
-      <td valign="top" align="right"><?php echo JText::_('JM_FUNCTION_FORM_DESCRIPTION') ?>:</td>
+      <td valign="top" align="right"><?php echo JText::_('VM_FUNCTION_FORM_DESCRIPTION') ?>:</td>
       <td valign="top">&nbsp;</td>
     </tr>
     <tr align="center"> 

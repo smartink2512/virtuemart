@@ -3,24 +3,24 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: product.product_type_form.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 global $ps_product_type;
 $product_type_id = JRequest::getVar( 'product_type_id', 0);
-$option = empty($option)?JRequest::getVar(  'option', 'com_jmart'):$option;
+$option = empty($option)?JRequest::getVar(  'option', 'com_virtuemart'):$option;
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( JText::_('JM_PRODUCT_TYPE_FORM_LBL') );
+$formObj = &new formFactory( JText::_('VM_PRODUCT_TYPE_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 
@@ -35,7 +35,7 @@ elseif (empty($vars["error"])) {
 ?> 
 <table class="adminform">
 	<tr> 
-      <td class="labelcell"><?php echo JText::_('JM_PRODUCT_TYPE_FORM_PUBLISH') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('VM_PRODUCT_TYPE_FORM_PUBLISH') ?>:</td>
       <td width="62%"><?php 
         if ($db->sf("product_type_publish")=="Y") { 
           echo "<input type=\"checkbox\" name=\"product_type_publish\" value=\"Y\" checked=\"checked\" />";
@@ -47,20 +47,20 @@ elseif (empty($vars["error"])) {
       </td>
 	</tr>
 	<tr> 
-          <td class="labelcell"><?php echo JText::_('JM_PRODUCT_TYPE_FORM_NAME') ?>:</td>
+          <td class="labelcell"><?php echo JText::_('VM_PRODUCT_TYPE_FORM_NAME') ?>:</td>
           <td width="62%"> 
             <input type="text" class="inputbox" name="product_type_name" size="60" value="<?php $db->sp('product_type_name') ?>" />
           </td>
 	</tr>
 	<tr> 
-        <td class="labelcell"><?php echo JText::_('JM_PRODUCT_TYPE_FORM_DESCRIPTION') ?>:</td>
+        <td class="labelcell"><?php echo JText::_('VM_PRODUCT_TYPE_FORM_DESCRIPTION') ?>:</td>
         <td width="62%" valign="top"><?php
             editorArea( 'editor1', $db->f("product_type_description"), 'product_type_description', '300', '100', '60', '6' ) ?>
             <!--input type="text" class="inputbox" name="product_type_description" size="60" value="<?php // $db->sp('product_type_description') ?>" /-->
   		</td>
 	</tr>
 	<tr>
-      <td class="labelcell"><?php echo JText::_('JM_MODULE_LIST_ORDER') ?>: </td>
+      <td class="labelcell"><?php echo JText::_('VM_MODULE_LIST_ORDER') ?>: </td>
       <td valign="top"><?php 
         echo $ps_product_type->list_order( $db->f("product_type_id"), $db->f("product_type_list_order"));
         echo "<input type=\"hidden\" name=\"currentpos\" value=\"".$db->f("product_type_list_order")."\" />";
@@ -71,14 +71,14 @@ elseif (empty($vars["error"])) {
       <td colspan="2"><br /></td>
 	</tr>
 	<tr>
-      <td class="labelcell"><?php echo JText::_('JM_PRODUCT_TYPE_FORM_BROWSEPAGE') ." ". JText::_('JM_LEAVE_BLANK') ?>: </td>
+      <td class="labelcell"><?php echo JText::_('VM_PRODUCT_TYPE_FORM_BROWSEPAGE') ." ". JText::_('VM_LEAVE_BLANK') ?>: </td>
       <td valign="top">
       <input type="text" class="inputbox" name="product_type_browsepage" value="<?php $db->sp("product_type_browsepage"); ?>" />
       </td>
 	</tr>
 	<tr>
       <td class="labelcell">
-        <?php echo JText::_('JM_PRODUCT_TYPE_FORM_FLYPAGE') ." ". JText::_('JM_LEAVE_BLANK') ?>:
+        <?php echo JText::_('VM_PRODUCT_TYPE_FORM_FLYPAGE') ." ". JText::_('VM_LEAVE_BLANK') ?>:
       </td>
       <td valign="top">
       <input type="text" class="inputbox" name="product_type_flypage" value="<?php $db->sp("product_type_flypage"); ?>" />

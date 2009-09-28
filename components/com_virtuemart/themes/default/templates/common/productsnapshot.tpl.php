@@ -37,7 +37,7 @@ if( !empty($addtocart_link) ) {
 	?>
 	<br />
 	<form action="<?php echo  $mm_action_url ?>index.php" method="post" name="addtocart" id="addtocart">
-    <input type="hidden" name="option" value="com_jmart" />
+    <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="page" value="shop.cart" />
     <input type="hidden" name="Itemid" value="<?php echo ps_session::getShopItemid(); ?>" />
     <input type="hidden" name="func" value="cartAdd" />
@@ -47,7 +47,7 @@ if( !empty($addtocart_link) ) {
     <input type="hidden" name="set_price[]" value="" />
     <input type="hidden" name="adjust_price[]" value="" />
     <input type="hidden" name="master_product[]" value="" />
-    <input type="submit" class="addtocart_button_module" value="<?php echo JText::_('JM_CART_ADD_TO') ?>" title="<?php echo JText::_('JM_CART_ADD_TO') ?>" />
+    <input type="submit" class="addtocart_button_module" value="<?php echo JText::_('VM_CART_ADD_TO') ?>" title="<?php echo JText::_('VM_CART_ADD_TO') ?>" />
     </form>
 	<br />
 	<?php

@@ -1,9 +1,9 @@
 <?php
 /**
- * JMart Change Log
+ * VirtueMart Change Log
  *
- * @package	JMart
- * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
+ * @package	VirtueMart
+ * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
 // no direct access
@@ -28,7 +28,7 @@ $ -> Language fix or change
 ^ Country maintenance converted to MVC
 ^ Credit card maintenance converted to MVC
 ^ Currency maintenance converted to MVC
-^ JMart branding and logos to replace Virtuemart ones
+^ VirtueMart branding and logos to replace Virtuemart ones
 ^ Credit card maintenance converted to MVC
 + Added the ability to publish/unpublish countries
 ^ Coupon maintenance converted to MVC

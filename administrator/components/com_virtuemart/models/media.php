@@ -1,6 +1,6 @@
 <?php
 /**
-* @package		JMart
+* @package		VirtueMart
 * @license		GNU/GPL, see LICENSE.php
 */
 
@@ -10,11 +10,11 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model');
 
 /**
- * Model for JMart Product Files
+ * Model for VirtueMart Product Files
  *
- * @package		JMart
+ * @package		VirtueMart
  */
-class JMartModelMedia extends JModel {
+class VirtueMartModelMedia extends JModel {
     
 	/* Private variables */
 	private $_total;
@@ -62,8 +62,8 @@ class JMartModelMedia extends JModel {
     	if (empty($this->_total)) {
     		$db = JFactory::getDBO();
     		$filter = '';
-            if (JRequest::getInt('product_id', 0) > 0) $filter .= ' WHERE `#__jmart_product_files`.`file_product_id` = '.JRequest::getInt('product_id');
-			$q = "SELECT COUNT(*) FROM `#__jmart_product_files` ".$filter;
+            if (JRequest::getInt('product_id', 0) > 0) $filter .= ' WHERE `#__vm_product_files`.`file_product_id` = '.JRequest::getInt('product_id');
+			$q = "SELECT COUNT(*) FROM `#__vm_product_files` ".$filter;
 			$db->setQuery($q);
 			$this->_total = $db->loadResult();
         }
@@ -106,7 +106,7 @@ class JMartModelMedia extends JModel {
 			default: $type_sql = ''; break;
 		}
 		$q = "SELECT COUNT(file_id) AS files 
-			FROM #__jmart_product_files 
+			FROM #__vm_product_files 
 			WHERE file_product_id=".intval($pid).' '.$type_sql;
 		$db->setQuery($q);
 		$files = $db->loadResult();
@@ -115,7 +115,7 @@ class JMartModelMedia extends JModel {
 					IF (LENGTH(`product_thumb_image`) = 0, '0', '1'), 
 					IF (LENGTH(`product_thumb_image`) = 0, '1', '2')) 
 					AS cnt 
-				FROM `#__jmart_product` 
+				FROM `#__vm_product` 
 				WHERE product_id=".intval($pid);
 		$db->setQuery($q);
 		$files += $db->loadResult();
@@ -193,11 +193,11 @@ class JMartModelMedia extends JModel {
 							IF (LOWER(attribute_name) = 'download', 1, 0) AS isdownloadable,
 							IF (file_is_image = 1, 'isImage', 'isFile') AS file_role,
 							product_name
-					FROM #__jmart_product_files 
-					LEFT JOIN #__jmart_product_attribute
-					ON #__jmart_product_files.file_title = #__jmart_product_attribute.attribute_value 
-					LEFT JOIN #__jmart_product
-					ON #__jmart_product_files.file_product_id = #__jmart_product.product_id ".$filter; 
+					FROM #__vm_product_files 
+					LEFT JOIN #__vm_product_attribute
+					ON #__vm_product_files.file_title = #__vm_product_attribute.attribute_value 
+					LEFT JOIN #__vm_product
+					ON #__vm_product_files.file_product_id = #__vm_product.product_id ".$filter; 
 				$q .= " ORDER BY file_is_image DESC";
 				break;
 			case 'product':
@@ -216,7 +216,7 @@ class JMartModelMedia extends JModel {
 							product_name,
 							CONCAT('".IMAGEURL."','product/', product_full_image) AS file_url, 
 							SUBSTRING(product_full_image, -3, 3) AS file_extension
-					FROM #__jmart_product 
+					FROM #__vm_product 
 					WHERE LENGTH(product_full_image) > 0 ".$filter;
 				break;
 		 }
@@ -240,13 +240,13 @@ class JMartModelMedia extends JModel {
 			$this->_productfile->product_id = JRequest::getInt('product_id', null);
 			$isProductDownload = $this->isProductDownloadFile($this->_productfile->file_id, $this->_productfile->product_id);
 			$q = "SELECT file_name,file_url,file_is_image,file_published,file_title 
-				  FROM #__jmart_product_files 
+				  FROM #__vm_product_files 
 				  WHERE file_id='".$this->_productfile->file_id."'"; 
 			$db->setQuery($q);
 			$pfile = $db->loadObject();
 			if ($db->getAffectedRows() > 0) {
 				if( $isProductDownload ) {
-					$db->setQuery('SELECT attribute_id FROM `#__jmart_product_attribute` WHERE attribute_name=\'download\' AND attribute_value=\''.$pfile->file_title.'\' AND product_id=\''.$this->_productfile->product_id.'\'');
+					$db->setQuery('SELECT attribute_id FROM `#__vm_product_attribute` WHERE attribute_name=\'download\' AND attribute_value=\''.$pfile->file_title.'\' AND product_id=\''.$this->_productfile->product_id.'\'');
 					$db->query();
 					$this->_productfile->attribute_id = $db->loadResult();
 					return 'downloadable_file';
@@ -270,7 +270,7 @@ class JMartModelMedia extends JModel {
 	 */
 	function isProductDownloadFile( $file_id, $product_id ) {
 		$db = JFactory::getDBO();
-		$q = "SELECT attribute_value, attribute_name,file_id FROM #__jmart_product_attribute,#__jmart_product_files WHERE ";
+		$q = "SELECT attribute_value, attribute_name,file_id FROM #__vm_product_attribute,#__vm_product_files WHERE ";
 		$q .= "product_id=".intval($product_id)." AND attribute_name='download' ";
 		$q .= "AND file_id=".intval($file_id)." AND attribute_value=file_title";
 		$db->setQuery($q);
@@ -361,7 +361,7 @@ class JMartModelMedia extends JModel {
 			}
 			$product_row->bind($this->_productfile);
 			if ($product_row->store()) {
-				$mainframe->enqueueMessage(JText::_('JM_PRODUCT_FILES_IMAGES_SET'));
+				$mainframe->enqueueMessage(JText::_('VM_PRODUCT_FILES_IMAGES_SET'));
 				return true;
 			}
 			else return false;
@@ -384,7 +384,7 @@ class JMartModelMedia extends JModel {
 											'attribute_name' => 'download',
 											'attribute_value' => $attribute_value
 										);
-				$attribute_row = $this->getTable('jmart_product_attribute');
+				$attribute_row = $this->getTable('vm_product_attribute');
 				$attribute_row->bind($fields);
 				$attribute_row->store();
 			}
@@ -393,14 +393,14 @@ class JMartModelMedia extends JModel {
 			$this->_productfile->file_product_id = JRequest::getInt("product_id");
 			$row->bind($this->_productfile);
 			if( $row->store() !== false ) {
-				$mainframe->enqueueMessage(JText::_('JM_PRODUCT_FILES_ADDED'));
+				$mainframe->enqueueMessage(JText::_('VM_PRODUCT_FILES_ADDED'));
 				JRequest::setVar('file_id', $row->file_id);
 			} 
 			else {
 				return false;
 			}
 		}
-		$mainframe->redirect('index.php?option=com_jmart&view=media&product_id='.JRequest::getInt("product_id"));
+		$mainframe->redirect('index.php?option=com_virtuemart&view=media&product_id='.JRequest::getInt("product_id"));
 		
 	}
 	
@@ -415,20 +415,20 @@ class JMartModelMedia extends JModel {
 		
 		/* Check if there is any file specified */
 		if (empty($files["file_upload"]["name"]) && is_null(JRequest::getVar('file_url')) && is_null(JRequest::getVar('downloadable_file'))) {
-			$mainframe->enqueueMessage(JText::_('JM_PRODUCT_FILES_ERR_PROVIDE'), 'error');
+			$mainframe->enqueueMessage(JText::_('VM_PRODUCT_FILES_ERR_PROVIDE'), 'error');
 			return False;
 		}
 		
 		/* Check if we have a product ID */
 		if (!JRequest::getInt("product_id", false)) {
-			$mainframe->enqueueMessage(JText::_('JM_PRODUCT_FILES_ERR_ID'), 'error');
+			$mainframe->enqueueMessage(JText::_('VM_PRODUCT_FILES_ERR_ID'), 'error');
 			return false;
 		}
 		
 		/* Handling uploaded file */
 		if (!empty($files["file_upload"]["name"])) {
 			$db = JFactory::getDBO();
-			$q = "SELECT count(*) AS rowcnt FROM #__jmart_product_files WHERE";
+			$q = "SELECT count(*) AS rowcnt FROM #__vm_product_files WHERE";
 			$q .= " file_name LIKE '%" . $db->getEscaped($files["file_upload"]["name"]) . "%'";
 			$db->setQuery($q);
 			$rowcnt = $db->loadResult();
@@ -452,7 +452,7 @@ class JMartModelMedia extends JModel {
 		
 		/* Get the filename */
 		if ($this->_productfile->fileexists) {
-			$mainframe->enqueueMessage(JText::_('JM_UPLOADED_FILE_NAME_EXISTS').' '.basename($files['file_upload']['name']), 'error');
+			$mainframe->enqueueMessage(JText::_('VM_UPLOADED_FILE_NAME_EXISTS').' '.basename($files['file_upload']['name']), 'error');
 			return false;
 		}
 		/* Get file details */
@@ -477,7 +477,7 @@ class JMartModelMedia extends JModel {
 					@mkdir( $uploaddir );
 				}
 				if( !file_exists( $uploaddir ) ) {
-					$mainframe->enqueueMessage(JText::_('JM_FILES_PATH_ERROR'), 'error');
+					$mainframe->enqueueMessage(JText::_('VM_FILES_PATH_ERROR'), 'error');
 					return false;
 				}
 				
@@ -493,7 +493,7 @@ class JMartModelMedia extends JModel {
 			$this->_productfile->upload_success = $this->moveUploadedFile( 'file_upload', $uploaddir.$this->_productfile->file_name);
 		}
 		else {
-			$mainframe->enqueueMessage(JText::_('JM_FILES_UPLOAD_FAILURE'), 'error');
+			$mainframe->enqueueMessage(JText::_('VM_FILES_UPLOAD_FAILURE'), 'error');
 			return false;
 		}
 		
@@ -512,7 +512,7 @@ class JMartModelMedia extends JModel {
 					$width = JRequest::getInt('thumbimage_width');
 					$this->_productfile->fileout = $this->createThumbImage($tmp_filename, 'product', $height, $width );
 					if (is_file($this->_productfile->fileout)) {
-						$mainframe->enqueueMessage(JText::_('JM_FILES_IMAGE_RESIZE_SUCCESS'));
+						$mainframe->enqueueMessage(JText::_('VM_FILES_IMAGE_RESIZE_SUCCESS'));
 						$thumbimg = getimagesize($this->_productfile->fileout);
 						$this->_productfile->file_image_thumb_width = $thumbimg[0];
 						$this->_productfile->file_image_thumb_height = $thumbimg[1];
@@ -525,14 +525,14 @@ class JMartModelMedia extends JModel {
 							rename($this->_productfile->fileout, $ss_new_fileout);
 						}
 						else {
-							$mainframe->enqueueMessage(JText::_('JM_FILES_UPLOAD_EXISTS').' '.$ss_new_fileout, 'notice');
+							$mainframe->enqueueMessage(JText::_('VM_FILES_UPLOAD_EXISTS').' '.$ss_new_fileout, 'notice');
 						}
 						
 						$this->_productfile->fileout = str_replace($ss_str_wh_in, $ss_str_wh_out, $this->_productfile->fileout);
 						*/
 					}
 					else {
-						$mainframe->enqueueMessage(JText::_('JM_FILES_IMAGE_RESIZE_FAILURE'), 'error');
+						$mainframe->enqueueMessage(JText::_('VM_FILES_IMAGE_RESIZE_FAILURE'), 'error');
 						$this->_productfile->file_image_thumb_height = "";
 						$this->_productfile->file_image_thumb_width = "";
 					}
@@ -588,13 +588,13 @@ class JMartModelMedia extends JModel {
 					//$vmLogger->warning( "There was a problem with your upload." );
 					break;
 				case 1: //uploaded file exceeds the upload_max_filesize directive in php.ini
-					$mainframe->enqueueMessage(JText::_('JM_PRODUCT_FILES_ERR_TOOBIG'), 'warning');
+					$mainframe->enqueueMessage(JText::_('VM_PRODUCT_FILES_ERR_TOOBIG'), 'warning');
 					break;
 				case 2: //uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the html form
-					$mainframe->enqueueMessage(JText::_('JM_PRODUCT_FILES_ERR_TOOBIG'), 'warning');
+					$mainframe->enqueueMessage(JText::_('VM_PRODUCT_FILES_ERR_TOOBIG'), 'warning');
 					break;
 				case 3: //uploaded file was only partially uploaded
-					$mainframe->enqueueMessage(JText::_('JM_PRODUCT_FILES_ERR_PARTIALLY'), 'warning');
+					$mainframe->enqueueMessage(JText::_('VM_PRODUCT_FILES_ERR_PARTIALLY'), 'warning');
 					break;
 				case 4: //no file was uploaded
 					//$vmLogger->warning( "You have not selected a file/image for upload." );
@@ -668,7 +668,7 @@ class JMartModelMedia extends JModel {
 		}
 		$mainframe->enqueueMessage(str_replace('{X}', $deleted, JText::_('DELETED_{X}_MEDIA_ITEMS')));
 		/* Redirect so the user cannot reload the delete action */
-		$url = 'index.php?option=com_jmart&view=media';
+		$url = 'index.php?option=com_virtuemart&view=media';
 		$productid = JRequest::getInt('product_id', false);
 		if ($productid) $url .= '&product_id='.$productid;
 		$mainframe->redirect($url);

@@ -17,9 +17,9 @@ defined('_JEXEC') or die('Restricted access');
 // Require the base controller
 require_once (JPATH_COMPONENT.DS.'controller.php');
 
-//Include the JMart configuration file
+//Include the VirtueMart configuration file
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php')) {
-    $errorMsg = '<h3>The configuration file for JMart is missing!</h3>It should be here: <strong>'.JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php</strong>';
+    $errorMsg = '<h3>The configuration file for VirtueMart is missing!</h3>It should be here: <strong>'.JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php</strong>';
     die( $errorMsg);
 }
 //else {
@@ -39,7 +39,7 @@ if($controller = JRequest::getVar('controller')) {
 }
 
 // Create the controller
-$classname	= 'JMartController'.ucfirst($controller);
+$classname	= 'VirtueMartController'.ucfirst($controller);
 $controller = new $classname( );
 
 // Perform the Request task

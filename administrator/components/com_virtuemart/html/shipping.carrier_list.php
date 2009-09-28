@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: shipping.carrier_list.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 
@@ -46,7 +46,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('JM_CARRIER_LIST_LBL'), JM_ADMIN_ICON_URL."icon_48".DS."jm_ups_48.png", $modulename, "carrier_list");
+$listObj->writeSearchHeader(JText::_('VM_CARRIER_LIST_LBL'), VM_ADMIN_ICON_URL."icon_48".DS."jm_ups_48.png", $modulename, "carrier_list");
 
 // start the list table
 $listObj->startTable();
@@ -54,8 +54,8 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					JText::_('JM_CARRIER_LIST_NAME_LBL') => '',
-					JText::_('JM_CARRIER_LIST_ORDER_LBL') => '',
+					JText::_('VM_CARRIER_LIST_NAME_LBL') => '',
+					JText::_('VM_CARRIER_LIST_ORDER_LBL') => '',
 					JText::_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );

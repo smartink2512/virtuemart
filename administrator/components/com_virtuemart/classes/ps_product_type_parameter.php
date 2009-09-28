@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
  *
  * @version $Id: ps_product_type_parameter.php 1755 2009-05-01 22:45:17Z rolandd $
- * @package JMart
+ * @package VirtueMart
  * @subpackage classes
  * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * JMart is free software. This version may have been modified pursuant
+ * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+ * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
  *
- * http://joomlacode.org/gf/project/jmart/
+ * http://virtuemart.org
  */
 
 /**
@@ -32,7 +32,7 @@ class ps_product_type_parameter {
 		
 		
 		if( empty($d["parameter_name"])) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_PARAMETER_ERR_NAME') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_PARAMETER_ERR_NAME') );
 			return False ;
 		}
 		// Column names must not have special chars or white spaces
@@ -44,14 +44,14 @@ class ps_product_type_parameter {
 			if( $d["parameter_type"] == "B" ) { // Break line
 				$d["parameter_label"] = $d["parameter_name"] ;
 			} else {
-				$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_PARAMETER_ERR_LABEL') );
+				$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_PARAMETER_ERR_LABEL') );
 				return False ;
 			}
 		}
 		
 		// field Value:
 		if( @$d["parameter_multiselect"] == "Y" && $d["parameter_values"] == "" ) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_PARAMETER_ERR_VALUES') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_PARAMETER_ERR_VALUES') );
 			return False ;
 		}
 		
@@ -64,7 +64,7 @@ class ps_product_type_parameter {
 		$db->query( $q ) ;
 		$db->next_record() ;
 		if( $db->f( "count" ) != 0 ) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_PARAMETER_ERR_EXIST') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_PARAMETER_ERR_EXIST') );
 			return False ;
 		}
 		
@@ -81,7 +81,7 @@ class ps_product_type_parameter {
 		
 		
 		if( empty($d["parameter_name"]) ) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_PARAMETER_ERR_NAME') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_PARAMETER_ERR_NAME') );
 			return False ;
 		}
 		// Column names must not have special chars or white spaces
@@ -90,11 +90,11 @@ class ps_product_type_parameter {
 			$d["parameter_name"] = strtolower(preg_replace($regex, '_', $d['parameter_name']));
 		} 
 		if( empty($d["parameter_label"])) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_PARAMETER_ERR_LABEL') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_PARAMETER_ERR_LABEL') );
 			return False ;
 		} // field Value:
 		elseif( @$d["parameter_multiselect"] == "Y" && $d["parameter_values"] == "" ) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_PARAMETER_ERR_VALUES') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_PARAMETER_ERR_VALUES') );
 			return False ;
 		} 
 
@@ -109,7 +109,7 @@ class ps_product_type_parameter {
 			$db->query( $q ) ;
 			$db->next_record() ;
 			if( $db->f( "count" ) != 0 ) {
-				$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_PARAMETER_ERR_EXIST') );
+				$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_PARAMETER_ERR_EXIST') );
 				return False ;
 			}
 		}
@@ -127,7 +127,7 @@ class ps_product_type_parameter {
 		$db = new ps_DB( ) ;
 		
 		if( empty($d["product_type_id"]) || empty($d["parameter_name"])) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_PARAMETER_DELETE_SELECT') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_PARAMETER_DELETE_SELECT') );
 			return False ;
 		}
 		
@@ -221,7 +221,7 @@ class ps_product_type_parameter {
 				$q .= "DEFAULT '" . $d["parameter_default"] . "' NOT NULL;" ;
 			}
 			if( $db->query($q) === false ) {
-				$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_PARAMETER_ADDING_FAILED') );
+				$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_PARAMETER_ADDING_FAILED') );
 				return false;
 			}
 			
@@ -238,7 +238,7 @@ class ps_product_type_parameter {
 				$db->query( $q );
 			}
 		}
-		$GLOBALS['vmLogger']->info( JText::_('JM_PRODUCT_TYPE_PARAMETER_ADDED') );
+		$GLOBALS['vmLogger']->info( JText::_('VM_PRODUCT_TYPE_PARAMETER_ADDED') );
 		return true ;
 	
 	}

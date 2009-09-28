@@ -3,22 +3,22 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: product.product_list.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 /* ROLANDD: MVC TEST START */
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'product.php');
-$productlist = new JMartModelProduct();
+$productlist = new VirtueMartModelProduct();
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'product_files.php');
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'productreviews.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
@@ -71,20 +71,20 @@ if (0) {
 	?>
 	<div align="right">
 	
-		<form style="float:right;" action="<?php $_SERVER['PHP_SELF'] ?>" method="get"><?php echo JText::_('JM_PRODUCT_LIST_SEARCH_BY_DATE') ?>&nbsp;
+		<form style="float:right;" action="<?php $_SERVER['PHP_SELF'] ?>" method="get"><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE') ?>&nbsp;
 			  <select class="inputbox" name="search_type">
-			  <option value="product"><?php echo JText::_('JM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT') ?></option>
-				  <option value="price" <?php echo $search_type == "price" ? 'selected="selected"' : ''; ?>><?php echo JText::_('JM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE') ?></option>
-				  <option value="withoutprice" <?php echo $search_type == "withoutprice" ? 'selected="selected"' : ''; ?>><?php echo JText::_('JM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE') ?></option>
+			  <option value="product"><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT') ?></option>
+				  <option value="price" <?php echo $search_type == "price" ? 'selected="selected"' : ''; ?>><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE') ?></option>
+				  <option value="withoutprice" <?php echo $search_type == "withoutprice" ? 'selected="selected"' : ''; ?>><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE') ?></option>
 			  </select>
 			  <select class="inputbox" name="search_order">
-				  <option value="&lt;"><?php echo JText::_('JM_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE') ?></option>
-				  <option value="&gt;" <?php echo $search_order == ">" ? 'selected="selected"' : ''; ?>><?php echo JText::_('JM_PRODUCT_LIST_SEARCH_BY_DATE_AFTER') ?></option>
+				  <option value="&lt;"><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE') ?></option>
+				  <option value="&gt;" <?php echo $search_order == ">" ? 'selected="selected"' : ''; ?>><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_AFTER') ?></option>
 			  </select>
-			  <input type="hidden" name="option" value="com_jmart" />
+			  <input type="hidden" name="option" value="com_virtuemart" />
 			  <input class="inputbox" type="text" size="15" name="search_date" value="<?php echo JRequest::getVar( 'search_date', $nowstring) ?>" />
 			  <input type="hidden" name="page" value="product.product_list" />
-			  <input class="button" type="submit" name="search" value="<?php echo JText::_('JM_SEARCH_TITLE')?>" />
+			  <input class="button" type="submit" name="search" value="<?php echo JText::_('VM_SEARCH_TITLE')?>" />
 		</form>
 		<br/>
 	</div>
@@ -168,7 +168,7 @@ if (0) {
 		list($d["search_date_hour"],$d["search_date_minute"]) = explode(":",$time);
 		list($d["search_date_day"],$d["search_date_month"],$d["search_date_year"]) = explode(".",$date);
 		$d["search_date_use"] = true;
-		if (process_date_time($d,"search_date",JText::_('JM_SEARCH_LBL'))) {
+		if (process_date_time($d,"search_date",JText::_('VM_SEARCH_LBL'))) {
 			$date = $d["search_date"];
 			switch( $search_type ) {
 				case "product" :
@@ -247,17 +247,17 @@ if (0) {
 	$listObj = new listFactory( $pageNav );
 	
 	// print out the search field and a list heading
-	$listObj->writeSearchHeader(JText::_('JM_PRODUCT_LIST_LBL'), JM_ADMIN_ICON_URL.'icon_48/jm_product_code_48.png', "product", "product_list");
+	$listObj->writeSearchHeader(JText::_('VM_PRODUCT_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/jm_product_code_48.png', "product", "product_list");
 	
-	echo JText::_('JM_FILTER') ?>:
-	 <select class="inputbox" id="category_id" name="category_id" onchange="window.location='<?php echo $_SERVER['PHP_SELF'] ?>?option=com_jmart&page=product.product_list&category_id='+document.getElementById('category_id').options[selectedIndex].value;">
+	echo JText::_('VM_FILTER') ?>:
+	 <select class="inputbox" id="category_id" name="category_id" onchange="window.location='<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&page=product.product_list&category_id='+document.getElementById('category_id').options[selectedIndex].value;">
 		<option value=""><?php echo JText::_('SEL_CATEGORY') ?></option>
 		<?php
 		$ps_product_category->list_tree( $category_id );
 		?>
 	</select>
 	<?php 
-	echo vmToolTip( JText::_('JM_PRODUCT_LIST_REORDER_TIP') );
+	echo vmToolTip( JText::_('VM_PRODUCT_LIST_REORDER_TIP') );
 			 
 	// start the list table
 	$listObj->startTable();
@@ -265,22 +265,22 @@ if (0) {
 	// these are the columns in the table
 	$columns = Array(  '#' => '',
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "",
-					JText::_('JM_PRODUCT_LIST_NAME') => "width=\"30%\"",
-					JText::_('JM_PRODUCT_LIST_VENDOR_NAME') => "width=\"30%\"",
-					JText::_('JM_PRODUCT_LIST_MEDIA') => 'width="5%"',
-					JText::_('JM_PRODUCT_LIST_SKU') => "width=\"15%\"",
-					JText::_('JM_PRODUCT_PRICE_TITLE') => "width=\"10%\"",
-					JText::_('JM_CATEGORY') => "width=\"15%\"" );
+					JText::_('VM_PRODUCT_LIST_NAME') => "width=\"30%\"",
+					JText::_('VM_PRODUCT_LIST_VENDOR_NAME') => "width=\"30%\"",
+					JText::_('VM_PRODUCT_LIST_MEDIA') => 'width="5%"',
+					JText::_('VM_PRODUCT_LIST_SKU') => "width=\"15%\"",
+					JText::_('VM_PRODUCT_PRICE_TITLE') => "width=\"10%\"",
+					JText::_('VM_CATEGORY') => "width=\"15%\"" );
 	
 	// Only show reordering fields when a category ID is selected!
 	if( $category_id ) {
-		$columns[JText::_('JM_FIELDMANAGER_REORDER')] ="width=\"5%\"";
+		$columns[JText::_('VM_FIELDMANAGER_REORDER')] ="width=\"5%\"";
 		$columns[vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' )] ='width="8%"';
 	}
-	$columns[JText::_('JM_MANUFACTURER_MOD')] ="width=\"10%\"";
-	$columns[JText::_('JM_REVIEWS')] ="width=\"10%\"";
-	$columns[JText::_('JM_PRODUCT_LIST_PUBLISH')] ="";
-	$columns[JText::_('JM_PRODUCT_CLONE')] = "";
+	$columns[JText::_('VM_MANUFACTURER_MOD')] ="width=\"10%\"";
+	$columns[JText::_('VM_REVIEWS')] ="width=\"10%\"";
+	$columns[JText::_('VM_PRODUCT_LIST_PUBLISH')] ="";
+	$columns[JText::_('VM_PRODUCT_CLONE')] = "";
 	$columns[JText::_('E_REMOVE')] = "width=\"5%\"";
 	$columns['Id'] = '';
 	
@@ -306,7 +306,7 @@ if (0) {
 							"&product_id=" . $db->f("product_id")."&product_parent_id=".$product_parent_id;
 			if( $vmLayout != 'standard' ) {
 			$link .= "&no_menu=1&tmpl=component";
-			$link = defined('_JM_IS_BACKEND') 
+			$link = defined('_VM_IS_BACKEND') 
 							? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
 							: str_replace('index.php', 'index2.php', $link );
 			}
@@ -325,12 +325,12 @@ if (0) {
 				$link = $sess->url($_SERVER['PHP_SELF'] . "?page=$modulename.product_list&product_parent_id=" . $db->f("product_id"));
 				if( $vmLayout != 'standard' ) {
 					$link .= "&no_menu=1&tmpl=component";
-					$link = defined('_JM_IS_BACKEND') 
+					$link = defined('_VM_IS_BACKEND') 
 								? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
 								: str_replace('index.php', 'index2.php', $link );
 				}
 				$tmpcell .= $link;
-				$tmpcell .=  "\">[ ".JText::_('JM_PRODUCT_FORM_ITEM_INFO_LBL'). " ]</a>";
+				$tmpcell .=  "\">[ ".JText::_('VM_PRODUCT_FORM_ITEM_INFO_LBL'). " ]</a>";
 			}
 			$listObj->addCell( $tmpcell );
 			
@@ -351,7 +351,7 @@ if (0) {
 			if( $db->f('product_full_image')) $numFiles++;
 			if( $db->f('product_thumb_image')) $numFiles++;
 			$link = $sess->url( $_SERVER['PHP_SELF']. '?page=product.file_list&product_id='.$db->f('product_id').'&no_menu=1' );
-			$link = defined('_JM_IS_BACKEND') 
+			$link = defined('_VM_IS_BACKEND') 
 							? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
 							: str_replace('index.php', 'index2.php', $link );
 			$text = '<img src="'.$mosConfig_live_site.'/includes/js/ThemeOffice/media.png" align="middle" border="0" />&nbsp;('.$numFiles.')';
@@ -366,7 +366,7 @@ if (0) {
 			$tmp_cell = '<span class="editable priceform">'.$GLOBALS['CURRENCY_DISPLAY']->getValue( $price['product_price']).' '.$price['product_currency'];
 			$tmp_cell .= '&nbsp;&nbsp;&nbsp;</span>';
 			
-			$listObj->addCell( $tmp_cell, 'id="'.$db->f('product_id').'" onclick="showPriceForm(this.id)" title="'.JText::_('JM_PRICE_FORM_LBL').'"' );
+			$listObj->addCell( $tmp_cell, 'id="'.$db->f('product_id').'" onclick="showPriceForm(this.id)" title="'.JText::_('VM_PRICE_FORM_LBL').'"' );
 			
 			// The Categories or the parent product's name
 			$tmpcell = "";
@@ -379,7 +379,7 @@ if (0) {
 				}
 			}
 			else {
-				$tmpcell .= JText::_('JM_CATEGORY_FORM_PARENT') .": <a href=\"";
+				$tmpcell .= JText::_('VM_CATEGORY_FORM_PARENT') .": <a href=\"";
 				$url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&limitstart=$limitstart&keyword=".urlencode($keyword)."&product_id=$product_parent_id";
 				$tmpcell .= $sess->url( $url );
 				$tmpcell .= "\">".$ps_product->get_field($product_parent_id,"product_name"). "</a>";
@@ -401,26 +401,26 @@ if (0) {
 			$db_cat->query("SELECT count(*) as num_rows FROM #__{vm}_product_reviews WHERE product_id='".$db->f("product_id")."'");
 			$db_cat->next_record();
 			if ($db_cat->f("num_rows")) {
-				$link = $_SERVER["PHP_SELF"]."?option=com_jmart&page=product.review_list&product_id=".$db->f("product_id");
+				$link = $_SERVER["PHP_SELF"]."?option=com_virtuemart&page=product.review_list&product_id=".$db->f("product_id");
 				if( $vmLayout != 'standard' ) {
 					$link .= "&no_menu=1&tmpl=component";
-					$link = defined('_JM_IS_BACKEND') 
+					$link = defined('_VM_IS_BACKEND') 
 								? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
 								: str_replace('index.php', 'index2.php', $link );
 				}
 				$tmpcell = $db_cat->f("num_rows")."&nbsp;";
 				$tmpcell .= "<a href=\"".$link."\">";
-				$tmpcell .= "[".JText::_('JM_SHOW')."]</a>";
+				$tmpcell .= "[".JText::_('VM_SHOW')."]</a>";
 			}
 			else {
 				$link = $sess->url( $_SERVER['PHP_SELF'].'?page=product.review_form&product_id='.$db->f('product_id'));
 				if( $vmLayout != 'standard' ) {
 					$link .= "&no_menu=1&tmpl=component";
-					$link = defined('_JM_IS_BACKEND') 
+					$link = defined('_VM_IS_BACKEND') 
 								? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
 								: str_replace('index.php', 'index2.php', $link );
 				}
-				$text = '['.JText::_('JM_REVIEW_FORM_LBL').']';
+				$text = '['.JText::_('VM_REVIEW_FORM_LBL').']';
 				$tmpcell = " - <a href=\"$link\">$text</a>\n";
 			}
 			$listObj->addCell( $tmpcell );
@@ -436,12 +436,12 @@ if (0) {
 			$tmpcell .= "</a>";
 			$listObj->addCell( $tmpcell );
 	
-			$tmpcell = "<a title=\"".JText::_('JM_PRODUCT_CLONE')."\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('copy_$i','','". IMAGEURL ."ps_image/copy_f2.gif',1);\" href=\"";
+			$tmpcell = "<a title=\"".JText::_('VM_PRODUCT_CLONE')."\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('copy_$i','','". IMAGEURL ."ps_image/copy_f2.gif',1);\" href=\"";
 			$url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&clone_product=1&limitstart=$limitstart&keyword=".urlencode($keyword)."&product_id=" . $db->f("product_id");
 			if( !empty($product_parent_id) )
 			$url .= "&product_parent_id=$product_parent_id";
 			$tmpcell .= $sess->url( $url );
-			$tmpcell .= "\"><img src=\"".IMAGEURL."/ps_image/copy.gif\" name=\"copy_$i\" border=\"0\" alt=\"".JText::_('JM_PRODUCT_CLONE')."\" /></a>";
+			$tmpcell .= "\"><img src=\"".IMAGEURL."/ps_image/copy.gif\" name=\"copy_$i\" border=\"0\" alt=\"".JText::_('VM_PRODUCT_CLONE')."\" /></a>";
 			$listObj->addCell( $tmpcell );
 	
 			$listObj->addCell( $ps_html->deleteButton( "product_id", $db->f("product_id"), "productDelete", $keyword, $limitstart ) );
@@ -459,7 +459,7 @@ if (0) {
 	
 	$listObj->writeFooter( $keyword,  "&product_parent_id=$product_parent_id&category_id=$category_id&product_type_id=$product_type_id&search_date=$search_date");
 	
-	$path = defined('_JM_IS_BACKEND' ) ? '/administrator/' : '/';
+	$path = defined('_VM_IS_BACKEND' ) ? '/administrator/' : '/';
 	?>
 	<script type="text/javascript">
 	var priceDlg = null;
@@ -473,7 +473,7 @@ if (0) {
 							priceDlg = Ext.Msg.show({
 								width:300,
 								height:250,
-							   title:'<?php echo JText::_('JM_PRICE_FORM_LBL') ?>',
+							   title:'<?php echo JText::_('VM_PRICE_FORM_LBL') ?>',
 							   msg: o.responseText,
 							   buttons: Ext.Msg.OKCANCEL,
 							   fn: handleResult
@@ -544,12 +544,12 @@ if (0) {
 		updatePriceField( id );
 	}
 	function updatePriceField( id ) {	
-		sUrl = '<?php  $sess->purl( $mm_action_url .'index3.php?option=com_jmart&no_html=1&page=product.ajax_tools&task=getpriceforshoppergroup&formatPrice=1', false, false, true ) ?>&product_id=' + id;
+		sUrl = '<?php  $sess->purl( $mm_action_url .'index3.php?option=com_virtuemart&no_html=1&page=product.ajax_tools&task=getpriceforshoppergroup&formatPrice=1', false, false, true ) ?>&product_id=' + id;
 		callback = { success : function(o) { Ext.get("priceform-dlg").innerHTML = o.responseText;	}};
 		Ext.Ajax.request({method:'GET', url: sUrl, success:callback.success });
 	}
 	function reloadForm( parentId, keyName, keyValue ) {
-		sUrl = '<?php  $sess->purl( $mm_action_url .'index3.php?option=com_jmart&no_html=1&page=product.ajax_tools&task=getPriceForm', false, false, true ) ?>&product_id='+parentId+'&'+keyName+'='+keyValue;
+		sUrl = '<?php  $sess->purl( $mm_action_url .'index3.php?option=com_virtuemart&no_html=1&page=product.ajax_tools&task=getPriceForm', false, false, true ) ?>&product_id='+parentId+'&'+keyName+'='+keyValue;
 		callback = { success : function(o) { priceDlg.updateText( o.responseText) }};
 		Ext.Ajax.request({method:'GET', url: sUrl, success:callback.success });
 	}

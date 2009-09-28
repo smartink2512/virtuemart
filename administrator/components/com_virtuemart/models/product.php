@@ -1,6 +1,6 @@
 <?php
 /**
-* @package		JMart
+* @package		VirtueMart
 * @license		GNU/GPL, see LICENSE.php
 */
 
@@ -10,13 +10,13 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model');
 
 /**
- * Model for JMart Products
+ * Model for VirtueMart Products
  *
- * @package JMart
+ * @package VirtueMart
  * @author RolandD
- * @todo Replace getOrderUp and getOrderDown with JTable move function. This requires the jmart_product_category_xref table to replace the product_list with the ordering column
+ * @todo Replace getOrderUp and getOrderDown with JTable move function. This requires the vm_product_category_xref table to replace the product_list with the ordering column
  */
-class JMartModelProduct extends JModel {
+class VirtueMartModelProduct extends JModel {
     
 	var $_total;
 	var $_pagination;
@@ -54,9 +54,9 @@ class JMartModelProduct extends JModel {
     	if (empty($this->_total)) {
     		$db = JFactory::getDBO();
     		$filter = '';
-            if (JRequest::getInt('category_id', 0) > 0) $filter .= ' AND #__jmart_category.`category_id` = '.JRequest::getInt('category_id');
+            if (JRequest::getInt('category_id', 0) > 0) $filter .= ' AND #__vm_category.`category_id` = '.JRequest::getInt('category_id');
 			$q = "SELECT COUNT(*) ".$this->getProductListQuery().$filter."
-				 GROUP BY #__jmart_product.`product_id`
+				 GROUP BY #__vm_product.`product_id`
 				";
 			$db->setQuery($q);
 			$this->_total = $db->loadResult();
@@ -75,10 +75,10 @@ class JMartModelProduct extends JModel {
 			 $db = JFactory::getDBO();
 			 $q = "SELECT p.*, pf.manufacturer_id, pp.product_price_id, pp.product_price, pp.product_currency,
 			 	pp.price_quantity_start, pp.price_quantity_end 
-				FROM #__jmart_product AS p
-				LEFT JOIN #__jmart_product_mf_xref AS pf
+				FROM #__vm_product AS p
+				LEFT JOIN #__vm_product_mf_xref AS pf
 				ON p.product_id = pf.product_id
-				LEFT JOIN #__jmart_product_price AS pp
+				LEFT JOIN #__vm_product_price AS pp
 				ON p.product_id = pp.product_id
 				WHERE p.product_id = ".$product_id;
 			 $db->setQuery($q);
@@ -109,23 +109,23 @@ class JMartModelProduct extends JModel {
      	$this->getPagination();
      	
      	/* Check some filters */
-     	if (JRequest::getInt('product_parent_id', 0) > 0) $filter = ' WHERE #__jmart_product.`product_parent_id` = '.JRequest::getInt('product_parent_id');
-     	else $filter = ' WHERE #__jmart_product.`product_parent_id` = 0';
-     	if (JRequest::getInt('category_id', 0) > 0) $filter .= ' AND #__jmart_category.`category_id` = '.JRequest::getInt('category_id').' ORDER BY product_list';
+     	if (JRequest::getInt('product_parent_id', 0) > 0) $filter = ' WHERE #__vm_product.`product_parent_id` = '.JRequest::getInt('product_parent_id');
+     	else $filter = ' WHERE #__vm_product.`product_parent_id` = 0';
+     	if (JRequest::getInt('category_id', 0) > 0) $filter .= ' AND #__vm_category.`category_id` = '.JRequest::getInt('category_id').' ORDER BY product_list';
      	
      	
      	/* Build the query */
-     	$q = "SELECT #__jmart_product.`product_id`,
-     				#__jmart_product.`product_parent_id`,
+     	$q = "SELECT #__vm_product.`product_id`,
+     				#__vm_product.`product_parent_id`,
      				`product_name`,
      				`vendor_name`,
      				`product_sku`,
      				`category_name`,
-     				#__jmart_category.`category_id`,
-     				#__jmart_category_xref.`category_parent_id`,
-     				#__jmart_product_category_xref.`product_list`,
+     				#__vm_category.`category_id`,
+     				#__vm_category_xref.`category_parent_id`,
+     				#__vm_product_category_xref.`product_list`,
      				`mf_name`,
-     				#__jmart_manufacturer.`manufacturer_id`,
+     				#__vm_manufacturer.`manufacturer_id`,
      				`product_publish`,
      				IF (`product_publish` = 'Y', 1, 0) AS `published`,
      				`product_price`
@@ -136,23 +136,23 @@ class JMartModelProduct extends JModel {
     }
     
     private function getProductListQuery() {
-    	return 'FROM #__jmart_product
-			LEFT JOIN #__jmart_product_price
-			ON #__jmart_product.product_id = #__jmart_product_price.product_id
-			LEFT JOIN #__jmart_product_mf_xref
-			ON #__jmart_product.product_id = #__jmart_product_mf_xref.product_id
-			LEFT JOIN #__jmart_manufacturer
-			ON #__jmart_product_mf_xref.manufacturer_id = #__jmart_manufacturer.manufacturer_id
-			LEFT JOIN #__jmart_product_attribute
-			ON #__jmart_product.product_id = #__jmart_product_attribute.product_id
-			LEFT JOIN #__jmart_product_category_xref
-			ON #__jmart_product.product_id = #__jmart_product_category_xref.product_id
-			LEFT JOIN #__jmart_category
-			ON #__jmart_product_category_xref.category_id = #__jmart_category.category_id
-			LEFT JOIN #__jmart_category_xref
-			ON #__jmart_category.category_id = #__jmart_category_xref.category_child_id
-			LEFT JOIN #__jmart_vendor
-			ON #__jmart_product.vendor_id = #__jmart_vendor.vendor_id';
+    	return 'FROM #__vm_product
+			LEFT JOIN #__vm_product_price
+			ON #__vm_product.product_id = #__vm_product_price.product_id
+			LEFT JOIN #__vm_product_mf_xref
+			ON #__vm_product.product_id = #__vm_product_mf_xref.product_id
+			LEFT JOIN #__vm_manufacturer
+			ON #__vm_product_mf_xref.manufacturer_id = #__vm_manufacturer.manufacturer_id
+			LEFT JOIN #__vm_product_attribute
+			ON #__vm_product.product_id = #__vm_product_attribute.product_id
+			LEFT JOIN #__vm_product_category_xref
+			ON #__vm_product.product_id = #__vm_product_category_xref.product_id
+			LEFT JOIN #__vm_category
+			ON #__vm_product_category_xref.category_id = #__vm_category.category_id
+			LEFT JOIN #__vm_category_xref
+			ON #__vm_category.category_id = #__vm_category_xref.category_child_id
+			LEFT JOIN #__vm_vendor
+			ON #__vm_product.vendor_id = #__vm_vendor.vendor_id';
     }
     
     /*
@@ -160,7 +160,7 @@ class JMartModelProduct extends JModel {
      */
     public function checkChildProducts($product_id) {
      	$db = JFactory::getDBO();
-     	$q  = "SELECT IF (COUNT(product_id) > 0, 'Y', 'N') FROM `#__jmart_product` WHERE `product_parent_id` = ".$product_id;
+     	$q  = "SELECT IF (COUNT(product_id) > 0, 'Y', 'N') FROM `#__vm_product` WHERE `product_parent_id` = ".$product_id;
      	$db->setQuery($q);
      	if ($db->loadResult() == 'Y') return true;
      	else if ($db->loadResult() == 'N') return false;
@@ -175,7 +175,7 @@ class JMartModelProduct extends JModel {
      		$db = JFactory::getDBO();
      		$cids = implode( ',', $cid );
 			if (JRequest::getVar('task') == 'publish') $state =  'Y'; else $state = 'N';
-			$q = "UPDATE #__jmart_product 
+			$q = "UPDATE #__vm_product 
 				SET product_publish = ".$db->Quote($state)." 
 				WHERE product_id IN (".$cids.")";
 			$db->setQuery($q);
@@ -196,14 +196,14 @@ class JMartModelProduct extends JModel {
 		$db = JFactory::getDBO();         
 	    
         if ( $categoryId ) {
-	        $query  = 'SELECT DISTINCT `product_sku`,`#__jmart_product`.`product_id`, `product_name`, `product_s_desc`, `product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url` '; 
-	        $query .= 'FROM `#__jmart_product`, `#__jmart_product_category_xref`, `#__jmart_category` WHERE ';
-	        $query .= '(`#__jmart_product`.`product_parent_id`="" OR `#__jmart_product`.`product_parent_id`="0") ';
-	        $query .= 'AND `#__jmart_product`.`product_id`=`#__jmart_product_category_xref`.`product_id` ';
-	        $query .= 'AND `#__jmart_category`.`category_id`=`#__jmart_product_category_xref`.`category_id` ';
-            $query .= 'AND `#__jmart_category`.`category_id`=' . $categoryId . ' ';
-	        $query .= 'AND `#__jmart_product`.`product_publish`="Y" ';
-	        $query .= 'AND `#__jmart_product`.`product_special`="Y" ';
+	        $query  = 'SELECT DISTINCT `product_sku`,`#__vm_product`.`product_id`, `product_name`, `product_s_desc`, `product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url` '; 
+	        $query .= 'FROM `#__vm_product`, `#__vm_product_category_xref`, `#__vm_category` WHERE ';
+	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") ';
+	        $query .= 'AND `#__vm_product`.`product_id`=`#__vm_product_category_xref`.`product_id` ';
+	        $query .= 'AND `#__vm_category`.`category_id`=`#__vm_product_category_xref`.`category_id` ';
+            $query .= 'AND `#__vm_category`.`category_id`=' . $categoryId . ' ';
+	        $query .= 'AND `#__vm_product`.`product_publish`="Y" ';
+	        $query .= 'AND `#__vm_product`.`product_special`="Y" ';
 	        if( CHECK_STOCK && SHOW_OUT_OF_STOCK_PRODUCTS != '1') {
 		        $query .= ' AND `product_in_stock` > 0 ';
 	        }
@@ -211,10 +211,10 @@ class JMartModelProduct extends JModel {
         }
         else {
 	        $query  = 'SELECT DISTINCT `product_sku`,`product_id`,`product_name`,`product_s_desc`,`product_thumb_image`, `product_full_image`, `product_in_stock`, `product_url` ';
-	        $query .= 'FROM `#__jmart_product` WHERE ';
-	        $query .= '(`#__jmart_product`.`product_parent_id`="" OR `#__jmart_product`.`product_parent_id`="0") AND `vendor_id`=' . $vendorId . ' ';
-	        $query .= 'AND `#__jmart_product`.`product_publish`="Y" ';
-	        $query .= 'AND `#__jmart_product`.`product_special`="Y" ';
+	        $query .= 'FROM `#__vm_product` WHERE ';
+	        $query .= '(`#__vm_product`.`product_parent_id`="" OR `#__vm_product`.`product_parent_id`="0") AND `vendor_id`=' . $vendorId . ' ';
+	        $query .= 'AND `#__vm_product`.`product_publish`="Y" ';
+	        $query .= 'AND `#__vm_product`.`product_special`="Y" ';
 	        if( CHECK_STOCK && PSHOP_SHOW_OUT_OF_STOCK_PRODUCTS != '1') {
 		        $query .= ' AND `product_in_stock` > 0 ';
 	        }
@@ -239,20 +239,20 @@ class JMartModelProduct extends JModel {
     	/* Check if all the entries are numbers */
 		foreach( $order as $list_id ) {
 			if( !is_numeric( $list_id ) ) {
-				$mainframe->enqueueMessage(JText::_('JM_SORT_ERR_NUMBERS_ONLY'), 'error');
+				$mainframe->enqueueMessage(JText::_('VM_SORT_ERR_NUMBERS_ONLY'), 'error');
 				return false;
 			}
 		}
 		
 		/* Get the list of product IDs */
 		$q = "SELECT product_id 
-			FROM #__jmart_product_category_xref
+			FROM #__vm_product_category_xref
 			WHERE category_id = ".$category_id;
 		$db->setQuery($q);
 		$product_ids = $db->loadResultArray();
 		
 		foreach( $order as $key => $list_id ) {
-			$q = "UPDATE #__jmart_product_category_xref ";
+			$q = "UPDATE #__vm_product_category_xref ";
 			$q .= "SET product_list = ".$list_id;
 			$q .= " WHERE category_id ='".$category_id."' ";
 			$q .= " AND product_id ='".$product_ids[$key]."' ";
@@ -272,7 +272,7 @@ class JMartModelProduct extends JModel {
     	$category_id = JRequest::getInt('category_id');
     	
     	$q = "SELECT product_id, product_list
-    		FROM #__jmart_product_category_xref
+    		FROM #__vm_product_category_xref
     		WHERE category_id = ".$category_id."
     		ORDER BY product_list";
     	$db->setQuery($q);
@@ -294,7 +294,7 @@ class JMartModelProduct extends JModel {
     	}
     	
     	/* Update the current product */
-		$q = "UPDATE #__jmart_product_category_xref
+		$q = "UPDATE #__vm_product_category_xref
 			SET product_list = ".$products[$prev_id]['product_list']."
 			WHERE category_id = ".$category_id."
 			AND product_id = ".$products[$cid]['product_id'];
@@ -306,7 +306,7 @@ class JMartModelProduct extends JModel {
     		$products[$cid]['product_list'] = $prev_id+1;
     	}
 		/* Update the previous product */
-		$q = "UPDATE #__jmart_product_category_xref
+		$q = "UPDATE #__vm_product_category_xref
 			SET product_list = ".$products[$cid]['product_list']."
 			WHERE category_id = ".$category_id."
 			AND product_id = ".$products[$prev_id]['product_id'];
@@ -325,7 +325,7 @@ class JMartModelProduct extends JModel {
     	$category_id = JRequest::getInt('category_id');
     	
     	$q = "SELECT product_id, product_list
-    		FROM #__jmart_product_category_xref
+    		FROM #__vm_product_category_xref
     		WHERE category_id = ".$category_id."
     		ORDER BY product_list";
     	$db->setQuery($q);
@@ -347,7 +347,7 @@ class JMartModelProduct extends JModel {
     	}
     	
     	/* Update the current product */
-		$q = "UPDATE #__jmart_product_category_xref
+		$q = "UPDATE #__vm_product_category_xref
 			SET product_list = ".$products[$next_id]['product_list']."
 			WHERE category_id = ".$category_id."
 			AND product_id = ".$products[$cid]['product_id'];
@@ -359,7 +359,7 @@ class JMartModelProduct extends JModel {
     		$products[$cid]['product_list'] = $next_id-1;
     	}
 		/* Update the next product */
-		$q = "UPDATE #__jmart_product_category_xref
+		$q = "UPDATE #__vm_product_category_xref
 			SET product_list = ".$products[$cid]['product_list']."
 			WHERE category_id = ".$category_id."
 			AND product_id = ".$products[$next_id]['product_id'];
@@ -374,13 +374,13 @@ class JMartModelProduct extends JModel {
 	 	 if (!$product_id) return array();
 	 	 else {
 			$db = JFactory::getDBO();
-			$q = "SELECT related_products FROM #__jmart_product_relations WHERE product_id='".$product_id."'";
+			$q = "SELECT related_products FROM #__vm_product_relations WHERE product_id='".$product_id."'";
 			$db->setQuery($q);
 			$results = explode("|", $db->loadResult());
 			if (count($results) > 0) {
 				$ids = 'product_id=' . implode( ' OR product =', $results );
 				$q = "SELECT product_id AS id, CONCAT(product_name, '::', product_sku) AS text
-					FROM #__jmart_product
+					FROM #__vm_product
 					WHERE (".$ids.")";
 				$db->setQuery($q);
 				return $db->loadObjectList();
@@ -402,26 +402,26 @@ class JMartModelProduct extends JModel {
 		$db = JFactory::getDBO();
 		$attributes = array();
 		if ($item_id and $product_id) {
-			$q  = "SELECT * FROM #__jmart_product_attribute,#__jmart_product_attribute_sku ";
-			$q .= "WHERE #__jmart_product_attribute.product_id = '$item_id' ";
-			$q .= "AND #__jmart_product_attribute_sku.product_id ='$product_id' ";
+			$q  = "SELECT * FROM #__vm_product_attribute,#__vm_product_attribute_sku ";
+			$q .= "WHERE #__vm_product_attribute.product_id = '$item_id' ";
+			$q .= "AND #__vm_product_attribute_sku.product_id ='$product_id' ";
 			if ($attribute_name) {
-				$q .= "AND #__jmart_product_attribute.attribute_name = $attribute_name ";
+				$q .= "AND #__vm_product_attribute.attribute_name = $attribute_name ";
 			}
-			$q .= "AND #__jmart_product_attribute.attribute_name = ";
-			$q .=     "#__jmart_product_attribute_sku.attribute_name ";
-			$q .= "ORDER BY attribute_list,#__jmart_product_attribute.attribute_name";
+			$q .= "AND #__vm_product_attribute.attribute_name = ";
+			$q .=     "#__vm_product_attribute_sku.attribute_name ";
+			$q .= "ORDER BY attribute_list,#__vm_product_attribute.attribute_name";
 		} elseif ($item_id) {
-			$q  = "SELECT * FROM #__jmart_product_attribute ";
+			$q  = "SELECT * FROM #__vm_product_attribute ";
 			$q .= "WHERE product_id=$item_id ";
 			if ($attribute_name) {
 				$q .= "AND attribute_name = '$attribute_name' ";
 			}
 		} elseif ($product_id) {
-			$q  = "SELECT * FROM #__jmart_product_attribute_sku ";
+			$q  = "SELECT * FROM #__vm_product_attribute_sku ";
 			$q .= "WHERE product_id =".(int)$product_id.' ';
 			if ($attribute_name) {
-				$q .= "AND #__jmart_product_attribute.attribute_name = $attribute_name ";
+				$q .= "AND #__vm_product_attribute.attribute_name = $attribute_name ";
 			}
 			$q .= "ORDER BY attribute_list,attribute_name";
 		} else {
@@ -444,7 +444,7 @@ class JMartModelProduct extends JModel {
 	public function getAttributeItems($product_id) {
 		$db = JFactory::getDBO();
 		if( !empty($product_id) ) {
-			$q  = "SELECT * FROM #__jmart_product ";
+			$q  = "SELECT * FROM #__vm_product ";
 			$q .= "WHERE product_parent_id=".(int)$product_id.' ';
 			$q .= "ORDER BY product_name";
 
@@ -457,7 +457,7 @@ class JMartModelProduct extends JModel {
 		$db = JFactory::getDBO();
 		$filter = JRequest::getVar('q', false);
 		$q = "SELECT product_id AS id, CONCAT(product_name, '::', product_sku) AS value
-			FROM #__jmart_product";
+			FROM #__vm_product";
 		if ($filter) $q .= " WHERE product_name LIKE '%".$filter."%'";
 		$db->setQuery($q);
 		return $db->loadObjectList();

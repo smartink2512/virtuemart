@@ -2,10 +2,10 @@
 /**
  * Country View
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage Country
  * @author Rick Glunt
- * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
 jimport( 'joomla.application.component.view');
@@ -14,7 +14,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
 /**
  * HTML View class for maintaining the Installation. Updating of the files and imports of the database should be done here
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage UpdatesMigration
  * @author Max Milbers
  */
@@ -27,7 +27,7 @@ class JmartViewUpdatesMigration extends JView {
 		if( JRequest::getVar( 'vm_updatepackage',null )!== null ) {
 //			include( PAGEPATH.'admin.update_preview.php');
 			if( JRequest::getVar( 'vm_updatepackage',null )== null ) {
-				JError::raiseWarning(JText::_('JM_UPDATE_NOTDOWNLOADED')." ".$extractdir,JText::_('JM_UPDATE_NOTDOWNLOADED')." ".$extractdir);
+				JError::raiseWarning(JText::_('VM_UPDATE_NOTDOWNLOADED')." ".$extractdir,JText::_('VM_UPDATE_NOTDOWNLOADED')." ".$extractdir);
 //				return;
 			}
 			$packageContents = vmUpdate::getPatchContents(JRequest::getVar( 'vm_updatepackage',false ));

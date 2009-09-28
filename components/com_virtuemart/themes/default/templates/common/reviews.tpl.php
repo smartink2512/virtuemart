@@ -1,7 +1,7 @@
 <?php if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' ); ?>
 
 <!-- List of product reviews -->
-<h4><?php echo JText::_('JM_REVIEWS') ?>:</h4>
+<h4><?php echo JText::_('VM_REVIEWS') ?>:</h4>
 
 <?php 
 foreach( $reviews as $review ) { // Loop through all reviews
@@ -20,8 +20,8 @@ foreach( $reviews as $review ) { // Loop through all reviews
 	?>
 	<strong><?php echo $review["username"]."&nbsp;&nbsp;($date)" ?></strong>
 	<br />
-	<?php echo JText::_('JM_RATE_NOM') // "Rating:" ?>: 
-		<img src="<?php echo JM_THEMEURL ?>images/stars/<?php echo $review["user_rating"] ?>.gif" border="0" alt="<?php echo $review["user_rating"] ?>"" />
+	<?php echo JText::_('VM_RATE_NOM') // "Rating:" ?>: 
+		<img src="<?php echo VM_THEMEURL ?>images/stars/<?php echo $review["user_rating"] ?>.gif" border="0" alt="<?php echo $review["user_rating"] ?>"" />
 	<br />
 	<blockquote><div><?php echo wordwrap($review['comment'], 150, "<br/>\n", true ); ?></div></blockquote>
 	
@@ -31,12 +31,12 @@ foreach( $reviews as $review ) { // Loop through all reviews
 }
 
 if( $num_rows < 1 ) {
-  echo JText::_('JM_NO_REVIEWS')." <br />"; // "There are no reviews for this product"
+  echo JText::_('VM_NO_REVIEWS')." <br />"; // "There are no reviews for this product"
   if (!empty($my->id)) {
-  	echo JText::_('JM_WRITE_FIRST_REVIEW'); // "Be the first to write a review!"
+  	echo JText::_('VM_WRITE_FIRST_REVIEW'); // "Be the first to write a review!"
   }
   else {
-  	echo JText::_('JM_REVIEW_LOGIN'); // Login to write a review!
+  	echo JText::_('VM_REVIEW_LOGIN'); // Login to write a review!
   }
 }
 if( !$showall && $num_rows >=5 ) {

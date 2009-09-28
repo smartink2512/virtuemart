@@ -4,17 +4,17 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 /**
  *
  * @version $Id: ps_product_attribute.php 1776 2009-05-12 22:13:21Z macallf $
- * @package JMart
+ * @package VirtueMart
  * @subpackage classes
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * JMart is free software. This version may have been modified pursuant
+ * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+ * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
  *
- * http://joomlacode.org/gf/project/jmart/
+ * http://virtuemart.org
  */
 
 /**
@@ -34,7 +34,7 @@ class ps_product_attribute {
 		global $vmLogger;
 		$valid = true ;
 		if( $d["attribute_name"] == "" ) {
-			$vmLogger->err( JText::_( 'JM_PRODUCT_ATTRIBUTE_ERR_ATTRNAME' ) ) ;
+			$vmLogger->err( JText::_( 'VM_PRODUCT_ATTRIBUTE_ERR_ATTRNAME' ) ) ;
 			$valid = false ;
 		} elseif( $d["old_attribute_name"] != $d["attribute_name"] ) {
 			$db = new ps_DB( ) ;
@@ -43,7 +43,7 @@ class ps_product_attribute {
 			$q .= "AND product_id = '" . (int)$d["product_id"] . "'" ;
 			$db->query( $q ) ;
 			if( $db->next_record() ) {
-				$vmLogger->err( JText::_( 'JM_PRODUCT_ATTRIBUTE_ERR_ATTRUNIQ' ) ) ;
+				$vmLogger->err( JText::_( 'VM_PRODUCT_ATTRIBUTE_ERR_ATTRUNIQ' ) ) ;
 				$valid = false ;
 			}
 		}
@@ -66,7 +66,7 @@ class ps_product_attribute {
 		$q = 'SELECT product_id FROM #__{vm}_product_attribute_sku WHERE product_id = ' . (int)$d["product_id"] ;
 		$db->query( $q ) ;
 		if( $db->num_rows() == 1 && $ps_product->parent_has_children( $d["product_id"] ) ) {
-			$vmLogger->err( JText::_( 'JM_PRODUCT_ATTRIBUTE_ERR_DELITEMS' ) ) ;
+			$vmLogger->err( JText::_( 'VM_PRODUCT_ATTRIBUTE_ERR_DELITEMS' ) ) ;
 			return false ;
 		}
 		
@@ -89,7 +89,7 @@ class ps_product_attribute {
 		$fields = array( 'product_id' => $d["product_id"] , 'attribute_name' => $d["attribute_name"] , 'attribute_list' => $d["attribute_list"] ) ;
 		$db->buildQuery( 'INSERT', '#__{vm}_product_attribute_sku', $fields ) ;
 		if( $db->query() === false ) {
-			$GLOBALS['vmLogger']->err( JText::_( 'JM_PRODUCT_ATTRIBUTE_ERR_SAVING' ) ) ;
+			$GLOBALS['vmLogger']->err( JText::_( 'VM_PRODUCT_ATTRIBUTE_ERR_SAVING' ) ) ;
 			return false ;
 		}
 		
@@ -102,7 +102,7 @@ class ps_product_attribute {
 			$db->buildQuery( 'INSERT', '#__{vm}_product_attribute', $fields ) ;
 			$db->query() ;
 		}
-		$GLOBALS['vmLogger']->info( JText::_( 'JM_PRODUCT_ATTRIBUTE_SAVED' ) ) ;
+		$GLOBALS['vmLogger']->info( JText::_( 'VM_PRODUCT_ATTRIBUTE_SAVED' ) ) ;
 		return true ;
 	}
 	
@@ -123,7 +123,7 @@ class ps_product_attribute {
 		$fields = array( 'attribute_name' => $d["attribute_name"] , 'attribute_list' => $d["attribute_list"] ) ;
 		$db->buildQuery( 'UPDATE', '#__{vm}_product_attribute_sku', $fields, "WHERE product_id='" . (int)$d["product_id"] . "' AND attribute_name='" . $db->getEscaped( $d["old_attribute_name"] ) . "'" ) ;
 		if( $db->query() === false ) {
-			$GLOBALS['vmLogger']->err( JText::_( 'JM_PRODUCT_ATTRIBUTE_ERR_UPDATING' ) ) ;
+			$GLOBALS['vmLogger']->err( JText::_( 'VM_PRODUCT_ATTRIBUTE_ERR_UPDATING' ) ) ;
 			return false ;
 		}
 		
@@ -137,7 +137,7 @@ class ps_product_attribute {
 				$db->query() ;
 			}
 		}
-		$GLOBALS['vmLogger']->info( JText::_( 'JM_PRODUCT_ATTRIBUTE_UPDATED' ) ) ;
+		$GLOBALS['vmLogger']->info( JText::_( 'VM_PRODUCT_ATTRIBUTE_UPDATED' ) ) ;
 		return true ;
 	}
 	
@@ -452,10 +452,10 @@ class ps_product_attribute {
 				if( ($child_link == "Y") && ! @$child_id ) {
 					$link = "<input type=\"hidden\" id=\"index_id" . $db->f( "product_id" ) . "\" value=\"" . $db->f( "product_id" ) . "\" />\n" ;
 					// If content plugins are enabled, reload the whole page; otherwise, use ajax 
-					if( JM_CONTENT_PLUGINS_ENABLE == '1' ) {
-						$link .= "<a name=\"" . $db->f( "product_name" ) . $db->f( "product_id" ) . "\"  onclick=\"var id = $('index_id" . $db->f( "product_id" ) . "').value; if(id != '') { document.location = '" . $mm_action_url . "index.php?option=com_jmart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id; }\" >" ;
+					if( VM_CONTENT_PLUGINS_ENABLE == '1' ) {
+						$link .= "<a name=\"" . $db->f( "product_name" ) . $db->f( "product_id" ) . "\"  onclick=\"var id = $('index_id" . $db->f( "product_id" ) . "').value; if(id != '') { document.location = '" . $mm_action_url . "index.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id; }\" >" ;
 					} else {
-						$link .= "<a name=\"" . $db->f( "product_name" ) . $db->f( "product_id" ) . "\"  onclick=\"var id = $('index_id" . $db->f( "product_id" ) . "').value; if(id != '') { loadNewPage( 'vmMainPage', '" . $mm_action_url . "index2.php?option=com_jmart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id ); }\" >" ;
+						$link .= "<a name=\"" . $db->f( "product_name" ) . $db->f( "product_id" ) . "\"  onclick=\"var id = $('index_id" . $db->f( "product_id" ) . "').value; if(id != '') { loadNewPage( 'vmMainPage', '" . $mm_action_url . "index2.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&Itemid=$Itemid&category_id=$category_id&product_id=' + id ); }\" >" ;
 					}
 					
 					$tpl->set( 'child_link', true );
@@ -561,7 +561,7 @@ class ps_product_attribute {
 		$ps_product = new ps_product( ) ;
 		$db = new ps_DB( ) ;
 		$auth = $_SESSION['auth'] ;
-		$tpl = new $GLOBALS['JM_THEMECLASS']( ) ;
+		$tpl = new $GLOBALS['VM_THEMECLASS']( ) ;
 		if($product_id == 0)
 			$product_id = $prod_id;	
 		$q = "SELECT product_id, attribute, product_parent_id FROM #__{vm}_product WHERE product_id='$product_id'";
@@ -650,7 +650,7 @@ class ps_product_attribute {
 	function list_custom_attribute( $product_id, $prod_id = null ) {
 		global $mosConfig_secret ;
 		$db = new ps_DB( ) ;
-		$tpl = new $GLOBALS['JM_THEMECLASS']( ) ;
+		$tpl = new $GLOBALS['VM_THEMECLASS']( ) ;
 		if($product_id == 0)
 			$product_id = $prod_id;	
 		$q = "SELECT product_id, custom_attribute, product_parent_id FROM #__{vm}_product WHERE product_id='$product_id'";
@@ -958,12 +958,12 @@ class ps_product_attribute {
 	
 	function loadAttributeExtension( $attribute_string = false ) {
 		
-		echo '<input type="hidden" name="js_lbl_title" value="' . JText::_( 'JM_PRODUCT_FORM_TITLE' ) . '" />
-		      <input type="hidden" name="js_lbl_property" value="' . JText::_( 'JM_PRODUCT_FORM_PROPERTY' ) . '" />
-		      <input type="hidden" name="js_lbl_property_new" value="' . JText::_( 'JM_PRODUCT_FORM_PROPERTY_NEW' ) . '" />
-		      <input type="hidden" name="js_lbl_attribute_new" value="' . JText::_( 'JM_PRODUCT_FORM_ATTRIBUTE_NEW' ) . '" />
-		      <input type="hidden" name="js_lbl_attribute_delete" value="' . JText::_( 'JM_PRODUCT_FORM_ATTRIBUTE_DELETE' ) . '" />
-		      <input type="hidden" name="js_lbl_price" value="' . JText::_( 'JM_CART_PRICE' ) . '" />' ;
+		echo '<input type="hidden" name="js_lbl_title" value="' . JText::_( 'VM_PRODUCT_FORM_TITLE' ) . '" />
+		      <input type="hidden" name="js_lbl_property" value="' . JText::_( 'VM_PRODUCT_FORM_PROPERTY' ) . '" />
+		      <input type="hidden" name="js_lbl_property_new" value="' . JText::_( 'VM_PRODUCT_FORM_PROPERTY_NEW' ) . '" />
+		      <input type="hidden" name="js_lbl_attribute_new" value="' . JText::_( 'VM_PRODUCT_FORM_ATTRIBUTE_NEW' ) . '" />
+		      <input type="hidden" name="js_lbl_attribute_delete" value="' . JText::_( 'VM_PRODUCT_FORM_ATTRIBUTE_DELETE' ) . '" />
+		      <input type="hidden" name="js_lbl_price" value="' . JText::_( 'VM_CART_PRICE' ) . '" />' ;
 		
 		if( ! $attribute_string ) {
 			// product has no attributes
@@ -973,27 +973,27 @@ class ps_product_attribute {
 	<tbody width="30%">
 		<tr>
 			<td width="5%"><?php
-			echo JText::_( 'JM_PRODUCT_FORM_TITLE' ) ;
+			echo JText::_( 'VM_PRODUCT_FORM_TITLE' ) ;
 			?></td>
 			<td align="left" colspan="2"><input type="text"
 				name="attributeX[0][name]" value="" size="60" /></td>
 			<td colspan="3" align="left"><a href="javascript: newAttribute(1)"><?php
-			echo JText::_( 'JM_PRODUCT_FORM_ATTRIBUTE_NEW' ) ;
+			echo JText::_( 'VM_PRODUCT_FORM_ATTRIBUTE_NEW' ) ;
 			?></a>
 			| <a href="javascript: newProperty(0)"><?php
-			echo JText::_( 'JM_PRODUCT_FORM_PROPERTY_NEW' ) ;
+			echo JText::_( 'VM_PRODUCT_FORM_PROPERTY_NEW' ) ;
 			?></a>
 			</td>
 		</tr>
 		<tr id="attributeX_tr_0_0">
 			<td width="5%">&nbsp;</td>
 			<td width="10%" align="left"><?php
-			echo JText::_( 'JM_PRODUCT_FORM_PROPERTY' ) ;
+			echo JText::_( 'VM_PRODUCT_FORM_PROPERTY' ) ;
 			?></td>
 			<td align="left" width="20%"><input type="text"
 				name="attributeX[0][value][]" value="" size="40" /></td>
 			<td align="left" width="5%"><?php
-			echo JText::_( 'JM_PRODUCT_PRICE_TITLE' ) ;
+			echo JText::_( 'VM_PRODUCT_PRICE_TITLE' ) ;
 			?></td>
 			<td align="left" width="60%"><input type="text"
 				name="attributeX[0][price][]" size="10" value="" /></td>
@@ -1021,7 +1021,7 @@ class ps_product_attribute {
 	<tbody width="30%">
 		<tr>
 			<td width="5%"><?php
-			echo JText::_( 'JM_PRODUCT_FORM_TITLE' ) ;
+			echo JText::_( 'VM_PRODUCT_FORM_TITLE' ) ;
 			?></td>
 			<td align="left" colspan="2"><input type="text"
 				name="attributeX[<?php
@@ -1034,7 +1034,7 @@ class ps_product_attribute {
 				href="javascript:newAttribute(<?php
 			echo ($i + 1) ;
 			?>)"><?php
-			echo JText::_( 'JM_PRODUCT_FORM_ATTRIBUTE_NEW' ) ;
+			echo JText::_( 'VM_PRODUCT_FORM_ATTRIBUTE_NEW' ) ;
 			?></a> | 
 			    <?php
 			if( $i != 0 ) {
@@ -1042,14 +1042,14 @@ class ps_product_attribute {
 				href="javascript:deleteAttribute(<?php
 				echo ($i) ;
 				?>)"><?php
-				echo JText::_( 'JM_PRODUCT_FORM_ATTRIBUTE_DELETE' ) ;
+				echo JText::_( 'VM_PRODUCT_FORM_ATTRIBUTE_DELETE' ) ;
 				?></a> | <?php
 			}
 			?>
 			    <a href="javascript:newProperty(<?php
 			echo ($i) ;
 			?>)"><?php
-			echo JText::_( 'JM_PRODUCT_FORM_PROPERTY_NEW' ) ;
+			echo JText::_( 'VM_PRODUCT_FORM_PROPERTY_NEW' ) ;
 			?></a>
 			</td>
 		</tr>
@@ -1066,7 +1066,7 @@ class ps_product_attribute {
 					?>">
 			<td width="5%">&nbsp;</td>
 			<td width="10%" align="left"><?php
-					echo JText::_( 'JM_PRODUCT_FORM_PROPERTY' ) ;
+					echo JText::_( 'VM_PRODUCT_FORM_PROPERTY' ) ;
 					?></td>
 			<td align="left" width="20%"><input type="text"
 				name="attributeX[<?php
@@ -1076,7 +1076,7 @@ class ps_product_attribute {
 					echo $value_price[0] ;
 					?>" size="40" /></td>
 			<td align="left" width="5%"><?php
-					echo JText::_( 'JM_CART_PRICE' ) ;
+					echo JText::_( 'VM_CART_PRICE' ) ;
 					?></td>
 			<td align="left" width="60%"><input type="text"
 				name="attributeX[<?php
@@ -1099,7 +1099,7 @@ class ps_product_attribute {
 					?>">
 			<td width="5%">&nbsp;</td>
 			<td width="10%" align="left"><?php
-					echo JText::_( 'JM_PRODUCT_FORM_PROPERTY' ) ;
+					echo JText::_( 'VM_PRODUCT_FORM_PROPERTY' ) ;
 					?></td>
 			<td align="left" width="20%"><input type="text"
 				name="attributeX[<?php
@@ -1109,7 +1109,7 @@ class ps_product_attribute {
 					echo $value ;
 					?>" size="40" /></td>
 			<td align="left" width="5%"><?php
-					echo JText::_( 'JM_CART_PRICE' ) ;
+					echo JText::_( 'VM_CART_PRICE' ) ;
 					?></td>
 			<td align="left" width="60%"><input type="text"
 				name="attributeX[<?php

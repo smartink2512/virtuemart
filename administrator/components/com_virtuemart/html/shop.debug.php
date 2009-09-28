@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: shop.debug.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 require_once( CLASSPATH . "DebugUtil.php");
@@ -68,7 +68,7 @@ $pane = JPane::getInstance();
           <td valign="top" nowrap><?php 
             echo $database->_ticker 
                 . "&nbsp;&nbsp;"
-                .mm_ToolTip( "Note: This is only the number of queries related to JMart, 
+                .mm_ToolTip( "Note: This is only the number of queries related to VirtueMart, 
                               which have been processed so far. Because the component is wrapped 
                               into the Joomla! Framework, we can't get the total number of Queries at THIS point"); 
             ?>
@@ -125,7 +125,7 @@ $pane = JPane::getInstance();
           <td colspan="3" valign="top"><?php if(isset($sess)) echo $sess->getSessionId(); ?>&nbsp;</td>
         </tr>
         <tr class="sectiontableentry2"> 
-          <td  align="right" valign="top"><b>JMart Session ID:</b></td>
+          <td  align="right" valign="top"><b>VirtueMart Session ID:</b></td>
           <td colspan="3" valign="top"><?php echo session_id(); ?> &nbsp;&nbsp;</td>
         </tr>
         <tr class="sectiontableentry1"> 
@@ -195,7 +195,7 @@ $pane = JPane::getInstance();
           <?php 
         }
         else {
-          echo "<td colspan=\"4\"><strong>Something's wrong with your Session Setup - the Session is empty. JMart cannot run without
+          echo "<td colspan=\"4\"><strong>Something's wrong with your Session Setup - the Session is empty. VirtueMart cannot run without
           Sessions!</strong></td>";
         }
           ?>

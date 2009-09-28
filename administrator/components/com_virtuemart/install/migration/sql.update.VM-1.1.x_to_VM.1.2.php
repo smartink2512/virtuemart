@@ -251,10 +251,10 @@ $db->query("
 
 //For the new admin menu
 $db->query("
-	ALTER TABLE `jos_jmart_menu_admin` ADD `view` VARCHAR( 255 ) NULL ,ADD `task` VARCHAR( 255 ) NULL ;
+	ALTER TABLE `jos_vm_menu_admin` ADD `view` VARCHAR( 255 ) NULL ,ADD `task` VARCHAR( 255 ) NULL ;
 ");
 
 //More decimals for taxrates
 $db->query("
- ALTER TABLE `jos_jmart_tax_rate` CHANGE `tax_rate` `tax_rate` DECIMAL( 10, 5 ) NULL DEFAULT NULL  
+ ALTER TABLE `jos_vm_tax_rate` CHANGE `tax_rate` `tax_rate` DECIMAL( 10, 5 ) NULL DEFAULT NULL  
  ");

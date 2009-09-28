@@ -6,7 +6,7 @@
 				<tr class="row0">
 					<td width="21%">
 						<div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('JM_PRODUCT_FORM_IN_STOCK') ?>:</div>
+						<?php echo JText::_('VM_PRODUCT_FORM_IN_STOCK') ?>:</div>
 					</td>
 					<td width="79%">
 						<input type="text" class="inputbox"  name="product_in_stock" value="<?php echo $this->product->product_in_stock; ?>" size="10" />
@@ -16,7 +16,7 @@
 				<tr class="row1">
 					<td width="21%">
 						<div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_( 'JM_LOW_STOCK_NOTIFICATION' ); ?>:
+							<?php echo JText::_( 'VM_LOW_STOCK_NOTIFICATION' ); ?>:
 						</div>
 					</td>
 					<td width="79%">
@@ -27,7 +27,7 @@
 				<tr class="row0"> 
 					<td width="21%">
 						<div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_('JM_PRODUCT_FORM_MIN_ORDER') ?>:
+							<?php echo JText::_('VM_PRODUCT_FORM_MIN_ORDER') ?>:
 						</div>
 					</td>
 					<td width="79%">
@@ -37,7 +37,7 @@
 				<tr class="row1"> 
 					<td width="21%">
 						<div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_('JM_PRODUCT_FORM_MAX_ORDER') ?>:
+							<?php echo JText::_('VM_PRODUCT_FORM_MAX_ORDER') ?>:
 						</div>
 					</td>
 					<td width="79%">
@@ -47,7 +47,7 @@
 				<tr class="row0"> 
 					<td width="21%" >
 						<div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_('JM_PRODUCT_FORM_AVAILABLE_DATE') ?>:
+							<?php echo JText::_('VM_PRODUCT_FORM_AVAILABLE_DATE') ?>:
 						</div>
 					</td>
 					<td width="79%" >
@@ -57,21 +57,21 @@
 				<tr>
 					<td valign="top" width="21%" >
 						<div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_('JM_AVAILABILITY') ?>:
+							<?php echo JText::_('VM_AVAILABILITY') ?>:
 						</div>
 					</td>
 					<td width="79%" >
 						<input type="text" class="inputbox" id="product_availability" name="product_availability" value="<?php echo $this->product->product_availability; ?>" />
 						<?php
-						echo JHTML::tooltip(JText::_('JM_PRODUCT_FORM_AVAILABILITY_TOOLTIP1'), JText::_('JM_AVAILABILITY'), 'tooltip.png', '', '', false);
-						$path = str_replace('\\', '/', JM_THEMEPATH)."images/availability/";
+						echo JHTML::tooltip(JText::_('VM_PRODUCT_FORM_AVAILABILITY_TOOLTIP1'), JText::_('VM_AVAILABILITY'), 'tooltip.png', '', '', false);
+						$path = str_replace('\\', '/', VM_THEMEPATH)."images/availability/";
 						?>
 						<script type="text/javascript">
 							jQuery('#image').live('click', function() { jQuery('#product_availability').val(jQuery('#image').val()); })
 						</script>
 						<?php
 						echo JHTML::_('list.images', 'image', $this->product->product_availability, null, $path);
-						echo JHTML::tooltip(str_replace('%s', $path, JText::_('JM_PRODUCT_FORM_AVAILABILITY_TOOLTIP2')), JText::_('JM_AVAILABILITY'), 'tooltip.png', '', '', false); 
+						echo JHTML::tooltip(str_replace('%s', $path, JText::_('VM_PRODUCT_FORM_AVAILABILITY_TOOLTIP2')), JText::_('VM_AVAILABILITY'), 'tooltip.png', '', '', false); 
 						?> 
 					</td>
 				</tr>
@@ -82,7 +82,7 @@
 				<tr class="row1">
 					<td width="21%" >
 						<div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('JM_PRODUCT_FORM_SPECIAL') ?>:</div>
+						<?php echo JText::_('VM_PRODUCT_FORM_SPECIAL') ?>:</div>
 					</td>
 					<td width="79%" >
 						<?php
@@ -99,11 +99,11 @@
 		<td width="50%" valign="top">
 			<table class="adminform">
 				<tr class="row1">
-					<td colspan="3"><h2><?php echo JText::_('JM_RELATED_PRODUCTS'); ?></h2></td>
+					<td colspan="3"><h2><?php echo JText::_('VM_RELATED_PRODUCTS'); ?></h2></td>
 				</tr>
 				<tr class="row0">
 					<td style="vertical-align:top;"><br />
-						<?php echo JText::_('JM_PRODUCT_RELATED_SEARCH'); ?>
+						<?php echo JText::_('VM_PRODUCT_RELATED_SEARCH'); ?>
 						<input type="text" size="40" name="search" id="relatedProductSearch" value="" />
 						<div class="jsonSuggestResults" style="width: 322px; display: none;"/>
 					</td>
@@ -119,7 +119,7 @@
 	</tr>
 </table>
 <script type="text/javascript">
-jQuery('input#relatedProductSearch').autocomplete('index.php?option=com_jmart&view=product&task=getData&format=json&type=relatedproducts', {
+jQuery('input#relatedProductSearch').autocomplete('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts', {
 		mustMatch: false,
 		dataType: "json",
 		parse: function(data) {

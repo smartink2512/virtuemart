@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id:shop.ask.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2006-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 
@@ -35,7 +35,7 @@ elseif( !empty($product_sku )) {
 	$q .= "`product_sku`='$product_sku'";
 }
 else {
-	vmRedirect( $sess->url( $_SERVER['PHP_SELF']."?page=shop.product_details&keyword=".urlencode($_SESSION['keyword'])."&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", false, false), JText::_('JM_PRODUCT_NOT_FOUND') );
+	vmRedirect( $sess->url( $_SERVER['PHP_SELF']."?page=shop.product_details&keyword=".urlencode($_SESSION['keyword'])."&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", false, false), JText::_('VM_PRODUCT_NOT_FOUND') );
 }
 if( !$perm->check("admin,storeadmin") ) {
 	$q .= " AND `product_publish`='Y'";
@@ -46,7 +46,7 @@ if( !$perm->check("admin,storeadmin") ) {
 $db_product->query( $q );
 // Redirect back to Product Browse Page on Error
 if( !$db_product->next_record() ) {
-	vmRedirect( $sess->url( $_SERVER['PHP_SELF']."?page=shop.product_details&keyword=".urlencode($_SESSION['keyword'])."&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", false, false ), JText::_('JM_PRODUCT_NOT_FOUND') );
+	vmRedirect( $sess->url( $_SERVER['PHP_SELF']."?page=shop.product_details&keyword=".urlencode($_SESSION['keyword'])."&category_id={$_SESSION['category_id']}&limitstart={$_SESSION['limitstart']}", false, false ), JText::_('VM_PRODUCT_NOT_FOUND') );
 }
 
 

@@ -2,10 +2,10 @@
 /**
  * Currency table
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage Currency
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
 // Check to ensure this file is included in Joomla!
@@ -16,7 +16,7 @@ defined('_JEXEC') or die();
  * The class is is used to manage the currencies in the shop.
  *
  * @author Rick Glunt
- * @package		JMart
+ * @package		VirtueMart
  */
 class TableCurrency extends JTable
 {
@@ -34,7 +34,7 @@ class TableCurrency extends JTable
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__jmart_currency', 'currency_id', $db);
+		parent::__construct('#__vm_currency', 'currency_id', $db);
 	}
 
 
@@ -58,7 +58,7 @@ class TableCurrency extends JTable
 		if (($this->currency_name) && ($this->currency_id == 0)) {
 		    $db =& JFactory::getDBO();
 		    
-			$q = 'SELECT count(*) FROM `#__jmart_currency` ';
+			$q = 'SELECT count(*) FROM `#__vm_currency` ';
 			$q .= 'WHERE `currency_name`="' .  $this->currency_name . '"';
             $db->setQuery($q);        
 		    $rowCount = $db->loadResult();		

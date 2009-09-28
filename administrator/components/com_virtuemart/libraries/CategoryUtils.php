@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 
 
 /**
- * Utilities for JMart categories
+ * Utilities for VirtueMart categories
  */
 class CategoryUtils
 {    
@@ -54,7 +54,7 @@ class CategoryUtils
 			// local image file
 			else {
 				if(PSHOP_IMG_RESIZE_ENABLE == '1' || $resize==1) {
-					$url = $mosConfig_live_site."/components/com_jmart/show_image_in_imgtag.php?filename=".urlencode($image)."&amp;newxsize=".PSHOP_IMG_WIDTH."&amp;newysize=".PSHOP_IMG_HEIGHT."&amp;fileout=";
+					$url = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($image)."&amp;newxsize=".PSHOP_IMG_WIDTH."&amp;newysize=".PSHOP_IMG_HEIGHT."&amp;fileout=";
 					if( !strpos( $args, "height=" )) {
 						$arr = @getimagesize( vmImageTools::getresizedfilename( $image, $path_appendix, '', $thumb_width, $thumb_height ) );
 						$width = $arr[0]; $height = $arr[1];
@@ -83,11 +83,11 @@ class CategoryUtils
 						}
 					}
 				}
-				$url = str_replace( basename( $url ), $GLOBALS['JM_LANG']->convert(basename($url)), $url );
+				$url = str_replace( basename( $url ), $GLOBALS['VM_LANG']->convert(basename($url)), $url );
 			}
 		}
 		else {
-			$url = JM_THEMEURL.'images/'.NO_IMAGE;
+			$url = VM_THEMEURL.'images/'.NO_IMAGE;
 		}
 		
 		return vmCommonHTML::imageTag( $url, '', '', $height, $width, '', '', $args.' '.$border );

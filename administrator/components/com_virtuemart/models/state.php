@@ -2,10 +2,10 @@
 /**
  * Data module for shop countries
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage Country
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
 // no direct access
@@ -16,11 +16,11 @@ jimport( 'joomla.application.component.model');
 /**
  * Model class for shop countries
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage State 
  * @author Rick Glunt and Max Milbers
  */
-class JMartModelState extends JModel
+class VirtueMartModelState extends JModel
 {
 	/** @var array Array of Primary keys */
     var $_cid;     
@@ -99,7 +99,7 @@ class JMartModelState extends JModel
 	function _getTotal() 
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `state_id` FROM `#__jmart_state`';	  		
+			$query = 'SELECT `state_id` FROM `#__vm_state`';	  		
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -117,7 +117,7 @@ class JMartModelState extends JModel
 					
 		if (empty($this->_data)) {					
 			$query = 'SELECT * ';
-			$query .= 'FROM `#__jmart_state` ';
+			$query .= 'FROM `#__vm_state` ';
 			$query .= 'WHERE `state_id` = ' . (int)$this->_id;
 			$db->setQuery($query);
 			$this->_data = $db->loadObject();
@@ -157,7 +157,7 @@ class JMartModelState extends JModel
 		}			
 										
 		$query = 'SELECT *';
-		$query .= ' FROM `#__jmart_state`';
+		$query .= ' FROM `#__vm_state`';
 		$query .= ' WHERE `' . $stateCodeFieldname . '` = ' . (int)$code;
 		$db->setQuery($query);
 
@@ -249,8 +249,8 @@ class JMartModelState extends JModel
 	 */
 	function getStates($countryId)
 	{	
-		$query = 'SELECT * FROM `#__jmart_state`  WHERE `country_id`= "'.$countryId.'"';
-		$query .= 'ORDER BY `#__jmart_state`.`state_id`';
+		$query = 'SELECT * FROM `#__vm_state`  WHERE `country_id`= "'.$countryId.'"';
+		$query .= 'ORDER BY `#__vm_state`.`state_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}

@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_session.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package JMart
+* @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 
@@ -27,12 +27,12 @@ class ps_session {
 	var $component_name;
 	var $_session_name = 'virtuemart';
 	/**
-     * Initialize the Session environment for JMart
+     * Initialize the Session environment for VirtueMart
      *
      */
 	function ps_session() {
 		
-		$this->component_name = 'option='.JM_COMPONENT_NAME;
+		$this->component_name = 'option='.VM_COMPONENT_NAME;
 		
 		$this->initSession();
 	}
@@ -52,7 +52,7 @@ class ps_session {
 			}
 			session_name( $this->_session_name );
 			
-			if( @$_REQUEST['option'] == 'com_jmart' ) {
+			if( @$_REQUEST['option'] == 'com_virtuemart' ) {
 				ob_start();// Fix for the issue that printed the shop contents BEFORE the page begin
 			}
 			@session_start();
@@ -74,14 +74,14 @@ class ps_session {
 		}
 		// Cookie Check
 		// Introduced to check if the user-agent accepts cookies
-		if( @$_REQUEST['option'] == 'com_jmart' && empty($_GET['martID']) 
-			&& USE_AS_CATALOGUE != '1' && JM_ENABLE_COOKIE_CHECK == '1' && !vmIsAdminMode() ) {
+		if( @$_REQUEST['option'] == 'com_virtuemart' && empty($_GET['martID']) 
+			&& USE_AS_CATALOGUE != '1' && VM_ENABLE_COOKIE_CHECK == '1' && !vmIsAdminMode() ) {
 			$this->doCookieCheck();
 		}
 	}
 	/**
 	 * Checks if the user-agent accepts cookies
-	 * @since JMart 1.0.7
+	 * @since VirtueMart 1.0.7
 	 * @author soeren
 	 */
 	function doCookieCheck() {
@@ -91,7 +91,7 @@ class ps_session {
 		$isOK = vmGet( $_SESSION, 'VMCHECK' );
 		
 		if( $doCheck && $isOK != 'OK' ) {
-			$GLOBALS['vmLogger']->info( JText::_('JM_SESSION_COOKIES_NOT_ACCEPTED_TIP',false) );
+			$GLOBALS['vmLogger']->info( JText::_('VM_SESSION_COOKIES_NOT_ACCEPTED_TIP',false) );
 		}
 		elseif( empty( $isOK )) {
 			$_SESSION['VMCHECK'] = 'OK';
@@ -213,7 +213,7 @@ class ps_session {
 	 * The function is called on each page load.
 	 */
 	function prepare_SSL_Session() {
-		global $mainframe, $my, $database, $mosConfig_secret, $page, $JM_MODULES_FORCE_HTTPS;
+		global $mainframe, $my, $database, $mosConfig_secret, $page, $VM_MODULES_FORCE_HTTPS;
 //		if( vmIsAdminMode() && vmIsJoomla('1.0')) {
 //			return;
 //		}
@@ -222,12 +222,12 @@ class ps_session {
 		$martID = vmGet( $_GET, 'martID', '' );
 		$ssl_domain = "";
 		
-		if (!empty( $JM_MODULES_FORCE_HTTPS )) {
+		if (!empty( $VM_MODULES_FORCE_HTTPS )) {
 			$pagearr = explode( '.', $page );
 			$module = $pagearr[0];
 			// When NOT in https mode, but the called page is part of a shop module that is
 			// forced to use https, we prepare the redirection to https here
-			if( array_search( $module, $JM_MODULES_FORCE_HTTPS ) !== false 
+			if( array_search( $module, $VM_MODULES_FORCE_HTTPS ) !== false 
 				&& !vmIsHttpsMode()
 				&& $this->check_Shared_SSL( $ssl_domain ) 
 				) {
@@ -236,17 +236,17 @@ class ps_session {
 			}
 		}
 		// Generally redirect to HTTP (from HTTPS) when it is not necessary? (speed up the pageload)
-		if( JM_GENERALLY_PREVENT_HTTPS == '1' 
+		if( VM_GENERALLY_PREVENT_HTTPS == '1' 
 			&& vmIsHttpsMode() && $redirected != 1
 			&& $ssl_redirect == 0 && !vmIsAdminMode()
 			&& URL != SECUREURL
-			&& @$_REQUEST['option']=='com_jmart') {
+			&& @$_REQUEST['option']=='com_virtuemart') {
 				
 			$pagearr = explode( '.', $page );
 			$module = $pagearr[0];
 			
 			// When it is not necessary to stay in https mode, we leave it here
-			if( array_search( $module, $JM_MODULES_FORCE_HTTPS ) === false ) {
+			if( array_search( $module, $VM_MODULES_FORCE_HTTPS ) === false ) {
 				if( $this->check_Shared_SSL($ssl_domain)) {
 					$this->saveSessionAndRedirect( false );
 				}
@@ -439,7 +439,7 @@ class ps_session {
 										'Shop Image Directory' => IMAGEPATH );
 			foreach( $try_these_paths as $name => $session_save_path ) {
 				if( @is_writable( $session_save_path )) {
-					$vmLogger->debug( sprintf( JText::_('JM_SESSION_SAVEPATH_UNWRITABLE_TMPFIX',false), session_save_path(), $name));
+					$vmLogger->debug( sprintf( JText::_('VM_SESSION_SAVEPATH_UNWRITABLE_TMPFIX',false), session_save_path(), $name));
 					session_save_path( $session_save_path );
 					break;
 				}
@@ -447,11 +447,11 @@ class ps_session {
 		}
 		// If the path is STILL not writable, generate an error
 		if( !@is_writable( session_save_path()) ) {
-			$vmLogger->err( JText::_('JM_SESSION_SAVEPATH_UNWRITABLE',false) );
+			$vmLogger->err( JText::_('VM_SESSION_SAVEPATH_UNWRITABLE',false) );
 		}
 	}
 	/**
-     * Gets the Itemid for the com_jmart Component
+     * Gets the Itemid for the com_virtuemart Component
      * and stores it in a global Variable
      *
      * @return int Itemid
@@ -460,7 +460,7 @@ class ps_session {
 
 		if( empty( $_REQUEST['shopItemid'] )) {
 			$db = new ps_DB;
-			$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_jmart' AND published=1");
+			$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_virtuemart' AND published=1");
 			if( $db->next_record() ) {
 				$_REQUEST['shopItemid'] = $db->f("id");
 			}
@@ -488,8 +488,8 @@ class ps_session {
 	}
 	
 	/**
-	 * This reformats an URL, appends "option=com_jmart" and "Itemid=XX"
-	 * where XX is the Id of an entry in the table mos_menu with "link: option=com_jmart"
+	 * This reformats an URL, appends "option=com_virtuemart" and "Itemid=XX"
+	 * where XX is the Id of an entry in the table mos_menu with "link: option=com_virtuemart"
 	 * It also calls sefRelToAbs to apply SEF formatting
 	 * 
 	 * @param string $text THE URL
@@ -499,7 +499,7 @@ class ps_session {
 	function url($text, $createAbsoluteURI=false, $encodeAmpersands=true, $ignoreSEF=false ) {
 		global $mm_action_url, $page, $mainframe;
 		
-		if( !defined( '_JM_IS_BACKEND' )) {
+		if( !defined( '_VM_IS_BACKEND' )) {
 			
 			// Strip the parameters from the $text variable and parse to a temporary array
 			$tmp_text=str_replace('amp;','',substr($text,strpos($text,'?')));
@@ -516,7 +516,7 @@ class ps_session {
 				// Check if the is a menuitem for a product_id (highest priority)
 				if (!empty($ii_arr['product_id'])) {
 					if ($ii_product_id=intval($ii_arr['product_id'])) {
-						$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_jmart' AND params like '%product_id=$ii_product_id%' AND published=1");
+						$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_virtuemart' AND params like '%product_id=$ii_product_id%' AND published=1");
 						if( $db->next_record() ) $tmp_Itemid = $db->f("id");
 					} 
 				}
@@ -524,7 +524,7 @@ class ps_session {
 				if (!empty($ii_arr['category_id'])) {
 					$ii_cat_id=intval($ii_arr['category_id']);
 					if ( $ii_cat_id && $tmp_Itemid=='') {
-						$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_jmart' AND params like '%category_id=$ii_cat_id%' AND published=1");
+						$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_virtuemart' AND params like '%category_id=$ii_cat_id%' AND published=1");
 						if( $db->next_record() ) $tmp_Itemid = $db->f("id");
 					}
 				}
@@ -532,7 +532,7 @@ class ps_session {
 				if (!empty($ii_arr['flypage'])) {
 					$ii_flypage=$ii_arr['flypage'];
 					if ($ii_flypage && $tmp_Itemid=='') {
-						$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_jmart' AND params like '%flypage=$ii_flypage%' AND published=1");
+						$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_virtuemart' AND params like '%flypage=$ii_flypage%' AND published=1");
 						if( $db->next_record() ) $tmp_Itemid = $db->f("id");
 					}
 				}
@@ -540,7 +540,7 @@ class ps_session {
 				if (!empty($ii_arr['page'])) {
 					$ii_page=$ii_arr['page'];
 					if ($ii_page && $tmp_Itemid=='') {
-						$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_jmart' AND params like '%page=$ii_page%' AND published=1");
+						$db->query( "SELECT id FROM #__menu WHERE link='index.php?option=com_virtuemart' AND params like '%page=$ii_page%' AND published=1");
 						if( $db->next_record() ) $tmp_Itemid = $db->f("id");
 					}
 				}
@@ -569,7 +569,7 @@ class ps_session {
 					$text = '?'.$text;
 				}
 				$appendix = "";
-				// now append "&option=com_jmart&Itemid=XX"
+				// now append "&option=com_virtuemart&Itemid=XX"
 				if (!strstr($text, "option=")) {
 					$appendix .= "&" . $this->component_name;
 				}
@@ -580,7 +580,7 @@ class ps_session {
 					$script = basename( $_SERVER['SCRIPT_NAME'] );
 				}
 				
-				if (!defined( '_JM_IS_BACKEND' )) {
+				if (!defined( '_VM_IS_BACKEND' )) {
 					if( $script == 'index3.php') {
 						$script = 'index2.php'; // index3.php is not available in the frontend!
 					}

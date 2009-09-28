@@ -1,15 +1,15 @@
 <?php 
 /**
 * @version $Id: checkout.epay_result.php,v 1.4 2005/05/22 09:21:15 soeren_nb Exp $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright (C) 2007-2008 Thomas Knudsen
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* JMart is Free Software.
-* JMart comes with absolute no warranty.
+* VirtueMart is Free Software.
+* VirtueMart comes with absolute no warranty.
 *
-* www.JMart.net
+* www.VirtueMart.net
 *
 * ePay Order Confirmation Handler
 */
@@ -84,7 +84,7 @@ if(($order_ekey == md5( $order_amount . $order_id . $tid  . EPAY_MD5_KEY)) || EP
 	            $d['include_comment'] = "Y";
 	            // Notifying the customer about the transaction key and
 	            // the order Status Update
-	            $d['order_comment'] = JText::_('JM_EPAY_PAYMENT_ORDER_COMMENT') . urldecode($tid)."\n";
+	            $d['order_comment'] = JText::_('VM_EPAY_PAYMENT_ORDER_COMMENT') . urldecode($tid)."\n";
 	                
 	            require_once ( CLASSPATH . 'ps_order.php' );
 	            $ps_order= new ps_order;
@@ -97,22 +97,22 @@ if(($order_ekey == md5( $order_amount . $order_id . $tid  . EPAY_MD5_KEY)) || EP
 	            
 	            // add history callback info
 	            if ($accept == "2") {
-	            	addPaymentLog($dbo, JText::_('JM_EPAY_PAYMENT_CALLBACK'), $order_id);
+	            	addPaymentLog($dbo, JText::_('VM_EPAY_PAYMENT_CALLBACK'), $order_id);
 	            }
 	            
 	            // payment fee
 	            if ($_REQUEST["transfee"]) {
-	            	addPaymentLog($dbo, JText::_('JM_EPAY_PAYMENT_FEE') . $_REQUEST["transfee"], $order_id);
+	            	addPaymentLog($dbo, JText::_('VM_EPAY_PAYMENT_FEE') . $_REQUEST["transfee"], $order_id);
 	            }
 	            
 	            // payment date
 	            if ($_REQUEST["date"]) {
-	            	addPaymentLog($dbo, JText::_('JM_EPAY_PAYMENT_DATE') . $_REQUEST["date"], $order_id);
+	            	addPaymentLog($dbo, JText::_('VM_EPAY_PAYMENT_DATE') . $_REQUEST["date"], $order_id);
 	            }
 	            
 	            // payment fraud control
 	            if ($_REQUEST["fraud"]) {
-	            	addPaymentLog($dbo, sprintf(JText::_('JM_EPAY_FRAUD'), $_REQUEST["fraud"]), $order_id);
+	            	addPaymentLog($dbo, sprintf(JText::_('VM_EPAY_FRAUD'), $_REQUEST["fraud"]), $order_id);
 	            }
 	            
 	            // card id
@@ -145,17 +145,17 @@ if(($order_ekey == md5( $order_amount . $order_id . $tid  . EPAY_MD5_KEY)) || EP
                     case 22: $cardname = 'Danske Bank'; break;
                     case 23: $cardname = 'Danske Bank'; break;
                  }
-	               addPaymentLog($dbo, sprintf(JText::_('JM_EPAY_PAYMENT_CARDTYPE'), $cardname, $cardimage), $order_id);
+	               addPaymentLog($dbo, sprintf(JText::_('VM_EPAY_PAYMENT_CARDTYPE'), $cardname, $cardimage), $order_id);
 	            	  
 	            }
 	            
 	            // creation information
-	            addPaymentLog($dbo, JText::_('JM_EPAY_PAYMENT_LOG_TID') . $tid . JText::_('JM_EPAY_PAYMENT_EPAY_LINK'), $order_id);
+	            addPaymentLog($dbo, JText::_('VM_EPAY_PAYMENT_LOG_TID') . $tid . JText::_('VM_EPAY_PAYMENT_EPAY_LINK'), $order_id);
 	        }
   
 ?> 
-            <img src="<?php echo JM_THEMEURL ?>images/button_ok.png" align="middle" alt="Success" border="0" />
-            <h2><?php echo JText::_('JM_PAYMENT_TRANSACTION_SUCCESS'); ?></h2>
+            <img src="<?php echo VM_THEMEURL ?>images/button_ok.png" align="middle" alt="Success" border="0" />
+            <h2><?php echo JText::_('VM_PAYMENT_TRANSACTION_SUCCESS'); ?></h2>
 <?php
         }
         elseif( $accept == "0" ) {
@@ -168,36 +168,36 @@ if(($order_ekey == md5( $order_amount . $order_id . $tid  . EPAY_MD5_KEY)) || EP
             $d['include_comment'] = "Y";
             // Notifying the customer about the transaction key and
             // the order Status Update
-            $d['order_comment'] = JText::_('JM_EPAY_PAYMENT_DECLINE') . $fejl;
+            $d['order_comment'] = JText::_('VM_EPAY_PAYMENT_DECLINE') . $fejl;
             require_once ( CLASSPATH . 'ps_order.php' );
             $ps_order= new ps_order;
             $ps_order->order_status_update($d);
             
 ?> 
-            <img src="<?php echo JM_THEMEURL ?>images/button_cancel.png" align="middle" alt="Failure" border="0" />
-            <h2><?php echo JText::_('JM_PAYMENT_ERROR') ?></h2>
+            <img src="<?php echo VM_THEMEURL ?>images/button_cancel.png" align="middle" alt="Failure" border="0" />
+            <h2><?php echo JText::_('VM_PAYMENT_ERROR') ?></h2>
 <?php
 		
            
-						echo JText::_('JM_EPAY_PAYMENT_RETRY_PAYMENT');
+						echo JText::_('VM_EPAY_PAYMENT_RETRY_PAYMENT');
         }
         
 ?>
         <br/>
-        <p><a href="<?php @$sess->purl( SECUREURL."index.php?option=com_jmart&page=account.order_details&order_id=$order_id" ) ?>">
-           <?php echo JText::_('JM_ORDER_LINK') ?></a>
+        <p><a href="<?php @$sess->purl( SECUREURL."index.php?option=com_virtuemart&page=account.order_details&order_id=$order_id" ) ?>">
+           <?php echo JText::_('VM_ORDER_LINK') ?></a>
         </p>
 <?php
       }
       else {
         ?>
-        <img src="<?php echo JM_THEMEURL ?>images/button_cancel.png" align="middle" alt="Failure" border="0" />
-        <span class="message"><? echo JText::_('JM_PAYMENT_ERROR') . JText::_('JM_EPAY_PAYMENT_ORDER_NOT_FOUND') ?> </span><?php
+        <img src="<?php echo VM_THEMEURL ?>images/button_cancel.png" align="middle" alt="Failure" border="0" />
+        <span class="message"><? echo JText::_('VM_PAYMENT_ERROR') . JText::_('VM_EPAY_PAYMENT_ORDER_NOT_FOUND') ?> </span><?php
       }
 }
 else{
         ?>
-        <img src="<?php echo JM_THEMEURL ?>images/button_cancel.png" align="middle" alt="Failure" border="0" />
-        <span class="message"><? echo JText::_('JM_PAYMENT_ERROR') . JText::_('JM_EPAY_PAYMENT_MD5_CHECK_FAILURE') ?> </span><?php
+        <img src="<?php echo VM_THEMEURL ?>images/button_cancel.png" align="middle" alt="Failure" border="0" />
+        <span class="message"><? echo JText::_('VM_PAYMENT_ERROR') . JText::_('VM_EPAY_PAYMENT_MD5_CHECK_FAILURE') ?> </span><?php
   }
   ?>

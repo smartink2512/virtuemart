@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_checkout.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */ 
 
 define("CHECK_OUT_GET_FINAL_BASKET", 1);
@@ -141,12 +141,12 @@ class ps_checkout {
 	 * @return array
 	 */
 	function get_checkout_steps() {
-		global $JM_CHECKOUT_MODULES;
-		$stepnames = array_keys( $JM_CHECKOUT_MODULES );
+		global $VM_CHECKOUT_MODULES;
+		$stepnames = array_keys( $VM_CHECKOUT_MODULES );
 		$steps = array();
 		$i = 0;
 		$last_order = 0;
-		foreach( $JM_CHECKOUT_MODULES as $step ) {
+		foreach( $VM_CHECKOUT_MODULES as $step ) {
 			// Get the stepname from the array key
 			$stepname = current($stepnames);
 //			$GLOBALS['vmLogger']->info('$stepname '.$stepname);
@@ -228,7 +228,7 @@ class ps_checkout {
 
 		global $sess, $ship_to_info_id, $shipping_rate_id;
 		
-		if (SHOW_CHECKOUT_BAR != '1' || defined('JM_CHECKOUT_BAR_LOADED')) {
+		if (SHOW_CHECKOUT_BAR != '1' || defined('VM_CHECKOUT_BAR_LOADED')) {
 			return;
 		}
 	    // Let's assemble the steps
@@ -240,16 +240,16 @@ class ps_checkout {
 	    	foreach( $step as $step_name ) {
 	    		switch ( $step_name ) {
 	    			case 'CHECK_OUT_GET_SHIPPING_ADDR':
-	    				$step_msg = JText::_('JM_ADD_SHIPTO_2');
+	    				$step_msg = JText::_('VM_ADD_SHIPTO_2');
 	    				break;
 	    			case 'CHECK_OUT_GET_SHIPPING_METHOD':
-	    				$step_msg = JText::_('JM_ISSHIP_LIST_CARRIER_LBL');
+	    				$step_msg = JText::_('VM_ISSHIP_LIST_CARRIER_LBL');
 	    				break;
 	    			case 'CHECK_OUT_GET_PAYMENT_METHOD':
-	    				$step_msg = JText::_('JM_ORDER_PRINT_PAYMENT_LBL');
+	    				$step_msg = JText::_('VM_ORDER_PRINT_PAYMENT_LBL');
 	    				break;
 	    			case 'CHECK_OUT_GET_FINAL_CONFIRMATION':
-	    				$step_msg = JText::_('JM_CHECKOUT_CONF_PAYINFO_COMPORDER');
+	    				$step_msg = JText::_('VM_CHECKOUT_CONF_PAYINFO_COMPORDER');
 	    				break;
 	    		}
 	    		$steps_to_do[$i][] = array('step_name' => $step_name,
@@ -263,7 +263,7 @@ class ps_checkout {
 	      
       	$highlighted_step = ps_checkout::get_current_stage(); 
     	
-    	$theme = new $GLOBALS['JM_THEMECLASS']();
+    	$theme = new $GLOBALS['VM_THEMECLASS']();
     	$theme->set_vars( array( 'step_count' => $step_count,
     							'steps_to_do' => $steps_to_do,
     							'steps' => $steps,
@@ -273,7 +273,7 @@ class ps_checkout {
     						) );
     						
 		echo $theme->fetch( 'checkout/checkout_bar.tpl.php');
-		define('JM_CHECKOUT_BAR_LOADED', 1 );
+		define('VM_CHECKOUT_BAR_LOADED', 1 );
 	}
 
 	/**
@@ -303,7 +303,7 @@ class ps_checkout {
 		}
 		if( PSHOP_AGREE_TO_TOS_ONORDER == '1' ) {
 			if( empty( $d["agreed"] )) {
-				$vmLogger->warning( JText::_('JM_AGREE_TO_TOS',false) );
+				$vmLogger->warning( JText::_('VM_AGREE_TO_TOS',false) );
 				return false;
 			}
 		}
@@ -356,30 +356,30 @@ class ps_checkout {
 		}
 		if (!ps_checkout::noShipToNecessary()) {
 			if (empty($d["ship_to_info_id"])) {
-				$vmLogger->err( 'validate add'.JText::_('JM_CHECKOUT_ERR_NO_SHIPTO',false) );
+				$vmLogger->err( 'validate add'.JText::_('VM_CHECKOUT_ERR_NO_SHIPTO',false) );
 				return False;
 			}
 		}
 		/*
 		if (!$d["payment_method_id"]) {
-			$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_PAYM',false) );
+			$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_PAYM',false) );
 			return False;
 		}*/
 		if ($vmPaymentMethod->is_creditcard(@$d["payment_method_id"])) {
 
 			if (empty($_SESSION["ccdata"]["order_payment_number"])) {
-				$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_CCNR',false) );
+				$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_CCNR',false) );
 				return False;
 			}
 
 			if(!$vmPaymentMethod->validate_payment($d["payment_method_id"],
 					$_SESSION["ccdata"]["order_payment_number"])) {
-				$vmLogger->err( JText::_('JM_CHECKOUT_ERR_CCNUM_INV',false) );
+				$vmLogger->err( JText::_('VM_CHECKOUT_ERR_CCNUM_INV',false) );
 				return False;
 			}
 
 			if(empty( $_SESSION["ccdata"]["order_payment_expire"])) {
-				$vmLogger->err( JText::_('JM_CHECKOUT_ERR_CCDATE_INV',false) );
+				$vmLogger->err( JText::_('VM_CHECKOUT_ERR_CCDATE_INV',false) );
 				return False;
 			}
 		}
@@ -400,13 +400,13 @@ class ps_checkout {
 		global  $vm_mainframe, $vmLogger;
 		
 		if( empty($d['shipping_rate_id']) ) {
-			$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_SHIP',false) );
+			$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_SHIP',false) );
 			return false;
 		}
 		
 		$result = $vm_mainframe->triggerEvent('validate', array( $d ));
 		if( is_array($result) && $result[0] === false ) {
-			$vmLogger->err( JText::_('JM_CHECKOUT_ERR_OTHER_SHIP',false) );
+			$vmLogger->err( JText::_('VM_CHECKOUT_ERR_OTHER_SHIP',false) );
 			return false;
 		}
 		
@@ -445,7 +445,7 @@ class ps_checkout {
 		
 //		if (!isset($d["payment_method_id"]) || $d["payment_method_id"]==0 ) {
 		if (empty($d["payment_method_id"])){
-			$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_PAYM',false) );
+			$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_PAYM',false) );
 			return false;
 		}
 		require_once(CLASSPATH.'paymentMethod.class.php');
@@ -465,53 +465,53 @@ class ps_checkout {
 
 			// Creditcard
 			if (empty( $_SESSION['ccdata']['creditcard_code']) ) {
-				$vmLogger->err( JText::_('JM_CHECKOUT_ERR_CCTYPE') );
+				$vmLogger->err( JText::_('VM_CHECKOUT_ERR_CCTYPE') );
 				return false;
 			}
 
 			// $_SESSION['ccdata'] = $ccdata;
 			// The Data should be in the session
 			if (!isset($_SESSION['ccdata'])) { //Not? Then Error
-				$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_CCDATA',false) );
+				$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_CCDATA',false) );
 				return False;
 			}
 
 			if (!$_SESSION['ccdata']['order_payment_number']) {
-				$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_CCNR_FOUND',false) );
+				$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_CCNR_FOUND',false) );
 				return False;
 			}
 
 			// CREDIT CARD NUMBER CHECK
 			// USING THE CREDIT CARD CLASS in ps_payment
 			if(!$vmPaymentMethod->validate_payment( $_SESSION['ccdata']['creditcard_code'], $_SESSION['ccdata']['order_payment_number'])) {
-				$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_CCDATE',false) );
+				$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_CCDATE',false) );
 				return False;
 			}
 
 			if (!$is_test) {
 				$payment_number = ereg_replace(" |-", "", $_SESSION['ccdata']['order_payment_number']);
 				if ($payment_number == "4111111111111111") {
-					$vmLogger->warning( JText::_('JM_CHECKOUT_ERR_TEST',false) );
+					$vmLogger->warning( JText::_('VM_CHECKOUT_ERR_TEST',false) );
 					return False;
 				}
 			}
 			if(!empty($_SESSION['ccdata']['need_card_code']) && empty($_SESSION['ccdata']['credit_card_code'])) {
-				$vmLogger->err( JText::_('JM_CUSTOMER_CVV2_ERROR',false) );
+				$vmLogger->err( JText::_('VM_CUSTOMER_CVV2_ERROR',false) );
 				return False;
 			}
 			if(!$_SESSION['ccdata']['order_payment_expire_month']) {
-				$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_CCMON',false) );
+				$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_CCMON',false) );
 				return False;
 			}
 			if(!$_SESSION['ccdata']['order_payment_expire_year']) {
-				$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_CCYEAR',false) );
+				$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_CCYEAR',false) );
 				return False;
 			}
 			$date = getdate( time() );
 			if ($_SESSION['ccdata']['order_payment_expire_year'] < $date["year"] or
 			($_SESSION['ccdata']['order_payment_expire_year'] == $date["year"] and
 			$_SESSION['ccdata']['order_payment_expire_month'] < $date["mon"])) {
-				$vmLogger->err( JText::_('JM_CHECKOUT_ERR_CCDATE_INV',false) );
+				$vmLogger->err( JText::_('VM_CHECKOUT_ERR_CCDATE_INV',false) );
 				return False;
 			}
 			return True;
@@ -544,30 +544,30 @@ class ps_checkout {
 					$dbu =& ps_user::getUserInfo( $auth["user_id"], array( 'bank_account_holder','bank_iban','bank_account_nr','bank_sort_code','bank_name' ) ); 
 				}
 				else {
-					$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_USER_DATA',false) );
+					$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_USER_DATA',false) );
 					return False;
 				}
 			}
 			if ($dbu->f("bank_account_holder") == ""){
-				$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_BA_HOLDER_NAME',false) );
+				$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_BA_HOLDER_NAME',false) );
 				return False;
 			}
 			if (($dbu->f("bank_iban") == "") and
 			($dbu->f("bank_account_nr") =="")) {
-				$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_IBAN',false) );
+				$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_IBAN',false) );
 				return False;
 			}
 			if ($dbu->f("bank_iban") == "") {
 				if ($dbu->f("bank_account_nr") == ""){
-					$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_BA_NUM',false) );
+					$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_BA_NUM',false) );
 					return False;
 				}
 				if ($dbu->f("bank_sort_code") == ""){
-					$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_BANK_SORT',false) );
+					$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_BANK_SORT',false) );
 					return False;
 				}
 				if ($dbu->f("bank_name") == ""){
-					$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_BANK_NAME',false) );
+					$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_BANK_NAME',false) );
 					return False;
 				}
 			}
@@ -619,7 +619,7 @@ class ps_checkout {
 		$ccdata = array();
 
 		if( empty($d["checkout_this_step"]) || !is_array(@$d["checkout_this_step"])) {
-			$vmLogger->err( JText::_('JM_CHECKOUT_ERR_NO_VALID_STEP',false) );
+			$vmLogger->err( JText::_('VM_CHECKOUT_ERR_NO_VALID_STEP',false) );
 			return false;
 		}
 		
@@ -633,7 +633,7 @@ class ps_checkout {
 				case 'CHECK_OUT_GET_SHIPPING_ADDR' :		
 					// The User has choosen a Shipping address
 					if (empty($d["ship_to_info_id"])) {
-						$vmLogger->err('I am in  process '.JText::_('JM_CHECKOUT_ERR_NO_SHIPTO',false) );
+						$vmLogger->err('I am in  process '.JText::_('VM_CHECKOUT_ERR_NO_SHIPTO',false) );
 						unset( $_POST['checkout_this_step']);
 						return False;
 					}
@@ -754,7 +754,7 @@ class ps_checkout {
 		//by Max Milbers seems  to work
 		$db = ps_user::get_user_details($auth['user_id'],array('*'),'','AND `u`.`address_type`= "'.$address_type.'"');
 		
-		$theme = new $GLOBALS['JM_THEMECLASS']();
+		$theme = new $GLOBALS['VM_THEMECLASS']();
 		$theme->set('db', $db );
 //		$theme->set_vars(array('db' => $db,
 //						'user_id' => $user_id,
@@ -800,7 +800,7 @@ class ps_checkout {
 	 * @param int $payment_method_id
 	 */
 	function list_payment_methods( $payment_method_id=0 ) {
-		global $order_total, $sess, $JM_CHECKOUT_MODULES;
+		global $order_total, $sess, $VM_CHECKOUT_MODULES;
 		
 		//This is the id of the mainvendor because the payment mehthods are not vendorrelated yet
 //		$hVendor_id = $_SESSION['ps_vendor_id'];
@@ -857,17 +857,17 @@ class ps_checkout {
 		//this is not really sensefull, because the paymentmethod is not saved automatically
 		//AND how should the customer give his data for the transfer?
         // Redirect to the last step when there's only one payment method
-//		if( $JM_CHECKOUT_MODULES['CHECK_OUT_GET_PAYMENT_METHOD']['order'] != $JM_CHECKOUT_MODULES['CHECK_OUT_GET_FINAL_CONFIRMATION']['order'] ) {
+//		if( $VM_CHECKOUT_MODULES['CHECK_OUT_GET_PAYMENT_METHOD']['order'] != $VM_CHECKOUT_MODULES['CHECK_OUT_GET_FINAL_CONFIRMATION']['order'] ) {
 //			if ($count <= 1 && $cc_payments==false) {
-//				vmRedirect($sess->url(SECUREURL.basename($_SERVER['PHP_SELF'])."?page=checkout.index&payment_method_id=$first_payment_method_id&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_stage=".$JM_CHECKOUT_MODULES['CHECK_OUT_GET_FINAL_CONFIRMATION']['order'], false, false ),"");
+//				vmRedirect($sess->url(SECUREURL.basename($_SERVER['PHP_SELF'])."?page=checkout.index&payment_method_id=$first_payment_method_id&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_stage=".$VM_CHECKOUT_MODULES['CHECK_OUT_GET_FINAL_CONFIRMATION']['order'], false, false ),"");
 //			}
 //			elseif( isset($order_total) && $order_total <= 0.00 ) {
 		if( isset($order_total) && $order_total <= 0.00 ) {
 			// In case the order total is less than or equal zero, we don't need a payment method
-			vmRedirect($sess->url(SECUREURL.basename($_SERVER['PHP_SELF'])."?page=checkout.index&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_stage=".$JM_CHECKOUT_MODULES['CHECK_OUT_GET_FINAL_CONFIRMATION']['order'], false, false),"");
+			vmRedirect($sess->url(SECUREURL.basename($_SERVER['PHP_SELF'])."?page=checkout.index&ship_to_info_id=$ship_to_info_id&shipping_rate_id=".urlencode($shipping_rate_id)."&checkout_stage=".$VM_CHECKOUT_MODULES['CHECK_OUT_GET_FINAL_CONFIRMATION']['order'], false, false),"");
 		}
 //		}
-		$theme = new $GLOBALS['JM_THEMECLASS']();
+		$theme = new $GLOBALS['VM_THEMECLASS']();
 		$theme->set_vars(array('db_nocc' => $db_nocc,
 								'db_cc' => $db_cc,
 								'nocc_payments' => $nocc_payments,
@@ -949,13 +949,13 @@ class ps_checkout {
 		
 		
 		if (is_array($process_payment_result) && @$process_payment_result[0] === false ) {
-			$vmLogger->err( JText::_('JM_PAYMENT_ERROR',false));
+			$vmLogger->err( JText::_('VM_PAYMENT_ERROR',false));
 			$_SESSION['last_page'] = "checkout.index";
 			$_REQUEST["checkout_next_step"] = CHECK_OUT_GET_PAYMENT_METHOD;
 			return False;
 		}
 		else {
-			$d["order_payment_log"] = JText::_('JM_CHECKOUT_MSG_LOG');
+			$d["order_payment_log"] = JText::_('VM_CHECKOUT_MSG_LOG');
 		}
 
 		// Remove the Coupon, because it is a Gift Coupon and now is used!!
@@ -1035,12 +1035,12 @@ class ps_checkout {
 					'order_payment_log' => @$d["order_payment_log"], 
 					'order_payment_trans_id' => $vmInputFilter->safeSQL( @$d["order_payment_trans_id"] )
 				  );
-		if( !empty( $payment_number ) && JM_STORE_CREDITCARD_DATA == '1' ) {
+		if( !empty( $payment_number ) && VM_STORE_CREDITCARD_DATA == '1' ) {
 			// Store Credit Card Information only if the Store Owner has decided to do so
 			$fields['order_payment_code'] = $d["order_payment_code"];
 			$fields['order_payment_expire'] = @$_SESSION["ccdata"]["order_payment_expire"];
 			$fields['order_payment_name'] = @$_SESSION["ccdata"]["order_payment_name"];
-			$fields['order_payment_number'] = JM_ENCRYPT_FUNCTION."( '$payment_number','" . ENCODE_KEY . "')";
+			$fields['order_payment_number'] = VM_ENCRYPT_FUNCTION."( '$payment_number','" . ENCODE_KEY . "')";
 			$specialfield = array('order_payment_number');
 		} else {
 			$specialfield = array();
@@ -1189,10 +1189,10 @@ class ps_checkout {
         $product_in_stock = $db->f("product_in_stock");
         
         // The email subject
-        $subject = sprintf( JText::_( 'JM_LOW_STOCK_NOTIFICATION_EMAIL_SUBJECT' ), $db->f("product_name"));
+        $subject = sprintf( JText::_( 'VM_LOW_STOCK_NOTIFICATION_EMAIL_SUBJECT' ), $db->f("product_name"));
         
         // The email body
-        $msg = str_replace( '{product_name}', $product_name, JText::_( 'JM_LOW_STOCK_NOTIFICATION_EMAIL_MESSAGE' ) );
+        $msg = str_replace( '{product_name}', $product_name, JText::_( 'VM_LOW_STOCK_NOTIFICATION_EMAIL_MESSAGE' ) );
         $msg = str_replace( '{product_sku}', $product_sku, $msg );
         $msg = str_replace( '{product_in_stock}', $product_in_stock, $msg );
         $msg = vmHtmlEntityDecode( $msg );
@@ -1210,7 +1210,7 @@ class ps_checkout {
 				$params = array('product_id' => $cart[$i]["product_id"], 'order_id' => $order_id, 'user_id' => $auth["user_id"] );
 				ps_order::insert_downloads_for_product( $params );
 				
-				if( @JM_DOWNLOADABLE_PRODUCTS_KEEP_STOCKLEVEL == '1' ) {
+				if( @VM_DOWNLOADABLE_PRODUCTS_KEEP_STOCKLEVEL == '1' ) {
 					// Update the product stock level back to where it was.
 					$q = "UPDATE #__{vm}_product ";
 					$q .= "SET product_in_stock = product_in_stock + ".(int)$cart[$i]["quantity"];
@@ -1868,8 +1868,8 @@ class ps_checkout {
 		$shopper_name = $dbbt->f("first_name")." ".$dbbt->f("last_name");
 
 		$from_email = $dbv->f("email");
-		$shopper_subject = $dbv->f("vendor_name") . " ".JText::_('JM_ORDER_PRINT_PO_LBL',false)." - " . $db->f("order_id");
-		$vendor_subject = $dbv->f("vendor_name") . " ".JText::_('JM_ORDER_PRINT_PO_LBL',false)." - " . $db->f("order_id");
+		$shopper_subject = $dbv->f("vendor_name") . " ".JText::_('VM_ORDER_PRINT_PO_LBL',false)." - " . $db->f("order_id");
+		$vendor_subject = $dbv->f("vendor_name") . " ".JText::_('VM_ORDER_PRINT_PO_LBL',false)." - " . $db->f("order_id");
 
 		$GLOBALS['vmLogger']->debug('$vendor_subject '.$vendor_subject);
 		$GLOBALS['vmLogger']->debug('$from_email '.$from_email);
@@ -1882,9 +1882,9 @@ class ps_checkout {
 		$payment_info_details = $db_payment->f("name");
 		if( !empty( $_SESSION['ccdata']['order_payment_name'] )
 			&& !empty($_SESSION['ccdata']['order_payment_number'])) {
-	  		$payment_info_details .= '<br />'.JText::_('JM_CHECKOUT_CONF_PAYINFO_NAMECARD',false).': '.$_SESSION['ccdata']['order_payment_name'].'<br />';
-	  		$payment_info_details .= JText::_('JM_CHECKOUT_CONF_PAYINFO_CCNUM',false).': '.$this->asterisk_pad($_SESSION['ccdata']['order_payment_number'], 4 ).'<br />';
-	  		$payment_info_details .= JText::_('JM_CHECKOUT_CONF_PAYINFO_EXDATE',false).': '.$_SESSION['ccdata']['order_payment_expire_month'].' / '.$_SESSION['ccdata']['order_payment_expire_year'].'<br />';
+	  		$payment_info_details .= '<br />'.JText::_('VM_CHECKOUT_CONF_PAYINFO_NAMECARD',false).': '.$_SESSION['ccdata']['order_payment_name'].'<br />';
+	  		$payment_info_details .= JText::_('VM_CHECKOUT_CONF_PAYINFO_CCNUM',false).': '.$this->asterisk_pad($_SESSION['ccdata']['order_payment_number'], 4 ).'<br />';
+	  		$payment_info_details .= JText::_('VM_CHECKOUT_CONF_PAYINFO_EXDATE',false).': '.$_SESSION['ccdata']['order_payment_expire_month'].' / '.$_SESSION['ccdata']['order_payment_expire_year'].'<br />';
 	  		if( !empty($_SESSION['ccdata']['credit_card_code'])) {
 	  			$payment_info_details .= 'CVV code: '.$_SESSION['ccdata']['credit_card_code'].'<br />';
 	  		}
@@ -1898,13 +1898,13 @@ class ps_checkout {
 		// Headers and Footers
 		// ******************************
 		// Shopper Header
-		$shopper_header = JText::_('JM_CHECKOUT_EMAIL_SHOPPER_HEADER1',false)."\n";
+		$shopper_header = JText::_('VM_CHECKOUT_EMAIL_SHOPPER_HEADER1',false)."\n";
 		
 		$legal_info_title = '';
 		$legal_info_html = '';
 		// Get the legal information about the returns/order cancellation policy
-		if( @JM_ONCHECKOUT_SHOW_LEGALINFO == '1' ) {
-			$article = intval(@JM_ONCHECKOUT_LEGALINFO_LINK);
+		if( @VM_ONCHECKOUT_SHOW_LEGALINFO == '1' ) {
+			$article = intval(@VM_ONCHECKOUT_LEGALINFO_LINK);
 			if( $article > 0 ) {
 				$db_legal = new ps_DB();
 				// Get the content article, which contains the Legal Info
@@ -1918,25 +1918,25 @@ class ps_checkout {
 			}
 		}
 		//Shopper Footer
-		$shopper_footer = "\n\n".JText::_('JM_CHECKOUT_EMAIL_SHOPPER_HEADER2',false)."\n";
-		if( JM_REGISTRATION_TYPE != 'NO_REGISTRATION' ) {
-			$shopper_footer .= "\n\n".JText::_('JM_CHECKOUT_EMAIL_SHOPPER_HEADER5',false)."\n";
+		$shopper_footer = "\n\n".JText::_('VM_CHECKOUT_EMAIL_SHOPPER_HEADER2',false)."\n";
+		if( VM_REGISTRATION_TYPE != 'NO_REGISTRATION' ) {
+			$shopper_footer .= "\n\n".JText::_('VM_CHECKOUT_EMAIL_SHOPPER_HEADER5',false)."\n";
 			$shopper_footer .= $shopper_order_link;
 		}
-		$shopper_footer .= "\n\n".JText::_('JM_CHECKOUT_EMAIL_SHOPPER_HEADER3',false)."\n";
+		$shopper_footer .= "\n\n".JText::_('VM_CHECKOUT_EMAIL_SHOPPER_HEADER3',false)."\n";
 		$shopper_footer .= "Email: " . $from_email;
 		// New in version 1.0.5
-		if( @JM_ONCHECKOUT_SHOW_LEGALINFO == '1' && !empty( $legal_info_title )) {
+		if( @VM_ONCHECKOUT_SHOW_LEGALINFO == '1' && !empty( $legal_info_title )) {
 			$shopper_footer .= "\n\n____________________________________________\n";
 			$shopper_footer .= $legal_info_title."\n";
 			$shopper_footer .= $legal_info_text."\n";
 		}
 		
 		// Vendor Header
-		$vendor_header = JText::_('JM_CHECKOUT_EMAIL_SHOPPER_HEADER4',false)."\n";
+		$vendor_header = JText::_('VM_CHECKOUT_EMAIL_SHOPPER_HEADER4',false)."\n";
 
 		// Vendor Footer
-		$vendor_footer = "\n\n".JText::_('JM_CHECKOUT_EMAIL_SHOPPER_HEADER5',false)."\n";
+		$vendor_footer = "\n\n".JText::_('VM_CHECKOUT_EMAIL_SHOPPER_HEADER5',false)."\n";
 		$vendor_footer .= $vendor_order_link;
 
 		$vendor_email = $from_email;
@@ -1947,12 +1947,12 @@ class ps_checkout {
 
 		// Main Email Message Purchase Order
 		// *********************************
-		$shopper_message  = "\n".JText::_('JM_ORDER_PRINT_PO_LBL',false)."\n";
+		$shopper_message  = "\n".JText::_('VM_ORDER_PRINT_PO_LBL',false)."\n";
 		$shopper_message .= "------------------------------------------------------------------------\n";
-		$shopper_message .= JText::_('JM_ORDER_PRINT_PO_NUMBER',false).": " . $db->f("order_id") . "\n";
-		$shopper_message .= JText::_('JM_ORDER_PRINT_PO_DATE',false).":   ";
+		$shopper_message .= JText::_('VM_ORDER_PRINT_PO_NUMBER',false).": " . $db->f("order_id") . "\n";
+		$shopper_message .= JText::_('VM_ORDER_PRINT_PO_DATE',false).":   ";
 		$shopper_message .= strftime( JText::_('DATE_FORMAT_LC'), $db->f("cdate") ) . "\n";
-		$shopper_message .= JText::_('JM_ORDER_PRINT_PO_STATUS',false).": ";
+		$shopper_message .= JText::_('VM_ORDER_PRINT_PO_STATUS',false).": ";
 				
 		$shopper_message .= $order_status."\n\n";
 				
@@ -1973,7 +1973,7 @@ class ps_checkout {
 		
 		// Shipping Fields
 		$shopper_message .= "\n\n";
-		$shopper_message .= JText::_('JM_ORDER_PRINT_SHIP_TO_LBL')."\n";
+		$shopper_message .= JText::_('VM_ORDER_PRINT_SHIP_TO_LBL')."\n";
 		$shopper_message .= "-------\n\n";
 		
 		$shippingfields = ps_userfield::getUserFields('shipping', false, '', false, true );
@@ -1990,23 +1990,23 @@ class ps_checkout {
 		
 		$shopper_message .= "\n\n";
 
-		$shopper_message .= JText::_('JM_ORDER_PRINT_ITEMS_LBL',false)."\n";
+		$shopper_message .= JText::_('VM_ORDER_PRINT_ITEMS_LBL',false)."\n";
 		$shopper_message .= "-----------";
 		$sub_total = 0.00;
 		while($dboi->next_record()) {
 			$shopper_message .= "\n\n";
-			$shopper_message .= JText::_('JM_PRODUCT',false)."  = ";
+			$shopper_message .= JText::_('VM_PRODUCT',false)."  = ";
 			if ($dboi->f("product_parent_id")) {
 				$shopper_message .= $dboi->f("order_item_name") . "\n";
 				$shopper_message .= "SERVICE  = ";
 			}
 			$shopper_message .= $dboi->f("product_name") . "; ".$dboi->f("product_attribute") ."\n";
-			$shopper_message .= JText::_('JM_ORDER_PRINT_QUANTITY',false)." = ";
+			$shopper_message .= JText::_('VM_ORDER_PRINT_QUANTITY',false)." = ";
 			$shopper_message .= $dboi->f("product_quantity") . "\n";
-			$shopper_message .= JText::_('JM_ORDER_PRINT_SKU',false)."      = ";
+			$shopper_message .= JText::_('VM_ORDER_PRINT_SKU',false)."      = ";
 			$shopper_message .= $dboi->f("order_item_sku") . "\n";
 
-			$shopper_message .= JText::_('JM_ORDER_PRINT_PRICE',false)."    = ";
+			$shopper_message .= JText::_('VM_ORDER_PRINT_PRICE',false)."    = ";
 			if ($auth["show_price_including_tax"] == 1) {
 				$sub_total += ($dboi->f("product_quantity") * $dboi->f("product_final_price"));
 				$shopper_message .= $CURRENCY_DISPLAY->getFullValue($dboi->f("product_final_price"), '', $db->f('order_currency'));
@@ -2018,60 +2018,60 @@ class ps_checkout {
 
 		$shopper_message .= "\n\n";
 
-		$shopper_message .= JText::_('JM_ORDER_PRINT_SUBTOTAL',false)." = ";
+		$shopper_message .= JText::_('VM_ORDER_PRINT_SUBTOTAL',false)." = ";
 		$shopper_message .= $CURRENCY_DISPLAY->getFullValue($sub_total, '', $db->f('order_currency'))."\n";
 
 		if ( PAYMENT_DISCOUNT_BEFORE == '1') {
 			if( !empty($order_discount)) {
 				if ($order_discount > 0) {
-					$shopper_message .= JText::_('JM_PAYMENT_METHOD_LIST_DISCOUNT',false)." = ";
+					$shopper_message .= JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT',false)." = ";
 					$shopper_message .= "- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency')) . "\n";
 				} else {
-					$shopper_message .= JText::_('JM_FEE',false)." = ";
+					$shopper_message .= JText::_('VM_FEE',false)." = ";
 					$shopper_message .= "+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency')) . "\n";
 				}
 			}
 			if( !empty($coupon_discount)) {
 				/* following 2 lines added by Erich for coupon hack */
-				$shopper_message .= JText::_('JM_COUPON_DISCOUNT',false) . ": ";
+				$shopper_message .= JText::_('VM_COUPON_DISCOUNT',false) . ": ";
 				$shopper_message .= $CURRENCY_DISPLAY->getFullValue($coupon_discount, '', $db->f('order_currency')) . "\n";
 			}
 		}
 
 		if ($auth["show_price_including_tax"] != 1) {
-			$shopper_message .= JText::_('JM_ORDER_PRINT_TOTAL_TAX',false)."      = ";
+			$shopper_message .= JText::_('VM_ORDER_PRINT_TOTAL_TAX',false)."      = ";
 			$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_tax, '', $db->f('order_currency')) . "\n";
 		}
-		$shopper_message .= JText::_('JM_ORDER_PRINT_SHIPPING',false)." = ";
+		$shopper_message .= JText::_('VM_ORDER_PRINT_SHIPPING',false)." = ";
 		$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_shipping, '', $db->f('order_currency')) . "\n";
 		if( !empty($order_shipping_tax)) {
-			$shopper_message .= JText::_('JM_ORDER_PRINT_SHIPPING_TAX',false)."   = ";
+			$shopper_message .= JText::_('VM_ORDER_PRINT_SHIPPING_TAX',false)."   = ";
 			$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_shipping_tax, '', $db->f('order_currency'));
 		}
 		$shopper_message .= "\n\n";
 		if ( PAYMENT_DISCOUNT_BEFORE != '1') {
 			if( !empty($order_discount)) {
 				if ($order_discount > 0) {
-					$shopper_message .= JText::_('JM_PAYMENT_METHOD_LIST_DISCOUNT',false)." = ";
+					$shopper_message .= JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT',false)." = ";
 					$shopper_message .= "- ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency')) . "\n";
 				} else {
-					$shopper_message .= JText::_('JM_FEE',false)." = ";
+					$shopper_message .= JText::_('VM_FEE',false)." = ";
 					$shopper_message .= "+ ".$CURRENCY_DISPLAY->getFullValue(abs($order_discount), '', $db->f('order_currency')) . "\n";
 				}
 			}
 			if( !empty($coupon_discount)) {
 				/* following 2 lines added by Erich for coupon hack */
-				$shopper_message .= JText::_('JM_COUPON_DISCOUNT',false) . ": ";
+				$shopper_message .= JText::_('VM_COUPON_DISCOUNT',false) . ": ";
 				$shopper_message .= $CURRENCY_DISPLAY->getFullValue($coupon_discount, '', $db->f('order_currency')) . "\n";
 			}
 		}
-		$shopper_message .= JText::_('JM_ORDER_PRINT_TOTAL',false)."    = ";
+		$shopper_message .= JText::_('VM_ORDER_PRINT_TOTAL',false)."    = ";
 		$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_total, '', $db->f('order_currency'));
 
 		if ($auth["show_price_including_tax"] == 1) {
 			$shopper_message .= "\n---------------";
 			$shopper_message .= "\n";
-			$shopper_message .= JText::_('JM_ORDER_PRINT_TOTAL_TAX',false)."      = ";
+			$shopper_message .= JText::_('VM_ORDER_PRINT_TOTAL_TAX',false)."      = ";
 			$shopper_message .= $CURRENCY_DISPLAY->getFullValue($order_tax, '', $db->f('order_currency')) . "\n";
 		}
 		if( $db->f('order_tax_details') ) {
@@ -2084,12 +2084,12 @@ class ps_checkout {
 		// Shipping Details
 		if( !empty($shipping_arr[1]) && !empty($shipping_arr[2]) ) {
 			$shopper_message .= "\n\n------------------------------------------------------------------------\n";
-			$shopper_message .= JText::_('JM_ORDER_PRINT_SHIPPING_LBL',false).":\n";
+			$shopper_message .= JText::_('VM_ORDER_PRINT_SHIPPING_LBL',false).":\n";
 			$shopper_message .= $shipping_arr[1]." (".$shipping_arr[2].")";
 		}
 		// Customer Note
 		$shopper_message .= "\n\n------------------------------------------------------------------------\n";
-		$shopper_message .= "\n".JText::_('JM_ORDER_PRINT_CUSTOMER_NOTE',false)."\n";
+		$shopper_message .= "\n".JText::_('VM_ORDER_PRINT_CUSTOMER_NOTE',false)."\n";
 		$shopper_message .= "---------------";
 		$shopper_message .= "\n";
 		if( !empty( $customer_note )) {
@@ -2136,17 +2136,17 @@ class ps_checkout {
 			$template = vmTemplate::getInstance();
 			
 			if ($order_discount > 0) {
-				$order_discount_lbl = JText::_('JM_PAYMENT_METHOD_LIST_DISCOUNT');
+				$order_discount_lbl = JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT');
 				$order_discount_plusminus = '-';
 			} else {
-				$order_discount_lbl = JText::_('JM_FEE');
+				$order_discount_lbl = JText::_('VM_FEE');
 				$order_discount_plusminus = '+';
 			}
 			if ($coupon_discount > 0) {
-				$coupon_discount_lbl = JText::_('JM_PAYMENT_METHOD_LIST_DISCOUNT');
+				$coupon_discount_lbl = JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT');
 				$coupon_discount_plusminus = '-';
 			} else {
-				$coupon_discount_lbl = JText::_('JM_FEE');
+				$coupon_discount_lbl = JText::_('VM_FEE');
 				$coupon_discount_plusminus = '+';
 			}
 
@@ -2179,9 +2179,9 @@ class ps_checkout {
 						'legal_info_html' => $legal_info_html,
 						'order_link' => $shopper_order_link,
 
-						'payment_info_lbl' => JText::_('JM_ORDER_PRINT_PAYINFO_LBL'),
+						'payment_info_lbl' => JText::_('VM_ORDER_PRINT_PAYINFO_LBL'),
 						'payment_info_details' => $payment_info_details,
-						'shipping_info_lbl' => JText::_('JM_ORDER_PRINT_SHIPPING_LBL'),
+						'shipping_info_lbl' => JText::_('VM_ORDER_PRINT_SHIPPING_LBL'),
 						'shipping_info_details' => $shipping_info_details,
 
 						'from_email' => $from_email,
@@ -2300,14 +2300,14 @@ class ps_checkout {
 		}
 		$html = '';
 		if( sizeof( $details) > 1 ) {
-			$html .= '<br />'.JText::_('JM_TAXDETAILS_LABEL').':<br />';
+			$html .= '<br />'.JText::_('VM_TAXDETAILS_LABEL').':<br />';
 			
 			foreach ($details as $rate => $value ) {
 				if( !$auth['show_price_including_tax']) {
 					$value /= $discount_factor;
 				}
 				$rate = str_replace( '-', $CURRENCY_DISPLAY->decimal, $rate )*100;
-				$html .= $CURRENCY_DISPLAY->getFullValue( $value, 5, $currency ).' ('.$rate.'% '.JText::_('JM_CART_TAX').')<br />';
+				$html .= $CURRENCY_DISPLAY->getFullValue( $value, 5, $currency ).' ('.$rate.'% '.JText::_('VM_CART_TAX').')<br />';
 			}
 		}
 		return $html;

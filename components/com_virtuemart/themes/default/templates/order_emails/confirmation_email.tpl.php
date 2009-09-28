@@ -5,7 +5,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 ?>
 <html>
 <head>
-<title><?php echo JText::_('JM_ORDER_PRINT_PO_LBL') ?></title>
+<title><?php echo JText::_('VM_ORDER_PRINT_PO_LBL') ?></title>
 <style type="text/css">
 <!--
 .Stil1 {
@@ -28,7 +28,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
   </tr>    
   <tr bgcolor="white"> 
     <td colspan="2">
-      <h3 class="Stil2"><?php echo JText::_('JM_ORDER_PRINT_PO_LBL') ?></h3>
+      <h3 class="Stil2"><?php echo JText::_('VM_ORDER_PRINT_PO_LBL') ?></h3>
     </td>
   </tr>
 </table>
@@ -36,17 +36,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 <table border=0 cellspacing=0 cellpadding=2 width=100%>
   <!-- begin customer information --> 
   <tr bgcolor="#CCCCCC" class="sectiontableheader"> 
-    <td colspan="2" class="Stil2"><b><?php echo JText::_('JM_ACC_ORDER_INFO') ?></b></td>
+    <td colspan="2" class="Stil2"><b><?php echo JText::_('VM_ACC_ORDER_INFO') ?></b></td>
   </tr>
   <tr class="Stil1"> 
-    <td><?php echo JText::_('JM_ORDER_PRINT_PO_NUMBER')?>:</td><td><?php echo $order_id ?></td>
+    <td><?php echo JText::_('VM_ORDER_PRINT_PO_NUMBER')?>:</td><td><?php echo $order_id ?></td>
   </tr>
    
   <tr class="Stil1"> 
-    <td><?php echo JText::_('JM_ORDER_PRINT_PO_DATE') ?>:</td><td><?php echo $order_date ?></td>
+    <td><?php echo JText::_('VM_ORDER_PRINT_PO_DATE') ?>:</td><td><?php echo $order_date ?></td>
   </tr>
   <tr class="Stil1"> 
-    <td><?php echo JText::_('JM_ORDER_PRINT_PO_STATUS') ?>:</td><td><?php echo $order_status ?></td>
+    <td><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?>:</td><td><?php echo $order_status ?></td>
   </tr>
   <!-- end customer information --> 
   <!-- begin 2 column bill-ship to --> 
@@ -54,7 +54,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
     <td colspan="2">&nbsp;</td>
   </tr>
   <tr bgcolor="#CCCCCC" class="sectiontableheader"> 
-    <td colspan="2"><b class="Stil2"><?php echo JText::_('JM_ORDER_PRINT_CUST_INFO_LBL') ?></b></td>
+    <td colspan="2"><b class="Stil2"><?php echo JText::_('VM_ORDER_PRINT_CUST_INFO_LBL') ?></b></td>
   </tr>
   <tr valign=top> 
     <td width=50%> <!-- begin billto -->  
@@ -98,7 +98,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
     <!-- begin shipto -->  
       <table width=100% border=0 cellpadding=2 cellspacing=0 class="Stil1">
         <tr> 
-          <td colspan="2"><b><?php echo JText::_('JM_ORDER_PRINT_SHIP_TO_LBL') ?></b></td>
+          <td colspan="2"><b><?php echo JText::_('VM_ORDER_PRINT_SHIP_TO_LBL') ?></b></td>
         </tr>
      <?php
       foreach( $shippingfields as $field ) {
@@ -149,17 +149,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
   </tr>
   <!-- begin order items information --> 
   <tr bgcolor="#CCCCCC" class="Stil2"> 
-    <td colspan="2"><b><?php echo JText::_('JM_ORDER_ITEM') ?></b></td>
+    <td colspan="2"><b><?php echo JText::_('VM_ORDER_ITEM') ?></b></td>
   </tr>
   <tr> 
     <td colspan="2"> 
       <table width=100% cellspacing=0 cellpadding=2 border=0>
         <tr align=left class="Stil1">
-			<th><?php echo JText::_('JM_CART_QUANTITY') ?></th>
-	        <th><?php echo JText::_('JM_CART_NAME') ?></th>
-	        <th><?php echo JText::_('JM_CART_SKU') ?></th>
-			<th><?php echo JText::_('JM_CART_PRICE') ?></th>
-			<th><?php echo JText::_('JM_CART_SUBTOTAL') ?></th>
+			<th><?php echo JText::_('VM_CART_QUANTITY') ?></th>
+	        <th><?php echo JText::_('VM_CART_NAME') ?></th>
+	        <th><?php echo JText::_('VM_CART_SKU') ?></th>
+			<th><?php echo JText::_('VM_CART_PRICE') ?></th>
+			<th><?php echo JText::_('VM_CART_SUBTOTAL') ?></th>
         </tr>
 <?php
 // CREATE THE LIST WITH ALL ORDER ITEMS
@@ -192,7 +192,7 @@ while($dboi->next_record()) {
           <td>&nbsp;</td>
         </tr>
         <tr class="Stil1"> 
-          <td colspan=4 align=right><?php echo JText::_('JM_ORDER_PRINT_SUBTOTAL') ?> :</td>
+          <td colspan=4 align=right><?php echo JText::_('VM_ORDER_PRINT_SUBTOTAL') ?> :</td>
           <td><?php echo $order_subtotal ?></td>
         </tr>
         <?php
@@ -209,7 +209,7 @@ while($dboi->next_record()) {
 			if ($coupon_discount > 0 || $coupon_discount < 0) {
 				?>
 				<tr class="Stil1">
-					<td align="right" colspan="4"><?php echo JText::_('JM_COUPON_DISCOUNT') ?>: </td>
+					<td align="right" colspan="4"><?php echo JText::_('VM_COUPON_DISCOUNT') ?>: </td>
 					<td><?php echo $coupon_discount_plusminus. ' '.$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount), '', $db->f('order_currency')) ?></td>
 				</tr>
 				<?php
@@ -217,11 +217,11 @@ while($dboi->next_record()) {
 		}
 		?>
         <tr class="Stil1"> 
-          <td colspan=4 align=right><?php echo JText::_('JM_ORDER_PRINT_SHIPPING') ?> :</td>
+          <td colspan=4 align=right><?php echo JText::_('VM_ORDER_PRINT_SHIPPING') ?> :</td>
           <td><?php echo $order_shipping ?></td>
         </tr>
         <tr class="Stil1"> 
-          <td colspan=4 align=right><?php echo JText::_('JM_ORDER_PRINT_TOTAL_TAX') ?> :</td>
+          <td colspan=4 align=right><?php echo JText::_('VM_ORDER_PRINT_TOTAL_TAX') ?> :</td>
           <td><?php echo $order_tax ?></td>
         </tr>
         <?php
@@ -237,7 +237,7 @@ while($dboi->next_record()) {
 			if ($coupon_discount > 0 || $coupon_discount < 0) {
 				?>
 				<tr class="Stil1">
-					<td align="right" colspan="4"><?php echo JText::_('JM_COUPON_DISCOUNT') ?>: </td>
+					<td align="right" colspan="4"><?php echo JText::_('VM_COUPON_DISCOUNT') ?>: </td>
 					<td><?php echo $coupon_discount_plusminus. ' '.$CURRENCY_DISPLAY->getFullValue(abs($coupon_discount), '', $db->f('order_currency')) ?></td>
 				</tr>
 				<?php
@@ -245,7 +245,7 @@ while($dboi->next_record()) {
 		}
 		?>
         <tr class="Stil1"> 
-          <td colspan=4 align=right><b><?php echo JText::_('JM_CART_TOTAL') .": " ?></b></td>
+          <td colspan=4 align=right><b><?php echo JText::_('VM_CART_TOTAL') .": " ?></b></td>
           <td><?php echo $order_total ?></td>
         </tr>
       </table>
@@ -257,7 +257,7 @@ while($dboi->next_record()) {
     <td colspan="2">&nbsp;</td>
   </tr>
   <tr bgcolor="#CCCCCC" class="sectiontableheader">
-    <td colspan="2"><b class="Stil2"><?php echo JText::_('JM_ORDER_PRINT_CUSTOMER_NOTE') ?>:</b></td>
+    <td colspan="2"><b class="Stil2"><?php echo JText::_('VM_ORDER_PRINT_CUSTOMER_NOTE') ?>:</b></td>
   </tr>
   <tr>
     <td colspan="2">
@@ -283,23 +283,23 @@ while($dboi->next_record()) {
 <?php
 // EMAIL FOOTER MESSAGE 
 if( $is_email_to_shopper ) {
-	$footer_html = "<br /><br />".JText::_('JM_CHECKOUT_EMAIL_SHOPPER_HEADER2')."<br />";
+	$footer_html = "<br /><br />".JText::_('VM_CHECKOUT_EMAIL_SHOPPER_HEADER2')."<br />";
 	
-	if( JM_REGISTRATION_TYPE != 'NO_REGISTRATION' ) {
-		$footer_html .= "<br /><a title=\"".JText::_('JM_CHECKOUT_EMAIL_SHOPPER_HEADER5')."\" href=\"$order_link\">"
-		. JText::_('JM_CHECKOUT_EMAIL_SHOPPER_HEADER5')."</a>";
+	if( VM_REGISTRATION_TYPE != 'NO_REGISTRATION' ) {
+		$footer_html .= "<br /><a title=\"".JText::_('VM_CHECKOUT_EMAIL_SHOPPER_HEADER5')."\" href=\"$order_link\">"
+		. JText::_('VM_CHECKOUT_EMAIL_SHOPPER_HEADER5')."</a>";
 	}
-	$footer_html .= "<br /><br />".JText::_('JM_CHECKOUT_EMAIL_SHOPPER_HEADER3')."<br />";
+	$footer_html .= "<br /><br />".JText::_('VM_CHECKOUT_EMAIL_SHOPPER_HEADER3')."<br />";
 	$footer_html .= JText::_('CMN_EMAIL').": <a href=\"mailto:" . $from_email."\">".$from_email."</a>";
 	// New in version 1.0.5
-	if( @JM_ONCHECKOUT_SHOW_LEGALINFO == '1' && !empty( $legal_info_title )) {
+	if( @VM_ONCHECKOUT_SHOW_LEGALINFO == '1' && !empty( $legal_info_title )) {
 		$footer_html .= "<br /><br />____________________________________________<br />";
 		$footer_html .= '<h5>'.$legal_info_title.'</h5>';
 		$footer_html .= $legal_info_html.'<br />';
 	}
 } else {
-	$footer_html = '<br /><br /><a title="'.JText::_('JM_CHECKOUT_EMAIL_SHOPPER_HEADER5').'" href="'.$order_link.'">'
-		. JText::_('JM_CHECKOUT_EMAIL_SHOPPER_HEADER5').'</a>';
+	$footer_html = '<br /><br /><a title="'.JText::_('VM_CHECKOUT_EMAIL_SHOPPER_HEADER5').'" href="'.$order_link.'">'
+		. JText::_('VM_CHECKOUT_EMAIL_SHOPPER_HEADER5').'</a>';
 }
 echo $footer_html;
 ?>

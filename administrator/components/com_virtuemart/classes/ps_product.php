@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_product.php 1786 2009-05-13 13:21:59Z macallf $
-* @package JMart
+* @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 /**
@@ -46,7 +46,7 @@ class ps_product extends vmAbstractObject {
 		$hVendor_id = $hVendor->getVendorIdByUserId($user_id );
 		if( !$perm->check( 'admin' )) {
 			if($hVendor_id!=$d['vendor_id']){
-				$vmLogger->err( JText::_('JM_PRODUCT_NOT_ALLOWED_TO_CHANGE ',false) );
+				$vmLogger->err( JText::_('VM_PRODUCT_NOT_ALLOWED_TO_CHANGE ',false) );
 //				$vmLogger->debug( 'ps_vendor_id: '.$hVendor_id );
 				return false;
 //				$valid = false;
@@ -88,15 +88,15 @@ class ps_product extends vmAbstractObject {
 			$d['manufacturer_id'] = "1";
 		}
 		if (empty( $d["product_sku"])) {
-			$vmLogger->err( JText::_('JM_PRODUCT_MISSING_SKU',false) );
+			$vmLogger->err( JText::_('VM_PRODUCT_MISSING_SKU',false) );
 			$valid = false;
 		}
 		if (!$d["product_name"]) {
-			$vmLogger->err( JText::_('JM_PRODUCT_MISSING_NAME',false) );
+			$vmLogger->err( JText::_('VM_PRODUCT_MISSING_NAME',false) );
 			$valid = false;
 		}
 		if (empty($d["product_available_date"])) {
-			$vmLogger->err( JText::_('JM_PRODUCT_MISSING_AVAILDATE',false) );
+			$vmLogger->err( JText::_('VM_PRODUCT_MISSING_AVAILDATE',false) );
 			$valid = false;
 		}
 		else {
@@ -112,7 +112,7 @@ class ps_product extends vmAbstractObject {
 				$d['product_categories'] = explode('|', $d['category_ids'] );
 			}
 			if (sizeof(@$d["product_categories"]) < 1) {
-				$vmLogger->err( JText::_('JM_PRODUCT_MISSING_CATEGORY') );
+				$vmLogger->err( JText::_('VM_PRODUCT_MISSING_CATEGORY') );
 				$valid = false;
 			}
 		}
@@ -122,7 +122,7 @@ class ps_product extends vmAbstractObject {
 		if (!empty( $d['product_thumb_image_url'] )) {
 			// Image URL
 			if (substr( $d['product_thumb_image_url'], 0, 4) != "http") {
-				$vmLogger->err( JText::_('JM_PRODUCT_IMAGEURL_MUSTBEGIN',false) );
+				$vmLogger->err( JText::_('VM_PRODUCT_IMAGEURL_MUSTBEGIN',false) );
 				$valid =  false;
 			}
 
@@ -146,7 +146,7 @@ class ps_product extends vmAbstractObject {
 		if (!empty( $d['product_full_image_url'] )) {
 			// Image URL
 			if (substr( $d['product_full_image_url'], 0, 4) != "http") {
-				$vmLogger->err( JText::_('JM_PRODUCT_IMAGEURL_MUSTBEGIN',false) );
+				$vmLogger->err( JText::_('VM_PRODUCT_IMAGEURL_MUSTBEGIN',false) );
 				return false;
 			}
 			// if we have an uploaded image file, prepare this one for deleting.
@@ -222,7 +222,7 @@ class ps_product extends vmAbstractObject {
 		return false;
 		}*/
 		if (empty($product_id)) {
-			$vmLogger->err( JText::_('JM_PRODUCT_SPECIFY_DELETE',false) );
+			$vmLogger->err( JText::_('VM_PRODUCT_SPECIFY_DELETE',false) );
 			return false;
 		}
 		/* Get the image filenames from the database */
@@ -238,7 +238,7 @@ class ps_product extends vmAbstractObject {
 			$_REQUEST["product_thumb_image_curr"] = $db->f("product_thumb_image");
 			$d["product_thumb_image_action"] = "delete";
 			if (!vmImageTools::validate_image($d,"product_thumb_image","product")) {
-				$vmLogger->err( JText::_('JM_PRODUCT_IMGDEL_FAILED',false) );
+				$vmLogger->err( JText::_('VM_PRODUCT_IMGDEL_FAILED',false) );
 				return false;
 			}
 		}
@@ -319,7 +319,7 @@ class ps_product extends vmAbstractObject {
 
 		$db->buildQuery('INSERT', '#__{vm}_product', $fields );
 		if( $db->query() === false ) {
-			$vmLogger->err( JText::_('JM_PRODUCT_ADDING_FAILED',false) );
+			$vmLogger->err( JText::_('VM_PRODUCT_ADDING_FAILED',false) );
 			return false;
 		}
 
@@ -447,10 +447,10 @@ class ps_product extends vmAbstractObject {
 
 		}
 		if( $d['clone_product'] == 'Y') {
-			$vmLogger->info( JText::_('JM_PRODUCT_CLONED',false) );
+			$vmLogger->info( JText::_('VM_PRODUCT_CLONED',false) );
 		}
 		else {
-			$vmLogger->info( JText::_('JM_PRODUCT_ADDED',false) );
+			$vmLogger->info( JText::_('VM_PRODUCT_ADDED',false) );
 		}
 		return true;
 	}
@@ -652,14 +652,14 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 		// Product Type Parameters!
 		$this->handleParameters( $d );
 
-		$vmLogger->info( JText::_('JM_PRODUCT_UPDATED',false) );
+		$vmLogger->info( JText::_('VM_PRODUCT_UPDATED',false) );
 		return true;
 	}
 
 
 	/**
 	 * Handles adding or updating parameter values for a product an its product types
-	 * @since JMart 1.1.0
+	 * @since VirtueMart 1.1.0
 	 * @param array $d
 	 */
 	function handleParameters( &$d ) {
@@ -747,11 +747,11 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 	function move( &$d ) {
 		global $db, $vmLogger;
 		if( !is_array( $d['product_id'])) {
-			$vmLogger->err( JText::_('JM_PRODUCT_MOVE_NOTFOUND',false));
+			$vmLogger->err( JText::_('VM_PRODUCT_MOVE_NOTFOUND',false));
 			return false;
 		}
 		if( empty( $d['category_id'])) {
-			$vmLogger->err( JText::_('JM_PRODUCT_MUSTSELECT_ONE_CAT',false));
+			$vmLogger->err( JText::_('VM_PRODUCT_MUSTSELECT_ONE_CAT',false));
 			return false;
 		}
 		// Loop though each product
@@ -861,7 +861,7 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 			$d["product_id"] = $d["product_parent_id"];
 			$d["product_parent_id"] = "";
 		}
-		$vmLogger->info( str_replace('{product_id}',$product_id,JText::_('JM_PRODUCT_DELETED',false)) );
+		$vmLogger->info( str_replace('{product_id}',$product_id,JText::_('VM_PRODUCT_DELETED',false)) );
 		return true;
 	}
 
@@ -1371,7 +1371,7 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 					$new_img_height = PSHOP_IMG_HEIGHT;
 				}
 				if(PSHOP_IMG_RESIZE_ENABLE == '1' || $resize==1) {
-					$url = $mosConfig_live_site."/components/com_jmart/show_image_in_imgtag.php?filename=".urlencode($image)."&amp;newxsize=".$new_img_width."&amp;newysize=".$new_img_height."&amp;fileout=";
+					$url = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($image)."&amp;newxsize=".$new_img_width."&amp;newysize=".$new_img_height."&amp;fileout=";
 					if( !strpos( $args, "height=" )) {
 						$arr = @getimagesize( vmImageTools::getresizedfilename( $image, $path_appendix, '', $thumb_width, $thumb_height ) );
 						$width = $arr[0]; $height = $arr[1];
@@ -1408,7 +1408,7 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 			}
 		}
 		else {
-			$url = JM_THEMEURL.'images/'.NO_IMAGE;
+			$url = VM_THEMEURL.'images/'.NO_IMAGE;
 		}
 */
 	//	return vmCommonHTML::imageTag( $url, '', '', $height, $width, '', '', $args.' '.$border );
@@ -1429,7 +1429,7 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 		$hVendor_id = $_SESSION["ps_vendor_id"];
 		$auth = $_SESSION['auth'];
 
-		if( !defined('_JM_IS_BACKEND' ) || $page == 'product.product_list') {
+		if( !defined('_VM_IS_BACKEND' ) || $page == 'product.product_list') {
 
 			$db = new ps_DB;
 
@@ -2064,18 +2064,18 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 				$my_taxrate = 0;
 			}
 			$tax = $my_taxrate * 100;
-			$price_info['tax_rate'] = JText::_('JM_TAX_LIST_RATE').': '.$tax.'%';
+			$price_info['tax_rate'] = JText::_('VM_TAX_LIST_RATE').': '.$tax.'%';
 			// Calculate discount
 			if( !empty($discount_info["amount"])) {
 
 				switch( $discount_info["is_percent"] ) {
 					case 0:
 						$base_price -= $discount_info["amount"];
-						$price_info['discount_info'] = JText::_('JM_PRODUCT_DISCOUNT_LBL').': '.$CURRENCY_DISPLAY->getFullValue($discount_info['amount']);
+						$price_info['discount_info'] = JText::_('VM_PRODUCT_DISCOUNT_LBL').': '.$CURRENCY_DISPLAY->getFullValue($discount_info['amount']);
 						break;
 					case 1:
 						$base_price *= (100 - $discount_info["amount"])/100;
-						$price_info['discount_info'] = JText::_('JM_PRODUCT_DISCOUNT_LBL').': '.$discount_info['amount'].'%';
+						$price_info['discount_info'] = JText::_('VM_PRODUCT_DISCOUNT_LBL').': '.$discount_info['amount'].'%';
 						break;
 				}
 			}
@@ -2107,7 +2107,7 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 		global  $CURRENCY_DISPLAY,$vendor_mail;
 		$auth = $_SESSION['auth'];
 
-		$tpl = new $GLOBALS['JM_THEMECLASS']();
+		$tpl = new $GLOBALS['VM_THEMECLASS']();
 
 		$product_name = htmlentities( $this->get_field($product_id, 'product_name'), ENT_QUOTES );
 		$tpl->set( 'product_id', $product_id );
@@ -2201,8 +2201,8 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 					$tax = $my_taxrate * 100;
 					// only show "including x % tax" when it shall
 					// not be hidden
-					if( !$hide_tax && $auth["show_price_including_tax"] == 1 && JM_PRICE_SHOW_INCLUDINGTAX) {
-						$text_including_tax = JText::_('JM_INCLUDING_TAX');
+					if( !$hide_tax && $auth["show_price_including_tax"] == 1 && VM_PRICE_SHOW_INCLUDINGTAX) {
+						$text_including_tax = JText::_('VM_INCLUDING_TAX');
 						eval ("\$text_including_tax = \"$text_including_tax\";");
 					}
 				}*/
@@ -2212,15 +2212,15 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 					$tax = $my_taxrate * 100;
 					// only show "including x % tax" when it shall
 					// not be hidden	//ct
-					if( !$hide_tax && $showwithtax == 1 && JM_PRICE_SHOW_INCLUDINGTAX) {
-						$text_including_tax = JText::_('JM_INCLUDING_TAX');
+					if( !$hide_tax && $showwithtax == 1 && VM_PRICE_SHOW_INCLUDINGTAX) {
+						$text_including_tax = JText::_('VM_INCLUDING_TAX');
 						eval ("\$text_including_tax = \"$text_including_tax\";");
 					}
 				}
 
 				//ct
-				if( $showwithtax != 1 && JM_PRICE_SHOW_EXCLUDINGTAX == 1) {
-					$text_excluding_tax = JText::_('JM_EXCLUDING_TAX');
+				if( $showwithtax != 1 && VM_PRICE_SHOW_EXCLUDINGTAX == 1) {
+					$text_excluding_tax = JText::_('VM_EXCLUDING_TAX');
 					eval ("\$text_excluding_tax = \"$text_excluding_tax\";");
 				}
 
@@ -2238,8 +2238,8 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 					//         $prices_table = "<table align=\"right\">
 					$prices_table = "<table width=\"100%\">
 					  <thead><tr class=\"sectiontableheader\">
-					  <th>".JText::_('JM_CART_QUANTITY')."</th>
-					  <th>".JText::_('JM_CART_PRICE')."</th>
+					  <th>".JText::_('VM_CART_QUANTITY')."</th>
+					  <th>".JText::_('VM_CART_PRICE')."</th>
 					  </tr></thead>
 					  <tbody>";
 					$i = 1;
@@ -2305,7 +2305,7 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 		}
 		$tpl->set( 'discount_info', $discount_info );
 		$tpl->set( 'text_including_tax', $text_including_tax );
-		if( $showwithtax != 1 && JM_PRICE_SHOW_EXCLUDINGTAX == 1) $tpl->set( 'text_excluding_tax', $text_excluding_tax ); //ct
+		if( $showwithtax != 1 && VM_PRICE_SHOW_EXCLUDINGTAX == 1) $tpl->set( 'text_excluding_tax', $text_excluding_tax ); //ct
 		$tpl->set( 'undiscounted_price', @$undiscounted_price );
 		$tpl->set( 'base_price', $base_price );
         $tpl->set( 'price_table', $html);
@@ -2408,7 +2408,7 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 
 		if ($db->next_record()) {
 			$product_id = $db->f("product_id" );
-			$tpl = new $GLOBALS['JM_THEMECLASS']();
+			$tpl = new $GLOBALS['VM_THEMECLASS']();
 
 			$cid = $ps_product_category->get_cid( $product_id );
 
@@ -2650,7 +2650,7 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 	    require_once( CLASSPATH . 'ps_product_attribute.php');
 	    $ps_product_attribute = new ps_product_attribute();
 	    $db = new ps_DB;
-	    $tpl = new $GLOBALS['JM_THEMECLASS']();
+	    $tpl = new $GLOBALS['VM_THEMECLASS']();
 	    $category_id = null;
 	    if($categories) {
 	        $category_id = vmRequest::getInt('category_id');
@@ -2703,7 +2703,7 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
                 $featured_products[$i]['flypage'] = $flypage;
                 $featured_products[$i]['form_addtocart'] = "";
                 if (USE_AS_CATALOGUE != '1' && $price != ""
-	                && !stristr( $price, JText::_('JM_PRODUCT_CALL') )
+	                && !stristr( $price, JText::_('VM_PRODUCT_CALL') )
 	                && !$this->product_has_attributes( $db->f('product_id'), true )
 	                && $tpl->get_cfg( 'showAddtocartButtonOnProductList' ) ) {
 			        $tpl->set( 'i', $i );
@@ -2763,7 +2763,7 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 		if($recentproducts['idx'] == 0) {
 			//return "";
 		}
-    	$tpl = new $GLOBALS['JM_THEMECLASS']();
+    	$tpl = new $GLOBALS['VM_THEMECLASS']();
 		$db = new ps_DB;
         $dbp = new ps_DB;
 		$k=0;
@@ -2840,7 +2840,7 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
     
     function stockIndicator($stock_level,$reorder_level,$pid,$detail="browse") {
     	global $db;
-	    $tpl = new $GLOBALS['JM_THEMECLASS']();
+	    $tpl = new $GLOBALS['VM_THEMECLASS']();
 	    //Check for parent item without stock and determine if children have levels
     	if($this->parent_has_children($pid) && $stock_level == 0 && $detail != "child") {
     		//Check if we are on the detail page, dont want to show levels for empty parent
@@ -2867,25 +2867,25 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
     	}
     	// Assign class to indicator 
 		$level = 'stock_ok';
-		$stock_tip = JText::_('JM_STOCK_LEVEL_DISPLAY_NORMAL_TIP');
+		$stock_tip = JText::_('VM_STOCK_LEVEL_DISPLAY_NORMAL_TIP');
 		if ($stock_level <= $reorder_level) {
 			$level = 'stock_low';
-			$stock_tip = JText::_('JM_STOCK_LEVEL_DISPLAY_LOW_TIP');
+			$stock_tip = JText::_('VM_STOCK_LEVEL_DISPLAY_LOW_TIP');
 		}
 		if ($stock_level == 0) {
 			$level = 'stock_out';
-			$stock_tip = JText::_('JM_STOCK_LEVEL_DISPLAY_OUT_TIP');
+			$stock_tip = JText::_('VM_STOCK_LEVEL_DISPLAY_OUT_TIP');
 		}    	
     	switch($detail) {
     		case 'child' :
-    			$label = JText::_('JM_STOCK_LEVEL_DISPLAY_CHILD_LABEL');   			
+    			$label = JText::_('VM_STOCK_LEVEL_DISPLAY_CHILD_LABEL');   			
     			break;
     		case 'detail' :
-    			$label = JText::_('JM_STOCK_LEVEL_DISPLAY_DETAIL_LABEL');    			
+    			$label = JText::_('VM_STOCK_LEVEL_DISPLAY_DETAIL_LABEL');    			
     			break;
     		case 'browse' :
     		default :
-    			$label = JText::_('JM_STOCK_LEVEL_DISPLAY_BROWSE_LABEL');
+    			$label = JText::_('VM_STOCK_LEVEL_DISPLAY_BROWSE_LABEL');
     			break;
     	}
     	$tpl->set('stock_tip',$stock_tip);
@@ -2898,7 +2898,7 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
     }
     function favouritesButton($product_id) {
     	global $my, $db;
-	    $tpl = new $GLOBALS['JM_THEMECLASS']();
+	    $tpl = new $GLOBALS['VM_THEMECLASS']();
 	    $q = "SELECT * FROM `#__{vm}_favourites` WHERE `user_id`=".$my->id." AND `product_id`=".$product_id;
 	    $db->query($q);
 	    if($db->nextRow()) {

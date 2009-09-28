@@ -3,21 +3,21 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_perm.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 /**
- * The permission handler class for JMart.
+ * The permission handler class for VirtueMart.
  *
  */
 class ps_perm {
@@ -31,7 +31,7 @@ class ps_perm {
 	function getUserGroups() {
 		if( empty( $this->user_groups )) {
 			$db = &JFactory::getDBO();
-			$query = ('SELECT `group_id`,`group_name`,`group_level` FROM `#__jmart_auth_group` ORDER BY `group_level` ');
+			$query = ('SELECT `group_id`,`group_name`,`group_level` FROM `#__vm_auth_group` ORDER BY `group_level` ');
 			$db->setQuery($query);
 			$rowData = $db->loadAssocList();
 			foreach($rowData as $rows){
@@ -59,7 +59,7 @@ class ps_perm {
 		} else {
 			$vmUser =& $my;
 		}
-		if( JM_PRICE_ACCESS_LEVEL != '' ) {
+		if( VM_PRICE_ACCESS_LEVEL != '' ) {
 			// Get the usertype property when not present
 			if( empty( $vmUser->usertype ) ) {
 				if( empty( $vmUser->id )) { 
@@ -98,7 +98,7 @@ class ps_perm {
 			if( $vmUser->id > 0 ) {
 				$auth["user_id"]   = $vmUser->id;
 				$auth["username"] = $vmUser->username;
-			} elseif( !empty( $auth['user_id']) && JM_REGISTRATION_TYPE != 'NO_REGISTRATION' && JM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION') {
+			} elseif( !empty( $auth['user_id']) && VM_REGISTRATION_TYPE != 'NO_REGISTRATION' && VM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION') {
 				$auth["user_id"] = 0;
 				$auth["username"] = "demo";
 			}
@@ -253,7 +253,7 @@ class ps_perm {
 		arsort( $perms );
 		
 		if( $size==1 ) {
-			$values[0] = JText::_('JM_SELECT');
+			$values[0] = JText::_('VM_SELECT');
 		}
 		while( list($key,$value) = each( $perms ) ) {
 			// Display only those permission that this user can set
@@ -293,7 +293,7 @@ class ps_perm {
 //		$db_check = new ps_DB;
 		$db = &JFactory::getDBO();
 		// If the registration type is neither "no registration" nor "optional registration", there *must* be a related Joomla! user, we can join
-		if( JM_REGISTRATION_TYPE != 'NO_REGISTRATION' && JM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION' ) {
+		if( VM_REGISTRATION_TYPE != 'NO_REGISTRATION' && VM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION' ) {
 			$q  = "SELECT COUNT(user_id) as num_rows FROM `#__{vm}_user_info`, `#__users` 
 				WHERE `id`=`user_id`
 				AND #__{vm}_user_info.user_id='" . $user_id . "'
@@ -321,7 +321,7 @@ class ps_perm {
 		global $acl;
 		
 		// The basic ACL integration in Mambo/Joomla is not awesome
-		$child_groups = ps_perm::getChildGroups( '#__core_acl_aro_groups', 'g1.group_id, g1.name, COUNT(g2.name) AS level',	'g1.name', null, JM_PRICE_ACCESS_LEVEL );
+		$child_groups = ps_perm::getChildGroups( '#__core_acl_aro_groups', 'g1.group_id, g1.name, COUNT(g2.name) AS level',	'g1.name', null, VM_PRICE_ACCESS_LEVEL );
 		foreach( $child_groups as $child_group ) {
 			ps_perm::_addToGlobalACL( 'virtuemart', 'prices', 'users', $child_group->name, null, null );
 		}

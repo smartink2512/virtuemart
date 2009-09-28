@@ -11,15 +11,15 @@ $data =array(); // Holds the rows of products
 $i = 1; $row = 0; // Counters
 
 // Table header
-$tableheader[] = JText::_('JM_CART_NAME');
-$tableheader[] = JText::_('JM_CART_SKU');
+$tableheader[] = JText::_('VM_CART_NAME');
+$tableheader[] = JText::_('VM_CART_SKU');
 if( _SHOW_PRICES && $auth['show_prices'] ) {
-	$tableheader[] = JText::_('JM_CART_PRICE');
+	$tableheader[] = JText::_('VM_CART_PRICE');
 }
-$tableheader[] = JText::_('JM_PRODUCT_FORM_THUMB_IMAGE');
-$tableheader[] = JText::_('JM_PRODUCT_DESC_TITLE');
+$tableheader[] = JText::_('VM_PRODUCT_FORM_THUMB_IMAGE');
+$tableheader[] = JText::_('VM_PRODUCT_DESC_TITLE');
 if( _SHOW_PRICES && $auth['show_prices'] && USE_AS_CATALOGUE != '1' ) {
-	$tableheader[] = JText::_('JM_CART_ACTION');
+	$tableheader[] = JText::_('VM_CART_ACTION');
 }
 
 // Creates a new HTML_Table object that will help us

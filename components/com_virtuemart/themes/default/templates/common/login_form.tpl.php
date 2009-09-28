@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: login_form.tpl.php 1768 2009-05-11 22:24:39Z macallf $
-* @package JMart
+* @package VirtueMart
 * @subpackage templates
 * @copyright Copyright (C) 2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 if(JRequest::getVar('tmpl') == 'component') {
@@ -34,7 +34,7 @@ if(JRequest::getVar('tmpl') == 'component') {
 	<br />
 	<br />
 	<input type="submit" name="Submit" class="button" value="<?php echo JText::_('BUTTON_LOGIN') ?>" />
-	<?php if( @JM_SHOW_REMEMBER_ME_BOX == '1' ) : ?>
+	<?php if( @VM_SHOW_REMEMBER_ME_BOX == '1' ) : ?>
 	<br />
 	<input type="checkbox" name="remember" id="remember_login" value="yes" checked="checked" />
 	<label for="remember_login"><?php echo JText::_('REMEMBER_ME') ?></label>

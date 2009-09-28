@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: paymentMethod.class.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 define('UNKNOWN', 0);
@@ -66,7 +66,7 @@ class vmPaymentMethod extends vmAbstractObject {
 		
 
 		if (empty($d["name"])) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PAYMENTMETHOD_ERR_NAME') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PAYMENTMETHOD_ERR_NAME') );
 			return False;
 		}
 
@@ -97,7 +97,7 @@ class vmPaymentMethod extends vmAbstractObject {
 				include( ADMINPATH . "plugins/payment/".$element.".php" );
 				$class = 'plgpayment'.$element;
 				if( !class_exists($class)) {
-					$GLOBALS['vmLogger']->err(JText::_('JM_PAYMENTMETHOD_CLASS_NOT_EXIST').' ('.$element.')');
+					$GLOBALS['vmLogger']->err(JText::_('VM_PAYMENTMETHOD_CLASS_NOT_EXIST').' ('.$element.')');
 					return false;
 				}
 			}
@@ -119,7 +119,7 @@ class vmPaymentMethod extends vmAbstractObject {
 		}
 
 		if (empty($d["id"])) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PAYMENTMETHOD_UPDATE_SELECT') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PAYMENTMETHOD_UPDATE_SELECT') );
 			return False;
 		}
 
@@ -136,7 +136,7 @@ class vmPaymentMethod extends vmAbstractObject {
 		
 
 		if (empty($d["id"])) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PAYMENTMETHOD_DELETE_SELECT') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PAYMENTMETHOD_DELETE_SELECT') );
 			return False;
 		}
 
@@ -228,7 +228,7 @@ class vmPaymentMethod extends vmAbstractObject {
 			
 		if( !$perm->check( 'admin' )) {
 			if($vendor_id!=$d['vendor_id']){
-				$vmLogger->err( JText::_('JM_PAYMENTMETHOD_NOT_ALLOWED_TO_UPDATE ',false) );
+				$vmLogger->err( JText::_('VM_PAYMENTMETHOD_NOT_ALLOWED_TO_UPDATE ',false) );
 				return false;
 			}
 		}else{
@@ -315,7 +315,7 @@ class vmPaymentMethod extends vmAbstractObject {
 		$q = 'DELETE from #__{vm}_payment_method WHERE id='.(int)$record_id.' AND ';
 		if( !$perm->check( 'admin' )) {
 			if($vendor_id!=$d['vendor_id']){
-				$vmLogger->err( JText::_('JM_PAYMENTMETHOD_NOT_ALLOWED_TO_DELETE ',false) );
+				$vmLogger->err( JText::_('VM_PAYMENTMETHOD_NOT_ALLOWED_TO_DELETE ',false) );
 			}else{
 				$q .= " vendor_id = '$vendor_id'";	
 			}
@@ -394,7 +394,7 @@ class vmPaymentMethod extends vmAbstractObject {
 
 		// Start drop down list
 	
-		$array[0] = JText::_('JM_SELECT');
+		$array[0] = JText::_('VM_SELECT');
 		while ($db->next_record()) {
 			$array[$db->f("id")] = $db->f("name");
 		}
@@ -940,10 +940,10 @@ class vmPaymentPlugin extends vmPlugin {
 		$auth = $_SESSION['auth'];
 		$db = new ps_DB();
 		// Get the Transaction Key securely from the database
-		$db->query( "SELECT ".JM_DECRYPT_FUNCTION."(secret_key,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE element='".$this->_name."' AND shopper_group_id='".$auth['shopper_group_id']."'" );
+		$db->query( "SELECT ".VM_DECRYPT_FUNCTION."(secret_key,'".ENCODE_KEY."') as passkey FROM #__{vm}_payment_method WHERE element='".$this->_name."' AND shopper_group_id='".$auth['shopper_group_id']."'" );
 		$db->next_record();
 		if( !$db->f('passkey')) {
-			$vmLogger->err( JText::_('JM_PAYMENT_ERROR',false).'. Technical Note: The required transaction key is empty! The payment method settings must be reviewed.' );
+			$vmLogger->err( JText::_('VM_PAYMENT_ERROR',false).'. Technical Note: The required transaction key is empty! The payment method settings must be reviewed.' );
 			return false;
 		}
 		return $db->f('passkey');

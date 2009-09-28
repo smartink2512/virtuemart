@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: product.product_type_list.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 require_once( CLASSPATH . "pageNavigation.class.php" );
 require_once( CLASSPATH . "htmlTools.class.php" );
@@ -38,7 +38,7 @@ $db->query( $q );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('JM_PRODUCT_TYPE_LIST_LBL'), IMAGEURL."ps_image/categories.gif", $modulename, "product_type_list");
+$listObj->writeSearchHeader(JText::_('VM_PRODUCT_TYPE_LIST_LBL'), IMAGEURL."ps_image/categories.gif", $modulename, "product_type_list");
 
 // start the list table
 $listObj->startTable();
@@ -46,12 +46,12 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					JText::_('JM_PRODUCT_TYPE_FORM_NAME') => 'width="25%"',
-					JText::_('JM_PRODUCT_TYPE_FORM_DESCRIPTION') => 'width="30%"',
-					JText::_('JM_PRODUCT_TYPE_FORM_PARAMETERS') => 'width="15%"',
-					JText::_('JM_PRODUCTS_LBL') => 'width="15%"',
-					JText::_('JM_PRODUCT_LIST_PUBLISH') => 'width="5%"',
-					JText::_('JM_MODULE_LIST_ORDER') => 'width="5%"',
+					JText::_('VM_PRODUCT_TYPE_FORM_NAME') => 'width="25%"',
+					JText::_('VM_PRODUCT_TYPE_FORM_DESCRIPTION') => 'width="30%"',
+					JText::_('VM_PRODUCT_TYPE_FORM_PARAMETERS') => 'width="15%"',
+					JText::_('VM_PRODUCTS_LBL') => 'width="15%"',
+					JText::_('VM_PRODUCT_LIST_PUBLISH') => 'width="5%"',
+					JText::_('VM_MODULE_LIST_ORDER') => 'width="5%"',
 					JText::_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
@@ -68,10 +68,10 @@ while ($db->next_record()) {
 	
 	// The Checkbox
 	$listObj->addCell( vmCommonHTML::idBox( $i, $db->f("product_type_id"), false, "product_type_id" ) );
-	$link = $_SERVER['PHP_SELF'] . "?option=com_jmart&page=product.product_type_form&product_type_id=" . $db->f("product_type_id") ;
+	$link = $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_type_form&product_type_id=" . $db->f("product_type_id") ;
 	if( $vmLayout != 'standard' ) {
 				$link .= "&no_menu=1&tmpl=component";
-				$link = defined('_JM_IS_BACKEND') 
+				$link = defined('_VM_IS_BACKEND') 
 							? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
 							: str_replace('index.php', 'index2.php', $link );
 			}
@@ -79,27 +79,27 @@ while ($db->next_record()) {
 	$listObj->addCell( $tmp_cell );
 	
 	$listObj->addCell(  $db->f("product_type_description"));
-	$link = $_SERVER['PHP_SELF'] . "?option=com_jmart&page=product.product_type_parameter_list&product_type_id="
+	$link = $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_type_parameter_list&product_type_id="
 			. $db->f("product_type_id");
 	if( $vmLayout != 'standard' ) {
 				
-				$link = defined('_JM_IS_BACKEND') 
+				$link = defined('_VM_IS_BACKEND') 
 							? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
 							: str_replace('index.php', 'index2.php', $link );
 			}
-	$tmp_cell = $parameter_count . " " . JText::_('JM_PARAMETERS_LBL') . " <a href=\""
-			. $link . "\">[ ".JText::_('JM_SHOW')." ]</a>";
+	$tmp_cell = $parameter_count . " " . JText::_('VM_PARAMETERS_LBL') . " <a href=\""
+			. $link . "\">[ ".JText::_('VM_SHOW')." ]</a>";
 	$listObj->addCell( $tmp_cell );
-	$link = $_SERVER['PHP_SELF'] . "?option=com_jmart&page=product.product_list&product_type_id=" . $db->f("product_type_id");
+	$link = $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_list&product_type_id=" . $db->f("product_type_id");
 	if( $vmLayout != 'standard' ) {
 				
-				$link = defined('_JM_IS_BACKEND') 
+				$link = defined('_VM_IS_BACKEND') 
 							? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
 							: str_replace('index.php', 'index2.php', $link );
 			}
-	$tmp_cell = $product_count ." ". JText::_('JM_PRODUCTS_LBL')."&nbsp;<a href=\""
+	$tmp_cell = $product_count ." ". JText::_('VM_PRODUCTS_LBL')."&nbsp;<a href=\""
 			. $link
-			. "\">[ ".JText::_('JM_SHOW')." ]</a>";
+			. "\">[ ".JText::_('VM_SHOW')." ]</a>";
 	$listObj->addCell( $tmp_cell );
       //$listObj->addCell( $db->f("list_order"));
 

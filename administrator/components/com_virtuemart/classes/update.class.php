@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: update.class.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package JMart
+* @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 *
 */
 require_once( CLASSPATH . 'connectionTools.class.php');
@@ -25,7 +25,7 @@ require_once( CLASSPATH . 'connectionTools.class.php');
  */
 class vmUpdate {
 	/**
-	 * Checks the JMart Server for the latest available Version of JMart
+	 * Checks the VirtueMart Server for the latest available Version of VirtueMart
 	 *
 	 * @return string Example: 1.1.2
 	 */
@@ -34,7 +34,7 @@ class vmUpdate {
 			return $_SESSION['vmLatestVersion'];
 		}
 		$VMVERSION =& new vmVersion();
-		$url = "http://joomlacode.org/gf/project/jmart/index2.php?option=com_versions&catid=1&myVersion={$VMVERSION->RELEASE}&task=latestversionastext&j=".(vmIsJoomla('1.5')?'1.5':'1.0');
+		$url = "http://virtuemart.orgindex2.php?option=com_versions&catid=1&myVersion={$VMVERSION->RELEASE}&task=latestversionastext&j=".(vmIsJoomla('1.5')?'1.5':'1.0');
 		$result = vmConnector::handleCommunication($url);
 		if( $result !== false ) {
 			// Cache the result for later use
@@ -58,10 +58,10 @@ class vmUpdate {
 			require_once( ADMINPATH.'version.php');
 			$VMVERSION =& new vmVersion();
 			// This URL should return a string - the direct URL to the matching patch package
-			$url = "http://joomlacode.org/gf/project/jmart//index2.php?option=com_versions&catid=1&myVersion={$VMVERSION->RELEASE}&task=listpatchpackages&j=".(vmIsJoomla('1.5')?'1.5':'1.0');
+			$url = "http://virtuemart.org/index2.php?option=com_versions&catid=1&myVersion={$VMVERSION->RELEASE}&task=listpatchpackages&j=".(vmIsJoomla('1.5')?'1.5':'1.0');
 			$result = vmConnector::handleCommunication($url);
 			if( !empty( $result )
-			 	&& (strncmp('http://dev.virtuemart.net', $result, 25)===0 || strncmp('http://joomlacode.org/gf/project/jmart/', $result, 21)===0)
+			 	&& (strncmp('http://dev.virtuemart.net', $result, 25)===0 || strncmp('http://virtuemart.org', $result, 21)===0)
 			 ) {
 				$filename = basename( $result );
 				$doc_id_pos = strpos($filename,'?');
@@ -70,20 +70,20 @@ class vmUpdate {
 				}
 				// Was the package already downloaded?
 				if( file_exists( $mosConfig_cachepath.'/'.$filename)) {
-					$vmLogger->info( JText::_('JM_UPDATE_PACKAGE_EXISTS').' '.$mosConfig_cachepath.'/'.$filename);
+					$vmLogger->info( JText::_('VM_UPDATE_PACKAGE_EXISTS').' '.$mosConfig_cachepath.'/'.$filename);
 	
 				} else {
 					// If not, store it on this server
 					$patch_package = vmConnector::handleCommunication($result);
 					if( !file_put_contents($mosConfig_cachepath.'/'.$filename, $patch_package )) {
-						$vmLogger->err( JText::_('JM_UPDATE_ERR_STORE_FAILED') );
+						$vmLogger->err( JText::_('VM_UPDATE_ERR_STORE_FAILED') );
 						return false;
 					}
 				}
 				// cache the location of the stored package file
 				$_SESSION['vm_updatepackage'] = $mosConfig_cachepath.'/'.$filename;
 			} else {
-				$vmLogger->err( JText::_('JM_UPDATE_ERR_RETRIEVE_FAILED') );
+				$vmLogger->err( JText::_('VM_UPDATE_ERR_RETRIEVE_FAILED') );
 				return false;
 			}
 			if( vmIsXHR() ) {
@@ -121,7 +121,7 @@ class vmUpdate {
 		if( !file_exists($update_manifest)) {
 			jimport('joomla.filesystem.archive');
 			if( !JArchive::extract($updatepackage, $extractdir )) {
-				JError::raiseNotice(JText::_('JM_UPDATE_ERR_EXTRACT_FAILED')." ".$extractdir,1);
+				JError::raiseNotice(JText::_('VM_UPDATE_ERR_EXTRACT_FAILED')." ".$extractdir,1);
 				$result= false;return $result;
 			}
 
@@ -135,7 +135,7 @@ class vmUpdate {
 		if( function_exists('simplexml_load_file')) {
 			$xml = @simplexml_load_file($update_manifest);
 			if( $xml === false ) {
-				$vmLogger->err( JText::_('JM_UPDATE_ERR_PARSE_FAILED') );
+				$vmLogger->err( JText::_('VM_UPDATE_ERR_PARSE_FAILED') );
 				return false;
 			}
 			
@@ -150,7 +150,7 @@ class vmUpdate {
 												'copy_policy' => (string)@$file['copy']
 										);
 				} else {
-					$vmLogger->err( sprintf(JText::_('JM_UPDATE_ERR_FILE_MISSING'),$file) );
+					$vmLogger->err( sprintf(JText::_('VM_UPDATE_ERR_FILE_MISSING'),$file) );
 					$result = false;
 				}
 			}
@@ -168,7 +168,7 @@ class vmUpdate {
  			$result = $xml->loadFile($update_manifest);
 		
 			if( $result === false ) {
-				$vmLogger->err( JText::_('JM_UPDATE_ERR_PARSE_FAILED') );
+				$vmLogger->err( JText::_('VM_UPDATE_ERR_PARSE_FAILED') );
 				return false;
 			}
 			$result = true;
@@ -185,7 +185,7 @@ class vmUpdate {
 													'copy_policy' => $file->attributes('copy')
 												);
 				} else {
-					$vmLogger->err( sprintf(JText::_('JM_UPDATE_ERR_FILE_MISSING'),$file) );
+					$vmLogger->err( sprintf(JText::_('VM_UPDATE_ERR_FILE_MISSING'),$file) );
 					$result = false;
 				}
 			}
@@ -217,7 +217,7 @@ class vmUpdate {
 		
 		$updatepackage = vmget($_SESSION,'vm_updatepackage');
 		if( empty( $updatepackage ) ) {
-			$vmLogger->err( JText::_('JM_UPDATE_ERR_DOWNLOAD') );
+			$vmLogger->err( JText::_('VM_UPDATE_ERR_DOWNLOAD') );
 			return false;
 		}
 		$patchdir = vmUpdate::getPackageDir($updatepackage);
@@ -234,7 +234,7 @@ class vmUpdate {
 			
 		  	if( file_exists($orig_file)) {
 		  		if( !is_writable($orig_file ) && !@chmod($orig_file, 0644 ) ) {
-		  			$vmLogger->err( sprintf(JText::_('JM_UPDATE_ERR_FILE_UNWRITABLE'),$mosConfig_absolute_path.'/'.$file) );
+		  			$vmLogger->err( sprintf(JText::_('VM_UPDATE_ERR_FILE_UNWRITABLE'),$mosConfig_absolute_path.'/'.$file) );
 		  			$errors++;
 		  		}
 		  	} else {
@@ -244,11 +244,11 @@ class vmUpdate {
 		  		$dirname =  is_dir($patch_file) ? $orig_file : dirname($orig_file);
 		  		if( (is_dir($patch_file) || !file_exists($dirname)) ) {  					
 		  			if( !vmUpdate::mkdirR($dirname, 0755 )) {
-		  				$vmLogger->err( sprintf(JText::_('JM_UPDATE_ERR_DIR_UNWRITABLE'),$dirname) );
+		  				$vmLogger->err( sprintf(JText::_('VM_UPDATE_ERR_DIR_UNWRITABLE'),$dirname) );
 		  				$errors++;
 		  			}
 		  		} elseif( !is_writable($mosConfig_absolute_path.'/'.dirname($file) ) && !@chmod($mosConfig_absolute_path.'/'.dirname($file), 0755) ) {
-		  			$vmLogger->err( sprintf(JText::_('JM_UPDATE_ERR_DIR_UNWRITABLE'),$mosConfig_absolute_path.'/'.$file) );
+		  			$vmLogger->err( sprintf(JText::_('VM_UPDATE_ERR_DIR_UNWRITABLE'),$mosConfig_absolute_path.'/'.$file) );
 		  			$errors++;
 		  		}
 		  	}
@@ -272,23 +272,23 @@ class vmUpdate {
   				}
   			}
   			elseif( !@copy( $patch_file, $orig_file ) ) {
-  				$vmLogger->crit( sprintf(JText::_('JM_UPDATE_ERR_OVERWRITE_FAILED'),$file) );
+  				$vmLogger->crit( sprintf(JText::_('VM_UPDATE_ERR_OVERWRITE_FAILED'),$file) );
   				return false;  				
   			} else {
-  				$vmLogger->debug( sprintf(JText::_('JM_UPDATE_FILE_OVERWROTE'),$file) );
+  				$vmLogger->debug( sprintf(JText::_('VM_UPDATE_FILE_OVERWROTE'),$file) );
   			}
   		}
   		foreach( $packageContents['queryArr'] as $query ) {
   			if( $db->query($query) === false ) {
-  				$vmLogger->crit( sprintf(JText::_('JM_UPDATE_ERR_QUERY_FAILED'),$query) );
+  				$vmLogger->crit( sprintf(JText::_('VM_UPDATE_ERR_QUERY_FAILED'),$query) );
   			} else {
-  				$vmLogger->debug( sprintf(JText::_('JM_UPDATE_QUERY_EXECUTED'),$query) );
+  				$vmLogger->debug( sprintf(JText::_('VM_UPDATE_QUERY_EXECUTED'),$query) );
   			}
   		}
   		
   		$db->query('UPDATE `#__components` SET `params` = \'RELEASE='.$packageContents['toversion'].'\nDEV_STATUS=stable\' WHERE `name` = \'virtuemart_version\'');
   		
-  		$_SESSION['vmupdatemessage'] = sprintf(JText::_('JM_UPDATE_SUCCESS'),$packageContents['forversion'],$packageContents['toversion']);
+  		$_SESSION['vmupdatemessage'] = sprintf(JText::_('VM_UPDATE_SUCCESS'),$packageContents['forversion'],$packageContents['toversion']);
   		
   		// Delete the patch package file
   		vmUpdate::removePackageFile($d);
@@ -316,7 +316,7 @@ class vmUpdate {
 		$VMVERSION = new vmVersion();
 		
 		if( $VMVERSION->RELEASE != $packageContents['forversion'] ) {
-			$vmLogger->err( JText::_('JM_UPDATE_ERR_NOTMATCHING') );
+			$vmLogger->err( JText::_('VM_UPDATE_ERR_NOTMATCHING') );
 			return false;
 		}
 		
@@ -373,9 +373,9 @@ class vmUpdate {
 	function stepBar( $step ) {
 		
 		
-		$steps = array( 1 => JText::_('JM_UPDATE_STEP_1'),
-									2 => JText::_('JM_UPDATE_STEP_2'),
-									3 => JText::_('JM_UPDATE_STEP_3') );
+		$steps = array( 1 => JText::_('VM_UPDATE_STEP_1'),
+									2 => JText::_('VM_UPDATE_STEP_2'),
+									3 => JText::_('VM_UPDATE_STEP_3') );
 		$num_of_steps = count( $steps );
 		$cellwidth = intval(100 / $num_of_steps);
 		

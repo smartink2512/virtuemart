@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_product_category.php 1786 2009-05-13 13:21:59Z macallf $
-* @package JMart
+* @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 /**
@@ -35,7 +35,7 @@ class ps_product_category extends vmAbstractObject {
 		$valid = true;
 		
 		if (empty($d["category_name"])) {
-			$vmLogger->err( JText::_('JM_PRODUCT_CATEGORY_ERR_NAME') );
+			$vmLogger->err( JText::_('VM_PRODUCT_CATEGORY_ERR_NAME') );
 			$valid = False;
 		}
 
@@ -45,7 +45,7 @@ class ps_product_category extends vmAbstractObject {
 		if (!empty( $d['category_thumb_image_url'] )) {
 			// Image URL
 			if (substr( $d['category_thumb_image_url'], 0, 4) != "http") {
-				$vmLogger->err( JText::_('JM_PRODUCT_IMAGEURL_MUSTBEGIN') );
+				$vmLogger->err( JText::_('VM_PRODUCT_IMAGEURL_MUSTBEGIN') );
 				$valid =  false;
 			}
 
@@ -61,7 +61,7 @@ class ps_product_category extends vmAbstractObject {
 		if (!empty( $d['category_full_image_url'] )) {
 			// Image URL
 			if (substr( $d['category_full_image_url'], 0, 4) != "http") {
-				$vmLogger->err( JText::_('JM_PRODUCT_IMAGEURL_MUSTBEGIN') );
+				$vmLogger->err( JText::_('VM_PRODUCT_IMAGEURL_MUSTBEGIN') );
 				return false;
 			}
 			$d["category_full_image"] = $d['category_full_image_url'];
@@ -100,18 +100,18 @@ class ps_product_category extends vmAbstractObject {
 			$db->next_record();
 			$vendor = $db->f("vendor_id");
 			if($vendor_id != $vendor){
-				$vmLogger->err( JText::_('JM_PRODUCT_CATEGORY_ERR_NOT_OWNER') );
+				$vmLogger->err( JText::_('VM_PRODUCT_CATEGORY_ERR_NOT_OWNER') );
 				$valid = False;
 				return false;
 			}
 		}
 		
 		if (!$d["category_name"]) {
-			$vmLogger->err( JText::_('JM_PRODUCT_CATEGORY_ERR_NAME') );
+			$vmLogger->err( JText::_('VM_PRODUCT_CATEGORY_ERR_NAME') );
 			$valid = False;
 		}
 		elseif ($d["category_id"] == $d["category_parent_id"]) {
-			$vmLogger->err( JText::_('JM_PRODUCT_CATEGORY_ERR_PARENT') );
+			$vmLogger->err( JText::_('VM_PRODUCT_CATEGORY_ERR_PARENT') );
 			$valid = False;
 		}
 		
@@ -125,7 +125,7 @@ class ps_product_category extends vmAbstractObject {
 		if (!empty( $d['category_thumb_image_url'] )) {
 			// Image URL
 			if (substr( $d['category_thumb_image_url'], 0, 4) != "http") {
-				$vmLogger->err( JText::_('JM_PRODUCT_IMAGEURL_MUSTBEGIN') );
+				$vmLogger->err( JText::_('VM_PRODUCT_IMAGEURL_MUSTBEGIN') );
 				$valid =  false;
 			}
 
@@ -149,7 +149,7 @@ class ps_product_category extends vmAbstractObject {
 		if (!empty( $d['category_full_image_url'] )) {
 			// Image URL
 			if (substr( $d['category_full_image_url'], 0, 4) != "http") {
-				$vmLogger->err( JText::_('JM_PRODUCT_IMAGEURL_MUSTBEGIN') );
+				$vmLogger->err( JText::_('VM_PRODUCT_IMAGEURL_MUSTBEGIN') );
 				return false;
 			}
 			// if we have an uploaded image file, prepare this one for deleting.
@@ -186,7 +186,7 @@ class ps_product_category extends vmAbstractObject {
 		$db = new ps_DB;
 		require_once(CLASSPATH . 'imageTools.class.php' );
 		if (empty( $category_id )) {
-			$vmLogger->err( JText::_('JM_PRODUCT_CATEGORY_ERR_DELETE_SELECT') );
+			$vmLogger->err( JText::_('VM_PRODUCT_CATEGORY_ERR_DELETE_SELECT') );
 			return False;
 		}
 
@@ -198,7 +198,7 @@ class ps_product_category extends vmAbstractObject {
 			$db->next_record();
 			$vendor = $db->f("vendor_id");
 			if($vendor_id != $vendor){
-				$vmLogger->err( JText::_('JM_PRODUCT_CATEGORY_ERR_NOT_OWNER') );
+				$vmLogger->err( JText::_('VM_PRODUCT_CATEGORY_ERR_NOT_OWNER') );
 				$valid = False;
 				return false;
 			}
@@ -208,7 +208,7 @@ class ps_product_category extends vmAbstractObject {
 		$q  = "SELECT * FROM #__{vm}_category_xref where category_parent_id='$category_id'";
 		$db->setQuery($q);   $db->query();
 		if ($db->next_record()) {
-			$vmLogger->err( JText::_('JM_PRODUCT_CATEGORY_ERR_DELETE_CHILDREN') );
+			$vmLogger->err( JText::_('VM_PRODUCT_CATEGORY_ERR_DELETE_CHILDREN') );
 			return False;
 		}
 		$q = "SELECT category_thumb_image,category_full_image FROM #__{vm}_category WHERE category_id='$category_id'";
@@ -220,7 +220,7 @@ class ps_product_category extends vmAbstractObject {
 			$_REQUEST["category_thumb_image_curr"] = $db->f("category_thumb_image");
 			$d["category_thumb_image_action"] = "delete";
 			if (!vmImageTools::validate_image($d,"category_thumb_image","category")) {
-				$vmLogger->err( JText::_('JM_PRODUCT_CATEGORY_ERR_DELETE_IMAGES') );
+				$vmLogger->err( JText::_('VM_PRODUCT_CATEGORY_ERR_DELETE_IMAGES') );
 				return false;
 			}
 		}
@@ -308,7 +308,7 @@ class ps_product_category extends vmAbstractObject {
 			$db->buildQuery('INSERT', '#__{vm}_category_xref', $fields );
 			$db->query();
 
-			$vmLogger->info( JText::_('JM_PRODUCT_CATEGORY_ADDED').': "'.vmGet($d,'category_name').'"' );
+			$vmLogger->info( JText::_('VM_PRODUCT_CATEGORY_ADDED').': "'.vmGet($d,'category_name').'"' );
 			return true;
 		}
 		else {
@@ -430,7 +430,7 @@ class ps_product_category extends vmAbstractObject {
 				$db->query( $q );
 			}
 
-			$vmLogger->info( JText::_('JM_PRODUCT_CATEGORY_UPDATED').': "'.vmGet($d,'category_name')."'" );
+			$vmLogger->info( JText::_('VM_PRODUCT_CATEGORY_UPDATED').': "'.vmGet($d,'category_name')."'" );
 
 			return True;
 		}
@@ -513,7 +513,7 @@ class ps_product_category extends vmAbstractObject {
 		if (!vmImageTools::process_images($d)) {
 			return false;
 		}
-		$vmLogger->info( JText::_('JM_PRODUCT_CATEGORY_DELETED').": $record_id." );
+		$vmLogger->info( JText::_('VM_PRODUCT_CATEGORY_DELETED').": $record_id." );
 		return True;
 	}
 	
@@ -854,13 +854,13 @@ class ps_product_category extends vmAbstractObject {
 			}
 			echo "&#095;&#095;|$level|&nbsp;";
 			echo "<a href=\"" ;
-			echo $_SERVER['PHP_SELF'] . "?option=com_jmart&page=product.product_category_form&category_id=" . $db->f("category_child_id"). "&category_parent_id=" . $db->f("category_parent_id");
+			echo $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_category_form&category_id=" . $db->f("category_child_id"). "&category_parent_id=" . $db->f("category_parent_id");
 			echo "\">";
 			echo $db->f("category_name") . "</a></td>\n";
 			echo "<td>&nbsp;&nbsp;" . $db->f("category_description");
-			echo "</td>\n<td>".$product_count ." ". JText::_('JM_PRODUCTS_LBL')."&nbsp;<a href=\"";
-			echo $_SERVER['PHP_SELF'] . "?page=product.product_list&category_id=" . $db->f("category_child_id")."&option=com_jmart";
-			echo "\">[ ".JText::_('JM_SHOW')." ]</a>\n</td>\n";
+			echo "</td>\n<td>".$product_count ." ". JText::_('VM_PRODUCTS_LBL')."&nbsp;<a href=\"";
+			echo $_SERVER['PHP_SELF'] . "?page=product.product_list&category_id=" . $db->f("category_child_id")."&option=com_virtuemart";
+			echo "\">[ ".JText::_('VM_SHOW')." ]</a>\n</td>\n";
 			//echo "<td>". $db->f("list_order")."</td>";
 			echo "<td>";
 			if ($db->f("category_publish")=='N') {
@@ -873,9 +873,9 @@ class ps_product_category extends vmAbstractObject {
 			echo mShop_orderUpIcon( $db->row, $db->num_rows(), $ibg ) . "\n&nbsp;" . mShop_orderDownIcon( $db->row, $db->num_rows(), $ibg );
 			echo "</div></td>\n";
 			echo "<td width=\"5%\">";
-			echo "<a class=\"toolbar\" href=\"".$_SERVER['PHP_SELF']."?option=com_jmart&page=".$page ."&func= productCategoryDelete&category_id=". $db->f("category_id") ."\"";
-			echo " onclick=\"return confirm('". addslashes(JText::_('JM_DELETE_MSG')) ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('Delete$ibg','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
-			echo "<img src=\"". IMAGEURL ."ps_image/delete.gif\" alt=\"".JText::_('JM_DELETE_RECORD')."\" name=\"delete$ibg\" align=\"middle\" border=\"0\" /></a></td>\n";
+			echo "<a class=\"toolbar\" href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=".$page ."&func= productCategoryDelete&category_id=". $db->f("category_id") ."\"";
+			echo " onclick=\"return confirm('". addslashes(JText::_('VM_DELETE_MSG')) ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('Delete$ibg','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
+			echo "<img src=\"". IMAGEURL ."ps_image/delete.gif\" alt=\"".JText::_('VM_DELETE_RECORD')."\" name=\"delete$ibg\" align=\"middle\" border=\"0\" /></a></td>\n";
 			$this->traverse_tree_down($class, $db->f("category_child_id"), $level);
 		}
 	}
@@ -898,7 +898,7 @@ class ps_product_category extends vmAbstractObject {
 
 			$count  = "SELECT count(#__{vm}_product.product_id) as num_rows from #__{vm}_product,#__{vm}_product_category_xref, #__{vm}_category WHERE ";
 			$q = "";
-			if (defined('_JM_IS_BACKEND' )) {
+			if (defined('_VM_IS_BACKEND' )) {
 				if (!$perm->check( "admin,storeadmin")) {
 					$q .= "#__{vm}_product.vendor_id = '$vendor_id' AND ";
 				}
@@ -971,16 +971,16 @@ class ps_product_category extends vmAbstractObject {
 			$db->setQuery($q);   $db->query();
 			$db->next_record();
 			if (!$db->f("category_id")) {
-				echo "<option value=\"0\">".JText::_('JM_SELECT')."</option>\n";
+				echo "<option value=\"0\">".JText::_('VM_SELECT')."</option>\n";
 			}
 			$this->list_tree($db->f("category_id"));
 		}
 		elseif ($category_id) {
-			echo "<option value=\"0\">".JText::_('JM_SELECT')."</option>\n";
+			echo "<option value=\"0\">".JText::_('VM_SELECT')."</option>\n";
 			$this->list_tree($category_id);
 		}
 		else {
-			echo "<option value=\"0\">".JText::_('JM_SELECT')."</option>\n";
+			echo "<option value=\"0\">".JText::_('VM_SELECT')."</option>\n";
 			$this->list_tree();
 		}
 
@@ -1127,7 +1127,7 @@ class ps_product_category extends vmAbstractObject {
 		$id = str_replace('[]', '', $name );
 		echo "<select class=\"inputbox\" size=\"$size\" $multiple name=\"$name\" id=\"$id\">\n";
 		if( $toplevel ) {
-			echo "<option value=\"0\">".JText::_('JM_DEFAULT_TOP_LEVEL')."</option>\n";
+			echo "<option value=\"0\">".JText::_('VM_DEFAULT_TOP_LEVEL')."</option>\n";
 		}
 		$this->list_tree($category_id, '0', '0', $selected_categories, $disabledFields );
 		echo "</select>\n";
@@ -1466,7 +1466,7 @@ class ps_product_category extends vmAbstractObject {
 					$i = 0;
 					foreach( $d['category_id'] as $category_id ) {
 						if( !is_numeric( $d['order'][$i] ) ) {
-							$d['error'] = JText::_('JM_SORT_ERR_NUMBERS_ONLY');
+							$d['error'] = JText::_('VM_SORT_ERR_NUMBERS_ONLY');
 							return false;
 						}
 						$i++;

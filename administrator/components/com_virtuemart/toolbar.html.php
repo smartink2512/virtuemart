@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: toolbar.html.php 1650 2009-02-17 19:48:43Z soeren_nb $
-* @package JMart
+* @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 $_REQUEST['keyword'] = urldecode(JRequest::getVar('keyword', ''));
 $keyword = $_REQUEST['keyword'];
@@ -32,13 +32,13 @@ class TOOLBAR_virtuemart {
     function TITLE($pageName) {
         switch ($pageName) {
             case 'admin.show_cfg';
-                JToolBarHelper::title(JText::_('JM_CONFIG'), 'jm_config_48');
+                JToolBarHelper::title(JText::_('VM_CONFIG'), 'jm_config_48');
                 break; 
             case 'admin.module_list';
-                JToolBarHelper::title(JText::_('JM_MODULE_LIST_LBL'), 'jm_module_48');
+                JToolBarHelper::title(JText::_('VM_MODULE_LIST_LBL'), 'jm_module_48');
                 break;     
             case 'admin.module_form';
-                JToolBarHelper::title(JText::_('JM_MODULE_FORM_LBL'), 'jm_module_48');
+                JToolBarHelper::title(JText::_('VM_MODULE_FORM_LBL'), 'jm_module_48');
                 break;       
             case 'admin.plugin_list';
                 JToolBarHelper::title(JText::_('Plugin List'), 'jm_module_48');
@@ -47,25 +47,25 @@ class TOOLBAR_virtuemart {
                 JToolBarHelper::title(JText::_('Plugin Details'), 'jm_module_48');
                 break;                                                                  
             case 'admin.user_list';
-                JToolBarHelper::title(JText::_('JM_USER_LIST_LBL'), 'jm_user_48');
+                JToolBarHelper::title(JText::_('VM_USER_LIST_LBL'), 'jm_user_48');
                 break;         
             case 'admin.user_form';
-                JToolBarHelper::title(JText::_('JM_USER_FORM_LBL'), 'jm_user_48');
+                JToolBarHelper::title(JText::_('VM_USER_FORM_LBL'), 'jm_user_48');
                 break;                     
             case 'admin.usergroup_list';
-                JToolBarHelper::title(JText::_('JM_USERGROUP_LIST_LBL'), 'jm_usergroup_48');
+                JToolBarHelper::title(JText::_('VM_USERGROUP_LIST_LBL'), 'jm_usergroup_48');
                 break;   
             case 'admin.usergroup_form';
-                JToolBarHelper::title(JText::_('JM_USERGROUP_FORM_LBL'), 'jm_usergroup_48');
+                JToolBarHelper::title(JText::_('VM_USERGROUP_FORM_LBL'), 'jm_usergroup_48');
                 break;   
             case 'store.store_form';
-                JToolBarHelper::title(JText::_('JM_STORE_FORM_LBL'), 'jm_store_48');
+                JToolBarHelper::title(JText::_('VM_STORE_FORM_LBL'), 'jm_store_48');
                 break;    
             case 'store.payment_method_list';
-                JToolBarHelper::title(JText::_('JM_PAYMENT_METHOD_LIST_LBL'), 'jm_payment_48');
+                JToolBarHelper::title(JText::_('VM_PAYMENT_METHOD_LIST_LBL'), 'jm_payment_48');
                 break;   
             case 'store.payment_method_form';
-                JToolBarHelper::title(JText::_('JM_PAYMENT_METHOD_FORM_LBL'), 'jm_payment_48');
+                JToolBarHelper::title(JText::_('VM_PAYMENT_METHOD_FORM_LBL'), 'jm_payment_48');
                 break;          
             case 'store.shipping_module_list';
                 JToolBarHelper::title(JText::_('Plugin List'), 'jm_module_48');
@@ -74,10 +74,10 @@ class TOOLBAR_virtuemart {
                 JToolBarHelper::title(JText::_('Plugin Details'), 'jm_module_48');
                 break;      
             case 'store.creditcard_list';
-                JToolBarHelper::title(JText::_('JM_CREDITCARD_LIST_LBL'), 'jm_credit_48');
+                JToolBarHelper::title(JText::_('VM_CREDITCARD_LIST_LBL'), 'jm_credit_48');
                 break;        
             case 'store.creditcard_form';
-                JToolBarHelper::title(JText::_('JM_CREDITCARD_FORM_LBL'), 'jm_credit_48');
+                JToolBarHelper::title(JText::_('VM_CREDITCARD_FORM_LBL'), 'jm_credit_48');
                 break;                                                                                                               
             case 'product.product_list';
                 JToolBarHelper::title(JText::_('Product List'), 'jm_product_48');
@@ -86,71 +86,71 @@ class TOOLBAR_virtuemart {
                 JToolBarHelper::title(JText::_('Update Item'), 'jm_product_48');
                 break;
             case 'product.product_category_list';
-                JToolBarHelper::title(JText::_('JM_CATEGORY_LIST_LBL'), 'jm_categories_48');
+                JToolBarHelper::title(JText::_('VM_CATEGORY_LIST_LBL'), 'jm_categories_48');
                 break;
             case 'product.product_category_form';
-                JToolBarHelper::title(JText::_('JM_CATEGORY_FORM_LBL'), 'jm_categories_48');
+                JToolBarHelper::title(JText::_('VM_CATEGORY_FORM_LBL'), 'jm_categories_48');
                 break;
             case 'product.file_list';
-                JToolBarHelper::title(JText::_('JM_FILES_LIST'), 'jm_product_files_48');
+                JToolBarHelper::title(JText::_('VM_FILES_LIST'), 'jm_product_files_48');
                 JToolBarHelper::EditListX();
                 break;
             case 'admin.country_list';
-                JToolBarHelper::title(JText::_('JM_COUNTRY_LIST_LBL'), 'jm_countries_48');
+                JToolBarHelper::title(JText::_('VM_COUNTRY_LIST_LBL'), 'jm_countries_48');
                 break;
             case 'admin.country_form';
-                JToolBarHelper::title(JText::_('JM_COUNTRY_LIST_ADD'), 'jm_countries_48');
+                JToolBarHelper::title(JText::_('VM_COUNTRY_LIST_ADD'), 'jm_countries_48');
                 break;  
             case 'admin.curr_list';
-                JToolBarHelper::title(JText::_('JM_CURRENCY_LIST_LBL'), 'jm_currency_48');
+                JToolBarHelper::title(JText::_('VM_CURRENCY_LIST_LBL'), 'jm_currency_48');
                 break;
             case 'admin.curr_form';
-                JToolBarHelper::title(JText::_('JM_CURRENCY_LIST_ADD'), 'jm_currency_48');
+                JToolBarHelper::title(JText::_('VM_CURRENCY_LIST_ADD'), 'jm_currency_48');
                 break;  
             case 'order.order_list';
-                JToolBarHelper::title(JText::_('JM_ORDER_LIST_LBL'), 'jm_orders_48');
+                JToolBarHelper::title(JText::_('VM_ORDER_LIST_LBL'), 'jm_orders_48');
                 break;  
             case 'order.order_status_list';
-                JToolBarHelper::title(JText::_('JM_ORDER_STATUS_LIST_MNU'), 'jm_orders_48');
+                JToolBarHelper::title(JText::_('VM_ORDER_STATUS_LIST_MNU'), 'jm_orders_48');
                 break;        
             case 'order.order_status_form';
-                JToolBarHelper::title(JText::_('JM_ORDER_STATUS_FORM_LBL'), 'jm_orders_48');
+                JToolBarHelper::title(JText::_('VM_ORDER_STATUS_FORM_LBL'), 'jm_orders_48');
                 break;  
             case 'vendor.vendor_list';
-                JToolBarHelper::title(JText::_('JM_VENDOR_LIST_LBL'), 'jm_vendors_48');
+                JToolBarHelper::title(JText::_('VM_VENDOR_LIST_LBL'), 'jm_vendors_48');
                 break;        
             case 'vendor.vendor_status_form';
-                JToolBarHelper::title(JText::_('JM_VENDOR_FORM_LBL'), 'jm_vendors_48');
+                JToolBarHelper::title(JText::_('VM_VENDOR_FORM_LBL'), 'jm_vendors_48');
                 break;    
             case 'tax.tax_list';
-                JToolBarHelper::title(JText::_('JM_TAX_LIST_LBL'), 'jm_tax_48');
+                JToolBarHelper::title(JText::_('VM_TAX_LIST_LBL'), 'jm_tax_48');
                 break;        
             case 'tax.tax_form';
-                JToolBarHelper::title(JText::_('JM_TAX_FORM_LBL'), 'jm_tax_48');
+                JToolBarHelper::title(JText::_('VM_TAX_FORM_LBL'), 'jm_tax_48');
                 break;   
             case 'shipping.carrier_list';
-                JToolBarHelper::title(JText::_('JM_CARRIER_LIST_LBL'), 'jm_ups_48');
+                JToolBarHelper::title(JText::_('VM_CARRIER_LIST_LBL'), 'jm_ups_48');
                 break;        
             case 'shipping.carrier_form';
-                JToolBarHelper::title(JText::_('JM_CARRIER_FORM_LBL'), 'jm_ups_48');
+                JToolBarHelper::title(JText::_('VM_CARRIER_FORM_LBL'), 'jm_ups_48');
                 break;     
             case 'shipping.rate_list';
-                JToolBarHelper::title(JText::_('JM_RATE_LIST_LBL'), 'jm_shipping_rates_48');
+                JToolBarHelper::title(JText::_('VM_RATE_LIST_LBL'), 'jm_shipping_rates_48');
                 break;        
             case 'shipping.rate_form';
-                JToolBarHelper::title(JText::_('JM_RATE_FORM_LBL'), 'jm_shipping_rates_48');
+                JToolBarHelper::title(JText::_('VM_RATE_FORM_LBL'), 'jm_shipping_rates_48');
                 break;                    
             case 'shopper.shopper_group_list';
-                JToolBarHelper::title(JText::_('JM_SHOPPER_GROUP_LIST_LBL'), 'jm_shop_users_48');
+                JToolBarHelper::title(JText::_('VM_SHOPPER_GROUP_LIST_LBL'), 'jm_shop_users_48');
                 break;        
             case 'shopper.shopper_group_form';
-                JToolBarHelper::title(JText::_('JM_SHOPPER_GROUP_FORM_LBL'), 'jm_shop_users_48');
+                JToolBarHelper::title(JText::_('VM_SHOPPER_GROUP_FORM_LBL'), 'jm_shop_users_48');
                 break;     
             case 'manufacturer.manufacturer_list';
-                JToolBarHelper::title(JText::_('JM_MANUFACTURER_LIST_LBL'), 'jm_manufacturer_48');
+                JToolBarHelper::title(JText::_('VM_MANUFACTURER_LIST_LBL'), 'jm_manufacturer_48');
                 break;        
             case 'manufacturer.manufacturer_form';
-                JToolBarHelper::title(JText::_('JM_MANUFACTURER_FORM_LBL'), 'jm_manufacturer_48');
+                JToolBarHelper::title(JText::_('VM_MANUFACTURER_FORM_LBL'), 'jm_manufacturer_48');
                 break;                                                                                                                                                    
             default:
                 JToolBarHelper::title(JText::_($pageName), 'jm_logo_48');
@@ -284,8 +284,8 @@ var submitbutton = function(pressbutton){
 		if ($page == "product.product_form" && !empty($product_id)) {
 			if( empty($product_parent_id) ) { 
 				// add new attribute
-				//$href=$_SERVER['PHP_SELF']."?option=com_jmart&page=product.product_attribute_form&product_id=". $product_id ."&limitstart=". $limitstart."&no_menu=$no_menu";
-				$alt =  JText::_('JM_ATTRIBUTE_FORM_MNU');
+				//$href=$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_attribute_form&product_id=". $product_id ."&limitstart=". $limitstart."&no_menu=$no_menu";
+				$alt =  JText::_('VM_ATTRIBUTE_FORM_MNU');
 				
 				// bass28 - 6/2/09 Move to Joomla toolbar
 				//$bar->customHref( $href, 'new', $alt );
@@ -293,16 +293,16 @@ var submitbutton = function(pressbutton){
 			}
 			else {
                 // back to parent product
-				//$href=$_SERVER['PHP_SELF']."?option=com_jmart&page=product.product_form&product_id=$product_parent_id&limitstart=".$limitstart."&no_menu=$no_menu";
-				$alt =  JText::_('JM_PRODUCT_FORM_RETURN_LBL');
+				//$href=$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_form&product_id=$product_parent_id&limitstart=".$limitstart."&no_menu=$no_menu";
+				$alt =  JText::_('VM_PRODUCT_FORM_RETURN_LBL');
 				// bass28 - 6/2/09 Move to Joomla toolbar
 				//$bar->customHref( $href, $vmIcons['back_icon'], $vmIcons['back_icon2'], $alt );
 				JToolBarHelper::back('back', $href);
 				JToolBarHelper::custom('redirectToParentProductForm', 'back_icon', 'back_icon2', $alt, false, false);
 				
 				// new child product
-				//$href=$_SERVER['PHP_SELF']."?option=com_jmart&page=product.product_form&product_parent_id=$product_parent_id&limitstart=". $limitstart."&no_menu=$no_menu";
-				$alt =  JText::_('JM_PRODUCT_FORM_ADD_ANOTHER_ITEM_MNU');
+				//$href=$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_form&product_parent_id=$product_parent_id&limitstart=". $limitstart."&no_menu=$no_menu";
+				$alt =  JText::_('VM_PRODUCT_FORM_ADD_ANOTHER_ITEM_MNU');
 				// bass28 - 6/2/09 Move to Joomla toolbar
 				//$bar->customHref( $href, 'new', $alt );
 				JToolBarHelper::addNew('new', $alt);
@@ -310,16 +310,16 @@ var submitbutton = function(pressbutton){
 				
 			} 
 			// Go to Price list
-			//$href = $_SERVER['PHP_SELF']."?page=product.product_price_list&product_id=$product_id&product_parent_id=$product_parent_id&limitstart=$limitstart&return_args=&option=com_jmart&no_menu=$no_menu";
-			$alt =  JText::_('JM_PRICE_LIST_MNU');
+			//$href = $_SERVER['PHP_SELF']."?page=product.product_price_list&product_id=$product_id&product_parent_id=$product_parent_id&limitstart=$limitstart&return_args=&option=com_virtuemart&no_menu=$no_menu";
+			$alt =  JText::_('VM_PRICE_LIST_MNU');
 			// bass28 - 6/2/09 Move to Joomla toolbar
 			//$bar->customHref( $href, 'new', $alt );
 			JToolBarHelper::custom('redirectToProductPriceList', 'preview', 'preview', $alt, false, false);
 			
 	
 			// add product type
-			//$href= $_SERVER['PHP_SELF']."?option=com_jmart&page=product.product_product_type_form&product_id=$product_id&product_parent_id=$product_parent_id&limitstart=$limitstart&no_menu=$no_menu";
-			$alt =  JText::_('JM_PRODUCT_PRODUCT_TYPE_FORM_MNU');
+			//$href= $_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_product_type_form&product_id=$product_id&product_parent_id=$product_parent_id&limitstart=$limitstart&no_menu=$no_menu";
+			$alt =  JText::_('VM_PRODUCT_PRODUCT_TYPE_FORM_MNU');
 			// bass28 - 6/2/09 Move to Joomla toolbar
 			//$bar->customHref( $href, 'new', $alt );
 			//JToolBarHelper::addNew('new', $alt);
@@ -329,8 +329,8 @@ var submitbutton = function(pressbutton){
 			/*** Adding an item is only pssible, if the product has attributes ***/
 			if (ps_product::product_has_attributes( $product_id ) ) { 
 				// Add Item
-				//$href=$_SERVER['PHP_SELF']."?option=com_jmart&page=product.product_form&product_parent_id=$product_id&limitstart=$limitstart&no_menu=$no_menu";
-				$alt =  JText::_('JM_PRODUCT_FORM_NEW_ITEM_LBL');
+				//$href=$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_form&product_parent_id=$product_id&limitstart=$limitstart&no_menu=$no_menu";
+				$alt =  JText::_('VM_PRODUCT_FORM_NEW_ITEM_LBL');
 				// bass28 - 6/2/09 Move to Joomla toolbar
 				//$bar->customHref( $href, 'new', $alt );
 				//JToolBarHelper::addNew('new', $alt);
@@ -343,18 +343,18 @@ var submitbutton = function(pressbutton){
 		}
 		elseif( $page == "admin.country_form" ) {
             if( !empty( $_REQUEST['country_id'] )) {
-				$href= $_SERVER['PHP_SELF'] ."?option=com_jmart&page=admin.country_state_form&country_id=". intval($_REQUEST['country_id']) ."&limitstart=$limitstart&no_menu=$no_menu";
-				//$alt = JText::_('JM_ADD_STATE');
+				$href= $_SERVER['PHP_SELF'] ."?option=com_virtuemart&page=admin.country_state_form&country_id=". intval($_REQUEST['country_id']) ."&limitstart=$limitstart&no_menu=$no_menu";
+				//$alt = JText::_('VM_ADD_STATE');
 				// bass28 - 6/2/09 Move to Joomla toolbar
 				//$bar->customHref( $href, 'new', $alt );		
-				JToolBarHelper::custom('redirectToCountryStateForm', 'new', 'new', JText::_('JM_ADD_STATE'), false, false);		
+				JToolBarHelper::custom('redirectToCountryStateForm', 'new', 'new', JText::_('VM_ADD_STATE'), false, false);		
 				
-				$href = $_SERVER['PHP_SELF'] ."?option=com_jmart&page=admin.country_state_list&country_id=". intval($_REQUEST['country_id']) ."&limitstart=$limitstart&no_menu=$no_menu";
-				//$alt = JText::_('JM_LIST_STATES');
+				$href = $_SERVER['PHP_SELF'] ."?option=com_virtuemart&page=admin.country_state_list&country_id=". intval($_REQUEST['country_id']) ."&limitstart=$limitstart&no_menu=$no_menu";
+				//$alt = JText::_('VM_LIST_STATES');
 				// bass28 - 6/2/09 Move to Joomla toolbar
 				//$bar->customHref( $href, 'new', $alt );		
 				//$bar->divider();
-				JToolBarHelper::custom('redirectToCountryStateList', 'preview', 'preview', JText::_('JM_LIST_STATES'), false, false);					
+				JToolBarHelper::custom('redirectToCountryStateList', 'preview', 'preview', JText::_('VM_LIST_STATES'), false, false);					
 				JToolBarHelper::divider();
 			}
 		}
@@ -387,10 +387,10 @@ var submitbutton = function(pressbutton){
             // bass28 - 6/2/09 Move to Joomla toolbar
 			// Back to the country
 			//$bar->divider();
-			//$href = $_SERVER['PHP_SELF']. '?option=com_jmart&page=admin.country_list';
-			//$bar->customHref( $href, 'back', '&nbsp;'.JText::_('JM_BACK_TO_COUNTRY') );
+			//$href = $_SERVER['PHP_SELF']. '?option=com_virtuemart&page=admin.country_list';
+			//$bar->customHref( $href, 'back', '&nbsp;'.JText::_('VM_BACK_TO_COUNTRY') );
 			JToolBarHelper::divider();
-			JToolBarHelper::custom('redirectToCountryList', 'back', 'back', JText::_('JM_BACK_TO_COUNTRY'), false, false);
+			JToolBarHelper::custom('redirectToCountryList', 'back', 'back', JText::_('VM_BACK_TO_COUNTRY'), false, false);
         }
         elseif ($page == 'product.file_list') {
             // bass28 - 6/2/09 Move to Joomla toolbar
@@ -439,33 +439,33 @@ var submitbutton = function(pressbutton){
 			
 				if( empty($_REQUEST['product_parent_id']) ) { 
 					// add new attribute
-					//$alt =  JText::_('JM_ATTRIBUTE_FORM_MNU');
+					//$alt =  JText::_('VM_ATTRIBUTE_FORM_MNU');
 					//$bar->custom( 'new', "product.product_attribute_form", 'new', $alt );
-					JToolBarHelper::custom('redirectToAddProductAttributeForm', 'new', 'new', JText::_('JM_ATTRIBUTE_FORM_MNU'), false, false);	
+					JToolBarHelper::custom('redirectToAddProductAttributeForm', 'new', 'new', JText::_('VM_ATTRIBUTE_FORM_MNU'), false, false);	
 					
 				}
 				// Go to Price list
-				//$alt =  JText::_('JM_PRICE_LIST_MNU');
+				//$alt =  JText::_('VM_PRICE_LIST_MNU');
 				//$bar->custom( 'new', "product.product_price_list", 'new', $alt );	
-				JToolBarHelper::custom('redirectToProductPriceList', 'preview', 'preview', JText::_('JM_PRICE_LIST_MNU'), false, false);			
+				JToolBarHelper::custom('redirectToProductPriceList', 'preview', 'preview', JText::_('VM_PRICE_LIST_MNU'), false, false);			
 		
 				// add product type
-				//$alt =  JText::_('JM_PRODUCT_PRODUCT_TYPE_FORM_MNU');
+				//$alt =  JText::_('VM_PRODUCT_PRODUCT_TYPE_FORM_MNU');
 				//$bar->custom( 'new', "product.product_product_type_form", 'new', $alt );	
-				JToolBarHelper::custom('redirectToAddProductTypeForm', 'new', 'new', JText::_('JM_PRODUCT_PRODUCT_TYPE_FORM_MNU'), false, false);		
+				JToolBarHelper::custom('redirectToAddProductTypeForm', 'new', 'new', JText::_('VM_PRODUCT_PRODUCT_TYPE_FORM_MNU'), false, false);		
 		
 				/*** Adding an item is only pssible, if the product has attributes ***/
 				if (ps_product::product_has_attributes( $product_id ) ) { 
 					// Add Item
-					//$alt =  JText::_('JM_PRODUCT_FORM_NEW_ITEM_LBL');
+					//$alt =  JText::_('VM_PRODUCT_FORM_NEW_ITEM_LBL');
 					//$bar->custom( 'new', "product.product_child_form", 'new', $alt );
-					JToolBarHelper::custom('redirectToAddChildProductForm', 'new', 'new', JText::_('JM_PRODUCT_FORM_NEW_ITEM_LBL'), false, false);
+					JToolBarHelper::custom('redirectToAddChildProductForm', 'new', 'new', JText::_('VM_PRODUCT_FORM_NEW_ITEM_LBL'), false, false);
 				}
 				//$bar->divider();
 				JToolBarHelper::divider();
 				
 				if( !empty( $_REQUEST['category_id'])) {
-					$alt = JText::_('JM_PRODUCTS_MOVE_TOOLBAR');
+					$alt = JText::_('VM_PRODUCTS_MOVE_TOOLBAR');
 //					$bar->custom( 'move', 'product.product_move', 'move', $alt );
 					
 					//$bar->divider();
@@ -474,13 +474,13 @@ var submitbutton = function(pressbutton){
 				break;
 			
 			case "admin.country_list":
-					//$alt = JText::_('JM_ADD_STATE');
+					//$alt = JText::_('VM_ADD_STATE');
 					//$bar->custom( 'new', "admin.country_state_form", 'new', $alt );	
-					//JToolBarHelper::custom('redirectToCountryStateForm', 'new', 'new', JText::_('JM_ADD_STATE'), false, false);				
+					//JToolBarHelper::custom('redirectToCountryStateForm', 'new', 'new', JText::_('VM_ADD_STATE'), false, false);				
 					
-					//$alt = JText::_('JM_LIST_STATES');
+					//$alt = JText::_('VM_LIST_STATES');
 					//$bar->custom( 'new', "admin.country_state_list", 'new', $alt );
-					//JToolBarHelper::customX('redirectToCountryStateList', 'new', 'new', JText::_('JM_LIST_STATES'), false, false);
+					//JToolBarHelper::customX('redirectToCountryStateList', 'new', 'new', JText::_('VM_LIST_STATES'), false, false);
 					
 					//$bar->divider();
 					JToolBarHelper::divider();
@@ -498,7 +498,7 @@ var submitbutton = function(pressbutton){
 		//$bar = & vmToolBar::getInstance('virtuemart');
 		//$bar->save();
 		//$bar->cancel();
-		JToolBarHelper::title(JText::_('JM_COUNTRY_LIST_ADD'), 'countries_48');
+		JToolBarHelper::title(JText::_('VM_COUNTRY_LIST_ADD'), 'countries_48');
 		JToolBarHelper::save();
 	    JToolBarHelper::cancel();
 	}

@@ -3,33 +3,33 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: product.product_product_type_form.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 $product_id = JRequest::getVar( 'product_id', 0);
 $return_args = JRequest::getVar( 'return_args');
-$option = empty($option)?JRequest::getVar(  'option', 'com_jmart'):$option;
+$option = empty($option)?JRequest::getVar(  'option', 'com_virtuemart'):$option;
 
 if( is_array( $product_id ))
 	$product_id = (int)$product_id[0];
 
 $product_parent_id = JRequest::getVar( 'product_parent_id', 0);
 
-$title = '<img src="'. IMAGEURL .'ps_image/categories.gif" border="0" />'.JText::_('JM_PRODUCT_PRODUCT_TYPE_FORM_LBL');
+$title = '<img src="'. IMAGEURL .'ps_image/categories.gif" border="0" />'.JText::_('VM_PRODUCT_PRODUCT_TYPE_FORM_LBL');
 if (!empty($product_parent_id)) {
-  $title .= " " . JText::_('JM_PRODUCT_FORM_ITEM_LBL') . ": ";
+  $title .= " " . JText::_('VM_PRODUCT_FORM_ITEM_LBL') . ": ";
 } else {
-  $title .= " " . JText::_('JM_PRODUCT') . ": ";
+  $title .= " " . JText::_('VM_PRODUCT') . ": ";
 }
 $url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=$product_id&product_parent_id=$product_parent_id";
 $title .= "<a href=\"" . $sess->url($url) . "\">". $ps_product->get_field($product_id,"product_name"). "</a>";
@@ -49,7 +49,7 @@ $formObj->startForm();
     </tr>
     <tr> 
       <td width="23%" height="20" valign="middle" > 
-        <div align="right"><?php echo JText::_('JM_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE') ?>:</div>
+        <div align="right"><?php echo JText::_('VM_PRODUCT_PRODUCT_TYPE_FORM_PRODUCT_TYPE') ?>:</div>
       </td>
       <td width="77%" height="10" >
         <select class="inputbox" name="product_type_id">

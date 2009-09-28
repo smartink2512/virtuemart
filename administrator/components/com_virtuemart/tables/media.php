@@ -2,10 +2,10 @@
 /**
  * Country table
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage Media
  * @author RolandD 
- * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
 // Check to ensure this file is included in Joomla!
@@ -16,7 +16,7 @@ defined('_JEXEC') or die();
  * The class is is used to manage the countries in the shop.
  *
  * @author RolandD
- * @package		JMart
+ * @package		VirtueMart
  */
 class TableMedia extends JTable
 {
@@ -55,7 +55,7 @@ class TableMedia extends JTable
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db) {
-		parent::__construct('#__jmart_product_files', 'file_id', $db);
+		parent::__construct('#__vm_product_files', 'file_id', $db);
 	}
 	
 	/**
@@ -82,7 +82,7 @@ class TableMedia extends JTable
 		if (($this->country_name) && ($this->country_id == 0)) {
 		    $db =& JFactory::getDBO();
 		    
-			$q = 'SELECT count(*) FROM `#__jmart_country` ';
+			$q = 'SELECT count(*) FROM `#__vm_country` ';
 			$q .= 'WHERE `country_name`="' .  $this->country_name . '"';
             $db->setQuery($q);        
 		    $rowCount = $db->loadResult();		

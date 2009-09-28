@@ -1,14 +1,14 @@
 <?php
 /**
-* @package		JMart
+* @package		VirtueMart
 */
 
 jimport( 'joomla.application.component.view');
 
 /**
- * HTML View class for the JMart Component
+ * HTML View class for the VirtueMart Component
  *
- * @package		JMart
+ * @package		VirtueMart
  */
 class JmartViewProduct extends JView {
 	
@@ -80,40 +80,40 @@ class JmartViewProduct extends JView {
 				/* Set up labels */
 				if ($product->product_parent_id > 0) {
 					if ($product->product_id) {
-						$action = JText::_('JM_PRODUCT_FORM_UPDATE_ITEM_LBL');
+						$action = JText::_('VM_PRODUCT_FORM_UPDATE_ITEM_LBL');
 					}
 					else {
-						$action = JText::_('JM_PRODUCT_FORM_NEW_ITEM_LBL');
+						$action = JText::_('VM_PRODUCT_FORM_NEW_ITEM_LBL');
 					}
-					$info_label = JText::_('JM_PRODUCT_FORM_ITEM_INFO_LBL');
-					$status_label = JText::_('JM_PRODUCT_FORM_ITEM_STATUS_LBL');
-					$dim_weight_label = JText::_('JM_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL');
-					$images_label = JText::_('JM_PRODUCT_FORM_ITEM_IMAGES_LBL');
-					$delete_message = JText::_('JM_PRODUCT_FORM_DELETE_ITEM_MSG');
+					$info_label = JText::_('VM_PRODUCT_FORM_ITEM_INFO_LBL');
+					$status_label = JText::_('VM_PRODUCT_FORM_ITEM_STATUS_LBL');
+					$dim_weight_label = JText::_('VM_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL');
+					$images_label = JText::_('VM_PRODUCT_FORM_ITEM_IMAGES_LBL');
+					$delete_message = JText::_('VM_PRODUCT_FORM_DELETE_ITEM_MSG');
 				}
 				else {
 					if (0) {
 						/* Cloning to be added later */
 						if ($product_id = @$vars["product_id"]) {
 							if( $clone_product == '1') {
-								$action = JText::_('JM_PRODUCT_CLONE');
+								$action = JText::_('VM_PRODUCT_CLONE');
 							}
 							else {
-								$action = JText::_('JM_PRODUCT_FORM_UPDATE_ITEM_LBL');
+								$action = JText::_('VM_PRODUCT_FORM_UPDATE_ITEM_LBL');
 							}
 						}
 						else {
-							$action = JText::_('JM_PRODUCT_FORM_NEW_PRODUCT_LBL');
+							$action = JText::_('VM_PRODUCT_FORM_NEW_PRODUCT_LBL');
 						}
 					}
-					if ($task == 'add') $action = JText::_('JM_PRODUCT_FORM_NEW_PRODUCT_LBL');
-					else $action = JText::_('JM_PRODUCT_FORM_UPDATE_ITEM_LBL');
+					if ($task == 'add') $action = JText::_('VM_PRODUCT_FORM_NEW_PRODUCT_LBL');
+					else $action = JText::_('VM_PRODUCT_FORM_UPDATE_ITEM_LBL');
 					
-					$info_label = JText::_('JM_PRODUCT_FORM_PRODUCT_INFO_LBL');
-					$status_label = JText::_('JM_PRODUCT_FORM_PRODUCT_STATUS_LBL');
-					$dim_weight_label = JText::_('JM_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL');
-					$images_label = JText::_('JM_PRODUCT_FORM_PRODUCT_IMAGES_LBL');
-					$delete_message = JText::_('JM_PRODUCT_FORM_DELETE_PRODUCT_MSG');
+					$info_label = JText::_('VM_PRODUCT_FORM_PRODUCT_INFO_LBL');
+					$status_label = JText::_('VM_PRODUCT_FORM_PRODUCT_STATUS_LBL');
+					$dim_weight_label = JText::_('VM_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL');
+					$images_label = JText::_('VM_PRODUCT_FORM_PRODUCT_IMAGES_LBL');
+					$delete_message = JText::_('VM_PRODUCT_FORM_DELETE_PRODUCT_MSG');
 				}
 				
 				/* Assign the values */
@@ -175,8 +175,8 @@ class JmartViewProduct extends JView {
 				}
 				
 				/* Check for Media Items and Reviews, set the price*/
-				$media = new JMartModelMedia();
-				$productreviews = new JMartModelProductReviews();
+				$media = new VirtueMartModelMedia();
+				$productreviews = new VirtueMartModelProductReviews();
 				$currencydisplay = new CurrencyDisplay();
 				foreach ($productlist as $product_id => $product) {
 					$product->mediaitems = $media->countFilesForProduct($product_id);

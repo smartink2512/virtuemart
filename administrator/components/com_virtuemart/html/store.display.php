@@ -3,30 +3,30 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: store.display.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 
 ?>
 <br />
-<img src="<?php echo JM_ADMIN_ICON_URL ?>icon_48/jm_store_48.png" border="0" align="left" alt="Store Home" />
-<h2 class="adminListHeader"><?php echo JText::_('JM_STORE_MOD') ?></h2>
+<img src="<?php echo VM_ADMIN_ICON_URL ?>icon_48/jm_store_48.png" border="0" align="left" alt="Store Home" />
+<h2 class="adminListHeader"><?php echo JText::_('VM_STORE_MOD') ?></h2>
 
 <br /><br />
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr> 
     <td colspan="2" align="right"> 
-      <div align="left"><b><?php echo JText::_('JM_STORE_FORM_LBL') ?> </B>
+      <div align="left"><b><?php echo JText::_('VM_STORE_FORM_LBL') ?> </B>
 
 <?php 
 		$db = ps_vendor::get_vendor_details($vendor_id);   
@@ -34,11 +34,11 @@ mm_showMyFileName( __FILE__ );
     </td>
   </tr>
   <tr> 
-    <td width="22%" align="right" ><?php echo JText::_('JM_STORE_FORM_STORE_NAME') ?> :</td>
+    <td width="22%" align="right" ><?php echo JText::_('VM_STORE_FORM_STORE_NAME') ?> :</td>
     <td width="78%" > <?php $db->sp("vendor_store_name") ?></td>
   </tr>
   <tr> 
-    <td width="22%" align="right" ><?php echo JText::_('JM_VENDOR_LIST_VENDOR_NAME') ?> :</td>
+    <td width="22%" align="right" ><?php echo JText::_('VM_VENDOR_LIST_VENDOR_NAME') ?> :</td>
     <td width="78%" > <?php $db->sp("vendor_name") ?> </td>
   </tr>
   <tr> 
@@ -54,31 +54,31 @@ $db->sp("address_2")
       <?php $db->sp("vzip") ?> <?php $db->sp("country") ?></td>
   </tr>
   <tr> 
-    <td width="22%" align="right" ><?php echo JText::_('JM_STORE_FORM_PHONE') ?> :</td>
+    <td width="22%" align="right" ><?php echo JText::_('VM_STORE_FORM_PHONE') ?> :</td>
     <td width="78%" > <?php $db->sp("vendor_phone") ?></td>
   </tr>
   <tr> 
-    <td colspan="2" class="topmenu"><b><?php echo JText::_('JM_STORE_FORM_CONTACT_LBL') ?></b></td>
+    <td colspan="2" class="topmenu"><b><?php echo JText::_('VM_STORE_FORM_CONTACT_LBL') ?></b></td>
   </tr>
   <tr> 
-    <td width="22%" align="right" ><?php echo JText::_('JM_CART_NAME') ?> :</td>
+    <td width="22%" align="right" ><?php echo JText::_('VM_CART_NAME') ?> :</td>
     <td width="78%" > <?php $db->sp("title") ?> <?php $db->sp("first_name") ?> 
       <?php $db->sp("middle_name") ?> <?php $db->sp("last_name") ?></td>
   </tr>
   <tr> 
-    <td width="22%" align="right" ><?php echo JText::_('JM_STORE_FORM_PHONE_1') ?> :</TD>
+    <td width="22%" align="right" ><?php echo JText::_('VM_STORE_FORM_PHONE_1') ?> :</TD>
     <TD WIDTH="78%" > <?php $db->sp("phone_1") ?></TD>
   </TR>
   <TR> 
-    <TD WIDTH="22%" ALIGN="right" ><?php echo JText::_('JM_STORE_FORM_PHONE_2') ?> :</TD>
+    <TD WIDTH="22%" ALIGN="right" ><?php echo JText::_('VM_STORE_FORM_PHONE_2') ?> :</TD>
     <TD WIDTH="78%" > <?php $db->sp("phone_2") ?></TD>
   </TR>
   <TR> 
-    <TD WIDTH="22%" ALIGN="right" ><?php echo JText::_('JM_STORE_FORM_FAX') ?> :</TD>
+    <TD WIDTH="22%" ALIGN="right" ><?php echo JText::_('VM_STORE_FORM_FAX') ?> :</TD>
     <TD WIDTH="78%" > <?php $db->sp("fax") ?></TD>
   </TR>
   <TR> 
-    <TD WIDTH="22%" ALIGN="right" ><?php echo JText::_('JM_STORE_FORM_EMAIL') ?> :</TD>
+    <TD WIDTH="22%" ALIGN="right" ><?php echo JText::_('VM_STORE_FORM_EMAIL') ?> :</TD>
     <TD WIDTH="78%" > <?php $db->sp("email") ?></TD>
   </TR>
   <TR> 

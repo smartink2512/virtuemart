@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_product_price.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package JMart
+* @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 /**
@@ -35,11 +35,11 @@ class ps_product_price extends vmAbstractObject  {
 		$valid = true;
 		
 		if (!isset($d["product_price"]) || $d["product_price"] === '') {
-			$vmLogger->err( JText::_('JM_PRODUCT_PRICE_MISSING',false) );
+			$vmLogger->err( JText::_('VM_PRODUCT_PRICE_MISSING',false) );
 			$valid = false;
 		}
 		if (empty($d["product_id"])) {
-			$vmLogger->err(  JText::_('JM_PRODUCT_ID_MISSING',false) );
+			$vmLogger->err(  JText::_('VM_PRODUCT_ID_MISSING',false) );
 			$valid = false;
 		}
 		
@@ -54,7 +54,7 @@ class ps_product_price extends vmAbstractObject  {
 			$vendor_id = ps_product::get_vendor_id_ofproduct($d["product_id"]);
 			$db = ps_vendor::get_vendor_fields($vendor_id,array('vendor_currency'));
 			if(empty($db)){
-				$vmLogger->err( JText::_('JM_PRODUCT_PRICE_CURRENCY_MISSING',false) );
+				$vmLogger->err( JText::_('VM_PRODUCT_PRICE_CURRENCY_MISSING',false) );
 				$valid = false;
 			}
 			$vendor_currency = $db->f("vendor_currency");		
@@ -68,7 +68,7 @@ class ps_product_price extends vmAbstractObject  {
 		$d["price_quantity_end"] = intval(@$d["price_quantity_end"]);
 
 		if ($d["price_quantity_end"] < $d["price_quantity_start"]) {
-			$vmLogger->err(  JText::_('JM_PRODUCT_PRICE_QEND_LESS',false) );
+			$vmLogger->err(  JText::_('VM_PRODUCT_PRICE_QEND_LESS',false) );
 			$valid = false;
 		}
 
@@ -85,7 +85,7 @@ class ps_product_price extends vmAbstractObject  {
 		$db->query( $q ); $db->next_record();
 
 		if ($db->f("num_rows") > 0) {
-			$vmLogger->err( JText::_('JM_PRODUCT_PRICE_ALREADY',false) );
+			$vmLogger->err( JText::_('VM_PRODUCT_PRICE_ALREADY',false) );
 			$valid = false;
 		}
 		return $valid;
@@ -102,7 +102,7 @@ class ps_product_price extends vmAbstractObject  {
 			return false;
 		}
 		if( $d["product_price"] === '') {
-			$vmLogger->err( JText::_('JM_PRODUCT_PRICE_NOTENTERED',false) );
+			$vmLogger->err( JText::_('VM_PRODUCT_PRICE_NOTENTERED',false) );
 			return false;
 		}
 		$timestamp = time();
@@ -125,10 +125,10 @@ class ps_product_price extends vmAbstractObject  {
 		
 		if( $db->query() !== false ) {		
 			$_REQUEST['product_price_id'] = $db->last_insert_id();
-			$vmLogger->info( JText::_('JM_PRODUCT_PRICE_ADDED',false));
+			$vmLogger->info( JText::_('VM_PRODUCT_PRICE_ADDED',false));
 			return true;
 		}
-		$vmLogger->err( JText::_('JM_PRODUCT_PRICE_ADDING_FAILED',false) );
+		$vmLogger->err( JText::_('VM_PRODUCT_PRICE_ADDING_FAILED',false) );
 		return false;
 	}
 
@@ -165,10 +165,10 @@ class ps_product_price extends vmAbstractObject  {
 		$db->buildQuery('UPDATE', '#__{vm}_product_price', $fields, 'WHERE product_price_id=' .(int)$d["product_price_id"] );
 		
 		if( $db->query() !== false ) {
-			$vmLogger->info( JText::_('JM_PRODUCT_PRICE_UPDATED',false) );
+			$vmLogger->info( JText::_('VM_PRODUCT_PRICE_UPDATED',false) );
 			return true;
 		}
-		$vmLogger->err( JText::_('JM_PRODUCT_PRICE_UPDATING_FAILED',false) );
+		$vmLogger->err( JText::_('VM_PRODUCT_PRICE_UPDATING_FAILED',false) );
 		return false;
 	}
 
@@ -199,7 +199,7 @@ class ps_product_price extends vmAbstractObject  {
 		$q  = "DELETE FROM #__{vm}_product_price ";
 		$q .= "WHERE product_price_id =".intval($record_id).' LIMIT 1';
 		$db->query($q);
-		$vmLogger->info( JText::_('JM_PRODUCT_PRICE_DELETED',false) );
+		$vmLogger->info( JText::_('VM_PRODUCT_PRICE_DELETED',false) );
 		return True;
 	}
 

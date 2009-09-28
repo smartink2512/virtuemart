@@ -2,10 +2,10 @@
 /**
  * Product table
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage Product
  * @author RolandD
- * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
 // Check to ensure this file is included in Joomla!
@@ -15,7 +15,7 @@ defined('_JEXEC') or die();
  * Product table class
  * The class is is used to manage the products in the shop.
  *
- * @package	JMart
+ * @package	VirtueMart
  * @author RolandD
  */
 class TableProduct extends JTable
@@ -109,7 +109,7 @@ class TableProduct extends JTable
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db) {
-		parent::__construct('#__jmart_product', 'product_id', $db);
+		parent::__construct('#__vm_product', 'product_id', $db);
 	}
 }
 ?>

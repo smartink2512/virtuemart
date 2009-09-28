@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: shop.view_images.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
@@ -34,11 +34,11 @@ if( !empty($product_id) ) {
   $db->query( "SELECT product_name,product_full_image,product_thumb_image FROM #__{vm}_product WHERE product_id='$product_id'" );
   $db->next_record();
   
-  echo "<h3>".JText::_('JM_AVAILABLE_IMAGES')." ".$db->f("product_name")."</h3>\n";
+  echo "<h3>".JText::_('VM_AVAILABLE_IMAGES')." ".$db->f("product_name")."</h3>\n";
   
   if( !$pop ) {
-  	echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_jmart&page=shop.product_details&flypage=$flypage&product_id=$product_id&Itemid=$Itemid\">"
-      . JText::_('JM_BACK_TO_DETAILS')."</a>";
+  	echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id&Itemid=$Itemid\">"
+      . JText::_('VM_BACK_TO_DETAILS')."</a>";
   }
   else {
   	echo '<a href="#" onclick="javascript: window.close();">'.JText::_('PROMPT_CLOSE').'</a>';
@@ -50,7 +50,7 @@ if( !empty($product_id) ) {
   $height = PSHOP_IMG_HEIGHT;
   $width = PSHOP_IMG_WIDTH;
   $border = ($image_id == "product") ? "4" : "1";
-  $href = $_SERVER['PHP_SELF']."?option=com_jmart&amp;page=$page&amp;product_id=$product_id&amp;image_id=product&amp;Itemid=".$Itemid.'&amp;pop='.$pop;
+  $href = $_SERVER['PHP_SELF']."?option=com_virtuemart&amp;page=$page&amp;product_id=$product_id&amp;image_id=product&amp;Itemid=".$Itemid.'&amp;pop='.$pop;
   $title = $db->f("product_name");
   
   
@@ -78,7 +78,7 @@ if( !empty($product_id) ) {
     $width = empty($image->file_image_thumb_width) ? PSHOP_IMG_WIDTH : $image->file_image_thumb_width; 
     
     $border = ($image->file_id == $image_id) ? "4" : "1";
-    $href = $_SERVER['PHP_SELF']."?option=com_jmart&amp;page=$page&amp;product_id=$product_id&amp;image_id=".$image->file_id."&amp;Itemid=".$Itemid.'&amp;pop='.$pop;
+    $href = $_SERVER['PHP_SELF']."?option=com_virtuemart&amp;page=$page&amp;product_id=$product_id&amp;image_id=".$image->file_id."&amp;Itemid=".$Itemid.'&amp;pop='.$pop;
     $title = $image->file_title;
     echo "<a href=\"$href\" target=\"_self\" title=\"$title\"><img src=\"$thumburl\" alt=\"$alt\" align=\"center\" width=\"$width\" border=\"$border\" /></a>\n&nbsp;&nbsp;&nbsp;";
     // Break Row when needed
@@ -114,7 +114,7 @@ if( !empty($product_id) ) {
       	echo "<div style=\"text-align:center;overflow:auto;\"><img src=\"$src\" alt=\"$alt\" width=\"$width\" height=\"$height\" border=\"0\" /></div>";
     }
     else {
-      echo JText::_('JM_IMAGE_NOT_FOUND');
+      echo JText::_('VM_IMAGE_NOT_FOUND');
     }
   }
 }

@@ -11,7 +11,7 @@ mm_showMyFileName(__FILE__); ?>
 			<?php echo JText::_('PN_DISPLAY_NR') ?>&nbsp;&nbsp;
 			<?php $pagenav->writeLimitBox( $search_string,$category_id ); ?>
 			
-			<noscript><input class="button" type="submit" value="<?php echo JText::_('JM_SUBMIT') ?>" /></noscript>
+			<noscript><input class="button" type="submit" value="<?php echo JText::_('VM_SUBMIT') ?>" /></noscript>
 		
 		</form>
 	<?php

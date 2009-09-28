@@ -7,7 +7,7 @@ jimport( 'joomla.application.component.model');
 /**
  * Model for product categories
  */
-class JMartModelCategory extends JModel
+class VirtueMartModelCategory extends JModel
 {    
     function __construct()
     {
@@ -26,12 +26,12 @@ class JMartModelCategory extends JModel
 		$db = JFactory::getDBO();
 
 		$query = 'SELECT `category_id`, `category_thumb_image`, `category_child_id`, `category_name` ';
-		$query .= 'FROM `#__jmart_category`, `#__jmart_category_xref` ';
-		$query .= 'WHERE `#__jmart_category_xref`.`category_parent_id` = ' . $category_id . ' ';
-		$query .= 'AND `#__jmart_category`.`category_id` = `#__jmart_category_xref`.`category_child_id` ';
-		$query .= 'AND `#__jmart_category`.`vendor_id` = ' . $vendorId . ' ';
-		$query .= 'AND `#__jmart_category`.`category_publish` = "Y" ';
-		$query .= 'ORDER BY `#__jmart_category`.`list_order`, `#__jmart_category`.`category_name` ASC';
+		$query .= 'FROM `#__vm_category`, `#__vm_category_xref` ';
+		$query .= 'WHERE `#__vm_category_xref`.`category_parent_id` = ' . $category_id . ' ';
+		$query .= 'AND `#__vm_category`.`category_id` = `#__vm_category_xref`.`category_child_id` ';
+		$query .= 'AND `#__vm_category`.`vendor_id` = ' . $vendorId . ' ';
+		$query .= 'AND `#__vm_category`.`category_publish` = "Y" ';
+		$query .= 'ORDER BY `#__vm_category`.`list_order`, `#__vm_category`.`category_name` ASC';
 		
 		$childList = $this->_getList( $query );
 		return $childList;	    
@@ -58,19 +58,19 @@ class JMartModelCategory extends JModel
 		
 		$level++;
 
-		$q = "SELECT category_id, category_child_id,category_name FROM #__jmart_category,#__jmart_category_xref ";
-		$q .= "WHERE #__jmart_category_xref.category_parent_id='$cid' ";
-		$q .= "AND #__jmart_category.category_id=#__jmart_category_xref.category_child_id ";
+		$q = "SELECT category_id, category_child_id,category_name FROM #__vm_category,#__vm_category_xref ";
+		$q .= "WHERE #__vm_category_xref.category_parent_id='$cid' ";
+		$q .= "AND #__vm_category.category_id=#__vm_category_xref.category_child_id ";
 		/**
 		if (!$perm->check("admin")) {
 			//This shows for the admin everything, but for normal vendors only their own AND shared categories by Max Milbers
-			$q .= "AND (#__jmart_category.vendor_id = '$vendor_id' OR #__jmart_category_xref.category_shared = 'Y') ";
+			$q .= "AND (#__vm_category.vendor_id = '$vendor_id' OR #__vm_category_xref.category_shared = 'Y') ";
 			
 		}
 		$GLOBALS['vmLogger']->debug('$hVendor_id='.$vendor_id);
 		*/
 		
-		$q .= "ORDER BY #__jmart_category.list_order, #__jmart_category.category_name ASC";
+		$q .= "ORDER BY #__vm_category.list_order, #__vm_category.category_name ASC";
 		$db->setQuery($q);   
 		$records = $db->loadObjectList();
 		

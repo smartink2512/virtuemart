@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: usergroup.class.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package JMart
+* @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 
@@ -55,7 +55,7 @@ class vmUserGroup extends vmAbstractObject {
 		$group_name = $db->f('group_name');
 		
 		if( in_array( $group_name, $this->_protected_groups ))  {
-			$vmLogger->err( sprintf(JText::_('JM_USER_GROUP_ERR_PROTECTED'),$group_name) );
+			$vmLogger->err( sprintf(JText::_('VM_USER_GROUP_ERR_PROTECTED'),$group_name) );
 			return false;
 		}
 		return $this->validate( $d );
@@ -72,20 +72,20 @@ class vmUserGroup extends vmAbstractObject {
 		global $perm, $vmLogger;
 		
 		if (empty($d['group_id'])) {
-			$vmLogger->err( JText::_('JM_USER_GROUP_DELETE_SELECT') );
+			$vmLogger->err( JText::_('VM_USER_GROUP_DELETE_SELECT') );
 			return False;
 		}
 		$db = $this->get_group( intval($d['group_id']) );
 		$group_name = $db->f('group_name');
 		if( in_array( $group_name, $this->_protected_groups ))  {
-			$vmLogger->err( sprintf(JText::_('JM_USER_GROUP_ERR_PROTECTED'),$group_name) );
+			$vmLogger->err( sprintf(JText::_('VM_USER_GROUP_ERR_PROTECTED'),$group_name) );
 			return false;
 		}
 		
 		$db = new ps_DB;
 		$db->query('SELECT user_id FROM #__{vm}_user_info WHERE FIND_IN_SET( \''.$group_name.'\', perms ) > 0' );
 		if( $db->next_record() ) {
-			$vmLogger->err( sprintf(JText::_('JM_USER_GROUP_ERR_STILLUSERS'),$group_name) );
+			$vmLogger->err( sprintf(JText::_('VM_USER_GROUP_ERR_STILLUSERS'),$group_name) );
 			return false;
 		}
 		return true;
@@ -114,7 +114,7 @@ class vmUserGroup extends vmAbstractObject {
 		$db->buildQuery( 'INSERT', $this->_table_name, $fields );
 		
 		if( $db->query() ) {
-			$vmLogger->info( JText::_('JM_USER_GROUP_ADDED') );
+			$vmLogger->info( JText::_('VM_USER_GROUP_ADDED') );
 		}
 		
 		$_REQUEST['function_id'] = $db->last_insert_id();
@@ -142,7 +142,7 @@ class vmUserGroup extends vmAbstractObject {
 						);
 		$db->buildQuery( 'UPDATE', $this->_table_name, $fields, 'WHERE '.$this->_key.'='.(int)$d[$this->_key] );
 		if( $db->query() ) {
-			$vmLogger->info( JText::_('JM_USER_GROUP_UPDATED') );
+			$vmLogger->info( JText::_('VM_USER_GROUP_UPDATED') );
 		}
 		return True;
 	}

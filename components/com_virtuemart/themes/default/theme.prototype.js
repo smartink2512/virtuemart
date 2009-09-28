@@ -25,7 +25,7 @@ function loadNewPage( el, url ) {
 	new Ajax.Request( url + '&only_page=1', opt );
 }
 
-function handleGoToCart() { document.location = 'index.php?option=com_jmart&page=shop.cart&product_id=' + formCartAdd.product_id.value ; }
+function handleGoToCart() { document.location = 'index.php?option=com_virtuemart&page=shop.cart&product_id=' + formCartAdd.product_id.value ; }
 
 function handleAddToCart( formId, parameters ) {
 	formCartAdd = document.getElementById( formId );
@@ -91,7 +91,7 @@ function updateMiniCarts() {
 			failure : function( hxr ) { alert( hxr.statusText ) }
 		}
 		option = { method: 'get', onSuccess: callbackCart.success,onFailure: callbackCart.failure }
-		new Ajax.Request('index2.php?only_page=1&page=shop.basket_short&option=com_jmart', option);
+		new Ajax.Request('index2.php?only_page=1&page=shop.basket_short&option=com_virtuemart', option);
 		
 }
 /**

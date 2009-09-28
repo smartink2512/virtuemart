@@ -2,10 +2,10 @@
 /**
  * Product discount table
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage Discount
  * @author RolandD
- * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
 // Check to ensure this file is included in Joomla!
@@ -14,7 +14,7 @@ defined('_JEXEC') or die();
 /**
  * Product discount class
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage Discount
  * @author RolandD
  */
@@ -36,7 +36,7 @@ class TableProduct_discount extends JTable
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db) {
-		parent::__construct('#__jmart_product_discount', 'discount_id', $db);
+		parent::__construct('#__vm_product_discount', 'discount_id', $db);
 	}
 }
 ?>

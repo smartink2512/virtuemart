@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: product.ajax_tools.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 global $ps_product;
 $task = strtolower( JRequest::getVar(  'task' ));
@@ -67,9 +67,9 @@ switch( $task ) {
 		}
 		$formName = 'priceForm';
 		$content = '<form id="'.$formName.'" method="post" name="priceForm">';
-		$content .= '<table class="adminform"><tr><td><strong>'.JText::_('JM_PRICE_FORM_PRICE').':</strong></td><td><input type="text" name="product_price" value="'.$price['product_price'].'" class="inputbox" id="product_price_'.$formName.'" size="11" /></td></tr>';
-		$content .= '<tr><td><strong>'.JText::_('JM_PRICE_FORM_GROUP').':</strong></td><td>'.$ps_shopper_group->list_shopper_groups('shopper_group_id', $shopper_group_id, 'onchange="reloadForm( \''.$product_id.'\', \'shopper_group_id\', this.options[this.selectedIndex].value);"' ).'</td></tr>';
-		$content .= '<tr><td><strong>'.JText::_('JM_PRICE_FORM_CURRENCY').':</strong></td><td>'.ps_html::getCurrencyList( 'product_currency', $currency_code, 'currency_code', 'style="max-width:120px;"' ).'</td></tr></table>';
+		$content .= '<table class="adminform"><tr><td><strong>'.JText::_('VM_PRICE_FORM_PRICE').':</strong></td><td><input type="text" name="product_price" value="'.$price['product_price'].'" class="inputbox" id="product_price_'.$formName.'" size="11" /></td></tr>';
+		$content .= '<tr><td><strong>'.JText::_('VM_PRICE_FORM_GROUP').':</strong></td><td>'.$ps_shopper_group->list_shopper_groups('shopper_group_id', $shopper_group_id, 'onchange="reloadForm( \''.$product_id.'\', \'shopper_group_id\', this.options[this.selectedIndex].value);"' ).'</td></tr>';
+		$content .= '<tr><td><strong>'.JText::_('VM_PRICE_FORM_CURRENCY').':</strong></td><td>'.ps_html::getCurrencyList( 'product_currency', $currency_code, 'currency_code', 'style="max-width:120px;"' ).'</td></tr></table>';
 		$content .= '<input type="hidden" name="product_price_id" value="'.$price['product_price_id'].'" id="product_price_id_'.$formName.'" />';
 		$content .= '<input type="hidden" name="product_id" value="'.$product_id.'" />';
 		$content .= '<input type="hidden" name="func" value="'. (empty($price['product_price_id']) ? 'productPriceAdd' : 'productPriceUpdate') . '" />';

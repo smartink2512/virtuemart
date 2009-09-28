@@ -3,25 +3,25 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: shopper.shopper_group_form.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 include_class("vendor");
 global $hVendor;
 $shopper_group_id = JRequest::getVar(  'shopper_group_id', null );
-$option = JRequest::getVar(  'option', 'com_jmart' );
+$option = JRequest::getVar(  'option', 'com_virtuemart' );
 //First create the object and let it print a form heading
-$formObj = &new formFactory( JText::_('JM_SHOPPER_GROUP_FORM_LBL') );
+$formObj = &new formFactory( JText::_('VM_SHOPPER_GROUP_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 
@@ -38,7 +38,7 @@ if (!empty($shopper_group_id)) {
 <table class="adminform">
     <tr>
       <td width="23%">
-        <strong><div align="right"><?php echo JText::_('JM_DEFAULT') ?> ?:</div></strong>
+        <strong><div align="right"><?php echo JText::_('VM_DEFAULT') ?> ?:</div></strong>
       </td>
       <td width="77%" >
 		<?php 
@@ -56,7 +56,7 @@ if (!empty($shopper_group_id)) {
     </tr>
     <tr>
       <td width="23%">
-        <strong><div align="right"><?php echo JText::_('JM_SHOPPER_GROUP_FORM_NAME') ?>:</div></strong>
+        <strong><div align="right"><?php echo JText::_('VM_SHOPPER_GROUP_FORM_NAME') ?>:</div></strong>
       </td>
       <td width="77%" > 
         <input type="text" class="inputbox" name="shopper_group_name" size="18" value="<?php $db->sp('shopper_group_name') ?>" />
@@ -64,7 +64,7 @@ if (!empty($shopper_group_id)) {
     </tr>
       <tr> 
         <td width="23%" class="labelcell">
-          <?php echo JText::_('JM_PRODUCT_FORM_VENDOR') ?>:
+          <?php echo JText::_('VM_PRODUCT_FORM_VENDOR') ?>:
         </td>
         <td width="77%" ><?php 
 		if( $perm->check("admin")) { 
@@ -77,26 +77,26 @@ if (!empty($shopper_group_id)) {
       </tr>
     <tr>
       <td width="23%"><strong><div align="right"><?php
-      echo JText::_('JM_ADMIN_CFG_PRICES_INCLUDE_TAX').": "; ?></div></strong>
+      echo JText::_('VM_ADMIN_CFG_PRICES_INCLUDE_TAX').": "; ?></div></strong>
       </td>
       <td width="77%" > 
         <input type="checkbox" class="inputbox" id="show_price_including_tax" name="show_price_including_tax" value="1" <?php echo $db->f('show_price_including_tax') == "1" ? "checked=\"checked\"" : ""  ?>/>
         &nbsp;
-        <?php echo vmToolTip( JText::_('JM_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN') ); ?>
+        <?php echo vmToolTip( JText::_('VM_ADMIN_CFG_PRICES_INCLUDE_TAX_EXPLAIN') ); ?>
       </td>
     </tr> 
     <tr>
       <td width="23%"><strong><div align="right"><?php
-      echo JText::_('JM_SHOPPER_GROUP_FORM_DISCOUNT').": "; ?></div></strong>
+      echo JText::_('VM_SHOPPER_GROUP_FORM_DISCOUNT').": "; ?></div></strong>
       </td>
       <td width="77%" > 
         <input type="text" class="inputbox" name="shopper_group_discount" size="18" value="<?php $db->sp('shopper_group_discount') ?>" />
-        <?php echo vmToolTip( JText::_('JM_SHOPPER_GROUP_FORM_DISCOUNT_TIP') ); ?>
+        <?php echo vmToolTip( JText::_('VM_SHOPPER_GROUP_FORM_DISCOUNT_TIP') ); ?>
       </td>
     </tr> 
     <tr> 
       <td width="23%" valign="top"><strong><div align="right">
-      <?php echo JText::_('JM_SHOPPER_GROUP_FORM_DESC') ?>:</div></strong>
+      <?php echo JText::_('VM_SHOPPER_GROUP_FORM_DESC') ?>:</div></strong>
       </td>
       <td width="77%" valign="top" >
       <?php

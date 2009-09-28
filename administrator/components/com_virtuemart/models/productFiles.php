@@ -1,6 +1,6 @@
 <?php
 /**
-* @package		JMart
+* @package		VirtueMart
 * @license		GNU/GPL, see LICENSE.php
 */
 
@@ -10,11 +10,11 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model');
 
 /**
- * Model for JMart Product Files
+ * Model for VirtueMart Product Files
  *
- * @package		JMart
+ * @package		VirtueMart
  */
-class JMartModelProductFiles extends JModel {
+class VirtueMartModelProductFiles extends JModel {
     
 	/* Private variables */
 	private $_total;
@@ -56,8 +56,8 @@ class JMartModelProductFiles extends JModel {
     	if (empty($this->_total)) {
     		$db = JFactory::getDBO();
     		$filter = '';
-            if (JRequest::getInt('product_id', 0) > 0) $filter .= ' WHERE `#__jmart_product_files`.`file_product_id` = '.JRequest::getInt('product_id');
-			$q = "SELECT COUNT(*) FROM `#__jmart_product_files` ".$filter;
+            if (JRequest::getInt('product_id', 0) > 0) $filter .= ' WHERE `#__vm_product_files`.`file_product_id` = '.JRequest::getInt('product_id');
+			$q = "SELECT COUNT(*) FROM `#__vm_product_files` ".$filter;
 			$db->setQuery($q);
 			$this->_total = $db->loadResult();
         }
@@ -80,11 +80,11 @@ class JMartModelProductFiles extends JModel {
     	$q = "SELECT file_id, file_is_image, file_product_id, file_extension, file_url, file_published AS published, file_name, file_title, 
     				IF (LOWER(attribute_name) = 'download', 1, 0) AS isdownloadable,
     				product_name
-    		FROM #__jmart_product_files 
-    		LEFT JOIN #__jmart_product_attribute
-    		ON #__jmart_product_files.file_product_id = #__jmart_product_attribute.product_id 
-    		LEFT JOIN #__jmart_product
-    		ON #__jmart_product_files.file_product_id = #__jmart_product.product_id ";
+    		FROM #__vm_product_files 
+    		LEFT JOIN #__vm_product_attribute
+    		ON #__vm_product_files.file_product_id = #__vm_product_attribute.product_id 
+    		LEFT JOIN #__vm_product
+    		ON #__vm_product_files.file_product_id = #__vm_product.product_id ";
     	$q .= $filter;
     	$q .= " ORDER BY file_is_image DESC";
     	$db->setQuery($q);
@@ -95,7 +95,7 @@ class JMartModelProductFiles extends JModel {
     	$q = "SELECT 'product_images' AS file_id, '1' AS file_is_image, product_id AS file_product_id, '1' AS published, 
     				product_full_image AS file_name, product_full_image AS file_title, '0' AS isdownloadable, product_name,
     				CONCAT('".IMAGEURL."','product/', product_full_image) AS file_url, SUBSTRING(product_full_image, -3, 3) AS file_extension
-    		FROM #__jmart_product 
+    		FROM #__vm_product 
     		WHERE LENGTH(product_full_image) > 0 ";
     	$q .= $filter;
     	$q .= " ORDER BY file_is_image DESC";
@@ -128,7 +128,7 @@ class JMartModelProductFiles extends JModel {
 			default: $type_sql = ''; break;
 		}
 		$q = "SELECT COUNT(file_id) AS files 
-			FROM #__jmart_product_files 
+			FROM #__vm_product_files 
 			WHERE file_product_id=".intval($pid).' '.$type_sql;
 		$db->setQuery($q);
 		$files = $db->loadResult();
@@ -173,12 +173,12 @@ class JMartModelProductFiles extends JModel {
 			$q = "SELECT file_id, file_is_image, file_product_id, file_extension, file_url, file_published AS published, file_name, file_title, 
 						IF (LOWER(attribute_name) = 'download', 1, 0) AS isdownloadable,
 						product_name
-				FROM #__jmart_product_files 
-				LEFT JOIN #__jmart_product_attribute
-				ON #__jmart_product_files.file_product_id = #__jmart_product_attribute.product_id 
-				LEFT JOIN #__jmart_product
-				ON #__jmart_product_files.file_product_id = #__jmart_product.product_id 
-				WHERE #__jmart_product.product_id = ".JRequest::getInt('product_id');
+				FROM #__vm_product_files 
+				LEFT JOIN #__vm_product_attribute
+				ON #__vm_product_files.file_product_id = #__vm_product_attribute.product_id 
+				LEFT JOIN #__vm_product
+				ON #__vm_product_files.file_product_id = #__vm_product.product_id 
+				WHERE #__vm_product.product_id = ".JRequest::getInt('product_id');
 			$db->setQuery($q);
 			return $db->loadObject();
 		}

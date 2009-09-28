@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: admin.usergroup_list.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 require_once( CLASSPATH . "pageNavigation.class.php" );
@@ -46,7 +46,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('JM_USERGROUP_LIST_LBL'), JM_ADMIN_ICON_URL.'icon_48/jm_shoppers_48.png', "admin", "usergroup_list");
+$listObj->writeSearchHeader(JText::_('VM_USERGROUP_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/jm_shoppers_48.png', "admin", "usergroup_list");
 
 // start the list table
 $listObj->startTable();
@@ -54,8 +54,8 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "",
-					JText::_('JM_USERGROUP_NAME') => "width=\"40%\"",
-					JText::_('JM_USERGROUP_LEVEL') => "width=\"20%\"",
+					JText::_('VM_USERGROUP_NAME') => "width=\"40%\"",
+					JText::_('VM_USERGROUP_LEVEL') => "width=\"20%\"",
 					JText::_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );

@@ -5,22 +5,22 @@
 * It expects three parameters:
 * 
 * gzip (can be 1 or 0, for yes or no; default: 0)
-* subdir[INDEX] (relative directory from /components/com_jmart/js)
+* subdir[INDEX] (relative directory from /components/com_virtuemart/js)
 * file[INDEX] (filename only)
 * where INDEX is the actual number of the file to be included, so you can include multiple scripts at a time
 * 
 * @version $Id: fetchscript.php 1510 2008-08-08 19:11:42Z soeren_nb $
-* @package JMart
+* @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2006-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 /**

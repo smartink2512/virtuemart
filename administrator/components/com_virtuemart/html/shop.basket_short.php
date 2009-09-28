@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: shop.basket_short.php 1785 2009-05-13 07:06:50Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 * 
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 
@@ -31,7 +31,7 @@ $flypage = JRequest::getVar( "flypage", null);
 $Itemid = JRequest::getVar( "Itemid", null);
 $option = JRequest::getVar( "option", null);
 $page =JRequest::getVar(  'page', null );
-$tpl = new $GLOBALS['JM_THEMECLASS']();
+$tpl = new $GLOBALS['VM_THEMECLASS']();
 $cart = $_SESSION['cart'];
 $saved_cart = @$_SESSION['savedcart'];
 $auth = $_SESSION['auth'];
@@ -118,10 +118,10 @@ if( !empty($_SESSION['coupon_discount']) ) {
 }
 if(!$empty_cart) {
 	if ($amount > 1) {
-		$total_products = $amount ." ". JText::_('JM_PRODUCTS_LBL');
+		$total_products = $amount ." ". JText::_('VM_PRODUCTS_LBL');
 	}
 	else {
-		$total_products = $amount ." ". JText::_('JM_PRODUCT_LBL');
+		$total_products = $amount ." ". JText::_('VM_PRODUCT_LBL');
 	}
 
 
@@ -132,17 +132,17 @@ $delete_cart = '';
 if(@$_SESSION['vmEnableEmptyCart'] && !@$_SESSION['vmMiniCart']) {
 	// Output the empty cart button
 	//echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.$option.'/js/wz_tooltip.js' );
-	$delete_cart = "<a href=\"".$_SERVER['SCRIPT_NAME'] . "?page=shop.cart_reset&amp;option=com_jmart&amp;option2=$option&amp;product_id=$prodid&amp;category_id=$catid&amp;return=$page&amp;flypage=$flypage&amp;Itemid=$Itemid\" title=\"". JText::_('JM_EMPTY_YOUR_CART') ." \">
-					<img src=\"". $mosConfig_live_site ."/images/cancel_f2.png\" width=\"12\" border=\"0\" style=\"float: right;vertical-align: middle;\" alt=\"". JText::_('JM_EMPTY_YOUR_CART') ." \" />
+	$delete_cart = "<a href=\"".$_SERVER['SCRIPT_NAME'] . "?page=shop.cart_reset&amp;option=com_virtuemart&amp;option2=$option&amp;product_id=$prodid&amp;category_id=$catid&amp;return=$page&amp;flypage=$flypage&amp;Itemid=$Itemid\" title=\"". JText::_('VM_EMPTY_YOUR_CART') ." \">
+					<img src=\"". $mosConfig_live_site ."/images/cancel_f2.png\" width=\"12\" border=\"0\" style=\"float: right;vertical-align: middle;\" alt=\"". JText::_('VM_EMPTY_YOUR_CART') ." \" />
       </a>"; 
-	$html1 = vmToolTip(JText::_('JM_EMPTY_YOUR_CART_TIP'), JText::_('JM_EMPTY_YOUR_CART'),'','',$delete_cart,true);
+	$html1 = vmToolTip(JText::_('VM_EMPTY_YOUR_CART_TIP'), JText::_('VM_EMPTY_YOUR_CART'),'','',$delete_cart,true);
 	$delete_cart = $html1;
 
 }
 
 $href = $sess->url($mm_action_url."index.php?page=shop.cart");
 $href2 = $sess->url($mm_action_url."index2.php?page=shop.cart", true);
-$text = JText::_('JM_CART_SHOW');
+$text = JText::_('VM_CART_SHOW');
 if( @$_SESSION['jmUseGreyBox'] ) {
 	$show_cart = vmCommonHTML::getGreyboxPopUpLink( $href2, $text, '', $text, '', 500, 600, $href );
 }
@@ -159,7 +159,7 @@ $tpl->set('total_price', @$total_price);
 $tpl->set('show_cart', @$show_cart);
 $saved_cart_text = "";
 if($saved_cart['idx'] != 0) {
-	$saved_cart_text = "<br style=\"clear:both;\"/><a href=\"".str_replace("Itemid=26","Itemid=34",$sess->url($mm_action_url."index.php?page=shop.savedcart"))."\" class=\"savedCart\">".JText::_('JM_RECOVER_CART')."</a>";
+	$saved_cart_text = "<br style=\"clear:both;\"/><a href=\"".str_replace("Itemid=26","Itemid=34",$sess->url($mm_action_url."index.php?page=shop.savedcart"))."\" class=\"savedCart\">".JText::_('VM_RECOVER_CART')."</a>";
 }
 $tpl->set('saved_cart',$saved_cart_text);
 echo $tpl->fetch( 'common/minicart.tpl.php');

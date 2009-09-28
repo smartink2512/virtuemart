@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: zw_waiting_list.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package JMart
+* @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 /**
@@ -37,19 +37,19 @@ class zw_waiting_list {
 		$q .= "product_id='" . $d["product_id"] . "' AND notified='0'";
 		$db->query($q);
 		if ($db->next_record()) {
-			$vmLogger->err( JText::_('JM_WAITING_LIST_ERR_ALREADY') );
+			$vmLogger->err( JText::_('VM_WAITING_LIST_ERR_ALREADY') );
 			return False;
 		}
 		if (!$d["notify_email"]) {
-			$vmLogger->err( JText::_('JM_WAITING_LIST_ERR_EMAIL_ENTER') );
+			$vmLogger->err( JText::_('VM_WAITING_LIST_ERR_EMAIL_ENTER') );
 			return False;
 		}
 		if (!vmValidateEmail($d["notify_email"])) {
-			$vmLogger->err( JText::_('JM_WAITING_LIST_ERR_EMAIL_NOTVALID') );
+			$vmLogger->err( JText::_('VM_WAITING_LIST_ERR_EMAIL_NOTVALID') );
 			return False;
 		}
 		if (!$d["product_id"]) {
-			$vmLogger->err( JText::_('JM_WAITING_LIST_ERR_PRODUCT') );
+			$vmLogger->err( JText::_('VM_WAITING_LIST_ERR_PRODUCT') );
 			return False;
 		}
 		return True;
@@ -59,15 +59,15 @@ class zw_waiting_list {
 		global $vmLogger;
 
 		if (!$d["notify_email"]) {
-			$vmLogger->err( JText::_('JM_WAITING_LIST_DELETE_SELECT') );
+			$vmLogger->err( JText::_('VM_WAITING_LIST_DELETE_SELECT') );
 			return False;
 		}
 		if (!vmValidateEmail($d["notify_email"])) {
-			$vmLogger->err( JText::_('JM_WAITING_LIST_ERR_EMAIL_ENTER') );
+			$vmLogger->err( JText::_('VM_WAITING_LIST_ERR_EMAIL_ENTER') );
 			return False;
 		}
 		if (!$d["product_id"]) {
-			$vmLogger->err( JText::_('JM_WAITING_LIST_DELETE_ERR_PRODUCT') );
+			$vmLogger->err( JText::_('VM_WAITING_LIST_DELETE_ERR_PRODUCT') );
 			return False;
 		}
 		return True;

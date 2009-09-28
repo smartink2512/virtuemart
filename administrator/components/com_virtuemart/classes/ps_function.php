@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_function.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 
@@ -62,7 +62,7 @@ class ps_function extends vmAbstractObject {
 		global $perm, $vmLogger;
 		
 		if (empty($d["function_id"])) {
-			$vmLogger->err( JText::_('JM_FUNCTION_ERR_DELETE_SELECT') );
+			$vmLogger->err( JText::_('VM_FUNCTION_ERR_DELETE_SELECT') );
 			return False;
 		}
 		else {
@@ -78,7 +78,7 @@ class ps_function extends vmAbstractObject {
 					$function_perms = explode(',', $db->f('function_perms') );
 					foreach( $module_perms as $permisson ) {
 						if( !$perm->hashigherPerms( $permisson )) {
-							$err_msg = JText::_('JM_FUNCTION_ERR_DELETE_NOTALLOWED_MOD');
+							$err_msg = JText::_('VM_FUNCTION_ERR_DELETE_NOTALLOWED_MOD');
 							$err_msg = str_replace('{module_perms}',$db->f('module_perms'),$err_msg);
 							$err_msg = str_replace('{perms}',$_SESSION['auth']['perms'],$err_msg);
 							$vmLogger->err( $err_msg );
@@ -87,7 +87,7 @@ class ps_function extends vmAbstractObject {
 					}
 					foreach( $function_perms as $permisson ) {
 						if( !$perm->hashigherPerms( $permisson )) {
-							$err_msg = JText::_('JM_FUNCTION_ERR_DELETE_NOTALLOWED_FUNC');
+							$err_msg = JText::_('VM_FUNCTION_ERR_DELETE_NOTALLOWED_FUNC');
 							$err_msg = str_replace('{function_perms}',$db->f('function_perms'),$err_msg);
 							$err_msg = str_replace('{perms}',$_SESSION['auth']['perms'],$err_msg);
 							$vmLogger->err( $err_msg );
@@ -105,7 +105,7 @@ class ps_function extends vmAbstractObject {
 				$function_perms = explode(',', $db->f('function_perms') );
 				foreach( $module_perms as $permisson ) {
 					if( !$perm->hashigherPerms( $permisson )) {
-						$err_msg = JText::_('JM_FUNCTION_ERR_DELETE_NOTALLOWED_MOD');
+						$err_msg = JText::_('VM_FUNCTION_ERR_DELETE_NOTALLOWED_MOD');
 						$err_msg = str_replace('{module_perms}',$db->f('module_perms'),$err_msg);
 						$err_msg = str_replace('{perms}',$_SESSION['auth']['perms'],$err_msg);
 						$vmLogger->err( $err_msg );
@@ -114,7 +114,7 @@ class ps_function extends vmAbstractObject {
 				}
 				foreach( $function_perms as $permisson ) {
 					if( !$perm->hashigherPerms( $permisson )) {
-						$err_msg = JText::_('JM_FUNCTION_ERR_DELETE_NOTALLOWED_FUNC');
+						$err_msg = JText::_('VM_FUNCTION_ERR_DELETE_NOTALLOWED_FUNC');
 						$err_msg = str_replace('{function_perms}',$db->f('function_perms'),$err_msg);
 						$err_msg = str_replace('{perms}',$_SESSION['auth']['perms'],$err_msg);
 						$vmLogger->err( $err_msg );
@@ -273,15 +273,15 @@ class ps_function extends vmAbstractObject {
 				}
 				else {
 					$vmLogger->error( "ps_function.php getFuncPermissions get_function no permission");
-					$error = JText::_('JM_PAGE_403').'. ';
-					$error .= JText::_('JM_FUNC_NO_EXEC') . $func;
+					$error = JText::_('VM_PAGE_403').'. ';
+					$error .= JText::_('VM_FUNC_NO_EXEC') . $func;
 					$vmLogger->err( $error );
 					return false;
 				}
 			}
 			else {
-				$error = JText::_('JM_FUNC_NOT_REG').'. ';
-				$error .= $func . JText::_('JM_FUNC_ISNO_REG') ;
+				$error = JText::_('VM_FUNC_NOT_REG').'. ';
+				$error .= $func . JText::_('VM_FUNC_ISNO_REG') ;
 				$vmLogger->err( $error );
 				return false;
 			}

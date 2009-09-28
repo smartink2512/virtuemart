@@ -9,10 +9,10 @@ AdminMenuHelper::startAdminArea();
 			<tr>
 			<td><?php 
 				if ($this->file_type_selected == 'product_images') {
-					echo JText::_('JM_FILES_FORM_CURRENT_FULL_IMAGE').':<br />'.JText::_('JM_FILES_FORM_CURRENT_THUMB_IMAGE').':';
+					echo JText::_('VM_FILES_FORM_CURRENT_FULL_IMAGE').':<br />'.JText::_('VM_FILES_FORM_CURRENT_THUMB_IMAGE').':';
 				}
 				else {
-					echo JText::_('JM_FILES_FORM_CURRENT_FILE').':';
+					echo JText::_('VM_FILES_FORM_CURRENT_FILE').':';
 				}
 				?>
 			</td>
@@ -24,69 +24,69 @@ AdminMenuHelper::startAdminArea();
 			</tr>
 			<?php }?>
 	<tr> 
-		<td class="labelcell"><?php echo JText::_('JM_FILES_LIST_FILENAME') ?>:</td>
+		<td class="labelcell"><?php echo JText::_('VM_FILES_LIST_FILENAME') ?>:</td>
 		<td> 
 			<input type="file" class="inputbox" name="file_upload" size="75" />
 		</td>
 	</tr>
 	<tr id="filename2">
-		<td class="labelcell"><?php echo JText::_('JM_FILES_LIST_FILENAME') ?>:</td>
+		<td class="labelcell"><?php echo JText::_('VM_FILES_LIST_FILENAME') ?>:</td>
 		<td><?php echo $this->filesselect; ?></td>
 	</tr>
 	<tr> 
-		<td class="labelcell"><?php echo JText::_('JM_FILES_LIST_FILETYPE') ?>:</td>
+		<td class="labelcell"><?php echo JText::_('VM_FILES_LIST_FILETYPE') ?>:</td>
 		<td><?php echo $this->file_types; ?></td>
 	</tr>
 	<tr> 
-		<td class="labelcell"><?php echo JText::_('JM_FILES_FORM_UPLOAD_TO') ?>:</td>
+		<td class="labelcell"><?php echo JText::_('VM_FILES_FORM_UPLOAD_TO') ?>:</td>
 		<td> 
 			<input type="radio" class="inputbox" name="upload_dir" id="upload_dir0" checked="checked" value="IMAGEPATH" />
-			<label for="upload_dir0"><?php echo JText::_('JM_FILES_FORM_UPLOAD_IMAGEPATH') ?></label><br/><br/>
+			<label for="upload_dir0"><?php echo JText::_('VM_FILES_FORM_UPLOAD_IMAGEPATH') ?></label><br/><br/>
 			<input type="radio" class="inputbox" name="upload_dir" id="upload_dir1" value="FILEPATH" />
-			<label for="upload_dir1"><?php echo JText::_('JM_FILES_FORM_UPLOAD_OWNPATH') ?></label>:
+			<label for="upload_dir1"><?php echo JText::_('VM_FILES_FORM_UPLOAD_OWNPATH') ?></label>:
 			&nbsp;&nbsp;&nbsp;<strong><?php echo JPATH_SITE; ?></strong>&nbsp;<input type="text" class="inputbox" name="file_path" size="25" value="<?php echo DS.'media'.DS; ?>" /><br/><br/>
 			<input type="radio" class="inputbox" name="upload_dir" id="upload_dir2" value="DOWNLOADPATH" />
-			<label for="upload_dir2"><?php echo JText::_('JM_FILES_FORM_UPLOAD_DOWNLOADPATH') ?></label>
+			<label for="upload_dir2"><?php echo JText::_('VM_FILES_FORM_UPLOAD_DOWNLOADPATH') ?></label>
 		</td>
 	</tr>
 	<tr> 
 		<td class="labelcell">
-			<label for="file_resize_fullimage"><?php echo JText::_('JM_FILES_FORM_RESIZE_IMAGE'); ?></label>
+			<label for="file_resize_fullimage"><?php echo JText::_('VM_FILES_FORM_RESIZE_IMAGE'); ?></label>
 		</td>
 		<td> 
 			<input type="checkbox" class="inputbox" id="file_resize_fullimage" name="file_resize_fullimage" checked="checked" value="1" />
 			<div id="fullsizes">&nbsp;&nbsp;&nbsp;
-			<?php echo JText::_('JM_PRODUCT_FORM_HEIGHT');?>: <input type="text" name="fullimage_height" value="500" class="inputbox" />&nbsp;&nbsp;&nbsp;
-			<?php echo JText::_('JM_PRODUCT_FORM_WIDTH');?>: <input type="text" name="fullimage_width" value="500" class="inputbox" /></div>
+			<?php echo JText::_('VM_PRODUCT_FORM_HEIGHT');?>: <input type="text" name="fullimage_height" value="500" class="inputbox" />&nbsp;&nbsp;&nbsp;
+			<?php echo JText::_('VM_PRODUCT_FORM_WIDTH');?>: <input type="text" name="fullimage_width" value="500" class="inputbox" /></div>
 		</td>
 	</tr>
 	<tr> 
       <td class="labelcell">
-      		<label for="file_create_thumbnail"><?php echo JText::_('JM_FILES_FORM_AUTO_THUMBNAIL') ?></label>
+      		<label for="file_create_thumbnail"><?php echo JText::_('VM_FILES_FORM_AUTO_THUMBNAIL') ?></label>
       	</td>
       <td> 
         <input type="checkbox" class="inputbox" id="file_create_thumbnail" name="file_create_thumbnail" checked="checked" value="1" />
         <div id="thumbsizes">&nbsp;&nbsp;&nbsp;
-        <?php echo JText::_('JM_PRODUCT_FORM_HEIGHT');?>: <input type="text" name="thumbimage_height" value="<?php echo PSHOP_IMG_HEIGHT ?>" class="inputbox" />&nbsp;&nbsp;&nbsp;
-        <?php echo JText::_('JM_PRODUCT_FORM_WIDTH');?>: <input type="text" name="thumbimage_width" value="<?php echo PSHOP_IMG_WIDTH ?>" class="inputbox" /></div>
+        <?php echo JText::_('VM_PRODUCT_FORM_HEIGHT');?>: <input type="text" name="thumbimage_height" value="<?php echo PSHOP_IMG_HEIGHT ?>" class="inputbox" />&nbsp;&nbsp;&nbsp;
+        <?php echo JText::_('VM_PRODUCT_FORM_WIDTH');?>: <input type="text" name="thumbimage_width" value="<?php echo PSHOP_IMG_WIDTH ?>" class="inputbox" /></div>
         </td>
     </tr>
 	<tr> 
 		<td class="labelcell">
-			<label for="file_published"><?php echo JText::_('JM_FILES_FORM_FILE_PUBLISHED') ?></label>
+			<label for="file_published"><?php echo JText::_('VM_FILES_FORM_FILE_PUBLISHED') ?></label>
 		</td>
 		<td> 
 			<input type="checkbox" class="inputbox" id="file_published" name="file_published" value="1" <?php if ($this->productfile->published) echo "checked=\"checked\"" ?> size="16" />
 		</td>
 	</tr>
 	<tr> 
-		<td class="labelcell"><?php echo JText::_('JM_FILES_FORM_FILE_TITLE') ?>:</td>
+		<td class="labelcell"><?php echo JText::_('VM_FILES_FORM_FILE_TITLE') ?>:</td>
 		<td> 
 			<input type="text" class="inputbox" name="file_title" size="32" value="<?php echo $this->productfile->file_title; ?>" />
 			</td>
 	</tr>
 	<tr> 
-		<td class="labelcell"><?php echo JText::_('JM_FILES_FORM_FILE_URL') ?>:</td>
+		<td class="labelcell"><?php echo JText::_('VM_FILES_FORM_FILE_URL') ?>:</td>
 		<td> 
 			<input type="text" class="inputbox" name="file_url" value="<?php $this->productfile->file_url ?>" size="75" />
 		</td>
@@ -98,7 +98,7 @@ AdminMenuHelper::startAdminArea();
 	if (!is_null($this->productfile->file_id)) echo '<input type="hidden" name="product_id" value="'.$this->productfile->file_id.'" />';
 ?>
 <input type="hidden" name="task" value="" />
-<input type="hidden" name="option" value="com_jmart" />
+<input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="view" value="media" />
 <input type="hidden" name="boxchecked" value="0" />

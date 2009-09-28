@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: shop.ask.tpl.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package JMart
+* @package VirtueMart
 * @subpackage themes
 * @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 
@@ -22,7 +22,7 @@ if ( $set == 0 ) { // This is the enquiry form!
 	$validate = vmIsJoomla( '1.5' ) ? JUtility::getHash( $mainframe->getCfg( 'db' ) ) : mosHash( $mainframe->getCfg( 'db' ) );
 	?>
 	<br />
-	<a class="button" href="<?php echo $product_link ?>"><?php echo JText::_('JM_RETURN_TO_PRODUCT') ?></a>
+	<a class="button" href="<?php echo $product_link ?>"><?php echo JText::_('VM_RETURN_TO_PRODUCT') ?></a>
 	<br /><br />
 	
 	<form action="<?php echo $mm_action_url ?>index.php" method="post" name="emailForm" id="emailForm">
@@ -40,7 +40,7 @@ if ( $set == 0 ) { // This is the enquiry form!
 	<input type="hidden" name="set" value="1" />	
 	<input type="hidden" name="func" value="productAsk" />
 	<input type="hidden" name="page" value="shop.ask" />
-	<input type="hidden" name="option" value="com_jmart" />
+	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="flypage" value="<?php echo $flypage ?>" />
 	<input type="hidden" name="Itemid" value="<?php echo $Itemid ?>" />
 	
@@ -63,12 +63,12 @@ if ( $set == 0 ) { // This is the enquiry form!
 }
 else { // if set==1 then we have sent the email to the vendor and say thank you here.
   ?>
-   <img src="<?php echo JM_THEMEURL ?>images/button_ok.png" height="48" width="48" align="center" alt="Success" border="0" />
+   <img src="<?php echo VM_THEMEURL ?>images/button_ok.png" height="48" width="48" align="center" alt="Success" border="0" />
    <?php echo JText::_('THANK_MESSAGE') ?>
  
   <br /><br />
   
-  <a class="button" href="<?php echo $product_link ?>"><?php echo JText::_('JM_RETURN_TO_PRODUCT') ?></a>
+  <a class="button" href="<?php echo $product_link ?>"><?php echo JText::_('VM_RETURN_TO_PRODUCT') ?></a>
   
   <?php 
 }

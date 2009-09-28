@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
  *
  * @version $Id: ps_product_discount.php 1760 2009-05-03 22:58:57Z Aravot $
- * @package JMart
+ * @package VirtueMart
  * @subpackage classes
  * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * JMart is free software. This version may have been modified pursuant
+ * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+ * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
  *
- * http://joomlacode.org/gf/project/jmart/
+ * http://virtuemart.org
  */
 
 /**
@@ -32,16 +32,16 @@ class ps_product_discount {
 		
 		
 		if( ! $d["amount"] ) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_DISCOUNT_ERR_AMOUNT') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_DISCOUNT_ERR_AMOUNT') );
 			return False ;
 		}
 		if( $d["is_percent"] == "" ) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_DISCOUNT_ERR_TYPE') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_DISCOUNT_ERR_TYPE') );
 			return False ;
 		}
 		
 		if( !empty($d['end_date']) && ( $d['end_date'] < $d['start_date'] ) ) {		
-			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_DISCOUNT_START_END_DATE') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_DISCOUNT_START_END_DATE') );
 			return False;
 		}
 		
@@ -58,20 +58,20 @@ class ps_product_discount {
 		
 		
 		if( empty($d["amount"]) ) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_DISCOUNT_ERR_AMOUNT') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_DISCOUNT_ERR_AMOUNT') );
 			return False ;
 		}
 		if( $d["is_percent"] == "" ) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_DISCOUNT_ERR_TYPE') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_DISCOUNT_ERR_TYPE') );
 			return False ;
 		}
 		if( ! $d["discount_id"] ) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_DISCOUNT_ERR_UPDATE') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_DISCOUNT_ERR_UPDATE') );
 			return False ;
 		}
 		
 		if( !empty($d['end_date']) && ( $d['end_date'] < $d['start_date'] ) ) {		
-			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_DISCOUNT_START_END_DATE') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_DISCOUNT_START_END_DATE') );
 			return False;
 		}
 		
@@ -88,7 +88,7 @@ class ps_product_discount {
 		
 		
 		if( ! $discount_id ) {
-			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_DISCOUNT_ERR_DELETE') );
+			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_DISCOUNT_ERR_DELETE') );
 			return False ;
 		}
 		
@@ -136,7 +136,7 @@ class ps_product_discount {
 		$db->buildQuery('INSERT', '#__{vm}_product_discount', $fields );
 		$db->query() ;
 		
-		$GLOBALS['vmLogger']->info( JText::_('JM_PRODUCT_DISCOUNT_ADDED') );
+		$GLOBALS['vmLogger']->info( JText::_('VM_PRODUCT_DISCOUNT_ADDED') );
 		$_REQUEST['discount_id'] = $db->last_insert_id() ;
 		
 		return True ;
@@ -183,7 +183,7 @@ class ps_product_discount {
 		$db->buildQuery('UPDATE', '#__{vm}_product_discount', $fields, 'WHERE discount_id=' .(int)$d["discount_id"] );
 		$db->query() ;
 		
-		$GLOBALS['vmLogger']->info( JText::_('JM_PRODUCT_DISCOUNT_UPDATED') );
+		$GLOBALS['vmLogger']->info( JText::_('VM_PRODUCT_DISCOUNT_UPDATED') );
 		
 		return True ;
 	}
@@ -237,7 +237,7 @@ class ps_product_discount {
 		
 		if( $db->num_rows() > 0 ) {
 			$html = "<select name=\"product_discount_id\" class=\"inputbox\" onchange=\"updateDiscountedPrice();\">\n" ;
-			$html .= "<option id=\"*1\" value=\"0\">" . JText::_('JM_INFO_MSG_VAT_ZERO_LBL') . "</option>\n" ;
+			$html .= "<option id=\"*1\" value=\"0\">" . JText::_('VM_INFO_MSG_VAT_ZERO_LBL') . "</option>\n" ;
 			while( $db->next_record() ) {
 				if( $db->f( "is_percent" ) ) {
 					$id = "*" . (100 - $db->f( "amount" )) / 100 ;
@@ -254,11 +254,11 @@ class ps_product_discount {
 				}
 				$html .= "</option>\n" ;
 			}
-			$html .= "<option value=\"override\">".JText::_('JM_PRODUCT_DISCOUNT_OVERRIDE')."</option>\n" ;
+			$html .= "<option value=\"override\">".JText::_('VM_PRODUCT_DISCOUNT_OVERRIDE')."</option>\n" ;
 			$html .= "</select>\n" ;
 		} else {
 			$html = "<input type=\"hidden\" name=\"product_discount_id\" value=\"0\" />\n
-      <a href=\"" . $_SERVER['PHP_SELF'] . "?option=$option&page=product.product_discount_form\" target=\"_blank\">" . JText::_('JM_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP') . "</a>" ;
+      <a href=\"" . $_SERVER['PHP_SELF'] . "?option=$option&page=product.product_discount_form\" target=\"_blank\">" . JText::_('VM_PRODUCT_DISCOUNT_ADDDISCOUNT_TIP') . "</a>" ;
 		}
 		return $html ;
 	}

@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: store.payment_method_list.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2009 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 require_once( CLASSPATH . "pageNavigation.class.php" );
@@ -54,7 +54,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('JM_PAYMENT_METHOD_LIST_LBL'), JM_ADMIN_ICON_URL.'icon_48/jm_payment_48.png', $modulename, "payment_method_list");
+$listObj->writeSearchHeader(JText::_('VM_PAYMENT_METHOD_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/jm_payment_48.png', $modulename, "payment_method_list");
 
 // start the list table
 $listObj->startTable();
@@ -62,12 +62,12 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					JText::_('JM_PAYMENT_METHOD_LIST_NAME') => '',
+					JText::_('VM_PAYMENT_METHOD_LIST_NAME') => '',
 					'Element' => '',
-					JText::_('JM_PAYMENT_METHOD_LIST_DISCOUNT') => '',
-					JText::_('JM_PAYMENT_METHOD_LIST_SHOPPER_GROUP') => '',
-					JText::_('JM_PAYMENT_METHOD_LIST_ENABLE_PROCESSOR') => '',
-					JText::_('JM_ISSHIP_LIST_PUBLISH_LBL') => '',
+					JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT') => '',
+					JText::_('VM_PAYMENT_METHOD_LIST_SHOPPER_GROUP') => '',
+					JText::_('VM_PAYMENT_METHOD_LIST_ENABLE_PROCESSOR') => '',
+					JText::_('VM_ISSHIP_LIST_PUBLISH_LBL') => '',
 					JText::_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
@@ -104,19 +104,19 @@ while ($db->next_record()) {
 	$type = $db->f("type");
 	switch($type) { 
 		case "Y": 
-			$tmp_cell = JText::_('JM_PAYMENT_FORM_USE_PP');
+			$tmp_cell = JText::_('VM_PAYMENT_FORM_USE_PP');
 			break;
 		case "N":
-			$tmp_cell = JText::_('JM_PAYMENT_FORM_AO');
+			$tmp_cell = JText::_('VM_PAYMENT_FORM_AO');
 			break;
 		case "B":
-			$tmp_cell = JText::_('JM_PAYMENT_FORM_BANK_DEBIT');
+			$tmp_cell = JText::_('VM_PAYMENT_FORM_BANK_DEBIT');
 			break;
 		case "P":
-			$tmp_cell = JText::_('JM_PAYMENT_FORM_FORMBASED');
+			$tmp_cell = JText::_('VM_PAYMENT_FORM_FORMBASED');
 			break;
 		default:
-			$tmp_cell = JText::_('JM_PAYMENT_FORM_CC');
+			$tmp_cell = JText::_('VM_PAYMENT_FORM_CC');
 			break;
 	}
 	$listObj->addCell( $tmp_cell );

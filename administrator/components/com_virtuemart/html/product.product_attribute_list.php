@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: product.product_attribute_list.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 
@@ -25,9 +25,9 @@ $return_args = JRequest::getVar( 'return_args');
 $product_id = JRequest::getVar( 'product_id', 0);
 
 if (!empty($product_parent_id)) {
-  $title = JText::_('JM_ATTRIBUTE_LIST_LBL'). " - Product:";
+  $title = JText::_('VM_ATTRIBUTE_LIST_LBL'). " - Product:";
 } else {
-  $title = JText::_('JM_ATTRIBUTE_LIST_LBL'). " - Item:";
+  $title = JText::_('VM_ATTRIBUTE_LIST_LBL'). " - Item:";
 }
 $url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=$product_id&product_parent_id=$product_parent_id";
 $title .= "<a href=\"" . $sess->url($url) . "\">". $ps_product->get_field($product_id,"product_name") ."</a>"; 
@@ -48,8 +48,8 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$db->num_rows().")\" />" => 'width="5%"',
-					JText::_('JM_ATTRIBUTE_LIST_NAME') => 'width="30%"',
-					JText::_('JM_ATTRIBUTE_LIST_ORDER') => 'width="45%"',
+					JText::_('VM_ATTRIBUTE_LIST_NAME') => 'width="30%"',
+					JText::_('VM_ATTRIBUTE_LIST_ORDER') => 'width="45%"',
 					JText::_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );

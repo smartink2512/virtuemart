@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: reportbasic.index.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 $nh_report = new nh_report();
@@ -36,18 +36,18 @@ $i=0;
 
 ?>
 <!-- BEGIN body -->
-&nbsp;&nbsp;&nbsp;<img src="<?php echo JM_ADMIN_ICON_URL ?>icon_48/jm_report_48.png" border="0" />&nbsp;&nbsp;&nbsp;
-<span class="sectionname"><?php echo JText::_('JM_REPORTBASIC_MOD') ?></span><br /><br />
+&nbsp;&nbsp;&nbsp;<img src="<?php echo VM_ADMIN_ICON_URL ?>icon_48/jm_report_48.png" border="0" />&nbsp;&nbsp;&nbsp;
+<span class="sectionname"><?php echo JText::_('VM_REPORTBASIC_MOD') ?></span><br /><br />
     <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
     <input type="hidden" name="page" value="reportbasic.index" />
-    <input type="hidden" name="option" value="com_jmart" />
+    <input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="pshop_mode" value="admin" />
     <table class="adminform" width="100%" border="0" cellspacing="0" cellpadding="1">
         <tr>
-          <td><?php echo JText::_('JM_VIEW') ?></td>
+          <td><?php echo JText::_('VM_VIEW') ?></td>
           <td><input type="checkbox" name="show_products" id="show_products" value="show_products"<?php
           if (!empty($show_products)) { echo ' checked="checked"'; } ?> />
-          <label for="show_products"><?php echo JText::_('JM_RB_INDIVIDUAL') ?></label> &nbsp; &nbsp; 
+          <label for="show_products"><?php echo JText::_('VM_RB_INDIVIDUAL') ?></label> &nbsp; &nbsp; 
           </td>
         </tr>
 
@@ -57,14 +57,14 @@ $i=0;
           </td>
         </tr>
         <tr>
-          <td><?php echo JText::_('JM_RB_INTERVAL_TITLE'); ?></td>
+          <td><?php echo JText::_('VM_RB_INTERVAL_TITLE'); ?></td>
 
           <td><input type="radio" id="byMonth" name="interval" value="byMonth" <?php if($interval=="byMonth") echo "checked='checked'" ?> />
-          <label for="byMonth"><?php echo JText::_('JM_RB_INTERVAL_MONTHLY_TITLE') ?></label> &nbsp; &nbsp; 
+          <label for="byMonth"><?php echo JText::_('VM_RB_INTERVAL_MONTHLY_TITLE') ?></label> &nbsp; &nbsp; 
           <input type="radio" name="interval" id="byWeek" value="byWeek" <?php if($interval=="byWeek") echo "checked='checked'" ?> />
-          <label for="byWeek"><?php echo JText::_('JM_RB_INTERVAL_WEEKLY_TITLE'); ?></label> &nbsp; &nbsp;
+          <label for="byWeek"><?php echo JText::_('VM_RB_INTERVAL_WEEKLY_TITLE'); ?></label> &nbsp; &nbsp;
           <input type="radio" name="interval" id="byDay" value="byDay" <?php if($interval=="byDay") echo "checked='checked'" ?> />
-          <label for="byDay"><?php echo JText::_('JM_RB_INTERVAL_DAILY_TITLE'); ?></label></td>
+          <label for="byDay"><?php echo JText::_('VM_RB_INTERVAL_DAILY_TITLE'); ?></label></td>
         </tr>
 
         <tr>
@@ -74,13 +74,13 @@ $i=0;
         </tr>
 
         <tr>
-          <td><?php echo JText::_('JM_SHOW') ?></td>
+          <td><?php echo JText::_('VM_SHOW') ?></td>
 
           <td>
-          <input type="submit" class="button" name="thisMonth" value="<?php echo JText::_('JM_RB_THISMONTH_BUTTON'); ?>" /> &nbsp; 
-          <input type="submit" class="button" name="lastMonth" value="<?php echo JText::_('JM_RB_LASTMONTH_BUTTON'); ?>" /> &nbsp; 
-          <input type="submit" class="button" name="last60" value="<?php echo JText::_('JM_RB_LAST60_BUTTON'); ?>" /> &nbsp;
-          <input type="submit" class="button" name="last90" value="<?php echo JText::_('JM_RB_LAST90_BUTTON'); ?>" />
+          <input type="submit" class="button" name="thisMonth" value="<?php echo JText::_('VM_RB_THISMONTH_BUTTON'); ?>" /> &nbsp; 
+          <input type="submit" class="button" name="lastMonth" value="<?php echo JText::_('VM_RB_LASTMONTH_BUTTON'); ?>" /> &nbsp; 
+          <input type="submit" class="button" name="last60" value="<?php echo JText::_('VM_RB_LAST60_BUTTON'); ?>" /> &nbsp;
+          <input type="submit" class="button" name="last90" value="<?php echo JText::_('VM_RB_LAST90_BUTTON'); ?>" />
           </td>
         </tr>
 
@@ -91,7 +91,7 @@ $i=0;
         </tr>
 
         <tr valign="top">
-          <td width="100"><?php echo JText::_('JM_RB_START_DATE_TITLE'); ?></td>
+          <td width="100"><?php echo JText::_('VM_RB_START_DATE_TITLE'); ?></td>
 
           <td><?php
           $nh_report->make_date_popups("s", $selected_begin );
@@ -99,7 +99,7 @@ $i=0;
         </tr>
 
         <tr>
-          <td width="100"><?php echo JText::_('JM_RB_END_DATE_TITLE'); ?></td>
+          <td width="100"><?php echo JText::_('VM_RB_END_DATE_TITLE'); ?></td>
 
           <td><?php $nh_report->make_date_popups("e", $selected_end ); ?></td>
         </tr>
@@ -107,7 +107,7 @@ $i=0;
         <tr>
           <td>&nbsp;</td>
 
-          <td><input type="submit" class="button" name="sbmt" value="<?php echo JText::_('JM_RB_SHOW_SEL_RANGE') ?>" /> </td>
+          <td><input type="submit" class="button" name="sbmt" value="<?php echo JText::_('VM_RB_SHOW_SEL_RANGE') ?>" /> </td>
         </tr>
       </table>
     </form>
@@ -230,19 +230,19 @@ if (!empty($show_products)) {
   $dbis->query($r);
  ?>
     <h4><?php 
-    echo JText::_('JM_RB_REPORT_FOR') ." ";
+    echo JText::_('VM_RB_REPORT_FOR') ." ";
     echo date("M j, Y", $start_date)." --&gt; ". date("M j, Y", $end_date); 
     ?></h4>
 
     <table class="adminlist">
       <tr>
-        <th><?php echo JText::_('JM_RB_DATE') ?></th>
+        <th><?php echo JText::_('VM_RB_DATE') ?></th>
 
-        <th><?php echo JText::_('JM_RB_ORDERS') ?></th>
+        <th><?php echo JText::_('VM_RB_ORDERS') ?></th>
 
-        <th><?php echo JText::_('JM_RB_TOTAL_ITEMS') ?></th>
+        <th><?php echo JText::_('VM_RB_TOTAL_ITEMS') ?></th>
 
-        <th><?php echo JText::_('JM_RB_REVENUE') ?></th>
+        <th><?php echo JText::_('VM_RB_REVENUE') ?></th>
       </tr>
 <?php
   while ($db->next_record()) {
@@ -268,12 +268,12 @@ if (!empty($show_products)) {
     <tr><td>&nbsp;</td><td colspan="2">
       <table class="adminlist">
         <tr>
-          <td colspan="3" align="left"><h3><?php echo JText::_('JM_RB_PRODLIST') ?></h3></td>
+          <td colspan="3" align="left"><h3><?php echo JText::_('VM_RB_PRODLIST') ?></h3></td>
         </tr>
         <tr bgcolor="#ffffff">
           <th>#</th>
-          <th><?php echo JText::_('JM_PRODUCT_NAME_TITLE') ?></th>
-          <th><?php echo JText::_('JM_CART_QUANTITY') ?></th>
+          <th><?php echo JText::_('VM_PRODUCT_NAME_TITLE') ?></th>
+          <th><?php echo JText::_('VM_CART_QUANTITY') ?></th>
         </tr>
       <?php
         $i = 1;

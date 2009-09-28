@@ -3,22 +3,22 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: store.creditcard_form.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 
 $creditcard_id = JRequest::getVar(  'creditcard_id', "");
-$option = empty($option)?JRequest::getVar(  'option', 'com_jmart'):$option;
+$option = empty($option)?JRequest::getVar(  'option', 'com_virtuemart'):$option;
 
 if (!empty($creditcard_id)) {
     $q = "SELECT * FROM #__{vm}_creditcard WHERE creditcard_id='$creditcard_id'";
@@ -27,7 +27,7 @@ if (!empty($creditcard_id)) {
 }
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( JText::_('JM_CREDITCARD_FORM_LBL') );
+$formObj = &new formFactory( JText::_('VM_CREDITCARD_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 
@@ -37,13 +37,13 @@ $formObj->startForm();
       <td colspan="2">&nbsp;</td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo JText::_('JM_CREDITCARD_NAME') ?>:</td>
+      <td width="24%" align="right"><?php echo JText::_('VM_CREDITCARD_NAME') ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="creditcard_name" value="<?php $db->sp("creditcard_name") ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="24%" align="right"><?php echo JText::_('JM_CREDITCARD_CODE') ?>:</td>
+      <td width="24%" align="right"><?php echo JText::_('VM_CREDITCARD_CODE') ?>:</td>
       <td width="76%"> 
         <input type="text" class="inputbox" name="creditcard_code" value="<?php $db->sp("creditcard_code") ?>">
       </td>

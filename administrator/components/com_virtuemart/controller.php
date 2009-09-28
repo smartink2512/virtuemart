@@ -1,16 +1,16 @@
 <?php
 /**
- * @package	    JMart
+ * @package	    VirtueMart
  */
 
 jimport('joomla.application.component.controller');
 
 /**
- * JMart default administrator controller
+ * VirtueMart default administrator controller
  *
- * @package		JMart
+ * @package		VirtueMart
  */
-class JMartController extends JController
+class VirtueMartController extends JController
 {
 		
 	/**
@@ -21,13 +21,13 @@ class JMartController extends JController
 	function display()
 	{								    
 	    $document = JFactory::getDocument();
-	    $document->addStyleSheet(JURI::base().'components/com_jmart/assets/css/jmart.css');
+	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
 		$viewName = JRequest::getVar('view', '');
 		$viewType = $document->getType();
 		$view =& $this->getView($viewName, $viewType);
 
 		// Push a model into the view					
-		$model =& $this->getModel( 'jmart' );
+		$model =& $this->getModel( 'virtuemart' );
 		if (!JError::isError( $model )) {
 			$view->setModel( $model, true );
 		}	    
@@ -36,7 +36,7 @@ class JMartController extends JController
 		    parent::display();	
 		}
 		else {
-		    include( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_jmart'.DS.'admin.vm.php' );	    
+		    include( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'admin.vm.php' );	    
 		}
 	}
 	
@@ -49,7 +49,7 @@ class JMartController extends JController
         $productId = JRequest::getInt('product_id', 0);    
 	    
 	    
-        $newURL = 'index2.php?option=com_jmart&page=product.product_price_list&product_id=' . $productId;
+        $newURL = 'index2.php?option=com_virtuemart&page=product.product_price_list&product_id=' . $productId;
         $newURL .= '&product_parent_id=' . $productParentId . '&limitstart=' . $limitstart . '&return_args=&no_menu=' . $nomenu;
 	    $this->setRedirect($newURL);	    	    	    
 	}
@@ -62,7 +62,7 @@ class JMartController extends JController
         $productParentId = JRequest::getInt('product_parent_id', 0);
         $productId = JRequest::getInt('product_id', 0);        
 	    
-        $newURL = 'index2.php?option=com_jmart&page=product.product_product_type_form&product_id=' . $productId;
+        $newURL = 'index2.php?option=com_virtuemart&page=product.product_product_type_form&product_id=' . $productId;
         $newURL .= '&product_parent_id=' . $productParentId . '&limitstart=' . $limitstart . '&return_args=&no_menu=' . $nomenu;
 	    $this->setRedirect($newURL);	    	    	    
 	}	
@@ -75,7 +75,7 @@ class JMartController extends JController
         $productParentId = JRequest::getInt('product_parent_id', 0);
         $productId = JRequest::getInt('product_id', 0);        
 	    
-        $newURL = 'index2.php?option=com_jmart&page=product.product_form&product_id=';
+        $newURL = 'index2.php?option=com_virtuemart&page=product.product_form&product_id=';
         $newURL .= '&product_parent_id=' . $productId . '&limitstart=' . $limitstart . '&return_args=&no_menu=' . $nomenu;
 	    $this->setRedirect($newURL);	    	    	    
 	}	
@@ -88,7 +88,7 @@ class JMartController extends JController
         $productParentId = JRequest::getInt('product_parent_id', 0);
         $productId = JRequest::getInt('product_id', 0);        
 	    
-        $newURL = 'index2.php?option=com_jmart&page=product.product_attribute_form&product_id='. $productId;
+        $newURL = 'index2.php?option=com_virtuemart&page=product.product_attribute_form&product_id='. $productId;
         $newURL .= '&limitstart=' . $limitstart . '&return_args=&no_menu=' . $nomenu;
 	    $this->setRedirect($newURL);	    	    	    
 	}		
@@ -101,7 +101,7 @@ class JMartController extends JController
         $productParentId = JRequest::getInt('product_parent_id', 0);
         $productId = JRequest::getInt('product_id', 0);        
 	    
-        $newURL = 'index2.php?option=com_jmart&page=product.product_form&product_id=' . $productParentId;
+        $newURL = 'index2.php?option=com_virtuemart&page=product.product_form&product_id=' . $productParentId;
         $newURL .= '&limitstart=' . $limitstart . '&return_args=&no_menu=' . $nomenu;
 	    $this->setRedirect($newURL);	    	    	    
 	}	
@@ -112,7 +112,7 @@ class JMartController extends JController
 	 */
 	function redirectToCountryList()
 	{      die('heres');
-        $newURL = 'index2.php?option=com_jmart&page=admin.country_list';
+        $newURL = 'index2.php?option=com_virtuemart&page=admin.country_list';
 	    $this->setRedirect($newURL);	    	    	    
 	}
 	
@@ -124,7 +124,7 @@ class JMartController extends JController
 	{
 		$limitstart = JRequest::getInt('limitstart', 0);
 	    $countryId = JRequest::getVar('country_id', '');
-        $newURL = 'index2.php?option=com_jmart&page=admin.country_state_list&country_id=' . $countryId;
+        $newURL = 'index2.php?option=com_virtuemart&page=admin.country_state_list&country_id=' . $countryId;
         $newURL .= '&limitstart=' . $limitstart . '&no_menu=' . $nomenu;
 	    $this->setRedirect($newURL);	    	    	    
 	}	
@@ -136,7 +136,7 @@ class JMartController extends JController
 	function redirectToCountryStateForm()
 	{
 		$countryId = JRequest::getVar('country_id', '');
-        $newURL = 'index2.php?option=com_jmart&page=admin.country_state_form&country_id=' . $countryId;;
+        $newURL = 'index2.php?option=com_virtuemart&page=admin.country_state_form&country_id=' . $countryId;;
 	    $this->setRedirect($newURL);	    	    	    
 	}
 	
@@ -148,7 +148,7 @@ class JMartController extends JController
 	{    
 	    $pageName = JRequest::getVar('page', '');
 	    $pageName = str_replace('list','form', $pageName);  
-        $newURL = 'index2.php?option=com_jmart&page=' . $pageName;
+        $newURL = 'index2.php?option=com_virtuemart&page=' . $pageName;
 	    $this->setRedirect($newURL);	    	    	    
 	}	
 		

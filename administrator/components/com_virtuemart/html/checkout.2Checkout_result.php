@@ -4,17 +4,17 @@
 * 2Checkout Order Confirmation Handler
 *
 * @version $Id: checkout.2Checkout_result.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );   
 
@@ -25,7 +25,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * and $_REQUEST includes $_POST as well as $_GET
 **/
 if( !isset( $_REQUEST["x_invoice_num"] ) || empty( $_REQUEST["x_invoice_num"] ))
-  echo JText::_('JM_CHECKOUT_ORDERIDNOTSET');
+  echo JText::_('VM_CHECKOUT_ORDERIDNOTSET');
 else {
   
   /* Load the 2Checkout Configuration File */ 
@@ -51,8 +51,8 @@ else {
   /* If both hashes are the same, the post should come from 2Checkout */
   if ($compare_hash1 != $compare_hash2) {
         ?>
-        <img src="<?php echo JM_THEMEURL ?>images/button_cancel.png" align="middle" alt="<?php echo JText::_('JM_CHECKOUT_FAILURE'); ?>" border="0" />
-        <span class="message"><?php echo JText::_('JM_PAYMENT_ERROR') ?></span><?php
+        <img src="<?php echo VM_THEMEURL ?>images/button_cancel.png" align="middle" alt="<?php echo JText::_('VM_CHECKOUT_FAILURE'); ?>" border="0" />
+        <span class="message"><?php echo JText::_('VM_PAYMENT_ERROR') ?></span><?php
   }
   else {
         $qv = "SELECT order_id, order_number FROM #__{vm}_orders ";
@@ -71,8 +71,8 @@ else {
             $ps_order->order_status_update($d);
             
     ?> 
-            <img src="<?php echo JM_THEMEURL ?>images/button_ok.png" align="middle" alt="<?php echo JText::_('JM_CHECKOUT_SUCCESS'); ?>" border="0" />
-            <h2><?php echo JText::_('JM_PAYMENT_TRANSACTION_SUCCESS') ?></h2>
+            <img src="<?php echo VM_THEMEURL ?>images/button_ok.png" align="middle" alt="<?php echo JText::_('VM_CHECKOUT_SUCCESS'); ?>" border="0" />
+            <h2><?php echo JText::_('VM_PAYMENT_TRANSACTION_SUCCESS') ?></h2>
         <?php
         }
         else {
@@ -85,15 +85,15 @@ else {
             $ps_order->order_status_update($d);
             
     ?> 
-            <img src="<?php echo JM_THEMEURL ?>images/button_cancel.png" align="middle" alt="<?php echo JText::_('JM_CHECKOUT_FAILURE'); ?>" border="0" />
-            <h2><?php echo JText::_('JM_PAYMENT_ERROR') ?></h2>
+            <img src="<?php echo VM_THEMEURL ?>images/button_cancel.png" align="middle" alt="<?php echo JText::_('VM_CHECKOUT_FAILURE'); ?>" border="0" />
+            <h2><?php echo JText::_('VM_PAYMENT_ERROR') ?></h2>
         <?php
         } 
   }
   ?>
 <br />
-<p><a href="<?php @$sess->purl( SECUREURL."index.php?option=com_jmart&page=account.order_details&order_id=".$d['order_id'] ) ?>">
-   <?php echo JText::_('JM_ORDER_LINK') ?></a>
+<p><a href="<?php @$sess->purl( SECUREURL."index.php?option=com_virtuemart&page=account.order_details&order_id=".$d['order_id'] ) ?>">
+   <?php echo JText::_('VM_ORDER_LINK') ?></a>
 </p>
 <?php
 }

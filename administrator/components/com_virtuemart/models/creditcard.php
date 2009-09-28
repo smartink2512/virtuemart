@@ -2,10 +2,10 @@
 /**
  * Data module for shop credit cards
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage CreditCard
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
 // no direct access
@@ -16,11 +16,11 @@ jimport( 'joomla.application.component.model');
 /**
  * Model class for shop credit cards
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage CreditCard 
  * @author Rick Glunt  
  */
-class JMartModelCreditcard extends JModel
+class VirtueMartModelCreditcard extends JModel
 {    
 	/** @var integer Primary key */
     var $_id;          
@@ -95,7 +95,7 @@ class JMartModelCreditcard extends JModel
 	function _getTotal() 
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `creditcard_id` FROM `#__jmart_creditcard`';	  		
+			$query = 'SELECT `creditcard_id` FROM `#__vm_creditcard`';	  		
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -189,8 +189,8 @@ class JMartModelCreditcard extends JModel
 	 */
 	function getCreditCards()
 	{		
-		$query = 'SELECT * FROM `#__jmart_creditcard` ';
-		$query .= 'ORDER BY `#__jmart_creditcard`.`creditcard_id`';
+		$query = 'SELECT * FROM `#__vm_creditcard` ';
+		$query .= 'ORDER BY `#__vm_creditcard`.`creditcard_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}

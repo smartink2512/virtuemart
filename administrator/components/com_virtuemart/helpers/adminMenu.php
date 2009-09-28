@@ -3,12 +3,12 @@
  * Administrator menu helper class
  *
  * This class was derived from the show_image_in_imgtag.php and imageTools.class.php files in VM.  It provides some
- * image functions that are used throughout the JMart shop.
+ * image functions that are used throughout the VirtueMart shop.
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage Helpers
  * @author Rick Glunt
- * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 JMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
  */
 
 // Check to ensure this file is included in Joomla!
@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
 /**
  * Administration ribbon menu helper
  *
- * @package		JMart
+ * @package		VirtueMart
  * @subpackage Helpers
  * @author Rick Glunt 
  */
@@ -69,12 +69,12 @@ class AdminMenuHelper
         $document	= &JFactory::getDocument();
         $moduleId   = JRequest::getInt('module_id', 0);
     	
-        $document->addScript(JURI::base().'components/com_jmart/assets/js/admin_menu/admin_menu.js');
-        $document->addScript(JURI::base().'components/com_jmart/assets/js/admin_menu/nifty.js');
-        $document->addScript(JURI::base().'components/com_jmart/assets/js/admin_menu/fat.js');
-        $document->addScript(JURI::base().'components/com_jmart/assets/js/admin_menu/functions.js');
+        $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/admin_menu.js');
+        $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/nifty.js');
+        $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/fat.js');
+        $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/functions.js');
 
-        JHTML::stylesheet( 'admin_menu.css', JURI::base().'components/com_jmart/assets/css/' );        
+        JHTML::stylesheet( 'admin_menu.css', JURI::base().'components/com_virtuemart/assets/css/' );        
         
         $menuItems = adminMenuHelper::_getAdminMenu($moduleId);
         
@@ -86,9 +86,9 @@ class AdminMenuHelper
                 <div class="sidemenu-pad">
 		            <center>
 		            <?php
-		            echo JHTML::_('link', 'http://joomlacode.org/gf/project/jmart/', JHTML::_('image', JURI::base().'components/com_jmart/assets/images/icon_48/jm_logo_48.png', 'J!Mart Cart Logo'), array('target' => '_blank'));
+		            echo JHTML::_('link', 'http://virtuemart.org', JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/icon_48/jm_logo_48.png', 'J!Mart Cart Logo'), array('target' => '_blank'));
 		            ?>
-			        <h2><?php echo JText::_('JM_ADMIN')	?></h2>
+			        <h2><?php echo JText::_('VM_ADMIN')	?></h2>
 		            </center>
 		            <div class="status-divider">
 		            </div>
@@ -111,13 +111,13 @@ class AdminMenuHelper
 				                    }
 				                    else {
 				                    	if ($link['view']) {			                       				                      
-				                        	$url = 'index.php?option=com_jmart&view='.$link['view'];
+				                        	$url = 'index.php?option=com_virtuemart&view='.$link['view'];
 					                    	$url .= $link['task'] ? "&task=".$link['task'] : '';
 					                    	// $url .= $link['extra'] ? $link['extra'] : '';
 					                    	$url = strncmp($link['view'], 'http', 4 ) === 0 ? $link['view'] : $url;
 					                	}
 					                    else {
-				                        	$url = 'index2.php?option=com_jmart&pshop_mode=admin&'.$link['link'];
+				                        	$url = 'index2.php?option=com_virtuemart&pshop_mode=admin&'.$link['link'];
 				                    	}
 				                    }
 					                ?>
@@ -132,8 +132,8 @@ class AdminMenuHelper
 		            } ?>
 		            </div>
 	                <div style="text-align:center;">
-	                    <h5><?php echo JText::_('JM_YOUR_VERSION') ?></h5>
-	                    <a href="http://joomlacode.org/gf/project/jmart//index2.php?option=com_versions&amp;catid=1&amp;myVersion=<?php echo @$VMVERSION->RELEASE ?>" onclick="javascript:void window.open(this.href, 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no'); return false;" title="<?php echo JText::_('JM_VERSIONCHECK_TITLE') ?>" target="_blank">
+	                    <h5><?php echo JText::_('VM_YOUR_VERSION') ?></h5>
+	                    <a href="http://virtuemart.org/index2.php?option=com_versions&amp;catid=1&amp;myVersion=<?php echo @$VMVERSION->RELEASE ?>" onclick="javascript:void window.open(this.href, 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no'); return false;" title="<?php echo JText::_('VM_VERSIONCHECK_TITLE') ?>" target="_blank">
 	                    <?php echo $VMVERSION->PRODUCT .'&nbsp;' . $VMVERSION->RELEASE .'&nbsp;'. $VMVERSION->DEV_STATUS
 	                    ?>
 	                    </a>
@@ -176,8 +176,8 @@ class AdminMenuHelper
 		}
 					
 	    $query = 'SELECT `jmmod`.`module_id`, `module_name`, `module_perms`, `id`, `name`, `link`, `depends`, `icon_class`, `view`, `task`'; 
-		$query .= 'FROM `#__jmart_module` jmmod ';
-		$query .= 'LEFT JOIN `#__jmart_menu_admin` item ON `jmmod`.`module_id`=`item`.`module_id` ';
+		$query .= 'FROM `#__vm_module` jmmod ';
+		$query .= 'LEFT JOIN `#__vm_menu_admin` item ON `jmmod`.`module_id`=`item`.`module_id` ';
 		$query .= 'WHERE  ' . implode(' AND ', $filter ) . ' ';
 		$query .= 'ORDER BY `jmmod`.`list_order`, `item`.`ordering`';	
 	    $db->setQuery($query);
@@ -185,7 +185,7 @@ class AdminMenuHelper
 
 		for ($i=0, $n=count( $result ); $i < $n; $i++) {
 			$row =& $result[$i];
-		    $menuArr[$row->module_name]['title'] = 'JM_'.strtoupper($row->module_name).'_MOD';
+		    $menuArr[$row->module_name]['title'] = 'VM_'.strtoupper($row->module_name).'_MOD';
 			$menuArr[$row->module_name]['items'][] = array('name' => $row->name,
 														   'link' => $row->link,
 														   'depends' => $row->depends,

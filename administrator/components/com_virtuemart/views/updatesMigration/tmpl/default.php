@@ -7,22 +7,22 @@ AdminMenuHelper::startAdminArea();
 <?php
 
 		echo $this->pane->startPane("versionCheckPane");
-		echo $this->pane->startPanel( JText::_('JM_PRODUCT_FORM_PRODUCT_INFO_LBL'), 'versionCheckPane' );
+		echo $this->pane->startPanel( JText::_('VM_PRODUCT_FORM_PRODUCT_INFO_LBL'), 'versionCheckPane' );
 		
-		$correctTableLink = JROUTE::_('index.php?option=com_jmart&controller=updatesMigration&task=correctTable&view=updatesMigration');
+		$correctTableLink = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=correctTable&view=updatesMigration');
 ?>
       	
 		<table class="adminlist">
 		  <tr>
-		    <th class="title"><?php echo JText::_('JM_UPDATE_CHECK_VERSION_INSTALLED'); ?></th>
-		    <th class="title"><?php echo JText::_('JM_UPDATE_CHECK_LATEST_VERSION'); ?></th>
+		    <th class="title"><?php echo JText::_('VM_UPDATE_CHECK_VERSION_INSTALLED'); ?></th>
+		    <th class="title"><?php echo JText::_('VM_UPDATE_CHECK_LATEST_VERSION'); ?></th>
 		  </tr>
 		  <tr>
 		    <td style="color:grey;font-size:18pt;text-align:center;"><?php echo $this->JmVersion ?></td>
 		    <td id="updateversioncontainer" >
-		    	<img src="<?php echo JM_THEMEURL ?>images/indicator.gif" align="left" alt="<?php echo JText::_('JM_UPDATE_CHECK_CHECKING'); ?>" style="display:none;" id="checkingindicator" />
-		    	<input name="checkbutton" id="checkbutton" type="button" value="<?php echo JText::_('JM_UPDATE_CHECK_CHECKNOW'); ?>" onclick="performUpdateCheck();" style="<?php echo $checkbutton_style ?>font-weight:bold;" />
-		    	<input name="downloadbutton" id="downloadbutton" type="submit" value="<?php echo JText::_('JM_UPDATE_CHECK_DLUPDATE'); ?>" style="<?php echo $downloadbutton_style ?>font-weight:bold;" />
+		    	<img src="<?php echo VM_THEMEURL ?>images/indicator.gif" align="left" alt="<?php echo JText::_('VM_UPDATE_CHECK_CHECKING'); ?>" style="display:none;" id="checkingindicator" />
+		    	<input name="checkbutton" id="checkbutton" type="button" value="<?php echo JText::_('VM_UPDATE_CHECK_CHECKNOW'); ?>" onclick="performUpdateCheck();" style="<?php echo $checkbutton_style ?>font-weight:bold;" />
+		    	<input name="downloadbutton" id="downloadbutton" type="submit" value="<?php echo JText::_('VM_UPDATE_CHECK_DLUPDATE'); ?>" style="<?php echo $downloadbutton_style ?>font-weight:bold;" />
 		    	<span id="versioncheckresult"><?php echo JRequest::getVar( 'vmLatestVersion' ) ?></span>
 		    </td>
 		    
@@ -69,8 +69,8 @@ AdminMenuHelper::startAdminArea();
 		function performUpdateCheck() {
 			form = document.adminForm;
 			$("checkingindicator").setStyle("display", "inline");
-			form.checkbutton.value="<?php echo JText::_('JM_UPDATE_CHECK_CHECKING'); ?>";
-			var vRequest = new Json.Remote("<?php echo $mosConfig_live_site ?>/administrator/index2.php?option=com_jmart&task=checkForUpdate&page=admin.ajax_tools&only_page=1&no_html=1", 
+			form.checkbutton.value="<?php echo JText::_('VM_UPDATE_CHECK_CHECKING'); ?>";
+			var vRequest = new Json.Remote("<?php echo $mosConfig_live_site ?>/administrator/index2.php?option=com_virtuemart&task=checkForUpdate&page=admin.ajax_tools&only_page=1&no_html=1", 
 												{
 													method: 'get',
 													onComplete: handleUpdateCheckResult
@@ -86,7 +86,7 @@ AdminMenuHelper::startAdminArea();
 				
 				if( isNaN( o.version ) ) {
 					$("checkbutton").setStyle("display", "");
-					$("checkbutton").value= "<?php echo JText::_('JM_UPDATE_CHECK_CHECKNOW' ); ?>";
+					$("checkbutton").value= "<?php echo JText::_('VM_UPDATE_CHECK_CHECKNOW' ); ?>";
 				}
 				else if( o.version == "<?php echo number_format($VMVERSION->RELEASE, 2 ) ?>" ) {
 					$("versioncheckresult").setStyle( "color", "green" );
@@ -99,13 +99,13 @@ AdminMenuHelper::startAdminArea();
 				}
 				$("versioncheckresult").setStyle( "font-size", "18pt" );
 			} else { 
-				form.checkbutton.value="<?php echo JText::_('JM_UPDATE_CHECK_CHECK'); ?>";
+				form.checkbutton.value="<?php echo JText::_('VM_UPDATE_CHECK_CHECK'); ?>";
 			}
 		}
 		//-->
 		</script>
 	<input type="hidden" name="controller" value="updatesMigration" />
-	<input type="hidden" name="option" value="com_jmart" />
+	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="view" value="updatesMigration" />       
 </form>     
 

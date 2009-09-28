@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: vmAbstractObject.class.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package JMart
+* @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2009 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 /**
@@ -94,13 +94,13 @@ class vmAbstractObject {
 		global $vmLogger, $db;
 		
 		if( !isset( $d[$this->_key])) {
-			$vmLogger->err( JText::_('JM_ABSTRACTOBJECT_VALIDATE_ERR_ID') );
+			$vmLogger->err( JText::_('VM_ABSTRACTOBJECT_VALIDATE_ERR_ID') );
 			return false;
 		}
 		$valid = true;
 		foreach( $this->_required_fields as $field ) {
 			if( empty($d[$field]) && $d[$field]!=="0" && $d[$field]!==0) {
-				$vmLogger->err( sprintf(JText::_('JM_ABSTRACTOBJECT_VALIDATE_ERR_FIELD'),$field) );
+				$vmLogger->err( sprintf(JText::_('VM_ABSTRACTOBJECT_VALIDATE_ERR_FIELD'),$field) );
 				$valid = false;
 			}
 		}
@@ -113,7 +113,7 @@ class vmAbstractObject {
 			$db->query($q);
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
-				$vmLogger->err( sprintf(JText::_('JM_ABSTRACTOBJECT_VALIDATE_NOTUNIQUE'),$d[$field],$field) );
+				$vmLogger->err( sprintf(JText::_('VM_ABSTRACTOBJECT_VALIDATE_NOTUNIQUE'),$d[$field],$field) );
 				$valid = false;
 			}
 		}
@@ -183,7 +183,7 @@ class vmAbstractObject {
 				$field_name = 'id';
 		}
 		else {
-			$vmLogger->err( JText::_('JM_ABSTRACTOBJECT_REORDER_ERR_TYPE') );
+			$vmLogger->err( JText::_('VM_ABSTRACTOBJECT_REORDER_ERR_TYPE') );
 			return false;
 		}
 		return $this->changeOrdering( $table_name, $order_field_name, $field_name, $entity_name, $where, $table2_name );
@@ -459,7 +459,7 @@ class vmAbstractObject {
 			$has_vendor = false;
 		}
 		else {
-			$vmLogger->err( JText::_('JM_ABSTRACTOBJECT_PUBLISH_ERR_TYPE') );
+			$vmLogger->err( JText::_('VM_ABSTRACTOBJECT_PUBLISH_ERR_TYPE') );
 			return false;
 		}
 		
@@ -514,7 +514,7 @@ class vmAbstractObject {
 				break;
 		}
 		
-		$infomessage = JText::_('JM_ABSTRACTOBJECT_TASK_OK');
+		$infomessage = JText::_('VM_ABSTRACTOBJECT_TASK_OK');
 		$infomessage = str_replace('{field_name}',$field_name,$infomessage);
 		$infomessage = str_replace('{set}',$set,$infomessage);
 		$infomessage = str_replace('{task}',$tasklang,$infomessage);

@@ -18,34 +18,34 @@ $search_type = JRequest::getVar('search_type', 'product');
 $category_id = JRequest::getInt('category_id', false);
 ?>
 <div align="right">
-	<form action="index.php" method="post" name="adminForm" id="adminForm"><?php echo JText::_('JM_PRODUCT_LIST_SEARCH_BY_DATE') ?>&nbsp;
+	<form action="index.php" method="post" name="adminForm" id="adminForm"><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE') ?>&nbsp;
 		<select class="inputbox" name="search_type">
-		<option value="product"><?php echo JText::_('JM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT') ?></option>
-		<option value="price" <?php echo $search_type == "price" ? 'selected="selected"' : ''; ?>><?php echo JText::_('JM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE') ?></option>
-		<option value="withoutprice" <?php echo $search_type == "withoutprice" ? 'selected="selected"' : ''; ?>><?php echo JText::_('JM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE') ?></option>
+		<option value="product"><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT') ?></option>
+		<option value="price" <?php echo $search_type == "price" ? 'selected="selected"' : ''; ?>><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE') ?></option>
+		<option value="withoutprice" <?php echo $search_type == "withoutprice" ? 'selected="selected"' : ''; ?>><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE') ?></option>
 		</select>
 		<select class="inputbox" name="search_order">
-		<option value="&lt;"><?php echo JText::_('JM_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE') ?></option>
-		<option value="&gt;" <?php echo $search_order == ">" ? 'selected="selected"' : ''; ?>><?php echo JText::_('JM_PRODUCT_LIST_SEARCH_BY_DATE_AFTER') ?></option>
+		<option value="&lt;"><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE') ?></option>
+		<option value="&gt;" <?php echo $search_order == ">" ? 'selected="selected"' : ''; ?>><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_AFTER') ?></option>
 		</select>
-		<input type="hidden" name="option" value="com_jmart" />
+		<input type="hidden" name="option" value="com_virtuemart" />
 		<input class="inputbox" type="text" size="15" name="search_date" value="<?php echo JRequest::getVar('search_date', $nowstring) ?>" />
 		<input type="hidden" name="page" value="product.product_list" />
-		<input class="button" type="submit" name="search" value="<?php echo JText::_('JM_SEARCH_TITLE')?>" />
+		<input class="button" type="submit" name="search" value="<?php echo JText::_('VM_SEARCH_TITLE')?>" />
 	<br/>
-	<?php echo JText::_('JM_PRODUCT_LIST_SEARCH_BY_NAME') ?>&nbsp;
+	<?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_NAME') ?>&nbsp;
 		<input type="text" value="" name="keyword" size="25" class="inputbox" />
 		<input type="hidden" name="option" value="<?php echo $option; ?>" />
 		<input type="hidden" name="page" value="product.product_list" />
-		<input class="button" type="submit" name="search" value="<?php echo JText::_('JM_SEARCH_TITLE')?>" />
+		<input class="button" type="submit" name="search" value="<?php echo JText::_('VM_SEARCH_TITLE')?>" />
 </div>
-<?php echo JText::_('JM_FILTER') ?>:
- <select class="inputbox" id="category_id" name="category_id" onchange="window.location='<?php echo $_SERVER['PHP_SELF'] ?>?option=com_jmart&view=product&task=product&category_id='+document.getElementById('category_id').options[selectedIndex].value;">
+<?php echo JText::_('VM_FILTER') ?>:
+ <select class="inputbox" id="category_id" name="category_id" onchange="window.location='<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&view=product&task=product&category_id='+document.getElementById('category_id').options[selectedIndex].value;">
 	<option value=""><?php echo JText::_('SEL_CATEGORY') ?></option>
 	<?php echo $this->category_tree; ?>
 </select>
 <?php 
-echo JHTML::tooltip(JText::_('JM_PRODUCT_LIST_REORDER_TIP'), JText::_('TIP'), 'tooltip.png', '', '', false);
+echo JHTML::tooltip(JText::_('VM_PRODUCT_LIST_REORDER_TIP'), JText::_('TIP'), 'tooltip.png', '', '', false);
 $productlist = $this->productlist;
 $pagination = $this->pagination;
 ?>
@@ -54,23 +54,23 @@ $pagination = $this->pagination;
 	<tr>
 		<td>#</td>
 		<td><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></td>
-		<td><?php echo JText::_('JM_PRODUCT_LIST_NAME'); ?></td>
-		<td><?php echo JText::_('JM_PRODUCT_LIST_VENDOR_NAME'); ?></td>
-		<td><?php echo JText::_('JM_PRODUCT_LIST_MEDIA'); ?></td>
-		<td><?php echo JText::_('JM_PRODUCT_LIST_SKU'); ?></td>
-		<td><?php echo JText::_('JM_PRODUCT_PRICE_TITLE'); ?></td>
-		<td><?php echo JText::_('JM_CATEGORY'); ?></td>
+		<td><?php echo JText::_('VM_PRODUCT_LIST_NAME'); ?></td>
+		<td><?php echo JText::_('VM_PRODUCT_LIST_VENDOR_NAME'); ?></td>
+		<td><?php echo JText::_('VM_PRODUCT_LIST_MEDIA'); ?></td>
+		<td><?php echo JText::_('VM_PRODUCT_LIST_SKU'); ?></td>
+		<td><?php echo JText::_('VM_PRODUCT_PRICE_TITLE'); ?></td>
+		<td><?php echo JText::_('VM_CATEGORY'); ?></td>
 		<!-- Only show reordering fields when a category ID is selected! -->
 		<?php
 		$num_rows = 0;
 		if( $category_id ) { ?>
-			<td><?php echo JText::_('JM_FIELDMANAGER_REORDER'); ?></td>
+			<td><?php echo JText::_('VM_FIELDMANAGER_REORDER'); ?></td>
 			<td><?php echo vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?></td>
 		<?php } ?>
-		<td><?php echo JText::_('JM_MANUFACTURER_MOD'); ?></td>
-		<td><?php echo JText::_('JM_REVIEWS'); ?></td>
-		<td><?php echo JText::_('JM_PRODUCT_LIST_PUBLISH'); ?></td>
-		<td><?php echo JText::_('JM_PRODUCT_CLONE'); ?></td>
+		<td><?php echo JText::_('VM_MANUFACTURER_MOD'); ?></td>
+		<td><?php echo JText::_('VM_REVIEWS'); ?></td>
+		<td><?php echo JText::_('VM_PRODUCT_LIST_PUBLISH'); ?></td>
+		<td><?php echo JText::_('VM_PRODUCT_CLONE'); ?></td>
 		<td><?php echo JText::_('E_REMOVE'); ?></td>
 		<td><?php echo JText::_('ID'); ?></td>
 	</tr>
@@ -96,7 +96,7 @@ $pagination = $this->pagination;
 				$link = 'index.php?option='.$option.'&view=product&task=edit&product_id='.$product->product_id.'&product_parent_id='.$product->product_parent_id;
 				$child_link = '';
 				if ($product->product_parent_id == 0 && $product->haschildren) {
-					$child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product->product_id.'&option='.$option), '[ '.JText::_('JM_PRODUCT_FORM_ITEM_INFO_LBL').' ]');
+					$child_link = '&nbsp;&nbsp;&nbsp;'.JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product->product_id.'&option='.$option), '[ '.JText::_('VM_PRODUCT_FORM_ITEM_INFO_LBL').' ]');
 				}
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('EDIT').' '.$product->product_name)).$child_link; ?></td>
@@ -135,7 +135,7 @@ $pagination = $this->pagination;
 					/* Create URL */
 					$link = JRoute::_('index.php?page=product.review_form&product_id='.$product->product_id.'&no_menu=1&tmpl=component&option='.$option);
 				?>
-				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('JM_REVIEW_FORM_LBL').']', array('class' => 'modal', 'rel' => '{handler: \'iframe\', size: {x: 800, y: 540}}')); ?></td>
+				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('VM_REVIEW_FORM_LBL').']', array('class' => 'modal', 'rel' => '{handler: \'iframe\', size: {x: 800, y: 540}}')); ?></td>
 				<!-- Published -->
 				<td><?php echo $published; ?></td>
 				<!-- Clone -->
@@ -145,13 +145,13 @@ $pagination = $this->pagination;
 					$link = JRoute::_($url);
 					$imglink = IMAGEURL.'/ps_image/copy.gif';
 				?>
-				<td><?php echo JHTML::_('link', $link,  JHTML::_('image', $imglink, JText::_('JM_PRODUCT_CLONE')))?></td>
+				<td><?php echo JHTML::_('link', $link,  JHTML::_('image', $imglink, JText::_('VM_PRODUCT_CLONE')))?></td>
 				<!-- Remove -->
 				<?php
 					/* Create link */
 					$link = JRoute::_('index.php?page=product.product_list&func=productDelete&product_id='.$product->product_id.'&keyword='.urlencode($keyword).'&limitstart=0&option='.$option);
 				?>
-				<td><?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'/components/'.$option.'/shop_image/ps_image/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('JM_DELETE_MSG').'\');')) ?></td>
+				<td><?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'/components/'.$option.'/shop_image/ps_image/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('VM_DELETE_MSG').'\');')) ?></td>
 				<!-- Product ID -->
 				<td><?php echo $product->product_id; ?></td>
 			</tr>
@@ -172,7 +172,7 @@ $pagination = $this->pagination;
 	</table>
 <!-- Hidden Fields -->
 <input type="hidden" name="task" value="" />
-<input type="hidden" name="option" value="com_jmart" />
+<input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="page" value="product.product_list" />
 <input type="hidden" name="view" value="product" />

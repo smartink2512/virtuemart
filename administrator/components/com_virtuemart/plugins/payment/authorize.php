@@ -5,17 +5,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 *  for transactions with authorize.net 
 *
 * @version $Id: authorize.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage payment
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 class plgPaymentAuthorize extends vmPaymentPlugin {
@@ -140,7 +140,7 @@ class plgPaymentAuthorize extends vmPaymentPlugin {
 
 		// Invoice Information
 		'x_invoice_num' => substr($order_number, 0, 20),
-		'x_description' => JText::_('JM_ORDER_PRINT_PO_LBL'),
+		'x_description' => JText::_('VM_ORDER_PRINT_PO_LBL'),
 
 		// Transaction Data
 		'x_amount' => $order_total,
@@ -186,7 +186,7 @@ class plgPaymentAuthorize extends vmPaymentPlugin {
 
 		// Approved - Success!
 		if ($response[0] == '1') {
-			$d["order_payment_log"] = JText::_('JM_PAYMENT_TRANSACTION_SUCCESS').": ";
+			$d["order_payment_log"] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').": ";
 			$d["order_payment_log"] .= $response[3];
 
 			$vmLogger->debug( $d['order_payment_log']);
@@ -272,7 +272,7 @@ class plgPaymentAuthorize extends vmPaymentPlugin {
 
 		// DECODE Account Number
 		$dbaccount = new ps_DB;
-		$q = "SELECT ".JM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."')
+		$q = "SELECT ".VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."')
           AS account_number from #__{vm}_order_payment WHERE order_id='".$db->f("order_id")."'";
 		$dbaccount->query($q);
 		$dbaccount->next_record();
@@ -384,7 +384,7 @@ class plgPaymentAuthorize extends vmPaymentPlugin {
 
 		// Approved - Success!
 		if ($response[0] == '1') {
-			$d["order_payment_log"] = JText::_('JM_PAYMENT_TRANSACTION_SUCCESS').": ";
+			$d["order_payment_log"] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').": ";
 			$d["order_payment_log"] .= $response[3];
 			// Catch Transaction ID
 			$d["order_payment_trans_id"] = $response[6];

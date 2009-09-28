@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: product.review_list.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 
@@ -58,10 +58,10 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 // Create the List Object with page navigation
 $listObj = new listFactory( $pageNav );
 
-$title = JText::_('JM_REVIEWS');
+$title = JText::_('VM_REVIEWS');
 		  
 // print out the search field and a list heading
-$listObj->writeSearchHeader( $title, JM_ADMIN_ICON_URL.'icon_48/jm_reviews_48.png', $modulename, "review_list");
+$listObj->writeSearchHeader( $title, VM_ADMIN_ICON_URL.'icon_48/jm_reviews_48.png', $modulename, "review_list");
 
 // start the list table
 $listObj->startTable();
@@ -69,11 +69,11 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",
-					JText::_('JM_PRODUCT_NAME_TITLE') => 'width="20%"',
-					JText::_('JM_REVIEW_LIST_NAMEDATE') => 'width="15%"',
-					JText::_('JM_REVIEWS') => 'width="35%"',
-					JText::_('JM_RATE_NOM') => 'width="15%"',
-					JText::_('JM_PRODUCT_LIST_PUBLISH') => 'width="5%"',
+					JText::_('VM_PRODUCT_NAME_TITLE') => 'width="20%"',
+					JText::_('VM_REVIEW_LIST_NAMEDATE') => 'width="15%"',
+					JText::_('VM_REVIEWS') => 'width="35%"',
+					JText::_('VM_RATE_NOM') => 'width="15%"',
+					JText::_('VM_PRODUCT_LIST_PUBLISH') => 'width="5%"',
 					JText::_('E_REMOVE') => 'width="10%"'
 				);
 $listObj->writeTableHeader( $columns );
@@ -102,7 +102,7 @@ while ($db->next_record()) {
 	}
 	$listObj->addCell( $text );
 	$listObj->addCell( substr($db->f("comment"), 0 , 500) );
-	$listObj->addCell( '<img src="'. JM_THEMEURL.'images/stars/'.$db->f("user_rating").'.gif" border="0" alt="stars" />' );
+	$listObj->addCell( '<img src="'. VM_THEMEURL.'images/stars/'.$db->f("user_rating").'.gif" border="0" alt="stars" />' );
 	
 	$tmpcell = "<a href=\"". $sess->url( $_SERVER['PHP_SELF']."?page=product.review_list&product_id=$product_id&review_id=".$db->f('review_id')."&func=changePublishState" );
 	if ($db->f("published")=='N') {

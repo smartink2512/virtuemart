@@ -121,9 +121,9 @@ function com_install(){
 	foreach( $row as $user) {
 	?><pre><?php //print_r($user); ?></pre><?php
 	echo (' </br>');
-		$db->setQuery( "INSERT INTO `#__jmart_shopper_vendor_xref` VALUES ('".$user->id."', '1', '5', '')" );
+		$db->setQuery( "INSERT INTO `#__vm_shopper_vendor_xref` VALUES ('".$user->id."', '1', '5', '')" );
 		$db->query();
-		$db->setQuery( "INSERT INTO `#__jmart_user_info` (`user_info_id`,`user_id`, `address_type`,`cdate`,`mdate` )
+		$db->setQuery( "INSERT INTO `#__vm_user_info` (`user_info_id`,`user_id`, `address_type`,`cdate`,`mdate` )
 						VALUES( '".md5(uniqid('virtuemart'))."','".$user->id."','BT', UNIX_TIMESTAMP('".$user->registerDate."'),UNIX_TIMESTAMP('".$user->lastvisitDate."'))" );
 		$db->query();
 	}
@@ -133,14 +133,14 @@ function com_install(){
 	$userId = $user->id;
 	$userUserName = $user->username;
 	$userName = $user->name;
-	$db->setQuery( 'INSERT `#__jmart_auth_user_vendor` (`user_id`, `vendor_id`) VALUES ("'.$userId.'", "1")' );
+	$db->setQuery( 'INSERT `#__vm_auth_user_vendor` (`user_id`, `vendor_id`) VALUES ("'.$userId.'", "1")' );
 	$db->query();
-	$db->setQuery( "UPDATE `#__jmart_user_info` SET `user_is_vendor` = '1' WHERE `user_id` ='".$userId."' ") ;
+	$db->setQuery( "UPDATE `#__vm_user_info` SET `user_is_vendor` = '1' WHERE `user_id` ='".$userId."' ") ;
 	$db->query();
 //	echo('ID of Storeadmin: '.$userId. '  </br>');
 	 
 	# insert the user <=> group relationship
-	$db->setQuery( "INSERT INTO `#__jmart_auth_user_group` 
+	$db->setQuery( "INSERT INTO `#__vm_auth_user_group` 
 				SELECT user_id, 
 					CASE `perms` 
 					    WHEN 'admin' THEN 0
@@ -149,11 +149,11 @@ function com_install(){
 					    WHEN 'demo' THEN 3
 					    ELSE 2 
 					END
-				FROM #__jmart_user_info
+				FROM #__vm_user_info
 				WHERE address_type='BT' ");
 	$db->query();
 	
-	$db->setQuery( "UPDATE `#__jmart_auth_user_group` SET `group_id` = '0' WHERE `user_id` ='".$userId."' ") ;
+	$db->setQuery( "UPDATE `#__vm_auth_user_group` SET `group_id` = '0' WHERE `user_id` ='".$userId."' ") ;
 	$db->query();
 	
 	if($sampleData){

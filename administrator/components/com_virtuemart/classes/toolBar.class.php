@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: toolBar.class.php 1600 2009-01-08 19:07:48Z soeren_nb $
-* @package JMart
+* @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2009 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 if( !class_exists('mosMenuBar')) {
 	require_once( $mosConfig_absolute_path."/administrator/includes/menubar.html.php" );
@@ -317,7 +317,7 @@ class vmExtToolBar {
 	}
 	
 	function appendButton( $text, $action_name, $click_action ) {
-		$text = '<div style="float:left;background: url('.JM_THEMEURL.'images/administration/menu/icon-16-'.$action_name.'.png) 50% 0 no-repeat;height:17px;width:17px;" border="0" alt="'.$action_name.'">&nbsp;</div>&nbsp;' . $text;
+		$text = '<div style="float:left;background: url('.VM_THEMEURL.'images/administration/menu/icon-16-'.$action_name.'.png) 50% 0 no-repeat;height:17px;width:17px;" border="0" alt="'.$action_name.'">&nbsp;</div>&nbsp;' . $text;
 		$this->buttons .=  "vmTb.addButton({text: '$text', handler: new Function('".addslashes($click_action)."')});\n";
 	}
 	/**
@@ -334,8 +334,8 @@ class vmExtToolBar {
 		if( $this->buttons != '' ) {
 			// Now the buttons are added to the Toolbar plus a "Reload" Button
 			$toolbar_script .= $this->buttons
-							//. "\nif( self.history.length > 1 ) { vmTb.addSeparator(); vmTb.addButton({text: '<div style=\"float:left;background: url(".JM_THEMEURL."images/administration/menu/icon-16-back.png) 50% 0 no-repeat;height:17px;width:17px;\" border=\"0\" alt=\"{JText::_BACK}\">&nbsp;</div>{JText::_BACK}', handler: new Function('history.back();') }); }"
-							. "\nvmTb.addSeparator();\n vmTb.addButton({text: '<div style=\"float:left;background: url(".JM_THEMEURL."images/administration/menu/icon-16-reload.png) 50% 0 no-repeat;height:17px;width:17px;\" border=\"0\" alt=\"".JText::_('RELOAD')."\">&nbsp;</div>".JText::_('RELOAD')."', handler: new Function('location.reload();') });"
+							//. "\nif( self.history.length > 1 ) { vmTb.addSeparator(); vmTb.addButton({text: '<div style=\"float:left;background: url(".VM_THEMEURL."images/administration/menu/icon-16-back.png) 50% 0 no-repeat;height:17px;width:17px;\" border=\"0\" alt=\"{JText::_BACK}\">&nbsp;</div>{JText::_BACK}', handler: new Function('history.back();') }); }"
+							. "\nvmTb.addSeparator();\n vmTb.addButton({text: '<div style=\"float:left;background: url(".VM_THEMEURL."images/administration/menu/icon-16-reload.png) 50% 0 no-repeat;height:17px;width:17px;\" border=\"0\" alt=\"".JText::_('RELOAD')."\">&nbsp;</div>".JText::_('RELOAD')."', handler: new Function('location.reload();') });"
 							;
 		}
 		$toolbar_script .= "\n}\n";

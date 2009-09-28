@@ -2,10 +2,10 @@
 /**
  * Store controller
  *
- * @package	JMart
+ * @package	VirtueMart
  * @subpackage Store
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
@@ -15,7 +15,7 @@ jimport('joomla.application.component.controller');
 /**
  * Store Controller
  *
- * @package    JMart
+ * @package    VirtueMart
  * @subpackage Store
  * @author Rick Glunt 
  */
@@ -38,7 +38,7 @@ class JmartControllerStore extends JController
 	 */
 	 function Store() {
 	 	$document = JFactory::getDocument();
-	    $document->addStyleSheet(JURI::base().'components/com_jmart/assets/css/jmart.css');
+	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
 	    
 		$document = JFactory::getDocument();				
 		$viewType	= $document->getType();
@@ -46,9 +46,9 @@ class JmartControllerStore extends JController
 
 		// Push a model into the view					
 		/* Default model */
-		$view->setModel( $this->getModel( 'store', 'JMartModel' ), true );
+		$view->setModel( $this->getModel( 'store', 'VirtueMartModel' ), true );
 		/* Country functions */
-		$view->setModel( $this->getModel( 'country', 'JMartModel' ));
+		$view->setModel( $this->getModel( 'country', 'VirtueMartModel' ));
 		
 		/* Now display the view. */
 		$view->display();
@@ -79,7 +79,7 @@ class JmartControllerStore extends JController
 	{
 		$msg = JText::_('Operation Canceled!!');
 		
-		$this->setRedirect('index.php?option=com_jmart&view=store', $msg);
+		$this->setRedirect('index.php?option=com_virtuemart&view=store', $msg);
 	}	
 	
 	
@@ -99,7 +99,7 @@ class JmartControllerStore extends JController
 			$msg = JText::_('Error saving store!');
 		}
 		
-		$this->setRedirect('index.php?option=com_jmart&view=store', $msg);
+		$this->setRedirect('index.php?option=com_virtuemart&view=store', $msg);
 	}	
 	
 	
@@ -118,7 +118,7 @@ class JmartControllerStore extends JController
 			$msg = JText::_( 'Stores Deleted!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_jmart&view=store', $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=store', $msg);
 	}	
 	
 	
@@ -134,7 +134,7 @@ class JmartControllerStore extends JController
 			$msg = JText::_('Error: One or more stores could not be published!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_jmart&view=store', $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=store', $msg);
 	}		
 	
 	
@@ -150,7 +150,7 @@ class JmartControllerStore extends JController
 			$msg = JText::_('Error: One or more stores could not be unpublished!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_jmart&view=store', $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=store', $msg);
 	}
 
 	/**
@@ -161,7 +161,7 @@ class JmartControllerStore extends JController
 		$view = $this->getView('store', 'json');
 		
 		/* Standard model */
-		$view->setModel( $this->getModel( 'country', 'JMartModel' ), true );
+		$view->setModel( $this->getModel( 'country', 'VirtueMartModel' ), true );
 		
 		/* Now display the view. */
 		$view->display();

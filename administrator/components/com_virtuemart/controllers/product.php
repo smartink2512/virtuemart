@@ -2,9 +2,9 @@
 /**
  * Product controller
  *
- * @package JMart
- * @author JMart
- * @link http://joomlacode.org/gf/project/jmart/
+ * @package VirtueMart
+ * @author VirtueMart
+ * @link http://virtuemart.org
  * @version $Id: product.php 186 2009-09-10 14:12:18Z rolandd $
  */
 
@@ -15,7 +15,7 @@ jimport('joomla.application.component.controller');
 /**
  * Product Controller
  *
- * @package    JMart
+ * @package    VirtueMart
  */
 class JmartControllerProduct extends JController
 {
@@ -42,13 +42,13 @@ class JmartControllerProduct extends JController
 		$view = $this->getView('product', 'html');
 				
 		/* Default model */
-		$view->setModel( $this->getModel( 'product', 'JMartModel' ), true );
+		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
 		/* Media files functions */
-		$view->setModel( $this->getModel( 'media', 'JMartModel' ));
+		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ));
 		/* Product reviews functions */
-		$view->setModel( $this->getModel( 'productReviews', 'JMartModel' ));
+		$view->setModel( $this->getModel( 'productReviews', 'VirtueMartModel' ));
 		/* Product category functions */
-		$view->setModel( $this->getModel( 'category', 'JMartModel' ));
+		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
 		
 		/* Set the layout */
 		$view->setLayout('product');
@@ -65,21 +65,21 @@ class JmartControllerProduct extends JController
 		$view = $this->getView('product', 'html');
 				
 		/* Default model */
-		$view->setModel( $this->getModel( 'product', 'JMartModel' ), true );
+		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
 		/* Media files functions */
-		$view->setModel( $this->getModel( 'media', 'JMartModel' ));
+		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ));
 		/* Product category functions */
-		$view->setModel( $this->getModel( 'category', 'JMartModel' ));
+		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
 		/* Vendor functions */
-		$view->setModel( $this->getModel( 'vendor', 'JMartModel' ));
+		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
 		/* Manufacturer functions */
-		$view->setModel( $this->getModel( 'manufacturer', 'JMartModel' ));
+		$view->setModel( $this->getModel( 'manufacturer', 'VirtueMartModel' ));
 		/* Currency functions */
-		$view->setModel( $this->getModel( 'currency', 'JMartModel' ));
+		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
 		/* Tax functions */
-		$view->setModel( $this->getModel( 'taxRate', 'JMartModel' ));
+		$view->setModel( $this->getModel( 'taxRate', 'VirtueMartModel' ));
 		/* Discount functions */
-		$view->setModel( $this->getModel( 'discount', 'JMartModel' ));
+		$view->setModel( $this->getModel( 'discount', 'VirtueMartModel' ));
 		
 		/* Set the layout */
 		$view->setLayout('product_edit');
@@ -96,7 +96,7 @@ class JmartControllerProduct extends JController
 		$view = $this->getView('product', 'json');
 				
 		/* Default model */
-		$view->setModel( $this->getModel( 'product', 'JMartModel' ), true );
+		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
 		
 		$view->setLayout('product');
 		

@@ -17,10 +17,10 @@ AdminMenuHelper::startAdminArea();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->currencies); ?>);" />
 			</th>			
 			<th>
-				<?php echo JText::_( 'JM_CURRENCY_LIST_NAME' ); ?>
+				<?php echo JText::_( 'VM_CURRENCY_LIST_NAME' ); ?>
 			</th>				
 			<th>
-				<?php echo JText::_( 'JM_CURRENCY_LIST_CODE' ); ?>
+				<?php echo JText::_( 'VM_CURRENCY_LIST_CODE' ); ?>
 			</th>									
 			<th width="20">
 				<?php echo JText::_( 'E_REMOVE' ); ?>
@@ -37,8 +37,8 @@ AdminMenuHelper::startAdminArea();
 			$row->published = 1;
 			$checked = JHTML::_('grid.id', $i, $row->currency_id);
 			$published = JHTML::_('grid.published', $row, $i);
-			$editlink = JROUTE::_('index.php?option=com_jmart&controller=currency&task=edit&cid[]=' . $row->currency_id);
-			$deletelink	= JROUTE::_('index.php?option=com_jmart&controller=currency&task=remove&cid[]=' . $row->currency_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=currency&task=edit&cid[]=' . $row->currency_id);
+			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&controller=currency&task=remove&cid[]=' . $row->currency_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td width="10" align="right">
@@ -54,7 +54,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_($row->currency_code); ?>
 				</td>				
 				<td align="center">
-					<?php echo JHTML::_('link', $deletelink, JHTML::_('image', JURI::base().'components/com_jmart/assets/images/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('JM_DELETE_MSG').'\');')) ?>
+					<?php echo JHTML::_('link', $deletelink, JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('VM_DELETE_MSG').'\');')) ?>
 				</td>				        																														
 			</tr>
 			<?php
@@ -71,7 +71,7 @@ AdminMenuHelper::startAdminArea();
 	</table>	
 </div>
 	        
-	<input type="hidden" name="option" value="com_jmart" />
+	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="controller" value="currency" />
 	<input type="hidden" name="view" value="currency" />	
 	<input type="hidden" name="task" value="" />

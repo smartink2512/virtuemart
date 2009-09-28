@@ -2,22 +2,22 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * @version $Id: COPYRIGHT.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package JMart
+* @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 ?>
 <pre><strong>Copyright:</strong>
 
-JMart derives from copyrighted works licensed under the GNU General
+VirtueMart derives from copyrighted works licensed under the GNU General
 Public License.  This version has been modified pursuant to the
 GNU General Public License as of September 15, 2005, and as distributed,
 it includes or is derivative of works licensed under the GNU General
@@ -27,11 +27,11 @@ Ekkehard Domning, Zdenek Dvorak, Edikon corp., Soeren Eberhardt,
 pablo (from Edikon), Bernhard Pfeifer,  John Syben, Phil Taylor, Erich Vinson,  
 or Mike Wattier from Zephware (devcompany.com)
 
-(If you have contributed a piece of JMart that is not mentioned and missing here, 
+(If you have contributed a piece of VirtueMart that is not mentioned and missing here, 
 and you feel that your copyright note should be mentioned here, 
-please contact the author of JMart (soeren |at| virtuemart.net).)
+please contact the author of VirtueMart (soeren |at| virtuemart.net).)
 
-JMart includes or is derivative of works distributed under the following copyright notices:
+VirtueMart includes or is derivative of works distributed under the following copyright notices:
 
 CreditCard Class
 ---
@@ -129,7 +129,7 @@ Administrator Icons
 Copyright:	2008 Simon Josephson (http://www.artatwork.com.au)
 Thank you Simon!
 
-If you have contributed a vital part of JMart that is not mentioned and missing here,
+If you have contributed a vital part of VirtueMart that is not mentioned and missing here,
 and you feel that your copyright note should be mentioned here,
-please contact the author of JMart (soeren|at|virtuemart.net).
+please contact the author of VirtueMart (soeren|at|virtuemart.net).
 </pre>

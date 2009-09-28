@@ -2,13 +2,13 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * @version $Id: montrada.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage Payment
 * @copyright (C) 2006 Benjamin Schirmer
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* JMart is Free Software.
-* JMart comes with absolute no warranty.
+* VirtueMart is Free Software.
+* VirtueMart comes with absolute no warranty.
 *
 * www.virtuemart.net
 
@@ -115,7 +115,7 @@ class plgPaymentMontrada extends vmPaymentPlugin {
             $error = curl_error( $CR );
             if( !empty( $error )) {
               $vmLogger->err( curl_error( $CR )
-                              ."<br/><span class=\"message\">".JText::_('JM_PAYMENT_INTERNAL_ERROR')." montrada.de</span>" );
+                              ."<br/><span class=\"message\">".JText::_('VM_PAYMENT_INTERNAL_ERROR')." montrada.de</span>" );
               return false;
             }
             else {
@@ -190,7 +190,7 @@ class plgPaymentMontrada extends vmPaymentPlugin {
         $rc1 = array("000", "005", "033", "091", "096");
         // Approved - Success!
         if (isset($response['posherr']) && ($response['posherr'] == 0)) {
-           $d["order_payment_log"] = JText::_('JM_PAYMENT_TRANSACTION_SUCCESS').": ";
+           $d["order_payment_log"] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').": ";
            $d["order_payment_log"] .= $response['rmsg'];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response['trefnum'];
@@ -205,7 +205,7 @@ class plgPaymentMontrada extends vmPaymentPlugin {
         else
         {
            if ($response['posherr'] = "") $response['posherr'] = -1;
-           $vmLogger->err( JText::_('JM_PAYMENT_ERROR',false)." ($response[posherr])" );
+           $vmLogger->err( JText::_('VM_PAYMENT_ERROR',false)." ($response[posherr])" );
            
            if (in_array($response['posherr'], $posherr1))
            {

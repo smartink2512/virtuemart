@@ -15,7 +15,7 @@ function fnLoadPngs() {
     var itsAllGood = (rslt != null && Number(rslt[1]) >= 5.5);
 
     for (var i = document.images.length - 1, img = null; (img = document.images[i]); i--) {
-        if (itsAllGood && img.src.match(/(.*)\/com_jmart\/(.*)\.png$/i) != null) {
+        if (itsAllGood && img.src.match(/(.*)\/com_virtuemart\/(.*)\.png$/i) != null) {
             fnFixPng(img);
             img.attachEvent("onpropertychange", fnPropertyChanged);
         }
@@ -62,5 +62,5 @@ function fnFixPng(img) {
     img.style.width = img.width + "px";
     img.style.height = img.height + "px";
     img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + src + "', sizingMethod='scale')";
-    img.src = "components/com_jmart/shop_image/blank.gif";
+    img.src = "components/com_virtuemart/shop_image/blank.gif";
 }

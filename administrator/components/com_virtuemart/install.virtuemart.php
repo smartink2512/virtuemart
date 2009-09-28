@@ -2,16 +2,16 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * @version $Id: install.virtuemart.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package JMart
+* @package VirtueMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2007 soeren and JMart team 2009- All rights reserved.
+* @copyright Copyright (C) 2004-2007 soeren and VirtueMart team 2009- All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 global $option;
 include_once( dirname(__FILE__).'/compat.joomla1.5.php' );
@@ -33,12 +33,12 @@ if (isset($_REQUEST['install_type']) && file_exists( $mosConfig_absolute_path.'/
 	$installfile = dirname( __FILE__ ) . "/install.php";
 	if( !@unlink( $installfile ) ) {
 		echo "<br /><span class=\"message\">Something went wrong when trying to delete the file <strong>install.php</strong>!<br />";
-		echo "You'll have to delete the file manually before being able to use JMart!</span>";
+		echo "You'll have to delete the file manually before being able to use VirtueMart!</span>";
 	}
 
 }
 elseif( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/install.php' )) {
-	echo '<html><head><title>JMart Installation</title>
+	echo '<html><head><title>VirtueMart Installation</title>
 	</head>
 	<body>';
 	virtuemart_is_installed();
@@ -53,11 +53,11 @@ function virtuemart_is_installed() {
 	if( is_null( $database ) && class_exists('jfactory')) {
 		$database = JFactory::getDBO();
 	}
-	//add JMart admin menu image
-	$database->setQuery( "UPDATE #__components SET admin_menu_img = '../components/com_jmart/shop_image/ps_image/menu_icon.png' WHERE admin_menu_link = 'option=com_jmart'");
+	//add VirtueMart admin menu image
+	$database->setQuery( "UPDATE #__components SET admin_menu_img = '../components/com_virtuemart/shop_image/ps_image/menu_icon.png' WHERE admin_menu_link = 'option=com_virtuemart'");
 	$database->query();
 	
-	$option = 'com_jmart';
+	$option = 'com_virtuemart';
 	$installfile = dirname( __FILE__ ) . "/install.php";
 	
 	$database->setQuery( "SHOW TABLES LIKE '".$mosConfig_dbprefix."vm_%'" );
@@ -65,10 +65,10 @@ function virtuemart_is_installed() {
 	
 	if( file_exists( $mosConfig_absolute_path.'/administrator/components/'.$option.'/classes/htmlTools.class.php' ) 
 		&& count( $vm_tables)> 30 ) {
-		// JMart is installed! But is it an older version that needs to be updated?
+		// VirtueMart is installed! But is it an older version that needs to be updated?
 		$database->setQuery( 'SELECT id, params FROM `#__components` WHERE name = \'virtuemart_version\'' );
 		$database->loadObject( $old_version );
-		if( $old_version && file_exists( $mosConfig_absolute_path.'/administrator/components/com_jmart/classes/htmlTools.class.php')) {
+		if( $old_version && file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/classes/htmlTools.class.php')) {
 			$version_info = new mosParameters( $old_version->params );
 			include_once( $mosConfig_absolute_path.'/administrator/components/'.$option.'/version.php' );
 			$VMVERSION = new vmVersion();
@@ -82,17 +82,17 @@ function virtuemart_is_installed() {
 		@unlink( $installfile );
 		if( ( file_exists($installfile)) || !file_exists(dirname( __FILE__ ) . "/virtuemart.cfg.php")) {
 			die('<h2>Virtuemart Installation Notice</h2>
-			<p>You already have installed JMart.</p>
+			<p>You already have installed VirtueMart.</p>
 			<p>You MUST 
 			<ol>
 				<li>DELETE the file <strong>'.$installfile.'</strong>,</li>
 				<li>RENAME the file <strong>virtuemart.cfg-dist.php</strong> to <strong>virtuemart.cfg.php</strong></li>
-			</ol>before you can use JMart.
+			</ol>before you can use VirtueMart.
 			</p>');
 		}
 		else {
-			header('Location: index2.php?option=com_jmart');
-			echo '<script type="text/javascript">document.location=\''.$GLOBALS['mosConfig_live_site'].'/administrator/index2.php?option=com_jmart\';</script>';
+			header('Location: index2.php?option=com_virtuemart');
+			echo '<script type="text/javascript">document.location=\''.$GLOBALS['mosConfig_live_site'].'/administrator/index2.php?option=com_virtuemart\';</script>';
 			exit;
 		}
 	}
@@ -102,7 +102,7 @@ function virtuemart_is_installed() {
 function com_install() {
 	global $mosConfig_absolute_path, $mosConfig_dbprefix, $database, 
 		$VMVERSION, $myVersion, $shortversion, $version_info;
-	include( $mosConfig_absolute_path. "/administrator/components/com_jmart/version.php" );
+	include( $mosConfig_absolute_path. "/administrator/components/com_virtuemart/version.php" );
 	if( !isset( $shortversion )) {
 		$shortversion = $VMVERSION->PRODUCT . " " . $VMVERSION->RELEASE . " " . $VMVERSION->DEV_STATUS. " ";
 		$myVersion = $shortversion . " [".$VMVERSION->CODENAME ."] <br />" . $VMVERSION->RELDATE . " "
@@ -111,8 +111,8 @@ function com_install() {
 	if( defined( '_RELEASE' )) {
 		// Refuse to install on Mambo 4.5.0
 		if( _RELEASE == '4.5' || (float)_RELEASE <= 4.50 )
-			die( '<h2>JMart Installation can\'t continue: Wrong Mambo version!</h2>
-<p>JMart requires at least Mambo <strong>4.5.1</strong></p>
+			die( '<h2>VirtueMart Installation can\'t continue: Wrong Mambo version!</h2>
+<p>VirtueMart requires at least Mambo <strong>4.5.1</strong></p>
 <p>Your Version: Mambo <strong>'._RELEASE.'.0 '._DEV_STATUS.' '._DEV_LEVEL.'</strong>, Codename: '._CODENAME.'</p>' );
 	}
 	// Check for old mambo-phpShop Tables. When they exist,
@@ -129,7 +129,7 @@ function com_install() {
 	else {
 		$database->setQuery( 'SELECT id FROM `#__components` WHERE name = \'virtuemart_version\'' );
 		$old_version =  $database->loadResult();
-		if( $old_version && file_exists( $mosConfig_absolute_path.'/administrator/components/com_jmart/classes/htmlTools.class.php')) {
+		if( $old_version && file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/classes/htmlTools.class.php')) {
 			$installation = 'vm_update';
 		}
 		else {
@@ -137,7 +137,7 @@ function com_install() {
 		}
 	}
 	?>
-	<link rel="stylesheet" href="components/com_jmart/install.css" type="text/css" />
+	<link rel="stylesheet" href="components/com_virtuemart/install.css" type="text/css" />
 	<div align="center">
 		<table width="100%" border="0">
 			<tr>
@@ -146,7 +146,7 @@ function com_install() {
 						<div class="install">
 							<div id="stepbar">
 								<div>
-									<a href="http://joomlacode.org/gf/project/jmart/" target="_blank"><img border="0" align="right" src="components/com_jmart/cart.gif" alt="Cart" /></a>
+									<a href="http://virtuemart.org" target="_blank"><img border="0" align="right" src="components/com_virtuemart/cart.gif" alt="Cart" /></a>
 									<br/>
 								</div>
 								<div class="clr"></div>
@@ -156,13 +156,13 @@ function com_install() {
 										Please consider a small donation to help me keep up the work on this component.<br /><br />
 										<input type="hidden" name="cmd" value="_xclick" />
 										<input type="hidden" name="business" value="soeren_nb@yahoo.de" />
-										<input type="hidden" name="item_name" value="JMart Donation" />
+										<input type="hidden" name="item_name" value="VirtueMart Donation" />
 										<input type="hidden" name="item_number" value="" />
 										<input type="hidden" name="currency_code" value="EUR" />
 										<input type="hidden" name="tax" value="0" />
 										<input type="hidden" name="no_note" value="0" />
 										<input type="hidden" name="amount" value="" />
-										<input type="image" src="components/com_jmart/x-click-but21.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" />
+										<input type="image" src="components/com_virtuemart/x-click-but21.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" />
 									</form>
 								</div>
 							</div>
@@ -176,10 +176,10 @@ function com_install() {
 								<?php
 								if( $installation == "new" ) { ?>
 									<tr>
-										<td colspan="3" class="error">Let's prepare the database now (the Installation Script hasn't found existing mambo-phpShop/JMart Tables, so let's do a fresh installation).</td>
+										<td colspan="3" class="error">Let's prepare the database now (the Installation Script hasn't found existing mambo-phpShop/VirtueMart Tables, so let's do a fresh installation).</td>
 									</tr>
 									<tr>
-										<td width="40%">Basic Installation has been finished. You can use JMart in a moment after having clicked on a link below.<br/></td>
+										<td width="40%">Basic Installation has been finished. You can use VirtueMart in a moment after having clicked on a link below.<br/></td>
 										<td width="20%">&nbsp;</td>
 										<td width="40%">To fill your Shop with dummy products, and to see how things can be set up, 
 												you can install some Sample Data now.
@@ -187,11 +187,11 @@ function com_install() {
 									</tr>
 									<tr>
 										<td width="40%">
-											<a title="Go directly to the Shop &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running JMart.');" name="Button1" class="button" href="index2.php?option=com_jmart&install_type=newinstall">Go directly to the Shop &gt;&gt;</a>
+											<a title="Go directly to the Shop &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" name="Button1" class="button" href="index2.php?option=com_virtuemart&install_type=newinstall">Go directly to the Shop &gt;&gt;</a>
 										</td>
 										<td width="20%">&nbsp;</td>
 										<td width="40%">
-											<a name="Button2" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running JMart.');" class="button" title="Install SAMPLE DATA &gt;&gt;" href="index2.php?option=com_jmart&install_type=newinstall&install_sample_data=true">Install SAMPLE DATA &gt;&gt;</a>
+											<a name="Button2" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" class="button" title="Install SAMPLE DATA &gt;&gt;" href="index2.php?option=com_virtuemart&install_type=newinstall&install_sample_data=true">Install SAMPLE DATA &gt;&gt;</a>
 										</td>
 									</tr>
 									<tr>
@@ -202,15 +202,15 @@ function com_install() {
 								elseif( $installation == 'vm_update' ) { 
 									$old_version = get_class($version_info) =='mosparameters' ? $version_info->get( 'RELEASE') : '1.0.x';
 									?>
-										<td colspan="3" class="error">[UPDATE MODE]<br/>The Installation script has found out that you've already installed JMart <?php echo $old_version ?>, so let's update your Database.</td>
+										<td colspan="3" class="error">[UPDATE MODE]<br/>The Installation script has found out that you've already installed VirtueMart <?php echo $old_version ?>, so let's update your Database.</td>
 									<tr>
 									</tr>
 									<tr>
 										<td align="left" colspan="3">
 											<div align="center">
-												<a title="UPDATE FROM VERSION <?php echo $old_version ?> &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating JMart.');" name="Button2" class="button" href="index2.php?option=com_jmart&install_type=updatevm10x">UPDATE FROM VERSION <?php echo $old_version ?> &gt;&gt;</a>
+												<a title="UPDATE FROM VERSION <?php echo $old_version ?> &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating VirtueMart.');" name="Button2" class="button" href="index2.php?option=com_virtuemart&install_type=updatevm10x">UPDATE FROM VERSION <?php echo $old_version ?> &gt;&gt;</a>
 											</div><br /><br/>
-											Your JMart Version is NOT <strong><?php echo $old_version ?></strong>? Then please just delete the file <strong><?php echo dirname(__FILE__).'/install.php' ?></strong><br />
+											Your VirtueMart Version is NOT <strong><?php echo $old_version ?></strong>? Then please just delete the file <strong><?php echo dirname(__FILE__).'/install.php' ?></strong><br />
 											
 										</td>
 									</tr>
@@ -224,11 +224,11 @@ function com_install() {
 										<td align="left" colspan="3">If you're upgrading from mambo-phpShop, version <strong>1.2 stable-pl3</strong> or <strong>Mambo eCommerce Edition</strong> you'll have to click on this link!<br />
 											<br /><br/>
 											<div align="center">
-												<a title="UPDATE FROM VERSION 1.2 stable-pl3 &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop to JMart.');" name="Button2" class="button" href="index2.php?option=com_jmart&install_type=update12pl3">UPDATE FROM VERSION 1.2 stable-pl3 &gt;&gt;</a>
+												<a title="UPDATE FROM VERSION 1.2 stable-pl3 &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop to VirtueMart.');" name="Button2" class="button" href="index2.php?option=com_virtuemart&install_type=update12pl3">UPDATE FROM VERSION 1.2 stable-pl3 &gt;&gt;</a>
 											</div>
 											<div class="error">Note:</div>
 											If your Version Number is between 1.1 and 1.2 stable.pl3 (e.g. <i>1.2 beta3</i>), you have to update your database before using the Step-by-Step SQL Update Scripts from the folder 
-											<pre>/administrator/components/com_jmart/sql/other</pre> of your JMart Installation. You can run these Scripts with <a href="http://mamboforge.net/projects/mosphpmyadmin/" target="_blank">phpMyAdmin for Mambo/Joomla</a>.                
+											<pre>/administrator/components/com_virtuemart/sql/other</pre> of your VirtueMart Installation. You can run these Scripts with <a href="http://mamboforge.net/projects/mosphpmyadmin/" target="_blank">phpMyAdmin for Mambo/Joomla</a>.                
 										</td>
 									</tr>
 									<tr>
@@ -238,13 +238,13 @@ function com_install() {
 										<td align="center" colspan="3">
 											<br /><br/>
 											<div align="center">
-												<a title="UPDATE FROM VERSION 1.2 RC2 &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop to JMart.');" name="Button2" class="button" href="index2.php?option=com_jmart&install_type=update12">UPDATE FROM VERSION 1.2 RC2 &gt;&gt;</a>
+												<a title="UPDATE FROM VERSION 1.2 RC2 &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop to VirtueMart.');" name="Button2" class="button" href="index2.php?option=com_virtuemart&install_type=update12">UPDATE FROM VERSION 1.2 RC2 &gt;&gt;</a>
 											</div>
 										</td>
 									</tr>
 									<tr>
 										<td align="center" colspan="3">If you're updating from version 1.1(a) you'll have to click on this link!<br /><br />
-											<a name="Button2" class="button" title="UPDATE FROM VERSION 1.1(a) &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop to VirtuMart.');" href="index2.php?option=com_jmart&install_type=update11">UPDATE FROM VERSION 1.1(a) &gt;&gt;<a />
+											<a name="Button2" class="button" title="UPDATE FROM VERSION 1.1(a) &gt;&gt;" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for updating mambo-phpShop to VirtuMart.');" href="index2.php?option=com_virtuemart&install_type=update11">UPDATE FROM VERSION 1.1(a) &gt;&gt;<a />
 										</td>
 									</tr>
 									<tr>

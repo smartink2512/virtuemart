@@ -4,17 +4,17 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 /**
  *
  * @version $Id: paypal.php 1760 2009-05-03 22:58:57Z Aravot $
- * @package JMart
+ * @package VirtueMart
  * @subpackage payment
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * JMart is free software. This version may have been modified pursuant
+ * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+ * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
  *
- * http://joomlacode.org/gf/project/jmart/
+ * http://virtuemart.org
  */
 
 /**
@@ -59,7 +59,7 @@ class plgPaymentPaypal extends vmPaymentPlugin {
 			"upload" => "1" , 
 			"business" => $this->params->get('PAYPAL_EMAIL') , 
 			"receiver_email" => $this->params->get('PAYPAL_EMAIL') , 
-			"item_name" => JText::_( 'JM_ORDER_PRINT_PO_NUMBER' ) . ": " . $db->f( "order_id" ) , 
+			"item_name" => JText::_( 'VM_ORDER_PRINT_PO_NUMBER' ) . ": " . $db->f( "order_id" ) , 
 			"order_id" => $db->f( "order_id" ) , 
 			"invoice" => $db->f( "order_number" ) , 
 			"amount" => round( $db->f( "order_subtotal" ) + $tax_total - $discount_total, 2 ) , 
@@ -78,8 +78,8 @@ class plgPaymentPaypal extends vmPaymentPlugin {
 			"night_phone_b" => $dbbt->f( 'phone_1' ) , 
 			"cpp_header_image" => $vendor_image_url , 
 
-			"return" => SECUREURL . "index.php?option=com_jmart&page=checkout.result&order_id=" . $db->f( "order_id" ) , 
-			"notify_url" => SECUREURL . "administrator/components/com_jmart/notify.php" , 
+			"return" => SECUREURL . "index.php?option=com_virtuemart&page=checkout.result&order_id=" . $db->f( "order_id" ) , 
+			"notify_url" => SECUREURL . "administrator/components/com_virtuemart/notify.php" , 
 			"cancel_return" => SECUREURL . "index.php" , 
 			"undefined_quantity" => "0" , 
 

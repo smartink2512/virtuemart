@@ -2,14 +2,14 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /*
 * @version $Id: shipvalue.php,v .1 2005/09  r_lewis
-* @package JMart
+* @package VirtueMart
 * @subpackage shipping
 * @copyright (C) 2005 Rhys Lewis with due respect to Micah Shawn and Bret (allbloodrunsred)
 
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
-* Based on JMart.  Thank you Soeren!
-* JMart is Free Software.
-* JMart comes with absolute no warranty.
+* Based on VirtueMart.  Thank you Soeren!
+* VirtueMart is Free Software.
+* VirtueMart comes with absolute no warranty.
 * www.virtuemart.net
 ******************************************************************************
 *

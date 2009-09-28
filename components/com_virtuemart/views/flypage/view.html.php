@@ -1,16 +1,16 @@
 <?php
 /**
-* @package		JMart
+* @package		VirtueMart
 */
 
 jimport( 'joomla.application.component.view');
 
 /**
- * HTML View class for the JMart Component
+ * HTML View class for the VirtueMart Component
  *
- * @package		JMart
+ * @package		VirtueMart
  */
-class JMartViewFlypage extends JView
+class VirtueMartViewFlypage extends JView
 {
 	
 	function display($tpl = null)

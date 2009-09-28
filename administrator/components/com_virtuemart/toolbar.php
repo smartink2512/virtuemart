@@ -1,7 +1,7 @@
 <?php 
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
-* This file is the ExtJS Toolbar controller for JMart
+* This file is the ExtJS Toolbar controller for VirtueMart
 *
 * There are three main Toolbar cases:
 * - a List Toolbar with 'New / Delete / Publish'
@@ -10,32 +10,32 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 *
 *
 * @version $Id: toolbar.php 1320 2008-03-19 20:50:08Z soeren_nb $
-* @package JMart
+* @package VirtueMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 if( stristr( $_SERVER['PHP_SELF'], 'administrator')) {
-	@define( '_JM_IS_BACKEND', '1' );
+	@define( '_VM_IS_BACKEND', '1' );
 }
-defined('_JM_TOOLBAR_LOADED' ) or define('_JM_TOOLBAR_LOADED', 1 );
+defined('_VM_TOOLBAR_LOADED' ) or define('_VM_TOOLBAR_LOADED', 1 );
 
 include( dirname(__FILE__).'/compat.joomla1.5.php');
 
 global $page, $sess; 
-//if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_jmart/install.php' )) {
-if (!file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_jmart'.DS.'install.php' )) {
+//if (!file_exists( $mosConfig_absolute_path.'/administrator/components/com_virtuemart/install.php' )) {
+if (!file_exists( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'install.php' )) {
     // We parse the phpShop main code before loading the toolbar,
     // for we can catch errors and adjust the toolbar when
     // the admin has to stay on a site or is redirected back on error
-//    require_once( $mosConfig_absolute_path.'/components/com_jmart/virtuemart_parser.php');
+//    require_once( $mosConfig_absolute_path.'/components/com_virtuemart/virtuemart_parser.php');
 	require_once( JPATH_COMPONENT_SITE.DS.'virtuemart_parser.php');
 //    require_once( JPATH_COMPONENT.DS.'virtuemart_parser.php');
 

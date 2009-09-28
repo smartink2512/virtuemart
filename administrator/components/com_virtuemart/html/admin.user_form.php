@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: admin.user_form.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 
@@ -119,20 +119,20 @@ $canEmailEvents = $acl->acl_check( 'workflow', 'email_events', 'users', $acl->ge
 // Set the last visit date
 $lvisit = $row->lastvisitDate;
 if ($lvisit == "0000-00-00 00:00:00") {
-	$lvisit = '***' . JText::_('JM_USER_FORM_LASTVISIT_NEVER');
+	$lvisit = '***' . JText::_('VM_USER_FORM_LASTVISIT_NEVER');
 }
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( vmCommonHTML::imageTag(JM_ADMIN_ICON_URL.'icon_48/jm_user_48.png', 'User Icon', 'absmiddle' ) 
+$formObj = &new formFactory( vmCommonHTML::imageTag(VM_ADMIN_ICON_URL.'icon_48/jm_user_48.png', 'User Icon', 'absmiddle' ) 
 							.'&nbsp;&nbsp;&nbsp;' 
-							. JText::_('JM_USER_FORM_LBL') );
+							. JText::_('VM_USER_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 
 $tabs = new vmTabPanel(0, 1, "userform");
 $tabs->startPane("userform-pane");
 
-$tabs->startTab( JText::_('JM_USER_FORM_TAB_GENERALINFO'), "userform-page");
+$tabs->startTab( JText::_('VM_USER_FORM_TAB_GENERALINFO'), "userform-page");
 
 ?>
 <script language="javascript" type="text/javascript">
@@ -146,12 +146,12 @@ function gotocontact( id ) {
 </script>
 
 <fieldset class="adminform">
-<legend><?php echo JText::_('JM_USER_FORM_LEGEND_USERDETAILS'); ?></legend>
+<legend><?php echo JText::_('VM_USER_FORM_LEGEND_USERDETAILS'); ?></legend>
 	<table class="admintable" cellspacing="1">
 		<tr>
 			<td width="150" class="key">
 				<label for="name">
-					<?php echo JText::_('JM_USER_FORM_NAME'); ?>
+					<?php echo JText::_('VM_USER_FORM_NAME'); ?>
 				</label>
 			</td>
 			<td>
@@ -161,7 +161,7 @@ function gotocontact( id ) {
 		<tr>
 			<td class="key">
 				<label for="username">
-					<?php echo JText::_('JM_USER_FORM_USERNAME'); ?>
+					<?php echo JText::_('VM_USER_FORM_USERNAME'); ?>
 				</label>
 			</td>
 			<td>
@@ -171,7 +171,7 @@ function gotocontact( id ) {
 		<tr>
 			<td class="key">
 				<label for="email">
-					<?php echo JText::_('JM_USER_FORM_EMAIL'); ?>
+					<?php echo JText::_('VM_USER_FORM_EMAIL'); ?>
 				</label>
 			</td>
 			<td>
@@ -181,7 +181,7 @@ function gotocontact( id ) {
 		<tr>
 			<td class="key">
 				<label for="password">
-					<?php echo JText::_('JM_USER_FORM_NEWPASSWORD'); ?>
+					<?php echo JText::_('VM_USER_FORM_NEWPASSWORD'); ?>
 				</label>
 			</td>
 			<td>
@@ -191,7 +191,7 @@ function gotocontact( id ) {
 		<tr>
 			<td class="key">
 				<label for="password2">
-					<?php echo JText::_('JM_USER_FORM_VERIFYPASSWORD'); ?>
+					<?php echo JText::_('VM_USER_FORM_VERIFYPASSWORD'); ?>
 				</label>
 			</td>
 			<td>
@@ -201,7 +201,7 @@ function gotocontact( id ) {
 		<tr>
 			<td valign="top" class="key">
 				<label for="gid">
-					<?php echo JText::_('JM_USER_FORM_GROUP'); ?>
+					<?php echo JText::_('VM_USER_FORM_GROUP'); ?>
 				</label>
 			</td>
 			<td>
@@ -212,7 +212,7 @@ function gotocontact( id ) {
 		<?php if ( $canBlockUser ) : ?>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('JM_USER_FORM_BLOCKUSER'); ?>
+				<?php echo JText::_('VM_USER_FORM_BLOCKUSER'); ?>
 			</td>
 			<td>
 				<?php echo $lists['block']; 
@@ -223,7 +223,7 @@ function gotocontact( id ) {
 		<?php if ( $canEmailEvents ) : ?>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('JM_USER_FORM_RECEIVESYSTEMEMAILS'); ?>
+				<?php echo JText::_('VM_USER_FORM_RECEIVESYSTEMEMAILS'); ?>
 			</td>
 			<td>
 				<?php echo $lists['sendEmail']; 
@@ -234,7 +234,7 @@ function gotocontact( id ) {
 		<?php if( $user_id ) : ?>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('JM_USER_FORM_REGISTERDATE'); ?>
+				<?php echo JText::_('VM_USER_FORM_REGISTERDATE'); ?>
 			</td>
 			<td>
 				<?php echo $row->registerDate;?>
@@ -242,7 +242,7 @@ function gotocontact( id ) {
 		</tr>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('JM_USER_FORM_LASTVISITDATE'); ?>
+				<?php echo JText::_('VM_USER_FORM_LASTVISITDATE'); ?>
 			</td>
 			<td>
 				<?php echo $lvisit; ?>
@@ -252,7 +252,7 @@ function gotocontact( id ) {
 	</table>
 </fieldset>
 <fieldset class="adminform">
-<legend><?php echo JText::_('JM_USER_FORM_LEGEND_PARAMETERS'); ?></legend>
+<legend><?php echo JText::_('VM_USER_FORM_LEGEND_PARAMETERS'); ?></legend>
 	<table class="admintable" cellspacing="1">
 		<tr>
 			<td>
@@ -262,15 +262,15 @@ function gotocontact( id ) {
 	</table>
 </fieldset>
 <fieldset class="adminform">
-<legend><?php echo JText::_('JM_USER_FORM_LEGEND_CONTACTINFO'); ?></legend>
+<legend><?php echo JText::_('VM_USER_FORM_LEGEND_CONTACTINFO'); ?></legend>
 	<?php if ( !$contact ) : ?>
 	<table class="admintable" cellspacing="1">
 		<tr>
 			<td>
 			<br />
-			<?php echo JText::_('JM_USER_FORM_NOCONTACTDETAILS_1'); ?>
+			<?php echo JText::_('VM_USER_FORM_NOCONTACTDETAILS_1'); ?>
 			<br />
-			<?php echo JText::_('JM_USER_FORM_NOCONTACTDETAILS_2'); ?>
+			<?php echo JText::_('VM_USER_FORM_NOCONTACTDETAILS_2'); ?>
 			<br /><br />
 			</td>
 		</tr>
@@ -279,7 +279,7 @@ function gotocontact( id ) {
 	<table class="admintable" cellspacing="1">
 		<tr>
 			<td width="15%">
-			<?php echo JText::_('JM_USER_FORM_CONTACTDETAILS_NAME'); ?>:
+			<?php echo JText::_('VM_USER_FORM_CONTACTDETAILS_NAME'); ?>:
 			</td>
 			<td>
 			<strong>
@@ -289,7 +289,7 @@ function gotocontact( id ) {
 		</tr>
 		<tr>
 			<td>
-			<?php echo JText::_('JM_USER_FORM_CONTACTDETAILS_POSITION'); ?>:
+			<?php echo JText::_('VM_USER_FORM_CONTACTDETAILS_POSITION'); ?>:
 			</td>
 			<td >
 			<strong>
@@ -299,7 +299,7 @@ function gotocontact( id ) {
 		</tr>
 		<tr>
 			<td>
-			<?php echo JText::_('JM_USER_FORM_CONTACTDETAILS_TELEPHONE'); ?>:
+			<?php echo JText::_('VM_USER_FORM_CONTACTDETAILS_TELEPHONE'); ?>:
 			</td>
 			<td >
 			<strong>
@@ -309,7 +309,7 @@ function gotocontact( id ) {
 		</tr>
 		<tr>
 			<td>
-			<?php echo JText::_('JM_USER_FORM_CONTACTDETAILS_FAX'); ?>:
+			<?php echo JText::_('VM_USER_FORM_CONTACTDETAILS_FAX'); ?>:
 			</td>
 			<td >
 			<strong>
@@ -336,7 +336,7 @@ function gotocontact( id ) {
 		<tr>
 			<td colspan="2">
 			<br />
-			<input class="button" type="button" value="<?php echo JText::_('JM_USER_FORM_CONTACTDETAILS_CHANGEBUTTON'); ?>" onclick="javascript: gotocontact( '<?php echo $contact[0]->id; ?>' )">
+			<input class="button" type="button" value="<?php echo JText::_('VM_USER_FORM_CONTACTDETAILS_CHANGEBUTTON'); ?>" onclick="javascript: gotocontact( '<?php echo $contact[0]->id; ?>' )">
 			</td>
 		</tr>
 	</table>
@@ -353,18 +353,18 @@ function gotocontact( id ) {
 <?php
 
 $tabs->endTab();
-$tabs->startTab( JText::_('JM_SHOPPER_FORM_LBL'), "third-page");
+$tabs->startTab( JText::_('VM_SHOPPER_FORM_LBL'), "third-page");
 
 ?>
 
-<fieldset style="width:48%;"><legend><?php echo JText::_('JM_SHOPPER_FORM_LBL') ?></legend>
+<fieldset style="width:48%;"><legend><?php echo JText::_('VM_SHOPPER_FORM_LBL') ?></legend>
 <table class="adminform">  
     <tr> 
-        <td style="text-align:right;"><?php echo JText::_('JM_PRODUCT_FORM_VENDOR') ?>:</td>
+        <td style="text-align:right;"><?php echo JText::_('VM_PRODUCT_FORM_VENDOR') ?>:</td>
         <td><?php $hVendor -> list_vendor($db->f("vendor_id"),true);  ?></td>
     </tr>
 	<tr> 
-        <td nowrap="nowrap" style="text-align:right;" width="38%" ><?php echo JText::_('JM_USER_FORM_PERMS') ?>:</td> 
+        <td nowrap="nowrap" style="text-align:right;" width="38%" ><?php echo JText::_('VM_USER_FORM_PERMS') ?>:</td> 
         <td width="62%" > 
                 <?php
                 if( !isset( $ps_perms)) { $ps_perms = new ps_perm(); }
@@ -373,13 +373,13 @@ $tabs->startTab( JText::_('JM_SHOPPER_FORM_LBL'), "third-page");
         </td> 
     </tr> 
       <tr> 
-    	<td style="text-align:right;"><?php echo JText::_('JM_USER_FORM_CUSTOMER_NUMBER') ?>:</td>
+    	<td style="text-align:right;"><?php echo JText::_('VM_USER_FORM_CUSTOMER_NUMBER') ?>:</td>
         <td > 
       	<input type="text" class="inputbox" name="customer_number" size="40" value="<?php echo $ps_shopper_group->get_customer_num($db->f("user_id")) ?>" />
         </td>
      </tr>
      <tr> 
-    	<td style="text-align:right;"> <?php echo JText::_('JM_SHOPPER_FORM_GROUP') ?>:</td>
+    	<td style="text-align:right;"> <?php echo JText::_('VM_SHOPPER_FORM_GROUP') ?>:</td>
         <td ><?php
             include_class('shopper');
             $sg_id = $ps_shopper_group->get_shoppergroup_by_id($db->f("user_id"));
@@ -392,10 +392,10 @@ $tabs->startTab( JText::_('JM_SHOPPER_FORM_LBL'), "third-page");
 <?php 
 if( $db->f("user_id") ) {
 ?> 
-    <fieldset><legend><?php echo JText::_('JM_USER_FORM_SHIPTO_LBL') ?></legend>
+    <fieldset><legend><?php echo JText::_('VM_USER_FORM_SHIPTO_LBL') ?></legend>
     
     <a class="vmicon vmicon-16-editadd" href="<?php $sess->purl($_SERVER['PHP_SELF'] . "?page=$modulename.user_address_form&amp;user_id=$user_id") ?>" >
-	(<?php echo JText::_('JM_USER_FORM_ADD_SHIPTO_LBL') ?>)</a> 
+	(<?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL') ?>)</a> 
 	
 	<table class="adminlist"> 
 		<tr> 
@@ -457,10 +457,10 @@ require_once(CLASSPATH.'ps_order.php');
 $db = ps_order::list_order_resultSet($order_status);
 $num_rows = $db->f("num_rows");
 if( $num_rows ) {
-	$tabs->startTab( JText::_('JM_ORDER_LIST_LBL') . ' ('.$num_rows.')', "order-list");
+	$tabs->startTab( JText::_('VM_ORDER_LIST_LBL') . ' ('.$num_rows.')', "order-list");
 	?>
 	        
-	<h3><?php echo JText::_('JM_ORDER_LIST_LBL') ?> </h3>
+	<h3><?php echo JText::_('VM_ORDER_LIST_LBL') ?> </h3>
 	
 	<?php
 	
@@ -474,12 +474,12 @@ if( $num_rows ) {
 	
 	// these are the columns in the table
 	$columns = Array(  "#" => "width=\"20\"", 
-	                                        JText::_('JM_ORDER_LIST_ID') => '',
-	                                        JText::_('JM_CHECK_OUT_THANK_YOU_PRINT_VIEW') => '',
-	                                        JText::_('JM_ORDER_LIST_CDATE') => '',
-	                                        JText::_('JM_ORDER_LIST_MDATE') => '',
-	                                        JText::_('JM_ORDER_LIST_STATUS') => '',
-	                                        JText::_('JM_ORDER_LIST_TOTAL') => '',
+	                                        JText::_('VM_ORDER_LIST_ID') => '',
+	                                        JText::_('VM_CHECK_OUT_THANK_YOU_PRINT_VIEW') => '',
+	                                        JText::_('VM_ORDER_LIST_CDATE') => '',
+	                                        JText::_('VM_ORDER_LIST_MDATE') => '',
+	                                        JText::_('VM_ORDER_LIST_STATUS') => '',
+	                                        JText::_('VM_ORDER_LIST_TOTAL') => '',
 	                                        JText::_('E_REMOVE') => "width=\"5%\""
 	                                );
 	$listObj->writeTableHeader( $columns );
@@ -539,61 +539,61 @@ $vendor_id = $hVendor->getVendorIdByUserId($user_id);
 	/* Build up the Tabs */
 //$tabs = new vmTabPanel(0, 1, "vendorform");
 //$tabs->startPane("content-pane");
-echo('Start JM_STORE_MOD $vendor_id: '.$vendor_id);
-$tabs->startTab( JText::_('JM_STORE_MOD'), "info-page");
+echo('Start VM_STORE_MOD $vendor_id: '.$vendor_id);
+$tabs->startTab( JText::_('VM_STORE_MOD'), "info-page");
 ?>
 
 <table class="adminform">
     <tr> 
-      <td><strong><?php echo JText::_('JM_VENDOR_FORM_INFO_LBL') ?></strong></td>
+      <td><strong><?php echo JText::_('VM_VENDOR_FORM_INFO_LBL') ?></strong></td>
       <td>&nbsp;</td>
     </tr>
     <tr> 
-      <td align="right" ><?php echo JText::_('JM_VENDOR_FORM_FULL_IMAGE') ?>:</td>
+      <td align="right" ><?php echo JText::_('VM_VENDOR_FORM_FULL_IMAGE') ?>:</td>
       <td><?php  
         $hVendor -> show_image($db->f("vendor_full_image"), $vendor_id); ?> 
         <input type="hidden" name="vendor_full_image_curr" value="<?php $db->p("vendor_full_image"); ?>" />
       </td>
     </tr>
     <tr> 
-      <td align="right" ><?php echo JText::_('JM_VENDOR_FORM_UPLOAD') ?>:</td>
+      <td align="right" ><?php echo JText::_('VM_VENDOR_FORM_UPLOAD') ?>:</td>
       <td> 
         <input type="file" name="vendor_full_image" size="16" />
       </td>
     </tr>
     <tr> 
-      <td align="right" ><?php echo JText::_('JM_VENDOR_FORM_STORE_NAME') ?>:</td>
+      <td align="right" ><?php echo JText::_('VM_VENDOR_FORM_STORE_NAME') ?>:</td>
       <td> 
         <input type="text" class="inputbox" name="vendor_store_name" value="<?php $db->sp("vendor_store_name") ?>" size="16" />
       </td>
     </tr>
     <tr> 
-      <td align="right"><?php echo JText::_('JM_VENDOR_FORM_COMPANY_NAME') ?></td>
+      <td align="right"><?php echo JText::_('VM_VENDOR_FORM_COMPANY_NAME') ?></td>
       <td> 
         <input type="text" class="inputbox" name="vendor_name" value="<?php $db->sp("vendor_name") ?>" size="16" />
       </td>
     </tr>
     <tr> 
-      <td width="22%" align="right" ><?php echo JText::_('JM_PRODUCT_FORM_URL') ?>:</td>
+      <td width="22%" align="right" ><?php echo JText::_('VM_PRODUCT_FORM_URL') ?>:</td>
       <td width="78%" > 
         <input type="text" class="inputbox" name="vendor_url" value="<?php $db->sp("vendor_url") ?>" size="32" />
       </td>
     </tr>
     <tr> 
-      <td width="22%" align="right" ><?php echo JText::_('JM_STORE_FORM_MPOV') ?>: </td>
+      <td width="22%" align="right" ><?php echo JText::_('VM_STORE_FORM_MPOV') ?>: </td>
       <td width="78%" > 
         <input type="text" class="inputbox" name="vendor_min_pov" value="<?php $db->sp("vendor_min_pov") ?>" size="6" />
       </td>
     </tr>
     <tr> 
-      <td width="22%" align="right" ><?php echo JText::_('JM_FREE_SHIPPING_AMOUNT') ?>: </td>
+      <td width="22%" align="right" ><?php echo JText::_('VM_FREE_SHIPPING_AMOUNT') ?>: </td>
       <td width="78%" > 
         <input type="text" class="inputbox" name="vendor_freeshipping" value="<?php $db->sp("vendor_freeshipping") ?>" size="6" />
-      <?php echo vmToolTip( JText::_('JM_FREE_SHIPPING_AMOUNT_TOOLTIP') ) ?>
+      <?php echo vmToolTip( JText::_('VM_FREE_SHIPPING_AMOUNT_TOOLTIP') ) ?>
       </td>
     </tr>
     <tr> 
-      <td align="right"><?php echo JText::_('JM_VENDOR_FORM_CATEGORY') ?>:</td>
+      <td align="right"><?php echo JText::_('VM_VENDOR_FORM_CATEGORY') ?>:</td>
       <td ><?php 
       	global $hVendor_category;
           $hVendor_category->list_category($db->sf("vendor_category_id"));
@@ -601,7 +601,7 @@ $tabs->startTab( JText::_('JM_STORE_MOD'), "info-page");
       </td>
     </tr>
     <tr>
-      <td colspan="2" style="font-weight:bold;"><hr /><?php echo JText::_('JM_CURRENCY_DISPLAY') ?></td>
+      <td colspan="2" style="font-weight:bold;"><hr /><?php echo JText::_('VM_CURRENCY_DISPLAY') ?></td>
     </tr>
     
 <?php
@@ -609,37 +609,37 @@ $tabs->startTab( JText::_('JM_STORE_MOD'), "info-page");
 $currency_display =& $hVendor -> get_currency_display_style( $db->f("vendor_currency_display_style") );
 ?>
     <tr>        
-      <td align="right"><?php echo JText::_('JM_VENDOR_FORM_CURRENCY') ?>:</td>
+      <td align="right"><?php echo JText::_('VM_VENDOR_FORM_CURRENCY') ?>:</td>
       <td> 
         <?php $ps_html->list_currency("vendor_currency", $db->sf("vendor_currency")); ?>
       </td>
     </tr>
     <tr>
-      <td align="right"><?php echo JText::_('JM_CURRENCY_SYMBOL') ?> : </td>
+      <td align="right"><?php echo JText::_('VM_CURRENCY_SYMBOL') ?> : </td>
       <td>
         <input type="hidden" name="display_style[0]" value="<?php echo $vendor_id; ?>" size="4">
         <input type="text" name="display_style[1]" value="<?php echo $currency_display['symbol']; ?>" size="4" />
-        <?php echo vmToolTip( JText::_('JM_CURRENCY_SYMBOL_TOOLTIP') )?>
+        <?php echo vmToolTip( JText::_('VM_CURRENCY_SYMBOL_TOOLTIP') )?>
       </td>
     </tr>
     <tr>
-      <td align="right"><?php echo JText::_('JM_CURRENCY_DECIMALS') ?> : </td>
+      <td align="right"><?php echo JText::_('VM_CURRENCY_DECIMALS') ?> : </td>
       <td><input type="text" name="display_style[2]" value="<?php echo $currency_display['nbdecimal']; ?>" size="1" />
-      <?php echo vmToolTip( JText::_('JM_CURRENCY_DECIMALS_TOOLTIP') ) ?>
+      <?php echo vmToolTip( JText::_('VM_CURRENCY_DECIMALS_TOOLTIP') ) ?>
       </td>
     </tr>
     <tr>
-      <td align="right"><?php echo JText::_('JM_CURRENCY_DECIMALSYMBOL') ?> : </td>
+      <td align="right"><?php echo JText::_('VM_CURRENCY_DECIMALSYMBOL') ?> : </td>
       <td><input type="text" name="display_style[3]" value="<?php echo $currency_display['sdecimal']; ?>" size="1" />
-      <?php echo vmToolTip( JText::_('JM_CURRENCY_DECIMALSYMBOL_TOOLTIP') ) ?></td>
+      <?php echo vmToolTip( JText::_('VM_CURRENCY_DECIMALSYMBOL_TOOLTIP') ) ?></td>
     </tr>
     <tr>
-      <td align="right"><?php echo JText::_('JM_CURRENCY_THOUSANDS') ?> : </td>
+      <td align="right"><?php echo JText::_('VM_CURRENCY_THOUSANDS') ?> : </td>
       <td><input type="text" name="display_style[4]" value="<?php echo $currency_display['thousands']; ?>" size="1" />
-      <?php echo vmToolTip( JText::_('JM_CURRENCY_THOUSANDS_TOOLTIP') )?></td>
+      <?php echo vmToolTip( JText::_('VM_CURRENCY_THOUSANDS_TOOLTIP') )?></td>
     </tr>
     <tr>
-      <td align="right"><?php echo JText::_('JM_CURRENCY_POSITIVE_DISPLAY') ?> : </td>
+      <td align="right"><?php echo JText::_('VM_CURRENCY_POSITIVE_DISPLAY') ?> : </td>
       <td>
         <select name="display_style[5]">
 			<option value="0"<?php if ($currency_display['positive']=='0') echo ' selected=\"selected\" ';?>>00Symb</option>
@@ -647,11 +647,11 @@ $currency_display =& $hVendor -> get_currency_display_style( $db->f("vendor_curr
 	   		<option value="2"<?php if ($currency_display['positive']=='2') echo ' selected=\"selected\" ';?>>Symb00</option>
 		   	<option value="3"<?php if ($currency_display['positive']=='3') echo ' selected=\"selected\" ';?>>Symb 00</option>
         </select>
-        <?php echo vmToolTip( JText::_('JM_CURRENCY_POSITIVE_DISPLAY_TOOLTIP') ) ?>
+        <?php echo vmToolTip( JText::_('VM_CURRENCY_POSITIVE_DISPLAY_TOOLTIP') ) ?>
       </td>
     </tr>
     <tr>
-      <td align="right"><?php echo JText::_('JM_CURRENCY_NEGATIVE_DISPLAY') ?> : </td>
+      <td align="right"><?php echo JText::_('VM_CURRENCY_NEGATIVE_DISPLAY') ?> : </td>
       <td>
         <select name="display_style[6]">
 			<option value="0"<?php if ($currency_display['negative']=='0') echo ' selected=\"selected\" ';?>>(Symb00)</option>
@@ -671,21 +671,21 @@ $currency_display =& $hVendor -> get_currency_display_style( $db->f("vendor_curr
 		   	<option value="14"<?php if ($currency_display['negative']=='14') echo ' selected=\"selected\" ';?>>(Symb 00)</option>
 		   	<option value="15"<?php if ($currency_display['negative']=='15') echo ' selected=\"selected\" ';?>>(00 Symb)</option>
         </select>
-        <?php echo vmToolTip( JText::_('JM_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP') ) ?>
+        <?php echo vmToolTip( JText::_('VM_CURRENCY_NEGATIVE_DISPLAY_TOOLTIP') ) ?>
       </td>
     </tr>
   </table>
   
    <table class="adminform">
     <tr> 
-      <td width="22%" align="right"  valign="top"><?php echo JText::_('JM_VENDOR_FORM_DESCRIPTION') ?>:</td>
+      <td width="22%" align="right"  valign="top"><?php echo JText::_('VM_VENDOR_FORM_DESCRIPTION') ?>:</td>
       <td width="78%" ><?php
 	  	 editorArea( 'editor1', $db->f("vendor_store_desc"), 'vendor_store_desc', '400', '200', '70', '15' );
 			?>
       </td>
     </tr>
             <tr> 
-      <td width="22%" align="right"  valign="top"><?php echo JText::_('JM_STORE_FORM_TOS') ?>:</td>
+      <td width="22%" align="right"  valign="top"><?php echo JText::_('VM_STORE_FORM_TOS') ?>:</td>
       <td width="78%" ><?php
 	  	  editorArea( 'editor2', $db->f("vendor_terms_of_service"), 'vendor_terms_of_service', '400', '200', '70', '15' );
 		?>

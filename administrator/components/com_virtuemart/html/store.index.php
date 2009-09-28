@@ -3,21 +3,21 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: store.index.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 mm_showMyFileName( __FILE__ );
 
-$iconURL = JURI::base().'components/com_jmart/assets/images/icon_48/';
+$iconURL = JURI::base().'components/com_virtuemart/assets/images/icon_48/';
 
 // Number of customers
 $db->query('SELECT count(*) as num_rows FROM #__{vm}_user_info WHERE address_type = \'BT\'');
@@ -82,12 +82,12 @@ while($db->next_record())
 
 $tabs = new vmTabPanel(1, 1, "dashboard");
 $tabs->startPane("content-pane");
-$tabs->startTab(JText::_('JM_CONTROL_PANEL'), 'control-panel');
+$tabs->startTab(JText::_('VM_CONTROL_PANEL'), 'control-panel');
 ?>
 
 <div class="header">
 	<h2><img src="<?php echo $iconURL. 'jm_store_48.png'; ?>" align="middle" alt="Desktop" border="0" />
-		<?php echo JText::_('JM_YOUR_STORE')."::".JText::_('JM_CONTROL_PANEL'); ?></h2>
+		<?php echo JText::_('VM_YOUR_STORE')."::".JText::_('VM_CONTROL_PANEL'); ?></h2>
 </div>
 <br style="clear:both;" />
 	<div id="cpanel">
@@ -95,54 +95,54 @@ $tabs->startTab(JText::_('JM_CONTROL_PANEL'), 'control-panel');
         
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_list");
 		$image = $iconURL.'jm_shop_products_48.png';
-		$text = JText::_('JM_PRODUCT_LIST_LBL');
+		$text = JText::_('VM_PRODUCT_LIST_LBL');
 		$ps_html->writePanelIcon( $image, $link, $text );
 		
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_category_list");
 		$image = $iconURL.'jm_shop_categories_48.png';
-		$text = JText::_('JM_CATEGORY_LIST_LBL');
+		$text = JText::_('VM_CATEGORY_LIST_LBL');
 		$ps_html->writePanelIcon( $image, $link, $text );
 
 		
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_list");
 		$image = $iconURL.'jm_shop_orders_48.png';
-		$text = JText::_('JM_ORDER_MOD');
+		$text = JText::_('VM_ORDER_MOD');
 		$ps_html->writePanelIcon( $image, $link, $text );
 		
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.payment_method_list");
 		$image = $iconURL.'jm_shop_payment_48.png';
-		$text = JText::_('JM_PAYMENT_METHOD_LIST_MNU');
+		$text = JText::_('VM_PAYMENT_METHOD_LIST_MNU');
 		$ps_html->writePanelIcon( $image, $link, $text );
               
-        if (defined( "_JM_IS_BACKEND" ) ) {
+        if (defined( "_VM_IS_BACKEND" ) ) {
 		    $link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=vendor.vendor_list");
 		    $image = $iconURL.'jm_shop_vendors_48.png';
-            $text =  JText::_('JM_VENDOR_MOD');
+            $text =  JText::_('VM_VENDOR_MOD');
 		    $ps_html->writePanelIcon( $image, $link, $text );
         }
                 
-		if (defined( "_JM_IS_BACKEND" ) ) { 
+		if (defined( "_VM_IS_BACKEND" ) ) { 
 			$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.user_list");
 			$image = $iconURL.'jm_shop_users_48.png';
-			$text = JText::_('JM_USERS');
+			$text = JText::_('VM_USERS');
 			$ps_html->writePanelIcon( $image, $link, $text );
 		}
         
-        if (defined( "_JM_IS_BACKEND" ) ) {    
+        if (defined( "_VM_IS_BACKEND" ) ) {    
 			$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.show_cfg");
 			$image = $iconURL.'jm_shop_configuration_48.png';
-			$text = JText::_('JM_CONFIG');
+			$text = JText::_('VM_CONFIG');
 			$ps_html->writePanelIcon( $image, $link, $text );
 		}
                 
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.store_form");
 		$image = $iconURL.'jm_shop_mart_48.png';
-		$text = JText::_('JM_STORE_FORM_MNU');
+		$text = JText::_('VM_STORE_FORM_MNU');
 		$ps_html->writePanelIcon( $image, $link, $text );
                 
-		$link = 'http://joomlacode.org/gf/project/jmart//index.php?option=com_content&amp;task=view&amp;id=248&amp;Itemid=125';
+		$link = 'http://virtuemart.org/index.php?option=com_content&amp;task=view&amp;id=248&amp;Itemid=125';
 		$image = $iconURL.'jm_shop_help_48.png';
-		$text = JText::_('JM_HELP_MOD');
+		$text = JText::_('VM_HELP_MOD');
 		$ps_html->writePanelIcon( $image, $link, $text );
 		
 		?>
@@ -151,32 +151,32 @@ $tabs->startTab(JText::_('JM_CONTROL_PANEL'), 'control-panel');
 		
 <?php
 $tabs->endTab();
-$tabs->startTab( JText::_('JM_STATISTIC_STATISTICS'), "statistic-page");
+$tabs->startTab( JText::_('VM_STATISTIC_STATISTICS'), "statistic-page");
     ?>
 	<table class="adminlist">
 		<tr> 
-		  <th colspan="2" class="title"><?php echo JText::_('JM_STATISTIC_STATISTICS') ?></th>
+		  <th colspan="2" class="title"><?php echo JText::_('VM_STATISTIC_STATISTICS') ?></th>
 		</tr>
 		<tr> 
 		  <td width="50%"><?php 
-			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_jmart&page=admin.user_list\">"
-					  .  JText::_('JM_STATISTIC_CUSTOMERS') ?></a>:</td>
+			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=admin.user_list\">"
+					  .  JText::_('VM_STATISTIC_CUSTOMERS') ?></a>:</td>
 		  <td width="50%"> <?php echo $customers ?></td>
 		</tr>
 		<tr> 
 		  <td width="50%"><?php 
-			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_jmart&page=product.product_list\">"
-					  .  JText::_('JM_STATISTIC_ACTIVE_PRODUCTS') ?></a>:</td>
+			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_list\">"
+					  .  JText::_('VM_STATISTIC_ACTIVE_PRODUCTS') ?></a>:</td>
 		  <td width="50%"> <?php echo $active_products ?> </td>
 		</tr>
 		<tr> 
-		  <td width="50%"><?php echo JText::_('JM_STATISTIC_INACTIVE_PRODUCTS') ?>:</td>
+		  <td width="50%"><?php echo JText::_('VM_STATISTIC_INACTIVE_PRODUCTS') ?>:</td>
 		  <td width="50%"> <?php  echo $inactive_products ?></td>
 		</tr>
 		<tr> 
 		  <td width="50%"><?php 
-			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_jmart&page=product.specialprod&filter=featured\">"
-					  .  JText::_('JM_SHOW_FEATURED') ?></a>:</td>
+			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.specialprod&filter=featured\">"
+					  .  JText::_('VM_SHOW_FEATURED') ?></a>:</td>
 		  <td width="50%"><?php echo $special_products ?></td>
 		</tr>
 	</table>
@@ -184,35 +184,35 @@ $tabs->startTab( JText::_('JM_STATISTIC_STATISTICS'), "statistic-page");
 	<table class="adminlist" style="width:95%;">
 		<tr> 
 		  <th colspan="2" class="title"><?php 
-			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_jmart&page=order.order_list\">"
-					  .  JText::_('JM_ORDER_MOD') ?></a>:</th>
+			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=order.order_list\">"
+					  .  JText::_('VM_ORDER_MOD') ?></a>:</th>
 		</tr>
 		<?php 
 		$i = 0;
 		foreach($orders as $order_status_name => $order_count) { ?>
 		<tr>
 		  <td width="50%"><?php 
-			echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_jmart&page=order.order_list&show=".$order_status_code[$i++]."\">";
+			echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=order.order_list&show=".$order_status_code[$i++]."\">";
 			echo $order_status_name ."</a>" ?>:</td>
 		  <td width="50%"> <?php echo $order_count ?></td>
 		</tr>
 		<?php } ?>
 		<tr> 
-		  <td width="50%"><strong><?php echo JText::_('JM_STATISTIC_SUM') ?>:</strong></td>
+		  <td width="50%"><strong><?php echo JText::_('VM_STATISTIC_SUM') ?>:</strong></td>
 		  <td width="50%"><strong><?php echo $sum ?></strong></td>
 		</tr>
 	</table>
 
 	<table class="adminlist" style="width:95%;">
 		<tr>
-			<th colspan="2" class="title"><?php echo JText::_('JM_STATISTIC_NEW_ORDERS') ?></th>
+			<th colspan="2" class="title"><?php echo JText::_('VM_STATISTIC_NEW_ORDERS') ?></th>
 		</tr>
 <?php 
 	foreach($new_orders as $order_id => $total) { ?>
 		  <tr>
 			<td width="50%"><?php 
-			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_jmart&page=order.order_print&order_id=$order_id\">";
-			  echo JText::_('JM_ORDER_LIST_ID')." ". $order_id ."</a>" ?>:</td>
+			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=order.order_print&order_id=$order_id\">";
+			  echo JText::_('VM_ORDER_LIST_ID')." ". $order_id ."</a>" ?>:</td>
 			<td width="50%">(<?php echo $total ." ".$_SESSION['vendor_currency'] ?>)</td>
 		</tr>
 		<?php 
@@ -220,11 +220,11 @@ $tabs->startTab( JText::_('JM_STATISTIC_STATISTICS'), "statistic-page");
 	</table>
 <?php
 
-if (defined( "_JM_IS_BACKEND" ) ) {
+if (defined( "_VM_IS_BACKEND" ) ) {
 	?>	
 	<table class="adminlist" style="width:95%;">
 		<tr> 
-		  <th colspan="2" class="title"><?php echo JText::_('JM_STATISTIC_NEW_CUSTOMERS') ?></th>
+		  <th colspan="2" class="title"><?php echo JText::_('VM_STATISTIC_NEW_CUSTOMERS') ?></th>
 		</tr>
 		<?php 
 		foreach($new_customers as $id => $name) { ?>

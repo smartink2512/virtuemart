@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: list_shipto_addresses.tpl.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package JMart
+* @package VirtueMart
 * @subpackage templates
 * @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* JMart is free software. This version may have been modified pursuant
+* VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
 *
-* http://joomlacode.org/gf/project/jmart/
+* http://virtuemart.org
 */
 
 ?>
@@ -28,7 +28,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 		echo '<input type="radio" name="'.$name.'" id="'.$bt_user_info_id.'" value="'.$bt_user_info_id.'" '.$checked.'/>'."\n";
 	
 		?></td>
-		<td><label for="<?php echo $bt_user_info_id ?>"><?php echo JText::_('JM_ACC_BILL_DEF') ?></label></td>
+		<td><label for="<?php echo $bt_user_info_id ?>"><?php echo JText::_('VM_ACC_BILL_DEF') ?></label></td>
 	</tr>
 <?php
 $i = 2;
@@ -47,7 +47,7 @@ while($db->next_record()) {
 			
 	echo '<strong>' . $db->f("address_type_name") . "</strong> ";
 	$url = SECUREURL . "index.php?page=account.shipto&user_info_id=" . $db->f('user_info_id')."&next_page=checkout.index";
-	echo '(<a href="'.$sess->url($url).'">'.JText::_('JM_UDATE_ADDRESS').'</a>)'."\n";
+	echo '(<a href="'.$sess->url($url).'">'.JText::_('VM_UDATE_ADDRESS').'</a>)'."\n";
 	echo '<br />'."\n";
 	echo $db->f("title") . " ". $db->f("first_name") . " ". $db->f("middle_name") . " ". $db->f("last_name") . "\n";
 	echo '<br />'."\n";
@@ -66,9 +66,9 @@ while($db->next_record()) {
 	echo $db->f("zip") . "<br />\n";
 	// for country, can be used: country_name, country_2_code, country_3_code
 	// (not displayed in default template)
-	echo JText::_('JM_CHECKOUT_CONF_PHONE').': '. $db->f("phone_1") . "\n";
+	echo JText::_('VM_CHECKOUT_CONF_PHONE').': '. $db->f("phone_1") . "\n";
 	echo '<br />'."\n";
-	echo JText::_('JM_CHECKOUT_CONF_FAX').': '.$db->f("fax") . "\n";
+	echo JText::_('VM_CHECKOUT_CONF_FAX').': '.$db->f("fax") . "\n";
 	echo '</label>
 	</td>
 	</tr>'."\n";
