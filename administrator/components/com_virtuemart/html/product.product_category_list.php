@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: product.product_category_list.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 global $ps_product_category;
@@ -42,7 +42,7 @@ for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('VM_CATEGORY_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/vm_categories_48.png', $modulename, "product_category_list");
+$listObj->writeSearchHeader(JText::_('JM_CATEGORY_LIST_LBL'), JM_ADMIN_ICON_URL.'icon_48/jm_categories_48.png', $modulename, "product_category_list");
 
 // start the list table
 $listObj->startTable();
@@ -50,12 +50,12 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$pageNav->limit.")\" />" => "width=\"20\"",
-					JText::_('VM_CATEGORY_FORM_NAME') => 'width="25%"',
-					JText::_('VM_CATEGORY_FORM_DESCRIPTION') => 'width="30%"',
-					JText::_('VM_PRODUCTS_LBL') => 'width="10%"',
-					JText::_('VM_PRODUCT_LIST_PUBLISH') => 'width="5%"',
-					JText::_('VM_PRODUCT_LIST_SHARED') => 'width="5%"',
-					JText::_('VM_MODULE_LIST_ORDER') => 'width="7%"',
+					JText::_('JM_CATEGORY_FORM_NAME') => 'width="25%"',
+					JText::_('JM_CATEGORY_FORM_DESCRIPTION') => 'width="30%"',
+					JText::_('JM_PRODUCTS_LBL') => 'width="10%"',
+					JText::_('JM_PRODUCT_LIST_PUBLISH') => 'width="5%"',
+					JText::_('JM_PRODUCT_LIST_SHARED') => 'width="5%"',
+					JText::_('JM_MODULE_LIST_ORDER') => 'width="7%"',
 					vmCommonHTML::getSaveOrderButton( min($nrows - $pageNav->limitstart, $pageNav->limit ) ) => 'width="8%"',
 					JText::_('E_REMOVE') => "width=\"5%\"",
 					'Id' => ''
@@ -88,10 +88,10 @@ for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 	
 	// Which category depth level we are in?
 	$repeat = $depth_list[$n]+1;
-	$link = $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_category_form&category_id=" . $categories[$row_list[$n]]["category_child_id"]. "&category_parent_id=" . $categories[$row_list[$n]]["category_parent_id"];
+	$link = $_SERVER['PHP_SELF'] . "?option=com_jmart&page=product.product_category_form&category_id=" . $categories[$row_list[$n]]["category_child_id"]. "&category_parent_id=" . $categories[$row_list[$n]]["category_parent_id"];
 	if( $vmLayout != 'standard' ) {
 		$link .= "&no_menu=1&tmpl=component";
-		$link = defined('_VM_IS_BACKEND') 
+		$link = defined('_JM_IS_BACKEND') 
 			? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
 			: str_replace('index.php', 'index2.php', $link );
 	}
@@ -102,18 +102,18 @@ for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 				. "</a>";
 	$listObj->addCell( $tmp_cell );
 	
-	$desc = strlen( $categories[$row_list[$n]]["category_description"] ) > 255 ? mm_ToolTip( $categories[$row_list[$n]]["category_description"], JText::_('VM_CATEGORY_FORM_DESCRIPTION') ) :$categories[$row_list[$n]]["category_description"];
+	$desc = strlen( $categories[$row_list[$n]]["category_description"] ) > 255 ? mm_ToolTip( $categories[$row_list[$n]]["category_description"], JText::_('JM_CATEGORY_FORM_DESCRIPTION') ) :$categories[$row_list[$n]]["category_description"];
 	$listObj->addCell( "&nbsp;&nbsp;". $desc );
-	$link = $_SERVER['PHP_SELF'] . "?page=product.product_list&category_id=" . $categories[$row_list[$n]]["category_child_id"]."&option=com_virtuemart";
+	$link = $_SERVER['PHP_SELF'] . "?page=product.product_list&category_id=" . $categories[$row_list[$n]]["category_child_id"]."&option=com_jmart";
 	if( $vmLayout != 'standard' ) {
 		$link .= "&no_menu=1&tmpl=component";
-		$link = defined('_VM_IS_BACKEND') 
+		$link = defined('_JM_IS_BACKEND') 
 			? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
 			: str_replace('index.php', 'index2.php', $link );
 	}
 	$listObj->addCell( ps_product_category::product_count( $categories[$row_list[$n]]["category_child_id"] )
 						."&nbsp;<a href=\"". $link
-						. "\">[ ".JText::_('VM_SHOW')." ]</a>"
+						. "\">[ ".JText::_('JM_SHOW')." ]</a>"
 					);
 					
 	// Publish / Unpublish

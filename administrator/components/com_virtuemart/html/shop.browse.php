@@ -4,17 +4,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * This is the Main Product Listing File!
 *
 * @version $Id: shop.browse.php 1788 2009-05-13 19:22:17Z macallf $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 
@@ -128,7 +128,7 @@ if( $category_id ) {
 }
 // when nothing has been found we tell this here and say goodbye
 if ($num_rows == 0 && (!empty($keyword)||!empty($keyword1))) {
-	echo JText::_('VM_NO_SEARCH_RESULT');
+	echo JText::_('JM_NO_SEARCH_RESULT');
 }
 elseif( $num_rows == 0 && empty($product_type_id) && !empty($child_list)) {
 	echo JText::_('EMPTY_CATEGORY');
@@ -185,15 +185,15 @@ else {
 		$browsepage_header = $tpl->fetch( 'browse/includes/browse_header_manufacturer.tpl.php' );
 	}
 	elseif( $keyword ) {
-		$mainframe->setPageTitle( JText::_('VM_SEARCH_TITLE',false) );
-		$browsepage_lbl = JText::_('VM_SEARCH_TITLE') .': '.shopMakeHtmlSafe( $keyword );
+		$mainframe->setPageTitle( JText::_('JM_SEARCH_TITLE',false) );
+		$browsepage_lbl = JText::_('JM_SEARCH_TITLE') .': '.shopMakeHtmlSafe( $keyword );
 		$tpl->set( 'browsepage_lbl', $browsepage_lbl );
 
 		$browsepage_header = $tpl->fetch( 'browse/includes/browse_header_keyword.tpl.php' );
 	}
 	else {
-		$mainframe->setPageTitle( JText::_('VM_BROWSE_LBL',false) );#
-		$browsepage_lbl = JText::_('VM_BROWSE_LBL');
+		$mainframe->setPageTitle( JText::_('JM_BROWSE_LBL',false) );#
+		$browsepage_lbl = JText::_('JM_BROWSE_LBL');
 		$tpl->set( 'browsepage_lbl', $browsepage_lbl );
 
 		$browsepage_header = $tpl->fetch( 'browse/includes/browse_header_all.tpl.php' );
@@ -238,7 +238,7 @@ else {
 	$search_string = '';
 	if ( $num_rows > 1 && @$_REQUEST['output'] != "pdf") {
 		if ( $num_rows > $products_per_row ) { // simplified logic
-			$search_string = $mm_action_url."index.php?option=com_virtuemart&amp;Itemid=$Itemid&amp;category_id=$category_id&amp;page=$modulename.browse";
+			$search_string = $mm_action_url."index.php?option=com_jmart&amp;Itemid=$Itemid&amp;category_id=$category_id&amp;page=$modulename.browse";
 			$search_string .= empty($manufacturer_id) ? '' : "&amp;manufacturer_id=$manufacturer_id";
 			$search_string .= empty($keyword) ? '' : '&amp;keyword='.urlencode( $keyword );
 			if (!empty($keyword1)) {
@@ -268,7 +268,7 @@ else {
 
 		}
 
-		$tpl->set( 'VM_BROWSE_ORDERBY_FIELDS', $VM_BROWSE_ORDERBY_FIELDS);
+		$tpl->set( 'JM_BROWSE_ORDERBY_FIELDS', $JM_BROWSE_ORDERBY_FIELDS);
 
 	    if ($DescOrderBy == "DESC") {
 	        $icon = "sort_desc.png";
@@ -319,10 +319,10 @@ else {
 		$templatefile = (!empty($category_id)) ? $db_browse->f("category_browsepage") : CATEGORY_TEMPLATE;
 		if( $templatefile == 'managed' ) {
 			// automatically select the browse template with the best match for the number of products per row
-			$templatefile = file_exists(VM_THEMEPATH.'templates/browse/browse_'.$products_per_row.'.php' )
+			$templatefile = file_exists(JM_THEMEPATH.'templates/browse/browse_'.$products_per_row.'.php' )
 								? 'browse_'.$products_per_row
 								: 'browse_5';
-		} elseif( !file_exists(VM_THEMEPATH.'templates/browse/'.$templatefile.'.php')) {
+		} elseif( !file_exists(JM_THEMEPATH.'templates/browse/'.$templatefile.'.php')) {
 			$templatefile = 'browse_5';
 		}
 	}
@@ -349,7 +349,7 @@ else {
 		}
 
 		// Set the flypage for this product based on the category.
-		// If no flypage is set then use the default as set in virtuemart.cfg.php
+		// If no flypage is set then use the default as set in jmart.cfg.php
 		$flypage = $db_browse->sf("category_flypage");
 
 		if (empty($flypage)) {
@@ -373,13 +373,13 @@ else {
 
 			if ($auth["show_price_including_tax"] == 1){
 				$product_price = $ps_product->show_price_with_tax( $db_browse->f("product_id") );
-				if (VM_PRICE_SHOW_WITHOUTTAX == 1){
+				if (JM_PRICE_SHOW_WITHOUTTAX == 1){
 					$product_price_without_tax = $ps_product->show_price_without_tax( $db_browse->f("product_id") );
 				}
 			}else{
 
 				$product_price = $ps_product->show_price_without_tax( $db_browse->f("product_id") );
-				if (VM_PRICE_SHOW_WITHTAX == 1){
+				if (JM_PRICE_SHOW_WITHTAX == 1){
 					$product_price_with_tax = $ps_product->show_price_with_tax( $db_browse->f("product_id") );
 				}
 		 	}
@@ -411,15 +411,15 @@ else {
 		if( $product_thumb_image ) {
 			if( substr( $product_thumb_image, 0, 4) != "http" ) {
 				if(PSHOP_IMG_RESIZE_ENABLE == '1') {
-					$product_thumb_image = $mosConfig_live_site."/components/com_virtuemart/show_image_in_imgtag.php?filename=".urlencode($product_thumb_image)."&amp;newxsize=".PSHOP_IMG_WIDTH."&amp;newysize=".PSHOP_IMG_HEIGHT."&amp;fileout=";
+					$product_thumb_image = $mosConfig_live_site."/components/com_jmart/show_image_in_imgtag.php?filename=".urlencode($product_thumb_image)."&amp;newxsize=".PSHOP_IMG_WIDTH."&amp;newysize=".PSHOP_IMG_HEIGHT."&amp;fileout=";
 				}
 				elseif( !file_exists( IMAGEPATH."product/".$product_thumb_image )) {
-                    $product_thumb_image = VM_THEMEURL.'images/'.NO_IMAGE;
+                    $product_thumb_image = JM_THEMEURL.'images/'.NO_IMAGE;
                 }
 			}
 		}
 		else {
-			$product_thumb_image = VM_THEMEURL.'images/'.NO_IMAGE;
+			$product_thumb_image = JM_THEMEURL.'images/'.NO_IMAGE;
 		}
 
 		// Get the full image path, or URL if set, or the no_image
@@ -429,11 +429,11 @@ else {
 			$product_full_image = $dbp->f("product_full_image"); // Use product_full_image from Parent Product
 		}
 		else {
-			$product_full_image = VM_THEMEURL . 'images/' . NO_IMAGE;
+			$product_full_image = JM_THEMEURL . 'images/' . NO_IMAGE;
 
 			// Get the size information for the no_image
-			if( file_exists( VM_THEMEPATH . 'images/' . NO_IMAGE ) ) {
-				$full_image_info = getimagesize( VM_THEMEPATH . 'images/' . NO_IMAGE );
+			if( file_exists( JM_THEMEPATH . 'images/' . NO_IMAGE ) ) {
+				$full_image_info = getimagesize( JM_THEMEPATH . 'images/' . NO_IMAGE );
 				$full_image_width = $full_image_info[0]+40;
 				$full_image_height = $full_image_info[1]+40;
 			}
@@ -474,8 +474,8 @@ else {
 		if( empty($product_s_desc) && $product_parent_id!=0 ) {
 			$product_s_desc = $dbp->f("product_s_desc"); // Use product_s_desc from Parent Product
 		}
-		$product_details = JText::_('VM_FLYPAGE_LBL');
-		$product_vendor = JText::_('VM_BROWSE_VENDOR_LBL') . $ps_product->get_vendorname($db_browse->f("product_id"));
+		$product_details = JText::_('JM_FLYPAGE_LBL');
+		$product_vendor = JText::_('JM_BROWSE_VENDOR_LBL') . $ps_product->get_vendorname($db_browse->f("product_id"));
 		if (PSHOP_ALLOW_REVIEWS == '1' && @$_REQUEST['output'] != "pdf") {
 			// Average customer rating: xxxxx
 	        // Total votes: x
@@ -496,7 +496,7 @@ else {
 			$tpl->set( 'product_in_stock', $db_browse->f('product_in_stock') );
 			$tpl->set( 'ps_product_attribute', $ps_product_attribute );
 			$tpl->set( 'ps_product', $ps_product );
-			$tpl->set('call_for_pricing',($product_price != "" && !stristr( $product_price, JText::_('VM_PRODUCT_CALL') )) ? false : true);			
+			$tpl->set('call_for_pricing',($product_price != "" && !stristr( $product_price, JText::_('JM_PRODUCT_CALL') )) ? false : true);			
 			$products[$i]['form_addtocart'] = $tpl->fetch( 'browse/includes/addtocart_form.tpl.php' );
 //			$products[$i]['form_addtocart'] = $tpl->fetch('product_details/includes/addtocart_form.tpl.php' );
 			$products[$i]['has_addtocart'] = true;
@@ -505,7 +505,7 @@ else {
 			$products[$i]['form_addtocart'] = '';
 			$products[$i]['has_addtocart'] = false;
 		}
-		if(stristr( $product_price, JText::_('VM_PRODUCT_CALL')) && $ps_product->parent_has_children($db_browse->f('product_id'))) {
+		if(stristr( $product_price, JText::_('JM_PRODUCT_CALL')) && $ps_product->parent_has_children($db_browse->f('product_id'))) {
 			$product_price = '';
 		}
 		$products[$i]['product_flypage'] = $url;

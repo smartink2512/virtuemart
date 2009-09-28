@@ -5,17 +5,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * @author Zdenek Dvorak (zdenek.dvorak@seznam.cz)
 *
 * @version $Id: shop.parameter_search_form.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 $q  = "SELECT * FROM #__{vm}_product_type ";
@@ -25,29 +25,29 @@ $db->query($q);
 
 $browsepage = $db->f("product_type_browsepage");
 
-$vm_mainframe->setPageTitle( JText::_('VM_PARAMETER_SEARCH') );
-$pathway[] = $vm_mainframe->vmPathwayItem( JText::_('VM_PARAMETER_SEARCH') );
+$vm_mainframe->setPageTitle( JText::_('JM_PARAMETER_SEARCH') );
+$pathway[] = $vm_mainframe->vmPathwayItem( JText::_('JM_PARAMETER_SEARCH') );
 $vm_mainframe->vmAppendPathway($pathway);
 
-echo "<h2>".JText::_('VM_PARAMETER_SEARCH')."</h2>";
+echo "<h2>".JText::_('JM_PARAMETER_SEARCH')."</h2>";
 
 	if (!$db->next_record()) { // There is no published Product Type
-		echo JText::_('VM_PARAMETER_SEARCH_BAD_PRODUCT_TYPE');
+		echo JText::_('JM_PARAMETER_SEARCH_BAD_PRODUCT_TYPE');
 	}
 	else {
 		echo "<table width=\"100%\" border=\"0\">\n<tr><td width=\"40%\">";
-		echo JText::_('VM_PARAMETER_SEARCH_IN_CATEGORY').": ".$db->f("product_type_name");
+		echo JText::_('JM_PARAMETER_SEARCH_IN_CATEGORY').": ".$db->f("product_type_name");
 		// Reset form
 		echo "</td><td align=\"center\">";
 		echo "<form action=\"".$sess->url( $mm_action_url.basename($_SERVER['PHP_SELF']). "?page=shop.parameter_search_form&product_type_id=". $product_type_id ). "\" method=\"post\" name=\"reset\">\n";
 		echo "<input type=\"submit\" class=\"button\" name=\"reset\" value=\"";
-		echo JText::_('VM_PARAMETER_SEARCH_RESET_FORM') ."\">\n</form>";
+		echo JText::_('JM_PARAMETER_SEARCH_RESET_FORM') ."\">\n</form>";
 		echo "</td><td width=\"40%\">&nbsp;</td></tr></table>\n";
 
 ?>
 
 <form action="<?php echo URL ?>index.php" method="post" name="attr_search">
-<input type="hidden" name="option" value="com_virtuemart" />
+<input type="hidden" name="option" value="com_jmart" />
 <input type="hidden" name="page" value="shop.browse" />
 <input type="hidden" name="product_type_id" value="<?php echo $product_type_id ?>" />
 <input type="hidden" name="Itemid" value="<?php echo $sess->getShopItemid() ?>" />
@@ -97,8 +97,8 @@ echo "<h2>".JText::_('VM_PARAMETER_SEARCH')."</h2>";
 					// Multiple section List of values - comparison FIND_IN_SET
 					$comp  = "<td width=\"10%\" height=\"2\" valign=\"top\" align=\"center\">\n";
 					$comp .= "<select class=\"inputbox\" name=\"".$item_name."_comp\">\n";
-					$comp .= "<option value=\"find_in_set_all\"".(($get_item_value_comp=="find_in_set_all")?" selected":"").">".JText::_('VM_PARAMETER_SEARCH_FIND_IN_SET_ALL')."</option>\n";
-					$comp .= "<option value=\"find_in_set_any\"".(($get_item_value_comp=="find_in_set_any")?" selected":"").">".JText::_('VM_PARAMETER_SEARCH_FIND_IN_SET_ANY')."</option>\n";
+					$comp .= "<option value=\"find_in_set_all\"".(($get_item_value_comp=="find_in_set_all")?" selected":"").">".JText::_('JM_PARAMETER_SEARCH_FIND_IN_SET_ALL')."</option>\n";
+					$comp .= "<option value=\"find_in_set_any\"".(($get_item_value_comp=="find_in_set_any")?" selected":"").">".JText::_('JM_PARAMETER_SEARCH_FIND_IN_SET_ANY')."</option>\n";
 					$comp .= "</select></td>";
 				}
 				else { // type: all other
@@ -133,9 +133,9 @@ echo "<h2>".JText::_('VM_PARAMETER_SEARCH')."</h2>";
 							break;
 						}
 						$comp  = "<select class=\"inputbox\" name=\"".$item_name."_comp\">\n";
-						$comp .= "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".JText::_('VM_PARAMETER_SEARCH_IS_LIKE')."</option>\n";
-						$comp .= "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".JText::_('VM_PARAMETER_SEARCH_IS_NOT_LIKE')."</option>\n";
-						$comp .= "<option value=\"fulltext\"".(($get_item_value_comp=="fulltext")?" selected":"").">".JText::_('VM_PARAMETER_SEARCH_FULLTEXT')."</option>\n";
+						$comp .= "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".JText::_('JM_PARAMETER_SEARCH_IS_LIKE')."</option>\n";
+						$comp .= "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".JText::_('JM_PARAMETER_SEARCH_IS_NOT_LIKE')."</option>\n";
+						$comp .= "<option value=\"fulltext\"".(($get_item_value_comp=="fulltext")?" selected":"").">".JText::_('JM_PARAMETER_SEARCH_FULLTEXT')."</option>\n";
 						$comp .= "</select>";
 						break;
 					case "S": // Short Text
@@ -145,8 +145,8 @@ echo "<h2>".JText::_('VM_PARAMETER_SEARCH')."</h2>";
 							break;
 						}
 						$comp  = "<select class=\"inputbox\" name=\"".$item_name."_comp\">\n";
-						$comp .= "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".JText::_('VM_PARAMETER_SEARCH_IS_LIKE')."</option>\n";
-						$comp .= "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".JText::_('VM_PARAMETER_SEARCH_IS_NOT_LIKE')."</option>\n";
+						$comp .= "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".JText::_('JM_PARAMETER_SEARCH_IS_LIKE')."</option>\n";
+						$comp .= "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".JText::_('JM_PARAMETER_SEARCH_IS_NOT_LIKE')."</option>\n";
 						$comp .= "</select></td>";
 				}
 			}
@@ -171,7 +171,7 @@ echo "<h2>".JText::_('VM_PARAMETER_SEARCH')."</h2>";
 				}
 				else {
 					$attr .= "\">\n";
-					$attr .= "<option value=\"\">".JText::_('VM_SELECT')."</option>\n";
+					$attr .= "<option value=\"\">".JText::_('JM_SELECT')."</option>\n";
 					foreach($fields as $field) {
 						$attr .= "<option value=\"$field\"".(($get_item_value==$field) ? " selected>" : ">"). $field."</option>\n";
 					}
@@ -214,7 +214,7 @@ echo "<h2>".JText::_('VM_PARAMETER_SEARCH')."</h2>";
 			
 				if ($db->f("parameter_description")) {
 					echo "&nbsp;";
-					echo mm_ToolTip($db->f("parameter_description"),JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION'));
+					echo mm_ToolTip($db->f("parameter_description"),JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_DESCRIPTION'));
 				}
 				echo "&nbsp;:</strong></div>\n  </td>\n";
 				
@@ -230,8 +230,8 @@ echo "<h2>".JText::_('VM_PARAMETER_SEARCH')."</h2>";
 						// Multiple section List of values - comparison FIND_IN_SET
 						echo "<td width=\"10%\" height=\"2\" valign=\"top\" align=\"center\">\n";
 						echo "<select class=\"inputbox\" name=\"".$item_name."_comp\">\n";
-						echo "<option value=\"find_in_set_all\"".(($get_item_value_comp=="find_in_set_all")?" selected":"").">".JText::_('VM_PARAMETER_SEARCH_FIND_IN_SET_ALL')."</option>\n";
-						echo "<option value=\"find_in_set_any\"".(($get_item_value_comp=="find_in_set_any")?" selected":"").">".JText::_('VM_PARAMETER_SEARCH_FIND_IN_SET_ANY')."</option>\n";
+						echo "<option value=\"find_in_set_all\"".(($get_item_value_comp=="find_in_set_all")?" selected":"").">".JText::_('JM_PARAMETER_SEARCH_FIND_IN_SET_ALL')."</option>\n";
+						echo "<option value=\"find_in_set_any\"".(($get_item_value_comp=="find_in_set_any")?" selected":"").">".JText::_('JM_PARAMETER_SEARCH_FIND_IN_SET_ANY')."</option>\n";
 						echo "</select></td>";
 					}
 					else { // type: all other
@@ -268,9 +268,9 @@ echo "<h2>".JText::_('VM_PARAMETER_SEARCH')."</h2>";
 							}
 							echo "<td width=\"10%\" height=\"2\" valign=\"top\" align=\"center\">\n";
 							echo "<select class=\"inputbox\" name=\"".$item_name."_comp\">\n";
-							echo "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".JText::_('VM_PARAMETER_SEARCH_IS_LIKE')."</option>\n";
-							echo "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".JText::_('VM_PARAMETER_SEARCH_IS_NOT_LIKE')."</option>\n";
-							echo "<option value=\"fulltext\"".(($get_item_value_comp=="fulltext")?" selected":"").">".JText::_('VM_PARAMETER_SEARCH_FULLTEXT')."</option>\n";
+							echo "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".JText::_('JM_PARAMETER_SEARCH_IS_LIKE')."</option>\n";
+							echo "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".JText::_('JM_PARAMETER_SEARCH_IS_NOT_LIKE')."</option>\n";
+							echo "<option value=\"fulltext\"".(($get_item_value_comp=="fulltext")?" selected":"").">".JText::_('JM_PARAMETER_SEARCH_FULLTEXT')."</option>\n";
 							echo "</select></td>";
 							break;
 						case "V": // Multiple Value
@@ -284,8 +284,8 @@ echo "<h2>".JText::_('VM_PARAMETER_SEARCH')."</h2>";
 							}
 							echo "<td width=\"10%\" height=\"2\" valign=\"top\" align=\"center\">\n";
 							echo "<select class=\"inputbox\" name=\"".$item_name."_comp\">\n";
-							echo "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".JText::_('VM_PARAMETER_SEARCH_IS_LIKE')."</option>\n";
-							echo "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".JText::_('VM_PARAMETER_SEARCH_IS_NOT_LIKE')."</option>\n";
+							echo "<option value=\"like\"".(($get_item_value_comp=="like")?" selected":"").">".JText::_('JM_PARAMETER_SEARCH_IS_LIKE')."</option>\n";
+							echo "<option value=\"notlike\"".(($get_item_value_comp=="notlike")?" selected":"").">".JText::_('JM_PARAMETER_SEARCH_IS_NOT_LIKE')."</option>\n";
 							echo "</select></td>";
 					}
 				}
@@ -308,7 +308,7 @@ echo "<h2>".JText::_('VM_PARAMETER_SEARCH')."</h2>";
 					}
 					else {
 						echo "\">\n";
-						echo "<option value=\"\">".JText::_('VM_SELECT')."</option>\n";
+						echo "<option value=\"\">".JText::_('JM_SELECT')."</option>\n";
 						foreach($fields as $field) {
 							echo "<option value=\"$field\"".(($get_item_value==$field) ? " selected>" : ">"). $field."</option>\n";
 						}
@@ -339,14 +339,14 @@ echo "<h2>".JText::_('VM_PARAMETER_SEARCH')."</h2>";
 				echo " ".$db->f("parameter_unit");
 				switch( $parameter_type ) {
 					case "D": // Date & Time
-						echo " (".JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT')." ";
-						echo JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT').")";
+						echo " (".JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT')." ";
+						echo JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT').")";
 						break;
 					case "A": // Date
-						echo " (".JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT').")";
+						echo " (".JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT').")";
 						break;
 					case "M": // Time
-						echo " (".JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT').")";
+						echo " (".JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT').")";
 						break;
 				}
 			}
@@ -365,7 +365,7 @@ echo "<h2>".JText::_('VM_PARAMETER_SEARCH')."</h2>";
 	$get_item_value_comp = JRequest::getVar( $item_name."_comp", "");
 	
 	echo "<tr>\n  <td width=\"35%\" height=\"2\" valign=\"top\"><div align=\"right\"><strong>";
-	echo JText::_('VM_CART_PRICE')."&nbsp;:</strong></div>\n  </td>\n";
+	echo JText::_('JM_CART_PRICE')."&nbsp;:</strong></div>\n  </td>\n";
 	// comparison
 	echo "<td width=\"10%\" height=\"2\" valign=\"top\" align=\"center\">\n";
 	echo "<select class=\"inputbox\" name=\"price_comp\">";
@@ -383,7 +383,7 @@ echo "<h2>".JText::_('VM_PARAMETER_SEARCH')."</h2>";
 ?>	
 	<tr><td colspan="3" height="2" >&nbsp;</td></tr>
 	<tr><td colspan="3" height="2" ><div align="center">
-		<input type="submit" class="button" name="search" value="<?php echo JText::_('VM_SEARCH_TITLE') ?>">
+		<input type="submit" class="button" name="search" value="<?php echo JText::_('JM_SEARCH_TITLE') ?>">
 		</div></td>
 	</tr>
 </table>

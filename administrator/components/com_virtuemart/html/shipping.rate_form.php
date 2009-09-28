@@ -3,27 +3,27 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: shipping.rate_form.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( JText::_('VM_RATE_FORM_LBL') );
+$formObj = &new formFactory( JText::_('JM_RATE_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 
 $shipping_rate_id = JRequest::getVar(  'shipping_rate_id');
-$option = empty($option)?JRequest::getVar(  'option', 'com_virtuemart'):$option;
+$option = empty($option)?JRequest::getVar(  'option', 'com_jmart'):$option;
 if (!isset($ps_shipping)) $ps_shipping = new ps_shipping();
 
 if (!empty($shipping_rate_id)) {
@@ -35,69 +35,69 @@ if (!empty($shipping_rate_id)) {
 
 <table class="adminform">
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo JText::_('VM_RATE_FORM_NAME') ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo JText::_('JM_RATE_FORM_NAME') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_name" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_name") ?>">
 		</td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo JText::_('VM_RATE_FORM_LIST_ORDER') ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo JText::_('JM_RATE_FORM_LIST_ORDER') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_list_order" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_list_order") ?>">
 		</td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo JText::_('VM_RATE_FORM_CARRIER') ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo JText::_('JM_RATE_FORM_CARRIER') ?>:</strong></div></td>
 		<td width="79%" ><?php $ps_shipping->carrier_list("shipping_rate_carrier_id", $db->f("shipping_rate_carrier_id")); ?></td>
 	</tr>
 	<tr>
-		<td width="21%" valign="top" ><strong><?php echo JText::_('VM_RATE_FORM_COUNTRY') .": </strong><br/><br/>".JText::_('VM_MULTISELECT') ?></td>
+		<td width="21%" valign="top" ><strong><?php echo JText::_('JM_RATE_FORM_COUNTRY') .": </strong><br/><br/>".JText::_('JM_MULTISELECT') ?></td>
 		<td width="79%" ><?php $ps_shipping->country_multiple_list("shipping_rate_country[]", $db->f("shipping_rate_country")); ?></td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo JText::_('VM_RATE_FORM_ZIP_START') ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo JText::_('JM_RATE_FORM_ZIP_START') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_zip_start" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_zip_start") ?>">
 		</td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo JText::_('VM_RATE_FORM_ZIP_END') ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo JText::_('JM_RATE_FORM_ZIP_END') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_zip_end" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_zip_end") ?>">
 		</td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo JText::_('VM_RATE_FORM_WEIGHT_START') ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo JText::_('JM_RATE_FORM_WEIGHT_START') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_weight_start" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_weight_start") ?>">
 		</td>
 	</tr>
 		<tr>
-		<td width="21%" ><div align="right"><strong><?php echo JText::_('VM_RATE_FORM_WEIGHT_END') ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo JText::_('JM_RATE_FORM_WEIGHT_END') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_weight_end" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_weight_end") ?>">
 		</td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo JText::_('VM_RATE_FORM_VALUE') ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo JText::_('JM_RATE_FORM_VALUE') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_value" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_value") ?>">
 		</td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo JText::_('VM_RATE_FORM_PACKAGE_FEE') ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo JText::_('JM_RATE_FORM_PACKAGE_FEE') ?>:</strong></div></td>
 		<td width="79%" >
 		<input type="text" class="inputbox" name="shipping_rate_package_fee" size="32" maxlength="255" value="<?php $db->sp("shipping_rate_package_fee") ?>">
 		</td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo JText::_('VM_RATE_FORM_CURRENCY') ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo JText::_('JM_RATE_FORM_CURRENCY') ?>:</strong></div></td>
 		<td width="79%" >
 		<?php $ps_html->list_currency_id("shipping_rate_currency_id",$db->sf("shipping_rate_currency_id")) ?>
 		</td>
 	</tr>
 	<tr>
-		<td width="21%" ><div align="right"><strong><?php echo JText::_('VM_RATE_FORM_VAT_ID') ?>:</strong></div></td>
+		<td width="21%" ><div align="right"><strong><?php echo JText::_('JM_RATE_FORM_VAT_ID') ?>:</strong></div></td>
 		<td width="79%" >
 		<?php
 		require_once(CLASSPATH.'ps_tax.php');

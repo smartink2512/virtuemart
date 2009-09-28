@@ -6,7 +6,7 @@ AdminMenuHelper::startAdminArea();
 <script type="text/javascript">
 window.addEvent("domready", function() {
     $("country_id").addEvent("change", function() {
-        var url="index.php?option=com_virtuemart&view=store&format=raw&task=listFields&country_id="+this.getValue();
+        var url="index.php?option=com_jmart&view=store&format=raw&task=listFields&country_id="+this.getValue();
         var a=new Ajax(url,{
         	method:"get",
         	onComplete: function(response){
@@ -24,12 +24,12 @@ window.addEvent("domready", function() {
 	<table class="adminform">			
 	<tr><td valign="top">	
 		<fieldset class="adminform">
-		<legend><?php echo JText::_('VM_STORE_MOD') ?></legend>
+		<legend><?php echo JText::_('JM_STORE_MOD') ?></legend>
 		<table class="adminform">			
 			<tr>
 				<td class="key">
 					<label for="title">
-						<?php echo JText::_('VM_STORE_FORM_STORE_NAME'); ?>:
+						<?php echo JText::_('JM_STORE_FORM_STORE_NAME'); ?>:
 					</label>
 				</td>
 				<td>
@@ -39,7 +39,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td class="key">
 					<label for="title">
-						<?php echo JText::_('VM_STORE_FORM_COMPANY_NAME'); ?>:
+						<?php echo JText::_('JM_STORE_FORM_COMPANY_NAME'); ?>:
 					</label>
 				</td>
 				<td>
@@ -49,7 +49,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td class="key">
 					<label for="title">
-						<?php echo JText::_('VM_PRODUCT_FORM_URL'); ?>:
+						<?php echo JText::_('JM_PRODUCT_FORM_URL'); ?>:
 					</label>
 				</td>
 				<td>
@@ -59,7 +59,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td class="key">
 					<label for="title">
-						<?php echo JText::_('VM_STORE_FORM_ADDRESS_1'); ?>:
+						<?php echo JText::_('JM_STORE_FORM_ADDRESS_1'); ?>:
 					</label>
 				</td>
 				<td>
@@ -69,7 +69,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td class="key">
 					<label for="title">
-						<?php echo JText::_('VM_STORE_FORM_ADDRESS_2'); ?>:
+						<?php echo JText::_('JM_STORE_FORM_ADDRESS_2'); ?>:
 					</label>
 				</td>
 				<td>
@@ -79,7 +79,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td class="key">
 					<label for="title">
-						<?php echo JText::_('VM_STORE_FORM_CITY'); ?>:
+						<?php echo JText::_('JM_STORE_FORM_CITY'); ?>:
 					</label>
 				</td>
 				<td>
@@ -89,7 +89,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td class="key">
 					<label for="title">
-						<?php echo JText::_('VM_STORE_FORM_COUNTRY'); ?>:
+						<?php echo JText::_('JM_STORE_FORM_COUNTRY'); ?>:
 					</label>
 				</td>
 				<td>
@@ -100,12 +100,12 @@ window.addEvent("domready", function() {
 		</fieldset>	
 		
 		<fieldset class="adminform">
-		<legend><?php echo JText::_('VM_STORE_FORM_LBL') ?></legend>
+		<legend><?php echo JText::_('JM_STORE_FORM_LBL') ?></legend>
 		<table class="adminform">			
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_('VM_STORE_FORM_FULL_IMAGE'); ?>:
+						<?php echo JText::_('JM_STORE_FORM_FULL_IMAGE'); ?>:
 					</label>
 				</td>
 				<td>
@@ -115,7 +115,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_STORE_FORM_UPLOAD' ); ?>:
+						<?php echo JText::_( 'JM_STORE_FORM_UPLOAD' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -125,7 +125,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_STORE_FORM_MPOV' ); ?>:
+						<?php echo JText::_( 'JM_STORE_FORM_MPOV' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -135,7 +135,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_FREE_SHIPPING_AMOUNT' ); ?>:
+						<?php echo JText::_( 'JM_FREE_SHIPPING_AMOUNT' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -147,12 +147,12 @@ window.addEvent("domready", function() {
 	</td>
 	<td valign="top">	
 		<fieldset class="adminform">
-		<legend><?php echo JText::_('VM_STORE_FORM_CONTACT_LBL') ?></legend>
+		<legend><?php echo JText::_('JM_STORE_FORM_CONTACT_LBL') ?></legend>
 		<table class="adminform">			
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_STORE_FORM_LAST_NAME' ); ?>:
+						<?php echo JText::_( 'JM_STORE_FORM_LAST_NAME' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -162,7 +162,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_STORE_FORM_FIRST_NAME' ); ?>:
+						<?php echo JText::_( 'JM_STORE_FORM_FIRST_NAME' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -172,7 +172,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_STORE_FORM_MIDDLE_NAME' ); ?>:
+						<?php echo JText::_( 'JM_STORE_FORM_MIDDLE_NAME' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -182,7 +182,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_STORE_FORM_TITLE' ); ?>:
+						<?php echo JText::_( 'JM_STORE_FORM_TITLE' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -192,7 +192,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_STORE_FORM_PHONE_1' ); ?>:
+						<?php echo JText::_( 'JM_STORE_FORM_PHONE_1' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -202,7 +202,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_STORE_FORM_PHONE_2' ); ?>:
+						<?php echo JText::_( 'JM_STORE_FORM_PHONE_2' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -212,7 +212,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_STORE_FORM_FAX' ); ?>:
+						<?php echo JText::_( 'JM_STORE_FORM_FAX' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -222,7 +222,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_STORE_FORM_EMAIL' ); ?>:
+						<?php echo JText::_( 'JM_STORE_FORM_EMAIL' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -233,12 +233,12 @@ window.addEvent("domready", function() {
 		</fieldset>
 		
 		<fieldset class="adminform">
-		<legend><?php echo JText::_('VM_CURRENCY_DISPLAY') ?></legend>
+		<legend><?php echo JText::_('JM_CURRENCY_DISPLAY') ?></legend>
 		<table class="adminform">			
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_STORE_FORM_CURRENCY' ); ?>:
+						<?php echo JText::_( 'JM_STORE_FORM_CURRENCY' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -248,7 +248,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_CURRENCY_SYMBOL' ); ?>:
+						<?php echo JText::_( 'JM_CURRENCY_SYMBOL' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -258,7 +258,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_CURRENCY_DECIMALS' ); ?>:
+						<?php echo JText::_( 'JM_CURRENCY_DECIMALS' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -268,7 +268,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_CURRENCY_DECIMALSYMBOL' ); ?>:
+						<?php echo JText::_( 'JM_CURRENCY_DECIMALSYMBOL' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -278,7 +278,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_CURRENCY_THOUSANDS' ); ?>:
+						<?php echo JText::_( 'JM_CURRENCY_THOUSANDS' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -288,7 +288,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_CURRENCY_POSITIVE_DISPLAY' ); ?>:
+						<?php echo JText::_( 'JM_CURRENCY_POSITIVE_DISPLAY' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -298,7 +298,7 @@ window.addEvent("domready", function() {
 			<tr>
 				<td width="110" class="key">
 					<label for="title">
-						<?php echo JText::_( 'VM_CURRENCY_NEGATIVE_DISPLAY' ); ?>:
+						<?php echo JText::_( 'JM_CURRENCY_NEGATIVE_DISPLAY' ); ?>:
 					</label>
 				</td>
 				<td>
@@ -313,7 +313,7 @@ window.addEvent("domready", function() {
 	
 </div>
 
-	<input type="hidden" name="option" value="com_virtuemart" />
+	<input type="hidden" name="option" value="com_jmart" />
 	<input type="hidden" name="view" value="store" />
 	<input type="hidden" name="cid" value="<?php echo $this->store->vendor_id; ?>" />
 	<input type="hidden" name="task" value="" />

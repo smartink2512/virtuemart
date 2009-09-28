@@ -2,10 +2,10 @@
 /**
  * Vendor Table
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Vendor
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 // Check to ensure this file is included in Joomla!
@@ -16,7 +16,7 @@ defined('_JEXEC') or die();
  * The class is is used to manage the vendors in the shop.
  *
  * @author Rick Glunt
- * @package		VirtueMart
+ * @package		JMart
  */
 class TableVendor extends JTable
 {
@@ -67,7 +67,7 @@ class TableVendor extends JTable
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_vendor', 'vendor_id', $db);
+		parent::__construct('#__jmart_vendor', 'vendor_id', $db);
 	}
 
 
@@ -82,7 +82,7 @@ class TableVendor extends JTable
 		if (($this->vendor_name) && ($this->vendor_id == 0)) {
 		    $db =& JFactory::getDBO();
 		    
-			$q = 'SELECT count(*) FROM `#__vm_vendor` ';
+			$q = 'SELECT count(*) FROM `#__jmart_vendor` ';
 			$q .= 'WHERE `vendor_name`="' .  $this->vendor_name . '"';
             $db->setQuery($q);        
 		    $rowCount = $db->loadResult();		

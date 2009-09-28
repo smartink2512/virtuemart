@@ -2,10 +2,10 @@
 /**
  * Data module for shop coupons
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Coupon
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 // no direct access
@@ -16,11 +16,11 @@ jimport( 'joomla.application.component.model');
 /**
  * Model class for shop coupons
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Coupon 
  * @author Rick Glunt  
  */
-class VirtueMartModelCoupon extends JModel
+class JMartModelCoupon extends JModel
 {    
 	/** @var integer Primary key */
     var $_id;          
@@ -95,7 +95,7 @@ class VirtueMartModelCoupon extends JModel
 	function _getTotal() 
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `coupon_id` FROM `#__vm_coupons`';	  		
+			$query = 'SELECT `coupon_id` FROM `#__jmart_coupons`';	  		
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -195,8 +195,8 @@ class VirtueMartModelCoupon extends JModel
 	 */
 	function getCoupons()
 	{		
-		$query = 'SELECT * FROM `#__vm_coupons` ';
-		$query .= 'ORDER BY `#__vm_coupons`.`coupon_id`';
+		$query = 'SELECT * FROM `#__jmart_coupons` ';
+		$query .= 'ORDER BY `#__jmart_coupons`.`coupon_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}

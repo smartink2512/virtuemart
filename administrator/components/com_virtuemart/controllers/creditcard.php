@@ -2,10 +2,10 @@
 /**
  * Credit Card controller
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage CreditCard
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
@@ -15,11 +15,11 @@ jimport('joomla.application.component.controller');
 /**
  * Credit Card Controller
  *
- * @package    VirtueMart
+ * @package    JMart
  * @subpackage CreditCard
  * @author Rick Glunt 
  */
-class VirtuemartControllerCreditcard extends JController
+class JmartControllerCreditcard extends JController
 {
 	/**
 	 * Method to display the view
@@ -33,7 +33,7 @@ class VirtuemartControllerCreditcard extends JController
 		$this->registerTask( 'add',  'edit' );			
 	
 	    $document =& JFactory::getDocument();
-	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
+	    $document->addStyleSheet(JURI::base().'components/com_jmart/assets/css/jmart.css');
 	    
 		$document =& JFactory::getDocument();				
 		$viewType	= $document->getType();
@@ -81,7 +81,7 @@ class VirtuemartControllerCreditcard extends JController
 	{
 		$msg = JText::_('Operation Canceled!!');
 		
-		$this->setRedirect('index.php?option=com_virtuemart&view=creditcard', $msg);
+		$this->setRedirect('index.php?option=com_jmart&view=creditcard', $msg);
 	}	
 	
 	
@@ -101,7 +101,7 @@ class VirtuemartControllerCreditcard extends JController
 			$msg = JText::_($model->getError());
 		}
 		
-		$this->setRedirect('index.php?option=com_virtuemart&view=creditcard', $msg);
+		$this->setRedirect('index.php?option=com_jmart&view=creditcard', $msg);
 	}	
 	
 	
@@ -120,7 +120,7 @@ class VirtuemartControllerCreditcard extends JController
 			$msg = JText::_( 'Credit cards Deleted!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=creditcard', $msg);
+		$this->setRedirect( 'index.php?option=com_jmart&view=creditcard', $msg);
 	}	
 	
 	
@@ -136,7 +136,7 @@ class VirtuemartControllerCreditcard extends JController
 			$msg = JText::_('Error: One or more credit cards could not be published!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=creditcard', $msg);
+		$this->setRedirect( 'index.php?option=com_jmart&view=creditcard', $msg);
 	}		
 	
 	
@@ -152,7 +152,7 @@ class VirtuemartControllerCreditcard extends JController
 			$msg = JText::_('Error: One or more credit cards could not be unpublished!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=creditcard', $msg);
+		$this->setRedirect( 'index.php?option=com_jmart&view=creditcard', $msg);
 	}	
 }
 ?>

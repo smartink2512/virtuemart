@@ -2,10 +2,10 @@
 /**
  * Country View
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Country
  * @author Rick Glunt
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 jimport( 'joomla.application.component.view');
@@ -14,20 +14,20 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
 /**
  * HTML View class for maintaining the Installation. Updating of the files and imports of the database should be done here
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage UpdatesMigration
  * @author Max Milbers
  */
-class VirtuemartViewUpdatesMigration extends JView {
+class JmartViewUpdatesMigration extends JView {
 	
 	function display($tpl = null) {	
-		JToolBarHelper::title(  'Updating and data migration', 'vm_config_48');
+		JToolBarHelper::title(  'Updating and data migration', 'jm_config_48');
 		
 		require_once( CLASSPATH.'update.class.php');
 		if( JRequest::getVar( 'vm_updatepackage',null )!== null ) {
 //			include( PAGEPATH.'admin.update_preview.php');
 			if( JRequest::getVar( 'vm_updatepackage',null )== null ) {
-				JError::raiseWarning(JText::_('VM_UPDATE_NOTDOWNLOADED')." ".$extractdir,JText::_('VM_UPDATE_NOTDOWNLOADED')." ".$extractdir);
+				JError::raiseWarning(JText::_('JM_UPDATE_NOTDOWNLOADED')." ".$extractdir,JText::_('JM_UPDATE_NOTDOWNLOADED')." ".$extractdir);
 //				return;
 			}
 			$packageContents = vmUpdate::getPatchContents(JRequest::getVar( 'vm_updatepackage',false ));

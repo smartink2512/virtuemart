@@ -24,7 +24,7 @@ foreach( $categories as $category ) {
 	
 	<td align="center" width="<?php echo $cellwidth ?>%" >
 		<br />
-         <a title="<?php echo $category["category_name"] ?>" href="<?php $sess->purl(URL."index.php?option=com_virtuemart&amp;page=shop.browse&amp;category_id=".$category["category_id"]) ?>"> 
+         <a title="<?php echo $category["category_name"] ?>" href="<?php $sess->purl(URL."index.php?option=com_jmart&amp;page=shop.browse&amp;category_id=".$category["category_id"]) ?>"> 
 			<?php
 			if ( $category["category_thumb_image"] ) {
 				//echo ps_product::image_tag( $category["category_thumb_image"], "alt=\"".$category["category_name"]."\"", 0, "category");

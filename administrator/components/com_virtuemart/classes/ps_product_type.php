@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_product_type.php 1768 2009-05-11 22:24:39Z macallf $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 
@@ -33,7 +33,7 @@ class ps_product_type {
 		
 		
 		if (empty($d["product_type_name"])) {
-			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_ERR_NAME') );
+			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_ERR_NAME') );
 			return False;
 		}
 		else {
@@ -54,7 +54,7 @@ class ps_product_type {
 		$db = new ps_DB;
 
 		if (empty( $product_type_id)) {
-			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_DELETE_SELECT') );
+			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_DELETE_SELECT') );
 			return False;
 		}
 
@@ -71,7 +71,7 @@ class ps_product_type {
 		
 		
 		if (!$d["product_type_name"]) {
-			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_ERR_NAME') );
+			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_ERR_NAME') );
 			return False;
 		}
 		else {
@@ -130,10 +130,10 @@ class ps_product_type {
 			$db->setQuery($q);
 			
 			if( $db->query() === false ) {
-				$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_ADD_FAILED') );
+				$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_ADD_FAILED') );
 				return false;
 			} else {
-				$GLOBALS['vmLogger']->info( JText::_('VM_PRODUCT_TYPE_ADDED') );
+				$GLOBALS['vmLogger']->info( JText::_('JM_PRODUCT_TYPE_ADDED') );
 				return true;
 			}
 			
@@ -460,7 +460,7 @@ class ps_product_type {
 		$html = '		
 		  <table class="adminform">
 		    <tr class="row0"> 
-		      <td colspan="2"><h2>'. JText::_('VM_PRODUCT_TYPE_LBL').': '.$product_type_name.'</h2>';
+		      <td colspan="2"><h2>'. JText::_('JM_PRODUCT_TYPE_LBL').': '.$product_type_name.'</h2>';
 		
 		      if( $product_id > 0 ) {
 		      	$html .= '<h3>'.JText::_('E_REMOVE').' =&gt; '.$ps_html->deleteButton( "product_type_id", $product_type_id, "productProductTypeDelete", $keyword, $limitstart, "&product_id=$product_id&product_parent_id=$product_parent_id&next_page=$next_page" ) . '</h3>';
@@ -558,31 +558,31 @@ class ps_product_type {
 	    		}
 	    		$html .= " ".$dbpt->f("parameter_unit");
 	    		if ($dbpt->f("parameter_default")) {
-	    			$html .= " (".JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT').": ";
+	    			$html .= " (".JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_DEFAULT').": ";
 	    			$html .= $dbpt->f("parameter_default").")";
 	    		}
-	    		$html .= " [ ".JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE').": ";
+	    		$html .= " [ ".JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE').": ";
 	    		switch( $dbpt->f("parameter_type") ) {
-	    			case "I": $html .= JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER'); break;	// Integer
-	    			case "T": $html .= JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT'); break; 	// Text
-	    			case "S": $html .= JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT'); break; // Short Text
-	    			case "F": $html .= JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT'); break; 	// Float
-	    			case "C": $html .= JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR'); break; 	// Char
+	    			case "I": $html .= JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER'); break;	// Integer
+	    			case "T": $html .= JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT'); break; 	// Text
+	    			case "S": $html .= JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT'); break; // Short Text
+	    			case "F": $html .= JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT'); break; 	// Float
+	    			case "C": $html .= JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR'); break; 	// Char
 	    			case "D": 
-	    				$html .= JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME')." ";	// Date & Time
-	    				$html .= JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT')." ";
-	    				$html .= JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT');
+	    				$html .= JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME')." ";	// Date & Time
+	    				$html .= JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT')." ";
+	    				$html .= JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT');
 	    			break;
 	    			case "A": 
-    					$html .= JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE')." ";		// Date
-	    				$html .= JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT');
+    					$html .= JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE')." ";		// Date
+	    				$html .= JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE_FORMAT');
 	    			break;
 	    			case "M": 
-    					$html .= JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME')." ";		// Time
-	    				$html .= JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT');
+    					$html .= JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME')." ";		// Time
+	    				$html .= JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME_FORMAT');
 	    			break;
 	    			case "V": 
-	    				$html .= JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE'); break; 	// Multiple Value
+	    				$html .= JText::_('JM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE'); break; 	// Multiple Value
 	    		}
 	    		$html .= " ] ";
 	    	}
@@ -746,7 +746,7 @@ class ps_product_type {
                 $product_type[$product_type_name."_".$parameter_name] = $dbp->f($dba->f("parameter_name"))." ".$dba->f("parameter_unit");
                 // Modification to build custom array for custom flypge use. removes queries from custom templates
                 if ($dbag->f("product_type_flypage")) {
-					$flypage_file = VM_THEMEPATH."templates/".$dbag->f("product_type_flypage").".php";
+					$flypage_file = JM_THEMEPATH."templates/".$dbag->f("product_type_flypage").".php";
 					if (file_exists($flypage_file)) {
 						$custom_parameters[$parameter_count]["parameter_value"] =	$dbp->f($dba->f("parameter_name"));
 						$custom_parameters[$parameter_count]["parameter_unit"] =	$dba->f("parameter_unit");
@@ -760,7 +760,7 @@ class ps_product_type {
 			}
 			// See if we have a flypage and if so include the file for custom display
 			if ($dbag->f("product_type_flypage")) {
-				$flypage_file = VM_THEMEPATH."templates/".$dbag->f("product_type_flypage").".php";
+				$flypage_file = JM_THEMEPATH."templates/".$dbag->f("product_type_flypage").".php";
 				if (file_exists($flypage_file)) {
 					$product_type[$product_type_name] = include($flypage_file);
 				}

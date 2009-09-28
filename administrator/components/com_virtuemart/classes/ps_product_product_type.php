@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_product_product_type.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /**
@@ -32,11 +32,11 @@ class ps_product_product_type {
   	
     
     if (empty($d["product_type_id"])) {
-      $GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_ERR_SELECT') );
+      $GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_ERR_SELECT') );
       return False;
     }
     if (empty($d["product_id"])) {
-      $GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_ERR_SELECT_PRODUCT') );
+      $GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_ERR_SELECT_PRODUCT') );
       return false;
     }
     $db = new ps_DB;
@@ -44,7 +44,7 @@ class ps_product_product_type {
     $q .= "WHERE product_id='".$d["product_id"]."' AND product_type_id='".$d["product_type_id"]."'";
     $db->query($q);
     if ($db->f("count") != 0) {
-      $GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_TYPE_ERR_ALREADY') );
+      $GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_TYPE_ERR_ALREADY') );
       return false;
     }
     else {
@@ -62,11 +62,11 @@ class ps_product_product_type {
   	
 
     if (empty($d["product_type_id"])) {
-      $GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_PRODUCT_TYPE_DELETE_SELECT_PT') );
+      $GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_PRODUCT_TYPE_DELETE_SELECT_PT') );
       return False;
     }
     if (empty($d["product_id"])) {
-      $GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_PRODUCT_TYPE_DELETE_SELECT_PR') );
+      $GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_PRODUCT_TYPE_DELETE_SELECT_PR') );
       return false;
     }
 
@@ -94,7 +94,7 @@ class ps_product_product_type {
       $q  = "INSERT INTO #__{vm}_product_type_".$d["product_type_id"]." (product_id) ";
       $q .= "VALUES ('".$d["product_id"]."')";
       $db->query($q);
-      $GLOBALS['vmLogger']->info( JText::_('VM_PRODUCT_PRODUCT_TYPE_ASSIGNED') );
+      $GLOBALS['vmLogger']->info( JText::_('JM_PRODUCT_PRODUCT_TYPE_ASSIGNED') );
       return true;
     }
     else {

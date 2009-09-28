@@ -44,7 +44,7 @@ AdminMenuHelper::startAdminArea();
 	</fieldset>
 </div>
 
-	<input type="hidden" name="option" value="com_virtuemart" />
+	<input type="hidden" name="option" value="com_jmart" />
 	<input type="hidden" name="creditcard_id" value="<?php echo $this->creditcard->creditcard_id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />

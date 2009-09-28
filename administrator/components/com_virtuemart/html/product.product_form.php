@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: product.product_form.php 1786 2009-05-13 13:21:59Z macallf $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /* Gets the $vendor_id by Max Milbers
@@ -31,7 +31,7 @@ if( is_array( $product_id )) {
 	$product_id = (int)$product_id[0];
 }
 vmCommonHTML::loadExtjs();
-echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/product_attributes.js');
+echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.JM_COMPONENT_NAME.'/js/product_attributes.js');
 echo vmCommonHTML::scriptTag( $mosConfig_live_site .'/includes/js/calendar/calendar.js');
 if( class_exists( 'JConfig' ) ) {
 	// in Joomla 1.5, the name of calendar lang file is changed...
@@ -43,7 +43,7 @@ echo vmCommonHTML::linkTag( $mosConfig_live_site .'/includes/js/calendar/calenda
 
 $product_parent_id = JRequest::getVar(  'product_parent_id');
 $next_page = JRequest::getVar(  'next_page', "product.product_display" );
-$option = empty($option)?JRequest::getVar(  'option', 'com_virtuemart'):$option;
+$option = empty($option)?JRequest::getVar(  'option', 'com_jmart'):$option;
 $clone_product = JRequest::getVar(  'clone_product', 0 );
 $product_type_id = JRequest::getVar( 'product_type_id', 0);
 $extra_ids = '';
@@ -75,37 +75,37 @@ $related_products = Array();
 
 if ($product_parent_id > 0) {
 	if ($product_id) {
-		$action = JText::_('VM_PRODUCT_FORM_UPDATE_ITEM_LBL');
+		$action = JText::_('JM_PRODUCT_FORM_UPDATE_ITEM_LBL');
 	}
 	else {
-		$action = JText::_('VM_PRODUCT_FORM_NEW_ITEM_LBL');
+		$action = JText::_('JM_PRODUCT_FORM_NEW_ITEM_LBL');
 	}
-	$info_label = JText::_('VM_PRODUCT_FORM_ITEM_INFO_LBL');
-	$status_label = JText::_('VM_PRODUCT_FORM_ITEM_STATUS_LBL');
-	$dim_weight_label = JText::_('VM_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL');
-	$images_label = JText::_('VM_PRODUCT_FORM_ITEM_IMAGES_LBL');
-	$delete_message = JText::_('VM_PRODUCT_FORM_DELETE_ITEM_MSG');
+	$info_label = JText::_('JM_PRODUCT_FORM_ITEM_INFO_LBL');
+	$status_label = JText::_('JM_PRODUCT_FORM_ITEM_STATUS_LBL');
+	$dim_weight_label = JText::_('JM_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL');
+	$images_label = JText::_('JM_PRODUCT_FORM_ITEM_IMAGES_LBL');
+	$delete_message = JText::_('JM_PRODUCT_FORM_DELETE_ITEM_MSG');
 }
 else {
 	$product_parent_id = '';
 	if ($product_id = @$vars["product_id"]) {
 		if( $clone_product == '1') {
-			$action = JText::_('VM_PRODUCT_CLONE');
+			$action = JText::_('JM_PRODUCT_CLONE');
 		}
 		else {
-			$action = JText::_('VM_PRODUCT_FORM_UPDATE_ITEM_LBL');
+			$action = JText::_('JM_PRODUCT_FORM_UPDATE_ITEM_LBL');
 		}
 	}
 	else {
-		$action = JText::_('VM_PRODUCT_FORM_NEW_PRODUCT_LBL');
+		$action = JText::_('JM_PRODUCT_FORM_NEW_PRODUCT_LBL');
 	}
-	$info_label = JText::_('VM_PRODUCT_FORM_PRODUCT_INFO_LBL');
-	$status_label = JText::_('VM_PRODUCT_FORM_PRODUCT_STATUS_LBL');
-	$dim_weight_label = JText::_('VM_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL');
-	$images_label = JText::_('VM_PRODUCT_FORM_PRODUCT_IMAGES_LBL');
-	$delete_message = JText::_('VM_PRODUCT_FORM_DELETE_PRODUCT_MSG');
+	$info_label = JText::_('JM_PRODUCT_FORM_PRODUCT_INFO_LBL');
+	$status_label = JText::_('JM_PRODUCT_FORM_PRODUCT_STATUS_LBL');
+	$dim_weight_label = JText::_('JM_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL');
+	$images_label = JText::_('JM_PRODUCT_FORM_PRODUCT_IMAGES_LBL');
+	$delete_message = JText::_('JM_PRODUCT_FORM_DELETE_PRODUCT_MSG');
 }
-$display_label = JText::_('VM_PRODUCT_FORM_ITEM_DISPLAY_LBL');
+$display_label = JText::_('JM_PRODUCT_FORM_ITEM_DISPLAY_LBL');
 if (!empty($product_id)) {
 	$price = $ps_product->get_retail_price($product_id);
 } else {
@@ -156,9 +156,9 @@ if (!empty($product_id)) {
 // Get some "default" values, which are used when no other values where provided through _REQUEST
 $default['attribute'] = ps_product_attribute::formatAttributeX();
 $default["product_publish"] = "Y";
-$default["product_weight_uom"] = JText::_('VM_PRODUCT_FORM_WEIGHT_UOM_DEFAULT');
-$default["product_lwh_uom"] = JText::_('VM_PRODUCT_FORM_DIMENSION_UOM_DEFAULT');
-$default["product_unit"] = JText::_('VM_PRODUCT_FORM_UNIT_DEFAULT');
+$default["product_weight_uom"] = JText::_('JM_PRODUCT_FORM_WEIGHT_UOM_DEFAULT');
+$default["product_lwh_uom"] = JText::_('JM_PRODUCT_FORM_DIMENSION_UOM_DEFAULT');
+$default["product_unit"] = JText::_('JM_PRODUCT_FORM_UNIT_DEFAULT');
 if( !empty($vars['product_available_date'])) $vars['product_available_date'] = strtotime($vars['product_available_date']);
 else $default["product_available_date"] = time();
 
@@ -199,15 +199,15 @@ if( $clone_product == "1" ) {
 	$product_id = "";
 }
 
-$title = '<img src="'. VM_ADMIN_ICON_URL.'icon_48/product_code.png" border="0" align="center" alt="Product Form" />&nbsp;&nbsp;';
+$title = '<img src="'. JM_ADMIN_ICON_URL.'icon_48/product_code.png" border="0" align="center" alt="Product Form" />&nbsp;&nbsp;';
 $title .= $action;
 
 if( !empty( $product_id )) {
 	$title .= " :: " . $db->f("product_name");
 	$flypage = $ps_product->get_flypage($product_id);
 	?>
-	<a href="<?php echo $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.product_details&flypage=$flypage&product_id=$product_id" ?>" target="_blank">
-		  <?php echo JText::_('VM_PRODUCT_FORM_SHOW_FLYPAGE') ?>
+	<a href="<?php echo $mosConfig_live_site."/index.php?option=com_jmart&page=shop.product_details&flypage=$flypage&product_id=$product_id" ?>" target="_blank">
+		  <?php echo JText::_('JM_PRODUCT_FORM_SHOW_FLYPAGE') ?>
 	</a>
 	<?php
 }
@@ -236,7 +236,7 @@ $tabs->startTab( $info_label, "info-page");
     </tr>
     <tr class="row0">
       <td  width="21%" ><div style="text-align:right;font-weight:bold;">
-      <?php echo JText::_('VM_PRODUCT_FORM_PUBLISH') ?>:</div>
+      <?php echo JText::_('JM_PRODUCT_FORM_PUBLISH') ?>:</div>
       </td>
       <td width="79%" > <?php if ($db->sf("product_publish")=="Y") {
       	echo "<input type=\"checkbox\" name=\"product_publish\" value=\"Y\" checked=\"checked\" />";
@@ -247,7 +247,7 @@ $tabs->startTab( $info_label, "info-page");
 ?> </td>
     </tr>
     <tr class="row1">
-      <td width="21%" ><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_SKU') ?>:</div>
+      <td width="21%" ><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_SKU') ?>:</div>
       </td>
       <td width="79%" height="2">
         <input type="text" class="inputbox"  name="product_sku" value="<?php $db->sp("product_sku"); ?>" size="32" maxlength="64" />
@@ -255,7 +255,7 @@ $tabs->startTab( $info_label, "info-page");
     </tr>
     <tr class="row0">
       <td width="21%" height="18"><div style="text-align:right;font-weight:bold;">
-      <?php echo JText::_('VM_PRODUCT_FORM_NAME') ?>:</div>
+      <?php echo JText::_('JM_PRODUCT_FORM_NAME') ?>:</div>
       </td>
       <td width="79%" height="18" >
         <input type="text" class="inputbox"  name="product_name" value="<?php echo shopMakeHtmlSafe( $db->sf("product_name")); ?>" size="32" maxlength="255" />
@@ -263,7 +263,7 @@ $tabs->startTab( $info_label, "info-page");
     </tr>
     <tr class="row1">
       <td width="21%"><div style="text-align:right;font-weight:bold;">
-        <?php echo JText::_('VM_PRODUCT_FORM_URL') ?>:</div>
+        <?php echo JText::_('JM_PRODUCT_FORM_URL') ?>:</div>
       </td>
       <td width="79%">
         <input type="text" class="inputbox"  name="product_url" value="<?php $db->sp("product_url"); ?>" size="32" maxlength="255" />
@@ -271,7 +271,7 @@ $tabs->startTab( $info_label, "info-page");
     </tr>
     <tr class="row0">
       <td width="21%"><div style="text-align:right;font-weight:bold;">
-        <?php echo JText::_('VM_PRODUCT_FORM_VENDOR') ?>:</div>
+        <?php echo JText::_('JM_PRODUCT_FORM_VENDOR') ?>:</div>
       </td>
       <td width="79%" ><?php
 // 		ps_vendor::list_ornot_vendor($db->sf("vendor_id"),$vendor_id);
@@ -280,7 +280,7 @@ $tabs->startTab( $info_label, "info-page");
     </tr>
     <tr class="row1">
       <td width="21%" ><div style="text-align:right;font-weight:bold;">
-        <?php echo JText::_('VM_PRODUCT_FORM_MANUFACTURER') ?>:</div>
+        <?php echo JText::_('JM_PRODUCT_FORM_MANUFACTURER') ?>:</div>
       </td>
       <td width="79%" ><?php ps_manufacturer::list_manufacturer(@$manufacturer_id);  ?></td>
     </tr>
@@ -292,7 +292,7 @@ $tabs->startTab( $info_label, "info-page");
     	if( $number_of_categories > 75 ) {
     		?>
 			<td style="vertical-align:top;">
-			<?php echo JText::_('VM_CATEGORIES') ?>:<br/>
+			<?php echo JText::_('JM_CATEGORIES') ?>:<br/>
 			<input type="text" size="40" name="catsearch" id="categorySearch" value="" />
 			</td>
 			<td>
@@ -310,8 +310,8 @@ $tabs->startTab( $info_label, "info-page");
     	} else {
 		    	?>
 		      <td width="29%" valign="top"><div style="text-align:right;font-weight:bold;">
-		       <?php echo JText::_('VM_CATEGORIES') ?>:<br/><br/>
-		       <?php echo vmToolTip( JText::_('VM_MULTISELECT') ) ?></div>
+		       <?php echo JText::_('JM_CATEGORIES') ?>:<br/><br/>
+		       <?php echo vmToolTip( JText::_('JM_MULTISELECT') ) ?></div>
 		       </td>
 		      <td width="71%" ><?php
 		        $ps_product_category->list_all("product_categories[]", "", $my_categories, 10, false, true);
@@ -329,7 +329,7 @@ $tabs->startTab( $info_label, "info-page");
  <td>
   <table class="adminform">
     <tr class="row0">
-      <td width="29%" ><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_NET') ?>:</div>
+      <td width="29%" ><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_PRICE_NET') ?>:</div>
       </td>
       <td width="71%" >
         <table border="0" cellspacing="0" cellpadding="0">
@@ -347,7 +347,7 @@ $tabs->startTab( $info_label, "info-page");
               $ps_html->list_currency("product_currency",$price["product_currency"]) ?>
             </td>
             <td>&nbsp;<?php
-                echo vmToolTip( JText::_('VM_PRICE_FORM_GROUP') . ": ".$shopper_db->f("shopper_group_name")); ?>
+                echo vmToolTip( JText::_('JM_PRICE_FORM_GROUP') . ": ".$shopper_db->f("shopper_group_name")); ?>
                 <input type="hidden" name="shopper_group_id" value="<?php echo $my_shopper_group_id ?>" />
              </td>
             </tr>
@@ -355,13 +355,13 @@ $tabs->startTab( $info_label, "info-page");
       </td>
     </tr>
 	<tr class="row1">
-      <td width="29%" ><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_GROSS') ?>:</div>
+      <td width="29%" ><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_PRICE_GROSS') ?>:</div>
       </td>
       <td width="71%" ><input type="text" class="inputbox" onkeyup="updateNet();" name="product_price_incl_tax" size="10" /></td>
     </tr>
     <tr class="row0">
       <td width="29%" ><div style="text-align:right;font-weight:bold;">
-        <?php echo JText::_('VM_RATE_FORM_VAT_ID') ?>:</div></td>
+        <?php echo JText::_('JM_RATE_FORM_VAT_ID') ?>:</div></td>
       <td width="71%" >
         <?php
         require_once(CLASSPATH.'ps_tax.php');
@@ -371,7 +371,7 @@ $tabs->startTab( $info_label, "info-page");
 
     <tr class="row1">
       <td width="21%" ><div style="text-align:right;font-weight:bold;">
-        <?php echo JText::_('VM_PRODUCT_FORM_DISCOUNT_TYPE') ?>:</div>
+        <?php echo JText::_('JM_PRODUCT_FORM_DISCOUNT_TYPE') ?>:</div>
       </td>
       <td width="79%" ><?php
         echo ps_product_discount::discount_list( $db->sf("product_discount_id") ); ?>
@@ -379,19 +379,19 @@ $tabs->startTab( $info_label, "info-page");
     </tr>
     <tr class="row0">
       <td width="21%" ><div style="text-align:right;font-weight:bold;">
-        <?php echo JText::_('VM_PRODUCT_FORM_DISCOUNTED_PRICE') ?>:</div>
+        <?php echo JText::_('JM_PRODUCT_FORM_DISCOUNTED_PRICE') ?>:</div>
       </td>
       <td width="79%" >
                 <input type="text" size="10" name="discounted_price_override" onchange="try { document.adminForm.product_discount_id[document.adminForm.product_discount_id.length-1].selected=true; } catch( e ) {}" />&nbsp;&nbsp;
-                <?php echo vmToolTip( JText::_('VM_PRODUCT_FORM_DISCOUNTED_PRICE_TIP') ) ?>
+                <?php echo vmToolTip( JText::_('JM_PRODUCT_FORM_DISCOUNTED_PRICE_TIP') ) ?>
         </td>
     </tr>
-    <tr><td width="29%" valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_ORDER_PRINT_INTNOTES'); ?>:</div></td>
+    <tr><td width="29%" valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_ORDER_PRINT_INTNOTES'); ?>:</div></td>
     <td width="71%" valign="top"><textarea class="inputbox" name="intnotes" id="intnotes" cols="35" rows="6" ><?php echo $db->sf("intnotes"); ?></textarea></td></tr>
     <tr class="row1"><td colspan="2">&nbsp;</td></tr>
     <tr class="row1">
       <td width="29%" valign="top"><div style="text-align:right;font-weight:bold;">
-          <?php echo JText::_('VM_PRODUCT_FORM_S_DESC') ?>:</div>
+          <?php echo JText::_('JM_PRODUCT_FORM_S_DESC') ?>:</div>
       </td>
       <td width="71%"  valign="top">
           <textarea class="inputbox" name="product_s_desc" id="short_desc" cols="35" rows="6" ><?php echo $db->sf("product_s_desc"); ?></textarea>
@@ -404,7 +404,7 @@ $tabs->startTab( $info_label, "info-page");
   <table class="adminform">
     <tr class="row1">
       <td valign="top" width="20%"><div style="font-weight:bold;">
-        <?php echo JText::_('VM_PRODUCT_FORM_DESCRIPTION') ?>:</div>
+        <?php echo JText::_('JM_PRODUCT_FORM_DESCRIPTION') ?>:</div>
       </td>
       <td width="60%">
         <?php
@@ -414,28 +414,28 @@ $tabs->startTab( $info_label, "info-page");
       
       <td valign="top">
     	<fieldset>
-        <legend><?php echo JText::_('VM_META_INFORMATION') ?></legend>		
+        <legend><?php echo JText::_('JM_META_INFORMATION') ?></legend>		
    			<table valign="top">
    				<tr>
-   					<td vlaign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_DESC'); ?>: </div></td>
+   					<td vlaign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_META_DESC'); ?>: </div></td>
       				<td valign="top">
       					<textarea class="inputbox" name="metadesc" id="meta_desc" cols="30" rows="6"><?php echo $db->sf("metadesc"); ?></textarea>
       				</td>
     			</tr>
     			<tr>
-    				<td ><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_KEYWORDS'); ?>: </div></td>
+    				<td ><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_META_KEYWORDS'); ?>: </div></td>
       				<td valign="top">
       					<textarea class="inputbox" name="metakeyword" id="meta_keyword" cols="30" rows="6"><?php echo $db->sf('metakey'); ?></textarea>
       				</td>
     			</tr>
     			<tr>
-    				<td ><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_ROBOTS'); ?>: </div></td>
+    				<td ><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_META_ROBOTS'); ?>: </div></td>
       				<td valign="top">
       					<input type="text" class="inputbox" size="20" name="metarobot" value="<?php echo $db->sf("metarobot") ?>" />
       				</td>
    				</tr>
     			<tr>
-    				<td ><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_AUTHOR'); ?>: </div></td>
+    				<td ><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_META_AUTHOR'); ?>: </div></td>
       				<td valign="top">
       					<input type="text" class="inputbox" size="20" name="metaauthor" value="<?php echo $db->sf("metaauthor") ?>" />
       				</td>
@@ -461,7 +461,7 @@ $tabs->startTab( $status_label, "status-page");
 	    </tr>
 	    <tr class="row0">
 	      <td width="21%"><div style="text-align:right;font-weight:bold;">
-	      <?php echo JText::_('VM_PRODUCT_FORM_IN_STOCK') ?>:</div>
+	      <?php echo JText::_('JM_PRODUCT_FORM_IN_STOCK') ?>:</div>
 	      </td>
 	      <td width="79%">
 	        <input type="text" class="inputbox"  name="product_in_stock" value="<?php $db->sp("product_in_stock"); ?>" size="10" />
@@ -470,7 +470,7 @@ $tabs->startTab( $status_label, "status-page");
 <!-- low stock notification -->
       <tr class="row1">
 					<td width="21%"><div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_( 'VM_LOW_STOCK_NOTIFICATION' ); ?>:</div>
+						<?php echo JText::_( 'JM_LOW_STOCK_NOTIFICATION' ); ?>:</div>
 					</td>
 					<td width="79%">
 						<input type="text" class="inputbox" name="low_stock_notification" value="<?php $db->sp("low_stock_notification"); ?>" size="3" />
@@ -479,7 +479,7 @@ $tabs->startTab( $status_label, "status-page");
 <!-- end low stock notification -->
 	    <tr class="row0"> 
 	      <td width="21%"><div style="text-align:right;font-weight:bold;">
-	      <?php echo JText::_('VM_PRODUCT_FORM_MIN_ORDER') ?>:</div>
+	      <?php echo JText::_('JM_PRODUCT_FORM_MIN_ORDER') ?>:</div>
 	      </td>
 	      <td width="79%">
 	        <input type="text" class="inputbox"  name="min_order_level" value="<?php echo $min_order; ?>" size="10" />
@@ -487,7 +487,7 @@ $tabs->startTab( $status_label, "status-page");
 	    </tr>
 	    <tr class="row1"> 
 	      <td width="21%"><div style="text-align:right;font-weight:bold;">
-	      <?php echo JText::_('VM_PRODUCT_FORM_MAX_ORDER') ?>:</div>
+	      <?php echo JText::_('JM_PRODUCT_FORM_MAX_ORDER') ?>:</div>
 	      </td>
 	      <td width="79%">
 	        <input type="text" class="inputbox"  name="max_order_level" value="<?php echo $max_order; ?>" size="10" />
@@ -495,7 +495,7 @@ $tabs->startTab( $status_label, "status-page");
 	    </tr>
 	    <tr class="row0"> 
 	      <td width="21%" ><div style="text-align:right;font-weight:bold;">
-	        <?php echo JText::_('VM_PRODUCT_FORM_AVAILABLE_DATE') ?>:</div>
+	        <?php echo JText::_('JM_PRODUCT_FORM_AVAILABLE_DATE') ?>:</div>
 	      </td>
 	      <td width="79%" >
 	          <input class="inputbox" type="text" name="product_available_date" id="product_available_date" size="20" maxlength="19" value="<?php echo date('Y-m-d', $db->sf("product_available_date") ); ?>" />
@@ -505,16 +505,16 @@ $tabs->startTab( $status_label, "status-page");
 	    <tr class="row1"><td colspan="2">&nbsp;</td></tr>
 	    <tr>
 	      <td valign="top" width="21%" ><div style="text-align:right;font-weight:bold;">
-	          <?php echo JText::_('VM_AVAILABILITY') ?>:</div>
+	          <?php echo JText::_('JM_AVAILABILITY') ?>:</div>
 	      </td>
 	      <td width="79%" >
 	        <input type="text" class="inputbox" name="product_availability" value="<?php $db->sp("product_availability"); ?>" />
 	      <?php
-	      echo vmToolTip(JText::_('VM_PRODUCT_FORM_AVAILABILITY_TOOLTIP1')); ?>
+	      echo vmToolTip(JText::_('JM_PRODUCT_FORM_AVAILABILITY_TOOLTIP1')); ?>
 	      <br /><br />
-	        <select class="inputbox" name="image" onchange="javascript:if (document.adminForm.image.options[selectedIndex].value!='') {document.imagelib.src='<?php echo VM_THEMEURL ?>images/availability/' + document.adminForm.image.options[selectedIndex].value; document.adminForm.product_availability.value=document.adminForm.image.options[selectedIndex].value;} else {document.imagelib.src='<?php echo VM_ADMIN_ICON_URL.'images/'.NO_IMAGE;?>'; document.adminForm.product_availability.value=''}">
-	          <option value=""><?php echo JText::_('VM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE'); ?></option><?php
-	          $path = VM_THEMEPATH."images/availability";
+	        <select class="inputbox" name="image" onchange="javascript:if (document.adminForm.image.options[selectedIndex].value!='') {document.imagelib.src='<?php echo JM_THEMEURL ?>images/availability/' + document.adminForm.image.options[selectedIndex].value; document.adminForm.product_availability.value=document.adminForm.image.options[selectedIndex].value;} else {document.imagelib.src='<?php echo JM_ADMIN_ICON_URL.'images/'.NO_IMAGE;?>'; document.adminForm.product_availability.value=''}">
+	          <option value=""><?php echo JText::_('JM_PRODUCT_FORM_AVAILABILITY_SELECT_IMAGE'); ?></option><?php
+	          $path = JM_THEMEPATH."images/availability";
 	          $files = vmReadDirectory( "$path", ".", true, true);
 	          foreach ($files as $file) {
 	          	$file_info = pathinfo($file);
@@ -527,16 +527,16 @@ $tabs->startTab( $status_label, "status-page");
 	            }  ?>
 	        </select>&nbsp;
 	        <?php
-			$pathrelative = str_replace($mosConfig_live_site,'',VM_THEMEURL."images/availability/");
-			echo vmToolTip(sprintf(JText::_('VM_PRODUCT_FORM_AVAILABILITY_TOOLTIP2'),$pathrelative));
+			$pathrelative = str_replace($mosConfig_live_site,'',JM_THEMEURL."images/availability/");
+			echo vmToolTip(sprintf(JText::_('JM_PRODUCT_FORM_AVAILABILITY_TOOLTIP2'),$pathrelative));
 			?>
 	        &nbsp;&nbsp;&nbsp;
-	        <img src="<?php echo $db->f("product_availability") ? VM_THEMEURL."images/availability/".$db->sf("product_availability") : VM_ADMIN_ICON_URL.'images/'.NO_IMAGE; ?>" name="imagelib" border="0" alt="Preview" />
+	        <img src="<?php echo $db->f("product_availability") ? JM_THEMEURL."images/availability/".$db->sf("product_availability") : JM_ADMIN_ICON_URL.'images/'.NO_IMAGE; ?>" name="imagelib" border="0" alt="Preview" />
 	      </td>
 	    </tr>
 	    <tr class="row1">
 	      <td width="21%" ><div style="text-align:right;font-weight:bold;">
-	      <?php echo JText::_('VM_PRODUCT_FORM_SPECIAL') ?>:</div>
+	      <?php echo JText::_('JM_PRODUCT_FORM_SPECIAL') ?>:</div>
 	      </td>
 	      <td width="79%" ><?php if ($db->sf("product_special")=="Y") { ?>
 	        <input type="checkbox" name="product_special" value="Y" checked="checked" />
@@ -554,11 +554,11 @@ $tabs->startTab( $status_label, "status-page");
 	<td width="50%" valign="top">
         <table class="adminform">
 			<tr class="row1">
-		      <td colspan="3"><h2><?php echo JText::_('VM_RELATED_PRODUCTS'); ?></h2></td>
+		      <td colspan="3"><h2><?php echo JText::_('JM_RELATED_PRODUCTS'); ?></h2></td>
 		    </tr>
 	          <tr class="row0">
 				<td style="vertical-align:top;"><br />
-				<?php echo JText::_('VM_PRODUCT_RELATED_SEARCH'); ?>
+				<?php echo JText::_('JM_PRODUCT_RELATED_SEARCH'); ?>
 				<input type="text" size="40" name="search" id="relatedProductSearch" value="" />
 				</td>
 				<td><input type="button" name="remove_related" onclick="removeSelectedOptions(relatedSelection, 'related_products');" value="&nbsp; &lt; &nbsp;" /></td>
@@ -599,13 +599,13 @@ if (!$product_parent_id and $product_id and $db_items->num_rows() > 0) {
     </tr>
     <tr class="row1">
       <td colspan="<?php echo $colspan ?>"><h2>
-          <?php echo JText::_('VM_PRODUCT_FORM_PRODUCT_ITEMS_LBL') ?></h2>
+          <?php echo JText::_('JM_PRODUCT_FORM_PRODUCT_ITEMS_LBL') ?></h2>
       </td>
     </tr>
     <tr class="row0">
-      <th class="title"><?php echo JText::_('VM_PRODUCT_FORM_NAME') ?></th>
-      <th class="title"><?php echo JText::_('VM_PRODUCT_FORM_SKU') ?></th>
-      <th class="title"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_NET') ?></th>
+      <th class="title"><?php echo JText::_('JM_PRODUCT_FORM_NAME') ?></th>
+      <th class="title"><?php echo JText::_('JM_PRODUCT_FORM_SKU') ?></th>
+      <th class="title"><?php echo JText::_('JM_PRODUCT_FORM_PRICE_NET') ?></th>
       <?php
       while ($db_heading->next_record()) {
 		?>
@@ -657,7 +657,7 @@ if (!$product_parent_id and $product_id and $db_items->num_rows() > 0) {
       <td colspan="2">&nbsp;</td>
     </tr>
     <tr class="row1">
-      <td colspan="2"><strong><?php echo JText::_('VM_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL') ?></strong></td>
+      <td colspan="2"><strong><?php echo JText::_('JM_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL') ?></strong></td>
     </tr>
     <?php
     if (!empty($_REQUEST['product_id'])) {
@@ -685,7 +685,7 @@ if (!$product_parent_id and $product_id and $db_items->num_rows() > 0) {
 }
 ?><table class="adminform">
 		<tr class="row0">
-	        <td align="right" width="21%" valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_ATTRIBUTE_LIST') ?>:</div></td>
+	        <td align="right" width="21%" valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_ATTRIBUTE_LIST') ?>:</div></td>
 			<td width="79%" id="attribute_container">
 				<?php
 				// ATTRIBUTE EXTENSION by Tobias (eaxs)
@@ -694,19 +694,19 @@ if (!$product_parent_id and $product_id and $db_items->num_rows() > 0) {
 	    </tr>
 	    <tr class="row0">
 	    <td>&nbsp;</td>
-	        <td><?php echo JText::_('VM_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES') ?></td>
+	        <td><?php echo JText::_('JM_PRODUCT_FORM_ATTRIBUTE_LIST_EXAMPLES') ?></td>
 	    </tr>
 	    <tr class="row0">
 	    <td colspan="2">&nbsp;</td>
 	    </tr>
 	    <tr class="row1">
-	        <td align="right" width="21%" valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST') ?>:</div></td>
+	        <td align="right" width="21%" valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST') ?>:</div></td>
 	        <td width="79%" >
 	        <input class="inputbox" type="text" name="product_custom_attribute" value="<?php $db->sp("custom_attribute"); ?>" size="64" />
 	    </tr>
 	    <tr class="row1">
 	     <td>&nbsp;</td>
-	     <td><?php echo JText::_('VM_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES') ?></td>
+	     <td><?php echo JText::_('JM_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST_EXAMPLES') ?></td>
         </tr>
 	</table>
 	<?php
@@ -720,7 +720,7 @@ echo "<h2>$dim_weight_label</h2>";
    <table class="adminform">
     <tr class="row1">
       <td width="21%" valign="top" >
-        <div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_LENGTH') ?>:</div>
+        <div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_LENGTH') ?>:</div>
       </td>
       <td width="79%" >
         <input type="text" class="inputbox"  name="product_length" value="<?php $db->sp("product_length"); ?>" size="15" maxlength="15" />
@@ -728,7 +728,7 @@ echo "<h2>$dim_weight_label</h2>";
     </tr>
     <tr class="row0">
       <td width="21%" valign="top" >
-        <div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_WIDTH') ?>:</div>
+        <div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_WIDTH') ?>:</div>
       </td>
       <td width="79%" >
         <input type="text" class="inputbox"  name="product_width" value="<?php $db->sp("product_width"); ?>" size="15" maxlength="15" />
@@ -736,7 +736,7 @@ echo "<h2>$dim_weight_label</h2>";
     </tr>
     <tr class="row1">
       <td width="21%" valign="top" >
-        <div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_HEIGHT') ?>:</div>
+        <div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_HEIGHT') ?>:</div>
       </td>
       <td width="79%" >
         <input type="text" class="inputbox"  name="product_height" value="<?php $db->sp("product_height"); ?>" size="15" maxlength="15" />
@@ -744,7 +744,7 @@ echo "<h2>$dim_weight_label</h2>";
     </tr>
     <tr class="row0">
       <td width="21%" valign="top" >
-        <div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_DIMENSION_UOM') ?>:</div>
+        <div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_DIMENSION_UOM') ?>:</div>
       </td>
       <td width="79%" >
         <input type="text" class="inputbox"  name="product_lwh_uom" value="<?php $db->sp("product_lwh_uom"); ?>" size="8" maxlength="32" />
@@ -756,7 +756,7 @@ echo "<h2>$dim_weight_label</h2>";
     </tr>
     <tr class="row0">
       <td width="21%" valign="top" >
-        <div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_WEIGHT') ?>:</div>
+        <div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_WEIGHT') ?>:</div>
       </td>
       <td width="79%" >
         <input type="text" class="inputbox"  name="product_weight" size="15" maxlength="15" value="<?php $db->sp("product_weight"); ?>" />
@@ -764,7 +764,7 @@ echo "<h2>$dim_weight_label</h2>";
     </tr>
     <tr class="row1">
       <td width="21%" valign="top" >
-        <div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_WEIGHT_UOM') ?>:</div>
+        <div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_WEIGHT_UOM') ?>:</div>
       </td>
       <td width="79%" >
         <input type="text" class="inputbox"  name="product_weight_uom" value="<?php $db->sp("product_weight_uom"); ?>" size="8" maxlength="32" />
@@ -777,7 +777,7 @@ echo "<h2>$dim_weight_label</h2>";
     </tr>
     <tr class="row1">
       <td width="21%" valign="top" >
-        <div align="right"><strong><?php echo JText::_('VM_PRODUCT_FORM_UNIT') ?>:</strong></div>
+        <div align="right"><strong><?php echo JText::_('JM_PRODUCT_FORM_UNIT') ?>:</strong></div>
       </td>
       <td width="21%" >
         <input type="text" class="inputbox"  name="product_unit" size="15" maxlength="15" value="<?php $db->sp("product_unit"); ?>" />
@@ -785,20 +785,20 @@ echo "<h2>$dim_weight_label</h2>";
     </tr>
     <tr class="row0">
       <td width="21%" valign="top" >
-        <div align="right"><strong><?php echo JText::_('VM_PRODUCT_FORM_PACKAGING') ?>:</strong></div>
+        <div align="right"><strong><?php echo JText::_('JM_PRODUCT_FORM_PACKAGING') ?>:</strong></div>
       </td>
       <td width="21%" >
         <input type="text" class="inputbox"  name="product_packaging" value="<?php echo $db->f("product_packaging") & 0xFFFF; ?>" size="8" maxlength="32" />&nbsp;<?php
-        echo vmToolTip(JText::_('VM_PRODUCT_FORM_PACKAGING_DESCRIPTION')); ?>
+        echo vmToolTip(JText::_('JM_PRODUCT_FORM_PACKAGING_DESCRIPTION')); ?>
       </td>
     </tr>
     <tr class="row1">
       <td width="21%" valign="top" >
-        <div align="right"><strong><?php echo JText::_('VM_PRODUCT_FORM_BOX') ?>:</strong></div>
+        <div align="right"><strong><?php echo JText::_('JM_PRODUCT_FORM_BOX') ?>:</strong></div>
       </td>
       <td width="21%" >
         <input type="text" class="inputbox"  name="product_box" value="<?php echo ($db->f("product_packaging")>>16)&0xFFFF; ?>" size="8" maxlength="32" />&nbsp;<?php
-        echo vmToolTip(JText::_('VM_PRODUCT_FORM_BOX_DESCRIPTION')); ?>
+        echo vmToolTip(JText::_('JM_PRODUCT_FORM_BOX_DESCRIPTION')); ?>
       </td>
     </tr>
     <!-- Changed Packaging - End -->
@@ -817,7 +817,7 @@ $tabs->startTab( $display_label, "display-page");
       <td align="left" colspan="2"></td>
     </tr>
     <tr class="row1">
-      <td width="21%"  style="vertical-align: middle;"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_DISPLAY_USE_PARENT_LABEL'); ?></div>
+      <td width="21%"  style="vertical-align: middle;"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_DISPLAY_USE_PARENT_LABEL'); ?></div>
       </td>
       <td width="79%" style="vertical-align: middle;" colspan="2">
       	<input type="checkbox" class="checkbox"  id="display_use_parent" name="display_use_parent" value="Y" <?php
@@ -825,11 +825,11 @@ $tabs->startTab( $display_label, "display-page");
         else if($display_use_parent_disabled) {
         	echo ' disabled="disabled" ';
         }   ?>  />
-      <label for="display_use_parent" ><?php echo JText::_('VM_DISPLAY_USE_PARENT'); ?></label><br/>
+      <label for="display_use_parent" ><?php echo JText::_('JM_DISPLAY_USE_PARENT'); ?></label><br/>
       </td>
     </tr>
     <tr class="row0">
-      <td width="21%"  style="vertical-align: top;"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_DISPLAY_LIST_TYPE'); ?></div>
+      <td width="21%"  style="vertical-align: top;"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_DISPLAY_LIST_TYPE'); ?></div>
       </td>
       <td width="20%"  style="vertical-align: top;"> <?php
       echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"product_list_check\" name=\"product_list\" value=\"Y\" onclick=\"javascript: toggleProductList( this.checked);\" ";
@@ -841,7 +841,7 @@ $tabs->startTab( $display_label, "display-page");
       if($product_parent_id !=0) {
       	echo ' disabled="disabled" ';
       }
-      echo '/> <label for="product_list_check">'.JText::_('VM_DISPLAY_USE_LIST_BOX').'</label>';
+      echo '/> <label for="product_list_check">'.JText::_('JM_DISPLAY_USE_LIST_BOX').'</label>';
       //Formatting Code
 ?> <br />
 
@@ -850,23 +850,23 @@ $tabs->startTab( $display_label, "display-page");
        if ($display_desc) {
        	echo 'checked="checked" ';
        }
-    echo '/> <label for="display_desc">'.JText::_('VM_DISPLAY_CHILD_DESCRIPTION').'</label><br />
+    echo '/> <label for="display_desc">'.JText::_('JM_DISPLAY_CHILD_DESCRIPTION').'</label><br />
     		<input type="inputbox" style="vertical-align: middle;" class="inputbox" size="8" id="desc_width" name="desc_width" value="'.$desc_width.'" />';
-    echo JText::_('VM_DISPLAY_DESC_WIDTH'); ?>
+    echo JText::_('JM_DISPLAY_DESC_WIDTH'); ?>
     <br />
     <?php
     echo "<input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"8\" id=\"attrib_width\" name=\"attrib_width\" value=\"$attrib_width\"  ";
-    echo "/> ".JText::_('VM_DISPLAY_ATTRIB_WIDTH'); ?>
+    echo "/> ".JText::_('JM_DISPLAY_ATTRIB_WIDTH'); ?>
     <br />
     <?php
-    echo JText::_('VM_DISPLAY_CHILD_SUFFIX')."<br /><input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"20\" id=\"child_class_sfx\" name=\"child_class_sfx\" value=\"$child_class_sfx\"  ";
+    echo JText::_('JM_DISPLAY_CHILD_SUFFIX')."<br /><input type=\"inputbox\" style=\"vertical-align: middle;\" class=\"inputbox\" size=\"20\" id=\"child_class_sfx\" name=\"child_class_sfx\" value=\"$child_class_sfx\"  ";
     echo "/> "; ?>
     <br />
       </td>
 
         <td width="20%" >
         <fieldset>
-            <legend><?php echo JText::_('VM_DISPLAY_LIST_STYLE'); ?></legend>
+            <legend><?php echo JText::_('JM_DISPLAY_LIST_STYLE'); ?></legend>
 
         <input type="radio" class="radio" style="vertical-align: middle;" id="list_style0" name="list_style" value="one"
         <?php if (@$product_list == "Y") echo "checked=\"checked\"";
@@ -875,7 +875,7 @@ $tabs->startTab( $display_label, "display-page");
         }
         ?>
         />
-        <label for="list_style0" style="vertical-align: middle;"><?php echo JText::_('VM_DISPLAY_ONE'); ?></label><br/>
+        <label for="list_style0" style="vertical-align: middle;"><?php echo JText::_('JM_DISPLAY_ONE'); ?></label><br/>
         <input type="radio" class="radio" style="vertical-align: middle;" id="list_style1" name="list_style" value="many"
         <?php
         if (@$product_list == "YM") echo "checked=\"checked\"";
@@ -884,7 +884,7 @@ $tabs->startTab( $display_label, "display-page");
         }
         ?>
         />
-        <label for="list_style1" style="vertical-align: middle;"><?php echo JText::_('VM_DISPLAY_MANY') ?> </label><br />
+        <label for="list_style1" style="vertical-align: middle;"><?php echo JText::_('JM_DISPLAY_MANY') ?> </label><br />
         <?php if (@$display_header =="Y" && (@$product_list =="Y" || @$product_list =="YM" )) {
         	echo "<input type=\"checkbox\" style=\"vertical-align: middle;\" class=\"checkbox\" id=\"display_headers\" name=\"display_headers\" value=\"Y\" checked=\"checked\" ";
         }
@@ -896,7 +896,7 @@ $tabs->startTab( $display_label, "display-page");
         else {
             echo ' disabled=true /> ';
         }
-        echo JText::_('VM_DISPLAY_TABLE_HEADER');
+        echo JText::_('JM_DISPLAY_TABLE_HEADER');
 ?> <br />
 
         <?php if (@$product_list_child =="Y" && (@$product_list =="Y"  || @$product_list =="YM" )) {
@@ -911,7 +911,7 @@ $tabs->startTab( $display_label, "display-page");
             echo ' disabled=true /> ';
         }
 
-        echo JText::_('VM_DISPLAY_LINK_TO_CHILD')."<br />";
+        echo JText::_('JM_DISPLAY_LINK_TO_CHILD')."<br />";
 ?>
 
         <?php if (@$product_list_type =="Y" && (@$product_list =="Y"  || @$product_list =="YM" )) {
@@ -925,7 +925,7 @@ $tabs->startTab( $display_label, "display-page");
         else {
             echo " disabled=true /> ";
         }
-        echo JText::_('VM_DISPLAY_INCLUDE_PRODUCT_TYPE');
+        echo JText::_('JM_DISPLAY_INCLUDE_PRODUCT_TYPE');
 ?>
 
         </fieldset>
@@ -934,24 +934,24 @@ $tabs->startTab( $display_label, "display-page");
         </td>
     </tr>
     <tr class="row1">
-      <td width="21%"  style="vertical-align: top;"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_DISPLAY_CHILD_ORDER_BY'); ?></div>
+      <td width="21%"  style="vertical-align: top;"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_DISPLAY_CHILD_ORDER_BY'); ?></div>
       </td>
       <td width="79%" colspan="2">
       <?php 
       $order_list =array();
-      $order_list['`#__{vm}_product`.`product_sku`'] = JText::_('VM_CART_SKU');
+      $order_list['`#__{vm}_product`.`product_sku`'] = JText::_('JM_CART_SKU');
       $order_list['`#__{vm}_product`.`product_id`'] = 'Child Product ID';
-      $order_list['`#__{vm}_product`.`product_name`'] = JText::_('VM_PRODUCT_NAME_TITLE');
+      $order_list['`#__{vm}_product`.`product_name`'] = JText::_('JM_PRODUCT_NAME_TITLE');
       echo ps_html::selectList('child_order_by', $child_order_by, $order_list, 1, '', 'id="child_order_by"'); ?>
       
-      <label for="child_order_by" style="vertical-align: middle;"><?php echo JText::_('VM_DISPLAY_CHILD_ORDER_DESC'); ?></label><br/>
+      <label for="child_order_by" style="vertical-align: middle;"><?php echo JText::_('JM_DISPLAY_CHILD_ORDER_DESC'); ?></label><br/>
       </td>
     </tr>
     <tr class="row0">
-      <td width="21%"  style="vertical-align: top;"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_EXTRA_PRODUCT_ID'); ?></div>
+      <td width="21%"  style="vertical-align: top;"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_EXTRA_PRODUCT_ID'); ?></div>
       </td>
       <td width="79%" colspan="2"><input type="inputbox" class="inputbox" size="35" id="included_product_id" name="included_product_id" value="<?php echo $db->f("child_option_ids") ?>" />
-      <label for="included_product_id" style="vertical-align: middle;"><?php echo JText::_('VM_INCLUDED_PRODUCT_ID'); ?></label><br/>
+      <label for="included_product_id" style="vertical-align: middle;"><?php echo JText::_('JM_INCLUDED_PRODUCT_ID'); ?></label><br/>
       </td>
     </tr>
 </table>
@@ -959,36 +959,36 @@ $tabs->startTab( $display_label, "display-page");
     <tr class="row0">
         <td width="21%" style="vertical-align: top;">
         <fieldset>
-                <legend><?php echo JText::_('VM_DISPLAY_QUANTITY_LABEL') ?></legend>
+                <legend><?php echo JText::_('JM_DISPLAY_QUANTITY_LABEL') ?></legend>
 
             <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box0" name="quantity_box" value="none" <?php
             	if ($display_type == "none") echo "checked=\"checked\""; ?>  />
-            <label for="quantity_box0" style="vertical-align: middle;"><?php echo JText::_('VM_DISPLAY_NORMAL'); ?></label><br/>
+            <label for="quantity_box0" style="vertical-align: middle;"><?php echo JText::_('JM_DISPLAY_NORMAL'); ?></label><br/>
             <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box1" name="quantity_box" value="hide" <?php
             	if ($display_type == "hide") echo "checked=\"checked\""; ?> />
-            <label for="quantity_box1" style="vertical-align: middle;"><?php echo JText::_('VM_DISPLAY_HIDE') ?> </label><br />
+            <label for="quantity_box1" style="vertical-align: middle;"><?php echo JText::_('JM_DISPLAY_HIDE') ?> </label><br />
             <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box2" name="quantity_box" value="drop" <?php
             	if ($display_type == "drop") echo "checked=\"checked\""; ?> />
-            <label for="quantity_box2" style="vertical-align: middle;"><?php echo JText::_('VM_DISPLAY_DROPDOWN') ?> </label><br />
+            <label for="quantity_box2" style="vertical-align: middle;"><?php echo JText::_('JM_DISPLAY_DROPDOWN') ?> </label><br />
             <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box3" name="quantity_box" value="check" <?php
             	if ($display_type == "check") echo "checked=\"checked\""; ?>
             />
-            <label for="quantity_box3" style="vertical-align: middle;"><?php echo JText::_('VM_DISPLAY_CHECKBOX') ?> </label><br />
+            <label for="quantity_box3" style="vertical-align: middle;"><?php echo JText::_('JM_DISPLAY_CHECKBOX') ?> </label><br />
             <input type="radio" class="radio" style="vertical-align: middle;" id="quantity_box4" name="quantity_box" value="radio" <?php
 	            if ($display_type == "radio") echo 'checked="checked"';
 	            if($product_parent_id !=0) echo ' disabled="true"'; ?>  />
-            <label for="quantity_box4" style="vertical-align: middle;"><?php echo JText::_('VM_DISPLAY_RADIOBOX') ?> </label><br />
+            <label for="quantity_box4" style="vertical-align: middle;"><?php echo JText::_('JM_DISPLAY_RADIOBOX') ?> </label><br />
 
         </td>
         <td width="20%" style="vertical-align: top;">
             <fieldset>
-                <legend><?php echo JText::_('VM_DISPLAY_QUANTITY_DROPDOWN_LABEL') ?></legend>
+                <legend><?php echo JText::_('JM_DISPLAY_QUANTITY_DROPDOWN_LABEL') ?></legend>
             <input type="text" class="inputbox" style="vertical-align: middle;" id="quantity_start" name="quantity_start" size="4" value="<?php echo $quantity_start; ?>" />
-            <label for="quantity_start" style="vertical-align: middle;"><?php echo JText::_('VM_DISPLAY_START') ?> </label><br />
+            <label for="quantity_start" style="vertical-align: middle;"><?php echo JText::_('JM_DISPLAY_START') ?> </label><br />
             <input type="text" class="inputbox" style="vertical-align: middle;" id="quantity_end" name="quantity_end" size="4" value="<?php echo $quantity_end; ?>" />
-            <label for="quantity_end" style="vertical-align: middle;"><?php echo JText::_('VM_DISPLAY_END') ?> </label><br />
+            <label for="quantity_end" style="vertical-align: middle;"><?php echo JText::_('JM_DISPLAY_END') ?> </label><br />
             <input type="text" class="inputbox" style="vertical-align: middle;" id="quantity_step" name="quantity_step" size="4" value="<?php echo $quantity_step; ?>" />
-            <label for="quantity_step" style="vertical-align: middle;"><?php echo JText::_('VM_DISPLAY_STEP') ?> </label><br />
+            <label for="quantity_step" style="vertical-align: middle;"><?php echo JText::_('JM_DISPLAY_STEP') ?> </label><br />
             </fieldset>
         </td>
         <td width="39%">
@@ -1006,28 +1006,28 @@ $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resi
   <table class="adminform" >
     <tr>
       <td valign="top" width="50%" style="border-right: 1px solid black;">
-        <h2><?php echo JText::_('VM_PRODUCT_FORM_FULL_IMAGE') ?></h2>
+        <h2><?php echo JText::_('JM_PRODUCT_FORM_FULL_IMAGE') ?></h2>
         <table class="adminform">
           <tr class="row0">
             <td colspan="2" ><?php
             if ($product_id) {
-                echo JText::_('VM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br />"; } ?>
+                echo JText::_('JM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br />"; } ?>
               <input type="file" class="inputbox" name="product_full_image" onchange="document.adminForm.product_full_image_url.value='';if(this.value!='') { document.adminForm.product_full_image_action[1].checked=true;toggleDisable(document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true) }" size="50" maxlength="255" />
             </td>
           </tr>
           <tr class="row1">
-            <td colspan="2" ><div style="font-weight:bold;"><?php echo JText::_('VM_IMAGE_ACTION') ?>:</div><br/>
+            <td colspan="2" ><div style="font-weight:bold;"><?php echo JText::_('JM_IMAGE_ACTION') ?>:</div><br/>
               <input type="radio" class="inputbox" id="product_full_image_action0" name="product_full_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-              <label for="product_full_image_action0"><?php echo JText::_('VM_NONE'); ?></label><br/>
+              <label for="product_full_image_action0"><?php echo JText::_('JM_NONE'); ?></label><br/>
               <?php
               // Check if GD library is available
               if( function_exists('imagecreatefromjpeg')) { ?>
 	              <input type="radio" class="inputbox" id="product_full_image_action1" name="product_full_image_action" value="auto_resize" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-	              <label for="product_full_image_action1"><?php echo JText::_('VM_FILES_FORM_AUTO_THUMBNAIL') . "</label><br />";
+	              <label for="product_full_image_action1"><?php echo JText::_('JM_FILES_FORM_AUTO_THUMBNAIL') . "</label><br />";
               }
               if ($product_id and $db->f("product_full_image")) { ?>
                 <input type="radio" class="inputbox" id="product_full_image_action2" name="product_full_image_action" value="delete" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-                <label for="product_full_image_action2"><?php echo JText::_('VM_PRODUCT_FORM_IMAGE_DELETE_LBL') . "</label><br />";
+                <label for="product_full_image_action2"><?php echo JText::_('JM_PRODUCT_FORM_IMAGE_DELETE_LBL') . "</label><br />";
               } ?>
             </td>
           </tr>
@@ -1062,22 +1062,22 @@ $ps_html->writableIndicator( array( IMAGEPATH."product", IMAGEPATH."product/resi
       </td>
 
       <td valign="top" width="50%">
-        <h2><?php echo JText::_('VM_PRODUCT_FORM_THUMB_IMAGE') ?></h2>
+        <h2><?php echo JText::_('JM_PRODUCT_FORM_THUMB_IMAGE') ?></h2>
         <table class="adminform">
           <tr class="row0">
             <td colspan="2" ><?php if ($product_id) {
-                echo JText::_('VM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br />"; } ?>
+                echo JText::_('JM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br />"; } ?>
               <input type="file" class="inputbox" name="product_thumb_image" size="50" maxlength="255" onchange="if(document.adminForm.product_thumb_image.value!='') document.adminForm.product_thumb_image_url.value='';" />
             </td>
           </tr>
           <tr class="row1">
-            <td colspan="2" ><div style="font-weight:bold;"><?php echo JText::_('VM_IMAGE_ACTION') ?>:</div><br/>
+            <td colspan="2" ><div style="font-weight:bold;"><?php echo JText::_('JM_IMAGE_ACTION') ?>:</div><br/>
               <input type="radio" class="inputbox" id="product_thumb_image_action0" name="product_thumb_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-              <label for="product_thumb_image_action0"><?php echo JText::_('VM_NONE') ?></label><br/>
+              <label for="product_thumb_image_action0"><?php echo JText::_('JM_NONE') ?></label><br/>
               <?php
               if ($product_id and $db->f("product_thumb_image")) { ?>
                 <input type="radio" class="inputbox" id="product_thumb_image_action1" name="product_thumb_image_action" value="delete" onchange="toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_thumb_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
-                <label for="product_thumb_image_action1"><?php echo JText::_('VM_PRODUCT_FORM_IMAGE_DELETE_LBL') . "</label><br />";
+                <label for="product_thumb_image_action1"><?php echo JText::_('JM_PRODUCT_FORM_IMAGE_DELETE_LBL') . "</label><br />";
               } ?>
             </td>
           </tr>
@@ -1141,7 +1141,7 @@ if( $db_ptypes->num_rows() < 1 ) {
 		<br />
 		';
 
-		$types = array(''=> JText::_('VM_SELECT'));
+		$types = array(''=> JText::_('JM_SELECT'));
 		while( $db_ptypes->next_record() ) {
 			$types[$db_ptypes->f('product_type_id')] = $db_ptypes->f('product_type_name');
 		}
@@ -1162,8 +1162,8 @@ if( $clone_product == "1" ) {
                 FROM #__{vm}_product
                 WHERE product_parent_id='".JRequest::getVar( 'product_id')."' " );
 	if( $db->num_rows() > 0 ) {
-		$tabs->startTab( JText::_('VM_PRODUCT_CLONE_OPTIONS_TAB'), 'clone-page' );
-		echo "<h3>" . JText::_('VM_PRODUCT_CLONE_OPTIONS_LBL') . ":</h3>";
+		$tabs->startTab( JText::_('JM_PRODUCT_CLONE_OPTIONS_TAB'), 'clone-page' );
+		echo "<h3>" . JText::_('JM_PRODUCT_CLONE_OPTIONS_LBL') . ":</h3>";
 
 		while( $db->next_record() ) {
 			$db_att->query( "SELECT attribute_name, attribute_value FROM #__{vm}_product_attribute
@@ -1231,6 +1231,6 @@ $formObj->finishForm( $funcname, $next_page, $option );
 
 ?>
 <script type="text/javascript">//<!--
-<?php include($mosConfig_absolute_path.'/components/com_virtuemart/js/product_form.js.php' ) ?>
+<?php include($mosConfig_absolute_path.'/components/com_jmart/js/product_form.js.php' ) ?>
 //-->
 </script>

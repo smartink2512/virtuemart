@@ -4,28 +4,28 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 /**
  *
  * @version $Id: product.product_price_form.php 1760 2009-05-03 22:58:57Z Aravot $
- * @package VirtueMart
+ * @package JMart
  * @subpackage html
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * VirtueMart is free software. This version may have been modified pursuant
+ * JMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+ * See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
  *
- * http://virtuemart.org
+ * http://joomlacode.org/gf/project/jmart/
  */
 mm_showMyFileName( __FILE__ ) ;
 require_once (CLASSPATH . 'ps_shopper_group.php') ;
 global $ps_html, $ps_product,$hVendor ;
-$title = JText::_( 'VM_PRICE_FORM_LBL' ) . '<br/>' ;
+$title = JText::_( 'JM_PRICE_FORM_LBL' ) . '<br/>' ;
 
 $product_id = JRequest::getVar(  'product_id', 0 ) ;
 $product_price_id = JRequest::getVar(  'product_price_id', 0 ) ;
 $product_parent_id = JRequest::getVar(  'product_parent_id' ) ;
 $return_args = JRequest::getVar(  'return_args' ) ;
-$option = empty( $option ) ? JRequest::getVar(  'option', 'com_virtuemart' ) : $option ;
+$option = empty( $option ) ? JRequest::getVar(  'option', 'com_jmart' ) : $option ;
 
 $db = new ps_DB( ) ;
 /* If Updating a Price */
@@ -43,15 +43,15 @@ elseif( empty( $vars["error"] ) ) {
 if( ! empty( $vars["product_price_id"] ) ) {
 	$product_price_id = $vars["product_price_id"] ;
 	if( empty( $product_parent_id ) ) {
-		$title .= JText::_( 'VM_PRICE_FORM_UPDATE_FOR_PRODUCT' ) . " " ;
+		$title .= JText::_( 'JM_PRICE_FORM_UPDATE_FOR_PRODUCT' ) . " " ;
 	} else {
-		$title .= JText::_( 'VM_PRICE_FORM_UPDATE_FOR_ITEM' ) . " " ;
+		$title .= JText::_( 'JM_PRICE_FORM_UPDATE_FOR_ITEM' ) . " " ;
 	}
 } else {
 	if( empty( $product_parent_id ) ) {
-		$title .= JText::_( 'VM_PRICE_FORM_NEW_FOR_PRODUCT' ) . " " ;
+		$title .= JText::_( 'JM_PRICE_FORM_NEW_FOR_PRODUCT' ) . " " ;
 	} else {
-		$title .= JText::_( 'VM_PRICE_FORM_NEW_FOR_ITEM' ) . " " ;
+		$title .= JText::_( 'JM_PRICE_FORM_NEW_FOR_ITEM' ) . " " ;
 	}
 }
 
@@ -71,7 +71,7 @@ $formObj->startForm() ;
 	</tr>
 	<tr>
 		<td class="labelcell"><?php
-		echo JText::_( 'VM_PRODUCT_FORM_PRICE_NET' ) ?>:
+		echo JText::_( 'JM_PRODUCT_FORM_PRICE_NET' ) ?>:
       </td>
 		<td><input type="text" class="inputbox" name="product_price"
 			onkeyup="updateGross();" value="<?php
@@ -82,7 +82,7 @@ $formObj->startForm() ;
 	<tr>
 		<td class="labelcell">
         <?php
-								echo JText::_( 'VM_PRODUCT_FORM_PRICE_GROSS' ) ?>:
+								echo JText::_( 'JM_PRODUCT_FORM_PRICE_GROSS' ) ?>:
       </td>
 		<td><input type="text" class="inputbox" onkeyup="updateNet();"
 			name="product_price_incl_tax" size="10" /></td>
@@ -90,7 +90,7 @@ $formObj->startForm() ;
 	<tr>
 		<td class="labelcell"> 
 			<?php
-			echo JText::_( 'VM_PRICE_FORM_CURRENCY' ) ?>:
+			echo JText::_( 'JM_PRICE_FORM_CURRENCY' ) ?>:
       </td>
 		<td> 
         <?php
@@ -99,7 +99,7 @@ $formObj->startForm() ;
 	</tr>
 	<tr>
 		<td class="labelcell"> <?php
-		echo JText::_( 'VM_PRICE_FORM_GROUP' ) ?>:
+		echo JText::_( 'JM_PRICE_FORM_GROUP' ) ?>:
       </td>
 		<td><?php
 		echo ps_shopper_group::list_shopper_groups( "shopper_group_id", $db->sf( "shopper_group_id" ) ) ;
@@ -111,7 +111,7 @@ $formObj->startForm() ;
 	</tr>
 	<tr>
 		<td class="labelcell"><?php
-		echo JText::_( 'VM_PRODUCT_LIST_QUANTITY_START' ) ;
+		echo JText::_( 'JM_PRODUCT_LIST_QUANTITY_START' ) ;
 		?>:</td>
 		<td><input type="text"
 			value="<?php
@@ -120,7 +120,7 @@ $formObj->startForm() ;
 	</tr>
 	<tr>
 		<td class="labelcell"><?php
-		echo JText::_( 'VM_PRODUCT_LIST_QUANTITY_END' ) ;
+		echo JText::_( 'JM_PRODUCT_LIST_QUANTITY_END' ) ;
 		?>:</td>
 		<td><input type="text"
 			value="<?php

@@ -83,15 +83,15 @@ class ps_order_edit {
 		<form method="post" name="editForm" action="<?php echo $_SERVER['PHP_SELF'] ?>">
   		<table class="adminlist">
         <tr>
-          <th><?php echo(JText::_('VM_ORDER_EDIT_EDIT_ORDER')); ?></th>
+          <th><?php echo(JText::_('JM_ORDER_EDIT_EDIT_ORDER')); ?></th>
         </tr>
       </table>
       <table class="adminlist">
 		    <tr>
-      		<th><?php echo JText::_('VM_ORDER_PRINT_SKU') ?></th>
-      		<th><?php echo JText::_('VM_ORDER_PRINT_NAME') ?></th>
-      		<th width="5%" align="left"><?php echo JText::_('VM_ORDER_PRINT_QUANTITY') ?></th>
-      		<th width="5%" align="left" colspan="2"><?php echo JText::_('VM_ORDER_EDIT_ACTIONS') ?></th>
+      		<th><?php echo JText::_('JM_ORDER_PRINT_SKU') ?></th>
+      		<th><?php echo JText::_('JM_ORDER_PRINT_NAME') ?></th>
+      		<th width="5%" align="left"><?php echo JText::_('JM_ORDER_PRINT_QUANTITY') ?></th>
+      		<th width="5%" align="left" colspan="2"><?php echo JText::_('JM_ORDER_EDIT_ACTIONS') ?></th>
     		</tr>
     		<?php
     		$dbt = new ps_DB;
@@ -124,12 +124,12 @@ class ps_order_edit {
             	  <input type="text" value="<?php $dbt->p("product_quantity") ?>" name="product_quantity" size="5" />
         		</td>
             	<td align="left">
-            		<input type="image" title="<?php echo JText::_('VM_UPDATE') ?>" 
-            		src="<?php echo VM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('VM_UPDATE') ?>" />
+            		<input type="image" title="<?php echo JText::_('JM_UPDATE') ?>" 
+            		src="<?php echo JM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('JM_UPDATE') ?>" />
             		<input type="hidden" value="1" name="update_quantity" />
             		<input type="hidden" name="order_edit_page" value="1" />
             		<input type="hidden" name="page" value="order.order_print" />
-            		<input type="hidden" name="option" value="com_virtuemart" />
+            		<input type="hidden" name="option" value="com_jmart" />
             		<input type="hidden" name="func" value="" />
             		<input type="hidden" name="order_item_id" value="<?php $dbt->p("order_item_id") ?>" />  
             		<input type="hidden" name="order_id" value="<?php echo $this->order_id ?>" />  
@@ -137,11 +137,11 @@ class ps_order_edit {
   		      </td>
             <td>
           		<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
-            		<input type="image" title="<?php echo JText::_('VM_DELETE') ?>" src="<?php echo IMAGEURL ?>ps_image/delete_f2.gif" border="0"  alt="<?php echo JText::_('VM_DELETE') ?>" />
+            		<input type="image" title="<?php echo JText::_('JM_DELETE') ?>" src="<?php echo IMAGEURL ?>ps_image/delete_f2.gif" border="0"  alt="<?php echo JText::_('JM_DELETE') ?>" />
             		<input type="hidden" value="1" name="delete_product" />
             		<input type="hidden" name="order_edit_page" value="1" />
             		<input type="hidden" name="page" value="order.order_print" />
-            		<input type="hidden" name="option" value="com_virtuemart" />
+            		<input type="hidden" name="option" value="com_jmart" />
             		<input type="hidden" name="func" value="" />
             		<input type="hidden" name="order_item_id" value="<?php $dbt->p("order_item_id") ?>" />  
             		<input type="hidden" name="order_id" value="<?php echo $this->order_id ?>" />  
@@ -156,15 +156,15 @@ class ps_order_edit {
       
       <table class="adminlist">
 		  <tr>
-      		<th><?php echo JText::_('VM_ORDER_PRINT_SHIPPING') . " &amp; " . JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT') ?></th>
+      		<th><?php echo JText::_('JM_ORDER_PRINT_SHIPPING') . " &amp; " . JText::_('JM_PAYMENT_METHOD_LIST_DISCOUNT') ?></th>
       		<th width="5%" align="left"> &nbsp; </th>
-      		<th width="5%" align="left" colspan="1"><?php echo JText::_('VM_ORDER_EDIT_ACTIONS') ?></th>
+      		<th width="5%" align="left" colspan="1"><?php echo JText::_('JM_ORDER_EDIT_ACTIONS') ?></th>
     		</tr>
   			<?php
 			if($db->f('ship_method_id') == "" OR preg_match('/^standard_shipping/', $db->f('ship_method_id'))) {
     		?>
       		<tr>
-        		<td align="right"><strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING') ?>: &nbsp;</strong></td>
+        		<td align="right"><strong><?php echo JText::_('JM_ORDER_PRINT_SHIPPING') ?>: &nbsp;</strong></td>
         		<td>
           		<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
             		
@@ -188,12 +188,12 @@ class ps_order_edit {
               	</select>
       		  </td>
             <td>
-            		<input type="image" title="<?php echo JText::_('VM_UPDATE') ?>"
-            		src="<?php echo VM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('VM_UPDATE') ?>" />
+            		<input type="image" title="<?php echo JText::_('JM_UPDATE') ?>"
+            		src="<?php echo JM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('JM_UPDATE') ?>" />
             		<input type="hidden" value="1" name="update_standard_shipping" />
             		<input type="hidden" name="order_edit_page" value="1" />
             		<input type="hidden" name="page" value="order.order_print" />
-            		<input type="hidden" name="option" value="com_virtuemart" />
+            		<input type="hidden" name="option" value="com_jmart" />
             		<input type="hidden" name="func" value="" />
             		<input type="hidden" name="order_id" value="<?php echo $this->order_id ?>" />  
           		</form>
@@ -204,36 +204,36 @@ class ps_order_edit {
     		?>
 
       		<tr>
-        		<td align="right"><strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING') ?>: </strong></td>
+        		<td align="right"><strong><?php echo JText::_('JM_ORDER_PRINT_SHIPPING') ?>: </strong></td>
         		<td>
           		<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
             		<input type="text" value="<?php $db->p("order_shipping") ?>" size="5" name="order_shipping" />
         		</td>
             <td>
-            		<input type="image" title="<?php echo JText::_('VM_UPDATE') ?>"
-            		src="<?php echo VM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('VM_UPDATE') ?>" />
+            		<input type="image" title="<?php echo JText::_('JM_UPDATE') ?>"
+            		src="<?php echo JM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('JM_UPDATE') ?>" />
             		<input type="hidden" value="1" name="update_shipping" />
             		<input type="hidden" name="order_edit_page" value="1" />
             		<input type="hidden" name="page" value="order.order_print" />
-            		<input type="hidden" name="option" value="com_virtuemart" />
+            		<input type="hidden" name="option" value="com_jmart" />
             		<input type="hidden" name="func" value="" />
             		<input type="hidden" name="order_id" value="<?php echo $this->order_id ?>" />  
           		</form>
         		</td>     
       		</tr>
       		<tr>
-        		<td align="right"><strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_TAX') ?>: </strong></td>
+        		<td align="right"><strong><?php echo JText::_('JM_ORDER_PRINT_SHIPPING_TAX') ?>: </strong></td>
         		<td>
           		<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
             		<input type="text" value="<?php $db->p("order_shipping_tax") ?>" name="order_shipping_tax" size="5" />
         		</td>
             <td>
-            		<input type="image" title="<?php echo JText::_('VM_UPDATE') ?>"
-            		src="<?php echo VM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('VM_UPDATE') ?>" />
+            		<input type="image" title="<?php echo JText::_('JM_UPDATE') ?>"
+            		src="<?php echo JM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('JM_UPDATE') ?>" />
             		<input type="hidden" value="1" name="update_shipping_tax" />
             		<input type="hidden" name="order_edit_page" value="1" />
             		<input type="hidden" name="page" value="order.order_print" />
-            		<input type="hidden" name="option" value="com_virtuemart" />
+            		<input type="hidden" name="option" value="com_jmart" />
             		<input type="hidden" name="func" value="" />
             		<input type="hidden" name="order_id" value="<?php echo $this->order_id ?>" />  
         		  </form>
@@ -243,18 +243,18 @@ class ps_order_edit {
     		}
     		?>
       		<tr>
-        		<td align="right"><strong><?php echo JText::_('VM_COUPON_DISCOUNT') ?>: </strong></td>
+        		<td align="right"><strong><?php echo JText::_('JM_COUPON_DISCOUNT') ?>: </strong></td>
         		<td>
           		<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
             		<input type="text" value="<?php $db->p("coupon_discount") ?>" size="5" name="coupon_discount" />
         		</td>
             <td>
-            		<input type="image" title="<?php echo JText::_('VM_UPDATE') ?>"
-            		src="<?php echo VM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('VM_UPDATE') ?>" />
+            		<input type="image" title="<?php echo JText::_('JM_UPDATE') ?>"
+            		src="<?php echo JM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('JM_UPDATE') ?>" />
             		<input type="hidden" value="1" name="update_coupon_discount" />
             		<input type="hidden" name="order_edit_page" value="1" />
             		<input type="hidden" name="page" value="order.order_print" />
-            		<input type="hidden" name="option" value="com_virtuemart" />
+            		<input type="hidden" name="option" value="com_jmart" />
             		<input type="hidden" name="func" value="" />
             		<input type="hidden" name="order_id" value="<?php echo $this->order_id ?>" />  
           		</form>
@@ -262,18 +262,18 @@ class ps_order_edit {
       		</tr>
 
       		<tr>
-        		<td align="right"><strong><?php echo JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT') ?>: </strong></td>
+        		<td align="right"><strong><?php echo JText::_('JM_PAYMENT_METHOD_LIST_DISCOUNT') ?>: </strong></td>
         		<td>
           		<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
             		<input type="text" value="<?php $db->p("order_discount") ?>" size="5" name="order_discount" />
         		</td>
             <td>
-            		<input type="image" title="<?php echo JText::_('VM_UPDATE') ?>"
-            		src="<?php echo VM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('VM_UPDATE') ?>" />
+            		<input type="image" title="<?php echo JText::_('JM_UPDATE') ?>"
+            		src="<?php echo JM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('JM_UPDATE') ?>" />
             		<input type="hidden" value="1" name="update_discount" />
             		<input type="hidden" name="order_edit_page" value="1" />
             		<input type="hidden" name="page" value="order.order_print" />
-            		<input type="hidden" name="option" value="com_virtuemart" />
+            		<input type="hidden" name="option" value="com_jmart" />
             		<input type="hidden" name="func" value="" />
             		<input type="hidden" name="order_id" value="<?php echo $this->order_id ?>" />  
           		</form>
@@ -283,12 +283,12 @@ class ps_order_edit {
       
       <table class="adminlist">
 		    <tr>
-      		<th><?php echo JText::_('VM_USER_FORM_BILLTO_LBL') . " & " . JText::_('VM_USER_FORM_SHIPTO_LBL')  ?></th>
+      		<th><?php echo JText::_('JM_USER_FORM_BILLTO_LBL') . " & " . JText::_('JM_USER_FORM_SHIPTO_LBL')  ?></th>
       		<th width="5%" align="left"> &nbsp; </th>
-      		<th width="5%" align="left" colspan="1"><?php echo JText::_('VM_ORDER_EDIT_ACTIONS') ?></th>
+      		<th width="5%" align="left" colspan="1"><?php echo JText::_('JM_ORDER_EDIT_ACTIONS') ?></th>
     		</tr>
     		<tr>
-      		<td align="right"><strong><?php echo JText::_('VM_ORDER_PRINT_BILL_TO_LBL') ?>: </strong></td>
+      		<td align="right"><strong><?php echo JText::_('JM_ORDER_PRINT_BILL_TO_LBL') ?>: </strong></td>
       		<td align="right">
         		<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
           		<select name="bill_to">
@@ -310,12 +310,12 @@ class ps_order_edit {
           		</select>
       		</td>
           <td>
-          		<input type="image" title="<?php echo JText::_('VM_UPDATE') ?>"
-          		src="<?php echo VM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('VM_UPDATE') ?>" />
+          		<input type="image" title="<?php echo JText::_('JM_UPDATE') ?>"
+          		src="<?php echo JM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('JM_UPDATE') ?>" />
           		<input type="hidden" value="1" name="update_bill_to" />
           		<input type="hidden" name="order_edit_page" value="1" />
           		<input type="hidden" name="page" value="order.order_print" />
-          		<input type="hidden" name="option" value="com_virtuemart" />
+          		<input type="hidden" name="option" value="com_jmart" />
           		<input type="hidden" name="func" value="" />
           		<input type="hidden" name="order_id" value="<?php echo $this->order_id ?>" />  
           	</form>
@@ -324,7 +324,7 @@ class ps_order_edit {
     		
 		    <?php /* Change ship to form */ ?>
     		<tr>
-      		<td align="right"><strong><?php echo JText::_('VM_ORDER_PRINT_SHIP_TO_LBL') ?>: </strong></td>
+      		<td align="right"><strong><?php echo JText::_('JM_ORDER_PRINT_SHIP_TO_LBL') ?>: </strong></td>
       		<td align="right">
         		<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
           		<select name="ship_to">
@@ -343,12 +343,12 @@ class ps_order_edit {
           		</select>
       		</td>
           <td>
-          		<input type="image" title="<?php echo JText::_('VM_UPDATE') ?>"
-          		src="<?php echo VM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('VM_UPDATE') ?>" />
+          		<input type="image" title="<?php echo JText::_('JM_UPDATE') ?>"
+          		src="<?php echo JM_THEMEURL ?>images/edit_f2.gif" border="0"  alt="<?php echo JText::_('JM_UPDATE') ?>" />
           		<input type="hidden" value="1" name="update_ship_to" />
           		<input type="hidden" name="order_edit_page" value="1" />
           		<input type="hidden" name="page" value="order.order_print" />
-          		<input type="hidden" name="option" value="com_virtuemart" />
+          		<input type="hidden" name="option" value="com_jmart" />
           		<input type="hidden" name="func" value="" />
           		<input type="hidden" name="order_id" value="<?php echo $this->order_id ?>" />  
           	</form>
@@ -677,7 +677,7 @@ class ps_order_edit {
 		$db->query($q);
 		$db->next_record();
 		
-		$vmLogger->info( JText::_('VM_ORDER_EDIT_PRODUCT_DELETED',false) );
+		$vmLogger->info( JText::_('JM_ORDER_EDIT_PRODUCT_DELETED',false) );
 	}
 
 	/**************************************************************************
@@ -693,7 +693,7 @@ class ps_order_edit {
 		$order_item_id = JRequest::getVar( 'order_item_id' );
 		$quantity = trim(JRequest::getVar( 'product_quantity' ));
 		if(!is_numeric($quantity) || $quantity < 1) {
-			$vmLogger->err( JText::_('VM_ORDER_EDIT_ERROR_QUANTITY_MUST_BE_HIGHER_THAN_0',false) );
+			$vmLogger->err( JText::_('JM_ORDER_EDIT_ERROR_QUANTITY_MUST_BE_HIGHER_THAN_0',false) );
 			return;
 		}
 		
@@ -742,7 +742,7 @@ class ps_order_edit {
 		$db->query($q);
 		$db->next_record();
 		
-		$vmLogger->info( JText::_('VM_ORDER_EDIT_QUANTITY_UPDATED',false) );
+		$vmLogger->info( JText::_('JM_ORDER_EDIT_QUANTITY_UPDATED',false) );
 		
 	}
 	
@@ -771,7 +771,7 @@ class ps_order_edit {
 		if ($add_product_validate == 1) {
 			$quantity = trim(JRequest::getVar( 'product_quantity' ));
 			if(!is_numeric($quantity) || $quantity < 1) {
-				$vmLogger->err( JText::_('VM_ORDER_EDIT_ERROR_QUANTITY_MUST_BE_HIGHER_THAN_0',false) );
+				$vmLogger->err( JText::_('JM_ORDER_EDIT_ERROR_QUANTITY_MUST_BE_HIGHER_THAN_0',false) );
 				$add_product_validate = 0;
 			}
 		}
@@ -887,7 +887,7 @@ class ps_order_edit {
 			$db->next_record();
 			
 			$this->product_added = true;
-			$vmLogger->info( JText::_('VM_ORDER_EDIT_PRODUCT_ADDED',false) );
+			$vmLogger->info( JText::_('JM_ORDER_EDIT_PRODUCT_ADDED',false) );
 		}
 		
 	}	
@@ -912,26 +912,26 @@ class ps_order_edit {
 
 		// Affichage de l'en-t�te
 		$html_entete = '<form method="post" action="' . $_SERVER['PHP_SELF'] . '">';
-		$html_entete .= '<br /><br /><table class="adminlist"><tr><th>' . JText::_('VM_ORDER_EDIT_ADD_PRODUCT') . '</th></tr></table>';
+		$html_entete .= '<br /><br /><table class="adminlist"><tr><th>' . JText::_('JM_ORDER_EDIT_ADD_PRODUCT') . '</th></tr></table>';
 		$html_entete .= '<table class="adminlist"><tr>';
-		$html_entete .= '<th>' . JText::_('VM_ORDER_PRINT_NAME') . '</th>';
+		$html_entete .= '<th>' . JText::_('JM_ORDER_PRINT_NAME') . '</th>';
 		
 		$html_pied = '<input type="hidden" name="add_product" value="1" />
 		<input type="hidden" name="order_edit_page" value="1" />
 		<input type="hidden" name="page" value="order.order_print" />
-		<input type="hidden" name="option" value="com_virtuemart" />
+		<input type="hidden" name="option" value="com_jmart" />
 		<input type="hidden" name="func" value="" />
 		<input type="hidden" name="order_id" value="' . $this->order_id . '" /></form>';
 		
 		$html_return_parent = '<form method="post" action="' . $_SERVER['PHP_SELF'] . '">
-		<input type="submit" value="' . JText::_('VM_ORDER_EDIT_RETURN_PARENTS') . '" />
+		<input type="submit" value="' . JText::_('JM_ORDER_EDIT_RETURN_PARENTS') . '" />
 		<input type="hidden" name="product_id" value="-1" />
 		<input type="hidden" name="add_product_validate" value="0" />
 		<input type="hidden" name="add_product_item" value="0" />
 		<input type="hidden" name="add_product" value="1" />
 		<input type="hidden" name="order_edit_page" value="1" />
 		<input type="hidden" name="page" value="order.order_print" />
-		<input type="hidden" name="option" value="com_virtuemart" />
+		<input type="hidden" name="option" value="com_jmart" />
 		<input type="hidden" name="func" value="" />
 		<input type="hidden" name="order_id" value="' . $this->order_id . '" /></form>';
 		
@@ -972,14 +972,14 @@ class ps_order_edit {
 			$html_table = '<tr><td>' . $this->list_products($product_id) . '</td>';
 		}
 		
-		$html_entete .= '<th>' . JText::_('VM_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST') . '</th>';
-		$html_entete .= '<th>' . JText::_('VM_PRODUCT_FORM_ATTRIBUTE_LIST') . '</th>';
-		$html_entete .= '<th align="left">' . JText::_('VM_ORDER_PRINT_QUANTITY') . '</th>';
+		$html_entete .= '<th>' . JText::_('JM_PRODUCT_FORM_CUSTOM_ATTRIBUTE_LIST') . '</th>';
+		$html_entete .= '<th>' . JText::_('JM_PRODUCT_FORM_ATTRIBUTE_LIST') . '</th>';
+		$html_entete .= '<th align="left">' . JText::_('JM_ORDER_PRINT_QUANTITY') . '</th>';
 		$html_entete .= '<th align="left">Action</th></tr>';
 		$html_table .= '<td>' . $ps_product_attribute->list_advanced_attribute($product_id) . '</td>';
 		$html_table .= '<td>' . $ps_product_attribute->list_custom_attribute($product_id) . '</td>';
 		$html_table .= '<td><input type="text" value="1" name="product_quantity" size="5" /><input type="hidden" name="add_product_validate" value="1" /></td>';
-		$html_table .= '<td><input type="submit" value="' . JText::_('VM_ORDER_EDIT_ADD') . '" /></td></tr></table>';
+		$html_table .= '<td><input type="submit" value="' . JText::_('JM_ORDER_EDIT_ADD') . '" /></td></tr></table>';
 		
 		if ($item) {
 			$html_pied .= $html_return_parent;
@@ -1018,7 +1018,7 @@ class ps_order_edit {
 		$db->query($query_list_products);
 		
 		$display = '<select name="product_id" onChange="this.form.add_product_validate.value=0;this.form.submit();">';
-		$display .= '<option value="-1">' . JText::_('VM_ORDER_EDIT_CHOOSE_PRODUCT') . '</option>';
+		$display .= '<option value="-1">' . JText::_('JM_ORDER_EDIT_CHOOSE_PRODUCT') . '</option>';
 		while ($db->next_record()) {
 			$display .= '<option value="' . $db->f("product_id") . '"';
 			if ($product_id == $db->f("product_id")) {

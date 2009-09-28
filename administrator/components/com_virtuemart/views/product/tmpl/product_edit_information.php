@@ -1,12 +1,14 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 <table class="adminform">
-<tr><th>TODO: Price update calculations</th></tr>
 	<tr>
 		<td valign="top">
 			<table width="100%" border="0">
+				<tr>
+					<td align="left" colspan="2"><?php echo "<h2 >".$this->action."</h2>"; ?></td>
+				</tr>
 				<tr class="row0">
 					<td  width="21%" ><div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('VM_PRODUCT_FORM_PUBLISH') ?>:</div>
+						<?php echo JText::_('JM_PRODUCT_FORM_PUBLISH') ?>:</div>
 					</td>
 					<td width="79%">
 						<?php
@@ -18,15 +20,15 @@
 				</tr>
 				<tr class="row1">
 					<td width="21%" >
-						<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_SKU') ?>:</div>
+						<div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_SKU') ?>:</div>
 					</td>
 					<td width="79%" height="2">
-						<input type="text" class="inputbox" name="product_sku" value="<?php echo $this->product->product_sku; ?>" size="32" maxlength="64" />
+						<input type="text" class="inputbox"  name="product_sku" value="<?php $this->product->product_sku; ?>" size="32" maxlength="64" />
 					</td>
 				</tr>
 				<tr class="row0">
 					<td width="21%" height="18"><div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('VM_PRODUCT_FORM_NAME') ?>:</div>
+						<?php echo JText::_('JM_PRODUCT_FORM_NAME') ?>:</div>
 					</td>
 					<td width="79%" height="18" >
 						<input type="text" class="inputbox"  name="product_name" value="<?php echo $this->product->product_name; ?>" size="32" maxlength="255" />
@@ -34,23 +36,26 @@
 				</tr>
 				<tr class="row1">
 					<td width="21%"><div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('VM_PRODUCT_FORM_URL') ?>:</div>
+						<?php echo JText::_('JM_PRODUCT_FORM_URL') ?>:</div>
 					</td>
 					<td width="79%">
-						<input type="text" class="inputbox"  name="product_url" value="<?php echo $this->product->product_url; ?>" size="32" maxlength="255" />
+						<input type="text" class="inputbox"  name="product_url" value="<?php $this->product->product_url; ?>" size="32" maxlength="255" />
 					</td>
 				</tr>
 				<tr class="row0">
 					<td width="21%"><div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('VM_PRODUCT_FORM_VENDOR') ?>:</div>
+						<?php echo JText::_('JM_PRODUCT_FORM_VENDOR') ?>:</div>
 					</td>
 				<td width="79%">
-					<?php echo $this->lists['vendors'];?>
+					<?php
+					// 		ps_vendor::list_ornot_vendor($db->sf("vendor_id"),$vendor_id);
+					// 		$hVendor->list_ornot_vendor($vendor_id,$this->product->vendor_id);
+					?>
 				</td>
 			</tr>
 			<tr class="row1">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('VM_PRODUCT_FORM_MANUFACTURER') ?>:</div>
+					<?php echo JText::_('JM_PRODUCT_FORM_MANUFACTURER') ?>:</div>
 				</td>
 				<td width="79%">
 					<?php echo $this->manufacturers;?>
@@ -60,7 +65,7 @@
 			<tr class="row0">
 				<td width="29%" valign="top">
 					<div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('VM_CATEGORIES') ?>:</div>
+					<?php echo JText::_('JM_CATEGORIES') ?>:</div>
 				</td>
 				<td width="71%" >
 					<select class="inputbox" id="category_id" name="category_id" multiple="multiple" size="10">
@@ -75,7 +80,7 @@
 		<table class="adminform">
 			<tr class="row0">
 				<td width="29%" >
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_NET') ?>:</div>
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_PRICE_NET') ?>:</div>
 				</td>
 				<td width="71%" >
 					<table border="0" cellspacing="0" cellpadding="0">
@@ -98,7 +103,7 @@
 			</tr>
 			<tr class="row1">
 				<td width="29%">
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_GROSS') ?>:</div>
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_PRODUCT_FORM_PRICE_GROSS') ?>:</div>
 				</td>
 				<td width="71%">
 					<input type="text" class="inputbox" onkeyup="updateNet();" name="product_price_incl_tax" size="10" />
@@ -106,35 +111,35 @@
 			</tr>
 			<tr class="row0">
 				<td width="29%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('VM_RATE_FORM_VAT_ID') ?>:</div>
+					<?php echo JText::_('JM_RATE_FORM_VAT_ID') ?>:</div>
 				</td>
 				<td width="71%" >
-					<?php echo $this->lists['taxrates']; ?>
+					<?php echo $this->taxrates; ?>
 				</td>
 			</tr>
 			<tr class="row1">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('VM_PRODUCT_FORM_DISCOUNT_TYPE') ?>:</div>
+					<?php echo JText::_('JM_PRODUCT_FORM_DISCOUNT_TYPE') ?>:</div>
 				</td>
 				<td width="79%">
-					<?php echo $this->lists['discounts']; ?>
+					<?php echo $this->discounts; ?>
 				</td>
 			</tr>
 			<tr class="row0">
 				<td width="21%" >
 					<div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('VM_PRODUCT_FORM_DISCOUNTED_PRICE') ?>:</div>
+					<?php echo JText::_('JM_PRODUCT_FORM_DISCOUNTED_PRICE') ?>:</div>
 				</td>
 				<td width="79%" >
 					<input type="text" size="10" name="discounted_price_override" onchange="try { document.adminForm.product_discount_id[document.adminForm.product_discount_id.length-1].selected=true; } catch( e ) {}" />&nbsp;&nbsp;
 					<?php 
-					// echo vmToolTip( JText::_('VM_PRODUCT_FORM_DISCOUNTED_PRICE_TIP') ) 
+					// echo vmToolTip( JText::_('JM_PRODUCT_FORM_DISCOUNTED_PRICE_TIP') ) 
 					?>
 				</td>
 			</tr>
 			<tr>
 				<td width="29%" valign="top">
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_ORDER_PRINT_INTNOTES'); ?>:</div>
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_ORDER_PRINT_INTNOTES'); ?>:</div>
 				</td>
 				<td width="71%" valign="top">
 					<textarea class="inputbox" name="intnotes" id="intnotes" cols="35" rows="6" ><?php echo $this->product->intnotes; ?></textarea>
@@ -146,7 +151,7 @@
 			<tr class="row1">
 				<td width="29%" valign="top">
 					<div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('VM_PRODUCT_FORM_S_DESC') ?>:</div>
+					<?php echo JText::_('JM_PRODUCT_FORM_S_DESC') ?>:</div>
 				</td>
 				<td width="71%"  valign="top">
 					<textarea class="inputbox" name="product_s_desc" id="short_desc" cols="35" rows="6" ><?php echo $this->product->product_s_desc; ?></textarea>
@@ -159,26 +164,26 @@
 <table class="adminform">
 	<tr class="row1">
 		<td valign="top" width="20%"><div style="font-weight:bold;">
-			<?php echo JText::_('VM_PRODUCT_FORM_DESCRIPTION') ?>:</div>
+			<?php echo JText::_('JM_PRODUCT_FORM_DESCRIPTION') ?>:</div>
 		</td>
 		<td width="60%">
 			<?php
-			echo $this->editor->display('product_desc',  $this->product->product_desc, '100%;', '550', '75', '20', array('pagebreak', 'readmore') ) ;
+			echo $this->editor->display( 'product_desc',  $this->product->product_desc, '100%;', '550', '75', '20', array('pagebreak', 'readmore') ) ;
 			?>
 		</td>
 		<td valign="top">
 			<fieldset>
-				<legend><?php echo JText::_('VM_META_INFORMATION') ?></legend>		
+				<legend><?php echo JText::_('JM_META_INFORMATION') ?></legend>		
 				<table valign="top">
 					<tr>
-						<td vlaign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_DESC'); ?>: </div></td>
+						<td vlaign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_META_DESC'); ?>: </div></td>
 						<td valign="top">
 							<textarea class="inputbox" name="metadesc" id="meta_desc" cols="30" rows="6"><?php echo $this->product->metadesc; ?></textarea>
 						</td>
 					</tr>
 					<tr>
 						<td >
-							<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_KEYWORDS'); ?>: </div>
+							<div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_META_KEYWORDS'); ?>: </div>
 						</td>
 						<td valign="top">
 							<textarea class="inputbox" name="metakeyword" id="meta_keyword" cols="30" rows="6"><?php echo $this->product->metakey; ?></textarea>
@@ -186,7 +191,7 @@
 					</tr>
 					<tr>
 						<td >
-							<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_ROBOTS'); ?>: </div>
+							<div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_META_ROBOTS'); ?>: </div>
 						</td>
 						<td valign="top">
 							<input type="text" class="inputbox" size="20" name="metarobot" value="<?php echo $this->product->metarobot ?>" />
@@ -194,7 +199,7 @@
 					</tr>
 					<tr>
 						<td >
-							<div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_META_AUTHOR'); ?>: </div>
+							<div style="text-align:right;font-weight:bold;"><?php echo JText::_('JM_META_AUTHOR'); ?>: </div>
 						</td>
 						<td valign="top">
 							<input type="text" class="inputbox" size="20" name="metaauthor" value="<?php echo $this->product->metaauthor ?>" />
@@ -205,86 +210,3 @@
 		</td>
 	</tr>
 </table>
-<script type="text/javascript">
-var tax_rates = new Array();
-<?php
-foreach( $this->taxrates as $key => $tax_rate ) {
-	echo 'tax_rates["'.$tax_rate->tax_rate_id.'"] = '.$tax_rate->tax_rate."\n";
-}
-?>
-function doRound(x, places) {
-	return Math.round(x * Math.pow(10, places)) / Math.pow(10, places);
-}
-
-function getTaxRate() {
-	var selected_value = document.adminForm.product_tax_id.selectedIndex;
-	var parameterVal = document.adminForm.product_tax_id[selected_value].value;
-	
-
-	if ( (parameterVal > 0) && (tax_rates[parameterVal] > 0) ) {
-		return tax_rates[parameterVal];
-	} else {
-		return 0;
-	}
-}
-
-function updateGross() {
-	if( document.adminForm.product_price.value != '' ) {
-		var taxRate = getTaxRate();
-
-		var r = new RegExp("\,", "i");
-		document.adminForm.product_price.value = document.adminForm.product_price.value.replace( r, "." );
-
-		var grossValue = document.adminForm.product_price.value;
-
-		if (taxRate > 0) {
-			grossValue = grossValue * (taxRate + 1);
-		}
-
-		document.adminForm.product_price_incl_tax.value = doRound(grossValue, 5);
-	}
-}
-
-function updateNet() {
-	if( document.adminForm.product_price_incl_tax.value != '' ) {
-		var taxRate = getTaxRate();
-
-		var r = new RegExp("\,", "i");
-		document.adminForm.product_price_incl_tax.value = document.adminForm.product_price_incl_tax.value.replace( r, "." );
-
-		var netValue = document.adminForm.product_price_incl_tax.value;
-
-		if (taxRate > 0) {
-			netValue = netValue / (taxRate + 1);
-		}
-
-		document.adminForm.product_price.value = doRound(netValue, 5);
-	}
-}
-
-function updateDiscountedPrice() {
-	if( document.adminForm.product_price.value != '' ) {
-		try {
-			var selected_discount = document.adminForm.product_discount_id.selectedIndex;
-			var discountCalc = document.adminForm.product_discount_id[selected_discount].id;
-			<?php if( PAYMENT_DISCOUNT_BEFORE == '1' ) : ?>
-			var origPrice = document.adminForm.product_price.value;
-			<?php else : ?>
-			var origPrice = document.adminForm.product_price_incl_tax.value;
-			<?php endif; ?>
-
-			if( discountCalc ) {
-				eval( 'var discPrice = ' + origPrice + discountCalc );
-				if( discPrice != origPrice ) {
-					document.adminForm.discounted_price_override.value = discPrice.toFixed( 2 );
-				} else {
-					document.adminForm.discounted_price_override.value = '';
-				}
-			}
-		}
-		catch( e ) { }
-	}
-}
-updateGross();
-updateDiscountedPrice();
-</script>

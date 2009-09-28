@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_coupon.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /**
@@ -38,28 +38,28 @@ class ps_coupon {
         $q = "SELECT coupon_code FROM #__{vm}_coupons WHERE coupon_code = '".$coupon_db->getEscaped($d['coupon_code'])."' ";
         $coupon_db->query($q);
         if ($coupon_db->next_record()) {
-            $vmLogger->err( JText::_('VM_COUPON_CODE_EXISTS',false) );
+            $vmLogger->err( JText::_('JM_COUPON_CODE_EXISTS',false) );
             $valid = false;
         }
         if( empty( $d['coupon_value'] ) || empty( $d['coupon_code'] )) {
-            $vmLogger->warning( JText::_('VM_COUPON_COMPLETE_ALL_FIELDS',false) );
+            $vmLogger->warning( JText::_('JM_COUPON_COMPLETE_ALL_FIELDS',false) );
             $valid = false;
         }
         if( !is_numeric( $d['coupon_value'] )) {
-            $vmLogger->err( JText::_('VM_COUPON_VALUE_NOT_NUMBER',false) );
+            $vmLogger->err( JText::_('JM_COUPON_VALUE_NOT_NUMBER',false) );
             $valid = false;
         }
 		if( !is_numeric( $d['coupon_value_valid'] )) {
-            $vmLogger->err( JText::_('VM_COUPON_VALUE_VALID_AT_NOT_NUMBER',false) );
+            $vmLogger->err( JText::_('JM_COUPON_VALUE_VALID_AT_NOT_NUMBER',false) );
             $valid = false;
         }
 		if (!$d["coupon_start_date"]) {
-			$vmLogger->err( JText::_('VM_COUPON_START_INVALID',false) );
+			$vmLogger->err( JText::_('JM_COUPON_START_INVALID',false) );
 			$valid = false;
 		}
 
 		if (!$d["coupon_expiry_date"]) {
-			$vmLogger->err( JText::_('VM_COUPON_EXPIRY_INVALID',false) );
+			$vmLogger->err( JText::_('JM_COUPON_EXPIRY_INVALID',false) );
 			$valid = false;
 		}
         return $valid;
@@ -75,28 +75,28 @@ class ps_coupon {
         $q = "SELECT coupon_code FROM #__{vm}_coupons WHERE coupon_code = '".$coupon_db->getEscaped($d['coupon_code'])."' AND coupon_id <> '".$d['coupon_id']."'";
         $coupon_db->query($q);
         if ($coupon_db->next_record()) {
-            $vmLogger->err( JText::_('VM_COUPON_CODE_EXISTS',false) );
+            $vmLogger->err( JText::_('JM_COUPON_CODE_EXISTS',false) );
             $valid = false;
         }
         if( empty( $d['coupon_value'] ) || empty( $d['coupon_code'] )) {
-            $vmLogger->err( JText::_('VM_COUPON_COMPLETE_ALL_FIELDS',false) );
+            $vmLogger->err( JText::_('JM_COUPON_COMPLETE_ALL_FIELDS',false) );
             $valid = false;
         }
         if( !is_numeric( $d['coupon_value'] )) {
-            $vmLogger->err( JText::_('VM_COUPON_VALUE_NOT_NUMBER',false) );
+            $vmLogger->err( JText::_('JM_COUPON_VALUE_NOT_NUMBER',false) );
             $valid = false;
         }
 		if( !is_numeric( $d['coupon_value_valid'] )) {
-            $vmLogger->err( JText::_('VM_COUPON_VALUE_VALID_AT_NOT_NUMBER',false) );
+            $vmLogger->err( JText::_('JM_COUPON_VALUE_VALID_AT_NOT_NUMBER',false) );
             $valid = false;
         }
         if (!$d["coupon_start_date"]) {
-			$vmLogger->err( JText::_('VM_COUPON_START_INVALID',false) );
+			$vmLogger->err( JText::_('JM_COUPON_START_INVALID',false) );
 			$valid = false;
 		}
 
 		if (!$d["coupon_expiry_date"]) {
-			$vmLogger->err( JText::_('VM_COUPON_EXPIRY_INVALID',false) );
+			$vmLogger->err( JText::_('JM_COUPON_EXPIRY_INVALID',false) );
 			$valid = false;
 		}
         return $valid;
@@ -122,7 +122,7 @@ class ps_coupon {
         $coupon_db->buildQuery( 'INSERT', '#__{vm}_coupons', $fields );
         if( $coupon_db->query() ) {
 	        $_REQUEST['coupon_id'] = $coupon_db->last_insert_id();
-	        $vmLogger->info(JText::_('VM_COUPON_ADDED'));
+	        $vmLogger->info(JText::_('JM_COUPON_ADDED'));
 	        return true;
         }
         return false;
@@ -154,7 +154,7 @@ class ps_coupon {
         $coupon_db->buildQuery( 'UPDATE', '#__{vm}_coupons', $fields, 'WHERE coupon_id = '.(int)$d['coupon_id'] );
         if( $coupon_db->query() ) {
 	        $_REQUEST['coupon_id'] = $coupon_db->last_insert_id();
-	        $vmLogger->info(JText::_('VM_COUPON_UPDATED'));
+	        $vmLogger->info(JText::_('JM_COUPON_UPDATED'));
 	        return true;
         }
         return false;
@@ -224,7 +224,7 @@ class ps_coupon {
         {
 
         	/* no record, so coupon_code entered was not valid */
-            $GLOBALS['coupon_error'] = JText::_('VM_COUPON_CODE_INVALID');
+            $GLOBALS['coupon_error'] = JText::_('JM_COUPON_CODE_INVALID');
             return false;
 
         }else{
@@ -265,7 +265,7 @@ class ps_coupon {
 
 	            	    if( $d["total"] < $coupon_value ) {
 	            	      	$coupon_value = (float)$d['total'];
-	            	      	$vmLogger->info( str_replace('{value}',$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_value ),JText::_('VM_COUPON_GREATER_TOTAL_SETTO')) );
+	            	      	$vmLogger->info( str_replace('{value}',$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_value ),JText::_('JM_COUPON_GREATER_TOTAL_SETTO')) );
 	            		}
 
 	                 	$_SESSION['coupon_discount'] = $coupon_value;
@@ -278,7 +278,7 @@ class ps_coupon {
 	            	    /* Total Amount */
 	            	    if( $d["total"] < $coupon_value ) {
 	            	      	$coupon_value = (float)$d['total'];
-	            	      	$vmLogger->info( str_replace('{value}',$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_value ),JText::_('VM_COUPON_GREATER_TOTAL_SETTO')) );
+	            	      	$vmLogger->info( str_replace('{value}',$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_value ),JText::_('JM_COUPON_GREATER_TOTAL_SETTO')) );
 	            	    }
 	            	    $_SESSION['coupon_discount'] = $GLOBALS['CURRENCY']->convert( $coupon_value );
 
@@ -293,7 +293,7 @@ class ps_coupon {
 
 		        else {
 		            /*Coupon not valid */
-		            $GLOBALS['coupon_error'] = JText::_('VM_COUPON_CODE_INVALID');
+		            $GLOBALS['coupon_error'] = JText::_('JM_COUPON_CODE_INVALID');
 		            /*echo "STARTDATE:".$start_date."<br/>";
 		            echo "ENDDATE:".$expiration_date."<br/>";
 					echo "TODAYDATE:".$today."<br/>";*/

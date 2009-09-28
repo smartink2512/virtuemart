@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: account.shipto.tpl.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage templates
 * @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 /*****************************
 ** Checkout Bar Feature
@@ -23,7 +23,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 <?php
  if ( $next_page=="checkout.index") {
     
-     echo "<h3>". JText::_('VM_CHECKOUT_TITLE') ."</h3>";    
+     echo "<h3>". JText::_('JM_CHECKOUT_TITLE') ."</h3>";    
 	    
 	include_class('checkout');
 	ps_checkout::show_checkout_bar();
@@ -34,10 +34,10 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 *****************************/
 ?>
 <fieldset>
-        <legend><span class="sectiontableheader"><?php echo JText::_('VM_SHOPPER_FORM_SHIPTO_LBL') ?></span></legend>
+        <legend><span class="sectiontableheader"><?php echo JText::_('JM_SHOPPER_FORM_SHIPTO_LBL') ?></span></legend>
         
 <br />
-<?php echo JText::_('VM_SHIPTO_TEXT') ?>
+<?php echo JText::_('JM_SHIPTO_TEXT') ?>
 <br /><br /><br />
 
 <div style="width:90%;">
@@ -45,7 +45,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 ps_userfield::listUserFields( $fields, array(), $db );
 ?>
 
-  <input type="hidden" name="option" value="com_virtuemart" />
+  <input type="hidden" name="option" value="com_jmart" />
   <input type="hidden" name="Itemid" value="<?php echo $Itemid ?>" />
   <input type="hidden" name="page" value="<?php echo $next_page ?>" />
   <input type="hidden" name="next_page" value="<?php echo $next_page ?>" />
@@ -75,7 +75,7 @@ ps_userfield::listUserFields( $fields, array(), $db );
   if (!empty($user_info_id)) { ?>
     <div style="float:left;width:45%;text-align:center;"> 
       <form action="<?php echo SECUREURL ?>index.php" method="post">
-        <input type="hidden" name="option" value="com_virtuemart" />
+        <input type="hidden" name="option" value="com_jmart" />
         <input type="hidden" name="page" value="<?php echo $next_page ?>" />
         <input type="hidden" name="next_page" value="<?php echo $next_page ?>" />
         <input type="hidden" name="func" value="useraddressdelete" />

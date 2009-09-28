@@ -8,7 +8,7 @@ if( !empty($quantity_box)) {
 }
 $html = '';
 if(!$child && $display_type != 'hide') {
-	$html = '<label for="quantity'.$prod_id.'" class="quantity_box">'.JText::_('VM_CART_QUANTITY').':&nbsp;</label>';
+	$html = '<label for="quantity'.$prod_id.'" class="quantity_box">'.JText::_('JM_CART_QUANTITY').':&nbsp;</label>';
 }
 switch($display_type) {
 	case "radio" : //Radio Box

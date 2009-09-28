@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: fedexdc.php 1510 2008-08-08 19:11:42Z soeren_nb $
-* @package VirtueMart
+* @package JMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /*
@@ -430,7 +430,7 @@ class FedExDC extends FedExTags{
 		$fp = fsockopen(FEDEX_URI, $port, $errno, $errstr, FEDEX_REQUEST_TIMEOUT);
 		if( !$fp ) {
 			$error = true;
-			$html = JText::_('VM_INTERNAL_ERROR').": $errstr ($errno)";
+			$html = JText::_('JM_INTERNAL_ERROR').": $errstr ($errno)";
 			return false;
 		}
 		else {

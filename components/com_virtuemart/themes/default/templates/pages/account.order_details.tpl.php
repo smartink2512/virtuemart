@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: account.order_details.tpl.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 global $vm_mainframe;
@@ -34,7 +34,7 @@ if( $db->f('order_number')) {
 	<table width="100%" align="center" border="0" cellspacing="0" cellpadding="2">
 	  <tr>
 	    <td valign="top">
-	     <h2><?php echo JText::_('VM_ORDER_PRINT_PO_LBL') ?></h2>
+	     <h2><?php echo JText::_('JM_ORDER_PRINT_PO_LBL') ?></h2>
 	     <p><?php echo ps_vendor::formatted_store_address(true,$vendor_id) ?></p>
 	    </td>
 	    <td valign="top" width="10%" align="right"><?php echo $vendor_image; ?></td>
@@ -67,31 +67,31 @@ if( $db->f('order_number')) {
 	<table border="0" cellspacing="0" cellpadding="2" width="100%">
 	  <!-- begin customer information --> 
 	  <tr class="sectiontableheader"> 
-	    <th align="left" colspan="2"><?php echo JText::_('VM_ACC_ORDER_INFO') ?></th>
+	    <th align="left" colspan="2"><?php echo JText::_('JM_ACC_ORDER_INFO') ?></th>
 	  </tr>
 	  <tr> 
-	    <td><?php echo JText::_('VM_ORDER_PRINT_PO_NUMBER')?>:</td>
+	    <td><?php echo JText::_('JM_ORDER_PRINT_PO_NUMBER')?>:</td>
 	    <td><?php printf("%08d", $db->f("order_id")); ?></td>
 	  </tr>
 	
 	  <tr> 
-		<td><?php echo JText::_('VM_ORDER_PRINT_PO_DATE') ?>:</td>
+		<td><?php echo JText::_('JM_ORDER_PRINT_PO_DATE') ?>:</td>
 	    <td><?php echo vmFormatDate($db->f("cdate")+$time_offset); ?></td>
 	  </tr>
 	  <tr> 
-	    <td><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?>:</td>
+	    <td><?php echo JText::_('JM_ORDER_PRINT_PO_STATUS') ?>:</td>
 	    <td><?php echo ps_order_status::getOrderStatusName( $db->f("order_status") ); ?></td>
 	  </tr>
 	  <!-- End Customer Information --> 
 	  <!-- Begin 2 column bill-ship to --> 
 	  <tr class="sectiontableheader"> 
-	    <th align="left" colspan="2"><?php echo JText::_('VM_ORDER_PRINT_CUST_INFO_LBL') ?></th>
+	    <th align="left" colspan="2"><?php echo JText::_('JM_ORDER_PRINT_CUST_INFO_LBL') ?></th>
 	  </tr>
 	  <tr valign="top"> 
 	    <td width="50%"> <!-- Begin BillTo -->
 	      <table width="100%" cellspacing="0" cellpadding="2" border="0">
 	        <tr> 
-	          <td colspan="2"><strong><?php echo JText::_('VM_ORDER_PRINT_BILL_TO_LBL') ?></strong></td>
+	          <td colspan="2"><strong><?php echo JText::_('JM_ORDER_PRINT_BILL_TO_LBL') ?></strong></td>
 	        </tr>
 	        <?php 
 		foreach( $registrationfields as $field ) {
@@ -137,7 +137,7 @@ if( $db->f('order_number')) {
 	  ?> 
 	 <table width="100%" cellspacing="0" cellpadding="2" border="0">
 	        <tr> 
-	          <td colspan="2"><strong><?php echo JText::_('VM_ORDER_PRINT_SHIP_TO_LBL') ?></strong></td>
+	          <td colspan="2"><strong><?php echo JText::_('JM_ORDER_PRINT_SHIP_TO_LBL') ?></strong></td>
 	        </tr>
 	        <?php 
 		foreach( $shippingfields as $field ) {
@@ -186,15 +186,15 @@ if( $db->f('order_number')) {
 	      <table width="100%" border="0" cellspacing="0" cellpadding="1">
 	        
 	        <tr class="sectiontableheader"> 
-	          <th align="left"><?php echo JText::_('VM_ORDER_PRINT_CUST_SHIPPING_LBL') ?></th>
+	          <th align="left"><?php echo JText::_('JM_ORDER_PRINT_CUST_SHIPPING_LBL') ?></th>
 	        </tr>
 	        <tr> 
 	          <td> 
 	            <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	              <tr> 
-	                <td><strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?></strong></td>
-	                <td><strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_MODE_LBL') ?></strong></td>
-	                <td><strong><?php echo JText::_('VM_ORDER_PRINT_PRICE') ?>&nbsp;</strong></td>
+	                <td><strong><?php echo JText::_('JM_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?></strong></td>
+	                <td><strong><?php echo JText::_('JM_ORDER_PRINT_SHIPPING_MODE_LBL') ?></strong></td>
+	                <td><strong><?php echo JText::_('JM_ORDER_PRINT_PRICE') ?>&nbsp;</strong></td>
 	              </tr>
 	              <tr> 
 	                <td><?php 
@@ -226,7 +226,7 @@ if( $db->f('order_number')) {
 	  </tr>
 	  <!-- Begin Order Items Information --> 
 	  <tr class="sectiontableheader"> 
-	    <th align="left" colspan="2"><?php echo JText::_('VM_ORDER_ITEM') ?></th>
+	    <th align="left" colspan="2"><?php echo JText::_('JM_ORDER_ITEM') ?></th>
 	  </tr>
 	  <tr>
 	    <td colspan="4">
@@ -245,17 +245,17 @@ if( $db->f('order_number')) {
 	
 		// check if download records exist for this purchase order
 		if ($dbdl->next_record()) {
-			echo "<b>" . JText::_('VM_DOWNLOADS_CLICK') . "</b><br /><br />";
+			echo "<b>" . JText::_('JM_DOWNLOADS_CLICK') . "</b><br /><br />";
 	
-			echo(JText::_('VM_DOWNLOADS_SEND_MSG_3').DOWNLOAD_MAX.". <br />");
+			echo(JText::_('JM_DOWNLOADS_SEND_MSG_3').DOWNLOAD_MAX.". <br />");
 	
 			$expire = ((DOWNLOAD_EXPIRE / 60) / 60) / 24;
-			echo(str_replace("{expire}", $expire, JText::_('VM_DOWNLOADS_SEND_MSG_4')));
+			echo(str_replace("{expire}", $expire, JText::_('JM_DOWNLOADS_SEND_MSG_4')));
 			
 			echo "<br /><br />";
 		}
 		//else {
-			//echo "<b>" . JText::_('VM_DOWNLOADS_EXPIRED') . "</b><br /><br />";
+			//echo "<b>" . JText::_('JM_DOWNLOADS_EXPIRED') . "</b><br /><br />";
 		//}
 	}
 	?>
@@ -266,11 +266,11 @@ if( $db->f('order_number')) {
 	    <td colspan="2"> 
 	      <table width="100%" cellspacing="0" cellpadding="2" border="0">
 	        <tr align="left"> 
-	          <th><?php echo JText::_('VM_ORDER_PRINT_QTY') ?></th>
-	          <th><?php echo JText::_('VM_ORDER_PRINT_NAME') ?></th>
-	          <th><?php echo JText::_('VM_ORDER_PRINT_SKU') ?></th>
-	          <th><?php echo JText::_('VM_ORDER_PRINT_PRICE') ?></th>
-	          <th align="right"><?php echo JText::_('VM_ORDER_PRINT_TOTAL') ?>&nbsp;&nbsp;&nbsp;</th>
+	          <th><?php echo JText::_('JM_ORDER_PRINT_QTY') ?></th>
+	          <th><?php echo JText::_('JM_ORDER_PRINT_NAME') ?></th>
+	          <th><?php echo JText::_('JM_ORDER_PRINT_SKU') ?></th>
+	          <th><?php echo JText::_('JM_ORDER_PRINT_PRICE') ?></th>
+	          <th align="right"><?php echo JText::_('JM_ORDER_PRINT_TOTAL') ?>&nbsp;&nbsp;&nbsp;</th>
 	        </tr>
 	        <?php 
 	        $dbcart = new ps_DB;
@@ -303,9 +303,9 @@ if( $db->f('order_number')) {
 	          <td><?php 
 	              if ($dbdl->next_record()) {
 	        			// hyperlink the downloadable order item	
-	        			$url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.downloads";
+	        			$url = $mosConfig_live_site."/index.php?option=com_jmart&page=shop.downloads";
 	        			echo '<a href="'."$url&download_id=".$dbdl->f("download_id").'">'
-	        					. '<img src="'.VM_THEMEURL.'images/download.png" alt="'.JText::_('VM_DOWNLOADS_CLICK').'" align="left" border="0" />&nbsp;'
+	        					. '<img src="'.JM_THEMEURL.'images/download.png" alt="'.JText::_('JM_DOWNLOADS_CLICK').'" align="left" border="0" />&nbsp;'
 	        					. $dbcart->f("order_item_name")
 	        					. '</a>';
 					}
@@ -346,7 +346,7 @@ if( $db->f('order_number')) {
 	          <td>&nbsp;</td>
 	        </tr>
 	        <tr> 
-	          <td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_SUBTOTAL') ?> :</td>
+	          <td colspan="4" align="right"><?php echo JText::_('JM_ORDER_PRINT_SUBTOTAL') ?> :</td>
 	          <td align="right"><?php echo $CURRENCY_DISPLAY->getFullValue($subtotal, '', $db->f('order_currency')) ?>&nbsp;&nbsp;&nbsp;</td>
 	        </tr>
 	<?php 
@@ -360,9 +360,9 @@ if( $db->f('order_number')) {
 	          <tr>
 	              <td colspan="4" align="right"><?php 
 	              if( $db->f("order_discount") > 0)
-	              echo JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT');
+	              echo JText::_('JM_PAYMENT_METHOD_LIST_DISCOUNT');
 	              else
-	              echo JText::_('VM_FEE');
+	              echo JText::_('JM_FEE');
 	                ?>:
 	              </td> 
 	              <td align="right"><?php
@@ -381,7 +381,7 @@ if( $db->f('order_number')) {
 		if( $coupon_discount > 0 ) {
 	?>
 	        <tr>
-	          <td colspan="4" align="right"><?php echo JText::_('VM_COUPON_DISCOUNT') ?>:
+	          <td colspan="4" align="right"><?php echo JText::_('JM_COUPON_DISCOUNT') ?>:
 	          </td> 
 	          <td align="right"><?php
 	            echo "- ".$CURRENCY_DISPLAY->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?>&nbsp;&nbsp;&nbsp;
@@ -392,7 +392,7 @@ if( $db->f('order_number')) {
 	}
 	?>        
 	        <tr> 
-	          <td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_SHIPPING') ?> :</td>
+	          <td colspan="4" align="right"><?php echo JText::_('JM_ORDER_PRINT_SHIPPING') ?> :</td>
 	          <td align="right"><?php 
 	          $shipping_total = $db->f("order_shipping");
 	          if ($auth["show_price_including_tax"] == 1)
@@ -406,7 +406,7 @@ if( $db->f('order_number')) {
 	  if ($auth["show_price_including_tax"] == 0) {
 	  ?>
 	        <tr> 
-	          <td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_TOTAL_TAX') ?> :</td>
+	          <td colspan="4" align="right"><?php echo JText::_('JM_ORDER_PRINT_TOTAL_TAX') ?> :</td>
 	          <td align="right"><?php 
 	
 	          echo $CURRENCY_DISPLAY->getFullValue($tax_total, '', $db->f('order_currency'));
@@ -420,9 +420,9 @@ if( $db->f('order_number')) {
 	          <tr>
 	              <td colspan="4" align="right"><?php 
 	              if( $db->f("order_discount") > 0)
-	              echo JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT');
+	              echo JText::_('JM_PAYMENT_METHOD_LIST_DISCOUNT');
 	              else
-	              echo JText::_('VM_FEE');
+	              echo JText::_('JM_FEE');
 	                ?>:
 	              </td> 
 	              <td align="right"><?php
@@ -438,7 +438,7 @@ if( $db->f('order_number')) {
 	  	if( $coupon_discount > 0 ) {
 	?>
 	        <tr>
-	          <td colspan="4" align="right"><?php echo JText::_('VM_COUPON_DISCOUNT') ?>:
+	          <td colspan="4" align="right"><?php echo JText::_('JM_COUPON_DISCOUNT') ?>:
 	          </td> 
 	          <td align="right"><?php
 	            echo "- ".$CURRENCY_DISPLAY->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?>&nbsp;&nbsp;&nbsp;
@@ -453,7 +453,7 @@ if( $db->f('order_number')) {
 	        </tr>
 	        <tr> 
 	          <td colspan="4" align="right">
-	          <strong><?php echo JText::_('VM_CART_TOTAL') .": "; ?></strong>
+	          <strong><?php echo JText::_('JM_CART_TOTAL') .": "; ?></strong>
 	          </td>
 	          
 	          <td align="right"><strong><?php  
@@ -470,7 +470,7 @@ if( $db->f('order_number')) {
 	          <td colspan="2" align="right"><hr/></td>
 	        </tr>
 	        <tr> 
-	          <td colspan="4" align="right"><?php echo JText::_('VM_ORDER_PRINT_TOTAL_TAX') ?> :</td>
+	          <td colspan="4" align="right"><?php echo JText::_('JM_ORDER_PRINT_TOTAL_TAX') ?> :</td>
 	          <td align="right"><?php 
 	
 	          echo $CURRENCY_DISPLAY->getFullValue($tax_total, '', $db->f('order_currency'));
@@ -501,10 +501,10 @@ if( $db->f('order_number')) {
 	
 	      <table width="100%">
 	      <tr class="sectiontableheader"> 
-	        <th align="left" colspan="2"><?php echo JText::_('VM_ORDER_PRINT_PAYINFO_LBL') ?></th>
+	        <th align="left" colspan="2"><?php echo JText::_('JM_ORDER_PRINT_PAYINFO_LBL') ?></th>
 	      </tr>
 	      <tr> 
-	        <td width="20%"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?> :</td>
+	        <td width="20%"><?php echo JText::_('JM_ORDER_PRINT_PAYMENT_LBL') ?> :</td>
 	        <td><?php $dbpm->p("name"); ?> </td>
 	      </tr>
 		  <?php
@@ -514,22 +514,22 @@ if( $db->f('order_number')) {
 	
 		  	// DECODE Account Number
 		  	$dbaccount = new ps_DB;
-		  	$q = 'SELECT '.VM_DECRYPT_FUNCTION.'(order_payment_number,\''.ENCODE_KEY.'\') as account_number 
+		  	$q = 'SELECT '.JM_DECRYPT_FUNCTION.'(order_payment_number,\''.ENCODE_KEY.'\') as account_number 
 		  				FROM #__{vm}_order_payment WHERE order_id=\''.$order_id.'\'';
 		  	$dbaccount->query($q);
 	        $dbaccount->next_record();
 	         ?>
 	      <tr> 
-	        <td width="10%"><?php echo JText::_('VM_ORDER_PRINT_ACCOUNT_NAME') ?> :</td>
+	        <td width="10%"><?php echo JText::_('JM_ORDER_PRINT_ACCOUNT_NAME') ?> :</td>
 	        <td><?php $dbpm->p("order_payment_name"); ?> </td>
 	      </tr>
 	      <tr> 
-	        <td><?php echo JText::_('VM_ORDER_PRINT_ACCOUNT_NUMBER') ?> :</td>
+	        <td><?php echo JText::_('JM_ORDER_PRINT_ACCOUNT_NUMBER') ?> :</td>
 	        <td> <?php echo ps_checkout::asterisk_pad($dbaccount->f("account_number"),4);
 	    ?> </td>
 	      </tr>
 	      <tr> 
-	        <td><?php echo JText::_('VM_ORDER_PRINT_EXPIRE_DATE') ?> :</td>
+	        <td><?php echo JText::_('JM_ORDER_PRINT_EXPIRE_DATE') ?> :</td>
 	        <td><?php echo strftime("%m - %Y", $dbpm->f("order_payment_expire")); ?> </td>
 	      </tr>
 		  <?php } ?>
@@ -546,7 +546,7 @@ if( $db->f('order_number')) {
 	        <td colspan="2">&nbsp;</td>
 	      </tr>
 	      <tr class="sectiontableheader">
-	        <th align="left" colspan="2"><?php echo JText::_('VM_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
+	        <th align="left" colspan="2"><?php echo JText::_('JM_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
 	      </tr>
 	      <tr>
 	        <td colspan="2">

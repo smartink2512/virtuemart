@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: admin.function_list.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 
@@ -28,7 +28,7 @@ $module_id = JRequest::getVar(  'module_id', 0 );
 $q = "SELECT module_name FROM #__{vm}_module WHERE module_id='$module_id'";
 $db->query($q);
 $db->next_record();
-$title = JText::_('VM_FUNCTION_LIST_LBL') . ": " . $db->f("module_name");
+$title = JText::_('JM_FUNCTION_LIST_LBL') . ": " . $db->f("module_name");
 if (!empty( $keyword )) {
 	$list  = "SELECT * FROM #__{vm}_function WHERE ";
 	$count = "SELECT count(*) as num_rows FROM #__{vm}_function WHERE ";
@@ -60,7 +60,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader( $title, VM_ADMIN_ICON_URL.'icon_48/vm_functions_48.png', 'admin', 'function_list');
+$listObj->writeSearchHeader( $title, JM_ADMIN_ICON_URL.'icon_48/jm_functions_48.png', 'admin', 'function_list');
 
 // start the list table
 $listObj->startTable();
@@ -68,9 +68,9 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".count($db->record) .")\" />" => "width=\"20\"",
-					JText::_('VM_FUNCTION_LIST_NAME') => "",
-					JText::_('VM_FUNCTION_LIST_CLASS') => "",
-					JText::_('VM_FUNCTION_LIST_METHOD') => "" );
+					JText::_('JM_FUNCTION_LIST_NAME') => "",
+					JText::_('JM_FUNCTION_LIST_CLASS') => "",
+					JText::_('JM_FUNCTION_LIST_METHOD') => "" );
 $usergroups = $vmUserGroup->get_groups();
 
 while($usergroups->next_record()) {

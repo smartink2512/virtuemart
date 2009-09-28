@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: shop.manufacturer.tpl.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage themes
 * @copyright Copyright (C) 2007 Soeren Eberhardt. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 ?>
@@ -22,7 +22,7 @@ mm_showMyFileName( __FILE__ );
   <table align="center"cellspacing="0" cellpadding="0" border="0">
       <tr valign="top"> 
         <th colspan="2" align="center"class="sectiontableheader">
-          <strong><?php echo JText::_('VM_MANUFACTURER_FORM_INFO_LBL') ?></strong>
+          <strong><?php echo JText::_('JM_MANUFACTURER_FORM_INFO_LBL') ?></strong>
         </th>
       </tr>
       <tr valign="top">
@@ -34,7 +34,7 @@ mm_showMyFileName( __FILE__ );
   
       <tr>
         <td valign="top" align="center"colspan="2">
-            <br /><?php echo JText::_('VM_STORE_FORM_EMAIL') ?>:&nbsp;
+            <br /><?php echo JText::_('JM_STORE_FORM_EMAIL') ?>:&nbsp;
             <a href="mailto:<?php echo $mf_email; ?>"><?php echo $mf_email; ?></a>
             <br />
             <br /><a href="<?php echo $mf_url ?>" target="_blank"><?php echo $mf_url ?></a><br />

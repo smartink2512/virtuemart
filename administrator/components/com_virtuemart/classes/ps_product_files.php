@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_product_files.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /**
@@ -38,11 +38,11 @@ class ps_product_files extends vmAbstractObject {
 		$db = new ps_DB;
 
 		if (empty($_FILES["file_upload"]["name"]) && empty($d['file_url']) && empty( $d['downloadable_file'])) {
-			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_FILES_ERR_PROVIDE') );
+			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_FILES_ERR_PROVIDE') );
 			return False;
 		}
 		if (empty($d["product_id"])) {
-			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_FILES_ERR_ID') );
+			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_FILES_ERR_ID') );
 			return False;
 		}
 
@@ -70,7 +70,7 @@ class ps_product_files extends vmAbstractObject {
 		
 		$db = new ps_DB;
 		if (empty($d["product_id"])) {
-			$vmLogger->err( JText::_('VM_PRODUCT_FILES_ERR_ID') );
+			$vmLogger->err( JText::_('JM_PRODUCT_FILES_ERR_ID') );
 			return False;
 		}
 
@@ -97,7 +97,7 @@ class ps_product_files extends vmAbstractObject {
 		
 		
 		if (empty($file_id)) {
-			$GLOBALS['vmLogger']->err( JText::_('VM_PRODUCT_FILES_ERR_DELETE') );
+			$GLOBALS['vmLogger']->err( JText::_('JM_PRODUCT_FILES_ERR_DELETE') );
 			return False;
 		}
 		return true;
@@ -171,7 +171,7 @@ class ps_product_files extends vmAbstractObject {
 			}
 			$q .= ' WHERE `product_id` ='.intval( $d["product_id"] );
 			$db->query( $q );
-			$vmLogger->info( JText::_('VM_PRODUCT_FILES_IMAGES_SET') );
+			$vmLogger->info( JText::_('JM_PRODUCT_FILES_IMAGES_SET') );
 			return true;
 		}
 		else {
@@ -211,7 +211,7 @@ class ps_product_files extends vmAbstractObject {
 								);
 			$db->buildQuery('INSERT', '#__{vm}_product_files', $fields );
 			if( $db->query() !== false ) {
-				$vmLogger->info( JText::_('VM_PRODUCT_FILES_ADDED') );
+				$vmLogger->info( JText::_('JM_PRODUCT_FILES_ADDED') );
 				$_REQUEST['file_id'] = $db->last_insert_id();
 			} else {
 				return false;
@@ -397,26 +397,26 @@ class ps_product_files extends vmAbstractObject {
 		if( $dbf->f("file_is_image") && !$file_still_used ) {
 			$info = pathinfo($fullfilepath);
 			if( !@unlink(realpath($fullfilepath)) ) {
-				$vmLogger->err( JText::_('VM_FILES_FULLIMG_DELETE_FAILURE',false) );
+				$vmLogger->err( JText::_('JM_FILES_FULLIMG_DELETE_FAILURE',false) );
 			} else {
-				$vmLogger->info( JText::_('VM_FILES_FULLIMG_DELETE_SUCCESS',false) );
+				$vmLogger->info( JText::_('JM_FILES_FULLIMG_DELETE_SUCCESS',false) );
 			}
 		
 			$thumb1 = $info["dirname"]."/resized/".basename($fullfilepath, ".".$info["extension"])."_".$dbf->f("file_image_thumb_height")."x".$dbf->f("file_image_thumb_width").".".$info["extension"];
 			$thumb2 = $info["dirname"]."/resized/".basename($fullfilepath, ".".$info["extension"])."_".PSHOP_IMG_HEIGHT."x".PSHOP_IMG_WIDTH.".".$info["extension"];
 			if( file_exists($thumb1) || file_exists($thumb2) ) {
 				if( !@unlink( realpath($thumb1)) && !@unlink( realpath($thumb2) ))  {	
-					$vmLogger->err( JText::_('VM_FILES_THUMBIMG_DELETE_FAILURE',false)." ". $thumb1 );
+					$vmLogger->err( JText::_('JM_FILES_THUMBIMG_DELETE_FAILURE',false)." ". $thumb1 );
 				} else {
-					$vmLogger->info( JText::_('VM_FILES_THUMBIMG_DELETE_SUCCESS',false) );
+					$vmLogger->info( JText::_('JM_FILES_THUMBIMG_DELETE_SUCCESS',false) );
 				}
 			}
 		}
 		elseif( $fullfilepath && !$file_still_used ) {
 			if( !@unlink(realpath($fullfilepath)) ) {
-				$vmLogger->err( JText::_('VM_FILES_FILE_DELETE_FAILURE',false) );
+				$vmLogger->err( JText::_('JM_FILES_FILE_DELETE_FAILURE',false) );
 			} else {
-				$vmLogger->info( JText::_('VM_FILES_FILE_DELETE_SUCCESS',false) );
+				$vmLogger->info( JText::_('JM_FILES_FILE_DELETE_SUCCESS',false) );
 			}
 		}
 		
@@ -444,14 +444,14 @@ class ps_product_files extends vmAbstractObject {
 		if( $dbf->f('product_full_image') && (@$d['file_type'] == 'product_images' || @$d['file_type'] == 'product_full_image') ) {		
 			$fullfilepath = IMAGEPATH .'product/'.$dbf->f('product_full_image');
 			if( !@unlink( realpath($fullfilepath) ) && file_exists($fullfilepath) ) {
-				$vmLogger->err( JText::_('VM_FILES_THUMBIMG_DELETE_FAILURE',false)." ". $thumb );
+				$vmLogger->err( JText::_('JM_FILES_THUMBIMG_DELETE_FAILURE',false)." ". $thumb );
 			}	
 			$sql[] = "product_full_image =''";
 		}
 		if( $dbf->f('product_thumb_image') && (@$d['file_type'] == 'product_images' || @$d['file_type'] == 'product_thumb_image') ) {
 			$thumbfilepath = IMAGEPATH .'product/'.$dbf->f('product_thumb_image');
 			if( !@unlink( realpath($thumbfilepath) ) && file_exists($thumbfilepath) ) {
-				$vmLogger->err( JText::_('VM_FILES_THUMBIMG_DELETE_FAILURE',false)." ". $thumb );
+				$vmLogger->err( JText::_('JM_FILES_THUMBIMG_DELETE_FAILURE',false)." ". $thumb );
 			}
 			$sql[] = "product_thumb_image =''";
 		}
@@ -498,7 +498,7 @@ class ps_product_files extends vmAbstractObject {
 					@mkdir( $uploaddir );
 				}
 				if( !file_exists( $uploaddir ) ) {
-					$vmLogger->err( JText::_('VM_FILES_PATH_ERROR',false) );
+					$vmLogger->err( JText::_('JM_FILES_PATH_ERROR',false) );
 					return false;
 				}
 				
@@ -515,7 +515,7 @@ class ps_product_files extends vmAbstractObject {
 			$d['upload_success'] = $this->moveUploadedFile( 'file_upload', $uploaddir.$d['filename']);
 		}
 		else {
-			$vmLogger->err( JText::_('VM_FILES_UPLOAD_FAILURE',false) );
+			$vmLogger->err( JText::_('JM_FILES_UPLOAD_FAILURE',false) );
 			return false;
 		}
 		
@@ -536,7 +536,7 @@ class ps_product_files extends vmAbstractObject {
 					$d['fileout'] = $fileout = $this->createThumbImage($tmp_filename, 'product', $height, $width );
 
 					if( is_file( $fileout ) ) {
-						$vmLogger->info( JText::_('VM_FILES_IMAGE_RESIZE_SUCCESS',false) );
+						$vmLogger->info( JText::_('JM_FILES_IMAGE_RESIZE_SUCCESS',false) );
 						$thumbimg = getimagesize( $fileout );
 						$d['file_image_thumb_width'] = $thumbimg[0];
 						$d['file_image_thumb_height'] = $thumbimg[1];
@@ -550,7 +550,7 @@ class ps_product_files extends vmAbstractObject {
 						///a25
 					}
 					else {
-						$vmLogger->warning( JText::_('VM_FILES_IMAGE_RESIZE_FAILURE',false) );
+						$vmLogger->warning( JText::_('JM_FILES_IMAGE_RESIZE_FAILURE',false) );
 						$d['file_image_thumb_height'] = "";
 						$d['file_image_thumb_width'] = "";
 					}
@@ -715,7 +715,7 @@ class ps_product_files extends vmAbstractObject {
 		$dbf->setQuery($sql);
 		$dbf->query();
 		if( !$dbf->next_record() ) {
-			$vmLogger->err( JText::_('VM_FILES_NOT_FOUND',false) );
+			$vmLogger->err( JText::_('JM_FILES_NOT_FOUND',false) );
 			return false;
 		}
 		$filename = $mosConfig_absolute_path. str_replace($mosConfig_absolute_path, '', $dbf->f("file_name") );
@@ -734,7 +734,7 @@ class ps_product_files extends vmAbstractObject {
 			$GLOBALS['vm_mainframe']->close(true);
 		}
 		else {
-			$vmLogger->err( JText::_('VM_FILES_NOT_FOUND',false) );
+			$vmLogger->err( JText::_('JM_FILES_NOT_FOUND',false) );
 		}
 		return true;
 	}
@@ -760,13 +760,13 @@ class ps_product_files extends vmAbstractObject {
 					//$vmLogger->warning( "There was a problem with your upload." );
 					break;
 				case 1: //uploaded file exceeds the upload_max_filesize directive in php.ini
-					$vmLogger->warning( JText::_('VM_PRODUCT_FILES_ERR_TOOBIG') );
+					$vmLogger->warning( JText::_('JM_PRODUCT_FILES_ERR_TOOBIG') );
 					break;
 				case 2: //uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the html form
-					$vmLogger->warning( JText::_('VM_PRODUCT_FILES_ERR_TOOBIG') );
+					$vmLogger->warning( JText::_('JM_PRODUCT_FILES_ERR_TOOBIG') );
 					break;
 				case 3: //uploaded file was only partially uploaded
-					$vmLogger->warning( JText::_('VM_PRODUCT_FILES_ERR_PARTIALLY') );
+					$vmLogger->warning( JText::_('JM_PRODUCT_FILES_ERR_PARTIALLY') );
 					break;
 				case 4: //no file was uploaded
 					//$vmLogger->warning( "You have not selected a file/image for upload." );

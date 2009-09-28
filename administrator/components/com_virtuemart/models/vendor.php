@@ -1,6 +1,6 @@
 <?php
 /**
-* @package		VirtueMart
+* @package		JMart
 * @license		GNU/GPL, see LICENSE.php
 */
 
@@ -11,11 +11,11 @@ jimport( 'joomla.application.component.model');
 
 
 /**
-* Model for VirtueMart Vendors
+* Model for JMart Vendors
 *
-* @package		VirtueMart
+* @package		JMart
 */
-class VirtueMartModelVendor extends JModel
+class JMartModelVendor extends JModel
 {
     /**
     * Vendor Id
@@ -73,26 +73,17 @@ class VirtueMartModelVendor extends JModel
         	//and the functions in this class must be rewritten OR I port the ps_vendor class in this class
         	// by Max Milbers
             $db =& $this->getDBO();
-            $query = 'SELECT * FROM `#__vm_vendor` ';
+            $query = 'SELECT * FROM `#__jmart_vendor` ';
             $query .=  'WHERE `vendor_id`=' . $vendId;
             $db->setQuery($query);
             
             $this->_vendor = $db->loadObject();
         }
+
         return $this->_vendor;   
 	}
-	
-	/**
-	* Retrieve a list of vendors
-	* 
-	* @author: RolandD
-	* @return object List of vendors
-	*/
-	public function getVendors() {
-		$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `#__vm_vendor`';
-		$db->setQuery($q);
-		return $db->loadObjectList();
-	}
+
+
+
 }
 ?>

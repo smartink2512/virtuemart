@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: store.payment_method_form.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 
@@ -23,7 +23,7 @@ include_class( 'shopper');
 global $ps_shopper_group;
 
 $payment_method_id = vmRequest::getint('id');
-$option = empty($option)?JRequest::getVar(  'option', 'com_virtuemart'):$option;
+$option = empty($option)?JRequest::getVar(  'option', 'com_jmart'):$option;
 
 $vars['published'] = "Y";
 $default['element'] = 'payment';
@@ -37,7 +37,7 @@ if (!empty($payment_method_id)) {
 }
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( JText::_('VM_PAYMENT_METHOD_FORM_LBL') );
+$formObj = &new formFactory( JText::_('JM_PAYMENT_METHOD_FORM_LBL') );
 //Then Start the form
 $formObj->startForm();
 
@@ -46,40 +46,40 @@ $formObj->startForm();
 <?php
 $tabs = new vmTabPanel(0, 1, "paymentform");
 $tabs->startPane("content-pane");
-$tabs->startTab( JText::_('VM_PAYMENT_METHOD_FORM_LBL'), "global-page");
+$tabs->startTab( JText::_('JM_PAYMENT_METHOD_FORM_LBL'), "global-page");
 ?>
 <table class="adminform">
     <tr class="row0">
-      <td class="labelcell"><?php echo JText::_('VM_ISSHIP_LIST_PUBLISH_LBL') ?>?:</td>
+      <td class="labelcell"><?php echo JText::_('JM_ISSHIP_LIST_PUBLISH_LBL') ?>?:</td>
       <td><input type="checkbox" name="published" class="inputbox" value="Y" <?php echo $db->sf("published")=="Y" ? "checked=\"checked\"" : "" ?> /></td>
     </tr>
     <tr class="row1"> 
-      <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_NAME') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('JM_PAYMENT_METHOD_FORM_NAME') ?>:</td>
       <td width="69%" > 
         <input type="text" class="inputbox" name="name" value="<?php $db->sp("name") ?>" size="32" />
       </td>
     </tr>
     <tr class="row1">
       <td class="labelcell"><?php
-          echo JText::_('VM_PAYMENT_CLASS_NAME');
+          echo JText::_('JM_PAYMENT_CLASS_NAME');
           ?>
       </td>
       <td width="69%">
       	<?php 
      	echo vmPaymentMethod::list_available_classes( 'element', $db->sf("element") ? $db->sf("element") : 'payment' );
-      	echo vmToolTip( JText::_('VM_PAYMENT_CLASS_NAME_TIP') ); ?>
+      	echo vmToolTip( JText::_('JM_PAYMENT_CLASS_NAME_TIP') ); ?>
       </td>
     </tr>
     <tr class="row0"> 
-      <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_ENABLE_PROCESSOR') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('JM_PAYMENT_METHOD_FORM_ENABLE_PROCESSOR') ?>:</td>
       <td width="69%" >
       <?php 
           $payment_process = $db->f("type"); 
-          $payment_types = array( "" => JText::_('VM_PAYMENT_FORM_CC'), 
-                              "Y" => JText::_('VM_PAYMENT_FORM_USE_PP'), 
-                              "B" => JText::_('VM_PAYMENT_FORM_BANK_DEBIT'), 
-                              "N" => JText::_('VM_PAYMENT_FORM_AO'), 
-                              "P" => JText::_('VM_PAYMENT_FORM_FORMBASED') );
+          $payment_types = array( "" => JText::_('JM_PAYMENT_FORM_CC'), 
+                              "Y" => JText::_('JM_PAYMENT_FORM_USE_PP'), 
+                              "B" => JText::_('JM_PAYMENT_FORM_BANK_DEBIT'), 
+                              "N" => JText::_('JM_PAYMENT_FORM_AO'), 
+                              "P" => JText::_('JM_PAYMENT_FORM_FORMBASED') );
           $i = 0;
           foreach( $payment_types as $value => $description) {
             echo "<input type=\"radio\" onchange=\"check()\" name=\"type\" id=\"type$i\" value=\"$value\"";
@@ -102,41 +102,41 @@ $tabs->startTab( JText::_('VM_PAYMENT_METHOD_FORM_LBL'), "global-page");
       <td colspan="2">&nbsp;</td>
     </tr>
     <tr class="row0"> 
-      <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_SHOPPER_GROUP') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('JM_PAYMENT_METHOD_FORM_SHOPPER_GROUP') ?>:</td>
       <td width="69%" ><?php 
       		echo ps_shopper_group::list_shopper_groups("shopper_group_id", $db->sf("shopper_group_id")) ?> 
       </td>
     </tr>
     <tr class="row1"> 
-      <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_DISCOUNT') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('JM_PAYMENT_METHOD_FORM_DISCOUNT') ?>:</td>
       <td width="69%" > 
         <input type="text" class="inputbox" name="discount" size="6"  value="<?php $db->sp("discount"); ?>" />
-        <?php echo vmToolTip( JText::_('VM_PAYMENT_METHOD_DISCOUNT_TIP') ); ?>
+        <?php echo vmToolTip( JText::_('JM_PAYMENT_METHOD_DISCOUNT_TIP') ); ?>
       </td>
     </tr>
     
     <tr class="row1"> 
-      <td class="labelcell"><?php echo JText::_('VM_PRODUCT_DISCOUNT_AMOUNTTYPE') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('JM_PRODUCT_DISCOUNT_AMOUNTTYPE') ?>:</td>
       <td width="69%"> 
         <input type="radio" class="inputbox" id="discount_is_percent0" name="discount_is_percentage" value="1" <?php if($db->sf("discount_is_percentage")==1) echo "checked=\"checked\""; ?> />
-        <label for="discount_is_percent0"><?php echo JText::_('VM_PRODUCT_DISCOUNT_ISPERCENT') ?></label>&nbsp;&nbsp;&nbsp;
-        <?php echo vmToolTip( JText::_('VM_PRODUCT_DISCOUNT_ISPERCENT_TIP') ); ?><br />
+        <label for="discount_is_percent0"><?php echo JText::_('JM_PRODUCT_DISCOUNT_ISPERCENT') ?></label>&nbsp;&nbsp;&nbsp;
+        <?php echo vmToolTip( JText::_('JM_PRODUCT_DISCOUNT_ISPERCENT_TIP') ); ?><br />
         <input type="radio" class="inputbox" id="discount_is_percent1" name="discount_is_percentage" value="0" <?php if($db->sf("discount_is_percentage")==0) echo "checked=\"checked\""; ?> />
-        <label for="discount_is_percent1"><?php echo JText::_('VM_PRODUCT_DISCOUNT_ISTOTAL') ?></label>
+        <label for="discount_is_percent1"><?php echo JText::_('JM_PRODUCT_DISCOUNT_ISTOTAL') ?></label>
       </td>
     </tr>
     <tr class="row1"> 
-    	<td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_DISCOUNT_MAX_AMOUNT') ?>:</td>
+    	<td class="labelcell"><?php echo JText::_('JM_PAYMENT_METHOD_DISCOUNT_MAX_AMOUNT') ?>:</td>
     	<td ><input type="text" name="discount_max_amount" value="<?php $db->sp('discount_max_amount') ?>" size="5" /></td>
    	</tr>
    	
     <tr class="row1"> 
-    	<td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_DISCOUNT_MIN_AMOUNT') ?>:</td>
+    	<td class="labelcell"><?php echo JText::_('JM_PAYMENT_METHOD_DISCOUNT_MIN_AMOUNT') ?>:</td>
     	<td ><input type="text" name="discount_min_amount" value="<?php $db->sp('discount_min_amount') ?>" size="5" /></td>
    	</tr>
    	
     <tr class="row0"> 
-      <td class="labelcell"><?php echo JText::_('VM_PAYMENT_METHOD_FORM_LIST_ORDER') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('JM_PAYMENT_METHOD_FORM_LIST_ORDER') ?>:</td>
       <td width="69%" > 
         <input type="text" class="inputbox" name="list_order" size="4" maxlength="4" value="<?php $db->sp("list_order"); ?>" />
       </td>
@@ -147,15 +147,15 @@ $tabs->startTab( JText::_('VM_PAYMENT_METHOD_FORM_LBL'), "global-page");
   </table>
 <?php
         $tabs->endTab();
-        $tabs->startTab( JText::_('VM_CONFIG'), "config-page");
+        $tabs->startTab( JText::_('JM_CONFIG'), "config-page");
         
         if( $db->sf('element') ) {
 	        $parameters = new vmParameters($db->f('params'), ADMINPATH.'plugins/payment/'.basename($db->f('element')).'.xml', 'payment' );
 	        echo $parameters->render();
         }
         echo '<br />
-<strong>'.JText::_('VM_PAYMENT_EXTRAINFO').':';
-		echo vmToolTip( JText::_('VM_PAYMENT_EXTRAINFO_TIP') ) 
+<strong>'.JText::_('JM_PAYMENT_EXTRAINFO').':';
+		echo vmToolTip( JText::_('JM_PAYMENT_EXTRAINFO_TIP') ) 
 	?>
 <br />
 <textarea class="inputbox" name="payment_extrainfo" cols="120" rows="20"><?php echo htmlspecialchars( $db->sf("payment_extrainfo") ); ?></textarea>
@@ -176,7 +176,7 @@ $formObj->finishForm( $funcname, $modulename.'.payment_method_list', $option );
   <script type="text/javascript">
 function check() {
    if (document.adminForm.type[0].checked == true || document.adminForm.type[1].checked == true) {
-      document.getElementById('accepted_creditcards1').innerHTML = '<strong><?php echo JText::_('VM_PAYMENT_ACCEPTED_CREDITCARDS') ?>:';
+      document.getElementById('accepted_creditcards1').innerHTML = '<strong><?php echo JText::_('JM_PAYMENT_ACCEPTED_CREDITCARDS') ?>:';
       if (document.getElementById('accepted_creditcards_store').innerHTML != '')
         document.getElementById('accepted_creditcards2').innerHTML ='<input type="text" name="accepted_creditcards" value="' + document.getElementById('accepted_creditcards_store').innerHTML + '" class="inputbox" />';
       else

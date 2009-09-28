@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: checkout.index.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 
@@ -71,7 +71,7 @@ if( in_array('CHECK_OUT_GET_FINAL_CONFIRMATION', $checkout_steps[$current_stage]
 // Get the zone quantity after it has been calculated in the basket 
 $zone_qty = JRequest::getVar(  'zone_qty');
 
-$theme = new $GLOBALS['VM_THEMECLASS']();
+$theme = new $GLOBALS['JM_THEMECLASS']();
 
 $theme->set_vars( // Import these values into the template files
 	array(	'zone_qty' => $zone_qty,
@@ -85,15 +85,15 @@ $theme->set_vars( // Import these values into the template files
 	
 if ($cart["idx"] > 0) {
 	
-	echo '<h3>'. JText::_('VM_CHECKOUT_TITLE') .'</h3>';
+	echo '<h3>'. JText::_('JM_CHECKOUT_TITLE') .'</h3>';
 	
     if (!defined('_MIN_POV_REACHED')) {
     	echo $basket_html;
     	?>
         <div align="center">
-            <script type="text/javascript">alert('<?php echo JText::_('VM_CHECKOUT_ERR_MIN_POV',false) ?>');</script>
-            <strong><?php echo JText::_('VM_CHECKOUT_ERR_MIN_POV') ?></strong><br />
-            <strong><?php echo JText::_('VM_CHECKOUT_ERR_MIN_POV2') . " ".$CURRENCY_DISPLAY->getFullValue($_SESSION['minimum_pov']) ?></strong>
+            <script type="text/javascript">alert('<?php echo JText::_('JM_CHECKOUT_ERR_MIN_POV',false) ?>');</script>
+            <strong><?php echo JText::_('JM_CHECKOUT_ERR_MIN_POV') ?></strong><br />
+            <strong><?php echo JText::_('JM_CHECKOUT_ERR_MIN_POV2') . " ".$CURRENCY_DISPLAY->getFullValue($_SESSION['minimum_pov']) ?></strong>
         </div><?php
         return;
     }
@@ -102,7 +102,7 @@ if ($cart["idx"] > 0) {
 	if ($perm->is_registered_customer($auth['user_id'])) { // user is logged in and a registered customer
 		$basket_html .= '<form action="'. SECUREURL.basename($_SERVER['PHP_SELF']) .'" method="post" name="adminForm">
 		
-		<input type="hidden" name="option" value="com_virtuemart" />
+		<input type="hidden" name="option" value="com_jmart" />
 		<input type="hidden" name="Itemid" value="'. $Itemid .'" />
 		<input type="hidden" name="user_id" value="'. $auth['user_id'] .'" />
 		<input type="hidden" name="page" value="'. $next_page .'" />
@@ -117,7 +117,7 @@ if ($cart["idx"] > 0) {
 		$theme->set( 'basket_html', $basket_html );
 		
 	    // Set Dynamic Page Title: "Checkout: Step x of x"
-	    $mainframe->setPageTitle( sprintf( JText::_('VM_CHECKOUT_TITLE_TAG'), $current_stage, count($checkout_steps) ));
+	    $mainframe->setPageTitle( sprintf( JText::_('JM_CHECKOUT_TITLE_TAG'), $current_stage, count($checkout_steps) ));
 
 	    // CHECK_OUT_GET_SHIPPING_ADDR
 	    // Lets the user pick or add an alternative Shipping Address
@@ -159,7 +159,7 @@ if ($cart["idx"] > 0) {
         if( !in_array('CHECK_OUT_GET_FINAL_CONFIRMATION', $checkout_steps[$current_stage]) ) {
          	?>
                 <div align="center">
-                <input type="submit" class="button" name="formSubmit" value="<?php echo JText::_('VM_CHECKOUT_NEXT');?> &gt;&gt;" />
+                <input type="submit" class="button" name="formSubmit" value="<?php echo JText::_('JM_CHECKOUT_NEXT');?> &gt;&gt;" />
                 </div>
             <?php 
 		}
@@ -176,7 +176,7 @@ if ($cart["idx"] > 0) {
 			// USER IS LOGGED IN, BUT NO REGISTERED CUSTOMER
 			// WE NEED SOME ADDITIONAL INFORMATION HERE,
 			// SO REDIRECT HIM TO shop/shopper_add
-			$vmLogger->info( JText::_('VM_NO_CUSTOMER',false) );
+			$vmLogger->info( JText::_('JM_NO_CUSTOMER',false) );
 	      
 			include(PAGEPATH. 'checkout_register_form.php');
 	            

@@ -1,6 +1,6 @@
 <?php
 /**
-* @package VirtueMart
+* @package JMart
 * @subpackage Discount
 * @license GNU/GPL, see LICENSE.php
 */
@@ -11,13 +11,13 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model');
 
 /**
- * Model for VirtueMart Products
+ * Model for JMart Products
  *
- * @package VirtueMart
+ * @package JMart
  * @subpackage Discount
  * @author RolandD
  */
-class VirtueMartModelDiscount extends JModel {
+class JMartModelDiscount extends JModel {
     
 	var $_total;
 	var $_pagination;
@@ -54,7 +54,7 @@ class VirtueMartModelDiscount extends JModel {
 	private function getTotal() {
     	if (empty($this->_total)) {
     		$db = JFactory::getDBO();
-			$q = "SELECT COUNT(*) FROM #__vm_product_discount";
+			$q = "SELECT COUNT(*) FROM #__jmart_product_discount";
 			$db->setQuery($q);
 			$this->_total = $db->loadResult();
         }
@@ -72,7 +72,7 @@ class VirtueMartModelDiscount extends JModel {
      	
      	/* Build the query */
      	$q = "SELECT *
-     		FROM #__vm_product_discount";
+     		FROM #__jmart_product_discount";
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
      	return $db->loadObjectList('discount_id');
     }
@@ -85,7 +85,7 @@ class VirtueMartModelDiscount extends JModel {
      	
      	/* Build the query */
      	$q = "SELECT *
-     		FROM #__vm_product_discount";
+     		FROM #__jmart_product_discount";
      	$db->setQuery($q);
      	return $db->loadObjectList();
     }

@@ -3,24 +3,24 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id:connectionTools.class.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /**
  * Provides general tools to handle connections (http, headers, ... )
  * 
  * @author soeren
- * @since VirtueMart 1.1.0
+ * @since JMart 1.1.0
  */
 class vmConnector {
 
@@ -72,12 +72,12 @@ class vmConnector {
 		if( isset( $urlParts['path'] )) $urlParts['path'] = $urlParts['path'].vmGet($urlParts,'query');
 
 		// Check proxy
-		if( trim( @VM_PROXY_URL ) != '') {
-			if( !stristr(VM_PROXY_URL, 'http')) {
-				$proxyURL['host'] = VM_PROXY_URL;
+		if( trim( @JM_PROXY_URL ) != '') {
+			if( !stristr(JM_PROXY_URL, 'http')) {
+				$proxyURL['host'] = JM_PROXY_URL;
 				$proxyURL['scheme'] = 'http';
 			} else {
-				$proxyURL = parse_url(VM_PROXY_URL);
+				$proxyURL = parse_url(JM_PROXY_URL);
 			}
 		}
 		else {
@@ -109,14 +109,14 @@ class vmConnector {
 			}
 			// Do we need to set up the proxy?
 			if( !empty($proxyURL) ) {
-				$vmLogger->debug( 'Setting up proxy: '.$proxyURL['host'].':'.VM_PROXY_PORT );
+				$vmLogger->debug( 'Setting up proxy: '.$proxyURL['host'].':'.JM_PROXY_PORT );
 				//curl_setopt($CR, CURLOPT_HTTPPROXYTUNNEL, true);
 				curl_setopt($CR, CURLOPT_PROXY, $proxyURL['host'] );
-				curl_setopt($CR, CURLOPT_PROXYPORT, VM_PROXY_PORT );
+				curl_setopt($CR, CURLOPT_PROXYPORT, JM_PROXY_PORT );
 				// Check if the proxy needs authentication
-				if( trim( @VM_PROXY_USER ) != '') {
+				if( trim( @JM_PROXY_USER ) != '') {
 					$vmLogger->debug( 'Using proxy authentication!' );
-					curl_setopt($CR, CURLOPT_PROXYUSERPWD, VM_PROXY_USER.':'.VM_PROXY_PASS );
+					curl_setopt($CR, CURLOPT_PROXYUSERPWD, JM_PROXY_USER.':'.JM_PROXY_PASS );
 				}
 			}
 
@@ -154,7 +154,7 @@ class vmConnector {
 					else {
 						$protocol = 'http';
 					}
-					$fp = fsockopen("$protocol://".$proxyURL['host'], VM_PROXY_PORT, $errno, $errstr, $timeout = 30);
+					$fp = fsockopen("$protocol://".$proxyURL['host'], JM_PROXY_PORT, $errno, $errstr, $timeout = 30);
 				}
 				else {
 					// If we have something to post we need to write into a socket
@@ -170,7 +170,7 @@ class vmConnector {
 			else {
 				if( !empty( $proxyURL )) {
 					// Do a read-only fopen transaction
-					$fp = fopen( $proxyURL['scheme'].'://'.$proxyURL['host'].':'.VM_PROXY_PORT, 'rb' );
+					$fp = fopen( $proxyURL['scheme'].'://'.$proxyURL['host'].':'.JM_PROXY_PORT, 'rb' );
 				}
 				else {
 					// Do a read-only fopen transaction
@@ -192,8 +192,8 @@ class vmConnector {
 					fputs($fp, "POST ".$urlParts['host'].':'.$urlParts['port'].$urlParts['path']." HTTP/1.0\r\n");
 					fputs($fp, "Host: ".$proxyURL['host']."\r\n");
 
-					if( trim( @VM_PROXY_USER )!= '') {
-						fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VM_PROXY_USER.':'.VM_PROXY_PASS ) . "\r\n\r\n");
+					if( trim( @JM_PROXY_USER )!= '') {
+						fputs($fp, "Proxy-Authorization: Basic " . base64_encode (JM_PROXY_USER.':'.JM_PROXY_PASS ) . "\r\n\r\n");
 					}
 				}
 				else {
@@ -209,8 +209,8 @@ class vmConnector {
 				if( !empty( $proxyURL )) {
 					fputs($fp, "GET ".$urlParts['host'].':'.$urlParts['port'].$urlParts['path']." HTTP/1.0\r\n");
 					fputs($fp, "Host: ".$proxyURL['host']."\r\n");
-					if( trim( @VM_PROXY_USER )!= '') {
-						fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VM_PROXY_USER.':'.VM_PROXY_PASS ) . "\r\n\r\n");
+					if( trim( @JM_PROXY_USER )!= '') {
+						fputs($fp, "Proxy-Authorization: Basic " . base64_encode (JM_PROXY_USER.':'.JM_PROXY_PASS ) . "\r\n\r\n");
 					}
 				}
 				else {

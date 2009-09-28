@@ -2,10 +2,10 @@
 /**
  * Coupon controller
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Coupon
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
@@ -15,11 +15,11 @@ jimport('joomla.application.component.controller');
 /**
  * Coupon Controller
  *
- * @package    VirtueMart
+ * @package    JMart
  * @subpackage Coupon
  * @author Rick Glunt 
  */
-class VirtuemartControllerCoupon extends JController
+class JmartControllerCoupon extends JController
 {
 	/**
 	 * Method to display the view
@@ -33,7 +33,7 @@ class VirtuemartControllerCoupon extends JController
 		$this->registerTask( 'add',  'edit' );			
 	
 	    $document =& JFactory::getDocument();
-	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
+	    $document->addStyleSheet(JURI::base().'components/com_jmart/assets/css/jmart.css');
 	    
 		$document = JFactory::getDocument();				
 		$viewType = $document->getType();
@@ -81,7 +81,7 @@ class VirtuemartControllerCoupon extends JController
 	{
 		$msg = JText::_('Operation Canceled!!');
 		
-		$this->setRedirect('index.php?option=com_virtuemart&view=coupon', $msg);
+		$this->setRedirect('index.php?option=com_jmart&view=coupon', $msg);
 	}	
 	
 	
@@ -101,7 +101,7 @@ class VirtuemartControllerCoupon extends JController
 			$msg = JText::_($model->getError());
 		}
 		
-		$this->setRedirect('index.php?option=com_virtuemart&view=coupon', $msg);
+		$this->setRedirect('index.php?option=com_jmart&view=coupon', $msg);
 	}	
 	
 	
@@ -120,7 +120,7 @@ class VirtuemartControllerCoupon extends JController
 			$msg = JText::_( 'Coupons Deleted!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=coupon', $msg);
+		$this->setRedirect( 'index.php?option=com_jmart&view=coupon', $msg);
 	}		
 }
 ?>

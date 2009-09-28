@@ -4,17 +4,17 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 /**
  *
  * @version $Id: free_shipping.php 1760 2009-05-03 22:58:57Z Aravot $
- * @package VirtueMart
+ * @package JMart
  * @subpackage shipping
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * VirtueMart is free software. This version may have been modified pursuant
+ * JMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+ * See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
  *
- * http://virtuemart.org
+ * http://joomlacode.org/gf/project/jmart/
  */
 
 /**
@@ -30,8 +30,8 @@ class free_shipping {
 	function list_rates( &$d ) {
 		global $vendor_name ;
 		
-		$html = "<strong>" . JText::_( 'VM_FREE_SHIPPING_CUSTOMER_TEXT' ) . "</strong><br/>\n" ;
-		$html .= "<input type=\"hidden\" name=\"shipping_rate_id\" value=\"free_shipping|$vendor_name|" . JText::_( 'VM_FREE_SHIPPING' ) . "|0|1\" />" ;
+		$html = "<strong>" . JText::_( 'JM_FREE_SHIPPING_CUSTOMER_TEXT' ) . "</strong><br/>\n" ;
+		$html .= "<input type=\"hidden\" name=\"shipping_rate_id\" value=\"free_shipping|$vendor_name|" . JText::_( 'JM_FREE_SHIPPING' ) . "|0|1\" />" ;
 		
 		echo $html ;
 		return true ;

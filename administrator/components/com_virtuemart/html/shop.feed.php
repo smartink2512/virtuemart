@@ -4,21 +4,21 @@
 * Get the latest Products directly to your Desktop!
 *
 * @version $Id: shop.feed.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 require_once( CLASSPATH.'connectionTools.class.php');
 
-if( VM_FEED_ENABLED == '') {
+if( JM_FEED_ENABLED == '') {
 	vmConnector::sendHeaderAndContent( 403, 'This Feed is currently not available.', '');
 	exit();
 }
@@ -83,10 +83,10 @@ $lang = split( '_', $mosConfig_locale );
 if( $category_id ) {
 	include_class('product');
 	global $ps_product_category;
-	$info['title'] = str_replace( '{storename}', $vendor_store_name, VM_FEED_TITLE_CATEGORIES );
+	$info['title'] = str_replace( '{storename}', $vendor_store_name, JM_FEED_TITLE_CATEGORIES );
 	$info['title'] = str_replace( '{catname}', $ps_product_category->get_name_by_catid( $category_id ), $info['title'] );
 } else {
-	$info['title'] = str_replace( '{storename}', $vendor_store_name, VM_FEED_TITLE );
+	$info['title'] = str_replace( '{storename}', $vendor_store_name, JM_FEED_TITLE );
 }
 $info['item_source'] = $vendor_store_name;
 $info['generator'] = $vendor_store_name." :: ProductFeed";
@@ -102,20 +102,20 @@ $info['link'] = $mosConfig_live_site;
 $info['encoding'] = $iso;
 $info['language'] = $lang[0];
 
-$info['cache'] = VM_FEED_CACHE;
-$info['cache_time'] = VM_FEED_CACHETIME;
+$info['cache'] = JM_FEED_CACHE;
+$info['cache_time'] = JM_FEED_CACHETIME;
 
 $info['category_id'] 	= $category_id;// Filter by category? At this place, category_id is INT
 $info['product_number'] 	= min( vmGet($_GET,'limit',20), 200 );// Print a maxmimum of 200 products
-$info['feed_description'] = 'VirtueMart Product Syndication';
+$info['feed_description'] = 'JMart Product Syndication';
 
-$info['product_description_type'] = VM_FEED_DESCRIPTION_TYPE;
-$info['limit_desc'] = VM_FEED_LIMITTEXT;
-$info['text_length'] = VM_FEED_MAX_TEXT_LENGTH;
+$info['product_description_type'] = JM_FEED_DESCRIPTION_TYPE;
+$info['limit_desc'] = JM_FEED_LIMITTEXT;
+$info['text_length'] = JM_FEED_MAX_TEXT_LENGTH;
 
-$info['show_description'] = VM_FEED_SHOW_DESCRIPTION;
-$info['show_price'] = VM_FEED_SHOW_PRICES;
-$info['show_image'] = VM_FEED_SHOW_IMAGES;
+$info['show_description'] = JM_FEED_SHOW_DESCRIPTION;
+$info['show_price'] = JM_FEED_SHOW_PRICES;
+$info['show_image'] = JM_FEED_SHOW_IMAGES;
 
 $info['image_file'] = $vendor_image_url;
 
@@ -237,7 +237,7 @@ function getProductDescription( $product, &$feed_info )  {
 		if( $feed_info['show_price'] == '1' ) {
 			require_once( CLASSPATH . "ps_product.php" );
 			$ps_product =& new ps_product();
-			$desc .= "<br />".JText::_('VM_CART_PRICE').": ".$ps_product->show_price( $product['id'] );
+			$desc .= "<br />".JText::_('JM_CART_PRICE').": ".$ps_product->show_price( $product['id'] );
 			$desc = preg_replace( "/<span class=\"product-Old-Price\"[^>]*?>(.*?)<\/span>/si", '<strike>\1</strike>', $desc );
 		}
 	}

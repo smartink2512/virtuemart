@@ -10,16 +10,16 @@ $cellwidth = intval( (100 / $featured_per_row) - 2 );
 if( empty( $featured_products )) {
 	return; // Do nothing, if there are no Featured!
 }
-echo "<h3>".JText::_('VM_FEATURED_PRODUCT')."</h3>";
+echo "<h3>".JText::_('JM_FEATURED_PRODUCT')."</h3>";
 foreach( $featured_products as $featured ) {
 	?>
 	<div style="float:left;width:<?php echo $cellwidth ?>%;text-align:top;padding:0px;" >
-         <a title="<?php echo $featured["product_name"] ?>" href="<?php $sess->purl(URL."index.php?option=com_virtuemart&amp;page=shop.product_details&amp;flypage=".$featured["flypage"]."&amp;product_id=".$featured["product_id"]) ?>"> 
+         <a title="<?php echo $featured["product_name"] ?>" href="<?php $sess->purl(URL."index.php?option=com_jmart&amp;page=shop.product_details&amp;flypage=".$featured["flypage"]."&amp;product_id=".$featured["product_id"]) ?>"> 
 			<h4><?php echo $featured["product_name"] ?></h4></a>
 			<?php echo $featured['product_price'] ?><br />
             <?php
 			if ( $featured["product_thumb"] ) { ?>
-                <a title="<?php echo $featured["product_name"] ?>" href="<?php $sess->purl(URL."index.php?option=com_virtuemart&amp;page=shop.product_details&amp;flypage=".$featured["flypage"]."&amp;product_id=".$featured["product_id"]) ?>"> 
+                <a title="<?php echo $featured["product_name"] ?>" href="<?php $sess->purl(URL."index.php?option=com_jmart&amp;page=shop.product_details&amp;flypage=".$featured["flypage"]."&amp;product_id=".$featured["product_id"]) ?>"> 
 				<?php /* echo ps_product::image_tag( $featured["product_thumb"], "class=\"browseProductImage\" border=\"0\" alt=\"".$featured["product_name"]."\""); */?>
 				<?php ImageHelper::displayShopImage($featured["product_thumb"], 'product', 'class="browseProductImage" border="0" alt="'.$featured["product_name"].'"');?>
 				</a><br /><br/>

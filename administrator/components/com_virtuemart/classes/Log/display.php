@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: display.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package VirtueMart
+* @package JMart
 * @subpackage Log
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /**
@@ -116,7 +116,7 @@ class vmLog_display extends vmLog
             return false;
         }
         /*@MWM1: Limit debugging by IP address, if enabled.*/
-        if((VM_DEBUG_IP_ENABLED == '1') && (strcmp($_SERVER['REMOTE_ADDR'], VM_DEBUG_IP_ADDRESS) != 0))
+        if((JM_DEBUG_IP_ENABLED == '1') && (strcmp($_SERVER['REMOTE_ADDR'], JM_DEBUG_IP_ADDRESS) != 0))
         {
                 /* Remote address is NOT our configured debug IP address
                    (if enabled), so skip logging. */
@@ -125,7 +125,7 @@ class vmLog_display extends vmLog
         $this->_ticker++;
         
 		if( $priority >= PEAR_LOG_ERR ) {
-			defined( '_VM_LOG_ERRORS' ) or define( '_VM_LOG_ERRORS', 1);
+			defined( '_JM_LOG_ERRORS' ) or define( '_JM_LOG_ERRORS', 1);
 		}
         /* Extract the string representation of the message. */
         $message = $this->_extractMessage($message);

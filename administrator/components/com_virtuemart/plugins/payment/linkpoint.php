@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: linkpoint.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage payment
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /* modified by Atlanticom to overcome ampersand issues and provide human friendly linkpoint order numbers 
@@ -36,7 +36,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * you also should have your public key file provided by linkpoint/yourpay.com secured
 * in a directory outside of the webroot, but readable by the webserver daemon owner (ie; nobody)
 *
-* In the administrator console of VirtueMart -> Payment Method List -> Creditcard LP -> Configuration
+* In the administrator console of JMart -> Payment Method List -> Creditcard LP -> Configuration
 * you can insert your store number, and public key location.
 *
 * Any questions, email jimmy@freshstation.org
@@ -239,7 +239,7 @@ class plgPaymentLinkpoint extends vmPaymentPlugin {
 		}
 		else    // Success, let's return
 		{
-		   $d["order_payment_log"] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').": ";
+		   $d["order_payment_log"] = JText::_('JM_PAYMENT_TRANSACTION_SUCCESS').": ";
 		   $d["order_payment_log"] = $result["r_approved"];
 		   // Catch Transaction ID
 		   $d["order_payment_trans_id"] = $result["r_ordernum"];
@@ -263,7 +263,7 @@ class plgPaymentLinkpoint extends vmPaymentPlugin {
   	  }
   	  else    // Success, let's return
   	  {
-  		 $d["order_payment_log"] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').": ";
+  		 $d["order_payment_log"] = JText::_('JM_PAYMENT_TRANSACTION_SUCCESS').": ";
   		 $d["order_payment_log"] = $result["r_approved"];
   		 // Catch Transaction ID
   		 $d["order_payment_trans_id"] = $result["r_ordernum"];

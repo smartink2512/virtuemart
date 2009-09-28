@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ups.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage shipping
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /**
@@ -166,7 +166,7 @@ class plgShippingUps extends vmShippingPlugin {
 			$xmlResult = vmConnector::handleCommunication($upsURL, $xmlPost );
 
 			if( !$xmlResult) {
-				$vmLogger->err( JText::_('VM_INTERNAL_ERROR',false)." UPS.com" );
+				$vmLogger->err( JText::_('JM_INTERNAL_ERROR',false)." UPS.com" );
 				$error = true;
 			}
 			else {
@@ -186,9 +186,9 @@ class plgShippingUps extends vmShippingPlugin {
 					$error_desc = $error_desc->item(0);
 					$error_desc = $error_desc->getText();
 
-					$vmLogger->err( JText::_('VM_UPS_RESPONSE_ERROR',false).'. '
-					. JText::_('VM_ERROR_CODE').": ".$error_code .', '
-					. JText::_('VM_ERROR_DESC').": ".$error_desc);
+					$vmLogger->err( JText::_('JM_UPS_RESPONSE_ERROR',false).'. '
+					. JText::_('JM_ERROR_CODE').": ".$error_code .', '
+					. JText::_('JM_ERROR_DESC').": ".$error_desc);
 				}
 
 			}
@@ -367,8 +367,8 @@ class plgShippingUps extends vmShippingPlugin {
 				$_SESSION[$shipping_rate_id] = 1;
 				
 				if (DEBUG) {
-					$value['ServiceName'] .= " - ".JText::_('VM_PRODUCT_FORM_WEIGHT').": ".$order_weight." ". $weight_measure.
-					", ".JText::_('VM_RATE_FORM_VALUE').": [[".$charge_unrated."(".$fsc_rate.")]+".UPS_HANDLING_FEE."](".$taxrate.")]";
+					$value['ServiceName'] .= " - ".JText::_('JM_PRODUCT_FORM_WEIGHT').": ".$order_weight." ". $weight_measure.
+					", ".JText::_('JM_RATE_FORM_VALUE').": [[".$charge_unrated."(".$fsc_rate.")]+".UPS_HANDLING_FEE."](".$taxrate.")]";
 				}
 				
 				$rateArr = array('shipping_rate_id' => $shipping_rate_id,
@@ -381,7 +381,7 @@ class plgShippingUps extends vmShippingPlugin {
 				// DELIVERY QUOTE
 				if ($this->params->get('SHOW_DELIVERY_DAYS_QUOTE') == 1) {
 					if( !empty($value['GuaranteedDaysToDelivery'])) {
-						$rateArr['rate_name'] .= "&nbsp;&nbsp;-&nbsp;&nbsp;".$value['GuaranteedDaysToDelivery']." ".JText::_('VM_UPS_SHIPPING_GUARANTEED_DAYS');
+						$rateArr['rate_name'] .= "&nbsp;&nbsp;-&nbsp;&nbsp;".$value['GuaranteedDaysToDelivery']." ".JText::_('JM_UPS_SHIPPING_GUARANTEED_DAYS');
 					}
 				}
 				if ($this->params->get('SHOW_DELIVERY_ETA_QUOTE') == 1) {

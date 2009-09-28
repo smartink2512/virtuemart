@@ -17,19 +17,19 @@ AdminMenuHelper::startAdminArea();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->states ); ?>);" />
 			</th>			
 			<th>
-				<?php echo JText::_( 'VM_STATE_LIST_NAME' ); ?>
+				<?php echo JText::_( 'JM_STATE_LIST_NAME' ); ?>
 			</th>				
 			<th>
-				<?php echo JText::_( 'VM_ZONE_ASSIGN_CURRENT_LBL' ); ?>
+				<?php echo JText::_( 'JM_ZONE_ASSIGN_CURRENT_LBL' ); ?>
 			</th>						
 			<th>
-				<?php echo JText::_( 'VM_STATE_LIST_3_CODE' ); ?>
+				<?php echo JText::_( 'JM_STATE_LIST_3_CODE' ); ?>
 			</th>	
 			<th>
-				<?php echo JText::_( 'VM_STATE_LIST_2_CODE' ); ?>
+				<?php echo JText::_( 'JM_STATE_LIST_2_CODE' ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'VM_COUNTRY_PUBLISH' ); ?>
+				<?php echo JText::_( 'JM_COUNTRY_PUBLISH' ); ?>
 			</th>				
 			<th width="20">
 				<?php echo JText::_( 'E_REMOVE' ); ?>
@@ -44,9 +44,9 @@ AdminMenuHelper::startAdminArea();
 			
 			$checked = JHTML::_('grid.id', $i, $row->state_id);
 			$published = JHTML::_('grid.published', $row, $i);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=state&task=edit&cid[]=' . $row->state_id);
-//			$statelink	= JROUTE::_('index.php?option=com_virtuemart&view=country&state_id=' . $row->state_id);
-			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&controller=state&task=remove&cid[]=' . $row->state_id);
+			$editlink = JROUTE::_('index.php?option=com_jmart&controller=state&task=edit&cid[]=' . $row->state_id);
+//			$statelink	= JROUTE::_('index.php?option=com_jmart&view=country&state_id=' . $row->state_id);
+			$deletelink	= JROUTE::_('index.php?option=com_jmart&controller=state&task=remove&cid[]=' . $row->state_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td width="10" align="right">
@@ -71,7 +71,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo $published; ?>
 				</td>	
 				<td align="center">
-					<?php echo JHTML::_('link', $deletelink, JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('VM_DELETE_MSG').'\');')) ?>
+					<?php echo JHTML::_('link', $deletelink, JHTML::_('image', JURI::base().'components/com_jmart/assets/images/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('JM_DELETE_MSG').'\');')) ?>
 				</td>				        																														
 			</tr>
 			<?php
@@ -88,7 +88,7 @@ AdminMenuHelper::startAdminArea();
 	</table>	
 </div>
 	        
-	<input type="hidden" name="option" value="com_virtuemart" />
+	<input type="hidden" name="option" value="com_jmart" />
 	<input type="hidden" name="controller" value="state" />
 	<input type="hidden" name="view" value="state" />	
 	<input type="hidden" name="task" value="" />

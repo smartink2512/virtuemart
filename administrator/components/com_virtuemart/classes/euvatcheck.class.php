@@ -31,25 +31,25 @@ class VmEUVatCheck {
 		require_once('nusoap/nusoap.php');
 		
 		/* Check for proxy settings */
-		if( trim( @VM_PROXY_URL ) != '') {
-			if( !stristr(VM_PROXY_URL, 'http')) {
-				$proxyURL['host'] = VM_PROXY_URL;
+		if( trim( @JM_PROXY_URL ) != '') {
+			if( !stristr(JM_PROXY_URL, 'http')) {
+				$proxyURL['host'] = JM_PROXY_URL;
 				$proxyURL['scheme'] = 'http';
 			} 
-			else $proxyURL = parse_url(VM_PROXY_URL);
+			else $proxyURL = parse_url(JM_PROXY_URL);
 		}
 		else $proxyURL = '';
 		
 		/* Use the proxy and initialise the client */
 		if( !empty($proxyURL) ) {
-			$vmLogger->debug( 'Setting up proxy: '.$proxyURL['host'].':'.VM_PROXY_PORT );
+			$vmLogger->debug( 'Setting up proxy: '.$proxyURL['host'].':'.JM_PROXY_PORT );
 			/* Proxy without authentication */
-			$this->client = new nusoap_client($this->viesurl, true, $proxyURL['host'], VM_PROXY_PORT);
+			$this->client = new nusoap_client($this->viesurl, true, $proxyURL['host'], JM_PROXY_PORT);
 			
 			/* proxy with authentication */
-			if( trim( @VM_PROXY_USER ) != '') {
+			if( trim( @JM_PROXY_USER ) != '') {
                $vmLogger->debug( 'Using proxy authentication!' );
-			   $this->client = new nusoap_client($this->viesurl, true, $proxyURL['host'], VM_PROXY_PORT, VM_PROXY_USER, VM_PROXY_PASS);
+			   $this->client = new nusoap_client($this->viesurl, true, $proxyURL['host'], JM_PROXY_PORT, JM_PROXY_USER, JM_PROXY_PASS);
             }
 
 		}

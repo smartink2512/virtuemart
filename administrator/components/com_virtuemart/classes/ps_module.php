@@ -3,20 +3,20 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_module.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 /**
- * VirtueMart "Core Module" Management
+ * JMart "Core Module" Management
  *
  */
 class ps_module {
@@ -32,7 +32,7 @@ class ps_module {
 		global $db, $vmLogger;
 
 		if ( empty($d[ 'module_name' ] )) {
-			$vmLogger->err ( JText::_('VM_MODULE_ERR_NAME') );
+			$vmLogger->err ( JText::_('JM_MODULE_ERR_NAME') );
 			return False;
 		}
 		else {
@@ -40,13 +40,13 @@ class ps_module {
 			$db->query($q);
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
-				$vmLogger->err( JText::_('VM_MODULE_ERR_EXISTS') );
+				$vmLogger->err( JText::_('JM_MODULE_ERR_EXISTS') );
 				return False;
 			}
 		}
 
 		if ( empty($d[ 'module_perms' ]) ) {
-			$vmLogger->err( JText::_('VM_MODULE_ERR_PERMS') );
+			$vmLogger->err( JText::_('JM_MODULE_ERR_PERMS') );
 			return false;
 		}
 		if (empty( $d[ 'list_order' ] ) ) {
@@ -67,7 +67,7 @@ class ps_module {
 		
 
 		if ( empty($d[ 'module_name' ] )) {
-			$vmLogger->err ( JText::_('VM_MODULE_ERR_NAME') );
+			$vmLogger->err ( JText::_('JM_MODULE_ERR_NAME') );
 			return False;
 		}
 		else {
@@ -76,13 +76,13 @@ class ps_module {
 			$db->query($q);
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
-				$vmLogger->err( JText::_('VM_MODULE_ERR_EXISTS') );
+				$vmLogger->err( JText::_('JM_MODULE_ERR_EXISTS') );
 				return False;
 			}
 		}
 
 		if ( empty($d[ 'module_perms' ]) ) {
-			$vmLogger->err( JText::_('VM_MODULE_ERR_PERMS') );
+			$vmLogger->err( JText::_('JM_MODULE_ERR_PERMS') );
 			return false;
 		}
 		if (empty( $d[ 'list_order' ] ) ) {
@@ -102,7 +102,7 @@ class ps_module {
 		global $db, $vmLogger;
 
 		if (empty($module_id)) {
-			$vmLogger->err( JText::_('VM_MODULE_ERR_DELETE_SELECT') );
+			$vmLogger->err( JText::_('JM_MODULE_ERR_DELETE_SELECT') );
 			return False;
 		}
 
@@ -110,7 +110,7 @@ class ps_module {
 		$db->next_record();
 		$name = $db->f("module_name");
 		if( $this->is_core( $name ) ) {
-			$vmLogger->err( str_replace('{name}',$name,JText::_('VM_MODULE_ERR_DELETE_CORE')) );
+			$vmLogger->err( str_replace('{name}',$name,JText::_('JM_MODULE_ERR_DELETE_CORE')) );
 			return false;
 		}
 		return True;
@@ -146,7 +146,7 @@ class ps_module {
 
 		if( $db->query() !== false ) {
 			$_REQUEST['module_id'] = $db->last_insert_id();
-			$GLOBALS['vmLogger']->info( JText::_('VM_MODULE_ADDED') );
+			$GLOBALS['vmLogger']->info( JText::_('JM_MODULE_ADDED') );
 			return True;
 		}
 		return false;
@@ -182,7 +182,7 @@ class ps_module {
 		$db->buildQuery( 'UPDATE',  '#__{vm}_module', $fields, ' WHERE module_id='.intval( $d[ 'module_id' ] ) );
 
 		if( $db->query() !== false ) {
-			$GLOBALS['vmLogger']->info( JText::_('VM_MODULE_UPDATED') );
+			$GLOBALS['vmLogger']->info( JText::_('JM_MODULE_UPDATED') );
 			return True;
 		}
 
@@ -282,7 +282,7 @@ class ps_module {
 		return $db;
 	}
 	/**
-	 * This function returns a drop down list of all available core modules in VirtueMart
+	 * This function returns a drop down list of all available core modules in JMart
 	 * @since 1.1.0
 	 * @param string $list_name
 	 * @param mixed $module
@@ -345,9 +345,9 @@ class ps_module {
 			if ($perm->check( $dir_list[ 'perms' ]) ) {
 
 				if ( !file_exists(PAGEPATH.$modulename.".".$pagename.".php") ) {
-					define( '_VM_PAGE_NOT_FOUND', 1 );
-					$error = JText::_('VM_PAGE_404_1');
-					$error .= ' '.JText::_('VM_PAGE_404_2') ;
+					define( '_JM_PAGE_NOT_FOUND', 1 );
+					$error = JText::_('JM_PAGE_404_1');
+					$error .= ' '.JText::_('JM_PAGE_404_2') ;
 					$error .= ' "'.$modulename.".".$pagename.'.php"';
 					$vmLogger->err( $error );
 					return false;
@@ -355,14 +355,14 @@ class ps_module {
 				return true;
 			}
 			else {
-				define( '_VM_PAGE_NOT_AUTH', 1 );
-				$vmLogger->err( JText::_('VM_MOD_NO_AUTH') );
+				define( '_JM_PAGE_NOT_AUTH', 1 );
+				$vmLogger->err( JText::_('JM_MOD_NO_AUTH') );
 				return false;
 			}
 		}
 		else {
-			$error = JText::_('VM_MOD_NOT_REG');
-			$error .= '"'.$modulename .'" '. JText::_('VM_MOD_ISNO_REG');
+			$error = JText::_('JM_MOD_NOT_REG');
+			$error .= '"'.$modulename .'" '. JText::_('JM_MOD_ISNO_REG');
 			$vmLogger->err( $error );
 			return false;
 		}

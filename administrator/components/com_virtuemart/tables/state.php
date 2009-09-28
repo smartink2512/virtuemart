@@ -2,10 +2,10 @@
 /**
  * State table
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Country
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 // Check to ensure this file is included in Joomla!
@@ -16,7 +16,7 @@ defined('_JEXEC') or die();
  * The class is is used to manage the states in a country
  *
  * @author Rick Glunt
- * @package		VirtueMart
+ * @package		JMart
  */
 class TableState extends JTable
 {
@@ -40,7 +40,7 @@ class TableState extends JTable
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_state', 'state_id', $db);
+		parent::__construct('#__jmart_state', 'state_id', $db);
 	}
 
 
@@ -68,7 +68,7 @@ class TableState extends JTable
 		if (($this->state_name) && ($this->state_id == 0)) {
 		    $db =& JFactory::getDBO();
 		    
-			$q = 'SELECT count(*) FROM `#__vm_state` ';
+			$q = 'SELECT count(*) FROM `#__jmart_state` ';
 			$q .= 'WHERE `state_name`="' .  $this->state_name . '"';
             $db->setQuery($q);        
 		    $rowCount = $db->loadResult();		

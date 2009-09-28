@@ -1,6 +1,6 @@
 <?php
 /**
-* @package VirtueMart
+* @package JMart
 * @subpackage Tax
 * @license GNU/GPL, see LICENSE.php
 */
@@ -11,13 +11,13 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model');
 
 /**
- * Model for VirtueMart Products
+ * Model for JMart Products
  *
- * @package VirtueMart
+ * @package JMart
  * @subpackage Tax
  * @author RolandD
  */
-class VirtueMartModelTaxRate extends JModel {
+class JMartModelTaxRate extends JModel {
     
 	var $_total;
 	var $_pagination;
@@ -54,7 +54,7 @@ class VirtueMartModelTaxRate extends JModel {
 	private function getTotal() {
     	if (empty($this->_total)) {
     		$db = JFactory::getDBO();
-			$q = "SELECT COUNT(*) FROM #__vm_tax_rate";
+			$q = "SELECT COUNT(*) FROM #__jmart_tax_rate";
 			$db->setQuery($q);
 			$this->_total = $db->loadResult();
         }
@@ -72,7 +72,7 @@ class VirtueMartModelTaxRate extends JModel {
      	
      	/* Build the query */
      	$q = "SELECT *
-     		FROM #__vm_tax_rate";
+     		FROM #__jmart_tax_rate";
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
      	return $db->loadObjectList('tax_rate_id');
     }
@@ -84,8 +84,8 @@ class VirtueMartModelTaxRate extends JModel {
      	$db = JFactory::getDBO();
      	
      	/* Build the query */
-     	$q = "SELECT tax_rate_id, vendor_id, tax_state, tax_country, mdate, tax_rate, CONCAT((tax_rate*100), '%') AS tax_rate_show
-     		FROM #__vm_tax_rate";
+     	$q = "SELECT tax_rate_id, vendor_id, tax_state, tax_country, mdate, CONCAT((tax_rate*100), '%') AS tax_rate
+     		FROM #__jmart_tax_rate";
      	$db->setQuery($q);
      	return $db->loadObjectList();
     }

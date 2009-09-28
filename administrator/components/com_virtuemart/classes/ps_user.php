@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_user.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2008 soeren - 2009 VirtueMart Team - All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - 2009 JMart Team - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 class ps_user {
@@ -54,7 +54,7 @@ class ps_user {
 						$valid = false;
 						$fieldtitle = $field->title;
 						$fieldtitle = JText::_($fieldtitle);
-						$vmLogger->err( sprintf(JText::_('VM_USER_ERR_MISSINGVALUE'), $fieldtitle) );
+						$vmLogger->err( sprintf(JText::_('JM_USER_ERR_MISSINGVALUE'), $fieldtitle) );
 					}
 					break;
 			}
@@ -83,12 +83,12 @@ class ps_user {
 
 		if( empty($d['perms']) ) {
 			$d['perms'] = 'shopper';
-//			$vmLogger->warning( JText::_('VM_USER_ERR_GROUP') );
+//			$vmLogger->warning( JText::_('JM_USER_ERR_GROUP') );
 //			$valid = false;
 		}
 		else {
 			if( !$perm->hasHigherPerms( $d['perms'] )) {
-				$vmLogger->err( sprintf(JText::_('VM_USER_ADD_ERR_NOPERMS'),$d['perms']) );
+				$vmLogger->err( sprintf(JText::_('JM_USER_ADD_ERR_NOPERMS'),$d['perms']) );
 				$valid = false;
 			}
 
@@ -129,24 +129,24 @@ class ps_user {
 		$valid = true;
 
 		if( empty( $id ) ) {
-			$vmLogger->err( JText::_('VM_USER_DELETE_SELECT') );
+			$vmLogger->err( JText::_('JM_USER_DELETE_SELECT') );
 			return false;
 		}
 		$db = new ps_DB();
 		$q = 'SELECT user_id, perms FROM #__{vm}_user_info WHERE user_id='.(int)$id;
 		$db->query( $q );
 
-		// Only check VirtueMart users - the user may be only a CMS user		
+		// Only check JMart users - the user may be only a CMS user		
 		if( $db->num_rows() > 0 ) {
 			$perms = $db->f('perms');
 
 			if( !$perm->hasHigherPerms( $perms ) ) {
-				$vmLogger->err( sprintf(JText::_('VM_USER_DELETE_ERR_NOPERMS'),$perms) );
+				$vmLogger->err( sprintf(JText::_('JM_USER_DELETE_ERR_NOPERMS'),$perms) );
 				$valid = false;
 			}
 
 			if( $id == $my->id) {
-				$vmLogger->err( JText::_('VM_USER_DELETE_ERR_YOURSELF') );
+				$vmLogger->err( JText::_('JM_USER_DELETE_ERR_YOURSELF') );
 				$valid = false;
 			}
 		}
@@ -155,7 +155,7 @@ class ps_user {
 	}
 
 	/**
-	 * Adds a new User to the CMS and VirtueMart
+	 * Adds a new User to the CMS and JMart
 	 * Only for legecy Use directly addUpdateUser
 	 * 
 	 * @param array $d
@@ -234,7 +234,7 @@ class ps_user {
 		
 		if($add){
 			// Insert billto;		
-			$hash_secret = "VirtueMartIsCool";
+			$hash_secret = "JMartIsCool";
 			
 			$fields['user_info_id'] = md5(uniqid( $hash_secret));
 			$fields['user_id'] =  $uid;
@@ -260,10 +260,10 @@ class ps_user {
 		$vmLogger->debug( 'addUpdateUser $uid '.$uid );
 		if($add){
 			$_REQUEST['id'] = $_REQUEST['user_id'] = $uid;
-			$vmLogger->info( JText::_('VM_USER_ADDED') );
+			$vmLogger->info( JText::_('JM_USER_ADDED') );
 			
 		}else{
-			$vmLogger->info( JText::_('VM_USER_UPDATED') );
+			$vmLogger->info( JText::_('JM_USER_UPDATED') );
 		}
 	
 
@@ -619,7 +619,7 @@ class ps_user {
 				if ( $count <= 1 )
 				{
 					// disallow change if only one Super Admin exists
-					$vmLogger->err( JText::_('VM_USER_ERR_ONLYSUPERADMIN') );
+					$vmLogger->err( JText::_('JM_USER_ERR_ONLYSUPERADMIN') );
 					return false;
 				}
 			}
@@ -717,13 +717,13 @@ class ps_user {
 				$obj->load( $id );
 				$this_group = strtolower( $obj->get('usertype') );
 				if ( $this_group == 'super administrator' ) {
-					$vmLogger->err( JText::_('VM_USER_DELETE_ERR_SUPERADMIN') );
+					$vmLogger->err( JText::_('JM_USER_DELETE_ERR_SUPERADMIN') );
 					return false;
 				} else if ( $id == $my->id ){
-					$vmLogger->err( JText::_('VM_USER_DELETE_ERR_YOURSELF') );
+					$vmLogger->err( JText::_('JM_USER_DELETE_ERR_YOURSELF') );
 					return false;
 				} else if ( ( $this_group == 'administrator' ) && ( $my->gid == 24 ) ){
-					$vmLogger->err( JText::_('VM_USER_DELETE_ERR_ADMIN') );
+					$vmLogger->err( JText::_('JM_USER_DELETE_ERR_ADMIN') );
 					return false;
 				} else {
 					$obj->delete( $id );

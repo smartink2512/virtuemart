@@ -2,9 +2,9 @@
 /**
  * Media controller
  *
- * @package VirtueMart
- * @author VirtueMart
- * @link http://virtuemart.org
+ * @package JMart
+ * @author JMart
+ * @link http://joomlacode.org/gf/project/jmart/
  * @version $Id: product_files.php 93 2009-06-20 12:10:04Z rolandd $
  */
 
@@ -15,9 +15,9 @@ jimport('joomla.application.component.controller');
 /**
  * Product Controller
  *
- * @package    VirtueMart
+ * @package    JMart
  */
-class VirtuemartControllerMedia extends JController
+class JmartControllerMedia extends JController
 {
 	/**
 	 * Method to display the view
@@ -44,7 +44,7 @@ class VirtuemartControllerMedia extends JController
 		$view = $this->getView('media', 'html');
 		
 		/* Default model */
-		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ), true );
+		$view->setModel( $this->getModel( 'media', 'JMartModel' ), true );
 		
 		/* Set the layout */
 		switch (JRequest::getCmd('task')) {

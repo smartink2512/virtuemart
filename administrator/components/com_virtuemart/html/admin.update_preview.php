@@ -3,23 +3,23 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: admin.update_preview.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 *
 */
 
 if( JRequest::getVar( 'vm_updatepackage',null )== null ) {
 //	$mainframe->enqueueMessage('your message', 'error');
-	JError::raiseWarning(JText::_('VM_UPDATE_NOTDOWNLOADED')." ".$extractdir,JText::_('VM_UPDATE_NOTDOWNLOADED')." ".$extractdir);
+	JError::raiseWarning(JText::_('JM_UPDATE_NOTDOWNLOADED')." ".$extractdir,JText::_('JM_UPDATE_NOTDOWNLOADED')." ".$extractdir);
 	return;
 }
 
@@ -33,7 +33,7 @@ if( $packageContents === false ) {
 }
 vmCommonHTML::loadMooTools();
 
-$formObj = new formFactory( JText::_('VM_UPDATE_PREVIEW_LBL') );
+$formObj = new formFactory( JText::_('JM_UPDATE_PREVIEW_LBL') );
 $formObj->startForm();
 
 $vm_mainframe->addStyleDeclaration(".writable { color:green;}\n.unwritable { color:red;font-weight:bold; }");
@@ -42,21 +42,21 @@ vmUpdate::stepBar(2);
 ?>
 <a name="warning"></a>
 <div class="shop_warning">
-	<span style="font-style: italic;"><?php echo JText::_('VM_UPDATE_WARNING_TITLE') ?></span><br />
-	<?php echo JText::_('VM_UPDATE_WARNING_TEXT'); ?>
+	<span style="font-style: italic;"><?php echo JText::_('JM_UPDATE_WARNING_TITLE') ?></span><br />
+	<?php echo JText::_('JM_UPDATE_WARNING_TEXT'); ?>
 </div>
 <div class="shop_info">
-	<span style="font-style: italic;"><?php echo JText::_('VM_UPDATE_PATCH_DETAILS') ?></span><br />
+	<span style="font-style: italic;"><?php echo JText::_('JM_UPDATE_PATCH_DETAILS') ?></span><br />
 	<ul>
-		<li><?php echo JText::_('VM_UPDATE_PATCH_DESCRIPTION') ?>: <?php echo vmGet($packageContents,'description',null, VMREQUEST_ALLOWHTML ) ?></li>
-		<li><?php echo JText::_('VM_UPDATE_PATCH_DATE') ?>: <?php echo $packageContents['releasedate'] ?></li>
+		<li><?php echo JText::_('JM_UPDATE_PATCH_DESCRIPTION') ?>: <?php echo vmGet($packageContents,'description',null, VMREQUEST_ALLOWHTML ) ?></li>
+		<li><?php echo JText::_('JM_UPDATE_PATCH_DATE') ?>: <?php echo $packageContents['releasedate'] ?></li>
 	</ul>
 </div>
 <table class="adminlist">
 	<thead>
 	  <tr>
-	    <th class="title"><?php echo JText::_('VM_UPDATE_PATCH_FILESTOUPDATE') ?></th>
-	    <th class="title"><?php echo JText::_('VM_UPDATE_PATCH_STATUS') ?></th>
+	    <th class="title"><?php echo JText::_('JM_UPDATE_PATCH_FILESTOUPDATE') ?></th>
+	    <th class="title"><?php echo JText::_('JM_UPDATE_PATCH_STATUS') ?></th>
 	  </tr>
 	  </thead>
 	  <tbody>
@@ -91,7 +91,7 @@ foreach( $packageContents['fileArr'] as $fileentry ) {
   	}
   	echo '<tr><td>'.$file.'</td>';
   	$class = $is_writable ? 'writable' : 'unwritable';
-  	$msg = $is_writable ? JText::_('VM_UPDATE_PATCH_WRITABLE') : JText::_('VM_UPDATE_PATCH_UNWRITABLE');
+  	$msg = $is_writable ? JText::_('JM_UPDATE_PATCH_WRITABLE') : JText::_('JM_UPDATE_PATCH_UNWRITABLE');
   	echo '<td class="'.$class.'">'.$msg."</td></tr>\n";
   	
 } ?>
@@ -100,7 +100,7 @@ foreach( $packageContents['fileArr'] as $fileentry ) {
 
 <?php
 if( !empty($packageContents['queryArr'])) {
-	echo '<table class="adminlist"><thead><tr><th class="title">' . JText::_('VM_UPDATE_PATCH_QUERYTOEXEC') . ':</th></tr></thead>';
+	echo '<table class="adminlist"><thead><tr><th class="title">' . JText::_('JM_UPDATE_PATCH_QUERYTOEXEC') . ':</th></tr></thead>';
 	echo '<tbody>';
 	foreach($packageContents['queryArr'] as $query) {
 		echo '<tr><td><pre>'.$query. "</pre></td></tr>";
@@ -110,13 +110,13 @@ if( !empty($packageContents['queryArr'])) {
 if( $valid ) {
 	echo '<div align="center">
 	<input type="checkbox" name="confirm_update" id="confirm_update">
-		<label for="confirm_update">' . JText::_('VM_UPDATE_PATCH_CONFIRM_TEXT') . '</label>
+		<label for="confirm_update">' . JText::_('JM_UPDATE_PATCH_CONFIRM_TEXT') . '</label>
 		<br /><br />
-	<input class="vmicon vmicon32 vmicon-32-apply" type="submit" onclick="return checkConfirm()" value="' . JText::_('VM_UPDATE_PATCH_APPLY') . '" name="submitbutton" />
+	<input class="vmicon vmicon32 vmicon-32-apply" type="submit" onclick="return checkConfirm()" value="' . JText::_('JM_UPDATE_PATCH_APPLY') . '" name="submitbutton" />
 	<input type="button" onclick="document.adminForm.page.value=\'store.index\';document.adminForm.func.value=\'removePatchPackage\';submitform(\'save\');" class="vmicon vmicon32 vmicon-32-cancel" value="'.JText::_('CMN_CANCEL').'" />
 	</div>';
 } else {
-	echo '<div class="shop_error">' . JText::_('VM_UPDATE_PATCH_ERR_UNWRITABLE').'</div>';
+	echo '<div class="shop_error">' . JText::_('JM_UPDATE_PATCH_ERR_UNWRITABLE').'</div>';
 }
 $formObj->finishForm('applypatchpackage', 'admin.update_result');
  ?>
@@ -125,7 +125,7 @@ $formObj->finishForm('applypatchpackage', 'admin.update_result');
  	if( document.adminForm.confirm_update.checked ) {
  		return true;
  	}
- 	alert( "<?php echo JText::_('VM_UPDATE_PATCH_PLEASEMARK') ?>" );
+ 	alert( "<?php echo JText::_('JM_UPDATE_PATCH_PLEASEMARK') ?>" );
  	return false;
  }
  </script>

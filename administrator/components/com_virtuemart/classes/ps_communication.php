@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_communication.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /**
@@ -91,7 +91,7 @@ class ps_communication {
 		$sessioncookie = JRequest::getVar( $_COOKIE, 'virtuemart', null );
 
 		if ( strlen($sessioncookie) < 16 || $sessioncookie == '-') {
-			$vmLogger->err( JText::_('VM_COOKIE_MISSING').'. '.JText::_('NOT_AUTH',false) );
+			$vmLogger->err( JText::_('JM_COOKIE_MISSING').'. '.JText::_('NOT_AUTH',false) );
 			return false;
 		}
 
@@ -143,7 +143,7 @@ class ps_communication {
 		$Itemid = $sess->getShopItemid();
 		$flypage = JRequest::getVar("flypage", null);
 		// product url
-		$product_url = $mosConfig_live_site."/index.php?option=com_virtuemart&page=shop.product_details&flypage=".urlencode($flypage)."&product_id=$product_id&Itemid=$Itemid";
+		$product_url = $mosConfig_live_site."/index.php?option=com_jmart&page=shop.product_details&flypage=".urlencode($flypage)."&product_id=$product_id&Itemid=$Itemid";
 		
 		//by Max Milbers, this need to be changed
 		$vendor_id =1;
@@ -158,9 +158,9 @@ class ps_communication {
 		$shopper_name = $d["name"];
 		$subject_msg = vmRequest::getVar( 'text', '', 'post' );
 		
-		$shopper_subject = sprintf( JText::_('VM_ENQUIRY_SHOPPER_EMAIL_SUBJECT'), $dbv->f("vendor_name"));
+		$shopper_subject = sprintf( JText::_('JM_ENQUIRY_SHOPPER_EMAIL_SUBJECT'), $dbv->f("vendor_name"));
 				
-		$shopper_msg = str_replace( '{vendor_name}', $dbv->f("vendor_name"), JText::_('VM_ENQUIRY_SHOPPER_EMAIL_MESSAGE') );
+		$shopper_msg = str_replace( '{vendor_name}', $dbv->f("vendor_name"), JText::_('JM_ENQUIRY_SHOPPER_EMAIL_MESSAGE') );
 		$shopper_msg = str_replace( '{product_name}', $db->f("product_name"), $shopper_msg );
 		$shopper_msg = str_replace( '{product_sku}', $db->f("product_sku"), $shopper_msg );
 		$shopper_msg = str_replace( '{product_url}', $product_url, $shopper_msg );
@@ -169,9 +169,9 @@ class ps_communication {
 		
 		//
 		
-		$vendor_subject = sprintf( JText::_('VM_ENQUIRY_VENDOR_EMAIL_SUBJECT'), $dbv->f("vendor_name"), $db->f("product_name"));
+		$vendor_subject = sprintf( JText::_('JM_ENQUIRY_VENDOR_EMAIL_SUBJECT'), $dbv->f("vendor_name"), $db->f("product_name"));
 		
-		$vendor_msg = str_replace( '{shopper_name}', $shopper_name, JText::_('VM_ENQUIRY_VENDOR_EMAIL_MESSAGE') );
+		$vendor_msg = str_replace( '{shopper_name}', $shopper_name, JText::_('JM_ENQUIRY_VENDOR_EMAIL_MESSAGE') );
 		$vendor_msg = str_replace( '{shopper_message}', $subject_msg, $vendor_msg );
 		$vendor_msg = str_replace( '{shopper_email}', $shopper_email, $vendor_msg );
 		$vendor_msg = str_replace( '{product_name}', $db->f("product_name"), $vendor_msg );
@@ -271,7 +271,7 @@ class ps_communication {
         <td><input type="text" name="sender_mail" size="50" value="'.(!empty($sender_mail)?$sender_mail:$my->email).'" /></td>
       </tr>
       <tr>
-        <td colspan="2">'.JText::_('VM_RECOMMEND_FORM_MESSAGE').'</td>
+        <td colspan="2">'.JText::_('JM_RECOMMEND_FORM_MESSAGE').'</td>
       </tr>
       <tr>
         <td colspan="2">
@@ -281,7 +281,7 @@ class ps_communication {
         echo stripslashes(str_replace( array('\r', '\n' ), array("\r", "\n" ), $message ));
     }
     else {
-        $msg = sprintf(JText::_('VM_RECOMMEND_MESSAGE',false), $vendor_store_name, $sess->url( URL.'index.php?page=shop.product_details&product_id='.$product_id, true ));
+        $msg = sprintf(JText::_('JM_RECOMMEND_MESSAGE',false), $vendor_store_name, $sess->url( URL.'index.php?page=shop.product_details&product_id='.$product_id, true ));
         echo shopMakeHtmlSafe(stripslashes( str_replace( 'index2.php', 'index.php', $msg )));
     }
 
@@ -290,13 +290,13 @@ class ps_communication {
       </tr>
     </table>
     
-    <input type="hidden" name="option" value="com_virtuemart" />
+    <input type="hidden" name="option" value="com_jmart" />
     <input type="hidden" name="page" value="shop.recommend" />
     <input type="hidden" name="product_id" value="'.$product_id.'" />
     <input type="hidden" name="'.vmCreateHash().'" value="1" />
     <input type="hidden" name="Itemid" value="'.$sess->getShopItemid().'" />
     <input type="hidden" name="func" value="recommendProduct" />
-    <input class="button" type="submit" name="submit" value="'.JText::_('VM_SUBMIT').'" />
+    <input class="button" type="submit" name="submit" value="'.JText::_('JM_SUBMIT').'" />
     <input class="button" type="button" onclick="window.close();" value="'.JText::_('CMN_CANCEL').'" />
     </form>
     ';
@@ -308,7 +308,7 @@ class ps_communication {
     if (!$this->validate( $d )) {
         return false;
     }
-    $subject = sprintf( JText::_('VM_RECOMMEND_SUBJECT',false), $vendor_store_name );
+    $subject = sprintf( JText::_('JM_RECOMMEND_SUBJECT',false), $vendor_store_name );
     $msg = vmRequest::getVar( 'recommend_message', '', 'post' );
     $send = vmMail($d['sender_mail'], 
                    $d['sender_name'],
@@ -318,10 +318,10 @@ class ps_communication {
                   );
     
     if ($send) {
-        $vmLogger->info( JText::_('VM_RECOMMEND_DONE',false) );
+        $vmLogger->info( JText::_('JM_RECOMMEND_DONE',false) );
     }
     else {
-        $vmLogger->warning( JText::_('VM_RECOMMEND_FAILED',false) );
+        $vmLogger->warning( JText::_('JM_RECOMMEND_FAILED',false) );
         return false;
     }
     

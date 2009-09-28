@@ -6,7 +6,7 @@ AdminMenuHelper::startAdminArea();
 
 
 ?>
-<a id="cnid" href="index.php?option=com_virtuemart&view=store">Store countries</a>
+<a id="cnid" href="index.php?option=com_jmart&view=store">Store countries</a>
 <select id="locid"></select>
 <form action="index.php" method="post" name="adminForm">
 	<div id="editcell">
@@ -20,10 +20,10 @@ AdminMenuHelper::startAdminArea();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->stores); ?>);" />
 			</th>					
 			<th>
-				<?php echo JText::_( 'VM_STORE_FORM_STORE_NAME' ); ?>
+				<?php echo JText::_( 'JM_STORE_FORM_STORE_NAME' ); ?>
 			</th>				
 			<th>
-				<?php echo JText::_( 'VM_CREDITCARD_CODE' ); ?>
+				<?php echo JText::_( 'JM_CREDITCARD_CODE' ); ?>
 			</th>									
 			<th width="20">
 				<?php echo JText::_( 'E_REMOVE' ); ?>
@@ -36,8 +36,8 @@ AdminMenuHelper::startAdminArea();
 			$row = $this->stores[$i];		
 			$checked = JHTML::_('grid.id', $i, $row->vendor_id);
 			$published = JHTML::_('grid.published', $row, $i);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=store&task=edit&cid[]=' . $row->vendor_id);
-			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&controller=store&task=remove&cid[]=' . $row->vendor_id);
+			$editlink = JROUTE::_('index.php?option=com_jmart&controller=store&task=edit&cid[]=' . $row->vendor_id);
+			$deletelink	= JROUTE::_('index.php?option=com_jmart&controller=store&task=remove&cid[]=' . $row->vendor_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td width="10" align="right">
@@ -53,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_($row->vendor_name); ?>
 				</td>	
 				<td align="center">
-					<?php echo JHTML::_('link', $deletelink, JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('VM_DELETE_MSG').'\');')) ?>
+					<?php echo JHTML::_('link', $deletelink, JHTML::_('image', JURI::base().'components/com_jmart/assets/images/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('JM_DELETE_MSG').'\');')) ?>
 				</td>				        																														
 			</tr>
 			<?php
@@ -70,7 +70,7 @@ AdminMenuHelper::startAdminArea();
 	</table>	
 </div>
 	        
-	<input type="hidden" name="option" value="com_virtuemart" />
+	<input type="hidden" name="option" value="com_jmart" />
 	<input type="hidden" name="controller" value="store" />
 	<input type="hidden" name="view" value="store" />	
 	<input type="hidden" name="task" value="" />
@@ -84,7 +84,7 @@ AdminMenuHelper::startAdminArea();
 jQuery(document).ready(function() {
 	jQuery("a#cnid").click(function() {
 			/* The selected value */
-			jQuery.getJSON("index.php",{option: 'com_virtuemart', view: "store", task: "getData", format:"raw"}, function(data){
+			jQuery.getJSON("index.php",{option: 'com_jmart', view: "store", task: "getData", format:"raw"}, function(data){
 				var myList = jQuery('select#locid');
 				var options = '';
 				if (data.length > 0) {

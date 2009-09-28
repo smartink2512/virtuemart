@@ -2,10 +2,10 @@
 /**
  * Data module for shop countries
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Country
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 // no direct access
@@ -16,11 +16,11 @@ jimport( 'joomla.application.component.model');
 /**
  * Model class for shop countries
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Country 
  * @author Rick Glunt  
  */
-class VirtueMartModelCountry extends JModel
+class JMartModelCountry extends JModel
 {    
 	/** @var integer Primary key */
     var $_id;          
@@ -95,7 +95,7 @@ class VirtueMartModelCountry extends JModel
 	function _getTotal() 
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `country_id` FROM `#__vm_country`';	  		
+			$query = 'SELECT `country_id` FROM `#__jmart_country`';	  		
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -150,7 +150,7 @@ class VirtueMartModelCountry extends JModel
 		}			
 										
 		$query = 'SELECT *';
-		$query .= ' FROM `#__vm_country`';
+		$query .= ' FROM `#__jmart_country`';
 		$query .= ' WHERE `' . $countryCodeFieldname . '` = ' . (int)$code;
 		$db->setQuery($query);
 
@@ -231,7 +231,7 @@ class VirtueMartModelCountry extends JModel
 		if ($countryId) {
 			$db =& JFactory::getDBO();	
 				
-			$query = 'DELETE FROM `#__vm_state`  WHERE `country_id`= "'.$countryId.'"';
+			$query = 'DELETE FROM `#__jmart_state`  WHERE `country_id`= "'.$countryId.'"';
 			$db->setQuery($query);
 			if ($db->query()) {
 				return true;
@@ -277,11 +277,11 @@ class VirtueMartModelCountry extends JModel
 	 */
 	function getCountries($onlyPublished=false, $noLimit=false)
 	{		
-		$query = 'SELECT * FROM `#__vm_country` ';
+		$query = 'SELECT * FROM `#__jmart_country` ';
 		if ($onlyPublished) { 
-			$query .= 'WHERE `#__vm_country`.`published` = 1';			
+			$query .= 'WHERE `#__jmart_country`.`published` = 1';			
 		}
-		$query .= 'ORDER BY `#__vm_country`.`country_id`';
+		$query .= 'ORDER BY `#__jmart_country`.`country_id`';
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
 		}

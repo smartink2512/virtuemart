@@ -3,27 +3,27 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: product.product_category_form.php 1786 2009-05-13 13:21:59Z macallf $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 global $ps_product_category, $ps_product;
 
 $category_id = JRequest::getVar( 'category_id', 0);
-$option = empty($option)?JRequest::getVar(  'option', 'com_virtuemart'):$option;
+$option = empty($option)?JRequest::getVar(  'option', 'com_jmart'):$option;
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( JText::_('VM_CATEGORY_FORM_LBL') );
+$formObj = &new formFactory( JText::_('JM_CATEGORY_FORM_LBL') );
 //Then Start the form
 $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
 
@@ -44,11 +44,11 @@ elseif (empty($vars["error"])) {
   
 $tabs = new vmTabPanel(0, 1, "categoryform");
 $tabs->startPane("category-pane");
-$tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' width='16' height='16' border='0' /> ".JText::_('VM_CATEGORY_FORM_LBL'), "info-page");
+$tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' width='16' height='16' border='0' /> ".JText::_('JM_CATEGORY_FORM_LBL'), "info-page");
 ?> 
 <table class="adminform">
     <tr> 
-      <td width="21%" nowrap><div align="right"><?php echo JText::_('VM_CATEGORY_FORM_PUBLISH') ?>:</div></td>
+      <td width="21%" nowrap><div align="right"><?php echo JText::_('JM_CATEGORY_FORM_PUBLISH') ?>:</div></td>
       <td width="79%"><?php 
         if ($db->sf("category_publish")=="Y") { 
           echo "<input type=\"checkbox\" name=\"category_publish\" value=\"Y\" checked=\"checked\" />";
@@ -60,7 +60,7 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' w
       </td>
     </tr>
         <tr> 
-      <td width="21%" nowrap><div align="right"><?php echo JText::_('VM_CATEGORY_FORM_SHARED') ?>:</div></td>
+      <td width="21%" nowrap><div align="right"><?php echo JText::_('JM_CATEGORY_FORM_SHARED') ?>:</div></td>
       <td width="79%"><?php 
         if ($db->sf("category_shared")=="Y") { 
           echo "<input type=\"checkbox\" name=\"category_shared\" value=\"Y\" checked=\"checked\" />";
@@ -72,13 +72,13 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' w
       </td>
     </tr>
     <tr> 
-      <td width="21%" nowrap><div align="right"><?php echo JText::_('VM_CATEGORY_FORM_NAME') ?>:</div></td>
+      <td width="21%" nowrap><div align="right"><?php echo JText::_('JM_CATEGORY_FORM_NAME') ?>:</div></td>
       <td width="79%"> 
         <input type="text" class="inputbox" name="category_name" size="60" value="<?php echo shopMakeHtmlSafe( $db->sf('category_name')) ?>" />
       </td>
     </tr>
     <tr> 
-      <td width="21%" valign="top" nowrap><div  align="right"><?php echo JText::_('VM_CATEGORY_FORM_DESCRIPTION') ?>:</div></td>
+      <td width="21%" valign="top" nowrap><div  align="right"><?php echo JText::_('JM_CATEGORY_FORM_DESCRIPTION') ?>:</div></td>
       <td width="79%" valign="top"><?php
         editorArea( 'editor1', $db->f("category_description"), 'category_description', '800', '300', '110', '40' ) ?>
       </td>
@@ -90,7 +90,7 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' w
       			<td width="60%">
       				<table>
     					<tr>
-      						<td ><div align="right"><?php echo JText::_('VM_MODULE_LIST_ORDER') ?>: </div></td>
+      						<td ><div align="right"><?php echo JText::_('JM_MODULE_LIST_ORDER') ?>: </div></td>
       						<td valign="top"><?php 
         						echo $ps_product_category->list_level( $db->f("category_parent_id"), $db->f("category_id"), $db->f("list_order"));
         						echo "<input type=\"hidden\" name=\"currentpos\" value=\"".$db->f("list_order")."\" />";
@@ -98,7 +98,7 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' w
       						</td>
     					</tr>
     					<tr> 
-      						<td width="35%" valign="top" nowrap><div  align="right"><?php echo JText::_('VM_CATEGORY_FORM_PARENT') ?>:</div></td>
+      						<td width="35%" valign="top" nowrap><div  align="right"><?php echo JText::_('JM_CATEGORY_FORM_PARENT') ?>:</div></td>
       						<td width="65%" valign="top"> <?php 
           						if (!$category_id) {
             						$ps_product_category->list_all("parent_category_id", $category_id);
@@ -113,38 +113,38 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' w
       						<td colspan="2"><br /></td>
     					</tr>
     					<tr>
-      						<td ><div align="right"><?php echo JText::_('VM_CATEGORY_FORM_PRODUCTS_PER_ROW'); ?>: </div></td>
+      						<td ><div align="right"><?php echo JText::_('JM_CATEGORY_FORM_PRODUCTS_PER_ROW'); ?>: </div></td>
       						<td valign="top">
       							<input type="text" class="inputbox" size="3" name="products_per_row" value="<?php $db->sp("products_per_row"); ?>" />
       						</td>
     					</tr>
     
     					<tr>
-      						<td ><div align="right"><?php echo JText::_('VM_CATEGORY_FORM_LIMIT_LIST_START'); ?>: </div></td>
+      						<td ><div align="right"><?php echo JText::_('JM_CATEGORY_FORM_LIMIT_LIST_START'); ?>: </div></td>
       						<td valign="top">
       							<input type="text" class="inputbox" size="3" name="limit_list_start" value="<?php $db->sp("limit_list_start"); ?>" />
       						</td>
     					</tr>
     					<tr>
-    						<td ><div align="right"><?php echo JText::_('VM_CATEGORY_FORM_LIMIT_LIST_STEP'); ?>: </div></td>
+    						<td ><div align="right"><?php echo JText::_('JM_CATEGORY_FORM_LIMIT_LIST_STEP'); ?>: </div></td>
       						<td valign="top">
       							<input type="text" class="inputbox" size="3" name="limit_list_step" value="<?php $db->sp("limit_list_step"); ?>" />
       						</td>
     					</tr>
     					<tr>
-      						<td ><div align="right"><?php echo JText::_('VM_CATEGORY_FORM_LIMIT_LIST_MAX'); ?>: </div></td>
+      						<td ><div align="right"><?php echo JText::_('JM_CATEGORY_FORM_LIMIT_LIST_MAX'); ?>: </div></td>
       						<td valign="top">
       							<input type="text" class="inputbox" size="3" name="limit_list_max" value="<?php $db->sp("limit_list_max"); ?>" />
       						</td>
     					</tr>
     					<tr>
-      						<td ><div align="right"><?php echo JText::_('VM_CATEGORY_FORM_INITIAL_DISPLAY_RECORDS'); ?>: </div></td>
+      						<td ><div align="right"><?php echo JText::_('JM_CATEGORY_FORM_INITIAL_DISPLAY_RECORDS'); ?>: </div></td>
       						<td valign="top">
       							<input type="text" class="inputbox" size="3" name="limit_list_initial" value="<?php $db->sp("limit_list_initial"); ?>" />
       						</td>
     					</tr>    
     					<tr>
-      						<td><div align="right"><?php echo JText::_('VM_CATEGORY_FORM_BROWSE_PAGE'); ?>: </div></td>
+      						<td><div align="right"><?php echo JText::_('JM_CATEGORY_FORM_BROWSE_PAGE'); ?>: </div></td>
       						<td valign="top">
       							<?php
       								echo ps_html::list_template_files( "category_browsepage", 'browse', $db->sf("category_browsepage") );
@@ -156,7 +156,7 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' w
     					</tr>
      					<tr>
       						<td ><div align="right">
-        						<?php echo JText::_('VM_CATEGORY_FORM_FLYPAGE') ?>:</div>
+        						<?php echo JText::_('JM_CATEGORY_FORM_FLYPAGE') ?>:</div>
       						</td>
       						<td valign="top">
           						<?php
@@ -168,28 +168,28 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' w
     			</td>
     			<td valign="top">
     				<fieldset>
-            			<legend><?php echo JText::_('VM_META_INFORMATION'); ?></legend>		
+            			<legend><?php echo JText::_('JM_META_INFORMATION'); ?></legend>		
    						<table valign="top">
    							<tr>
-   								<td vlaign="top"><div align="right"><?php echo JText::_('VM_META_DESC'); ?>: </div></td>
+   								<td vlaign="top"><div align="right"><?php echo JText::_('JM_META_DESC'); ?>: </div></td>
       							<td valign="top">
       								<textarea class="inputbox" name="meta_desc" id="meta_desc" cols="35" rows="5"><?php echo $db->sf("metadesc"); ?></textarea>
       							</td>
     						</tr>
     						<tr>
-    							<td ><div align="right"><?php echo JText::_('VM_META_KEYWORDS'); ?>: </div></td>
+    							<td ><div align="right"><?php echo JText::_('JM_META_KEYWORDS'); ?>: </div></td>
       							<td valign="top">
       								<textarea class="inputbox" name="metakey" id="meta_key" cols="35" rows="5"><?php echo $db->sf("metakey"); ?></textarea>
       							</td>
     						</tr>
     						<tr>
-    							<td ><div align="right"><?php echo JText::_('VM_META_ROBOTS'); ?>: </div></td>
+    							<td ><div align="right"><?php echo JText::_('JM_META_ROBOTS'); ?>: </div></td>
       							<td valign="top">
       								<input type="text" class="inputbox" size="20" name="metarobot" value="<?php echo $db->sf("metarobot"); ?>" />
       							</td>
    							</tr>
     						<tr>
-    							<td ><div align="right"><?php echo JText::_('VM_META_AUTHOR'); ?>: </div></td>
+    							<td ><div align="right"><?php echo JText::_('JM_META_AUTHOR'); ?>: </div></td>
       							<td valign="top">
       								<input type="text" class="inputbox" size="20" name="metaauthor" value="<?php echo $db->sf("metaauthor"); ?>" />
       							</td>
@@ -219,28 +219,28 @@ if( !stristr( $db->f("category_full_image"), "http") )
   <table width="100%" border="0" cellspacing="0" cellpadding="2">
     <tr> 
       <td valign="top" width="50%" style="border-right: 1px solid black;">
-        <h2><?php echo JText::_('VM_PRODUCT_FORM_FULL_IMAGE') ?></h2>
+        <h2><?php echo JText::_('JM_PRODUCT_FORM_FULL_IMAGE') ?></h2>
         <table>
           <tr> 
             <td colspan="2" ><?php 
               if ($category_id) {
-                echo JText::_('VM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br />"; } ?> 
+                echo JText::_('JM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br />"; } ?> 
               <input type="file" class="inputbox" name="category_full_image" size="50" maxlength="255" />
             </td>
           </tr>
           <tr> 
-            <td colspan="2" ><strong><?php echo JText::_('VM_IMAGE_ACTION') ?>:</strong><br/>
+            <td colspan="2" ><strong><?php echo JText::_('JM_IMAGE_ACTION') ?>:</strong><br/>
               <input type="radio" class="inputbox" name="category_full_image_action" id="category_full_image_action0" checked="checked" value="none" onchange="toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image, true );toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image_url, true );"/>
-              <label for="category_full_image_action0"><?php echo JText::_('VM_NONE') ?></label><br/>
+              <label for="category_full_image_action0"><?php echo JText::_('JM_NONE') ?></label><br/>
               <?php
               if( function_exists('imagecreatefromjpeg')) {
               		?>
 	              <input type="radio" class="inputbox" name="category_full_image_action" id="category_full_image_action1" value="auto_resize" onchange="toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image, true );toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image_url, true );"/>
-	              <label for="category_full_image_action1"><?php echo JText::_('VM_FILES_FORM_AUTO_THUMBNAIL') . "</label><br />"; 
+	              <label for="category_full_image_action1"><?php echo JText::_('JM_FILES_FORM_AUTO_THUMBNAIL') . "</label><br />"; 
               }
               if ($category_id and $db->f("category_full_image")) { ?>
                 <input type="radio" class="inputbox" name="category_full_image_action" id="category_full_image_action2" value="delete" onchange="toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image, true );toggleDisable( document.adminForm.category_full_image_action[1], document.adminForm.category_thumb_image_url, true );"/>
-                <label for="category_full_image_action2"><?php echo JText::_('VM_PRODUCT_FORM_IMAGE_DELETE_LBL') . "</label><br />"; 
+                <label for="category_full_image_action2"><?php echo JText::_('JM_PRODUCT_FORM_IMAGE_DELETE_LBL') . "</label><br />"; 
               } ?> 
             </td>
           </tr>
@@ -272,22 +272,22 @@ if( !stristr( $db->f("category_full_image"), "http") )
       </td>
 
       <td valign="top" width="50%">
-        <h2><?php echo JText::_('VM_PRODUCT_FORM_THUMB_IMAGE') ?></h2>
+        <h2><?php echo JText::_('JM_PRODUCT_FORM_THUMB_IMAGE') ?></h2>
         <table>
           <tr> 
             <td colspan="2" ><?php if ($category_id) {
-                echo JText::_('VM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br>"; } ?> 
+                echo JText::_('JM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br>"; } ?> 
               <input type="file" class="inputbox" name="category_thumb_image" size="50" maxlength="255" onchange="if(document.adminForm.category_thumb_image.value!='') document.adminForm.category_thumb_image_url.value='';" />
             </td>
           </tr>
           <tr> 
-            <td colspan="2" ><strong><?php echo JText::_('VM_IMAGE_ACTION') ?>:</strong><br/>
+            <td colspan="2" ><strong><?php echo JText::_('JM_IMAGE_ACTION') ?>:</strong><br/>
               <input type="radio" class="inputbox" id="category_thumb_image_action0" name="category_thumb_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.image_action[1], document.adminForm.category_thumb_image, true );toggleDisable( document.adminForm.image_action[1], document.adminForm.category_thumb_image_url, true );"/>
-              <label for="category_thumb_image_action0"><?php echo JText::_('VM_NONE') ?></label><br/>
+              <label for="category_thumb_image_action0"><?php echo JText::_('JM_NONE') ?></label><br/>
               <?php 
               if ($category_id and $db->f("category_thumb_image")) { ?>
                 <input type="radio" class="inputbox" id="category_thumb_image_action1" name="category_thumb_image_action" value="delete" onchange="toggleDisable( document.adminForm.image_action[1], document.adminForm.category_thumb_image, true );toggleDisable( document.adminForm.image_action[1], document.adminForm.category_thumb_image_url, true );"/>
-                <label for="category_thumb_image_action1"><?php echo JText::_('VM_PRODUCT_FORM_IMAGE_DELETE_LBL') . "</label><br />"; 
+                <label for="category_thumb_image_action1"><?php echo JText::_('JM_PRODUCT_FORM_IMAGE_DELETE_LBL') . "</label><br />"; 
               } ?> 
             </td>
           </tr>

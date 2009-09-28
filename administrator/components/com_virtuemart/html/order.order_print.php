@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: order.order_print.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 global $ps_order_status;
@@ -30,7 +30,7 @@ $ps_order_change_html =& new ps_order_change_html($order_id);
 
 if (!is_numeric($order_id)){
     echo "<h2>The Order ID $order_id is not valid.</h2>";
-    echo JText::_('VM_ORDER_NOTFOUND');
+    echo JText::_('JM_ORDER_NOTFOUND');
 }else {
     $dbc = new ps_DB;
 	$q = "SELECT * FROM #__{vm}_orders WHERE order_id='$order_id'";
@@ -44,13 +44,13 @@ if (!is_numeric($order_id)){
 //	  }
 	  
 	  $print_url = $sess->url( $print_url );
-	  $print_url = defined( '_VM_IS_BACKEND' ) ? str_replace( "index2.php", "index3.php", $print_url ) : str_replace( "index.php", "index2.php", $print_url );
+	  $print_url = defined( '_JM_IS_BACKEND' ) ? str_replace( "index2.php", "index3.php", $print_url ) : str_replace( "index.php", "index2.php", $print_url );
 ?>
 	  <div style="float: right;">
 	  	<span class="pagenav" style="font-weight: bold;">
 	  		<a href="javascript:void window.open('<?php echo $print_url ?>', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');">
 	  			<img src="<?php echo $mosConfig_live_site ?>/images/M_images/printButton.png" align="ABSMIDDLE" height="16" width="16" border="0" />
-	  			<?php echo JText::_('VM_CHECK_OUT_THANK_YOU_PRINT_VIEW') ?>
+	  			<?php echo JText::_('JM_CHECK_OUT_THANK_YOU_PRINT_VIEW') ?>
 	  		</a>
 	  	</span>
 	  </div>
@@ -70,28 +70,28 @@ if (!is_numeric($order_id)){
 		  <td valign="top"> 
 			<table border="0" cellspacing="0" cellpadding="1">
 			  <tr class="sectiontableheader"> 
-				  <th colspan="2"><?php echo JText::_('VM_ORDER_PRINT_PO_LBL') ?></th>
+				  <th colspan="2"><?php echo JText::_('JM_ORDER_PRINT_PO_LBL') ?></th>
 			  </tr>
 			  <tr> 
-				  <td><strong><?php echo JText::_('VM_ORDER_PRINT_PO_NUMBER') ?>:</strong></td>
+				  <td><strong><?php echo JText::_('JM_ORDER_PRINT_PO_NUMBER') ?>:</strong></td>
 				<td><?php printf("%08d", $db->f("order_id"));?></td>
 			  </tr>
 			  <tr> 
-				  <td><strong><?php echo JText::_('VM_ORDER_PRINT_PO_DATE') ?>:</strong></td>
+				  <td><strong><?php echo JText::_('JM_ORDER_PRINT_PO_DATE') ?>:</strong></td>
 				<td><?php echo vmFormatDate( $db->f("cdate")+$mosConfig_offset);?></td>
 			  </tr>
 			  <tr> 
-				  <td><strong><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
+				  <td><strong><?php echo JText::_('JM_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
 				<td><?php echo ps_order_status::getOrderStatusName($db->f("order_status")) ?></td>
 			  </tr>
 			  <tr>
-		      <td><strong><?php echo JText::_('VM_ORDER_PRINT_PO_IPADDRESS') ?>:</strong></td>
+		      <td><strong><?php echo JText::_('JM_ORDER_PRINT_PO_IPADDRESS') ?>:</strong></td>
 			    <td><?php $db->p("ip_address"); ?></td>
 			  </tr>
 		  <?php 
 		  if( PSHOP_COUPONS_ENABLE == '1') { ?>
 		  <tr>
-			  <td><strong><?php echo JText::_('VM_COUPON_COUPON_HEADER') ?>:</strong></td>
+			  <td><strong><?php echo JText::_('JM_COUPON_COUPON_HEADER') ?>:</strong></td>
 			  <td><?php if( $db->f("coupon_code") ) $db->p("coupon_code"); else echo '-'; ?></td>
 		  </tr>
 		  <?php 
@@ -102,39 +102,39 @@ if (!is_numeric($order_id)){
 			<?php
 		$tab = new vmTabPanel( 1, 1, "orderstatuspanel");
 		$tab->startPane( "order_change_pane" );
-		$tab->startTab(  JText::_('VM_ORDER_STATUS_CHANGE'), "order_change_page" );
+		$tab->startTab(  JText::_('JM_ORDER_STATUS_CHANGE'), "order_change_page" );
 			?>
 			<form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
 			<table class="adminform">
 			 <tr>
-			  <th colspan="2"><?php echo JText::_('VM_ORDER_STATUS_CHANGE') ?></th>
+			  <th colspan="2"><?php echo JText::_('JM_ORDER_STATUS_CHANGE') ?></th>
 			 </tr>
 			 <tr>
-			  <td class="labelcell"><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') .":"; ?>
+			  <td class="labelcell"><?php echo JText::_('JM_ORDER_PRINT_PO_STATUS') .":"; ?>
 			  </td>
 			  <td><?php $ps_order_status->list_order_status($db->f("order_status")); ?>
-				  <input type="submit" class="button" name="Submit" value="<?php echo JText::_('VM_UPDATE') ?>" />
+				  <input type="submit" class="button" name="Submit" value="<?php echo JText::_('JM_UPDATE') ?>" />
 					<input type="hidden" name="page" value="order.order_print" />
 					<input type="hidden" name="func" value="orderStatusSet" />
 					<input type="hidden" name="vmtoken" value="<?php echo vmSpoofValue($sess->getSessionId()) ?>" />
-					<input type="hidden" name="option" value="com_virtuemart" />
+					<input type="hidden" name="option" value="com_jmart" />
 					<input type="hidden" name="current_order_status" value="<?php $db->p("order_status") ?>" />
 					<input type="hidden" name="order_id" value="<?php echo $order_id ?>" />
 			  </td>
 			 </tr>
 			 <tr>
-			  <td class="labelcell" valign="top"><?php echo JText::_('VM_COMMENT') .":"; ?>
+			  <td class="labelcell" valign="top"><?php echo JText::_('JM_COMMENT') .":"; ?>
 			  </td>
 			  <td>
 				<textarea name="order_comment" rows="5" cols="25"></textarea>
 			  </td>
 			  <tr>
 			  <tr>
-			  <td class="labelcell"><label for="notify_customer"><?php echo JText::_('VM_ORDER_LIST_NOTIFY') ?></label></td>
+			  <td class="labelcell"><label for="notify_customer"><?php echo JText::_('JM_ORDER_LIST_NOTIFY') ?></label></td>
 			  <td><input type="checkbox" name="notify_customer" id="notify_customer" checked="checked" value="Y" /></td> 
 				  </tr>
 				  <tr>
-				<td class="labelcell"><label for="include_comment"><?php echo JText::_('VM_ORDER_HISTORY_INCLUDE_COMMENT') ?></label>
+				<td class="labelcell"><label for="include_comment"><?php echo JText::_('JM_ORDER_HISTORY_INCLUDE_COMMENT') ?></label>
 			  </td>
 			  <td>
 			  <input type="checkbox" name="include_comment" id="include_comment" checked="checked" value="Y" /> 
@@ -144,20 +144,20 @@ if (!is_numeric($order_id)){
 			</form>
 				<?php
 				$tab->endTab();
-				$tab->startTab( JText::_('VM_ORDER_HISTORY'), "order_history_page" );
+				$tab->startTab( JText::_('JM_ORDER_HISTORY'), "order_history_page" );
 				?>
 			<table class="adminlist">
 			 <tr >
-			  <th><?php echo JText::_('VM_ORDER_HISTORY_DATE_ADDED') ?></th>
-			  <th><?php echo JText::_('VM_ORDER_HISTORY_CUSTOMER_NOTIFIED') ?></th>
-			  <th><?php echo JText::_('VM_ORDER_LIST_STATUS') ?></th>
-			  <th><?php echo JText::_('VM_COMMENT') ?></th>
+			  <th><?php echo JText::_('JM_ORDER_HISTORY_DATE_ADDED') ?></th>
+			  <th><?php echo JText::_('JM_ORDER_HISTORY_CUSTOMER_NOTIFIED') ?></th>
+			  <th><?php echo JText::_('JM_ORDER_LIST_STATUS') ?></th>
+			  <th><?php echo JText::_('JM_COMMENT') ?></th>
 			 </tr>
 			 <?php 
 			 foreach( $order_events as $order_event ) {
 			  echo "<tr>";
 			  echo "<td>".$order_event->date_added."</td>\n";
-			  echo "<td align=\"center\"><img alt=\"" . JText::_('VM_ORDER_STATUS_ICON_ALT') ."\" src=\"$mosConfig_live_site/administrator/images/";
+			  echo "<td align=\"center\"><img alt=\"" . JText::_('JM_ORDER_STATUS_ICON_ALT') ."\" src=\"$mosConfig_live_site/administrator/images/";
 			  echo $order_event->customer_notified == 1 ? 'tick.png' : 'publish_x.png';
 
 			  echo "\" border=\"0\" align=\"absmiddle\" /></td>\n";
@@ -187,8 +187,8 @@ if (!is_numeric($order_id)){
     	$shippingfields = ps_userfield::getUserFields('shipping', false, '', true, true );
 	   ?> 
 		<tr> 
-		  <th width="50%"  valign="top"><?php echo JText::_('VM_ORDER_PRINT_BILL_TO_LBL') ?></th>
-		  <th width="50%" valign="top"><?php echo JText::_('VM_ORDER_PRINT_SHIP_TO_LBL') ?></th>
+		  <th width="50%"  valign="top"><?php echo JText::_('JM_ORDER_PRINT_BILL_TO_LBL') ?></th>
+		  <th width="50%" valign="top"><?php echo JText::_('JM_ORDER_PRINT_SHIP_TO_LBL') ?></th>
 		</tr>
 		<tr> 
 		  <td valign="top"> 
@@ -272,15 +272,15 @@ if (!is_numeric($order_id)){
 		  <td colspan="2"> 
 			<table  class="adminlist">
 			  <tr > 
-				<th class="title" width="5%" align="left"><?php echo JText::_('VM_ORDER_EDIT_ACTIONS') ?></th>
-				<th class="title" width="50" align="left"><?php echo JText::_('VM_ORDER_PRINT_QUANTITY') ?></th>
-				<th class="title" width="*" align="left"><?php echo JText::_('VM_ORDER_PRINT_NAME') ?></th>
-				<th class="title" width="10%" align="left"><?php echo JText::_('VM_ORDER_PRINT_SKU') ?></th>
-				<th class="title" width="10%"><?php echo JText::_('VM_ORDER_PRINT_PO_STATUS') ?></th>
-				<th class="title" width="50"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_NET') ?></th>
-				<th class="title" width="50"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_GROSS') ?></th>
-				<th class="title" width="5%"><?php echo JText::_('VM_ORDER_PRINT_TOTAL') ?></th>
-				<th class="title" width="22%"><?php echo JText::_('VM_ORDER_PRINT_INTNOTES') ?></th>
+				<th class="title" width="5%" align="left"><?php echo JText::_('JM_ORDER_EDIT_ACTIONS') ?></th>
+				<th class="title" width="50" align="left"><?php echo JText::_('JM_ORDER_PRINT_QUANTITY') ?></th>
+				<th class="title" width="*" align="left"><?php echo JText::_('JM_ORDER_PRINT_NAME') ?></th>
+				<th class="title" width="10%" align="left"><?php echo JText::_('JM_ORDER_PRINT_SKU') ?></th>
+				<th class="title" width="10%"><?php echo JText::_('JM_ORDER_PRINT_PO_STATUS') ?></th>
+				<th class="title" width="50"><?php echo JText::_('JM_PRODUCT_FORM_PRICE_NET') ?></th>
+				<th class="title" width="50"><?php echo JText::_('JM_PRODUCT_FORM_PRICE_GROSS') ?></th>
+				<th class="title" width="5%"><?php echo JText::_('JM_ORDER_PRINT_TOTAL') ?></th>
+				<th class="title" width="22%"><?php echo JText::_('JM_ORDER_PRINT_INTNOTES') ?></th>
 			  </tr>
 			  <?php
 			  $dbt = new ps_DB;
@@ -328,9 +328,9 @@ if (!is_numeric($order_id)){
   			  echo "<br /><span style=\"font-size: smaller;\">" . ps_product::getDescriptionWithTax($dbt->f("product_attribute")) . "</span>"; 
   			  if( $downloadable ) {
   			  	echo '<br /><br />
-  			  			<div style="font-weight:bold;">'.JText::_('VM_DOWNLOAD_STATS') .'</div>';
+  			  			<div style="font-weight:bold;">'.JText::_('JM_DOWNLOAD_STATS') .'</div>';
   			  	if( empty( $files )) {
-  			  		echo '<em>- '.JText::_('VM_DOWNLOAD_NOTHING_LEFT') .' -</em>';
+  			  		echo '<em>- '.JText::_('JM_DOWNLOAD_NOTHING_LEFT') .' -</em>';
   			  		$enable_download_function = $ps_function->get_function('insertDownloadsForProduct');
   			  		if( $perm->check( $enable_download_function['perms'] ) ) {
   			  			echo '<form action="'.$_SERVER['PHP_SELF'].'" method="post">				  		
@@ -341,18 +341,18 @@ if (!is_numeric($order_id)){
   			  			<input type="hidden" name="func" value="insertDownloadsForProduct" />
   						  <input type="hidden" name="vmtoken" value="'. vmSpoofValue($sess->getSessionId()) .'" />
   			  			<input type="hidden" name="option" value="'.$option.'" />
-  			  			<input class="button" type="submit" name="submit" value="'.JText::_('VM_DOWNLOAD_REENABLE').'" />
+  			  			<input class="button" type="submit" name="submit" value="'.JText::_('JM_DOWNLOAD_REENABLE').'" />
   			  			</form>';
   			  		}
   			  	} else {
   			  		foreach( $files as $file ) {
   			  			echo '<em>'
-  			  					.'<a href="'.$sess->url( $_SERVER['PHP_SELF'].'?page=product.file_form&amp;product_id='.$dbt->f('product_id').'&amp;file_id='.$db->f("file_id")).'&amp;no_menu='.@$_REQUEST['no_menu'].'" title="'.JText::_('VM_MANUFACTURER_LIST_ADMIN').'">'
+  			  					.'<a href="'.$sess->url( $_SERVER['PHP_SELF'].'?page=product.file_form&amp;product_id='.$dbt->f('product_id').'&amp;file_id='.$db->f("file_id")).'&amp;no_menu='.@$_REQUEST['no_menu'].'" title="'.JText::_('JM_MANUFACTURER_LIST_ADMIN').'">'
   			  					.$file->file_name.'</a></em><br />';
   			  			echo '<ul>';
-  			  			echo '<li>'.JText::_('VM_DOWNLOAD_REMAINING_DOWNLOADS') .': '.$file->download_max.'</li>';
+  			  			echo '<li>'.JText::_('JM_DOWNLOAD_REMAINING_DOWNLOADS') .': '.$file->download_max.'</li>';
   			  			if( $file->end_date > 0 ) {
-  			  				echo '<li>'.JText::_('VM_EXPIRY').': '.vmFormatDate( $file->end_date + $mosConfig_offset ).'</li>';
+  			  				echo '<li>'.JText::_('JM_EXPIRY').': '.vmFormatDate( $file->end_date + $mosConfig_offset ).'</li>';
   			  			}
   			  			echo '</ul>';
   			  			echo '<form action="'.$_SERVER['PHP_SELF'].'" method="post">				  		
@@ -361,7 +361,7 @@ if (!is_numeric($order_id)){
   			  			<input type="hidden" name="func" value="mailDownloadId" />
   						  <input type="hidden" name="vmtoken" value="'. vmSpoofValue($sess->getSessionId()) .'" />
   			  			<input type="hidden" name="option" value="'.$option.'" />
-  			  			<input class="button" type="submit" name="submit" value="'.JText::_('VM_DOWNLOAD_RESEND_ID').'" />
+  			  			<input class="button" type="submit" name="submit" value="'.JText::_('JM_DOWNLOAD_RESEND_ID').'" />
   			  			</form>';
   			  		}
   			  		
@@ -372,13 +372,13 @@ if (!is_numeric($order_id)){
 				<td width="10%" align="left"><?php  $dbt->p("order_item_sku") ?></td>
   			<td width="10%">
   				<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
-  				<?php echo "<strong>".JText::_('VM_ORDER_PRINT_PO_STATUS') .": </strong>";
+  				<?php echo "<strong>".JText::_('JM_ORDER_PRINT_PO_STATUS') .": </strong>";
   			 	 $ps_order_status->list_order_status($dbt->f("order_status")); ?>
-  				<input type="submit" class="button" name="Submit" value="<?php echo JText::_('VM_UPDATE') ?>" />
+  				<input type="submit" class="button" name="Submit" value="<?php echo JText::_('JM_UPDATE') ?>" />
   				<input type="hidden" name="page" value="order.order_print" />
   				<input type="hidden" name="func" value="orderStatusSet" />
   				<input type="hidden" name="vmtoken" value="<?php echo vmSpoofValue($sess->getSessionId()) ?>" />
-  				<input type="hidden" name="option" value="com_virtuemart" />
+  				<input type="hidden" name="option" value="com_jmart" />
   				<input type="hidden" name="current_order_status" value="<?php $dbt->p("order_status") ?>" />
   				<input type="hidden" name="order_id" value="<?php echo $order_id ?>" />
   				<input type="hidden" name="order_item_id" value="<?php $dbt->p("order_item_id") ?>" />
@@ -400,7 +400,7 @@ if (!is_numeric($order_id)){
 			  </table>
 			  <table  class="adminlist">
 			  <tr> 
-				  <td align="right" colspan="7"><div align="right"><strong> <?php echo JText::_('VM_ORDER_PRINT_SUBTOTAL') ?>: </strong></div></td>
+				  <td align="right" colspan="7"><div align="right"><strong> <?php echo JText::_('JM_ORDER_PRINT_SUBTOTAL') ?>: </strong></div></td>
 				  <td width="5%" align="right" style="padding-right: 5px;"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_subtotal"), '', $db->f('order_currency')); ?></td>
 			  </tr>
 	  <?php
@@ -414,9 +414,9 @@ if (!is_numeric($order_id)){
 			  <tr>
 				<td align="right" colspan="7"><strong><?php 
 				  if( $db->f("order_discount") > 0)
-					 echo JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT');
+					 echo JText::_('JM_PAYMENT_METHOD_LIST_DISCOUNT');
 				  else
-					 echo JText::_('VM_FEE');
+					 echo JText::_('JM_FEE');
 					?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php
 					  if ($db->f("order_discount") > 0 )
@@ -431,7 +431,7 @@ if (!is_numeric($order_id)){
 			  if( $coupon_discount > 0 || $coupon_discount < 0) {
 	  ?>
 			  <tr>
-				<td align="right" colspan="7"><strong><?php echo JText::_('VM_COUPON_DISCOUNT') ?>:</strong></td> 
+				<td align="right" colspan="7"><strong><?php echo JText::_('JM_COUPON_DISCOUNT') ?>:</strong></td> 
 				<td  width="5%" align="right" style="padding-right: 5px;"><?php
 				  echo "- ".$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?>
 				</td>
@@ -442,15 +442,15 @@ if (!is_numeric($order_id)){
 	  ?>
 			  
 			  <tr> 
-  				<td align="right" colspan="7"><strong><?php echo JText::_('VM_ORDER_PRINT_TOTAL_TAX') ?>:</strong></td>
+  				<td align="right" colspan="7"><strong><?php echo JText::_('JM_ORDER_PRINT_TOTAL_TAX') ?>:</strong></td>
   				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_tax"), '', $db->f('order_currency')) ?></td>
 			  </tr>
 			  <tr> 
-				<td align="right" colspan="7"><strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING') ?>:</strong></td>
+				<td align="right" colspan="7"><strong><?php echo JText::_('JM_ORDER_PRINT_SHIPPING') ?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_shipping"), '', $db->f('order_currency')) ?></td>
 			  </tr>
 			  <tr> 
-				<td align="right" colspan="7"><strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_TAX') ?>:</strong></td>
+				<td align="right" colspan="7"><strong><?php echo JText::_('JM_ORDER_PRINT_SHIPPING_TAX') ?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_shipping_tax"), '', $db->f('order_currency')) ?></td>
 			  </tr>
 	  <?php
@@ -460,9 +460,9 @@ if (!is_numeric($order_id)){
 			  <tr> 
 				<td align="right" colspan="7"><strong><?php 
 				  if( $db->f("order_discount") > 0)
-					echo JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT');
+					echo JText::_('JM_PAYMENT_METHOD_LIST_DISCOUNT');
 				  else
-					echo JText::_('VM_FEE');
+					echo JText::_('JM_FEE');
 					?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php
 					  if ($db->f("order_discount") > 0 )
@@ -477,7 +477,7 @@ if (!is_numeric($order_id)){
 			  if( $coupon_discount > 0 || $coupon_discount < 0) {
 	  ?>
 			  <tr> 
-  				<td align="right" colspan="7"><strong><?php echo JText::_('VM_COUPON_DISCOUNT') ?>:</strong></td> 
+  				<td align="right" colspan="7"><strong><?php echo JText::_('JM_COUPON_DISCOUNT') ?>:</strong></td> 
   				<td width="5%" align="right" style="padding-right: 5px;"><?php echo "- ".$GLOBALS['CURRENCY_DISPLAY']->getFullValue( $coupon_discount, '', $db->f('order_currency') ); ?></td>
 			  </tr>
 			  <?php
@@ -485,7 +485,7 @@ if (!is_numeric($order_id)){
 			}
 	  ?>
 			  <tr>
-				<td align="right" colspan="7"><strong><?php echo JText::_('VM_CART_TOTAL') ?>:</strong></td>
+				<td align="right" colspan="7"><strong><?php echo JText::_('JM_CART_TOTAL') ?>:</strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><strong><?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($db->f("order_total"), '', $db->f('order_currency')); ?></strong>
 				  </td>
 			  </tr>
@@ -510,7 +510,7 @@ if (!is_numeric($order_id)){
     				<table class="adminlist">
     				  <tr>
       					<th ><?php 
-      							echo JText::_('VM_ORDER_PRINT_SHIPPING_LBL') ?>
+      							echo JText::_('JM_ORDER_PRINT_SHIPPING_LBL') ?>
       					</th>
     				  </tr>
     				  <tr> 
@@ -520,19 +520,19 @@ if (!is_numeric($order_id)){
                       $details = explode( "|", $db->f("ship_method_id"));
                     }
                   ?>
-    					    <strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?>: </strong>
+    					    <strong><?php echo JText::_('JM_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?>: </strong>
     						  <?php  echo $details[1]; ?>&nbsp;
                 </td>
     	        </tr>
     				  <tr>
     					  <td align="left">
-    					    <strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_MODE_LBL') ?>: </strong>
+    					    <strong><?php echo JText::_('JM_ORDER_PRINT_SHIPPING_MODE_LBL') ?>: </strong>
     					    <?php echo $details[2]; ?>
                 </td>
     				  </tr>
     				  <tr>
     					  <td align="left">
-    					    <strong><?php echo JText::_('VM_ORDER_PRINT_SHIPPING_PRICE_LBL') ?>: </strong>
+    					    <strong><?php echo JText::_('JM_ORDER_PRINT_SHIPPING_PRICE_LBL') ?>: </strong>
     					    <?php echo $GLOBALS['CURRENCY_DISPLAY']->getFullValue($details[3], '', $db->f('order_currency')); ?>
     					  </td>
     				  </tr>
@@ -549,7 +549,7 @@ if (!is_numeric($order_id)){
   			   
   				// DECODE Account Number
   				$dbaccount =& new ps_DB;
-  			    $q = "SELECT ".VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."')
+  			    $q = "SELECT ".JM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."')
   					AS account_number, order_payment_code FROM #__{vm}_order_payment  
   					WHERE order_id='".$order_id."'";
   				$dbaccount->query($q);
@@ -559,10 +559,10 @@ if (!is_numeric($order_id)){
   			  <td valign="top" width="*">
     				<table class="adminlist">
     				  <tr class="sectiontableheader"> 
-      					<th width="13%"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LBL') ?></th>
-      					<th width="40%"><?php echo JText::_('VM_ORDER_PRINT_ACCOUNT_NAME') ?></th>
-      					<th width="30%"><?php echo JText::_('VM_ORDER_PRINT_ACCOUNT_NUMBER'); ?></th>
-      					<th width="17%"><?php echo JText::_('VM_ORDER_PRINT_EXPIRE_DATE') ?></th>
+      					<th width="13%"><?php echo JText::_('JM_ORDER_PRINT_PAYMENT_LBL') ?></th>
+      					<th width="40%"><?php echo JText::_('JM_ORDER_PRINT_ACCOUNT_NAME') ?></th>
+      					<th width="30%"><?php echo JText::_('JM_ORDER_PRINT_ACCOUNT_NUMBER'); ?></th>
+      					<th width="17%"><?php echo JText::_('JM_ORDER_PRINT_EXPIRE_DATE') ?></th>
     				  </tr>
     				  <tr> 
       					<td width="13%">
@@ -572,14 +572,14 @@ if (!is_numeric($order_id)){
       					<td width="30%"><?php 
         					echo ps_checkout::asterisk_pad( $dbaccount->f("account_number"), 4, true );
         					if( $dbaccount->f('order_payment_code')) {
-        						echo '<br/>(' . JText::_('VM_ORDER_PAYMENT_CCV_CODE') . ': '.$dbaccount->f('order_payment_code').') ';
+        						echo '<br/>(' . JText::_('JM_ORDER_PAYMENT_CCV_CODE') . ': '.$dbaccount->f('order_payment_code').') ';
         					}
         					?>
                 </td>
       					<td width="17%"><?php echo vmFormatDate( $dbpm->f("order_payment_expire"), '%b-%Y'); ?></td>
     				  </tr> 
     				  <tr class="sectiontableheader"> 
-      					<th colspan="4"><?php echo JText::_('VM_ORDER_PRINT_PAYMENT_LOG_LBL') ?></th>
+      					<th colspan="4"><?php echo JText::_('JM_ORDER_PRINT_PAYMENT_LOG_LBL') ?></th>
     				  </tr>
     				  <tr> 
       					<td colspan="4"><?php if($dbpm->f("order_payment_log")) echo $dbpm->f("order_payment_log"); else echo "./."; ?></td>
@@ -600,7 +600,7 @@ if (!is_numeric($order_id)){
   			  <td valign="top" width="30%" colspan="2">
     				<table class="adminlist">
     				  <tr>
-    					  <th><?php echo JText::_('VM_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
+    					  <th><?php echo JText::_('JM_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
     				  </tr>
     				  <tr>
     				    <td valign="top" align="center" width="50%">

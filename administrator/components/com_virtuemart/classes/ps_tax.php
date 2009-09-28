@@ -4,17 +4,17 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 /**
  *
  * @version $Id: ps_tax.php 1760 2009-05-03 22:58:57Z Aravot $
- * @package VirtueMart
+ * @package JMart
  * @subpackage classes
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * VirtueMart is free software. This version may have been modified pursuant
+ * JMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+ * See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
  *
- * http://virtuemart.org
+ * http://joomlacode.org/gf/project/jmart/
  */
 
 class ps_tax extends vmAbstractObject  {
@@ -35,7 +35,7 @@ class ps_tax extends vmAbstractObject  {
 			$q = "SELECT tax_rate_id from #__{vm}_tax_rate WHERE tax_state='" . $d["tax_state"] . "'" ;
 			$db->query( $q ) ;
 			if( $db->next_record() ) {
-				$vmLogger->err( JText::_('VM_TAX_ERR_STATE_LISTED') ) ;
+				$vmLogger->err( JText::_('JM_TAX_ERR_STATE_LISTED') ) ;
 				$valid = False ;
 			}
 		}
@@ -46,18 +46,18 @@ class ps_tax extends vmAbstractObject  {
 		}
 		 */
 		if( empty($d["tax_country"]) ) {
-			$vmLogger->err( JText::_('VM_TAX_ERR_COUNTRY') ) ;
+			$vmLogger->err( JText::_('JM_TAX_ERR_COUNTRY') ) ;
 			$valid = False ;
 		}
 		require_once( CLASSPATH.'ps_country.php');
 		$ps_country = new ps_country();
 		$country_db = $ps_country->get_country_by_code($d["tax_country"]);
 		if( $country_db === false ) {
-			$vmLogger->err( JText::_('VM_TAX_ERR_COUNTRY_NOTEXIST') );
+			$vmLogger->err( JText::_('JM_TAX_ERR_COUNTRY_NOTEXIST') );
 			return false;
 		}
 		if( empty($d["tax_rate"]) ) {
-			$vmLogger->err( JText::_('VM_TAX_ERR_TAXRATE') ) ;
+			$vmLogger->err( JText::_('JM_TAX_ERR_TAXRATE') ) ;
 			$valid = False ;
 		}
 		$d["tax_rate"] = floatval( str_replace( ',', '.', $d['tax_rate'] ) ) ;
@@ -79,7 +79,7 @@ class ps_tax extends vmAbstractObject  {
 		$db = new ps_DB( ) ;
 		
 		if( ! $d["tax_rate_id"] ) {
-			$vmLogger->err( JText::_('VM_TAX_ERR_UPDATE_SELECT') ) ;
+			$vmLogger->err( JText::_('JM_TAX_ERR_UPDATE_SELECT') ) ;
 			return False ;
 		}
 		/**
@@ -88,18 +88,18 @@ class ps_tax extends vmAbstractObject  {
 			return False;
 		 */
 		if( empty($d["tax_country"]) ) {
-			$vmLogger->err( JText::_('VM_TAX_ERR_COUNTRY') ) ;
+			$vmLogger->err( JText::_('JM_TAX_ERR_COUNTRY') ) ;
 			return False ;
 		}
 		require_once( CLASSPATH.'ps_country.php');
 		$ps_country = new ps_country();
 		$country_db = $ps_country->get_country_by_code($d["tax_country"]);
 		if( $country_db === false ) {
-			$vmLogger->err( JText::_('VM_TAX_ERR_COUNTRY_NOTEXIST') );
+			$vmLogger->err( JText::_('JM_TAX_ERR_COUNTRY_NOTEXIST') );
 			return false;
 		}
 		if( empty($d["tax_rate"]) ) {
-			$vmLogger->err( JText::_('VM_TAX_ERR_TAXRATE') ) ;
+			$vmLogger->err( JText::_('JM_TAX_ERR_TAXRATE') ) ;
 			return False ;
 		}
 		$d["tax_rate"] = floatval( str_replace( ',', '.', $d['tax_rate'] ) ) ;
@@ -118,7 +118,7 @@ class ps_tax extends vmAbstractObject  {
 		global $vmLogger;
 		
 		if( ! $d["tax_rate_id"] ) {
-			$vmLogger->err( JText::_('VM_TAX_ERR_DELETE_SELECT') ) ;
+			$vmLogger->err( JText::_('JM_TAX_ERR_DELETE_SELECT') ) ;
 			return False ;
 		}
 		
@@ -153,10 +153,10 @@ class ps_tax extends vmAbstractObject  {
 		$db->buildQuery('INSERT', $this->getTable(), $fields );
 		if( $db->query() !== false ) {
 			$_REQUEST['tax_rate_id'] = $db->last_insert_id() ;
-			$GLOBALS['vmLogger']->info(JText::_('VM_TAX_ADDED'));
+			$GLOBALS['vmLogger']->info(JText::_('JM_TAX_ADDED'));
 			return True ;
 		}
-		$GLOBALS['vmLogger']->err(JText::_('VM_TAX_ADD_FAILED'));
+		$GLOBALS['vmLogger']->err(JText::_('JM_TAX_ADD_FAILED'));
 		return false;	
 	}
 	
@@ -186,10 +186,10 @@ class ps_tax extends vmAbstractObject  {
 								);
 		$db->buildQuery('UPDATE', $this->getTable(), $fields, 'WHERE tax_rate_id=' . $d["tax_rate_id"] . ' AND vendor_id='.$hVendor_id );
 		if( $db->query() !== false ) {
-			$GLOBALS['vmLogger']->info(JText::_('VM_TAX_UPDATED'));
+			$GLOBALS['vmLogger']->info(JText::_('JM_TAX_UPDATED'));
 			return True ;
 		}
-		$GLOBALS['vmLogger']->err(JText::_('VM_TAX_UPDATE_FAILED'));
+		$GLOBALS['vmLogger']->err(JText::_('JM_TAX_UPDATE_FAILED'));
 		return false;	
 		
 	}
@@ -246,7 +246,7 @@ class ps_tax extends vmAbstractObject  {
 		if( $on_change != '' ) {
 			$on_change = " onchange=\"$on_change\"" ;
 		}
-		$ratesArr[0] = JText::_( 'VM_INFO_MSG_VAT_ZERO_LBL' ) ;
+		$ratesArr[0] = JText::_( 'JM_INFO_MSG_VAT_ZERO_LBL' ) ;
 		
 		$tax_rates = Array( ) ;
 		while( $db->next_record() ) {

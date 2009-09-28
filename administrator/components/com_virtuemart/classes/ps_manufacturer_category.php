@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_manufacturer_category.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /****************************************************************************
@@ -50,7 +50,7 @@ class ps_manufacturer_category {
 		$db = new ps_DB;
 
 		if (!$d["mf_category_name"]) {
-			$GLOBALS['vmLogger']->err( JText::_('VM_MANUF_CAT_ERR_NAME') );
+			$GLOBALS['vmLogger']->err( JText::_('JM_MANUF_CAT_ERR_NAME') );
 			return False;
 		}
 
@@ -60,7 +60,7 @@ class ps_manufacturer_category {
 			$db->query($q);
 			$db->next_record();
 			if ($db->f("rowcnt") > 0) {
-				$GLOBALS['vmLogger']->err( JText::_('VM_MANUF_CAT_ERR_EXISTS') );
+				$GLOBALS['vmLogger']->err( JText::_('JM_MANUF_CAT_ERR_EXISTS') );
 				return False;
 			}
 		}
@@ -76,7 +76,7 @@ class ps_manufacturer_category {
 	function validate_update($d) {
 		
 		if (empty($d["mf_category_name"])) {
-			$GLOBALS['vmLogger']->err( JText::_('VM_MANUF_CAT_ERR_NAME') );
+			$GLOBALS['vmLogger']->err( JText::_('JM_MANUF_CAT_ERR_NAME') );
 			return false;
 		}
 
@@ -92,7 +92,7 @@ class ps_manufacturer_category {
 	function validate_delete($d) {
 		
 		if (empty($d["mf_category_id"])) {
-			$GLOBALS['vmLogger']->err( JText::_('VM_MANUF_CAT_ERR_DELETE_SELECT') );
+			$GLOBALS['vmLogger']->err( JText::_('JM_MANUF_CAT_ERR_DELETE_SELECT') );
 			return False;
 		}
 		else {
@@ -122,7 +122,7 @@ class ps_manufacturer_category {
 
 		if( $db->query() !== false ) {
 			$_REQUEST['mf_category_id'] = $db->last_insert_id();
-			$GLOBALS['vmLogger']->info( JText::_('VM_MANUF_CAT_ADDED') );
+			$GLOBALS['vmLogger']->info( JText::_('JM_MANUF_CAT_ADDED') );
 			return True;
 		}
 		return false;
@@ -152,7 +152,7 @@ class ps_manufacturer_category {
 
 		if( $db->query() !== false ) {
 			$_REQUEST['mf_category_id'] = $db->last_insert_id();
-			$GLOBALS['vmLogger']->info( JText::_('VM_MANUF_CAT_UPDATED') );
+			$GLOBALS['vmLogger']->info( JText::_('JM_MANUF_CAT_UPDATED') );
 			return True;
 		}
 		return false;
@@ -215,7 +215,7 @@ class ps_manufacturer_category {
 		$db->query($q);
 		$array = array();
 		if ( $rowcnt > 1) {
-			$array[0] = JText::_('VM_SELECT');
+			$array[0] = JText::_('JM_SELECT');
 		}
 		while ($db->next_record()) {
 			$array[$db->f("mf_category_id")] = $db->f("mf_category_name");

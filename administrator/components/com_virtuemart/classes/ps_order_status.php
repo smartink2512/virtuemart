@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_order_status.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /**
@@ -53,7 +53,7 @@ class ps_order_status extends vmAbstractObject {
 			$order_status_code = $db->f('order_status_code');
 			// Check if the Order Status Code of protected Order Statuses is to be changed
 			if( in_array( $order_status_code, $this->_protected_status_codes ) && $order_status_code != $d["order_status_code"] ) {
-				$vmLogger->err( JText::_('VM_ORDERSTATUS_CHANGE_ERR_CORE') );
+				$vmLogger->err( JText::_('JM_ORDERSTATUS_CHANGE_ERR_CORE') );
 				return False;
 			}
 			if( $order_status_code != $d["order_status_code"] ) {
@@ -75,20 +75,20 @@ class ps_order_status extends vmAbstractObject {
 		
 		
 		if (empty($d["order_status_id"])) {
-			$vmLogger->err( JText::_('VM_ORDERSTATUS_DELETE_ERR_SELECT') );
+			$vmLogger->err( JText::_('JM_ORDERSTATUS_DELETE_ERR_SELECT') );
 			return False;
 		}
 		$db = $this->get(intval($d["order_status_id"]));
 		if( $db->f('order_status_code')) {
 			$order_status_code = $db->f('order_status_code');
 			if( in_array( $order_status_code, $this->_protected_status_codes ) ) {
-				$vmLogger->err( JText::_('VM_ORDERSTATUS_DELETE_ERR_CORE') );
+				$vmLogger->err( JText::_('JM_ORDERSTATUS_DELETE_ERR_CORE') );
 				return False;
 			}
 			$dbo = new ps_DB();
 			$dbo->query('SELECT order_id FROM #__{vm}_orders WHERE order_status=\''.$order_status_code.'\' LIMIT 1');
 			if( $dbo->next_record() ) {
-				$vmLogger->err( JText::_('VM_ORDERSTATUS_DELETE_ERR_STILL') );
+				$vmLogger->err( JText::_('JM_ORDERSTATUS_DELETE_ERR_STILL') );
 				return False;
 			}
 		}
@@ -123,10 +123,10 @@ class ps_order_status extends vmAbstractObject {
 		$result = $db->query();
 		
 		if( $result ) {
-			$GLOBALS['vmLogger']->info(JText::_('VM_ORDERSTATUS_ADDED'));
+			$GLOBALS['vmLogger']->info(JText::_('JM_ORDERSTATUS_ADDED'));
 			$d["order_status_id"] = $_REQUEST['order_status_id'] = $db->last_insert_id();
 		} else {
-			$GLOBALS['vmLogger']->err(JText::_('VM_ORDERSTATUS_ADD_FAILED'));
+			$GLOBALS['vmLogger']->err(JText::_('JM_ORDERSTATUS_ADD_FAILED'));
 		}
 		return $result;
 
@@ -156,7 +156,7 @@ class ps_order_status extends vmAbstractObject {
 		$db->buildQuery( 'UPDATE', $this->_table_name, $fields, "WHERE order_status_id=".(int)$d["order_status_id"]." AND vendor_id=$vendor_id" );
 		
 		if( $db->query() !== false ) {
-			$GLOBALS['vmLogger']->info(JText::_('VM_ORDERSTATUS_UPDATED'));
+			$GLOBALS['vmLogger']->info(JText::_('JM_ORDERSTATUS_UPDATED'));
 			return true;
 		}
 		return false;

@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_reviews.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2009 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 class ps_reviews {
@@ -43,9 +43,9 @@ class ps_reviews {
 	function allvotes( $product_id ) {
 
 		$db = &JFactory::getDBO();
-		$tpl = new $GLOBALS['VM_THEMECLASS']();
+		$tpl = new $GLOBALS['JM_THEMECLASS']();
 		
-		$q = "SELECT `votes`, `allvotes`, `rating` FROM `#__vm_product_votes` "
+		$q = "SELECT `votes`, `allvotes`, `rating` FROM `#__jmart_product_votes` "
 			. "WHERE `product_id`='$product_id' ";
 		$db->setQuery($q);
 		$result = $db->loadAssoc();
@@ -75,7 +75,7 @@ class ps_reviews {
 	 */
 	function voteform( $product_id ) {
 		
-		$tpl = new $GLOBALS['VM_THEMECLASS']();
+		$tpl = new $GLOBALS['JM_THEMECLASS']();
 		$tpl->set( 'product_id', $product_id );
 		
 		return $tpl->fetch( 'common/voteform.tpl.php' );
@@ -135,12 +135,12 @@ class ps_reviews {
 		$db = new ps_DB;
 
 		$d["comment"] = trim($d["comment"]);
-		if( strlen( $d["comment"] ) < VM_REVIEWS_MINIMUM_COMMENT_LENGTH ) {
-			$vmLogger->err( sprintf( JText::_('VM_REVIEW_ERR_COMMENT1',false), VM_REVIEWS_MINIMUM_COMMENT_LENGTH ));
+		if( strlen( $d["comment"] ) < JM_REVIEWS_MINIMUM_COMMENT_LENGTH ) {
+			$vmLogger->err( sprintf( JText::_('JM_REVIEW_ERR_COMMENT1',false), JM_REVIEWS_MINIMUM_COMMENT_LENGTH ));
 			return false;
 		}
-		if( strlen ( $d["comment"] ) > VM_REVIEWS_MAXIMUM_COMMENT_LENGTH ) {
-			$vmLogger->err( sprintf( JText::_('VM_REVIEW_ERR_COMMENT2',false), VM_REVIEWS_MAXIMUM_COMMENT_LENGTH ) );
+		if( strlen ( $d["comment"] ) > JM_REVIEWS_MAXIMUM_COMMENT_LENGTH ) {
+			$vmLogger->err( sprintf( JText::_('JM_REVIEW_ERR_COMMENT2',false), JM_REVIEWS_MAXIMUM_COMMENT_LENGTH ) );
 			return false;
 		}
 		$time = time() + $mosConfig_offset*60*60;
@@ -155,7 +155,7 @@ class ps_reviews {
 
 		$this->process_vote( $d );
 
-		$vmLogger->info( JText::_('VM_REVIEW_MODIFIED',false) );
+		$vmLogger->info( JText::_('JM_REVIEW_MODIFIED',false) );
 
 		return true;
 	}
@@ -169,13 +169,13 @@ class ps_reviews {
 	function reviewform( $product_id ) {
 		global $db, $auth;
 		
-		$tpl = new $GLOBALS['VM_THEMECLASS']();
+		$tpl = new $GLOBALS['JM_THEMECLASS']();
 
 		$db->query("SELECT userid FROM #__{vm}_product_reviews WHERE product_id='$product_id' AND userid=".(int)$auth['user_id']);
 		$db->next_record();
 		$alreadycommented = $db->num_rows() > 0;
 
-		$review_comment = sprintf( JText::_('VM_REVIEW_COMMENT'), VM_REVIEWS_MINIMUM_COMMENT_LENGTH, VM_REVIEWS_MAXIMUM_COMMENT_LENGTH );
+		$review_comment = sprintf( JText::_('JM_REVIEW_COMMENT'), JM_REVIEWS_MINIMUM_COMMENT_LENGTH, JM_REVIEWS_MAXIMUM_COMMENT_LENGTH );
 		
 		$tpl->set( 'product_id', $product_id );
 		$tpl->set( 'alreadycommented', $alreadycommented );
@@ -237,16 +237,16 @@ class ps_reviews {
 
 		if (PSHOP_ALLOW_REVIEWS == "1" && !empty($auth['user_id']) ) {
 			$d["comment"] = trim($d["comment"]);
-			if( strlen( $d["comment"] ) < VM_REVIEWS_MINIMUM_COMMENT_LENGTH ) {
-				$vmLogger->err( sprintf( JText::_('VM_REVIEW_ERR_COMMENT1',false), VM_REVIEWS_MINIMUM_COMMENT_LENGTH ));
+			if( strlen( $d["comment"] ) < JM_REVIEWS_MINIMUM_COMMENT_LENGTH ) {
+				$vmLogger->err( sprintf( JText::_('JM_REVIEW_ERR_COMMENT1',false), JM_REVIEWS_MINIMUM_COMMENT_LENGTH ));
 				return true;
 			}
-			if( strlen ( $d["comment"] ) > VM_REVIEWS_MAXIMUM_COMMENT_LENGTH ) {
-				$vmLogger->err( sprintf( JText::_('VM_REVIEW_ERR_COMMENT2',false), VM_REVIEWS_MAXIMUM_COMMENT_LENGTH ));
+			if( strlen ( $d["comment"] ) > JM_REVIEWS_MAXIMUM_COMMENT_LENGTH ) {
+				$vmLogger->err( sprintf( JText::_('JM_REVIEW_ERR_COMMENT2',false), JM_REVIEWS_MAXIMUM_COMMENT_LENGTH ));
 				return true;
 			}
 			if( !isset( $d["user_rating"] ) || intval( $d["user_rating"] ) < 0 || intval( $d["user_rating"] ) > 5) {
-				$vmLogger->err(JText::_('VM_REVIEW_ERR_RATE',false));
+				$vmLogger->err(JText::_('JM_REVIEW_ERR_RATE',false));
 				return true;
 			}
 			$commented=false;
@@ -267,7 +267,7 @@ class ps_reviews {
 			}
 			if ($commented==false) {
 				$comment= nl2br(htmlspecialchars(vmGet($d, 'comment' )));
-				$published = VM_REVIEWS_AUTOPUBLISH ? 'Y' : 'N';
+				$published = JM_REVIEWS_AUTOPUBLISH ? 'Y' : 'N';
 				$time = time() + $mosConfig_offset*60*60;
 				$fields = array('product_id' => $d['product_id'], 
 											'userid' => $userid,
@@ -280,10 +280,10 @@ class ps_reviews {
 				$db->query();
 				
 				$this->process_vote( $d );
-				$vmLogger->info(JText::_('VM_REVIEW_THANKYOU',false));
+				$vmLogger->info(JText::_('JM_REVIEW_THANKYOU',false));
 			}
 			else {
-				$vmLogger->info( JText::_('VM_REVIEW_ALREADYDONE',false) );
+				$vmLogger->info( JText::_('JM_REVIEW_ALREADYDONE',false) );
 			}
 		}
 		return true;

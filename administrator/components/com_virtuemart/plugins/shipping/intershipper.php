@@ -4,17 +4,17 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 /**
  *
  * @version $Id: intershipper.php 1624 2009-02-04 19:28:48Z Milbo $
- * @package VirtueMart
+ * @package JMart
  * @subpackage shipping
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * VirtueMart is free software. This version may have been modified pursuant
+ * JMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+ * See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
  *
- * http://virtuemart.org
+ * http://joomlacode.org/gf/project/jmart/
  */
 /**
  * Class to connect to Intershipper and fetch live rates

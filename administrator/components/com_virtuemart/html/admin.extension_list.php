@@ -5,17 +5,17 @@ if (! defined ( '_VALID_MOS' ) && ! defined ( '_JEXEC' ))
 /**
 *
 * @version $Id: installer.extension_list.class.php 27/09/2008
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright 2008 HoaNT-Vsmarttech for this class
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 JHTML::_('behavior.tooltip');
@@ -27,7 +27,7 @@ $available_extensions = vmInstaller::get_extension_types();
 
 $extension_type = JRequest::getVar('extension_type', 'payment');
 
-$link = $_SERVER['SCRIPT_NAME'].'?option=com_virtuemart&page='.$page.'&extension_type=';
+$link = $_SERVER['SCRIPT_NAME'].'?option=com_jmart&page='.$page.'&extension_type=';
  
 echo '<div id="submenu-box">';
 echo '<div id="submenu">';

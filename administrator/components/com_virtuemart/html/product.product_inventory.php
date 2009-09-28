@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: product.product_inventory.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 /**
 * @20090204 Hack from toivo.talikka@totaldata.biz  stock on hand listing for VM 1.0
@@ -144,31 +144,31 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('VM_PRODUCT_INVENTORY_LBL'), IMAGEURL."ps_image/inventory.gif", $modulename, "product_inventory");
+$listObj->writeSearchHeader(JText::_('JM_PRODUCT_INVENTORY_LBL'), IMAGEURL."ps_image/inventory.gif", $modulename, "product_inventory");
 
 echo '&nbsp;&nbsp;';
 if($allproducts != 1){
 	$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=$page&allproducts=1");
 	
-	echo '<a href="'.$link.'" title="'.JText::_('VM_LIST_ALL_PRODUCTS').'">';
-	echo JText::_('VM_LIST_ALL_PRODUCTS');
+	echo '<a href="'.$link.'" title="'.JText::_('JM_LIST_ALL_PRODUCTS').'">';
+	echo JText::_('JM_LIST_ALL_PRODUCTS');
 	echo '</a>';
 } else{
-	echo JText::_('VM_LIST_ALL_PRODUCTS');
+	echo JText::_('JM_LIST_ALL_PRODUCTS');
 }
 
 
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
-//if ($allproducts == 1) echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=$page&allproducts=0").'" title="'.JText::_('VM_HIDE_OUT_OF_STOCK').'">';
-//echo JText::_('VM_HIDE_OUT_OF_STOCK');
+//if ($allproducts == 1) echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=$page&allproducts=0").'" title="'.JText::_('JM_HIDE_OUT_OF_STOCK').'">';
+//echo JText::_('JM_HIDE_OUT_OF_STOCK');
 //if ($allproducts == 1) '</a>';
 //echo '<br /><br />';
 if ($allproducts != 0) {
-	echo "<a href=\"".$sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=$page&allproducts=0").'" title="'.JText::_('VM_HIDE_OUT_OF_STOCK'). "\">";
-	echo JText::_('VM_HIDE_OUT_OF_STOCK');
+	echo "<a href=\"".$sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=$page&allproducts=0").'" title="'.JText::_('JM_HIDE_OUT_OF_STOCK'). "\">";
+	echo JText::_('JM_HIDE_OUT_OF_STOCK');
 	echo "</a>";
 }else{
-	echo JText::_('VM_HIDE_OUT_OF_STOCK');
+	echo JText::_('JM_HIDE_OUT_OF_STOCK');
 }
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
 
@@ -177,11 +177,11 @@ $listObj->startTable();
 
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
-					JText::_('VM_PRODUCT_LIST_NAME') => '',
-					JText::_('VM_PRODUCT_LIST_SKU') => '',
-					JText::_('VM_PRODUCT_INVENTORY_STOCK') => '',
-					JText::_('VM_PRODUCT_INVENTORY_PRICE') => '',
-					JText::_('VM_PRODUCT_INVENTORY_WEIGHT') => '',
+					JText::_('JM_PRODUCT_LIST_NAME') => '',
+					JText::_('JM_PRODUCT_LIST_SKU') => '',
+					JText::_('JM_PRODUCT_INVENTORY_STOCK') => '',
+					JText::_('JM_PRODUCT_INVENTORY_PRICE') => '',
+					JText::_('JM_PRODUCT_INVENTORY_WEIGHT') => '',
 					JText::_('CMN_PUBLISHED') => 'width="5%"',
 				);
 $listObj->writeTableHeader( $columns );
@@ -200,7 +200,7 @@ while ($db->next_record()) {
 					"&product_id=" . $db->f("product_id")."&product_parent_id=".$db->f("product_parent_id");
 	if( $vmLayout != 'standard' ) {
 		$link .= "&no_menu=1&tmpl=component";
-		$link = defined('_VM_IS_BACKEND') 
+		$link = defined('_JM_IS_BACKEND') 
 					? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
 					: str_replace('index.php', 'index2.php', $link );
 	}

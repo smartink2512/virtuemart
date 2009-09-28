@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: shop.infopage.tpl.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage themes
 * @copyright Copyright (C) 2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 //TODO !
@@ -30,7 +30,7 @@ require_once( CLASSPATH . 'ps_vendor.php');
   <table align="center" cellspacing="0" cellpadding="0" border="0">
       <tr valign="top"> 
         <th colspan="2" align="center" class="sectiontableheader">
-          <strong><?php echo JText::_('VM_STORE_FORM_CONTACT_LBL') ?></strong>
+          <strong><?php echo JText::_('JM_STORE_FORM_CONTACT_LBL') ?></strong>
         </th>
         </tr>
         <tr valign="top">
@@ -41,10 +41,10 @@ require_once( CLASSPATH . 'ps_vendor.php');
 
         <tr>
       <td valign="top" align="center" colspan="2">
-          <br /><?php echo JText::_('VM_STORE_FORM_CONTACT_LBL') ?>:&nbsp;<?php echo $v_title ." " . $v_first_name . " " . $v_last_name ?>
-          <br /><?php echo JText::_('VM_STORE_FORM_PHONE') ?>:&nbsp;<?php $db->p("phone_1");?>
-          <br /><?php echo JText::_('VM_STORE_FORM_FAX') ?>:&nbsp;<?php echo $v_fax ?>
-          <br /><?php echo JText::_('VM_STORE_FORM_EMAIL') ?>:&nbsp;<?php echo $v_email; ?><br />
+          <br /><?php echo JText::_('JM_STORE_FORM_CONTACT_LBL') ?>:&nbsp;<?php echo $v_title ." " . $v_first_name . " " . $v_last_name ?>
+          <br /><?php echo JText::_('JM_STORE_FORM_PHONE') ?>:&nbsp;<?php $db->p("phone_1");?>
+          <br /><?php echo JText::_('JM_STORE_FORM_FAX') ?>:&nbsp;<?php echo $v_fax ?>
+          <br /><?php echo JText::_('JM_STORE_FORM_EMAIL') ?>:&nbsp;<?php echo $v_email; ?><br />
           <br /><a href="<?php $db->p("vendor_url") ?>" target="_blank"><?php $db->p("vendor_url") ?></a><br />
       </td>
         </tr>

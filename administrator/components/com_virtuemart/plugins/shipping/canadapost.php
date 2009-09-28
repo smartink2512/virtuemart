@@ -4,17 +4,17 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 /**
  *
  * @version $Id: canadapost.php 1760 2009-05-03 22:58:57Z Aravot $
- * @package VirtueMart
+ * @package JMart
  * @subpackage shipping
  * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * VirtueMart is free software. This version may have been modified pursuant
+ * JMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+ * See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
  *
- * http://virtuemart.org
+ * http://joomlacode.org/gf/project/jmart/
  */
 require_once ( ADMINPATH.'plugins/shipping/minixml/minixml.inc.php') ;
 /**
@@ -117,7 +117,7 @@ class plgShippingCanadapost extends vmShippingPlugin {
 		
 		$this->xml_request = "<?phpxml version=\"1.0\" ?>
 <eparcel>
-	<language>" . JText::_( 'VM_CANADAPOST_SEND_LANGUAGE_CODE' ) . "</language>
+	<language>" . JText::_( 'JM_CANADAPOST_SEND_LANGUAGE_CODE' ) . "</language>
 	<ratesAndServicesRequest>
 		<merchantCPCID>" . $this->merchant_cpcid . "</merchantCPCID>
 		<lineItems>" ;
@@ -206,11 +206,11 @@ class plgShippingCanadapost extends vmShippingPlugin {
 	<tr class="sectiontableheader">
 		<th>&nbsp;</th>
 		<th><?php
-			echo JText::_( 'VM_ISSHIP_LIST_CARRIER_LBL' ) ?></th>
+			echo JText::_( 'JM_ISSHIP_LIST_CARRIER_LBL' ) ?></th>
 		<th><?php
-			echo JText::_( 'VM_CANADAPOST_FORM_HANDLING_DATE' ) ?><sup>1</sup></th>
+			echo JText::_( 'JM_CANADAPOST_FORM_HANDLING_DATE' ) ?><sup>1</sup></th>
 		<th><?php
-			echo JText::_( 'VM_CANADAPOST_FORM_HANDLING_LBL' ) ?><sup>2</sup></th>
+			echo JText::_( 'JM_CANADAPOST_FORM_HANDLING_LBL' ) ?><sup>2</sup></th>
 	</tr>
       <?php
       		$returnArr = array();
@@ -224,7 +224,7 @@ class plgShippingCanadapost extends vmShippingPlugin {
 				if( ($timestamp = strtotime( $delivery_date )) === - 1 ) {
 					$delivery_date = html_entity_decode( $m["deliveryDate"] ) ;
 				} else {
-					if( JText::_( 'VM_CANADAPOST_SEND_LANGUAGE_CODE' ) == "FR" ) {
+					if( JText::_( 'JM_CANADAPOST_SEND_LANGUAGE_CODE' ) == "FR" ) {
 						setlocale( LC_TIME, 'fr' ) ;
 						$delivery_date = strftime( '%A %d %B %Y', $timestamp ) ;
 					} else {						

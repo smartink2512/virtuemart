@@ -3,24 +3,24 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: admin.usergroup_form.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 require_once(CLASSPATH.'usergroup.class.php');
 $usergroup = new vmUserGroup();
 
 $group_id = (int)JRequest::getVar(  'group_id', 0 );
-$option = empty($option)?JRequest::getVar(  'option', 'com_virtuemart'):$option;
+$option = empty($option)?JRequest::getVar(  'option', 'com_jmart'):$option;
 
 if (!empty( $group_id )) {
   $db = $usergroup->get_group($group_id);
@@ -30,7 +30,7 @@ if (!empty( $group_id )) {
 $funcname = !empty($group_id) ? "usergroupUpdate" : "usergroupAdd";
 
 // Create the Form Control Object
-$formObj = &new formFactory( JText::_('VM_USERGROUP_FORM_LBL') );
+$formObj = &new formFactory( JText::_('JM_USERGROUP_FORM_LBL') );
 
 // Start the the Form
 $formObj->startForm();
@@ -42,16 +42,16 @@ $formObj->hiddenField( 'group_id', $group_id );
 		<td colspan="2">&nbsp;</td>
 	</tr>
 	<tr> 
-		<td width="24%" align="right"><?php echo JText::_('VM_USERGROUP_NAME') ?>:</td>
+		<td width="24%" align="right"><?php echo JText::_('JM_USERGROUP_NAME') ?>:</td>
 		<td width="76%"> 
 			<input type="text" class="inputbox" name="group_name" value="<?php $db->sp("group_name") ?>" />
 		</td>
 	</tr>
 	<tr> 
-		<td width="24%" align="right"><?php echo JText::_('VM_USERGROUP_LEVEL') ?>:</td>
+		<td width="24%" align="right"><?php echo JText::_('JM_USERGROUP_LEVEL') ?>:</td>
 		<td width="76%"> 
 			<input type="text" class="inputbox" name="group_level" value="<?php $db->sp("group_level") ?>" />
-			<?php echo vmToolTip( JText::_('VM_USERGROUP_LEVEL_TIP') ); ?>
+			<?php echo vmToolTip( JText::_('JM_USERGROUP_LEVEL_TIP') ); ?>
 		</td>
 	</tr>
 </table>

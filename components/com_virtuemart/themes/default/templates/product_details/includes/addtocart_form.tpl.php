@@ -27,13 +27,13 @@ if($pageName=="shop.product_details"){
 	    }
 	
 	?>
-	    <form action="<?php echo JROUTE::_('index.php?option=com_virtuemart'); ?>" method="post" name="addtocart" id="<?php echo uniqid('addtocart_') ?>" class="addtocart_form" <?php if( $this->get_cfg( 'useAjaxCartActions', 1 ) && !$notify ) { echo 'onsubmit="handleAddToCart( this.id );return false;"'; } ?>>
+	    <form action="<?php echo JROUTE::_('index.php?option=com_jmart'); ?>" method="post" name="addtocart" id="<?php echo uniqid('addtocart_') ?>" class="addtocart_form" <?php if( $this->get_cfg( 'useAjaxCartActions', 1 ) && !$notify ) { echo 'onsubmit="handleAddToCart( this.id );return false;"'; } ?>>
 	
 	<?php  
 	}
 	echo $html;
-//	echo('yepp we are here $product_price '.$product_price.'  VM_PRODUCT_CALL '.JText::_('VM_PRODUCT_CALL'));
-	if (USE_AS_CATALOGUE != '1' && $product_price != "" && !stristr( $product_price, JText::_('VM_PRODUCT_CALL') )) {
+//	echo('yepp we are here $product_price '.$product_price.'  JM_PRODUCT_CALL '.JText::_('JM_PRODUCT_CALL'));
+	if (USE_AS_CATALOGUE != '1' && $product_price != "" && !stristr( $product_price, JText::_('JM_PRODUCT_CALL') )) {
 		?>
 	        <?php if ($children != "multi") { ?> 
 	    <div style="float: right;vertical-align: middle;"> <?php 
@@ -43,10 +43,10 @@ if($pageName=="shop.product_details"){
 	    if ($children == "radio") {
 			echo $ps_product_attribute->show_radio_quantity_box();
 	    }
-	    $button_lbl = JText::_('VM_CART_ADD_TO');
+	    $button_lbl = JText::_('JM_CART_ADD_TO');
 	    $button_cls = 'addtocart_button';
 	    if( CHECK_STOCK == '1' && !$product_in_stock && $children != "list") {
-	     	$button_lbl = JText::_('VM_CART_NOTIFY');
+	     	$button_lbl = JText::_('JM_CART_NOTIFY');
 	     	$button_cls = 'notify_button';
 	    }
 	  ?>    
@@ -94,10 +94,10 @@ if($pageName=="shop.product_details"){
 	
 	global $ps_product;
 	$p_has_a = false;
-	$button_lbl = JText::_('VM_CART_ADD_TO');
+	$button_lbl = JText::_('JM_CART_ADD_TO');
 	$button_cls = 'addtocart_button';
 	if( CHECK_STOCK == '1' && !$product_in_stock && !$ps_product->parent_has_children($product_id) && !$ps_product->product_has_attributes($product_id, true) && !$call_for_pricing) {
-		$button_lbl = JText::_('VM_CART_NOTIFY');
+		$button_lbl = JText::_('JM_CART_NOTIFY');
 		$button_cls = 'notify_button';
 		$notify = true;
 	} elseif ($ps_product->parent_has_children($product_id) || $ps_product->product_has_attributes($product_id, true) || $call_for_pricing) {
@@ -115,7 +115,7 @@ if($pageName=="shop.product_details"){
 	}
 	?>
 	
-	<form action="<?php echo JROUTE::_('index.php?option=com_virtuemart'); ?>" method="post" name="addtocart" id="addtocart<?php echo $i ?>" class="addtocart_form" <?php if( $this->get_cfg( 'useAjaxCartActions', 1 ) && !$notify ) { echo 'onsubmit="handleAddToCart( this.id );return false;"'; } ?>>
+	<form action="<?php echo JROUTE::_('index.php?option=com_jmart'); ?>" method="post" name="addtocart" id="addtocart<?php echo $i ?>" class="addtocart_form" <?php if( $this->get_cfg( 'useAjaxCartActions', 1 ) && !$notify ) { echo 'onsubmit="handleAddToCart( this.id );return false;"'; } ?>>
 	    <?php if(!$notify) { echo $ps_product_attribute->show_quantity_box($product_id,$product_id); } ?>
 		<input type="submit" class="<?php echo $button_cls ?>" value="<?php echo $button_lbl	?>" title="<?php echo $button_lbl ?>" />
 	    <input type="hidden" name="category_id" value="<?php echo  @$_REQUEST['category_id'] ?>" />
@@ -125,7 +125,7 @@ if($pageName=="shop.product_details"){
 	    <input type="hidden" name="page" value="shop.cart" />
 	    <input type="hidden" name="func" value="cartadd" />
 	    <input type="hidden" name="Itemid" value="<?php echo $sess->getShopItemid() ?>" />
-	 	<input type="hidden" name="option" value="com_virtuemart" />
+	 	<input type="hidden" name="option" value="com_jmart" />
 	    <input type="hidden" name="set_price[]" value="" />
 	    <input type="hidden" name="adjust_price[]" value="" />
 	    <input type="hidden" name="master_product[]" value="" />

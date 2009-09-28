@@ -2,14 +2,14 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /*
  * @version $Id: order.label_track.php 1755 2009-05-01 22:45:17Z rolandd $
- * @package VirtueMart
+ * @package JMart
  * @subpackage html
  */
 mm_showMyFileName(__FILE__);
 
 $order_id = JRequest::getVar( 'order_id', null);
 if (!is_numeric($order_id))
-	die(str_replace('order_id',$order_id,JText::_('VM_ORDER_LABEL_ORDERID_NOTVALID')));
+	die(str_replace('order_id',$order_id,JText::_('JM_ORDER_LABEL_ORDERID_NOTVALID')));
 
 $db =& new ps_DB;
 
@@ -18,20 +18,20 @@ $q .= "FROM #__{vm}_shipping_label ";
 $q .= "WHERE order_id='" . $order_id . "'";
 $db->query($q);
 if (!$db->next_record())
-	die(JText::_('VM_ORDER_LABEL_NOTFOUND'));
+	die(JText::_('JM_ORDER_LABEL_NOTFOUND'));
 
 include_once(CLASSPATH . "shipping/" . $db->f("shipper_class") . ".php");
 eval("\$ship_class =& new " . $db->f("shipper_class") . "();");
 if (!is_callable(array($ship_class, 'void_label')))
-	die(str_replace('{ship_class}',$ship_class,JText::_('VM_ORDER_LABEL_CLASSCANNOT')));
+	die(str_replace('{ship_class}',$ship_class,JText::_('JM_ORDER_LABEL_CLASSCANNOT')));
 
 if (!$db->f('label_is_generated'))
-	die(JText::_('VM_ORDER_LABEL_NEVERGENERATED'));
+	die(JText::_('JM_ORDER_LABEL_NEVERGENERATED'));
 
 $msg = $ship_class->track($order_id);
 
 echo "<html>\n";
-echo "<head><title>" . JText::_('VM_ORDER_LABEL_TRACK_TITLE') . "</title></head>\n";
+echo "<head><title>" . JText::_('JM_ORDER_LABEL_TRACK_TITLE') . "</title></head>\n";
 echo "<body>\n";
 echo $msg . "\n";
 echo "</body>\n";

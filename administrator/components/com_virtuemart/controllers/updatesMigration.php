@@ -2,10 +2,10 @@
 /**
  * Country controller
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Country
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
@@ -15,11 +15,11 @@ jimport('joomla.application.component.controller');
 /**
  * Country Controller
  *
- * @package    VirtueMart
+ * @package    JMart
  * @subpackage Country
  * @author Rick Glunt 
  */
-class VirtuemartControllerUpdatesMigration extends JController
+class JmartControllerUpdatesMigration extends JController
 {
 	/**
 	 * Method to display the view
@@ -33,7 +33,7 @@ class VirtuemartControllerUpdatesMigration extends JController
 //		$this->registerTask( 'add',  'edit' );			
 		
 	    $document =& JFactory::getDocument();
-	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
+	    $document->addStyleSheet(JURI::base().'components/com_jmart/assets/css/jmart.css');
 	    
 		$document =& JFactory::getDocument();				
 		$viewType	= $document->getType();
@@ -58,7 +58,7 @@ class VirtuemartControllerUpdatesMigration extends JController
 	}
 	
 	/**
-	 * Updates the table to the last version of VM
+	 * Updates the table to the last version of JM
 	 * 
 	 * @author Max Milbers
 	 */
@@ -92,7 +92,7 @@ class VirtuemartControllerUpdatesMigration extends JController
 //	{
 //		$msg = JText::_('Operation Canceled!!');
 //		
-//		$this->setRedirect('index.php?option=com_virtuemart&view=country', $msg);
+//		$this->setRedirect('index.php?option=com_jmart&view=country', $msg);
 //	}	
 	
 	
@@ -112,7 +112,7 @@ class VirtuemartControllerUpdatesMigration extends JController
 //			$msg = JText::_($model->getError());
 //		}
 //		
-//		$this->setRedirect('index.php?option=com_virtuemart&view=country', $msg);
+//		$this->setRedirect('index.php?option=com_jmart&view=country', $msg);
 //	}	
 	
 	
@@ -131,7 +131,7 @@ class VirtuemartControllerUpdatesMigration extends JController
 //			$msg = JText::_( 'Countries Deleted!');
 //		}
 //	
-//		$this->setRedirect( 'index.php?option=com_virtuemart&view=country', $msg);
+//		$this->setRedirect( 'index.php?option=com_jmart&view=country', $msg);
 //	}	
 //	
 	
@@ -147,7 +147,7 @@ class VirtuemartControllerUpdatesMigration extends JController
 //			$msg = JText::_('Error: One or more countries could not be published!');
 //		}
 //	
-//		$this->setRedirect( 'index.php?option=com_virtuemart&view=country', $msg);
+//		$this->setRedirect( 'index.php?option=com_jmart&view=country', $msg);
 //	}		
 //	
 //	
@@ -163,7 +163,7 @@ class VirtuemartControllerUpdatesMigration extends JController
 //			$msg = JText::_('Error: One or more countries could not be unpublished!');
 //		}
 //	
-//		$this->setRedirect( 'index.php?option=com_virtuemart&view=country', $msg);
+//		$this->setRedirect( 'index.php?option=com_jmart&view=country', $msg);
 //	}	
 }
 ?>

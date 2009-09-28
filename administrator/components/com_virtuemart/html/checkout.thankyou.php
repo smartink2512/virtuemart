@@ -4,17 +4,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * This file is called after the order has been placed by the customer
 *
 * @version $Id: checkout.thankyou.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 
@@ -63,7 +63,7 @@ $q .= "AND `#__{vm}_orders`.`user_id`=" . $userid . " ";
 $q .= "AND `#__{vm}_orders`.`order_id`='$order_id' ";
 $db->query($q);
 	
-$tpl = new $GLOBALS['VM_THEMECLASS']();
+$tpl = new $GLOBALS['JM_THEMECLASS']();
 $tpl->set( 'order_id', $order_id );
 $tpl->set( 'ps_product', $ps_product );
 $tpl->set( 'vendor_currency', $vendor_currency );

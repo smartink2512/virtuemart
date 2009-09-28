@@ -2,10 +2,10 @@
 /**
  * Product attribute table
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Product
  * @author RolandD
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 // Check to ensure this file is included in Joomla!
@@ -16,9 +16,9 @@ defined('_JEXEC') or die();
  * The class is is used to manage the countries in the shop.
  *
  * @author RolandD
- * @package		VirtueMart
+ * @package		JMart
  */
-class TableVirtuemart_product_attribute extends JTable
+class TableJmart_product_attribute extends JTable
 {
 	/** @var int Primary key */
 	var $attribute_id		= 0;
@@ -34,7 +34,7 @@ class TableVirtuemart_product_attribute extends JTable
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db) {
-		parent::__construct('#__vm_product_attribute', 'attribute_id', $db);
+		parent::__construct('#__jmart_product_attribute', 'attribute_id', $db);
 	}
 }
 ?>

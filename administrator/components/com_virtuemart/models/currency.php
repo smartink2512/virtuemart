@@ -2,10 +2,10 @@
 /**
  * Data module for shop currencies
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Currency
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 // no direct access
@@ -16,11 +16,11 @@ jimport( 'joomla.application.component.model');
 /**
  * Model class for shop Currencies
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Currency 
  * @author Rick Glunt  
  */
-class VirtueMartModelCurrency extends JModel
+class JMartModelCurrency extends JModel
 {    
 	/** @var integer Primary key */
     var $_id;          
@@ -95,7 +95,7 @@ class VirtueMartModelCurrency extends JModel
 	function _getTotal() 
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `currency_id` FROM `#__vm_currency`';	  		
+			$query = 'SELECT `currency_id` FROM `#__jmart_currency`';	  		
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -189,8 +189,8 @@ class VirtueMartModelCurrency extends JModel
 	 */
 	function getCurrenciesList()
 	{		
-		$query = 'SELECT * FROM `#__vm_currency` ';
-		$query .= 'ORDER BY `#__vm_currency`.`currency_id`';
+		$query = 'SELECT * FROM `#__jmart_currency` ';
+		$query .= 'ORDER BY `#__jmart_currency`.`currency_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}
@@ -203,7 +203,7 @@ class VirtueMartModelCurrency extends JModel
 	 */
 	function getCurrencies() {
 		$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `#__vm_currency`';
+		$q = 'SELECT * FROM `#__jmart_currency`';
 		$db->setQuery($q);
 		return $db->loadObjectList();
 	}

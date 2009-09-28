@@ -4,17 +4,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * This file contains functions and classes for common html tasks
 *
 * @version $Id: htmlTools.class.php 1786 2009-05-13 13:21:59Z macallf $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /**
@@ -30,7 +30,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * $listObj = new listFactory( $pageNav );
 *
 * // print out the search field and a list heading
-* $listObj->writeSearchHeader(JText::_('VM_PRODUCT_LIST_LBL'), IMAGEURL."ps_image/product_code.png", $modulename, "product_list");
+* $listObj->writeSearchHeader(JText::_('JM_PRODUCT_LIST_LBL'), IMAGEURL."ps_image/product_code.png", $modulename, "product_list");
 *
 * // start the list table
 * $listObj->startTable();
@@ -38,8 +38,8 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * // these are the columns in the table
 * $columns = Array(  "#" => "width=\"20\"",
 * 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$num_rows.")\" />" => "width=\"20\"",*
-* 					JText::_('VM_PRODUCT_LIST_NAME') => '',
-* 					JText::_('VM_PRODUCT_LIST_SKU') => '',
+* 					JText::_('JM_PRODUCT_LIST_NAME') => '',
+* 					JText::_('JM_PRODUCT_LIST_SKU') => '',
 * 					_E_REMOVE => "width=\"5%\""
 * 				);
 * $listObj->writeTableHeader( $columns );
@@ -64,7 +64,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * $listObj->endTable();
 * $listObj->writeFooter( $keyword );
 *
-* @package VirtueMart
+* @package JMart
 * @subpackage Classes
 * @author soeren
 */
@@ -86,7 +86,7 @@ class listFactory {
 	var $_resultsToShowPageNav = 6;
 
 	function listFactory( $pageNav=null ) {
-		if( defined('_VM_IS_BACKEND')) {
+		if( defined('_JM_IS_BACKEND')) {
 			$this->alternateColors = array( 0 => 'row0', 1 => 'row1' );
 		}
 		else {
@@ -218,7 +218,7 @@ class listFactory {
 		$header = '<a name="listheader"></a>';
 		$header .= '<form name="adminForm" action="'.$_SERVER['PHP_SELF'].'" method="post">
 
-					<input type="hidden" name="option" value="'.VM_COMPONENT_NAME.'" />
+					<input type="hidden" name="option" value="'.JM_COMPONENT_NAME.'" />
 					<input type="hidden" name="page" value="'. $modulename . '.' . $pagename . '" />
 					<input type="hidden" name="task" value="" />
 					<input type="hidden" name="func" value="" />
@@ -227,7 +227,7 @@ class listFactory {
 					<input type="hidden" name="no_toolbar" value="'.vmRequest::getInt('no_toolbar').'" />
 					<input type="hidden" name="only_page" value="'.vmRequest::getInt('only_page').'" />
 					<input type="hidden" name="boxchecked" />';
-		if( defined( "_VM_IS_BACKEND") || @$_REQUEST['pshop_mode'] == "admin"  ) {
+		if( defined( "_JM_IS_BACKEND") || @$_REQUEST['pshop_mode'] == "admin"  ) {
 			$header .= "<input type=\"hidden\" name=\"pshop_mode\" value=\"admin\" />\n";
 		}
         if(( $title != "" ) || !empty( $pagename )) {
@@ -241,7 +241,7 @@ class listFactory {
 			if( !empty( $pagename ))
 				$header .= '<td width="20%">
 				<input class="inputbox" type="text" size="25" name="keyword" value="'.shopMakeHtmlSafe($keyword).'" />
-				<input class="button" type="submit" name="search" value="'.JText::_('VM_SEARCH_TITLE').'" />
+				<input class="button" type="submit" name="search" value="'.JText::_('JM_SEARCH_TITLE').'" />
 				</td>';
 
 			$header .= "\n</tr></table><br style=\"clear:both;\" />\n";
@@ -290,7 +290,7 @@ class listFactory {
 	}
 }
 /**
-* This is the class for creating regular forms used in VirtueMart
+* This is the class for creating regular forms used in JMart
 *
 * Usage:
 * //First create the object and let it print a form heading
@@ -323,7 +323,7 @@ class formFactory {
 	* Writes the form start tag
 	*/
 	function startForm( $formname = 'adminForm', $extra = "" ) {
-		$action = (!defined('_VM_IS_BACKEND' ) && !empty($_REQUEST['next_page'])) ? 'index.php' : $_SERVER['PHP_SELF'];
+		$action = (!defined('_JM_IS_BACKEND' ) && !empty($_REQUEST['next_page'])) ? 'index.php' : $_SERVER['PHP_SELF'];
 		echo '<form method="post" action="'. $action .'" name="'.$formname.'" '.$extra.' target="_self">';
 	}
 
@@ -343,7 +343,7 @@ class formFactory {
 		<input type="hidden" name="func" value="'.$func.'" />
         <input type="hidden" name="page" value="'.$page.'" />
         <input type="hidden" name="task" value="" />
-        <input type="hidden" name="option" value="'.VM_COMPONENT_NAME.'" />';
+        <input type="hidden" name="option" value="'.JM_COMPONENT_NAME.'" />';
 		if( $no_menu ) {
 			$html .= '<input type="hidden" name="ajax_request" value="1" />';
 		}
@@ -351,7 +351,7 @@ class formFactory {
 		$html .= '<input type="hidden" name="no_toolbar" value="'.JRequest::getVar('no_toolbar',0).'" />';
 		$html .= '<input type="hidden" name="only_page" value="'.JRequest::getVar('only_page',0).'" />';
 
-        if( defined( "_VM_IS_BACKEND") || @$_REQUEST['pshop_mode'] == "admin"  ) {
+        if( defined( "_JM_IS_BACKEND") || @$_REQUEST['pshop_mode'] == "admin"  ) {
         	$html .= '<input type="hidden" name="pshop_admin" value="admin" />';
         }
         $html .= '
@@ -364,7 +364,7 @@ class formFactory {
 
 /**
 * Tab Creation handler
-* @package VirtueMart
+* @package JMart
 * @subpackage core
 * @author soeren
 * Modified to use Panel-in-Panel functionality
@@ -491,7 +491,7 @@ class vmMooAjax {
 	 * @param string $url
 	 * @param string $updateId
 	 * @param string $onComplete A JS function name to be called after the HTTP transport has been finished
-	 * @param array VM_COMPONENT_NAMEs
+	 * @param array JM_COMPONENT_NAMEs
 	 * @param string $varName The name of a variable the ajax object is assigned to
 	 */
 	function writeAjaxUpdater( $url, $updateId, $onComplete, $method='post', $vmDirs=array(), $varName='' ) {
@@ -503,7 +503,7 @@ class vmMooAjax {
 
 		vmCommonHTML::loadMooTools();
 
-		$path = defined('_VM_IS_BACKEND' ) ? '/administrator/' : '/';
+		$path = defined('_JM_IS_BACKEND' ) ? '/administrator/' : '/';
 		$vmDirs['method'] = $method;
 		$html = '';
 		if( $varName ) {
@@ -513,7 +513,7 @@ class vmMooAjax {
 			$url = $mosConfig_live_site.$path.$url;
 		}
 		$html .= "new ajax('$url', {\n";
-		foreach (VM_COMPONENT_NAMEs as $key => $val) {
+		foreach (JM_COMPONENT_NAMEs as $key => $val) {
 			if( strstr( $val, '.')) {
 				$html .= "$key: $val,\n";
 			}
@@ -636,7 +636,7 @@ class vmCommonHTML {
 
 			$url_params = '';
 
-			if( stristr( $src, 'com_virtuemart' ) && !stristr( $src, '.php' ) && $use_fetchscript ) {
+			if( stristr( $src, 'com_jmart' ) && !stristr( $src, '.php' ) && $use_fetchscript ) {
 				$urlpos = strpos( $src, '?' );
 				if( $urlpos ) {
 					$url_params = '&amp;'.substr( $src, $urlpos );
@@ -644,9 +644,9 @@ class vmCommonHTML {
 				}
 				$base_source = str_replace( URL, '', $src );
 				$base_source = str_replace( SECUREURL, '', $base_source );
-				$base_source = str_replace( '/components/com_virtuemart', '', $base_source);
-				$base_source = str_replace( 'components/com_virtuemart', '', $base_source);
-				$src = $mosConfig_live_site.'/components/com_virtuemart/fetchscript.php?gzip='.$mosConfig_gzip.'&amp;subdir[0]='.dirname( $base_source ) . '&amp;file[0]=' . basename( $src );
+				$base_source = str_replace( '/components/com_jmart', '', $base_source);
+				$base_source = str_replace( 'components/com_jmart', '', $base_source);
+				$src = $mosConfig_live_site.'/components/com_jmart/fetchscript.php?gzip='.$mosConfig_gzip.'&amp;subdir[0]='.dirname( $base_source ) . '&amp;file[0]=' . basename( $src );
 			}
 
 			return '<script src="'.$src.@$url_params.'" type="text/javascript"></script>'."\n";
@@ -673,11 +673,11 @@ class vmCommonHTML {
 		} else {
 			$use_fetchscript = vmRequest::getBool( 'usefetchscript', 1, 'session' );
 		}
-		if( stristr( $href, 'com_virtuemart' ) && $use_fetchscript) {
+		if( stristr( $href, 'com_jmart' ) && $use_fetchscript) {
 			$base_href = str_replace( URL, '', $href );
 			$base_href = str_replace( SECUREURL, '', $base_href );
-			$base_href = str_replace( 'components/com_virtuemart/', '', $base_href);
-			$href = $mosConfig_live_site.'/components/com_virtuemart/fetchscript.php?gzip='.$mosConfig_gzip.'&amp;subdir[0]='.dirname( $base_href ) . '&amp;file[0]=' . basename( $href );
+			$base_href = str_replace( 'components/com_jmart/', '', $base_href);
+			$href = $mosConfig_live_site.'/components/com_jmart/fetchscript.php?gzip='.$mosConfig_gzip.'&amp;subdir[0]='.dirname( $base_href ) . '&amp;file[0]=' . basename( $href );
 		}
 		return '<link type="'.$type.'" href="'.$href.'" rel="'.$rel.'"'.(empty($media)?'':' media="'.$media.'"').' />'."\n";
 
@@ -690,9 +690,9 @@ class vmCommonHTML {
 		global $mosConfig_live_site;
 		$n = $num_rows-1;
 		$html = '<a href="javascript: document.adminForm.func.value = \''.$funcname.'\'; saveorder( '.$n.' );">
-				<img src="'.$mosConfig_live_site.'/administrator/images/filesave.png" border="0" width="16" height="16" alt="'.JText::_('VM_SORT_SAVE_ORDER').'" /></a>';
-		$html .= '<a href="javascript: if( confirm( \''.addslashes(JText::_('VM_SORT_ALPHA_CONFIRM')).'\')) { document.adminForm.func.value = \''.$funcname.'\'; document.adminForm.task.value=\'sort_alphabetically\'; document.adminForm.submit(); }">
-				<img src="'.IMAGEURL.'/ps_image/sort_a-z.gif" border="0" width="16" height="16" alt="'.JText::_('VM_SORT_ALPHA').'" /></a>';
+				<img src="'.$mosConfig_live_site.'/administrator/images/filesave.png" border="0" width="16" height="16" alt="'.JText::_('JM_SORT_SAVE_ORDER').'" /></a>';
+		$html .= '<a href="javascript: if( confirm( \''.addslashes(JText::_('JM_SORT_ALPHA_CONFIRM')).'\')) { document.adminForm.func.value = \''.$funcname.'\'; document.adminForm.task.value=\'sort_alphabetically\'; document.adminForm.submit(); }">
+				<img src="'.IMAGEURL.'/ps_image/sort_a-z.gif" border="0" width="16" height="16" alt="'.JText::_('JM_SORT_ALPHA').'" /></a>';
 
 		return $html;
 	}
@@ -776,7 +776,7 @@ class vmCommonHTML {
 	 * Function to include the MooTools JS scripts in the HTML document
 	 * http://mootools.net
 	 * @static
-	 * @since VirtueMart 1.1.0
+	 * @since JMart 1.1.0
 	 *
 	 */
 	function loadMooTools( $version='' ) {
@@ -785,10 +785,10 @@ class vmCommonHTML {
 			if( $version  == '' ) {
 				$version = 'mootools-release-1.11.js';
 			}
-			$vm_mainframe->addScriptDeclaration( 'var cart_title = "'.JText::_('VM_CART_TITLE').'";var ok_lbl="'.JText::_('CMN_CONTINUE').'";var cancel_lbl="'.JText::_('CMN_CANCEL').'";var notice_lbl="'.JText::_('PEAR_LOG_NOTICE').'";var live_site="'.$mosConfig_live_site.'";' );
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/mootools/'.$version );
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/mootools/mooPrompt.js' );
-			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/mootools/mooPrompt.css' );
+			$vm_mainframe->addScriptDeclaration( 'var cart_title = "'.JText::_('JM_CART_TITLE').'";var ok_lbl="'.JText::_('CMN_CONTINUE').'";var cancel_lbl="'.JText::_('CMN_CANCEL').'";var notice_lbl="'.JText::_('PEAR_LOG_NOTICE').'";var live_site="'.$mosConfig_live_site.'";' );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/mootools/'.$version );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/mootools/mooPrompt.js' );
+			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/mootools/mooPrompt.css' );
 
 			define ( "_MOOTOOLS_LOADED", "1" );
 		}
@@ -807,9 +807,9 @@ class vmCommonHTML {
 
 			vmCommonHTML::loadMooTools();
 
-			$vm_mainframe->addScriptDeclaration( 'var slimboxurl = \''.$mosConfig_live_site.'/components/'. VM_COMPONENT_NAME .'/js/slimbox/\';');
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/slimbox/js/slimbox.js' );
-			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/slimbox/css/slimbox.css' );
+			$vm_mainframe->addScriptDeclaration( 'var slimboxurl = \''.$mosConfig_live_site.'/components/'. JM_COMPONENT_NAME .'/js/slimbox/\';');
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/slimbox/js/slimbox.js' );
+			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/slimbox/css/slimbox.css' );
 
 			define ( '_SLIMBOX_LOADED', '1' );
 		}
@@ -823,7 +823,7 @@ class vmCommonHTML {
 	function loadPrototype( ) {
 		global $vm_mainframe, $mosConfig_live_site;
 		if( !defined( "_PROTOTYPE_LOADED" )) {
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/prototype/prototype.js' );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/prototype/prototype.js' );
 			define( '_PROTOTYPE_LOADED', 1 );
 		}
 
@@ -838,11 +838,11 @@ class vmCommonHTML {
 		global $mosConfig_live_site, $vm_mainframe;
 		if( !defined( '_GREYBOX_LOADED' )) {
 
-			$vm_mainframe->addScriptDeclaration( 'var GB_ROOT_DIR = \''.$mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/greybox/\';', 'top' );
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/greybox/AJS.js' );
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/greybox/AJS_fx.js' );
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/greybox/gb_scripts.js' );
-			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/greybox/gb_styles.css' );
+			$vm_mainframe->addScriptDeclaration( 'var GB_ROOT_DIR = \''.$mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/greybox/\';', 'top' );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/greybox/AJS.js' );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/greybox/AJS_fx.js' );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/greybox/gb_scripts.js' );
+			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/greybox/gb_styles.css' );
 
 			define ( '_GREYBOX_LOADED', '1' );
 		}
@@ -851,7 +851,7 @@ class vmCommonHTML {
 	/**
 	* Loads all necessary script files for Tigra Tree Menu
 	* @static
-	* @since VirtueMart 1.1.0
+	* @since JMart 1.1.0
 	*/
 	function loadTigraTree( ) {
 		global $mosConfig_live_site, $vm_mainframe;
@@ -871,7 +871,7 @@ class vmCommonHTML {
 	function loadYUI( ) {
 		global $mosConfig_live_site, $vm_mainframe;
 		if( !defined( "_YUI_LOADED" )) {
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/yui-utilities.js' );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/extjs2/yui-utilities.js' );
 			define ( "_YUI_LOADED", "1" );
 		}
 	}
@@ -880,11 +880,11 @@ class vmCommonHTML {
 		vmCommonHTML::loadYUI();
 		if( !defined( "_EXTJS_LOADED" )) {
 
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/ext-yui-adapter.js' );
-			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/ext-all.js' );
-			$vm_mainframe->addScriptDeclaration( 'Ext.BLANK_IMAGE_URL = "'.$mosConfig_live_site.'/components/'. VM_COMPONENT_NAME .'/js/extjs2/images/default/s.gif";', 'bottom' );
-			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/css/ext-all.css' );
-			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/extjs2/css/xtheme-gray.css' );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/extjs2/ext-yui-adapter.js' );
+			$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/extjs2/ext-all.js' );
+			$vm_mainframe->addScriptDeclaration( 'Ext.BLANK_IMAGE_URL = "'.$mosConfig_live_site.'/components/'. JM_COMPONENT_NAME .'/js/extjs2/images/default/s.gif";', 'bottom' );
+			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/extjs2/css/ext-all.css' );
+			$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/extjs2/css/xtheme-gray.css' );
 			define ( "_EXTJS_LOADED", "1" );
 		}
 	}
@@ -992,7 +992,7 @@ class vmCommonHTML {
 	 */
 	function EmailIcon( $product_id, $use_icon=true ) {
 		global  $mosConfig_live_site, $sess;
-		if ( @VM_SHOW_EMAILFRIEND == '1' && !JRequest::getVar( 'pop' ) && $product_id > 0  ) {
+		if ( @JM_SHOW_EMAILFRIEND == '1' && !JRequest::getVar( 'pop' ) && $product_id > 0  ) {
 			$link = $sess->url( 'index2.php?page=shop.recommend&amp;product_id='.$product_id.'&amp;pop=1'.(vmIsJoomla('1.5') ? '&amp;tmpl=component' : '') );
 			if ( $use_icon ) {
 				$text = vmCommonHTML::ImageCheck( 'emailButton.png', '/images/M_images/', NULL, NULL, JText::_('CMN_EMAIL'), JText::_('CMN_EMAIL') );
@@ -1005,7 +1005,7 @@ class vmCommonHTML {
 
 	function PrintIcon( $link='', $use_icon=true, $add_text='' ) {
 		global  $mosConfig_live_site, $mosConfig_absolute_path, $cur_template, $Itemid;
-		if ( @VM_SHOW_PRINTICON == '1' ) {
+		if ( @JM_SHOW_PRINTICON == '1' ) {
 			if( !$link ) {
 				$query_string = str_replace( 'only_page=1', 'only_page=0', vmAmpReplace(JRequest::getVar('QUERY_STRING')) );
 				$link = 'index2.php?'.$query_string.'&amp;pop=1&amp;tmpl=component';
@@ -1086,7 +1086,7 @@ class vmCommonHTML {
 	 */
 	function ParseContentByPlugins( $text, $type = 'content' ) {
 		global $_MAMBOTS;
-		if( VM_CONTENT_PLUGINS_ENABLE == '1') {
+		if( JM_CONTENT_PLUGINS_ENABLE == '1') {
 //			} elseif( vmIsJoomla('1.5')) {
 				$params 	   =& $GLOBALS['mainframe']->getParams('com_content');
 				$dispatcher	   =& JDispatcher::getInstance();
@@ -1159,8 +1159,8 @@ class vmCommonHTML {
 		*/
 		function yesnoRadioList( $tag_name, $tag_attribs, $key, $text, $selected, $yes='', $no='' ) {
 			
-			$yes = ( $yes=='' ) ? JText::_('VM_ADMIN_CFG_YES') : $yes;
-			$no = ( $no=='' ) ? JText::_('VM_ADMIN_CFG_NO') : $no;
+			$yes = ( $yes=='' ) ? JText::_('JM_ADMIN_CFG_YES') : $yes;
+			$no = ( $no=='' ) ? JText::_('JM_ADMIN_CFG_NO') : $no;
 			$arr = array(
 				vmCommonHTML::makeOption( '0', $no ),
 				vmCommonHTML::makeOption( '1', $yes )
@@ -1180,7 +1180,7 @@ class vmCommonHTML {
                 
                 reset( $arr );
                 $html = "\n<select name=\"$tag_name\" id=\"".str_replace('[]', '', $tag_name)."\" $tag_attribs>";
-                if(!$required) $html .= "\n\t<option value=\"\">".JText::_('VM_SELECT')."</option>";
+                if(!$required) $html .= "\n\t<option value=\"\">".JText::_('JM_SELECT')."</option>";
                 $n=count( $arr );
                 for ($i=0; $i < $n; $i++ ) {
                         $k = stripslashes($arr[$i]->$key);
@@ -1360,8 +1360,8 @@ function vmHelpToolTip( $tip, $linktext = ' [?] ' ) {
         global $mosConfig_live_site;
 
         if( !defined( 'vmHelpToolTipCalled')) {
-                echo '<script type="text/javascript" src="'.$mosConfig_live_site.'/components/com_virtuemart/js/helptip/helptip.js"></script>
-                        <link type="text/css" rel="stylesheet" href="'.$mosConfig_live_site.'/components/com_virtuemart/js/helptip/helptip.css" />';
+                echo '<script type="text/javascript" src="'.$mosConfig_live_site.'/components/com_jmart/js/helptip/helptip.js"></script>
+                        <link type="text/css" rel="stylesheet" href="'.$mosConfig_live_site.'/components/com_jmart/js/helptip/helptip.css" />';
                 define('vmHelpToolTipCalled', 1);
         }
         $tip = str_replace( "\n", "",

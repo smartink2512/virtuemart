@@ -6,22 +6,22 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * @param int product_id
 *
 * @version $Id: product.file_list.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 *
 */
 /* ROLANDD: MVC TEST START */
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'files.php');
-$productfiles = new VirtuemartModelFiles();
+$productfiles = new JmartModelFiles();
 /* Handle any publish/unpublish */
 switch (JRequest::getVar('task')) {
 	case 'publish':
@@ -84,7 +84,7 @@ if( !empty( $files)) {
 }
 
 if( $db->num_rows() < 1 && $task != "cancel" ) {
-  	vmRedirect( $_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.file_form&product_id=$product_id&no_menu=".@$_REQUEST['no_menu'] );
+  	vmRedirect( $_SERVER['PHP_SELF']."?option=com_jmart&page=product.file_form&product_id=$product_id&no_menu=".@$_REQUEST['no_menu'] );
 }
 $db->reset();
 $arr = array(); $arr2 = array();
@@ -112,7 +112,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('VM_FILES_LIST') ." " . $product_name, $mosConfig_live_site."/administrator/images/mediamanager.png", $modulename, "file_list");
+$listObj->writeSearchHeader(JText::_('JM_FILES_LIST') ." " . $product_name, $mosConfig_live_site."/administrator/images/mediamanager.png", $modulename, "file_list");
 
 // start the list table
 $listObj->startTable();
@@ -120,12 +120,12 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => 'width="20"', 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll($num_rows)\" />" => 'width="20"',
-					JText::_('VM_FILES_LIST_FILENAME') => '',
-					JText::_('VM_FILES_LIST_ROLE') => '',
-					JText::_('VM_VIEW') => '',
-					JText::_('VM_FILES_LIST_FILETITLE') => '',
-					JText::_('VM_FILES_LIST_FILETYPE') => '',
-					JText::_('VM_FILEMANAGER_PUBLISHED') => '',
+					JText::_('JM_FILES_LIST_FILENAME') => '',
+					JText::_('JM_FILES_LIST_ROLE') => '',
+					JText::_('JM_VIEW') => '',
+					JText::_('JM_FILES_LIST_FILETITLE') => '',
+					JText::_('JM_FILES_LIST_FILETYPE') => '',
+					JText::_('JM_FILEMANAGER_PUBLISHED') => '',
 					JText::_('E_REMOVE') => "width=\"5%\""
 				);
 $listObj->writeTableHeader( $columns );
@@ -154,7 +154,7 @@ while ($db->next_record()) {
 
 	$tmp_cell = '';
 	
-	$tmp_cell = "<a href=\"".$sess->url( $_SERVER['PHP_SELF'].'?page=product.file_form&amp;product_id='.$product_id.'&amp;file_id='.$db->f("file_id")).'&amp;no_menu='.@$_REQUEST['no_menu'].'" title="'.JText::_('VM_MANUFACTURER_LIST_ADMIN').'">';
+	$tmp_cell = "<a href=\"".$sess->url( $_SERVER['PHP_SELF'].'?page=product.file_form&amp;product_id='.$product_id.'&amp;file_id='.$db->f("file_id")).'&amp;no_menu='.@$_REQUEST['no_menu'].'" title="'.JText::_('JM_MANUFACTURER_LIST_ADMIN').'">';
 	$style = '';
 	if($filename) {
 		$role = $db->f("file_is_image") ? 'isImage' : 'isFile';
@@ -181,8 +181,8 @@ while ($db->next_record()) {
 		$fullimg = $filename;
 		$info = pathinfo( $fullimg );
 		if( is_file( $fullimg ) ) {
-			$tmp_cell .= JText::_('VM_FILES_LIST_FULL_IMG').": ";
-			$tmp_cell .= '<a onclick="document.getElementById(\'file_form_iframe\').src=\''.$db->f("file_url") . '\';" href="#file_form" title="Click me!">[ '.JText::_('VM_VIEW') . ' ]</a>'; 
+			$tmp_cell .= JText::_('JM_FILES_LIST_FULL_IMG').": ";
+			$tmp_cell .= '<a onclick="document.getElementById(\'file_form_iframe\').src=\''.$db->f("file_url") . '\';" href="#file_form" title="Click me!">[ '.JText::_('JM_VIEW') . ' ]</a>'; 
 		}
 		$tmp_cell .= '<br />';
 		if( $db->f('product_thumb_image')) {
@@ -195,11 +195,11 @@ while ($db->next_record()) {
 		}
 		
 		if( is_file( $thumb ) ) {
-			$tmp_cell .= JText::_('VM_FILES_LIST_THUMBNAIL_IMG').": ";
-			$tmp_cell .= vmToolTip( '&nbsp;<img src="'.$thumburl.'" alt="thumbnail" />', JText::_('VM_FILES_LIST_THUMBNAIL_IMG'), '', '', '[ '.JText::_('VM_VIEW') . ' ]' ); 
+			$tmp_cell .= JText::_('JM_FILES_LIST_THUMBNAIL_IMG').": ";
+			$tmp_cell .= vmToolTip( '&nbsp;<img src="'.$thumburl.'" alt="thumbnail" />', JText::_('JM_FILES_LIST_THUMBNAIL_IMG'), '', '', '[ '.JText::_('JM_VIEW') . ' ]' ); 
 		}
 		if( !$db->f("file_name") ) {
-			$tmp_cell = "&nbsp;<a target=\"_blank\" href=\"".$db->f("file_url"). "\">[ ".JText::_('VM_VIEW') . " ]</a><br/>"; 
+			$tmp_cell = "&nbsp;<a target=\"_blank\" href=\"".$db->f("file_url"). "\">[ ".JText::_('JM_VIEW') . " ]</a><br/>"; 
 		}
 	}
 	$listObj->addCell( $tmp_cell );
@@ -245,7 +245,7 @@ $listObj->writeFooter( $keyword,"&product_id=$product_id" );
 <br /><br />
 <a name="file_form" href="#listheader">
 <div id="file_form_container">
-	<img align="middle" src="<?php echo $mosConfig_live_site ?>/administrator/images/restore_f2.png" border="0" alt="<?php echo JText::_('VM_FILES_LIST_GO_UP'); ?>" /><?php echo JText::_('VM_FILES_LIST_UP'); ?></a>
+	<img align="middle" src="<?php echo $mosConfig_live_site ?>/administrator/images/restore_f2.png" border="0" alt="<?php echo JText::_('JM_FILES_LIST_GO_UP'); ?>" /><?php echo JText::_('JM_FILES_LIST_UP'); ?></a>
 	<iframe id="file_form_iframe" src="" style="height: 1000px;" frameborder="0" width="100%"></iframe>
 </div>
 <?php } ?>

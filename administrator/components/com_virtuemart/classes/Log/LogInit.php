@@ -3,10 +3,10 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 
 /**
- * VirtueMart Logging Initialization.
+ * JMart Logging Initialization.
  *
  * This file is included only once, inside virtuemart_parser.php.  External
- * applications that run outside of VirtueMart - such as PayPal notification
+ * applications that run outside of JMart - such as PayPal notification
  * (notify.php) should also include this file.
  *
  * Logging has been modified so that instead of just a single "vmLogger",
@@ -70,22 +70,22 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  *
  *
  * @version $Id: LogInit.php 1755 2009-05-01 22:45:17Z rolandd $
- * @package VirtueMart
+ * @package JMart
  * @subpackage Log
  * @author Mike Mills (mike@MikeMillsConsulting.com)
  * @copyright Copyright (C) 2008 Mike Mills. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * VirtueMart is free software. This version may have been modified pursuant
+ * JMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+ * See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
  *
- * http://virtuemart.org
+ * http://joomlacode.org/gf/project/jmart/
  */
 
-// bass28 8/24/09 - Hack to keep this code working without virtuemart.cfg
-$classPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'classes'.DS;
+// bass28 8/24/09 - Hack to keep this code working without jmart.cfg
+$classPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jmart'.DS.'classes'.DS;
 
 require_once($classPath."Log/Log.php");
 require_once($classPath."Log/composite.php");
@@ -99,7 +99,7 @@ $vmFileLogger    = null;
     
 
 /* The $vmLogIdentifier is intended to separate different sources of logging
-   information - such as VirtueMart itself, or external apps like the PayPal
+   information - such as JMart itself, or external apps like the PayPal
    notification script (notify.php).
 */
 if(!isset($vmLogIdentifier))
@@ -116,15 +116,15 @@ $vmDisplayLogger = &vmLog::singleton('display', '', $vmLogIdentifier, $vmDisplay
 /* Use a null logger if file logging is disabled or if there is an error.  This
    is so that code using the logger will continue to work without problem. */
 
-if(VM_LOGFILE_ENABLED != '1')
+if(JM_LOGFILE_ENABLED != '1')
     $vmFileLogger = &vmLog::singleton('null');
 else {
-    $vmFileLoggerConf = array('mode' => 0600, 'timeFormat' => '%X %x', 'lineFormat' => VM_LOGFILE_FORMAT);
-    $vmFileLogger = &vmLog::singleton('file', VM_LOGFILE_NAME, $vmLogIdentifier, $vmFileLoggerConf, vmLog::stringToPriorityPEAR(VM_LOGFILE_LEVEL));
+    $vmFileLoggerConf = array('mode' => 0600, 'timeFormat' => '%X %x', 'lineFormat' => JM_LOGFILE_FORMAT);
+    $vmFileLogger = &vmLog::singleton('file', JM_LOGFILE_NAME, $vmLogIdentifier, $vmFileLoggerConf, vmLog::stringToPriorityPEAR(JM_LOGFILE_LEVEL));
 
     if($vmFileLogger == false)
     {
-        $vmDisplayLogger->warning(JText::_VM_ADMIN_CFG_LOGFILE_ERROR);
+        $vmDisplayLogger->warning(JText::_JM_ADMIN_CFG_LOGFILE_ERROR);
         $vmFileLogger = &vmLog::singleton('null');
     }
 }

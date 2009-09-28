@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: product.product_product_type_list.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 $product_id = JRequest::getVar( 'product_id', 0);
@@ -33,11 +33,11 @@ $db->query();
 // Create the List Object with page navigation
 $listObj = new listFactory( );
 
-$title = JText::_('VM_PRODUCT_PRODUCT_TYPE_LIST_LBL');
+$title = JText::_('JM_PRODUCT_PRODUCT_TYPE_LIST_LBL');
 if (!empty($product_parent_id)) {
-  $title .= " ".JText::_('VM_ITEM').": ";
+  $title .= " ".JText::_('JM_ITEM').": ";
 } else {
-  $title .= " ".JText::_('VM_PRODUCT').": ";
+  $title .= " ".JText::_('JM_PRODUCT').": ";
 }
 $url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=$product_id&product_parent_id=$product_parent_id";
 $title .= "<a href=\"" . $sess->url($url) . "\">". $ps_product->get_field($product_id,"product_name")."</a>";
@@ -51,10 +51,10 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
 					"<input type=\"checkbox\" name=\"toggle\" value=\"\" onclick=\"checkAll(".$db->num_rows().")\" />" => "width=\"20\"",
-					JText::_('VM_PRODUCT_TYPE_FORM_NAME') => 'width="25%"',
-					JText::_('VM_PRODUCT_TYPE_FORM_DESCRIPTION') => 'width="30%"',
-					JText::_('VM_PRODUCT_TYPE_FORM_PARAMETERS') => 'width="15%"',
-					JText::_('VM_PRODUCTS_LBL') => 'width="15%"',
+					JText::_('JM_PRODUCT_TYPE_FORM_NAME') => 'width="25%"',
+					JText::_('JM_PRODUCT_TYPE_FORM_DESCRIPTION') => 'width="30%"',
+					JText::_('JM_PRODUCT_TYPE_FORM_PARAMETERS') => 'width="15%"',
+					JText::_('JM_PRODUCTS_LBL') => 'width="15%"',
 					JText::_('E_REMOVE') => "width=\"10%\""
 				);
 $listObj->writeTableHeader( $columns );
@@ -72,17 +72,17 @@ while ($db->next_record()) {
 	// The Checkbox
 	$listObj->addCell( vmCommonHTML::idBox( $i, $db->f("product_type_id"), false, "product_type_id" ) );
 	
-	$tmp_cell = "<a href=\"" . $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_type_form&product_type_id=" . $db->f("product_type_id"). "\">". $db->f("product_type_name") . "</a>";
+	$tmp_cell = "<a href=\"" . $_SERVER['PHP_SELF'] . "?option=com_jmart&page=product.product_type_form&product_type_id=" . $db->f("product_type_id"). "\">". $db->f("product_type_name") . "</a>";
 	$listObj->addCell( $tmp_cell );
 	
 	$listObj->addCell( $db->f("product_type_description"));
       
-	$tmp_cell = $parameter_count . " " . JText::_('VM_PARAMETERS_LBL') 
-			. " <a href=\"". $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_type_parameter_list&product_type_id=". $db->f("product_type_id") . "\">[ ".JText::_('VM_SHOW')." ]</a>";
+	$tmp_cell = $parameter_count . " " . JText::_('JM_PARAMETERS_LBL') 
+			. " <a href=\"". $_SERVER['PHP_SELF'] . "?option=com_jmart&page=product.product_type_parameter_list&product_type_id=". $db->f("product_type_id") . "\">[ ".JText::_('JM_SHOW')." ]</a>";
 	$listObj->addCell( $tmp_cell );
 	
-	$tmp_cell = $product_count ." ". JText::_('VM_PRODUCTS_LBL')
-			."&nbsp;<a href=\"". $_SERVER['PHP_SELF'] . "?option=com_virtuemart&page=product.product_list&product_type_id=" . $db->f("product_type_id"). "\">[ ".JText::_('VM_SHOW')." ]</a>";
+	$tmp_cell = $product_count ." ". JText::_('JM_PRODUCTS_LBL')
+			."&nbsp;<a href=\"". $_SERVER['PHP_SELF'] . "?option=com_jmart&page=product.product_list&product_type_id=" . $db->f("product_type_id"). "\">[ ".JText::_('JM_SHOW')." ]</a>";
 	$listObj->addCell( $tmp_cell );
 	
 	$listObj->addCell( $ps_html->deleteButton( "product_type_id", $db->f("product_type_id"), "productProductTypeDelete", $keyword, $limitstart, "&product_id=". $product_id ) );

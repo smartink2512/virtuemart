@@ -2,10 +2,10 @@
 /**
  * Coupon table
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Coupon
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 // Check to ensure this file is included in Joomla!
@@ -16,7 +16,7 @@ defined('_JEXEC') or die();
  * The class is is used to manage the coupons in the shop.
  *
  * @author Rick Glunt
- * @package		VirtueMart
+ * @package		JMart
  */
 class TableCoupon extends JTable
 {
@@ -43,7 +43,7 @@ class TableCoupon extends JTable
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_coupons', 'coupon_id', $db);
+		parent::__construct('#__jmart_coupons', 'coupon_id', $db);
 	}
 
 

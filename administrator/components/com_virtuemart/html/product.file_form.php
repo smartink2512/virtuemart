@@ -3,26 +3,26 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: product.file_form.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 /* ROLANDD: MVC TEST START */
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'product_files.php');
-$productfiles = new VirtuemartModelProduct_Files();
+$productfiles = new JmartModelProduct_Files();
 $productfile = $productfiles->getImageDetails();
 
 $file_id = JRequest::getVar('file_id' );
 $product_id= JRequest::getInt('product_id');
-$option = JRequest::getVar('option', 'com_virtuemart');
+$option = JRequest::getVar('option', 'com_jmart');
 $selected_type = array( "selected=\"selected\"", '', '', '', '','' );
 
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product_files'.DS.'tmpl'.DS.'product_files_edit.php');
@@ -38,7 +38,7 @@ require_once( CLASSPATH . "ps_product_files.php" );
 
 $file_id= JRequest::getVar(  'file_id' );
 $product_id= JRequest::getVar(  'product_id');
-$option = empty($option)?JRequest::getVar(  'option', 'com_virtuemart'):$option;
+$option = empty($option)?JRequest::getVar(  'option', 'com_jmart'):$option;
 
 $selected_type = Array();
 
@@ -51,7 +51,7 @@ $selected_type = array( "selected=\"selected\"", '', '', '', '','' );
 $product_name = '<a href="'.$_SERVER['PHP_SELF'].'?option='.$option.'&amp;product_id='.$product_id.'&amp;page=product.product_form">'.$db->f("product_name").'</a>';
 
 $title ='<img src="'. $mosConfig_live_site .'/administrator/images/mediamanager.png" width="48" height="48" align="center" alt="Product List" border="0" />'
-		. JText::_('VM_FILES_FORM') . ": ". $product_name ;
+		. JText::_('JM_FILES_FORM') . ": ". $product_name ;
 
 
 $attribute_id = '';
@@ -102,7 +102,7 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
   <?php 
   	if( $file_id ) { ?>
     <tr> 
-      <td class="labelcell"><?php echo JText::_('VM_FILES_FORM_CURRENT_FILE') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('JM_FILES_FORM_CURRENT_FILE') ?>:</td>
       <td><?php 
       	echo $file_id == 'product_images' ? 
       		$db->f("file_name").'<br />'.$db->f("file_name2")
@@ -112,13 +112,13 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
     <?php 
   	} ?>
     <tr> 
-      <td class="labelcell"><?php echo JText::_('VM_FILES_LIST_FILENAME') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('JM_FILES_LIST_FILENAME') ?>:</td>
       <td> 
         <input type="file" class="inputbox" name="file_upload" size="32" />
       </td>
     </tr>
     <tr id="filename2">
-    	<td class="labelcell"><?php echo JText::_('VM_FILES_LIST_FILENAME') ?>:</td>
+    	<td class="labelcell"><?php echo JText::_('JM_FILES_LIST_FILENAME') ?>:</td>
     	<td><?php 
     		$downloadRootFiles = vmReadDirectory(DOWNLOADROOT, '.', true);
     		$mappedDownloadRootFiles = array();
@@ -132,69 +132,69 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"');
     	</td>
     </tr>
     <tr> 
-      <td class="labelcell"><?php echo JText::_('VM_FILES_LIST_FILETYPE') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('JM_FILES_LIST_FILETYPE') ?>:</td>
       <td> 
         <select name="file_type" onchange="checkThumbnailing();" class="inputbox">
-        	<option value="product_images" <?php echo $selected_type[0] ?>><?php echo JText::_('VM_FILES_FORM_PRODUCT_IMAGE'); ?></option>
-	        <option value="product_full_image" <?php echo $selected_type[1] ?>><?php echo JText::_('VM_PRODUCT_FORM_FULL_IMAGE') ?></option>
-	        <option value="product_thumb_image" <?php echo $selected_type[2] ?>><?php echo JText::_('VM_PRODUCT_FORM_THUMB_IMAGE') ?></option>
-	        <option value="downloadable_file" <?php echo $selected_type[3] ?>><?php echo JText::_('VM_FILES_FORM_DOWNLOADABLE') ?></option>
-	        <option value="image" <?php echo $selected_type[4] ?>><?php echo JText::_('VM_FILES_FORM_IMAGE') ?></option>
-	        <option value="file" <?php echo $selected_type[5] ?>><?php echo JText::_('VM_FILES_FORM_FILE') ?></option>
+        	<option value="product_images" <?php echo $selected_type[0] ?>><?php echo JText::_('JM_FILES_FORM_PRODUCT_IMAGE'); ?></option>
+	        <option value="product_full_image" <?php echo $selected_type[1] ?>><?php echo JText::_('JM_PRODUCT_FORM_FULL_IMAGE') ?></option>
+	        <option value="product_thumb_image" <?php echo $selected_type[2] ?>><?php echo JText::_('JM_PRODUCT_FORM_THUMB_IMAGE') ?></option>
+	        <option value="downloadable_file" <?php echo $selected_type[3] ?>><?php echo JText::_('JM_FILES_FORM_DOWNLOADABLE') ?></option>
+	        <option value="image" <?php echo $selected_type[4] ?>><?php echo JText::_('JM_FILES_FORM_IMAGE') ?></option>
+	        <option value="file" <?php echo $selected_type[5] ?>><?php echo JText::_('JM_FILES_FORM_FILE') ?></option>
         </select>
       </td>
     </tr>
     <tr> 
-      <td class="labelcell"><?php echo JText::_('VM_FILES_FORM_UPLOAD_TO') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('JM_FILES_FORM_UPLOAD_TO') ?>:</td>
       <td> 
         <input type="radio" class="inputbox" name="upload_dir" id="upload_dir0" checked="checked" value="IMAGEPATH" />
-        <label for="upload_dir0"><?php echo JText::_('VM_FILES_FORM_UPLOAD_IMAGEPATH') ?></label><br/><br/>
+        <label for="upload_dir0"><?php echo JText::_('JM_FILES_FORM_UPLOAD_IMAGEPATH') ?></label><br/><br/>
         <input type="radio" class="inputbox" name="upload_dir" id="upload_dir1" value="FILEPATH" />
-        <label for="upload_dir1"><?php echo JText::_('VM_FILES_FORM_UPLOAD_OWNPATH') ?></label>:
+        <label for="upload_dir1"><?php echo JText::_('JM_FILES_FORM_UPLOAD_OWNPATH') ?></label>:
         &nbsp;&nbsp;&nbsp;<strong><?php echo $mosConfig_absolute_path ?></strong>&nbsp;<input type="text" class="inputbox" name="file_path" size="25" value="/media/" /><br/><br/>
         <input type="radio" class="inputbox" name="upload_dir" id="upload_dir2" value="DOWNLOADPATH" />
-        <label for="upload_dir2"><?php echo JText::_('VM_FILES_FORM_UPLOAD_DOWNLOADPATH') ?></label>
+        <label for="upload_dir2"><?php echo JText::_('JM_FILES_FORM_UPLOAD_DOWNLOADPATH') ?></label>
       </td>
     </tr>
     <tr> 
       <td class="labelcell">
-      		<label for="file_resize_fullimage"><?php echo JText::_('VM_FILES_FORM_RESIZE_IMAGE'); ?></label>
+      		<label for="file_resize_fullimage"><?php echo JText::_('JM_FILES_FORM_RESIZE_IMAGE'); ?></label>
       	</td>
       <td> 
         <input type="checkbox" class="inputbox" id="file_resize_fullimage" name="file_resize_fullimage" checked="checked" value="1" />
         <div id="fullsizes">&nbsp;&nbsp;&nbsp;
-        <?php echo JText::_('VM_PRODUCT_FORM_HEIGHT');?>: <input type="text" name="fullimage_height" value="500" class="inputbox" />&nbsp;&nbsp;&nbsp;
-        <?php echo JText::_('VM_PRODUCT_FORM_WIDTH');?>: <input type="text" name="fullimage_width" value="500" class="inputbox" /></div>
+        <?php echo JText::_('JM_PRODUCT_FORM_HEIGHT');?>: <input type="text" name="fullimage_height" value="500" class="inputbox" />&nbsp;&nbsp;&nbsp;
+        <?php echo JText::_('JM_PRODUCT_FORM_WIDTH');?>: <input type="text" name="fullimage_width" value="500" class="inputbox" /></div>
       </td>
     </tr>
     <tr> 
       <td class="labelcell">
-      		<label for="file_create_thumbnail"><?php echo JText::_('VM_FILES_FORM_AUTO_THUMBNAIL') ?></label>
+      		<label for="file_create_thumbnail"><?php echo JText::_('JM_FILES_FORM_AUTO_THUMBNAIL') ?></label>
       	</td>
       <td> 
         <input type="checkbox" class="inputbox" id="file_create_thumbnail" name="file_create_thumbnail" checked="checked" value="1" />
         <div id="thumbsizes">&nbsp;&nbsp;&nbsp;
-        <?php echo JText::_('VM_PRODUCT_FORM_HEIGHT');?>: <input type="text" name="thumbimage_height" value="<?php echo PSHOP_IMG_HEIGHT ?>" class="inputbox" />&nbsp;&nbsp;&nbsp;
-        <?php echo JText::_('VM_PRODUCT_FORM_WIDTH');?>: <input type="text" name="thumbimage_width" value="<?php echo PSHOP_IMG_WIDTH ?>" class="inputbox" /></div>
+        <?php echo JText::_('JM_PRODUCT_FORM_HEIGHT');?>: <input type="text" name="thumbimage_height" value="<?php echo PSHOP_IMG_HEIGHT ?>" class="inputbox" />&nbsp;&nbsp;&nbsp;
+        <?php echo JText::_('JM_PRODUCT_FORM_WIDTH');?>: <input type="text" name="thumbimage_width" value="<?php echo PSHOP_IMG_WIDTH ?>" class="inputbox" /></div>
         </td>
     </tr>
 
     <tr> 
       <td class="labelcell">
-      		<label for="file_published"><?php echo JText::_('VM_FILES_FORM_FILE_PUBLISHED') ?></label>
+      		<label for="file_published"><?php echo JText::_('JM_FILES_FORM_FILE_PUBLISHED') ?></label>
       	</td>
       <td> 
         <input type="checkbox" class="inputbox" id="file_published" name="file_published" value="1" <?php if($db->sf("file_published")==1) echo "checked=\"checked\"" ?> size="16" />
       </td>
     </tr>
     <tr> 
-      <td class="labelcell"><?php echo JText::_('VM_FILES_FORM_FILE_TITLE') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('JM_FILES_FORM_FILE_TITLE') ?>:</td>
       <td> 
         <input type="text" class="inputbox" name="file_title" size="32" value="<?php echo shopMakeHtmlSafe( $db->sf("file_title") ) ?>" />
       </td>
     </tr>
     <tr> 
-      <td class="labelcell"><?php echo JText::_('VM_FILES_FORM_FILE_URL') ?>:</td>
+      <td class="labelcell"><?php echo JText::_('JM_FILES_FORM_FILE_URL') ?>:</td>
       <td> 
         <input type="text" class="inputbox" name="file_url" value="<?php $db->sp("file_url") ?>" size="32" />
       </td>

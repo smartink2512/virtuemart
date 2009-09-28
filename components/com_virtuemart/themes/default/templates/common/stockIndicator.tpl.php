@@ -7,5 +7,5 @@ $tooltipArray = array('className'=>'stockImageTip', 'showDelay'=>'200',
    'onHide'=>"function(tip) {tip.effect('opacity', 
       {duration: 300, wait: false}).start(1,0)}");
 JHTML::_('behavior.tooltip','.hasTip3',$tooltipArray);?>
-<span class="hasTip3" title="<?php echo JText::_('VM_STOCK_LEVEL_DISPLAY_TITLE_TIP') ?>::<?php echo $stock_tip ?>">
+<span class="hasTip3" title="<?php echo JText::_('JM_STOCK_LEVEL_DISPLAY_TITLE_TIP') ?>::<?php echo $stock_tip ?>">
 <div class="<?php echo $stock_level ?>"><?php echo $stock_level_label ?></div></span>

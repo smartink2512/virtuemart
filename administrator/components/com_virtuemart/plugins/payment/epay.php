@@ -1,13 +1,13 @@
 <?php
 /**
  * @version $Id: ps_epay.php,v 1.4 2005/05/17 20:31:31 soeren_nb Exp $
- * @package VirtueMart
+ * @package JMart
  * @subpackage Payment
  * @copyright (C) 2007-2008 Thomas Knudsen
  *
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * VirtueMart is Free Software.
- * VirtueMart comes with absolute no warranty.
+ * JMart is Free Software.
+ * JMart comes with absolute no warranty.
  *
  * www.virtuemart.net
 
@@ -37,7 +37,7 @@ class plgPaymentEpay extends vmPaymentPlugin {
 	function showPaymentForm( &$db, $user, $dbbt ) {
 		global  $mosConfig_live_site ;
 		
-		echo JText::_( 'VM_CHECKOUT_EPAY_PAYMENT_CHECKOUT_HEADER' ) ;
+		echo JText::_( 'JM_CHECKOUT_EPAY_PAYMENT_CHECKOUT_HEADER' ) ;
 		?>
 <script type="text/javascript" src="http://www.epay.dk/js/standardwindow.js"></script>
 <script type="text/javascript">
@@ -76,17 +76,17 @@ function printCard(cardId) {
 	<input type="hidden" name="ordretext" value="" />
 <?php
 		if( $this->params->get('EPAY_CALLBACK') == "1" ) {
-			echo '<input type="hidden" name="callbackurl" value="' . $mosConfig_live_site . '/index.php?page=checkout.epay_result&accept=1&sessionid=' . $sessionid . '&option=com_virtuemart&Itemid=1" />' ;
+			echo '<input type="hidden" name="callbackurl" value="' . $mosConfig_live_site . '/index.php?page=checkout.epay_result&accept=1&sessionid=' . $sessionid . '&option=com_jmart&Itemid=1" />' ;
 		}
 		?>
 <input type="hidden" name="accepturl"
 	value="<?php
 		echo $mosConfig_live_site ?>/index.php?page=checkout.epay_result&accept=1&sessionid=<?php
-		echo $sessionid ?>&option=com_virtuemart&Itemid=1" />
+		echo $sessionid ?>&option=com_jmart&Itemid=1" />
 <input type="hidden" name="declineurl"
 	value="<?php
 		echo $mosConfig_live_site ?>/index.php?page=checkout.epay_result&accept=0&sessionid=<?php
-		echo $sessionid ?>&option=com_virtuemart&Itemid=1" />
+		echo $sessionid ?>&option=com_jmart&Itemid=1" />
 <input type="hidden" name="group" value="<?php
 		echo $this->params->get('EPAY_GROUP') ?>" /> <input
 	type="hidden" name="instant" value="<?php
@@ -125,7 +125,7 @@ function printCard(cardId) {
 	<tr>
 		<td><input type="button" onClick="open_ePay_window()"
 			value="<?php
-		echo JText::_( 'VM_CHECKOUT_EPAY_BUTTON_OPEN_WINDOW' ) ?>"></td>
+		echo JText::_( 'JM_CHECKOUT_EPAY_BUTTON_OPEN_WINDOW' ) ?>"></td>
 		<td width="100%" id="flashLoader"></td>
 	</tr>
 </table>
@@ -133,18 +133,18 @@ function printCard(cardId) {
 <br />
 <br />
 <?php
-		echo JText::_( 'VM_CHECKOUT_EPAY_PAYMENT_CHECKOUT_FOOTER' ) ?>
+		echo JText::_( 'JM_CHECKOUT_EPAY_PAYMENT_CHECKOUT_FOOTER' ) ?>
 <br />
 <br />
-<img alt="ePay Logo" src="components/com_virtuemart/shop_image/ps_image/epay_images/epay_logo.gif" border="0" />
+<img alt="ePay Logo" src="components/com_jmart/shop_image/ps_image/epay_images/epay_logo.gif" border="0" />
 &nbsp;&nbsp;&nbsp;
-<img src="components/com_virtuemart/shop_image/ps_image/epay_images/mastercard_securecode.gif" alt="Mastercard" 	border="0" />
+<img src="components/com_jmart/shop_image/ps_image/epay_images/mastercard_securecode.gif" alt="Mastercard" 	border="0" />
 &nbsp;&nbsp;&nbsp;
-<img src="components/com_virtuemart/shop_image/ps_image/epay_images/pci.gif" alt="PCI" border="0" />
+<img src="components/com_jmart/shop_image/ps_image/epay_images/pci.gif" alt="PCI" border="0" />
 &nbsp;&nbsp;&nbsp;
-<img src="components/com_virtuemart/shop_image/ps_image/epay_images/verisign_secure.gif" alt="Verisign -secure" border="0" />
+<img src="components/com_jmart/shop_image/ps_image/epay_images/verisign_secure.gif" alt="Verisign -secure" border="0" />
 &nbsp;&nbsp;&nbsp;
-<img src="components/com_virtuemart/shop_image/ps_image/epay_images/visa_secure.gif" alt="Visa -secure" border="0" />
+<img src="components/com_jmart/shop_image/ps_image/epay_images/visa_secure.gif" alt="Visa -secure" border="0" />
 &nbsp;&nbsp;&nbsp;
 <?php
 	}

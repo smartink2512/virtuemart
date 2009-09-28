@@ -1,6 +1,6 @@
 <?php
 /**
-* @package		VirtueMart
+* @package		JMart
 * @license		GNU/GPL, see LICENSE.php
 */
 
@@ -12,9 +12,9 @@ jimport( 'joomla.application.component.model');
 /**
  * Model for Macola
  *
- * @package		VirtueMart
+ * @package		JMart
  */
-class VirtueMartModelVirtueMart extends JModel
+class JMartModelJMart extends JModel
 {
     
     /**
@@ -28,13 +28,13 @@ class VirtueMartModelVirtueMart extends JModel
 		$db = JFactory::getDBO();
 
 		$query = "SELECT category_id, category_thumb_image, category_child_id, category_name ";
-		$query .= "FROM #__vm_category, #__vm_category_xref ";
-		$query .= "WHERE #__vm_category_xref.category_parent_id = '$category_id' ";
-		$query .= "AND #__vm_category.category_id = #__vm_category_xref.category_child_id ";
-		//$query .= "AND #__vm_category.vendor_id = '$hVendor_id' ";
-		$query .= "AND #__vm_category.vendor_id = '1' ";
-		$query .= "AND #__vm_category.category_publish = 'Y' ";
-		$query .= "ORDER BY #__vm_category.list_order, #__vm_category.category_name ASC";
+		$query .= "FROM #__jmart_category, #__jmart_category_xref ";
+		$query .= "WHERE #__jmart_category_xref.category_parent_id = '$category_id' ";
+		$query .= "AND #__jmart_category.category_id = #__jmart_category_xref.category_child_id ";
+		//$query .= "AND #__jmart_category.vendor_id = '$hVendor_id' ";
+		$query .= "AND #__jmart_category.vendor_id = '1' ";
+		$query .= "AND #__jmart_category.category_publish = 'Y' ";
+		$query .= "ORDER BY #__jmart_category.list_order, #__jmart_category.category_name ASC";
 		
 		$childList = $this->_getList( $query );
 		return $childList;	    

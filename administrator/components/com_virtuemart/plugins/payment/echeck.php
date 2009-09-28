@@ -4,17 +4,17 @@
  *  for eCheck.net transactions with authorize.net 
  *
  * @version $Id: echeck.php 1760 2009-05-03 22:58:57Z Aravot $
- * @package VirtueMart
+ * @package JMart
  * @subpackage payment
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * VirtueMart is free software. This version may have been modified pursuant
+ * JMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+ * See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
  *
- * http://virtuemart.org
+ * http://joomlacode.org/gf/project/jmart/
  */
 if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not allowed.' ) ;
@@ -58,7 +58,7 @@ class plgPaymentEcheck extends vmPaymentPlugin {
 		
 		$passkey = $this->get_passkey();
 		if( empty( $passkey ) ) {
-			$vmLogger->err( JText::_( 'VM_PAYMENT_ERROR' ), false ) ;
+			$vmLogger->err( JText::_( 'JM_PAYMENT_ERROR' ), false ) ;
 			return false ;
 		}
 		
@@ -134,7 +134,7 @@ class plgPaymentEcheck extends vmPaymentPlugin {
 			$error = curl_error( $CR ) ;
 			if( ! empty( $error ) ) {
 				$vmLogger->err( curl_error( $CR ) ) ;
-				$html = "<br/><span class=\"message\">" . JText::_( 'VM_PAYMENT_INTERNAL_ERROR' ) . " authorize.net</span>" ;
+				$html = "<br/><span class=\"message\">" . JText::_( 'JM_PAYMENT_INTERNAL_ERROR' ) . " authorize.net</span>" ;
 				return false ;
 			} else {
 				//echo $result; exit();
@@ -186,7 +186,7 @@ class plgPaymentEcheck extends vmPaymentPlugin {
 		
 		// Approved - Success!
 		if( $response[0] == '1' ) {
-			$d["order_payment_log"] = JText::_( 'VM_PAYMENT_TRANSACTION_SUCCESS' ) . ": " ;
+			$d["order_payment_log"] = JText::_( 'JM_PAYMENT_TRANSACTION_SUCCESS' ) . ": " ;
 			$d["order_payment_log"] .= $response[3] ;
 			return True ;
 		} // Payment Declined

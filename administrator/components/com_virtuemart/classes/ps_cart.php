@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_cart.php 1781 2009-05-13 00:29:41Z macallf $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /**
@@ -190,12 +190,12 @@ class ps_cart {
 
 			// Check for negative quantity
 			if ($quantity < 0) {
-				$vmLogger->warning( JText::_('VM_CART_ERROR_NO_NEGATIVE',false) );
+				$vmLogger->warning( JText::_('JM_CART_ERROR_NO_NEGATIVE',false) );
 				return False;
 			}
 
 			if (!ereg("^[0-9]*$", $quantity)) {
-				$vmLogger->warning( JText::_('VM_CART_ERROR_NO_VALID_QUANTITY',false) );
+				$vmLogger->warning( JText::_('JM_CART_ERROR_NO_VALID_QUANTITY',false) );
 				return False;
 			}
 			// Check to see if checking stock quantity
@@ -215,7 +215,7 @@ class ps_cart {
 
 			// Check if product exists and is published
 			if ( !ps_product::product_exists($product_id)) {
-				$vmLogger->tip( JText::_('VM_CART_PRODUCT_NOTEXIST',false) );
+				$vmLogger->tip( JText::_('JM_CART_PRODUCT_NOTEXIST',false) );
 				return false;
 			}
 			// Quick add of item
@@ -224,7 +224,7 @@ class ps_cart {
 			$db->query ( $q );
 
 			if ( $db->num_rows()) {
-				$vmLogger->tip( JText::_('VM_CART_SELECT_ITEM',false) );
+				$vmLogger->tip( JText::_('JM_CART_SELECT_ITEM',false) );
 				return false;
 			}
 
@@ -237,7 +237,7 @@ class ps_cart {
 			|| ($multiple_products == 1 && ($result["custom_attribute_given"] == false && !empty( $result["custom_attribute_list"] ))) ) {
 				$_REQUEST['flypage'] = ps_product::get_flypage($product_id);
 				$GLOBALS['page'] = 'shop.product_details';
-				$vmLogger->tip( JText::_('VM_CART_SELECT_ITEM',false) );
+				$vmLogger->tip( JText::_('JM_CART_SELECT_ITEM',false) );
 				return true;
 			}
 
@@ -245,7 +245,7 @@ class ps_cart {
 			//Normally means no info added to a custom field, but once added to a cart the quantity is automatically placed
 			//If another item is added and the custom field is left blank for another product already added this will just ignore that item
 			if ($multiple_products != 1 && $quantity != 0 && ($result["custom_attribute_given"] == false && !empty( $result["custom_attribute_list"] )))  {
-				$vmLogger->tip( JText::_('VM_CART_SELECT_ITEM',false) );
+				$vmLogger->tip( JText::_('JM_CART_SELECT_ITEM',false) );
 				continue;
 			}
 
@@ -261,12 +261,12 @@ class ps_cart {
 			}
 			list($min,$max) = ps_product::product_order_levels($product_id);
 			If ($min!= 0 && $quantity !=0 && $quantity < $min) {
-				eval( "\$msg = \"".JText::_('VM_CART_MIN_ORDER',false)."\";" );
+				eval( "\$msg = \"".JText::_('JM_CART_MIN_ORDER',false)."\";" );
 				$vmLogger->warning( $msg );
 				continue;
 			}
 			if ($max !=0 && $quantity !=0 && $quantity>$max) {
-				eval( "\$msg = \"".JText::_('VM_CART_MAX_ORDER',false)."\";" );
+				eval( "\$msg = \"".JText::_('JM_CART_MAX_ORDER',false)."\";" );
 				$vmLogger->warning( $msg );
 				continue;
 			}
@@ -306,18 +306,18 @@ class ps_cart {
 		// Ouput info message with cart update details /*
 		if($total_quantity !=0 || $total_updated !=0 || $total_deleted !=0) {
 			if( $total_quantity > 0 && $total_updated ==0 ) {
-				$msg = JText::_('VM_CART_PRODUCT_ADDED',false);
+				$msg = JText::_('JM_CART_PRODUCT_ADDED',false);
 			} else {
-				$msg = JText::_('VM_CART_PRODUCT_UPDATED',false);
+				$msg = JText::_('JM_CART_PRODUCT_UPDATED',false);
 			}
 			
 			// Comment out the following line to turn off msg i.e. //$vmLogger->tip( $msg );
 			$vmLogger->info( $msg );
 		}
         else if (@$request_stock && vmIsXHR() ) {
-            $vmLogger->tip( JText::_('VM_CART_GOTO_WAITING_LIST',false) );
+            $vmLogger->tip( JText::_('JM_CART_GOTO_WAITING_LIST',false) );
 		} else {
-            $vmLogger->tip( JText::_('VM_CART_QUANTITY_EXCEEDED',false) );
+            $vmLogger->tip( JText::_('JM_CART_QUANTITY_EXCEEDED',false) );
         }
 		// end cart update message */
 
@@ -361,12 +361,12 @@ class ps_cart {
 
 		// Check for negative quantity
 		if ($quantity < 0) {
-			$vmLogger->warning( JText::_('VM_CART_ERROR_NO_NEGATIVE',false) );
+			$vmLogger->warning( JText::_('JM_CART_ERROR_NO_NEGATIVE',false) );
 			return False;
 		}
 
 		if (!ereg("^[0-9]*$", $quantity)) {
-			$vmLogger->warning( JText::_('VM_CART_ERROR_NO_VALID_QUANTITY',false) );
+			$vmLogger->warning( JText::_('JM_CART_ERROR_NO_VALID_QUANTITY',false) );
 			return False;
 		}
 
@@ -391,12 +391,12 @@ class ps_cart {
 					// Get min and max order levels
 					list($min,$max) = ps_product::product_order_levels($product_id);
 					If ($min!= 0 && $quantity < $min) {
-						eval( "\$msg = \"".JText::_('VM_CART_MIN_ORDER',false)."\";" );
+						eval( "\$msg = \"".JText::_('JM_CART_MIN_ORDER',false)."\";" );
 						$vmLogger->warning( $msg );
 						return false;
 					}
 					if ($max !=0 && $quantity>$max) {
-						eval( "\$msg = \"".JText::_('VM_CART_MAX_ORDER',false)."\";" );
+						eval( "\$msg = \"".JText::_('JM_CART_MAX_ORDER',false)."\";" );
 						$vmLogger->warning( $msg );
 						return false;
 					}
@@ -552,12 +552,12 @@ class ps_cart {
 
 		// Check for negative quantity
 		if ($quantity < 0) {
-			$vmLogger->warning( JText::_('VM_CART_ERROR_NO_NEGATIVE',false) );
+			$vmLogger->warning( JText::_('JM_CART_ERROR_NO_NEGATIVE',false) );
 			return False;
 		}
 
 		if (!ereg("^[0-9]*$", $quantity)) {
-			$vmLogger->warning( JText::_('VM_CART_ERROR_NO_VALID_QUANTITY',false) );
+			$vmLogger->warning( JText::_('JM_CART_ERROR_NO_VALID_QUANTITY',false) );
 			return False;
 		}
 
@@ -577,12 +577,12 @@ class ps_cart {
 					// Get min and max order levels
 					list($min,$max) = ps_product::product_order_levels($product_id);
 					If ($min!= 0 && $quantity < $min) {
-						eval( "\$msg = \"".JText::_('VM_CART_MIN_ORDER',false)."\";" );
+						eval( "\$msg = \"".JText::_('JM_CART_MIN_ORDER',false)."\";" );
 						$vmLogger->warning( $msg );
 						return false;
 					}
 					if ($max !=0 && $quantity>$max) {
-						eval( "\$msg = \"".JText::_('VM_CART_MAX_ORDER',false)."\";" );
+						eval( "\$msg = \"".JText::_('JM_CART_MAX_ORDER',false)."\";" );
 						$vmLogger->warning( $msg );
 						return false;
 					}

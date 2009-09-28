@@ -4,17 +4,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * This file contains functions and classes for common image manipulation tasks
 *
 * @version $Id: imageTools.class.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 class vmImageTools {
@@ -329,7 +329,7 @@ class vmImageTools {
 	/**
 	 * Resizes an image to a given size
 	 * 
-	 * @since VirtueMart 1.1.0
+	 * @since JMart 1.1.0
 	 * @author soeren
 	 * 
 	 * @static
@@ -373,7 +373,7 @@ class vmImageTools {
 	}
 	/**
 	 * Returns the filename of an image's resized copy in the /resized folder
-	 * @since VirtueMart 1.1.0
+	 * @since JMart 1.1.0
 	 * @author soeren
 	 * @static 
 	 * @param string $filename

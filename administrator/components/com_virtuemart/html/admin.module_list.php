@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: admin.module_list.php 1768 2009-05-11 22:24:39Z macallf $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 
@@ -53,7 +53,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('VM_MODULE_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/vm_modules_48.png', "admin", "module_list");
+$listObj->writeSearchHeader(JText::_('JM_MODULE_LIST_LBL'), JM_ADMIN_ICON_URL.'icon_48/jm_modules_48.png', "admin", "module_list");
 
 // start the list table
 $listObj->startTable();
@@ -61,7 +61,7 @@ $listObj->startTable();
 // these are the columns in the table
 $columns = Array(  "#" => 'width="3%"',
 					'<input type="checkbox" name="toggle" value="" onclick="checkAll('.count($db->record).')" />' => 'width="3%"',
-					JText::_('VM_MODULE_LIST_NAME') => 'width="20%"'
+					JText::_('JM_MODULE_LIST_NAME') => 'width="20%"'
 				);
 $usergroups = $vmUserGroup->get_groups();
 
@@ -73,8 +73,8 @@ $columns['none'] = 'width="5%"';
 $usergroups->reset();
 $columns['<a href="javascript: document.adminForm.func.value = \'setModulePermissions\'; saveorder( '.(count($db->record)-1).' );"><img src="'.$mosConfig_live_site.'/administrator/images/filesave.png" border="0" width="16" height="16" alt="' . JText::_('SAVE_PERMISSIONS') . '" align="left"/>' . JText::_('SAVE_PERMISSIONS') . '</a>'] = '';
 
-$columns[JText::_('VM_MODULE_LIST_FUNCTIONS')] = 'width="10%"';
-$columns[JText::_('VM_FIELDMANAGER_REORDER')] = "width=\"5%\"";
+$columns[JText::_('JM_MODULE_LIST_FUNCTIONS')] = 'width="10%"';
+$columns[JText::_('JM_FIELDMANAGER_REORDER')] = "width=\"5%\"";
 $columns[vmCommonHTML::getSaveOrderButton( (count($db->record)-1), 'changeordering' )] = 'width="8%"';
 $columns[JText::_('E_REMOVE')] = "width=\"5%\"";
 
@@ -93,7 +93,7 @@ while ($db->next_record()) {
 	$link = "<a href=\"". $sess->url( $_SERVER['PHP_SELF'] . "?page=$modulename.module_form&limitstart=$limitstart&module_id=" . $db->f("module_id"));
 	if( $vmLayout != 'standard' ) {
 		$link .= "&no_menu=1&tmpl=component";
-		$link = defined('_VM_IS_BACKEND') 
+		$link = defined('_JM_IS_BACKEND') 
 			? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
 			: str_replace('index.php', 'index2.php', $link );
 	}
@@ -119,11 +119,11 @@ while ($db->next_record()) {
 	$link = "<a href=\"".$sess->url($_SERVER['PHP_SELF']."?page=$modulename.function_list&module_id=" . $db->f("module_id"));
 	if( $vmLayout != 'standard' ) {
 		$link .= "&no_menu=1&tmpl=component";
-		$link = defined('_VM_IS_BACKEND') 
+		$link = defined('_JM_IS_BACKEND') 
 			? str_replace('index2.php', 'index3.php', str_replace('index.php', 'index3.php', $link )) 
 			: str_replace('index.php', 'index2.php', $link );
 	}
-	$tmp_cell = $link."\">". JText::_('VM_FUNCTION_LIST_LBL') ."</a>";
+	$tmp_cell = $link."\">". JText::_('JM_FUNCTION_LIST_LBL') ."</a>";
 	$listObj->addCell( $tmp_cell );
 
 	$tmp_cell = "<div align=\"center\">"

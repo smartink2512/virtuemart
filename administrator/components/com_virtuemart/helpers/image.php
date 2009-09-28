@@ -3,12 +3,12 @@
  * Image helper class
  *
  * This class was derived from the show_image_in_imgtag.php and imageTools.class.php files in VM.  It provides some
- * image functions that are used throughout the VirtueMart shop.
+ * image functions that are used throughout the JMart shop.
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Helpers
  * @author Rick Glunt
- * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 JMart Team. All rights reserved.
  */
 defined('_JEXEC') or die();
 
@@ -18,7 +18,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'classes' . DS. "class.img2thu
 /**
  * Image Helper class
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Helpers
  * @author Rick Glunt
  */
@@ -35,7 +35,7 @@ class ImageHelper
 	{
 		$button  = '<div style="float:left;width=100px;"><div class="icon">';
 		$button .= '<a title="' . $text . '" href="' . $link . '">';
-		$button .= JHTML::_('image.administrator',  $image, '/components/com_virtuemart/assets/images/icon_48/', NULL, NULL, $text);
+		$button .= JHTML::_('image.administrator',  $image, '/components/com_jmart/assets/images/icon_48/', NULL, NULL, $text);
 		$button .= '<br />' . $text.'</a></div></div>';
 		echo $button;
 	}	
@@ -50,7 +50,7 @@ class ImageHelper
 	function displayImage($image, $text) 
 	{
 		$imageHtml  = '<div style="float:left;"><div class="icon">';
-		$imageHtml .= JHTML::_('image.administrator',  $image, '/components/com_virtuemart/assets/images/icon_48/', NULL, NULL, $text);
+		$imageHtml .= JHTML::_('image.administrator',  $image, '/components/com_jmart/assets/images/icon_48/', NULL, NULL, $text);
 		$imageHtml .= '</div></div>';
 		echo $imageHtml;
 	}	
@@ -139,10 +139,10 @@ class ImageHelper
 				}				
 				else {
 					if ($imgRootFolder <> '') {
-						$url = JURI::root().'components/com_virtuemart/shop_image/'.$imgRootFolder.'/'.$image;	
+						$url = JURI::root().'components/com_jmart/shop_image/'.$imgRootFolder.'/'.$image;	
 					}
 					else {
-						$url = JURI::root().'components/com_virtuemart/shop_image/'.$image;	
+						$url = JURI::root().'components/com_jmart/shop_image/'.$image;	
 					}
 
 					if ($resize) {
@@ -160,7 +160,7 @@ class ImageHelper
 			}
 		}
 		else {
-			$url = VM_THEMEURL.'images/'.NO_IMAGE;
+			$url = JM_THEMEURL.'images/'.NO_IMAGE;
 		}		
 
 		return JHTML::image($url, '');
@@ -208,14 +208,14 @@ class ImageHelper
 		
 		if (file_exists($resizedFilenamePath)) {
 			if ($imageRootFolder <> '') {
-				return JURI::root().'components/com_virtuemart/shop_image/'.$imageRootFolder.'/resized/'.$resizedFilename;
+				return JURI::root().'components/com_jmart/shop_image/'.$imageRootFolder.'/resized/'.$resizedFilename;
 			}
 			else {
-				return JURI::root().'components/com_virtuemart/shop_image/resized/'.$resizedFilename;
+				return JURI::root().'components/com_jmart/shop_image/resized/'.$resizedFilename;
 			}				
 		}
 		else {
-			return VM_THEMEURL.'images/'.NO_IMAGE;
+			return JM_THEMEURL.'images/'.NO_IMAGE;
 		}
 	}
 	

@@ -2,10 +2,10 @@
 /**
  * State controller
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage State
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
@@ -15,11 +15,11 @@ jimport('joomla.application.component.controller');
 /**
  * Product Controller
  *
- * @package    VirtueMart
+ * @package    JMart
  * @subpackage State
  * @author Rick Glunt and Max Milbers
  */
-class VirtuemartControllerState extends JController
+class JmartControllerState extends JController
 {
 	/**
 	 * Method to display the view
@@ -31,7 +31,7 @@ class VirtuemartControllerState extends JController
 		parent::__construct();
 		
 	    $document =& JFactory::getDocument();
-	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
+	    $document->addStyleSheet(JURI::base().'components/com_jmart/assets/css/jmart.css');
 	    
 		$document =& JFactory::getDocument();				
 		$viewType	= $document->getType();
@@ -83,7 +83,7 @@ class VirtuemartControllerState extends JController
 	{
 		$msg = JText::_('Operation Canceled!!');
 		
-		$this->setRedirect('index.php?option=com_virtuemart&view=state&state_id='.$data["state_id"], $msg);
+		$this->setRedirect('index.php?option=com_jmart&view=state&state_id='.$data["state_id"], $msg);
 	}	
 	
 	
@@ -104,7 +104,7 @@ class VirtuemartControllerState extends JController
 			$msg = JText::_('Error saving state!');
 		}
 		
-		$this->setRedirect('index.php?option=com_virtuemart&view=state&state_id='.$data["state_id"], $msg);
+		$this->setRedirect('index.php?option=com_jmart&view=state&state_id='.$data["state_id"], $msg);
 	}	
 	
 	
@@ -124,7 +124,7 @@ class VirtuemartControllerState extends JController
 			$msg = JText::_( 'States Deleted!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&state_id='.$data["state_id"], $msg);
+		$this->setRedirect( 'index.php?option=com_jmart&view=state&state_id='.$data["state_id"], $msg);
 	}	
 	
 	
@@ -141,7 +141,7 @@ class VirtuemartControllerState extends JController
 			$msg = JText::_('Error: One or more states could not be published!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&state_id='.$data["state_id"], $msg);
+		$this->setRedirect( 'index.php?option=com_jmart&view=state&state_id='.$data["state_id"], $msg);
 	}		
 	
 	
@@ -158,7 +158,7 @@ class VirtuemartControllerState extends JController
 			$msg = JText::_('Error: One or more states could not be unpublished!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&state_id='.$data["state_id"], $msg);
+		$this->setRedirect( 'index.php?option=com_jmart&view=state&state_id='.$data["state_id"], $msg);
 	}	
 }
 ?>

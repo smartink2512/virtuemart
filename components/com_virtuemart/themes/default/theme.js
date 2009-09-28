@@ -22,7 +22,7 @@ function loadNewPage( el, url ) {
 	new Ajax( url + '&only_page=1', opt ).request();
 }
 
-function handleGoToCart() { document.location = live_site + '/index.php?option=com_virtuemart&page=shop.cart&product_id=' + formCartAdd.product_id.value + '&Itemid=' +formCartAdd.Itemid.value; }
+function handleGoToCart() { document.location = live_site + '/index.php?option=com_jmart&page=shop.cart&product_id=' + formCartAdd.product_id.value + '&Itemid=' +formCartAdd.Itemid.value; }
 var timeoutID = 0;
 
 function handleAddToCart( formId, parameters ) {
@@ -63,7 +63,7 @@ function handleAddToCart( formId, parameters ) {
 	new Ajax(formCartAdd.action, opt).request();
 }
 
-function handleGoToFavourites() { document.location = live_site + '/index.php?option=com_virtuemart&page=shop.favourites&product_id=' + formfavouriteAdd.product_id.value + '&Itemid=' +formfavouriteAdd.Itemid.value; }
+function handleGoToFavourites() { document.location = live_site + '/index.php?option=com_jmart&page=shop.favourites&product_id=' + formfavouriteAdd.product_id.value + '&Itemid=' +formfavouriteAdd.Itemid.value; }
 
 function handleAddToFavourites( formId, parameters ) {
 	formFavouriteAdd = document.getElementById( formId );
@@ -108,7 +108,8 @@ function handleAddToFavourites( formId, parameters ) {
 */
 function updateMiniCarts() {
 	var callbackCart = function(responseText) {
-		carts = $$( '.vmCartModule' );
+		carts = $$( '.jmCartModule' );
+		//carts = $$( '.jmartCartModule' );
 		if( carts ) {
 			try {
 				for (var i=0; i<carts.length; i++){
@@ -140,7 +141,7 @@ function updateMiniCarts() {
 			} catch(e) {}
 		}
 	}
-	var option = { method: 'post', onComplete: callbackCart, data: { only_page:1,page: "shop.basket_short", option: "com_virtuemart" } }
+	var option = { method: 'post', onComplete: callbackCart, data: { only_page:1,page: "shop.basket_short", option: "com_jmart" } }
 	new Ajax( live_site + '/index2.php', option).request();
 } 
 
@@ -182,7 +183,7 @@ function updateMiniFavourites() {
 			} catch(e) {}
 		}
 	}
-	var option = { method: 'post', onComplete: callbackFavs, data: { only_page:1,page: "shop.favourites_short", option: "com_virtuemart" } }
+	var option = { method: 'post', onComplete: callbackFavs, data: { only_page:1,page: "shop.favourites_short", option: "com_jmart" } }
 	new Ajax( live_site + '/index2.php', option).request();
 } 
 /**

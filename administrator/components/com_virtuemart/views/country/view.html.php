@@ -2,10 +2,10 @@
 /**
  * Country View
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Country
  * @author Rick Glunt
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 jimport( 'joomla.application.component.view');
@@ -14,11 +14,11 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
 /**
  * HTML View class for maintaining the list of countries
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Country
  * @author Rick Glunt 
  */
-class VirtuemartViewCountry extends JView {
+class JmartViewCountry extends JView {
 	
 	function display($tpl = null) {	
 		$model = $this->getModel();
@@ -31,13 +31,13 @@ class VirtuemartViewCountry extends JView {
 		
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('VM_COUNTRY_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title(  JText::_('JM_COUNTRY_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'jm_countries_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 			}
 			else {
-				JToolBarHelper::title( JText::_('VM_COUNTRY_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_countries_48');
+				JToolBarHelper::title( JText::_('JM_COUNTRY_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'jm_countries_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
@@ -47,7 +47,7 @@ class VirtuemartViewCountry extends JView {
 			$this->assignRef('shippingZones',	$zoneModel->getShippingZoneSelectList());
         }
         else {
-			JToolBarHelper::title( JText::_( 'VM_COUNTRY_LIST_LBL' ), 'vm_countries_48' );
+			JToolBarHelper::title( JText::_( 'JM_COUNTRY_LIST_LBL' ), 'jm_countries_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');

@@ -6,33 +6,33 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * that may be used in your templates 
 *
 * @version $Id: theme.php 1772 2009-05-11 23:27:27Z macallf $
-* @package VirtueMart
+* @package JMart
 * @subpackage themes
 * @copyright Copyright (C) 2006-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
-require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'image.php');
+require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jmart'.DS.'helpers'.DS.'image.php');
 
 global $mainframe;
 
 // include the stylesheet for this template
 
-//if( vmIsJoomla('1.0') && mosGetParam($_REQUEST,'option') != VM_COMPONENT_NAME) {
+//if( vmIsJoomla('1.0') && mosGetParam($_REQUEST,'option') != JM_COMPONENT_NAME) {
 //	// This can only be a call from a module or mambot
 //	// In Joomla 1.0 it is not possible to add a JS or CSS into the HEAD from a module or content mambot,
 //	// using addcustomheadtag, that's why we just print the tags here
-//	echo vmCommonHTML::scriptTag(VM_THEMEURL.'theme.js');
-//	echo vmCommonHTML::linkTag(VM_THEMEURL.'theme.css');
+//	echo vmCommonHTML::scriptTag(JM_THEMEURL.'theme.js');
+//	echo vmCommonHTML::linkTag(JM_THEMEURL.'theme.css');
 //} else {
-	$vm_mainframe->addStyleSheet( VM_THEMEURL.'theme.css' );
-	$vm_mainframe->addScript( VM_THEMEURL.'theme.js' );
+	$vm_mainframe->addStyleSheet( JM_THEMEURL.'theme.css' );
+	$vm_mainframe->addScript( JM_THEMEURL.'theme.js' );
 //}
 class vmTheme extends vmTemplate  {
 	
@@ -43,9 +43,9 @@ class vmTheme extends vmTemplate  {
 		if( !defined( "_MOOTOOLS_LOADED" )) {
 			JHTML::_("behavior.mootools");
 			$document =& JFactory::getDocument();
-			$document->addScriptDeclaration('var cart_title = "'.JText::_('VM_CART_TITLE').'";var ok_lbl="'.JText::_('CMN_CONTINUE').'";var cancel_lbl="'.JText::_('CMN_CANCEL').'";var notice_lbl="'.JText::_('PEAR_LOG_NOTICE').'";var live_site="'.$mosConfig_live_site.'";' );
-			$document->addScript(VM_THEMEURL.'js/mootools/mooPrompt.js');
-			$document->addStyleSheet(VM_THEMEURL.'js/mootools/mooPrompt.css');
+			$document->addScriptDeclaration('var cart_title = "'.JText::_('JM_CART_TITLE').'";var ok_lbl="'.JText::_('CMN_CONTINUE').'";var cancel_lbl="'.JText::_('CMN_CANCEL').'";var notice_lbl="'.JText::_('PEAR_LOG_NOTICE').'";var live_site="'.$mosConfig_live_site.'";' );
+			$document->addScript(JM_THEMEURL.'js/mootools/mooPrompt.js');
+			$document->addStyleSheet(JM_THEMEURL.'js/mootools/mooPrompt.css');
 			define ("_MOOTOOLS_LOADED","1");
 		}
 		//vmCommonHTML::loadMooTools();
@@ -68,7 +68,7 @@ class vmTheme extends vmTemplate  {
 		/* Show the Thumbnail with a Link to the full IMAGE */
 		else {
 			if( empty($product['product_full_image'] ) ) {
-				$product_image = "<img src=\"".VM_THEMEURL.'images/'.NO_IMAGE."\" alt=\"".$product['product_name']."\" border=\"0\" />";
+				$product_image = "<img src=\"".JM_THEMEURL.'images/'.NO_IMAGE."\" alt=\"".$product['product_name']."\" border=\"0\" />";
 			}
 			else {
 				// file_exists doesn't work on remote files,
@@ -95,15 +95,15 @@ class vmTheme extends vmTemplate  {
 				/* Build the "See Bigger Image" Link */
 				if( @$_REQUEST['output'] != "pdf" && $this->get_cfg('useLightBoxImages', 1 ) ) {
 					$link = $imageurl;
-					//$text = ps_product::image_tag($product['product_full_image'], $img_attributes, 1,null,200,200,true)."<br/>".JText::_('VM_FLYPAGE_ENLARGE_IMAGE');
-					//$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 0)."<br/>".JText::_('VM_FLYPAGE_ENLARGE_IMAGE');
+					//$text = ps_product::image_tag($product['product_full_image'], $img_attributes, 1,null,200,200,true)."<br/>".JText::_('JM_FLYPAGE_ENLARGE_IMAGE');
+					//$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 0)."<br/>".JText::_('JM_FLYPAGE_ENLARGE_IMAGE');
 					$text = ImageHelper::getShopImageHtml($product['product_thumb_image'], 'product', $img_attributes, false);
 					
 					$product_image = $this->getLightboxImageLink( $link, $text, $product['product_name'], 'product'.$product['product_id'] );
 				}
 				elseif( @$_REQUEST['output'] != "pdf" ) {
 					$link = $imageurl;
-					$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 0)."<br/>".JText::_('VM_FLYPAGE_ENLARGE_IMAGE');
+					$text = ps_product::image_tag($product['product_thumb_image'], $img_attributes, 0)."<br/>".JText::_('JM_FLYPAGE_ENLARGE_IMAGE');
 					// vmPopupLink can be found in: htmlTools.class.php
 					$product_image = vmPopupLink( $link, $text, $width, $height );
 				}
@@ -154,8 +154,8 @@ class vmTheme extends vmTemplate  {
 		global $mosConfig_live_site, $sess;
 		/* Build the JavaScript Link */
 		$url = $sess->url( "index2.php?page=shop.view_images&amp;flypage=".@$_REQUEST['flypage']."&amp;product_id=".@$_REQUEST['product_id']."&amp;category_id=".@$_REQUEST['category_id']."&amp;pop=1" );
-		$text = JText::_('VM_MORE_IMAGES').'('.count($images).')';
-		$image = vmCommonHTML::imageTag( VM_THEMEURL.'images/more_images.png', $text, '', '16', '16' );
+		$text = JText::_('JM_MORE_IMAGES').'('.count($images).')';
+		$image = vmCommonHTML::imageTag( JM_THEMEURL.'images/more_images.png', $text, '', '16', '16' );
 		
 		return vmPopupLink( $url, $image.'<br />'.$text, 640, 550, '_blank', '', 'screenX=100,screenY=100' );
 	}
@@ -175,13 +175,13 @@ class vmTheme extends vmTemplate  {
 
 			JHTML::_("behavior.mootools");
 			$document =& JFactory::getDocument();
-			$document->addScriptDeclaration('var slimboxurl = \''.VM_THEMEURL.'js/slimbox/\';' );
-			$document->addScript(VM_THEMEURL.'js/slimbox/js/slimbox.js');
-			$document->addStyleSheet(VM_THEMEURL.'js/slimbox/css/slimbox.css');
+			$document->addScriptDeclaration('var slimboxurl = \''.JM_THEMEURL.'js/slimbox/\';' );
+			$document->addScript(JM_THEMEURL.'js/slimbox/js/slimbox.js');
+			$document->addStyleSheet(JM_THEMEURL.'js/slimbox/css/slimbox.css');
 			
-			//$vm_mainframe->addScriptDeclaration( 'var slimboxurl = \''.$mosConfig_live_site.'/components/'. VM_COMPONENT_NAME .'/js/slimbox/\';');
-			//$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/slimbox/js/slimbox.js' );
-			//$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. VM_COMPONENT_NAME .'/js/slimbox/css/slimbox.css' );
+			//$vm_mainframe->addScriptDeclaration( 'var slimboxurl = \''.$mosConfig_live_site.'/components/'. JM_COMPONENT_NAME .'/js/slimbox/\';');
+			//$vm_mainframe->addScript( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/slimbox/js/slimbox.js' );
+			//$vm_mainframe->addStyleSheet( $mosConfig_live_site .'/components/'. JM_COMPONENT_NAME .'/js/slimbox/css/slimbox.css' );
 
 			define ( '_SLIMBOX_LOADED', '1' );
 		}

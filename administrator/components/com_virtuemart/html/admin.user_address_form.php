@@ -3,21 +3,21 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: admin.user_address_form.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 
-$mainframe->setPageTitle( JText::_('VM_USER_FORM_ADD_SHIPTO_LBL') );
+$mainframe->setPageTitle( JText::_('JM_USER_FORM_ADD_SHIPTO_LBL') );
 
 require_once( CLASSPATH . "ps_userfield.php" );
 
@@ -30,7 +30,7 @@ if (!empty( $missing )) {
     echo "<script type=\"text/javascript\">alert('".JText::_('CONTACT_FORM_NC')."'); </script>\n";
 }
 ?>
-<h2><?php echo JText::_('VM_USER_FORM_ADD_SHIPTO_LBL') ?></h2>
+<h2><?php echo JText::_('JM_USER_FORM_ADD_SHIPTO_LBL') ?></h2>
 <?php if (!empty($user_info_id)) {
    $q = "SELECT * from #__{vm}_user_info ";
    $q .= "WHERE #__{vm}_user_info.user_info_id='$user_info_id' ";
@@ -40,7 +40,7 @@ if (!empty( $missing )) {
 ?>
 <div style="width:90%;" class="adminform">
 <fieldset>
-	<legend><span class="sectiontableheader"><?php echo JText::_('VM_SHOPPER_FORM_SHIPTO_LBL') ?></span></legend>
+	<legend><span class="sectiontableheader"><?php echo JText::_('JM_SHOPPER_FORM_SHIPTO_LBL') ?></span></legend>
 
 	<!-- Registration form -->
 	<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" name="adminForm">
@@ -50,7 +50,7 @@ $fields = ps_userfield::getUserFields( 'shipping' );
 ps_userfield::listUserFields( $fields, array(), $db, false );
 ?>
 
-	<input type="hidden" name="option" value="com_virtuemart" />
+	<input type="hidden" name="option" value="com_jmart" />
 <?php if (!empty($user_info_id)) : ?>
 	<input type="hidden" name="func" value="userAddressUpdate" />
 	<input type="hidden" name="user_info_id" value="<?php echo $user_info_id ?>" />

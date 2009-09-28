@@ -2,10 +2,10 @@
 /**
  * Store View
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Store
  * @author Rick Glunt
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 jimport( 'joomla.application.component.view');
@@ -13,11 +13,11 @@ jimport( 'joomla.application.component.view');
 /**
  * HTML View class for maintaining the store
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Store
  * @author RolandD
  */
-class VirtuemartViewStore extends JView {
+class JmartViewStore extends JView {
 	
 	function display($tpl = null) {
 		$country_model = $this->getModel('country');

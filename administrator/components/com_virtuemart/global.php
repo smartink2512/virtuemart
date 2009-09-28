@@ -2,16 +2,16 @@
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 * @version $Id: global.php 1768 2009-05-11 22:24:39Z macallf $
-* @package VirtueMart
+* @package JMart
 * @subpackage core
-* @copyright Copyright (C) 2004-2008 soeren - 2009 Virtuemart Team All rights reserved.
+* @copyright Copyright (C) 2004-2008 soeren - 2009 Jmart Team All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 global  $vm_mainframe, $module_description;
@@ -28,25 +28,25 @@ $vendor_image,$vendor_country_2_code, ,$vendor_country_3_code, $vendor_image_url
         $vendor_address_format, $vendor_date_format
 */
 
-if( @VM_ENCRYPT_FUNCTION == 'AES_ENCRYPT') {
-	define('VM_DECRYPT_FUNCTION', 'AES_DECRYPT');
+if( @JM_ENCRYPT_FUNCTION == 'AES_ENCRYPT') {
+	define('JM_DECRYPT_FUNCTION', 'AES_DECRYPT');
 } else {
-	define('VM_DECRYPT_FUNCTION', 'DECODE');
+	define('JM_DECRYPT_FUNCTION', 'DECODE');
 }
-if( !defined('VM_COMPONENT_NAME')) {
-	echo '<div class="shop_warning">You seem to have upgraded to a new VirtueMart Version recently.<br />
-			Your Configuration File must be updated. so please proceed to the <a href="'.$_SERVER['PHP_SELF'].'?page=admin.show_cfg&amp;option=com_virtuemart">Configuration Form</a> and save the Configuration once you are done with the settings.</div>';
-	define('VM_COMPONENT_NAME', 'com_virtuemart');
-	define('VM_CURRENCY_CONVERTER_MODULE', 'convertECB');
-	defined('VM_THEMEPATH ') or define('VM_THEMEPATH', $mosConfig_absolute_path. '/components/com_virtuemart/themes/default/');
-	defined('VM_THEMEURL') or define('VM_THEMEURL', $mosConfig_live_site. '/components/com_virtuemart/themes/default/');
+if( !defined('JM_COMPONENT_NAME')) {
+	echo '<div class="shop_warning">You seem to have upgraded to a new JMart Version recently.<br />
+			Your Configuration File must be updated. so please proceed to the <a href="'.$_SERVER['PHP_SELF'].'?page=admin.show_cfg&amp;option=com_jmart">Configuration Form</a> and save the Configuration once you are done with the settings.</div>';
+	define('JM_COMPONENT_NAME', 'com_jmart');
+	define('JM_CURRENCY_CONVERTER_MODULE', 'convertECB');
+	defined('JM_THEMEPATH ') or define('JM_THEMEPATH', $mosConfig_absolute_path. '/components/com_jmart/themes/default/');
+	defined('JM_THEMEURL') or define('JM_THEMEURL', $mosConfig_live_site. '/components/com_jmart/themes/default/');
 }
 
-// bass28 8/24/09 - Hack to keep this code working without virtuemart.cfg
-$adminPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS;
-$classPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'classes'.DS;
+// bass28 8/24/09 - Hack to keep this code working without jmart.cfg
+$adminPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jmart'.DS;
+$classPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jmart'.DS.'classes'.DS;
 
-// Instantiate the MainFrame class for VirtueMart
+// Instantiate the MainFrame class for JMart
 require_once( $classPath."ps_database.php");
 require_once( $classPath."mainframe.class.php" );
 require_once( $classPath."plugin.class.php" );
@@ -58,15 +58,15 @@ require_once( $classPath."dispatcher.class.php" );
 require_once($classPath."DebugUtil.php");
 
 /* @MWM1: Initialize Logging */
-$vmLogIdentifier = 'VirtueMart';
+$vmLogIdentifier = 'JMart';
 require_once($classPath."Log/LogInit.php");
 $vm_mainframe = new vmMainFrame();
 
 vmPluginHelper::importPlugin('system');
 
-if (file_exists( $adminPath.'plugins/currency_converter/'.@VM_CURRENCY_CONVERTER_MODULE.'.php' )) {
-	$module_filename = VM_CURRENCY_CONVERTER_MODULE;
-	require_once($adminPath.'plugins/currency_converter/'.VM_CURRENCY_CONVERTER_MODULE.'.php');
+if (file_exists( $adminPath.'plugins/currency_converter/'.@JM_CURRENCY_CONVERTER_MODULE.'.php' )) {
+	$module_filename = JM_CURRENCY_CONVERTER_MODULE;
+	require_once($adminPath.'plugins/currency_converter/'.JM_CURRENCY_CONVERTER_MODULE.'.php');
 	if( class_exists( $module_filename )) {
 		$GLOBALS['CURRENCY'] = $CURRENCY = new $module_filename();
 	}
@@ -157,7 +157,7 @@ if( vmShouldDebug() ) {   /*@MWM1: Log/Debug enhancements */
 
 //require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'vendor_helper.php');
 //We cant use JPATH_COMPONENT_ADMINISTRATOR here, because this file is used during the installationscript
-require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendor_helper.php');
+require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jmart'.DS.'helpers'.DS.'vendor_helper.php');
 
 global $hVendor;
 $hVendor = new vendor_helper;
@@ -186,7 +186,7 @@ $currency_display = $hVendor -> get_currency_display_style( $vendor_currency_dis
 //}
 /** load Currency Display Class **/
 // require_once( $classPath.'class_currency_display.php' );
-require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
+require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jmart'.DS.'helpers'.DS.'currencydisplay.php');
 /**
  *  @global CurrencyDisplay $GLOBALS['CURRENCY_DISPLAY']
  *  @global CurrencyDisplay $CURRENCY_DISPLAY
@@ -194,8 +194,8 @@ require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.D
 $CURRENCY_DISPLAY = $GLOBALS['CURRENCY_DISPLAY'] =& new CurrencyDisplay($currency_display["id"], $currency_display["symbol"], $currency_display["nbdecimal"], $currency_display["sdecimal"], $currency_display["thousands"], $currency_display["positive"], $currency_display["negative"]);
 	
 // Include the theme
-if( file_exists( VM_THEMEPATH.'theme.php' )) {
-	include( VM_THEMEPATH.'theme.php' );
+if( file_exists( JM_THEMEPATH.'theme.php' )) {
+	include( JM_THEMEPATH.'theme.php' );
 }
 elseif( file_exists( $mosConfig_absolute_path.'/components/'.$option.'/themes/default/theme.php' )) {
 	include( $mosConfig_absolute_path.'/components/'.$option.'/themes/default/theme.php' );
@@ -204,7 +204,7 @@ else {
 	$vmLogger->crit( 'Theme file not found.' );
 	return;
 }
-$GLOBALS['VM_THEMECLASS'] = 'vmTheme';
+$GLOBALS['JM_THEMECLASS'] = 'vmTheme';
 
 /**
  * Returns the variable names of all global variables in VM
@@ -212,8 +212,8 @@ $GLOBALS['VM_THEMECLASS'] = 'vmTheme';
  * @return array
  */
 function vmGetGlobalsArray() {
-	static $vm_globals = array(  'perm', 'page', 'sess', 'func', 'cart', 'VM_LANG', 'PSHOP_SHIPPING_MODULES', 'VM_BROWSE_ORDERBY_FIELDS', 
-					'VM_MODULES_FORCE_HTTPS', 'vmLogger', 'CURRENCY_DISPLAY', 'CURRENCY', 'ps_html', 
+	static $vm_globals = array(  'perm', 'page', 'sess', 'func', 'cart', 'JM_LANG', 'PSHOP_SHIPPING_MODULES', 'JM_BROWSE_ORDERBY_FIELDS', 
+					'JM_MODULES_FORCE_HTTPS', 'vmLogger', 'CURRENCY_DISPLAY', 'CURRENCY', 'ps_html', 
 					'ps_vendor_id', 'keyword', 'vmPaymentMethod', 'pagename', 'modulename', 
 					'vars', 'auth', 'ps_checkout', 'vendor_image','vendor_country_2_code','vendor_country_3_code', 'vendor_state_name',
 					'vendor_image_url', 'vendor_name', 'vendor_address', 'vendor_address_2', 'vendor_city','vendor_country','vendor_mail',

@@ -2,10 +2,10 @@
 /**
  * Credit Card table
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage CreditCard
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 // Check to ensure this file is included in Joomla!
@@ -16,7 +16,7 @@ defined('_JEXEC') or die();
  * The class is is used to manage the credit cards in the shop.
  *
  * @author Rick Glunt
- * @package		VirtueMart
+ * @package		JMart
  */
 class TableCreditcard extends JTable
 {
@@ -36,7 +36,7 @@ class TableCreditcard extends JTable
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_creditcard', 'creditcard_id', $db);
+		parent::__construct('#__jmart_creditcard', 'creditcard_id', $db);
 	}
 
 
@@ -60,7 +60,7 @@ class TableCreditcard extends JTable
 		if (($this->creditcard_name) && ($this->creditcard_id == 0)) {
 		    $db =& JFactory::getDBO();
 		    
-			$q = 'SELECT count(*) FROM `#__vm_creditcard` ';
+			$q = 'SELECT count(*) FROM `#__jmart_creditcard` ';
 			$q .= 'WHERE `creditcard_name`="' .  $this->creditcard_name . '"';
             $db->setQuery($q);        
 		    $rowCount = $db->loadResult();		

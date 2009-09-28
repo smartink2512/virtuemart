@@ -1,16 +1,16 @@
 <?php
 /**
- * @package		VirtueMart
+ * @package		JMart
  */
 
 jimport('joomla.application.component.controller');
 
 /**
- * VirtueMart Component Controller
+ * JMart Component Controller
  *
- * @package		VirtueMart
+ * @package		JMart
  */
-class VirtueMartController extends JController
+class JMartController extends JController
 {
     
 	function __construct()
@@ -18,7 +18,7 @@ class VirtueMartController extends JController
 		parent::__construct();
 				
 		$document =& JFactory::getDocument();				
-		$viewName = JRequest::getVar('view', 'virtuemart');
+		$viewName = JRequest::getVar('view', 'jmart');
 		$viewType	= $document->getType();
 		$view =& $this->getView($viewName, $viewType);
 
@@ -48,7 +48,7 @@ class VirtueMartController extends JController
 	 */
 	function display()
 	{
-	    if (VM_IS_OFFLINE == '1') {
+	    if (JMART_IS_OFFLINE == '1') {
 		    JRequest::setVar( 'layout', 'offline' );	
 	    }
 	    else {

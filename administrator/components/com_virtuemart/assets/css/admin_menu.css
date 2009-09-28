@@ -1,14 +1,14 @@
 #content-box {
-	background: url(../images/admin_menu/vm_border.png) 0 0 repeat-y;
+	background: url(../images/admin_menu/jm_border.png) 0 0 repeat-y;
 }
 
 #content-box2 {
-	background: url(../images/admin_menu/vm_border.png) 100% 0 repeat-y;
+	background: url(../images/admin_menu/jm_border.png) 100% 0 repeat-y;
 	background-color: Black;
 }
 
 #content-box3 {
-	background: url(../images/admin_menu/vm_border.png) 100% 0 repeat-y;
+	background: url(../images/admin_menu/jm_border.png) 100% 0 repeat-y;
 }
 
 #content-pad {
@@ -59,12 +59,12 @@
 	font-size: 10px;
 }
 .title-smenu {
- background-image: url(../images/admin_menu/vm_arrow.gif) ;
+ background-image: url(../images/admin_menu/jm_arrow.gif) ;
  background-color: #EBEBEB;
 }
 .title-smenu-down {
 	color: black;
- 	background-image: url(../images/admin_menu/vm_arrow_down.gif) ;
+ 	background-image: url(../images/admin_menu/jm_arrow_down.gif) ;
  	background-color: #D2D2D2;
  	border: 1px solid #333;
 }

@@ -1,20 +1,20 @@
 <?php
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
-* This file contains the mainframe class for VirtueMart
+* This file contains the mainframe class for JMart
 *
 * @version $Id: mainframe.class.php 1786 2009-05-13 13:21:59Z macallf $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2007-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 class vmMainFrame {
@@ -145,7 +145,7 @@ class vmMainFrame {
 	function addScript($url, $position = 'middle', $type="text/javascript") {
 		static $included_scripts = array();
 //		if( vmIsJoomla('1.0') && strstr($_SERVER['PHP_SELF'],'index3.php') || 
-//			!vmIsJoomla() && defined('_VM_IS_BACKEND')) {
+//			!vmIsJoomla() && defined('_JM_IS_BACKEND')) {
 //			echo vmCommonHTML::scriptTag($url);
 //			return;
 //		}
@@ -168,7 +168,7 @@ class vmMainFrame {
 	 */
 	function addScriptDeclaration($content, $position = 'middle', $type = 'text/javascript') {
 //		if( vmIsJoomla('1.0') && strstr($_SERVER['PHP_SELF'],'index3.php') || 
-//			!vmIsJoomla() && defined('_VM_IS_BACKEND')) {
+//			!vmIsJoomla() && defined('_JM_IS_BACKEND')) {
 //			echo vmCommonHTML::scriptTag('', $content);
 //			return;
 //		}
@@ -189,7 +189,7 @@ class vmMainFrame {
 	function addStyleSheet($url, $type = 'text/css', $media = null, $attribs = array())
 	{
 //		if( vmIsJoomla('1.0') && (strstr($_SERVER['PHP_SELF'],'index3.php') || strstr($_SERVER['PHP_SELF'],'index2.php')) || 
-//			!vmIsJoomla() && defined('_VM_IS_BACKEND') ) {
+//			!vmIsJoomla() && defined('_JM_IS_BACKEND') ) {
 //			echo vmCommonHTML::linkTag($url, $type, 'stylesheet', $media );
 //			return;
 //		}
@@ -210,7 +210,7 @@ class vmMainFrame {
 	 */
 	function addStyleDeclaration($content, $type = 'text/css') {
 //		if( vmIsJoomla('1.0') && strstr($_SERVER['PHP_SELF'],'index3.php') || 
-//			!vmIsJoomla() && defined('_VM_IS_BACKEND')) {
+//			!vmIsJoomla() && defined('_JM_IS_BACKEND')) {
 //			echo '<style type="'.$type.'">'.$content.'</style>';
 //			return;
 //		}
@@ -279,17 +279,17 @@ class vmMainFrame {
 			$js_file = false;
 			$js_statement = false;
 			
-			if( $urlpos && (stristr( $src, VM_COMPONENT_NAME ) && !stristr( $src, '.php' ) && $use_fetchscript) ) {
+			if( $urlpos && (stristr( $src, JM_COMPONENT_NAME ) && !stristr( $src, '.php' ) && $use_fetchscript) ) {
 				$url_params = '&amp;'.substr( $src, $urlpos );
 				$src = substr( $src, 0, $urlpos);
 			}
 			
 			/* Group the JS files together */
-			if( stristr( $src, VM_COMPONENT_NAME ) && !stristr( $src, '.php' ) && $use_fetchscript) {
+			if( stristr( $src, JM_COMPONENT_NAME ) && !stristr( $src, '.php' ) && $use_fetchscript) {
 				$base_source = str_replace( $GLOBALS['real_mosConfig_live_site'], '', $src );
 				$base_source = str_replace( $GLOBALS['mosConfig_live_site'], '', $base_source );
-				$base_source = str_replace( '/components/'.VM_COMPONENT_NAME, '', $base_source);
-				$base_source = str_replace( 'components/'.VM_COMPONENT_NAME, '', $base_source);
+				$base_source = str_replace( '/components/'.JM_COMPONENT_NAME, '', $base_source);
+				$base_source = str_replace( 'components/'.JM_COMPONENT_NAME, '', $base_source);
 				$js_file = '&amp;subdir['.$i.']='.dirname( $base_source ) . '&amp;file['.$i.']=' . basename( $src );
 				$i++;
 			} 
@@ -319,7 +319,7 @@ class vmMainFrame {
 			if (isset($loadorder[$pos])) {
 				if (isset($loadorder[$pos]['js_file'])) {
 					/* JS files */
-			$src = $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/fetchscript.php?gzip='.$mosConfig_gzip;
+			$src = $mosConfig_live_site.'/components/'.JM_COMPONENT_NAME.'/fetchscript.php?gzip='.$mosConfig_gzip;
 					$src .= $loadorder[$pos]['js_file']['appendix'];
 			$tag = '<script src="'.$src.@$url_params.'" type="text/javascript"></script>';
 			if( $print ) {
@@ -357,11 +357,11 @@ class vmMainFrame {
 				$url_params .= '&amp;'.substr( $stylesheet['url'], $urlpos );
 				$stylesheet['url'] = substr( $stylesheet['url'], 0, $urlpos);
 			}
-			if( stristr( $stylesheet['url'], VM_COMPONENT_NAME ) && !stristr( $stylesheet['url'], '.php' ) && $stylesheet['media'] == null && $use_fetchscript ) {
+			if( stristr( $stylesheet['url'], JM_COMPONENT_NAME ) && !stristr( $stylesheet['url'], '.php' ) && $stylesheet['media'] == null && $use_fetchscript ) {
 				$base_source = str_replace( $GLOBALS['real_mosConfig_live_site'], '', $stylesheet['url'] );
 				$base_source = str_replace( $GLOBALS['mosConfig_live_site'], '', $base_source );
-				$base_source = str_replace( '/components/'.VM_COMPONENT_NAME, '', $base_source);
-				$base_source = str_replace( 'components/'.VM_COMPONENT_NAME, '', $base_source);
+				$base_source = str_replace( '/components/'.JM_COMPONENT_NAME, '', $base_source);
+				$base_source = str_replace( 'components/'.JM_COMPONENT_NAME, '', $base_source);
 				$appendix .= '&amp;subdir['.$i.']='.dirname( $base_source ) . '&amp;file['.$i.']=' . basename( $stylesheet['url'] );
 				$i++;
 			} else {
@@ -374,7 +374,7 @@ class vmMainFrame {
 			}
 		}
 		if( $i> 0 ) {
-			$src = $mosConfig_live_site.'/components/com_virtuemart/fetchscript.php?gzip='.$mosConfig_gzip;
+			$src = $mosConfig_live_site.'/components/com_jmart/fetchscript.php?gzip='.$mosConfig_gzip;
 			$src .= $appendix;
 			$tag = '<link href="'.$src.@$url_params.'" type="text/css" rel="stylesheet" />';
 			if( $print ) {
@@ -389,7 +389,7 @@ class vmMainFrame {
 		global $mosConfig_live_site, $mainframe;
 		if( !$exit ) {
 			if( defined( 'vmToolTipCalled')) {
-				echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.VM_COMPONENT_NAME.'/js/wz_tooltip.js' );
+				echo vmCommonHTML::scriptTag( $mosConfig_live_site.'/components/'.JM_COMPONENT_NAME.'/js/wz_tooltip.js' );
 			}
 			if( defined( '_LITEBOX_LOADED')) {
 				echo vmCommonHTML::scriptTag( '', 'var prev_onload = document.body.onload; 
@@ -438,7 +438,7 @@ class vmMainFrame {
 		global $mainframe;
 		$title = strip_tags(str_replace('&nbsp;',' ', $title));
 		$title = trim($title);
-		if( defined( '_VM_IS_BACKEND')) {
+		if( defined( '_JM_IS_BACKEND')) {
 			echo vmCommonHTML::scriptTag('', "//<![CDATA[
 			var vm_page_title=\"".str_replace('"', '\"', $title )."\";
 			try{ parent.document.title = vm_page_title; } catch(e) { document.title =vm_page_title; } 

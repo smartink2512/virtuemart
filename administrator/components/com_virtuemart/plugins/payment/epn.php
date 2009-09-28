@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: epn.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage payment
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 class plgPaymentEpn extends vmPaymentPlugin {
@@ -57,7 +57,7 @@ class plgPaymentEpn extends vmPaymentPlugin {
         // Get the Transaction Key securely from the database
         $transactionkey = $this->get_passkey();
         if( empty($transactionkey)) {
-            $vmLogger->err( JText::_('VM_PAYMENT_ERROR'),false );
+            $vmLogger->err( JText::_('JM_PAYMENT_ERROR'),false );
             return false;
         }
         
@@ -178,7 +178,7 @@ class plgPaymentEpn extends vmPaymentPlugin {
             $error = curl_error( $CR );
             if( !empty( $error )) {
               $vmLogger->err( curl_error( $CR ) );
-              $html = "<br/><span class=\"message\">".JText::_('VM_PAYMENT_INTERNAL_ERROR')." eProcessingNetwork.com</span>";
+              $html = "<br/><span class=\"message\">".JText::_('JM_PAYMENT_INTERNAL_ERROR')." eProcessingNetwork.com</span>";
               return false;
             }
             else {
@@ -233,7 +233,7 @@ class plgPaymentEpn extends vmPaymentPlugin {
 
         // Approved - Success!
         if ($response[0] == '1') {
-           $d["order_payment_log"] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').": ";
+           $d["order_payment_log"] = JText::_('JM_PAYMENT_TRANSACTION_SUCCESS').": ";
            $d["order_payment_log"] .= $response[3];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response[6];
@@ -291,7 +291,7 @@ Discover Test Account       5424000000000015
         // Get the Transaction Key securely from the database
         $transactionkey = $this->get_passkey();
         if( empty($transactionkey)) {
-            $vmLogger->err(JText::_('VM_PAYMENT_ERROR'),false);
+            $vmLogger->err(JText::_('JM_PAYMENT_ERROR'),false);
             return false;
         }
         $db = new ps_DB;
@@ -307,7 +307,7 @@ Discover Test Account       5424000000000015
         
         // DECODE Account Number
         $dbaccount = new ps_DB;
-        $q = "SELECT ".VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."') 
+        $q = "SELECT ".JM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."') 
           AS account_number from #__{vm}_order_payment WHERE order_id='".$db->f("order_id")."'";
         $dbaccount->query($q);
         $dbaccount->next_record();
@@ -426,7 +426,7 @@ Discover Test Account       5424000000000015
             $error = curl_error( $CR );
             if( !empty( $error )) {
               $vmLogger->err( curl_error( $CR ) );
-              $html = "<br/><span class=\"message\">".JText::_('VM_PAYMENT_INTERNAL_ERROR')." eProcessingNetork.com</span>";
+              $html = "<br/><span class=\"message\">".JText::_('JM_PAYMENT_INTERNAL_ERROR')." eProcessingNetork.com</span>";
               return false;
             }
             else {
@@ -481,7 +481,7 @@ Discover Test Account       5424000000000015
         
         // Approved - Success!
         if ($response[0] == '1') {
-           $d["order_payment_log"] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').": ";
+           $d["order_payment_log"] = JText::_('JM_PAYMENT_TRANSACTION_SUCCESS').": ";
            $d["order_payment_log"] .= $response[3];
            // Catch Transaction ID
            $d["order_payment_trans_id"] = $response[6];

@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: manufacturer.manufacturer_form.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
@@ -21,7 +21,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 global $ps_manufacturer_category, $ps_product;
 include_class('product');
 $manufacturer_id = vmRequest::getInt( 'manufacturer_id', 0 );
-$option = empty($option)?JRequest::getVar(  'option', 'com_virtuemart'):$option;
+$option = empty($option)?JRequest::getVar(  'option', 'com_jmart'):$option;
 
 if (!empty($manufacturer_id)) {
   $q = "SELECT * FROM #__{vm}_manufacturer WHERE manufacturer_id=$manufacturer_id"; 
@@ -29,35 +29,35 @@ if (!empty($manufacturer_id)) {
   $db->next_record();
 }
 //First create the object and let it print a form heading
-$formObj = &new formFactory( JText::_('VM_MANUFACTURER_FORM_LBL') );
+$formObj = &new formFactory( JText::_('JM_MANUFACTURER_FORM_LBL') );
 //Then Start the form
 $formObj->startForm('adminForm', 'enctype="multipart/form-data"');
 
 $tabs = new vmTabPanel(0, 1, "manufacturerform");
 $tabs->startPane("manufacturer-pane");
-$tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' width='16' height='16' border='0' /> ".JText::_('VM_MANUFACTURER_FORM_LBL'), "info-page");
+$tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' width='16' height='16' border='0' /> ".JText::_('JM_MANUFACTURER_FORM_LBL'), "info-page");
 
 ?>
 <br />
   <table class="adminform">
     <tr> 
-      <td><strong><?php echo JText::_('VM_MANUFACTURER_FORM_INFO_LBL') ?></strong></td>
+      <td><strong><?php echo JText::_('JM_MANUFACTURER_FORM_INFO_LBL') ?></strong></td>
       <td>&nbsp;</td>
     </tr>
     <tr> 
-      <td align="right"><?php echo JText::_('VM_MANUFACTURER_LIST_MANUFACTURER_NAME') ?></td>
+      <td align="right"><?php echo JText::_('JM_MANUFACTURER_LIST_MANUFACTURER_NAME') ?></td>
       <td> 
         <input type="text" class="inputbox" name="mf_name" value="<?php $db->sp("mf_name") ?>" size="16" />
       </td>
     </tr>
     <tr> 
-      <td width="22%" align="right" ><?php echo JText::_('VM_PRODUCT_FORM_URL') ?>:</td>
+      <td width="22%" align="right" ><?php echo JText::_('JM_PRODUCT_FORM_URL') ?>:</td>
       <td width="78%" > 
         <input type="text" class="inputbox" name="mf_url" value="<?php $db->sp("mf_url") ?>" size="32" />
       </td>
     </tr>
     <tr> 
-      <td align="right"><?php echo JText::_('VM_MANUFACTURER_FORM_CATEGORY') ?>:</td>
+      <td align="right"><?php echo JText::_('JM_MANUFACTURER_FORM_CATEGORY') ?>:</td>
       <td ><?php $ps_manufacturer_category->list_category($db->f("mf_category_id"));     ?></td>
     </tr>
     <tr> 
@@ -65,7 +65,7 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' w
       <td >&nbsp;</td>
     </tr>
     <tr> 
-      <td align="right" ><?php echo JText::_('VM_MANUFACTURER_FORM_EMAIL') ?>:</td>
+      <td align="right" ><?php echo JText::_('JM_MANUFACTURER_FORM_EMAIL') ?>:</td>
       <td>
         <input type="text" class="inputbox" name="mf_email" value="<?php $db->sp("mf_email") ?>" size="18" />
       </td>
@@ -75,7 +75,7 @@ $tabs->startTab( "<img src='". IMAGEURL ."ps_image/edit.png' align='absmiddle' w
       <td>&nbsp;</td>
     </tr>
     <tr> 
-      <td width="22%" align="right"  valign="top"><?php echo JText::_('VM_MANUFACTURER_FORM_DESCRIPTION') ?>:</td>
+      <td width="22%" align="right"  valign="top"><?php echo JText::_('JM_MANUFACTURER_FORM_DESCRIPTION') ?>:</td>
       <td width="78%" ><?php
 		editorArea( 'editor1', $db->f("mf_desc"), 'mf_desc', '300', '150', '70', '25' )
 	?>
@@ -101,28 +101,28 @@ if( !stristr( $db->f("mf_full_image"), "http") )
   <table width="100%" border="0" cellspacing="0" cellpadding="2">
     <tr> 
       <td valign="top" width="50%" style="border-right: 1px solid black;">
-        <h2><?php echo JText::_('VM_PRODUCT_FORM_FULL_IMAGE') ?></h2>
+        <h2><?php echo JText::_('JM_PRODUCT_FORM_FULL_IMAGE') ?></h2>
         <table>
           <tr> 
             <td colspan="2" ><?php 
               if ($manufacturer_id) {
-                echo JText::_('VM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br />"; } ?> 
+                echo JText::_('JM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br />"; } ?> 
               <input type="file" class="inputbox" name="mf_full_image" size="50" maxlength="255" />
             </td>
           </tr>
           <tr> 
-            <td colspan="2" ><strong><?php echo JText::_('VM_IMAGE_ACTION') ?>:</strong><br/>
+            <td colspan="2" ><strong><?php echo JText::_('JM_IMAGE_ACTION') ?>:</strong><br/>
               <input type="radio" class="inputbox" name="mf_full_image_action" id="mf_full_image_action0" checked="checked" value="none" onchange="toggleDisable( document.adminForm.mf_full_image_action[1], document.adminForm.mf_thumb_image, true );toggleDisable( document.adminForm.mf_full_image_action[1], document.adminForm.mf_thumb_image_url, true );"/>
-              <label for="mf_full_image_action0"><?php echo JText::_('VM_NONE') ?></label><br/>
+              <label for="mf_full_image_action0"><?php echo JText::_('JM_NONE') ?></label><br/>
               <?php
               if( function_exists('imagecreatefromjpeg')) {
               		?>
 	              <input type="radio" class="inputbox" name="mf_full_image_action" id="mf_full_image_action1" value="auto_resize" onchange="toggleDisable( document.adminForm.mf_full_image_action[1], document.adminForm.mf_thumb_image, true );toggleDisable( document.adminForm.mf_full_image_action[1], document.adminForm.mf_thumb_image_url, true );"/>
-	              <label for="mf_full_image_action1"><?php echo JText::_('VM_FILES_FORM_AUTO_THUMBNAIL') . "</label><br />"; 
+	              <label for="mf_full_image_action1"><?php echo JText::_('JM_FILES_FORM_AUTO_THUMBNAIL') . "</label><br />"; 
               }
               if ($manufacturer_id and $db->f("mf_full_image")) { ?>
                 <input type="radio" class="inputbox" name="mf_full_image_action" id="mf_full_image_action2" value="delete" onchange="toggleDisable( document.adminForm.mf_full_image_action[1], document.adminForm.mf_thumb_image, true );toggleDisable( document.adminForm.mf_full_image_action[1], document.adminForm.mf_thumb_image_url, true );"/>
-                <label for="mf_full_image_action2"><?php echo JText::_('VM_PRODUCT_FORM_IMAGE_DELETE_LBL') . "</label><br />"; 
+                <label for="mf_full_image_action2"><?php echo JText::_('JM_PRODUCT_FORM_IMAGE_DELETE_LBL') . "</label><br />"; 
               } ?> 
             </td>
           </tr>
@@ -154,22 +154,22 @@ if( !stristr( $db->f("mf_full_image"), "http") )
       </td>
 
       <td valign="top" width="50%">
-        <h2><?php echo JText::_('VM_PRODUCT_FORM_THUMB_IMAGE') ?></h2>
+        <h2><?php echo JText::_('JM_PRODUCT_FORM_THUMB_IMAGE') ?></h2>
         <table>
           <tr> 
             <td colspan="2" ><?php if ($manufacturer_id) {
-                echo JText::_('VM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br>"; } ?> 
+                echo JText::_('JM_PRODUCT_FORM_IMAGE_UPDATE_LBL') . "<br>"; } ?> 
               <input type="file" class="inputbox" name="mf_thumb_image" size="50" maxlength="255" onchange="if(document.adminForm.mf_thumb_image.value!='') document.adminForm.mf_thumb_image_url.value='';" />
             </td>
           </tr>
           <tr> 
-            <td colspan="2" ><strong><?php echo JText::_('VM_IMAGE_ACTION') ?>:</strong><br/>
+            <td colspan="2" ><strong><?php echo JText::_('JM_IMAGE_ACTION') ?>:</strong><br/>
               <input type="radio" class="inputbox" id="mf_thumb_image_action0" name="mf_thumb_image_action" checked="checked" value="none" onchange="toggleDisable( document.adminForm.image_action[1], document.adminForm.mf_thumb_image, true );toggleDisable( document.adminForm.image_action[1], document.adminForm.mf_thumb_image_url, true );"/>
-              <label for="mf_thumb_image_action0"><?php echo JText::_('VM_NONE') ?></label><br/>
+              <label for="mf_thumb_image_action0"><?php echo JText::_('JM_NONE') ?></label><br/>
               <?php 
               if ($manufacturer_id and $db->f("mf_thumb_image")) { ?>
                 <input type="radio" class="inputbox" id="mf_thumb_image_action1" name="mf_thumb_image_action" value="delete" onchange="toggleDisable( document.adminForm.image_action[1], document.adminForm.mf_thumb_image, true );toggleDisable( document.adminForm.image_action[1], document.adminForm.mf_thumb_image_url, true );"/>
-                <label for="mf_thumb_image_action1"><?php echo JText::_('VM_PRODUCT_FORM_IMAGE_DELETE_LBL') . "</label><br />"; 
+                <label for="mf_thumb_image_action1"><?php echo JText::_('JM_PRODUCT_FORM_IMAGE_DELETE_LBL') . "</label><br />"; 
               } ?> 
             </td>
           </tr>

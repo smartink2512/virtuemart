@@ -1,6 +1,6 @@
 <?php
 /**
-* @package		VirtueMart
+* @package		JMart
 * @license		GNU/GPL, see LICENSE.php
 */
 
@@ -10,11 +10,11 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model');
 
 /**
- * Model for VirtueMart Product Reviews
+ * Model for JMart Product Reviews
  *
- * @package		VirtueMart
+ * @package		JMart
  */
-class VirtueMartModelProductReviews extends JModel {
+class JMartModelProductReviews extends JModel {
     
 	var $_total;
 	var $_pagination;
@@ -52,9 +52,9 @@ class VirtueMartModelProductReviews extends JModel {
     	if (empty($this->_total)) {
     		$db = JFactory::getDBO();
     		$filter = '';
-            if (JRequest::getInt('category_id', 0) > 0) $filter .= ' AND #__vm_category.`category_id` = '.JRequest::getInt('category_id');
+            if (JRequest::getInt('category_id', 0) > 0) $filter .= ' AND #__jmart_category.`category_id` = '.JRequest::getInt('category_id');
 			$q = "SELECT COUNT(*) ".$this->getProductListQuery().$filter."
-				 GROUP BY #__vm_product.`product_id`
+				 GROUP BY #__jmart_product.`product_id`
 				";
 			$db->setQuery($q);
 			$this->_total = $db->loadResult();
@@ -72,7 +72,7 @@ class VirtueMartModelProductReviews extends JModel {
 	public function countReviewsForProduct($pid) {
 		$db = JFactory::getDBO();
 		$q = "SELECT COUNT(*) AS total 
-			FROM #__vm_product_reviews 
+			FROM #__jmart_product_reviews 
 			WHERE product_id=".$pid;
 		$db->setQuery($q);
 		$reviews = $db->loadResult();

@@ -2,10 +2,10 @@
 /**
  * Currency View
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Currency
  * @author Rick Glunt
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 jimport( 'joomla.application.component.view');
@@ -14,11 +14,11 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
 /**
  * HTML View class for maintaining the list of countries
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Currency
  * @author Rick Glunt 
  */
-class VirtuemartViewCurrency extends JView {
+class JmartViewCurrency extends JView {
 	
 	function display($tpl = null) {	
 		$model = $this->getModel();
@@ -29,13 +29,13 @@ class VirtuemartViewCurrency extends JView {
 		
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('VM_CURRENCY_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_currency_48');
+				JToolBarHelper::title(  JText::_('JM_CURRENCY_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'jm_currency_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 			}
 			else {
-				JToolBarHelper::title( JText::_('VM_CURRENCY_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_currency_48');
+				JToolBarHelper::title( JText::_('JM_CURRENCY_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'jm_currency_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
@@ -43,7 +43,7 @@ class VirtuemartViewCurrency extends JView {
 			$this->assignRef('currency',	$currency);
         }
         else {
-			JToolBarHelper::title( JText::_( 'VM_CURRENCY_LIST_LBL' ), 'vm_currency_48' );
+			JToolBarHelper::title( JText::_( 'JM_CURRENCY_LIST_LBL' ), 'jm_currency_48' );
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();	

@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_order.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /**
@@ -190,7 +190,7 @@ class ps_order {
 
 		global $sess,	 $vmLogger;
 
-		$url = URL."index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
+		$url = URL."index.php?option=com_jmart&page=shop.downloads&Itemid=".$sess->getShopItemid();
 		
 		$db = new ps_DB();
 		$db->query( 'SELECT order_status FROM #__{vm}_orders WHERE order_id='.(int)$d['order_id'] );
@@ -223,35 +223,35 @@ class ps_order {
 				$db->next_record();
 				
 				$message = JText::_('HI',false) .' '. $db->f("first_name") .($db->f("middle_name")?' '.$db->f("middle_name") : '' ). ' ' . $db->f("last_name") . ",\n\n";
-				$message .= JText::_('VM_DOWNLOADS_SEND_MSG_1',false).".\n";
-				$message .= JText::_('VM_DOWNLOADS_SEND_MSG_2',false)."\n\n";
+				$message .= JText::_('JM_DOWNLOADS_SEND_MSG_1',false).".\n";
+				$message .= JText::_('JM_DOWNLOADS_SEND_MSG_2',false)."\n\n";
 
 				while($dbw->next_record()) {
 					$message .= $dbw->f("file_name").": ".$dbw->f("download_id")
 					. "\n$url&download_id=".$dbw->f("download_id")."\n\n";
 				}
 
-				$message .= JText::_('VM_DOWNLOADS_SEND_MSG_3',false) . DOWNLOAD_MAX."\n";
+				$message .= JText::_('JM_DOWNLOADS_SEND_MSG_3',false) . DOWNLOAD_MAX."\n";
 				$expire = ((DOWNLOAD_EXPIRE / 60) / 60) / 24;
-				$message .= str_replace("{expire}", $expire, JText::_('VM_DOWNLOADS_SEND_MSG_4',false));
+				$message .= str_replace("{expire}", $expire, JText::_('JM_DOWNLOADS_SEND_MSG_4',false));
 				$message .= "\n\n____________________________________________________________\n";
-				$message .= JText::_('VM_DOWNLOADS_SEND_MSG_5',false)."\n";
+				$message .= JText::_('JM_DOWNLOADS_SEND_MSG_5',false)."\n";
 				$message .= $dbv->f("vendor_name") . " \n" . URL."\n\n".$dbv->f("email") . "\n";
 				$message .= "____________________________________________________________\n";
-				$message .= JText::_('VM_DOWNLOADS_SEND_MSG_6',false) . $dbv->f("vendor_name");
+				$message .= JText::_('JM_DOWNLOADS_SEND_MSG_6',false) . $dbv->f("vendor_name");
 
 
 				$mail_Body = $message;
-				$mail_Subject = JText::_('VM_DOWNLOADS_SEND_SUBJ',false);
+				$mail_Subject = JText::_('JM_DOWNLOADS_SEND_SUBJ',false);
 
 				$result = vmMail( $dbv->f("email"), $dbv->f("vendor_name"), 
 						$db->f("email"), $mail_Subject, $mail_Body, '' );
 
 				if ($result) {
-					$vmLogger->info( JText::_('VM_DOWNLOADS_SEND_MSG',false). " ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("email") );
+					$vmLogger->info( JText::_('JM_DOWNLOADS_SEND_MSG',false). " ". $db->f("first_name") . " " . $db->f("last_name") . " ".$db->f("email") );
 				}
 				else {
-					$vmLogger->warning( JText::_('VM_DOWNLOADS_ERR_SEND',false)." ". $db->f("first_name") . " " . $db->f("last_name") . ", ".$db->f("email") );
+					$vmLogger->warning( JText::_('JM_DOWNLOADS_ERR_SEND',false)." ". $db->f("first_name") . " " . $db->f("last_name") . ", ".$db->f("email") );
 				}
 			} 
 		}
@@ -273,7 +273,7 @@ class ps_order {
 
 		global  $sess, $vmLogger;
 
-		$url = SECUREURL."index.php?option=com_virtuemart&page=account.order_details&order_id=".urlencode($d["order_id"]).'&Itemid='.$sess->getShopItemid();
+		$url = SECUREURL."index.php?option=com_jmart&page=account.order_details&order_id=".urlencode($d["order_id"]).'&Itemid='.$sess->getShopItemid();
 
 		$db = new ps_DB;
 		$order_id = $db->getEscaped($d["order_id"]);
@@ -292,21 +292,21 @@ class ps_order {
 
 		// MAIL BODY
 		$message = JText::_('HI',false) .' '. $db->f("first_name") . ($db->f("middle_name")?' '.$db->f("middle_name") : '' ). ' ' . $db->f("last_name") . ",\n\n";
-		$message .= JText::_('VM_ORDER_STATUS_CHANGE_SEND_MSG_1',false)."\n\n";
+		$message .= JText::_('JM_ORDER_STATUS_CHANGE_SEND_MSG_1',false)."\n\n";
 
 		if( !empty($d['include_comment']) && !empty($d['order_comment']) ) {
-			$message .= JText::_('VM_ORDER_HISTORY_COMMENT_EMAIL',false).":\n";
+			$message .= JText::_('JM_ORDER_HISTORY_COMMENT_EMAIL',false).":\n";
 			$message .= $d['order_comment'];
 			$message .= "\n____________________________________________________________\n\n";
 		}
 
-		$message .= JText::_('VM_ORDER_STATUS_CHANGE_SEND_MSG_2',false)."\n";
+		$message .= JText::_('JM_ORDER_STATUS_CHANGE_SEND_MSG_2',false)."\n";
 		$message .= "____________________________________________________________\n\n";
 		$message .= $db->f("order_status_name");
 
-		if( VM_REGISTRATION_TYPE != 'NO_REGISTRATION' ) {
+		if( JM_REGISTRATION_TYPE != 'NO_REGISTRATION' ) {
 			$message .= "\n____________________________________________________________\n\n";
-			$message .= JText::_('VM_ORDER_STATUS_CHANGE_SEND_MSG_3',false)."\n";
+			$message .= JText::_('JM_ORDER_STATUS_CHANGE_SEND_MSG_3',false)."\n";
 			$message .= $url;
 		}
 		$message .= "\n\n____________________________________________________________\n";
@@ -317,7 +317,7 @@ class ps_order {
 		$message = str_replace( "{order_id}", $d["order_id"], $message );
 
 		$mail_Body = html_entity_decode($message);
-		$mail_Subject = str_replace( "{order_id}", $d["order_id"], JText::_('VM_ORDER_STATUS_CHANGE_SEND_SUBJ',false));
+		$mail_Subject = str_replace( "{order_id}", $d["order_id"], JText::_('JM_ORDER_STATUS_CHANGE_SEND_SUBJ',false));
 		
 		
 		$result = vmMail( $dbv->f("email"),  $dbv->f("vendor_name"), 
@@ -325,10 +325,10 @@ class ps_order {
 		
 		/* Send the email */
 		if ($result) {
-			$vmLogger->info( JText::_('VM_DOWNLOADS_SEND_MSG',false). " ". $db->f("first_name") . " " . $db->f("last_name") . ", ".$db->f("email") );
+			$vmLogger->info( JText::_('JM_DOWNLOADS_SEND_MSG',false). " ". $db->f("first_name") . " " . $db->f("last_name") . ", ".$db->f("email") );
 		}
 		else {
-			$vmLogger->warning( JText::_('VM_DOWNLOADS_ERR_SEND',false).' '. $db->f("first_name") . " " . $db->f("last_name") . ", ".$db->f("email")." (". $result->ErrorInfo.")" );
+			$vmLogger->warning( JText::_('JM_DOWNLOADS_ERR_SEND',false).' '. $db->f("first_name") . " " . $db->f("last_name") . ", ".$db->f("email")." (". $result->ErrorInfo.")" );
 			$GLOBALS['vmLogger']->debug('From: '.$dbv->f("email"));
 			$GLOBALS['vmLogger']->debug('To: '.$db->f("email"));
 		}
@@ -407,9 +407,9 @@ class ps_order {
 		$zeit=time();
 
 		if (!$download_id) {
-			$vmLogger->err( JText::_('VM_DOWNLOADS_ERR_INV',false) );
+			$vmLogger->err( JText::_('JM_DOWNLOADS_ERR_INV',false) );
 			return false;
-			//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+			//vmRedirect("index.php?option=com_jmart&page=shop.downloads", $d["error"]);
 		}
 
 		elseif ($download_max=="0") {
@@ -417,9 +417,9 @@ class ps_order {
 			$q .=" WHERE download_id = '" . $download_id . "'";
 			$db->query($q);
 			$db->next_record();
-			$vmLogger->err( JText::_('VM_DOWNLOADS_ERR_MAX',false) );
+			$vmLogger->err( JText::_('JM_DOWNLOADS_ERR_MAX',false) );
 			return false;
-			//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+			//vmRedirect("index.php?option=com_jmart&page=shop.downloads", $d["error"]);
 		}
 
 		elseif ($end_date!="0" && $zeit > $end_date) {
@@ -427,9 +427,9 @@ class ps_order {
 			$q .=" WHERE download_id = '" . $download_id . "'";
 			$db->query($q);
 			$db->next_record();
-			$vmLogger->err( JText::_('VM_DOWNLOADS_ERR_EXP',false) );
+			$vmLogger->err( JText::_('JM_DOWNLOADS_ERR_EXP',false) );
 			return false;
-			//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+			//vmRedirect("index.php?option=com_jmart&page=shop.downloads", $d["error"]);
 		}
 		require_once(CLASSPATH.'connectionTools.class.php');
 		
@@ -459,7 +459,7 @@ class ps_order {
 				$datei = $datei_local;
 				$unlink = true;
 			} else {
-				$vmLogger->err( JText::_('VM_DOWNLOAD_FILE_NOTFOUND',false) );
+				$vmLogger->err( JText::_('JM_DOWNLOAD_FILE_NOTFOUND',false) );
 				return false;
 			}
 		}
@@ -467,14 +467,14 @@ class ps_order {
 			// Check, if file path is correct
 			// and file is
 			if ( !@file_exists( $datei ) ){
-				$vmLogger->err( JText::_('VM_DOWNLOAD_FILE_NOTFOUND',false) );
+				$vmLogger->err( JText::_('JM_DOWNLOAD_FILE_NOTFOUND',false) );
 				return false;
-				//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+				//vmRedirect("index.php?option=com_jmart&page=shop.downloads", $d["error"]);
 			}
 			if ( !@is_readable( $datei ) ) {
-				$vmLogger->err( JText::_('VM_DOWNLOAD_FILE_NOTREADABLE',false) );
+				$vmLogger->err( JText::_('JM_DOWNLOAD_FILE_NOTREADABLE',false) );
 				return false;
-				//vmRedirect("index.php?option=com_virtuemart&page=shop.downloads", $d["error"]);
+				//vmRedirect("index.php?option=com_jmart&page=shop.downloads", $d["error"]);
 			}
 		}
 		if( $download_count ) {
@@ -580,7 +580,7 @@ class ps_order {
 		
 		$num_rows = $db->f('num_rows');
 		if( $num_rows == 0 ) {
-			echo "<span style=\"font-style:italic;\">".JText::_('VM_ACC_NO_ORDERS')."</span>\n";
+			echo "<span style=\"font-style:italic;\">".JText::_('JM_ACC_NO_ORDERS')."</span>\n";
 			return;
 		}
 		$pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
@@ -605,15 +605,15 @@ class ps_order {
 			$listObj->newRow();
 
 			$tmp_cell = "<a href=\"". $sess->url( $mm_action_url."index.php?page=account.order_details&order_id=".$db->f("order_id") )."\">\n";
-			$tmp_cell .= "<img src=\"".IMAGEURL."ps_image/goto.png\" height=\"32\" width=\"32\" align=\"middle\" border=\"0\" alt=\"".JText::_('VM_ORDER_LINK')."\" />&nbsp;".JText::_('VM_VIEW')."</a><br />";
+			$tmp_cell .= "<img src=\"".IMAGEURL."ps_image/goto.png\" height=\"32\" width=\"32\" align=\"middle\" border=\"0\" alt=\"".JText::_('JM_ORDER_LINK')."\" />&nbsp;".JText::_('JM_VIEW')."</a><br />";
 			$listObj->addCell( $tmp_cell );
 
-			$tmp_cell = "<strong>".JText::_('VM_ORDER_PRINT_PO_DATE').":</strong> " . vmFormatDate($db->f("cdate"), "%d. %B %Y");
-			$tmp_cell .= "<br /><strong>".JText::_('VM_ORDER_PRINT_TOTAL').":</strong> " . $CURRENCY_DISPLAY->getFullValue($db->f("order_total"), '', $db->f('order_currency'));
+			$tmp_cell = "<strong>".JText::_('JM_ORDER_PRINT_PO_DATE').":</strong> " . vmFormatDate($db->f("cdate"), "%d. %B %Y");
+			$tmp_cell .= "<br /><strong>".JText::_('JM_ORDER_PRINT_TOTAL').":</strong> " . $CURRENCY_DISPLAY->getFullValue($db->f("order_total"), '', $db->f('order_currency'));
 			$listObj->addCell( $tmp_cell );
 
-			$tmp_cell = "<strong>".JText::_('VM_ORDER_PRINT_PO_STATUS').":</strong> ".$order_status;
-			$tmp_cell .= "<br /><strong>".JText::_('VM_ORDER_PRINT_PO_NUMBER').":</strong> " . sprintf("%08d", $db->f("order_id"));
+			$tmp_cell = "<strong>".JText::_('JM_ORDER_PRINT_PO_STATUS').":</strong> ".$order_status;
+			$tmp_cell .= "<br /><strong>".JText::_('JM_ORDER_PRINT_PO_NUMBER').":</strong> " . sprintf("%08d", $db->f("order_id"));
 			$listObj->addCell( $tmp_cell );
 		}
 		$listObj->writeTable();
@@ -636,7 +636,7 @@ class ps_order {
 		$db = new ps_DB;
 
 		if(empty( $order_id )) {
-			$GLOBALS['vmLogger']->err(JText::_('VM_ORDER_DELETE_ERR_ID'));
+			$GLOBALS['vmLogger']->err(JText::_('JM_ORDER_DELETE_ERR_ID'));
 			return False;
 		}
 		

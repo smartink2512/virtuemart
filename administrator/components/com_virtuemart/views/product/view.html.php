@@ -1,16 +1,16 @@
 <?php
 /**
-* @package		VirtueMart
+* @package		JMart
 */
 
 jimport( 'joomla.application.component.view');
 
 /**
- * HTML View class for the VirtueMart Component
+ * HTML View class for the JMart Component
  *
- * @package		VirtueMart
+ * @package		JMart
  */
-class VirtuemartViewProduct extends JView {
+class JmartViewProduct extends JView {
 	
 	function display($tpl = null) {
 		/* Get the task */
@@ -80,40 +80,40 @@ class VirtuemartViewProduct extends JView {
 				/* Set up labels */
 				if ($product->product_parent_id > 0) {
 					if ($product->product_id) {
-						$action = JText::_('VM_PRODUCT_FORM_UPDATE_ITEM_LBL');
+						$action = JText::_('JM_PRODUCT_FORM_UPDATE_ITEM_LBL');
 					}
 					else {
-						$action = JText::_('VM_PRODUCT_FORM_NEW_ITEM_LBL');
+						$action = JText::_('JM_PRODUCT_FORM_NEW_ITEM_LBL');
 					}
-					$info_label = JText::_('VM_PRODUCT_FORM_ITEM_INFO_LBL');
-					$status_label = JText::_('VM_PRODUCT_FORM_ITEM_STATUS_LBL');
-					$dim_weight_label = JText::_('VM_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL');
-					$images_label = JText::_('VM_PRODUCT_FORM_ITEM_IMAGES_LBL');
-					$delete_message = JText::_('VM_PRODUCT_FORM_DELETE_ITEM_MSG');
+					$info_label = JText::_('JM_PRODUCT_FORM_ITEM_INFO_LBL');
+					$status_label = JText::_('JM_PRODUCT_FORM_ITEM_STATUS_LBL');
+					$dim_weight_label = JText::_('JM_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL');
+					$images_label = JText::_('JM_PRODUCT_FORM_ITEM_IMAGES_LBL');
+					$delete_message = JText::_('JM_PRODUCT_FORM_DELETE_ITEM_MSG');
 				}
 				else {
 					if (0) {
 						/* Cloning to be added later */
 						if ($product_id = @$vars["product_id"]) {
 							if( $clone_product == '1') {
-								$action = JText::_('VM_PRODUCT_CLONE');
+								$action = JText::_('JM_PRODUCT_CLONE');
 							}
 							else {
-								$action = JText::_('VM_PRODUCT_FORM_UPDATE_ITEM_LBL');
+								$action = JText::_('JM_PRODUCT_FORM_UPDATE_ITEM_LBL');
 							}
 						}
 						else {
-							$action = JText::_('VM_PRODUCT_FORM_NEW_PRODUCT_LBL');
+							$action = JText::_('JM_PRODUCT_FORM_NEW_PRODUCT_LBL');
 						}
 					}
-					if ($task == 'add') $action = JText::_('VM_PRODUCT_FORM_NEW_PRODUCT_LBL');
-					else $action = JText::_('VM_PRODUCT_FORM_UPDATE_ITEM_LBL');
+					if ($task == 'add') $action = JText::_('JM_PRODUCT_FORM_NEW_PRODUCT_LBL');
+					else $action = JText::_('JM_PRODUCT_FORM_UPDATE_ITEM_LBL');
 					
-					$info_label = JText::_('VM_PRODUCT_FORM_PRODUCT_INFO_LBL');
-					$status_label = JText::_('VM_PRODUCT_FORM_PRODUCT_STATUS_LBL');
-					$dim_weight_label = JText::_('VM_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL');
-					$images_label = JText::_('VM_PRODUCT_FORM_PRODUCT_IMAGES_LBL');
-					$delete_message = JText::_('VM_PRODUCT_FORM_DELETE_PRODUCT_MSG');
+					$info_label = JText::_('JM_PRODUCT_FORM_PRODUCT_INFO_LBL');
+					$status_label = JText::_('JM_PRODUCT_FORM_PRODUCT_STATUS_LBL');
+					$dim_weight_label = JText::_('JM_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL');
+					$images_label = JText::_('JM_PRODUCT_FORM_PRODUCT_IMAGES_LBL');
+					$delete_message = JText::_('JM_PRODUCT_FORM_DELETE_PRODUCT_MSG');
 				}
 				
 				/* Assign the values */
@@ -141,7 +141,7 @@ class VirtuemartViewProduct extends JView {
 				/* Toolbar */
 				if ($task == 'add') $text = JText::_( 'ADD_PRODUCT' );
 				else $text = JText::_( 'EDIT_PRODUCT' );
-				JToolBarHelper::title($text, 'vm_product_48');
+				JToolBarHelper::title($text, 'jm_product_48');
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 				break;
@@ -175,8 +175,8 @@ class VirtuemartViewProduct extends JView {
 				}
 				
 				/* Check for Media Items and Reviews, set the price*/
-				$media = new VirtueMartModelMedia();
-				$productreviews = new VirtueMartModelProductReviews();
+				$media = new JMartModelMedia();
+				$productreviews = new JMartModelProductReviews();
 				$currencydisplay = new CurrencyDisplay();
 				foreach ($productlist as $product_id => $product) {
 					$product->mediaitems = $media->countFilesForProduct($product_id);
@@ -188,7 +188,7 @@ class VirtuemartViewProduct extends JView {
 				$pagination = $this->get('Pagination');
 				
 				/* Toolbar */
-				JToolBarHelper::title(JText::_( 'PRODUCT_LIST' ), 'vm_product_48');
+				JToolBarHelper::title(JText::_( 'PRODUCT_LIST' ), 'jm_product_48');
 				JToolBarHelper::addNew();
 				
 				/* Assign the data */

@@ -2,9 +2,9 @@
 /**
  * Product controller
  *
- * @package VirtueMart
- * @author VirtueMart
- * @link http://virtuemart.org
+ * @package JMart
+ * @author JMart
+ * @link http://joomlacode.org/gf/project/jmart/
  * @version $Id: product.php 186 2009-09-10 14:12:18Z rolandd $
  */
 
@@ -15,9 +15,9 @@ jimport('joomla.application.component.controller');
 /**
  * Product Controller
  *
- * @package    VirtueMart
+ * @package    JMart
  */
-class VirtuemartControllerProduct extends JController
+class JmartControllerProduct extends JController
 {
 	/**
 	 * Method to display the view
@@ -31,7 +31,6 @@ class VirtuemartControllerProduct extends JController
 		$this->registerTask('saveorder','product');
 		$this->registerTask('orderup','product');
 		$this->registerTask('orderdown','product');
-		$this->registerTask('edit','add');
 	}
 	
 	/**
@@ -42,13 +41,13 @@ class VirtuemartControllerProduct extends JController
 		$view = $this->getView('product', 'html');
 				
 		/* Default model */
-		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
+		$view->setModel( $this->getModel( 'product', 'JMartModel' ), true );
 		/* Media files functions */
-		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'media', 'JMartModel' ));
 		/* Product reviews functions */
-		$view->setModel( $this->getModel( 'productReviews', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'productReviews', 'JMartModel' ));
 		/* Product category functions */
-		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'category', 'JMartModel' ));
 		
 		/* Set the layout */
 		$view->setLayout('product');
@@ -65,40 +64,22 @@ class VirtuemartControllerProduct extends JController
 		$view = $this->getView('product', 'html');
 				
 		/* Default model */
-		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
+		$view->setModel( $this->getModel( 'product', 'JMartModel' ), true );
 		/* Media files functions */
-		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'media', 'JMartModel' ));
 		/* Product category functions */
-		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
-		/* Vendor functions */
-		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'category', 'JMartModel' ));
 		/* Manufacturer functions */
-		$view->setModel( $this->getModel( 'manufacturer', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'manufacturer', 'JMartModel' ));
 		/* Currency functions */
-		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'currency', 'JMartModel' ));
 		/* Tax functions */
-		$view->setModel( $this->getModel( 'taxRate', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'taxRate', 'JMartModel' ));
 		/* Discount functions */
-		$view->setModel( $this->getModel( 'discount', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'discount', 'JMartModel' ));
 		
 		/* Set the layout */
 		$view->setLayout('product_edit');
-		
-		/* Now display the view. */
-		$view->display();
-	}
-	
-	/**
-	* Get a list of related products
-	*/
-	public function getData() {
-		/* Create the view object */
-		$view = $this->getView('product', 'json');
-				
-		/* Default model */
-		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
-		
-		$view->setLayout('product');
 		
 		/* Now display the view. */
 		$view->display();

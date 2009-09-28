@@ -1,12 +1,12 @@
--- VirtueMart table SQL script
--- This will install all the tables need to run VirtueMart
+-- JMart table SQL script
+-- This will install all the tables need to run JMart
 
 
 --
--- Table structure for table `#__vm_auth_group`
+-- Table structure for table `#__jmart_auth_group`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_auth_group` (
+CREATE TABLE IF NOT EXISTS `#__jmart_auth_group` (
   `group_id` int(11) NOT NULL auto_increment,
   `group_name` varchar(128) default NULL,
   `group_level` int(11) default NULL,
@@ -16,10 +16,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_auth_group` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_auth_user_group`
+-- Table structure for table `#__jmart_auth_user_group`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_auth_user_group` (
+CREATE TABLE IF NOT EXISTS `#__jmart_auth_user_group` (
   `user_id` int(11) NOT NULL default '0',
   `group_id` int(11) default NULL,
   PRIMARY KEY  (`user_id`)
@@ -28,10 +28,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_auth_user_group` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_auth_user_vendor`
+-- Table structure for table `#__jmart_auth_user_vendor`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_auth_user_vendor` (
+CREATE TABLE IF NOT EXISTS `#__jmart_auth_user_vendor` (
   `user_id` int(11) default NULL,
   `vendor_id` int(11) default NULL,
   KEY `idx_auth_user_vendor_user_id` (`user_id`),
@@ -41,10 +41,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_auth_user_vendor` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_cart`
+-- Table structure for table `#__jmart_cart`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_cart` (
+CREATE TABLE IF NOT EXISTS `#__jmart_cart` (
   `user_id` int(11) NOT NULL,
   `cart_content` text NOT NULL,
   `last_updated` timestamp NOT NULL default CURRENT_TIMESTAMP,
@@ -54,9 +54,9 @@ CREATE TABLE IF NOT EXISTS `#__vm_cart` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_category`
+-- Table structure for table `#__jmart_category`
 --
-CREATE TABLE IF NOT EXISTS `#__vm_category` (
+CREATE TABLE IF NOT EXISTS `#__jmart_category` (
   `category_id` int(11) NOT NULL auto_increment,
   `vendor_id` int(11) NOT NULL default '0',
   `category_name` varchar(128) NOT NULL default '',
@@ -87,10 +87,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_category` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_category_xref`
+-- Table structure for table `#__jmart_category_xref`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_category_xref` (
+CREATE TABLE IF NOT EXISTS `#__jmart_category_xref` (
   `category_parent_id` int(11) NOT NULL default '0',
   `category_child_id` int(11) NOT NULL default '0',
   `category_list` int(11) default NULL,
@@ -103,10 +103,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_category_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_country`
+-- Table structure for table `#__jmart_country`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_country` (
+CREATE TABLE IF NOT EXISTS `#__jmart_country` (
   `country_id` int(11) NOT NULL auto_increment,
   `zone_id` int(11) NOT NULL default '1',
   `country_name` varchar(64) default NULL,
@@ -120,10 +120,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_country` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_coupons`
+-- Table structure for table `#__jmart_coupons`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_coupons` (
+CREATE TABLE IF NOT EXISTS `#__jmart_coupons` (
   `coupon_id` int(16) NOT NULL auto_increment,
   `coupon_code` varchar(32) NOT NULL default '',
   `percent_or_total` enum('percent','total') NOT NULL default 'percent',
@@ -138,10 +138,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_coupons` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_creditcard`
+-- Table structure for table `#__jmart_creditcard`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_creditcard` (
+CREATE TABLE IF NOT EXISTS `#__jmart_creditcard` (
   `creditcard_id` int(11) NOT NULL auto_increment,
   `vendor_id` int(11) NOT NULL default '0',
   `creditcard_name` varchar(70) NOT NULL default '',
@@ -152,10 +152,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_creditcard` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_currency`
+-- Table structure for table `#__jmart_currency`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_currency` (
+CREATE TABLE IF NOT EXISTS `#__jmart_currency` (
   `currency_id` int(11) NOT NULL auto_increment,
   `currency_name` varchar(64) default NULL,
   `currency_code` char(3) default NULL,
@@ -166,10 +166,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_currency` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_function`
+-- Table structure for table `#__jmart_function`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_function` (
+CREATE TABLE IF NOT EXISTS `#__jmart_function` (
   `function_id` int(11) NOT NULL auto_increment,
   `module_id` int(11) default NULL,
   `function_name` varchar(32) default NULL,
@@ -185,10 +185,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_function` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_manufacturer`
+-- Table structure for table `#__jmart_manufacturer`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_manufacturer` (
+CREATE TABLE IF NOT EXISTS `#__jmart_manufacturer` (
   `manufacturer_id` int(11) NOT NULL auto_increment,
   `mf_name` varchar(64) default NULL,
   `mf_email` varchar(255) default NULL,
@@ -203,10 +203,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_manufacturer` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_manufacturer_category`
+-- Table structure for table `#__jmart_manufacturer_category`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_manufacturer_category` (
+CREATE TABLE IF NOT EXISTS `#__jmart_manufacturer_category` (
   `mf_category_id` int(11) NOT NULL auto_increment,
   `mf_category_name` varchar(64) default NULL,
   `mf_category_desc` text,
@@ -217,10 +217,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_manufacturer_category` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_menu_admin`
+-- Table structure for table `#__jmart_menu_admin`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_menu_admin` (
+CREATE TABLE IF NOT EXISTS `#__jmart_menu_admin` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `module_id` int(10) unsigned NOT NULL COMMENT 'The ID of the VM Module, this Item is assigned to',
   `parent_id` int(11) unsigned NOT NULL,
@@ -239,10 +239,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_menu_admin` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_module`
+-- Table structure for table `#__jmart_module`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_module` (
+CREATE TABLE IF NOT EXISTS `#__jmart_module` (
   `module_id` int(11) NOT NULL auto_increment,
   `module_name` varchar(255) default NULL,
   `module_description` text,
@@ -253,15 +253,15 @@ CREATE TABLE IF NOT EXISTS `#__vm_module` (
   PRIMARY KEY  (`module_id`),
   KEY `idx_module_name` (`module_name`),
   KEY `idx_module_list_order` (`list_order`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='VirtueMart Core Modules, not: Joomla modules' AUTO_INCREMENT=12844 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='JMart Core Modules, not: Joomla modules' AUTO_INCREMENT=12844 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_orders`
+-- Table structure for table `#__jmart_orders`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_orders` (
+CREATE TABLE IF NOT EXISTS `#__jmart_orders` (
   `order_id` int(11) NOT NULL auto_increment,
   `user_id` int(11) NOT NULL default '0',
   `vendor_id` int(11) NOT NULL default '0',
@@ -294,10 +294,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_orders` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_order_history`
+-- Table structure for table `#__jmart_order_history`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_order_history` (
+CREATE TABLE IF NOT EXISTS `#__jmart_order_history` (
   `order_status_history_id` int(11) NOT NULL auto_increment,
   `order_id` int(11) NOT NULL default '0',
   `order_status_code` char(1) NOT NULL default '0',
@@ -310,10 +310,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_history` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_order_item`
+-- Table structure for table `#__jmart_order_item`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_order_item` (
+CREATE TABLE IF NOT EXISTS `#__jmart_order_item` (
   `order_item_id` int(11) NOT NULL auto_increment,
   `order_id` int(11) default NULL,
   `user_info_id` varchar(32) default NULL,
@@ -338,10 +338,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_item` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_order_payment`
+-- Table structure for table `#__jmart_order_payment`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_order_payment` (
+CREATE TABLE IF NOT EXISTS `#__jmart_order_payment` (
   `order_id` int(11) NOT NULL default '0',
   `payment_method_id` int(11) default NULL,
   `order_payment_code` varchar(30) NOT NULL default '',
@@ -357,10 +357,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_payment` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_order_status`
+-- Table structure for table `#__jmart_order_status`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_order_status` (
+CREATE TABLE IF NOT EXISTS `#__jmart_order_status` (
   `order_status_id` int(11) NOT NULL auto_increment,
   `order_status_code` char(1) NOT NULL default '',
   `order_status_name` varchar(64) default NULL,
@@ -375,10 +375,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_status` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_order_user_info`
+-- Table structure for table `#__jmart_order_user_info`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_order_user_info` (
+CREATE TABLE IF NOT EXISTS `#__jmart_order_user_info` (
   `order_info_id` int(11) NOT NULL auto_increment,
   `order_id` int(11) NOT NULL default '0',
   `user_id` int(11) NOT NULL default '0',
@@ -417,10 +417,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_user_info` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_payment_method`
+-- Table structure for table `#__jmart_payment_method`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_payment_method` (
+CREATE TABLE IF NOT EXISTS `#__jmart_payment_method` (
   `id` int(11) NOT NULL auto_increment,
   `vendor_id` int(11) default NULL,
   `name` varchar(255) default NULL,
@@ -448,10 +448,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_payment_method` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_plugins`
+-- Table structure for table `#__jmart_plugins`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_plugins` (
+CREATE TABLE IF NOT EXISTS `#__jmart_plugins` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(100) NOT NULL default '',
   `element` varchar(100) NOT NULL default '',
@@ -472,9 +472,9 @@ CREATE TABLE IF NOT EXISTS `#__vm_plugins` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product`
+-- Table structure for table `#__jmart_product`
 --
-CREATE TABLE IF NOT EXISTS `#__vm_product` (
+CREATE TABLE IF NOT EXISTS `#__jmart_product` (
   `product_id` int(11) NOT NULL auto_increment,
   `vendor_id` int(11) NOT NULL default '0',
   `product_parent_id` int(11) NOT NULL default '0',
@@ -527,10 +527,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_attribute`
+-- Table structure for table `#__jmart_product_attribute`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_attribute` (
+CREATE TABLE IF NOT EXISTS `#__jmart_product_attribute` (
   `attribute_id` int(11) NOT NULL auto_increment,
   `product_id` int(11) NOT NULL default '0',
   `attribute_name` char(255) NOT NULL default '',
@@ -543,10 +543,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_attribute` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_attribute_sku`
+-- Table structure for table `#__jmart_product_attribute_sku`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_attribute_sku` (
+CREATE TABLE IF NOT EXISTS `#__jmart_product_attribute_sku` (
   `product_id` int(11) NOT NULL default '0',
   `attribute_name` char(255) NOT NULL default '',
   `attribute_list` int(11) NOT NULL default '0',
@@ -558,10 +558,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_attribute_sku` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_category_xref`
+-- Table structure for table `#__jmart_product_category_xref`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_category_xref` (
+CREATE TABLE IF NOT EXISTS `#__jmart_product_category_xref` (
   `category_id` int(11) NOT NULL default '0',
   `product_id` int(11) NOT NULL default '0',
   `product_list` int(11) default NULL,
@@ -573,10 +573,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_category_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_discount`
+-- Table structure for table `#__jmart_product_discount`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_discount` (
+CREATE TABLE IF NOT EXISTS `#__jmart_product_discount` (
   `discount_id` int(11) NOT NULL auto_increment,
   `amount` decimal(12,2) NOT NULL default '0.00',
   `is_percent` tinyint(1) NOT NULL default '0',
@@ -588,10 +588,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_discount` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_download`
+-- Table structure for table `#__jmart_product_download`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_download` (
+CREATE TABLE IF NOT EXISTS `#__jmart_product_download` (
   `product_id` int(11) NOT NULL default '0',
   `user_id` int(11) NOT NULL default '0',
   `order_id` int(11) NOT NULL default '0',
@@ -605,10 +605,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_download` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_files`
+-- Table structure for table `#__jmart_product_files`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_files` (
+CREATE TABLE IF NOT EXISTS `#__jmart_product_files` (
   `file_id` int(19) NOT NULL auto_increment,
   `file_product_id` int(11) NOT NULL default '0',
   `file_name` varchar(128) NOT NULL default '',
@@ -629,10 +629,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_files` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_mf_xref`
+-- Table structure for table `#__jmart_product_mf_xref`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_mf_xref` (
+CREATE TABLE IF NOT EXISTS `#__jmart_product_mf_xref` (
   `product_id` int(11) default NULL,
   `manufacturer_id` int(11) default NULL,
   KEY `idx_product_mf_xref_product_id` (`product_id`),
@@ -642,10 +642,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_mf_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_price`
+-- Table structure for table `#__jmart_product_price`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_price` (
+CREATE TABLE IF NOT EXISTS `#__jmart_product_price` (
   `product_price_id` int(11) NOT NULL auto_increment,
   `product_id` int(11) NOT NULL default '0',
   `product_price` decimal(12,5) default NULL,
@@ -665,10 +665,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_price` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_product_type_xref`
+-- Table structure for table `#__jmart_product_product_type_xref`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_product_type_xref` (
+CREATE TABLE IF NOT EXISTS `#__jmart_product_product_type_xref` (
   `product_id` int(11) NOT NULL default '0',
   `product_type_id` int(11) NOT NULL default '0',
   KEY `idx_product_product_type_xref_product_id` (`product_id`),
@@ -678,10 +678,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_product_type_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_relations`
+-- Table structure for table `#__jmart_product_relations`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_relations` (
+CREATE TABLE IF NOT EXISTS `#__jmart_product_relations` (
   `product_id` int(11) NOT NULL default '0',
   `related_products` text,
   PRIMARY KEY  (`product_id`)
@@ -690,10 +690,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_relations` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_reviews`
+-- Table structure for table `#__jmart_product_reviews`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_reviews` (
+CREATE TABLE IF NOT EXISTS `#__jmart_product_reviews` (
   `review_id` int(11) NOT NULL auto_increment,
   `product_id` int(11) NOT NULL default '0',
   `comment` text NOT NULL,
@@ -710,10 +710,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_reviews` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_type`
+-- Table structure for table `#__jmart_product_type`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_type` (
+CREATE TABLE IF NOT EXISTS `#__jmart_product_type` (
   `product_type_id` int(11) NOT NULL auto_increment,
   `product_type_name` varchar(255) NOT NULL default '',
   `product_type_description` text,
@@ -727,10 +727,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_type` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_type_parameter`
+-- Table structure for table `#__jmart_product_type_parameter`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_type_parameter` (
+CREATE TABLE IF NOT EXISTS `#__jmart_product_type_parameter` (
   `product_type_id` int(11) NOT NULL default '0',
   `parameter_name` varchar(255) NOT NULL default '',
   `parameter_label` varchar(255) NOT NULL default '',
@@ -749,10 +749,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_type_parameter` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_product_votes`
+-- Table structure for table `#__jmart_product_votes`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_product_votes` (
+CREATE TABLE IF NOT EXISTS `#__jmart_product_votes` (
   `product_id` int(255) NOT NULL default '0',
   `votes` text NOT NULL,
   `allvotes` int(11) NOT NULL default '0',
@@ -764,10 +764,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_votes` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_shipping_carrier`
+-- Table structure for table `#__jmart_shipping_carrier`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_shipping_carrier` (
+CREATE TABLE IF NOT EXISTS `#__jmart_shipping_carrier` (
   `shipping_carrier_id` int(11) NOT NULL auto_increment,
   `shipping_carrier_name` char(80) NOT NULL default '',
   `shipping_carrier_list_order` int(11) NOT NULL default '0',
@@ -777,10 +777,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_shipping_carrier` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_shipping_label`
+-- Table structure for table `#__jmart_shipping_label`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_shipping_label` (
+CREATE TABLE IF NOT EXISTS `#__jmart_shipping_label` (
   `order_id` int(11) NOT NULL default '0',
   `shipper_class` varchar(32) default NULL,
   `ship_date` varchar(32) default NULL,
@@ -804,10 +804,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_shipping_label` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_shipping_rate`
+-- Table structure for table `#__jmart_shipping_rate`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_shipping_rate` (
+CREATE TABLE IF NOT EXISTS `#__jmart_shipping_rate` (
   `shipping_rate_id` int(11) NOT NULL auto_increment,
   `shipping_rate_name` varchar(255) NOT NULL default '',
   `shipping_rate_carrier_id` int(11) NOT NULL default '0',
@@ -827,10 +827,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_shipping_rate` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_shopper_group`
+-- Table structure for table `#__jmart_shopper_group`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_shopper_group` (
+CREATE TABLE IF NOT EXISTS `#__jmart_shopper_group` (
   `shopper_group_id` int(11) NOT NULL auto_increment,
   `vendor_id` int(11) default NULL,
   `shopper_group_name` varchar(32) default NULL,
@@ -846,10 +846,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_shopper_group` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_shopper_vendor_xref`
+-- Table structure for table `#__jmart_shopper_vendor_xref`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_shopper_vendor_xref` (
+CREATE TABLE IF NOT EXISTS `#__jmart_shopper_vendor_xref` (
   `user_id` int(11) default NULL,
   `vendor_id` int(11) default NULL,
   `shopper_group_id` int(11) default NULL,
@@ -862,10 +862,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_shopper_vendor_xref` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_state`
+-- Table structure for table `#__jmart_state`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_state` (
+CREATE TABLE IF NOT EXISTS `#__jmart_state` (
   `state_id` int(11) NOT NULL auto_increment,
   `country_id` int(11) NOT NULL default '1',
   `state_name` varchar(64) default NULL,
@@ -881,10 +881,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_state` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_tax_rate`
+-- Table structure for table `#__jmart_tax_rate`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_tax_rate` (
+CREATE TABLE IF NOT EXISTS `#__jmart_tax_rate` (
   `tax_rate_id` int(11) NOT NULL auto_increment,
   `vendor_id` int(11) default NULL,
   `tax_state` varchar(64) default NULL,
@@ -898,10 +898,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_tax_rate` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_userfield`
+-- Table structure for table `#__jmart_userfield`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_userfield` (
+CREATE TABLE IF NOT EXISTS `#__jmart_userfield` (
   `fieldid` int(11) NOT NULL auto_increment,
   `name` varchar(50) NOT NULL default '',
   `title` varchar(255) NOT NULL,
@@ -930,10 +930,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_userfield` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_userfield_values`
+-- Table structure for table `#__jmart_userfield_values`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_userfield_values` (
+CREATE TABLE IF NOT EXISTS `#__jmart_userfield_values` (
   `fieldvalueid` int(11) NOT NULL auto_increment,
   `fieldid` int(11) NOT NULL default '0',
   `fieldtitle` varchar(255) NOT NULL default '',
@@ -946,10 +946,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_userfield_values` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_user_info`
+-- Table structure for table `#__jmart_user_info`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_user_info` (
+CREATE TABLE IF NOT EXISTS `#__jmart_user_info` (
   `user_info_id` varchar(32) NOT NULL default '',
   `user_id` int(11) NOT NULL default '0',
   `user_is_vendor` tinyint(1) NOT NULL default '0',
@@ -990,10 +990,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_user_info` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_vendor`
+-- Table structure for table `#__jmart_vendor`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_vendor` (
+CREATE TABLE IF NOT EXISTS `#__jmart_vendor` (
   `vendor_id` int(11) NOT NULL auto_increment,
   `vendor_name` varchar(64) default NULL,
   `vendor_phone` varchar(32) default NULL,
@@ -1022,10 +1022,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_vendor` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_vendor_category`
+-- Table structure for table `#__jmart_vendor_category`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_vendor_category` (
+CREATE TABLE IF NOT EXISTS `#__jmart_vendor_category` (
   `vendor_category_id` int(11) NOT NULL auto_increment,
   `vendor_category_name` varchar(64) default NULL,
   `vendor_category_desc` text,
@@ -1036,10 +1036,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_vendor_category` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_waiting_list`
+-- Table structure for table `#__jmart_waiting_list`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_waiting_list` (
+CREATE TABLE IF NOT EXISTS `#__jmart_waiting_list` (
   `waiting_list_id` int(11) NOT NULL auto_increment,
   `product_id` int(11) NOT NULL default '0',
   `user_id` int(11) NOT NULL default '0',
@@ -1054,10 +1054,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_waiting_list` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__vm_zone_shipping`
+-- Table structure for table `#__jmart_zone_shipping`
 --
 
-CREATE TABLE IF NOT EXISTS `#__vm_zone_shipping` (
+CREATE TABLE IF NOT EXISTS `#__jmart_zone_shipping` (
   `zone_id` int(11) NOT NULL auto_increment,
   `zone_name` varchar(255) default NULL,
   `zone_cost` decimal(10,2) default NULL,

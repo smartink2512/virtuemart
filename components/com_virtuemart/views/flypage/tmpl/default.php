@@ -1,1 +1,1 @@
-Welcom to VirtueMart flypages!
+Welcom to JMart flypages!

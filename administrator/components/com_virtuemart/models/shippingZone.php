@@ -2,10 +2,10 @@
 /**
  * Data module for the shipping zones
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Shipping
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 // no direct access
@@ -16,11 +16,11 @@ jimport( 'joomla.application.component.model');
 /**
  * Model class for shipping zone
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Shipping 
  * @author Rick Glunt  
  */
-class VirtueMartModelShippingZone extends JModel
+class JMartModelShippingZone extends JModel
 {
    /**
     * Shipping Zone Id
@@ -83,7 +83,7 @@ class VirtueMartModelShippingZone extends JModel
 					
 		if (empty($this->_data)) {					
 			$query = 'SELECT * ';
-			$query .= 'FROM `#__vm_zone_shipping` ';
+			$query .= 'FROM `#__jmart_zone_shipping` ';
 			$query .= 'WHERE `zone_id` = ' . (int)$this->_id;
 			$db->setQuery($query);
 			$this->_data = $db->loadObject();
@@ -109,7 +109,7 @@ class VirtueMartModelShippingZone extends JModel
     	$db =& JFactory::getDBO();
     				
     	$query = 'SELECT `zone_id`, `zone_name` ';
-		$query .= 'FROM `#__vm_zone_shipping`';
+		$query .= 'FROM `#__jmart_zone_shipping`';
 		$db->setQuery($query);
 		
 		return $db->loadObjectList();

@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_userfield.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 class ps_userfield extends vmAbstractObject {
@@ -64,7 +64,7 @@ class ps_userfield extends vmAbstractObject {
 		}
 		$db->query($sql); $db->next_record();
 		if($db->f('num_rows')) {
-			$vmLogger->err( sprintf(JText::_('VM_USERFIELD_ERR_ALREADY'),$d['name']) );
+			$vmLogger->err( sprintf(JText::_('JM_USERFIELD_ERR_ALREADY'),$d['name']) );
 			return false;
 		}
 
@@ -166,11 +166,11 @@ class ps_userfield extends vmAbstractObject {
 				$j++;
 			}
 		}
-		$GLOBALS['vmLogger']->info(JText::_('VM_USERFIELD_SAVED'));
+		$GLOBALS['vmLogger']->info(JText::_('JM_USERFIELD_SAVED'));
 		return true;
 	}
 	/**
-	 * Add, change or drop fields from the VirtueMart user tables
+	 * Add, change or drop fields from the JMart user tables
 	 * Currently these are: #__{vm}_user_info, #__{vm}_order_user_info
 	 * @param string $column
 	 * @param string $type The column type is determined in the validateOnSave function
@@ -211,7 +211,7 @@ class ps_userfield extends vmAbstractObject {
 			$d['fieldid'] = array( $d['fieldid']);
 		}
 		if ( count( @$d['fieldid'] ) < 1) {
-			$vmLogger->err( JText::_('VM_USERFIELD_DELETE_SELECT') );
+			$vmLogger->err( JText::_('JM_USERFIELD_DELETE_SELECT') );
 			return false;
 		}
 
@@ -220,7 +220,7 @@ class ps_userfield extends vmAbstractObject {
 			$db->next_record();
 			
 			if($db->f('sys')==1) {
-				$vmLogger->err(sprintf(JText::_('VM_USERFIELD_DELETE_ERR_SYSTEM'),$db->f('name')));
+				$vmLogger->err(sprintf(JText::_('JM_USERFIELD_DELETE_ERR_SYSTEM'),$db->f('name')));
 				continue;
 			}
 			else {
@@ -231,7 +231,7 @@ class ps_userfield extends vmAbstractObject {
 				$db->query('DELETE FROM `#__{vm}_userfield` WHERE fieldid='.(int)$id. ' LIMIT 1' );
 				
 				$db->query( 'UPDATE `#__{vm}_userfield` SET ordering = ordering-1 WHERE ordering > '.intval($db->f('ordering')));
-				$vmLogger->info( sprintf(JText::_('VM_USERFIELD_DELETED'),$db->f('name')) );
+				$vmLogger->info( sprintf(JText::_('JM_USERFIELD_DELETED'),$db->f('name')) );
 			}
 		}
 		
@@ -309,21 +309,21 @@ class ps_userfield extends vmAbstractObject {
 	   		$field->title = JText::_($key);
 	   		if( $field->name == 'agreed') {
 	   			$field->title = '<script type="text/javascript">//<![CDATA[
-				document.write(\'<label for="agreed_field">'. str_replace("'","\\'",JText::_('VM_I_AGREE_TO_TOS')) .'</label><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
-				document.write(\' ('.JText::_('VM_STORE_FORM_TOS') .')</a>\');
+				document.write(\'<label for="agreed_field">'. str_replace("'","\\'",JText::_('JM_I_AGREE_TO_TOS')) .'</label><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_jmart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
+				document.write(\' ('.JText::_('JM_STORE_FORM_TOS') .')</a>\');
 				//]]></script>
 				<noscript>
-					<label for="agreed_field">'. JText::_('VM_I_AGREE_TO_TOS') .'</label>
-					<a target="_blank" href="'. $mosConfig_live_site .'/index.php?option=com_virtuemart&amp;page=shop.tos" title="'. JText::_('VM_I_AGREE_TO_TOS') .'">
-					 ('.JText::_('VM_STORE_FORM_TOS').')
+					<label for="agreed_field">'. JText::_('JM_I_AGREE_TO_TOS') .'</label>
+					<a target="_blank" href="'. $mosConfig_live_site .'/index.php?option=com_jmart&amp;page=shop.tos" title="'. JText::_('JM_I_AGREE_TO_TOS') .'">
+					 ('.JText::_('JM_STORE_FORM_TOS').')
 					</a></noscript>';
 	   		}
-	   		if( $field->name == 'username' && VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' ) {
+	   		if( $field->name == 'username' && JM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' ) {
 				echo '<div class="formLabel">
 						<input type="checkbox" id="register_account" name="register_account" value="1" class="inputbox" onchange="showFields( this.checked, new Array(\'username\', \'password\', \'password2\') );if( this.checked ) { document.adminForm.remember.value=\'yes\'; } else { document.adminForm.remember.value=\'yes\'; }" checked="checked" />
 					</div>
 					<div class="formField">
-						<label for="register_account">'.JText::_('VM_REGISTER_ACCOUNT').'</label>
+						<label for="register_account">'.JText::_('JM_REGISTER_ACCOUNT').'</label>
 					</div>
 					';
 			} elseif( $field->name == 'username' ) {
@@ -335,7 +335,7 @@ class ps_userfield extends vmAbstractObject {
 	   			if( $delimiter > 0) {
 	   				echo "</fieldset>\n";
 	   			}
-	   			if( VM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' && $field->title == JText::_('VM_ORDER_PRINT_CUST_INFO_LBL') && $page == 'checkout.index' ) {
+	   			if( JM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' && $field->title == JText::_('JM_ORDER_PRINT_CUST_INFO_LBL') && $page == 'checkout.index' ) {
 	   				continue;
 	   			}
 	   			echo '<fieldset>
@@ -500,7 +500,7 @@ class ps_userfield extends vmAbstractObject {
 			echo "</fieldset>\n";
 		}
 	   echo '</div>';
-	   if( VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION') {
+	   if( JM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION') {
 		   	echo '<script type="text/javascript">
 		   	//<![CDATA[
 		   function showFields( show, fields ) {
@@ -604,9 +604,9 @@ class ps_userfield extends vmAbstractObject {
 		return $userFields;
 	}
 	/**
-	 * Returns an array of fieldnames which are NOT used for VirtueMart tables
+	 * Returns an array of fieldnames which are NOT used for JMart tables
 	 *
-	 * @return array Field names which are to be skipped by VirtueMart db functions
+	 * @return array Field names which are to be skipped by JMart db functions
 	 */
 	function getSkipFields() {
 		return array( 'username', 'password', 'password2', 'agreed' );
@@ -696,7 +696,7 @@ class ps_userfield extends vmAbstractObject {
 	            }
             ";
        	$optional_check = '';
-		if( VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION') {
+		if( JM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION') {
 			$optional_check = '&& form.register_account.checked';
 		}
 	    // We have skipped email in the first loop above!
@@ -741,7 +741,7 @@ class ps_userfield extends vmAbstractObject {
         if( isset( $required_fields['agreed'] )) {
 			echo '
             if (!form.agreed.checked) {
-				alert( "'. JText::_('VM_AGREE_TO_TOS',false) .'" );
+				alert( "'. JText::_('JM_AGREE_TO_TOS',false) .'" );
 				return false;
 			}';
 		}
@@ -752,7 +752,7 @@ class ps_userfield extends vmAbstractObject {
 			}			
 		}
 		if( !empty($euvatid) ) {
-			$vm_mainframe->addScript( 'components/'.VM_COMPONENT_NAME.'/js/euvat_check.js');
+			$vm_mainframe->addScript( 'components/'.JM_COMPONENT_NAME.'/js/euvat_check.js');
 			echo '
 			if( form.'.$euvatid.'.value != \'\' ) {
 				if( !isValidVATID( form.'.$euvatid.'.value )) {

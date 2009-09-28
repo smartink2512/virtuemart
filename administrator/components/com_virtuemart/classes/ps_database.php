@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_database.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /***********************************************************************
@@ -68,7 +68,7 @@ class ps_DB {
 		
 		$vm_prefix = "{vm}";
 		$sql = trim( $sql );
-		$this->_sql = trim(str_replace( $vm_prefix, VM_TABLEPREFIX, $sql ));
+		$this->_sql = trim(str_replace( $vm_prefix, JM_TABLEPREFIX, $sql ));
 		$this->_database->setQuery( $this->_sql );
 		
 		$this->_query_set = true;
@@ -201,7 +201,7 @@ class ps_DB {
 	function sf($field_name, $stripslashes=true) {
 		global $vars, $default;
 
-		if ((defined( '_VM_LOG_ERRORS' ) || isset($vars["error"])) && !empty($vars["$field_name"])) {
+		if ((defined( '_JM_LOG_ERRORS' ) || isset($vars["error"])) && !empty($vars["$field_name"])) {
 			if($stripslashes) {
 				return  stripslashes($vars[$field_name] );
 			}
@@ -300,7 +300,7 @@ class ps_DB {
 	}
 	/**
 	 * Returns the current row of the recordset
-	 * @since VirtueMart 1.1.0
+	 * @since JMart 1.1.0
 	 * @return stdClass Object
 	 */
 	function getCurrentRow() {
@@ -310,7 +310,7 @@ class ps_DB {
 	/**
 	 * Query Builder Functions
 	 * @author soeren
-	 * @since VirtueMart 1.1.0
+	 * @since JMart 1.1.0
 	 * 
 	 * @param string $type Either INSERT or UPDATE
 	 * @param string $table Example: #__{vm}_user_info

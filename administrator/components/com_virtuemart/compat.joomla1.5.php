@@ -1,24 +1,24 @@
 <?php 
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
-* This file provides compatibility for VirtueMart on Joomla! 1.0.x and Joomla! 1.5
+* This file provides compatibility for JMart on Joomla! 1.0.x and Joomla! 1.5
 *
 *
 * @version $Id: compat.joomla1.5.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package VirtueMart
+* @package JMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
-if( !defined('_VM_COMPAT_FILE_LOADED') ) {
-	define( '_VM_COMPAT_FILE_LOADED', 1 );
+if( !defined('_JM_COMPAT_FILE_LOADED') ) {
+	define( '_JM_COMPAT_FILE_LOADED', 1 );
 
 	if( class_exists( 'JConfig' ) ) {
 		
@@ -32,7 +32,7 @@ if( !defined('_VM_COMPAT_FILE_LOADED') ) {
 				
 				require_once ( JPATH_BASE .DS.'includes'.DS.'defines.php' );
 				require_once ( JPATH_BASE .DS.'includes'.DS.'framework.php' );
-				$mainframe = JFactory::getApplication(defined('_VM_IS_BACKEND') ? 'administrator' : 'site');
+				$mainframe = JFactory::getApplication(defined('_JM_IS_BACKEND') ? 'administrator' : 'site');
 			
 			}
 			jimport('joomla.application.component.helper');
@@ -70,7 +70,7 @@ if( !defined('_VM_COMPAT_FILE_LOADED') ) {
 			$mosConfig_cachepath = $GLOBALS['mosConfig_cachepath'] = JPATH_BASE.DS.'cache';
 			
 			if( !isset( $option ) ) {
-				$option = strtolower( JRequest::getCmd( 'option', 'com_virtuemart' ) );
+				$option = strtolower( JRequest::getCmd( 'option', 'com_jmart' ) );
 			}
 			
 			// The selected language
@@ -94,7 +94,7 @@ if( !defined('_VM_COMPAT_FILE_LOADED') ) {
 			if( !function_exists( 'sefreltoabs')) {
 				function sefRelToAbs( $url ) {
 					//TODO!!!
-					//Create a file "router.php" inside /components/com_virtuemart/
+					//Create a file "router.php" inside /components/com_jmart/
 					//$router = JRouter::getInstance('virtuemart');
 					//return $router->build($url);
 					return $url;

@@ -5,17 +5,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * It should be included whenever a VirtueMart function is needed
 *
 * @version $Id: virtuemart_parser.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package VirtueMart
+* @package JMart
 * @subpackage core
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $hVendor_id, $vendor_image,$vendor_image_url, $keyword,
 	$ps_payment_method,$ps_zone,$sess, $page, $func, $pagename, $modulename, $vars, $default, $cmd, $ok, $mosConfig_lang,
@@ -23,9 +23,9 @@ global $my, $db, $perm, $ps_function, $ps_module, $ps_html, $hVendor_id, $vendor
 	$vendor_currency_display_style, $vendor_freeshipping, $mm_action_url, $limit, $limitstart, $mainframe, $ps_product, $database;
 global $sess, $perm, $ps_module, $pagePermissionsOK;
 
-include_once( dirname(__FILE__).'/../../administrator/components/com_virtuemart/compat.joomla1.5.php' );
+include_once( dirname(__FILE__).'/../../administrator/components/com_jmart/compat.joomla1.5.php' );
 
-if( !defined( '_VM_PARSER_LOADED' )) {
+if( !defined( '_JM_PARSER_LOADED' )) {
 	global $my;
 	
 	// Clean the var PHP_SELF from chars like " or ' 
@@ -63,7 +63,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	}
 
 	// the configuration file for the Shop
-	require_once( JPATH_ROOT. "/administrator/components/com_virtuemart/virtuemart.cfg.php" );
+	require_once( JPATH_ROOT. "/administrator/components/com_jmart/jmart.cfg.php" );
 	
 	$GLOBALS['mosConfig_live_site'] = $mosConfig_live_site = substr( URL, 0, strlen(URL)-1);
 	
@@ -117,7 +117,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	// This makes it possible to use Shared SSL
 	$sess->prepare_SSL_Session();
 	
-	if( $option == "com_virtuemart" ) {
+	if( $option == "com_jmart" ) {
 
 		// Get sure that we have float values with a decimal point!
 		@setlocale( LC_NUMERIC, 'en_US', 'en' );
@@ -184,7 +184,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
     // or the caching time range has expired
 	$GLOBALS['cache_id'] = vmTemplate::getCacheId();
 		
-	if( $option == "com_virtuemart" ) {
+	if( $option == "com_jmart" ) {
 		// Check if we have to run a Shop Function
 		// and if the user is allowed to execute it
 		$funcParams = $ps_function->getFuncPermissions( $func );
@@ -196,7 +196,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		** user has no permission to view it , or file doesn't exist
 		************************************************/
 		if (empty($page)) {// default page
-			if (defined('_VM_IS_BACKEND')) {
+			if (defined('_JM_IS_BACKEND')) {
 				$page = "store.index";
 			} 
 			else {
@@ -290,7 +290,7 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 	}
 
 	// I don't get it, why Joomla uses masked gid values!
-	if( !defined( '_VM_IS_BACKEND' )&& !class_exists('jfactory')) {
+	if( !defined( '_JM_IS_BACKEND' )&& !class_exists('jfactory')) {
 		$my = $mainframe->getUser();
 	}
 	
@@ -303,6 +303,6 @@ if( !defined( '_VM_PARSER_LOADED' )) {
 		$vmDisplayLogger->_buffering = false;
 	}
 	
-	define( '_VM_PARSER_LOADED', 1 );
+	define( '_JM_PARSER_LOADED', 1 );
 }
 ?>

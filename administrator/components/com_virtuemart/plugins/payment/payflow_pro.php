@@ -5,17 +5,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 *  for transactions with payflowpro.verisign.com
 *
 * @version $Id: payflow_pro.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage payment
 * @copyright Copyright (C) 2007-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 define ('PFP_CLIENT_CERTIFICATION_ID', 'bea46ef28cd8693d8b191d2d011b7fd1');
 
@@ -62,7 +62,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		// Get the Password securely from the database
 		$transactionkey = $this->get_passkey();
 		if( empty($transactionkey)) {
-			$vmLogger->err( JText::_('VM_PAYMENT_ERROR',false).'. Technical Note: The required passwird is empty! The payment method settings must be reviewed.' );
+			$vmLogger->err( JText::_('JM_PAYMENT_ERROR',false).'. Technical Note: The required passwird is empty! The payment method settings must be reviewed.' );
 			return false;
 		}
 
@@ -174,7 +174,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 			case '0':
 				// Approved - Success!
 				$success = true;
-				$d["order_payment_log"] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').": ";
+				$d["order_payment_log"] = JText::_('JM_PAYMENT_TRANSACTION_SUCCESS').": ";
 				$d["order_payment_log"] .= $RESPMSG;
 				$vmLogger->debug( $d['order_payment_log']);
 				break;
@@ -218,7 +218,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		// Get the Account Password securely from the database
 		$transactionkey = $this->get_passkey();
 		if( empty($transactionkey)) {
-			$vmLogger->err(JText::_('VM_PAYMENT_ERROR'),false);
+			$vmLogger->err(JText::_('JM_PAYMENT_ERROR'),false);
 			return false;
 		}
 		$db = new ps_DB;
@@ -235,7 +235,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 
 		// DECODE Account Number
 		$dbaccount = new ps_DB;
-		$q = "SELECT ".VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."')
+		$q = "SELECT ".JM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."')
           AS account_number from #__{vm}_order_payment WHERE order_id='".$db->f("order_id")."'";
 		$dbaccount->query($q);
 		$dbaccount->next_record();
@@ -347,7 +347,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 			case '0':
 				// Approved - Success!
 				$success = true;
-				$d["order_payment_log"] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').": ";
+				$d["order_payment_log"] = JText::_('JM_PAYMENT_TRANSACTION_SUCCESS').": ";
 				$d["order_payment_log"] .= $RESPMSG;
 				
 				$q = "UPDATE #__{vm}_order_payment SET ";
@@ -393,7 +393,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 		// Get the Account Password securely from the database
 		$transactionkey = $this->get_passkey();
 		if( empty($transactionkey)) {
-			$vmLogger->err(JText::_('VM_PAYMENT_ERROR'),false);
+			$vmLogger->err(JText::_('JM_PAYMENT_ERROR'),false);
 			return false;
 		}
 		$db = new ps_DB;
@@ -410,7 +410,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 
 		// DECODE Account Number
 		$dbaccount = new ps_DB;
-		$q = "SELECT ".VM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."')
+		$q = "SELECT ".JM_DECRYPT_FUNCTION."(order_payment_number,'".ENCODE_KEY."')
           AS account_number from #__{vm}_order_payment WHERE order_id='".$db->f("order_id")."'";
 		$dbaccount->query($q);
 		$dbaccount->next_record();
@@ -522,7 +522,7 @@ class plgPaymentPayflow_Pro extends vmPaymentPlugin {
 			case '0':
 				// Approved - Success!
 				$success = true;
-				$d["order_payment_log"] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').": ";
+				$d["order_payment_log"] = JText::_('JM_PAYMENT_TRANSACTION_SUCCESS').": ";
 				$d["order_payment_log"] .= $RESPMSG;
 				
 				$q = "UPDATE #__{vm}_order_payment SET ";

@@ -1,7 +1,7 @@
 <?php
 /**
  * @version		$Id: request.class.php 1755 2009-05-01 22:45:17Z rolandd $
- * @package		VirtueMart
+ * @package		JMart
  * @subpackage	core
  * @copyright	Copyright (C) 2005 - 2007 Open Source Matters. All rights reserved.
  * @copyright	Copyright (C) 2007-2008 soeren. All rights reserved.
@@ -62,7 +62,7 @@ $GLOBALS['_VMREQUEST'] = array();
 /**
  * vmRequest Class
  *
- * This class serves to provide VirtueMart with a common interface to access
+ * This class serves to provide JMart with a common interface to access
  * request variables.  This includes $_POST, $_GET, and naturally $_REQUEST.  Variables
  * can be passed through an input filter to avoid injection or returned raw.
  *

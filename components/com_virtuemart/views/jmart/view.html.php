@@ -6,9 +6,9 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'libraries'.DS.'ProductUtils.php')
 
 
 /**
- * Default HTML View class for the VirtueMart Component
+ * Default HTML View class for the JMart Component
  */
-class VirtueMartViewVirtueMart extends JView
+class JMartViewJMart extends JView
 {
 	
 	function display($tpl = null)

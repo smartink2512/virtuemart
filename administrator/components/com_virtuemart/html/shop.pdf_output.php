@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: shop.pdf_output.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 mm_showMyFileName( __FILE__ );
 
@@ -25,7 +25,7 @@ $category_id = JRequest::getVar(  'category_id');
 /* Who cares for Safe Mode ? Not me! */
 if (@file_exists( "/usr/bin/htmldoc" )) {
 	
-	$load_page = $mosConfig_live_site . "/index2.php?option=com_virtuemart&page=$showpage&flypage=$flypage&product_id=$product_id&category_id=$category_id&pop=1&hide_js=1&output=pdf";
+	$load_page = $mosConfig_live_site . "/index2.php?option=com_jmart&page=$showpage&flypage=$flypage&product_id=$product_id&category_id=$category_id&pop=1&hide_js=1&output=pdf";
 	header( "Content-Type: application/pdf" );
 	header( "Content-Disposition: inline; filename=\"pdf-mambo.pdf\"" );
 	flush();
@@ -163,7 +163,7 @@ if ( isset($pdf) ) {
 	<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>'. $mainframe->getHead().'
 			<link rel="stylesheet" href="templates/'. $cur_template .'/css/template_css.css" type="text/css" />
-			<link rel="stylesheet" href="'. VM_THEMEURL .'theme.css" type="text/css" />
+			<link rel="stylesheet" href="'. JM_THEMEURL .'theme.css" type="text/css" />
 			<link rel="shortcut icon" href="'. $mosConfig_live_site .'/images/favicon.ico" />
 			<meta http-equiv="Content-Type" content="text/html; '. _ISO.'" />
 			<meta name="robots" content="noindex, nofollow" />

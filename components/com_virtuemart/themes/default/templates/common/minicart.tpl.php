@@ -4,11 +4,11 @@ if($empty_cart) { ?>
     
     <div style="margin: 0 auto;">
     <?php if(!$vmMinicart) { ?>
-        <a href="http://virtuemart.org/" target="_blank">
-        <img src="<?php echo $mm_action_url ?>components/com_virtuemart/shop_image/ps_image/menu_logo.gif" alt="VirtueMart" width="80" border="0" /></a>
+        <a href="http://joomlacode.org/gf/project/jmart//" target="_blank">
+        <img src="<?php echo $mm_action_url ?>components/com_jmart/shop_image/ps_image/menu_logo.gif" alt="VirtueMart" width="80" border="0" /></a>
         <br />
     <?php }
-    echo JText::_('VM_EMPTY_CART') ?>
+    echo JText::_('JM_EMPTY_CART') ?>
     </div>
 <?php } 
 else {

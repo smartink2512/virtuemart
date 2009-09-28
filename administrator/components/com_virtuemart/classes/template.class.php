@@ -3,18 +3,18 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: template.class.php 1755 2009-05-01 22:45:17Z rolandd $
-* @package VirtueMart
+* @package JMart
 * @subpackage core
 * @copyright Copyright (c) 2003 Brian E. Lozier (brian@massassi.net)
 * @copyright Copyright (C) 2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 *
 * set_vars() method contributed by Ricardo Garcia (Thanks!)
 *
@@ -55,8 +55,8 @@ class vmTemplate {
 	function vmTemplate($path='', $expire = 0 ) {
 		global $mosConfig_absolute_path, $mosConfig_cachepath, $mosConfig_cachetime;
 			
-		$this->path = empty($path) ?  VM_THEMEPATH.'templates/' : $path;
-		$this->default_path = $mosConfig_absolute_path.'/components/'.VM_COMPONENT_NAME.'/themes/default/templates/';
+		$this->path = empty($path) ?  JM_THEMEPATH.'templates/' : $path;
+		$this->default_path = $mosConfig_absolute_path.'/components/'.JM_COMPONENT_NAME.'/themes/default/templates/';
 		
 		$globalsArray = vmGetGlobalsArray();
 		foreach( $globalsArray as $global ) {
@@ -68,7 +68,7 @@ class vmTemplate {
 		
 		// the theme configuration needs to be available to the templates! (so you can use $this->get_cfg('showManufacturerLink') for example )
 		if( empty( $GLOBALS['vmThemeConfig'] ) || !empty( $_REQUEST['vmThemeConfig'])) {
-			$GLOBALS['vmThemeConfig'] =& new vmParameters( @file_get_contents(VM_THEMEPATH.'theme.config.php'), VM_THEMEPATH.'theme.xml', 'theme');
+			$GLOBALS['vmThemeConfig'] =& new vmParameters( @file_get_contents(JM_THEMEPATH.'theme.config.php'), JM_THEMEPATH.'theme.xml', 'theme');
 
 		}
 		$this->config =& $GLOBALS['vmThemeConfig'];
@@ -89,7 +89,7 @@ class vmTemplate {
 	 * @return vmTheme
 	 */
 	function getInstance() {
-		return new $GLOBALS['VM_THEMECLASS']();
+		return new $GLOBALS['JM_THEMECLASS']();
 	}
 	/**
     * Test to see whether the currently loaded cache_id has a valid

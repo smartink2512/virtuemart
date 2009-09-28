@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: product.specialprod.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage html
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /**
@@ -117,26 +117,26 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('VM_FEATURED_PRODUCTS_LIST_LBL'), IMAGEURL."ps_image/product_code.png", $modulename, "specialprod");
+$listObj->writeSearchHeader(JText::_('JM_FEATURED_PRODUCTS_LIST_LBL'), IMAGEURL."ps_image/product_code.png", $modulename, "specialprod");
 
-echo '<strong>'.JText::_('VM_FILTER').':</strong>&nbsp;&nbsp;';
-if($filter != "all") echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=all").'" title="'.JText::_('VM_LIST_ALL_PRODUCTS').'">';
-echo JText::_('VM_LIST_ALL_PRODUCTS');
+echo '<strong>'.JText::_('JM_FILTER').':</strong>&nbsp;&nbsp;';
+if($filter != "all") echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=all").'" title="'.JText::_('JM_LIST_ALL_PRODUCTS').'">';
+echo JText::_('JM_LIST_ALL_PRODUCTS');
 if ($filter != 'all') echo '</a>';
 
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
-if ($filter != 'featured_and_discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured_and_discounted").'" title="'.JText::_('VM_SHOW_FEATURED_AND_DISCOUNTED').'">';
-echo JText::_('VM_SHOW_FEATURED_AND_DISCOUNTED');
+if ($filter != 'featured_and_discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured_and_discounted").'" title="'.JText::_('JM_SHOW_FEATURED_AND_DISCOUNTED').'">';
+echo JText::_('JM_SHOW_FEATURED_AND_DISCOUNTED');
 if ($filter != 'featured_and_discounted') echo '</a>';
 
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
-if ($filter != 'featured') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured").'" title="'.JText::_('VM_SHOW_FEATURED').'">';
-echo JText::_('VM_SHOW_FEATURED');
+if ($filter != 'featured') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=featured").'" title="'.JText::_('JM_SHOW_FEATURED').'">';
+echo JText::_('JM_SHOW_FEATURED');
 if ($filter != 'featured') echo '</a>';
 
 echo '&nbsp;&nbsp;|&nbsp;&nbsp;';
-if ($filter != 'discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=discounted").'" title="'.JText::_('VM_SHOW_DISCOUNTED').'">';
-echo JText::_('VM_SHOW_DISCOUNTED');
+if ($filter != 'discounted') echo '<a href="'.$sess->url($_SERVER['PHP_SELF']."?page=$page&filter=discounted").'" title="'.JText::_('JM_SHOW_DISCOUNTED').'">';
+echo JText::_('JM_SHOW_DISCOUNTED');
 if ($filter != 'discounted') echo '</a>';
 
 echo '<br /><br />';
@@ -146,12 +146,12 @@ $listObj->startTable();
 
 // these are the columns in the table
 $columns = Array(  "#" => "width=\"20\"", 
-					JText::_('VM_PRODUCT_LIST_NAME') => '',
-					JText::_('VM_PRODUCT_LIST_SKU') => '',
-					JText::_('VM_PRODUCT_INVENTORY_PRICE') => '',
-					JText::_('VM_FEATURED') => '',
-					JText::_('VM_PAYMENT_METHOD_LIST_DISCOUNT') => '',
-					JText::_('VM_FILEMANAGER_PUBLISHED') => ''
+					JText::_('JM_PRODUCT_LIST_NAME') => '',
+					JText::_('JM_PRODUCT_LIST_SKU') => '',
+					JText::_('JM_PRODUCT_INVENTORY_PRICE') => '',
+					JText::_('JM_FEATURED') => '',
+					JText::_('JM_PAYMENT_METHOD_LIST_DISCOUNT') => '',
+					JText::_('JM_FILEMANAGER_PUBLISHED') => ''
 				);
 $listObj->writeTableHeader( $columns );
 

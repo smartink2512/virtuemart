@@ -2,10 +2,10 @@
 /**
  * Currency controller
  *
- * @package	VirtueMart
+ * @package	JMart
  * @subpackage Currency
  * @author Rick Glunt 
- * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2009 JMart Team. All rights reserved.
  */
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
@@ -15,11 +15,11 @@ jimport('joomla.application.component.controller');
 /**
  * Currency Controller
  *
- * @package    VirtueMart
+ * @package    JMart
  * @subpackage Currency
  * @author Rick Glunt 
  */
-class VirtuemartControllerCurrency extends JController
+class JmartControllerCurrency extends JController
 {
 	/**
 	 * Method to display the view
@@ -33,7 +33,7 @@ class VirtuemartControllerCurrency extends JController
 		$this->registerTask( 'add',  'edit' );			
 		
 	    $document =& JFactory::getDocument();
-	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
+	    $document->addStyleSheet(JURI::base().'components/com_jmart/assets/css/jmart.css');
 	    
 		$document =& JFactory::getDocument();				
 		$viewType	= $document->getType();
@@ -81,7 +81,7 @@ class VirtuemartControllerCurrency extends JController
 	{
 		$msg = JText::_('Operation Canceled!!');
 		
-		$this->setRedirect('index.php?option=com_virtuemart&view=currency', $msg);
+		$this->setRedirect('index.php?option=com_jmart&view=currency', $msg);
 	}	
 	
 	
@@ -101,7 +101,7 @@ class VirtuemartControllerCurrency extends JController
 			$msg = JText::_($model->getError());
 		}
 		
-		$this->setRedirect('index.php?option=com_virtuemart&view=currency', $msg);
+		$this->setRedirect('index.php?option=com_jmart&view=currency', $msg);
 	}	
 	
 	
@@ -120,7 +120,7 @@ class VirtuemartControllerCurrency extends JController
 			$msg = JText::_( 'Currencies Deleted!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=currency', $msg);
+		$this->setRedirect( 'index.php?option=com_jmart&view=currency', $msg);
 	}	
 	
 	
@@ -136,7 +136,7 @@ class VirtuemartControllerCurrency extends JController
 			$msg = JText::_('Error: One or more currencies could not be published!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=currency', $msg);
+		$this->setRedirect( 'index.php?option=com_jmart&view=currency', $msg);
 	}		
 	
 	
@@ -152,7 +152,7 @@ class VirtuemartControllerCurrency extends JController
 			$msg = JText::_('Error: One or more currencies could not be unpublished!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=currency', $msg);
+		$this->setRedirect( 'index.php?option=com_jmart&view=currency', $msg);
 	}	
 }
 ?>

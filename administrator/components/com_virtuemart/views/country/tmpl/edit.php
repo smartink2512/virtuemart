@@ -65,7 +65,7 @@ AdminMenuHelper::startAdminArea();
 	</fieldset>
 </div>
 
-	<input type="hidden" name="option" value="com_virtuemart" />
+	<input type="hidden" name="option" value="com_jmart" />
 	<input type="hidden" name="country_id" value="<?php echo $this->country->country_id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />

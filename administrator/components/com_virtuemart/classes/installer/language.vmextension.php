@@ -5,17 +5,17 @@ if (! defined ( '_VALID_MOS' ) && ! defined ( '_JEXEC' ))
 /**
 *
 * @version $Id: language.class.php 27/09/2008
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright 2008 HoaNT-Vsmarttech for this class
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */ 
 
 class vmInstallerLanguage {
@@ -33,7 +33,7 @@ class vmInstallerLanguage {
 	function get_extension_list(){
 		
 		$rows= array();
-		$path=JPATH_ADMINISTRATOR.'/components/com_virtuemart/languages/';
+		$path=JPATH_ADMINISTRATOR.'/components/com_jmart/languages/';
 		$files = vmReadDirectory( $path, '.xml$' );
 		if(count($files)==0)
 		{
@@ -120,7 +120,7 @@ class vmInstallerLanguage {
 				return false;
 			}
 			
-			$path = JPATH_ADMINISTRATOR . DS . "components" . DS . "com_virtuemart".DS."languages".DS.basename($info ['name']);
+			$path = JPATH_ADMINISTRATOR . DS . "components" . DS . "com_jmart".DS."languages".DS.basename($info ['name']);
 			$check_file = vmInstallerLanguage::install_file ( $package ['dir'], $file_install ['file'], $path );
 			
 			if ($check_file === 'exists') {
@@ -129,7 +129,7 @@ class vmInstallerLanguage {
 				$check_query = vmInstaller::install_query ( $file_install ['query'] );
 				if ($check_file && $check_query) {
 					$src = $package ['dir'] . DS . JFile::getName ( $file );
-					$path = JPATH_ADMINISTRATOR . DS . "components" . DS . "com_virtuemart" . DS . "languages" . DS . $info ['name'] . ".xml";
+					$path = JPATH_ADMINISTRATOR . DS . "components" . DS . "com_jmart" . DS . "languages" . DS . $info ['name'] . ".xml";
 					
 					JFile::copy ( $src, $path );
 				}
@@ -152,17 +152,17 @@ class vmInstallerLanguage {
 	 * @since 1.2.0
 	 */
 	function uninstall($languagename) {
-		$xml_path = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'languages' . DS . $languagename . '.xml';
+		$xml_path = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_jmart' . DS . 'languages' . DS . $languagename . '.xml';
 		jimport ( 'joomla.filesystem.file' );
-		$path = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS . 'languages'.DS.basename($languagename);
+		$path = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_jmart'.DS . 'languages'.DS.basename($languagename);
 		if (JFile::exists ( $xml_path )) {
 			$file_install = vminstaller::getFile ( $xml_path );
 			vminstaller::rollback ( $file_install ['file'], $file_install ['query'], $path );
-			$url = 'index.php?pshop_mode=admin&page=installer.extension_list&option=com_virtuemart';
+			$url = 'index.php?pshop_mode=admin&page=installer.extension_list&option=com_jmart';
 			$msg = 'Uninstall successfully!';
 			JFile::delete ( $xml_path );
 		} else {
-			$url = 'index.php?pshop_mode=admin&page=installer.extension_list&option=com_virtuemart';
+			$url = 'index.php?pshop_mode=admin&page=installer.extension_list&option=com_jmart';
 			$msg = 'Can not uninstall this Language! The XML file was not found!';
 		}
 		vmRedirect($url, $msg);

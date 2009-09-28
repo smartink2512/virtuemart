@@ -5,17 +5,17 @@ if (! defined ( '_VALID_MOS' ) && ! defined ( '_JEXEC' ))
 /**
 *
 * @version $Id: payment.class.php 27/09/2008
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright 2008 HoaNT-Vsmarttech for this class
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */ 
 
 class vmInstallerPayment {
@@ -51,10 +51,10 @@ class vmInstallerPayment {
 				return false;
 			}
 			if( !empty($file_install ['languages'])) {
-				$lang_path = JPATH_ADMINISTRATOR . DS . "components" . DS . "com_virtuemart". DS . 'languages' . DS . 'plg_payment_'.$info ['element'];
+				$lang_path = JPATH_ADMINISTRATOR . DS . "components" . DS . "com_jmart". DS . 'languages' . DS . 'plg_payment_'.$info ['element'];
 				$check_file = vmInstaller::install_file ( $package ['dir'], $file_install ['languages'], $lang_path );
 			}
-			$path = JPATH_ADMINISTRATOR . DS . "components" . DS . "com_virtuemart" . DS . 'plugins'. DS . 'payment';
+			$path = JPATH_ADMINISTRATOR . DS . "components" . DS . "com_jmart" . DS . 'plugins'. DS . 'payment';
 			$check_file = vmInstaller::install_file ( $package ['dir'], $file_install ['file'], $path );
 			
 			if ($check_file === 'exists') {
@@ -65,7 +65,7 @@ class vmInstallerPayment {
 				
 				if ($check_file && $check_query) {
 					$src = $package ['dir'] . DS . JFile::getName ( $file );
-					$path = JPATH_ADMINISTRATOR . DS . "components" . DS . "com_virtuemart" . DS . "plugins" . DS . "payment"  . DS . $info ['name'] . ".xml";
+					$path = JPATH_ADMINISTRATOR . DS . "components" . DS . "com_jmart" . DS . "plugins" . DS . "payment"  . DS . $info ['name'] . ".xml";
 					
 					JFile::copy ( $src, $path );
 

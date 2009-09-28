@@ -14,7 +14,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'VM_CURRENCY_LIST_NAME' ); ?>:
+					<?php echo JText::_( 'JM_CURRENCY_LIST_NAME' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -24,7 +24,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'VM_CURRENCY_LIST_CODE' ); ?>:
+					<?php echo JText::_( 'JM_CURRENCY_LIST_CODE' ); ?>:
 				</label>
 			</td>
 			<td>
@@ -35,7 +35,7 @@ AdminMenuHelper::startAdminArea();
 	</fieldset>
 </div>
 
-	<input type="hidden" name="option" value="com_virtuemart" />
+	<input type="hidden" name="option" value="com_jmart" />
 	<input type="hidden" name="currency_id" value="<?php echo $this->currency->currency_id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />

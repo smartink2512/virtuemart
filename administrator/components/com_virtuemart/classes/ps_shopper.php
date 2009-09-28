@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: ps_shopper.php 1768 2009-05-11 22:24:39Z macallf $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 /**
@@ -41,11 +41,11 @@ class ps_shopper {
 		$registrationFields = ps_userfield::getUserFields( 'registration', false, '', true );
 
 		$skipFields = array();
-		if( VM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' || VM_REGISTRATION_TYPE == 'NO_REGISTRATION'
-			|| (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account']))) {
+		if( JM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' || JM_REGISTRATION_TYPE == 'NO_REGISTRATION'
+			|| (JM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account']))) {
 			$skipFields = array( 'username', 'password', 'password2');
 		}
-        if ( $my->id > 0 || (VM_REGISTRATION_TYPE != 'NORMAL_REGISTRATION' && VM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION')) {
+        if ( $my->id > 0 || (JM_REGISTRATION_TYPE != 'NORMAL_REGISTRATION' && JM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION')) {
             $skipFields = array( 'username', 'password', 'password2');
         }
 		if( $my->id ) {
@@ -162,10 +162,10 @@ class ps_shopper {
 		require_once( CLASSPATH . 'ps_userfield.php' );
 		$accountFields = ps_userfield::getUserFields( 'account', false, '', true );
 
-		if( VM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' || VM_REGISTRATION_TYPE == 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account'] ))) {
+		if( JM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' || JM_REGISTRATION_TYPE == 'NO_REGISTRATION' || (JM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account'] ))) {
 			$skipFields = array( 'username', 'password', 'password2');
 		}
-        if ( $my->id > 0 || (VM_REGISTRATION_TYPE != 'NORMAL_REGISTRATION' && VM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION')) {
+        if ( $my->id > 0 || (JM_REGISTRATION_TYPE != 'NORMAL_REGISTRATION' && JM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION')) {
             $skipFields = array( 'username', 'password', 'password2');
         }
 		if( $my->id ) {
@@ -283,7 +283,7 @@ class ps_shopper {
 
 		//TODO must depend on vendor of bill,.. or on vendorS of the bill
 		$vendor_id =  1; //$_SESSION["ps_vendor_id"];
-		$hash_secret = "VirtueMartIsCool";
+		$hash_secret = "JMartIsCool";
 		$db = new ps_DB;
 		$timestamp = time();
 
@@ -294,7 +294,7 @@ class ps_shopper {
 		if( empty( $my->id ) ) {
 
 			$_POST['name'] = vmGet($d,'first_name','First Name' )." ".vmGet($d,'last_name','Last Name' );
-			if( VM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' || VM_REGISTRATION_TYPE == 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account'] ))) {
+			if( JM_REGISTRATION_TYPE == 'SILENT_REGISTRATION' || JM_REGISTRATION_TYPE == 'NO_REGISTRATION' || (JM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account'] ))) {
 				// Silent Registration, Optional Registration with no account wanted and No Registration
 				// means we need to create a hidden user
 
@@ -313,7 +313,7 @@ class ps_shopper {
 				$_POST['password2'] = $_POST['password'];
 			}
 
-			if( VM_REGISTRATION_TYPE == 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account'] ) ) ) {
+			if( JM_REGISTRATION_TYPE == 'NO_REGISTRATION' || (JM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account'] ) ) ) {
 				// If no user shall be registered into the global user table, we just add the registration info into the vm_user_info table
 				// Make sure that "dummy" entries for non-existing Joomla! users won't ever have the same user_id as a future Joomla! user
 				$db->query( "SELECT MIN(user_id)-1 as uid FROM `#__{vm}_user_info`" );
@@ -452,7 +452,7 @@ class ps_shopper {
 					}
 			}
 		}
-		if( VM_REGISTRATION_TYPE == 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account'] ) ) ) {
+		if( JM_REGISTRATION_TYPE == 'NO_REGISTRATION' || (JM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && empty($d['register_account'] ) ) ) {
 			$auth['user_id'] = $uid;
 			$auth['username'] = $d['email'];
 			$_SESSION['auth'] = $auth;
@@ -677,7 +677,7 @@ $vmLogger->err( 'ps_shopper update' );
 //		$d['error'] = "";
 
 		//I think this is now useless by Max Milbers
-//		if ( VM_REGISTRATION_TYPE != 'NO_REGISTRATION' ) {
+//		if ( JM_REGISTRATION_TYPE != 'NO_REGISTRATION' ) {
 //			ps_user::saveUser( $d );
 //		}
 
@@ -803,7 +803,7 @@ $vmLogger->err( 'ps_shopper update' );
 		if ($mosConfig_useractivation=="1"){
 			$message = sprintf (JText::_('USEND_MSG_ACTIVATE',false), $name, $mosConfig_sitename, $activation_link, $mosConfig_live_site, $username, $pwd);
 		} else {
-			$message = sprintf (JText::_('VM_USER_SEND_REGISTRATION_DETAILS',false), $name, $mosConfig_sitename, $mosConfig_live_site, $username, $pwd);
+			$message = sprintf (JText::_('JM_USER_SEND_REGISTRATION_DETAILS',false), $name, $mosConfig_sitename, $mosConfig_live_site, $username, $pwd);
 		}
 
 		$message = vmHtmlEntityDecode($message, ENT_QUOTES);
@@ -823,7 +823,7 @@ $vmLogger->err( 'ps_shopper update' );
 			$adminName2 	= $row2->name;
 			$adminEmail2 	= $row2->email;
 		}
-		if( VM_REGISTRATION_TYPE != 'NO_REGISTRATION' || (VM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && !empty($d['register_account']))) {
+		if( JM_REGISTRATION_TYPE != 'NO_REGISTRATION' || (JM_REGISTRATION_TYPE == 'OPTIONAL_REGISTRATION' && !empty($d['register_account']))) {
 			vmMail($adminEmail2, $adminName2, $email, $subject, $message);
 		}
 

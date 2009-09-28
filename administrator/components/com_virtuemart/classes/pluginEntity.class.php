@@ -106,7 +106,7 @@ class vmPluginEntity extends vmAbstractObject {
 		foreach( $folders as $folder ) {
 			$array[$folder] = ucfirst($folder);
 		}
-		$array = array_merge(array('' => JText::_('VM_SELECT')), $array);
+		$array = array_merge(array('' => JText::_('JM_SELECT')), $array);
 		
 		return ps_html::selectList($name, $value, $array, 1, '', 'onchange="adminForm.submit()"');
 	}

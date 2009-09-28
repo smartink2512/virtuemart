@@ -5,17 +5,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * to easily create drop-down lists
 *
 * @version $Id: ps_html.php 1760 2009-05-03 22:58:57Z Aravot $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 class ps_html {
@@ -70,8 +70,8 @@ class ps_html {
 	}
 	function yesNoSelectList( $fieldname, $value, $yesValue=1, $noValue=0 ) {
 		
-		$values = array($yesValue => JText::_('VM_ADMIN_CFG_YES'),
-								$noValue => JText::_('VM_ADMIN_CFG_NO'));
+		$values = array($yesValue => JText::_('JM_ADMIN_CFG_YES'),
+								$noValue => JText::_('JM_ADMIN_CFG_NO'));
 		return ps_html::selectList($fieldname, $value, $values );
 	}
 	/**
@@ -118,12 +118,12 @@ class ps_html {
 	function list_user_title($t, $extra="") {
 		
 
-		$title = array(JText::_('VM_REGISTRATION_FORM_MR'),
-						JText::_('VM_REGISTRATION_FORM_MRS'),
-						JText::_('VM_REGISTRATION_FORM_DR'),
-						JText::_('VM_REGISTRATION_FORM_PROF'));
+		$title = array(JText::_('JM_REGISTRATION_FORM_MR'),
+						JText::_('JM_REGISTRATION_FORM_MRS'),
+						JText::_('JM_REGISTRATION_FORM_DR'),
+						JText::_('JM_REGISTRATION_FORM_PROF'));
 		echo "<select class=\"inputbox\" name=\"title\" $extra>\n";
-		echo "<option value=\"\">".JText::_('VM_REGISTRATION_FORM_NONE')."</option>\n";
+		echo "<option value=\"\">".JText::_('JM_REGISTRATION_FORM_NONE')."</option>\n";
 		for ($i=0;$i<count($title);$i++) {
 			echo "<option value=\"" . $title[$i]."\"";
 			if ($title[$i] == $t)
@@ -216,7 +216,7 @@ class ps_html {
 
 		$q = "SELECT * from #__{vm}_country ORDER BY country_name ASC";
 		$db->query($q);
-		$countries[''] = JText::_('VM_SELECT');
+		$countries[''] = JText::_('JM_SELECT');
 		
 		while ($db->next_record()) {
 //			$countries[$db->f("country_3_code")] = $db->f("country_name");
@@ -247,7 +247,7 @@ class ps_html {
 		$q .= "\nORDER BY country_name, state_name";
 		$db->query( $q );
 		$list = Array();
-		$list["0"] = JText::_('VM_SELECT');
+		$list["0"] = JText::_('JM_SELECT');
 		$list["NONE"] = "not listed";
 		$country = "";
 
@@ -345,10 +345,10 @@ class ps_html {
 				if( $db->f('state_name') ) {
 					// Add 'none' to the list of countries that have states:
 					if( $prev_country != $country_3_code  && $page == 'tax.tax_form' ) {
-						$script .= "states[".$i++."] = new Array( '".$country_3_code."',' - ','".JText::_('VM_NONE')."' );\n";
+						$script .= "states[".$i++."] = new Array( '".$country_3_code."',' - ','".JText::_('JM_NONE')."' );\n";
 					}
 					elseif( $prev_country != $country_3_code ) {
-						$script .= "states[".$i++."] = new Array( '".$country_3_code."','',' -= ".JText::_('VM_SELECT')." =-' );\n";
+						$script .= "states[".$i++."] = new Array( '".$country_3_code."','',' -= ".JText::_('JM_SELECT')." =-' );\n";
 					}
 					$prev_country = $country_3_code;
 
@@ -356,7 +356,7 @@ class ps_html {
 					$script .= "states[".$i++."] = new Array( '".$country_3_code."','".$db->f("state_2_code")."','".addslashes($db->f("state_name"))."' );\n";
 				}
 				else {
-					$script .= "states[".$i++."] = new Array( '".$country_3_code."',' - ','".JText::_('VM_NONE')."' );\n";
+					$script .= "states[".$i++."] = new Array( '".$country_3_code."',' - ','".JText::_('JM_NONE')."' );\n";
 				}
 
 			}
@@ -391,7 +391,7 @@ class ps_html {
 	function list_weight_uom($list_name) {
 		
 
-		$list = array(JText::_('VM_SELECT'),
+		$list = array(JText::_('JM_SELECT'),
 		"LBS" => "Pounds",
 		"KGS" => "Kilograms",
 		"G" => "Grams");
@@ -429,7 +429,7 @@ class ps_html {
 		$db->query($q);
 		
 		if( $size == 1 ) {
-			$currencies[''] = JText::_('VM_SELECT');
+			$currencies[''] = JText::_('JM_SELECT');
 		}
 		while ($db->next_record()) {
 			$currencies[$db->f($key)] = $db->f("currency_name");
@@ -501,8 +501,8 @@ class ps_html {
 
 		$vmLogger->debug( 'The function '.__CLASS__.'::'.__FUNCTION__.' is deprecated. Use the userfield manager instead please.' );
 		
-		$title = array(array('Y',JText::_('VM_SHOPPER_FORM_EXTRA_FIELD_4_1')),
-		array('N',JText::_('VM_SHOPPER_FORM_EXTRA_FIELD_4_2')));
+		$title = array(array('Y',JText::_('JM_SHOPPER_FORM_EXTRA_FIELD_4_1')),
+		array('N',JText::_('JM_SHOPPER_FORM_EXTRA_FIELD_4_2')));
 
 		echo "<select class=\"inputbox\" name=\"extra_field_4\" $extra>\n";
 		for ($i=0;$i<count($title);$i++) {
@@ -524,9 +524,9 @@ class ps_html {
 		
 		$vmLogger->debug( 'The function '.__CLASS__.'::'.__FUNCTION__.' is deprecated. Use the userfield manager instead please.' );
 		
-		$title = array(array('A',JText::_('VM_SHOPPER_FORM_EXTRA_FIELD_5_1')),
-		array('B',JText::_('VM_SHOPPER_FORM_EXTRA_FIELD_5_2')),
-		array('C',JText::_('VM_SHOPPER_FORM_EXTRA_FIELD_5_3')));
+		$title = array(array('A',JText::_('JM_SHOPPER_FORM_EXTRA_FIELD_5_1')),
+		array('B',JText::_('JM_SHOPPER_FORM_EXTRA_FIELD_5_2')),
+		array('C',JText::_('JM_SHOPPER_FORM_EXTRA_FIELD_5_3')));
 
 		echo "<select class=\"inputbox\" name=\"extra_field_5\" $extra>\n";
 		for ($i=0;$i<count($title);$i++) {
@@ -538,7 +538,7 @@ class ps_html {
 		echo "</select>\n";
 	}
 	/**
-	 * Lists all available themes for this VirtueMart installation
+	 * Lists all available themes for this JMart installation
 	 *
 	 * @param string $name
 	 * @param string $preselected
@@ -546,7 +546,7 @@ class ps_html {
 	 */
 	function list_themes( $name, $preselected='default' ) {
 		global $mosConfig_absolute_path;
-		$themes = vmReadDirectory( $mosConfig_absolute_path . "/components/com_virtuemart/themes", "", false, true );
+		$themes = vmReadDirectory( $mosConfig_absolute_path . "/components/com_jmart/themes", "", false, true );
 		$array = array();
 		foreach ($themes as $theme ) {
 			if( file_exists($theme.'/theme.php' ) ) {
@@ -566,7 +566,7 @@ class ps_html {
 	 */
 	function list_template_files( $name, $section='browse', $preselected='' ) {
 		
-		$files = vmReadDirectory( VM_THEMEPATH . "templates/$section/" );
+		$files = vmReadDirectory( JM_THEMEPATH . "templates/$section/" );
 		$array = array();
         foreach ($files as $file) {
         	if( is_dir( $file ) ) continue;
@@ -598,8 +598,8 @@ class ps_html {
         foreach( $folder as $dir ) {
             echo $dir . ' :: ';
             echo is_writable( $dir )
-                 ? '<span style="font-weight:bold;color:green;">'.JText::_('VM_WRITABLE').'</span>'
-                 : '<span style="font-weight:bold;color:red;">'.JText::_('VM_UNWRITABLE').'</span>';
+                 ? '<span style="font-weight:bold;color:green;">'.JText::_('JM_WRITABLE').'</span>'
+                 : '<span style="font-weight:bold;color:red;">'.JText::_('JM_UNWRITABLE').'</span>';
             echo '<br/>';
         }
         echo '</div>';
@@ -619,7 +619,7 @@ class ps_html {
 		global $page, $sess;
 		$no_menu = vmRequest::getInt('no_menu');
 		$href = $sess->url($_SERVER['PHP_SELF']. "?page=$page&func=$func&$id_fieldname=$id&keyword=". urlencode($keyword)."&limitstart=$limitstart&no_menu=$no_menu" . $extra );
-		$code = "<a class=\"toolbar\" href=\"$href\" onclick=\"return confirm('".JText::_('VM_DELETE_MSG') ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('delete$id','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
+		$code = "<a class=\"toolbar\" href=\"$href\" onclick=\"return confirm('".JText::_('JM_DELETE_MSG') ."');\" onmouseout=\"MM_swapImgRestore();\"  onmouseover=\"MM_swapImage('delete$id','','". IMAGEURL ."ps_image/delete_f2.gif',1);\">";
 		$code .= "<img src=\"". IMAGEURL ."ps_image/delete.gif\" alt=\"Delete this record\" name=\"delete$id\" align=\"middle\" border=\"0\" />";
 		$code .= "</a>";
 

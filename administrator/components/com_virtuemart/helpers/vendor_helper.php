@@ -2,7 +2,7 @@
 /*
  * Created on 18.06.2009
  *
- * Copyright 2009 VirtueMart Team based on Virtuemart 2009/04
+ * Copyright 2009 JMart Team based on Virtuemart 2009/04
  * 
  */
  
@@ -12,17 +12,17 @@
 *	This class provides Functions to get simple answers for a user and/or vendor	
 *
 * @version $Id: vendor_helper.php 90 2009-06-018 22:45:17Z Max Milbers $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
-* @copyright Copyright (C) 2004-2009 Virtuemart, since 2009 VirtueMart Dev Team - All rights reserved.
+* @copyright Copyright (C) 2004-2009 Virtuemart, since 2009 JMart Dev Team - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 
 
@@ -58,10 +58,10 @@ class vendor_helper {
 
 		/* Test if user has a vendorId*/
 		if($ownerOnly){
-		$q  = 'SELECT `vendor_id`, `user_is_vendor` FROM `#__vm_auth_user_vendor` `au` 
-				LEFT JOIN `#__vm_user_info` `u` ON (au.user_id = u.user_id) WHERE `u`.`user_id`="' . $userId .'"';
+		$q  = 'SELECT `vendor_id`, `user_is_vendor` FROM `#__jmart_auth_user_vendor` `au` 
+				LEFT JOIN `#__jmart_user_info` `u` ON (au.user_id = u.user_id) WHERE `u`.`user_id`="' . $userId .'"';
 		}else{
-		$q  = 'SELECT `vendor_id` FROM  `#__vm_auth_user_vendor` WHERE `user_id`=' . (int)$userId .' ';						
+		$q  = 'SELECT `vendor_id` FROM  `#__jmart_auth_user_vendor` WHERE `user_id`=' . (int)$userId .' ';						
 		}
 
 		$this->db->setQuery($q);
@@ -83,7 +83,7 @@ class vendor_helper {
 	function getUserIdByVendorId(&$vendorId) {
 		if(empty ($vendorId)) return ;
 //		$db =& JFactory::getDBO();
-		$q = 'SELECT `user_id` FROM `#__vm_auth_user_vendor` WHERE `vendor_id`="'.$vendorId.'" ';
+		$q = 'SELECT `user_id` FROM `#__jmart_auth_user_vendor` WHERE `vendor_id`="'.$vendorId.'" ';
 		$this->db->setQuery($q);
 		$this->db->query();
 		return $this->db->loadResult();
@@ -125,7 +125,7 @@ class vendor_helper {
 	function isVendor( $userId ) {
 		if(empty ($userId))return;
 		
-		$q = 'SELECT `user_is_vendor` FROM `#__vm_user_info` WHERE `user_id`='.(int)$userId;
+		$q = 'SELECT `user_is_vendor` FROM `#__jmart_user_info` WHERE `user_id`='.(int)$userId;
 		$this->db->setQuery($q);
 		$this->db->query($q);
 //		echo('isVendor'. $db->loadResult());
@@ -292,7 +292,7 @@ class vendor_helper {
 	
 	function getUserIdByOrderId( &$order_id){
 		if(empty ($order_id))return;
-		$q  = "SELECT `user_id` FROM `#__vm_orders` WHERE `order_id`='$order_id'";
+		$q  = "SELECT `user_id` FROM `#__jmart_orders` WHERE `order_id`='$order_id'";
 //		$db->query( $q );
 		$this->db->setQuery($q);
 		

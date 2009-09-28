@@ -1,16 +1,16 @@
 <?php
 /**
-* @package		VirtueMart
+* @package		JMart
 */
 
 jimport( 'joomla.application.component.view');
 
 /**
- * HTML View class for the VirtueMart Component
+ * HTML View class for the JMart Component
  *
- * @package		VirtueMart
+ * @package		JMart
  */
-class VirtuemartViewMedia extends JView {
+class JmartViewMedia extends JView {
 	
 	function display($tpl = null) {
 		/* Load the menu */
@@ -39,7 +39,7 @@ class VirtuemartViewMedia extends JView {
 			case 'edit':
 				/* Load jQuery */
 				$document = JFactory::getDocument();
-				$document->addScript(JURI::root().'administrator/components/com_virtuemart/assets/js/jquery.js');
+				$document->addScript(JURI::root().'administrator/components/com_jmart/assets/js/jquery.js');
 				$document->addScriptDeclaration('jQuery.noConflict();');
 				
 				/* Get the file details */
@@ -52,12 +52,12 @@ class VirtuemartViewMedia extends JView {
 				/* Set selected file type */
 				/* Add the dropdown options */
 				$file_type_options=array();
-				$file_type_options[] = JHTML::_('select.option','product_images', 'VM_FILES_FORM_PRODUCT_IMAGE');
-				$file_type_options[] = JHTML::_('select.option','product_full_image', 'VM_PRODUCT_FORM_FULL_IMAGE');
-				$file_type_options[] = JHTML::_('select.option','product_thumb_image', 'VM_PRODUCT_FORM_THUMB_IMAGE');
-				$file_type_options[] = JHTML::_('select.option','downloadable_file', 'VM_FILES_FORM_DOWNLOADABLE');
-				$file_type_options[] = JHTML::_('select.option','image', 'VM_FILES_FORM_IMAGE');
-				$file_type_options[] = JHTML::_('select.option','file', 'VM_FILES_FORM_FILE');
+				$file_type_options[] = JHTML::_('select.option','product_images', 'JM_FILES_FORM_PRODUCT_IMAGE');
+				$file_type_options[] = JHTML::_('select.option','product_full_image', 'JM_PRODUCT_FORM_FULL_IMAGE');
+				$file_type_options[] = JHTML::_('select.option','product_thumb_image', 'JM_PRODUCT_FORM_THUMB_IMAGE');
+				$file_type_options[] = JHTML::_('select.option','downloadable_file', 'JM_FILES_FORM_DOWNLOADABLE');
+				$file_type_options[] = JHTML::_('select.option','image', 'JM_FILES_FORM_IMAGE');
+				$file_type_options[] = JHTML::_('select.option','file', 'JM_FILES_FORM_FILE');
 				
 				/* Find out which type the image is */
 				$file_type_selected = $this->get('SelectedFileType');
@@ -67,7 +67,7 @@ class VirtuemartViewMedia extends JView {
 				$this->assignRef('file_types', $file_types);
 				
 				/* Set up the toolbar */
-				JToolBarHelper::title(JText::_( 'VM_FILES_FORM' ).' '.$productfile->product_name, 'vm_media_48');
+				JToolBarHelper::title(JText::_( 'JM_FILES_FORM' ).' '.$productfile->product_name, 'jm_media_48');
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 				break;
@@ -83,9 +83,9 @@ class VirtuemartViewMedia extends JView {
 				/* Set up the toolbar */
 				/* Create the toolbar */
 				if (JRequest::getInt('product_id', false)) {
-					JToolBarHelper::title(JText::_('MEDIA_LIST').' :: '.$this->productfileslist[0]->product_name, 'vm_media_48');
+					JToolBarHelper::title(JText::_('MEDIA_LIST').' :: '.$this->productfileslist[0]->product_name, 'jm_media_48');
 				}
-				else JToolBarHelper::title(JText::_( 'MEDIA_LIST' ), 'vm_media_48');
+				else JToolBarHelper::title(JText::_( 'MEDIA_LIST' ), 'jm_media_48');
 				JToolBarHelper::deleteList();
 				if (JRequest::getInt('product_id', false)) JToolBarHelper::addNew();
 				break;

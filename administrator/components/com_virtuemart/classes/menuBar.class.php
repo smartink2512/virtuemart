@@ -3,17 +3,17 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /**
 *
 * @version $Id: menuBar.class.php 1650 2009-02-17 19:48:43Z soeren_nb $
-* @package VirtueMart
+* @package JMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
+* JMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+* See /administrator/components/com_jmart/COPYRIGHT.php for copyright notices and details.
 *
-* http://virtuemart.org
+* http://joomlacode.org/gf/project/jmart/
 */
 if( !class_exists('mosMenuBar')) {
 	require_once( $mosConfig_absolute_path."/administrator/includes/menubar.html.php" );
@@ -312,11 +312,11 @@ class vmToolBar {
 	}
 	
 	function appendButton( $text, $action_name, $click_action ) {
-		$text = '<div style="float:left;background: url('.VM_THEMEURL.'images/administration/menu/icon-16-'.$action_name.'.png) 50% 0 no-repeat;height:17px;width:17px;" border="0" alt="'.$action_name.'">&nbsp;</div>&nbsp;' . $text;
+		$text = '<div style="float:left;background: url('.JM_THEMEURL.'images/administration/menu/icon-16-'.$action_name.'.png) 50% 0 no-repeat;height:17px;width:17px;" border="0" alt="'.$action_name.'">&nbsp;</div>&nbsp;' . $text;
 		$this->buttons .=  "vmTb.addButton({text: '$text', handler: new Function('".addslashes($click_action)."')});\n";
 	}
 	/**
-	 * Renders the Ext Toolbar for VirtueMart
+	 * Renders the Ext Toolbar for JMart
 	 * means: it assembles the javascript to add the buttons/separators/links to the toolbar
 	 *
 	 */
@@ -327,8 +327,8 @@ class vmToolBar {
 			$toolbarscript = "var renderVMTb = function() {
 				var vmTb = new Ext.Toolbar({renderTo: \"vm-toolbar\"});\n"
 				. $this->buttons
-				//. "\nif( self.history.length > 1 ) { vmTb.addSeparator(); vmTb.addButton({text: '<div style=\"float:left;background: url(".VM_THEMEURL."images/administration/menu/icon-16-back.png) 50% 0 no-repeat;height:17px;width:17px;\" border=\"0\" alt=\"{JText::_BACK}\">&nbsp;</div>{JText::_BACK}', handler: new Function('history.back();') }); }"
-				. "\nvmTb.addSeparator();\n vmTb.addButton({text: '<div style=\"float:left;background: url(".VM_THEMEURL."images/administration/menu/icon-16-reload.png) 50% 0 no-repeat;height:17px;width:17px;\" border=\"0\" alt=\"".JText::_('RELOAD')."\">&nbsp;</div>".JText::_('RELOAD')."', handler: new Function('location.reload();') });
+				//. "\nif( self.history.length > 1 ) { vmTb.addSeparator(); vmTb.addButton({text: '<div style=\"float:left;background: url(".JM_THEMEURL."images/administration/menu/icon-16-back.png) 50% 0 no-repeat;height:17px;width:17px;\" border=\"0\" alt=\"{JText::_BACK}\">&nbsp;</div>{JText::_BACK}', handler: new Function('history.back();') }); }"
+				. "\nvmTb.addSeparator();\n vmTb.addButton({text: '<div style=\"float:left;background: url(".JM_THEMEURL."images/administration/menu/icon-16-reload.png) 50% 0 no-repeat;height:17px;width:17px;\" border=\"0\" alt=\"".JText::_('RELOAD')."\">&nbsp;</div>".JText::_('RELOAD')."', handler: new Function('location.reload();') });
 				};
 				if( Ext.isIE6 || Ext.isIE7 ) {
 					Ext.EventManager.addListener( window, 'load', renderVMTb );

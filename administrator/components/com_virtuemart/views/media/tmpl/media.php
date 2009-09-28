@@ -1,6 +1,6 @@
 <?php
 /**
- * @Todo: Edit link like: http://csvi/administrator/index3.php?page=product.file_form&product_id=1&file_id=7&option=com_virtuemart&no_menu=1
+ * @Todo: Edit link like: http://csvi/administrator/index3.php?page=product.file_form&product_id=1&file_id=7&option=com_jmart&no_menu=1
  */
 AdminMenuHelper::startAdminArea();
 
@@ -18,16 +18,16 @@ $keyword = JRequest::getVar('keyword', null);
 <div id="header">
 	<div style="float: left;">
 	<?php
-	if (JRequest::getInt('product_id', false)) echo JHTML::_('link', JRoute::_('index.php?view=media&option='.$option), JText::_('VM_RETURN_PRODUCT_FILES_LIST'));
+	if (JRequest::getInt('product_id', false)) echo JHTML::_('link', JRoute::_('index.php?view=media&option='.$option), JText::_('JM_RETURN_PRODUCT_FILES_LIST'));
 	?>
 	</div>
 	<div style="float: right;">
 		<form action="index.php" method="post" name="adminForm" id="adminForm">
-		<?php echo JText::_('VM_PRODUCT_FILES_LIST_SEARCH_BY_NAME') ?>&nbsp;
+		<?php echo JText::_('JM_PRODUCT_FILES_LIST_SEARCH_BY_NAME') ?>&nbsp;
 			<input type="text" value="" name="keyword" size="25" class="inputbox" />
 			<input type="hidden" name="option" value="<?php echo $option; ?>" />
 			<input type="hidden" name="page" value="product.file_list" />
-			<input class="button" type="submit" name="search" value="<?php echo JText::_('VM_SEARCH_TITLE')?>" />
+			<input class="button" type="submit" name="search" value="<?php echo JText::_('JM_SEARCH_TITLE')?>" />
 	</div>
 </div>
 <?php 
@@ -40,13 +40,13 @@ $pagination = $this->pagination;
 	<tr>
 		<th>#</td>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></td>
-		<th><?php echo JText::_('VM_PRODUCT_LIST_NAME'); ?></td>
-		<th><?php echo JText::_('VM_FILES_LIST_FILENAME'); ?></td>
-		<th><?php echo JText::_('VM_FILES_LIST_ROLE'); ?></td>
-		<th><?php echo JText::_('VM_VIEW'); ?></td>
-		<th><?php echo JText::_('VM_FILES_LIST_FILETITLE'); ?></td>
-		<th><?php echo JText::_('VM_FILES_LIST_FILETYPE'); ?></td>
-		<th><?php echo JText::_('VM_FILEMANAGER_PUBLISHED'); ?></td>
+		<th><?php echo JText::_('JM_PRODUCT_LIST_NAME'); ?></td>
+		<th><?php echo JText::_('JM_FILES_LIST_FILENAME'); ?></td>
+		<th><?php echo JText::_('JM_FILES_LIST_ROLE'); ?></td>
+		<th><?php echo JText::_('JM_VIEW'); ?></td>
+		<th><?php echo JText::_('JM_FILES_LIST_FILETITLE'); ?></td>
+		<th><?php echo JText::_('JM_FILES_LIST_FILETYPE'); ?></td>
+		<th><?php echo JText::_('JM_FILEMANAGER_PUBLISHED'); ?></td>
 		<th><?php echo JText::_('E_REMOVE'); ?></td>
 	</tr>
 	</thead>
@@ -60,7 +60,7 @@ $pagination = $this->pagination;
 			if (strtolower(substr($productfile->file_name, 0, 4)) == 'http') {
 				$filename = $productfile->file_name;
 			}
-			else $filename = JPATH_SITE.DS.'components'.DS.'com_virtuemart'.DS.'shop_image'.DS.'product'.DS.str_replace(JPATH_SITE, '', $productfile->file_name);
+			else $filename = JPATH_SITE.DS.'components'.DS.'com_jmart'.DS.'shop_image'.DS.'product'.DS.str_replace(JPATH_SITE, '', $productfile->file_name);
 			$checked = JHTML::_('grid.id', $i , $productfile->file_id);
 			if (!is_null($productfile->file_id)) $published = JHTML::_('grid.published', $productfile, $i );
 			else $published = '';
@@ -105,8 +105,8 @@ $pagination = $this->pagination;
 							$imgsize = getimagesize($fullimg);
 							if ($imgsize[0] > 800) $imgsize[0] = 800;
 							if ($imgsize[1] > 600) $imgsize[1] = 600;
-							echo JText::_('VM_FILES_LIST_FULL_IMG').": ";
-							echo JHTML::_('link', $productfile->file_url, JText::_('VM_VIEW'), array('class' => 'modal', 'rel' => '{handler: \'iframe\', size: {x: '.$imgsize[0].', y: '.$imgsize[1].'}}'));
+							echo JText::_('JM_FILES_LIST_FULL_IMG').": ";
+							echo JHTML::_('link', $productfile->file_url, JText::_('JM_VIEW'), array('class' => 'modal', 'rel' => '{handler: \'iframe\', size: {x: '.$imgsize[0].', y: '.$imgsize[1].'}}'));
 						}
 						echo '<br />';
 						/* Create the thumbnail file, this should be in the resized folder */
@@ -116,10 +116,10 @@ $pagination = $this->pagination;
 						/* Thumbnail image */
 						if (JFile::exists($thumbimg)) {
 							$imgsize = getimagesize($thumbimg);
-							echo JText::_('VM_FILES_LIST_THUMBNAIL_IMG').": ";
-							echo JHTML::_('link', JURI::root().str_ireplace(array(JPATH_SITE, '\\'), array('', '/'), $info['dirname']).'/resized/'.$basename, JText::_('VM_VIEW'), array('class' => 'modal', 'rel' => '{handler: \'iframe\', size: {x: '.($imgsize[0]+20).', y: '.($imgsize[1]+20).'}}'));
+							echo JText::_('JM_FILES_LIST_THUMBNAIL_IMG').": ";
+							echo JHTML::_('link', JURI::root().str_ireplace(array(JPATH_SITE, '\\'), array('', '/'), $info['dirname']).'/resized/'.$basename, JText::_('JM_VIEW'), array('class' => 'modal', 'rel' => '{handler: \'iframe\', size: {x: '.($imgsize[0]+20).', y: '.($imgsize[1]+20).'}}'));
 						}
-						else echo JText::_('VM_THUMB_NOT_FOUND').': '.$thumbimg;
+						else echo JText::_('JM_THUMB_NOT_FOUND').': '.$thumbimg;
 					}
 				?>
 				</td>
@@ -137,7 +137,7 @@ $pagination = $this->pagination;
 					if ($productid) $url .= '&product_id='.$productid;
 					$link = JRoute::_($url);
 				?>
-				<td><?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'/components/'.$option.'/shop_image/ps_image/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('VM_DELETE_MSG').'\');')) ?></td>
+				<td><?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'/components/'.$option.'/shop_image/ps_image/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('JM_DELETE_MSG').'\');')) ?></td>
 			</td>
 		<?php 
 			$k = 1 - $k;
@@ -159,7 +159,7 @@ $pagination = $this->pagination;
 <?php if (JRequest::getInt('product_id', false)) { ?>
 	<input type="hidden" name="product_id" value="<?php echo JRequest::getInt('product_id'); ?>" />
 <?php } ?>
-<input type="hidden" name="option" value="com_virtuemart" />
+<input type="hidden" name="option" value="com_jmart" />
 <input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="view" value="media" />
 <input type="hidden" name="boxchecked" value="0" />
