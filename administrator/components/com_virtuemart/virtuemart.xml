@@ -33,7 +33,7 @@
 	</uninstall>
 	
 	<!-- Site Main File Copy Section -->
-	<files folder="components/com_jmart">
+	<files folder="components/com_virtuemart">
 		<filename>controller.php</filename>
 		<filename>fetchscript.php</filename>
 		<filename>jmart.php</filename>
@@ -61,7 +61,6 @@
  		<menu img="../components/com_virtuemart/shop_image/ps_image/menu_icon.png">VirtueMart</menu>
 		<!-- Administration Main File Copy Section -->
 		<files folder="administrator/components/com_virtuemart">
-			<filename>admin.jmart.php</filename>
 			<filename>admin.vm.php</filename>
 			<filename>cart.gif</filename>
 			<filename>compat.joomla1.5.php</filename>
