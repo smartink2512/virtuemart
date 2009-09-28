@@ -17,7 +17,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage Store
  * @author RolandD
  */
-class JmartViewStore extends JView {
+class VirtuemartViewStore extends JView {
 	
 	function display($tpl = null) {
 		$country_model = $this->getModel('country');

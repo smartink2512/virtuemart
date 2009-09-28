@@ -19,7 +19,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Country
  * @author Rick Glunt 
  */
-class JmartControllerCountry extends JController
+class VirtuemartControllerCountry extends JController
 {
 	/**
 	 * Method to display the view

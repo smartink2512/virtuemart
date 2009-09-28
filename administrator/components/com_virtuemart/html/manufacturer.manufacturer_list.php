@@ -60,7 +60,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('VM_MANUFACTURER_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/jm_manufacturer_48.png', $modulename, "manufacturer_list");
+$listObj->writeSearchHeader(JText::_('VM_MANUFACTURER_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/vm_manufacturer_48.png', $modulename, "manufacturer_list");
 
 // start the list table
 $listObj->startTable();

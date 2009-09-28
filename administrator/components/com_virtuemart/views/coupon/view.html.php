@@ -18,7 +18,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
  * @subpackage Coupon
  * @author Rick Glunt 
  */
-class JmartViewCoupon extends JView {
+class VirtuemartViewCoupon extends JView {
 	
 	function display($tpl = null) {	
 		$model = $this->getModel();
@@ -30,13 +30,13 @@ class JmartViewCoupon extends JView {
 		
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('VM_COUPON_NEW_HEADER' ).': <small><small>[ New ]</small></small>', 'jm_coupon_48');
+				JToolBarHelper::title(  JText::_('VM_COUPON_NEW_HEADER' ).': <small><small>[ New ]</small></small>', 'vm_coupon_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 			}
 			else {
-				JToolBarHelper::title( JText::_('VM_COUPON_EDIT_HEADER' ).': <small><small>[ Edit ]</small></small>', 'jm_coupon_48');
+				JToolBarHelper::title( JText::_('VM_COUPON_EDIT_HEADER' ).': <small><small>[ Edit ]</small></small>', 'vm_coupon_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
@@ -44,7 +44,7 @@ class JmartViewCoupon extends JView {
 			$this->assignRef('coupon',	$coupon);
         }
         else {
-			JToolBarHelper::title( JText::_('VM_COUPON_LIST'), 'jm_coupon_48');
+			JToolBarHelper::title( JText::_('VM_COUPON_LIST'), 'vm_coupon_48');
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();	

@@ -394,7 +394,7 @@ class ps_vendor {
 			$usertable = true;
 		}
 		else {
-		//All fieldnames from the tables jmart_vendor, jmart_user_info, __users, jmart_country and jmart_state
+		//All fieldnames from the tables vm_vendor, vm_user_info, __users, vm_country and vm_state
 			$allowedStrings = array('vendor_id', 'vendor_name', 'vendor_phone', 'vendor_store_name', 
 			'vendor_store_desc', 'vendor_category_id', 'vendor_thumb_image', 'vendor_full_image', 'vendor_currency', 'cdate',
 			'mdate', 'vendor_image_path', 'vendor_terms_of_service', 'vendor_url', 'vendor_min_pov', 'vendor_freeshipping', 

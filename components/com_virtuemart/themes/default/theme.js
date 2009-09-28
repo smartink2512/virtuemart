@@ -108,8 +108,7 @@ function handleAddToFavourites( formId, parameters ) {
 */
 function updateMiniCarts() {
 	var callbackCart = function(responseText) {
-		carts = $$( '.jmCartModule' );
-		//carts = $$( '.jmartCartModule' );
+		carts = $$( '.vmCartModule' );
 		if( carts ) {
 			try {
 				for (var i=0; i<carts.length; i++){

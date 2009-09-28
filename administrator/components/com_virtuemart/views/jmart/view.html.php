@@ -13,7 +13,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
  *
  * @package		VirtueMart
  */
-class JmartViewJmart extends JView
+class VirtuemartViewVirtuemart extends JView
 {
 	
 	function display($tpl = null)

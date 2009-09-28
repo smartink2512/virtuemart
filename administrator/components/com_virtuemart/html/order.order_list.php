@@ -74,7 +74,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('VM_ORDER_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/jm_orders_48.png', $modulename, "order_list");
+$listObj->writeSearchHeader(JText::_('VM_ORDER_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/vm_orders_48.png', $modulename, "order_list");
 
 ?>
 <div align="center">

@@ -60,7 +60,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader( $title, VM_ADMIN_ICON_URL.'icon_48/jm_functions_48.png', 'admin', 'function_list');
+$listObj->writeSearchHeader( $title, VM_ADMIN_ICON_URL.'icon_48/vm_functions_48.png', 'admin', 'function_list');
 
 // start the list table
 $listObj->startTable();

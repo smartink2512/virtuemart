@@ -18,7 +18,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
  * @subpackage Currency
  * @author Rick Glunt 
  */
-class JmartViewCurrency extends JView {
+class VirtuemartViewCurrency extends JView {
 	
 	function display($tpl = null) {	
 		$model = $this->getModel();
@@ -29,13 +29,13 @@ class JmartViewCurrency extends JView {
 		
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('VM_CURRENCY_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'jm_currency_48');
+				JToolBarHelper::title(  JText::_('VM_CURRENCY_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_currency_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 			}
 			else {
-				JToolBarHelper::title( JText::_('VM_CURRENCY_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'jm_currency_48');
+				JToolBarHelper::title( JText::_('VM_CURRENCY_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_currency_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
@@ -43,7 +43,7 @@ class JmartViewCurrency extends JView {
 			$this->assignRef('currency',	$currency);
         }
         else {
-			JToolBarHelper::title( JText::_( 'VM_CURRENCY_LIST_LBL' ), 'jm_currency_48' );
+			JToolBarHelper::title( JText::_( 'VM_CURRENCY_LIST_LBL' ), 'vm_currency_48' );
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();	

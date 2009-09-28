@@ -20,6 +20,6 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 <br />
 <div align="center">
 	<a href="http://virtuemart.org" target="_blank" style="display:block;width:90%; filter: alpha(opacity=60);" onmouseover="if( this.filters) { this.filters.alpha.opacity=100; }" onmouseout="if( this.filters) { this.filters.alpha.opacity=60; }">
-    		<img align="middle" style="-moz-opacity: 0.6;" onmouseover="this.style.MozOpacity=1.0;" onmouseout="this.style.MozOpacity = 0.6;" src="<?php echo JURI::root().'/administrator/components/com_virtuemart/assets/images/jm_pblogo.png'; ?>" border="0" alt="Powered by VirtueMart" />
+    		<img align="middle" style="-moz-opacity: 0.6;" onmouseover="this.style.MozOpacity=1.0;" onmouseout="this.style.MozOpacity = 0.6;" src="<?php echo JURI::root().'/administrator/components/com_virtuemart/assets/images/vm_pblogo.png'; ?>" border="0" alt="Powered by VirtueMart" />
 	</a>
 </div>

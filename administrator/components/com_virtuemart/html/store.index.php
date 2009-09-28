@@ -86,7 +86,7 @@ $tabs->startTab(JText::_('VM_CONTROL_PANEL'), 'control-panel');
 ?>
 
 <div class="header">
-	<h2><img src="<?php echo $iconURL. 'jm_store_48.png'; ?>" align="middle" alt="Desktop" border="0" />
+	<h2><img src="<?php echo $iconURL. 'vm_store_48.png'; ?>" align="middle" alt="Desktop" border="0" />
 		<?php echo JText::_('VM_YOUR_STORE')."::".JText::_('VM_CONTROL_PANEL'); ?></h2>
 </div>
 <br style="clear:both;" />
@@ -94,54 +94,54 @@ $tabs->startTab(JText::_('VM_CONTROL_PANEL'), 'control-panel');
         <?php
         
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_list");
-		$image = $iconURL.'jm_shop_products_48.png';
+		$image = $iconURL.'vm_shop_products_48.png';
 		$text = JText::_('VM_PRODUCT_LIST_LBL');
 		$ps_html->writePanelIcon( $image, $link, $text );
 		
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=product.product_category_list");
-		$image = $iconURL.'jm_shop_categories_48.png';
+		$image = $iconURL.'vm_shop_categories_48.png';
 		$text = JText::_('VM_CATEGORY_LIST_LBL');
 		$ps_html->writePanelIcon( $image, $link, $text );
 
 		
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=order.order_list");
-		$image = $iconURL.'jm_shop_orders_48.png';
+		$image = $iconURL.'vm_shop_orders_48.png';
 		$text = JText::_('VM_ORDER_MOD');
 		$ps_html->writePanelIcon( $image, $link, $text );
 		
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.payment_method_list");
-		$image = $iconURL.'jm_shop_payment_48.png';
+		$image = $iconURL.'vm_shop_payment_48.png';
 		$text = JText::_('VM_PAYMENT_METHOD_LIST_MNU');
 		$ps_html->writePanelIcon( $image, $link, $text );
               
         if (defined( "_VM_IS_BACKEND" ) ) {
 		    $link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=vendor.vendor_list");
-		    $image = $iconURL.'jm_shop_vendors_48.png';
+		    $image = $iconURL.'vm_shop_vendors_48.png';
             $text =  JText::_('VM_VENDOR_MOD');
 		    $ps_html->writePanelIcon( $image, $link, $text );
         }
                 
 		if (defined( "_VM_IS_BACKEND" ) ) { 
 			$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.user_list");
-			$image = $iconURL.'jm_shop_users_48.png';
+			$image = $iconURL.'vm_shop_users_48.png';
 			$text = JText::_('VM_USERS');
 			$ps_html->writePanelIcon( $image, $link, $text );
 		}
         
         if (defined( "_VM_IS_BACKEND" ) ) {    
 			$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=admin.show_cfg");
-			$image = $iconURL.'jm_shop_configuration_48.png';
+			$image = $iconURL.'vm_shop_configuration_48.png';
 			$text = JText::_('VM_CONFIG');
 			$ps_html->writePanelIcon( $image, $link, $text );
 		}
                 
 		$link = $sess->url($_SERVER['PHP_SELF']."?pshop_mode=admin&page=store.store_form");
-		$image = $iconURL.'jm_shop_mart_48.png';
+		$image = $iconURL.'vm_shop_mart_48.png';
 		$text = JText::_('VM_STORE_FORM_MNU');
 		$ps_html->writePanelIcon( $image, $link, $text );
                 
 		$link = 'http://virtuemart.org/index.php?option=com_content&amp;task=view&amp;id=248&amp;Itemid=125';
-		$image = $iconURL.'jm_shop_help_48.png';
+		$image = $iconURL.'vm_shop_help_48.png';
 		$text = JText::_('VM_HELP_MOD');
 		$ps_html->writePanelIcon( $image, $link, $text );
 		

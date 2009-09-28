@@ -19,7 +19,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Currency
  * @author Rick Glunt 
  */
-class JmartControllerCurrency extends JController
+class VirtuemartControllerCurrency extends JController
 {
 	/**
 	 * Method to display the view

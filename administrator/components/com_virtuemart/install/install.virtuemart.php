@@ -173,7 +173,7 @@ function com_install(){
 //        JError::raiseNotice('Processed sample SQL data ');
 //       	$this->setNotice(JText::_('Couldnt find file '.$filename));
 //   }else{
-//			$installation = "jm_update";
+//			$installation = "vm_update";
 //		}  
 
     

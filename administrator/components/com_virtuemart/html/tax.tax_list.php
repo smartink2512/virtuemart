@@ -48,7 +48,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('VM_TAX_LIST_LBL'), VM_ADMIN_ICON_URL."icon_48/jm_tax_48.png", $modulename, "tax_list");
+$listObj->writeSearchHeader(JText::_('VM_TAX_LIST_LBL'), VM_ADMIN_ICON_URL."icon_48/vm_tax_48.png", $modulename, "tax_list");
 
 // start the list table
 $listObj->startTable();

@@ -10,7 +10,7 @@ jimport( 'joomla.application.component.view');
  *
  * @package		VirtueMart
  */
-class JmartViewProduct extends JView {
+class VirtuemartViewProduct extends JView {
 	
 	function display($tpl = null) {
 		/* Get the task */
@@ -141,7 +141,7 @@ class JmartViewProduct extends JView {
 				/* Toolbar */
 				if ($task == 'add') $text = JText::_( 'ADD_PRODUCT' );
 				else $text = JText::_( 'EDIT_PRODUCT' );
-				JToolBarHelper::title($text, 'jm_product_48');
+				JToolBarHelper::title($text, 'vm_product_48');
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 				break;
@@ -188,7 +188,7 @@ class JmartViewProduct extends JView {
 				$pagination = $this->get('Pagination');
 				
 				/* Toolbar */
-				JToolBarHelper::title(JText::_( 'PRODUCT_LIST' ), 'jm_product_48');
+				JToolBarHelper::title(JText::_( 'PRODUCT_LIST' ), 'vm_product_48');
 				JToolBarHelper::addNew();
 				
 				/* Assign the data */

@@ -19,7 +19,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Country
  * @author Rick Glunt 
  */
-class JmartControllerUpdatesMigration extends JController
+class VirtuemartControllerUpdatesMigration extends JController
 {
 	/**
 	 * Method to display the view
@@ -58,7 +58,7 @@ class JmartControllerUpdatesMigration extends JController
 	}
 	
 	/**
-	 * Updates the table to the last version of JM
+	 * Updates the table to the last version of VM
 	 * 
 	 * @author Max Milbers
 	 */

@@ -38,7 +38,7 @@ $parameter_xml_file = $themepath.'/theme.xml';
 // get params definitions
 $params = new vmParameters( $current_config, $parameter_xml_file, 'theme' );
 
-$title = '&nbsp;&nbsp;<img src="'. VM_ADMIN_ICON_URL .'icon_48'.DS.'jm_config_48.png" align="middle" border="0" alt="'.JText::_('VM_ADMIN_CFG_THEME_SETTINGS').'" />&nbsp;';
+$title = '&nbsp;&nbsp;<img src="'. VM_ADMIN_ICON_URL .'icon_48'.DS.'vm_config_48.png" align="middle" border="0" alt="'.JText::_('VM_ADMIN_CFG_THEME_SETTINGS').'" />&nbsp;';
 $title .= JText::_('VM_ADMIN_CFG_THEME_SETTINGS');
 
 //First create the object and let it print a form heading

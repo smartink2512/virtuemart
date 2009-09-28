@@ -46,7 +46,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('VM_RATE_LIST_LBL'), VM_ADMIN_ICON_URL."icon_48".DS."jm_shipping_48.gif", $modulename, "rate_list");
+$listObj->writeSearchHeader(JText::_('VM_RATE_LIST_LBL'), VM_ADMIN_ICON_URL."icon_48".DS."vm_shipping_48.gif", $modulename, "rate_list");
 
 // start the list table
 $listObj->startTable();

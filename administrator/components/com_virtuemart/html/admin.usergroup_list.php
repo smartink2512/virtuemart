@@ -46,7 +46,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('VM_USERGROUP_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/jm_shoppers_48.png', "admin", "usergroup_list");
+$listObj->writeSearchHeader(JText::_('VM_USERGROUP_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/vm_shoppers_48.png', "admin", "usergroup_list");
 
 // start the list table
 $listObj->startTable();

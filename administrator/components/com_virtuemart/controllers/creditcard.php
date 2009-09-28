@@ -19,7 +19,7 @@ jimport('joomla.application.component.controller');
  * @subpackage CreditCard
  * @author Rick Glunt 
  */
-class JmartControllerCreditcard extends JController
+class VirtuemartControllerCreditcard extends JController
 {
 	/**
 	 * Method to display the view

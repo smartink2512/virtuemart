@@ -69,7 +69,7 @@ $menu_items = getAdminMenu($module_id);
     <div class="sidemenu-pad">
 		<center>
 		<?php
-		echo JHTML::_('link', 'http://virtuemart.org', JHTML::_('image', VM_ADMIN_ICON_URL.'icon_48/jm_logo_48.png', 'J!Mart Cart Logo'), array('target' => '_blank'));
+		echo JHTML::_('link', 'http://virtuemart.org', JHTML::_('image', VM_ADMIN_ICON_URL.'icon_48/vm_logo_48.png', 'J!Mart Cart Logo'), array('target' => '_blank'));
 		?>
 			<h2><?php echo JText::_('VM_ADMIN')	?></h2>
 		</center>

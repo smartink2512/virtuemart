@@ -123,7 +123,7 @@ if ($lvisit == "0000-00-00 00:00:00") {
 }
 
 //First create the object and let it print a form heading
-$formObj = &new formFactory( vmCommonHTML::imageTag(VM_ADMIN_ICON_URL.'icon_48/jm_user_48.png', 'User Icon', 'absmiddle' ) 
+$formObj = &new formFactory( vmCommonHTML::imageTag(VM_ADMIN_ICON_URL.'icon_48/vm_user_48.png', 'User Icon', 'absmiddle' ) 
 							.'&nbsp;&nbsp;&nbsp;' 
 							. JText::_('VM_USER_FORM_LBL') );
 //Then Start the form

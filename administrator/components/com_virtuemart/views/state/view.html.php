@@ -18,7 +18,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
  * @subpackage State
  * @author Max Milbers
  */
-class JmartViewState extends JView {
+class VirtuemartViewState extends JView {
 	
 	function display($tpl = null) {	
 		$model = $this->getModel();
@@ -37,13 +37,13 @@ class JmartViewState extends JView {
 		
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('VM_STATE_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'jm_states_48');
+				JToolBarHelper::title(  JText::_('VM_STATE_LIST_ADD' ).': <small><small>[ New ]</small></small>', 'vm_states_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 			}
 			else {
-				JToolBarHelper::title( JText::_('VM_STATE_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'jm_states_48');
+				JToolBarHelper::title( JText::_('VM_STATE_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_states_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
@@ -53,7 +53,7 @@ class JmartViewState extends JView {
 			$this->assignRef('shippingZones', $zoneModel->getShippingZoneSelectList());
         }
         else {
-			JToolBarHelper::title( JText::_( 'VM_STATE_LIST_LBL' ), 'jm_states_48' );
+			JToolBarHelper::title( JText::_( 'VM_STATE_LIST_LBL' ), 'vm_states_48' );
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::deleteList('', 'remove', 'Delete');

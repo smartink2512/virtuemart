@@ -42,7 +42,7 @@ for($n = $pageNav->limitstart ; $n < $nrows ; $n++) {
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('VM_CATEGORY_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/jm_categories_48.png', $modulename, "product_category_list");
+$listObj->writeSearchHeader(JText::_('VM_CATEGORY_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/vm_categories_48.png', $modulename, "product_category_list");
 
 // start the list table
 $listObj->startTable();

@@ -53,7 +53,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('VM_MODULE_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/jm_modules_48.png', "admin", "module_list");
+$listObj->writeSearchHeader(JText::_('VM_MODULE_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/vm_modules_48.png', "admin", "module_list");
 
 // start the list table
 $listObj->startTable();

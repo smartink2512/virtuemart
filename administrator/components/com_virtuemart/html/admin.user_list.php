@@ -57,7 +57,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('VM_USER_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/jm_user_48.png', $modulename, "user_list");
+$listObj->writeSearchHeader(JText::_('VM_USER_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/vm_user_48.png', $modulename, "user_list");
 
 // start the list table
 $listObj->startTable();

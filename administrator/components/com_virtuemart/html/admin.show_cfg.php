@@ -41,7 +41,7 @@ $db->next_record();
 $gtree = $acl->get_group_children_tree( null, 'USERS', false );
 $access_group_list = vmCommonHTML::selectList( $gtree, 'conf_VM_PRICE_ACCESS_LEVEL', 'size="4"', 'value', 'text', $db->f($fieldname), true );
 
-$title = '&nbsp;&nbsp;<img src="'. ADMINICONURL .'icon_48'.DS.'jm_config_48.png" align="middle" border="0" alt="'.JText::_('VM_CONFIG').'" />&nbsp;';
+$title = '&nbsp;&nbsp;<img src="'. ADMINICONURL .'icon_48'.DS.'vm_config_48.png" align="middle" border="0" alt="'.JText::_('VM_CONFIG').'" />&nbsp;';
 $title .= JText::_('VM_CONFIG');
 
 //First create the object and let it print a form heading

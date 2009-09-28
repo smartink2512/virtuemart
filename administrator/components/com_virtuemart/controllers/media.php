@@ -17,7 +17,7 @@ jimport('joomla.application.component.controller');
  *
  * @package    VirtueMart
  */
-class JmartControllerMedia extends JController
+class VirtuemartControllerMedia extends JController
 {
 	/**
 	 * Method to display the view

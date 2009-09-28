@@ -46,7 +46,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('VM_CREDITCARD_LIST_LBL'), VM_ADMIN_ICON_URL .'icon_48'.DS.'jm_credit_48.png', $modulename, "creditcard_list");
+$listObj->writeSearchHeader(JText::_('VM_CREDITCARD_LIST_LBL'), VM_ADMIN_ICON_URL .'icon_48'.DS.'vm_credit_48.png', $modulename, "creditcard_list");
 
 // start the list table
 $listObj->startTable();

@@ -17,7 +17,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 */
 /* ROLANDD: MVC TEST START */
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'product_files.php');
-$productfiles = new JmartModelProduct_Files();
+$productfiles = new VirtuemartModelProduct_Files();
 $productfile = $productfiles->getImageDetails();
 
 $file_id = JRequest::getVar('file_id' );

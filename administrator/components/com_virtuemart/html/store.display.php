@@ -19,7 +19,7 @@ mm_showMyFileName( __FILE__ );
 
 ?>
 <br />
-<img src="<?php echo VM_ADMIN_ICON_URL ?>icon_48/jm_store_48.png" border="0" align="left" alt="Store Home" />
+<img src="<?php echo VM_ADMIN_ICON_URL ?>icon_48/vm_store_48.png" border="0" align="left" alt="Store Home" />
 <h2 class="adminListHeader"><?php echo JText::_('VM_STORE_MOD') ?></h2>
 
 <br /><br />

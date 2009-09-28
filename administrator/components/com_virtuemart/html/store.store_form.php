@@ -32,7 +32,7 @@ $vendor_id = $hVendor -> getLoggedVendor();
 $db = ps_vendor::get_vendor_details($vendor_id);
 $GLOBALS['vmLogger']->info('Store.store_form The vendor ID: '.$vendor_id);
 
-$title = '<img src="'. VM_ADMIN_ICON_URL.'icon_48/jm_store_48.png" align="absmiddle" border="0" alt="Store" />'.'&nbsp;&nbsp;&nbsp;'. JText::_('VM_STORE_FORM_LBL');
+$title = '<img src="'. VM_ADMIN_ICON_URL.'icon_48/vm_store_48.png" align="absmiddle" border="0" alt="Store" />'.'&nbsp;&nbsp;&nbsp;'. JText::_('VM_STORE_FORM_LBL');
 
 //First create the object and let it print a form heading
 $formObj = &new formFactory( $title );

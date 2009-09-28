@@ -68,7 +68,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('Plugin List'), VM_ADMIN_ICON_URL.'icon_48/jm_modules_48.png', "admin", "plugin_list");
+$listObj->writeSearchHeader(JText::_('Plugin List'), VM_ADMIN_ICON_URL.'icon_48/vm_modules_48.png', "admin", "plugin_list");
 
 // Hide the drop-down list of plugin types if this page was included by another page
 if( strstr(__FILE__, $page ) ) {

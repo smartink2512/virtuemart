@@ -18,7 +18,7 @@ defined('_JEXEC') or die();
  * @author RolandD
  * @package		VirtueMart
  */
-class TableJmart_product_attribute extends JTable
+class TableVirtuemart_product_attribute extends JTable
 {
 	/** @var int Primary key */
 	var $attribute_id		= 0;

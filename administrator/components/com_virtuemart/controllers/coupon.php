@@ -19,7 +19,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Coupon
  * @author Rick Glunt 
  */
-class JmartControllerCoupon extends JController
+class VirtuemartControllerCoupon extends JController
 {
 	/**
 	 * Method to display the view

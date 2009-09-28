@@ -26,7 +26,7 @@ $ps_shipping_method = new vmshippingMethod;
  <table width="100%" cellspacing="0" cellpadding="4" border="0">
   <tr>
     <td>
-      <br />&nbsp;&nbsp;&nbsp;<img src="<?php echo VM_ADMIN_ICON_URL ?>icon_48/jm_ups_48.png" border="0" />
+      <br />&nbsp;&nbsp;&nbsp;<img src="<?php echo VM_ADMIN_ICON_URL ?>icon_48/vm_ups_48.png" border="0" />
       <br /><br />
     </td>
     <td><span class="sectionname"><?php echo JText::_('VM_SHIPPING_MODULE_LIST_LBL') ?></span></td>

@@ -5,7 +5,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @version $Id: sql.update.VM-1.1.x_to_VM.1.2.php 1697 2009-03-13 17:52:08Z Milbo $
 * @package VirtueMart
 * @subpackage core
-* @copyright	Copyright (C) 2008 Greg Perkins. All rights reserved.
+* @copyright	Copyright (C) 2008 Greg Perkins. 2009 The VirtueMart Development Team.All rights reserved.
 * @license		GNU/GPL, http://www.gnu.org/copyleft/gpl.html
 * 
 * VirtueMart is free software. This version may have been modified pursuant

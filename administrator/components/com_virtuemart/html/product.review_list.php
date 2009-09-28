@@ -61,7 +61,7 @@ $listObj = new listFactory( $pageNav );
 $title = JText::_('VM_REVIEWS');
 		  
 // print out the search field and a list heading
-$listObj->writeSearchHeader( $title, VM_ADMIN_ICON_URL.'icon_48/jm_reviews_48.png', $modulename, "review_list");
+$listObj->writeSearchHeader( $title, VM_ADMIN_ICON_URL.'icon_48/vm_reviews_48.png', $modulename, "review_list");
 
 // start the list table
 $listObj->startTable();

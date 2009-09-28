@@ -247,7 +247,7 @@ if (0) {
 	$listObj = new listFactory( $pageNav );
 	
 	// print out the search field and a list heading
-	$listObj->writeSearchHeader(JText::_('VM_PRODUCT_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/jm_product_code_48.png', "product", "product_list");
+	$listObj->writeSearchHeader(JText::_('VM_PRODUCT_LIST_LBL'), VM_ADMIN_ICON_URL.'icon_48/vm_product_code_48.png', "product", "product_list");
 	
 	echo JText::_('VM_FILTER') ?>:
 	 <select class="inputbox" id="category_id" name="category_id" onchange="window.location='<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&page=product.product_list&category_id='+document.getElementById('category_id').options[selectedIndex].value;">

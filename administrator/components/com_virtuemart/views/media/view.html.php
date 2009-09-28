@@ -10,7 +10,7 @@ jimport( 'joomla.application.component.view');
  *
  * @package		VirtueMart
  */
-class JmartViewMedia extends JView {
+class VirtuemartViewMedia extends JView {
 	
 	function display($tpl = null) {
 		/* Load the menu */
@@ -67,7 +67,7 @@ class JmartViewMedia extends JView {
 				$this->assignRef('file_types', $file_types);
 				
 				/* Set up the toolbar */
-				JToolBarHelper::title(JText::_( 'VM_FILES_FORM' ).' '.$productfile->product_name, 'jm_media_48');
+				JToolBarHelper::title(JText::_( 'VM_FILES_FORM' ).' '.$productfile->product_name, 'vm_media_48');
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 				break;
@@ -83,9 +83,9 @@ class JmartViewMedia extends JView {
 				/* Set up the toolbar */
 				/* Create the toolbar */
 				if (JRequest::getInt('product_id', false)) {
-					JToolBarHelper::title(JText::_('MEDIA_LIST').' :: '.$this->productfileslist[0]->product_name, 'jm_media_48');
+					JToolBarHelper::title(JText::_('MEDIA_LIST').' :: '.$this->productfileslist[0]->product_name, 'vm_media_48');
 				}
-				else JToolBarHelper::title(JText::_( 'MEDIA_LIST' ), 'jm_media_48');
+				else JToolBarHelper::title(JText::_( 'MEDIA_LIST' ), 'vm_media_48');
 				JToolBarHelper::deleteList();
 				if (JRequest::getInt('product_id', false)) JToolBarHelper::addNew();
 				break;

@@ -21,7 +21,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 */
 /* ROLANDD: MVC TEST START */
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'files.php');
-$productfiles = new JmartModelFiles();
+$productfiles = new VirtuemartModelFiles();
 /* Handle any publish/unpublish */
 switch (JRequest::getVar('task')) {
 	case 'publish':

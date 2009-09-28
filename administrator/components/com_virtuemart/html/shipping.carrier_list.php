@@ -46,7 +46,7 @@ $pageNav = new vmPageNav( $num_rows, $limitstart, $limit );
 $listObj = new listFactory( $pageNav );
 
 // print out the search field and a list heading
-$listObj->writeSearchHeader(JText::_('VM_CARRIER_LIST_LBL'), VM_ADMIN_ICON_URL."icon_48".DS."jm_ups_48.png", $modulename, "carrier_list");
+$listObj->writeSearchHeader(JText::_('VM_CARRIER_LIST_LBL'), VM_ADMIN_ICON_URL."icon_48".DS."vm_ups_48.png", $modulename, "carrier_list");
 
 // start the list table
 $listObj->startTable();

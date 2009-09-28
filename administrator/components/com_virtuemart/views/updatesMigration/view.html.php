@@ -18,10 +18,10 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
  * @subpackage UpdatesMigration
  * @author Max Milbers
  */
-class JmartViewUpdatesMigration extends JView {
+class VirtuemartViewUpdatesMigration extends JView {
 	
 	function display($tpl = null) {	
-		JToolBarHelper::title(  'Updating and data migration', 'jm_config_48');
+		JToolBarHelper::title(  'Updating and data migration', 'vm_config_48');
 		
 		require_once( CLASSPATH.'update.class.php');
 		if( JRequest::getVar( 'vm_updatepackage',null )!== null ) {

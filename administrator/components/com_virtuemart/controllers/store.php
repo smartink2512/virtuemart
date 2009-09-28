@@ -19,7 +19,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Store
  * @author Rick Glunt 
  */
-class JmartControllerStore extends JController
+class VirtuemartControllerStore extends JController
 {
 	/**
 	 * Method to display the view

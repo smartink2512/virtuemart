@@ -36,7 +36,7 @@ $i=0;
 
 ?>
 <!-- BEGIN body -->
-&nbsp;&nbsp;&nbsp;<img src="<?php echo VM_ADMIN_ICON_URL ?>icon_48/jm_report_48.png" border="0" />&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;<img src="<?php echo VM_ADMIN_ICON_URL ?>icon_48/vm_report_48.png" border="0" />&nbsp;&nbsp;&nbsp;
 <span class="sectionname"><?php echo JText::_('VM_REPORTBASIC_MOD') ?></span><br /><br />
     <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
     <input type="hidden" name="page" value="reportbasic.index" />
