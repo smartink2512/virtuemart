@@ -51,7 +51,7 @@ else {
 	$html="";
 
 	// Determiine the cart direction and set vars
-	if (@$_SESSION['jmCartDirection']) {
+	if (@$_SESSION['vmCartDirection']) {
 		$i=0;
 		$up_limit = $cart["idx"] ;
 	}
@@ -100,7 +100,7 @@ else {
 		$minicart[$ci]['quantity'] = $cart[$i]["quantity"];
 		$minicart[$ci]['price'] = $CURRENCY_DISPLAY->getFullValue( $subtotal );
 		$minicart[$ci]['attributes'] = $html;
-		if(@$_SESSION['jmCartDirection']) {
+		if(@$_SESSION['vmCartDirection']) {
 			$i++;
 		}
 		else {
@@ -143,7 +143,7 @@ if(@$_SESSION['vmEnableEmptyCart'] && !@$_SESSION['vmMiniCart']) {
 $href = $sess->url($mm_action_url."index.php?page=shop.cart");
 $href2 = $sess->url($mm_action_url."index2.php?page=shop.cart", true);
 $text = JText::_('VM_CART_SHOW');
-if( @$_SESSION['jmUseGreyBox'] ) {
+if( @$_SESSION['vmUseGreyBox'] ) {
 	$show_cart = vmCommonHTML::getGreyboxPopUpLink( $href2, $text, '', $text, '', 500, 600, $href );
 }
 else {

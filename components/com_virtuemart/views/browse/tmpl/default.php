@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<link rel="stylesheet" href="<?php echo JMART_THEMEPATH.DS.JMART_THEMENAME.DS.'theme.css'; ?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo VM_THEMEPATH.DS.VM_THEMENAME.DS.'theme.css'; ?>" type="text/css" />
         
 <div id="store">
 

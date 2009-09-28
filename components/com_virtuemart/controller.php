@@ -48,7 +48,7 @@ class VirtueMartController extends JController
 	 */
 	function display()
 	{
-	    if (JMART_IS_OFFLINE == '1') {
+	    if (VM_IS_OFFLINE == '1') {
 		    JRequest::setVar( 'layout', 'offline' );	
 	    }
 	    else {
