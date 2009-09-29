@@ -10,12 +10,12 @@ AdminMenuHelper::startAdminArea();
 		<table class="adminlist">
 		<thead>
 		<tr>
-			<th>
-				<?php echo JText::_( '#' ); ?>
-			</th>		            
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->currencies); ?>);" />
-			</th>			
+			</th>	
+			<th width="10">
+				<?php echo JText::_( '#' ); ?>
+			</th>		            		
 			<th>
 				<?php echo JText::_( 'VM_CURRENCY_LIST_NAME' ); ?>
 			</th>				
@@ -41,14 +41,14 @@ AdminMenuHelper::startAdminArea();
 			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&controller=currency&task=remove&cid[]=' . $row->currency_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td width="10" align="right">
-					<?php echo $row->currency_id; ?>
-				</td>			            
 				<td width="10">
 					<?php echo $checked; ?>
-				</td>
+				</td>				
+				<td width="10">
+					<?php echo JText::_($row->currency_id); ?>
+				</td>			            
 				<td align="left">
-					<a href="<?php echo $editlink; ?>"><?php echo $row->currency_name; ?></a>
+					<a href="<?php echo $editlink; ?>"><?php echo JText::_($row->currency_name); ?></a>
 				</td>					
 				<td align="left">
 					<?php echo JText::_($row->currency_code); ?>
