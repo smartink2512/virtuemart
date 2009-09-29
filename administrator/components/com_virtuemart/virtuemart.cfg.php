@@ -140,6 +140,7 @@ define('VM_LOGFILE_LEVEL', 'PEAR_LOG_WARNING');
 define('VM_DEBUG_IP_ENABLED', '');
 define('VM_DEBUG_IP_ADDRESS', '');
 define('VM_LOGFILE_FORMAT', '%{timestamp} %{ident} [%{priority}] [%{remoteip}] [%{username}] %{message}');
+define('VM_DATE_FORMAT', '%m/%d/%y');
 
 /* OrderByFields */
 global $VM_BROWSE_ORDERBY_FIELDS;
