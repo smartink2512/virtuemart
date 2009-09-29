@@ -10,9 +10,8 @@ jimport('joomla.application.component.controller');
  *
  * @package		VirtueMart
  */
-class VirtueMartController extends JController
+class VirtuemartController extends JController
 {
-		
 	/**
 	 * Method to display the view
 	 *

@@ -50,7 +50,7 @@ class AdminMenuHelper
 	function endAdminArea()
 	{	
 		if( DEBUG == '1') {
-			include( PAGEPATH."shop.debug.php" );
+			include(PAGEPATH."shop.debug.php");
 		}
 		?>
 	    	</td>
@@ -87,7 +87,7 @@ class AdminMenuHelper
 		            <center>
 		            <?php
 		            //TODO The link should be done better
-		            echo JHTML::_('link', 'http://virtuemart.org', JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/icon_48/vm_logo_48.png', 'J!Mart Cart Logo'), array('target' => '_blank'));
+		            echo JHTML::_('link', 'http://virtuemart.org', JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/vm_menulogo.png', 'Virtuemart'), array('target' => '_blank'));
 		            ?>
 			        <h2><?php echo JText::_('VM_ADMIN')	?></h2>
 		            </center>
