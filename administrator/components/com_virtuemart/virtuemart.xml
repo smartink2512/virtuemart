@@ -61,7 +61,8 @@
  		<menu img="../components/com_virtuemart/shop_image/ps_image/menu_icon.png">VirtueMart</menu>
 		<!-- Administration Main File Copy Section -->
 		<files folder="administrator/components/com_virtuemart">
-			<filename>admin.vm.php</filename>
+			<filename>admin.virtuemart.php</filename>
+			<filename>admin.vm.old.php</filename>
 			<filename>cart.gif</filename>
 			<filename>compat.joomla1.5.php</filename>
 			<filename>controller.php</filename>
