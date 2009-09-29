@@ -36,7 +36,7 @@ class VirtueMartController extends JController
 		    parent::display();	
 		}
 		else {
-		    include( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'admin.vm.php' );	    
+		    include( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'admin.virtuemart.php' );	    
 		}
 	}
 	
