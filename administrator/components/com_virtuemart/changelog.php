@@ -28,7 +28,6 @@ $ -> Language fix or change
 ^ Country maintenance converted to MVC
 ^ Credit card maintenance converted to MVC
 ^ Currency maintenance converted to MVC
-^ VirtueMart branding and logos to replace Virtuemart ones
 ^ Credit card maintenance converted to MVC
 + Added the ability to publish/unpublish countries
 ^ Coupon maintenance converted to MVC
