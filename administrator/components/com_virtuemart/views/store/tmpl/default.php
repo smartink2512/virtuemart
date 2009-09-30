@@ -3,8 +3,6 @@ defined('_JEXEC') or die('Restricted access');
 
 AdminMenuHelper::startAdminArea(); 
 
-
-
 ?>
 <a id="cnid" href="index.php?option=com_virtuemart&view=store">Store countries</a>
 <select id="locid"></select>
@@ -35,7 +33,6 @@ AdminMenuHelper::startAdminArea();
 		for ($i=0, $n=count( $this->stores ); $i < $n; $i++) {
 			$row = $this->stores[$i];		
 			$checked = JHTML::_('grid.id', $i, $row->vendor_id);
-			$published = JHTML::_('grid.published', $row, $i);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=store&task=edit&cid[]=' . $row->vendor_id);
 			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&controller=store&task=remove&cid[]=' . $row->vendor_id);
 			?>
@@ -47,7 +44,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo $checked; ?>
 				</td>
 				<td align="left">
-					<a href="<?php echo $editlink; ?>"><?php echo $row->vendor_store_name; ?></a>
+					<?php echo JHTML::_('link', $editlink, JTEXT::_($row->vendor_store_name)); ?>
 				</td>									
 				<td>
 					<?php echo JText::_($row->vendor_name); ?>

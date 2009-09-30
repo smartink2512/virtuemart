@@ -272,7 +272,7 @@ class VirtueMartModelCountry extends JModel
 	 * 
      * @author Rick Glunt	 
      * @param string $onlyPuiblished True to only retreive the publish countries, false otherwise
-     * @param string $noLimit True if no record count limit is impossed, false otherwise
+     * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of country objects
 	 */
 	function getCountries($onlyPublished=false, $noLimit=false)

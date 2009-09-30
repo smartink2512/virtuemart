@@ -19,14 +19,14 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
  * @subpackage Store
  * @author Rick Glunt 
  */
-class VirtuemartViewStore extends JView {
+class VirtueMartViewStore extends JView {
 	
 	function display($tpl = null) {
 		$model = $this->getModel();
         $store = $model->getStore();
         
         $layoutName = JRequest::getVar('layout', 'default');
-        $isNew = ($store < 1);
+        $isNew = ($store->vendor_id < 1);
 		
 		if ($layoutName == 'edit') {
 			if ($isNew) {
@@ -44,9 +44,9 @@ class VirtuemartViewStore extends JView {
 									
 			$countryModel = $this->getModel('country');
 			$countries = $countryModel->getCountries(true, true);
-			$this->assignRef('countries',	$countries);
+			$this->assignRef('countries', $countries);
 											
-			$this->assignRef('store',	$store);
+			$this->assignRef('store', $store);
         }	
         else {
         	/* Load jQuery */

@@ -19,7 +19,7 @@ jimport('joomla.application.component.controller');
  * @subpackage Store
  * @author Rick Glunt 
  */
-class VirtuemartControllerStore extends JController
+class VirtueMartControllerStore extends JController
 {
 	/**
 	 * Method to display the view
@@ -28,7 +28,7 @@ class VirtuemartControllerStore extends JController
 	 */
 	function __construct() {
 		parent::__construct();
-		
+				
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );			
 	}
@@ -36,7 +36,7 @@ class VirtuemartControllerStore extends JController
 	/**
 	 * The default store view
 	 */
-	 function Store() {
+	 function display() {
 	 	$document = JFactory::getDocument();
 	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
 	    
@@ -46,10 +46,15 @@ class VirtuemartControllerStore extends JController
 
 		// Push a model into the view					
 		/* Default model */
-		$view->setModel( $this->getModel( 'store', 'VirtueMartModel' ), true );
-		/* Country functions */
-		$view->setModel( $this->getModel( 'country', 'VirtueMartModel' ));
-		
+		$model = $this->getModel('store');
+		if (!JError::isError($model)) {
+			$view->setModel($model, true);
+		}
+		$model1 = $this->getModel('country');
+		if (!JError::isError($model1)) {
+			$view->setModel($model1, false);
+		}	
+
 		/* Now display the view. */
 		$view->display();
 	 }

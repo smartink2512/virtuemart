@@ -109,23 +109,20 @@ class VirtueMartModelStore extends JModel
      */ 
 	function getStore()
 	{		
-		$db = JFactory::getDBO();		
-					
-		if (empty($this->_data)) {					
-			$query = 'SELECT * ';
-			$query .= 'FROM `#__vm_vendor` ';
-			$query .= 'WHERE `vendor_id` = ' . (int)$this->_id;
-			$db->setQuery($query);
-			$this->_data = $db->loadObject();
-		}
-		
-		if (!$this->_data) {
-			$this->_data = new stdClass();
-			$this->_id = 0;
-			$this->_data = null;
-		}
+		$db = JFactory::getDBO();  
+     
+  		if (empty($this->_data)) {
+   			$this->_data = $this->getTable('vendor');
+   			$this->_data->load((int)$this->_id);
+  		}
+  
+  		if (!$this->_data) {
+   			$this->_data = new stdClass();
+   			$this->_id = 0;
+   			$this->_data = null;
+  		}
 
-		return $this->_data;
+  		return $this->_data;
 	}    
 	
         
