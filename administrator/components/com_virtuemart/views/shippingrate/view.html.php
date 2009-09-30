@@ -35,15 +35,19 @@ class VirtuemartViewShippingRate extends JView {
 				JToolBarHelper::cancel();
 			}
 			else {
-				JToolBarHelper::title( JText::_('VM_CARRIER_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_ups_48');
+				JToolBarHelper::title( JText::_('VM_RATE_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_ups_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
 			}
-			$this->assignRef('carrier',	$shippingRate);
+			$this->assignRef('rate', $shippingRate);
+			
+			$countrymodel = $this->getModel('country');
+        	$countries = $countrymodel->getCountries(true, true);		     	
+        	$this->assignRef('countries', $countries);	        	
         }
         else {
-			JToolBarHelper::title( JText::_( 'VM_RATE_LIST_LBL' ), 'vm_ups_48' );
+			JToolBarHelper::title( JText::_('VM_RATE_LIST_LBL' ), 'vm_ups_48');
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();	

@@ -281,14 +281,14 @@ class VirtueMartModelCountry extends JModel
 		if ($onlyPublished) { 
 			$query .= 'WHERE `#__vm_country`.`published` = 1';			
 		}
-		$query .= 'ORDER BY `#__vm_country`.`country_id`';
+		$query .= ' ORDER BY `#__vm_country`.`country_id`';
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
 		}
 		else {
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}		
-		
+
 		return $this->_data;
 	}
 }
