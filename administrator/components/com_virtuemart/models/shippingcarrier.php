@@ -171,13 +171,45 @@ class VirtueMartModelShippingCarrier extends JModel
     	$table =& $this->getTable('shipping_carrier');
  
     	foreach($shippingCarrierIds as $shippingCarrierId) {
-        	if (!$table->delete($shippingCarrierId)) {
-            	$this->setError($table->getError());
-            	return false;
+    		if ($this->deleteShippingCarrierRates($shippingCarrierId)) {
+        		if (!$table->delete($shippingCarrierId)) {
+            		$this->setError($table->getError());
+            		return false;
+        		}
         	}
+        	else {
+        		$this->setError('Could not remove shipping carrier rates!');
+        		return false;
+        	}        	
     	}
  
     	return true;	
+	}		
+	
+	
+	/**
+	 * Delete all rate records for a given shipping carrier id.
+     *
+     * @author Rick Glunt
+     * @return boolean True is the delete was successful, false otherwise.      
+     */ 	 
+	function deleteShippingCarrierRates($carrierId = '') 
+	{
+		if ($carrierId) {
+			$db =& JFactory::getDBO();	
+				
+			$query = 'DELETE FROM `#__vm_shipping_rate`  WHERE `shipping_rate_carrier_id` = "' . $carrierId . '"';
+			$db->setQuery($query);
+			if ($db->query()) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+    		return false;
+    	}	
 	}		
 	
 	
