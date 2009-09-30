@@ -1,9 +1,9 @@
 <?php
 /**
- * Shipping Carrier View
+ * Shipping Rate View
  *
  * @package	VirtueMart
- * @subpackage ShippingCarrier
+ * @subpackage ShippingRate
  * @author Rick Glunt
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
@@ -12,24 +12,24 @@ jimport( 'joomla.application.component.view');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
 
 /**
- * HTML View class for maintaining the list of shipping carriers
+ * HTML View class for maintaining the list of shipping rates
  *
  * @package	VirtueMart
- * @subpackage ShippingCarrier
+ * @subpackage ShippingRate
  * @author Rick Glunt 
  */
-class VirtuemartViewShippingCarrier extends JView {
+class VirtuemartViewShippingRate extends JView {
 	
 	function display($tpl = null) {	
 		$model = $this->getModel();
-        $shippingCarrier = $model->getShippingCarrier();
+        $shippingRate = $model->getShippingRate();
         
         $layoutName = JRequest::getVar('layout', 'default');
-        $isNew = ($shippingCarrier->shipping_carrier_id < 1);
+        $isNew = ($shippingRate->shipping_rate_id < 1);
 		
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('VM_CARRIER_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_ups_48');
+				JToolBarHelper::title(  JText::_('VM_RATE_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_ups_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
@@ -40,10 +40,10 @@ class VirtuemartViewShippingCarrier extends JView {
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
 			}
-			$this->assignRef('carrier',	$shippingCarrier);
+			$this->assignRef('carrier',	$shippingRate);
         }
         else {
-			JToolBarHelper::title( JText::_( 'VM_CARRIER_LIST_LBL' ), 'vm_ups_48' );
+			JToolBarHelper::title( JText::_( 'VM_RATE_LIST_LBL' ), 'vm_ups_48' );
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();	
@@ -51,8 +51,8 @@ class VirtuemartViewShippingCarrier extends JView {
 			$pagination = $model->getPagination();			
 			$this->assignRef('pagination',	$pagination);	
 			
-			$shippingCarriers = $model->getShippingCarriers();
-			$this->assignRef('shippingCarriers', $shippingCarriers);	
+			$shippingRates = $model->getShippingRates();
+			$this->assignRef('shippingRates', $shippingRates);	
 		}			
 		
 		parent::display($tpl);

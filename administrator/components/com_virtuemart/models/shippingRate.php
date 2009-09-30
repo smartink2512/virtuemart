@@ -1,9 +1,9 @@
 <?php
 /**
- * Data module for shipping carriers
+ * Data module for shipping rates
  *
  * @package	VirtueMart
- * @subpackage ShippingCarrier
+ * @subpackage ShippingRate
  * @author Rick Glunt 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
@@ -17,25 +17,25 @@ jimport( 'joomla.application.component.model');
  * Model class for shop shipping carriers
  *
  * @package	VirtueMart
- * @subpackage ShippingCarrier 
+ * @subpackage ShippingRate 
  * @author Rick Glunt  
  */
-class VirtueMartModelShippingCarrier extends JModel
+class VirtueMartModelShippingRate extends JModel
 {    
 	/** @var integer Primary key */
     var $_id;          
-	/** @var objectlist shipping carrier data */
+	/** @var objectlist shipping rate data */
     var $_data;        
-	/** @var integer Total number of shipping carriers in the database */
+	/** @var integer Total number of shipping rates in the database */
 	var $_total;      
-	/** @var pagination Pagination for shipping carrier list */
+	/** @var pagination Pagination for shipping rate list */
 	var $_pagination;    
     
     
     /**
-     * Constructor for the shipping carrier model.
+     * Constructor for the shipping rate model.
      *
-     * The shipping carrier id is read and detmimined if it is an array of ids or just one single id.
+     * The shipping rate id is read and detmimined if it is an array of ids or just one single id.
      *
      * @author Rick Glunt 
      */
@@ -52,14 +52,14 @@ class VirtueMartModelShippingCarrier extends JModel
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);        
         
-        // Get the shipping carrier id or array of ids.
+        // Get the shipping rate id or array of ids.
 		$idArray = JRequest::getVar('cid',  0, '', 'array');
     	$this->setId((int)$idArray[0]);
     }
     
     
     /**
-     * Resets the shipping carrier id and data
+     * Resets the shipping rate id and data
      *
      * @author Rick Glunt
      */        
@@ -71,10 +71,10 @@ class VirtueMartModelShippingCarrier extends JModel
     
     
 	/**
-	 * Loads the pagination for the shipping carrier table
+	 * Loads the pagination for the shipping rate table
 	 *
      * @author Rick Glunt	
-     * @return JPagination Pagination for the current list of shipping carriers 
+     * @return JPagination Pagination for the current list of shipping rates 
 	 */
     function getPagination() 
     {
@@ -87,15 +87,15 @@ class VirtueMartModelShippingCarrier extends JModel
     
     
 	/**
-	 * Gets the total number of shipping carriers
+	 * Gets the total number of shipping rates
 	 *
      * @author Rick Glunt	 
-	 * @return int Total number of shipping carriers in the database
+	 * @return int Total number of shipping rates in the database
 	 */
 	function _getTotal() 
 	{
     	if (empty($this->_total)) {
-			$query = 'SELECT `shipping_carrier_id` FROM `#__vm_shipping_carrier`';	  		
+			$query = 'SELECT `shipping_rate_id` FROM `#__vm_shipping_rate`';	  		
 			$this->_total = $this->_getListCount($query);
         }
         return $this->_total;
@@ -107,12 +107,12 @@ class VirtueMartModelShippingCarrier extends JModel
      *
      * @author Rick Glunt
      */ 
-	function getShippingCarrier()
+	function getShippingRate()
 	{		
 		$db = JFactory::getDBO();  
      
   		if (empty($this->_data)) {
-   			$this->_data = $this->getTable('shipping_carrier');
+   			$this->_data = $this->getTable('shipping_rate');
    			$this->_data->load((int)$this->_id);
   		}
   
@@ -127,29 +127,29 @@ class VirtueMartModelShippingCarrier extends JModel
 	
         
 	/**
-	 * Bind the post data to the shipping carrier table and save it
+	 * Bind the post data to the shipping rate table and save it
      *
      * @author Rick Glunt	
      * @return boolean True is the save was successful, false otherwise. 
 	 */
     function store() 
 	{
-		$table =& $this->getTable('shipping_carrier');
+		$table =& $this->getTable('shipping_rate');
 
 		$data = JRequest::get( 'post' );		
-		// Bind the form fields to the shipping carrier table
+		// Bind the form fields to the shipping rate table
 		if (!$table->bind($data)) {		    
 			$this->setError($table->getError());
 			return false;	
 		}
 
-		// Make sure the shipping carrier record is valid
+		// Make sure the shipping rate record is valid
 		if (!$table->check()) {
 			$this->setError($table->getError());
 			return false;	
 		}
 		
-		// Save the shipping carrier record to the database
+		// Save the shipping rate record to the database
 		if (!$table->store()) {
 			$this->setError($table->getError());
 			return false;	
@@ -168,7 +168,7 @@ class VirtueMartModelShippingCarrier extends JModel
 	function delete() 
 	{
 		$shippingCarrierIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table =& $this->getTable('shipping_carrier');
+    	$table =& $this->getTable('shipping_rate');
  
     	foreach($shippingCarrierIds as $shippingCarrierId) {
     		if ($this->deleteShippingCarrierRates($shippingCarrierId)) {
@@ -178,51 +178,25 @@ class VirtueMartModelShippingCarrier extends JModel
         		}
         	}
         	else {
-        		$this->setError('Could not remove shipping carrier rates!');
+        		$this->setError('Could not remove shipping rate rates!');
         		return false;
         	}        	
     	}
  
     	return true;	
-	}		
+	}			
 	
 	
 	/**
-	 * Delete all rate records for a given shipping carrier id.
-     *
-     * @author Rick Glunt
-     * @return boolean True is the delete was successful, false otherwise.      
-     */ 	 
-	function deleteShippingCarrierRates($carrierId = '') 
-	{
-		if ($carrierId) {
-			$db =& JFactory::getDBO();	
-				
-			$query = 'DELETE FROM `#__vm_shipping_rate`  WHERE `shipping_rate_carrier_id` = "' . $carrierId . '"';
-			$db->setQuery($query);
-			if ($db->query()) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		else {
-    		return false;
-    	}	
-	}		
-	
-	
-	/**
-	 * Retireve a list of shipping carriers from the database.
+	 * Retireve a list of shipping rates from the database.
 	 * 
      * @author Rick Glunt	 
-	 * @return object List of shipping carrier objects
+	 * @return object List of shipping rate objects
 	 */
-	function getShippingCarriers()
+	function getShippingRates()
 	{		
-		$query = 'SELECT * FROM `#__vm_shipping_carrier` ';
-		$query .= 'ORDER BY `#__vm_shipping_carrier`.`shipping_carrier_id`';
+		$query = 'SELECT * FROM `#__vm_shipping_rate` ';
+		$query .= 'ORDER BY `#__vm_shipping_rate`.`shipping_rate_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}

@@ -11,17 +11,23 @@ AdminMenuHelper::startAdminArea();
 		<thead>
 		<tr>
 			<th width="10">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shippingCarriers); ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shippingRates); ?>);" />
 			</th>	
 			<th width="10">
 				<?php echo JText::_( '#' ); ?>
 			</th>		            		
 			<th>
-				<?php echo JText::_( 'VM_CARRIER_LIST_NAME_LBL' ); ?>
+				<?php echo JText::_( 'VM_SHIPPING_RATE_LIST_CARRIER_LBL' ); ?>
 			</th>				
 			<th>
-				<?php echo JText::_( 'VM_CARRIER_LIST_ORDER_LBL' ); ?>
-			</th>									
+				<?php echo JText::_( 'VM_SHIPPING_RATE_LIST_RATE_NAME' ); ?>
+			</th>				
+			<th>
+				<?php echo JText::_( 'VM_SHIPPING_RATE_LIST_RATE_WSTART' ); ?>
+			</th>	
+			<th>
+				<?php echo JText::_( 'VM_SHIPPING_RATE_LIST_RATE_WEND' ); ?>
+			</th>												
 			<th width="20">
 				<?php echo JText::_( 'E_REMOVE' ); ?>
 			</th>										
@@ -29,29 +35,35 @@ AdminMenuHelper::startAdminArea();
 		</thead>
 		<?php
 		$k = 0;
-		for ($i=0, $n=count( $this->shippingCarriers ); $i < $n; $i++) {
-			$row =& $this->shippingCarriers[$i];
+		for ($i=0, $n=count( $this->shippingRates ); $i < $n; $i++) {
+			$row =& $this->shippingRates[$i];
 			/** 
 			 * @todo Add to database layout published column
 			 */
 			$row->published = 1;
-			$checked = JHTML::_('grid.id', $i, $row->shipping_carrier_id);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=shippingcarrier&task=edit&cid[]=' . $row->shipping_carrier_id);
-			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&controller=shippingcarrier&task=remove&cid[]=' . $row->shipping_carrier_id);
+			$checked = JHTML::_('grid.id', $i, $row->shipping_rate_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=shippingrate&task=edit&cid[]=' . $row->shipping_rate_id);
+			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&controller=shippingrate&task=remove&cid[]=' . $row->shipping_rate_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td width="10">
 					<?php echo $checked; ?>
 				</td>				
 				<td width="10">
-					<?php echo JText::_($row->shipping_carrier_id); ?>
+					<?php echo JText::_($row->shipping_rate_id); ?>
 				</td>			            
 				<td align="left">
-					<?php echo JHTML::_('link', $editlink, JText::_($row->shipping_carrier_name)); ?>
+					<?php echo JText::_($row->shipping_rate_carrier_id); ?>
 				</td>					
 				<td align="left">
-					<?php echo JText::_($row->shipping_carrier_list_order); ?>
-				</td>				
+					<?php echo JHTML::_('link', $editlink, JText::_($row->shipping_rate_name)); ?>
+				</td>	
+				<td align="left">
+					<?php echo JText::_($row->shipping_rate_weight_start); ?>
+				</td>					
+				<td align="left">
+					<?php echo JText::_($row->shipping_rate_weight_end); ?>
+				</td>								
 				<td align="center">
 					<?php echo JHTML::_('link', $deletelink, JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('VM_DELETE_MSG').'\');')) ?>
 				</td>				        																														
@@ -71,8 +83,8 @@ AdminMenuHelper::startAdminArea();
 </div>
 	        
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="controller" value="shippingcarrier" />
-	<input type="hidden" name="view" value="shippingcarrier" />	
+	<input type="hidden" name="controller" value="shippingrate" />
+	<input type="hidden" name="view" value="shippingrate" />	
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 </form>

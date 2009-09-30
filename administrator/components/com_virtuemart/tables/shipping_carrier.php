@@ -3,7 +3,7 @@
  * Shipping Carrier table
  *
  * @package	VirtueMart
- * @subpackage Shipping Carrier
+ * @subpackage ShippingCarrier
  * @author Rick Glunt 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
@@ -13,7 +13,7 @@ defined('_JEXEC') or die();
 
 /**
  * Shipping Carrier table class
- * The class is is used to manage the currencies in the shop.
+ * The class is is used to manage the shipping carriers in the shop.
  *
  * @author Rick Glunt
  * @package	VirtueMart
@@ -55,7 +55,7 @@ class TableShipping_Carrier extends JTable
 		    $db =& JFactory::getDBO();
 		    
 			$q = 'SELECT count(*) FROM `#__vm_sipping_carier` ';
-			$q .= 'WHERE `currency_name`="' .  $this->shipping_carrier_name . '"';
+			$q .= 'WHERE `shipping_carrier_name`="' .  $this->shipping_carrier_name . '"';
             $db->setQuery($q);        
 		    $rowCount = $db->loadResult();		
 			if ($rowCount > 0) {
