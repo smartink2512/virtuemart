@@ -35,12 +35,12 @@ class VirtuemartViewShippingCarrier extends JView {
 				JToolBarHelper::cancel();
 			}
 			else {
-				JToolBarHelper::title( JText::_('VM_SHIPPER_LIST_ADD' ).': <small><small>[ Edit ]</small></small>', 'vm_ups_48');
+				JToolBarHelper::title( JText::_('VM_CARRIER_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_ups_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
 			}
-			$this->assignRef('shipper',	$shipper);
+			$this->assignRef('carrier',	$shippingCarrier);
         }
         else {
 			JToolBarHelper::title( JText::_( 'VM_CARRIER_LIST_LBL' ), 'vm_ups_48' );

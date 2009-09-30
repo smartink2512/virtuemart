@@ -185,12 +185,14 @@ ALTER TABLE `jos_vm_product` MODIFY COLUMN product_tax_id int;
 #For the admin menues
 ALTER TABLE `jos_jmart_menu_admin` ADD `view` VARCHAR( 255 ) NULL ,ADD `task` VARCHAR( 255 ) NULL ;
 
-UPDATE `jos_jmart_menu_admin` SET `view` = 'country' WHERE `jos_jmart_menu_admin`.`id` =5 LIMIT 1 ;
-UPDATE `jos_jmart_menu_admin` SET `view` = 'currency' WHERE `jos_jmart_menu_admin`.`id` =6 LIMIT 1 ;
-UPDATE `jos_jmart_menu_admin` SET `view` = 'creditcard' WHERE `jos_jmart_menu_admin`.`id` =14 LIMIT 1 ;
-UPDATE `jos_jmart_menu_admin` SET `view` = 'creditcard', `task` = 'add' WHERE `jos_jmart_menu_admin`.`id` =15 LIMIT 1 ;
-UPDATE `jos_jmart_menu_admin` SET `view` = 'coupon' WHERE `jos_jmart_menu_admin`.`id` =47 LIMIT 1 ;
-UPDATE `jos_jmart_menu_admin` SET `view` = 'coupon', `task` = 'add' WHERE `jos_jmart_menu_admin`.`id` =48 LIMIT 1 ;
+UPDATE `jos_jmart_menu_admin` SET `view` = 'country' WHERE `jos_jmart_menu_admin`.`id` =50 LIMIT 1 ;
+UPDATE `jos_jmart_menu_admin` SET `view` = 'currency' WHERE `jos_jmart_menu_admin`.`id` =60 LIMIT 1 ;
+UPDATE `jos_jmart_menu_admin` SET `view` = 'creditcard' WHERE `jos_jmart_menu_admin`.`id` =140 LIMIT 1 ;
+UPDATE `jos_jmart_menu_admin` SET `view` = 'creditcard', `task` = 'add' WHERE `jos_jmart_menu_admin`.`id` =150 LIMIT 1 ;
+UPDATE `jos_jmart_menu_admin` SET `view` = 'coupon' WHERE `jos_jmart_menu_admin`.`id` =470 LIMIT 1 ;
+UPDATE `jos_jmart_menu_admin` SET `view` = 'coupon', `task` = 'add' WHERE `jos_jmart_menu_admin`.`id` =480 LIMIT 1 ;
+UPDATE `jos_jmart_menu_admin` SET `view` = 'shippingcarrier' WHERE `jos_jmart_menu_admin`.`id` =430 LIMIT 1 ;
+UPDATE `jos_jmart_menu_admin` SET `view` = 'shippingcarrier', `task` = 'add' WHERE `jos_jmart_menu_admin`.`id` =440 LIMIT 1 ;
 
 //taxrate Decimals
  ALTER TABLE `jos_jmart_tax_rate` CHANGE `tax_rate` `tax_rate` DECIMAL( 10, 5 ) NULL DEFAULT NULL ;

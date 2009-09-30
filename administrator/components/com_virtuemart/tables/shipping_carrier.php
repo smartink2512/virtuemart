@@ -21,11 +21,11 @@ defined('_JEXEC') or die();
 class TableShipping_Carrier extends JTable
 {
 	/** @var int Primary key */
-	var $shiping_carrier_id			= 0;
+	var $shipping_carrier_id			= 0;
 	/** @var string Shipping Carrier name*/
-	var $shiping_carrier_name      	= '';	
+	var $shipping_carrier_name      	= '';	
 	/** @var char Shipping Carrier code */
-	var $shiping_carrier_list_order = '';				
+	var $shipping_carrier_list_order    = 0;				
 
 
 	/**

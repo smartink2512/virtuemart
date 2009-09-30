@@ -31,3 +31,4 @@ $ -> Language fix or change
 ^ Coupon maintenance converted to MVC
 + Added the ability to publish/unpublish countries
 ^ Coupon maintenance converted to MVC
+^ Shipping Carrier maintenance converted to MVC

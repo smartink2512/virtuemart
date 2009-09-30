@@ -9,26 +9,26 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('Currency Details'); ?></legend>
+	<legend><?php echo JText::_('Shipping Carrier'); ?></legend>
 	<table class="admintable">			
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'VM_CURRENCY_LIST_NAME' ); ?>:
+					<?php echo JText::_( 'VM_CARRIER_FORM_NAME' ); ?>:
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="currency_name" id="currency_name" size="50" value="<?php echo $this->currency->currency_name; ?>" />				
+				<input class="inputbox" type="text" name="shipping_carrier_name" id="shipping_carrier_name" size="50" value="<?php echo $this->carrier->shipping_carrier_name; ?>" />				
 			</td>
 		</tr>					
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_( 'VM_CURRENCY_LIST_CODE' ); ?>:
+					<?php echo JText::_( 'VM_CARRIER_FORM_LIST_ORDER' ); ?>:
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="currency_code" id="currency_code" size="3" value="<?php echo $this->currency->currency_code; ?>" />				
+				<input class="inputbox" type="text" name="shipping_carrier_list_order" id="shipping_carrier_list_order" size="3" value="<?php echo $this->carrier->shipping_carrier_list_order; ?>" />				
 			</td>
 		</tr>					
 	</table>
@@ -36,10 +36,10 @@ AdminMenuHelper::startAdminArea();
 </div>
 
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="currency_id" value="<?php echo $this->currency->currency_id; ?>" />
+	<input type="hidden" name="shipping_carrier_id" value="<?php echo $this->carrier->shipping_carrier_id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="controller" value="currency" />
+	<input type="hidden" name="controller" value="shippingcarrier" />
 </form>
 
 
