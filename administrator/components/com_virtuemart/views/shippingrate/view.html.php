@@ -29,13 +29,13 @@ class VirtuemartViewShippingRate extends JView {
 		
 		if ($layoutName == 'edit') {
 			if ($isNew) {
-				JToolBarHelper::title(  JText::_('VM_RATE_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_ups_48');
+				JToolBarHelper::title(  JText::_('VM_RATE_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_shipping_rates_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 			}
 			else {
-				JToolBarHelper::title( JText::_('VM_RATE_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_ups_48');
+				JToolBarHelper::title( JText::_('VM_RATE_FORM_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_shipping_rates_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
@@ -47,7 +47,7 @@ class VirtuemartViewShippingRate extends JView {
         	$this->assignRef('countries', $countries);	        	
         }
         else {
-			JToolBarHelper::title( JText::_('VM_RATE_LIST_LBL' ), 'vm_ups_48');
+			JToolBarHelper::title( JText::_('VM_RATE_LIST_LBL' ), 'vm_shipping_rates_48');
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			JToolBarHelper::editListX();
 			JToolBarHelper::addNewX();	
