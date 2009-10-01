@@ -48,6 +48,14 @@ class VirtuemartControllerShippingRate extends JController
 		if (!JError::isError($model1)) {
 			$view->setModel($model1, false);
 		}		
+		$model2 =& $this->getModel('shippingcarrier');
+		if (!JError::isError($model2)) {
+			$view->setModel($model2, false);
+		}	
+		$model3 =& $this->getModel('currency');
+		if (!JError::isError($model3)) {
+			$view->setModel($model3, false);
+		}				
 	}
 	
 	/**

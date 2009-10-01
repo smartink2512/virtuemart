@@ -42,9 +42,17 @@ class VirtuemartViewShippingRate extends JView {
 			}
 			$this->assignRef('rate', $shippingRate);
 			
+			$carrierModel = $this->getModel('shippingcarrier');
+        	$carriers = $carrierModel->getShippingCarriers(true, true);		     	
+        	$this->assignRef('carriers', $carriers);	
+        	
+			$currencyModel = $this->getModel('currency');
+        	$currencies = $currencyModel->getCurrencies(true, true);		     	
+        	$this->assignRef('currencies', $currencies);	  
+        	
 			$countrymodel = $this->getModel('country');
         	$countries = $countrymodel->getCountries(true, true);		     	
-        	$this->assignRef('countries', $countries);	        	
+        	$this->assignRef('countries', $countries);	        	      	
         }
         else {
 			JToolBarHelper::title( JText::_('VM_RATE_LIST_LBL' ), 'vm_shipping_rates_48');

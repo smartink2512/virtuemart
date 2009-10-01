@@ -9,7 +9,7 @@ AdminMenuHelper::startAdminArea();
 
 <div class="col50">
 	<fieldset class="adminform">
-	<legend><?php echo JText::_('Shipping Carrier'); ?></legend>
+	<legend><?php echo JText::_('Shipping Rate Details'); ?></legend>
 	<table class="admintable">			
 		<tr>
 			<td width="110" class="key">
@@ -18,7 +18,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_carrier_name" id="shipping_carrier_name" size="50" value="<?php echo $this->carrier->shipping_carrier_name; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_name" id="shipping_rate_name" size="50" value="<?php echo $this->rate->shipping_rate_name; ?>" />				
 			</td>
 		</tr>					
 		<tr>
@@ -28,7 +28,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_carrier_list_order" id="shipping_carrier_list_order" size="3" value="<?php echo $this->carrier->shipping_carrier_list_order; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_list_order" id="shipping_rate_list_order" size="3" value="<?php echo $this->rate->shipping_rate_list_order; ?>" />				
 			</td>
 		</tr>		
 		<tr>
@@ -38,7 +38,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_carrier_name" id="shipping_carrier_name" size="50" value="<?php echo $this->carrier->shipping_carrier_name; ?>" />				
+				<?php echo JHTML::_('Select.genericlist', $this->carriers, 'shipping_rate_carrier_id', '', 'shipping_carrier_id', 'shipping_carrier_name', $this->rate->shipping_rate_carrier_id); ?>			
 			</td>
 		</tr>					
 		<tr>
@@ -48,7 +48,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->countries, 'shipping_rate_country', '', 'country_id', 'country_name', $this->rate->shipping_rate_country); ?>			
+				<?php echo JHTML::_('Select.genericlist', $this->countries, 'shipping_rate_country', 'multiple size=5', 'country_id', 'country_name', $this->rate->shipping_rate_country); ?>			
 			</td>
 		</tr>		
 		<tr>
@@ -58,7 +58,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_carrier_name" id="shipping_carrier_name" size="50" value="<?php echo $this->carrier->shipping_carrier_name; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_zip_start" id="shipping_rate_zip_start" size="10" value="<?php echo $this->rate->shipping_rate_zip_start; ?>" />				
 			</td>
 		</tr>					
 		<tr>
@@ -68,7 +68,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_carrier_list_order" id="shipping_carrier_list_order" size="3" value="<?php echo $this->carrier->shipping_carrier_list_order; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_zip_end" id="shipping_rate_zip_end" size="10" value="<?php echo $this->rate->shipping_rate_zip_end; ?>" />				
 			</td>
 		</tr>				
 		<tr>
@@ -78,7 +78,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_carrier_name" id="shipping_carrier_name" size="50" value="<?php echo $this->carrier->shipping_carrier_name; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_weight_start" id="shipping_rate_weight_start" size="10" value="<?php echo $this->rate->shipping_rate_weight_start; ?>" />				
 			</td>
 		</tr>					
 		<tr>
@@ -88,7 +88,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_carrier_list_order" id="shipping_carrier_list_order" size="3" value="<?php echo $this->carrier->shipping_carrier_list_order; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_weight_end" id="shipping_rate_weight_end" size="10" value="<?php echo $this->rate->shipping_rate_weight_end; ?>" />				
 			</td>
 		</tr>
 		<tr>
@@ -98,7 +98,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_carrier_name" id="shipping_carrier_name" size="50" value="<?php echo $this->carrier->shipping_carrier_name; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_value" id="shipping_rate_value" size="10" value="<?php echo $this->rate->shipping_rate_value; ?>" />				
 			</td>
 		</tr>					
 		<tr>
@@ -108,7 +108,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_carrier_list_order" id="shipping_carrier_list_order" size="3" value="<?php echo $this->carrier->shipping_carrier_list_order; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_package_fee" id="shipping_rate_package_fee" size="3" value="<?php echo $this->rate->shipping_rate_package_fee; ?>" />				
 			</td>
 		</tr>	
 		<tr>
@@ -118,7 +118,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_carrier_name" id="shipping_carrier_name" size="50" value="<?php echo $this->carrier->shipping_carrier_name; ?>" />				
+				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'shipping_rate_currency_id', '', 'currency_id', 'currency_name', $this->rate->shipping_rate_currency_id); ?>							
 			</td>
 		</tr>					
 		<tr>
@@ -128,7 +128,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_carrier_list_order" id="shipping_carrier_list_order" size="3" value="<?php echo $this->carrier->shipping_carrier_list_order; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_vat_id" id="shipping_rate_vat_id" size="3" value="<?php echo $this->rate->shipping_rate_vat_id; ?>" />				
 			</td>
 		</tr>										
 	</table>
