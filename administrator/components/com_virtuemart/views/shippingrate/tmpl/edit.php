@@ -108,7 +108,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_rate_package_fee" id="shipping_rate_package_fee" size="3" value="<?php echo $this->rate->shipping_rate_package_fee; ?>" />				
+				<input class="inputbox" type="text" name="shipping_rate_package_fee" id="shipping_rate_package_fee" size="10" value="<?php echo $this->rate->shipping_rate_package_fee; ?>" />				
 			</td>
 		</tr>	
 		<tr>
@@ -128,7 +128,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="shipping_rate_vat_id" id="shipping_rate_vat_id" size="3" value="<?php echo $this->rate->shipping_rate_vat_id; ?>" />				
+				<?php echo JHTML::_('Select.genericlist', $this->taxRates, 'shipping_rate_vat_id', '', 'tax_rate_id', 'tax_rate', $this->rate->shipping_rate_vat_id); ?>											
 			</td>
 		</tr>										
 	</table>

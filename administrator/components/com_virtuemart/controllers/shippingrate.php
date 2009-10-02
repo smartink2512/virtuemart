@@ -55,7 +55,11 @@ class VirtuemartControllerShippingRate extends JController
 		$model3 =& $this->getModel('currency');
 		if (!JError::isError($model3)) {
 			$view->setModel($model3, false);
-		}				
+		}	
+		$model =& $this->getModel('taxrate');
+		if (!JError::isError($model)) {
+			$view->setModel($model, false);
+		}					
 	}
 	
 	/**
