@@ -17,6 +17,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 */
 
 /* Load the configuration file */
+// Quickfix by Harry Patterson: 
+global $mosConfig_absolute_path;
+$mosConfig_absolute_path=JPATH_ROOT.DS;
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php');
 
 // Require the base controller
