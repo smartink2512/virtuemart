@@ -114,6 +114,9 @@ class VirtueMartModelShippingRate extends JModel
   		if (empty($this->_data)) {
    			$this->_data = $this->getTable('shipping_rate');
    			$this->_data->load((int)$this->_id);
+   			
+   			// Convert ; seperated string into array
+   			$this->_data->shipping_rate_country = explode(';', $this->_data->shipping_rate_country);
   		}
   
   		if (!$this->_data) {
@@ -137,6 +140,12 @@ class VirtueMartModelShippingRate extends JModel
 		$table =& $this->getTable('shipping_rate');
 
 		$data = JRequest::get( 'post' );		
+		
+		// Store multiple selectlist entries as a ; seperated string
+        if (key_exists('shipping_rate_country', $data) && is_array($data['shipping_rate_country'])) {
+                $data['shipping_rate_country'] = implode(';', $data['shipping_rate_country']);
+        }
+		
 		// Bind the form fields to the shipping rate table
 		if (!$table->bind($data)) {		    
 			$this->setError($table->getError());
@@ -195,8 +204,9 @@ class VirtueMartModelShippingRate extends JModel
 	 */
 	function getShippingRates()
 	{		
-		$query = 'SELECT * FROM `#__vm_shipping_rate` ';
-		$query .= 'ORDER BY `#__vm_shipping_rate`.`shipping_rate_id`';
+		$query = 'SELECT sr.*, sc.shipping_carrier_name FROM `#__vm_shipping_rate` AS sr ';
+		$query .= 'JOIN `#__vm_shipping_carrier` AS sc ON `sc`.`shipping_carrier_id` = `sr`.`shipping_rate_carrier_id`';
+		$query .= 'ORDER BY `sr`.`shipping_rate_id`';		
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}

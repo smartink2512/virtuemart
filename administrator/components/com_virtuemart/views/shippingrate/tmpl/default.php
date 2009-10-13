@@ -53,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_($row->shipping_rate_id); ?>
 				</td>			            
 				<td align="left">
-					<?php echo JText::_($row->shipping_rate_carrier_id); ?>
+					<?php echo JText::_($row->shipping_carrier_name); ?>
 				</td>					
 				<td align="left">
 					<?php echo JHTML::_('link', $editlink, JText::_($row->shipping_rate_name)); ?>

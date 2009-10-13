@@ -185,7 +185,9 @@ class VirtueMartModelTaxRate extends JModel {
 	 */
 	function getTaxRates() {
 		$db = JFactory::getDBO();
-		$query = 'SELECT * FROM `#__vm_tax_rate`';
+		$query = 'SELECT *, ';
+		$query .= 'CONCAT("(", `#__vm_tax_rate`.`tax_rate_id`, ") ", FORMAT(`#__vm_tax_rate`.`tax_rate`*100, 2)) AS select_list_name ';
+		$query .= 'FROM `#__vm_tax_rate`';
 
 		$db->setQuery($query);
 		return $db->loadObjectList();

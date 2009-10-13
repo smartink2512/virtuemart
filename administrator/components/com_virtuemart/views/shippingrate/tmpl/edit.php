@@ -48,7 +48,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->countries, 'shipping_rate_country', 'multiple size=5', 'country_id', 'country_name', $this->rate->shipping_rate_country); ?>			
+				<?php echo JHTML::_('Select.genericlist', $this->countries, 'shipping_rate_country[]', 'multiple size=10', 'country_3_code', 'country_name', $this->rate->shipping_rate_country); ?>			
 			</td>
 		</tr>		
 		<tr>
@@ -128,7 +128,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->taxRates, 'shipping_rate_vat_id', '', 'tax_rate_id', 'tax_rate', $this->rate->shipping_rate_vat_id); ?>											
+				<?php echo JHTML::_('Select.genericlist', $this->taxRates, 'shipping_rate_vat_id', '', 'tax_rate_id', 'select_list_name', $this->rate->shipping_rate_vat_id); ?>											
 			</td>
 		</tr>										
 	</table>

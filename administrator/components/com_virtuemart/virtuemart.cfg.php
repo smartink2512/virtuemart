@@ -95,7 +95,7 @@ define('FLYPAGE', 'flypage.tpl');
 define('PRODUCTS_PER_ROW', '1');
 define('ERRORPAGE', 'shop.error');
 define('NO_IMAGE', 'noimage.gif');
-define('DEBUG', '1');
+define('DEBUG', '0');
 define('SHOWVERSION', '1');
 define('TAX_VIRTUAL', '1');
 define('TAX_MODE', '1');
