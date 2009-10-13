@@ -180,20 +180,14 @@ class VirtueMartModelShippingRate extends JModel
     	$table =& $this->getTable('shipping_rate');
  
     	foreach($shippingCarrierIds as $shippingCarrierId) {
-    		if ($this->deleteShippingCarrierRates($shippingCarrierId)) {
-        		if (!$table->delete($shippingCarrierId)) {
-            		$this->setError($table->getError());
-            		return false;
-        		}
-        	}
-        	else {
-        		$this->setError('Could not remove shipping rate rates!');
-        		return false;
+    		if (!$table->delete($shippingCarrierId)) {
+            	$this->setError($table->getError());
+            	return false;
         	}        	
     	}
  
     	return true;	
-	}			
+	}				
 	
 	
 	/**
