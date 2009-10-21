@@ -21,7 +21,7 @@
 	<install>
 		<sql>
 			<file charset="utf8" driver="mysql">install/install.sql</file>
-			<file charset="utf8" driver="mysql">install/install_required_data.sql</file>
+			<file charset="utf8" driver="mysql">install/install_essential_data.sql</file>
 		</sql>
 	</install>
 	

@@ -21,10 +21,10 @@ function com_install(){
 	
 	require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'updatesMigrationHelper.php');
 	$vmInstaller = new updatesMigrationHelper;
-	$vmInstaller -> determineAlreadyInstalledVersion;
+	$vmInstaller -> determineAlreadyInstalledVersion();
 	echo('Already installed version : '.$vmInstaller -> oldVersion.'   that works,.. why?<br />');
-	$vmInstaller -> determineStoreOwner;
-	$idStoreOwner = $vmInstaller -> determineStoreOwner;
+	//$vmInstaller -> determineStoreOwner;
+	$idStoreOwner = $vmInstaller -> determineStoreOwner();
 	echo('Does not work? Why? $idStoreOwner : '.$idStoreOwner.'<br />');
 	echo('Does not work? $vmInstaller -> idStoreOwner : '.$vmInstaller -> idStoreOwner.'<br />');
 	
@@ -37,11 +37,11 @@ function com_install(){
 	$vmInstaller -> userUserName = $user->username;
 	$vmInstaller -> userName = $user->name;
 
-
 	$linkUpdate =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMigration&view=updatesMigration');	
 	$linkFresh =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMigration&view=updatesMigration&task=freshInstall');
 	$linkSample=JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMigration&view=updatesMigration&task=freshInstallSample');
 	$linkEssentials=JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMigration&view=updatesMigration&task=InstallEssentials');
+
 
 	include(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install.virtuemart.html.php');
 

@@ -12,7 +12,7 @@
  
  class updatesMigrationHelper {
 	
-		private $db;
+//	private $db;
    	public	$storeOwnerId = "62";
 		public	$userUserName = "not found";
 		public	$userName = "not found";
@@ -20,6 +20,7 @@
 	 	
     function __construct(){
 			$this->db = &JFactory::getDBO();
+			
 		}
 		
 	function determineAlreadyInstalledVersion(){
@@ -55,18 +56,36 @@
 		return $id;
 	}
 	
+	//Notice: main part of this function should be moved to vendorhelper
 	function setStoreOwner($userId=0){
-
+		
 		if(empty($userId)){
-			$userId =	$this ->determineStoreOwner();
+			$userId = $this ->determineStoreOwner();
+		}
+		JError::raiseNotice(1, 'setStoreOwner '.$userId);
+		$db = JFactory::getDBO();
+		$oldUserId	="";		
+		$db->setQuery('SELECT `user_id` FROM  `#__vm_auth_user_vendor` WHERE `user_id`=' . (int)$userId .' ');
+		$db->query();
+		$oldUserId = $db->loadResult();
+		if(!isset($oldUserId)) {	
+			$db->setQuery( 'INSERT `#__vm_auth_user_vendor` (`user_id`, `vendor_id`) VALUES ("'.$userId.'", "1")' );
+			if($db->query() === false ) {
+				JError::raiseNotice(1, 'setStoreOwner '.$userId.' was not possible to execute INSERT __vm_auth_user_vendor');
+			}
+		}else{
+			$db->setQuery( 'UPDATE `#__vm_auth_user_vendor` SET `user_id` ="'.$userId.'" WHERE `vendor_id` = "1" ');
+			if($db->query() === false ) {
+				JError::raiseNotice(1, 'setStoreOwner '.$userId.' was not possible to execute UPDATE '.$oldUserId.' query __vm_auth_user_vendor');
+			}else{
+				JError::raiseNotice(1, 'StoreOwner changed to user with id = '.$userId);
+			}
 		}
 		
-		$db = JFactory::getDBO();
-		$db->setQuery( 'INSERT `#__vm_auth_user_vendor` (`user_id`, `vendor_id`) VALUES ("'.$userId.'", "1")' );
-		$db->query();
-		$db->setQuery( "UPDATE `#__vm_user_info` SET `user_is_vendor` = '1' WHERE `user_id` ='".$userId."' ") ;
-		$db->query();
+		$db->setQuery( 'UPDATE `#__vm_user_info` SET `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'"');
+//		$db->query();
 		if($db->query() === false ) {
+			JError::raiseNotice(1, 'setStoreOwner failed Update. User with id = '.$userId.' not found in table');
 			return 0;
 		}else{
 			return $this -> storeOwnerId;
@@ -80,17 +99,25 @@
 		 * Well, because we add them here.
 		 */
 		$db = JFactory::getDBO();
-		$db->setQuery( "SELECT `id`, `registerDate`, `lastvisitDate` FROM `#__users`"); 
+		$db->setQuery( "SELECT `id`, `registerDate`, `lastvisitDate` FROM `#__users`");
+		if($db->query() === false ) {
+			JError::raiseNotice(1, 'integrateJUsers was not possible to execute load JUserlist');
+		}
 		$row = $db->loadObjectList();
 	
 		foreach( $row as $user) {
-			?><pre><?php //print_r($user); ?></pre><?php
+			?><pre><?php print_r($user); ?></pre><?php
 			echo (' </br>');
 			$db->setQuery( "INSERT INTO `#__vm_shopper_vendor_xref` VALUES ('".$user->id."', '1', '5', '')" );
-			$db->query();
+//			$db->query();
+			if($db->query() === false ) {
+				JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_shopper_vendor_xref FAILED' );
+			}
 			$db->setQuery( "INSERT INTO `#__vm_user_info` (`user_info_id`,`user_id`, `address_type`,`cdate`,`mdate` )
 						VALUES( '".md5(uniqid('virtuemart'))."','".$user->id."','BT', UNIX_TIMESTAMP('".$user->registerDate."'),UNIX_TIMESTAMP('".$user->lastvisitDate."'))" );
-			$db->query();
+			if($db->query() === false ) {
+				JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_info FAILED' );
+			}
 		}
 	}
 
@@ -114,34 +141,106 @@
 		$db->query();
 	}
 	
-	function installTables(){
-		$db = JFactory::getDBO();
-		$db->setQuery(include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS."install.sql"));
-		if($db->query() === false ) {
-			JError::raiseNotice(1, 'installTables Query error ');
-		}else{
-			JError::raiseNotice(1, 'installed Tables');
-		}
-		parent::display();
-	}
+//	function installTables(){
+//		
+//		$db = JFactory::getDBO();
+//		$db->setQuery(include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS."install.sql"));
+//		if($db->query() === false ) {
+//			JError::raiseNotice(1, 'installTables Query error ');
+//		}else{
+//			JError::raiseNotice(1, 'installed Tables');
+//		}
+//		//parent::display();
+//	}
 
-	function installRequiredData(){
-		$db = JFactory::getDBO();
-		$db->setQuery(include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS."install_required_data.sql"));
-		if($db->query() === false ) {
-			JError::raiseNotice(1, 'installRequiredTables Query error ');
-		}else{
-			JError::raiseNotice(1, 'installed required Data');
-		}
-		parent::display();
+//	function installRequiredData(){
+//		JError::raiseNotice(1, 'installRequiredData');
+//		$db = JFactory::getDBO();
+//		$db->setQuery(include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS."install_required_data.sql"));
+//		if($db->query() === false ) {
+//			JError::raiseNotice(1, 'installRequiredTables Query error ');
+//		}else{
+//			JError::raiseNotice(1, 'installed required Data');
+//		}
+//		//parent::display();
+//	}
+
+	function populateVmDatabase($sqlfile){
+	
+				// Check that sql files exists before reading. Otherwise raise error for rollback
+				if ( !file_exists( JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS.$sqlfile ) ) {
+					return false;
+				}
+				$buffer = file_get_contents(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS.$sqlfile);
+
+				// Graceful exit and rollback if read not successful
+				if ( $buffer === false ) {
+					return false;
+				}
+
+				// Create an array of queries from the sql file
+				jimport('joomla.installer.helper');
+				$queries = JInstallerHelper::splitSql($buffer);
+
+				if (count($queries) == 0) {
+					// No queries to process
+					return 0;
+				}
+				$db = JFactory::getDBO();
+				// Process each query in the $queries array (split out of sql file).
+				foreach ($queries as $query)
+				{
+					$query = trim($query);
+					if ($query != '' && $query{0} != '#') {
+						$db->setQuery($query);
+						if (!$db->query()) {
+							JError::raiseWarning(1, 'JInstaller::install: '.JText::_('SQL Error')." ".$db->stderr(true));
+							return false;
+						}
+					}
+				}
 	}
+	
+	
+	function populateVmDatabaseOLD($fileName){
+	
+		$db = JFactory::getDBO();
+		$dbsample = JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS.$fileName;
+		jimport('joomla'.DS.'installer'.DS.'helper.php');
+	
+	//	require_once($backendPath.DS.'install'.DS.'helper.php');
+		$errors=null;
+		$result = JInstallationHelper::populateDatabase($db, $dbsample, $errors);
+		
+		/*
+		 * prepare sql error messages if returned from populate
+		 */
+		if (!is_null($errors)){
+			foreach($errors as $error){
+				$msg .= stripslashes( $error['msg'] );
+				$msg .= chr(13)."-------------".chr(13);
+				$txt = '<textarea cols="35" rows="5" name="instDefault" readonly="readonly" >'.('Database Errors Reported').chr(13).$msg.'</textarea>';
+			}
+			echo('Installer Result: '.$txt);
+			return false;
+		} else {
+			// consider other possible errors from populate
+			$msg = $result == 0 ? ("Sample data installed successfully") : ("Error installing SQL script") ;
+			$txt = '<input size="35" name="instDefault" value="'.$msg.'" readonly="readonly" />';
+			echo('Installer Result: '.$txt);
+			return true;
+		}
+			
+	}
+	
+
 		
 	function installSample($user_id=null){
 	
 		if($user_id==null){
 			$user_id = $this -> storeOwnerId;
 		}
-		
+		JError::raiseNotice(1, 'installSample '.$user_id);
 		$backendPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'; 
 			//Add store information
 		require_once($backendPath.DS."virtuemart.cfg.php" );
@@ -197,84 +296,85 @@
 		
 		ps_vendor::setVendorInfo($fields,1,$user_id);
 		
-		//	function installSample(){
-		$db = JFactory::getDBO();
-		$db->setQuery( include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS."install_sample_data.sql"));
-		if($db->query() === false ) {
-			JError::raiseNotice(1, 'Install Sample Data Query error ');
-			return false;
-		}
+		$this -> populateVmDatabase("install_sample_data.sql");
+//		//	function installSample(){
+//		$db = JFactory::getDBO();
+//		$db->setQuery( include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS."install_sample_data.sql"));
+//		if($db->query() === false ) {
+//			JError::raiseNotice(1, 'Install Sample Data Query error ');
+//			return false;
+//		}
 		
 	}
 	
 	
 	function installVM15(){
-		
-		@ini_set( 'memory_limit', '32M' );
-	  	//echo('Start with VirtueM installation script </br>');
-	    $frontendPath = JPATH_ROOT.DS.'components'.DS.'com_virtuemart';
-	    $backendPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart';    
-	    $installOk = true;
-    
-		$db = JFactory::getDBO();
-		$db->setQuery( include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS."install.sql"));
-		
-		if($db->query() === false ) {
-			JError::raiseNotice(1, 'updateVM10to11 Query error ');
-			return false;
-		}else{
-			$db->setQuery(include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS."install_required_data.sql"));
-			if($db->query() === false ) {
-				JError::raiseNotice(1, 'updateVM10to11 Query error ');
-				return false;
-			}
-		}
-		
-	    //Handles the ID of the shopowner, here set to the logged in joomla user
-		/**
-		 * You wonder why users are visible in VirtueMart after installation?
-		 * Well, because we add them here.
-		 */
-		$db->setQuery( "SELECT `id`, `registerDate`, `lastvisitDate` FROM `#__users`"); 
-		$row = $db->loadObjectList();
-		
-		foreach( $row as $user) {
+//		
+//		@ini_set( 'memory_limit', '32M' );
+//	  	//echo('Start with VirtueM installation script </br>');
+//	    $frontendPath = JPATH_ROOT.DS.'components'.DS.'com_virtuemart';
+//	    $backendPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart';    
+//	    $installOk = true;
+//    
+//		$db = JFactory::getDBO();
+//		$db->setQuery( include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS."install.sql"));
+//		
+//		if($db->query() === false ) {
+//			JError::raiseNotice(1, 'updateVM10to11 Query error ');
+//			return false;
+//		}else{
+//			$db->setQuery(include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS."install_required_data.sql"));
+//			if($db->query() === false ) {
+//				JError::raiseNotice(1, 'updateVM10to11 Query error ');
+//				return false;
+//			}
+//		}
+//		
+//	    //Handles the ID of the shopowner, here set to the logged in joomla user
+//		/**
+//		 * You wonder why users are visible in VirtueMart after installation?
+//		 * Well, because we add them here.
+//		 */
+//		$db->setQuery( "SELECT `id`, `registerDate`, `lastvisitDate` FROM `#__users`"); 
+//		$row = $db->loadObjectList();
+//		
+//		foreach( $row as $user) {
 		?><pre><?php //print_r($user); ?></pre><?php
-//		echo (' </br>');
-			$db->setQuery( "INSERT INTO `#__vm_shopper_vendor_xref` VALUES ('".$user->id."', '1', '5', '')" );
-			$db->query();
-			$db->setQuery( "INSERT INTO `#__vm_user_info` (`user_info_id`,`user_id`, `address_type`,`cdate`,`mdate` )
-							VALUES( '".md5(uniqid('virtuemart'))."','".$user->id."','BT', UNIX_TIMESTAMP('".$user->registerDate."'),UNIX_TIMESTAMP('".$user->lastvisitDate."'))" );
-			$db->query();
-		}
-	
-		# Set Admin Xref to vendor_id = 1
-		$user = JFactory::getUser();
-		$userId = $user->id;
-		$userUserName = $user->username;
-		$userName = $user->name;
-		$db->setQuery( 'INSERT `#__vm_auth_user_vendor` (`user_id`, `vendor_id`) VALUES ("'.$userId.'", "1")' );
-		$db->query();
-		$db->setQuery( "UPDATE `#__vm_user_info` SET `user_is_vendor` = '1' WHERE `user_id` ='".$userId."' ") ;
-		$db->query();
-	//	echo('ID of Storeadmin: '.$userId. '  </br>');
-		 
-		# insert the user <=> group relationship
-		$db->setQuery( "INSERT INTO `#__vm_auth_user_group` 
-					SELECT user_id, 
-						CASE `perms` 
-						    WHEN 'admin' THEN 0
-						    WHEN 'storeadmin' THEN 1
-						    WHEN 'shopper' THEN 2
-						    WHEN 'demo' THEN 3
-						    ELSE 2 
-						END
-					FROM #__vm_user_info
-					WHERE address_type='BT' ");
-		$db->query();
-		
-		$db->setQuery( "UPDATE `#__vm_auth_user_group` SET `group_id` = '0' WHERE `user_id` ='".$userId."' ") ;
-		$db->query();
+////		echo (' </br>');
+//			$db->setQuery( "INSERT INTO `#__vm_shopper_vendor_xref` VALUES ('".$user->id."', '1', '5', '')" );
+//			$db->query();
+//			$db->setQuery( "INSERT INTO `#__vm_user_info` (`user_info_id`,`user_id`, `address_type`,`cdate`,`mdate` )
+//							VALUES( '".md5(uniqid('virtuemart'))."','".$user->id."','BT', UNIX_TIMESTAMP('".$user->registerDate."'),UNIX_TIMESTAMP('".$user->lastvisitDate."'))" );
+//			$db->query();
+//		}
+//	
+//		# Set Admin Xref to vendor_id = 1
+//		$user = JFactory::getUser();
+//		$userId = $user->id;
+//		$userUserName = $user->username;
+//		$userName = $user->name;
+//		$db->setQuery( 'INSERT `#__vm_auth_user_vendor` (`user_id`, `vendor_id`) VALUES ("'.$userId.'", "1")' );
+//		$db->query();
+//		$db->setQuery( "UPDATE `#__vm_user_info` SET `user_is_vendor` = '1' WHERE `user_id` ='".$userId."' ") ;
+//		$db->query();
+//	//	echo('ID of Storeadmin: '.$userId. '  </br>');
+//		 
+//		# insert the user <=> group relationship
+//		$db->setQuery( "INSERT INTO `#__vm_auth_user_group` 
+//					SELECT user_id, 
+//						CASE `perms` 
+//						    WHEN 'admin' THEN 0
+//						    WHEN 'storeadmin' THEN 1
+//						    WHEN 'shopper' THEN 2
+//						    WHEN 'demo' THEN 3
+//						    ELSE 2 
+//						END
+//					FROM #__vm_user_info
+//					WHERE address_type='BT' ");
+//		$db->query();
+//		
+//		$db->setQuery( "UPDATE `#__vm_auth_user_group` SET `group_id` = '0' WHERE `user_id` ='".$userId."' ") ;
+//		$db->query();
 	}
 	
 }

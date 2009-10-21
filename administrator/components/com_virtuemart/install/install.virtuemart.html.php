@@ -53,21 +53,21 @@
 									if($vmInstaller -> oldVersion=="fresh"){
 										?>
 										<td width="40%">&nbsp;
-											<a name="Button1" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" class="button" title="Install a fresh Shop &gt;&gt;" href="<?php $linkFresh?>">Install required data for a fresh shop &gt;&gt;</a>
+											<a name="Button1" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" class="button" title="Install a fresh Shop &gt;&gt;" href="<?php echo $linkFresh?>">Install required data for a fresh shop &gt;&gt;</a>
 										</td>
 										<td width="20">&nbsp;</td>
 										<td width="40">
-											<a name="Button2" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" class="button" title="Install SAMPLE DATA &gt;&gt;" href="<?php $linkSample?>">Install required and sample data for a example shop &gt;&gt;</a>
+											<a name="Button2" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" class="button" title="Install SAMPLE DATA &gt;&gt;" href="<?php echo $linkSample?>">Install required and sample data for a example shop &gt;&gt;</a>
 										</td>	
 									<?php }else if($vmInstaller -> oldVersion=="1.5"){?>
 										<td width="80%">
-											<a name="Button3" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" class="button" title="Do nothing and go to the shop &gt;&gt;" href="<?php $linkFresh?>">Do nothing and go to the shop &gt;&gt;</a>
+											<a name="Button3" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" class="button" title="Do nothing and go to the shop &gt;&gt;" href="<?php echo $linkFresh?>">Do nothing and go to the shop &gt;&gt;</a>
 										</td>	
 									<?php }else{
 										//TODO: at least the table admin_menu must be created or maybe some more
 										?>						
 										<td width="80%">&nbsp;
-											<a name="Button4" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" class="button" title="Go directly to the Update/Migration &gt;&gt;" href="<?php $linkEssentials?>">Go directly to the Update/Migration &gt;&gt;</a>
+											<a name="Button4" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" class="button" title="Go directly to the Update/Migration &gt;&gt;" href="<?php echo $linkEssentials?>">Go directly to the Update/Migration &gt;&gt;</a>
 										</td>											
 										<?php
 									}

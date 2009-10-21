@@ -1,10 +1,10 @@
 <?php
 /**
- * Country View
+ * UpdatesMigration View
  *
  * @package	VirtueMart
  * @subpackage Country
- * @author Rick Glunt
+ * @author Max Milbers
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 

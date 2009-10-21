@@ -50,10 +50,10 @@ class VirtuemartControllerUpdatesMigration extends JController{
 			$view->setModel($model, true);
 		}			
 		
-		if(empty($this -> installer){
+		if(empty($this -> installer)){
 			if(empty($vmInstaller)){
-				echo('Global $vmInstaller == null');
-				JError::raiseNotice(1, 'Global $vmInstaller == null');
+				//echo('Global $vmInstaller == null');
+				//JError::raiseNotice(1, 'Global $vmInstaller == null');
 				require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'updatesMigrationHelper.php');
 				$this -> installer = new updatesMigrationHelper;
 			}else{
@@ -76,37 +76,52 @@ class VirtuemartControllerUpdatesMigration extends JController{
 	}
 	
 
-	function freshInstall(){
-	
-		$this -> installer -> installTables;
-		$this -> installer -> installRequiredData;
+	function freshInstall($display=true){
+		JError::raiseNotice(1, 'freshInstall ');
+	//	$this -> installer -> installTables;
+		$this -> installer -> populateVmDatabase("install_required_data.sql");
 		
-		$this -> installer -> integrateJUsers;
-		$this -> installer -> setStoreOwner;
-		$this -> installer -> setUserToShopperGroup;
+		$this -> installer -> integrateJUsers();
+		
+		$user = JFactory::getUser();
+		$id = $user -> id;
+		$this -> installer -> setStoreOwner($id);
+		$this -> installer -> setUserToShopperGroup();
+		if($display){
+			parent::display();		
+		}
 
 	}
 	
 	function freshInstallSample(){
-		$this -> freshInstall;
-		$this -> installer -> installSample;
+		JError::raiseNotice(1, 'freshInstallSample ');
+		$this -> freshInstall(false);
+		$this -> installer -> installSample();
+		parent::display();
 	}
 	
 	function updateVM10to11(){
-		$db = JFactory::getDBO();
-		$db->setQuery(include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS.migration.DS."UPDATE-SCRIPT_VM_1.0.x_to_1.1.0.sql"));
-		if($db->query() === false ) {
-			JError::raiseNotice(1, 'updateVM10to11 Query error ');
-		}
+		
+		$this -> installer -> populateVmDatabase(migration.DS."UPDATE-SCRIPT_VM_1.0.x_to_1.1.0.sql");
+		
+//		$db = JFactory::getDBO();
+//		
+//		$db->setQuery(include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS.migration.DS."UPDATE-SCRIPT_VM_1.0.x_to_1.1.0.sql"));
+//		if($db->query() === false ) {
+//			JError::raiseNotice(1, 'updateVM10to11 Query error ');
+//		}
 		parent::display();
 	}
 	
 	function updateVM11to15(){
-		$db = JFactory::getDBO();
-		$db->setQuery(include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS.migration.DS."UPDATE-SCRIPT_VM_1.1.x_to_1.5.0.sql"));
-		if($db->query() === false ) {
-			JError::raiseNotice(1, 'updateVM11to15 Query error ');
-		}
+		
+		$this -> installer -> populateVmDatabase(migration.DS."UPDATE-SCRIPT_VM_1.1.x_to_1.5.0.sql");
+		
+//		$db = JFactory::getDBO();
+//		$db->setQuery(include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS.migration.DS."UPDATE-SCRIPT_VM_1.1.x_to_1.5.0.sql"));
+//		if($db->query() === false ) {
+//			JError::raiseNotice(1, 'updateVM11to15 Query error ');
+//		}
 		parent::display();
 	}
 }
