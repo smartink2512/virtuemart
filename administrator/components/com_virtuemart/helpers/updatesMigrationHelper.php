@@ -65,8 +65,91 @@
 		return $id;
 	}
 	
-	//Notice: main part of this function should be moved to vendorhelper
 	function setStoreOwner($userId=0){
+		
+		if(empty($userId)){
+			$userId = $this ->determineStoreOwner();
+		}
+		
+		$oldUserId	= "";
+		$oldVendorId = "";
+		
+		$db = JFactory::getDBO();
+		
+		$db->setQuery('SELECT * FROM  `#__vm_auth_user_vendor` WHERE `vendor_id`= "1" ');
+		$db->query();
+		$oldVendorId = $db->loadResult();
+		JError::raiseNotice(1, '$oldVendorId = '.$oldVendorId);
+		
+		$db->setQuery('SELECT * FROM  `#__vm_auth_user_vendor` WHERE `user_id`= "'.$userId.'" ');
+		$db->query();
+		$oldUserId = $db->loadResult();
+		JError::raiseNotice(1, '$oldUserId = '.$oldUserId);
+		
+		if(!isset($oldVendorId) && !isset($oldUserId)){
+			$db->setQuery( 'INSERT `#__vm_auth_user_vendor` (`user_id`, `vendor_id`) VALUES ("'.$userId.'", "1")' );
+			if($db->query() == false ) {
+				JError::raiseNotice(1, 'setStoreOwner '.$userId.' was not possible to execute INSERT __vm_auth_user_vendor');
+			} else {
+				JError::raiseNotice(1, 'setStoreOwner INSERT __vm_auth_user_vendor '.$userId);
+			}			
+		}else{
+			if(!isset($oldUserId)) {
+				$db->setQuery( 'UPDATE `#__vm_auth_user_vendor` SET `user_id` ="'.$userId.'" WHERE `vendor_id` = "1" ');
+			}else{
+				$db->setQuery( 'UPDATE `#__vm_auth_user_vendor` SET `vendor_id` = "1" WHERE `user_id` ="'.$userId.'" ');
+			}
+			if($db->query() == false ) {
+				
+			}
+		}
+	
+		$db->setQuery('SELECT `vendor_id` FROM  `#__vm_vendor` WHERE `vendor_id`= "1" ');
+		$db->query();
+		$oldVendorId = $db->loadResult();
+		JError::raiseNotice(1, '$oldVendorId = '.$oldVendorId);
+		if(!isset($oldVendorId)){
+			$db->setQuery( 'INSERT INTO `#__vm_vendor` (
+										`vendor_id` ,
+										`vendor_name` ,
+										`vendor_phone` ,
+										`vendor_store_name` ,
+										`vendor_store_desc` ,
+										`vendor_category_id` ,
+										`vendor_thumb_image` ,
+										`vendor_full_image` ,
+										`vendor_currency` ,
+										`cdate` ,
+										`mdate` ,
+										`vendor_image_path` ,
+										`vendor_terms_of_service` ,
+										`vendor_url` ,
+										`vendor_min_pov` ,
+										`vendor_freeshipping` ,
+										`vendor_currency_display_style` ,
+										`vendor_accepted_currencies` ,
+										`vendor_address_format` ,
+										`vendor_date_format`
+				) VALUES (
+"1", NULL , NULL , "", NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , "", "", NULL , "0.00", "", "", "", "");' );
+		} else {
+		//	$db->setQuery( 'UPDATE INTO `#__vm_vendor` SET `vendor_id` VALUES ("1")' );
+		}
+		$db->query();
+		
+		$db->setQuery( 'UPDATE `#__vm_user_info` SET `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'"');
+//		$db->query();
+		if($db->query() === false ) {
+			JError::raiseNotice(1, 'setStoreOwner failed Update. User with id = '.$userId.' not found in table');
+			return 0;
+		}else{
+			return $this -> storeOwnerId;
+		}
+	
+	}
+
+	//Notice: main part of this function should be moved to vendorhelper
+	function setStoreOwnerOld($userId=0){
 		
 		if(empty($userId)){
 			$userId = $this ->determineStoreOwner();
@@ -74,16 +157,18 @@
 		JError::raiseNotice(1, 'setStoreOwner '.$userId);
 		$db = JFactory::getDBO();
 		$oldUserId	="";		
-		$db->setQuery('SELECT `user_id` FROM  `#__vm_auth_user_vendor` WHERE `user_id`= "' . (int)$userId .'" ');
+		$db->setQuery('SELECT * FROM  `#__vm_auth_user_vendor` WHERE `vendor_id`= "1" ');
 		$db->query();
 		$oldUserId = $db->loadResult();
-		$insertVendor=false;
+//		$insertVendor=false;
+		JError::raiseNotice(1, '$oldUserId = '.$oldUserId);
 		if(!isset($oldUserId)) {	
 			$db->setQuery( 'INSERT `#__vm_auth_user_vendor` (`user_id`, `vendor_id`) VALUES ("'.$userId.'", "1")' );
-			if($db->query() === false ) {
+			if($db->query() == false ) {
 				JError::raiseNotice(1, 'setStoreOwner '.$userId.' was not possible to execute INSERT __vm_auth_user_vendor');
-			}
-			$insertVendor=true;
+			} else {
+				JError::raiseNotice(1, 'setStoreOwner INSERT __vm_auth_user_vendor '.$userId);
+			}		
 		}else{
 			$db->setQuery( 'UPDATE `#__vm_auth_user_vendor` SET `user_id` ="'.$userId.'" WHERE `vendor_id` = "1" ');
 			if($db->query() == false ) {
@@ -91,14 +176,13 @@
 			}else{
 				JError::raiseNotice(1, 'StoreOwner changed to user with id = '.$userId);
 			}
-			$db->setQuery('SELECT `vendor_id` FROM  `#__vm_vendor` WHERE `vendor_id`= "1" ');
-			$db->query();
-			$oldVendorId = $db->loadResult();
-			if(!isset($oldVendorId)) {
-				$insertVendor=true;
-			}
 		}
-		if($insertVendor){
+		
+		$db->setQuery('SELECT `vendor_id` FROM  `#__vm_vendor` WHERE `vendor_id`= "1" ');
+		$db->query();
+		$oldVendorId = $db->loadResult();
+		JError::raiseNotice(1, '$oldVendorId = '.$oldVendorId);
+		if(empty($oldVendorId)){
 			$db->setQuery( 'INSERT `#__vm_vendor` `vendor_id` VALUES ("1")' );
 			$db->query();
 		}
@@ -127,8 +211,6 @@
 		$row = $db->loadObjectList();
 	
 		foreach( $row as $user) {
-			?><pre><?php print_r($user); ?></pre><?php
-			echo (' </br>');
 			$db->setQuery( "INSERT INTO `#__vm_shopper_vendor_xref` VALUES ('".$user->id."', '1', '5', '')" );
 //			$db->query();
 			if($db->query() == false ) {
@@ -204,15 +286,8 @@
 		if($user_id==null){
 			$user_id = $this -> storeOwnerId;
 		}
-//		JError::raiseNotice(1, 'installSample '.$user_id);
-//		$backendPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'; 
-//			//Add store information
-//		require_once($backendPath.DS."virtuemart.cfg.php" );
-//		require_once($backendPath.DS."classes".DS."vmAbstractObject.class.php");
-//		require_once($backendPath.DS."classes".DS."ps_main.php");
 		$vmLogIdentifier = 'VirtueMart';
-//		require_once($backendPath.DS."classes".DS."Log".DS."LogInit.php");
-//
+
 		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_database.php");
 		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_vendor.php");
 		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_user.php");
@@ -258,7 +333,7 @@
 		
 		$fields['vendor_name'] =  "Washupito";
 		
-		ps_vendor::setVendorInfo($fields,0,$user_id);
+		ps_vendor::setVendorInfo($fields,1,$user_id);
 		
 //		$this -> populateVmDatabase("install_sample_data.sql");
 	}
