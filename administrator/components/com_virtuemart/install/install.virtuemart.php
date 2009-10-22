@@ -38,12 +38,7 @@ function com_install(){
 
 function com_uninstall(){
 
-	require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'updatesMigrationHelper.php');
-	$vmInstaller = new updatesMigrationHelper;
-	$linkDeleteALL =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMigration&view=updatesMigration&task=deleteAll');
-	$linkDeleteOnlyRestorable =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMigration&view=updatesMigration&task=deleteRestorable');
-	$linkDoNothing =JROUTE::_('index2.php');
-	include(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall.virtuemart.html.php');
+
 }
 
 ?>

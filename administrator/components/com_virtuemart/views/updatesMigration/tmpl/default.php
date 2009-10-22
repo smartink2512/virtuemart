@@ -13,6 +13,10 @@ AdminMenuHelper::startAdminArea();
 		$installSampleLink = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=installSample&view=updatesMigration');
 		$updateVMTables10to11Link = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=updateVMTables10to11&view=updatesMigration');
 		$updateVMTables11to15Link = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=updateVMTables11to15&view=updatesMigration');
+
+		$linkDeleteALL =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMigration&view=updatesMigration&task=deleteAll');
+		$linkDeleteOnlyRestorable =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMigration&view=updatesMigration&task=deleteRestorable');
+		$linkDoNothing =JROUTE::_('index2.php');
 ?>
       	
 		<table class="adminlist">
@@ -40,7 +44,12 @@ AdminMenuHelper::startAdminArea();
 		<br />
 		<a href="<?php echo $updateVMTables11to15Link; ?>">Execute Update Tables 1.1 - 1.5</a><br />
 		<br />
-
+		<p><?php echo JText::_('VM_DELETE_GENERAL_WARNING'); ?></p>
+		<br />
+		<a href="<?php echo $linkDeleteALL; ?>">Uninstall All</a><br />
+		<br />
+		<a href="<?php echo $linkDeleteOnlyRestorable; ?>">Install SampleData</a><br />
+		
 		<?php
 		echo $this->pane->endPanel();
 		

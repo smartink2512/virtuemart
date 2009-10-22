@@ -25,13 +25,6 @@
 		</sql>
 	</install>
 	
-	<!-- Uninstall SQL queries -->
-	<uninstall>
-		<sql>
-			<file charset="utf8" driver="mysql">install/uninstall.sql</file>
-		</sql>
-	</uninstall>
-	
 	<!-- Site Main File Copy Section -->
 	<files folder="components/com_virtuemart">
 		<filename>controller.php</filename>

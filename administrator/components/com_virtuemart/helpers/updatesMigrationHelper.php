@@ -30,13 +30,22 @@
 		$db = JFactory::getDBO();
 		$db->setQuery( 'SELECT * FROM #__vm_country WHERE `country_id`="1" ');
 		if($db->query() == true ) {
-			$this -> oldVersion = "1.0";
-			$db->setQuery( 'SELECT * FROM #__vm_auth_user_group WHERE `user_id`="'.$this -> storeOwnerId.'" ');
-			if($db->query() == true ) {
-				$this -> oldVersion = "1.1";
-				$db->setQuery( 'SELECT * FROM #__vm_menu_admin ');
+			$country1 = $db->loadResult();
+			if(isset($country1)){
+				$this -> oldVersion = "1.0";
+				$db->setQuery( 'SELECT * FROM #__vm_auth_user_group WHERE `user_id`="'.$this -> storeOwnerId.'" ');
 				if($db->query() == true ) {
-					$this -> oldVersion = "1.5";
+					$authUser = $db->loadResult();
+					if(isset($authUser)){
+						$this -> oldVersion = "1.1";
+						$db->setQuery( 'SELECT * FROM #__vm_menu_admin WHERE `id`= "10" ');
+						if($db->query() == true ) {
+							$menuAdmin = $db->loadResult();
+							if(isset($menuAdmin)){
+								$this -> oldVersion = "1.5";
+							}
+						}
+					}
 				}
 			}
 		}
@@ -79,12 +88,12 @@
 		$db->setQuery('SELECT * FROM  `#__vm_auth_user_vendor` WHERE `vendor_id`= "1" ');
 		$db->query();
 		$oldVendorId = $db->loadResult();
-		JError::raiseNotice(1, '$oldVendorId = '.$oldVendorId);
+//		JError::raiseNotice(1, '$oldVendorId = '.$oldVendorId);
 		
 		$db->setQuery('SELECT * FROM  `#__vm_auth_user_vendor` WHERE `user_id`= "'.$userId.'" ');
 		$db->query();
 		$oldUserId = $db->loadResult();
-		JError::raiseNotice(1, '$oldUserId = '.$oldUserId);
+//		JError::raiseNotice(1, '$oldUserId = '.$oldUserId);
 		
 		if(!isset($oldVendorId) && !isset($oldUserId)){
 			$db->setQuery( 'INSERT `#__vm_auth_user_vendor` (`user_id`, `vendor_id`) VALUES ("'.$userId.'", "1")' );
@@ -107,7 +116,7 @@
 		$db->setQuery('SELECT `vendor_id` FROM  `#__vm_vendor` WHERE `vendor_id`= "1" ');
 		$db->query();
 		$oldVendorId = $db->loadResult();
-		JError::raiseNotice(1, '$oldVendorId = '.$oldVendorId);
+//		JError::raiseNotice(1, '$oldVendorId = '.$oldVendorId);
 		if(!isset($oldVendorId)){
 			$db->setQuery( 'INSERT INTO `#__vm_vendor` (
 										`vendor_id` ,
@@ -181,7 +190,7 @@
 		$db->setQuery('SELECT `vendor_id` FROM  `#__vm_vendor` WHERE `vendor_id`= "1" ');
 		$db->query();
 		$oldVendorId = $db->loadResult();
-		JError::raiseNotice(1, '$oldVendorId = '.$oldVendorId);
+//		JError::raiseNotice(1, '$oldVendorId = '.$oldVendorId);
 		if(empty($oldVendorId)){
 			$db->setQuery( 'INSERT `#__vm_vendor` `vendor_id` VALUES ("1")' );
 			$db->query();
@@ -335,7 +344,7 @@
 		
 		ps_vendor::setVendorInfo($fields,$user_id);
 		
-//		$this -> populateVmDatabase("install_sample_data.sql");
+		$this -> populateVmDatabase("install_sample_data.sql");
 	}
 	
 }
