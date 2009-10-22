@@ -9,7 +9,10 @@ AdminMenuHelper::startAdminArea();
 		echo $this->pane->startPane("versionCheckPane");
 		echo $this->pane->startPanel( JText::_('VM_PRODUCT_FORM_PRODUCT_INFO_LBL'), 'versionCheckPane' );
 		
-		$correctTableLink = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=correctTable&view=updatesMigration');
+		$testVersionLink = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=testVersion&view=updatesMigration');
+		$installSampleLink = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=installSample&view=updatesMigration');
+		$updateVMTables10to11Link = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=updateVMTables10to11&view=updatesMigration');
+		$updateVMTables11to15Link = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=updateVMTables11to15&view=updatesMigration');
 ?>
       	
 		<table class="adminlist">
@@ -28,7 +31,16 @@ AdminMenuHelper::startAdminArea();
 		    
 		  </tr>
 		</table>
-		<a href="<?php echo $correctTableLink; ?>">Correct the Table</a>
+		<br />
+		<a href="<?php echo $testVersionLink; ?>">Test installed version by database tables</a><br />
+		<br />
+		<a href="<?php echo $installSampleLink; ?>">Install SampleData</a><br />
+		<br />
+		<a href="<?php echo $updateVMTables10to11Link; ?>">Execute Update Tables 1.0 - 1.1</a><br />
+		<br />
+		<a href="<?php echo $updateVMTables11to15Link; ?>">Execute Update Tables 1.1 - 1.5</a><br />
+		<br />
+
 		<?php
 		echo $this->pane->endPanel();
 		

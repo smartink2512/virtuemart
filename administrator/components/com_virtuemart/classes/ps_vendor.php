@@ -271,15 +271,25 @@ class ps_vendor {
 			JError::raiseNotice('SOME_ERROR_CODE', 'setVendorInfo ADD');
 			$fields['cdate'] = $timestamp; // add a creation date only if this is an INSERT
 		}else{
-			$action = 'UPDATE';
+//			$q = 'SELECT * FROM `#__{vm}_vendor` WHERE `vendor_id`='.(int)$vendor_id.' ';
+//
+//			if( $db->query($q) == false ) {
+//				$action = 'INSERT';
+//				$add = true;#
+//			}else{
+				$action = 'UPDATE';
+				$add = false;#
+//			}
 			$whereAnd = 'WHERE `vendor_id`='.(int)$vendor_id . $and;
-			$add = false;#
-			JError::raiseNotice('SOME_ERROR_CODE', 'setVendorInfo UPDATE');
 			
+			JError::raiseNotice('SOME_ERROR_CODE', 'setVendorInfo UPDATE');
 		}
+//		if($action = 'INSERT'){
+//			
+//		}
 		
 		$db->buildQuery( $action, '#__{vm}_vendor', $fields, $whereAnd );
-		if( $db->query() === false ) {
+		if( $db->query() == false ) {
 			JError::raiseError('SOME_ERROR_CODE','setVendorInfo '.$action.' set user_info failed for $vendor_id '.$vendor_id);
 			return false;
 		}else{
@@ -290,14 +300,14 @@ class ps_vendor {
 //			$vmLogger->debug( ' setVendorInfo $user_id'. $user_id);
 			require_once(CLASSPATH. 'ps_user.php');
 
-			if (isset($user_id)) {
+			if (!empty($user_id)) {
 				
 				$auth_user_vendor = array('user_id' => $user_id, 'vendor_id' => $vendor_id);
 				if(!$add){
 					$whereAnd = 'WHERE `user_id`= "'.$user_id.'"';
 				}
 				$db->buildQuery( $action, '#__{vm}_auth_user_vendor', $auth_user_vendor, $whereAnd );
-				if( $db->query() === false ) {
+				if( $db->query() == false ) {
 					JError::raiseError('SOME_ERROR_CODE', JText::_('Failed to associate the vendor to a user') );
 				}
 
@@ -306,7 +316,7 @@ class ps_vendor {
 				$whereAnd = 'WHERE `user_id`= "'.$user_id.'"';
 
 				$db->buildQuery( 'UPDATE', '#__{vm}_user_info', $user_is_vendor, $whereAnd );
-				if( $db->query() === false ) {
+				if( $db->query() == false ) {
 					JError::raiseError('SOME_ERROR_CODE', JText::_('Failed to set the user as vendor') );
 				}
 				

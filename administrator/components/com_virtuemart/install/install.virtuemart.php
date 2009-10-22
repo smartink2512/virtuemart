@@ -21,21 +21,22 @@ function com_install(){
 	
 	require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'updatesMigrationHelper.php');
 	$vmInstaller = new updatesMigrationHelper;
+	
+//	echo('Already installed version : '.$vmInstaller -> oldVersion.'   that works,.. why?<br />');
+	$vmInstaller -> determineStoreOwner();
 	$vmInstaller -> determineAlreadyInstalledVersion();
-	echo('Already installed version : '.$vmInstaller -> oldVersion.'   that works,.. why?<br />');
-	//$vmInstaller -> determineStoreOwner;
-	$idStoreOwner = $vmInstaller -> determineStoreOwner();
-	echo('Does not work? Why? $idStoreOwner : '.$idStoreOwner.'<br />');
-	echo('Does not work? $vmInstaller -> idStoreOwner : '.$vmInstaller -> idStoreOwner.'<br />');
+//	$idStoreOwner = $vmInstaller -> determineStoreOwner();
+//	echo('Does not work? Why? $idStoreOwner : '.$idStoreOwner.'<br />');
+//	echo('Does not work? $vmInstaller -> idStoreOwner : '.$vmInstaller -> storeOwnerId.'<br />');
 	
 	//This should be done in updatesMigrationHelper, but it doestn work, dont know why
-	$user = JFactory::getUser();
-	$id = $user -> id;
-	echo('Strange here it works $id = $user -> id : '.$id.'<br />');
-	
-	$vmInstaller -> storeOwnerId = $id;
-	$vmInstaller -> userUserName = $user->username;
-	$vmInstaller -> userName = $user->name;
+//	$user = JFactory::getUser();
+//	$id = $user -> id;
+//	echo('Strange here it works $id = $user -> id : '.$id.'<br />');
+//	
+//	$vmInstaller -> storeOwnerId = $id;
+//	$vmInstaller -> userUserName = $user->username;
+//	$vmInstaller -> userName = $user->name;
 
 	$linkUpdate =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMigration&view=updatesMigration');	
 	$linkFresh =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMigration&view=updatesMigration&task=freshInstall');

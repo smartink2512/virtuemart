@@ -82,7 +82,6 @@ class vendor_helper {
 	*/
 	function getUserIdByVendorId(&$vendorId) {
 		if(empty ($vendorId)) return ;
-//		$db =& JFactory::getDBO();
 		$q = 'SELECT `user_id` FROM `#__vm_auth_user_vendor` WHERE `vendor_id`="'.$vendorId.'" ';
 		$this->db->setQuery($q);
 		$this->db->query();

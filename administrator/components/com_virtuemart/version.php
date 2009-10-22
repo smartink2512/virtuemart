@@ -30,7 +30,7 @@ class vmVersion {
 	/** @var string Product */
 	var $PRODUCT = 'VirtueMart';
 	/** @var int Release Number */
-	var $RELEASE = '1.0.0';
+	var $RELEASE = '1.5.0';
 	/** @var string Development Status */
 	var $DEV_STATUS = 'beta';
 	/** @var string Codename */

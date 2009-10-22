@@ -85,12 +85,17 @@ class VirtuemartControllerUpdatesMigration extends JController{
 		
 		$user = JFactory::getUser();
 		$id = $user -> id;
-		$this -> installer -> setStoreOwner($id);
+//		$this -> installer -> setStoreOwner($id);
 		$this -> installer -> setUserToShopperGroup();
 		if($display){
-			parent::display();		
+			parent::display();
 		}
 
+	}
+	
+	function testVersion(){
+		$this -> installer -> determineAlreadyInstalledVersion();
+		parent::display();
 	}
 	
 	function freshInstallSample(){
@@ -100,28 +105,23 @@ class VirtuemartControllerUpdatesMigration extends JController{
 		parent::display();
 	}
 	
-	function updateVM10to11(){
-		
-		$this -> installer -> populateVmDatabase(migration.DS."UPDATE-SCRIPT_VM_1.0.x_to_1.1.0.sql");
-		
-//		$db = JFactory::getDBO();
-//		
-//		$db->setQuery(include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS.migration.DS."UPDATE-SCRIPT_VM_1.0.x_to_1.1.0.sql"));
-//		if($db->query() === false ) {
-//			JError::raiseNotice(1, 'updateVM10to11 Query error ');
-//		}
+	function installSample(){
+		JError::raiseNotice(1, 'InstallSample ');
+		$this -> installer -> installSample();
 		parent::display();
 	}
 	
-	function updateVM11to15(){
+	function updateVMTables10to11(){
+		
+		$this -> installer -> populateVmDatabase(migration.DS."UPDATE-SCRIPT_VM_1.0.x_to_1.1.0.sql");
+
+		parent::display();
+	}
+	
+	function updateVMTables11to15(){
 		
 		$this -> installer -> populateVmDatabase(migration.DS."UPDATE-SCRIPT_VM_1.1.x_to_1.5.0.sql");
-		
-//		$db = JFactory::getDBO();
-//		$db->setQuery(include(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS.migration.DS."UPDATE-SCRIPT_VM_1.1.x_to_1.5.0.sql"));
-//		if($db->query() === false ) {
-//			JError::raiseNotice(1, 'updateVM11to15 Query error ');
-//		}
+
 		parent::display();
 	}
 }
