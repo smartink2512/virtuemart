@@ -333,7 +333,7 @@
 		
 		$fields['vendor_name'] =  "Washupito";
 		
-		ps_vendor::setVendorInfo($fields,1,$user_id);
+		ps_vendor::setVendorInfo($fields,$user_id);
 		
 //		$this -> populateVmDatabase("install_sample_data.sql");
 	}

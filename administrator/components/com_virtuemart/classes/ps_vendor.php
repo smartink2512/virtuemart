@@ -136,7 +136,7 @@ class ps_vendor {
 		$vendor_id = $hVendor -> getVendorIdByUserId($user_id, false);
 		
 		$vmLogger->debug( 'addUpdateVendor vendor_id '.$vendor_id );
-		$vendor_idnew = ps_vendor::setVendorInfo($d, $vendor_id, $user_id);
+		$vendor_idnew = ps_vendor::setVendorInfo($d, $user_id);
 		if(empty($vendor_idnew)){
 			$vmLogger->err( 'setVendorInfo failed' );
 			return false;
@@ -183,12 +183,13 @@ class ps_vendor {
 	 * @param $and An 'AND' condition like 'AND column = value'
 	 * return $vendor_id
 	 */
-	function setVendorInfo(&$d, $vendor_id=0, $user_id,$and=""){
+	function setVendorInfo(&$d, $user_id,$and=""){
 		
+		global $hVendor;
+
 		$db = new ps_DB;
 		
-		$timestamp = time();
-		
+		$timestamp = time();	
 		$vendor_currency_display_style="";
 		if(empty($d['display_style'])){
 			$vendor_currency_display_style = $d['vendor_currency_display_style'];
@@ -263,7 +264,12 @@ class ps_vendor {
 
 		//Setting fields empty is senseless people should use a dummy (-),... makes the life for devs a lot easier
 		$fields = array_filter($fields);
-			
+		
+		if(empty($hVendor)){
+			require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendor_helper.php');
+			$hVendor = new vendor_helper;
+		}
+		$vendor_id = $hVendor -> getVendorIdByUserId($user_id, false);
 		if( empty( $vendor_id ) ) { // INSERT NEW USER/SHOPPER
 			$action = 'INSERT';
 			$whereAnd = "";
@@ -271,22 +277,12 @@ class ps_vendor {
 			JError::raiseNotice('SOME_ERROR_CODE', 'setVendorInfo ADD');
 			$fields['cdate'] = $timestamp; // add a creation date only if this is an INSERT
 		}else{
-//			$q = 'SELECT * FROM `#__{vm}_vendor` WHERE `vendor_id`='.(int)$vendor_id.' ';
-//
-//			if( $db->query($q) == false ) {
-//				$action = 'INSERT';
-//				$add = true;#
-//			}else{
-				$action = 'UPDATE';
-				$add = false;#
-//			}
+			$action = 'UPDATE';
+			$add = false;
 			$whereAnd = 'WHERE `vendor_id`='.(int)$vendor_id . $and;
 			
 			JError::raiseNotice('SOME_ERROR_CODE', 'setVendorInfo UPDATE');
 		}
-//		if($action = 'INSERT'){
-//			
-//		}
 		
 		$db->buildQuery( $action, '#__{vm}_vendor', $fields, $whereAnd );
 		if( $db->query() == false ) {
@@ -319,10 +315,8 @@ class ps_vendor {
 				if( $db->query() == false ) {
 					JError::raiseError('SOME_ERROR_CODE', JText::_('Failed to set the user as vendor') );
 				}
-				
 //				$GLOBALS['vmLogger']->debug('setVendorInfo vendor_id= "'.$vendor_id.'" user_id="'.$user_id.'"');		
 								
-
 			}else {
 //				if(!$perm->check( 'admin' )){
 					JError::raiseError('SOME_ERROR_CODE', 'No matching Virtuemart shopper found; This is not supposed to happen' );

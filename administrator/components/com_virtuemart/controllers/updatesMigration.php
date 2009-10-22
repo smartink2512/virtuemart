@@ -78,13 +78,11 @@ class VirtuemartControllerUpdatesMigration extends JController{
 
 	function freshInstall($display=true){
 		JError::raiseNotice(1, 'freshInstall ');
-	//	$this -> installer -> installTables;
 		$this -> installer -> populateVmDatabase("install_required_data.sql");
 		
 		$this -> installer -> integrateJUsers();
 		
-		$user = JFactory::getUser();
-		$id = $user -> id;
+		$id = $this -> installer -> determineStoreOwner();
 		$this -> installer -> setStoreOwner($id);
 		$this -> installer -> setUserToShopperGroup();
 		if($display){
@@ -128,6 +126,18 @@ class VirtuemartControllerUpdatesMigration extends JController{
 		$this -> installer -> populateVmDatabase(migration.DS."UPDATE-SCRIPT_VM_1.1.x_to_1.5.0.sql");
 		parent::display();
 	}
+	
+	
+	function deleteAll(){
+		$this -> installer -> populateVmDatabase("delete_essential.sql");
+		$this -> installer -> populateVmDatabase("delete_data.sql");
+	}
+	
+	function deleteRestorable(){
+		$this -> installer -> populateVmDatabase("delete_restoreable.sql");
+	}
+
+	
 }
 
 ?>
