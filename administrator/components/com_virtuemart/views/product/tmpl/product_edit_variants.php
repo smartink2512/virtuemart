@@ -1,106 +1,68 @@
-<?php defined('_JEXEC') or die('Restricted access'); ?>
-<?php
-	/** @todo handle child products */
-?>
-<table class="adminlist">
-	<tr class="row0">
-		<td>&nbsp;</td>
-	</tr>
-	<tr class="row1">
-		<td><h2>
-			<?php echo JText::_('VM_PRODUCT_FORM_PRODUCT_ITEMS_LBL') ?></h2>
-		</td>
-	</tr>
-	<!-- Child products -->
-	<tr class="row0">
-		<th class="title"><?php echo JText::_('VM_PRODUCT_FORM_NAME') ?></th>
-		<th class="title"><?php echo JText::_('VM_PRODUCT_FORM_SKU') ?></th>
-		<th class="title"><?php echo JText::_('VM_PRODUCT_FORM_PRICE_NET') ?></th>
-		<?php
-			foreach ($this->attribute_titles as $key => $attribute_title) {
-				?>
-				<th class="title"><?php echo $attribute_title->attribute_name; ?></th>
-				<?php
-			}
-		?> 
-	</tr>
-	<?php
-		foreach ($this->attribute_items as $key => $attribute_item) {
-			if (0) {
-				/* No idea what this is supposed to do */
-			?>
-			<tr  class="row0">
-				<td><?php
-					$url = $_SERVER['PHP_SELF'] . "?page=$modulename.product_form&product_id=" . $attribute_item->product_id . "&product_parent_id=$product_id";
-					echo "<a href=\"" . $sess->url($url) . "\">". $attribute_item->product_name. '</a>'; ?>
-				</td>
-				<td><?php echo $attribute_item->product_sku; ?> </td>
-				<td><?php
-					$price = $ps_product->get_price($db_items->f("product_id"));
-					$url  = $_SERVER['PHP_SELF'] . "?page=$modulename.product_price_list&product_id=" . $db_items->f("product_id") . "&product_parent_id=$product_parent_id";
-					$url .= "&return_args=" . urlencode("page=$page&product_id=$product_id");
-					echo "<a href=\"" . $sess->url($url) . "\">";
-					if ($price) {
-						if (!empty($price["item"])) {
-							echo $price["product_price"];
-						} else {
-							echo "none";
-						}
-					} else {
-						echo "none";
-					}
-					echo "</a>";
-					?> 
-				</td>
-				<?php
-					$db_detail = $ps_product->attribute_sql($db_items->f("product_id"),$product_id);
-					while ($db_detail->next_record()) {
-						echo '<td>'. $db_detail->f("attribute_value").'</td>';
-					}
-				?>
-			</tr>
-		<?php
+<?php defined('_JEXEC') or die('Restricted access');
+if ($this->product->product_parent_id == 0) {
+	?>
+	<table class="adminlist">
+		<thead>
+		<tr class="row1">
+			<th colspan="<?php echo count($this->product->attribute_names)+2; ?>"><?php echo JText::_('VM_PRODUCT_FORM_PRODUCT_ITEMS_LBL') ?></th>
+		</tr>
+		<!-- Child products -->
+		<tr class="row0">
+			<th class="title"><?php echo JText::_('VM_PRODUCT_FORM_NAME') ?></th>
+			<th class="title"><?php echo JText::_('VM_PRODUCT_FORM_SKU') ?></th>
+			<?php
+				foreach ($this->product->attribute_names as $key => $attribute_title) {
+					?>
+					<th class="title"><?php echo $attribute_title; ?></th>
+					<?php
 				}
-		}
-		?>
+			?> 
+		</tr>
+		</thead>
+		<tbody>
+		<?php
+			foreach ($this->product->child_products as $product_sku => $child_product) {
+				?>
+				<tr class="row0">
+					<td><?php
+						$link = 'index.php?option='.$option.'&view=product&task=edit&product_id='.$child_product->product_id.'&product_parent_id='.$this->product->product_id;
+						echo JHTML::_('link', JRoute::_($link), $child_product->product_name);
+						?>
+					</td>
+					<td><?php echo $product_sku; ?> </td>
+					<?php
+						foreach ($this->product->attribute_names as $key => $attribute_title) {
+							echo '<td>'.$child_product->$attribute_title.'</td>';
+						}
+					?>
+				</tr>
+			<?php } ?>
+			</tbody>
 	</table>
-	<?php
-	
-	/*
-	} elseif ($product_parent_id) {
-		?>
-		<table class="adminform">
+<?php
+} elseif ($this->product->product_parent_id > 0) {?>
+	<table class="adminform">
 		<tr class="row0">
 			<td colspan="2">&nbsp;</td>
 		</tr>
 		<tr class="row1">
 			<td colspan="2"><strong><?php echo JText::_('VM_PRODUCT_FORM_ITEM_ATTRIBUTES_LBL') ?></strong></td>
 		</tr>
-		<?php
-			if (!empty($_REQUEST['product_id'])) {
-				$db_attribute = $ps_product->attribute_sql($product_id,$product_parent_id);
-			} else {
-				$db_attribute = $ps_product->attribute_sql("",$product_parent_id);
-			}
-			$num = 0;
-			while ($db_attribute->next_record()) {
-				$num++; ?>
-				<tr  class="row<?php echo $num%2 ?>">
+		<?php foreach ($this->product->attribute_names as $key => $attribute_title) { ?>
+				<tr>
 					<td width="21%" height="22" >
 						<div style="text-align:right;font-weight:bold;"><?php
-						echo $db_attribute->sf("attribute_name") . ":";
-						$field_name = "attribute_$num"; ?></div>
+						echo $attribute_title . ":"?></div>
 					</td>
 					<td width="79%" >
-						<input type="text" class="inputbox"  name="<?php echo $field_name; ?>" size="32" maxlength="255" value="<?php $db_attribute->sp("attribute_value"); ?>" />
+						<input type="text" class="inputbox" name="attribute_<?php echo $this->product->attribute_values[$attribute_title]['attribute_id'];?>" size="32" maxlength="255" value="<?php echo $this->product->attribute_values[$attribute_title]['attribute_value']; ?>" />
 					</td>
 				</tr>
-			<?php
-			} ?>
-		</table>
+			<?php } ?>
+	</table>
 	<?php
-	}
-	*/
+}
+	
 	?>
 	<table class="adminform">
 		<tr class="row0">

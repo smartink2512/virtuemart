@@ -40,7 +40,7 @@ class VirtuemartViewProduct extends JView {
 				$document->addScript(JURI::root().'administrator/components/com_jmart/assets/js/jquery.autocomplete.pack.js');
 				$document->addStyleSheet(JURI::root().'administrator/components/com_jmart/assets/css/jquery.autocomplete.css');
 				jimport('joomla.html.pane');
-				$pane = JPane::getInstance('tabs'); 
+				$pane = JPane::getInstance(); 
 				JHTML::_('behavior.tooltip');
 				JHTML::_('behavior.calendar');
 				$editor = JFactory::getEditor();
@@ -76,6 +76,17 @@ class VirtuemartViewProduct extends JView {
 				$mf_model = $this->getModel('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown($product->manufacturer_id);
 				
+				/* Load the attribute names */
+				$product->attribute_names = $this->get('ProductAttributeNames');
+				
+				/* Load the attribute values */
+				$product->attribute_values = $this->get('ProductAttributeValues');
+				
+				/* Load the child products */
+				if ($product->product_parent_id == 0) {
+					$product->child_products = $product_model->getChildAttributes($product->product_id);
+				}
+				
 				/* Get the minimum and maximum order levels */
 				$min_order = 0;
 				$max_order = 0;
@@ -89,10 +100,6 @@ class VirtuemartViewProduct extends JView {
 				$related_products = $product_model->getRelatedProducts($product->product_id);
 				if (!$related_products) $related_products = array();
 				$lists['related_products'] = JHTML::_('select.genericlist', $related_products, 'related_products', 'autocomplete="off" multiple="multiple" size="10" ondblclick="removeSelectedOptions(\'related_products\')"', 'id', 'text');
-				
-				/* Get the product attributes */
-				$attribute_titles = $product_model->getAttributeTitles($product->product_id);
-				$attribute_items = $product_model->getAttributeItems($product->product_id);
 				
 				/* Get the parent settings */
 				$product->desc_width = '20%';
@@ -164,8 +171,6 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('min_order', $min_order);
 				$this->assignRef('max_order', $max_order);
 				$this->assignRef('related_products', $related_products);
-				$this->assignRef('attribute_titles', $attribute_titles);
-				$this->assignRef('attribute_items', $attribute_items);
 				
 				/* Assign label values */
 				$this->assignRef('action', $action);

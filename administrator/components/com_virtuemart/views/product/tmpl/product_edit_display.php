@@ -119,7 +119,6 @@
 			$options[] = JHTML::_('select.option', '`#__{vm}_product`.`product_id`', JText::_('VM_CHILD_PRODUCT_ID'));
 			$options[] = JHTML::_('select.option', '`#__{vm}_product`.`product_name`', JText::_('VM_PRODUCT_NAME_TITLE'));
 			echo JHTML::_('select.genericlist', $options, 'child_order_by', 'id="child_order_by"', 'value', 'text', $this->product->child_order_by);
-			//echo ps_html::selectList('child_order_by', $this->product->child_order_by, $this->product->order_list, 1, '', 'id="child_order_by"');
 			?>
 			<label for="child_order_by" style="vertical-align: middle;"><?php echo JText::_('VM_DISPLAY_CHILD_ORDER_DESC'); ?></label><br/>
 		</td>

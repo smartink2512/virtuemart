@@ -74,12 +74,14 @@ class VirtueMartModelProduct extends JModel {
      	 if ($product_id > 0) {
 			 $db = JFactory::getDBO();
 			 $q = "SELECT p.*, pf.manufacturer_id, pp.product_price_id, pp.product_price, pp.product_currency,
-			 	pp.price_quantity_start, pp.price_quantity_end 
+			 	pp.price_quantity_start, pp.price_quantity_end, a.attribute_name AS attribute_names
 				FROM #__vm_product AS p
 				LEFT JOIN #__vm_product_mf_xref AS pf
 				ON p.product_id = pf.product_id
 				LEFT JOIN #__vm_product_price AS pp
 				ON p.product_id = pp.product_id
+				LEFT JOIN #__vm_product_attribute_sku a
+				ON p.product_id = a.product_id
 				WHERE p.product_id = ".$product_id;
 			 $db->setQuery($q);
 			 $row = $db->loadObject();
@@ -98,6 +100,43 @@ class VirtueMartModelProduct extends JModel {
 		 	 $row->product_price_quantity_end = null;
 		 }
      	 return $row;
+     }
+     
+     /**
+     * Load the attribute names for a product
+     */
+     public function getProductAttributeNames() {
+     	 $product_id = JRequest::getInt('product_id', 0);
+     	 $product_parent_id = JRequest::getInt('product_parent_id', 0);
+     	 /* Check if we are loading an existing product */
+     	 if ($product_id > 0) {
+     	 	 $db = JFactory::getDBO();
+			 $q = "SELECT attribute_name
+				FROM #__vm_product_attribute_sku
+				WHERE product_id = ";
+				if ($product_parent_id > 0) $q .= $product_parent_id;
+				else $q .= $product_id;
+			 $db->setQuery($q);
+			 return $db->loadResultArray();
+     	 }
+     	 else return null;
+     }
+     
+     /**
+     * Load the attribute names for a product
+     */
+     public function getProductAttributeValues() {
+     	 $product_id = JRequest::getInt('product_id', 0);
+     	 /* Check if we are loading an existing product */
+     	 if ($product_id > 0) {
+     	 	 $db = JFactory::getDBO();
+			 $q = "SELECT attribute_id, attribute_name, attribute_value
+				FROM #__vm_product_attribute
+				WHERE product_id = ".$product_id;
+			 $db->setQuery($q);
+			 return $db->loadAssocList('attribute_name');
+     	 }
+     	 else return null;
      }
     
     /**
@@ -155,9 +194,9 @@ class VirtueMartModelProduct extends JModel {
 			ON #__vm_product.vendor_id = #__vm_vendor.vendor_id';
     }
     
-    /*
-     * Check if the product has any children
-     */
+    /**
+    * Check if the product has any children
+    */
     public function checkChildProducts($product_id) {
      	$db = JFactory::getDBO();
      	$q  = "SELECT IF (COUNT(product_id) > 0, 'Y', 'N') FROM `#__vm_product` WHERE `product_parent_id` = ".$product_id;
@@ -166,9 +205,9 @@ class VirtueMartModelProduct extends JModel {
      	else if ($db->loadResult() == 'N') return false;
     }
     
-    /*
-     * Set the publish/unpublish state
-     */
+    /**
+    * Set the publish/unpublish state
+    */
     public function getPublish() {
      	$cid = JRequest::getVar('cid', false);
      	if (is_array($cid)) {
@@ -389,70 +428,9 @@ class VirtueMartModelProduct extends JModel {
 		 }
 	 }
 	 
-	 /**
-	 * Function to create a DB object that holds all information
-	 * from the attribute tables about item $item_id AND/OR product $product_id
-	 *
-	 * @param int $item_id The product_id of the item
-	 * @param int $product_id The product_id of the parent product
-	 * @param string $attribute_name The name of the attribute to filter
-	 * @return ps_DB The db object...
-	 */
-	function getAttributeTitles($item_id="",$product_id="",$attribute_name="") {
-		$db = JFactory::getDBO();
-		$attributes = array();
-		if ($item_id and $product_id) {
-			$q  = "SELECT * FROM #__vm_product_attribute,#__vm_product_attribute_sku ";
-			$q .= "WHERE #__vm_product_attribute.product_id = '$item_id' ";
-			$q .= "AND #__vm_product_attribute_sku.product_id ='$product_id' ";
-			if ($attribute_name) {
-				$q .= "AND #__vm_product_attribute.attribute_name = $attribute_name ";
-			}
-			$q .= "AND #__vm_product_attribute.attribute_name = ";
-			$q .=     "#__vm_product_attribute_sku.attribute_name ";
-			$q .= "ORDER BY attribute_list,#__vm_product_attribute.attribute_name";
-		} elseif ($item_id) {
-			$q  = "SELECT * FROM #__vm_product_attribute ";
-			$q .= "WHERE product_id=$item_id ";
-			if ($attribute_name) {
-				$q .= "AND attribute_name = '$attribute_name' ";
-			}
-		} elseif ($product_id) {
-			$q  = "SELECT * FROM #__vm_product_attribute_sku ";
-			$q .= "WHERE product_id =".(int)$product_id.' ';
-			if ($attribute_name) {
-				$q .= "AND #__vm_product_attribute.attribute_name = $attribute_name ";
-			}
-			$q .= "ORDER BY attribute_list,attribute_name";
-		} else {
-			/* Error: no arguments were provided. */
-			return $attributes;
-		}
-		
-		$db->setQuery($q); 
-		$attributes = $db->loadObjectList();
-		return $attributes;
-	}
-	
 	/**
-	 * Function to create a db object holding the data of all child items of
-	 * product $product_id
-	 *
-	 * @param int $product_id
-	 * @return ps_DB object that holds all items of product $product_id
-	 */
-	public function getAttributeItems($product_id) {
-		$db = JFactory::getDBO();
-		if( !empty($product_id) ) {
-			$q  = "SELECT * FROM #__vm_product ";
-			$q .= "WHERE product_parent_id=".(int)$product_id.' ';
-			$q .= "ORDER BY product_name";
-
-			$db->setQuery($q); 
-		}
-		return $db->loadObjectList();
-	}
-	
+	* Create a list of products for JSON return
+	*/
 	public function getProductListJson() {
 		$db = JFactory::getDBO();
 		$filter = JRequest::getVar('q', false);
@@ -461,6 +439,37 @@ class VirtueMartModelProduct extends JModel {
 		if ($filter) $q .= " WHERE product_name LIKE '%".$filter."%'";
 		$db->setQuery($q);
 		return $db->loadObjectList();
+	}
+	
+	/**
+	* Load the child products for a given product
+	*/
+	public function getChildAttributes($product_id) {
+		$db = JFactory::getDBO();
+		$q = "SELECT p.product_id, product_name, product_sku, attribute_name, attribute_value
+			FROM #__vm_product p
+			LEFT JOIN #__vm_product_attribute
+			ON p.product_id = #__vm_product_attribute.product_id
+			WHERE p.product_parent_id = ".$product_id."
+			ORDER BY p.product_sku";
+		$db->setQuery($q);
+		$products = $db->loadObjectList();
+		$childproduct = array();
+		foreach ($products as $key => $product) {
+			foreach ($product as $name => $value) {
+				if (!array_key_exists($product->product_sku, $childproduct)) {
+					$childproduct[$product->product_sku] = new StdClass();
+				}
+				if ($name != 'attribute_name' && $name != 'attribute_value') {
+					$childproduct[$product->product_sku]->$name = $value;
+				}
+				else {
+					$attribute_name = $product->attribute_name;
+					$childproduct[$product->product_sku]->$attribute_name = $product->attribute_value;
+				}
+			}
+		}
+		return $childproduct;
 	}
 }
 ?>
