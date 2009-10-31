@@ -64,7 +64,7 @@
 						<input type="text" class="inputbox" id="product_availability" name="product_availability" value="<?php echo $this->product->product_availability; ?>" />
 						<?php
 						echo JHTML::tooltip(JText::_('VM_PRODUCT_FORM_AVAILABILITY_TOOLTIP1'), JText::_('VM_AVAILABILITY'), 'tooltip.png', '', '', false);
-						$path = str_replace('\\', '/', VM_THEMEPATH)."images/availability/";
+						$path = str_ireplace(str_replace(DS, '/', JPATH_SITE), '', str_replace('\\', '/', VM_THEMEPATH)."images/availability/");
 						?>
 						<script type="text/javascript">
 							jQuery('#image').live('click', function() { jQuery('#product_availability').val(jQuery('#image').val()); })

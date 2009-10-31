@@ -33,9 +33,16 @@ class VirtuemartViewProduct extends JView {
 			case 'add':
 			case 'edit':
 				/* Load some behaviour */
+				/* Load jQuery */
+				$document = JFactory::getDocument();
+				$document->addScript(JURI::root().'administrator/components/com_jmart/assets/js/jquery.js');
+				$document->addScriptDeclaration('jQuery.noConflict();');
+				$document->addScript(JURI::root().'administrator/components/com_jmart/assets/js/jquery.autocomplete.pack.js');
+				$document->addStyleSheet(JURI::root().'administrator/components/com_jmart/assets/css/jquery.autocomplete.css');
 				jimport('joomla.html.pane');
 				$pane = JPane::getInstance('tabs'); 
 				JHTML::_('behavior.tooltip');
+				JHTML::_('behavior.calendar');
 				$editor = JFactory::getEditor();
 				
 				/* Load the product */
@@ -47,15 +54,23 @@ class VirtuemartViewProduct extends JView {
 				
 				/* Load the currencies */
 				$currency_model = $this->getModel('currency');
-				$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_id', 'currency_name', $product->product_currency);
+				$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'currency_code', 'currency_name', $product->product_currency);
 				
 				/* Load the tax rates */
 				$tax_model = $this->getModel('taxRate');
-				$taxrates = JHTML::_('select.genericlist', $tax_model->getTaxRates(), 'product_tax_id', '"updateGross();"', 'tax_rate_id', 'tax_rate', $product->product_tax_id);
+				$taxrates = $tax_model->getTaxRates();
+				$lists['taxrates'] = JHTML::_('select.genericlist', $taxrates, 'product_tax_id', '"updateGross();"', 'tax_rate_id', 'select_list_name', $product->product_tax_id);
 				
 				/* Load the tax rates */
 				$discount_model = $this->getModel('discount');
-				$discounts = JHTML::_('select.genericlist', $discount_model->getDiscounts(), 'product_discount_id', '', 'discount_id', 'amount', $product->product_discount_id);
+				$discounts = $discount_model->getDiscounts();
+				$discounts[] = JHTML::_('select.option', 'override', JText::_('VM_PRODUCT_DISCOUNT_OVERRIDE'), 'discount_id', 'amount');
+				$lists['discounts'] = JHTML::_('select.genericlist', $discounts, 'product_discount_id', 'onchange="updateDiscountedPrice();"', 'discount_id', 'amount', $product->product_discount_id);
+				
+				/* Load the vendors */
+				$vendor_model = $this->getModel('vendor');
+				$vendors = $vendor_model->getVendors();
+				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'vendor_id', '', 'vendor_id', 'vendor_name', $product->vendor_id);
 				
 				/* Load the manufacturers */
 				$mf_model = $this->getModel('manufacturer');
@@ -72,23 +87,44 @@ class VirtuemartViewProduct extends JView {
 				
 				/* Get the related products */
 				$related_products = $product_model->getRelatedProducts($product->product_id);
+				if (!$related_products) $related_products = array();
+				$lists['related_products'] = JHTML::_('select.genericlist', $related_products, 'related_products', 'autocomplete="off" multiple="multiple" size="10" ondblclick="removeSelectedOptions(\'related_products\')"', 'id', 'text');
 				
 				/* Get the product attributes */
 				$attribute_titles = $product_model->getAttributeTitles($product->product_id);
 				$attribute_items = $product_model->getAttributeItems($product->product_id);
 				
+				/* Get the parent settings */
+				$product->desc_width = '20%';
+				$product->attrib_width = '10%';
+				$product->display_use_parent_disabled = false;
+				if($product->product_parent_id !=0) {
+					$product->display_use_parent_disabled = true;
+				}
+				list($product->display_use_parent, 
+					$product->product_list,
+					$product->display_header,
+					$product->product_list_child,
+					$product->product_list_type,
+					$product->display_desc,
+					$product->desc_width,
+					$product->attrib_width,
+					$product->child_class_sfx,
+					$product->child_order_by) = $product->child_options;
+				/* Get the quantity types */
+				$product->display_type = 'none';
+				list($product->display_type, 
+					$product->quantity_start,
+					$product->quantity_end,
+					$product->quantity_step) = $product->quantity_options;
+				
 				/* Set up labels */
 				if ($product->product_parent_id > 0) {
-					if ($product->product_id) {
-						$action = JText::_('VM_PRODUCT_FORM_UPDATE_ITEM_LBL');
-					}
-					else {
-						$action = JText::_('VM_PRODUCT_FORM_NEW_ITEM_LBL');
-					}
 					$info_label = JText::_('VM_PRODUCT_FORM_ITEM_INFO_LBL');
 					$status_label = JText::_('VM_PRODUCT_FORM_ITEM_STATUS_LBL');
 					$dim_weight_label = JText::_('VM_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL');
 					$images_label = JText::_('VM_PRODUCT_FORM_ITEM_IMAGES_LBL');
+					$display_label = JText::_('VM_PRODUCT_FORM_ITEM_IMAGES_LBL');
 					$delete_message = JText::_('VM_PRODUCT_FORM_DELETE_ITEM_MSG');
 				}
 				else {
@@ -119,6 +155,7 @@ class VirtuemartViewProduct extends JView {
 				/* Assign the values */
 				$this->assignRef('pane', $pane);
 				$this->assignRef('editor', $editor);
+				$this->assignRef('lists', $lists);
 				$this->assignRef('product', $product);
 				$this->assignRef('currencies', $currencies);
 				$this->assignRef('manufacturers', $manufacturers);
@@ -136,6 +173,7 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('status_label', $status_label);
 				$this->assignRef('dim_weight_label', $dim_weight_label);
 				$this->assignRef('images_label', $images_label);
+				$this->assignRef('display_label', $display_label);
 				$this->assignRef('delete_message', $delete_message);
 				
 				/* Toolbar */
