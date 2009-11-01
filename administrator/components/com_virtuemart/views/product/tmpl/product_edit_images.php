@@ -1,4 +1,16 @@
-<?php defined('_JEXEC') or die('Restricted access'); ?>
+<?php defined('_JEXEC') or die('Restricted access');
+$folder = array(IMAGEPATH."product", IMAGEPATH."product/resized");
+$style = 'text-align:left;margin-left:20px;';
+echo '<div class="vmquote" style="'.$style.'">';
+foreach( $folder as $dir ) {
+	echo $dir . ' :: ';
+	echo is_writable( $dir )
+		 ? '<span style="font-weight:bold;color:green;">'.JText::_('VM_WRITABLE').'</span>'
+		 : '<span style="font-weight:bold;color:red;">'.JText::_('VM_UNWRITABLE').'</span>';
+	echo '<br/>';
+}
+echo '</div>';
+?>
 <table class="adminform" >
     <tr>
       <td valign="top" width="50%" style="border-right: 1px solid black;">
@@ -17,7 +29,7 @@
               <label for="product_full_image_action0"><?php echo JText::_('VM_NONE'); ?></label><br/>
               <?php
               // Check if GD library is available
-              if (function_exists('imagecreatefromjpeg')) { ?>
+              if (function_exists('gd_info')) { ?>
 	              <input type="radio" class="inputbox" id="product_full_image_action1" name="product_full_image_action" value="auto_resize" onchange="toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );"/>
 	              <label for="product_full_image_action1"><?php echo JText::_('VM_FILES_FORM_AUTO_THUMBNAIL') . "</label><br />";
               }
@@ -46,11 +58,7 @@
           <tr class="row1">
             <td colspan="2" >
               <div style="overflow:auto;">
-                <?php
-                if( $clone_product != "1" ) {
-                	// echo $ps_product->image_tag($db->f("product_full_image"), "", 0);
-                }
-                ?>
+                <?php echo ImageHelper::displayShopImage($this->product->product_full_image, 'product', '', 0); ?>
               </div>
             </td>
           </tr>
@@ -96,11 +104,7 @@
           <tr class="row1">
             <td colspan="2" >
               <div style="overflow:auto;">
-                <?php
-                if( $clone_product != "1" ) {
-                	// echo $ps_product->image_tag($db->f("product_thumb_image"), "", 0);
-                }
-                ?>
+                <?php echo ImageHelper::displayShopImage($this->product->product_thumb_image, 'product/resized', '', 0); ?>
               </div>
             </td>
           </tr>
@@ -108,3 +112,26 @@
       </td>
     </tr>
   </table>
+<script type="text/javascript">
+function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {
+	try {
+		if( !disableOnChecked ) {
+			if(elementOnChecked.checked==true) {
+				elementDisable.disabled=false;
+			}
+			else {
+				elementDisable.disabled=true;
+			}
+		}
+		else {
+			if(elementOnChecked.checked==true) {
+				elementDisable.disabled=true;
+			}
+			else {
+				elementDisable.disabled=false;
+			}
+		}
+	}
+	catch( e ) {}
+}
+</script>

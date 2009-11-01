@@ -107,11 +107,11 @@ class ImageHelper
 	{
 		// Process image arguments
 		$border="";
-		if( strpos( $args, "border=" )===false ) {
+		if( strpos( $imageArgs, "border=" )===false ) {
 			$border = 'border="0"';
 		}
 		$newImageHeight = $newImageWidth = '';
-
+		
 		if ($image != "") {
 			// Remote image URL
 			if( substr( $image, 0, 4) == "http" ) {
@@ -119,7 +119,7 @@ class ImageHelper
 			}
 			// Local image file
 			else {
-				if ($overridSize) {
+				if ($overrideSize) {
 					$newImageWidth = $thumbWidth;
 					$newImageHeight = $thumbHeight;
 				}
@@ -131,12 +131,12 @@ class ImageHelper
 				// Dynamic image resizing will happen
 				if (PSHOP_IMG_RESIZE_ENABLE == '1' || $resize==1) {
 					$url = ImageHelper::createResizedImage(urlencode($image), $imgRootFolder, $newImageWidth, $newImageHeight);
-					if (!strpos($args, "height=")) {
+					if (!strpos($imageArgs, "height=")) {
 						$arr = @getimagesize(ImageHelper::getresizedfilename($image, $imgRootFolder, '', $newImageWidth, $newImageHeight));
 						$width = $arr[0]; 
 						$height = $arr[1];
 					}
-				}				
+				}			
 				else {
 					if ($imgRootFolder <> '') {
 						$url = JURI::root().'components/com_virtuemart/shop_image/'.$imgRootFolder.'/'.$image;	
@@ -144,7 +144,6 @@ class ImageHelper
 					else {
 						$url = JURI::root().'components/com_virtuemart/shop_image/'.$image;	
 					}
-
 					if ($resize) {
 						if ($height < $width) {
 							$newImageWidth = round($width / ($height / PSHOP_IMG_HEIGHT));

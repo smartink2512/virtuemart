@@ -172,3 +172,25 @@
 		</td>
 	</tr>
 </table>
+<script type="text/javascript">
+function toggleProductList( enable ) {
+	if(enable) {		
+    	document.getElementById('list_style0').disabled = false;
+       document.getElementById('list_style0').checked = true;
+    	document.getElementById('list_style1').disabled = false;
+       document.getElementById('display_headers').disabled = false;
+    	document.getElementById('product_list_child').disabled = false;
+       document.getElementById('product_list_type').disabled = false;
+	}
+    else {
+    	document.getElementById('list_style0').disabled = true;
+    	document.getElementById('list_style1').disabled = true;
+       document.getElementById('display_headers').disabled = true;
+    	document.getElementById('product_list_child').disabled = true;
+       document.getElementById('product_list_type').disabled = true;
+       document.getElementById('display_headers').checked = false;
+    	document.getElementById('product_list_child').checked = false;
+       document.getElementById('product_list_type').checked = false;
+	}
+}
+</script>

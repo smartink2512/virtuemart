@@ -209,3 +209,12 @@ div.status-divider {
 .icon-48-vm_coupon_48 { 
    background: url(../images/icon_48/vm_coupon_48.png) no-repeat left; 
 }
+
+.vmquote {
+	background-color: #E9ECEF;
+	border: 1px solid #CCCCCC;
+	color: #254D78;
+	font-size: 12px;
+	margin: 4px;
+	padding: 10px;
+}
