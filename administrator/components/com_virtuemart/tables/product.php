@@ -21,77 +21,77 @@ defined('_JEXEC') or die();
 class TableProduct extends JTable
 {
 	/** @var int Primary key */
-	var $product_id				= 0;
+	var $product_id				= null;
 	/** @var integer Product id */
-	var $vendor_id		= 0;
+	var $vendor_id		= null;
 	/** @var string File name */
-	var $product_parent_id		= '';
+	var $product_parent_id		= null;
 	/** @var string File title */
-	var $product_sku				= '';
+	var $product_sku				= null;
     /** @var string File description */
-	var $product_s_desc		= '';
+	var $product_s_desc		= null;
     /** @var string File extension */
-	var $product_desc			= '';
+	var $product_desc			= null;
 	/** @var string File mime type */
-	var $product_thumb_image			= '';
+	var $product_thumb_image			= null;
 	/** @var string File URL */
-	var $product_full_image				= '';
+	var $product_full_image				= null;
 	/** @var int File published or not */
-	var $product_publish		= 0;
+	var $product_publish		= null;
 	/** @var int File is an image or other */
-	var $product_weight			= 0;
+	var $product_weight			= null;
 	/** @var int File image height */
-	var $product_weight_uom		= 0;
+	var $product_weight_uom		= null;
 	/** @var int File image width */
-	var $product_length		= 0;
+	var $product_length		= null;
 	/** @var int File thumbnail image height */
-	var $product_width = 0;
+	var $product_width = null;
 	/** @var int File thumbnail image width */
-	var $product_height	= 0;
+	var $product_height	= null;
 	/** @var int File thumbnail image width */
-	var $product_lwh_uom	= 0;
+	var $product_lwh_uom	= null;
 	/** @var int File thumbnail image width */
-	var $product_url	= 0;
+	var $product_url	= null;
 	/** @var int File thumbnail image width */
-	var $product_in_stock	= 0;
+	var $product_in_stock	= null;
 	/** @var int File thumbnail image width */
-	var $low_stock_notification	= 0;
+	var $low_stock_notification	= null;
 	/** @var int File thumbnail image width */
-	var $product_available_date	= 0;
+	var $product_available_date	= null;
 	/** @var int File thumbnail image width */
-	var $product_availability	= 0;
+	var $product_availability	= null;
 	/** @var int File thumbnail image width */
-	var $product_special	= 0;
+	var $product_special	= null;
 	/** @var int File thumbnail image width */
-	var $product_discount_id	= 0;
+	var $product_discount_id	= null;
 	/** @var int File thumbnail image width */
-	var $ship_code_id	= 0;
+	var $ship_code_id	= null;
 	/** @var int File thumbnail image width */
-	var $cdate	= 0;
+	var $cdate	= null;
 	/** @var int File thumbnail image width */
-	var $mdate	= 0;
+	var $mdate	= null;
 	/** @var string Name of the product */
 	var $product_name	= null;
 	/** @var int File thumbnail image width */
-	var $product_sales	= 0;
+	var $product_sales	= null;
 	/** @var int File thumbnail image width */
-	var $attribute	= 0;
+	var $attribute	= null;
 	/** @var int File thumbnail image width */
-	var $custom_attribute	= 0;
+	var $custom_attribute	= null;
 	/** @var int File thumbnail image width */
-	var $product_tax_id	= 0;
+	var $product_tax_id	= null;
 	/** @var int File thumbnail image width */
-	var $product_unit	= 0;
+	var $product_unit	= null;
 	/** @var int File thumbnail image width */
-	var $product_packaging	= 0;
+	var $product_packaging	= null;
 	/** @var int File thumbnail image width */
-	var $child_options	= 0;
+	var $child_options	= null;
 	/** @var int File thumbnail image width */
-	var $quantity_options	= 0;
+	var $quantity_options	= null;
 	/** @var int File thumbnail image width */
-	var $child_option_ids	= 0;
+	var $child_option_ids	= null;
 	/** @var int File thumbnail image width */
-	var $product_order_levels	= 0;
+	var $product_order_levels	= null;
 	/** @var string Internal note for product */
 	var $intnotes = null;
 	/** @var string Meta description */

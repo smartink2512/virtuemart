@@ -63,7 +63,7 @@
 					<?php echo JText::_('VM_CATEGORIES') ?>:</div>
 				</td>
 				<td width="71%" >
-					<select class="inputbox" id="category_id" name="category_id" multiple="multiple" size="10">
+					<select class="inputbox" id="product_categories" name="product_categories[]" multiple="multiple" size="10">
 						<?php echo $this->category_tree; ?>
 					</select>
 				</td>

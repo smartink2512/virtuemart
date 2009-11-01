@@ -89,6 +89,33 @@ class VirtuemartControllerProduct extends JController
 	}
 	
 	/**
+	* Cancellation, redirect to main product list
+	*
+	* @author RolandD
+	*/
+	public function Cancel() {
+		$mainframe = Jfactory::getApplication();
+		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product', JText::_('Operation Canceled!!'));
+	}
+	
+	/**
+	* Save a product
+	*
+	* @author RolandD
+	*/
+	public function Save() {
+		$mainframe = Jfactory::getApplication();
+		$model = $this->getModel('product');
+		$msgtype = '';
+		if ($model->saveProduct()) $msg = JText::_('PRODUCT_SAVED_SUCCESSFULLY');
+		else {
+			$msg = JText::_('PRODUCT_NOT_SAVED_SUCCESSFULLY');
+			$msgtype = 'error';
+		}
+		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product', $msg, $msgtype);
+	}
+	
+	/**
 	* Get a list of related products
 	*/
 	public function getData() {

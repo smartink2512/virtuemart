@@ -144,7 +144,7 @@ jQuery('input#relatedProductSearch').autocomplete('index.php?option=com_virtuema
 		if (jQuery.inArray(item.id, items) >= 0) {
 			return;
 		}
-		jQuery("select#related_products").append('<option value="'+item.id+'">'+item.value+'</option>');
+		jQuery("select#related_products").append('<option value="'+item.id+'" selected="selected">'+item.value+'</option>');
 	});
 
 function removeSelectedOptions(from) {

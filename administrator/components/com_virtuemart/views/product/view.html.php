@@ -25,10 +25,6 @@ class VirtuemartViewProduct extends JView {
 		/* Load some common models */
 		$category_model = $this->getModel('category');
 		
-		/* Get the category tree */
-		$category_tree = $category_model->list_tree(JRequest::getInt('category_id'));
-		$this->assignRef('category_tree', $category_tree);
-		
 		/* Handle any publish/unpublish */
 		switch ($task) {
 			case 'add':
@@ -49,6 +45,10 @@ class VirtuemartViewProduct extends JView {
 				/* Load the product */
 				$product_model = $this->getModel('product');
 				$product = $this->get('Product');
+				
+				/* Get the category tree */
+				$category_tree = $category_model->list_tree('', 0, 0, $product->categories);
+				$this->assignRef('category_tree', $category_tree);
 				
 				/* Load the product price */
 				$product_price = $this->get('ProductPrice');
@@ -100,7 +100,7 @@ class VirtuemartViewProduct extends JView {
 				/* Get the related products */
 				$related_products = $product_model->getRelatedProducts($product->product_id);
 				if (!$related_products) $related_products = array();
-				$lists['related_products'] = JHTML::_('select.genericlist', $related_products, 'related_products', 'autocomplete="off" multiple="multiple" size="10" ondblclick="removeSelectedOptions(\'related_products\')"', 'id', 'text');
+				$lists['related_products'] = JHTML::_('select.genericlist', $related_products, 'related_products[]', 'autocomplete="off" multiple="multiple" size="10" ondblclick="removeSelectedOptions(\'related_products\')"', 'id', 'text', $related_products);
 				
 				/* Get the parent settings */
 				$product->desc_width = '20%';
@@ -108,6 +108,9 @@ class VirtuemartViewProduct extends JView {
 				$product->display_use_parent_disabled = false;
 				if($product->product_parent_id !=0) {
 					$product->display_use_parent_disabled = true;
+				}
+				if (is_null($product->child_options)) {
+					$product->child_options = 'N,N,N,N,N,Y,20%,10%,,`#__{vm}_product`.`product_sku`';
 				}
 				list($product->display_use_parent, 
 					$product->product_list,
@@ -118,13 +121,23 @@ class VirtuemartViewProduct extends JView {
 					$product->desc_width,
 					$product->attrib_width,
 					$product->child_class_sfx,
-					$product->child_order_by) = $product->child_options;
+					$product->child_order_by) = explode(',', $product->child_options);
 				/* Get the quantity types */
-				$product->display_type = 'none';
+				if (is_null($product->quantity_options)) {
+					$product->quantity_options = 'none,0,0,1';
+				}
 				list($product->display_type, 
 					$product->quantity_start,
 					$product->quantity_end,
-					$product->quantity_step) = $product->quantity_options;
+					$product->quantity_step) = explode(',', $product->quantity_options);
+				
+				/* Set some default values */
+				if (is_null($product->desc_width)) $product->desc_width = '20%';
+				if (is_null($product->attrib_width)) $product->attrib_width = '10%';
+				if (is_null($product->display_type)) $product->display_type = 'none';
+				if (is_null($product->quantity_start)) $product->quantity_start = 0;
+				if (is_null($product->quantity_end)) $product->quantity_end = 0;
+				if (is_null($product->quantity_step)) $product->quantity_step = 1;
 				
 				/* Set up labels */
 				if ($product->product_parent_id > 0) {
@@ -184,7 +197,7 @@ class VirtuemartViewProduct extends JView {
 				
 				/* Toolbar */
 				if ($task == 'add') $text = JText::_( 'ADD_PRODUCT' );
-				else $text = JText::_( 'EDIT_PRODUCT' );
+				else $text = JText::_( 'EDIT_PRODUCT' ).' :: '.$product->product_sku.' :: '.$product->product_name;
 				JToolBarHelper::title($text, 'vm_product_48');
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
@@ -210,6 +223,10 @@ class VirtuemartViewProduct extends JView {
 				
 				/* Get the list of products */
 				$productlist = $this->get('ProductList');
+				
+				/* Get the category tree */
+				$category_tree = $category_model->list_tree(JRequest::getInt('category_id'));
+				$this->assignRef('category_tree', $category_tree);
 				
 				/* Check for child products if it is a parent item */
 				if (JRequest::getInt('product_parent_id', 0) == 0) {

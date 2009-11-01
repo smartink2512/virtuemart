@@ -1,7 +1,6 @@
-<?php defined('_JEXEC') or die('Restricted access');
-echo '<h2>'.$this->dim_weight_label.'</h2>';
-?>
+<?php defined('_JEXEC') or die('Restricted access');?>
    <table class="adminform">
+   <tbody>
     <tr class="row1">
       <td width="21%" valign="top" >
         <div style="text-align:right;font-weight:bold;"><?php echo JText::_('VM_PRODUCT_FORM_LENGTH') ?>:</div>
@@ -88,5 +87,5 @@ echo '<h2>'.$this->dim_weight_label.'</h2>';
       </td>
     </tr>
     <!-- Changed Packaging - End -->
-
+</tbody>
 </table>

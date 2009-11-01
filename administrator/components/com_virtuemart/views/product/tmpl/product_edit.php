@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 AdminMenuHelper::startAdminArea(); 
 ?>
-<form name="adminForm" enctype="multipart/form-data">
+<form method="post" name="adminForm" action="index.php" enctype="multipart/form-data">
 <?php
 	echo $this->pane->startPane("product-pane");
 	echo $this->pane->startPanel( JText::_('VM_PRODUCT_FORM_PRODUCT_INFO_LBL'), 'product_information' );
@@ -30,6 +30,8 @@ AdminMenuHelper::startAdminArea();
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="product" />
+<input type="hidden" name="product_id" value="<?php echo $this->product->product_id; ?>" />
+<input type="hidden" name="product_parent_id" value="<?php echo $this->product->product_parent_id; ?>" />
 <input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?> 

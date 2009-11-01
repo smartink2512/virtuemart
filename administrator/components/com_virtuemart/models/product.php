@@ -73,7 +73,7 @@ class VirtueMartModelProduct extends JModel {
      	 /* Check if we are loading an existing product */
      	 if ($product_id > 0) {
 			 $db = JFactory::getDBO();
-			 $q = "SELECT p.*, pf.manufacturer_id, pp.product_price_id, pp.product_price, pp.product_currency,
+			 $q = "SELECT p.*, pf.manufacturer_id, pp.shopper_group_id, pp.product_price_id, pp.product_price, pp.product_currency,
 			 	pp.price_quantity_start, pp.price_quantity_end, a.attribute_name AS attribute_names
 				FROM #__vm_product AS p
 				LEFT JOIN #__vm_product_mf_xref AS pf
@@ -99,6 +99,15 @@ class VirtueMartModelProduct extends JModel {
 		 	 $row->product_price_quantity_start = null;
 		 	 $row->product_price_quantity_end = null;
 		 }
+		 
+		 /* Add the product categories */
+		 $q = 'SELECT category_id FROM #__vm_product_category_xref WHERE product_id = '.$product_id;
+		 $db->setQuery($q);
+		 $categories = $db->loadResultArray();
+		 foreach ($categories as $value) {
+		 	 $row->categories[$value]  = 1;
+		 }
+		 
      	 return $row;
      }
      
@@ -417,7 +426,7 @@ class VirtueMartModelProduct extends JModel {
 			$db->setQuery($q);
 			$results = explode("|", $db->loadResult());
 			if (count($results) > 0) {
-				$ids = 'product_id=' . implode( ' OR product =', $results );
+				$ids = 'product_id =' . implode( ' OR product_id =', $results );
 				$q = "SELECT product_id AS id, CONCAT(product_name, '::', product_sku) AS text
 					FROM #__vm_product
 					WHERE (".$ids.")";
@@ -470,6 +479,195 @@ class VirtueMartModelProduct extends JModel {
 			}
 		}
 		return $childproduct;
+	}
+	
+	/**
+	* Store a product
+	*
+	* @author RolandD
+	*/
+	public function saveProduct() {
+		$db = JFactory::getDBO();
+		
+		/* Setup some place holders */
+		$product_data = $this->getTable('product');
+		
+		/* Load the data */
+		$data = JRequest::get('post', 4);
+		
+		/* Process the images */
+		
+		/* Get the product data */
+		$product_data->bind($data);
+		
+		/* Set the changed date */
+		$product_data->mdate = time();
+		
+		/* Get the attribute */
+		$product_data->attribute = $this->formatAttributeX();
+		
+		/* Get the child options */
+		if ($product_data->product_parent_id != 0) {
+			$product_data->child_options = null;
+        } else {
+			$product_data->child_options = $this->getYesOrNo('display_use_parent').","
+										.JRequest::getVar('product_list', 'N').","
+										.$this->getYesOrNo('display_headers').","
+										.$this->getYesOrNo('product_list_child').","
+										.$this->getYesOrNo('product_list_type').","
+										.$this->getYesOrNo('display_desc').","
+										.JRequest::getVar('desc_width').","
+										.JRequest::getVar('attrib_width').","
+										.JRequest::getVar('child_class_sfx').","
+										.JRequest::getVar('child_order_by');
+        }
+        
+        /* Get the quantity options */
+        $product_data->quantity_options = JRequest::getVar('quantity_box', 'none').","
+        			.JRequest::getInt('quantity_start').","
+        			.JRequest::getInt('quantity_end').","
+        			.JRequest::getInt('quantity_step');
+        			
+        /* Store the product */
+		$product_data->store();
+		
+		?><pre><?php
+		print_r($product_data);
+		?></pre><?php
+		
+		
+		?><pre><?php
+		print_r($data);
+		?></pre><?php
+		
+		/* Update manufacturer link */
+		$q = 'UPDATE #__vm_product_mf_xref SET ';
+		$q .= 'manufacturer_id='.JRequest::getInt('manufacturer_id').' ';
+		$q .= 'WHERE product_id = '.$product_data->product_id;
+		$db->setQuery($q);
+		$db->query();
+		
+		/* Update waiting list */
+		
+		/* If is Item, update attributes */
+		if ($product_data->product_parent_id > 0) {
+			$q  = 'SELECT attribute_id FROM #__vm_product_attribute ';
+			$q .= 'WHERE product_id='.$product_data->product_id;
+			$db->setQuery($q);
+			$attributes = $db->loadObjectList();
+			foreach ($attributes as $id => $attribute) {
+				$q  = 'UPDATE #__vm_product_attribute SET ';
+				$q .= 'attribute_value='.$db->Quote($data['attribute_'.$attribute->attribute_id]);
+				$q .= ' WHERE attribute_id = '.$attribute->attribute_id;
+				$db->setQuery($q);
+				echo $db->getQuery();
+				echo '<br />';
+				$db->query();
+				
+			}
+		/* If it is a Product, update Category */
+		}
+		else {
+			/* Delete old category links */
+			$q  = "DELETE FROM `#__vm_product_category_xref` ";
+			$q .= "WHERE `product_id` = '".$product_data->product_id."' ";
+			$db->setQuery($q);
+			$db->Query();
+			
+			/* Store the new categories */
+			foreach( $data["product_categories"] as $category_id ) {
+				$db->setQuery('SELECT IF (ISNULL(`product_list`), 1, MAX(`product_list`) + 1) as list_order FROM `#__vm_product_category_xref` WHERE `category_id`='.$category_id );
+				$list_order = $db->loadResult();
+
+				$q  = "INSERT INTO #__vm_product_category_xref ";
+				$q .= "(category_id,product_id,product_list) ";
+				$q .= "VALUES ('".$category_id."','". $product_data->product_id . "', ".$list_order. ")";
+				$db->setQuery($q); 
+				$db->query();
+			}
+		}
+		
+		/* Update related products */
+		if (array_key_exists('related_products', $data)) {
+			/* Insert Pipe separated Related Product IDs */
+			$q  = "REPLACE INTO #__vm_product_relations (product_id, related_products)";
+			$q .= " VALUES( '".$product_data->product_id."', '".implode('|', $data['related_products'])."') ";
+			$db->setQuery($q);
+			$db->query();
+		}
+		else{
+			$q  = "DELETE FROM #__vm_product_relations WHERE product_id='".$product_data->product_id."'";
+			$db->setQuery($q);
+			$db->query();
+		}
+		
+		return true;
+	}
+	
+	/**
+	* Format the attributes of a product to DB format
+	*/
+	public function formatAttributeX() {
+		// request attribute pieces
+		$attributeX = JRequest::getVar( 'attributeX', array( 0 ) ) ;
+		$attribute_string = '' ;
+		
+		// no pieces given? then return 
+		if( empty( $attributeX ) ) {
+			return $attribute_string ;
+		}
+		
+		// put the pieces together again
+		foreach( $attributeX as $attributes ) {
+			$attribute_string .= ';' ;
+			// continue only if the attribute has a name
+			if( empty( $attributes['name'] ) ) {
+				continue ;
+			}
+			$attribute_string .= trim( $attributes['name'] ) ;
+			$n2 = count( $attributes['value'] ) ;
+			for( $i2 = 0 ; $i2 < $n2 ; $i2 ++ ) {
+				$value = $attributes['value'][$i2] ;
+				$price = $attributes['price'][$i2] ;
+				
+				if( ! empty( $value ) ) {
+					$attribute_string .= ',' . trim( $value ) ;
+					
+					if( ! empty( $price ) ) {
+						
+						// add the price only if there is an operand
+						if( strstr( $price, '+' ) or (strstr( $price, '-' )) or (strstr( $price, '=' )) ) {
+							$attribute_string .= '[' . trim( $price ) . ']' ;
+						}
+					}
+				}
+			}
+		
+		}
+		
+		// cut off the first attribute separators on the beginning of the string
+		// otherwise you would get an empty first attribute
+		$attribute_string = substr( $attribute_string, 1 ) ;
+		return trim( $attribute_string ) ;
+	}
+	
+	/**
+	 * Fetches and returns a given filtered variable. 
+	 * The variable can have the value "Y" or "N", nothing else
+	 *
+	 * See getVar() for more in-depth documentation on the parameters.
+	 *
+	 * @static
+	 * @param	string	$name		Variable name
+	 * @param	string	$default	Default value if the variable does not exist
+	 * @param	string	$hash		Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
+	 * @return	string	Requested variable
+	 * @since	1.1
+	 * @todo move to a generic file
+	 */
+	function getYesOrNo($name, $default = 'N', $hash = 'default') {
+		$yes_or_no = strtoupper( JRequest::getVar($name, $default, $hash, 'none'));
+		return $yes_or_no == 'Y' ? 'Y' : 'N'; 
 	}
 }
 ?>
