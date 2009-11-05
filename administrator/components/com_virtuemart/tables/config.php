@@ -45,6 +45,54 @@ class TableConfig extends JTable
 	var $show_price_for_packaging  	= 0;	
 	/** @var tinyint Enable content plugins flag */
 	var $enable_content_plugins    	= 0;	
+	/** @var tinyint Enable coupons flag */
+	var $enable_coupons   		 	= 1;
+	/** @var tinyint Enable reviews flag */
+	var $enable_reviews    			= 0;
+	/** @var tinyint Autopublish reviews flag */
+	var $autopublish_reviews		= 0;
+	/** @var int Autopublish reviews flag */
+	var $comment_min_length			= 100;
+	/** @var int Autopublish reviews flag */
+	var $comment_max_length			= 2000;
+	/** @var tinyint Virtual tax flag */
+	var $virtual_tax				= 1;
+	/** @var tinyint Tax mode id */
+	var $tax_mode					= 0;	
+	/** @var tinyint Multiple tax rate flag */
+	var $enable_multiple_taxrates	= 0;
+	/** @var tinyint Subtract payment before discounts flag */
+	var $subtract_payment_before_discount = 0;
+	/** @var varchar Registration type */
+	var $registration_type			= 'NORMAL_REGISTRATION';		
+	/** @var tinyint Subtract payment before discounts flag */
+	var $show_remember_me_box		 = 0;
+	/** @var tinyint Agree to terms of service on order flag */
+	var $agree_tos_onorder			 = 0;
+	/** @var tinyint Show legal informaiton on checkout flag */
+	var $oncheckout_show_legal_info	 = 0;
+	/** @var text OnCheckout legal information short text. */
+	var $oncheckout_legalinfo_shorttext	 = '';	
+	/** @var tinyint Show products with no stock flag */
+	var $show_out_of_stock_products	 = 0;	
+	/** @var tinyint Check cookie flag */
+	var $enable_cookie_check		 = 1;	
+	/** @var tinyint Mail format index */
+	var $mail_format				 = 0;		
+	/** @var tinyint Debug flag */
+	var $debug						 = 0;
+	/** @var tinyint Debug by ip address flag */
+	var $debug_by_ip				 = 0;
+	/** @var varchar Ip address to debug. */
+	var $debug_ip_address			 = '';	
+	/** @var tinyint Logfile enabled flag */
+	var $logfile_enabled			 = 0;		
+	/** @var varchar Logfile name. */
+	var $logfile_name				 = '';		
+	/** @var varchar Logfile level. */
+	var $logfile_level				 = '';	
+	/** @var varchar Logfile format. */
+	var $logfile_format				 = '';		
 
 	/**
 	 * @author Rick Glunt
