@@ -139,6 +139,12 @@ class VirtuemartViewProduct extends JView {
 				if (is_null($product->quantity_end)) $product->quantity_end = 0;
 				if (is_null($product->quantity_step)) $product->quantity_step = 1;
 				
+				/* Load waiting list */
+				if ($product->product_id) {
+					$waitinglist = $this->get('waitingusers', 'waitinglist');
+					$this->assignRef('waitinglist', $waitinglist);
+				}
+				
 				/* Set up labels */
 				if ($product->product_parent_id > 0) {
 					$info_label = JText::_('VM_PRODUCT_FORM_ITEM_INFO_LBL');

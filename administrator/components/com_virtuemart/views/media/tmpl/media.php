@@ -111,8 +111,9 @@ $pagination = $this->pagination;
 						echo '<br />';
 						/* Create the thumbnail file, this should be in the resized folder */
 						if (is_null($productfile->product_thumb_image)) $basename = $info['basename'];
-						else $basename = $productfile->product_thumb_image;
+						else $basename = basename($productfile->product_thumb_image);
 						$thumbimg = $info['dirname'].DS.'resized'.DS.$basename;
+						
 						/* Thumbnail image */
 						if (JFile::exists($thumbimg)) {
 							$imgsize = getimagesize($thumbimg);

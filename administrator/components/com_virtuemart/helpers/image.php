@@ -188,13 +188,14 @@ class ImageHelper
 		
 		$origFileInfo = pathinfo($imageFilename);
 		$resizedFilename = $origFileInfo['filename'].'_'.$width.'x'.$height.'.'.$origFileInfo['extension'];
+		
 		if ($imageRootFolder) {
-			$fullSizeFilenamePath = JPATH_COMPONENT.DS.'shop_image'.DS.$imageRootFolder.DS.$imageFilename;
-			$resizedFilenamePath = JPATH_COMPONENT.DS.'shop_image'.DS.$imageRootFolder.DS.'resized'.DS.$resizedFilename;
+			$fullSizeFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.$imageRootFolder.DS.$imageFilename;
+			$resizedFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.$imageRootFolder.DS.'resized'.DS.$resizedFilename;
 		}
 		else {
-			$fullSizeFilenamePath = JPATH_COMPONENT.DS.'shop_image'.DS.$imageFilename;
-			$resizedFilenamePath = JPATH_COMPONENT.DS.'shop_image'.DS.'resized'.DS.$resizedFilename;
+			$fullSizeFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.$imageFilename;
+			$resizedFilenamePath = JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'resized'.DS.$resizedFilename;
 		}			
 
 		// Don't allow sizes beyond 2000 pixels

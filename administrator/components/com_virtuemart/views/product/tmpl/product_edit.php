@@ -23,6 +23,11 @@ AdminMenuHelper::startAdminArea();
 	echo $this->pane->startPanel( JText::_('VM_PRODUCT_FORM_PRODUCT_IMAGES_LBL'), 'product_images' );
 		echo $this->loadTemplate('images');
 	echo $this->pane->endPanel();
+	if (count($this->waitinglist) > 0) {
+		echo $this->pane->startPanel( JText::_('PRODUCT_WAITING_LIST_TAB'), 'product_waitinglist' );
+			echo $this->loadTemplate('waitinglist');
+		echo $this->pane->endPanel();
+	}
 	echo $this->pane->endPane(); 
 
 ?>

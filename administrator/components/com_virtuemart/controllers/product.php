@@ -63,7 +63,7 @@ class VirtuemartControllerProduct extends JController
 	public function Add() {
 		/* Create the view object */
 		$view = $this->getView('product', 'html');
-				
+		
 		/* Default model */
 		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
 		/* Media files functions */
@@ -80,6 +80,8 @@ class VirtuemartControllerProduct extends JController
 		$view->setModel( $this->getModel( 'taxRate', 'VirtueMartModel' ));
 		/* Discount functions */
 		$view->setModel( $this->getModel( 'discount', 'VirtueMartModel' ));
+		/* Waitinglist functions */
+		$view->setModel( $this->getModel( 'waitinglist', 'VirtueMartModel' ));
 		
 		/* Set the layout */
 		$view->setLayout('product_edit');
@@ -105,6 +107,17 @@ class VirtuemartControllerProduct extends JController
 	*/
 	public function Save() {
 		$mainframe = Jfactory::getApplication();
+		
+		/* Load the view object */
+		$view = $this->getView('product', 'html');
+		
+		/* Waitinglist functions */
+		$view->setModel( $this->getModel( 'waitinglist', 'VirtueMartModel' ));
+		
+		/* Load some helpers */
+		$view->loadHelper('image');
+		$view->loadHelper('shopFunctions');
+		
 		$model = $this->getModel('product');
 		$msgtype = '';
 		if ($model->saveProduct()) $msg = JText::_('PRODUCT_SAVED_SUCCESSFULLY');

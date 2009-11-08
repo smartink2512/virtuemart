@@ -51,7 +51,7 @@ echo '</div>';
               else
               $product_full_image_url = "";
               ?>
-              <input type="text" class="inputbox" size="50" name="product_full_image_url" value="<?php echo $product_full_image_url ?>" onchange="if( this.value.length>0) document.adminForm.product_full_image_action[1].checked=false; else document.adminForm.product_full_image_action[1].checked=true; toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );" />
+              <input type="text" class="inputbox" size="50" name="product_full_image_url" id="product_full_image_url" value="<?php echo $product_full_image_url ?>" onchange="toggleFullURL()" />
             </td>
           </tr>
           <tr class="row1"><td colspan="2">&nbsp;</td></tr>
@@ -104,7 +104,7 @@ echo '</div>';
           <tr class="row1">
             <td colspan="2" >
               <div style="overflow:auto;">
-                <?php echo ImageHelper::displayShopImage($this->product->product_thumb_image, 'product/resized', '', 0); ?>
+                <?php echo ImageHelper::displayShopImage($this->product->product_thumb_image, 'product/', '', 0); ?>
               </div>
             </td>
           </tr>
@@ -133,5 +133,12 @@ function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {
 		}
 	}
 	catch( e ) {}
+}
+
+function toggleFullURL() {
+	if( jQuery('#product_full_image_url').val().length>0) document.adminForm.product_full_image_action[1].checked=false; 
+	else document.adminForm.product_full_image_action[1].checked=true; 
+	toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image_url, true );
+	toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );
 }
 </script>

@@ -34,7 +34,7 @@ class VirtueMartModelProduct extends JModel {
 		
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
-	}  
+	}
 	
 	/**
 	 * Loads the pagination
@@ -495,7 +495,51 @@ class VirtueMartModelProduct extends JModel {
 		/* Load the data */
 		$data = JRequest::get('post', 4);
 		
+		/* Load the old product details first */
+		$product_data->load($data['product_id']);
+		
 		/* Process the images */
+		if (JRequest::getWord('product_full_image_action') == 'delete') $data['product_full_image'] = '';
+		else {
+			/* Handle the full image */
+			if (array_key_exists('product_full_image_url', $data) && !empty($data['product_full_image_url'])) {
+				$data['product_full_image'] = $data['product_full_image_url'];
+			}
+			else {
+				$full_image = JRequest::getVar('product_full_image', array(), 'files');
+				if ($full_image['error'] == UPLOAD_ERR_OK) {
+					move_uploaded_file($full_image['tmp_name'], JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'product'.DS.$full_image['name']);
+					$data['product_full_image'] = $full_image['name'];
+				}
+				
+				if (JRequest::getWord('product_full_image_action') == 'auto_resize') {
+					/* Check if we have an uploaded file */
+					if ($full_image['error'] == UPLOAD_ERR_NO_FILE) {
+						$data['product_thumb_image'] = 'resized/'.basename(ImageHelper::createResizedImage($product_data->product_full_image, 'product', PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
+					}
+					/* Move the file to its final destination */
+					else if ($full_image['error'] == UPLOAD_ERR_OK) {
+						move_uploaded_file($full_image['tmp_name'], JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'product'.DS.$full_image['name']);
+						$data['product_thumb_image'] = 'resized/'.basename(ImageHelper::createResizedImage($full_image['name'], 'product', PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
+					}
+				}
+				else {
+					$thumb_image = JRequest::getVar('product_thumb_image', array(), 'files');
+					if ($full_image['error'] == UPLOAD_ERR_OK) {
+						move_uploaded_file($thumb_image['tmp_name'], JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'product'.DS.'resized'.DS.$thumb_image['name']);
+						$data['product_thumb_image'] = 'resized/'.$thumb_image['name'];
+					}
+					
+				}
+			}
+		}
+		
+		/* Handle thumb image */
+		if (JRequest::getWord('product_thumb_image_action') == 'delete') $data['product_thumb_image'] = '';
+		else {
+			/* Handle the thumb image URL if there is any */
+			if (array_key_exists('product_thumb_image_url', $data) && !empty($data['product_thumb_image_url'])) $data['product_thumb_image'] = $data['product_thumb_image_url'];
+		}
 		
 		/* Get the product data */
 		$product_data->bind($data);
@@ -531,15 +575,6 @@ class VirtueMartModelProduct extends JModel {
         /* Store the product */
 		$product_data->store();
 		
-		?><pre><?php
-		print_r($product_data);
-		?></pre><?php
-		
-		
-		?><pre><?php
-		print_r($data);
-		?></pre><?php
-		
 		/* Update manufacturer link */
 		$q = 'UPDATE #__vm_product_mf_xref SET ';
 		$q .= 'manufacturer_id='.JRequest::getInt('manufacturer_id').' ';
@@ -548,6 +583,10 @@ class VirtueMartModelProduct extends JModel {
 		$db->query();
 		
 		/* Update waiting list */
+		if ($data['product_in_stock'] > 0 && $data['notify_users'] == '1' && $data['product_in_stock_old'] == '500') {
+			$waitinglist = new VirtueMartModelWaitingList();
+			$waitinglist->notifyList($data['product_id']);
+		}
 		
 		/* If is Item, update attributes */
 		if ($product_data->product_parent_id > 0) {
