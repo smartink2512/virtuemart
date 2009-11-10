@@ -294,14 +294,14 @@ class ps_perm {
 		$db = &JFactory::getDBO();
 		// If the registration type is neither "no registration" nor "optional registration", there *must* be a related Joomla! user, we can join
 		if( VM_REGISTRATION_TYPE != 'NO_REGISTRATION' && VM_REGISTRATION_TYPE != 'OPTIONAL_REGISTRATION' ) {
-			$q  = "SELECT COUNT(user_id) as num_rows FROM `#__{vm}_user_info`, `#__users` 
+			$q  = "SELECT COUNT(user_id) as num_rows FROM `#__vm_user_info`, `#__users` 
 				WHERE `id`=`user_id`
-				AND #__{vm}_user_info.user_id='" . $user_id . "'
-				AND #__{vm}_user_info.address_type='BT'";
+				AND #__vm_user_info.user_id='" . $user_id . "'
+				AND #__vm_user_info.address_type='BT'";
 		} else {
-			$q  = "SELECT COUNT(user_id) as num_rows FROM `#__{vm}_user_info` 
-				WHERE #__{vm}_user_info.user_id='" . $user_id . "'  
-				AND #__{vm}_user_info.address_type='BT'";
+			$q  = "SELECT COUNT(user_id) as num_rows FROM `#__vm_user_info` 
+				WHERE #__vm_user_info.user_id='" . $user_id . "'  
+				AND #__vm_user_info.address_type='BT'";
 			
 		}
 		$db->setQuery($q);

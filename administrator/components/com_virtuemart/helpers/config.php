@@ -11,59 +11,37 @@
  */
 
 class VmConfig {
-	/** @var objectlist Country data */
-    var $_data;  
-	
-	
-    /**
-     * Constructor for the configuration helper.
-     *
-     * The configuration values are read and stored in a local variable.
-     *
-     * @author Rick Glunt 
-     */
-    function __construct()
-    {
-    	$this->_data = JRequest::getVar('vmconfig', '');
-    	
-    	// Load the configuration if not aleady loaded.
-        if (empty($this->_data)) {
-			$this->loadConfig();        	
-		}
-		
-		$this->loadConfig();
-    }	
-	
-	
 	/**
 	 * Load the configuration values from the DB into a local variable.
 	 *
 	 * @author RickG
 	 */
-	function loadConfig() {
-    	$this->_data = JRequest::getVar('vmconfig', '');
-    	
-    	// Load the configuration if not aleady loaded.
-        if (empty($this->_data)) {
-			$db = JFactory::getDBO();	
+	function loadConfig() {   	
+		$db = JFactory::getDBO();	
 		
-			$query = 'SELECT * FROM `#__vm_config`';
-			$db->setQuery($query);		
-			$this->_data = $db->loadObjectList();
-		}
+		$query = 'SELECT * FROM `#__vm_config`';
+		$db->setQuery($query);		
+		
+		$result = $db->loadObject();
+		JRequest::setVar('vmconfig', $result);
 	}
 	
 	
+	/**
+	 * Find the configuration value for a given key
+	 *
+	 * @author RickG
+	 * @param string $key Key name to lookup
+	 * @return Value for the given key name
+	 */	
 	function getVar($key = '')
 	{
-    	// Load the configuration if not aleady loaded.
-        if (empty($this->_data)) {
-			VmConfig::loadConfig();        	
-		}		
-		
 		$value = '';
 		if ($key) {
-			$value = $this->_data[$key];
+			$config = JRequest::getVar('vmconfig', '');
+			if ($config) {
+				$value = $config->$key;
+			}
 		}	
 		
 		return $value;
