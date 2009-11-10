@@ -14,8 +14,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
-
 /**
  * Administration ribbon menu helper
  *

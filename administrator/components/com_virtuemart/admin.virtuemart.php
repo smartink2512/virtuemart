@@ -21,8 +21,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 global $mosConfig_absolute_path;
 $mosConfig_absolute_path=JPATH_ROOT.DS;
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopFunctions.php');
-ShopFunctions::loadConfig();
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 
 // Require the base controller
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'controller.php');

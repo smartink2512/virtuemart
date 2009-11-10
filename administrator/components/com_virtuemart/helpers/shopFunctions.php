@@ -6,7 +6,7 @@
  *
  * @package	VirtueMart
  * @subpackage Helpers
- * @author RolandD, RickG
+ * @author RolandD
  * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -27,22 +27,6 @@ class ShopFunctions {
 		$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
 		
 		return $mailer;
-	}
-	
-	
-	/**
-	 * Load the configuration values from the DB into a global variable.
-	 *
-	 * @author RickG
-	 */
-	public function loadConfig() {
-		$db =& JFactory::getDBO();	
-		
-		$query = 'SELECT * FROM `#__vm_config`';
-		$db->setQuery($query);
-		$result = $db->loadObject();						
-		
-		JRequest::setVar('vmconfig', $result);
 	}
 }
 ?>
