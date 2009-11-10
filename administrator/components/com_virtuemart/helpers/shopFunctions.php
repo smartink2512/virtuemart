@@ -2,12 +2,11 @@
 /**
  * General helper class
  *
- * This class was derived from the show_image_in_imgtag.php and imageTools.class.php files in VM.  It provides some
- * image functions that are used throughout the VirtueMart shop.
+ * This class provides some shop functions that are used throughout the VirtueMart shop.
  *
  * @package	VirtueMart
  * @subpackage Helpers
- * @author RolandD
+ * @author RolandD, RickG
  * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -28,6 +27,22 @@ class ShopFunctions {
 		$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
 		
 		return $mailer;
+	}
+	
+	
+	/**
+	 * Load the configuration values from the DB into a global variable.
+	 *
+	 * @author RickG
+	 */
+	public function loadConfig() {
+		$db =& JFactory::getDBO();	
+		
+		$query = 'SELECT * FROM `#__vm_config`';
+		$db->setQuery($query);
+		$result = $db->loadObject();						
+		
+		JRequest::setVar('vmconfig', $result);
 	}
 }
 ?>

@@ -16,11 +16,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 * http://virtuemart.org
 */
 
-/* Load the configuration file */
+// Load the configuration file
 // Quickfix by Harry Patterson: 
 global $mosConfig_absolute_path;
 $mosConfig_absolute_path=JPATH_ROOT.DS;
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.cfg.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopFunctions.php');
+ShopFunctions::loadConfig();
 
 // Require the base controller
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'controller.php');
