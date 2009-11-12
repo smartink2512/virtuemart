@@ -229,17 +229,13 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('VM_ADMIN_CFG_TAX_MODE') ?>
 			</td>
 			<td>
-				<select name="tax_mode" class="inputbox">
-					<option value="0" <?php if (VmConfig::getVar('tax_mode') == 0) echo 'selected="selected"'; ?>>
-					<?php echo JText::_('VM_ADMIN_CFG_TAX_MODE_SHIP') ?>
-					</option>
-					<option value="1" <?php if (VmConfig::getVar('tax_mode') == 1) echo 'selected="selected"'; ?>>
-					<?php echo JText::_('VM_ADMIN_CFG_TAX_MODE_VENDOR') ?>
-					</option>
-					<option value="17749" <?php if (VmConfig::getVar('tax_mode') == 17749) echo 'selected="selected"'; ?>>
-					<?php echo JText::_('VM_ADMIN_CFG_TAX_MODE_EU') ?>
-					</option>
-				</select>
+				<?php
+				$options = array();
+				$options[] = JHTML::_('select.option', '0', JText::_('VM_ADMIN_CFG_TAX_MODE_SHIP') );
+				$options[] = JHTML::_('select.option', '1', JText::_('VM_ADMIN_CFG_TAX_MODE_VENDOR'));
+				$options[] = JHTML::_('select.option', '17749', JText::_('VM_ADMIN_CFG_TAX_MODE_EU'));
+				echo JHTML::_('Select.genericlist', $options, 'tax_mode', 'size=1');
+				?>				
 			</td>
 		</tr>
 		<tr>
@@ -280,12 +276,14 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('VM_CFG_REGISTRATION_TYPE') ?>				
 			</td>
 			<td>
-				<select id="registration_type" name="registration_type" class="inputbox">
-					<option value="NORMAL_REGISTRATION"<?php if(VmConfig::getVar('registration_type') == 'NORMAL_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo JText::_('VM_CFG_REGISTRATION_TYPE_NORMAL_REGISTRATION') ?></option>
-					<option value="SILENT_REGISTRATION"<?php if(VmConfig::getVar('registration_type') == 'SILENT_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo JText::_('VM_CFG_REGISTRATION_TYPE_SILENT_REGISTRATION') ?></option>
-					<option value="OPTIONAL_REGISTRATION"<?php if(VmConfig::getVar('registration_type') == 'OPTIONAL_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo JText::_('VM_CFG_REGISTRATION_TYPE_OPTIONAL_REGISTRATION') ?></option>
-					<option value="NO_REGISTRATION"<?php if(VmConfig::getVar('registration_type') == 'NO_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo JText::_('VM_CFG_REGISTRATION_TYPE_NO_REGISTRATION') ?></option>
-				</select>
+				<?php
+				$options = array();
+				$options[] = JHTML::_('select.option', 'NORMAL_REGISTRATION', JText::_('VM_CFG_REGISTRATION_TYPE_NORMAL_REGISTRATION') );
+				$options[] = JHTML::_('select.option', 'SILENT_REGISTRATION', JText::_('VM_CFG_REGISTRATION_TYPE_SILENT_REGISTRATION'));
+				$options[] = JHTML::_('select.option', 'OPTIONAL_REGISTRATION', JText::_('VM_CFG_REGISTRATION_TYPE_OPTIONAL_REGISTRATION'));
+				$options[] = JHTML::_('select.option', 'NO_REGISTRATION', JText::_('VM_CFG_REGISTRATION_TYPE_NO_REGISTRATION'));				
+				echo JHTML::_('Select.genericlist', $options, 'registration_type', 'size=1');
+				?>	
 			</td> 
 		</tr>
 		
