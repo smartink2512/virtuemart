@@ -13,9 +13,7 @@ echo $this->loadTemplate('global');
 echo $pane->endPanel();
 
 echo $pane->startPanel(JText::_('VM_ADMIN_SECURITY'), 'security_panel');
-?>
-Secuirty Here
-<?php
+echo $this->loadTemplate('security');
 echo $pane->endPanel();
 echo $pane->startPanel(JText::_('VM_ADMIN_CFG_SITE'), 'site_panel');
 ?>

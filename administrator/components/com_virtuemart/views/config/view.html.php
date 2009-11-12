@@ -32,9 +32,6 @@ class VirtuemartViewConfig extends JView
 	
 		$mainframe = JFactory::getApplication();
 		$this->assignRef('joomlaconfig', $mainframe);
-		
-		$vmConfig = $model->getConfig();
-		$this->assignRef('vmConfig', $vmConfig);
 	
 		parent::display($tpl);
 	}

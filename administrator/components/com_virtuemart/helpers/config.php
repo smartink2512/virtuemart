@@ -12,18 +12,13 @@
 
 class VmConfig {
 	/**
-	 * Load the configuration values from the DB into a local variable.
+	 * Load the configuration values from the INI file into a local variable.
 	 *
 	 * @author RickG
 	 */
 	function loadConfig() {   	
-		$db = JFactory::getDBO();	
-		
-		$query = 'SELECT * FROM `#__vm_config`';
-		$db->setQuery($query);		
-		
-		$result = $db->loadObject();
-		JRequest::setVar('vmconfig', $result);
+		$ini_array = parse_ini_file(JPATH_COMPONENT_ADMINISTRATOR.DS.'vm.ini');
+		JRequest::setVar('vmconfig', $ini_array);
 	}
 	
 	
@@ -40,7 +35,7 @@ class VmConfig {
 		if ($key) {
 			$config = JRequest::getVar('vmconfig', '');
 			if ($config) {
-				$value = $config->$key;
+				$value = $config[$key];
 			}
 		}	
 		

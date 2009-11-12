@@ -15,14 +15,14 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->shop_is_offline) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('shop_is_offline')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="shop_is_offline" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
 		<tr>
 			<td class="key"><?php echo JText::_('VM_ADMIN_CFG_SHOP_OFFLINE_MSG') ?></td>
 			<td>
-				<textarea rows="8" cols="35" name="offline_message"><?php echo $this->vmConfig->offline_message; ?></textarea>
+				<textarea rows="8" cols="35" name="offline_message"><?php echo VmConfig::getVar('offline_message'); ?></textarea>
 			</td>
 		</tr>  
 		<tr>
@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->use_as_catalog) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('use_as_catalog')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="use_as_catalog" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->show_prices) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('show_prices')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="show_prices" value="1" <?php echo $checked; ?> />				
 			</td>
 		</tr>
@@ -61,7 +61,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('VM_ADMIN_CFG_PRICE_ACCESS_LEVEL') ?>
 			</td>
 			<td>
-				<input type="checkbox" id="price_access_level_enabled" name="price_access_level_enabled" class="inputbox" value="<?php echo $this->vmConfig->price_access_level_enabled; ?>" />
+				<input type="checkbox" id="price_access_level_enabled" name="price_access_level_enabled" class="inputbox" value="<?php echo VmConfig::getVar('price_access_level_enabled'); ?>" />
 				<?php echo JText::_('VM_CFG_ENABLE_FEATURE'); ?>
 			</td>
 		</tr>
@@ -73,7 +73,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->show_prices_with_tax) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('show_prices_with_tax')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="show_prices_with_tax" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
@@ -85,7 +85,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->show_excluding_tax_note) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('show_excluding_tax_note')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="show_excluding_tax_note" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
@@ -107,7 +107,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->show_including_tax_note) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('show_including_tax_note')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="show_including_tax_note" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
@@ -119,7 +119,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->show_price_for_packaging) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('show_price_for_packaging')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="show_price_for_packaging" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
@@ -140,7 +140,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->enable_content_plugins) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('enable_content_plugins')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="enable_content_plugins" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
@@ -153,7 +153,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->enable_coupons) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('enable_coupons')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="enable_coupons" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
@@ -166,7 +166,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->enable_reviews) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('enable_reviews')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="enable_reviews" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
@@ -180,7 +180,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->autopublish_reviews) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('autopublish_reviews')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="autopublish_reviews" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
@@ -191,7 +191,7 @@ defined('_JEXEC') or die('Restricted access');
 				
 			</td>
 			<td>
-				<input type="text" size="6" id="comment_min_length" name="comment_min_length" class="inputbox" value="<?php echo $this->vmConfig->comment_min_length; ?>" />
+				<input type="text" size="6" id="comment_min_length" name="comment_min_length" class="inputbox" value="<?php echo VmConfig::getVar('comment_min_length'); ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -200,7 +200,7 @@ defined('_JEXEC') or die('Restricted access');
 				<label for="conf_VM_REVIEWS_MAXIMUM_COMMENT_LENGTH"><?php echo JText::_('VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH') ?></label>				
 			</td>
 			<td>
-				<input type="text" size="6" id="comment_max_length" name="comment_max_length" class="inputbox" value="<?php echo $this->vmConfig->comment_max_length; ?>" />
+				<input type="text" size="6" id="comment_max_length" name="comment_max_length" class="inputbox" value="<?php echo VmConfig::getVar('comment_max_length'); ?>" />
 			</td>
 		</tr>
 
@@ -219,7 +219,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td align="left">
 				<?php
 				$checked = '';
-				if ($this->vmConfig->virtual_tax) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('virtual_tax')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="virtual_tax" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
@@ -230,13 +230,13 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 				<select name="tax_mode" class="inputbox">
-					<option value="0" <?php if ($this->vmConfig->tax_mode == 0) echo 'selected="selected"'; ?>>
+					<option value="0" <?php if (VmConfig::getVar('tax_mode') == 0) echo 'selected="selected"'; ?>>
 					<?php echo JText::_('VM_ADMIN_CFG_TAX_MODE_SHIP') ?>
 					</option>
-					<option value="1" <?php if ($this->vmConfig->tax_mode == 1) echo 'selected="selected"'; ?>>
+					<option value="1" <?php if (VmConfig::getVar('tax_mode') == 1) echo 'selected="selected"'; ?>>
 					<?php echo JText::_('VM_ADMIN_CFG_TAX_MODE_VENDOR') ?>
 					</option>
-					<option value="17749" <?php if ($this->vmConfig->tax_mode == 17749) echo 'selected="selected"'; ?>>
+					<option value="17749" <?php if (VmConfig::getVar('tax_mode') == 17749) echo 'selected="selected"'; ?>>
 					<?php echo JText::_('VM_ADMIN_CFG_TAX_MODE_EU') ?>
 					</option>
 				</select>
@@ -250,7 +250,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->enable_multiple_taxrates) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('enable_multiple_taxrates')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="enable_multiple_taxrates" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
@@ -262,7 +262,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->subtract_payment_before_discount) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('subtract_payment_before_discount')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="subtract_payment_before_discount" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
@@ -281,10 +281,10 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 				<select id="registration_type" name="registration_type" class="inputbox">
-					<option value="NORMAL_REGISTRATION"<?php if($this->vmConfig->registration_type == 'NORMAL_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo JText::_('VM_CFG_REGISTRATION_TYPE_NORMAL_REGISTRATION') ?></option>
-					<option value="SILENT_REGISTRATION"<?php if($this->vmConfig->registration_type == 'SILENT_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo JText::_('VM_CFG_REGISTRATION_TYPE_SILENT_REGISTRATION') ?></option>
-					<option value="OPTIONAL_REGISTRATION"<?php if($this->vmConfig->registration_type == 'OPTIONAL_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo JText::_('VM_CFG_REGISTRATION_TYPE_OPTIONAL_REGISTRATION') ?></option>
-					<option value="NO_REGISTRATION"<?php if($this->vmConfig->registration_type == 'NO_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo JText::_('VM_CFG_REGISTRATION_TYPE_NO_REGISTRATION') ?></option>
+					<option value="NORMAL_REGISTRATION"<?php if(VmConfig::getVar('registration_type') == 'NORMAL_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo JText::_('VM_CFG_REGISTRATION_TYPE_NORMAL_REGISTRATION') ?></option>
+					<option value="SILENT_REGISTRATION"<?php if(VmConfig::getVar('registration_type') == 'SILENT_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo JText::_('VM_CFG_REGISTRATION_TYPE_SILENT_REGISTRATION') ?></option>
+					<option value="OPTIONAL_REGISTRATION"<?php if(VmConfig::getVar('registration_type') == 'OPTIONAL_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo JText::_('VM_CFG_REGISTRATION_TYPE_OPTIONAL_REGISTRATION') ?></option>
+					<option value="NO_REGISTRATION"<?php if(VmConfig::getVar('registration_type') == 'NO_REGISTRATION' ) echo "selected=\"selected\""; ?>><?php echo JText::_('VM_CFG_REGISTRATION_TYPE_NO_REGISTRATION') ?></option>
 				</select>
 			</td> 
 		</tr>
@@ -297,7 +297,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->show_remember_me_box) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('show_remember_me_box')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="show_remember_me_box" value="1" <?php echo $checked; ?> />
 			</td> 
 		</tr>
@@ -341,7 +341,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->agree_tos_onorder) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('agree_tos_onorder')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="agree_tos_onorder" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
@@ -353,7 +353,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->oncheckout_show_legal_info) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('oncheckout_show_legal_info')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="oncheckout_show_legal_info" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
@@ -363,7 +363,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT') ?>
 			</td>
 			<td>
-				<textarea rows="6" cols="40" id="oncheckout_legalinfo_shorttext" name="oncheckout_legalinfo_shorttext" class="inputbox"><?php echo $this->vmConfig->oncheckout_legalinfo_shorttext; ?></textarea>
+				<textarea rows="6" cols="40" id="oncheckout_legalinfo_shorttext" name="oncheckout_legalinfo_shorttext" class="inputbox"><?php echo VmConfig::getVar('oncheckout_legalinfo_shorttext'); ?></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -401,7 +401,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td valign="top">
 				<?php
 				$checked = '';
-				if ($this->vmConfig->show_out_of_stock_products) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('show_out_of_stock_products')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="show_out_of_stock_products" value="1" <?php echo $checked; ?> />					
 			</td>
 		</tr>
@@ -413,7 +413,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->enable_cookie_check) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('enable_cookie_check')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="enable_cookie_check" value="1" <?php echo $checked; ?> />
 			</td>
 		</tr>
@@ -443,10 +443,10 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT') ?></td>
 			<td>
 				<select name="mail_format" class="inputbox">
-				<option value="0" <?php if ($this->vmConfig->mail_format == '0') echo 'selected="selected"'; ?>>
+				<option value="0" <?php if (VmConfig::getVar('mail_format') == '0') echo 'selected="selected"'; ?>>
 			   <?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT_TEXT') ?>
 				</option>
-				<option value="1" <?php if ($this->vmConfig->mail_format == '1') echo 'selected="selected"'; ?>>
+				<option value="1" <?php if (VmConfig::getVar('mail_format') == '1') echo 'selected="selected"'; ?>>
 				<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT_HTML') ?>
 				</option>
 				</select>
@@ -460,7 +460,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->debug) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('debug')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="debug" value="1" <?php echo $checked; ?> />				
 			</td>
 		</tr>
@@ -471,7 +471,7 @@ defined('_JEXEC') or die('Restricted access');
             <td>
 				<?php
 				$checked = '';
-				if ($this->vmConfig->debug_by_ip) $checked = 'checked="checked"'; ?>
+				if (VmConfig::getVar('debug_by_ip')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="debug_by_ip" value="1" <?php echo $checked; ?> />            	
             </td>
         </tr>
@@ -480,7 +480,7 @@ defined('_JEXEC') or die('Restricted access');
             	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DEBUG_IP_ADDRESS_EXPLAIN'); ?>">
             	<?php echo JText::_('VM_ADMIN_CFG_DEBUG_IP_ADDRESS') ?></td>
             <td>
-                <input size="20" type="text" name="debug_ip_address" class="inputbox" value="<?php echo $this->vmConfig->debug_ip_address; ?>" />
+                <input size="20" type="text" name="debug_ip_address" class="inputbox" value="<?php echo VmConfig::getVar('debug_ip_address'); ?>" />
             </td>
         </tr>
 		</table>		
@@ -498,8 +498,8 @@ defined('_JEXEC') or die('Restricted access');
             <td>
             	<?php
 				$checked = '';
-				if ($this->vmConfig->logfile_enabled) $checked = 'checked="checked"'; ?>
-				<input type="checkbox" name="logfile_enabled" value="1" <?php echo $checked; ?> />
+				if (VmConfig::getVar('enable_logfile')) $checked = 'checked="checked"'; ?>
+				<input type="checkbox" name="enable_logfile" value="1" <?php echo $checked; ?> />
             </td>
         </tr>
         <tr>
@@ -508,7 +508,7 @@ defined('_JEXEC') or die('Restricted access');
             	<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_NAME') ?>
             </td>
             <td>
-                <input size="65" type="text" name="logfile_name" class="inputbox" value="<?php echo $this->vmConfig->logfile_name; ?>" />
+                <input size="65" type="text" name="logfile_name" class="inputbox" value="<?php echo VmConfig::getVar('logfile_name'); ?>" />
             </td>
         </tr>
     	<tr>
@@ -519,22 +519,22 @@ defined('_JEXEC') or die('Restricted access');
         <td>
         	<?php if (!defined('VM_LOGFILE_LEVEL')) define('VM_LOGFILE_LEVEL', 'PEAR_LOG_WARNING'); ?>
                 <select class="inputbox" name="logfile_level">
-                        <option value="PEAR_LOG_TIP" <?php if ($this->vmConfig->logfile_level == 'PEAR_LOG_TIP') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_TIP') ?></option>
-                        <option value="PEAR_LOG_DEBUG" <?php if ($this->vmConfig->logfile_level == 'PEAR_LOG_DEBUG') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_DEBUG') ?></option>
-                        <option value="PEAR_LOG_INFO" <?php if ($this->vmConfig->logfile_level == 'PEAR_LOG_INFO') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_INFO') ?></option>
-                        <option value="PEAR_LOG_NOTICE" <?php if ($this->vmConfig->logfile_level == 'PEAR_LOG_NOTICE') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_NOTICE') ?></option>
-                        <option value="PEAR_LOG_WARNING" <?php if ($this->vmConfig->logfile_level == 'PEAR_LOG_WARNING') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_WARNING') ?></option>
-                        <option value="PEAR_LOG_ERR" <?php if ($this->vmConfig->logfile_level == 'PEAR_LOG_ERR') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_ERR') ?></option>
-                        <option value="PEAR_LOG_CRIT" <?php if ($this->vmConfig->logfile_level == 'PEAR_LOG_CRIT') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_CRIT') ?></option>
-                        <option value="PEAR_LOG_ALERT" <?php if ($this->vmConfig->logfile_level == 'PEAR_LOG_ALERT') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_ALERT') ?></option>
-                        <option value="PEAR_LOG_EMERG" <?php if ($this->vmConfig->logfile_level == 'PEAR_LOG_EMERG') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_EMERG') ?></option>
+                        <option value="PEAR_LOG_TIP" <?php if (VmConfig::getVar('logfile_level') == 'PEAR_LOG_TIP') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_TIP') ?></option>
+                        <option value="PEAR_LOG_DEBUG" <?php if (VmConfig::getVar('logfile_level') == 'PEAR_LOG_DEBUG') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_DEBUG') ?></option>
+                        <option value="PEAR_LOG_INFO" <?php if (VmConfig::getVar('logfile_level') == 'PEAR_LOG_INFO') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_INFO') ?></option>
+                        <option value="PEAR_LOG_NOTICE" <?php if (VmConfig::getVar('logfile_level') == 'PEAR_LOG_NOTICE') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_NOTICE') ?></option>
+                        <option value="PEAR_LOG_WARNING" <?php if (VmConfig::getVar('logfile_level') == 'PEAR_LOG_WARNING') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_WARNING') ?></option>
+                        <option value="PEAR_LOG_ERR" <?php if (VmConfig::getVar('logfile_level') == 'PEAR_LOG_ERR') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_ERR') ?></option>
+                        <option value="PEAR_LOG_CRIT" <?php if (VmConfig::getVar('logfile_level') == 'PEAR_LOG_CRIT') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_CRIT') ?></option>
+                        <option value="PEAR_LOG_ALERT" <?php if (VmConfig::getVar('logfile_level') == 'PEAR_LOG_ALERT') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_ALERT') ?></option>
+                        <option value="PEAR_LOG_EMERG" <?php if (VmConfig::getVar('logfile_level') == 'PEAR_LOG_EMERG') echo "selected=\"selected\""; ?>><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_LEVEL_EMERG') ?></option>
             </select>
         </td>
     	</tr>
         <tr>
         	<?php
-            if(defined('VM_LOGFILE_FORMAT') && (VM_LOGFILE_FORMAT != '')) {
-            	$logfile_format = VM_LOGFILE_FORMAT;
+            if (VmConfig::getVar('logfile_level') <> '') {
+            	$logfile_format = VmConfig::getVar('logfile_level');
             } else {
                 $logfile_format = '%{timestamp} %{ident} [%{priority}] [%{remoteip}] [%{username}] %{message}';
 			}
@@ -544,7 +544,7 @@ defined('_JEXEC') or die('Restricted access');
             	<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_FORMAT') ?>
             </td>
             <td>
-                <input size="65" type="text" name="logfile_format" class="inputbox" value="<?php echo $this->vmConfig->logfile_format ?>" />
+                <input size="65" type="text" name="logfile_format" class="inputbox" value="<?php echo VmConfig::getVar('logfile_format') ?>" />
             </td>
         </tr>
         <tr>

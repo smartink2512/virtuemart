@@ -32,9 +32,9 @@ class TableConfig extends JTable
 	/** @var tinyint Show prices flag */
 	var $show_prices	       		= 1;
 	/** @var tinyint Price access level enabled */
-	var $price_access_level_enabled  = 0;			
+	var $price_access_level_enabled = 0;			
 	/** @var varchar Price access level */
-	var $price_acces_level     		= '';	
+	var $price_access_level    		= '';	
 	/** @var tinyint Show prices with tax flag */
 	var $show_prices_with_tax  		= 0;	
 	/** @var tinyint Show excluding tax note flag */
@@ -86,7 +86,7 @@ class TableConfig extends JTable
 	/** @var varchar Ip address to debug. */
 	var $debug_ip_address			 = '';	
 	/** @var tinyint Logfile enabled flag */
-	var $logfile_enabled			 = 0;		
+	var $enable_logfile				 = 0;		
 	/** @var varchar Logfile name. */
 	var $logfile_name				 = '';		
 	/** @var varchar Logfile level. */
