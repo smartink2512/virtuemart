@@ -17,7 +17,7 @@ class VmConfig {
 	 * @author RickG
 	 */
 	function loadConfig() {   	
-		$ini_array = parse_ini_file(JPATH_COMPONENT_ADMINISTRATOR.DS.'vm.ini');
+		$ini_array = parse_ini_file(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.ini');
 		JRequest::setVar('vmconfig', $ini_array);
 	}
 	
