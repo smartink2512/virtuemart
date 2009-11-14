@@ -13,6 +13,9 @@ jimport( 'joomla.application.component.view');
 class VirtuemartViewProduct extends JView {
 	
 	function display($tpl = null) {
+		$mainframe = Jfactory::getApplication();
+		$option = JRequest::getVar('option');
+		
 		/* Get the task */
 		$task = JRequest::getVar('task');
 		
@@ -32,10 +35,10 @@ class VirtuemartViewProduct extends JView {
 				/* Load some behaviour */
 				/* Load jQuery */
 				$document = JFactory::getDocument();
-				$document->addScript(JURI::root().'administrator/components/com_jmart/assets/js/jquery.js');
+				$document->addScript(JURI::root().'administrator/components/com_virtuemart/assets/js/jquery.js');
 				$document->addScriptDeclaration('jQuery.noConflict();');
-				$document->addScript(JURI::root().'administrator/components/com_jmart/assets/js/jquery.autocomplete.pack.js');
-				$document->addStyleSheet(JURI::root().'administrator/components/com_jmart/assets/css/jquery.autocomplete.css');
+				$document->addScript(JURI::root().'administrator/components/com_virtuemart/assets/js/jquery.autocomplete.pack.js');
+				$document->addStyleSheet(JURI::root().'administrator/components/com_virtuemart/assets/css/jquery.autocomplete.css');
 				jimport('joomla.html.pane');
 				$pane = JPane::getInstance(); 
 				JHTML::_('behavior.tooltip');
@@ -47,7 +50,8 @@ class VirtuemartViewProduct extends JView {
 				$product = $this->get('Product');
 				
 				/* Get the category tree */
-				$category_tree = $category_model->list_tree('', 0, 0, $product->categories);
+				if (isset($product->categories)) $category_tree = $category_model->list_tree('', 0, 0, $product->categories);
+				else $category_tree = $category_model->list_tree();
 				$this->assignRef('category_tree', $category_tree);
 				
 				/* Load the product price */
@@ -84,9 +88,10 @@ class VirtuemartViewProduct extends JView {
 				$product->attribute_values = $this->get('ProductAttributeValues');
 				
 				/* Load the child products */
-				if ($product->product_parent_id == 0) {
+				if ($product->product_id > 0 && $product->product_parent_id == 0) {
 					$product->child_products = $product_model->getChildAttributes($product->product_id);
 				}
+				else $product->child_products = null;
 				
 				/* Get the minimum and maximum order levels */
 				$min_order = 0;
@@ -155,20 +160,6 @@ class VirtuemartViewProduct extends JView {
 					$delete_message = JText::_('VM_PRODUCT_FORM_DELETE_ITEM_MSG');
 				}
 				else {
-					if (0) {
-						/* Cloning to be added later */
-						if ($product_id = @$vars["product_id"]) {
-							if( $clone_product == '1') {
-								$action = JText::_('VM_PRODUCT_CLONE');
-							}
-							else {
-								$action = JText::_('VM_PRODUCT_FORM_UPDATE_ITEM_LBL');
-							}
-						}
-						else {
-							$action = JText::_('VM_PRODUCT_FORM_NEW_PRODUCT_LBL');
-						}
-					}
 					if ($task == 'add') $action = JText::_('VM_PRODUCT_FORM_NEW_PRODUCT_LBL');
 					else $action = JText::_('VM_PRODUCT_FORM_UPDATE_ITEM_LBL');
 					
@@ -253,14 +244,21 @@ class VirtuemartViewProduct extends JView {
 				
 				/* Get the pagination */
 				$pagination = $this->get('Pagination');
+				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
+				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 				
 				/* Toolbar */
 				JToolBarHelper::title(JText::_( 'PRODUCT_LIST' ), 'vm_product_48');
+				JToolBarHelper::publish();
+				JToolBarHelper::unpublish();
+				JToolBarHelper::custom('cloneproduct', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('VM_PRODUCT_CLONE'), true);
+				JToolBarHelper::deleteListX();
 				JToolBarHelper::addNew();
 				
 				/* Assign the data */
 				$this->assignRef('productlist', $productlist);
 				$this->assignRef('pagination',	$pagination);
+				$this->assignRef('lists', $lists);
 				break;
 		}
 		

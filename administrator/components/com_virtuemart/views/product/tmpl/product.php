@@ -44,6 +44,7 @@ $category_id = JRequest::getInt('category_id', false);
 	<option value=""><?php echo JText::_('SEL_CATEGORY') ?></option>
 	<?php echo $this->category_tree; ?>
 </select>
+<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
 <?php 
 echo JHTML::tooltip(JText::_('VM_PRODUCT_LIST_REORDER_TIP'), JText::_('TIP'), 'tooltip.png', '', '', false);
 $productlist = $this->productlist;
@@ -52,27 +53,25 @@ $pagination = $this->pagination;
 	<table class="adminlist">
 	<thead>
 	<tr>
-		<td>#</td>
-		<td><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></td>
-		<td><?php echo JText::_('VM_PRODUCT_LIST_NAME'); ?></td>
-		<td><?php echo JText::_('VM_PRODUCT_LIST_VENDOR_NAME'); ?></td>
-		<td><?php echo JText::_('VM_PRODUCT_LIST_MEDIA'); ?></td>
-		<td><?php echo JText::_('VM_PRODUCT_LIST_SKU'); ?></td>
-		<td><?php echo JText::_('VM_PRODUCT_PRICE_TITLE'); ?></td>
-		<td><?php echo JText::_('VM_CATEGORY'); ?></td>
+		<th>#</th>
+		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></th>
+		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_NAME', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_VENDOR_NAME', 'vendor_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JText::_('VM_PRODUCT_LIST_MEDIA'); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_SKU', 'product_sku', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_PRICE_TITLE', 'product_price', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'VM_CATEGORY', 'category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<!-- Only show reordering fields when a category ID is selected! -->
 		<?php
 		$num_rows = 0;
 		if( $category_id ) { ?>
-			<td><?php echo JText::_('VM_FIELDMANAGER_REORDER'); ?></td>
-			<td><?php echo vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?></td>
+			<th><?php echo JText::_('VM_FIELDMANAGER_REORDER'); ?></th>
+			<th><?php echo vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?></th>
 		<?php } ?>
-		<td><?php echo JText::_('VM_MANUFACTURER_MOD'); ?></td>
-		<td><?php echo JText::_('VM_REVIEWS'); ?></td>
-		<td><?php echo JText::_('VM_PRODUCT_LIST_PUBLISH'); ?></td>
-		<td><?php echo JText::_('VM_PRODUCT_CLONE'); ?></td>
-		<td><?php echo JText::_('E_REMOVE'); ?></td>
-		<td><?php echo JText::_('ID'); ?></td>
+		<th><?php echo JHTML::_('grid.sort', 'VM_MANUFACTURER_MOD', 'mf_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JText::_('VM_REVIEWS'); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_PUBLISH', 'product_publish', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JText::_('ID'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -87,7 +86,7 @@ $pagination = $this->pagination;
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<!-- Counter -->
-				<td><?php echo $key + 1 + $pagination->limitstart;?></td>
+				<td><?php echo $i + 1 + $pagination->limitstart;?></td>
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Product name -->
@@ -137,20 +136,6 @@ $pagination = $this->pagination;
 				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('VM_REVIEW_FORM_LBL').']', array('class' => 'modal', 'rel' => '{handler: \'iframe\', size: {x: 800, y: 540}}')); ?></td>
 				<!-- Published -->
 				<td><?php echo $published; ?></td>
-				<!-- Clone -->
-				<?php 
-				$url = 'index.php?page=product.product_form&clone_product=1&limitstart=$limitstart&keyword='.urlencode($keyword).'&product_id='.$product->product_id.'&option='.$option;
-					if (!empty($product->product_parent_id)) $url .= '&product_parent_id='.$product->product_parent_id;
-					$link = JRoute::_($url);
-					$imglink = IMAGEURL.'/ps_image/copy.gif';
-				?>
-				<td><?php echo JHTML::_('link', $link,  JHTML::_('image', $imglink, JText::_('VM_PRODUCT_CLONE')))?></td>
-				<!-- Remove -->
-				<?php
-					/* Create link */
-					$link = JRoute::_('index.php?page=product.product_list&func=productDelete&product_id='.$product->product_id.'&keyword='.urlencode($keyword).'&limitstart=0&option='.$option);
-				?>
-				<td><?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'/components/'.$option.'/shop_image/ps_image/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('VM_DELETE_MSG').'\');')) ?></td>
 				<!-- Product ID -->
 				<td><?php echo $product->product_id; ?></td>
 			</tr>
@@ -170,15 +155,16 @@ $pagination = $this->pagination;
 	</tfoot>
 	</table>
 <!-- Hidden Fields -->
-<input type="hidden" name="task" value="" />
 <input type="hidden" name="option" value="com_virtuemart" />
+<input type="hidden" name="task" value="product" />
+<input type="hidden" name="view" value="product" />
+<input type="hidden" name="product_parent_id" value="<?php echo JRequest::getInt('product_parent_id', 0); ?>" />
 <input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="page" value="product.product_list" />
-<input type="hidden" name="view" value="product" />
 <input type="hidden" name="func" value="" />
 <input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
+<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
 <input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?> 

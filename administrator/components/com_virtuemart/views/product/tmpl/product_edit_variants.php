@@ -1,5 +1,5 @@
 <?php defined('_JEXEC') or die('Restricted access');
-if ($this->product->product_parent_id == 0 && count($this->product->attribute_names) > 0) {
+if (JRequest::getInt('product_parent_id', 0) == 0 && $this->product->product_parent_id == 0 && count($this->product->attribute_names) > 0) {
 	?>
 	<table class="adminlist">
 		<thead>
@@ -40,7 +40,7 @@ if ($this->product->product_parent_id == 0 && count($this->product->attribute_na
 			</tbody>
 	</table>
 <?php
-} elseif ($this->product->product_parent_id > 0) {?>
+} elseif (JRequest::getInt('product_parent_id', 0) > 0 || $this->product->product_parent_id > 0) {?>
 	<table class="adminform">
 		<tr class="row0">
 			<td colspan="2">&nbsp;</td>

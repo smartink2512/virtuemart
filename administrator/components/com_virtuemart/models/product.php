@@ -53,13 +53,12 @@ class VirtueMartModelProduct extends JModel {
 	private function getTotal() {
     	if (empty($this->_total)) {
     		$db = JFactory::getDBO();
-    		$filter = '';
-            if (JRequest::getInt('category_id', 0) > 0) $filter .= ' AND #__vm_category.`category_id` = '.JRequest::getInt('category_id');
-			$q = "SELECT COUNT(*) ".$this->getProductListQuery().$filter."
-				 GROUP BY #__vm_product.`product_id`
-				";
+    		
+			$q = "SELECT #__vm_product.`product_id` ".$this->getProductListQuery().$this->getProductListFilter();
 			$db->setQuery($q);
-			$this->_total = $db->loadResult();
+			$fields = $db->loadObjectList('product_id');
+			
+			$this->_total = count($fields);
         }
         
         return $this->_total;
@@ -69,10 +68,10 @@ class VirtueMartModelProduct extends JModel {
      * Load a single product
      */
      public function getProduct() {
+     	 $db = JFactory::getDBO();
      	 $product_id = JRequest::getInt('product_id', 0);
      	 /* Check if we are loading an existing product */
      	 if ($product_id > 0) {
-			 $db = JFactory::getDBO();
 			 $q = "SELECT p.*, pf.manufacturer_id, pp.shopper_group_id, pp.product_price_id, pp.product_price, pp.product_currency,
 			 	pp.price_quantity_start, pp.price_quantity_end, a.attribute_name AS attribute_names
 				FROM #__vm_product AS p
@@ -117,18 +116,14 @@ class VirtueMartModelProduct extends JModel {
      public function getProductAttributeNames() {
      	 $product_id = JRequest::getInt('product_id', 0);
      	 $product_parent_id = JRequest::getInt('product_parent_id', 0);
-     	 /* Check if we are loading an existing product */
-     	 if ($product_id > 0) {
-     	 	 $db = JFactory::getDBO();
-			 $q = "SELECT attribute_name
-				FROM #__vm_product_attribute_sku
-				WHERE product_id = ";
-				if ($product_parent_id > 0) $q .= $product_parent_id;
-				else $q .= $product_id;
-			 $db->setQuery($q);
-			 return $db->loadResultArray();
-     	 }
-     	 else return null;
+		 $db = JFactory::getDBO();
+		 $q = "SELECT attribute_name
+			FROM #__vm_product_attribute_sku
+			WHERE product_id = ";
+			if ($product_parent_id > 0) $q .= $product_parent_id;
+			else $q .= $product_id;
+		 $db->setQuery($q);
+		 return $db->loadResultArray();
      }
      
      /**
@@ -156,12 +151,6 @@ class VirtueMartModelProduct extends JModel {
      	/* Pagination */
      	$this->getPagination();
      	
-     	/* Check some filters */
-     	if (JRequest::getInt('product_parent_id', 0) > 0) $filter = ' WHERE #__vm_product.`product_parent_id` = '.JRequest::getInt('product_parent_id');
-     	else $filter = ' WHERE #__vm_product.`product_parent_id` = 0';
-     	if (JRequest::getInt('category_id', 0) > 0) $filter .= ' AND #__vm_category.`category_id` = '.JRequest::getInt('category_id').' ORDER BY product_list';
-     	
-     	
      	/* Build the query */
      	$q = "SELECT #__vm_product.`product_id`,
      				#__vm_product.`product_parent_id`,
@@ -177,12 +166,16 @@ class VirtueMartModelProduct extends JModel {
      				`product_publish`,
      				IF (`product_publish` = 'Y', 1, 0) AS `published`,
      				`product_price`
-     				".$this->getProductListQuery().$filter."
+     				".$this->getProductListQuery().$this->getProductListFilter()."
 			";
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
      	return $db->loadObjectList('product_id');
     }
     
+    /**
+    * List of tables to include for the product query
+    * @author RolandD
+    */
     private function getProductListQuery() {
     	return 'FROM #__vm_product
 			LEFT JOIN #__vm_product_price
@@ -201,6 +194,27 @@ class VirtueMartModelProduct extends JModel {
 			ON #__vm_category.category_id = #__vm_category_xref.category_child_id
 			LEFT JOIN #__vm_vendor
 			ON #__vm_product.vendor_id = #__vm_vendor.vendor_id';
+    }
+    
+    /**
+    * Collect the filters for the query
+    * @author RolandD
+    */
+    private function getProductListFilter() {
+    	$filters = array();
+    	/* Check some filters */
+    	$filter_order = JRequest::getCmd('filter_order', 'product_name');
+		if ($filter_order == '') $filter_order = 'product_name';
+		$filter_order_Dir = JRequest::getWord('filter_order_Dir', 'desc');
+		if ($filter_order_Dir == '') $filter_order_Dir = 'desc';
+    	
+     	if (JRequest::getInt('product_parent_id', 0) > 0) $filters[] = '#__vm_product.`product_parent_id` = '.JRequest::getInt('product_parent_id');
+     	else $filters[] = '#__vm_product.`product_parent_id` = 0';
+     	if (JRequest::getInt('category_id', 0) > 0) $filters[] = '#__vm_category.`category_id` = '.JRequest::getInt('category_id');
+     	
+     	if (count($filters) > 0) $filter = ' WHERE '.implode(' AND ', $filters).' GROUP BY #__vm_product.`product_id` ORDER BY '.$filter_order." ".$filter_order_Dir;
+     	else $filter = ' GROUP BY #__vm_product.`product_id` ORDER BY '.$filter_order." ".$filter_order_Dir;
+     	return $filter;
     }
     
     /**
@@ -576,9 +590,10 @@ class VirtueMartModelProduct extends JModel {
 		$product_data->store();
 		
 		/* Update manufacturer link */
-		$q = 'UPDATE #__vm_product_mf_xref SET ';
-		$q .= 'manufacturer_id='.JRequest::getInt('manufacturer_id').' ';
-		$q .= 'WHERE product_id = '.$product_data->product_id;
+		$q = 'INSERT INTO #__vm_product_mf_xref  (product_id, manufacturer_id) VALUES (';
+		$q .= $product_data->product_id.', ';
+		$q .= JRequest::getInt('manufacturer_id').') ';
+		$q .= 'ON DUPLICATE KEY UPDATE manufacturer_id = '.JRequest::getInt('manufacturer_id');
 		$db->setQuery($q);
 		$db->query();
 		
@@ -707,6 +722,181 @@ class VirtueMartModelProduct extends JModel {
 	function getYesOrNo($name, $default = 'N', $hash = 'default') {
 		$yes_or_no = strtoupper( JRequest::getVar($name, $default, $hash, 'none'));
 		return $yes_or_no == 'Y' ? 'Y' : 'N'; 
+	}
+	
+	/**
+	* Clone a product
+	* @author RolandD
+	* @todo Add sanity checks
+	*/
+	public function cloneProduct($old_product_id=false, $parent_id=false) {
+		$db = JFactory::getDBO();
+		
+		/* Get the product IDs to clone */
+		if (!$old_product_id) {
+			$cids = JRequest::getVar('cid');
+			if (!is_array($cids)) $cids = array($cids);
+		}
+		else $cids[] = $old_product_id;
+		
+		/* Start duplicating */
+		foreach ($cids as $key => $old_product_id) {
+			/* First copy the product in the product table */
+			$product_data = $this->getTable('product');
+			
+			/* Load the old product details first */
+			$product_data->load($old_product_id);
+			
+			/* Reset the product ID, so it will insert */
+			$product_data->product_id = null;
+			
+			/* Check if we are cloning a child product */
+			if ($product_data->product_parent_id > 0 && $parent_id) {
+				$product_data->product_parent_id = $parent_id;
+				$product_data->product_sku .= '_'.$parent_id;
+			}
+			
+			/* Set the creation and modification date */
+			$time = time();
+			$product_data->cdate = $time;
+			$product_data->mdate = $time;
+			
+			/* Update the product SKU to be unique */
+			$product_data->product_sku .= '_'.$time;
+			
+			/* Save the new product */
+			$product_data->store();
+			
+			/* Clone the categoy */
+			$q  = "INSERT INTO #__vm_product_category_xref
+			  SELECT category_id, ".$product_data->product_id.", MAX(product_list)+1 AS product_list
+			  FROM #__vm_product_category_xref WHERE product_id='".$old_product_id."' GROUP BY product_id";
+			$db->setQuery($q);
+			$db->query();
+			
+			/* Clone the manufacturer */
+			$q  = "INSERT INTO #__vm_product_mf_xref
+			  SELECT ".$product_data->product_id.", manufacturer_id
+			  FROM #__vm_product_mf_xref WHERE product_id='".$old_product_id."'";
+			$db->setQuery($q);
+			$db->query();
+			
+			/* Clone the price */
+			$q  = "INSERT INTO #__vm_product_price
+			  SELECT ".$product_data->product_id.", product_price, product_currency, product_price_vdate, product_price_edate, NOW(), NOW(), shopper_group_id, price_quantity_start, price_quantity_end
+			  FROM #__vm_product_price WHERE product_id='".$old_product_id."'";
+			$db->setQuery($q);
+			$db->query();
+			
+			/* Clone the attributes if it is a child product */
+			if ($product_data->product_parent_id > 0 && $parent_id) {
+				$q  = "INSERT INTO #__vm_product_attribute
+				  SELECT attribute_id, ".$product_data->product_id.", attribute_name, attribute_value
+				  FROM #__vm_product_attribute WHERE product_id='".$old_product_id."'";
+				$db->setQuery($q);
+				$db->query();
+			}
+			
+			/* Lets see if the product has children  */
+			if ($this->checkChildProducts($old_product_id)) {
+				/* Clone Parent Product's Attributes */
+				$q  = "INSERT INTO #__vm_product_attribute_sku
+				  SELECT ".$product_data->product_id.", attribute_name, MAX(attribute_list)+1 AS attribute_list
+				  FROM #__vm_product_attribute_sku WHERE product_id='".$old_product_id."' GROUP BY product_id";
+				$db->setQuery($q);
+				$db->query();
+				
+				/* Get a list of child products */
+				$q = "SELECT product_id FROM #__vm_product WHERE product_parent_id = ".$old_product_id;
+				$db->setQuery($q);
+				$children = $db->loadResultArray();
+				foreach ($children as $child_key => $child_id) {
+					$this->cloneProduct($child_id, $product_data->product_id);
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
+	* Remove a product
+	* @author RolandD
+	* @todo Add sanity checks
+	*/
+	public function removeProduct($old_product_id=false) {
+		$db = JFactory::getDBO();
+		
+		/* Get the product IDs to remove */
+		$cids = array();
+		if (!$old_product_id) {
+			$cids = JRequest::getVar('cid');
+			if (!is_array($cids)) $cids = array($cids);
+		}
+		else $cids[] = $old_product_id;
+		
+		/* Start removing */
+		foreach ($cids as $key => $product_id) {
+			/* First copy the product in the product table */
+			$product_data = $this->getTable('product');
+			
+			/* Load the product details */
+			$product_data->load($product_id);
+			
+			/* Delete all children if needed */
+			if ($product_data->product_parent_id == 0) {
+				/* Delete all children */
+				/* Get a list of child products */
+				$q = "SELECT product_id FROM #__vm_product WHERE product_parent_id = ".$product_id;
+				$db->setQuery($q);
+				$children = $db->loadResultArray();
+				foreach ($children as $child_key => $child_id) {
+					$this->removeProduct($child_id);
+				}
+			}
+			
+			/* Delete attributes */
+			$q  = "DELETE FROM #__vm_product_attribute_sku WHERE product_id = ".$product_id;
+			$db->setQuery($q); 
+			$db->query();
+			
+			/* Delete categories xref */
+			$q  = "DELETE FROM #__vm_product_category_xref WHERE product_id = ".$product_id;
+			$db->setQuery($q); 
+			$db->query();
+			
+			/* Delete product - manufacturer xref */
+			$q = "DELETE FROM #__vm_product_mf_xref WHERE product_id = ".$product_id;
+			$db->setQuery($q); 
+			$db->query();
+			
+			/* Delete Product - ProductType Relations */
+			$q  = "DELETE FROM #__vm_product_product_type_xref WHERE product_id = ".$product_id;
+			$db->setQuery($q); 
+			$db->query();
+			
+			/* Delete product votes */
+			$q  = "DELETE FROM #__vm_product_votes WHERE product_id = ".$product_id;
+			$db->setQuery($q); 
+			$db->query();
+			
+			/* Delete product reviews */
+			$q = "DELETE FROM #__vm_product_reviews WHERE product_id = ".$product_id;
+			$db->setQuery($q); 
+			$db->query();
+			
+			/* Delete Product Relations */
+			$q  = "DELETE FROM #__vm_product_relations WHERE product_id = ".$product_id;
+			$db->setQuery($q); $db->query();
+			
+			/* Delete Prices */
+			$q  = "DELETE FROM #__vm_product_price WHERE product_id = ".$product_id;
+			$db->setQuery($q); 
+			$db->query();
+			
+			/* Delete the product itself */
+			$product_data->delete($product_id);
+		}
+		return true;
 	}
 }
 ?>

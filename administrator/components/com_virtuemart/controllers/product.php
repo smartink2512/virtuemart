@@ -31,6 +31,8 @@ class VirtuemartControllerProduct extends JController
 		$this->registerTask('saveorder','product');
 		$this->registerTask('orderup','product');
 		$this->registerTask('orderdown','product');
+		$this->registerTask('unpublish','product');
+		$this->registerTask('publish','product');
 		$this->registerTask('edit','add');
 	}
 	
@@ -97,7 +99,7 @@ class VirtuemartControllerProduct extends JController
 	*/
 	public function Cancel() {
 		$mainframe = Jfactory::getApplication();
-		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product', JText::_('Operation Canceled!!'));
+		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'));
 	}
 	
 	/**
@@ -125,7 +127,50 @@ class VirtuemartControllerProduct extends JController
 			$msg = JText::_('PRODUCT_NOT_SAVED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
-		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product', $msg, $msgtype);
+		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);
+	}
+	
+	/**
+	* Clone a product
+	*
+	* @author RolandD
+	*/
+	public function CloneProduct() {
+		$mainframe = Jfactory::getApplication();
+		
+		/* Load the view object */
+		$view = $this->getView('product', 'html');
+		
+		$model = $this->getModel('product');
+		$msgtype = '';
+		if ($model->cloneProduct()) $msg = JText::_('PRODUCT_CLONED_SUCCESSFULLY');
+		else {
+			$msg = JText::_('PRODUCT_NOT_CLONED_SUCCESSFULLY');
+			$msgtype = 'error';
+		}
+		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);
+	}
+	
+	/**
+	* Delete a product
+	*
+	* @author RolandD
+	*/
+	public function remove() {
+		$mainframe = Jfactory::getApplication();
+		
+		/* Load the view object */
+		$view = $this->getView('product', 'html');
+		
+		$model = $this->getModel('product');
+		$msgtype = '';
+		if ($model->removeProduct()) $msg = JText::_('PRODUCT_REMOVED_SUCCESSFULLY');
+		else {
+			$msg = JText::_('PRODUCT_NOT_REMOVED_SUCCESSFULLY');
+			$msgtype = 'error';
+		}
+		
+		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);
 	}
 	
 	/**
