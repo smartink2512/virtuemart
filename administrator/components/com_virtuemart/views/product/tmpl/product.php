@@ -2,10 +2,6 @@
 defined('_JEXEC') or die('Restricted access'); 
 AdminMenuHelper::startAdminArea(); 
 
-/* Load some behaviors we need */
-JHTML::_('behavior.modal');
-JHTML::_('behavior.tooltip');
-
 /* Get the component name */
 $option = JRequest::getWord('option');
 
