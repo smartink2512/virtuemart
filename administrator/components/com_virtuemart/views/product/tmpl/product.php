@@ -12,41 +12,40 @@ $option = JRequest::getWord('option');
 /* Load some variables */
 $search_date = JRequest::getVar('search_date', null); // Changed search by date
 $now = getdate();
-$nowstring = $now["hours"].":".$now["minutes"]." ".$now["mday"].".".$now["mon"].".".$now["year"];
+$nowstring = $now["hours"].":".substr('0'.$now["minutes"], -2).' '.$now["mday"].".".$now["mon"].".".$now["year"];
 $search_order = JRequest::getVar('search_order', '>');
 $search_type = JRequest::getVar('search_type', 'product');
 $category_id = JRequest::getInt('category_id', false);
 ?>
-<div align="right">
-	<form action="index.php" method="post" name="adminForm" id="adminForm"><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE') ?>&nbsp;
-		<select class="inputbox" name="search_type">
-		<option value="product"><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT') ?></option>
-		<option value="price" <?php echo $search_type == "price" ? 'selected="selected"' : ''; ?>><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE') ?></option>
-		<option value="withoutprice" <?php echo $search_type == "withoutprice" ? 'selected="selected"' : ''; ?>><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE') ?></option>
-		</select>
-		<select class="inputbox" name="search_order">
-		<option value="&lt;"><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE') ?></option>
-		<option value="&gt;" <?php echo $search_order == ">" ? 'selected="selected"' : ''; ?>><?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_AFTER') ?></option>
-		</select>
-		<input type="hidden" name="option" value="com_virtuemart" />
-		<input class="inputbox" type="text" size="15" name="search_date" value="<?php echo JRequest::getVar('search_date', $nowstring) ?>" />
-		<input type="hidden" name="page" value="product.product_list" />
-		<input class="button" type="submit" name="search" value="<?php echo JText::_('VM_SEARCH_TITLE')?>" />
-	<br/>
-	<?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_NAME') ?>&nbsp;
-		<input type="text" value="" name="keyword" size="25" class="inputbox" />
-		<input type="hidden" name="option" value="<?php echo $option; ?>" />
-		<input type="hidden" name="page" value="product.product_list" />
-		<input class="button" type="submit" name="search" value="<?php echo JText::_('VM_SEARCH_TITLE')?>" />
+<form action="index.php" method="post" name="adminForm" id="adminForm">
+<div id="header">
+<div id="filterbox" style="float: left">
+	<table>
+		<tr>
+			<td align="left" width="100%">
+			<?php echo JText::_('VM_FILTER') ?>:
+				<select class="inputbox" id="category_id" name="category_id" onchange="document.adminForm.submit(); return false;">
+					<option value=""><?php echo JText::_('SEL_CATEGORY') ?></option>
+					<?php echo $this->category_tree; ?>
+				</select>
+				<?php echo JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE') ?>&nbsp;
+					<input type="text" value="<?php echo JRequest::getVar('filter_product'); ?>" name="filter_product" size="25" />
+				<?php 
+					echo $this->lists['search_type'];
+					echo $this->lists['search_order']; 
+					echo JHTML::calendar( JRequest::getVar('search_date', $nowstring), 'search_date', 'search_date', '%H.%M %d.%m.%Y', 'size="20"');
+				?>
+				<button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
+				<button onclick="document.adminForm.filter_product.value=''; document.adminForm.search_type.options[0].selected = true;"><?php echo JText::_('Reset'); ?></button>
+			</td>
+		</tr>
+	</table>
+	</div>
+	<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
 </div>
-<?php echo JText::_('VM_FILTER') ?>:
- <select class="inputbox" id="category_id" name="category_id" onchange="window.location='<?php echo $_SERVER['PHP_SELF'] ?>?option=com_virtuemart&view=product&task=product&category_id='+document.getElementById('category_id').options[selectedIndex].value;">
-	<option value=""><?php echo JText::_('SEL_CATEGORY') ?></option>
-	<?php echo $this->category_tree; ?>
-</select>
-<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
+<br clear="all" />
+<div style="text-align: left;">
 <?php 
-echo JHTML::tooltip(JText::_('VM_PRODUCT_LIST_REORDER_TIP'), JText::_('TIP'), 'tooltip.png', '', '', false);
 $productlist = $this->productlist;
 $pagination = $this->pagination;
 ?>
@@ -129,11 +128,8 @@ $pagination = $this->pagination;
 				<!-- Manufacturer name -->
 				<td><?php echo JHTML::_('link', JRoute::_('index.php?page=manufacturer.manufacturer_form&manufacturer_id='.$product->manufacturer_id.'&option='.$option), $product->mf_name); ?></td>
 				<!-- Reviews -->
-				<?php
-					/* Create URL */
-					$link = JRoute::_('index.php?page=product.review_form&product_id='.$product->product_id.'&no_menu=1&tmpl=component&option='.$option);
-				?>
-				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('VM_REVIEW_FORM_LBL').']', array('class' => 'modal', 'rel' => '{handler: \'iframe\', size: {x: 800, y: 540}}')); ?></td>
+				<?php $link = 'index.php?option='.$option.'&view=ratings&task=add&product_id='.$product->product_id; ?>
+				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('VM_REVIEW_FORM_LBL').']'); ?></td>
 				<!-- Published -->
 				<td><?php echo $published; ?></td>
 				<!-- Product ID -->
@@ -154,6 +150,7 @@ $pagination = $this->pagination;
 		</tr>
 	</tfoot>
 	</table>
+</div>
 <!-- Hidden Fields -->
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="task" value="product" />

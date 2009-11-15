@@ -48,7 +48,7 @@ class VirtuemartControllerProduct extends JController
 		/* Media files functions */
 		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ));
 		/* Product reviews functions */
-		$view->setModel( $this->getModel( 'productReviews', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'ratings', 'VirtueMartModel' ));
 		/* Product category functions */
 		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
 		
@@ -175,6 +175,7 @@ class VirtuemartControllerProduct extends JController
 	
 	/**
 	* Get a list of related products
+	* @author RolandD
 	*/
 	public function getData() {
 		/* Create the view object */
@@ -187,6 +188,21 @@ class VirtuemartControllerProduct extends JController
 		
 		/* Now display the view. */
 		$view->display();
+	}
+	
+	/**
+	* Add a product rating
+	* @author RolandD
+	*/
+	public function addRating() {
+		$mainframe = Jfactory::getApplication();
+		
+		/* Get the product ID */
+		$cids = array();
+		$cids = JRequest::getVar('cid');
+		if (!is_array($cids)) $cids = array($cids);
+		
+		$mainframe->redirect('index.php?option=com_virtuemart&view=ratings&task=add&product_id='.$cids[0]);
 	}
 }
 ?>

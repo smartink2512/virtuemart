@@ -15,7 +15,7 @@ jimport( 'joomla.application.component.model');
  * @package VirtueMart
  * @author RolandD
  */
-class VirtueMartModelInventory extends JModel {
+class VirtueMartModelProductspecial extends JModel {
     
 	var $_total;
 	var $_pagination;
@@ -63,7 +63,7 @@ class VirtueMartModelInventory extends JModel {
     /**
      * Select the products to list on the product list page
      */
-    public function getInventory() {
+    public function getProductSpecial() {
      	$db = JFactory::getDBO();
      	/* Pagination */
      	$this->getPagination();
@@ -73,8 +73,8 @@ class VirtueMartModelInventory extends JModel {
      				#__vm_product.`product_parent_id`,
      				`product_name`,
      				`product_sku`,
-     				`product_in_stock`,
-     				`product_weight`,
+     				`product_special`,
+     				IF (`is_percent` = '1', CONCAT(amount, '%'), amount) AS `product_discount`,
      				IF (`product_publish` = 'Y', 1, 0) AS `published`,
      				`product_price`
      				".$this->getInventoryListQuery().$this->getInventoryFilter();
@@ -91,7 +91,9 @@ class VirtueMartModelInventory extends JModel {
 			LEFT JOIN #__vm_product_price
 			ON #__vm_product.product_id = #__vm_product_price.product_id
 			LEFT JOIN #__vm_shopper_group
-			ON #__vm_product_price.shopper_group_id = #__vm_shopper_group.shopper_group_id';
+			ON #__vm_product_price.shopper_group_id = #__vm_shopper_group.shopper_group_id
+			LEFT JOIN #__vm_product_discount
+			ON #__vm_product.product_discount_id = #__vm_product_discount.discount_id';
     }
     
     /**
@@ -107,12 +109,25 @@ class VirtueMartModelInventory extends JModel {
 		
     	/* Check some filters */
      	$filters = array();
-     	if (JRequest::getVar('filter_inventory', false)) $filters[] = '#__vm_product.`product_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_inventory').'%');
-     	if (JRequest::getInt('stockfilter', 0) == 1) $filters[] = '#__vm_product.`product_in_stock` > 0';
-     	if (JRequest::getInt('category_id', 0) > 0) $filters[] = '#__vm_category.`category_id` = '.JRequest::getInt('category_id');
-     	$filters[] = '(#__vm_shopper_group.default = 1 OR #__vm_shopper_group.default is NULL)';
+     	if (JRequest::getVar('filter_productspecial', false)) $filters[] = '#__vm_product.`product_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_productspecial').'%');
+     	if (JRequest::getVar('search_type', '') != '') {
+     		switch (JRequest::getVar('search_type')) {
+				case 'featured_and_discounted':
+					$filters[] = "#__vm_product.`product_discount_id` > 0 AND #__vm_product.`product_special` = 'Y'";
+					break;
+				case 'featured':
+					$filters[] = "#__vm_product.`product_special` = 'Y'";
+					break;
+				case 'discounted':
+					$filters[] = '#__vm_product.`product_discount_id` > 0';
+					break;
+     		}
+     	}
      	
-     	return ' WHERE '.implode(' AND ', $filters).' ORDER BY '.$filter_order." ".$filter_order_Dir;
+     	if (count($filters) > 0) $filter = ' WHERE '.implode(' AND ', $filters);
+     	else $filter = '';
+     	
+     	return $filter.' ORDER BY '.$filter_order." ".$filter_order_Dir;
     }
 }
 ?>

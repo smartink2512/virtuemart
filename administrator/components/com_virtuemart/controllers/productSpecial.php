@@ -1,6 +1,6 @@
 <?php
 /**
- * Inventory controller
+ * Product Special controller
  *
  * @package VirtueMart
  * @author RolandD
@@ -13,12 +13,12 @@ defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
 jimport('joomla.application.component.controller');
 
 /**
- * Inventory Controller
+ * Product Special Controller
  *
  * @package    VirtueMart
  * @author RolandD
  */
-class VirtuemartControllerInventory extends JController
+class VirtuemartControllerProductspecial extends JController
 {
 	/**
 	 * Method to display the view
@@ -27,27 +27,20 @@ class VirtuemartControllerInventory extends JController
 	 */
 	function __construct() {
 		parent::__construct();
-		
-		/* Redirects */
-		$this->registerTask('unpublish','inventory');
-		$this->registerTask('publish','inventory');
 	}
 	
 	/**
 	 * Shows the product list screen
 	 */
-	public function Inventory() {
+	public function productSpecial() {
 		/* Create the view object */
-		$view = $this->getView('inventory', 'html');
+		$view = $this->getView('productSpecial', 'html');
 				
 		/* Default model */
-		$view->setModel( $this->getModel( 'inventory', 'VirtueMartModel' ), true );
-		
-		/* Product model */
-		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
+		$view->setModel( $this->getModel( 'productSpecial', 'VirtueMartModel' ), true );
 		
 		/* Set the layout */
-		$view->setLayout('inventory');
+		$view->setLayout('productSpecial');
 		
 		/* Now display the view. */
 		$view->display();

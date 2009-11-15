@@ -9,12 +9,12 @@ AdminMenuHelper::startAdminArea();
 	  <tr>
 		 <td align="left" width="100%">
 			<?php echo JText::_('Filter'); ?>:
-			<input type="text" name="filter_inventory" value="<?php echo JRequest::getVar('filter_inventory', ''); ?>" />
+			<input type="text" name="filter_productspecial" value="<?php echo JRequest::getVar('filter_productspecial', ''); ?>" />
 			<button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
 			<button onclick="document.adminForm.filter_inventory.value='';"><?php echo JText::_('Reset'); ?></button>
 		 </td>
 		 <td>
-		 	<?php echo $this->lists['stockfilter']; ?>
+		 	<?php echo $this->lists['search_type']; ?>
 		 </td>
 	  </tr>
 	</table>
@@ -30,19 +30,19 @@ AdminMenuHelper::startAdminArea();
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->inventorylist); ?>')" /></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_NAME', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_SKU', 'product_sku', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_INVENTORY_STOCK', 'product_in_stock', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_INVENTORY_PRICE', 'product_price', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_INVENTORY_WEIGHT', 'product_weight', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'VM_FEATURED', 'product_special', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'VM_PAYMENT_METHOD_LIST_DISCOUNT', 'amount', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'CMN_PUBLISHED', 'product_publish', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	</tr>
 	</thead>
 	<tbody>
 	<?php
-	if (count($this->inventorylist) > 0) {
+	if (count($this->productlist) > 0) {
 		$i = 0;
 		$k = 0;
 		$keyword = JRequest::getVar('keyword');
-		foreach ($this->inventorylist as $key => $product) {
+		foreach ($this->productlist as $key => $product) {
 			$checked = JHTML::_('grid.id', $i , $product->product_id);
 			$published = JHTML::_('grid.published', $product, $i );
 			?>
@@ -58,12 +58,16 @@ AdminMenuHelper::startAdminArea();
 				<td><?php echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('EDIT').' '.$product->product_name)); ?></td>
 				<!-- Product SKU -->
 				<td><?php echo $product->product_sku; ?></td>
-				<!-- Product in stock -->
-				<td><?php echo $product->product_in_stock; ?></td>
 				<!-- Product price -->
 				<td><?php echo $product->product_price_display; ?></td>
-				<!-- Product weight -->
-				<td><?php echo $product->product_weight; ?></td>
+				<!-- Product special -->
+				<td><?php 
+				if ($product->product_special == 'Y') echo JHTML::_('image', 'administrator/images/tick.png', JText::_('SPECIAL'));
+					else echo JHTML::_('image', 'administrator/images/publish_x.png', JText::_('NOT_SPECIAL'))
+					?>
+				</td>
+				<!-- Product discount -->
+				<td><?php echo $product->product_discount; ?></td>
 				<!-- Published -->
 				<td><?php echo $published; ?></td>
 			</tr>
@@ -86,11 +90,11 @@ AdminMenuHelper::startAdminArea();
 <!-- Hidden Fields -->
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
-<input type="hidden" name="task" value="inventory" />
+<input type="hidden" name="task" value="productSpecial" />
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="page" value="product.product_list" />
-<input type="hidden" name="view" value="inventory" />
+<input type="hidden" name="view" value="productSpecial" />
 <input type="hidden" name="func" value="" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />

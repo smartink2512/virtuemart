@@ -10,33 +10,23 @@ jimport( 'joomla.application.component.view');
  *
  * @package		VirtueMart
  */
-class VirtuemartViewInventory extends JView {
+class VirtuemartViewProductspecial extends JView {
 	
 	function display($tpl = null) {
 		$mainframe = Jfactory::getApplication();
 		$option = JRequest::getVar('option');
 		$lists = array();
-		/* Get the task */
-		$task = JRequest::getVar('task');
-		
-		switch ($task) {
-			case 'publish':
-			case 'unpublish':
-				$product_model = $this->getModel('product');
-				$product_model->getPublish();
-				break;
-		}
 		
 		/* Load helpers */
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('currencydisplay');
 		
 		/* Get the data */
-		$inventorylist = $this->get('Inventory');
+		$productlist = $this->get('ProductSpecial');
 		
 		/* Apply currency */
 		$currencydisplay = new CurrencyDisplay();
-		foreach ($inventorylist as $product_id => $product) {
+		foreach ($productlist as $product_id => $product) {
 			$product->product_price_display = $currencydisplay->getValue($product->product_price);
 		}
 		
@@ -45,20 +35,20 @@ class VirtuemartViewInventory extends JView {
 		$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
 		$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 		
-		/* Create filter */
+		/* Add filters */
 		$options = array();
 		$options[] = JHTML::_('select.option', '', JText::_('SELECT'));
-		$options[] = JHTML::_('select.option', 0, JText::_('VM_LIST_ALL_PRODUCTS'));
-		$options[] = JHTML::_('select.option', 1, JText::_('VM_HIDE_OUT_OF_STOCK'));
-		$lists['stockfilter'] = JHTML::_('select.genericlist', $options, 'stockfilter', 'onChange="document.adminForm.submit(); return false;"', 'value', 'text', JRequest::getVar('stockfilter'));
+		$options[] = JHTML::_('select.option', 'all', JText::_('VM_LIST_ALL_PRODUCTS'));
+		$options[] = JHTML::_('select.option', 'featured_and_discounted', JText::_('VM_SHOW_FEATURED_AND_DISCOUNTED'));
+		$options[] = JHTML::_('select.option', 'featured', JText::_('VM_SHOW_FEATURED'));
+		$options[] = JHTML::_('select.option', 'discounted', JText::_('VM_SHOW_DISCOUNTED'));
+		$lists['search_type'] = JHTML::_('select.genericlist', $options, 'search_type', 'onChange="document.adminForm.submit(); return false;"', 'value', 'text', JRequest::getVar('search_type'));
 		
 		/* Toolbar */
-		JToolBarHelper::title(JText::_( 'VM_PRODUCT_INVENTORY_LBL' ), 'vm_product_48');
-		JToolBarHelper::publish();
-		JToolBarHelper::unpublish();
+		JToolBarHelper::title(JText::_( 'VM_FEATURED_PRODUCTS_LIST_LBL' ), 'vm_product_48');
 		
 		/* Assign the data */
-		$this->assignRef('inventorylist', $inventorylist);
+		$this->assignRef('productlist', $productlist);
 		$this->assignRef('pagination',	$pagination);
 		$this->assignRef('lists',	$lists);
 		

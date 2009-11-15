@@ -201,6 +201,7 @@ class VirtueMartModelProduct extends JModel {
     * @author RolandD
     */
     private function getProductListFilter() {
+    	$db = JFactory::getDBO();
     	$filters = array();
     	/* Check some filters */
     	$filter_order = JRequest::getCmd('filter_order', 'product_name');
@@ -208,10 +209,28 @@ class VirtueMartModelProduct extends JModel {
 		$filter_order_Dir = JRequest::getWord('filter_order_Dir', 'desc');
 		if ($filter_order_Dir == '') $filter_order_Dir = 'desc';
     	
+		/* Product Parent ID */
      	if (JRequest::getInt('product_parent_id', 0) > 0) $filters[] = '#__vm_product.`product_parent_id` = '.JRequest::getInt('product_parent_id');
      	else $filters[] = '#__vm_product.`product_parent_id` = 0';
+     	/* Category ID */
      	if (JRequest::getInt('category_id', 0) > 0) $filters[] = '#__vm_category.`category_id` = '.JRequest::getInt('category_id');
-     	
+     	/* Product name */
+     	if (JRequest::getVar('filter_product', false)) $filters[] = '#__vm_product.`product_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_product').'%');
+     	/* Time filter */
+     	if (JRequest::getVar('search_type', '') != '') {
+     		$search_order = JRequest::getVar('search_order') == 'bf' ? '<' : '>';
+     		switch (JRequest::getVar('search_type')) {
+     			case 'product':
+     				$filters[] = '#__vm_product.`mdate` '.$search_order.' '.strtotime(JRequest::getVar('search_date'));
+     				break;
+     			case 'price':
+     				$filters[] = '#__vm_product_price.`mdate` '.$search_order.' '.strtotime(JRequest::getVar('search_date'));
+     				break;
+     			case 'withoutprice':
+     				$filters[] = '#__vm_product_price.`product_price` IS NULL';
+     				break;
+     		}
+     	}
      	if (count($filters) > 0) $filter = ' WHERE '.implode(' AND ', $filters).' GROUP BY #__vm_product.`product_id` ORDER BY '.$filter_order." ".$filter_order_Dir;
      	else $filter = ' GROUP BY #__vm_product.`product_id` ORDER BY '.$filter_order." ".$filter_order_Dir;
      	return $filter;
@@ -245,7 +264,6 @@ class VirtueMartModelProduct extends JModel {
 			else return false;
 		}
     }
-    
     
     /**
 	 * Retrieve a list of featured products from the database.

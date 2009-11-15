@@ -234,7 +234,7 @@ class VirtuemartViewProduct extends JView {
 				
 				/* Check for Media Items and Reviews, set the price*/
 				$media = new VirtueMartModelMedia();
-				$productreviews = new VirtueMartModelProductReviews();
+				$productreviews = new VirtueMartModelRatings();
 				$currencydisplay = new CurrencyDisplay();
 				foreach ($productlist as $product_id => $product) {
 					$product->mediaitems = $media->countFilesForProduct($product_id);
@@ -247,8 +247,25 @@ class VirtuemartViewProduct extends JView {
 				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
 				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 				
+				/* Create filter */
+				/* Search type */
+				$options = array();
+				$options[] = JHTML::_('select.option', '', JText::_('SELECT'));
+				$options[] = JHTML::_('select.option', 'product', JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT'));
+				$options[] = JHTML::_('select.option', 'price', JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE'));
+				$options[] = JHTML::_('select.option', 'withoutprice', JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE'));
+				$lists['search_type'] = JHTML::_('select.genericlist', $options, 'search_type', '', 'value', 'text', JRequest::getVar('search_type'));
+				
+				/* Search order */
+				$options = array();
+				$options[] = JHTML::_('select.option', 'bf', JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE'));
+				$options[] = JHTML::_('select.option', 'af', JText::_('VM_PRODUCT_LIST_SEARCH_BY_DATE_AFTER'));
+				$lists['search_order'] = JHTML::_('select.genericlist', $options, 'search_order', '', 'value', 'text', JRequest::getVar('search_order'));
+				
 				/* Toolbar */
 				JToolBarHelper::title(JText::_( 'PRODUCT_LIST' ), 'vm_product_48');
+				JToolBarHelper::custom('addrating', 'icon-32-new', '', JText::_('ADD_RATING'), true);
+				JToolBarHelper::divider();
 				JToolBarHelper::publish();
 				JToolBarHelper::unpublish();
 				JToolBarHelper::custom('cloneproduct', 'virtuemart_clone_32', 'virtuemart_clone_32', JText::_('VM_PRODUCT_CLONE'), true);
