@@ -18,97 +18,111 @@ jimport( 'joomla.application.component.model');
  *
  * @package	VirtueMart
  * @subpackage Config 
- * @author Rick Glunt  
+ * @author RickG  
  */
 class VirtueMartModelConfig extends JModel
 {    
-	/** @var integer Primary key */
-    var $_id;          
-	/** @var objectlist Config data */
-    var $_data;         
-    
-    
-    /**
-     * Constructor for the config model.
-     *
-     * There should only be one config record with an id = 1
-     *
-     * @author Rick Glunt 
-     */
-    function __construct()
-    {
-        parent::__construct();      
-
-    	$this->setId(1);
-    }
-    
-    
-    /**
-     * Resets the config id and data
-     *
-     * @author Rick Glunt
-     */        
-    function setId($id) 
-    {
-        $this->_id = $id;
-        $this->_data = null;
-    }	
-    
-    
-    /** 
-     * Retrieve the detail record if the data has not already been loaded.
-     *
-     * @author Rick Glunt
-     */ 
-	function getConfig()
-	{		
-		$db = JFactory::getDBO();  
-     
-  		if (empty($this->_data)) {
-   			$this->_data = $this->getTable();
-   			$this->_data->load((int)$this->_id);
-  		}
-  
-  		if (!$this->_data) {
-   			$this->_data = new stdClass();
-   			$this->_id = 0;
-   			$this->_data = null;
-  		}
-
-  		return $this->_data;
-	}    
-	
-        
 	/**
-	 * Bind the post data to the config table and save it
-     *
-     * @author Rick Glunt	
-     * @return boolean True is the save was successful, false otherwise. 
+	 * Retrieve a list of themes from the themes directory.
+	 * 
+     * @author RickG	 
+	 * @return object List of theme objects
 	 */
-    function store() 
-	{
-		$table =& $this->getTable('config');
-		$data = JRequest::get('post');			
-
-		// Bind the form fields to the config table
-		if (!$table->bind($data)) {		    
-			$this->setError($table->getError());
-			return false;	
-		}
-
-		// Make sure the config record is valid
-		if (!$table->check()) {
-			$this->setError($table->getError());
-			return false;	
+	function getThemeList()
+	{		
+		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
+		$result = '';
+		
+		if ($handle = opendir($dir)) {
+    		while (false !== ($file = readdir($handle))) {
+    			if ($file != "." && $file != ".." && $file != '.svn') {
+    				if (filetype($dir.DS.$file) == 'dir') {
+    					$result[] = JHTML::_('select.option', $file, JText::_($file));
+        			}
+        		}
+    		}
 		}
 		
-		// Save the config record to the database
-		if (!$table->store()) {
-			$this->setError($table->getError());
-			return false;	
+		return $result;
+	}
+	
+	
+	/**
+	 * Retrieve a list of category templates from the templates directory.
+	 * 
+     * @author RickG	 
+	 * @return object List of template objects
+	 */
+	function getTemplateList()
+	{		
+		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
+		$dir .= DS.VmConfig::getVar('theme').DS.'templates'.DS.'browse';		
+		$result = '';
+		
+		if ($handle = opendir($dir)) {
+    		while (false !== ($file = readdir($handle))) {
+    			if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
+    				if (filetype($dir.DS.$file) != 'dir') {
+    					$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));	
+    				}
+        		}
+    		}
+		}		
+		$result[] = JHTML::_('select.option', 'managed', JText::_('managed'));			
+		
+		return $result;
+	}	
+	
+	
+	/**
+	 * Retrieve a list of flypages from the templates directory.
+	 * 
+     * @author RickG	 
+	 * @return object List of flypage objects
+	 */
+	function getFlypageList()
+	{		
+		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
+		$dir .= DS.VmConfig::getVar('theme').DS.'templates'.DS.'product_details';		
+		$result = '';
+		
+		if ($handle = opendir($dir)) {
+    		while (false !== ($file = readdir($handle))) {
+    			if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
+    				if (filetype($dir.DS.$file) != 'dir') {
+    					$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));	
+    				}
+        		}
+    		}
 		}		
 		
-		return true;
+		return $result;
+	}	
+	
+	
+	/**
+	 * Retrieve a list of possible images to be used for the 'no image' image.
+	 * 
+     * @author RickG	 
+	 * @return object List of image objects
+	 */
+	function getNoImageList()
+	{		
+		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
+		$dir .= DS.VmConfig::getVar('theme').DS.'images';		
+		$result = '';
+		
+		if ($handle = opendir($dir)) {
+    		while (false !== ($file = readdir($handle))) {
+    			if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
+    				if (filetype($dir.DS.$file) != 'dir') {
+    					$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));	
+    				}
+        		}
+    		}
+		}		
+		
+		return $result;
 	}	
 }
 ?>

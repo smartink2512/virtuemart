@@ -16,9 +16,7 @@ echo $pane->startPanel(JText::_('VM_ADMIN_SECURITY'), 'security_panel');
 echo $this->loadTemplate('security');
 echo $pane->endPanel();
 echo $pane->startPanel(JText::_('VM_ADMIN_CFG_SITE'), 'site_panel');
-?>
-Site here
-<?php
+echo $this->loadTemplate('site');
 echo $pane->endPanel();
 echo $pane->startPanel(JText::_('VM_ADMIN_CFG_CHECKOUT'), 'checkout_panel');
 ?>

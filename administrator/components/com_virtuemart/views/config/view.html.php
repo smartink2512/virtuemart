@@ -32,6 +32,14 @@ class VirtuemartViewConfig extends JView
 	
 		$mainframe = JFactory::getApplication();
 		$this->assignRef('joomlaconfig', $mainframe);
+		$themelist = $model->getThemeList();
+		$this->assignRef('themelist', $themelist);
+		$templatelist = $model->getTemplateList();
+		$this->assignRef('templatelist', $templatelist);
+		$flypagelist = $model->getFlypageList();
+		$this->assignRef('flypagelist', $flypagelist);	
+		$noimagelist = $model->getNoImageList();
+		$this->assignRef('noimagelist', $noimagelist);		
 	
 		parent::display($tpl);
 	}
