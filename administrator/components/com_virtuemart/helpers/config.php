@@ -18,6 +18,7 @@ class VmConfig {
 	 */
 	function loadConfig() {   	
 		$ini_array = parse_ini_file(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.ini');
+		$ini_array['checkout_steps'] = explode(',', $ini_array['checkout_steps']); 		
 		JRequest::setVar('vmconfig', $ini_array);
 	}
 	

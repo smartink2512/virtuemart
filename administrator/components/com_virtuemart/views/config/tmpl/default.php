@@ -19,14 +19,10 @@ echo $pane->startPanel(JText::_('VM_ADMIN_CFG_SITE'), 'site_panel');
 echo $this->loadTemplate('site');
 echo $pane->endPanel();
 echo $pane->startPanel(JText::_('VM_ADMIN_CFG_CHECKOUT'), 'checkout_panel');
-?>
-Checkout here
-<?php
+echo $this->loadTemplate('checkout');
 echo $pane->endPanel();
 echo $pane->startPanel(JText::_('VM_ADMIN_CFG_DOWNLOADABLEGOODS'), 'downloads_panel');
-?>
-Downloads here
-<?php
+echo $this->loadTemplate('downloads');
 echo $pane->endPanel();
 echo $pane->startPanel(JText::_('VM_ADMIN_CFG_FEED_CONFIGURATION'), 'feed_panel');
 ?>

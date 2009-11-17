@@ -124,5 +124,23 @@ class VirtueMartModelConfig extends JModel
 		
 		return $result;
 	}	
+	
+	
+	/**
+	 * Retrieve a list of possible order statuses.
+	 * 
+     * @author RickG	 
+	 * @return object List of status objects
+	 */
+	function getOrderStatusList()
+	{		
+		$db = JFactory::getDBO(); 
+		
+		$query = 'SELECT `order_status_code`, `order_status_name` FROM `#__vm_order_status` ';
+		$query .= ' ORDER BY `#__vm_order_status`.`order_status_name`';
+		$db->setQuery($query);
+		
+		return $db->loadObjectList();
+	}		
 }
 ?>

@@ -40,6 +40,8 @@ class VirtuemartViewConfig extends JView
 		$this->assignRef('flypagelist', $flypagelist);	
 		$noimagelist = $model->getNoImageList();
 		$this->assignRef('noimagelist', $noimagelist);		
+		$orderStatusList = $model->getOrderStatusList();
+		$this->assignRef('orderStatusList', $orderStatusList);			
 	
 		parent::display($tpl);
 	}
