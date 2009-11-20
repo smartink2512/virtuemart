@@ -456,9 +456,9 @@ class VirtueMartModelProduct extends JModel {
 			$db = JFactory::getDBO();
 			$q = "SELECT related_products FROM #__vm_product_relations WHERE product_id='".$product_id."'";
 			$db->setQuery($q);
-			$results = explode("|", $db->loadResult());
-			if (count($results) > 0) {
-				$ids = 'product_id =' . implode( ' OR product_id =', $results );
+			$results = $db->loadResult();
+			if ($results) {
+				$ids = 'product_id =' . implode(' OR product_id =', explode("|", $results));
 				$q = "SELECT product_id AS id, CONCAT(product_name, '::', product_sku) AS text
 					FROM #__vm_product
 					WHERE (".$ids.")";
