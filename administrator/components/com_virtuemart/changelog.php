@@ -21,7 +21,7 @@ $ -> Language fix or change
 ! -> Note
 
 
--------------------- 1.0.0 Stable Release [Release date here] ------------------
+-------------------- 1.5.0 Stable Release [Release date here] ------------------
 ^ Media handling converted to MVC
 ^ Product listing converted to MVC
 ^ Administrator menu converted to MVC helper
