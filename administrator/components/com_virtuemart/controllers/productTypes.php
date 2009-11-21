@@ -29,7 +29,7 @@ class VirtuemartControllerProducttypes extends JController {
 		
 		/* Redirects */
 		$this->registerTask('add','edit');
-		$this->registerTask('cancel','discounts');
+		$this->registerTask('cancel','productTypes');
 	}
 	
 	/**

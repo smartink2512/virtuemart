@@ -54,7 +54,7 @@ AdminMenuHelper::startAdminArea();
 				<!-- Product type description -->
 				<td><?php echo $producttype->product_type_description; ?></td>
 				<!-- Parameters -->
-				<?php $link = 'index.php?option='.$option.'&view=producttypeparameters&task=producttypes&product_type_id='.$producttype->product_type_id; ?>
+				<?php $link = 'index.php?option='.$option.'&view=producttypeparameters&task=producttypeparameters&product_type_id='.$producttype->product_type_id; ?>
 				<td><?php echo $producttype->parametercount. " " . JText::_('VM_PARAMETERS_LBL').JHTML::_('link', $link, ' [ '.JText::_('VM_SHOW').' ]'); ?></td>
 				<!-- Products -->
 				<?php $link = 'index.php?option='.$option.'&view=product&task=product&product_type_id='.$producttype->product_type_id; ?>

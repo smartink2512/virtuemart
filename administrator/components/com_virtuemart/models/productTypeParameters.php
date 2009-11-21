@@ -10,12 +10,12 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model');
 
 /**
- * Model for VirtueMart Discounts
+ * Model for VirtueMart Product Type Parameters
  *
  * @package VirtueMart
  * @author RolandD
  */
-class VirtueMartModelProducttypes extends JModel {
+class VirtueMartModelProducttypeparameters extends JModel {
     
 	var $_total;
 	var $_pagination;
@@ -52,7 +52,7 @@ class VirtueMartModelProducttypes extends JModel {
 	private function getTotal() {
     	if (empty($this->_total)) {
     		$db = JFactory::getDBO();
-			$q = "SELECT COUNT(*) ".$this->getProductTypesListQuery().$this->getProductTypesFilter();
+			$q = "SELECT COUNT(*) ".$this->getProductTypeParametersListQuery().$this->getProductTypeParametersFilter();
 			$db->setQuery($q);
 			$this->_total = $db->loadResult();
         }
@@ -63,13 +63,13 @@ class VirtueMartModelProducttypes extends JModel {
     /**
      * Select the products to list on the product list page
      */
-    public function getProductTypes() {
+    public function getProductTypeParameters() {
      	$db = JFactory::getDBO();
      	/* Pagination */
      	$this->getPagination();
      	
      	/* Build the query */
-     	$q = "SELECT *, p.product_type_id, IF(product_type_publish = 'Y', 1, 0) AS published ".$this->getProductTypesListQuery().$this->getProductTypesFilter();
+     	$q  = "SELECT * ".$this->getProductTypeParametersListQuery().$this->getProductTypeParametersFilter();
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
      	return $db->loadObjectList('product_type_id');
     }
@@ -78,27 +78,25 @@ class VirtueMartModelProducttypes extends JModel {
     * List of tables to include for the product query
     * @author RolandD
     */
-    private function getProductTypesListQuery() {
-    	return 'FROM #__vm_product_type p
-    			LEFT JOIN #__vm_product_product_type_xref x
-    			ON p.product_type_id = x.product_type_id';
+    private function getProductTypeParametersListQuery() {
+    	return 'FROM #__vm_product_type_parameter';
     }
     
     /**
     * Collect the filters for the query
     * @author RolandD
     */
-    private function getProductTypesFilter() {
+    private function getProductTypeParametersFilter() {
     	$db = JFactory::getDBO();
-    	$filter_order = JRequest::getCmd('filter_order', 'product_type_list_order');
-		if ($filter_order == '') $filter_order = 'product_type_list_order';
+    	$filter_order = JRequest::getCmd('filter_order', 'parameter_list_order');
+		if ($filter_order == '') $filter_order = 'parameter_list_order';
 		$filter_order_Dir = JRequest::getWord('filter_order_Dir', 'desc');
 		if ($filter_order_Dir == '') $filter_order_Dir = 'desc';
 		
     	/* Check some filters */
      	$filters = array();
      	if (JRequest::getVar('filter_producttypes', false)) $filters[] = '#__vm_product_type.`product_type_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_producttypes').'%');
-     	if (JRequest::getInt('product_id', false)) $filters[] = 'product_id = '.JRequest::getInt('product_id');
+     	if (JRequest::getInt('product_type_id', false)) $filters[] = 'product_type_id = '.JRequest::getInt('product_type_id');
      	
      	if (count($filters) > 0) $filter = ' WHERE '.implode(' AND ', $filters);
      	else $filter = '';
