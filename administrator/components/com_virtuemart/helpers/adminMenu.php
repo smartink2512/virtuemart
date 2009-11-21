@@ -74,7 +74,9 @@ class AdminMenuHelper
         $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/fat.js');
         $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/functions.js');
 
-        JHTML::stylesheet( 'admin_menu.css', JURI::base().'components/com_virtuemart/assets/css/' );        
+        $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_menu.css');
+        $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/toolbar_images.css');
+		$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/menu_images.css');        
         
         $menuItems = adminMenuHelper::_getAdminMenu($moduleId);
         

@@ -10,7 +10,7 @@ jimport( 'joomla.application.component.view');
  *
  * @package		VirtueMart
  */
-class VirtuemartViewDiscounts extends JView {
+class VirtuemartViewProducttypes extends JView {
 	
 	function display($tpl = null) {
 		$mainframe = Jfactory::getApplication();
@@ -26,33 +26,31 @@ class VirtuemartViewDiscounts extends JView {
 			case 'add':
 			case 'edit':
 				/* Get the data */
-				$discount = $this->get('Discount');
+				$producttype = $this->get('ProductType');
 				
-				/* The discount type */
-				$lists['discount_type'] = JHTML::_('select.booleanlist', 'is_percent', '', $discount->is_percent, JText::_('VM_PRODUCT_DISCOUNT_ISPERCENT'), JText::_('VM_PRODUCT_DISCOUNT_ISTOTAL'));
-				
-				/* Load the behaviours */
-				JHTML::_('behavior.calendar');
-				JHTML::_('behavior.tooltip');
-				
-				/* Set the dates to today if we are adding */
-				if ($task == 'add') {
-					$discount->start_date = time();
-					$discount->end_date = time();
-				}
+				/* Load the editor */
+				$editor = JFactory::getEditor();
 				
 				/* Toolbar */
-				JToolBarHelper::title(JText::_( 'VM_PRODUCT_DISCOUNT_ADDEDIT' ), 'vm_coupon_48');
+				JToolBarHelper::title(JText::_( 'VM_PRODUCT_TYPE_FORM_LBL' ), 'vm_product_48');
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 				
 				/* Assign the data */
-				$this->assignRef('discount', $discount);
+				$this->assignRef('producttype', $producttype);
+				$this->assignRef('editor', $editor);
 				$this->assignRef('lists', $lists);
 				break;
 			default:
 				/* Get the data */
-				$discountslist = $this->get('Discounts');
+				$producttypeslist = $this->get('ProductTypes');
+				
+				/* Get some statistics */
+				$model = $this->getModel();
+				foreach ($producttypeslist as $key => $producttype) {
+					$producttypeslist[$key]->productcount = $model->getProductCount($producttype->product_type_id);
+					$producttypeslist[$key]->parametercount = $model->getParameterCount($producttype->product_type_id);
+				}
 				
 				/* Get the pagination */
 				$pagination = $this->get('Pagination');
@@ -60,13 +58,13 @@ class VirtuemartViewDiscounts extends JView {
 				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 				
 				/* Toolbar */
-				JToolBarHelper::title(JText::_( 'VM_PRODUCT_DISCOUNT_LIST_LBL' ), 'vm_coupon_48');
+				JToolBarHelper::title(JText::_('VM_PRODUCT_TYPE_LIST_LBL'), 'vm_product_48');
 				JToolBarHelper::deleteListX();
 				JToolBarHelper::editListX();
 				JToolBarHelper::addNewX();
 				
 				/* Assign the data */
-				$this->assignRef('discountslist', $discountslist);
+				$this->assignRef('producttypeslist', $producttypeslist);
 				$this->assignRef('pagination',	$pagination);
 				$this->assignRef('lists',	$lists);
 				break;
