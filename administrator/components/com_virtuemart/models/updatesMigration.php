@@ -1,10 +1,10 @@
 <?php
 /**
- * Data module for shop countries
+ * Data module for updates and migrations
  *
  * @package	VirtueMart
- * @subpackage Country
- * @author Rick Glunt 
+ * @subpackage updatesMigration
+ * @author Max Milbers, RickG
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -14,30 +14,21 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model');
 
 /**
- * Model class for shop countries
+ * Model class for updates and migrations
  *
  * @package	VirtueMart
- * @subpackage Country 
- * @author Rick Glunt  
+ * @subpackage updatesMigration
+ * @author Max Milbers, RickG
  */
 class VirtueMartModelUpdatesMigration extends JModel
 {    
-	/** @var integer Primary key */
-    var $_id;          
-	/** @var objectlist Country data */
-    var $_data;        
-	/** @var integer Total number of countries in the database */
-	var $_total;      
-	/** @var pagination Pagination for country list */
-	var $_pagination;    
-    
     
     /**
      * Constructor for the country model.
      *
      * The country id is read and detmimined if it is an array of ids or just one single id.
      *
-     * @author Rick Glunt 
+     * @author RickG
      */
     function __construct()
     {
@@ -47,6 +38,11 @@ class VirtueMartModelUpdatesMigration extends JModel
     }
     
     
+	/**
+	 * Parse a sql file executing each sql statement found.
+	 *
+	 * @author RickG
+	 */    
 	function execSQLFile($filename) 
 	{ 
 		$db = JFactory::getDBO();   	     
@@ -101,6 +97,9 @@ class VirtueMartModelUpdatesMigration extends JModel
 	}	
 	
 	
+	/**
+	 * @author Max Milbers
+	 */	
 	function determineStoreOwner(){
 		global $hVendor;
 		if(empty($hVendor)){
@@ -123,6 +122,9 @@ class VirtueMartModelUpdatesMigration extends JModel
 	}
 	
 	
+	/**
+	 * @author Max Milbers
+	 */		
 	function setStoreOwner($userId=0){
 		
 		if(empty($userId)){
@@ -207,6 +209,9 @@ class VirtueMartModelUpdatesMigration extends JModel
 	}	
 	
 	
+	/**
+	 * @author Max Milbers
+	 */		
 	function setUserToShopperGroup(){
 		# insert the user <=> group relationship
 		$db = JFactory::getDBO();

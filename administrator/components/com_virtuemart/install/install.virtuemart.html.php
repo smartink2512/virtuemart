@@ -25,11 +25,19 @@ defined('_JEXEC') or die('Restricted access');
 				<td width="33%">
 					<a name="Button1" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" class="button" title="Install a fresh Shop &gt;&gt;" href="<?php echo $linkFresh?>">Install required data for a fresh shop &gt;&gt;</a>
 				</td>
-				<td width="33%">
-					<a name="Button2" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" class="button" title="Install SAMPLE DATA &gt;&gt;" href="<?php echo $linkSample?>">Install required and sample data for a example shop &gt;&gt;</a>
-				</td>	
-				<td width="33%">
-					<a name="Button3" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" class="button" title="Do nothing and go to the shop &gt;&gt;" href="<?php echo $linkFresh?>">Do nothing and go to the shop &gt;&gt;</a>
+				<td width="33%" align="center">
+					<a onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesMigration&task=freshInstallSample'); ?>">
+						<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
+					</a>
+					<br />
+					Install Sample Data
+				</td>				
+				<td width="33%" align="center">
+					<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart'); ?>">
+						<img src="components/com_virtuemart/assets/images/icon_48/vm_frontpage_48.png">
+					</a>
+					<br />
+					Go to the Shop
 				</td>
 			</tr>
 			<tr>

@@ -86,18 +86,13 @@ class VirtuemartControllerUpdatesMigration extends JController{
 		$id = $model->determineStoreOwner();
 		$model->setStoreOwner($id);
 		$model->setUserToShopperGroup();
-		
-		//$this -> installer -> integrateJUsers();
-		
-		//$id = $this -> installer -> determineStoreOwner();
-		//$this -> installer -> setStoreOwner($id);
-		//$this -> installer -> setUserToShopperGroup();
+	
 		if($display){
 			parent::display();
 		}
 
 	}
-
+/*
 	function setStoreOwner(){
 		
 		$userId = 62;
@@ -105,7 +100,7 @@ class VirtuemartControllerUpdatesMigration extends JController{
 		$this -> installer -> setStoreOwner($userId);
 		parent::display();
 	}
-
+*/
 	function testVersion(){
 		$this -> installer -> determineAlreadyInstalledVersion();
 		parent::display();
