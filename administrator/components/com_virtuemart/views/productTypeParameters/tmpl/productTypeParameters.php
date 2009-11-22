@@ -80,6 +80,7 @@ AdminMenuHelper::startAdminArea();
 <input type="hidden" name="view" value="producttypeparameters" />
 <input type="hidden" name="func" value="" />
 <input type="hidden" name="boxchecked" value="0" />
+<input type="hidden" name="product_type_id" value="<?php echo JRequest::getInt('product_type_id'); ?>" />
 <input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
 </form>
 <?php AdminMenuHelper::endAdminArea(); ?>

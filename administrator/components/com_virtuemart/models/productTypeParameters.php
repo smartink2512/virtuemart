@@ -71,7 +71,7 @@ class VirtueMartModelProducttypeparameters extends JModel {
      	/* Build the query */
      	$q  = "SELECT * ".$this->getProductTypeParametersListQuery().$this->getProductTypeParametersFilter();
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
-     	return $db->loadObjectList('product_type_id');
+     	return $db->loadObjectList();
     }
     
     /**
@@ -120,7 +120,7 @@ class VirtueMartModelProducttypeparameters extends JModel {
 		/* Load the rating */
 		if ($cids) {
 			$parameter_data->load($cids[0]);
-			$parameter_data->list_order = $this->getListOrderParameter($cids[0], $parameter_data->parameter_name, $parameter_data->product_type_list_order);
+			$parameter_data->list_order = $this->getListOrderParameter($cids[0], $parameter_data->parameter_name, $parameter_data->parameter_list_order);
 		}
 		else {
 			$parameter_data->list_order = $this->getListOrderParameter();
@@ -176,8 +176,9 @@ class VirtueMartModelProducttypeparameters extends JModel {
     * @author RolandD
     * @todo Use the J! table for moving up and down
     */
-    public function saveProductType() {
-    	 $db = JFactory::getDBO();
+    public function saveProductTypeParameter() {
+    	$mainframe = Jfactory::getApplication();
+    	$db = JFactory::getDBO();
     	 
 		/* Get the product IDs to remove */
 		$cids = array();
@@ -185,72 +186,103 @@ class VirtueMartModelProducttypeparameters extends JModel {
 		if (!is_array($cids)) $cids = array($cids);
 		
 		/* First copy the product in the product table */
-		$product_type_data = $this->getTable('product_type');
+		$parameter_data = $this->getTable('product_type_parameter');
 		
 		/* Get the posted data */
 		$data = JRequest::get('post', 4);
 		
-		/* Bind the rating details */
-		$product_type_data->bind($data);
+		/* added for custom parameter modification, strips the trailing semi-colon from an values */
+		if (';' == substr( $data["parameter_values"], strlen( $data["parameter_values"] ) - 1, 1 ) ) {
+			$data["parameter_values"] = substr($data["parameter_values"], 0, strlen( $data["parameter_values"] ) - 1 ) ;
+		}
 		
+		/* Check the parameter_multiselect */
+		if (empty($data["parameter_multiselect"])) $data["parameter_multiselect"] = "N";
+		
+		/* delete "\n" from field parameter_description */
+		$data["parameter_description"] = str_replace( array("\r\n", "\n"), "", $data["parameter_description"] ) ;
+		
+		/* Bind the rating details */
+		$parameter_data->bind($data);
+		
+		/* Set the list order for new parameters */
 		if ($cids[0] == 0) {
 			/* Let's find out the last Product Type */
-			$q = "SELECT MAX(product_type_list_order)+1 AS list_order FROM #__vm_product_type";
+			$q = "SELECT MAX(parameter_list_order)+1 AS list_order FROM #__vm_product_type_parameter WHERE product_type_id = ".$data['product_type_id'];
 			$db->setQuery($q);
-			$product_type_data->product_type_list_order = $db->loadResult();
-			
-			/* Check publish state */
-			if ($product_type_data->product_type_publish != "Y") $product_type_data->product_type_publish = "N";
+			$parameter_data->parameter_list_order = $db->loadResult();
 		}
 		
-		/* Store the product type */
-		$product_type_data->store();
+		/* Store the parameter */
+		$parameter_data->store();
 		
-		/* Make a new product_type_<id> table if this is a new product type */
-		if ($cids[0] == 0) {
-			/* Make new table product_type_<id> */
-			$q = "CREATE TABLE `#__vm_product_type_";
-			$q .= $product_type_data->product_type_id. "` (";
-			$q .= "`product_id` int(11) NOT NULL,";
-			$q .= "PRIMARY KEY (`product_id`)";
-			$q .= ") TYPE=MyISAM;";
-			$db->setQuery($q);
-			$db->query();
-		}
-		
-		/* Re-Order the Product Type table IF the list_order has been changed */
-		if ($cids[0] > 0 && intval($data['list_order']) != intval($data['currentpos'])) {
-			$db = JFactory::getDBO();
-			
-			/* Moved UP in the list order */
-			if( intval($data['list_order']) < intval($data['currentpos']) ) {
-				$q  = "SELECT product_type_id FROM #__vm_product_type WHERE ";
-				$q .= "product_type_id <> '" . $data["product_type_id"] . "' ";
-				$q .= "AND product_type_list_order >= '" . intval($data["list_order"]) . "'";
-				$db->setQuery($q);
-				$moveup = $db->loadObjectList();
-				foreach ($moveup as $key => $move) {
-					$db->setQuery("UPDATE #__vm_product_type SET product_type_list_order=product_type_list_order+1 WHERE product_type_id='".$move->product_type_id."'");
-					$db->query();
-				}
+		if( $data["parameter_type"] != "B" ) { // != Break Line
+			// Make new column in table product_type_<id>
+			$q = "ALTER TABLE `#__vm_product_type_" ;
+			$q .= $data["product_type_id"] . "` ADD `" ;
+			$q .= $db->getEscaped($data['parameter_name']) . "` " ;
+			switch( $data["parameter_type"]) {
+				case "I" :
+					$q .= "int(11) " ;
+				break ; // Integer
+				case "T" :
+					$q .= "text " ;
+				break ; // Text
+				case "S" :
+					$q .= "varchar(255) " ;
+				break ; // Short Text
+				case "F" :
+					$q .= "float " ;
+				break ; // Float
+				case "C" :
+					$q .= "char(1) " ;
+				break ; // Char
+				case "D" :
+					$q .= "datetime " ;
+				break ; // Date & Time
+				case "A" :
+					$q .= "date " ;
+				break ; // Date
+				case "V" :
+					$q .= "varchar(255) " ;
+				break ; // Multiple Value
+				case "M" :
+					$q .= "time " ;
+				break ; // Time
+				default :
+					$q .= "varchar(255) " ; // Default type Short Text
 			}
-			// Moved DOWN in the list order
+			if( $data["parameter_default"] != "" && $data["parameter_type"] != "T" ) {
+				$q .= "DEFAULT ".$db->Quote($data["parameter_default"])." NOT NULL;" ;
+			}
+			
+			$db->setQuery($q);
+			$mainframe->enqueueMessage($db->getQuery());
+			if ($db->query() === false ) {
+				$mainframe->enqueueMessage(JText::_('VM_PRODUCT_TYPE_PARAMETER_ADDING_FAILED'), 'error');
+				return false;
+			}
+			
+			/* Make index for this column */
+			if( $data["parameter_type"] == "T" ) {
+				$q = "ALTER TABLE `#__vm_product_type_" ;
+				$q .= $data["product_type_id"] . "` ADD FULLTEXT `idx_product_type_" . $data["product_type_id"] . "_" ;
+				$q .= $db->getEscaped($data['parameter_name']) . "` (`" . $db->getEscaped($data['parameter_name']) . "`);" ;
+				$db->setQuery($q);
+				$mainframe->enqueueMessage($db->getQuery());
+				$db->query();
+			} 
 			else {
-				$q = "SELECT product_type_id FROM #__vm_product_type WHERE ";
-				$q .= "product_type_id <> '".$data["product_type_id"] . "' ";
-				$q .= "AND product_type_list_order > '".intval($data["currentpos"])."'";
-				$q .= "AND product_type_list_order <= '".intval($data["list_order"])."'";
+				$q = "ALTER TABLE `#__vm_product_type_" ;
+				$q .= $data["product_type_id"] . "` ADD KEY `idx_product_type_" . $data["product_type_id"] . "_" ;
+				$q .= $db->getEscaped($data['parameter_name']) . "` (`" . $db->getEscaped($data['parameter_name']) . "`);" ;
 				$db->setQuery($q);
-				$movedown = $db->loadObjectList();
-				foreach ($movedown as $key => $move) {
-					$db->setQuery("UPDATE #__vm_product_type SET product_type_list_order=product_type_list_order-1 WHERE product_type_id='".$move->product_type_id."'");
-					$db->query();
-				}
-
+				$mainframe->enqueueMessage($db->getQuery());
+				$db->query();
 			}
-		} // END Re-Ordering
-		
-		return true;
+		}
+		$mainframe->enqueueMessage(JText::_('VM_PRODUCT_TYPE_PARAMETER_ADDED'));
+		return true ;
     }
     
     /**

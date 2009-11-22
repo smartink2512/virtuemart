@@ -27,6 +27,8 @@ class VirtuemartViewProducttypeparameters extends JView {
 			case 'edit':
 				/* Get the data */
 				$parameter = $this->get('ProductTypeParameter');
+				echo  JRequest::getInt('product_type_id');
+				if ($task == 'add') $parameter->product_type_id = JRequest::getInt('product_type_id');
 				
 				/* Load the editor */
 				$editor = JFactory::getEditor();
