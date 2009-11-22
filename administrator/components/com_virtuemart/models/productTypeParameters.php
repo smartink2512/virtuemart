@@ -108,25 +108,25 @@ class VirtueMartModelProducttypeparameters extends JModel {
     * Load a single discount
     * @author RolandD
     */
-    public function getProductType() {
+    public function getProductTypeParameter() {
 		/* Get the product IDs to remove */
 		$cids = array();
 		$cids = JRequest::getVar('cid', false);
 		if ($cids && !is_array($cids)) $cids = array($cids);
 		
 		/* First copy the product in the product table */
-		$product_type_data = $this->getTable('product_type');
+		$parameter_data = $this->getTable('product_type_parameter');
 		
 		/* Load the rating */
 		if ($cids) {
-			$product_type_data->load($cids[0]);
-			$product_type_data->list_order = $this->getListOrder($cids[0], $product_type_data->product_type_list_order);
+			$parameter_data->load($cids[0]);
+			$parameter_data->list_order = $this->getListOrderParameter($cids[0], $parameter_data->parameter_name, $parameter_data->product_type_list_order);
 		}
 		else {
-			$product_type_data->list_order = $this->getListOrder();
+			$parameter_data->list_order = $this->getListOrderParameter();
 		}
 		
-		return $product_type_data;
+		return $parameter_data;
     }
     
     /**
@@ -254,61 +254,31 @@ class VirtueMartModelProducttypeparameters extends JModel {
     }
     
     /**
-    * Count products using this product type
-    * @author RolandD
-    */
-    public function getProductCount($product_type_id) {
-    	$db = JFactory::getDBO();
-    	$count  = "SELECT COUNT(*) AS num_rows FROM #__vm_product p
-    		LEFT JOIN #__vm_product_product_type_xref x
-    		ON p.product_id = x.product_id
-    		WHERE x.product_type_id = ".$product_type_id."
-    		AND p.product_parent_id = 0 
-    		ORDER BY product_publish DESC, product_name";
-		$db->setQuery($count);
-		return $db->loadResult();
-    }
-    
-    /**
-    * Count parameters using this product type
-    * @author RolandD
-    */
-    public function getParameterCount($product_type_id) {
-    	$db = JFactory::getDBO();
-    	$count  = "SELECT count(*) AS num_rows 
-    		FROM #__vm_product_type_parameter 
-    		WHERE product_type_id = ".$product_type_id;
-		$db->setQuery($count);
-		return $db->loadResult();
-    }
-    
-    /**
     * Get the position where the product type needs to be
     * @author RolandD
-    * @return string Dropdown list with product types
+    * @return string Dropdown list with product type parameters
     */
-    public function getListOrder($product_type_id=0, $list_order=0) {
+    public function getListOrderParameter($product_type_id=0, $parameter_name = '', $list_order=0) {
+    	
     	$db = JFactory::getDBO();
     	$options = array();
-		if (!$product_type_id) {
-			return JText::_('CMN_NEW_ITEM_LAST');
-		}
+		if (empty($parameter_name)) {
+			return JText::_( 'CMN_NEW_ITEM_LAST' );
+		} 
 		else {
-
-			$q  = "SELECT product_type_list_order, product_type_name FROM #__vm_product_type ";
-			if ($product_type_id) {
-				$q .= 'WHERE product_type_id='.$product_type_id;
-			}
-			$q .= " ORDER BY product_type_list_order ASC";
-			$db->setQuery($q);
-			$producttypes = $db->loadObjectList();
 			
-			foreach ($producttypes as $key => $producttype) {
-				$options[] = JHTML::_('select.option', $producttype->product_type_list_order, $producttype->product_type_list_order.". ".$producttype->product_type_name);
+			$q = "SELECT parameter_list_order,parameter_label,parameter_name FROM #__vm_product_type_parameter " ;
+			if ($product_type_id) {
+				$q .= 'WHERE product_type_id='.$product_type_id; 
 			}
+			$q .= " ORDER BY parameter_list_order ASC" ;
+			$db->setQuery($q) ;
+			$parameters = $db->loadObjectList();
+			foreach ($parameters as $key => $parameter) {
+				$options[] = JHTML::_('select.option', $parameter->parameter_list_order, $parameter->parameter_list_order.". ".$parameter->parameter_label.' ('.$parameter->parameter_name.')');
+			}
+			return JHTML::_('select.genericlist', $options, 'list_order', '', 'value', 'text', $list_order);
 		}
-		
-		return JHTML::_('select.genericlist', $options, 'list_order', '', 'value', 'text', $list_order);
     }
 }
 ?>

@@ -26,18 +26,34 @@ class VirtuemartViewProducttypeparameters extends JView {
 			case 'add':
 			case 'edit':
 				/* Get the data */
-				$producttype = $this->get('ProductType');
+				$parameter = $this->get('ProductTypeParameter');
 				
 				/* Load the editor */
 				$editor = JFactory::getEditor();
+				JHTML::_('behavior.tooltip');
+				
+				/* Parameter types */
+				$options = array();
+				$options[] = JHTML::_('select.option', 'I', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_INTEGER'));
+				$options[] = JHTML::_('select.option', 'T', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TEXT'));
+				$options[] = JHTML::_('select.option', 'S', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_SHORTTEXT'));
+				$options[] = JHTML::_('select.option', 'F', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_FLOAT'));
+				$options[] = JHTML::_('select.option', 'C', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_CHAR'));
+				$options[] = JHTML::_('select.option', 'D', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATETIME'));
+				$options[] = JHTML::_('select.option', 'A', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_DATE'));
+				$options[] = JHTML::_('select.option', 'M', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_TIME'));
+				$options[] = JHTML::_('select.option', 'V', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_MULTIVALUE'));
+				$options[] = JHTML::_('select.option', 'B', JText::_('VM_PRODUCT_TYPE_PARAMETER_FORM_TYPE_BREAK'));
+				
+				$lists['parameter_type'] = JHTML::_('select.genericlist', $options, 'parameter_type', 'class="inputbox"', 'value', 'text', $parameter->parameter_type);
 				
 				/* Toolbar */
-				JToolBarHelper::title(JText::_( 'VM_PRODUCT_TYPE_FORM_LBL' ), 'vm_product_48');
+				JToolBarHelper::title(JText::_( 'VM_PRODUCT_TYPE_PARAMETER_FORM_LBL' ), 'vm_product_48');
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 				
 				/* Assign the data */
-				$this->assignRef('producttype', $producttype);
+				$this->assignRef('parameter', $parameter);
 				$this->assignRef('editor', $editor);
 				$this->assignRef('lists', $lists);
 				break;

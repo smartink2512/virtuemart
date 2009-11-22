@@ -308,9 +308,8 @@ class VirtueMartModelProducttypes extends JModel {
 			foreach ($producttypes as $key => $producttype) {
 				$options[] = JHTML::_('select.option', $producttype->product_type_list_order, $producttype->product_type_list_order.". ".$producttype->product_type_name);
 			}
+			return JHTML::_('select.genericlist', $options, 'list_order', '', 'value', 'text', $list_order);
 		}
-		
-		return JHTML::_('select.genericlist', $options, 'list_order', '', 'value', 'text', $list_order);
     }
 }
 ?>

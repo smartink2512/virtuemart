@@ -74,10 +74,10 @@ AdminMenuHelper::startAdminArea();
 <!-- Hidden Fields -->
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
-<input type="hidden" name="task" value="producttypes" />
+<input type="hidden" name="task" value="producttypeparameters" />
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="pshop_mode" value="admin" />
-<input type="hidden" name="view" value="producttypes" />
+<input type="hidden" name="view" value="producttypeparameters" />
 <input type="hidden" name="func" value="" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="<?php echo JUtility::getToken(); ?>" value="1" />
