@@ -21,7 +21,6 @@
 	<install>
 		<sql>
 			<file charset="utf8" driver="mysql">install/install.sql</file>
-			<file charset="utf8" driver="mysql">install/install_essential_data.sql</file>
 		</sql>
 	</install>
 	
@@ -56,7 +55,6 @@
 		<files folder="administrator/components/com_virtuemart">
 			<filename>admin.virtuemart.php</filename>
 			<filename>admin.vm.old.php</filename>
-			<filename>cart.gif</filename>
 			<filename>compat.joomla1.5.php</filename>
 			<filename>controller.php</filename>
 			<filename>COPYRIGHT.php</filename>

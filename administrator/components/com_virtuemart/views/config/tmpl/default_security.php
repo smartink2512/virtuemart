@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access'); 
 ?> 
-
+<br />
 <table>
 <tr><td valign="top">
 	<fieldset class="adminform">

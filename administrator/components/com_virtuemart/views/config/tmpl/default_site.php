@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $orderByFieldsArray = explode(',', VmConfig::getVar('browse_orderby_fields')); 
 ?> 
-
+<br />
 <table>
 <tr><td valign="top">
 	<fieldset class="adminform">

@@ -1,7 +1,8 @@
 <?php
 defined('_JEXEC') or die('Restricted access');  
-?> 
-		<table class="adminform">
+?>
+<br />
+		<table class="admintable">
    		<tr>
         	<td class="key">
         		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ENABLE_CHECKOUTBAR_EXPLAIN'); ?>">

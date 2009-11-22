@@ -1,9 +1,10 @@
 <?php
 defined('_JEXEC') or die('Restricted access');  
 ?> 
-	<table class="adminform">
+<br />
+	<table class="admintable">
   	<tr>
-    	<td class="labelcell">
+    	<td class="key">
     		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN'); ?>">
     		<?php echo JText::_('VM_ADMIN_CFG_ENABLE_DOWNLOADS') ?>
     	</td>
@@ -15,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
         </td>
     </tr>
     <tr>
-        <td class="labelcell">
+        <td class="key">
         	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN'); ?>">
         	<?php echo JText::_('VM_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS') ?></td>
         <td>
@@ -23,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
         </td>
     </tr>
         <tr>
-        <td class="labelcell">
+        <td class="key">
         	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN'); ?>">
         	<?php echo JText::_('VM_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS') ?>
         </td>
@@ -32,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
         </td>
     </tr>
       <tr>
-        <td class="labelcell">
+        <td class="key">
         	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DOWNLOADROOT_EXPLAIN'); ?>">
         	<?php echo JText::_('VM_ADMIN_CFG_DOWNLOADROOT') ?></td>
         <td valign="top">
@@ -40,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
         </td>
     </tr>
     <tr>
-    	<td class="labelcell">
+    	<td class="key">
       		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN'); ?>">
       		<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_MAX') ?>
       	</td>
@@ -49,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
         </td>
     </tr>
     <tr>
-    	<td class="labelcell">
+    	<td class="key">
       		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN'); ?>">
       		<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_EXPIRE') ?></td>
         <td>
@@ -57,7 +58,7 @@ defined('_JEXEC') or die('Restricted access');
         </td>
     </tr>
     <tr>
-      	<td class="labelcell">
+      	<td class="key">
       		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL_TIP'); ?>">
       		<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL') ?>
       	</td>
