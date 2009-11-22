@@ -24,7 +24,7 @@ include( dirname(__FILE__).'/compat.joomla1.5.php');
 
 //* INSTALLER SECTION *
 //include( $mosConfig_absolute_path.'/administrator/components/com_jmart/install.virtuemart.php' );
-include( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'install.virtuemart.php' );
+//include( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'install.virtuemart.php' );
 
 // * END INSTALLER SECTION *
 

@@ -107,7 +107,7 @@ class ps_perm {
 				if(empty($db)){
 					$db = &JFactory::getDBO();	
 				}
-				$q = "SELECT perms,first_name,last_name,country,zip FROM #__{vm}_user_info WHERE user_id='".$auth["user_id"]."'";
+				$q = "SELECT perms,first_name,last_name,country,zip FROM #__vm_user_info WHERE user_id='".$auth["user_id"]."'";
 				$db->setQuery($q); 
 				$row = $db->loadAssoc();
 	

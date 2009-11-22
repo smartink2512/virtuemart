@@ -42,254 +42,189 @@ class VirtueMartModelUpdatesMigration extends JModel
     function __construct()
     {
         parent::__construct();
-        
-		// Get the pagination request variables
+
 		$mainframe = JFactory::getApplication() ;
-//		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-//		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').'.limitstart', 'limitstart', 0, 'int');		
-//				
-//		// Set the state pagination variables
-//		$this->setState('limit', $limit);
-//		$this->setState('limitstart', $limitstart);        
-//        
-//        // Get the country id or array of ids.
-//		$idArray = JRequest::getVar('cid',  0, '', 'array');
-//    	$this->setId((int)$idArray[0]);
     }
     
     
-//    /**
-//     * Resets the country id and data
-//     *
-//     * @author Rick Glunt
-//     */        
-//    function setId($id) 
-//    {
-//        $this->_id = $id;
-//        $this->_data = null;
-//    }	
-//    
-//    
-//	/**
-//	 * Loads the pagination for the country table
-//	 *
-//     * @author Rick Glunt	
-//     * @return JPagination Pagination for the current list of countries 
-//	 */
-//    function getPagination() 
-//    {
-//		if (empty($this->_pagination)) {
-//			jimport('joomla.html.pagination');
-//			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
-//		}
-//		return $this->_pagination;
-//	}
-//    
-//    
-//	/**
-//	 * Gets the total number of countries
-//	 *
-//     * @author Rick Glunt	 
-//	 * @return int Total number of countries in the database
-//	 */
-//	function _getTotal() 
-//	{
-//    	if (empty($this->_total)) {
-//			$query = 'SELECT `country_id` FROM `#__vm_country`';	  		
-//			$this->_total = $this->_getListCount($query);
-//        }
-//        return $this->_total;
-//    }    
-//    
-//    
-//    /** 
-//     * Retrieve the detail record for the current $id if the data has not already been loaded.
-//     *
-//     * @author Rick Glunt
-//     */ 
-//	function getCountry()
-//	{	
-//		$db = JFactory::getDBO();  
-//     
-//  		if (empty($this->_data)) {
-//   			$this->_data = $this->getTable();
-//   			$this->_data->load((int)$this->_id);
-//  		}
-//  
-//  		if (!$this->_data) {
-//   			$this->_data = new stdClass();
-//   			$this->_id = 0;
-//   			$this->_data = null;
-//  		}
-//
-//  		return $this->_data;		
-//	}    
-//    
-//    
-//    /**
-//     * Retreive a country record given a country code.
-//     *
-//     * @author Rick Glunt     
-//     * @param string $code Country code to lookup
-//     * @return object Country object from database
-//     */ 
-//    function &getCountryByCode($code)
-//    {
-//		$db =& JFactory::getDBO();	
-//		
-//		$countryCodeLength = strlen($code);
-//		switch ($countryCodeLength) {
-//			case 2:
-//				$countryCodeFieldname = 'country_2_code';
-//				break;
-//			case 3:
-//				$countryCodeFieldname = 'country_3_code';
-//				break;
-//			default:
-//				return false;
-//		}			
-//										
-//		$query = 'SELECT *';
-//		$query .= ' FROM `#__vm_country`';
-//		$query .= ' WHERE `' . $countryCodeFieldname . '` = ' . (int)$code;
-//		$db->setQuery($query);
-//
-//        return $db->loadObject();
-//	}
-//	
-//        
-//	/**
-//	 * Bind the post data to the country table and save it
-//     *
-//     * @author Rick Glunt	
-//     * @return boolean True is the save was successful, false otherwise. 
-//	 */
-//    function store() 
-//	{
-//		$table =& $this->getTable('country');
-//
-//		$data = JRequest::get('post');		
-//	
-//		// Bind the form fields to the country table
-//		if (!$table->bind($data)) {		    
-//			$this->setError($table->getError());
-//			return false;	
-//		}
-//
-//		// Make sure the country record is valid
-//		if (!$table->check()) {
-//			$this->setError($table->getError());
-//			return false;	
-//		}
-//		
-//		// Save the country record to the database
-//		if (!$table->store()) {
-//			$this->setError($table->getError());
-//			return false;	
-//		}		
-//		
-//		return true;
-//	}	
-//
-//
-//	/**
-//	 * Delete all record ids selected
-//     *
-//     * @author Rick Glunt
-//     * @return boolean True is the delete was successful, false otherwise.      
-//     */ 	 
-//	function delete() 
-//	{
-//		$countryIds = JRequest::getVar('cid',  0, '', 'array');
-//    	$table =& $this->getTable('country');
-// 
-//    	foreach($countryIds as $countryId) {
-//    		if ($this->deleteCountryStates($countryId)) {
-//        		if (!$table->delete($countryId)) {
-//            		$this->setError($table->getError());
-//            		return false;
-//        		}
-//        	}
-//        	else {
-//        		$this->setError('Could not remove country states!');
-//        		return false;
-//        	}
-//    	}
-// 
-//    	return true;	
-//	}	
-//	
-//	
-//	/**
-//	 * Delete all state records for a given country id.
-//     *
-//     * @author Rick Glunt
-//     * @return boolean True is the delete was successful, false otherwise.      
-//     */ 	 
-//	function deleteCountryStates($countryId = '') 
-//	{
-//		if ($countryId) {
-//			$db =& JFactory::getDBO();	
-//				
-//			$query = 'DELETE FROM `#__vm_state`  WHERE `country_id`= "'.$countryId.'"';
-//			$db->setQuery($query);
-//			if ($db->query()) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-//		else {
-//    		return false;
-//    	}	
-//	}	
-//	
-//	
-//	/**
-//	 * Publish/Unpublish all the ids selected
-//     *
-//     * @author Rick Glunt
-//     * @param boolean $publishId True is the ids should be published, false otherwise.
-//     * @return boolean True is the delete was successful, false otherwise.      
-//     */ 	 
-//	function publish($publishId = false) 
-//	{
-//		$table =& $this->getTable('country');
-//		$countryIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );				
-//								
-//        if (!$table->publish($countryIds, $publishId)) {
-//			$this->setError($table->getError());
-//			return false;        		
-//        }		
-//        
-//		return true;		
-//	}	
-//	
-//	
-//	/**
-//	 * Retireve a list of countries from the database.
-//	 * 
-//     * @author Rick Glunt	 
-//     * @param string $onlyPuiblished True to only retreive the publish countries, false otherwise
-//     * @param string $noLimit True if no record count limit is impossed, false otherwise
-//	 * @return object List of country objects
-//	 */
-//	function getCountries($onlyPublished=false, $noLimit=false)
-//	{		
-//		$query = 'SELECT * FROM `#__vm_country` ';
-//		if ($onlyPublished) { 
-//			$query .= 'WHERE `#__vm_country`.`published` = 1';			
-//		}
-//		$query .= 'ORDER BY `#__vm_country`.`country_id`';
-//		if ($noLimit) {
-//			$this->_data = $this->_getList($query);
-//		}
-//		else {
-//			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-//		}		
-//		
-//		return $this->_data;
-//	}
+	function execSQLFile($filename) 
+	{ 
+		$db = JFactory::getDBO();   	     
+		$content = file_get_contents($filename);             
+    	$file_content = explode("\n",$content);    
+    	      
+   		// Parsing the SQL file content    	      
+    	$query = "";                       
+    	foreach($file_content as $sql_line) {        
+    		if(trim($sql_line) != "" && strpos($sql_line, "--") === false) {              
+        		$query .= $sql_line; 
+            	// Checking whether the line is a valid statement 
+            	if(preg_match("/(.*);/", $sql_line)) { 
+            		$query = substr($query, 0, strlen($query)-1);                                   
+					$db->setQuery($query);
+        			if (!$db->query()){
+						$installOk = false;
+            			break;
+        			}                     
+                	$query = ""; 
+            	} 
+        	} 
+    	}        
+    	return true; 
+	}    
+	
+	
+	/**
+	 * Add existing Joomla users into the Virtuemart database.
+	 */
+	function integrateJoomlaUsers()
+	{
+		$db = JFactory::getDBO();
+		$query = "SELECT `id`, `registerDate`, `lastvisitDate` FROM `#__users`";
+		$db->setQuery($query);
+		$row = $db->loadObjectList();
+	
+		foreach ($row as $user) {
+			$query = "INSERT INTO `#__vm_shopper_vendor_xref` VALUES ('" . $user->id . "', '1', '5', '')"; 
+			$db->setQuery($query);
+			if (!$db->query()) {
+				JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_shopper_vendor_xref FAILED' );
+			}
+			
+			$query = "INSERT INTO `#__vm_user_info` (`user_info_id`, `user_id`, `address_type`, `cdate`, `mdate`) ";
+			$query .= "VALUES( '" . md5(uniqid('virtuemart')) . "', '" . $user->id . "', 'BT', UNIX_TIMESTAMP('" . $user->registerDate . "'), UNIX_TIMESTAMP('" . $user->lastvisitDate."'))";
+			$db->setQuery($query);
+			if (!$db->query()) {
+				JError::raiseNotice(1, 'integrateJUsers INSERT '.$user->id.' INTO #__vm_user_info FAILED' );
+			}
+		}
+	}	
+	
+	
+	function determineStoreOwner(){
+		global $hVendor;
+		if(empty($hVendor)){
+			require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendor_helper.php');
+			$hVendor = new vendor_helper;
+		}
+		$vendorid= 1;
+		$user_id = $hVendor->getUserIdByVendorId($vendorid);
+		if(isset($user_id)){
+			$user = JFactory::getUser($user_id);
+		}else{
+			$user = JFactory::getUser();
+		}
+		
+		$id = $user -> id;
+		$this -> storeOwnerId = $id;
+		$this -> userUserName = $user->username;
+		$this -> userName = $user->name;
+		return $id;
+	}
+	
+	
+	function setStoreOwner($userId=0){
+		
+		if(empty($userId)){
+			$userId = $this ->determineStoreOwner();
+		}
+		
+		$oldUserId	= "";
+		$oldVendorId = "";
+		
+		$db = JFactory::getDBO();
+		
+		$db->setQuery('SELECT * FROM  `#__vm_auth_user_vendor` WHERE `vendor_id`= "1" ');
+		$db->query();
+		$oldVendorId = $db->loadResult();
+//		JError::raiseNotice(1, '$oldVendorId = '.$oldVendorId);
+		
+		$db->setQuery('SELECT * FROM  `#__vm_auth_user_vendor` WHERE `user_id`= "'.$userId.'" ');
+		$db->query();
+		$oldUserId = $db->loadResult();
+//		JError::raiseNotice(1, '$oldUserId = '.$oldUserId);
+		
+		if(!isset($oldVendorId) && !isset($oldUserId)){
+			$db->setQuery( 'INSERT `#__vm_auth_user_vendor` (`user_id`, `vendor_id`) VALUES ("'.$userId.'", "1")' );
+			if($db->query() == false ) {
+				JError::raiseNotice(1, 'setStoreOwner '.$userId.' was not possible to execute INSERT __vm_auth_user_vendor');
+			} else {
+				JError::raiseNotice(1, 'setStoreOwner INSERT __vm_auth_user_vendor '.$userId);
+			}			
+		}else{
+			if(!isset($oldUserId)) {
+				$db->setQuery( 'UPDATE `#__vm_auth_user_vendor` SET `user_id` ="'.$userId.'" WHERE `vendor_id` = "1" ');
+			}else{
+				$db->setQuery( 'UPDATE `#__vm_auth_user_vendor` SET `vendor_id` = "1" WHERE `user_id` ="'.$userId.'" ');
+			}
+			if($db->query() == false ) {
+				
+			}
+		}
+	
+		$db->setQuery('SELECT `vendor_id` FROM  `#__vm_vendor` WHERE `vendor_id`= "1" ');
+		$db->query();
+		$oldVendorId = $db->loadResult();
+//		JError::raiseNotice(1, '$oldVendorId = '.$oldVendorId);
+		if(!isset($oldVendorId)){
+			$db->setQuery( 'INSERT INTO `#__vm_vendor` (
+										`vendor_id` ,
+										`vendor_name` ,
+										`vendor_phone` ,
+										`vendor_store_name` ,
+										`vendor_store_desc` ,
+										`vendor_category_id` ,
+										`vendor_thumb_image` ,
+										`vendor_full_image` ,
+										`vendor_currency` ,
+										`cdate` ,
+										`mdate` ,
+										`vendor_image_path` ,
+										`vendor_terms_of_service` ,
+										`vendor_url` ,
+										`vendor_min_pov` ,
+										`vendor_freeshipping` ,
+										`vendor_currency_display_style` ,
+										`vendor_accepted_currencies` ,
+										`vendor_address_format` ,
+										`vendor_date_format`
+				) VALUES (
+"1", NULL , NULL , "", NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , "", "", NULL , "0.00", "", "", "", "");' );
+		} else {
+		//	$db->setQuery( 'UPDATE INTO `#__vm_vendor` SET `vendor_id` VALUES ("1")' );
+		}
+		$db->query();
+		
+		$db->setQuery( 'UPDATE `#__vm_user_info` SET `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'"');
+//		$db->query();
+		if($db->query() === false ) {
+			JError::raiseNotice(1, 'setStoreOwner failed Update. User with id = '.$userId.' not found in table');
+			return 0;
+		}else{
+			return $this -> storeOwnerId;
+		}
+	
+	}	
+	
+	
+	function setUserToShopperGroup(){
+		# insert the user <=> group relationship
+		$db = JFactory::getDBO();
+		$db->setQuery( "INSERT INTO `#__vm_auth_user_group` 
+				SELECT user_id, 
+					CASE `perms` 
+					    WHEN 'admin' THEN 0
+					    WHEN 'storeadmin' THEN 1
+					    WHEN 'shopper' THEN 2
+					    WHEN 'demo' THEN 3
+					    ELSE 2 
+					END
+				FROM #__vm_user_info
+				WHERE address_type='BT' ");
+		$db->query();
+	
+		$db->setQuery( "UPDATE `#__vm_auth_user_group` SET `group_id` = '0' WHERE `user_id` ='".$this -> userId."' ") ;
+		$db->query();
+	}	
 }
 ?>

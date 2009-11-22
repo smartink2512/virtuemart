@@ -32,13 +32,10 @@ class VirtuemartControllerUpdatesMigration extends JController{
 	 * @access	public
 	 */
 	function __construct() {
-		parent::__construct();
-		
-		// Register Extra tasks
-//		$this->registerTask( 'add',  'edit' );			
+		parent::__construct();		
 		
  		$document =& JFactory::getDocument();
-  	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
+  		$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
 	    
 		$document =& JFactory::getDocument();				
 		$viewType	= $document->getType();
@@ -76,15 +73,25 @@ class VirtuemartControllerUpdatesMigration extends JController{
 	}
 	
 
-	function freshInstall($display=true){
-		JError::raiseNotice(1, 'freshInstall ');
-		$this -> installer -> populateVmDatabase("install_required_data.sql");
+	/**
+	 * Execute a fresh VM install
+	 *
+	 * @author Max Milbers, RickG	 
+	 */
+	function freshInstall($display = true){
+		$model = $this->getModel('updatesMigration');
 		
-		$this -> installer -> integrateJUsers();
+		$model->execSQLFile(JPATH_COMPONENT_ADMINISTRATOR.DS.'install'.DS.'install_required_data.sql');
+		$model->integrateJoomlaUsers();
+		$id = $model->determineStoreOwner();
+		$model->setStoreOwner($id);
+		$model->setUserToShopperGroup();
 		
-		$id = $this -> installer -> determineStoreOwner();
-		$this -> installer -> setStoreOwner($id);
-		$this -> installer -> setUserToShopperGroup();
+		//$this -> installer -> integrateJUsers();
+		
+		//$id = $this -> installer -> determineStoreOwner();
+		//$this -> installer -> setStoreOwner($id);
+		//$this -> installer -> setUserToShopperGroup();
 		if($display){
 			parent::display();
 		}
@@ -138,6 +145,8 @@ class VirtuemartControllerUpdatesMigration extends JController{
 		$this -> installer -> populateVmDatabase("delete_restoreable.sql");
 		$this->setRedirect(JPATH_ADMINISTRATOR, $msg);
 	}
+
+
 
 	
 }
