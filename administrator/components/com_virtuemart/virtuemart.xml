@@ -75,11 +75,11 @@
 			<folder>helpers</folder>
 			<folder>html</folder>
 			<folder>install</folder>
-   		<folder>libraries</folder>			
+   			<folder>libraries</folder>			
 			<folder>models</folder>
 			<folder>plugins</folder>
 			<folder>tables</folder>	    		
-   		<folder>views</folder>
+   			<folder>views</folder>
 
 		</files>
 		

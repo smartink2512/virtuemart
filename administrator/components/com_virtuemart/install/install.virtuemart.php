@@ -11,6 +11,9 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+jimport( 'joomla.application.component.model');
+require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'updatesMigration.php');
+
 global $option, $vmInstaller;
 
 
@@ -53,6 +56,7 @@ function execSQLFile($filename)
 function com_install(){	
 	@ini_set( 'memory_limit', '32M' );
 	$db = JFactory::getDBO();  
+	$model = new VirtueMartModelUpdatesMigration();
 	
 	$query = "SELECT count(id) AS idCount FROM `#__vm_menu_admin`";
 	$db->setQuery($query);
@@ -67,9 +71,9 @@ function com_install(){
 	if ($newInstall) {	
 		// Install Essential Data
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_essential_data.sql'; 
-		execSQLFile($filename);
+		$model->execSQLFile($filename);
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql'; 
-		execSQLFile($filename);		
+		$model->execSQLFile($filename);		
 	}
 
 	$installOk = true;

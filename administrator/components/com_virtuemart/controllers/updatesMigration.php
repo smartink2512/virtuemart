@@ -72,10 +72,7 @@ class VirtuemartControllerUpdatesMigration extends JController{
 		$model->setStoreOwner($id);
 		$model->setUserToShopperGroup();
 	
-		if($display){
-			parent::display();
-		}
-
+		parent::display();
 	}
 /*
 	function setStoreOwner(){
@@ -91,18 +88,31 @@ class VirtuemartControllerUpdatesMigration extends JController{
 		parent::display();
 	}
 
-	function freshInstallSample(){
+	function installSampleData(){
 		JError::raiseNotice(1, 'freshInstallSample ');
 		$this -> freshInstall(false);
 		$this -> installer -> installSample();
 		parent::display();
+		
+		
+		$model = $this->getModel('updatesMigration');
+		
+		$model->execSQLFile(JPATH_COMPONENT_ADMINISTRATOR.DS.'install'.DS.'install_required_data.sql');
+		$model->integrateJoomlaUsers();
+		$id = $model->determineStoreOwner();
+		$model->setStoreOwner($id);
+		$model->setUserToShopperGroup();
+	
+		parent::display();		
 	}
 
+/*
 	function installSample(){
 		JError::raiseNotice(1, 'InstallSample ');
 		$this -> installer -> installSample();
 		parent::display();
 	}
+
 
 	function updateVMTables10to11(){
 		$this -> installer -> populateVmDatabase(migration.DS."UPDATE-SCRIPT_VM_1.0.x_to_1.1.0.sql");
@@ -113,7 +123,7 @@ class VirtuemartControllerUpdatesMigration extends JController{
 		$this -> installer -> populateVmDatabase(migration.DS."UPDATE-SCRIPT_VM_1.1.x_to_1.5.0.sql");
 		parent::display();
 	}
-	
+*/
 	
 	function deleteAll(){
 		$this -> installer -> populateVmDatabase("delete_essential.sql");
