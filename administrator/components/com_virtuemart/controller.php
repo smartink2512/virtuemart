@@ -20,7 +20,9 @@ class VirtuemartController extends JController
 	function display()
 	{								    
 	    $document = JFactory::getDocument();
-	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin.menu.css');
+	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_menu.css');
+        $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/toolbar_images.css');
+		$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/menu_images.css'); 
 		$viewName = JRequest::getVar('view', '');
 		$viewType = $document->getType();
 		$view =& $this->getView($viewName, $viewType);

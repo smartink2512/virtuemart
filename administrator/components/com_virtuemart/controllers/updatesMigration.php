@@ -34,9 +34,6 @@ class VirtuemartControllerUpdatesMigration extends JController{
 	function __construct() {
 		parent::__construct();		
 		
- 		$document =& JFactory::getDocument();
-  		$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
-	    
 		$document =& JFactory::getDocument();				
 		$viewType	= $document->getType();
 		$view =& $this->getView('updatesMigration', $viewType);		
@@ -51,7 +48,7 @@ class VirtuemartControllerUpdatesMigration extends JController{
 	/**
 	 * Display the upgrade view
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */
 	function display() {
 		parent::display();

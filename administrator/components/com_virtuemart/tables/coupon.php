@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Coupon
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -15,7 +15,7 @@ defined('_JEXEC') or die();
  * Coupon table class
  * The class is is used to manage the coupons in the shop.
  *
- * @author Rick Glunt
+ * @author RickG
  * @package		VirtueMart
  */
 class TableCoupon extends JTable
@@ -38,7 +38,7 @@ class TableCoupon extends JTable
 	var $coupon_value_valid 	= 0;		
 
 	/**
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db)
@@ -50,7 +50,7 @@ class TableCoupon extends JTable
 	/**
 	 * Validates the coupon record fields.
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
 	function check() 

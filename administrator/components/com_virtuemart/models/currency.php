@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Currency
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -18,7 +18,7 @@ jimport( 'joomla.application.component.model');
  *
  * @package	VirtueMart
  * @subpackage Currency 
- * @author Rick Glunt  
+ * @author RickG  
  */
 class VirtueMartModelCurrency extends JModel
 {    
@@ -37,7 +37,7 @@ class VirtueMartModelCurrency extends JModel
      *
      * The currency id is read and detmimined if it is an array of ids or just one single id.
      *
-     * @author Rick Glunt 
+     * @author RickG 
      */
     function __construct()
     {
@@ -61,7 +61,7 @@ class VirtueMartModelCurrency extends JModel
     /**
      * Resets the currency id and data
      *
-     * @author Rick Glunt
+     * @author RickG
      */        
     function setId($id) 
     {
@@ -73,7 +73,7 @@ class VirtueMartModelCurrency extends JModel
 	/**
 	 * Loads the pagination for the currency table
 	 *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return JPagination Pagination for the current list of currencies 
 	 */
     function getPagination() 
@@ -89,7 +89,7 @@ class VirtueMartModelCurrency extends JModel
 	/**
 	 * Gets the total number of currencies
 	 *
-     * @author Rick Glunt	 
+     * @author RickG	 
 	 * @return int Total number of currencies in the database
 	 */
 	function _getTotal() 
@@ -105,7 +105,7 @@ class VirtueMartModelCurrency extends JModel
     /** 
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
-     * @author Rick Glunt
+     * @author RickG
      */ 
 	function getCurrency()
 	{		
@@ -129,7 +129,7 @@ class VirtueMartModelCurrency extends JModel
 	/**
 	 * Bind the post data to the currency table and save it
      *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return boolean True is the save was successful, false otherwise. 
 	 */
     function store() 
@@ -162,7 +162,7 @@ class VirtueMartModelCurrency extends JModel
 	/**
 	 * Delete all record ids selected
      *
-     * @author Rick Glunt
+     * @author RickG
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
 	function delete() 
@@ -184,7 +184,7 @@ class VirtueMartModelCurrency extends JModel
 	/**
 	 * Retireve a list of currencies from the database.
 	 * 
-     * @author Rick Glunt	 
+     * @author RickG	 
 	 * @return object List of currency objects
 	 */
 	function getCurrenciesList()

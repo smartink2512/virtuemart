@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Country
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -18,7 +18,7 @@ jimport( 'joomla.application.component.model');
  *
  * @package	VirtueMart
  * @subpackage Country 
- * @author Rick Glunt  
+ * @author RickG  
  */
 class VirtueMartModelCountry extends JModel
 {    
@@ -37,7 +37,7 @@ class VirtueMartModelCountry extends JModel
      *
      * The country id is read and detmimined if it is an array of ids or just one single id.
      *
-     * @author Rick Glunt 
+     * @author RickG 
      */
     function __construct()
     {
@@ -61,7 +61,7 @@ class VirtueMartModelCountry extends JModel
     /**
      * Resets the country id and data
      *
-     * @author Rick Glunt
+     * @author RickG
      */        
     function setId($id) 
     {
@@ -73,7 +73,7 @@ class VirtueMartModelCountry extends JModel
 	/**
 	 * Loads the pagination for the country table
 	 *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return JPagination Pagination for the current list of countries 
 	 */
     function getPagination() 
@@ -89,7 +89,7 @@ class VirtueMartModelCountry extends JModel
 	/**
 	 * Gets the total number of countries
 	 *
-     * @author Rick Glunt	 
+     * @author RickG	 
 	 * @return int Total number of countries in the database
 	 */
 	function _getTotal() 
@@ -105,7 +105,7 @@ class VirtueMartModelCountry extends JModel
     /** 
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
-     * @author Rick Glunt
+     * @author RickG
      */ 
 	function getCountry()
 	{	
@@ -129,7 +129,7 @@ class VirtueMartModelCountry extends JModel
     /**
      * Retreive a country record given a country code.
      *
-     * @author Rick Glunt     
+     * @author RickG     
      * @param string $code Country code to lookup
      * @return object Country object from database
      */ 
@@ -161,7 +161,7 @@ class VirtueMartModelCountry extends JModel
 	/**
 	 * Bind the post data to the country table and save it
      *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return boolean True is the save was successful, false otherwise. 
 	 */
     function store() 
@@ -195,7 +195,7 @@ class VirtueMartModelCountry extends JModel
 	/**
 	 * Delete all record ids selected
      *
-     * @author Rick Glunt
+     * @author RickG
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
 	function delete() 
@@ -223,7 +223,7 @@ class VirtueMartModelCountry extends JModel
 	/**
 	 * Delete all state records for a given country id.
      *
-     * @author Rick Glunt
+     * @author RickG
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
 	function deleteCountryStates($countryId = '') 
@@ -249,7 +249,7 @@ class VirtueMartModelCountry extends JModel
 	/**
 	 * Publish/Unpublish all the ids selected
      *
-     * @author Rick Glunt
+     * @author RickG
      * @param boolean $publishId True is the ids should be published, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
@@ -270,7 +270,7 @@ class VirtueMartModelCountry extends JModel
 	/**
 	 * Retireve a list of countries from the database.
 	 * 
-     * @author Rick Glunt	 
+     * @author RickG	 
      * @param string $onlyPuiblished True to only retreive the publish countries, false otherwise
      * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of country objects

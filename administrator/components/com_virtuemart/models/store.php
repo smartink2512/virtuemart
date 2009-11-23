@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Store
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -18,7 +18,7 @@ jimport( 'joomla.application.component.model');
  *
  * @package	VirtueMart
  * @subpackage Vendor 
- * @author Rick Glunt  
+ * @author RickG  
  */
 class VirtueMartModelStore extends JModel
 {    
@@ -37,7 +37,7 @@ class VirtueMartModelStore extends JModel
      *
      * The vendor id is read and detmimined if it is an array of ids or just one single id.
      *
-     * @author Rick Glunt 
+     * @author RickG 
      */
     function __construct()
     {
@@ -61,7 +61,7 @@ class VirtueMartModelStore extends JModel
     /**
      * Resets the vendor id and data
      *
-     * @author Rick Glunt
+     * @author RickG
      */        
     function setId($id) 
     {
@@ -73,7 +73,7 @@ class VirtueMartModelStore extends JModel
 	/**
 	 * Loads the pagination for the store table
 	 *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return JPagination Pagination for the current list of stores
 	 */
     function getPagination() 
@@ -89,7 +89,7 @@ class VirtueMartModelStore extends JModel
 	/**
 	 * Gets the total number of stores
 	 *
-     * @author Rick Glunt	 
+     * @author RickG	 
 	 * @return int Total number of stores in the database
 	 */
 	function _getTotal() 
@@ -105,7 +105,7 @@ class VirtueMartModelStore extends JModel
     /** 
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
-     * @author Rick Glunt
+     * @author RickG
      */ 
 	function getStore()
 	{		
@@ -129,7 +129,7 @@ class VirtueMartModelStore extends JModel
 	/**
 	 * Bind the post data to the credit card table and save it
      *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return boolean True is the save was successful, false otherwise. 
 	 */
     function store() 
@@ -162,7 +162,7 @@ class VirtueMartModelStore extends JModel
 	/**
 	 * Delete all record ids selected
      *
-     * @author Rick Glunt
+     * @author RickG
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
 	function delete() 
@@ -184,7 +184,7 @@ class VirtueMartModelStore extends JModel
 	/**
 	 * Retireve a list of stores from the database.
 	 * 
-     * @author Rick Glunt	 
+     * @author RickG	 
 	 * @return object List of store objects
 	 */
 	function getStores()

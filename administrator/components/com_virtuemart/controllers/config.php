@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Config
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -17,7 +17,7 @@ jimport('joomla.application.component.controller');
  *
  * @package    VirtueMart
  * @subpackage Config
- * @author Rick Glunt 
+ * @author RickG 
  */
 class VirtuemartControllerConfig extends JController
 {
@@ -28,9 +28,6 @@ class VirtuemartControllerConfig extends JController
 	 */
 	function __construct() {
 		parent::__construct();			
-	
-	    $document =& JFactory::getDocument();
-	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
 	    
 		$document = JFactory::getDocument();				
 		$viewType = $document->getType();
@@ -46,7 +43,7 @@ class VirtuemartControllerConfig extends JController
 	/**
 	 * Display the config view
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */
 	function display() {			
 		parent::display();
@@ -56,7 +53,7 @@ class VirtuemartControllerConfig extends JController
 	/**
 	 * Handle the edit task
 	 *
-     * @author Rick Glunt
+     * @author RickG
 	 */
 	function edit()
 	{	
@@ -72,7 +69,7 @@ class VirtuemartControllerConfig extends JController
 	/**
 	 * Handle the cancel task
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 */
 	function cancel()
 	{
@@ -85,7 +82,7 @@ class VirtuemartControllerConfig extends JController
 	/**
 	 * Handle the save task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */	
 	function save()
 	{
@@ -105,7 +102,7 @@ class VirtuemartControllerConfig extends JController
 	/**
 	 * Handle the remove task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */		
 	function remove()
 	{

@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Country
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -18,7 +18,7 @@ jimport( 'joomla.application.component.model');
  *
  * @package	VirtueMart
  * @subpackage State 
- * @author Rick Glunt and Max Milbers
+ * @author RickG and Max Milbers
  */
 class VirtueMartModelState extends JModel
 {
@@ -39,7 +39,7 @@ class VirtueMartModelState extends JModel
      *
      * The state id is read and detmimined if it is an array of ids or just one single id.
      *
-     * @author Rick Glunt 
+     * @author RickG 
      */
     function __construct()
     {
@@ -65,7 +65,7 @@ class VirtueMartModelState extends JModel
     /**
      * Resets the state id and data
      *
-     * @author Rick Glunt
+     * @author RickG
      */        
     function setId($id) 
     {
@@ -77,7 +77,7 @@ class VirtueMartModelState extends JModel
 	/**
 	 * Loads the pagination for the state table
 	 *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return JPagination Pagination for the current list of countries 
 	 */
     function getPagination() 
@@ -93,7 +93,7 @@ class VirtueMartModelState extends JModel
 	/**
 	 * Gets the total number of countries
 	 *
-     * @author Rick Glunt	 
+     * @author RickG	 
 	 * @return int Total number of countries in the database
 	 */
 	function _getTotal() 
@@ -109,7 +109,7 @@ class VirtueMartModelState extends JModel
     /** 
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
-     * @author Rick Glunt
+     * @author RickG
      */ 
 	function getState()
 	{		
@@ -136,7 +136,7 @@ class VirtueMartModelState extends JModel
     /**
      * Retreive a state record given a state code.
      *
-     * @author Rick Glunt     
+     * @author RickG     
      * @param string $code State code to lookup
      * @return object State object from database
      */ 
@@ -168,7 +168,7 @@ class VirtueMartModelState extends JModel
 	/**
 	 * Bind the post data to the state table and save it
      *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return boolean True is the save was successful, false otherwise. 
 	 */
     function store() 
@@ -202,7 +202,7 @@ class VirtueMartModelState extends JModel
 	/**
 	 * Delete all record ids selected
      *
-     * @author Rick Glunt
+     * @author RickG
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
 	function delete() 
@@ -223,7 +223,7 @@ class VirtueMartModelState extends JModel
 	/**
 	 * Publish/Unpublish all the ids selected
      *
-     * @author Rick Glunt
+     * @author RickG
      * @param boolean $publishId True is the ids should be published, false otherwise.
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
@@ -244,7 +244,7 @@ class VirtueMartModelState extends JModel
 	/**
 	 * Retireve a list of countries from the database.
 	 * 
-     * @author Rick Glunt and Max Milbers 
+     * @author RickG and Max Milbers 
 	 * @return object List of state objects
 	 */
 	function getStates($countryId)

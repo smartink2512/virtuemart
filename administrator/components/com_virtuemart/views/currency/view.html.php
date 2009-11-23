@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Currency
- * @author Rick Glunt
+ * @author RickG
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -16,7 +16,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
  *
  * @package	VirtueMart
  * @subpackage Currency
- * @author Rick Glunt 
+ * @author RickG 
  */
 class VirtuemartViewCurrency extends JView {
 	

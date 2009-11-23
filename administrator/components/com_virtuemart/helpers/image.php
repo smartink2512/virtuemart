@@ -7,7 +7,7 @@
  *
  * @package	VirtueMart
  * @subpackage Helpers
- * @author Rick Glunt
+ * @author RickG
  * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
  */
 defined('_JEXEC') or die();
@@ -20,7 +20,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'classes' . DS. "class.img2thu
  *
  * @package	VirtueMart
  * @subpackage Helpers
- * @author Rick Glunt
+ * @author RickG
  */
 class ImageHelper
 {
@@ -59,7 +59,7 @@ class ImageHelper
 	/** 
 	 * Display a given image in <img> tags
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @param string $image Filename of the image.  No path.
 	 * @param string $imgRootFolder Folder under the shop imgae location that contains this image.  For example, 'products'.	 
 	 * @param string $imageArgs Attributes to be included in the <img> tag.
@@ -75,7 +75,7 @@ class ImageHelper
 	
 	/** Return the HTML <img> code for a given image.
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @param string $image Filename of the image.  No path.
 	 * @param string $imgRootFolder Folder under the shop imgae location that contains this image.  For example, 'products'.	 
 	 * @param string $imageArgs Attributes to be included in the <img> tag.
@@ -93,7 +93,7 @@ class ImageHelper
 	/**
 	 * Generate the <img> html code for a given image and a given image size.
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @param string $image Filename of the image.  No path.
 	 * @param string $imgRootFolder Folder under the shop imgae location that contains this image.  For example, 'products'.	 
 	 * @param string $imageArgs Attributes to be included in the <img> tag.
@@ -172,7 +172,7 @@ class ImageHelper
 	 *
 	 * Resized images are currently held in the shop image directory in a resized folder found under the $imageRootFolder.
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @param string $imageFilename Filename of the image.  No path included.
 	 * @param string $imageRootFolder Folder under the shop imgae location that contains this image.  For example, 'products'.
 	 * @param integer $width Width the resized image should be 
@@ -223,7 +223,7 @@ class ImageHelper
 	/**
 	 * Returns the filename of an image's resized copy in the /resized folder
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @param string $filename Filename of the image we are looking for.
 	 * @param string $imageRootFolder Folder under the shop image location that contains this image.  For example, 'products'.
 	 * @param string $ext Image extension we ar elooking for,  If none we will use what is on the $filename.

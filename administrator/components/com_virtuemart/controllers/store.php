@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Store
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -17,7 +17,7 @@ jimport('joomla.application.component.controller');
  *
  * @package    VirtueMart
  * @subpackage Store
- * @author Rick Glunt 
+ * @author RickG 
  */
 class VirtueMartControllerStore extends JController
 {
@@ -37,9 +37,6 @@ class VirtueMartControllerStore extends JController
 	 * The default store view
 	 */
 	 function display() {
-	 	$document = JFactory::getDocument();
-	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
-	    
 		$document = JFactory::getDocument();				
 		$viewType	= $document->getType();
 		$view = $this->getView('store', $viewType);		
@@ -62,7 +59,7 @@ class VirtueMartControllerStore extends JController
 	/**
 	 * Handle the edit task
 	 *
-     * @author Rick Glunt
+     * @author RickG
 	 */
 	function edit()
 	{	
@@ -78,7 +75,7 @@ class VirtueMartControllerStore extends JController
 	/**
 	 * Handle the cancel task
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 */
 	function cancel()
 	{
@@ -91,7 +88,7 @@ class VirtueMartControllerStore extends JController
 	/**
 	 * Handle the save task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */	
 	function save()
 	{
@@ -111,7 +108,7 @@ class VirtueMartControllerStore extends JController
 	/**
 	 * Handle the remove task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */		
 	function remove()
 	{
@@ -130,7 +127,7 @@ class VirtueMartControllerStore extends JController
 	/**
 	 * Handle the publish task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */		
 	function publish()
 	{
@@ -146,7 +143,7 @@ class VirtueMartControllerStore extends JController
 	/**
 	 * Handle the publish task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */		
 	function unpublish()
 	{

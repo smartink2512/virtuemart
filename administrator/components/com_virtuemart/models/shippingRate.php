@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage ShippingRate
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -18,7 +18,7 @@ jimport( 'joomla.application.component.model');
  *
  * @package	VirtueMart
  * @subpackage ShippingRate 
- * @author Rick Glunt  
+ * @author RickG  
  */
 class VirtueMartModelShippingRate extends JModel
 {    
@@ -37,7 +37,7 @@ class VirtueMartModelShippingRate extends JModel
      *
      * The shipping rate id is read and detmimined if it is an array of ids or just one single id.
      *
-     * @author Rick Glunt 
+     * @author RickG 
      */
     function __construct()
     {
@@ -61,7 +61,7 @@ class VirtueMartModelShippingRate extends JModel
     /**
      * Resets the shipping rate id and data
      *
-     * @author Rick Glunt
+     * @author RickG
      */        
     function setId($id) 
     {
@@ -73,7 +73,7 @@ class VirtueMartModelShippingRate extends JModel
 	/**
 	 * Loads the pagination for the shipping rate table
 	 *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return JPagination Pagination for the current list of shipping rates 
 	 */
     function getPagination() 
@@ -89,7 +89,7 @@ class VirtueMartModelShippingRate extends JModel
 	/**
 	 * Gets the total number of shipping rates
 	 *
-     * @author Rick Glunt	 
+     * @author RickG	 
 	 * @return int Total number of shipping rates in the database
 	 */
 	function _getTotal() 
@@ -105,7 +105,7 @@ class VirtueMartModelShippingRate extends JModel
     /** 
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
-     * @author Rick Glunt
+     * @author RickG
      */ 
 	function getShippingRate()
 	{		
@@ -132,7 +132,7 @@ class VirtueMartModelShippingRate extends JModel
 	/**
 	 * Bind the post data to the shipping rate table and save it
      *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return boolean True is the save was successful, false otherwise. 
 	 */
     function store() 
@@ -171,7 +171,7 @@ class VirtueMartModelShippingRate extends JModel
 	/**
 	 * Delete all record ids selected
      *
-     * @author Rick Glunt
+     * @author RickG
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
 	function delete() 
@@ -193,7 +193,7 @@ class VirtueMartModelShippingRate extends JModel
 	/**
 	 * Retireve a list of shipping rates from the database.
 	 * 
-     * @author Rick Glunt	 
+     * @author RickG	 
 	 * @return object List of shipping rate objects
 	 */
 	function getShippingRates()

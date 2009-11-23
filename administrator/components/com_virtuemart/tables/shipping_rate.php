@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage ShippingCarrier
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -15,7 +15,7 @@ defined('_JEXEC') or die();
  * Shipping Rate table class
  * The class is is used to manage the shipping rates in the shop.
  *
- * @author Rick Glunt
+ * @author RickG
  * @package	VirtueMart
  */
 class TableShipping_Rate extends JTable
@@ -48,7 +48,7 @@ class TableShipping_Rate extends JTable
 	var $shipping_rate_list_order      	= '';
 
 	/**
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db)
@@ -60,7 +60,7 @@ class TableShipping_Rate extends JTable
 	/**
 	 * Validates the shipping rate record fields.
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
 	function check() 

@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Shipping
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -18,7 +18,7 @@ jimport( 'joomla.application.component.model');
  *
  * @package	VirtueMart
  * @subpackage Shipping 
- * @author Rick Glunt  
+ * @author RickG  
  */
 class VirtueMartModelShippingZone extends JModel
 {
@@ -42,7 +42,7 @@ class VirtueMartModelShippingZone extends JModel
      *
      * The zone id is read and detmimined if it is an array of ids or just one single id.
      *
-     * @author Rick Glunt 
+     * @author RickG 
      */
     function __construct()
     {
@@ -63,7 +63,7 @@ class VirtueMartModelShippingZone extends JModel
     /**
      * Resets the zone id and data
      *
-     * @author Rick Glunt
+     * @author RickG
      */        
     function setId($id) 
     {
@@ -75,7 +75,7 @@ class VirtueMartModelShippingZone extends JModel
     /** 
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
-     * @author Rick Glunt
+     * @author RickG
      */ 
 	function getShippingZone()
 	{		
@@ -102,7 +102,7 @@ class VirtueMartModelShippingZone extends JModel
     /** 
      * Retrieve a list of zone ids and zone names for use in a HTML select list.
      *
-     * @author Rick Glunt
+     * @author RickG
      */ 
     function getShippingZoneSelectList()
     {

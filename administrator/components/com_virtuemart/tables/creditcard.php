@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage CreditCard
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -15,7 +15,7 @@ defined('_JEXEC') or die();
  * Credit card table class
  * The class is is used to manage the credit cards in the shop.
  *
- * @author Rick Glunt
+ * @author RickG
  * @package		VirtueMart
  */
 class TableCreditcard extends JTable
@@ -31,7 +31,7 @@ class TableCreditcard extends JTable
 
 
 	/**
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db)
@@ -43,7 +43,7 @@ class TableCreditcard extends JTable
 	/**
 	 * Validates the credit card record fields.
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
 	function check() 

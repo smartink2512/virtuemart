@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Vendor
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -15,7 +15,7 @@ defined('_JEXEC') or die();
  * Vendor table class
  * The class is is used to manage the vendors in the shop.
  *
- * @author Rick Glunt
+ * @author RickG
  * @package		VirtueMart
  */
 class TableVendor extends JTable
@@ -62,7 +62,7 @@ class TableVendor extends JTable
 	var $vendor_date_format			= '';	
 
 	/**
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db)
@@ -74,7 +74,7 @@ class TableVendor extends JTable
 	/**
 	 * Validates the vendor record fields.
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
 	function check() 

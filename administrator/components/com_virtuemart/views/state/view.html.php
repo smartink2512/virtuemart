@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage State
- * @author Rick Glunt
+ * @author RickG
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 

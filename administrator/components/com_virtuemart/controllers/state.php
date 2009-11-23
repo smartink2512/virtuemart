@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage State
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -17,7 +17,7 @@ jimport('joomla.application.component.controller');
  *
  * @package    VirtueMart
  * @subpackage State
- * @author Rick Glunt and Max Milbers
+ * @author RickG and Max Milbers
  */
 class VirtuemartControllerState extends JController
 {
@@ -25,13 +25,10 @@ class VirtuemartControllerState extends JController
 	 * Method to display the view
 	 *
 	 * @access	public
-	 * @author Rick Glunt and Max Milbers
+	 * @author RickG and Max Milbers
 	 */
 	function __construct() {
 		parent::__construct();
-		
-	    $document =& JFactory::getDocument();
-	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
 	    
 		$document =& JFactory::getDocument();				
 		$viewType	= $document->getType();
@@ -51,7 +48,7 @@ class VirtuemartControllerState extends JController
 	/**
 	 * Display the state view
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */
 	function display() {			
 		parent::display();
@@ -61,7 +58,7 @@ class VirtuemartControllerState extends JController
 	/**
 	 * Handle the edit task
 	 *
-     * @author Rick Glunt and Max Milbers
+     * @author RickG and Max Milbers
 	 */
 	function edit()
 	{				
@@ -77,7 +74,7 @@ class VirtuemartControllerState extends JController
 	/**
 	 * Handle the cancel task
 	 *
-	 * @author Rick Glunt and Max Milbers
+	 * @author RickG and Max Milbers
 	 */
 	function cancel()
 	{
@@ -90,7 +87,7 @@ class VirtuemartControllerState extends JController
 	/**
 	 * Handle the save task
 	 *
-	 * @author Rick Glunt and Max Milbers	 
+	 * @author RickG and Max Milbers	 
 	 */	
 	function save()
 	{
@@ -111,7 +108,7 @@ class VirtuemartControllerState extends JController
 	/**
 	 * Handle the remove task
 	 *
-	 * @author Rick Glunt and Max Milbers	 
+	 * @author RickG and Max Milbers	 
 	 */		
 	function remove()
 	{
@@ -131,7 +128,7 @@ class VirtuemartControllerState extends JController
 	/**
 	 * Handle the publish task
 	 *
-	 * @author Rick Glunt and Max Milbers	 
+	 * @author RickG and Max Milbers	 
 	 */		
 	function publish()
 	{
@@ -148,7 +145,7 @@ class VirtuemartControllerState extends JController
 	/**
 	 * Handle the publish task
 	 *
-	 * @author Rick Glunt and Max Milbers	 
+	 * @author RickG and Max Milbers	 
 	 */		
 	function unpublish()
 	{

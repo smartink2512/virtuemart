@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Currency
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -15,7 +15,7 @@ defined('_JEXEC') or die();
  * Currency table class
  * The class is is used to manage the currencies in the shop.
  *
- * @author Rick Glunt
+ * @author RickG
  * @package		VirtueMart
  */
 class TableCurrency extends JTable
@@ -29,7 +29,7 @@ class TableCurrency extends JTable
 
 
 	/**
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db)
@@ -41,7 +41,7 @@ class TableCurrency extends JTable
 	/**
 	 * Validates the currency record fields.
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
 	function check() 

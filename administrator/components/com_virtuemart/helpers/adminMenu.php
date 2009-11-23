@@ -7,7 +7,7 @@
  *
  * @package	VirtueMart
  * @subpackage Helpers
- * @author Rick Glunt
+ * @author RickG
  * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -19,7 +19,7 @@ defined('_JEXEC') or die();
  *
  * @package		VirtueMart
  * @subpackage Helpers
- * @author Rick Glunt 
+ * @author RickG 
  */
 class AdminMenuHelper
 {
@@ -72,11 +72,7 @@ class AdminMenuHelper
         $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/admin_menu.js');
         $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/nifty.js');
         $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/fat.js');
-        $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/functions.js');
-
-        $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_menu.css');
-        $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/toolbar_images.css');
-		$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/menu_images.css');        
+        $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/functions.js');       
         
         $menuItems = adminMenuHelper::_getAdminMenu($moduleId);
         

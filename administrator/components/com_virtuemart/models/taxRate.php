@@ -33,7 +33,7 @@ class VirtueMartModelTaxRate extends JModel {
      *
      * The tax rate id is read and detmimined if it is an array of ids or just one single id.
      *
-     * @author Rick Glunt 
+     * @author RickG 
      */
     function __construct()
     {
@@ -57,7 +57,7 @@ class VirtueMartModelTaxRate extends JModel {
     /**
      * Resets the tax rate id and data
      *
-     * @author Rick Glunt
+     * @author RickG
      */        
     function setId($id) 
     {
@@ -69,7 +69,7 @@ class VirtueMartModelTaxRate extends JModel {
 	/**
 	 * Loads the pagination for the tax rate table
 	 *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return JPagination Pagination for the current list of tax rates 
 	 */
     function getPagination() 
@@ -85,7 +85,7 @@ class VirtueMartModelTaxRate extends JModel {
 	/**
 	 * Gets the total number of tax rates
 	 *
-     * @author Rick Glunt	 
+     * @author RickG	 
 	 * @return int Total number of tax rates in the database
 	 */
 	function _getTotal() 
@@ -101,7 +101,7 @@ class VirtueMartModelTaxRate extends JModel {
     /** 
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
-     * @author Rick Glunt
+     * @author RickG
      */ 
 	function getTaxRate()
 	{		
@@ -125,7 +125,7 @@ class VirtueMartModelTaxRate extends JModel {
 	/**
 	 * Bind the post data to the tax rate table and save it
      *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return boolean True is the save was successful, false otherwise. 
 	 */
     function store() 
@@ -158,7 +158,7 @@ class VirtueMartModelTaxRate extends JModel {
 	/**
 	 * Delete all record ids selected
      *
-     * @author Rick Glunt
+     * @author RickG
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
 	function delete() 

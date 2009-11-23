@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage ShippingRate
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -17,7 +17,7 @@ jimport('joomla.application.component.controller');
  *
  * @package    VirtueMart
  * @subpackage ShippingRate
- * @author Rick Glunt 
+ * @author RickG 
  */
 class VirtuemartControllerShippingRate extends JController
 {
@@ -31,9 +31,6 @@ class VirtuemartControllerShippingRate extends JController
 		
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );			
-		
-	    $document =& JFactory::getDocument();
-	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
 	    
 		$document =& JFactory::getDocument();				
 		$viewType	= $document->getType();
@@ -65,7 +62,7 @@ class VirtuemartControllerShippingRate extends JController
 	/**
 	 * Display the shipping rate view
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */
 	function display() {			
 		parent::display();
@@ -75,7 +72,7 @@ class VirtuemartControllerShippingRate extends JController
 	/**
 	 * Handle the edit task
 	 *
-     * @author Rick Glunt
+     * @author RickG
 	 */
 	function edit()
 	{				
@@ -91,7 +88,7 @@ class VirtuemartControllerShippingRate extends JController
 	/**
 	 * Handle the cancel task
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 */
 	function cancel()
 	{
@@ -104,7 +101,7 @@ class VirtuemartControllerShippingRate extends JController
 	/**
 	 * Handle the save task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */	
 	function save()
 	{
@@ -124,7 +121,7 @@ class VirtuemartControllerShippingRate extends JController
 	/**
 	 * Handle the remove task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */		
 	function remove()
 	{

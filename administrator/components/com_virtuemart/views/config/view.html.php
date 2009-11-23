@@ -2,7 +2,7 @@
 /**
  * @package		VirtueMart
  * @subpackage 	Config
- * @author 		Rick Glunt 
+ * @author 		RickG 
 */
 
 jimport( 'joomla.application.component.view');
@@ -15,7 +15,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
  *
  * @package		VirtueMart
  * @subpackage 	Config
- * @author 		Rick Glunt 
+ * @author 		RickG 
  */
 class VirtuemartViewConfig extends JView
 {

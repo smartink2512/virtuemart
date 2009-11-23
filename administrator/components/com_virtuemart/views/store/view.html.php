@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Store
- * @author Rick Glunt
+ * @author RickG
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -17,7 +17,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
  *
  * @package	VirtueMart
  * @subpackage Store
- * @author Rick Glunt 
+ * @author RickG 
  */
 class VirtueMartViewStore extends JView {
 	

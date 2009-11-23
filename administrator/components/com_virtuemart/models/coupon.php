@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Coupon
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -18,7 +18,7 @@ jimport( 'joomla.application.component.model');
  *
  * @package	VirtueMart
  * @subpackage Coupon 
- * @author Rick Glunt  
+ * @author RickG  
  */
 class VirtueMartModelCoupon extends JModel
 {    
@@ -37,7 +37,7 @@ class VirtueMartModelCoupon extends JModel
      *
      * The coupon id is read and detmimined if it is an array of ids or just one single id.
      *
-     * @author Rick Glunt 
+     * @author RickG 
      */
     function __construct()
     {
@@ -61,7 +61,7 @@ class VirtueMartModelCoupon extends JModel
     /**
      * Resets the coupon id and data
      *
-     * @author Rick Glunt
+     * @author RickG
      */        
     function setId($id) 
     {
@@ -73,7 +73,7 @@ class VirtueMartModelCoupon extends JModel
 	/**
 	 * Loads the pagination for the coupon table
 	 *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return JPagination Pagination for the current list of coupons 
 	 */
     function getPagination() 
@@ -89,7 +89,7 @@ class VirtueMartModelCoupon extends JModel
 	/**
 	 * Gets the total number of coupons
 	 *
-     * @author Rick Glunt	 
+     * @author RickG	 
 	 * @return int Total number of coupons in the database
 	 */
 	function _getTotal() 
@@ -105,7 +105,7 @@ class VirtueMartModelCoupon extends JModel
     /** 
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
-     * @author Rick Glunt
+     * @author RickG
      */ 
 	function getCoupon()
 	{		
@@ -129,7 +129,7 @@ class VirtueMartModelCoupon extends JModel
 	/**
 	 * Bind the post data to the coupon table and save it
      *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return boolean True is the save was successful, false otherwise. 
 	 */
     function store() 
@@ -168,7 +168,7 @@ class VirtueMartModelCoupon extends JModel
 	/**
 	 * Delete all record ids selected
      *
-     * @author Rick Glunt
+     * @author RickG
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
 	function delete() 
@@ -190,7 +190,7 @@ class VirtueMartModelCoupon extends JModel
 	/**
 	 * Retireve a list of coupons from the database.
 	 * 
-     * @author Rick Glunt	 
+     * @author RickG	 
 	 * @return object List of coupon objects
 	 */
 	function getCoupons()

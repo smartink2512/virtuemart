@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Country
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -15,7 +15,7 @@ defined('_JEXEC') or die();
  * Country table class
  * The class is is used to manage the countries in the shop.
  *
- * @author Rick Glunt
+ * @author RickG
  * @package		VirtueMart
  */
 class TableCountry extends JTable
@@ -35,7 +35,7 @@ class TableCountry extends JTable
 
 
 	/**
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db)
@@ -47,7 +47,7 @@ class TableCountry extends JTable
 	/**
 	 * Validates the country record fields.
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
 	function check() 

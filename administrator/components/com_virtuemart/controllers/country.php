@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage Country
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -17,7 +17,7 @@ jimport('joomla.application.component.controller');
  *
  * @package    VirtueMart
  * @subpackage Country
- * @author Rick Glunt 
+ * @author RickG 
  */
 class VirtuemartControllerCountry extends JController
 {
@@ -31,9 +31,6 @@ class VirtuemartControllerCountry extends JController
 		
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );			
-		
-	    $document =& JFactory::getDocument();
-	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
 	    
 		$document =& JFactory::getDocument();				
 		$viewType	= $document->getType();
@@ -53,7 +50,7 @@ class VirtuemartControllerCountry extends JController
 	/**
 	 * Display the country view
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */
 	function display() {			
 		parent::display();
@@ -63,7 +60,7 @@ class VirtuemartControllerCountry extends JController
 	/**
 	 * Handle the edit task
 	 *
-     * @author Rick Glunt
+     * @author RickG
 	 */
 	function edit()
 	{				
@@ -79,7 +76,7 @@ class VirtuemartControllerCountry extends JController
 	/**
 	 * Handle the cnacel task
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 */
 	function cancel()
 	{
@@ -92,7 +89,7 @@ class VirtuemartControllerCountry extends JController
 	/**
 	 * Handle the save task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */	
 	function save()
 	{
@@ -112,7 +109,7 @@ class VirtuemartControllerCountry extends JController
 	/**
 	 * Handle the remove task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */		
 	function remove()
 	{
@@ -131,7 +128,7 @@ class VirtuemartControllerCountry extends JController
 	/**
 	 * Handle the publish task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */		
 	function publish()
 	{
@@ -147,7 +144,7 @@ class VirtuemartControllerCountry extends JController
 	/**
 	 * Handle the publish task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */		
 	function unpublish()
 	{

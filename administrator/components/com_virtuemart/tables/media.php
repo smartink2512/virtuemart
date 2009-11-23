@@ -61,7 +61,7 @@ class TableMedia extends JTable
 	/**
 	 * Validates the country record fields.
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
 	function check() 

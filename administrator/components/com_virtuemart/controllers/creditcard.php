@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage CreditCard
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -17,7 +17,7 @@ jimport('joomla.application.component.controller');
  *
  * @package    VirtueMart
  * @subpackage CreditCard
- * @author Rick Glunt 
+ * @author RickG 
  */
 class VirtuemartControllerCreditcard extends JController
 {
@@ -31,9 +31,6 @@ class VirtuemartControllerCreditcard extends JController
 		
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );			
-	
-	    $document =& JFactory::getDocument();
-	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/vm.css');
 	    
 		$document =& JFactory::getDocument();				
 		$viewType	= $document->getType();
@@ -49,7 +46,7 @@ class VirtuemartControllerCreditcard extends JController
 	/**
 	 * Display the credit card view
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */
 	function display() {			
 		parent::display();
@@ -59,7 +56,7 @@ class VirtuemartControllerCreditcard extends JController
 	/**
 	 * Handle the edit task
 	 *
-     * @author Rick Glunt
+     * @author RickG
 	 */
 	function edit()
 	{	
@@ -75,7 +72,7 @@ class VirtuemartControllerCreditcard extends JController
 	/**
 	 * Handle the cancel task
 	 *
-	 * @author Rick Glunt
+	 * @author RickG
 	 */
 	function cancel()
 	{
@@ -88,7 +85,7 @@ class VirtuemartControllerCreditcard extends JController
 	/**
 	 * Handle the save task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */	
 	function save()
 	{
@@ -108,7 +105,7 @@ class VirtuemartControllerCreditcard extends JController
 	/**
 	 * Handle the remove task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */		
 	function remove()
 	{
@@ -127,7 +124,7 @@ class VirtuemartControllerCreditcard extends JController
 	/**
 	 * Handle the publish task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */		
 	function publish()
 	{
@@ -143,7 +140,7 @@ class VirtuemartControllerCreditcard extends JController
 	/**
 	 * Handle the publish task
 	 *
-	 * @author Rick Glunt	 
+	 * @author RickG	 
 	 */		
 	function unpublish()
 	{
