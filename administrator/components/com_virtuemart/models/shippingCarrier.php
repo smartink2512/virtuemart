@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage ShippingCarrier
- * @author Rick Glunt 
+ * @author RickG 
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -18,7 +18,7 @@ jimport( 'joomla.application.component.model');
  *
  * @package	VirtueMart
  * @subpackage ShippingCarrier 
- * @author Rick Glunt  
+ * @author RickG 
  */
 class VirtueMartModelShippingCarrier extends JModel
 {    
@@ -37,7 +37,7 @@ class VirtueMartModelShippingCarrier extends JModel
      *
      * The shipping carrier id is read and detmimined if it is an array of ids or just one single id.
      *
-     * @author Rick Glunt 
+     * @author RickG 
      */
     function __construct()
     {
@@ -61,7 +61,7 @@ class VirtueMartModelShippingCarrier extends JModel
     /**
      * Resets the shipping carrier id and data
      *
-     * @author Rick Glunt
+     * @author RickG
      */        
     function setId($id) 
     {
@@ -73,7 +73,7 @@ class VirtueMartModelShippingCarrier extends JModel
 	/**
 	 * Loads the pagination for the shipping carrier table
 	 *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return JPagination Pagination for the current list of shipping carriers 
 	 */
     function getPagination() 
@@ -89,7 +89,7 @@ class VirtueMartModelShippingCarrier extends JModel
 	/**
 	 * Gets the total number of shipping carriers
 	 *
-     * @author Rick Glunt	 
+     * @author RickG	 
 	 * @return int Total number of shipping carriers in the database
 	 */
 	function _getTotal() 
@@ -105,7 +105,7 @@ class VirtueMartModelShippingCarrier extends JModel
     /** 
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
-     * @author Rick Glunt
+     * @author RickG
      */ 
 	function getShippingCarrier()
 	{		
@@ -129,7 +129,7 @@ class VirtueMartModelShippingCarrier extends JModel
 	/**
 	 * Bind the post data to the shipping carrier table and save it
      *
-     * @author Rick Glunt	
+     * @author RickG	
      * @return boolean True is the save was successful, false otherwise. 
 	 */
     function store() 
@@ -162,7 +162,7 @@ class VirtueMartModelShippingCarrier extends JModel
 	/**
 	 * Delete all record ids selected
      *
-     * @author Rick Glunt
+     * @author RickG
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
 	function delete() 
@@ -190,7 +190,7 @@ class VirtueMartModelShippingCarrier extends JModel
 	/**
 	 * Delete all rate records for a given shipping carrier id.
      *
-     * @author Rick Glunt
+     * @author RickG
      * @return boolean True is the delete was successful, false otherwise.      
      */ 	 
 	function deleteShippingCarrierRates($carrierId = '') 
@@ -216,7 +216,7 @@ class VirtueMartModelShippingCarrier extends JModel
 	/**
 	 * Retireve a list of shipping carriers from the database.
 	 * 
-     * @author Rick Glunt	 
+     * @author RickG	 
 	 * @return object List of shipping carrier objects
 	 */
 	function getShippingCarriers()
