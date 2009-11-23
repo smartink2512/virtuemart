@@ -68,6 +68,8 @@ function com_install(){
 		// Install Essential Data
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_essential_data.sql'; 
 		execSQLFile($filename);
+		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql'; 
+		execSQLFile($filename);		
 	}
 
 	$installOk = true;

@@ -17,22 +17,19 @@ defined('_JEXEC') or die('Restricted access');
 			<h1>The first step of the Installation was <font color="green">SUCCESSFUL</font></h1>
 			<br />
 			
-			<table>				
+			<table width="50%">				
 			<tr>
-				<td align="center" colspan="3" >Basic Installation has been finished.</td>
+				<td align="center" colspan="2" >Basic Installation has been finished.</td>
 			</tr>
 			<tr>
-				<td width="33%">
-					<a name="Button1" onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" class="button" title="Install a fresh Shop &gt;&gt;" href="<?php echo $linkFresh?>">Install required data for a fresh shop &gt;&gt;</a>
-				</td>
-				<td width="33%" align="center">
+				<td width="50%" align="center">
 					<a onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesMigration&task=freshInstallSample'); ?>">
 						<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
 					</a>
 					<br />
 					Install Sample Data
 				</td>				
-				<td width="33%" align="center">
+				<td width="50%" align="center">
 					<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart'); ?>">
 						<img src="components/com_virtuemart/assets/images/icon_48/vm_frontpage_48.png">
 					</a>
@@ -41,13 +38,13 @@ defined('_JEXEC') or die('Restricted access');
 				</td>
 			</tr>
 			<tr>
-				<td align="center" colspan="3"><br /><br /><hr /><br /></td>
+				<td align="center" colspan="2"><br /><br /><hr /><br /></td>
 			</tr>
 			<tr>
 				<td align="center">
 					Go to <a href="http://virtuemart.net" target="_blank">VirtueMart</a> for further Help
 				</td>
-				<td colspan="2" align="center">
+				<td align="center">
 					Please consider a small donation to help us keep up the work on this component.<br /><br />
 					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
 						<input type="hidden" name="cmd" value="_xclick" />

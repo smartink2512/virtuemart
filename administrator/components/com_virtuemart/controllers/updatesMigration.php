@@ -46,25 +46,10 @@ class VirtuemartControllerUpdatesMigration extends JController{
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}			
-		
-		if(empty($this -> installer)){
-			if(empty($vmInstaller)){
-				//echo('Global $vmInstaller == null');
-				//JError::raiseNotice(1, 'Global $vmInstaller == null');
-				require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'updatesMigrationHelper.php');
-				$this -> installer = new updatesMigrationHelper;
-			}else{
-				JError::raiseNotice(1, 'Global $vmInstaller exists !!!');
-				echo('Global $vmInstaller exists !!!');
-				$this -> installer = $vmInstaller;
-			}
-		}
-
-		 //JRequest::setVar('task', 'submit');
 	}
 	
 	/**
-	 * Display the country view
+	 * Display the upgrade view
 	 *
 	 * @author Rick Glunt	 
 	 */

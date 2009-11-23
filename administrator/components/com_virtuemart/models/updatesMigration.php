@@ -230,6 +230,65 @@ class VirtueMartModelUpdatesMigration extends JModel
 	
 		$db->setQuery( "UPDATE `#__vm_auth_user_group` SET `group_id` = '0' WHERE `user_id` ='".$this -> userId."' ") ;
 		$db->query();
-	}	
+	}
+	
+	
+	function installSample($user_id=null) 
+	{
+		/*if($user_id==null){
+			$user_id = $this -> storeOwnerId;
+		}
+		$vmLogIdentifier = 'VirtueMart';
+
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_database.php");
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_vendor.php");
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_user.php");
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_perm.php");
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."helpers".DS."vendor_helper.php");
+		
+		global $perm, $hVendor;
+		// Instantiate the permission class
+		$perm = new ps_perm();
+		$hVendor = new vendor_helper;
+
+		$fields = array();
+		
+		$fields['address_type'] =  "BT";
+		$fields['company'] =  "Washupito''s the User";
+		$fields['title'] =  "Sire";
+		$fields['last_name'] =  "upito";
+		$fields['first_name'] =  "Wash";
+		$fields['middle_name'] =  "the cheapest";
+		$fields['phone_1'] =  "555-555-555";
+		$fields['address_1'] =  "vendorra road 8";
+		$fields['city'] =  "Canangra";
+		$fields['state'] =  "72";
+		$fields['country'] =  "13";
+		ps_user::setUserInfoWithEmail($fields,$user_id);
+
+		unset($fields);
+		$currencyFields = array();
+		$currencyFields[0] = 'EUR';
+		$currencyFields[1] = 'USD';
+		
+		$fields = array();
+		$fields['vendor_name'] =  "Washupito";
+		$fields['vendor_phone'] =  "555-555-1212";
+		$fields['vendor_store_name'] =  "Washupito''s Tiendita";
+		$fields['vendor_store_desc'] =  " <p>We have the best tools for do-it-yourselfers.  Check us out! </p> <p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p> 		<p>You can easily find products selecting the category you would like to browse above.</p>	";
+		$fields['vendor_full_image'] =  "c19970d6f2970cb0d1b13bea3af3144a.gif";
+		$fields['vendor_currency '] =  "EUR";
+		$fields['vendor_accepted_currencies'] = $currencyFields;
+		$fields['vendor_currency_display_style'] =  "1|&euro;|2|,|.|0|0";
+		$fields['vendor_terms_of_service'] =  "<h5>You haven''t configured any terms of service yet. Click <a href=administrator/index2.php?page=store.store_form&option=com_virtuemart>here</a> to change this text.</h5>";
+		$fields['vendor_url'] = JURI::root();
+		
+		$fields['vendor_name'] =  "Washupito";
+		
+		ps_vendor::setVendorInfo($fields,$user_id);
+		
+		$this->execSQLFile("install_sample_data.sql");
+		*/
+	}		
 }
 ?>
