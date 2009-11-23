@@ -32,6 +32,11 @@ class AdminMenuHelper
       */
 	function startAdminArea()
 	{	
+	    $document = JFactory::getDocument();
+	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_menu.css');
+        $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/toolbar_images.css');
+		$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/menu_images.css'); 		
+		
 		?>	
 		<table style="width:100%; table-layout:fixed;">
     	<tr>

@@ -18,19 +18,16 @@ class VirtuemartController extends JController
 	 * @access	public
 	 */
 	function display()
-	{								    
-	    $document = JFactory::getDocument();
-	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_menu.css');
-        $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/toolbar_images.css');
-		$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/menu_images.css'); 
+	{							
+		$document = JFactory::getDocument();	    
 		$viewName = JRequest::getVar('view', '');
 		$viewType = $document->getType();
 		$view =& $this->getView($viewName, $viewType);
 
 		// Push a model into the view					
 		$model =& $this->getModel( 'virtuemart' );
-		if (!JError::isError( $model )) {
-			$view->setModel( $model, true );
+		if (!JError::isError($model)) {
+			$view->setModel($model, true);
 		}	    
 		
 		if ($viewName) {
@@ -106,41 +103,6 @@ class VirtuemartController extends JController
         $newURL .= '&limitstart=' . $limitstart . '&return_args=&no_menu=' . $nomenu;
 	    $this->setRedirect($newURL);	    	    	    
 	}	
-	
-	
-	/**
-	 * Redirect to the list of countries.
-	 */
-	function redirectToCountryList()
-	{      die('heres');
-        $newURL = 'index2.php?option=com_virtuemart&page=admin.country_list';
-	    $this->setRedirect($newURL);	    	    	    
-	}
-	
-	
-	/**
-	 * Redirect to the country states form..
-	 */
-	function redirectToCountryStateList()
-	{
-		$limitstart = JRequest::getInt('limitstart', 0);
-	    $countryId = JRequest::getVar('country_id', '');
-        $newURL = 'index2.php?option=com_virtuemart&page=admin.country_state_list&country_id=' . $countryId;
-        $newURL .= '&limitstart=' . $limitstart . '&no_menu=' . $nomenu;
-	    $this->setRedirect($newURL);	    	    	    
-	}	
-	
-	
-	/**
-	 * Redirect to the country states form..
-	 */
-	function redirectToCountryStateForm()
-	{
-		$countryId = JRequest::getVar('country_id', '');
-        $newURL = 'index2.php?option=com_virtuemart&page=admin.country_state_form&country_id=' . $countryId;;
-	    $this->setRedirect($newURL);	    	    	    
-	}
-	
 	
 	/**
 	 * Redirect to the a given page name.
