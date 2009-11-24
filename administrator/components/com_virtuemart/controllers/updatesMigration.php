@@ -54,23 +54,7 @@ class VirtuemartControllerUpdatesMigration extends JController{
 		parent::display();
 	}
 	
-
-	/**
-	 * Execute a fresh VM install
-	 *
-	 * @author Max Milbers, RickG	 
-	 */
-	function freshInstall($display = true){
-		$model = $this->getModel('updatesMigration');
-		
-		$model->execSQLFile(JPATH_COMPONENT_ADMINISTRATOR.DS.'install'.DS.'install_required_data.sql');
-		$model->integrateJoomlaUsers();
-		$id = $model->determineStoreOwner();
-		$model->setStoreOwner($id);
-		$model->setUserToShopperGroup();
 	
-		parent::display();
-	}
 /*
 	function setStoreOwner(){
 		
