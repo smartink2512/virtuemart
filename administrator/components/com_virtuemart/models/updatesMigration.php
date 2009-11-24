@@ -12,6 +12,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.model');
+require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendor_helper.php');
 
 /**
  * Model class for updates and migrations
@@ -99,34 +100,25 @@ class VirtueMartModelUpdatesMigration extends JModel
 	 * @author Max Milbers
 	 */	
 	function determineStoreOwner(){
-		global $hVendor;
-		if(empty($hVendor)){
-			require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendor_helper.php');
-			$hVendor = new vendor_helper;
-		}
-		$vendorid= 1;
-		$user_id = $hVendor->getUserIdByVendorId($vendorid);
-		if(isset($user_id)){
+		$user_id = vendor_helper::getUserIdByVendorId(1);
+		if (isset($user_id)) {
 			$user = JFactory::getUser($user_id);
-		}else{
+		}
+		else {
 			$user = JFactory::getUser();
 		}
 		
-		$id = $user -> id;
-		$this -> storeOwnerId = $id;
-		$this -> userUserName = $user->username;
-		$this -> userName = $user->name;
-		return $id;
+		return $user->id;
 	}
 	
 	
 	/**
 	 * @author Max Milbers
 	 */		
-	function setStoreOwner($userId=0){
-		
-		if(empty($userId)){
-			$userId = $this ->determineStoreOwner();
+	function setStoreOwner($userId=0)
+	{	
+		if (empty($userId)) {
+			$userId = $this->determineStoreOwner();
 		}
 		
 		$oldUserId	= "";
@@ -137,38 +129,40 @@ class VirtueMartModelUpdatesMigration extends JModel
 		$db->setQuery('SELECT * FROM  `#__vm_auth_user_vendor` WHERE `vendor_id`= "1" ');
 		$db->query();
 		$oldVendorId = $db->loadResult();
-//		JError::raiseNotice(1, '$oldVendorId = '.$oldVendorId);
 		
-		$db->setQuery('SELECT * FROM  `#__vm_auth_user_vendor` WHERE `user_id`= "'.$userId.'" ');
+		$db->setQuery('SELECT * FROM  `#__vm_auth_user_vendor` WHERE `user_id`= "' . $userId . '" ');
 		$db->query();
 		$oldUserId = $db->loadResult();
-//		JError::raiseNotice(1, '$oldUserId = '.$oldUserId);
 		
-		if(!isset($oldVendorId) && !isset($oldUserId)){
-			$db->setQuery( 'INSERT `#__vm_auth_user_vendor` (`user_id`, `vendor_id`) VALUES ("'.$userId.'", "1")' );
-			if($db->query() == false ) {
-				JError::raiseNotice(1, 'setStoreOwner '.$userId.' was not possible to execute INSERT __vm_auth_user_vendor');
-			} else {
+		if (!isset($oldVendorId) && !isset($oldUserId)) {
+			$db->setQuery('INSERT `#__vm_auth_user_vendor` (`user_id`, `vendor_id`) VALUES ("' . $userId . '", "1")');
+			if ($db->query() == false) {
+				JError::raiseNotice(1, 'setStoreOwner ' . $userId . ' was not possible to execute INSERT __vm_auth_user_vendor');
+			} 
+			else {
 				JError::raiseNotice(1, 'setStoreOwner INSERT __vm_auth_user_vendor '.$userId);
 			}			
-		}else{
-			if(!isset($oldUserId)) {
+		}
+		else{
+			if (!isset($oldUserId)) {
 				$db->setQuery( 'UPDATE `#__vm_auth_user_vendor` SET `user_id` ="'.$userId.'" WHERE `vendor_id` = "1" ');
-			}else{
+			}
+			else {
 				$db->setQuery( 'UPDATE `#__vm_auth_user_vendor` SET `vendor_id` = "1" WHERE `user_id` ="'.$userId.'" ');
 			}
-			if($db->query() == false ) {
+			if ($db->query() == false ) {
 				
 			}
 		}		
 		
 		$db->setQuery( 'UPDATE `#__vm_user_info` SET `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'"');
-//		$db->query();
-		if($db->query() === false ) {
-			JError::raiseNotice(1, 'setStoreOwner failed Update. User with id = '.$userId.' not found in table');
+		$db->query();
+		if (!$db->query()) {
+			JError::raiseNotice(1, 'setStoreOwner failed Update. User with id = ' . $userId . ' not found in table');
 			return 0;
-		}else{
-			return $this -> storeOwnerId;
+		}
+		else{
+			return $userId;
 		}
 	
 	}	
@@ -177,10 +171,11 @@ class VirtueMartModelUpdatesMigration extends JModel
 	/**
 	 * @author Max Milbers
 	 */		
-	function setUserToShopperGroup(){
+	function setUserToShopperGroup($userId=0)
+	{
 		# insert the user <=> group relationship
 		$db = JFactory::getDBO();
-		$db->setQuery( "INSERT INTO `#__vm_auth_user_group` 
+		$db->setQuery("INSERT INTO `#__vm_auth_user_group` 
 				SELECT user_id, 
 					CASE `perms` 
 					    WHEN 'admin' THEN 0
@@ -193,7 +188,7 @@ class VirtueMartModelUpdatesMigration extends JModel
 				WHERE address_type='BT' ");
 		$db->query();
 	
-		$db->setQuery( "UPDATE `#__vm_auth_user_group` SET `group_id` = '0' WHERE `user_id` ='".$this -> userId."' ") ;
+		$db->setQuery( "UPDATE `#__vm_auth_user_group` SET `group_id` = '0' WHERE `user_id` ='" . $userId . "' ") ;
 		$db->query();
 	}
 	

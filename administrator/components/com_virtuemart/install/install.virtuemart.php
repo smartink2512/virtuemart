@@ -43,7 +43,7 @@ function com_install(){
 		$model->integrateJoomlaUsers();
 		$id = $model->determineStoreOwner();
 		$model->setStoreOwner($id);
-		$model->setUserToShopperGroup();	
+		$model->setUserToShopperGroup($id);	
 	}
 
 	$installOk = true;

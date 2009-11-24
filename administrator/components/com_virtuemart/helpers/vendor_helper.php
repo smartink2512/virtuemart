@@ -38,7 +38,7 @@ class vendor_helper {
      private $db;
      
      function __construct(){
-		$this->db = &JFactory::getDBO();
+		$this->db = JFactory::getDBO();
 	}
 	
 	/**
@@ -75,17 +75,23 @@ class vendor_helper {
 	}
 
 	/**
-	* name: getUserIdByVendorId
-	* @author Max Milbers
-	* @param ps_DB $db, int $vendor_id
-	* returns int $user_id
-	*/
-	function getUserIdByVendorId(&$vendorId) {
-		if(empty ($vendorId)) return ;
-		$q = 'SELECT `user_id` FROM `#__vm_auth_user_vendor` WHERE `vendor_id`="'.$vendorId.'" ';
-		$this->db->setQuery($q);
-		$this->db->query();
-		return $this->db->loadResult();
+	 * Find the user id given a vendor id
+	 *
+	 * @author Max Milbers
+	 * @param int $vendor_id
+	 * @return int $user_id
+	 */
+	function getUserIdByVendorId($vendorId) 
+	{
+		$db = JFactory::getDBO();
+		if (empty($vendorId)) {
+			return;
+		}
+		
+		$query = 'SELECT `user_id` FROM `#__vm_auth_user_vendor` WHERE `vendor_id`="' . $vendorId . '" ';
+		$db->setQuery($query);
+		
+		return $db->loadResult();
 	}
 	
 
