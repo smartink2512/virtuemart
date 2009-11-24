@@ -85,32 +85,20 @@ class VirtuemartControllerUpdatesMigration extends JController{
 		parent::display();
 	}
 
+	/**
+	 * Install sample data into the database
+	 * 
+	 * @author RickG
+	 */
 	function installSampleData(){
-		JError::raiseNotice(1, 'freshInstallSample ');
-		$this -> freshInstall(false);
-		$this -> installer -> installSample();
-		parent::display();
-		
-		
 		$model = $this->getModel('updatesMigration');
+		$model->installSampleData();
 		
-		$model->execSQLFile(JPATH_COMPONENT_ADMINISTRATOR.DS.'install'.DS.'install_required_data.sql');
-		$model->integrateJoomlaUsers();
-		$id = $model->determineStoreOwner();
-		$model->setStoreOwner($id);
-		$model->setUserToShopperGroup();
-	
-		parent::display();		
+		$msg = JText::_('Sample data installed!!');		
+		$this->setRedirect('index.php?option=com_virtuemart', $msg);			
 	}
 
 /*
-	function installSample(){
-		JError::raiseNotice(1, 'InstallSample ');
-		$this -> installer -> installSample();
-		parent::display();
-	}
-
-
 	function updateVMTables10to11(){
 		$this -> installer -> populateVmDatabase(migration.DS."UPDATE-SCRIPT_VM_1.0.x_to_1.1.0.sql");
 		parent::display();

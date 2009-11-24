@@ -160,41 +160,7 @@ class VirtueMartModelUpdatesMigration extends JModel
 			if($db->query() == false ) {
 				
 			}
-		}
-	
-/*		$db->setQuery('SELECT `vendor_id` FROM  `#__vm_vendor` WHERE `vendor_id`= "1" ');
-		$db->query();
-		$oldVendorId = $db->loadResult();
-//		JError::raiseNotice(1, '$oldVendorId = '.$oldVendorId);
-		if(!isset($oldVendorId)){
-			$db->setQuery( 'INSERT INTO `#__vm_vendor` (
-										`vendor_id` ,
-										`vendor_name` ,
-										`vendor_phone` ,
-										`vendor_store_name` ,
-										`vendor_store_desc` ,
-										`vendor_category_id` ,
-										`vendor_thumb_image` ,
-										`vendor_full_image` ,
-										`vendor_currency` ,
-										`cdate` ,
-										`mdate` ,
-										`vendor_image_path` ,
-										`vendor_terms_of_service` ,
-										`vendor_url` ,
-										`vendor_min_pov` ,
-										`vendor_freeshipping` ,
-										`vendor_currency_display_style` ,
-										`vendor_accepted_currencies` ,
-										`vendor_address_format` ,
-										`vendor_date_format`
-				) VALUES (
-"1", NULL , NULL , "", NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , "", "", NULL , "0.00", "", "", "", "");' );
-		} else {
-		//	$db->setQuery( 'UPDATE INTO `#__vm_vendor` SET `vendor_id` VALUES ("1")' );
-		}
-		$db->query();
-*/		
+		}		
 		
 		$db->setQuery( 'UPDATE `#__vm_user_info` SET `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'"');
 //		$db->query();
@@ -232,7 +198,7 @@ class VirtueMartModelUpdatesMigration extends JModel
 	}
 	
 	
-	function installSample($user_id=null) 
+	function installSampleData($user_id=null) 
 	{
 		/*if($user_id==null){
 			$user_id = $this -> storeOwnerId;
@@ -285,9 +251,10 @@ class VirtueMartModelUpdatesMigration extends JModel
 		$fields['vendor_name'] =  "Washupito";
 		
 		ps_vendor::setVendorInfo($fields,$user_id);
-		
-		$this->execSQLFile("install_sample_data.sql");
 		*/
+		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql'; 
+		$this->execSQLFile($filename);
+		
 	}		
 }
 ?>
