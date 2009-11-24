@@ -10,16 +10,19 @@
  * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
  */
 
-class VmConfig {
+class VmConfig 
+{
 	/**
-	 * Load the configuration values from the INI file into a local variable.
+	 * Load the configuration values from the INI file into a session variable.
 	 *
 	 * @author RickG
 	 */
 	function loadConfig() {   	
 		$ini_array = parse_ini_file(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.ini');
 		$ini_array['checkout_steps'] = explode(',', $ini_array['checkout_steps']); 		
-		JRequest::setVar('vmconfig', $ini_array);
+		
+		$session = &JFactory::getSession();
+		$session->set("vmconfig", $ini_array);
 	}
 	
 	
@@ -34,7 +37,15 @@ class VmConfig {
 	{
 		$value = '';
 		if ($key) {
-			$config = JRequest::getVar('vmconfig', '');
+			$session = &JFactory::getSession();
+			$config = $session->get('vmconfig', '');
+			
+			if (!$config) { 
+				echo 'Loading Config';
+				VmConfig::loadConfig();
+				$config = $session->get('vmconfig', '');
+			}			
+				
 			if ($config) {
 				$value = $config[$key];
 			}

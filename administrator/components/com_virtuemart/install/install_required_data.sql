@@ -977,7 +977,8 @@ INSERT INTO `#__vm_state` (`state_id`, `country_id`, `state_name`, `state_3_code
 -- Dumping data for table `#__vm_vendor`
 --
 
--- INSERT INTO `#__vm_vendor` (`vendor_id`, `vendor_name`, `vendor_phone`, `vendor_store_name`, `vendor_store_desc`, `vendor_category_id`, `vendor_thumb_image`, `vendor_full_image`, `vendor_currency`, `cdate`, `mdate`, `vendor_image_path`, `vendor_terms_of_service`, `vendor_url`, `vendor_min_pov`, `vendor_freeshipping`, `vendor_currency_display_style`, `vendor_accepted_currencies`, `vendor_address_format`, `vendor_date_format`) VALUES (1, '', '', '', '', 0, '', '', '', 0, 0, '', '', '', '0.00', '0.00', '', '', '{storename}\r\n{address_1}\r\n{address_2}\r\n{city}, {zip}', '%A, %d %B %Y %H:%M');
+INSERT INTO `#__vm_vendor` (`vendor_id`, `vendor_name`, `vendor_phone`, `vendor_store_name`, `vendor_store_desc`, `vendor_category_id`, `vendor_thumb_image`, `vendor_full_image`, `vendor_currency`, `cdate`, `mdate`, `vendor_image_path`, `vendor_terms_of_service`, `vendor_url`, `vendor_min_pov`, `vendor_freeshipping`, `vendor_currency_display_style`, `vendor_accepted_currencies`, `vendor_address_format`, `vendor_date_format`) VALUES
+('1', NULL , NULL , '', NULL , NULL , NULL , NULL , NULL , NULL , NULL , NULL , '', '', NULL , '0.00', '', '', '', '');
 
 --
 -- Dumping data for table `#__vm_vendor_category`

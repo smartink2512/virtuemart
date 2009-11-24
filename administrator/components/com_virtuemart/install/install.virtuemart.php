@@ -17,42 +17,6 @@ require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.D
 global $option, $vmInstaller;
 
 
-/** 
- * Parse a .sql file and execute the sql statements found.
- *
- * @author RickG 
- */
-function execSQLFile($filename) 
-{ 
-	$db = JFactory::getDBO();   	
-     
-	$content = file_get_contents($filename);             
-    $file_content = explode("\n",$content);    
-      
-    $query = ""; 
-        
-   	// Parsing the SQL file content              
-    foreach($file_content as $sql_line) 
-    {        
-    	if(trim($sql_line) != "" && strpos($sql_line, "--") === false) {              
-        	$query .= $sql_line; 
-            // Checking whether the line is a valid statement 
-            if(preg_match("/(.*);/", $sql_line)) { 
-            	$query = substr($query, 0, strlen($query)-1);                                   
-				$db->setQuery($query);
-        		if (!$db->query()){
-					$installOk = false;
-            		break;
-        		}                     
-                $query = ""; 
-            } 
-        } 
-    }        
-    return true; 
-}
-
-
-
 function com_install(){	
 	@ini_set( 'memory_limit', '32M' );
 	$db = JFactory::getDBO();  
@@ -68,12 +32,18 @@ function com_install(){
 		$newInstall = true;
 	}
 	
-	if ($newInstall) {	
+	if ($newInstall) {		
 		// Install Essential Data
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_essential_data.sql'; 
 		$model->execSQLFile($filename);
+		// Install Required Data
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql'; 
-		$model->execSQLFile($filename);		
+		$model->execSQLFile($filename);			
+		
+		$model->integrateJoomlaUsers();
+		$id = $model->determineStoreOwner();
+		$model->setStoreOwner($id);
+		$model->setUserToShopperGroup();	
 	}
 
 	$installOk = true;

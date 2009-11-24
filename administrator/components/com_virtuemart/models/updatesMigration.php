@@ -21,57 +21,55 @@ jimport( 'joomla.application.component.model');
  * @author Max Milbers, RickG
  */
 class VirtueMartModelUpdatesMigration extends JModel
-{    
-    
-    /**
-     * Constructor for the country model.
-     *
-     * The country id is read and detmimined if it is an array of ids or just one single id.
-     *
-     * @author RickG
-     */
-    function __construct()
-    {
-        parent::__construct();
-
-		$mainframe = JFactory::getApplication() ;
-    }
-    
-    
+{      
 	/**
 	 * Parse a sql file executing each sql statement found.
 	 *
-	 * @author RickG
+	 * @author Max Milbers
 	 */    
-	function execSQLFile($filename) 
+	function execSQLFile($sqlfile) 
 	{ 
-		$db = JFactory::getDBO();   	     
-		$content = file_get_contents($filename);             
-    	$file_content = explode("\n",$content);    
-    	      
-   		// Parsing the SQL file content    	      
-    	$query = "";                       
-    	foreach($file_content as $sql_line) {        
-    		if(trim($sql_line) != "" && strpos($sql_line, "--") === false) {              
-        		$query .= $sql_line; 
-            	// Checking whether the line is a valid statement 
-            	if(preg_match("/(.*);/", $sql_line)) { 
-            		$query = substr($query, 0, strlen($query)-1);                                   
-					$db->setQuery($query);
-        			if (!$db->query()){
-						$installOk = false;
-            			break;
-        			}                     
-                	$query = ""; 
-            	} 
-        	} 
-    	}        
+		// Check that sql files exists before reading. Otherwise raise error for rollback
+		if ( !file_exists($sqlfile) ) {
+			return false;
+		}
+		$buffer = file_get_contents($sqlfile);
+
+		// Graceful exit and rollback if read not successful
+		if ( $buffer == false ) {
+			return false;
+		}
+
+		// Create an array of queries from the sql file
+		jimport('joomla.installer.helper');
+		$queries = JInstallerHelper::splitSql($buffer);
+
+		if (count($queries) == 0) {
+			// No queries to process
+			return 0;
+		}
+		$db = JFactory::getDBO();
+		// Process each query in the $queries array (split out of sql file).
+		foreach ($queries as $query)
+		{
+			$query = trim($query);
+			if ($query != '' && $query{0} != '#') {
+				$db->setQuery($query);
+				if (!$db->query()) {
+					JError::raiseWarning(1, 'JInstaller::install: '.JText::_('SQL Error')." ".$db->stderr(true));
+					return false;
+				}
+			}
+		}
+			      
     	return true; 
 	}    
 	
 	
 	/**
 	 * Add existing Joomla users into the Virtuemart database.
+	 *
+	 * @author Max Milbers. RickG
 	 */
 	function integrateJoomlaUsers()
 	{
@@ -164,7 +162,7 @@ class VirtueMartModelUpdatesMigration extends JModel
 			}
 		}
 	
-		$db->setQuery('SELECT `vendor_id` FROM  `#__vm_vendor` WHERE `vendor_id`= "1" ');
+/*		$db->setQuery('SELECT `vendor_id` FROM  `#__vm_vendor` WHERE `vendor_id`= "1" ');
 		$db->query();
 		$oldVendorId = $db->loadResult();
 //		JError::raiseNotice(1, '$oldVendorId = '.$oldVendorId);
@@ -196,6 +194,7 @@ class VirtueMartModelUpdatesMigration extends JModel
 		//	$db->setQuery( 'UPDATE INTO `#__vm_vendor` SET `vendor_id` VALUES ("1")' );
 		}
 		$db->query();
+*/		
 		
 		$db->setQuery( 'UPDATE `#__vm_user_info` SET `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'"');
 //		$db->query();

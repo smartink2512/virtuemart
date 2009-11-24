@@ -425,6 +425,9 @@ class ps_vendor {
 			if(in_array($countryFields,$fields)){
 				$countrytable = true;
 			}
+			else {
+				$countrytable = false;
+			}
 			$fieldstring = '`'. implode( '`,`', $fields ) . '`';
 			if(empty($fieldstring)){
 				$GLOBALS['vmLogger']->err( 'get_vendor_fields implode returns empty String: '.$fields[0] );
@@ -432,13 +435,13 @@ class ps_vendor {
 			}	
 		}    
 		
-		$q = 'SELECT '.$fieldstring.' FROM (#__{vm}_vendor v, #__{vm}_user_info u) ';
+		$q = 'SELECT '.$fieldstring.' FROM (#__vm_vendor v, #__vm_user_info u) ';
 		if($usertable){
 			$q .= 'LEFT JOIN #__users ju ON (ju.id = u.user_id) ';
 		}
 		if($countrytable){
-			$q .= 'LEFT JOIN #__{vm}_country c ON (u.country=c.country_id) 
-			LEFT JOIN #__{vm}_state s ON (s.country_id=c.country_id) ';
+			$q .= 'LEFT JOIN #__vm_country c ON (u.country=c.country_id) 
+			LEFT JOIN #__vm_state s ON (s.country_id=c.country_id) ';
 		}	
 		$q .= 'WHERE v.vendor_id = '.(int)$vendor_id.' AND u.user_id = '.(int)$user_id.' ';
 		if(!empty($orderby)){
