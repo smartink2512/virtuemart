@@ -30,9 +30,9 @@ class VirtuemartController extends JController
 			$view->setModel($model, true);
 		}	    
 		
-		if ($viewName) {
+		if (($viewName) || (JRequest::getVar('page', '') == '')) {
 		    parent::display();	
-		}
+		}	
 		else {
 		    include( JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'admin.vm.old.php' );	    
 		}
