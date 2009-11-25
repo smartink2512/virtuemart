@@ -182,21 +182,22 @@ ALTER TABLE `jos_vm_payment_method` CHANGE `list_order` `ordering` INT( 11 ) NUL
 ALTER TABLE `jos_vm_product` MODIFY COLUMN product_tax_id int;
 
 #For the admin menues
-ALTER TABLE `jos_jmart_menu_admin` ADD `view` VARCHAR( 255 ) NULL ,ADD `task` VARCHAR( 255 ) NULL ;
+ALTER TABLE `jos_vm_menu_admin` ADD `view` VARCHAR( 255 ) NULL ,ADD `task` VARCHAR( 255 ) NULL ;
 
-UPDATE `jos_jmart_menu_admin` SET `view` = 'country' WHERE `jos_jmart_menu_admin`.`id` =50 LIMIT 1 ;
-UPDATE `jos_jmart_menu_admin` SET `view` = 'currency' WHERE `jos_jmart_menu_admin`.`id` =60 LIMIT 1 ;
-UPDATE `jos_jmart_menu_admin` SET `view` = 'creditcard' WHERE `jos_jmart_menu_admin`.`id` =140 LIMIT 1 ;
-UPDATE `jos_jmart_menu_admin` SET `view` = 'creditcard', `task` = 'add' WHERE `jos_jmart_menu_admin`.`id` =150 LIMIT 1 ;
-UPDATE `jos_jmart_menu_admin` SET `view` = 'coupon' WHERE `jos_jmart_menu_admin`.`id` =470 LIMIT 1 ;
-UPDATE `jos_jmart_menu_admin` SET `view` = 'coupon', `task` = 'add' WHERE `jos_jmart_menu_admin`.`id` =480 LIMIT 1 ;
-UPDATE `jos_jmart_menu_admin` SET `view` = 'shippingcarrier' WHERE `jos_jmart_menu_admin`.`id` =430 LIMIT 1 ;
-UPDATE `jos_jmart_menu_admin` SET `view` = 'shippingcarrier', `task` = 'add' WHERE `jos_jmart_menu_admin`.`id` =440 LIMIT 1 ;
-UPDATE `jos_jmart_menu_admin` SET `view` = 'shippingrate' WHERE `jos_jmart_menu_admin`.`id` =450 LIMIT 1 ;
-UPDATE `jos_jmart_menu_admin` SET `view` = 'shippingrate', `task` = 'add' WHERE `jos_jmart_menu_admin`.`id` =460 LIMIT 1 ;
+UPDATE `jos_vm_menu_admin` SET `view` = 'country' WHERE `jos_vm_menu_admin`.`id` =50 LIMIT 1 ;
+UPDATE `jos_vm_menu_admin` SET `view` = 'currency' WHERE `jos_vm_menu_admin`.`id` =60 LIMIT 1 ;
+UPDATE `jos_vm_menu_admin` SET `view` = 'virtuemart', WHERE `jos_vm_menu_admin`.`id` =90 LIMIT 1 ;
+UPDATE `jos_vm_menu_admin` SET `view` = 'creditcard' WHERE `jos_vm_menu_admin`.`id` =140 LIMIT 1 ;
+UPDATE `jos_vm_menu_admin` SET `view` = 'creditcard', `task` = 'add' WHERE `jos_vm_menu_admin`.`id` =150 LIMIT 1 ;
+UPDATE `jos_vm_menu_admin` SET `view` = 'coupon' WHERE `jos_vm_menu_admin`.`id` =470 LIMIT 1 ;
+UPDATE `jos_vm_menu_admin` SET `view` = 'coupon', `task` = 'add' WHERE `jos_vm_menu_admin`.`id` =480 LIMIT 1 ;
+UPDATE `jos_vm_menu_admin` SET `view` = 'shippingcarrier' WHERE `jos_vm_menu_admin`.`id` =430 LIMIT 1 ;
+UPDATE `jos_vm_menu_admin` SET `view` = 'shippingcarrier', `task` = 'add' WHERE `jos_vm_menu_admin`.`id` =440 LIMIT 1 ;
+UPDATE `jos_vm_menu_admin` SET `view` = 'shippingrate' WHERE `jos_vm_menu_admin`.`id` =450 LIMIT 1 ;
+UPDATE `jos_vm_menu_admin` SET `view` = 'shippingrate', `task` = 'add' WHERE `jos_vm_menu_admin`.`id` =460 LIMIT 1 ;
 
 //taxrate Decimals
- ALTER TABLE `jos_jmart_tax_rate` CHANGE `tax_rate` `tax_rate` DECIMAL( 10, 5 ) NULL DEFAULT NULL ;
+ ALTER TABLE `jos_vm_tax_rate` CHANGE `tax_rate` `tax_rate` DECIMAL( 10, 5 ) NULL DEFAULT NULL ;
  
  #New published flag for the country table
- ALTER TABLE `jos_jmart_country` ADD `published` tinyint(4) NOT NULL default '0';
+ ALTER TABLE `jos_vm_country` ADD `published` tinyint(4) NOT NULL default '0';
