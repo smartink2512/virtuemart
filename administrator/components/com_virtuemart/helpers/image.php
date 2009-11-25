@@ -33,11 +33,11 @@ class ImageHelper
 	 */
 	function displayImageButton($link, $image, $text) 
 	{
-		$button  = '<div style="float:left;width=100px;"><div class="icon">';
-		$button .= '<a title="' . $text . '" href="' . $link . '">';
-		$button .= JHTML::_('image.administrator',  $image, '/components/com_virtuemart/assets/images/icon_48/', NULL, NULL, $text);
-		$button .= '<br />' . $text.'</a></div></div>';
+		$button = '<a title="' . $text . '" href="' . $link . '">';
+		$button .= JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_48/'.$image, ' align="middle" name="image" border="0"', NULL, $text);
+		$button .= '<br />' . $text.'</a>';
 		echo $button;
+				
 	}	
 	
 	
