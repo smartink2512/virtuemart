@@ -91,8 +91,8 @@ $formObj->startForm( 'adminForm', 'enctype="multipart/form-data"' );
 			    <tr class="row1"> 
 			      <td class="labelcell"><?php echo JText::_('VM_STORE_FORM_STATE') ?>:</td>
 			      <td width="78%" ><?php 
-			        echo $ps_html->dynamic_state_lists( "country", "state", $db->sf("country"), $db->sf("state") );
-			        ?>
+			      		echo $ps_html->dynamic_state_lists( "country", "state", $db->sf("country"), $db->sf("state") );
+			      	?>
 			      </td>
 			    </tr>
 			    <tr class="row0"> 

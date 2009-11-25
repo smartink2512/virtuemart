@@ -276,26 +276,28 @@ class ps_html {
 	function dynamic_state_lists( $country_list_name, $state_list_name, $selected_country_code="", $selected_state_code="" ) {
 		global $vendor_country_3_code, $vm_mainframe, $mm_action_url, $page;
 		
-		$GLOBALS['vmLogger'] -> info ('dynamic_state_lists  $country_list_name     ' .$country_list_name);
+		/*$GLOBALS['vmLogger'] -> info ('dynamic_state_lists  $country_list_name     ' .$country_list_name);
 		$GLOBALS['vmLogger'] -> info ('dynamic_state_lists  $state_list_name       ' .$state_list_name);
 		$GLOBALS['vmLogger'] -> info ('dynamic_state_lists  $selected_country_code ' .$selected_country_code);
 		$GLOBALS['vmLogger'] -> info ('dynamic_state_lists  $selected_state_code   ' .$selected_state_code);
-		$GLOBALS['vmLogger'] -> info ('dynamic_state_lists  $vendor_country_3_code ' .$vendor_country_3_code);
+		$GLOBALS['vmLogger'] -> info ('dynamic_state_lists  $vendor_country_3_code ' .$vendor_country_3_code);*/
 
 		$db = new ps_DB;
-	
+		
+		//note the unexisting & before the = PHP5 issues!
+		//requesting singleton-like JDocument object
+		$document = JFactory::getDocument();
+		
 		if( empty( $selected_country_code )) {
 			$selected_country_code = $vendor_country_3_code;
 		}else{
 			$db->query( 'SELECT `country_3_code` FROM `#__{vm}_country` WHERE `country_id`="' . $selected_country_code. '" ' );
 	//		if($db -> num_rows >0){
-				$selected_country_code = $db->f('country_3_code');
+				$selected_country_code = $db->f('country_id');
 //			}else{
 //				$GLOBALS['vmLogger'] -> info ('dynamic_state_lists Country Code 3 not found for id ' .$selected_country_code. ' and code '. $db->f('country_3_code'));
 //			}
 		}
-		
-
 
 		if( empty( $selected_state_code )) {
 			$selected_state_code = "originalPos";
@@ -317,7 +319,8 @@ class ps_html {
 //						ON c.country_id=s.country_id OR s.country_id IS NULL
 //						ORDER BY c.country_id, s.state_name" );
 		//Maybe better
-		$db->query( "SELECT *
+		//select only some fields from state table to avoid conflict
+		$db->query( "SELECT c.*, s.state_id, s.state_3_code, s.state_2_code, s.state_name, s.published
 						FROM #__{vm}_country c
 						LEFT JOIN #__{vm}_state s 
 						ON c.country_id=s.country_id
@@ -332,50 +335,71 @@ class ps_html {
 				$vm_mainframe->addScript( $mm_action_url.'includes/js/joomla.javascript.js');
 			}
 			// Build the State lists for each Country
-			$script = "<script language=\"javascript\" type=\"text/javascript\">//<![CDATA[\n";
-			$script .= "<!--\n";
-			$script .= "var originalOrder = '1';\n";
-			$script .= "var originalPos = '$selected_country_code';\n";
-			$script .= "var states = new Array();	// array in the format [key,value,text]\n";
+			//$script = "<script language=\"javascript\" type=\"text/javascript\">\n";
+			$script = "//<![CDATA[ 
+						<!--\n";
+			$script .= "var originalOrder = 1,\n";
+			$script .= "originalPos = '".$selected_country_code."',\n";
+			$script .= "states = [];	// array in the format [key,value,text]\n";
 
 			$i = 0;
 			$prev_country = '';
+			
+			
 			while( $db->next_record() ) {
-				$country_3_code = $db->f("country_3_code");
-				if( $db->f('state_name') ) {
+				//$country_3_code = $db->f("country_3_code");
+				
+				$country_id = $db->f("country_id");
+				
+				//better verifing only the id
+				if( $db->f('state_id') ) {
+					
 					// Add 'none' to the list of countries that have states:
-					if( $prev_country != $country_3_code  && $page == 'tax.tax_form' ) {
-						$script .= "states[".$i++."] = new Array( '".$country_3_code."',' - ','".JText::_('VM_NONE')."' );\n";
+					if( $prev_country != $country_id && $page == 'tax.tax_form' ) {
+						$script .= "states[".$i++."] = [ '".$country_id."',' - ','".JText::_('VM_NONE')."' ];\n";
 					}
-					elseif( $prev_country != $country_3_code ) {
-						$script .= "states[".$i++."] = new Array( '".$country_3_code."','',' -= ".JText::_('VM_SELECT')." =-' );\n";
+					elseif( $prev_country != $country_id ) {
+						$script .= "states[".$i++."] = [ '".$country_id."','',' -= ".JText::_('VM_SELECT')." =-' ];\n";
 					}
-					$prev_country = $country_3_code;
-
+					
+					$prev_country = $country_id;
+					
 					// array in the format [key,value,text]
-					$script .= "states[".$i++."] = new Array( '".$country_3_code."','".$db->f("state_2_code")."','".addslashes($db->f("state_name"))."' );\n";
+					$script .= "states[".$i++."] = [ '".$country_id."','".$db->f("state_id")."','".addslashes($db->f("state_name"))."' ];\n";
 				}
-				else {
-					$script .= "states[".$i++."] = new Array( '".$country_3_code."',' - ','".JText::_('VM_NONE')."' );\n";
+				else{
+					$script .= "states[".$i++."] = [ '".$country_id."',' - ','".JText::_('VM_NONE')."' ];\n";
 				}
-
+				
+				
 			}
 //			$GLOBALS['vmLogger'] -> info ('$selected_country_code '.$selected_country_code.' ...$selected_state_code ' .$selected_state_code);
 			
 			$script .= "
 			function changeStateList() { 
-			  var selected_country = null;
-			  for (var i=0; i<document.adminForm.".$country_list_name.".length; i++)
-				 if (document.adminForm.".$country_list_name."[i].selected)
-					selected_country = document.adminForm.".$country_list_name."[i].value;
+			  var selected_country = null,
+			   stateList = document.adminForm.".$country_list_name.";
+			  for (var i=0, l=stateList.length; i < l ; i++){
+				 if (stateList[i].selected){
+					selected_country = stateList[i].value;
+				}
+			  }
+
+			  //joomla.javascript.js
 			  changeDynaList('".$state_list_name."',states,selected_country, originalPos, originalOrder);
 			  
-			}
-			writeDynaList( 'class=\"inputbox\" name=\"".$state_list_name."\" size=\"1\" id=\"state\"', states, originalPos, originalPos, $selected_state_code );
-			//-->
-			//]]></script>";
+			}";
+			
+			$script_write = "<script type=\"text/javascript\">writeDynaList( 'class=\"inputbox\" name=\"".$state_list_name."\" size=\"1\" id=\"state\"', states, originalPos, originalPos, ".$selected_state_code." );</script>";
+			$script .= "
+				//-->	
+				//]]>";
 
-			return $script;
+			//embeding dynamic list declaration
+			$vm_mainframe->addScriptDeclaration($script);
+			
+			//just returning the dynamic script to write combobox
+			return $script_write;
 		}else{
 			$GLOBALS['vmLogger'] -> info ('No rows');
 		}
