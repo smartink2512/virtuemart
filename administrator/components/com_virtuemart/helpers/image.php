@@ -34,7 +34,7 @@ class ImageHelper
 	function displayImageButton($link, $image, $text) 
 	{
 		$button = '<a title="' . $text . '" href="' . $link . '">';
-		$button .= JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_48/'.$image, ' align="middle" name="image" border="0"', NULL, $text);
+		$button .= JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_48/'.$image, $text, NULL, $text);
 		$button .= '<br />' . $text.'</a>';
 		echo $button;
 				
