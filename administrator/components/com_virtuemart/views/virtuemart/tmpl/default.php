@@ -41,7 +41,7 @@ width: 125px;
 <?php
 echo $pane->endPanel();
 echo $pane->startPanel(JText::_('VM_STATISTIC_STATISTICS'), 'statistics_page');
-echo "This is panel2";
+echo "Statistics not finished yet";
 echo $pane->endPanel();
 echo $pane->endPane();
 
