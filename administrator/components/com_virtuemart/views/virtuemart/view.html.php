@@ -17,7 +17,7 @@ class VirtuemartViewVirtuemart extends JView
 {
 	
 	function display($tpl = null)
-	{	
+	{		
 		$model =& $this->getModel();
 	
 //		$this->useVirtuemartBackend();
