@@ -2,7 +2,8 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<link rel="stylesheet" href="components/com_virtuemart/install.css" type="text/css" />
+<link rel="stylesheet" href="components/com_virtuemart/assets/css/install.css" type="text/css" /> 
+
 <div align="center">
 	<table width="100%" border="0">
 	<tr>

@@ -21,9 +21,9 @@ defined('_JEXEC') or die();
 class TableUser_info extends JTable
 {
 	/** @var int Primary key */
+	var $user_id	  	         	= 0;		
+	/** @var varchar Info Id */
 	var $user_info_id				= '';
-	/** @var int Joomla user id*/
-	var $user_id	  	         	= 0;	
 	/** @var tinyint Is the user a vendor? */
 	var $user_is_vendor        		= 0;				
 	/** @var char Address type */
@@ -73,7 +73,7 @@ class TableUser_info extends JTable
 	/** @var int Modified Date */
 	var $mdate						= '';	
 	/** @var varchar Bank Account Nbr */
-	var $bank_account_nbr			= '';	
+	var $bank_account_nr			= '';	
 	/** @var varchar Bank_name */
 	var $bank_name					= '';	
 	/** @var varchar Bank sort code */
@@ -92,7 +92,7 @@ class TableUser_info extends JTable
 	 */
 	function __construct(&$db)
 	{
-		parent::__construct('#__vm_user_info', 'user_info_id', $db);
+		parent::__construct('#__vm_user_info', 'user_id', $db);
 	}
 
 

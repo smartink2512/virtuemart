@@ -70,7 +70,7 @@ class VirtueMartModelUpdatesMigration extends JModel
 	/**
 	 * Add existing Joomla users into the Virtuemart database.
 	 *
-	 * @author Max Milbers. RickG
+	 * @author Max Milbers, RickG
 	 */
 	function integrateJoomlaUsers()
 	{
@@ -195,24 +195,26 @@ class VirtueMartModelUpdatesMigration extends JModel
 	
 	function installSampleData($user_id=null) 
 	{
-		/*if($user_id==null){
-			$user_id = $this -> storeOwnerId;
+		if($user_id == null) {
+			$user_id = $this->determineStoreOwner();
 		}
+		
 		$vmLogIdentifier = 'VirtueMart';
 
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_database.php");
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_vendor.php");
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_user.php");
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_perm.php");
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."helpers".DS."vendor_helper.php");
+		//require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_database.php");
+		//require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_vendor.php");
+		//require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_user.php");
+		//require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_perm.php");
+		//require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."helpers".DS."vendor_helper.php");
 		
-		global $perm, $hVendor;
+		//global $perm, $hVendor;
 		// Instantiate the permission class
-		$perm = new ps_perm();
-		$hVendor = new vendor_helper;
+		//$perm = new ps_perm();
+		//$hVendor = new vendor_helper;
 
 		$fields = array();
 		
+		$fields['user_id'] =  $user_id;
 		$fields['address_type'] =  "BT";
 		$fields['company'] =  "Washupito''s the User";
 		$fields['title'] =  "Sire";
@@ -224,7 +226,10 @@ class VirtueMartModelUpdatesMigration extends JModel
 		$fields['city'] =  "Canangra";
 		$fields['state'] =  "72";
 		$fields['country'] =  "13";
-		ps_user::setUserInfoWithEmail($fields,$user_id);
+		//ps_user::setUserInfoWithEmail($fields,$user_id);
+		if (!$this->storeUserInfo($fields)) {
+			JError::raiseNotice(1, $this->getError());
+		}		
 
 		unset($fields);
 		$currencyFields = array();
@@ -245,11 +250,43 @@ class VirtueMartModelUpdatesMigration extends JModel
 		
 		$fields['vendor_name'] =  "Washupito";
 		
-		ps_vendor::setVendorInfo($fields,$user_id);
-		*/
+		//ps_vendor::setVendorInfo($fields,$user_id);
+		
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql'; 
 		$this->execSQLFile($filename);
 		
 	}		
+	
+	
+	/**
+	 * Bind the post data to the user info table and save it
+     *
+     * @author RickG	
+     * @return boolean True is the save was successful, false otherwise. 
+	 */
+    function storeUserInfo($data) 
+	{
+		$table = $this->getTable('user_info');	
+	
+		// Bind the form fields to the unser info table
+		if (!$table->bind($data)) {		    
+			$this->setError($table->getError());
+			return false;	
+		}
+
+		// Make sure the user info record is valid
+		if (!$table->check()) {
+			$this->setError($table->getError());
+			return false;	
+		}
+		
+		// Save the user info record to the database
+		if (!$table->store()) {
+			$this->setError($table->getError());
+			return false;	
+		}		
+		
+		return true;
+	}	
 }
 ?>
