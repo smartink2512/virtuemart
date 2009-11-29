@@ -32,15 +32,19 @@ echo $pane->startPanel(JText::_('VM_STATISTIC_STATISTICS'), 'statistics_page');
 			<th colspan="2" class="title"><?php echo JText::_('VM_STATISTIC_STATISTICS') ?></th>
 		</tr>
 		<tr> 
-			<td width="50%"><?php 
-				echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=admin.user_list\">"
-						  .  JText::_('VM_STATISTIC_CUSTOMERS') ?></a>:</td>
+		  	<td width="50%">
+		  		<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&page=admin.user_list');?>">
+					<?php echo JText::_('VM_STATISTIC_CUSTOMERS') ?>
+				</a>
+			</td>			
 		  	<td width="50%"> <?php echo $this->nbrCustomers ?></td>
 		</tr>
 		<tr> 
-		  <td width="50%"><?php 
-			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_list\">"
-					  .  JText::_('VM_STATISTIC_ACTIVE_PRODUCTS') ?></a>:</td>
+		  	<td width="50%">
+		  		<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=product');?>">
+					<?php echo JText::_('VM_STATISTIC_ACTIVE_PRODUCTS') ?>
+				</a>
+			</td>
 		  <td width="50%"> <?php echo $this->nbrActiveProducts ?> </td>
 		</tr>
 		<tr> 
@@ -48,22 +52,25 @@ echo $pane->startPanel(JText::_('VM_STATISTIC_STATISTICS'), 'statistics_page');
 		  <td width="50%"> <?php  echo $this->nbrInActiveProducts ?></td>
 		</tr>
 		<tr> 
-		  <td width="50%"><?php 
-			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.specialprod&filter=featured\">"
-					  .  JText::_('VM_SHOW_FEATURED') ?></a>:</td>
+			<td width="50%">
+		  		<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&page=product.specialprod&filter=featured');?>">
+					<?php echo JText::_('VM_SHOW_FEATURED') ?>
+				</a>
+			</td>
 		  <td width="50%"><?php echo $this->nbrFeaturedProducts ?></td>
 		</tr>
 		<tr>
-			<th colspan="2" class="title"><?php 
-			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=order.order_list\">"
-					  .  JText::_('VM_ORDER_MOD') ?></a>:
+			<th colspan="2" class="title">
+		  		<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&page=order.order_list');?>">
+					<?php echo JText::_('VM_ORDER_MOD') ?>
+				</a>
 			</th>
 		</tr>
 		<?php 
 		$sum = 0;
 		for ($i=0, $n=count( $this->ordersByStatus ); $i < $n; $i++) {
 			$row = $this->ordersByStatus[$i]; 
-			$link = JROUTE::_('index.php?option=com_virtuemart&page=order.order_list&show=');
+			$link = JROUTE::_('index.php?option=com_virtuemart&page=order.order_list&show='.$row->order_status_code);
 			?>
 			<tr>
 		  		<td width="50%">
@@ -86,7 +93,7 @@ echo $pane->startPanel(JText::_('VM_STATISTIC_STATISTICS'), 'statistics_page');
 		<?php 
 		for ($i=0, $n=count($this->recentOrders); $i < $n; $i++) {
 			$row = $this->recentOrders[$i];
-			$link = JROUTE::_('index.php?option=com_virtuemart&page=order.order_list&show=');
+			$link = JROUTE::_('index.php?option=com_virtuemart&page=order.order_print&order_id='.$row->order_id);
 			?> 
 		  	<tr>
 				<td width="50%">
@@ -104,7 +111,7 @@ echo $pane->startPanel(JText::_('VM_STATISTIC_STATISTICS'), 'statistics_page');
 		<?php 
 		for ($i=0, $n=count($this->recentCustomers); $i < $n; $i++) {
 			$row = $this->recentCustomers[$i];
-			$link = JROUTE::_('index.php?option=com_virtuemart&page=order.order_list&show=');
+			$link = JROUTE::_('index.php?option=com_virtuemart&page=admin.user_form&user_id='.$row->user_id);
 			?>
 			<tr>
 		  		<td colspan="2">

@@ -93,7 +93,7 @@ class VirtueMartModelVirtueMart extends JModel
 	 * @return int Total number of orders with the given status
 	 */
 	function getTotalOrdersByStatus() {
-		$query = 'SELECT `#__vm_order_status`.`order_status_name`,'; 
+		$query = 'SELECT `#__vm_order_status`.`order_status_name`, `#__vm_order_status`.`order_status_code`, '; 
 		$query .= '(SELECT count(order_id) FROM `#__vm_orders` WHERE `#__vm_orders`.`order_status` = `#__vm_order_status`.`order_status_code`) as order_count ';
  		$query .= 'FROM `#__vm_order_status`';
         return $this->_getList($query);
