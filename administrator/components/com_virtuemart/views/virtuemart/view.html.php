@@ -20,18 +20,24 @@ class VirtuemartViewVirtuemart extends JView
 	{		
 		$model =& $this->getModel();
 	
-//		$this->useVirtuemartBackend();
+		$nbrCustomers = $model->getTotalCustomers();			
+		$this->assignRef('nbrCustomers', $nbrCustomers);
+		
+		$nbrActiveProducts = $model->getTotalActiveProducts();			
+		$this->assignRef('nbrActiveProducts', $nbrActiveProducts);			
+		$nbrInActiveProducts = $model->getTotalInActiveProducts();			
+		$this->assignRef('nbrInActiveProducts', $nbrInActiveProducts);				
+		$nbrFeaturedProducts = $model->getTotalFeaturedProducts();			
+		$this->assignRef('nbrFeaturedProducts', $nbrFeaturedProducts);
+				
+		$ordersByStatus = $model->getTotalOrdersByStatus();			
+		$this->assignRef('ordersByStatus', $ordersByStatus);
+		print_r($ordersByStatus);
+
+		$recentOrders = $model->getRecentOrders();			
+		$this->assignRef('recentOrders', $recentOrders);	
+	
 		parent::display($tpl);
 	}
-	
-	function useVirtuemartBackend()
-	{
-		//A bit quickn Dirty the components\com_virtuemart\ may probably replaced
-//	    include(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'admin.vm.php');
-		echo('In the Backend the JPATH_COMPONENT is: '.JPATH_COMPONENT);
-//	    include(JPATH_COMPONENT.DS.'admin.vm.php');
-	    include(JPATH_COMPONENT_ADMINISTRATOR.DS.'admin.vm.php');
-	    
-	 }
 }
 ?>

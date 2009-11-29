@@ -40,5 +40,75 @@ class VirtueMartModelVirtueMart extends JModel
 		return $childList;	    
 	}
 
+
+	/**
+	 * Gets the total number of customers
+	 *
+     * @author RickG	 
+	 * @return int Total number of customers in the database
+	 */
+	function getTotalCustomers() {
+		$query = 'SELECT `user_id`  FROM `#__vm_user_info` WHERE `address_type` = "BT"';	  		
+        return $this->_getListCount($query);
+    }
+
+	/**
+	 * Gets the total number of active products
+	 *
+     * @author RickG	 
+	 * @return int Total number of active products in the database
+	 */
+	function getTotalActiveProducts() {
+		$query = 'SELECT `product_id` FROM `#__vm_product` WHERE `product_publish`="Y"';	  		
+        return $this->_getListCount($query);
+    }
+    
+	/**
+	 * Gets the total number of inactive products
+	 *
+     * @author RickG	 
+	 * @return int Total number of inactive products in the database
+	 */
+	function getTotalInActiveProducts() {
+		$query = 'SELECT `product_id` FROM `#__vm_product` WHERE  `product_publish`="N"';
+        return $this->_getListCount($query);
+    } 
+    
+	/**
+	 * Gets the total number of featured products
+	 *
+     * @author RickG	 
+	 * @return int Total number of featured products in the database
+	 */
+	function getTotalFeaturedProducts() {
+		$query = 'SELECT `product_id` FROM `#__vm_product` WHERE `product_special`="Y"';
+        return $this->_getListCount($query);
+    }       
+
+
+	/**
+	 * Gets the total number of orders with the given status
+	 *
+     * @author RickG	 
+	 * @return int Total number of orders with the given status
+	 */
+	function getTotalOrdersByStatus() {
+		$query = 'SELECT `#__vm_order_status`.`order_status_name`,'; 
+		$query .= '(SELECT count(order_id) FROM `#__vm_orders` WHERE `#__vm_orders`.`order_status` = `#__vm_order_status`.`order_status_code`) as order_count ';
+ 		$query .= 'FROM `#__vm_order_status`';
+        return $this->_getList($query);
+    } 
+
+
+	/**
+	 * Gets a list of recent orders
+	 *
+     * @author RickG	 
+	 * @return ObjectList List of recent orders.
+	 */
+	function getRecentOrders($nbrOrders=5) {
+		$query = 'SELECT `order_id`, `order_total` FROM `#__vm_orders` ORDER BY `cdate` desc';
+        return $this->_getList($query, 0, $nbrOrders);
+    } 
 }
 ?>

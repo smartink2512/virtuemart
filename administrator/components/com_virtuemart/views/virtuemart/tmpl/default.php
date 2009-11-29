@@ -25,7 +25,97 @@ echo $pane->startPanel(JText::_('VM_CONTROL_PANEL'), 'control_panel');
 <?php
 echo $pane->endPanel();
 echo $pane->startPanel(JText::_('VM_STATISTIC_STATISTICS'), 'statistics_page');
-echo "Statistics not finished yet";
+?>
+<br />
+	<table class="adminlist">
+		<th colspan="2" class="title"><?php echo JText::_('VM_STATISTIC_STATISTICS') ?></th>
+		<tr> 
+			<td width="50%"><?php 
+				echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=admin.user_list\">"
+						  .  JText::_('VM_STATISTIC_CUSTOMERS') ?></a>:</td>
+		  	<td width="50%"> <?php echo $this->nbrCustomers ?></td>
+		</tr>
+		<tr> 
+		  <td width="50%"><?php 
+			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.product_list\">"
+					  .  JText::_('VM_STATISTIC_ACTIVE_PRODUCTS') ?></a>:</td>
+		  <td width="50%"> <?php echo $this->nbrActiveProducts ?> </td>
+		</tr>
+		<tr> 
+		  <td width="50%"><?php echo JText::_('VM_STATISTIC_INACTIVE_PRODUCTS') ?>:</td>
+		  <td width="50%"> <?php  echo $this->nbrInActiveProducts ?></td>
+		</tr>
+		<tr> 
+		  <td width="50%"><?php 
+			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=product.specialprod&filter=featured\">"
+					  .  JText::_('VM_SHOW_FEATURED') ?></a>:</td>
+		  <td width="50%"><?php echo $this->nbrFeaturedProducts ?></td>
+		</tr>
+		<th colspan="2" class="title"><?php 
+			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=order.order_list\">"
+					  .  JText::_('VM_ORDER_MOD') ?></a>:
+		</th>
+		<?php 
+		$sum = 0;
+		for ($i=0, $n=count( $this->ordersByStatus ); $i < $n; $i++) {
+			$row = $this->ordersByStatus[$i]; 
+			$link = JROUTE::_('index.php?option=com_virtuemart&page=order.order_list&show=');
+			?>
+			<tr>
+		  		<td width="50%">
+		  			<a href="<?php echo $link; ?>"><?php echo $row->order_status_name; ?></a>
+				</td>
+		  		<td width="50%">
+		  			<?php echo $row->order_count; ?>
+		  		</td>
+			</tr>
+		<?php 
+			$sum = $sum + $row->order_count;
+		} ?>
+		<tr> 
+		  <td width="50%"><strong><?php echo JText::_('VM_STATISTIC_SUM') ?>:</strong></td>
+		  <td width="50%"><strong><?php echo $sum ?></strong></td>
+		</tr>
+		<tr>
+			<th colspan="2" class="title"><?php echo JText::_('VM_STATISTIC_NEW_ORDERS') ?></th>
+		</tr>
+		<?php 
+		for ($i=0, $n=count($this->recentOrders); $i < $n; $i++) {
+			$row = $this->recentOrders[$i];
+			$link = JROUTE::_('index.php?option=com_virtuemart&page=order.order_list&show=');
+			?> 
+		  	<tr>
+				<td width="50%">
+					<a href="<?php echo $link; ?>"><?php echo $row->order_id; ?></a>
+			  	</td>
+				<td width="50%">
+					(<?php echo $total ." ".$_SESSION['vendor_currency'] ?>)
+				</td>
+			</tr>
+			<?php 
+		} ?>
+	</table>
+<?php
+
+if (defined( "_VM_IS_BACKEND" ) ) {
+	?>	
+	<table class="adminlist" style="width:95%;">
+		<tr> 
+		  <th colspan="2" class="title"><?php echo JText::_('VM_STATISTIC_NEW_CUSTOMERS') ?></th>
+		</tr>
+		<?php 
+		foreach($new_customers as $id => $name) { ?>
+		<tr>
+		  <td colspan="2">
+			  <a href="<?php $sess->purl( $_SERVER['PHP_SELF'] .'?page=admin.user_form&user_id='. $id ); ?>">
+			  <?php echo $name ?></a></td>
+		</tr>
+		<?php 
+		} ?>
+	</table>
+<?php
+}		
+
 echo $pane->endPanel();
 echo $pane->endPane();
 
