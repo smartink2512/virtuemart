@@ -109,6 +109,22 @@ class VirtueMartModelVirtueMart extends JModel
 	function getRecentOrders($nbrOrders=5) {
 		$query = 'SELECT `order_id`, `order_total` FROM `#__vm_orders` ORDER BY `cdate` desc';
         return $this->_getList($query, 0, $nbrOrders);
-    } 
-}
+    }
+    
+    
+	/**
+	 * Gets a list of recent customers
+	 *
+     * @author RickG	 
+	 * @return ObjectList List of recent orders.
+	 */
+	function getRecentCustomers($nbrCusts=5) {
+		$query = 'SELECT `id`, `first_name`, `last_name`, `username` FROM `#__users`, `#__vm_user_info` ';
+		$query .= 'WHERE `address_type` = "BT" AND `perms` <> "admin" '; 
+        $query .= 'AND `perms` <> "storeadmin" ';
+        $query .= 'AND INSTR(`usertype`, "administrator") = 0 AND INSTR(`usertype`, "Administrator") = 0 ';
+        $query .= 'AND id = `user_id`';
+        return $this->_getList($query, 0, $nbrCusts);
+    }  
+}  
 ?>

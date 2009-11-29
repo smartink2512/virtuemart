@@ -28,7 +28,9 @@ echo $pane->startPanel(JText::_('VM_STATISTIC_STATISTICS'), 'statistics_page');
 ?>
 <br />
 	<table class="adminlist">
-		<th colspan="2" class="title"><?php echo JText::_('VM_STATISTIC_STATISTICS') ?></th>
+		<tr>
+			<th colspan="2" class="title"><?php echo JText::_('VM_STATISTIC_STATISTICS') ?></th>
+		</tr>
 		<tr> 
 			<td width="50%"><?php 
 				echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=admin.user_list\">"
@@ -51,10 +53,12 @@ echo $pane->startPanel(JText::_('VM_STATISTIC_STATISTICS'), 'statistics_page');
 					  .  JText::_('VM_SHOW_FEATURED') ?></a>:</td>
 		  <td width="50%"><?php echo $this->nbrFeaturedProducts ?></td>
 		</tr>
-		<th colspan="2" class="title"><?php 
+		<tr>
+			<th colspan="2" class="title"><?php 
 			  echo "<a href=\"".$_SERVER['PHP_SELF']."?option=com_virtuemart&page=order.order_list\">"
 					  .  JText::_('VM_ORDER_MOD') ?></a>:
-		</th>
+			</th>
+		</tr>
 		<?php 
 		$sum = 0;
 		for ($i=0, $n=count( $this->ordersByStatus ); $i < $n; $i++) {
@@ -94,28 +98,25 @@ echo $pane->startPanel(JText::_('VM_STATISTIC_STATISTICS'), 'statistics_page');
 			</tr>
 			<?php 
 		} ?>
-	</table>
-<?php
-
-if (defined( "_VM_IS_BACKEND" ) ) {
-	?>	
-	<table class="adminlist" style="width:95%;">
 		<tr> 
 		  <th colspan="2" class="title"><?php echo JText::_('VM_STATISTIC_NEW_CUSTOMERS') ?></th>
 		</tr>
 		<?php 
-		foreach($new_customers as $id => $name) { ?>
-		<tr>
-		  <td colspan="2">
-			  <a href="<?php $sess->purl( $_SERVER['PHP_SELF'] .'?page=admin.user_form&user_id='. $id ); ?>">
-			  <?php echo $name ?></a></td>
-		</tr>
+		for ($i=0, $n=count($this->recentCustomers); $i < $n; $i++) {
+			$row = $this->recentCustomers[$i];
+			$link = JROUTE::_('index.php?option=com_virtuemart&page=order.order_list&show=');
+			?>
+			<tr>
+		  		<td colspan="2">
+		  			<a href="<?php echo $link; ?>">
+		  				<?php echo '(' . $row->order_id . ') ' . $row->first_name . ' ' . $row->last_name; ?>
+		  			</a>
+		  		</td>
+			</tr>
 		<?php 
-		} ?>
+		}?>	
 	</table>
 <?php
-}		
-
 echo $pane->endPanel();
 echo $pane->endPane();
 
