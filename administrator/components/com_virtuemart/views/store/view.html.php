@@ -12,6 +12,7 @@ jimport( 'joomla.application.component.view');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 
+
 /**
  * HTML View class for maintaining the store
  *
@@ -41,10 +42,11 @@ class VirtueMartViewStore extends JView {
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
 			}
-									
+			
 			$countryModel = $this->getModel('country');
+			
 			$countries = $countryModel->getCountries(true, true);
-			$this->assignRef('countries', $countries);
+			$this->assignRef('countryList', $countries);
 											
 			$this->assignRef('store', $store);
         }	

@@ -94,5 +94,23 @@ class VirtueMartModelVendor extends JModel
 		$db->setQuery($q);
 		return $db->loadObjectList();
 	}
+	
+	/**
+	* Retrieve the user ID by vendor ID 
+	* 
+	* @author jseros
+	* @param $vendId The vendor ID
+	* @return user ID by vendor
+	*/
+	public function getUserId($vendId = 0) {
+		$sql = "SELECT user_id
+   				FROM #__vm_auth_user_vendor
+  				WHERE vendor_id = ". $this->_db->Quote((int)$vendId) ."";
+   				
+   		$this->_db->setQuery($sql);
+   		$result = $this->_db->loadObject();
+   		
+   		return (isset($result->user_id) ? $result->user_id : 0);
+	}
 }
 ?>

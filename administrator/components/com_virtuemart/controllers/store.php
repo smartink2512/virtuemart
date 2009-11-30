@@ -68,6 +68,15 @@ class VirtueMartControllerStore extends JController
 		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemenu', 1);		
 		
+		$document = JFactory::getDocument();				
+		$viewType	= $document->getType();
+		$view = $this->getView('store', $viewType);
+		
+		$countryModel = $this->getModel('country');
+		if (!JError::isError($countryModel)) {
+			$view->setModel($countryModel, false);
+		}
+	
 		parent::display();
 	}		
 	

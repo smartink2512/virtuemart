@@ -11,13 +11,11 @@ window.addEvent("domready", function() {
         	method:"get",
         	onComplete: function(response){
         		var resp=Json.evaluate(response);
-            	);
         	}
         }).request();
     });
 });
 </script>
-
 <form action="index.php" method="post" name="adminForm">
 
 <div class="col50">
@@ -63,7 +61,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="address_1" id="address_1" size="50" value="<?php echo $this->store->address_1; ?>" />				
+					<input class="inputbox" type="text" name="address_1" id="address_1" size="50" value="<?php echo $this->store->userInfo->address_1; ?>" />				
 				</td>
 			</tr>
 			<tr>
@@ -73,7 +71,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="address_2" id="address_2" size="50" value="<?php echo $this->store->address_2; ?>" />				
+					<input class="inputbox" type="text" name="address_2" id="address_2" size="50" value="<?php echo $this->store->userInfo->address_2; ?>" />				
 				</td>
 			</tr>
 			<tr>
@@ -83,7 +81,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="city" id="city" size="50" value="<?php echo $this->store->city; ?>" />				
+					<input class="inputbox" type="text" name="city" id="city" size="50" value="<?php echo $this->store->userInfo->city; ?>" />				
 				</td>
 			</tr>				
 			<tr>
@@ -156,7 +154,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="last_name" id="last_name" size="50" value="<?php echo $this->store->last_name; ?>" />				
+					<input class="inputbox" type="text" name="last_name" id="last_name" size="50" value="<?php echo $this->store->userInfo->last_name; ?>" />				
 				</td>
 			</tr>		
 			<tr>
@@ -166,7 +164,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="first_name" id="first_name" size="50" value="<?php echo $this->store->first_name; ?>" />										
+					<input class="inputbox" type="text" name="first_name" id="first_name" size="50" value="<?php echo $this->store->userInfo->first_name; ?>" />										
 				</td>
 			</tr>		
 			<tr>
@@ -176,7 +174,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="middle_name" id="middle_name" size="10" value="<?php echo $this->store->middle_name; ?>" />				
+					<input class="inputbox" type="text" name="middle_name" id="middle_name" size="10" value="<?php echo $this->store->userInfo->middle_name; ?>" />				
 				</td>
 			</tr>	
 			<tr>
@@ -186,7 +184,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="title" id="title" size="10" value="<?php echo $this->store->title; ?>" />				
+					<input class="inputbox" type="text" name="title" id="title" size="10" value="<?php echo $this->store->userInfo->title; ?>" />				
 				</td>
 			</tr>
 			<tr>
@@ -196,7 +194,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="phone_1" id="phone_1" size="10" value="<?php echo $this->store->phone_1; ?>" />				
+					<input class="inputbox" type="text" name="phone_1" id="phone_1" size="10" value="<?php echo $this->store->userInfo->phone_1; ?>" />				
 				</td>
 			</tr>
 			<tr>
@@ -206,7 +204,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="phone_2" id="phone_2" size="10" value="<?php echo $this->store->phone_2; ?>" />				
+					<input class="inputbox" type="text" name="phone_2" id="phone_2" size="10" value="<?php echo $this->store->userInfo->phone_2; ?>" />				
 				</td>
 			</tr>
 			<tr>
@@ -216,7 +214,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="fax" id="fax" size="10" value="<?php echo $this->store->fax; ?>" />				
+					<input class="inputbox" type="text" name="fax" id="fax" size="10" value="<?php echo $this->store->userInfo->fax; ?>" />				
 				</td>
 			</tr>	
 			<tr>

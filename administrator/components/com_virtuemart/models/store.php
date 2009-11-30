@@ -109,11 +109,21 @@ class VirtueMartModelStore extends JModel
      */ 
 	function getStore()
 	{		
-		$db = JFactory::getDBO();  
-     
   		if (empty($this->_data)) {
    			$this->_data = $this->getTable('vendor');
    			$this->_data->load((int)$this->_id);
+   			
+   			$sqlUserVendor = "SELECT user_id
+   								FROM #__vm_auth_user_vendor
+  								WHERE vendor_id = ". $this->_db->Quote((int)$this->_id) ."";
+   				
+		   	$this->_db->setQuery($sqlUserVendor);
+		   	$userVendor = $this->_db->loadObject();
+		   	
+		   	$userVendor->user_id = (isset($userVendor->user_id) ? $userVendor->user_id : 0);
+		   
+		   	$this->_data->userInfo = $this->getTable('user_info');
+		    $this->_data->userInfo->load((int)$userVendor->user_id);
   		}
   
   		if (!$this->_data) {
