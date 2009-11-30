@@ -111,6 +111,18 @@ class VirtueMartModelProduct extends JModel {
      }
      
      /**
+     * Get the simple product info
+     * @author RolandD
+     */
+     public function getProductDetails() {
+     	$db = JFactory::getDBO();
+     	$cids = JRequest::getVar('cid');
+     	$q = "SELECT * FROM #__vm_product WHERE product_id = ".$cids[0];
+     	$db->setQuery($q);
+     	return $db->loadObject();
+     }
+     
+     /**
      * Load the attribute names for a product
      */
      public function getProductAttributeNames() {
@@ -216,6 +228,8 @@ class VirtueMartModelProduct extends JModel {
      	if (JRequest::getInt('category_id', 0) > 0) $filters[] = '#__vm_category.`category_id` = '.JRequest::getInt('category_id');
      	/* Product name */
      	if (JRequest::getVar('filter_product', false)) $filters[] = '#__vm_product.`product_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_product').'%');
+     	/* Product type ID */
+     	//if (JRequest::getInt('product_type_id', false)) $filters[] = '#__vm_product.`product_name` LIKE '.$db->Quote('%'.JRequest::getVar('filter_product').'%');
      	/* Time filter */
      	if (JRequest::getVar('search_type', '') != '') {
      		$search_order = JRequest::getVar('search_order') == 'bf' ? '<' : '>';
@@ -916,5 +930,58 @@ class VirtueMartModelProduct extends JModel {
 		}
 		return true;
 	}
+	
+	/**
+    * Get a list of product types to assign the product to
+    * @author RolandD
+    */
+    public function getProductTypeList() {
+    	$db = JFactory::getDBO();
+    	
+    	$cids = JRequest::getVar('cid');
+    	
+    	$q  = "SELECT t.product_type_id AS value, product_type_name AS text 
+    		FROM #__vm_product_type t
+			LEFT JOIN #__vm_product_product_type_xref x
+			ON x.product_type_id = t.product_type_id
+			WHERE (product_id != ".$cids[0]." OR product_id IS NULL) 
+			ORDER BY product_type_list_order ASC";
+		$db->setQuery($q);
+		return $db->loadObjectList();
+    }
+    
+    /**
+    * Add a product to a product type link
+    * @todo Add unique key to table vm_product_product_type_xref
+    */
+    public function saveProductType() {
+    	$db = JFactory::getDBO();
+    	
+    	$product_id = JRequest::getInt('product_id', false);
+    	$product_type_id = JRequest::getInt('product_type_id', false);
+    	
+    	if ($product_id && $product_type_id) {
+			/* Check if the product link already exist */
+			$q  = "SELECT COUNT(*) AS count FROM #__vm_product_product_type_xref ";
+			$q .= "WHERE product_id = ".$product_id." AND product_type_id = ".$product_type_id;
+			$db->setQuery($q);
+			
+			if ($db->loadResult() == 0) {
+				$q  = "INSERT INTO #__vm_product_product_type_xref (product_id, product_type_id) ";
+				$q .= "VALUES (".$product_id.",".$product_type_id.")";
+				$db->setQuery($q);
+				$db->query();
+				
+				$q  = "INSERT INTO #__vm_product_type_".$product_type_id." (product_id) ";
+				$q .= "VALUES (".$product_id.")";
+				$db->setQuery($q);
+				$db->query();
+				
+				return true;
+			}
+			else return false;
+		}
+		else return false;
+    }
 }
 ?>

@@ -27,7 +27,7 @@ class VirtuemartViewProducttypeparameters extends JView {
 			case 'edit':
 				/* Get the data */
 				$parameter = $this->get('ProductTypeParameter');
-				echo  JRequest::getInt('product_type_id');
+				
 				if ($task == 'add') $parameter->product_type_id = JRequest::getInt('product_type_id');
 				
 				/* Load the editor */
@@ -63,13 +63,16 @@ class VirtuemartViewProducttypeparameters extends JView {
 				/* Get the data */
 				$producttypeparameterslist = $this->get('ProductTypeParameters');
 				
+				/* Get the product type */
+				$product_type_name = $this->get('ProductTypeName');
+				
 				/* Get the pagination */
 				$pagination = $this->get('Pagination');
 				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
 				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 				
 				/* Toolbar */
-				JToolBarHelper::title(JText::_('VM_PRODUCT_TYPE_PARAMETER_LIST_LBL'), 'vm_product_48');
+				JToolBarHelper::title(JText::_('VM_PRODUCT_TYPE_PARAMETER_LIST_LBL').'::'.$product_type_name, 'vm_product_48');
 				JToolBarHelper::deleteListX();
 				JToolBarHelper::editListX();
 				JToolBarHelper::addNewX();

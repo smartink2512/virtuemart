@@ -105,6 +105,18 @@ class VirtueMartModelProducttypeparameters extends JModel {
     }
     
     /**
+    * Get the product type name
+    * @author RolandD
+    */
+    public function getProductTypeName() {
+    	$db = JFactory::getDBO();
+    	$q = "SELECT product_type_name FROM #__vm_product_type WHERE product_type_id = ".JRequest::getInt('product_type_id', 0);
+    	$db->setQuery($q);
+    	return $db->loadResult();
+    }
+    
+    
+    /**
     * Load a single discount
     * @author RolandD
     */
@@ -133,39 +145,33 @@ class VirtueMartModelProducttypeparameters extends JModel {
     * Delete a product type
     * @author RolandD
     */
-    public function removeProductType() {
+    public function removeProductTypeParameter() {
     	$db = JFactory::getDBO();
 		/* Get the product IDs to remove */
 		$cids = array();
 		$cids = JRequest::getVar('cid');
 		if (!is_array($cids)) $cids = array($cids);
+		$product_type_id = JRequest::getInt('product_type_id');
 		
 		/* Start removing */
-		foreach ($cids as $key => $product_type_id) {
-			/* Delete all product parameters from this product type */
-			$q = 'SELECT `parameter_name` FROM `#__vm_product_type_parameter` WHERE `product_type_id`='.$product_type_id;
+		foreach ($cids as $key => $product_type_name) {
+			$q = "SELECT parameter_type FROM #__vm_product_type_parameter
+				WHERE product_type_id = ".$product_type_id." AND parameter_name = ".$db->Quote($product_type_name);
 			$db->setQuery($q);
-			$parameter_names = $db->loadObjectList();
-			foreach ($parameter_names as $key => $name) {
-				/**
-				if( !isset($ps_product_type_parameter)) { $ps_product_type_parameter = new ps_product_type_parameter(); }
-				$arr['product_type_id'] = $record_id;
-				$arr['parameter_name'] = $db->f('parameter_name');
-				$ps_product_type_parameter->delete_parameter( $arr );
-				*/
+			$parameter_type = $db->loadResult();
+			
+			/* If there is no parameter type, make it B as it might be non-existing */
+			$q = "DELETE FROM #__vm_product_type_parameter
+				WHERE product_type_id = ".$product_type_id." AND parameter_name = ".$db->Quote($product_type_name);
+			$db->setQuery($q);
+			$db->query();
+			
+			if ($parameter_type != "B") { // != Break Line
+				// Delete column
+				$q = "ALTER TABLE #__vm_product_type_" . $product_type_id." DROP ".$db->nameQuote($product_type_name);
+				$db->setQuery($q) ;
+				$db->query() ;
 			}
-			
-			$q = "DELETE FROM #__vm_product_type WHERE product_type_id = ".$product_type_id;
-			$db->setQuery($q);
-			$db->query();
-			
-			$q  = "DELETE FROM #__vm_product_product_type_xref WHERE product_type_id = ".$product_type_id;
-			$db->setQuery($q);
-			$db->query();
-			
-			$q  = "DROP TABLE IF EXISTS `#__vm_product_type_".$product_type_id."`";
-			$db->setQuery($q);
-			$db->query();
 		}
 		return true;
     }
@@ -216,69 +222,76 @@ class VirtueMartModelProducttypeparameters extends JModel {
 		/* Store the parameter */
 		$parameter_data->store();
 		
-		if( $data["parameter_type"] != "B" ) { // != Break Line
-			// Make new column in table product_type_<id>
-			$q = "ALTER TABLE `#__vm_product_type_" ;
-			$q .= $data["product_type_id"] . "` ADD `" ;
-			$q .= $db->getEscaped($data['parameter_name']) . "` " ;
-			switch( $data["parameter_type"]) {
-				case "I" :
-					$q .= "int(11) " ;
-				break ; // Integer
-				case "T" :
-					$q .= "text " ;
-				break ; // Text
-				case "S" :
-					$q .= "varchar(255) " ;
-				break ; // Short Text
-				case "F" :
-					$q .= "float " ;
-				break ; // Float
-				case "C" :
-					$q .= "char(1) " ;
-				break ; // Char
-				case "D" :
-					$q .= "datetime " ;
-				break ; // Date & Time
-				case "A" :
-					$q .= "date " ;
-				break ; // Date
-				case "V" :
-					$q .= "varchar(255) " ;
-				break ; // Multiple Value
-				case "M" :
-					$q .= "time " ;
-				break ; // Time
-				default :
-					$q .= "varchar(255) " ; // Default type Short Text
-			}
-			if( $data["parameter_default"] != "" && $data["parameter_type"] != "T" ) {
-				$q .= "DEFAULT ".$db->Quote($data["parameter_default"])." NOT NULL;" ;
-			}
-			
-			$db->setQuery($q);
-			$mainframe->enqueueMessage($db->getQuery());
-			if ($db->query() === false ) {
-				$mainframe->enqueueMessage(JText::_('VM_PRODUCT_TYPE_PARAMETER_ADDING_FAILED'), 'error');
-				return false;
-			}
-			
-			/* Make index for this column */
-			if( $data["parameter_type"] == "T" ) {
+		/* Check if we have a new column */
+		$q = "SHOW COLUMNS FROM `#__vm_product_type_".$data["product_type_id"]."` WHERE field = ".$db->Quote($data['parameter_name']);
+		$db->setQuery($q);
+		$result = $db->loadResult();
+		
+		if ($result != $data['parameter_name']) {
+			if( $data["parameter_type"] != "B" ) { // != Break Line
+				// Make new column in table product_type_<id>
 				$q = "ALTER TABLE `#__vm_product_type_" ;
-				$q .= $data["product_type_id"] . "` ADD FULLTEXT `idx_product_type_" . $data["product_type_id"] . "_" ;
-				$q .= $db->getEscaped($data['parameter_name']) . "` (`" . $db->getEscaped($data['parameter_name']) . "`);" ;
+				$q .= $data["product_type_id"] . "` ADD `" ;
+				$q .= $db->getEscaped($data['parameter_name']) . "` " ;
+				switch( $data["parameter_type"]) {
+					case "I" :
+						$q .= "int(11) " ;
+					break ; // Integer
+					case "T" :
+						$q .= "text " ;
+					break ; // Text
+					case "S" :
+						$q .= "varchar(255) " ;
+					break ; // Short Text
+					case "F" :
+						$q .= "float " ;
+					break ; // Float
+					case "C" :
+						$q .= "char(1) " ;
+					break ; // Char
+					case "D" :
+						$q .= "datetime " ;
+					break ; // Date & Time
+					case "A" :
+						$q .= "date " ;
+					break ; // Date
+					case "V" :
+						$q .= "varchar(255) " ;
+					break ; // Multiple Value
+					case "M" :
+						$q .= "time " ;
+					break ; // Time
+					default :
+						$q .= "varchar(255) " ; // Default type Short Text
+				}
+				if( $data["parameter_default"] != "" && $data["parameter_type"] != "T" ) {
+					$q .= "DEFAULT ".$db->Quote($data["parameter_default"])." NOT NULL;" ;
+				}
+				
 				$db->setQuery($q);
 				$mainframe->enqueueMessage($db->getQuery());
-				$db->query();
-			} 
-			else {
-				$q = "ALTER TABLE `#__vm_product_type_" ;
-				$q .= $data["product_type_id"] . "` ADD KEY `idx_product_type_" . $data["product_type_id"] . "_" ;
-				$q .= $db->getEscaped($data['parameter_name']) . "` (`" . $db->getEscaped($data['parameter_name']) . "`);" ;
-				$db->setQuery($q);
-				$mainframe->enqueueMessage($db->getQuery());
-				$db->query();
+				if ($db->query() === false ) {
+					$mainframe->enqueueMessage(JText::_('VM_PRODUCT_TYPE_PARAMETER_ADDING_FAILED'), 'error');
+					return false;
+				}
+				
+				/* Make index for this column */
+				if( $data["parameter_type"] == "T" ) {
+					$q = "ALTER TABLE `#__vm_product_type_" ;
+					$q .= $data["product_type_id"] . "` ADD FULLTEXT `idx_product_type_" . $data["product_type_id"] . "_" ;
+					$q .= $db->getEscaped($data['parameter_name']) . "` (`" . $db->getEscaped($data['parameter_name']) . "`);" ;
+					$db->setQuery($q);
+					$mainframe->enqueueMessage($db->getQuery());
+					$db->query();
+				} 
+				else {
+					$q = "ALTER TABLE `#__vm_product_type_" ;
+					$q .= $data["product_type_id"] . "` ADD KEY `idx_product_type_" . $data["product_type_id"] . "_" ;
+					$q .= $db->getEscaped($data['parameter_name']) . "` (`" . $db->getEscaped($data['parameter_name']) . "`);" ;
+					$db->setQuery($q);
+					$mainframe->enqueueMessage($db->getQuery());
+					$db->query();
+				}
 			}
 		}
 		$mainframe->enqueueMessage(JText::_('VM_PRODUCT_TYPE_PARAMETER_ADDED'));

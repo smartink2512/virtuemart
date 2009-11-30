@@ -199,6 +199,21 @@ class VirtuemartViewProduct extends JView {
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 				break;
+			case 'addproducttype':
+				/* Get the product types that can be chosen */
+				$producttypes = JHTML::_('select.genericlist', $this->get('ProductTypeList'), 'product_type_id');
+				$this->assignRef('producttypes', $producttypes);
+				
+				/* Get the product */
+				$product = $this->get('ProductDetails');
+				$this->assignRef('product', $product);
+				
+				/* Toolbar */
+				$text = JText::_( 'VM_PRODUCT_PRODUCT_TYPE_FORM_LBL' ).' :: '.$product->product_sku.' :: '.$product->product_name;
+				JToolBarHelper::title($text, 'vm_product_48');
+				JToolBarHelper::save('saveproducttype');
+				JToolBarHelper::cancel();
+				break;
 			default:
 				switch ($task) {
 					case 'publish':
@@ -264,6 +279,7 @@ class VirtuemartViewProduct extends JView {
 				
 				/* Toolbar */
 				JToolBarHelper::title(JText::_( 'PRODUCT_LIST' ), 'vm_product_48');
+				JToolBarHelper::custom('addproducttype', 'icon-32-new', '', JText::_('ADD_PRODUCT_TYPE'), true);
 				JToolBarHelper::custom('addrating', 'icon-32-new', '', JText::_('ADD_RATING'), true);
 				JToolBarHelper::divider();
 				JToolBarHelper::publish();

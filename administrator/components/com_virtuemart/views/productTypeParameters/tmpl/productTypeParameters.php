@@ -38,7 +38,7 @@ AdminMenuHelper::startAdminArea();
 		$k = 0;
 		$keyword = JRequest::getVar('keyword');
 		foreach ($this->producttypeparameterslist as $key => $producttypeparameter) {
-			$checked = JHTML::_('grid.id', $i , $producttypeparameter->product_type_id);
+			$checked = JHTML::_('grid.id', $i, $producttypeparameter->parameter_name);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<!-- Row number -->
@@ -46,7 +46,7 @@ AdminMenuHelper::startAdminArea();
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Product type parameter label -->
-				<?php $link = 'index.php?option='.$option.'&view=producttypeparameters&task=edit&cid[]='.$producttypeparameter->product_type_id; ?>
+				<?php $link = 'index.php?option='.$option.'&view=producttypeparameters&task=edit&&product_type_id='.JRequest::getInt('product_type_id').'&cid[]='.$producttypeparameter->product_type_id; ?>
 				<td><?php echo JHTML::_('link', $link, $producttypeparameter->parameter_label); ?></td>
 				<!-- Product type parameter name -->
 				<td><?php echo $producttypeparameter->parameter_name; ?></td>

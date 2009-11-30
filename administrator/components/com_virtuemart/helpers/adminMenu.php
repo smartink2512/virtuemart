@@ -67,11 +67,12 @@ class AdminMenuHelper
 		
 	
     /**
-     * Display the administrative ribbon menu.
-     */
+    * Display the administrative ribbon menu.
+    * @todo The link should be done better
+    */
     function showAdminMenu()
     {
-        $document	= &JFactory::getDocument();
+        $document	= JFactory::getDocument();
         $moduleId   = JRequest::getInt('module_id', 0);
     	
         $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/admin_menu.js');

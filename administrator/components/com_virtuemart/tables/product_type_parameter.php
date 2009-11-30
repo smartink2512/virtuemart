@@ -49,7 +49,6 @@ class TableProduct_type_parameter extends JTable {
 	* @author RolandD
 	*/
 	public function store() {
-		$mainframe = Jfactory::getApplication();
 		$db = JFactory::getDBO();
 		
 		/* Update or Insert? */
@@ -69,7 +68,6 @@ class TableProduct_type_parameter extends JTable {
 		
 		/* Update the database */
 		$db->setQuery($q);
-		$mainframe->enqueueMessage(__FILE__.__LINE__.$db->getQuery());
 		return ($db->query());
 	}
 	
