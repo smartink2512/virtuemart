@@ -18,7 +18,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
  *
  * @package	VirtueMart
  * @subpackage Store
- * @author RickG 
+ * @author RickG, jseros
  */
 class VirtueMartViewStore extends JView {
 	
@@ -45,10 +45,21 @@ class VirtueMartViewStore extends JView {
 			
 			$countryModel = $this->getModel('country');
 			
-			$countries = $countryModel->getCountries(true, true);
+			$countries = $countryModel->getCountries(false, true);
+			
+			//just adding "--Select--" option
+			$emptyOption = new stdClass();
+			$emptyOption->country_id = '';
+			$emptyOption->country_name = '-- '.JText::_('Select').' --';
+			array_unshift($countries, $emptyOption);
+			
 			$this->assignRef('countryList', $countries);
 											
 			$this->assignRef('store', $store);
+			
+			//singleton instance of editor
+			$editor = JFactory::getEditor();
+			$this->assignRef('editor', $editor);
         }	
         else {
         	/* Load jQuery */

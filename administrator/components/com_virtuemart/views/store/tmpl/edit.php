@@ -6,11 +6,11 @@ AdminMenuHelper::startAdminArea();
 <script type="text/javascript">
 window.addEvent("domready", function() {
     $("country_id").addEvent("change", function() {
-        var url="index.php?option=com_virtuemart&view=store&format=raw&task=listFields&country_id="+this.getValue();
-        var a=new Ajax(url,{
-        	method:"get",
+        var url = "index.php?option=com_virtuemart&view=country&format=raw&task=listStates&country_id="+this.getValue();
+        new Ajax(url,{
+        	method: "get",
         	onComplete: function(response){
-        		var resp=Json.evaluate(response);
+        		var resp = Json.evaluate(response);
         	}
         }).request();
     });
@@ -93,7 +93,17 @@ window.addEvent("domready", function() {
 				<td>
 					<?php echo JHTML::_('Select.genericlist', $this->countryList, 'country_id', '', 'country_id', 'country_name', 'country_id'); ?>														
 				</td>
-			</tr>			
+			</tr>
+			<tr>
+				<td class="key">
+					<label for="title">
+						<?php echo JText::_('VM_STORE_FORM_STATE'); ?>:
+					</label>
+				</td>
+				<td>
+					<select name="state_id" id="state_id"></select>												
+				</td>
+			</tr>		
 		</table>
 		</fieldset>	
 		
@@ -117,7 +127,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="vendor_id" id="vendor_id" size="50" value="<?php echo $this->creditcard->vendor_id; ?>" />										
+					<input type="file" name="vendor_full_image" id="vendor_full_image" size="25" class="inputbox"  />										
 				</td>
 			</tr>		
 			<tr>
@@ -304,8 +314,31 @@ window.addEvent("domready", function() {
 				</td>
 			</tr>																
 		</table>	
-		</fieldset>		
+		</fieldset>
+			
 	</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<table class="adminform">
+				<tr>
+					<td>
+						<fieldset>
+							<legend><?php echo JText::_('VM_STORE_FORM_DESCRIPTION');?></legend>
+							<?php echo $this->editor->display('vendor_store_desc', $this->store->vendor_store_desc, '100%', 220, 70, 15)?>
+						</fieldset>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<fieldset>
+							<legend><?php echo JText::_('VM_STORE_FORM_TOS');?></legend>
+							<?php echo $this->editor->display('vendor_terms_of_service', $this->store->vendor_terms_of_service, '100%', 220, 70, 15)?>
+						</fieldset>
+					</td>
+				</tr>
+			</table>
+		</td>
 	</tr>
 	</table>
 	
