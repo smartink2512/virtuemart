@@ -21,6 +21,7 @@
 	</tr>
 	<tr>
 		<td colspan="2" valign="top" align="center">
+			<br />
 			<b>Uninstall Note:</b><br />
 			Uninstalling Virtuemart does not remove the Virtuemart tables from your database.&nbsp;&nbsp;
 			This is done intentionally  to allow for upgrading your current data to new versions of Virtuemart.&nbsp;&nbsp;

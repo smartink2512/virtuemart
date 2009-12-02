@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 		</td>
 		<td>	
 			<h1>The first step of the Installation was <font color="green">SUCCESSFUL</font></h1>
-			<br />
+			<br /><br />
 			
 			<table width="50%">				
 			<tr>
