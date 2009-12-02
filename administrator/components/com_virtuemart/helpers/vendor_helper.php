@@ -11,7 +11,7 @@
 /**
 *	This class provides Functions to get simple answers for a user and/or vendor	
 *
-* @version $Id: vendor_helper.php 90 2009-06-018 22:45:17Z Max Milbers $
+* @version $Id: Vendor.php 90 2009-06-018 22:45:17Z Max Milbers $
 * @package VirtueMart
 * @subpackage classes
 * @copyright Copyright (C) 2004-2009 Virtuemart, since 2009 VirtueMart Dev Team - All rights reserved.
@@ -26,7 +26,7 @@
 */
 
 
-class vendor_helper {
+class Vendor {
 	
 	
 //	public $vendor_image,$vendor_country_2_code, $vendor_country_3_code, $vendor_image_url, $vendor_name, $vendor_state_name,
@@ -53,22 +53,26 @@ class vendor_helper {
 	 * @param $ownerOnly returns only an id if the vendorOwner is logged in (dont get confused with storeowner)
 	 * returns $vendorId if no vendorId mapped, it returns 0
 	 */
-	function getVendorIdByUserId(&$userId,$ownerOnly=true) {				
+	function getVendorIdByUserId(&$userId, $ownerOnly=true) 
+	{				
 		if(empty ($userId)) return ;
+		$db = JFactory::getDBO();
 
 		/* Test if user has a vendorId*/
-		if($ownerOnly){
-		$q  = 'SELECT `vendor_id`, `user_is_vendor` FROM `#__vm_auth_user_vendor` `au` 
-				LEFT JOIN `#__vm_user_info` `u` ON (au.user_id = u.user_id) WHERE `u`.`user_id`="' . $userId .'"';
-		}else{
-		$q  = 'SELECT `vendor_id` FROM  `#__vm_auth_user_vendor` WHERE `user_id`=' . (int)$userId .' ';						
+		if ($ownerOnly){
+			$q = 'SELECT `vendor_id`, `user_is_vendor` FROM `#__vm_auth_user_vendor` `au` 
+				 LEFT JOIN `#__vm_user_info` `u` ON (au.user_id = u.user_id) WHERE `u`.`user_id`="' . $userId .'"';
+		}
+		else {
+			$q  = 'SELECT `vendor_id` FROM  `#__vm_auth_user_vendor` WHERE `user_id`=' . (int)$userId .' ';						
 		}
 
-		$this->db->setQuery($q);
-		$vendorId = $this->db->loadResult();
-		if(isset($vendorId)){
+		$db->setQuery($q);
+		$vendorId = $db->loadResult();
+		if (isset($vendorId)) {
 			return $vendorId;
-		}else{
+		}
+		else {
 			$GLOBALS['vmLogger']->info( 'getVendorIdByUserId no vendorId found for '.$userId );
 			return 0;
 		}
@@ -108,7 +112,7 @@ class vendor_helper {
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		if(isset($userId)){
-			$vendorId = vendor_helper::getVendorIdByUserId($userId,$ownerOnly);
+			$vendorId = Vendor::getVendorIdByUserId($userId,$ownerOnly);
 			return $vendorId;
 		}else{
 			echo('$user_id empty, no logged User');
@@ -490,7 +494,7 @@ class vendor_helper {
 //		$db->query( $q );
 //		$db->next_record();
 //		$user_id = $db->f('user_id');
-//		$email = vendor_helper::get_juser_email_by_user_id($user_id);
+//		$email = Vendor::get_juser_email_by_user_id($user_id);
 //		return $email;
 //	}
 	

@@ -160,7 +160,7 @@
 		global $perm, $hVendor;
 		// Instantiate the permission class
 		$perm = new ps_perm();
-		$hVendor = new vendor_helper;
+		$hVendor = new Vendor;
 
 		$fields = array();
 		

@@ -160,7 +160,7 @@ if( vmShouldDebug() ) {   /*@MWM1: Log/Debug enhancements */
 require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendor_helper.php');
 
 global $hVendor;
-$hVendor = new vendor_helper;
+$hVendor = new Vendor;
  	
 //Lets life make easy, To be exact this value shouldnt be global but we leave it for now as a quckfix
 //In the most cases a shop with vendors will use a standard currency anyway.

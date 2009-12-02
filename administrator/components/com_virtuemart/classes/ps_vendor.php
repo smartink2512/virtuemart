@@ -267,7 +267,7 @@ class ps_vendor {
 		
 		if(empty($hVendor)){
 			require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendor_helper.php');
-			$hVendor = new vendor_helper;
+			$hVendor = new Vendor;
 		}
 		$vendor_id = $hVendor -> getVendorIdByUserId($user_id, false);
 		if( empty( $vendor_id ) ) { // INSERT NEW USER/SHOPPER

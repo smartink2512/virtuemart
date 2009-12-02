@@ -112,5 +112,37 @@ class VirtueMartModelVendor extends JModel
    		
    		return (isset($result->user_id) ? $result->user_id : 0);
 	}
+	
+	
+	/**
+	 * Bind the post data to the vendor table and save it
+     *
+     * @author RickG	
+     * @return boolean True is the save was successful, false otherwise. 
+	 */
+    function store($data) 
+	{
+		$table = $this->getTable('vendor');	
+	
+		// Bind the form fields to the unser info table
+		if (!$table->bind($data)) {		    
+			$this->setError($table->getError());
+			return false;	
+		}
+
+		// Make sure the user info record is valid
+		if (!$table->check()) {
+			$this->setError($table->getError());
+			return false;	
+		}
+		
+		// Save the user info record to the database
+		if (!$table->store()) {
+			$this->setError($table->getError());
+			return false;	
+		}		
+		
+		return true;
+	}	
 }
 ?>

@@ -100,7 +100,7 @@ class VirtueMartModelUpdatesMigration extends JModel
 	 * @author Max Milbers
 	 */	
 	function determineStoreOwner(){
-		$user_id = vendor_helper::getUserIdByVendorId(1);
+		$user_id = Vendor::getUserIdByVendorId(1);
 		if (isset($user_id)) {
 			$user = JFactory::getUser($user_id);
 		}
@@ -193,28 +193,23 @@ class VirtueMartModelUpdatesMigration extends JModel
 	}
 	
 	
-	function installSampleData($user_id=null) 
+	/**
+	 * Installs sample data to the current database.
+	 * 
+	 * @author Max Milbers, RickG
+	 * @params $userId User Id to add the user_info and vendor sample data to
+	 */		
+	function installSampleData($userId = null) 
 	{
-		if($user_id == null) {
-			$user_id = $this->determineStoreOwner();
+		if($userId == null) {
+			$userId = $this->determineStoreOwner();
 		}
 		
 		$vmLogIdentifier = 'VirtueMart';
 
-		//require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_database.php");
-		//require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_vendor.php");
-		//require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_user.php");
-		//require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_perm.php");
-		//require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."helpers".DS."vendor_helper.php");
-		
-		//global $perm, $hVendor;
-		// Instantiate the permission class
-		//$perm = new ps_perm();
-		//$hVendor = new vendor_helper;
-
 		$fields = array();
 		
-		$fields['user_id'] =  $user_id;
+		$fields['user_id'] =  $userId;
 		$fields['address_type'] =  "BT";
 		$fields['company'] =  "Washupito''s the User";
 		$fields['title'] =  "Sire";
@@ -226,7 +221,6 @@ class VirtueMartModelUpdatesMigration extends JModel
 		$fields['city'] =  "Canangra";
 		$fields['state'] =  "72";
 		$fields['country'] =  "13";
-		//ps_user::setUserInfoWithEmail($fields,$user_id);
 		if (!$this->storeUserInfo($fields)) {
 			JError::raiseNotice(1, $this->getError());
 		}		
@@ -237,6 +231,7 @@ class VirtueMartModelUpdatesMigration extends JModel
 		$currencyFields[1] = 'USD';
 		
 		$fields = array();
+		$fields['vendor_id'] = Vendor::getVendorIdByUserId($userId);
 		$fields['vendor_name'] =  "Washupito";
 		$fields['vendor_phone'] =  "555-555-1212";
 		$fields['vendor_store_name'] =  "Washupito''s Tiendita";
@@ -246,15 +241,14 @@ class VirtueMartModelUpdatesMigration extends JModel
 		$fields['vendor_accepted_currencies'] = $currencyFields;
 		$fields['vendor_currency_display_style'] =  "1|&euro;|2|,|.|0|0";
 		$fields['vendor_terms_of_service'] =  "<h5>You haven''t configured any terms of service yet. Click <a href=administrator/index2.php?page=store.store_form&option=com_virtuemart>here</a> to change this text.</h5>";
-		$fields['vendor_url'] = JURI::root();
-		
+		$fields['vendor_url'] = JURI::root();		
 		$fields['vendor_name'] =  "Washupito";
-		
-		//ps_vendor::setVendorInfo($fields,$user_id);
-		
+		if (!$this->storeVendor($fields)) {
+			JError::raiseNotice(1, $this->getError());
+		}
+
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql'; 
-		$this->execSQLFile($filename);
-		
+		$this->execSQLFile($filename);		
 	}		
 	
 	
@@ -281,6 +275,38 @@ class VirtueMartModelUpdatesMigration extends JModel
 		}
 		
 		// Save the user info record to the database
+		if (!$table->store()) {
+			$this->setError($table->getError());
+			return false;	
+		}		
+		
+		return true;
+	}	
+	
+	
+	/**
+	 * Bind the post data to the vendor table and save it
+     *
+     * @author RickG	
+     * @return boolean True is the save was successful, false otherwise. 
+	 */
+    function storeVendor($data) 
+	{
+		$table = $this->getTable('vendor');	
+	
+		// Bind the form fields to the vendor table
+		if (!$table->bind($data)) {		    
+			$this->setError($table->getError());
+			return false;	
+		}
+
+		// Make sure the vendor record is valid
+		if (!$table->check()) {
+			$this->setError($table->getError());
+			return false;	
+		}
+		
+		// Save the vendor record to the database
 		if (!$table->store()) {
 			$this->setError($table->getError());
 			return false;	

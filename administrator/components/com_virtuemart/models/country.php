@@ -135,7 +135,7 @@ class VirtueMartModelCountry extends JModel
      */ 
     function &getCountryByCode($code)
     {
-		$db =& JFactory::getDBO();	
+		$db = JFactory::getDBO();	
 		
 		$countryCodeLength = strlen($code);
 		switch ($countryCodeLength) {
@@ -166,7 +166,7 @@ class VirtueMartModelCountry extends JModel
 	 */
     function store() 
 	{
-		$table =& $this->getTable('country');
+		$table = $this->getTable('country');
 
 		$data = JRequest::get('post');		
 	
@@ -201,7 +201,7 @@ class VirtueMartModelCountry extends JModel
 	function delete() 
 	{
 		$countryIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table =& $this->getTable('country');
+    	$table = $this->getTable('country');
  
     	foreach($countryIds as $countryId) {
     		if ($this->deleteCountryStates($countryId)) {
@@ -229,7 +229,7 @@ class VirtueMartModelCountry extends JModel
 	function deleteCountryStates($countryId = '') 
 	{
 		if ($countryId) {
-			$db =& JFactory::getDBO();	
+			$db = JFactory::getDBO();	
 				
 			$query = 'DELETE FROM `#__vm_state`  WHERE `country_id`= "'.$countryId.'"';
 			$db->setQuery($query);
@@ -255,7 +255,7 @@ class VirtueMartModelCountry extends JModel
      */ 	 
 	function publish($publishId = false) 
 	{
-		$table =& $this->getTable('country');
+		$table = $this->getTable('country');
 		$countryIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );				
 								
         if (!$table->publish($countryIds, $publishId)) {

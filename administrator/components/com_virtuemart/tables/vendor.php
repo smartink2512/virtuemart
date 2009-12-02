@@ -39,9 +39,9 @@ class TableVendor extends JTable
 	/** @var varchar Currency */
 	var $vendor_currency	  		= '';
 	/** @var int Vendor created date */
-	var $vendor_cdate	 	 		= '';
+	var $cdate	 	 				= '';
 	/** @var int Vendor modified date */
-	var $vendor_mdate		  		= '';
+	var $mdate				  		= '';
 	/** @var varchar Path to vendor images */
 	var $vendor_image_path   		= '';
 	/** @var text Vendor terms of service */
