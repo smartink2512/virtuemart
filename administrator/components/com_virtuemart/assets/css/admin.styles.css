@@ -1,6 +1,8 @@
 #cpanel { 
 	text-align: center; 
-	vertical-align: middle; 
+	vertical-align: middle;
+	height: 1%;
+	overflow: hidden;
 }
 
 #cpanel div.icon   { 
@@ -45,4 +47,8 @@
 .editable {
 	background: #ffff33;
 	cursor: pointer;
+}
+
+.align-center{
+	text-align: center;
 }

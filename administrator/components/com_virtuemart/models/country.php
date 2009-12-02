@@ -133,7 +133,7 @@ class VirtueMartModelCountry extends JModel
      * @param string $code Country code to lookup
      * @return object Country object from database
      */ 
-    function &getCountryByCode($code)
+    function getCountryByCode($code)
     {
 		$db = JFactory::getDBO();	
 		

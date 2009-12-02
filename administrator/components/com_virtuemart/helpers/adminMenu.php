@@ -34,7 +34,7 @@ class AdminMenuHelper
 	{	
 	    $document = JFactory::getDocument();
 	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_menu.css');
-		$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_styles.css');	    
+		$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin.styles.css');	    
         $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/toolbar_images.css');
 		$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/menu_images.css'); 		 		
 		?>	
@@ -103,13 +103,14 @@ class AdminMenuHelper
 		            foreach( $menuItems as $item ) { ?> 
 			            <h3 class="title-smenu" title="<?php echo JText::_($item['title']); ?> admin" ><?php echo JText::_($item['title']) ?></h3>
 			            <div class="section-smenu">
-			                <ul><?php 			
+			                <ul>
+			                <?php 			
 			                foreach( $item['items'] as $link ) {
-				                if( $link['name'] == '-' ) {?>
-					                <li>
-					                <hr>
-					                </li><?php 
-				                }
+				                if( $link['name'] == '-' ) {
+				            ?>
+					        	<li><hr></li>
+					       	<?php 
+				             	}
 				                else { 
 				                    if (strncmp($link['link'], 'http', 4 ) === 0) {
 				                        $url = $link['link'];
@@ -136,7 +137,7 @@ class AdminMenuHelper
 			            <?php $modCount++;
 		            } ?>
 		            </div>
-	                <div style="text-align:center;">
+	                <div class="align-center">
 	                    <h5><?php echo JText::_('VM_YOUR_VERSION') ?></h5>
 	                    <?php $release = VmConfig::getVar('version_release'); ?>
 	                    <a href="http://virtuemart.org/index2.php?option=com_versions&amp;catid=1&amp;myVersion=<?php echo $release ?>" onclick="javascript:void window.open(this.href, 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no'); return false;" title="<?php echo JText::_('VM_VERSIONCHECK_TITLE') ?>" target="_blank">
@@ -172,7 +173,7 @@ class AdminMenuHelper
      */
     function _getAdminMenu($moduleId=0) 
     {
-	    $db		=& JFactory::getDBO();
+	    $db		= JFactory::getDBO();
 	    $menuArr = array();
 		        
 	    $filter[] = "jmmod.module_publish='Y'";
