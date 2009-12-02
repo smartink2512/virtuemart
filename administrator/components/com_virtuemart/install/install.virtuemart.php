@@ -6,15 +6,13 @@
  * This installation function extracts some of the frontend and backend files
  * need for this component.
  *
- * @author Max Milbers
+ * @author Max Milbers, RickG
  * @package VirtueMart
  */
 defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.model');
 require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'updatesMigration.php');
-
-global $option, $vmInstaller;
 
 
 function com_install(){	
@@ -52,13 +50,5 @@ function com_install(){
 	
 	return $installOk;
 }
-
-function com_uninstall(){
-
-
-}
-
-
-
 
 ?>

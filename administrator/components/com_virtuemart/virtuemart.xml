@@ -15,7 +15,7 @@
 	<installfile>install/install.virtuemart.php</installfile>
 	
 	<!-- Custom uninstaller -->
-	<uninstallfile>install/install.virtuemart.php</uninstallfile>
+	<uninstallfile>install/uninstall.virtuemart.php</uninstallfile>
 	
 	<!-- SQL queries -->
 	<install>

@@ -4,7 +4,7 @@
  *
  * @package	VirtueMart
  * @subpackage updatesMigration
- * @author Max Milbers
+ * @author Max Milbers, RickG
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
 
@@ -81,6 +81,18 @@ class VirtuemartControllerUpdatesMigration extends JController{
 		$msg = JText::_('Sample data installed!!');		
 		$this->setRedirect('index.php?option=com_virtuemart', $msg);			
 	}
+	
+	
+	/**
+	 * Install sample data into the database
+	 * 
+	 * @author RickG
+	 */
+	function deleteVmTables(){
+		$model = $this->getModel('updatesMigration');
+		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall.sql'; 
+		$model->execSQLFile($filename);			
+	}	
 
 /*
 	function updateVMTables10to11(){
