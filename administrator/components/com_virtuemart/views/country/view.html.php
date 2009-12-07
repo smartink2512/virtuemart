@@ -60,7 +60,6 @@ class VirtuemartViewCountry extends JView {
 			$countries = $model->getCountries();
 			$this->assignRef('countries',	$countries);	
 		}			
-		
 		parent::display($tpl);
 	}
 	

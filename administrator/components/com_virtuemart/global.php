@@ -47,19 +47,19 @@ $adminPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.D
 $classPath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'classes'.DS;
 
 // Instantiate the MainFrame class for VirtueMart
-require_once( $classPath."ps_database.php");
-require_once( $classPath."mainframe.class.php" );
-require_once( $classPath."plugin.class.php" );
-require_once( $classPath."dispatcher.class.php" );
+require_once( $classPath.'ps_database.php');
+require_once( $classPath.'mainframe.class.php' );
+require_once( $classPath.'plugin.class.php' );
+require_once( $classPath.'dispatcher.class.php' );
 
 /* @MWM1: Load debug utility functions (currently just vmShouldDebug())
    Replaces test (DEBUG == '1') and also checks if DEBUG_IP_ADDRESS is
    enabled. */
-require_once($classPath."DebugUtil.php");
+require_once($classPath.'DebugUtil.php');
 
 /* @MWM1: Initialize Logging */
 $vmLogIdentifier = 'VirtueMart';
-require_once($classPath."Log/LogInit.php");
+require_once($classPath.'Log/LogInit.php');
 $vm_mainframe = new vmMainFrame();
 
 vmPluginHelper::importPlugin('system');
@@ -93,20 +93,20 @@ $GLOBALS['vendor_info'] = Array();
 
 // load the MAIN CLASSES
 // $classPath is defined in the config file
-require_once($classPath."ps_main.php");
-require_once($classPath."request.class.php");
-require_once($classPath."vmAbstractObject.class.php");
-require_once($classPath."ps_cart.php");
-require_once($classPath."ps_html.php");
-require_once($classPath."ps_session.php");
-require_once($classPath."ps_function.php");
-require_once($classPath."ps_module.php");
-require_once($classPath."ps_perm.php");
-require_once($classPath."ps_shopper_group.php");
-require_once($classPath."ps_vendor.php");
+require_once($classPath.'ps_main.php');
+require_once($classPath.'request.class.php');
+require_once($classPath.'vmAbstractObject.class.php');
+require_once($classPath.'ps_cart.php');
+require_once($classPath.'ps_html.php');
+require_once($classPath.'ps_session.php');
+require_once($classPath.'ps_function.php');
+require_once($classPath.'ps_module.php');
+require_once($classPath.'ps_perm.php');
+require_once($classPath.'ps_shopper_group.php');
+require_once($classPath.'ps_vendor.php');
 require_once($classPath.'template.class.php' );
-require_once($classPath."htmlTools.class.php");
-require_once($classPath."phpInputFilter/class.inputfilter.php");
+require_once($classPath.'htmlTools.class.php');
+require_once($classPath.'phpInputFilter/class.inputfilter.php');
 
 $vm_mainframe->triggerEvent('onAfterInitialise');
 
@@ -114,6 +114,7 @@ $vm_mainframe->triggerEvent('onAfterInitialise');
 $db = new ps_DB();
 
 // Instantiate the permission class
+global $perm;
 $perm = new ps_perm();
 
 // Instantiate the HTML helper class
@@ -140,7 +141,7 @@ $ps_function = new ps_function();
 
 // Set the mosConfig_live_site to its' SSL equivalent
 $GLOBALS['real_mosConfig_live_site'] = $GLOBALS['mosConfig_live_site'];
-if( $_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on' || @strstr( $page, "checkout." )) {
+if( $_SERVER['SERVER_PORT'] == 443 || @$_SERVER['HTTPS'] == 'on' || @strstr( $page, 'checkout.' )) {
 	// Change the global Live Site Value to HTTPS
 	$GLOBALS['mosConfig_live_site'] = ereg_replace('/$','',SECUREURL);
 	$mm_action_url = SECUREURL;
@@ -168,12 +169,12 @@ $hVendor = new Vendor;
 $mainvendor = 1;
 $db = ps_vendor::get_vendor_fields($mainvendor,array('vendor_currency', 'vendor_currency_display_style','vendor_accepted_currencies','vendor_store_desc'));
 if(!empty($db)){
-	$vendor_currency = $db->f("vendor_currency");
-	$_SESSION["vendor_currency"] = $vendor_currency;
+	$vendor_currency = $db->f('vendor_currency');
+	$_SESSION['vendor_currency'] = $vendor_currency;
 
-	$vendor_currency_display_style = $db->f("vendor_currency_display_style");
-	$vendor_accepted_currencies = $db->f("vendor_accepted_currencies");
-	$vendor_store_desc = $db->f("vendor_store_desc");
+	$vendor_currency_display_style = $db->f('vendor_currency_display_style');
+	$vendor_accepted_currencies = $db->f('vendor_accepted_currencies');
+	$vendor_store_desc = $db->f('vendor_store_desc');
 }
 
 
@@ -182,7 +183,7 @@ vmSetGlobalCurrency();
 
 $currency_display = $hVendor -> get_currency_display_style( $vendor_currency_display_style );
 //if( $GLOBALS['product_currency'] != $vendor_currency ) {
-//	$currency_display["symbol"] = $GLOBALS['product_currency'];
+//	$currency_display['symbol'] = $GLOBALS['product_currency'];
 //}
 /** load Currency Display Class **/
 // require_once( $classPath.'class_currency_display.php' );
@@ -191,7 +192,7 @@ require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.D
  *  @global CurrencyDisplay $GLOBALS['CURRENCY_DISPLAY']
  *  @global CurrencyDisplay $CURRENCY_DISPLAY
  */
-$CURRENCY_DISPLAY = $GLOBALS['CURRENCY_DISPLAY'] =& new CurrencyDisplay($currency_display["id"], $currency_display["symbol"], $currency_display["nbdecimal"], $currency_display["sdecimal"], $currency_display["thousands"], $currency_display["positive"], $currency_display["negative"]);
+$CURRENCY_DISPLAY = $GLOBALS['CURRENCY_DISPLAY'] =& new CurrencyDisplay($currency_display['id'], $currency_display['symbol'], $currency_display['nbdecimal'], $currency_display['sdecimal'], $currency_display['thousands'], $currency_display['positive'], $currency_display['negative']);
 	
 // Include the theme
 if( file_exists( VM_THEMEPATH.'theme.php' )) {

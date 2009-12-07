@@ -112,7 +112,6 @@ class vmPaymentMethod extends vmAbstractObject {
 	 * @return boolean
 	 */
 	function validate_update(&$d) {
-		
 
 		if( !$this->validate_add($d)) {
 			return false;
@@ -133,7 +132,6 @@ class vmPaymentMethod extends vmAbstractObject {
 	 * @return boolean
 	 */
 	function validate_delete(&$d) {
-		
 
 		if (empty($d["id"])) {
 			$GLOBALS['vmLogger']->err( JText::_('VM_PAYMENTMETHOD_DELETE_SELECT') );

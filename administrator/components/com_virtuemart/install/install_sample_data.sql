@@ -146,4 +146,11 @@ INSERT INTO `#__vm_tax_rate` (`tax_rate_id`, `vendor_id`, `tax_state`, `tax_coun
 (2, 1, 'CA', 'USA', 964565926, '0.0925');
 
 
+--
+--  Dumping data for `jos_vm_calc`
+--
+
+INSERT INTO `jos_vm_calc` (`calc_id`, `calc_vendor_id`, `calc_name`, `calc_descr`, `calc_qualify`, `calc_affected`, `calc_value`, `calc_value_mathop`, `calc_vis_shopper`, `calc_vis_vendor`, `calc_kind`, `calc_start_date`, `calc_end_date`, `calc_amount_cond`, `calc_amount_dimunit`, `calc_location`, `published`) VALUES
+(1, '1', 'First rule', 'The first rule is easy, discount for all Outdoortools', NULL, NULL, '30', '%', 1, 1, 'Discount', '2009-12-02', '2009-12-10', 4, NULL, 'some country_id', 1),
+(2, '1', 'Second rule, wares coupon', 'Ah coupon that is substracted before the tax is calculated', NULL, NULL, '50', '-', 1, 1, 'Coupon', '2009-12-07', '2010-12-07', NULL, NULL, NULL, 1);
 

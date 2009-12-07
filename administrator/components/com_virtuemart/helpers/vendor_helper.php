@@ -163,8 +163,8 @@ class Vendor {
 			$q .= "WHERE `product_id` = '$product_id' ";
 			$q .= "AND `#__{vm}_product`.`vendor_id` = `#__{vm}_vendor`.`vendor_id` ";
 		} else {
-			/* ERROR: No arguments were specified. */
-			return 0;
+			$vendor_id = $this -> getLoggedVendor();
+			$q = "SELECT `vendor_name` FROM `#__{vm}_vendor` WHERE `vendor_id` = '$vendor_id'";
 		}
 
 		$db->query($q);

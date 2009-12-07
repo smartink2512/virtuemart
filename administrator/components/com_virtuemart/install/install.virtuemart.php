@@ -16,7 +16,11 @@ require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.D
 
 
 function com_install(){	
+
+	//Maybe it is possible to set this within the xml file note by Max Milbers
 	@ini_set( 'memory_limit', '32M' );
+	@ini_set( 'max_execution_time', '120' );
+	
 	$db = JFactory::getDBO();  
 	$model = new VirtueMartModelUpdatesMigration();
 	

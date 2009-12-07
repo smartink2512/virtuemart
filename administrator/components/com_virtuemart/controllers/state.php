@@ -78,9 +78,10 @@ class VirtuemartControllerState extends JController
 	 */
 	function cancel()
 	{
+		$data = JRequest::get( 'post' );
 		$msg = JText::_('Operation Canceled!!');
 		
-		$this->setRedirect('index.php?option=com_virtuemart&view=state&state_id='.$data["state_id"], $msg);
+		$this->setRedirect('index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
 	}	
 	
 	
@@ -91,7 +92,7 @@ class VirtuemartControllerState extends JController
 	 */	
 	function save()
 	{
-		$data = JRequest::get( 'post' );	
+		$data = JRequest::get( 'post' );
 		$model =& $this->getModel( 'state' );		
 		
 		if ($model->store()) {
@@ -101,7 +102,7 @@ class VirtuemartControllerState extends JController
 			$msg = JText::_('Error saving state!');
 		}
 		
-		$this->setRedirect('index.php?option=com_virtuemart&view=state&state_id='.$data["state_id"], $msg);
+		$this->setRedirect('index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
 	}	
 	
 	
@@ -121,7 +122,7 @@ class VirtuemartControllerState extends JController
 			$msg = JText::_( 'States Deleted!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&state_id='.$data["state_id"], $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
 	}	
 	
 	
@@ -138,7 +139,7 @@ class VirtuemartControllerState extends JController
 			$msg = JText::_('Error: One or more states could not be published!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&state_id='.$data["state_id"], $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
 	}		
 	
 	
@@ -155,7 +156,7 @@ class VirtuemartControllerState extends JController
 			$msg = JText::_('Error: One or more states could not be unpublished!');
 		}
 	
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&state_id='.$data["state_id"], $msg);
+		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
 	}	
 }
 ?>

@@ -194,7 +194,7 @@ class ps_user {
 
 		require_once( CLASSPATH . 'ps_userfield.php' );
 		if (!ps_user::validate_add($d)) {
-			return false;
+//			return false;
 		}
 
 		// Joomla User Information stuff

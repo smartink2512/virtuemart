@@ -48,7 +48,7 @@ AdminMenuHelper::startAdminArea();
 		<br />
 		<a href="<?php echo $linkDeleteALL; ?>">Uninstall All</a><br />
 		<br />
-		<a href="<?php echo $linkDeleteOnlyRestorable; ?>">Install SampleData</a><br />
+		<a href="<?php echo $linkDeleteOnlyRestorable; ?>">Delete only restorable data</a><br />
 		
 		<?php
 		echo $this->pane->endPanel();

@@ -28,7 +28,7 @@ class VirtueMartModelState extends JModel
     var $_id;      
 	/** @var objectlist State data */
     var $_data;        
-//	/** @var integer Total number of countries in the database */
+//	/** @var integer Total number of state in the database */
 //	var $_total;      
 	/** @var pagination Pagination for state list */
 	var $_pagination;    
@@ -54,7 +54,7 @@ class VirtueMartModelState extends JModel
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);        
         
-        // Get the country id or array of ids.
+        // Get the state id or array of ids.
 		$idArray = JRequest::getVar('cid',  0, '', 'array');
     	$this->setId((int)$idArray[0]);
 /*	?><pre><?php print_r($this); ?></pre><?php  */

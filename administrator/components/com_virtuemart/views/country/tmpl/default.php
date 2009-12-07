@@ -44,7 +44,7 @@ AdminMenuHelper::startAdminArea();
 			$checked = JHTML::_('grid.id', $i, $row->country_id);
 			$published = JHTML::_('grid.published', $row, $i);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=country&task=edit&cid[]=' . $row->country_id);
-			$statelink	= JROUTE::_('index.php?option=com_virtuemart&view=state&country_id=' . $row->country_id);
+			$statelink	= JROUTE::_('index.php?option=com_virtuemart&controller=state&view=state&country_id=' . $row->country_id);
 			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&controller=country&task=remove&cid[]=' . $row->country_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">

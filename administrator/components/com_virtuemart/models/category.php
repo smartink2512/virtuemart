@@ -40,7 +40,7 @@ class VirtueMartModelCategory extends JModel
 	/**
 	 * Creates structured option fields for all categories
 	 *
-	 * @todo Connect to vendor data
+	 * @todo Connect to vendor data  seems to work, need to be reviewed
 	 *
 	 * @param int $category_id A single category to be pre-selected
 	 * @param int $cid Internally used for recursion
