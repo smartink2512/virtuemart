@@ -5,10 +5,8 @@ AdminMenuHelper::startAdminArea();
 ?>
 <form name="adminForm" enctype="multipart/form-data">
 <?php
-
-		echo $this->pane->startPane("versionCheckPane");
-		echo $this->pane->startPanel( JText::_('VM_PRODUCT_FORM_PRODUCT_INFO_LBL'), 'versionCheckPane' );
-		
+	echo $this->pane->startPane("versionCheckPane");
+	echo $this->pane->startPanel(JText::_('VM_UPDATE_CHECK_UPDATE_TAB'), 'versionCheckPane');
 		$testVersionLink = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=testVersion&view=updatesMigration');
 		$installSampleLink = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=installSample&view=updatesMigration');
 		$updateVMTables10to11Link = JROUTE::_('index.php?option=com_virtuemart&controller=updatesMigration&task=updateVMTables10to11&view=updatesMigration');
@@ -18,23 +16,26 @@ AdminMenuHelper::startAdminArea();
 		$linkDeleteOnlyRestorable =JROUTE::_('index2.php?option=com_virtuemart&controller=updatesMigration&view=updatesMigration&task=deleteRestorable');
 		$linkDoNothing =JROUTE::_('index2.php');
 ?>
-      	
-		<table class="adminlist">
-		  <tr>
-		    <th class="title"><?php echo JText::_('VM_UPDATE_CHECK_VERSION_INSTALLED'); ?></th>
-		    <th class="title"><?php echo JText::_('VM_UPDATE_CHECK_LATEST_VERSION'); ?></th>
-		  </tr>
-		  <tr>
-		    <td style="color:grey;font-size:18pt;text-align:center;"><?php echo $this->JmVersion ?></td>
-		    <td id="updateversioncontainer" >
-		    	<img src="<?php echo VM_THEMEURL ?>images/indicator.gif" align="left" alt="<?php echo JText::_('VM_UPDATE_CHECK_CHECKING'); ?>" style="display:none;" id="checkingindicator" />
-		    	<input name="checkbutton" id="checkbutton" type="button" value="<?php echo JText::_('VM_UPDATE_CHECK_CHECKNOW'); ?>" onclick="performUpdateCheck();" style="<?php echo $checkbutton_style ?>font-weight:bold;" />
-		    	<input name="downloadbutton" id="downloadbutton" type="submit" value="<?php echo JText::_('VM_UPDATE_CHECK_DLUPDATE'); ?>" style="<?php echo $downloadbutton_style ?>font-weight:bold;" />
-		    	<span id="versioncheckresult"><?php echo JRequest::getVar( 'vmLatestVersion' ) ?></span>
-		    </td>
-		    
-		  </tr>
-		</table>
+    <br />
+	<table class="adminlist">	
+	<tr>
+		<th class="title"><?php echo JText::_('VM_UPDATE_CHECK_VERSION_INSTALLED'); ?></th>
+	    <td style="color:grey;font-size:18pt;text-align:center;">
+	    	<?php echo VmConfig::getVar('version_release') . ' ' . VmConfig::getVar('version_dev_status'); ?>
+	    </td> 
+	</tr>
+	<tr>
+		<th class="title"><?php echo JText::_('VM_UPDATE_CHECK_LATEST_VERSION'); ?></th>
+	    <td id="updateversioncontainer" >
+	    	<img src="<?php echo VM_THEMEURL ?>images/indicator.gif" align="left" alt="<?php echo JText::_('VM_UPDATE_CHECK_CHECKING'); ?>" style="display:none;" id="checkingindicator" />
+	    	<input name="checkbutton" id="checkbutton" type="button" value="<?php echo JText::_('VM_UPDATE_CHECK_CHECKNOW'); ?>" onclick="performUpdateCheck();" style="<?php echo $checkbutton_style ?>font-weight:bold;" />
+	    	<input name="downloadbutton" id="downloadbutton" type="submit" value="<?php echo JText::_('VM_UPDATE_CHECK_DLUPDATE'); ?>" style="<?php echo $downloadbutton_style ?>font-weight:bold;" />
+	    	<span id="versioncheckresult"><?php echo JRequest::getVar( 'vmLatestVersion' ) ?></span>
+	    </td> 		
+	</tr>	
+	</table>
+		
+		
 		<br />
 		<a href="<?php echo $testVersionLink; ?>">Test installed version by database tables</a><br />
 		<br />
@@ -45,13 +46,41 @@ AdminMenuHelper::startAdminArea();
 		<a href="<?php echo $updateVMTables11to15Link; ?>">Execute Update Tables 1.1 - 1.5</a><br />
 		<br />
 		<p><?php echo JText::_('VM_DELETE_GENERAL_WARNING'); ?></p>
+<<<<<<< .mine
+=======
 		<br />
 		<a href="<?php echo $linkDeleteALL; ?>">Uninstall All</a><br />
 		<br />
 		<a href="<?php echo $linkDeleteOnlyRestorable; ?>">Delete only restorable data</a><br />
+>>>>>>> .r2046
 		
-		<?php
-		echo $this->pane->endPanel();
+	<?php
+	echo $this->pane->endPanel();		
+	echo $this->pane->startPanel(JText::_('VM_UPDATE_CHECK_MIGRATE_TAB'), 'upload_patch');		
+	echo $this->pane->endPanel();		
+	echo $this->pane->startPanel(JText::_('VM_UPDATE_CHECK_TOOLS_TAB'), 'upload_patch');
+	?>		
+	<br />
+	<table class="adminlist">	
+	<tr>		
+		<td align="center">
+			<a onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesMigration&task=installSampleData'); ?>">
+				<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
+			</a>
+			<br />
+			Install Sample Data
+		</td>
+		<td align="center">
+			<a onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesMigration&task=installSampleData'); ?>">
+				<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
+			</a>
+			<br />
+			Remove Virtuemart Data
+		</td>		
+	</tr>
+	</table>	
+	<?php 
+	echo $this->pane->endPanel();
 		
 		echo $this->pane->startPanel( 'Upload a Patch', 'upload_patch' );
 		?>

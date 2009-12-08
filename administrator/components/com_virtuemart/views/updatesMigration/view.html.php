@@ -3,7 +3,7 @@
  * UpdatesMigration View
  *
  * @package	VirtueMart
- * @subpackage Country
+ * @subpackage UpdatesMigration
  * @author Max Milbers
  * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
  */
@@ -18,8 +18,8 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'adminMenu.php');
  * @subpackage UpdatesMigration
  * @author Max Milbers
  */
-class VirtuemartViewUpdatesMigration extends JView {
-	
+class VirtuemartViewUpdatesMigration extends JView 
+{	
 	function display($tpl = null) {	
 		JToolBarHelper::title(  'Updating and data migration', 'vm_config_48');
 		
@@ -38,9 +38,10 @@ class VirtuemartViewUpdatesMigration extends JView {
 			
 			$vm_mainframe->addStyleDeclaration(".writable { color:green;}\n.unwritable { color:red;font-weight:bold; }");
 			
-			vmUpdate::stepBar(2);
+			//vmUpdate::stepBar(2);
 			$layout = 'update_preview';
-		}else{
+		}
+		else {
 			if( !empty( $_SESSION['vmLatestVersion'] ) && version_compare( $VMVERSION->RELEASE, $_SESSION['vmLatestVersion']) === -1 ) {
 				$checkbutton_style = 'display:none;';
 				$downloadbutton_style = '';
@@ -58,7 +59,7 @@ class VirtuemartViewUpdatesMigration extends JView {
 			$JmVersion = '1.0';
 			$this->assignRef('JmVersion', $JmVersion);
 			
-			vmUpdate::stepBar(1);
+			//vmUpdate::stepBar(1);
 			$layout = 'default';
 		}
 
