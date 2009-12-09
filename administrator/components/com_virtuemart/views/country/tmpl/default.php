@@ -30,10 +30,7 @@ AdminMenuHelper::startAdminArea();
 			</th>
 			<th width="20">
 				<?php echo JText::_( 'VM_COUNTRY_PUBLISH' ); ?>
-			</th>				
-			<th width="20">
-				<?php echo JText::_( 'E_REMOVE' ); ?>
-			</th>										
+			</th>													
 		</tr>
 		</thead>
 		<?php
@@ -45,7 +42,6 @@ AdminMenuHelper::startAdminArea();
 			$published = JHTML::_('grid.published', $row, $i);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=country&task=edit&cid[]=' . $row->country_id);
 			$statelink	= JROUTE::_('index.php?option=com_virtuemart&controller=state&view=state&country_id=' . $row->country_id);
-			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&controller=country&task=remove&cid[]=' . $row->country_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td width="10" align="right">
@@ -69,9 +65,6 @@ AdminMenuHelper::startAdminArea();
 				</td>	
 				<td align="center">
 					<?php echo $published; ?>
-				</td>	
-				<td align="center">
-					<?php echo JHTML::_('link', $deletelink, JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('VM_DELETE_MSG').'\');')) ?>
 				</td>				        																														
 			</tr>
 			<?php

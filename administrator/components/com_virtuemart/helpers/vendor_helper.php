@@ -55,11 +55,11 @@ class Vendor {
 	 */
 	function getVendorIdByUserId(&$userId, $ownerOnly=true) 
 	{				
-		if(empty ($userId)) return ;
+		if (empty ($userId)) return ;
 		$db = JFactory::getDBO();
 
 		/* Test if user has a vendorId*/
-		if ($ownerOnly){
+		if ($ownerOnly) {
 			$q = 'SELECT `vendor_id`, `user_is_vendor` FROM `#__vm_auth_user_vendor` `au` 
 				 LEFT JOIN `#__vm_user_info` `u` ON (au.user_id = u.user_id) WHERE `u`.`user_id`="' . $userId .'"';
 		}
@@ -73,7 +73,7 @@ class Vendor {
 			return $vendorId;
 		}
 		else {
-			$GLOBALS['vmLogger']->info( 'getVendorIdByUserId no vendorId found for '.$userId );
+			JError::raiseNotice(1, 'getVendorIdByUserId no vendor_id found for ' . $userId);
 			return 0;
 		}
 	}

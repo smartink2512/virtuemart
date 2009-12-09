@@ -21,6 +21,7 @@ $ -> Language fix or change
 
 
 -------------------- 1.5.0 Stable Release [Release date here] ------------------
+^ Landing page converted to MVC
 ^ Media handling converted to MVC
 ^ Product listing converted to MVC
 ^ Administrator menu converted to MVC helper

@@ -201,7 +201,7 @@ class VirtueMartModelUpdatesMigration extends JModel
 	 */		
 	function installSampleData($userId = null) 
 	{
-		if($userId == null) {
+		if ($userId == null) {
 			$userId = $this->determineStoreOwner();
 		}
 		
@@ -221,7 +221,7 @@ class VirtueMartModelUpdatesMigration extends JModel
 		$fields['city'] =  "Canangra";
 		$fields['state'] =  "72";
 		$fields['country'] =  "13";
-		if (!$this->storeUserInfo($fields)) {
+		if (!$this->storeSampleUserInfo($fields)) {
 			JError::raiseNotice(1, $this->getError());
 		}		
 
@@ -243,7 +243,7 @@ class VirtueMartModelUpdatesMigration extends JModel
 		$fields['vendor_terms_of_service'] =  "<h5>You haven''t configured any terms of service yet. Click <a href=administrator/index2.php?page=store.store_form&option=com_virtuemart>here</a> to change this text.</h5>";
 		$fields['vendor_url'] = JURI::root();		
 		$fields['vendor_name'] =  "Washupito";
-		if (!$this->storeVendor($fields)) {
+		if (!$this->storeSampleVendor($fields)) {
 			JError::raiseNotice(1, $this->getError());
 		}
 
@@ -258,7 +258,7 @@ class VirtueMartModelUpdatesMigration extends JModel
      * @author RickG	
      * @return boolean True is the save was successful, false otherwise. 
 	 */
-    function storeUserInfo($data) 
+    function storeSampleUserInfo($data) 
 	{
 		$table = $this->getTable('user_info');	
 	
@@ -269,10 +269,10 @@ class VirtueMartModelUpdatesMigration extends JModel
 		}
 
 		// Make sure the user info record is valid
-		if (!$table->check()) {
+		if (!$table->check()) {		
 			$this->setError($table->getError());
 			return false;	
-		}
+		}		
 		
 		// Save the user info record to the database
 		if (!$table->store()) {
@@ -290,7 +290,7 @@ class VirtueMartModelUpdatesMigration extends JModel
      * @author RickG	
      * @return boolean True is the save was successful, false otherwise. 
 	 */
-    function storeVendor($data) 
+    function storeSampleVendor($data) 
 	{
 		$table = $this->getTable('vendor');	
 	
