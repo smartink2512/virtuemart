@@ -21,10 +21,7 @@ AdminMenuHelper::startAdminArea();
 			</th>				
 			<th>
 				<?php echo JText::_( 'VM_CURRENCY_LIST_CODE' ); ?>
-			</th>									
-			<th width="20">
-				<?php echo JText::_( 'E_REMOVE' ); ?>
-			</th>										
+			</th>																		
 		</tr>
 		</thead>
 		<?php
@@ -38,7 +35,6 @@ AdminMenuHelper::startAdminArea();
 			$checked = JHTML::_('grid.id', $i, $row->currency_id);
 			$published = JHTML::_('grid.published', $row, $i);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=currency&task=edit&cid[]=' . $row->currency_id);
-			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&controller=currency&task=remove&cid[]=' . $row->currency_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td width="10">
@@ -52,10 +48,7 @@ AdminMenuHelper::startAdminArea();
 				</td>					
 				<td align="left">
 					<?php echo JText::_($row->currency_code); ?>
-				</td>				
-				<td align="center">
-					<?php echo JHTML::_('link', $deletelink, JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('VM_DELETE_MSG').'\');')) ?>
-				</td>				        																														
+				</td>							        																														
 			</tr>
 			<?php
 			$k = 1 - $k;

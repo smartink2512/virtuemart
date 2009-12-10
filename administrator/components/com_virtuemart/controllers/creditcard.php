@@ -76,9 +76,7 @@ class VirtuemartControllerCreditcard extends JController
 	 */
 	function cancel()
 	{
-		$msg = JText::_('Operation Canceled!!');
-		
-		$this->setRedirect('index.php?option=com_virtuemart&view=creditcard', $msg);
+		$this->setRedirect('index.php?option=com_virtuemart&view=creditcard');
 	}	
 	
 	

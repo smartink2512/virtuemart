@@ -29,7 +29,7 @@ AdminMenuHelper::startAdminArea();
 				<?php echo JText::_( 'VM_STATE_LIST_2_CODE' ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_( 'VM_COUNTRY_PUBLISH' ); ?>
+				<?php echo JText::_( 'PUBLISH' ); ?>
 			</th>													
 		</tr>
 		</thead>

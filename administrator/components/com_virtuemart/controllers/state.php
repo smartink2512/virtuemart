@@ -79,9 +79,7 @@ class VirtuemartControllerState extends JController
 	function cancel()
 	{
 		$data = JRequest::get( 'post' );
-		$msg = JText::_('Operation Canceled!!');
-		
-		$this->setRedirect('index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
+		$this->setRedirect('index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"]);
 	}	
 	
 	

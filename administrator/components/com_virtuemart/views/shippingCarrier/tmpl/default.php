@@ -21,10 +21,7 @@ AdminMenuHelper::startAdminArea();
 			</th>				
 			<th>
 				<?php echo JText::_( 'VM_CARRIER_LIST_ORDER_LBL' ); ?>
-			</th>									
-			<th width="20">
-				<?php echo JText::_( 'E_REMOVE' ); ?>
-			</th>										
+			</th>																		
 		</tr>
 		</thead>
 		<?php
@@ -37,7 +34,6 @@ AdminMenuHelper::startAdminArea();
 			$row->published = 1;
 			$checked = JHTML::_('grid.id', $i, $row->shipping_carrier_id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=shippingcarrier&task=edit&cid[]=' . $row->shipping_carrier_id);
-			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&controller=shippingcarrier&task=remove&cid[]=' . $row->shipping_carrier_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td width="10">
@@ -51,10 +47,7 @@ AdminMenuHelper::startAdminArea();
 				</td>					
 				<td align="left">
 					<?php echo JText::_($row->shipping_carrier_list_order); ?>
-				</td>				
-				<td align="center">
-					<?php echo JHTML::_('link', $deletelink, JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('VM_DELETE_MSG').'\');')) ?>
-				</td>				        																														
+				</td>							        																														
 			</tr>
 			<?php
 			$k = 1 - $k;

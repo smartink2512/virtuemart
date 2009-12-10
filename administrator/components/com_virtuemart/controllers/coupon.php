@@ -76,9 +76,7 @@ class VirtuemartControllerCoupon extends JController
 	 */
 	function cancel()
 	{
-		$msg = JText::_('Operation Canceled!!');
-		
-		$this->setRedirect('index.php?option=com_virtuemart&view=coupon', $msg);
+		$this->setRedirect('index.php?option=com_virtuemart&view=coupon');
 	}	
 	
 	

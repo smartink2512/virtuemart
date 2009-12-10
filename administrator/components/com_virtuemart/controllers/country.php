@@ -80,9 +80,7 @@ class VirtuemartControllerCountry extends JController
 	 */
 	function cancel()
 	{
-		$msg = JText::_('Operation Canceled!!');
-		
-		$this->setRedirect('index.php?option=com_virtuemart&view=country', $msg);
+		$this->setRedirect('index.php?option=com_virtuemart&view=country');
 	}	
 	
 	

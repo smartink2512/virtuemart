@@ -92,9 +92,7 @@ class VirtuemartControllerShippingRate extends JController
 	 */
 	function cancel()
 	{
-		$msg = JText::_('Operation Canceled!!');
-		
-		$this->setRedirect('index.php?option=com_virtuemart&view=shippingrate', $msg);
+		$this->setRedirect('index.php?option=com_virtuemart&view=shippingrate');
 	}	
 	
 	
