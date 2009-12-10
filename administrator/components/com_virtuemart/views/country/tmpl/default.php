@@ -21,13 +21,13 @@ AdminMenuHelper::startAdminArea();
 			</th>				
 			<th>
 				<?php echo JText::_( 'VM_ZONE_ASSIGN_CURRENT_LBL' ); ?>
-			</th>						
-			<th>
-				<?php echo JText::_( 'VM_COUNTRY_LIST_3_CODE' ); ?>
 			</th>	
 			<th>
 				<?php echo JText::_( 'VM_COUNTRY_LIST_2_CODE' ); ?>
-			</th>
+			</th>								
+			<th>
+				<?php echo JText::_( 'VM_COUNTRY_LIST_3_CODE' ); ?>
+			</th>	
 			<th width="20">
 				<?php echo JText::_( 'VM_COUNTRY_PUBLISH' ); ?>
 			</th>													
