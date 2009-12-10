@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_country` (
   `country_name` varchar(64) default NULL,
   `country_3_code` char(3) default NULL,
   `country_2_code` char(2) default NULL,
-  `published` tinyint(1) NOT NULL default '0',  
+  `published` tinyint(1) NOT NULL default '1',  
   PRIMARY KEY  (`country_id`),
   KEY `idx_country_name` (`country_name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Country records' AUTO_INCREMENT=245 ;
@@ -871,7 +871,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_state` (
   `state_name` varchar(64) default NULL,
   `state_3_code` char(3) default NULL,
   `state_2_code` char(2) default NULL,
-  `published` tinyint(1) NOT NULL default '0',
+  `published` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`state_id`),
   UNIQUE KEY `state_3_code` (`country_id`,`state_3_code`),
   UNIQUE KEY `state_2_code` (`country_id`,`state_2_code`),
