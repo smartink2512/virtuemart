@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access'); 
-
-$orderByFieldsArray = explode(',', $this->config->get('browse_orderby_fields')); 
+print_r($this->config->get('browse_orderby_fields'));
+$orderByFieldsArray = $this->config->get('browse_orderby_fields'); 
 ?> 
 <br />
 <fieldset class="adminform">
@@ -175,7 +175,7 @@ $orderByFieldsArray = explode(',', $this->config->get('browse_orderby_fields'));
        	<?php echo JText::_('VM_ADMIN_CFG_PRODUCTS_PER_ROW') ?>
     </td>
     <td>
-        <input type="text" name="conf_PRODUCTS_PER_ROW" size="4" class="inputbox" value="<?php echo $this->config->get('products_per_row') ?>" />
+        <input type="text" name="products_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('products_per_row') ?>" />
     </td>
 </tr>
 <tr>
@@ -185,7 +185,7 @@ $orderByFieldsArray = explode(',', $this->config->get('browse_orderby_fields'));
     </td>
     <td>
        	<?php
-       	echo JHTML::_('Select.genericlist', $this->templatelist, 'theme', 'size=1');
+       	echo JHTML::_('Select.genericlist', $this->templatelist, 'category_template', 'size=1');
        	?>
     </td>
 </tr>
@@ -221,7 +221,7 @@ if( function_exists('imagecreatefromjpeg') ) {
        	<?php echo JText::_('VM_ADMIN_CFG_THUMBNAIL_WIDTH') ?>
     </td>
     <td>
-        <input type="text" name="conf_PSHOP_IMG_WIDTH" class="inputbox" value="<?php echo $this->config->get('img_width') ?>" />
+        <input type="text" name="img_width" class="inputbox" value="<?php echo $this->config->get('img_width') ?>" />
 	</td>
 </tr>
 <tr>
@@ -230,7 +230,7 @@ if( function_exists('imagecreatefromjpeg') ) {
        	<?php echo JText::_('VM_ADMIN_CFG_THUMBNAIL_HEIGHT') ?>
     </td>
     <td>
-        <input type="text" name="conf_PSHOP_IMG_HEIGHT" class="inputbox" value="<?php echo $this->config->get('img_height') ?>" />
+        <input type="text" name="img_height" class="inputbox" value="<?php echo $this->config->get('img_height') ?>" />
     </td>
 </tr>
 <?php
