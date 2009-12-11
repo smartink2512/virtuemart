@@ -57,6 +57,7 @@ class VirtueMartModelConfig extends JModel
 	{		
 		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
 		$dir .= DS.VmConfig::getVar('theme').DS.'templates'.DS.'browse';		
+		echo ($dir);
 		$result = '';
 		
 		if ($handle = opendir($dir)) {
@@ -141,6 +142,65 @@ class VirtueMartModelConfig extends JModel
 		$db->setQuery($query);
 		
 		return $db->loadObjectList();
-	}		
+	}
+	
+	
+	/**
+	 * Retrieve the configuration record
+	 * 
+     * @author RickG	 
+	 * @return object A JParameter of the configuration
+	 */
+	function getConfig() {
+		$db = JFactory::getDBO();
+		
+		$query = "SELECT `config` FROM `#__vm_config` WHERE `config_id` = 1";
+		$db->setQuery($query);
+		$config = $db->loadResult();
+		if ($config) {
+			$params = new JParameter($config);
+		}
+		else {
+			$params = new JParameter('');
+			$params->set('store_name', 'My Super Store');
+			$params->set('currency', 'EUR');
+		
+			$q = "INSERT INTO jos_vm_config (config) VALUES(".$db->Quote($params->toString()).")";
+			$db->setQuery($q);
+			$db->query();
+			echo $db->getErrorMsg();
+		}
+		
+		return $params;
+	}
+	
+	
+	/**
+	 * Save the configuration record
+	 * 
+     * @author RickG	 
+	 * @return boolean True is successful, false otherwise
+	 */
+	function store($data) 
+	{
+		if ($data) {
+			$curConfigParams = $this->getConfig();
+			$curConfigParams->bind($data);
+			
+			$db = JFactory::getDBO();		
+			$query = "UPDATE #__vm_config SET config = " . $db->Quote($curConfigParams->toString());
+			$db->setQuery($query);
+			if (!$db->query()) {
+				$this->setError($table->getError());
+				return false;
+			}
+		}
+		else {
+			$this->setError('No configuration parameters to save!');
+			return false;
+		}
+		
+		return true;
+	}	
 }
 ?>

@@ -21,14 +21,17 @@ class VirtuemartViewConfig extends JView
 {
 	
 	function display($tpl = null)
-	{	
-		$model =& $this->getModel();
+	{
+		$model = $this->getModel();
 
 		JToolBarHelper::title(JText::_('VM_CONFIG'), 'vm_config_48');
 		JToolBarHelper::divider();
 		JToolBarHelper::save();
 		JToolBarHelper::apply();
 		JToolBarHelper::cancel('cancel', 'Close');
+	
+		$config = $model->getConfig();
+		$this->assignRef('config', $config);			
 	
 		$mainframe = JFactory::getApplication();
 		$this->assignRef('joomlaconfig', $mainframe);

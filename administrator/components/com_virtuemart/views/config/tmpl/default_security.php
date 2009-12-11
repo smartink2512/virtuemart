@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td class="labelcell">Site URL</td>
 			<td>
-				<input size="40" type="text" name="url" class="inputbox" value="<?php echo JText::_(VmConfig::getVar('url')); ?>" />
+				<input size="40" type="text" name="url" class="inputbox" value="<?php echo JText::_($this->config->get('url')); ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -19,7 +19,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('VM_ADMIN_CFG_URLSECURE') ?>
 			</td>
 			<td>
-				<input size="40" type="text" name="secureurl" class="inputbox" value="<?php echo JText::_(VmConfig::getVar('secureurl')); ?>" />
+				<input size="40" type="text" name="secureurl" class="inputbox" value="<?php echo JText::_($this->config->get('secureurl')); ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 				<?php
 				$checked = '';
-				if (VmConfig::getVar('generally_prevent_https')) $checked = 'checked="checked"'; ?>
+				if ($this->config->get('generally_prevent_https')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="generally_prevent_https" value="1" <?php echo $checked; ?> />
 			</td>
 			<td class="key">
@@ -73,14 +73,14 @@ defined('_JEXEC') or die('Restricted access');
 				<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_ENCRYPTION_KEY_TIP'); ?>">
 				<?php echo JText::_('VM_ADMIN_ENCRYPTION_KEY') ?>&nbsp;&nbsp;</td>
 			<td>
-				<input type="text" name="conf_ENCODE_KEY" class="inputbox" value="<?php echo JText::_(VmConfig::getVar('encode_key')); ?>" />
+				<input type="text" name="conf_ENCODE_KEY" class="inputbox" value="<?php echo JText::_($this->config->get('encode_key')); ?>" />
 			</td>
 		</tr>
 		<tr>
 			<td>
 				<?php
 				$checked = '';
-				if (VmConfig::getVar('store_creditcard_data')) $checked = 'checked="checked"'; ?>
+				if ($this->config->get('store_creditcard_data')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="store_creditcard_data" value="1" <?php echo $checked; ?> />
 			</td>			
 			<td>
@@ -96,7 +96,7 @@ defined('_JEXEC') or die('Restricted access');
 		  	<td>
 				<?php
 				$checked = '';
-				if (VmConfig::getVar('allow_frontendadminfor_nonbackenders')) $checked = 'checked="checked"'; ?>
+				if ($this->config->get('allow_frontendadminfor_nonbackenders')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="allow_frontendadminfor_nonbackenders" value="1" <?php echo $checked; ?> />
 			</td>	
 			<td>
@@ -107,7 +107,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 	  	}
 	  	else {
-	  		echo '<input type="hidden" name="allow_frontendadminfor_nonbackenders" value="'.VmConfig::getVar('allow_frontendadminfor_nonbackenders').'" />';
+	  		echo '<input type="hidden" name="allow_frontendadminfor_nonbackenders" value="'.$this->config->get('allow_frontendadminfor_nonbackenders').'" />';
 	  	}
 		?>
 		</table>    	
@@ -124,7 +124,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('VM_ADMIN_CFG_TABLEPREFIX') ?>
 			</td>
 			<td>
-				<input size="40" type="text" name="conf_VM_TABLEPREFIX" class="inputbox" value="<?php echo JText::_(VmConfig::getVar('table_prefix')); ?>" readonly="readonly" />
+				<input size="40" type="text" name="conf_VM_TABLEPREFIX" class="inputbox" value="<?php echo JText::_($this->config->get('table_prefix')); ?>" readonly="readonly" />
 			</td>
 		</tr>
 		<tr>
@@ -136,7 +136,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('VM_ADMIN_CFG_HOMEPAGE') ?>
 			</td>
 			<td>
-				<input type="text" name="conf_HOMEPAGE" class="inputbox" value="<?php echo JText::_(VmConfig::getVar('homepage')); ?>" />
+				<input type="text" name="conf_HOMEPAGE" class="inputbox" value="<?php echo JText::_($this->config->get('homepage')); ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -145,7 +145,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('VM_ADMIN_CFG_ERRORPAGE') ?>
 			</td>
 			<td>
-				<input type="text" name="conf_ERRORPAGE" class="inputbox" value="<?php echo JText::_(VmConfig::getVar('errorpage')); ?>" />
+				<input type="text" name="conf_ERRORPAGE" class="inputbox" value="<?php echo JText::_($this->config->get('errorpage')); ?>" />
 			</td>
 		</tr>
 	</table>
@@ -160,7 +160,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('VM_ADMIN_CFG_PROXY_URL') ?>
 			</td>
 			<td>
-				<input size="40" type="text" name="conf_VM_PROXY_URL" class="inputbox" value="<?php JText::_(VmConfig::getVar('proxy_url')); ?>" />
+				<input size="40" type="text" name="conf_VM_PROXY_URL" class="inputbox" value="<?php JText::_($this->config->get('proxy_url')); ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -169,7 +169,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('VM_ADMIN_CFG_PROXY_PORT') ?>
 			</td>
 			<td>
-				<input type="text" name="conf_VM_PROXY_PORT" class="inputbox" value="<?php echo JText::_(VmConfig::getVar('proxy_port')); ?>" />
+				<input type="text" name="conf_VM_PROXY_PORT" class="inputbox" value="<?php echo JText::_($this->config->get('proxy_port')); ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -178,7 +178,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('VM_ADMIN_CFG_PROXY_USER') ?>
 			</td>
 			<td>
-				<input type="text" name="conf_VM_PROXY_USER" class="inputbox" value="<?php echo JText::_(VmConfig::getVar('proxy_user'));; ?>" />
+				<input type="text" name="conf_VM_PROXY_USER" class="inputbox" value="<?php echo JText::_($this->config->get('proxy_user'));; ?>" />
 			</td>
 		</tr>
 		<tr>
@@ -187,7 +187,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('VM_ADMIN_CFG_PROXY_PASS') ?>
 			</td>
 			<td>
-				<input autocomplete="off" type="password" name="conf_VM_PROXY_PASS" class="inputbox" value="<?php echo JText::_(VmConfig::getVar('proxy_pass'));; ?>" />
+				<input autocomplete="off" type="password" name="conf_VM_PROXY_PASS" class="inputbox" value="<?php echo JText::_($this->config->get('proxy_pass'));; ?>" />
 			</td>
 		</tr>
 	</table>

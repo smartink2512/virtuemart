@@ -30,7 +30,7 @@ AdminMenuHelper::startAdminArea();
 	    	<img src="<?php echo VM_THEMEURL ?>images/indicator.gif" align="left" alt="<?php echo JText::_('VM_UPDATE_CHECK_CHECKING'); ?>" style="display:none;" id="checkingindicator" />
 	    	<input name="checkbutton" id="checkbutton" type="button" value="<?php echo JText::_('VM_UPDATE_CHECK_CHECKNOW'); ?>" onclick="performUpdateCheck();" style="<?php echo $checkbutton_style ?>font-weight:bold;" />
 	    	<input name="downloadbutton" id="downloadbutton" type="submit" value="<?php echo JText::_('VM_UPDATE_CHECK_DLUPDATE'); ?>" style="<?php echo $downloadbutton_style ?>font-weight:bold;" />
-	    	<span id="versioncheckresult"><?php echo JRequest::getVar( 'vmLatestVersion' ) ?></span>
+	    	<span id="versioncheckresult"><?php echo $this->latestVersion; ?></span>
 	    </td> 		
 	</tr>	
 	</table>

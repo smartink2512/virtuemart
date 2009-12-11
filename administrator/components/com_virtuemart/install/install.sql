@@ -1,6 +1,16 @@
 -- VirtueMart table SQL script
 -- This will install all the tables need to run VirtueMart
 
+--
+-- Table structure for table `#__vm_config`
+--
+CREATE TABLE IF NOT EXISTS `#__vm_config` (
+	`config_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`config` TEXT NULL,
+	PRIMARY KEY (`config_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds configuration settings';
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `#__vm_auth_group`
@@ -11,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_auth_group` (
   `group_name` varchar(128) default NULL,
   `group_level` int(11) default NULL,
   PRIMARY KEY  (`group_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds all the user groups' AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds all the user groups';
 
 -- --------------------------------------------------------
 
@@ -133,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_coupons` (
   `coupon_expiry_date` datetime default NULL,
   `coupon_value_valid` decimal(12,2) NOT NULL default '0.00',
   PRIMARY KEY  (`coupon_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Used to store coupon codes' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Used to store coupon codes';
 
 -- --------------------------------------------------------
 
@@ -147,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_creditcard` (
   `creditcard_name` varchar(70) NOT NULL default '',
   `creditcard_code` varchar(30) NOT NULL default '',
   PRIMARY KEY  (`creditcard_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store credit card types' AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store credit card types';
 
 -- --------------------------------------------------------
 
@@ -161,7 +171,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_currency` (
   `currency_code` char(3) default NULL,
   PRIMARY KEY  (`currency_id`),
   KEY `idx_currency_name` (`currency_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store currencies' AUTO_INCREMENT=159 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store currencies';
 
 -- --------------------------------------------------------
 
@@ -180,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_function` (
   PRIMARY KEY  (`function_id`),
   KEY `idx_function_module_id` (`module_id`),
   KEY `idx_function_name` (`function_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to map a function alias to a ''real'' class::function' AUTO_INCREMENT=198 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to map a function alias to a ''real'' class::function';
 
 -- --------------------------------------------------------
 
@@ -198,7 +208,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_manufacturer` (
   `mf_thumb_image` varchar(255) default NULL,
   `mf_full_image` varchar(255) default NULL,
   PRIMARY KEY  (`manufacturer_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are those who create products' AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are those who create products';
 
 -- --------------------------------------------------------
 
@@ -212,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_manufacturer_category` (
   `mf_category_desc` text,
   PRIMARY KEY  (`mf_category_id`),
   KEY `idx_manufacturer_category_category_name` (`mf_category_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are assigned to these categories' AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are assigned to these categories';
 
 -- --------------------------------------------------------
 
@@ -234,7 +244,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_menu_admin` (
   `view` varchar(255) default NULL,
   `task` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Administration Menu Items' AUTO_INCREMENT=75 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Administration Menu Items';
 
 -- --------------------------------------------------------
 
@@ -253,7 +263,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_module` (
   PRIMARY KEY  (`module_id`),
   KEY `idx_module_name` (`module_name`),
   KEY `idx_module_list_order` (`list_order`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='VirtueMart Core Modules, not: Joomla modules' AUTO_INCREMENT=12844 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='VirtueMart Core Modules, not: Joomla modules';
 
 -- --------------------------------------------------------
 
@@ -289,7 +299,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_orders` (
   KEY `idx_orders_order_number` (`order_number`),
   KEY `idx_orders_user_info_id` (`user_info_id`),
   KEY `idx_orders_ship_method_id` (`ship_method_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Used to store all orders' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Used to store all orders';
 
 -- --------------------------------------------------------
 
@@ -305,7 +315,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_history` (
   `customer_notified` int(1) default '0',
   `comments` text,
   PRIMARY KEY  (`order_status_history_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores all actions and changes that occur to an order' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores all actions and changes that occur to an order';
 
 -- --------------------------------------------------------
 
@@ -333,7 +343,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_item` (
   KEY `idx_order_item_order_id` (`order_id`),
   KEY `idx_order_item_user_info_id` (`user_info_id`),
   KEY `idx_order_item_vendor_id` (`vendor_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores all items (products) which are part of an order' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores all items (products) which are part of an order';
 
 -- --------------------------------------------------------
 
@@ -370,7 +380,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_status` (
   PRIMARY KEY  (`order_status_id`),
   KEY `idx_order_status_list_order` (`list_order`),
   KEY `idx_order_status_vendor_id` (`vendor_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='All available order statuses' AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='All available order statuses';
 
 -- --------------------------------------------------------
 
@@ -412,7 +422,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_user_info` (
   `bank_account_type` enum('Checking','Business Checking','Savings') NOT NULL default 'Checking',
   PRIMARY KEY  (`order_info_id`),
   KEY `idx_order_info_order_id` (`order_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores the BillTo and ShipTo Information at order time' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores the BillTo and ShipTo Information at order time';
 
 -- --------------------------------------------------------
 
@@ -443,7 +453,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_payment_method` (
   KEY `idx_payment_method_name` (`name`),
   KEY `idx_payment_method_list_order` (`ordering`),
   KEY `idx_payment_method_shopper_group_id` (`shopper_group_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The payment methods of your store' AUTO_INCREMENT=17 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The payment methods of your store';
 
 -- --------------------------------------------------------
 
@@ -467,7 +477,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_plugins` (
   `secrets` blob NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `idx_folder` (`published`,`vendor_id`,`folder`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -538,7 +548,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_attribute` (
   PRIMARY KEY  (`attribute_id`),
   KEY `idx_product_attribute_product_id` (`product_id`),
   KEY `idx_product_attribute_name` (`attribute_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Stores attributes + their specific values for Child Products' AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Stores attributes + their specific values for Child Products';
 
 -- --------------------------------------------------------
 
@@ -583,7 +593,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_discount` (
   `start_date` int(11) NOT NULL default '0',
   `end_date` int(11) NOT NULL default '0',
   PRIMARY KEY  (`discount_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Discounts that can be assigned to products' AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Discounts that can be assigned to products';
 
 -- --------------------------------------------------------
 
@@ -624,7 +634,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_files` (
   `file_image_thumb_height` int(11) NOT NULL default '50',
   `file_image_thumb_width` int(11) NOT NULL default '0',
   PRIMARY KEY  (`file_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Additional Images and Files which are assigned to products' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Additional Images and Files which are assigned to products';
 
 -- --------------------------------------------------------
 
@@ -660,7 +670,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_price` (
   PRIMARY KEY  (`product_price_id`),
   KEY `idx_product_price_product_id` (`product_id`),
   KEY `idx_product_price_shopper_group_id` (`shopper_group_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds price records for a product' AUTO_INCREMENT=17 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds price records for a product';
 
 -- --------------------------------------------------------
 
@@ -705,7 +715,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_reviews` (
   `published` char(1) NOT NULL default 'Y',
   PRIMARY KEY  (`review_id`),
   UNIQUE KEY `product_id` (`product_id`,`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -722,7 +732,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_type` (
   `product_type_flypage` varchar(255) default NULL,
   `product_type_list_order` int(11) default NULL,
   PRIMARY KEY  (`product_type_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -772,7 +782,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_shipping_carrier` (
   `shipping_carrier_name` char(80) NOT NULL default '',
   `shipping_carrier_list_order` int(11) NOT NULL default '0',
   PRIMARY KEY  (`shipping_carrier_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shipping Carriers as used by the Standard Shipping Module' AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shipping Carriers as used by the Standard Shipping Module';
 
 -- --------------------------------------------------------
 
@@ -822,7 +832,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_shipping_rate` (
   `shipping_rate_vat_id` int(11) NOT NULL default '0',
   `shipping_rate_list_order` int(11) NOT NULL default '0',
   PRIMARY KEY  (`shipping_rate_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shipping Rates, used by the Standard Shipping Module' AUTO_INCREMENT=22 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shipping Rates, used by the Standard Shipping Module';
 
 -- --------------------------------------------------------
 
@@ -841,7 +851,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_shopper_group` (
   PRIMARY KEY  (`shopper_group_id`),
   KEY `idx_shopper_group_vendor_id` (`vendor_id`),
   KEY `idx_shopper_group_name` (`shopper_group_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shopper Groups that users can be assigned to' AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shopper Groups that users can be assigned to';
 
 -- --------------------------------------------------------
 
@@ -876,7 +886,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_state` (
   UNIQUE KEY `state_3_code` (`country_id`,`state_3_code`),
   UNIQUE KEY `state_2_code` (`country_id`,`state_2_code`),
   KEY `idx_country_id` (`country_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='States that are assigned to a country' AUTO_INCREMENT=473 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='States that are assigned to a country';
 
 -- --------------------------------------------------------
 
@@ -893,7 +903,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_tax_rate` (
   `tax_rate` decimal(10,5) default NULL,
   PRIMARY KEY  (`tax_rate_id`),
   KEY `idx_tax_rate_vendor_id` (`vendor_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The tax rates for your store' AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The tax rates for your store';
 
 -- --------------------------------------------------------
 
@@ -925,7 +935,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_userfield` (
   `vendor_id` int(11) default NULL,
   `params` mediumtext,
   PRIMARY KEY  (`fieldid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds the fields for the user information' AUTO_INCREMENT=36 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds the fields for the user information';
 
 -- --------------------------------------------------------
 
@@ -941,7 +951,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_userfield_values` (
   `ordering` int(11) NOT NULL default '0',
   `sys` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`fieldvalueid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds the different values for dropdown and radio lists' AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds the different values for dropdown and radio lists';
 
 -- --------------------------------------------------------
 
@@ -1017,7 +1027,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_vendor` (
   PRIMARY KEY  (`vendor_id`),
   KEY `idx_vendor_name` (`vendor_name`),
   KEY `idx_vendor_category_id` (`vendor_category_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Vendors manage their products in your store' AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Vendors manage their products in your store';
 
 -- --------------------------------------------------------
 
@@ -1031,7 +1041,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_vendor_category` (
   `vendor_category_desc` text,
   PRIMARY KEY  (`vendor_category_id`),
   KEY `idx_vendor_category_category_name` (`vendor_category_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The categories that vendors are assigned to' AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The categories that vendors are assigned to';
 
 -- --------------------------------------------------------
 
@@ -1049,7 +1059,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_waiting_list` (
   PRIMARY KEY  (`waiting_list_id`),
   KEY `product_id` (`product_id`),
   KEY `notify_email` (`notify_email`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores notifications, users waiting f. products out of stock' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Stores notifications, users waiting f. products out of stock';
 
 -- --------------------------------------------------------
 
@@ -1065,7 +1075,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_zone_shipping` (
   `zone_description` text NOT NULL,
   `zone_tax_rate` int(11) NOT NULL default '0',
   PRIMARY KEY  (`zone_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The Zones managed by the Zone Shipping Module' AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The Zones managed by the Zone Shipping Module';
 
 --
 -- Tabellenstruktur für Tabelle `jos_vm_calc`

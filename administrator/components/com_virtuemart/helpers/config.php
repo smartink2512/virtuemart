@@ -9,20 +9,24 @@
  * @author RickG
  * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
  */
+defined('_JEXEC') or die('Restricted access');
 
 class VmConfig 
 {
 	/**
-	 * Load the configuration values from the INI file into a session variable.
+	 * Load the configuration values from the database into a session variable.
+	 * This step is done to prevent accessing the database for every configuration variable lookup.
 	 *
 	 * @author RickG
 	 */
-	function loadConfig() {   	
-		$ini_array = parse_ini_file(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.ini');
-		$ini_array['checkout_steps'] = explode(',', $ini_array['checkout_steps']); 		
-		
-		$session = &JFactory::getSession();
-		$session->set("vmconfig", $ini_array);
+	function loadConfig() {  
+		$db = JFactory::getDBO();
+		$query = "SELECT `config` FROM `#__vm_config` WHERE `config_id` = 1";
+		$db->setQuery($query);
+		$config = $db->loadResult();
+	
+		$session = JFactory::getSession();
+		$session->set("vmconfig", $config);
 	}
 	
 	
@@ -37,22 +41,43 @@ class VmConfig
 	{
 		$value = '';
 		if ($key) {
-			$session = &JFactory::getSession();
+			$session = JFactory::getSession();
 			$config = $session->get('vmconfig', '');
 			
 			if (!$config) { 
-				echo 'Loading Config';
 				VmConfig::loadConfig();
 				$config = $session->get('vmconfig', '');
 			}			
 				
 			if ($config) {
-				$value = $config[$key];
+				$params = new JParameter($config);
+				$value = $params->get($key);				
 			}
 		}	
 		
 		return $value;
 	}
+	
+	
+	/**
+	 * Find the currenlty installed version
+	 *
+	 * @author RickG
+	 * @param boolean $includeDevStatus True to include the development status
+	 * @return String of the currently installed version
+	 */	
+	function getInstalledVersion($includeDevStatus=false)
+	{
+		// Get the installed version from the XML file
+		$xmlParser = JFactory::getXMLParser('Simple');
+		$xmlParser->loadFile(JPATH_COMPONENT_ADMINISTRATOR.DS.'virtuemart.xml');
+		$version = $xmlParser->document->getElementByPath('version')->data();
+		if ($includeDevStatus) {
+			$version .= ' ' . $xmlParser->document->getElementByPath('version')->attributes('status');
+		}
+		
+		return $version;	
+	}	
 	
 }
 ?>

@@ -24,47 +24,23 @@ require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.D
 class VirtueMartModelUpdatesMigration extends JModel
 {      
 	/**
-	 * Parse a sql file executing each sql statement found.
+	 * Checks the VirtueMart Server for the latest available Version of VirtueMart
 	 *
-	 * @author Max Milbers
-	 */    
-	function execSQLFile($sqlfile) 
-	{ 
-		// Check that sql files exists before reading. Otherwise raise error for rollback
-		if ( !file_exists($sqlfile) ) {
-			return false;
-		}
-		$buffer = file_get_contents($sqlfile);
-
-		// Graceful exit and rollback if read not successful
-		if ( $buffer == false ) {
-			return false;
-		}
-
-		// Create an array of queries from the sql file
-		jimport('joomla.installer.helper');
-		$queries = JInstallerHelper::splitSql($buffer);
-
-		if (count($queries) == 0) {
-			// No queries to process
-			return 0;
-		}
-		$db = JFactory::getDBO();
-		// Process each query in the $queries array (split out of sql file).
-		foreach ($queries as $query)
-		{
-			$query = trim($query);
-			if ($query != '' && $query{0} != '#') {
-				$db->setQuery($query);
-				if (!$db->query()) {
-					JError::raiseWarning(1, 'JInstaller::install: '.JText::_('SQL Error')." ".$db->stderr(true));
-					return false;
-				}
-			}
-		}
-			      
-    	return true; 
-	}    
+	 * @return string Example: 1.1.2
+	 */
+	function getLatestVersion() {
+		//if (!empty($_SESSION['vmLatestVersion'])) {
+	//		return $_SESSION['vmLatestVersion'];
+	//	}
+	//	$VMVERSION =& new vmVersion();
+		$url = "http://virtuemart.orgindex2.php?option=com_versions&catid=1&myVersion={".VmConfig::getVar('version_release')."}&task=latestversionastext";
+		$result = vmConnector::handleCommunication($url);
+		//if ($result !== false) {
+		//	// Cache the result for later use
+	//		$_SESSION['vmLatestVersion'] = $result;
+	//	}
+		return $result; 
+	}		   
 	
 	
 	/**
@@ -314,5 +290,52 @@ class VirtueMartModelUpdatesMigration extends JModel
 		
 		return true;
 	}	
+	
+	
+	
+	
+	
+	/**
+	 * Parse a sql file executing each sql statement found.
+	 *
+	 * @author Max Milbers
+	 */    
+	function execSQLFile($sqlfile) 
+	{ 
+		// Check that sql files exists before reading. Otherwise raise error for rollback
+		if ( !file_exists($sqlfile) ) {
+			return false;
+		}
+		$buffer = file_get_contents($sqlfile);
+
+		// Graceful exit and rollback if read not successful
+		if ( $buffer == false ) {
+			return false;
+		}
+
+		// Create an array of queries from the sql file
+		jimport('joomla.installer.helper');
+		$queries = JInstallerHelper::splitSql($buffer);
+
+		if (count($queries) == 0) {
+			// No queries to process
+			return 0;
+		}
+		$db = JFactory::getDBO();
+		// Process each query in the $queries array (split out of sql file).
+		foreach ($queries as $query)
+		{
+			$query = trim($query);
+			if ($query != '' && $query{0} != '#') {
+				$db->setQuery($query);
+				if (!$db->query()) {
+					JError::raiseWarning(1, 'JInstaller::install: '.JText::_('SQL Error')." ".$db->stderr(true));
+					return false;
+				}
+			}
+		}
+			      
+    	return true; 
+	} 	
 }
 ?>

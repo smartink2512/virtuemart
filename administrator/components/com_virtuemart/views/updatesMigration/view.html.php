@@ -42,24 +42,20 @@ class VirtuemartViewUpdatesMigration extends JView
 			$layout = 'update_preview';
 		}
 		else {
-			if( !empty( $_SESSION['vmLatestVersion'] ) && version_compare( $VMVERSION->RELEASE, $_SESSION['vmLatestVersion']) === -1 ) {
+			$model = $this->getModel();
+	/*		$latestVersion = $model->getLatestVersion();
+			$this->assignRef('latestVersion', $latestVersion);
+			
+			if (!empty($latestVersion) && version_compare(VmConfig::getVar('version_release'), $latestVersion) === -1) {
 				$checkbutton_style = 'display:none;';
 				$downloadbutton_style = '';
 			} else {
 				$checkbutton_style = '';
 				$downloadbutton_style = 'display:none;';
-			}
+			}*/
 			$this->assignRef('checkbutton_style', $checkbutton_style);
 			$this->assignRef('downloadbutton_style', $downloadbutton_style);
-			
-			//TODO Just for now, will be changed anyway
-//			include( ADMINPATH.'version.php');
-//			$JmVersion = $this->VMVERSION -> shortversion;
-//			echo $JmVersion;
-			$JmVersion = '1.0';
-			$this->assignRef('JmVersion', $JmVersion);
-			
-			//vmUpdate::stepBar(1);
+
 			$layout = 'default';
 		}
 

@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access'); 
 
-$orderByFieldsArray = explode(',', VmConfig::getVar('browse_orderby_fields')); 
+$orderByFieldsArray = explode(',', $this->config->get('browse_orderby_fields')); 
 ?> 
 <br />
 <table>
@@ -17,7 +17,7 @@ $orderByFieldsArray = explode(',', VmConfig::getVar('browse_orderby_fields'));
 			<td>
 				<?php
 				$checked = '';
-				if (VmConfig::getVar('enable_pdf_button')) $checked = 'checked="checked"'; ?>
+				if ($this->config->get('enable_pdf_button')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="enable_pdf_button" value="1" <?php echo $checked; ?> />
 			</td>
     	</tr>
@@ -29,7 +29,7 @@ $orderByFieldsArray = explode(',', VmConfig::getVar('browse_orderby_fields'));
         	<td>
         		<?php
 				$checked = '';
-				if (VmConfig::getVar('show_emailfriend')) $checked = 'checked="checked"'; ?>
+				if ($this->config->get('show_emailfriend')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="show_emailfriend" value="1" <?php echo $checked; ?> />
         	</td>
     	</tr>
@@ -40,7 +40,7 @@ $orderByFieldsArray = explode(',', VmConfig::getVar('browse_orderby_fields'));
         <td>
         	<?php
 			$checked = '';
-			if (VmConfig::getVar('show_print_button')) $checked = 'checked="checked"'; ?>
+			if ($this->config->get('show_print_button')) $checked = 'checked="checked"'; ?>
 			<input type="checkbox" name="show_print_button" value="1" <?php echo $checked; ?> />        	
         </td>
     </tr>
@@ -51,7 +51,7 @@ $orderByFieldsArray = explode(',', VmConfig::getVar('browse_orderby_fields'));
         <td>
         	<?php
 			$checked = '';
-			if (VmConfig::getVar('show_top_pagenav')) $checked = 'checked="checked"'; ?>
+			if ($this->config->get('show_top_pagenav')) $checked = 'checked="checked"'; ?>
 			<input type="checkbox" name="show_top_pagenav" value="1" <?php echo $checked; ?> />
         </td>
     </tr>
@@ -118,7 +118,7 @@ $orderByFieldsArray = explode(',', VmConfig::getVar('browse_orderby_fields'));
 		<td>
 			<?php
 			$checked = '';
-			if (VmConfig::getVar('show_products_in_category')) $checked = 'checked="checked"'; ?>
+			if ($this->config->get('show_products_in_category')) $checked = 'checked="checked"'; ?>
 			<input type="checkbox" name="show_products_in_category" value="1" <?php echo $checked; ?> />
 		</td>        	
     </tr>
@@ -144,7 +144,7 @@ $orderByFieldsArray = explode(',', VmConfig::getVar('browse_orderby_fields'));
         <td>
         	<?php
 			$checked = '';
-			if (VmConfig::getVar('show_footer')) $checked = 'checked="checked"'; ?>
+			if ($this->config->get('show_footer')) $checked = 'checked="checked"'; ?>
 			<input type="checkbox" name="show_footer" value="1" <?php echo $checked; ?> />
         </td>
     </tr>
@@ -177,7 +177,7 @@ $orderByFieldsArray = explode(',', VmConfig::getVar('browse_orderby_fields'));
         	<?php echo JText::_('VM_ADMIN_CFG_PRODUCTS_PER_ROW') ?>
         </td>
         <td>
-            <input type="text" name="conf_PRODUCTS_PER_ROW" size="4" class="inputbox" value="<?php echo VmConfig::getVar('products_per_row') ?>" />
+            <input type="text" name="conf_PRODUCTS_PER_ROW" size="4" class="inputbox" value="<?php echo $this->config->get('products_per_row') ?>" />
         </td>
     </tr>
     <tr>
@@ -213,7 +213,7 @@ $orderByFieldsArray = explode(',', VmConfig::getVar('browse_orderby_fields'));
 			<td>
 				<?php
 				$checked = '';
-				if (VmConfig::getVar('img_resize_enable')) $checked = 'checked="checked"'; ?>
+				if ($this->config->get('img_resize_enable')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="img_resize_enable" value="1" <?php echo $checked; ?> />
 			</td> 	        
 	    </tr>
@@ -223,7 +223,7 @@ $orderByFieldsArray = explode(',', VmConfig::getVar('browse_orderby_fields'));
 	        	<?php echo JText::_('VM_ADMIN_CFG_THUMBNAIL_WIDTH') ?>
 	        </td>
 	        <td>
-	            <input type="text" name="conf_PSHOP_IMG_WIDTH" class="inputbox" value="<?php echo VmConfig::getVar('img_width') ?>" />
+	            <input type="text" name="conf_PSHOP_IMG_WIDTH" class="inputbox" value="<?php echo $this->config->get('img_width') ?>" />
 	        </td>
 	    </tr>
 	    <tr>
@@ -232,7 +232,7 @@ $orderByFieldsArray = explode(',', VmConfig::getVar('browse_orderby_fields'));
 	        	<?php echo JText::_('VM_ADMIN_CFG_THUMBNAIL_HEIGHT') ?>
 	        </td>
 	        <td>
-	            <input type="text" name="conf_PSHOP_IMG_HEIGHT" class="inputbox" value="<?php echo VmConfig::getVar('img_height') ?>" />
+	            <input type="text" name="conf_PSHOP_IMG_HEIGHT" class="inputbox" value="<?php echo $this->config->get('img_height') ?>" />
 	        </td>
 	    </tr>
 	    <?php

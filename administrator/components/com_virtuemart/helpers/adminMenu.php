@@ -139,10 +139,10 @@ class AdminMenuHelper
 		            </div>
 	                <div class="align-center">
 	                    <h5><?php echo JText::_('VM_YOUR_VERSION') ?></h5>
-	                    <?php $release = VmConfig::getVar('version_release'); ?>
+	                    <?php $release = VmConfig::getInstalledVersion(false); ?>
 	                    <a href="http://virtuemart.org/index2.php?option=com_versions&amp;catid=1&amp;myVersion=<?php echo $release ?>" onclick="javascript:void window.open(this.href, 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no'); return false;" title="<?php echo JText::_('VM_VERSIONCHECK_TITLE') ?>" target="_blank">
 	                    <?php
-	                    	echo 'Virtuemart&nbsp;'. $release . '&nbsp;' . VmConfig::getVar('version_dev_status');
+	                    	echo 'Virtuemart&nbsp;'. VmConfig::getInstalledVersion(true);
 	                    ?>
 	                    </a>
 	                </div>

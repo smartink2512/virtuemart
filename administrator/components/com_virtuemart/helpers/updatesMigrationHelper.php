@@ -52,153 +52,202 @@
 		JError::raiseNotice(1, 'Installed Version '.$this -> oldVersion);
 		return;
 	}
-	
 
-	//Notice: main part of this function should be moved to vendorhelper
-	function setStoreOwnerOld($userId=0) {
-		
-		if(empty($userId)){
-			$userId = $this ->determineStoreOwner();
-		}
-		JError::raiseNotice(1, 'setStoreOwner '.$userId);
-		$db = JFactory::getDBO();
-		$oldUserId	="";		
-		$db->setQuery('SELECT * FROM  `#__vm_auth_user_vendor` WHERE `vendor_id`= "1" ');
-		$db->query();
-		$oldUserId = $db->loadResult();
-//		$insertVendor=false;
-		JError::raiseNotice(1, '$oldUserId = '.$oldUserId);
-		if(!isset($oldUserId)) {	
-			$db->setQuery( 'INSERT `#__vm_auth_user_vendor` (`user_id`, `vendor_id`) VALUES ("'.$userId.'", "1")' );
-			if($db->query() == false ) {
-				JError::raiseNotice(1, 'setStoreOwner '.$userId.' was not possible to execute INSERT __vm_auth_user_vendor');
-			} else {
-				JError::raiseNotice(1, 'setStoreOwner INSERT __vm_auth_user_vendor '.$userId);
-			}		
-		}else{
-			$db->setQuery( 'UPDATE `#__vm_auth_user_vendor` SET `user_id` ="'.$userId.'" WHERE `vendor_id` = "1" ');
-			if($db->query() == false ) {
-				JError::raiseNotice(1, 'setStoreOwner '.$userId.' was not possible to execute UPDATE '.$oldUserId.' query __vm_auth_user_vendor');
-			}else{
-				JError::raiseNotice(1, 'StoreOwner changed to user with id = '.$userId);
+
+	/**
+	 * This is a general function to safely open a connection to a server,
+	 * post data when needed and read the result.
+	 * Tries using cURL and switches to fopen/fsockopen if cURL is not available
+	 * @since VirtueMart 1.1.0
+	 * @static 
+	 * @param string $url
+	 * @param string $postData
+	 * @param array $headers
+	 * @param resource $fileToSaveData
+	 * @return mixed
+	 */
+	function handleCommunication( $url, $postData='', $headers=array(), $fileToSaveData=null ) {
+		global $vmLogger;
+
+		$urlParts = parse_url( $url );
+		if ( !isset( $urlParts['port'] )) $urlParts['port'] = 80;
+		if ( !isset( $urlParts['scheme'] )) $urlParts['scheme'] = 'http';
+
+		if ( isset( $urlParts['query'] )) $urlParts['query'] = '?'.$urlParts['query'];
+		if ( isset( $urlParts['path'] )) $urlParts['path'] = $urlParts['path'].vmGet($urlParts,'query');
+
+		// Check proxy
+		$proxyURL = VmConfgi::getVar(proxy_url);
+		if ( trim( $proxyUrl ) != '') {
+			if ( !stristr($proxyUrl, 'http')) {
+				$proxyURL['host'] = $proxyUrl;
+				$proxyURL['scheme'] = 'http';
+			} 
+			else {
+				$proxyURL = parse_url($proxyUrl);
 			}
 		}
-		
-		$db->setQuery('SELECT `vendor_id` FROM  `#__vm_vendor` WHERE `vendor_id`= "1" ');
-		$db->query();
-		$oldVendorId = $db->loadResult();
-//		JError::raiseNotice(1, '$oldVendorId = '.$oldVendorId);
-		if(empty($oldVendorId)){
-			$db->setQuery( 'INSERT `#__vm_vendor` `vendor_id` VALUES ("1")' );
-			$db->query();
-		}
-		
-		$db->setQuery( 'UPDATE `#__vm_user_info` SET `user_is_vendor` = "1" WHERE `user_id` ="'.$userId.'"');
-//		$db->query();
-		if($db->query() === false ) {
-			JError::raiseNotice(1, 'setStoreOwner failed Update. User with id = '.$userId.' not found in table');
-			return 0;
-		}else{
-			return $this -> storeOwnerId;
-		}
-		
-	}
-
-	function populateVmDatabase($sqlfile){
-	
-		// Check that sql files exists before reading. Otherwise raise error for rollback
-		if ( !file_exists( JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS.$sqlfile ) ) {
-			return false;
-		}
-		$buffer = file_get_contents(JPATH_COMPONENT_ADMINISTRATOR.DS.install.DS.$sqlfile);
-
-		// Graceful exit and rollback if read not successful
-		if ( $buffer == false ) {
-			return false;
+		else {
+			$proxyURL = '';
 		}
 
-		// Create an array of queries from the sql file
-		jimport('joomla.installer.helper');
-		$queries = JInstallerHelper::splitSql($buffer);
+		if( function_exists( "curl_init" ) && function_exists( 'curl_exec' ) ) {
 
-		if (count($queries) == 0) {
-			// No queries to process
-			return 0;
-		}
-		$db = JFactory::getDBO();
-		// Process each query in the $queries array (split out of sql file).
-		foreach ($queries as $query)
-		{
-			$query = trim($query);
-			if ($query != '' && $query{0} != '#') {
-				$db->setQuery($query);
-				if (!$db->query()) {
-					JError::raiseWarning(1, 'JInstaller::install: '.JText::_('SQL Error')." ".$db->stderr(true));
-					return false;
+			$vmLogger->debug( 'Using the cURL library for communicating with '.$urlParts['host'] );
+
+			$CR = curl_init();
+			curl_setopt($CR, CURLOPT_URL, $url);
+
+			// just to get sure the script doesn't die
+			curl_setopt($CR, CURLOPT_TIMEOUT, 30 );
+			if( !empty( $headers )) {
+				// Add additional headers if provided
+				curl_setopt($CR, CURLOPT_HTTPHEADER, $headers);
+			}
+			curl_setopt($CR, CURLOPT_FAILONERROR, true);
+			if( $postData ) {
+				curl_setopt($CR, CURLOPT_POSTFIELDS, $postData );
+				curl_setopt($CR, CURLOPT_POST, 1);
+			}
+			if( is_resource($fileToSaveData)) {
+				curl_setopt($CR, CURLOPT_FILE, $fileToSaveData );
+			} else {
+				curl_setopt($CR, CURLOPT_RETURNTRANSFER, 1);
+			}
+			// Do we need to set up the proxy?
+			if( !empty($proxyURL) ) {
+				$vmLogger->debug( 'Setting up proxy: '.$proxyURL['host'].':'.VmConfig::getVar('proxy_port') );
+				//curl_setopt($CR, CURLOPT_HTTPPROXYTUNNEL, true);
+				curl_setopt($CR, CURLOPT_PROXY, $proxyURL['host'] );
+				curl_setopt($CR, CURLOPT_PROXYPORT, VmConfig::getVar('proxy_port') );
+				// Check if the proxy needs authentication
+				if ( trim(VmConfig::getVar('proxy_user')) != '') {
+					$vmLogger->debug( 'Using proxy authentication!' );
+					curl_setopt($CR, CURLOPT_PROXYUSERPWD, VmConfig::getVar('proxy_user').':'.VmConfig::getVar('proxy_pass') );
 				}
 			}
+
+			if( $urlParts['scheme'] == 'https') {
+				// No PEER certificate validation...as we don't have
+				// a certificate file for it to authenticate the host www.ups.com against!
+				curl_setopt($CR, CURLOPT_SSL_VERIFYPEER, 0);
+				//curl_setopt($CR, CURLOPT_SSLCERT , "/usr/locale/xxxx/clientcertificate.pem");
+			}
+			$result = curl_exec( $CR );
+			$error = curl_error( $CR );
+			if( !empty( $error ) && stristr( $error, '502') && !empty( $proxyURL )) {
+				$vmLogger->debug( 'Switching to NTLM authenticaton.');
+				curl_setopt( $CR, CURLOPT_PROXYAUTH, CURLAUTH_NTLM );
+				$result = curl_exec( $CR );
+				$error = curl_error( $CR );
+			}
+			curl_close( $CR );
+
+			if( !empty( $error )) {
+				$vmLogger->err( $error );
+				return false;
+			}
+			else {
+				return $result;
+			}
+		}
+		else {
+			if( $postData ) {
+				if( !empty( $proxyURL )) {
+					// If we have something to post we need to write into a socket
+					if( $proxyURL['scheme'] == 'https'){
+						$protocol = 'ssl';
+					}
+					else {
+						$protocol = 'http';
+					}
+					$fp = fsockopen("$protocol://".$proxyURL['host'], VmConfig::getVar('proxy_port'), $errno, $errstr, $timeout = 30);
+				}
+				else {
+					// If we have something to post we need to write into a socket
+					if( $urlParts['scheme'] == 'https'){
+						$protocol = 'ssl';
+					}
+					else {
+						$protocol = $urlParts['scheme'];
+					}
+					$fp = fsockopen("$protocol://".$urlParts['host'], $urlParts['port'], $errno, $errstr, $timeout = 30);
+				}
+			}
+			else {
+				if( !empty( $proxyURL )) {
+					// Do a read-only fopen transaction
+					$fp = fopen( $proxyURL['scheme'].'://'.$proxyURL['host'].':'.VmConfig::getVar('proxy_port'), 'rb' );
+				}
+				else {
+					// Do a read-only fopen transaction
+					$fp = fopen( $urlParts['scheme'].'://'.$urlParts['host'].':'.$urlParts['port'].$urlParts['path'], 'rb' );
+				}
+			}
+			if(!$fp){
+				//error tell us
+				$vmLogger->err( "Possible server error! - $errstr ($errno)\n" );
+				return false;
+			}
+			else {
+				$vmLogger->debug( 'Connection opened to '.$urlParts['host']);
+			}
+			if( $postData ) {
+				$vmLogger->debug('Now posting the variables.' );
+				//send the server request
+				if( !empty( $proxyURL )) {
+					fputs($fp, "POST ".$urlParts['host'].':'.$urlParts['port'].$urlParts['path']." HTTP/1.0\r\n");
+					fputs($fp, "Host: ".$proxyURL['host']."\r\n");
+
+					if( trim( VmConfig::getVar('proxy_user') )!= '') {
+						fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VmConfig::getVar('proxy_user').':'.VmConfig::getVar('proxy_pass') ) . "\r\n\r\n");
+					}
+				}
+				else {
+					fputs($fp, 'POST '.$urlParts['path']." HTTP/1.0\r\n");
+					fputs($fp, 'Host:'. $urlParts['host']."\r\n");
+				}
+				fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
+				fputs($fp, "Content-length: ".strlen($postData)."\r\n");
+				fputs($fp, "Connection: close\r\n\r\n");
+				fputs($fp, $postData . "\r\n\r\n");
+			}
+			else {
+				if( !empty( $proxyURL )) {
+					fputs($fp, "GET ".$urlParts['host'].':'.$urlParts['port'].$urlParts['path']." HTTP/1.0\r\n");
+					fputs($fp, "Host: ".$proxyURL['host']."\r\n");
+					if( trim( VmConfig::getVar('proxy_user') )!= '') {
+						fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VmConfig::getVar('proxy_user').':'.VmConfig::getVar('proxy_pass')) . "\r\n\r\n");
+					}
+				}
+				else {
+					fputs($fp, 'GET '.$urlParts['path']." HTTP/1.0\r\n");
+					fputs($fp, 'Host:'. $urlParts['host']."\r\n");
+				}
+			}
+			// Add additional headers if provided
+			foreach( $headers as $header ) {
+				fputs($fp, $header."\r\n");
+			}
+			$data = "";
+			while (!feof($fp)) {
+				$data .= @fgets ($fp, 4096);
+			}
+			fclose( $fp );
+
+			// If didnt get content-lenght, something is wrong, return false.
+			if ( trim($data) == '' ) {
+				$vmLogger->err('An error occured while communicating with the server '.$urlParts['host'].'. It didn\'t reply (correctly). Please try again later, thank you.' );
+				return false;
+			}
+			$result = trim( $data );
+			if( is_resource($fileToSaveData )) {
+				fwrite($fileToSaveData, $result );
+				return true;
+			} else {
+				return $result;
+			}
 		}
 	}
 
-
-
-
-		
-	function installSample($user_id=null){
-	
-		if($user_id==null){
-			$user_id = $this -> storeOwnerId;
-		}
-		$vmLogIdentifier = 'VirtueMart';
-
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_database.php");
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_vendor.php");
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_user.php");
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."classes".DS."ps_perm.php");
-		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS."helpers".DS."vendor_helper.php");
-		
-		global $perm, $hVendor;
-		// Instantiate the permission class
-		$perm = new ps_perm();
-		$hVendor = new Vendor;
-
-		$fields = array();
-		
-		$fields['address_type'] =  "BT";
-		$fields['company'] =  "Washupito''s the User";
-		$fields['title'] =  "Sire";
-		$fields['last_name'] =  "upito";
-		$fields['first_name'] =  "Wash";
-		$fields['middle_name'] =  "the cheapest";
-		$fields['phone_1'] =  "555-555-555";
-		$fields['address_1'] =  "vendorra road 8";
-		$fields['city'] =  "Canangra";
-		$fields['state'] =  "72";
-		$fields['country'] =  "13";
-		ps_user::setUserInfoWithEmail($fields,$user_id);
-
-		unset($fields);
-		$currencyFields = array();
-		$currencyFields[0] = 'EUR';
-		$currencyFields[1] = 'USD';
-		
-		$fields = array();
-		$fields['vendor_name'] =  "Washupito";
-		$fields['vendor_phone'] =  "555-555-1212";
-		$fields['vendor_store_name'] =  "Washupito''s Tiendita";
-		$fields['vendor_store_desc'] =  " <p>We have the best tools for do-it-yourselfers.  Check us out! </p> <p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p> 		<p>You can easily find products selecting the category you would like to browse above.</p>	";
-		$fields['vendor_full_image'] =  "c19970d6f2970cb0d1b13bea3af3144a.gif";
-		$fields['vendor_currency '] =  "EUR";
-		$fields['vendor_accepted_currencies'] = $currencyFields;
-		$fields['vendor_currency_display_style'] =  "1|&euro;|2|,|.|0|0";
-		$fields['vendor_terms_of_service'] =  "<h5>You haven''t configured any terms of service yet. Click <a href=administrator/index2.php?page=store.store_form&option=com_virtuemart>here</a> to change this text.</h5>";
-		$fields['vendor_url'] = JURI::root();
-		
-		$fields['vendor_name'] =  "Washupito";
-		
-		ps_vendor::setVendorInfo($fields,$user_id);
-		
-		$this -> populateVmDatabase("install_sample_data.sql");
-	}
-	
 }

@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 	<td>
 		<?php
 		$checked = '';
-		if (VmConfig::getVar('show_remember_me_box')) $checked = 'checked="checked"'; ?>
+		if ($this->config->get('show_remember_me_box')) $checked = 'checked="checked"'; ?>
 		<input type="checkbox" name="show_remember_me_box" value="1" <?php echo $checked; ?> />
 	</td> 
 </tr>
@@ -71,7 +71,7 @@ defined('_JEXEC') or die('Restricted access');
 	<td>
 		<?php
 		$checked = '';
-		if (VmConfig::getVar('agree_tos_onorder')) $checked = 'checked="checked"'; ?>
+		if ($this->config->get('agree_tos_onorder')) $checked = 'checked="checked"'; ?>
 		<input type="checkbox" name="agree_tos_onorder" value="1" <?php echo $checked; ?> />
 	</td>
 </tr>
@@ -83,7 +83,7 @@ defined('_JEXEC') or die('Restricted access');
 	<td>
 		<?php
 		$checked = '';
-		if (VmConfig::getVar('oncheckout_show_legal_info')) $checked = 'checked="checked"'; ?>
+		if ($this->config->get('oncheckout_show_legal_info')) $checked = 'checked="checked"'; ?>
 		<input type="checkbox" name="oncheckout_show_legal_info" value="1" <?php echo $checked; ?> />
 	</td>
 </tr>
@@ -93,7 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_ONCHECKOUT_LEGALINFO_SHORTTEXT') ?>
 	</td>
 	<td>
-		<textarea rows="6" cols="40" id="oncheckout_legalinfo_shorttext" name="oncheckout_legalinfo_shorttext" class="inputbox"><?php echo VmConfig::getVar('oncheckout_legalinfo_shorttext'); ?></textarea>
+		<textarea rows="6" cols="40" id="oncheckout_legalinfo_shorttext" name="oncheckout_legalinfo_shorttext" class="inputbox"><?php echo $this->config->get('oncheckout_legalinfo_shorttext'); ?></textarea>
 	</td>
 </tr>
 <tr>

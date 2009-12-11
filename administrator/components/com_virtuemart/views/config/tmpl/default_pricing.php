@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 	<td>
 		<?php
 		$checked = '';
-		if (VmConfig::getVar('show_prices')) $checked = 'checked'; ?>
+		if ($this->config->get('show_prices')) $checked = 'checked'; ?>
 		<input type="checkbox" name="show_prices" value="1" <?php echo $checked; ?> />				
 	</td>
 </tr>
@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('VM_ADMIN_CFG_PRICE_ACCESS_LEVEL') ?>
 	</td>
 	<td>
-		<input type="checkbox" id="price_access_level_enabled" name="price_access_level_enabled" class="inputbox" value="<?php echo VmConfig::getVar('price_access_level_enabled'); ?>" />
+		<input type="checkbox" id="price_access_level_enabled" name="price_access_level_enabled" class="inputbox" value="<?php echo $this->config->get('price_access_level_enabled'); ?>" />
 		<?php echo JText::_('VM_CFG_ENABLE_FEATURE'); ?>
 	</td>
 </tr>
@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 	<td>
 		<?php
 		$checked = '';
-		if (VmConfig::getVar('show_prices_with_tax')) $checked = 'checked"'; ?>
+		if ($this->config->get('show_prices_with_tax')) $checked = 'checked"'; ?>
 		<input type="checkbox" name="show_prices_with_tax" value="1" <?php echo $checked; ?> />
 	</td>
 </tr>
@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 	<td>
 		<?php
 		$checked = '';
-		if (VmConfig::getVar('show_excluding_tax_note')) $checked = 'checked'; ?>
+		if ($this->config->get('show_excluding_tax_note')) $checked = 'checked'; ?>
 		<input type="checkbox" name="show_excluding_tax_note" value="1" <?php echo $checked; ?> />
 	</td>
 </tr>
@@ -68,7 +68,7 @@ defined('_JEXEC') or die('Restricted access');
 	<td>
 		<?php
 		$checked = '';
-		if (VmConfig::getVar('show_including_tax_note')) $checked = 'checked"'; ?>
+		if ($this->config->get('show_including_tax_note')) $checked = 'checked"'; ?>
 		<input type="checkbox" name="show_including_tax_note" value="1" <?php echo $checked; ?> />
 	</td>
 </tr>
@@ -80,7 +80,7 @@ defined('_JEXEC') or die('Restricted access');
 	<td>
 		<?php
 		$checked = '';
-		if (VmConfig::getVar('show_price_for_packaging')) $checked = 'checked"'; ?>
+		if ($this->config->get('show_price_for_packaging')) $checked = 'checked"'; ?>
 		<input type="checkbox" name="show_price_for_packaging" value="1" <?php echo $checked; ?> />
 	</td>
 </tr>
@@ -98,7 +98,7 @@ defined('_JEXEC') or die('Restricted access');
 	<td>
 		<?php
 		$checked = '';
-		if (VmConfig::getVar('virtual_tax')) $checked = 'checked"'; ?>
+		if ($this->config->get('virtual_tax')) $checked = 'checked"'; ?>
 		<input type="checkbox" name="virtual_tax" value="1" <?php echo $checked; ?> />
 	</td>
 </tr>
@@ -125,7 +125,7 @@ defined('_JEXEC') or die('Restricted access');
 	<td>
 		<?php
 		$checked = '';
-		if (VmConfig::getVar('enable_multiple_taxrates')) $checked = 'checked'; ?>
+		if ($this->config->get('enable_multiple_taxrates')) $checked = 'checked'; ?>
 		<input type="checkbox" name="enable_multiple_taxrates" value="1" <?php echo $checked; ?> />
 	</td>
 </tr>
@@ -137,7 +137,7 @@ defined('_JEXEC') or die('Restricted access');
 	<td>
 		<?php
 		$checked = '';
-		if (VmConfig::getVar('subtract_payment_before_discount')) $checked = 'checked'; ?>
+		if ($this->config->get('subtract_payment_before_discount')) $checked = 'checked'; ?>
 		<input type="checkbox" name="subtract_payment_before_discount" value="1" <?php echo $checked; ?> />
 	</td>
 </tr>

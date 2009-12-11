@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
         	<td>
         		<?php
 				$checked = '';
-				if (VmConfig::getVar('show_checkout_bar')) $checked = 'checked="checked"'; ?>
+				if ($this->config->get('show_checkout_bar')) $checked = 'checked="checked"'; ?>
 				<input type="checkbox" name="show_checkout_bar" value="1" <?php echo $checked; ?> />
         	</td>
     	</tr>

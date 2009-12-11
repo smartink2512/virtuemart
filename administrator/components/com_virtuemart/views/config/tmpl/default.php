@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 AdminMenuHelper::startAdminArea(); 
 ?>
-<form name="adminForm" enctype="multipart/form-data">
+<form action="index.php" method="post" name="adminForm">
 <?php
 
 $pane = JPane::getInstance('tabs', array('startOffset'=>0)); 
