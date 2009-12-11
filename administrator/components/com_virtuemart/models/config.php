@@ -57,7 +57,6 @@ class VirtueMartModelConfig extends JModel
 	{		
 		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
 		$dir .= DS.VmConfig::getVar('theme').DS.'templates'.DS.'browse';		
-		echo ($dir);
 		$result = '';
 		
 		if ($handle = opendir($dir)) {
