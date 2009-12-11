@@ -108,10 +108,12 @@ class VirtueMartModelState extends JModel
     
     /** 
      * Retrieve the detail record for the current $id if the data has not already been loaded.
-     *
+     * 
+     * Renamed to getSingleState to avoid overwriting by jseros
+     * 
      * @author RickG
      */ 
-	function getState()
+	function getSingleState()
 	{		
 		$db =& JFactory::getDBO();		
 					
@@ -247,12 +249,26 @@ class VirtueMartModelState extends JModel
      * @author RickG and Max Milbers 
 	 * @return object List of state objects
 	 */
-	function getStates($countryId)
-	{	
+	public function getStates($countryId)
+	{
 		$query = 'SELECT * FROM `#__vm_state`  WHERE `country_id`= "'.$countryId.'"';
-		$query .= 'ORDER BY `#__vm_state`.`state_id`';
+		$query .= 'ORDER BY `#__vm_state`.`state_name`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
+	}
+	
+	
+	/**
+	 * Retireve a full list of countries from the database.
+	 * 
+     * @author jseros 
+	 * @return object List of state objects
+	 */
+	public function getFullStates($countryId)
+	{
+		$this->setState('limitstart', 0);
+		$this->setState('limit', 5000);
+		return $this->getStates($countryId);
 	}
 }
 ?>

@@ -155,6 +155,25 @@ class VirtuemartControllerState extends JController
 		}
 	
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=state&country_id='.$data["country_id"], $msg);
+	}
+
+	
+	/**
+	 * Retrieve full statelist
+	 */
+	function getList() {
+		
+		//retrieving country id
+		$countryId = JRequest::getInt('country_id');
+		
+		/* Create the view object. */
+		$view = $this->getView('state', 'json');
+		
+		/* Standard model */
+		$view->setModel( $this->getModel( 'state', 'VirtueMartModel' ), true );
+		
+		/* Now display the view. */
+		$view->display(null, $countryId);
 	}	
 }
 ?>

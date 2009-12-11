@@ -43,17 +43,8 @@ class VirtueMartViewStore extends JView {
 				JToolBarHelper::cancel('cancel', 'Close');
 			}
 			
-			$countryModel = $this->getModel('country');
-			
-			$countries = $countryModel->getCountries(false, true);
-			
-			//just adding "--Select--" option
-			$emptyOption = new stdClass();
-			$emptyOption->country_id = '';
-			$emptyOption->country_name = '-- '.JText::_('Select').' --';
-			array_unshift($countries, $emptyOption);
-			
-			$this->assignRef('countryList', $countries);
+			// loading the ShopFunctions Helper by jseros
+			$this->loadHelper('shopFunctions');
 											
 			$this->assignRef('store', $store);
 			

@@ -36,7 +36,10 @@ class AdminMenuHelper
 	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_menu.css');
 		$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin.styles.css');	    
         $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/toolbar_images.css');
-		$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/menu_images.css'); 		 		
+		$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/menu_images.css');
+		
+		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.js');
+		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/VMAdmin.js'); 		 		
 		?>	
 		<table style="width:100%; table-layout:fixed;">
     	<tr>

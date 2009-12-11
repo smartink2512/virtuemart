@@ -3,19 +3,6 @@ defined('_JEXEC') or die('Restricted access');
 
 AdminMenuHelper::startAdminArea(); 
 ?>
-<script type="text/javascript">
-window.addEvent("domready", function() {
-    $("country_id").addEvent("change", function() {
-        var url = "index.php?option=com_virtuemart&view=country&format=raw&task=listStates&country_id="+this.getValue();
-        new Ajax(url,{
-        	method: "get",
-        	onComplete: function(response){
-        		var resp = Json.evaluate(response);
-        	}
-        }).request();
-    });
-});
-</script>
 <form action="index.php" method="post" name="adminForm">
 
 <div class="col50">
@@ -91,7 +78,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<?php echo JHTML::_('Select.genericlist', $this->countryList, 'country_id', '', 'country_id', 'country_name', 'country_id'); ?>														
+					<?php echo ShopFunctions::renderCountryList($this->store->userInfo->country);?>														
 				</td>
 			</tr>
 			<tr>
@@ -101,7 +88,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<select name="state_id" id="state_id"></select>												
+					<?php echo ShopFunctions::renderStateList($this->store->userInfo->state, $this->store->userInfo->country);?>											
 				</td>
 			</tr>		
 		</table>
@@ -184,7 +171,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="middle_name" id="middle_name" size="10" value="<?php echo $this->store->userInfo->middle_name; ?>" />				
+					<input class="inputbox" type="text" name="middle_name" id="middle_name" size="20" value="<?php echo $this->store->userInfo->middle_name; ?>" />				
 				</td>
 			</tr>	
 			<tr>
@@ -204,7 +191,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="phone_1" id="phone_1" size="10" value="<?php echo $this->store->userInfo->phone_1; ?>" />				
+					<input class="inputbox" type="text" name="phone_1" id="phone_1" size="20" value="<?php echo $this->store->userInfo->phone_1; ?>" />				
 				</td>
 			</tr>
 			<tr>
@@ -214,7 +201,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="phone_2" id="phone_2" size="10" value="<?php echo $this->store->userInfo->phone_2; ?>" />				
+					<input class="inputbox" type="text" name="phone_2" id="phone_2" size="20" value="<?php echo $this->store->userInfo->phone_2; ?>" />				
 				</td>
 			</tr>
 			<tr>
@@ -224,7 +211,7 @@ window.addEvent("domready", function() {
 					</label>
 				</td>
 				<td>
-					<input class="inputbox" type="text" name="fax" id="fax" size="10" value="<?php echo $this->store->userInfo->fax; ?>" />				
+					<input class="inputbox" type="text" name="fax" id="fax" size="20" value="<?php echo $this->store->userInfo->fax; ?>" />				
 				</td>
 			</tr>	
 			<tr>

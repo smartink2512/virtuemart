@@ -50,8 +50,8 @@ class VirtueMartControllerStore extends JController
 		$model1 = $this->getModel('country');
 		if (!JError::isError($model1)) {
 			$view->setModel($model1, false);
-		}	
-
+		}
+		
 		/* Now display the view. */
 		$view->display();
 	 }
