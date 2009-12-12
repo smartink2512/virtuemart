@@ -92,7 +92,15 @@ $menu_items = getAdminMenu($module_id);
 					//$url = strncmp($link['link'], 'http', 4 ) === 0 ? $link['link'] : $sess->url('index2.php?pshop_mode=admin&'.$link['link'], false, false );
 					
                     if (strncmp($link['link'], 'http', 4 ) === 0) {
-                        $url = $link['link'];
+                    	/* Check for CSVI VirtueMart */
+                    	if ($link['name'] == 'CSVIMPROVED_TITLE') {
+                    		$q = "SELECT id FROM #__components WHERE link = 'option=com_csvivirtuemart'";
+                    		$db->setQuery($q);
+                    		$id = $db->loadResult();
+                    		if ($id) $url = 'index.php?option=com_csvivirtuemart';
+                    		else $url = $link['link'];
+                    	}
+                        else $url = $link['link'];
                     }
                     else {
                     	if ($link['view']) {			                       				                      

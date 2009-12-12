@@ -36,6 +36,12 @@
 .icon-48-vm_categories_48 { 
    background: url(../images/icon_48/vm_categories_48.png) no-repeat left; 
 }
+.icon-48-vm_product_types_48 { 
+   background: url(../images/icon_48/vm_categories_48.png) no-repeat left; 
+}
+.icon-48-vm_product_type_parameters_48 { 
+   background: url(../images/icon_48/vm_categories_48.png) no-repeat left; 
+}
 .icon-48-vm_countries_48 { 
    background: url(../images/icon_48/vm_countries_48.png) no-repeat left; 
 }
@@ -57,6 +63,9 @@
 .icon-48-vm_shipping_rates_48 { 
    background: url(../images/icon_48/vm_shipping_rates_48.gif) no-repeat left; 
 }
+.icon-48-vm_inventory_48 { 
+   background: url(../images/icon_48/vm_inventory_48.gif) no-repeat left; 
+}
 .icon-48-vm_shop_users_48 { 
    background: url(../images/icon_48/vm_shop_users_48.png) no-repeat left; 
 }
@@ -68,4 +77,7 @@
 }
 .icon-48-vm_coupon_48 { 
    background: url(../images/icon_48/vm_coupon_48.png) no-repeat left; 
+}
+.icon-48-vm_reviews_48 { 
+   background: url(../images/icon_48/vm_reviews_48.png) no-repeat left; 
 }

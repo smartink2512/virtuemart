@@ -50,7 +50,7 @@ class VirtuemartViewProducttypeparameters extends JView {
 				$lists['parameter_type'] = JHTML::_('select.genericlist', $options, 'parameter_type', 'class="inputbox"', 'value', 'text', $parameter->parameter_type);
 				
 				/* Toolbar */
-				JToolBarHelper::title(JText::_( 'VM_PRODUCT_TYPE_PARAMETER_FORM_LBL' ), 'vm_product_48');
+				JToolBarHelper::title(JText::_( 'VM_PRODUCT_TYPE_PARAMETER_FORM_LBL' ), 'vm_product_type_parameters_48');
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
 				
@@ -72,7 +72,7 @@ class VirtuemartViewProducttypeparameters extends JView {
 				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 				
 				/* Toolbar */
-				JToolBarHelper::title(JText::_('VM_PRODUCT_TYPE_PARAMETER_LIST_LBL').'::'.$product_type_name, 'vm_product_48');
+				JToolBarHelper::title(JText::_('VM_PRODUCT_TYPE_PARAMETER_LIST_LBL').'::'.$product_type_name, 'vm_product_type_parameters_48');
 				JToolBarHelper::deleteListX();
 				JToolBarHelper::editListX();
 				JToolBarHelper::addNewX();
