@@ -557,6 +557,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_attribute` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__vm_product_attribute_sku` (
+  `attribute_sku_id` int(11) NOT NULL auto_increment,
   `product_id` int(11) NOT NULL default '0',
   `attribute_name` char(255) NOT NULL default '',
   `attribute_list` int(11) NOT NULL default '0',

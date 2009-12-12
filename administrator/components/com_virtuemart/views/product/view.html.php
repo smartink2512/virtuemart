@@ -279,6 +279,7 @@ class VirtuemartViewProduct extends JView {
 				
 				/* Toolbar */
 				JToolBarHelper::title(JText::_( 'PRODUCT_LIST' ), 'vm_product_48');
+				JToolBarHelper::custom('addattribute', 'icon-32-new', '', JText::_('ADD_ATTRIBUTE'), true);
 				JToolBarHelper::custom('addproducttype', 'icon-32-new', '', JText::_('ADD_PRODUCT_TYPE'), true);
 				JToolBarHelper::custom('addrating', 'icon-32-new', '', JText::_('ADD_RATING'), true);
 				JToolBarHelper::divider();

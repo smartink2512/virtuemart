@@ -240,5 +240,20 @@ class VirtuemartControllerProduct extends JController
 		}
 		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);
 	}
+	
+	/**
+	* Add a product attribute
+	* @author RolandD
+	*/
+	public function addAttribute() {
+		$mainframe = Jfactory::getApplication();
+		
+		/* Get the product ID */
+		$cids = array();
+		$cids = JRequest::getVar('cid');
+		if (!is_array($cids)) $cids = array($cids);
+		
+		$mainframe->redirect('index.php?option=com_virtuemart&view=attributes&task=add&product_id='.$cids[0]);
+	}
 }
 ?>
