@@ -11,7 +11,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_('Filter'); ?>:
 			<input type="text" name="filter_productspecial" value="<?php echo JRequest::getVar('filter_productspecial', ''); ?>" />
 			<button onclick="this.form.submit();"><?php echo JText::_('Go'); ?></button>
-			<button onclick="document.adminForm.filter_inventory.value='';"><?php echo JText::_('Reset'); ?></button>
+			<button onclick="document.adminForm.filter_productspecial.value='';"><?php echo JText::_('Reset'); ?></button>
 		 </td>
 		 <td>
 		 	<?php echo $this->lists['search_type']; ?>
