@@ -2,6 +2,9 @@
 defined('_JEXEC') or die('Restricted access'); 
 ?> 
 <br />
+<table>
+<tr><td valign="top">
+
 <fieldset class="adminform">
 <legend><?php echo JText::_('VM_ADMIN_CFG_PRICE_CONFIGURATION') ?></legend>	
 <table class="admintable">
@@ -87,6 +90,8 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 </fieldset>
 
+</td><td valign="top">	
+
 <fieldset class="adminform">
 <legend><?php echo JText::_('VM_ADMIN_CFG_TAX_CONFIGURATION') ?></legend>	
 <table class="admintable">
@@ -141,4 +146,7 @@ defined('_JEXEC') or die('Restricted access');
 		<input type="checkbox" name="subtract_payment_before_discount" value="1" <?php echo $checked; ?> />
 	</td>
 </tr>
+</table>
+
+</td></tr>
 </table>

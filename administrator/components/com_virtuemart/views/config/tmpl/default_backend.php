@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 ?> 
 <br />
 <fieldset class="adminform">
-<legend><?php echo JText::_('VM_ADMIN_CFG_GLOBAL') ?></legend>		
+<legend><?php echo JText::_('VM_ADMIN_CFG_SHOP_SETTINGS') ?></legend>
 <table class="admintable">
 <tr>
 	<td class="key">
@@ -34,13 +34,65 @@ defined('_JEXEC') or die('Restricted access');
 		if ($this->config->get('use_as_catalog')) $checked = 'checked="checked"'; ?>
 		<input type="checkbox" name="use_as_catalog" value="1" <?php echo $checked; ?> />
 	</td>
+</tr>	
+<tr>
+	<td class="key">
+		<?php echo JText::_('VM_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN'); ?>">				
+	</td>
+	<td valign="top">
+		<?php
+		$checked = '';
+		if ($this->config->get('show_out_of_stock_products')) $checked = 'checked="checked"'; ?>
+		<input type="checkbox" name="show_out_of_stock_products" value="1" <?php echo $checked; ?> />					
+	</td>
 </tr>
-</table>				
-</fieldset>
-
-<fieldset class="adminform">
-<legend><?php echo JText::_('VM_ADMIN_CFG_FRONTEND_FEATURES') ?></legend>
-<table class="admintable">
+<tr>
+	<td class="key">
+		<?php echo JText::_('VM_ADMIN_CFG_COOKIE_CHECK') ?>
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_COOKIE_CHECK_EXPLAIN'); ?>">
+	</td>
+	<td>
+		<?php
+		$checked = '';
+		if ($this->config->get('enable_cookie_check')) $checked = 'checked="checked"'; ?>
+		<input type="checkbox" name="enable_cookie_check" value="1" <?php echo $checked; ?> />
+	</td>
+</tr>
+<tr>
+	<td class="key">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_CFG_CURRENCY_MODULE_TIP'); ?>">
+		<?php echo JText::_('VM_CFG_CURRENCY_MODULE') ?>
+	</td>
+	<td>
+		<select id="conf__VM_CURRENCY_CONVERTER_MODULE" name="conf__VM_CURRENCY_CONVERTER_MODULE" class="inputbox">
+			<?php 
+			//$files = vmReadDirectory( CLASSPATH."currency/", "convert?.", true, true);
+			foreach ($files as $file) {
+				$file_info = pathinfo($file);
+				$filename = $file_info['basename'];
+				$checked = ($filename == @VM_CURRENCY_CONVERTER_MODULE.'.php') ? 'selected="selected"' : "";
+				echo "<option value=\"".basename($filename, '.php' )."\" $checked>$filename</option>\n";
+			}
+           ?>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td class="key">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT_EXPLAIN'); ?>">
+		<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT') ?></td>
+	<td>
+		<select name="mail_format" class="inputbox">
+		<option value="0" <?php if ($this->config->get('mail_format') == '0') echo 'selected="selected"'; ?>>
+	   <?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT_TEXT') ?>
+		</option>
+		<option value="1" <?php if ($this->config->get('mail_format') == '1') echo 'selected="selected"'; ?>>
+		<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT_HTML') ?>
+		</option>
+		</select>
+	</td>
+</tr>
 <tr>
 	<td class="key">
 		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_CFG_CONTENT_PLUGINS_ENABLE_TIP'); ?>">
@@ -107,70 +159,12 @@ defined('_JEXEC') or die('Restricted access');
 		<input type="text" size="6" id="comment_max_length" name="comment_max_length" class="inputbox" value="<?php echo $this->config->get('comment_max_length'); ?>" />
 	</td>
 </tr>
-</table>
-</fieldset>
+</table>		
+</fieldset>   
 
 <fieldset class="adminform">
-<legend><?php echo JText::_('VM_ADMIN_CFG_CORE_SETTINGS') ?></legend>
+<legend><?php echo JText::_('VM_ADMIN_CFG_SYSTEM_SETTINGS') ?></legend>		
 <table class="admintable">
-<tr>
-	<td class="key">
-		<?php echo JText::_('VM_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS') ?>
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN'); ?>">				
-	</td>
-	<td valign="top">
-		<?php
-		$checked = '';
-		if ($this->config->get('show_out_of_stock_products')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="show_out_of_stock_products" value="1" <?php echo $checked; ?> />					
-	</td>
-</tr>
-<tr>
-	<td class="key">
-		<?php echo JText::_('VM_ADMIN_CFG_COOKIE_CHECK') ?>
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_COOKIE_CHECK_EXPLAIN'); ?>">
-	</td>
-	<td>
-		<?php
-		$checked = '';
-		if ($this->config->get('enable_cookie_check')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="enable_cookie_check" value="1" <?php echo $checked; ?> />
-	</td>
-</tr>
-<tr>
-	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_CFG_CURRENCY_MODULE_TIP'); ?>">
-		<?php echo JText::_('VM_CFG_CURRENCY_MODULE') ?>
-	</td>
-	<td>
-		<select id="conf__VM_CURRENCY_CONVERTER_MODULE" name="conf__VM_CURRENCY_CONVERTER_MODULE" class="inputbox">
-			<?php 
-			//$files = vmReadDirectory( CLASSPATH."currency/", "convert?.", true, true);
-			foreach ($files as $file) {
-				$file_info = pathinfo($file);
-				$filename = $file_info['basename'];
-				$checked = ($filename == @VM_CURRENCY_CONVERTER_MODULE.'.php') ? 'selected="selected"' : "";
-				echo "<option value=\"".basename($filename, '.php' )."\" $checked>$filename</option>\n";
-			}
-           ?>
-		</select>
-	</td>
-</tr>
-<tr>
-	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT_EXPLAIN'); ?>">
-		<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT') ?></td>
-	<td>
-		<select name="mail_format" class="inputbox">
-		<option value="0" <?php if ($this->config->get('mail_format') == '0') echo 'selected="selected"'; ?>>
-	   <?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT_TEXT') ?>
-		</option>
-		<option value="1" <?php if ($this->config->get('mail_format') == '1') echo 'selected="selected"'; ?>>
-		<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT_HTML') ?>
-		</option>
-		</select>
-	</td>
-</tr>
 <tr>
 	<td class="key">
 		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DEBUG_EXPLAIN'); ?>">
@@ -204,12 +198,6 @@ defined('_JEXEC') or die('Restricted access');
         <input size="20" type="text" name="debug_ip_address" class="inputbox" value="<?php echo $this->config->get('debug_ip_address'); ?>" />
    </td>
 </tr>
-</table>		
-</fieldset>
-	
-<fieldset class="adminform">
-<legend><?php echo JText::_('VM_ADMIN_CFG_LOGFILE_HEADER') ?></legend>
-<table class="admintable">
 <tr>
 	<td class="key">
        	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_ENABLED_EXPLAIN'); ?>">
@@ -273,5 +261,5 @@ defined('_JEXEC') or die('Restricted access');
    		<?php echo JText::_('VM_ADMIN_CFG_LOGFILE_FORMAT_EXPLAIN_EXTRA') ?>
    	</td>
 </tr>
-</table>    	
-</fieldset>    
+</table>				
+</fieldset>

@@ -4,6 +4,9 @@ print_r($this->config->get('browse_orderby_fields'));
 $orderByFieldsArray = $this->config->get('browse_orderby_fields'); 
 ?> 
 <br />
+<table>
+<tr><td valign="top">
+	
 <fieldset class="adminform">
 <legend><?php echo JText::_('VM_ADMIN_CFG_DISPLAY') ?></legend>
 <table class="admintable">
@@ -152,6 +155,8 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 </table>    
 </fieldset>	
 		
+</td><td valign="top">	
+		
 <fieldset class="adminform">
 <legend><?php echo JText::_('VM_ADMIN_CFG_MORE_CORE_SETTINGS') ?></legend>
 <table class="admintable">
@@ -245,3 +250,6 @@ else {
 ?>
 </table>
 </fieldset>
+
+</td></tr>
+</table>
