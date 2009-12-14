@@ -12,7 +12,6 @@
 
 /**
  * Auto-executable function to avoid conflict and global variables.
- * It's not necessary to use jQuery.noConflict() 
  * 
  * @author jseros
  * @param jQuery $ Solve the scope problem and jQuery-Mootools conflict
@@ -31,13 +30,22 @@ jQuery.noConflict();
 	var VMAdmin = window.VMAdmin = {
 		
 		/**
+		 * Configuration Object
+		 */	
+		config: {
+			menuAdminSpeed: 'medium' //string-int Speed to Menu slide effect 
+		},
+			
+		
+		/**
 		 * cache namespace. Useful to temporal data
 		 * 
 		 * @author jseros
 		 * 
 		 */	
 		cache: {
-			states: [] //states cache
+			states: [], //states cache
+			activeMenuAdminItem: null //active item menu
 		},
 		
 		/**
@@ -46,8 +54,6 @@ jQuery.noConflict();
 		 * @author jseros
 		 * 
 		 */
-		
-		
 		URL: {
 			countryStates: 'index.php?option=com_virtuemart&view=state&task=getList&format=json&country_id='
 			
@@ -119,6 +125,60 @@ jQuery.noConflict();
 					});
 					
 				});
+			},
+			
+			/**
+			 * Create admin accordion menu
+			 * 
+			 * TODO: Standalone cookie storage
+			 * 
+			 * @author jseros
+			 */
+			buildAdminMenu: function(){
+				var that = this;
+				
+				$(function(){
+					var actualItem = VMAdmin.cache.activeMenuAdminItem = Cookie.get('voir').toInt(), // Actual selected item
+					speed = VMAdmin.config.menuAdminSpeed; //shortcut. Performance issue!
+					
+					$('.section-smenu').addClass('element-hidden');//Hidding Panels
+					
+					var actualItemNode = $('#menu-toggler-'+ actualItem);
+					actualItemNode.next().slideDown( speed );
+					
+					that.activeMenuItem( actualItemNode.get(0) );
+					
+					$('.title-smenu').click(function(){
+						that.activeMenuItem( this );
+					}); 					
+					
+				});
+			},
+			
+			/**
+			 * set the active menu item
+			 * 
+			 * TODO: Standalone cookie storage
+			 * @author jseros
+			 * 
+			 * @param HTMLElement Toggler node
+			 */
+			activeMenuItem: function( toggler ){
+				
+				var ai = VMAdmin.cache.activeMenuAdminItem, //shortcut. Performance issue!
+				voir = parseInt( $( toggler ).addClass('title-smenu-down').attr('rel') ), //this Item
+				speed = VMAdmin.config.menuAdminSpeed; //shortcut. Performance issue!
+				
+				if( ai !== voir ){
+					$( toggler ).next().slideDown( speed );
+					
+					if(ai){
+						$('#menu-toggler-'+ ai).removeClass('title-smenu-down').next().slideUp( speed );
+					}
+					
+					Cookie.set('voir', voir);
+					VMAdmin.cache.activeMenuAdminItem = voir;
+				}
 			}
 		}
 	};

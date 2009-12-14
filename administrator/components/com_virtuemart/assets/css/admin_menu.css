@@ -63,7 +63,7 @@
  background-color: #EBEBEB;
 }
 .title-smenu-down {
-	color: black;
+	color: #000;
  	background-image: url(../images/admin_menu/vm_arrow_down.gif) ;
  	background-color: #D2D2D2;
  	border: 1px solid #333;

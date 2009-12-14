@@ -78,13 +78,22 @@ class AdminMenuHelper
         $document	= JFactory::getDocument();
         $moduleId   = JRequest::getInt('module_id', 0);
     	
-        $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/admin_menu.js');
         $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/nifty.js');
-        $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/fat.js');
-        $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/functions.js');       
+        $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/fat.js');      
+
+        $document->addScriptDeclaration('
+        	jQuery(function(){
+        		VMAdmin.util.buildAdminMenu();
+	        	Fat.fade_all();
+			    NiftyCheck();
+			    Rounded("div.sidemenu-box","all","#fff","#f7f7f7","border #ccc");
+			    Rounded("div.element-box","all","#fff","#fff","border #ccc");
+			    Rounded("div.toolbar-box","all","#fff","#fbfbfb","border #ccc");
+			    Rounded("div.submenu-box","all","#fff","#f2f2f2","border #ccc");
+    		});');
         
         $menuItems = adminMenuHelper::_getAdminMenu($moduleId);
-        
+       
         ?>
         <div id="vmMenu">
         <div id="content-box2">
@@ -104,8 +113,8 @@ class AdminMenuHelper
 		            <?php
 		            $modCount = 1;
 		            foreach( $menuItems as $item ) { ?> 
-			            <h3 class="title-smenu" title="<?php echo JText::_($item['title']); ?> admin" ><?php echo JText::_($item['title']) ?></h3>
-			            <div class="section-smenu">
+			            <h3 class="title-smenu" title="<?php echo JText::_($item['title']); ?> admin" id="menu-toggler-<?php echo $modCount?>" rel="<?php echo $modCount?>"><?php echo JText::_($item['title']) ?></h3>
+			            <div class="section-smenu" id="menu-panel-<?php echo $modCount?>" id="<?php echo $modCount?>">
 			                <ul>
 			                <?php 			
 			                foreach( $item['items'] as $link ) {
@@ -155,17 +164,7 @@ class AdminMenuHelper
         </div>
         </div>
    
-        <?php 
-        echo '<script type="text/javascript">
-	    window.onload=function(){
-		    Fat.fade_all();
-		    NiftyCheck();
-		    Rounded("div.sidemenu-box","all","#fff","#f7f7f7","border #ccc");
-		    Rounded("div.element-box","all","#fff","#fff","border #ccc");
-		    Rounded("div.toolbar-box","all","#fff","#fbfbfb","border #ccc");
-		    Rounded("div.submenu-box","all","#fff","#f2f2f2","border #ccc");
-	    }
-        </script>';                     
+        <?php                  
     }     
     
     
