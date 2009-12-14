@@ -33,3 +33,4 @@ $ -> Language fix or change
 ^ Coupon maintenance converted to MVC
 ^ Shipping Carrier maintenance converted to MVC
 ^ Shipping Rate maintenance converted
+^ Order Status maintenance page converted to MVC
