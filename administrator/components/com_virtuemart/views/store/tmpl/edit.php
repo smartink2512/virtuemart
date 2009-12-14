@@ -88,7 +88,7 @@ AdminMenuHelper::startAdminArea();
 					</label>
 				</td>
 				<td>
-					<?php echo ShopFunctions::renderStateList($this->store->userInfo->state, $this->store->userInfo->country);?>											
+					<?php echo ShopFunctions::renderStateList($this->store->userInfo->state, $this->store->userInfo->country, 'country_id');?>											
 				</td>
 			</tr>		
 		</table>

@@ -55,7 +55,7 @@ class ShopFunctions {
 	*/
 	public function renderCountryList( $countryId = 0 ){
 		
-		$countryModel = self::getModel('country');
+		$countryModel = self::_getModel('country');
 				
 		$countries = $countryModel->getCountries(false, true);
 		
@@ -76,12 +76,13 @@ class ShopFunctions {
 	* 
 	* @param int $stateID Selected state id
 	* @param int $countryID Selected country id
+	* @param string $dependentField Parent <select /> ID attribute
 	* @return string HTML containing the <select />
 	*/
-	public function renderStateList( $stateId = 0, $countryId = 0){
+	public function renderStateList( $stateId = 0, $countryId = 0, $dependentField = ''){
 		
 		$document = JFactory::getDocument();
-		$stateModel = self::getModel('state');
+		$stateModel = self::_getModel('state');
 		$states = array();
 		
 		if( $countryId ){
@@ -95,7 +96,7 @@ class ShopFunctions {
 		array_unshift($states, $emptyOption);
 		
 		$attribs = array(
-			'class' => 'dependent[country_id]'
+			'class' => 'dependent['. $dependentField .']'
 		);
 		
 		$document->addScriptDeclaration('VMAdmin.util.countryStateList();');
@@ -106,12 +107,28 @@ class ShopFunctions {
 	
 	
 	/**
+	 * Gets the total number of product for category
+	 *
+     * @author jseros	 
+	 * @return int Total number of products
+	 */
+	public function countProductsByCategory( $categoryId = 0 ) 
+	{
+		$categoryModel = self::_getModel('category');
+        return $categoryModel->countProducts($categoryId);
+    } 
+	
+	
+	/**
 	* Return model instance. This is a DRY solution!
-	* @author jseros
 	* 
+	* @author jseros
+	* @access private
+	* 
+	* @param string $name Model name
 	* @return JModel Instance any model
 	*/
-	public function getModel($name = ''){
+	private function _getModel($name = ''){
 		
 		$name = strtolower($name);
 		$className = ucfirst($name);
