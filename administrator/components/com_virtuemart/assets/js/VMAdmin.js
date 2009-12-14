@@ -135,10 +135,10 @@ jQuery.noConflict();
 			 * @author jseros
 			 */
 			buildAdminMenu: function(){
-				var that = this;
+				var that = this; //that = VMAdmin.util
 				
 				$(function(){
-					var actualItem = VMAdmin.cache.activeMenuAdminItem = Cookie.get('voir').toInt(), // Actual selected item
+					var actualItem = VMAdmin.cache.activeMenuAdminItem = parseInt(Cookie.get('voir')), // Current selected item
 					speed = VMAdmin.config.menuAdminSpeed; //shortcut. Performance issue!
 					
 					$('.section-smenu').addClass('element-hidden');//Hidding Panels
@@ -150,7 +150,7 @@ jQuery.noConflict();
 					
 					$('.title-smenu').click(function(){
 						that.activeMenuItem( this );
-					}); 					
+					});				
 					
 				});
 			},
