@@ -375,7 +375,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_status` (
   `order_status_code` char(1) NOT NULL default '',
   `order_status_name` varchar(64) default NULL,
   `order_status_description` text NOT NULL,
-  `list_order` int(11) default NULL,
+  `ordering` int(11) default NULL,
   `vendor_id` int(11) default NULL,
   PRIMARY KEY  (`order_status_id`),
   KEY `idx_order_status_list_order` (`list_order`),
