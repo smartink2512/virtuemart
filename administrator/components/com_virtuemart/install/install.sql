@@ -378,7 +378,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_status` (
   `ordering` int(11) default NULL,
   `vendor_id` int(11) default NULL,
   PRIMARY KEY  (`order_status_id`),
-  KEY `idx_order_status_list_order` (`list_order`),
+  KEY `idx_order_status_list_order` (`ordering`),
   KEY `idx_order_status_vendor_id` (`vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='All available order statuses';
 
@@ -561,6 +561,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_attribute_sku` (
   `product_id` int(11) NOT NULL default '0',
   `attribute_name` char(255) NOT NULL default '',
   `attribute_list` int(11) NOT NULL default '0',
+  PRIMARY KEY (`attribute_sku_id`),
   KEY `idx_product_attribute_sku_product_id` (`product_id`),
   KEY `idx_product_attribute_sku_attribute_name` (`attribute_name`),
   KEY `idx_product_attribute_list` (`attribute_list`)

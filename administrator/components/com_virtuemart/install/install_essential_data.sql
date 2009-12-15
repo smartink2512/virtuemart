@@ -258,7 +258,7 @@ INSERT INTO `#__vm_module` (`module_id`, `module_name`, `module_description`, `m
 -- Dumping data for table `#__vm_order_status`
 --
 
-INSERT INTO `#__vm_order_status` (`order_status_id`, `order_status_code`, `order_status_name`, `order_status_description`, `list_order`, `vendor_id`) VALUES
+INSERT INTO `#__vm_order_status` (`order_status_id`, `order_status_code`, `order_status_name`, `order_status_description`, `ordering`, `vendor_id`) VALUES
 (1, 'P', 'Pending', '', 1, 1),
 (2, 'C', 'Confirmed', '', 2, 1),
 (3, 'X', 'Cancelled', '', 3, 1),
