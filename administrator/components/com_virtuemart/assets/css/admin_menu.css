@@ -43,7 +43,7 @@
 .content-area-full .content-pad .content-pad2 {
 	padding: 0;
 }
-.section-smenu {
+.section-smenu{
 	background: #F7F7F7;
 }
 
@@ -78,6 +78,9 @@ div.status-divider {
 	background: #F7F7F7;
 	float: left;
 	width: 200px;
+	padding: 10px 0;
+	border: solid 1px #DDD;
+	
 }
 .sidemenu-box2 {
 	background: #F7F7F7;
@@ -88,6 +91,8 @@ div.status-divider {
 .sidemenu-pad {
 	padding: 0;
 	margin-bottom: 0 !Important;
+	border-left: solid 1px #F7F7F7;
+	border-right: solid 1px #F7F7F7;
 }
 
 .element-box {

@@ -129,6 +129,11 @@ Administrator Icons
 Copyright:	2008 Simon Josephson (http://www.artatwork.com.au)
 Thank you Simon!
 
+jQuery JavaScript Library 
+----
+Copyright: 2009 John Resig
+License: Dual licensed under the MIT and GPL licenses.
+
 If you have contributed a vital part of VirtueMart that is not mentioned and missing here,
 and you feel that your copyright note should be mentioned here,
 please contact the author of VirtueMart (soeren|at|virtuemart.net).

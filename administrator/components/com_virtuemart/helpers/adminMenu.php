@@ -78,18 +78,12 @@ class AdminMenuHelper
         $document	= JFactory::getDocument();
         $moduleId   = JRequest::getInt('module_id', 0);
     	
-        $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/nifty.js');
         $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/fat.js');      
 
         $document->addScriptDeclaration('
         	jQuery(function(){
         		VMAdmin.util.buildAdminMenu();
 	        	Fat.fade_all();
-			    NiftyCheck();
-			    Rounded("div.sidemenu-box","all","#fff","#f7f7f7","border #ccc");
-			    Rounded("div.element-box","all","#fff","#fff","border #ccc");
-			    Rounded("div.toolbar-box","all","#fff","#fbfbfb","border #ccc");
-			    Rounded("div.submenu-box","all","#fff","#f2f2f2","border #ccc");
     		});');
         
         $menuItems = adminMenuHelper::_getAdminMenu($moduleId);

@@ -53,10 +53,6 @@ class VirtueMartViewStore extends JView {
 			$this->assignRef('editor', $editor);
         }	
         else {
-        	/* Load jQuery */
-			$document = JFactory::getDocument();
-			$document->addScript(JURI::root().'administrator/components/com_virtuemart/assets/js/jquery.js');
-			$document->addScriptDeclaration('jQuery.noConflict();');
 			
 			JToolBarHelper::title( JText::_( 'VM_STORE_FORM_LBL' ), 'vm_store_48' );
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
