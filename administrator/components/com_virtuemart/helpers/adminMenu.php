@@ -33,12 +33,16 @@ class AdminMenuHelper
 	function startAdminArea()
 	{	
 	    $document = JFactory::getDocument();
+	    $mainframe = JFactory::getApplication(); 
+	    
 	    $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_menu.css');
 		$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin.styles.css');	    
         $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/toolbar_images.css');
 		$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/menu_images.css');
 		
-		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.js');
+		//loading from public site
+		$document->addScript($mainframe->getSiteURL().'components/com_virtuemart/assets/js/jquery.js');
+		
 		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/VMAdmin.js'); 		 		
 		?>	
 		<table style="width:100%; table-layout:fixed;">
@@ -76,16 +80,12 @@ class AdminMenuHelper
     function showAdminMenu()
     {
         $document	= JFactory::getDocument();
-        $moduleId   = JRequest::getInt('module_id', 0);
-    	
-        $document->addScript(JURI::base().'components/com_virtuemart/assets/js/admin_menu/fat.js');      
+        $moduleId   = JRequest::getInt('module_id', 0);     
 
         $document->addScriptDeclaration('
-        	jQuery(function(){
         		VMAdmin.util.buildAdminMenu();
-	        	Fat.fade_all();
-    		});');
-        
+        ');
+       
         $menuItems = adminMenuHelper::_getAdminMenu($moduleId);
        
         ?>
