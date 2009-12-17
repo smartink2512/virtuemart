@@ -2,17 +2,6 @@
 -- This will install all the tables need to run VirtueMart
 
 --
--- Table structure for table `#__vm_config`
---
-CREATE TABLE IF NOT EXISTS `#__vm_config` (
-	`config_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`config` TEXT NULL,
-	PRIMARY KEY (`config_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds configuration settings';
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `#__vm_auth_group`
 --
 
@@ -109,6 +98,17 @@ CREATE TABLE IF NOT EXISTS `#__vm_category_xref` (
   KEY `category_xref_category_parent_id` (`category_parent_id`),
   KEY `idx_category_xref_category_list` (`category_list`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Category child-parent relation list';
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__vm_config`
+--
+CREATE TABLE IF NOT EXISTS `#__vm_config` (
+	`config_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`config` TEXT NULL,
+	PRIMARY KEY (`config_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds configuration settings';
 
 -- --------------------------------------------------------
 
@@ -333,7 +333,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_order_item` (
   `order_item_name` varchar(64) NOT NULL default '',
   `product_quantity` int(11) default NULL,
   `product_item_price` decimal(15,5) default NULL,
-  `product_final_price` decimal(12,2) NOT NULL default '0.00',
+  `product_final_price` decimal(15,5) NOT NULL default '0.00',
   `order_item_currency` varchar(16) default NULL,
   `order_status` char(1) default NULL,
   `cdate` int(11) default NULL,
@@ -590,7 +590,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_category_xref` (
 
 CREATE TABLE IF NOT EXISTS `#__vm_product_discount` (
   `discount_id` int(11) NOT NULL auto_increment,
-  `amount` decimal(12,2) NOT NULL default '0.00',
+  `amount` decimal(15,5) NOT NULL default '0.00',
   `is_percent` tinyint(1) NOT NULL default '0',
   `start_date` int(11) NOT NULL default '0',
   `end_date` int(11) NOT NULL default '0',
@@ -660,7 +660,7 @@ CREATE TABLE IF NOT EXISTS `#__vm_product_mf_xref` (
 CREATE TABLE IF NOT EXISTS `#__vm_product_price` (
   `product_price_id` int(11) NOT NULL auto_increment,
   `product_id` int(11) NOT NULL default '0',
-  `product_price` decimal(12,5) default NULL,
+  `product_price` decimal(15,5) default NULL,
   `product_currency` char(16) default NULL,
   `product_price_vdate` int(11) default NULL,
   `product_price_edate` int(11) default NULL,
