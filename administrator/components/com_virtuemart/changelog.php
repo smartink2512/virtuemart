@@ -34,3 +34,4 @@ $ -> Language fix or change
 ^ Shipping Carrier maintenance converted to MVC
 ^ Shipping Rate maintenance converted
 ^ Order Status maintenance page converted to MVC
+# Bug 1538 fixed; Product pricing table change
