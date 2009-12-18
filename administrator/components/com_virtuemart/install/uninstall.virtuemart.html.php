@@ -10,17 +10,12 @@
 <div align="center">
 	<table width="100%" border="0">
 	<tr>
-		<td valign="top" align="center">
-			<a href="http://virtuemart.net" target="_blank">
-				<img border="0" align="center" src="components/com_virtuemart/assets/images/cart.gif" alt="Cart" />
-			</a>
-		</td>
 		<td>
 			<h1>Thank you for using Virtuemart!</h1>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2" valign="top" align="center">
+		<td valign="top" align="center">
 			<br />
 			<b>Uninstall Note:</b><br />
 			Uninstalling Virtuemart does not remove the Virtuemart tables from your database.&nbsp;&nbsp;
