@@ -138,10 +138,10 @@ CREATE TABLE IF NOT EXISTS `#__vm_coupons` (
   `coupon_code` varchar(32) NOT NULL default '',
   `percent_or_total` enum('percent','total') NOT NULL default 'percent',
   `coupon_type` enum('gift','permanent') NOT NULL default 'gift',
-  `coupon_value` decimal(12,2) NOT NULL default '0.00',
+  `coupon_value` decimal(15,5) NOT NULL default '0.00000',
   `coupon_start_date` datetime default NULL,
   `coupon_expiry_date` datetime default NULL,
-  `coupon_value_valid` decimal(12,2) NOT NULL default '0.00',
+  `coupon_value_valid` decimal(15,5) NOT NULL default '0.00000',
   PRIMARY KEY  (`coupon_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Used to store coupon codes';
 
