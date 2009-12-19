@@ -49,17 +49,17 @@ class VirtuemartControllerOrders extends JController
 	}
 	
 	/**
-	* Cancellation, redirect to main product list
+	* Cancellation, redirect to main order list
 	*
 	* @author RolandD
 	*/
 	public function Cancel() {
 		$mainframe = Jfactory::getApplication();
-		$mainframe->redirect('index.php?option=com_virtuemart&view=attributes&product_id='.JRequest::getInt('product_id'));
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders');
 	}
 	
 	/**
-	* Save an attribute
+	* Save an order
 	*
 	* @author RolandD
 	*/
@@ -67,20 +67,20 @@ class VirtuemartControllerOrders extends JController
 		$mainframe = Jfactory::getApplication();
 		
 		/* Load the view object */
-		$view = $this->getView('attributes', 'html');
+		$view = $this->getView('orders', 'html');
 		
-		$model = $this->getModel('attributes');
+		$model = $this->getModel('orders');
 		$msgtype = '';
-		if ($model->saveAttribute()) $msg = JText::_('ATTRIBUTE_SAVED_SUCCESSFULLY');
+		if ($model->saveOrder()) $msg = JText::_('ORDER_SAVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('ATTRIBUTE_NOT_SAVED_SUCCESSFULLY');
+			$msg = JText::_('ORDER_NOT_SAVED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
-		$mainframe->redirect('index.php?option=com_virtuemart&view=attributes&product_id='.JRequest::getInt('product_id'), $msg, $msgtype);
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg, $msgtype);
 	}
 	
 	/**
-	* Delete an attribute
+	* Delete an order
 	*
 	* @author RolandD
 	*/
@@ -88,17 +88,41 @@ class VirtuemartControllerOrders extends JController
 		$mainframe = Jfactory::getApplication();
 		
 		/* Load the view object */
-		$view = $this->getView('attributes', 'html');
+		$view = $this->getView('orders', 'html');
 		
-		$model = $this->getModel('attributes');
+		$model = $this->getModel('orders');
 		$msgtype = '';
-		if ($model->removeAttribute()) $msg = JText::_('ATTRIBUTE_REMOVED_SUCCESSFULLY');
+		if ($model->removeOrder()) $msg = JText::_('ORDER_REMOVED_SUCCESSFULLY');
 		else {
-			$msg = JText::_('ATTRIBUTE_NOT_REMOVED_SUCCESSFULLY');
+			$msg = JText::_('ORDER_NOT_REMOVED_SUCCESSFULLY');
+			$msgtype = 'error';
+		}
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg, $msgtype);
+	}
+	
+	/**
+	* Update an order status
+	*
+	* @author RolandD
+	*/
+	public function updatestatus() {
+		$mainframe = Jfactory::getApplication();
+		?><pre><?php
+		print_r($_POST);
+		?></pre><?php
+		
+		/* Load the view object */
+		$view = $this->getView('orders', 'html');
+		
+		$model = $this->getModel('orders');
+		$msgtype = '';
+		if ($model->updateStatus()) $msg = JText::_('ORDER_UPDATED_SUCCESSFULLY');
+		else {
+			$msg = JText::_('ORDER_NOT_UPDATED_SUCCESSFULLY');
 			$msgtype = 'error';
 		}
 		
-		$mainframe->redirect('index.php?option=com_virtuemart&view=attributes&product_id='.JRequest::getInt('product_id'), $msg, $msgtype);
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg, $msgtype);
 	}
 }
 ?>

@@ -3,6 +3,9 @@ defined('_JEXEC') or die('Restricted access');
 AdminMenuHelper::startAdminArea(); 
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
+<?php
+defined('_JEXEC') or die('Restricted access'); 
+?>
 <div id="header">
 	<div id="filterbox" style="float: left;">
 	<table>
@@ -19,95 +22,87 @@ AdminMenuHelper::startAdminArea();
 	<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
 </div>
 <br clear="all" />
-<div style="text-align: left;">
-	<table class="adminlist">
-	<thead>
-	<tr>
-		<th>#</th>
-		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->orderslist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_ID', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_PRINT_NAME', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_PRINT_LABEL', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_TRACK', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_VOID_LABEL', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_CHECK_OUT_THANK_YOU_PRINT_VIEW', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_CDATE', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_MDATE', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_STATUS', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_UPDATE', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_TOTAL', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-	</tr>
-	</thead>
-	<tbody>
-	<?php
-	if (count($this->orderslist) > 0) {
-		$i = 0;
-		$k = 0;
-		$keyword = JRequest::getVar('keyword');
-		foreach ($this->orderslist as $key => $order) {
-			$checked = JHTML::_('grid.id', $i , $order->order_id);
+<table class="adminlist">
+<thead>
+<tr>
+	<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->orderslist); ?>')" /></th>
+	<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_ID', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+	<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_PRINT_NAME', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+	<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_PAYMENT_NAME', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+	<th><?php echo JHTML::_('grid.sort', 'VM_CHECK_OUT_THANK_YOU_PRINT_VIEW', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+	<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_CDATE', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+	<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_MDATE', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+	<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_STATUS', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+	<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_NOTIFY', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+	<th><?php echo JHTML::_('grid.sort', 'VM_ORDER_LIST_TOTAL', 'order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+</tr>
+</thead>
+<tbody>
+<?php
+if (count($this->orderslist) > 0) {
+	$i = 0;
+	$k = 0;
+	$keyword = JRequest::getVar('keyword');
+	foreach ($this->orderslist as $key => $order) {
+		$checked = JHTML::_('grid.id', $i , $order->order_id);
+		?>
+		<tr class="<?php echo "row$k"; ?>">
+			<!-- Checkbox -->
+			<td><?php echo $checked; ?></td>
+			<!-- Order id -->
+			<?php 
+			$link = 'index.php?option='.$option.'&view=orders&task=edit&order_id='.$order->order_id;
 			?>
-			<tr class="<?php echo "row$k"; ?>">
-				<!-- Row number -->
-				<td><?php echo $i + 1 + $this->pagination->limitstart;?></td>
-				<!-- Checkbox -->
-				<td><?php echo $checked; ?></td>
-				<!-- Order id -->
-				<?php 
-				$link = 'index.php?option='.$option.'&view=orders&task=edit&order_id='.$order->order_id;
-				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link), $order->order_id, array('title' => JText::_('EDIT').' '.$order->order_id)); ?></td>
-				<!-- Name -->
-				<td><?php echo $order->order_name; ?></td>
-				<!-- Print label -->
-				<td><?php echo $order->print_label; ?></td>
-				<!-- Track -->
-				<td><?php echo $order->track_label; ?></td>
-				<!-- Void label -->
-				<td><?php echo $order->void_label; ?></td>
-				<!-- Print view -->
+			<td><?php echo JHTML::_('link', JRoute::_($link), $order->order_id, array('title' => JText::_('EDIT').' '.$order->order_id)); ?></td>
+			<!-- Name -->
+			<td><?php echo $order->order_name; ?></td>
+			<!-- Payment method -->
+			<td><?php echo $order->payment_method; ?></td>
+			<!-- Print view -->
+			<?php
+			/* Print view URL */
+			$details_url = JURI::root()."?option=".$option."&view=orders&task=orderprintdetails&order_id=".$order->order_id."&format=raw";
+			$details_link = "&nbsp;<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">";
+			$details_link .= JHTML::_('image', 'images/M_images/printButton.png', JText::_('PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
+			?>
+			<td><?php echo $details_link; ?></td>
+			<!-- Order date -->
+			<td><?php echo date('d-M-y H:i', $order->cdate); ?></td>
+			<!-- Last modified -->
+			<td><?php echo date('d-M-y H:i', $order->mdate); ?></td>
+			<!-- Status -->
+			<td>
 				<?php
-				/* Print view URL */
-				$details_url = JURI::root()."?option=".$option."&view=orders&task=orderprintdetails&order_id=".$order->order_id."&format=raw";
-				$details_link = "&nbsp;<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">";
-				$details_link .= JHTML::_('image', 'images/M_images/printButton.png', JText::_('PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
+					echo JHTML::_('select.genericlist', $this->orderstatuses, 'order_status['.$order->order_id.']', '', 'value', 'text', $order->order_status, 'order_status'.$i);
+					echo '<input type="hidden" name="current_order_status['.$order->order_id.']" value="'.$order->order_status.'" />';
+					//$form_code .= $ps_order_status->getOrderStatusList($db->f("order_status"), "style=\"visibility:hidden;\" ");
 				?>
-				<td><?php echo $details_link; ?></td>
-				<!-- Order date -->
-				<td><?php echo date('d-M-y H:i', $order->cdate); ?></td>
-				<!-- Last modified -->
-				<td><?php echo date('d-M-y H:i', $order->mdate); ?></td>
-				<!-- Status -->
-				<td><?php // echo $order->track_label; 
+			</td>
+			<!-- Update -->
+			<td>
+				<?php 
+				echo '<input type="checkbox" class="inputbox" name="notify_customer['.$order->order_id.']" />';
+				// <input type="button" class="button" onclick="if(document.adminForm'. $i .'.changed.value!=\'1\') { alert(\''. addslashes(JText::_('VM_ORDER_LIST_NOTIFY_ERR')) .'\'); return false;} else adminForm'.$i.'.submit();" name="Submit" value="'.JText::_('VM_UPDATE_STATUS').'" />'
 				?>
-				</td>
-				<!-- Update -->
-				<td>
-					<?php 
-					echo '<input type="checkbox" class="inputbox" onclick="if(this.checked==true) {document.adminForm'. $i .'.notify_customer.value = \'Y\';} else {document.adminForm'. $i .'.notify_customer.value = \'N\';}" value="Y" />'
-						.JText::_('VM_ORDER_LIST_NOTIFY') .'<br />
-					<input type="button" class="button" onclick="if(document.adminForm'. $i .'.changed.value!=\'1\') { alert(\''. addslashes(JText::_('VM_ORDER_LIST_NOTIFY_ERR')) .'\'); return false;} else adminForm'.$i.'.submit();" name="Submit" value="'.JText::_('VM_UPDATE_STATUS').'" />'
-					?>
-				</td>
-				<!-- Total -->
-				<td><?php echo $order->order_total; ?></td>
-			</tr>
-		<?php 
-			$k = 1 - $k;
-			$i++;
-		}
-	}	
-	?>
-	</tbody>
-	<tfoot>
-		<tr>
-		<td colspan="16">
-			<?php echo $this->pagination->getListFooter(); ?>
-		</td>
+			</td>
+			<!-- Total -->
+			<td><?php echo $order->order_total; ?></td>
 		</tr>
-	</tfoot>
-	</table>
-</div>
+	<?php 
+		$k = 1 - $k;
+		$i++;
+	}
+}	
+?>
+</tbody>
+<tfoot>
+<tr>
+	<td colspan="10">
+		<?php echo $this->pagination->getListFooter(); ?>
+	</td>
+</tr>
+</tfoot>
+</table>
 <!-- Hidden Fields -->
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />

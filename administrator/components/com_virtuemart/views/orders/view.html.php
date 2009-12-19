@@ -13,7 +13,7 @@ jimport( 'joomla.application.component.view');
 class VirtuemartViewOrders extends JView {
 	
 	function display($tpl = null) {
-		$mainframe = Jfactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getVar('option');
 		$lists = array();
 		
@@ -30,6 +30,9 @@ class VirtuemartViewOrders extends JView {
 			$order->order_total = $currencydisplay->getValue($order->order_total);
 		}
 		
+		/* Get order statuses */
+		$orderstatuses = $this->get('OrderStatusList');
+		
 		/* Get the pagination */
 		$pagination = $this->get('Pagination');
 		$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
@@ -37,11 +40,14 @@ class VirtuemartViewOrders extends JView {
 		
 		/* Toolbar */
 		JToolBarHelper::title(JText::_( 'VM_ORDER_LIST_LBL' ), 'vm_orders_48');
+		JToolBarHelper::save('updatestatus', JText::_('VM_UPDATE_STATUS'));
+		JToolBarHelper::deleteListX();
 		
 		/* Assign the data */
 		$this->assignRef('orderslist', $orderslist);
 		$this->assignRef('pagination',	$pagination);
 		$this->assignRef('lists',	$lists);
+		$this->assignRef('orderstatuses', $orderstatuses);
 		
 		parent::display($tpl);
 	}
