@@ -1,6 +1,5 @@
 <?php
 defined('_JEXEC') or die('Restricted access'); 
-print_r($this->config->get('browse_orderby_fields'));
 $orderByFieldsArray = $this->config->get('browse_orderby_fields'); 
 ?> 
 <br />
@@ -12,7 +11,7 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 <table class="admintable">
 <tr>
 	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_URLSECURE_EXPLAIN'); ?>">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_URLSECURE_EXPLAIN'); ?>" />
 		<?php echo JText::_('VM_ADMIN_CFG_PDF_BUTTON') ?>
 	</td>
 	<td>
@@ -24,7 +23,7 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 </tr>
 <tr>
    	<td class="key">
-   		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_SHOW_EMAILFRIEND_TIP'); ?>">
+   		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_SHOW_EMAILFRIEND_TIP'); ?>" />
    		<label for="conf_VM_SHOW_EMAILFRIEND"><?php echo JText::_('VM_ADMIN_SHOW_EMAILFRIEND') ?></label>
 	</td>
 	<td>
@@ -36,7 +35,7 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 </tr>
 <tr>
     <td class="key">
-      	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_SHOW_PRINTICON_TIP'); ?>">
+      	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_SHOW_PRINTICON_TIP'); ?>" />
        	<label for="conf_VM_SHOW_PRINTICON"><?php echo JText::_('VM_ADMIN_SHOW_PRINTICON') ?></label></td>
     <td>
        	<?php
@@ -47,7 +46,7 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 </tr>
 <tr>
     <td class="key">
-      	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_NAV_AT_TOP_TIP'); ?>">
+      	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_NAV_AT_TOP_TIP'); ?>" />
        	<?php echo JText::_('VM_ADMIN_CFG_NAV_AT_TOP') ?>
     </td>
     <td>
@@ -59,7 +58,7 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 </tr>
 <tr>
     <td class="key">
-       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP'); ?>">
+       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL_TIP'); ?>" />
        	<?php echo JText::_('VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL') ?>
     </td>
     <td>
@@ -77,7 +76,7 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 </tr>
 <tr>
     <td class="key">
-       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_BROWSE_ORDERBY_FIELDS_LBL_TIP'); ?>">
+       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_BROWSE_ORDERBY_FIELDS_LBL_TIP'); ?>" />
        	<?php echo JText::_('VM_BROWSE_ORDERBY_FIELDS_LBL') ?>
     </td>
     <td>
@@ -115,7 +114,7 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 </tr>
 <tr>
     <td class="key">
-       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP'); ?>">
+       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOW_PRODUCT_COUNT_TIP'); ?>"/>
        	<?php echo JText::_('VM_ADMIN_CFG_SHOW_PRODUCT_COUNT') ?></td>
 	<td>
 		<?php
@@ -126,7 +125,7 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 </tr>
 <tr>
     <td class="key">
-       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN'); ?>">
+       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN'); ?>"/>
        	<?php echo JText::_('VM_ADMIN_CFG_NOIMAGEPAGE') ?>
 	</td>
    	<td>
@@ -142,7 +141,7 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 </tr>
 <tr>
     <td class="key">
-       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
+       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>"/>
        	<?php echo JText::_('VM_ADMIN_CFG_SHOWVM_VERSION') ?>
     </td>
 	<td>
@@ -162,7 +161,7 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 <table class="admintable">
 <tr>
 	<td class="key">
-       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_SELECT_THEME_TIP'); ?>">
+       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_SELECT_THEME_TIP'); ?>"/>
        	<?php echo JText::_('VM_SELECT_THEME') ?>
     </td>
     <td>
@@ -176,7 +175,7 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 </tr> 
 <tr>
     <td class="key">
-       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
+       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN'); ?>"/>
        	<?php echo JText::_('VM_ADMIN_CFG_PRODUCTS_PER_ROW') ?>
     </td>
     <td>
@@ -185,7 +184,7 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 </tr>
 <tr>
     <td class="key">
-       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN'); ?>">
+       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN'); ?>"/>
        	<?php echo JText::_('VM_ADMIN_CFG_CATEGORY_TEMPLATE') ?>
     </td>
     <td>
@@ -196,7 +195,7 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 </tr>
 <tr>
     <td class="key">
-       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FLYPAGE_EXPLAIN'); ?>">
+       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FLYPAGE_EXPLAIN'); ?>"/>
        	<?php echo JText::_('VM_ADMIN_CFG_FLYPAGE') ?>
     </td>
     <td>
@@ -210,7 +209,7 @@ if( function_exists('imagecreatefromjpeg') ) {
 ?> 
 <tr>
     <td class="key">
-       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP'); ?>">
+       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP'); ?>"/>
        	<label for="conf_PSHOP_IMG_RESIZE_ENABLE"><?php echo JText::_('VM_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING') ?></label>
     </td>
 	<td>
@@ -222,7 +221,7 @@ if( function_exists('imagecreatefromjpeg') ) {
 </tr>
 <tr>
     <td class="key">
-       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_THUMBNAIL_WIDTH_TIP'); ?>">
+       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_THUMBNAIL_WIDTH_TIP'); ?>"/>
        	<?php echo JText::_('VM_ADMIN_CFG_THUMBNAIL_WIDTH') ?>
     </td>
     <td>
@@ -231,7 +230,7 @@ if( function_exists('imagecreatefromjpeg') ) {
 </tr>
 <tr>
     <td class="key">
-       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
+       	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>"/>
        	<?php echo JText::_('VM_ADMIN_CFG_THUMBNAIL_HEIGHT') ?>
     </td>
     <td>

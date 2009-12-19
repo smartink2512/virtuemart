@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 	<table class="admintable">
   	<tr>
     	<td class="key">
-    		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN'); ?>">
+    		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN'); ?>"/>
     		<?php echo JText::_('VM_ADMIN_CFG_ENABLE_DOWNLOADS') ?>
     	</td>
         <td>
@@ -17,7 +17,7 @@ defined('_JEXEC') or die('Restricted access');
     </tr>
     <tr>
         <td class="key">
-        	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN'); ?>">
+        	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN'); ?>"/>
         	<?php echo JText::_('VM_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS') ?></td>
         <td>
 			<?php echo JHTML::_('Select.genericlist', $this->orderStatusList, 'enable_download_status', 'size=1', 'order_status_code', 'order_status_name', $this->config->get('enable_download_status')); ?>
@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
     </tr>
         <tr>
         <td class="key">
-        	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN'); ?>">
+        	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN'); ?>"/>
         	<?php echo JText::_('VM_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS') ?>
         </td>
         <td>
@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
     </tr>
       <tr>
         <td class="key">
-        	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DOWNLOADROOT_EXPLAIN'); ?>">
+        	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DOWNLOADROOT_EXPLAIN'); ?>"/>
         	<?php echo JText::_('VM_ADMIN_CFG_DOWNLOADROOT') ?></td>
         <td valign="top">
             <input size="40" type="text" name="conf_DOWNLOADROOT" class="inputbox" value="<?php echo $this->config->get('download_root'); ?>" />
@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
     </tr>
     <tr>
     	<td class="key">
-      		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN'); ?>">
+      		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN'); ?>"/>
       		<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_MAX') ?>
       	</td>
         <td>
@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
     </tr>
     <tr>
     	<td class="key">
-      		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN'); ?>">
+      		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN'); ?>"/>
       		<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_EXPIRE') ?></td>
         <td>
             <input size="8" type="text" name="download_expire" class="inputbox" value="<?php echo $this->config->get('download_expire'); ?>" />
@@ -59,7 +59,7 @@ defined('_JEXEC') or die('Restricted access');
     </tr>
     <tr>
       	<td class="key">
-      		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL_TIP'); ?>">
+      		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL_TIP'); ?>"/>
       		<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL') ?>
       	</td>
         <td>

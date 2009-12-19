@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 <table class="admintable">
 <tr>
 	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOW_PRICES_EXPLAIN'); ?>">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SHOW_PRICES_EXPLAIN'); ?>"/>
 		<?php echo JText::_('VM_ADMIN_CFG_SHOW_PRICES') ?>
 	</td>
 	<td>
@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 </tr>
 <tr>
 	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_ACCESS_LEVEL_TIP'); ?>">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_ACCESS_LEVEL_TIP'); ?>"/>
 		<?php echo JText::_('VM_ADMIN_CFG_PRICE_ACCESS_LEVEL') ?>
 	</td>
 	<td>
@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 </tr>
 <tr>
 	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_WITHOUTTAX_TIP'); ?>">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_WITHOUTTAX_TIP'); ?>"/>
 		<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_WITHOUTTAX') ?>
 	</td>
 	<td>
@@ -44,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 </tr>
 <tr>
 	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_EXCLUDINGTAX_TIP'); ?>">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_EXCLUDINGTAX_TIP'); ?>"/>
 		<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_EXCLUDINGTAX') ?>
 	</td>
 	<td>
@@ -56,7 +56,7 @@ defined('_JEXEC') or die('Restricted access');
 </tr>
 <tr>
 	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_WITHTAX_TIP'); ?>">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_WITHTAX_TIP'); ?>"/>
 		<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_WITHTAX') ?>
 	</td>
 	<td>
@@ -65,7 +65,7 @@ defined('_JEXEC') or die('Restricted access');
 </tr>
 <tr>
 	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX_TIP'); ?>">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX_TIP'); ?>"/>
 		<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_INCLUDINGTAX') ?>
 	</td>
 	<td>
@@ -77,7 +77,7 @@ defined('_JEXEC') or die('Restricted access');
 </tr>
 <tr>
 	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP'); ?>">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP'); ?>"/>
 		<?php echo JText::_('VM_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL'); ?>
 	</td>
 	<td>
@@ -97,7 +97,7 @@ defined('_JEXEC') or die('Restricted access');
 <table class="admintable">
 <tr>
 	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN'); ?>">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_VIRTUAL_TAX_EXPLAIN'); ?>"/>
 		<label for="conf_TAX_VIRTUAL"><?php echo JText::_('VM_ADMIN_CFG_VIRTUAL_TAX') ?></label>
 	</td>
 	<td>
@@ -109,7 +109,7 @@ defined('_JEXEC') or die('Restricted access');
 </tr>
 <tr>
 	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_TAX_MODE_EXPLAIN'); ?>">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_TAX_MODE_EXPLAIN'); ?>"/>
 		<?php echo JText::_('VM_ADMIN_CFG_TAX_MODE') ?>
 	</td>
 	<td>
@@ -124,7 +124,7 @@ defined('_JEXEC') or die('Restricted access');
 </tr>
 <tr>
 	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN'); ?>">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MULTI_TAX_RATE_EXPLAIN'); ?>"/>
 		<?php echo JText::_('VM_ADMIN_CFG_MULTI_TAX_RATE') ?>				
 	</td>
 	<td>
@@ -136,7 +136,7 @@ defined('_JEXEC') or die('Restricted access');
 </tr>
 <tr>
 	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN'); ?>">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE_EXPLAIN'); ?>"/>
 		<?php echo JText::_('VM_ADMIN_CFG_SUBSTRACT_PAYEMENT_BEFORE') ?>
 	</td>
 	<td>
@@ -147,6 +147,7 @@ defined('_JEXEC') or die('Restricted access');
 	</td>
 </tr>
 </table>
+</fieldset>
 
 </td></tr>
 </table>
