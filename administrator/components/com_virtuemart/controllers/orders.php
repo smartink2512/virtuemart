@@ -28,7 +28,7 @@ class VirtuemartControllerOrders extends JController
 		parent::__construct();
 		
 		/* Redirect templates to templates as this is the standard call */
-		$this->registerTask('edit','add');
+		//$this->registerTask('edit','orders');
 	}
 	
 	/**
@@ -43,6 +43,26 @@ class VirtuemartControllerOrders extends JController
 		
 		/* Set the layout */
 		$view->setLayout('orders');
+		
+		/* Now display the view. */
+		$view->display();
+	}
+	
+	/**
+	* Shows the order details
+	*/
+	public function Edit() {
+		/* Create the view object */
+		$view = $this->getView('orders', 'html');
+		
+		/* Default model */
+		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ), true );
+		
+		/* Userfields model */
+		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
+		
+		/* Set the layout */
+		$view->setLayout('orders_edit');
 		
 		/* Now display the view. */
 		$view->display();
@@ -115,8 +135,8 @@ class VirtuemartControllerOrders extends JController
 		$view->loadHelper('shopFunctions');
 		$view->loadHelper('vendorHelper');
 		
+		/* Update the statuses */
 		$model = $this->getModel('orders');
-		$msgtype = '';
 		$result = $model->updateStatus();
 		
 		if ($result['updated'] > 0) $mainframe->enqueueMessage(str_replace('{X}', $result['updated'], JText::_('ORDER_UPDATED_SUCCESSFULLY')));

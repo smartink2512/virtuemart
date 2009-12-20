@@ -67,10 +67,55 @@ class VirtueMartModelOrders extends JModel {
      * Load a single order
      */
      public function getOrder() {
-		 /* Load an attribute */
-		 $row = $this->getTable();
-		 $row->load(JRequest::getInt('attribute_sku_id'));
-     	 return $row;
+     	$db = JFactory::getDBO();
+     	$order = array();
+     	$order_id = JRequest::getInt('order_id');
+     	
+     	/* Get the order details */
+		$q = "SELECT o.*, u.*,
+				c.country_name AS country, 
+				IF (isempty(coupon_code), '-', coupon_code) AS coupon_code, 
+				s.order_status_name 
+			FROM #__vm_orders o
+			LEFT JOIN #__vm_order_status s
+			ON s.order_status_code = o.order_status
+			LEFT JOIN #__vm_order_user_info u
+			ON u.order_id = o.order_id
+			LEFT JOIN #__vm_country c
+			ON c.country_3_code = u.country
+			WHERE o.order_id=".$order_id;
+		$db->setQuery($q);
+		$order['details'] = $db->loadObjectList('address_type');
+		
+		/* Get the order history */
+		$q = "SELECT * 
+			FROM #__vm_order_history 
+			WHERE order_id=".$order_id."
+			ORDER BY order_status_history_id ASC";
+		$db->setQuery($q);
+		$order['history'] = $db->loadObjectList();
+		
+		/* Get the order items */
+		$q = "SELECT order_item_id, product_quantity, order_item_name,
+				order_item_sku, i.product_id, product_item_price, 
+				product_final_price, product_attribute, order_status,
+				intnotes
+			FROM #__vm_order_item i
+			LEFT JOIN #__vm_product p
+			ON p.product_id = i.product_id
+			WHERE order_id=".$order_id;
+		$db->setQuery($q);
+		$order['items'] = $db->loadObjectList();
+		
+		/* Payment details */
+		$q  = "SELECT *, ".Vmconfig::getVar('vm_decrypt_function')."(order_payment_number,'".Vmconfig::getVar('encode_key')."') AS account_number
+			FROM #__vm_payment_method, #__vm_order_payment 
+			WHERE #__vm_order_payment.order_id=".$order_id."
+			AND #__vm_payment_method.payment_method_id = #__vm_order_payment.payment_method_id";
+		$db->setQuery($q);
+		$order['payment'] = $db->loadObject();
+		
+     	return $order;
      }
      
     /**

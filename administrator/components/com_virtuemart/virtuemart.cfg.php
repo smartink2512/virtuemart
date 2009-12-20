@@ -32,8 +32,9 @@ else {
 	$app = '/';
 }
 // these path and url definitions here are based on the Joomla! Configuration
-define( 'URL', 'http://milbovm12.zapto.org/' );
-define( 'SECUREURL', 'http://milbovm12.zapto.org/' );
+//a virgin file should have define( 'URL', JURI::root() );   not a concrete URL
+define( 'URL', JURI::root() );
+define( 'SECUREURL', JURI::root() );
 
 if ( (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == '443' ) {
 	define( 'IMAGEURL', SECUREURL .'components/com_virtuemart/shop_image/' );
@@ -42,14 +43,16 @@ if ( (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERV
 	define( 'IMAGEURL', URL .'components/com_virtuemart/shop_image/' );
 	define( 'VM_THEMEURL', URL.'components/com_virtuemart/themes/default/' );
 }
-define( 'VM_THEMEPATH', $mosConfig_absolute_path.'/components/com_virtuemart/themes/default/' );
+define( 'VM_THEMEPATH', $mosConfig_absolute_path.DS.'components'.DS.'com_virtuemart'.DS.'themes'.DS.'default'.DS );
 
 define( 'COMPONENTURL', URL .'administrator/components/com_virtuemart/' );
-define( 'ADMINPATH', $mosConfig_absolute_path.'/administrator/components/com_virtuemart/' );
-define( 'CLASSPATH', ADMINPATH.'classes/' );
-define( 'PAGEPATH', ADMINPATH.'html/' );
-define( 'IMAGEPATH', $mosConfig_absolute_path.'/components/com_virtuemart/shop_image/' );
 
+define( 'ADMINPATH', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS );
+
+define( 'CLASSPATH', ADMINPATH.'classes'.DS );
+define( 'PAGEPATH', ADMINPATH.'html'.DS );
+define( 'IMAGEPATH', JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'shop_image'.DS );
+define( 'VM_ADMIN_ICON_URL',COMPONENTURL.'assets/images/');
 define('PSHOP_IS_OFFLINE', '');
 define('PSHOP_OFFLINE_MESSAGE', '<h2>Our Shop is currently down for maintenance.</h2> Please check back again soon.');
 define('USE_AS_CATALOGUE', '');
@@ -92,12 +95,12 @@ define('FLYPAGE', 'flypage.tpl');
 define('PRODUCTS_PER_ROW', '1');
 define('ERRORPAGE', 'shop.error');
 define('NO_IMAGE', 'noimage.gif');
-define('DEBUG', '');
+define('DEBUG', '0');
 define('SHOWVERSION', '1');
 define('TAX_VIRTUAL', '1');
 define('TAX_MODE', '1');
 define('MULTIPLE_TAXRATES_ENABLE', '');
-define('PAYMENT_DISCOUNT_BEFORE', '1');
+define('PAYMENT_DISCOUNT_BEFORE', '');
 define('PSHOP_ALLOW_REVIEWS', '1');
 define('PSHOP_AGREE_TO_TOS_ONORDER', '');
 define('SHOW_CHECKOUT_BAR', '1');
@@ -137,6 +140,7 @@ define('VM_LOGFILE_LEVEL', 'PEAR_LOG_WARNING');
 define('VM_DEBUG_IP_ENABLED', '');
 define('VM_DEBUG_IP_ADDRESS', '');
 define('VM_LOGFILE_FORMAT', '%{timestamp} %{ident} [%{priority}] [%{remoteip}] [%{username}] %{message}');
+define('VM_DATE_FORMAT', '%m/%d/%y');
 
 /* OrderByFields */
 global $VM_BROWSE_ORDERBY_FIELDS;

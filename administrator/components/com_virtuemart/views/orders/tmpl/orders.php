@@ -3,9 +3,6 @@ defined('_JEXEC') or die('Restricted access');
 AdminMenuHelper::startAdminArea(); 
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-<?php
-defined('_JEXEC') or die('Restricted access'); 
-?>
 <div id="header">
 	<div id="filterbox" style="float: left;">
 	<table>
