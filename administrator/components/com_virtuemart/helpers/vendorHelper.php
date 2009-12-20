@@ -42,40 +42,12 @@ class Vendor {
 	}
 	
 	/**
-	 * getVendorIdByUserId
-	 * Gets the vendorId by an userId mapped by table auth_user_vendor 
-	 * Assigned users cannot change storeinformations
-	 * ownerOnly = false should be used for users who are assigned to a vendor
-	 * for administrative jobs like execution of orders or managing products
-	 * Changing of vendorinformation should ONLY be possible by the Mainvendor who is in charge
-	 * @author by Max Milbers
-	 * @param $userId
-	 * @param $ownerOnly returns only an id if the vendorOwner is logged in (dont get confused with storeowner)
-	 * returns $vendorId if no vendorId mapped, it returns 0
+	 * Proxy function
+	 * @todo delete this function
 	 */
-	function getVendorIdByUserId(&$userId, $ownerOnly=true) 
+	function getVendorIdByUserId($userId, $ownerOnly=true) 
 	{				
-		if (empty ($userId)) return ;
-		$db = JFactory::getDBO();
-
-		/* Test if user has a vendorId*/
-		if ($ownerOnly) {
-			$q = 'SELECT `vendor_id`, `user_is_vendor` FROM `#__vm_auth_user_vendor` `au` 
-				 LEFT JOIN `#__vm_user_info` `u` ON (au.user_id = u.user_id) WHERE `u`.`user_id`="' . $userId .'"';
-		}
-		else {
-			$q  = 'SELECT `vendor_id` FROM  `#__vm_auth_user_vendor` WHERE `user_id`=' . (int)$userId .' ';						
-		}
-
-		$db->setQuery($q);
-		$vendorId = $db->loadResult();
-		if (isset($vendorId)) {
-			return $vendorId;
-		}
-		else {
-			JError::raiseNotice(1, 'getVendorIdByUserId no vendor_id found for ' . $userId);
-			return 0;
-		}
+		return self::getVendorId('user', $userId, $ownerOnly);
 	}
 
 	/**
@@ -88,14 +60,13 @@ class Vendor {
 	function getUserIdByVendorId($vendorId) 
 	{
 		$db = JFactory::getDBO();
-		if (empty($vendorId)) {
-			return;
+		if (empty($vendorId)) return;
+		else {
+			$query = 'SELECT `user_id` FROM `#__vm_auth_user_vendor` WHERE `vendor_id`="' . $vendorId . '" ';
+			$db->setQuery($query);
+			
+			return $db->loadResult();
 		}
-		
-		$query = 'SELECT `user_id` FROM `#__vm_auth_user_vendor` WHERE `vendor_id`="' . $vendorId . '" ';
-		$db->setQuery($query);
-		
-		return $db->loadResult();
 	}
 	
 
@@ -132,13 +103,13 @@ class Vendor {
 	 * @return boolean
 	 */
 	function isVendor( $userId ) {
-		if(empty ($userId))return;
-		
-		$q = 'SELECT `user_is_vendor` FROM `#__vm_user_info` WHERE `user_id`='.(int)$userId;
-		$this->db->setQuery($q);
-		$this->db->query($q);
-//		echo('isVendor'. $db->loadResult());
-		return $this->db->loadResult();
+		if (empty($userId)) return;
+		else {
+			$db = JFactory::getDBO();
+			$q = 'SELECT `user_is_vendor` FROM `#__vm_user_info` WHERE `user_id`='.$userId;
+			$db->setQuery($q);
+			return $db->loadResult();
+		}
 		
 	}
 	
@@ -498,7 +469,147 @@ class Vendor {
 //		return $email;
 //	}
 	
-
+	/**
+	* Gets the vendorId by user Id mapped by table auth_user_vendor or by the order item 
+	* Assigned users cannot change storeinformations
+	* ownerOnly = false should be used for users who are assigned to a vendor
+	* for administrative jobs like execution of orders or managing products
+	* Changing of vendorinformation should ONLY be possible by the Mainvendor who is in charge
+	* @author by Max Milbers
+	* @author RolandD
+	* @param string $type Where the vendor ID should be taken from
+	* @param mixed $value Whatever value the vendor ID should be filtered on
+	* @return int Vendor ID
+	*/
+	public function getVendorId($type, $value, $ownerOnly=true){
+		$db = JFactory::getDBO();
+		switch ($type) {
+			case 'order':
+				$q = 'SELECT vendor_id FROM #__vm_order_item WHERE order_id='.$value;
+				break;
+			case 'user':
+				if ($ownerOnly) {
+					$q = 'SELECT `vendor_id`, `user_is_vendor` 
+						FROM `#__vm_auth_user_vendor` `au` 
+						LEFT JOIN `#__vm_user_info` `u` 
+						ON (au.user_id = u.user_id) 
+						WHERE `u`.`user_id`=' .$value;
+				}
+				else {
+					$q  = 'SELECT `vendor_id` 
+						FROM `#__vm_auth_user_vendor` 
+						WHERE `user_id`=' .$value;
+				}						
+				break;
+		}
+		$db->setQuery($q);
+		$vendor_id = $db->loadResult();
+		if ($vendor_id) return $vendor_id;
+		else {
+			JError::raiseNotice(1, 'No vendor_id found for '.$value.' on '.$type.' check.');
+			return 0;
+		}
+	}
 	
+	/**
+	* Retrieves a DB object with the recordset of the specified fields (as array)
+	* of vendor_id and ordered by lastparam 
+	* If no orderby is need just set "" 
+	* the country the vendor is assigned to    
+	* 
+	* @author Max Milbers
+	* @author RolandD
+	* @static 
+	* @param int $vendor_id
+	* @param array $fields  "" = Select *
+	* @param String $orderby to order by, just the columnname Without 'ORDER BY '
+	* @return ps_DB
+	*/
+	 
+	public function getVendorFields($vendor_id, $fields=array(), $orderby="") {
+		$db = JFactory::getDBO();
+		$usertable= false;
+		$user_id = self::getUserIdByVendorId($vendor_id);
+		if (empty($user_id)) {
+				$GLOBALS['vmLogger']->err( 'Failure in Database no user_id for vendor_id '.$vendor_id.' found' );
+				return;
+		}
+		else{
+			// $GLOBALS['vmLogger']->debug( 'get_vendor_details user_id for vendor_id found' );
+		}
+		if (empty($fields)) {
+			$fieldstring = '*';
+			$usertable = true;
+		}
+		else {
+			$showtables = array();
+			$showtables[] = 'vm_vendor';
+			$showtables[] = 'vm_user_info';
+			$showtables[] = 'users';
+			$showtables[] = 'vm_country';
+			$showtables[] = 'vm_state';
+			$allowedStrings = array();
+			$countryFields = array();
+			foreach ($showtables as $key => $table) {
+				$q = "SHOW COLUMNS FROM ".$db->nameQuote('#__'.$table);
+				$db->setQuery($q);
+				$dbfields = $db->loadObjectList();
+				if (count($dbfields) > 0) {
+					foreach ($dbfields as $key => $dbfield) {
+						$allowedStrings[] = $dbfield->Field;
+						if ($table == 'vm_country') {
+							$countryFields[] = $dbfield->Field;
+						}
+					}
+				}
+			} 
+			
+			/* Validate the fields */
+			foreach($fields as $field){
+					if(!in_array($field, $allowedStrings)){
+						echo $field;
+						//$GLOBALS['vmLogger']->err( 'get_vendor_fields: field not known: '.$field );	
+						return;
+					}
+					else {
+						switch ($field) {
+							case 'email':
+								$usertable = true;
+									break;
+						}
+					}
+				}
+				/* Check if we need to include the country table */
+				if(in_array($countryFields,$fields)) $countrytable = true;
+				else $countrytable = false;
+				
+				/* Check the fields string */
+				$fieldstring = '`'. implode( '`,`', $fields ) . '`';
+				if(empty($fieldstring)) {
+					$GLOBALS['vmLogger']->err( 'get_vendor_fields implode returns empty String: '.$fields[0] );
+					return;
+				}
+			}
+		
+		$q = 'SELECT '.$fieldstring.' FROM (#__vm_vendor v, #__vm_user_info u) ';
+		if($usertable) $q .= 'LEFT JOIN #__users ju ON (ju.id = u.user_id) ';
+		if($countrytable) {
+			$q .= 'LEFT JOIN #__vm_country c ON (u.country=c.country_id) 
+				LEFT JOIN #__vm_state s ON (s.country_id=c.country_id) ';
+		}
+		$q .= 'WHERE v.vendor_id = '.(int)$vendor_id.' AND u.user_id = '.(int)$user_id.' ';
+		
+		if (!empty($orderby)) $q .= 'ORDER BY '.$orderby.' ';
+		
+		$db->setQuery($q);
+		$vendor_fields = $db->loadObject();
+		if (!$vendor_fields) {
+			print '<h1>Invalid query in get_vendor_fields <br />Query: '.$q.'<br />';
+			print 'vendor_id: '.$vendor_id.' and user_id: '.$user_id.' <br />' ;
+			print '$orderby: '.$orderby.' and $usertable: '.$usertable.'</h1>' ;
+			return ;
+		}
+		else return $vendor_fields;
+	}
 }
 ?>

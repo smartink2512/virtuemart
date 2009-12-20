@@ -107,22 +107,21 @@ class VirtuemartControllerOrders extends JController
 	*/
 	public function updatestatus() {
 		$mainframe = Jfactory::getApplication();
-		?><pre><?php
-		print_r($_POST);
-		?></pre><?php
 		
 		/* Load the view object */
 		$view = $this->getView('orders', 'html');
 		
+		/* Load the helper */
+		$view->loadHelper('shopFunctions');
+		$view->loadHelper('vendorHelper');
+		
 		$model = $this->getModel('orders');
 		$msgtype = '';
-		if ($model->updateStatus()) $msg = JText::_('ORDER_UPDATED_SUCCESSFULLY');
-		else {
-			$msg = JText::_('ORDER_NOT_UPDATED_SUCCESSFULLY');
-			$msgtype = 'error';
-		}
+		$result = $model->updateStatus();
 		
-		$mainframe->redirect('index.php?option=com_virtuemart&view=orders', $msg, $msgtype);
+		if ($result['updated'] > 0) $mainframe->enqueueMessage(str_replace('{X}', $result['updated'], JText::_('ORDER_UPDATED_SUCCESSFULLY')));
+		if ($result['error'] > 0) $mainframe->enqueueMessage(str_replace('{X}', $result['error'], JText::_('ORDER_NOT_UPDATED_SUCCESSFULLY')), 'error');
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders');
 	}
 }
 ?>

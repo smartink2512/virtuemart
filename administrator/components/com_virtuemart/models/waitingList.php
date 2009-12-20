@@ -42,6 +42,7 @@ class VirtueMartModelWaitingList extends JModel {
 	* @todo Add Itemid &Itemid='.$sess->getShopItemid()
 	* @todo Do something if the mail cannot be send
 	* @todo Update mail from
+	* @todo Get the from name/email from the vendor
 	*/
 	public function notifyList($product_id=false) {
 		if (!$product_id) return false;

@@ -76,14 +76,17 @@ if (count($this->orderslist) > 0) {
 					echo JHTML::_('select.genericlist', $this->orderstatuses, 'order_status['.$order->order_id.']', '', 'value', 'text', $order->order_status, 'order_status'.$i);
 					echo '<input type="hidden" name="current_order_status['.$order->order_id.']" value="'.$order->order_status.'" />';
 					echo '<br />';
-					//echo '<input type="text" name="order_comment['.$order->order_id.']" value="" size="40"/>';
-					echo JHTML::_('link', 'index.php', JText::_('ADD_COMMENT'), array('onClick' => 'jQuery(\'#order_comment_'.$order->order_id.'\').toggle(); return false;"'));
+					echo JHTML::_('link', 'index.php', JText::_('ADD_COMMENT'), array('onClick' => 'jQuery(\'#order_comment_'.$order->order_id.'\').toggle().focus(); return false;"'));
 					echo '<textarea style="display: none;" id="order_comment_'.$order->order_id.'" name="order_comment['.$order->order_id.']" value="" cols="40" rows="10"/></textarea>';
 				?>
 			</td>
 			<!-- Update -->
 			<td>
-				<?php echo '<input type="checkbox" class="inputbox" name="notify_customer['.$order->order_id.']" />'; ?>
+				<?php 
+				echo '<input type="checkbox" class="inputbox" name="notify_customer['.$order->order_id.']" />'.JText::_('VM_ORDER_LIST_NOTIFY');
+				echo '<br />';
+				echo '<input type="checkbox" class="inputbox" name="include_comment['.$order->order_id.']" />'.JText::_('VM_ORDER_HISTORY_INCLUDE_COMMENT');
+				?>
 			</td>
 			<!-- Total -->
 			<td><?php echo $order->order_total; ?></td>

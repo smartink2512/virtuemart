@@ -266,7 +266,7 @@ class ps_vendor {
 		$fields = array_filter($fields);
 		
 		if(empty($hVendor)){
-			require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendor_helper.php');
+			require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendorHelper.php');
 			$hVendor = new Vendor;
 		}
 		$vendor_id = $hVendor -> getVendorIdByUserId($user_id, false);

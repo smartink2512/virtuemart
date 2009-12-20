@@ -38,9 +38,10 @@ class ShopFunctions {
 		/* Start the mailer object */
 		$mailer = JFactory::getMailer();
 		$mailer->isHTML(true);
-		$mailer->From = $mainframe->getCfg('mailfrom');
-		$mailer->FromName = $mainframe->getCfg('sitename');
-		$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
+		/* This has to be replaced by the vendor data */
+		//$mailer->From = $mainframe->getCfg('mailfrom');
+		//$mailer->FromName = $mainframe->getCfg('sitename');
+		//$mailer->AddReplyTo(array($mainframe->getCfg('mailfrom'), $mainframe->getCfg('sitename')));
 		
 		return $mailer;
 	}
