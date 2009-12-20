@@ -17,13 +17,11 @@
 	public	$userUserName = "not found";
 	public	$userName = "not found";
 	public	$oldVersion = "fresh";
-	
-	
-	
+
+
     function __construct(){
-//			$this->db = &JFactory::getDBO();
-			
-		}
+//		$this->db = &JFactory::getDBO();
+	}
 		
 	function determineAlreadyInstalledVersion(){
 		$this -> oldVersion = "fresh";

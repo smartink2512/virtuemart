@@ -2104,15 +2104,34 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 	 * @return string The formatted price
 	 */
 	function show_price( $product_id, $hide_tax = false, $showwithtax = 0 ) {
+		
+		$newCalculator=true;
+		echo '<br /><br />show_price called new Calculator modell: '.$newCalculator.'<br />';
+		
 		global  $CURRENCY_DISPLAY,$vendor_mail;
 		$auth = $_SESSION['auth'];
-
 		$tpl = new $GLOBALS['VM_THEMECLASS']();
-
+		
 		$product_name = htmlentities( $this->get_field($product_id, 'product_name'), ENT_QUOTES );
 		$tpl->set( 'product_id', $product_id );
 		$tpl->set( 'product_name', $product_name );
 		$tpl->set( 'vendor_mail', $vendor_mail );
+
+		if($newCalculator){
+			require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'calculationH.php');
+			$calculator = new calculationHelper();
+			$calculator -> getProductPrices($product_id);
+			$discount_info = $calculator -> discount_info;
+			$text_including_tax = $calculator ->salesPrice;
+			
+			if( $showwithtax != 1 && VM_PRICE_SHOW_EXCLUDINGTAX == 1) $text_excluding_tax = $calculator -> discountedPrice; //ct
+			$undiscounted_price = $calculator ->basePrice;  //With Tax?
+			$base_price = $calculator ->basePrice;
+//        	$tpl->set( 'price_table', $html);
+        	$tpl->set( 'price_info', $calculator ->salesPrice );
+        	$tpl->set( 'base_price_info', $base_price );
+		} else{
+
 		$discount_info = $base_price = array();
 		$text_including_tax = '';
 
@@ -2303,12 +2322,26 @@ $db->buildQuery( 'UPDATE', '#__{vm}_product', $fields,  "WHERE product_id='". (i
 				}
 			}
 		}
+		}
+		
 		$tpl->set( 'discount_info', $discount_info );
 		$tpl->set( 'text_including_tax', $text_including_tax );
 		if( $showwithtax != 1 && VM_PRICE_SHOW_EXCLUDINGTAX == 1) $tpl->set( 'text_excluding_tax', $text_excluding_tax ); //ct
 		$tpl->set( 'undiscounted_price', @$undiscounted_price );
 		$tpl->set( 'base_price', $base_price );
         $tpl->set( 'price_table', $html);
+        
+//		$product_name = htmlentities( $this->get_field($product_id, 'product_name'), ENT_QUOTES );
+//		$tpl->set( 'product_id', $product_id );
+//		$tpl->set( 'product_name', $product_name );
+//		$tpl->set( 'vendor_mail', $vendor_mail );
+
+
+//		echo 'basePrice '.$calculator ->basePrice;
+//		echo '<br />discountedPrice '.$calculator -> discountedPrice;
+//		echo '<br />salesPrice with Tax'.$calculator ->salesPrice;
+//		echo '<br />salesPrice adjusted Currency'.$calculator ->salesPriceCurrency;
+//		echo '<br />';
 		return $tpl->fetch( 'common/price.tpl.php');
 
 	}

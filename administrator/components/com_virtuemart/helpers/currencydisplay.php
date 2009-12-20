@@ -129,6 +129,7 @@ class CurrencyDisplay {
 	 * Create the full price
 	 */
 	public function getFullValue($nb, $decimals='', $symbol = '') {
+
 		$res = "";
 		if( $symbol != ''  ) {
 			$old_symbol = $this->symbol;
