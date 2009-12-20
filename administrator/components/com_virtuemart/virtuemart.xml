@@ -35,6 +35,7 @@
 		<filename>virtuemart_parser.php</filename>
 		<filename>index.html</filename>
 		
+		<folder>assets</folder>
 		<folder>js</folder>
 		<folder>models</folder>
 		<folder>shop_image</folder>
