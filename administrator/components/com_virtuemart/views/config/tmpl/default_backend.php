@@ -95,14 +95,14 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_CFG_CONTENT_PLUGINS_ENABLE_TIP'); ?>">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_CFG_CONTENT_PLUGINS_ENABLE_TIP'); ?>"/>
 		    <label for="conf_VM_CONTENT_PLUGINS_ENABLE"><?php echo JText::_('VM_CFG_CONTENT_PLUGINS_ENABLE') ?></label>
 	    </td>
 	    <td>
 		<?php
 		$checked = '';
 		if ($this->config->get('enable_content_plugins')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="enable_content_plugins" value="1" <?php echo $checked; ?> />
+		<input type="checkbox" name="content_plugins_enable" value="1" <?php echo $checked; ?> />
 	    </td>
 	</tr>
 	<tr>
@@ -113,8 +113,8 @@ defined('_JEXEC') or die('Restricted access');
 	    <td>
 		<?php
 		$checked = '';
-		if ($this->config->get('enable_coupons')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="enable_coupons" value="1" <?php echo $checked; ?> />
+		if ($this->config->get('coupons_enable')) $checked = 'checked="checked"'; ?>
+		<input type="checkbox" name="coupons_enable" value="1" <?php echo $checked; ?> />
 	    </td>
 	</tr>
 	<tr>
@@ -125,8 +125,8 @@ defined('_JEXEC') or die('Restricted access');
 	    <td>
 		<?php
 		$checked = '';
-		if ($this->config->get('enable_reviews')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="enable_reviews" value="1" <?php echo $checked; ?> />
+		if ($this->config->get('allow_reviews')) $checked = 'checked="checked"'; ?>
+		<input type="checkbox" name="allow_reviews" value="1" <?php echo $checked; ?> />
 	    </td>
 	</tr>
 	<tr>
@@ -137,8 +137,8 @@ defined('_JEXEC') or die('Restricted access');
 	    <td>
 		<?php
 		$checked = '';
-		if ($this->config->get('autopublish_reviews')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="autopublish_reviews" value="1" <?php echo $checked; ?> />
+		if ($this->config->get('reviews_autopublish')) $checked = 'checked="checked"'; ?>
+		<input type="checkbox" name="reviews_autopublish" value="1" <?php echo $checked; ?> />
 	    </td>
 	</tr>
 	<tr>
@@ -147,7 +147,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <label for="conf_VM_REVIEWS_MINIMUM_COMMENT_LENGTH"><?php echo JText::_('VM_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH') ?></label>
 	    </td>
 	    <td>
-		<input type="text" size="6" id="comment_min_length" name="comment_min_length" class="inputbox" value="<?php echo $this->config->get('comment_min_length'); ?>" />
+		<input type="text" size="6" id="reviews_minimum_comment_length" name="comment_min_length" class="inputbox" value="<?php echo $this->config->get('comment_min_length'); ?>" />
 	    </td>
 	</tr>
 	<tr>
@@ -156,7 +156,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <label for="conf_VM_REVIEWS_MAXIMUM_COMMENT_LENGTH"><?php echo JText::_('VM_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH'); ?></label>
 	    </td>
 	    <td>
-		<input type="text" size="6" id="comment_max_length" name="comment_max_length" class="inputbox" value="<?php echo $this->config->get('comment_max_length'); ?>" />
+		<input type="text" size="6" id="reviews_maximum_comment_length" name="comment_max_length" class="inputbox" value="<?php echo $this->config->get('comment_max_length'); ?>" />
 	    </td>
 	</tr>
     </table>
@@ -185,8 +185,8 @@ defined('_JEXEC') or die('Restricted access');
 	    <td>
 		<?php
 		$checked = '';
-		if ($this->config->get('debug_by_ip')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="debug_by_ip" value="1" <?php echo $checked; ?> />
+		if ($this->config->get('debug_ip_enabled')) $checked = 'checked="checked"'; ?>
+		<input type="checkbox" name="debug_ip_enabled" value="1" <?php echo $checked; ?> />
 	    </td>
 	</tr>
 	<tr>
@@ -206,8 +206,8 @@ defined('_JEXEC') or die('Restricted access');
 	    <td>
 		<?php
 		$checked = '';
-		if ($this->config->get('enable_logfile')) $checked = 'checked="checked"'; ?>
-		<input type="checkbox" name="enable_logfile" value="1" <?php echo $checked; ?> />
+		if ($this->config->get('logfile_enabled')) $checked = 'checked="checked"'; ?>
+		<input type="checkbox" name="logfile_enabled" value="1" <?php echo $checked; ?> />
 	    </td>
 	</tr>
 	<tr>
