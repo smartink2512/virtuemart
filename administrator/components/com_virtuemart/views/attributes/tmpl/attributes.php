@@ -30,12 +30,10 @@ $pagination = $this->pagination;
 	<table class="adminlist">
 	<thead>
 	<tr>
-		<th>#</th>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($attributeslist); ?>')" /></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_ATTRIBUTE_LIST_NAME', 'a.attribute_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_ATTRIBUTE_LIST_ORDER', 'a.attribute_list', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'PRODUCT_NAME', 'p.product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JText::_('ID'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -47,8 +45,6 @@ $pagination = $this->pagination;
 			$checked = JHTML::_('grid.id', $i , $attribute->attribute_sku_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
-				<!-- Counter -->
-				<td><?php echo $i + 1 + $pagination->limitstart;?></td>
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Attribute name -->
@@ -60,8 +56,6 @@ $pagination = $this->pagination;
 				<td><?php echo $attribute->attribute_list; ?></td>
 				<!-- Product name -->
 				<td><?php echo $attribute->product_name; ?></td>
-				<!-- Attribute ID -->
-				<td><?php echo $attribute->attribute_sku_id; ?></td>
 			</tr>
 		<?php 
 			$k = 1 - $k;

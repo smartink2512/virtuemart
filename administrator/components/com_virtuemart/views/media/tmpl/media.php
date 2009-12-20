@@ -38,7 +38,6 @@ $pagination = $this->pagination;
 	<table class="adminlist">
 	<thead>
 	<tr>
-		<th>#</td>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></td>
 		<th><?php echo JText::_('VM_PRODUCT_LIST_NAME'); ?></td>
 		<th><?php echo JText::_('VM_FILES_LIST_FILENAME'); ?></td>
@@ -47,7 +46,6 @@ $pagination = $this->pagination;
 		<th><?php echo JText::_('VM_FILES_LIST_FILETITLE'); ?></td>
 		<th><?php echo JText::_('VM_FILES_LIST_FILETYPE'); ?></td>
 		<th><?php echo JText::_('VM_FILEMANAGER_PUBLISHED'); ?></td>
-		<th><?php echo JText::_('E_REMOVE'); ?></td>
 	</tr>
 	</thead>
 	<tbody>
@@ -66,8 +64,6 @@ $pagination = $this->pagination;
 			else $published = '';
 			?>
 			<tr>
-				<!-- Counter -->
-				<td><?php echo $key + 1 + $pagination->limitstart;?></td>
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Product name -->
@@ -130,16 +126,7 @@ $pagination = $this->pagination;
 				<td><?php echo $productfile->file_extension; ?></td>
 				<!-- Published -->
 				<td><?php echo $published; ?></td>
-				<!-- Remove -->
-				<?php
-					/* Create link */
-					$url = 'index.php?view=media&task=remove&cid='.$productfile->file_id.'&keyword='.urlencode($keyword).'&option='.$option;
-					$productid = JRequest::getInt('product_id', false);
-					if ($productid) $url .= '&product_id='.$productid;
-					$link = JRoute::_($url);
-				?>
-				<td><?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'/components/'.$option.'/shop_image/ps_image/delete.gif', JText::_('DELETE')), array('class' => 'toolbar', 'onclick' => 'return confirm(\''.JText::_('VM_DELETE_MSG').'\');')) ?></td>
-			</td>
+			</tr>
 		<?php 
 			$k = 1 - $k;
 			$i++;

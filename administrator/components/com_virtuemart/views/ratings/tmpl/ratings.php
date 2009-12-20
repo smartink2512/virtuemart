@@ -23,7 +23,6 @@ AdminMenuHelper::startAdminArea();
 	<table class="adminlist">
 	<thead>
 	<tr>
-		<th>#</th>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->ratingslist); ?>')" /></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_NAME_TITLE', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_REVIEW_LIST_NAMEDATE', 'time', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
@@ -43,8 +42,6 @@ AdminMenuHelper::startAdminArea();
 			$published = JHTML::_('grid.published', $review, $i );
 			?>
 			<tr class="<?php echo "row$k"; ?>">
-				<!-- Row number -->
-				<td><?php echo $i + 1 + $this->pagination->limitstart;?></td>
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Product name -->

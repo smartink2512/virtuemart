@@ -48,7 +48,6 @@ $pagination = $this->pagination;
 	<table class="adminlist">
 	<thead>
 	<tr>
-		<th>#</th>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_NAME', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_VENDOR_NAME', 'vendor_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
@@ -66,7 +65,6 @@ $pagination = $this->pagination;
 		<th><?php echo JHTML::_('grid.sort', 'VM_MANUFACTURER_MOD', 'mf_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JText::_('VM_REVIEWS'); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_PUBLISH', 'product_publish', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JText::_('ID'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -80,8 +78,6 @@ $pagination = $this->pagination;
 			$published = JHTML::_('grid.published', $product, $i );
 			?>
 			<tr class="<?php echo "row$k"; ?>">
-				<!-- Counter -->
-				<td><?php echo $i + 1 + $pagination->limitstart;?></td>
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Product name -->
@@ -128,8 +124,6 @@ $pagination = $this->pagination;
 				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('VM_REVIEW_FORM_LBL').']'); ?></td>
 				<!-- Published -->
 				<td><?php echo $published; ?></td>
-				<!-- Product ID -->
-				<td><?php echo $product->product_id; ?></td>
 			</tr>
 		<?php 
 			$k = 1 - $k;

@@ -75,15 +75,15 @@ if (count($this->orderslist) > 0) {
 				<?php
 					echo JHTML::_('select.genericlist', $this->orderstatuses, 'order_status['.$order->order_id.']', '', 'value', 'text', $order->order_status, 'order_status'.$i);
 					echo '<input type="hidden" name="current_order_status['.$order->order_id.']" value="'.$order->order_status.'" />';
-					//$form_code .= $ps_order_status->getOrderStatusList($db->f("order_status"), "style=\"visibility:hidden;\" ");
+					echo '<br />';
+					//echo '<input type="text" name="order_comment['.$order->order_id.']" value="" size="40"/>';
+					echo JHTML::_('link', 'index.php', JText::_('ADD_COMMENT'), array('onClick' => 'jQuery(\'#order_comment_'.$order->order_id.'\').toggle(); return false;"'));
+					echo '<textarea style="display: none;" id="order_comment_'.$order->order_id.'" name="order_comment['.$order->order_id.']" value="" cols="40" rows="10"/></textarea>';
 				?>
 			</td>
 			<!-- Update -->
 			<td>
-				<?php 
-				echo '<input type="checkbox" class="inputbox" name="notify_customer['.$order->order_id.']" />';
-				// <input type="button" class="button" onclick="if(document.adminForm'. $i .'.changed.value!=\'1\') { alert(\''. addslashes(JText::_('VM_ORDER_LIST_NOTIFY_ERR')) .'\'); return false;} else adminForm'.$i.'.submit();" name="Submit" value="'.JText::_('VM_UPDATE_STATUS').'" />'
-				?>
+				<?php echo '<input type="checkbox" class="inputbox" name="notify_customer['.$order->order_id.']" />'; ?>
 			</td>
 			<!-- Total -->
 			<td><?php echo $order->order_total; ?></td>

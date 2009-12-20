@@ -23,7 +23,6 @@ AdminMenuHelper::startAdminArea();
 	<table class="adminlist">
 	<thead>
 	<tr>
-		<th>#</th>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->discountslist); ?>')" /></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_DISCOUNT_AMOUNT', 'amount', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'VM_PRODUCT_DISCOUNT_AMOUNTTYPE', 'is_percent', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
@@ -41,8 +40,6 @@ AdminMenuHelper::startAdminArea();
 			$checked = JHTML::_('grid.id', $i , $discount->discount_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
-				<!-- Row number -->
-				<td><?php echo $i + 1 + $this->pagination->limitstart;?></td>
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Amount -->
