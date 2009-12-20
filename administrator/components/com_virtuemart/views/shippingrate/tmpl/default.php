@@ -12,10 +12,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shippingRates); ?>);" />
-			</th>	
-			<th width="10">
-				<?php echo JText::_( '#' ); ?>
-			</th>		            		
+			</th>			            		
 			<th>
 				<?php echo JText::_( 'VM_SHIPPING_RATE_LIST_CARRIER_LBL' ); ?>
 			</th>				
@@ -44,10 +41,7 @@ AdminMenuHelper::startAdminArea();
 			<tr class="<?php echo "row$k"; ?>">
 				<td width="10">
 					<?php echo $checked; ?>
-				</td>				
-				<td width="10">
-					<?php echo JText::_($row->shipping_rate_id); ?>
-				</td>			            
+				</td>							            
 				<td align="left">
 					<?php echo JText::_($row->shipping_carrier_name); ?>
 				</td>					

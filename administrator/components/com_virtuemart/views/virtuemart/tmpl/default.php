@@ -126,5 +126,5 @@ echo $pane->startPanel(JText::_('VM_STATISTIC_STATISTICS'), 'statistics_page');
 echo $pane->endPanel();
 echo $pane->endPane();
 
-AdminMenuHelper::endAdminArea(); 
+AdminMenuHelper::endAdminArea();
 ?>
