@@ -140,6 +140,40 @@ class VirtueMartModelConfig extends JModel
 
 
     /**
+     * Retrieve a list of modules.
+     *
+     * @author RickG
+     * @return object List of module objects
+     */
+    function getModuleList() {
+	$db = JFactory::getDBO();
+
+	$query = 'SELECT `module_id`, `module_name` FROM `#__vm_module` ';
+	$query .= 'ORDER BY `module_id`';
+	$db->setQuery($query);
+
+	return $db->loadObjectList();
+    }
+
+
+    /**
+     * Retrieve a list of Joomla content items.
+     *
+     * @author RickG
+     * @return object List of content objects
+     */
+    function getContentLinks() {
+	$db = JFactory::getDBO();
+
+	$query = 'SELECT `id`, CONCAT(`title`, " (", `title_alias`, ")") AS text FROM `#__content` ';
+	$query .= 'ORDER BY `id`';
+	$db->setQuery($query);
+
+	return $db->loadObjectList();
+    }
+
+
+    /**
      * Retrieve the configuration record
      *
      * @author RickG

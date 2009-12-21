@@ -23,6 +23,7 @@ class VirtuemartViewConfig extends JView
 	function display($tpl = null)
 	{
 		$model = $this->getModel();
+		$usermodel = $this->getModel('user');
 
 		JToolBarHelper::title(JText::_('VM_CONFIG'), 'vm_config_48');
 		JToolBarHelper::divider();
@@ -44,7 +45,13 @@ class VirtuemartViewConfig extends JView
 		$noimagelist = $model->getNoImageList();
 		$this->assignRef('noimagelist', $noimagelist);		
 		$orderStatusList = $model->getOrderStatusList();
-		$this->assignRef('orderStatusList', $orderStatusList);			
+		$this->assignRef('orderStatusList', $orderStatusList);
+		$moduleList = $model->getModuleList();
+		$this->assignRef('moduleList', $moduleList);
+		$contentLinks = $model->getContentLinks();
+		$this->assignRef('contentLinks', $contentLinks);
+		$aclGroups = $usermodel->getAclGroupIndentedTree();
+		$this->assignRef('aclGroups', $aclGroups);
 	
 		parent::display($tpl);
 	}

@@ -83,11 +83,11 @@ defined('_JEXEC') or die('Restricted access');
 		<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT_EXPLAIN'); ?>"/>
 		<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT') ?></td>
 	    <td>
-		<select name="mail_format" class="inputbox">
-		    <option value="0" <?php if ($this->config->get('mail_format') == '0') echo 'selected="selected"'; ?>>
+		<select name="order_mail_html" class="inputbox">
+		    <option value="0" <?php if ($this->config->get('order_mail_html') == '0') echo 'selected="selected"'; ?>>
 			<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT_TEXT') ?>
 		    </option>
-		    <option value="1" <?php if ($this->config->get('mail_format') == '1') echo 'selected="selected"'; ?>>
+		    <option value="1" <?php if ($this->config->get('order_mail_html') == '1') echo 'selected="selected"'; ?>>
 			<?php echo JText::_('VM_ADMIN_CFG_MAIL_FORMAT_HTML') ?>
 		    </option>
 		</select>

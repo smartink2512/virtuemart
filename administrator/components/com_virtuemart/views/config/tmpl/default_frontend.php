@@ -1,6 +1,13 @@
 <?php
 defined('_JEXEC') or die('Restricted access'); 
-$orderByFieldsArray = $this->config->get('browse_orderby_fields'); 
+$orderByFieldsArray = $this->config->get('browse_orderby_fields');
+$orderByFields = array();
+$orderByFields[] = JHTML::_('select.option', 'product_list', JText::_('VM_DEFAULT'));
+$orderByFields[] = JHTML::_('select.option', 'product_name', JText::_('VM_PRODUCT_NAME_TITLE'));
+$orderByFields[] = JHTML::_('select.option', 'product_price', JText::_('VM_PRODUCT_PRICE_TITLE'));
+$orderByFields[] = JHTML::_('select.option', 'product_sku', JText::_('VM_CART_SKU'));
+$orderByFields[] = JHTML::_('select.option', 'product_cdate', JText::_('VM_LATEST'));
+$orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES'));
 ?> 
 <br />
 <table>
@@ -17,8 +24,8 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 			<td>
 			    <?php
 			    $checked = '';
-			    if ($this->config->get('enable_pdf_button')) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="enable_pdf_button" value="1" <?php echo $checked; ?> />
+			    if ($this->config->get('pdf_button_enable')) $checked = 'checked="checked"'; ?>
+			    <input type="checkbox" name="pdf_button_enable" value="1" <?php echo $checked; ?> />
 			</td>
 		    </tr>
 		    <tr>
@@ -40,8 +47,8 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 			<td>
 			    <?php
 			    $checked = '';
-			    if ($this->config->get('show_print_button')) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="show_print_button" value="1" <?php echo $checked; ?> />
+			    if ($this->config->get('show_printicon')) $checked = 'checked="checked"'; ?>
+			    <input type="checkbox" name="show_printicon" value="1" <?php echo $checked; ?> />
 			</td>
 		    </tr>
 		    <tr>
@@ -62,16 +69,7 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 			    <?php echo JText::_('VM_BROWSE_ORDERBY_DEFAULT_FIELD_LBL') ?>
 			</td>
 			<td>
-			    <?php
-			    $options = array();
-			    $options[] = JHTML::_('select.option', 'product_list', JText::_('VM_DEFAULT'));
-			    $options[] = JHTML::_('select.option', 'product_name', JText::_('VM_PRODUCT_NAME_TITLE'));
-			    $options[] = JHTML::_('select.option', 'product_price', JText::_('VM_PRODUCT_PRICE_TITLE'));
-			    $options[] = JHTML::_('select.option', 'product_sku', JText::_('VM_CART_SKU'));
-			    $options[] = JHTML::_('select.option', 'product_cdate', JText::_('VM_LATEST'));
-			    $options[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES'));
-			    echo JHTML::_('Select.genericlist', $options, 'browse_orderby_field', 'size=1');
-			    ?>
+			    <?php echo JHTML::_('Select.genericlist', $orderByFields, 'browse_orderby_field', 'size=1'); ?>
 			</td>
 		    </tr>
 		    <tr>
@@ -81,35 +79,13 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 			</td>
 			<td>
 			    <?php
-			    $checked = '';
-			    if (in_array('product_list', $orderByFieldsArray)) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="browse_orderby_fields[]" value="1" <?php echo $checked; ?> />
-			    <?php echo JText::_('VM_DEFAULT'); ?><br />
-
-			    <?php $checked = '';
-			    if (in_array('product_name', $orderByFieldsArray)) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="browse_orderby_fields[]" value="1" <?php echo $checked; ?> />
-			    <?php echo JText::_('VM_PRODUCT_NAME_TITLE'); ?><br />
-
-			    <?php $checked = '';
-			    if (in_array('product_price', $orderByFieldsArray)) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="browse_orderby_fields[]" value="1" <?php echo $checked; ?> />
-			    <?php echo JText::_('VM_PRODUCT_PRICE_TITLE'); ?><br />
-
-			    <?php $checked = '';
-			    if (in_array('product_sku', $orderByFieldsArray)) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="browse_orderby_fields[]" value="1" <?php echo $checked; ?> />
-			    <?php echo JText::_('VM_CART_SKU'); ?><br />
-
-			    <?php $checked = '';
-			    if (in_array('product_cdate', $orderByFieldsArray)) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="browse_orderby_fields[]" value="1" <?php echo $checked; ?> />
-			    <?php echo JText::_('VM_LATEST'); ?><br />
-
-			    <?php $checked = '';
-			    if (in_array('product_sales', $orderByFieldsArray)) $checked = 'checked="checked"'; ?>
-			    <input type="checkbox" name="browse_orderby_fields[]" value="1" <?php echo $checked; ?> />
-			    <?php echo JText::_('VM_SALES'); ?><br />
+			    for ($i=0, $n=count($orderByFields); $i < $n; $i++) {
+				$field = $orderByFields[$i];
+				$checked = '';
+				if (in_array($field->value, $orderByFieldsArray)) $checked = 'checked="checked"'; ?>
+				<input type="checkbox" name="browse_orderby_fields[]" value="1" <?php echo $checked; ?> />
+				<?php echo $field->text.'<br />';
+			    } ?>
 			</td>
 		    </tr>
 		    <tr>
@@ -243,8 +219,8 @@ $orderByFieldsArray = $this->config->get('browse_orderby_fields');
 			echo '<tr>
         <td colspan="2"><strong>Dynamic Image Resizing is not available. The GD library seems to be missing.</strong>';
 			echo '<input type="hidden" name="conf_PSHOP_IMG_RESIZE_ENABLE" value="0" />';
-			echo '<input type="hidden" name="conf_PSHOP_IMG_WIDTH" value="'. PSHOP_IMG_WIDTH .'" />';
-			echo '<input type="hidden" name="conf_PSHOP_IMG_HEIGHT" value="'. PSHOP_IMG_HEIGHT .'" /></td></tr>';
+			echo '<input type="hidden" name="conf_PSHOP_IMG_WIDTH" value="'. $this->config->get('img_width') .'" />';
+			echo '<input type="hidden" name="conf_PSHOP_IMG_HEIGHT" value="'. $this->config->get('img_height') .'" /></td></tr>';
 		    }
 		    ?>
 		</table>

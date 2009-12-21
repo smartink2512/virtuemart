@@ -38,6 +38,10 @@ class VirtuemartControllerConfig extends JController
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}	
+		$model = $this->getModel('user');
+		if (!JError::isError($model)) {
+			$view->setModel($model, false);
+		}
 	}
 	
 	/**
