@@ -30,11 +30,13 @@ class VirtuemartViewOrderstatus extends JView
 
 		if ($layoutName == 'edit') {
 			$editor = JFactory::getEditor();
+
 			if ($orderStatus->order_status_id < 1) {
 				JToolBarHelper::title(  JText::_('VM_ORDER_STATUS_FORM_MNU' ).': <small><small>[ New ]</small></small>', 'vm_orderstatus_48');
 				JToolBarHelper::divider();
 				JToolBarHelper::save();
 				JToolBarHelper::cancel();
+				
 				$this->assignRef('ordering', JText::_('New items default to the last place. Ordering can be changed after this item is saved.'));
 			} else {
 				// Ordering dropdown
@@ -49,6 +51,12 @@ class VirtuemartViewOrderstatus extends JView
 				JToolBarHelper::save();
 				JToolBarHelper::cancel('cancel', 'Close');
 			}
+			// Vendor selection
+			$vendor_model = $this->getModel('vendor');
+			$vendor_list = $vendor_model->getVendors();
+			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'vendor_id', '', 'vendor_id', 'vendor_name', $orderStatus->vendor_id);
+
+			$this->assignRef('lists', $lists);
 			$this->assignRef('orderStatus', $orderStatus);
 			$this->assignRef('editor', $editor);
 		} else {

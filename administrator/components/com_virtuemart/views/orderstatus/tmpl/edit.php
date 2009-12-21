@@ -42,6 +42,18 @@ AdminMenuHelper::startAdminArea();
 				<?php echo $this->editor->display('order_status_description',  $this->orderStatus->order_status_description, '100%;', '250', '75', '20', array('image', 'pagebreak', 'readmore') ) ; ?>
 			</td>
 		</tr>
+
+		<tr>
+			<td width="110" class="key">
+				<label for="title">
+					<?php echo JText::_('VM_PRODUCT_FORM_VENDOR'); ?>:
+				</label>
+			</td>
+			<td>
+				<?php echo $this->lists['vendors'];?>
+			</td>
+		</tr>
+
 		<tr>
 			<td width="110" class="key">
 				<label for="title">

@@ -64,6 +64,11 @@ class VirtuemartControllerOrderstatus extends JController
 		JRequest::setVar('layout', 'edit');
 		JRequest::setVar('hidemenu', 1);
 
+		$document =& JFactory::getDocument();
+		$viewType = $document->getType();
+		$view =& $this->getView('orderstatus', $viewType);
+		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
+		
 		parent::display();
 	}
 
