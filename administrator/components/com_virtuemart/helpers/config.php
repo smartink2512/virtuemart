@@ -37,7 +37,7 @@ class VmConfig
 	 * @param string $key Key name to lookup
 	 * @return Value for the given key name
 	 */	
-	function getVar($key = '')
+	function getVar($key = '', $default='')
 	{
 		$value = '';
 		if ($key) {
@@ -52,6 +52,11 @@ class VmConfig
 			if ($config) {
 				$params = new JParameter($config);
 				$value = $params->get($key);				
+			}
+
+			if ($value == '') {
+			    $params->set($key, $default);
+			    $value = $default;
 			}
 		}	
 		

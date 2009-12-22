@@ -39,6 +39,36 @@ CREATE TABLE IF NOT EXISTS `#__vm_auth_user_vendor` (
 
 -- --------------------------------------------------------
 
+
+--
+-- Table structure for Tabelle `jos_vm_calc`
+--
+
+CREATE TABLE IF NOT EXISTS `#__vm_calc` (
+  `calc_id` int(11) NOT NULL auto_increment,
+  `calc_vendor_id` text NOT NULL COMMENT 'Belongs to vendor, if no vendor => for all',
+  `calc_name` text NOT NULL COMMENT 'Name of the rule',
+  `calc_descr` text COMMENT 'Description',
+  `calc_kind` text COMMENT 'Discount/Tax/Margin/Commission',
+  `calc_value_mathop` text COMMENT 'the mathematical operation like (+,-,+%,-%)',
+  `calc_value` text COMMENT 'The Amount',
+  `calc_categories` text COMMENT 'Affected Categories Ids',
+  `calc_country` text COMMENT 'Affected Country Ids',
+  `calc_state` text COMMENT 'Affected State Ids',
+  `calc_shopper_published` tinyint(1) default NULL COMMENT 'Visible for Shoppers',
+  `calc_vendor_published` tinyint(1) default NULL COMMENT 'Visible for Vendors',
+  `calc_start_date` date default NULL COMMENT 'Startdate if nothing is set = permanent',
+  `calc_end_date` date default NULL COMMENT 'Enddate if nothing is set = permanent',
+  `calc_mdate` date default NULL COMMENT 'modified date',
+  `calc_qualify` text COMMENT 'qualifying productId''s',
+  `calc_affected` text COMMENT 'affected productId''s',
+  `calc_amount_cond` float default NULL COMMENT 'Number of affected products',
+  `calc_amount_dimunit` text COMMENT 'The dimension, kg, m, €',
+  `published` tinyint(1) NOT NULL default '0',
+  PRIMARY KEY  (`calc_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
 --
 -- Table structure for table `#__vm_cart`
 --
@@ -1079,30 +1109,3 @@ CREATE TABLE IF NOT EXISTS `#__vm_zone_shipping` (
   PRIMARY KEY  (`zone_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The Zones managed by the Zone Shipping Module';
 
---
--- Table structure for Tabelle `jos_vm_calc`
---
-
-CREATE TABLE IF NOT EXISTS `#__vm_calc` (
-  `calc_id` int(11) NOT NULL auto_increment,
-  `calc_vendor_id` text NOT NULL COMMENT 'Belongs to vendor, if no vendor => for all',
-  `calc_name` text NOT NULL COMMENT 'Name of the rule',
-  `calc_descr` text COMMENT 'Description',
-  `calc_kind` text COMMENT 'Discount/Tax/Margin/Commission',
-  `calc_value_mathop` text COMMENT 'the mathematical operation like (+,-,+%,-%)',
-  `calc_value` text COMMENT 'The Amount', 
-  `calc_categories` text COMMENT 'Affected Categories Ids',
-  `calc_country` text COMMENT 'Affected Country Ids',
-  `calc_state` text COMMENT 'Affected State Ids',
-  `calc_shopper_published` tinyint(1) default NULL COMMENT 'Visible for Shoppers',
-  `calc_vendor_published` tinyint(1) default NULL COMMENT 'Visible for Vendors',
-  `calc_start_date` date default NULL COMMENT 'Startdate if nothing is set = permanent',
-  `calc_end_date` date default NULL COMMENT 'Enddate if nothing is set = permanent',
-  `calc_mdate` date default NULL COMMENT 'modified date',
-  `calc_qualify` text COMMENT 'qualifying productId''s',
-  `calc_affected` text COMMENT 'affected productId''s',
-  `calc_amount_cond` float default NULL COMMENT 'Number of affected products',
-  `calc_amount_dimunit` text COMMENT 'The dimension, kg, m, €',
-  `published` tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (`calc_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
