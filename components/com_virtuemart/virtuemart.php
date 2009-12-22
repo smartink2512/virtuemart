@@ -15,7 +15,29 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 *
 * http://virtuemart.org
 */
+/* Going for a new look :) */
 
+/* Require the base controller */
+require_once(JPATH_COMPONENT.DS.'controller.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+
+/* Require specific controller if requested */
+if($controller = JRequest::getVar('view', 'virtuemart')) {
+   require_once (JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php');
+}
+
+/* Create the controller */
+$classname   = 'VirtuemartController'.$controller;
+$controller = new $classname();
+
+/* Perform the Request task */
+$controller->execute(JRequest::getVar('view'));
+
+/* Redirect if set by the controller */
+$controller->redirect();
+
+
+if (0) {
 global $mosConfig_absolute_path, $product_id, $vmInputFilter, $vmLogger;
         
 /* Load the virtuemart main parse code */
@@ -115,15 +137,8 @@ else {
 
 		define( '_FRONTEND_ADMIN_LOADED', '1' );
 		
-//		if( vmIsJoomla('1.5') ) {
-			$editor =& JFactory::getEditor();
-			echo $editor->initialise();
-//		} else {
-//			$mainframe->loadEditor = 1;
-//			require_once( $mosConfig_absolute_path."/editor/editor.php" );
-//			initEditor();
-//		}
-
+		$editor =& JFactory::getEditor();
+		echo $editor->initialise();
 		$editor1_array = Array('product.product_form' => 'product_desc',
 		'product.product_category_form' => 'category_description',
 		'store.store_form' => 'vendor_store_desc',
@@ -258,4 +273,5 @@ else {
 
 }
 $vm_mainframe->close();
+}
 ?>
