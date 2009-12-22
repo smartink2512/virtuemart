@@ -18,6 +18,24 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 		<table class="admintable">
 		    <tr>
 			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_HOMEPAGE_EXPLAIN'); ?>"/>
+			    <?php echo JText::_('VM_ADMIN_CFG_HOMEPAGE') ?>
+			</td>
+			<td>
+			    <input type="text" name="homepage" class="inputbox" value="<?php echo JText::_($this->config->get('homepage')); ?>" />
+			</td>
+		    </tr>
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ERRORPAGE_EXPLAIN'); ?>"/>
+			    <?php echo JText::_('VM_ADMIN_CFG_ERRORPAGE') ?>
+			</td>
+			<td>
+			    <input type="text" name="errorpage" class="inputbox" value="<?php echo JText::_($this->config->get('errorpage')); ?>" />
+			</td>
+		    </tr>
+		    <tr>
+			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_URLSECURE_EXPLAIN'); ?>" />
 			    <?php echo JText::_('VM_ADMIN_CFG_PDF_BUTTON') ?>
 			</td>
@@ -83,7 +101,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
 				$field = $orderByFields[$i];
 				$checked = '';
 				if (in_array($field->value, $orderByFieldsArray)) $checked = 'checked="checked"'; ?>
-				<input type="checkbox" name="browse_orderby_fields[]" value="1" <?php echo $checked; ?> />
+			    <input type="checkbox" name="browse_orderby_fields[]" value="1" <?php echo $checked; ?> />
 				<?php echo $field->text.'<br />';
 			    } ?>
 			</td>
