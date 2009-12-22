@@ -14,7 +14,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('VM_SALES
     <tr><td valign="top">
 
 	    <fieldset class="adminform">
-		<legend><?php echo JText::_('VM_ADMIN_CFG_DISPLAY') ?></legend>
+		<legend><?php echo JText::_('VM_ADMIN_CFG_SHOPFRONT_SETTINGS') ?></legend>
 		<table class="admintable">
 		    <tr>
 			<td class="key">
