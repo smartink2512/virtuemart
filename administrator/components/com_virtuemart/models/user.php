@@ -38,7 +38,7 @@ class VirtueMartModelUser extends JModel
 	$db = JFactory::getDBO();
 	$version = new JVersion();
 
-	if (version_compare($version->getShortVersion(), '1.6.0', '>' ) == 1) {
+	if (version_compare($version->getShortVersion(), '1.6.0', '>=' ) == 1) {
 	    $query = 'SELECT `node`.`name`, CONCAT(REPEAT("&nbsp;&nbsp;&nbsp;", (COUNT(`parent`.`name`) - 1)), `node`.`name`) AS `text` ';
 	    $query .= 'FROM `#__usergroups` AS node, `#__core_acl_aro_groups` AS parent ';
 	    $query .= 'WHERE `node`.`lft` BETWEEN `parent`.`lft` AND `parent`.`rgt` ';
