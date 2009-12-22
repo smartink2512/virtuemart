@@ -5,6 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 <table class="admintable">
     <tr>
         <td class="key">
+	    <?php echo JHTML::tooltip(JText::_('VM_ADMIN_CFG_FEED_ENABLE_TIP'), JText::_('VM_ADMIN_CFG_FEED_ENABLE_TIP')); ?>
 	    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_ENABLE_TIP'); ?>"/>
 	    <label for="conf_VM_FEED_ENABLED"><?php echo JText::_('VM_ADMIN_CFG_FEED_ENABLE') ?></label>
         </td>
@@ -18,7 +19,8 @@ defined('_JEXEC') or die('Restricted access');
     <tr>
         <td class="key">
 	    <span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_FEED_CACHE_TIP'); ?>"/>
-	    <?php echo JText::_('VM_ADMIN_CFG_FEED_CACHE') ?></td>
+	    <?php echo JText::_('VM_ADMIN_CFG_FEED_CACHE') ?>
+	</td>
         <td>
 	    <?php
 	    $checked = '';
@@ -44,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 	    <?php echo JText::_('VM_ADMIN_CFG_FEED_TITLE_CATEGORIES') ?>
 	</td>
         <td>
-	    <input type="text" size="40" value="<?php echo $this->config->get('feed_category_title'); ?>" name="feed_category_title" id="feed_category_title" /><br />
+	    <input type="text" size="40" value="<?php echo $this->config->get('feed_title_categories'); ?>" name="feed_title_categories" id="feed_title_categories" /><br />
         </td>
     </tr>    
     <tr>
@@ -93,7 +95,7 @@ defined('_JEXEC') or die('Restricted access');
 	    $options = array();
 	    $options[] = JHTML::_('select.option', 'product_s_desc', JText::_('VM_PRODUCT_FORM_S_DESC'));
 	    $options[] = JHTML::_('select.option', 'product_desc', JText::_('VM_PRODUCT_FORM_DESCRIPTION'));
-	    echo JHTML::_('Select.genericlist', $options, 'product_s_desc', 'size=1');
+	    echo JHTML::_('Select.genericlist', $options, 'feed_description_type', 'size=1', 'value', 'text', $this->config->get('feed_description_type'));
 	    ?>
         </td>
     </tr>

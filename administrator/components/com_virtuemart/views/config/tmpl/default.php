@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access'); 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
+JHTML::_('behavior.tooltip');
 ?>
 <form action="index.php" method="post" name="adminForm">
 <?php

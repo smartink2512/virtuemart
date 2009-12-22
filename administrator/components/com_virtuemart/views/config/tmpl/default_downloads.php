@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
         	<span class="editlinktip hasTip" title="<?php echo JText::_('VM_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN'); ?>"/>
         	<?php echo JText::_('VM_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS') ?></td>
         <td>
-			<?php echo JHTML::_('Select.genericlist', $this->orderStatusList, 'enable_download_status', 'size=1', 'order_status_code', 'order_status_name', $this->config->get('enable_download_status')); ?>
+		<?php echo JHTML::_('Select.genericlist', $this->orderStatusList, 'enable_download_status', 'size=1', 'order_status_code', 'order_status_name', $this->config->get('enable_download_status')); ?>
         </td>
     </tr>
         <tr>
@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
         	<?php echo JText::_('VM_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS') ?>
         </td>
         <td>
-			<?php echo JHTML::_('Select.genericlist', $this->orderStatusList, 'disable_download_status', 'size=1', 'order_status_code', 'order_status_name', $this->config->get('disable_download_status')); ?>
+		<?php echo JHTML::_('Select.genericlist', $this->orderStatusList, 'disable_download_status', 'size=1', 'order_status_code', 'order_status_name', $this->config->get('disable_download_status')); ?>
         </td>
     </tr>
       <tr>
@@ -63,10 +63,10 @@ defined('_JEXEC') or die('Restricted access');
       		<?php echo JText::_('VM_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL') ?>
       	</td>
         <td>
-            <?php
-			$checked = '';
-			if ($this->config->get('downloadable_products_keep_stocklevel')) $checked = 'checked="checked"'; ?>
-			<input type="checkbox" name="downloadable_products_keep_stocklevel" value="1" <?php echo $checked; ?> />
+		<?php
+		$checked = '';
+		if ($this->config->get('downloadable_products_keep_stocklevel')) $checked = 'checked="checked"'; ?>
+		<input type="checkbox" name="downloadable_products_keep_stocklevel" value="1" <?php echo $checked; ?> />
         </td>
     </tr>
     </table>    	
