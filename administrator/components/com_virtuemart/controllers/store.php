@@ -74,9 +74,7 @@ class VirtueMartControllerStore extends JController {
      * @author RickG
      */
     function cancel() {
-	$msg = JText::_('Operation Canceled!!');
-
-	$this->setRedirect('index.php?option=com_virtuemart&view=store', $msg);
+	$this->setRedirect('index.php?option=com_virtuemart&view=store');
     }
 
 
@@ -86,13 +84,13 @@ class VirtueMartControllerStore extends JController {
      * @author RickG
      */
     function save() {
-	$model = $this->getModel( 'store' );
+	$model = $this->getModel('store');
 
 	if ($model->store()) {
 	    $msg = JText::_('Store saved!');
 	}
 	else {
-	    $msg = JText::_('Error saving store!');
+	    $msg = JText::_($model->getError());
 	}
 
 	$this->setRedirect('index.php?option=com_virtuemart&view=store', $msg);
@@ -107,7 +105,7 @@ class VirtueMartControllerStore extends JController {
     function remove() {
 	$model = $this->getModel('store');
 	if (!$model->delete()) {
-	    $msg = JText::_('Error: One or more stores could not be deleted!');
+	    $msg = JText::_($model->getError());
 	}
 	else {
 	    $msg = JText::_( 'Stores Deleted!');
@@ -144,20 +142,6 @@ class VirtueMartControllerStore extends JController {
 	}
 
 	$this->setRedirect( 'index.php?option=com_virtuemart&view=store', $msg);
-    }
-
-    /**
-     * Retrieve countrylist
-     */
-    function getData() {
-	/* Create the view object. */
-	$view = $this->getView('store', 'json');
-
-	/* Standard model */
-	$view->setModel( $this->getModel( 'country', 'VirtueMartModel' ), true );
-
-	/* Now display the view. */
-	$view->display();
     }
 }
 ?>

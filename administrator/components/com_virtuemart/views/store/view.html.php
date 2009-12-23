@@ -50,6 +50,8 @@ class VirtueMartViewStore extends JView {
 		JToolBarHelper::cancel('cancel', 'Close');
 	    }
 
+	    $this->loadHelper('currencyDisplay');
+	    CurrencyDisplay::setCurrencyDisplayToStyleStr($store->vendor_currency_display_style);
 	    $currencyModel = $this->getModel('currency');
 	    $this->assignRef('store', $store);
 	    $currencies = $currencyModel->getCurrencies();

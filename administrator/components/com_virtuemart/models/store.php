@@ -138,18 +138,23 @@ class VirtueMartModelStore extends JModel {
      */
     function getStore() {
 	if (empty($this->_data)) {
-	    $this->_data = $this->getTable('vendor');
-	    $this->_data->load((int)$this->_id);
-	    $sqlUserVendor = "SELECT user_id FROM #__vm_auth_user_vendor
-  		WHERE vendor_id = ". $this->_db->Quote((int)$this->_id) ."";
+	    // Get vendor table data
+	    $vendorTable = $this->getTable('vendor');
+	    $vendorTable->load((int)$this->_id);
+	    $this->_data = $vendorTable;
+	    // Convert ; seperated string into array
+	    $this->_data->vendor_accepted_currencies = explode(',', $this->_data->vendor_accepted_currencies);
 
-	    $this->_db->setQuery($sqlUserVendor);
+	    $query = "SELECT user_id FROM #__vm_auth_user_vendor ";
+	    $query .= "WHERE vendor_id = '". $this->_id ."'";
+	    $this->_db->setQuery($query);
 	    $userVendor = $this->_db->loadObject();
 
-	    $userVendor->user_id = (isset($userVendor->user_id) ? $userVendor->user_id : 0);
-
-	    $this->_data->userInfo = $this->getTable('user_info');
-	    $this->_data->userInfo->load((int)$userVendor->user_id);
+	    // Get user_info table data
+	    $userId = (isset($userVendor->user_id) ? $userVendor->user_id : 0);
+	    $userInfoTable = $this->getTable('user_info');
+	    $userInfoTable->load((int)$userId);
+	    $this->_data->userInfo = $userInfoTable;
 	}
 
 	if (!$this->_data) {
@@ -163,7 +168,7 @@ class VirtueMartModelStore extends JModel {
 
 
     /**
-     * Bind the post data to the credit card table and save it
+     * Bind the post data to the vendor table and save it
      *
      * @author RickG
      * @return boolean True is the save was successful, false otherwise.
@@ -171,22 +176,27 @@ class VirtueMartModelStore extends JModel {
     function store() {
 	$table = $this->getTable('vendor');
 
-	$data = JRequest::get( 'post' );
+	$data = JRequest::get('post');
+	// Store multiple selectlist entries as a ; seperated string
+        if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
+                $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
+        }
+
 	// Bind the form fields to the vendor table
 	if (!$table->bind($data)) {
-	    $this->setError($this->getError());
+	    $this->setError($table->getError());
 	    return false;
 	}
 
 	// Make sure the vendor record is valid
 	if (!$table->check()) {
-	    $this->setError($this->getError());
+	    $this->setError($table->getError());
 	    return false;
 	}
 
 	// Save the vendor to the database
 	if (!$table->store()) {
-	    $this->setError($this->getError());
+	    $this->setError($table->getError());
 	    return false;
 	}
 

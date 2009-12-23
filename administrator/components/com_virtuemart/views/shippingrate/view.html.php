@@ -43,19 +43,19 @@ class VirtuemartViewShippingRate extends JView {
 			$this->assignRef('rate', $shippingRate);
 			
 			$carrierModel = $this->getModel('shippingcarrier');
-        	$carriers = $carrierModel->getShippingCarriers(true, true);		     	
+        	$carriers = $carrierModel->getShippingCarriers(false, true);
         	$this->assignRef('carriers', $carriers);	
         	
 			$currencyModel = $this->getModel('currency');
-        	$currencies = $currencyModel->getCurrencies(true, true);		     	
+        	$currencies = $currencyModel->getCurrencies(false, true);
         	$this->assignRef('currencies', $currencies);	  
         	
 			$countrymodel = $this->getModel('country');
-        	$countries = $countrymodel->getCountries(true, true);		     	
+        	$countries = $countrymodel->getCountries(false, true);
         	$this->assignRef('countries', $countries);	     
         	
 			$taxratemodel = $this->getModel('taxrate');
-        	$taxrates = $taxratemodel->getTaxRates(true, true);		     	
+        	$taxrates = $taxratemodel->getTaxRates(false, true);
         	$this->assignRef('taxRates', $taxrates);        	   	      	
         }
         else {

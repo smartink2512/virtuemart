@@ -251,7 +251,7 @@ class VirtueMartModelState extends JModel
 	 */
 	public function getStates($countryId)
 	{
-		$query = 'SELECT * FROM `#__vm_state`  WHERE `country_id`= "'.$countryId.'"';
+		$query = 'SELECT * FROM `#__vm_state`  WHERE `country_id`= "'.$countryId.'" ';
 		$query .= 'ORDER BY `#__vm_state`.`state_name`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;

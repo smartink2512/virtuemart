@@ -54,7 +54,7 @@ class ImageHelper
 		$imageHtml .= '</div></div>';
 		echo $imageHtml;
 	}	
-	
+
 	
 	/** 
 	 * Display a given image in <img> tags

@@ -6,16 +6,14 @@ AdminMenuHelper::startAdminArea();
 <form action="index.php" method="post" name="adminForm">
 
     <div class="col50">
-	<table class="adminform">
+	<table class="admintable">
 	    <tr><td valign="top">
 		    <fieldset class="adminform">
 			<legend><?php echo JText::_('VM_STORE_MOD') ?></legend>
-			<table class="adminform">
+			<table class="admintable">
 			    <tr>
 				<td class="key">
-				    <label for="title">
-					<?php echo JText::_('VM_STORE_FORM_STORE_NAME'); ?>:
-				    </label>
+				    <?php echo JText::_('VM_STORE_FORM_STORE_NAME'); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="vendor_store_name" id="vendor_store_name" size="50" value="<?php echo $this->store->vendor_store_name; ?>" />
@@ -23,9 +21,7 @@ AdminMenuHelper::startAdminArea();
 			    </tr>
 			    <tr>
 				<td class="key">
-				    <label for="title">
-					<?php echo JText::_('VM_STORE_FORM_COMPANY_NAME'); ?>:
-				    </label>
+				    <?php echo JText::_('VM_STORE_FORM_COMPANY_NAME'); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="vendor_name" id="vendor_name" size="50" value="<?php echo $this->store->vendor_name; ?>" />
@@ -33,9 +29,7 @@ AdminMenuHelper::startAdminArea();
 			    </tr>
 			    <tr>
 				<td class="key">
-				    <label for="title">
-					<?php echo JText::_('VM_PRODUCT_FORM_URL'); ?>:
-				    </label>
+				    <?php echo JText::_('VM_PRODUCT_FORM_URL'); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="vendor_url" id="vendor_url" size="50" value="<?php echo $this->store->vendor_url; ?>" />
@@ -43,9 +37,7 @@ AdminMenuHelper::startAdminArea();
 			    </tr>
 			    <tr>
 				<td class="key">
-				    <label for="title">
-					<?php echo JText::_('VM_STORE_FORM_ADDRESS_1'); ?>:
-				    </label>
+				    <?php echo JText::_('VM_STORE_FORM_ADDRESS_1'); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="address_1" id="address_1" size="50" value="<?php echo $this->store->userInfo->address_1; ?>" />
@@ -53,9 +45,7 @@ AdminMenuHelper::startAdminArea();
 			    </tr>
 			    <tr>
 				<td class="key">
-				    <label for="title">
-					<?php echo JText::_('VM_STORE_FORM_ADDRESS_2'); ?>:
-				    </label>
+				    <?php echo JText::_('VM_STORE_FORM_ADDRESS_2'); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="address_2" id="address_2" size="50" value="<?php echo $this->store->userInfo->address_2; ?>" />
@@ -63,9 +53,7 @@ AdminMenuHelper::startAdminArea();
 			    </tr>
 			    <tr>
 				<td class="key">
-				    <label for="title">
-					<?php echo JText::_('VM_STORE_FORM_CITY'); ?>:
-				    </label>
+				    <?php echo JText::_('VM_STORE_FORM_CITY'); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="city" id="city" size="50" value="<?php echo $this->store->userInfo->city; ?>" />
@@ -73,9 +61,7 @@ AdminMenuHelper::startAdminArea();
 			    </tr>
 			    <tr>
 				<td class="key">
-				    <label for="title">
-					<?php echo JText::_('VM_STORE_FORM_COUNTRY'); ?>:
-				    </label>
+				    <?php echo JText::_('VM_STORE_FORM_COUNTRY'); ?>:
 				</td>
 				<td>
 				    <?php echo ShopFunctions::renderCountryList($this->store->userInfo->country);?>
@@ -83,9 +69,7 @@ AdminMenuHelper::startAdminArea();
 			    </tr>
 			    <tr>
 				<td class="key">
-				    <label for="title">
-					<?php echo JText::_('VM_STORE_FORM_STATE'); ?>:
-				    </label>
+				    <?php echo JText::_('VM_STORE_FORM_STATE'); ?>:
 				</td>
 				<td>
 				    <?php echo ShopFunctions::renderStateList($this->store->userInfo->state, $this->store->userInfo->country, 'country_id');?>
@@ -96,42 +80,34 @@ AdminMenuHelper::startAdminArea();
 
 		    <fieldset class="adminform">
 			<legend><?php echo JText::_('VM_STORE_FORM_LBL') ?></legend>
-			<table class="adminform">
+			<table class="admintable">
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_('VM_STORE_FORM_FULL_IMAGE'); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_('VM_STORE_FORM_FULL_IMAGE'); ?>:
 				</td>
 				<td>
-				    <?php ImageHelper::displayImage($this->store->vendor_full_image, 'Shop Image'); ?>
+				    <?php ImageHelper::displayShopImage($this->store->vendor_full_image, 'vendor', 'alt="Shop Image"', false); ?>
 				</td>
 			    </tr>
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_STORE_FORM_UPLOAD' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_STORE_FORM_UPLOAD' ); ?>:
 				</td>
 				<td>
 				    <input type="file" name="vendor_full_image" id="vendor_full_image" size="25" class="inputbox"  />
 				</td>
 			    </tr>
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_STORE_FORM_MPOV' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_STORE_FORM_MPOV' ); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="vendor_min_pov" id="vendor_min_pov" size="10" value="<?php echo $this->store->vendor_min_pov; ?>" />
 				</td>
 			    </tr>
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_FREE_SHIPPING_AMOUNT' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_FREE_SHIPPING_AMOUNT' ); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="vendor_freeshipping" id="vendor_freeshipping" size="10" value="<?php echo $this->store->vendor_freeshipping; ?>" />
@@ -143,82 +119,66 @@ AdminMenuHelper::startAdminArea();
 		<td valign="top">
 		    <fieldset class="adminform">
 			<legend><?php echo JText::_('VM_STORE_FORM_CONTACT_LBL') ?></legend>
-			<table class="adminform">
+			<table class="admintable">
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_STORE_FORM_LAST_NAME' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_STORE_FORM_LAST_NAME' ); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="last_name" id="last_name" size="50" value="<?php echo $this->store->userInfo->last_name; ?>" />
 				</td>
 			    </tr>
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_STORE_FORM_FIRST_NAME' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_STORE_FORM_FIRST_NAME' ); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="first_name" id="first_name" size="50" value="<?php echo $this->store->userInfo->first_name; ?>" />
 				</td>
 			    </tr>
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_STORE_FORM_MIDDLE_NAME' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_STORE_FORM_MIDDLE_NAME' ); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="middle_name" id="middle_name" size="20" value="<?php echo $this->store->userInfo->middle_name; ?>" />
 				</td>
 			    </tr>
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_STORE_FORM_TITLE' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_STORE_FORM_TITLE' ); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="title" id="title" size="10" value="<?php echo $this->store->userInfo->title; ?>" />
 				</td>
 			    </tr>
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_STORE_FORM_PHONE_1' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_STORE_FORM_PHONE_1' ); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="phone_1" id="phone_1" size="20" value="<?php echo $this->store->userInfo->phone_1; ?>" />
 				</td>
 			    </tr>
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_STORE_FORM_PHONE_2' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_STORE_FORM_PHONE_2' ); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="phone_2" id="phone_2" size="20" value="<?php echo $this->store->userInfo->phone_2; ?>" />
 				</td>
 			    </tr>
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_STORE_FORM_FAX' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_STORE_FORM_FAX' ); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="fax" id="fax" size="20" value="<?php echo $this->store->userInfo->fax; ?>" />
 				</td>
 			    </tr>
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_STORE_FORM_EMAIL' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_STORE_FORM_EMAIL' ); ?>:
 				</td>
 				<td>
 				    <input class="inputbox" type="text" name="email" id="email" size="50" value="<?php echo $this->store->email; ?>" />
@@ -229,12 +189,10 @@ AdminMenuHelper::startAdminArea();
 
 		    <fieldset class="adminform">
 			<legend><?php echo JText::_('VM_CURRENCY_DISPLAY') ?></legend>
-			<table class="adminform">
+			<table class="admintable">
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_STORE_FORM_CURRENCY' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_STORE_FORM_CURRENCY' ); ?>:
 				</td>
 				<td>
 				    <?php
@@ -243,74 +201,86 @@ AdminMenuHelper::startAdminArea();
 				</td>
 			    </tr>
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_CURRENCY_SYMBOL' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_CURRENCY_SYMBOL' ); ?>:
 				</td>
 				<td>
-				    <input class="inputbox" type="text" name="vendor_id" id="vendor_id" size="50" value="<?php echo $this->creditcard->vendor_id; ?>" />
+				    <input type="hidden" name="display_style[0]" value="<?php echo $store->vendor_id; ?>" />
+				    <input class="inputbox" type="text" name="vendor_currency_display_style[1]" id="currency_symbol" size="10" value="<?php echo CurrencyDisplay::getSymbol(); ?>" />
 				</td>
 			    </tr>
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_CURRENCY_DECIMALS' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_CURRENCY_DECIMALS' ); ?>:
 				</td>
 				<td>
-				    <input class="inputbox" type="text" name="creditcard_code" id="creditcard_code" size="10" value="<?php echo $this->creditcard->creditcard_code; ?>" />
+				    <input class="inputbox" type="text" name="vendor_currency_display_style[4]" id="currency_nbr_decimals" size="10" value="<?php echo CurrencyDisplay::getNbrDecimals();
+					   ; ?>" />
 				</td>
 			    </tr>
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_CURRENCY_DECIMALSYMBOL' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_CURRENCY_DECIMALSYMBOL' ); ?>:
 				</td>
 				<td>
-				    <input class="inputbox" type="text" name="creditcard_code" id="creditcard_code" size="10" value="<?php echo $this->creditcard->creditcard_code; ?>" />
+				    <input class="inputbox" type="text" name="vendor_currency_display_style[3]" id="currency_decimal_symbol" size="10" value="<?php echo CurrencyDisplay::getDecimalSymbol(); ?>" />
 				</td>
 			    </tr>
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_CURRENCY_THOUSANDS' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_CURRENCY_THOUSANDS' ); ?>:
 				</td>
 				<td>
-				    <input class="inputbox" type="text" name="creditcard_code" id="creditcard_code" size="10" value="<?php echo $this->creditcard->creditcard_code; ?>" />
+				    <input class="inputbox" type="text" name="vendor_currency_display_style[4]" id="currency_thousands_seperator" size="10" value="<?php echo CurrencyDisplay::getThousandsSeperator(); ?>" />
 				</td>
 			    </tr>
 			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_CURRENCY_POSITIVE_DISPLAY' ); ?>:
-				    </label>
-				</td>
-				<td>
-				    <input class="inputbox" type="text" name="creditcard_code" id="creditcard_code" size="10" value="<?php echo $this->creditcard->creditcard_code; ?>" />
-				</td>
-			    </tr>
-			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_CURRENCY_NEGATIVE_DISPLAY' ); ?>:
-				    </label>
-				</td>
-				<td>
-				    <input class="inputbox" type="text" name="creditcard_code" id="creditcard_code" size="10" value="<?php echo $this->creditcard->creditcard_code; ?>" />
-				</td>
-			    </tr>
-			    <tr>
-				<td width="110" class="key">
-				    <label for="title">
-					<?php echo JText::_( 'VM_STORE_FORM_ACCEPTED_CURRENCIES' ); ?>:
-				    </label>
+				<td class="key">
+				    <?php echo JText::_( 'VM_CURRENCY_POSITIVE_DISPLAY' ); ?>:
 				</td>
 				<td>
 				    <?php
-				    echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies', 'size=10 multiple', 'currency_id', 'currency_name', $this->store->vendor_accepted_currencies);
+				    $options = array();
+				    $options[] = JHTML::_('select.option', '00Symb', JText::_('00Symb') );
+				    $options[] = JHTML::_('select.option', '00 Symb', JText::_('00 Symb'));
+				    $options[] = JHTML::_('select.option', 'Symb00', JText::_('Symb00'));
+				    $options[] = JHTML::_('select.option', 'Symb 00', JText::_('Symb 00'));
+				    echo JHTML::_('Select.genericlist', $options, 'vendor_currency_display_style[5]', 'size=1');
+				    ?>
+				</td>
+			    </tr>
+			    <tr>
+				<td class="key">
+				    <?php echo JText::_( 'VM_CURRENCY_NEGATIVE_DISPLAY' ); ?>:
+				</td>
+				<td>
+				    <?php
+				    $options = array();
+				    $options[] = JHTML::_('select.option', '(Symb00)', JText::_('(Symb00)') );
+				    $options[] = JHTML::_('select.option', '-Symb00', JText::_('-Symb00'));
+				    $options[] = JHTML::_('select.option', 'Symb00-', JText::_('Symb00-'));
+				    $options[] = JHTML::_('select.option', '(00Symb)', JText::_('(00Symb)'));
+				    $options[] = JHTML::_('select.option', '-00Symb', JText::_('-00Symb') );
+				    $options[] = JHTML::_('select.option', '00-Symb', JText::_('00-Symb'));
+				    $options[] = JHTML::_('select.option', '00Symb-', JText::_('00Symb-'));
+				    $options[] = JHTML::_('select.option', '-00 Symb', JText::_('-00 Symb'));
+				    $options[] = JHTML::_('select.option', '-Symb 00', JText::_('-Symb 00'));
+				    $options[] = JHTML::_('select.option', '00 Symb-', JText::_('00 Symb-') );
+				    $options[] = JHTML::_('select.option', 'Symb 00-', JText::_('Symb 00-'));
+				    $options[] = JHTML::_('select.option', 'Symb -00', JText::_('Symb -00'));
+				    $options[] = JHTML::_('select.option', '(Symb 00)', JText::_('(Symb 00)'));
+				    $options[] = JHTML::_('select.option', '(00 Symb)', JText::_('(00 Symb)'));
+				    echo JHTML::_('Select.genericlist', $options, 'vendor_currency_display_style[6]', 'size=1');
+				    ?>
+				</td>
+			    </tr>
+			    <tr>
+				<td class="key">
+				    <?php echo JText::_( 'VM_STORE_FORM_ACCEPTED_CURRENCIES' ); ?>:
+				</td>
+				<td>
+				    <?php
+				    echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=10 multiple', 'currency_code', 'currency_name', $this->store->vendor_accepted_currencies);
 				    ?>
 				</td>
 			    </tr>
@@ -321,24 +291,18 @@ AdminMenuHelper::startAdminArea();
 	    </tr>
 	    <tr>
 		<td colspan="2">
-		    <table class="adminform">
-			<tr>
-			    <td>
-				<fieldset>
-				    <legend><?php echo JText::_('VM_STORE_FORM_DESCRIPTION');?></legend>
-				    <?php echo $this->editor->display('vendor_store_desc', $this->store->vendor_store_desc, '100%', 220, 70, 15)?>
-				</fieldset>
-			    </td>
-			</tr>
-			<tr>
-			    <td>
-				<fieldset>
-				    <legend><?php echo JText::_('VM_STORE_FORM_TOS');?></legend>
-				    <?php echo $this->editor->display('vendor_terms_of_service', $this->store->vendor_terms_of_service, '100%', 220, 70, 15)?>
-				</fieldset>
-			    </td>
-			</tr>
-		    </table>
+		    <fieldset>
+			<legend><?php echo JText::_('VM_STORE_FORM_DESCRIPTION');?></legend>
+			<?php echo $this->editor->display('vendor_store_desc', $this->store->vendor_store_desc, '100%', 220, 70, 15)?>
+		    </fieldset>
+		</td>
+	    </tr>
+	    <tr>
+		<td colspan="2">
+		    <fieldset>
+			<legend><?php echo JText::_('VM_STORE_FORM_TOS');?></legend>
+			<?php echo $this->editor->display('vendor_terms_of_service', $this->store->vendor_terms_of_service, '100%', 220, 70, 15)?>
+		    </fieldset>
 		</td>
 	    </tr>
 	</table>
@@ -347,6 +311,7 @@ AdminMenuHelper::startAdminArea();
 
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="view" value="store" />
+    <input type="hidden" name="vendor_id" value="<?php echo $this->store->vendor_id; ?>" />
     <input type="hidden" name="cid" value="<?php echo $this->store->vendor_id; ?>" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />

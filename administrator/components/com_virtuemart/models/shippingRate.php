@@ -137,14 +137,14 @@ class VirtueMartModelShippingRate extends JModel
 	 */
     function store() 
 	{
-		$table =& $this->getTable('shipping_rate');
+		$table = $this->getTable('shipping_rate');
 
 		$data = JRequest::get( 'post' );		
 		
 		// Store multiple selectlist entries as a ; seperated string
-        if (key_exists('shipping_rate_country', $data) && is_array($data['shipping_rate_country'])) {
-                $data['shipping_rate_country'] = implode(';', $data['shipping_rate_country']);
-        }
+		if (key_exists('shipping_rate_country', $data) && is_array($data['shipping_rate_country'])) {
+		    $data['shipping_rate_country'] = implode(';', $data['shipping_rate_country']);
+		}
 		
 		// Bind the form fields to the shipping rate table
 		if (!$table->bind($data)) {		    

@@ -20,7 +20,7 @@ defined('_JEXEC') or die();
  */
 class TableVendor extends JTable {
     /** @var int Primary key */
-    var $vendor_id					= 0;
+    var $vendor_id			= 0;
     /** @var varchar Vendor name*/
     var $vendor_name  	         	= '';
     /** @var varchar Vendor phone number */
@@ -54,7 +54,7 @@ class TableVendor extends JTable {
     /** @var varchar Currency display style */
     var $vendor_currency_display_style = '';
     /** @var text Currencies accepted by this vendor */
-    var $vendor_accepted_currencies = '';
+    var $vendor_accepted_currencies = array();
     /** @var text Vendor address format */
     var $vendor_address_format		= '';
     /** @var varchar Vendor date format */
@@ -91,7 +91,7 @@ class TableVendor extends JTable {
 
 	return true;
     }
-    
+
 
 
 
