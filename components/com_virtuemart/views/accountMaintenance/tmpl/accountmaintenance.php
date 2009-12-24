@@ -12,8 +12,8 @@ if ($this->auth['is_registered_customer']) {
     <tr>
       <td>
       <strong>
-      	<?php echo JHTML::_('link', JRoute::_(Vmconfig::getVar('secureurl')."index.php?option=com_virtuemart&page=account.billing"), 
-      				JHTML::_('image', JURI::root().'components/com_virtuemart/assets/images/identity.png', JText::_('VM_ACCOUNT_TITLE')).' '.JText::_('VM_ACC_ACCOUNT_INFO')); ?>
+      	<?php echo JHTML::_('link', JRoute::_(Vmconfig::getVar('secureurl')."index.php?option=com_virtuemart&view=accountmaintenance&task=accountbilling"), 
+      				JHTML::_('image', JURI::root().'components/com_virtuemart/assets/images/identity.png', JText::_('VM_ACCOUNT_TITLE'), array('align' => 'middle')).' '.JText::_('VM_ACC_ACCOUNT_INFO')); ?>
        </strong>
        <br /><?php echo JText::_('VM_ACC_UPD_BILL') ?>
       </td>
@@ -26,8 +26,8 @@ if ($this->auth['is_registered_customer']) {
 		<tr>
 		  <td><hr />
 		  <strong>
-		  	<?php echo JHTML::_('link', JRoute::_(Vmconfig::getVar('secureurl')."index.php?option=com_virtuemart&page=account.shipping"), 
-		  				JHTML::_('image', JURI::root().'components/com_virtuemart/assets/images/web.png', JText::_('VM_ACC_SHIP_INFO')).' '.JText::_('VM_ACC_SHIP_INFO')); ?>
+		  	<?php echo JHTML::_('link', JRoute::_(Vmconfig::getVar('secureurl')."index.php?option=com_virtuemart&view=accountmaintenance&task=accountshipping"), 
+		  				JHTML::_('image', JURI::root().'components/com_virtuemart/assets/images/web.png', JText::_('VM_ACC_SHIP_INFO'), array('align' => 'middle')).' '.JText::_('VM_ACC_SHIP_INFO')); ?>
 		  </strong>
                         <br />
                         <?php echo JText::_('VM_ACC_UPD_SHIP') ?>
@@ -42,7 +42,7 @@ if ($this->auth['is_registered_customer']) {
       <td>
       	<hr />
       	<strong>
-      	<?php echo JHTML::_('image', JURI::root().'components/com_virtuemart/assets/images/package.png', JText::_('VM_ACC_ORDER_INFO')).' '.JText::_('VM_ACC_ORDER_INFO'); ?>
+      	<?php echo JHTML::_('image', JURI::root().'components/com_virtuemart/assets/images/package.png', JText::_('VM_ACC_ORDER_INFO'), array('align' => 'middle')).' '.JText::_('VM_ACC_ORDER_INFO'); ?>
 	    </strong>
         <?php 
         //$ps_order->list_order("A", "1" ); 

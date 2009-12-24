@@ -20,6 +20,11 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 /* Require the base controller */
 require_once(JPATH_COMPONENT.DS.'controller.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopperGroup.php');
+
+/* Load the permissions */
+Permissions::doAuthentication();
 
 /* Require specific controller if requested */
 if($controller = JRequest::getVar('view', 'virtuemart')) {
@@ -31,7 +36,7 @@ $classname   = 'VirtuemartController'.$controller;
 $controller = new $classname();
 
 /* Perform the Request task */
-$controller->execute(JRequest::getVar('view'));
+$controller->execute(JRequest::getVar('task', JRequest::getVar('view')));
 
 /* Redirect if set by the controller */
 $controller->redirect();

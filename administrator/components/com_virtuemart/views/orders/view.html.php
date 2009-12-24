@@ -20,6 +20,7 @@ class VirtuemartViewOrders extends JView {
 		/* Load helpers */
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('currencydisplay');
+		$this->loadHelper('shopFunctions');
 		
 		/* Get order statuses */
 		$orderstatuses = $this->get('OrderStatusList');
@@ -29,9 +30,8 @@ class VirtuemartViewOrders extends JView {
 				/* Get the data */
 				$order = $this->get('Order');
 				
-				$userfields_model =  $this->getModel('userfields');
-				$userfields = $userfields_model->getUserFields('registration', false, '', true, true );
-				$shippingfields = $userfields_model->getUserFields('shipping', false, '', true, true );
+				$userfields = shopFunctions::getUserFields('registration', false, '', true, true );
+				$shippingfields = shopFunctions::getUserFields('shipping', false, '', true, true );
 				
 				/* Assign the data */
 				$this->assignRef('order', $order);

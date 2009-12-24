@@ -88,8 +88,8 @@ class Permissions {
 	function doAuthentication() {
 		$db = JFactory::getDBO();
 		$session = JFactory::getSession();
-		$auth = $session->get('auth', array());
 		$vmUser = JFactory::getUser();
+		$auth = array();
 		
 		if (Vmconfig::getVar('vm_price_access_level') != '') {
 			/* Is the user allowed to see the prices? */
@@ -171,10 +171,8 @@ class Permissions {
 			$auth["is_registered_customer"] = false;
 		}
 		
-		/* Register the authorization into the session */
-		$session->set('auth', $auth);
-		return $auth;
-
+		/* Set the authorization for use */
+		JRequest::setVar('auth', $auth);
 	}
 
 	/**

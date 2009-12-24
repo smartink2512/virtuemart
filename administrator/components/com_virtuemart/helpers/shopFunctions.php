@@ -259,4 +259,125 @@ class ShopFunctions {
 		$model = new $className();
 		return $model;
 	}
+	
+	/**
+	* This function allows you to get an object list of user fields
+	*
+	* @param string $section The section the fields belong to (e.g. 'registration' or 'account')
+	* @param boolean $required_only
+	* @param mixed $sys When left empty, doesn't filter by sys
+	* @return array
+	*/
+	public function getUserFields( $section = 'registration', $required_only=false, $sys = '', $exclude_delimiters=false, $exclude_skipfields=false ) {
+		$db = JFactory::getDBO();
+		$fields = array();
+		$fields['skipfields'] = self::getSkipFields();
+		
+		$q = "SELECT f.* FROM `#__vm_userfield` f"
+			. "\n WHERE f.published=1";
+		if( $section != 'bank' && $section != '') {
+			$q .= "\n AND f.`$section`=1";
+		}
+		elseif( $section == 'bank' ) {
+			$q .= "\n AND f.name LIKE '%bank%'";
+		}
+		if( $exclude_delimiters ) {
+			$q .= "\n AND f.type != 'delimiter' ";
+			}
+		if( $required_only ) {
+			$q .= "\n AND f.required=1";
+		}
+		if( $sys !== '') {
+			if( $sys == '1') { $q .= "\n AND f.sys=1"; }
+			elseif( $sys == '0') { $q .= "\n AND f.sys=0"; }
+		}
+		if ($exclude_skipfields ) {
+			$q .= "\n AND FIND_IN_SET( f.name, '".implode(',', $fields['skipfields'])."') = 0 ";
+		}
+		$q .= "\n ORDER BY f.ordering";
+		
+		$db->setQuery($q);
+		$fields['details'] = $db->loadObjectList();
+		
+		/* Collect all required fields */
+		foreach ($fields['details'] as $field) {
+			if ($field->required == 1) $fields['required_fields'][$field->name] = $field->type;
+			$fields['allfields'][$field->name] = $field->name;
+		}
+		foreach ($fields['skipfields'] as $skip ) {		
+			unset($fields['required_fields'][$skip]); 
+		}
+		return $fields;
+	}
+	
+	/**
+	* Returns an array of fieldnames which are NOT used for VirtueMart tables
+	*
+	* @return array Field names which are to be skipped by VirtueMart db functions
+	*/
+	public function getSkipFields() {
+		return array( 'username', 'password', 'password2', 'agreed' );
+	}
+	
+	/**
+	* Gets the user details, it joins 
+	* #__users ju, #__{vm}_user_info u, #__{vm}_country c and #__{vm}_state s
+	* @author Max Milbers
+	* @author RolandD
+	* @param int $user_id user_id of the user same ID for joomla and VM
+	* @param array $fields Columns to get
+	* @param String $orderby should be ordered by $field
+	* @param String $and this is for an additional AND condition
+	*/
+	public function getUserDetails( $user_id=0, $fields=array(), $orderby='', $and='') {
+
+		$db = JFactory::getDBO();		
+		if( empty( $fields )) {
+			$selector = '*';
+		}else {
+			$selector = implode(",",$fields);
+		}
+		$q = "SELECT ".$selector." FROM (#__{vm}_user_info u , #__users ju) " .
+//		"LEFT JOIN #__{vm}_country c ON (u.country = c.country_2_code OR u.country = c.country_3_code) ".		
+//		"LEFT JOIN #__{vm}_state s ON (u.state = s.state_2_code AND s.country_id = c.country_id) ";
+		"LEFT JOIN #__{vm}_country c ON (u.country = c.country_id) ".		
+		"LEFT JOIN #__{vm}_state s ON (s.country_id=c.country_id) ";
+		
+		if(!empty($user_id)){
+			$q .= "WHERE u.user_id = ".(int)$user_id." AND ju.id = ".(int)$user_id." ";
+		}
+		if(!empty($and)){
+			$q .= $and." ";
+		}
+		if(!empty($orderby)){
+			$q .= "ORDER BY ".$orderby." ";
+		}
+//		$GLOBALS['vmLogger']->info('get_user_details query '.$q);				
+		$db->setQuery($q);
+		return $db->loadObjectList();
+	}
+	
+	/**
+	 * Lists titles for people
+	 *
+	 * @param string $t The selected title value
+	 * @param string $extra More attributes when needed
+	 */
+	public function listUserTitle($t, $extra="") {
+		$title = array(JText::_('VM_REGISTRATION_FORM_MR'),
+						JText::_('VM_REGISTRATION_FORM_MRS'),
+						JText::_('VM_REGISTRATION_FORM_DR'),
+						JText::_('VM_REGISTRATION_FORM_PROF'));
+		echo "<select class=\"inputbox\" name=\"title\" $extra>\n";
+		echo "<option value=\"\">".JText::_('VM_REGISTRATION_FORM_NONE')."</option>\n";
+		for ($i=0;$i<count($title);$i++) {
+			echo "<option value=\"" . $title[$i]."\"";
+			if ($title[$i] == $t)
+			echo " selected=\"selected\" ";
+			echo ">" . $title[$i] . "</option>\n";
+		}
+		echo "</select>\n";
+
+	}
 }
+?>
