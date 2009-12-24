@@ -4,23 +4,23 @@
 -- Dumping data for table `#__vm_category`
 --
 
-INSERT INTO `#__vm_category` (`category_id`, `vendor_id`, `category_name`, `category_description`, `category_thumb_image`, `category_full_image`, `category_publish`, `cdate`, `mdate`, `category_browsepage`, `products_per_row`, `category_flypage`, `list_order`) VALUES
-(1, 1, 'Hand Tools', 'Hand Tools', 'ee024e46399e792cc8ba4bf097d0fa6a.jpg', 'fc2f001413876a374484df36ed9cf775.jpg', 'Y', 950319905, 960304194, 'browse_3', 3, '', 1),
-(2, 1, 'Power Tools', 'Power Tools', 'fc8802c7eaa1149bde98a541742217de.jpg', 'fe2f63f4c46023e3b33404c80bdd2bfe.jpg', 'Y', 950319916, 960304104, 'browse_4', 4, '', 2),
-(3, 1, 'Garden Tools', 'Garden Tools', '702168cd91e8b7bbb7a36be56f86e9be.jpg', '756ff6d140e11079caf56955060f1162.jpg', 'Y', 950321122, 960304338, 'browse_2', 2, 'shop.garden_flypage', 3),
-(4, 1, 'Outdoor Tools', 'Outdoor Tools', NULL, NULL, 'Y', 955626629, 958889528, 'browse_1', 1, NULL, 4),
-(5, 1, 'Indoor Tools', 'Indoor Tools', NULL, NULL, 'Y', 958892894, 958892894, 'browse_1', 1, NULL, 5);
+INSERT INTO `#__vm_category` (`category_id`, `vendor_id`, `category_name`, `category_description`, `category_thumb_image`, `category_full_image`, `published`, `cdate`, `mdate`, `category_browsepage`, `products_per_row`, `category_flypage`, `ordering`) VALUES
+(1, 1, 'Hand Tools', 'Hand Tools', 'ee024e46399e792cc8ba4bf097d0fa6a.jpg', 'fc2f001413876a374484df36ed9cf775.jpg', 1, 950319905, 960304194, 'browse_3', 3, '', 1),
+(2, 1, 'Power Tools', 'Power Tools', 'fc8802c7eaa1149bde98a541742217de.jpg', 'fe2f63f4c46023e3b33404c80bdd2bfe.jpg', 1, 950319916, 960304104, 'browse_4', 4, '', 2),
+(3, 1, 'Garden Tools', 'Garden Tools', '702168cd91e8b7bbb7a36be56f86e9be.jpg', '756ff6d140e11079caf56955060f1162.jpg', 1, 950321122, 960304338, 'browse_2', 2, 'shop.garden_flypage', 3),
+(4, 1, 'Outdoor Tools', 'Outdoor Tools', NULL, NULL, 1, 955626629, 958889528, 'browse_1', 1, NULL, 4),
+(5, 1, 'Indoor Tools', 'Indoor Tools', NULL, NULL, 1, 958892894, 958892894, 'browse_1', 1, NULL, 5);
 
 --
 -- Dumping data for table `#__vm_category_xref`
 --
 
 INSERT INTO `#__vm_category_xref` (`category_parent_id`, `category_child_id`, `category_list`, `category_shared`) VALUES
-(0, 1, NULL, 'Y'),
-(0, 2, NULL, 'Y'),
-(0, 3, NULL, 'Y'),
-(2, 4, NULL, 'Y'),
-(2, 5, NULL, 'Y');
+(0, 1, NULL, 1),
+(0, 2, NULL, 1),
+(0, 3, NULL, 1),
+(2, 4, NULL, 1),
+(2, 5, NULL, 1);
 
 
 --
