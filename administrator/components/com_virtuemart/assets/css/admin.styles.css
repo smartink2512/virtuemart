@@ -56,3 +56,41 @@
 .element-hidden{
 	display: none;
 }
+
+/*Avoid content collapse*/
+.vm-block{
+	overflow: hidden;
+}
+
+
+.vm-main-container{
+	position: relative;
+}
+
+.vm-layout-left{
+	float: left;
+	width: 23%;
+}
+
+.vm-layout-right{
+	float: right;
+	width: 77%;
+}
+
+.vm-replace-content{
+	text-indent: -9999px;
+	font-size: 0;
+}
+
+#vm-close-menu{
+	position: absolute;
+	background: url(../images/show.gif) no-repeat;
+	width: 7px;
+	height: 25px;
+	top: 0;
+	left: 0;
+}
+
+#vm-close-menu.vm-close-menu-show{
+	background: url(../images/hide.gif) no-repeat;
+}

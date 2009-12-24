@@ -50,7 +50,6 @@
 	
 	<administration>
 		<!-- Administration Menu Section -->
-		<menu>VirtueMart</menu>
  		<menu img="../components/com_virtuemart/shop_image/ps_image/menu_icon.png">VirtueMart</menu>
 		<!-- Administration Main File Copy Section -->
 		<files folder="administrator/components/com_virtuemart">

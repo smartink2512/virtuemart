@@ -42,15 +42,14 @@ class AdminMenuHelper
 		
 		//loading from public site
 		$document->addScript($mainframe->getSiteURL().'components/com_virtuemart/assets/js/jquery.js');
-		
 		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/VMAdmin.js'); 		 		
 		?>	
-		<table style="width:100%; table-layout:fixed;">
-    	<tr>
-        <td style="vertical-align:top;">            
+		<div class="vm-block vm-main-container">
+			<a href="#" class="vm-replace-content" id="vm-close-menu" title="<?php echo JText::_('Close')?>"><?php echo JText::_('Close')?></a>
+			<div class="vm-block vm-layout-left">
             <?php AdminMenuHelper::showAdminMenu(); ?>
-        </td>
-        <td id="vmPage" style="width:78%;vertical-align:top;">
+			</div>
+			<div id="vmPage" class="vm-block vm-layout-right">
 		<?php 
 	}
 	
@@ -65,9 +64,8 @@ class AdminMenuHelper
 			include(PAGEPATH."shop.debug.php");
 		}
 		?>
-	    	</td>
-    	</tr>
-		</table>
+	    </div>
+	</div>
 		<?php 
 	}	
 	

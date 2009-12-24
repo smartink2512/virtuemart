@@ -37,10 +37,6 @@ class VirtuemartViewMedia extends JView {
 		switch ($task) {
 			case 'add':
 			case 'edit':
-				/* Load jQuery */
-				$document = JFactory::getDocument();
-				$document->addScript(JURI::root().'administrator/components/com_virtuemart/assets/js/jquery.js');
-				$document->addScriptDeclaration('jQuery.noConflict();');
 				
 				/* Get the file details */
 				$productfile = $this->get('ImageDetails');

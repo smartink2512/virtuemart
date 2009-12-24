@@ -33,7 +33,8 @@ jQuery.noConflict();
 		 * Configuration Object
 		 */	
 		config: {
-			menuAdminSpeed: 'medium' //string-int Speed to Menu slide effect 
+			menuAdminSpeed: 'medium', //string-int Speed to Menu slide effect
+			menuCloserSelector: '#vm-close-menu' // menu closer selector
 		},
 			
 		
@@ -129,6 +130,7 @@ jQuery.noConflict();
 					});
 					
 				});
+				return true;
 			},
 			
 			/**
@@ -145,6 +147,9 @@ jQuery.noConflict();
 					var actualItem = VMAdmin.cache.activeMenuAdminItem = parseInt(Cookie.get('voir')), // Current selected item
 					speed = VMAdmin.config.menuAdminSpeed; //shortcut. Performance issue!
 					
+					//set current state when document loads
+					VMAdmin.util.showMenu(false, Cookie.get('vmclosed'));
+					
 					$('.section-smenu').addClass('element-hidden');//Hidding Panels
 					
 					var actualItemNode = $('#menu-toggler-'+ actualItem);
@@ -156,7 +161,9 @@ jQuery.noConflict();
 						that.activeMenuItem( this );
 					});				
 					
+					VMAdmin.util.setMenuClose();
 				});
+				return true;
 			},
 			
 			/**
@@ -183,6 +190,81 @@ jQuery.noConflict();
 					Cookie.set('voir', voir);
 					VMAdmin.cache.activeMenuAdminItem = voir;
 				}
+				return true;
+			},
+			
+
+			/**
+			 * Set the menu close action
+			 * 
+			 * @author jseros
+			 * 
+			 * @param bool with animation?
+			 */
+			setMenuClose: function(){
+				var closerSel = VMAdmin.config.menuCloserSelector;
+				
+				$(closerSel).click(function(){
+					VMAdmin.util.showMenu(true);				
+					return false;
+				});
+				return true;
+			},
+
+
+			/**
+			 * Set the menu close action
+			 * 
+			 * TODO: Standalone cookie storage
+			 * @author jseros
+			 * 
+			 * @param bool with animation?
+			 * @param bool only hide it
+			 */
+			showMenu: function(animation, hide){
+				var leftPanel = $('.vm-layout-left'),
+				rightPanel = $('.vm-layout-right'),
+				closerSel = VMAdmin.config.menuCloserSelector;
+				
+				if(typeof hide !== 'undefined'){
+					if(hide){
+						leftPanel.css('width', '0');
+						rightPanel.css('width', '99%');
+						$(closerSel).addClass('vm-close-menu-show');
+					}
+					return true;
+				}			
+				
+				
+				if( !Cookie.get('vmclosed')){
+					if(animation){
+						leftPanel.animate({ width: '0'}, 'medium');
+						rightPanel.animate({ width: '99%'}, 'medium');
+					}
+					else{
+						leftPanel.css('width', '0px');
+						rightPanel.css('width', '99%');
+					}
+					
+					$(closerSel).addClass('vm-close-menu-show');
+					Cookie.set('vmclosed', 1);
+				}
+				else{
+					
+					if(animation){
+						rightPanel.animate({ width: '77%'}, 'medium');
+						leftPanel.animate({ width: '23%'}, 'medium');
+					}
+					else{
+						rightPanel.css('width', '77%');
+						leftPanel.css('width', '23%');
+					}
+					
+					$(closerSel).removeClass('vm-close-menu-show');
+					Cookie.remove('vmclosed');
+				}
+				
+				return true;
 			}
 		}
 	};
