@@ -82,12 +82,20 @@ jQuery.noConflict();
 					//Performace issue
 					var successCallBack = (function(statesCombo, countryId){
 						return function(states){
-							VMAdmin.cache.states[countryId] = states; //store into the cache object
-							$(statesCombo).empty().removeAttr('disabled');
+							var options = '',
+							statesC = $(statesCombo);
+							
+							if( !VMAdmin.cache.states[countryId] ){ 
+								VMAdmin.cache.states[countryId] = states; //store into the cache object
+							}
+							
+							statesC.empty().removeAttr('disabled');
 							
 							for(var i = 0, j = states.length; i < j; i++){
-								$(statesCombo).append( new Option(states[i].state_name, states[i].state_id) );
+								options += '<option value="'+ states[i].state_id +'">'+ states[i].state_name +'</option>';
 							}
+							
+							statesC.append(	options );					
 						};
 					});
 					
@@ -95,21 +103,17 @@ jQuery.noConflict();
 						this.className = this.className || '';
 						
 						var params = /dependent\[(.*)\]/i.exec( this.className ), //extracting parent id
-						that = this, //shortchut to [[this]] and scope solution
-						countryId = null; 
+						that = this; //shortchut to [[this]] and scope solution
 						
 						if( params && params[1]){
 							       
 							$('#'+ params[1]).change(function(){
 								
-								countryId = $(this).val();
+								var countryId = $(this).val();
 								
 								//using cache to speed up the process
 								if( VMAdmin.cache.states[countryId] ){
-									var states = VMAdmin.cache.states[countryId];
-									for(var i = 0, j = states.length; i < j; i++){
-										$(that).append( new Option(states[i].state_name, states[i].state_id) );
-									}
+									successCallBack(that, countryId)( VMAdmin.cache.states[countryId] );
 								}
 								else{
 									$(that).attr('disabled', 'disabled');
