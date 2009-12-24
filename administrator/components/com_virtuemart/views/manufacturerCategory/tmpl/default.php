@@ -34,6 +34,7 @@ AdminMenuHelper::startAdminArea();
 		$row->published = 1;
 		$checked = JHTML::_('grid.id', $i, $row->mf_category_id);
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&controller=manufacturerCategory&task=edit&cid[]=' . $row->mf_category_id);
+		$mfglink = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&category=' . $row->mf_category_id);
 		?>
 	    <tr class="<?php echo "row$k"; ?>">
 		<td width="10">
@@ -46,7 +47,7 @@ AdminMenuHelper::startAdminArea();
 			<?php echo JText::_($row->mf_category_desc); ?>
 		</td>
 		<td align="left">
-			<?php echo JText::_($row->mf_category_desc); ?>
+		    <?php echo JHTML::_('link', $mfglink, JText::_('VM_MANUFACTURER_LIST_LBL')); ?>
 		</td>
 	    </tr>
 		<?php
