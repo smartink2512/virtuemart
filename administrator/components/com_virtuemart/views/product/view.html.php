@@ -33,10 +33,7 @@ class VirtuemartViewProduct extends JView {
 			case 'add':
 			case 'edit':
 				/* Load some behaviour */
-				/* Load jQuery */
 				$document = JFactory::getDocument();
-				$document->addScript(JURI::root().'administrator/components/com_virtuemart/assets/js/jquery.js');
-				$document->addScriptDeclaration('jQuery.noConflict();');
 				$document->addScript(JURI::root().'administrator/components/com_virtuemart/assets/js/jquery.autocomplete.pack.js');
 				$document->addStyleSheet(JURI::root().'administrator/components/com_virtuemart/assets/css/jquery.autocomplete.css');
 				jimport('joomla.html.pane');
@@ -236,8 +233,11 @@ class VirtuemartViewProduct extends JView {
 				/* Get the list of products */
 				$productlist = $this->get('ProductList');
 				
+				//loading shop functions helper
+				$this->loadHelper('shopFunctions');
+				
 				/* Get the category tree */
-				$category_tree = $category_model->list_tree(JRequest::getInt('category_id'));
+				$category_tree = ShopFunctions::categoryListTree( JRequest::getInt('category_id') );
 				$this->assignRef('category_tree', $category_tree);
 				
 				/* Check for child products if it is a parent item */
