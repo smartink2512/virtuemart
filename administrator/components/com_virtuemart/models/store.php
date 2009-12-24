@@ -181,6 +181,10 @@ class VirtueMartModelStore extends JModel {
         if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
                 $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
         }
+	// Store multiple selectlist entries as a | seperated string
+        if (key_exists('vendor_currency_display_style', $data) && is_array($data['vendor_currency_display_style'])) {
+                $data['vendor_currency_display_style'] = implode('|', $data['vendor_currency_display_style']);
+        }
 
 	// Bind the form fields to the vendor table
 	if (!$table->bind($data)) {
@@ -195,6 +199,38 @@ class VirtueMartModelStore extends JModel {
 	}
 
 	// Save the vendor to the database
+	if (!$table->store()) {
+	    $this->setError($table->getError());
+	    return false;
+	}
+	
+	return $this->storeUserInfo($data);
+	return true;
+    }
+
+
+    /**
+     * Bind the post data to the user info table and save it
+     *
+     * @author RickG
+     * @return boolean True is the save was successful, false otherwise.
+     */
+    function storeUserInfo($data) {
+	$table = $this->getTable('user_info');
+
+	// Bind the form fields to the user info table
+	if (!$table->bind($data)) {
+	    $this->setError($table->getError());
+	    return false;
+	}
+
+	// Make sure the user info record is valid
+	if (!$table->check()) {
+	    $this->setError($table->getError());
+	    return false;
+	}
+
+	// Save the user info to the database
 	if (!$table->store()) {
 	    $this->setError($table->getError());
 	    return false;

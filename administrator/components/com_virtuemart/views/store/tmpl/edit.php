@@ -176,14 +176,6 @@ AdminMenuHelper::startAdminArea();
 				    <input class="inputbox" type="text" name="fax" id="fax" size="20" value="<?php echo $this->store->userInfo->fax; ?>" />
 				</td>
 			    </tr>
-			    <tr>
-				<td class="key">
-				    <?php echo JText::_( 'VM_STORE_FORM_EMAIL' ); ?>:
-				</td>
-				<td>
-				    <input class="inputbox" type="text" name="email" id="email" size="50" value="<?php echo $this->store->email; ?>" />
-				</td>
-			    </tr>
 			</table>
 		    </fieldset>
 
@@ -205,7 +197,7 @@ AdminMenuHelper::startAdminArea();
 				    <?php echo JText::_( 'VM_CURRENCY_SYMBOL' ); ?>:
 				</td>
 				<td>
-				    <input type="hidden" name="display_style[0]" value="<?php echo $store->vendor_id; ?>" />
+				    <input type="hidden" name="vendor_currency_display_style[0]" value="<?php echo $this->store->vendor_id; ?>" />
 				    <input class="inputbox" type="text" name="vendor_currency_display_style[1]" id="currency_symbol" size="10" value="<?php echo CurrencyDisplay::getSymbol(); ?>" />
 				</td>
 			    </tr>
@@ -214,7 +206,7 @@ AdminMenuHelper::startAdminArea();
 				    <?php echo JText::_( 'VM_CURRENCY_DECIMALS' ); ?>:
 				</td>
 				<td>
-				    <input class="inputbox" type="text" name="vendor_currency_display_style[4]" id="currency_nbr_decimals" size="10" value="<?php echo CurrencyDisplay::getNbrDecimals();
+				    <input class="inputbox" type="text" name="vendor_currency_display_style[2]" id="currency_nbr_decimals" size="10" value="<?php echo CurrencyDisplay::getNbrDecimals();
 					   ; ?>" />
 				</td>
 			    </tr>
@@ -241,11 +233,11 @@ AdminMenuHelper::startAdminArea();
 				<td>
 				    <?php
 				    $options = array();
-				    $options[] = JHTML::_('select.option', '00Symb', JText::_('00Symb') );
-				    $options[] = JHTML::_('select.option', '00 Symb', JText::_('00 Symb'));
-				    $options[] = JHTML::_('select.option', 'Symb00', JText::_('Symb00'));
-				    $options[] = JHTML::_('select.option', 'Symb 00', JText::_('Symb 00'));
-				    echo JHTML::_('Select.genericlist', $options, 'vendor_currency_display_style[5]', 'size=1');
+				    $options[] = JHTML::_('select.option', '0', JText::_('00Symb') );
+				    $options[] = JHTML::_('select.option', '1', JText::_('00 Symb'));
+				    $options[] = JHTML::_('select.option', '2', JText::_('Symb00'));
+				    $options[] = JHTML::_('select.option', '3', JText::_('Symb 00'));
+				    echo JHTML::_('Select.genericlist', $options, 'vendor_currency_display_style[5]', 'size=1', 'value', 'text', CurrencyDisplay::getPositiveFormat());
 				    ?>
 				</td>
 			    </tr>
@@ -256,21 +248,21 @@ AdminMenuHelper::startAdminArea();
 				<td>
 				    <?php
 				    $options = array();
-				    $options[] = JHTML::_('select.option', '(Symb00)', JText::_('(Symb00)') );
-				    $options[] = JHTML::_('select.option', '-Symb00', JText::_('-Symb00'));
-				    $options[] = JHTML::_('select.option', 'Symb00-', JText::_('Symb00-'));
-				    $options[] = JHTML::_('select.option', '(00Symb)', JText::_('(00Symb)'));
-				    $options[] = JHTML::_('select.option', '-00Symb', JText::_('-00Symb') );
-				    $options[] = JHTML::_('select.option', '00-Symb', JText::_('00-Symb'));
-				    $options[] = JHTML::_('select.option', '00Symb-', JText::_('00Symb-'));
-				    $options[] = JHTML::_('select.option', '-00 Symb', JText::_('-00 Symb'));
-				    $options[] = JHTML::_('select.option', '-Symb 00', JText::_('-Symb 00'));
-				    $options[] = JHTML::_('select.option', '00 Symb-', JText::_('00 Symb-') );
-				    $options[] = JHTML::_('select.option', 'Symb 00-', JText::_('Symb 00-'));
-				    $options[] = JHTML::_('select.option', 'Symb -00', JText::_('Symb -00'));
-				    $options[] = JHTML::_('select.option', '(Symb 00)', JText::_('(Symb 00)'));
-				    $options[] = JHTML::_('select.option', '(00 Symb)', JText::_('(00 Symb)'));
-				    echo JHTML::_('Select.genericlist', $options, 'vendor_currency_display_style[6]', 'size=1');
+				    $options[] = JHTML::_('select.option', '0', JText::_('(Symb00)') );
+				    $options[] = JHTML::_('select.option', '1', JText::_('-Symb00'));
+				    $options[] = JHTML::_('select.option', '2', JText::_('Symb00-'));
+				    $options[] = JHTML::_('select.option', '3', JText::_('(00Symb)'));
+				    $options[] = JHTML::_('select.option', '4', JText::_('-00Symb') );
+				    $options[] = JHTML::_('select.option', '5', JText::_('00-Symb'));
+				    $options[] = JHTML::_('select.option', '6', JText::_('00Symb-'));
+				    $options[] = JHTML::_('select.option', '7', JText::_('-00 Symb'));
+				    $options[] = JHTML::_('select.option', '8', JText::_('-Symb 00'));
+				    $options[] = JHTML::_('select.option', '9', JText::_('00 Symb-') );
+				    $options[] = JHTML::_('select.option', '10', JText::_('Symb 00-'));
+				    $options[] = JHTML::_('select.option', '11', JText::_('Symb -00'));
+				    $options[] = JHTML::_('select.option', '12', JText::_('(Symb 00)'));
+				    $options[] = JHTML::_('select.option', '13', JText::_('(00 Symb)'));
+				    echo JHTML::_('Select.genericlist', $options, 'vendor_currency_display_style[6]', 'size=1', 'value', 'text', CurrencyDisplay::getNegativeFormat());
 				    ?>
 				</td>
 			    </tr>
@@ -313,6 +305,8 @@ AdminMenuHelper::startAdminArea();
     <input type="hidden" name="view" value="store" />
     <input type="hidden" name="vendor_id" value="<?php echo $this->store->vendor_id; ?>" />
     <input type="hidden" name="cid" value="<?php echo $this->store->vendor_id; ?>" />
+    <input type="hidden" name="user_info_id" value="<?php echo $this->store->userInfo->user_info_id; ?>" />
+    <input type="hidden" name="user_id" value="<?php echo $this->store->userInfo->user_id; ?>" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
 </form>
