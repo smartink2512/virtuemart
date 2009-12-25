@@ -78,7 +78,12 @@ else {
 	$types['radio'] = JText::_('VM_FIELDS_RADIOBUTTON');
 	$types['webaddress'] = JText::_('VM_FIELDS_WEBADDRESS');
 	
+	/* Captcha check changed */
 	if( file_exists($mosConfig_absolute_path.'/administrator/components/com_securityimages/client.php')) {	
+		$types['captcha'] = JText::_('VM_FIELDS_CAPTCHA');
+	}
+	$captchafile = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_securityimages'.DS.'class'.DS.'SecurityImagesHelper.php';
+	if( file_exists($captchafile)) {	
 		$types['captcha'] = JText::_('VM_FIELDS_CAPTCHA');
 	}
 	if( file_exists($mosConfig_absolute_path.'/components/com_yanc/yanc.php')) {

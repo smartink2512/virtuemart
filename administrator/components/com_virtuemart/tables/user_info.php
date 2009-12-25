@@ -15,97 +15,83 @@ defined('_JEXEC') or die();
  * User Info table class
  * The class is is used to manage the user_info table.
  *
- * @author 	RickG
+ * @author 	RickG, RolandD
  * @package	VirtueMart
  */
-class TableUser_info extends JTable
-{
-	/** @var varchar Info Id */
-	var $user_info_id				= '';
-	/** @var int Primary key */
-	var $user_id	  	         	= 0;		
-	/** @var tinyint Is the user a vendor? */
-	var $user_is_vendor        		= 0;				
-	/** @var char Address type */
-	var $address_type				= '';
-	/** @var varchar Address type name */
-	var $address_type_name   		= '';
-	/** @var varchar Company */
-	var $company   					= '';
-	/** @var varchar Title */
-	var $title   					= '';
-	/** @var varchar Last Name */
-	var $last_name			   		= '';
-	/** @var varchar First Name */
-	var $first_name			  		= '';
-	/** @var varchar Middle Name */
-	var $middle_name	 	 		= '';
-	/** @var varchar Phone 1 */
-	var $phone_1			  		= '';
-	/** @var varchar Phone 2 */
-	var $phone_2			  		= '';	
-	/** @var varchar Fax */
-	var $fax				   		= '';
-	/** @var varchar Addrress line 1 */
-	var $address_1					= '';
-	/** @var varchar Addrress line 2 */
-	var $address_2					= '';		
-	/** @var varchar City */
-	var $city						= '';
-	/** @var varchar State */
-	var $state			 	   		= '';
-	/** @var varchar Country */
-	var $country  					= 'US';
-	/** @var varchar Zip */
-	var $zip						= '';
-	/** @var varchar Extra Field 1 */
-	var $extra_field_1 				= '';
-	/** @var varchar Extra Field 2 */
-	var $extra_field_2 				= '';
-	/** @var varchar Extra Field 3 */
-	var $extra_field_3 				= '';
-	/** @var varchar Extra Field 4 */
-	var $extra_field_4 				= '';
-	/** @var varchar Extra Field 5 */
-	var $extra_field_5				= '';				
-	/** @var int Change date */
-	var $cdate						= '';
-	/** @var int Modified Date */
-	var $mdate						= '';	
-	/** @var varchar Bank Account Nbr */
-	var $bank_account_nr			= '';	
-	/** @var varchar Bank_name */
-	var $bank_name					= '';	
-	/** @var varchar Bank sort code */
-	var $bank_sort_code				= '';	
-	/** @var varchar Bank iban */
-	var $bank_iban					= '';
-	/** @var varchar Bank Account Holder */
-	var $bank_account_holder		= '';	
-	/** @var varchar Bank Account Type */
-	var $bank_account_type			= 'Checking';	
-
-
+class TableUser_info extends JTable {
 	/**
 	 * @author RickG
 	 * @param $db A database connector object
 	 */
-	function __construct(&$db)
-	{
-		parent::__construct('#__vm_user_info', 'user_id', $db);
+	function __construct($db) {
+		/* Make sure the custom fields are added */
+		self::addUserFields();
+		parent::__construct('#__vm_user_info', 'user_info_id', $db);
 	}
 
-
 	/**
-	 * Validates the user info record fields.
-	 *
-	 * @author RickG
-	 * @return boolean True if the table buffer is contains valid data, false otherwise.
-	 */
-	function check() 
-	{
+	* Add the user fields to the table to make sure all gets updated
+	*
+	* @author RolandD
+	*/
+	private function addUserFields() {
+		$db = JFactory::getDBO();
+		/* Collect the table names for the product types */
+		$customfields = array();
+		$q = "SHOW COLUMNS FROM ".$db->nameQuote('#__vm_user_info');
+		$db->setQuery($q);
+		$fields = $db->loadObjectList();
+		if (count($fields) > 0) {
+			foreach ($fields as $key => $field) {
+				$customfields[$field->Field] = $field->Default;
+			}
+			$this->setProperties($customfields);
+		}
+	}
+	
+	/**
+	* Stores/Updates a tax rate
+	*
+	*/
+	public function store() {
+		$k = $this->check();
 		
-		return true;
+		if ($k) $ret = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
+		else $ret = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
+		
+		if (!$ret){
+			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
+			return false;
+		}
+		else return true;
+	}
+	
+	/**
+	* Validates the user info record fields.
+	*
+	* @author RickG, RolandD
+	* @return boolean True if the table buffer is contains valid data, false otherwise.
+	*/
+	public function check() {
+		$db = JFactory::getDBO();
+		
+		/* Check if a record exists */
+		$q = "SELECT user_info_id
+			FROM #__vm_user_info
+			WHERE user_id = ".$this->user_id."
+			AND address_type = ".$db->Quote($this->address_type)."
+			AND address_type_name = ".$db->Quote($this->address_type_name);
+		$db->setQuery($q);
+		$total = $db->loadResultArray();
+		if (count($total) > 0) {
+			$this->user_info_id = $total[0];
+			return true;
+		}
+		else {
+			$this->user_info_id = md5(uniqid($this->user_id));
+			$this->cdate = time();
+			return false;
+		}
 	}
 	
 	

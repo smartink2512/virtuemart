@@ -22,6 +22,7 @@ require_once(JPATH_COMPONENT.DS.'controller.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopperGroup.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'shopFunctions.php');
 
 /* Load the permissions */
 Permissions::doAuthentication();

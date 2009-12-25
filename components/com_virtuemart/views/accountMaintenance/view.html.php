@@ -52,9 +52,14 @@ class VirtueMartViewAccountmaintenance extends JView {
 				$fields = shopFunctions::getUserFields('account');
 				$userinfo = shopFunctions::getUserDetails($auth["user_id"],"",""," AND address_type='BT'");
 				
+				/* Load the editor */
+				$editor = JFactory::getEditor(); 
+				
 				/* Assign data */
 				$this->assignRef('fields', $fields);
+				$this->assignRef('skipfields', $skip_fields);
 				$this->assignRef('userinfo', $userinfo);
+				$this->assignRef('editor', $editor);
 				
 				break;
 			default:

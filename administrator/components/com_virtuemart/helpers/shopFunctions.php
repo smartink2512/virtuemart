@@ -271,7 +271,7 @@ class ShopFunctions {
 	public function getUserFields( $section = 'registration', $required_only=false, $sys = '', $exclude_delimiters=false, $exclude_skipfields=false ) {
 		$db = JFactory::getDBO();
 		$fields = array();
-		$fields['skipfields'] = self::getSkipFields();
+		$skipfields = self::getSkipFields();
 		
 		$q = "SELECT f.* FROM `#__vm_userfield` f"
 			. "\n WHERE f.published=1";
@@ -299,12 +299,28 @@ class ShopFunctions {
 		$db->setQuery($q);
 		$fields['details'] = $db->loadObjectList();
 		
-		/* Collect all required fields */
-		foreach ($fields['details'] as $field) {
+		/* Collect extra field information */
+		foreach ($fields['details'] as $key => $field) {
 			if ($field->required == 1) $fields['required_fields'][$field->name] = $field->type;
-			$fields['allfields'][$field->name] = $field->name;
+			/* Create a list of all fields */
+			$fields['allfields'][$field->name] = $field->title;
+			/* Get the details for several types */
+			switch ($field->type) {
+				case 'multicheckbox':
+				case 'select':
+				case 'multiselect':
+				case 'radio':
+					$q = "SELECT fieldtitle,fieldvalue 
+						FROM #__vm_userfield_values
+						WHERE fieldid = ".$field->fieldid."
+						ORDER BY ordering";
+					$db->setQuery($q);
+					$fields['details'][$key]->values = $db->loadObjectList();
+				break;
+			}
+			
 		}
-		foreach ($fields['skipfields'] as $skip ) {		
+		foreach ($skipfields as $skip ) {		
 			unset($fields['required_fields'][$skip]); 
 		}
 		return $fields;
@@ -329,32 +345,29 @@ class ShopFunctions {
 	* @param String $orderby should be ordered by $field
 	* @param String $and this is for an additional AND condition
 	*/
-	public function getUserDetails( $user_id=0, $fields=array(), $orderby='', $and='') {
+	public function getUserDetails($user_id=0, $fields=array(), $orderby='', $filter='') {
+		$db = JFactory::getDBO();
 
-		$db = JFactory::getDBO();		
-		if( empty( $fields )) {
-			$selector = '*';
-		}else {
-			$selector = implode(",",$fields);
-		}
-		$q = "SELECT ".$selector." FROM (#__{vm}_user_info u , #__users ju) " .
-//		"LEFT JOIN #__{vm}_country c ON (u.country = c.country_2_code OR u.country = c.country_3_code) ".		
-//		"LEFT JOIN #__{vm}_state s ON (u.state = s.state_2_code AND s.country_id = c.country_id) ";
-		"LEFT JOIN #__{vm}_country c ON (u.country = c.country_id) ".		
-		"LEFT JOIN #__{vm}_state s ON (s.country_id=c.country_id) ";
+		/* Set the selectors */		
+		if (empty($fields)) $selector = '*';
+		else $selector = implode(",", $fields);
 		
-		if(!empty($user_id)){
-			$q .= "WHERE u.user_id = ".(int)$user_id." AND ju.id = ".(int)$user_id." ";
-		}
-		if(!empty($and)){
-			$q .= $and." ";
-		}
-		if(!empty($orderby)){
-			$q .= "ORDER BY ".$orderby." ";
-		}
+		$q = "SELECT ".$selector." 
+			FROM #__vm_user_info u
+			LEFT JOIN #__users ju 
+			ON ju.id = u.user_id
+			LEFT JOIN #__vm_country c 
+			ON c.country_id = u.country_id 
+			LEFT JOIN jos_vm_state s 
+			ON s.state_id = u.state_id ";
+			
+		if (!empty($user_id)) $q .= "WHERE u.user_id = ".$user_id;
+		if (!empty($filter)) $q .= $filter." ";
+		if (!empty($orderby)) $q .= "ORDER BY ".$orderby." ";
+		
 //		$GLOBALS['vmLogger']->info('get_user_details query '.$q);				
 		$db->setQuery($q);
-		return $db->loadObjectList();
+		return $db->loadObject();
 	}
 	
 	/**
@@ -364,20 +377,341 @@ class ShopFunctions {
 	 * @param string $extra More attributes when needed
 	 */
 	public function listUserTitle($t, $extra="") {
-		$title = array(JText::_('VM_REGISTRATION_FORM_MR'),
-						JText::_('VM_REGISTRATION_FORM_MRS'),
-						JText::_('VM_REGISTRATION_FORM_DR'),
-						JText::_('VM_REGISTRATION_FORM_PROF'));
-		echo "<select class=\"inputbox\" name=\"title\" $extra>\n";
-		echo "<option value=\"\">".JText::_('VM_REGISTRATION_FORM_NONE')."</option>\n";
-		for ($i=0;$i<count($title);$i++) {
-			echo "<option value=\"" . $title[$i]."\"";
-			if ($title[$i] == $t)
-			echo " selected=\"selected\" ";
-			echo ">" . $title[$i] . "</option>\n";
+		$options = array();
+		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_MR'), JText::_('VM_REGISTRATION_FORM_MR'));
+		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_MRS'), JText::_('VM_REGISTRATION_FORM_MRS'));
+		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_DR'), JText::_('VM_REGISTRATION_FORM_DR'));
+		$options[] = JHTML::_('select.option', JText::_('VM_REGISTRATION_FORM_PROF'), JText::_('VM_REGISTRATION_FORM_PROF'));
+		
+		return JHTML::_('select.genericlist', $options, 'title', $extra, 'value', 'text', $t);
+	}
+	
+	/**
+	 * Creates an drop-down list with numbers from 1 to 31 or of the selected range
+	 *
+	 * @param string $list_name The name of the select element
+	 * @param string $selected_item The pre-selected value
+	 */
+	function listDays($list_name,$selected=false, $start=null, $end=null) {
+		$options = array();
+		if (!$selected) $selected = date('d');
+		$start = $start ? $start : 1;
+		$end = $end ? $end : $start + 30;
+		$options[] = JHTML::_('select.option', 0, JText::_('DAY'));
+		for ($i=$start; $i<=$end; $i++) {
+			$options[] = JHTML::_('select.option', $i, $i);
 		}
-		echo "</select>\n";
+		return JHTML::_('select.genericlist', $options, $list_name, '', 'value', 'text', $selected);
+	}
+	/**
+	 * Creates a Drop-Down List for the 12 months in a year
+	 *
+	 * @param string $list_name The name for the select element
+	 * @param string $selected_item The pre-selected value
+	 * 
+	 */
+	function listMonths($list_name, $selected=false) {
+		$options = array();
+		if (!$selected) $selected = date('m');
+		
+		$options[] = JHTML::_('select.option', 0, JText::_('MONTH'));
+		$options[] = JHTML::_('select.option', "01", JText::_('JAN'));
+		$options[] = JHTML::_('select.option', "02", JText::_('FEB'));
+		$options[] = JHTML::_('select.option', "03", JText::_('MAR'));
+		$options[] = JHTML::_('select.option', "04", JText::_('APR'));
+		$options[] = JHTML::_('select.option', "05", JText::_('MAY'));
+		$options[] = JHTML::_('select.option', "06", JText::_('JUN'));
+		$options[] = JHTML::_('select.option', "07", JText::_('JUL'));
+		$options[] = JHTML::_('select.option', "08", JText::_('AUG'));
+		$options[] = JHTML::_('select.option', "09", JText::_('SEP'));
+		$options[] = JHTML::_('select.option', "10", JText::_('OCT'));
+		$options[] = JHTML::_('select.option', "11", JText::_('NOV'));
+		$options[] = JHTML::_('select.option', "12", JText::_('DEC'));
+		return JHTML::_('select.genericlist', $options, $list_name, '', 'value', 'text', $selected);
+	}
 
+	/**
+	 * Creates an drop-down list with years of the selected range or of the next 7 years
+	 *
+	 * @param string $list_name The name of the select element
+	 * @param string $selected_item The pre-selected value
+	 */
+	function listYears($list_name, $selected=false, $start=null, $end=null) {
+		$options = array();
+		if (!$selected) $selected = date('Y');
+		$start = $start ? $start : date('Y');
+		$end = $end ? $end : $start + 7;
+		$options[] = JHTML::_('select.option', 0, JText::_('YEAR'));
+		for ($i=$start; $i<=$end; $i++) {
+			$options[] = JHTML::_('select.option', $i, $i);
+		}
+		return JHTML::_('select.genericlist', $options, $list_name, '', 'value', 'text', $selected);
+	}
+	
+	function checkboxListArr( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=null, $required=0  ) {
+		reset( $arr );
+		$html = array();
+		$n=count( $arr );
+		for ($i=0; $i < $n; $i++ ) {
+				$k = $arr[$i]->$key;
+				$t = $arr[$i]->$text;
+				$id = isset($arr[$i]->id) ? $arr[$i]->id : null;
+
+				$extra = '';
+				$extra .= $id ? " id=\"" . $arr[$i]->id . "\"" : '';
+				if (is_array( $selected )) {
+						foreach ($selected as $obj) {
+								$k2 = $obj->$key;
+								if ($k == $k2) {
+										$extra .= " checked=\"checked\"";
+										break;
+								}
+						}
+				} else {
+						$extra .= ($k == $selected ? " checked=\"checked\"" : '');
+				}
+				$tmp = "<input type=\"checkbox\" name=\"$tag_name\" id=\"".str_replace('[]', '', $tag_name)."_field$i\" value=\"".$k."\"$extra $tag_attribs />" . "<label for=\"".str_replace('[]', '', $tag_name)."_field$i\">";
+				$tmp .= JText::_($t);
+				$tmp .= "</label>";
+				$html[] = $tmp;
+		}
+		return $html;
+	}
+        
+	function checkboxList( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=null, $required=0 ) {
+			return "\n\t".implode("\n\t", vmCommonHTML::checkboxListArr( $arr, $tag_name, $tag_attribs,  $key, $text,$selected, $required ))."\n";
+	}
+	function checkboxListTable( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=null, $cols=0, $rows=0, $size=0, $required=0 ) {
+			$cellsHtml = self::checkboxListArr( $arr, $tag_name, $tag_attribs,  $key, $text,$selected, $required );
+			return self::list2Table( $cellsHtml, $cols, $rows, $size );
+	}
+	// private methods:
+	private function list2Table( $cellsHtml, $cols, $rows, $size ) {
+		$cells = count($cellsHtml);
+		if ($size == 0) {
+				$localstyle = ""; //" style='width:100%'";
+		} else {
+				$size = (($size-($size % 3)) / 3  ) * 2; // int div  3 * 2 width/heigh ratio
+				$localstyle = " style='width:".$size."em;'";
+		}
+		$return="";
+		if ($cells) {
+				if ($rows) {
+						$return = "\n\t<table class='vmMulti'".$localstyle.">";
+						$cols = ($cells-($cells % $rows)) / $rows;      // int div
+						if ($cells % $rows) $cols++;
+						$lineIdx=0;
+						for ($lineIdx=0 ; $lineIdx < min($rows, $cells) ; $lineIdx++) {
+								$return .= "\n\t\t<tr>";
+								for ($i=$lineIdx ; $i < $cells; $i += $rows) {
+										$return .= "<td>".$cellsHtml[$i]."</td>";
+								}
+								$return .= "</tr>\n";
+						}
+						$return .= "\t</table>\n";
+				} else if ($cols) {
+						$return = "\n\t<table class='vmMulti'".$localstyle.">";
+						$idx=0;
+						while ($cells) {
+								$return .= "\n\t\t<tr>";
+								for ($i=0, $n=min($cells,$cols); $i < $n; $i++, $cells-- ) {
+										$return .= "<td>".$cellsHtml[$idx++]."</td>";
+								}
+								$return .= "</tr>\n";
+						}
+						$return .= "\t</table>\n";
+				} else {
+						$return = "\n\t".implode("\n\t ", $cellsHtml)."\n";
+				}
+		}
+		return $return;
+	}
+	
+	/**
+	 * Prints a JS function to validate all fields
+	 * given in the array $required_fields
+	 * Does only test if non-empty (or if no options are selected)
+	 * Includes a check for a valid email-address
+	 *
+	 * @param array $required_fields The list of form elements that are to be validated
+	 * @param string $formname The name for the form element
+	 * @param string $div_id_postfix The ID postfix to identify the label for the field
+	 */
+	function printJsFormValidation( $required_fields, $allfields, $formname = 'adminForm', $functioname='submitregistration', $div_id_postfix = '_div' ) {
+        $field_list = implode( "','", array_keys( $required_fields ) );
+        $field_list = str_replace( "'email',", '', $field_list );
+        $field_list = str_replace( "'username',", '', $field_list );
+        $field_list = str_replace( "'password',", '', $field_list );
+        $field_list = str_replace( "'password2',", '', $field_list );
+        
+        echo '
+            <script language="javascript" type="text/javascript">//<![CDATA[
+            function '.$functioname.'() {
+                var form = document.'.$formname.';
+                var r = new RegExp("[\<|\>|\"|\'|\%|\;|\(|\)|\&|\+|\-]", "i");
+                var isvalid = true;
+                var required_fields = new Array(\''. $field_list.'\');
+            	for (var i=0; i < required_fields.length; i++) {
+                    formelement = eval( \'form.\' + required_fields[i] );
+                    ';
+       	echo "
+                    if( !formelement ) { 
+                            formelement = document.getElementById( required_fields[i]+'_field0' );
+                            var loopIds = true;
+                    }
+                    if( !formelement ) { continue; }
+                    if (formelement.type == 'radio' || formelement.type == 'checkbox') {
+                        if( loopIds ) {
+                                var rOptions = new Array();
+                                for(var j=0; j<30; j++ ) {
+                                        rOptions[j] = document.getElementById( required_fields[i] + '_field' + j );
+                                        if( !rOptions[j] ) { break; }
+                                }
+                        } else {
+                                var rOptions = form[formelement.getAttribute('name')];
+                        }
+                        var rChecked = 0;
+                        if(rOptions.length > 1) {
+                                for (var r=0; r < rOptions.length; r++) {
+                                        if( !rOptions[r] ) { continue; }
+                                        if (rOptions[r].checked) {      rChecked=1; }
+                                }
+                        } else {
+                                if (formelement.checked) {
+                                        rChecked=1;
+                                }
+                        }
+                        if(rChecked==0) {
+                        	document.getElementById(required_fields[i]+'$div_id_postfix').className += ' missing';
+                            isvalid = false;
+                    	}
+                    	else if (document.getElementById(required_fields[i]+'$div_id_postfix').className == 'formLabel missing') {
+                            document.getElementById(required_fields[i]+'$div_id_postfix').className = 'formLabel';
+                        }                               
+                    }
+                    else if( formelement.options ) {
+                        if(formelement.selectedIndex.value == '') {
+                                document.getElementById(required_fields[i]+'$div_id_postfix').className += ' missing';
+                                isvalid = false;
+                        } 
+                        else if (document.getElementById(required_fields[i]+'$div_id_postfix').className == 'formLabel missing') {
+                                document.getElementById(required_fields[i]+'$div_id_postfix').className = 'formLabel';
+                        }
+                    }
+                    else {
+                        if (formelement.value == '') {
+                            document.getElementById(required_fields[i]+'$div_id_postfix').className += ' missing';
+                            isvalid = false;
+                        }
+                        else if (document.getElementById(required_fields[i]+'$div_id_postfix').className == 'formLabel missing') {
+                            document.getElementById(required_fields[i]+'$div_id_postfix').className = 'formLabel';
+	                    }
+    	        	}
+	            }
+            ";
+       	$optional_check = '';
+		if (Vmconfig::getVar('vm_registration_type') == 'OPTIONAL_REGISTRATION') {
+			$optional_check = '&& form.register_account.checked';
+		}
+	    // We have skipped email in the first loop above!
+	    // Now let's handle email address validation
+	    if( isset( $required_fields['email'] )) {
+	    
+	   		echo '
+			if( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(form.email.value))) {
+				alert( \''. str_replace("'","\\'",JText::_('REGWARN_MAIL',false)) .'\');
+				return false;
+			}';
+
+		}
+		if( isset( $required_fields['username'] )) {
+		
+			echo '
+			if ((r.exec(form.username.value) || form.username.value.length < 3)'.$optional_check.') {
+				alert( "'. sprintf(JText::_('VALID_AZ09',false), JText::_('USERNAME',false), 2) .'" );
+				return false;
+            }';
+        }
+        if( isset($required_fields['password']) ) {
+			if( JRequest::getVar('view') == 'checkout.index') {
+                echo '
+                if (form.password.value.length < 6 '.$optional_check.') {
+                    alert( "'.JText::_('REGWARN_PASS',false) .'" );
+					return false;
+                } else if (form.password2.value == ""'.$optional_check.') {
+                    alert( "'. JText::_('REGWARN_VPASS1',false) .'" );
+                    return false;
+                } else if (r.exec(form.password.value)'.$optional_check.') {
+                    alert( "'. sprintf( JText::_('VALID_AZ09',false), JText::_('PASSWORD',false), 6 ) .'" );
+                    return false;
+                }';
+        	}
+            echo '
+                if ((form.password.value != "") && (form.password.value != form.password2.value)'.$optional_check.'){
+                    alert( "'. JText::_('REGWARN_VPASS2',false) .'" );
+                    return false;
+                }';
+        }
+        if( isset( $required_fields['agreed'] )) {
+			echo '
+            if (!form.agreed.checked) {
+				alert( "'. JText::_('VM_AGREE_TO_TOS',false) .'" );
+				return false;
+			}';
+		}
+		foreach( $allfields as $field ) {		
+			if(  $field->type == 'euvatid' ) {
+				$euvatid = $field->name;
+				break;
+			}			
+		}
+		if (!empty($euvatid) ) {
+			$document = JFactory::getDocument();
+			$document->addScript(JURI::root().'components/com_virtuemart/js/euvat_check.js');
+			echo '
+			if( form.'.$euvatid.'.value != \'\' ) {
+				if( !isValidVATID( form.'.$euvatid.'.value )) {
+					alert( \''.addslashes(JText::_('VALID_EUVATID',false)).'\' );
+					return false;
+				}
+			}';
+		}
+		// Finish the validation function
+		echo '
+			if( !isvalid) {
+				alert("'.addslashes( JText::_('CONTACT_FORM_NC',false) ) .'" );
+			}
+			return isvalid;
+		}
+	            //]]>
+	    </script>';
+	}
+	
+	/**
+	* Validates an EU-vat number
+	* @author RolandD
+	* @param string $euvat EU-vat number to validate
+	* @return boolean The result of the validation
+	*/
+	public function validateEUVat($euvat) {
+		require_once(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'euvatcheck.php');
+		$vatcheck = new VmEUVatCheck($euvat);
+		return $vatcheck->validvatid;
+	}
+	
+	/**
+	* Validates an email address by using regular expressions
+	* Does not resolve the domain name!
+	*
+	* Joomla has it's own e-mail checker but is no good JMailHelper::isEmailAddress()
+	* maybe in the future it will be better
+	*
+	* @param string $email
+	* @return boolean The result of the validation
+	*/
+	function validateEmail($email) {
+		$valid = preg_match( '/^[\w\.\-]+@\w+[\w\.\-]*?\.\w{1,4}$/', $email );
+		return $valid;
 	}
 }
 ?>

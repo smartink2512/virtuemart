@@ -255,5 +255,10 @@ $db->query("
 
 //More decimals for taxrates
 $db->query("
- ALTER TABLE `jos_vm_tax_rate` CHANGE `tax_rate` `tax_rate` DECIMAL( 10, 5 ) NULL DEFAULT NULL  
+ ALTER TABLE `#__vm_tax_rate` CHANGE `tax_rate` `tax_rate` DECIMAL( 10, 5 ) NULL DEFAULT NULL  
+ ");
+
+/* User info field changes */
+$db->query("
+ ALTER TABLE `#__vm_user_info`  CHANGE COLUMN `state` `state_id` VARCHAR(32) NOT NULL DEFAULT '' AFTER `city`,  CHANGE COLUMN `country` `country_id` VARCHAR(32) NOT NULL DEFAULT 'US' AFTER `state_id`;  
  ");
