@@ -12,7 +12,7 @@ echo $pane->startPanel(JText::_('VM_CONTROL_PANEL'), 'control_panel');
 <br />
 <div id="cpanel">
 	<div class="icon"><?php ImageHelper::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=product'), 'vm_shop_products_48.png', JText::_('VM_PRODUCT_LIST_LBL')); ?></div>
-	<div class="icon"><?php ImageHelper::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&pshop_mode=admin&page=product.product_category_list'), 'vm_shop_categories_48.png', JText::_('VM_CATEGORY_LIST_LBL')); ?></div>
+	<div class="icon"><?php ImageHelper::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=category'), 'vm_shop_categories_48.png', JText::_('VM_CATEGORY_LIST_LBL')); ?></div>
 	<div class="icon"><?php ImageHelper::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=orders'), 'vm_shop_orders_48.png', JText::_('VM_ORDER_MOD')); ?></div>
 	<div class="icon"><?php ImageHelper::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&pshop_mode=admin&page=store.payment_method_list'), 'vm_shop_payment_48.png', JText::_('VM_PAYMENT_METHOD_LIST_MNU')); ?></div>
 	<div class="icon"><?php ImageHelper::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=product'), 'vm_shop_vendors_48.png', JText::_('VM_VENDOR_MOD')); ?></div>

@@ -22,7 +22,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  * @author soeren
  * @since VirtueMart 1.1.0
  */
-class vmConnector {
+class VmConnection {
 
 	var $handle = null;
 

@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.model');
 require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vendorHelper.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
 
 /**
  * Model class for updates and migrations
@@ -33,8 +34,8 @@ class VirtueMartModelUpdatesMigration extends JModel
 	//		return $_SESSION['vmLatestVersion'];
 	//	}
 	//	$VMVERSION =& new vmVersion();
-		$url = "http://virtuemart.orgindex2.php?option=com_versions&catid=1&myVersion={".VmConfig::getVar('version_release')."}&task=latestversionastext";
-		$result = vmConnector::handleCommunication($url);
+		$url = "http://virtuemart.net/index2.php?option=com_versions&catid=1&myVersion={".VmConfig::getInstalledVersion()."}&task=latestversionastext";
+		$result = VmConnector::handleCommunication($url);
 		//if ($result !== false) {
 		//	// Cache the result for later use
 	//		$_SESSION['vmLatestVersion'] = $result;
