@@ -89,6 +89,7 @@
 	height: 25px;
 	top: 0;
 	left: 0;
+	outline: 0;
 }
 
 #vm-close-menu.vm-close-menu-show{

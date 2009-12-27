@@ -238,7 +238,7 @@ jQuery.noConflict();
 				
 				if( !Cookie.get('vmclosed')){
 					if(animation){
-						leftPanel.animate({ width: '0'}, 'medium');
+						leftPanel.animate({ width: '0', opacity: 0}, 'medium');
 						rightPanel.animate({ width: '99%'}, 'medium');
 					}
 					else{
@@ -253,7 +253,7 @@ jQuery.noConflict();
 					
 					if(animation){
 						rightPanel.animate({ width: '77%'}, 'medium');
-						leftPanel.animate({ width: '23%'}, 'medium');
+						leftPanel.animate({ width: '23%', opacity: 1}, 'medium');
 					}
 					else{
 						rightPanel.css('width', '77%');
