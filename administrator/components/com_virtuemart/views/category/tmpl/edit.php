@@ -59,7 +59,7 @@ $imagesURL = $mainframe->getSiteURL().'/components/com_virtuemart/shop_image/cat
 				</label>
 			</td>
 			<td>
-				<?php echo $editor->display('category_description', $this->category->category_description, '100%', '300', '50', '8');?>	
+				<?php echo $editor->display('category_description', $this->category->category_description, '100%', '300', '50', '8', array('pagebreak', 'readmore'));?>	
 			</td>
 		</tr>
 		<tr>
@@ -243,12 +243,13 @@ $imagesURL = $mainframe->getSiteURL().'/components/com_virtuemart/shop_image/cat
 							</td>
 							<td>
 								<input type="file" name="category_full_image" id="category_full_image" size="30" class="inputbox" />		
+								<input type="hidden" name="category_full_image_current" id="category_full_image_current" value="<?php echo $this->category->category_full_image?>" />	
 							</td>
 						</tr>
 						<?php if( function_exists('imagecreatefromjpeg') ):?>
 						<tr>
 							<td class="key">
-								<label for="image_action">
+								<label for="image_action_full">
 									<?php echo JText::_( 'VM_IMAGE_ACTION' ); ?>:
 								</label>
 							</td>
@@ -257,13 +258,17 @@ $imagesURL = $mainframe->getSiteURL().'/components/com_virtuemart/shop_image/cat
 									$imageActions = array(
 										JHTML::_('select.option',  '0', JText::_( 'NONE' ) ),
 										JHTML::_('select.option',  '1', JText::_( 'VM_FILES_FORM_AUTO_THUMBNAIL' ) )
-									);									
-									echo JHTML::_('select.radiolist', $imageActions, 'image_action', '', 'value', 'text', 0, 'image_action');
+									);
+
+									if(!empty($this->category->category_full_image)){
+										array_push($imageActions, JHTML::_('select.option',  '2', JText::_( 'VM_CATEGORY_FORM_IMAGE_DELETE_LBL' ) ));
+									}
+									
+									echo JHTML::_('select.radiolist', $imageActions, 'image_action_full', '', 'value', 'text', 0, 'image_action_full');
 								?>
 							</td>
 						</tr>
 						<?php endif;
-						
 							$fullImageURL = '';
 							
 							if( stripos($this->category->category_full_image, 'http://') ){
@@ -275,18 +280,14 @@ $imagesURL = $mainframe->getSiteURL().'/components/com_virtuemart/shop_image/cat
 								<label for="image_url">
 									<?php echo JText::_( 'URL' ); ?> <em>(<?php echo JText::_( 'CMN_OPTIONAL' ); ?>)</em>
 								</label>
-							</td>
+							</td>							
 							<td>
 								<input type="text" name="category_full_image_url" id="category_full_image_url" size="45" value="<?php echo $fullImageURL?>" class="inputbox" />
 							</td>
 						</tr>
 						<tr>
 							<td colspan="2">
-							<?php if( !empty($fullImageURL) ):?>
-								<img src="<?php echo $fullImageURL?>" />
-							<?php elseif( !empty($this->category->category_full_image) ):?>
-								<img src="<?php echo $imagesURL.$this->category->category_full_image?>" />
-							<?php endif;?>
+								<?php echo ImageHelper::generateImageHtml( $this->category->category_full_image, 'category', '', 0);?>
 							</td>
 						</tr>
 					</table>
@@ -303,7 +304,8 @@ $imagesURL = $mainframe->getSiteURL().'/components/com_virtuemart/shop_image/cat
 								</label>
 							</td>
 							<td>
-								<input type="file" name="category_thumb_image" id="category_thumb_image" size="30" class="inputbox" />				
+								<input type="file" name="category_thumb_image" id="category_thumb_image" size="30" class="inputbox" />
+								<input type="hidden" name="category_thumb_image_current" id="category_thumb_image_current" value="<?php echo $this->category->category_thumb_image?>" />			
 							</td>
 						</tr>
 						<?php						
@@ -313,6 +315,26 @@ $imagesURL = $mainframe->getSiteURL().'/components/com_virtuemart/shop_image/cat
 								$fullThumbURL = $this->category->category_thumb_image;
 							}
 						?>
+						<?php if( !empty($this->category->category_thumb_image)):?>
+						<tr>
+							<td class="key">
+								<label for="image_action_thumb">
+									<?php echo JText::_( 'VM_IMAGE_ACTION' ); ?>:
+								</label>
+							</td>
+							<td>
+								<?php 
+									$imageActions = array(
+										JHTML::_('select.option',  '0', JText::_( 'NONE' ) ),
+										JHTML::_('select.option',  '2', JText::_( 'VM_CATEGORY_FORM_IMAGE_DELETE_LBL' ) )
+									);
+									
+									echo JHTML::_('select.radiolist', $imageActions, 'image_action_thumb', '', 'value', 'text', 0, 'image_action_thumb');
+								?>
+							</td>
+						
+						</tr>
+						<?php endif;?>
 						<tr>
 							<td class="key">
 								<label for="image_url">
@@ -325,11 +347,7 @@ $imagesURL = $mainframe->getSiteURL().'/components/com_virtuemart/shop_image/cat
 						</tr>
 						<tr>
 							<td colspan="2">
-							<?php if( !empty($fullThumbURL) ):?>
-								<img src="<?php echo $fullThumbURL?>" />
-							<?php elseif( !empty($this->category->category_thumb_image) ):?>
-								<img src="<?php echo $imagesURL.'resized/'.$this->category->category_thumb_image;?>" />
-							<?php endif;?>
+								<?php echo ImageHelper::generateImageHtml( $this->category->category_thumb_image, 'category/resized', '', 0);?>
 							</td>
 						</tr>	
 					</table>

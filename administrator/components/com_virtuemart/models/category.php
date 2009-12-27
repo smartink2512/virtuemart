@@ -263,8 +263,7 @@ class VirtueMartModelCategory extends JModel
      * @author jseros	 
 	 * @return int Total number of products
 	 */
-	public function countProducts( $categoryId = 0 ) 
-	{
+	public function countProducts( $categoryId = 0 ){
 		$categoryId = intval($categoryId);
 		$query = 'SELECT COUNT(category_id) as total FROM #__vm_product_category_xref 
 				  WHERE category_id = '. $this->_db->Quote($categoryId);
@@ -282,8 +281,7 @@ class VirtueMartModelCategory extends JModel
      * @author RickG, jseros
      * @return JPagination Pagination for the current list of categories 
 	 */
-    public function getPagination() 
-    {
+    public function getPagination(){
 		if (empty($this->_pagination)) {
 			jimport('joomla.html.pagination');
 			$this->_pagination = new JPagination($this->_getTotal(), $this->getState('limitstart'), $this->getState('limit'));
@@ -298,8 +296,7 @@ class VirtueMartModelCategory extends JModel
      * @author RickG, jseros	 
 	 * @return int Total number of categories in the database
 	 */
-	public function _getTotal() 
-	{
+	public function _getTotal(){
     	if (empty($this->_total)) {
 			$query = 'SELECT `category_id` FROM `#__vm_category`';	  		
 			$this->_total = $this->_getListCount($query);
@@ -316,8 +313,7 @@ class VirtueMartModelCategory extends JModel
      * @param  int $movement movement number
 	 * @return bool
 	 */
-	function orderCategory($id, $movement)
-	{
+	function orderCategory($id, $movement){
 		//retrieving the category table object
 		//and loading data
 		$row = $this->getTable();
@@ -343,8 +339,7 @@ class VirtueMartModelCategory extends JModel
      * @param  array $cats categories to order
 	 * @return bool
 	 */
-	public function setOrder($cats)
-	{
+	public function setOrder($cats){
 		$total		= count( $cats );
 		$groupings	= array();
 		$row = $this->gettable();
@@ -389,10 +384,9 @@ class VirtueMartModelCategory extends JModel
      *
      * @author RickG, jseros
      * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the delete was successful, false otherwise.      
+     * @return boolean True is the publishing was successful, false otherwise.      
      */ 	 
-	function publish($publishId = false) 
-	{
+	function publish($publishId = false){
 		$table = $this->getTable();
 		$categoryIds = JRequest::getVar( 'cid', array(0), 'post', 'array' );				
 	
@@ -405,13 +399,52 @@ class VirtueMartModelCategory extends JModel
 	}
 	
 	
+	
+	/**
+	 * Shared/Unsared all the ids selected
+     *
+     * @author jseros
+     * 
+     * @param boolean $share True is the ids should be shared, false otherwise
+     * @return int 1 is the sharing action was successful, -1 is the unsharing action was successfully, 0 otherwise.      
+     */ 	 
+	function share($categories){
+				
+		foreach ($categories as $id){
+			
+			$quotedId = $this->_db->Quote($id);
+			$query = 'SELECT category_shared 
+					  FROM #__vm_category_xref
+					  WHERE category_child_id = '. $quotedId;
+			
+			$this->_db->setQuery($query);
+			$categoryXref = $this->_db->loadObject();
+			
+			$share = ($categoryXref->category_shared > 0) ? 0 : 1;
+			
+			$query = 'UPDATE #__vm_category_xref
+					  SET category_shared = '.$share.'
+					  WHERE category_child_id = '.$quotedId;
+			
+			$this->_db->setQuery($query);
+			
+			if( !$this->_db->query() ){
+				$this->setError( $this->_db->getErrorMsg() );
+				return false;
+			}
+			
+		}
+        
+		return ($share ? 1 : -1);		
+	}
+	
+	
     /** 
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *
      * @author RickG, jseros
      */ 
-	function getCategory()
-	{	 
+	function getCategory(){	 
      
   		if (empty($this->_data)) {
    			$this->_data = $this->getTable();
@@ -437,8 +470,7 @@ class VirtueMartModelCategory extends JModel
      * @param int $categoryId Child category id
      * @return JTable parent category data
      */ 
-	function getParentCategory( $categoryId = 0 )
-	{	 
+	function getParentCategory( $categoryId = 0 ){	 
 		$data = $this->getRelationInfo( $categoryId );
 		$parentId = isset($data->category_parent_id) ? $data->category_parent_id : 0;
 		
@@ -455,7 +487,7 @@ class VirtueMartModelCategory extends JModel
      * @author RickG, jseros
      * @return object List of flypage objects
      */
-    function getTemplateList( $section = 'browse' ) {
+    public function getTemplateList( $section = 'browse' ) {
 		$dir = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'themes';
 		$dir .= DS.VmConfig::getVar('theme').DS.'templates'.DS.$section;
 		$result = '';
@@ -496,40 +528,64 @@ class VirtueMartModelCategory extends JModel
     
     
     /**
-	 * Bind the post data to the country table and save it
+	 * Bind the post data to the category table and save it
      *
-     * @author RickG	
-     * @return boolean True is the save was successful, false otherwise. 
+     * @author jseros	
+     * @return int category id stored 
 	 */
-    function store() 
-	{
-		//loading filesystem library
+    public function store() 
+	{		
 		jimport('joomla.filesystem.file');
 		
 		$table = $this->getTable();
-
 		$data = JRequest::get('post');		
 	
 		//normalize data
 		$data['category_flypage'] = 'shop.'.$data['category_flypage'];
 		$data['category_flypage'] = str_replace('.tpl', '', $data['category_flypage']);
 		
-		
+		//uploading images and creating thumbnails
 		$fullImage = JRequest::getVar('category_full_image', array(), 'files');
-		
-		if ($fullImage['error'] == UPLOAD_ERR_OK) {
+		if($fullImage['error'] == UPLOAD_ERR_OK) {
 			move_uploaded_file( $fullImage['tmp_name'], JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'category'.DS.$fullImage['name']);
 			$data['category_full_image'] = $fullImage['name'];
 		}
-		
-		if( $data['image_action'] ){
-			$data['category_thumb_image'] = 'resized/'. basename( ImageHelper::createResizedImage($data['category_full_image'], 'category', PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
+		elseif($data['category_full_image_url']){
+			$data['category_full_image'] = $data['category_full_image_url'];
+		}
+		else{
+			$data['category_full_image'] = $data['category_full_image_current'];
 		}
 		
+		//creating the thumbnail image
+		if( $data['image_action_full'] == 1 ){
+			$data['category_thumb_image'] = basename( ImageHelper::createResizedImage($data['category_full_image'], 'category', PSHOP_IMG_WIDTH, PSHOP_IMG_HEIGHT));
+		}
+		//deleting image
+		elseif( $data['image_action_full'] == 2 ){
+			JFile::delete( JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'category'.DS.$data['category_full_image_current'] );
+			$data['category_full_image'] = '';
+		}
+		
+		//uploading explicit thumbnail image
 		$thumbImage = JRequest::getVar('category_thumb_image', array(), 'files');
-		if ($thumbImage['error'] == UPLOAD_ERR_OK) {
+		if( $thumbImage['error'] == UPLOAD_ERR_OK ){
 			move_uploaded_file( $thumbImage['tmp_name'], JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'category'.DS.'resized'.DS.$thumbImage['name']);
 			$data['category_thumb_image'] = $thumbImage['name'];
+		}
+		elseif( empty($data['category_thumb_image']) ){
+			if( !empty($data['category_thumb_image_url']) ){ //storing the URL if is it necessary
+				$data['category_thumb_image'] = $data['category_thumb_image_url'];
+			}
+			else{
+				$data['category_thumb_image'] = $data['category_thumb_image_current'];
+			}
+		}
+		
+		//deleting thumbnail image
+		if( $data['image_action_thumb'] == 2 ){
+			JFile::delete( JPATH_COMPONENT_SITE.DS.'shop_image'.DS.'category'.DS.'resized'.DS.$data['category_thumb_image_current'] );
+			$data['category_thumb_image'] = '';
 		}
 		
 		// Bind the form fields to the country table
@@ -553,17 +609,19 @@ class VirtueMartModelCategory extends JModel
 		//store category relation
 		if( !$data['category_id'] ){ //is new
 			
-			$lastId = $this->_db->insertid();
+			$id = $this->_db->insertid();
 			
 			$query = 'INSERT INTO #__vm_category_xref(category_parent_id, category_child_id, category_shared) 
 					  VALUES( 
 					  	'. $this->_db->Quote( (int)$data['category_parent_id'] ) .',
-					  	'. $this->_db->Quote( (int)$lastId ) .',
+					  	'. $this->_db->Quote( (int)$id ) .',
 					  	'. $this->_db->Quote( (int)$data['shared'] ) .'
 					  )';
 			
 		}
 		else{
+			$id = $data['category_id'];
+			
 			$query = 'UPDATE #__vm_category_xref 
 					  SET category_parent_id = '. $this->_db->Quote( (int)$data['category_parent_id'] ) .',
 					  category_shared = '. $this->_db->Quote( (int)$data['shared'] ) .'
@@ -578,8 +636,9 @@ class VirtueMartModelCategory extends JModel
 			return false;
 		}
 		
-		
-		
-		return true;
-	}	
+		return $id;
+	}
+	
+	
+	
 }

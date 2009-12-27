@@ -39,11 +39,13 @@ class VirtuemartViewCategory extends JView {
 			if ( $isNew ) {
 				JToolBarHelper::title(  JText::_('VM_CATEGORY_LIST_LBL' ).': <small><small>[ New ]</small></small>', 'vm_categories_48');
 				JToolBarHelper::save();
+				JToolBarHelper::apply();
 				JToolBarHelper::cancel();				
 			}
 			else {
 				JToolBarHelper::title( JText::_('VM_CATEGORY_LIST_LBL' ).': <small><small>[ Edit ]</small></small>', 'vm_categories_48');
 				JToolBarHelper::save();
+				JToolBarHelper::apply();
 				JToolBarHelper::cancel('cancel', 'Close');
 
 				$relationInfo = $model->getRelationInfo( $category->category_id );
@@ -67,6 +69,8 @@ class VirtuemartViewCategory extends JView {
 			JToolBarHelper::editListX();
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
+			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('VM_CATEGORY_SHARE'), true);
+			JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('VM_CATEGORY_UNSHARE'), true);
 			JToolBarHelper::deleteList('', 'remove', 'Delete');
 			
 			$categories = $model->getCategoryTree(false);

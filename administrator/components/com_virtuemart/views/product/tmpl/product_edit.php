@@ -1,6 +1,10 @@
 <?php
 defined('_JEXEC') or die('Restricted access'); 
-AdminMenuHelper::startAdminArea(); 
+AdminMenuHelper::startAdminArea();
+/* Load some behaviour */
+$document = JFactory::getDocument();				
+$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.autocomplete.pack.js');
+$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jquery.autocomplete.css');
 ?>
 <form method="post" name="adminForm" action="index.php" enctype="multipart/form-data">
 <?php

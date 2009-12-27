@@ -70,7 +70,7 @@ class ImageHelper
 	 */
 	function displayShopImage($image, $imgRootFolder='', $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false)
 	{
-		echo ImageHelper::genterateImageHtml($image, $imgRootFolder, $imageArgs, $resize, $thumbWidth, $thumbHeight, $overrideSize);		
+		echo ImageHelper::generateImageHtml($image, $imgRootFolder, $imageArgs, $resize, $thumbWidth, $thumbHeight, $overrideSize);		
 	}
 	
 	/** Return the HTML <img> code for a given image.
@@ -87,7 +87,7 @@ class ImageHelper
 	 */	
 	function getShopImageHtml($image, $imgRootFolder='', $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false)
 	{
-		return ImageHelper::genterateImageHtml($image, $imgRootFolder, $imageArgs, $resize, $thumbWidth, $thumbHeight, $overrideSize);		
+		return ImageHelper::generateImageHtml($image, $imgRootFolder, $imageArgs, $resize, $thumbWidth, $thumbHeight, $overrideSize);		
 	}
 	
 	/**
@@ -103,7 +103,7 @@ class ImageHelper
 	 * @param boolean $overrideSize If true, $thumbWidth and $thumbHeight will overried image sizes set in the shop configuration.
 	 * @return string <img> tage containing the image as the src attribute.  Needs only to be echo'd.
 	 */
-	function genterateImageHtml($image, $imgRootFolder='', $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false)
+	function generateImageHtml($image, $imgRootFolder='', $imageArgs="", $resize=1, $thumbWidth=0, $thumbHeight=0, $overrideSize=false)
 	{
 		// Process image arguments
 		$border="";
@@ -160,8 +160,8 @@ class ImageHelper
 		}
 		else {
 			$url = VM_THEMEURL.'images/'.NO_IMAGE;
-		}		
-
+		}
+		
 		return JHTML::image($url, '');
 			
 	}

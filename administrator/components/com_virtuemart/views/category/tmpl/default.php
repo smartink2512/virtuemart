@@ -93,7 +93,7 @@ if( $this->pagination->limit < $nrows ){
 					<?php echo $published;?>
 				</td>
 				<td align="center">
-					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggle_shared')" title="<?php echo ( $row->category_shared == 'Y' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>">
+					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShared')" title="<?php echo ( $row->category_shared == 'Y' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>">
 						<img src="images/<?php echo ( $row->category_shared) ? 'tick.png' : 'publish_x.png';?>" width="16" height="16" border="0" alt="<?php echo ( $row->category_shared == 'Y' ) ? JText::_( 'Yes' ) : JText::_( 'No' );?>" />
 					</a>
 				</td>

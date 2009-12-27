@@ -26,12 +26,13 @@ class VirtuemartControllerCategory extends JController
 	 *
 	 * @access	public
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 		
 		// Register Extra tasks
 		$this->registerTask( 'add',  'edit' );			
-	    
+	    $this->registerTask( 'apply',  'save' );	
+		
 		$document = JFactory::getDocument();				
 		$viewType	= $document->getType();
 		$view = $this->getView('category', $viewType);		
@@ -48,7 +49,7 @@ class VirtuemartControllerCategory extends JController
 	 *
 	 * @author RickG, jseros
 	 */
-	function display() {			
+	public function display() {			
 		parent::display();
 	}
 	
@@ -58,7 +59,7 @@ class VirtuemartControllerCategory extends JController
 	 *
      * @author RickG
 	 */
-	function edit()
+	public function edit()
 	{				
 		JRequest::setVar('controller', 'category');
 		JRequest::setVar('view', 'category');
@@ -74,7 +75,7 @@ class VirtuemartControllerCategory extends JController
 	 *
 	 * @author RickG
 	 */
-	function cancel()
+	public function cancel()
 	{		
 		$this->setRedirect('index.php?option=com_virtuemart&view=category');
 	}	
@@ -85,18 +86,26 @@ class VirtuemartControllerCategory extends JController
 	 *
 	 * @author RickG, jseros 
 	 */	
-	function save()
+	public function save()
 	{
 		$categoryModel =& $this->getModel('category');		
+		$cmd = JRequest::getCmd('task');
 		
-		if ($categoryModel->store()) {
+		if ($id = $categoryModel->store()) {
 			$msg = JText::_('VM_CATEGORY_SAVED_SUCCESS');
 		}
 		else {
 			$msg = JText::_($categoryModel->getError());
 		}
 		
-		$this->setRedirect('index.php?option=com_virtuemart&view=category', $msg);
+		if($cmd == 'apply'){
+			$redirection = 'index.php?option=com_virtuemart&view=category&task=edit&cid[]='.$id;
+		}
+		else{
+			$redirection = 'index.php?option=com_virtuemart&view=category';
+		}
+		
+		$this->setRedirect($redirection, $msg);
 	}	
 	
 	
@@ -105,7 +114,7 @@ class VirtuemartControllerCategory extends JController
 	 *
 	 * @author RickG, jseros	 
 	 */		
-	function remove()
+	public function remove()
 	{
 		$categoryModel = $this->getModel('category');
 		if (!$categoryModel->delete()) {
@@ -124,11 +133,14 @@ class VirtuemartControllerCategory extends JController
 	 *
 	 * @author RickG, jseros	 
 	 */		
-	function publish()
+	public function publish()
 	{
 		$categoryModel = $this->getModel('category');
 		if (!$categoryModel->publish(true)) {
 			$msg = JText::_('VM_ERROR_CATEGORIES_COULD_NOT_BE_PUBLISHED');
+		}
+		else{
+			$msg = JText::_('VM_CATEGORY_PUBLISHED_SUCCESS');
 		}
 	
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=category', $msg);
@@ -140,14 +152,54 @@ class VirtuemartControllerCategory extends JController
 	 *
 	 * @author RickG, jseros	 
 	 */		
-	function unpublish()
+	public function unpublish()
 	{
 		$categoryModel = $this->getModel('category');
 		if (!$categoryModel->publish(false)) {
 			$msg = JText::_('VM_ERROR_CATEGORIES_COULD_NOT_BE_UNPUBLISHED');
 		}
-	
+		else{
+			$msg = JText::_('VM_CATEGORY_UNPUBLISHED_SUCCESS');
+		}
+		
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=category', $msg);
+	}
+	
+	
+	
+	/**
+	 * Handle the shared/unshared action
+	 *
+	 * @author jseros	 
+	 */	
+	public function toggleShared()
+	{
+		$mainframe = JFactory::getApplication();
+
+		// Check token
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
+		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$msg = '';
+
+		JArrayHelper::toInteger($cid);
+
+		if(count($cid) < 1) {
+			$msg = JText::_('Select an item to toggle');
+			$mainframe->redirect('index.php?option=com_virtuemart&view=category', $msg, 'error');
+		}
+
+		$categoryModel = $this->getModel('category');
+		$status = $categoryModel->share($cid);
+		
+		if( $status == 1 ){
+			$msg = JText::_('VM_CATEGORY_SHARED_SUCCESS');
+		}
+		elseif( $status == -1 ){
+			$msg = JText::_('VM_CATEGORY_UNSHARED_SUCCESS');
+		}
+		
+		$mainframe->redirect('index.php?option=com_virtuemart&view=category', $msg);
 	}
 	
 	
