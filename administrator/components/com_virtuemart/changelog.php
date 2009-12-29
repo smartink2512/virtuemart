@@ -21,6 +21,7 @@ $ -> Language fix or change
 
 
 -------------------- 1.5.0 Stable Release [Release date here] ------------------
+^ Category maintenance converted to MVC
 ^ Manufacturer Category view converted
 ^ Landing page converted to MVC
 ^ Media handling converted to MVC
