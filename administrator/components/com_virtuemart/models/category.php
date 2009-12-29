@@ -640,6 +640,65 @@ class VirtueMartModelCategory extends JModel
 		return $id;
 	}
 	
+	/**
+     * Delete all categories selected
+     *
+     * @author jseros
+     * @param  array $cids categories to delete
+     * @return boolean if the item delete was successful
+     */
+    public function delete($cids) {
+		$table = $this->getTable();
 	
-	
+		foreach($cids as $cid) {
+		    if( $this->clearProducts($cid) ) {
+				if (!$table->delete($cid)) {
+				    $this->setError($table->getError());
+				    return false;
+				}
+				
+				//deleting relations
+				$query = "DELETE FROM #__vm_product_category_xref WHERE category_child_id = ". $this->_db->Quote($cid);
+		    	$this->_db->setQuery($query);
+		    	
+		    	if(!$this->_db->query()){
+		    		$this->setError( $this->_db->getErrorMsg() );
+		    	}
+		    	
+		    	//updating parent relations
+				$query = "UPDATE #__vm_product_category_xref SET category_parent_id = 0 WHERE category_parent_id = ". $this->_db->Quote($cid);
+		    	$this->_db->setQuery($query);
+		    	
+		    	if(!$this->_db->query()){
+		    		$this->setError( $this->_db->getErrorMsg() );
+		    	}
+		    }
+		    else {
+				$this->setError('Could not clear category products');
+				return false;
+		    }
+		}
+		return true;
+    }
+    
+    
+	/**
+     * Delete all relations between categories and products
+     *
+     * @author jseros
+     * 
+     * @param  int $cid categories to delete
+     * @return boolean if the item delete was successful
+     */
+    public function clearProducts($cid) {
+
+    	$query = "UPDATE #__vm_product_category_xref SET category_id = 0 WHERE category_id =" . $this->_db->Quote($cid);
+		$this->_db->setQuery($query);
+		
+		if( !$this->_db->query() ){
+			return false;
+		}
+		
+		return true;
+    }
 }

@@ -116,8 +116,24 @@ class VirtuemartControllerCategory extends JController
 	 */		
 	public function remove()
 	{
+		// Check token
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		
+		$mainframe = JFactory::getApplication();
+		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$msg = '';
+
+		JArrayHelper::toInteger($cid);
+
+		if(count($cid) < 1) {
+			$msg = JText::_('Select an item to delete');
+			$mainframe->redirect('index.php?option=com_virtuemart&view=category', $msg, 'error');
+			return;
+		}
+		
 		$categoryModel = $this->getModel('category');
-		if (!$categoryModel->delete()) {
+		
+		if (!$categoryModel->delete($cid)) {
 			$msg = JText::_('VM_ERROR_CATEGORIES_COULD_NOT_BE_DELETED');
 		}
 		else {
