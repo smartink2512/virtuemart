@@ -24,26 +24,26 @@ if( $this->pagination->limit < $nrows ){
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->categories); ?>);" />
 			</th>			
 			<th>
-				<?php echo JText::_( 'VM_CATEGORY_FORM_NAME' ); ?>
+				<?php echo JHTML::_('grid.sort', 'VM_CATEGORY_FORM_NAME', 'c.category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>				
 			<th>
-				<?php echo JText::_( 'VM_CATEGORY_FORM_DESCRIPTION' ); ?>
+				<?php echo JHTML::_('grid.sort', 'VM_CATEGORY_FORM_DESCRIPTION', 'c.category_description', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>						
 			<th width="11%">
 				<?php echo JText::_( 'VM_PRODUCTS_LBL' ); ?>
 			</th>	
 			<th width="5%">
-				<?php echo JText::_( 'VM_PRODUCT_LIST_PUBLISH' ); ?>
+				<?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_PUBLISH', 'c.published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>
 			<th width="5%">
-				<?php echo JText::_( 'VM_PRODUCT_LIST_SHARED' ); ?>
+				<?php echo JHTML::_('grid.sort', 'VM_PRODUCT_LIST_SHARED', 'cx.category_shared', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>	
 			<th width="13%">
-				<?php echo JText::_( 'ORDER' ); ?>
+				<?php echo JHTML::_('grid.sort', 'ORDER', 'c.ordering', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 				<?php echo JHTML::_('grid.order', $this->categories, 'filesave.png', 'saveOrder' ); ?>
 			</th>
 			<th width="3%">
-				<?php echo JText::_( 'ID' ); ?>
+				<?php echo JHTML::_('grid.sort', 'ID', 'c.category_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>							
 		</tr>
 		</thead>
@@ -126,6 +126,8 @@ if( $this->pagination->limit < $nrows ){
 	<input type="hidden" name="view" value="category" />	
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
             

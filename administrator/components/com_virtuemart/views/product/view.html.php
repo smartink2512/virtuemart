@@ -22,6 +22,7 @@ class VirtuemartViewProduct extends JView {
 		/* Load helpers */
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('adminMenu');
+		$this->loadHelper('shopFunctions');
 		JView::loadHelper('image');
 		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'classes'.DS.'htmlTools.class.php');
 		
@@ -33,9 +34,6 @@ class VirtuemartViewProduct extends JView {
 			case 'add':
 			case 'edit':
 				/* Load some behaviour */
-				$document = JFactory::getDocument();
-				$document->addScript(JURI::root().'administrator/components/com_virtuemart/assets/js/jquery.autocomplete.pack.js');
-				$document->addStyleSheet(JURI::root().'administrator/components/com_virtuemart/assets/css/jquery.autocomplete.css');
 				jimport('joomla.html.pane');
 				$pane = JPane::getInstance(); 
 				JHTML::_('behavior.tooltip');
@@ -47,8 +45,8 @@ class VirtuemartViewProduct extends JView {
 				$product = $this->get('Product');
 				
 				/* Get the category tree */
-				if (isset($product->categories)) $category_tree = $category_model->list_tree('', 0, 0, $product->categories);
-				else $category_tree = $category_model->list_tree();
+				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree('', 0, 0, $product->categories);
+				else $category_tree = ShopFunctions::categoryListTree();
 				$this->assignRef('category_tree', $category_tree);
 				
 				/* Load the product price */
@@ -233,8 +231,6 @@ class VirtuemartViewProduct extends JView {
 				/* Get the list of products */
 				$productlist = $this->get('ProductList');
 				
-				//loading shop functions helper
-				$this->loadHelper('shopFunctions');
 				
 				/* Get the category tree */
 				$category_tree = ShopFunctions::categoryListTree( JRequest::getInt('category_id') );

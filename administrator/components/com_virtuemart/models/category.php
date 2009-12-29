@@ -11,6 +11,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.model');
+require_once(JPATH_COMPONENT.DS.'helpers'.DS.'vendorHelper.php');
+require_once(JPATH_COMPONENT.DS.'helpers'.DS.'permissions.php');
 
 /**
  * Model for product categories
@@ -109,7 +111,6 @@ class VirtueMartModelCategory extends JModel
 	/**
 	* Return an array containing category information
 	* 
-	* TODO: Vendor data integration
 	* @author VirtueMart Development Team
 	* 
 	* @param boolean $onlyPublished Show only published categories?
@@ -119,13 +120,10 @@ class VirtueMartModelCategory extends JModel
 	* @return array Categories list
 	*/
 	public function getCategoryTree($onlyPublished = true, $withParentId = false, $parentId = 0, $keyword = "") {
-		//global $perm, $hVendor;
-
-		//$vendor_id = $hVendor->getLoggedVendor();
-		$vendor_id = 1;
-		$categories = Array();
 		
-		//if( empty( $GLOBALS['category_info']['category_tree'])) {
+		//$vendorId = Vendor::getLoggedVendor();
+		$vendorId = 1;
+		$categories = Array();
 
 		$query = "SELECT c.category_id, c.category_description, c.category_name, c.ordering, c.published, cx.category_child_id, cx.category_parent_id, cx.category_shared
 				  FROM #__vm_category c
@@ -144,14 +142,17 @@ class VirtueMartModelCategory extends JModel
 		}
 		
 		if( $withParentId ){
-			$query .= "AND cx.category_parent_id = ". $this->_db->Quote($parentId);
+			$query .= " AND cx.category_parent_id = ". $this->_db->Quote($parentId);
 		}
 
-		/*if( !$perm->check("admin") ) {
-				$query .= "AND (#__{vm}_category.vendor_id = '$vendor_id' OR #__{vm}_category_xref.category_shared = 'Y') ";
+		/*if( !Permissions::check('admin') ){
+			$query .= " AND (#__vm_category.vendor_id = ". $this->_db->Quote($vendorId) . " OR #__vm_category_xref.category_shared = '1') ";
 		}*/
 		
-		$query .= "ORDER BY c.ordering ASC, c.category_name ASC";
+		$filterOrder = JRequest::getCmd('filter_order', 'c.ordering');
+		$filterOrderDir = JRequest::getCmd('filter_order_Dir', 'ASC');
+		
+		$query .= " ORDER BY ". $filterOrder ." ". $filterOrderDir;
 			
 		
 		// Set the query in the database connector

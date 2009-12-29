@@ -26,7 +26,8 @@ class VirtuemartViewCategory extends JView {
 	function display($tpl = null) {	
 		$model = $this->getModel();        
         $layoutName = JRequest::getVar('layout', 'default');
-        
+        $mainframe = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
         $category = $model->getCategory();
         
         // loading the ShopFunctions and Image Helpers
@@ -78,11 +79,16 @@ class VirtuemartViewCategory extends JView {
 			
 			$pagination = $model->getPagination();			
 			
+			$lists = array();
+			$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
+			$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
+			
 			$this->assignRef('pagination',	$pagination);			
 			$this->assignRef('categories', $categoriesSorted['categories']);
 			$this->assignRef('depthList', $categoriesSorted['depth_list']);
 			$this->assignRef('rowList',	$categoriesSorted['row_list']);
 			$this->assignRef('idList', $categoriesSorted['id_list']);
+			$this->assignRef('lists', $lists);
 		}			
 		
 		

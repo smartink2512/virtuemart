@@ -152,7 +152,7 @@ jQuery.noConflict();
 					
 					$('.section-smenu').addClass('element-hidden');//Hidding Panels
 					
-					var actualItemNode = $('#menu-toggler-'+ actualItem);
+					var actualItemNode = $('#menu-toggler-'+ (actualItem || 1));
 					actualItemNode.next().slideDown( speed );
 					
 					that.activeMenuItem( actualItemNode.get(0) );
