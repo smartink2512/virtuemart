@@ -229,15 +229,16 @@ CREATE TABLE IF NOT EXISTS `#__vm_function` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__vm_manufacturer` (
-  `manufacturer_id` int(11) NOT NULL auto_increment,
-  `mf_name` varchar(64) default NULL,
-  `mf_email` varchar(255) default NULL,
+  `manufacturer_id` int(11) NOT NULL AUTO_INCREMENT,
+  `mf_name` varchar(64) DEFAULT NULL,
+  `mf_email` varchar(255) DEFAULT NULL,
   `mf_desc` text,
-  `mf_category_id` int(11) default NULL,
-  `mf_url` varchar(255) NOT NULL default '',
-  `mf_thumb_image` varchar(255) default NULL,
-  `mf_full_image` varchar(255) default NULL,
-  PRIMARY KEY  (`manufacturer_id`)
+  `mf_category_id` int(11) DEFAULT NULL,
+  `mf_url` varchar(255) NOT NULL DEFAULT '',
+  `mf_thumb_image` varchar(255) DEFAULT NULL,
+  `mf_full_image` varchar(255) DEFAULT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`manufacturer_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are those who create products';
 
 -- --------------------------------------------------------
@@ -247,12 +248,13 @@ CREATE TABLE IF NOT EXISTS `#__vm_manufacturer` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__vm_manufacturer_category` (
-  `mf_category_id` int(11) NOT NULL auto_increment,
-  `mf_category_name` varchar(64) default NULL,
+  `mf_category_id` int(11) NOT NULL AUTO_INCREMENT,
+  `mf_category_name` varchar(64) DEFAULT NULL,
   `mf_category_desc` text,
-  PRIMARY KEY  (`mf_category_id`),
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`mf_category_id`),
   KEY `idx_manufacturer_category_category_name` (`mf_category_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are assigned to these categories';
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are assigned to these categories' AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
