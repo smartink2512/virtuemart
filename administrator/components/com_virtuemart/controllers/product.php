@@ -45,7 +45,7 @@ class VirtuemartControllerProduct extends VmController {
 	/**
 	 * Shows the product add/edit screen
 	 */
-	public function edit() {
+	public function edit($layout='edit') {
 		parent::edit('product_edit');
 	}
 
@@ -54,7 +54,7 @@ class VirtuemartControllerProduct extends VmController {
 	 *
 	 * @author Max Milbers
 	 */
-	function save(){
+	function save($data = 0){
 
 		$data = JRequest::get('post');
 

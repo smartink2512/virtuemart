@@ -204,7 +204,7 @@ class ShopFunctions {
 	 *
 	 * @author Max Milbers, RolandD
 	 * @access public
-	 * @param int $virtuemart_shoppergroup_id the shopper group to pre-select
+	 * @param int $shopperGroupId the shopper group to pre-select
 	 * @param bool $multiple if the select list should allow multiple selections
 	 * @return string HTML select option list
 	 */
@@ -232,8 +232,8 @@ class ShopFunctions {
 	 * @author jseros, Max Milbers
 	 *
 	 * @param int $countryId Selected country id
-	 * @param boolean $multiple True if multiple selecions are allowed (default: false)
-	 * @param mixed $_attrib string or array with additional attibutes,
+	 * @param boolean $multiple True if multiple selections are allowed (default: false)
+	 * @param mixed $_attrib string or array with additional attributes,
 	 * e.g. 'onchange=somefunction()' or array('onchange'=>'somefunction()')
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 * @return string HTML containing the <select />
@@ -285,7 +285,7 @@ class ShopFunctions {
 		if (is_array($stateId))
 		$stateId = implode(",", $stateId);
 		vmJsApi::JcountryStateList($stateId);
-		$attrs = array();
+
 		if ($multiple) {
 			$attrs = 'multiple="multiple" size="12" name="' . $_prefix . 'virtuemart_state_id[]" ';
 		} else {
@@ -509,7 +509,7 @@ class ShopFunctions {
 	}
 
 	/**
-	 * Renders the list for the Lenght, Width, Height Unit
+	 * Renders the list for the Length, Width, Height Unit
 	 *
 	 * @author Valérie Isaksen
 	 */
@@ -700,7 +700,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @param char $_fld Field to return: country_name (default), country_2_code or country_3_code.
 	 * @return string Country name or code
 	 */
-	public function getCountryByID ($id, $fld = 'country_name'){
+	public static function getCountryByID ($id, $fld = 'country_name'){
 
 		if (empty($id)) return '';
 

@@ -29,7 +29,7 @@ class VmHTML{
 	 * @param boolean $only_special_chars Only Convert Some Special Chars ? ( <, >, &, ... )
 	 * @return string
 	 */
-	function shopMakeHtmlSafe( $string, $quote_style='ENT_QUOTES', $use_entities=false ) {
+	static function shopMakeHtmlSafe( $string, $quote_style='ENT_QUOTES', $use_entities=false ) {
 
 		if( defined( $quote_style )) {
 			$quote_style = constant($quote_style);
@@ -49,7 +49,7 @@ class VmHTML{
 	 * @return string UTF-8 by default
 	 * @since 1.0.5
 	 */
-	function vmGetCharset() {
+static function vmGetCharset() {
 		$iso = explode( '=', @constant('_ISO') );
 		if( !empty( $iso[1] )) {
 			return $iso[1];
@@ -67,7 +67,7 @@ class VmHTML{
      * @args array : arguments
      * @return string: HTML code for row table
      */
-    function row($func,$label){
+    static function row($func,$label){
 		$VmHTML="VmHTML";
 		$passedArgs = func_get_args();
 		array_shift( $passedArgs );//remove function
@@ -90,25 +90,25 @@ class VmHTML{
 		return $html ;
 	}
 	/* simple value display */
-	function value( $value ){
+	static function value( $value ){
 		$lang =JFactory::getLanguage();
 		return $lang->hasKey($value) ? JText::_($value) : $value;
 	}
 
 	/* simple raw render */
-	function raw( $value ){
+	static function raw( $value ){
 		return $value;
 	}
     /**
      * Generate HTML code for a checkbox
      *
-     * @param string Name for the chekcbox
+     * @param string Name for the checkbox
      * @param mixed Current value of the checkbox
      * @param mixed Value to assign when checkbox is checked
      * @param mixed Value to assign when checkbox is not checked
      * @return string HTML code for checkbox
      */
-    function checkbox($name, $value, $checkedValue=1, $uncheckedValue=0, $extraAttribs = '', $id = null) {
+    static function checkbox($name, $value, $checkedValue=1, $uncheckedValue=0, $extraAttribs = '', $id = null) {
 		if (!$id) $id=$name ;
 	if ($value == $checkedValue) {
 	    $checked = 'checked="checked"';
@@ -130,13 +130,13 @@ class VmHTML{
 	 *
 	 * @param string $name The name of the select element
 	 * @param string $value The pre-selected value
-	 * @param array $arr The array containting $key and $val
+	 * @param array $arr The array containing $key and $val
 	 * @param int $size The size of the select element
 	 * @param string $multiple use "multiple=\"multiple\" to have a multiple choice select list
 	 * @param string $extra More attributes when needed
 	 * @return string HTML drop-down list
 	 */
-	function selectList($name, $value, $arrIn, $size=1, $multiple="", $extra="") {
+	static function selectList($name, $value, $arrIn, $size=1, $multiple="", $extra="") {
 
 		$html = '';
 		if( empty( $arrIn ) ) {
@@ -237,7 +237,7 @@ class VmHTML{
 	 * @param string $extra
 	 * @return string
 	 */
-	function radioList($name, $value, &$arr, $extra="") {
+	static function radioList($name, $value, &$arr, $extra="") {
 		$html = '';
 		if( empty( $arr ) ) {
 			$arr = array();
@@ -270,7 +270,7 @@ class VmHTML{
 	 * @param string $default
 	 * @return string
 	 */
-	function radio( $name, $radios, $default,$key='value',$text='text') {
+	static function radio( $name, $radios, $default,$key='value',$text='text') {
 		return '<fieldset class="radio">'.JHTML::_('select.radiolist', $radios, $name, '', $key, $text, $default).'</fieldset>';
 	}
 	/**
@@ -282,7 +282,7 @@ class VmHTML{
 	 * @param string $value
 	 *
 	 */
-	public function booleanlist (  $name, $value,$class='class="inputbox"'){
+	public static function booleanlist (  $name, $value,$class='class="inputbox"'){
 		return '<fieldset class="radio">'.JHTML::_( 'select.booleanlist',  $name , $class , $value).'</fieldset>' ;
 	}
 		/**
@@ -293,7 +293,7 @@ class VmHTML{
 	 * @param string $name
 	 * @param string $value
 	 */
-	public function input($name,$value,$class='class="inputbox"',$readonly='',$size='37',$maxlength='255',$more=''){
+	public static function input($name,$value,$class='class="inputbox"',$readonly='',$size='37',$maxlength='255',$more=''){
 		return '<input type="text" '.$readonly.' '.$class.' id="'.$name.'" name="'.$name.'" size="'.$size.'" maxlength="'.$maxlength.'" value="'.htmlspecialchars($value).'" />'.$more;
 	}
 
@@ -305,7 +305,7 @@ class VmHTML{
 	 * @param string $name
 	 * @param string $value
 	 */
-	public function textarea($name,$value,$class='class="inputbox"',$cols='70',$rows="10"){
+	public static function textarea($name,$value,$class='class="inputbox"',$cols='70',$rows="10"){
 		return '<textarea '.$class.' id="'.$name.'" name="'.$name.'" cols="'.$cols.'" rows="'.$rows.'"/>'.$value.'</textarea >';
 	}
 	/**
@@ -316,7 +316,7 @@ class VmHTML{
 	 * @param string $name
 	 * @param string $value
 	 */
-	public function editor($name,$value,$size='100%',$height='300',$hide = array('pagebreak', 'readmore')){
+	public static function editor($name,$value,$size='100%',$height='300',$hide = array('pagebreak', 'readmore')){
 		$editor =JFactory::getEditor();
 		return $editor->display($name, $value, $size, $height, null, null ,$hide )  ;
 	}
@@ -332,7 +332,7 @@ class VmHTML{
 	 * @param boolean $zero add  a '0' value in the option
 	 * return a select list
 	 */
-	public function select($name, $options, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true){
+	public static function select($name, $options, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true){
 		if ($zero==true) {
 		$option  = array($key =>"0", $text => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
 		$options = array_merge(array($option), $options);
@@ -343,7 +343,7 @@ class VmHTML{
 	 * renders the hidden input
 	 * @author Max Milbers
 	 */
-	public function inputHidden($values){
+	public static function inputHidden($values){
 		$html='';
 		foreach($values as $k=>$v){
 			$html .= '<input type="hidden" name="'.$k.'" value="'.$v.'" />';
@@ -361,7 +361,7 @@ class VmHTML{
 	*@var $match original ID field to compare with this such as Email, passsword
 	*@ Return $html class for validate javascript
 	**/
-	public function validate($type='',$required=true, $min=null,$max=null,$match=null) {
+	public static function validate($type='',$required=true, $min=null,$max=null,$match=null) {
 
 		if ($required) $validTxt = 'required';
 		else $validTxt = 'optional';

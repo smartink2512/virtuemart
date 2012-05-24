@@ -46,6 +46,7 @@ defined('JPATH_BASE') or die();
 	?>
 				<table class="klarna_pclasses">
 					<thead class="klarna_pclasses_header">
+					<tr>
 						<td class="pclass_id"><?php echo JText::_('VMPAYMENT_KLARNA_PCLASS_ID') ?></td>
 						<td class="pclass_description"><?php echo JText::_('VMPAYMENT_KLARNA_PCLASS_DESCRIPTION') ?></td>
 						<td class="pclass_number"><?php echo JText::_('VMPAYMENT_KLARNA_PCLASS_MONTHS') ?></td>
@@ -54,6 +55,7 @@ defined('JPATH_BASE') or die();
 						<td class="pclass_number"><?php echo JText::_('VMPAYMENT_KLARNA_PCLASS_START_FEE') ?></td>
 						<td class="pclass_number"><?php echo JText::_('VMPAYMENT_KLARNA_PCLASS_MIN_AMOUNT') ?></td>
 						<td class="pclass_flag"><?php echo JText::_('VMPAYMENT_KLARNA_PCLASS_COUNTRY') ?></td>
+					</tr>
 					</thead>
 					<tbody class="klarna_pclasses_body">
 	<?php

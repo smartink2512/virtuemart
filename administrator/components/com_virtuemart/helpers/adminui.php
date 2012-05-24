@@ -26,7 +26,7 @@ class AdminUIHelper {
      * in the left column and the content in the right column.  This function sets up the table and
      * displayes the admin menu in the left column.
      */
-    function startAdminArea($backEnd=true) {
+    static function startAdminArea($backEnd=true) {
 		if (JRequest::getWord ( 'format') =='pdf') return;
 		if (JRequest::getWord ( 'tmpl') =='component') self::$backEnd=false;
     	if(self::$vmAdminAreaStarted) return;
@@ -112,7 +112,7 @@ class AdminUIHelper {
 	 * Close out the adminstrator area table.
 	 * @author RickG, Max Milbers
 	 */
-	function endAdminArea() {
+	static function endAdminArea() {
 		if (!self::$backEnd) return;
 		self::$vmAdminAreaStarted = false;
 		if (VmConfig::get('debug') == '1') {
@@ -132,7 +132,7 @@ class AdminUIHelper {
 	 * Admin UI Tabs
 	 * Gives A Tab Based Navigation Back And Loads The Templates With A Nice Design
 	 * @param $load_template = a key => value array. key = template name, value = Language File contraction
-	 * @params $cookieName = choose a cookiename or leave empty if you dont want cookie tabs in this place
+	 * @params $cookieName = choose a cookiename or leave empty if you don't want cookie tabs in this place
 	 * @example 'shop' => 'COM_VIRTUEMART_ADMIN_CFG_SHOPTAB'
 	 */
 	function buildTabs($load_template = array(),$cookieName='') {
@@ -154,12 +154,12 @@ class AdminUIHelper {
 	}
 
 	/**
-	 * Admin UI Tabs Imtation
+	 * Admin UI Tabs Imitation
 	 * Gives A Tab Based Navigation Back And Loads The Templates With A Nice Design
 	 * @param $return = return the start tag or the closing tag - choose 'start' or 'end'
 	 * @params $language = pass the language string
 	 */
-	function imitateTabs($return,$language = '') {
+	static function imitateTabs($return,$language = '') {
 		if ($return == 'start') {
 			$document = JFactory::getDocument ();
 			$document->addScriptDeclaration ( '
@@ -182,7 +182,7 @@ class AdminUIHelper {
 	 *
 	 * @param int $moduleId Id of the module to filter on
 	 */
-	function _getAdminMenu($moduleId = 0) {
+	static function _getAdminMenu($moduleId = 0) {
 		$db = JFactory::getDBO ();
 		$menuArr = array ();
 
@@ -214,7 +214,7 @@ class AdminUIHelper {
 	 * Display the administrative ribbon menu.
 	 * @todo The link should be done better
 	 */
-	function showAdminMenu() {
+	static function showAdminMenu() {
 		$document = JFactory::getDocument ();
 		$moduleId = JRequest::getInt ( 'module_id', 0 );
 

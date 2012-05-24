@@ -1,12 +1,13 @@
 <?php
 
-defined('_JEXEC') or die('Restricted access');
+defined ('_JEXEC') or die('Restricted access');
 
 /**
  *
  * a special type of Klarna
- * @author Val√©rie Isaksen
- * @version $Id:
+ *
+ * @author Valérie Isaksen
+ * @version $Id$
  * @package VirtueMart
  * @subpackage payment
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
@@ -22,6 +23,9 @@ defined('_JEXEC') or die('Restricted access');
 class klarna_payments {
 
 	// Estore ID
+	/**
+	 * @var
+	 */
 	private $eid;
 	// Estore Shared Secret
 	private $secret;
@@ -67,351 +71,219 @@ class klarna_payments {
 	private $splitAddress;
 	private $klarna_bday;
 
-	function __construct($cData, $shipTo) {
+	/**
+	 * @param $cData
+	 * @param $shipTo
+	 */
+	function __construct ($cData, $shipTo) {
 		$this->shipTo = $shipTo;
 
-		$this->country                = $cData['country_code'];
-		$this->country_code_3         = $cData['country_code_3'];
-		$this->currency               = $cData['currency_code'];
+		$this->country = $cData['country_code'];
+		$this->country_code_3 = $cData['country_code_3'];
+		$this->currency = $cData['currency_code'];
 		$this->virtuemart_currency_id = $cData['virtuemart_currency_id'];
 		//$this->currency = $vendor_currency;
 		// Get EID and Secret
-		$this->eid    = $cData['eid'];
+		$this->eid = $cData['eid'];
 		$this->secret = $cData['secret'];
-		$this->lang   = $cData['language_code'];
+		$this->lang = $cData['language_code'];
 		// Is Invoice enabled?
-		$this->enabled = true;
+		$this->enabled = TRUE;
 		// Set modes
 		$this->mode = $cData['mode'];
-		$this->ssl  = KlarnaHandler::getKlarnaSSL($this->mode);
+		$this->ssl = KlarnaHandler::getKlarnaSSL ($this->mode);
 
-		$this->web_root = JURI::base();
+		$this->web_root = JURI::base ();
 		try {
 			$this->klarna = new Klarna_virtuemart();
-			$this->klarna->config($this->eid, $this->secret, $this->country, $this->lang, $this->currency, $this->mode, VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type(), $this->ssl);
-		} catch (Exception $e) {
-			VmDebug('klarna_payments', $e);
+			$this->klarna->config ($this->eid, $this->secret, $this->country, $this->lang, $this->currency, $this->mode, VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), $this->ssl);
+		}
+		catch (Exception $e) {
+			VmDebug ('klarna_payments', $e);
 			unset($this->klarna);
 		}
 	}
 
-	private function getParams() {
-
-		$aParams = array();
-		if ($this->code == "klarna_partPayment") {
-			$aParams["paymentPlan"] = "klarna_paymentPlan";
-		} elseif ($this->code == "klarna_SpecCamp") {
-			$aParams["paymentPlan"] = "klarna_paymentPlan";
-		}
-
-		// Params specific for:
-		// ---- Sweden, Denmark, Norway, Finland
-
-		if ($this->country == "se" || $this->country == "dk" || $this->country == "no" || $this->country == "fi") {
-			$aParams["socialNumber"] = "klarna_pnum";
-		}
-		// Params needed for non-swedish customers
-		if ($this->country != "se") {
-			$aParams["firstName"]   = "klarna_first_name";
-			$aParams["lastName"]    = "klarna_last_name";
-			$aParams["street"]      = "klarna_street";
-			$aParams["city"]        = "klarna_city";
-			$aParams["zipcode"]     = "klarna_zip";
-			$aParams["companyName"] = "klarna_company_name";
-
-			// Specific for Germany and Netherlands
-			if ($this->country == "de" || $this->country == "nl") { // Germany && Netherlands
-				$aParams["gender"]      = "klarna_gender";
-				$aParams["homenumber"]  = "klarna_house";
-				$aParams["birth_year"]  = "klarna_birth_year";
-				$aParams["birth_month"] = "klarna_birth_month";
-				$aParams["birth_day"]   = "klarna_birth_day";
-			}
-			if ($this->country == "nl") { // Netherlands only
-				$aParams["house_extension"] = "klarna_house_extension";
-			}
-			if ($this->country == "dk") { // Denmark only
-				$aParams["year_salary"] = "klarna_spec_ysalary";
-			}
-		}
-		// Params that are the same for all countries
-		$aParams["phoneNumber"]          = "klarna_phone";
-		$aParams["emailAddress"]         = "klarna_email";
-		$aParams["invoiceType"]          = "klarna_invoice_type";
-		$aParams["reference"]            = "klarna_reference";
-		$aParams["shipmentAddressInput"] = "klarna_shipment_address";
-		$aParams["type"]                 = "klarna_invoice";
-
-		return $aParams;
-	}
-
-	private function getValues() {
-		$aValues = array();
-		$c       = strtolower($this->country);
-		// Values for non-swedish customers.
-		$aValues["firstName"]   = $this->shipTo['first_name'];
-		$aValues["lastName"]    = $this->shipTo['last_name'];
-		$aValues["street"]      = $this->shipTo['street'];
-		$aValues["city"]        = $this->shipTo['city'];
-		$aValues["zipcode"]     = $this->shipTo['zip'];
-		$aValues["companyName"] = $this->shipTo['company_name'];
-
-		$aValues["gender"]          = $this->shipTo['gender'];
-		$aValues["homenumber"]      = $this->shipTo['houseNr'];
-		$aValues["birth_year"]      = @$this->shipTo['year'];
-		$aValues["birth_month"]     = @$this->shipTo['month'];
-		$aValues["birth_day"]       = @$this->shipTo['day'];
-		$aValues["house_extension"] = $this->shipTo['houseExt'];
-		$aValues["year_salary"]     = $this->klarna_year_salary;
-
-		// Values that are the same for all countries
-		$aValues["phoneNumber"]    = $this->shipTo['phone'];
-		$aValues["socialNumber"]   = $this->shipTo['socialNumber'];
-		$aValues["emailAddress"]   = $this->shipTo['email'];
-		$aValues["reference"]      = $this->shipTo['reference'];
-		$aValues["agreement_link"] = $this->payment_charge_link;
-		return $aValues;
-	}
 
 	/**
 	 * Attempt to fill in some of what we've already filled in if we
 	 * come back after failing a purchase.
 	 */
-	private function setPreviouslyFilledIn($klarna_data) {
+	private function setPreviouslyFilledIn ($klarna_data) {
 		if (($this->country == "nl" || $this->country == "de") && isset($klarna_data['pno'])) {
-			$pno                        = $klarna_data['pno'];
-			$this->klarna_bday['year']  = substr($pno, 4, 4);
-			$this->klarna_bday['month'] = substr($pno, 2, 2);
-			$this->klarna_bday['day']   = substr($pno, 0, 2);
+			$pno = $klarna_data['pno'];
+			$this->klarna_bday['year'] = substr ($pno, 4, 4);
+			$this->klarna_bday['month'] = substr ($pno, 2, 2);
+			$this->klarna_bday['day'] = substr ($pno, 0, 2);
 		}
-		$this->klarna_street      = ((isset($klarna_data['street']) &&
+		$this->klarna_street = ((isset($klarna_data['street']) &&
 			!isset($this->klarna_street)) ? $klarna_data['street'] :
 			$this->klarna_street);
-		$this->klarna_houseNr     = ((isset($klarna_data['house_no']) &&
+		$this->klarna_houseNr = ((isset($klarna_data['house_no']) &&
 			!isset($this->klarna_houseNr)) ? $klarna_data['house_no'] :
 			$this->klarna_houseNr);
-		$this->klarna_houseExt    = ((isset($klarna_data['house_ext']) &&
+		$this->klarna_houseExt = ((isset($klarna_data['house_ext']) &&
 			!isset($this->klarna_houseExt)) ? $klarna_data['house_ext'] :
 			$this->klarna_houseExt);
-		$this->klarna_gender      = ((isset($klarna_data['gender']) &&
+		$this->klarna_gender = ((isset($klarna_data['gender']) &&
 			!isset($this->klarna_gender)) ? $klarna_data['gender'] :
 			$this->klarna_gender);
 		$this->klarna_year_salary = ((isset($klarna_data['year_salary']) && !isset($this->klarna_year_salary)) ? $klarna_data['year_salary'] : $this->klarna_year_salary);
 	}
 
 	/**
-	 * Build the Invoice module.
+	 * Build the Payment params
 	 */
-	public function invoice($method) {
-		if (!class_exists('CurrencyDisplay')) {
+	public function get_payment_params ($method, $payment_type, $cart = NULL) {
+		if (!class_exists ('CurrencyDisplay')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
-		$this->code = "klarna_invoice";
-		// If module isn't enabled, don't do anything.
-		if ($this->enabled == false) {
-			return NULL;
+		if (!class_exists ('KlarnaAPI')) {
+			require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
 		}
-		if (!isset($this->klarna) || !($this->klarna instanceof Klarna_virtuemart)) {
-			return NULL;
-		}
-
-		$invoice_fee        = KlarnaHandler::getInvoiceFeeInclTax($method, $this->country_code_3);
-		$this->payment_link = "https://online.klarna.com/villkor.yaws?eid=" . $this->eid . "&charge=" . $invoice_fee;
-
-		$kCheckout = new KlarnaVm2API($this->country, $this->lang, 'invoice', 0, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, NULL, VMKLARNAPLUGINWEBROOT);
-		$kCheckout->addSetupValue('eid', $this->eid);
-		$kCheckout->addSetupValue('sum', $invoice_fee);
-		$kCheckout->setInvoiceFee($invoice_fee);
-		$kCheckout->addSetupValue('payment_id', 'virtuemart_paymentmethod_id');
-		if (strtolower($this->country) == 'de') {
-			$vendor_id = 1;
-			$link      = JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $vendor_id);
-			$kCheckout->addSetupValue('agb_link', $link);
-		}
-
-		//$lang = KlarnaHandler::getLanguageForCountry($method, $this->country);
-		$symbol = KlarnaHandler::getCurrencySymbolForCountry($method, $this->country);
-
-		$currency    = CurrencyDisplay::getInstance();
-		$display_fee = $currency->priceDisplay($invoice_fee);
-
-		//$title = str_replace('(+XX)', '(+' . $sFee . ')', $kCheckout->fetchFromLanguagePack('INVOICE_TITLE', $lang, JPATH_VMKLARNAPLUGIN ));
-		$title = JText::sprintf('VMPAYMENT_KLARNA_INVOICE_TITLE_NO_PRICE', $display_fee);
-
-		if (KlarnaHandler::getKlarnaError($klarnaError, $klarnaOption)) {
-			$kCheckout->addSetupValue('red_baloon_content', $klarnaError);
-			$kCheckout->addSetupValue('red_baloon_paymentBox', 'klarna_box_' . $klarnaOption);
-			KlarnaHandler::clearKlarnaError();
-		}
-
-		// Something went wrong, refill what we can.
-		$session       = JFactory::getSession();
-		$sessionKlarna = $session->get('Klarna', 0, 'vm');
-
-		if (!empty($sessionKlarna)) {
-			$sessionKlarnaData = unserialize($sessionKlarna);
-			$klarnaData        = $sessionKlarnaData->KLARNA_DATA;
-			$this->setPreviouslyFilledIn($klarnaData);
-		}
-
-		$aParams = $this->getParams();
-		$aValues = $this->getValues();
-
-		return array(
-			'id'       => 'klarna_invoice',
-			'module'   => $title,
-			'fields'   => $kCheckout->retrieveLayout($aParams, $aValues),
-			'pClasses' => NULL
-		);
-	}
-
-	/**
-	 * Build the PartPayment module.
-	 */
-	public function partPay($cart) {
-		// If module isn't enabled, don't do anything.
-		$this->code = "klarna_partPayment";
+		$payment_params = array();
 
 		if (!isset($this->klarna) || !($this->klarna instanceof Klarna_virtuemart)) {
 			return NULL;
 		}
-
-		/* Should contain the shipment Fee */
-		$billTotal = KlarnaHandler::convertPrice($cart->pricesUnformatted['billTotal'], $this->virtuemart_currency_id);
-		if ($billTotal <= 0) {
-			return NULL;
+		if ($payment_type == 'invoice') {
+			$invoice_fee = KlarnaHandler::getInvoiceFeeInclTax ($method, $this->country_code_3);
+			$billTotal = 0;
+			$aTypes = NULL;
+			$payment_params['pClasses'] = NULL;
 		}
-		$this->paymeny_charge_link = "https://online.klarna.com/villkor.yaws?eid=" . $this->eid . "&charge=0";
-
-		//$lang = KlarnaHandler::getLanguageForCountry($method, $this->country);
-
-		$kCheckout = new KlarnaVm2API($this->country, $this->lang, 'part', $billTotal, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED), JPATH_VMKLARNAPLUGIN);
-		$kCheckout->addSetupValue('payment_id', 'virtuemart_paymentmethod_id');
-		$kCheckout->addSetupValue('eid', $this->eid);
-		if (strtolower($this->country) == 'de') {
-			$vendor_id = 1;
-			$link      = JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $vendor_id);
-			$kCheckout->addSetupValue('agb_link', $link);
+		else {
+			$invoice_fee = 0;
+			$billTotal = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $this->virtuemart_currency_id);
+			if ($billTotal <= 0) {
+				return NULL;
+			}
+			$aTypes = array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED);
 		}
-		$kCheckout->addMultipleSetupValues(array(
-			"web_root" => $this->web_root,
-			"path_js"  => $this->web_root . VMKLARNAPLUGINWEBROOT . "/klarna/assets/js/",
-			"path_img" => $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/',
-			"path_css" => $this->web_root . VMKLARNAPLUGINWEBROOT . '/klarna/assets/css/'));
+		$payment_params['sType'] = $payment_type;
+		$kCheckout = new KlarnaAPI($this->country, $this->lang, $payment_type, $billTotal, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, $aTypes, JPATH_VMKLARNAPLUGIN);
 
-		if ($billTotal > 0) {
+		if ($payment_type == 'invoice') {
+			$currency = CurrencyDisplay::getInstance ();
+			$display_fee = $currency->priceDisplay ($invoice_fee);
+			$payment_params['module'] = JText::sprintf ('VMPAYMENT_KLARNA_INVOICE_TITLE_NO_PRICE', $display_fee);
+			$payment_params['pClasses'] = NULL;
+			$payment_params['id'] = 'klarna_invoice';
+		}
+		elseif ($payment_type == 'part') {
 			$pclasses = $kCheckout->aPClasses;
 			if (empty($pclasses)) {
-				$this->enabled = false;
+				return NULL;
 			}
-
 			$cheapest = 0;
-			$minimum  = '';
+			$minimum = '';
 			foreach ($pclasses as $pclass) {
 				if ($cheapest == 0 || $pclass['monthlyCost'] < $cheapest) {
 					$cheapest = $pclass['monthlyCost'];
 				}
-				if ($pclass['pclass']->getMinAmount() < $minimum || $minimum === '') {
-					$minimum = $pclass['pclass']->getMinAmount();
+				if ($pclass['pclass']->getMinAmount () < $minimum || $minimum === '') {
+					$minimum = $pclass['pclass']->getMinAmount ();
 				}
 			}
-
 			if ($billTotal < $minimum) {
-				$this->enabled = false;
+				return NULL;
 			}
-			if (!class_exists('VirtueMartModelCurrency')) {
+			if (!class_exists ('VirtueMartModelCurrency')) {
 				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 			}
 			// Cheapest is in the Klarna country currency, convert it to the current currency display
 			//$currencyDisplay = CurrencyDisplay::getInstance( );
 			//$countryCurrencyId = $this->virtuemart_currency_id;
 			//$sFee = $currencyDisplay->priceDisplay($cheapest, 0, 1,false);
-			$sFee  = $kCheckout->getPresentableValuta($cheapest);
-			$title = JText::sprintf('VMPAYMENT_KLARNA_PARTPAY_TITLE', $sFee);
-		} else {
-			$title = JText::_('VMPAYMENT_KLARNA_PARTPAY_TITLE_NOSUM');
+			$sFee = $kCheckout->getPresentableValuta ($cheapest);
+			$payment_params['module'] = JText::sprintf ('VMPAYMENT_KLARNA_PARTPAY_TITLE', $sFee);
+			$payment_params['pClasses'] = $kCheckout->getPClassesInfo ();
+			$payment_params['id'] = 'klarna_partPayment';
+		}
+		else {
+			$pclasses = $kCheckout->aPClasses;
+			if (empty($pclasses)) {
+				return NULL;
+			}
+			$payment_params['module'] = JText::_ ('VMPAYMENT_KLARNA_SPEC_TITLE');
+			$payment_params['pClasses'] = $kCheckout->getPClassesInfo ();
+			$payment_params['id'] = 'klarna_SpecCamp';
+		}
+		$payment_params['payment_link'] = "https://online.klarna.com/villkor.yaws?eid=" . $this->eid . "&charge=" . $invoice_fee;
+
+		if (strtolower ($this->country) == 'de') {
+			$vendor_id = 1;
+			$payment_params['agb_link'] = JRoute::_ ('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $vendor_id);
 		}
 
-		if (KlarnaHandler::getKlarnaError($klarnaError, $klarnaOption)) {
-			$kCheckout->addSetupValue('red_baloon_content', $klarnaError);
-			$kCheckout->addSetupValue('red_baloon_paymentBox', 'klarna_box_' . $klarnaOption);
-			KlarnaHandler::clearKlarnaError();
+		//$lang = KlarnaHandler::getLanguageForCountry($method, $this->country);
+		$symbol = KlarnaHandler::getCurrencySymbolForCountry ($method, $this->country);
+
+		if (KlarnaHandler::getKlarnaError ($klarnaError, $klarnaOption)) {
+			$payment_params['red_baloon_content'] = $klarnaError;
+			$payment_params['red_baloon_paymentBox'] = 'klarna_box_' . $klarnaOption;
+			KlarnaHandler::clearKlarnaError ();
 		}
 
 		// Something went wrong, refill what we can.
-		if (isset($_SESSION['KLARNA_DATA'])) {
-			$this->setPreviouslyFilledIn($_SESSION['KLARNA_DATA']);
+		$session = JFactory::getSession ();
+		$sessionKlarna = $session->get ('Klarna', 0, 'vm');
+
+		if (!empty($sessionKlarna)) {
+			$sessionKlarnaData = unserialize ($sessionKlarna);
+			$klarnaData = $sessionKlarnaData->KLARNA_DATA;
+			$this->setPreviouslyFilledIn ($klarnaData);
 		}
 
-		$aParams = $this->getParams();
-		$aValues = $this->getValues();
+		$payment_params['paymentPlan'] = '';
 
-		return array(
-			'id'       => 'klarna_partPayment',
-			'module'   => $title,
-			'fields'   => $kCheckout->retrieveLayout($aParams, $aValues),
-			'pClasses' => $kCheckout->getPClassesInfo()
-		);
+		if (is_array ($kCheckout->aPClasses)) {
+			foreach ($kCheckout->aPClasses as $pclass) {
+				if ($pclass['default'] === TRUE) {
+					$payment_params['paymentPlan'] = $pclass['pclass']->getId ();
+					break;
+				}
+			}
+		}
+
+		if ($payment_type != "spec") {
+			//$payment_params['conditionsLink'] = $aTemplateData['conditions'];
+		}
+		$payment_params['fields'] = $this->shipTo;
+		$payment_params['payment_id'] = 'virtuemart_paymentmethod_id';
+		$payment_params['checkout'] = $this->klarna->checkoutHTML ();
+		$payment_params['eid'] = $this->eid;
+		$payment_params['year_salary'] = $this->klarna_year_salary;
+		$payment_params['agreement_link'] = $this->payment_charge_link;
+		$payment_params['sum'] = $invoice_fee;
+		$payment_params['fee'] = $invoice_fee;
+		$payment_params['invoice_fee'] = $invoice_fee;
+		$payment_params['langISO'] = $this->lang;
+		$payment_params['countryCode'] = $this->country;
+		$payment_params['flag'] = KlarnaFlags::CHECKOUT_PAGE;
+		$payment_params['payment_id'] = "payment";
+		$payment_params['invoice_name'] = 'klarna_invoice';
+		$payment_params['part_name'] = 'klarna_partPayment';
+		$payment_params['spec_name'] = 'klarna_SpecCamp';
+		return $payment_params;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getTermsLink () {
+		return 'https://static.klarna.com/external/html/' . KLARNA_SPECIAL_CAMPAIGN . '_' . strtolower ($this->country) . '.html';
 	}
 
 	/**
-	 * Build the Special Campaign module.
+	 * @param $pid
+	 * @param $totalSum
+	 * @return string
 	 */
-	public function specCamp($cart) {
-		$this->code = "klarna_SpecCamp";
-
-		if (!isset($this->klarna) || !($this->klarna instanceof Klarna_virtuemart)) {
-			return 0;
-		}
-		if (!class_exists('KlarnaAPI')) {
-			require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
-		}
-
-		$totalSum                  = $cart->pricesUnformatted['salesPrice'];
-		$this->paymeny_charge_link = "https://online.klarna.com/villkor.yaws?eid=" . $this->eid . "&charge=0";
-
-		if (!class_exists('KlarnaVm2API')) {
-			require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_vm2api.php');
-		}
-		$kCheckout = new KlarnaVm2API($this->country, $this->lang, 'spec', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::SPECIAL), JPATH_VMKLARNAPLUGIN);
-		$kCheckout->addSetupValue('eid', $this->eid);
-		$kCheckout->addSetupValue('payment_id', 'virtuemart_paymentmethod_id');
-		if (strtolower($this->country) == 'de') {
-			$vendor_id = 1;
-			$link      = JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $vendor_id);
-			$kCheckout->addSetupValue('agb_link', $link);
-		}
-		//$kCheckout->addSetupValue('agreementLink', $this->getTermsLink());
-		$title = JText::_('VMPAYMENT_KLARNA_SPEC_TITLE');
-
-		if (KlarnaHandler::getKlarnaError($klarnaError, $klarnaOption)) {
-			$kCheckout->addSetupValue('red_baloon_content', $klarnaError);
-			$kCheckout->addSetupValue('red_baloon_paymentBox', 'klarna_box_' . $klarnaOption);
-			KlarnaHandler::clearKlarnaError();
-		}
-		// Something went wrong, refill what we can.
-		if (isset($_SESSION['KLARNA_DATA'])) {
-			$this->setPreviouslyFilledIn($_SESSION['KLARNA_DATA']);
-		}
-
-		$aParams = $this->getParams();
-		$aValues = $this->getValues();
-
-		return array(
-			'id'       => "klarna_SpecCamp",
-			'module'   => $title,
-			'fields'   => $kCheckout->retrieveLayout($aParams, $aValues),
-			'pClasses' => $kCheckout->getPClassesInfo()
-		);
-	}
-
-	public function getTermsLink() {
-		return 'https://static.klarna.com/external/html/' . KLARNA_SPECIAL_CAMPAIGN . '_' . strtolower($this->country) . '.html';
-	}
-
-	function displayPclass($pid, $totalSum) {
+	function displayPclass ($pid, $totalSum) {
 		$kCheckout = new KlarnaVm2API($this->country, $this->lang, 'part', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED), JPATH_VMKLARNAPLUGIN);
-		return $kCheckout->renderPClass($pid);
+		return $kCheckout->renderPClass ($pid);
 	}
 
 }

@@ -157,9 +157,10 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 	</table>
 </fieldset>
-</td>
 
-<?php /*		<td valign="top">
+
+<?php /*	</td>
+ <td valign="top">
 
 <fieldset>
 <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES') ?></legend>

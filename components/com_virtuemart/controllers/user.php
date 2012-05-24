@@ -158,13 +158,13 @@ class VirtueMartControllerUser extends JController
 	}
 
 	/**
-	 * Save the user info. The saveData function dont use the userModel store function for anonymous shoppers, because it would register them.
+	 * Save the user info. The saveData function don't use the userModel store function for anonymous shoppers, because it would register them.
 	 * We make this function private, so we can do the tests in the tasks.
 	 *
 	 * @author Max Milbers
 	 * @author Valérie Isaksen
 	 *
-	 * @param boolean Defaults to false, the param is for the userModel->store function, which needs it to determin how to handle the data.
+	 * @param boolean Defaults to false, the param is for the userModel->store function, which needs it to determine how to handle the data.
 	 * @return String it gives back the messages.
 	 */
 	private function saveData($cart=false,$register=false) {
@@ -232,7 +232,7 @@ class VirtueMartControllerUser extends JController
 	 */
 	function cancelCartUser(){
 
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart'), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart')  );
 	}
 
 	/**
@@ -241,7 +241,7 @@ class VirtueMartControllerUser extends JController
 	 * @author Oscar van Eijk
 	 */
 	function cancelCheckoutUser(){
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout',$this->useXHTML,$this->useSSL), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout',$this->useXHTML,$this->useSSL) );
 	}
 
 	/**

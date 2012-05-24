@@ -1,7 +1,7 @@
 <?php defined('_JEXEC') or die('Restricted access');
 /**
 *
-* @version $Id: virtuemart.php 5967 2012-04-29 23:17:14Z electrocity $
+* @version $Id$
 * @package VirtueMart
 * @subpackage Klarna
 * @author Valérie Isaksen
@@ -51,7 +51,7 @@ if ($viewData['country']== "nl") {
 	$country_width="";
 }
 ?>
-</script>
+
 <div class="klarna_PPBox">
     <div id="klarna_partpayment" style="display: none"></div>
     <div class="klarna_PPBox_inner">

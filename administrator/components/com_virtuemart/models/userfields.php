@@ -38,7 +38,7 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  */
 class VirtueMartModelUserfields extends VmModel {
 
-	/** @var object paramater parsers */
+	/** @var object parameter parsers */
 	var $_params;
 	/** @var array type=>fieldname with formfields that are saved as parameters */
 	var $reqParam;
@@ -138,7 +138,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 				//$config->set('URI.HostBlacklist', array('google.com'));// set eg .add google.com in black list
 
-				if(strpos($fieldType,'plugin')!==false){
+				if (strpos($fieldType,'plugin')!==false){
 
 					JPluginHelper::importPlugin('vmuserfield');
 					$dispatcher = JDispatcher::getInstance();
@@ -212,14 +212,11 @@ class VirtueMartModelUserfields extends VmModel {
 	 *
 	 * @return boolean True is the save was successful, false otherwise.
 	 */
-	function store()
+	function store($data)
 	{
 		$field      = $this->getTable('userfields');
 		$userinfo   = $this->getTable('userinfos');
 		$orderinfo  = $this->getTable('order_userinfos');
-
-		//TODO move this to controller
-		$data = JRequest::get('post');
 
 		$isNew = ($data['virtuemart_userfield_id'] < 1) ? true : false;
 

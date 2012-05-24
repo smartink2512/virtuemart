@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');?>
 
 <fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_META_INFORMATION') ?></legend>
-	<table valign="top">
+	<table>
 <tr>
 			<td >
 				<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_CUSTOM_PAGE_TITLE'); ?> </div>

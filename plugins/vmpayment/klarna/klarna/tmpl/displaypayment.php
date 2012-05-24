@@ -1,4 +1,4 @@
-<?php  defined('_JEXEC') or die();
+<?php  defined ('_JEXEC') or die();
 /**
  *
  * @version $Id: virtuemart.php 5967 2012-04-29 23:17:14Z electrocity $
@@ -21,9 +21,8 @@
 		<tbody>
 		<tr>
 			<td colspan="2">
-				<input class="klarnaPayment" data-stype="<?php echo $viewData['stype'] ?>"
-				       id="<?php echo $viewData['id'] ?>" type="radio" name="virtuemart_paymentmethod_id"
-				       value="<?php echo  $viewData['virtuemart_paymentmethod_id'] ?>"/>
+				<input class="klarnaPayment" data-stype="<?php echo $viewData['stype'] ?>" id="<?php echo $viewData['id'] ?>" type="radio"
+				       name="virtuemart_paymentmethod_id" value="<?php echo  $viewData['virtuemart_paymentmethod_id'] ?>"/>
 				<input value="<?php echo $viewData['id'] ?>" type="hidden" name="klarna_paymentmethod"/>
 				<label for="<?php echo $viewData['id']?>">
 					<?php echo $viewData['module'] ?>
@@ -42,8 +41,10 @@
 <?php
 // preventing 2 x load javascript
 static $loadjavascript;
-if ($loadjavascript) return true;
-$loadjavascript = true ;
+if ($loadjavascript) {
+	return TRUE;
+}
+$loadjavascript = TRUE;
 $html_js = '<script type="text/javascript">
             setTimeout(\'jQuery(":radio[value=' . $viewData['klarna_paymentmethod'] . ']").click();\', 200);
         </script>';

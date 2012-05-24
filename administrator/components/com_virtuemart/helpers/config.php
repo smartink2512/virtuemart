@@ -337,7 +337,7 @@ class VmConfig {
 	 * Parsed and in session: 0.0051419734954834
 	 *
 	 *
-	 * Functions tests if alread loaded in program cache, session cache, database and at last the file.
+	 * Functions tests if already loaded in program cache, session cache, database and at last the file.
 	 *
 	 * Load the configuration values from the database into a session variable.
 	 * This step is done to prevent accessing the database for every configuration variable lookup.
@@ -805,7 +805,7 @@ class VmConfig {
 
 class vmRequest{
 
- 	function uword($field, $default, $custom=''){
+	static function uword($field, $default, $custom=''){
 
  		$source = JRequest::getVar($field,$default);
 
@@ -926,7 +926,7 @@ class vmJsApi{
 	 * Prevent duplicate load of script
 	 * @ Author KOHL Patrick
 	 */
-	function jQuery() {
+	static function jQuery() {
 		if ( JFactory::getApplication()->get('jquery')) return false;
 		$isSite = JFactory::getApplication()->isSite();
 		if ( !VmConfig::get('jquery',true ) and $isSite) return false;
@@ -948,7 +948,7 @@ class vmJsApi{
 		return true;
 	}
 	// Virtuemart product and price script
-	function jPrice()
+	static function jPrice()
 	{
 		if ( !VmConfig::get('jprice',true ) and JFactory::getApplication()->isSite() ) return false;
 		static $jPrice;
@@ -983,13 +983,13 @@ class vmJsApi{
 	}
 
 	// Virtuemart Site Js script
-	function jSite()
+	static function jSite()
 	{
 		if ( !VmConfig::get('jsite',true ) and JFactory::getApplication()->isSite() ) return false;
 		vmJsApi::js('vmsite');
 	}
 
-	function JcountryStateList($stateIds) {
+	static function JcountryStateList($stateIds) {
 		static $JcountryStateList;
 		// If exist exit
 		if ($JcountryStateList) return;
@@ -1003,7 +1003,7 @@ class vmJsApi{
 	}
 
 
-	function JvalideForm($name='#adminForm')
+	static function JvalideForm($name='#adminForm')
 	{
 		static $jvalideForm;
 		// If exist exit
@@ -1028,7 +1028,7 @@ class vmJsApi{
 	}
 
 	// Virtuemart product and price script
-	function jCreditCard()
+	static function jCreditCard()
 	{
 
 		static $jCreditCard;
@@ -1059,7 +1059,7 @@ class vmJsApi{
 	 * @ Author KOHL Patrick
 	 */
 
-	function cssSite() {
+	static function cssSite() {
 
 		if ( !VmConfig::get('css',true ) ) return false;
 		static $cssSite;
@@ -1077,7 +1077,7 @@ class vmJsApi{
 
 	// $yearRange format >> 1980:2010
 	// Virtuemart Datepicker script
-	function jDate($date='',$name="date",$id=null,$resetBt = true, $yearRange='') {
+	static function jDate($date='',$name="date",$id=null,$resetBt = true, $yearRange='') {
 		if ($yearRange) $yearRange='yearRange: "'.$yearRange.'",';
 		if ($date == "0000-00-00 00:00:00") $date= 0 ;
 		if (empty($id)) $id = $name ;
@@ -1145,7 +1145,7 @@ class vmJsApi{
 	 * @ revert date format for database- TODO ?
 	 */
 
-	function date($date , $format ='LC2', $joomla=false ,$revert=false ){
+	static function date($date , $format ='LC2', $joomla=false ,$revert=false ){
 		if (!strcmp($date,'0000-00-00 00:00:00')) return JText::_('COM_VIRTUEMART_NEVER');
 		If ($joomla) {
 			$formatedDate = JHTML::_('date', $date, JText::_('DATE_FORMAT_'.$format));
