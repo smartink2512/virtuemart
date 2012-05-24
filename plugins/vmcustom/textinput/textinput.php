@@ -90,7 +90,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 */
 	function plgVmOnViewCartModule( $product,$row,&$html) {
 
-		return $this->plgVmOnViewCart($item,$row,$html);
+		return $this->plgVmOnViewCart($product,$row,$html);
     }
 
 	/**
