@@ -320,10 +320,10 @@ class calculationHelper {
 		$prices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $prices['basePrice'], true));
 		if(!empty($this->rules['VatTax'])){
 			$price = !empty($prices['basePriceWithTax']) ? $prices['basePriceWithTax'] : $prices['basePrice'];
-			$prices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $price,true));
+			$prices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $price,true),'basePriceWithTax');
 		}
 
-		$prices['discountedPriceWithoutTax'] = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $prices['basePrice']));
+		$prices['discountedPriceWithoutTax'] = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $prices['basePrice']),'discountedPriceWithoutTax');
 
 		if ($override==-1) {
 			$prices['discountedPriceWithoutTax'] = $product_override_price;
@@ -332,7 +332,7 @@ class calculationHelper {
 		$priceBeforeTax = !empty($prices['discountedPriceWithoutTax']) ? $prices['discountedPriceWithoutTax'] : $prices['basePrice'];
 
 		$prices['priceBeforeTax'] = $priceBeforeTax;
-		$prices['salesPrice'] = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $priceBeforeTax, true));
+		$prices['salesPrice'] = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $priceBeforeTax, true),'salesPrice');
 
 		$salesPrice = !empty($prices['salesPrice']) ? $prices['salesPrice'] : $priceBeforeTax;
 
@@ -343,7 +343,7 @@ class calculationHelper {
 			$salesPrice = !empty($prices['salesPrice']) ? $prices['salesPrice'] : $salesPrice;
 		}
 
-		$prices['salesPriceWithDiscount'] = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $salesPrice),'salesPrice');
+		$prices['salesPriceWithDiscount'] = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $salesPrice),'salesPriceWithDiscount');
 
 // 		vmdebug('$$override salesPriceWithDiscount',$override,$prices['salesPriceWithDiscount'],$salesPrice);
 		$prices['salesPrice'] = !empty($prices['salesPriceWithDiscount']) ? $prices['salesPriceWithDiscount'] : $salesPrice;
@@ -762,7 +762,7 @@ class calculationHelper {
 		$countries = '';
 		$states = '';
 		$shopperGroup = '';
-
+		$entrypoint = (string) $entrypoint;
 		if(empty($this->allrules[$this->productVendorId][$entrypoint])){
 			return $testedRules;
 		}
@@ -1167,7 +1167,13 @@ class calculationHelper {
 		function roundInternal($value,$name = 0) {
 
 			if($name!=0){
-				return round($value,$this->_priceConfig[$name][1]);
+				if(isset($this->_priceConfig[$name][1])){
+					return round($value,$this->_priceConfig[$name][1]);
+				} else {
+					vmdebug('roundInternal rounding not found for '.$name);
+					return round($value, $this->_internalDigits);
+				}
+
 			} else {
 				return round($value, $this->_internalDigits);
 			}

@@ -21,6 +21,7 @@ function virtuemartBuildRoute(&$query) {
 
 	$segments = array();
 
+
 	$helper = vmrouterHelper::getInstance($query);
 	/* simple route , no work , for very slow server or test purpose */
 	if ($helper->router_disabled) {
@@ -61,8 +62,6 @@ function virtuemartBuildRoute(&$query) {
 			$start = null;
 			$limitstart = null;
 			$limit = null;
-
-
 
 			if ( isset($query['virtuemart_manufacturer_id'])  ) {
 				$segments[] = $helper->lang('manufacturer').'/'.$helper->getManufacturerName($query['virtuemart_manufacturer_id']) ;
@@ -119,14 +118,14 @@ function virtuemartBuildRoute(&$query) {
 				// using general limit if $limit is not set
 				if ($limit === null) $limit= vmrouterHelper::$limit ;
 
-				//Pagination changed, maybe the +1 is wrong note by Max Milbers
-					$segments[] = $helper->lang('results') .','. ($start+1).'-'.($start+$limit);
+				$segments[] = $helper->lang('results') .','. ($start+1).'-'.($start+$limit);
 			} else if ($limit !== null && $limit != vmrouterHelper::$limit ) $segments[] = $helper->lang('results') .',1-'.$limit ;//limit change
 
 			return $segments;
 		break;
 		/* Shop product details view  */
 		case 'productdetails';
+
 			$virtuemart_product_id = false;
 			if (isset($jmenu['virtuemart_product_id'][ $query['virtuemart_product_id'] ] ) ) {
 				$query['Itemid'] = $jmenu['virtuemart_product_id'][$query['virtuemart_product_id']];
@@ -155,7 +154,7 @@ function virtuemartBuildRoute(&$query) {
 					$segments[] = $helper->getProductName($virtuemart_product_id);
 			}
 			if (!count($query))	return $segments;
-		break;
+		//break;
 		case 'manufacturer';
 
 			if(isset($query['virtuemart_manufacturer_id'])) {
@@ -179,11 +178,38 @@ function virtuemartBuildRoute(&$query) {
 				$query['Itemid'] = $jmenu['virtuemart'];
 			}
 			if (isset($query['task'])) {
-				if ($query['addrtype'] == 'BT' && $query['task']='editaddresscart') $segments[] = $helper->lang('editaddresscartBT') ;
+				vmdebug('my task in user view',$query['task']);
+				if($query['task']=='editaddresscart'){
+					if ($query['addrtype'] == 'ST'){
+						$segments[] = $helper->lang('editaddresscartST') ;
+					} else {
+						$segments[] = $helper->lang('editaddresscartBT') ;
+					}
+				}
+
+				else if($query['task']=='editaddresscheckout'){
+					if ($query['addrtype'] == 'ST'){
+						$segments[] = $helper->lang('editaddresscheckoutST') ;
+					} else {
+						$segments[] = $helper->lang('editaddresscheckoutBT') ;
+					}
+				}
+
+				else if($query['task']='editaddress'){
+					if ($query['addrtype'] == 'ST'){
+						$segments[] = $helper->lang('editaddressST') ;
+					} else {
+						$segments[] = $helper->lang('editaddressBT') ;
+					}
+				} else {
+					$segments[] =  $helper->lang($query['task']);
+				}
+			/*	if ($query['addrtype'] == 'BT' && $query['task']='editaddresscart') $segments[] = $helper->lang('editaddresscartBT') ;
 				elseif ($query['addrtype'] == 'ST' && $query['task']='editaddresscart') $segments[] = $helper->lang('editaddresscartST') ;
 				elseif ($query['addrtype'] == 'BT') $segments[] = $helper->lang('editaddresscheckoutST') ;
 				elseif ($query['addrtype'] == 'ST') $segments[] = $helper->lang('editaddresscheckoutST') ;
-				else $segments[] = $query['task'] ;
+				else $segments[] = $query['task'] ;*/
+
 				unset ($query['task'] , $query['addrtype']);
 			}
 		break;
@@ -242,6 +268,10 @@ function virtuemartBuildRoute(&$query) {
 
 
 	}
+
+//	if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
+//	vmdebug("case 'productdetails'",$query);
+
 	if (isset($query['task'])) {
 		$segments[] = $helper->lang($query['task']);
 		unset($query['task']);
@@ -297,6 +327,7 @@ function virtuemartParseRoute($segments) {
 		$vars['limit'] = vmrouterHelper::$limit;
 
 	}
+
 	if (empty($segments)) {
 			$vars['view'] = 'category';
 			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
@@ -370,6 +401,10 @@ function virtuemartParseRoute($segments) {
 		$vars['task'] = 'recommend';
 		array_pop($segments);
 
+	} elseif ( $helper->compareKey(end($segments) ,'notify') ) {
+		$vars['layout'] = 'notify';
+		array_pop($segments);
+
 	}
 
 	if (empty($segments)) return $vars ;
@@ -419,7 +454,16 @@ function virtuemartParseRoute($segments) {
 			elseif (  $helper->compareKey($segments[0] ,'editaddresscheckoutST') ) {
 				$vars['addrtype'] = 'BT' ;
 				$vars['task'] = 'editaddresscheckout' ;
-			} else $vars['task'] = $segments[0] ;
+			}
+			elseif (  $helper->compareKey($segments[0] ,'editaddressST') ) {
+				$vars['addrtype'] = 'ST' ;
+				$vars['task'] = 'editAddressST' ;
+			}
+			elseif (  $helper->compareKey($segments[0] ,'editaddressBT') ) {
+				$vars['addrtype'] = 'BT' ;
+				$vars['task'] = 'edit' ;
+			}
+			else $vars['task'] = $segments[0] ;
 		}
 		return $vars;
 	}
@@ -470,13 +514,15 @@ function virtuemartParseRoute($segments) {
 		return $vars;
 	}
 
+	vmdebug('$segments productdetail',$segments);
 	/*
 	 * seo_sufix must never be used in category or router can't find it
 	 * eg. suffix as "-suffix", a category with "name-suffix" get always a false return
 	 * Trick : YOu can simply use "-p","-x","-" or ".htm" for better seo result if it's never in the product/category name !
 	 */
 	 if (substr(end($segments ), -(int)$helper->seo_sufix_size ) == $helper->seo_sufix ) {
-		$vars['view'] = 'productdetails';
+
+
 		if (!$helper->use_id ) {
 			$product = $helper->getProductId($segments ,$helper->activeMenu->virtuemart_category_id);
 			$vars['virtuemart_product_id'] = $product['virtuemart_product_id'];

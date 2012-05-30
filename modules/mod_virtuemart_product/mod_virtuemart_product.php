@@ -16,7 +16,8 @@ defined('_JEXEC') or die( 'Direct Access to '.basename(__FILE__).' is not allowe
 * www.virtuemart.net
 */
 
-if (!class_exists( 'VmModel' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmmodel.php');
+
+if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 
 // Setting
 $max_items = 		$params->get( 'max_items', 2 ); //maximum number of items to display
@@ -46,11 +47,7 @@ if (!($output = $cache->get($key))) {
 	/* Load  VM fonction */
 	if (!class_exists( 'mod_virtuemart_product' )) require('helper.php');
 
-
-
 	$vendorId = JRequest::getInt('vendorid', 1);
-
-
 
 	if ($filter_category ) $filter_category = TRUE;
 

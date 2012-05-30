@@ -1384,6 +1384,9 @@ class VirtueMartCart {
 
 		//of course, some may argue that the $this->data->products should be generated in the view.html.php, but
 		//
+		if(empty($this->data)){
+			$this->data = new stdClass();
+		}
 		$this->data->products = array();
 		$this->data->totalProduct = 0;
 		$i=0;

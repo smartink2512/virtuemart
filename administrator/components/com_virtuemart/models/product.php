@@ -1188,7 +1188,7 @@ class VirtueMartModelProduct extends VmModel {
 		$langs = (array) VmConfig::get('active_languages');
 		if(count($langs)>1){
 			foreach($langs as $lang){
-				$lang = str_replace('-', '_', $lang);
+				$lang = str_replace('-', '_', strtolower($lang));
 				$db->setQuery('SELECT `product_name` FROM `#__virtuemart_products_'.$lang.'` WHERE `virtuemart_product_id` = "'.$prodTable->virtuemart_product_id.'" ');
 				$res = $db->loadResult();
 				if(!$res){
