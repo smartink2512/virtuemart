@@ -22,25 +22,25 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_STATUS_LBL'); ?></legend>
 <table class="adminform" width="100%">
 	<tr class="row0">
-		<td>
+		<td width="25%" >
 			<div style="text-align:right;font-weight:bold;">
 			<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK') ?></div>
 		</td>
-		<td>
+		<td width="20%">
 			<input  type="text" class="inputbox js-change-stock"  name="product_in_stock" value="<?php echo $this->product->product_in_stock; ?>" size="10" />
 
 			<?php if (isset($this->waitinglist) && count($this->waitinglist) > 0) { ?>
 			<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=sentproductemailtoshoppers&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() ); ?>
-			<div class="button2-left">
-				<div class="blank">
+
+
 					<a href="<?php echo $link ?>">
 					<span class="icon-nofloat vmicon icon-16-messages"></span><?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_NOTIFY_USER'); ?>
 					</a>
-				</div>
-			</div>
+
+
 			<?php } ?>
 		</td>
-		<td>
+		<td width="20%" >
 			<div style="text-align:right;font-weight:bold;">
 			<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK') ?></div>
 		</td>

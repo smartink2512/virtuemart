@@ -43,11 +43,11 @@ if ($show_product_list) {
 <?php } ?>
 
 <div class="total" style="float: right;">
-	<?php if ($data->totalProduct) echo  $data->billTotal; ?>
+	<?php if ($data->totalProduct and $show_price) echo  $data->billTotal; ?>
 </div>
 <div class="total_products"><?php echo  $data->totalProductTxt ?></div>
 <div class="show_cart">
-	<?php if ($data->totalProduct) echo  $data->cart_show; ?>
+	<?php if ($data->totalProduct and $show_price) echo  $data->cart_show; ?>
 </div>
 <div style="clear:both;"></div>
 

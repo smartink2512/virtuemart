@@ -84,8 +84,10 @@ defined('_JEXEC') or die('Restricted access');
 <!--
 
 /* JS for list changes */
-var $customerMailLink = '<?php echo 'index.php?option=com_virtuemart&view=product&task=sentproductemailtoshoppers&virtuemart_product_id='.$this->product->virtuemart_product_id ?>';
-var $customerListLink = '<?php echo 'index.php?option=com_virtuemart&view=product&format=json&type=userlist&virtuemart_product_id='.$this->product->virtuemart_product_id ?>';
+var $customerMailLink = '<?php echo juri::root().'/index.php?option=com_virtuemart&view=productdetails&task=sentproductemailtoshoppers&virtuemart_product_id='
+	.$this->product->virtuemart_product_id ?>';
+var $customerListLink = '<?php echo 'index.php?option=com_virtuemart&view=product&format=json&type=userlist&virtuemart_product_id='
+	.$this->product->virtuemart_product_id ?>';
 var $customerListtype='reserved';
 jQuery('.mailing .button2-left').click(function() {
 	//document.orderStatForm.task.value = 'updateOrderItemStatus';

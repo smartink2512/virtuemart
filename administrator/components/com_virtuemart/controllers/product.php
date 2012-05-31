@@ -231,50 +231,7 @@ class VirtuemartControllerProduct extends VmController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=ratings&task=add&virtuemart_product_id='.$cids[0]);
 	}
 
-	public function sentProductEmailToShoppers(){
 
-		//vmdebug('updatestatus');
-		$mainframe = Jfactory::getApplication();
-		$lastTask = JRequest::getWord('last_task');
-
-
-		/* Load the view object */
-		$view = $this->getView('product', 'html');
-
-		/* Load the helper */
-		$view->loadHelper('vendorHelper');
-
-		/* Update the statuses */
-		$model = VmModel::getModel('product');
-
-		if ($lastTask == 'sentproductemailtoshoppers') {
-			// single order is in POST but we need an array
-			$products = array() ;
-			$virtuemart_product_id = JRequest::getInt('virtuemart_product_id');
-			$product[$virtuemart_product_id] = (JRequest::get('post'));
-			$result = $model->sentProductEmailToShoppers($product);
-
-		} else {
-			$result = $model->sentProductEmailToShoppers();
-		}
-
-		$msg='';
-		if ($result['updated'] > 0)
-		$msg = JText::sprintf('COM_VIRTUEMART_PRODUCT_EMAIL_SENT_SUCCESSFULLY', $result['updated'] );
-		else if ($result['error'] == 0)
-		$msg .= JText::_('COM_VIRTUEMART_PRODUCT_EMAIL_SENT_NOT_SUCCESSFULL');
-		if ($result['error'] > 0)
-		$msg .= JText::sprintf('COM_VIRTUEMART_PRODUCT_EMAIL_SENT_NOT_SUCCESSFULL', $result['error'] , $result['total']);
-		if ( $lastTask =='sentproductemailtoshoppers' ) {
-			$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$virtuemart_product_id , $msg);
-		}
-		else {
-			$mainframe->redirect('index.php?option=com_virtuemart&view=product', $msg);
-		}
- ////
-
-
-	}
 
 }
 // pure php no closing tag

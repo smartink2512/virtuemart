@@ -520,8 +520,15 @@ function virtuemartParseRoute($segments) {
 	 * eg. suffix as "-suffix", a category with "name-suffix" get always a false return
 	 * Trick : YOu can simply use "-p","-x","-" or ".htm" for better seo result if it's never in the product/category name !
 	 */
-	 if (substr(end($segments ), -(int)$helper->seo_sufix_size ) == $helper->seo_sufix ) {
-
+	//if (substr(end($segments ), -(int)$helper->seo_sufix_size ) == $helper->seo_sufix ) {
+	$last_elem = end($segments);
+	$slast_elem = prev($segments);
+	if ( (substr($last_elem, -(int)$helper->seo_sufix_size ) == $helper->seo_sufix) 
+	|| ($last_elem=='notify' && substr($slast_elem, -(int)$helper->seo_sufix_size ) == $helper->seo_sufix) ) {
+		if($last_elem=='notify') {
+			$vars['layout'] = 'notify';
+			array_pop($segments);
+		}
 
 		if (!$helper->use_id ) {
 			$product = $helper->getProductId($segments ,$helper->activeMenu->virtuemart_category_id);

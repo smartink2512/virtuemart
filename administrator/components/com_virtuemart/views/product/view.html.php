@@ -333,7 +333,7 @@ class VirtuemartViewProduct extends VmView {
 
 			// Toolbar
 
-			JToolBarHelper::save('sentproductemailtoshoppers', JText::_('COM_VIRTUEMART_PRODUCT_EMAILTOSHOPPERS'));
+			//JToolBarHelper::save('sentproductemailtoshoppers', JText::_('COM_VIRTUEMART_PRODUCT_EMAILTOSHOPPERS'));
 			JToolBarHelper::custom('createchild', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
 			JToolBarHelper::custom('cloneproduct', 'copy', 'copy', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 			JToolBarHelper::custom('addrating', 'default', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);
