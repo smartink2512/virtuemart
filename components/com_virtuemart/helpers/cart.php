@@ -236,7 +236,9 @@ class VirtueMartCart {
 			foreach($sessionCart->pricesUnformatted as &$prices){
 				if(is_array($prices)){
 					foreach($prices as &$price){
-						$price = (string)$price;
+						if(!is_array($price)){
+							$price = (string)$price;
+						}
 					}
 				} else {
 					$prices = (string)$prices;

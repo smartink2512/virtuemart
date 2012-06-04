@@ -11,7 +11,7 @@
 		var tabswidth = 100/tabscount;
 		this.find('div.tabs').each(
 			function(i) {
-				list += '<li style="width:'+tabswidth+'%"><span>'+ $(this).attr('title')+'<span></li>' ;
+				list += '<li style="width:'+tabswidth+'%"><span>'+ $(this).attr('title')+'</span></li>' ;
 				$(this).removeAttr('title');
 			}
 		);

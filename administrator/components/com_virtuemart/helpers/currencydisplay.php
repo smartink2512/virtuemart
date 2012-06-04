@@ -336,7 +336,7 @@ class CurrencyDisplay {
 		}
 
 		//$res = $this->formatNumber($nb, $nbDecimal, $this->_thousands, $this->_decimal);
-		$res = number_format((float)$nb,$nbDecimal,$this->_decimal,$this->_thousands);
+		$res = number_format((float)$nb,(int)$nbDecimal,$this->_decimal,$this->_thousands);
 		$search = array('{sign}', '{number}', '{symbol}');
 		$replace = array($sign, $res, $this->_symbol);
 		$formattedRounded = str_replace ($search,$replace,$format);

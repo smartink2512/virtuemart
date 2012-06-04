@@ -38,17 +38,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 		$this->setConfigParameterable('custom_params',$varsToPush);
 
-// 		self::$_this = $this;
 	}
-
-	// function plgVmOnOrder($product) {
-
-		// $dbValues['virtuemart_product_id'] = $product->virtuemart_product_id;
-		// $dbValues['textinput'] = $this->_virtuemart_paymentmethod_id;
-		// $this->writeCustomData($dbValues, '#__virtuemart_product_custom_' . $this->_name);
-	// }
-
-
 
 	// get product param for this plugin on edit
 	function plgVmOnProductEdit($field, $product_id, &$row,&$retValue) {
