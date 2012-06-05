@@ -133,7 +133,7 @@ class VmMediaHandler {
 	 * @param string  $type vendor,product,category,...
 	 * @param string $file_mimetype such as image/jpeg
 	 */
-	public function createMedia($table,$type='',$file_mimetype=''){
+	static public function createMedia($table,$type='',$file_mimetype=''){
 
 		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 
@@ -300,7 +300,7 @@ class VmMediaHandler {
 	 * @param string $file_mimetype
 	 * @param string $file_extension
 	 */
-	private function isImage($file_extension=0){
+	static private function isImage($file_extension=0){
 
 		//		if(!empty($file_mimetype)){
 		//			if(strpos($file_mimetype,'image')===FALSE){

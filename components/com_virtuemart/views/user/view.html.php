@@ -174,7 +174,7 @@ class VirtuemartViewUser extends VmView {
 	}
 
 
-	$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this->_model, $task);
+	$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this,$this->_model, $task);
 
 
 	if ($this->_openTab < 0) {

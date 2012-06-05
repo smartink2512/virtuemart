@@ -122,7 +122,7 @@ class VirtuemartViewUser extends VmView {
 			$this->lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
 
 			// Shipment address(es)
-			$this->lists['shipTo'] = ShopFunctions::generateStAddressList($model,'addST');
+			$this->lists['shipTo'] = ShopFunctions::generateStAddressList($this,$model,'addST');
 
 			$new = false;
 			if(JRequest::getInt('new','0')===1){

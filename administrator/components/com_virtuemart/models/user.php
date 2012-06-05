@@ -396,7 +396,7 @@ class VirtueMartModelUser extends VmModel {
 			// 			$authGroups = $user->getAuthorisedGroups();
 			// 			vmdebug('getGroupList j17',$authGroups);
 
-			$db		= &$this->getDbo();
+			$db		= $this->getDbo();
 			$where = implode($authGroups,'" OR `id` = "').'"';
 			$q = 'SELECT `id` as value,`title` as text FROM #__usergroups WHERE `id` = "'.$where;
 

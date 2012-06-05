@@ -1371,7 +1371,7 @@ class VirtueMartCart {
 	function prepareVendor(){
 
 		$vendorModel = VmModel::getModel('vendor');
-		$this->vendor = & $vendorModel->getVendor();
+		$this->vendor = $vendorModel->getVendor();
 		$vendorModel->addImages($this->vendor,1);
 		return $this->vendor;
 	}

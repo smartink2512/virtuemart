@@ -115,7 +115,8 @@ class VirtueMartModelShopperGroup extends VmModel {
 		//Prevent making anonymous Shoppergroup as default
 		$adId = $this->getDefault(1);
 		if($adId == $id){
-			vmError(JText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_DEFAULT',$name,$id));
+			$group = $this->getShoppergroupById($id);
+			vmError(JText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_DEFAULT',$group->shopper_group_name,$id));
 			return false;
 		}
 		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 0 WHERE `default`<"2"');
@@ -157,7 +158,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 		foreach($ids as $id){
 
 			//Test if shoppergroup is default
-			if($id == $defaultId->virtuemart_shoppergroup_id){
+			if($id == $defaultSgId->virtuemart_shoppergroup_id){
 				$this->_db->setQuery('SELECT shopper_group_name FROM `#__virtuemart_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
 				$name = $this->_db->loadResult();
 				vmError(JText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_DEFAULT',$name,$id));
@@ -198,7 +199,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 	 * @param boolean $default_group
 	 * @return array
 	 */
-  	function getShoppergroupById($id, $default_group = false) {
+  	static function getShoppergroupById($id, $default_group = false) {
     	$virtuemart_vendor_id = 1;
     	$db = JFactory::getDBO();
 

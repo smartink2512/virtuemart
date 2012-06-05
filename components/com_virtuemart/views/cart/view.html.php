@@ -122,15 +122,18 @@ class VirtueMartViewCart extends VmView {
 			$this->checkPaymentMethodsConfigured();
 			$this->checkShipmentMethodsConfigured();
 			if ($cart->virtuemart_shipmentmethod_id) {
-				$this->assignRef('select_shipment_text', JText::_('COM_VIRTUEMART_CART_CHANGE_SHIPPING'));
+				$shippingText =  JText::_('COM_VIRTUEMART_CART_CHANGE_SHIPPING');
 			} else {
-				$this->assignRef('select_shipment_text', JText::_('COM_VIRTUEMART_CART_EDIT_SHIPPING'));
+				$shippingText = JText::_('COM_VIRTUEMART_CART_EDIT_SHIPPING');
 			}
+			$this->assignRef('select_shipment_text', $shippingText);
+
 			if ($cart->virtuemart_paymentmethod_id) {
-				$this->assignRef('select_payment_text', JText::_('COM_VIRTUEMART_CART_CHANGE_PAYMENT'));
+				$paymentText = JText::_('COM_VIRTUEMART_CART_CHANGE_PAYMENT');
 			} else {
-				$this->assignRef('select_payment_text', JText::_('COM_VIRTUEMART_CART_EDIT_PAYMENT'));
+				$paymentText = JText::_('COM_VIRTUEMART_CART_EDIT_PAYMENT');
 			}
+			$this->assignRef('select_payment_text', $paymentText);
 
 			if (!VmConfig::get('use_as_catalog')) {
 				$checkout_link_html = '<a class="vm-button-correct" href="javascript:document.checkoutForm.submit();" ><span>' . $text . '</span></a>';

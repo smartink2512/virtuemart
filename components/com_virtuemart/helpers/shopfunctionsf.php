@@ -28,7 +28,7 @@ class shopFunctionsF {
 	 *
 	 */
 
-	public function getLoginForm($cart=false,$order=false){
+	static public function getLoginForm($cart=false,$order=false){
 
 		if(!class_exists('VirtuemartViewUser')) require(JPATH_VM_SITE . DS . 'views' . DS . 'user' .DS. 'view.html.php');
 		$view = new VirtuemartViewUser();
@@ -59,7 +59,7 @@ class shopFunctionsF {
 	/**
 	 * @author Max Milbers
 	 */
-	public function getLastVisitedCategoryId(){
+	static public function getLastVisitedCategoryId(){
 
 		$session = JFactory::getSession();
 		return $session->get('vmlastvisitedcategoryid', 0, 'vm');
@@ -69,7 +69,7 @@ class shopFunctionsF {
 	/**
 	 * @author Max Milbers
 	 */
-	public function setLastVisitedCategoryId($categoryId){
+	static public function setLastVisitedCategoryId($categoryId){
 		$session = JFactory::getSession();
 		return $session->set('vmlastvisitedcategoryid', (int) $categoryId, 'vm');
 
@@ -79,7 +79,7 @@ class shopFunctionsF {
 	 *
 	 * @author Max Milbers
 	 */
-	public function addProductToRecent($productId){
+	static public function addProductToRecent($productId){
 		$session = JFactory::getSession();
 		$products_ids = $session->get('vmlastvisitedproductids', array(), 'vm');
 		$key = array_search($productId,$products_ids);
@@ -272,7 +272,7 @@ class shopFunctionsF {
 	 * This function sets the right template on the view
 	 * @author Max Milbers
 	 */
-	function setVmTemplate($view,$catTpl=0,$prodTpl=0,$catLayout=0,$prodLayout=0){
+	static function setVmTemplate($view,$catTpl=0,$prodTpl=0,$catLayout=0,$prodLayout=0){
 
 		//Lets get here the template set in the shopconfig, if there is nothing set, get the joomla standard
 		$template = VmConfig::get('vmtemplate','default');
@@ -345,7 +345,7 @@ class shopFunctionsF {
 	 *
 	 * @author Max Milbers
 	 */
-	function setTemplate( $template ){
+	static function setTemplate( $template ){
 
 		if(!empty($template) && $template!='default'){
 			if (is_dir(JPATH_THEMES.DS.$template)) {
@@ -369,7 +369,7 @@ class shopFunctionsF {
 	 * @param int $maxlength
 	 * @param string $suffix
 	 */
-	public function limitStringByWord($string, $maxlength, $suffix=''){
+	static public function limitStringByWord($string, $maxlength, $suffix=''){
 		if(function_exists('mb_strlen')) {
 			/* use multibyte functions by Iysov*/
 			if(mb_strlen($string)<=$maxlength) return $string;
@@ -398,14 +398,14 @@ class shopFunctionsF {
 	 * @param $load_template = a key => value array. key = template name, value = Language File contraction
 	 * @example 'shop' => 'COM_VIRTUEMART_ADMIN_CFG_SHOPTAB'
 	 */
-	function buildTabs( $this, $load_template = array()) {
+	static function buildTabs( $view, $load_template = array()) {
 
 		vmJsApi::js( 'vmtabs');
 		$html = '<div id="ui-tabs">';
 		$i = 1;
 		foreach ( $load_template as $tab_content => $tab_title ) {
 			$html .= '<div id="tab-' . $i . '" class="tabs" title="' . JText::_ ( $tab_title ) . '">';
-			$html .= $this->loadTemplate ( $tab_content );
+			$html .= $view->loadTemplate ( $tab_content );
 			$html .= '<div class="clear"></div>
 			    </div>';
 			$i ++;
@@ -434,7 +434,7 @@ class shopFunctionsF {
 	}
 
 
-	function getComUserOption() {
+	static function getComUserOption() {
 	 if ( JVM_VERSION===1 ) {
 		return 'com_user';
 	    } else {
