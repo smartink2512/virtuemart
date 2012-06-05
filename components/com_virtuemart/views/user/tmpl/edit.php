@@ -79,7 +79,7 @@ if($this->userDetails->virtuemart_user_id!=0) {
     }
 
 
-    shopFunctionsF::buildTabs ($tabarray);
+    shopFunctionsF::buildTabs ( $this, $tabarray);
 
  } else {
     echo $this->loadTemplate ( 'shopper' );

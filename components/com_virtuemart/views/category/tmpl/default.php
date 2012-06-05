@@ -46,14 +46,18 @@ if (Permissions::getInstance()->check("admin,storeadmin")) {
 		'.JHTML::_('image', 'images/M_images/edit.png', JText::_('COM_VIRTUEMART_PRODUCT_FORM_EDIT_PRODUCT'), array('width' => 16, 'height' => 16, 'border' => 0)).'</a>';
 }
 
-echo $edit_link; */ ?>
-<div class="category_description">
+echo $edit_link; */
+if ( empty($this->keyword) ) {
+	?>
+	<div class="category_description">
 	<?php echo $this->category->category_description ; ?>
-</div>
-<?php
+	</div>
+	<?php
+}
+
 /* Show child categories */
 
-if ( VmConfig::get('showCategory',1) ) {
+if ( VmConfig::get('showCategory',1) and empty($this->keyword)) {
 	if ($this->category->haschildren) {
 
 		// Category and Columns Counter

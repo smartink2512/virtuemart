@@ -56,7 +56,7 @@ class VirtueMartModelCustom extends VmModel {
     	if(empty($this->_data)){
 
 //     		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
-    		$this->_data =& $this->getTable('customs');
+    		$this->_data = $this->getTable('customs');
     		$this->_data->load($this->_id);
     		//    		vmdebug('getCustom $data',$this->_data);
     		if(!empty($this->_data->custom_jplugin_id)){

@@ -279,15 +279,15 @@ class VmConfig {
 
 	}
 
-	function getStartTime(){
+	static function getStartTime(){
 		return self::$_starttime;
 	}
 
-	function setStartTime($name,$value){
+	static function setStartTime($name,$value){
 		self::$_starttime[$name] = $value;
 	}
 
-	function showDebug(){
+	static function showDebug(){
 
 		//return self::$_debug = true;	//this is only needed, when you want to debug THIS file
 		if(self::$_debug===null){
@@ -345,7 +345,7 @@ class VmConfig {
 	 * @author Max Milbers
 	 * @param $force boolean Forces the function to load the config from the db
 	 */
-	public function loadConfig($force = false) {
+	static public function loadConfig($force = false) {
 
 		vmSetStartTime('loadConfig');
 		if(!$force){
@@ -459,7 +459,7 @@ class VmConfig {
 	 * @author Patrick Kohl
 	 * @return string valid langtag
 	 */
-	public function setdbLanguageTag($langTag = 0) {
+	static public function setdbLanguageTag($langTag = 0) {
 
 		if (self::$_jpConfig->lang ) return self::$_jpConfig->lang;
 
@@ -475,7 +475,7 @@ class VmConfig {
 				// this work with joomfish j1.5 (application.data.lang)
 
 				$session  =JFactory::getSession();
-				$registry =& $session->get('registry');
+				$registry = $session->get('registry');
 				$siteLang = $registry->getValue('application.data.lang') ;
 				} else  {
 				// TODO test wiht j1.7
@@ -537,7 +537,7 @@ class VmConfig {
 	 * @param string $key Key name to lookup
 	 * @return Value for the given key name
 	 */
-	function get($key, $default='',$allow_load=true)
+	static function get($key, $default='',$allow_load=true)
 	{
 
 		$value = '';
@@ -566,7 +566,7 @@ class VmConfig {
 		return $value;
 	}
 
-	function set($key, $value){
+	static function set($key, $value){
 
 		if (empty(self::$_jpConfig->_params)) {
 			self::loadConfig();
@@ -625,7 +625,7 @@ class VmConfig {
 	 * @param boolean $includeDevStatus True to include the development status
 	 * @return String of the currently installed version
 	 */
-	function getInstalledVersion($includeDevStatus=false)
+	static function getInstalledVersion($includeDevStatus=false)
 	{
 		// Get the installed version from the wmVersion class.
 

@@ -160,7 +160,7 @@ class VirtuemartViewUserfields extends VmView {
 			JToolBarHelper::divider();
 			$barText = JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_HIDE');
 
-			$bar=& JToolBar::getInstance( 'toolbar' );
+			$bar= JToolBar::getInstance( 'toolbar' );
 			$bar->appendButton( 'Separator', '"><span class="bartext">'.$barText.'</span><hr style="display: none;' );
 //$bar->appendButton( 'publish', 'upload', $alt, '', 550, 400 );
 			JToolBarHelper::custom('toggle.registration.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_REGISTRATION');

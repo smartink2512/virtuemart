@@ -25,7 +25,7 @@ AdminUIHelper::startAdminArea();
 $tabarray = array();
 $tabarray['calc'] = 'COM_VIRTUEMART_CALC_DETAILS';
 
-AdminUIHelper::buildTabs ( $tabarray );
+AdminUIHelper::buildTabs ( $this, $tabarray );
 // Loading Templates in Tabs END
 
 AdminUIHelper::endAdminArea();

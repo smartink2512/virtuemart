@@ -27,7 +27,7 @@ $tabarray = array();
 $tabarray['edit'] = 'COM_VIRTUEMART_ADMIN_SHIPMENT_FORM';
 $tabarray['config'] = 'COM_VIRTUEMART_ADMIN_SHIPMENT_CONFIGURATION';
 
-AdminUIHelper::buildTabs ( $tabarray , $this->shipment->virtuemart_shipmentmethod_id );
+AdminUIHelper::buildTabs ( $this, $tabarray , $this->shipment->virtuemart_shipmentmethod_id );
 // Loading Templates in Tabs END ?>
 
     <!-- Hidden Fields -->

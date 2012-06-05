@@ -40,7 +40,7 @@ $tabarray['custom'] = 'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_CUSTOM_TAB';
 // $tabarray['customer'] = 'COM_VIRTUEMART_PRODUCT_FORM_CUSTOMER_TAB';
 
 
-AdminUIHelper::buildTabs ( $tabarray, $this->product->virtuemart_product_id );
+AdminUIHelper::buildTabs ( $this,  $tabarray, $this->product->virtuemart_product_id );
 // Loading Templates in Tabs END ?>
 
 

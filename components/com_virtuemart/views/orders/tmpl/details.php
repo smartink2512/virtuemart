@@ -79,7 +79,7 @@ if($this->print){
 	$tabarray['items'] = 'COM_VIRTUEMART_ORDER_ITEM';
 	$tabarray['history'] = 'COM_VIRTUEMART_ORDER_HISTORY';
 
-	shopFunctionsF::buildTabs ($tabarray); ?>
+	shopFunctionsF::buildTabs ( $this, $tabarray); ?>
 	 </div>
 	    <br clear="all"/><br/>
 	<?php

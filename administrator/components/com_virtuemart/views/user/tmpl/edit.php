@@ -54,7 +54,7 @@ if (($_ordcnt = count($this->orderlist)) > 0) {
 }
 
 
-AdminUIHelper::buildTabs ( $tabarray,'vm-user' );
+AdminUIHelper::buildTabs ( $this, $tabarray,'vm-user' );
 
 ?>
 

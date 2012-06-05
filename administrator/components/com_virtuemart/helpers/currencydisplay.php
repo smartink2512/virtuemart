@@ -85,7 +85,7 @@ class CurrencyDisplay {
 	 EXAMPLE: ||&euro;|2|,||1|8
 	 * @return string
 	 */
-	public function getInstance($currencyId=0,$vendorId=0){
+	static public function getInstance($currencyId=0,$vendorId=0){
 
 		// 		vmdebug('hmmmmm getInstance given $currencyId '.$currencyId,self::$_instance->_currency_id);
 		// 		if(empty(self::$_instance) || empty(self::$_instance->_currency_id) || ($currencyId!=self::$_instance->_currency_id && !empty($currencyId)) ){

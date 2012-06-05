@@ -135,7 +135,7 @@ class AdminUIHelper {
 	 * @params $cookieName = choose a cookiename or leave empty if you don't want cookie tabs in this place
 	 * @example 'shop' => 'COM_VIRTUEMART_ADMIN_CFG_SHOPTAB'
 	 */
-	function buildTabs($load_template = array(),$cookieName='') {
+	static public function buildTabs($view, $load_template = array(),$cookieName='') {
 		$cookieName = JRequest::getWord('view','virtuemart').$cookieName;
 		$document = JFactory::getDocument ();
 		$document->addScriptDeclaration ( '
@@ -146,7 +146,7 @@ class AdminUIHelper {
 
 		foreach ( $load_template as $tab_content => $tab_title ) {
 			$html .= '<div class="tabs" title="' . JText::_ ( $tab_title ) . '">';
-			$html .= $this->loadTemplate ( $tab_content );
+			$html .= $view->loadTemplate ( $tab_content );
 			$html .= '<div class="clear"></div></div>';
 		}
 		$html .= '</div>';

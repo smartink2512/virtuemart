@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea();
 
-AdminUIHelper::buildTabs ( array (	'tools' 	=> 	'COM_VIRTUEMART_UPDATE_TOOLS_TAB',
+AdminUIHelper::buildTabs ( $this, array (	'tools' 	=> 	'COM_VIRTUEMART_UPDATE_TOOLS_TAB',
 									'migrator' 	=> 	'COM_VIRTUEMART_MIGRATION_TAB'
 									 ) );
 ?>

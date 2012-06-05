@@ -24,7 +24,7 @@ AdminUIHelper::startAdminArea ();
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
 <?php // Loading Templates in Tabs
-AdminUIHelper::buildTabs ( array (
+AdminUIHelper::buildTabs ( $this,  array (
 									'shop' 			=> 	'COM_VIRTUEMART_ADMIN_CFG_SHOPTAB',
 									'shopfront' 	=> 	'COM_VIRTUEMART_ADMIN_CFG_SHOPFRONTTAB',
 									'templates' 	=> 	'COM_VIRTUEMART_ADMIN_CFG_TEMPLATESTAB',

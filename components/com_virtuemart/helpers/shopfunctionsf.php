@@ -398,7 +398,7 @@ class shopFunctionsF {
 	 * @param $load_template = a key => value array. key = template name, value = Language File contraction
 	 * @example 'shop' => 'COM_VIRTUEMART_ADMIN_CFG_SHOPTAB'
 	 */
-	function buildTabs($load_template = array()) {
+	function buildTabs( $this, $load_template = array()) {
 
 		vmJsApi::js( 'vmtabs');
 		$html = '<div id="ui-tabs">';

@@ -726,7 +726,7 @@ class VirtueMartModelCategory extends VmModel {
 	public function getParentsList($virtuemart_category_id) {
 
 		$db = JFactory::getDBO();
-		$menu = JSite::getMenu();
+		$menu = JFactory::getApplication()->getMenu();
 		$parents = array();
 		if (empty($query['Itemid'])) {
 			$menuItem = &$menu->getActive();

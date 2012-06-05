@@ -26,7 +26,7 @@ JToolBarHelper::title(JText::_('COM_VIRTUEMART')." ".JText::_('COM_VIRTUEMART_CO
 
 
 // Loading Templates in Tabs
-AdminUIHelper::buildTabs ( array (	'controlpanel' 	=> 	'COM_VIRTUEMART_CONTROL_PANEL',
+AdminUIHelper::buildTabs ( $this, array (	'controlpanel' 	=> 	'COM_VIRTUEMART_CONTROL_PANEL',
 									'statisticspage'=> 	'COM_VIRTUEMART_STATISTIC_STATISTICS'
 									 ) );
 

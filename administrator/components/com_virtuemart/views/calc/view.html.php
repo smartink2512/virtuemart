@@ -40,7 +40,8 @@ class VirtuemartViewCalc extends VmView {
 
 		$model = VmModel::getModel('calc');
 		$this->loadHelper('permissions');
-		$this->assignRef('perms', Permissions::getInstance());
+		$perms = Permissions::getInstance();
+		$this->assignRef('perms', $perms);
 
 		//@todo should be depended by loggedVendor
 		$vendorId=1;
@@ -75,9 +76,11 @@ class VirtuemartViewCalc extends VmView {
 				}
 
 			}
+			$entryPointsList = self::renderEntryPointsList($calc->calc_kind);
+			$this->assignRef('entryPointsList',$entryPointsList);
 
-			$this->assignRef('entryPointsList',self::renderEntryPointsList($calc->calc_kind));
-			$this->assignRef('mathOpList',self::renderMathOpList($calc->calc_value_mathop));
+			$mathOpList = self::renderMathOpList($calc->calc_value_mathop);
+			$this->assignRef('mathOpList',$mathOpList);
 
 
 			/* Get the category tree */

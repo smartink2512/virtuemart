@@ -263,7 +263,7 @@ class VmTable extends JTable{
 
 		$this->reset();
 
-		$db =& $this->getDBO();
+		$db = $this->getDBO();
 
 		//Version load the tables using JOIN
 		if($this->_translatable){

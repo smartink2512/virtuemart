@@ -52,7 +52,7 @@ class Permissions extends JObject{
 
 	}
 
-	function getInstance() {
+	static public function getInstance() {
 		if(!is_object(self::$_instance)){
 			self::$_instance = new Permissions();
 		}else {

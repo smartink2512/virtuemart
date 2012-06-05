@@ -84,7 +84,7 @@ class VirtuemartViewCategories extends VmView {
 
 		if ($category->category_name) $document->setTitle($category->category_name); //Todo same here, what should be shown up?
 		else {
-			$menus = &JSite::getMenu();
+			$menus = JFactory::getApplication()->getMenu();
 			$menu  = $menus->getActive();
 			if(!empty($menu)){
 				if (!class_exists('JParameter')) require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );

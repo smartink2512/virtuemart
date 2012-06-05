@@ -102,7 +102,7 @@ class calculationHelper {
 		$this->rules['DATax'] = array();
 	}
 
-	public function getInstance() {
+	static public function getInstance() {
 		if (!is_object(self::$_instance)) {
 			self::$_instance = new calculationHelper();
 		} else {

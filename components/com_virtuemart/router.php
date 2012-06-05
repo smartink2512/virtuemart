@@ -986,7 +986,7 @@ class vmrouterHelper {
 	/* Set $this->activeMenu to current Item ID from Joomla Menus */
 	private function setActiveMenu(){
 		if ($this->activeMenu === null ) {
-		$menu = JSite::getMenu();
+		$menu = JFactory::getApplication()->getMenu();
 		if ($Itemid = JRequest::getInt('Itemid',0) ) {
 			$menuItem = $menu->getItem($Itemid);
 		} else {

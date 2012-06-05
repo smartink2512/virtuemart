@@ -16,16 +16,10 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
 class ShopFunctions {
 
 	/**
-	 * @var global database object
-	 */
-	private $_db = null;
-
-	/**
 	 * Contructor
 	 */
 	public function __construct() {
 
-		$this->_db = JFactory::getDBO();
 	}
 
 	/*
@@ -58,7 +52,7 @@ class ShopFunctions {
 	 * @param $quantity The number of items in the list
 	 * @return List as String
 	 */
-	function renderGuiList($fieldnameXref, $tableXref, $fieldIdXref, $idXref, $fieldname, $table, $fieldId, $view, $quantity=4,$translate = 1) {
+	static public function renderGuiList($fieldnameXref, $tableXref, $fieldIdXref, $idXref, $fieldname, $table, $fieldId, $view, $quantity=4,$translate = 1) {
 // 		'virtuemart_category_id','#__virtuemart_calc_categories','virtuemart_calc_id',$data->virtuemart_calc_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category'
 		//Sanitize input
 		$quantity = (int) $quantity;
@@ -118,7 +112,7 @@ class ShopFunctions {
 	 * @author Max Milbers
 	 * @deprecated
 	 */
-	public function renderCreditCardList($ccId, $multiple = false) {
+	static public function renderCreditCardList($ccId, $multiple = false) {
 
 		$model = VmModel::getModel('creditcard');
 		$creditcards = $model->getCreditCards();
@@ -238,7 +232,7 @@ class ShopFunctions {
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 * @return string HTML containing the <select />
 	 */
-	public function renderCountryList($countryId = 0, $multiple = false, $_attrib = array(), $_prefix = '', $required = 0) {
+	static public function renderCountryList($countryId = 0, $multiple = false, $_attrib = array(), $_prefix = '', $required = 0) {
 		$countryModel = VmModel::getModel('country');
 		$countries = $countryModel->getCountries(true, true, false);
 		$attrs = array();
@@ -280,7 +274,7 @@ class ShopFunctions {
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 * @return string HTML containing the <select />
 	 */
-	public function renderStateList($stateId = '0', $_prefix = '', $multiple = false, $required = 0) {
+	static public function renderStateList($stateId = '0', $_prefix = '', $multiple = false, $required = 0) {
 
 		if (is_array($stateId))
 		$stateId = implode(",", $stateId);
@@ -333,7 +327,7 @@ class ShopFunctions {
 	 * @param boolean defaultOption you can supress the empty otion setting this to false
 	 * return array of Template objects
 	 */
-	public function renderTemplateList($defaultText = 0, $defaultOption=true) {
+	static public function renderTemplateList($defaultText = 0, $defaultOption=true) {
 
 		if (empty($defaultText))
 		$defaultText = JText::_('COM_VIRTUEMART_TEMPLATE_DEFAULT');
@@ -603,7 +597,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	public static $counter = 0;
 	public static $categoryTree = 0;
 
-	public function categoryListTree($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields=array()) {
+	static public function categoryListTree($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields=array()) {
 
 		if(empty(self::$categoryTree)){
 // 			vmTime('Start with categoryListTree');
@@ -627,7 +621,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @param int 		$level 		Internally used for recursion
 	 * @return string 	$category_tree HTML: Category tree list
 	 */
-	public function categoryListTreeLoop($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields=array()) {
+	static public function categoryListTreeLoop($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields=array()) {
 
 		self::$counter++;
 
@@ -1224,7 +1218,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		return $html;
 	}
 
-	function getValidProductFilterArray( ) {
+	static function getValidProductFilterArray( ) {
 		static $filterArray;
 
 		if (!isset( $filterArray )) {

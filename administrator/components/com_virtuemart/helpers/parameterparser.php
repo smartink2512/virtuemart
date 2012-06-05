@@ -210,7 +210,7 @@ class vmParameters extends JParameter {
 		//remove any occurance of a mos_ prefix
 		$type = str_replace('mos_', '', $type);
 
-		$element =& $this->loadElement($type);
+		$element = $this->loadElement($type);
 
 		// error happened
 		if ($element === false)

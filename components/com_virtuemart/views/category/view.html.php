@@ -232,10 +232,15 @@ class VirtuemartViewCategory extends VmView {
 		$dispatcher = JDispatcher::getInstance();
 		$plgDisplay = $dispatcher->trigger('plgVmSelectSearchableCustom',array( &$this->options,&$this->searchCustomValues,$this->custom_parent_id ) );
 
-
 		$this->options = array_merge(array($emptyOption), $this->options);
-		// render List of available groups
-		$this->searchCustomList = JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHTML::_('select.genericlist',$this->options, 'custom_parent_id', 'class="inputbox"', 'virtuemart_custom_id', 'custom_title', $this->custom_parent_id);
+
+		if(!empty($this->options)){
+			// render List of available groups
+			$this->searchCustomList = JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHTML::_('select.genericlist',$this->options, 'custom_parent_id', 'class="inputbox"', 'virtuemart_custom_id', 'custom_title', $this->custom_parent_id);
+		} else {
+			$this->searchCustomList = '';
+		}
+
 		$this->assignRef('searchcustom', $this->searchCustomList);
 		$this->assignRef('searchcustomvalues', $this->searchCustomValues);
 	}
