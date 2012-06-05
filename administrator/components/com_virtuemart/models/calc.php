@@ -231,26 +231,26 @@ class VirtueMartModelCalc extends VmModel {
 		return $table->virtuemart_calc_id;
 	}
 
-	function getRule($kind){
+	static function getRule($kind){
 
 		if (!is_array($kind)) $kind = array($kind);
-		if(empty($this->_db)) $this->_db = JFactory::getDBO();
+		$db = JFactory::getDBO();
 
-		$this->_nullDate		= $this->_db->getNullDate();
-		$this->_now			= JFactory::getDate()->toMySQL();
+		$nullDate		= $db->getNullDate();
+		$now			= JFactory::getDate()->toMySQL();
 
 		$q = 'SELECT * FROM `#__virtuemart_calcs` WHERE ';
 		foreach ($kind as $field){
-			$q .= '`calc_kind`='.$this->_db->Quote($field).' OR ';
+			$q .= '`calc_kind`='.$db->Quote($field).' OR ';
 		}
 		$q=substr($q,0,-3);
 
-		$q .= 'AND ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
-				AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" ) ';
+		$q .= 'AND ( publish_up = "' . $db->getEscaped($nullDate) . '" OR publish_up <= "' . $db->getEscaped($now) . '" )
+				AND ( publish_down = "' . $db->getEscaped($nullDate) . '" OR publish_down >= "' . $db->getEscaped($now) . '" ) ';
 
 
-		$this->_db->setQuery($q);
-		$data = $this->_db->loadObjectList();
+		$db->setQuery($q);
+		$data = $db->loadObjectList();
 
 		if (!$data) {
    			$data = new stdClass();
@@ -315,21 +315,21 @@ class VirtueMartModelCalc extends VmModel {
 		return $ok;
 	}
 
-	function getTaxes() {
+	static function getTaxes() {
 
 		return self::getRule(array('TAX','VatTax','TaxBill'));
 	}
 
-	function getDiscounts(){
+	static function getDiscounts(){
 		return  self::getRule(array('DATax','DATaxBill','DBTax','DBTaxBill'));
 	}
 
-	function getDBDiscounts() {
+	static function getDBDiscounts() {
 
 		return self::getRule(array('DBTax','DBTaxBill'));
 	}
 
-	function getDADiscounts() {
+	static function getDADiscounts() {
 
 		return self::getRule(array('DATax','DATaxBill'));
 	}
