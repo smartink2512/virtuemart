@@ -17,6 +17,7 @@ defined('_JEXEC') or die('');
  * @version $Id: view.html.php 2459 2010-07-02 17:30:23Z milbo $
  */
 
-
-echo JText::sprintf('COM_VIRTUEMART_CART_NOTIFY_MAIL_RAW', $this->productName,$this->url);
+if(!empty($this->mailbody))
+	echo $this->mailbody;
+else echo JText::sprintf('COM_VIRTUEMART_CART_NOTIFY_MAIL_RAW', $this->productName,$this->url);
 echo "\n";

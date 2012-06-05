@@ -316,11 +316,11 @@ class VirtueMartViewProductdetails extends VmView {
 
 	function renderMailLayout ($doVendor, $recipient) {
 		$tpl = VmConfig::get('order_mail_html') ? 'mail_html_notify' : 'mail_raw_notify';		
-		
+
 		$this->doVendor=$doVendor;
 		$this->fromPdf=false;
 		$this->uselayout = $tpl;
-		$this->subject = JText::_('COM_VIRTUEMART_CART_NOTIFY_MAIL_SUBJECT');
+		$this->subject = !empty($this->subject) ? $this->subject : JText::_('COM_VIRTUEMART_CART_NOTIFY_MAIL_SUBJECT');
 		$this->layoutName = $tpl;
 		$this->setLayout($tpl);
 		parent::display();

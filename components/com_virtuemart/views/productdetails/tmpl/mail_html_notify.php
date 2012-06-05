@@ -44,7 +44,10 @@ defined('_JEXEC') or die('');
 			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="html-email">
 			    <tr>
 				<td >
-					<?php echo JText::sprintf('COM_VIRTUEMART_CART_NOTIFY_MAIL_HTML', $this->productName,$this->url); ?>
+					<?php 
+						if(!empty($this->mailbody)) echo nl2br($this->mailbody);
+						else echo JText::sprintf('COM_VIRTUEMART_CART_NOTIFY_MAIL_HTML', $this->productName,$this->url);
+					?>
 				</td>
 			    </tr>
 			</table>

@@ -29,8 +29,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<td width="20%">
 			<input  type="text" class="inputbox js-change-stock"  name="product_in_stock" value="<?php echo $this->product->product_in_stock; ?>" size="10" />
 
-			<?php if (isset($this->waitinglist) && count($this->waitinglist) > 0) { ?>
-			<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=sentproductemailtoshoppers&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() ); ?>
+			<?php 
+			/*if (isset($this->waitinglist) && count($this->waitinglist) > 0) { 
+				$link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=sentproductemailtoshoppers&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() ); 
 
 
 					<a href="<?php echo $link ?>">
@@ -38,7 +39,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					</a>
 
 
-			<?php } ?>
+			}*/ ?>
 		</td>
 		<td width="20%" >
 			<div style="text-align:right;font-weight:bold;">
@@ -108,63 +109,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</tr>
 </table>
 </fieldset>
-	<?php if ( VmConfig::get('stockhandle',0) == 'disableadd' && !empty($this->waitinglist ) or 1) { ?>
+
 <fieldset>
-				<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST'); ?></legend>
-<table class="adminform" width="100%">
-		<tr class="row0">
-			<td colspan ="4">
-
-					<input type="hidden" value="<?php echo $this->product->product_in_stock; ?>" name="product_in_stock_old" />
-					<input type="checkbox" value="1" id="notify_users" name="notify_users" />
-
-					<label for="notify_users"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_NOTIFYUSERS');?></label>
-					<br /><br />
-
-						<table class="adminlist" cellspacing="0" cellpadding="0">
-							<thead>
-								<tr>
-									<th class="title"><?php echo JText::_('COM_VIRTUEMART_NAME');?></th>
-									<th class="title"><?php echo JText::_('COM_VIRTUEMART_USERNAME');?></th>
-									<th class="title"><?php echo JText::_('COM_VIRTUEMART_EMAIL');?></th>
-									<th class="title"><?php echo JText::_('COM_VIRTUEMART_NOTIFIED');?></th>
-								</tr>
-							</thead>
-							<tbody>
-							<?php
-							if (isset($this->waitinglist) && count($this->waitinglist) > 0) {
-								foreach ($this->waitinglist as $key => $wait) {
-									if ($wait->notified == 1) {
-										$waiting_notified = JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_NOTIFIED') . ' ' . $wait->notify_date;
-									} else {
-										$waiting_notified = '';
-									}
-									if ($wait->virtuemart_user_id==0) {
-										$row = '<tr><td></td><td></td><td><a href="mailto:' . $wait->notify_email . '">' . $wait->notify_email . '</a></td><td>'.$waiting_notified.'</td></tr>';
-									}
-									else {
-										$row = '<tr><td>'.$wait->name.'</td><td>'.$wait->username . '</td><td>' . '<a href="mailto:' . $wait->notify_email . '">' . $wait->notify_email . '</a>' . '</td><td>' . $waiting_notified.'</td></tr>';
-									}
-									echo $row;
-								}
-
-							} else
-							{ ?>
-									<tr>
-										<td colspan="4">
-											<?php echo JText::_('COM_VIRTUEMART_PRODUCT_WAITING_NOWAITINGUSERS'); ?>
-										</td>
-									</tr>
-								<?php
-							} ?>
-						</tbody>
-					</table>
-
-			</td>
-		</tr>
-</table>
+	<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_SHOPPERS'); ?></legend>
+		<?php echo $this->loadTemplate('customer'); ?>
 </fieldset>
-	<?php } ?>
+
+
 
 
 <script type="text/javascript">
@@ -186,8 +137,4 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	});
 </script>
 
-	<fieldset>
-		<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_SHOPPERS'); ?></legend>
-			<?php echo $this->loadTemplate('customer'); ?>
-	</fieldset>
 

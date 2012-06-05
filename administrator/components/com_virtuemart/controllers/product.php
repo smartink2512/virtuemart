@@ -232,6 +232,44 @@ class VirtuemartControllerProduct extends VmController {
 	}
 
 
+	public function ajax_notifyUsers(){
+
+		//vmdebug('updatestatus');
+		$mainframe = Jfactory::getApplication();
+		
+		$virtuemart_product_id = (int)JRequest::getVar('virtuemart_product_id', 0);
+		$subject = JRequest::getVar('subject', '');
+		$mailbody = JRequest::getVar('mailbody', '');
+		$max_number = (int)JRequest::getVar('max_number', '');
+		
+		$waitinglist = VmModel::getModel('Waitinglist');
+		$waitinglist->notifyList($virtuemart_product_id,$subject,$mailbody,$max_number);
+		
+		exit;
+	}
+	
+	public function ajax_waitinglist() {
+		$mainframe = Jfactory::getApplication();
+		
+		$virtuemart_product_id = (int)JRequest::getVar('virtuemart_product_id', 0);
+
+		$waitinglistmodel = VmModel::getModel('waitinglist');
+		$waitinglist = $waitinglistmodel->getWaitingusers($virtuemart_product_id);
+
+		if(empty($waitinglist)) $waitinglist = array();
+		
+		echo json_encode($waitinglist);
+		exit;
+
+		/*
+		$result = array();
+		foreach($waitinglist as $wait) array_push($result,array("virtuemart_user_id"=>$wait->virtuemart_user_id,"notify_email"=>$wait->notify_email,'name'=>$wait->name,'username'=>$wait->username));
+		
+		echo json_encode($result);
+		exit;
+		*/
+	}
+
 
 }
 // pure php no closing tag

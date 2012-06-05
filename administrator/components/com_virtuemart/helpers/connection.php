@@ -61,8 +61,7 @@ class VmConnector {
      * @param resource $fileToSaveData
      * @return mixed
      */
-    function handleCommunication( $url, $postData='', $headers=array(), $fileToSaveData=null ) {
-//	global $vmLogger;
+    static function handleCommunication( $url, $postData='', $headers=array(), $fileToSaveData=null ) {
 
 	$urlParts = parse_url( $url );
 	if( !isset( $urlParts['port'] )) $urlParts['port'] = 80;
