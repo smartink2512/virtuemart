@@ -87,8 +87,8 @@
     settings: {
       opacity      : 0.2,
       overlay      : true,
-      loadingImage : 'loading.gif',
-      closeImage   : 'closelabel.png',
+      loadingImage : 'components/com_virtuemart/assets/images/facebox/loading.gif',
+      closeImage   : 'components/com_virtuemart/assets/images/facebox/closelabel.png',
       imageTypes   : [ 'png', 'jpg', 'jpeg', 'gif' ],
       faceboxHtml  : '\
     <div id="facebox" style="display:none;"> \
