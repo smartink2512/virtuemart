@@ -472,7 +472,7 @@ class VirtueMartModelUser extends VmModel {
 	 * @author Oscar van Eijk
 	 * @return boolean True is the save was successful, false otherwise.
 	 */
-	function store($data=0){
+	function store(&$data){
 
 		$message = '';
 		$user = '';

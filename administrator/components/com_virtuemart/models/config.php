@@ -41,7 +41,7 @@ class VirtueMartModelConfig extends JModel {
 	 * @param name of the view
 	 * @return object List of flypage objects
 	 */
-	function getLayoutList($view) {
+	static function getLayoutList($view) {
 
 		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'views'.DS.$view.DS.'tmpl';
 
@@ -256,7 +256,7 @@ class VirtueMartModelConfig extends JModel {
 	 * @author RickG
 	 * @return boolean True is successful, false otherwise
 	 */
-	function store($data) {
+	function store(&$data) {
 
 		JRequest::checkToken() or jexit( 'Invalid Token, in store config');
 

@@ -354,13 +354,13 @@ class VmTable extends JTable{
 	 * Technic to inject params as table attributes
 	 * @author Max Milbers
 	 */
-	function store(){
+	function store($updateNulls = false){
 
 		$this->setLoggableFieldsForStore();
 
 		$this->storeParams();
 
-		return parent::store();
+		return parent::store($updateNulls);
 
 	}
 

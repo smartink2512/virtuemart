@@ -73,7 +73,7 @@ class VirtueMartModelCoupon extends VmModel {
      * @author RickG, Oscar van Eijk
      * @return mixed False if the save was unsuccessful, the coupon ID otherwise.
 	 */
-    function store($data)
+    function store(&$data)
 	{
 		$table = $this->getTable('coupons');
 		//$data = JRequest::get('post');

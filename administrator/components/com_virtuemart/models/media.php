@@ -336,7 +336,7 @@ class VirtueMartModelMedia extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	public function store($data,$type) {
+	public function store(&$data,$type) {
 
 		//if(empty($data['media_action'])) return $table->virtuemart_media_id;
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');

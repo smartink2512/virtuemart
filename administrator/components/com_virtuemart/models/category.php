@@ -520,7 +520,7 @@ class VirtueMartModelCategory extends VmModel {
      * @author jseros, RolandD, Max Milbers
      * @return int category id stored
 	 */
-    public function store($data) {
+    public function store(&$data) {
 
     	JRequest::checkToken() or jexit( 'Invalid Token, in store category');
 

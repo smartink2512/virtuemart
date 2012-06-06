@@ -139,7 +139,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	 * @author Max Milbers
 	 * @return boolean True is the save was successful, false otherwise.
 	 */
-	public function store($data)
+	public function store(&$data)
 	{
 		//$data = JRequest::get('post');
 

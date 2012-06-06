@@ -307,10 +307,11 @@ $i=0;
 				</td>
 				<td width="71%"> <?php
 				if ($this->product->product_parent_id) {
-					$parentRelation= VirtueMartModelCustomfields::getProductParentRelation($this->product->virtuemart_product_id);
+
 
 					$result = JText::_('COM_VIRTUEMART_EDIT').' ' . $this->product_parent->product_name;
-					echo ' | '.JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id.'&option=com_virtuemart'), $this->product_parent->product_name, array('title' => $result)).' | '.$parentRelation;
+					echo ' | '.JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id
+						.'&option=com_virtuemart'), $this->product_parent->product_name, array('title' => $result)).' | '.$this->parentRelation;
 				}
 				?>
 				</td>

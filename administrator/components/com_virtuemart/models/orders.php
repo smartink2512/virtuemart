@@ -204,7 +204,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 
 
-		if ($search = JRequest::getWord('search', false)){
+		if ($search = JRequest::getString('search', false)){
 
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 

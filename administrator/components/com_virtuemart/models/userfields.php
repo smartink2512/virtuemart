@@ -212,7 +212,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 *
 	 * @return boolean True is the save was successful, false otherwise.
 	 */
-	function store($data)
+	function store(&$data)
 	{
 		$field      = $this->getTable('userfields');
 		$userinfo   = $this->getTable('userinfos');

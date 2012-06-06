@@ -89,7 +89,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 	    return $this->_data;
     }
 
-   function store($data){
+   function store(&$data){
 
    	$myfields = array('basePrice','variantModification','basePriceVariant',
    										'basePriceWithTax','basePriceWithTax','discountedPriceWithoutTax',

@@ -152,11 +152,11 @@ class VmController extends JController{
 	 * @author Max Milbers
 	 * @param post $data sometimes we just want to override the data to process
 	 */
-	function save($data = 0){
+	function save(){
 
 		JRequest::checkToken() or jexit( 'Invalid Token save' );
 
-		if(empty($data))$data = JRequest::get('post');
+		$data = JRequest::get('post');
 
 		$model = VmModel::getModel($this->_cname);
 		$id = $model->store($data);

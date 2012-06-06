@@ -83,7 +83,7 @@ class convertECB {
 		}
 	}
 
-	function getSetExchangeRates($ecb_filename){
+	static function getSetExchangeRates($ecb_filename){
 
 			$archive = true;
 			setlocale(LC_TIME, "en-GB");

@@ -1041,16 +1041,13 @@ class VirtueMartModelProduct extends VmModel {
 	 * @author Max Milbers
 	 * @access public
 	 */
-	public function store($product=false,$isChild = false) {
+	public function store(&$product,$isChild = false) {
 
-		/* Load the data */
 		if($product){
 			$data = (array)$product;
-		} else{
-			$data = JRequest::get('post');
 		}
 
-// 				vmdebug('my data in product store ',$data);
+// 		vmdebug('my data in product store ',$data);
 		if(isset($data['intnotes'])){
 			$data['intnotes'] = trim($data['intnotes']);
 		}

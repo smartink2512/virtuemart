@@ -189,13 +189,19 @@ class VirtuemartViewProduct extends VmView {
 
 				/* Load product types lists */
 				$customsList = $field_model->getCustomsList();
-				$this->assignRef('customsList', JHTML::_('select.genericlist', $customsList,'customlist'));
+				$customlist = JHTML::_('select.genericlist', $customsList,'customlist');
+				$this->assignRef('customsList', $customlist);
 
 				$ChildCustomRelation = $field_model->getProductChildCustomRelation();
 				$this->assignRef('ChildCustomRelation',$ChildCustomRelation);
 
-				/* Set up labels */
+
 				if ($product->product_parent_id > 0) {
+
+					$parentRelation= $field_model->getProductParentRelation($product->virtuemart_product_id);
+					$this->assignRef('parentRelation',$parentRelation);
+
+					// Set up labels
 					$info_label = JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_INFO_LBL');
 					$status_label = JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_STATUS_LBL');
 					$dim_weight_label = JText::_('COM_VIRTUEMART_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL');

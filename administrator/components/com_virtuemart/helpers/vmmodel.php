@@ -453,6 +453,7 @@ class VmModel extends JModel {
 		foreach($errors as $error){
 			vmError( get_class( $this ).'::store '.$error);
 		}
+
 		if(is_object($data)){
 			$_idName = $this->_idName;
 			return $data->$_idName;

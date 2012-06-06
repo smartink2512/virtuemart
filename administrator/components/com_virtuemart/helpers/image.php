@@ -170,7 +170,7 @@ class VmImage extends VmMediaHandler {
 	 * @param string $image Name of the image file to display
 	 * @param string $text Text to use for the image alt text and to display under the image.
 	 */
-	public function displayImageButton($link, $imageclass, $text) {
+	static public function displayImageButton($link, $imageclass, $text) {
 		$button = '<a title="' . $text . '" href="' . $link . '">';
 		$button .= '<span class="vmicon48 '.$imageclass.'"></span>';
 		$button .= '<br />' . $text.'</a>';

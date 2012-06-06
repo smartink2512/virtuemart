@@ -147,7 +147,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
      * @author Max Milbers
      * @return boolean True is the save was successful, false otherwise.
 	 */
-    public function store($data)
+    public function store(&$data)
 	{
 
 		if(!empty($data['params'])){

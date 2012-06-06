@@ -54,7 +54,7 @@ class VirtueMartModelVendor extends VmModel {
 	* @param @param $ownerOnly returns only an id if the vendorOwner is logged in (dont get confused with storeowner)
 	* returns int $vendorId
 	*/
-	function getLoggedVendor($ownerOnly = true){
+	static function getLoggedVendor($ownerOnly = true){
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		if(isset($userId)){
@@ -284,7 +284,7 @@ class VirtueMartModelVendor extends VmModel {
 	* @param mixed $value Whatever value the vendor ID should be filtered on
 	* @return int Vendor ID
 	*/
-	public function getVendorId($type, $value, $ownerOnly=true){
+	static public function getVendorId($type, $value, $ownerOnly=true){
 		if(empty($value)) return 0;
 
 		//sanitize input params
