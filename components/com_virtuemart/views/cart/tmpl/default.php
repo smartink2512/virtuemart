@@ -131,7 +131,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 		?>
 		<div class="terms-of-service">
 		
-			<a href="" id="terms-of-service" class="terms-of-service" rel="facebox">
+			<a href="index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=1" class="terms-of-service" id="terms-of-service" rel="facebox" target="_blank">
 				<span class="vmicon vm2-termsofservice-icon"></span>
 				<?php echo JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED'); ?>
 			</a>
