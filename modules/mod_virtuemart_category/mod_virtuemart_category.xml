@@ -5,8 +5,8 @@
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
-    <copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
-    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <copyright>${PHING.VM.COPYRIGHT}</copyright>
+    <license>${PHING.VM.LICENSE}</license>
     <version>${PHING.VM.RELEASE}</version>
     <description>MOD_VIRTUEMART_CATEGORY_DESC</description>
     <files>
