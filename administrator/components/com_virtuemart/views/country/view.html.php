@@ -50,7 +50,8 @@ class VirtuemartViewCountry extends VmView {
 			$country = $model->getData();
 
 		    $this->assignRef('country',	$country);
-		    $this->assignRef('worldZones',	$zoneModel->getWorldZonesSelectList());
+			$wzsList = $zoneModel->getWorldZonesSelectList();
+		    $this->assignRef('worldZones', $wzsList	);
 
 			$this->addStandardEditViewCommands();
 

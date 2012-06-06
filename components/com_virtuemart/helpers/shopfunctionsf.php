@@ -495,7 +495,7 @@ class shopFunctionsF {
 
 		if (VmConfig::get('show_printicon', 1) == '1') {
 
-			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
+			$folder = (JVM_VERSION===1) ? '/images/M_images/' : '/media/system/images/';
 
 			// checks template image directory for image, if non found default are loaded
 			if ( $use_icon ) {

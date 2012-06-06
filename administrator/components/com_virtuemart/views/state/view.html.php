@@ -70,7 +70,8 @@ class VirtuemartViewState extends VmView {
 			$this->assignRef('state', $state);
 
 			$zoneModel = VmModel::getModel('Worldzones');
-			$this->assignRef('worldZones', $zoneModel->getWorldZonesSelectList());
+			$wzsList = $zoneModel->getWorldZonesSelectList();
+			$this->assignRef('worldZones', $wzsList);
 
 			$this->addStandardEditViewCommands();
 

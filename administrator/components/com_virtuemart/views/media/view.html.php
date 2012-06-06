@@ -43,7 +43,8 @@ class VirtuemartViewMedia extends VmView {
 
 
 		$model = VmModel::getModel();
-		$this->assignRef('perms', Permissions::getInstance());
+		$perms = Permissions::getInstance();
+		$this->assignRef('perms', $perms);
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {

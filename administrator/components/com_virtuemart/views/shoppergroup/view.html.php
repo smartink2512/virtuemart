@@ -62,7 +62,8 @@ class VirtuemartViewShopperGroup extends VmView {
 
 
 			$this->loadHelper('permissions');
-			$this->assignRef('showVendors',Permissions::getInstance()->check('admin'));
+			$showVendors = Permissions::getInstance()->check('admin');
+			$this->assignRef('showVendors',$showVendors);
 
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);

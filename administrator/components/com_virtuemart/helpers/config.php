@@ -633,19 +633,6 @@ class VmConfig {
 	}
 
 	/**
-	 * Compares two "A PHP standardized" version number against the current Joomla! version
-	 * This function needs at least 3 digits, like 1.5.0,
-	 * We can use it like isAtLeastVersion('1.6.0')
-	 *
-	 * This function returns a true if the version is equal or higher
-	 * @return boolean
-	 * @see http://www.php.net/version_compare
-	 */
-	function isAtLeastVersion ( $minimum ) {
-		return (version_compare( JVERSION, $minimum, 'ge' ));
-	}
-
-	/**
 	 * Return if the used joomla function is j15
 	 * @deprecated use JVM_VERSION instead
 	 */

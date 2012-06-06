@@ -47,10 +47,9 @@ class VirtuemartControllerOrders extends VmController {
 	/**
 	 * Shows the order details
 	 */
-	public function edit()
-	{
+	public function edit($layout='order'){
 
-		parent::edit('order');
+		parent::edit($layout);
 	}
 
 	/**

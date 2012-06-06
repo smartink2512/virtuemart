@@ -188,10 +188,10 @@ class TableUserfields extends VmTable {
 	 *
 	 * @return mixed When a new record was succesfully inserted, return the ID, otherwise the status
 	 */
-	function store()
+	public function store($updateNulls = false)
 	{
 		$isNew = ($this->virtuemart_userfield_id == 0);
-		if (!parent::store()) { // Write data to the DB
+		if (!parent::store($updateNulls)) { // Write data to the DB
 			vmError($this->getError());
 			return false;
 		} else {

@@ -415,7 +415,7 @@ class VirtueMartModelUser extends VmModel {
 
 			if(empty($this->_data)) $this->getUser();
 
-			if (VmConfig::isAtLeastVersion('1.6.0')){
+			if (JVM_VERSION>1){
 				//TODO fix this latter. It's just an workarround to make it working on 1.6
 				$gids = $this->_data->JUser->get('groups');
 				return array_flip($gids);

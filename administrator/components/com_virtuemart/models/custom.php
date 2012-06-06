@@ -94,6 +94,7 @@ class VirtueMartModelCustom extends VmModel {
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			$query .= 'AND `custom_title` LIKE '.$search;
 		}
+	    $datas = new stdClass();
 		$datas->items = $this->exeSortSearchListQuery(0, $query, '');
 
 		$customfields = VmModel::getModel('Customfields');
