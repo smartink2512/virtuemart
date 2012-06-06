@@ -29,21 +29,21 @@ if( !class_exists( 'vmVersion' ) ) {
 /** Version information */
 class vmVersion {
 	/** @var string Product */
-	static $PRODUCT = 'VirtueMart';
+	static $PRODUCT = '${PHING.VM.PRODUCT}';
 	/** @var int Release Number */
-	static $RELEASE = '2.0.7.b';
+	static $RELEASE = '${PHING.VM.RELEASE}';
 	/** @var string Development Status */
-	static $DEV_STATUS = 'Final';
+	static $DEV_STATUS = '${PHING.VM.DEV_STATUS}';
 	/** @var string Codename */
-	static $CODENAME = 'silver';
+	static $CODENAME = '${PHING.VM.CODENAME}';
 	/** @var string Date */
-	static $RELDATE = 'May 7, 2012';
+	static $RELDATE = '${PHING.VM.RELDATE}';
 	/** @var string Time */
-	static $RELTIME = '17:30';
+	static $RELTIME = '${PHING.VM.RELTIME}';
 	/** @var string Timezone */
-	static $RELTZ = 'GMT';
+	static $RELTZ = '${PHING.VM.RELTZ}';
 	/** @var string Revision */
-	static $REVISION = 'Revision: 6018';
+	static $REVISION = 'Revision: ${PHING.VM.REVISION}';
 	/** @var string Copyright Text */
 	static $COPYRIGHT = 'Copyright (C) 2005-2012 VirtueMart Development Team  - All rights reserved.';
 	/** @var string URL */
