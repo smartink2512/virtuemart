@@ -104,7 +104,7 @@ td.key{padding:0 6px; width: 150px;}
 .checkout-button-top input.terms-of-service{margin-right:10px;display:inline-block;}
 span.tos{display:inline-block;margin-right:15px;}
 .billto-shipto{border-top:solid #E9E8E8 1px;border-bottom:solid #E9E8E8 1px;margin:10px 0 0;padding:10px 0 25px;}
-.billto-shipto span,span.terms-of-service{display:inline-block;font-size:14px;}
+.billto-shipto span,a.terms-of-service{display:inline-block;font-size:14px;}
 .output-billto span.titles,.output-shipto span.titles{width:150px;float:left;}
 .output-billto span.values-first_name,.output-billto span.values-middle_name,.output-billto span.values-zip,.output-shipto span.values-first_name,.output-shipto span.values-middle_name,.output-shipto span.values-zip{float:left;margin-right:3px;}
 table.cart-summary tr th{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border-bottom:solid #E9E8E8 1px;padding:6px 0 3px;}

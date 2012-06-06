@@ -26,8 +26,8 @@ $document = JFactory::getDocument();
 $document->addScriptDeclaration("
 	jQuery(document).ready(function($) {
 		$('div#full-tos').hide();
-		$('span.terms-of-service').click( function(){
-			//$.facebox({ span: '#full-tos' });
+		$('a#terms-of-service').click(function(event) {
+			event.preventDefault();
 			$.facebox( { div: '#full-tos' }, 'my-groovy-style');
 		});
 	});
@@ -130,12 +130,17 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 		if(VmConfig::get('oncheckout_show_legal_info',1)){
 		?>
 		<div class="terms-of-service">
-			<span class="terms-of-service" rel="facebox"><span class="vmicon vm2-termsofservice-icon"></span><?php echo JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED'); ?><span class="vm2-modallink"></span></span>
+		
+			<a href="" id="terms-of-service" class="terms-of-service" rel="facebox">
+				<span class="vmicon vm2-termsofservice-icon"></span>
+				<?php echo JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED'); ?>
+			</a>
+		
 			<div id="full-tos">
 				<h2><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?></h2>
-				<?php echo $this->cart->vendor->vendor_terms_of_service;?>
-
+				<?php echo $this->cart->vendor->vendor_terms_of_service; ?>
 			</div>
+			
 		</div>
 		<?php
 		} // VmConfig::get('oncheckout_show_legal_info',1)
