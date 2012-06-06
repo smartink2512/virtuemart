@@ -2,12 +2,12 @@
 <!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/module-install.dtd">
 <install type="module" version="1.5.0">
     <name>mod_virtuemart_product</name>
-    <creationDate>February 2011</creationDate>
+    <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
-    <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-    <version>2.0.0RC3</version>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <version>${PHING.VM.RELEASE}</version>
     <description>MOD_VIRTUEMART_PRODUCT_DESC</description>
     <files>
 	<filename module="mod_virtuemart_product">mod_virtuemart_product.php</filename>
