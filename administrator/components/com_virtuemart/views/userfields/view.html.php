@@ -208,7 +208,7 @@ class VirtuemartViewUserfields extends VmView {
 			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM') : JText::_('COM_VIRTUEMART_ENABLE_ITEM');
 		}
 
-		if (VM_VERSION>1) {
+		if (JVM_VERSION>1) {
 			$img = 'admin/' . $img;
 		}
 		$retImgSrc =  JHTML::_('image.administrator', $img, '/images/', null, null, $alt);

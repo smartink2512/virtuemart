@@ -52,7 +52,7 @@ class VirtuemartControllerManufacturer extends VmController {
 	 *
 	 * @author Max Milbers
 	 */
-	function save(){
+	function save($data = 0){
 
 		/* Load the data */
 		$data = JRequest::get('post');

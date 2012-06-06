@@ -84,7 +84,7 @@ class VirtuemartControllerUser extends VmController {
 	 *
 	 * @author Max Milbers
 	 */
-	function save(){
+	function save($data = 0){
 
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();

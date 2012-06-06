@@ -274,13 +274,15 @@ class VirtuemartViewUser extends VmView {
 			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM') : JText::_('COM_VIRTUEMART_ENABLE_ITEM');
 		}
 
-		if (VM_VERSION>1) {
+		if (JVM_VERSION>1) {
 			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
 			.JHTML::_('image', 'admin/' .$img, $alt, null, true) .'</a>');
+		} else {
+			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
+				.'<img src="images/'. $img .'" border="0" alt="'. $alt .'" /></a>');
 		}
 
-		return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
-		.'<img src="images/'. $img .'" border="0" alt="'. $alt .'" /></a>');
+
 	}
 
 

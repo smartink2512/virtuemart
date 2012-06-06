@@ -54,7 +54,7 @@ class VirtuemartControllerCustom extends VmController {
 		$view->display(null);
 	}
 
-	function save() {
+	function save($data = 0) {
 		$data = JRequest::get('post');
 		// onSaveCustom plugin;
 		parent::save($data);

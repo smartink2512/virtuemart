@@ -57,7 +57,7 @@ class VirtuemartControllerMedia extends VmController {
 		$view->display(null);
 	}
 
-	function save(){
+	function save($data = 0){
 
 		$fileModel = VmModel::getModel('media');
 
