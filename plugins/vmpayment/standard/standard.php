@@ -107,10 +107,9 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($method->payment_currency, $order['details']['BT']->order_total, false), 2);
 		$cd                     = CurrencyDisplay::getInstance($cart->pricesCurrency);
 
-		$this->_virtuemart_paymentmethod_id      = $order['details']['BT']->virtuemart_paymentmethod_id;
 		$dbValues['payment_name']                = $this->renderPluginName($method) . '<br />' . $method->payment_info;
 		$dbValues['order_number']                = $order['details']['BT']->order_number;
-		$dbValues['virtuemart_paymentmethod_id'] = $this->_virtuemart_paymentmethod_id;
+		$dbValues['virtuemart_paymentmethod_id'] = $order['details']['BT']->virtuemart_paymentmethod_id;
 		$dbValues['cost_per_transaction']        = $method->cost_per_transaction;
 		$dbValues['cost_percent_total']          = $method->cost_percent_total;
 		$dbValues['payment_currency']            = $currency_code_3;

@@ -58,7 +58,6 @@ function getTableSQLFields() {
 	    'systempay_response_payment_amount' => 'char(15)',
 	    'systempay_response_auth_number' => 'char(10)',
 	    'systempay_response_payment_currency' => 'char(3)',
-	    'systempay_response_auth_number' => 'char(10)',
 	    'systempay_response_payment_mean' => 'char(255)',
 	    'systempay_response_payment_date' => 'char(20)',
 	    'systempay_response_payment_status' => 'char(3)',

@@ -78,7 +78,7 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
 
 	    	<div class="width30 floatleft" id="com-form-order-number">
 	    		<label for="order_number"><?php echo JText::_('COM_VIRTUEMART_ORDER_NUMBER') ?></label><br />
-	    		<input type="text" id="order_number " name="order_number" class="inputbox" size="18" alt="order_number" />
+	    		<input type="text" id="order_number" name="order_number" class="inputbox" size="18" alt="order_number" />
 	    	</div>
 	    	<div class="width30 floatleft" id="com-form-order-pass">
 	    		<label for="order_pass"><?php echo JText::_('COM_VIRTUEMART_ORDER_PASS') ?></label><br />

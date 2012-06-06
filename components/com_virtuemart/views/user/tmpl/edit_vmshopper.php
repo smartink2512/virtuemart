@@ -59,7 +59,8 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			 <?php if(Permissions::getInstance()->check('admin')) { ?>
-				<input type="text" class="inputbox" name="customer_number" size="40" value="<?php echo  $this->lists['custnumber']; ?>" />
+				<input type="text" class="inputbox" name="customer_number" id="customer_number" size="40" value="<?php echo  $this->lists['custnumber'];
+					?>" />
 			<?php } else {
 				echo $this->lists['custnumber'];
 			} ?>

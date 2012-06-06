@@ -98,7 +98,6 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 			'tax_id'                                     => 'smallint(1)',
 			'authorizenet_response_authorization_code'   => 'char(10)',
 			'authorizenet_response_transaction_id'       => 'mediumint(1) UNSIGNED',
-			'authorizenet_response_authorization_code'   => 'char(6)',
 			'authorizenet_response_response_code'        => 'char(128)',
 			'authorizenet_response_response_subcode'     => 'char(13)',
 			'authorizenet_response_response_reason_code' => 'decimal(10,2)',
