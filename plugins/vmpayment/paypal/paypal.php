@@ -587,6 +587,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		    return '';
 		} elseif (strcmp($res, 'INVALID') == 0) {
 		    // If 'INVALID', send an email. TODO: Log for manual investigation.
+			$emailtext = '';
 		    foreach ($paypal_data as $key => $value) {
 			$emailtext = $key . " = " . $value . "\n\n";
 		    }

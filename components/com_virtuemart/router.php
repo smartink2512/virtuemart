@@ -514,17 +514,20 @@ function virtuemartParseRoute($segments) {
 		return $vars;
 	}
 
-	vmdebug('$segments productdetail',$segments);
+
 	/*
 	 * seo_sufix must never be used in category or router can't find it
 	 * eg. suffix as "-suffix", a category with "name-suffix" get always a false return
 	 * Trick : YOu can simply use "-p","-x","-" or ".htm" for better seo result if it's never in the product/category name !
 	 */
-	//if (substr(end($segments ), -(int)$helper->seo_sufix_size ) == $helper->seo_sufix ) {
+/*	if (substr(end($segments ), -(int)$helper->seo_sufix_size ) == $helper->seo_sufix ) {
+		vmdebug('$segments productdetail',$segments,end($segments ));*/
 	$last_elem = end($segments);
 	$slast_elem = prev($segments);
 	if ( (substr($last_elem, -(int)$helper->seo_sufix_size ) == $helper->seo_sufix) 
 	|| ($last_elem=='notify' && substr($slast_elem, -(int)$helper->seo_sufix_size ) == $helper->seo_sufix) ) {
+
+
 		if($last_elem=='notify') {
 			$vars['layout'] = 'notify';
 			array_pop($segments);
@@ -543,6 +546,7 @@ function virtuemartParseRoute($segments) {
 			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
 		}
 
+		$vars['view'] = 'productdetails';
 
 	} elseif (!$helper->use_id && ($helper->activeMenu->view == 'category' ) )  {
 		$vars['virtuemart_category_id'] = $helper->getCategoryId (end($segments) ,$helper->activeMenu->virtuemart_category_id);
@@ -570,7 +574,7 @@ function virtuemartParseRoute($segments) {
 		}
 	}
 
-
+vmdebug('Router vars',$vars);
 
 	return $vars;
 }
@@ -986,12 +990,15 @@ class vmrouterHelper {
 	/* Set $this->activeMenu to current Item ID from Joomla Menus */
 	private function setActiveMenu(){
 		if ($this->activeMenu === null ) {
-		$menu = JFactory::getApplication()->getMenu();
-		if ($Itemid = JRequest::getInt('Itemid',0) ) {
-			$menuItem = $menu->getItem($Itemid);
-		} else {
-			$menuItem = $menu->getActive();
-		}
+			//$menu = JSite::getMenu();
+			//$menu = JFactory::getApplication()->getMenu();
+			$app		= JFactory::getApplication();
+			$menu		= $app->getMenu('site');
+			if ($Itemid = JRequest::getInt('Itemid',0) ) {
+				$menuItem = $menu->getItem($Itemid);
+			} else {
+				$menuItem = $menu->getActive();
+			}
 
 			$this->activeMenu = new stdClass();
 			$this->activeMenu->view			= (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
