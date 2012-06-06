@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" method="upgrade">
     <name>VM - Payment, Klarna</name>
-    <creationDate>April 2012</creationDate>
+    <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <version>2.0.8</version>
+    <version>${PHING.VM.RELEASE}</version>
     <description>VMPAYMENT_KLARNA_CONF_PLUGIN_DESC</description>
     <languages>
 	<language tag="en-GB">en-GB.plg_vmpayment_klarna.ini</language>

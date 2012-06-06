@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install method="upgrade" version="1.5" type="plugin" group="vmcustom" >
     <name>VMCustom - textinput</name>
-    <creationDate>June 2011</creationDate>
+    <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
-    <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-    <version>2.0.6</version>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <version>${PHING.VM.RELEASE}</version>
     <description>text input plugin for product</description>
     <languages>
         <language tag="en-GB">en-GB.plg_vmcustom_textinput.ini</language>

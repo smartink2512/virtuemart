@@ -28,8 +28,7 @@ class LiveUpdateView extends JView
 		
 		$requeryURL = 'index.php?option='.JRequest::getCmd('option','').'&view='.JRequest::getCmd('view','liveupdate').'&force=1';
 		$this->assign('requeryURL', $requeryURL);
-		
-		$model = $this->getModel();
+
 		
 		$extInfo = (object)$config->getExtensionInformation();
 		JToolBarHelper::title($extInfo->title.' &ndash; '.JText::_('LIVEUPDATE_TASK_OVERVIEW'),'liveupdate');
