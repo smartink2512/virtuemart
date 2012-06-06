@@ -225,7 +225,7 @@ class VirtueMartModelProduct extends VmModel {
 			if(!empty($filter_search)){
 				$where[] = '('.implode(' OR ', $filter_search ).')';
 			} else {
-				$where[] = '`product_name` LIKE '.$search;
+				$where[] = '`product_name` LIKE '.$keyword;
 				//If they have no check boxes selected it will default to product name at least.
 			}
 			$joinLang = true;
@@ -982,7 +982,7 @@ class VirtueMartModelProduct extends VmModel {
 	/* reorder product in one category
 	 * TODO this not work perfect ! (Note by Patrick Kohl)
 	*/
-	function saveorder($cid , $orders) {
+	function saveorder($cid = array(), $order, $filter = null){
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
@@ -997,7 +997,7 @@ class VirtueMartModelProduct extends VmModel {
 		$tableOrdering = array();
 		foreach ($pkey_orders as $order) $tableOrdering[$order->id] = $order->ordering;
 		// set and save new ordering
-		foreach  ($orders as $key => $order) $tableOrdering[$key] = $order;
+		foreach  ($order as $key => $ord) $tableOrdering[$key] = $ord;
 		asort($tableOrdering);
 		$i = 1 ; $ordered = 0 ;
 		foreach  ($tableOrdering as $key => $order) {
@@ -1023,7 +1023,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * Moves the order of a record
 	 * @param integer The increment to reorder by
 	 */
-	function move($direction) {
+	function move($direction, $filter=null) {
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 

@@ -254,12 +254,14 @@ class VirtueMartViewProductdetails extends VmView {
 	$this->assignRef('edit_link', $edit_link);
 
 	// Load the user details
-	$this->assignRef('user', JFactory::getUser());
+	$user = JFactory::getUser();
+	$this->assignRef('user',$user);
 
 	// More reviews link
 	$uri = JURI::getInstance();
 	$uri->setVar('showall', 1);
-	$this->assignRef('more_reviews', $uri->toString());
+	$uristring = $uri->toString();
+	$this->assignRef('more_reviews', $uristring);
 
 	if ($product->metadesc) {
 	    $document->setDescription($product->metadesc);

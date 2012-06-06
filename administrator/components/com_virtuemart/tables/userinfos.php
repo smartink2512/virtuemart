@@ -192,8 +192,7 @@ class TableUserinfos extends VmTableData {
 	 * @return boolean True on success
 	 * @author Oscar van Eijk
 	 */
-	function delete($id)
-	{
+	function delete( $id=null , $where = 0 ){
 		// TODO If $id is not numeric, assume it's a virtuemart_userinfo_id. Validate if this is safe enough
 		if (!is_numeric($id)) {
 			return (parent::delete($id));

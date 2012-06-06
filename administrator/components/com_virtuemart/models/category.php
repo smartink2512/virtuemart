@@ -729,9 +729,9 @@ class VirtueMartModelCategory extends VmModel {
 		$menu = JFactory::getApplication()->getMenu();
 		$parents = array();
 		if (empty($query['Itemid'])) {
-			$menuItem = &$menu->getActive();
+			$menuItem = $menu->getActive();
 		} else {
-			$menuItem = &$menu->getItem($query['Itemid']);
+			$menuItem = $menu->getItem($query['Itemid']);
 		}
 		$menuCatid = (empty($menuItem->query['virtuemart_category_id'])) ? 0 : $menuItem->query['virtuemart_category_id'];
 		if ($menuCatid == $virtuemart_category_id) return ;

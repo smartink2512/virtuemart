@@ -56,7 +56,7 @@ class VmTableXarray extends VmTable {
 	* swap the ordering of a record in the Xref tables
 	* @param  $direction , 1/-1 The increment to reorder by
 	*/
-	function move($direction) {
+	function move($direction, $where='', $orderingkey=0) {
 
     	if(empty($this->_skey) ) {
     		vmError( 'No secondary keys defined in VmTableXarray '.$this->_tbl );
@@ -99,7 +99,7 @@ class VmTableXarray extends VmTable {
 	 * @author Max Milbers
      * @param int $id
      */
-    function load($id=0){
+    function load($oid=null,$overWriteLoadName=0,$andWhere=0,$tableJoins= array(),$joinKey = 0){
 
     	if(empty($this->_skey) ) {
     		vmError( 'No secondary keys defined in VmTableXarray '.$this->_tbl );
@@ -114,7 +114,7 @@ class VmTableXarray extends VmTable {
 			$orderby = '';
 		}
 
-		$q = 'SELECT `'.$this->_skey.'` FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'.(int)$id.'" '.$orderby;
+		$q = 'SELECT `'.$this->_skey.'` FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'.(int)$oid.'" '.$orderby;
 		$this->_db->setQuery($q);
 
 		$result = $this->_db->loadResultArray();
@@ -138,7 +138,7 @@ class VmTableXarray extends VmTable {
      * @author Max Milbers
      * @param unknown_type $data
      */
-	function bind($data){
+	public function bind($data, $ignore = array()){
 
 		if(!empty($data[$this->_pkeyForm])){
 			$this->_pvalue = $data[$this->_pkeyForm];
@@ -157,7 +157,7 @@ class VmTableXarray extends VmTable {
      * @author Max Milbers, George Kostopoulos
      * @see libraries/joomla/database/JTable#store($updateNulls)
      */
-    public function store() {
+    public function store($updateNulls = false) {
 
     	$returnCode = true;
 	$this->setLoggableFieldsForStore();

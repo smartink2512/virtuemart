@@ -32,7 +32,7 @@ class VmTableData extends VmTable {
 	 * @author Max Milbers
 	 * @see libraries/joomla/database/JTable#store($updateNulls)
 	 */
-	public function store() {
+	public function store($updateNulls = false) {
 
 		$this->setLoggableFieldsForStore();
 
@@ -52,7 +52,7 @@ class VmTableData extends VmTable {
 				$res = $this->_db->loadResult();
 			}
 			if($res){
-				$returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, false);
+				$returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
 			} else {
 				$returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 			}
@@ -66,7 +66,7 @@ class VmTableData extends VmTable {
 				$this->$tblKey = $this->_db->loadResult();
 			}
 			if ( !empty($this->$tblKey) ) {
-				$returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, false);
+				$returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
 			} else {
 				$returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 			}

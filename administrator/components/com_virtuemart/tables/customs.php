@@ -110,8 +110,8 @@ class TableCustoms extends VmTable {
 	* field from 3 table have to be checked at delete
 	* #__vm_custom_field,#__virtuemart_customs,#__virtuemart_product_customfields
 	*/
-	function delete($id)
-	{
+	function delete( $id=null , $where = 0 ){
+
 // 		$this->_db->setQuery('DELETE X,F,C FROM `#__virtuemart_customs` AS C
 // 			LEFT JOIN `#__virtuemart_customfields` AS F ON F.`virtuemart_custom_id` = C.`virtuemart_custom_id`
 // 			LEFT JOIN  `#__virtuemart_product_customfields` AS X ON  X.`virtuemart_customfield_id` = F.`virtuemart_customfield_id`

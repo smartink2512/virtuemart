@@ -127,8 +127,8 @@ class TableOrders extends VmTable {
 	 * @author Oscar van Eijk
 	 * @author Kohl Patrick
 	 */
-	function delete($id)
-	{
+	function delete( $id=null , $where = 0 ){
+
 		$this->_db->setQuery('DELETE from `#__virtuemart_order_userinfos` WHERE `virtuemart_order_id` = ' . $id);
 		if ($this->_db->query() === false) {
 			vmError($this->_db->getError());

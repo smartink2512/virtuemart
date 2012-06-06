@@ -88,8 +88,8 @@ class TableUserfield_values extends VmTable {
 	 * @var Field id
 	 * @return boolean True on success
 	 */
-	function delete($virtuemart_userfield_id)
-	{
+	function delete( $virtuemart_userfield_id=null , $where = 0 ){
+
 		$db = JFactory::getDBO();
 		$db->setQuery('DELETE from `#__virtuemart_userfield_values` WHERE `virtuemart_userfield_id` = ' . $virtuemart_userfield_id);
 		if ($db->query() === false) {
