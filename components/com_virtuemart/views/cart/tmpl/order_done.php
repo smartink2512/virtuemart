@@ -23,4 +23,3 @@ defined('_JEXEC') or die('');
 echo "<h3>".JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU')."</h3>";
 
 echo $this->html;
-?> 

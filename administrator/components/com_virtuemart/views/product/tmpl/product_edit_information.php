@@ -264,7 +264,7 @@ $i=0;
 					</td>
 					<td >
 						<?php echo $this->lists['discounts']; ?> <br />
-							<td>
+
 							<?php if(!empty($this->DBTaxRules)){
 
 								echo JText::_('COM_VIRTUEMART_RULES_EFFECTING').'<br />'.$this->DBTaxRules.'<br />';
@@ -275,7 +275,7 @@ $i=0;
 
 							}
 // 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
-						</td>
+
 					</td>
 				</tr>
 

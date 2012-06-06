@@ -104,7 +104,9 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	);
 	return $SQLfields;
     }
-
+/*
+ *
+ */
     function plgVmConfirmedOrder($cart, $order) {
 
 	if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
@@ -123,10 +125,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	if (!class_exists('VirtueMartModelCurrency'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 
-	//$usr = JFactory::getUser();
-	$new_status = '';
-
-	$usrBT = $order['details']['BT'];
 	$address = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
 
 
@@ -155,7 +153,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    return false;
 	}
 
-	$testReq = $method->debug == 1 ? 'YES' : 'NO';
+
 	$post_variables = Array(
 	    'cmd' => '_ext-enter',
 	    'redirect_cmd' => '_xclick',
@@ -402,7 +400,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    $order['customer_notified'] = 0;
 	    $order['order_status'] = $method->status_canceled;
 	    $order['comments'] = 'process IPN ' . $error_msg;
-	    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
+		/** @var $modelOrder array() */
+		$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 	    $this->logInfo('process IPN ' . $error_msg . ' ' . $new_status, 'ERROR');
 	    return;
 	} else {
@@ -589,9 +588,9 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		} elseif (strcmp($res, 'INVALID') == 0) {
 		    // If 'INVALID', send an email. TODO: Log for manual investigation.
 		    foreach ($paypal_data as $key => $value) {
-			$emailtext .= $key . " = " . $value . "\n\n";
+			$emailtext = $key . " = " . $value . "\n\n";
 		    }
-		    $this->sendEmailToVendorAndAdmins("error with paypal IPN NOTIFICATION", JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . " " . $res . " " . $emailtext);
+		    $this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . " " . $res . " " . $emailtext, "error with paypal IPN NOTIFICATION");
 		    return JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . $res;
 		}
 	    }
@@ -628,11 +627,9 @@ class plgVmPaymentPaypal extends vmPSPlugin {
     function checkPaypalIps($test_ipn) {
 	return;
 	// Get the list of IP addresses for www.paypal.com and notify.paypal.com
-	$paypal_iplist = array();
+
 	$paypal_iplist = gethostbynamel('www.paypal.com');
-	$paypal_iplist2 = array();
 	$paypal_iplist2 = gethostbynamel('notify.paypal.com');
-	$paypal_iplist3 = array();
 	$paypal_iplist3 = array('216.113.188.202', '216.113.188.203', '216.113.188.204', '66.211.170.66');
 	$paypal_iplist = array_merge($paypal_iplist, $paypal_iplist2, $paypal_iplist3);
 
@@ -673,7 +670,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    $res = "FAILED";
 	    $mailsubject = "PayPal Sandbox Transaction";
 	    $mailbody = "Hello,
-		A fatal error occured while processing a paypal transaction.
+		A fatal error occurred while processing a paypal transaction.
 		----------------------------------
 		Hostname: $hostname
 		URI: $uri

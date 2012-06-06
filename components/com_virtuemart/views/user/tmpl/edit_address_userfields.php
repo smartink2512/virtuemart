@@ -103,4 +103,4 @@ foreach ($typefields as $typefield) {
 }
 
 echo $_hiddenFields;
-?>
+

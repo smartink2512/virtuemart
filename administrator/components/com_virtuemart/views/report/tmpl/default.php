@@ -88,12 +88,13 @@ if ( JVM_VERSION == 2 )
 	    	//$is = $this->itemsSold[$j];
 	    	$s = 0;
 	    	?>
-                <tr class="row"
-                    <?php echo $i;?>">
+                <tr class="row<?php echo $i;?>">
                     <td align="center">
                         <?php echo $r['intervals'] ;
-						if ( $addDateInfo ) echo ' ('.substr ( $r['created_on'],0,4 ).')';
-						;?>
+						if ( $addDateInfo ) {
+							echo ' ('.substr ( $r['created_on'],0,4 ).')';
+						}
+                     ?>
                     </td>
                     <td align="center">
                         <?php echo $r['count_order_id'];?>

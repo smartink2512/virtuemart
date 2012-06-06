@@ -177,12 +177,12 @@ jQuery("#fieldValuesBody").delegate("input.deleteRow", "click", function() {
 });
 
 jQuery(".readonly").click( function(e) {
-	return false})
+	return false});
 
 jQuery('select#type').chosen().change(function() {
 		selected = jQuery(this).find( 'option:selected').val() ;
 	toggleType(selected)
-})
+});
 function toggleType( sType ) {
 	jQuery('#toggler').children('div').filter(':visible').slideUp();
 	jQuery('input[name="vNames[0]"]').attr("mosReq", 0);

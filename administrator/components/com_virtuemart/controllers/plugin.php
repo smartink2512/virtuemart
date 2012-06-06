@@ -72,5 +72,6 @@ class VirtuemartControllerPlugin extends JController
 			}
 			else echo $render;
 		}
+		return true;
 	}
 }

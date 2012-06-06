@@ -123,7 +123,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		var $newimage = jQuery(this).val();
 		jQuery('#product_availability').val($newimage);
 		jQuery('#imagelib').attr({ src:'<?php echo JURI::root(true).$this->imagePath ?>'+$newimage, alt:$newimage });
-		})
+		});
 	jQuery('.js-change-stock').change( function() {
 
 		var in_stock = jQuery('.js-change-stock[name="product_in_stock"]');

@@ -23,7 +23,5 @@ AdminUIHelper::startAdminArea();
 AdminUIHelper::buildTabs ( $this, array (	'tools' 	=> 	'COM_VIRTUEMART_UPDATE_TOOLS_TAB',
 									'migrator' 	=> 	'COM_VIRTUEMART_MIGRATION_TAB'
 									 ) );
-?>
 
-
-<?php AdminUIHelper::endAdminArea(); ?>
+AdminUIHelper::endAdminArea();
