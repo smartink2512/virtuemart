@@ -36,7 +36,8 @@ class JElementVmManufacturersmenu extends JElement {
 
     function fetchElement($name, $value, &$node, $control_name) {
 
-	JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
+	    $lang = JFactory::getLanguage();
+	    $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
 	$model =VmModel::getModel('Manufacturer');
 	$manufacturers = $model->getManufacturers(true, true, false);
 	       return JHTML::_('select.genericlist', $manufacturers, $control_name . '[' . $name . ']', '', $name, 'mf_name', $value, $control_name . $name);

@@ -33,7 +33,8 @@ class JElementVmvendormenu extends JElement {
     var $_name = 'vendormenu';
 
     function fetchElement($name, $value, &$node, $control_name) {
-	JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
+	    $lang = JFactory::getLanguage();
+	    $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
 	$model = VmModel::getModel('Vendor');
 	$vendors = $model->getVendors(true, true, false);
 	return JHTML::_('select.genericlist', $vendors, $control_name . '[' . $name . ']', '', $name, 'vendor_name', $value, $control_name . $name);

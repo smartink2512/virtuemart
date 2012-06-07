@@ -5,7 +5,6 @@ defined ('_JEXEC') or die();
 /**
  *
  * Klarna
- *
  * @author     Valérie Isaksen
  * @version    $Id:
  * @package    VirtueMart

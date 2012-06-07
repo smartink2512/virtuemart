@@ -30,7 +30,8 @@ class JElementVmjpluginwarning extends JElement {
     var $_name = 'vmjpluginwarning';
 
     function fetchElement($name, $value, &$node, $control_name) {
-	JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
+	    $lang = JFactory::getLanguage();
+	    $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
 
 	$option = JRequest::getWord('option');
 	if ($option == 'com_virtuemart')

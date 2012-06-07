@@ -157,7 +157,9 @@ class vmParameters extends JParameter {
 	 * @since	1.5
 	 */
 	function __construct($data, $element = '', $type='component', $pluginfolder ) {
-		JPlugin::loadLanguage('plg_'.$pluginfolder.'_' . $element);
+		$lang = JFactory::getLanguage();
+		$lang->load('plg_'.$pluginfolder.'_' . $element,JPATH_ADMINISTRATOR);
+
 		if (JVM_VERSION === 2) {
 			$path = JPATH_PLUGINS . DS . $pluginfolder . DS . basename($element). DS . basename($element) . '.xml';
 		} else {

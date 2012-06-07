@@ -37,7 +37,10 @@ class VmElementVmCategories extends VmElements {
     function getInput() {
         $key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
         $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
-        JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
+
+	    $lang = JFactory::getLanguage();
+	    $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
+
         $categorylist = ShopFunctions::categoryListTree(array($this->value));
 
         $html = '<select class="inputbox"   name="' . $this->name . '" >';

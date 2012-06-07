@@ -28,7 +28,8 @@ class JElementVMFiles extends JElement {
     function fetchElement($name, $value, &$node, $control_name) {
                 jimport( 'joomla.filesystem.folder' );
 		jimport( 'joomla.filesystem.file' );
-                JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
+	    $lang = JFactory::getLanguage();
+	    $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
 		// path to images directory
 		$folder = $node->attributes('directory');
 		$rel_path = str_replace('/',DS,$folder);

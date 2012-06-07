@@ -12,7 +12,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: $
+ * @version $Id$
  */
 defined('JPATH_BASE') or die;
 if (!class_exists('VmConfig'))
@@ -37,17 +37,11 @@ class JFormFieldVendor extends JFormField
 {
 	protected $type = 'vendor';
 
-	/**
-	 * Method to get the field input markup.
-	 *
-         * @author      Valerie  Isaksen
-	 * @return	string	The field input markup.
-	 * @since	1.6
-	 */
 
      function getInput() {
 
-        JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
+	     $lang = JFactory::getLanguage();
+	     $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
          $key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
         $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
         $model = VmModel::getModel('vendor');
