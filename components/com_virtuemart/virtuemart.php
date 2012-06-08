@@ -88,7 +88,7 @@ else {
 	// try plugins
 	JPluginHelper::importPlugin('vmextended');
 	$dispatcher = JDispatcher::getInstance();
-	$dispatcher->trigger($trigger, $_controller);
+	$dispatcher->trigger($trigger, array($_controller));
 }
 
 
