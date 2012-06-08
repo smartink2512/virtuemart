@@ -531,7 +531,7 @@ class VmModel extends JModel {
 			vmError('VmModel move '.$this->_db->getErrorMsg());
 			return false;
 		}
-		if ($filter) ' '.$filter.' = '.(int) $table->$filter.' AND published >= 0 ';
+
 		if (!$table->move( $direction, $filter )) {
 			vmError('VmModel move '.$this->_db->getErrorMsg());
 			return false;

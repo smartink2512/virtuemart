@@ -448,11 +448,11 @@ function virtuemartParseRoute($segments) {
 				$vars['task'] = 'editaddresscart' ;
 			}
 			elseif (  $helper->compareKey($segments[0] ,'editaddresscheckoutBT') ) {
-				$vars['addrtype'] = 'ST' ;
+				$vars['addrtype'] = 'BT' ;
 				$vars['task'] = 'editaddresscheckout' ;
 			}
 			elseif (  $helper->compareKey($segments[0] ,'editaddresscheckoutST') ) {
-				$vars['addrtype'] = 'BT' ;
+				$vars['addrtype'] = 'ST' ;
 				$vars['task'] = 'editaddresscheckout' ;
 			}
 			elseif (  $helper->compareKey($segments[0] ,'editaddressST') ) {

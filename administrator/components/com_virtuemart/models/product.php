@@ -500,7 +500,7 @@ class VirtueMartModelProduct extends VmModel {
 
 				foreach($attribs as $k=>$v){
 
-					if(strpos($k,'_')!==0 && empty($child->$k)){
+					if(strpos($k,'_')!==0 and empty($child->$k) ){
 						$child->$k = $v;
 // 						vmdebug($child->product_parent_id.' $child->$k',$child->$k);
 					}
@@ -702,6 +702,14 @@ class VirtueMartModelProduct extends VmModel {
 				// Check the stock level
 				if (empty($product->product_in_stock)) $product->product_in_stock = 0;
 
+				//TODO OpenGlobal add here the stock of parent, conditioned by $product->customfields type A
+/*				if (0 == $product->product_parent_id) {
+					$q = 'SELECT SUM(IFNULL(children.`product_in_stock`,0)) + p.`product_in_stock` FROM `#__virtuemart_products` p LEFT OUTER JOIN `#__virtuemart_products` children ON p.`virtuemart_product_id` = children.`product_parent_id`
+						WHERE p.`virtuemart_product_id` = "'.$this->_id.'"';
+					$this->_db->setQuery($q);
+					// change for faster ordering
+					$product->product_in_stock = $this->_db->loadResult();
+				}*/
 				// Get stock indicator
 				//				$product->stock = $this->getStockIndicator($product);
 
@@ -1593,7 +1601,7 @@ public function updateStockInDB($product, $amount, $signInStoc, $signOrderedStoc
 }
 
 
-public function getUncategorizedChildren($selected){
+public function getUncategorizedChildren($withParent){
 
 		$q = 'SELECT * FROM `#__virtuemart_products` as p
 			LEFT JOIN `#__virtuemart_products_'.VMLANG.'` as pl
@@ -1602,7 +1610,12 @@ public function getUncategorizedChildren($selected){
 			USING (`virtuemart_product_id`) ';
 
 // 		$q .= ' WHERE (`product_parent_id` = "'.$this->_id.'" AND (pc.`virtuemart_category_id`) IS NULL  ) OR (`virtuemart_product_id` = "'.$this->_id.'" ) ';
+	if($withParent){
 		$q .= ' WHERE `product_parent_id` = "'.$this->_id.'"  OR `virtuemart_product_id` = "'.$this->_id.'" ';
+	} else {
+		$q .= ' WHERE `product_parent_id` = "'.$this->_id.'" ';
+	}
+
 
 
 	$app = JFactory::getApplication();

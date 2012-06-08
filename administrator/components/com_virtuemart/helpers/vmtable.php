@@ -77,7 +77,7 @@ class VmTable extends JTable{
 
 	public function setLoggable(){
 		$this->_loggable = true;
-		$this->created_on = '';
+		$this->created_on = false;
 		$this->created_by = 0;
 		$this->modified_on = '';
 		$this->modified_by = 0;
@@ -212,7 +212,8 @@ class VmTable extends JTable{
 			$today = $date->toMySQL();
 			$user = JFactory::getUser();
 
-			if(!$this->created_on){
+			$pkey = $this->_pkey;
+			if(empty($this->$pkey)){
 				$this->created_on = $today;
 				$this->created_by = $user->id;
 			}
@@ -317,7 +318,7 @@ class VmTable extends JTable{
 
 	}
 
-	function bindParameterable(&$obj,$xParams,$varsToPushParam){
+	static function bindParameterable(&$obj,$xParams,$varsToPushParam){
 
 		$paramFields = $obj->$xParams;
 		// 						vmdebug('$obj->_xParams '.$xParams.' $obj->$xParams ',$paramFields);
@@ -339,7 +340,7 @@ class VmTable extends JTable{
 			}
 		} else {
 			if(empty($xParams)){
-				vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error '.$this->_tbl,$obj);
+				vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error '.$obj);
 			}
 		}
 

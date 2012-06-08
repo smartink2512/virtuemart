@@ -92,6 +92,21 @@ abstract class vmPlugin extends JPlugin {
 		return array();
 	}
 
+	function getOwnUrl(){
+
+		if(JVM_VERSION!=1){
+			$url = '/plugins/'.$this->_type.'/'.$this->_name;
+		} else{
+			$url = '/plugins/'.$this->_type;
+		}
+		return $url;
+	}
+
+	function display3rdInfo($intro,$developer,$contactlink,$manlink){
+		$logolink = $this->getOwnUrl() ;
+		return shopfunctions::display3rdInfo($this->_name,$intro,$developer,$logolink,$contactlink,$manlink);
+	}
+
 	/**
 	 * Checks if this plugin should be active by the trigger
 	 *
@@ -270,9 +285,12 @@ abstract class vmPlugin extends JPlugin {
 				if (!$db->query ()) {
 					JError::raiseWarning (1, $this->_name . '::onStoreInstallPluginTable: ' . JText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE));
 					echo $this->_name . '::onStoreInstallPluginTable: ' . JText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE);
+				} else {
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 
 	/**

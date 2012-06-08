@@ -112,7 +112,7 @@ class ShopFunctions {
 	 * @author Max Milbers
 	 * @deprecated
 	 */
-	static public function renderCreditCardList($ccId, $multiple = false) {
+	static public function renderCreditCardList($ccId, $multiple = FALSE) {
 
 		$model = VmModel::getModel('creditcard');
 		$creditcards = $model->getCreditCards();
@@ -141,7 +141,7 @@ class ShopFunctions {
 	 * @param bool $multiple if the select list should allow multiple selections
 	 * @return string HTML select option list
 	 */
-	static public function renderVendorList($vendorId, $multiple = false) {
+	static public function renderVendorList($vendorId, $multiple = FALSE) {
 
 		$db = JFactory::getDBO();
 
@@ -154,8 +154,10 @@ class ShopFunctions {
 			$vendor = $db->loadResult();
 			$html = '<input type="text" size="14" name="vendor_name" class="inputbox" value="' . $vendor . '" readonly="">';
 		} else {
-			if (!class_exists('Permissions'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+			if (!class_exists ('Permissions'))
+					{
+						require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+					}
 			if (!Permissions::getInstance()->check('admin')) {
 				if (empty($vendorId)) {
 					$vendorId = 1;
@@ -202,9 +204,9 @@ class ShopFunctions {
 	 * @param bool $multiple if the select list should allow multiple selections
 	 * @return string HTML select option list
 	 */
-	static public function renderShopperGroupList($shopperGroupId=0, $multiple = true) {
+	static public function renderShopperGroupList($shopperGroupId=0, $multiple = TRUE) {
 		$shopperModel = VmModel::getModel('shoppergroup');
-		$shoppergrps = $shopperModel->getShopperGroups(false, true);
+		$shoppergrps = $shopperModel->getShopperGroups(FALSE, TRUE);
 		$attrs = '';
 		$name = 'shopper_group_name';
 		$idA = $id = 'virtuemart_shoppergroup_id';
@@ -232,9 +234,9 @@ class ShopFunctions {
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 * @return string HTML containing the <select />
 	 */
-	static public function renderCountryList($countryId = 0, $multiple = false, $_attrib = array(), $_prefix = '', $required = 0) {
+	static public function renderCountryList($countryId = 0, $multiple = FALSE, $_attrib = array(), $_prefix = '', $required = 0) {
 		$countryModel = VmModel::getModel('country');
-		$countries = $countryModel->getCountries(true, true, false);
+		$countries = $countryModel->getCountries(TRUE, TRUE, FALSE);
 		$attrs = array();
 		$name = 'country_name';
 		$id = 'virtuemart_country_id';
@@ -274,10 +276,12 @@ class ShopFunctions {
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 * @return string HTML containing the <select />
 	 */
-	static public function renderStateList($stateId = '0', $_prefix = '', $multiple = false, $required = 0) {
+	static public function renderStateList($stateId = '0', $_prefix = '', $multiple = FALSE, $required = 0) {
 
-		if (is_array($stateId))
-		$stateId = implode(",", $stateId);
+		if (is_array ($stateId))
+				{
+					$stateId = implode (",", $stateId);
+				}
 		vmJsApi::JcountryStateList($stateId);
 
 		if ($multiple) {
@@ -304,8 +308,10 @@ class ShopFunctions {
 	 */
 	static function renderTaxList($selected, $name='product_tax_id', $class='') {
 
-		if (!class_exists('VirtueMartModelCalc'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'calc.php');
+		if (!class_exists ('VirtueMartModelCalc'))
+				{
+					require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'calc.php');
+				}
 		$taxes = VirtueMartModelCalc::getTaxes();
 
 		$taxrates = array();
@@ -327,10 +333,12 @@ class ShopFunctions {
 	 * @param boolean defaultOption you can supress the empty otion setting this to false
 	 * return array of Template objects
 	 */
-	static public function renderTemplateList($defaultText = 0, $defaultOption=true) {
+	static public function renderTemplateList($defaultText = 0, $defaultOption=TRUE) {
 
 		if (empty($defaultText))
-		$defaultText = JText::_('COM_VIRTUEMART_TEMPLATE_DEFAULT');
+				{
+					$defaultText = JText::_ ('COM_VIRTUEMART_TEMPLATE_DEFAULT');
+				}
 
 		$templateList = array();
 
@@ -343,8 +351,10 @@ class ShopFunctions {
 		}
 
 		if (JVM_VERSION===1) {
-			if (!class_exists('TemplatesHelper'))
-			require (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_templates' . DS . 'helpers' . DS . 'template.php');
+			if (!class_exists ('TemplatesHelper'))
+					{
+						require (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_templates' . DS . 'helpers' . DS . 'template.php');
+					}
 			$jtemplates = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE . DS . 'templates');
 		} else {
 			require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_templates' . DS . 'helpers' . DS . 'templates.php');
@@ -373,7 +383,9 @@ class ShopFunctions {
 	 */
 	static function getWeightUnit() {
 		static $weigth_unit ;
-		if ($weigth_unit) return $weigth_unit ;
+		if ($weigth_unit) {
+			return $weigth_unit;
+		}
 		return $weigth_unit = array(
                 'KG' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_KG')
 		, 'GR' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_GR')
@@ -391,9 +403,12 @@ class ShopFunctions {
 
 		$weigth_unit = self::getWeightUnit();
 		if (isset($weigth_unit[$name]))
-		return $weigth_unit[$name];
-		else
-		return '';
+				{
+					return $weigth_unit[$name];
+				}
+		else {
+			return '';
+		}
 	}
 
 	/**
@@ -422,7 +437,10 @@ class ShopFunctions {
 	 * @author Valérie Isaksen
 	 */
 	static function convertWeigthUnit($value, $from, $to) {
-		if ($from === $to ) return $value;
+
+		if ($from === $to) {
+			return $value;
+		}
 		$value = str_replace(',', '.', $value);
 		$g = 1 ;
 
@@ -466,7 +484,9 @@ class ShopFunctions {
 	static function convertDimensionUnit($value, $from, $to) {
 
 		$value = (float)str_replace(',', '.', $value);
-		if ($from === $to ) return $value;
+		if ($from === $to) {
+			return $value;
+		}
 		$meter = 1 ;
 
 		// transform $value in meters
@@ -509,7 +529,9 @@ class ShopFunctions {
 	 */
 	static function renderLWHUnitList($name, $selected) {
 
-		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
+		if (!class_exists ('VmHTML')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+		}
 
 		$lwh_unit_default = array(   'M' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_NAME_M')
 		,'CM' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_NAME_CM')
@@ -534,7 +556,9 @@ class ShopFunctions {
 	 */
 	static function writePriceConfigLine($obj,$name,$langkey){
 
-		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
+		if (!class_exists ('VmHTML')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+		}
 		$html =
 			'<tr>
 				<td class="key">
@@ -570,9 +594,15 @@ class ShopFunctions {
 		} else {
 			$_shipTo = array();
 			for ($_i = 0; $_i < count($_addressList); $_i++) {
-				if(empty($_addressList[$_i]->virtuemart_user_id)) $_addressList[$_i]->virtuemart_user_id = JFactory::getUser()->id;
-				if(empty($_addressList[$_i]->virtuemart_userinfo_id)) $_addressList[$_i]->virtuemart_userinfo_id = 0;
-				if(empty($_addressList[$_i]->address_type_name)) $_addressList[$_i]->address_type_name = 0;
+				if (empty($_addressList[$_i]->virtuemart_user_id)) {
+					$_addressList[$_i]->virtuemart_user_id = JFactory::getUser ()->id;
+				}
+				if (empty($_addressList[$_i]->virtuemart_userinfo_id)) {
+					$_addressList[$_i]->virtuemart_userinfo_id = 0;
+				}
+				if (empty($_addressList[$_i]->address_type_name)) {
+					$_addressList[$_i]->address_type_name = 0;
+				}
 
 				$_shipTo[] = '<li>'.'<a href="index.php'
 				.'?option=com_virtuemart'
@@ -584,8 +614,8 @@ class ShopFunctions {
 				. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
 
 			}
-			$useXHTTML = empty($view->useXHTML) ? true:$view->useXHTML;
-			$useSSL = empty($view->useSSL) ? false:$view->useSSL;
+			$useXHTTML = empty($view->useXHTML) ? TRUE:$view->useXHTML;
+			$useSSL = empty($view->useSSL) ? FALSE:$view->useSSL;
 
 $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task='.$task.'&new=1&addrtype=ST&virtuemart_user_id[]='.$userModel->getId(),$useXHTTML,$useSSL) .'"><span class="vmicon vmicon-16-editadd"></span> ';
 		$addLink .= JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL').' </a>';
@@ -633,7 +663,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		$categoryModel = VmModel::getModel('category');
 		$level++;
 
-		$categoryModel->_noLimit = true;
+		$categoryModel->_noLimit = TRUE;
 		$app = JFactory::getApplication();
 		$records = $categoryModel->getCategories($app->isSite(), $cid);
 // 		vmTime('getCategories','getCategories');
@@ -644,7 +674,12 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 				$childId = $category->category_child_id;
 
 				if ($childId != $cid) {
-					if(in_array($childId, $selectedCategories)) $selected = 'selected=\"selected\"'; else $selected='';
+					if (in_array ($childId, $selectedCategories)) {
+						$selected = 'selected=\"selected\"';
+					}
+					else {
+						$selected = '';
+					}
 
 					$disabled = '';
 					if( in_array( $childId, $disabledFields )) {
@@ -696,7 +731,9 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 */
 	static public function getCountryByID ($id, $fld = 'country_name'){
 
-		if (empty($id)) return '';
+		if (empty($id)) {
+			return '';
+		}
 
 		$id = (int) $id;
 		$db = JFactory::getDBO();
@@ -724,10 +761,14 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 
 		if(strlen($name)===2){
 			$fieldname = 'country_2_code';
-		} else if(strlen($name)===3){
-			$fieldname = 'country_3_code';
-		} else {
-			$fieldname = 'country_name';
+		}
+		else {
+			if (strlen ($name) === 3) {
+				$fieldname = 'country_3_code';
+			}
+			else {
+				$fieldname = 'country_name';
+			}
 		}
 		$q = 'SELECT `virtuemart_country_id` FROM `#__virtuemart_countries` WHERE `'.$fieldname.'` = "'.$db->getEscaped($name).'"';
 		$db->setQuery($q);
@@ -745,7 +786,10 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @return string state name or code
 	 */
 	static public function getStateByID ($id, $fld = 'state_name'){
-		if (empty($id)) return '';
+
+		if (empty($id)) {
+			return '';
+		}
 		$db = JFactory::getDBO();
 		$q = 'SELECT ' . $db->getEscaped($fld) . ' AS fld FROM `#__virtuemart_states` WHERE virtuemart_state_id = "'.(int)$id.'"';
 		$db->setQuery($q);
@@ -769,10 +813,14 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		$db = JFactory::getDBO();
 		if(strlen($name)===2){
 			$fieldname = 'state_2_code';
-		} else if(strlen($name)===3){
-			$fieldname = 'state_3_code';
-		} else {
-			$fieldname = 'state_name';
+		}
+		else {
+			if (strlen ($name) === 3) {
+				$fieldname = 'state_3_code';
+			}
+			else {
+				$fieldname = 'state_name';
+			}
 		}
 		$q = 'SELECT `virtuemart_state_id` FROM `#__virtuemart_states` WHERE `'.$fieldname.'` = "'.$db->getEscaped($name).'"';
 		$db->setQuery($q);
@@ -788,7 +836,10 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	* @return string Country name or code
 	*/
 	static public function getTaxByID ($id){
-		if (empty($id)) return '';
+
+		if (empty($id)) {
+			return '';
+		}
 
 		$id = (int) $id;
 		$db = JFactory::getDBO();
@@ -808,7 +859,9 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 */
 	static public function getCurrencyByID ($id, $fld = 'currency_name'){
 
-		if (empty($id)) return '';
+		if (empty($id)) {
+			return '';
+		}
 
 		$id = (int) $id;
 		$db = JFactory::getDBO();
@@ -835,10 +888,14 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 
 		if(strlen($name)===2){
 			$fieldname = 'currency_code_2';
-		} else if(strlen($name)===3){
-			$fieldname = 'currency_code_3';
-		} else {
-			$fieldname = 'currency_name';
+		}
+		else {
+			if (strlen ($name) === 3) {
+				$fieldname = 'currency_code_3';
+			}
+			else {
+				$fieldname = 'currency_name';
+			}
 		}
 		$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `'.$fieldname.'` = "'.$db->getEscaped($name).'"';
 		$db->setQuery($q);
@@ -856,7 +913,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @param string $attribs HTML attributes for the list
 	 * @return string <Select /> HTML
 	 */
-	static public function getEnumeratedCategories( $onlyPublished = true, $withParentId = false, $parentId = 0, $name = '', $attribs = '', $key = '', $text = '', $selected = null )
+	static public function getEnumeratedCategories( $onlyPublished = TRUE, $withParentId = FALSE, $parentId = 0, $name = '', $attribs = '', $key = '', $text = '', $selected = NULL )
 	{
 		$categoryModel = VmModel::getModel('category');
 
@@ -897,10 +954,10 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @author Valerie
 	 */
 	static function InvoiceNumberReserved($invoice_number) {
-	   if (($pos=strpos ($invoice_number, 'reservedByPayment_'))=== false ) {
-	       return false;
+	   if (($pos=strpos ($invoice_number, 'reservedByPayment_'))=== FALSE ) {
+	       return FALSE;
 	   } else {
-	        return true;
+	        return TRUE;
 	   }
 	}
 	/**
@@ -929,9 +986,11 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @param string $list_name The name of the select element
 	 * @param string $selected_item The pre-selected value
 	 */
-	static function listDays($list_name,$selected=false, $start=null, $end=null) {
+	static function listDays($list_name,$selected=FALSE, $start=NULL, $end=NULL) {
 		$options = array();
-		if (!$selected) $selected = date('d');
+		if (!$selected) {
+			$selected = date ('d');
+		}
 		$start = $start ? $start : 1;
 		$end = $end ? $end : $start + 30;
 		$options[] = JHTML::_('select.option', 0, JText::_('DAY'));
@@ -950,9 +1009,11 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @param string $selected_item The pre-selected value
 	 *
 	 */
-	static function listMonths($list_name, $selected=false, $class='') {
+	static function listMonths($list_name, $selected=FALSE, $class='') {
 		$options = array();
-		if (!$selected) $selected = date('m');
+		if (!$selected) {
+			$selected = date ('m');
+		}
 
 		$options[] = JHTML::_('select.option', 0, JText::_('MONTH'));
 		$options[] = JHTML::_('select.option', "01", JText::_('JANUARY'));
@@ -977,9 +1038,11 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @param string $list_name The name of the select element
 	 * @param string $selected_item The pre-selected value
 	 */
-	static function listYears($list_name, $selected=false, $start=null, $end=null, $attr='') {
+	static function listYears($list_name, $selected=FALSE, $start=NULL, $end=NULL, $attr='') {
 		$options = array();
-		if (!$selected) $selected = date('Y');
+		if (!$selected) {
+			$selected = date ('Y');
+		}
 		$start = $start ? $start : date('Y');
 		$end = $end ? $end : $start + 7;
 		$options[] = JHTML::_('select.option', 0, JText::_('YEAR'));
@@ -989,14 +1052,14 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		return JHTML::_('select.genericlist', $options, $list_name, $attr, 'value', 'text', $selected);
 	}
 
-	static function checkboxListArr( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=null, $required=0  ) {
+	static function checkboxListArr( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=NULL, $required=0  ) {
 		reset( $arr );
 		$html = array();
 		$n=count( $arr );
 		for ($i=0; $i < $n; $i++ ) {
 			$k = $arr[$i]->$key;
 			$t = $arr[$i]->$text;
-			$id = isset($arr[$i]->id) ? $arr[$i]->id : null;
+			$id = isset($arr[$i]->id) ? $arr[$i]->id : NULL;
 
 			$extra = '';
 			$extra .= $id ? " id=\"" . $arr[$i]->id . "\"" : '';
@@ -1019,10 +1082,10 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		return $html;
 	}
 
-	function checkboxList( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=null, $required=0 ) {
+	function checkboxList( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=NULL, $required=0 ) {
 		return "\n\t".implode("\n\t", vmCommonHTML::checkboxListArr( $arr, $tag_name, $tag_attribs,  $key, $text,$selected, $required ))."\n";
 	}
-	function checkboxListTable( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=null, $cols=0, $rows=0, $size=0, $required=0 ) {
+	function checkboxListTable( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=NULL, $cols=0, $rows=0, $size=0, $required=0 ) {
 		$cellsHtml = self::checkboxListArr( $arr, $tag_name, $tag_attribs,  $key, $text,$selected, $required );
 		return self::list2Table( $cellsHtml, $cols, $rows, $size );
 	}
@@ -1041,7 +1104,9 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 			if ($rows) {
 				$return = "\n\t<table class='vmMulti'".$localstyle.">";
 				$cols = ($cells-($cells % $rows)) / $rows;      // int div
-				if ($cells % $rows) $cols++;
+				if ($cells % $rows) {
+					$cols++;
+				}
 				$lineIdx=0;
 				for ($lineIdx=0 ; $lineIdx < min($rows, $cells) ; $lineIdx++) {
 					$return .= "\n\t\t<tr>";
@@ -1051,19 +1116,23 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 					$return .= "</tr>\n";
 				}
 				$return .= "\t</table>\n";
-			} else if ($cols) {
-				$return = "\n\t<table class='vmMulti'".$localstyle.">";
-				$idx=0;
-				while ($cells) {
-					$return .= "\n\t\t<tr>";
-					for ($i=0, $n=min($cells,$cols); $i < $n; $i++, $cells-- ) {
-						$return .= "<td>".$cellsHtml[$idx++]."</td>";
+			}
+			else {
+				if ($cols) {
+					$return = "\n\t<table class='vmMulti'" . $localstyle . ">";
+					$idx = 0;
+					while ($cells) {
+						$return .= "\n\t\t<tr>";
+						for ($i = 0, $n = min ($cells, $cols); $i < $n; $i++, $cells--) {
+							$return .= "<td>" . $cellsHtml[$idx++] . "</td>";
+						}
+						$return .= "</tr>\n";
 					}
-					$return .= "</tr>\n";
+					$return .= "\t</table>\n";
 				}
-				$return .= "\t</table>\n";
-			} else {
-				$return = "\n\t".implode("\n\t ", $cellsHtml)."\n";
+				else {
+					$return = "\n\t" . implode ("\n\t ", $cellsHtml) . "\n";
+				}
 			}
 		}
 		return $return;
@@ -1092,11 +1161,11 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 			$vatNumber 		= substr($vat_number, 2);
 
 			if ( strlen($countryCode) != 2 || is_numeric(substr($countryCode, 0, 1)) || is_numeric(substr($countryCode, 1, 2)) ) {
-				return false;//format error 'message' => 'Your VAT Number syntax is not correct. You should have something like this: BE805670816B01'
+				return FALSE;//format error 'message' => 'Your VAT Number syntax is not correct. You should have something like this: BE805670816B01'
 			}
 
 			if ( $args['country'] != $countryCode ) {
-				return false;//'message' => 'Your VAT Number is not valid for the selected country.'
+				return FALSE;//'message' => 'Your VAT Number is not valid for the selected country.'
 			}
 
 			$client = new SoapClient("http://ec.europa.eu/taxation_customs/vies/services/checkVatService.wsdl");
@@ -1105,12 +1174,12 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 			$result = $client->checkVat($params);
 
 			if ( !$result->valid ) {
-				return false ;// 'message' => sprintf('Invalid VAT Number. Check the validity on the customer VAT Number via <a href="%s">Europa VAT Number validation webservice</a>', 'http://ec.europa.eu/taxation_customs/vies/lang.do?fromWhichPage=vieshome'));
+				return FALSE ;// 'message' => sprintf('Invalid VAT Number. Check the validity on the customer VAT Number via <a href="%s">Europa VAT Number validation webservice</a>', 'http://ec.europa.eu/taxation_customs/vies/lang.do?fromWhichPage=vieshome'));
 			} else {
-				return true;
+				return TRUE;
 			}
 		}
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -1138,7 +1207,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @param boolean $reversed When true, masks the end. Masks from the beginning at default
 	 * @return string The string masked by asteriks
 	 */
-	public function asteriskPad($str, $display_length, $reversed = false) {
+	public function asteriskPad($str, $display_length, $reversed = FALSE) {
 
 		$total_length = strlen($str);
 
@@ -1168,7 +1237,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @return	string	Either the icon to move an item up or a space
 	 * @since	1.0
 	 */
-	function orderUpIcon($i, $condition = true, $task = 'orderup', $alt = 'COM_VIRTUEMART_MOVE_UP', $enabled = true)
+	function orderUpIcon($i, $condition = TRUE, $task = 'orderup', $alt = 'COM_VIRTUEMART_MOVE_UP', $enabled = TRUE)
 	{
 		$alt = JText::_($alt);
 
@@ -1199,7 +1268,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @return	string	Either the icon to move an item down or a space
 	 * @since	1.0
 	 */
-	function orderDownIcon($i, $n, $condition = true, $task = 'orderdown', $alt = 'Move Down', $enabled = true)
+	function orderDownIcon($i, $n, $condition = TRUE, $task = 'orderdown', $alt = 'Move Down', $enabled = TRUE)
 	{
 		$alt = JText::_($alt);
 
@@ -1246,9 +1315,41 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		//'l.metadesc', 'l.metakey', 'l.metarobot', 'l.metaauthor'
 		}
 
-
 		return $filterArray ;
 	}
+
+	/**
+	 * Returns developer information for a plugin
+	 * Returns a 2 link with background image, should look like a button to open contact page or manual
+	 * @static
+	 * @param $title string Title of the plugin
+	 * @param $intro string Intro text
+	 * @param $logolink url Url to logo images, use here the path and then as image names contact.png and manual.png
+	 * @param $developer string Name of the developer/company
+	 * @param $contactlink url Url to the contact form of the developer for support
+	 * @param $manlink url URL to the manual for this specific plugin
+	 * @return string
+	 */
+	static function display3rdInfo($title,$intro,$developer,$logolink,$contactlink,$manlink,$width='200px',$height='40px'){
+
+		$html = $intro;
+
+		$html .= self::displayLinkButton(JText::sprintf('COM_VIRTUEMART_THRD_PARTY_CONTACT',$developer),$contactlink, $logolink.'/contact.png',$width,$height);
+		$html .='<br />';
+		$html .= self::displayLinkButton(JText::sprintf('COM_VIRTUEMART_THRD_PARTY_MANUAL',$title),$manlink, $logolink.'/manual.png',$width,$height);
+
+		return $html;
+	}
+
+
+	static function displayLinkButton($title, $link, $bgrndImage,$width,$height,$additionalStyles=''){
+
+		$html = '<div style="line-height:'.$height.';background-image:url('.$bgrndImage.');width:'.$width.';height:'.$height.';'.$additionalStyles.'">'
+				.'<a  title="'.$title.'" href="'.$link.'" target="_blank" >'.$title .'</a></div>';
+
+		return $html;
+	}
+
 }
 
 //pure php no tag

@@ -1296,17 +1296,20 @@ class VirtueMartCart {
 
 		$this->userDetails = $this->user->getUser();
 
+		$_addressBT = array();
+
 		// Shipment address(es)
 		if($this->user){
 			$_addressBT = $this->user->getUserAddressList($this->userDetails->JUser->get('id') , 'BT');
 
 			// Overwrite the address name for display purposes
+			if(empty($_addressBT[0])) $_addressBT[0] = new stdClass();
 			$_addressBT[0]->address_type_name = JText::_('COM_VIRTUEMART_ACC_BILL_DEF');
 
 			$_addressST = $this->user->getUserAddressList($this->userDetails->JUser->get('id') , 'ST');
 
 		} else {
-			$_addressBT = array();
+
 			$_addressBT[0]->address_type_name = '<a href="index.php'
 			.'?option=com_virtuemart'
 			.'&view=user'

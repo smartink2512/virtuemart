@@ -27,12 +27,8 @@ if (!class_exists('vmPSPlugin')) {
 
 class plgVmPaymentStandard extends vmPSPlugin {
 
-	// instance of class
-	public static $_this = false;
-
 	function __construct(& $subject, $config) {
-		//if (self::$_this)
-		//   return self::$_this;
+
 		parent::__construct($subject, $config);
 		// 		vmdebug('Plugin stuff',$subject, $config);
 		$this->_loggable   = true;
@@ -40,7 +36,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 
 		$varsToPush = $this->getVarsToPush();
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
-		// self::$_this = $this;
+
 	}
 
 	/**

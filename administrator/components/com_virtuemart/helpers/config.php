@@ -48,7 +48,6 @@ require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
 
 if (!class_exists( 'VmModel' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
-// if(!class_exists('VmTable')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 
 /**
  * This function shows an info message, the messages gets translated with JText::,

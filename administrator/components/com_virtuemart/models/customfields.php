@@ -78,7 +78,10 @@ class VirtueMartModelCustomfields extends VmModel {
 
 			$this->_db->setQuery ($query);
 			$child->field = $this->_db->loadObject ();
-			$child->display = $this->displayType ($child->virtuemart_product_id, 'C');
+			$customfield = new stdClass();
+			$customfield->custom_value = $child->virtuemart_product_id;
+			$customfield->field_type = 'C';
+			$child->display = $this->displayType ($customfield);
 			if ($child->field) {
 				$data[] = $child;
 			}
@@ -621,7 +624,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				}
 				else {
-					$field->display = $this->displayType ($field->custom_value, $field->field_type, $field->is_list, $field->custom_price, $row, 0, $field->virtuemart_custom_id);
+					$field->display = $this->displayType ($field, $row);
 				}
 				$row++;
 			}
@@ -643,7 +646,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		if ($productCustoms = $this->_db->loadObjectList ()) {
 			$row = 0;
 			foreach ($productCustoms as & $field) {
-				$field->display = $this->displayType ($field->custom_value, $field->field_type, $field->is_list, $field->custom_price, $row, 0);
+				$field->display = $this->displayType ($field, $row);
 				$row++;
 			}
 			return $productCustoms;
@@ -664,7 +667,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		if ($productCustoms = $this->_db->loadObjectList ()) {
 			$row = 0;
 			foreach ($productCustoms as & $field) {
-				$field->display = $this->displayType ($field->custom_value, $field->field_type, $field->is_list, $field->custom_price, $row, 0);
+				$field->display = $this->displayType ($field, $row);
 				$row++;
 			}
 			return $productCustoms;
@@ -804,7 +807,9 @@ class VirtueMartModelCustomfields extends VmModel {
 									else {
 										$price = ($productCustom->custom_price === '') ? '' : $free;
 									}
-									$group->display .= $this->displayType ($productCustom->custom_value, $group->field_type, 0, '', $row, 1);
+									$productCustom->field_type = $group->field_type;
+									$productCustom->is_cart = 1;
+									$group->display .= $this->displayType ($productCustom->custom_value, $row);
 									$checked = '';
 								}
 							}
@@ -818,7 +823,11 @@ class VirtueMartModelCustomfields extends VmModel {
 									else {
 										$price = ($productCustom->custom_price === '') ? '' : $free;
 									}
-									$group->display .= '<input id="' . $productCustom->value . '" ' . $checked . ' type="radio" value="' . $productCustom->value . '" name="customPrice[' . $row . '][' . $group->virtuemart_customfield_id . ']" /><label for="' . $productCustom->value . '">' . $this->displayType ($productCustom->custom_value, $group->field_type, 0, '', $row, 1) . ' ' . $price . '</label>';
+									$productCustom->field_type = $group->field_type;
+									$productCustom->is_cart = 1;
+									$group->display .= '<input id="' . $productCustom->value . '" ' . $checked . ' type="radio" value="' .
+										$productCustom->value . '" name="customPrice[' . $row . '][' . $group->virtuemart_customfield_id . ']" /><label
+										for="' . $productCustom->value . '">' . $this->displayType ($productCustom, $row) . ' ' . $price . '</label>';
 									$checked = '';
 								}
 							}
@@ -837,7 +846,15 @@ class VirtueMartModelCustomfields extends VmModel {
 	 * Formating front display by roles
 	 *  for product only !
 	 */
-	public function displayType ($value, $type, $is_list = 0, $price = 0, $row = '', $is_cart = 0, $virtuemart_custom_id = 0) {
+	public function displayType ($customfield, $row = '') {
+
+		$virtuemart_custom_id = isset($customfield->virtuemart_custom_id)? $customfield->virtuemart_custom_id:0;
+		$value = $customfield->custom_value;
+		$type = $customfield->field_type;
+		$is_list = isset($customfield->is_list)? $customfield->is_list:0;
+		$price = isset($customfield->custom_price)? $customfield->custom_price:'';
+		$is_cart = isset($customfield->is_cart)? $customfield->is_cart:0;
+
 
 		if (!class_exists ('CurrencyDisplay'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
@@ -889,19 +906,10 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					$selected = JRequest::getInt ('virtuemart_product_id');
 
-					// 					$product = $productModel->getProductSingle($selected);
-
-					// 					if($product->product_parent_id == 0){
-
-					// 						$options[] = array( 'value' => JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.$virtuemart_category_id.'&virtuemart_product_id='.$product->virtuemart_product_id) ,'text' =>$product->product_name);
-					$uncatChildren = $productModel->getUncategorizedChildren ($selected);
-					// 					} else {
-					// 						$parent = $productModel->getProductSingle($product->virtuemart_parent_id);
-
-					// 						$options[] = array( 'value' => JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.$virtuemart_category_id.'&virtuemart_product_id='.$parent->virtuemart_product_id) ,'text' =>$parent->product_name);
-					// 						$uncatChildren = $productModel->getUncategorizedChildren($product->virtuemart_parent_id);
-
-					// 					}
+					//TODO OpenGlobal add the option of $withParent via customparams
+					//vmdebug('displayType',$customfield->custom_params);
+					$withParent = FALSE;
+					$uncatChildren = $productModel->getUncategorizedChildren ($withParent);
 
 					foreach ($uncatChildren as $k => $child) {
 						$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id']), 'text' => $child['product_name']);

@@ -315,9 +315,9 @@ abstract class vmCustomPlugin extends vmPlugin {
 	 * called by customfields inputTypePlugin
 	 *
 	 */
-	public function plgVmAddToSearch (&$where, $searchplugin) {
+/*	public function plgVmAddToSearch (&$where, $searchplugin) {
 
-	}
+	}*/
 
 	/**
 	 * render the plugin with param  to display on product edit
