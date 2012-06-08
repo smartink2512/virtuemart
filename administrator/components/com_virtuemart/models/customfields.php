@@ -809,7 +809,7 @@ class VirtueMartModelCustomfields extends VmModel {
 									}
 									$productCustom->field_type = $group->field_type;
 									$productCustom->is_cart = 1;
-									$group->display .= $this->displayType ($productCustom->custom_value, $row);
+									$group->display .= $this->displayType ($productCustom, $row);
 									$checked = '';
 								}
 							}
