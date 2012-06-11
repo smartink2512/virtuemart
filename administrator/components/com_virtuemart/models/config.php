@@ -302,7 +302,7 @@ class VirtueMartModelConfig extends JModel {
 
 		if(empty($safePath)){
 			$lastIndex= strrpos(JPATH_ROOT,DS);
-			$suggestedPath = substr(JPATH_ROOT,0,$lastIndex).DS.'vmfiles';
+			$suggestedPath = substr(JPATH_ROOT,0,$lastIndex).DS.'vmfiles'.DS;
 			VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
 		} else {
 			$exists = JFolder::exists($safePath);
