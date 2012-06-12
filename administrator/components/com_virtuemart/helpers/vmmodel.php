@@ -269,7 +269,7 @@ class VmModel extends JModel {
 
 		//There is a strange error in the frontend giving back 9 instead of 10, or 24 instead of 25
 		//This functions assures that the steps of limitstart fit with the limit
-		if(!empty($limit)){
+		if(empty($limit)){
 			$limit = 1;
 		}
 		$limitStart = ceil((float)$limitStart/(float)$limit) * $limit;
