@@ -52,48 +52,6 @@ class VirtueMartModelCategory extends VmModel {
 	}
 
 
-	/**
-	 * Override
-	 * @see VmModel::setPaginationLimits()
-	 */
-	public function setPaginationLimits(){
-
-		$app = JFactory::getApplication();
-		$view = JRequest::getWord('view');
-
-		$cateid = JRequest::getInt('virtuemart_category_id',0);
-
-		$limit = $app->getUserStateFromRequest('com_virtuemart.'.$view.$cateid.'.limit', 'limit',  VmConfig::get('list_limit',20), 'int');
-		$this->setState('limit', $limit);
-		$this->setState('com_virtuemart.'.$view.$cateid.'.limit',$limit);
-
-		if($app->isSite() and $cateid!=0 ){
-			$lastCatId = ShopFunctionsf::getLastVisitedCategoryId();
-			if($lastCatId!=$cateid){
-				$limitStart = 0;
-			} else {
-				$limitStart = $app->getUserStateFromRequest('com_virtuemart.'.$view.'.limitstart', 'limitstart',  JRequest::getInt('limitstart',0), 'int');
-			}
-		} else {
-			$limitStart = $app->getUserStateFromRequest('com_virtuemart.'.$view.'.limitstart', 'limitstart',  JRequest::getInt('limitstart',0), 'int');
-		}
-
-		//There is a strange error in the frontend giving back 9 instead of 10, or 24 instead of 25
-		//This functions assures that the steps of limitstart fit with the limit
-		if(empty($limit)){
-			$limit = 1;
-		}
-		$limitStart = ceil((float)$limitStart/(float)$limit) * $limit;
-
-		$this->setState('limitstart', $limitStart);
-		$this->setState('com_virtuemart.'.$view.$cateid.'.limitstart',$limitStart);
-
-		$this->_limitStart = $limitStart;
-		$this->_limit = $limit;
-
-		return array($this->_limitStart,$this->_limit);
-	}
-
     /**
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *

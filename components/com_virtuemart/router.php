@@ -178,7 +178,7 @@ function virtuemartBuildRoute(&$query) {
 				$query['Itemid'] = $jmenu['virtuemart'];
 			}
 			if (isset($query['task'])) {
-				vmdebug('my task in user view',$query['task']);
+				//vmdebug('my task in user view',$query['task']);
 				if($query['task']=='editaddresscart'){
 					if ($query['addrtype'] == 'ST'){
 						$segments[] = $helper->lang('editaddresscartST') ;
@@ -574,7 +574,7 @@ function virtuemartParseRoute($segments) {
 		}
 	}
 
-vmdebug('Router vars',$vars);
+//vmdebug('Router vars',$vars);
 
 	return $vars;
 }

@@ -235,9 +235,6 @@ class VmMediaHandler {
 		} else {
 			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 
-			// 				$lastIndexOfSlash= strrpos($this->file_url,'/');
-			// 				$name = substr($this->file_url,$lastIndexOfSlash+1);
-
 			if($this->file_is_forSale==1){
 
 				$rdspos = strrpos($this->file_url,DS);
@@ -262,14 +259,14 @@ class VmMediaHandler {
 					if(JFile::exists($file_url)){
 						$this->file_url = $file_url;
 					} else {
-						vmdebug('MediaHandler, file does not exist in safepath '.$file_url);
+					//	vmdebug('MediaHandler, file does not exist in safepath '.$file_url);
 					}
 				} else {
 					$pathToTest = JPATH_ROOT.DS.str_replace('/',DS,$file_url);
 					if(JFile::exists($pathToTest)){
 						$this->file_url = $file_url;
 					} else {
-						vmdebug('MediaHandler, file does not exist in '.$pathToTest);
+					//	vmdebug('MediaHandler, file does not exist in '.$pathToTest);
 					}
 				}
 
