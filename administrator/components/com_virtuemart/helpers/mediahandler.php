@@ -237,23 +237,42 @@ class VmMediaHandler {
 
 			// 				$lastIndexOfSlash= strrpos($this->file_url,'/');
 			// 				$name = substr($this->file_url,$lastIndexOfSlash+1);
-			$name = str_replace($this->file_url_folder,'',$this->file_url);
+
+			if($this->file_is_forSale==1){
+
+				$rdspos = strrpos($this->file_url,DS);
+				if($rdspos!==false){
+					$name = substr($this->file_url,$rdspos+1);
+				}
+				//vmdebug('$name',$this->file_url,$rdspos,$name);
+			} else {
+				//This construction is only valid for the images, it is for own structuring using folders
+				$name = str_replace($this->file_url_folder,'',$this->file_url);
+			}
+
 
 			if(!empty($name) && $name !=='/'){
 				$this->file_name = JFile::stripExt($name);
+				$this->file_extension = strtolower(JFile::getExt($name));
 
 				//Ensure using right directory
-				if($this->file_is_forSale==0){
-					$file_url = $this->getMediaUrlByView($type).$this->file_name;
+				$file_url = $this->getMediaUrlByView($type).$name;
+
+				if($this->file_is_forSale==1){
+					if(JFile::exists($file_url)){
+						$this->file_url = $file_url;
+					} else {
+						vmdebug('MediaHandler, file does not exist in safepath '.$file_url);
+					}
 				} else {
-					$file_url = vmConfig::get('forSale_path');
+					$pathToTest = JPATH_ROOT.DS.str_replace('/',DS,$file_url);
+					if(JFile::exists($pathToTest)){
+						$this->file_url = $file_url;
+					} else {
+						vmdebug('MediaHandler, file does not exist in '.$pathToTest);
+					}
 				}
 
-				if(JFile::exists($file_url)){
-					$this->file_url = $file_url;
-				}
-
-				$this->file_extension = strtolower(JFile::getExt($name));
 			}
 
 
