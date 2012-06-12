@@ -20,7 +20,7 @@ class JElementAuthorizenetCurl extends JElement {
 	var $_name = 'authorizenetcurl';
 	function fetchElement ($name, $value, &$node, $control_name) {
 
-		if (!function_exists ('curl_init')) {
+		if (!function_exists ('curl_init') or !function_exists ('curl_exec')) {
 			return JText::_ ('VMPAYMENT_AUTHORIZENET_CURL_LIBRARY_NOT_INSTALLED');
 		}
 		else {
