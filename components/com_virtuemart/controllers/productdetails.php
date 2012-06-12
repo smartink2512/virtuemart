@@ -59,13 +59,24 @@ class VirtueMartControllerProductdetails extends JController {
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
 		$vars = array();
-		$min = VmConfig::get('vm_asks_minimum_comment_length', 50)+1;
-		$max = VmConfig::get('vm_asks_maximum_comment_length', 2000)-1 ;
+		$min = VmConfig::get('asks_minimum_comment_length', 50)+1;
+		$max = VmConfig::get('asks_maximum_comment_length', 2000)-1 ;
 		$commentSize = mb_strlen( JRequest::getString('comment') );
 		$validMail = filter_var(JRequest::getVar('email'), FILTER_VALIDATE_EMAIL);
-		if ( $commentSize<$min || $commentSize>$max || !$validMail ) {
-				$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id='.JRequest::getInt('virtuemart_product_id',0) ),JText::_('COM_VIRTUEMART_COMMENT_NOT_VALID_JS'));
-				return ;
+
+		if( $commentSize<$min or $commentSize>$max or !$validMail){
+			$errmsg = JText::_('COM_VIRTUEMART_COMMENT_NOT_VALID_JS');
+			if ( $commentSize<$min ) {
+				vmdebug('mailAskquestion',$min,$commentSize);
+				$errmsg = JText::_('COM_VIRTUEMART_ASKQU_CS_MIN');;
+			} else if ( $commentSize>$max ) {
+				$errmsg = JText::_('COM_VIRTUEMART_ASKQU_CS_MAX');;
+			} else if (!$validMail){
+				$errmsg = JText::_('COM_VIRTUEMART_ASKQU_INV_MAIL');;
+			}
+
+			$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id='.JRequest::getInt('virtuemart_product_id',0) ),$errmsg);
+			return ;
 		}
 
 		$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id',0);

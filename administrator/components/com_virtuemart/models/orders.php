@@ -795,10 +795,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				$variantmods = $calculator->parseModifier($priceKey);
 // 				vmdebug('_createOrderLines '.$priceKey,$_prod,$variantmods);
 				$row=0 ;
-				$product_id = (int)$priceKey;
+				//$product_id = (int)$priceKey;
 				$_prod->product_attribute = '';
 				$product_attribute = array();
-				foreach($variantmods as $variant=>$selected){
+				//foreach($variantmods as $variant=>$selected){
+				foreach($variantmods as $selected=>$variant){
 					if ($selected) {
 						if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 						$productCustom = VirtueMartModelCustomfields::getProductCustomFieldCart ($selected );
@@ -814,6 +815,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 							if(!empty($_prod->param)){
 								foreach($_prod->param as $k => $plg){
 									if ($k == $variant){
+										//TODO productCartId
 										$product_attribute[$selected] = $plg ;
 									}
 								}

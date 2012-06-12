@@ -410,11 +410,14 @@ class VirtueMartCart {
 
 							if ( is_array($custom_fieldId) ) {
 								foreach ($custom_fieldId as $userfieldId => $userfield) {
-									$productKey .= (int)$customId . ':' . (int)$userfieldId . ';';
+									//$productKey .= (int)$customId . ':' . (int)$userfieldId . ';';
+									$productKey .= (int)$custom_fieldId . ':' .(int)$customId . ';';
 // 									$product->userfield[(int)$customId . '-' . (int)$userfieldId] = $userfield;  //not used
 								}
 							} else {
-								$productKey .= (int)$customId . ':' .(int)$custom_fieldId . ';';
+								//TODO productCartId
+								//$productKey .= (int)$customId . ':' .(int)$custom_fieldId . ';';
+								$productKey .= (int)$custom_fieldId . ':' .(int)$customId . ';';
 							}
 
 						}
@@ -986,41 +989,6 @@ class VirtueMartCart {
 	}
 
 
-	/**
-	 * prepare display of cart
-	 *
-	 * @author RolandD
-	 * @author Max Milbers
-	 * @access public
-	 */
-	public function prepareCartData($checkAutomaticSelected=true){
-
-		// Get the products for the cart
-// 		$prices = array();
-		$product_prices = $this->getCartPrices($checkAutomaticSelected);
-
-		if (empty($product_prices)) return null;
-		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-		$currency = CurrencyDisplay::getInstance();
-
-
-		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-		$calculator = calculationHelper::getInstance();
-
-// 		$this->prices = $prices;
-
-		$this->pricesCurrency = $currency->getCurrencyForDisplay();
-
-		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$this->paymentCurrency));
-		$cartData = $calculator->getCartData();
-
-// 		$this->setCartIntoSession();
-		return $cartData ;
-	}
-
 	function saveAddressInCart($data, $type, $putIntoSession = true) {
 
 		// VirtueMartModelUserfields::getUserFields() won't work
@@ -1224,6 +1192,41 @@ class VirtueMartCart {
 		$this->prepareAddressDataInCart();
 		$this->prepareVendor();
 
+	}
+
+	/**
+	 * prepare display of cart
+	 *
+	 * @author RolandD
+	 * @author Max Milbers
+	 * @access public
+	 */
+	public function prepareCartData($checkAutomaticSelected=true){
+
+		// Get the products for the cart
+// 		$prices = array();
+		$product_prices = $this->getCartPrices($checkAutomaticSelected);
+
+		if (empty($product_prices)) return null;
+		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+		$currency = CurrencyDisplay::getInstance();
+
+
+		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		$calculator = calculationHelper::getInstance();
+
+// 		$this->prices = $prices;
+
+		$this->pricesCurrency = $currency->getCurrencyForDisplay();
+
+		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+		JPluginHelper::importPlugin('vmpayment');
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$this->paymentCurrency));
+		$cartData = $calculator->getCartData();
+
+// 		$this->setCartIntoSession();
+		return $cartData ;
 	}
 
 	private function prepareCartPrice( $prices ){

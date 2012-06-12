@@ -904,7 +904,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					$productModel = VmModel::getModel ('product');
 
-					$selected = JRequest::getInt ('virtuemart_product_id');
+					$selected = JRequest::getInt ('virtuemart_product_id',0);
 
 					//TODO OpenGlobal add the option of $withParent via customparams
 					//vmdebug('displayType',$customfield->custom_params);

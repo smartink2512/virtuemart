@@ -141,36 +141,6 @@ defined('_JEXEC') or die('Restricted access');
 			<tr> */?>
 			<tr>
 	    	<td class="key">
-				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_POOS_ENABLE_EXPLAIN'); ?>">
-				<label for="stockhandle"><?php echo JText::_('COM_VIRTUEMART_CFG_POOS_ENABLE') ?></label>
-				</span>
-	   	 	</td>
-	    	<td><fieldset class="checkboxes">
-<?php		$options = array(
-				'none'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_NONE'),
-				'disableit'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_IT'),
-				 'disableadd'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_ADD'),
-				'risetime'	=> JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_RISE_AVATIME')
- 			);
-			echo VmHTML::radioList('stockhandle', $this->config->get('stockhandle','none'),$options);
-			?>
-			 <div style="font-weight:bold;">
-					     <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_AVAILABILITY_EXPLAIN'); ?>">
-							<?php echo JText::_('COM_VIRTUEMART_AVAILABILITY') ?>
-						    </span>
-			 </div>
-
-						<input type="text" class="inputbox" id="product_availability" name="rised_availability" value="<?php echo $this->config->get('rised_availability'); ?>" />
-						<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>'.JText::_('COM_VIRTUEMART_AVAILABILITY').'</b><br/ >'.JText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP1') ?>"></span>
-
-						<?php echo JHTML::_('list.images', 'image', $this->config->get('rised_availability'), " ", $this->imagePath); ?>
-						<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>'.JText::_('COM_VIRTUEMART_AVAILABILITY').'</b><br/ >'.JText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP2',  $this->imagePath ) ?>"></span>
-
-					<img border="0" id="imagelib" alt="<?php echo JText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php if ($this->config->get('rised_availability')) echo JURI::root(true).$this->imagePath.$this->config->get('rised_availability');?>"/>
-			</fieldset></td>
-			</tr>
-				<tr>
-	    	<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_DISPLAY_STOCK_EXPLAIN'); ?>">
 				<label for="display_stock"><?php echo JText::_('COM_VIRTUEMART_DISPLAY_STOCK') ?></label>
 				</span>
@@ -241,6 +211,32 @@ echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lw
 	</fieldset>
 
 <td>
+			<fieldset class="checkboxes">
+				<legend><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_POOS_ENABLE_EXPLAIN'); ?>">
+					<?php echo JText::_('COM_VIRTUEMART_CFG_POOS_ENABLE') ?></legend></span>
+				<?php		$options = array(
+				'none'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_NONE'),
+				'disableit'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_IT'),
+				'disableadd'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_ADD'),
+				'risetime'	=> JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_RISE_AVATIME')
+			);
+
+				echo VmHTML::radioList('stockhandle', $this->config->get('stockhandle','none'),$options);
+				?>
+				<div style="font-weight:bold;">
+					     <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_AVAILABILITY_EXPLAIN'); ?>">
+							<?php echo JText::_('COM_VIRTUEMART_AVAILABILITY') ?>
+						    </span>
+				</div>
+
+				<input type="text" class="inputbox" id="product_availability" name="rised_availability" value="<?php echo $this->config->get('rised_availability'); ?>" />
+				<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>'.JText::_('COM_VIRTUEMART_AVAILABILITY').'</b><br/ >'.JText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP1') ?>"></span>
+
+				<?php echo JHTML::_('list.images', 'image', $this->config->get('rised_availability'), " ", $this->imagePath); ?>
+				<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>'.JText::_('COM_VIRTUEMART_AVAILABILITY').'</b><br/ >'.JText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP2',  $this->imagePath ) ?>"></span>
+
+				<img border="0" id="imagelib" alt="<?php echo JText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php if ($this->config->get('rised_availability')) echo JURI::root(true).$this->imagePath.$this->config->get('rised_availability');?>"/>
+			</fieldset>
 			<fieldset>
 				<legend>
 
@@ -248,7 +244,49 @@ echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lw
 
 				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_TITLE') ?></legend>
 				<table class="admintable">
-
+					<tr>
+						<td class="key"><span
+							class="hasTip"
+							title="<?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH_TIP'); ?>">
+								<label for="reviews_autopublish"><?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH') ?>
+								</label> </span>
+						</td>
+						<td>
+							<?php echo VmHTML::checkbox('reviews_autopublish', $this->config->get('reviews_autopublish')); ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><span
+							class="hasTip"
+							title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP'); ?>">
+								<label for="reviews_minimum_comment_length"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH') ?>
+								</label> </span>
+						</td>
+						<td><input
+							type="text"
+							size="6"
+							id="reviews_minimum_comment_length"
+							name="reviews_minimum_comment_length"
+							class="inputbox"
+							value="<?php echo $this->config->get('reviews_minimum_comment_length'); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><span
+							class="hasTip"
+							title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP'); ?>">
+								<label><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH'); ?>
+								</label> </span>
+						</td>
+						<td><input
+							type="text"
+							size="6"
+							id="reviews_maximum_comment_length"
+							name="reviews_maximum_comment_length"
+							class="inputbox"
+							value="<?php echo $this->config->get('reviews_maximum_comment_length'); ?>" />
+						</td>
+					</tr>
 					<tr>
 						<td class="key"><span
 							class="hasTip"
@@ -328,49 +366,7 @@ echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lw
 						echo VmHTML::radioList('ratingMode', $this->config->get('ratingMode',2),$showReviewFor); ?>
 							</fieldset></td>
 					</tr>
-					<tr>
-						<td class="key"><span
-							class="hasTip"
-							title="<?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH_TIP'); ?>">
-								<label for="reviews_autopublish"><?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH') ?>
-							</label> </span>
-						</td>
-						<td>
-						<?php echo VmHTML::checkbox('reviews_autopublish', $this->config->get('reviews_autopublish')); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><span
-							class="hasTip"
-							title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP'); ?>">
-								<label for="reviews_minimum_comment_length"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH') ?>
-							</label> </span>
-						</td>
-						<td><input
-							type="text"
-							size="6"
-							id="reviews_minimum_comment_length"
-							name="reviews_minimum_comment_length"
-							class="inputbox"
-							value="<?php echo $this->config->get('reviews_minimum_comment_length'); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><span
-							class="hasTip"
-							title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP'); ?>">
-								<label><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH'); ?>
-							</label> </span>
-						</td>
-						<td><input
-							type="text"
-							size="6"
-							id="reviews_maximum_comment_length"
-							name="reviews_maximum_comment_length"
-							class="inputbox"
-							value="<?php echo $this->config->get('reviews_maximum_comment_length'); ?>" />
-						</td>
-					</tr>
+
 				</table>
 			</fieldset>
 		</td>

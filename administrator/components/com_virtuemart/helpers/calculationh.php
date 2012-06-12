@@ -1308,7 +1308,9 @@ class calculationHelper {
 						if($index2!=false){
 							$variant = substr($item, 0, $index2);
 							$selected = substr($item, $index2 + 1);
-							$variants[$selected] = $variant;
+							//TODO productCartId
+							$variants[$selected] = $variant; //this works atm not for the cart
+							//$variants[$variant] = $selected; //but then the orders are broken
 						}
 					}
 				}
