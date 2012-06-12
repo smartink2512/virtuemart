@@ -365,7 +365,9 @@ abstract class vmPlugin extends JPlugin {
 	 * @return bool
 	 */
 	protected function declarePluginParams ($psType, $name, $id, &$data) {
-		// 		if($this->selectedThis($psType,$name,$id)){
+		if(!$this->selectedThis($psType,$name,$id)){
+			return FALSE;
+		}
 		if (!class_exists ('VmTable')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtable.php');
 		}

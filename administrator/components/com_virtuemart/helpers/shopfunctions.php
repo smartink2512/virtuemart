@@ -295,7 +295,7 @@ class ShopFunctions {
 		}
 
 		$listHTML = '<select class="inputbox multiple" id="virtuemart_state_id" ' . $attrs . '>
-						<OPTION value="">' . JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</OPTION>
+						<option value="">' . JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>
 						</select>';
 
 		return $listHTML;
@@ -487,7 +487,7 @@ class ShopFunctions {
 		if ($from === $to) {
 			return $value;
 		}
-		$meter = 1 ;
+		$meter = 1*$value;
 
 		// transform $value in meters
 		switch ($from) {

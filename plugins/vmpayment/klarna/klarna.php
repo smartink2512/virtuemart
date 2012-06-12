@@ -336,7 +336,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			return NULL;
 		}
 
-		$pclasses = KlarnaHandler::getPClasses (NULL, KlarnaHandler::getKlarnaMode ($method), $cData);
+		$pclasses = KlarnaHandler::getPClasses (NULL, KlarnaHandler::getKlarnaMode ($method,$cData['country_code_3']), $cData);
 		$this->getNbPClasses ($pclasses, $specCamp, $partPay);
 		$sessionKlarnaData = $this->getKlarnaSessionData ();
 
@@ -718,9 +718,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$country = $this->getCountryCodeByOrderId ($order->virtuemart_order_id);
 			$klarna = new Klarna_virtuemart();
 			$cData = KlarnaHandler::countryData ($method, $country);
-			$mode = KlarnaHandler::getKlarnaMode ($method);
-			$klarna->config ($cData['eid'], $cData['secret'], $cData['country_code'], NULL, $cData['currency_code'], $mode);
-
+			$klarna->config ($cData['eid'], $cData['secret'], $cData['country_code'], NULL, $cData['currency_code'], $cData['mode']);
 			try {
 				//remove a passive invoice from Klarna.
 				$result = $klarna->deleteInvoice ($invNo);
@@ -817,7 +815,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$settings = KlarnaHandler::getCountryData ($method, $country);
 
 		$klarna = new Klarna_virtuemart();
-		$klarna->config ($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], KlarnaHandler::getKlarnaMode ($method), VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), TRUE);
+		$klarna->config ($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], KlarnaHandler::getKlarnaMode ($method,$settings['country_code_3']), VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), TRUE);
 
 		$SelfCall = new KlarnaAjax($klarna, (int)$settings['eid'], JPATH_VMKLARNAPLUGIN, Juri::base ());
 		$action = JRequest::getWord ('action');
@@ -855,39 +853,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		// 	jexit();
 	}
 
-	/**
-	 *
-	 */
-	function getPclasses () {
-
-		$jlang = JFactory::getLanguage ();
-		$jlang->load ('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, 'en-GB', TRUE);
-		$jlang->load ('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, $jlang->getDefault (), TRUE);
-		$jlang->load ('plg_vmpayment_klarna', JPATH_ADMINISTRATOR, NULL, TRUE);
-		// call klarna server for pClasses
-		//$methodid = jrequest::getInt('methodid');
-		if (!class_exists ('VmModel')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
-		}
-		$model = VmModel::getModel ('paymentmethod');
-		$payment = $model->getPayment ();
-		if (!class_exists ('vmParameters')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
-		}
-		$parameters = new vmParameters($payment, $payment->payment_element, 'plugin', 'vmpayment');
-		$method = $parameters->getParamByName ('data');
-		// echo "<pre>";print_r($data);
-		$json = KlarnaHandler::fetchAllPClasses ($method);
-		ob_start ();
-		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'pclasses_html.php');
-		$json['pclasses'] = ob_get_clean ();
-		$document = JFactory::getDocument ();
-		$document->setMimeEncoding ('application/json');
-		//echo json_encode($json, true);
-		echo json_encode ($json);
-		jexit ();
-		// echo result with tmpl ?
-	}
 
 	/**
 	 *
@@ -977,8 +942,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 		$country = $this->getCountryCodeByOrderID ($orderId);
 		$settings = KlarnaHandler::countryData ($method, $country);
-		$mode = KlarnaHandler::getKlarnaMode ($method);
-		$klarna_order_status = KlarnaHandler::checkOrderStatus ($settings, $mode, $invNo);
+		$klarna_order_status = KlarnaHandler::checkOrderStatus ($settings,  KlarnaHandler::getKlarnaMode ($method,$settings['country_code_3']), $invNo);
 		if ($klarna_order_status == KlarnaFlags::ACCEPTED) {
 			/* if Klarna's order status is pending: add it in the history */
 			/* The order is under manual review and will be accepted or denied at a later stage.
@@ -1156,8 +1120,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 						   * It is however possible to manually activate that type of invoices.
 						   */
 
-			$mode = KlarnaHandler::getKlarnaMode ($method);
-			$klarna->config ($cData['eid'], $cData['secret'], $cData['country_code'], NULL, $cData['currency_code'], $mode);
+			$klarna->config ($cData['eid'], $cData['secret'], $cData['country_code'], NULL, $cData['currency_code'],  KlarnaHandler::getKlarnaMode ($method,$cData['country_code_3']));
 
 			try {
 				//You can specify a new pclass ID if the customer wanted to change it before you activate.
@@ -1227,7 +1190,16 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 		$method = $this->getPluginMethod (JRequest::getInt ('virtuemart_paymentmethod_id'));
 
-		// we have to chek that the following Shopper fields are there
+
+		$results = KlarnaHandler::fetchAllPClasses ($method);
+		if ($results['msg'] ) {
+			vmError($results['msg'] );
+		}
+		vmDebug('PClasses fetched for : ', $results['notice']);
+
+
+
+		// we have to check that the following Shopper fields are there
 		$required_shopperfields_vm = Klarnahandler::getKlarnaVMGenericShopperFields ();
 
 		$required_shopperfields_bycountry = KlarnaHandler::getKlarnaSpecificShopperFields ();

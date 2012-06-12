@@ -6,7 +6,7 @@ defined ('_JEXEC') or die();
  * @package    VirtueMart
  * @subpackage Klarna
  * @author     Valérie Isaksen
- * @copyright  Copyright (C) 2009-11 by the authors of the VirtueMart Team listed at /administrator/com_virtuemart/copyright.php - All rights reserved.
+ * @copyright  Copyright (C) 2009-2012 by the authors of the VirtueMart Team listed at /administrator/com_virtuemart/copyright.php - All rights reserved.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  *             VirtueMart is free software. This version may have been modified pursuant
  *             to the GNU General Public License, and as distributed it includes or
@@ -207,8 +207,7 @@ $sType = $viewData['payment_params']['sType'];
 		       value="<?php echo $viewData['payment_params']['fields']['last_name']; ?>" style="width: 100%"/>
 	</div>
 </div>
-	<?php if ($code2 == 'de' or $code2 == 'nl') {
-		?>
+	<?php if ($code2 == 'de' or $code2 == 'nl') { ?>
 	<div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_SEX'); ?></div>
 	<input type="radio" name="klarna_gender" value="1" id="<?php echo $sType ?>_male"
 	       class="Klarna_radio gender"/>
@@ -220,7 +219,7 @@ $sType = $viewData['payment_params']['sType'];
 	<div class="klarna_box_bottom_radio_title" style="float: none">
 		<label for="<?php echo $sType ?>_female"><?php echo JText::_ ('VMPAYMENT_KLARNA_SEX_FEMALE'); ?></label>
 	</div>
-		<?php } ?>
+	<?php } ?>
 <div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_PHONE_NUMBER'); ?></div>
 <input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER'); ?>" type="text" name="klarna_phone"
        value="<?php echo $viewData['payment_params']['fields']['phone']; ?>" class="Klarna_fullwidth"/>

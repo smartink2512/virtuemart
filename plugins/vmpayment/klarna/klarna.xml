@@ -18,23 +18,11 @@
 
     <params addpath="/plugins/vmpayment/klarna/elements" />
     <params addpath="/plugins/vmpayment/klarna/klarna/elements" />
-
     <params addpath="/administrator/components/com_virtuemart/elements">
 	<param type="vmjpluginwarning" />
 	<param type="spacer" default="VMPAYMENT_KLARNA_CONF_PAYMENT_TITLE" level="level1" />
 	<param type="klarnalogo"   level="level1"  />
 	<param type="klarnacurl" />
-	<param name="module version" type="klarnamoduleversion"  />
-	<param type="spacer" default="VMPAYMENT_KLARNA_CONF_SERVER_SETTINGS" level="level1" />
-	<param name="klarna_mode" type="radio"  default="klarna_beta" label="VMPAYMENT_KLARNA_CONF_MODE" description="VMPAYMENT_KLARNA_CONF_MODE_DESC" >
-	    <option value="klarna_live">VMPAYMENT_KLARNA_CONF_MODE_LIVE</option>
-	    <option value="klarna_beta">VMPAYMENT_KLARNA_CONF_MODE_BETA</option>
-	</param>
-	<!--param name="klarna_modules" type="klarnamultilist" multiple="multiple"  label="VMPAYMENT_KLARNA_CONF_MODULE" description="VMPAYMENT_KLARNA_CONF_MODULE_DESC" >
-	    <option value="klarna_invoice">VMPAYMENT_KLARNA_CONF_MODULE_INVOICE</option>
-	    <option value="klarna_partpay">VMPAYMENT_KLARNA_CONF_MODULE_PARTPAYMENT</option>
-	    <option value="klarna_speccamp">VMPAYMENT_KLARNA_CONF_MODULE_SPECCAMP</option>
-	</param-->
 
 	<param type="klarnacountrylogo" default="SV" level="level1" />
 	<param name="klarna_active_swe" type="radio" default="0"   label="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY" description="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY_DESC" >
@@ -120,17 +108,19 @@
 	    <option value="mail">VMPAYMENT_KLARNA_CONF_MAIL</option>
 	    <option value="printout">VMPAYMENT_KLARNA_CONF_PRINTOUT</option>
 	</param>
-	<param name="delay_invoice" type="delay_invoice" scope="com_virtuemart" default="S" label="VMPAYMENT_KLARNA_CONF_DELAY_INVOICE" description="VMPAYMENT_KLARNA_CONF_DELAY_INVOICE_DESC" />
+	<!--param name="delay_invoice" type="delay_invoice" scope="com_virtuemart" default="S" label="VMPAYMENT_KLARNA_CONF_DELAY_INVOICE" description="VMPAYMENT_KLARNA_CONF_DELAY_INVOICE_DESC" /-->
+        <param name="module version" type="klarnamoduleversion"  />
 
 
-	<!-- param name="klarna_pc_type" type="text" default="json" label="VMPAYMENT_KLARNA_CONF_PC_TYPE" description="VMPAYMENT_KLARNA_CONF_PC_TYPE_DESC" />
-	<param name="KlarnaHandler::getKlarna_pc_type()" type="text"   size="80"  default="" label="VMPAYMENT_KLARNA_CONF_PC_URI" description="VMPAYMENT_KLARNA_CONF_PC_URI_DESC" / -->
-	<param name="klarna_pclasses" type="klarnapclasses"   default="" label="VMPAYMENT_KLARNA_CONF_PCLASSES" description="VMPAYMENT_KLARNA_CONF_PCLASSES_DESC" />
+        <!-- param name="klarna_pc_type" type="text" default="json" label="VMPAYMENT_KLARNA_CONF_PC_TYPE" description="VMPAYMENT_KLARNA_CONF_PC_TYPE_DESC" />
+            <param name="KlarnaHandler::getKlarna_pc_type()" type="text"   size="80"  default="" label="VMPAYMENT_KLARNA_CONF_PC_URI" description="VMPAYMENT_KLARNA_CONF_PC_URI_DESC" / -->
+        <!--param name="klarna_pclasses" type="klarnapclasses"   default="" label="VMPAYMENT_KLARNA_CONF_PCLASSES"
+        description="VMPAYMENT_KLARNA_CONF_PCLASSES_DESC" / -->
 
-	<!-- param name="debug" type="radio" default="0" label="VMPAYMENT_KLARNA_CONF_DEBUG" description="VMPAYMENT_KLARNA_CONF_DEBUG_DESC" >
-	    <option value="0">COM_VIRTUEMART_NO</option>
-	    <option value="1">COM_VIRTUEMART_YES</option>
-	</param -->
+        <!-- param name="debug" type="radio" default="0" label="VMPAYMENT_KLARNA_CONF_DEBUG" description="VMPAYMENT_KLARNA_CONF_DEBUG_DESC" >
+                <option value="0">COM_VIRTUEMART_NO</option>
+                <option value="1">COM_VIRTUEMART_YES</option>
+            </param -->
     </params>
 
 

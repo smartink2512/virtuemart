@@ -170,7 +170,7 @@ class SQLStorage extends PCStorage {
      * @ignore Do not show in PHPDoc.
      * @param  string|array $uri Specified URI to database and table.
      * @throws Exception
-     * @return void
+     * @return array
      */
     protected function splitURI($uri) {
         /* If you want to have some characters that would make the

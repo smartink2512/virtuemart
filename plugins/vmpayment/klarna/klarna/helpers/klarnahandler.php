@@ -111,7 +111,7 @@ class KlarnaHandler {
 			$cData['country_code_3'] = $country;
 			$cData['virtuemart_currency_id'] = ShopFunctions::getCurrencyIDByName ($cData['currency_code']);
 			$cData['virtuemart_country_id'] = ShopFunctions::getCountryIDByName ($country);
-			$cData['mode'] = $method->klarna_mode;
+			$cData['mode'] =  KlarnaHandler::getKlarnaMode ($method, $country);
 			$cData['min_amount'] = $method->$min_amount;
 			$cData['active'] = $method->$active;
 			return $cData;
@@ -408,7 +408,7 @@ class KlarnaHandler {
 		//$total_price_excl_vat = self::convertPrice($order['details']['BT']->order_subtotal, $cData['currency_code']);
 		//$total_price_incl_vat = self::convertPrice($order['details']['BT']->order_subtotal + $order['details']['BT']->order_tax, $cData['currency_code'], $order['details']['BT']->order_currency);
 
-		$mode = KlarnaHandler::getKlarnaMode ($method);
+		$mode = KlarnaHandler::getKlarnaMode ($method,$cData['country_code_3']);
 		$ssl = KlarnaHandler::getKlarnaSSL ($mode);
 		// Instantiate klarna object.
 		$klarna = new Klarna_virtuemart();
@@ -541,7 +541,7 @@ class KlarnaHandler {
 		// Only available for sweden.
 		$addresses = array();
 		$klarna = new Klarna_virtuemart();
-		$mode = KlarnaHandler::getKlarnaMode ($method);
+		$mode = KlarnaHandler::getKlarnaMode ($method,$settings['country_code_3']);
 		$klarna->config ($settings['eid'], $settings['secret'], KlarnaCountry::SE, KlarnaLanguage::SV, KlarnaCurrency::SEK, $mode, VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), $mode);
 		try {
 			$addresses = $klarna->getAddresses ($pno, NULL, KlarnaFlags::GA_GIVEN);
@@ -577,22 +577,20 @@ class KlarnaHandler {
 					$settings = self::getCountryData ($method, $country);
 
 					$klarna = new Klarna_virtuemart();
-					$klarna->config ($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], KlarnaHandler::getKlarnaMode ($method), VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), TRUE);
+					$klarna->config ($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], KlarnaHandler::getKlarnaMode ($method,$settings['country_code_3']), VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), TRUE);
 					// fetch pclass from file
 					$klarna->fetchPClasses ($country);
-					$success .= '<span style="padding: 5px;">' . $flag . " " .
-						shopFunctions::getCountryByID ($settings['virtuemart_country_id']) . '</span>';
+					$success .=  shopFunctions::getCountryByID ($settings['virtuemart_country_id'])  ;
 				}
 				catch (Exception $e) {
-					$message .= '<br><span style="font-size: 15px;">' .
-						$flag . " " . shopFunctions::getCountryByID ($settings['virtuemart_country_id']) .
+					$message .=  $flag . " " . shopFunctions::getCountryByID ($settings['virtuemart_country_id']) .
 						": " . $e->getMessage () . ' Error Code #' .
 						$e->getCode () . '</span></br>';
 				}
 			}
 		}
 		$results['msg'] = $message;
-		$results['notice'] = 'PClasses fetched for : ' . $success;
+		$results['notice'] =  $success;
 		return $results;
 		//echo $notice;
 	}
@@ -708,33 +706,33 @@ class KlarnaHandler {
 	public static function getEidSecretArray ($method) {
 		$eid_array = array();
 		if (isset($method->klarna_merchantid_swe) && $method->klarna_merchantid_swe != "" && $method->klarna_sharedsecret_swe != "") {
-			$eid_array['se']['secret'] = $method->klarna_sharedsecret_swe;
-			$eid_array['se']['eid'] = (int)$method->klarna_merchantid_swe;
+			$eid_array['swe']['secret'] = $method->klarna_sharedsecret_swe;
+			$eid_array['swe']['eid'] = (int)$method->klarna_merchantid_swe;
 		}
 
 		if (isset($method->klarna_merchantid_nor) && $method->klarna_merchantid_nor != "" && $method->klarna_sharedsecret_nor != "") {
-			$eid_array['no']['secret'] = $method->klarna_sharedsecret_nor;
-			$eid_array['no']['eid'] = $method->klarna_merchantid_nor;
+			$eid_array['nor']['secret'] = $method->klarna_sharedsecret_nor;
+			$eid_array['nor']['eid'] = $method->klarna_merchantid_nor;
 		}
 
 		if (isset($method->klarna_merchantid_deu) && $method->klarna_merchantid_deu != "" && $method->klarna_sharedsecret_deu != "") {
-			$eid_array['de']['secret'] = $method->klarna_sharedsecret_deu;
-			$eid_array['de']['eid'] = $method->klarna_merchantid_deu;
+			$eid_array['deu']['secret'] = $method->klarna_sharedsecret_deu;
+			$eid_array['deu']['eid'] = $method->klarna_merchantid_deu;
 		}
 
 		if (isset($method->klarna_nld_merchantid) && $method->klarna_nld_merchantid != "" && $method->klarna_sharedsecret_nld != "") {
-			$eid_array['nl']['secret'] = $method->klarna_sharedsecret_nld;
-			$eid_array['nl']['eid'] = $method->klarna_nld_merchantid;
+			$eid_array['nld']['secret'] = $method->klarna_sharedsecret_nld;
+			$eid_array['nld']['eid'] = $method->klarna_nld_merchantid;
 		}
 
 		if (isset($method->klarna_merchantid_dnk) && $method->klarna_merchantid_dnk != "" && $method->klarna_sharedsecret_dnk != "") {
-			$eid_array['dk']['secret'] = $method->klarna_sharedsecret_dnk;
-			$eid_array['dk']['eid'] = $method->klarna_merchantid_dnk;
+			$eid_array['dnk']['secret'] = $method->klarna_sharedsecret_dnk;
+			$eid_array['dnk']['eid'] = $method->klarna_merchantid_dnk;
 		}
 
 		if (isset($method->klarna_merchantid_fin) && $method->klarna_merchantid_fin != "" && $method->klarna_sharedsecret_fin != "") {
-			$eid_array['fi']['secret'] = $method->klarna_sharedsecret_fin;
-			$eid_array['fi']['eid'] = $method->klarna_merchantid_fin;
+			$eid_array['fin']['secret'] = $method->klarna_sharedsecret_fin;
+			$eid_array['fin']['eid'] = $method->klarna_merchantid_fin;
 		}
 
 		return $eid_array;
@@ -919,8 +917,14 @@ class KlarnaHandler {
 	 * @param $method
 	 * @return int
 	 */
-	static function getKlarnaMode ($method) {
-		return (($method->klarna_mode == 'klarna_live') ? Klarna::LIVE : Klarna::BETA);
+	static function getKlarnaMode ($method, $country) {
+		// It is the VM specific store ID to test
+		$merchant_id='klarna_merchantid_'.$country;
+		if ($method->$merchant_id=="1926") {
+			return Klarna::BETA;
+		} else {
+			return Klarna::LIVE;
+		}
 	}
 
 	/**
