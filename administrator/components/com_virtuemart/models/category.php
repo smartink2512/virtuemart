@@ -63,13 +63,16 @@ class VirtueMartModelCategory extends VmModel {
 
 		$cateid = JRequest::getInt('virtuemart_category_id',0);
 
-		$limit = $app->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit',  VmConfig::get('list_limit',20), 'int');
+		$limit = $app->getUserStateFromRequest('com_virtuemart.'.$view.$cateid.'.limit', 'limit',  VmConfig::get('list_limit',20), 'int');
 		$this->setState('limit', $limit);
+		$this->setState('com_virtuemart.'.$view.$cateid.'.limit',$limit);
 
 		if($app->isSite() and $cateid!=0 ){
 			$lastCatId = ShopFunctionsf::getLastVisitedCategoryId();
 			if($lastCatId!=$cateid){
 				$limitStart = 0;
+			} else {
+				$limitStart = $app->getUserStateFromRequest('com_virtuemart.'.$view.'.limitstart', 'limitstart',  JRequest::getInt('limitstart',0), 'int');
 			}
 		} else {
 			$limitStart = $app->getUserStateFromRequest('com_virtuemart.'.$view.'.limitstart', 'limitstart',  JRequest::getInt('limitstart',0), 'int');
