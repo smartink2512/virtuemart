@@ -62,11 +62,11 @@ INSERT IGNORE INTO `#__virtuemart_category_categories` (`category_parent_id`, `c
 --
 
 INSERT IGNORE INTO `#__virtuemart_category_medias` (`id`,`virtuemart_category_id`, `virtuemart_media_id`) VALUES
-(NULL, 1, 1),
-(NULL, 2, 2),
-(NULL, 3, 3),
-(NULL, 4, 4),
-(NULL, 5, 5);
+(NULL, 1, 8),
+(NULL, 2, 11),
+(NULL, 3, 7),
+(NULL, 4, 10),
+(NULL, 5, 9);
 
 --
 -- Dumping data for table `#__virtuemart_customs`
@@ -140,23 +140,24 @@ INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`,`virtuemart_manufac
 --
 -- Dumping data for table `#__virtuemart_medias`
 --
+INSERT INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_vendor_id`, `file_title`, `file_description`, `file_meta`, `file_mimetype`, `file_type`, `file_url`, `file_url_thumb`, `file_is_product_image`, `file_is_downloadable`, `file_is_forSale`, `file_params`, `shared`, `published`) VALUES
+(1, 1, 'hand_saw.jpg', 'hand_saw.jpg', 'hand_saw.jpg', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hand_saw.jpg', 'images/stories/virtuemart/product/resized/hand_saw_90x90.jpg', 0, 0, 0, '', 0, 1),
+(2, 1, 'hand_shovel.jpg', 'hand_shovel.jpg', 'hand_shovel.jpg', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hand_shovel.jpg', 'images/stories/virtuemart/product/resized/hand_shovel_90x90.jpg', 0, 0, 0, '', 0, 1),
+(3, 1, 'ladder.jpg', 'ladder.jpg', 'ladder.jpg', 'image/jpeg', 'product', 'images/stories/virtuemart/product/ladder.jpg', 'images/stories/virtuemart/product/resized/ladder_90x90.jpg', 0, 0, 0, '', 0, 1),
+(4, 1, 'power_drill.jpg', 'power_drill.jpg', 'power_drill.jpg', 'image/jpeg', 'product', 'images/stories/virtuemart/product/power_drill.jpg', 'images/stories/virtuemart/product/resized/power_drill_90x90.jpg', 0, 0, 0, '', 0, 1),
+(5, 1, 'power_sander.jpg', 'power_sander.jpg', 'power_sander.jpg', 'image/jpeg', 'product', 'images/stories/virtuemart/product/power_sander.jpg', 'images/stories/virtuemart/product/resized/power_sander_90x90.jpg', 0, 0, 0, '', 0, 1),
+(6, 1, 'shovel.jpg', 'shovel.jpg', 'shovel.jpg', 'image/jpeg', 'product', 'images/stories/virtuemart/product/shovel.jpg', 'images/stories/virtuemart/product/resized/shovel_90x90.jpg', 0, 0, 0, '', 0, 1),
+(7, 1, 'garden_tools.jpg', 'garden_tools.jpg', 'garden_tools.jpg', 'image/jpeg', 'category', 'images/stories/virtuemart/category/garden_tools.jpg', 'images/stories/virtuemart/category/resized/garden_tools_90x90.jpg', 0, 0, 0, '', 0, 1),
+(8, 1, 'hand_tools.jpg', 'hand_tools.jpg', 'hand_tools.jpg', 'image/jpeg', 'category', 'images/stories/virtuemart/category/hand_tools.jpg', 'images/stories/virtuemart/category/resized/hand_tools_90x90.jpg', 0, 0, 0, '', 0, 1),
+(9, 1, 'power_indoor_tool.jpg', 'power_indoor_tool.jpg', 'power_indoor_tool.jpg', 'image/jpeg', 'category', 'images/stories/virtuemart/category/power_indoor_tool.jpg', 'images/stories/virtuemart/category/resized/power_indoor_tool_90x90.jpg', 0, 0, 0, '', 0, 1),
+(10, 1, 'Power_outdoor_tool.jpg', 'Power_outdoor_tool.jpg', 'Power_outdoor_tool.jpg', 'image/jpeg', 'category', 'images/stories/virtuemart/category/Power_outdoor_tool.jpg', 'images/stories/virtuemart/category/resized/Power_outdoor_tool_90x90.jpg', 0, 0, 0, '', 0, 1),
+(11, 1, 'power_tools.jpg', 'power_tools.jpg', 'power_tools.jpg', 'image/jpeg', 'category', 'images/stories/virtuemart/category/power_tools.jpg', 'images/stories/virtuemart/category/resized/power_tools_90x90.jpg', 0, 0, 0, '', 0, 1),
+(12, 1, 'manufacturersample.jpg', 'manufacturersample.jpg', 'manufacturersample.jpg', 'image/jpeg', 'manufacturer', 'images/stories/virtuemart/manufacturer/manufacturersample.jpg', 'images/stories/virtuemart/manufacturer/resized/manufacturersample_90x90.jpg', 0, 0, 0, '', 0, 1),
+(13, 1, 'washupito.gif', 'washupito.gif', 'washupito.gif', 'image/gif', 'vendor', 'images/stories/virtuemart/vendor/washupito.gif', 'images/stories/virtuemart/vendor/resized/washupito_90x90.gif', 0, 0, 0, '', 0, 1),
+(14, 1, 'hammer.jpg', 'hammer.jpg', 'hammer.jpg', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hammer.jpg', 'images/stories/virtuemart/product/resized/hammer_90x90.jpg', 0, 0, 0, '', 0, 1),
+(15, 1, 'chain_saw.jpg', 'chain_saw.jpg', 'chain_saw.jpg', 'image/jpeg', 'product', 'images/stories/virtuemart/product/chain_saw.jpg', 'images/stories/virtuemart/product/resized/chain_saw_90x90.jpg', 0, 0, 0, '', 0, 1),
+(16, 1, 'circular_saw.jpg', 'circular_saw.jpg', 'circular_saw.jpg', 'image/jpeg', 'product', 'images/stories/virtuemart/product/circular_saw.jpg', 'images/stories/virtuemart/product/resized/circular_saw_90x90.jpg', 0, 0, 0, '', 0, 1);
 
-INSERT INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_vendor_id`, `file_title`, `file_description`, `file_meta`, `file_mimetype`, `file_type`, `file_url`, `file_url_thumb`, `created_on`, `modified_on`, `published`, `file_is_product_image`, `file_is_downloadable`, `file_is_forSale`, `shared`, `file_params`) VALUES
-(1, 1, 'black shovel', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/fc2f001413876a374484df36ed9cf775.jpg', '', NULL, NULL, 1, 0, 0, 0, 0, ''),
-(2, 1, 'fe2f63f4c46023e3b33404c80bdd2bfe.jpg', '', '', 'image/jpeg','category', 'images/stories/virtuemart/category/fe2f63f4c46023e3b33404c80bdd2bfe.jpg', '', NULL, NULL, 1, 0, 0, 0, 0, ''),
-(3, 1, 'green shovel', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/756ff6d140e11079caf56955060f1162.jpg', '', NULL, NULL, 1, 0, 0, 0, 0, ''),
-(4, 1, 'wooden shovel', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/1b0c96d67abdbea648cd0ea96fd6abcb.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
-(5, 1, 'black shovel', 'the', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/520efefd6d7977f91b16fac1149c7438.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
-(6, 1, '480655b410d98a5cc3bef3927e786866.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/480655b410d98a5cc3bef3927e786866.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
-(7, 1, 'nice saw', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/e614ba08c3ee0c2adc62fd9e5b9440eb.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
-(8, 1, 'our ladder', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/8cb8d644ef299639b7eab25829d13dbc.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
-(9, 1, 'Hamma', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/578563851019e01264a9b40dcf1c4ab6.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
-(10, 1, 'drill', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/1ff5f2527907ca86103288e1b7cc3446.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
-(11, 1, 'circular saw', 'for the fine cut', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/9a4448bb13e2f7699613b2cfd7cd51ad.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
-(12, 1, 'chain saw', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/8716aefc3b0dce8870360604e6eb8744.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
-(13, 1, 'hand shovel', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/cca3cd5db813ee6badf6a3598832f2fc.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
-(14, 1, 'manufacturer', '', '', 'image/jpeg', 'manufacturer', 'images/stories/virtuemart/manufacturer/manufacturersample.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
-(15, 1, 'Washupito', '', '', 'image/jpeg', 'vendor', 'images/stories/virtuemart/vendor/washupito.gif', '', NULL, NULL, 1, 1, 0, 0, 0, '');
 
 
 
@@ -197,16 +198,16 @@ INSERT INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_na
 	(16, 'Plastic Ladder', '', '', '', '', 'plastic-ladder');
 
 INSERT IGNORE INTO `#__virtuemart_product_medias` (`id`,`virtuemart_product_id`, `virtuemart_media_id`) VALUES
-(NULL, 1, 13),
-(NULL, 2, 8),
-(NULL, 3, 5),
-(NULL, 4, 4),
-(NULL, 5, 7),
-(NULL, 6, 9),
-(NULL, 7, 12),
-(NULL, 8, 11),
-(NULL, 9, 10),
-(NULL, 10, 6);
+(NULL, 1, 2),
+(NULL, 2, 3),
+(NULL, 3, 6),
+(NULL, 4, 2),
+(NULL, 5, 1),
+(NULL, 6, 14),
+(NULL, 7, 15),
+(NULL, 8, 16),
+(NULL, 9, 4),
+(NULL, 10, 5);
 
 INSERT IGNORE INTO `#__virtuemart_vendor_medias` (`id`,`virtuemart_vendor_id`, `virtuemart_media_id`) VALUES
 (NULL, 1, 15);
