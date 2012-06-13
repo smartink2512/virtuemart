@@ -348,13 +348,16 @@ abstract class vmPlugin extends JPlugin {
 	 */
 	protected function setOnTablePluginParams ($name, $id, &$table) {
 
-		if ($this->selectedThis ($this->_psType, $name, $id)) {
+		//Todo I think a test on this is wrong here
+		//Adjusted it like already done in declarePluginParams
+		if (!empty($this->_psType) and !$this->selectedThis ($this->_psType, $name, $id)) {
+			return FALSE;
+		}
+		else {
 			$table->setParameterable ($this->_xParams, $this->_varsToPushParam);
 			return TRUE;
 		}
-		else {
-			return FALSE;
-		}
+
 	}
 
 	/**
@@ -365,7 +368,10 @@ abstract class vmPlugin extends JPlugin {
 	 * @return bool
 	 */
 	protected function declarePluginParams ($psType, $name, $id, &$data) {
-		if(!$this->selectedThis($psType,$name,$id)){
+
+		//vmdebug('declarePluginParams '.$this->_psType.' '.$psType);
+		//Todo I know a test only on seledtThis is wrong here, it works now with extra !empty($this->_psType)
+		if(!empty($this->_psType) and !$this->selectedThis($psType,$name,$id)){
 			return FALSE;
 		}
 		if (!class_exists ('VmTable')) {

@@ -258,7 +258,7 @@ abstract class vmCustomPlugin extends vmPlugin {
 			return FALSE;
 		}
 
-		vmPlugin::declarePluginParams ('vmcustom', $productCustomsPrice->custom_element, $productCustomsPrice->custom_jplugin_id, $productCustomsPrice);
+		vmPlugin::declarePluginParams ('custom', $productCustomsPrice->custom_element, $productCustomsPrice->custom_jplugin_id, $productCustomsPrice);
 // 		VmTable::bindParameterable($productCustomsPrice,'custom_params',$this->_varsToPushParam);
 
 		$pluginFields = JRequest::getVar ('customPlugin', NULL);

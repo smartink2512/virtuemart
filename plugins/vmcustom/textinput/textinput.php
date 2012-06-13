@@ -137,7 +137,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 
 	function plgVmDeclarePluginParamsCustom($psType,$name,$id, &$data){
-		return $this->declarePluginParams($psType, $name, $id, $data);
+		return $this->declarePluginParams('custom', $name, $id, $data);
 	}
 
 	function plgVmSetOnTablePluginParamsCustom($name, $id, &$table){
