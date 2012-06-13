@@ -15,7 +15,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: default.php 2710 2011-02-13 00:51:06Z Electrocity $
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
