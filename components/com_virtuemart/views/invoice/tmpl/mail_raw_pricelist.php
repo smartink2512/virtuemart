@@ -19,11 +19,11 @@ defined('_JEXEC') or die('Restricted access');
  *
  */
 // Plain text formating
-// echo sprintf("[%s]\n",      $s); // affichage d'une cha�ne standard
-// echo sprintf("[%10s]\n",    $s); // justification � droite avec des espaces
-// echo sprintf("[%-10s]\n",   $s); // justification � gauche avec des espaces
+// echo sprintf("[%s]\n",      $s); // affichage d'une chaîne standard
+// echo sprintf("[%10s]\n",    $s); // justification à droite avec des espaces
+// echo sprintf("[%-10s]\n",   $s); // justification à gauche avec des espaces
 // echo sprintf("[%010s]\n",   $s); // l'espacement nul fonctionne aussi sur les cha�nes
-// echo sprintf("[%'#10s]\n",  $s); // utilisation du caract�re personnalis� de s�paration '#'
+// echo sprintf("[%'#10s]\n",  $s); // utilisation du caractère personnalis� de s�paration '#'
 // echo sprintf("[%10.10s]\n", $t); // justification � gauche mais avec une coupure � 10 caract�res
 // $s = 'monkey';
 // [monkey]
@@ -105,4 +105,4 @@ if (VmConfig::get('show_tax')) {
     echo ' (' . JText::_('COM_VIRTUEMART_ORDER_PRINT_TAX') . ' : ' . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_billTaxAmount) . ')' . "\n";
 }
 echo "\n";
-?>
+

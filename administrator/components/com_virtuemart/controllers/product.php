@@ -235,21 +235,18 @@ class VirtuemartControllerProduct extends VmController {
 	public function ajax_notifyUsers(){
 
 		//vmdebug('updatestatus');
-		$mainframe = Jfactory::getApplication();
 		
 		$virtuemart_product_id = (int)JRequest::getVar('virtuemart_product_id', 0);
 		$subject = JRequest::getVar('subject', '');
-		$mailbody = JRequest::getVar('mailbody', '');
+		$mailbody = JRequest::getVar('mailbody',  '');
 		$max_number = (int)JRequest::getVar('max_number', '');
 		
 		$waitinglist = VmModel::getModel('Waitinglist');
 		$waitinglist->notifyList($virtuemart_product_id,$subject,$mailbody,$max_number);
-		
 		exit;
 	}
 	
 	public function ajax_waitinglist() {
-		$mainframe = Jfactory::getApplication();
 		
 		$virtuemart_product_id = (int)JRequest::getVar('virtuemart_product_id', 0);
 

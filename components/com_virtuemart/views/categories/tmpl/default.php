@@ -9,7 +9,7 @@
 * @author Max Milbers
 * @todo add pagination
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2004 - 2012 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -51,7 +51,7 @@ if ($this->category->children ) {
 	    <div class="row">
 	    <?php }
 
-	    // Show the vertical seperator
+	    // Show the vertical separator
 	    if ($iCategory == $categories_per_row or $iCategory % $categories_per_row == 0) {
 		    $show_vertical_separator = ' ';
 	    } else {

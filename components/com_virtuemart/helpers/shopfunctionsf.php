@@ -181,13 +181,11 @@ class shopFunctionsF {
 
 		$vmtemplate = VmConfig::get('vmtemplate','default');
 		if($vmtemplate=='default'){
-			$app = JFactory::getApplication('site');
 			if(JVM_VERSION == 2){
 				$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
 			} else {
 				$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id`="0" AND `menuid`="0"';
 			}
-
 			$db = JFactory::getDbo();
 			$db->setQuery($q);
 			$template = $db->loadResult();
@@ -228,7 +226,6 @@ class shopFunctionsF {
 	 * @param bool $vendor true for notifying vendor of user action (e.g. registration)
 	 */
 	private function sendVmMail (&$view, $recipient, $vendor=false) {
-		$jlang =JFactory::getLanguage();
 		$jlang =JFactory::getLanguage();
 		if(VmConfig::get('enableEnglish', 1)){
 		     $jlang->load('com_virtuemart', JPATH_SITE, 'en-GB', true);

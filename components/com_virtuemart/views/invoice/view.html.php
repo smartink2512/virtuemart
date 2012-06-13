@@ -243,7 +243,7 @@ class VirtuemartViewInvoice extends VmView {
 		$vendorFieldsArray = $usermodel->getUserInfoInUserFields($layout, 'BT', $virtuemart_userinfo_id, false,true);
 		$vendorFields = $vendorFieldsArray[$virtuemart_userinfo_id];
 		$vendorAddress='';
-		 foreach ($vendorFields['fields'] as $field) {
+		foreach ($vendorFields['fields'] as $field) {
 		    if (!empty($field['value'])) {
 			     $vendorAddress.= $field['value'];
 			    if ($field['name'] != 'title' and $field['name'] != 'first_name' and $field['name'] != 'middle_name' and $field['name'] != 'zip') {
@@ -259,7 +259,6 @@ class VirtuemartViewInvoice extends VmView {
 			}
 		}
 		$this->assignRef('vendorAddress', $vendorAddress);
-
 		$vendorEmail = $vendorModel->getVendorEmail($virtuemart_vendor_id);
 		$vars['vendorEmail'] = $vendorEmail;
 

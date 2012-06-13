@@ -317,7 +317,7 @@ class VirtueMartViewProductdetails extends VmView {
     }
 
 	function renderMailLayout ($doVendor, $recipient) {
-		$tpl = VmConfig::get('order_mail_html') ? 'mail_html_notify' : 'mail_raw_notify';		
+		$tpl = VmConfig::get('order_mail_html') ? 'mail_html_notify' : 'mail_raw_notify';
 
 		$this->doVendor=$doVendor;
 		$this->fromPdf=false;
@@ -329,17 +329,17 @@ class VirtueMartViewProductdetails extends VmView {
 	}
 
     private function showLastCategory($tpl) {
-	$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
-	$categoryLink = '';
-	if ($virtuemart_category_id) {
-	    $categoryLink = '&virtuemart_category_id=' . $virtuemart_category_id;
-	}
-	$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink);
+		$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
+		$categoryLink = '';
+		if ($virtuemart_category_id) {
+		    $categoryLink = '&virtuemart_category_id=' . $virtuemart_category_id;
+		}
+		$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink);
 
-	$continue_link_html = '<a href="' . $continue_link . '" />' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
-	$this->assignRef('continue_link_html', $continue_link_html);
-	// Display it all
-	parent::display($tpl);
+		$continue_link_html = '<a href="' . $continue_link . '" />' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
+		$this->assignRef('continue_link_html', $continue_link_html);
+		// Display it all
+		parent::display($tpl);
     }
 
 

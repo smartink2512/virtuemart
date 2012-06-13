@@ -175,7 +175,6 @@ class VirtuemartViewProduct extends VmView {
 				/* Load waiting list */
 				if ($product->virtuemart_product_id) {
 					//$waitinglist = $this->get('waitingusers', 'waitinglist');
-
 					$waitinglist = $waitinglistmodel->getWaitingusers($product->virtuemart_product_id);
 					$this->assignRef('waitinglist', $waitinglist);
 				}

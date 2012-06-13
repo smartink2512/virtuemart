@@ -150,7 +150,7 @@ if (empty ( $this->product )) {
 		foreach ($this->product->customfields as $field){
 			?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
 			<?php if ($field->custom_title != $custom_title) { ?>
-				<span class="product-fields-title" ><b><?php echo JText::_($field->custom_title); ?></b></span>
+				<span class="product-fields-title" ><strong><?php echo JText::_($field->custom_title); ?></strong></span>
 				<?php //echo JHTML::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png');
 			} ?>
 			<span class="product-field-display"><?php echo $field->display ?></span>
