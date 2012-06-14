@@ -102,31 +102,16 @@ class VirtueMartModelWaitingList extends VmModel {
 		$vendor = $vendorModel->getVendor ($virtuemart_vendor_id);
 		$vendorModel->addImages ($vendor);
 		$vars['vendor'] = $vendor;
-		$vendorId = VirtueMartModelVendor::getUserIdByVendorId ($virtuemart_vendor_id);
-		$userModel = VmModel::getModel ('user');
-		$vendorEmail = $vendorModel->getVendorEmail ($virtuemart_vendor_id);
-		$virtuemart_userinfo_id = $userModel->getBTuserinfo_id ($vendorId);
-		$vendorFieldsArray = $userModel->getUserInfoInUserFields ('mail', 'BT', $virtuemart_userinfo_id, FALSE, TRUE);
-		$vendorFields = $vendorFieldsArray[$virtuemart_userinfo_id];
-		$vendorAddress = '';
-		foreach ($vendorFields['fields'] as $field) {
-			if (!empty($field['value'])) {
-				$vendorAddress .= $field['value'];
-				if ($field['name'] != 'title' and $field['name'] != 'first_name' and $field['name'] != 'middle_name' and $field['name'] != 'zip') {
-					$vendorAddress .= "<br />";
-				}
-				else {
-					$vendorAddress .= ' ';
-				}
-			}
-		}
 
-		$vars['vendorAddress'] = $vendorAddress;
+		$vars['vendorAddress']= shopFunctions::renderVendorAddress($virtuemart_vendor_id);
+		$vendorEmail = $vendorModel->getVendorEmail ($virtuemart_vendor_id);
+
+		$vars['vendorAddress'] = shopFunctions::renderVendorAddress($virtuemart_vendor_id);
 		$vars['vendorEmail'] = $vendorEmail;
 
 		$i = 0;
-		foreach ($waiting_users as $key => $waiting_user) {
-			$vars['user'] = $waiting_user;
+		foreach ($waiting_users as $waiting_user) {
+			$vars['user'] =  $waiting_user->name ;
 			if (shopFunctionsF::renderMail ('productdetails', $waiting_user->notify_email, $vars)) {
 				$db->setQuery ('UPDATE #__virtuemart_waitingusers SET notified=1 WHERE virtuemart_waitinguser_id=' . $waiting_user->virtuemart_waitinguser_id);
 				$db->query ();
@@ -215,44 +200,6 @@ class VirtueMartModelWaitingList extends VmModel {
 			return $customers;
 
 		} */
-	public
-	function getProductShoppersByStatus ($product_id, $states) {
 
-		if (empty($states)) {
-			return FALSE;
-		}
-		$orderstatusModel = VmModel::getModel ('orderstatus');
-		$orderStates = $orderstatusModel->getOrderStatusNames ();
-
-		foreach ($states as &$status) {
-			if (!array_key_exists ($status, $orderStates)) {
-				unset($status);
-			}
-		}
-		if (empty($states)) {
-			return FALSE;
-		}
-
-		$q = 'SELECT ou.* ,sum(product_quantity) as quantity FROM `#__virtuemart_order_userinfos` as ou
-			JOIN `#__virtuemart_order_items` AS oi using (`virtuemart_order_id`)
-			WHERE ou.`address_type`="BT" AND oi.`virtuemart_product_id`=' . (int)$product_id;
-		if (count ($orderStates) !== count ($states)) {
-			$q .= ' AND order_status IN ( "' . implode ('","', $states) . '") ';
-		}
-		$q .= ' GROUP BY ou.`email` ORDER BY ou.`last_name` ASC';
-		$this->_db->setQuery ($q);
-		$infos = $this->_db->loadAssocList ('virtuemart_order_userinfo_id');
-
-		$customers = array();
-		foreach ($infos as $key => $info) {
-			$customers[$key] = array();
-			$customers[$key]['customer_phone'] = !empty($info['phone_1']) ? $info['phone_1'] : (!empty($info['phone_2']) ? $info['phone_2'] : '-');
-			$customers[$key]['customer_name'] = $info['first_name'] . ' ' . $info['last_name'];
-			$customers[$key]['email'] = $info['email'];
-			$customers[$key]['mail_to'] = 'mailto:' . $info['email'];
-			$customers[$key]['quantity'] = $info['quantity'];
-		}
-		return $customers;
-	}
 }
 // pure php no closing tag

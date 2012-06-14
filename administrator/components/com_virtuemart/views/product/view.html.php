@@ -178,8 +178,8 @@ class VirtuemartViewProduct extends VmView {
 					$waitinglist = $waitinglistmodel->getWaitingusers($product->virtuemart_product_id);
 					$this->assignRef('waitinglist', $waitinglist);
 				}
-				$bookedUsers = $waitinglistmodel->getProductShoppersByStatus($product->virtuemart_product_id,array('S') );
-				$this->assignRef('customers', $bookedUsers);
+				$productShoppers = $model->getProductShoppersByStatus($product->virtuemart_product_id,array('S') );
+				$this->assignRef('productShoppers', $productShoppers);
 				$orderstatusModel = VmModel::getModel('orderstatus');
 				$lists['OrderStatus'] = $orderstatusModel->renderOrderStatusList(true,array('S'));
 				$field_model = VmModel::getModel('customfields');

@@ -40,7 +40,7 @@ defined('_JEXEC') or die('');
 <div style="width="100%">
 <table width="600" border="0" cellpadding="0" cellspacing="0" class="html-email">
 	<tr>
-		<td>
+		<td valign="top">
 			<img src="<?php  echo JURI::root () . $this->vendor->images[0]->file_url ?>" />
 		</td>
 		<td>
@@ -49,7 +49,7 @@ defined('_JEXEC') or die('');
 	</tr>
 	<tr>
 		<td colspan="2">
-			<strong><?php echo JText::sprintf ('COM_VIRTUEMART_MAIL_SHOPPER_NAME', $this->user->name); ?></strong><br/>
+			<strong><?php echo JText::sprintf ('COM_VIRTUEMART_MAIL_SHOPPER_NAME', $this->user); ?></strong><br/>
 		</td>
 	</tr>
 </table>

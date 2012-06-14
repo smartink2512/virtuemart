@@ -7,7 +7,7 @@
 * @subpackage
 * @author
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2004 - 2012 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -160,31 +160,14 @@ class VirtuemartViewProduct extends JView {
 			$this->json['ok'] = 1 ;
 		} else if ($this->type=='userlist')
 		{
-			$html='';
+
 			if ($status = JRequest::getvar('status')) {
-				$userlist = VmModel::getModel('WaitingList');
-				$users = $userlist->getProductShoppersByStatus($product_id ,$status);
-				foreach ($users as $virtuemart_order_user_id => $customer)
-					{
-						$html.='
-						<tr class="customer" data-cid="'.$virtuemart_order_user_id.'">
-							<td class="customer_name">'.$customer['customer_name'].'</td>
-							<td><a class="mailto" href="'.$customer['mail_to'].'"><span class="mail">'.$customer['email'].'</span></a></td>
-							<td class="customer_phone">'.$customer['customer_phone'].'</td>
-							<td class="quantity">'.$customer['quantity'].'</td>
-						</tr>
-						';
-					}
+				$productModel = VmModel::getModel('product');
+				$productShoppers = $productModel->getProductShoppersByStatus($product_id ,$status);
+				if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+				$html = ShopFunctions::renderProductShopperList($productShoppers);
 			}
-			if ( empty($html) ) {
-				$html.='
-				<tr class="customer">
-					<td colspan="4">
-						'.JText::_('COM_VIRTUEMART_NO_SEARCH_RESULT').'
-					</td>
-				</tr>
-				';
-			}
+
 			$this->json['value'] = $html;
 		} else $this->json['ok'] = 0 ;
 

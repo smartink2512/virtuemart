@@ -235,34 +235,12 @@ class VirtuemartViewInvoice extends VmView {
 		$this->assignRef('headFooter', $headFooter);
 
 		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-		$userId =  VirtueMartModelVendor::getUserIdByVendorId($virtuemart_vendor_id);
+		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
-		$usermodel = VmModel::getModel('user');
-// 		$usermodel->setId($userId);
-		$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
-		$vendorFieldsArray = $usermodel->getUserInfoInUserFields($layout, 'BT', $virtuemart_userinfo_id, false,true);
-		$vendorFields = $vendorFieldsArray[$virtuemart_userinfo_id];
-		$vendorAddress='';
-		foreach ($vendorFields['fields'] as $field) {
-		    if (!empty($field['value'])) {
-			     $vendorAddress.= $field['value'];
-			    if ($field['name'] != 'title' and $field['name'] != 'first_name' and $field['name'] != 'middle_name' and $field['name'] != 'zip') {
-			    	if($headFooter){
-			    		$vendorAddress.= "<br />";
-			    	} else {
-			    		$vendorAddress.= "\n";
-			    	}
-
-			    } else {
-				$vendorAddress.=' ';
-			    }
-			}
-		}
+	    $vendorAddress= shopFunctions::renderVendorAddress($virtuemart_vendor_id);
 		$this->assignRef('vendorAddress', $vendorAddress);
 		$vendorEmail = $vendorModel->getVendorEmail($virtuemart_vendor_id);
 		$vars['vendorEmail'] = $vendorEmail;
-
-		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
 		// this is no setting in BE to change the layout !
 		//shopFunctionsF::setVmTemplate($this,0,0,$layoutName);

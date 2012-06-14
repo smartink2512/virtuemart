@@ -60,14 +60,14 @@ defined('_JEXEC') or die('Restricted access'); ?>
   if($this->orderDetails['history'][$nb-1]->customer_notified && !(empty($this->orderDetails['history'][$nb-1]->comments))) { ?>
   <tr>
     <td colspan="3">
-		<?php echo  $this->orderDetails['history'][$nb-1]->comments; ?>
+		<?php echo  nl2br($this->orderDetails['history'][$nb-1]->comments); ?>
 	</td>
   </tr>
   <?php } ?>
   <?php if(!empty($this->orderDetails['details']['BT']->customer_note)){ ?>
   <tr>
     <td colspan="3">
-		<?php echo JText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_QUESTION',$this->orderDetails['details']['BT']->customer_note) ?>
+		<?php echo JText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_QUESTION',nl2br($this->orderDetails['details']['BT']->customer_note)) ?>
 
 	</td>
   </tr>

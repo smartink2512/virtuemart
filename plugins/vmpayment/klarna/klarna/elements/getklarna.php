@@ -17,7 +17,7 @@ if (JVM_VERSION === 2) {
     require ( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
 }
 
-class JElementKlarnaLogo extends JElement {
+class JElementGetKlarna extends JElement {
 
     /**
      * Element name
@@ -25,16 +25,12 @@ class JElementKlarnaLogo extends JElement {
      * @access	protected
      * @var		string
      */
-    var $_name = 'KlarnaLogo';
+    var $_name = 'getKlarna';
 
-	function fetchElement($name, $value, &$node, $control_name) {
-		$countriesData = KlarnaHandler::countriesData();
-		$logo = '<a href="https://www.klarna.com" target="_blank"><img src="' . JURI::root() . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/logo_small.png" /></a> ';
-		$flagImgHtml='';
-		foreach ($countriesData as $countryData) {
-			$flagImg = JURI::root(true) . '/administrator/components/com_virtuemart/assets/images/flag/' . strtolower($countryData['language_code']) . '.png';
-			$flagImgHtml.='<img style="margin-right: 5px;margin-top: 15px;" src="' . $flagImg . '"  alt="' . JText::_('VMPAYMENT_KLARNA_CONF_SETTINGS_' . $countryData['language_code']) . '"/>';
-		}
-		return $logo . $flagImgHtml;
-	}
+    function fetchElement($name, $value, &$node, $control_name) {
+	$countriesData = KlarnaHandler::countriesData();
+	$logo = '<a href="https://merchants.klarna.com/signup?locale=en&partner_id=7829355537eae268a17667c199e7c7662d3391f7&utm_campaign=Platform&utm_medium=Partners&utm_source=Virtuemart" target="_blank"><img src="' . JURI::root() . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/get_klarna_now.png" /></a> ';
+	return $logo  ;
+    }
+
 }

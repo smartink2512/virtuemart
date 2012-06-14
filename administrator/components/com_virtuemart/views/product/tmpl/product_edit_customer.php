@@ -1,152 +1,159 @@
 <?php
 /**
  *
- * Handle the waitinglist
+ * Handle the waitinglist, and the send an email to shoppers who bought this product
  *
  * @package    VirtueMart
  * @subpackage Product
  * @author Seyi, Valérie Isaksen
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2012 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: $
+ * @version $Id$
  */
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access');
-
-
-$mail_options = array(
-	'customer'=> JText::_ ('COM_VIRTUEMART_PRODUCT_SHOPPERS'),
-	'notify'  => JText::_ ('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST'),
-);
-$mail_default = 'notify';
-if (VmConfig::get ('stockhandle', 0) != 'disableadd' or empty($this->waitinglist)) {
-	echo '<input type="hidden" name="customer_email_type" value="customer" id="customer_email_type0">';
-}
-else {
-	echo VmHtml::radioList ('customer_email_type', $mail_default, $mail_options);
-}
+$i = 0;
 ?>
-
-<div id="notify_particulars" style="padding-left:20px;">
-	<div><input type="checkbox" name="notification_template" id="notification_template" value="1" CHECKED>
-		<label for="notification_template">
-		<span
-			class="hasTip"
-			title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_USE_NOTIFY_TEMPLATE_TIP'); ?>">
-		<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_USE_NOTIFY_TEMPLATE'); ?></span></div> </label>
-	<div><input type="text" name="notify_number" value="" size="4" /><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_NOTIFY_NUMBER'); ?></div>
-</div>
-<br/>
-
-<div class="mailing">
-	<div class="button2-left" data-type="sendmail">
-		<div class="blank" style="padding:0 6px;cursor: pointer;" title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_SEND_TIP'); ?>">
-			<span class="vmicon vmicon-16-email"></span>
-			<?php echo Jtext::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_SEND'); ?>
-		</div>
-	</div>
-	<br/>
-
-	<div class="clear"></div>
-
-
-	<div id="customer-mail-content">
-		<div><?php echo Jtext::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_SUBJECT') ?></div>
-		<input type="text" class="mail-subject" size="100" value="<?php echo JText::sprintf ('COM_VIRTUEMART_PRODUCT_EMAIL_SHOPPERS_SUBJECT',
-			$this->product->product_name) ?>">
-
-		<div><?php echo Jtext::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_CONTENT') ?></div>
-		<textarea style="width: 100%;" class="inputbox" id="mail-body" cols="35" rows="10"></textarea>
-		<br/>
-	</div>
-
-	<div id="customer-mail-list">
-		<span
-			class="hasTip"
-			title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_ORDER_STATUS_TIP'); ?>">
-					<strong><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_ORDER_STATUS') ?></strong>
-			</span><br/>
-		<?php echo $this->lists['OrderStatus'];?>
-		<div style="font-weight:bold;"><?php echo JText::sprintf('COM_VIRTUEMART_PRODUCT_SHOPPERS_LIST',  htmlspecialchars($this->product->product_name)); ?></div>
-		<table class="adminlist" cellspacing="0" cellpadding="0">
-			<thead>
-			<tr>
-				<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_NAME');?></th>
-				<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_EMAIL');?></th>
-				<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_SHOPPER_FORM_PHONE');?></th>
-				<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_ORDER_PRINT_QUANTITY');?></th>
-			</tr>
-			</thead>
-			<tbody id="customers-list">
+<table class="adminform">
+	<tbody>
+	<tr class="row<?php echo $i?>">
+		<td width="21%" valign="top">
 			<?php
-			if (!empty($this->customers)) {
-				foreach ($this->customers as $virtuemart_order_user_id => $customer) {
-					?>
-				<tr class="customer" data-cid="<?php echo $virtuemart_order_user_id ?>">
-					<td class=''><?php echo $customer['customer_name'] ?></td>
-					<td><a class='mailto' href="<?php echo $customer['mail_to'] ?>"><span class='mail'><?php echo $customer['email'] ?></span></a></td>
-					<td class='customer_phone'><?php echo $customer['customer_phone'] ?></td>
-					<td class='quantity'><?php echo $customer['quantity'] ?></td>
-				</tr>
-					<?php
-				}
+			$mail_options = array(
+				'customer'=> JText::_ ('COM_VIRTUEMART_PRODUCT_SHOPPERS'),
+				'notify'  => JText::_ ('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST'),
+			);
+			$mail_default = 'notify';
+			if (VmConfig::get ('stockhandle', 0) != 'disableadd' or empty($this->waitinglist)) {
+				echo '<input type="hidden" name="customer_email_type" value="customer" id="customer_email_type0">';
+			}
+			else {
+				echo VmHtml::radioList ('customer_email_type', $mail_default, $mail_options);
 			}
 			?>
-			</tbody>
-		</table>
-	</div>
 
-	<div id="customer-mail-notify-list">
+			<div id="notify_particulars" style="padding-left:20px;">
+				<div><input type="checkbox" name="notification_template" id="notification_template" value="1" CHECKED>
+					<label for="notification_template">
+						<span class="hasTip" title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_USE_NOTIFY_TEMPLATE_TIP'); ?>">
+						<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_USE_NOTIFY_TEMPLATE'); ?></span>
+				</div>
+				</label>
+				<div><input type="text" name="notify_number" value="" size="4"/><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_NOTIFY_NUMBER'); ?></div>
+			</div>
+			<br/>
 
-		<?php if (VmConfig::get ('stockhandle', 0) == 'disableadd' && !empty($this->waitinglist)) { ?>
-		<div style="font-weight:bold;"><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST'); ?></div>
-		<table class="adminlist" cellspacing="0" cellpadding="0">
-			<thead>
-			<tr>
-				<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_NAME');?></th>
-				<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_USERNAME');?></th>
-				<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_EMAIL');?></th>
-			</tr>
-			</thead>
-			<tbody id="customers-notify-list">
-				<?php
-				if (isset($this->waitinglist) && count ($this->waitinglist) > 0) {
-					foreach ($this->waitinglist as $key => $wait) {
-						if ($wait->virtuemart_user_id == 0) {
-							$row = '<tr><td></td><td></td><td><a href="mailto:' . $wait->notify_email . '">' . $wait->notify_email . '</a></td></tr>';
+			<div class="mailing">
+				<div class="button2-left" data-type="sendmail">
+					<div class="blank" style="padding:0 6px;cursor: pointer;" title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_SEND_TIP'); ?>">
+						<span class="vmicon vmicon-16-email"></span>
+						<?php echo Jtext::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_SEND'); ?>
+					</div>
+
+				</div>
+				<div id="customers-list-msg"></div>
+				<br/>
+
+
+		</td>
+	</tr>
+	<?php $i = 1 - $i; ?>
+	<tr class="row<?php echo $i?>">
+		<td width="21%" valign="top">
+			<div id="customer-mail-content">
+				<div><?php echo Jtext::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_SUBJECT') ?></div>
+				<input type="text" class="mail-subject" id="mail-subject" size="100"   value="<?php echo JText::sprintf ('COM_VIRTUEMART_PRODUCT_EMAIL_SHOPPERS_SUBJECT',$this->product->product_name) ?>">
+
+				<div><?php echo Jtext::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_CONTENT') ?></div>
+				<textarea style="width: 100%;" class="inputbox"   id="mail-body" cols="35" rows="10"></textarea>
+				<br/>
+			</div>
+		</td>
+	</tr>
+	<?php $i = 1 - $i; ?>
+	<tr class="row<?php echo $i?>">
+		<td width="21%" valign="top">
+			<div id="customer-mail-list">
+				<span class="hasTip" title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_ORDER_ITEM_STATUS_TIP'); ?>">
+				<strong><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_ORDER_ITEM_STATUS') ?></strong>
+				</span><br/>
+				<?php echo $this->lists['OrderStatus'];?>
+				<br/> <br/>
+				<div style="font-weight:bold;"><?php echo JText::sprintf ('COM_VIRTUEMART_PRODUCT_SHOPPERS_LIST', htmlspecialchars ($this->product->product_name)); ?></div>
+				<table class="adminlist" cellspacing="0" cellpadding="0">
+					<thead>
+					<tr>
+						<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_NAME');?></th>
+						<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_EMAIL');?></th>
+						<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_SHOPPER_FORM_PHONE');?></th>
+						<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_ORDER_PRINT_QUANTITY');?></th>
+						<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_ORDER_PRINT_ITEM_STATUS');?></th>
+						<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_ORDER_NUMBER');?></th>
+					</tr>
+					</thead>
+					<tbody id="customers-list">
+					<?php
+					if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+					echo ShopFunctions::renderProductShopperList($this->productShoppers);
+					?>
+					</tbody>
+				</table>
+			</div>
+
+			<div id="customer-mail-notify-list">
+
+				<?php if (VmConfig::get ('stockhandle', 0) == 'disableadd' && !empty($this->waitinglist)) { ?>
+				<div style="font-weight:bold;"><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST'); ?></div>
+				<table class="adminlist" cellspacing="0" cellpadding="0">
+					<thead>
+					<tr>
+						<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_NAME');?></th>
+						<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_USERNAME');?></th>
+						<th class="title"><?php echo JText::_ ('COM_VIRTUEMART_EMAIL');?></th>
+					</tr>
+					</thead>
+					<tbody id="customers-notify-list">
+						<?php
+						if (isset($this->waitinglist) && count ($this->waitinglist) > 0) {
+							foreach ($this->waitinglist as $key => $wait) {
+								if ($wait->virtuemart_user_id == 0) {
+									$row = '<tr><td></td><td></td><td><a href="mailto:' . $wait->notify_email . '">' . $wait->notify_email . '</a></td></tr>';
+								}
+								else {
+									$row = '<tr><td>' . $wait->name . '</td><td>' . $wait->username . '</td><td>' . '<a href="mailto:' . $wait->notify_email . '">' . $wait->notify_email . '</a>' . '</td></tr>';
+								}
+								echo $row;
+							}
 						}
 						else {
-							$row = '<tr><td>' . $wait->name . '</td><td>' . $wait->username . '</td><td>' . '<a href="mailto:' . $wait->notify_email . '">' . $wait->notify_email . '</a>' . '</td></tr>';
-						}
-						echo $row;
-					}
+							?>
+						<tr>
+							<td colspan="4">
+								<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_WAITING_NOWAITINGUSERS'); ?>
+							</td>
+						</tr>
+							<?php
+						} ?>
+					</tbody>
+				</table>
 
-				} else {
-					?>
-				<tr>
-					<td colspan="4">
-						<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_WAITING_NOWAITINGUSERS'); ?>
-					</td>
-				</tr>
-					<?php
-				} ?>
-			</tbody>
-		</table>
+				<?php } ?>
+			</div>
 
-		<?php } ?>
-	</div>
+			</div>
+		</td>
+	</tr>
 
-
-</div>
-
+	</tbody>
+</table>
 <script type="text/javascript">
 	<!--
-	var $customerMailLink = '<?php echo juri::root () . '/index.php?option=com_virtuemart&view=productdetails&task=sentproductemailtoshoppers&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';
+	var $customerMailLink = '<?php echo JURI::root () . '/index.php?option=com_virtuemart&view=productdetails&task=sentproductemailtoshoppers&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';
 	var $customerMailNotifyLink = '<?php echo 'index.php?option=com_virtuemart&view=product&task=ajax_notifyUsers&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';
 	var $customerListLink = '<?php echo 'index.php?option=com_virtuemart&view=product&format=json&type=userlist&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';
 	var $customerListNotifyLink = '<?php echo 'index.php?option=com_virtuemart&view=product&task=ajax_waitinglist&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';
@@ -159,7 +166,7 @@ else {
 		jQuery("input:radio[name=customer_email_type],input:checkbox[name=notification_template]").click(function () {
 			customer_initiliaze_boxes();
 		});
-		jQuery('select#order_items_status').chosen({enable_select_all:false, select_some_options_text:vm2string.select_some_options_text}).change(function () {
+		jQuery('select#order_items_status').chosen({enable_select_all:true, select_some_options_text:vm2string.select_some_options_text}).change(function () {
 			populate_customer_list(jQuery(this).val());
 		})
 		jQuery('.mailing .button2-left').click(function () {
@@ -170,8 +177,8 @@ else {
 				var $body = '';
 				var $subject = '';
 				if (jQuery('input:checkbox[name=notification_template]').is(':checked')); else {
-					var $subject = jQuery('.mailing .mail-subject').val();
-					var $body = jQuery('#mail-body').val();
+					 $subject = jQuery('#mail-subject').val();
+					 $body = jQuery('#mail-body').val();
 				}
 				var $max_number = jQuery('input[name=notify_number]').val();
 
@@ -200,15 +207,24 @@ else {
 
 			}
 			else if (email_type = 'customer') {
-				var $subject = jQuery('.mailing .mail-subject').val();
+				var $subject = jQuery('#mail-subject').val();
 				var $body = jQuery('#mail-body').val();
-				var $statut = jQuery('select#order_items_status').val();
-				jQuery.post($customerMailLink, { subject:$subject, mailbody:$body, statut:$statut, token:'<?php echo JUtility::getToken () ?>' },
-					function (data) {
-						jQuery("#customers-list").html('message sent');
-					}
-				);
-
+				if ($subject == '') {
+					alert("<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_ENTER_SUBJECT')?>");
+				}
+				else if ($body == '') {
+					alert("<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_ENTER_BODY')?>");
+				}
+				else {
+					var $statut = jQuery('select#order_items_status').val();
+					jQuery.post($customerMailLink, { subject:$subject, mailbody:$body, statut:$statut, token:'<?php echo JUtility::getToken () ?>' },
+						function (data) {
+							jQuery("#customers-list-msg").html('<strong><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_NOTIFY_MESSAGE_SENT')?></strong>');
+							jQuery("#mail-subject").html('');
+							jQuery("#mail-body").html('');
+						}
+					);
+				}
 
 			}
 
