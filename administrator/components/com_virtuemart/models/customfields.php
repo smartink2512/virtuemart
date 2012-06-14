@@ -128,7 +128,6 @@ class VirtueMartModelCustomfields extends VmModel {
 		$varsToPush = self::getVarsToPush($type);
 
 		if(!empty($varsToPush)){
-			vmdebug('setParameterableByFieldType ',$type,$varsToPush);
 			$table->setParameterable('custom_param',$varsToPush,TRUE);
 		}
 

@@ -1172,13 +1172,10 @@ class VirtueMartModelProduct extends VmModel {
 
 		//We may need to change this, the reason it is not in the other list of commands for parents
 		if (!$isChild) {
-			//vmdebug('store isChild ',$data);
-
 			if (isset($data['save_customfields']) ){
 				if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 				VirtueMartModelCustomfields::storeProductCustomfields('product',$data,$product_data->virtuemart_product_id);
 			}
-				VirtueMartModelCustom::saveModelCustomfields ('product', $data, $product_data->virtuemart_product_id);
 		}
 
 
