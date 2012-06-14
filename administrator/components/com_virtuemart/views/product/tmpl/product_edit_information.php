@@ -327,7 +327,7 @@ $i=0;
                 	$customs = array();
                 	if(!empty($this->product->customfields)){
                 		foreach($this->product->customfields as $custom){
-                			vmdebug('my custom',$custom);
+                			//vmdebug('my custom',$custom);
                 			if($custom->field_type=='A'){
                 				$customs[] = $custom;
                 			}

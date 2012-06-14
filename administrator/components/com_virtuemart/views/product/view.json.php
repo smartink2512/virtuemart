@@ -97,7 +97,7 @@ class VirtuemartViewProduct extends JView {
 					// Get childs
 						foreach ($childIds as $childId) {
 							$field->custom_value = $childId;
-							$display = $this->model->inputType($field,$childId,$this->row);
+							$display = $this->model->displayProductCustomfieldBE($field,$childId,$this->row);
 							 if ($field->is_cart_attribute) $cartIcone=  'default';
 							 else  $cartIcone= 'default-off';
 							 $html[] = '<div class="removable">
@@ -115,7 +115,7 @@ class VirtuemartViewProduct extends JView {
 					}
 				} elseif ($field->field_type =='E') {
 					$this->json['table'] = 'customPlugins';
-					$display = $this->model->inputType($field,$product_id,$this->row);
+					$display = $this->model->displayProductCustomfieldBE($field,$product_id,$this->row);
 					 if ($field->is_cart_attribute) {
 					     $cartIcone=  'default';
 					 } else {
@@ -139,7 +139,7 @@ class VirtuemartViewProduct extends JView {
 
 				} else {
 					$this->json['table'] = 'fields';
-					$display = $this->model->inputType($field,$product_id,$this->row);
+					$display = $this->model->displayProductCustomfieldBE($field,$product_id,$this->row);
 					 if ($field->is_cart_attribute) $cartIcone=  'default';
 					 else  $cartIcone= 'default-off';
 					 $html[] = '<tr class="removable">
@@ -191,7 +191,7 @@ class VirtuemartViewProduct extends JView {
 		foreach ($this->json as &$related) {
 
 			$customs->custom_value = $related->id;
-			$display = $this->model->inputType($customs,$related->id,$this->row);
+			$display = $this->model->displayProductCustomfieldBE($customs,$related->id,$this->row);
 			$html = '<div class="vm_thumb_image">
 				<span>'.$display.'</span>
 				'.$this->model->setEditCustomHidden($customs, $this->row).'

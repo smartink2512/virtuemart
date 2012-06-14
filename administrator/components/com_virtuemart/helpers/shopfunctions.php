@@ -6,7 +6,7 @@ defined ('_JEXEC') or die('Direct Access to ' . basename (__FILE__) . ' is not a
  *
  * This class provides some shop functions that are used throughout the VirtueMart shop.
  *
- * @package    VirtueMart
+ * @package	VirtueMart
  * @subpackage Helpers
  * @author RolandD
  * @author Max Milbers
@@ -141,7 +141,7 @@ class ShopFunctions {
 	 *
 	 * @author Max Milbers, RolandD
 	 * @access public
-	 * @param int  $virtuemart_shoppergroup_id the shopper group to pre-select
+	 * @param int $virtuemart_shoppergroup_id the shopper group to pre-select
 	 * @param bool $multiple if the select list should allow multiple selections
 	 * @return string HTML select option list
 	 */
@@ -159,8 +159,8 @@ class ShopFunctions {
 			$html = '<input type="text" size="14" name="vendor_name" class="inputbox" value="' . $vendor . '" readonly="">';
 		} else {
 			if (!class_exists ('Permissions')) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-			}
+						require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+					}
 			if (!Permissions::getInstance ()->check ('admin')) {
 				if (empty($vendorId)) {
 					$vendorId = 1;
@@ -202,7 +202,7 @@ class ShopFunctions {
 	 *
 	 * @author Max Milbers, RolandD
 	 * @access public
-	 * @param int  $shopperGroupId the shopper group to pre-select
+	 * @param int $shopperGroupId the shopper group to pre-select
 	 * @param bool $multiple if the select list should allow multiple selections
 	 * @return string HTML select option list
 	 */
@@ -231,11 +231,11 @@ class ShopFunctions {
 	 *
 	 * @author jseros, Max Milbers
 	 *
-	 * @param int     $countryId Selected country id
+	 * @param int $countryId Selected country id
 	 * @param boolean $multiple True if multiple selections are allowed (default: false)
-	 * @param mixed   $_attrib string or array with additional attributes,
+	 * @param mixed $_attrib string or array with additional attributes,
 	 * e.g. 'onchange=somefunction()' or array('onchange'=>'somefunction()')
-	 * @param string  $_prefix Optional prefix for the formtag name attribute
+	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 * @return string HTML containing the <select />
 	 */
 	static public function renderCountryList ($countryId = 0, $multiple = FALSE, $_attrib = array(), $_prefix = '', $required = 0) {
@@ -276,8 +276,8 @@ class ShopFunctions {
 	 *
 	 * @author jseros, Patrick Kohl
 	 *
-	 * @param int    $stateID Selected state id
-	 * @param int    $countryID Selected country id
+	 * @param int $stateID Selected state id
+	 * @param int $countryID Selected country id
 	 * @param string $dependentField Parent <select /> ID attribute
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 * @return string HTML containing the <select />
@@ -285,8 +285,8 @@ class ShopFunctions {
 	static public function renderStateList ($stateId = '0', $_prefix = '', $multiple = FALSE, $required = 0) {
 
 		if (is_array ($stateId)) {
-			$stateId = implode (",", $stateId);
-		}
+					$stateId = implode (",", $stateId);
+				}
 		vmJsApi::JcountryStateList ($stateId);
 
 		if ($multiple) {
@@ -314,8 +314,8 @@ class ShopFunctions {
 	static function renderTaxList ($selected, $name = 'product_tax_id', $class = '') {
 
 		if (!class_exists ('VirtueMartModelCalc')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'calc.php');
-		}
+					require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'calc.php');
+				}
 		$taxes = VirtueMartModelCalc::getTaxes ();
 
 		$taxrates = array();
@@ -340,8 +340,8 @@ class ShopFunctions {
 	static public function renderTemplateList ($defaultText = 0, $defaultOption = TRUE) {
 
 		if (empty($defaultText)) {
-			$defaultText = JText::_ ('COM_VIRTUEMART_TEMPLATE_DEFAULT');
-		}
+					$defaultText = JText::_ ('COM_VIRTUEMART_TEMPLATE_DEFAULT');
+				}
 
 		$defaulttemplate = array();
 		if ($defaultOption) {
@@ -353,8 +353,8 @@ class ShopFunctions {
 
 		if (JVM_VERSION === 1) {
 			if (!class_exists ('TemplatesHelper')) {
-				require (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_templates' . DS . 'helpers' . DS . 'template.php');
-			}
+						require (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_templates' . DS . 'helpers' . DS . 'template.php');
+					}
 			$jtemplates = TemplatesHelper::parseXMLTemplateFiles (JPATH_SITE . DS . 'templates');
 		} else {
 			require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_templates' . DS . 'helpers' . DS . 'templates.php');
@@ -406,7 +406,7 @@ class ShopFunctions {
 
 		$weigth_unit = self::getWeightUnit ();
 		if (isset($weigth_unit[$name])) {
-			return $weigth_unit[$name];
+					return $weigth_unit[$name];
 		} else {
 			return '';
 		}
@@ -420,7 +420,7 @@ class ShopFunctions {
 	static function renderWeightUnitList ($name, $selected) {
 
 		$weigth_unit_default = self::getWeightUnit ();
-		foreach ($weigth_unit_default as $key => $value) {
+		foreach ($weigth_unit_default as  $key => $value) {
 			$wu_list[] = JHTML::_ ('select.option', $key, $value, $name);
 		}
 		$listHTML = JHTML::_ ('Select.genericlist', $wu_list, $name, '', $name, 'text', $selected);
@@ -448,19 +448,19 @@ class ShopFunctions {
 		switch ($from) {
 			case 'KG':
 				$g = 1000 * $value;
-				break;
+			break;
 			case 'GR':
 				$g = $value;
-				break;
+			break;
 			case 'MG':
 				$g = $value / 1000;
-				break;
+			break;
 			case 'LB':
 				$g = 453.59237 * $value;
-				break;
+			break;
 			case 'OZ':
 				$g = 28.3495 * $value;
-				break;
+			break;
 		}
 		switch ($to) {
 			case 'KG' :
@@ -499,19 +499,19 @@ class ShopFunctions {
 		switch ($from) {
 			case 'CM':
 				$meter = 0.01 * $value;
-				break;
+			break;
 			case 'MM':
 				$meter = 0.001 * $value;
-				break;
+			break;
 			case 'YD':
 				$meter = 1.0936 * $value;
-				break;
+			break;
 			case 'FT':
 				$meter = 3.28083 * $value;
-				break;
+			break;
 			case 'IN':
 				$meter = 39.37 * $value;
-				break;
+			break;
 		}
 		switch ($to) {
 			case 'CM' :
@@ -573,7 +573,7 @@ class ShopFunctions {
 				<td class="key">
 					<span class="editlinktip hasTip" title="' . JText::_ ($langkey . '_EXPLAIN') . '">
 						<label>' . JText::_ ($langkey) .
-				'</label>
+						'</label>
 					</span>
 				</td>
 
@@ -684,10 +684,10 @@ class ShopFunctions {
 	 *
 	 * @todo: Connect to vendor data
 	 * @author RolandD, Max Milbers, jseros
-	 * @param array       $selectedCategories All category IDs that will be pre-selected
-	 * @param int         $cid         Internally used for recursion
-	 * @param int         $level         Internally used for recursion
-	 * @return string     $category_tree HTML: Category tree list
+	 * @param array 	$selectedCategories All category IDs that will be pre-selected
+	 * @param int 		$cid 		Internally used for recursion
+	 * @param int 		$level 		Internally used for recursion
+	 * @return string 	$category_tree HTML: Category tree list
 	 */
 	static public function categoryListTreeLoop ($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields = array()) {
 
@@ -761,7 +761,7 @@ class ShopFunctions {
 	 *
 	 * @author Oscar van Eijk
 	 * @access public
-	 * @param int  $_id Country ID
+	 * @param int $_id Country ID
 	 * @param char $_fld Field to return: country_name (default), country_2_code or country_3_code.
 	 * @return string Country name or code
 	 */
@@ -815,7 +815,7 @@ class ShopFunctions {
 	 *
 	 * @author Oscar van Eijk
 	 * @access public
-	 * @param int  $_id State ID
+	 * @param int $_id State ID
 	 * @param char $_fld Field to return: state_name (default), state_2_code or state_3_code.
 	 * @return string state name or code
 	 */
@@ -887,7 +887,7 @@ class ShopFunctions {
 	 *
 	 * @author Valérie Isaksen
 	 * @access public
-	 * @param int  $_id Currency ID
+	 * @param int $_id Currency ID
 	 * @param char $_fld Field to return: currency_name (default), currency_2_code or currency_3_code.
 	 * @return string Currency name or code
 	 */
@@ -943,7 +943,7 @@ class ShopFunctions {
 	 * @param boolean $onlyPublished Show only published categories?
 	 * @param boolean $withParentId Keep in mind $parentId param?
 	 * @param integer $parentId Show only its childs
-	 * @param string  $attribs HTML attributes for the list
+	 * @param string $attribs HTML attributes for the list
 	 * @return string <Select /> HTML
 	 */
 	static public function getEnumeratedCategories ($onlyPublished = TRUE, $withParentId = FALSE, $parentId = 0, $name = '', $attribs = '', $key = '', $text = '', $selected = NULL) {
@@ -985,15 +985,15 @@ class ShopFunctions {
 	}
 
 	/*
-		 * @author Valerie
-		 */
+	 * @author Valerie
+	 */
 	static function InvoiceNumberReserved ($invoice_number) {
 
 		if (($pos = strpos ($invoice_number, 'reservedByPayment_')) === FALSE) {
-			return FALSE;
-		} else {
-			return TRUE;
-		}
+	       return FALSE;
+	   } else {
+	        return TRUE;
+	   }
 	}
 
 	/**
@@ -1186,9 +1186,9 @@ class ShopFunctions {
 	 * @return boolean The result of the validation
 	 */
 	// public function validateEUVat($euvat) {
-	// if(!class_exists('VmEUVatCheck')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'euvatcheck.php');
-	// $vatcheck = new VmEUVatCheck($euvat);
-	// return $vatcheck->validvatid;
+		// if(!class_exists('VmEUVatCheck')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'euvatcheck.php');
+		// $vatcheck = new VmEUVatCheck($euvat);
+		// return $vatcheck->validvatid;
 
 	/*
 	 *
@@ -1246,8 +1246,8 @@ class ShopFunctions {
 	 * @author gday
 	 *
 	 * @access public
-	 * @param string  $str The string to mask
-	 * @param int     $display_length The length at the end of the string that is NOT masked
+	 * @param string $str The string to mask
+	 * @param int $display_length The length at the end of the string that is NOT masked
 	 * @param boolean $reversed When true, masks the end. Masks from the beginning at default
 	 * @return string The string masked by asteriks
 	 */
@@ -1273,13 +1273,13 @@ class ShopFunctions {
 	/**
 	 * Return the icon to move an item UP
 	 *
-	 * @access    public
-	 * @param    int        $i The row index
-	 * @param    boolean    $condition True to show the icon
-	 * @param    string     $task The task to fire
-	 * @param    string     $alt The image alternate text string
-	 * @return    string    Either the icon to move an item up or a space
-	 * @since    1.0
+	 * @access	public
+	 * @param	int		$i The row index
+	 * @param	boolean	$condition True to show the icon
+	 * @param	string	$task The task to fire
+	 * @param	string	$alt The image alternate text string
+	 * @return	string	Either the icon to move an item up or a space
+	 * @since	1.0
 	 */
 	function orderUpIcon ($i, $condition = TRUE, $task = 'orderup', $alt = 'COM_VIRTUEMART_MOVE_UP', $enabled = TRUE) {
 
@@ -1290,7 +1290,7 @@ class ShopFunctions {
 			if ($enabled) {
 				$html = '<a href="#reorder"  class="orderUp" title="' . $alt . '">';
 				$html .= '   <img src="images/uparrow.png" width="16" height="16" border="0" alt="' . $alt . '" />';
-				$html .= '</a>';
+				$html	.= '</a>';
 			} else {
 				$html = '<img src="images/uparrow0.png" width="16" height="16" border="0" alt="' . $alt . '" />';
 			}
@@ -1302,14 +1302,14 @@ class ShopFunctions {
 	/**
 	 * Return the icon to move an item DOWN
 	 *
-	 * @access    public
-	 * @param    int        $i The row index
-	 * @param    int        $n The number of items in the list
-	 * @param    boolean    $condition True to show the icon
-	 * @param    string     $task The task to fire
-	 * @param    string     $alt The image alternate text string
-	 * @return    string    Either the icon to move an item down or a space
-	 * @since    1.0
+	 * @access	public
+	 * @param	int		$i The row index
+	 * @param	int		$n The number of items in the list
+	 * @param	boolean	$condition True to show the icon
+	 * @param	string	$task The task to fire
+	 * @param	string	$alt The image alternate text string
+	 * @return	string	Either the icon to move an item down or a space
+	 * @since	1.0
 	 */
 	function orderDownIcon ($i, $n, $condition = TRUE, $task = 'orderdown', $alt = 'Move Down', $enabled = TRUE) {
 
@@ -1320,7 +1320,7 @@ class ShopFunctions {
 			if ($enabled) {
 				$html = '<a href="#reorder" class="orderDown" title="' . $alt . '">';
 				$html .= '  <img src="images/downarrow.png" width="16" height="16" border="0" alt="' . $alt . '" />';
-				$html .= '</a>';
+				$html	.= '</a>';
 			} else {
 				$html = '<img src="images/downarrow0.png" width="16" height="16" border="0" alt="' . $alt . '" />';
 			}
@@ -1335,27 +1335,27 @@ class ShopFunctions {
 
 		if (!isset($filterArray)) {
 			/*
-		   $filterArray = array('p.virtuemart_product_id', 'p.product_sku','pp.product_price','c.category_name','c.category_description',
-		   'm.mf_name', 'l.product_s_desc', 'p.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width',
-		   'p.product_height', 'p.product_lwh_uom', 'p.product_in_stock', 'p.low_stock_notification', 'p.product_available_date',
-		   'p.product_availability', 'p.product_special', 'p.created_on', 'p.modified_on', 'l.product_name', 'p.product_sales',
-		   'p.product_unit', 'p.product_packaging', 'p.intnotes', 'l.metadesc', 'l.metakey', 'p.metarobot', 'p.metaauthor');
-		   }
+		$filterArray = array('p.virtuemart_product_id', 'p.product_sku','pp.product_price','c.category_name','c.category_description',
+		'm.mf_name', 'l.product_s_desc', 'p.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width',
+		'p.product_height', 'p.product_lwh_uom', 'p.product_in_stock', 'p.low_stock_notification', 'p.product_available_date',
+		'p.product_availability', 'p.product_special', 'p.created_on', 'p.modified_on', 'l.product_name', 'p.product_sales',
+		'p.product_unit', 'p.product_packaging', 'p.intnotes', 'l.metadesc', 'l.metakey', 'p.metarobot', 'p.metaauthor');
+		}
    */
-			$filterArray = array('product_name', 'created_on', 'product_sku',
-				'product_s_desc', 'product_desc',
+		$filterArray = array('product_name', 'created_on', 'product_sku',
+			'product_s_desc', 'product_desc',
 				'category_name', 'category_description', 'mf_name',
-				'product_price', 'product_special', 'product_sales', 'product_availability', 'product_available_date',
-				'product_height', 'product_width', 'product_length', 'product_lwh_uom',
-				'product_weight', 'product_weight_uom', 'product_in_stock', 'low_stock_notification',
-				'p.modified_on',
+			'product_price', 'product_special', 'product_sales', 'product_availability', 'product_available_date',
+			'product_height', 'product_width', 'product_length', 'product_lwh_uom',
+			'product_weight', 'product_weight_uom', 'product_in_stock', 'low_stock_notification',
+			 'p.modified_on',
 				'product_unit', 'product_packaging', 'p.virtuemart_product_id', 'ordering');
-			//other possible fields
-			//'p.intnotes',		this is maybe interesting, but then only for admins or special shoppergroups
+		//other possible fields
+		//'p.intnotes',		this is maybe interesting, but then only for admins or special shoppergroups
 
-			// this fields leads to trouble, because we have this fields in product, category and manufacturer,
-			// they are anyway making not a lot sense for orderby or search.
-			//'l.metadesc', 'l.metakey', 'l.metarobot', 'l.metaauthor'
+		// this fields leads to trouble, because we have this fields in product, category and manufacturer,
+		// they are anyway making not a lot sense for orderby or search.
+		//'l.metadesc', 'l.metakey', 'l.metarobot', 'l.metaauthor'
 		}
 
 		return $filterArray;
@@ -1374,22 +1374,24 @@ class ShopFunctions {
 	 * @param $manlink url URL to the manual for this specific plugin
 	 * @return string
 	 */
-	static function display3rdInfo ($title, $intro, $developer, $logolink, $contactlink, $manlink, $width = '200px', $height = '40px') {
+	static function display3rdInfo($title,$intro,$developer,$logolink,$contactlink,$manlink,$width='96px',$height='66px',$linesHeight='33px'){
 
 		$html = $intro;
 
-		$html .= self::displayLinkButton (JText::sprintf ('COM_VIRTUEMART_THRD_PARTY_CONTACT', $developer), $contactlink, $logolink . '/contact.png', $width, $height);
-		$html .= '<br />';
-		$html .= self::displayLinkButton (JText::sprintf ('COM_VIRTUEMART_THRD_PARTY_MANUAL', $title), $manlink, $logolink . '/manual.png', $width, $height);
+		$html .= self::displayLinkButton(JText::sprintf('COM_VIRTUEMART_THRD_PARTY_CONTACT',$developer),$contactlink, $logolink.'/contact.png',$width,$height,$linesHeight);
+		$html .='<br />';
+		$html .= self::displayLinkButton(JText::sprintf('COM_VIRTUEMART_THRD_PARTY_MANUAL',$title),$manlink, $logolink.'/manual.png',$width,$height,$linesHeight);
 
 		return $html;
 	}
 
 
-	static function displayLinkButton ($title, $link, $bgrndImage, $width, $height, $additionalStyles = '') {
+	static function displayLinkButton($title, $link, $bgrndImage,$width,$height,$linesHeight,$additionalStyles=''){
 
-		$html = '<div style="line-height:' . $height . ';background-image:url(' . $bgrndImage . ');width:' . $width . ';height:' . $height . ';' . $additionalStyles . '">'
-			. '<a  title="' . $title . '" href="' . $link . '" target="_blank" >' . $title . '</a></div>';
+		//$lineHeight = ((int)$height)/$lines;
+		//vmdebug('displayLinkButton '.$height.' '.$lineHeight);
+		$html = '<div style="line-height:'.$linesHeight.';background-image:url('.$bgrndImage.');width:'.$width.';height:'.$height.';'.$additionalStyles.'">'
+				.'<a  title="'.$title.'" href="'.$link.'" target="_blank" >'.$title .'</a></div>';
 
 		return $html;
 	}

@@ -58,6 +58,10 @@ class VirtueMartModelCustom extends VmModel {
 //     		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
     		$this->_data = $this->getTable('customs');
     		$this->_data->load($this->_id);
+
+		    $customfields = VmModel::getModel('Customfields');
+		    $this->_data->field_types = $customfields->getField_types() ;
+
     		//    		vmdebug('getCustom $data',$this->_data);
     		if(!empty($this->_data->custom_jplugin_id)){
     			JPluginHelper::importPlugin('vmcustom');
@@ -65,10 +69,11 @@ class VirtueMartModelCustom extends VmModel {
     			//    			$varsToPushParam = $dispatcher->trigger('plgVmDeclarePluginParams',array('custom',$this->_data->custom_element,$this->_data->custom_jplugin_id));
     			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsCustom',array('custom',$this->_data->custom_element,$this->_data->custom_jplugin_id,&$this->_data));
 
-    		}
+    		} else {
+			    VirtueMartModelCustomfields::bindParameterableByFieldType($this->_data);
+		    }
 
-    		$customfields = VmModel::getModel('Customfields');
-    		$this->_data->field_types = $customfields->getField_types() ;
+
     	}
 
   		return $this->_data;
@@ -140,87 +145,6 @@ class VirtueMartModelCustom extends VmModel {
 		return $clone;
 	}
 
-	/* Save and delete from database
-	* all product custom_fields and xref
-	@ var   $table	: the xref table(eg. product,category ...)
-	@array $data	: array of customfields
-	@int     $id		: The concerned id (eg. product_id)
-	*/
-	public function saveModelCustomfields($table,$datas, $id) {
-
-		vmdebug('put in plugin, use internal plugin table instead');
-		JRequest::checkToken() or jexit( 'Invalid Token, in store customfields');
-		//Sanitize id
-		$id = (int)$id;
-
-
-		//Table whitelist
-		$tableWhiteList = array('product','category','manufacturer');
-		if(!in_array($table,$tableWhiteList)) return false;
-
-
-		// Get old IDS
-		$this->_db->setQuery( 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_'.$table.'_customfields` as `PC` WHERE `PC`.virtuemart_'.$table.'_id ='.$id );
-		$old_customfield_ids = $this->_db->loadResultArray();
-
-
-		 if (isset ( $datas['custom_param'] )) $params = true ;
-		 else $params = false ;
-		if (array_key_exists('field', $datas)) {
-			//vmdebug('datas save',$datas);
-			$customfieldIds = array();
-
-
-			foreach($datas['field'] as $key => $fields){
-				$fields['virtuemart_'.$table.'_id'] =$id;
-				$tableCustomfields = $this->getTable($table.'_customfields');
-				$tableCustomfields->setPrimaryKey('virtuemart_product_id');
-				if ( $params and !isset($datas['clone']) ) {
-					if (array_key_exists( $key,$datas['custom_param'])) {
-
-						$fields['custom_param'] = json_encode($datas['custom_param'][$key]);
-						// $varsToPushParam = null;
-						// $ParamKeys = array_keys($datas['custom_param'][$key]);
-						// foreach ( $ParamKeys as $key =>$param )$varsToPushParam[ $param ] = array("",'string');
-						// $tableCustomfields->setParameterable('custom_param',$varsToPushParam);
-						// $fields =  (array)$datas['custom_param'][$key]+$fields;
-
-					}
-
-				} else $fields['custom_param'] = '';
-				//if ($fields['field_type'] == "y" or $fields['field_type'] == "X") $fields['custom_value'] = JRequest::getVar('custom_value', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
-						// if(empty ($data['password'])){
-				// $data['password'] = JRequest::getVar('password', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
-// 				vmdebug('saveModelCustomfields',$fields);
-				$tableCustomfields->bindChecknStore($fields);
-				$errors = $tableCustomfields->getErrors();
-
-				foreach($errors as $error){
-					vmError($error);
-				}
-				$key = array_search($fields['virtuemart_customfield_id'], $old_customfield_ids );
-				if ($key !== false ) unset( $old_customfield_ids[ $key ] );
-// 				vmdebug('datas clone',$old_customfield_ids,$fields);
-			}
-
-		}
-
-		if ( count($old_customfield_ids) ) {
-		// delete old unused Customfields
-		$this->_db->setQuery( 'DELETE FROM `#__virtuemart_'.$table.'_customfields` WHERE `virtuemart_customfield_id` in ("'.implode('","', $old_customfield_ids ).'") ');
-		$this->_db->query();
-		}
-
-
-		JPluginHelper::importPlugin('vmcustom');
-		$dispatcher = JDispatcher::getInstance();
-		if (is_array($datas['plugin_param'])) {
-		    foreach ($datas['plugin_param'] as $key => $plugin_param ) {
-			$dispatcher->trigger('plgVmOnStoreProduct', array($datas, $plugin_param ));
-		    }
-		}
-
-	}
 
 	/* Save and delete from database
 	 *  all Child product custom_fields relation

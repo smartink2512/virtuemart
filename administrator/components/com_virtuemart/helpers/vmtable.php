@@ -149,7 +149,7 @@ class VmTable extends JTable{
 		foreach($this->_varsToPushParam as $k=>$v){
 			if(!isset($this->$k))$this->$k = $v[0];
 		}
-		// 		vmdebug('setParameterable called '.$this->_xParams,$this->_varsToPushParam);
+		//vmdebug('setParameterable called '.$this->_xParams,$this->_varsToPushParam);
 	}
 
 	var $_tablePreFix = '';
@@ -324,20 +324,30 @@ class VmTable extends JTable{
 		// 						vmdebug('$obj->_xParams '.$xParams.' $obj->$xParams ',$paramFields);
 		if(!empty($obj->$xParams)){
 
-			$params = explode('|', $obj->$xParams);
-			foreach($params as $item){
+		//	if(strpos($obj->$xParams,'|')!==false){
+				$params = explode('|', $obj->$xParams);
+				foreach($params as $item){
 
-				$item = explode('=',$item);
-				$key = $item[0];
-				unset($item[0]);
+					$item = explode('=',$item);
+					$key = $item[0];
+					unset($item[0]);
 
-				$item = implode('=',$item);
+					$item = implode('=',$item);
 
-				if(!empty($item) && isset($varsToPushParam[$key][1]) ){
-					$obj->$key = json_decode($item);
-
+					if(!empty($item) && isset($varsToPushParam[$key][1]) ){
+						$obj->$key = json_decode($item);
+					}
+				}
+		/*	} else {
+				$params = json_decode($obj->$xParams);
+				foreach($params as $key=>$item){
+					if(!empty($item) && isset($varsToPushParam[$key][1]) ){
+						$obj->$key = $item;
+					}
+					//unset($item[0]);
 				}
 			}
+*/
 		} else {
 			if(empty($xParams)){
 				vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error '.$obj);

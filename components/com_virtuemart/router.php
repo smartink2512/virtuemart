@@ -527,7 +527,7 @@ function virtuemartParseRoute($segments) {
 	if ( (substr($last_elem, -(int)$helper->seo_sufix_size ) == $helper->seo_sufix) 
 	|| ($last_elem=='notify' && substr($slast_elem, -(int)$helper->seo_sufix_size ) == $helper->seo_sufix) ) {
 
-
+		$vars['view'] = 'productdetails';
 		if($last_elem=='notify') {
 			$vars['layout'] = 'notify';
 			array_pop($segments);
@@ -537,16 +537,19 @@ function virtuemartParseRoute($segments) {
 			$product = $helper->getProductId($segments ,$helper->activeMenu->virtuemart_category_id);
 			$vars['virtuemart_product_id'] = $product['virtuemart_product_id'];
 			$vars['virtuemart_category_id'] = $product['virtuemart_category_id'];
+			vmdebug('View productdetails, using case !$helper->use_id',$vars,$helper->activeMenu);
 		}
 		elseif (isset($segments[1]) ){
 			$vars['virtuemart_product_id'] = $segments[0];
 			$vars['virtuemart_category_id'] = $segments[1];
+			vmdebug('View productdetails, using case isset($segments[1]',$vars);
 		} else {
 			$vars['virtuemart_product_id'] = $segments[0];
 			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+			vmdebug('View productdetails, using case "else", which uses $helper->activeMenu->virtuemart_category_id ',$vars);
 		}
 
-		$vars['view'] = 'productdetails';
+
 
 	} elseif (!$helper->use_id && ($helper->activeMenu->view == 'category' ) )  {
 		$vars['virtuemart_category_id'] = $helper->getCategoryId (end($segments) ,$helper->activeMenu->virtuemart_category_id);

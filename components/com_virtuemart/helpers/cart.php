@@ -789,8 +789,6 @@ class VirtueMartCart {
 			}
 		}
 
-
-
 		// Test Coupon
 		if (!empty($this->couponCode)) {
 			$prices = $this->getCartPrices();
@@ -827,7 +825,6 @@ class VirtueMartCart {
 				} elseif ($retVal === false) {
 					// Missing data, ask for it (again)
 					return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=edit_shipment' , $redirectMsg);
-// 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $redirectMsg);
 					// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
 				}
 			}
@@ -849,12 +846,10 @@ class VirtueMartCart {
 				} elseif ($retVal === false) {
 					// Missing data, ask for it (again)
 					return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=editpayment' , $redirectMsg);
-// 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $redirectMsg);
 					// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
 				}
 			}
 		}
-
 
 		if (empty($this->tosAccepted)) {
 
