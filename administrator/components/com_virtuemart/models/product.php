@@ -1180,7 +1180,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 				VirtueMartModelCustom::saveModelCustomfields ('product', $data, $product_data->virtuemart_product_id);
 		}
-		}
+
 
 // 		vmdebug('use_desired_price '.$this->_id.' '.$data['use_desired_price']);
 		if (!$isChild and isset($data['use_desired_price']) and $data['use_desired_price'] == "1") {

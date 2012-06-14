@@ -418,18 +418,4 @@ if( property_exists($this, 'taxrates') && is_array( $this->taxrates )) {
 
 </script>
 
-<script type="text/javascript">
-<!--
 
-/* JS for editstatus */
-
-jQuery('.sendEmailFormSubmit').click(function() {
-	//document.orderStatForm.task.value = 'updateOrderItemStatus';
-	document.sendEmailFormSubmit.submit();
-
-	return false
-});
-
-var editingItem = 0;
-
-</script>
