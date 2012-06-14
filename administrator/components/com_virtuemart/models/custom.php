@@ -70,7 +70,8 @@ class VirtueMartModelCustom extends VmModel {
     			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsCustom',array('custom',$this->_data->custom_element,$this->_data->custom_jplugin_id,&$this->_data));
 
     		} else {
-			    VirtueMartModelCustomfields::bindParameterableByFieldType($this->_data);
+			    //Todo this is not working, because the custom is using custom_params, while the customfield is using custom_param !
+			    //VirtueMartModelCustomfields::bindParameterableByFieldType($this->_data);
 		    }
 
 

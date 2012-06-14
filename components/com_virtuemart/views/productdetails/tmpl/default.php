@@ -74,27 +74,27 @@ if (empty($this->product)) {
         </div>
     <?php } // Product Navigation END
     ?>
-	
+
 	<?php // Back To Category Button
 	if ($this->product->virtuemart_category_id) {
 		$catURL =  JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$this->product->virtuemart_category_id);
-		$categoryName = $this->product->category_name ; 
+		$categoryName = $this->product->category_name ;
 	} else {
 		$catURL =  JRoute::_('index.php?option=com_virtuemart');
-		$categoryName = jtext::_('COM_VIRTUEMART_SHOP_HOME') ; 
+		$categoryName = jtext::_('COM_VIRTUEMART_SHOP_HOME') ;
 	}
 	?>
 	<div class="back-to-category">
     	<a href="<?php echo $catURL ?>" class="product-details" title="<?php echo $categoryName ?>"><?php echo JText::sprintf('COM_VIRTUEMART_CATEGORY_BACK_TO',$categoryName) ?></a>
 	</div>
-	
+
     <?php // Product Title   ?>
     <h1><?php echo $this->product->product_name ?></h1>
     <?php // Product Title END   ?>
 
     <?php // afterDisplayTitle Event
     echo $this->product->event->afterDisplayTitle ?>
-    
+
     <?php
     // Product Edit Link
     echo $this->edit_link;
@@ -207,20 +207,20 @@ echo $this->loadTemplate('images');
 
 		<?php
 		// Availability Image
-		/* TO DO add width and height to the image */
-		if (!empty($this->product->product_availability)) {
-		    $stockhandle = VmConfig::get('stockhandle', 'none');
-		    if ($stockhandle == 'risetime' and ($this->product->product_in_stock - $this->product->product_ordered) < 1) {
+		$stockhandle = VmConfig::get('stockhandle', 'none');
+		if (($this->product->product_in_stock - $this->product->product_ordered) < 1) {
+			if ($stockhandle == 'risetime' and VmConfig::get('rised_availability') and empty($this->product->product_availability)) {
 			?>	<div class="availability">
-			    <?php echo JHTML::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability', '7d.gif'), VmConfig::get('rised_availability', '7d.gif'), array('class' => 'availability')); ?>
+			    <?php echo (file_exists(JPATH_BASE . DS . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability'))) ? JHTML::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability', '7d.gif'), VmConfig::get('rised_availability', '7d.gif'), array('class' => 'availability')) : VmConfig::get('rised_availability'); ?>
 			</div>
-		    <?php } else {
+		    <?php
+			} else if (!empty($this->product->product_availability)) {
 			?>
 			<div class="availability">
-			<?php echo JHTML::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . $this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
+			<?php echo (file_exists(JPATH_BASE . DS . VmConfig::get('assets_general_path') . 'images/availability/' . $this->product->product_availability)) ? JHTML::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . $this->product->product_availability, $this->product->product_availability, array('class' => 'availability')) : $this->product->product_availability; ?>
 			</div>
 			<?php
-		    }
+			}
 		}
 		?>
 
@@ -249,7 +249,7 @@ if (VmConfig::get('ask_question', 1) == '1') {
 
 	<?php // event onContentBeforeDisplay
 	echo $this->product->event->beforeDisplayContent; ?>
-	
+
 	<?php
 	// Product Description
 	if (!empty($this->product->product_desc)) {
