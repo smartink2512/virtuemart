@@ -120,14 +120,17 @@ $i = 0;
 					<tbody id="customers-notify-list">
 						<?php
 						if (isset($this->waitinglist) && count ($this->waitinglist) > 0) {
+							$i=0;
 							foreach ($this->waitinglist as $key => $wait) {
 								if ($wait->virtuemart_user_id == 0) {
-									$row = '<tr><td></td><td></td><td><a href="mailto:' . $wait->notify_email . '">' . $wait->notify_email . '</a></td></tr>';
+									$row = '<tr class="row'.$i.'"><td></td><td></td><td><a href="mailto:' . $wait->notify_email . '">' .
+									$wait->notify_email . '</a></td></tr>';
 								}
 								else {
-									$row = '<tr><td>' . $wait->name . '</td><td>' . $wait->username . '</td><td>' . '<a href="mailto:' . $wait->notify_email . '">' . $wait->notify_email . '</a>' . '</td></tr>';
+									$row = '<tr class="row'.$i.'"><td>' . $wait->name . '</td><td>' . $wait->username . '</td><td>' . '<a href="mailto:' . $wait->notify_email . '">' . $wait->notify_email . '</a>' . '</td></tr>';
 								}
 								echo $row;
+								$i = 1 - $i;
 							}
 						}
 						else {
@@ -190,14 +193,12 @@ $i = 0;
 								//			jQuery("#customers-list").html(data.value);
 								$html = '';
 								jQuery.each(data, function (key, val) {
-
 									if (val.virtuemart_user_id == 0) {
 										$html += '<tr><td></td><td></td><td><a href="mailto:' + val.notify_email + '">' + val.notify_email + '</a></td></tr>';
 									}
 									else {
 										$html += '<tr><td>' + val.name + '</td><td>' + val.username + '</td><td><a href="mailto:' + val.notify_email + '">' + val.notify_email + '</a></td></tr>';
 									}
-
 								});
 								jQuery("#customers-notify-list").html($html);
 							}
@@ -219,8 +220,9 @@ $i = 0;
 					var $statut = jQuery('select#order_items_status').val();
 					jQuery.post($customerMailLink, { subject:$subject, mailbody:$body, statut:$statut, token:'<?php echo JUtility::getToken () ?>' },
 						function (data) {
-							jQuery("#customers-list-msg").html('<strong><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_NOTIFY_MESSAGE_SENT')?></strong>');
-							jQuery("#mail-subject").html('');
+							alert('<?php echo addslashes (JTExt::_ ('COM_VIRTUEMART_PRODUCT_NOTIFY_MESSAGE_SENT')); ?>');
+							//jQuery("#customers-list-msg").html('<strong><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_NOTIFY_MESSAGE_SENT')?></strong>');
+							//jQuery("#mail-subject").html('');
 							jQuery("#mail-body").html('');
 						}
 					);

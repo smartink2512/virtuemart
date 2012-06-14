@@ -8,7 +8,7 @@
  * @author Max Milbers, Valerie Isaksen
 
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004 - 2012 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -42,7 +42,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 			    <?php
 			}
 
-			// this is an indicator wether a row needs to be opened or not
+			// this is an indicator whether a row needs to be opened or not
 			if ($iCol == 1) {
 			    ?>
 		    	<div class="row">
