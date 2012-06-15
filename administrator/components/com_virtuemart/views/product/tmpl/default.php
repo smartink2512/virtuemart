@@ -50,8 +50,7 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 				<?php
 					echo $this->lists['search_type'];
 					echo $this->lists['search_order'];
-					echo vmJsApi::jDate(JRequest::getVar('search_date', $nowstring), 'search_date', 'class="datepicker" size="9"');
-					//echo JHTML::calendar( JRequest::getVar('search_date', $nowstring), 'search_date', 'search_date', '%H.%M %d.%m.%Y', 'size="20"');
+					echo vmJsApi::jDate(JRequest::getVar('search_date', $nowstring), 'search_date');
 				?>
 				<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
 				<button onclick="document.adminForm.filter_product.value=''; document.adminForm.search_type.options[0].selected = true;"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>

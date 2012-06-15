@@ -505,7 +505,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 */
 		public function uninstall ($parent=null) {
 
-			$this->loadVm();
+			if(empty($this->path)){
+				$this->path = JPATH_VM_ADMINISTRATOR;
+			}
+			//$this->loadVm();
 			include($this->path.DS.'install'.DS.'uninstall.virtuemart.html.php');
 
 			return true;
