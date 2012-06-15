@@ -154,7 +154,7 @@ function virtuemartBuildRoute(&$query) {
 					$segments[] = $helper->getProductName($virtuemart_product_id);
 			}
 			if (!count($query))	return $segments;
-		//break;
+		break;
 		case 'manufacturer';
 
 			if(isset($query['virtuemart_manufacturer_id'])) {
