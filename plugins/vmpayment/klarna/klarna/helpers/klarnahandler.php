@@ -919,8 +919,8 @@ class KlarnaHandler {
 	 */
 	static function getKlarnaMode ($method, $country) {
 		// It is the VM specific store ID to test
-		$merchant_id='klarna_merchantid_'.$country;
-		if ($method->$merchant_id=="1926") {
+		$merchant_id=strtolower( 'klarna_merchantid_'.$country);
+		if ($method->$merchant_id==VMPAYMENT_KLARNA_MERCHANT_ID_VM or $method->$merchant_id==VMPAYMENT_KLARNA_MERCHANT_ID_DEMO) {
 			return Klarna::BETA;
 		} else {
 			return Klarna::LIVE;

@@ -37,4 +37,9 @@ if (!defined('VMKLARNA_PC_TYPE'))
     define('VMKLARNA_PC_TYPE', 'json');
 if (!defined('VMKLARNA_CONFIG_FILE'))
   define('VMKLARNA_CONFIG_FILE',JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna.cfg');
+
+if (!defined('VMPAYMENT_KLARNA_MERCHANT_ID_VM'))
+	define('VMPAYMENT_KLARNA_MERCHANT_ID_VM', '1926');
+if (!defined('VMPAYMENT_KLARNA_MERCHANT_ID_DEMO'))
+	define('VMPAYMENT_KLARNA_MERCHANT_ID_DEMO', '2236');
 // No closing tag

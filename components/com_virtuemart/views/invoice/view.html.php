@@ -121,7 +121,7 @@ class VirtuemartViewInvoice extends VmView {
 			if (  $orderModel->createInvoiceNumber($orderDetails['details']['BT'], $invoiceNumberDate)) {
                 if (ShopFunctions::InvoiceNumberReserved( $invoiceNumberDate[0])) {
 	                if (!JFactory::getApplication()->isSite() ){
-	                    vmInfo('  InvoiceNumber is Reserved by Payment ');
+	                    vmInfo('COM_VIRTUEMART_INVOICE_NUMBER_RESERVED');
 	                }
 	                if  ($this->uselayout!='mail') {
                         return ;
@@ -229,15 +229,18 @@ class VirtuemartViewInvoice extends VmView {
 		$task = JRequest::getWord('task',0);
 		if($task == 'checkStoreInvoice'){
 			$headFooter = false;
+			$lineSeparator="<br />";
 		} else {
 			$headFooter = true;
+			$lineSeparator="\n";
 		}
 		$this->assignRef('headFooter', $headFooter);
 
 		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
-	    $vendorAddress= shopFunctions::renderVendorAddress($virtuemart_vendor_id);
+	    $vendorAddress= shopFunctions::renderVendorAddress($virtuemart_vendor_id, $lineSeparator);
+
 		$this->assignRef('vendorAddress', $vendorAddress);
 		$vendorEmail = $vendorModel->getVendorEmail($virtuemart_vendor_id);
 		$vars['vendorEmail'] = $vendorEmail;

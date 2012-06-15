@@ -992,7 +992,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 /*
  * returns true if an invoice number has been created
- * returns false if an invoice number have not been created  due to some configuration parameters
+ * returns false if an invoice number has not been created  due to some configuration parameters
  */
 	function createInvoiceNumber($orderDetails, &$invoiceNumber){
 
@@ -1053,6 +1053,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$table->bindChecknStore($data);
 			$invoiceNumber= array($table->invoice_number,$table->created_on);
 		} elseif (ShopFunctions::InvoiceNumberReserved($result['invoice_number']) ) {
+			$invoiceNumber = array($result['invoice_number'],$result['created_on']);
 		    return true;
 		} else {
 			$invoiceNumber = array($result['invoice_number'],$result['created_on']);

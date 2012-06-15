@@ -25,10 +25,18 @@ $logo = '<img src="' . JURI::base() . VMKLARNAPLUGINWEBROOT . '/klarna/assets/im
 
 <div class="klarna_info">
     <span style="">
-	<a href="http://www.klarna.com/"><?php echo $logo ?></a><br /><?php echo $viewData['description'] ?>
+	<a href="http://www.klarna.com/"><?php echo $logo ?></a><br /><?php echo $viewData['text'] ?>
     </span>
 </div>
 
 <div class="clear"></div>
+<span class="payment_name"><?php echo $viewData['payment_name'] ?> </span>
+<?php
+if (!empty($description)) {
+?>
+ <span class="payment_description"><?php echo $viewData['payment_description'] ?> . '</span>
+	 <?php
+}
 
+?>
 

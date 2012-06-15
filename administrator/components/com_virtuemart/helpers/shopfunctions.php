@@ -637,7 +637,7 @@ class ShopFunctions {
 	/*
 	* used mostly in the email, to display the vendor address
 	*/
-	static public function renderVendorAddress ($vendorId) {
+	static public function renderVendorAddress ($vendorId,$lineSeparator="<br />") {
 
 		if (!class_exists ('VirtueMartModelVendor')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
@@ -653,7 +653,7 @@ class ShopFunctions {
 			if (!empty($field['value'])) {
 				$vendorAddress .= $field['value'];
 				if ($field['name'] != 'title' and $field['name'] != 'first_name' and $field['name'] != 'middle_name' and $field['name'] != 'zip') {
-					$vendorAddress .= "<br />";
+					$vendorAddress .= $lineSeparator;
 				} else {
 					$vendorAddress .= ' ';
 				}
