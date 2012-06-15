@@ -103,7 +103,7 @@ class VirtueMartModelProduct extends VmModel {
 	function initialiseRequests () {
 
 		$this->keyword 							= "0";
-		$this->valid_search_fields 				= array('product_name');
+		$this->valid_search_fields 				= array('product_name','product_sku','product_sku','product_s_desc','metadesc');
 		$this->product_parent_id = FALSE;
 		$this->virtuemart_manufacturer_id = FALSE;
 		$this->search_type						= '';
