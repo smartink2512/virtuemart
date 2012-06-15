@@ -553,7 +553,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			switch ($field->field_type) {
 
 				case 'A':
-
+					if(!isset($field->withParent)) $field->withParent = 0;
 					//vmdebug('displayProductCustomfieldFE',$field);
 					if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 					$html = JText::_('COM_VIRTUEMART_CUSTOM_WP').VmHTML::checkbox('field[' . $row . '][withParent]',$field->withParent,1,0,'');
