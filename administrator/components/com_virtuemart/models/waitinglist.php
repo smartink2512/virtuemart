@@ -73,8 +73,8 @@ class VirtueMartModelWaitingList extends VmModel {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 		$vars = array();
-		$waitinglistmodel = VmModel::getModel ('waitinglist');
-		$waiting_users = $waitinglistmodel->getWaitingusers ($virtuemart_product_id);
+		$waitinglistModel = VmModel::getModel ('waitinglist');
+		$waiting_users = $waitinglistModel->getWaitingusers ($virtuemart_product_id);
 
 		/* Load the product details */
 		$db = JFactory::getDbo ();
@@ -112,7 +112,7 @@ class VirtueMartModelWaitingList extends VmModel {
 		$i = 0;
 		foreach ($waiting_users as $waiting_user) {
 			$vars['user'] =  $waiting_user->name ;
-			if (shopFunctionsF::renderMail ('productdetails', $waiting_user->notify_email, $vars)) {
+			if (shopFunctionsF::renderMail ('productdetails', $waiting_user->notify_email, $vars, true)) {
 				$db->setQuery ('UPDATE #__virtuemart_waitingusers SET notified=1 WHERE virtuemart_waitinguser_id=' . $waiting_user->virtuemart_waitinguser_id);
 				$db->query ();
 				$i++;

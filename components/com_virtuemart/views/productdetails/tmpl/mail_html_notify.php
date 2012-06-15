@@ -37,8 +37,10 @@ defined('_JEXEC') or die('');
 </head>
 
 <body style="background: #F2F2F2;word-wrap: break-word;">
-<div style="width="100%">
-<table width="600" border="0" cellpadding="0" cellspacing="0" class="html-email">
+<div style="background-color: #e6e6e6;" width="100%">
+	<table style="margin: auto;" cellpadding="0" cellspacing="0" width="600" ><tr><td>
+
+	<table width="600" border="0" cellpadding="0" cellspacing="0" class="html-email">
 	<tr>
 		<td valign="top">
 			<img src="<?php  echo JURI::root () . $this->vendor->images[0]->file_url ?>" />
@@ -69,6 +71,20 @@ defined('_JEXEC') or die('');
 				</table>
 			</td>
 		</tr>
+	</table>
+	<?php
+	// $uri    = JURI::getInstance();
+	// $prefix = $uri->toString(array('scheme', 'host', 'port'));
+	$link = JRoute::_ ( 'index.php?option=com_virtuemart',true,-1);
+
+	echo '<br/><br/>';
+
+	/* GENERAL FOOTER FOR ALL MAILS */
+	echo JText::_('COM_VIRTUEMART_MAIL_FOOTER' ) . '<a href="'.JURI::root().'index.php?option=com_virtuemart">'.$this->vendor->vendor_name.'</a>';
+	echo '<br/>';
+	echo $this->vendor->vendor_name .'<br />'.$this->vendor->vendor_phone .' '.$this->vendor->vendor_store_name .'<br /> '.$this->vendor->vendor_store_desc.'<br />'.$this->vendor->vendor_legal_info;
+	?>
+	</td></tr>
 	</table>
 </div>
 </body>
