@@ -42,7 +42,7 @@ class JElementGetKlarna extends JElement {
 				break;
 			}
 		}
-		$logo = '<a href="https://merchants.klarna.com/signup?locale=' . $signLang . '&partner_id=3da7e2c2144502d7115bee98a0dfe95030345b43" target="_blank">
+		$logo = '<a href="https://merchants.klarna.com/signup?locale=' . $signLang . '&partner_id=7829355537eae268a17667c199e7c7662d3391f7" target="_blank">
 	             <img src="' . JURI::root () . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/get_klarna_now.png" /></a> ';
 		return $logo;
 	}
