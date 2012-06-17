@@ -22,15 +22,15 @@
         <param name="show_price" type="list" default="1"
 			label="MOD_VIRTUEMART_CART_SHOW_PRICE"
 			description="MOD_VIRTUEMART_CART_SHOW_PRICE_DESC">
-            <option value="1">Yes</option>
-            <option value="0">No</option>
+            <option value="1">COM_VIRTUEMART_YES</option>
+            <option value="0">COM_VIRTUEMART_NO</option>
         </param>
         <br/>
         <param name="show_product_list" type="list" default="1"
 			label="MOD_VIRTUEMART_CART_SHOW_LIST"
 			description="MOD_VIRTUEMART_CART_SHOW_LIST_DESC">
-            <option value="1">Yes</option>
-            <option value="0">No</option>
+            <option value="1">COM_VIRTUEMART_YES</option>
+            <option value="0">COM_VIRTUEMART_NO</option>
         </param>
     </params>
     <config>
@@ -42,14 +42,14 @@
                 <field name="show_price" type="list" default="1"
 			label="MOD_VIRTUEMART_CART_SHOW_PRICE"
 			description="MOD_VIRTUEMART_CART_SHOW_PRICE_DESC">
-                    <option value="1">JYes</option>
-                    <option value="0">JNo</option>
+                    <option value="1">COM_VIRTUEMART_YES</option>
+                    <option value="0">COM_VIRTUEMART_NO</option>
                 </field>
                 <field name="show_product_list" type="list" default="1"
 			label="MOD_VIRTUEMART_CART_SHOW_LIST"
 			description="MOD_VIRTUEMART_CART_SHOW_LIST_DESC">
-                    <option value="1">JYES</option>
-                    <option value="0">JNo</option>
+                    <option value="1">COM_VIRTUEMART_YES</option>
+                    <option value="0">COM_VIRTUEMART_NO</option>
                 </field>
             </fieldset>
         </fields>
