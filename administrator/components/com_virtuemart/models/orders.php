@@ -699,7 +699,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if(!array_key_exists($oldState,$StatutWhiteList) or !array_key_exists($newState,$StatutWhiteList)) {
 			vmError('The workflow for '.$newState.' or  '.$oldState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Can\'t process workflow, contact the shopowner. Status is'.$newState);
 			return ;
-			}
+		}
 		//vmdebug( 'updatestock qt :' , $quantity.' id :'.$productId);
 		// P 	Pending
 		// C 	Confirmed

@@ -537,16 +537,16 @@ function virtuemartParseRoute($segments) {
 			$product = $helper->getProductId($segments ,$helper->activeMenu->virtuemart_category_id);
 			$vars['virtuemart_product_id'] = $product['virtuemart_product_id'];
 			$vars['virtuemart_category_id'] = $product['virtuemart_category_id'];
-			vmdebug('View productdetails, using case !$helper->use_id',$vars,$helper->activeMenu);
+			//vmdebug('View productdetails, using case !$helper->use_id',$vars,$helper->activeMenu);
 		}
 		elseif (isset($segments[1]) ){
 			$vars['virtuemart_product_id'] = $segments[0];
 			$vars['virtuemart_category_id'] = $segments[1];
-			vmdebug('View productdetails, using case isset($segments[1]',$vars);
+			//vmdebug('View productdetails, using case isset($segments[1]',$vars);
 		} else {
 			$vars['virtuemart_product_id'] = $segments[0];
 			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
-			vmdebug('View productdetails, using case "else", which uses $helper->activeMenu->virtuemart_category_id ',$vars);
+			//vmdebug('View productdetails, using case "else", which uses $helper->activeMenu->virtuemart_category_id ',$vars);
 		}
 
 

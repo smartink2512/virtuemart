@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 	<div class="spacer">
 
 	<?php // Manufacturer Image
-	if (!empty($manufacturerImage)) { ?>
+	if (!empty($this->manufacturerImage)) { ?>
 		<div class="manufacturer-image">
 		<?php echo $this->manufacturerImage; ?>
 		</div>
