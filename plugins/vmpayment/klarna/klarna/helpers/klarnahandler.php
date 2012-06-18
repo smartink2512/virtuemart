@@ -416,22 +416,22 @@ class KlarnaHandler {
 
 		// Fill the good list the we send to Klarna
 		foreach ($order['items'] as $item) {
-			$item_price = self::convertPrice ($item->product_final_price, $cData['currency_code']);
+			$item_price = self::convertPrice ($item->product_final_price, $order['currency_code'],$cData['currency_code']);
 			$item_price = (double)(round ($item_price, 2));
 			$item_tax_percent = (double)(round (self::getTaxPercent ($item->product_item_price + ($item->product_tax / $item->product_quantity), $item->product_item_price), 2));
-			$item_discount = self::convertPrice ($item->product_subtotal_discount / $item->product_quantity, $cData['currency_code']);
+			$item_discount = self::convertPrice ($item->product_subtotal_discount / $item->product_quantity, $order['currency_code'],$cData['currency_code']);
 			$item_discount = (double)(abs (round ($item_discount, 2)));
 			//vmdebug('addarticle', $item->order_item_sku, $item,  $item_tax_percent);
 			$klarna->addArticle ($item->product_quantity, utf8_decode ($item->order_item_sku), utf8_decode (strip_tags ($item->order_item_name)), $item_price, (double)$item_tax_percent, $item_discount, KlarnaFlags::INC_VAT);
 		}
 		// Add shipping
-		$shipment = self::convertPrice ($order['details']['BT']->order_shipment + $order['details']['BT']->order_shipment_tax, $cData['currency_code']);
+		$shipment = self::convertPrice ($order['details']['BT']->order_shipment + $order['details']['BT']->order_shipment_tax,$order['currency_code'], $cData['currency_code']);
 		$shipment_tax_percent = self::getTaxPercent ($order['details']['BT']->order_shipment + $order['details']['BT']->order_shipment_tax, $order['details']['BT']->order_shipment);
 		$klarna->addArticle (1, "shippingfee", JText::_ ('VMPAYMENT_KLARNA_SHIPMENT'), ((double)(round (($shipment), 2))), (double)$shipment_tax_percent, 0, KlarnaFlags::IS_SHIPMENT + KlarnaFlags::INC_VAT);
 
 		// Add invoice fee
 		if ($klarna_pclass == -1) { //Only for invoices!
-			$payment = self::convertPrice ($order['details']['BT']->order_payment + $order['details']['BT']->order_payment_tax, $cData['currency_code']);
+			$payment = self::convertPrice ($order['details']['BT']->order_payment + $order['details']['BT']->order_payment_tax, $order['currency_code'],$cData['currency_code']);
 			$payment_tax_percent = self::getTaxPercent ($order['details']['BT']->order_payment + $order['details']['BT']->order_payment_tax, $order['details']['BT']->order_payment);
 			if ($payment > 0) {
 				//vmdebug('invoicefee', $payment, $payment_tax);
@@ -440,7 +440,7 @@ class KlarnaHandler {
 		}
 		// Add coupon if there is any
 		if ($order['details']['BT']->coupon_discount > 0) {
-			$coupon_discount = self::convertPrice (round ($order['details']['BT']->coupon_discount, $cData['currency_code']));
+			$coupon_discount = self::convertPrice (round ($order['details']['BT']->coupon_discount), $order['currency_code'], $cData['currency_code']);
 			//vmdebug('discount', $coupon_discount);
 			$klarna->addArticle (1, 'discount', JText::_ ('VMPAYMENT_KLARNA_DISCOUNT') . ' ' . $order['details']['BT']->coupon_code, ((int)(round ($coupon_discount, 2) * -1)), 0, 0, KlarnaFlags::INC_VAT);
 		}
@@ -942,17 +942,18 @@ class KlarnaHandler {
 	 * @param string $toCurrency
 	 * @return float
 	 */
-	static function convertPrice ($price, $toCurrency = '') {
+	static function convertPrice ($price, $cartPricesCurrency, $toCurrency = '') {
 
-		if (!is_int ($toCurrency) && !empty($toCurrency)) {
+		if (! (is_int ($toCurrency) or is_numeric($toCurrency)) && !empty($toCurrency)) {
 			$toCurrency = ShopFunctions::getCurrencyIDByName ($toCurrency);
 		}
-		$currency = CurrencyDisplay::getInstance ($toCurrency);
-		$fromCurrency = $currency->getCurrencyForDisplay ();
-		$price = round ($currency->convertCurrencyTo ($toCurrency, $price, FALSE), 2);
-		$cd = CurrencyDisplay::getInstance ($fromCurrency);
-
-		return $price;
+		$currencyToConvert = CurrencyDisplay::getInstance ($toCurrency);
+		// product prices or total in cart is always in vendor currency
+		$priceInNewCurrency = round($currencyToConvert->convertCurrencyTo($toCurrency, $price, false), 2);
+		// set back the currency display
+		$cd = CurrencyDisplay::getInstance ($cartPricesCurrency);
+vmDebug('convertPrice', $price,$cartPricesCurrency,$toCurrency ,$priceInNewCurrency);
+		return $priceInNewCurrency;
 	}
 
 	/*

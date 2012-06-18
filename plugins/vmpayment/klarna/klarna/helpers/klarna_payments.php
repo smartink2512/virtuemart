@@ -134,7 +134,7 @@ class klarna_payments {
 	/**
 	 * Build the Payment params
 	 */
-	public function get_payment_params ($method, $payment_type, $cart = NULL) {
+	public function get_payment_params ($method, $payment_type, $cart = NULL, $country_currency_code='') {
 		if (!class_exists ('CurrencyDisplay')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
@@ -148,20 +148,20 @@ class klarna_payments {
 		}
 		if ($payment_type == 'invoice') {
 			$invoice_fee = KlarnaHandler::getInvoiceFeeInclTax ($method, $this->country_code_3);
-			$billTotal = 0;
+			$billTotalInCountryCurrency = 0;
 			$aTypes = NULL;
 			$payment_params['pClasses'] = NULL;
 		}
 		else {
 			$invoice_fee = 0;
-			$billTotal = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $this->virtuemart_currency_id);
-			if ($billTotal <= 0) {
+			$billTotalInCountryCurrency = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $cart->pricesCurrency, $country_currency_code);
+			if ($billTotalInCountryCurrency <= 0) {
 				return NULL;
 			}
 			$aTypes = array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED);
 		}
 		$payment_params['sType'] = $payment_type;
-		$kCheckout = new KlarnaAPI($this->country, $this->lang, $payment_type, $billTotal, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, $aTypes, JPATH_VMKLARNAPLUGIN);
+		$kCheckout = new KlarnaAPI($this->country, $this->lang, $payment_type, $billTotalInCountryCurrency, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, $aTypes, JPATH_VMKLARNAPLUGIN);
 
 		if ($payment_type == 'invoice') {
 			$currency = CurrencyDisplay::getInstance ();
@@ -185,7 +185,7 @@ class klarna_payments {
 					$minimum = $pclass['pclass']->getMinAmount ();
 				}
 			}
-			if ($billTotal < $minimum) {
+			if ($billTotalInCountryCurrency < $minimum) {
 				return NULL;
 			}
 			if (!class_exists ('VirtueMartModelCurrency')) {

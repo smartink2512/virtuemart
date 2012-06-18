@@ -64,7 +64,7 @@ class klarna_productPrice {
 		// the price is in the vendor currency
 		// convert price in NLD currency= euro
 
-		$price = KlarnaHandler::convertPrice ($product->prices['salesPrice'], 'EUR');
+		$price = KlarnaHandler::convertPrice ($product->prices['salesPrice'], $product->product_currency, 'EUR');
 
 		if (strtolower ($this->cData['country_code']) == 'nl' && $price > 250) {
 			vmDebug ('showPP', 'dont show price for NL', $this->cData['country_code'], $price);
