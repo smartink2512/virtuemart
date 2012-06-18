@@ -158,7 +158,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$cart = VirtueMartCart::getCart ();
 
 		foreach ($this->methods as $method) {
-			$cData = KlarnaHandler::getcData ($method, $this->getCartAddress ($cart, FALSE));
+			$cData = KlarnaHandler::getcData ($method, $this->getCartAddress ($cart,$type, FALSE));
 			if ($cData) {
 				$productPrice = new klarna_productPrice($cData);
 				if ($productViewData = $productPrice->showProductPrice ($product)) {
