@@ -749,7 +749,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$product_attributes = json_decode($product->product_attribute,true);
 			foreach ($product_attributes as $virtuemart_customfield_id=>$param){
 				if ($param) {
-					if ($productCustom = VirtueMartModelCustomfields::getProductCustomFieldCart ($virtuemart_customfield_id ) ) {
+					if ($productCustom = VirtueMartModelCustomfields::getProductCustomField ($virtuemart_customfield_id ) ) {
 						if ($productCustom->field_type == "E") {
 								//$product = self::addParam($product);
 								if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
@@ -802,7 +802,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				foreach($variantmods as $selected=>$variant){
 					if ($selected) {
 						if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-						$productCustom = VirtueMartModelCustomfields::getProductCustomFieldCart ($selected );
+						$productCustom = VirtueMartModelCustomfields::getProductCustomField ($selected );
 						vmdebug('$_prod,$productCustom',$productCustom );
 						if ($productCustom->field_type == "E") {
 

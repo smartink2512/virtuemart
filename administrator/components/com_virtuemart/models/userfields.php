@@ -708,8 +708,14 @@ class VirtueMartModelUserfields extends VmModel {
 							// $_doc->addScript( JURI::root(true).'/includes/js/joomla.javascript.js');
 							// }
 							$currentYear= date('Y');
-							$calendar = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,  $_prefix.$_fld->name . '_field',false,($currentYear-100).':'.$currentYear);
-							$_return['fields'][$_fld->name]['formcode'] = $calendar ;
+
+						//	$calendar = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,  $_prefix.$_fld->name . '_field',false,($currentYear-100).':'.$currentYear);
+						//	$_return['fields'][$_fld->name]['formcode'] = $calendar ;
+
+							if(empty($_return['fields'][$_fld->name]['value'])){
+								$_return['fields'][$_fld->name]['value'] = "1978-06-10 00:00:00";
+							}
+							$_return['fields'][$_fld->name]['formcode'] = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,$_prefix.$_fld->name . '_field');
 							break;
 						case 'emailaddress':
 							if(empty($_return['fields'][$_fld->name]['value'])) $_return['fields'][$_fld->name]['value'] = JFactory::getUser()->email;
