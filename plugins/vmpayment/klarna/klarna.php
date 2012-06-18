@@ -1,68 +1,66 @@
 <?php
 
-defined ('_JEXEC') or die();
+	defined ('_JEXEC') or die();
 
-/**
- *
- * Klarna
- *
- * @author     Valérie Isaksen
- * @version    $Id:
- * @package    VirtueMart
- * @subpackage payment
- * @copyright  Copyright (C) 2004-2008 soeren - All rights reserved.
- * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- *             VirtueMart is free software. This version may have been modified pursuant
- *             to the GNU General Public License, and as distributed it includes or
- *             is derivative of works licensed under the GNU General Public License or
- *             other free or open source software licenses.
- *             See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
- *
- * http://virtuemart.net
- */
-if (!class_exists ('vmPSPlugin')) {
-	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-}
+	/**
+	 *
+	 * Klarna
+	 *
+	 * @author     Valérie Isaksen
+	 * @version    $Id$
+	 * @package    VirtueMart
+	 * @subpackage payment
+	 * @copyright  Copyright (C) 2004-2008 soeren - All rights reserved.
+	 * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+	 *             VirtueMart is free software. This version may have been modified pursuant
+	 *             to the GNU General Public License, and as distributed it includes or
+	 *             is derivative of works licensed under the GNU General Public License or
+	 *             other free or open source software licenses.
+	 *             See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+	 *
+	 * http://virtuemart.net
+	 */
+	if (!class_exists ('vmPSPlugin')) {
+		require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+	}
 
-if (JVM_VERSION === 2) {
-	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
-} else {
-	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
-}
-if (!class_exists ('Klarna')) {
-	require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
-}
-if (!class_exists ('klarna_virtuemart')) {
-	require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_virtuemart.php');
-}
-if (!class_exists ('PCStorage')) {
-	require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'pclasses' . DS . 'storage.intf.php');
-}
+	if (JVM_VERSION === 2) {
+		require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
+	} else {
+		require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
+	}
+	if (!class_exists ('Klarna')) {
+		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
+	}
+	if (!class_exists ('klarna_virtuemart')) {
+		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_virtuemart.php');
+	}
+	if (!class_exists ('PCStorage')) {
+		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'pclasses' . DS . 'storage.intf.php');
+	}
 
-if (!class_exists ('KlarnaConfig')) {
-	require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarnaconfig.php');
-}
-if (!class_exists ('KlarnaPClass')) {
-	require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarnapclass.php');
-}
-if (!class_exists ('KlarnaCalc')) {
-	require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarnacalc.php');
-}
+	if (!class_exists ('KlarnaConfig')) {
+		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarnaconfig.php');
+	}
+	if (!class_exists ('KlarnaPClass')) {
+		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarnapclass.php');
+	}
+	if (!class_exists ('KlarnaCalc')) {
+		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarnacalc.php');
+	}
 
-if (!class_exists ('KlarnaHandler')) {
-	require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
-}
+	if (!class_exists ('KlarnaHandler')) {
+		require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
+	}
 
-require_once (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'transport' . DS . 'xmlrpc-3.0.0.beta' . DS . 'lib' . DS . 'xmlrpc.inc');
-require_once (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'transport' . DS . 'xmlrpc-3.0.0.beta' . DS . 'lib' . DS . 'xmlrpc_wrappers.inc');
+	require_once (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'transport' . DS . 'xmlrpc-3.0.0.beta' . DS . 'lib' . DS . 'xmlrpc.inc');
+	require_once (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'transport' . DS . 'xmlrpc-3.0.0.beta' . DS . 'lib' . DS . 'xmlrpc_wrappers.inc');
 
-if (is_file (VMKLARNA_CONFIG_FILE)) {
-	require_once (VMKLARNA_CONFIG_FILE);
-}
+	if (is_file (VMKLARNA_CONFIG_FILE)) {
+		require_once (VMKLARNA_CONFIG_FILE);
+	}
 
-/**
- *
- */
+
 class plgVmPaymentKlarna extends vmPSPlugin {
 
 	// instance of class
@@ -160,7 +158,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$cart = VirtueMartCart::getCart ();
 
 		foreach ($this->methods as $method) {
-			$cData = KlarnaHandler::getcData ($method, $this->getCartAddress ($cart, $type, FALSE));
+			$cData = KlarnaHandler::getcData ($method, $this->getCartAddress ($cart, FALSE));
 			if ($cData) {
 				$productPrice = new klarna_productPrice($cData);
 				if ($productViewData = $productPrice->showProductPrice ($product)) {
@@ -555,12 +553,12 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				$this->storePSPluginInternalData ($dbValues);
 
 				/*
-								 * Klarna's order status
-								 *  Integer - 1,2 or 3.
-								 *  1 = OK: KlarnaFlags::ACCEPTED
-								 *  2 = Pending: KlarnaFlags::PENDING
-								 *  3 = Denied: KlarnaFlags::DENIED
-								 */
+				 * Klarna's order status
+				 *  Integer - 1,2 or 3.
+				 *  1 = OK: KlarnaFlags::ACCEPTED
+				 *  2 = Pending: KlarnaFlags::PENDING
+				 *  3 = Denied: KlarnaFlags::DENIED
+				 */
 				if ($result['status_code'] == KlarnaFlags::PENDING) {
 					/* if Klarna's order status is pending: add it in the history */
 					/* The order is under manual review and will be accepted or denied at a later stage.
@@ -578,7 +576,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 					'payment_name'     => $dbValues['payment_name'],
 					'klarna_invoiceno' => $invoiceno));
 
-				if ( $result['eid'] == VMPAYMENT_KLARNA_MERCHANT_ID_VM or  $result['eid'] == VMPAYMENT_KLARNA_MERCHANT_ID_DEMO) {
+				if ($result['eid'] == VMPAYMENT_KLARNA_MERCHANT_ID_VM or  $result['eid'] == VMPAYMENT_KLARNA_MERCHANT_ID_DEMO) {
 					$html .= "<br />" . JText::_ ('VMPAYMENT_KLARNA_WARNING') . "<br />";
 				}
 
@@ -1124,32 +1122,22 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		// to actiavte the order
 		if ($order->order_status == $method->status_shipped) {
 			$country = $this->getCountryCodeByOrderId ($order->virtuemart_order_id);
-			$klarna = new Klarna_virtuemart();
+			$klarna_vm = new Klarna_virtuemart();
 			$cData = KlarnaHandler::countryData ($method, $country);
 			/*
-						   * The activateInvoice function is used to activate a passive invoice.
-						   * Please note that this function call cannot activate an invoice created in test mode.
-						   * It is however possible to manually activate that type of invoices.
-						   */
+		   * The activateInvoice function is used to activate a passive invoice.
+		   * Please note that this function call cannot activate an invoice created in test mode.
+		   * It is however possible to manually activate that type of invoices.
+		   */
 
-			$klarna->config ($cData['eid'], $cData['secret'], $cData['country_code'], NULL, $cData['currency_code'], KlarnaHandler::getKlarnaMode ($method, $cData['country_code_3']));
+			$klarna_vm->config ($cData['eid'], $cData['secret'], $cData['country_code'], NULL, $cData['currency_code'], KlarnaHandler::getKlarnaMode ($method, $cData['country_code_3']));
 
 			try {
 				//You can specify a new pclass ID if the customer wanted to change it before you activate.
 
-				$invoice_url = $klarna->activateInvoice ($invNo);
+				$invoice_url = $klarna_vm->activateInvoice ($invNo);
 				$this->copyInvoice ($invoice_url, $vm_invoice_name);
-				$dbValues['order_number'] = $order->order_number;
-				$dbValues['virtuemart_order_id'] = $order->virtuemart_order_id;
-				$dbValues['virtuemart_paymentmethod_id'] = $order->virtuemart_paymentmethod_id;
-				$dbValues['klarna_invoice_no'] = $invNo;
-				$dbValues['klarna_log'] = Jtext::_ ('VMPAYMENT_KLARNA_ACTIVATE_INVOICE', $invNo);
-				$dbValues['klarna_eid'] = $cData['eid'];
-				//$dbValues['klarna_status_code'] = KLARNA_INVOICE_ACTIVE; // Invoice is active
-				//$dbValues['klarna_status_text'] = '';
-				$dbValues['klarna_pdf_invoice'] = $vm_invoice_name;
 
-				$this->storePSPluginInternalData ($dbValues);
 
 				//The url points to a PDF file for the invoice.
 				//Invoice activated, proceed accordingly.
@@ -1162,9 +1150,45 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				return FALSE;
 			}
 
+			$emailInvoice = $this->emailInvoice ($method, $klarna_vm, $invNo);
+			$dbValues['order_number'] = $order->order_number;
+			$dbValues['virtuemart_order_id'] = $order->virtuemart_order_id;
+			$dbValues['virtuemart_paymentmethod_id'] = $order->virtuemart_paymentmethod_id;
+			$dbValues['klarna_invoice_no'] = $invNo;
+			$dbValues['klarna_log'] = Jtext::sprintf ('VMPAYMENT_KLARNA_ACTIVATE_INVOICE', $invNo);
+			if ($emailInvoice) {
+				$dbValues['klarna_log'] .= "<br />".Jtext::sprintf ('VMPAYMENT_KLARNA_EMAIL_INVOICE', $invNo);
+			} else {
+				$dbValues['klarna_log'] .= "<br />".Jtext::_ ('VMPAYMENT_KLARNA_EMAIL_INVOICE_NOT_SENT' );
+			}
+			$dbValues['klarna_eid'] = $cData['eid'];
+			//$dbValues['klarna_status_code'] = KLARNA_INVOICE_ACTIVE; // Invoice is active
+			//$dbValues['klarna_status_text'] = '';
+			$dbValues['klarna_pdf_invoice'] = $vm_invoice_name;
+
+			$this->storePSPluginInternalData ($dbValues);
 			return TRUE;
 		}
 		return NULL;
+	}
+
+	private function emailInvoice ($method, $klarna_vm, $invNo) {
+
+		if ($method->send_invoice) {
+
+			try {
+				$result = $klarna_vm->emailInvoice ($invNo);
+
+				/* Invoice sent to customer via email, proceed accordingly.
+					   $result contains the invoice number of the emailed invoice. */
+			}
+			catch (Exception $e) {
+				//Something went wrong, print the message:
+				VmError ($e->getMessage () . " (#" . $e->getCode () . ")");
+			}
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -1184,14 +1208,12 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	 * This functions checks if the called plugin is active one.
 	 * When yes it is calling the standard method to create the tables
 	 *
-	 * @author Valérie Isaksen
-	 *
 	 */
 	function plgVmOnStoreInstallPaymentPluginTable ($jplugin_id) {
 
 		/*
-						 * if the file Klarna.cfg does not exist, then create it
-						 */
+											 * if the file Klarna.cfg does not exist, then create it
+											 */
 		$filename = VMKLARNA_CONFIG_FILE;
 		if (!JFile::exists ($filename)) {
 			$fileContents = "<?php defined('_JEXEC') or die();
@@ -1243,9 +1265,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		if (count ($klarna_required_not_found)) {
 			VmError (JText::sprintf ('VMPAYMENT_KLARNA_REQUIRED_USERFIELDS_NOT_FOUND', implode (", ", $klarna_required_not_found)));
 			/*
-					  *  create all required shopperfields
-					  *
-					  */
+												  *  create all required shopperfields
+												  *
+												  */
 			$userfieldsModel = VmModel::getModel ('userfields');
 			$data['virtuemart_userfield_id'] = 0;
 			$data['type'] = 'text';
@@ -1289,7 +1311,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	 * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
 	 *
 	 */
-	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart) {
+	public
+	function plgVmOnSelectCheckPayment (VirtueMartCart $cart) {
 
 		if (!$this->selectedThisByMethodId ($cart->virtuemart_paymentmethod_id)) {
 			return NULL; // Another method was selected, do nothing
@@ -1472,7 +1495,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	 * @param                $cart_prices_name
 	 * @return bool|null
 	 */
-	public function plgVmOnSelectedCalculatePricePayment (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
+	public
+	function plgVmOnSelectedCalculatePricePayment (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
 
 		return $this->onKlarnaSelectedCalculatePrice ($cart, $cart_prices, $cart_prices_name);
 	}
@@ -1507,14 +1531,14 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		}
 	}
 
-
 	/**
 	 * @param VirtueMartCart $cart
 	 * @param array          $cart_prices
 	 * @param                $cart_prices_name
 	 * @return bool|null
 	 */
-	public function onKlarnaSelectedCalculatePrice (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
+	private
+	function onKlarnaSelectedCalculatePrice (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
 
 		if (!($method = $this->selectedThisByMethodId ($cart->virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
@@ -1583,11 +1607,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$cart_prices['salesPrice' . $_psType] = $invoice_fee;
 			$cart_prices[$this->_psType . 'Tax'] = 0;
 		}
-	}
 
-	/*
-		* @param $plugin plugin
-		*/
+	}
 
 	/**
 	 * @param $method
@@ -1596,7 +1617,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	 * @param $total
 	 * @return string
 	 */
-	protected function renderKlarnaPluginName ($method, $virtuemart_country_id, $shipTo, $total) {
+	protected
+	function renderKlarnaPluginName ($method, $virtuemart_country_id, $shipTo, $total) {
 
 		$session = JFactory::getSession ();
 		$sessionKlarna = $session->get ('Klarna', 0, 'vm');
@@ -1713,7 +1735,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	 * @param integer $order_number The order Number
 	 * @param integer $method_id            method used for this order
 	 * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
-	 * @author Valerie Isaksen
 	 */
 	function plgVmOnShowOrderPrintPayment ($order_number, $method_id) {
 

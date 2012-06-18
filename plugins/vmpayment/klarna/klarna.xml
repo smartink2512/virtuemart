@@ -105,11 +105,10 @@
 	</param>
 	<param name="status_denied" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_KLARNA_CONF_STATUS_DENIED" description="VMPAYMENT_KLARNA_CONF_STATUS_DENIED_DESC" />
 
-	<param name="send_invoice" type="radio"   default="S" label="VMPAYMENT_KLARNA_CONF_DISTRIBUTION_INVOICE"
-        description="VMPAYMENT_KLARNA_CONF_DISTRIBUTION_INVOICE_DESC" >
-	    <option value="email">VMPAYMENT_KLARNA_CONF_EMAIL</option>
-	    <option value="mail">VMPAYMENT_KLARNA_CONF_MAIL</option>
-	    <option value="printout">VMPAYMENT_KLARNA_CONF_PRINTOUT</option>
+	<param name="send_invoice" type="radio"   default="0" label="VMPAYMENT_KLARNA_CONF_EMAIL_INVOICE" description
+            ="VMPAYMENT_KLARNA_CONFEMAIL_INVOICE_DESC" >
+        <option value="0">COM_VIRTUEMART_NO</option>
+        <option value="1">COM_VIRTUEMART_YES</option>
 	</param>
 	<!--param name="delay_invoice" type="delay_invoice" scope="com_virtuemart" default="S" label="VMPAYMENT_KLARNA_CONF_DELAY_INVOICE" description="VMPAYMENT_KLARNA_CONF_DELAY_INVOICE_DESC" /-->
         <!--param name="module version" type="klarnamoduleversion"  /-->

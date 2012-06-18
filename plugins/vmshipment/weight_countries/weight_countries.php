@@ -6,10 +6,10 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Shipment plugin for weight_countries shipments, like regular postal services
  *
- * @version $Id: weight_countries.php 3220 2011-05-12 20:09:14Z Milbo $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage Plugins - shipment
- * @copyright Copyright (C) 2004-2011 VirtueMart Team - All rights reserved.
+ * @copyright Copyright (C) 2004-2012 VirtueMart Team - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or

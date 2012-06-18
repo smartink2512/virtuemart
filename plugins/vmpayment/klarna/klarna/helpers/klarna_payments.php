@@ -282,7 +282,10 @@ class klarna_payments {
 	 * @return string
 	 */
 	function displayPclass ($pid, $totalSum) {
-		$kCheckout = new KlarnaVm2API($this->country, $this->lang, 'part', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED), JPATH_VMKLARNAPLUGIN);
+		if (!class_exists ('KlarnaAPI')) {
+			require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
+		}
+		$kCheckout = new KlarnaAPI($this->country, $this->lang, 'part', $totalSum, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED), JPATH_VMKLARNAPLUGIN);
 		return $kCheckout->renderPClass ($pid);
 	}
 
