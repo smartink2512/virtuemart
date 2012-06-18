@@ -259,12 +259,13 @@ $i=0;
 					</td>
 				</tr>
 				<tr class="row1">
-					<td><div style="text-align: right; font-weight: bold;">
+					<td width="17%"><div style="text-align: right; font-weight: bold;">
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_TYPE') ?></div>
 					</td>
-					<td >
+					<td width="30%">
 						<?php echo $this->lists['discounts']; ?> <br />
-
+						</td>
+						<td>
 							<?php if(!empty($this->DBTaxRules)){
 
 								echo JText::_('COM_VIRTUEMART_RULES_EFFECTING').'<br />'.$this->DBTaxRules.'<br />';
