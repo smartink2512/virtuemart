@@ -118,7 +118,8 @@ class VirtuemartViewVendor extends VmView {
 
 		$vendorModel = VmModel::getModel('vendor');
 		$this->vendor = $vendorModel->getVendor($virtuemart_vendor_id);
-
+		// in this particular case, overwrite the value for fix the recipient name
+		$this->vendor->vendor_name= $this->user['name'];
 		$this->subject = JText::_('COM_VIRTUEMART_VENDOR_CONTACT') .' '.$this->user['name'];
 		$this->vendorEmail= $this->user['email'];
 		//$this->vendorName= $this->user['email'];
