@@ -711,7 +711,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		// don't set same values in the 2 arrays !!!
 		// stockOut is in normal case shipped product
 		//order_stock_handle
-		// 'A' : sotck Available
+		// 'A' : stock Available
 		// 'O' : stock Out
 		// 'R' : stock reserved
 		// the status decreasing real stock ?

@@ -1720,11 +1720,11 @@ class VirtueMartModelProduct extends VmModel {
 	}
 
 
-	public function updateStockInDB ($product, $amount, $signInStoc, $signOrderedStock) {
+	public function updateStockInDB ($product, $amount, $signInStock, $signOrderedStock) {
 
-// 	vmdebug( 'stockupdate in DB', $product->virtuemart_product_id,$amount, $signInStoc, $signOrderedStock );
+// 	vmdebug( 'stockupdate in DB', $product->virtuemart_product_id,$amount, $signInStock, $signOrderedStock );
 		$validFields = array('=', '+', '-');
-		if (!in_array ($signInStoc, $validFields)) {
+		if (!in_array ($signInStock, $validFields)) {
 			return FALSE;
 		}
 		if (!in_array ($signOrderedStock, $validFields)) {
@@ -1732,21 +1732,22 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		//sanitize fields
 		$id = (int)$product->virtuemart_product_id;
+
 		$amount = (float)$amount;
 		$update = array();
 
-		if ($signInStoc != '=' || $signOrderedStock != '=') {
+		if ($signInStock != '=' || $signOrderedStock != '=') {
 
-			if ($signInStoc != '=') {
-				$update[] = '`product_in_stock` = `product_in_stock` ' . $signInStoc . $amount;
+			if ($signInStock != '=') {
+				$update[] = '`product_in_stock` = `product_in_stock` ' . $signInStock . $amount;
 
-				if (strpos ($signInStoc, '+') !== FALSE) {
-					$signInStoc = '-';
+				if (strpos ($signInStock, '+') !== FALSE) {
+					$signInStock = '-';
 				}
 				else {
-					$signInStoc = '+';
+					$signInStock = '+';
 				}
-				$update[] = '`product_sales` = `product_sales` ' . $signInStoc . $amount;
+				$update[] = '`product_sales` = `product_sales` ' . $signInStock . $amount;
 
 			}
 			if ($signOrderedStock != '=') {
@@ -1757,20 +1758,51 @@ class VirtueMartModelProduct extends VmModel {
 			$this->_db->setQuery ($q);
 			$this->_db->query ();
 
-			if ($signInStoc == '-') {
+			if ($signInStock == '-') {
 				$this->_db->setQuery ('SELECT (`product_in_stock`+`product_ordered`) < `low_stock_notification` '
 						. 'FROM `#__virtuemart_products` '
 						. 'WHERE `virtuemart_product_id` = ' . $id
 				);
 				if ($this->_db->loadResult () == 1) {
-
-					// TODO Generate low stock warning
+					$this->lowStockWarningEmail( $id) ;
 				}
 			}
 		}
 
 	}
+function lowStockWarningEmail($virtuemart_product_id) {
 
+
+	if (!class_exists ('shopFunctionsF')) {
+		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+	}
+
+	/* Load the product details */
+	$q = "SELECT l.product_name,product_in_stock FROM `#__virtuemart_products_" . VMLANG . "` l
+				JOIN `#__virtuemart_products` p ON p.virtuemart_product_id=l.virtuemart_product_id
+			   WHERE p.virtuemart_product_id = " . $virtuemart_product_id;
+	$this->_db->setQuery ($q);
+	$vars = $this->_db->loadAssoc ();
+
+	$url = JURI::root () . 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id;
+	$link = '<a href="'. $url.'">'. $vars['product_name'].'</a>';
+	$vars['subject'] = JText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_SUBJECT',$vars['product_name']);
+	$vars['mailbody'] =JText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_BODY',$link, $vars['product_in_stock']);
+
+	$virtuemart_vendor_id = 1;
+	$vendorModel = VmModel::getModel ('vendor');
+	$vendor = $vendorModel->getVendor ($virtuemart_vendor_id);
+	$vendorModel->addImages ($vendor);
+	$vars['vendor'] = $vendor;
+
+	$vars['vendorAddress']= shopFunctions::renderVendorAddress($virtuemart_vendor_id);
+	$vars['vendorEmail'] = $vendorModel->getVendorEmail ($virtuemart_vendor_id);
+
+	$vars['user'] =  $vendor->vendor_store_name ;
+	shopFunctionsF::renderMail ('productdetails', $vars['vendorEmail'], $vars, 'productdetails') ;
+
+	return TRUE;
+}
 
 	public function getUncategorizedChildren ($withParent) {
 

@@ -138,7 +138,7 @@ class VirtueMartModelMedia extends VmModel {
 	}
 
 	/**
-	* Retireve a list of files from the database. This is meant only for backend use
+	* Retrieve a list of files from the database. This is meant only for backend use
 	*
 	* @author Max Milbers
 	* @param boolean $onlyPublished True to only retreive the published files, false otherwise

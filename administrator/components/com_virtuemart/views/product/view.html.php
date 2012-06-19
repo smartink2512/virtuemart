@@ -362,7 +362,7 @@ class VirtuemartViewProduct extends VmView {
 	function renderMail() {
 		$this->setLayout('mail_html_waitlist');
 		$this->subject = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_SUBJECT', $this->productName);
-		$notice_body = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_TEXT', $this->productName, $this->url);
+		$notice_body = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_BODY', $this->productName, $this->url);
 
 		parent::display();
 	}

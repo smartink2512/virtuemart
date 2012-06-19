@@ -983,7 +983,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$price = isset($customfield->custom_price)? $customfield->custom_price:'';
 		$is_cart = isset($customfield->is_cart)? $customfield->is_cart:0;
 
-		vmdebug('displayProductCustomfieldFE and here is something wrong ',$customfield);
+		//vmdebug('displayProductCustomfieldFE and here is something wrong ',$customfield);
 
 		if (!class_exists ('CurrencyDisplay'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
