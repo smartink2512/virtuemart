@@ -1264,13 +1264,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$klarna_required_not_found = array_unique ($klarna_required_not_found, SORT_STRING);
 		if (count ($klarna_required_not_found)) {
 			VmError (JText::sprintf ('VMPAYMENT_KLARNA_REQUIRED_USERFIELDS_NOT_FOUND', implode (", ", $klarna_required_not_found)));
-			/*
-												  *  create all required shopperfields
-												  *
-												  */
+		$shopperFieldsType = KlarnaHandler::getKlarnaShopperFieldsType ();
 			$userfieldsModel = VmModel::getModel ('userfields');
 			$data['virtuemart_userfield_id'] = 0;
-			$data['type'] = 'text';
+
 			$data['published'] = 1;
 			$data['required'] = 0;
 			$data['account'] = 1;
@@ -1279,7 +1276,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$data['vValues'] = array();
 			foreach ($klarna_required_not_found as $requiredfield) {
 				$data['name'] = $requiredfield;
-				$data['title'] = JText::_ ('VMPAYMENT_KLARNA_REQUIRED_' . $requiredfield);
+				$data['type'] = $shopperFieldsType[$requiredfield];
+				$data['title'] =  strtoupper('COM_VIRTUEMART_SHOPPER_FORM_' . $requiredfield);
 				$ret = $userfieldsModel->store ($data);
 				if (!$ret) {
 					vmError (JText::_ ('VMPAYMENT_KLARNA_REQUIRED_USERFIELDS_ERROR_STORING', $requiredfield));

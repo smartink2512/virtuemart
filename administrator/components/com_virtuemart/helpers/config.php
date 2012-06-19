@@ -1082,13 +1082,17 @@ class vmJsApi{
 			}
 			$formatedDate = JHTML::_('date', $date, $dateFormat );
 		}
-		else $formatedDate = JText::_('COM_VIRTUEMART_NEVER');
+		else {
+			$formatedDate = JText::_('COM_VIRTUEMART_NEVER');
+		}
 		$display  = '<input class="datepicker-db" id="'.$id.'" type="hidden" name="'.$name.'" value="'.$date.'" />';
 		$display .= '<input id="'.$id.'_text" class="datepicker" type="date" value="'.$formatedDate.'" />';
 		if ($resetBt) $display.='<span class="vmicon vmicon-16-logout icon-nofloat js-date-reset"></span>';
 
 		// If exist exit
-		if ($jDate) return $display;
+		if ($jDate) {
+			return $display;
+		}
 		$front = 'components/com_virtuemart/assets/';
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration('

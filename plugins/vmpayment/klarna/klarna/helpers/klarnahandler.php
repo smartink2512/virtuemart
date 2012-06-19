@@ -1081,6 +1081,14 @@ vmDebug('convertPrice', $price,$cartPricesCurrency,$toCurrency ,$priceInNewCurre
 		return $required;
 
 	}
+	static function getKlarnaShopperFieldsType () {
+		return array("socialNumber"=>"text",
+			"email"=>"email",
+			"birthday"=>"date",
+			"address_2"=>"text",
+			"house_no"=>"text",
+		);
+	}
 
 	/**
 	 *
