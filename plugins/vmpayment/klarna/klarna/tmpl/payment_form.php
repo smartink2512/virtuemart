@@ -176,8 +176,7 @@ $sType = $viewData['payment_params']['sType'];
 	<?php if ($code2 != 'de' and $code2 != 'nl') { ?>
 		<?php if ($sType == 'invoice') { ?>
 		<div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_INVOICE_TYPE'); ?></div>
-		<input type="radio" name="klarna_invoiceType" id="private" value="private" checked="checked"
-		       class="Klarna_radio"/>
+		<input type="radio" name="klarna_invoiceType" id="private" value="private" checked="checked" class="Klarna_radio"/>
 		<div class="klarna_box_bottom_radio_title" style="float: left">
 			<label for="private"><?php echo JText::_ ('VMPAYMENT_KLARNA_INVOICE_TYPE_PRIVATE'); ?></label>
 		</div>
@@ -185,7 +184,16 @@ $sType = $viewData['payment_params']['sType'];
 		<div class="klarna_box_bottom_radio_title" style="float: none">
 			<label for="company"><?php echo JText::_ ('VMPAYMENT_KLARNA_INVOICE_TYPE_COMPANY'); ?></label>
 		</div>
-		<input type="radio" name="klarna_invoiceType" value="company" class="Klarna_radio"/>
+		<div class="klarna_box_bottom_input_combo"
+		     style="width: 100%; display: none" id="invoice_box_company">
+			<div id="left" style="width: 60%">
+				<div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_COMPANY_NAME'); ?></div>
+				<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_COMPANY_NAME'); ?>" type="text"
+				       name="klarna_company_name" value="<?php echo @$viewData['payment_params']['fields']['company_name']; ?>"
+				       style="width: 98%" />
+			</div>
+
+		</div>
 			<?php } ?>
 	<div class="klarna_box_bottom_title"
 	     id="invoice_perOrg_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_PERSON_NUMBER'); ?></div>
@@ -401,7 +409,7 @@ if ($code2 == 'de') {
 	?>
 <div class="klarna_box_bottom_input_combo" style="width: 100%">
 	<input type="checkbox" name="klarna_consent"
-	       id="box_klarna_consent'] ; ?>"
+	       id="box_klarna_consent"
 	       style="float: left; margin-right: 3px"/>
 
 	<div class="klarna_box_bottom_title" style="width: 80%; margin-top: 3px">Mit der &Uuml;bermittlung der f&uuml;r die

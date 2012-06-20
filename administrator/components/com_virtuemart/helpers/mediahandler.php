@@ -994,7 +994,7 @@ class VmMediaHandler {
 
 		function displayImages($types ='',$page=0,$max=16 ) {
 
-			$images = array();
+			$Images = array();
 			$list = VmMediaHandler::getImagesList($types,$page,$max);
 			if (empty($list['images'])) return JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND');
 

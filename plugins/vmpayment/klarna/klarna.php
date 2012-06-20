@@ -539,7 +539,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 				// Prepare data that should be stored in the database
 				$dbValues['order_number'] = $order['details']['BT']->order_number;
-				$dbValues['payment_name'] = $this->renderKlarnaPluginName ($method, $order['details']['BT']->virtuemart_country_id, $shipTo, $order['details']['BT']->order_total,$order['order_currency']);
+				$dbValues['payment_name'] = $this->renderKlarnaPluginName ($method, $order['details']['BT']->virtuemart_country_id, $shipTo, $order['details']['BT']->order_total,$order['details']['BT']->order_currency);
 				$dbValues['virtuemart_paymentmethod_id'] = $order['details']['BT']->virtuemart_paymentmethod_id;
 				$dbValues['order_payment'] = $order['details']['BT']->order_payment;
 				$dbValues['order_payment_tax'] = $order['details']['BT']->order_payment_tax;
@@ -1357,6 +1357,15 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$klarnaData = KlarnaHandler::getDataFromEditPayment ();
 		$klarnaData['country'] = $cData['country_code'];
 		$klarnaData['country3'] = $cData['country_code_3'];
+
+
+		if ($klarnaData['country3']=="DEU") {
+			if ($klarnaData['consent'] !='on') {
+				vmInfo (JText::_ ('VMPAYMENT_KLARNA_NO_CONSENT' ));
+				return FALSE;
+			}
+		}
+
 		//$country = $cData['country_code']; //KlarnaHandler::convertCountry($method, $country2);
 		//$lang = $cData['language_code']; //KlarnaHandler::getLanguageForCountry($method, $country);
 		// Get the correct data
@@ -1416,17 +1425,19 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$prefix . 'phone_2'               => $st['phone_2'],
 			$prefix . 'fax'                   => $st['fax'],
 			$prefix . 'birthday'              => empty($klarnaData['birthday']) ? $st['birthday'] : $klarnaData['birthday'],
-			$prefix . 'social_number'         => empty($klarnaData['pno']) ? $klarnaData['socialNumber'] : $klarnaData['pno'],
+			$prefix . 'socialNumber'         => empty($klarnaData['pno']) ? $klarnaData['socialNumber'] : $klarnaData['pno'],
 			'address_type'                    => $address_type
 		);
 		if ($address_type == 'BT') {
 			$update_data ['email'] = $klarnaData['email'];
 		}
+
 		if (strtolower ($cData['country_code']) != "se") {
 			if (!KlarnaHandler::checkDataFromEditPayment ($update_data, $cData['country_code_3'])) {
 				return FALSE;
 			}
 		}
+
 		$update_data = array_merge ($st, $update_data);
 		// save address in cart if different
 		// 	if (false) {
