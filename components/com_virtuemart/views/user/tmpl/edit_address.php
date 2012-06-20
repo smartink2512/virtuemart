@@ -36,7 +36,7 @@ echo shopFunctionsF::getLoginForm(false);
 <script language="javascript">
     function myValidator(f, t)
     {
-        f.task.value=t; //I understand this as method to set the task of the form on the fTask. This is not longer needed, because we use another js method for the cancel button than before.
+        f.task.value=t; //this is a method to set the task of the form on the fTask.
         if (document.formvalidator.isValid(f)) {
             f.submit();
             return true;
@@ -63,7 +63,7 @@ echo shopFunctionsF::getLoginForm(false);
 
         var elem = jQuery('#userForm');
 
-	return myValidator(f, '<?php echo $this->fTask //was using before rtask ?>');
+	return myValidator(f, '<?php echo $rtask ?>');
 
     }
 
