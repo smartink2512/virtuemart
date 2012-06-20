@@ -80,7 +80,7 @@ if ($this->address_type == 'BT') {
 ?>
     </h2>
 
-
+	<!-- // the id=adminForm and class adminForm is used here for datepicker and other js, dont remove it ! -->
     <form method="post" id="userForm" name="userForm" class="form-validate">
     <!--<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate">-->
 	<div class="control-buttons">

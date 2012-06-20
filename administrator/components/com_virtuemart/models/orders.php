@@ -1132,13 +1132,15 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		//if  ($this->getInvoiceNumber( $order['details']['BT']->virtuemart_order_id ) ){
 		$invoiceNumberDate = array();
 		if ($orderModel->createInvoiceNumber($order['details']['BT'], $invoiceNumberDate )) {
-			if(!class_exists('VirtueMartControllerInvoice')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
-			$controller = new VirtueMartControllerInvoice( array(
-													  'model_path' => JPATH_VM_SITE.DS.'models',
-													  'view_path' => JPATH_VM_SITE.DS.'views'
-			));
+			if (!shopFunctions::InvoiceNumberReserved($invoiceNumberDate[0])) {
+				if(!class_exists('VirtueMartControllerInvoice')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
+				$controller = new VirtueMartControllerInvoice( array(
+														  'model_path' => JPATH_VM_SITE.DS.'models',
+														  'view_path' => JPATH_VM_SITE.DS.'views'
+				));
 
-			$vars['mediaToSend'][] = $controller->checkStoreInvoice($order);
+				$vars['mediaToSend'][] = $controller->checkStoreInvoice($order);
+			}
 		}
 
 		// Send the email

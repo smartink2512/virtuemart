@@ -71,8 +71,8 @@ foreach ($typefields as $typefield) {
 		    echo '<span class="userfields_info">' . $this->vmfield_title . '</span>';
 		}
 
-		//the id=adminForm and class adminForm is used here for datepicker and other js, dont remove it !
-		echo '	<table id="adminForm" class="adminForm user-details">' . "\n";
+
+		echo '	<table  class="adminForm user-details">' . "\n";
 		$_table = true;
 	    }
 	    echo '		<tr>' . "\n";

@@ -1094,10 +1094,11 @@ class vmJsApi{
 			return $display;
 		}
 		$front = 'components/com_virtuemart/assets/';
+
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration('
-		jQuery(document).ready( function($) {
-			$("#adminForm").delegate(".datepicker","focus", function() {
+			jQuery(document).ready( function($) {
+			$(".datepicker").live( "focus", function() {
 				$( this ).datepicker({
 					changeMonth: true,
 					changeYear: true,
