@@ -1160,8 +1160,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		$row = 0;
 		if (!class_exists ('shopFunctionsF'))
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-		foreach ($variantmods as $selected=> $variant) {
-		//foreach ($variantmods as $variant=> $selected) {
+		//foreach ($variantmods as $selected=> $variant) {
+		foreach ($variantmods as $variant=> $selected) {
 			//vmdebug('customFieldDisplay '.$variant.' '.$selected);
 			if ($selected) {
 
@@ -1182,7 +1182,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					}
 					else {
-						vmdebug('customFieldDisplay $productCustom by self::getProductCustomField '.$variant.' '.$selected,$productCustom);
+						//vmdebug('customFieldDisplay $productCustom by self::getProductCustomField $variant: '.$variant.' $selected: '.$selected,$productCustom);
 						$value = '';
 						if (($productCustom->field_type == "G")) {
 
@@ -1254,6 +1254,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			$calculator = calculationHelper::getInstance ();
 		}
 
+		//vmdebug('CustomsFieldCartDisplay ',$priceKey);
 		$variantmods = $calculator->parseModifier ($priceKey);
 
 		return self::customFieldDisplay ($product, $variantmods, '<div class="vm-customfield-cart">', 'plgVmOnViewCart');

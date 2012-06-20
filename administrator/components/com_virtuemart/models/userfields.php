@@ -712,9 +712,9 @@ class VirtueMartModelUserfields extends VmModel {
 						//	$calendar = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,  $_prefix.$_fld->name . '_field',false,($currentYear-100).':'.$currentYear);
 						//	$_return['fields'][$_fld->name]['formcode'] = $calendar ;
 
-							if(empty($_return['fields'][$_fld->name]['value'])){
-								$_return['fields'][$_fld->name]['value'] = "1978-06-10 00:00:00";
-							}
+							//if(empty($_return['fields'][$_fld->name]['value'])){
+							//	$_return['fields'][$_fld->name]['value'] = "1912-01-01 00:00:00";
+							//}                                                     jDate($date='',$name="date",$id=null,$resetBt = true, $yearRange='') {
 							$_return['fields'][$_fld->name]['formcode'] = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,$_prefix.$_fld->name . '_field');
 							break;
 						case 'emailaddress':

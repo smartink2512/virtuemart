@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 
 
-<fieldset class="adminform">
+<fieldset class="adminForm">
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
 	</legend>
@@ -72,7 +72,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </fieldset>
 
 
-<fieldset class="adminform">
+<fieldset class="adminForm">
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DISPLAY') ?>
 	</legend>
@@ -147,7 +147,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</table>
 </fieldset>
 
-<fieldset class="adminform">
+<fieldset class="adminForm">
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_VENDOR_FORM_MEDIA') ?>
 	</legend>
