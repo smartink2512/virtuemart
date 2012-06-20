@@ -709,14 +709,15 @@ class VmMediaHandler {
 			if($data['media_roles'] == 'file_is_downloadable'){
 				$this->file_is_downloadable = 1;
 				$this->file_is_forSale = 0;
-			}
-			else if($data['media_roles'] == 'file_is_forSale'){
+			} else if($data['media_roles'] == 'file_is_forSale'){
 				$this->file_is_downloadable = 0;
 				$this->file_is_forSale = 1;
 				$this->file_url_folder = VmConfig::get('forSale_path');
 				$this->file_url_folder_thumb = VmConfig::get('forSale_path_thumb');
 
 				$this->setRole = false;
+			} else {
+				$this->file_is_product_image = 1;
 			}
 
 			if($this->setRole and $data['media_roles'] != 'file_is_forSale'){

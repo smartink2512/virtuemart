@@ -141,7 +141,7 @@ class VirtueMartModelMedia extends VmModel {
 	* Retrieve a list of files from the database. This is meant only for backend use
 	*
 	* @author Max Milbers
-	* @param boolean $onlyPublished True to only retreive the published files, false otherwise
+	* @param boolean $onlyPublished True to only retrieve the published files, false otherwise
 	* @param boolean $noLimit True if no record count limit is used, false otherwise
 	* @return object List of media objects
 	*/
@@ -240,7 +240,7 @@ class VirtueMartModelMedia extends VmModel {
 			}
 
 		} else {
-			$vmError('No select fields given in getFiles','No select fields given');
+			vmError('No select fields given in getFiles','No select fields given');
 			return false;
 		}
 

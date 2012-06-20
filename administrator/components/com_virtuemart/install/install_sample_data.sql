@@ -141,22 +141,22 @@ INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`,`virtuemart_manufac
 -- Dumping data for table `#__virtuemart_medias`
 --
 INSERT INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_vendor_id`, `file_title`, `file_description`, `file_meta`, `file_mimetype`, `file_type`, `file_url`, `file_url_thumb`, `file_is_product_image`, `file_is_downloadable`, `file_is_forSale`, `file_params`, `shared`, `published`) VALUES
-(1, 1, 'hand_saw.jpg', '', 'hand saw', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hand_saw.jpg','images/stories/virtuemart/product/resized/hand_saw_90x90.jpg', 0, 0, 0, '', 0, 1),
-(2, 1, 'hand_shovel.jpg', '', 'hand shovel', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hand_shovel.jpg','images/stories/virtuemart/product/resized/hand_shovel_90x90.jpg', 0, 0, 0, '', 0, 1),
-(3, 1, 'ladder.jpg', '', 'ladder', 'image/jpeg', 'product', 'images/stories/virtuemart/product/ladder.jpg', 'images/stories/virtuemart/product/resized/ladder_90x90.jpg', 0, 0, 0, '', 0, 1),
-(4, 1, 'power_drill.jpg', '', 'power drill', 'image/jpeg', 'product', 'images/stories/virtuemart/product/power_drill.jpg', 'images/stories/virtuemart/product/resized/power_drill_90x90.jpg', 0, 0, 0, '', 0, 1),
-(5, 1, 'power_sander.jpg', '', 'power sander', 'image/jpeg', 'product', 'images/stories/virtuemart/product/power_sander.jpg', 'images/stories/virtuemart/product/resized/power_sander_90x90.jpg', 0, 0, 0, '', 0, 1),
-(6, 1, 'shovel.jpg', '', 'shovel', 'image/jpeg', 'product', 'images/stories/virtuemart/product/shovel.jpg', 'images/stories/virtuemart/product/resized/shovel_90x90.jpg', 0, 0, 0, '', 0, 1),
-(7, 1, 'garden_tools.jpg', '', 'garden tools', 'image/jpeg', 'category', 'images/stories/virtuemart/category/garden_tools.jpg', 'images/stories/virtuemart/category/resized/garden_tools_90x90.jpg', 0, 0, 0, '', 0, 1),
-(8, 1, 'hand_tools.jpg', '', 'hand tools', 'image/jpeg', 'category', 'images/stories/virtuemart/category/hand_tools.jpg', 'images/stories/virtuemart/category/resized/hand_tools_90x90.jpg', 0, 0, 0, '', 0, 1),
-(9, 1, 'power_indoor_tool.jpg', '', 'power indoor tool', 'image/jpeg', 'category', 'images/stories/virtuemart/category/power_indoor_tool.jpg', 'images/stories/virtuemart/category/resized/power_indoor_tool_90x90.jpg', 0, 0, 0, '', 0, 1),
-(10, 1, 'Power_outdoor_tool.jpg', '', 'Power outdoor tool', 'image/jpeg', 'category', 'images/stories/virtuemart/category/Power_outdoor_tool.jpg', 'images/stories/virtuemart/category/resized/Power_outdoor_tool_90x90.jpg', 0, 0, 0, '', 0, 1),
-(11, 1, 'power_tools.jpg', '', 'power tools', 'image/jpeg', 'category', 'images/stories/virtuemart/category/power_tools.jpg', 'images/stories/virtuemart/category/resized/power_tools_90x90.jpg', 0, 0, 0, '', 0, 1),
-(12, 1, 'manufacturersample.jpg', '', 'manufacturer sample', 'image/jpeg', 'manufacturer', 'images/stories/virtuemart/manufacturer/manufacturersample.jpg', 'images/stories/virtuemart/manufacturer/resized/manufacturersample_90x90.jpg', 0, 0, 0, '', 0, 1),
+(1, 1, 'hand_saw.jpg', '', 'hand saw', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hand_saw.jpg','images/stories/virtuemart/product/resized/hand_saw_90x90.jpg', 1, 0, 0, '', 0, 1),
+(2, 1, 'hand_shovel.jpg', '', 'hand shovel', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hand_shovel.jpg','images/stories/virtuemart/product/resized/hand_shovel_90x90.jpg', 1, 0, 0, '', 0, 1),
+(3, 1, 'ladder.jpg', '', 'ladder', 'image/jpeg', 'product', 'images/stories/virtuemart/product/ladder.jpg', 'images/stories/virtuemart/product/resized/ladder_90x90.jpg', 1, 0, 0, '', 0, 1),
+(4, 1, 'power_drill.jpg', '', 'power drill', 'image/jpeg', 'product', 'images/stories/virtuemart/product/power_drill.jpg', 'images/stories/virtuemart/product/resized/power_drill_90x90.jpg', 1, 0, 0, '', 0, 1),
+(5, 1, 'power_sander.jpg', '', 'power sander', 'image/jpeg', 'product', 'images/stories/virtuemart/product/power_sander.jpg', 'images/stories/virtuemart/product/resized/power_sander_90x90.jpg', 1, 0, 0, '', 0, 1),
+(6, 1, 'shovel.jpg', '', 'shovel', 'image/jpeg', 'product', 'images/stories/virtuemart/product/shovel.jpg', 'images/stories/virtuemart/product/resized/shovel_90x90.jpg', 1, 0, 0, '', 0, 1),
+(7, 1, 'garden_tools.jpg', '', 'garden tools', 'image/jpeg', 'category', 'images/stories/virtuemart/category/garden_tools.jpg', 'images/stories/virtuemart/category/resized/garden_tools_90x90.jpg', 1, 0, 0, '', 0, 1),
+(8, 1, 'hand_tools.jpg', '', 'hand tools', 'image/jpeg', 'category', 'images/stories/virtuemart/category/hand_tools.jpg', 'images/stories/virtuemart/category/resized/hand_tools_90x90.jpg', 1, 0, 0, '', 0, 1),
+(9, 1, 'power_indoor_tool.jpg', '', 'power indoor tool', 'image/jpeg', 'category', 'images/stories/virtuemart/category/power_indoor_tool.jpg', 'images/stories/virtuemart/category/resized/power_indoor_tool_90x90.jpg', 1, 0, 0, '', 0, 1),
+(10, 1, 'Power_outdoor_tool.jpg', '', 'Power outdoor tool', 'image/jpeg', 'category', 'images/stories/virtuemart/category/Power_outdoor_tool.jpg', 'images/stories/virtuemart/category/resized/Power_outdoor_tool_90x90.jpg', 1, 0, 0, '', 0, 1),
+(11, 1, 'power_tools.jpg', '', 'power tools', 'image/jpeg', 'category', 'images/stories/virtuemart/category/power_tools.jpg', 'images/stories/virtuemart/category/resized/power_tools_90x90.jpg', 1, 0, 0, '', 0, 1),
+(12, 1, 'manufacturersample.jpg', '', 'manufacturer sample', 'image/jpeg', 'manufacturer', 'images/stories/virtuemart/manufacturer/manufacturersample.jpg', 'images/stories/virtuemart/manufacturer/resized/manufacturersample_90x90.jpg', 1, 0, 0, '', 0, 1),
 (13, 1, 'washupito.gif', '', 'washupito', 'image/gif', 'vendor', 'images/stories/virtuemart/vendor/washupito.gif', 'images/stories/virtuemart/vendor/resized/washupito_90x90.gif', 0, 0, 0, '', 0, 1),
-(14, 1, 'hammer.jpg', '', 'hammer', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hammer.jpg', 'images/stories/virtuemart/product/resized/hammer_90x90.jpg', 0, 0, 0, '', 0, 1),
-(15, 1, 'chain_saw.jpg', '', 'chain saw', 'image/jpeg', 'product', 'images/stories/virtuemart/product/chain_saw.jpg', 'images/stories/virtuemart/product/resized/chain_saw_90x90.jpg', 0, 0, 0, '', 0, 1),
-(16, 1, 'circular_saw.jpg', '', 'circular saw', 'image/jpeg', 'product', 'images/stories/virtuemart/product/circular_saw.jpg', 'images/stories/virtuemart/product/resized/circular_saw_90x90.jpg', 0, 0, 0, '', 0, 1);
+(14, 1, 'hammer.jpg', '', 'hammer', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hammer.jpg', 'images/stories/virtuemart/product/resized/hammer_90x90.jpg', 1, 0, 0, '', 0, 1),
+(15, 1, 'chain_saw.jpg', '', 'chain saw', 'image/jpeg', 'product', 'images/stories/virtuemart/product/chain_saw.jpg', 'images/stories/virtuemart/product/resized/chain_saw_90x90.jpg', 1, 0, 0, '', 0, 1),
+(16, 1, 'circular_saw.jpg', '', 'circular saw', 'image/jpeg', 'product', 'images/stories/virtuemart/product/circular_saw.jpg', 'images/stories/virtuemart/product/resized/circular_saw_90x90.jpg', 1, 0, 0, '', 0, 1);
 
 
 
