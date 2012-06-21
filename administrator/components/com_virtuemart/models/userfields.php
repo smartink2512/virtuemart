@@ -715,7 +715,8 @@ class VirtueMartModelUserfields extends VmModel {
 							//if(empty($_return['fields'][$_fld->name]['value'])){
 							//	$_return['fields'][$_fld->name]['value'] = "1912-01-01 00:00:00";
 							//}                                                     jDate($date='',$name="date",$id=null,$resetBt = true, $yearRange='') {
-							$_return['fields'][$_fld->name]['formcode'] = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,$_prefix.$_fld->name . '_field');
+							// Year range MUST start 100 years ago, for birthday
+							$_return['fields'][$_fld->name]['formcode'] = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,$_prefix.$_fld->name . '_field',false,($currentYear-100).':'.$currentYear);
 							break;
 						case 'emailaddress':
 							if(empty($_return['fields'][$_fld->name]['value'])) $_return['fields'][$_fld->name]['value'] = JFactory::getUser()->email;
