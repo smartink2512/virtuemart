@@ -59,23 +59,22 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JHTML::_('Select.genericlist', $this->currConverterList, 'currency_converter_module', 'size=1', 'value', 'text', $this->config->get('currency_converter_module')); ?>
 	    </td>
 	</tr>
-	<tr>
+
+
 	    <td class="key">
-		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT') ?>
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_CONTENT_PLUGIN_EXPLAIN'); ?>">
+		<label for="enable_content_plugin"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_CONTENT_PLUGIN') ?>
 		</span>
-		</td>
-	    <td>
-		<select name="order_mail_html" id="order_mail_html">
-		    <option value="0" <?php if ($this->config->get('order_mail_html') == '0') echo 'selected="selected"'; ?>>
-			<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_TEXT') ?>
-		    </option>
-		    <option value="1" <?php if ($this->config->get('order_mail_html') == '1') echo 'selected="selected"'; ?>>
-			<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_HTML') ?>
-		    </option>
-		</select>
 	    </td>
-	</tr>
+	    <td>
+		    <?php
+		    echo VmHTML::checkbox('enable_content_plugin', $this->config->get('enable_content_plugin','0'));
+		    ?>
+	    </td>
+	    <?php	/* <tr>
+	<td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT_EXPLAIN'); ?>">
+
 <?php	/* <tr>
 	<td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT_EXPLAIN'); ?>">
@@ -96,7 +95,14 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo VmHTML::checkbox('useSSL', $this->config->get('useSSL',0)); ?>
 		</td>
 	</tr>
-	<tr>
+	    </table>
+	    </fieldset>
+
+<fieldset>
+ <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_LANGUAGES') ?></legend>
+<table class="admintable">
+
+<tr>
 	<td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MULTILANGUE_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MULTILANGUE') ?>
@@ -120,58 +126,85 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 	</td>
 	</tr>
-	<tr>
-	<td class="key">
-		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS_EXPLAIN'); ?>">
-		<label for="dangeroustools"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS') ?>
-		</span>
-		</td>
-		<td>
-		<?php echo VmHTML::checkbox('dangeroustools', $this->config->get('dangeroustools')); ?>
-		</td>
-	</tr>
 
-	<tr>
-	<td class="key">
+</table>
+</fieldset>
+
+<fieldset>
+	<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_EMAILS') ?></legend>
+	<table class="admintable">
+	    <tr>
+		    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_EXPLAIN'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT') ?>
+		</span>
+		    </td>
+		    <td>
+			    <select name="order_mail_html" id="order_mail_html">
+				    <option value="0" <?php if ($this->config->get('order_mail_html') == '0') echo 'selected="selected"'; ?>>
+					    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_TEXT') ?>
+				    </option>
+				    <option value="1" <?php if ($this->config->get('order_mail_html') == '1') echo 'selected="selected"'; ?>>
+					    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_HTML') ?>
+				    </option>
+			    </select>
+		    </td>
+	    </tr>
+		<!-- NOT YET -->
+	    <!--tr>
+		    <td class="key">
+			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_RECIPIENT_EXPLAIN'); ?>">
+			<label for="mail_from_recipient"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_RECIPIENT') ?></span>
+			    </span>
+		    </td>
+		    <td>
+			    <?php echo VmHTML::checkbox('mail_from_recipient', $this->config->get('mail_from_recipient',0)); ?>
+		    </td>
+	    </tr>
+	    <tr>
+		    <td class="key">
+			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_SETSENDER_EXPLAIN'); ?>">
+			<label for="mail_from_setsender"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_SETSENDER') ?></span>
+			    </span>
+		    </td>
+		    <td>
+			    <?php echo VmHTML::checkbox('mail_from_setsender', $this->config->get('mail_from_setsender',0)); ?>
+		    </td>
+	    </tr -->
+
+		</table>
+</fieldset>
+
+<fieldset>
+	<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_ADVANCED') ?></legend>
+	<table class="admintable">
+		<tr>
+			<td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG') ?>
 		</span>
-		</td>
-		<td>
-		<?php
-			$options = array(
-				'none'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_NONE'),
-				'admin'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ADMIN'),
-				'all'	=> JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
-			);
-			echo VmHTML::radioList('debug_enable', $this->config->get('debug_enable','none'),$options);
-		?>
-	</td>
-	</tr>
-	<tr>
-	<td class="key">
-		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_GOOGLE_JQUERY_EXPLAIN'); ?>">
-		<label for="google_jquery"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_GOOGLE_JQUERY') ?>
+			</td>
+			<td>
+				<?php
+				$options = array(
+					'none'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_NONE'),
+					'admin'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ADMIN'),
+					'all'	=> JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
+				);
+				echo VmHTML::radioList('debug_enable', $this->config->get('debug_enable','none'),$options);
+				?>
+			</td>
+		</tr>
+	    <tr>
+		    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS_EXPLAIN'); ?>">
+		<label for="dangeroustools"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS') ?>
 		</span>
-		</td>
-		<td>
-		<?php
-			echo VmHTML::checkbox('google_jquery', $this->config->get('google_jquery','1'));
-		?>
-	</td>
-	</tr>
-	<td class="key">
-		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_CONTENT_PLUGIN_EXPLAIN'); ?>">
-		<label for="enable_content_plugin"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_CONTENT_PLUGIN') ?>
-		</span>
-		</td>
-		<td>
-		<?php
-			echo VmHTML::checkbox('enable_content_plugin', $this->config->get('enable_content_plugin','0'));
-		?>
-	</td>
-	</tr>
-
+		    </td>
+		    <td>
+			    <?php echo VmHTML::checkbox('dangeroustools', $this->config->get('dangeroustools')); ?>
+		    </td>
+	    </tr>
 	<tr>
 	<td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_EXPLAIN'); ?>">

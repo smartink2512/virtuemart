@@ -65,7 +65,7 @@ if (empty ( $this->product )) {
 	<div class="form-field">
 
 		<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component') ; ?>" name="askform" id="askform" >
-			<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" value="<?php echo $this->user->email ?>" name="email" id="email" size="30" class="validate[required,custom[email]]"/></label>
+			<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" value="" name="email" id="email" size="30" class="validate[required,custom[email]]"/></label>
 				<br />
 			<label>
 				<?php

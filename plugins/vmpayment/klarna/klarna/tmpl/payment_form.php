@@ -118,7 +118,7 @@ $sType = $viewData['payment_params']['sType'];
 			?>
 			<!-- Part/invoice payment External js -->
 			<a href="javascript:ShowKlarnaPopup('<?php echo $viewData["payment_params"]["eid"]; ?>', '<?php echo $popupTotal; ?>','<?php echo $sType; ?>')">
-				<?php echo JText::_ ('VMPAYMENT_KLARNA_KLARNA_ACCOUNT_AGREEMENT'); ?>
+				<?php echo JText::_ ('VMPAYMENT_KLARNA_KLARNA_'.$sType.'_AGREEMENT'); ?>
 			</a>
 			<!-- payment External js END -->
 			<?php } ?>
@@ -137,7 +137,7 @@ $sType = $viewData['payment_params']['sType'];
 	}
 	?>
 	<img class="klarna_logo" src="<?php echo $logo ?>"
-	     alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_IMG_LOGO_ACCOUNT'); ?>"/>
+	     alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_IMG_LOGO_'.$sType); ?>"/>
 </div>
 <div class="klarna_box_bottom">
 <div class="klarna_box_bottom_contents">
@@ -409,7 +409,7 @@ if ($code2 == 'de') {
 	?>
 <div class="klarna_box_bottom_input_combo" style="width: 100%">
 	<input type="checkbox" name="klarna_consent"
-	       id="box_klarna_consent"
+	       id="box_klarna_consent_<?php echo $sType ?>"
 	       style="float: left; margin-right: 3px"/>
 
 	<div class="klarna_box_bottom_title" style="width: 80%; margin-top: 3px">Mit der &Uuml;bermittlung der f&uuml;r die

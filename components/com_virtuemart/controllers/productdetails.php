@@ -142,6 +142,8 @@ class VirtueMartControllerProductdetails extends JController {
 		if (!class_exists ('shopFunctionsF')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
+		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+
 		$mainframe = JFactory::getApplication ();
 		$vars = array();
 
@@ -156,17 +158,22 @@ class VirtueMartControllerProductdetails extends JController {
 		$vars['product'] = $productModel->getProduct ($virtuemart_product_id);
 
 		$user = JFactory::getUser ();
-		$fromMail = $user->email;
-		$fromName = $user->name;
-		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
+		$vars['user'] = array('name' => $user->name, 'email' =>  $user->email);
 
+		$vars['vendorEmail'] = $user->email;
 		$vendorModel = VmModel::getModel ('vendor');
-		$VendorEmail = $vendorModel->getVendorEmail ($vars['product']->virtuemart_vendor_id);
-		$vars['vendor'] = array('vendor_store_name' => $fromName);
+		$vars['vendor'] = $vendorModel->getVendor ($vars['product']->virtuemart_vendor_id);
+		$vendorModel->addImages ($vars['vendor']);
+		$vars['vendorAddress']= shopFunctions::renderVendorAddress($vars['product']->virtuemart_vendor_id);
 
-		$TOMail = JRequest::getVar ('email'); //is sanitized then
-		$TOMail = str_replace (array('\'', '"', ',', '%', '*', '/', '\\', '?', '^', '`', '{', '}', '|', '~'), array(''), $TOMail);
-		if (shopFunctionsF::renderMail ('recommend', $TOMail, $vars, 'productdetails', TRUE)) {
+		$vars['vendorEmail']=  $user->email;
+		$vars['vendor']->vendor_name =$user->name;
+
+
+		$toMail = JRequest::getVar ('email'); //is sanitized then
+		$toMail = str_replace (array('\'', '"', ',', '%', '*', '/', '\\', '?', '^', '`', '{', '}', '|', '~'), array(''), $toMail);
+
+		if (shopFunctionsF::renderMail ('recommend', $toMail, $vars, 'productdetails', TRUE)) {
 			$string = 'COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY';
 		} else {
 			$string = 'COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY';

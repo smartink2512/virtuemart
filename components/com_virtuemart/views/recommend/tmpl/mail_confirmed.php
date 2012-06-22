@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
-/* thank you for the ask question mail  */ ?>
+/* thank you for the Recommend  mail  */ ?>
 
 <div class="productdetails-view">
 	<?php echo JText::_('COM_VIRTUEMART_RECOMMEND_THANK_YOU'); ?>

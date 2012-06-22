@@ -44,7 +44,7 @@ class VirtueMartModelUser extends VmModel {
 	/**
 	 * Constructor for the user model.
 	 *
-	 * The user ID is read and detmimined if it is an array of ids or just one single id.
+	 * The user ID is read and determined if it is an array of ids or just one single id.
 	 */
 	function __construct(){
 
@@ -70,7 +70,7 @@ class VirtueMartModelUser extends VmModel {
 		//anonymous sets to 0 for a new entry
 		if(empty($user->id)){
 			$this->setUserId(0);
-			//			echo($this->_id,'Recogniced anonymous case');
+			//			echo($this->_id,'Recognized anonymous case');
 		} else {
 
 			//not anonymous, but no cid means already registered user edit own data
@@ -1032,7 +1032,7 @@ class VirtueMartModelUser extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	function getUserInfoInUserFields($layoutName, $type,$uid,$cart=true,$isVendor=false){
+	function getUserInfoInUserFields($layoutName, $type,$uid,$cart=true,$isVendor=false ){
 
 		// 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		// 		$userFieldsModel = new VirtuemartModelUserfields();
@@ -1044,6 +1044,9 @@ class VirtueMartModelUser extends VmModel {
 		} else {
 			$preFix = '';
 		}
+/*
+ * JUser  or $this->_id is the logged user
+ */
 
 		if(!empty($this->_data->JUser)){
 			$JUser = $this->_data->JUser;

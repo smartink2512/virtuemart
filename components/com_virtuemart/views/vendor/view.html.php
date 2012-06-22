@@ -78,6 +78,7 @@ class VirtuemartViewVendor extends VmView {
 			$usermodel = VmModel::getModel('user');
 
 			$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
+			$usermodel->getVendor($virtuemart_vendor_id);
 			$userFields = $usermodel->getUserInfoInUserFields($layoutName, 'BT', $virtuemart_userinfo_id,true,true);
 			$this->assignRef('userFields', $userFields);
 
@@ -97,7 +98,8 @@ class VirtuemartViewVendor extends VmView {
 				$this->setLayout('details');
 			}
 
-			$linkdetails = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_DETAILS').'</a>';
+			$linkdetails = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=details&virtuemart_vendor_id=' .
+			$this->vendor->virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_DETAILS').'</a>';
 			$linkcontact = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=contact&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_CONTACT').'</a>';
 			$linktos = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_TOS').'</a>';
 
@@ -111,11 +113,11 @@ class VirtuemartViewVendor extends VmView {
 	}
 
 
-	function renderMailLayout() {
+	function renderMailLayout($doVendor, $recipient) {
 		$this->setLayout('mail_html_question');
 		$this->comment = JRequest::getString('comment');
 		$virtuemart_vendor_id = JRequest::getInt('virtuemart_vendor_id');
-
+		$this->dovendor=$doVendor;
 		$vendorModel = VmModel::getModel('vendor');
 		$this->vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 		// in this particular case, overwrite the value for fix the recipient name

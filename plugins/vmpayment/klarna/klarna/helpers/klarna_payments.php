@@ -76,6 +76,7 @@ class klarna_payments {
 	 * @param $shipTo
 	 */
 	function __construct ($cData, $shipTo) {
+
 		$this->shipTo = $shipTo;
 
 		$this->country = $cData['country_code'];
@@ -110,6 +111,7 @@ class klarna_payments {
 	 * come back after failing a purchase.
 	 */
 	private function setPreviouslyFilledIn ($klarna_data) {
+
 		if (($this->country == "nl" || $this->country == "de") && isset($klarna_data['pno'])) {
 			$pno = $klarna_data['pno'];
 			$this->klarna_bday['year'] = substr ($pno, 4, 4);
@@ -134,7 +136,8 @@ class klarna_payments {
 	/**
 	 * Build the Payment params
 	 */
-	public function get_payment_params ($method, $payment_type, $cart = NULL, $country_currency_code='') {
+	public function get_payment_params ($method, $payment_type, $cart = NULL, $country_currency_code = '') {
+
 		if (!class_exists ('CurrencyDisplay')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
@@ -142,18 +145,17 @@ class klarna_payments {
 			require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
 		}
 		$payment_params = array();
-
+$invoice_fee=0;
 		if (!isset($this->klarna) || !($this->klarna instanceof Klarna_virtuemart)) {
 			return NULL;
 		}
 		if ($payment_type == 'invoice') {
-			$invoice_fee = KlarnaHandler::getInvoiceFeeInclTax ($method, $this->country_code_3);
+			KlarnaHandler::getInvoiceFeeInclTax ($method, $this->country_code_3,   $cart->pricesCurrency, $this->virtuemart_currency_id, $display_invoice_fee, $invoice_fee);
 			$billTotalInCountryCurrency = 0;
 			$aTypes = NULL;
 			$payment_params['pClasses'] = NULL;
-		}
-		else {
-			$invoice_fee = 0;
+		} else {
+			$display_fee = 0;
 			$billTotalInCountryCurrency = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $cart->pricesCurrency, $country_currency_code);
 			if ($billTotalInCountryCurrency <= 0) {
 				return NULL;
@@ -164,13 +166,15 @@ class klarna_payments {
 		$kCheckout = new KlarnaAPI($this->country, $this->lang, $payment_type, $billTotalInCountryCurrency, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, $aTypes, JPATH_VMKLARNAPLUGIN);
 
 		if ($payment_type == 'invoice') {
-			$currency = CurrencyDisplay::getInstance ();
-			$display_fee = $currency->priceDisplay ($invoice_fee);
-			$payment_params['module'] = JText::sprintf ('VMPAYMENT_KLARNA_INVOICE_TITLE_NO_PRICE', $display_fee);
+			if ($invoice_fee) {
+				$payment_params['module'] = JText::sprintf ('VMPAYMENT_KLARNA_INVOICE_TITLE', $display_invoice_fee);
+
+			} else {
+				$payment_params['module'] = JText::_ ('VMPAYMENT_KLARNA_INVOICE_TITLE_NO_PRICE');
+			}
 			$payment_params['pClasses'] = NULL;
 			$payment_params['id'] = 'klarna_invoice';
-		}
-		elseif ($payment_type == 'part') {
+		} elseif ($payment_type == 'part') {
 			$pclasses = $kCheckout->aPClasses;
 			if (empty($pclasses)) {
 				return NULL;
@@ -273,6 +277,7 @@ class klarna_payments {
 	 * @return string
 	 */
 	public function getTermsLink () {
+
 		return 'https://static.klarna.com/external/html/' . KLARNA_SPECIAL_CAMPAIGN . '_' . strtolower ($this->country) . '.html';
 	}
 
@@ -282,6 +287,7 @@ class klarna_payments {
 	 * @return string
 	 */
 	function displayPclass ($pid, $totalSum) {
+
 		if (!class_exists ('KlarnaAPI')) {
 			require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
 		}

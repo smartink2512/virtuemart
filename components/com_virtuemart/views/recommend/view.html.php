@@ -142,10 +142,18 @@ class virtuemartViewrecommend extends VmView {
 		parent::display($tpl);
 	}
 
-	function renderMailLayout($vendor, $recipient) {
-		$this->setLayout('mail_html');
-		$this->comment = JRequest::getString('comment');
+	function renderMailLayout($doVendor, $recipient) {
+
+		$this->comment = nl2br(JRequest::getString('comment'));
 	 	$this->subject = JText::sprintf('COM_VIRTUEMART_RECOMMEND_PRODUCT',$recipient, $this->product->product_name);
+
+		if (VmConfig::get ('order_mail_html')) {
+			$tpl = 'mail_html';
+		} else {
+			$tpl = 'mail_raw';
+		}
+		$this->setLayout ($tpl);
+
 	 	parent::display();
 	}
 

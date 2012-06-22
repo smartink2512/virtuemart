@@ -348,7 +348,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 		$html = '';
 		$payments = new klarna_payments($cData, KlarnaHandler::getShipToAddress ($cart));
-		$payment_params = $payments->get_payment_params ($method, 'invoice');
+		$payment_params = $payments->get_payment_params ($method, 'invoice', $cart);
 		$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params), 'klarna', 'payment');
 		$html .= $this->renderByLayout ('displaypayment', array(
 			'stype'                       => 'invoice',
@@ -576,7 +576,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 					'payment_name'     => $dbValues['payment_name'],
 					'klarna_invoiceno' => $invoiceno));
 
-				if ($result['eid'] == VMPAYMENT_KLARNA_MERCHANT_ID_VM or  $result['eid'] == VMPAYMENT_KLARNA_MERCHANT_ID_DEMO) {
+				if ( $result['eid'] == VMPAYMENT_KLARNA_MERCHANT_ID_DEMO) {
 					$html .= "<br />" . JText::_ ('VMPAYMENT_KLARNA_WARNING') . "<br />";
 				}
 
@@ -1400,6 +1400,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			}
 		}
 		$st = $this->getCartAddress ($cart, $address_type, TRUE);
+		vmDebug('getCartAddress', $st);
 		if ($address_type == 'BT') {
 			$prefix = '';
 		} else {
@@ -1610,11 +1611,11 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		}
 		$calculator = calculationHelper::getInstance ();
 		if (count ($taxrules) > 0) {
-			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value']));
-			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal ($cart_prices['salesPrice' . $_psType]) - $cart_prices[$this->_psType . 'Value'];
+			 $cart_prices['salesPricePayment'  ] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices['paymentValue']));
+			$cart_prices['paymentTax'] = $calculator->roundInternal ($cart_prices['salesPrice' . $_psType]) - $cart_prices['paymentValue'];
 		} else {
-			$cart_prices['salesPrice' . $_psType] = $invoice_fee;
-			$cart_prices[$this->_psType . 'Tax'] = 0;
+			$cart_prices['salesPricePayment'] = $invoice_fee;
+			$cart_prices['paymentTax'] = 0;
 		}
 
 	}
@@ -1640,10 +1641,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		switch ($sessionKlarnaData->klarna_option) {
 			case 'invoice':
 				$image = '/klarna_invoice_' . $country2 . '.png';
-				$klarna_invoice_fee = KlarnaHandler::getInvoiceFeeInclTax ($method, $cData['country_code_3']);
-				$currency = CurrencyDisplay::getInstance ();
-				$display_fee = $currency->priceDisplay ($klarna_invoice_fee);
-				$text = JText::sprintf ('VMPAYMENT_KLARNA_INVOICE_TITLE_NO_PRICE', $display_fee);
+				 KlarnaHandler::getInvoiceFeeInclTax ($method, $cData['country_code_3'], $cartPricesCurrency,$cData['virtuemart_currency_id'], $display_invoice_fee, $invoice_fee);
+				$text = JText::sprintf ('VMPAYMENT_KLARNA_INVOICE_TITLE_NO_PRICE', $display_invoice_fee);
 				break;
 			case 'partpayment':
 			case 'part':
@@ -1657,6 +1656,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				$payments = new klarna_payments($cData, $shipTo);
 				//vmdebug('displaylogos',$cart_prices);
 				$totalInPaymentCurrency = KlarnaHandler::convertPrice ($total,$cartPricesCurrency, $cData['currency_code']);
+				vmdebug('totalInPaymentCurrency', $totalInPaymentCurrency);
 				$text = $payments->displayPclass ($sessionKlarnaData->KLARNA_DATA['pclass'], $totalInPaymentCurrency); // .' '.$total;
 				break;
 			case 'speccamp':

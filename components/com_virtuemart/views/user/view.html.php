@@ -414,7 +414,7 @@ class VirtuemartViewUser extends VmView {
      * @author Valerie Isaksen
      */
 
-    public function renderMailLayout($vendor=false) {
+    public function renderMailLayout($doVendor, $recipient) {
 
 	$useSSL = VmConfig::get('useSSL', 0);
 	$useXHTML = true;
@@ -430,7 +430,7 @@ class VirtuemartViewUser extends VmView {
 	} else {
 	    $mailFormat = 'raw';
 	}
-	if (!$vendor) {
+	if (!$doVendor) {
 	    $this->subject = JText::sprintf('COM_VIRTUEMART_NEW_SHOPPER_SUBJECT', $this->user->username, $this->vendor->vendor_store_name);
 	    $tpl = 'mail_' . $mailFormat . '_reguser';
 	} else {

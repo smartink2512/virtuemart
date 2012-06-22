@@ -646,6 +646,8 @@ class ShopFunctions {
 		$userId = VirtueMartModelVendor::getUserIdByVendorId ($vendorId);
 		$userModel = VmModel::getModel ('user');
 		$virtuemart_userinfo_id = $userModel->getBTuserinfo_id ($userId);
+		// this is needed to set the correct user id for the vendor when the user is logged
+		$userModel->getVendor($vendorId);
 		$vendorFieldsArray = $userModel->getUserInfoInUserFields ('mail', 'BT', $virtuemart_userinfo_id, FALSE, TRUE);
 		$vendorFields = $vendorFieldsArray[$virtuemart_userinfo_id];
 		$vendorAddress = '';
