@@ -60,7 +60,7 @@ $sType = $viewData['payment_params']['sType'];
 		gender:'klarna_gender',
 		street:'klarna_street',
 		homenumber:'klarna_homenumber',
-		house_extension:'house_extension',
+		house_extension:'klarna_house_extension',
 		city:'klarna_city',
 		zipcode:'klarna_zip',
 		reference:'klarna_reference',

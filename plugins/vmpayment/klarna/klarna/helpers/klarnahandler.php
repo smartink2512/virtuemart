@@ -238,17 +238,15 @@ class KlarnaHandler {
 		$vendor_id = 1;
 		$vendor_currency = VirtueMartModelVendor::getVendorCurrency ($vendor_id);
 
+		$currency = CurrencyDisplay::getInstance ();
+		$invoice_fee = $currency->convertCurrencyTo ($cartPaymentCurrency, $invoiceAmount);
 
-			$currency = CurrencyDisplay::getInstance ();
-			$invoice_fee = $currency->convertCurrencyTo ($cartPaymentCurrency, $invoiceAmount);
-
-			$paymentCurrency = CurrencyDisplay::getInstance ($cartPaymentCurrency);
-			$display_invoice_fee = $paymentCurrency->priceDisplay ($invoiceAmount, $cartPaymentCurrency);
-			$currencyDisplay = CurrencyDisplay::getInstance ($cartPricesCurrency);
-
+		$paymentCurrency = CurrencyDisplay::getInstance ($cartPaymentCurrency);
+		$display_invoice_fee = $paymentCurrency->priceDisplay ($invoiceAmount, $cartPaymentCurrency);
+		$currencyDisplay = CurrencyDisplay::getInstance ($cartPricesCurrency);
 
 		vmdebug ('getInvoiceFeeInclTax', $cartPaymentCurrency, $invoice_fee, $invoice_tax_id, $display_invoice_fee, $invoice_fee);
-		return ;
+		return;
 	}
 
 	/*
@@ -433,6 +431,9 @@ class KlarnaHandler {
 		$klarna = new Klarna_virtuemart();
 		$klarna->config ($cData['eid'], $cData['secret'], $cData['country_code'], NULL, $cData['currency_code'], $mode, VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), $ssl);
 
+		// Sets order id's from other systems for the upcoming transaction.
+		$klarna->setEstoreInfo ($order['details']['BT']->order_number);
+
 		// Fill the good list the we send to Klarna
 		foreach ($order['items'] as $item) {
 			$item_price = self::convertPrice ($item->product_final_price, $order['details']['BT']->order_currency, $cData['currency_code']);
@@ -450,12 +451,9 @@ class KlarnaHandler {
 
 		// Add invoice fee
 		if ($klarna_pclass == -1) { //Only for invoices!
-			$payment_without_tax = self::convertPrice ($order['details']['BT']->order_payment, $order['details']['BT']->order_currency,
-				$cData['currency_code']);
-			$payment_with_tax = self::convertPrice ($order['details']['BT']->order_payment + $order['details']['BT']->order_payment_tax,
-				$order['details']['BT']->order_currency,
-				$cData['currency_code']);
-			$payment_tax_percent = self::getTaxPercent ($order['details']['BT']->$payment_with_tax + $order['details']['BT']->order_payment_tax, $order['details']['BT']->order_payment);
+			$payment_without_tax = self::convertPrice ($order['details']['BT']->order_payment, $order['details']['BT']->order_currency, $cData['currency_code']);
+			$payment_with_tax = self::convertPrice ($order['details']['BT']->order_payment + $order['details']['BT']->order_payment_tax, $order['details']['BT']->order_currency, $cData['currency_code']);
+			$payment_tax_percent = self::getTaxPercent ($order['details']['BT']->order_payment + $order['details']['BT']->order_payment_tax, $order['details']['BT']->order_payment);
 			if ($payment_without_tax > 0) {
 				//vmdebug('invoicefee', $payment, $payment_tax);
 				$klarna->addArticle (1, "invoicefee", JText::_ ('VMPAYMENT_KLARNA_INVOICE_FEE_TITLE'), ((double)(round (($payment_without_tax), 2))), (double)round ($payment_tax_percent, 2), 0, KlarnaFlags::IS_HANDLING + KlarnaFlags::INC_VAT);
@@ -467,7 +465,14 @@ class KlarnaHandler {
 			//vmdebug('discount', $coupon_discount);
 			$klarna->addArticle (1, 'discount', JText::_ ('VMPAYMENT_KLARNA_DISCOUNT') . ' ' . $order['details']['BT']->coupon_code, ((int)(round ($coupon_discount, 2) * -1)), 0, 0, KlarnaFlags::INC_VAT);
 		}
-
+		/*
+$test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true);
+		$test2=  mb_detect_encoding ($shipTo->address_1,  'ISO-8859-1',true);
+		$test3=utf8_decode ($shipTo->address_1);
+		$test5=  mb_detect_encoding ($test3,  'ISO-8859-1',true);
+		$test6 = mb_convert_encoding($shipTo->address_1, 'ISO-8859-1' , 'UTF-8');
+		$test7=  mb_detect_encoding ($test6, 'ISO-8859-1',true);
+		vmDebug('mb_detect_encoding',$shipTo->address_1,$test,$test2,$test5,  $test7);*/
 		try {
 			$klarna_shipping = new KlarnaAddr(
 				$order['details']['BT']->email,
@@ -479,8 +484,8 @@ class KlarnaHandler {
 				$shipTo->zip,
 				utf8_decode ($shipTo->city),
 				utf8_decode ($cData['country']),
-				$shipTo->house_no,
-				$shipTo->address_2
+				KlarnaHandler::setHouseNo ($shipTo->house_no, $cData['country_code_3']),
+				KlarnaHandler::setAddress2 ($shipTo->address_2, $cData['country_code_3'])
 			);
 		}
 		catch (Exception $e) {
@@ -535,6 +540,24 @@ class KlarnaHandler {
 			//self::redirectPaymentMethod('error', htmlentities($e->getMessage()) .  "  (#" . $e->getCode() . ")");
 		}
 
+	}
+
+	private function setAddress2 ($address2, $country) {
+
+		if ($country == 'NLD') {
+			return $address2;
+		} else {
+			return NULL;
+		}
+	}
+
+	private function setHouseNo ($houseNo, $country) {
+
+		if (($country == 'DEU') or ($country == 'NLD')) {
+			return $houseNo;
+		} else {
+			return NULL;
+		}
 	}
 
 	/**

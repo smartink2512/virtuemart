@@ -686,7 +686,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		if (!class_exists ('VirtueMartCart')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
-		$cart = VirtueMartCart::getCart ();
+		$cart = VirtueMartCart::getCart (false);
 
 		$this->_getCartAddressCountryCode ($cart, $country, $countryId);
 		$cData = KlarnaHandler::countryData ($method, $country);
@@ -1438,8 +1438,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				return FALSE;
 			}
 		}
-
-		$update_data = array_merge ($st, $update_data);
+		if (!empty($st)) {
+			$update_data = array_merge ($st, $update_data);
+		}
 		// save address in cart if different
 		// 	if (false) {
 		$cart->saveAddressInCart ($update_data, $update_data['address_type'], TRUE);

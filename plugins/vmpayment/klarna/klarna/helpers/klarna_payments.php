@@ -156,7 +156,10 @@ $invoice_fee=0;
 			$payment_params['pClasses'] = NULL;
 		} else {
 			$display_fee = 0;
-			$billTotalInCountryCurrency = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $cart->pricesCurrency, $country_currency_code);
+			$billTotalInCountryCurrency = 0;
+			if (isset($cart->pricesUnformatted['billTotal'])) {
+				$billTotalInCountryCurrency = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $cart->pricesCurrency, $country_currency_code);
+			}
 			if ($billTotalInCountryCurrency <= 0) {
 				return NULL;
 			}
