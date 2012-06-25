@@ -728,9 +728,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				//remove a passive invoice from Klarna.
 				$result = $klarna->deleteInvoice ($invNo);
 				if ($result) {
-					$message = Jtext::_ ('VMPAYMENT_KLARNA_INVOICE_DELETED', $invNo);
+					$message = Jtext::_('VMPAYMENT_KLARNA_INVOICE_DELETED').":". $invNo;
 				} else {
-					$message = Jtext::_ ('VMPAYMENT_KLARNA_INVOICE_NOT_DELETED', $invNo);
+					$message = Jtext::_ ('VMPAYMENT_KLARNA_INVOICE_NOT_DELETED').":". $invNo;
 				}
 				$dbValues['order_number'] = $order->order_number;
 				$dbValues['virtuemart_order_id'] = $order->virtuemart_order_id;
@@ -951,6 +951,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$country = $this->getCountryCodeByOrderID ($orderId);
 		$settings = KlarnaHandler::countryData ($method, $country);
 		$klarna_order_status = KlarnaHandler::checkOrderStatus ($settings, KlarnaHandler::getKlarnaMode ($method, $settings['country_code_3']), $orderNumber);
+		vmdebug('Klarna status',$klarna_order_status);
 		if ($klarna_order_status == KlarnaFlags::ACCEPTED) {
 			/* if Klarna's order status is pending: add it in the history */
 			/* The order is under manual review and will be accepted or denied at a later stage.
@@ -961,17 +962,17 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$order['customer_notified'] = 0;
 			$dbValues['klarna_log'] = JText::_ ('VMPAYMENT_KLARNA_PAYMENT_ACCEPTED');
 		} elseif ($klarna_order_status == KlarnaFlags::DENIED) {
-			$order['order_status'] = $method->status_canceled;
+			$order['order_status'] = $method->status_denied;
 			$order['customer_notified'] = 0;
 			$dbValues['klarna_log'] = JText::_ ('VMPAYMENT_KLARNA_PAYMENT_NOT_ACCEPTED');
-			$order['comments'] =   $klarna_order_status;;
+			$order['comments'] =   JText::_ ('VMPAYMENT_KLARNA_PAYMENT_NOT_ACCEPTED');
 		} else {
 			if ($klarna_order_status == KlarnaFlags::PENDING) {
 				$dbValues['klarna_log'] = JText::_ ('VMPAYMENT_KLARNA_PAYMENT_PENDING');
 			} else {
 				$dbValues['klarna_log'] = $klarna_order_status;
 			}
-			$order['comments'] =   $klarna_order_status;
+			$order['comments'] =   $dbValues['klarna_log'] ;
 			$order['customer_notified'] = 0;
 		}
 		$dbValues['order_number'] = $orderNumber;
@@ -980,7 +981,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$dbValues['klarna_invoice_no'] = $invNo;
 		$this->storePSPluginInternalData ($dbValues);
 
-		$modelOrder->updateStatusForOneOrder ($orderId, $order, TRUE);
+		$modelOrder->updateStatusForOneOrder ($orderId, $order, false);
 		$app = JFactory::getApplication ();
 		$app->redirect ('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $orderId);
 		// 	jexit();
@@ -1602,7 +1603,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$invoice_tax_id = KlarnaHandler::getInvoiceTaxId ($method, $country);
 
 		$_psType = ucfirst ($this->_psType);
-		$cart_prices[$this->_psType . 'Value'] = $invoice_fee;
+
 
 		$taxrules = array();
 		if (!empty($invoice_tax_id)) {
@@ -1616,9 +1617,14 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		}
 		$calculator = calculationHelper::getInstance ();
 		if (count ($taxrules) > 0) {
-			 $cart_prices['salesPricePayment'  ] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices['paymentValue']));
-			$cart_prices['paymentTax'] = $calculator->roundInternal ($cart_prices['salesPrice' . $_psType]) - $cart_prices['paymentValue'];
+			$calculator->setRevert (true);
+			$invoiceFeeWithoutTax = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $invoice_fee));
+			$cart_prices['salesPricePayment'] = $invoice_fee;
+			$cart_prices['paymentTax'] = $invoice_fee -$calculator->roundInternal ($invoiceFeeWithoutTax)   ;
+			$cart_prices['paymentValue'] = $invoiceFeeWithoutTax;
+			$calculator->setRevert (false);
 		} else {
+			$cart_prices['paymentValue'] = $invoice_fee;
 			$cart_prices['salesPricePayment'] = $invoice_fee;
 			$cart_prices['paymentTax'] = 0;
 		}

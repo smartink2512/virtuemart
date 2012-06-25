@@ -220,29 +220,14 @@ class KlarnaHandler {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 		}
 
-		$calculator = calculationHelper::getInstance ();
-		$taxrules = array();
-		$db = JFactory::getDBO ();
-		if (!empty($invoice_tax_id)) {
-			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $invoice_tax_id . '" ';
-			$db->setQuery ($q);
-			$taxrules = $db->loadAssocList ();
-		}
-
-		if (count ($taxrules) > 0) {
-			$invoiceAmount = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $invoice_fee));
-		} else {
-			$invoiceAmount = $invoice_fee;
-		}
-
 		$vendor_id = 1;
 		$vendor_currency = VirtueMartModelVendor::getVendorCurrency ($vendor_id);
 
 		$currency = CurrencyDisplay::getInstance ();
-		$invoice_fee = $currency->convertCurrencyTo ($cartPaymentCurrency, $invoiceAmount);
+		$invoice_fee = $currency->convertCurrencyTo ($cartPaymentCurrency, $invoice_fee);
 
 		$paymentCurrency = CurrencyDisplay::getInstance ($cartPaymentCurrency);
-		$display_invoice_fee = $paymentCurrency->priceDisplay ($invoiceAmount, $cartPaymentCurrency);
+		$display_invoice_fee = $paymentCurrency->priceDisplay ($invoice_fee, $cartPaymentCurrency);
 		$currencyDisplay = CurrencyDisplay::getInstance ($cartPricesCurrency);
 
 		vmdebug ('getInvoiceFeeInclTax', $cartPaymentCurrency, $invoice_fee, $invoice_tax_id, $display_invoice_fee, $invoice_fee);

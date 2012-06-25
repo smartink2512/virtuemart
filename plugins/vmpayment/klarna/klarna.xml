@@ -98,7 +98,9 @@
 
 	<param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="U" label="VMPAYMENT_KLARNA_CONF_STATUS_PENDING" description="VMPAYMENT_KLARNA_CONF_STATUS_PENDING_DESC" />
 	<param name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_KLARNA_CONF_STATUS_SUCCESS" description="VMPAYMENT_KLARNA_CONF_STATUS_SUCCESS_DESC" />
-	<param name="status_shipped" type="vmorderstate" scope="com_virtuemart" default="S" label="VMPAYMENT_KLARNA_CONF_STATUS_SHIPPED" description="VMPAYMENT_KLARNA_CONF_STATUS_SHIPPED_DESC" />
+
+
+        <param name="status_shipped" type="vmorderstate" scope="com_virtuemart" default="S" label="VMPAYMENT_KLARNA_CONF_STATUS_SHIPPED" description="VMPAYMENT_KLARNA_CONF_STATUS_SHIPPED_DESC" />
 	<param name="delete_order" type="radio" default="1"  label="VMPAYMENT_KLARNA_CONF_DELETE_ORDER_DENIED" description="VMPAYMENT_KLARNA_CONF_DELETE_ORDER_DENIED_DESC" >
 	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>

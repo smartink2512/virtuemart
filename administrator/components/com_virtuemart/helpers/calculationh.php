@@ -654,7 +654,9 @@ class calculationHelper {
 		$this->_revert = false;
 		return $costprice;
 	}
-
+	public function setRevert($revert){
+		$this->_revert = $revert;
+	}
 	/**
 	 * Get coupon details and calculate the value
 	 * @author Oscar van Eijk
