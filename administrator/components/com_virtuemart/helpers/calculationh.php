@@ -1267,7 +1267,8 @@ class calculationHelper {
 		public function calculateModificators(&$product, $variants) {
 
 			$modificatorSum = 0.0;
-			foreach ($variants as $variant => $selected) {
+			//MarkerVarMods
+			foreach ($variants as $selected => $variant) {
 				if (!empty($selected)) {
 
 					$query = 'SELECT  C.* , field.*
@@ -1305,7 +1306,7 @@ class calculationHelper {
 
 				foreach ($items as $item) {
 					if (!empty($item)) {
-// 						vmdebug('parseModifier',$item);
+ 						//vmdebug('parseModifier $item',$item);
 						$index2 = strpos($item, ':');
 						if($index2!=false){
 							$selected = substr($item, 0, $index2);
@@ -1318,6 +1319,7 @@ class calculationHelper {
 					}
 				}
 			}
+			vmdebug('parseModifier $variants',$variants);
 			return $variants;
 		}
 

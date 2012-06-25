@@ -985,11 +985,10 @@ class VirtueMartModelCustomfields extends VmModel {
 		$value = $customfield->custom_value;
 		$type = $customfield->field_type;
 		$is_list = isset($customfield->is_list)? $customfield->is_list:0;
-		$price = isset($customfield->custom_price)? $customfield->custom_price:'';
+		$price = isset($customfield->custom_price)? $customfield->custom_price:0;
 		$is_cart = isset($customfield->is_cart)? $customfield->is_cart:0;
 
-		//parseCustomParams
-		VirtueMartModelCustomfields::bindParameterableByFieldType($customfield);
+
 		//vmdebug('displayProductCustomfieldFE and here is something wrong ',$customfield);
 
 		if (!class_exists ('CurrencyDisplay'))
@@ -1041,6 +1040,8 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					$productModel = VmModel::getModel ('product');
 
+					//parseCustomParams
+					VirtueMartModelCustomfields::bindParameterableByFieldType($customfield);
 					//Todo preselection as dropdown of children
 					//Note by Max Milbers: This is not necessary, in this case it is better to unpublish the parent and to give the child which should be preselected a category
 					//Or it is withParent, in that case there exists the case, that a parent should be used as a kind of mini category and not be orderable.
@@ -1175,7 +1176,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			if ($selected) {
 
 				$productCustom = self::getProductCustomField ($selected);
-				vmdebug('customFieldDisplay',$selected,$productCustom);
+				//vmdebug('customFieldDisplay',$selected,$productCustom);
 				if (!empty($productCustom)) {
 					$html .= ' <span class="product-field-type-' . $productCustom->field_type . '">';
 					if ($productCustom->field_type == "E") {
