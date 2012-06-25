@@ -217,6 +217,7 @@ echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lw
 				<?php		$options = array(
 				'none'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_NONE'),
 				'disableit'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_IT'),
+				'disableit_children'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_IT_CHILDREN'),
 				'disableadd'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_ADD'),
 				'risetime'	=> JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_RISE_AVATIME')
 			);
