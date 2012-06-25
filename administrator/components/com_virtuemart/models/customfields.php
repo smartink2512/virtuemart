@@ -927,12 +927,12 @@ class VirtueMartModelCustomfields extends VmModel {
 							if ($group->field_type == 'A') {
 								$group->display = '';
 								foreach ($group->options as $productCustom) {
-									if ((float)$productCustom->custom_price) {
+								/*	if ((float)$productCustom->custom_price) {
 										$price = $currency->priceDisplay ($calculator->calculateCustomPriceWithTax ($productCustom->custom_price));
 									}
 									else {
 										$price = ($productCustom->custom_price === '') ? '' : $free;
-									}
+									}*/
 									$productCustom->field_type = $group->field_type;
 									$productCustom->is_cart = 1;
 									$group->display .= $this->displayProductCustomfieldFE ($productCustom, $row);
@@ -988,6 +988,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		$price = isset($customfield->custom_price)? $customfield->custom_price:'';
 		$is_cart = isset($customfield->is_cart)? $customfield->is_cart:0;
 
+		//parseCustomParams
+		VirtueMartModelCustomfields::bindParameterableByFieldType($customfield);
 		//vmdebug('displayProductCustomfieldFE and here is something wrong ',$customfield);
 
 		if (!class_exists ('CurrencyDisplay'))
@@ -1039,15 +1041,16 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					$productModel = VmModel::getModel ('product');
 
+					//Todo preselection as dropdown of children
+					//Note by Max Milbers: This is not necessary, in this case it is better to unpublish the parent and to give the child which should be preselected a category
+					//Or it is withParent, in that case there exists the case, that a parent should be used as a kind of mini category and not be orderable.
+					//There exists already other customs and in special plugins which wanna disable or change the add to cart button.
+					//I suggest that we manipulate the button with a message "choose a variant first"
+					//if(!isset($customfield->pre_selected)) $customfield->pre_selected = 0;
 					$selected = JRequest::getInt ('virtuemart_product_id',0);
 
-					//TODO OpenGlobal add the option of $withParent via custom_param, not custom_params!
-					//vmdebug('displayProductCustomfieldFE',$customfield);
-
-					$withParent = FALSE;
-
-					$html =
-					$uncatChildren = $productModel->getUncategorizedChildren ($withParent);
+					$html = '';
+					$uncatChildren = $productModel->getUncategorizedChildren ($customfield->withParent);
 
 					foreach ($uncatChildren as $k => $child) {
 						$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id']), 'text' => $child['product_name']);
