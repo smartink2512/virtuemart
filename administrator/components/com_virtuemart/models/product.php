@@ -266,9 +266,14 @@ class VirtueMartModelProduct extends VmModel {
 				$where[] = ' p.`published`="1" ';
 			}
 
-			if ($app->isSite () && !VmConfig::get ('use_as_catalog', 0) && VmConfig::get ('stockhandle', 'none') == 'disableit') {
-				$where[] = ' p.`product_in_stock`>"0" ';
-			}
+			if($app->isSite() && !VmConfig::get('use_as_catalog',0)) {
+				if (VmConfig::get('stockhandle','none')=='disableit_children') {
+					$where[] = ' (p.`product_in_stock` - p.`product_ordered` >"0" OR children.`product_in_stock` - children.`product_ordered` > "0") ';
+					$joinChildren = true;
+				} else if (VmConfig::get('stockhandle','none')=='disableit') {
+					$where[] = ' p.`product_in_stock` - p.`product_ordered` >"0" ';
+				}
+ 			}
 
 			if ($virtuemart_category_id > 0) {
 				$joinCategory = TRUE;
@@ -437,6 +442,10 @@ class VirtueMartModelProduct extends VmModel {
 			 LEFT  OUTER JOIN `#__virtuemart_shoppergroups` as s ON s.`virtuemart_shoppergroup_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_shoppergroup_id`';
 		}
 
+		if ($joinChildren) {
+			$joinedTables .= ' LEFT OUTER JOIN `#__virtuemart_products` children ON p.`virtuemart_product_id` = children.`product_parent_id` ';
+		}
+
 		if (count ($where) > 0) {
 			$whereString = ' WHERE (' . implode (' AND ', $where) . ') ';
 		}
@@ -539,6 +548,28 @@ class VirtueMartModelProduct extends VmModel {
 		if (!array_key_exists ($productKey, $_products)) {
 
 			$child = $this->getProductSingle ($virtuemart_product_id, $front, FALSE, $onlyPublished);
+
+			// Check if we need to display this product, or the first child
+			if ($front and !empty($child->customfields)) {
+				foreach ($child->customfields as $field) {
+					if ('A' == $field->field_type) {
+						$uncatChildren = $this->getUncategorizedChildren();
+						$parent_sellable = false;
+						foreach ($uncatChildren as $k => $child) {
+							if ($child['virtuemart_product_id'] == $virtuemart_product_id) {
+								$parent_sellable = true;
+								break;
+							}
+						}
+						if (!$parent_sellable) {
+							$virtuemart_product_id = $this->_id = $uncatChildren[0]['virtuemart_product_id'];
+							$child = $this->getProductSingle($virtuemart_product_id,$front, false,$onlyPublished);
+						}
+						break;
+					}
+				}
+			}
+
 			if (!$child->published && $onlyPublished) {
 				return FALSE;
 			}
@@ -571,10 +602,11 @@ class VirtueMartModelProduct extends VmModel {
 				$attribs = get_object_vars ($parentProduct);
 
 				foreach ($attribs as $k=> $v) {
-
-					if (strpos ($k, '_') !== 0 and empty($child->$k)) {
-						$child->$k = $v;
-// 						vmdebug($child->product_parent_id.' $child->$k',$child->$k);
+					if ('product_in_stock' != $k and 'product_ordered' != $k) {// Do not copy parent stock into child
+						if (strpos ($k, '_') !== 0 and empty($child->$k)) {
+							$child->$k = $v;
+// 							vmdebug($child->product_parent_id.' $child->$k',$child->$k);
+						}
 					}
 				}
 				$i++;
@@ -1805,44 +1837,42 @@ function lowStockWarningEmail($virtuemart_product_id) {
 }
 
 	public function getUncategorizedChildren ($withParent) {
+		if (!isset($this->_uncategorizedChildren)) {
+			$q = 'SELECT * FROM `#__virtuemart_products` as p
+				LEFT JOIN `#__virtuemart_products_' . VMLANG . '` as pl
+				USING (`virtuemart_product_id`)
+				LEFT JOIN `#__virtuemart_product_categories` as pc
+				USING (`virtuemart_product_id`) ';
 
-		$q = 'SELECT * FROM `#__virtuemart_products` as p
-			LEFT JOIN `#__virtuemart_products_' . VMLANG . '` as pl
-			USING (`virtuemart_product_id`)
-			LEFT JOIN `#__virtuemart_product_categories` as pc
-			USING (`virtuemart_product_id`) ';
+//	 		$q .= ' WHERE (`product_parent_id` = "'.$this->_id.'" AND (pc.`virtuemart_category_id`) IS NULL  ) OR (`virtuemart_product_id` = "'.$this->_id.'" ) ';
+			if ($withParent) {
+				$q .= ' WHERE `product_parent_id` = "' . $this->_id . '"  OR `virtuemart_product_id` = "' . $this->_id . '" ';
+			}
+			else {
+				$q .= ' WHERE `product_parent_id` = "' . $this->_id . '" ';
+			}
 
-// 		$q .= ' WHERE (`product_parent_id` = "'.$this->_id.'" AND (pc.`virtuemart_category_id`) IS NULL  ) OR (`virtuemart_product_id` = "'.$this->_id.'" ) ';
-		if ($withParent) {
-			$q .= ' WHERE `product_parent_id` = "' . $this->_id . '"  OR `virtuemart_product_id` = "' . $this->_id . '" ';
-		}
-		else {
-			$q .= ' WHERE `product_parent_id` = "' . $this->_id . '" ';
-		}
+			$app = JFactory::getApplication ();
+			if ($app->isSite () && !VmConfig::get ('use_as_catalog', 0) && VmConfig::get ('stockhandle', 'none') == 'disableit') {
+				$q .= ' AND p.`product_in_stock`>"0" ';
+			}
 
-		$app = JFactory::getApplication ();
-		if ($app->isSite () && !VmConfig::get ('use_as_catalog', 0) && VmConfig::get ('stockhandle', 'none') == 'disableit') {
-			$q .= ' AND p.`product_in_stock`>"0" ';
-		}
+			if ($app->isSite ()) {
+				$q .= ' AND p.`published`="1"';
+			}
 
-		if ($app->isSite ()) {
-			$q .= ' AND p.`published`="1"';
+			$q .= 'GROUP BY `virtuemart_product_id` ORDER BY ordering DESC';
+			$this->_db->setQuery ($q);
+			$this->_uncategorizedChildren = $this->_db->loadAssocList ();
+			$err = $this->_db->getErrorMsg ();
+			if (!empty($err)) {
+				vmError ('getUncategorizedChildren sql error ' . $err, 'getUncategorizedChildren sql error');
+				vmdebug ('getUncategorizedChildren ' . $err);
+				return FALSE;
+			}
+// 			vmdebug('getUncategorizedChildren '.$this->_db->getQuery());
 		}
-
-		$q .= 'GROUP BY `virtuemart_product_id` ORDER BY ordering DESC';
-		$this->_db->setQuery ($q);
-		$res = $this->_db->loadAssocList ();
-		$err = $this->_db->getErrorMsg ();
-		if (!empty($err)) {
-			vmError ('getUncategorizedChildren sql error ' . $err, 'getUncategorizedChildren sql error');
-			vmdebug ('getUncategorizedChildren ' . $err);
-			return FALSE;
-		}
-		else {
-// 		vmdebug('getUncategorizedChildren '.$this->_db->getQuery());
-			return $res;
-		}
-
+		return $this->_uncategorizedChildren;
 	}
 
 	/**
