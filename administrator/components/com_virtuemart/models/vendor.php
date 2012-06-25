@@ -242,7 +242,7 @@ class VirtueMartModelVendor extends VmModel {
 	 * @param $_vendorId Vendor ID
 	 * @return string Currency code
 	 */
-	function getVendorCurrency ($_vendorId) {
+	static function getVendorCurrency ($_vendorId) {
 
 		$db = JFactory::getDBO ();
 

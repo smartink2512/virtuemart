@@ -950,7 +950,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 		$country = $this->getCountryCodeByOrderID ($orderId);
 		$settings = KlarnaHandler::countryData ($method, $country);
-		$klarna_order_status = KlarnaHandler::checkOrderStatus ($settings, KlarnaHandler::getKlarnaMode ($method, $settings['country_code_3']), $invNo);
+		$klarna_order_status = KlarnaHandler::checkOrderStatus ($settings, KlarnaHandler::getKlarnaMode ($method, $settings['country_code_3']), $orderNumber);
 		if ($klarna_order_status == KlarnaFlags::ACCEPTED) {
 			/* if Klarna's order status is pending: add it in the history */
 			/* The order is under manual review and will be accepted or denied at a later stage.
@@ -964,10 +964,14 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$order['order_status'] = $method->status_canceled;
 			$order['customer_notified'] = 0;
 			$dbValues['klarna_log'] = JText::_ ('VMPAYMENT_KLARNA_PAYMENT_NOT_ACCEPTED');
-		}
-		else {
-			$dbValues['klarna_log'] = $klarna_order_status;
-			$order['comments'] = $klarna_order_status;
+			$order['comments'] =   $klarna_order_status;;
+		} else {
+			if ($klarna_order_status == KlarnaFlags::PENDING) {
+				$dbValues['klarna_log'] = JText::_ ('VMPAYMENT_KLARNA_PAYMENT_PENDING');
+			} else {
+				$dbValues['klarna_log'] = $klarna_order_status;
+			}
+			$order['comments'] =   $klarna_order_status;
 			$order['customer_notified'] = 0;
 		}
 		$dbValues['order_number'] = $orderNumber;

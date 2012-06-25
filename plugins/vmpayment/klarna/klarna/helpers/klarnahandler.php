@@ -865,13 +865,13 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 	 * @param $klarna_invoice_no
 	 * @return string
 	 */
-	public static function checkOrderStatus ($settings, $mode, $klarna_invoice_no) {
+	public static function checkOrderStatus ($settings, $mode, $orderNumber) {
 
 		try {
 			$klarna = new Klarna_virtuemart();
 			$klarna->config ($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], $mode, VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), TRUE);
 			vmdebug ('checkOrderStatus', $klarna);
-			$os = $klarna->checkOrderStatus ($klarna_invoice_no, 0);
+			$os = $klarna->checkOrderStatus ($orderNumber,1);
 		}
 		catch (Exception $e) {
 			$msg = $e->getMessage () . ' #' . $e->getCode () . ' </br>';
@@ -990,6 +990,9 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 
 		if (!(is_int ($toCurrency) or is_numeric ($toCurrency)) && !empty($toCurrency)) {
 			$toCurrency = ShopFunctions::getCurrencyIDByName ($toCurrency);
+		}
+		if ($cartPricesCurrency==$toCurrency) {
+			return $price;
 		}
 		$currencyToConvert = CurrencyDisplay::getInstance ($toCurrency);
 		// product prices or total in cart is always in vendor currency
