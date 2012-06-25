@@ -85,7 +85,6 @@ class VirtueMartModelProduct extends VmModel {
 
 	}
 
-
 	var $keyword = "0";
 	var $product_parent_id = FALSE;
 	var $virtuemart_manufacturer_id = FALSE;
@@ -114,6 +113,7 @@ class VirtueMartModelProduct extends VmModel {
 		;
 		$this->filter_order_Dir = 'DESC';
 
+		$this->_uncategorizedChildren = null;
 	}
 
 	/**
@@ -194,6 +194,7 @@ class VirtueMartModelProduct extends VmModel {
 		$joinPrice = FALSE;
 		$joinCustom = FALSE;
 		$joinShopper = FALSE;
+		$joinChildren = FALSE;
 		$joinLang = TRUE; // test fix Patrick
 		$orderBy = ' ';
 
@@ -269,7 +270,7 @@ class VirtueMartModelProduct extends VmModel {
 			if($app->isSite() && !VmConfig::get('use_as_catalog',0)) {
 				if (VmConfig::get('stockhandle','none')=='disableit_children') {
 					$where[] = ' (p.`product_in_stock` - p.`product_ordered` >"0" OR children.`product_in_stock` - children.`product_ordered` > "0") ';
-					$joinChildren = true;
+					$joinChildren = TRUE;
 				} else if (VmConfig::get('stockhandle','none')=='disableit') {
 					$where[] = ' p.`product_in_stock` - p.`product_ordered` >"0" ';
 				}
@@ -548,28 +549,6 @@ class VirtueMartModelProduct extends VmModel {
 		if (!array_key_exists ($productKey, $_products)) {
 
 			$child = $this->getProductSingle ($virtuemart_product_id, $front, FALSE, $onlyPublished);
-
-			// Check if we need to display this product, or the first child
-			if ($front and !empty($child->customfields)) {
-				foreach ($child->customfields as $field) {
-					if ('A' == $field->field_type) {
-						$uncatChildren = $this->getUncategorizedChildren();
-						$parent_sellable = false;
-						foreach ($uncatChildren as $k => $child) {
-							if ($child['virtuemart_product_id'] == $virtuemart_product_id) {
-								$parent_sellable = true;
-								break;
-							}
-						}
-						if (!$parent_sellable) {
-							$virtuemart_product_id = $this->_id = $uncatChildren[0]['virtuemart_product_id'];
-							$child = $this->getProductSingle($virtuemart_product_id,$front, false,$onlyPublished);
-						}
-						break;
-					}
-				}
-			}
-
 			if (!$child->published && $onlyPublished) {
 				return FALSE;
 			}
@@ -602,13 +581,12 @@ class VirtueMartModelProduct extends VmModel {
 				$attribs = get_object_vars ($parentProduct);
 
 				foreach ($attribs as $k=> $v) {
-					if ('product_in_stock' != $k and 'product_ordered' != $k) {// Do not copy parent stock into child
+
 						if (strpos ($k, '_') !== 0 and empty($child->$k)) {
 							$child->$k = $v;
 // 							vmdebug($child->product_parent_id.' $child->$k',$child->$k);
 						}
 					}
-				}
 				$i++;
 				if ($child->product_parent_id != $parentProduct->product_parent_id) {
 					$child->product_parent_id = $parentProduct->product_parent_id;
@@ -1837,7 +1815,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 }
 
 	public function getUncategorizedChildren ($withParent) {
-		if (!isset($this->_uncategorizedChildren)) {
+		if (empty($this->_uncategorizedChildren)) {
 			$q = 'SELECT * FROM `#__virtuemart_products` as p
 				LEFT JOIN `#__virtuemart_products_' . VMLANG . '` as pl
 				USING (`virtuemart_product_id`)
