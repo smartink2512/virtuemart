@@ -1308,9 +1308,10 @@ class calculationHelper {
 // 						vmdebug('parseModifier',$item);
 						$index2 = strpos($item, ':');
 						if($index2!=false){
-							$variant = substr($item, 0, $index2);
-							$selected = substr($item, $index2 + 1);
+							$selected = substr($item, 0, $index2);
+							$variant = substr($item, $index2 + 1);
 							//TODO productCartId
+							//MarkerVarMods
 							$variants[$selected] = $variant; //this works atm not for the cart
 							//$variants[$variant] = $selected; //but then the orders are broken
 						}

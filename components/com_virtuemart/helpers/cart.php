@@ -403,11 +403,12 @@ class VirtueMartCart {
 					$product->customPrices = $post['customPrice'];
 					if (isset($post['customPlugin'])) $product->customPlugin = json_encode($post['customPlugin']);
 
-
 					$productKey .= '::';
+
 					foreach ($product->customPrices as $customPrice) {
 						foreach ($customPrice as $customId => $custom_fieldId) {
 
+							//MarkerVarMods
 							if ( is_array($custom_fieldId) ) {
 								foreach ($custom_fieldId as $userfieldId => $userfield) {
 									//$productKey .= (int)$customId . ':' . (int)$userfieldId . ';';

@@ -798,6 +798,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				//$product_id = (int)$priceKey;
 				$_prod->product_attribute = '';
 				$product_attribute = array();
+				//MarkerVarMods
 				//foreach($variantmods as $variant=>$selected){
 				foreach($variantmods as $selected=>$variant){
 					if ($selected) {
@@ -823,6 +824,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 						} else {
 							$product_attribute[$selected] = ' <span class="costumTitle">'.$productCustom->custom_title.'</span><span class="costumValue" >'.$productCustom->custom_value.'</span>';
+							//$product_attribute[$variant] = ' <span class="costumTitle">'.$productCustom->custom_title.'</span><span class="costumValue" >'.$productCustom->custom_value.'</span>';
 						}
 					}
 					$row++;

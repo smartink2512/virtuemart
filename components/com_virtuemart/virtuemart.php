@@ -53,6 +53,7 @@ if(VmConfig::get('shop_is_offline',0)){
 	vmJsApi::cssSite();
 
 	$_controller = JRequest::getWord('view', JRequest::getWord('controller', 'virtuemart')) ;
+	$trigger = 'onVmSiteController';
 // 	$task = JRequest::getWord('task',JRequest::getWord('layout',$_controller) );		$this makes trouble!
 	$task = JRequest::getWord('task') ;
 

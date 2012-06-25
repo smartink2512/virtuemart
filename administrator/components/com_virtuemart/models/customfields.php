@@ -917,7 +917,7 @@ class VirtueMartModelCustomfields extends VmModel {
 								}
 								$productCustom->text = $productCustom->custom_value . ' ' . $price;
 
-								$group->display .= '<input type="text" value="' . JText::_ ($productCustom->custom_value) . '" name="customPrice[' . $row . '][' . $group->virtuemart_customfield_id . '][' . $productCustom->value . ']" /> ';
+								$group->display .= '<input type="text" value="' . JText::_ ($productCustom->custom_value) . '" name="customPrice[' . $row . '][' . $group->virtuemart_custom_id . '][' . $productCustom->value . ']" /> ';
 								if (!empty($currency->_priceConfig['variantModification'][0]) and $price !== '') {
 									$group->display .= '<div class="price-plugin">' . JText::_ ('COM_VIRTUEMART_CART_PRICE') . '<span class="price-plugin">' . $price . '</span></div>';
 								}
@@ -953,9 +953,14 @@ class VirtueMartModelCustomfields extends VmModel {
 									}
 									$productCustom->field_type = $group->field_type;
 									$productCustom->is_cart = 1;
+								//	$group->display .= '<input id="' . $productCustom->virtuemart_custom_id . '" ' . $checked . ' type="radio" value="' .
+								//		$productCustom->virtuemart_custom_id . '" name="customPrice[' . $row . '][' . $productCustom->virtuemart_customfield_id . ']" /><label
+								//		for="' . $productCustom->virtuemart_custom_id . '">' . $this->displayProductCustomfieldFE ($productCustom, $row) . ' ' . $price . '</label>';
+						//MarkerVarMods
 									$group->display .= '<input id="' . $productCustom->virtuemart_custom_id . '" ' . $checked . ' type="radio" value="' .
-										$productCustom->virtuemart_custom_id . '" name="customPrice[' . $row . '][' . $productCustom->virtuemart_customfield_id . ']" /><label
+										$productCustom->virtuemart_customfield_id . '" name="customPrice[' . $row . '][' . $productCustom->virtuemart_custom_id . ']" /><label
 										for="' . $productCustom->virtuemart_custom_id . '">' . $this->displayProductCustomfieldFE ($productCustom, $row) . ' ' . $price . '</label>';
+
 									$checked = '';
 								}
 							}
@@ -1160,12 +1165,14 @@ class VirtueMartModelCustomfields extends VmModel {
 		$row = 0;
 		if (!class_exists ('shopFunctionsF'))
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-		//foreach ($variantmods as $selected=> $variant) {
-		foreach ($variantmods as $variant=> $selected) {
+		//MarkerVarMods
+		foreach ($variantmods as $selected => $variant) {
+		//foreach ($variantmods as $variant=> $selected) {
 			//vmdebug('customFieldDisplay '.$variant.' '.$selected);
 			if ($selected) {
 
 				$productCustom = self::getProductCustomField ($selected);
+				vmdebug('customFieldDisplay',$selected,$productCustom);
 				if (!empty($productCustom)) {
 					$html .= ' <span class="product-field-type-' . $productCustom->field_type . '">';
 					if ($productCustom->field_type == "E") {
@@ -1254,7 +1261,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			$calculator = calculationHelper::getInstance ();
 		}
 
-		//vmdebug('CustomsFieldCartDisplay ',$priceKey);
+		vmdebug('CustomsFieldCartDisplay ',$priceKey);
 		$variantmods = $calculator->parseModifier ($priceKey);
 
 		return self::customFieldDisplay ($product, $variantmods, '<div class="vm-customfield-cart">', 'plgVmOnViewCart');
