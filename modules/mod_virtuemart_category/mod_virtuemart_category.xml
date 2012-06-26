@@ -31,8 +31,8 @@
              	default="default" hide_default="1" hide_none="1"
              	stripext="1" filter="\.php$" exclude="^_" />
 	<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-	    <option value="0">COM_VIRTUEMART_NO</option>
-	    <option value="1">COM_VIRTUEMART_YES</option>
+        <option value="0">No</option>
+        <option value="1">Yes</option>
 	</param>
 	<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
 	<param name="class_sfx" type="text" default="" label="Menu Class Suffix" description="A suffix to be applied to the css class of the menu items" />
@@ -52,8 +52,8 @@
 					label="COM_MODULES_FIELD_CACHING_LABEL"
 					description="COM_MODULES_FIELD_CACHING_DESC"
 				>
-		    <option value="0">COM_VIRTUEMART_NO</option>
-		    <option value="1">COM_VIRTUEMART_YES</option>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
 		</field>
 		<field name="moduleclass_sfx" type="text"
 					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
