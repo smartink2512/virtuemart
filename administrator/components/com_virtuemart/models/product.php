@@ -581,12 +581,13 @@ class VirtueMartModelProduct extends VmModel {
 				$attribs = get_object_vars ($parentProduct);
 
 				foreach ($attribs as $k=> $v) {
-
+					if ('product_in_stock' != $k and 'product_ordered' != $k) {// Do not copy parent stock into child
 						if (strpos ($k, '_') !== 0 and empty($child->$k)) {
 							$child->$k = $v;
 // 							vmdebug($child->product_parent_id.' $child->$k',$child->$k);
 						}
 					}
+				}
 				$i++;
 				if ($child->product_parent_id != $parentProduct->product_parent_id) {
 					$child->product_parent_id = $parentProduct->product_parent_id;
