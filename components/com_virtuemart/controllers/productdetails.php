@@ -259,9 +259,9 @@ class VirtueMartControllerProductdetails extends JController {
 		//MarkerVarMods
 		foreach ($customVariants as $customVariant) {
 			//foreach ($customVariant as $selected => $priceVariant) {
+			//In this case it is NOT $selected => $variant, because we get it that way from the form
 			foreach ($customVariant as $priceVariant => $selected) {
 				//Important! sanitize array to int
-				//JArrayHelper::toInteger($priceVariant);
 				$selected = (int)$selected;
 				$customPrices[$selected] = $priceVariant;
 			}

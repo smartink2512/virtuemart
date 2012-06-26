@@ -413,11 +413,9 @@ class VirtueMartCart {
 								foreach ($custom_fieldId as $userfieldId => $userfield) {
 									//$productKey .= (int)$customId . ':' . (int)$userfieldId . ';';
 									$productKey .= (int)$custom_fieldId . ':' .(int)$customId . ';';
-// 									$product->userfield[(int)$customId . '-' . (int)$userfieldId] = $userfield;  //not used
 								}
 							} else {
 								//TODO productCartId
-								//$productKey .= (int)$customId . ':' .(int)$custom_fieldId . ';';
 								$productKey .= (int)$custom_fieldId . ':' .(int)$customId . ';';
 							}
 

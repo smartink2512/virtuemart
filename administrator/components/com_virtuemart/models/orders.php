@@ -793,7 +793,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 				$variantmods = $calculator->parseModifier($priceKey);
-// 				vmdebug('_createOrderLines '.$priceKey,$_prod,$variantmods);
+ 				vmdebug('_createOrderLines '.$priceKey,$_prod->param,$variantmods);
 				$row=0 ;
 				//$product_id = (int)$priceKey;
 				$_prod->product_attribute = '';
@@ -815,7 +815,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 							//$product_attribute[$selected] = $selected;
 							if(!empty($_prod->param)){
 								foreach($_prod->param as $k => $plg){
-									if ($k == $variant){
+									if ($k == $selected){
 										//TODO productCartId
 										$product_attribute[$selected] = $plg ;
 									}
