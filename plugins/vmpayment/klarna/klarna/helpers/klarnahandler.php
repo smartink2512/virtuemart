@@ -208,7 +208,7 @@ class KlarnaHandler {
 
 		$invoice_fee = self::getInvoiceFee ($method, $country);
 		$invoice_tax_id = self::getInvoiceTaxId ($method, $country);
-
+		vmdebug ('getInvoiceFeeInclTax', $cartPaymentCurrency, $invoice_fee );
 		if (!class_exists ('calculationHelper')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 		}
@@ -224,13 +224,13 @@ class KlarnaHandler {
 		$vendor_currency = VirtueMartModelVendor::getVendorCurrency ($vendor_id);
 
 		$currency = CurrencyDisplay::getInstance ();
-		$invoice_fee = $currency->convertCurrencyTo ($cartPaymentCurrency, $invoice_fee);
+		//$invoice_fee = $currency->convertCurrencyTo ($cartPaymentCurrency, $invoice_fee);
 
 		$paymentCurrency = CurrencyDisplay::getInstance ($cartPaymentCurrency);
 		$display_invoice_fee = $paymentCurrency->priceDisplay ($invoice_fee, $cartPaymentCurrency);
 		$currencyDisplay = CurrencyDisplay::getInstance ($cartPricesCurrency);
 
-		vmdebug ('getInvoiceFeeInclTax', $cartPaymentCurrency, $invoice_fee, $invoice_tax_id, $display_invoice_fee, $invoice_fee);
+		vmdebug ('getInvoiceFeeInclTax', $cartPaymentCurrency, $invoice_fee, $invoice_tax_id, $display_invoice_fee );
 		return;
 	}
 

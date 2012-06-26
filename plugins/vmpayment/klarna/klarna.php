@@ -932,13 +932,14 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		}
 
 		$payment_methodid = JRequest::getInt ('payment_methodid');
-		$invNo = JRequest::getInt ('invNo');
+		//$invNo = JRequest::getWord ('invNo');
 		$orderNumber = JRequest::getString ('order_number');
 		$orderPass = JRequest::getString ('order_pass');
 
 		if (!($method = $this->getVmPluginMethod ($payment_methodid))) {
 			return NULL; // Another method was selected, do nothing
 		}
+
 
 		$modelOrder = VmModel::getModel ('orders');
 		// If the user is not logged in, we will check the order number and order pass
@@ -947,11 +948,14 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			VmError ('Invalid order_number/password ' . JText::_ ('COM_VIRTUEMART_RESTRICTED_ACCESS'));
 			return 0;
 		}
-
+		if (!($payments = $this->_getKlarnaInternalData ($orderId))) {
+			return '';
+		}
+		$invNo=$this->_getKlarnaInvoiceNo($payments);
 		$country = $this->getCountryCodeByOrderID ($orderId);
 		$settings = KlarnaHandler::countryData ($method, $country);
 		$klarna_order_status = KlarnaHandler::checkOrderStatus ($settings, KlarnaHandler::getKlarnaMode ($method, $settings['country_code_3']), $orderNumber);
-		vmdebug('Klarna status',$klarna_order_status);
+		vmdebug('Klarna status',$klarna_order_status, $invNo);
 		if ($klarna_order_status == KlarnaFlags::ACCEPTED) {
 			/* if Klarna's order status is pending: add it in the history */
 			/* The order is under manual review and will be accepted or denied at a later stage.
@@ -1048,15 +1052,15 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			}
 		}
 
-		$nb = count ($payments);
 		if ($order['details']['BT']->order_status == $method->status_pending) {
 			if (!class_exists ('VirtueMartModelOrders')) {
 				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 			}
 
 			$country = $this->getCountryCodeByOrderId ($virtuemart_order_id);
-			$invNo = $payments[$nb - 1]->klarna_invoice_no;
-			$checkOrderStatus = JURI::root () . 'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=checkOrderStatus&payment_methodid=' . (int)$payment_method_id . '&order_number=' . $order['details']['BT']->order_number . '&order_pass=' . $order['details']['BT']->order_pass . '&country=' . $country . '&invNo=' . $invNo;
+			$invNo = $this->_getKlarnaInvoiceNo($payments);
+			vmDebug('plgVmOnShowOrderBEPayment', $invNo);
+			$checkOrderStatus = JURI::root () . 'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=checkOrderStatus&payment_methodid=' . (int)$payment_method_id . '&order_number=' . $order['details']['BT']->order_number . '&order_pass=' . $order['details']['BT']->order_pass . '&country=' . $country ;
 
 			$link = '<a href="' . $checkOrderStatus . '">' . JText::_ ('VMPAYMENT_KLARNA_GET_NEW_STATUS') . '</a>';
 			$html .= $this->getHtmlRowBE ('KLARNA_PAYMENT_CHECK_ORDER_STATUS', $link);
