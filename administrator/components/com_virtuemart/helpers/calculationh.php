@@ -1277,6 +1277,7 @@ class calculationHelper {
 						WHERE field.`virtuemart_customfield_id`=' .(int) $selected;
 					$this->_db->setQuery($query);
 					$productCustomsPrice = $this->_db->loadObject();
+				//	echo 'calculateModificators '.$selected.' <pre>'.print_r($productCustomsPrice,1).'</pre>';
 // 					vmdebug('calculateModificators',$productCustomsPrice);
 					if (!empty($productCustomsPrice) and $productCustomsPrice->field_type =='E') {
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
@@ -1311,6 +1312,8 @@ class calculationHelper {
 						if($index2!=false){
 							$selected = substr($item, 0, $index2);
 							$variant = substr($item, $index2 + 1);
+						//	echo 'My selected '.$selected;
+						//	echo ' My $variant '.$variant.' ';
 							//TODO productCartId
 							//MarkerVarMods
 							$variants[$selected] = $variant; //this works atm not for the cart

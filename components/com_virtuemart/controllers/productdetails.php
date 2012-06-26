@@ -254,13 +254,19 @@ class VirtueMartControllerProductdetails extends JController {
 		$virtuemart_product_id = $virtuemart_product_idArray[0];
 		$customPrices = array();
 		$customVariants = JRequest::getVar ('customPrice', array()); //is sanitized then
+		//echo '<pre>'.print_r($customVariants,1).'</pre>';
+
+		//MarkerVarMods
 		foreach ($customVariants as $customVariant) {
-			foreach ($customVariant as $priceVariant=> $selected) {
+			//foreach ($customVariant as $selected => $priceVariant) {
+			foreach ($customVariant as $priceVariant => $selected) {
 				//Important! sanitize array to int
 				//JArrayHelper::toInteger($priceVariant);
-				$customPrices[$priceVariant] = $selected;
+				$selected = (int)$selected;
+				$customPrices[$selected] = $priceVariant;
 			}
 		}
+		//echo '<pre>'.print_r($customPrices,1).'</pre>';
 		jimport ('joomla.utilities.arrayhelper');
 		$quantityArray = JRequest::getVar ('quantity', array()); //is sanitized then
 		JArrayHelper::toInteger ($quantityArray);
