@@ -28,12 +28,16 @@ define( 'JPATH_VM_PLUGINS', JPATH_VM_ADMINISTRATOR.DS.'plugins' );
 if(version_compare(JVERSION,'1.7.0','ge')) {
 	defined('JPATH_VM_LIBRARIES') or define ('JPATH_VM_LIBRARIES', JPATH_PLATFORM);
 	defined('JVM_VERSION') or define ('JVM_VERSION', 2);
-} else if (version_compare(JVERSION,'1.6.0','ge')){
-	defined('JPATH_VM_LIBRARIES') or define ('JPATH_VM_LIBRARIES', JPATH_LIBRARIES);
-	defined('JVM_VERSION') or define ('JVM_VERSION', 2);
-} else {
-	defined('JPATH_VM_LIBRARIES') or define ('JPATH_VM_LIBRARIES', JPATH_LIBRARIES);
-	defined('JVM_VERSION') or define ('JVM_VERSION', 1);
+}
+else {
+	if (version_compare (JVERSION, '1.6.0', 'ge')) {
+		defined ('JPATH_VM_LIBRARIES') or define ('JPATH_VM_LIBRARIES', JPATH_LIBRARIES);
+		defined ('JVM_VERSION') or define ('JVM_VERSION', 2);
+	}
+	else {
+		defined ('JPATH_VM_LIBRARIES') or define ('JPATH_VM_LIBRARIES', JPATH_LIBRARIES);
+		defined ('JVM_VERSION') or define ('JVM_VERSION', 1);
+	}
 }
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
@@ -47,7 +51,9 @@ require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 
 JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
 
-if (!class_exists( 'VmModel' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+if (!class_exists ('VmModel')) {
+	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
+}
 
 /**
  * This function shows an info message, the messages gets translated with JText::,
@@ -60,14 +66,14 @@ if (!class_exists( 'VmModel' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'
  * @param unknown_type $value
  */
 
-function vmInfo($publicdescr,$value=null){
+function vmInfo($publicdescr,$value=NULL){
 
 	VmConfig::$maxMessageCount++;
 	$app = JFactory::getApplication();
 
 	if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
 		$lang = JFactory::getLanguage();
-		if($value!==null){
+		if($value!==NULL){
 
 			$args = func_get_args();
 			if (count($args) > 0) {
@@ -80,20 +86,60 @@ function vmInfo($publicdescr,$value=null){
 			$app ->enqueueMessage('Info: '.JText::_($publicdescr),'info');
 			// 		debug_print_backtrace();
 		}
-	} else if(VmConfig::$maxMessageCount==VmConfig::$maxMessage){
-		$app ->enqueueMessage('Max messages reached','info');
+	}
+	else {
+		if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
+			$app->enqueueMessage ('Max messages reached', 'info');
+		}
 	}
 
 }
 
-function vmWarn($publicdescr,$value=null){
+/**
+ * Informations for the vendors or the administrators of the store, but not for developers like vmdebug
+ * @param      $publicdescr
+ * @param null $value
+ */
+function vmAdminInfo($publicdescr,$value=NULL){
+
+	if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+	if(Permissions::getInstance()->isSuperVendor()){
+		VmConfig::$maxMessageCount++;
+		$app = JFactory::getApplication();
+
+		if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
+			$lang = JFactory::getLanguage();
+			if($value!==NULL){
+
+				$args = func_get_args();
+				if (count($args) > 0) {
+					$args[0] = $lang->_($args[0]);
+					$app ->enqueueMessage(call_user_func_array('sprintf', $args),'info');
+				}
+			}	else {
+				// 		$app ->enqueueMessage('Info: '.JText::_($publicdescr));
+				$publicdescr = $lang->_($publicdescr);
+				$app ->enqueueMessage('Info: '.JText::_($publicdescr),'info');
+				// 		debug_print_backtrace();
+			}
+		}
+		else {
+			if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
+				$app->enqueueMessage ('Max messages reached', 'info');
+			}
+		}
+	}
+
+}
+
+function vmWarn($publicdescr,$value=NULL){
 
 	VmConfig::$maxMessageCount++;
 	$app = JFactory::getApplication();
 
 	if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
 		$lang = JFactory::getLanguage();
-		if($value!==null){
+		if($value!==NULL){
 
 			$args = func_get_args();
 			if (count($args) > 0) {
@@ -106,8 +152,11 @@ function vmWarn($publicdescr,$value=null){
 			$app ->enqueueMessage('Info: '.$publicdescr,'warning');
 			// 		debug_print_backtrace();
 		}
-	} else if(VmConfig::$maxMessageCount==VmConfig::$maxMessage){
-		$app ->enqueueMessage('Max messages reached','info');
+	}
+	else {
+		if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
+			$app->enqueueMessage ('Max messages reached', 'info');
+		}
 	}
 
 }
@@ -122,9 +171,13 @@ function vmError($descr,$publicdescr=''){
 	$app = JFactory::getApplication();
 
 	if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
-		if(empty($descr)) vmTrace('vmError message empty');
+		if (empty($descr)) {
+			vmTrace ('vmError message empty');
+		}
 		$lang = JFactory::getLanguage();
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if (!class_exists ('Permissions')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+		}
 		if(Permissions::getInstance()->check('admin')){
 			$app = JFactory::getApplication();
 			$descr = $lang->_($descr);
@@ -137,8 +190,11 @@ function vmError($descr,$publicdescr=''){
 				$app ->enqueueMessage($publicdescr,'error');
 			}
 		}
-	} else if(VmConfig::$maxMessageCount==VmConfig::$maxMessage){
-		$app ->enqueueMessage('Max messages reached','info');
+	}
+	else {
+		if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
+			$app->enqueueMessage ('Max messages reached', 'info');
+		}
 	}
 
 
@@ -151,7 +207,7 @@ function vmError($descr,$publicdescr=''){
  * @param unknown_type $descr
  * @param unknown_type $values
  */
-function vmdebug($debugdescr,$debugvalues=null){
+function vmdebug($debugdescr,$debugvalues=NULL){
 
 	if(VMConfig::showDebug()  ){
 
@@ -159,7 +215,7 @@ function vmdebug($debugdescr,$debugvalues=null){
 		$app = JFactory::getApplication();
 
 		if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
-			if($debugvalues!==null){
+			if($debugvalues!==NULL){
 				// 			$debugdescr .=' <pre>'.print_r($debugvalues,1).'<br />'.print_r(get_class_methods($debugvalues),1).'</pre>';
 
 				$args = func_get_args();
@@ -176,15 +232,18 @@ function vmdebug($debugdescr,$debugvalues=null){
 
 			$app = JFactory::getApplication();
 			$app ->enqueueMessage('<span class="vmdebug" >vmdebug '.$debugdescr.'</span>');
-		} else if(VmConfig::$maxMessageCount==VmConfig::$maxMessage){
-			$app ->enqueueMessage('Max messages reached','info');
+		}
+		else {
+			if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
+				$app->enqueueMessage ('Max messages reached', 'info');
+			}
 		}
 
 	}
 
 }
 
-function vmTrace($notice,$force=false){
+function vmTrace($notice,$force=FALSE){
 
 	if($force || (VMConfig::showDebug() ) ){
 		//$app = JFactory::getApplication();
@@ -201,34 +260,42 @@ function vmTrace($notice,$force=false){
 
 }
 
-function vmRam($notice,$value=null){
-	vmdebug($notice.' used Ram '.round(memory_get_usage(true)/(1024*1024),2).'M ',$value);
+function vmRam($notice,$value=NULL){
+	vmdebug($notice.' used Ram '.round(memory_get_usage(TRUE)/(1024*1024),2).'M ',$value);
 }
 
-function vmRamPeak($notice,$value=null){
-	vmdebug($notice.' memory peak '.round(memory_get_peak_usage(true)/(1024*1024),2).'M ',$value);
+function vmRamPeak($notice,$value=NULL){
+	vmdebug($notice.' memory peak '.round(memory_get_peak_usage(TRUE)/(1024*1024),2).'M ',$value);
 }
 
 
 function vmSetStartTime($name='current'){
 
-	VmConfig::setStartTime($name, microtime(true));
+	VmConfig::setStartTime($name, microtime(TRUE));
 }
 
 function vmTime($descr,$name='current'){
 
-	if(empty($descr)) $descr = $name;
+	if (empty($descr)) {
+		$descr = $name;
+	}
 	$starttime = VmConfig::$_starttime ;
 	if(empty($starttime[$name])){
-		vmdebug('vmTime: '.$descr.' starting '.microtime(true));
-		VmConfig::$_starttime[$name] = microtime(true);
-	} else if($name=='current'){
-		vmdebug('vmTime: '.$descr.' time consumed '.(microtime(true) - $starttime[$name]) );
-		VmConfig::$_starttime[$name] = microtime(true);
-	} else {
-		if(empty($descr)) $descr = $name;
-		$tmp = 'vmTime: '.$descr.': '.(microtime(true) - $starttime[$name]);
-		vmdebug($tmp);
+		vmdebug('vmTime: '.$descr.' starting '.microtime(TRUE));
+		VmConfig::$_starttime[$name] = microtime(TRUE);
+	}
+	else {
+		if ($name == 'current') {
+			vmdebug ('vmTime: ' . $descr . ' time consumed ' . (microtime (TRUE) - $starttime[$name]));
+			VmConfig::$_starttime[$name] = microtime (TRUE);
+		}
+		else {
+			if (empty($descr)) {
+				$descr = $name;
+			}
+			$tmp = 'vmTime: ' . $descr . ': ' . (microtime (TRUE) - $starttime[$name]);
+			vmdebug ($tmp);
+		}
 	}
 
 }
@@ -246,15 +313,15 @@ function vmTime($descr,$name='current'){
 class VmConfig {
 
 	// instance of class
-	private static $_jpConfig = null;
-	private static $_debug = null;
+	private static $_jpConfig = NULL;
+	private static $_debug = NULL;
 	public static $_starttime = array();
-	public static $loaded = false;
+	public static $loaded = FALSE;
 
 	public static $maxMessageCount = 0;
 	public static $maxMessage = 100;
 
-	var $lang = false;
+	var $lang = FALSE;
 
 	var $_params = array();
 	var $_raw = array();
@@ -289,7 +356,7 @@ class VmConfig {
 	static function showDebug(){
 
 		//return self::$_debug = true;	//this is only needed, when you want to debug THIS file
-		if(self::$_debug===null){
+		if(self::$_debug===NULL){
 
 			$debug = VmConfig::get('debug_enable','none');
 			// 			$app = JFactory::getApplication();
@@ -297,20 +364,24 @@ class VmConfig {
 
 			// 1 show debug only to admins
 			if($debug === 'admin' ){
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+				if (!class_exists ('Permissions')) {
+					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+				}
 				if(Permissions::getInstance()->check('admin')){
-					self::$_debug = true;
+					self::$_debug = TRUE;
 				} else {
-					self::$_debug = false;
+					self::$_debug = FALSE;
 				}
 			}
 			// 2 show debug to anyone
-			else if($debug === 'all' ){
-				self::$_debug = true;
-			}
-			// else dont show debug
 			else {
-				self::$_debug = false;
+				if ($debug === 'all') {
+					self::$_debug = TRUE;
+				}
+				// else dont show debug
+				else {
+					self::$_debug = FALSE;
+				}
 			}
 
 		}
@@ -344,7 +415,7 @@ class VmConfig {
 	 * @author Max Milbers
 	 * @param $force boolean Forces the function to load the config from the db
 	 */
-	static public function loadConfig($force = false) {
+	static public function loadConfig($force = FALSE) {
 
 		vmSetStartTime('loadConfig');
 		if(!$force){
@@ -409,7 +480,7 @@ class VmConfig {
 					$install = 'yes';
 					$db->setQuery($query);
 					self::$_jpConfig->_raw = $db->loadResult();
-					self::$_jpConfig->_params = null;
+					self::$_jpConfig->_params = NULL;
 				} else {
 					VmError('Error loading configuration file','Error loading configuration file, please contact the storeowner');
 				}
@@ -439,7 +510,7 @@ class VmConfig {
 // 			$pair['sctime'] = microtime(true);
 			self::$_jpConfig->_params = $pair;
 
-			self::$_jpConfig->set('sctime',microtime(true));
+			self::$_jpConfig->set('sctime',microtime(TRUE));
 			self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
 			self::$_jpConfig->setSession();
 			vmTime('loadConfig db '.$install,'loadConfig');
@@ -460,7 +531,9 @@ class VmConfig {
 	 */
 	static public function setdbLanguageTag($langTag = 0) {
 
-		if (self::$_jpConfig->lang ) return self::$_jpConfig->lang;
+		if (self::$_jpConfig->lang) {
+			return self::$_jpConfig->lang;
+		}
 
 		$langs = (array)self::$_jpConfig->get('active_languages',array());
 		$isBE = !JFactory::getApplication()->isSite();
@@ -526,7 +599,7 @@ class VmConfig {
 
 		$params['sctime'] = microtime(true);
 		$session->set('vmconfig', serialize($params),'vm');*/
-		self::$loaded = true;
+		self::$loaded = TRUE;
 	}
 
 	/**
@@ -536,7 +609,7 @@ class VmConfig {
 	 * @param string $key Key name to lookup
 	 * @return Value for the given key name
 	 */
-	static function get($key, $default='',$allow_load=true)
+	static function get($key, $default='',$allow_load=TRUE)
 	{
 
 		$value = '';
@@ -571,7 +644,9 @@ class VmConfig {
 			self::loadConfig();
 		}
 
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if (!class_exists ('Permissions')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+		}
 		if(Permissions::getInstance()->check('admin')){
 			if (!empty(self::$_jpConfig->_params)) {
 				self::$_jpConfig->_params[$key] = $value;
@@ -586,7 +661,10 @@ class VmConfig {
 	 * @author Max Milbers
 	 */
 	function setParams($params){
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+
+		if (!class_exists ('Permissions')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+		}
 		if(Permissions::getInstance()->check('admin')){
 			self::$_jpConfig->_params = array_merge($this->_params,$params);
 		}
@@ -624,7 +702,7 @@ class VmConfig {
 	 * @param boolean $includeDevStatus True to include the development status
 	 * @return String of the currently installed version
 	 */
-	static function getInstalledVersion($includeDevStatus=false)
+	static function getInstalledVersion($includeDevStatus=FALSE)
 	{
 		// Get the installed version from the wmVersion class.
 
@@ -665,9 +743,11 @@ class VmConfig {
 	 */
 	public function installVMconfig($_section = 'config'){
 
-		$_value = self::readConfigFile(false);
+		$_value = self::readConfigFile(FALSE);
 
-		if(!$_value) return false;
+		if (!$_value) {
+			return FALSE;
+		}
 
 		$qry = self::$_jpConfig->getCreateConfigTableQuery();
 		$_db = JFactory::getDBO();
@@ -691,13 +771,13 @@ class VmConfig {
 
 		$_db->setQuery($qry);
 		if (!$_db->query()) {
-			JError::raiseWarning(1, 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(true));
-			echo 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(true);
+			JError::raiseWarning(1, 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE));
+			echo 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE);
 			die;
-			return false;
+			return FALSE;
 		}else {
 			//vmdebug('Config installed file, store values '.$_value);
-			return true;
+			return TRUE;
 		}
 
 	}
@@ -712,11 +792,13 @@ class VmConfig {
 		$_datafile = JPATH_VM_ADMINISTRATOR.DS.'virtuemart.cfg';
 		if (!file_exists($_datafile)) {
 			if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'virtuemart_defaults.cfg-dist')) {
-				if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+				if (!class_exists ('JFile')) {
+					require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
+				}
 				JFile::copy('virtuemart_defaults.cfg-dist','virtuemart.cfg',JPATH_VM_ADMINISTRATOR);
 			} else {
 				JError::raiseWarning(500, 'The data file with the default configuration could not be found. You must configure the shop manually.');
-				return false;
+				return FALSE;
 			}
 
 		} else {
@@ -726,7 +808,7 @@ class VmConfig {
 		$_section = '[CONFIG]';
 		$_data = fopen($_datafile, 'r');
 		$_configData = array();
-		$_switch = false;
+		$_switch = FALSE;
 		while ($_line = fgets ($_data)) {
 			$_line = trim($_line);
 
@@ -739,9 +821,9 @@ class VmConfig {
 			if (strpos($_line, '[') === 0) {
 				// New section, check if it's what we want
 				if (strtoupper($_line) == $_section) {
-					$_switch = true; // Ok, right section
+					$_switch = TRUE; // Ok, right section
 				} else {
-					$_switch = false;
+					$_switch = FALSE;
 				}
 				continue;
 			}
@@ -749,11 +831,11 @@ class VmConfig {
 				continue; // Outside a section or inside the wrong one.
 			}
 
-			if (strpos($_line, '=') !== false) {
+			if (strpos($_line, '=') !== FALSE) {
 
 				$pair = explode('=',$_line);
 				if(isset($pair[1])){
-					if(strpos($pair[1], 'array:') !== false){
+					if(strpos($pair[1], 'array:') !== FALSE){
 						$pair[1] = substr($pair[1],6);
 						$pair[1] = explode('|',$pair[1]);
 					}
@@ -766,7 +848,12 @@ class VmConfig {
 
 					if($returnDangerousTools && $pair[0] == 'dangeroustools' ){
 						vmdebug('dangeroustools'.$pair[1]);
-						if($pair[1]=="0") return false; else return true;
+						if ($pair[1] == "0") {
+							return FALSE;
+						}
+						else {
+							return TRUE;
+						}
 					}
 
 				} else {
@@ -781,7 +868,7 @@ class VmConfig {
 		fclose ($_data);
 
 		if (!$_configData) {
-			return false; // Nothing to do
+			return FALSE; // Nothing to do
 		} else {
 			return $_configData;
 		}
@@ -827,7 +914,7 @@ class vmJsApi{
 	 * @return  nothing
 	 */
 
-	public static function js($namespace,$path=false,$version='', $minified = null)
+	public static function js($namespace,$path=FALSE,$version='', $minified = NULL)
 	{
 
 		static $loaded = array();
@@ -845,7 +932,7 @@ class vmJsApi{
 		$file = vmJsApi::setPath($namespace,$path,$version, $minified , 'js');
 		$document = JFactory::getDocument();
 		$document->addScript( $file );
-		$loaded[$namespace] = true;
+		$loaded[$namespace] = TRUE;
 	}
 
 	/**
@@ -857,7 +944,7 @@ class vmJsApi{
 	 * @return  nothing
 	 */
 
-	public static function css($namespace,$path = false ,$version='', $minified = null)
+	public static function css($namespace,$path = FALSE ,$version='', $minified = NULL)
 	{
 
 		static $loaded = array();
@@ -873,37 +960,37 @@ class vmJsApi{
 
 		$document = JFactory::getDocument();
 		$document->addStyleSheet($file);
-		$loaded[$namespace] = true;
+		$loaded[$namespace] = TRUE;
 
 	}
 
 	/*
 	 * Set file path(look in template if relative path)
 	 */
-	public static function setPath( $namespace ,$path = false ,$version='' ,$minified = null , $ext = 'js')
+	public static function setPath( $namespace ,$path = FALSE ,$version='' ,$minified = NULL , $ext = 'js')
 	{
 
 		$version = $version ? '.'.$version : '';
 		$min	 = $minified ? '.min' : '';
 		$file 	 = $namespace.$version.$min.'.'.$ext ;
 		$template = JFactory::getApplication()->getTemplate() ;
-		if ($path === false) {
+		if ($path === FALSE) {
 			$uri = JPATH_THEMES .'/'. $template.'/'.$ext ;
 			$path= 'templates/'. $template .'/'.$ext ;
 		}
-		if (strpos($path, 'templates/'. $template ) !== false)
+		if (strpos($path, 'templates/'. $template ) !== FALSE)
 		{
 			// Search in template or fallback
 			if (!file_exists($uri.'/'. $file)) {
 				$path = str_replace('templates/'. $template,'components/com_virtuemart/assets', $path);
 				// vmWarn('file not found in tmpl :'.$file );
 			}
-			$path = JURI::root(true) .'/'.$path;
+			$path = JURI::root(TRUE) .'/'.$path;
 
 		}
-		elseif (strpos($path, '//') === false)
+		elseif (strpos($path, '//') === FALSE)
 		{
-			$path = JURI::root(true) .'/'.$path;
+			$path = JURI::root(TRUE) .'/'.$path;
 		}
 		return $path.'/'.$file ;
 	}
@@ -913,46 +1000,66 @@ class vmJsApi{
 	 * @ Author KOHL Patrick
 	 */
 	static function jQuery() {
-		if ( JFactory::getApplication()->get('jquery')) return false;
+
+		if (JFactory::getApplication ()->get ('jquery')) {
+			return FALSE;
+		}
 		$isSite = JFactory::getApplication()->isSite();
-		if ( !VmConfig::get('jquery',true ) and $isSite) return false;
+		if (!VmConfig::get ('jquery', TRUE) and $isSite) {
+			return FALSE;
+		}
 		$document = JFactory::getDocument();
-		if(VmConfig::get('google_jquery',true)){
-			vmJsApi::js('jquery','//ajax.googleapis.com/ajax/libs/jquery/1.6.4','',true);
+		if(VmConfig::get('google_jquery',TRUE)){
+			vmJsApi::js('jquery','//ajax.googleapis.com/ajax/libs/jquery/1.6.4','',TRUE);
 			//$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js');
-			if (!$isSite) vmJsApi::js('jquery-ui','//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16','',true);
+			if (!$isSite) {
+				vmJsApi::js ('jquery-ui', '//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16', '', TRUE);
+			}
 			// if (!$isSite) $document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js');
 		} else {
-			vmJsApi::js( 'jquery',false,'',true);
+			vmJsApi::js( 'jquery',FALSE,'',TRUE);
 			//$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.min.js');
-			if (!$isSite) vmJsApi::js( 'jquery-ui',false,'',true);
+			if (!$isSite) {
+				vmJsApi::js ('jquery-ui', FALSE, '', TRUE);
+			}
 			//if (!$isSite) $document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery-ui.min.js');
 		}
-		if (!$isSite) vmJsApi::js( 'jquery.ui.autocomplete.html');
+		if (!$isSite) {
+			vmJsApi::js ('jquery.ui.autocomplete.html');
+		}
 		vmJsApi::js( 'jquery.noConflict');
-		JFactory::getApplication()->set('jquery',true);
-		return true;
+		JFactory::getApplication()->set('jquery',TRUE);
+		return TRUE;
 	}
 	// Virtuemart product and price script
 	static function jPrice()
 	{
-		if ( !VmConfig::get('jprice',true ) and JFactory::getApplication()->isSite() ) return false;
+
+		if (!VmConfig::get ('jprice', TRUE) and JFactory::getApplication ()->isSite ()) {
+			return FALSE;
+		}
 		static $jPrice;
 		// If exist exit
-		if ($jPrice) return;
+		if ($jPrice) {
+			return;
+		}
 		vmJsApi::jQuery();
 		//JPlugin::loadLanguage('com_virtuemart');
 		$lang = JFactory::getLanguage();
 		$lang->load('com_virtuemart');
 		vmJsApi::jSite();
 
-		$closeimage = JURI::root(true) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
+		$closeimage = JURI::root(TRUE) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
 		$jsVars  = "vmSiteurl = '". JURI::root( ) ."' ;\n" ;
-		if  (VmConfig::get('vmlang_js',1) )  $jsVars .= "vmLang = '&lang=". substr(VMLANG,0,2) ."' ;\n" ;
-		else $jsVars .= 'vmLang = ""'."\n" ;
+		if (VmConfig::get ('vmlang_js', 1))  {
+			$jsVars .= "vmLang = '&lang=" . substr (VMLANG, 0, 2) . "' ;\n";
+		}
+		else {
+			$jsVars .= 'vmLang = ""' . "\n";
+		}
 		$jsVars .= "vmCartText = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ADDED_JS') )."' ;\n" ;
 		$jsVars .= "vmCartError = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
-		$jsVars .= "loadingImage = '".JURI::root(true) ."/components/com_virtuemart/assets/images/facebox/loading.gif' ;\n" ;
+		$jsVars .= "loadingImage = '".JURI::root(TRUE) ."/components/com_virtuemart/assets/images/facebox/loading.gif' ;\n" ;
 		$jsVars .= "closeImage = '".$closeimage."' ; \n";
 		$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
 		// $jsVars .= 'faceboxHtml = \'<div id="facebox" style="display:none;"><div class="popup"><div class="content"></div> <a href="#" class="close"><img src="'.$closeimage.'" title="close" alt="X" class="close_image" /></a></div></div>\' '."\n";
@@ -964,27 +1071,32 @@ class vmJsApi{
 		vmJsApi::js( 'vmprices');
 		vmJsApi::css('facebox');
 
-		$jPrice = true;
-		return true;
+		$jPrice = TRUE;
+		return TRUE;
 	}
 
 	// Virtuemart Site Js script
 	static function jSite()
 	{
-		if ( !VmConfig::get('jsite',true ) and JFactory::getApplication()->isSite() ) return false;
+
+		if (!VmConfig::get ('jsite', TRUE) and JFactory::getApplication ()->isSite ()) {
+			return FALSE;
+		}
 		vmJsApi::js('vmsite');
 	}
 
 	static function JcountryStateList($stateIds) {
 		static $JcountryStateList;
 		// If exist exit
-		if ($JcountryStateList) return;
+		if ($JcountryStateList) {
+			return;
+		}
 		$document = JFactory::getDocument();
 		VmJsApi::jSite();
 		$document->addScriptDeclaration(' jQuery( function($) {
 			$("select.virtuemart_country_id").vm2front("list",{dest : "#virtuemart_state_id",ids : "'.$stateIds.'"});
 		});');
-		$JcountryStateList = true;
+		$JcountryStateList = TRUE;
 		return;
 	}
 
@@ -993,18 +1105,24 @@ class vmJsApi{
 	{
 		static $jvalideForm;
 		// If exist exit
-		if ($jvalideForm === $name ) return;
+		if ($jvalideForm === $name) {
+			return;
+		}
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration( "
 
 			jQuery(document).ready(function() {
 				jQuery('".$name."').validationEngine();
 			});"  );
-		if ( $jvalideForm ) return;
+		if ($jvalideForm) {
+			return;
+		}
 		$lg = JFactory::getLanguage();
 		$lang = substr($lg->getTag(), 0, 2);
 		$existingLang = array("cz", "da", "de", "en", "es", "fr", "it", "ja", "nl", "pl", "pt", "ro", "ru", "tr");
-		if (!in_array($lang, $existingLang)) $lang ="en";
+		if (!in_array ($lang, $existingLang)) {
+			$lang = "en";
+		}
 		vmJsApi::js( 'jquery.validationEngine');
 		vmJsApi::js( 'languages/jquery.validationEngine-'.$lang );
 
@@ -1019,7 +1137,9 @@ class vmJsApi{
 
 		static $jCreditCard;
 		// If exist exit
-		if ($jCreditCard) return;
+		if ($jCreditCard) {
+			return;
+		}
 		JFactory::getLanguage()->load('com_virtuemart');
 
 
@@ -1035,8 +1155,8 @@ class vmJsApi{
 		$doc = JFactory::getDocument();
 		$doc->addScriptDeclaration($js);
 
-		$jCreditCard = true;
-		return true;
+		$jCreditCard = TRUE;
+		return TRUE;
 	}
 
 	/**
@@ -1047,9 +1167,13 @@ class vmJsApi{
 
 	static function cssSite() {
 
-		if ( !VmConfig::get('css',true ) ) return false;
+		if (!VmConfig::get ('css', TRUE)) {
+			return FALSE;
+		}
 		static $cssSite;
-		if ($cssSite) return;
+		if ($cssSite) {
+			return;
+		}
 		// Get the Page direction for right to left support
 		$document = JFactory::getDocument ();
 		$direction = $document->getDirection ();
@@ -1057,16 +1181,23 @@ class vmJsApi{
 
 		// If exist exit
 		vmJsApi::css ( $cssFile ) ;
-		$cssSite = true;
-		return true;
+		$cssSite = TRUE;
+		return TRUE;
 	}
 
 	// $yearRange format >> 1980:2010
 	// Virtuemart Datepicker script
-	static function jDate($date='',$name="date",$id=null,$resetBt = true, $yearRange='') {
-		if ($yearRange) $yearRange='yearRange: "'.$yearRange.'",';
-		if ($date == "0000-00-00 00:00:00") $date= 0 ;
-		if (empty($id)) $id = $name ;
+	static function jDate($date='',$name="date",$id=NULL,$resetBt = TRUE, $yearRange='') {
+
+		if ($yearRange) {
+			$yearRange = 'yearRange: "' . $yearRange . '",';
+		}
+		if ($date == "0000-00-00 00:00:00") {
+			$date = 0;
+		}
+		if (empty($id)) {
+			$id = $name;
+		}
 		static $jDate;
 
 		$dateFormat = JText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_J16');//="m/d/y"
@@ -1087,7 +1218,9 @@ class vmJsApi{
 		}
 		$display  = '<input class="datepicker-db" id="'.$id.'" type="hidden" name="'.$name.'" value="'.$date.'" />';
 		$display .= '<input id="'.$id.'_text" class="datepicker" type="date" value="'.$formatedDate.'" />';
-		if ($resetBt) $display.='<span class="vmicon vmicon-16-logout icon-nofloat js-date-reset"></span>';
+		if ($resetBt) {
+			$display .= '<span class="vmicon vmicon-16-logout icon-nofloat js-date-reset"></span>';
+		}
 
 		// If exist exit
 		if ($jDate) {
@@ -1113,18 +1246,22 @@ class vmJsApi{
 			});
 		});
 		');
-		vmJsApi::js ('jquery.ui.core',false,'',true);
-		vmJsApi::js ('jquery.ui.datepicker',false,'',true);
+		vmJsApi::js ('jquery.ui.core',FALSE,'',TRUE);
+		vmJsApi::js ('jquery.ui.datepicker',FALSE,'',TRUE);
 
 		vmJsApi::css ('jquery.ui.all',$front.'css/ui' ) ;
 		$lg = JFactory::getLanguage();
 		$lang = $lg->getTag();
 
 		$existingLang = array("af","ar","ar-DZ","az","bg","bs","ca","cs","da","de","el","en-AU","en-GB","en-NZ","eo","es","et","eu","fa","fi","fo","fr","fr-CH","gl","he","hr","hu","hy","id","is","it","ja","ko","kz","lt","lv","ml","ms","nl","no","pl","pt","pt-BR","rm","ro","ru","sk","sl","sq","sr","sr-SR","sv","ta","th","tj","tr","uk","vi","zh-CN","zh-HK","zh-TW");
-		if (!in_array($lang, $existingLang)) $lang = substr($lang, 0, 2);
-		elseif (!in_array($lang, $existingLang)) $lang ="en-GB";
+		if (!in_array ($lang, $existingLang)) {
+			$lang = substr ($lang, 0, 2);
+		}
+		elseif (!in_array ($lang, $existingLang)) {
+			$lang = "en-GB";
+		}
 		vmJsApi::js ('jquery.ui.datepicker-'.$lang, $front.'js/i18n' ) ;
-		$jDate = true;
+		$jDate = TRUE;
 		return $display;
 	}
 
@@ -1136,12 +1273,20 @@ class vmJsApi{
 	 * @ revert date format for database- TODO ?
 	 */
 
-	static function date($date , $format ='LC2', $joomla=false ,$revert=false ){
-		if (!strcmp($date,'0000-00-00 00:00:00')) return JText::_('COM_VIRTUEMART_NEVER');
+	static function date($date , $format ='LC2', $joomla=FALSE ,$revert=FALSE ){
+
+		if (!strcmp ($date, '0000-00-00 00:00:00')) {
+			return JText::_ ('COM_VIRTUEMART_NEVER');
+		}
 		If ($joomla) {
 			$formatedDate = JHTML::_('date', $date, JText::_('DATE_FORMAT_'.$format));
 		} else {
-			if ( !JVM_VERSION===1) $J16 = "_J16"; else $J16 ="";
+			if (!JVM_VERSION === 1) {
+				$J16 = "_J16";
+			}
+			else {
+				$J16 = "";
+			}
 			$formatedDate = JHTML::_('date', $date, JText::_('COM_VIRTUEMART_DATE_FORMAT_'.$format.$J16));
 		}
 		return $formatedDate;

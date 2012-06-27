@@ -898,7 +898,8 @@ class VirtueMartModelCustomfields extends VmModel {
 							$dispatcher = JDispatcher::getInstance ();
 							$fieldsToShow = $dispatcher->trigger ('plgVmOnDisplayProductVariantFE', array($productCustom, &$row, &$group));
 
-							$group->display .= '<input type="hidden" value="' . $k . '" name="customPrice[' . $row . '][' . $group->virtuemart_custom_id . ']" /> ';
+						//	$group->display .= '<input type="hidden" value="' . $k . '" name="customPrice[' . $row . '][' . $group->virtuemart_custom_id . ']" /> ';
+							$group->display .= '<input type="hidden" value="' . $productCustom->virtuemart_customfield_id . '" name="customPrice[' . $row . '][' . $productCustom->virtuemart_custom_id . ']" /> ';
 							if (!empty($currency->_priceConfig['variantModification'][0]) and $price !== '') {
 								$group->display .= '<div class="price-plugin">' . JText::_ ('COM_VIRTUEMART_CART_PRICE') . '<span class="price-plugin">' . $price . '</span></div>';
 							}

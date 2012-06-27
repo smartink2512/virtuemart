@@ -87,9 +87,9 @@ abstract class vmCustomPlugin extends vmPlugin {
 	 * helper to parse plugin parameters as object
 	 *
 	 */
-	public function parseCustomParams (&$field) {
+	public function parseCustomParams (&$field, $xParams = 'custom_params') {
 
-		VmTable::bindParameterable ($field, 'custom_params', $this->_varsToPushParam);
+		VmTable::bindParameterable ($field, $xParams, $this->_varsToPushParam);
 
 		if (empty($field->custom_element)) {
 			return 0;

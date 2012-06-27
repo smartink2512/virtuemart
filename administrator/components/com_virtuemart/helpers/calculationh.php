@@ -1322,7 +1322,7 @@ class calculationHelper {
 					}
 				}
 			}
-			vmdebug('parseModifier $variants',$variants);
+			//vmdebug('parseModifier $variants',$variants);
 			return $variants;
 		}
 
