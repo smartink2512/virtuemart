@@ -25,13 +25,15 @@ JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/asse
 //why do we have this?
 if ($this->fTask === 'savecartuser') {
     $rtask = 'registercartuser';
+	$url=0;
 } else {
     $rtask = 'registercheckoutuser';
+	$url = JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout',$this->useXHTML,$this->useSSL);
 }
 ?>
 <h1><?php echo $this->page_title ?></h1>
 <?php
-echo shopFunctionsF::getLoginForm(false);
+echo shopFunctionsF::getLoginForm(false,false,$url);
 ?>
 <script language="javascript">
     function myValidator(f, t)

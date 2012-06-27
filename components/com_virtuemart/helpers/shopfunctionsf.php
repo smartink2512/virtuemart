@@ -28,7 +28,7 @@ class shopFunctionsF {
 	 *
 	 */
 
-	static public function getLoginForm($cart=false,$order=false){
+	static public function getLoginForm($cart=false,$order=false,$url = 0){
 
 		if(!class_exists('VirtuemartViewUser')) require(JPATH_VM_SITE . DS . 'views' . DS . 'user' .DS. 'view.html.php');
 		$view = new VirtuemartViewUser();
@@ -46,6 +46,7 @@ class shopFunctionsF {
 
 			$view->assignRef('order',$order);
 			$view->assignRef('from_cart',$cart);
+			$view->assignRef('url',$url);
 			ob_start();
 			$view->display();
 			$body = ob_get_contents();

@@ -945,7 +945,7 @@ class VirtueMartModelCustomfields extends VmModel {
 								$group->display = '';
 								$checked = 'checked="checked"';
 								foreach ($group->options as $productCustom) {
-									vmdebug('getProductCustomsFieldCart',$productCustom);
+									//vmdebug('getProductCustomsFieldCart',$productCustom);
 									if ((float)$productCustom->custom_price) {
 										$price = $currency->priceDisplay ($calculator->calculateCustomPriceWithTax ($productCustom->custom_price));
 									}

@@ -22,9 +22,14 @@ defined('_JEXEC') or die('Restricted access');
 
 if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 $comUserOption=shopfunctionsF::getComUserOption();
-$uri = JFactory::getURI();
-$url = $uri->toString(array('path', 'query', 'fragment'));
-// vmdebug('$this->show ',$this);
+if (empty($this->url)){
+	$uri = JFactory::getURI();
+	$url = $uri->toString(array('path', 'query', 'fragment'));
+} else{
+	$url = $this->url;
+}
+
+vmdebug('loginform $url ',$url);
 $user = JFactory::getUser();
 if(!isset($this->show)) $this->show = true;
 if ($this->show and $user->id == 0  ) {
@@ -32,8 +37,8 @@ JHtml::_('behavior.formvalidation');
 JHTML::_ ( 'behavior.modal' );
 
 
-$uri = JFactory::getURI();
-$url = $uri->toString(array('path', 'query', 'fragment'));
+//$uri = JFactory::getURI();
+//$url = $uri->toString(array('path', 'query', 'fragment'));
 
 
 	//Extra login stuff, systems like openId and plugins HERE
