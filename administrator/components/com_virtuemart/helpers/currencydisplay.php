@@ -455,26 +455,26 @@ class CurrencyDisplay {
 		$this->exchangeRateShopper = $exchangeRate;
 		// 		vmdebug('convertCurrencyTo my currency ',$exchangeRate,$currency);
 		if(!empty($exchangeRate) && $exchangeRate!=FALSE){
-			$price = $price * $exchangeRate;
+
+			vmdebug('convertCurrencyTo Use custom rate');
+			if($shop){
+				$price = $price / $exchangeRate;
+			} else {
+				$price = $price * $exchangeRate;
+			}
+
 			// 			vmdebug('!empty($exchangeRate) && $exchangeRate!=FALSE '.$price.' '.$exchangeRate);
 		} else {
 			$currencyCode = self::ensureUsingCurrencyCode($currency);
 			$vendorCurrencyCode = self::ensureUsingCurrencyCode($this->_vendorCurrency);
 			$globalCurrencyConverter=JRequest::getVar('globalCurrencyConverter');
 			if($shop){
+				//$oldprice = $price;
 				$price = $this ->_currencyConverter->convert( $price, $currencyCode, $vendorCurrencyCode);
-				// 				if(!empty($globalCurrencyConverter[$currencyCode])){
-				// 					$this->exchangeRateShopper = $globalCurrencyConverter[$vendorCurrencyCode]/$globalCurrencyConverter[$currencyCode];
-				// 				} else {
-				// 					$this->exchangeRateShopper = 1;
-				// 				}
+				//vmdebug('convertCurrencyTo Use dynamic rate in shop '.$oldprice .' => '.$price);
 			} else {
+				//vmdebug('convertCurrencyTo Use dynamic rate to shopper currency '.$price);
 				$price = $this ->_currencyConverter->convert( $price , $vendorCurrencyCode, $currencyCode);
-				// 				if(!empty($globalCurrencyConverter[$vendorCurrencyCode])){
-				// 					$this->exchangeRateShopper = $globalCurrencyConverter[$currencyCode]/$globalCurrencyConverter[$vendorCurrencyCode];
-				// 				} else {
-				// 					$this->exchangeRateShopper = 1;
-				// 				}
 			}
 			// 			vmdebug('convertCurrencyTo my currency ',$this->exchangeRateShopper);
 		}

@@ -292,8 +292,8 @@ class calculationHelper {
 		$this->rules['DATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
 
 		$prices['costPrice'] = $costPrice;
-		$basePriceShopCurrency = $this->roundInternal($this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $costPrice));
-		//         vmdebug('my pure $basePriceShopCurrency',$basePriceShopCurrency);
+		$basePriceShopCurrency = $this->roundInternal($this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $costPrice,true));
+		vmdebug('my pure $basePriceShopCurrency',$costPrice,$this->productCurrency,$basePriceShopCurrency);
 
 		//For Profit, margin, and so on
 		$this->rules['Marge'] = $this->gatherEffectingRulesForProductPrice('Marge', $this->product_marge_id);

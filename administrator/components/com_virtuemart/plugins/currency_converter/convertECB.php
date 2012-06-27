@@ -75,8 +75,8 @@ class convertECB {
 			$valA = isset( $globalCurrencyConverter[$currA] ) ? $globalCurrencyConverter[$currA] : 1.0;
 			$valB = isset( $globalCurrencyConverter[$currB] ) ? $globalCurrencyConverter[$currB] : 1.0;
 
-			$val = (float)$amountA * $valB / (float)$valA;
-
+			$val = (float)$amountA * (float)$valB / (float)$valA;
+			vmdebug('convertECB with '.$currA.' '.$amountA.' * '.$valB.' / '.$valA.' = '.$val,$globalCurrencyConverter[$currA]);
 // 			$val = $amountA * $valB / $valA;
 // 			vmdebug('convert convert in: '.$amountA.'  out: '.$val);
 			return $val;
@@ -131,7 +131,7 @@ class convertECB {
 
 			if( !is_writable( $store_path )) {
 				$archive = false;
-				JError::raiseWarning(1, "The file $archivefile_name can't be created. The directory $store_path is not writable" );
+				vmError( "The file $archivefile_name can't be created. The directory $store_path is not writable" );
 			}
 			//			JError::raiseNotice(1, "The file $archivefile_name should be in the directory $store_path " );
 			if( $curr_filename == $ecb_filename ) {
@@ -162,8 +162,8 @@ class convertECB {
 
 				if( !$xmlDoc->loadXML($contents) ) {
 					//todo
-					JError::raiseWarning(1,  'Failed to parse the Currency Converter XML document.');
-					JError::raiseWarning(1,  'The content: '.$contents);
+					vmError('Failed to parse the Currency Converter XML document.');
+					vmError('The content: '.$contents);
 					//					$GLOBALS['product_currency'] = $vendor_currency;
 					return false;
 				}
@@ -183,7 +183,7 @@ class convertECB {
 			}
 			else {
 				$globalCurrencyConverter = false;
-				JError::raiseWarning(1, 'Failed to retrieve the Currency Converter XML document.');
+				vmError( 'Failed to retrieve the Currency Converter XML document.');
 // 				return false;
 			}
 
