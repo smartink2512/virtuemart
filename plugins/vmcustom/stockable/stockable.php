@@ -231,6 +231,20 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				if ($stock = $this->getValideChild( $child_id)) {
 					$field->child[$child_id]['in_stock'] = $stock->product_in_stock - $stock->product_ordered;
 
+					// Availability Image
+					if ($field->child[$child_id]['in_stock'] < 1) {
+						if ($this->stockhandle == 'risetime' and VmConfig::get('rised_availability') and empty($stock->product_availability)) {
+			    			$field->child[$child_id]['product_availability'] = (file_exists(JPATH_BASE . DS . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability')))
+			    				? JHTML::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability', '7d.gif'), VmConfig::get('rised_availability', '7d.gif'), array('class' => 'availability'))
+			    				: $field->child[$child_id]['product_availability'] = VmConfig::get('rised_availability');
+						} else if (!empty($stock->product_availability)) {
+							$field->child[$child_id]['product_availability'] = (file_exists(JPATH_BASE . DS . VmConfig::get('assets_general_path') . 'images/availability/' . $stock->product_availability))
+								? JHTML::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . $stock->product_availability, $stock->product_availability, array('class' => 'availability'))
+								: $field->child[$child_id]['product_availability'] = $stock->product_availability;
+						}
+					}
+					//$field->child[$child_id]['product_availability'] = $stock->product_availability;
+
 					if ($attribut['custom_price'])
 						$js[]= '"'.$child_id.'" :'.$attribut['custom_price'];
 					unset ($attribut['custom_price']);
@@ -290,7 +304,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		//<![CDATA[
 		jQuery( function($) {
 			var customfield_id = {'. implode(',' , $js ) .'};
-			var stockable =$.parseJSON(\'' .json_encode($field->child). '\') ;
+			var stockable =$.parseJSON(\'' .str_replace('\"', '\\\"', json_encode($field->child)). '\') ;
 			var stockhandle = "'.$this->stockhandle.'";
 			var selecteds = [];//all selected options
 			var selections = [];
@@ -353,6 +367,12 @@ class plgVmCustomStockable extends vmCustomPlugin {
 					$(".addtocart-bar>a.notify").remove();
 					$(".addtocart-bar").append(\'<span class="quantity-box"><input type="text" class="quantity-input js-recalculate" name="quantity[]" value="1" /></span><span class="quantity-controls js-recalculate"><input type="button" class="quantity-controls quantity-plus" /><input type="button" class="quantity-controls quantity-minus" /></span><span class="addtocart-button"><input type="submit" name="addtocart" class="addtocart-button" value="'.JText::_('COM_VIRTUEMART_CART_ADD_TO').'" title="'.JText::_('COM_VIRTUEMART_CART_ADD_TO').'" /></span>\');
 					Virtuemart.product($("form.product"));
+				}
+
+				$(".availability").remove();
+
+				if ("risetime" == stockhandle && stockable[found_id].product_availability) {
+					$(".addtocart-area").after(\'<div class="availability">\' + stockable[found_id].product_availability + \'</div>\');
 				}
 
 				// recalculate the price by found product child id;
@@ -496,7 +516,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 */
 	function getValideChild($child_id ) {
 		$db = JFactory::getDBO();
-		$q = 'SELECT `product_sku`,`product_name`,`product_in_stock`,`product_ordered` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_'.VMLANG.'` as l using (`virtuemart_product_id`) WHERE `published`=1 and `virtuemart_product_id` ='.(int)$child_id ;
+		$q = 'SELECT `product_sku`,`product_name`,`product_in_stock`,`product_ordered`,`product_availability` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_'.VMLANG.'` as l using (`virtuemart_product_id`) WHERE `published`=1 and `virtuemart_product_id` ='.(int)$child_id ;
 		$db->setQuery($q);
 		$child = $db->loadObject();
 		if ($child) {
