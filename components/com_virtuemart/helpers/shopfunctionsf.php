@@ -40,7 +40,7 @@ class shopFunctionsF {
 		if($cart){
 			$show = VmConfig::get('oncheckout_show_register', 1);
 		}
-		if($show){
+		if($show==1){
 
 			$view->assignRef('show',$show);
 

@@ -202,6 +202,7 @@ function virtuemartBuildRoute(&$query) {
 						$segments[] = $helper->lang('editaddressBT') ;
 					}
 				} else {
+
 					$segments[] =  $helper->lang($query['task']);
 				}
 				/*	if ($query['addrtype'] == 'BT' && $query['task']='editaddresscart') $segments[] = $helper->lang('editaddresscartBT') ;
@@ -478,8 +479,13 @@ function virtuemartParseRoute($segments) {
 			elseif (  $helper->compareKey($segments[0] ,'editaddressBT') ) {
 				$vars['addrtype'] = 'BT' ;
 				$vars['task'] = 'edit' ;
+				$vars['layout'] = 'edit' ;      //I think that should be the layout, not the task
+			}
+			elseif (  $helper->compareKey($segments[0] ,'edit') ) {
+				//$vars['layout'] = 'edit' ;      //uncomment and lets test
 			}
 			else $vars['task'] = $segments[0] ;
+			vmdebug('$vars[task]',$vars);
 		}
 		return $vars;
 	}

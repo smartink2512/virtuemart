@@ -22,7 +22,6 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.formvalidation');
 JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/assets/css/');
 
-//why do we have this?
 if ($this->fTask === 'savecartuser') {
     $rtask = 'registercartuser';
 	$url=0;
@@ -33,7 +32,7 @@ if ($this->fTask === 'savecartuser') {
 ?>
 <h1><?php echo $this->page_title ?></h1>
 <?php
-echo shopFunctionsF::getLoginForm(false,false,$url);
+echo shopFunctionsF::getLoginForm(true,false,$url);
 ?>
 <script language="javascript">
     function myValidator(f, t)
