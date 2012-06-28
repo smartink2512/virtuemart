@@ -837,7 +837,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param array          $cart_prices
 	 */
 	protected function checkConditions ($cart, $method, $cart_prices) {
-		VmAdminInfo('vmPsPlugin checkConditions FALSE');
+		VmAdminInfo('vmPsPlugin function checkConditions not overriden, gives always back FALSE');
 		return FALSE;
 	}
 
