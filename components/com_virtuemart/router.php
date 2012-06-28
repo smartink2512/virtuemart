@@ -482,7 +482,7 @@ function virtuemartParseRoute($segments) {
 				$vars['layout'] = 'edit' ;      //I think that should be the layout, not the task
 			}
 			elseif (  $helper->compareKey($segments[0] ,'edit') ) {
-				//$vars['layout'] = 'edit' ;      //uncomment and lets test
+				$vars['layout'] = 'edit' ;      //uncomment and lets test
 			}
 			else $vars['task'] = $segments[0] ;
 			vmdebug('$vars[task]',$vars);

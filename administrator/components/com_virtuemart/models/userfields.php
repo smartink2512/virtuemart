@@ -363,7 +363,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	public function getUserFieldsFor($layoutName, $type,$userId = -1){
 
-// 		vmdebug('getUserFieldsFor '.$layoutName.' '. $type .' ' . $userId);
+ 		vmdebug('getUserFieldsFor '.$layoutName.' '. $type .' ' . $userId);
 		$register = false;
 
 		if(VmConfig::get('oncheckout_show_register',1) and $type=='BT'){
@@ -383,7 +383,7 @@ class VirtueMartModelUserfields extends VmModel {
 		//Maybe there is another method to define the skips
 		$skips = array('delimiter_userinfo', 'delimiter_billto','address_type');
 
-		if(!$register or $type =='ST'){
+		if((!$register or $type =='ST') and $layoutName !='edit'){
 			$skips[] = 'name';
 			$skips[] = 'username';
 			$skips[] = 'password';
