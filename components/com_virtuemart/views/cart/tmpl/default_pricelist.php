@@ -110,7 +110,7 @@
 				width="60px"><?php echo JText::_('COM_VIRTUEMART_CART_PRICE') ?></th>
 			<th
 				align="right"
-				width="140px"><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY') ?>
+				width="130px"><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY') ?>
 				/ <?php echo JText::_('COM_VIRTUEMART_CART_ACTION') ?></th>
 
 
