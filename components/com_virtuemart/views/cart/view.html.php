@@ -102,7 +102,8 @@ class VirtueMartViewCart extends VmView {
 			$this->assignRef('currencyDisplay',$currencyDisplay);
 
 			$totalInPaymentCurrency =$this->getTotalInPaymentCurrency();
-
+			// todo after 2.0.8
+			//$checkoutAdvertise =$this->getCheckoutAdvertise();
 			if ($cart && !VmConfig::get('use_as_catalog', 0)) {
 				$cart->checkout(false);
 			}
@@ -148,7 +149,7 @@ class VirtueMartViewCart extends VmView {
 		$this->assignRef('useSSL', $useSSL);
 		$this->assignRef('useXHTML', $useXHTML);
 		$this->assignRef('totalInPaymentCurrency', $totalInPaymentCurrency);
-
+		$this->assignRef('checkoutAdvertise', $checkoutAdvertise);
 		// @max: quicknirty
 		$cart->setCartIntoSession();
 		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
@@ -269,6 +270,18 @@ class VirtueMartViewCart extends VmView {
 
 		return $totalInPaymentCurrency;
 	}
+	/*
+	 * TODO later after 2.0.8
+	 */
+	private function getCheckoutAdvertise() {
+		$checkoutAdvertise=array();
+		JPluginHelper::importPlugin('vmcoupon');
+		JPluginHelper::importPlugin('vmpayment');
+		JPluginHelper::importPlugin('vmshipment');
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$checkoutAdvertise));
+		return $checkoutAdvertise;
+}
 
 	private function lOrderDone() {
 		$html = JRequest::getVar('html', JText::_('COM_VIRTUEMART_ORDER_PROCESSED'), 'default', 'STRING', JREQUEST_ALLOWRAW);

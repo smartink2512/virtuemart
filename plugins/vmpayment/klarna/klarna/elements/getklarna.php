@@ -31,7 +31,7 @@ class JElementGetKlarna extends JElement {
 	function fetchElement ($name, $value, &$node, $control_name) {
 
 		$jlang = JFactory::getLanguage ();
-		$lang = $jlang->getDefault ();
+		$lang = $jlang->getTag();
 		$langArray = explode ("-", $lang);
 		$lang = strtolower ($langArray[1]);
 		$countriesData = KlarnaHandler::countriesData ();

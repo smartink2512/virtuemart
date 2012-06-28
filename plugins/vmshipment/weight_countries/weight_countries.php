@@ -204,12 +204,12 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @return bool
 	 */
 	protected function checkConditions($cart, $method, $cart_prices) {
+
 		$this->convert($method);
 
 		$orderWeight = $this->getOrderWeight($cart, $method->weight_unit);
 		$address     = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
-		$nbShipment = 0;
 		$countries  = array();
 		if (!empty($method->countries)) {
 			if (!is_array($method->countries)) {
@@ -220,19 +220,25 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		}
 		// probably did not gave his BT:ST address
 		if (!is_array($address)) {
+			// there are some address dependant conditions, redirect then
+			/*
+			if ($method->zip_start or $method->zip_stop or empty($countries)) {
+				$mainframe = JFactory::getApplication ();
+				$redirectMsg = JText::_ ('VMSHIPMENT_WEIGHT_COUNTRIES_ADDRESS_FIRST');
+				//vmWarn($redirectMsg);
+				$mainframe->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $redirectMsg);
+			}
+			*/
 			$address                          = array();
 			$address['zip']                   = 0;
 			$address['virtuemart_country_id'] = 0;
 		}
+
 		$weight_cond      = $this->_weightCond($orderWeight, $method);
 		$nbproducts_cond  = $this->_nbproductsCond($cart, $method);
 		$orderamount_cond = $this->_orderamountCond($cart_prices, $method);
 		if (isset($address['zip'])) {
 			$zip_cond = $this->_zipCond($address['zip'], $method);
-		} else {
-			//no zip in address data normally occurs only, when it is removed from the form by the shopowner
-			//Todo for  valerie, you may take a look, maybe should be false, or configurable.
-			$zip_cond = true;
 		}
 
 		if (!isset($address['virtuemart_country_id'])) {
@@ -273,7 +279,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$weight_cond = (($orderWeight >= $method->weight_start AND $orderWeight <= $method->weight_stop)
 			OR
 			($method->weight_start <= $orderWeight AND $method->weight_stop === ''));
-
+		VmAdminInfo('weigth_countries _weightCond orderWeight:'. $orderWeight. ' method->weight_start:'. $method->weight_start.' method->weight_stop:'.
+			$method->weight_stop. ' result:'.$weight_cond);
 		return $weight_cond;
 	}
 
@@ -297,6 +304,9 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		} else {
 			$nbproducts_cond = true;
 		}
+		VmAdminInfo('weigth_countries _nbproductsCond nbproducts:'. $nbproducts. ' method->nbproducts_start:'. $method->nbproducts_start.
+			' method->nbproducts_stop:'.
+			$method->nbproducts_stop. ' result:'.$nbproducts_cond);
 		return $nbproducts_cond;
 	}
 
@@ -306,7 +316,6 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @return bool
 	 */
 	private function _orderamountCond($cart_prices, $method) {
-		$orderamount = 0;
 
 		if (!isset($method->orderamount_start) AND !isset($method->orderamount_stop)) {
 			return true;
@@ -318,6 +327,9 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		} else {
 			$orderamount_cond = true;
 		}
+		VmAdminInfo('weigth_countries _orderamountCond cart_amount:'. $cart_prices['salesPrice']. ' method->orderamount_start:'. $method->orderamount_start.
+			' method->orderamount_stop:'.
+			$method->orderamount_stop. ' result:',$orderamount_cond);
 		return $orderamount_cond;
 	}
 
@@ -337,6 +349,9 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		} else {
 			$zip_cond = true;
 		}
+		VmAdminInfo('weigth_countries _zipCond zip:'. $zip, ' method->zip_start:'. $method->zip_start.
+			' method->zip_stop:'.
+			$method->zip_stop. ' result:'.$zip_cond);
 		return $zip_cond;
 	}
 

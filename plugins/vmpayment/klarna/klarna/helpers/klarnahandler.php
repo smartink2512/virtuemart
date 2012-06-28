@@ -141,7 +141,6 @@ class KlarnaHandler {
 	 * @return mixed
 	 */
 	public static function convertCountry ($method, $country) {
-
 		$country_data = self::countryData ($method, $country);
 		return $country_data['country_code'];
 	}
@@ -206,9 +205,9 @@ class KlarnaHandler {
 	 */
 	public static function getInvoiceFeeInclTax ($method, $country, $cartPricesCurrency, $cartPaymentCurrency, &$display_invoice_fee, &$invoice_fee) {
 
-		$invoice_fee = self::getInvoiceFee ($method, $country);
+		$method_invoice_fee = self::getInvoiceFee ($method, $country);
 		$invoice_tax_id = self::getInvoiceTaxId ($method, $country);
-		vmdebug ('getInvoiceFeeInclTax', $cartPaymentCurrency, $invoice_fee );
+		vmdebug ('getInvoiceFeeInclTax', $cartPaymentCurrency, $invoice_fee);
 		if (!class_exists ('calculationHelper')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 		}
@@ -224,13 +223,13 @@ class KlarnaHandler {
 		$vendor_currency = VirtueMartModelVendor::getVendorCurrency ($vendor_id);
 
 		$currency = CurrencyDisplay::getInstance ();
-		//$invoice_fee = $currency->convertCurrencyTo ($cartPaymentCurrency, $invoice_fee);
+		$invoice_fee = $currency->convertCurrencyTo ($cartPaymentCurrency, $method_invoice_fee);
 
 		$paymentCurrency = CurrencyDisplay::getInstance ($cartPaymentCurrency);
-		$display_invoice_fee = $paymentCurrency->priceDisplay ($invoice_fee, $cartPaymentCurrency);
+		$display_invoice_fee = $paymentCurrency->priceDisplay ($method_invoice_fee, $cartPaymentCurrency);
 		$currencyDisplay = CurrencyDisplay::getInstance ($cartPricesCurrency);
 
-		vmdebug ('getInvoiceFeeInclTax', $cartPaymentCurrency, $invoice_fee, $invoice_tax_id, $display_invoice_fee );
+		vmdebug ('getInvoiceFeeInclTax', $cartPaymentCurrency, $invoice_fee, $invoice_tax_id, $display_invoice_fee);
 		return;
 	}
 
@@ -448,7 +447,7 @@ class KlarnaHandler {
 		if ($order['details']['BT']->coupon_discount > 0) {
 			$coupon_discount = self::convertPrice (round ($order['details']['BT']->coupon_discount), $order['details']['BT']->order_currency, $cData['currency_code']);
 			//vmdebug('discount', $coupon_discount);
-			$klarna->addArticle (1, 'discount', JText::_ ('VMPAYMENT_KLARNA_DISCOUNT') . ' ' . $order['details']['BT']->coupon_code, ((int)(round ($coupon_discount, 2) * -1)), 0, 0, KlarnaFlags::INC_VAT);
+			$klarna->addArticle (1, 'discount', JText::_ ('VMPAYMENT_KLARNA_DISCOUNT') . ' ' . $order['details']['BT']->coupon_code,((int)(round ($coupon_discount, 2) * -1)), 0, 0, KlarnaFlags::INC_VAT);
 		}
 		/*
 $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true);
@@ -458,11 +457,12 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		$test6 = mb_convert_encoding($shipTo->address_1, 'ISO-8859-1' , 'UTF-8');
 		$test7=  mb_detect_encoding ($test6, 'ISO-8859-1',true);
 		vmDebug('mb_detect_encoding',$shipTo->address_1,$test,$test2,$test5,  $test7);*/
+
 		try {
 			$klarna_shipping = new KlarnaAddr(
 				$order['details']['BT']->email,
 				$shipTo->phone_1,
-				'',
+				isset($shipTo->phone_2)?$shipTo->phone_2:"",
 				utf8_decode ($shipTo->first_name),
 				utf8_decode ($shipTo->last_name), '',
 				utf8_decode ($shipTo->address_1),
@@ -856,7 +856,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			$klarna = new Klarna_virtuemart();
 			$klarna->config ($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], $mode, VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), TRUE);
 			vmdebug ('checkOrderStatus', $klarna);
-			$os = $klarna->checkOrderStatus ($orderNumber,1);
+			$os = $klarna->checkOrderStatus ($orderNumber, 1);
 		}
 		catch (Exception $e) {
 			$msg = $e->getMessage () . ' #' . $e->getCode () . ' </br>';
@@ -909,19 +909,32 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 
 		$session = JFactory::getSession ();
 		$sessionKlarna = $session->get ('Klarna', 0, 'vm');
-		if ($sessionKlarna) {
-			$sessionKlarnaData = unserialize ($sessionKlarna);
-			if (isset($sessionKlarnaData->klarna_error)) {
-				$klarnaError = $sessionKlarnaData->klarna_error;
-				$klarnaOption = $sessionKlarnaData->klarna_option;
-				return TRUE;
-			} else {
-				return FALSE;
-			}
+		if (empty($sessionKlarna)) {
+			return FALSE;
 		}
+		$sessionKlarnaData = unserialize ($sessionKlarna);
+		if (isset($sessionKlarnaData->klarna_error)) {
+			$klarnaError = $sessionKlarnaData->klarna_error; // it is a message to display
+			$klarnaOption = $sessionKlarnaData->klarna_option;
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+
 		return FALSE;
 	}
-
+	function setKlarnaErrorInSession ($msg,$option) {
+		$session = JFactory::getSession ();
+		$sessionKlarna = $session->get ('Klarna', 0, 'vm');
+		if (empty($sessionKlarna)) {
+			$sessionKlarnaData = new stdClass();
+		} else {
+			$sessionKlarnaData = unserialize ($sessionKlarna);
+		}
+		$sessionKlarnaData->klarna_error= $msg;
+		$sessionKlarnaData->klarna_option=$option;
+		$session->set ('Klarna', serialize ($sessionKlarnaData), 'vm');
+	}
 	/**
 	 *
 	 */
@@ -976,7 +989,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		if (!(is_int ($toCurrency) or is_numeric ($toCurrency)) && !empty($toCurrency)) {
 			$toCurrency = ShopFunctions::getCurrencyIDByName ($toCurrency);
 		}
-		if ($cartPricesCurrency==$toCurrency) {
+		if ($cartPricesCurrency == $toCurrency) {
 			return $price;
 		}
 		$currencyToConvert = CurrencyDisplay::getInstance ($toCurrency);
@@ -1060,17 +1073,15 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		if (!class_exists ('VirtueMartModelUserfields')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
 		}
-
+		$errors = array();
 		if ($country3 == "DEU") {
-			FALSE;
 			$consent = JRequest::getVar ('klarna_consent');
 			if ($consent != 'on') {
-				vmInfo (JText::_ ('VMPAYMENT_KLARNA_NO_CONSENT'));
-				return;
+				$errors = JText::_ ('VMPAYMENT_KLARNA_NO_CONSENT');
 			}
 		}
 		return TRUE;
-		/*
+		// todo later
 		$userFieldsModel = VmModel::getModel ('userfields');
 
 		$userFields = $userFieldsModel->getUserFields (
@@ -1086,16 +1097,25 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 
 		$required_shopperfields = array_merge ($required_shopperfields_vm, $required_shopperfields_bycountry[$country3]);
 		$return = TRUE;
+
 		foreach ($userFields as $userField) {
 			if (in_array ($userField->name, $required_shopperfields)) {
 				if (empty($data[$userField->name])) {
-					vmInfo (JText::sprintf ('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD', JText::_ ($userField->title)));
-					$return = FALSE;
+					$errors[] = $userField->value;
 				}
 			}
 		}
-		return $return;
-		*/
+		if (!empty($errors)) {
+			$msg = JText::_ ('VMPAYMENT_KLARNA_ERROR_TITLE_2');
+			foreach ($errors as $error) {
+				$msg .= "<li> -" . $error . "</li>";
+			}
+			self::setKlarnaErrorInSession($msg, $option);
+
+			return FALSE;
+		}
+		return TRUE;
+
 	}
 
 	/**

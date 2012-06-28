@@ -354,6 +354,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			'stype'                       => 'invoice',
 			'id'                          => $payment_params['id'],
 			'module'                      => $payment_params['module'],
+			'payment_currency_info'       => $payment_params['payment_currency_info'],
 			'klarna_form'                 => $payment_form,
 			'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id,
 			'klarna_paymentmethod'        => $klarna_paymentmethod));
@@ -365,6 +366,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 					'stype'                       => 'part',
 					'id'                          => $payment_params['id'],
 					'module'                      => $payment_params['module'],
+					'payment_currency_info'       => $payment_params['payment_currency_info'],
 					'klarna_form'                 => $payment_form,
 					'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id,
 					'klarna_paymentmethod'        => $klarna_paymentmethod));
@@ -378,6 +380,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 					'stype'                       => 'spec',
 					'id'                          => $payment_params['id'],
 					'module'                      => $payment_params['module'],
+					'payment_currency_info'       => $payment_params['payment_currency_info'],
 					'klarna_form'                 => $payment_form,
 					'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id,
 					'klarna_paymentmethod'        => $klarna_paymentmethod));
@@ -744,12 +747,15 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			}
 			catch (Exception $e) {
 				$log = $e->getMessage () . " (#" . $e->getCode () . ")";
-				$this->_updateKlarnaInternalData ($order, $log, $invNo);
-				VmError ($e->getMessage () . " (#" . $e->getCode () . ")");
 				if ($e->getCode () == '8113') {
 					VmError ('invoice_not_passive');
 				}
-				return FALSE;
+				if ($e->getCode () != 8101) { // unkown_order
+					$this->_updateKlarnaInternalData ($order, $log, $invNo);
+					VmError ($e->getMessage () . " (#" . $e->getCode () . ")");
+					return FALSE;
+				}
+
 			}
 		}
 
@@ -967,7 +973,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$dbValues['klarna_log'] = JText::_ ('VMPAYMENT_KLARNA_PAYMENT_ACCEPTED');
 		} elseif ($klarna_order_status == KlarnaFlags::DENIED) {
 			$order['order_status'] = $method->status_denied;
-			$order['customer_notified'] = 0;
+			$order['customer_notified'] = 1;
 			$dbValues['klarna_log'] = JText::_ ('VMPAYMENT_KLARNA_PAYMENT_NOT_ACCEPTED');
 			$order['comments'] =   JText::_ ('VMPAYMENT_KLARNA_PAYMENT_NOT_ACCEPTED');
 		} else {
@@ -1138,7 +1144,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		   * Please note that this function call cannot activate an invoice created in test mode.
 		   * It is however possible to manually activate that type of invoices.
 		   */
-
+			$force_emailInvoice=false;
 			$klarna_vm->config ($cData['eid'], $cData['secret'], $cData['country_code'], NULL, $cData['currency_code'], KlarnaHandler::getKlarnaMode ($method, $cData['country_code_3']));
 
 			try {
@@ -1152,14 +1158,17 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				//Invoice activated, proceed accordingly.
 			}
 			catch (Exception $e) {
-
 				$log = $e->getMessage () . " (#" . $e->getCode () . ")";
-				$this->_updateKlarnaInternalData ($order, $log);
-				VmError ($e->getMessage () . " (#" . $e->getCode () . ")");
-				return FALSE;
+				if ($e->getCode () != 8111) { // (invoice_not_passive_or_frozen)
+					$this->_updateKlarnaInternalData ($order, $log);
+					VmError ($e->getMessage () . " (#" . $e->getCode () . ")");
+					return FALSE;
+				} else {
+					$force_emailInvoice=true;
+				}
 			}
 
-			$emailInvoice = $this->emailInvoice ($method, $klarna_vm, $invNo);
+			$emailInvoice = $this->emailInvoice ($method, $klarna_vm, $invNo, $force_emailInvoice);
 			$dbValues['order_number'] = $order->order_number;
 			$dbValues['virtuemart_order_id'] = $order->virtuemart_order_id;
 			$dbValues['virtuemart_paymentmethod_id'] = $order->virtuemart_paymentmethod_id;
@@ -1181,9 +1190,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		return NULL;
 	}
 
-	private function emailInvoice ($method, $klarna_vm, $invNo) {
+	private function emailInvoice ($method, $klarna_vm, $invNo, $force_emailInvoice) {
 
-		if ($method->send_invoice) {
+		if ($method->send_invoice or $force_emailInvoice) {
 
 			try {
 				$result = $klarna_vm->emailInvoice ($invNo);
@@ -1334,7 +1343,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$session = JFactory::getSession ();
 		$sessionKlarna = new stdClass();
 		//$post = JRequest::get('post');
-
+		$errors=array();
 		$klarnaData_paymentmethod = JRequest::getVar ('klarna_paymentmethod', '');
 		if ($klarnaData_paymentmethod == 'klarna_invoice') {
 			$sessionKlarna->klarna_option = 'invoice';
@@ -1367,28 +1376,16 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$klarnaData['country'] = $cData['country_code'];
 		$klarnaData['country3'] = $cData['country_code_3'];
 
-
-		if ($klarnaData['country3']=="DEU") {
-			if ($klarnaData['consent'] !='on') {
-				vmInfo (JText::_ ('VMPAYMENT_KLARNA_NO_CONSENT' ));
-				return FALSE;
-			}
-		}
-
 		//$country = $cData['country_code']; //KlarnaHandler::convertCountry($method, $country2);
 		//$lang = $cData['language_code']; //KlarnaHandler::getLanguageForCountry($method, $country);
 		// Get the correct data
 		//Removes spaces, tabs, and other delimiters.
 		// If it is a swedish customer we use the information from getAddress
 		if (strtolower ($cData['country_code']) == "se") {
-			if (empty($klarnaData['socialNumber'])) {
-				VmInfo ('VMPAYMENT_KLARNA_MUST_VALID_PNO');
-				return FALSE;
-			}
+
 			$swedish_addresses = klarnaHandler::getAddresses ($klarnaData['socialNumber'], $cData, $method);
 			if (empty($swedish_addresses)) {
-				VmInfo ('VMPAYMENT_KLARNA_NO_GETADDRESS');
-				return FALSE;
+				$errors[]= JText::_ ('VMPAYMENT_KLARNA_NO_GETADDRESS');
 			}
 			//This example only works for GA_GIVEN.
 			foreach ($swedish_addresses as $address) {
@@ -1443,7 +1440,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		}
 
 		if (strtolower ($cData['country_code']) != "se") {
-			if (!KlarnaHandler::checkDataFromEditPayment ($update_data, $cData['country_code_3'])) {
+			if (! KlarnaHandler::checkDataFromEditPayment ($update_data, $cData['country_code_3'] )) {
 				return FALSE;
 			}
 		}
@@ -1500,6 +1497,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			//KlarnaHandler::redirectPaymentMethod('error', $msg);
 		}
 		$session->set ('Klarna', serialize ($sessionKlarna), 'vm');
+
 		return TRUE;
 	}
 

@@ -139,6 +139,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		if ($this->getPluginMethods ($cart->vendorId) === 0) {
 			if (empty($this->_name)) {
+				VmAdminInfo('displayListFE cartVendorId='. $cart->vendorId);
 				$app = JFactory::getApplication ();
 				$app->enqueueMessage (JText::_ ('COM_VIRTUEMART_CART_NO_' . strtoupper ($this->_psType)));
 				return FALSE;
@@ -836,6 +837,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param array          $cart_prices
 	 */
 	protected function checkConditions ($cart, $method, $cart_prices) {
+		VmAdminInfo('vmPsPlugin checkConditions FALSE');
 		return FALSE;
 	}
 

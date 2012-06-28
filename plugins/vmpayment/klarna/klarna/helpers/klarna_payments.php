@@ -145,9 +145,13 @@ class klarna_payments {
 			require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnaapi.php');
 		}
 		$payment_params = array();
-$invoice_fee=0;
+		$invoice_fee=0;
 		if (!isset($this->klarna) || !($this->klarna instanceof Klarna_virtuemart)) {
 			return NULL;
+		}
+		$payment_params['payment_currency_info'] ="";
+		if ( $cart->pricesCurrency != $this->virtuemart_currency_id) {
+			$payment_params['payment_currency_info'] = JText::_ ('VMPAYMENT_KLARNA_PAYMENT_CURRENCY_INFO');
 		}
 		if ($payment_type == 'invoice') {
 			KlarnaHandler::getInvoiceFeeInclTax ($method, $this->country_code_3,   $cart->pricesCurrency, $this->virtuemart_currency_id, $display_invoice_fee, $invoice_fee);
