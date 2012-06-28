@@ -485,7 +485,7 @@ function virtuemartParseRoute($segments) {
 				$vars['layout'] = 'edit' ;      //uncomment and lets test
 			}
 			else $vars['task'] = $segments[0] ;
-			vmdebug('$vars[task]',$vars);
+
 		}
 		return $vars;
 	}

@@ -194,12 +194,12 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!Permissions::getInstance()->check('admin')){
 			$myuser		=JFactory::getUser();
-			$whereString= 'WHERE u.virtuemart_user_id = ' . (int)$myuser->id.' AND o.virtuemart_vendor_id = "1" ';
+			$where[]= ' u.virtuemart_user_id = ' . (int)$myuser->id.' AND o.virtuemart_vendor_id = "1" ';
 		} else {
 			if(empty($uid)){
-				$whereString= 'WHERE o.virtuemart_vendor_id = "1" ';
+				$where[]= ' o.virtuemart_vendor_id = "1" ';
 			} else {
-				$whereString= 'WHERE u.virtuemart_user_id = ' . (int)$uid.' AND o.virtuemart_vendor_id = "1" ';
+				$where[]= ' u.virtuemart_user_id = ' . (int)$uid.' AND o.virtuemart_vendor_id = "1" ';
 			}
 		}
 
@@ -208,24 +208,19 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 
-			if(empty($whereString)){
-				$whereString = ' WHERE ( u.first_name LIKE '.$search.' OR u.middle_name LIKE '.$search.' OR u.last_name LIKE '.$search.' OR `order_number` LIKE '.$search.')';
-			} else {
-				$whereString .= ' AND ( u.first_name LIKE '.$search.' OR u.middle_name LIKE '.$search.' OR u.last_name LIKE '.$search.' OR `order_number` LIKE '.$search.')';
-			}
-
-
+			$where[] = ' ( u.first_name LIKE '.$search.' OR u.middle_name LIKE '.$search.' OR u.last_name LIKE '.$search.' OR `order_number` LIKE '.$search.')';
 		}
-/*		$query .= $this->_getOrdering('virtuemart_order_id', 'DESC');
-		if ($_ignorePagination) {
-			$this->_data = $this->_getList($query);
-		} else {
-			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+
+		if ($order_status_code = JRequest::getString('order_status_code', false)){
+			$where[] = ' o.order_status = "'.$order_status_code.'" ';
 		}
-		// set total for pagination
-		if(count($this->_data) >0){
-			$this->_total = $this->_getListCount($query);
-		}*/
+
+		if (count ($where) > 0) {
+			$whereString = ' WHERE (' . implode (' AND ', $where) . ') ';
+		}
+		else {
+			$whereString = '';
+		}
 
 		if ( JRequest::getCmd('view') == 'orders') {
 			$ordering = $this->_getOrdering();
