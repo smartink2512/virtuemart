@@ -141,9 +141,10 @@ $sType = $viewData['payment_params']['sType'];
 </div>
 <div class="klarna_box_bottom">
 <div class="klarna_box_bottom_contents">
-<?php if ($sType !== 'invoice') { ?>
+
 <div class="klarna_box_bottom_left">
 	<div class="klarna_box_bottom_content">
+		<?php if ($sType !== 'invoice') { ?>
 		<div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_' . $sType . '_PAYMENT'); ?></div>
 		<ol id="paymentPlan">
 			<?php
@@ -164,14 +165,15 @@ $sType = $viewData['payment_params']['sType'];
 		</ol>
 		<input type="hidden" name="klarna_paymentPlan" value="<?php echo $viewData['payment_params']['paymentPlan']; ?>"
 		       class="paymentPlan"/>
-
+	<?php } ?>
 		<div class="klarna_box_bottom_content_listPriceInfo">
-			<?php // echo JText::_('VMPAYMENT_KLARNA_PRICES_ARE_IN_SEK');  ?></div>
+			<?php echo $viewData['payment_currency_info'] ?></div>
 	</div>
 </div>
-	<?php } ?>
+
 <div class="klarna_box_bottom_right">
 <div class="klarna_box_bottom_content">
+
 <?php if ($code2 != 'se') { ?>
 	<?php if ($code2 != 'de' and $code2 != 'nl') { ?>
 		<?php if ($sType == 'invoice') { ?>

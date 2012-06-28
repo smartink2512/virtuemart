@@ -440,7 +440,7 @@ class KlarnaHandler {
 			$payment_tax_percent = self::getTaxPercent ($order['details']['BT']->order_payment + $order['details']['BT']->order_payment_tax, $order['details']['BT']->order_payment);
 			if ($payment_without_tax > 0) {
 				//vmdebug('invoicefee', $payment, $payment_tax);
-				$klarna->addArticle (1, "invoicefee", JText::_ ('VMPAYMENT_KLARNA_INVOICE_FEE_TITLE'), ((double)(round (($payment_without_tax), 2))), (double)round ($payment_tax_percent, 2), 0, KlarnaFlags::IS_HANDLING + KlarnaFlags::INC_VAT);
+				$klarna->addArticle (1, "invoicefee", JText::_ ('VMPAYMENT_KLARNA_INVOICE_FEE_TITLE'), ((double)(round (($payment_with_tax), 2))), (double)round ($payment_tax_percent, 2), 0, KlarnaFlags::IS_HANDLING + KlarnaFlags::INC_VAT);
 			}
 		}
 		// Add coupon if there is any

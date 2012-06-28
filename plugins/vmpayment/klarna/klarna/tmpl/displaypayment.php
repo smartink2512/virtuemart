@@ -29,7 +29,6 @@
 					<?php echo $viewData['module'] ?>
 				</label>
 				<br/>
-				<?php echo $viewData['payment_currency_info'] ?>
 			</td>
 		</tr>
 		<tr>

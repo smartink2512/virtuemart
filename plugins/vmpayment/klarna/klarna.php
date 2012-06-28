@@ -349,24 +349,22 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$html = '';
 		$payments = new klarna_payments($cData, KlarnaHandler::getShipToAddress ($cart));
 		$payment_params = $payments->get_payment_params ($method, 'invoice', $cart);
-		$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params), 'klarna', 'payment');
+		$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 			'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
 		$html .= $this->renderByLayout ('displaypayment', array(
 			'stype'                       => 'invoice',
 			'id'                          => $payment_params['id'],
 			'module'                      => $payment_params['module'],
-			'payment_currency_info'       => $payment_params['payment_currency_info'],
 			'klarna_form'                 => $payment_form,
 			'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id,
 			'klarna_paymentmethod'        => $klarna_paymentmethod));
 
 		if ($partPay > 0) {
 			if ($payment_params = $payments->get_payment_params ($method, 'part', $cart, $cData['virtuemart_currency_id'])) {
-				$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params), 'klarna', 'payment');
+				$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 			'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
 				$html .= $this->renderByLayout ('displaypayment', array(
 					'stype'                       => 'part',
 					'id'                          => $payment_params['id'],
 					'module'                      => $payment_params['module'],
-					'payment_currency_info'       => $payment_params['payment_currency_info'],
 					'klarna_form'                 => $payment_form,
 					'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id,
 					'klarna_paymentmethod'        => $klarna_paymentmethod));
@@ -375,12 +373,11 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 		if ($specCamp > 0) {
 			if ($payment_params = $payments->get_payment_params ($method, 'spec', $cart,$cData['virtuemart_currency_id'])) {
-				$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params), 'klarna', 'payment');
+				$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 			'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
 				$html .= $this->renderByLayout ('displaypayment', array(
 					'stype'                       => 'spec',
 					'id'                          => $payment_params['id'],
 					'module'                      => $payment_params['module'],
-					'payment_currency_info'       => $payment_params['payment_currency_info'],
 					'klarna_form'                 => $payment_form,
 					'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id,
 					'klarna_paymentmethod'        => $klarna_paymentmethod));
