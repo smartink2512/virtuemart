@@ -255,8 +255,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 							// $selects[$key] = array() ;
 						// }
 						// if (!in_array($list , $selects[$key]) ) {
-							$selects[$key][$list] = $list ;
 							if (preg_match('/^selectoptions\d+$/', $key)) {
+								$selects[$key][$list] = $list ;
 								$attribut[$key] = array($list,JText::_($list));
 							}
 						// }
