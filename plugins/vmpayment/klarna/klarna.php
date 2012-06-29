@@ -1745,7 +1745,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		}
 		return NULL;
 	}
-	function plgVmOncheckoutAdvertise($virtuemart_paymentmethod_id, &$payment_advertise) {
+	function plgVmOnCheckoutAdvertise($virtuemart_paymentmethod_id, &$payment_advertise) {
 /*
 		if (!$this->selectedThisByMethodId ($virtuemart_paymentmethod_id)) {
 			return NULL; // Another method was selected, do nothing
