@@ -279,7 +279,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$weight_cond = (($orderWeight >= $method->weight_start AND $orderWeight <= $method->weight_stop)
 			OR
 			($method->weight_start <= $orderWeight AND $method->weight_stop === ''));
-		VmAdminInfo('weigth_countries _weightCond orderWeight:'. $orderWeight. ' method->weight_start:'. $method->weight_start.' method->weight_stop:'.
+		vmAdminInfo('weigth_countries _weightCond orderWeight:'. $orderWeight. ' method->weight_start:'. $method->weight_start.' method->weight_stop:'.
 			$method->weight_stop. ' result:'.$weight_cond);
 		return $weight_cond;
 	}
@@ -304,7 +304,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		} else {
 			$nbproducts_cond = true;
 		}
-		VmAdminInfo('weigth_countries _nbproductsCond nbproducts:'. $nbproducts. ' method->nbproducts_start:'. $method->nbproducts_start.
+		vmAdminInfo('weigth_countries _nbproductsCond nbproducts:'. $nbproducts. ' method->nbproducts_start:'. $method->nbproducts_start.
 			' method->nbproducts_stop:'.
 			$method->nbproducts_stop. ' result:'.$nbproducts_cond);
 		return $nbproducts_cond;
@@ -327,7 +327,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		} else {
 			$orderamount_cond = true;
 		}
-		VmAdminInfo('weigth_countries _orderamountCond cart_amount:'. $cart_prices['salesPrice']. ' method->orderamount_start:'. $method->orderamount_start.
+		vmAdminInfo('weigth_countries _orderamountCond cart_amount:'. $cart_prices['salesPrice']. ' method->orderamount_start:'. $method->orderamount_start.
 			' method->orderamount_stop:'.
 			$method->orderamount_stop. ' result:',$orderamount_cond);
 		return $orderamount_cond;
@@ -349,7 +349,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		} else {
 			$zip_cond = true;
 		}
-		VmAdminInfo('weigth_countries _zipCond zip:'. $zip, ' method->zip_start:'. $method->zip_start.
+		vmAdminInfo('weigth_countries _zipCond zip:'. $zip, ' method->zip_start:'. $method->zip_start.
 			' method->zip_stop:'.
 			$method->zip_stop. ' result:'.$zip_cond);
 		return $zip_cond;
