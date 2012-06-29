@@ -99,7 +99,21 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 	echo $this->loadTemplate('pricelist');
 	if ($this->checkout_task) $taskRoute = '&task='.$this->checkout_task;
 	else $taskRoute ='';
+
+
+	// added in 2.0.8
 	?>
+	<div id="checkout-advertise-box">
+	<?php
+	foreach ($this->checkoutAdvertise as $checkoutAdvertise) {
+		?>
+		<div class="checkout-advertise">
+			<?php echo $checkoutAdvertise; ?>
+		</div>
+	<?php
+	}
+	?>
+	</div>
 
 	<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart'.$taskRoute,$this->useXHTML,$this->useSSL ); ?>">
 

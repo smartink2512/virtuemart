@@ -39,12 +39,15 @@ if ($this->headFooter) {
             <?php
         }
         ?>    </h1>
+	<div class="vendor-details-address">
+	<?php echo $this->vendorAddress; ?>
+		</div>
 </div>
 
 <div class="vendor-description">
 <?php //echo $this->vendor->vendor_store_desc.'<br>';
 
-    echo $this->vendorAddress;
+
     /*	foreach($this->vendorAddress as $userfields){
 
          foreach($userfields['fields'] as $item){

@@ -1745,7 +1745,21 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		}
 		return NULL;
 	}
-
+	function plgVmOncheckoutAdvertise($virtuemart_paymentmethod_id, &$payment_advertise) {
+/*
+		if (!$this->selectedThisByMethodId ($virtuemart_paymentmethod_id)) {
+			return NULL; // Another method was selected, do nothing
+		}
+		if (!($method = $this->getVmPluginMethod ($virtuemart_paymentmethod_id))) {
+			return NULL; // Another method was selected, do nothing
+		}
+*/
+		$vendorId = 1;
+		if ($this->getPluginMethods ($vendorId) === 0) {
+			return FALSE;
+		}
+		$payment_advertise[]="Klarna advertisement";
+	}
 	/**
 	 * This method is fired when showing when printing an Order
 	 * It displays the the payment method-specific data.

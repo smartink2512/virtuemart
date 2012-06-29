@@ -229,9 +229,12 @@ class VirtuemartViewInvoice extends VmView {
 		$task = JRequest::getWord('task',0);
 		if($task == 'checkStoreInvoice'){
 			$headFooter = false;
-			$lineSeparator="<br />";
 		} else {
 			$headFooter = true;
+		}
+		if (strpos($layout,'mail') !== false) {
+			$lineSeparator="<br />";
+		} else {
 			$lineSeparator="\n";
 		}
 		$this->assignRef('headFooter', $headFooter);

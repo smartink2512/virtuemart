@@ -102,8 +102,8 @@ class VirtueMartViewCart extends VmView {
 			$this->assignRef('currencyDisplay',$currencyDisplay);
 
 			$totalInPaymentCurrency =$this->getTotalInPaymentCurrency();
-			// todo after 2.0.8
-			//$checkoutAdvertise =$this->getCheckoutAdvertise();
+
+			$checkoutAdvertise =$this->getCheckoutAdvertise();
 			if ($cart && !VmConfig::get('use_as_catalog', 0)) {
 				$cart->checkout(false);
 			}
@@ -271,7 +271,7 @@ class VirtueMartViewCart extends VmView {
 		return $totalInPaymentCurrency;
 	}
 	/*
-	 * TODO later after 2.0.8
+	 * Trigger to place Coupon, payment, shipment advertisement on the cart
 	 */
 	private function getCheckoutAdvertise() {
 		$checkoutAdvertise=array();
@@ -279,7 +279,7 @@ class VirtueMartViewCart extends VmView {
 		JPluginHelper::importPlugin('vmpayment');
 		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$checkoutAdvertise));
+		$returnValues = $dispatcher->trigger('plgVmOncheckoutAdvertise', array( $this->cart->virtuemart_paymentmethod_id, &$checkoutAdvertise));
 		return $checkoutAdvertise;
 }
 
