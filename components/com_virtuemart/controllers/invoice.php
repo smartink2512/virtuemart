@@ -72,7 +72,11 @@ class VirtueMartControllerInvoice extends JController
 		    return 0;
 		}
 
-		$invoiceNumber = $invoiceNumberDate[0];
+		if(!empty($invoiceNumberDate[0])){
+			$invoiceNumber = $invoiceNumberDate[0];
+		} else {
+			$invoiceNumber = FALSE;
+		}
 
 		if(!$invoiceNumber or empty($invoiceNumber)){
 			vmError('Cant create pdf, createInvoiceNumber failed');

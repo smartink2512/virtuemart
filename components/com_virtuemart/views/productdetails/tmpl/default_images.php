@@ -30,7 +30,7 @@ if (!empty($this->product->images[0])) {
 <?php
 // Showing The Additional Images
 // if(!empty($this->product->images) && count($this->product->images)>1) {
-if (!empty($this->product->images)) {
+if (!empty($this->product->images) and count ($this->product->images)>1) {
     ?>
     <div class="additional-images">
 	<?php

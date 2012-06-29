@@ -92,7 +92,7 @@ class VirtuemartControllerOrders extends VmController {
 	 * @deprecated
 	 */
 	public function editOrderStatus() {
-		//vmdebug('editOrderStatus');
+
 		/* Create the view object */
 		$view = $this->getView('orders', 'html');
 

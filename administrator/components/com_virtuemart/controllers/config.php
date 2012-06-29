@@ -57,7 +57,6 @@ class VirtuemartControllerConfig extends VmController {
 		$model = VmModel::getModel('config');
 
 		$data = JRequest::get('post');
-// 		vmdebug ('post', $data);
 		$data['offline_message'] = JRequest::getVar('offline_message','','post','STRING',JREQUEST_ALLOWHTML);
 
 		if(strpos($data['offline_message'],'|')!==false){

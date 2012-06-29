@@ -789,7 +789,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 				$variantmods = $calculator->parseModifier($priceKey);
- 				vmdebug('_createOrderLines '.$priceKey,$_prod->param,$variantmods);
+
 				$row=0 ;
 				//$product_id = (int)$priceKey;
 				$_prod->product_attribute = '';
@@ -800,7 +800,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					if ($selected) {
 						if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 						$productCustom = VirtueMartModelCustomfields::getProductCustomField ($selected );
-						vmdebug('$_prod,$productCustom',$productCustom );
+						//vmdebug('$_prod,$productCustom',$productCustom );
 						if ($productCustom->field_type == "E") {
 
 							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
@@ -1025,10 +1025,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			if(!isset($data['invoice_number']) ) {
 			    // check the default configuration
 			    $orderstatusForInvoice = VmConfig::get('inv_os','C');
-			    $pdfInvoice = VmConfig::get('pdf_invoice', 0); // backwards compatible
+			    $pdfInvoice = (int)VmConfig::get('pdf_invoice', 0); // backwards compatible
 			    $force_create_invoice=JRequest::getInt('create_invoice', 0);
 			    // florian : added if pdf invoice are enabled
-			    if ( ($orderDetails['order_status'] == $orderstatusForInvoice)  or $pdfInvoice  or $force_create_invoice ){
+			    if ( ($orderDetails['order_status'] == $orderstatusForInvoice)  or $pdfInvoice==1  or $force_create_invoice==1 ){
 					$q = 'SELECT COUNT(1) FROM `#__virtuemart_invoices` WHERE `virtuemart_vendor_id`= "'.$orderDetails['virtuemart_vendor_id'].'" '; // AND `order_status` = "'.$orderDetails->order_status.'" ';
 					$db->setQuery($q);
 

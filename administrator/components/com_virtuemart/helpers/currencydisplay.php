@@ -456,7 +456,7 @@ class CurrencyDisplay {
 		// 		vmdebug('convertCurrencyTo my currency ',$exchangeRate,$currency);
 		if(!empty($exchangeRate) && $exchangeRate!=FALSE){
 
-			vmdebug('convertCurrencyTo Use custom rate');
+			//vmdebug('convertCurrencyTo Use custom rate');
 			if($shop){
 				$price = $price / $exchangeRate;
 			} else {
