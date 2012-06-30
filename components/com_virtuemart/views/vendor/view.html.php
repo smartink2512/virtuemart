@@ -75,12 +75,12 @@ class VirtuemartViewVendor extends VmView {
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 			$userId = VirtueMartModelVendor::getUserIdByVendorId($virtuemart_vendor_id);
 
-			$usermodel = VmModel::getModel('user');
+			//$usermodel = VmModel::getModel('user');
 
-			$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
-			$usermodel->getVendor($virtuemart_vendor_id);
-			$userFields = $usermodel->getUserInfoInUserFields($layoutName, 'BT', $virtuemart_userinfo_id,true,true);
-			$this->assignRef('userFields', $userFields);
+			//$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
+			//$usermodel->getVendor($virtuemart_vendor_id);
+			//$userFields = $usermodel->getUserInfoInUserFields($layoutName, 'BT', $virtuemart_userinfo_id,true,true);
+			//$this->assignRef('userFields', $userFields);
 
 			if ($layoutName=='tos') {
 				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_TOS') );
@@ -99,10 +99,12 @@ class VirtuemartViewVendor extends VmView {
 			}
 
 			$linkdetails = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=details&virtuemart_vendor_id=' .
-			$this->vendor->virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_DETAILS').'</a>';
-			$linkcontact = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=contact&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_CONTACT').'</a>';
-			$linktos = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_TOS').'</a>';
+				$virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_DETAILS').'</a>';
+			$linkcontact = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=contact&virtuemart_vendor_id=' . $virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_CONTACT').'</a>';
+			$linktos = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_TOS').'</a>';
 
+
+			//$this->assignRef('lineSeparator', $lineSeparator);
 			$this->assignRef('linkdetails', $linkdetails);
 			$this->assignRef('linkcontact', $linkcontact);
 			$this->assignRef('linktos', $linktos);

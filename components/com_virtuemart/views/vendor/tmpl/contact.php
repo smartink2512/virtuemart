@@ -31,7 +31,12 @@ defined('_JEXEC') or die('Restricted access');
 	}
 ?>	</h1>
 
-<?php	foreach($this->userFields as $userfields){
+<?php
+
+	if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+	echo shopFunctions::renderVendorAddress($this->vendor->virtuemart_vendor_id);
+
+/*	foreach($this->userFields as $userfields){
 
 		foreach($userfields['fields'] as $item){
 			if(!empty($item['value'])){
@@ -46,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 				}
 			}
 		}
-	}
+	} */
 
 
 	$min = VmConfig::get('vm_asks_minimum_comment_length', 50);

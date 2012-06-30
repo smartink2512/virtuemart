@@ -43,8 +43,8 @@ class VirtueMartControllerVendor extends JController
 		$model = VmModel::getModel('vendor');
 		$mainframe = JFactory::getApplication();
 		$vars = array();
-		$min = VmConfig::get('vm_asks_minimum_comment_length', 50)+1;
-		$max = VmConfig::get('vm_asks_maximum_comment_length', 2000)-1 ;
+		$min = VmConfig::get('asks_minimum_comment_length', 50)+1;
+		$max = VmConfig::get('asks_maximum_comment_length', 2000)-1 ;
 		$commentSize = mb_strlen( JRequest::getString('comment') );
 		$validMail = filter_var(JRequest::getVar('email'), FILTER_VALIDATE_EMAIL);
 
