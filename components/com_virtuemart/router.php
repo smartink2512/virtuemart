@@ -215,12 +215,11 @@ function virtuemartBuildRoute(&$query) {
 			}
 			break;
 		case 'vendor';
-
+/* VM208 */
 			if(isset($query['virtuemart_vendor_id'])) {
 				if (isset($jmenu['virtuemart_vendor_id'][ $query['virtuemart_vendor_id'] ] ) ) {
 					$query['Itemid'] = $jmenu['virtuemart_vendor_id'][$query['virtuemart_vendor_id']];
 				} else {
-
 					if ( isset($jmenu['vendor']) ) {
 						$query['Itemid'] = $jmenu['vendor'];
 					} else {
@@ -235,9 +234,12 @@ function virtuemartBuildRoute(&$query) {
 				$query['Itemid'] = $jmenu['virtuemart'];
 			}
 			if (isset($query['virtuemart_vendor_id'])) {
-				$segments[] = $helper->lang('vendor').'/'.$helper->getVendorName($query['virtuemart_vendor_id']) ;
+				//$segments[] = $helper->lang('vendor').'/'.$helper->getVendorName($query['virtuemart_vendor_id']) ;
+				$segments[] =  $helper->getVendorName($query['virtuemart_vendor_id']) ;
 				unset ($query['virtuemart_vendor_id'] );
 			}
+
+
 			break;
 		case 'cart';
 			if ( isset($jmenu['cart']) ) $query['Itemid'] = $jmenu['cart'];
@@ -379,14 +381,14 @@ function virtuemartParseRoute($segments) {
 		}
 
 	}
-
+/* added in vm208 */
+// if no joomla link: vendor/vendorname/layout
+// if joomla link joomlalink/vendorname/layout
 	if (  $helper->compareKey($segments[0] ,'vendor') ) {
-		array_shift($segments);
-		$vars['virtuemart_vendor_id'] =  $helper->getVendorId($segments[0]);
-		array_shift($segments);
+		$vars['virtuemart_vendor_id'] =  $helper->getVendorId($segments[1]);
 		// OSP 2012-02-29 removed search malforms SEF path and search is performed
 		// $vars['search'] = 'true';
-
+		// this can never happen
 		if (empty($segments)) {
 			$vars['view'] = 'vendor';
 			$vars['virtuemart_vendor_id'] = $helper->activeMenu->virtuemart_vendor_id ;
@@ -394,6 +396,7 @@ function virtuemartParseRoute($segments) {
 		}
 
 	}
+
 	if ( $helper->compareKey($segments[0] ,'search') ) {
 		$vars['search'] = 'true';
 		array_shift($segments);
@@ -490,19 +493,25 @@ function virtuemartParseRoute($segments) {
 		return $vars;
 	}
 	else if ( $helper->compareKey($view,'vendor') || $helper->activeMenu->view == 'vendor') {
+		/* vm208 */
 		$vars['view'] = 'vendor';
-		/*
+
 		if ( $helper->compareKey($view,'vendor') ) {
 			array_shift($segments);
 			if (empty($segments)) return $vars;
-		}*/
+		}
 		//$vars['virtuemart_vendor_id'] = array_shift($segments);//// already done
+		//array_shift($segments);
+		$vars['virtuemart_vendor_id'] =  $helper->getVendorId($segments[0]);
+		array_shift($segments);
 		if(!empty($segments)) {
 			if ( $helper->compareKey($segments[0] ,'contact') ) $vars['layout'] = 'contact' ;
 			elseif ( $helper->compareKey($segments[0] ,'tos') ) $vars['layout'] = 'tos' ;
+			elseif ( $helper->compareKey($segments[0] ,'details') ) $vars['layout'] = 'details' ;
 		} else $vars['layout'] = 'details' ;
 
 		return $vars;
+
 	}
 	else if ( $helper->compareKey($view,'cart') || $helper->activeMenu->view == 'cart') {
 		$vars['view'] = 'cart';
@@ -1049,8 +1058,9 @@ class vmrouterHelper {
 			$this->activeMenu->virtuemart_category_id	= (empty($menuItem->query['virtuemart_category_id'])) ? 0 : $menuItem->query['virtuemart_category_id'];
 			$this->activeMenu->virtuemart_product_id	= (empty($menuItem->query['virtuemart_product_id'])) ? null : $menuItem->query['virtuemart_product_id'];
 			$this->activeMenu->virtuemart_manufacturer_id	= (empty($menuItem->query['virtuemart_manufacturer_id'])) ? null : $menuItem->query['virtuemart_manufacturer_id'];
-
-			$this->activeMenu->virtuemart_vendor_id	= (empty($menuItem->query['virtuemart_vendor__id'])) ? null : $menuItem->query['virtuemart_vendor__id'];
+/* added in 208 */
+			$this->activeMenu->virtuemart_vendor_id	= (empty($menuItem->query['virtuemart_vendor_id'])) ? null :
+				//$menuItem->query['virtuemart_vendor_id']; ???
 
 			$this->activeMenu->Component	= (empty($menuItem->component)) ? null : $menuItem->component;
 		}
