@@ -54,8 +54,8 @@ defined('_JEXEC') or die('Restricted access');
 	} */
 
 
-	$min = VmConfig::get('vm_asks_minimum_comment_length', 50);
-	$max = VmConfig::get('vm_asks_maximum_comment_length', 2000) ;
+	$min = VmConfig::get('asks_minimum_comment_length', 50);
+	$max = VmConfig::get('asks_maximum_comment_length', 2000) ;
 	vmJsApi::JvalideForm();
 	$document = JFactory::getDocument();
 	$document->addScriptDeclaration('
