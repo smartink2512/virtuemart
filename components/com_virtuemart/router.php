@@ -1059,8 +1059,8 @@ class vmrouterHelper {
 			$this->activeMenu->virtuemart_product_id	= (empty($menuItem->query['virtuemart_product_id'])) ? null : $menuItem->query['virtuemart_product_id'];
 			$this->activeMenu->virtuemart_manufacturer_id	= (empty($menuItem->query['virtuemart_manufacturer_id'])) ? null : $menuItem->query['virtuemart_manufacturer_id'];
 /* added in 208 */
-			$this->activeMenu->virtuemart_vendor_id	= (empty($menuItem->query['virtuemart_vendor_id'])) ? null :
-				//$menuItem->query['virtuemart_vendor_id']; ???
+			$this->activeMenu->virtuemart_vendor_id	= (empty($menuItem->query['virtuemart_vendor_id'])) ? null : $menuItem->query['virtuemart_vendor_id'];
+			//???
 
 			$this->activeMenu->Component	= (empty($menuItem->component)) ? null : $menuItem->component;
 		}
