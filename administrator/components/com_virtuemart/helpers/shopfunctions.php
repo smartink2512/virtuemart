@@ -637,7 +637,7 @@ class ShopFunctions {
 	/*
 	* used mostly in the email, to display the vendor address
 	*/
-	static public function renderVendorAddress ($vendorId,$lineSeparator="<br />", $skips = array('name','username')) {
+	static public function renderVendorAddress ($vendorId,$lineSeparator="<br />", $skips = array('name','username','email')) {
 
 		if (!class_exists ('VirtueMartModelVendor')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');

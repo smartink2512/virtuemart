@@ -489,10 +489,8 @@ class VirtueMartModelProduct extends VmModel {
 
 		$cateid = JRequest::getInt ('virtuemart_category_id', 0);
 
-		$limit = $app->getUserStateFromRequest ('com_virtuemart.' . $view . $cateid . '.limit', 'limit', VmConfig::get ('list_limit', 20), 'int');
-		$this->setState ('limit', $limit);
-		$this->setState ('com_virtuemart.' . $view . $cateid . '.limit', $limit);
-		$this->_limit = $limit;
+		$limit = (int)$app->getUserStateFromRequest ('com_virtuemart.' . $view . $cateid . '.limit', 'limit');
+
 
 		if ($app->isSite () and $cateid != 0) {
 			$lastCatId = ShopFunctionsf::getLastVisitedCategoryId ();
@@ -500,20 +498,42 @@ class VirtueMartModelProduct extends VmModel {
 				$limitStart = 0;
 			}
 			else {
-
 				$limitStart = $app->getUserStateFromRequest ('com_virtuemart.' . $view . '.limitstart', 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
 			}
+			$catModel= VmModel::getModel('category');
+			$category = $catModel->getCategory();
+			if(empty($limit)){
+				if(!empty($category->limit_list_initial)){
+					$suglimit = $category->limit_list_initial;
+				} else {
+					if(empty($category->limit_list_step)){
+						$suglimit = VmConfig::get ('list_limit', 20);
+					} else {
+						$suglimit = $category->limit_list_step;
+					}
+				}
+
+				$rest = $suglimit%$category->products_per_row;
+				$limit = $suglimit - $rest;
+
+			}
+
+			//vmdebug('my cat',$category);
 			//vmdebug('Looks like the category lastCatId '.$lastCatId.' actual id '.$cateid );
 		}
 		else {
 			$limitStart = $app->getUserStateFromRequest ('com_virtuemart.' . $view . '.limitstart', 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
 		}
 
+		if(empty($limit)){
+			$limit = VmConfig::get ('list_limit', 20);
+		}
+		$this->setState ('limit', $limit);
+		$this->setState ('com_virtuemart.' . $view . $cateid . '.limit', $limit);
+		$this->_limit = $limit;
+
 		//There is a strange error in the frontend giving back 9 instead of 10, or 24 instead of 25
 		//This functions assures that the steps of limitstart fit with the limit
-		if (empty($limit)) {
-			$limit = 1;
-		}
 		$limitStart = ceil ((float)$limitStart / (float)$limit) * $limit;
 
 		$this->setState ('limitstart', $limitStart);

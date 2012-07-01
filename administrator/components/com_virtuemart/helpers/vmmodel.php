@@ -259,7 +259,10 @@ class VmModel extends JModel {
 		$app = JFactory::getApplication();
 		$view = JRequest::getWord('view');
 
-		$limit = $app->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit',  VmConfig::get('list_limit',20), 'int');
+		$limit = (int)$app->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit');
+		if(empty($limit)){
+			$limit = VmConfig::get ('list_limit', 20);
+		}
 		$this->setState('limit', $limit);
 		$this->setState('com_virtuemart.'.$view.'.limit',$limit);
 		$this->_limit = $limit;
@@ -268,9 +271,6 @@ class VmModel extends JModel {
 
 		//There is a strange error in the frontend giving back 9 instead of 10, or 24 instead of 25
 		//This functions assures that the steps of limitstart fit with the limit
-		if(empty($limit)){
-			$limit = 1;
-		}
 		$limitStart = ceil((float)$limitStart/(float)$limit) * $limit;
 		$this->setState('limitstart', $limitStart);
 		$this->setState('com_virtuemart.'.$view.'.limitstart',$limitStart);
