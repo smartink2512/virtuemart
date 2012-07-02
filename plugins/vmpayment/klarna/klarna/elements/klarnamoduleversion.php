@@ -1,18 +1,15 @@
 <?php  defined('_JEXEC') or die();
 
 /**
+ * @version $Id$
  *
- * @package	VirtueMart
- * @subpackage Plugins  - Elements
- * @author Val?rie Isaksen
- * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2011 VirtueMart Team. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * VirtueMart is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * @version $Id: $
+ * @author Valérie Isaksen
+ * @package VirtueMart
+
+ * @copyright Copyright (C) iStraxx - All rights reserved.
+ * @license istraxx_license.txt Proprietary License. This code belongs to istraxx UG (haftungsbeschränkt)
+ * You are not allowed to distribute or sell this code. You bought only a license to use it for ONE virtuemart installation.
+ * You are not allowed to modify this code
  */
 /*
  * This class is used by VirtueMart Payment or Shipping Plugins
