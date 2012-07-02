@@ -196,7 +196,8 @@ function virtuemartBuildRoute(&$query) {
 				}
 
 				else if($query['task']='editaddress'){
-					if ($query['addrtype'] == 'ST'){
+
+					if (isset($query['addrtype']) and $query['addrtype'] == 'ST'){
 						$segments[] = $helper->lang('editaddressST') ;
 					} else {
 						$segments[] = $helper->lang('editaddressBT') ;

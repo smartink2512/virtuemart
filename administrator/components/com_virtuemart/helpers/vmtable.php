@@ -303,7 +303,6 @@ class VmTable extends JTable{
 			if(!empty($this->_xParams)){
 				//Maybe better to use for $this an &
 				self::bindParameterable($this,$this->_xParams,$this->_varsToPushParam);
-
 			}
 
 			if (count($tableJoins)) {
@@ -697,6 +696,23 @@ class VmTable extends JTable{
 
 			$ok = true;
 			if($ok){
+
+			//We need to get this feature to work for ()
+			/*	if($preload){
+					if(!empty($langTable->$tblKey)){
+						$id = $langTable->$tblKey;
+						//$langTable->load($langTable->$tblKey);
+						foreach ($this->getProperties() as $k => $v)
+						{
+							// Only process fields not in the ignore array.
+							if (empty($v)){
+								unset($this->$k);
+							}
+						}
+						vmdebug('use id ',$langTable);
+					}
+				}*/
+
 				if(!$langTable->check()){
 					$ok = false;
 					// $msg .= ' check';
@@ -741,12 +757,13 @@ class VmTable extends JTable{
 					$this->load($data[$tblKey]);
 				}
 			}
+
 			if($this->_translatable){
 				foreach( $this->_translatableFields as $name){
 					unset($this->$name);
 				}
 			}
-
+			//vmdebug('bindChecknStoreNoLang language unloaded, why?');
 		}
 
 		$ok = true;

@@ -512,7 +512,9 @@ class VirtueMartModelProduct extends VmModel {
 						$suglimit = $category->limit_list_step;
 					}
 				}
-
+				if(empty($category->products_per_row)){
+					$category->products_per_row = VmConfig::get ('products_per_row', 3);
+				}
 				$rest = $suglimit%$category->products_per_row;
 				$limit = $suglimit - $rest;
 
@@ -1209,6 +1211,7 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	public function store (&$product, $isChild = FALSE) {
 
+
 		if ($product) {
 			$data = (array)$product;
 		}
@@ -1229,7 +1232,7 @@ class VirtueMartModelProduct extends VmModel {
 		// 			$data['layout'] = 0;
 		// 		}
 
-		//with the true, we do preloading and preserve so old values, but why do we do that? I try with false note by Max Milbers
+		//with the true, we do preloading and preserve so old values note by Max Milbers
 		$product_data->bindChecknStore ($data, TRUE);
 
 		$errors = $product_data->getErrors ();

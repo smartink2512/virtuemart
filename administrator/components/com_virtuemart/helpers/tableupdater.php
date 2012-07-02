@@ -627,7 +627,9 @@ class GenericTableUpdater extends JModel{
 		$columns = $this->_db->loadResultArray(0);
 
 		//Attention user_infos is not in here, because it an contain customised fields. #__virtuemart_order_userinfos #__virtuemart_userinfos
-		if(VmConfig::get('upDelCols',true)==true and !($tablename==$this->_prefix.'virtuemart_userfields' or $tablename==$this->_prefix.'virtuemart_userinfos' or $tablename==$this->_prefix.'virtuemart_order_userinfos')){
+		//This is currently not working as intended, because the config is not deleted before, it is better to create an extra command for this, when we need it later
+		$upDelCols = (int) VmConfig::get('updelcols',0);
+		if($upDelCols==1 and !($tablename==$this->_prefix.'virtuemart_userfields' or $tablename==$this->_prefix.'virtuemart_userinfos' or $tablename==$this->_prefix.'virtuemart_order_userinfos')){
 
 				foreach($columns as $fieldname){
 

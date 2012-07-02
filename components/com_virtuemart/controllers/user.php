@@ -256,5 +256,24 @@ class VirtueMartControllerUser extends JController
 	}
 
 
+	function removeAddressST(){
+		$db = JFactory::getDBO();
+		$currentUser = JFactory::getUser();
+		$virtuemart_userinfo_id = JRequest::getVar('virtuemart_userinfo_id');
+
+		//Lets do it dirty for now
+		//$userModel = VmModel::getModel('user');
+		$msg = '';
+		if ( isset($virtuemart_userinfo_id) && $currentUser->id != 0 ) {
+			//$userModel -> deleteAddressST();
+			$q = 'DELETE FROM #__virtuemart_userinfos  WHERE virtuemart_user_id="'. $currentUser->id .'" AND virtuemart_userinfo_id="'. $virtuemart_userinfo_id .'"';
+			$db->setQuery($q);
+			$db->query();
+
+			$msg = vmInfo('Address has been successfully deleted.');
+		}
+		$layout = JRequest::getWord('layout','edit');
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout), $msg );
+	}
 }
 // No closing tag
