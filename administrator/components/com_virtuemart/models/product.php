@@ -1233,6 +1233,7 @@ class VirtueMartModelProduct extends VmModel {
 		// 		}
 
 		//with the true, we do preloading and preserve so old values note by Max Milbers
+	//	$product_data->bindChecknStore ($data, $isChild);
 		$product_data->bindChecknStore ($data, TRUE);
 
 		$errors = $product_data->getErrors ();
@@ -1300,7 +1301,7 @@ class VirtueMartModelProduct extends VmModel {
 			else {
 				$data['virtuemart_category_id'] = array();
 			}
-			$data = $this->updateXrefAndChildTables ($data, 'product_categories');
+			$data = $this->updateXrefAndChildTables ($data, 'product_categories', TRUE);
 
 			// Update waiting list
 			//TODO what is this doing?
@@ -1329,7 +1330,18 @@ class VirtueMartModelProduct extends VmModel {
 
 		//First we load the xref table, to get the old data
 		$product_table_Parent = $this->getTable ($tableName);
-		$product_table_Parent->bindChecknStore ($data, $preload);
+		//We must go that way, because the load function of the vmtablexarry
+		// is working different.
+		if($preload){
+			$product_table_Parent->setOrderable('ordering',false);
+			$orderingA = $product_table_Parent->load($data['virtuemart_product_id']);
+			if(isset($orderingA)){
+				$product_table_Parent->ordering = $orderingA[0];
+			}
+			//$product_table_Parent->ordering = $product_table_Parent->load($data['virtuemart_product_id']);
+			//vmdebug('my ordering ',$product_table_Parent->ordering);
+		}
+		$product_table_Parent->bindChecknStore ($data);
 		$errors = $product_table_Parent->getErrors ();
 		foreach ($errors as $error) {
 			vmError ($error);

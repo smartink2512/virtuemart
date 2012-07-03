@@ -297,7 +297,7 @@ class VmTable extends JTable{
 			vmError('vmTable load' . $db->getErrorMsg() );
 			return false;
 		}
-
+		//vmdebug('load',$result );
 		if($result){
 			$this->bind($result);
 			if(!empty($this->_xParams)){
@@ -695,23 +695,29 @@ class VmTable extends JTable{
 			$langTable->$tblKey = !empty($this->$tblKey) ? $this->$tblKey : 0;
 
 			$ok = true;
-			if($ok){
 
-			//We need to get this feature to work for ()
-			/*	if($preload){
+			if($preload){
+				if($ok){
 					if(!empty($langTable->$tblKey)){
 						$id = $langTable->$tblKey;
-						//$langTable->load($langTable->$tblKey);
-						foreach ($this->getProperties() as $k => $v)
-						{
-							// Only process fields not in the ignore array.
-							if (empty($v)){
-								unset($this->$k);
+
+						if(!$langTable->load($id)){
+							$ok = false;
+						} else {
+							if(!$langTable->bind($data)){
+								$ok = false;
+								$msg = 'bind';
+								// 			vmdebug('Problem in bind '.get_class($this).' '.$this->_db->getErrorMsg());
+								vmdebug('Problem in bind '.get_class($this).' ');
 							}
 						}
-						vmdebug('use id ',$langTable);
+
 					}
-				}*/
+				}
+
+			}
+
+			if($ok){
 
 				if(!$langTable->check()){
 					$ok = false;
@@ -725,16 +731,11 @@ class VmTable extends JTable{
 					$ok = false;
 					// $msg .= ' store';
 					vmdebug('Problem in store '.get_class($langTable).' '.$langTable->_db->getErrorMsg());
+				} else {
+					vmdebug('stored product_name '.$langTable->product_name);
 				}
 			}
 
-			// 			if(is_object($data)){
-			// 				$data->$tblKey = !empty($langTable->$tblKey) ? $langTable->$tblKey : 0;
-			// 			}else {
-			// 				$data[$tblKey] = !empty($langTable->$tblKey) ? $langTable->$tblKey : 0;
-			// 			}
-
-			// 			$langTable->bindChecknStoreNoLang($data,$preload);
 		} else {
 			$this->bindChecknStoreNoLang($data,$preload);
 		}

@@ -111,6 +111,12 @@ $i=0;
 							<?php echo $this->category_tree; ?>
 						</select>
 					</td>
+					<?php
+					// It is important to have all product information in the form, since we do not preload the parent
+					// I place the ordering here, maybe we make it editable later.
+						if(!isset($this->product->ordering)) $this->product->ordering = 0;
+					?>
+					<input type="hidden" value="<?php echo $this->product->ordering ?>" name="ordering">
 				</tr>
 				<?php $i = 1 - $i; ?>
 				<tr class="row<?php echo $i?>">
