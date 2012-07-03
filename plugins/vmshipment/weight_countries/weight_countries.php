@@ -489,7 +489,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 *
 	 * @param array $_formData Form data
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be
-	 * skipped!), or null when this method is not actived.
+	 * skipped!), or null when this method is not activated.
 	 * @author Oscar van Eijk
 
 	public function plgVmOnUpdateOrderLine($psType, $_formData) {
