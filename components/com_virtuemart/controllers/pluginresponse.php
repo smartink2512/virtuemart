@@ -86,7 +86,8 @@ class VirtueMartControllerPluginresponse extends JController {
     }
 
     function ShipmentResponseReceived() {
-
+		// TODO: not ready yet
+	    /*
 	    if (!class_exists('vmPSPlugin'))
 		    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 	    JPluginHelper::importPlugin('vmshipment');
@@ -109,6 +110,7 @@ class VirtueMartControllerPluginresponse extends JController {
 
 	    // Display it all
 	    $view->display();
+	    */
 
     }
 
