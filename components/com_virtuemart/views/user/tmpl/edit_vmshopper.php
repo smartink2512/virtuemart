@@ -22,9 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <fieldset>
-	<legend>
+	<span class="userfields_info">
 		<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_LBL') ?>
-	</legend>
+	</span>
 	<table class="adminForm user-details">
 <?php	if(Vmconfig::get('multix','none')!=='none'){ ?>
 
