@@ -84,9 +84,11 @@ class VirtueMartModelWaitingList extends VmModel {
 		$db->setQuery ($q);
 		$item = $db->loadObject ();
 		$vars['productName'] = $item->product_name;
+		/*
 		if ($item->product_in_stock <= 0) {
 			return FALSE;
 		}
+		*/
 		$url = JURI::root () . 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id;
 		$vars['link'] = '<a href="'. $url.'">'. $item->product_name.'</a>';
 

@@ -88,10 +88,12 @@ class VirtueMartControllerPluginresponse extends JController {
     function ShipmentResponseReceived() {
 
 	    if (!class_exists('vmPSPlugin'))
-		    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php'); JPluginHelper::importPlugin('vmshipment');
+		    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+	    JPluginHelper::importPlugin('vmshipment');
 
 	    $return_context = "";
 	    $dispatcher = JDispatcher::getInstance();
+
 	    $html = "";
 	    $shipmentResponse = Jtext::_('COM_VIRTUEMART_CART_THANKYOU');
 	    $dispatcher->trigger('plgVmOnShipmentResponseReceived', array( 'html' => &$html,&$shipmentResponse));

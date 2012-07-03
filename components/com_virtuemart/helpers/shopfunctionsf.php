@@ -411,6 +411,16 @@ class shopFunctionsF {
 		$html .= '</div>';
 		echo $html;
 	}
+
+	static function getBaseUrl() {
+		$uri = JURI::getInstance();
+		$baseUrl = $uri->getScheme() . "://" . $uri->getHost();
+		if($uri->getPort()){
+			$baseUrl = $baseUrl . ":" . $uri->getPort();
+		}
+		$baseUrl =  $baseUrl . "/";
+		return $baseUrl;
+	}
 	/**
 	 * Align in plain text the strings
 	 * $string text to resize

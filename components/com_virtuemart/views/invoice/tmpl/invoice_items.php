@@ -42,8 +42,14 @@ defined('_JEXEC') or die('Restricted access');
 <?php
 	foreach($this->orderDetails['items'] as $item) {
 		$qtt = $item->product_quantity ;
-//		$_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $item->virtuemart_category_id . '&virtuemart_product_id=' . $item->virtuemart_product_id,true);
-		$_link =JURI::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $item->virtuemart_category_id . '&virtuemart_product_id=' . $item->virtuemart_product_id;
+		$product_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $item->virtuemart_category_id .
+			'&virtuemart_product_id=' . $item->virtuemart_product_id );
+		$baseUrl = shopFunctionsF::getBaseUrl();
+		// product link must be an absolute URL.
+
+		$product_link=$baseUrl.$product_link;
+
+		//$product_link =JURI::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $item->virtuemart_category_id .'&virtuemart_product_id=' . $item->virtuemart_product_id;
 
 
 		?>
@@ -52,7 +58,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo $item->order_item_sku; ?>
 			</td>
 			<td align="left" colspan="2" >
-				<a href="<?php echo $_link; ?>"><?php echo $item->order_item_name; ?></a>
+				<a href="<?php echo $product_link; ?>"><?php echo $item->order_item_name; ?></a>
 				<?php
 // 				vmdebug('$item',$item);
 					if (!empty($item->product_attribute)) {

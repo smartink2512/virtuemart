@@ -105,13 +105,15 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 	?>
 	<div id="checkout-advertise-box">
 	<?php
-	foreach ($this->checkoutAdvertise as $checkoutAdvertise) {
-		?>
-		<div class="checkout-advertise">
-			<?php echo $checkoutAdvertise; ?>
-		</div>
-	<?php
-	}
+		if (!empty($this->checkoutAdvertise)) {
+			foreach ($this->checkoutAdvertise as $checkoutAdvertise) {
+				?>
+				<div class="checkout-advertise">
+					<?php echo $checkoutAdvertise; ?>
+				</div>
+			<?php
+			}
+		}
 	?>
 	</div>
 

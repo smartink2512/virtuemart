@@ -274,7 +274,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	 * @author Valerie Isaksen
 	 */
 	public function plgVmDisplayListFEPayment (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
-return false;
+
 		$html = $this->displayListFEPayment ($cart, $selected);
 		if (!empty($html)) {
 			$htmlIn[] = $html;
@@ -366,7 +366,7 @@ return false;
 
 		if ($specCamp > 0) {
 			if ($payment_params = $payments->get_payment_params ($method, 'spec', $cart,$cData['virtuemart_currency_id'])) {
-				$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 			'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
+				$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
 				$html .= $this->renderByLayout ('displaypayment', array(
 					'stype'                       => 'spec',
 					'id'                          => $payment_params['id'],
@@ -1218,7 +1218,9 @@ return false;
 	 *
 	 */
 	function plgVmOnStoreInstallPaymentPluginTable ($jplugin_id) {
-
+		if (  $jplugin_id != $this->_jid) {
+			return false;
+		}
 		/*
 											 * if the file Klarna.cfg does not exist, then create it
 											 */
@@ -1535,7 +1537,9 @@ return false;
 		//$html = $this->renderByLayout('displaylogin', array('klarna_pm' => $klarna_pm, 'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id, 'klarna_paymentmethod' => $klarna_paymentmethod));
 		$link = JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=editpayment');
 		foreach ($this->methods as $method) {
-			$html .= $this->renderByLayout ('displaylogin', array('editpayment_link' => $link));
+			if ($method->klarna_active_swe) {
+				$html .= $this->renderByLayout ('displaylogin', array('editpayment_link' => $link));
+			}
 		}
 	}
 
@@ -1700,11 +1704,11 @@ return false;
 	 *
 	 */
 	function plgVmOnCheckAutomaticSelectedPayment (VirtueMartCart $cart, array $cart_prices = array(), &$paymentCounter) {
-return NULL;
+
 		$nbMethod = 0;
 
 		if ($this->getPluginMethods ($cart->vendorId) === 0) {
-			return FALSE;
+			return NULL;
 		}
 
 		foreach ($this->methods as $method) {
@@ -1715,6 +1719,7 @@ return NULL;
 				}
 			}
 		}
+
 		$paymentCounter = $paymentCounter + $nbMethod;
 		if ($nbMethod == 0) {
 			return NULL;

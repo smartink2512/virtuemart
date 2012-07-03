@@ -80,7 +80,9 @@ defined('_JEXEC') or die('');
 	echo '<br/><br/>';
 
 	/* GENERAL FOOTER FOR ALL MAILS */
-	echo JText::_('COM_VIRTUEMART_MAIL_FOOTER' ) . '<a href="'.JURI::root().'index.php?option=com_virtuemart">'.$this->vendor->vendor_name.'</a>';
+		$link = shopFunctionsF::getBaseUrl().JRoute::_ ( 'index.php?option=com_virtuemart',false,-1);
+
+		echo JText::_('COM_VIRTUEMART_MAIL_FOOTER' ) . '<a href="'.$link.'">'.$this->vendor->vendor_name.'</a>';
 	echo '<br/>';
 	echo $this->vendor->vendor_name .'<br />'.$this->vendor->vendor_phone .' '.$this->vendor->vendor_store_name .'<br /> '.$this->vendor->vendor_store_desc.'<br />'.$this->vendor->vendor_legal_info;
 	?>

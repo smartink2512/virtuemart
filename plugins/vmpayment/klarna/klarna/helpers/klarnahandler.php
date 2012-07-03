@@ -7,7 +7,6 @@ defined ('_JEXEC') or die('Restricted access');
  *
  * @author Valérie Isaksen
  * @package VirtueMart
-
  * @copyright Copyright (C) iStraxx - All rights reserved.
  * @license istraxx_license.txt Proprietary License. This code belongs to istraxx UG (haftungsbeschränkt)
  * You are not allowed to distribute or sell this code. You bought only a license to use it for ONE virtuemart installation.
@@ -134,6 +133,7 @@ class KlarnaHandler {
 	 * @return mixed
 	 */
 	public static function convertCountry ($method, $country) {
+
 		$country_data = self::countryData ($method, $country);
 		return $country_data['country_code'];
 	}
@@ -393,8 +393,12 @@ class KlarnaHandler {
 		}
 		$klarnaData = $sessionKlarnaData->KLARNA_DATA;
 
-		//
-		$shipTo = (!isset($order['details']['ST']) or empty($order['details']['ST']) or count ($order['details']['ST']) == 0) ? $order['details']['BT'] : $order['details']['ST'];
+		if (VMKLARNA_SHIPTO_SAME_AS_BILLTO) {
+			$shipTo = $order['details']['BT'];
+		} else {
+			$shipTo = (!isset($order['details']['ST']) or empty($order['details']['ST']) or count ($order['details']['ST']) == 0) ? $order['details']['BT'] : $order['details']['ST'];
+		}
+
 		$billTo = $order['details']['BT'];
 		$country = shopFunctions::getCountrybyID ($shipTo->virtuemart_country_id, 'country_3_code');
 		$cData = self::countryData ($method, $country);
@@ -440,7 +444,7 @@ class KlarnaHandler {
 		if ($order['details']['BT']->coupon_discount > 0) {
 			$coupon_discount = self::convertPrice (round ($order['details']['BT']->coupon_discount), $order['details']['BT']->order_currency, $cData['currency_code']);
 			//vmdebug('discount', $coupon_discount);
-			$klarna->addArticle (1, 'discount', JText::_ ('VMPAYMENT_KLARNA_DISCOUNT') . ' ' . $order['details']['BT']->coupon_code,((int)(round ($coupon_discount, 2) * -1)), 0, 0, KlarnaFlags::INC_VAT);
+			$klarna->addArticle (1, 'discount', JText::_ ('VMPAYMENT_KLARNA_DISCOUNT') . ' ' . $order['details']['BT']->coupon_code, ((int)(round ($coupon_discount, 2) * -1)), 0, 0, KlarnaFlags::INC_VAT);
 		}
 		/*
 $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true);
@@ -455,7 +459,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			$klarna_shipping = new KlarnaAddr(
 				$order['details']['BT']->email,
 				$shipTo->phone_1,
-				isset($shipTo->phone_2)?$shipTo->phone_2:"",
+				isset($shipTo->phone_2) ? $shipTo->phone_2 : "",
 				utf8_decode ($shipTo->first_name),
 				utf8_decode ($shipTo->last_name), '',
 				utf8_decode ($shipTo->address_1),
@@ -916,7 +920,9 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 
 		return FALSE;
 	}
-	function setKlarnaErrorInSession ($msg,$option) {
+
+	function setKlarnaErrorInSession ($msg, $option) {
+
 		$session = JFactory::getSession ();
 		$sessionKlarna = $session->get ('Klarna', 0, 'vm');
 		if (empty($sessionKlarna)) {
@@ -924,10 +930,11 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		} else {
 			$sessionKlarnaData = unserialize ($sessionKlarna);
 		}
-		$sessionKlarnaData->klarna_error= $msg;
-		$sessionKlarnaData->klarna_option=$option;
+		$sessionKlarnaData->klarna_error = $msg;
+		$sessionKlarnaData->klarna_option = $option;
 		$session->set ('Klarna', serialize ($sessionKlarnaData), 'vm');
 	}
+
 	/**
 	 *
 	 */
@@ -1103,7 +1110,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			foreach ($errors as $error) {
 				$msg .= "<li> -" . $error . "</li>";
 			}
-			self::setKlarnaErrorInSession($msg, $option);
+			self::setKlarnaErrorInSession ($msg, $option);
 
 			return FALSE;
 		}
