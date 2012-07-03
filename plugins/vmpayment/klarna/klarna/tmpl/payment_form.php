@@ -8,7 +8,7 @@ defined ('_JEXEC') or die();
 
  * @copyright Copyright (C) iStraxx - All rights reserved.
  * @license istraxx_license.txt Proprietary License. This code belongs to istraxx UG (haftungsbeschränkt)
- * You are not allowed to distribute or sell this code. You bought only a license to use it for ONE virtuemart installation.
+ * You are not allowed to distribute or sell this code.
  * You are not allowed to modify this code
  */
 
