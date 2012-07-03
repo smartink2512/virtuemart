@@ -169,7 +169,7 @@ class VirtueMartViewCart extends VmView {
 		}
 		$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink);
 
-		$continue_link_html = '<a class="continue_link" href="' . $continue_link . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
+		$continue_link_html = '<a class="continue_link" href="' . $continue_link . '" ><span>' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</span></a>';
 		$this->assignRef('continue_link_html', $continue_link_html);
 		$this->assignRef('continue_link', $continue_link);
 	}
