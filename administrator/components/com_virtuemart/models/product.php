@@ -579,6 +579,7 @@ class VirtueMartModelProduct extends VmModel {
 			$ppId = $child->product_parent_id;
 			$published = $child->published;
 
+			$this->product_parent_id = $child->product_parent_id;
 			$i = 0;
 			$runtime = microtime (TRUE) - $this->starttime;
 			//Check for all attributes to inherited by parent products
@@ -1852,6 +1853,8 @@ function lowStockWarningEmail($virtuemart_product_id) {
 
 	public function getUncategorizedChildren ($withParent) {
 		if (empty($this->_uncategorizedChildren)) {
+
+			//Todo add check for shoppergroup depended product display
 			$q = 'SELECT * FROM `#__virtuemart_products` as p
 				LEFT JOIN `#__virtuemart_products_' . VMLANG . '` as pl
 				USING (`virtuemart_product_id`)
@@ -1860,7 +1863,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 
 //	 		$q .= ' WHERE (`product_parent_id` = "'.$this->_id.'" AND (pc.`virtuemart_category_id`) IS NULL  ) OR (`virtuemart_product_id` = "'.$this->_id.'" ) ';
 			if ($withParent) {
-				$q .= ' WHERE `product_parent_id` = "' . $this->_id . '"  OR `virtuemart_product_id` = "' . $this->_id . '" ';
+				$q .= ' WHERE (`product_parent_id` = "' . $this->_id . '"  OR `virtuemart_product_id` = "' . $this->_id . '") ';
 			}
 			else {
 				$q .= ' WHERE `product_parent_id` = "' . $this->_id . '" ';
@@ -1872,10 +1875,11 @@ function lowStockWarningEmail($virtuemart_product_id) {
 			}
 
 			if ($app->isSite ()) {
+
 				$q .= ' AND p.`published`="1"';
 			}
 
-			$q .= 'GROUP BY `virtuemart_product_id` ORDER BY ordering DESC';
+			$q .= ' GROUP BY `virtuemart_product_id` ORDER BY ordering DESC';
 			$this->_db->setQuery ($q);
 			$this->_uncategorizedChildren = $this->_db->loadAssocList ();
 			$err = $this->_db->getErrorMsg ();

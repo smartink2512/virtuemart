@@ -1063,6 +1063,19 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					$html .= JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][custom_value]', 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="inputbox"', "value", "text",
 						JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $selected));
+					//vmdebug('$customfield',$customfield);
+					if($customfield->parentOrderable==0){
+
+						if(!$productModel->product_parent_id){
+							vmdebug('$customfield parentOrderable');
+							$document = JFactory::getDocument();
+							$document->addScriptDeclaration(
+								'jQuery(document).ready( function($) {
+								alert("heyhooo");
+								}); ');
+						}
+					}
+
 					return $html;
 					break;
 
