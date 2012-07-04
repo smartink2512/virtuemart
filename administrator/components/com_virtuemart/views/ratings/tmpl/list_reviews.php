@@ -48,24 +48,25 @@ $option = JRequest::getWord('option');
 	<table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
-		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->reviewslist); ?>')" /></th>
-		<th><?php echo $this->sort('created_on', 'COM_VIRTUEMART_DATE') ; ?></th>
+		<th width="20"><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->reviewslist); ?>')" /></th>
+		<th><?php echo $this->sort('pr.created_on', 'COM_VIRTUEMART_DATE') ; ?></th>
 		<th><?php echo $this->sort('product_name') ; ?></th>
-		<th><?php echo $this->sort('rating', 'COM_VIRTUEMART_RATE_NOM') ; ?></th>
-		<th width="20"><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo $this->sort('vote', 'COM_VIRTUEMART_RATE_NOM') ; ?></th>
+		<th width="20"><?php echo $this->sort('published') ; ?></th>
 	</tr>
 	</thead>
 	<tbody>
 	<?php
 	if (count($this->reviewslist) > 0) {
-		$i = 0;
-		$k = 0;
+		$i = 2;
+		//$k = 0;
 		$keyword = JRequest::getWord('keyword');
 		foreach ($this->reviewslist as $key => $review) {
-			$checked = JHTML::_('grid.id', $i , $review->virtuemart_rating_review_id );
-			$published = JHTML::_('grid.published', $review, $i );
+			//vmdebug('my review ',$review);
+			$checked = JHTML::_('grid.id', $i , $review->virtuemart_rating_review_id ,null, 'virtuemart_rating_review_id');
+			$published = JHTML::_('grid.published', $review, $i);
 			?>
-			<tr class="row<?php echo $k ; ?>">
+			<tr class="row<?php echo ($i)%2 ; ?>">
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Username + time -->
@@ -92,7 +93,7 @@ $option = JRequest::getWord('option');
 				<td><?php echo $published; ?></td>
 			</tr>
 		<?php
-			$k = 1 - $k;
+			//$k = 1 - $k;
 			$i++;
 		}
 	}
@@ -108,8 +109,9 @@ $option = JRequest::getWord('option');
 	</table>
 </div>
 <!-- Hidden Fields -->
-<input type="hidden" name="func" value="" />
-	<?php echo $this->addStandardHiddenToForm(); ?>
+	<input type="hidden" name="layout" value="list_reviews" />
+	<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getVar('virtuemart_product_id', 0); ?>" />
+	<?php echo $this->addStandardHiddenToForm(null,'listreviews'); ?>
 </form>
 <?php AdminUIHelper::endAdminArea(); ?>
 

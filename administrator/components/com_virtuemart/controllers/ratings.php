@@ -22,7 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 // Load the controller framework
 jimport('joomla.application.component.controller');
 
-if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
+if (!class_exists ('VmController')){
+	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmcontroller.php');
+}
 
 
 /**
@@ -41,27 +43,9 @@ class VirtuemartControllerRatings extends VmController {
 	function __construct() {
 		parent::__construct();
 
+		$task = JRequest::getVar('task');
+		vmdebug('cconstruct',$task);
 	}
-
-	/**
-	 * edit task ratings
-	 *
-	 * @author Max Milbers
-	 *
-	function edit(){
-
-		// Get the review IDs to retrieve (input variable may be cid, cid[] or virtuemart_rating_review_id
-		$cids = JRequest::getVar('cid', array());
-		if (empty($cids)) {
-			$cids= JRequest::getVar('virtuemart_rating_review_id',false);
-		}
-		if ($cids && !is_array($cids)) $cids = array($cids);
-
-		jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($cids);
-
-		parent::edit();
-	}*/
 
 	/**
 	 * Generic edit task
@@ -100,13 +84,56 @@ class VirtuemartControllerRatings extends VmController {
 	}
 
 	/**
+	 * we must overwrite it here, because the task publish can be meant for two different list layouts.
+	 */
+	function publish(){
+
+		JRequest::checkToken() or jexit( 'Invalid Token save' );
+		$layout = JRequest::getString('layout','default');
+
+		if($layout=='list_reviews'){
+
+			$product_id= JRequest::getInt('virtuemart_product_id',0);
+			$redPath = '';
+			if (!empty($product_id)) {
+				$redPath = '&task=listreviews&virtuemart_product_id=' . $product_id;
+			}
+
+			parent::publish('virtuemart_rating_review_id','rating_reviews',$this->redirectPath.$redPath);
+		} else {
+			parent::publish();
+		}
+
+	}
+
+	function unpublish(){
+
+		JRequest::checkToken() or jexit( 'Invalid Token save' );
+		$layout = JRequest::getString('layout','default');
+
+		if($layout=='list_reviews'){
+
+			$product_id= JRequest::getInt('virtuemart_product_id',0);
+			$redPath = '';
+			if (!empty($product_id)) {
+				$redPath = '&task=listreviews&virtuemart_product_id=' . $product_id;
+			}
+
+			parent::unpublish('virtuemart_rating_review_id','rating_reviews',$this->redirectPath.$redPath);
+		} else {
+			parent::unpublish();
+		}
+
+	}
+
+	/**
 	 * Save task for review
 	 *
 	 * @author Max Milbers
 	 */
 	function saveReview(){
 
-		$this->storeReview(false);
+		$this->storeReview(FALSE);
 	}
 
 	/**
@@ -116,19 +143,24 @@ class VirtuemartControllerRatings extends VmController {
 	 */
 	function applyReview(){
 
-		$this->storeReview(true);
+		$this->storeReview(TRUE);
 	}
+
 
 	function storeReview($apply){
 		JRequest::checkToken() or jexit( 'Invalid Token save' );
 
-		if(empty($data))$data = JRequest::get('post');
+		if (empty($data)){
+			$data = JRequest::get ('post');
+		}
 
 		$model = VmModel::getModel($this->_cname);
 		$id = $model->saveRating($data);
 
 		$errors = $model->getErrors();
-		if(empty($errors)) $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
+		if (empty($errors)) {
+			$msg = JText::sprintf ('COM_VIRTUEMART_STRING_SAVED', $this->mainLangKey);
+		}
 		foreach($errors as $error){
 			$msg = ($error).'<br />';
 		}

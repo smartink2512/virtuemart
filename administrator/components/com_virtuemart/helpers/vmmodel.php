@@ -371,7 +371,7 @@ class VmModel extends JModel {
 		if($err=$this->_db->getErrorMsg()){
 			vmError('exeSortSearchListQuery '.$err);
 		}
-// 		vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q ',$this->_db->getQuery() );
+ 		//vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q ',$this->_db->getQuery() );
 
 		if($this->_withCount){
 
@@ -491,16 +491,19 @@ class VmModel extends JModel {
 	 * @param string $postName the name of id Post  (Primary Key in table Class constructor)
 	 */
 
-	function toggle($field,$val = NULL, $cidName = 0 ) {
+	function toggle($field,$val = NULL, $cidname = 0,$tablename = 0  ) {
 		$ok = true;
 		$this->setToggleName('published');
 		if (!in_array($field, $this->_togglesName)) {
 			return false ;
 		}
-		$table = $this->getTable($this->_maintablename);
-		//		if(empty($cidName)) $cidName = $this->_cidName;
+		if($tablename === 0) $tablename = $this->_maintablename;
+		if($cidname === 0) $cidname = $this->_cidName;
 
-		$ids = JRequest::getVar( $this->_cidName, JRequest::getVar('cid',array(0)), 'post', 'array' );
+		$table = $this->getTable($tablename);
+		//if(empty($cidName)) $cidName = $this->_cidName;
+
+		$ids = JRequest::getVar( $cidname, JRequest::getVar('cid',array(0)), 'post', 'array' );
 
 		foreach($ids as $id){
 			$table->load( (int)$id );

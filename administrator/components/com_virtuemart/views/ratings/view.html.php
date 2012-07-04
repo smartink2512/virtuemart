@@ -76,6 +76,7 @@ class VirtuemartViewRatings extends VmView {
 				$pagination = $model->getPagination();
 				$this->assignRef('pagination', $pagination);
 
+				$this->addStandardDefaultViewCommands(false,true);
 				break;
 
 			case 'edit':
@@ -102,8 +103,6 @@ class VirtuemartViewRatings extends VmView {
 				} else {
 					$this->SetViewTitle('REVIEW_RATE','ERROR' );
 				}
-
-
 
 				JToolBarHelper::customX('cancelEditReview', 'cancel', 'cancel',  JText::_('COM_VIRTUEMART_CANCEL'), false);
 

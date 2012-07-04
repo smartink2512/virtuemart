@@ -252,18 +252,23 @@ class VmController extends JController{
 	 *
 	 * @author Jseros, Max Milbers
 	 */
-	public function publish(){
+	public function publish($cidname=0,$table=0,$redirect = 0){
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$model = VmModel::getModel($this->_cname);
-		if (!$model->toggle('published',1)) {
+
+		if($cidname === 0) $cidname = $this->_cidName;
+
+		if (!$model->toggle('published', 1, $cidname, $table)) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_ERROR',$this->mainLangKey);
 		} else{
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_SUCCESS',$this->mainLangKey);
 		}
 
-		$this->setRedirect( $this->redirectPath, $msg);
+		if($redirect === 0) $redirect = $this->redirectPath;
+
+		$this->setRedirect( $redirect , $msg);
 	}
 
 
@@ -272,18 +277,23 @@ class VmController extends JController{
 	 *
 	 * @author Max Milbers, Jseros
 	 */
-	function unpublish(){
+	function unpublish($cidname=0,$table=0,$redirect = 0){
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$model = VmModel::getModel($this->_cname);
-		if (!$model->toggle('published',0)) {
+
+		if($cidname === 0) $cidname = $this->_cidName;
+
+		if (!$model->toggle('published', 0, $cidname, $table)) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_ERROR',$this->mainLangKey);
 		} else{
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_SUCCESS',$this->mainLangKey);
 		}
 
-		$this->setRedirect( $this->redirectPath, $msg);
+		if($redirect === 0) $redirect = $this->redirectPath;
+
+		$this->setRedirect( $redirect, $msg);
 	}
 
 	function orderup() {
