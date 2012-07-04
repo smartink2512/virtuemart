@@ -1090,7 +1090,11 @@ class VirtueMartModelCustomfields extends VmModel {
 														value: 	"Please choose a Child Variant first",
 													}).css({
 														margin: "10px 0px 0px 0px",
-														width: "auto"
+														width: "auto",
+														backgroundColor: "#f2f2f2",
+														backgroundImage: "none",
+														color: "#333",
+														borderColor: "#333"
 													});						
 									}); 
 							');
