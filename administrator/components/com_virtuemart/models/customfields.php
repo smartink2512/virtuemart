@@ -1091,7 +1091,7 @@ class VirtueMartModelCustomfields extends VmModel {
 												.addClass(addToCartButtonClassName + "-disabled")
 												.attr({
 														disabled: "disabled",
-														value: 	"Please choose a Child Variant first",
+														value: 	"'.JText::_('COM_VIRTUEMART_ADDTOCARTBUTTON_DISABLED').'",
 													});						
 									}); 
 							');
