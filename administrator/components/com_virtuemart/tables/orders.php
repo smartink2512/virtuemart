@@ -146,14 +146,21 @@ class TableOrders extends VmTable {
 		}		/*vm_order_shipment NOT EXIST  have to find the table name*/
 		$this->_db->setQuery( 'SELECT `shipment_element` FROM `#__virtuemart_shipmentmethods` , `#__virtuemart_orders`
 			WHERE `#__virtuemart_shipmentmethods`.`virtuemart_shipmentmethod_id` = `#__virtuemart_orders`.`virtuemart_shipmentmethod_id` AND `virtuemart_order_id` = ' . $id );
-		$shipmentTable = '#__virtuemart_shipment_plg_'. $this->_db->loadResult();
+		$shipmentName = $this->_db->loadResult();
+
+		if(empty($shipmentName)){
+			vmError('Seems the used shipmentmethod got deleted');
+			//Can we securely prevent this just using
+		//	'SELECT `shipment_element` FROM `#__virtuemart_shipmentmethods` , `#__virtuemart_orders`
+		//	WHERE `#__virtuemart_shipmentmethods`.`virtuemart_shipmentmethod_id` = `#__virtuemart_orders`.`virtuemart_shipmentmethod_id` AND `virtuemart_order_id` = ' . $id );
+		}
+		$shipmentTable = '#__virtuemart_shipment_plg_'. $shipmentName;
 
 		$this->_db->setQuery('DELETE from `'.$shipmentTable.'` WHERE `virtuemart_order_id` = ' . $id);
 		if ($this->_db->query() === false) {
-			vmError($this->_db->getError());
+			vmError('TableOrders delete Order shipmentTable = '.$shipmentTable.' `virtuemart_order_id` = '.$id.' dbErrorMsg '.$this->_db->getError());
 			return false;
 		}
-
 
 		$_q = 'INSERT INTO `#__virtuemart_order_histories` ('
 				.	' virtuemart_order_history_id'
