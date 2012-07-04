@@ -132,7 +132,7 @@ if(!version_compare(JVERSION,'1.6.0','ge')) {
 				default:
 					$order = 'a.product_name DESC';
 			}
-			// search product
+			// search product //TODO  b.virtuemart_category_id>0 should be configurable
 			$text = $db->Quote('%' . $db->getEscaped($text, true) . '%', false);
 			$query = "SELECT DISTINCT CONCAT( a.product_name,' (',p.product_sku,')' ) AS title, a.virtuemart_product_id , b.virtuemart_category_id ,   a.product_s_desc   AS text, b.category_name as section,
 					 p.created_on as created, '2' AS browsernav
