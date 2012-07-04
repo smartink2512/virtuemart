@@ -76,6 +76,7 @@ $option = JRequest::getWord('option');
 				<td><?php echo JHTML::_('link', JRoute::_($link), $review->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$review->product_name)); ?></td>
 				<!-- Stars rating -->
 				<td align="center">
+					
 					<?php // echo JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.round($review->vote).'.gif',$review->vote,array("title" => (JText::_('COM_VIRTUEMART_RATING_TITLE').' : '. $review->vote . ' :: ' . $this->max_rating)));
 					$maxrating = VmConfig::get('vm_maximum_rating_scale', 5);
 				    $ratingwidth = round($review->vote) * 24;
