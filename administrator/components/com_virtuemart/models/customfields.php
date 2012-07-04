@@ -1073,8 +1073,8 @@ class VirtueMartModelCustomfields extends VmModel {
 								'jQuery(document).ready( function($) {
 									
 									addToCartArea = jQuery(".productdetails-view .addtocart-bar");
-									addToCartBar = addToCartArea.find(".addtocart-button");
-										
+									addToCartBar = addToCartArea.find("input[name$=addtocart]");
+
 									addToCartArea.css({
 														padding: "0px 0px 0px 0px",
 														width: "auto"
@@ -1085,7 +1085,7 @@ class VirtueMartModelCustomfields extends VmModel {
 																float: 	"left"
 															});
 										
-									addToCartBar.find(":input").attr({
+									addToCartBar.attr({
 														disabled: "disabled",
 														value: 	"Please choose a Child Variant first",
 													}).css({
