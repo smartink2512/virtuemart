@@ -1085,16 +1085,13 @@ class VirtueMartModelCustomfields extends VmModel {
 																float: 	"left"
 															});
 										
-									addToCartBar.attr({
+									addToCartButtonClassName = addToCartBar.attr("class");
+									
+									addToCartBar.removeClass(addToCartButtonClassName)
+												.addClass(addToCartButtonClassName + "-disabled")
+												.attr({
 														disabled: "disabled",
 														value: 	"Please choose a Child Variant first",
-													}).css({
-														margin: "10px 0px 0px 0px",
-														width: "auto",
-														backgroundColor: "#f2f2f2",
-														backgroundImage: "none",
-														color: "#333",
-														borderColor: "#333"
 													});						
 									}); 
 							');
