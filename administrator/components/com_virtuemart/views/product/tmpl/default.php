@@ -93,7 +93,7 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 		<?php } ?>
 		<th><?php echo $this->sort('mf_name', 'COM_VIRTUEMART_MANUFACTURER_S') ; ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_REVIEW_S'); ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_EMAILTOSHOPPERS'); ?></th>
+
 		<th width="40px" ><?php echo $this->sort('published') ; ?></th>
 	                <th><?php echo $this->sort('virtuemart_product_id', 'COM_VIRTUEMART_ID')  ?></th>
 
@@ -165,12 +165,6 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 				<!-- Reviews -->
 				<?php $link = 'index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$product->virtuemart_product_id; ?>
 				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('COM_VIRTUEMART_REVIEW_FORM_LBL').']'); ?></td>
-				<td style="position:relative;">
- <textarea class="element-hidden vm-order_comment vm-showable" name="orders[<?php echo $product->virtuemart_product_id; ?>][comments]" value="" cols="5" rows="5"></textarea>
-	 <?php echo JHTML::_('link', '#', JText::_('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_comment')); ?>
-			</td>
-
-
 
 				<!-- published -->
 				<td><?php echo $published; ?></td>
