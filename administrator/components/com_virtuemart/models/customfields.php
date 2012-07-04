@@ -1071,8 +1071,29 @@ class VirtueMartModelCustomfields extends VmModel {
 							$document = JFactory::getDocument();
 							$document->addScriptDeclaration(
 								'jQuery(document).ready( function($) {
-								alert("heyhooo");
-								}); ');
+									
+									addToCartArea = jQuery(".productdetails-view .addtocart-bar");
+									addToCartBar = addToCartArea.find(".addtocart-button");
+										
+									addToCartArea.css({
+														padding: "0px 0px 0px 0px",
+														width: "auto"
+													}).children("span:not(:nth-child(3))").hide()
+															.parent().children("span::nth-child(3)").css({
+																margin: "0px 0px 0px 0px",
+																width: "auto",
+																float: 	"left"
+															});
+										
+									addToCartBar.find(":input").attr({
+														disabled: "disabled",
+														value: 	"Please choose a Child Variant first",
+													}).css({
+														margin: "10px 0px 0px 0px",
+														width: "auto"
+													});						
+									}); 
+							');
 						}
 					}
 
