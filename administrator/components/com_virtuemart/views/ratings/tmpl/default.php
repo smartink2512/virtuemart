@@ -42,7 +42,6 @@ $option = JRequest::getWord('option');
 	<div id="resultscounter" ><?php echo $this->pagination->getResultsCounter();?></div>
 </div>
 
-
 <div style="text-align: left;">
 	<table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
@@ -74,8 +73,21 @@ $option = JRequest::getWord('option');
 				<?php $link = 'index.php?option='.$option.'&view=product&task=edit&virtuemart_product_id='.$review->virtuemart_product_id ; ?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $review->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$review->product_name)); ?></td>
 				<!-- Stars rating -->
-				<td>
-				<?php echo JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.round($review->rating).'.gif',$review->rating,array("title" => (JText::_('COM_VIRTUEMART_RATING_TITLE').' : '. $review->rating . ' :: ' . $this->max_rating))); ?>
+				<td align="center">
+					
+					<?php // Rating Stars output
+					// Old Method replace
+					// echo JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.round($review->rating).'.gif',$review->rating,array("title" => (JText::_('COM_VIRTUEMART_RATING_TITLE').' : '. $review->rating . ' :: ' . $this->max_rating)));
+					
+					$maxrating = VmConfig::get('vm_maximum_rating_scale', 5);
+				    $ratingwidth = round($review->rating) * 24;
+				    ?>
+	
+				    <span title="<?php echo (JText::_("COM_VIRTUEMART_RATING_TITLE").' '. round($review->rating) . '/' . $maxrating) ?>" class="ratingbox" style="display:inline-block;">
+						<span class="stars-orange" style="width:<?php echo $ratingwidth.'px'; ?>">
+						</span>
+				    </span>
+
 				</td>
 				<!-- published -->
 				<td><?php echo $published; ?></td>
