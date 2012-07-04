@@ -172,8 +172,8 @@ echo $this->loadTemplate('images');
 			    $ratingwidth = $this->rating->rating * 24; //I don't use round as percetntage with works perfect, as for me
 			    ?>
 			<span class="vote">
-	<?php echo JText::_('COM_VIRTUEMART_RATING') . ' ' . round($this->rating->rating, 2) . '/' . $maxrating; ?><br/>
-			    <span title=" <?php echo (JText::_("COM_VIRTUEMART_RATING_TITLE") . $this->rating->rating . '/' . $maxrating) ?>" class="vmicon ratingbox" style="display:inline-block;">
+	<?php echo JText::_('COM_VIRTUEMART_RATING') . ' ' . round($this->rating->rating) . '/' . $maxrating; ?><br/>
+			    <span title=" <?php echo (JText::_("COM_VIRTUEMART_RATING_TITLE") . round($this->rating->rating) . '/' . $maxrating) ?>" class="ratingbox" style="display:inline-block;">
 				<span class="stars-orange" style="width:<?php echo $ratingwidth.'px'; ?>">
 				</span>
 			    </span>
