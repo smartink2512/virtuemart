@@ -322,7 +322,7 @@ class VirtueMartModelRatings extends VmModel {
 				$value =	(string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
 				$value = trim(str_replace('"', ' ', $value),"'") ;
 				$data['comment'] =	(string)preg_replace('#^\'#si','',$value);//replace ' at start
-
+				$data['comment'] = nl2br($data['comment']);  // keep returns
 				//set to defaut value not used (prevent hack)
 				$data['review_ok'] = 0;
 				$data['review_rating'] = 0;
