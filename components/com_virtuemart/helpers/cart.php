@@ -57,6 +57,7 @@ class VirtueMartCart {
 	var $pricesCurrency = null;
 	var $paymentCurrency = null;
 	var $STsameAsBT = 0;
+	var $productParentOrderable = TRUE;
 
 	private static $_cart = null;
 	private static $_triesValidateCoupon;
@@ -1235,13 +1236,6 @@ class VirtueMartCart {
 			} else {
 				$product->customfields ='';
 			}
-// 			$product->salesPrice = empty($prices[$cart_item_id]['salesPrice'])? 0:$prices[$cart_item_id]['salesPrice'];
-// 			$product->basePriceWithTax = empty($prices[$cart_item_id]['salesPrice'])? 0:$prices[$cart_item_id]['basePriceWithTax'];
-// 			$product->basePriceWithTax = $prices[$cart_item_id]['basePriceWithTax'];
-// 			$product->subtotal = $prices[$cart_item_id]['subtotal'];
-// 			$product->subtotal_tax_amount = $prices[$cart_item_id]['subtotal_tax_amount'];
-// 			$product->subtotal_discount = $prices[$cart_item_id]['subtotal_discount'];
-// 			$product->subtotal_with_tax = $prices[$cart_item_id]['subtotal_with_tax'];
 			$product->cart_item_id = $cart_item_id ;
 		}
 	}

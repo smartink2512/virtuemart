@@ -69,7 +69,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	function getProductCustomsChilds ($childs) {
 
 		$data = array();
-		foreach ($childs as &$child) {
+		foreach ($childs as $child) {
 			$query = 'SELECT C.* , field.*
 					FROM `#__virtuemart_product_customfields` AS field
 					LEFT JOIN `#__virtuemart_customs` AS C ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
@@ -81,7 +81,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			$customfield = new stdClass();
 			$customfield->custom_value = $child->virtuemart_product_id;
 			$customfield->field_type = 'C';
-			$child->display = $this->displayProductCustomfieldFE ($customfield);
+			$child->display = $this->displayProductCustomfieldFE ($child, $customfield);
 			if ($child->field) {
 				$data[] = $child;
 			}
@@ -748,7 +748,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				}
 				else {
-					$field->display = $this->displayProductCustomfieldFE ($field, $row);
+					$field->display = $this->displayProductCustomfieldFE ($product, $field, $row);
 				}
 				$row++;
 			}
@@ -770,7 +770,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		if ($productCustoms = $this->_db->loadObjectList ()) {
 			$row = 0;
 			foreach ($productCustoms as & $field) {
-				$field->display = $this->displayProductCustomfieldFE ($field, $row);
+				$field->display = $this->displayProductCustomfieldFE ($product, $field, $row);
 				$row++;
 			}
 			return $productCustoms;
@@ -791,7 +791,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		if ($productCustoms = $this->_db->loadObjectList ()) {
 			$row = 0;
 			foreach ($productCustoms as & $field) {
-				$field->display = $this->displayProductCustomfieldFE ($field, $row);
+				$field->display = $this->displayProductCustomfieldFE ($product, $field, $row);
 				$row++;
 			}
 			return $productCustoms;
@@ -939,7 +939,7 @@ class VirtueMartModelCustomfields extends VmModel {
 									}*/
 									$productCustom->field_type = $group->field_type;
 									$productCustom->is_cart = 1;
-									$group->display .= $this->displayProductCustomfieldFE ($productCustom, $row);
+									$group->display .= $this->displayProductCustomfieldFE ($product, $productCustom, $row);
 									$checked = '';
 								}
 							}
@@ -963,7 +963,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						//MarkerVarMods
 									$group->display .= '<input id="' . $productCustom->virtuemart_custom_id . '" ' . $checked . ' type="radio" value="' .
 										$productCustom->virtuemart_customfield_id . '" name="customPrice[' . $row . '][' . $productCustom->virtuemart_custom_id . ']" /><label
-										for="' . $productCustom->virtuemart_custom_id . '">' . $this->displayProductCustomfieldFE ($productCustom, $row) . ' ' . $price . '</label>';
+										for="' . $productCustom->virtuemart_custom_id . '">' . $this->displayProductCustomfieldFE ($product, $productCustom, $row) . ' ' . $price . '</label>';
 
 									$checked = '';
 								}
@@ -983,7 +983,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 * Formating front display by roles
 	 *  for product only !
 	 */
-	public function displayProductCustomfieldFE ($customfield, $row = '') {
+	public function displayProductCustomfieldFE (&$product, $customfield, $row = '') {
 
 		$virtuemart_custom_id = isset($customfield->virtuemart_custom_id)? $customfield->virtuemart_custom_id:0;
 		$value = $customfield->custom_value;
@@ -1064,9 +1064,10 @@ class VirtueMartModelCustomfields extends VmModel {
 					$html .= JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][custom_value]', 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="inputbox"', "value", "text",
 						JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $selected));
 					//vmdebug('$customfield',$customfield);
-					if($customfield->parentOrderable==0){
-
-						if(!$productModel->product_parent_id){
+					if($customfield->parentOrderable==0 and $product->product_parent_id==0){
+						vmdebug('Should not be orderable');
+						$product->orderable = FALSE;
+					/*	if(!$productModel->product_parent_id){
 							vmdebug('$customfield parentOrderable');
 							$document = JFactory::getDocument();
 							$document->addScriptDeclaration(
@@ -1095,7 +1096,7 @@ class VirtueMartModelCustomfields extends VmModel {
 													});						
 									}); 
 							');
-						}
+						}*/
 					}
 
 					return $html;

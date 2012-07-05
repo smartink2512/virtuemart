@@ -87,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 	    // Display the add to cart button
 	    ?>
 		<span class="addtocart-button">
-		<input type="submit" name="addtocart" class="addtocart-button" value="<?php echo JText::_('COM_VIRTUEMART_CART_ADD_TO') ?>" title="<?php echo JText::_('COM_VIRTUEMART_CART_ADD_TO') ?>" />
+		<?php echo shopFunctionsF::getAddToCartButton($this->product->orderable); ?>
 		</span>
 <?php } ?>
 

@@ -95,6 +95,7 @@ class VirtueMartModelProduct extends VmModel {
 	var $filter_order = 'p.virtuemart_product_id';
 	var $filter_order_Dir = 'DESC';
 
+
 	/**
 	 * This function resets the variables holding request depended data to the initial values
 	 *
@@ -574,12 +575,16 @@ class VirtueMartModelProduct extends VmModel {
 			if (!$child->published && $onlyPublished) {
 				return FALSE;
 			}
+			if(!isset($child->orderable)){
+				$child->orderable = TRUE;
+			}
 			//store the original parent id
 			$pId = $child->virtuemart_product_id;
 			$ppId = $child->product_parent_id;
 			$published = $child->published;
 
-			$this->product_parent_id = $child->product_parent_id;
+			//$this->product_parent_id = $child->product_parent_id;
+
 			$i = 0;
 			$runtime = microtime (TRUE) - $this->starttime;
 			//Check for all attributes to inherited by parent products

@@ -103,7 +103,7 @@ class mod_virtuemart_product {
 						?>
 						<?php // Display the add to cart button ?>
 						<span class="addtocart-button">
-				<input type="submit" name="addtocart" class="addtocart-button" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>"/>
+							<?php echo shopFunctionsF::getAddToCartButton($this->product->orderable); ?>
 			</span>
 
 						<div class="clear"></div>
