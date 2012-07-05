@@ -982,7 +982,8 @@ class vmJsApi{
 		{
 			// Search in template or fallback
 			if (!file_exists($uri.'/'. $file)) {
-				$path = str_replace('templates/'. $template,'components/com_virtuemart/assets', $path);
+				$assets_path = VmConfig::get('assets_general_path','components/com_virtuemart/assets') ;
+				$path = str_replace('templates/'. $template,$assets_path, $path);
 				// vmWarn('file not found in tmpl :'.$file );
 			}
 			$path = JURI::root(TRUE) .'/'.$path;
