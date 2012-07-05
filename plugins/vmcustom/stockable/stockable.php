@@ -360,12 +360,14 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 				if ("disableadd" == stockhandle && stockable[found_id].in_stock <= 0) {
 					$(".addtocart-bar>span").remove();
+					$(".addtocart-bar>div").remove();
 					$(".addtocart-bar>a.notify").remove();
 					$(".addtocart-bar").append(\'<a href="ind\'+\'ex.php?option=com_virtuemart&view=productdetails&layout=notify&virtuemart_product_id=\' + found_id + \'" class="notify">' . JText::_('COM_VIRTUEMART_CART_NOTIFY') . '</a>\');
 				} else {
 					$(".addtocart-bar>span").remove();
+					$(".addtocart-bar>div").remove();
 					$(".addtocart-bar>a.notify").remove();
-					$(".addtocart-bar").append(\'<span class="quantity-box"><input type="text" class="quantity-input js-recalculate" name="quantity[]" value="1" /></span><span class="quantity-controls js-recalculate"><input type="button" class="quantity-controls quantity-plus" /><input type="button" class="quantity-controls quantity-minus" /></span><span class="addtocart-button"><input type="submit" name="addtocart" class="addtocart-button" value="'.JText::_('COM_VIRTUEMART_CART_ADD_TO').'" title="'.JText::_('COM_VIRTUEMART_CART_ADD_TO').'" /></span>\');
+					$(".addtocart-bar").append(\'<span class="quantity-box"><input type="text" class="quantity-input js-recalculate" name="quantity[]" value="1" /></span><span class="quantity-controls js-recalculate"><input type="button" class="quantity-controls quantity-plus" /><input type="button" class="quantity-controls quantity-minus" /></span><span class="addtocart-button"><input type="submit" name="addtocart" class="addtocart-button" value="'.JText::_('COM_VIRTUEMART_CART_ADD_TO').'" title="'.JText::_('COM_VIRTUEMART_CART_ADD_TO').'" /></span><div class="clear"></div>\');
 					Virtuemart.product($("form.product"));
 				}
 
