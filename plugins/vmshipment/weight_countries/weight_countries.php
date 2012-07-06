@@ -1,7 +1,6 @@
 <?php
 
-defined('_JEXEC') or die('Restricted access');
-
+defined ('_JEXEC') or die('Restricted access');
 
 /**
  * Shipment plugin for weight_countries shipments, like regular postal services
@@ -21,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
  * @author Valerie Isaksen
  *
  */
-if (!class_exists('vmPSPlugin')) {
+if (!class_exists ('vmPSPlugin')) {
 	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 }
 
@@ -31,21 +30,22 @@ if (!class_exists('vmPSPlugin')) {
 class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	// instance of class
-	public static $_this = false;
+	public static $_this = FALSE;
 
 	/**
 	 * @param object $subject
-	 * @param array $config
+	 * @param array  $config
 	 */
-	function __construct(& $subject, $config) {
+	function __construct (& $subject, $config) {
+
 		//if (self::$_this)
 		//   return self::$_this;
-		parent::__construct($subject, $config);
+		parent::__construct ($subject, $config);
 
-		$this->_loggable   = true;
-		$this->tableFields = array_keys($this->getTableSQLFields());
-		$varsToPush        = $this->getVarsToPush();
-		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
+		$this->_loggable = TRUE;
+		$this->tableFields = array_keys ($this->getTableSQLFields ());
+		$varsToPush = $this->getVarsToPush ();
+		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
 
 		// 		self::$_this
 		//$this->createPluginTable($this->_tablename);
@@ -54,17 +54,19 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	/**
 	 * Create the table for this plugin if it does not yet exist.
+	 *
 	 * @author Valérie Isaksen
 	 */
-	public function getVmPluginCreateTableSQL() {
+	public function getVmPluginCreateTableSQL () {
 
-		return $this->createTableSQL('Shipment Weight Countries Table');
+		return $this->createTableSQL ('Shipment Weight Countries Table');
 	}
 
 	/**
 	 * @return array
 	 */
-	function getTableSQLFields() {
+	function getTableSQLFields () {
+
 		$SQLfields = array(
 			'id'                           => 'int(1) UNSIGNED NOT NULL AUTO_INCREMENT',
 			'virtuemart_order_id'          => 'int(11) UNSIGNED',
@@ -86,44 +88,46 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 *
 	 * @param integer $virtuemart_order_id The order ID
 	 * @param integer $virtuemart_shipmentmethod_id The selected shipment method id
-	 * @param string $shipment_name Shipment Name
+	 * @param string  $shipment_name Shipment Name
 	 * @return mixed Null for shipments that aren't active, text (HTML) otherwise
 	 * @author Valérie Isaksen
 	 * @author Max Milbers
 	 */
-	public function plgVmOnShowOrderFEShipment($virtuemart_order_id, $virtuemart_shipmentmethod_id, &$shipment_name) {
-		$this->onShowOrderFE($virtuemart_order_id, $virtuemart_shipmentmethod_id, $shipment_name);
+	public function plgVmOnShowOrderFEShipment ($virtuemart_order_id, $virtuemart_shipmentmethod_id, &$shipment_name) {
+
+		$this->onShowOrderFE ($virtuemart_order_id, $virtuemart_shipmentmethod_id, $shipment_name);
 	}
 
 	/**
 	 * This event is fired after the order has been stored; it gets the shipment method-
 	 * specific data.
 	 *
-	 * @param int $order_id The order_id being processed
+	 * @param int    $order_id The order_id being processed
 	 * @param object $cart  the cart
-	 * @param array $order The actual order saved in the DB
+	 * @param array  $order The actual order saved in the DB
 	 * @return mixed Null when this method was not selected, otherwise true
 	 * @author Valerie Isaksen
 	 */
-	function plgVmConfirmedOrder(VirtueMartCart $cart, $order) {
-		if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_shipmentmethod_id))) {
+	function plgVmConfirmedOrder (VirtueMartCart $cart, $order) {
+
+		if (!($method = $this->getVmPluginMethod ($order['details']['BT']->virtuemart_shipmentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
 		}
-		if (!$this->selectedThisElement($method->shipment_element)) {
-			return false;
+		if (!$this->selectedThisElement ($method->shipment_element)) {
+			return FALSE;
 		}
-		$values['virtuemart_order_id']          = $order['details']['BT']->virtuemart_order_id;
-		$values['order_number']                 = $order['details']['BT']->order_number;
+		$values['virtuemart_order_id'] = $order['details']['BT']->virtuemart_order_id;
+		$values['order_number'] = $order['details']['BT']->order_number;
 		$values['virtuemart_shipmentmethod_id'] = $order['details']['BT']->virtuemart_shipmentmethod_id;
-		$values['shipment_name']                = $this->renderPluginName($method);
-		$values['order_weight']                 = $this->getOrderWeight($cart, $method->weight_unit);
-		$values['shipment_weight_unit']         = $method->weight_unit;
-		$values['shipment_cost']                = $method->cost;
-		$values['shipment_package_fee']         = $method->package_fee;
-		$values['tax_id']                       = $method->tax_id;
-		$this->storePSPluginInternalData($values);
+		$values['shipment_name'] = $this->renderPluginName ($method);
+		$values['order_weight'] = $this->getOrderWeight ($cart, $method->weight_unit);
+		$values['shipment_weight_unit'] = $method->weight_unit;
+		$values['shipment_cost'] = $method->cost;
+		$values['shipment_package_fee'] = $method->package_fee;
+		$values['tax_id'] = $method->tax_id;
+		$this->storePSPluginInternalData ($values);
 
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -134,15 +138,16 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 *
 	 * @param integer $virtuemart_order_id The order ID
 	 * @param integer $virtuemart_shipmentmethod_id The order shipment method ID
-	 * @param object $_shipInfo Object with the properties 'shipment' and 'name'
+	 * @param object  $_shipInfo Object with the properties 'shipment' and 'name'
 	 * @return mixed Null for shipments that aren't active, text (HTML) otherwise
 	 * @author Valerie Isaksen
 	 */
-	public function plgVmOnShowOrderBEShipment($virtuemart_order_id, $virtuemart_shipmentmethod_id) {
-		if (!($this->selectedThisByMethodId($virtuemart_shipmentmethod_id))) {
+	public function plgVmOnShowOrderBEShipment ($virtuemart_order_id, $virtuemart_shipmentmethod_id) {
+
+		if (!($this->selectedThisByMethodId ($virtuemart_shipmentmethod_id))) {
 			return NULL;
 		}
-		$html = $this->getOrderShipmentHtml($virtuemart_order_id);
+		$html = $this->getOrderShipmentHtml ($virtuemart_order_id);
 		return $html;
 	}
 
@@ -150,33 +155,33 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @param $virtuemart_order_id
 	 * @return string
 	 */
-	function getOrderShipmentHtml($virtuemart_order_id) {
+	function getOrderShipmentHtml ($virtuemart_order_id) {
 
-		$db = JFactory::getDBO();
-		$q  = 'SELECT * FROM `' . $this->_tablename . '` '
+		$db = JFactory::getDBO ();
+		$q = 'SELECT * FROM `' . $this->_tablename . '` '
 			. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
-		$db->setQuery($q);
-		if (!($shipinfo = $db->loadObject())) {
-			vmWarn(500, $q . " " . $db->getErrorMsg());
+		$db->setQuery ($q);
+		if (!($shipinfo = $db->loadObject ())) {
+			vmWarn (500, $q . " " . $db->getErrorMsg ());
 			return '';
 		}
 
-		if (!class_exists('CurrencyDisplay')) {
+		if (!class_exists ('CurrencyDisplay')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 
-		$currency   = CurrencyDisplay::getInstance();
-		$tax        = ShopFunctions::getTaxByID($shipinfo->tax_id);
-		$taxDisplay = is_array($tax) ? $tax['calc_value'] . ' ' . $tax['calc_value_mathop'] : $shipinfo->tax_id;
-		$taxDisplay = ($taxDisplay == -1) ? JText::_('COM_VIRTUEMART_PRODUCT_TAX_NONE') : $taxDisplay;
+		$currency = CurrencyDisplay::getInstance ();
+		$tax = ShopFunctions::getTaxByID ($shipinfo->tax_id);
+		$taxDisplay = is_array ($tax) ? $tax['calc_value'] . ' ' . $tax['calc_value_mathop'] : $shipinfo->tax_id;
+		$taxDisplay = ($taxDisplay == -1) ? JText::_ ('COM_VIRTUEMART_PRODUCT_TAX_NONE') : $taxDisplay;
 
 		$html = '<table class="adminlist">' . "\n";
-		$html .= $this->getHtmlHeaderBE();
-		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_SHIPPING_NAME', $shipinfo->shipment_name);
-		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_WEIGHT', $shipinfo->order_weight . ' ' . ShopFunctions::renderWeightUnit($shipinfo->shipment_weight_unit));
-		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_COST', $currency->priceDisplay($shipinfo->shipment_cost));
-		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_PACKAGE_FEE', $currency->priceDisplay($shipinfo->shipment_package_fee));
-		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_TAX', $taxDisplay);
+		$html .= $this->getHtmlHeaderBE ();
+		$html .= $this->getHtmlRowBE ('WEIGHT_COUNTRIES_SHIPPING_NAME', $shipinfo->shipment_name);
+		$html .= $this->getHtmlRowBE ('WEIGHT_COUNTRIES_WEIGHT', $shipinfo->order_weight . ' ' . ShopFunctions::renderWeightUnit ($shipinfo->shipment_weight_unit));
+		$html .= $this->getHtmlRowBE ('WEIGHT_COUNTRIES_COST', $currency->priceDisplay ($shipinfo->shipment_cost));
+		$html .= $this->getHtmlRowBE ('WEIGHT_COUNTRIES_PACKAGE_FEE', $currency->priceDisplay ($shipinfo->shipment_package_fee));
+		$html .= $this->getHtmlRowBE ('WEIGHT_COUNTRIES_TAX', $taxDisplay);
 		$html .= '</table>' . "\n";
 
 		return $html;
@@ -184,11 +189,11 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	/**
 	 * @param VirtueMartCart $cart
-	 * @param $method
-	 * @param $cart_prices
+	 * @param                $method
+	 * @param                $cart_prices
 	 * @return int
 	 */
-	function getCosts(VirtueMartCart $cart, $method, $cart_prices) {
+	function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
 
 		if ($method->free_shipment && $cart_prices['salesPrice'] >= $method->free_shipment) {
 			return 0;
@@ -199,27 +204,27 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	/**
 	 * @param \VirtueMartCart $cart
-	 * @param int $method
-	 * @param array $cart_prices
+	 * @param int             $method
+	 * @param array           $cart_prices
 	 * @return bool
 	 */
-	protected function checkConditions($cart, $method, $cart_prices) {
+	protected function checkConditions ($cart, $method, $cart_prices) {
 
-		$this->convert($method);
+		$this->convert ($method);
 
-		$orderWeight = $this->getOrderWeight($cart, $method->weight_unit);
-		$address     = (($cart->ST == 0) ? $cart->BT : $cart->ST);
+		$orderWeight = $this->getOrderWeight ($cart, $method->weight_unit);
+		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
-		$countries  = array();
+		$countries = array();
 		if (!empty($method->countries)) {
-			if (!is_array($method->countries)) {
+			if (!is_array ($method->countries)) {
 				$countries[0] = $method->countries;
 			} else {
 				$countries = $method->countries;
 			}
 		}
 		// probably did not gave his BT:ST address
-		if (!is_array($address)) {
+		if (!is_array ($address)) {
 			// there are some address dependant conditions, redirect then
 			/*
 			if ($method->zip_start or $method->zip_stop or empty($countries)) {
@@ -229,44 +234,48 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 				$mainframe->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $redirectMsg);
 			}
 			*/
-			$address                          = array();
-			$address['zip']                   = 0;
+			$address = array();
+			$address['zip'] = 0;
 			$address['virtuemart_country_id'] = 0;
 		}
 
-		$weight_cond      = $this->_weightCond($orderWeight, $method);
-		$nbproducts_cond  = $this->_nbproductsCond($cart, $method);
-		$orderamount_cond = $this->_orderamountCond($cart_prices, $method);
+		$weight_cond = $this->_weightCond ($orderWeight, $method);
+		$nbproducts_cond = $this->_nbproductsCond ($cart, $method);
+		$orderamount_cond = $this->_orderamountCond ($cart_prices, $method);
 		if (isset($address['zip'])) {
-			$zip_cond = $this->_zipCond($address['zip'], $method);
+			$zip_cond = $this->_zipCond ($address['zip'], $method);
 		}
 
 		if (!isset($address['virtuemart_country_id'])) {
 			$address['virtuemart_country_id'] = 0;
 		}
 
-		if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
-			if ($weight_cond AND $zip_cond AND $nbproducts_cond AND $orderamount_cond) {
-				return true;
+		if (in_array ($address['virtuemart_country_id'], $countries) || count ($countries) == 0) {
+			$cond=$weight_cond AND $zip_cond AND $nbproducts_cond AND $orderamount_cond;
+			if ($cond) {
+				// this line does not work http://forum.virtuemart.net/index.php?topic=104642.15
+			//if ($weight_cond AND $zip_cond AND $nbproducts_cond AND $orderamount_cond) {
+				return TRUE;
 			}
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	/**
 	 * @param $method
 	 */
-	function convert(&$method) {
+	function convert (&$method) {
+
 		//$method->weight_start = (float) $method->weight_start;
 		//$method->weight_stop = (float) $method->weight_stop;
 		$method->orderamount_start = (float)$method->orderamount_start;
-		$method->orderamount_stop  = (float)$method->orderamount_stop;
-		$method->zip_start         = (int)$method->zip_start;
-		$method->zip_stop          = (int)$method->zip_stop;
-		$method->nbproducts_start  = (int)$method->nbproducts_start;
-		$method->nbproducts_stop   = (int)$method->nbproducts_stop;
-		$method->free_shipment     = (float)$method->free_shipment;
+		$method->orderamount_stop = (float)$method->orderamount_stop;
+		$method->zip_start = (int)$method->zip_start;
+		$method->zip_stop = (int)$method->zip_stop;
+		$method->nbproducts_start = (int)$method->nbproducts_start;
+		$method->nbproducts_stop = (int)$method->nbproducts_stop;
+		$method->free_shipment = (float)$method->free_shipment;
 	}
 
 	/**
@@ -274,13 +283,13 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @param $method
 	 * @return bool
 	 */
-	private function _weightCond($orderWeight, $method) {
+	private function _weightCond ($orderWeight, $method) {
 
 		$weight_cond = (($orderWeight >= $method->weight_start AND $orderWeight <= $method->weight_stop)
 			OR
 			($method->weight_start <= $orderWeight AND $method->weight_stop === ''));
-		vmAdminInfo('weigth_countries _weightCond orderWeight:'. $orderWeight. ' method->weight_start:'. $method->weight_start.' method->weight_stop:'.
-			$method->weight_stop. ' result:'.$weight_cond);
+		vmAdminInfo ('weigth_countries _weightCond orderWeight:' . $orderWeight . ' method->weight_start:' . $method->weight_start . ' method->weight_stop:' .
+			$method->weight_stop . ' result:' . $weight_cond);
 		return $weight_cond;
 	}
 
@@ -289,24 +298,25 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @param $method
 	 * @return bool
 	 */
-	private function _nbproductsCond($cart, $method) {
+	private function _nbproductsCond ($cart, $method) {
+
 		$nbproducts = 0;
 		foreach ($cart->products as $product) {
 			$nbproducts += $product->quantity;
 		}
-		if (!isset($method->nbproducts_start) AND !isset($method->nbproducts_stop)) {
-			return true;
+		if (!isset($method->nbproducts_start) and !isset($method->nbproducts_stop)) {
+			return TRUE;
 		}
 		if ($nbproducts) {
 			$nbproducts_cond = ($nbproducts >= $method->nbproducts_start AND $nbproducts <= $method->nbproducts_stop
 				OR
 				($method->nbproducts_start <= $nbproducts AND ($method->nbproducts_stop == 0)));
 		} else {
-			$nbproducts_cond = true;
+			$nbproducts_cond = TRUE;
 		}
-		vmAdminInfo('weigth_countries _nbproductsCond nbproducts:'. $nbproducts. ' method->nbproducts_start:'. $method->nbproducts_start.
-			' method->nbproducts_stop:'.
-			$method->nbproducts_stop. ' result:'.$nbproducts_cond);
+		vmAdminInfo ('weigth_countries _nbproductsCond nbproducts:' . $nbproducts . ' method->nbproducts_start:' . $method->nbproducts_start .
+			' method->nbproducts_stop:' .
+			$method->nbproducts_stop . ' result:' . $nbproducts_cond);
 		return $nbproducts_cond;
 	}
 
@@ -315,43 +325,45 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @param $method
 	 * @return bool
 	 */
-	private function _orderamountCond($cart_prices, $method) {
+	private function _orderamountCond ($cart_prices, $method) {
 
 		if (!isset($method->orderamount_start) AND !isset($method->orderamount_stop)) {
-			return true;
+			return TRUE;
 		}
 		if ($cart_prices['salesPrice']) {
 			$orderamount_cond = ($cart_prices['salesPrice'] >= $method->orderamount_start AND $cart_prices['salesPrice'] <= $method->orderamount_stop
 				OR
 				($method->orderamount_start <= $cart_prices['salesPrice'] AND ($method->orderamount_stop == 0)));
 		} else {
-			$orderamount_cond = true;
+			$orderamount_cond = TRUE;
 		}
-		vmAdminInfo('weigth_countries _orderamountCond cart_amount:'. $cart_prices['salesPrice']. ' method->orderamount_start:'. $method->orderamount_start.
-			' method->orderamount_stop:'.
-			$method->orderamount_stop. ' result:',$orderamount_cond);
+		vmAdminInfo ('weigth_countries _orderamountCond cart_amount:' . $cart_prices['salesPrice'] . ' method->orderamount_start:' . $method->orderamount_start .
+			' method->orderamount_stop:' .
+			$method->orderamount_stop . ' result:', $orderamount_cond);
 		return $orderamount_cond;
 	}
 
 	/**
 	 * Check the conditions on Zip code
+	 *
 	 * @param int $zip : zip code
-	 * @param $params paremters for this specific shiper
+	 * @param     $params paremters for this specific shiper
 	 * @author Valérie Isaksen
 	 * @return string if Zip condition is ok or not
 	 */
-	private function _zipCond($zip, $method) {
+	private function _zipCond ($zip, $method) {
+
 		$zip = (int)$zip;
 		if (!empty($zip)) {
 			$zip_cond = (($zip >= $method->zip_start AND $zip <= $method->zip_stop)
 				OR
 				($method->zip_start <= $zip AND ($method->zip_stop == 0)));
 		} else {
-			$zip_cond = true;
+			$zip_cond = TRUE;
 		}
-		vmAdminInfo('weigth_countries _zipCond zip:'. $zip, ' method->zip_start:'. $method->zip_start.
-			' method->zip_stop:'.
-			$method->zip_stop. ' result:'.$zip_cond);
+		vmAdminInfo ('weigth_countries _zipCond zip:' . $zip, ' method->zip_start:' . $method->zip_start .
+			' method->zip_stop:' .
+			$method->zip_stop . ' result:' . $zip_cond);
 		return $zip_cond;
 	}
 
@@ -363,11 +375,13 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * Create the table for this plugin if it does not yet exist.
 	 * This functions checks if the called plugin is active one.
 	 * When yes it is calling the standard method to create the tables
+	 *
 	 * @author Valérie Isaksen
 	 *
 	 */
-	function plgVmOnStoreInstallShipmentPluginTable($jplugin_id) {
-		return $this->onStoreInstallPluginTable($jplugin_id);
+	function plgVmOnStoreInstallShipmentPluginTable ($jplugin_id) {
+
+		return $this->onStoreInstallPluginTable ($jplugin_id);
 	}
 
 	/**
@@ -388,15 +402,16 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @param VirtueMartCart $cart
 	 * @return null
 	 */
-	public function plgVmOnSelectCheckShipment(VirtueMartCart &$cart) {
-		return $this->OnSelectCheck($cart);
+	public function plgVmOnSelectCheckShipment (VirtueMartCart &$cart) {
+
+		return $this->OnSelectCheck ($cart);
 	}
 
 	/**
 	 * plgVmDisplayListFE
 	 * This event is fired to display the pluginmethods in the cart (edit shipment/payment) for example
 	 *
-	 * @param object $cart Cart object
+	 * @param object  $cart Cart object
 	 * @param integer $selected ID of the method selected
 	 * @return boolean True on success, false on failures, null when this plugin was not selected.
 	 * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
@@ -404,8 +419,9 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @author Valerie Isaksen
 	 * @author Max Milbers
 	 */
-	public function plgVmDisplayListFEShipment(VirtueMartCart $cart, $selected = 0, &$htmlIn) {
-		return $this->displayListFE($cart, $selected, $htmlIn);
+	public function plgVmDisplayListFEShipment (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
+
+		return $this->displayListFE ($cart, $selected, $htmlIn);
 	}
 
 	/*
@@ -423,28 +439,31 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	/**
 	 * @param VirtueMartCart $cart
-	 * @param array $cart_prices
-	 * @param $cart_prices_name
+	 * @param array          $cart_prices
+	 * @param                $cart_prices_name
 	 * @return bool|null
 	 */
-	public function plgVmonSelectedCalculatePriceShipment(VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
-		return $this->onSelectedCalculatePrice($cart, $cart_prices, $cart_prices_name);
+	public function plgVmonSelectedCalculatePriceShipment (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
+
+		return $this->onSelectedCalculatePrice ($cart, $cart_prices, $cart_prices_name);
 	}
 
 	/**
 	 * plgVmOnCheckAutomaticSelected
 	 * Checks how many plugins are available. If only one, the user will not have the choice. Enter edit_xxx page
 	 * The plugin must check first if it is the correct type
+	 *
 	 * @author Valerie Isaksen
 	 * @param VirtueMartCart cart: the cart object
 	 * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
 	 *
 	 */
-	function plgVmOnCheckAutomaticSelectedShipment(VirtueMartCart $cart, array $cart_prices = array(), &$shipCounter) {
+	function plgVmOnCheckAutomaticSelectedShipment (VirtueMartCart $cart, array $cart_prices = array(), &$shipCounter) {
+
 		if ($shipCounter > 1) {
 			return 0;
 		}
-		return $this->onCheckAutomaticSelected($cart, $cart_prices, $shipCounter);
+		return $this->onCheckAutomaticSelected ($cart, $cart_prices, $shipCounter);
 	}
 
 	/**
@@ -468,8 +487,9 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
 	 * @author Valerie Isaksen
 	 */
-	function plgVmonShowOrderPrint($order_number, $method_id) {
-		return $this->onShowOrderPrint($order_number, $method_id);
+	function plgVmonShowOrderPrint ($order_number, $method_id) {
+
+		return $this->onShowOrderPrint ($order_number, $method_id);
 	}
 
 	/**
@@ -533,7 +553,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * NOTE for Plugin developers:
 	 *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
 	 *
-	 * @param int $virtuemart_order_id : should return the virtuemart_order_id
+	 * @param int  $virtuemart_order_id : should return the virtuemart_order_id
 	 * @param text $html: the html to display
 	 * @return mixed Null when this method was not selected, otherwise the true or false
 	 *
@@ -544,9 +564,9 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	return null;
 	}
 	 */
-	function plgVmDeclarePluginParamsShipment($name, $id, &$data) {
+	function plgVmDeclarePluginParamsShipment ($name, $id, &$data) {
 
-		return $this->declarePluginParams('shipment', $name, $id, $data);
+		return $this->declarePluginParams ('shipment', $name, $id, $data);
 	}
 
 	/**
@@ -555,8 +575,9 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @param $table
 	 * @return bool
 	 */
-	function plgVmSetOnTablePluginParamsShipment($name, $id, &$table) {
-		return $this->setOnTablePluginParams($name, $id, $table);
+	function plgVmSetOnTablePluginParamsShipment ($name, $id, &$table) {
+
+		return $this->setOnTablePluginParams ($name, $id, $table);
 	}
 
 }
