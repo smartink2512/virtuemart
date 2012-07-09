@@ -327,7 +327,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		if (!class_exists ('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
-
+	// $resp->get ('order_id') is the virtuemart order_number
 		$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber ($resp->get ('order_id'));
 
 		// Order not found
@@ -510,7 +510,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 			}
 
 			// Save platform response
-			$this->managePaymentResponse ($virtuemart_order_id, $resp, $new_status, $return_context);
+			$this->managePaymentResponse ($virtuemart_order_id, $resp, $new_status, $return_context, $data['vads_order_id']);
 		}
 		else {
 			// Order already processed
@@ -625,7 +625,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		return TRUE;
 	}
 
-	function managePaymentResponse ($virtuemart_order_id, $resp, $new_status, $return_context = NULL) {
+	function managePaymentResponse ($virtuemart_order_id, $resp, $new_status, $return_context = NULL, $order_number=NULL) {
 		// Save platform response data
 		$this->savePaymentData ($virtuemart_order_id, $resp);
 
@@ -650,7 +650,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 
 		if ($resp->isAcceptedPayment ()) {
 			// Empty cart in session
-			$this->emptyCart ($return_context);
+			$this->emptyCart ($return_context, $order_number);
 		}
 	}
 

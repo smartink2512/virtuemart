@@ -1020,22 +1020,90 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 	}
 
-	function emptyCart ($session_id) {
+	function emptyCart ($session_id=NULL, $order_number=NULL) {
+
 		if (!class_exists ('VirtueMartCart')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		$this->logInfo ('Notification: emptyCart ' . $session_id, 'message');
-		if ($session_id != NULL) {
-			// Recover session in wich the payment is done
-			session_id ($session_id);
-			session_start ();
-		}
+		if ($session_id != NULL and $order_number!= NULL) {
+			// Recover session from the storage session in wich the payment is done
+			  $this->emptyCartFromStorageSession($session_id , $order_number);
+		} else {
 
 		$cart = VirtueMartCart::getCart ();
 		$cart->emptyCart ();
+		}
 		return TRUE;
 	}
+	/*
+	 * recovers the session from Storage, and only empty the cart if it has not been done already
+	 */
+	function emptyCartFromStorageSession($session_id , $order_number) {
+		$conf = JFactory::getConfig();
+		$handler = $conf->get('session_handler', 'none');
 
+		$config['session_name']='site';
+		$name=Japplication::getHash($config['session_name']);
+		$options['name'] = $name;
+		$sessionStorage = JSessionStorage::getInstance($handler, $options);
+
+		// The session store MUST be registered.
+		$sessionStorage->register();
+		// reads directly the session from the storage
+		$sessionStored=$sessionStorage->read($session_id);
+		if (empty($sessionStored)) {
+			return;
+		}
+		$sessionStorageDecoded=self::session_decode($sessionStored);
+
+		$vm_namespace = '__vm';
+		$cart_name = 'vmcart';
+		if (array_key_exists($vm_namespace, $sessionStorageDecoded)) { // vm session is there
+				$vm_sessionStorage=$sessionStorageDecoded[$vm_namespace];
+				if (array_key_exists($cart_name, $vm_sessionStorage)) { // vm cart session is there
+					$sessionStorageCart= unserialize($vm_sessionStorage[$cart_name]);
+					// only empty the cart if the order number is still there. If not there, it means that the cart has already been emptied.
+					if ($sessionStorageCart->order_number==$order_number) {
+						if (!class_exists ('VirtueMartCart')) {
+							require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+						}
+						VirtueMartCart::emptyCartValues($sessionStorageCart);
+						$sessionStorageDecoded[$vm_namespace][$cart_name] =serialize($sessionStorageCart);
+						$sessionStorageEncoded=self::session_encode($sessionStorageDecoded);
+						$sessionStorage->write($session_id, $sessionStorageEncoded);
+					}
+			}
+		}
+	}
+
+
+
+	private static function session_decode($session_data) {
+		$decoded_session = array();
+		$offset = 0;
+		while ($offset < strlen($session_data)) {
+			if (!strstr(substr($session_data, $offset), "|")) {
+				return array();			}
+			$pos = strpos($session_data, "|", $offset);
+			$num = $pos - $offset;
+			$varname = substr($session_data, $offset, $num);
+			$offset += $num + 1;
+			$data = unserialize(substr($session_data, $offset));
+			$decoded_session[$varname] = $data;
+			$offset += strlen(serialize($data));
+		}
+		return $decoded_session;
+	}
+
+
+	private static function session_encode($session_data_array) {
+		$encoded_session ="";
+		foreach($session_data_array as $key => $session_data) {
+			$encoded_session .= $key."|".serialize($session_data);
+		}
+		return $encoded_session;
+	}
 	/**
 	 * get_passkey
 	 * Retrieve the payment method-specific encryption key

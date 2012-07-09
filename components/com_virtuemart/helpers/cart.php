@@ -51,6 +51,7 @@ class VirtueMartCart {
 	var $couponCode = '';
 	var $cartData = null;
 	var $lists = null;
+	var $order_number=null; // added to solve emptying cart for payment notification
 	// 	var $user = null;
 // 	var $prices = null;
 	var $pricesUnformatted = null;
@@ -106,7 +107,7 @@ class VirtueMartCart {
 				self::$_cart->customer_comment 					= base64_decode($sessionCart->customer_comment);
 				self::$_cart->couponCode 							= $sessionCart->couponCode;
 				self::$_cart->cartData 								= $sessionCart->cartData;
-
+				self::$_cart->order_number							= $sessionCart->order_number;
 // 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 // 				$calculator = calculationHelper::getInstance();
 // 				self::$_cart->cartData								= $calculator->getCartData();
@@ -121,6 +122,7 @@ class VirtueMartCart {
 				self::$_cart->_dataValidated						= $sessionCart->_dataValidated;
 				self::$_cart->_confirmDone							= $sessionCart->_confirmDone;
 				self::$_cart->STsameAsBT							= $sessionCart->STsameAsBT;
+
 
 			}
 
@@ -214,6 +216,8 @@ class VirtueMartCart {
 		$sessionCart->virtuemart_paymentmethod_id 	= $this->virtuemart_paymentmethod_id;
 		$sessionCart->automaticSelectedShipment 		= $this->automaticSelectedShipment;
 		$sessionCart->automaticSelectedPayment 		= $this->automaticSelectedPayment;
+		$sessionCart->order_number 		            = $this->order_number;
+
 		$sessionCart->BT 										= $this->BT;
 		$sessionCart->ST 										= $this->ST;
 		$sessionCart->tosAccepted 							= $this->tosAccepted;
@@ -968,20 +972,33 @@ class VirtueMartCart {
 	 */
 	public function emptyCart(){
 
-		//We delete the old stuff
-		$this->products = array();
-		$this->_inCheckOut = false;
-		$this->_dataValidated = false;
-		$this->_confirmDone = false;
-		$this->customer_comment = '';
-		$this->couponCode = '';
-		$this->tosAccepted = null;
-		$this->virtuemart_shipmentmethod_id = 0; //OSP 2012-03-14
-		$this->virtuemart_paymentmethod_id = 0;
+		self::emptyCartValues($this);
 
 		$this->setCartIntoSession();
 	}
 
+
+	/**
+	 * emptyCart: Used for payment handling.
+	 *
+	 * @author Valerie Cartan Isaksen
+	 *
+	 */
+	static public function emptyCartValues($cartData){
+
+		//We delete the old stuff
+		$cartData->products = array();
+		$cartData->_inCheckOut = false;
+		$cartData->_dataValidated = false;
+		$cartData->_confirmDone = false;
+		$cartData->customer_comment = '';
+		$cartData->couponCode = '';
+		$cartData->tosAccepted = null;
+		$cartData->virtuemart_shipmentmethod_id = 0; //OSP 2012-03-14
+		$cartData->virtuemart_paymentmethod_id = 0;
+		$cartData->order_number=null;
+
+	}
 
 	function saveAddressInCart($data, $type, $putIntoSession = true) {
 

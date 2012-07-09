@@ -198,6 +198,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			"email"            => $order['details']['BT']->email,
 			"night_phone_b"    => $address->phone_1,
 			"return"           => JROUTE::_ (JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt ('Itemid')),
+			// Keep this line, needed when testing
 			//"return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
 			"notify_url"       => JROUTE::_ (JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
 			"cancel_return"    => JROUTE::_ (JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt ('Itemid')),
@@ -208,6 +209,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			"image_url"        => JURI::root () . $vendor->images[0]->file_url,
 			"no_shipping"      => isset($method->no_shipping) ? $method->no_shipping : 0,
 			"no_note"          => "1");
+
 
 		/*
 			  $i = 1;
@@ -419,7 +421,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		}
 		$this->logInfo ('paypal_data ' . implode ('   ', $paypal_data), 'message');
 
-		$this->_storePaypalInternalData ($method, $paypal_data, $virtuemart_order_id);
+		$this->_storePaypalInternalData ($method, $paypal_data, $virtuemart_order_id, $payment->virtuemart_paymentmethod_id);
 		$modelOrder = VmModel::getModel ('orders');
 		$order = array();
 		$error_msg = $this->_processIPN ($paypal_data, $method, $virtuemart_order_id);
@@ -479,7 +481,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		$modelOrder->updateStatusForOneOrder ($virtuemart_order_id, $order, TRUE);
 		//// remove vmcart
-		$this->emptyCart ($paypal_data['custom']);
+		$this->emptyCart ($paypal_data['custom'], $order_number);
 		//die();
 	}
 
@@ -488,7 +490,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	 * @param $paypal_data
 	 * @param $virtuemart_order_id
 	 */
-	function _storePaypalInternalData ($method, $paypal_data, $virtuemart_order_id) {
+	function _storePaypalInternalData ($method, $paypal_data, $virtuemart_order_id, $virtuemart_paymentmethod_id) {
 
 		// get all know columns of the table
 		$db = JFactory::getDBO ();
@@ -509,6 +511,9 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$response_fields['paypalresponse_raw'] = $post_msg;
 		$response_fields['order_number'] = $paypal_data['invoice'];
 		$response_fields['virtuemart_order_id'] = $virtuemart_order_id;
+		$response_fields['virtuemart_paymentmethod_id'] = $virtuemart_paymentmethod_id;
+		$response_fields['paypal_custom'] = $paypal_data['custom'];
+
 		//$preload=true   preload the data here too preserve not updated data
 		$this->storePSPluginInternalData ($response_fields, 'virtuemart_order_id', TRUE);
 	}

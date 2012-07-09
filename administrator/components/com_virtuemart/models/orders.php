@@ -592,6 +592,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			// If a gift coupon was used, remove it now
 			CouponHelper::RemoveCoupon($_cart->couponCode);
 		}
+		// the order number is saved into the session to make sure that the correct cart is emptied with the payment notification
+		$_cart->order_number=$_orderData->order_number;
+		$_cart->setCartIntoSession ();
 
 		return $_orderID;
 	}
