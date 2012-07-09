@@ -86,8 +86,7 @@ class VirtuemartViewUser extends VmView {
 
 	// 	vmdebug('my layoutname',$layoutName);
 	if ($layoutName == 'login') {
-	    // 		$true = true;
-	    // 		$this->assignRef('anonymous',$true);
+
 	    parent::display($tpl);
 	    return;
 	}
@@ -96,7 +95,6 @@ class VirtuemartViewUser extends VmView {
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
 	$this->_model = new VirtuemartModelUser();
 
-	//$this->_model = VmModel::getModel('user', 'VirtuemartModel');
 	//		$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?
 	$editor = JFactory::getEditor();
 
@@ -104,11 +102,6 @@ class VirtuemartViewUser extends VmView {
 	$this->_currentUser = JFactory::getUser();
 	$this->_cuid = $this->_lists['current_id'] = $this->_currentUser->get('id');
 	$this->assignRef('userId', $this->_cuid);
-
-	if (empty($this->_cuid)) {
-	    // 		$layout = 'default';
-	    // 		$this->setLayout('default');
-	}
 
 	$this->_userDetails = $this->_model->getUser();
 
@@ -325,11 +318,6 @@ class VirtuemartViewUser extends VmView {
 	    if (!empty($this->_userDetails->perms)) {
 		$this->_lists['perms'] = $this->_userDetails->perms;
 
-		/* This now done in the model, so it is unnecessary here, notice by Max Milbers
-		  if(empty($this->_lists['perms'])){
-		  $this->_lists['perms'] = 'shopper'; // TODO Make this default configurable
-		  }
-		 */
 		$_hiddenInfo = '<input type="hidden" name="perms" value = "' . $this->_lists['perms'] . '" />';
 		$this->_lists['perms'] .= $_hiddenInfo;
 	    }

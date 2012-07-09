@@ -30,9 +30,6 @@ jimport( 'joomla.application.component.view');
  */
 class VirtuemartViewUserfields extends JView {
 
-	/* json object */
-	private $json = null;
-
 	function display($tpl = null) {
 		$db = JFactory::getDBO();
 		if ( $field = JRequest::getVar('field') ) {

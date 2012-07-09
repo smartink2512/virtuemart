@@ -74,7 +74,7 @@ class VirtueMartModelManufacturer extends VmModel {
 	 */
 	public function store(&$data) {
 
-		/* Setup some place holders */
+		// Setup some place holders
 		$table = $this->getTable('manufacturers');
 
 		$table->bindChecknStore($data);
@@ -92,22 +92,6 @@ class VirtueMartModelManufacturer extends VmModel {
 		}
 		return $table->virtuemart_manufacturer_id;
 	}
-
-    /**
-     * Select the products to list on the product list page
-     */
-/*    public function getManufacturerList() {
-     	$db = JFactory::getDBO();
-     	// Pagination
-     	$this->getPagination();
-
-     	// Build the query
-     	$q = "SELECT
-			";
-     	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
-     	return $db->loadObjectList('virtuemart_product_id');
-    }
-*/
 
     /**
      * Returns a dropdown menu with manufacturers

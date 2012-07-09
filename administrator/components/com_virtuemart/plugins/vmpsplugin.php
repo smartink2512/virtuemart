@@ -608,27 +608,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $db->loadResult (); // TODO Error check
 	}
 
-	/**
-	 * This functions gets the used and configured  method
-	 * pelement of this class determines the used jplugin.
-	 * The right  method is determined by the vendor and the jplugin id.
-	 *
-	 * This function sets the used  plugin as variable of this class
-	 *
-	 * @author Max Milbers
-	 *
-	 */
-	/* 	protected function getVmParams($vendorId=0, $method_id=0) {
-
-	if (!$vendorId)
-	$vendorId = 1;
-	$db = JFactory::getDBO();
-
-	$q = 'SELECT   `' . $this->_psType . '_params` FROM #__virtuemart_' . $this->_psType . 'methods WHERE `' . $this->_idName . '` = "' . $method_id . '" AND `virtuemart_vendor_id` = "' . $vendorId . '" AND `published`="1" ';
-	$db->setQuery($q);
-	return $db->loadResult();
-	}
-	*/
 
 	/**
 	 * Extends the standard function in vmplugin. Extendst the input data by virtuemart_order_id

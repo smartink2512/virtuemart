@@ -94,22 +94,9 @@ AdminUIHelper::startAdminArea();
 				</td>
 			</tr>
 			<?php
-// 			<td class="order">
-// 						<span><?php echo ShopFunctions::orderUpIcon( $i, true, 'orderup', 'Move Up' ); ></span>
-// 						<span><?php echo ShopFunctions::orderDownIcon( $i, $n, true, 'orderdown', 'Move Down' ); ></span>
-// 					<input class="ordering" type="text" name="order[]" size="5" value="<?php echo $row->ordering;>" class="text_area" style="text-align: center" />
-// 				</td>
 			$k = 1 - $k;
 		}
-		?><?php /* NO limit used in model
-		<tfoot>
-			<tr>
-				<td colspan="10">
-					<?php echo $this->pagination->getListFooter(); ?>
-				</td>
-			</tr>
-		</tfoot>
-		*/ ?>
+		?>
 	</table>
 </div>
 

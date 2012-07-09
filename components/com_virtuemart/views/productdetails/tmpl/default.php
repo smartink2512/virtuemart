@@ -153,7 +153,7 @@ echo $this->loadTemplate('images');
 	    <div class="spacer-buy-area">
 
 		<?php
-		// TO DO in Multi-Vendor not needed at the moment and just would lead to confusion
+		// TODO in Multi-Vendor not needed at the moment and just would lead to confusion
 		/* $link = JRoute::_('index2.php?option=com_virtuemart&view=virtuemart&task=vendorinfo&virtuemart_vendor_id='.$this->product->virtuemart_vendor_id);
 		  $text = JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL');
 		  echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_VENDOR_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a><br />

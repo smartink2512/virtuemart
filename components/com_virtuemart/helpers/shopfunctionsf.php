@@ -380,7 +380,7 @@ class shopFunctionsF {
 	 */
 	static public function limitStringByWord($string, $maxlength, $suffix=''){
 		if(function_exists('mb_strlen')) {
-			/* use multibyte functions by Iysov*/
+			// use multibyte functions by Iysov
 			if(mb_strlen($string)<=$maxlength) return $string;
 			$string = mb_substr($string,0,$maxlength);
 			$index = mb_strrpos($string, ' ');
@@ -389,7 +389,7 @@ class shopFunctionsF {
 			} else {
 				return mb_substr($string,0,$index).$suffix;
 			}
-		} else { /* original code here */
+		} else { // original code here
 			if(strlen($string)<=$maxlength) return $string;
 			$string = substr($string,0,$maxlength);
 			$index = strrpos($string, ' ');
@@ -432,6 +432,7 @@ class shopFunctionsF {
 		$baseUrl =  $baseUrl . "/";
 		return $baseUrl;
 	}
+
 	/**
 	 * Align in plain text the strings
 	 * $string text to resize

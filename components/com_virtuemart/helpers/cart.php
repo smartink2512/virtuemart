@@ -482,7 +482,7 @@ class VirtueMartCart {
 	 * @access public
 	 */
 	public function removeProductCart($prod_id=0) {
-		/* Check for cart IDs */
+		// Check for cart IDs
 		if (empty($prod_id))
 		$prod_id = JRequest::getVar('cart_virtuemart_product_id');
 		unset($this->products[$prod_id]);
@@ -1194,7 +1194,7 @@ class VirtueMartCart {
 	*/
 	function prepareCartViewData(){
 		$data = new stdClass();
-		/* Get the products for the cart */
+		// Get the products for the cart
 		$this->cartData = $this->prepareCartData();
 
 // 		$this->prepareCartPrice( $this->prices ) ;
