@@ -44,8 +44,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</td>
     <td width="40%">
     	<p>
-			<a class="default" title="<?php echo $this->vendor->vendor_store_name ?>" href="<?php echo  shopFunctionsF::getBaseUrl().JRoute::_('index
-			.php?option=com_virtuemart&view=orders&layout=details&order_number='.$this->orderDetails['details']['BT']->order_number.'&order_pass='.$this->orderDetails['details']['BT']->order_pass); ?>">
+ 			<a class="default" title="<?php echo $this->vendor->vendor_store_name ?>" href="<?php echo  shopFunctionsF::getBaseUrl().JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$this->orderDetails['details']['BT']->order_number.'&order_pass='.$this->orderDetails['details']['BT']->order_pass); ?>">
 			<?php echo JText::_('COM_VIRTUEMART_MAIL_SHOPPER_YOUR_ORDER_LINK'); ?></a>
 		</p>
 	</td>
