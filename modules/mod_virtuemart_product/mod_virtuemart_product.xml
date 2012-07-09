@@ -119,14 +119,14 @@
 		<field name="show_price" type="list" default="1"
 			label="MOD_VIRTUEMART_PRODUCT_SHOW_PRICE"
 			description="MOD_VIRTUEMART_PRODUCT_SHOW_PRICE_DESC">
-		    <option value="1">COM_VIRTUEMART_YES</option>
-		    <option value="0">COM_VIRTUEMART_NO</option>
+		    <option value="1">JYES</option>
+		    <option value="0">JNO</option>
 		</field>
 		<field name="show_addtocart" type="list" default="1"
 			label="MOD_VIRTUEMART_PRODUCT_SHOW_ADDTOCART"
 			description="MOD_VIRTUEMART_PRODUCT_SHOW_ADDTOCART_DESC">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="headerText" type="text" default=""
@@ -138,8 +138,8 @@
 		<field name="filter_category" type="list" default="0"
 			label="MOD_VIRTUEMART_PRODUCT_FILTER_CATEGORY"
 			description="MOD_VIRTUEMART_PRODUCT_FILTER_CATEGORY_DESC">
-            <option value="0">No</option>
-            <option value="1">Yes</option>
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
 		</field>
 		<field name="virtuemart_category_id" type="vmcategories"  value_field="category_name" label="MOD_VIRTUEMART_PRODUCT_CATEGORY_ID" description="MOD_VIRTUEMART_PRODUCT_CATEGORY_ID_DESC" />
 
@@ -150,8 +150,8 @@
 					label="COM_MODULES_FIELD_CACHING_LABEL"
 					description="COM_MODULES_FIELD_CACHING_DESC"
 				>
-            <option value="0">No</option>
-            <option value="1">Yes</option>
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
 		</field>
 		<field name="moduleclass_sfx" type="text" default=""
 			label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
