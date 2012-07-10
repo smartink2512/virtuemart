@@ -429,7 +429,7 @@ class shopFunctionsF {
 		if($uri->getPort()){
 			$baseUrl = $baseUrl . ":" . $uri->getPort();
 		}
-		$baseUrl =  $baseUrl . "/";
+		//$baseUrl =  $baseUrl . "/";
 		return $baseUrl;
 	}
 
