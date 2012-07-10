@@ -2,7 +2,7 @@
 
 /*
 * @author Skrill Holdings Ltd.
-* @version $Id: 1.0
+* @version $Id$
 * @package VirtueMart
 * @subpackage payment
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -330,7 +330,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin
             $this->logInfo('Process IPN ' . JText::sprintf('VMPAYMENT_MONEYBOOKERS_ERROR_POSTING_IPN', $errstr, $errno),
                                                     'message');
 
-            JError::raiseWarning(500, JText::_('VMPAYMENT_MONEYBOOKERS_DISPLAY_GWERROR'));
+           vmInfo (JText::_('VMPAYMENT_MONEYBOOKERS_DISPLAY_GWERROR'));
             return null;
             }
         else
@@ -352,7 +352,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin
             if (!count($response))
                 {
                 $this->logInfo('Process IPN (empty or bad response) ' . $msg,'message');
-                JError::raiseWarning(500, JText::_('VMPAYMENT_MONEYBOOKERS_DISPLAY_GWERROR'));
+                vmInfo( JText::_('VMPAYMENT_MONEYBOOKERS_DISPLAY_GWERROR'));
                 return null;
                 }
             $sid = $response[0];
@@ -655,7 +655,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin
      * @author Valérie isaksen
      *
      * @param VirtueMartCart $cart: the actual cart
-     * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
+     * @return null if the payment was not selected, true if the data is valid, error message if the data is not valid
      *
      */
     public function plgVmOnSelectCheckPayment(VirtueMartCart $cart) {
@@ -668,7 +668,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin
      *
      * @param object $cart Cart object
      * @param integer $selected ID of the method selected
-     * @return boolean True on succes, false on failures, null when this plugin was not selected.
+     * @return boolean True on success, false on failures, null when this plugin was not selected.
      * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
      *
      * @author Valerie Isaksen
@@ -751,7 +751,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin
      *
      * @param array $_formData Form data
      * @return mixed, True on success, false on failures (the rest of the save-process will be
-     * skipped!), or null when this method is not actived.
+     * skipped!), or null when this method is not activated.
      * @author Oscar van Eijk
 
       public function plgVmOnUpdateOrderPayment(  $_formData) {
