@@ -93,7 +93,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin
                 $mb_data['status'];
 
         $calcmd5 = md5($md5data);
-        if (strcmp(strtoupper($calcmd5, $mb_data['md5sig'])))
+        if (strcmp( strtoupper($calcmd5), $mb_data['md5sig']) )
             return "MD5 checksum doesn't match - calculated: $calcmd5, expected: " . $mb_data['md5sig'];
 
         return false;
@@ -459,10 +459,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin
             require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
         $mb_data = JRequest::get('post');
-        $debug = '';
-        foreach ($mb_data as $key => $value)
-            $debug .= "$key = $value\n";
-        $this->logInfo(__FUNCTION__ . ' response: ' . $debug, 'message');
+
 
         if (!isset($mb_data['transaction_id']))
             {
@@ -530,8 +527,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin
             }
         elseif (strcmp($mb_data['payment_status'], 'Pending') == 0)
             {
-            $order['comments'] = JText::sprintf('VMPAYMENT_MONEYBOOKERS_PAYMENT_STATUS_PENDING', $order_number) .
-                                                JText::_($key);
+            $order['comments'] = JText::sprintf('VMPAYMENT_MONEYBOOKERS_PAYMENT_STATUS_PENDING', $order_number) ;
             $order['order_status'] = $method->status_pending;
             }
         else
@@ -544,7 +540,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin
         $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 
         //// remove vmcart
-        $this->emptyCart($return_context);
+        $this->emptyCart($payment->user_session, $mb_data['transaction_id']);
         }
 
     function plgVmOnShowOrderBEPayment($virtuemart_order_id, $payment_method_id)
@@ -643,7 +639,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin
      * Create the table for this plugin if it does not yet exist.
      * This functions checks if the called plugin is active one.
      * When yes it is calling the standard method to create the tables
-     * @author ValÃ¯Â¿Â½rie Isaksen
+     * @author Valérie Isaksen
      *
      */
     function plgVmOnStoreInstallPaymentPluginTable($jplugin_id) {
@@ -656,7 +652,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin
      * additional payment info in the cart.
      *
      * @author Max Milbers
-     * @author ValÃ¯Â¿Â½rie isaksen
+     * @author Valérie isaksen
      *
      * @param VirtueMartCart $cart: the actual cart
      * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
