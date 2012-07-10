@@ -48,14 +48,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		public function checkIfUpdate(){
 
 			$update = false;
-			$db = JFactory::getDBO();
+			$this->_db = JFactory::getDBO();
 			$q = 'SHOW TABLES LIKE "%virtuemart_adminmenuentries%"'; //=>jos_virtuemart_shipment_plg_weight_countries
-			$db->setQuery($q);
-			if($db->loadResult()){
+			$this->_db->setQuery($q);
+			if($this->_db->loadResult()){
 
 				$q = "SELECT count(id) AS idCount FROM `#__virtuemart_adminmenuentries`";
-				$db->setQuery($q);
-				$result = $db->loadResult();
+				$this->_db->setQuery($q);
+				$result = $this->_db->loadResult();
 
 				if (empty($result)) {
 					$update = false;
@@ -84,10 +84,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 				$q = 'DELETE FROM `#__menu` WHERE `menutype` = "main" AND
 						(`link`="index.php?option=com_virtuemart" OR `alias`="virtuemart" )';
-				$db = JFactory::getDbo();
-				$db -> setQuery($q);
-				$db -> query();
-				$error = $db->getErrorMsg();
+				$this->_db = JFactory::getDbo();
+				$this->_db -> setQuery($q);
+				$this->_db -> query();
+				$error = $this->_db->getErrorMsg();
 				if(!empty($error)){
 					$app = JFactory::getApplication();
 					$app ->enqueueMessage('Error deleting old vm admin menu (BE) '.$error);
@@ -353,8 +353,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		}
 
 		private function addToRequired($table,$fieldname,$fieldvalue,$insert){
-			if(empty($this->db)){
-				$this->db = JFactory::getDBO();
+			if(empty($this->_db)){
+				$this->_db = JFactory::getDBO();
 			}
 
 			$query = 'SELECT * FROM `'.$table.'` WHERE '.$fieldname.' = "'.$fieldvalue.'" ';
@@ -442,27 +442,27 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default` = "1" ';
 
-			$db = JFactory::getDbo();
-			$db->setQuery($q);
-			$res = $db ->loadResult();
+			$this->_db = JFactory::getDbo();
+			$this->_db->setQuery($q);
+			$res = $this->_db ->loadResult();
 
 			if(empty($res)){
 				$q = "INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`) VALUES
 								(NULL, 1, '-default-', 'This is the default shopper group.', 1, 1);";
-				$db->setQuery($q);
-				$db->query();
+				$this->_db->setQuery($q);
+				$this->_db->query();
 			}
 
 			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default` = "2" ';
 
-			$db->setQuery($q);
-			$res = $db ->loadResult();
+			$this->_db->setQuery($q);
+			$res = $this->_db ->loadResult();
 
 			if(empty($res)){
 				$q = "INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`) VALUES
 								(NULL, 1, '-anonymous-', 'Shopper group for anonymous shoppers', 2, 1);";
-				$db->setQuery($q);
-				$db->query();
+				$this->_db->setQuery($q);
+				$this->_db->query();
 			}
 
 		}
@@ -489,7 +489,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$table -> bindChecknStore($stdgroup);
 
 				$sgroup['virtuemart_shoppergroup_id'] = 0;
-				$table = new TableShoppergroups($db);
+				$table = new TableShoppergroups($this->_db);
 				$table -> bindChecknStore($sgroup);
 				vmdebug('changeShoppergroupDataSetAnonShopperToOne $table',$table);
 			}
@@ -526,10 +526,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->loadVm();
 				// 				VmConfig::loadConfig(true);
 
-				$db = JFactory::getDBO();
+				$this->_db = JFactory::getDBO();
 				$q = 'SHOW TABLES LIKE "%virtuemart_configs%"'; //=>jos_virtuemart_shipment_plg_weight_countries
-				$db->setQuery($q);
-				$res = $db->loadResult();
+				$this->_db->setQuery($q);
+				$res = $this->_db->loadResult();
 				if(!empty($res)){
 					JRequest::setVar(JUtility::getToken(), '1', 'post');
 					$config = JModel::getInstance('config', 'VirtueMartModel');

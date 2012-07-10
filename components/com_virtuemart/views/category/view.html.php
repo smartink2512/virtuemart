@@ -93,7 +93,14 @@ class VirtuemartViewCategory extends VmView {
 	   $this->assignRef('category', $category);
 
 		// Set Canonic link
-		$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId) , 'canonical', 'rel', '' );
+		if (!empty($tpl)) {
+			$format = $tpl;
+		} else {
+			$format = JRequest::getWord('format', 'html');
+		}
+		if ($format == 'html') {
+			$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId) , 'canonical', 'rel', '' );
+		}
 
 	    // Set the titles
 		if ($category->customtitle) {

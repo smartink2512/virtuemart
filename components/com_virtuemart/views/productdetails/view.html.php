@@ -190,7 +190,7 @@ class VirtueMartViewProductdetails extends VmView {
 	    $category->children = $category_model->getChildCategoryList($vendorId, $virtuemart_category_id);
 	    $category_model->addImages($category->children, 1);
 	}
-	$format = JRequest::getCmd('format', 'html');
+
 	if (!empty($tpl)) {
 	    $format = $tpl;
 	} else {
