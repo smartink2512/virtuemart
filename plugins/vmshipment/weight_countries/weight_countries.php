@@ -242,6 +242,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$weight_cond = $this->_weightCond ($orderWeight, $method);
 		$nbproducts_cond = $this->_nbproductsCond ($cart, $method);
 		$orderamount_cond = $this->_orderamountCond ($cart_prices, $method);
+		$zip_cond = TRUE;
 		if (isset($address['zip'])) {
 			$zip_cond = $this->_zipCond ($address['zip'], $method);
 		}
@@ -354,12 +355,16 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	private function _zipCond ($zip, $method) {
 
 		$zip = (int)$zip;
-		if (!empty($zip)) {
-			$zip_cond = (($zip >= $method->zip_start AND $zip <= $method->zip_stop)
-				OR
-				($method->zip_start <= $zip AND ($method->zip_stop == 0)));
-		} else {
-			$zip_cond = TRUE;
+		$zip_cond = TRUE;
+		if (!empty($zip) ) {
+
+			if(!empty($method->zip_start) and !empty( $method->zip_stop)){
+				$zip_cond = (($zip >= $method->zip_start AND $zip <= $method->zip_stop));
+			} else if (!empty($method->zip_start)) {
+				$zip_cond = ($zip >= $method->zip_start);
+			} else if (!empty($method->zip_stop)) {
+				$zip_cond = ($zip <= $method->zip_stop);
+			}
 		}
 		vmAdminInfo ('weigth_countries _zipCond zip:' . $zip, ' method->zip_start:' . $method->zip_start .
 			' method->zip_stop:' .
