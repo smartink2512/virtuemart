@@ -286,21 +286,24 @@ class calculationHelper {
 
 		$this->setCountryState($this->_cart);
 
+		$prices['costPrice'] = $costPrice;
+		$basePriceShopCurrency = $this->roundInternal($this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $costPrice,true));
+		//vmdebug('my pure $basePriceShopCurrency',$costPrice,$this->productCurrency,$basePriceShopCurrency);
+		$basePriceMargin = $this->roundInternal($this->executeCalculation($this->rules['Marge'], $basePriceShopCurrency));
+		$this->basePrice = $basePriceShopCurrency = $prices['basePrice'] = !empty($basePriceMargin) ? $basePriceMargin : $basePriceShopCurrency;
+
+		//For Profit, margin, and so on
+		$this->rules['Marge'] = $this->gatherEffectingRulesForProductPrice('Marge', $this->product_marge_id);
+
 		$this->rules['Tax'] = $this->gatherEffectingRulesForProductPrice('Tax', $this->product_tax_id);
 		$this->rules['VatTax'] = $this->gatherEffectingRulesForProductPrice('VatTax', $this->product_tax_id);
 		$this->rules['DBTax'] = $this->gatherEffectingRulesForProductPrice('DBTax', $this->product_discount_id);
 		$this->rules['DATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
 
-		$prices['costPrice'] = $costPrice;
-		$basePriceShopCurrency = $this->roundInternal($this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $costPrice,true));
-		//vmdebug('my pure $basePriceShopCurrency',$costPrice,$this->productCurrency,$basePriceShopCurrency);
 
-		//For Profit, margin, and so on
-		$this->rules['Marge'] = $this->gatherEffectingRulesForProductPrice('Marge', $this->product_marge_id);
 
-		$basePriceMargin = $this->roundInternal($this->executeCalculation($this->rules['Marge'], $basePriceShopCurrency));
-		$basePriceShopCurrency = $prices['basePrice'] = !empty($basePriceMargin) ? $basePriceMargin : $basePriceShopCurrency;
 
+		vmdebug('$this->basePrice ',$this->basePrice);
 		//         vmdebug('my $basePriceShopCurrency after Marge',$basePriceShopCurrency);
 
 		//         $prices['basePrice'] = $basePriceShopCurrency;
@@ -486,7 +489,7 @@ class calculationHelper {
 
 		$this->setCountryState($cart);
 
-
+		$this->_amountCart = 0;
 		foreach ($cart->products as $name => $product) {
 			//$product = $productModel->getProduct($product->virtuemart_product_id,false,false,true);
 			$productId = $product->virtuemart_product_id;
@@ -500,6 +503,7 @@ class calculationHelper {
 
 			$cartproductkey = $name; //$product->virtuemart_product_id.$variantmod;
 			$product->prices = $pricesPerId[$cartproductkey] = $this->getProductPrices($product, 0, $variantmod, $product->quantity, true, false);
+			$this->_amountCart += $product->quantity;
 // 			vmdebug('getCheckoutPrices',$product->prices);
 			$this->_cartPrices[$cartproductkey] = $product->prices;
 
@@ -912,22 +916,22 @@ class calculationHelper {
 			//				//Test
 			//			}
 
-				if ($hitsDeliveryArea && $hitsShopper) {
-					if ($this->_debug)
-					echo '<br/ >Add Checkout rule ' . $rule["virtuemart_calc_id"] . '<br/ >';
-					$testedRules[] = $rule;
-				}
+			if ($hitsDeliveryArea && $hitsShopper) {
+				if ($this->_debug)
+				echo '<br/ >Add Checkout rule ' . $rule["virtuemart_calc_id"] . '<br/ >';
+				$testedRules[] = $rule;
 			}
-
-			//Test rules in plugins
-			if(!empty($testedRules)){
-				JPluginHelper::importPlugin('vmcalculation');
-				$dispatcher = JDispatcher::getInstance();
-				$dispatcher->trigger('plgVmInGatherEffectRulesBill', array(&$this, &$testedRules));
-			}
-
-			return $testedRules;
 		}
+
+		//Test rules in plugins
+		if(!empty($testedRules)){
+			JPluginHelper::importPlugin('vmcalculation');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('plgVmInGatherEffectRulesBill', array(&$this, &$testedRules));
+		}
+
+		return $testedRules;
+	}
 
 		//	/**
 		//	 * Gathers the effecting coupons for the calculation

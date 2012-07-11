@@ -711,7 +711,8 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			// Load the categories the product is in
-			$product->categories = $this->getProductCategories ($this->_id, $front);
+			//$product->categories = $this->getProductCategories ($this->_id, $front);
+			$product->categories = $this->getProductCategories ($this->_id, FALSE); //We need also the unpublished categories, else the calculation rules do not work
 
 			if (!empty($product->categories) and is_array ($product->categories) and !empty($product->categories[0])) {
 				$product->virtuemart_category_id = $product->categories[0];
