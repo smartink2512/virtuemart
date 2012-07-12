@@ -954,7 +954,6 @@ class vmrouterHelper {
 			vmWarn(JText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
 		} else {
 
-
 			// Search  Virtuemart itemID in joomla menu
 			foreach ($this->menuVmitems as $item)	{
 				$linkToSplit= explode ('&',$item->link);
