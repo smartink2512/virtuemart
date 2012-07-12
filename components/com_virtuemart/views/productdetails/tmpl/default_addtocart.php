@@ -100,9 +100,6 @@ defined('_JEXEC') or die('Restricted access');
 	<input type="hidden" name="view" value="cart" />
 	<noscript><input type="hidden" name="task" value="add" /></noscript>
 	<input type="hidden" name="virtuemart_product_id[]" value="<?php echo $this->product->virtuemart_product_id ?>" />
-<?php /** @todo Handle the manufacturer view */ ?>
-	<input type="hidden" name="virtuemart_manufacturer_id" value="<?php echo $this->product->virtuemart_manufacturer_id ?>" />
-	<input type="hidden" name="virtuemart_category_id[]" value="<?php echo $this->product->virtuemart_category_id ?>" />
     </form>
 
     <div class="clear"></div>
