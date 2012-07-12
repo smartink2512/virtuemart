@@ -722,13 +722,13 @@ class VirtueMartModelUser extends VmModel {
 
 		$alreadyStoredUserData = $usertable->load($this->_id);
 		$app = JFactory::getApplication();
-		if($app->isSite()){
-			unset($data['user_is_vendor']);
-			unset($data['virtuemart_vendor_id']);
-			unset($data['perms']);
+		unset($data['virtuemart_vendor_id']);
+		unset($data['user_is_vendor']);
+		$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
+		$data['virtuemart_vendor_id'] = $alreadyStoredUserData->virtuemart_vendor_id;
 
-			$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
-			$data['virtuemart_vendor_id'] = $alreadyStoredUserData->virtuemart_vendor_id;
+		if($app->isSite()){
+			unset($data['perms']);
 
 			if(!empty($alreadyStoredUserData->perms)){
 				$data['perms'] = $alreadyStoredUserData->perms;
