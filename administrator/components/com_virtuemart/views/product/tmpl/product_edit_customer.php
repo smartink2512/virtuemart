@@ -154,8 +154,9 @@ $i = 0;
 	<tr>
 		<td>
 			<?php
-			$aflink = '<a target="_blank" href="http://www.acyba.com/acymailing.html?partner_id=19513">'.JText::_('COM_VIRTUEMART_AD_ACY').'</a>';
-			echo $aflink;
+
+			$aflink = '<a target="_blank" href="http://www.acyba.com/acymailing.html?partner_id=19513"><img title="AcyMailing 2" height=40 src="http://www.acyba.com/images/banners/acymailing_450-109.png"/></a>';
+			echo JText::sprintf('COM_VIRTUEMART_AD_ACY',$aflink);
 			?>
 		</td>
 	</tr>
