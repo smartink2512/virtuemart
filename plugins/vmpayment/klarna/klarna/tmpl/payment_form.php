@@ -86,6 +86,13 @@ $sType = $viewData['payment_params']['sType'];
 	</div>
 	<div class="klarna_baloon_bottom"></div>
 </div>
+<div class="klarna_red_baloon" id="klarna_red_baloon" style="display: none">
+    <div class="klarna_red_baloon_top"></div>
+    <div class="klarna_red_baloon_middle" id="klarna_red_baloon_content">
+        <div><?php echo @$viewData['payment_params']['red_baloon_content']; ?></div>
+    </div>
+    <div class="klarna_red_baloon_bottom"></div>
+</div>
 <div class="klarna_blue_baloon" id="klarna_blue_baloon"
      style="display: none">
 	<div class="klarna_blue_baloon_top"></div>
@@ -163,21 +170,26 @@ $sType = $viewData['payment_params']['sType'];
 	<?php } ?>
 		<div class="klarna_box_bottom_content_listPriceInfo">
 			<?php echo $viewData['payment_currency_info'] ?></div>
+		<?php if ( $code2 == 'nl' and $sType == 'part') { ?>
+	<div class="klarna_box_bottom_content_listPriceInfo">
+		<img src="<?php echo VMKLARNAPLUGINWEBASSETS . '/images/account/notice_nl.jpg' ?> "/>
+                            </div>
+		<?php } ?>
 	</div>
+
 </div>
 
 <div class="klarna_box_bottom_right">
 <div class="klarna_box_bottom_content">
-
-<?php if ($code2 != 'se') { ?>
-	<?php if ($code2 != 'de' and $code2 != 'nl') { ?>
-		<?php if ($sType == 'invoice') { ?>
+<?php if ($code2 != 'de' and $code2 != 'nl') { ?>
+<?php // Now it is also asked for account payments
+		if ($sType == 'invoice') { ?>
 		<div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_INVOICE_TYPE'); ?></div>
-		<input type="radio" name="klarna_invoiceType" id="private" value="private" checked="checked" class="Klarna_radio"/>
+		<input type="radio" name="klarna_invoice_type" id="private" value="private" checked="checked" class="Klarna_radio"/>
 		<div class="klarna_box_bottom_radio_title" style="float: left">
 			<label for="private"><?php echo JText::_ ('VMPAYMENT_KLARNA_INVOICE_TYPE_PRIVATE'); ?></label>
 		</div>
-		<input type="radio" name="klarna_invoiceType" id="company" value="" class="Klarna_radio"/>
+		<input type="radio" name="klarna_invoice_type" id="company" value="company" class="Klarna_radio"/>
 		<div class="klarna_box_bottom_radio_title" style="float: none">
 			<label for="company"><?php echo JText::_ ('VMPAYMENT_KLARNA_INVOICE_TYPE_COMPANY'); ?></label>
 		</div>
@@ -189,9 +201,12 @@ $sType = $viewData['payment_params']['sType'];
 				       name="klarna_company_name" value="<?php echo @$viewData['payment_params']['fields']['company_name']; ?>"
 				       style="width: 98%" />
 			</div>
-
 		</div>
-			<?php } ?>
+	<?php  } ?>
+<?php  } ?>
+<?php if ($code2 != 'se') { ?>
+	<?php if ($code2 != 'de' and $code2 != 'nl') { ?>
+		<?php // Now it is also asked for account payments ?>
 	<div class="klarna_box_bottom_title"
 	     id="invoice_perOrg_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_PERSON_NUMBER'); ?></div>
 	<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_SOCIALNUMBER_' . strtoupper ($code2)); ?>" type="text"
@@ -214,12 +229,12 @@ $sType = $viewData['payment_params']['sType'];
 </div>
 	<?php if ($code2 == 'de' or $code2 == 'nl') { ?>
 	<div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_SEX'); ?></div>
-	<input type="radio" name="klarna_gender" value="1" id="<?php echo $sType ?>_male"
+	<input type="radio" name="<?php echo $sType ?>_klarna_gender" value="1" id="<?php echo $sType ?>_male"
 	       class="Klarna_radio gender"/>
 	<div class="klarna_box_bottom_radio_title" style="float: left">
 		<label for="<?php echo $sType ?>_male"><?php echo JText::_ ('VMPAYMENT_KLARNA_SEX_MALE'); ?></label>
 	</div>
-	<input type="radio" name="klarna_gender" value="0" id="<?php echo $sType ?>_female"
+	<input type="radio" name="<?php echo $sType ?>_klarna_gender" value="0" id="<?php echo $sType ?>_female"
 	       class="Klarna_radio gender"/>
 	<div class="klarna_box_bottom_radio_title" style="float: none">
 		<label for="<?php echo $sType ?>_female"><?php echo JText::_ ('VMPAYMENT_KLARNA_SEX_FEMALE'); ?></label>

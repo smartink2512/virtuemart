@@ -1198,6 +1198,7 @@ class ShopFunctions {
 	/*
 	 *
 	 *$return = validateEUVat(array(‘vatnumber’ => ‘BE0123456789′, ‘country’ => ‘BE’));
+	 * @depredecated
 	 */
 
 	function validateEUVat ($args = array()) {
@@ -1400,7 +1401,15 @@ class ShopFunctions {
 
 		return $html;
 	}
-
+	/*
+	 * Returns the suggested safe Path, used to store the invoices
+	 * @static
+	 * @return string: suggested safe path
+	 */
+	static public function getSuggestedSafePath() {
+		$lastIndex= strrpos(JPATH_ROOT,DS);
+		return substr(JPATH_ROOT,0,$lastIndex).DS.'vmfiles';
+	}
 	/*
 	 * @author Valerie Isaksen
 	 */
@@ -1413,7 +1422,7 @@ class ShopFunctions {
 			<td rowspan ="'.$productShopper['nb_orders'] .'">' . $productShopper['name'] . '</td>
 			<td rowspan ="'.$productShopper['nb_orders'] .'><a class="mailto" href="' . $productShopper['mail_to'] . '"><span class="mail">' . $productShopper['email'] . '</span></a></td>
 			<td rowspan ="'.$productShopper['nb_orders'] .'class="shopper_phone">' . $productShopper['phone'] . '</td>';
-            $first=true;
+            $first=TRUE;
 			foreach ($productShopper['order_info'] as $order_info) {
 				if (!$first)
 				$html .= '<tr class="row'.$i.'">';
@@ -1426,7 +1435,7 @@ class ShopFunctions {
 			<td class="order_number">';
 				$link = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $order_info['order_id'];
 				$html .= JHTML::_ ('link', JRoute::_ ($link), $order_info['order_number'], array('title' => JText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $order_info['order_number']));
-			$first=false;
+			$first=FALSE;
 			$html .= '
 					</td>
 				</tr>

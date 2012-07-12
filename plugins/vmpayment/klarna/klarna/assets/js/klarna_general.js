@@ -32,7 +32,7 @@ var klarna = {
             }
 
             if (jQuery('#klarna_red_baloon').length == 0) {
-                klarna.errorHandler.create();
+                klarna.errorHandler.create(parentBox);
             }
 
             jQuery('#klarna_red_baloon_content').html(errorHTML);
@@ -42,13 +42,81 @@ var klarna = {
         /**
          * Creates the red baloon used to show error messages
          */
-        create: function() {
+        create: function(parentBox) {
             jQuery(
                 '<div class="klarna_red_baloon" id="klarna_red_baloon">' +
                 '<div class="klarna_red_baloon_top"></div>' +
                 '<div class="klarna_red_baloon_middle" id="klarna_red_baloon_content"></div>' +
                 '<div class="klarna_red_baloon_bottom"></div>' +
-                '</div>').appendTo('body');
+                '</div>').appendTo(parentBox);
+        },
+
+
+         prepareRedBaloon: function () {
+            if ((typeof klarna.global.red_baloon_content != 'undefined') &&
+                (klarna.global.red_baloon_content != '')
+            ) {
+                var box;
+                if (klarna.global.red_baloon_box != '') {
+                    box = jQuery('#' + klarna.global.red_baloon_box)
+                }
+                this.show(box, klarna.global.red_baloon_content);
+            }
+          },
+
+         showRedBaloon: function (box) {
+            if (this.busy)
+                return;
+
+            this.busy = true;
+            var field;
+            if (typeof box == 'undefined') {
+                if (gChoice == klarna.global.invoice_name) {
+                    box = jQuery(document).find('#klarna_box_invoice');
+                } else if (gChoice == klarna.global.part_name) {
+                    box = jQuery(document).find('#klarna_box_part');
+                } else if (gChoice == klarna.global_spec_name) {
+                    box = jQuery(document).find('#klarna_box_spec');
+                }
+            }
+
+            if (typeof box != 'undefined') {
+                field = box.find('.klarna_logo');
+            }
+
+            if (typeof field == 'undefined' || field.length == 0) {
+                field = jQuery('.klarna_logo:visible');
+            }
+
+            if (field.length > 0) {
+                var callback = this.fadeRedBaloon;
+                var position = field.offset();
+                var top = (position.top - jQuery('#klarna_red_baloon').height()) + (jQuery('#klarna_red_baloon').height() / 6);
+                if (top < 0) top = 10;
+                position.top = top;
+                var left = (position.left + field.width()) - (jQuery('#klarna_red_baloon').width() / 2);
+
+                position.left = left;
+
+                jQuery('#klarna_red_baloon').css(position);
+
+                jQuery('#klarna_red_baloon').fadeIn('slow', function () {
+                    setTimeout(callback, 3000);
+                });
+            } else {
+                this.busy = false;
+            }
+        },
+
+         fadeRedBaloon: function () {
+            this.busy = false;
+            jQuery('#klarna_red_baloon').addClass('klarna_fading_baloon');
+        },
+
+        hideRedBaloon: function () {
+            this.busy = false;
+            this.showing_address_error = false;
+            jQuery('#klarna_red_baloon').remove();
         }
     },
 	hidePaymentOption : function  (box, animate) {
@@ -123,14 +191,15 @@ var klarna = {
 	setGender : function  (context, gender) {
 		// This should be refactored to not be able to set other non-gender radio buttons
 		var value;
-		if (gender == 'm' || gender == '1')
-		{
-			jQuery('.Klarna_radio[value=1]', context).attr('checked', 'checked');
-		}
-		else if (gender == 'f' || gender == '0')
+        if (gender == 'f' || gender == '0')
 		{
 			jQuery('.Klarna_radio[value=0]', context).attr('checked', 'checked');
 		}
+		else //if (gender == 'm' || gender == '1')
+		{
+			jQuery('.Klarna_radio[value=1]', context).attr('checked', 'checked');
+		}
+
 	},
 
 	/**
@@ -210,7 +279,7 @@ var klarna = {
 			klarna.hideBlueBaloon();
 		});
 
-		jQuery('input.Klarna_radio', opts).bind('change', function () {
+		jQuery('input.gender.Klarna_radio', opts).bind('change', function () {
 			klarna.gender = jQuery(this).val();
 		});
 
@@ -304,6 +373,47 @@ var klarna = {
 		}
 	},
 
+	showRedBaloon : function  (box) {
+		if (klarna.red_baloon_busy)
+			return;
+
+		klarna.red_baloon_busy = true;
+		var field;
+		if (typeof box == 'undefined') {
+			if (klarna.gChoice == "klarna_invoice") {
+				box = jQuery('#klarna_box_invoice');
+			} else if (klarna.gChoice == "klarna_partPayment") {
+				box = jQuery('#klarna_box_part');
+			} else if (klarna.gChoice == "klarna_SpecCamp") {
+				box = jQuery('#klarna_box_spec');
+			}
+		}
+
+		if (typeof box != 'undefined') {
+			field = box.find('.klarna_logo');
+		}
+
+		if (typeof field == 'undefined' || field.length == 0) {
+			field = jQuery('.klarna_logo:visible');
+		}
+
+		var position = field.offset();
+		var top = (position.top - jQuery('#klarna_red_baloon').height()) + (jQuery('#klarna_red_baloon').height() / 6);
+		if (top < 0) top = 10;
+		position.top = top;
+
+		var left = (position.left + field.width()) - (jQuery('#klarna_red_baloon').width() / 2);
+
+		position.left = left;
+
+		jQuery('#klarna_red_baloon').css(position);
+
+		jQuery('#klarna_red_baloon').fadeIn('slow', function () {
+			klarna.red_baloon_busy = false;
+
+			setTimeout('klarna.fadeRedBaloon()', 3000);
+		});
+	},
 	getAddress : function  (parentBox, pno_value, companyAllowed)
 	{
 		if (!klarna.address_busy)
@@ -404,7 +514,7 @@ var klarna = {
 		jQuery('#klarna_blue_baloon').hide();
 	},
 
-	showRedBaloon : function  (box) {
+	showRedBaloonX : function  (box) {
 		if (klarna.red_baloon_busy)
 			return;
 

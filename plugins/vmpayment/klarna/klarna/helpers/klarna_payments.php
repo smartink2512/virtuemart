@@ -224,9 +224,11 @@ class klarna_payments {
 		$symbol = KlarnaHandler::getCurrencySymbolForCountry ($method, $this->country);
 
 		if (KlarnaHandler::getKlarnaError ($klarnaError, $klarnaOption)) {
-			$payment_params['red_baloon_content'] = $klarnaError;
-			$payment_params['red_baloon_paymentBox'] = 'klarna_box_' . $klarnaOption;
-			KlarnaHandler::clearKlarnaError ();
+			if ($klarnaOption =='klarna_'.$payment_type) {
+				$payment_params['red_baloon_content'] = $klarnaError;
+				$payment_params['red_baloon_paymentBox'] = 'klarna_box_' . $klarnaOption;
+				//KlarnaHandler::clearKlarnaError ();
+			}
 		}
 
 		// Something went wrong, refill what we can.
@@ -235,8 +237,10 @@ class klarna_payments {
 
 		if (!empty($sessionKlarna)) {
 			$sessionKlarnaData = unserialize ($sessionKlarna);
-			$klarnaData = $sessionKlarnaData->KLARNA_DATA;
-			$this->setPreviouslyFilledIn ($klarnaData);
+			if (isset($sessionKlarnaData->KLARNA_DATA)) {
+				$klarnaData = $sessionKlarnaData->KLARNA_DATA;
+				$this->setPreviouslyFilledIn ($klarnaData);
+			}
 		}
 
 		$payment_params['paymentPlan'] = '';

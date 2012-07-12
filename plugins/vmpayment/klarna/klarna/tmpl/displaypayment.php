@@ -18,7 +18,7 @@
 		<tr>
 			<td >
 				<input class="klarnaPayment" data-stype="<?php echo $viewData['stype'] ?>" id="<?php echo $viewData['id'] ?>" type="radio"
-				       name="virtuemart_paymentmethod_id" value="<?php echo  $viewData['virtuemart_paymentmethod_id'] ?>"/>
+				       name="virtuemart_paymentmethod_id" value="<?php echo  $viewData['virtuemart_paymentmethod_id'] ?>" <?php echo  $viewData['selected'] ?> />
 				<input value="<?php echo $viewData['id'] ?>" type="hidden" name="klarna_paymentmethod"/>
 				<label for="<?php echo $viewData['id']?>">
 					<?php echo $viewData['module'] ?>

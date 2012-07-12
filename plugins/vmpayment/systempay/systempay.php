@@ -150,7 +150,7 @@ function getTableSQLFields() {
      * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
      *
      */
-    public function plgVmOnSelectCheckPayment(VirtueMartCart $cart) {
+	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart,  &$msg) {
 	return parent::OnSelectCheck($cart);
     }
 

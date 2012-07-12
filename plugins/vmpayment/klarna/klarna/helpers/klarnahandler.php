@@ -215,8 +215,10 @@ class KlarnaHandler {
 		$vendor_id = 1;
 		$vendor_currency = VirtueMartModelVendor::getVendorCurrency ($vendor_id);
 
-		$currency = CurrencyDisplay::getInstance ();
-		$invoice_fee = $currency->convertCurrencyTo ($cartPaymentCurrency, $method_invoice_fee);
+		//$currency = CurrencyDisplay::getInstance ();
+		$paymentCurrency = CurrencyDisplay::getInstance ($cartPaymentCurrency);
+		$invoice_fee = $paymentCurrency->convertCurrencyTo ($cartPaymentCurrency, $method_invoice_fee, false);
+		$currencyDisplay = CurrencyDisplay::getInstance ($cartPricesCurrency);
 
 		$paymentCurrency = CurrencyDisplay::getInstance ($cartPaymentCurrency);
 		$display_invoice_fee = $paymentCurrency->priceDisplay ($method_invoice_fee, $cartPaymentCurrency);
@@ -291,6 +293,7 @@ class KlarnaHandler {
 		$klarna['company_name'] = JRequest::getVar ('klarna_companyName');
 		$klarna['phone'] = JRequest::getVar ($kIndex . 'phone');
 		$klarna['consent'] = JRequest::getVar ($kIndex . 'consent');
+		$klarna['klarna_paymentmethod'] = JRequest::getVar ($kIndex . 'paymentmethod');
 		switch (JRequest::getVar ($kIndex . 'gender')) {
 			case KlarnaFlags::MALE :
 				$klarna['title'] = JText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MR');
@@ -604,9 +607,12 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 				$flag = "<img src='" . $flagImg . "' />";
 				try {
 					$settings = self::getCountryData ($method, $country);
-
+					$pc_type= KlarnaHandler::getKlarna_pc_type ();
+					if (empty($pc_type)) {
+						return false;
+					}
 					$klarna = new Klarna_virtuemart();
-					$klarna->config ($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], KlarnaHandler::getKlarnaMode ($method, $settings['country_code_3']), VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), TRUE);
+					$klarna->config ($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], KlarnaHandler::getKlarnaMode ($method, $settings['country_code_3']), VMKLARNA_PC_TYPE, $pc_type, TRUE);
 					// fetch pclass from file
 					$klarna->fetchPClasses ($country);
 					$success .= shopFunctions::getCountryByID ($settings['virtuemart_country_id']);
@@ -910,9 +916,9 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			return FALSE;
 		}
 		$sessionKlarnaData = unserialize ($sessionKlarna);
-		if (isset($sessionKlarnaData->klarna_error)) {
+		if (isset($sessionKlarnaData->klarna_error) and isset( $sessionKlarnaData->klarna_paymentmethod)) {
 			$klarnaError = $sessionKlarnaData->klarna_error; // it is a message to display
-			$klarnaOption = $sessionKlarnaData->klarna_option;
+			$klarnaOption = $sessionKlarnaData->klarna_paymentmethod;
 			return TRUE;
 		} else {
 			return FALSE;
@@ -931,7 +937,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			$sessionKlarnaData = unserialize ($sessionKlarna);
 		}
 		$sessionKlarnaData->klarna_error = $msg;
-		$sessionKlarnaData->klarna_option = $option;
+		//$sessionKlarnaData->klarna_option = $option;
 		$session->set ('Klarna', serialize ($sessionKlarnaData), 'vm');
 	}
 
@@ -946,7 +952,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			$sessionKlarnaData = unserialize ($sessionKlarna);
 			if (isset($sessionKlarnaData->klarna_error)) {
 				unset($sessionKlarnaData->klarna_error);
-				unset($sessionKlarnaData->klarna_option);
+				//unset($sessionKlarnaData->klarna_option);
 				$session->set ('Klarna', serialize ($sessionKlarnaData), 'vm');
 			}
 		}
@@ -1031,10 +1037,15 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 	 */
 	static function getKlarna_pc_type () {
 
-		$safePath = VmConfig::get ('forSale_path', 0);
+		$safePath = VmConfig::get ('forSale_path', '');
 		if ($safePath) {
 			return $safePath . "klarna/klarna.json";
 		} else {
+			$suggestedPath=shopFunctions::getSuggestedSafePath();
+			//VmError('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
+			$uri = JFactory::getURI();
+			$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=config';
+			VmError( JText::sprintf('VMPAYMENT_KLARNA_CANNOT_STORE_CONFIG', '<a href="'.$link.'">'.$link.'</a>', JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH')) );
 			return NULL;
 		}
 	}
@@ -1074,13 +1085,15 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
 		}
 		$errors = array();
+
+		/*
 		if ($country3 == "DEU") {
 			$consent = JRequest::getVar ('klarna_consent');
 			if ($consent != 'on') {
 				$errors = JText::_ ('VMPAYMENT_KLARNA_NO_CONSENT');
 			}
 		}
-		return TRUE;
+
 		// todo later
 		$userFieldsModel = VmModel::getModel ('userfields');
 
@@ -1096,29 +1109,95 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		$required_shopperfields_bycountry = KlarnaHandler::getKlarnaSpecificShopperFields ();
 
 		$required_shopperfields = array_merge ($required_shopperfields_vm, $required_shopperfields_bycountry[$country3]);
-		$return = TRUE;
 
 		foreach ($userFields as $userField) {
 			if (in_array ($userField->name, $required_shopperfields)) {
 				if (empty($data[$userField->name])) {
-					$errors[] = $userField->value;
+					$errors[] = JText::_($userField->title);
 				}
 			}
 		}
+
+*/
+// Quick and durty .. but it works
+		$kIndex="klarna_";
+		 if ( $country3== "SWE") {
+            if (JRequest::getVar( 'klarna_invoice_type') == 'company') {
+                if ( strlen(trim((string) JRequest::getVar( 'klarna_company_name') )) == 0) {
+                    $errors[] ='VMPAYMENT_KLARNA_COMPANY_NAME';
+                }
+            } else {
+                if (!KlarnaEncoding::checkPNO(JRequest::getVar( $kIndex . 'socialNumber'), KlarnaEncoding::PNO_SE)) {
+                    $errors[] = 'VMPAYMENT_KLARNA_PERSONALORORGANISATIO_NUMBER';
+                }
+            }
+        } else   {
+	         if (strlen(trim((string) JRequest::getVar( $kIndex . 'phone'))) == 0) {
+                $errors[] = 'VMPAYMENT_KLARNA_PHONE_NUMBER';
+             }
+            if (strlen(trim((string)JRequest::getVar( $kIndex . 'street'))) == 0) {
+                $errors[] ='VMPAYMENT_KLARNA_STREET_ADRESS';
+            }
+            if (strlen(trim((string) JRequest::getVar( $kIndex . 'first_name'))) == 0) {
+                $errors[] ='VMPAYMENT_KLARNA_FIRST_NAME';
+            }
+            if (strlen(trim((string) JRequest::getVar( $kIndex . 'last_name'))) == 0) {
+                $errors[] = 'VMPAYMENT_KLARNA_LAST_NAME';
+            }
+            if (strlen(trim((string) JRequest::getVar( $kIndex . 'city'))) == 0) {
+                $errors[] = 'VMPAYMENT_KLARNA_ADDRESS_CITY';
+            }
+            if (strlen(trim((string) JRequest::getVar( $kIndex . 'zip'))) == 0) {
+                $errors[] = 'VMPAYMENT_KLARNA_ADDRESS_ZIP';
+            }
+        }
+        // German and dutch
+        if ($country3 == "NLD" || $country3 == "DEU") {
+            if (strlen(trim((string) JRequest::getVar( $kIndex . 'house'))) == 0) {
+                $errors[] = 'VMPAYMENT_KLARNA_STREET_ADRESS';
+            }
+            if ($country3 == "DEU") {
+                if (JRequest::getVar( 'consent') != 'on') {
+                    $errors[] = 'VMPAYMENT_KLARNA_NO_CONSENT';
+                }
+            }
+            $pno = JRequest::getVar( $kIndex . 'birth_day') .
+                      JRequest::getVar( $kIndex . 'birth_month') .
+                     JRequest::getVar( $kIndex . 'birth_year') ;
+            if (strlen(trim((string) $pno)) == 0) {
+                $errors[] = 'VMPAYMENT_KLARNA_PERSONALORORGANISATIO_NUMBER';
+            }
+            if (strlen(trim((string)JRequest::getVar( $kIndex . 'gender'))) == 0) {
+                $errors[] ='VMPAYMENT_KLARNA_SEX';
+            }
+        }
+ // General
+
+        if (strlen(trim((string) JRequest::getVar( $kIndex . 'emailAddress'))) == 0) {
+            $errors[] = 'VMPAYMENT_KLARNA_EMAIL';
+        }
+        // Norwegian, Danish and Finnish
+        if (( $country3== "NOR")  || ( $country3== "DNK")   || $country3 == "FIN") {
+            if (strlen(trim((string) JRequest::getVar( $kIndex . 'pnum'))) == 0) {
+                $errors[] ='VMPAYMENT_KLARNA_PERSONALORORGANISATIO_NUMBER';
+            }
+        }
+
+
 		if (!empty($errors)) {
 			$msg = JText::_ ('VMPAYMENT_KLARNA_ERROR_TITLE_2');
 			foreach ($errors as $error) {
-				$msg .= "<li> -" . $error . "</li>";
+				$msg .= "<li>" .JText::_( $error) . "</li>";
 			}
 			self::setKlarnaErrorInSession ($msg, $option);
 
-			return FALSE;
+			return $msg;
 		}
-		return TRUE;
+		return NULL;
 
 	}
 
-	/**
+/**
 	 * @static
 	 * @return array
 	 */
@@ -1133,7 +1212,6 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			"DEU" => array("birthday", "house_no")
 		);
 	}
-
 	/**
 	 * @return array
 	 */

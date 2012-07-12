@@ -118,7 +118,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	 * @author Valerie Cartan Isaksen
 	 */
 	function plgVmDisplayListFEPayment (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
-		JHTML::_ ('behavior.tooltip');
+		//JHTML::_ ('behavior.tooltip');
 
 		if ($this->getPluginMethods ($cart->vendorId) === 0) {
 			if (empty($this->_name)) {
@@ -335,7 +335,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	 * @param VirtueMartCart $cart
 	 * @return null if payment not selected; true if card infos are correct; string containing the errors id cc is not valid
 	 */
-	function plgVmOnSelectCheckPayment (VirtueMartCart $cart) {
+	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart,  &$msg) {
 
 		if (!$this->selectedThisByMethodId ($cart->virtuemart_paymentmethod_id)) {
 			return NULL; // Another method was selected, do nothing
