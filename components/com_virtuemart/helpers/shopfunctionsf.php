@@ -81,7 +81,7 @@ class shopFunctionsF {
 		if($orderable){
 			$html = '<input type="submit" name="addtocart" class="addtocart-button" value="'.JText::_('COM_VIRTUEMART_CART_ADD_TO') .'" title="'.JText::_('COM_VIRTUEMART_CART_ADD_TO') .'" />';
 		} else {
-			$html = '<input type="submit" name="addtocart" class="addtocart-button-disabled" value="'.JText::_('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT') .'" title="'.JText::_('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT') .'" />';
+			$html = '<input name="addtocart" class="addtocart-button-disabled" value="'.JText::_('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT') .'" title="'.JText::_('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT') .'" />';
 		}
 
 		return $html;
