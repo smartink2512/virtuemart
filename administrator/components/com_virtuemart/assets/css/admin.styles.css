@@ -277,6 +277,7 @@ div.threecols ul   {
 .element-hidden{display: none;}
 .datepicker {
     text-align: center;
+    width:130px;
 }
 a.fg-button, .always-left{
     float: left !important;
