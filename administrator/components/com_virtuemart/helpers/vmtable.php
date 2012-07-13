@@ -503,35 +503,41 @@ class VmTable extends JTable{
 				//Lets check if the user is admin or the mainvendor
 				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 
-				$loggedVendorId = Permissions::getInstance()->isSuperVendor();
-
-				if(empty($this->user_is_vendor)){
-					if($loggedVendorId and $loggedVendorId !== 0){
-						if(get_class($this)!=='TableVmusers'){
-							$this->virtuemart_vendor_id = 1;
-						} else {
-							$this->virtuemart_vendor_id = 0;
-						}
-
-					} else {
-						$this->virtuemart_vendor_id = 0;
-					}
+				if(get_class($this)!=='TableVmusers'){
+					$this->virtuemart_vendor_id = 1;
 				} else {
 					//We are in the user table
 					$tbl_key = $this->_tbl_key ;
-					$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` ';
+					$q = 'SELECT `virtuemart_vendor_id`,`user_is_vendor` FROM `' . $this->_tbl . '` ';
 					$q .= 'WHERE `' . $this->_tbl_key.'`='.$this->$tbl_key;
 					$this->_db->setQuery($q);
-					$virtuemart_vendor_id = $this->_db->loadResult();
-					if(!empty($virtuemart_vendor_id) and $loggedVendorId!=$virtuemart_vendor_id){
-						//vmWarn('COM_VIRTUEMART_NOT_SAME_VENDOR',$loggedVendorId,$virtuemart_vendor_id
-						vmWarn('Stop try to hack this store, you got logged');
-						vmdebug('Hacking attempt stopped, logged vendor '.$loggedVendorId.' but data belongs to '.$virtuemart_vendor_id);
-						return false;
+					$vmuser = $this->_db->loadRow();
+
+					$virtuemart_vendor_id = $vmuser[0];
+					$user_is_vendor = $vmuser[1];
+
+					if(empty($user_is_vendor)){
+						$this->virtuemart_vendor_id = 0;
 					} else {
-						$this->virtuemart_vendor_id = 1;
+
+						$loggedVendorId = Permissions::getInstance()->isSuperVendor();
+						$admin = Permissions::getInstance()->check('admin');
+
+						if(!$admin and !empty($virtuemart_vendor_id) and $loggedVendorId!=$virtuemart_vendor_id ){
+							//vmWarn('COM_VIRTUEMART_NOT_SAME_VENDOR',$loggedVendorId,$virtuemart_vendor_id
+							vmWarn('Stop try to hack this store, you got logged');
+							vmdebug('Hacking attempt stopped, logged vendor '.$loggedVendorId.' but data belongs to '.$virtuemart_vendor_id);
+							return false;
+						} else {
+							if(!empty($virtuemart_vendor_id)){
+								$this->virtuemart_vendor_id = $virtuemart_vendor_id;
+							} else {
+								$this->virtuemart_vendor_id = $loggedVendorId;
+							}
+						}
 					}
 				}
+
 			}
 
 
