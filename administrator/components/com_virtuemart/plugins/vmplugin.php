@@ -74,7 +74,7 @@ abstract class vmPlugin extends JPlugin {
 			$lang->load ($filename, JPATH_ADMINISTRATOR, 'en-GB', TRUE);
 			$lang->load ($filename, JPATH_ADMINISTRATOR, $lang->getDefault (), TRUE);
 		}
-		$xx=$lang->getUsed ();
+
 		$knownLanguages=$lang->getKnownLanguages();
 		foreach($knownLanguages as $key => $knownLanguage) {
 			$lang->load ($filename, JPATH_ADMINISTRATOR, $key, TRUE);
