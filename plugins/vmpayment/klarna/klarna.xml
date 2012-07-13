@@ -23,6 +23,7 @@
 	<param type="spacer" default="VMPAYMENT_KLARNA_CONF_PAYMENT_TITLE" level="level1" />
 	<param type="klarnalogo"   level="level1"  />
 	<param type="klarnacurl" />
+	<param name="documentation" type="klarnalabel" label="VMPAYMENT_KLARNA_DOCUMENTATION" default="&lt;a href=&quot;https://static.klarna.com/integration_sales/partner/Klarna_documentation.pdf&quot; target=&quot;_blank&quot;&gt;Documentation&lt;/a&gt;"/>/>
 
 	<param type="klarnacountrylogo" default="SV" level="level1" />
 	<param name="klarna_active_swe" type="radio" default="0"   label="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY" description="VMPAYMENT_KLARNA_CONF_ACTIVE_COUNTRY_DESC" >
