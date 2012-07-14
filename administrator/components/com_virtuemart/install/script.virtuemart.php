@@ -250,9 +250,48 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->adjustDefaultOrderStates();
 
+			$this->fixOrdersVendorId();
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
+		}
+
+		private function fixOrdersVendorId(){
+
+			$multix = Vmconfig::get('multix','none');
+
+			if( $multix == 'none'){
+
+				if(empty($this->_db)){
+					$this->_db = JFactory::getDBO();
+				}
+
+				$q = 'SELECT `virtuemart_user_id` FROM #__virtuemart_orders WHERE virtuemart_vendor_id = "0" ';
+				$this->_db->setQuery($q);
+				$res = $this->_db->loadResult();
+
+				if($res){
+					vmdebug('fixOrdersVendorId ',$res);
+					$q = 'UPDATE #__virtuemart_orders SET `virtuemart_vendor_id`=1 WHERE virtuemart_vendor_id = "0" ';
+					$this->_db->setQuery($q);
+					$res = $this->_db->query();
+					$err = $this->_db->getErrorMsg();
+					if(!empty($err)){
+						vmError('fixOrdersVendorId update orders '.$err);
+					}
+					$q = 'UPDATE #__virtuemart_order_items SET `virtuemart_vendor_id`=1 WHERE virtuemart_vendor_id = "0" ';
+					$this->_db->setQuery($q);
+					$res = $this->_db->query();
+					$err = $this->_db->getErrorMsg();
+					if(!empty($err)){
+						vmError('fixOrdersVendorId update order_item '.$err);
+					}
+				}
+
+			}
+
+
+
 		}
 
 		private function adjustDefaultOrderStates(){

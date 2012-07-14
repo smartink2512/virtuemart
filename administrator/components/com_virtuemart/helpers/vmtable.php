@@ -498,10 +498,61 @@ class VmTable extends JTable{
 		if(isset($this->virtuemart_vendor_id )){
 
 			$multix = Vmconfig::get('multix','none');
-			if( $multix == 'none'){
+			//Lets check if the user is admin or the mainvendor
+			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 
-				//Lets check if the user is admin or the mainvendor
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+			$virtuemart_vendor_id = false;
+			if( $multix == 'none' and get_class($this)!=='TableVmusers'){
+
+				$this->virtuemart_vendor_id = 1;
+
+			} else {
+
+				$loggedVendorId = Permissions::getInstance()->isSuperVendor();
+				$admin = Permissions::getInstance()->check('admin');
+
+				$tbl_key = $this->_tbl_key ;
+				if(get_class($this)!=='TableVmusers'){
+					$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key.'`='.$this->$tbl_key;
+					$this->_db->setQuery($q);
+					$virtuemart_vendor_id = $this->_db->loadResult();
+				} else {
+					$q = 'SELECT `virtuemart_vendor_id`,`user_is_vendor` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key.'`='.$this->$tbl_key;
+					$this->_db->setQuery($q);
+					$vmuser = $this->_db->loadRow();
+
+					if($vmuser and count($vmuser)>1){
+						$virtuemart_vendor_id = $vmuser[0];
+						$user_is_vendor = $vmuser[1];
+
+						if($multix == 'none' ){
+							if(empty($user_is_vendor)){
+								$this->virtuemart_vendor_id = 0;
+							} else {
+								$this->virtuemart_vendor_id = 1;
+							}
+						}
+					}
+				}
+
+				if(!$admin and !empty($virtuemart_vendor_id) and $loggedVendorId!=$virtuemart_vendor_id ){
+					//vmWarn('COM_VIRTUEMART_NOT_SAME_VENDOR',$loggedVendorId,$virtuemart_vendor_id
+					vmWarn('Stop try to hack this store, you got logged');
+					vmdebug('Hacking attempt stopped, logged vendor '.$loggedVendorId.' but data belongs to '.$virtuemart_vendor_id);
+					return false;
+				} else if (!$admin) {
+					if($virtuemart_vendor_id){
+						$this->virtuemart_vendor_id = $virtuemart_vendor_id;
+					}
+				} else if (!empty($virtuemart_vendor_id) and $loggedVendorId!=$virtuemart_vendor_id) {
+					vmInfo('Admin with vendor id'.$loggedVendorId.' is using for storing vendor id '.$this->virtuemart_vendor_id);
+				}
+
+			}
+
+
+/*			//if(get_class($this)!== 'TableOrders' and get_class($this)!== 'TableInvoices' and get_class($this)!== 'TableOrder_items'){
+			if( $multix == 'none'){
 
 				if(get_class($this)!=='TableVmusers'){
 					$this->virtuemart_vendor_id = 1;
@@ -592,7 +643,7 @@ class VmTable extends JTable{
 					}
 				}
 
-			}
+			}*/
 
 		}
 
