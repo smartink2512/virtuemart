@@ -456,7 +456,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				$html .='<span class="stockablecartvariant_attribute"> '.JText::_($attribute).' </span>';
 			}
 		}		// $html .='<span>'.$param->Morecomment.'</span>';
-		$html.=$product->test_parameter.'</div>';
+		$html.='</div>';
 		return true;
 		//vmdebug('stockable attributs',$plgParam);
 	}
