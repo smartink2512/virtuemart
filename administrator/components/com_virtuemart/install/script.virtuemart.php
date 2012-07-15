@@ -271,7 +271,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$res = $this->_db->loadResult();
 
 				if($res){
-					vmdebug('fixOrdersVendorId ',$res);
+					//vmdebug('fixOrdersVendorId ',$res);
 					$q = 'UPDATE #__virtuemart_orders SET `virtuemart_vendor_id`=1 WHERE virtuemart_vendor_id = "0" ';
 					$this->_db->setQuery($q);
 					$res = $this->_db->query();

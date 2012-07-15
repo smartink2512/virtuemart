@@ -242,24 +242,37 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$weight_cond = $this->_weightCond ($orderWeight, $method);
 		$nbproducts_cond = $this->_nbproductsCond ($cart, $method);
 		$orderamount_cond = $this->_orderamountCond ($cart_prices, $method);
-		$zip_cond = TRUE;
-		if (isset($address['zip'])) {
-			$zip_cond = $this->_zipCond ($address['zip'], $method);
+
+		if (!isset($address['zip'])) {
+			$address['zip'] = 0;
 		}
+
+		$zip_cond = $this->_zipCond ($address['zip'], $method);
 
 		if (!isset($address['virtuemart_country_id'])) {
 			$address['virtuemart_country_id'] = 0;
 		}
 
 		if (in_array ($address['virtuemart_country_id'], $countries) || count ($countries) == 0) {
-			$cond=$weight_cond AND $zip_cond AND $nbproducts_cond AND $orderamount_cond;
-			if ($cond) {
+
+			//vmdebug('checkConditions '.$method->name.' fit ',$weight_cond,(int)$zip_cond,$nbproducts_cond,$orderamount_cond);
+
+			$allconditions = (int) $weight_cond + (int)$zip_cond + (int)$nbproducts_cond + (int)$orderamount_cond;
+			if($allconditions === 4){
+				return TRUE;
+			} else {
+				return FALSE;
+			}
+			//$cond=$weight_cond AND $zip_cond AND $nbproducts_cond AND $orderamount_cond;
+
+/*			if ($cond) {
+				vmdebug('checkConditions '.$method->name.' fits?');
 				// this line does not work http://forum.virtuemart.net/index.php?topic=104642.15
 			//if ($weight_cond AND $zip_cond AND $nbproducts_cond AND $orderamount_cond) {
 				return TRUE;
-			}
+			}*/
 		}
-
+		vmdebug('checkConditions '.$method->name.' does not fit');
 		return FALSE;
 	}
 
@@ -289,8 +302,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$weight_cond = (($orderWeight >= $method->weight_start AND $orderWeight <= $method->weight_stop)
 			OR
 			($method->weight_start <= $orderWeight AND $method->weight_stop === ''));
+
 		vmAdminInfo ('weigth_countries _weightCond orderWeight:' . $orderWeight . ' method->weight_start:' . $method->weight_start . ' method->weight_stop:' .
 			$method->weight_stop . ' result:' . $weight_cond);
+
 		return $weight_cond;
 	}
 
@@ -306,15 +321,16 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 			$nbproducts += $product->quantity;
 		}
 		if (!isset($method->nbproducts_start) and !isset($method->nbproducts_stop)) {
-			return TRUE;
+			return true;
 		}
 		if ($nbproducts) {
 			$nbproducts_cond = ($nbproducts >= $method->nbproducts_start AND $nbproducts <= $method->nbproducts_stop
 				OR
 				($method->nbproducts_start <= $nbproducts AND ($method->nbproducts_stop == 0)));
 		} else {
-			$nbproducts_cond = TRUE;
+			$nbproducts_cond = true;
 		}
+
 		vmAdminInfo ('weigth_countries _nbproductsCond nbproducts:' . $nbproducts . ' method->nbproducts_start:' . $method->nbproducts_start .
 			' method->nbproducts_stop:' .
 			$method->nbproducts_stop . ' result:' . $nbproducts_cond);
@@ -329,15 +345,16 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	private function _orderamountCond ($cart_prices, $method) {
 
 		if (!isset($method->orderamount_start) AND !isset($method->orderamount_stop)) {
-			return TRUE;
+			return true;
 		}
 		if ($cart_prices['salesPrice']) {
 			$orderamount_cond = ($cart_prices['salesPrice'] >= $method->orderamount_start AND $cart_prices['salesPrice'] <= $method->orderamount_stop
 				OR
 				($method->orderamount_start <= $cart_prices['salesPrice'] AND ($method->orderamount_stop == 0)));
 		} else {
-			$orderamount_cond = TRUE;
+			$orderamount_cond = true;
 		}
+
 		vmAdminInfo ('weigth_countries _orderamountCond cart_amount:' . $cart_prices['salesPrice'] . ' method->orderamount_start:' . $method->orderamount_start .
 			' method->orderamount_stop:' .
 			$method->orderamount_stop . ' result:', $orderamount_cond);
@@ -355,7 +372,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	private function _zipCond ($zip, $method) {
 
 		$zip = (int)$zip;
-		$zip_cond = TRUE;
+		$zip_cond = true;
 		if (!empty($zip) ) {
 
 			if(!empty($method->zip_start) and !empty( $method->zip_stop)){
@@ -365,7 +382,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 			} else if (!empty($method->zip_stop)) {
 				$zip_cond = ($zip <= $method->zip_stop);
 			}
+		} else if(!empty($method->zip_start) or !empty( $method->zip_stop)){
+			$zip_cond = false;
 		}
+
 		vmAdminInfo ('weigth_countries _zipCond zip:' . $zip, ' method->zip_start:' . $method->zip_start .
 			' method->zip_stop:' .
 			$method->zip_stop . ' result:' . $zip_cond);
