@@ -984,7 +984,7 @@ class ShopFunctions {
 			vmError ('getOrderStatusName: couldnt find order_status_name for ' . $_code);
 			return 'current order status broken';
 		} else {
-			return $_r->order_status_name;
+			return JText::_($_r->order_status_name);
 		}
 
 	}

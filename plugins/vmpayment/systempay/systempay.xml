@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" method="upgrade">
     <name>VM - Payment, Systempay</name>
-    <creationDate>${PHING.VM.RELDATE}</creationDate>
+    <creationDate>July 04 2012</creationDate>
     <author>Lyra Network</author>
     <authorEmail>supportvad@lyra-network.com</authorEmail>
     <authorUrl>http://www.lyra-network.com</authorUrl>
     <copyright>Copyright Lyra Network.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <version>${PHING.VM.RELEASE}</version>
+    <version>2.0.8c</version>
     <description>
     	<![CDATA[<a href="http://www.lyra-network.com" target="_blank">Systempay</a> is a multi bank payment provider. ]]>
     </description>
@@ -32,17 +32,18 @@
     <params addpath="/administrator/components/com_virtuemart/elements">
 	<param type="vmjpluginwarning" />
 
-	<param type="spacer" default="VMPAYMENT_SYSTEMPAY_MODULE_INFORMATION_TITLE" level="level1" />
-	<param type="spacer" default="VMPAYMENT_SYSTEMPAY_MODULE_INFORMATION" level="level1" />
+	<param type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_MODULE_INFORMATION_TITLE" level="level1" />
+	<param type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_MODULE_INFORMATION" level="level1" />
 
 	<param name="developed_by" type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_DEVELOPED_BY" default="&lt;a href=&quot;http://www.lyra-network.com/&quot; target=&quot;_blank&quot;&gt;Lyra network&lt;/a&gt;"/>
 	<param name="contact_email" type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_CONTACT_EMAIL" default="&lt;a href=&quot;mailto:supportvad@lyra-network.com&quot;&gt;supportvad@lyra-network.com&lt;/a&gt;"/>
 	<param name="contrib_version" type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_CONTRIB_VERSION" default="1.2"/>
 	<param name="gateway_version" type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_GATEWAY_VERSION" default="V2"/>
-	<param name="documentation" type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_DOC" default="&lt;a href=&quot;http://media.payzen.eu/documentation_support/virtuemart_2.pdf&quot; target=&quot;_blank&quot;&gt;Documentation&lt;/a&gt;"/>/>
+	<param name="documentation" type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_DOC" default="&lt;a href=&quot;http://media.payzen.eu/documentation_support/virtuemart_2_S.pdf&quot; target=&quot;_blank&quot;&gt;Documentation&lt;/a&gt;"/>/>
 
 	<param type="spacer" default="" level="level1" />
-	<param type="spacer" default="VMPAYMENT_SYSTEMPAY_PAYMENT_MODULE_SETTINGS" level="level1" />
+	
+	<param type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_PAYMENT_MODULE_SETTINGS" level="level1" />
 	<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_SYSTEMPAY_LOGOS"
 			description="VMPAYMENT_SYSTEMPAY_LOGOS_DESC"
 			directory="/images/stories/virtuemart/payment"
@@ -52,7 +53,9 @@
 	<param name="cost_percent_total" type="text" label="VMPAYMENT_SYSTEMPAY_COST_PERCENT_TOTAL" description="VMPAYMENT_SYSTEMPAY_COST_PERCENT_TOTAL_DESC" />
 	<param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_SYSTEMPAY_TAX" description="VMPAYMENT_SYSTEMPAY_TAX_DESC" />
 
-	<param type="spacer" default="VMPAYMENT_SYSTEMPAY_PAYMENT_GATEWAY_ACCESS" level="level1" />
+	<param type="spacer" default="" level="level1" />
+	
+	<param type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_PAYMENT_GATEWAY_ACCESS" level="level1" />
 
 	<param name="site_id" type="text" size="10" default="" label="VMPAYMENT_SYSTEMPAY_SITE_ID" description="VMPAYMENT_SYSTEMPAY_SITE_ID_DESC"/>
 	<param name="key_test" type="text" size="20" default="" label="VMPAYMENT_SYSTEMPAY_TEST_KEY" description="VMPAYMENT_SYSTEMPAY_TEST_KEY_DESC"/>
@@ -63,7 +66,9 @@
 	</param>
 	<param name="platform_url" type="text" size="50" default="https://paiement.systempay.fr/vads-payment/" label="VMPAYMENT_SYSTEMPAY_PLATFORM_URL" description="VMPAYMENT_SYSTEMPAY_PLATFORM_URL_DESC"/>
 
-	<param type="spacer" default="VMPAYMENT_SYSTEMPAY_PAYMENT_PAGE" level="level1" />
+	<param type="spacer" default="" level="level1" />
+	
+	<param type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_PAYMENT_PAGE" level="level1" />
 
 	<param name="language" type="list" default="fr" label="VMPAYMENT_SYSTEMPAY_LANGUAGE" description="VMPAYMENT_SYSTEMPAY_LANGUAGE_DESC">
 	    <option value="fr">VMPAYMENT_SYSTEMPAY_FRENCH</option>
@@ -102,12 +107,16 @@
 	    <option value="AMEX">American Express</option>
 	</param>
 
-	<param type="spacer" default="VMPAYMENT_SYSTEMPAY_AMOUNT_RESTRICTIONS" level="level1" />
+	<param type="spacer" default="" level="level1" />
+	
+	<param type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_AMOUNT_RESTRICTIONS" level="level1" />
 
 	<param name="min_amount" type="text" size="10" default="" label="VMPAYMENT_SYSTEMPAY_AMOUNT_MIN" description="VMPAYMENT_SYSTEMPAY_AMOUNT_MIN_DESC"/>
 	<param name="max_amount" type="text" size="10" default="" label="VMPAYMENT_SYSTEMPAY_AMOUNT_MAX" description="VMPAYMENT_SYSTEMPAY_AMOUNT_MAX_DESC"/>
 
-	<param type="spacer" default="VMPAYMENT_SYSTEMPAY_RETURN_OPTIONS" level="level1" />
+	<param type="spacer" default="" level="level1" />
+	
+	<param type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_RETURN_OPTIONS" level="level1" />
 
 	<param name="redirect_enabled" type="radio" default="0" label="VMPAYMENT_SYSTEMPAY_REDIRECT_ENABLED" description="VMPAYMENT_SYSTEMPAY_REDIRECT_ENABLED_DESC">
 	    <option value="0">VMPAYMENT_SYSTEMPAY_NO</option>

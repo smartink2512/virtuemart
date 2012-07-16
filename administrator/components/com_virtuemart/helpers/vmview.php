@@ -3,7 +3,7 @@
  * abstract controller class containing get,store,delete,publish and pagination
  *
  *
- * This class provides the functions for the calculatoins
+ * This class provides the functions for the calculations
  *
  * @package	VirtueMart
  * @subpackage Helpers

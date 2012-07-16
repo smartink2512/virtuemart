@@ -31,14 +31,18 @@
 
     <params addpath="/administrator/components/com_virtuemart/elements">
 	<param type="vmjpluginwarning" />
-	<param type="payzenlabel" label="VMPAYMENT_PAYZEN_MODULE_INFORMATION_TITLE"  />
-	<param type="payzenlabel" label="VMPAYMENT_PAYZEN_MODULE_INFORMATION"  />
+	<param type="spacer" default="" level="level1" />
+	
+	<param type="payzenlabel" label="VMPAYMENT_PAYZEN_MODULE_INFORMATION_TITLE" level="level1" />
+	<param type="payzenlabel" label="VMPAYMENT_PAYZEN_MODULE_INFORMATION" level="level1" />
+
 	<param name="developed_by" type="payzenlabel" label="VMPAYMENT_PAYZEN_DEVELOPED_BY" default="&lt;a href=&quot;http://www.lyra-network.com/&quot; target=&quot;_blank&quot;&gt;Lyra network&lt;/a&gt;"/>
 	<param name="contact_email" type="payzenlabel" label="VMPAYMENT_PAYZEN_CONTACT_EMAIL" default="&lt;a href=&quot;mailto:support@payzen.eu&quot;&gt;support@payzen.eu&lt;/a&gt;"/>
 	<param name="contrib_version" type="payzenlabel" label="VMPAYMENT_PAYZEN_CONTRIB_VERSION" default="1.2"/>
 	<param name="gateway_version" type="payzenlabel" label="VMPAYMENT_PAYZEN_GATEWAY_VERSION" default="V2"/>
 	<param name="cms_version" type="payzenlabel" label="VMPAYMENT_PAYZEN_CMS_VERSION" default="VirtueMart 2.0.3"/>
-	<param name="documentation" type="payzenlabel" label="VMPAYMENT_PAYZEN_DOC" default="&lt;a href=&quot;http://media.payzen.eu/documentation_support/virtuemart_2.pdf&quot; target=&quot;_blank&quot;&gt;Documentation&lt;/a&gt;"/>/>
+	<param name="documentation" type="payzenlabel" label="VMPAYMENT_PAYZEN_DOC" default="&lt;a href=&quot;http://media.payzen.eu/documentation_support/virtuemart_2_P.pdf&quot; target=&quot;_blank&quot;&gt;Documentation&lt;/a&gt;"/>/>
+
 	<param type="spacer" default="" level="level1" />
 	
 	<param type="payzenlabel" label="VMPAYMENT_PAYZEN_PAYMENT_MODULE_SETTINGS" level="level1" />
