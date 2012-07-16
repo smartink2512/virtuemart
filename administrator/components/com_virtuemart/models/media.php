@@ -347,8 +347,10 @@ class VirtueMartModelMedia extends VmModel {
 		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
 
 		// workarround for media published and product published two fields in one form.
+
 		if (isset($data['media_published'])){
 			$data['published'] = $data['media_published'];
+			vmdebug('$data["published"]',$data['published']);
 		}
 
 		$table->bindChecknStore($data);

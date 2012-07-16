@@ -351,7 +351,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturer_medias` (
   `virtuemart_media_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `ordering` int(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `i_virtuemart_category_id` (`virtuemart_manufacturer_id`,`virtuemart_media_id`)
+  UNIQUE KEY `i_virtuemart_manufacturer_id` (`virtuemart_manufacturer_id`,`virtuemart_media_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -794,7 +794,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_medias` (
   `virtuemart_media_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `ordering` int(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `i_virtuemart_category_id` (`virtuemart_product_id`,`virtuemart_media_id`)
+  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_media_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
