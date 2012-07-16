@@ -45,7 +45,7 @@ if($this->userDetails->user_is_vendor){
 	$tabarray['vendor'] = 'COM_VIRTUEMART_VENDOR';
 }
 $tabarray['shopper'] = 'COM_VIRTUEMART_SHOPPER_FORM_LBL';
-$tabarray['user'] = 'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO';
+//$tabarray['user'] = 'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO';
 if ($this->shipToId != 0 || $this->new) {
 	$tabarray['shipto'] = 'COM_VIRTUEMART_USER_FORM_SHIPTO_LBL';
 }
@@ -54,7 +54,7 @@ if (($_ordcnt = count($this->orderlist)) > 0) {
 }
 
 
-AdminUIHelper::buildTabs ( $this, $tabarray,'vm-user' );
+AdminUIHelper::buildTabs ( $this, $tabarray,'vm-user');
 
 ?>
 

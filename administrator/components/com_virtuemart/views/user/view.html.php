@@ -129,7 +129,7 @@ class VirtuemartViewUser extends VmView {
 				$new = true;
 			}
 
-			$virtuemart_userinfo_id_BT = $model->getBTuserinfo_id();
+			$virtuemart_userinfo_id_BT = $model->getBTuserinfo_id($userId);
 			$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'BT',$virtuemart_userinfo_id_BT,false);
 			$userFieldsBT = $userFieldsArray[$virtuemart_userinfo_id_BT];
 

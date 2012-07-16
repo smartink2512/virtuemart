@@ -719,8 +719,11 @@ class VirtueMartModelUserfields extends VmModel {
 							$_return['fields'][$_fld->name]['formcode'] = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,$_prefix.$_fld->name . '_field',false,($currentYear-100).':'.$currentYear);
 							break;
 						case 'emailaddress':
-							if(empty($_return['fields'][$_fld->name]['value'])) $_return['fields'][$_fld->name]['value'] = JFactory::getUser()->email;
-							// 							vmdebug('emailaddress',$_fld);
+							if( JFactory::getApplication()->isSite()) {
+								if(empty($_return['fields'][$_fld->name]['value'])) {
+									$_return['fields'][$_fld->name]['value'] = JFactory::getUser()->email;
+								}
+							}							// 							vmdebug('emailaddress',$_fld);
 						case 'text':
 						case 'webaddress':
 

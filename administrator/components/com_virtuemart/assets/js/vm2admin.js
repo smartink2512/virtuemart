@@ -2,12 +2,13 @@
 
   var methods = {
 	tabs : function (cookie) {
-		if ($.cookie(cookie) == null || cookie == "product0") var idx=0;
+        var tabscount = this.find('div.tabs').length;
+		if ($.cookie(cookie) == null || cookie == "product0" || tabscount==1) var idx=0;
 		else var idx = $.cookie(cookie);
 		if (idx == null) idx=0;
 		var options = { path: '/', expires: 2},
 			list = '<ul id="tabs">';
-		var tabscount = this.find('div.tabs').length;
+
 		var tabswidth = 100/tabscount;
 		this.find('div.tabs').each(
 			function(i) {

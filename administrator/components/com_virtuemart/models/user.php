@@ -1085,8 +1085,7 @@ class VirtueMartModelUser extends VmModel {
 
 			}
 // 			vmdebug('getUserInfoInUserFields ',$data);
-		}
-		else {
+		} else {
 			//New Address is filled here with the data of the cart (we are in the userview)
 			if($cart){
 				if (!class_exists('VirtueMartCart'))
@@ -1112,7 +1111,20 @@ class VirtueMartModelUser extends VmModel {
 				}
 				$data = (object)$data;
 			} else {
+				if($JUser){
+						if(empty($data['name'])){
+							$data['name'] = $JUser->name;
+						}
+						if(empty($data['email'])){
+							$data['email'] = $JUser->email;
+						}
+						if(empty($data['username'])){
+							$data['username'] = $JUser->username;
+						}
+					$data = (object)$data;
+				} else {
 				$data = null;
+				}
 			}
 
 		}
