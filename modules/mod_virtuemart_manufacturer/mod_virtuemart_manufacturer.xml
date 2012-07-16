@@ -83,7 +83,7 @@
 			label="MOD_VIRTUEMART_MANUFACTURER_FOOTER_TEXT"
 			description="MOD_VIRTUEMART_MANUFACTURER_FOOTER_TEXT_DESC" />
             </fieldset>
-            <fieldset group="advanced">
+            <fieldset name="advanced">
                <field name="cache" type="list"
 					default="1"
 					label="COM_MODULES_FIELD_CACHING_LABEL"
