@@ -736,7 +736,7 @@ class VirtueMartCart {
 		$this->_inCheckOut = true;
 
 		$this->tosAccepted = JRequest::getInt('tosAccepted', $this->tosAccepted);
-
+		$this->STsameAsBT = JRequest::getInt('STsameAsBT', $this->STsameAsBT);
 		$this->customer_comment = JRequest::getVar('customer_comment', $this->customer_comment);
 
 		// no HTML TAGS but permit all alphabet

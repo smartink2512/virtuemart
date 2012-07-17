@@ -244,13 +244,11 @@ class VirtuemartViewUserfields extends VmView {
 			,array('type' => 'textarea'         , 'text' => JText::_('COM_VIRTUEMART_FIELDS_TEXTAREA'))
 			,array('type' => 'radio'            , 'text' => JText::_('COM_VIRTUEMART_FIELDS_RADIOBUTTON'))
 			,array('type' => 'webaddress'       , 'text' => JText::_('COM_VIRTUEMART_FIELDS_WEBADDRESS'))
-			,array('type' => 'delimiter', 'text' => JText::_('COM_VIRTUEMART_FIELDS_DELIMITER'))
+			,array('type' => 'delimiter'        , 'text' => JText::_('COM_VIRTUEMART_FIELDS_DELIMITER'))
 
 		);
+		$this->renderInstalledUserfieldPlugins($types);
 
-		JPluginHelper::importPlugin('vmuserfield');
-		$dispatcher = JDispatcher::getInstance();
-		$ret = $dispatcher->trigger('plgVmOnUserfieldSelection',array(&$types));
 
 // 		vmdebug('my $dispatcher ',$dispatcher);
 // 		if($data['userverifyfailed']==1){
@@ -312,6 +310,34 @@ class VirtuemartViewUserfields extends VmView {
 		return $parameters->render();
 
 
+	}
+
+	function renderInstalledUserfieldPlugins(&$plugins){
+
+		if ( JVM_VERSION===1) {
+			$table = '#__plugins';
+			$ext_id = 'id';
+			$enable = 'published';
+		} else {
+			$table = '#__extensions';
+			$ext_id = 'extension_id';
+			$enable = 'enabled';
+		}
+
+		$db = JFactory::getDBO();
+ 		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmuserfield" AND `'.$enable.'`="1" ';
+		$db->setQuery($q);
+		$userfieldplugins = $db->loadAssocList($ext_id);
+		if(empty($userfieldplugins)){
+			return;
+		}
+
+		foreach($userfieldplugins as $userfieldplugin){
+		  // $plugins[] = array('type' => $userfieldplugin[$ext_id], 'text' => $userfieldplugin['name']);
+            $plugins[] = array('type' => 'plugin'.$userfieldplugin['element'], 'text' => $userfieldplugin['name']);
+		}
+
+		return;
 	}
 }
 

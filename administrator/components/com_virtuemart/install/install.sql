@@ -1095,6 +1095,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_permgroups` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_userfields` (
   `virtuemart_userfield_id` smallint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '1',
+  `userfield_jplugin_id` int(11) NOT NULL DEFAULT '0',
   `name` char(50) NOT NULL DEFAULT '',
   `title` char(255) NOT NULL DEFAULT '',
   `description` mediumtext,

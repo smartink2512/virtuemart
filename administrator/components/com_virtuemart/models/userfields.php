@@ -170,15 +170,16 @@ class VirtueMartModelUserfields extends VmModel {
 
 			$this->_data->load((int)$this->_id);
 		}
+
 		if(strpos($this->_data->type,'plugin')!==false){
   			JPluginHelper::importPlugin('vmuserfield');
   			$dispatcher = JDispatcher::getInstance();
 			$plgName = substr($this->_data->type,6);
-			$type = 'vmuserfield';
-
-  			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfield',array($type,$plgName,$this->_id,&$this->_data));
+			$type = 'userfield';
+  			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfield',array($type,$plgName,$this->_data->userfield_jplugin_id,&$this->_data));
 			// vmdebug('pluginGet',$type,$plgName,$this->_id,$this->_data);
 		}
+
 		// Parse the parameters, if any
 		else $this->_params->parseParam($this->_data->params);
 
@@ -251,10 +252,20 @@ class VirtueMartModelUserfields extends VmModel {
 
 
 		if(strpos($data['type'],'plugin')!==false){
-
+			// missing string FIX, Bad way ?
+			if (JVM_VERSION===1) {
+				$tb = '#__plugins';
+				$ext_id = 'id';
+			} else {
+				$tb = '#__extensions';
+				$ext_id = 'extension_id';
+			}
+			$plgName = substr($data['type'],6);
+			$q = 'SELECT `' . $ext_id . '` FROM `' . $tb . '` WHERE `element` = "'.$plgName.'"';
+			$this->_db->setQuery($q);
+			$data['userfield_jplugin_id'] = $this->_db->loadResult();
 			JPluginHelper::importPlugin('vmuserfield');
 			$dispatcher = JDispatcher::getInstance();
-			$plgName = substr($data['type'],6);
 			$dispatcher->trigger('plgVmOnBeforeUserfieldSave',array( $plgName , &$data, &$field ) );
 		}
 
@@ -304,7 +315,12 @@ class VirtueMartModelUserfields extends VmModel {
 		if (!$this->storeFieldValues($fieldValues, $_id)) {
 			return false;
 		}
-
+		if(strpos($data['type'],'plugin')!==false){
+			JPluginHelper::importPlugin('vmuserfield');
+					$dispatcher = JDispatcher::getInstance();
+					$plgName = substr($data['type'],6);
+					$dispatcher->trigger('plgVmOnStoreInstallPluginTable',array( 'userfield' , $data  ) );
+		}
 		if ($reorderRequired) {
 			$field->reorder();
 		}
