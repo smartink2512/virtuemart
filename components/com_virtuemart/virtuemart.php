@@ -41,6 +41,7 @@ if(VmConfig::get('shop_is_offline',0)){
 	require (JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
 	JRequest::setVar('view', 'virtuemart');
 	$task='';
+	$basePath = JPATH_VM_SITE;
 } else {
 
 	/* Front-end helpers */

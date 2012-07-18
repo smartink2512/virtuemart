@@ -278,7 +278,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 			                        $order['details']['BT']->virtuemart_paymentmethod_id),
 		                        'status_url'               => JROUTE::_ (JURI::root () .
 			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
-
+		                        'platform'                 => '21477272',
 		                        'hide_login'               => $method->hide_login,
 		                        'prepare_only'             => 1,
 		                        'logo_url'                 => $method->logourl,
@@ -298,7 +298,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		                        'amount'                   => $totalInPaymentCurrency,
 		                        'currency'                 => $currency_code_3,
 		                        'detail1_description'
-		                                                   => JText::_ ('VMPAYMENT_MONEYBOOKERS_ORDER_NUMBER') . ': ',
+		                                                   => JText::_ ('VMPAYMENT_MONEYBOOKERS_ORDER_NUMBER') . ': ', //ihh hardcoded colon
 		                        'detail1_text'             => $order['details']['BT']->order_number);
 
 		// Prepare data that should be stored in the database
