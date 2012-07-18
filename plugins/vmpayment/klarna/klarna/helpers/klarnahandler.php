@@ -1189,7 +1189,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 */
         // Norwegian, Danish and Finnish
         if (( $country3== "NOR")  || ( $country3== "DNK")   || $country3 == "FIN") {
-            if ($data['pno']=='') {
+            if ($data['socialNumber']=='') {
                 $errors[] ='VMPAYMENT_KLARNA_PERSONALORORGANISATIO_NUMBER';
             }
         }
@@ -1298,20 +1298,25 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 				$klarnaFields['gender'] = NULL;
 				break;
 		}
-
+$country_code_3=ShopFunctions::getCountryByID ($from['virtuemart_country_id'], 'country_3_code');
 		$klarnaFields['email'] = $from_email;
 		$klarnaFields['country'] = @ShopFunctions::getCountryByID (@$from['virtuemart_country_id'], 'country_3_code');
 		$klarnaFields['socialNumber'] = @$from['socialNumber'];
 		$klarnaFields['houseNr'] = @$from['house_no'];
 		$klarnaFields['houseExt'] = @$from['address_2'];
 		$klarnaFields['first_name'] = @$from['first_name'];
-		$klarnaFields['last_name'] = @$from['last_name'];
+		if ($country_code_3=='NLD') {
+			$klarnaFields['last_name'] = @$from['middle_name']." ".@$from['last_name'];
+		} else {
+			$klarnaFields['last_name'] = @$from['last_name'];
+		}
+
 		$klarnaFields['reference'] = $from['first_name'] . ' ' . $from['last_name'];
 		$klarnaFields['company_name'] = @$from['company_name'];
 		$klarnaFields['phone'] = @$from['phone_1'];
 		$klarnaFields['street'] = @$from['address_1'];
 		$klarnaFields['city'] = @$from['city'];
-		$klarnaFields['country'] = @ShopFunctions::getCountryByID (@$from['virtuemart_country_id'], 'country_3_code');
+		$klarnaFields['country'] = $country_code_3;
 		$klarnaFields['state'] = @$from['state'];
 		$klarnaFields['zip'] = @$from['zip'];
 		$klarnaFields['birthday'] = @$from['birthday'];
