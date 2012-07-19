@@ -695,10 +695,10 @@ class VirtueMartModelUserfields extends VmModel {
 					default:
 						if(strpos($_fld->type,'plugin')!==false){
 
-						JPluginHelper::importPlugin('vmuserfield');
-						$dispatcher = JDispatcher::getInstance();
-						$dispatcher->trigger('plgVmOnUserfieldDisplay',array($_prefix, $_fld, &$_return) );
-						break;
+							JPluginHelper::importPlugin('vmuserfield');
+							$dispatcher = JDispatcher::getInstance();
+							$dispatcher->trigger('plgVmOnUserfieldDisplay',array($_prefix, $_fld,isset($_userData['virtuemart_user_id'])?$_userData['virtuemart_user_id']:0,  &$_return) );
+							break;
 						}
 					switch( $_fld->type ) {
 						case 'hidden':
