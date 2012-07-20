@@ -1745,10 +1745,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		return NULL;
 	}
 
-	function plgVmOnCheckoutAdvertise ($cart,  &$payment_advertise) {
+	function plgVmOnCheckoutAdvertise ($cart, &$payment_advertise) {
 
 		$vendorId = 1;
-
+		$loadScriptAndCss = FALSE;
 		if (!class_exists ('Klarna_payments')) {
 			require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_payments.php');
 		}
@@ -1766,11 +1766,14 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				return NULL;
 			}
 			$payments = new klarna_payments($cData, KlarnaHandler::getShipToAddress ($cart));
+			// TODO: change to there is a function in the API
 			$sFee = $payments->getCheapestMonthlyCost ($cart, $cData['virtuemart_currency_id']);
-			$popupTotal = 0;
+			$payment_advertise[] = $this->renderByLayout ('cart_advertisement',
+				array("sFee"   => $sFee,
+				      "eid"    => $cData['eid'],
+				      "country"=> $cData['country_code']
+				));
 
-			$link="javascript:ShowKlarnaPopup('".$cData['eid']."', '". $popupTotal."','part')";
-			$payment_advertise[] = JText::sprintf ('VMPAYMENT_KLARNA_ADVERTISEMENT', $sFee, $link);
 		}
 
 	}
