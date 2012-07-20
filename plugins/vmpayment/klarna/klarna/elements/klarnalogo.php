@@ -45,5 +45,8 @@ class JElementKlarnaLogo extends JElement {
 			$flagImgHtml.='<img style="margin-right: 5px;margin-top: 15px;" src="' . $flagImg . '"  alt="' . JText::_('VMPAYMENT_KLARNA_CONF_SETTINGS_' . $countryData['language_code']) . '"/>';
 		}
 		return $logo . $flagImgHtml;
+
+
+
 	}
 }

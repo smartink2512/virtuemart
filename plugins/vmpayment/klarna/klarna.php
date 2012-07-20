@@ -87,7 +87,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	 */
 	function getTableSQLFields () {
 
-$SQLfields = array(
+		$SQLfields = array(
 			'id'                          => 'int(11) UNSIGNED NOT NULL AUTO_INCREMENT',
 			'virtuemart_order_id'         => 'int(1) UNSIGNED',
 			'order_number'                => ' char(64)',
@@ -341,7 +341,7 @@ $SQLfields = array(
 		$payments = new klarna_payments($cData, KlarnaHandler::getShipToAddress ($cart));
 		$payment_params = $payments->get_payment_params ($method, 'invoice', $cart);
 		$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
-		$selected=($klarna_paymentmethod=='klarna_invoice' AND $method->virtuemart_paymentmethod_id==$cart->virtuemart_paymentmethod_id)?$checked:"";
+		$selected = ($klarna_paymentmethod == 'klarna_invoice' AND $method->virtuemart_paymentmethod_id == $cart->virtuemart_paymentmethod_id) ? $checked : "";
 		$html .= $this->renderByLayout ('displaypayment', array(
 			'stype'                       => 'invoice',
 			'id'                          => $payment_params['id'],
@@ -349,12 +349,12 @@ $SQLfields = array(
 			'klarna_form'                 => $payment_form,
 			'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id,
 			'klarna_paymentmethod'        => $klarna_paymentmethod,
-			'selected' =>$selected
+			'selected'                    => $selected
 		));
 		if ($partPay > 0) {
 			if ($payment_params = $payments->get_payment_params ($method, 'part', $cart, $cData['virtuemart_currency_id'])) {
 				$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
-				$selected=($klarna_paymentmethod=='klarna_part' AND $method->virtuemart_paymentmethod_id==$cart->v)?$checked:"";
+				$selected = ($klarna_paymentmethod == 'klarna_part' AND $method->virtuemart_paymentmethod_id == $cart->v) ? $checked : "";
 				$html .= $this->renderByLayout ('displaypayment', array(
 					'stype'                       => 'part',
 					'id'                          => $payment_params['id'],
@@ -362,7 +362,7 @@ $SQLfields = array(
 					'klarna_form'                 => $payment_form,
 					'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id,
 					'klarna_paymentmethod'        => $klarna_paymentmethod,
-					'selected' =>$selected
+					'selected'                    => $selected
 				));
 			}
 		}
@@ -370,7 +370,7 @@ $SQLfields = array(
 		if ($specCamp > 0) {
 			if ($payment_params = $payments->get_payment_params ($method, 'spec', $cart, $cData['virtuemart_currency_id'])) {
 				$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
-				$selected=($klarna_paymentmethod=='klarna_spec' AND $method->virtuemart_paymentmethod_id==$cart->virtuemart_paymentmethod_id)?$checked:"";
+				$selected = ($klarna_paymentmethod == 'klarna_spec' AND $method->virtuemart_paymentmethod_id == $cart->virtuemart_paymentmethod_id) ? $checked : "";
 				$html .= $this->renderByLayout ('displaypayment', array(
 					'stype'                       => 'spec',
 					'id'                          => $payment_params['id'],
@@ -378,9 +378,9 @@ $SQLfields = array(
 					'klarna_form'                 => $payment_form,
 					'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id,
 					'klarna_paymentmethod'        => $klarna_paymentmethod,
-					'selected' =>$selected
-					));
-				}
+					'selected'                    => $selected
+				));
+			}
 		}
 
 		return $html;
@@ -404,7 +404,8 @@ $SQLfields = array(
 			if ($pClass->getType () == KlarnaPClass::CAMPAIGN ||
 				$pClass->getType () == KlarnaPClass::ACCOUNT ||
 				$pClass->getType () == KlarnaPClass::FIXED ||
-				$pClass->getType () == KlarnaPClass::DELAY			) {
+				$pClass->getType () == KlarnaPClass::DELAY
+			) {
 				$partPay += 1;
 			}
 		}
@@ -830,7 +831,7 @@ $SQLfields = array(
 		$currentLang = substr ($jlang->getDefault (), 0, 2);
 		$newIso = JRequest::getWord ('newIso');
 		if ($currentLang != $newIso) {
-		$iso = array(
+			$iso = array(
 				"sv" => "sv-SE",
 				"da" => "da-DK",
 				"en" => "en-GB",
@@ -1318,7 +1319,7 @@ $SQLfields = array(
 	 * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
 	 *
 	 */
-	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart,  &$msg) {
+	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart, &$msg) {
 
 		if (!$this->selectedThisByMethodId ($cart->virtuemart_paymentmethod_id)) {
 			return NULL; // Another method was selected, do nothing
@@ -1362,7 +1363,7 @@ $SQLfields = array(
 
 		$klarnaData = KlarnaHandler::getDataFromEditPayment ();
 
-		if ($msg=KlarnaHandler::checkDataFromEditPayment ($klarnaData, $cData['country_code_3'])) {
+		if ($msg = KlarnaHandler::checkDataFromEditPayment ($klarnaData, $cData['country_code_3'])) {
 			//vmInfo($msg); // meanwhile the red baloon works
 			$session->set ('Klarna', serialize ($sessionKlarna), 'vm');
 			return FALSE;
@@ -1427,7 +1428,7 @@ $SQLfields = array(
 			$prefix . 'phone_2'               => $st['phone_2'],
 			$prefix . 'fax'                   => $st['fax'],
 			$prefix . 'birthday'              => empty($klarnaData['birthday']) ? $st['birthday'] : $klarnaData['birthday'],
-			$prefix . 'socialNumber'         => empty($klarnaData['pno']) ? $klarnaData['socialNumber'] : $klarnaData['pno'],
+			$prefix . 'socialNumber'          => empty($klarnaData['pno']) ? $klarnaData['socialNumber'] : $klarnaData['pno'],
 			'address_type'                    => $address_type
 		);
 		if ($address_type == 'BT') {
@@ -1574,7 +1575,7 @@ $SQLfields = array(
 		$address = $this->getCartAddress ($cart, $type, FALSE);
 		$shipTo = KlarnaHandler::getShipToAddress ($cart);
 		$cart_prices_name = $this->renderKlarnaPluginName ($method, $address['virtuemart_country_id'], $shipTo, $cart_prices['withTax'], $cart->pricesCurrency);
-		if (isset($sessionKlarnaData->klarna_option ) AND $sessionKlarnaData->klarna_option == 'invoice') {
+		if (isset($sessionKlarnaData->klarna_option) AND $sessionKlarnaData->klarna_option == 'invoice') {
 			$this->setKlarnaCartPrices ($cart, $cart_prices, $method);
 		}
 		return TRUE;
@@ -1640,56 +1641,56 @@ $SQLfields = array(
 		$address['virtuemart_country_id'] = $virtuemart_country_id;
 		$cData = KlarnaHandler::getcData ($method, $address);
 		$country2 = strtolower (shopFunctions::getCountryByID ($virtuemart_country_id, 'country_2_code'));
-		$text="";
-		if (isset($sessionKlarnaData->klarna_option) ) {
-				switch ($sessionKlarnaData->klarna_option) {
-					case 'invoice':
-						$image = '/klarna_invoice_' . $country2 . '.png';
-						KlarnaHandler::getInvoiceFeeInclTax ($method, $cData['country_code_3'], $cartPricesCurrency, $cData['virtuemart_currency_id'], $display_invoice_fee, $invoice_fee);
-						$text = JText::sprintf ('VMPAYMENT_KLARNA_INVOICE_TITLE_NO_PRICE', $display_invoice_fee);
-						break;
-					case 'partpayment':
-					case 'part':
-						$image = '/klarna_part_' . $country2 . '.png';
-						$address['virtuemart_country_id'] = $virtuemart_country_id;
-						//$pclasses                         = KlarnaHandler::getPClasses(NULL,   KlarnaHandler::getKlarnaMode($method), $cData);
-						if (!class_exists ('Klarna_payments')) {
-							require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_payments.php');
-						}
+		$text = "";
+		if (isset($sessionKlarnaData->klarna_option)) {
+			switch ($sessionKlarnaData->klarna_option) {
+				case 'invoice':
+					$image = '/klarna_invoice_' . $country2 . '.png';
+					KlarnaHandler::getInvoiceFeeInclTax ($method, $cData['country_code_3'], $cartPricesCurrency, $cData['virtuemart_currency_id'], $display_invoice_fee, $invoice_fee);
+					$text = JText::sprintf ('VMPAYMENT_KLARNA_INVOICE_TITLE_NO_PRICE', $display_invoice_fee);
+					break;
+				case 'partpayment':
+				case 'part':
+					$image = '/klarna_part_' . $country2 . '.png';
+					$address['virtuemart_country_id'] = $virtuemart_country_id;
+					//$pclasses                         = KlarnaHandler::getPClasses(NULL,   KlarnaHandler::getKlarnaMode($method), $cData);
+					if (!class_exists ('Klarna_payments')) {
+						require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_payments.php');
+					}
 
-						$payments = new klarna_payments($cData, $shipTo);
-						//vmdebug('displaylogos',$cart_prices);
-						$totalInPaymentCurrency = KlarnaHandler::convertPrice ($total, $cartPricesCurrency, $cData['currency_code']);
-						vmdebug ('totalInPaymentCurrency', $totalInPaymentCurrency);
-						if (isset($sessionKlarnaData->KLARNA_DATA)) {
-							$text = $payments->displayPclass ($sessionKlarnaData->KLARNA_DATA['pclass'], $totalInPaymentCurrency); // .' '.$total;
-						}
-						break;
-					case 'speccamp':
-						$image = 'klarna_logo.png';
-						$text = JText::_ ('VMPAYMENT_KLARNA_SPEC_TITLE');
-						break;
-					default:
-						$image = '';
-						$text = '';
-						break;
-				}
+					$payments = new klarna_payments($cData, $shipTo);
+					//vmdebug('displaylogos',$cart_prices);
+					$totalInPaymentCurrency = KlarnaHandler::convertPrice ($total, $cartPricesCurrency, $cData['currency_code']);
+					vmdebug ('totalInPaymentCurrency', $totalInPaymentCurrency);
+					if (isset($sessionKlarnaData->KLARNA_DATA)) {
+						$text = $payments->displayPclass ($sessionKlarnaData->KLARNA_DATA['pclass'], $totalInPaymentCurrency); // .' '.$total;
+					}
+					break;
+				case 'speccamp':
+					$image = 'klarna_logo.png';
+					$text = JText::_ ('VMPAYMENT_KLARNA_SPEC_TITLE');
+					break;
+				default:
+					$image = '';
+					$text = '';
+					break;
+			}
 
-				$plugin_name = $this->_psType . '_name';
-				$plugin_desc = $this->_psType . '_desc';
-				$payment_description = '';
-				if (!empty($method->$plugin_desc)) {
-					$payment_description = $method->$plugin_desc;
-				}
-				$payment_name = $method->$plugin_name;
+			$plugin_name = $this->_psType . '_name';
+			$plugin_desc = $this->_psType . '_desc';
+			$payment_description = '';
+			if (!empty($method->$plugin_desc)) {
+				$payment_description = $method->$plugin_desc;
+			}
+			$payment_name = $method->$plugin_name;
 
-				$html = $this->renderByLayout ('payment_cart', array(
-					'logo'                => $image,
-					'text'                => $text,
-					'payment_description' => $payment_description,
-					'payment_name'        => $payment_name
-				));
-				return $html;
+			$html = $this->renderByLayout ('payment_cart', array(
+				'logo'                => $image,
+				'text'                => $text,
+				'payment_description' => $payment_description,
+				'payment_name'        => $payment_name
+			));
+			return $html;
 		}
 	}
 
@@ -1744,21 +1745,34 @@ $SQLfields = array(
 		return NULL;
 	}
 
-	function plgVmOnCheckoutAdvertise ($virtuemart_paymentmethod_id, &$payment_advertise) {
+	function plgVmOnCheckoutAdvertise ($cart,  &$payment_advertise) {
 
-		/*
-		  if (!$this->selectedThisByMethodId ($virtuemart_paymentmethod_id)) {
-			  return NULL; // Another method was selected, do nothing
-		  }
-		  if (!($method = $this->getVmPluginMethod ($virtuemart_paymentmethod_id))) {
-			  return NULL; // Another method was selected, do nothing
-		  }
-  */
 		$vendorId = 1;
-		if ($this->getPluginMethods ($vendorId) === 0) {
+
+		if (!class_exists ('Klarna_payments')) {
+			require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarna_payments.php');
+		}
+
+		if ($this->getPluginMethods ($cart->vendorId) === 0) {
 			return FALSE;
 		}
-		$payment_advertise[] = "Klarna advertisement";
+
+		$this->_getCartAddressCountryCode ($cart, $country_code, $countryId);
+		foreach ($this->methods as $method) {
+			if ($cart->virtuemart_paymentmethod_id == $method->virtuemart_paymentmethod_id) {
+				continue;
+			}
+			if (!($cData = $this->checkCountryCondition ($method, $country_code, $cart))) {
+				return NULL;
+			}
+			$payments = new klarna_payments($cData, KlarnaHandler::getShipToAddress ($cart));
+			$sFee = $payments->getCheapestMonthlyCost ($cart, $cData['virtuemart_currency_id']);
+			$popupTotal = 0;
+
+			$link="javascript:ShowKlarnaPopup('".$cData['eid']."', '". $popupTotal."','part')";
+			$payment_advertise[] = JText::sprintf ('VMPAYMENT_KLARNA_ADVERTISEMENT', $sFee, $link);
+		}
+
 	}
 
 	/**
