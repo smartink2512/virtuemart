@@ -433,6 +433,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 */
 	function plgVmOnViewCartModule( $product, $row,&$html) {
+		if (empty($product->productCustom->custom_element) or $product->productCustom->custom_element != $this->_name) return '';
 		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
 		foreach ($plgParam as $k => $attributes) {
 			foreach ($attributes as $k => $attribute) {
@@ -448,6 +449,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 */
 	function plgVmOnViewCart($product, $row,&$html) {
+		if (empty($product->productCustom->custom_element) or $product->productCustom->custom_element != $this->_name) return '';
 		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
 		$html  .= '<div class="stockablecartvariant_attributes">';
 		foreach ($plgParam as $attributes) {
