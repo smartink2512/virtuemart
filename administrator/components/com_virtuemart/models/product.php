@@ -571,7 +571,7 @@ class VirtueMartModelProduct extends VmModel {
 		static $_products = array();
 		if (!array_key_exists ($productKey, $_products)) {
 
-			$child = $this->getProductSingle ($virtuemart_product_id, $front, FALSE, $onlyPublished);
+			$child = $this->getProductSingle ($virtuemart_product_id, $front);
 			if (!$child->published && $onlyPublished) {
 				return FALSE;
 			}
@@ -602,7 +602,7 @@ class VirtueMartModelProduct extends VmModel {
 						break;
 					}
 				}
-				$parentProduct = $this->getProductSingle ($child->product_parent_id, $front, FALSE, FALSE);
+				$parentProduct = $this->getProductSingle ($child->product_parent_id, $front);
 				if ($child->product_parent_id === $parentProduct->product_parent_id) {
 					break;
 				}
@@ -656,7 +656,7 @@ class VirtueMartModelProduct extends VmModel {
 		return $_products[$productKey];
 	}
 
-	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $withCalc = TRUE, $onlyPublished = TRUE) {
+	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE) {
 
 		//$this->fillVoidProduct($front);
 		if (!empty($virtuemart_product_id)) {
@@ -1047,7 +1047,7 @@ class VirtueMartModelProduct extends VmModel {
 		if ($single) {
 			foreach ($productIds as $id) {
 				$i = 0;
-				if ($product = $this->getProductSingle ((int)$id, $front, $withCalc, $onlyPublished)) {
+				if ($product = $this->getProductSingle ((int)$id, $front)) {
 					// 					if($onlyPublished && $product->published){
 					$products[] = $product;
 					$i++;

@@ -488,7 +488,6 @@ abstract class vmPlugin extends JPlugin {
 		}
 
 		if (!$this->_tableChecked) {
-			vmdebug ('createPluginTableObject executing onStoreInstallPluginTable');
 			$this->onStoreInstallPluginTable ($this->_psType);
 			$this->_tableChecked = TRUE;
 		}

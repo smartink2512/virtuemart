@@ -31,6 +31,8 @@ class TableCalcs extends VmTable
 	var $virtuemart_calc_id					= 0;
 	/** @var string VendorID of the rule creator */
 	var $virtuemart_vendor_id				= 0;
+	var $calc_jplugin_id            = 0;
+	//var $calc_element            = '';
 	/** @var string Calculation name */
 	var $calc_name           		= '';
 	/** @var string Calculation description */
@@ -41,6 +43,7 @@ class TableCalcs extends VmTable
 	var $calc_value_mathop       	= '';
 	/** @var string Calculation value of the mathop */
 	var $calc_value       		 	= '';
+	var $calc_params       		 	= '';
 	/** @var string Currency used in the calculation */
 	var $calc_currency				= '';
 

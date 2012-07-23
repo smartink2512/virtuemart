@@ -319,8 +319,8 @@ class VmTable extends JTable{
 
 	static function bindParameterable(&$obj,$xParams,$varsToPushParam){
 
-		$paramFields = $obj->$xParams;
-		// 						vmdebug('$obj->_xParams '.$xParams.' $obj->$xParams ',$paramFields);
+		//$paramFields = $obj->$xParams;
+		//vmdebug('$obj->_xParams '.$xParams.' $obj->$xParams ',$paramFields);
 		if(!empty($obj->$xParams)){
 
 		//	if(strpos($obj->$xParams,'|')!==false){
@@ -450,7 +450,8 @@ class VmTable extends JTable{
 				if(empty($error)){
 					$error = 'Serious error cant save ' . $this->_tbl . ' without ' . $obkeys;
 				}else {
-					$error = get_class($this).' '.JText::_($error);
+				//	$error = get_class($this).' '.JText::_($error);
+					$error = get_class($this).' '.$error;
 				}
 				$this->setError($error);
 				vmError($error);
@@ -741,7 +742,7 @@ class VmTable extends JTable{
 			if(!$this->check()){
 				$ok = false;
 				$msg .= ' check';
-				vmdebug('Check returned false '.get_class($this).' '.$this->_db->getErrorMsg());
+				vmdebug('Check no lang returned false '.get_class($this).' '.$this->_db->getErrorMsg());
 				return false;
 			}
 		}
