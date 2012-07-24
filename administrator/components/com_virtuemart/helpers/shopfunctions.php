@@ -623,7 +623,7 @@ class ShopFunctions {
 					. '&virtuemart_userinfo_id=' . $_addressList[$_i]->virtuemart_userinfo_id
 					. '">' . $_addressList[$_i]->address_type_name . '</a> ' ;
 
-				$_shipTo[] = '&nbsp;&nbsp;<a href="index.php?option=com_virtuemart&view=user&task=deleteAddressST&virtuemart_user_id[]=' . $_addressList[$_i]->virtuemart_user_id . '&virtuemart_userinfo_id=' . $_addressList[$_i]->virtuemart_userinfo_id . '" class="icon_delete">'.JText::_('COM_VIRTUEMART_USER_DELETE_ST').'</a></li>';
+				$_shipTo[] = '&nbsp;&nbsp;<a href="index.php?option=com_virtuemart&view=user&task=removeAddressST&virtuemart_user_id[]=' . $_addressList[$_i]->virtuemart_user_id . '&virtuemart_userinfo_id=' . $_addressList[$_i]->virtuemart_userinfo_id . '" class="icon_delete">'.JText::_('COM_VIRTUEMART_USER_DELETE_ST').'</a></li>';
 
 			}
 			$useXHTTML = empty($view->useXHTML) ? TRUE : $view->useXHTML;

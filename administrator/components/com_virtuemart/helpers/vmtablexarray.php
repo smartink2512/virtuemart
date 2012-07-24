@@ -136,7 +136,7 @@ class VmTableXarray extends VmTable {
      * This binds the data to this kind of table. You can set the used name of the form with $this->skeyForm;
      *
      * @author Max Milbers
-     * @param unknown_type $data
+     * @param array $data
      */
 	public function bind($data, $ignore = array()){
 

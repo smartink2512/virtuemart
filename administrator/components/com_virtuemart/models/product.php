@@ -187,9 +187,12 @@ class VirtueMartModelProduct extends VmModel {
 
 		$app = JFactory::getApplication ();
 
+		//User Q.Stanley said that removing group by is increasing the speed of product listing in a bigger shop (10k products) by factor 60
+		//So what was the reason for that we have it? TODO experiemental, find conditions for the need of group by
 		$groupBy = 'group by p.`virtuemart_product_id` ';
+		//$groupBy = ' ';
 
-		//administrative variables to organize the joining of tables
+			//administrative variables to organize the joining of tables
 		$joinCategory = FALSE;
 		$joinMf = FALSE;
 		$joinPrice = FALSE;
@@ -218,7 +221,6 @@ class VirtueMartModelProduct extends VmModel {
 		if ($useCore) {
 // 		if ( $this->keyword !== "0" and $group ===false) {
 			if (!empty($this->keyword) and $this->keyword !== '' and $group === FALSE) {
-// 			$groupBy = 'group by p.`product_parent_id`';
 
 				//		$keyword = trim(preg_replace('/\s+/', '%', $keyword), '%');
 				$keyword = '"%' . $this->_db->getEscaped ($this->keyword, TRUE) . '%"';
@@ -407,8 +409,8 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		//write the query, incldue the tables
-		// 		$selectFindRows = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';
-		// 		$selectFindRows = 'SELECT COUNT(*) FROM `#__virtuemart_products` ';
+		//$selectFindRows = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';
+		//$selectFindRows = 'SELECT COUNT(*) FROM `#__virtuemart_products` ';
 		if ($joinLang) {
 			$select = ' * FROM `#__virtuemart_products_' . VMLANG . '` as l';
 			$joinedTables = ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)';
@@ -472,7 +474,7 @@ class VirtueMartModelProduct extends VmModel {
 		$product_ids = $tmp;
 		}*/
 
-		// 		vmdebug('my product ids',$product_ids);
+		 //vmdebug('my product ids',$product_ids);
 
 		return $product_ids;
 
@@ -561,6 +563,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		else {
 			if (empty($this->_id)) {
+				vmError('Can not return product with empty id');
 				return FALSE;
 			}
 			else {
@@ -573,6 +576,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$child = $this->getProductSingle ($virtuemart_product_id, $front);
 			if (!$child->published && $onlyPublished) {
+				vmdebug('getProduct child is not published, returning zero');
 				return FALSE;
 			}
 			if(!isset($child->orderable)){
@@ -604,6 +608,7 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				$parentProduct = $this->getProductSingle ($child->product_parent_id, $front);
 				if ($child->product_parent_id === $parentProduct->product_parent_id) {
+					vmError('Error, parent product with virtuemart_product_id = '.$parentProduct->virtuemart_product_id.' has same parent id like the child with virtuemart_product_id '.$child->virtuemart_product_id);
 					break;
 				}
 				$attribs = get_object_vars ($parentProduct);
@@ -650,9 +655,12 @@ class VirtueMartModelProduct extends VmModel {
 			if ($app->isSite () and VmConfig::get ('stockhandle', 'none') == 'disableit' and ($child->product_in_stock - $child->product_ordered) <= 0) {
 				vmdebug ('STOCK 0', VmConfig::get ('use_as_catalog', 0), VmConfig::get ('stockhandle', 'none'), $child->product_in_stock);
 				return FALSE;
+			} else {
+				$_products[$productKey] = $child;
 			}
-			$_products[$productKey] = $child;
+
 		}
+
 		return $_products[$productKey];
 	}
 
@@ -689,7 +697,7 @@ class VirtueMartModelProduct extends VmModel {
 // 				vmdebug('$user->shoppergroups',$virtuemart_shoppergroup_ids);
 				$commonShpgrps = array_intersect ($virtuemart_shoppergroup_ids, $product->shoppergroups);
 				if (empty($commonShpgrps)) {
-					$product = new stdClass();
+					vmdebug('getProductSingle creating void product, usergroup does not fit ',$product->shoppergroups);
 					return $this->fillVoidProduct ($front);
 				}
 			}
@@ -1029,10 +1037,10 @@ class VirtueMartModelProduct extends VmModel {
 	 * Returns products for given array of ids
 	 *
 	 * @author Max Milbers
-	 * @param unknown_type $productIds
-	 * @param unknown_type $front
-	 * @param unknown_type $withCalc
-	 * @param unknown_type $onlyPublished
+	 * @param int $productIds
+	 * @param boolean $front
+	 * @param boolean $withCalc
+	 * @param boolean $onlyPublished
 	 */
 	public function getProducts ($productIds, $front = TRUE, $withCalc = TRUE, $onlyPublished = TRUE, $single = FALSE) {
 
@@ -1269,7 +1277,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-// 		vmdebug('use_desired_price '.$this->_id.' '.$data['use_desired_price']);
+ 		//vmdebug('use_desired_price '.$this->_id.' '.$data['use_desired_price']);
 		if (!$isChild and isset($data['use_desired_price']) and $data['use_desired_price'] == "1") {
 
 			if (!class_exists ('calculationHelper')) {
@@ -1408,7 +1416,7 @@ class VirtueMartModelProduct extends VmModel {
 	public function createClone ($id) {
 
 		//	if (is_array($cids)) $cids = array($cids);
-		$product = $this->getProduct ($id, FALSE, TRUE, FALSE);
+		$product = $this->getProduct ($id, TRUE, FALSE, FALSE);
 		$product->field = $this->productCustomsfieldsClone ($id);
 // 		vmdebug('$product->field',$product->field);
 		$product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;

@@ -191,7 +191,7 @@ $Browsecellwidth = ' width'.floor ( 100 / $BrowseProducts_per_row );
 // Separator
 $verticalseparator = " vertical-separator";
 
-// Count products
+// Count products ?? why not just count ($this->products)  ?? note by Max Milbers
 $BrowseTotalProducts = 0;
 foreach ( $this->products as $product ) {
    $BrowseTotalProducts ++;

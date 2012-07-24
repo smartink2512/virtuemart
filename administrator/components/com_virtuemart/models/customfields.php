@@ -554,7 +554,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			switch ($field->field_type) {
 
 				case 'A':
-					vmdebug('$field',$field);
+					//vmdebug('displayProductCustomfieldBE $field',$field);
 					if(!isset($field->withParent)) $field->withParent = 0;
 					if(!isset($field->parentOrderable)) $field->parentOrderable = 0;
 					//vmdebug('displayProductCustomfieldFE',$field);

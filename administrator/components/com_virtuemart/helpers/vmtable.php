@@ -579,6 +579,7 @@ class VmTable extends JTable{
 			$langData = array();
 			$langObKeys = array();
 			$langUniqueKeys = array();
+
 			if(is_object($data)){
 
 				foreach($this->_translatableFields as $name){
@@ -639,40 +640,35 @@ class VmTable extends JTable{
 
 			$langTable->setProperties($langData);
 			$langTable->_translatable = false;
-			// 			$dataLang = $data;
-			// 			vmdebug('my $dataLang',$langTable,$data);
-			// 			vmdebug('my $table $this',$this);
 
 			$this->bindChecknStoreNoLang($data,$preload);
 
-			// 			vmdebug('bindchecknstore',$langData,$this);
 			$langTable->$tblKey = !empty($this->$tblKey) ? $this->$tblKey : 0;
 
 			$ok = true;
 
 			if($preload){
-				if($ok){
-					if(!empty($langTable->$tblKey)){
-						$id = $langTable->$tblKey;
-
-						if(!$langTable->load($id)){
-							$ok = false;
-						} else {
-							if(!$langTable->bind($data)){
-								$ok = false;
-								$msg = 'bind';
-								// 			vmdebug('Problem in bind '.get_class($this).' '.$this->_db->getErrorMsg());
-								vmdebug('Problem in bind '.get_class($this).' ');
-							}
-						}
-
+				if(!empty($langTable->$tblKey)){
+					$id = $langTable->$tblKey;
+					if(!$langTable->load($id)){
+						$ok = false;
 					}
 				}
-
 			}
 
 			if($ok){
+				//vmdebug('my langtable before bind',$langTable->id);
+				if(!$langTable->bind($data)){
+					$ok = false;
+					$msg = 'bind';
+					// 			vmdebug('Problem in bind '.get_class($this).' '.$this->_db->getErrorMsg());
+					vmdebug('Problem in bind '.get_class($this).' ');
+				}
+				//vmdebug('my langtable after bind ',$langTable->id);
+			}
 
+
+			if($ok){
 				if(!$langTable->check()){
 					$ok = false;
 					// $msg .= ' check';
@@ -684,9 +680,11 @@ class VmTable extends JTable{
 				if(!$langTable->store()){
 					$ok = false;
 					// $msg .= ' store';
-					vmdebug('Problem in store '.get_class($langTable).' '.$langTable->_db->getErrorMsg());
+					vmdebug('Problem in store with langtable '.get_class($langTable).' with '.$tblKey.' = '.$this->$tblKey.' '.$langTable->_db->getErrorMsg());
+					//vmTrace('From where the heck comes this problem?');
+					return false;
 				} else {
-					vmdebug('stored product_name '.$langTable->product_name);
+					//vmdebug('stored product_name '.$langTable->product_name);
 				}
 			}
 
