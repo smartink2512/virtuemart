@@ -297,36 +297,31 @@ class VirtueMartModelConfig extends JModel {
 		}
 */
 
-
 		$safePath = trim($config->get('forSale_path'));
-
-		if(empty($safePath)){
-			$lastIndex= strrpos(JPATH_ROOT,DS);
-			$suggestedPath = substr(JPATH_ROOT,0,$lastIndex).DS.'vmfiles'.DS;
-			VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
-		} else {
-			$exists = JFolder::exists($safePath);
-
-			if(!$exists){
-				VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_WRONG',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath);
-			} else {
-				$length = strlen($safePath);
-				if(strrpos($safePath,DS)!=($length-1)){
-					$config->set('forSale_path',$safePath.DS);
-					vmInfo('Corrected safe path added missing '.DS);
-				}
-				$exists = JFolder::exists($safePath.'invoices');
-				if(!$exists){
-					$created = JFolder::create($safePath.'invoices');
-					if($created){
-						vmInfo('COM_VIRTUEMART_SAFE_PATH_INVOICE_CREATED');
-					} else {
-						VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
-					}
-				}
-
+		if(!empty($safePath)){
+			$length = strlen($safePath);
+			if(strrpos($safePath,DS)!=($length-1)){
+				$safePath = $safePath.DS;
+				$config->set('forSale_path',$safePath);
+				vmInfo('Corrected safe path added missing '.DS);
 			}
 		}
+
+		$safePath = shopFunctions::checkSafePath($safePath);
+
+		if(!empty($safePath)){
+
+			$exists = JFolder::exists($safePath.'invoices');
+			if(!$exists){
+				$created = JFolder::create($safePath.'invoices');
+				if($created){
+					vmInfo('COM_VIRTUEMART_SAFE_PATH_INVOICE_CREATED');
+				} else {
+					VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
+				}
+			}
+		}
+
 
 		$confData['config'] = $config->toString();
 		// 		vmdebug('config to store',$confData);

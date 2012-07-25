@@ -148,7 +148,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$filter_order = $this->checkFilterOrder ($filter_order);
 			$filter_order_Dir = strtoupper ($app->getUserStateFromRequest ($option . '.' . $view . '.filter_order_Dir', 'filter_order_Dir', '', 'word'));
-			$valid_search_fields = array('product_name');
+			$valid_search_fields = array('product_name','product_sku','product_s_desc','metadesc');
 		}
 		$filter_order_Dir = $this->checkFilterDir ($filter_order_Dir);
 

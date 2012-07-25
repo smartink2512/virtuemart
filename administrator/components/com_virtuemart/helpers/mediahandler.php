@@ -81,14 +81,9 @@ class VmMediaHandler {
 			$choosed = true;
 		}
 		else if($type == 'forSale' || $type== 'file_is_forSale'){
-			//todo add this path to config
-			$safePath = VmConfig::get('forSale_path',0);
-			if(empty($safePath)){
-				$suggestedPath=shopFunctions::getSuggestedSafePath();
-				VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
 
-			}else {
-				$relUrl = $safePath;
+			$relUrl = shopFunctions::checkSafePath();
+			if($relUrl){
 				$choosed = true;
 				$this->file_is_forSale=1;
 			}
@@ -209,12 +204,9 @@ class VmMediaHandler {
 			$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
 			$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
 		} else {
-			$safePath = VmConfig::get('forSale_path',0);
-			if(empty($safePath)){
-				$lastIndex= strrpos(JPATH_ROOT,DS);
-				$suggestedPath = substr(JPATH_ROOT,0,$lastIndex).DS.'vmfiles';
-				VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
-				return false;
+			$safePath = shopFunctions::checkSafePath();
+			if(!$safePath){
+				return FALSE;
 			}
 			$this->file_path_folder = $safePath;
 			$this->file_url_folder = $this->file_path_folder;//str_replace(DS,'/',$this->file_path_folder);

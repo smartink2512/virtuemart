@@ -80,14 +80,14 @@ class VirtuemartViewConfig extends VmView {
 		$this->assignRef('noimagelist', $noimagelist);
 
 		$orderStatusModel=VmModel::getModel('orderstatus');
-		$orderStates = $orderStatusModel->getOrderStatusList();
+/*		$orderStates = $orderStatusModel->getOrderStatusList();
 		$orderStatusList = array();
 		$orderStatusList[0] = JText::_('COM_VIRTUEMART_NONE');
 		foreach ($orderStates as $orderState) {
 			$orderStatusList[$orderState->order_status_code] = JText::_($orderState->order_status_name);
-		}
+		}*/
 
-		$this->assignRef('orderStatusList', $orderStatusList);
+		$this->assignRef('orderStatusModel', $orderStatusModel);
 
 /*
 		$oderstatusModel = VmModel::getModel('Orderstatus');
@@ -119,18 +119,8 @@ class VirtuemartViewConfig extends VmView {
 		}
 		$this->assignRef('imagePath', $imagePath);
 
-		$safePath = VmConfig::get('forSale_path',0);
-		$lastIndex= strrpos(JPATH_ROOT,DS);
-		$suggestedPath = substr(JPATH_ROOT,0,$lastIndex).DS.'vmfiles';
-		if(empty($safePath)){
+		shopFunctions::checkSafePath();
 
-			VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
-		} else {
-			$exists = JFolder::exists($safePath);
-			if(!$exists){
-				VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_WRONG',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
-			}
-		}
 		parent::display($tpl);
 	}
 

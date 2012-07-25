@@ -1046,7 +1046,12 @@ class VirtueMartCart {
 							$address[$name] = $this->{$type}[$name];
 						}
 					} else {
-						$address[$name] = $data[$prefix.$name];
+						if(!empty($data[$prefix.$name])){
+							$address[$name] = $data[$prefix.$name];
+						} else {
+							$address[$name] = '';
+							vmdebug('saveAddressInCart the $data[$prefix.$name] ($prefix.$name = '.$prefix.$name.' is empty');
+						}
 					}
 				}
 			}

@@ -151,7 +151,8 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 					<?php
-					echo VmHTML::selectList('inv_os',$this->config->get('inv_os','C'),$this->orderStatusList);
+					echo $this->orderStatusModel->renderOrderStatusList($this->config->get('inv_os',array('C')),'inv_os[]');
+					//echo VmHTML::selectList('inv_os',$this->config->get('inv_os','C'),$this->orderStatusList);
 					?>
 			</td>
 		</tr>

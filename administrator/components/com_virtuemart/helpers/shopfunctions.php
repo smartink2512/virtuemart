@@ -1401,6 +1401,29 @@ class ShopFunctions {
 
 		return $html;
 	}
+
+	static function checkSafePath($safePath=0){
+
+		if($safePath==0) $safePath = VmConfig::get('forSale_path',0);
+		if(empty($safePath)){
+			$suggestedPath=shopFunctions::getSuggestedSafePath();
+			$uri = JFactory::getURI();
+			$configlink = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
+			VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath,$configlink);
+			return FALSE;
+		} else {
+			$exists = JFolder::exists($safePath);
+			if(!$exists){
+				$uri = JFactory::getURI();
+				$configlink = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
+				VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_WRONG',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath,$configlink);
+				return FALSE;
+			} else{
+				return $safePath;
+			}
+		}
+	}
+
 	/*
 	 * Returns the suggested safe Path, used to store the invoices
 	 * @static

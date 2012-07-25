@@ -521,7 +521,7 @@ class Migrator extends VmModel{
 					vmError ($this->_db->getErrorMsg() );
 				}
 				$userfields->type = $field->type;
-				$type = $userfields->formatFieldType($data);
+				$type = $userfields->formatFieldType($field);
 				if (!$userinfo->_modifyColumn ('ADD', $field->name, $type)) {
 					vmError($userinfo->getError());
 					return false;

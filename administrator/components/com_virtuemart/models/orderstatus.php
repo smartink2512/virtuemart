@@ -80,15 +80,15 @@ class VirtueMartModelOrderstatus extends VmModel {
 
 	}
 
-	function renderOrderStatusList($multiple = true,$value = '')
+	function renderOrderStatusList($value, $name = 'order_status[]' )
 	{
-		if ($multiple) {
+		//if ($multiple) {
 			$attrs = 'multiple="multiple"';
-			$name ='order_status[]';
-		} else {
-			$name ='order_status';
-			$attrs ='';
-		}
+			//$name ='order_status[]';
+		//} else {
+		//	$name ='order_status';
+			//$attrs ='';
+		//}
 
 		if (!$this->renderStatusList) {
 			$orderStates = $this->getOrderStatusNames();

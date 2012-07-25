@@ -28,14 +28,14 @@ class shopFunctionsF {
 	 *
 	 */
 
-	static public function getLoginForm($cart=false,$order=false,$url = 0){
+	static public function getLoginForm($cart=FALSE,$order=FALSE,$url = 0){
 
 		if(!class_exists('VirtuemartViewUser')) require(JPATH_VM_SITE . DS . 'views' . DS . 'user' .DS. 'view.html.php');
 		$view = new VirtuemartViewUser();
 		$view -> setLayout('login');
 
 		$body = '';
-		$show=true;
+		$show=TRUE;
 
 		if($cart){
 			$show = VmConfig::get('oncheckout_show_register', 1);
@@ -175,7 +175,8 @@ class shopFunctionsF {
 	 * @param string $recipient shopper@whatever.com
 	 * @param array $vars variables to assign to the view
 	 */
-	static public function renderMail ($viewName, $recipient, $vars=array(),$controllerName = null,$noVendorMail = false) {
+	//TODO this is quirk, why it is using here $noVendorMail, but everywhere else it is using $doVendor => this make logic trouble
+	static public function renderMail ($viewName, $recipient, $vars=array(),$controllerName = NULL,$noVendorMail = FALSE) {
 		if(!class_exists('VirtueMartControllerVirtuemart')) require(JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
 // 		$format = (VmConfig::get('order_html_email',1)) ? 'html' : 'raw';
 
@@ -222,7 +223,7 @@ class shopFunctionsF {
 
 		$user= self::sendVmMail($view, $recipient,$noVendorMail);
 		if (isset($view->doVendor) && !$noVendorMail) {
-			self::sendVmMail($view, $view->vendorEmail, true);
+			self::sendVmMail($view, $view->vendorEmail, TRUE);
 		}
 		return $user ;
 
@@ -237,16 +238,17 @@ class shopFunctionsF {
 	 * @param string $recipient shopper@whatever.com
 	 * @param bool $vendor true for notifying vendor of user action (e.g. registration)
 	 */
-	private function sendVmMail (&$view, $recipient, $vendor=false) {
+
+	private function sendVmMail (&$view, $recipient, $noVendorMail=FALSE) {
 		$jlang =JFactory::getLanguage();
 		if(VmConfig::get('enableEnglish', 1)){
-		     $jlang->load('com_virtuemart', JPATH_SITE, 'en-GB', true);
+		     $jlang->load('com_virtuemart', JPATH_SITE, 'en-GB', TRUE);
 		}
-		$jlang->load('com_virtuemart', JPATH_SITE, $jlang->getDefault(), true);
-		$jlang->load('com_virtuemart', JPATH_SITE, null, true);
+		$jlang->load('com_virtuemart', JPATH_SITE, $jlang->getDefault(), TRUE);
+		$jlang->load('com_virtuemart', JPATH_SITE, NULL, TRUE);
 
 		ob_start();
-		$view->renderMailLayout($vendor, $recipient);
+		$view->renderMailLayout(!$noVendorMail, $recipient);
 		$body = ob_get_contents();
 		ob_end_clean();
 
@@ -254,10 +256,10 @@ class shopFunctionsF {
 		$mailer = JFactory::getMailer();
 		$mailer->addRecipient($recipient);
 		$mailer->setSubject($subject);
-		$mailer->isHTML(VmConfig::get('order_mail_html',true));
+		$mailer->isHTML(VmConfig::get('order_mail_html',TRUE));
 		$mailer->setBody($body);
 
-		if(!$vendor){
+		if(!$noVendorMail){
 			$replyto[0]=$view->vendorEmail;
 			$replyto[1]= $view->vendor->vendor_name;
 			$mailer->addReplyTo($replyto);
@@ -423,15 +425,26 @@ class shopFunctionsF {
 		echo $html;
 	}
 
-	static function getBaseUrl() {
-		$uri = JURI::getInstance();
-		$baseUrl = $uri->getScheme() . "://" . $uri->getHost();
-		if($uri->getPort()){
-			$baseUrl = $baseUrl . ":" . $uri->getPort();
-		}
+	/**
+	 * TODO remove this function, this function is not necessary and give back the wrong uri
+	 * The right thing is to use JURI::root();, which is always giving back something like
+	 * https://mydomain.com/myjoomla  , but JURI::base() is giving back the relative base, that means when the backend is used,
+	 * it gives back https://mydomain.com/myjoomla/administrator;
+	 * @static
+	 * @return string
+	 */
+	/*	static function getBaseUrl() {
+			$uri = JURI::getInstance();
+			$baseUrl = $uri->getScheme() . "://" . $uri->getHost();
+			if($uri->getPort()){
+				$baseUrl = $baseUrl . ":" . $uri->getPort();
+			}
+			$base = $uri::base();
+		$baseUrl = JURI::root();
+		//vmdebug('getBaseUrl',$base,$root);
 		//$baseUrl =  $baseUrl . "/";
 		return $baseUrl;
-	}
+	}**/
 
 	/**
 	 * Align in plain text the strings
@@ -440,7 +453,7 @@ class shopFunctionsF {
 	 * $toUpper uppercase Y/N ?
 	 * @author kohl patrick
 	 */
-	function tabPrint( $size, $string,$header = false){
+	function tabPrint( $size, $string,$header = FALSE){
 		if ($header) $string = strtoupper (JText::_($string ) );
 		sprintf("%".$size.".".$size."s",$string ) ;
 
@@ -486,7 +499,7 @@ class shopFunctionsF {
 	* @param boolean $use_icon
 	* @deprecated
 	*/
-	function PdfIcon( $link, $use_icon=true,$modal=true ) {
+	function PdfIcon( $link, $use_icon=TRUE,$modal=TRUE ) {
 
 		return VmView::linkIcon($link,'COM_VIRTUEMART_PDF','pdf_button','pdf_button_enable',$modal,$use_icon);
 
@@ -511,7 +524,7 @@ class shopFunctionsF {
 	 *
 	 * @deprecated
 	 */
-	function PrintIcon( $link='', $use_icon=true, $add_text='' ) {
+	function PrintIcon( $link='', $use_icon=TRUE, $add_text='' ) {
 
 		if (VmConfig::get('show_printicon', 1) == '1') {
 
@@ -520,7 +533,7 @@ class shopFunctionsF {
 			// checks template image directory for image, if non found default are loaded
 			if ( $use_icon ) {
 				$filter = JFilterInput::getInstance();
-				$text = JHtml::_('image.site', 'printButton.png', $folder, null, null, JText::_('COM_VIRTUEMART_PRINT'));
+				$text = JHtml::_('image.site', 'printButton.png', $folder, NULL, NULL, JText::_('COM_VIRTUEMART_PRINT'));
 				$text .= $filter->clean($add_text);
 			} else {
 				$text = '|&nbsp;'. JText::_('COM_VIRTUEMART_PRINT'). '&nbsp;|';
