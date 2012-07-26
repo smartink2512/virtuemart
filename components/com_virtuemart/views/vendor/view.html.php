@@ -120,6 +120,7 @@ class VirtuemartViewVendor extends VmView {
 		$this->comment = JRequest::getString('comment');
 		$virtuemart_vendor_id = JRequest::getInt('virtuemart_vendor_id');
 		$this->doVendor=$doVendor;
+		//$this->doVendor=TRUE;
 		$vendorModel = VmModel::getModel('vendor');
 		$this->vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 		// in this particular case, overwrite the value for fix the recipient name

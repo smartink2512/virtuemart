@@ -23,7 +23,6 @@ defined ('_JEXEC') or die ('Restricted access');
 if ($this->allowRating || $this->showReview) {
 	$maxrating = VmConfig::get ('vm_maximum_rating_scale', 5);
 	$ratingsShow = VmConfig::get ('vm_num_ratings_show', 3); // TODO add  vm_num_ratings_show in vmConfig
-	//$starsPath = JURI::root().VmConfig::get('assets_general_path').'images/stars/';
 	$stars = array();
 	$showall = JRequest::getBool ('showall', FALSE);
 	$ratingWidth = $maxrating * 24;

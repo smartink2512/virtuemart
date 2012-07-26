@@ -1860,7 +1860,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 	$vars['vendorEmail'] = $vendorModel->getVendorEmail ($virtuemart_vendor_id);
 
 	$vars['user'] =  $vendor->vendor_store_name ;
-	shopFunctionsF::renderMail ('productdetails', $vars['vendorEmail'], $vars, 'productdetails') ;
+	shopFunctionsF::renderMail ('productdetails', $vars['vendorEmail'], $vars, 'productdetails', FALSE) ;
 
 	return TRUE;
 }

@@ -33,7 +33,7 @@ echo "\n";
 
 // $uri    = JURI::getInstance();
 // $prefix = $uri->toString(array('scheme', 'host', 'port'));
-$link = shopFunctionsF::getBaseUrl().JRoute::_ ( 'index.php?option=com_virtuemart',false,-1);
+$link = JURI::root().'index.php?option=com_virtuemart';
 
 echo "\n\n";
 $link= JHTML::_('link', $link, $this->vendor->vendor_name) ;
