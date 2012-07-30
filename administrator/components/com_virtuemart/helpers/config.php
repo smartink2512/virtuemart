@@ -230,8 +230,13 @@ function vmdebug($debugdescr,$debugvalues=NULL){
 				}
 			}
 
-			$app = JFactory::getApplication();
-			$app ->enqueueMessage('<span class="vmdebug" >vmdebug '.$debugdescr.'</span>');
+			if(!VmConfig::$echoDebug){
+				$app = JFactory::getApplication();
+				$app ->enqueueMessage('<span class="vmdebug" >vmdebug '.$debugdescr.'</span>');
+			} else {
+				echo $debugdescr;
+			}
+
 		}
 		else {
 			if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
@@ -254,8 +259,13 @@ function vmTrace($notice,$force=FALSE){
 		echo '</pre>';
 		$body = ob_get_contents();
 		ob_end_clean();
-		$app = JFactory::getApplication();
-		$app ->enqueueMessage($notice.' <pre>'.$body.'</pre>');
+		if(!VmConfig::$echoDebug){
+			$app = JFactory::getApplication();
+			$app ->enqueueMessage($notice.' <pre>'.$body.'</pre>');
+		} else {
+			echo $notice.' <pre>'.$body.'</pre>';
+		}
+
 	}
 
 }
@@ -320,6 +330,7 @@ class VmConfig {
 
 	public static $maxMessageCount = 0;
 	public static $maxMessage = 100;
+	public static $echoDebug = FALSE;
 
 	var $lang = FALSE;
 

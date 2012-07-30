@@ -28,29 +28,6 @@ defined('_JEXEC') or die('Restricted access');
 		<table class="admintable">
 		    <tr>
 			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ACCESS_LEVEL_TIP'); ?>">
-			    <label for="price_access_level_published"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ACCESS_LEVEL') ?></label>
-			    </span>
-			</td>
-			<td>
-			    <?php echo VmHTML::checkbox('price_access_level_published', $this->config->get('price_access_level_published')); ?>
-			    <?php echo JText::_('COM_VIRTUEMART_CFG_ENABLE_FEATURE'); ?>
-			    <br />
-			    <?php /*
-				if ( JVM_VERSION===1) {
-					echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', 'size=5', 'title', 'text', $this->config->get('price_access_level'));
-				} else {
-					$selectOptions['list.attr'] = 'size=5';
-					$selectOptions['option.key'] = 'title';
-					$selectOptions['option.text'] = 'text';
-					$selectOptions['list.select'] = $this->config->get('price_access_level');
-					$selectOptions['option.text.toHtml'] = false;
-					echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', $selectOptions);
-				} */ ?>
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP'); ?>">
 			    <label for="price_show_packaging_pricelabel"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL'); ?>
 			    </span>

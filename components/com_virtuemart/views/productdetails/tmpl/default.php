@@ -226,7 +226,7 @@ echo $this->loadTemplate('images');
 
 <?php
 // Ask a question about this product
-if (VmConfig::get('ask_question', 1) == '1') {
+if (VmConfig::get('ask_question', 1) == 1) {
     ?>
     		<div class="ask-a-question">
     		    <a class="ask-a-question" href="<?php echo $url ?>" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>

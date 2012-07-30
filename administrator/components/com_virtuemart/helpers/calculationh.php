@@ -719,7 +719,8 @@ class calculationHelper {
 					$cIn = $price;
 				}
 // 				vmdebug('executeCalculation '.$baseprice);
-				$cOut = $this->interpreteMathOp($rule['calc_value_mathop'], $rule['calc_value'], $cIn, $rule['calc_currency']);
+				$cOut = $this->interpreteMathOp($rule, $cIn);
+				//$cOut = $this->interpreteMathOp($rule['calc_value_mathop'], $rule['calc_value'], $cIn, $rule['calc_currency']);
 				$this->_cartPrices[$rule['virtuemart_calc_id'] . 'Diff'] = $this->roundInternal($this->roundInternal($cOut) - $cIn);
 // 				vmdebug('executeCalculation '.$cOut);
 				//okey, this is a bit flawless logic, but should work
@@ -1098,7 +1099,12 @@ class calculationHelper {
 		 * @param 	$currency int	the currency which should be used
 		 * @param	$price 	float	The price to calculate
 		 */
-		function interpreteMathOp($mathop, $value, $price, $currency='') {
+		function interpreteMathOp($rule, $price) {
+
+			$mathop = $rule['calc_value_mathop'];
+			$value = $rule['calc_value'];
+			$currency = $rule['calc_currency'];
+			//$mathop, $value, $price, $currency='')
 
 			$coreMathOp = array('+','-','+%','-%');
 
@@ -1145,6 +1151,7 @@ class calculationHelper {
 				JPluginHelper::importPlugin('vmcalculation');
 				$dispatcher = JDispatcher::getInstance();
 				$calculated = $dispatcher->trigger('interpreteMathOp', array($this, $mathop, $value, $price, $currency,$this->_revert));
+				$calculated = $dispatcher->trigger('plgVmInterpreteMathOp', array($this, $rule, $price,$this->_revert));
 				if($calculated){
 					foreach($calculated as $calc){
 						if($calc) return $calc;

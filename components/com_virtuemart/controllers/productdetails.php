@@ -58,6 +58,11 @@ class VirtueMartControllerProductdetails extends JController {
 	 */
 	public function mailAskquestion () {
 
+		// Display it all
+		$view = $this->getView ('askquestion', 'html');
+		if(!VmConfig::get('ask_question',false)){
+			$view->display ();
+		}
 		JRequest::checkToken () or jexit ('Invalid Token');
 		if (!class_exists ('shopFunctionsF')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
@@ -124,8 +129,7 @@ class VirtueMartControllerProductdetails extends JController {
 		}
 		$mainframe->enqueueMessage (JText::_ ($string));
 
-		// Display it all
-		$view = $this->getView ('askquestion', 'html');
+
 		$view->setLayout ('mail_confirmed');
 		$view->display ();
 	}
@@ -138,7 +142,12 @@ class VirtueMartControllerProductdetails extends JController {
 	public function mailRecommend () {
 
 		JRequest::checkToken () or jexit ('Invalid Token');
+		// Display it all
+		$view = $this->getView ('recommend', 'html');
 
+		if(!VmConfig::get('show_emailfriend',false)){
+			$view->display ();
+		}
 		if (!class_exists ('shopFunctionsF')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
@@ -181,8 +190,7 @@ class VirtueMartControllerProductdetails extends JController {
 		$mainframe->enqueueMessage (JText::_ ($string));
 
 // 		vmdebug('my email vars ',$vars,$TOMail);
-		// Display it all
-		$view = $this->getView ('recommend', 'html');
+
 
 		$view->setLayout ('mail_confirmed');
 		$view->display ();

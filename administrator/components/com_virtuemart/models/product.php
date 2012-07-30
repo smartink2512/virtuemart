@@ -189,8 +189,8 @@ class VirtueMartModelProduct extends VmModel {
 
 		//User Q.Stanley said that removing group by is increasing the speed of product listing in a bigger shop (10k products) by factor 60
 		//So what was the reason for that we have it? TODO experiemental, find conditions for the need of group by
-		$groupBy = 'group by p.`virtuemart_product_id` ';
-		//$groupBy = ' ';
+		$groupBy = ' group by p.`virtuemart_product_id` ';
+		// $groupBy = ' ';
 
 			//administrative variables to organize the joining of tables
 		$joinCategory = FALSE;
@@ -412,11 +412,11 @@ class VirtueMartModelProduct extends VmModel {
 		//$selectFindRows = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';
 		//$selectFindRows = 'SELECT COUNT(*) FROM `#__virtuemart_products` ';
 		if ($joinLang) {
-			$select = ' * FROM `#__virtuemart_products_' . VMLANG . '` as l';
+			$select = ' l.`virtuemart_product_id` FROM `#__virtuemart_products_' . VMLANG . '` as l';
 			$joinedTables = ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)';
 		}
 		else {
-			$select = ' * FROM `#__virtuemart_products` as p';
+			$select = ' p.`virtuemart_product_id` FROM `#__virtuemart_products` as p';
 			$joinedTables = '';
 		}
 
