@@ -464,19 +464,19 @@ class ShopFunctions {
 		}
 		switch ($to) {
 			case 'KG' :
-				$value = round ($g / 1000, 2);
+				$value = $g / 1000;
 				break;
 			case 'GR' :
-				$value = round ($g, 2);
+				$value = $g;
 				break;
 			case 'MG' :
-				$value = round (1000 * $g, 2);
+				$value = 1000 * $g;
 				break;
 			case 'LB' :
-				$value = round ($g / 453.59237, 2);
+				$value = $g / 453.59237;
 				break;
 			case 'OZ' :
-				$value = round ($g / 28.3495, 2);
+				$value = $g / 28.3495;
 				break;
 		}
 		return $value;
@@ -515,19 +515,19 @@ class ShopFunctions {
 		}
 		switch ($to) {
 			case 'CM' :
-				$value = round ($meter * 0.01, 2);
+				$value = $meter * 0.01;
 				break;
 			case 'MM' :
-				$value = round ($meter * 0.001, 2);
+				$value = $meter * 0.001;
 				break;
 			case 'YD' :
-				$value = round ($meter * 0.9144, 2);
+				$value = $meter * 0.9144;
 				break;
 			case 'FT' :
-				$value = round ($meter * 0.3048, 2);
+				$value = $meter * 0.3048;
 				break;
 			case 'IN' :
-				$value = round ($meter * 0.0254, 2);
+				$value = $meter * 0.0254;
 				break;
 		}
 		return $value;
