@@ -112,10 +112,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				return $this->update($loadVm);
 			}
 
-			if(version_compare(JVERSION,'1.6.0','ge')) {
-				$fields = array('data'=>'`data` varchar(30480) NULL AFTER `time`');
-				$this->alterTable('#__session',$fields);
-			}
+
+			$this -> joomlaSessionDBToMediumText();
 
 			// install essential and required data
 			// should this be covered in install.sql (or 1.6's JInstaller::parseSchemaUpdates)?
@@ -222,10 +220,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			// 			$this->displayFinished(true);
 			//return false;
 
-			if(version_compare(JVERSION,'1.6.0','ge')) {
-				$fields = array('data'=>'`data` text NULL AFTER `time`');
-				$this->alterTable('#__session',$fields);
-			}
+			$this -> joomlaSessionDBToMediumText();
 
 // 			$this->portOverwritePrices();
 /*			$table = '#__virtuemart_customs';
@@ -534,6 +529,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			}
 		}
 
+
+		private function joomlaSessionDBToMediumText(){
+
+			if(version_compare(JVERSION,'1.6.0','ge')) {
+				$fields = array('data'=>'`data` mediumtext NULL AFTER `time`');
+				$this->alterTable('#__session',$fields);
+			}
+		}
 
 		/**
 		 * Uninstall script
