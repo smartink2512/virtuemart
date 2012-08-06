@@ -389,11 +389,11 @@ class ShopFunctions {
 			return $weigth_unit;
 		}
 		return $weigth_unit = array(
-			'KG' => JText::_ ('COM_VIRTUEMART_WEIGHT_UNIT_NAME_KG')
-		, 'GR'   => JText::_ ('COM_VIRTUEMART_WEIGHT_UNIT_NAME_GR')
-		, 'MG'   => JText::_ ('COM_VIRTUEMART_WEIGHT_UNIT_NAME_MG')
-		, 'LB'   => JText::_ ('COM_VIRTUEMART_WEIGHT_UNIT_NAME_LB')
-		, 'OZ'   => JText::_ ('COM_VIRTUEMART_WEIGHT_UNIT_NAME_ONCE')
+			'KG' => JText::_ ('COM_VIRTUEMART_UNIT_NAME_KG')
+		, 'G'   => JText::_ ('COM_VIRTUEMART_UNIT_NAME_G')
+		, 'MG'   => JText::_ ('COM_VIRTUEMART_UNIT_NAME_MG')
+		, 'LB'   => JText::_ ('COM_VIRTUEMART_UNIT_NAME_LB')
+		, 'OZ'   => JText::_ ('COM_VIRTUEMART_UNIT_NAME_ONCE')
 		);
 	}
 
@@ -432,6 +432,24 @@ class ShopFunctions {
 		 */
 	}
 
+	static function renderUnitIsoList($name, $selected){
+
+		$weigth_unit_default = array(
+			'KG' => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_KG')
+		, '100MG' => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100MG')
+		, 'M'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_M')
+		, 'SM'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_SM')
+		, 'CUBM'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_CUBM')
+		, 'L'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_L')
+		, '100ML'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100ML')
+		);
+		foreach ($weigth_unit_default as  $key => $value) {
+			$wu_list[] = JHTML::_ ('select.option', $key, $value, $name);
+		}
+		$listHTML = JHTML::_ ('Select.genericlist', $wu_list, $name, '', $name, 'text', $selected);
+		return $listHTML;
+	}
+
 	/**
 	 * Convert Weigth Unit
 	 *
@@ -449,7 +467,7 @@ class ShopFunctions {
 			case 'KG':
 				$g = 1000 * $value;
 			break;
-			case 'GR':
+			case 'G':
 				$g = $value;
 			break;
 			case 'MG':
@@ -466,7 +484,7 @@ class ShopFunctions {
 			case 'KG' :
 				$value = $g / 1000;
 				break;
-			case 'GR' :
+			case 'G' :
 				$value = $g;
 				break;
 			case 'MG' :
@@ -544,12 +562,12 @@ class ShopFunctions {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 		}
 
-		$lwh_unit_default = array('M' => JText::_ ('COM_VIRTUEMART_LWH_UNIT_NAME_M')
-		, 'CM'                        => JText::_ ('COM_VIRTUEMART_LWH_UNIT_NAME_CM')
-		, 'MM'                        => JText::_ ('COM_VIRTUEMART_LWH_UNIT_NAME_MM')
-		, 'YD'                        => JText::_ ('COM_VIRTUEMART_LWH_UNIT_NAME_YARD')
-		, 'FT'                        => JText::_ ('COM_VIRTUEMART_LWH_UNIT_NAME_FOOT')
-		, 'IN'                        => JText::_ ('COM_VIRTUEMART_LWH_UNIT_NAME_INCH')
+		$lwh_unit_default = array('M' => JText::_ ('COM_VIRTUEMART_UNIT_NAME_M')
+		, 'CM'                        => JText::_ ('COM_VIRTUEMART_UNIT_NAME_CM')
+		, 'MM'                        => JText::_ ('COM_VIRTUEMART_UNIT_NAME_MM')
+		, 'YD'                        => JText::_ ('COM_VIRTUEMART_UNIT_NAME_YARD')
+		, 'FT'                        => JText::_ ('COM_VIRTUEMART_UNIT_NAME_FOOT')
+		, 'IN'                        => JText::_ ('COM_VIRTUEMART_UNIT_NAME_INCH')
 		);
 		return VmHTML::selectList ($name, $selected, $lwh_unit_default);
 

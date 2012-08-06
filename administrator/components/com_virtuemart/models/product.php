@@ -1239,8 +1239,8 @@ class VirtueMartModelProduct extends VmModel {
 		$product_data = $this->getTable ('products');
 
 		//Set the product packaging
-		if (array_key_exists ('product_box', $data)) {
-			$data['product_packaging'] = (($data['product_box'] << 16) | ($data['product_packaging'] & 0xFFFF));
+		if (array_key_exists ('product_packaging', $data)) {
+			$data['product_packaging'] = str_replace(',','.',$data['product_packaging']);
 		}
 
 		// 		if(VmConfig::get('productlayout') == $data['layout']){

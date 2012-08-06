@@ -118,8 +118,10 @@ class TableProducts extends VmTable {
 
 		//We could put into the params also the product_availability and the low_stock_notification
 		$varsToPushParam = array(
-				    				'min_order_level'=>array(0.0,'float'),
-				    				'max_order_level'=>array(0.0,'float')
+				    				'min_order_level'=>array(null,'float'),
+				    				'max_order_level'=>array(null,'float'),
+									//'product_packaging'=>array(null,'float'),
+									'product_box'=>array(null,'float')
 									);
 
 		$this->setParameterable('product_params',$varsToPushParam);

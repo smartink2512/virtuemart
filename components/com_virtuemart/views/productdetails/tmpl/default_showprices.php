@@ -46,5 +46,6 @@ defined('_JEXEC') or die('Restricted access');
     echo $this->currency->createPriceDiv('priceWithoutTax', 'COM_VIRTUEMART_PRODUCT_SALESPRICE_WITHOUT_TAX', $this->product->prices);
     echo $this->currency->createPriceDiv('discountAmount', 'COM_VIRTUEMART_PRODUCT_DISCOUNT_AMOUNT', $this->product->prices);
     echo $this->currency->createPriceDiv('taxAmount', 'COM_VIRTUEMART_PRODUCT_TAX_AMOUNT', $this->product->prices);
+	echo $this->currency->createPriceDiv('grundPrice', 'COM_VIRTUEMART_PRODUCT_GRUND_PRICE', $this->product->prices);
     ?>
 </div>

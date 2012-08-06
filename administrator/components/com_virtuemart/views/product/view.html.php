@@ -166,6 +166,7 @@ class VirtuemartViewProduct extends VmView {
 				}
 
 				$lists['product_weight_uom'] = ShopFunctions::renderWeightUnitList('product_weight_uom',$task=='add'? VmConfig::get('weight_unit_default'): $product->product_weight_uom);
+				$lists['product_iso_uom'] = ShopFunctions::renderUnitIsoList('product_unit',$task=='add'? VmConfig::get('weight_unit_default'): $product->product_unit);
 				$lists['product_lwh_uom'] = ShopFunctions::renderLWHUnitList('product_lwh_uom', $task=='add'?VmConfig::get('lwh_unit_default') : $product->product_lwh_uom);
 
 				if( empty( $product->product_available_date )) {

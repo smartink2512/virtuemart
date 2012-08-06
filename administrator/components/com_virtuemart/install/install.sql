@@ -705,7 +705,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `product_special` tinyint(1),
   `product_sales` int(1) UNSIGNED,
   `product_unit` char(4),
-  `product_packaging` int(11),
+  `product_packaging` decimal(8,4) UNSIGNED,
   `product_params` varchar(2000),
   `hits` int(11) unsigned,
   `intnotes` varchar(18000),

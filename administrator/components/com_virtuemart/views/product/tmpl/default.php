@@ -95,7 +95,7 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 		<th><?php echo JText::_('COM_VIRTUEMART_REVIEW_S'); ?></th>
 
 		<th width="40px" ><?php echo $this->sort('published') ; ?></th>
-	                <th><?php echo $this->sort('virtuemart_product_id', 'COM_VIRTUEMART_ID')  ?></th>
+	                <th><?php echo $this->sort('p.virtuemart_product_id', 'COM_VIRTUEMART_ID')  ?></th>
 
         </tr>
 	</thead>

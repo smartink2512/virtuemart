@@ -241,36 +241,6 @@ class calculationHelper {
 			$this->_product = $product;
 		} //Use it as productId
 		else {
-			vmSetStartTime('getProductCalcs');
-/*			$this->_db->setQuery('SELECT * FROM #__virtuemart_product_prices  WHERE `virtuemart_product_id`="' . $productId . '" ');
-			$row = $this->_db->loadAssoc();
-			if ($row) {
-				if (!empty($row['product_price'])) {
-					$costPrice = $row['product_price'];
-					$this->productCurrency = $row['product_currency'];
-					$override = $row['override'];
-					$product_override_price = $row['product_override_price'];
-					$this->product_tax_id = $row['product_tax_id'];
-					$this->product_discount_id = $row['product_discount_id'];
-				} else {
-					$app = Jfactory::getApplication();
-					$app->enqueueMessage('cost Price empty, if child, everything okey, this is just a dev note');
-					return false;
-				}
-			}
-			$this->_db->setQuery('SELECT `virtuemart_vendor_id` FROM #__virtuemart_products  WHERE `virtuemart_product_id`="' . $productId . '" ');
-			$single = $this->_db->loadResult();
-			$this->productVendorId = $single;
-			if (empty($this->productVendorId)) {
-				$this->productVendorId = 1;
-			}
-
-			if (empty($catIds)) {
-				$this->_db->setQuery('SELECT `virtuemart_category_id` FROM #__virtuemart_product_categories  WHERE `virtuemart_product_id`="' . $productId . '" ');
-				$this->_cats = $this->_db->loadResultArray();
-			} else {
-				$this->_cats = $catIds;
-			}*/
 			vmError('getProductPrices no object given query time','getProductPrices no object given query time');
 		}
 
@@ -353,6 +323,13 @@ class calculationHelper {
 		} else {
 
 		}
+
+		if(!empty($product->product_packaging) and $product->product_packaging!='0.0000'){
+			$prices['grundPrice'] = $prices['salesPrice']/$product->product_packaging;
+		} else {
+			$prices['grundPrice'] = 0.0;
+		}
+
 
 		if(!empty($this->rules['VatTax'])){
 			$this->_revert = true;

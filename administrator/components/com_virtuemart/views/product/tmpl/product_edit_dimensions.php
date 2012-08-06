@@ -63,19 +63,19 @@ defined('_JEXEC') or die('Restricted access');?>
         <div align="right"><strong><?php echo JText::_('COM_VIRTUEMART_PRODUCT_UNIT') ?></strong></div>
       </td>
       <td width="21%" >
-        <input type="text" class="inputbox"  name="product_unit" size="15" maxlength="15" value="<?php echo $this->product->product_unit; ?>" />
+	      <?php echo " ".$this->lists['product_iso_uom'];?>
       </td>
     </tr>
     <tr class="row0">
       <td width="21%" valign="top" >
         <div align="right"><strong>
-        <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_PACKAGING_DESCRIPTION'); ?>">
+        <span class="hasTip" title="<?php echo JText::sprintf('COM_VIRTUEMART_PRODUCT_PACKAGING_DESCRIPTION',JText::_('COM_VIRTUEMART_UNIT_NAME_L'),JText::_('COM_VIRTUEMART_PRODUCT_UNIT'),JText::_('COM_VIRTUEMART_UNIT_NAME_100ML')); ?>">
         <?php echo JText::_('COM_VIRTUEMART_PRODUCT_PACKAGING') ?>
          </span>
             </strong></div>
       </td>
       <td width="21%" >
-        <input type="text" class="inputbox"  name="product_packaging" value="<?php echo $this->product->product_packaging & 0xFFFF; ?>" size="8" maxlength="32" />&nbsp;<?php
+        <input type="text" class="inputbox"  name="product_packaging" value="<?php echo $this->product->product_packaging; ?>" size="8" maxlength="32" />&nbsp;<?php
         ?>
       </td>
     </tr>
@@ -87,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');?>
                 </span></strong></div>
       </td>
       <td width="21%" >
-        <input type="text" class="inputbox"  name="product_box" value="<?php echo ($this->product->product_packaging>>16)&0xFFFF; ?>" size="8" maxlength="32" />&nbsp;
+        <input type="text" class="inputbox"  name="product_box" value="<?php echo $this->product->product_box; ?>" size="8" maxlength="32" />&nbsp;
       </td>
     </tr>
     <!-- Changed Packaging - End -->

@@ -1743,9 +1743,9 @@ class Migrator extends VmModel{
 		$weightUnitMigrate=array (
                   'kg' => 'KG'
 		, 'kilos' => 'KG'
-		, 'gr' => 'GR'
+		, 'gr' => 'G'
 		, 'pound' => 'LB'
-		, 'livre' => 'LB'
+		, 'livre' => 'LB'   //TODO ERROR HERE
 		, 'once' => 'OZ'
 		, 'ounce' => 'OZ'
 		);
