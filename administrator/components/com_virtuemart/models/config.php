@@ -306,7 +306,7 @@ class VirtueMartModelConfig extends JModel {
 				vmInfo('Corrected safe path added missing '.DS);
 			}
 		}
-
+		if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		$safePath = shopFunctions::checkSafePath($safePath);
 
 		if(!empty($safePath)){
