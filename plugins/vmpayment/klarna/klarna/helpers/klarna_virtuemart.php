@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
  * @package VirtueMart
 
  * @copyright Copyright (C) iStraxx - All rights reserved.
- * @license istraxx_license.txt Proprietary License. This code belongs to istraxx UG (haftungsbeschränkt)
+ * @license istraxx_license.txt Proprietary License. This code belongs to iStraxx UG (haftungsbeschränkt)
  * You are not allowed to distribute or sell this code.
  * You are not allowed to modify this code
  */
