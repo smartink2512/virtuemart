@@ -77,10 +77,18 @@ $states = JText::_('COM_VIRTUEMART_STATE_S');
 			<?php echo $checked; ?>
 		</td>
 		<td align="left">
-		    <a href="<?php echo $editlink; ?>"><?php echo $row->country_name; ?></a>&nbsp;
-		    <a title="<?php echo JText::sprintf('COM_VIRTUEMART_STATES_VIEW_LINK', $row->country_name ); ?>" href="<?php echo $statelink; ?>">[<?php echo $states ?>]</a>
+			<?php $country_string= Jtext::_($row->country_name); ?>
+		    <a href="<?php echo $editlink; ?>"><?php echo $row->country_name ?> </a>&nbsp;
+			<?php
+			$lang =JFactory::getLanguage();
+			if ($lang->hasKey($row->country_name)) {
+				echo "(".$country_string.") ";
+			}
+			?>
+
+		    <a title="<?php echo JText::sprintf('COM_VIRTUEMART_STATES_VIEW_LINK', $country_string ); ?>" href="<?php echo $statelink; ?>">[<?php echo $states ?>]</a>
 		</td>
-<?php /* TODO not implemented				<td align="left">
+		<?php /* TODO not implemented				<td align="left">
 			<?php echo $row->virtuemart_worldzone_id; ?>
 		</td> */ ?>
 		<td> 

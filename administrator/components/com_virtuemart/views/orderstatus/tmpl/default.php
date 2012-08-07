@@ -38,6 +38,9 @@ AdminUIHelper::startAdminArea();
 			<?php echo $this->sort('order_status_code') ?>
 			</th>
 			<th>
+				<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_STOCK_HANDLE'); ?>
+			</th>
+			<th>
 				<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
 			</th>
 			<th>
@@ -73,12 +76,20 @@ AdminUIHelper::startAdminArea();
 				<td width="10">
 					<?php echo $checked; ?>
 				</td>
-
 				<td align="left">
-					<a href="<?php echo $editlink; ?>"><?php echo JText::_($row->order_status_name); ?></a>
+					<a href="<?php echo $editlink; ?>"><?php echo $row->order_status_name; ?></a>
+					<?php
+					$lang =JFactory::getLanguage();
+					if ($lang->hasKey($row->order_status_name)) {
+						echo " (".JText::_($row->order_status_name).")";
+					}
+					?>
 				</td>
 				<td align="left">
 					<?php echo $row->order_status_code; ?>
+				</td>
+				<td align="left">
+					<?php echo  JText::_($this->stockHandelList[$row->order_stock_handle]); ?>
 				</td>
 				<td align="left">
 					<?php echo JText::_($row->order_status_description); ?>

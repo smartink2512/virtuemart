@@ -90,26 +90,33 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'payment_currency'                       => 'char(3) ',
 			'cost_per_transaction'                   => 'decimal(10,2)',
 			'cost_percent_total'                     => 'decimal(10,2)',
-			'tax_id'                                 => ' smallint(1)',
-			'paypal_custom'                          => ' varchar(255)',
-			'paypal_response_mc_gross'               => 'decimal(10,2)',
-			'paypal_response_mc_currency'            => 'char(10)',
-			'paypal_response_invoice'                => 'char(32)',
-			'paypal_response_protection_eligibility' => 'char(128)',
-			'paypal_response_payer_id'               => 'char(13)',
-			'paypal_response_tax'                    => 'decimal(10,2)',
-			'paypal_response_payment_date'           => 'char(28)',
-			'paypal_response_payment_status'         => 'char(50)',
-			'paypal_response_pending_reason'         => 'char(50)',
-			'paypal_response_mc_fee'                 => 'decimal(10,2) ',
-			'paypal_response_payer_email'            => 'char(128)',
-			'paypal_response_last_name'              => 'char(64)',
-			'paypal_response_first_name'             => 'char(64)',
-			'paypal_response_business'               => 'char(128)',
-			'paypal_response_receiver_email'         => 'char(128)',
-			'paypal_response_transaction_subject'    => 'char(128)',
-			'paypal_response_residence_country'      => 'char(2)',
-			'paypalresponse_raw'                     => 'varchar(512)'
+			'tax_id'                                 => 'smallint(1)',
+			'paypal_custom'                          => 'varchar(255)',
+			'paypal_response_mc_gross'               => 'decimal(10,2) NULL DEFAULT NULL',
+			'paypal_response_mc_currency'            => 'char(10) NULL DEFAULT NULL',
+			'paypal_response_invoice'                => 'char(32) NULL DEFAULT NULL',
+			'paypal_response_protection_eligibility' => 'char(128) NULL DEFAULT NULL',
+			'paypal_response_payer_id'               => 'char(13) NULL DEFAULT NULL',
+			'paypal_response_tax'                    => 'decimal(10,2) NULL DEFAULT NULL',
+			'paypal_response_payment_date'           => 'char(28) NULL DEFAULT NULL',
+			'paypal_response_payment_status'         => 'char(50) NULL DEFAULT NULL',
+			'paypal_response_pending_reason'         => 'char(50) NULL DEFAULT NULL',
+			'paypal_response_mc_fee'                 => 'decimal(10,2) NULL DEFAULT NULL',
+			'paypal_response_payer_email'            => 'char(128) NULL DEFAULT NULL',
+			'paypal_response_last_name'              => 'char(64) NULL DEFAULT NULL',
+			'paypal_response_first_name'             => 'char(64) NULL DEFAULT NULL',
+			'paypal_response_business'               => 'char(128) NULL DEFAULT NULL',
+			'paypal_response_receiver_email'         => 'char(128) NULL DEFAULT NULL',
+			'paypal_response_transaction_subject'    => 'char(128) NULL DEFAULT NULL',
+			'paypal_response_residence_country'      => 'char(2) NULL DEFAULT NULL',
+			'paypal_response_txn_id'                 => 'char(32) NULL DEFAULT NULL',
+			'paypal_response_txn_type'               => 'char(32) NULL DEFAULT NULL', //The kind of transaction for which the IPN message was sent
+			'paypal_response_parent_txn_id'          => 'char(32) NULL DEFAULT NULL',
+			'paypal_response_case_creation_date'     => 'char(32) NULL DEFAULT NULL',
+			'paypal_response_case_id'                => 'char(32) NULL DEFAULT NULL',
+			'paypal_response_case_type'              => 'char(32) NULL DEFAULT NULL',
+			'paypal_response_reason_code'            => 'char(32) NULL DEFAULT NULL',
+			'paypalresponse_raw'                     => 'varchar(512) NULL DEFAULT NULL',
 		);
 		return $SQLfields;
 	}
@@ -149,10 +156,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$vendor = $vendorModel->getVendor ();
 		$vendorModel->addImages ($vendor, 1);
 		$this->getPaymentCurrency ($method);
-		$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $method->payment_currency . '" ';
-		$db = JFactory::getDBO ();
-		$db->setQuery ($q);
-		$currency_code_3 = $db->loadResult ();
+		$currency_code_3 = shopFunctions::getCurrencyByID ($method->payment_currency, 'currency_code_3');
 
 		$paymentCurrency = CurrencyDisplay::getInstance ($method->payment_currency);
 		$totalInPaymentCurrency = round ($paymentCurrency->convertCurrencyTo ($method->payment_currency, $order['details']['BT']->order_total, FALSE), 2);
@@ -210,34 +214,33 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			"no_shipping"      => isset($method->no_shipping) ? $method->no_shipping : 0,
 			"no_note"          => "1");
 
-
 		/*
-			  $i = 1;
-			  foreach ($cart->products as $key => $product) {
-			  $post_variables["item_name_" . $i] = substr(strip_tags($product->product_name), 0, 127);
-			  $post_variables["item_number_" . $i] = $i;
-			  $post_variables["amount_" . $i] = $cart->pricesUnformatted[$key]['salesPrice'];
-			  $post_variables["quantity_" . $i] = $product->quantity;
-			  $i++;
-			  }
-			  if ($cart->pricesUnformatted ['shipmentValue']) {
-			  $post_variables["item_name_" . $i] = JText::_('VMPAYMENT_PAYPAL_SHIPMENT_PRICE');
-			  $post_variables["item_number_" . $i] = $i;
-			  $post_variables["amount_" . $i] = $cart->pricesUnformatted ['shipmentValue'];
-			  $post_variables["quantity_" . $i] = 1;
-			  $i++;
-			  }
-			  if ($cart->pricesUnformatted ['paymentValue']) {
-			  $post_variables["item_name_" . $i] = JText::_('VMPAYMENT_PAYPAL_PAYMENT_PRICE');
-			  $post_variables["item_number_" . $i] = $i;
-			  $post_variables["amount_" . $i] = $cart->pricesUnformatted ['paymentValue'];
-			  $post_variables["quantity_" . $i] = 1;
-			  $i++;
-			  }
-			  if (!empty($order->cart->coupon)) {
-			  $post_variables["discount_amount_cart"] = $cart->pricesUnformatted['discountAmount'];
-			  }
-			 */
+					  $i = 1;
+					  foreach ($cart->products as $key => $product) {
+					  $post_variables["item_name_" . $i] = substr(strip_tags($product->product_name), 0, 127);
+					  $post_variables["item_number_" . $i] = $i;
+					  $post_variables["amount_" . $i] = $cart->pricesUnformatted[$key]['salesPrice'];
+					  $post_variables["quantity_" . $i] = $product->quantity;
+					  $i++;
+					  }
+					  if ($cart->pricesUnformatted ['shipmentValue']) {
+					  $post_variables["item_name_" . $i] = JText::_('VMPAYMENT_PAYPAL_SHIPMENT_PRICE');
+					  $post_variables["item_number_" . $i] = $i;
+					  $post_variables["amount_" . $i] = $cart->pricesUnformatted ['shipmentValue'];
+					  $post_variables["quantity_" . $i] = 1;
+					  $i++;
+					  }
+					  if ($cart->pricesUnformatted ['paymentValue']) {
+					  $post_variables["item_name_" . $i] = JText::_('VMPAYMENT_PAYPAL_PAYMENT_PRICE');
+					  $post_variables["item_number_" . $i] = $i;
+					  $post_variables["amount_" . $i] = $cart->pricesUnformatted ['paymentValue'];
+					  $post_variables["quantity_" . $i] = 1;
+					  $i++;
+					  }
+					  if (!empty($order->cart->coupon)) {
+					  $post_variables["discount_amount_cart"] = $cart->pricesUnformatted['discountAmount'];
+					  }
+					 */
 
 		// Prepare data that should be stored in the database
 		$dbValues['order_number'] = $order['details']['BT']->order_number;
@@ -392,6 +395,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	 */
 	function plgVmOnPaymentNotification () {
 
+		//$this->_debug = true;
 		if (!class_exists ('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
@@ -405,83 +409,95 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		}
 
 		$vendorId = 0;
-		if (!($payment = $this->getDataByOrderId ($virtuemart_order_id))) {
+		if (!($payments = $this->getDatasByOrderId ($virtuemart_order_id))) {
 			return NULL;
 		}
 
-		$method = $this->getVmPluginMethod ($payment->virtuemart_paymentmethod_id);
+		$method = $this->getVmPluginMethod ($payments[0]->virtuemart_paymentmethod_id);
 		if (!$this->selectedThisElement ($method->payment_element)) {
 			return FALSE;
 		}
 
 		$this->_debug = $method->debug;
-		if (!$payment) {
-			$this->logInfo ('getDataByOrderId payment not found: exit ', 'ERROR');
-			return NULL;
-		}
+
 		$this->logInfo ('paypal_data ' . implode ('   ', $paypal_data), 'message');
 
-		$this->_storePaypalInternalData ($method, $paypal_data, $virtuemart_order_id, $payment->virtuemart_paymentmethod_id);
+		//$this->_storePaypalInternalData ($method, $paypal_data, $virtuemart_order_id, $payment->virtuemart_paymentmethod_id);
 		$modelOrder = VmModel::getModel ('orders');
 		$order = array();
-		$error_msg = $this->_processIPN ($paypal_data, $method, $virtuemart_order_id);
+
+		// _processIPN checks that  $res== "VERIFIED"
+		$error_msg = $this->_processIPN ($paypal_data, $method);
+
 		$this->logInfo ('process IPN ' . $error_msg, 'message');
 
 		if (!(empty($error_msg))) {
-			$order['customer_notified'] = 0;
-			$order['order_status'] = $method->status_canceled;
-			$order['comments'] = 'process IPN ' . $error_msg;
-			/** @var $modelOrder array() */
-			$modelOrder->updateStatusForOneOrder ($virtuemart_order_id, $order, TRUE);
-			$this->logInfo ('process IPN ' . $error_msg . ' ' . $order['order_status'] , 'ERROR');
+			$this->logInfo ('process IPN ' . $error_msg . ' ' . $order['order_status'], 'ERROR');
 			return NULL;
-		}
-		else {
+		} else {
 			$this->logInfo ('process IPN OK', 'message');
 		}
 		/*
-			 * https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_IPNandPDTVariables
-			 * The status of the payment:
-			 * Canceled_Reversal: A reversal has been canceled. For example, you won a dispute with the customer, and the funds for the transaction that was reversed have been returned to you.
-			 * Completed: The payment has been completed, and the funds have been added successfully to your account balance.
-			 * Created: A German ELV payment is made using Express Checkout.
-			 * Denied: You denied the payment. This happens only if the payment was previously pending because of possible reasons described for the pending_reason variable or the Fraud_Management_Filters_x variable.
-			 * Expired: This authorization has expired and cannot be captured.
-			 * Failed: The payment has failed. This happens only if the payment was made from your customer’s bank account.
-			 * Pending: The payment is pending. See pending_reason for more information.
-			 * Refunded: You refunded the payment.
-			 * Reversed: A payment was reversed due to a chargeback or other type of reversal. The funds have been removed from your account balance and returned to the buyer. The reason for the reversal is specified in the ReasonCode element.
-			 * Processed: A payment has been accepted.
-			 * Voided: This authorization has been voided.
-			 *
-			 */
+		 * https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_IPNandPDTVariables
+		 * The status of the payment:
+		 * Canceled_Reversal: A reversal has been canceled. For example, you won a dispute with the customer, and the funds for the transaction that was reversed have been returned to you.
+		 * Completed: The payment has been completed, and the funds have been added successfully to your account balance.
+		 * Created: A German ELV payment is made using Express Checkout.
+		 * Denied: You denied the payment. This happens only if the payment was previously pending because of possible reasons described for the pending_reason variable or the Fraud_Management_Filters_x variable.
+		 * Expired: This authorization has expired and cannot be captured.
+		 * Failed: The payment has failed. This happens only if the payment was made from your customer’s bank account.
+		 * Pending: The payment is pending. See pending_reason for more information.
+		 * Refunded: You refunded the payment.
+		 * Reversed: A payment was reversed due to a chargeback or other type of reversal. The funds have been removed from your account balance and returned to the buyer. The reason for the reversal is specified in the ReasonCode element.
+		 * Processed: A payment has been accepted.
+		 * Voided: This authorization has been voided.
+		 *
+		 */
 		if (empty($paypal_data['payment_status']) || ($paypal_data['payment_status'] != 'Completed' && $paypal_data['payment_status'] != 'Pending')) {
 			//return false;
 		}
 		$lang = JFactory::getLanguage ();
 		$order['customer_notified'] = 1;
 
+		// 1. check the payment_status is Completed
 		if (strcmp ($paypal_data['payment_status'], 'Completed') == 0) {
+			// 2. check that txn_id has not been previously processed
+			if ($this->_check_txn_id_already_processed ($payments, $paypal_data['txn_id'])) {
+				return;
+			}
+			// 3. check email and amount currency is correct
+			if (!$this->_check_email_amount_currency ($payments, $this->_getMerchantEmail ($method), $paypal_data)) {
+				return;
+			}
+			// now we can process the payment
 			$order['order_status'] = $method->status_success;
 			$order['comments'] = JText::sprintf ('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $order_number);
-		}
-		elseif (strcmp ($paypal_data['payment_status'], 'Pending') == 0) {
+		} elseif (strcmp ($paypal_data['payment_status'], 'Pending') == 0) {
 			$key = 'VMPAYMENT_PAYPAL_PENDING_REASON_FE_' . strtoupper ($paypal_data['pending_reason']);
 			if (!$lang->hasKey ($key)) {
 				$key = 'VMPAYMENT_PAYPAL_PENDING_REASON_FE_DEFAULT';
 			}
 			$order['comments'] = JText::sprintf ('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PENDING', $order_number) . JText::_ ($key);
 			$order['order_status'] = $method->status_pending;
-		}
-		else {
+		} elseif (isset ($paypal_data['payment_status'])) {
 			$order['order_status'] = $method->status_canceled;
+		} else {
+			/*
+			* a notification was received that concerns one of the payment (since $paypal_data['invoice'] is found in our table),
+			* but the IPN notification has no $paypal_data['payment_status']
+			* We just log the info in the order, and do not change the status, do not notify the customer
+			*/
+			$order['comments'] = JText::_ ('VMPAYMENT_PAYPAL_IPN_NOTIFICATION_RECEIVED');
+			$order['customer_notified'] = 0;
 		}
-
+		$this->_storePaypalInternalData ($method, $paypal_data, $virtuemart_order_id, $payments[0]->virtuemart_paymentmethod_id);
 		$this->logInfo ('plgVmOnPaymentNotification return new_status:' . $order['order_status'], 'message');
 
 		$modelOrder->updateStatusForOneOrder ($virtuemart_order_id, $order, TRUE);
 		//// remove vmcart
-		$this->emptyCart ($paypal_data['custom'], $order_number);
+		if (isset($paypal_data['custom'])) {
+			$this->emptyCart ($paypal_data['custom'], $order_number);
+		}
 		//die();
 	}
 
@@ -515,7 +531,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$response_fields['paypal_custom'] = $paypal_data['custom'];
 
 		//$preload=true   preload the data here too preserve not updated data
-		$this->storePSPluginInternalData ($response_fields, 'virtuemart_order_id', TRUE);
+		$this->storePSPluginInternalData ($response_fields);
 	}
 
 	/**
@@ -547,23 +563,29 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return NULL; // Another method was selected, do nothing
 		}
 
-		if (!($paymentTable = $this->_getPaypalInternalData ($virtuemart_order_id))) {
+		if (!($payments = $this->_getPaypalInternalData ($virtuemart_order_id))) {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 			return '';
 		}
-		$this->getPaymentCurrency ($paymentTable);
-		$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $paymentTable->payment_currency . '" ';
-		$db = JFactory::getDBO ();
-		$db->setQuery ($q);
-		$currency_code_3 = $db->loadResult ();
-		$html = '<table class="adminlist">' . "\n";
+
+		$html = '<table class="adminlist" width="50%">' . "\n";
 		$html .= $this->getHtmlHeaderBE ();
-		$html .= $this->getHtmlRowBE ('PAYPAL_PAYMENT_NAME', $paymentTable->payment_name);
-		//$html .= $this->getHtmlRowBE('PAYPAL_PAYMENT_TOTAL_CURRENCY', $paymentTable->payment_order_total.' '.$currency_code_3);
 		$code = "paypal_response_";
-		foreach ($paymentTable as $key => $value) {
-			if (substr ($key, 0, strlen ($code)) == $code) {
-				$html .= $this->getHtmlRowBE ($key, $value);
+		$first = TRUE;
+		foreach ($payments as $payment) {
+			$html .= '<tr class="row1"><td>' . JText::_ ('VMPAYMENT_PAYPAL_DATE') . '</td><td align="left">' . $payment->created_on . '</td></tr>';
+			if ($first) {
+				$html .= $this->getHtmlRowBE ('PAYPAL_PAYMENT_NAME', $payment->payment_name);
+				$html .= $this->getHtmlRowBE ('PAYPAL_PAYMENT_ORDER_TOTAL', $payment->payment_order_total . " " . shopFunctions::getCurrencyByID ($payment->payment_currency, 'currency_code_3'));
+				$first = FALSE;
+			} else{
+				foreach ($payment as $key => $value) {
+					if ($value) {
+						if (substr ($key, 0, strlen ($code)) == $code) {
+							$html .= $this->getHtmlRowBE ($key, $value);
+						}
+					}
+				}
 			}
 		}
 		$html .= '</table>' . "\n";
@@ -581,17 +603,16 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$q = 'SELECT * FROM `' . $this->_tablename . '` WHERE ';
 		if ($order_number) {
 			$q .= " `order_number` = '" . $order_number . "'";
-		}
-		else {
+		} else {
 			$q .= ' `virtuemart_order_id` = ' . $virtuemart_order_id;
 		}
 
 		$db->setQuery ($q);
-		if (!($paymentTable = $db->loadObject ())) {
+		if (!($payments = $db->loadObjectList ())) {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 			return '';
 		}
-		return $paymentTable;
+		return $payments;
 	}
 
 	/**
@@ -625,24 +646,21 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			// If possible, securely post back to paypal using HTTPS
 			// Your PHP server will need to be SSL enabled
 			$fps = fsockopen ('ssl://' . $paypal_url, 443, $errno, $errstr, 30);
-		}
-		else {
+		} else {
 			$fps = fsockopen ($paypal_url, 80, $errno, $errstr, 30);
 		}
 
 		if (!$fps) {
 			$this->sendEmailToVendorAndAdmins ("error with paypal", JText::sprintf ('VMPAYMENT_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno));
 			return JText::sprintf ('VMPAYMENT_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno); // send email
-		}
-		else {
+		} else {
 			fputs ($fps, $header . $post_msg);
 			while (!feof ($fps)) {
 				$res = fgets ($fps, 1024);
 
 				if (strcmp ($res, 'VERIFIED') == 0) {
 					return '';
-				}
-				elseif (strcmp ($res, 'INVALID') == 0) {
+				} elseif (strcmp ($res, 'INVALID') == 0) {
 					// If 'INVALID', send an email. TODO: Log for manual investigation.
 					foreach ($paypal_data as $key => $value) {
 						$emailtext = $key . " = " . $value . "\n\n";
@@ -655,6 +673,51 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		fclose ($fps);
 		return '';
+	}
+
+	function _check_txn_id_already_processed ($payments, $txn_id) {
+
+		foreach ($payments as $payment) {
+			if ($payment->paypal_response_txn_id == $txn_id) {
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
+	function _check_email_amount_currency ($payments, $email, $paypal_data) {
+
+		/*
+		 * TODO Not checking yet because config do not have primary email address
+		* Primary email address of the payment recipient (that is, the merchant).
+		* If the payment is sent to a non-primary email address on your PayPal account,
+		* the receiver_email is still your primary email.
+		*/
+		/*
+		if ($payments[0]->payment_order_total==$email) {
+			return true;
+		}
+		*/
+		if ($payments[0]->payment_order_total == $paypal_data['mc_gross']) {
+			return TRUE;
+		}
+		$currency_code_3 = shopFunctions::getCurrencyByID ($payments[0]->payment_currency, 'currency_code_3');
+		if ($currency_code_3 == $paypal_data['mc_currency']) {
+			return TRUE;
+		}
+		$mailsubject = "PayPal Transaction";
+		$mailbody = "Hello,
+		An IPN notification was received with an invalid amount or currency
+		----------------------------------
+		IPN Notification content:
+		";
+		foreach ($paypal_data as $key => $value) {
+			$mailbody .= $key . " = " . $value . "\n\n";
+		}
+		$this->sendEmailToVendorAndAdmins ($mailsubject, $mailbody);
+
+		return FALSE;
 	}
 
 	/**
@@ -717,8 +780,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if ($paypal_sandbox_hostname == $remote_hostname) {
 			$valid_ip = TRUE;
 			$hostname = 'www.sandbox.paypal.com';
-		}
-		else {
+		} else {
 			$ips = "";
 			// Loop through all allowed IPs and test if the remote IP connected here
 			// is a valid IP address
@@ -736,6 +798,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
             These are the valid IP Addresses: $ips
 
             The Order ID received was: $invoice";
+
 			$this->sendEmailToVendorAndAdmins ($mailsubject, $mailbody);
 
 			exit();
@@ -752,6 +815,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		A Paypal transaction was made using the sandbox without your site in Paypal-Debug-Mode";
 			//vmMail($mosConfig_mailfrom, $mosConfig_fromname, $debug_email_address, $mailsubject, $mailbody );
 			$this->sendEmailToVendorAndAdmins ($mailsubject, $mailbody);
+			exit();
 		}
 	}
 
@@ -783,8 +847,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		if (preg_match ('/%$/', $method->cost_percent_total)) {
 			$cost_percent_total = substr ($method->cost_percent_total, 0, -1);
-		}
-		else {
+		} else {
 			$cost_percent_total = $method->cost_percent_total;
 		}
 		return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
@@ -815,8 +878,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if (!empty($method->countries)) {
 			if (!is_array ($method->countries)) {
 				$countries[0] = $method->countries;
-			}
-			else {
+			} else {
 				$countries = $method->countries;
 			}
 		}
@@ -875,7 +937,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	 * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
 	 *
 	 */
-	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart,  &$msg) {
+	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart, &$msg) {
 
 		return $this->OnSelectCheck ($cart);
 	}

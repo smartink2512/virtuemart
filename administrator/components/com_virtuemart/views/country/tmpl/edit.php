@@ -30,7 +30,12 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUNTRY_DETAILS');
 	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_COUNTRY_DETAILS'); ?></legend>
 	<table class="admintable">
-		<?php echo VmHTML::row('input','COM_VIRTUEMART_COUNTRY_NAME','country_name',$this->country->country_name); ?>
+		<?php
+		$lang = JFactory::getLanguage();
+		$country_string = $lang->hasKey($this->country->country_name) ? ' (' . JText::_($this->country->country_name) . ')' : ' ';
+		?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_COUNTRY_NAME','country_name',$this->country->country_name, 'class="inputbox"', '', 50, 50, $country_string); ?>
+
 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$this->country->published); ?>
 <?php /* TODO not implemented		<tr>
 			<td width="110" class="key">

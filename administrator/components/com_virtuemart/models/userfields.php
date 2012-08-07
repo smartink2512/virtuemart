@@ -663,7 +663,7 @@ class VirtueMartModelUserfields extends VmModel {
 						ShopFunctions::renderCountryList($_return['fields'][$_fld->name]['value'], false, array(), $_prefix, $_fld->required);
 
 						// Translate the value from ID to name
-						$_return['fields'][$_fld->name]['value'] = shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']);
+						$_return['fields'][$_fld->name]['value'] = JText::_(shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']));
 						break;
 
 					case 'virtuemart_state_id':

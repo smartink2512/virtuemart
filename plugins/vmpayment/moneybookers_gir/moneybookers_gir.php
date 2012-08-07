@@ -30,7 +30,7 @@ class plgVmpaymentMoneybookers_Gir extends plgVmpaymentMoneybookers
         parent::__construct($subject, $config);
         
         $this->_loggable = true;
-        $this->_debug = true;
+        $this->_debug = false;
         $this->_tablepkey = 'id'; //virtuemart_moneybookers_id';
         $this->_tableId = 'id'; //'virtuemart_moneybookers_id';
 	}

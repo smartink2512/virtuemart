@@ -44,6 +44,14 @@ class VirtuemartViewOrderstatus extends VmView {
 
 		$layoutName = JRequest::getWord('layout', 'default');
 
+// 'A' : sotck Available
+		// 'O' : stock Out
+		// 'R' : stock reserved
+			$stockHandelList = array(
+				'A' => 'COM_VIRTUEMART_ORDER_STATUS_STOCK_AVAILABLE',
+				'R' => 'COM_VIRTUEMART_ORDER_STATUS_STOCK_RESERVED',
+				'O' => 'COM_VIRTUEMART_ORDER_STATUS_STOCK_OUT'
+			);
 
 		if ($layoutName == 'edit') {
 			$orderStatus = $model->getData();
@@ -62,14 +70,7 @@ class VirtuemartViewOrderstatus extends VmView {
 
 			}
 			$lists['vmCoreStatusCode'] = $model->getVMCoreStatusCode();
-		// 'A' : sotck Available
-		// 'O' : stock Out
-		// 'R' : stock reserved
-			$stockHandelList = array(
-				'A' => 'COM_VIRTUEMART_ORDER_STATUS_STOCK_AVAILABLE',
-				'R' => 'COM_VIRTUEMART_ORDER_STATUS_STOCK_RESERVED',
-				'O' => 'COM_VIRTUEMART_ORDER_STATUS_STOCK_OUT'
-			);
+
 			$this->assignRef('stockHandelList', $stockHandelList);
 			// Vendor selection
 			$vendor_model = VmModel::getModel('vendor');
@@ -89,6 +90,8 @@ class VirtuemartViewOrderstatus extends VmView {
 
 			$orderStatusList = $model->getOrderStatusList();
 			$this->assignRef('orderStatusList', $orderStatusList);
+
+			$this->assignRef('stockHandelList', $stockHandelList);
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination', $pagination);

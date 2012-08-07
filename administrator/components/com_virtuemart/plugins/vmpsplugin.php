@@ -468,7 +468,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	function setDebug ($params) {
-		return $this->_debug = $params->get ('debug');
+		return $this->_debug = $params->get ('debug',0);
 	}
 
 	/**
@@ -561,7 +561,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * Get Method Data for a given Payment ID
 	 *
 	 * @author Valérie Isaksen
-	 * @param int $virtuemart_payment_id The Payment ID
+	 * @param int $virtuemart_order_id The order ID
 	 * @return  $methodData
 	 */
 	final protected function getDataByOrderId ($virtuemart_order_id) {
@@ -574,7 +574,23 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		return $methodData;
 	}
+/**
+	 * Get Method Datas for a given Payment ID
+	 *
+	 * @author Valérie Isaksen
+	 * @param int $virtuemart_order_id The order ID
+	 * @return  $methodData
+	 */
+	final protected function getDatasByOrderId ($virtuemart_order_id) {
+		$db = JFactory::getDBO ();
+		$q = 'SELECT * FROM `' . $this->_tablename . '` '
+			. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
 
+		$db->setQuery ($q);
+		$methodData = $db->loadObjectList ();
+
+		return $methodData;
+	}
 	/**
 	 * Get the total weight for the order, based on which the proper shipping rate
 	 * can be selected.
@@ -954,6 +970,8 @@ abstract class vmPSPlugin extends vmPlugin {
 	protected function logInfo ($text, $type = 'message') {
 
 		if ($this->_debug) {
+			JLog::add($text, JLog::INFO);
+
 			$file = JPATH_ROOT . "/logs/" . $this->_name . ".log";
 			$date = JFactory::getDate ();
 

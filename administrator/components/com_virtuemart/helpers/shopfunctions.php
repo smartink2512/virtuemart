@@ -229,7 +229,7 @@ class ShopFunctions {
 	/**
 	 * Render a simple country list
 	 *
-	 * @author jseros, Max Milbers
+	 * @author jseros, Max Milbers, Valérie Isaksen
 	 *
 	 * @param int $countryId Selected country id
 	 * @param boolean $multiple True if multiple selections are allowed (default: false)
@@ -247,6 +247,30 @@ class ShopFunctions {
 		$id = 'virtuemart_country_id';
 		$idA = $_prefix . 'virtuemart_country_id';
 		$attrs['class'] = 'virtuemart_country_id';
+		// Load helpers and  languages files
+		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+		VmConfig::loadConfig();
+		if(VmConfig::get('enableEnglish', 1)){
+		    $jlang =JFactory::getLanguage();
+		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, 'en-GB', true);
+		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
+		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, null, true);
+		}
+
+        $sorted_countries = array();
+        foreach ($countries as  $country) {
+            $sorted_countries[$country->virtuemart_country_id] = JText::_($country->country_name);
+        }
+
+		asort($sorted_countries);
+
+		$countries_list=array();
+		$i=0;
+	    foreach ($sorted_countries as  $key=>$value) {
+	        $countries_list[$i]->$id = $key;
+			$countries_list[$i]->$name = $value;
+		    $i++;
+	    }
 
 		if ($required != 0) {
 			$attrs['class'] .= ' required';
@@ -258,7 +282,7 @@ class ShopFunctions {
 			$idA .= '[]';
 		} else {
 			$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
-			array_unshift ($countries, $emptyOption);
+			array_unshift ($countries_list, $emptyOption);
 		}
 
 		if (is_array ($_attrib)) {
@@ -268,7 +292,7 @@ class ShopFunctions {
 			$attrs[$_a[0]] = $_a[1];
 		}
 
-		return JHTML::_ ('select.genericlist', $countries, $idA, $attrs, $id, $name, $countryId);
+		return JHTML::_ ('select.genericlist', $countries_list, $idA, $attrs, $id, $name, $countryId);
 	}
 
 	/**
@@ -465,36 +489,36 @@ class ShopFunctions {
 
 		switch ($from) {
 			case 'KG':
-				$g = 1000 * $value;
+				$g = (float)(1000 * $value);
 			break;
 			case 'G':
-				$g = $value;
+				$g = (float)$value;
 			break;
 			case 'MG':
-				$g = $value / 1000;
+				$g = (float)($value / 1000);
 			break;
 			case 'LB':
-				$g = 453.59237 * $value;
+				$g = (float)(453.59237 * $value);
 			break;
 			case 'OZ':
-				$g = 28.3495 * $value;
+				$g = (float)(28.3495 * $value);
 			break;
 		}
 		switch ($to) {
 			case 'KG' :
-				$value = $g / 1000;
+				$value = (float)($g / 1000);
 				break;
 			case 'G' :
 				$value = $g;
 				break;
 			case 'MG' :
-				$value = 1000 * $g;
+				$value = (float)(1000 * $g);
 				break;
 			case 'LB' :
-				$value = $g / 453.59237;
+				$value = (float)($g / 453.59237);
 				break;
 			case 'OZ' :
-				$value = $g / 28.3495;
+				$value = (float)($g / 28.3495);
 				break;
 		}
 		return $value;
@@ -516,36 +540,36 @@ class ShopFunctions {
 		// transform $value in meters
 		switch ($from) {
 			case 'CM':
-				$meter = 0.01 * $value;
+				$meter = (float)(0.01 * $value);
 			break;
 			case 'MM':
-				$meter = 0.001 * $value;
+				$meter = (float)(0.001 * $value);
 			break;
 			case 'YD':
-				$meter = 1.0936 * $value;
+				$meter = (float)(1.0936 * $value);
 			break;
 			case 'FT':
-				$meter = 3.28083 * $value;
+				$meter = (float)(3.28083 * $value);
 			break;
 			case 'IN':
-				$meter = 39.37 * $value;
+				$meter =(float) (39.37 * $value);
 			break;
 		}
 		switch ($to) {
 			case 'CM' :
-				$value = $meter * 0.01;
+				$value = (float)($meter * 0.01);
 				break;
 			case 'MM' :
-				$value = $meter * 0.001;
+				$value = (float)($meter * 0.001);
 				break;
 			case 'YD' :
-				$value = $meter * 0.9144;
+				$value =(float) ($meter * 0.9144);
 				break;
 			case 'FT' :
-				$value = $meter * 0.3048;
+				$value = (float)($meter * 0.3048);
 				break;
 			case 'IN' :
-				$value = $meter * 0.0254;
+				$value = (float)($meter * 0.0254);
 				break;
 		}
 		return $value;
