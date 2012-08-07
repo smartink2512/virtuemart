@@ -15,7 +15,7 @@ INSERT INTO `#__virtuemart_permgroups` (`virtuemart_permgroup_id`, `group_name`,
 -- Dumping data for table `#__virtuemart_countries`
 --
 
-INSERT INTO `vm2_virtuemart_countries` (`virtuemart_country_id`, `virtuemart_worldzone_id`, `country_name`, `country_3_code`, `country_2_code`) VALUES
+INSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_worldzone_id`, `country_name`, `country_3_code`, `country_2_code`) VALUES
 (1, 1, 'COM_VIRTUEMART_COUNTRY_AFG', 'AFG', 'AF'),
 (2, 1, 'COM_VIRTUEMART_COUNTRY_ALB', 'ALB', 'AL'),
 (3, 1, 'COM_VIRTUEMART_COUNTRY_DZA', 'DZA', 'DZ'),
