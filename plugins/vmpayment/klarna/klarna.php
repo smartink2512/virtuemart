@@ -3,7 +3,7 @@
 defined ('_JEXEC') or die();
 
 /**
- * @version $Id: klarna.php 6293 2012-07-20 14:38:34Z alatak $
+ * @version $Id$
  *
  * @author Valérie Isaksen
  * @package VirtueMart

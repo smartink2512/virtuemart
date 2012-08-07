@@ -2,7 +2,7 @@
 
 /*
 * @author Skrill Holdings Ltd.
-* @version $Id: 1.0
+* @version $Id$
 * @package VirtueMart
 * @subpackage payment
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php

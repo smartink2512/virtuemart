@@ -19,7 +19,7 @@ if (!class_exists('Klarna'))
 class Klarna_virtuemart extends Klarna {
 
     public function __construct() {
-        $this->VERSION = 'PHP:VirtueMart: ${PHING.VM.RELEASE}-'.KLARNA_MODULE_VERSION.':r74'.'-PHP version: '.phpversion();
+        $this->VERSION = 'PHP'.phpversion().':VirtueMart:${PHING.VM.RELEASE}';
         Klarna::$debug =  false;
     }
 }
