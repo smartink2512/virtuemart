@@ -127,14 +127,16 @@ class VirtuemartViewProduct extends JView {
 					     $field->custom_tip ='';
 					     }
 					 $html[] = '
-					<fieldset class="removable">
-						<legend>'.$field->custom_title.'</legend>
-						<span>'.$field->custom_tip.'</span>
+					<tr class="removable">
+						<td>'.$field->custom_title.'</td>
+						<td colspan="3"><span>'.$field->custom_tip.'</span>
 						'.$display.'
 						'.$this->model->setEditCustomHidden($field, $this->row).'
-						<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
-						<span class="vmicon vmicon-16-remove"></span>'.JTEXT::_('COM_VIRTUEMART_CUSTOM_ACTIVATE_JAVASCRIPT').'
-					</fieldset>';
+						<p>'.JTEXT::_('COM_VIRTUEMART_CUSTOM_ACTIVATE_JAVASCRIPT').'</p></td>
+						<td>'.JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION').'</td>
+						<td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
+						<td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" /></td>
+					</tr>';
 					$this->row++;
 
 				} else {

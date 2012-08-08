@@ -1073,7 +1073,7 @@ class VirtueMartModelCustomfields extends VmModel {
 							$document = JFactory::getDocument();
 							$document->addScriptDeclaration(
 								'jQuery(document).ready( function($) {
-									
+
 									addToCartArea = jQuery(".productdetails-view .addtocart-bar");
 									addToCartBar = addToCartArea.find("input[name$=addtocart]");
 
@@ -1086,16 +1086,16 @@ class VirtueMartModelCustomfields extends VmModel {
 																width: "auto",
 																float: 	"left"
 															});
-										
+
 									addToCartButtonClassName = addToCartBar.attr("class");
-									
+
 									addToCartBar.removeClass(addToCartButtonClassName)
 												.addClass(addToCartButtonClassName + "-disabled")
 												.attr({
 														disabled: "disabled",
 														value: 	"'.JText::_('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT').'",
-													});						
-									}); 
+													});
+									});
 							');
 						}*/
 					}
