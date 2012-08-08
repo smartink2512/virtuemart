@@ -266,8 +266,11 @@ if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpe
 		}
 
         $sorted_countries = array();
+		$lang = JFactory::getLanguage();
+		$prefix="COM_VIRTUEMART_COUNTRY_";
         foreach ($countries as  $country) {
-            $sorted_countries[$country->virtuemart_country_id] = JText::_($country->country_name);
+	        $country_string = $lang->hasKey($prefix.$country->country_3_code) ?   JText::_($prefix.$country->country_3_code)  : $country->country_name;
+            $sorted_countries[$country->virtuemart_country_id] = $country_string;
         }
 
 		asort($sorted_countries);

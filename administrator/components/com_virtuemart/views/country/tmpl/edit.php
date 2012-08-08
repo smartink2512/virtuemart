@@ -32,9 +32,10 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUNTRY_DETAILS');
 	<table class="admintable">
 		<?php
 		$lang = JFactory::getLanguage();
-		$country_string = $lang->hasKey($this->country->country_name) ? ' (' . JText::_($this->country->country_name) . ')' : ' ';
-		?>
-		<?php echo VmHTML::row('input','COM_VIRTUEMART_COUNTRY_NAME','country_name',$this->country->country_name, 'class="inputbox"', '', 50, 50, $country_string); ?>
+		$prefix="COM_VIRTUEMART_COUNTRY_";
+		$country_string = $lang->hasKey($prefix.$this->country->country_3_code) ? ' (' . JText::_($prefix.$this->country->country_3_code) . ')' : ' ';
+        ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_COUNTRY_REFERENCE_NAME','country_name',$this->country->country_name, 'class="inputbox"', '', 50, 50, $country_string); ?>
 
 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$this->country->published); ?>
 <?php /* TODO not implemented		<tr>

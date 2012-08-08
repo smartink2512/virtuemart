@@ -57,6 +57,33 @@ class VirtuemartControllerShipmentmethod extends VmController {
 		parent::save($data);
 
 	}
+	/**
+	 * Clone a shipment
+	 *
+	 * @author Valérie Isaksen
+	 */
+	public function CloneShipment() {
+		$mainframe = Jfactory::getApplication();
 
+		/* Load the view object */
+		$view = $this->getView('shipmentmethod', 'html');
+
+		$model = VmModel::getModel('shipmentmethod');
+		$msgtype = '';
+		//$cids = JRequest::getInt('virtuemart_product_id',0);
+		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_shipment_id',array(),'', 'ARRAY'), '', 'ARRAY');
+		//jimport( 'joomla.utilities.arrayhelper' );
+		JArrayHelper::toInteger($cids);
+
+		foreach($cids as $cid){
+			if ($model->createClone($cid)) $msg = JText::_('COM_VIRTUEMART_SHIPMENT_CLONED_SUCCESSFULLY');
+			else {
+				$msg = JText::_('COM_VIRTUEMART_SHIPMENT_NOT_CLONED_SUCCESSFULLY');
+				$msgtype = 'error';
+			}
+		}
+
+		$mainframe->redirect('index.php?option=com_virtuemart&view=shipmentmethod', $msg, $msgtype);
+	}
 }
 // pure php no closing tag

@@ -74,13 +74,16 @@ class VirtueMartModelShipmentmethod extends VmModel {
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 				$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();;
 			}
-// 			if(!empty($this->_id)){
+ 		//if(!empty($this->_id)){
 				/* Add the shipmentcarreir shoppergroups */
 				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shipmentmethod_shoppergroups WHERE `virtuemart_shipmentmethod_id` = "'.$this->_id.'"';
 				$this->_db->setQuery($q);
 				$this->_data->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();#
 				if(empty($this->_data->virtuemart_shoppergroup_ids)) $this->_data->virtuemart_shoppergroup_ids = 0;
-// 			}
+
+
+		//}
+
 		}
 
 		return $this->_data;
@@ -144,12 +147,15 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		//$data = JRequest::get('post');
 
 
-// 		vmdebug('store',$data);
-		if(!empty($data['params'])){
-			foreach($data['params'] as $k=>$v){
-				$data[$k] = $v;
-			}
+		if ($data) {
+			$data = (array)$data;
 		}
+// 		vmdebug('store',$data);
+			if(!empty($data['params'])){
+				foreach($data['params'] as $k=>$v){
+					$data[$k] = $v;
+				}
+			}
 
 		if(empty($data['virtuemart_vendor_id'])){
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
@@ -200,7 +206,25 @@ class VirtueMartModelShipmentmethod extends VmModel {
 
 		return $table->virtuemart_shipmentmethod_id;
 	}
+	/**
+	 * Creates a clone of a given shipmentmethod id
+	 *
+	 * @author Valérie Isaksen
+	 * @param int $virtuemart_shipmentmethod_id
+	 */
 
+	public function createClone ($id) {
+
+		//	if (is_array($cids)) $cids = array($cids);
+		$this->setId ($id);
+		$shipment = $this->getShipment ();
+		$shipment->virtuemart_shipmentmethod_id = 0;
+		$shipment->shipment_name = $shipment->shipment_name.' Copy';
+		if (!$clone = $this->store($shipment)) {
+			JError::raiseError(500, 'createClone '. $shipment->getError() );
+		}
+		return $clone;
+	}
 }
 
 //no closing tag

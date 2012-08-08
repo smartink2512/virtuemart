@@ -77,11 +77,13 @@ $states = JText::_('COM_VIRTUEMART_STATE_S');
 			<?php echo $checked; ?>
 		</td>
 		<td align="left">
-			<?php $country_string= Jtext::_($row->country_name); ?>
+			<?php
+			$prefix="COM_VIRTUEMART_COUNTRY_";
+			$country_string= Jtext::_($prefix.$row->country_3_code); ?>
 		    <a href="<?php echo $editlink; ?>"><?php echo $row->country_name ?> </a>&nbsp;
 			<?php
 			$lang =JFactory::getLanguage();
-			if ($lang->hasKey($row->country_name)) {
+			if ($lang->hasKey($prefix.$row->country_3_code)) {
 				echo "(".$country_string.") ";
 			}
 			?>
