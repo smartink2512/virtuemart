@@ -241,7 +241,8 @@ $i=0;
 						</td>
 						<td><?php
 // 							echo VmHtml::checkbox('override',$this->product->override);
-						$options = array(0 => 'Disabled', 1 => 'Overwrite final',-1 =>'Overwrite price to tax');
+							$options = array(0 => JText::_('COM_VIRTUEMART_DISABLED'), 1 => JText::_('COM_VIRTUEMART_OVERWRITE_FINAL'), -1 =>JText::_('COM_VIRTUEMART_OVERWRITE_PRICE_TAX'));
+
 							echo VmHtml::radioList('override',$this->product->override,$options);
 
 						?>

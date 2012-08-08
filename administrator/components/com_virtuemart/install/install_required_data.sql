@@ -14,7 +14,7 @@ INSERT INTO `#__virtuemart_permgroups` (`virtuemart_permgroup_id`, `group_name`,
 --
 -- Dumping data for table `#__virtuemart_countries`
 --
-NSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_worldzone_id`, `country_name`, `country_3_code`, `country_2_code`) VALUES
+INSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_worldzone_id`, `country_name`, `country_3_code`, `country_2_code`) VALUES
 (1, 1, 'Afghanistan', 'AFG', 'AF'),
 (2, 1, 'Albania', 'ALB', 'AL'),
 (3, 1, 'Algeria', 'DZA', 'DZ'),
@@ -253,7 +253,7 @@ NSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_world
 (238, 1, 'Zambia', 'ZMB', 'ZM'),
 (239, 1, 'Zimbabwe', 'ZWE', 'ZW'),
 (240, 1, 'East Timor', 'XET', 'XE'),
-(241, 1, 'Jersey', 'XJE', 'XJ'),
+(241, 1, 'Jersey', 'JEY', 'JE'),
 (242, 1, 'St. Barthelemy', 'XSB', 'XB'),
 (243, 1, 'St. Eustatius', 'XSE', 'XU'),
 (244, 1, 'Canary Islands', 'XCA', 'XC'),
