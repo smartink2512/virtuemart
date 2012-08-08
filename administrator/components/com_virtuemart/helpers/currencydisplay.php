@@ -354,7 +354,7 @@ class CurrencyDisplay {
 	 * @param array the prices of the product
 	 * return a div for prices which is visible according to config and have all ids and class set
 	 */
-	public function createPriceDiv($name,$description,$product_price,$priceOnly=false,$switchSequel=false,$quantity = 1.0){
+	public function createPriceDiv($name,$description,$product_price,$priceOnly=false,$switchSequel=false,$quantity = 1.0,$forceNoLabel=false){
 
 		// 		vmdebug('createPriceDiv '.$name,$product_price[$name]);
 		if(empty($product_price)) return '';
@@ -390,6 +390,9 @@ class CurrencyDisplay {
 			}
 			if($priceOnly){
 				return $priceFormatted;
+			}
+			if($forceNoLabel) {
+				return '<div class="Price'.$name.'" style="display : '.$vis.';" ><span class="Price'.$name.'" >'.$priceFormatted.'</span></div>';
 			}
 			$descr = '';
 			if($this->_priceConfig[$name][2]) $descr = JText::_($description);

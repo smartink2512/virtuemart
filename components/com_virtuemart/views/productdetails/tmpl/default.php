@@ -52,7 +52,7 @@ if (empty($this->product)) {
 }
 ?>
 
-<div class="productdetails-view">
+<div class="productdetails-view productdetails">
 
     <?php
     // Product Navigation
