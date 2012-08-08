@@ -283,7 +283,10 @@ abstract class vmPlugin extends JPlugin {
 
 		if ($psType == $this->_psType) {
 			$query = $this->getVmPluginCreateTableSQL ();
-			if ($query !== 0) {
+			if(empty($query)){
+				return false;
+			} else {
+			//if ($query !== 0) {
 				// 				vmdebug('onStoreInstallPluginTable '.$query);
 				$db = JFactory::getDBO ();
 				$db->setQuery ($query);
@@ -318,15 +321,22 @@ abstract class vmPlugin extends JPlugin {
 	 * @param $tableComment
 	 * @return string
 	 */
-	protected function createTableSQL ($tableComment) {
-		$SQLfields = $this->getTableSQLFields ();
-		$loggablefields = $this->getTableSQLLoggablefields ();
+	protected function createTableSQL ($tableComment,$tablesFields=0) {
+
 		$query = "CREATE TABLE IF NOT EXISTS `" . $this->_tablename . "` (";
-		foreach ($SQLfields as $fieldname => $fieldtype) {
-			$query .= '`' . $fieldname . '` ' . $fieldtype . " , ";
-		}
-		foreach ($loggablefields as $fieldname => $fieldtype) {
-			$query .= '`' . $fieldname . '` ' . $fieldtype . ", ";
+		if(!empty($tablesFields)){
+			foreach ($tablesFields as $fieldname => $fieldtype) {
+				$query .= '`' . $fieldname . '` ' . $fieldtype . " , ";
+			}
+		} else {
+			$SQLfields = $this->getTableSQLFields ();
+			$loggablefields = $this->getTableSQLLoggablefields ();
+			foreach ($SQLfields as $fieldname => $fieldtype) {
+				$query .= '`' . $fieldname . '` ' . $fieldtype . " , ";
+			}
+			foreach ($loggablefields as $fieldname => $fieldtype) {
+				$query .= '`' . $fieldname . '` ' . $fieldtype . ", ";
+			}
 		}
 
 		$query .= "	      PRIMARY KEY (`id`)
