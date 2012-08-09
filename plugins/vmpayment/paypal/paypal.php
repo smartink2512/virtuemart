@@ -661,11 +661,12 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				if (strcmp ($res, 'VERIFIED') == 0) {
 					return '';
 				} elseif (strcmp ($res, 'INVALID') == 0) {
+					$emailBody="Hello,\n\nerror with paypal IPN NOTIFICATION". " " . $res. "\n";
 					// If 'INVALID', send an email. TODO: Log for manual investigation.
 					foreach ($paypal_data as $key => $value) {
-						$emailtext = $key . " = " . $value . "\n\n";
+						$emailBody .= $key . " = " . $value . "\n";
 					}
-					$this->sendEmailToVendorAndAdmins (JText::_ ('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . " " . $res . " " . $emailtext, "error with paypal IPN NOTIFICATION");
+					$this->sendEmailToVendorAndAdmins (JText::_ ('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . " " . $res , $emailBody);
 					return JText::_ ('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . $res;
 				}
 			}
