@@ -83,7 +83,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$SQLfields = array(
 			'id'                                     => 'int(11) UNSIGNED NOT NULL AUTO_INCREMENT',
 			'virtuemart_order_id'                    => 'int(1) UNSIGNED',
-			'order_number'                           => ' char(64)',
+			'order_number'                           => 'char(64)',
 			'virtuemart_paymentmethod_id'            => 'mediumint(1) UNSIGNED',
 			'payment_name'                           => 'varchar(5000)',
 			'payment_order_total'                    => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
@@ -578,13 +578,14 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			if ($first) {
 				$html .= $this->getHtmlRowBE ('PAYPAL_PAYMENT_NAME', $payment->payment_name);
 				// keep that test to have it backwards compatible. Old version was deleting that column  when receiving an IPN notification
-				if ($payment->payment_order_total) {
+				if ($payment->payment_order_total and  $payment->payment_order_total !=  0.00) {
 					$html .= $this->getHtmlRowBE ('PAYPAL_PAYMENT_ORDER_TOTAL', $payment->payment_order_total . " " . shopFunctions::getCurrencyByID ($payment->payment_currency, 'currency_code_3'));
 				}
 				$first = FALSE;
 			}
 			foreach ($payment as $key => $value) {
-				if ($value) {
+				// only displays if there is a value or the value is different from 0.00 and the value
+				if ($value and  $value !=  0.00) {
 					if (substr ($key, 0, strlen ($code)) == $code) {
 						$html .= $this->getHtmlRowBE ($key, $value);
 					}

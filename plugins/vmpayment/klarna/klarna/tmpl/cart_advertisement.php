@@ -54,7 +54,7 @@ if ($viewData['country']== "nl") {
                 </div>
 
         <?php
-	$notice = (($viewData['country']  == 'nl') ? '<div class="nlBanner"><img src="' . VMKLARNAPLUGINWEBASSETS . '/images/account/notice_nl.jpg" /></div>' : "");
+	$notice = (($viewData['country']  == 'nl') ? '<div class="nlBanner"><img src="' . VMKLARNAPLUGINWEBASSETS . '/images/account/notice_nl.png" /></div>' : "");
 	echo $notice;
 	 ?>
 </div>

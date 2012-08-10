@@ -27,7 +27,9 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 	function __construct (& $subject, $config) {
 
 		parent::__construct ($subject, $config);
-
+		// unique filelanguage for all moneybookers methods
+		$jlang = JFactory::getLanguage ();
+		$jlang->load ('plg_vmpayment_moneybookers', JPATH_ADMINISTRATOR, NULL, TRUE);
 		$this->_loggable = TRUE;
 		$this->_debug = TRUE;
 		$this->tableFields = array_keys ($this->getTableSQLFields ());

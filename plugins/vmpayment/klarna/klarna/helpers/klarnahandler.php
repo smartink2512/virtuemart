@@ -300,7 +300,7 @@ class KlarnaHandler {
 		$klarna['first_name'] = JRequest::getVar ($kIndex . 'firstName');
 		$klarna['last_name'] = JRequest::getVar ($kIndex . 'lastName');
 		$klarna['invoice_type'] = JRequest::getVar ('klarna_invoice_type');
-		$klarna['company_name'] = JRequest::getVar ('klarna_companyName');
+		$klarna['company_name'] = JRequest::getVar ('klarna_company_name');
 		$klarna['phone'] = JRequest::getVar ($kIndex . 'phone');
 		$klarna['consent'] = JRequest::getVar ($kIndex . 'consent');
 		$klarna['gender'] = JRequest::getVar ($klarna_option.'_'.$kIndex . 'gender');
@@ -480,7 +480,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 				$shipTo->zip,
 				utf8_decode ($shipTo->city),
 				utf8_decode ($cData['country']),
-				KlarnaHandler::setHouseNo ($shipTo->house_no, $cData['country_code_3']),
+				KlarnaHandler::setHouseNo (isset($shipTo->house_no)?$shipTo->house_no:"", $cData['country_code_3']),
 				KlarnaHandler::setAddress2 ($shipTo->address_2, $cData['country_code_3'])
 			);
 		}
@@ -488,9 +488,11 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			VmInfo ($e->getMessage ());
 			return FALSE;
 		}
+
+		$klarna_reference = "";// what is that?
 		if ($klarnaData['invoice_type'] == 'company') {
 			$klarna_shipping->isCompany = TRUE;
-			$klarna_shipping->setCompanyName ($shipTo->company_name);
+			$klarna_shipping->setCompanyName ($shipTo->company);
 			$klarna_comment = $shipTo->first_name . ' ' . $shipTo->last_name; //$klarnaData['reference'];
 
 			if ($klarna_shipping->getLastName () == "") {

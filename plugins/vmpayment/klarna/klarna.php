@@ -152,13 +152,13 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$cData = KlarnaHandler::getcData ($method, $this->getCartAddress ($cart, $type, FALSE));
 			$active = 'klarna_active_' . strtolower ($cData['country_code_3']);
 			//if ($method->$active) {
-				if ($cData) {
-					$productPrice = new klarna_productPrice($cData);
-					if ($productViewData = $productPrice->showProductPrice ($product)) {
-						$productDisplayHtml = $this->renderByLayout ('productprice_layout', $productViewData, $method->payment_element, 'payment');
-						$productDisplay[] = $productDisplayHtml;
-					}
+			if ($cData) {
+				$productPrice = new klarna_productPrice($cData);
+				if ($productViewData = $productPrice->showProductPrice ($product)) {
+					$productDisplayHtml = $this->renderByLayout ('productprice_layout', $productViewData, $method->payment_element, 'payment');
+					$productDisplay[] = $productDisplayHtml;
 				}
+			}
 			//}
 		}
 		return TRUE;
@@ -497,6 +497,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		catch (Exception $e) {
 			$log = $e->getMessage ();
 			vmError ($e->getMessage () . ' #' . $e->getCode ());
+			return;
 			//KlarnaHandler::redirectPaymentMethod('error', $e->getMessage() . ' #' . $e->getCode());
 		}
 		//vmdebug('addTransaction result', $result);
@@ -1518,7 +1519,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	 * @param string             $from_cart
 	 * @return bool|null
 	 */
-	function plgVmDisplayLogin (VirtuemartViewUser $user, &$html, $from_cart = 'false') {
+	function plgVmDisplayLogin (VirtuemartViewUser $user, &$html, $from_cart = false) {
 
 		// only to display it in the cart, not in list orders view
 		if (!$from_cart) {
@@ -1526,8 +1527,12 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		}
 
 		$vendorId = 1;
-		if ($from_cart->BT != 0 or $from_cart->virtuemart_paymentmethod_id) {
-			return ;
+		if (!class_exists ('VirtueMartCart')) {
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		}
+		$cart = VirtueMartCart::getCart ();
+		if ($cart->BT != 0 or $cart->virtuemart_paymentmethod_id) {
+			return;
 		}
 		if ($this->getPluginMethods ($vendorId) === 0) {
 			if (empty($this->_name)) {

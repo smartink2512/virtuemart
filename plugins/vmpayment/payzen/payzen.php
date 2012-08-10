@@ -212,7 +212,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		$available_languages = !is_array ($available_languages) ? $available_languages : (in_array ("", $available_languages) ? "" : implode (";", $available_languages));
 		$api->set ('available_languages', $available_languages);
 
-		$api->set ('contrib', 'VirtueMart2.0.0_1.2');
+		$api->set ('contrib', 'VirtueMart${PHING.VM.RELEASE}');
 
 		// Set customer info
 		// $usr = JFactory::getUser();
