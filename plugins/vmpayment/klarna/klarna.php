@@ -150,13 +150,16 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 		foreach ($this->methods as $method) {
 			$cData = KlarnaHandler::getcData ($method, $this->getCartAddress ($cart, $type, FALSE));
-			if ($cData) {
-				$productPrice = new klarna_productPrice($cData);
-				if ($productViewData = $productPrice->showProductPrice ($product)) {
-					$productDisplayHtml = $this->renderByLayout ('productprice_layout', $productViewData, $method->payment_element, 'payment');
-					$productDisplay[] = $productDisplayHtml;
+			$active = 'klarna_active_' . strtolower ($cData['country_code_3']);
+			//if ($method->$active) {
+				if ($cData) {
+					$productPrice = new klarna_productPrice($cData);
+					if ($productViewData = $productPrice->showProductPrice ($product)) {
+						$productDisplayHtml = $this->renderByLayout ('productprice_layout', $productViewData, $method->payment_element, 'payment');
+						$productDisplay[] = $productDisplayHtml;
+					}
 				}
-			}
+			//}
 		}
 		return TRUE;
 	}
@@ -1521,7 +1524,11 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		if (!$from_cart) {
 			return NULL;
 		}
+
 		$vendorId = 1;
+		if ($from_cart->BT != 0 or $from_cart->virtuemart_paymentmethod_id) {
+			return ;
+		}
 		if ($this->getPluginMethods ($vendorId) === 0) {
 			if (empty($this->_name)) {
 				$app = JFactory::getApplication ();
