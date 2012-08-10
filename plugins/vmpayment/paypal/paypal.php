@@ -574,19 +574,23 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$first = TRUE;
 		foreach ($payments as $payment) {
 			$html .= '<tr class="row1"><td>' . JText::_ ('VMPAYMENT_PAYPAL_DATE') . '</td><td align="left">' . $payment->created_on . '</td></tr>';
+			// Now only the first entry has this data when creating the order
 			if ($first) {
 				$html .= $this->getHtmlRowBE ('PAYPAL_PAYMENT_NAME', $payment->payment_name);
-				$html .= $this->getHtmlRowBE ('PAYPAL_PAYMENT_ORDER_TOTAL', $payment->payment_order_total . " " . shopFunctions::getCurrencyByID ($payment->payment_currency, 'currency_code_3'));
+				// keep that test to have it backwards compatible. Old version was deleting that column  when receiving an IPN notification
+				if ($payment->payment_order_total) {
+					$html .= $this->getHtmlRowBE ('PAYPAL_PAYMENT_ORDER_TOTAL', $payment->payment_order_total . " " . shopFunctions::getCurrencyByID ($payment->payment_currency, 'currency_code_3'));
+				}
 				$first = FALSE;
-			} else{
-				foreach ($payment as $key => $value) {
-					if ($value) {
-						if (substr ($key, 0, strlen ($code)) == $code) {
-							$html .= $this->getHtmlRowBE ($key, $value);
-						}
+			}
+			foreach ($payment as $key => $value) {
+				if ($value) {
+					if (substr ($key, 0, strlen ($code)) == $code) {
+						$html .= $this->getHtmlRowBE ($key, $value);
 					}
 				}
 			}
+
 		}
 		$html .= '</table>' . "\n";
 		return $html;
@@ -661,12 +665,12 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				if (strcmp ($res, 'VERIFIED') == 0) {
 					return '';
 				} elseif (strcmp ($res, 'INVALID') == 0) {
-					$emailBody="Hello,\n\nerror with paypal IPN NOTIFICATION". " " . $res. "\n";
+					$emailBody = "Hello,\n\nerror with paypal IPN NOTIFICATION" . " " . $res . "\n";
 					// If 'INVALID', send an email. TODO: Log for manual investigation.
 					foreach ($paypal_data as $key => $value) {
 						$emailBody .= $key . " = " . $value . "\n";
 					}
-					$this->sendEmailToVendorAndAdmins (JText::_ ('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . " " . $res , $emailBody);
+					$this->sendEmailToVendorAndAdmins (JText::_ ('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . " " . $res, $emailBody);
 					return JText::_ ('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . $res;
 				}
 			}
