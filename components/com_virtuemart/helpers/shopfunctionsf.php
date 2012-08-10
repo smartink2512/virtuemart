@@ -248,7 +248,7 @@ class shopFunctionsF {
 		$jlang->load('com_virtuemart', JPATH_SITE, NULL, TRUE);
 
 		ob_start();
-		$view->renderMailLayout(!$noVendorMail, $recipient);
+		$view->renderMailLayout($noVendorMail, $recipient);
 		$body = ob_get_contents();
 		ob_end_clean();
 
@@ -259,7 +259,7 @@ class shopFunctionsF {
 		$mailer->isHTML(VmConfig::get('order_mail_html',TRUE));
 		$mailer->setBody($body);
 
-		if(!$noVendorMail){
+		if($noVendorMail){
 			$replyto[0]=$view->vendorEmail;
 			$replyto[1]= $view->vendor->vendor_name;
 			$mailer->addReplyTo($replyto);
