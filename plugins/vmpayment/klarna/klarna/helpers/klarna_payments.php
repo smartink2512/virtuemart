@@ -92,7 +92,7 @@ class klarna_payments {
 			$this->klarna->config ($this->eid, $this->secret, $this->country, $this->lang, $this->currency, $this->mode, VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), $this->ssl);
 		}
 		catch (Exception $e) {
-			VmDebug ('klarna_payments', $e);
+			VmError ('klarna_payments', $e);
 			unset($this->klarna);
 		}
 	}

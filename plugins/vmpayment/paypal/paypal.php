@@ -585,7 +585,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			}
 			foreach ($payment as $key => $value) {
 				// only displays if there is a value or the value is different from 0.00 and the value
-				if ($value and  $value !=  0.00) {
+				if ($value) {
 					if (substr ($key, 0, strlen ($code)) == $code) {
 						$html .= $this->getHtmlRowBE ($key, $value);
 					}

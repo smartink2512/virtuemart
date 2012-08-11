@@ -1235,7 +1235,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$filename = VMKLARNA_CONFIG_FILE;
 		if (!JFile::exists ($filename)) {
 			$fileContents = "<?php defined('_JEXEC') or die();
-	define('VMKLARNA_SHIPTO_SAME_AS_BILLTO', '1'); ?>";
+	define('VMKLARNA_SHIPTO_SAME_AS_BILLTO', '1');
+	define('VMKLARNA_SHOW_PRODUCTPRICE', '1');
+	?>";
 			$result = JFile::write ($filename, $fileContents);
 			if (!$result) {
 				VmInfo (JText::sprintf ('VMPAYMENT_KLARNA_CANT_WRITE_CONFIG', $filename, $result));
@@ -1298,9 +1300,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				$data['title'] = strtoupper ('COM_VIRTUEMART_SHOPPER_FORM_' . $requiredfield);
 				$ret = $userfieldsModel->store ($data);
 				if (!$ret) {
-					vmError (JText::_ ('VMPAYMENT_KLARNA_REQUIRED_USERFIELDS_ERROR_STORING', $requiredfield));
+					vmError (JText::_ ('VMPAYMENT_KLARNA_REQUIRED_USERFIELDS_ERROR_STORING'). $requiredfield);
 				} else {
-					vmInfo (JText::_ ('VMPAYMENT_KLARNA_REQUIRED_USERFIELDS_CREATE_OK' . $requiredfield));
+					vmInfo (JText::_ ('VMPAYMENT_KLARNA_REQUIRED_USERFIELDS_CREATE_OK') . $requiredfield);
 				}
 			}
 
@@ -1382,7 +1384,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		//Removes spaces, tabs, and other delimiters.
 		// If it is a swedish customer we use the information from getAddress
 		if (strtolower ($cData['country_code']) == "se") {
-
 			$swedish_addresses = klarnaHandler::getAddresses ($klarnaData['socialNumber'], $cData, $method);
 			if (empty($swedish_addresses)) {
 				$errors[] = JText::_ ('VMPAYMENT_KLARNA_NO_GETADDRESS');
@@ -1391,6 +1392,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			foreach ($swedish_addresses as $address) {
 				if ($address->isCompany) {
 					$klarnaData['company_name'] = $address->getCompanyName ();
+					$klarnaData['first_name'] = "-";
+					$klarnaData['last_name'] = "-";
 				} else {
 					$klarnaData['first_name'] = $address->getFirstName ();
 					$klarnaData['last_name'] = $address->getLastName ();
