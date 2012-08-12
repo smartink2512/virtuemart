@@ -67,12 +67,13 @@ class VirtueMartModelProduct extends VmModel {
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 			}
 			$browseOrderByFields = ShopFunctions::getValidProductFilterArray ();
+			$this->addvalidOrderingFieldName (array('product_price','p.`product_sales`'));
 			$this->addvalidOrderingFieldName (array('product_price'));
 			// 	vmdebug('$browseOrderByFields',$browseOrderByFields);
 		}
 		$this->addvalidOrderingFieldName ((array)$browseOrderByFields);
 		$this->removevalidOrderingFieldName ('virtuemart_product_id');
-
+		$this->removevalidOrderingFieldName ('product_sales');
 		//unset($this->_validOrderingFieldName[0]);//virtuemart_product_id
 		array_unshift ($this->_validOrderingFieldName, 'p.virtuemart_product_id');
 		$this->_selectedOrdering = VmConfig::get ('browse_orderby_field', 'category_name');
@@ -238,8 +239,10 @@ class VirtueMartModelProduct extends VmModel {
 								$joinPrice = TRUE;
 							}
 							else {
+								//vmdebug('sortSearchListQuery $searchField',$searchField);
 								if (strpos ($searchField, '.') == 1) {
 									$searchField = 'p`.`' . substr ($searchField, 2, (strlen ($searchField)));
+									//vmdebug('sortSearchListQuery $searchField recreated',$searchField);
 								}
 							}
 						}
@@ -397,7 +400,7 @@ class VirtueMartModelProduct extends VmModel {
 						$orderBy = ' ORDER BY RAND() '; //LIMIT 0, '.(int)$nbrReturnProducts ; //TODO set limit LIMIT 0, '.(int)$nbrReturnProducts;
 						break;
 					case 'topten';
-						$orderBy = ' ORDER BY product_sales '; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
+						$orderBy = ' ORDER BY p.`product_sales` '; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 						$this->filter_order_Dir = 'DESC';
 				}
 				// 			$joinCategory 	= false ; //creates error

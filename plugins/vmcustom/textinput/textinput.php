@@ -158,14 +158,18 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		if (!empty($productCustomsPrice->custom_price)) {
 			//TODO adding % and more We should use here $this->interpreteMathOp
 			// eg. to calculate the price * comment text length
-			if ($productCustomsPrice->custom_price_by_letter ==1) {
-				if (!empty($customVariant['comment'])) {
+
+			if (!empty($customVariant['comment'])) {
+				if ($productCustomsPrice->custom_price_by_letter ==1) {
 					$charcount = strlen ($customVariant['comment']);
-					$productCustomsPrice->custom_price = $charcount * $productCustomsPrice->custom_price ;
 				} else {
-					$productCustomsPrice->custom_price = 0.0;
+					$charcount = 1.0;
 				}
+				$productCustomsPrice->custom_price = $charcount * $productCustomsPrice->custom_price ;
+			} else {
+				$productCustomsPrice->custom_price = 0.0;
 			}
+
 		}
 		return true;
 	}

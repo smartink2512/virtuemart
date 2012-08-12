@@ -172,11 +172,13 @@ function virtuemartBuildRoute(&$query) {
 			}
 			break;
 		case 'user';
+
 			if ( isset($jmenu['user']) ) $query['Itemid'] = $jmenu['user'];
 			else {
 				$segments[] = $helper->lang('user') ;
 				$query['Itemid'] = $jmenu['virtuemart'];
 			}
+
 			if (isset($query['task'])) {
 				//vmdebug('my task in user view',$query['task']);
 				if($query['task']=='editaddresscart'){
@@ -195,15 +197,15 @@ function virtuemartBuildRoute(&$query) {
 					}
 				}
 
-				else if($query['task']='editaddress'){
+				else if($query['task']=='editaddress'){
 
 					if (isset($query['addrtype']) and $query['addrtype'] == 'ST'){
 						$segments[] = $helper->lang('editaddressST') ;
 					} else {
 						$segments[] = $helper->lang('editaddressBT') ;
 					}
-				} else {
-
+				}
+				else {
 					$segments[] =  $helper->lang($query['task']);
 				}
 				/*	if ($query['addrtype'] == 'BT' && $query['task']='editaddresscart') $segments[] = $helper->lang('editaddresscartBT') ;
