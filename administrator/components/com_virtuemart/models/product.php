@@ -95,7 +95,7 @@ class VirtueMartModelProduct extends VmModel {
 	var $searchplugin = 0;
 	var $filter_order = 'p.virtuemart_product_id';
 	var $filter_order_Dir = 'DESC';
-
+	var $valid_BE_search_fields = array('product_name', 'product_sku', 'product_s_desc', '`l`.`metadesc`');
 
 	/**
 	 * This function resets the variables holding request depended data to the initial values
@@ -105,7 +105,7 @@ class VirtueMartModelProduct extends VmModel {
 	function initialiseRequests () {
 
 		$this->keyword = "0";
-		$this->valid_search_fields = array('product_name', 'product_sku', 'product_s_desc', 'metadesc');
+		$this->valid_search_fields = $this->valid_BE_search_fields;
 		$this->product_parent_id = FALSE;
 		$this->virtuemart_manufacturer_id = FALSE;
 		$this->search_type = '';
@@ -149,7 +149,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$filter_order = $this->checkFilterOrder ($filter_order);
 			$filter_order_Dir = strtoupper ($app->getUserStateFromRequest ($option . '.' . $view . '.filter_order_Dir', 'filter_order_Dir', '', 'word'));
-			$valid_search_fields = array('product_name','product_sku','product_s_desc','metadesc');
+			$valid_search_fields = $this->valid_BE_search_fields;
 		}
 		$filter_order_Dir = $this->checkFilterDir ($filter_order_Dir);
 
@@ -240,14 +240,19 @@ class VirtueMartModelProduct extends VmModel {
 							}
 							else {
 								//vmdebug('sortSearchListQuery $searchField',$searchField);
-								if (strpos ($searchField, '.') == 1) {
+							/*	if (strpos ($searchField, 'p.') == 1) {
 									$searchField = 'p`.`' . substr ($searchField, 2, (strlen ($searchField)));
 									//vmdebug('sortSearchListQuery $searchField recreated',$searchField);
-								}
+								}*/
 							}
 						}
 					}
-					$filter_search[] = '`' . $searchField . '` LIKE ' . $keyword;
+					if (strpos ($searchField, '`') !== FALSE){
+						$filter_search[] =  $searchField . ' LIKE ' . $keyword;
+					} else {
+						$filter_search[] = '`' . $searchField . '` LIKE ' . $keyword;
+					}
+
 
 				}
 				if (!empty($filter_search)) {
@@ -494,18 +499,36 @@ class VirtueMartModelProduct extends VmModel {
 		$view = JRequest::getWord ('view');
 
 		$cateid = JRequest::getInt ('virtuemart_category_id', 0);
+		$manid = JRequest::getInt ('virtuemart_manufacturer_id', 0);
 
-		$limit = (int)$app->getUserStateFromRequest ('com_virtuemart.' . $view . $cateid . '.limit', 'limit');
+		$limitString = 'com_virtuemart.' . $view . 'c' . $cateid . '.limit';
+		$limit = (int)$app->getUserStateFromRequest ($limitString, 'limit');
 
+		$limitStartString  = 'com_virtuemart.' . $view . '.limitstart';
+		if ($app->isSite () and ($cateid != 0 or $manid != 0) ) {
 
-		if ($app->isSite () and $cateid != 0) {
-			$lastCatId = ShopFunctionsf::getLastVisitedCategoryId ();
-			if ($lastCatId != $cateid) {
-				$limitStart = 0;
+			if($cateid != 0){
+				$lastCatId = ShopFunctionsf::getLastVisitedCategoryId ();
+				if ($lastCatId != $cateid) {
+					$limitStart = 0;
+				}
+				else {
+					$limitStartString  = 'com_virtuemart.' . $view . 'c' . $cateid . '.limitstart';
+					$limitStart = $app->getUserStateFromRequest ($limitStartString, 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
+				}
 			}
-			else {
-				$limitStart = $app->getUserStateFromRequest ('com_virtuemart.' . $view . '.limitstart', 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
+
+			if($manid != 0){
+				$lastCatId = ShopFunctionsf::getLastVisitedManuId ();
+				if ($lastCatId != $cateid) {
+					$limitStart = 0;
+				}
+				else {
+					$limitStartString  = 'com_virtuemart.' . $view . 'm' . $manid . '.limitstart';
+					$limitStart = $app->getUserStateFromRequest ($limitStartString, 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
+				}
 			}
+
 			$catModel= VmModel::getModel('category');
 			$category = $catModel->getCategory();
 			if(empty($limit)){
@@ -523,7 +546,6 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				$rest = $suglimit%$category->products_per_row;
 				$limit = $suglimit - $rest;
-
 			}
 
 			//vmdebug('my cat',$category);
@@ -537,7 +559,7 @@ class VirtueMartModelProduct extends VmModel {
 			$limit = VmConfig::get ('list_limit', 20);
 		}
 		$this->setState ('limit', $limit);
-		$this->setState ('com_virtuemart.' . $view . $cateid . '.limit', $limit);
+		$this->setState ($limitString, $limit);
 		$this->_limit = $limit;
 
 		//There is a strange error in the frontend giving back 9 instead of 10, or 24 instead of 25
@@ -545,7 +567,7 @@ class VirtueMartModelProduct extends VmModel {
 		$limitStart = ceil ((float)$limitStart / (float)$limit) * $limit;
 
 		$this->setState ('limitstart', $limitStart);
-		$this->setState ('com_virtuemart.' . $view . $cateid . '.limitstart', $limitStart);
+		$this->setState ($limitStartString, $limitStart);
 
 		$this->_limitStart = $limitStart;
 

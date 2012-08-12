@@ -154,7 +154,8 @@ class VirtuemartViewCategory extends VmView {
 		$showRating = $ratingModel->showRating();
 		$this->assignRef('showRating', $showRating);
 
-		if (JRequest::getInt('virtuemart_manufacturer_id' ) and !empty($products[0])) $title .=' '.$products[0]->mf_name ;
+		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id',0 );
+		if ($virtuemart_manufacturer_id and !empty($products[0])) $title .=' '.$products[0]->mf_name ;
 		$document->setTitle( $title );
 		// Override Category name when viewing manufacturers products !IMPORTANT AFTER page title.
 		if (JRequest::getInt('virtuemart_manufacturer_id' ) and !empty($products[0])) $category->category_name =$products[0]->mf_name ;
@@ -202,6 +203,7 @@ class VirtuemartViewCategory extends VmView {
 		$this->assignRef('paginationAction', $paginationAction);
 
 	    shopFunctionsF::setLastVisitedCategoryId($categoryId);
+		shopFunctionsF::setLastVisitedManuId($virtuemart_manufacturer_id);
 
 	    if(empty($category->category_template)){
 	    	$category->category_template = VmConfig::get('categorytemplate');

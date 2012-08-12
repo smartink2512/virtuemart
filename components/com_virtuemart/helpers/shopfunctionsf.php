@@ -76,6 +76,25 @@ class shopFunctionsF {
 
 	}
 
+	/**
+	 * @author Max Milbers
+	 */
+	static public function getLastVisitedManuId(){
+
+		$session = JFactory::getSession();
+		return $session->get('vmlastvisitedmanuid', 0, 'vm');
+
+	}
+
+	/**
+	 * @author Max Milbers
+	 */
+	static public function setLastVisitedManuId($manuId){
+		$session = JFactory::getSession();
+		return $session->set('vmlastvisitedmanuid', (int) $manuId, 'vm');
+
+	}
+
 	public function getAddToCartButton($orderable){
 
 		if($orderable){

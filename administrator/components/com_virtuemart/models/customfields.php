@@ -1066,7 +1066,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $selected));
 					//vmdebug('$customfield',$customfield);
 					if($customfield->parentOrderable==0 and $product->product_parent_id==0){
-						vmdebug('Should not be orderable');
+						//vmdebug('Should not be orderable');
 						$product->orderable = FALSE;
 					/*	if(!$productModel->product_parent_id){
 							vmdebug('$customfield parentOrderable');

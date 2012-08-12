@@ -1229,7 +1229,7 @@ class vmJsApi{
 			$formatedDate = JText::_('COM_VIRTUEMART_NEVER');
 		}
 		$display  = '<input class="datepicker-db" id="'.$id.'" type="hidden" name="'.$name.'" value="'.$date.'" />';
-		$display .= '<input id="'.$id.'_text" class="datepicker" type="date" value="'.$formatedDate.'" />';
+		$display .= '<input id="'.$id.'_text" class="datepicker" type="text" value="'.$formatedDate.'" />';
 		if ($resetBt) {
 			$display .= '<span class="vmicon vmicon-16-logout icon-nofloat js-date-reset"></span>';
 		}
