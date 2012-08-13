@@ -29,7 +29,6 @@ if (empty($this->url)){
 	$url = $this->url;
 }
 
-vmdebug('loginform $url ',$url);
 $user = JFactory::getUser();
 if(!isset($this->show)) $this->show = true;
 if ($this->show and $user->id == 0  ) {

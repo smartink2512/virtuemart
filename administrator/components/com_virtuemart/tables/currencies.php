@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 
 /**
  * Currency table class
@@ -28,7 +28,7 @@ if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmta
  * @package		VirtueMart
  * @author RickG, Max Milbers
  */
-class TableCurrencies extends VmTable {
+class TableCurrencies extends VmTableData {
 
 	/** @var int Primary key */
 	var $virtuemart_currency_id				= 0;

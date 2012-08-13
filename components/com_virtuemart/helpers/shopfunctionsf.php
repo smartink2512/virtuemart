@@ -278,14 +278,14 @@ class shopFunctionsF {
 		$mailer->isHTML(VmConfig::get('order_mail_html',TRUE));
 		$mailer->setBody($body);
 
-		if($noVendorMail){
+		if(!$noVendorMail){
 			$replyto[0]=$view->vendorEmail;
 			$replyto[1]= $view->vendor->vendor_name;
 			$mailer->addReplyTo($replyto);
 		}
-// 		if (isset($view->replyTo)) {
-// 			$mailer->addReplyTo($view->replyTo);
-// 		}
+ 	/*	if (isset($view->replyTo)) {
+ 			$mailer->addReplyTo($view->replyTo);
+ 		}*/
 
 		if (isset($view->mediaToSend)) {
 			foreach ((array)$view->mediaToSend as $media) {
