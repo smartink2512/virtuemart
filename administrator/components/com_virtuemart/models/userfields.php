@@ -648,6 +648,7 @@ class VirtueMartModelUserfields extends VmModel {
 				,'required' => $_fld->required
 				,'hidden' => false
 				,'formcode' => ''
+				,'description' => JText::_($_fld->description)
 				);
 
 // 				vmdebug ('getUserFieldsFilled',$_fld->name);

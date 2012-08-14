@@ -76,7 +76,7 @@ foreach ($typefields as $typefield) {
 		$_table = true;
 	    }
 	    echo '		<tr>' . "\n";
-	    echo '			<td class="key">' . "\n";
+	    echo '			<td class="key" title="'.$_field['description'].'" >' . "\n";
 	    echo '				<label class="' . $_field['name'] . '" for="' . $_field['name'] . '_field">' . "\n";
 	    echo '					' . $_field['title'] . ($_field['required'] ? ' *' : '') . "\n";
 	    echo '				</label>' . "\n";
