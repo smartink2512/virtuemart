@@ -400,6 +400,16 @@ class VmConfig {
 		return self::$_debug;
 	}
 
+	static public function loadJLang($name){
+
+		$jlang =JFactory::getLanguage();
+		if(VmConfig::get('enableEnglish', 1)){
+			$jlang->load($name, JPATH_ADMINISTRATOR, 'en-GB', true);
+		}
+		$jlang->load($name, JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
+		$jlang->load($name, JPATH_ADMINISTRATOR, null, true);
+	}
+
 	/**
 	 * Loads the configuration and works as singleton therefore called static. The call using the program cache
 	 * is 10 times faster then taking from the session. The session is still approx. 30 times faster then using the file.
@@ -1064,7 +1074,7 @@ class vmJsApi{
 		$closeimage = JURI::root(TRUE) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
 		$jsVars  = "vmSiteurl = '". JURI::root( ) ."' ;\n" ;
 		if (VmConfig::get ('vmlang_js', 1))  {
-			$jsVars .= "vmLang = '&lang=" . substr (VMLANG, 0, 2) . "' ;\n";
+			$jsVars .= "vmLang = '&amp;lang=" . substr (VMLANG, 0, 2) . "' ;\n";
 		}
 		else {
 			$jsVars .= 'vmLang = ""' . "\n";

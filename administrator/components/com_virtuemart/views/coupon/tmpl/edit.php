@@ -23,7 +23,7 @@ AdminUIHelper::startAdminArea();
 AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_COUPON_DETAILS');
 ?>
 
-<form action="index.php" method="post" name="adminForm" ID="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 
 	<fieldset>
 	    <legend><?php echo JText::_('COM_VIRTUEMART_COUPON_DETAILS'); ?></legend>

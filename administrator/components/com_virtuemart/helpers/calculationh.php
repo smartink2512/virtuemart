@@ -325,9 +325,9 @@ class calculationHelper {
 		}
 
 		if(!empty($product->product_packaging) and $product->product_packaging!='0.0000'){
-			$prices['grundPrice'] = $prices['salesPrice']/$product->product_packaging;
+			$prices['unitPrice'] = $prices['salesPrice']/$product->product_packaging;
 		} else {
-			$prices['grundPrice'] = 0.0;
+			$prices['unitPrice'] = 0.0;
 		}
 
 

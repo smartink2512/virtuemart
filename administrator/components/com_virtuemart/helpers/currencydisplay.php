@@ -239,7 +239,7 @@ class CurrencyDisplay {
 		$priceFields = array('basePrice','variantModification','basePriceVariant',
 											'basePriceWithTax','discountedPriceWithoutTax',
 											'salesPrice','priceWithoutTax',
-											'salesPriceWithDiscount','discountAmount','taxAmount','grundPrice');
+											'salesPriceWithDiscount','discountAmount','taxAmount','unitPrice');
 
 		if($show_prices==1){
 			foreach($priceFields as $name){

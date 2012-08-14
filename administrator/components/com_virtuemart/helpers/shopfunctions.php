@@ -56,14 +56,11 @@ class ShopFunctions {
 	 * @return List as String
 	 */
 	static public function renderGuiList ($fieldnameXref, $tableXref, $fieldIdXref, $idXref, $fieldname, $table, $fieldId, $view, $quantity = 4, $translate = 1) {
-if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+
+		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 		VmConfig::loadConfig();
-		if(VmConfig::get('enableEnglish', 1)){
-		    $jlang =JFactory::getLanguage();
-		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, 'en-GB', true);
-		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
-		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, null, true);
-		}
+		VmConfig::loadJLang('com_virtuemart_countries');
+
 
 // 		'virtuemart_category_id','#__virtuemart_calc_categories','virtuemart_calc_id',$data->virtuemart_calc_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category'
 		//Sanitize input

@@ -849,10 +849,10 @@ class VmMediaHandler {
 		 * @param array $fileIds
 		 */
 		public function displayFilesHandler($fileIds,$type){
-			//$this->lists= $this->displayImages($type);
+			VmConfig::loadJLang('com_virtuemart_media');
 			$html = $this->displayFileSelection($fileIds,$type);
 			$html .= $this->displayFileHandler();
-			//$html .= '<div style="display:none"><div id="media-dialog" >'.$this->lists['htmlImages'].'</div></div>';//$type);
+
 			if(empty($this->_db)) $this->_db = JFactory::getDBO();
 			$this->_db->setQuery('SELECT FOUND_ROWS()');
 			$imagetotal = $this->_db->loadResult();
@@ -929,7 +929,7 @@ class VmMediaHandler {
 			$html='';
 			$html .= '<fieldset class="checkboxes">' ;
 			$html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGES').'</legend>';
-			$html .=  '<span class="hasTip always-left" title="'.JText::_('COM_VIRTUEMART_SEARCH_TITLE_TIP').'">'.JText::_('COM_VIRTUEMART_SEARCH_TITLE') . ' ' . JText::_('COM_VIRTUEMART_IMAGES') . ' :</span>';
+			$html .=  '<span class="hasTip always-left" title="'.JText::_('COM_VIRTUEMART_SEARCH_MEDIA_TIP').'">'.JText::_('COM_VIRTUEMART_SEARCH_MEDIA') . '</span>';
 			$html .=   '
 					<input type="text" name="searchMedia" id="searchMedia" data-start="0" value="' .JRequest::getString('searchMedia') . '" class="text_area always-left" />
 					<button class="reset-value fg-button">'.JText::_('COM_VIRTUEMART_RESET') .'</button>
@@ -1072,6 +1072,7 @@ class VmMediaHandler {
 		 */
 		public function displayFileHandler(){
 
+			//VmConfig::loadJLang('com_virtuemart_media');
 			$identify = ''; // ':'.$this->virtuemart_media_id;
 
 			$this->addHiddenByType();
