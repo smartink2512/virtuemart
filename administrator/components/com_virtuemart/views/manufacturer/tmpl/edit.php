@@ -28,7 +28,7 @@ AdminUIHelper::startAdminArea();
 <?php // Loading Templates in Tabs
 $tabarray = array();
 $tabarray['description'] = 'COM_VIRTUEMART_DESCRIPTION';
-$tabarray['images'] = 'COM_VIRTUEMART_IMAGE_S';
+$tabarray['images'] = 'COM_VIRTUEMART_IMAGES';
 
 AdminUIHelper::buildTabs ( $this,  $tabarray ,$this->manufacturer->virtuemart_manufacturer_id);
 // Loading Templates in Tabs END ?>

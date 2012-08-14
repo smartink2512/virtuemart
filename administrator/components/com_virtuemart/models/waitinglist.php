@@ -19,8 +19,6 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access');
 
-// Load the model framework
-jimport ('joomla.application.component.model');
 
 /**
  * Model for VirtueMart wating list

@@ -25,7 +25,6 @@ defined('_JEXEC') or die('Restricted access');
 define ('__SUPER_ADMIN_GID', 25);
 
 // Load the model framework
-jimport('joomla.application.component.model');
 jimport('joomla.version');
 
 if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');

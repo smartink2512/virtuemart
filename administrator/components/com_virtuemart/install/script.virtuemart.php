@@ -13,10 +13,10 @@ defined('_JEXEC') or die('Restricted access');
 @ini_set( 'memory_limit', '32M' );
 @ini_set( 'max_execution_time', '120' );
 
-jimport( 'joomla.application.component.model');
-
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('JPATH_VM_ADMINISTRATOR') or define('JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart');
+
+if(!class_exists('JModel')) require JPATH_VM_LIBRARIES.DS.'joomla'.DS.'application'.DS.'component'.DS.'model.php';
 
 // hack to prevent defining these twice in 1.6 installation
 if (!defined('_VM_SCRIPT_INCLUDED')) {

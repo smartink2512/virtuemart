@@ -20,8 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the model framework
-jimport( 'joomla.application.component.model');
-
+if(!class_exists('JModel')) require JPATH_VM_LIBRARIES.DS.'joomla'.DS.'application'.DS.'component'.DS.'model.php';
 
 /**
  * Model for Macola
