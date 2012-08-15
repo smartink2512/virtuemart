@@ -1024,7 +1024,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 			if(!isset($data['invoice_number']) ) {
 			    // check the default configuration
-			    $orderstatusForInvoice = VmConfig::get('inv_os',array('C'));
+			    $orderstatusForInvoice = VmConfig::get('inv_os',array());
 				if(!is_array($orderstatusForInvoice)) $orderstatusForInvoice = array($orderstatusForInvoice); //for backward compatibility 2.0.8e
 			    $pdfInvoice = (int)VmConfig::get('pdf_invoice', 0); // backwards compatible
 			    $force_create_invoice=JRequest::getInt('create_invoice', 0);
@@ -1131,7 +1131,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		//if  ($this->getInvoiceNumber( $order['details']['BT']->virtuemart_order_id ) ){
 		$invoiceNumberDate = array();
 		if ($orderModel->createInvoiceNumber($order['details']['BT'], $invoiceNumberDate )) {
-			$orderstatusForInvoice = VmConfig::get('inv_os',array('C'));
+			$orderstatusForInvoice = VmConfig::get('inv_os',array());
 			if(!is_array($orderstatusForInvoice)) $orderstatusForInvoice = array($orderstatusForInvoice);   // for backward compatibility 2.0.8e
 			$pdfInvoice = (int)VmConfig::get('pdf_invoice', 0); // backwards compatible
 			$force_create_invoice=JRequest::getInt('create_invoice', 0);

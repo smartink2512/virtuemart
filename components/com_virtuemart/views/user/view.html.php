@@ -71,8 +71,10 @@ class VirtuemartViewUser extends VmView {
 	// 	vmdebug('layout by view '.$layoutName);
 	if (empty($layoutName) or $layoutName == 'default') {
 	    $layoutName = JRequest::getWord('layout', 'edit');
-	    $this->setLayout($layoutName);
-	    // 	    vmdebug('layout by post '.$layoutName);
+		if ($layoutName == 'default'){
+			$layoutName = 'edit';
+		}
+		$this->setLayout($layoutName);
 	}
 
 	if (empty($this->fTask)) {

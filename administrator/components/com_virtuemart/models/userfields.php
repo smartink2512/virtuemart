@@ -802,7 +802,11 @@ class VirtueMartModelUserfields extends VmModel {
 								$_selected = $_return['fields'][$_fld->name]['value'];
 							} else {
 								$_attribs['size'] = $_fld->size; // Use for all but radioselects
-								$_selected = explode("|*|", $_return['fields'][$_fld->name]['value']);
+								if (!is_array($_return['fields'][$_fld->name]['value'])){
+									$_selected = explode("|*|", $_return['fields'][$_fld->name]['value']);
+								} else {
+									$_selected = $_return['fields'][$_fld->name]['value'];
+								}
 							}
 
 							// Nested switch...

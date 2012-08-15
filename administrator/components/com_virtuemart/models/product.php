@@ -1820,7 +1820,7 @@ class VirtueMartModelProduct extends VmModel {
 		$amount = (float)$amount;
 		$update = array();
 
-		if ($signInStock != '=' || $signOrderedStock != '=') {
+		if ($signInStock != '=' or $signOrderedStock != '=') {
 
 			if ($signInStock != '=') {
 				$update[] = '`product_in_stock` = `product_in_stock` ' . $signInStock . $amount;
@@ -1842,11 +1842,16 @@ class VirtueMartModelProduct extends VmModel {
 			$this->_db->setQuery ($q);
 			$this->_db->query ();
 
-			if ($signInStock == '-') {
+			//The low on stock notification comes now, when the people ordered.
+			//You need to know that the stock is going low before you actually sent the wares, because then you ususally know it already yoursefl
+			//note by Max Milbers
+			if ($signInStock == '+') {
+
 				$this->_db->setQuery ('SELECT (`product_in_stock`+`product_ordered`) < `low_stock_notification` '
 						. 'FROM `#__virtuemart_products` '
 						. 'WHERE `virtuemart_product_id` = ' . $id
 				);
+				$res = $this->_db->loadResult ();
 				if ($this->_db->loadResult () == 1) {
 					$this->lowStockWarningEmail( $id) ;
 				}
