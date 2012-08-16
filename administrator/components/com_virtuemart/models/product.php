@@ -717,7 +717,7 @@ class VirtueMartModelProduct extends VmModel {
 				$currentVMuser = $usermodel->getUser ();
 				$virtuemart_shoppergroup_ids = (array)$currentVMuser->shopper_groups;
 
-// 				vmdebug('$user->shoppergroups',$virtuemart_shoppergroup_ids);
+ 				vmdebug('$user->shoppergroups',$virtuemart_shoppergroup_ids,$product->shoppergroups);
 				$commonShpgrps = array_intersect ($virtuemart_shoppergroup_ids, $product->shoppergroups);
 				if (empty($commonShpgrps)) {
 					vmdebug('getProductSingle creating void product, usergroup does not fit ',$product->shoppergroups);
@@ -799,20 +799,17 @@ class VirtueMartModelProduct extends VmModel {
 				$product->category_name = '';
 			}
 
-			// $this->productHasCustoms($this->_id);
-
 			if (!$front) {
 // 				if (!empty($product->virtuemart_customfield_id ) ){
 				$customfields = VmModel::getModel ('Customfields');
 				$product->customfields = $customfields->getproductCustomslist ($this->_id);
+
 				if (empty($product->customfields) and !empty($product->product_parent_id)) {
 					//$product->customfields = $this->productCustomsfieldsClone($product->product_parent_id,true) ;
 					$product->customfields = $customfields->getproductCustomslist ($product->product_parent_id, $this->_id);
-					$product->customfields_parent_id = $product->product_parent_id;
-
+					$product->customfields_fromParent = TRUE;
 				}
 
-// 				vmdebug('$product->customfields',$product->customfields);
 			}
 			else {
 
@@ -1254,7 +1251,6 @@ class VirtueMartModelProduct extends VmModel {
 			$data = (array)$product;
 		}
 
-		//vmdebug('my data in product store ',$data);
 		if (isset($data['intnotes'])) {
 			$data['intnotes'] = trim ($data['intnotes']);
 		}
@@ -1286,13 +1282,9 @@ class VirtueMartModelProduct extends VmModel {
 			return FALSE;
 		}
 
-		// 	 	JPluginHelper::importPlugin('vmcustom');
-		// 	 	$dispatcher = JDispatcher::getInstance();
-		// 	 	$error = $dispatcher->trigger('plgVmOnStoreProduct', array('product',$data,$product_data->virtuemart_product_id));
-
 		//We may need to change this, the reason it is not in the other list of commands for parents
 		if (!$isChild) {
-			if (isset($data['save_customfields'])) {
+			if (!empty($data['save_customfields'])) {
 				if (!class_exists ('VirtueMartModelCustomfields')) {
 					require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'customfields.php');
 				}
@@ -1851,7 +1843,6 @@ class VirtueMartModelProduct extends VmModel {
 						. 'FROM `#__virtuemart_products` '
 						. 'WHERE `virtuemart_product_id` = ' . $id
 				);
-				$res = $this->_db->loadResult ();
 				if ($this->_db->loadResult () == 1) {
 					$this->lowStockWarningEmail( $id) ;
 				}

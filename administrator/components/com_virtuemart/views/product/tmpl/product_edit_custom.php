@@ -18,10 +18,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-if (isset($this->product->customfields_parent_id)) { ?>
+if (isset($this->product->customfields_fromParent)) { ?>
 	<label><?php echo JText::_('COM_VIRTUEMART_CUSTOM_SAVE_FROM_CHILD');?><input type="checkbox" name="save_customfields" value="1" /></label>
-<?php } else {?>
-	<input type="hidden" name="save_customfields" value="1" />
+<?php } else {
+	?> <input type="hidden" name="save_customfields" value="1" />
 <?php }  ?>
 <table id="customfieldsTable" width="100%">
 	<tr>
