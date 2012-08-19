@@ -813,7 +813,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				FROM `#__virtuemart_customs` AS C
 				LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
 				Where `virtuemart_product_id` =' . (int)$product->virtuemart_product_id . ' and `field_type` != "G" and `field_type` != "R" and `field_type` != "Z"';
-		$query .= ' and is_cart_attribute = 1 group by virtuemart_custom_id';
+		$query .= ' and is_cart_attribute = 1 group by virtuemart_custom_id ORDER BY field.`ordering`';
 
 		$this->_db->setQuery ($query);
 		$groups = $this->_db->loadObjectList ();
