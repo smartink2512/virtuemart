@@ -661,7 +661,19 @@ class VirtueMartModelUserfields extends VmModel {
 						ShopFunctions::renderCountryList($_return['fields'][$_fld->name]['value'], false, array(), $_prefix, $_fld->required);
 
 						// Translate the value from ID to name
-						$_return['fields'][$_fld->name]['value'] = JText::_(shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']));
+						$db = JFactory::getDBO ();
+						$q = 'SELECT * FROM `#__virtuemart_countries` WHERE virtuemart_country_id = "' . (int)$_return['fields'][$_fld->name]['value'] . '"';
+						$db->setQuery ($q);
+						$r = $db->loadAssoc();
+						if($r){
+							$_return['fields'][$_fld->name]['value'] = !empty($r['country_name'])? $r['country_name']:'' ;
+							$_return['fields'][$_fld->name]['country_2_code'] = !empty($r['country_2_code'])? $r['country_2_code']:'' ;
+							$_return['fields'][$_fld->name]['country_3_code'] = !empty($r['country_3_code'])? $r['country_3_code']:'' ;
+						} else {
+							vmError('Model Userfields, country with id '.$_return['fields'][$_fld->name]['value'].' not found');
+						}
+						//$_return['fields'][$_fld->name]['value'] = JText::_(shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']));
+						//$_return['fields'][$_fld->name]['state_2_code'] = JText::_(shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']));
 						break;
 
 					case 'virtuemart_state_id':
@@ -673,7 +685,19 @@ class VirtueMartModelUserfields extends VmModel {
 						$_fld->required
 						);
 
-						$_return['fields'][$_fld->name]['value'] = shopFunctions::getStateByID($_return['fields'][$_fld->name]['value']);
+						// Translate the value from ID to name
+						$db = JFactory::getDBO ();
+						$q = 'SELECT * FROM `#__virtuemart_states` WHERE virtuemart_state_id = "' . (int)$_return['fields'][$_fld->name]['value'] . '"';
+						$db->setQuery ($q);
+						$r = $db->loadAssoc();
+						if($r){
+							$_return['fields'][$_fld->name]['value'] = !empty($r['state_name'])? $r['state_name']:'' ;
+							$_return['fields'][$_fld->name]['state_2_code'] = !empty($r['state_2_code'])? $r['state_2_code']:'' ;
+							$_return['fields'][$_fld->name]['state_3_code'] = !empty($r['state_3_code'])? $r['state_3_code']:'' ;
+						} else {
+							vmError('Model Userfields, state with id '.$_return['fields'][$_fld->name]['value'].' not found');
+						}
+						//$_return['fields'][$_fld->name]['value'] = shopFunctions::getStateByID($_return['fields'][$_fld->name]['value']);
 						break;
 						//case 'agreed':
 						//	$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" id="'.$_prefix.'agreed_field" name="'.$_prefix.'agreed" value="1" '

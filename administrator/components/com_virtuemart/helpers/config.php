@@ -400,18 +400,25 @@ class VmConfig {
 		return self::$_debug;
 	}
 
-	private static $_loadedlang = NULL;
+	/**
+	 * loads a language file, the trick for us is that always the config option enableEnglish is used
+	 * and the path are already set and the correct order is used
+	 * We use first the english language, then the default, and then the language choosen by the user
+	 * We removed the fourth parameter of $jlang->load, so that languages are not unecessary loaded twice
+	 *
+	 * @author Max Milbers
+	 * @static
+	 * @param $name
+	 * @return bool
+	 */
 	static public function loadJLang($name){
 
-		if(isset(self::$_loadedlang[$name])){
-			return TRUE;
-		}
 		$jlang =JFactory::getLanguage();
 		if(VmConfig::get('enableEnglish', 1)){
-			$jlang->load($name, JPATH_ADMINISTRATOR, 'en-GB', true);
+			$jlang->load($name, JPATH_ADMINISTRATOR, 'en-GB');
 		}
-		$jlang->load($name, JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
-		$jlang->load($name, JPATH_ADMINISTRATOR, null, true);
+		$jlang->load($name, JPATH_ADMINISTRATOR, $jlang->getDefault());
+		$jlang->load($name, JPATH_ADMINISTRATOR, NULL);
 		return TRUE;
 	}
 
