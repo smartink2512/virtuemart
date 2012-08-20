@@ -63,7 +63,7 @@ class VirtueMartModelUser extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	public function setId(){
+	public function setId($cid){
 
 		$user = JFactory::getUser();
 		//anonymous sets to 0 for a new entry
