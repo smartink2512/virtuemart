@@ -518,7 +518,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			if($manid != 0){
 				$lastCatId = ShopFunctionsf::getLastVisitedManuId ();
-				if ($lastCatId != $cateid) {
+				if ($lastCatId != $manid) {
 					$limitStart = 0;
 				}
 				else {
@@ -714,8 +714,12 @@ class VirtueMartModelProduct extends VmModel {
 					require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
 				}
 				$usermodel = VmModel::getModel ('user');
-				$currentVMuser = $usermodel->getUser ();
-				$virtuemart_shoppergroup_ids = (array)$currentVMuser->shopper_groups;
+				$currentVMuser = $usermodel->getCurrentUser ();
+				if(!is_array($currentVMuser->shopper_groups)){
+					$virtuemart_shoppergroup_ids = (array)$currentVMuser->shopper_groups;
+				} else {
+					$virtuemart_shoppergroup_ids = $currentVMuser->shopper_groups;
+				}
 
  				vmdebug('$user->shoppergroups',$virtuemart_shoppergroup_ids,$product->shoppergroups);
 				$commonShpgrps = array_intersect ($virtuemart_shoppergroup_ids, $product->shoppergroups);
@@ -1852,36 +1856,40 @@ class VirtueMartModelProduct extends VmModel {
 	}
 function lowStockWarningEmail($virtuemart_product_id) {
 
+	if(VmConfig::get('lstockmail',TRUE)){
+		if (!class_exists ('shopFunctionsF')) {
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+		}
 
-	if (!class_exists ('shopFunctionsF')) {
-		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-	}
-
-	/* Load the product details */
-	$q = "SELECT l.product_name,product_in_stock FROM `#__virtuemart_products_" . VMLANG . "` l
+		/* Load the product details */
+		$q = "SELECT l.product_name,product_in_stock FROM `#__virtuemart_products_" . VMLANG . "` l
 				JOIN `#__virtuemart_products` p ON p.virtuemart_product_id=l.virtuemart_product_id
 			   WHERE p.virtuemart_product_id = " . $virtuemart_product_id;
-	$this->_db->setQuery ($q);
-	$vars = $this->_db->loadAssoc ();
+		$this->_db->setQuery ($q);
+		$vars = $this->_db->loadAssoc ();
 
-	$url = JURI::root () . 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id;
-	$link = '<a href="'. $url.'">'. $vars['product_name'].'</a>';
-	$vars['subject'] = JText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_SUBJECT',$vars['product_name']);
-	$vars['mailbody'] =JText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_BODY',$link, $vars['product_in_stock']);
+		$url = JURI::root () . 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id;
+		$link = '<a href="'. $url.'">'. $vars['product_name'].'</a>';
+		$vars['subject'] = JText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_SUBJECT',$vars['product_name']);
+		$vars['mailbody'] =JText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_BODY',$link, $vars['product_in_stock']);
 
-	$virtuemart_vendor_id = 1;
-	$vendorModel = VmModel::getModel ('vendor');
-	$vendor = $vendorModel->getVendor ($virtuemart_vendor_id);
-	$vendorModel->addImages ($vendor);
-	$vars['vendor'] = $vendor;
+		$virtuemart_vendor_id = 1;
+		$vendorModel = VmModel::getModel ('vendor');
+		$vendor = $vendorModel->getVendor ($virtuemart_vendor_id);
+		$vendorModel->addImages ($vendor);
+		$vars['vendor'] = $vendor;
 
-	$vars['vendorAddress']= shopFunctions::renderVendorAddress($virtuemart_vendor_id);
-	$vars['vendorEmail'] = $vendorModel->getVendorEmail ($virtuemart_vendor_id);
+		$vars['vendorAddress']= shopFunctions::renderVendorAddress($virtuemart_vendor_id);
+		$vars['vendorEmail'] = $vendorModel->getVendorEmail ($virtuemart_vendor_id);
 
-	$vars['user'] =  $vendor->vendor_store_name ;
-	shopFunctionsF::renderMail ('productdetails', $vars['vendorEmail'], $vars, 'productdetails', FALSE) ;
+		$vars['user'] =  $vendor->vendor_store_name ;
+		shopFunctionsF::renderMail ('productdetails', $vars['vendorEmail'], $vars, 'productdetails', TRUE) ;
 
-	return TRUE;
+		return TRUE;
+	} else {
+		return FALSE;
+	}
+
 }
 
 	public function getUncategorizedChildren ($withParent) {

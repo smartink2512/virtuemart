@@ -451,22 +451,22 @@ class ShopFunctions {
 	 */
 	static function renderWeightUnitList ($name, $selected) {
 
-		$weigth_unit_default = self::getWeightUnit ();
-		foreach ($weigth_unit_default as  $key => $value) {
+		$weight_unit_default = self::getWeightUnit ();
+		foreach ($weight_unit_default as  $key => $value) {
 			$wu_list[] = JHTML::_ ('select.option', $key, $value, $name);
 		}
 		$listHTML = JHTML::_ ('Select.genericlist', $wu_list, $name, '', $name, 'text', $selected);
 		return $listHTML;
 		/*
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-		return VmHTML::selectList($name, $selected, $weigth_unit_default);
+		return VmHTML::selectList($name, $selected, $weight_unit_default);
 		 *
 		 */
 	}
 
 	static function renderUnitIsoList($name, $selected){
 
-		$weigth_unit_default = array(
+		$weight_unit_default = array(
 			'KG' => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_KG')
 		, '100MG' => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100MG')
 		, 'M'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_M')
@@ -475,7 +475,7 @@ class ShopFunctions {
 		, 'L'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_L')
 		, '100ML'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100ML')
 		);
-		foreach ($weigth_unit_default as  $key => $value) {
+		foreach ($weight_unit_default as  $key => $value) {
 			$wu_list[] = JHTML::_ ('select.option', $key, $value, $name);
 		}
 		$listHTML = JHTML::_ ('Select.genericlist', $wu_list, $name, '', $name, 'text', $selected);

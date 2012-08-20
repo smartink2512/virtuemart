@@ -849,6 +849,7 @@ class VmMediaHandler {
 		 * @param array $fileIds
 		 */
 		public function displayFilesHandler($fileIds,$type){
+
 			VmConfig::loadJLang('com_virtuemart_media');
 			$html = $this->displayFileSelection($fileIds,$type);
 			$html .= $this->displayFileHandler();
@@ -1072,6 +1073,7 @@ class VmMediaHandler {
 		 */
 		public function displayFileHandler(){
 
+			VmConfig::loadJLang('com_virtuemart_media');
 			//VmConfig::loadJLang('com_virtuemart_media');
 			$identify = ''; // ':'.$this->virtuemart_media_id;
 

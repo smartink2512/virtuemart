@@ -43,7 +43,7 @@ class VirtueMartControllerUser extends JController
 
 	}
 
-	function editAddressSt(){
+	function editAddressST(){
 
 		$view = $this->getView('user', 'html');
 

@@ -400,14 +400,19 @@ class VmConfig {
 		return self::$_debug;
 	}
 
+	private static $_loadedlang = NULL;
 	static public function loadJLang($name){
 
+		if(isset(self::$_loadedlang[$name])){
+			return TRUE;
+		}
 		$jlang =JFactory::getLanguage();
 		if(VmConfig::get('enableEnglish', 1)){
 			$jlang->load($name, JPATH_ADMINISTRATOR, 'en-GB', true);
 		}
 		$jlang->load($name, JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
 		$jlang->load($name, JPATH_ADMINISTRATOR, null, true);
+		return TRUE;
 	}
 
 	/**

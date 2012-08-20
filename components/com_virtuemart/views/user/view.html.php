@@ -146,7 +146,7 @@ class VirtuemartViewUser extends VmView {
 // 			vmdebug('Try to get $virtuemart_userinfo_id by type BT', $virtuemart_userinfo_id);
 		}
 	   $userFields = $userFields[$virtuemart_userinfo_id];
-	   $task = 'editAddressSt';
+	   $task = 'editaddressST';
 	}
 
 	$this->assignRef('userFields', $userFields);

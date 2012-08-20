@@ -214,7 +214,17 @@ echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lw
 			<fieldset class="checkboxes">
 				<legend><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_POOS_ENABLE_EXPLAIN'); ?>">
 					<?php echo JText::_('COM_VIRTUEMART_CFG_POOS_ENABLE') ?></legend></span>
-				<?php		$options = array(
+				<div>
+					<?php echo VmHTML::checkbox('lstockmail', $this->config->get('lstockmail')); ?>
+					     <span class="hasTip"
+						title="<?php echo JText::_('COM_VIRTUEMART_CFG_LOWSTOCK_NOTIFY_TIP'); ?>">
+								<label for="reviews_autopublish"><?php echo JText::_('COM_VIRTUEMART_CFG_LOWSTOCK_NOTIFY') ?>
+								</label> </span>
+
+				</div>
+				<?php
+
+				$options = array(
 				'none'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_NONE'),
 				'disableit'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_IT'),
 				'disableit_children'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_IT_CHILDREN'),

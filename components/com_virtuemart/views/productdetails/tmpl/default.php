@@ -81,7 +81,7 @@ if (empty($this->product)) {
 		$categoryName = $this->product->category_name ;
 	} else {
 		$catURL =  JRoute::_('index.php?option=com_virtuemart');
-		$categoryName = jtext::_('COM_VIRTUEMART_SHOP_HOME') ;
+		$categoryName = jText::_('COM_VIRTUEMART_SHOP_HOME') ;
 	}
 	?>
 	<div class="back-to-category">

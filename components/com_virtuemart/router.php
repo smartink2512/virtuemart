@@ -178,7 +178,7 @@ function virtuemartBuildRoute(&$query) {
 				$segments[] = $helper->lang('user') ;
 				$query['Itemid'] = $jmenu['virtuemart'];
 			}
-
+			vmdebug('editaddress',$query);
 			if (isset($query['task'])) {
 				//vmdebug('my task in user view',$query['task']);
 				if($query['task']=='editaddresscart'){
@@ -460,7 +460,7 @@ function virtuemartParseRoute($segments) {
 		if ( $helper->compareKey($view,'user') ) {
 			array_shift($segments);
 		}
-
+		vmdebug('MUHHH',$segments);
 		if ( !empty($segments) ) {
 			if (  $helper->compareKey($segments[0] ,'editaddresscartBT') ) {
 				$vars['addrtype'] = 'BT' ;
@@ -480,7 +480,7 @@ function virtuemartParseRoute($segments) {
 			}
 			elseif (  $helper->compareKey($segments[0] ,'editaddressST') ) {
 				$vars['addrtype'] = 'ST' ;
-				$vars['task'] = 'editAddressST' ;
+				$vars['task'] = 'editaddressST' ;
 			}
 			elseif (  $helper->compareKey($segments[0] ,'editaddressBT') ) {
 				$vars['addrtype'] = 'BT' ;

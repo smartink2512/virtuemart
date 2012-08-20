@@ -146,7 +146,7 @@ class VirtueMartCart {
 	public function setPreferred() {
 
 		$usermodel = VmModel::getModel('user');
-		$user = $usermodel->getUser();
+		$user = $usermodel->getCurrentUser();
 
 		if (empty($this->BT) || (!empty($this->BT) && count($this->BT) <=1) ) {
 			foreach ($user->userInfo as $address) {

@@ -279,8 +279,12 @@ abstract class vmPlugin extends JPlugin {
 	 * @author Valérie Isaksen
 	 * @author Max Milbers
 	 */
-	protected function onStoreInstallPluginTable ($psType) {
+	protected function onStoreInstallPluginTable ($psType,$name=FALSE) {
 
+		if(!empty($name) and $name!=$this->_name){
+			return false;
+		}
+		//Todo the psType should be name of the plugin.
 		if ($psType == $this->_psType) {
 			$query = $this->getVmPluginCreateTableSQL ();
 			if(empty($query)){
