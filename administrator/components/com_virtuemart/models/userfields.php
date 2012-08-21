@@ -243,7 +243,7 @@ class VirtueMartModelUserfields extends VmModel {
 		}
 
 		// Store the fieldvalues, if any, in a correct array
-		$fieldValues = $this->postData2FieldValues($data['vNames'], $data['vValues'], $data['virtuemart_userfield_id'], $data['vIds'], $data['vDelete']);
+		$fieldValues = $this->postData2FieldValues($data['vNames'], $data['vValues'], $data['virtuemart_userfield_id'] );
 
 
 		if(strpos($data['type'],'plugin')!==false){
