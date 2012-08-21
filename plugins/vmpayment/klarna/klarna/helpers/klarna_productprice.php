@@ -37,7 +37,8 @@ class klarna_productPrice {
 			$this->klarna_virtuemart->config ($this->cData['eid'], $this->cData['secret'], $this->cData['country'], $this->cData['language'], $this->cData['currency'], $this->cData['mode'], VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), FALSE);
 		}
 		catch (Exception $e) {
-			vmDebug ('klarna_productPrice', $e->getMessage (), $this->cData);
+			vmDebug ('klarna_productPrice', $e->getMessage (),  $e->getFile() , $e->getLine(), $this->cData);
+			vmError ('klarna_productPrice', 'klarna_productPrice: '.$e->getMessage (). " country:".$this->cData['country_code_3'] );
 			unset($this->klarna);
 		}
 	}
@@ -52,6 +53,7 @@ class klarna_productPrice {
 			return FALSE;
 		}
 		if (!VMKLARNA_SHOW_PRODUCTPRICE) {
+			vmDebug ('Klarna: showPP', 'dont show price because VMKLARNA_SHOW_PRODUCTPRICE');
 			return FALSE;
 		}
 		// the price is in the vendor currency
@@ -102,8 +104,14 @@ class klarna_productPrice {
 		$lang = $this->cData['language_code'];
 
 		$types = array(KlarnaPClass::CAMPAIGN, KlarnaPClass::ACCOUNT, KlarnaPClass::FIXED);
-
-		$kCheckout = new KlarnaAPI($country, $lang, 'part', $price, KlarnaFlags::PRODUCT_PAGE, $this->klarna_virtuemart, $types, $this->path);
+		try {
+			$kCheckout = new KlarnaAPI($country, $lang, 'part', $price, KlarnaFlags::PRODUCT_PAGE, $this->klarna_virtuemart, $types, $this->path);
+		}
+		  catch(Exception $e) {
+			  VmDebug('getViewData','Error in ' . __METHOD__ . ': ' . $e->getMessage(), $e->getCode());
+			  VmError( $e->getMessage(), 'getViewData'.'Error in ' . __METHOD__ . ': ' . $e->getMessage(), $e->getCode());
+			  return NULL;
+        }
 
 		$kCheckout->setCurrency ($this->cData['currency']);
 

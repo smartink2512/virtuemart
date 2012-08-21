@@ -217,7 +217,7 @@ class KlarnaHandler {
 
 		//$currency = CurrencyDisplay::getInstance ();
 		$paymentCurrency = CurrencyDisplay::getInstance ($cartPaymentCurrency);
-		$invoice_fee = $paymentCurrency->convertCurrencyTo ($cartPaymentCurrency, $method_invoice_fee, false);
+		$invoice_fee = (double)round($paymentCurrency->convertCurrencyTo ($cartPaymentCurrency, $method_invoice_fee, false), 2);
 		$currencyDisplay = CurrencyDisplay::getInstance ($cartPricesCurrency);
 
 		$paymentCurrency = CurrencyDisplay::getInstance ($cartPaymentCurrency);
@@ -610,6 +610,16 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 
 		$countries = self::getKlarnaCountries ();
 
+		$pc_type= KlarnaHandler::getKlarna_pc_type ();
+		if (empty($pc_type)) {
+			return false;
+		} else {
+			// delete the file directly
+			if(file_exists($pc_type)) {
+                unlink($pc_type);
+            }
+		}
+
 		foreach ($countries as $country) {
 			$active_country = "klarna_active_" . $country;
 			if ($method->$active_country) {
@@ -620,13 +630,8 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 				$flag = "<img src='" . $flagImg . "' />";
 				try {
 					$settings = self::getCountryData ($method, $country);
-					$pc_type= KlarnaHandler::getKlarna_pc_type ();
-					if (empty($pc_type)) {
-						return false;
-					}
 					$klarna = new Klarna_virtuemart();
 					$klarna->config ($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], KlarnaHandler::getKlarnaMode ($method, $settings['country_code_3']), VMKLARNA_PC_TYPE, $pc_type, TRUE);
-					// fetch pclass from file
 					$klarna->fetchPClasses ($country);
 					$success .= shopFunctions::getCountryByID ($settings['virtuemart_country_id']);
 				}
@@ -902,7 +907,8 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
  static function getCheapestPclass($kCheckout, &$cheapest, &$minimum) {
 	 $pclasses = $kCheckout->aPClasses;
 			if (empty($pclasses)) {
-				return NULL;
+				$minimum=0;
+				return ;
 			}
 			$cheapest = 0;
 			$minimum = '';
@@ -1070,8 +1076,6 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		if ($safePath) {
 			return $safePath . "klarna/klarna.json";
 		} else {
-			$suggestedPath=shopFunctions::getSuggestedSafePath();
-			//VmError('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
 			$uri = JFactory::getURI();
 			$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=config';
 			VmError( JText::sprintf('VMPAYMENT_KLARNA_CANNOT_STORE_CONFIG', '<a href="'.$link.'">'.$link.'</a>', JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH')) );

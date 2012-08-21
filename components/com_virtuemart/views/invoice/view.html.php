@@ -142,8 +142,8 @@ class VirtuemartViewInvoice extends VmView {
 				}
 			}
 		}
-
-		$shopperName =  $orderDetails['details']['BT']->title.' '.$orderDetails['details']['BT']->first_name.' '.$orderDetails['details']['BT']->last_name;
+		$company= empty($orderDetails['details']['BT']->company) ?"":$orderDetails['details']['BT']->company.", ";
+		$shopperName =  $company. $orderDetails['details']['BT']->title.' '.$orderDetails['details']['BT']->first_name.' '.$orderDetails['details']['BT']->last_name;
 		$this->assignRef('shopperName', $shopperName);
 
 		//Todo multix

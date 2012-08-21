@@ -64,14 +64,14 @@ class TableUserfield_values extends VmTable {
 	 */
 	function check()
 	{
-		if (preg_match('/[^a-z0-9\._\-]/i', $this->fieldtitle) > 0) {
+		if (preg_match('/[^a-z0-9\._\-]/i', $this->fieldvalue) > 0) {
 			vmError(JText::_('COM_VIRTUEMART_TITLE_IN_FIELDVALUES_CONTAINS_INVALID_CHARACTERS'));
 			return false;
 		}
 
 		$db = JFactory::getDBO();
 		$q = 'SELECT `virtuemart_userfield_value_id` FROM `#__virtuemart_userfield_values` '
-			. 'WHERE `fieldtitle`="' . $this->fieldtitle . '" '
+			. 'WHERE `fieldvalue`="' . $this->fieldvalue . '" '
 			. 'AND   `virtuemart_userfield_id`=' . $this->virtuemart_userfield_id;
 		$db->setQuery($q);
 		$_id = $db->loadResult();

@@ -297,7 +297,7 @@ class klarna_payments {
 
 		KlarnaHandler::getCheapestPclass ($kCheckout, $cheapest, $minimum);
 
-		if ($billTotalInCountryCurrency < $minimum) {
+		if ($minimum==0 OR $billTotalInCountryCurrency < $minimum) {
 			return NULL;
 		}
 		if (!class_exists ('VirtueMartModelCurrency')) {

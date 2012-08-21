@@ -732,6 +732,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	function _setBillingInformation ($usrBT) {
 		// Customer Name and Billing Address
 		return array(
+			'x_email'      => isset($usrBT->email) ? $this->_getField ($usrBT->email, 100) : '',//get email
 			'x_first_name' => isset($usrBT->first_name) ? $this->_getField ($usrBT->first_name, 50) : '',
 			'x_last_name'  => isset($usrBT->last_name) ? $this->_getField ($usrBT->last_name, 50) : '',
 			'x_company'    => isset($usrBT->company) ? $this->_getField ($usrBT->company, 50) : '',
@@ -750,7 +751,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		return array(
 			'x_ship_to_first_name' => isset($usrST->first_name) ? $this->_getField ($usrST->first_name, 50) : '',
 			'x_ship_to_last_name'  => isset($usrST->first_name) ? $this->_getField ($usrST->last_name, 50) : '',
-			// 'x_ship_to_company' => substr($usrST->company, 0, 50),
+			'x_ship_to_company'    => isset($usrST->company) ? $this->_getField ($usrST->company, 50) : '',
 			'x_ship_to_address'    => isset($usrST->first_name) ? $this->_getField ($usrST->address_1, 60) : '',
 			'x_ship_to_city'       => isset($usrST->city) ? $this->_getField ($usrST->city, 40) : '',
 			'x_ship_to_zip'        => isset($usrST->zip) ? $this->_getField ($usrST->zip, 40) : '',
@@ -791,6 +792,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	function _sendRequest ($post_url, $post_string) {
 		$this->logInfo ("_sendRequest" . "\n\n", 'message');
 		$curl_request = curl_init ($post_url);
+		 //Added the next line to fix SSL verification issue (CURL error verifying the far end SSL Cert)
+        curl_setopt ($curl_request, CURLOPT_SSL_VERIFYPEER, 0);
 		curl_setopt ($curl_request, CURLOPT_POSTFIELDS, $post_string);
 		curl_setopt ($curl_request, CURLOPT_HEADER, 0);
 		curl_setopt ($curl_request, CURLOPT_TIMEOUT, 45);

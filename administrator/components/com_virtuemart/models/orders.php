@@ -640,8 +640,12 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		foreach ($_userFieldsBT as $_fld) {
 			$_name = $_fld->name;
 			if(!empty( $_cart->BT[$_name])){
+				if (is_array( $_cart->BT[$_name])) {
+					$_userInfoData[$_name] =  implode("|*|",$_cart->BT[$_name]);
+				} else {
+					$_userInfoData[$_name] = $_cart->BT[$_name];
+				}
 
-				$_userInfoData[$_name] = $_cart->BT[$_name];
 			}
 		}
 

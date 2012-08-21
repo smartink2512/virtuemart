@@ -48,7 +48,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 
 				<div id="divColsRows">
 					<fieldset>
-					<legend><?php echo JText::_('COM_VIRTUEMART_TEXTAREA_ATTRIBUTES'); ?></legend>
+					<legend><?php echo JText::_('COM_VIRTUEMART_COL_ROWS_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
 							<?php echo VmHTML::row('input','COM_VIRTUEMART_USERFIELDS_COLUMNS','cols',$this->userField->cols,'class="inputbox"','',5); ?>
 							<?php echo VmHTML::row('input','COM_VIRTUEMART_USERFIELDS_ROWS','rows',$this->userField->rows,'class="inputbox"','',5); ?>
@@ -80,8 +80,8 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 						<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="admintable">
 							<thead>
 								<tr>
-									<th class="title" width="20%"><?php echo JText::_('COM_VIRTUEMART_TITLE') ?></th>
-									<th class="title" width="80%"><?php echo JText::_('COM_VIRTUEMART_VALUE') ?></th>
+									<th class="title" width="20%"><?php echo JText::_('COM_VIRTUEMART_VALUE') ?></th>
+									<th class="title" width="60%"><?php echo JText::_('COM_VIRTUEMART_TITLE') ?></th>
 								</tr>
 							</thead>
 							<tbody id="fieldValuesBody"><?php echo $this->lists['userfield_values'];?></tbody>
@@ -168,7 +168,7 @@ $existingFields = '"'.implode('","',$db->loadResultArray()).'"';
 
 jQuery(".insertRow").click( function() {
 	nr = jQuery('#fieldValuesBody tr').length ;
-	row = '<tr><td><input type="text" name="vNames['+nr+']" value="Mr"></td><td><input type="text" name="vValues['+nr+']" value="Mr"> <input type="button" class="button deleteRow" value=" - " /></td></tr>';
+	row = '<tr><td><input type="text" name="vValues['+nr+']" value=""> </td><td><input type="text" name="vNames['+nr+']" value=""> <input type="button" class="button deleteRow" value=" - " /></td></tr>';
 	jQuery('#fieldValuesBody').append( row );
 });
 jQuery("#fieldValuesBody").delegate("input.deleteRow", "click", function() {

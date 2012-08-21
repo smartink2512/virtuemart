@@ -152,6 +152,7 @@ class TableUserfields extends VmTable {
 			case 'multicheckbox':
 				$_fieldType = 'MEDIUMTEXT';
 				break;
+			/*
 			case 'letterman_subscription':
 			case 'yanc_subscription':
 			case 'anjel_subscription':
@@ -159,13 +160,16 @@ class TableUserfields extends VmTable {
 				//TODO $this->params exists?
 				$this->params = 'newsletter='.substr($this->type,0,strpos($this->type, '_') )."\n";
 				$this->type = 'checkbox';
+			*/
 			case 'checkbox':
 				$_fieldType = 'TINYINT';
 				break;
+			/*
 			case 'euvatid':
 				$this->params = 'virtuemart_shoppergroup_id='.$_data['virtuemart_shoppergroup_id']."\n";
 				$_fieldType = 'VARCHAR(255)';
 				break;
+			*/
 			case 'age_verification':
 				$this->params = 'minimum_age='.(int)$_data['minimum_age']."\n";
 			default:

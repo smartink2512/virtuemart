@@ -37,7 +37,7 @@ class VirtueMartCart {
 	var $_dataValidated = false;
 	var $_confirmDone = false;
 	var $_lastError = null; // Used to pass errmsg to the cart using addJS()
-	//todo multivendor stuff must be set in the add function, first product determins ownership of cart, or a fixed vendor is used
+	//todo multivendor stuff must be set in the add function, first product determines ownership of cart, or a fixed vendor is used
 	var $vendorId = 1;
 	var $lastVisitedCategoryId = 0;
 	var $virtuemart_shipmentmethod_id = 0;
@@ -1069,7 +1069,6 @@ class VirtueMartCart {
 					}else {
 						$address[$name] = $data->{$prefix.$name};
 					}
-
 				}
 			}
 

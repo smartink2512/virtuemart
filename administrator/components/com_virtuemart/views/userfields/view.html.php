@@ -118,17 +118,19 @@ class VirtuemartViewUserfields extends VmView {
 			if (($n = count($userFieldValues)) < 1) {
 				$lists['userfield_values'] =
 					 '<tr>'
-					.'<td><input type="text" value="" name="vNames[0]" /></td>'
 					.'<td><input type="text" value="" name="vValues[0]" /></td>'
+					.'<td><input type="text" size="50" value="" name="vNames[0]" /></td>'
 					.'</tr>';
 				$i = 1;
 			} else {
 				$lists['userfield_values'] = '';
+				$lang =JFactory::getLanguage();
 				for ($i = 0; $i < $n; $i++) {
+					$translate= $lang->hasKey($userFieldValues[$i]->fieldtitle) ? " (".JText::_($userFieldValues[$i]->fieldtitle).")" : "";
 					$lists['userfield_values'] .=
 						 '<tr>'
-						.'<td><input type="text" value="'.$userFieldValues[$i]->fieldtitle.'" name="vNames['.$i.']" readonly="readonly"  class="readonly"/></td>'
-						.'<td><input type="text" value="'.$userFieldValues[$i]->fieldvalue.'" name="vValues['.$i.']" /></td>'
+						 .'<td><input type="text" value="'.$userFieldValues[$i]->fieldvalue.'" name="vValues['.$i.']" /></td>'
+						.'<td><input type="text" size="50" value="'.$userFieldValues[$i]->fieldtitle.'" name="vNames['.$i.']"   />'.$translate.'</td>'
 						.'</tr>';
 				}
 			}
