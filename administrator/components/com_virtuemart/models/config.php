@@ -35,7 +35,7 @@ class VirtueMartModelConfig extends JModel {
 
 
 	/**
-	 * Retrieve a list of layouts from the default and choosen templates directory.
+	 * Retrieve a list of layouts from the default and chosen templates directory.
 	 *
 	 * @author Max Milbers
 	 * @param name of the view

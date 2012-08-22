@@ -120,7 +120,7 @@ class VirtueMartModelState extends VmModel {
 			}
 
 		} else {
-			//The given country does not exist, this can happen, when no country was choosen, which maybe valid.
+			//The given country does not exist, this can happen, when no country was chosen, which maybe valid.
 			return true;
 		}
 	}

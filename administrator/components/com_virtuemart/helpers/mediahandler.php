@@ -1009,7 +1009,7 @@ class VmMediaHandler {
 
 
 		/**
-		 * Retrieve a list of layouts from the default and choosen templates directory.
+		 * Retrieve a list of layouts from the default and chosen templates directory.
 		 *
 		 * We may use here the getFiles function of the media model or write something simular
 		 * @author Max Milbers

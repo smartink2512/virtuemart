@@ -383,7 +383,7 @@ class shopFunctionsF {
 				$mainframe = JFactory::getApplication('site');
 				$mainframe->set('setTemplate', $template);
 			} else{
-				JError::raiseWarning(412,'The choosen template couldnt found on the filesystem: '.$template);
+				JError::raiseWarning(412,'The chosen template couldnt found on the filesystem: '.$template);
 			}
 		} else{
 				//JError::raiseWarning('No template set : '.$template);
