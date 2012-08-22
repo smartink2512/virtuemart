@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div class="addtocart-area">
 
-    <form method="post" class="product js-recalculate" action="index.php" >
+    <form method="post" class="product js-recalculate" action="<?php echo JRoute::_('index.php'); ?>" >
 	<?php // Product custom_fields
 	if (!empty($this->product->customfieldsCart)) { ?>
     	<div class="product-fields">

@@ -105,7 +105,7 @@ JHTML::_ ( 'behavior.modal' );
 
 
     ?>
-    <form action="index.php" method="post" name="com-login" >
+    <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="com-login" >
 	<?php if (!$this->from_cart ) { ?>
 	<div>
 		<h2><?php echo JText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM'); ?></h2>
@@ -171,7 +171,7 @@ JHTML::_ ( 'behavior.modal' );
 
 <?php  }else if ($user->id  ){ ?>
 
-   <form action="index.php" method="post" name="login" id="form-login">
+   <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="login" id="form-login">
         <?php echo JText::sprintf( 'COM_VIRTUEMART_HINAME', $user->name ); ?>
 	<input type="submit" name="Submit" class="button" value="<?php echo JText::_( 'COM_VIRTUEMART_BUTTON_LOGOUT'); ?>" />
         <input type="hidden" name="option" value="<?php echo $comUserOption ?>" />
