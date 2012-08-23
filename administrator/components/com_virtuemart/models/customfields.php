@@ -1062,39 +1062,9 @@ class VirtueMartModelCustomfields extends VmModel {
 					$html .= JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][custom_value]', 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="inputbox"', "value", "text",
 						JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $selected));
 					//vmdebug('$customfield',$customfield);
+
 					if($customfield->parentOrderable==0 and $product->product_parent_id==0){
-						//vmdebug('Should not be orderable');
 						$product->orderable = FALSE;
-					/*	if(!$productModel->product_parent_id){
-							vmdebug('$customfield parentOrderable');
-							$document = JFactory::getDocument();
-							$document->addScriptDeclaration(
-								'jQuery(document).ready( function($) {
-
-									addToCartArea = jQuery(".productdetails-view .addtocart-bar");
-									addToCartBar = addToCartArea.find("input[name$=addtocart]");
-
-									addToCartArea.css({
-														padding: "0px 0px 0px 0px",
-														width: "auto"
-													}).children("span:not(:nth-child(3))").hide()
-															.parent().children("span::nth-child(3)").css({
-																margin: "0px 0px 0px 0px",
-																width: "auto",
-																float: 	"left"
-															});
-
-									addToCartButtonClassName = addToCartBar.attr("class");
-
-									addToCartBar.removeClass(addToCartButtonClassName)
-												.addClass(addToCartButtonClassName + "-disabled")
-												.attr({
-														disabled: "disabled",
-														value: 	"'.JText::_('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT').'",
-													});
-									});
-							');
-						}*/
 					}
 
 					return $html;

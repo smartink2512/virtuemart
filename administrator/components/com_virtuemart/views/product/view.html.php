@@ -32,7 +32,9 @@ class VirtuemartViewProduct extends VmView {
 	function display($tpl = null) {
 
 		// Get the task
-		$task = JRequest::getWord('task');
+		$task = JRequest::getWord('task',$this->getLayout());
+		vmdebug('VirtuemartViewProduct '.$task);
+		$this->assignRef('task', $task);
 
 		// Load helpers
 		$this->loadHelper('currencydisplay');
@@ -260,7 +262,52 @@ class VirtuemartViewProduct extends VmView {
 				$this->addStandardEditViewCommands ($product->virtuemart_product_id);
 				break;
 
-			default:
+			case 'massxref_cats':
+			case 'massxref_cats_exe':
+				$this->SetViewTitle('PRODUCT_MASSXREF');
+
+				$this->loadHelper('permissions');
+				$showVendors = Permissions::getInstance()->check('admin');
+				$this->assignRef('showVendors',$showVendors);
+
+				$keyWord ='';
+				$catmodel = VmModel::getModel('category');
+				$this->assignRef('catmodel',	$catmodel);
+				//$this->addStandardDefaultViewCommands();
+				$this->addStandardDefaultViewLists($catmodel,'category_name');
+
+				$categories = $catmodel->getCategoryTree(0,0,false,$this->lists['search']);
+				$this->assignRef('categories', $categories);
+
+				$catpagination = $catmodel->getPagination();
+				$this->assignRef('catpagination', $catpagination);
+
+				//$this->addStandardDefaultViewCommands();
+				$this->setLayout('massxref');
+
+				JToolBarHelper::custom('massxref_cats_exe', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_XREF_CAT_EXE'), true);
+
+
+				break;
+
+			case 'massxref_sgrps':
+			case 'massxref_sgrps_exe':
+				$sgrpmodel = VmModel::getModel('shoppergroup');
+				$this->addStandardDefaultViewLists($sgrpmodel);
+
+				$shoppergroups = $sgrpmodel->getShopperGroups(false, true);
+				$this->assignRef('shoppergroups',	$shoppergroups);
+
+				$sgrppagination = $sgrpmodel->getPagination();
+				$this->assignRef('sgrppagination', $sgrppagination);
+
+				$this->setLayout('massxref');
+
+				JToolBarHelper::custom('massxref_sgrps_exe', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_XREF_SGRPS_EXE'), true);
+
+				break;
+
+		default:
 			if ($product_parent_id=JRequest::getInt('product_parent_id',false) ) {
 				$product_parent= $model->getProduct($product_parent_id);
 				$title='PRODUCT_CHILDREN_LIST' ;
@@ -340,6 +387,8 @@ class VirtuemartViewProduct extends VmView {
 			// Toolbar
 
 			//JToolBarHelper::save('sentproductemailtoshoppers', JText::_('COM_VIRTUEMART_PRODUCT_EMAILTOSHOPPERS'));
+			JToolBarHelper::custom('massxref_cats', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_XREF_CAT'), true);
+			JToolBarHelper::custom('massxref_sgrps', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_XREF_SGRPS'), true);
 			JToolBarHelper::custom('createchild', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
 			JToolBarHelper::custom('cloneproduct', 'copy', 'copy', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 			JToolBarHelper::custom('addrating', 'default', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);

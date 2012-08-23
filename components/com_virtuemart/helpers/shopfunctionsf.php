@@ -445,6 +445,38 @@ class shopFunctionsF {
 	}
 
 	/**
+	 * Creates also for BE app a correct site link
+	 * @static
+	 * @param $link
+	 */
+	static function getSiteUrl($link){
+
+		//site url if use administrator application
+		$be_site = substr(JURI::root(), 0, -1);
+
+		// Checking if we are in the backend and change to the app site
+		if(JPATH_BASE == JPATH_ADMINISTRATOR) {
+			JFactory::$application = JApplication::getInstance('site');
+		}
+
+		//VM homepage sef url (for example) - SEF url for be and fe. If you use clasic url will work also.
+		$link = JURI::root().substr(JRoute::_('index.php?option=com_virtuemart&view=virtuemart'),strlen(JURI::base(TRUE))+1);
+
+		// Check if we are in the backend again
+		if(JPATH_BASE == JPATH_ADMINISTRATOR) {
+			// when link produced in be we need to remove livesite/administrator in case that been added from URL (usually added instead
+			//we have set the application to the site app)
+			$link = str_replace($be_site .'/administrator', $be_site, $link);
+			//echo $link;
+
+			// Setting back the administrator app
+			JFactory::$application = JApplication::getInstance('administrator');
+		}
+		return $link;
+	}
+
+
+	/**
 	 * TODO remove this function, this function is not necessary and give back the wrong uri
 	 * The right thing is to use JURI::root();, which is always giving back something like
 	 * https://mydomain.com/myjoomla  , but JURI::base() is giving back the relative base, that means when the backend is used,

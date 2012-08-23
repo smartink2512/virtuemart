@@ -721,7 +721,6 @@ class VirtueMartModelProduct extends VmModel {
 					$virtuemart_shoppergroup_ids = $currentVMuser->shopper_groups;
 				}
 
- 				vmdebug('$user->shoppergroups',$virtuemart_shoppergroup_ids,$product->shoppergroups);
 				$commonShpgrps = array_intersect ($virtuemart_shoppergroup_ids, $product->shoppergroups);
 				if (empty($commonShpgrps)) {
 					vmdebug('getProductSingle creating void product, usergroup does not fit ',$product->shoppergroups);
@@ -1143,7 +1142,18 @@ class VirtueMartModelProduct extends VmModel {
 				$q .= '	LEFT JOIN `#__virtuemart_product_shoppergroups` as `psgr` on (`psgr`.`virtuemart_product_id`=`l`.`virtuemart_product_id`)';
 			}
 
-			$q .= '	WHERE `virtuemart_category_id` = ' . (int)$product->virtuemart_category_id;
+			if ($app->isSite ()) {
+				if (!class_exists ('shopFunctionsF'))
+					require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopFunctionsF.php');
+				$lastId = shopFunctionsF::getLastVisitedCategoryId();
+				if(empty($lastId)){
+					$lastId = (int)$product->virtuemart_category_id;
+				}
+				$q .= '	WHERE `virtuemart_category_id` = ' . $lastId;
+			} else {
+				$q .= '	WHERE `virtuemart_category_id` = ' . (int)$product->virtuemart_category_id;
+			}
+
 			$q .= ' and `slug` ' . $op . ' "' . $product->slug . '" ';
 			if ($app->isSite ()) {
 
@@ -1250,7 +1260,7 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	public function store (&$product, $isChild = FALSE) {
 
-
+		JRequest::checkToken () or jexit ('Invalid Token');
 		if ($product) {
 			$data = (array)$product;
 		}
@@ -1360,8 +1370,9 @@ class VirtueMartModelProduct extends VmModel {
 		return $product_data->virtuemart_product_id;
 	}
 
-	private function updateXrefAndChildTables ($data, $tableName, $preload = FALSE) {
+	public function updateXrefAndChildTables ($data, $tableName, $preload = FALSE) {
 
+		JRequest::checkToken () or jexit ('Invalid Token');
 		//First we load the xref table, to get the old data
 		$product_table_Parent = $this->getTable ($tableName);
 		//We must go that way, because the load function of the vmtablexarry

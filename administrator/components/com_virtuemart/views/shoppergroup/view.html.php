@@ -72,7 +72,7 @@ class VirtuemartViewShopperGroup extends VmView {
 			$this->assignRef('shoppergroups',	$shoppergroups);
 
 			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
+			$this->assignRef('sgrppagination', $pagination);
 
 		}
 		parent::display($tpl);

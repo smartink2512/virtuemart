@@ -102,13 +102,13 @@ AdminUIHelper::startAdminArea();
 	    <tfoot>
 		    <tr>
 		      <td colspan="10">
-			      <?php echo $this->pagination->getListFooter(); ?>
+			      <?php echo $this->sgrppagination->getListFooter(); ?>
 		      </td>
 		    </tr>
 	    </tfoot>
 	  </table>
   </div>
 
-	<?php echo $this->addStandardHiddenToForm(); ?>
+	<?php echo $this->addStandardHiddenToForm($this->_name,$this->task); ?>
 </form><?php
 AdminUIHelper::endAdminArea(); ?>

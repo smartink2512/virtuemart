@@ -182,8 +182,7 @@ class calculationHelper {
 		return;
 
 		if (empty($cart)) {
-			if (!class_exists('VirtueMartCart'))
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 			$cart = VirtueMartCart::getCart();
 		}
 		$this->_cart = $cart;
@@ -1092,6 +1091,8 @@ class calculationHelper {
 				$plus = '-';
 				$minus = '+';
 			}
+			//vmdebug(' interpreteMathOp',$mathop,$rule['calc_name']);
+			//vmTrace(' interpreteMathOp');
 			if(in_array($mathop,$coreMathOp)){
 				$sign = substr($mathop, 0, 1);
 
@@ -1129,6 +1130,7 @@ class calculationHelper {
 				$dispatcher = JDispatcher::getInstance();
 				$calculated = $dispatcher->trigger('interpreteMathOp', array($this, $mathop, $value, $price, $currency,$this->_revert));
 				$calculated = $dispatcher->trigger('plgVmInterpreteMathOp', array($this, $rule, $price,$this->_revert));
+				//vmdebug('result of plgVmInterpreteMathOp',$calculated);
 				if($calculated){
 					foreach($calculated as $calc){
 						if($calc) return $calc;

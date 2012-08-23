@@ -35,7 +35,7 @@ AdminUIHelper::startAdminArea();
 		</tr>
 	</table>
 	</div>
-	<div id="resultscounter"><?php echo $this->pagination->getResultsCounter(); ?></div>
+	<div id="resultscounter"><?php echo $this->catpagination->getResultsCounter(); ?></div>
 
 </div>
 
@@ -81,9 +81,9 @@ AdminUIHelper::startAdminArea();
 
  		$nrows = count( $this->categories );
 
-		if( $this->pagination->limit < $nrows ){
-			if( ($this->pagination->limitstart + $this->pagination->limit) < $nrows ) {
-				$nrows = $this->pagination->limitstart + $this->pagination->limit;
+		if( $this->catpagination->limit < $nrows ){
+			if( ($this->catpagination->limitstart + $this->catpagination->limit) < $nrows ) {
+				$nrows = $this->catpagination->limitstart + $this->catpagination->limit;
 			}
 		}
 
@@ -121,7 +121,7 @@ AdminUIHelper::startAdminArea();
 					<?php echo $cat->category_description; ?>
 				</td>
 				<td>
-					<?php echo  $this->model->countProducts($cat->virtuemart_category_id);//ShopFunctions::countProductsByCategory($row->virtuemart_category_id);?>
+					<?php echo  $this->catmodel->countProducts($cat->virtuemart_category_id);//ShopFunctions::countProductsByCategory($row->virtuemart_category_id);?>
 					&nbsp;<a href="<?php echo $showProductsLink; ?>">[ <?php echo JText::_('COM_VIRTUEMART_SHOW');?> ]</a>
 				</td>
 
@@ -137,8 +137,8 @@ AdminUIHelper::startAdminArea();
 				*/
 ?>
 				<td align="center" class="order">
-					<span><?php echo $this->pagination->orderUpIcon( $i, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i - 1]]->category_parent_id), 'orderUp', JText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
-					<span><?php echo $this->pagination->orderDownIcon( $i, $nrows, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i + 1]]->category_parent_id), 'orderDown', JText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
+					<span><?php echo $this->catpagination->orderUpIcon( $i, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i - 1]]->category_parent_id), 'orderUp', JText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
+					<span><?php echo $this->catpagination->orderDownIcon( $i, $nrows, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i + 1]]->category_parent_id), 'orderDown', JText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
 					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $cat->ordering; ?>" style="text-align: center" />
 				</td>
 				<td align="center">
@@ -154,14 +154,18 @@ AdminUIHelper::startAdminArea();
 		<tfoot>
 			<tr>
 				<td colspan="10">
-					<?php echo $this->pagination->getListFooter(); ?>
+					<?php echo $this->catpagination->getListFooter(); ?>
 				</td>
 			</tr>
 		</tfoot>
 	</table>
 </div>
 
-	<?php echo $this->addStandardHiddenToForm(); ?>
+	<?php
+	vmdebug('my name here is '.$this->_name);
+	echo $this->addStandardHiddenToForm($this->_name,$this->task);
+
+	  ?>
 </form>
 
 

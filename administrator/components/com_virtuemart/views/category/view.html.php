@@ -40,6 +40,9 @@ class VirtuemartViewCategory extends VmView {
 		$model = VmModel::getModel();
 		$layoutName = $this->getLayout();
 
+		$task = JRequest::getWord('task',$layoutName);
+		$this->assignRef('task', $task);
+
 		if ($layoutName == 'edit') {
 
 			$category = $model->getCategory('',false);
@@ -91,7 +94,7 @@ class VirtuemartViewCategory extends VmView {
 
 			$keyWord ='';
 
-			$this->assignRef('model',	$model);
+			$this->assignRef('catmodel',	$model);
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model,'category_name');
 
@@ -99,7 +102,7 @@ class VirtuemartViewCategory extends VmView {
 			$this->assignRef('categories', $categories);
 
 			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
+			$this->assignRef('catpagination', $pagination);
 
 		}
 
