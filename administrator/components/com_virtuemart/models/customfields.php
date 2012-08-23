@@ -598,7 +598,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					return $html . $retValue . $priceInput;
 					break;
 				case 'D':
-					return vmJsApi::jDate ($field->custom_value, 'field[' . $row . '][custom_value]', 'field_' . $row . '_customvalue') . $priceInput;
+					return vmJsApi::jDate ($field->custom_value, 'field[' . $row . '][custom_value]', 'field_' . $row . '_customvalue') .'</td><td>'. $priceInput;
 					break;
 				case 'T':
 					//TODO Patrick
