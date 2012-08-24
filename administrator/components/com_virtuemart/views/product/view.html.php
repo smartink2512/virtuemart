@@ -285,7 +285,7 @@ class VirtuemartViewProduct extends VmView {
 				//$this->addStandardDefaultViewCommands();
 				$this->setLayout('massxref');
 
-				JToolBarHelper::custom('massxref_cats_exe', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_XREF_CAT_EXE'), true);
+				JToolBarHelper::custom('massxref_cats_exe', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_XREF_CAT_EXE'), false);
 
 
 				break;
@@ -303,7 +303,7 @@ class VirtuemartViewProduct extends VmView {
 
 				$this->setLayout('massxref');
 
-				JToolBarHelper::custom('massxref_sgrps_exe', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_XREF_SGRPS_EXE'), true);
+				JToolBarHelper::custom('massxref_sgrps_exe', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_XREF_SGRPS_EXE'), false);
 
 				break;
 
