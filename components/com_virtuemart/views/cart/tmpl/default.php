@@ -32,6 +32,17 @@ $document->addScriptDeclaration ("
 		});
 	});
 ");
+$document->addScriptDeclaration ("
+	jQuery(document).ready(function($) {
+		$('#STsameAsBTjs').click(function(event) {
+			if($(this).is(':checked')){
+				$('#STsameAsBT').val('1') ;
+			} else {
+				$('#STsameAsBT').val('0') ;
+			}
+		});
+	});
+");
 $document->addStyleDeclaration ('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
 
 //  vmdebug('car7t pricesUnformatted',$this->cart->pricesUnformatted);
@@ -141,7 +152,7 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 			?>
 		</div>
 		<?php // Continue and Checkout Button END ?>
-
+		<input type='hidden' id='STsameAsBT' name='STsameAsBT' value='<?php echo $this->cart->STsameAsBT; ?>'/>
 		<input type='hidden' name='task' value='<?php echo $this->checkout_task; ?>'/>
 		<input type='hidden' name='option' value='com_virtuemart'/>
 		<input type='hidden' name='view' value='cart'/>

@@ -68,7 +68,7 @@
 		} else {
 			if(!class_exists('VmHtml'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 			echo JText::_('COM_VIRTUEMART_USER_FORM_ST_SAME_AS_BT');
-			echo VmHtml::checkbox('STsameAsBT',$this->cart->STsameAsBT).'<br />';
+			echo VmHtml::checkbox('STsameAsBTjs',$this->cart->STsameAsBT).'<br />';
 			foreach($this->cart->STaddress['fields'] as $item){
 				if(!empty($item['value'])){ ?>
 					<!-- <span class="titles"><?php echo $item['title'] ?></span> -->
