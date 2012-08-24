@@ -441,7 +441,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 					if (1 == nextSelect.find("option").length) {
 						nextSelect.find("option").attr("selected","selected");
 						selections_'.$js_suffix.'[stockableBlockIndex][nextIndex] = child_attrib["selectoptions"+nextIndex][0];
-						populateNextSelect_'.$js_suffix.'(child_attrib, nextIndex+1);
+						populateNextSelect_'.$js_suffix.'(stockableBlockIndex, child_attrib, nextIndex+1);
 					}
 				}
 			}
