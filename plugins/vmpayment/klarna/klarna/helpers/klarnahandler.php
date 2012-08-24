@@ -219,7 +219,7 @@ class KlarnaHandler {
 
 		//$currency = CurrencyDisplay::getInstance ();
 		$paymentCurrency = CurrencyDisplay::getInstance ($cartPaymentCurrency);
-		$invoice_fee = (double)round($paymentCurrency->convertCurrencyTo ($cartPaymentCurrency, $method_invoice_fee, false), 2);
+		$invoice_fee = (double)round ($paymentCurrency->convertCurrencyTo ($cartPaymentCurrency, $method_invoice_fee, FALSE), 2);
 		$currencyDisplay = CurrencyDisplay::getInstance ($cartPricesCurrency);
 
 		$paymentCurrency = CurrencyDisplay::getInstance ($cartPaymentCurrency);
@@ -305,7 +305,7 @@ class KlarnaHandler {
 		$klarna['company_name'] = JRequest::getVar ('klarna_company_name');
 		$klarna['phone'] = JRequest::getVar ($kIndex . 'phone');
 		$klarna['consent'] = JRequest::getVar ($kIndex . 'consent');
-		$klarna['gender'] = JRequest::getVar ($klarna_option.'_'.$kIndex . 'gender');
+		$klarna['gender'] = JRequest::getVar ($klarna_option . '_' . $kIndex . 'gender');
 		switch ($klarna['gender']) {
 			case KlarnaFlags::MALE :
 				$klarna['title'] = JText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MR');
@@ -432,19 +432,19 @@ class KlarnaHandler {
 
 		// Fill the good list the we send to Klarna
 		foreach ($order['items'] as $item) {
-			$price= $basePriceWithTax = !empty($item->basePriceWithTax) ? $item->basePriceWithTax : $item->product_final_price;
+			$price = $basePriceWithTax = !empty($item->basePriceWithTax) ? $item->basePriceWithTax : $item->product_final_price;
 
 			$item_price = self::convertPrice ($price, $order['details']['BT']->order_currency, $cData['currency_code']);
 			$item_price = (double)(round ($item_price, 2));
 			$item_tax_percent = (double)(round (self::getTaxPercent ($item->product_item_price + ($item->product_tax / $item->product_quantity), $item->product_item_price), 2));
-			$item_discount_percent = (double)(round (  abs(($item->product_subtotal_discount / $item->product_quantity)*100/$price) , 2));
+			$item_discount_percent = (double)(round (abs (($item->product_subtotal_discount / $item->product_quantity) * 100 / $price), 2));
 			//vmdebug('addarticle', $item->order_item_sku, $item,  $item_tax_percent);
 			$klarna->addArticle ($item->product_quantity, utf8_decode ($item->order_item_sku), utf8_decode (strip_tags ($item->order_item_name)), $item_price, (double)$item_tax_percent, $item_discount_percent, KlarnaFlags::INC_VAT);
 		}
 		// Add shipping
 		$shipment = self::convertPrice ($order['details']['BT']->order_shipment + $order['details']['BT']->order_shipment_tax, $order['details']['BT']->order_currency, $cData['currency_code']);
 		$shipment_tax_percent = self::getTaxPercent ($order['details']['BT']->order_shipment + $order['details']['BT']->order_shipment_tax, $order['details']['BT']->order_shipment);
-		$klarna->addArticle (1, "shippingfee", JText::_ ('VMPAYMENT_KLARNA_SHIPMENT'), ((double)(round (($shipment), 2))),round($shipment_tax_percent,2), 0, KlarnaFlags::IS_SHIPMENT + KlarnaFlags::INC_VAT);
+		$klarna->addArticle (1, "shippingfee", JText::_ ('VMPAYMENT_KLARNA_SHIPMENT'), ((double)(round (($shipment), 2))), round ($shipment_tax_percent, 2), 0, KlarnaFlags::IS_SHIPMENT + KlarnaFlags::INC_VAT);
 
 		// Add invoice fee
 		if ($klarna_pclass == -1) { //Only for invoices!
@@ -482,7 +482,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 				$shipTo->zip,
 				utf8_decode ($shipTo->city),
 				utf8_decode ($cData['country']),
-				KlarnaHandler::setHouseNo (isset($shipTo->house_no)?$shipTo->house_no:"", $cData['country_code_3']),
+				KlarnaHandler::setHouseNo (isset($shipTo->house_no) ? $shipTo->house_no : "", $cData['country_code_3']),
 				KlarnaHandler::setAddress2 ($shipTo->address_2, $cData['country_code_3'])
 			);
 		}
@@ -491,7 +491,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			return FALSE;
 		}
 
-		$klarna_reference = "";// what is that?
+		$klarna_reference = ""; // what is that?
 		if ($klarnaData['invoice_type'] == 'company') {
 			$klarna_shipping->isCompany = TRUE;
 			$klarna_shipping->setCompanyName ($shipTo->company);
@@ -593,7 +593,9 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			$addresses = $klarna->getAddresses ($pno, NULL, KlarnaFlags::GA_GIVEN);
 		}
 		catch (Exception $e) {
-			VmInfo ($e->getMessage ());
+			// the message is returned NOT in UTF-8
+			$msg = mb_convert_encoding ($e->getMessage (), 'UTF-8', 'ISO-8859-1');
+			VmInfo ($msg);
 		}
 		unset($klarna);
 		return $addresses;
@@ -612,14 +614,14 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 
 		$countries = self::getKlarnaCountries ();
 
-		$pc_type= KlarnaHandler::getKlarna_pc_type ();
+		$pc_type = KlarnaHandler::getKlarna_pc_type ();
 		if (empty($pc_type)) {
-			return false;
+			return FALSE;
 		} else {
 			// delete the file directly
-			if(file_exists($pc_type)) {
-                unlink($pc_type);
-            }
+			if (file_exists ($pc_type)) {
+				unlink ($pc_type);
+			}
 		}
 
 		foreach ($countries as $country) {
@@ -648,6 +650,26 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		$results['notice'] = $success;
 		return $results;
 		//echo $notice;
+	}
+
+	static function createKlarnaFolder () {
+
+		$safePath = VmConfig::get ('forSale_path', '');
+		if ($safePath) {
+			$exists = JFolder::exists ($safePath . 'klarna');
+			if (!$exists) {
+				$created = JFolder::create ($safePath . 'klarna');
+				if ($created) {
+					return TRUE;
+				}
+			} else {
+				return TRUE;
+			}
+		}
+		$uri = JFactory::getURI ();
+		$link = $uri->root () . 'administrator/index.php?option=com_virtuemart&view=config';
+		VmError (JText::sprintf ('VMPAYMENT_KLARNA_CANNOT_STORE_CONFIG', '<a href="' . $link . '">' . $link . '</a>', JText::_ ('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH')));
+		return FALSE;
 	}
 
 	/**
@@ -892,7 +914,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 
 
 	/**
-	 * Return pclasses stored in database.
+	 * Return pclasses stored in json file.
 	 */
 	public static function getPClasses ($type = NULL, $mode, $settings) {
 
@@ -906,24 +928,27 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 
 		}
 	}
- static function getCheapestPclass($kCheckout, &$cheapest, &$minimum) {
-	 $pclasses = $kCheckout->aPClasses;
-			if (empty($pclasses)) {
-				$minimum=0;
-				return ;
-			}
-			$cheapest = 0;
-			$minimum = '';
-			foreach ($pclasses as $pclass) {
-				if ($cheapest == 0 || $pclass['monthlyCost'] < $cheapest) {
-					$cheapest = $pclass['monthlyCost'];
-				}
-				if ($pclass['pclass']->getMinAmount () < $minimum || $minimum === '') {
-					$minimum = $pclass['pclass']->getMinAmount ();
-				}
-			}
 
- }
+	static function getCheapestPclass ($kCheckout, &$cheapest, &$minimum) {
+
+		$pclasses = $kCheckout->aPClasses;
+		if (empty($pclasses)) {
+			$minimum = 0;
+			return;
+		}
+		$cheapest = 0;
+		$minimum = '';
+		foreach ($pclasses as $pclass) {
+			if ($cheapest == 0 || $pclass['monthlyCost'] < $cheapest) {
+				$cheapest = $pclass['monthlyCost'];
+			}
+			if ($pclass['pclass']->getMinAmount () < $minimum || $minimum === '') {
+				$minimum = $pclass['pclass']->getMinAmount ();
+			}
+		}
+
+	}
+
 	/**
 	 * @param string $fld
 	 * @return string
@@ -953,7 +978,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			return FALSE;
 		}
 		$sessionKlarnaData = unserialize ($sessionKlarna);
-		if (isset($sessionKlarnaData->klarna_error) and isset( $sessionKlarnaData->klarna_paymentmethod)) {
+		if (isset($sessionKlarnaData->klarna_error) and isset($sessionKlarnaData->klarna_paymentmethod)) {
 			$klarnaError = $sessionKlarnaData->klarna_error; // it is a message to display
 			$klarnaOption = $sessionKlarnaData->klarna_paymentmethod;
 			return TRUE;
@@ -1078,9 +1103,9 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		if ($safePath) {
 			return $safePath . "klarna/klarna.json";
 		} else {
-			$uri = JFactory::getURI();
-			$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=config';
-			VmError( JText::sprintf('VMPAYMENT_KLARNA_CANNOT_STORE_CONFIG', '<a href="'.$link.'">'.$link.'</a>', JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH')) );
+			$uri = JFactory::getURI ();
+			$link = $uri->root () . 'administrator/index.php?option=com_virtuemart&view=config';
+			VmError (JText::sprintf ('VMPAYMENT_KLARNA_CANNOT_STORE_CONFIG', '<a href="' . $link . '">' . $link . '</a>', JText::_ ('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH')));
 			return NULL;
 		}
 	}
@@ -1154,77 +1179,76 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		}
 
 */
-// Quick and durty .. but it works
-		$kIndex="klarna_";
-		 if ( $country3== "SWE") {
-            if (JRequest::getVar( 'klarna_invoice_type') == 'company') {
-                if ( strlen(trim((string) JRequest::getVar( 'klarna_company_name') )) == 0) {
-                    $errors[] ='VMPAYMENT_KLARNA_COMPANY_NAME';
-                }
-            } else {
-                if (!KlarnaEncoding::checkPNO(JRequest::getVar( $kIndex . 'socialNumber'), KlarnaEncoding::PNO_SE)) {
-                    $errors[] = 'VMPAYMENT_KLARNA_PERSONALORORGANISATIO_NUMBER';
-                }
-            }
-        } else   {
-	         if ($data['phone'] == '') {
-                $errors[] = 'VMPAYMENT_KLARNA_PHONE_NUMBER';
-             }
-            if ($data['street']  =='') {
-                $errors[] ='VMPAYMENT_KLARNA_STREET_ADRESS';
-            }
-            if ($data['first_name'] == '') {
-                $errors[] ='VMPAYMENT_KLARNA_FIRST_NAME';
-            }
-            if ($data['last_name'] == '') {
-                $errors[] = 'VMPAYMENT_KLARNA_LAST_NAME';
-            }
-            if ($data['city'] == '') {
-                $errors[] = 'VMPAYMENT_KLARNA_ADDRESS_CITY';
-            }
-            if ($data['zip'] == '') {
-                $errors[] = 'VMPAYMENT_KLARNA_ADDRESS_ZIP';
-            }
-        }
-        // German and dutch
-        if ($country3 == "NLD" || $country3 == "DEU") {
-            if ($data['street'] == '') {
-                $errors[] = 'VMPAYMENT_KLARNA_STREET_ADRESS';
-            }
-	        if ($data['house_no'] == '') {
-                $errors[] = 'VMPAYMENT_KLARNA_ADDRESS_HOMENUMBER';
-            }
-            if ($country3 == "DEU") {
-                if ($data['consent'] != 'on') {
-                    $errors[] = 'VMPAYMENT_KLARNA_NO_CONSENT';
-                }
-            }
+		// Quick and durty .. but it works
+		$kIndex = "klarna_";
+		if ($country3 == "SWE") {
+			if (JRequest::getVar ('klarna_invoice_type') == 'company') {
+				if (strlen (trim ((string)JRequest::getVar ('klarna_company_name'))) == 0) {
+					$errors[] = 'VMPAYMENT_KLARNA_COMPANY_NAME';
+				}
+			} else {
+				if (!KlarnaEncoding::checkPNO (JRequest::getVar ($kIndex . 'socialNumber'), KlarnaEncoding::PNO_SE)) {
+					$errors[] = 'VMPAYMENT_KLARNA_PERSONALORORGANISATIO_NUMBER';
+				}
+			}
+		} else {
+			if ($data['phone'] == '') {
+				$errors[] = 'VMPAYMENT_KLARNA_PHONE_NUMBER';
+			}
+			if ($data['street'] == '') {
+				$errors[] = 'VMPAYMENT_KLARNA_STREET_ADRESS';
+			}
+			if ($data['first_name'] == '') {
+				$errors[] = 'VMPAYMENT_KLARNA_FIRST_NAME';
+			}
+			if ($data['last_name'] == '') {
+				$errors[] = 'VMPAYMENT_KLARNA_LAST_NAME';
+			}
+			if ($data['city'] == '') {
+				$errors[] = 'VMPAYMENT_KLARNA_ADDRESS_CITY';
+			}
+			if ($data['zip'] == '') {
+				$errors[] = 'VMPAYMENT_KLARNA_ADDRESS_ZIP';
+			}
+		}
+		// German and dutch
+		if ($country3 == "NLD" || $country3 == "DEU") {
+			if ($data['street'] == '') {
+				$errors[] = 'VMPAYMENT_KLARNA_STREET_ADRESS';
+			}
+			if ($data['house_no'] == '') {
+				$errors[] = 'VMPAYMENT_KLARNA_ADDRESS_HOMENUMBER';
+			}
+			if ($country3 == "DEU") {
+				if ($data['consent'] != 'on') {
+					$errors[] = 'VMPAYMENT_KLARNA_NO_CONSENT';
+				}
+			}
 
-            if ($data['pno_frombirthday'] == '') {
-                $errors[] = 'VMPAYMENT_KLARNA_PERSONALORORGANISATIO_NUMBER';
-            }
-            if ($data['gender'] == '') {
-                $errors[] ='VMPAYMENT_KLARNA_SEX';
-            }
-        }
- // General
-/* the email is not in the payment form
-        if ($data['emailAddress'] == '') {
-            $errors[] = 'VMPAYMENT_KLARNA_EMAIL';
-        }
-*/
-        // Norwegian, Danish and Finnish
-        if (( $country3== "NOR")  || ( $country3== "DNK")   || $country3 == "FIN") {
-            if ($data['socialNumber']=='') {
-                $errors[] ='VMPAYMENT_KLARNA_PERSONALORORGANISATIO_NUMBER';
-            }
-        }
-
+			if ($data['pno_frombirthday'] == '') {
+				$errors[] = 'VMPAYMENT_KLARNA_PERSONALORORGANISATIO_NUMBER';
+			}
+			if ($data['gender'] == '') {
+				$errors[] = 'VMPAYMENT_KLARNA_SEX';
+			}
+		}
+		// General
+		/* the email is not in the payment form
+		  if ($data['emailAddress'] == '') {
+			  $errors[] = 'VMPAYMENT_KLARNA_EMAIL';
+		  }
+  */
+		// Norwegian, Danish and Finnish
+		if (($country3 == "NOR") || ($country3 == "DNK") || $country3 == "FIN") {
+			if ($data['socialNumber'] == '') {
+				$errors[] = 'VMPAYMENT_KLARNA_PERSONALORORGANISATIO_NUMBER';
+			}
+		}
 
 		if (!empty($errors)) {
 			$msg = JText::_ ('VMPAYMENT_KLARNA_ERROR_TITLE_2');
 			foreach ($errors as $error) {
-				$msg .= "<li>" .JText::_( $error) . "</li>";
+				$msg .= "<li>" . JText::_ ($error) . "</li>";
 			}
 			self::setKlarnaErrorInSession ($msg, $option);
 
@@ -1234,7 +1258,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 
 	}
 
-/**
+	/**
 	 * @static
 	 * @return array
 	 */
@@ -1249,6 +1273,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			"DEU" => array("birthday", "house_no")
 		);
 	}
+
 	/**
 	 * @return array
 	 */
@@ -1324,15 +1349,15 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 				$klarnaFields['gender'] = NULL;
 				break;
 		}
-$country_code_3=ShopFunctions::getCountryByID ($from['virtuemart_country_id'], 'country_3_code');
+		$country_code_3 = ShopFunctions::getCountryByID ($from['virtuemart_country_id'], 'country_3_code');
 		$klarnaFields['email'] = $from_email;
 		$klarnaFields['country'] = @ShopFunctions::getCountryByID (@$from['virtuemart_country_id'], 'country_3_code');
 		$klarnaFields['socialNumber'] = @$from['socialNumber'];
 		$klarnaFields['houseNr'] = @$from['house_no'];
 		$klarnaFields['houseExt'] = @$from['address_2'];
 		$klarnaFields['first_name'] = @$from['first_name'];
-		if ($country_code_3=='NLD') {
-			$klarnaFields['last_name'] = @$from['middle_name']." ".@$from['last_name'];
+		if ($country_code_3 == 'NLD') {
+			$klarnaFields['last_name'] = @$from['middle_name'] . " " . @$from['last_name'];
 		} else {
 			$klarnaFields['last_name'] = @$from['last_name'];
 		}

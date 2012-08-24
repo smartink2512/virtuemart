@@ -155,7 +155,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$cData = KlarnaHandler::getcData ($method, $this->getCartAddress ($cart, $type, FALSE));
 			if ($cData['active']) {
 				$productPrice = new klarna_productPrice($cData);
-				if ( $productViewData = $productPrice->showProductPrice ($product)) {
+				if ($productViewData = $productPrice->showProductPrice ($product)) {
 					$productDisplayHtml = $this->renderByLayout ('productprice_layout', $productViewData, $method->payment_element, 'payment');
 					$productDisplay[] = $productDisplayHtml;
 				}
@@ -326,7 +326,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			return NULL;
 		}
 		try {
-			$pclasses = KlarnaHandler::getPClasses (NULL, KlarnaHandler::getKlarnaMode ($method, $cData['country_code_3']), $cData);
+			$pclasses = KlarnaHandler::getPClasses (null, KlarnaHandler::getKlarnaMode ($method, $cData['country_code_3']), $cData);
 		}
 		catch (Exception $e) {
 			vmError ($e->getMessage (), $e->getMessage ());
@@ -370,8 +370,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				));
 			}
 		}
-
-		if ($specCamp > 0) {
+		// not tested yet
+		/*
+		if ( $specCamp > 0) {
 			if ($payment_params = $payments->get_payment_params ($method, 'spec', $cart, $cData['virtuemart_currency_id'])) {
 				$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
 				$selected = ($klarna_paymentmethod == 'klarna_spec' AND $method->virtuemart_paymentmethod_id == $cart->virtuemart_paymentmethod_id) ? $checked : "";
@@ -386,7 +387,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				));
 			}
 		}
-
+		*/
 		return $html;
 	}
 
@@ -1246,11 +1247,11 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		}
 
 		$method = $this->getPluginMethod (JRequest::getInt ('virtuemart_paymentmethod_id'));
-
-		// KlarnaHandler::fetchPClasses();
-		$results = KlarnaHandler::fetchAllPClasses ($method);
-		if (is_array ($results) and $results['msg']) {
-			vmError ($results['msg']);
+		if (KlarnaHandler::createKlarnaFolder ()) {
+			$results = KlarnaHandler::fetchAllPClasses ($method);
+			if (is_array ($results) and $results['msg']) {
+				vmError ($results['msg']);
+			}
 		}
 		vmDebug ('PClasses fetched for : ', $results['notice']);
 
@@ -1386,9 +1387,12 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		//Removes spaces, tabs, and other delimiters.
 		// If it is a swedish customer we use the information from getAddress
 		if (strtolower ($cData['country_code']) == "se") {
-			$swedish_addresses = klarnaHandler::getAddresses ($klarnaData['socialNumber'], $cData, $method);
+			$swedish_addresses = KlarnaHandler::getAddresses ($klarnaData['socialNumber'], $cData, $method);
 			if (empty($swedish_addresses)) {
-				$errors[] = JText::_ ('VMPAYMENT_KLARNA_NO_GETADDRESS');
+				$msg = JText::_ ('VMPAYMENT_KLARNA_ERROR_TITLE_2');
+				$msg .= JText::_ ('VMPAYMENT_KLARNA_NO_GETADDRESS');
+				$session->set ('Klarna', serialize ($sessionKlarna), 'vm');
+				return FALSE;
 			}
 			//This example only works for GA_GIVEN.
 			foreach ($swedish_addresses as $address) {
@@ -1787,10 +1791,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$sFee = $payments->getCheapestMonthlyCost ($cart, $cData['virtuemart_currency_id']);
 			if ($sFee) {
 				$payment_advertise[] = $this->renderByLayout ('cart_advertisement',
-				array("sFee"   => $sFee,
-				      "eid"    => $cData['eid'],
-				      "country"=> $cData['country_code']
-				));
+					array("sFee"   => $sFee,
+					      "eid"    => $cData['eid'],
+					      "country"=> $cData['country_code']
+					));
 			}
 
 		}

@@ -22,7 +22,29 @@
 // jimport( 'joomla.application.component.view');
 // $viewEscape = new JView();
 // $viewEscape->setEscape('htmlspecialchars');
+$js = "
+window.onload = function() {
+   ShowHideST();
+ }
+ function ShowHideST() {
+	var shiptoDisplay = document.getElementById('output-shipto-display');
+			var value= document.getElementById('STsameAsBT').value;
+			if(shiptoDisplay){
+			if(!document.getElementById('STsameAsBT').checked){
+					shiptoDisplay.style.display='';
+				}else{
+					shiptoDisplay.style.display='none';
+				}
+			}
+			return true;
+}
+function vmSTsameAsBT(){
+			ShowHideST() ;
+			return true;
+		}";
 
+$document = JFactory::getDocument();
+$document->addScriptDeclaration($js);
 ?>
 <div class="billto-shipto">
 	<div class="width50 floatleft">
@@ -68,7 +90,11 @@
 		} else {
 			if(!class_exists('VmHtml'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 			echo JText::_('COM_VIRTUEMART_USER_FORM_ST_SAME_AS_BT');
-			echo VmHtml::checkbox('STsameAsBTjs',$this->cart->STsameAsBT).'<br />';
+			$attributes='onclick="return vmSTsameAsBT();"';
+			echo VmHtml::checkbox('STsameAsBT',$this->cart->STsameAsBT,1,0,$attributes).'<br />';
+			?>
+			<div id="output-shipto-display">
+				<?php
 			foreach($this->cart->STaddress['fields'] as $item){
 				if(!empty($item['value'])){ ?>
 					<!-- <span class="titles"><?php echo $item['title'] ?></span> -->
@@ -82,6 +108,10 @@
 					}
 				}
 			}
+			?>
+			</div>
+			<?php
+
 		}
  		?>
 		<div class="clear"></div>
