@@ -17,6 +17,25 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+$js = "
+window.onload = function() {
+   showHidePrices();
+ }
+ function showHidePrices() {
+	var priceDisplay = document.getElementById('show_hide_prices');
+			var value= document.getElementById('custom_price_display').value;
+			if(priceDisplay){
+			if(!document.getElementById('custom_price_display').checked){
+					priceDisplay.style.display='none';
+				}else{
+					priceDisplay.style.display='';
+				}
+			}
+			return true;
+}";
+
+$document = JFactory::getDocument();
+$document->addScriptDeclaration($js);
 AdminUIHelper::startAdminArea();
 AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 ?>
@@ -74,9 +93,13 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 <?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_ENABLE_PRICE_DISPLAY'); ?>
 		    </td>
 		    <td>
-<?php echo VmHTML::checkbox('custom_price_display', $this->shoppergroup->custom_price_display) ?>
+<?php
+			     $attributes='onclick="return showHidePrices();"';
+			    echo VmHTML::checkbox('custom_price_display', $this->shoppergroup->custom_price_display,1,0,$attributes) ?>
 		    </td>
 		</tr>
+		</table>
+		<table class="admintable" id="show_hide_prices">
 		<tr>
 		    <td>
 			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES_EXPLAIN'); ?>">
@@ -86,8 +109,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 <?php echo VmHTML::checkbox('show_prices', $this->shoppergroup->price_display->get('show_prices')); ?>
 		    </td>
 		</tr>
-	    </table>
-		<table class="admintable">
+
 		    <tr>
 			<th></th>
 			<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_LABEL'); ?></th>

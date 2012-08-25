@@ -260,9 +260,6 @@ foreach ( $this->products as $product ) {
 					<div class="product-price marginbottom12" id="productPrice<?php echo $product->virtuemart_product_id ?>">
 					<?php
 					if ($this->show_prices == '1') {
-						if( $product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
-							echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE_PER_UNIT').' ('.$product->product_unit."):</strong>";
-						}
 						if(empty($product->prices) and VmConfig::get('askprice',1) and empty($product->images[0]->file_is_downloadable) ){
 							echo JText::_('COM_VIRTUEMART_PRODUCT_ASKPRICE');
 						}
@@ -279,6 +276,8 @@ foreach ( $this->products as $product ) {
 						echo $this->currency->createPriceDiv('priceWithoutTax','COM_VIRTUEMART_PRODUCT_SALESPRICE_WITHOUT_TAX',$product->prices);
 						echo $this->currency->createPriceDiv('discountAmount','COM_VIRTUEMART_PRODUCT_DISCOUNT_AMOUNT',$product->prices);
 						echo $this->currency->createPriceDiv('taxAmount','COM_VIRTUEMART_PRODUCT_TAX_AMOUNT',$product->prices);
+						$unitPriceDescription=JText::sprintf('COM_VIRTUEMART_PRODUCT_UNITPRICE', $this->product->product_unit);
+						echo $this->currency->createPriceDiv('unitPrice', $unitPriceDescription, $this->product->prices);
 					} ?>
 					</div>
 

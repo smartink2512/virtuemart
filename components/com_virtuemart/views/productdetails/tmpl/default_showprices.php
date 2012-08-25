@@ -22,11 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div class="product-price" id="productPrice<?php echo $this->product->virtuemart_product_id ?>">
     <?php
-    if ($this->product->product_unit && VmConfig::get('price_show_packaging_pricelabel')) {
-	echo "<strong>" . JText::_('COM_VIRTUEMART_CART_PRICE_PER_UNIT') . ' (' . $this->product->product_unit . "):</strong>";
-    } else {
 	echo "<strong>" . JText::_('COM_VIRTUEMART_CART_PRICE') . "</strong>";
-    }
+
 
     if (empty($this->product->prices) and VmConfig::get('askprice', 1)) {
 	?>
@@ -46,6 +43,8 @@ defined('_JEXEC') or die('Restricted access');
     echo $this->currency->createPriceDiv('priceWithoutTax', 'COM_VIRTUEMART_PRODUCT_SALESPRICE_WITHOUT_TAX', $this->product->prices);
     echo $this->currency->createPriceDiv('discountAmount', 'COM_VIRTUEMART_PRODUCT_DISCOUNT_AMOUNT', $this->product->prices);
     echo $this->currency->createPriceDiv('taxAmount', 'COM_VIRTUEMART_PRODUCT_TAX_AMOUNT', $this->product->prices);
-	echo $this->currency->createPriceDiv('unitPrice', 'COM_VIRTUEMART_PRODUCT_UNITPRICE', $this->product->prices);
+	$unitPriceDescription=JText::sprintf('COM_VIRTUEMART_PRODUCT_UNITPRICE', $this->product->product_unit);
+	echo $this->currency->createPriceDiv('unitPrice', $unitPriceDescription, $this->product->prices);
+
     ?>
 </div>
