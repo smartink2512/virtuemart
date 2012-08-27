@@ -303,8 +303,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 			OR
 			($method->weight_start <= $orderWeight AND $method->weight_stop === ''));
 
-		vmAdminInfo ('weigth_countries _weightCond orderWeight:' . $orderWeight . ' method->weight_start:' . $method->weight_start . ' method->weight_stop:' .
-			$method->weight_stop . ' result:' . $weight_cond);
+		//vmAdminInfo ('weigth_countries _weightCond orderWeight:' . $orderWeight . ' method->weight_start:' . $method->weight_start . ' method->weight_stop:' .$method->weight_stop . ' result:' . $weight_cond);
 
 		return $weight_cond;
 	}
@@ -331,9 +330,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 			$nbproducts_cond = true;
 		}
 
-		vmAdminInfo ('weigth_countries _nbproductsCond nbproducts:' . $nbproducts . ' method->nbproducts_start:' . $method->nbproducts_start .
-			' method->nbproducts_stop:' .
-			$method->nbproducts_stop . ' result:' . $nbproducts_cond);
+		//vmAdminInfo ('weigth_countries _nbproductsCond nbproducts:' . $nbproducts . ' method->nbproducts_start:' . $method->nbproducts_start .' method->nbproducts_stop:' .$method->nbproducts_stop . ' result:' . $nbproducts_cond);
 		return $nbproducts_cond;
 	}
 

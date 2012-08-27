@@ -530,7 +530,14 @@ class VirtueMartModelCustomfields extends VmModel {
 		$field->custom_value = empty($field->custom_value) ? $field->value : $field->custom_value;
 
 		if ($field->is_cart_attribute) {
-			$priceInput = '<input type="text" value="' . (isset($field->custom_price) ? $field->custom_price : '0') . '" name="field[' . $row . '][custom_price]" />';
+			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+			if(!class_exists('VirtueMartModelCurrency')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'currency.php');
+			$vendor_model = VmModel::getModel('vendor');
+			$vendor_model->setId(1);
+			$vendor = $vendor_model->getVendor();
+			$currency_model = VmModel::getModel('currency');
+			$vendor_currency = $currency_model->getCurrency($vendor->vendor_currency);
+			$priceInput = JText::_('COM_VIRTUEMART_CUSTOM_FIELD_PRICE').'<input type="text" value="' . (isset($field->custom_price) ?  $field->custom_price : '0') . '" name="field[' . $row . '][custom_price]" /> '.$vendor_currency->currency_symbol;
 		}
 		else {
 			$priceInput = ' ';
