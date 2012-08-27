@@ -163,7 +163,9 @@ class klarna_payments {
 				return NULL;
 			}
 
-			$aTypes = array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED);
+			//$aTypes = array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED);
+						$aTypes = array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN);
+
 		}
 		$payment_params['sType'] = $payment_type;
 		$kCheckout = new KlarnaAPI($this->country, $this->lang, $payment_type, $billTotalInCountryCurrency, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, $aTypes, JPATH_VMKLARNAPLUGIN);

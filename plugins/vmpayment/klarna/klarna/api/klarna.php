@@ -3063,7 +3063,7 @@ class Klarna {
                 $this->pclasses = $this->getPCStorage();
                 $this->pclasses->load($this->pcURI);
             }
-	    $aa=$this->country;
+
             $tmp = $this->pclasses->getPClasses($this->eid, $this->country, $type);
             $this->sortPClasses($tmp[$this->eid]);
             return $tmp[$this->eid];
