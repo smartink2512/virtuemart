@@ -91,7 +91,7 @@ $document->addScriptDeclaration($js);
 			if(!class_exists('VmHtml'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 			echo JText::_('COM_VIRTUEMART_USER_FORM_ST_SAME_AS_BT');
 			$attributes='onclick="return vmSTsameAsBT();"';
-			echo VmHtml::checkbox('STsameAsBT',$this->cart->STsameAsBT,1,0,$attributes).'<br />';
+			echo VmHtml::checkbox('STsameAsBTjs',$this->cart->STsameAsBT,1,0,$attributes).'<br />';
 			?>
 			<div id="output-shipto-display">
 				<?php

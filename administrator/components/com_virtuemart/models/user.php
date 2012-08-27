@@ -488,11 +488,12 @@ class VirtueMartModelUser extends VmModel {
 		//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
 		//The constructor sets automatically the right id.
 		$new = ($this->_id < 1);
-		 if(empty($this->_id)){
-		    $user = JFactory::getUser();
-		 } else {
-		    $user = JFactory::getUser($this->_id);
-		 }
+		if(empty($this->_id)){
+			$user = JFactory::getUser();
+		} else {
+			$user = JFactory::getUser($this->_id);
+		}
+
 		$gid = $user->get('gid'); // Save original gid
 
 		// Preformat and control user datas by plugin
