@@ -35,7 +35,7 @@ class plgVmpaymentMoneybookers_Gir extends plgVmpaymentMoneybookers
         $this->_tableId = 'id'; //'virtuemart_moneybookers_id';
 	}
     
-    function plgVmConfirmedOrder($cart, $order)
+    function plgVmConfirmedOrder($cart, $order, $payment_method = '')
         {
         parent::plgVmConfirmedOrder($cart, $order, "GIR");
         }

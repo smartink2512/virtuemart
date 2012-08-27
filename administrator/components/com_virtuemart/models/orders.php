@@ -64,7 +64,7 @@ class VirtueMartModelOrders extends VmModel {
 	 * This function gets the orderId, for payment response
 	 * author Valerie Isaksen
 	 */
-	public function getOrderIdByOrderNumber($orderNumber){
+	public static function getOrderIdByOrderNumber($orderNumber){
 
 		$db = JFactory::getDBO();
 		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_number`="'.$db->getEscaped($orderNumber).'"';

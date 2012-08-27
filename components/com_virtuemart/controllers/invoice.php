@@ -30,7 +30,7 @@ jimport('joomla.application.component.controller');
 class VirtueMartControllerInvoice extends JController
 {
 
-	public function display() {
+	public function display($cachable = false, $urlparams = false)  {
 
 		$format = JRequest::getWord('format','html');
 		if ($format=='pdf') {

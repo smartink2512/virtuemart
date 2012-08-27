@@ -58,7 +58,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		$SQLfields = array(
 			'id'                               => 'int(11) UNSIGNED NOT NULL AUTO_INCREMENT',
 			'virtuemart_order_id'              => 'int(1) UNSIGNED',
-			'order_number'                     => ' char(64)',
+			'order_number'                     => 'char(64)',
 			'virtuemart_paymentmethod_id'      => 'mediumint(1) UNSIGNED',
 			'payment_name'                     => 'varchar(5000)',
 			'payment_order_total'              => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
@@ -609,7 +609,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		return $pkey;
 	}
 
-	function emptyCart ($session_id) {
+	function emptyCart ($session_id = NULL, $order_number = NULL)  {
 		if ($session_id != NULL) {
 			$session = JFactory::getSession ();
 			$session->close ();

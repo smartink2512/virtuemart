@@ -20,7 +20,6 @@ class JElementKlarnaCurl extends JElement {
 
 	function fetchElement ($name, $value, &$node, $control_name) {
 
-		JPlugin::loadLanguage ('com_virtuemart', JPATH_ADMINISTRATOR);
 		if (!function_exists ('curl_init') or !function_exists ('curl_exec')) {
 			return JTExt::_ ('VMPAYMENT_KLARNA_CURL_LIBRARY_NOT_INSTALLED');
 		}

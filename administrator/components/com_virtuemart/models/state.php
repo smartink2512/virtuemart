@@ -91,7 +91,7 @@ class VirtueMartModelState extends VmModel {
 	 * @author Max Milbers
 	 * @return String Attention, this function gives a 0=false back in case of success
 	 */
-	public function testStateCountry($countryId,$stateId)
+	public static function testStateCountry($countryId,$stateId)
 	{
 
 		$countryId = (int)$countryId;

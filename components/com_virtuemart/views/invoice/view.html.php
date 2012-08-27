@@ -93,7 +93,7 @@ class VirtuemartViewInvoice extends VmView {
 				// If the user is logged in, we will check if the order belongs to him
 				$virtuemart_order_id = JRequest::getInt('virtuemart_order_id',0) ;
 				if (!$virtuemart_order_id) {
-					$virtuemart_order_id = $orderModel->getOrderIdByOrderNumber(JRequest::getString('order_number'));
+					$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber(JRequest::getString('order_number'));
 				}
 				$orderDetails = $orderModel->getOrder($virtuemart_order_id);
 

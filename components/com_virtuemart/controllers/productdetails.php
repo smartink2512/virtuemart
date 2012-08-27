@@ -37,7 +37,7 @@ class VirtueMartControllerProductdetails extends JController {
 		$this->registerTask ('askquestion', 'MailForm');
 	}
 
-	function display () {
+	function display($cachable = false, $urlparams = false)  {
 
 		$format = JRequest::getWord ('format', 'html');
 		if ($format == 'pdf') {

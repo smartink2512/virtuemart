@@ -542,7 +542,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 
 	}
 
-	private function setAddress2 ($address2, $country) {
+	private static function setAddress2 ($address2, $country) {
 
 		if ($country == 'NLD') {
 			return $address2;
@@ -551,7 +551,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		}
 	}
 
-	private function setHouseNo ($houseNo, $country) {
+	private static function setHouseNo ($houseNo, $country) {
 
 		if (($country == 'DEU') or ($country == 'NLD')) {
 			return $houseNo;

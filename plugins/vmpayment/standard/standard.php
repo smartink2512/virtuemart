@@ -135,7 +135,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$html .= '</table>' . "\n";
 
 		$modelOrder                 = VmModel::getModel('orders');
-		$order['order_status']      = 'P';
+		$order['order_status']      =  $this->getNewStatus($method);
 		$order['customer_notified'] = 1;
 		$order['comments']          = '';
 		$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order, true);
@@ -145,7 +145,17 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		JRequest::setVar('html', $html);
 		return true;
 	}
-
+	/*
+	 * Keep backwards compatibility
+	 * a new parameter has been added in the xml file
+	 */
+	function getNewStatus($method) {
+		if (isset($method->status_pending)) {
+			return $method->status_pending;
+		} else {
+			return 'P';
+		}
+	}
 	/**
 	 * Display stored payment data for an order
 	 *
