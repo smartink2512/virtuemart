@@ -434,7 +434,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				var nextSelect = blah.eq(nextIndex-1);
 				if ("undefined" !== typeof(nextSelect) && nextSelect.length > 0) {
 //					if ($("#selectoptions"+nextIndex+".customfield_id_'.$js_suffix.' option:contains(" + child_attrib["selectoptions"+nextIndex][0] + ")").length == 0) {
-					if (nextSelect.find("option:contains(" + child_attrib["selectoptions"+nextIndex][0] + ")").length == 0) {
+					if (nextSelect.find("option[value=\'" + child_attrib["selectoptions"+nextIndex][0] + "\']").length == 0) {
 						nextSelect.append("<option value=\'" + child_attrib["selectoptions"+nextIndex][0] + "\'>" + child_attrib["selectoptions"+nextIndex][1] + "</option>");
 					}
 //					if (1 == $("#selectoptions"+nextIndex+".customfield_id_'.$js_suffix.' option").length) {
