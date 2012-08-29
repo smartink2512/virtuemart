@@ -429,18 +429,22 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				return return_value;
 			}
 			function populateNextSelect_'.$js_suffix.'(stockableBlockIndex, child_attrib, nextIndex) {
-//				var nextSelect = $("#selectoptions"+nextIndex+".customfield_id_'.$js_suffix.'");
-				var blah = $("#stockableBlockIndex_'.$js_suffix.'_"+stockableBlockIndex+" select.attribute_list.customfield_id_'.$js_suffix.'");
-				var nextSelect = blah.eq(nextIndex-1);
+				var selectList = $("#stockableBlockIndex_'.$js_suffix.'_"+stockableBlockIndex+" select.attribute_list.customfield_id_'.$js_suffix.'");
+				var nextSelect = selectList.eq(nextIndex-1);
+				// if the select exists
 				if ("undefined" !== typeof(nextSelect) && nextSelect.length > 0) {
-//					if ($("#selectoptions"+nextIndex+".customfield_id_'.$js_suffix.' option:contains(" + child_attrib["selectoptions"+nextIndex][0] + ")").length == 0) {
+					// if it doesn\'t already contain this option, add it
 					if (nextSelect.find("option[value=\'" + child_attrib["selectoptions"+nextIndex][0] + "\']").length == 0) {
 						nextSelect.append("<option value=\'" + child_attrib["selectoptions"+nextIndex][0] + "\'>" + child_attrib["selectoptions"+nextIndex][1] + "</option>");
 					}
-//					if (1 == $("#selectoptions"+nextIndex+".customfield_id_'.$js_suffix.' option").length) {
+
+					// if there is only one option, make it selected
 					if (1 == nextSelect.find("option").length) {
 						nextSelect.find("option").attr("selected","selected");
 						selections_'.$js_suffix.'[stockableBlockIndex][nextIndex] = child_attrib["selectoptions"+nextIndex][0];
+					}
+					// if this is the selected value, populate the next select too
+					if (nextSelect.val() == child_attrib["selectoptions"+nextIndex][0]) {
 						populateNextSelect_'.$js_suffix.'(stockableBlockIndex, child_attrib, nextIndex+1);
 					}
 				}
