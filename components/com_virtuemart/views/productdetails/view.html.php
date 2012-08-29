@@ -253,6 +253,10 @@ class VirtueMartViewProductdetails extends VmView {
 	}
 	$this->assignRef('edit_link', $edit_link);
 
+	// todo: atm same form for "call for price" and "ask a question". Title of the form should be different
+	$askquestion_url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id . '&tmpl=component');
+	$this->assignRef('askquestion_url', $askquestion_url);
+
 	// Load the user details
 	$user = JFactory::getUser();
 	$this->assignRef('user',$user);

@@ -153,7 +153,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 		foreach ($this->methods as $method) {
 			$cData = KlarnaHandler::getcData ($method, $this->getCartAddress ($cart, $type, FALSE));
-			if ($cData['active']) {
+			if ($cData['active'] and in_array ('part', $cData['payments_activated'])) {
 				$productPrice = new klarna_productPrice($cData);
 				if ($productViewData = $productPrice->showProductPrice ($product)) {
 					$productDisplayHtml = $this->renderByLayout ('productprice_layout', $productViewData, $method->payment_element, 'payment');
@@ -326,7 +326,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			return NULL;
 		}
 		try {
-			$pclasses = KlarnaHandler::getPClasses (null, KlarnaHandler::getKlarnaMode ($method, $cData['country_code_3']), $cData);
+			$pclasses = KlarnaHandler::getPClasses (NULL, KlarnaHandler::getKlarnaMode ($method, $cData['country_code_3']), $cData);
 		}
 		catch (Exception $e) {
 			vmError ($e->getMessage (), $e->getMessage ());
@@ -343,31 +343,35 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$html = '';
 		$checked = 'checked="checked"';
 		$payments = new klarna_payments($cData, KlarnaHandler::getShipToAddress ($cart));
-		$payment_params = $payments->get_payment_params ($method, 'invoice', $cart);
-		$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
-		$selected = ($klarna_paymentmethod == 'klarna_invoice' AND $method->virtuemart_paymentmethod_id == $cart->virtuemart_paymentmethod_id) ? $checked : "";
-		$html .= $this->renderByLayout ('displaypayment', array(
-			'stype'                       => 'invoice',
-			'id'                          => $payment_params['id'],
-			'module'                      => $payment_params['module'],
-			'klarna_form'                 => $payment_form,
-			'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id,
-			'klarna_paymentmethod'        => $klarna_paymentmethod,
-			'selected'                    => $selected
-		));
-		if ($partPay > 0) {
-			if ($payment_params = $payments->get_payment_params ($method, 'part', $cart, $cData['virtuemart_currency_id'])) {
-				$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
-				$selected = ($klarna_paymentmethod == 'klarna_part' AND $method->virtuemart_paymentmethod_id == $cart->v) ? $checked : "";
-				$html .= $this->renderByLayout ('displaypayment', array(
-					'stype'                       => 'part',
-					'id'                          => $payment_params['id'],
-					'module'                      => $payment_params['module'],
-					'klarna_form'                 => $payment_form,
-					'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id,
-					'klarna_paymentmethod'        => $klarna_paymentmethod,
-					'selected'                    => $selected
-				));
+		if (in_array ('invoice', $cData['payments_activated'])) {
+			$payment_params = $payments->get_payment_params ($method, 'invoice', $cart);
+			$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
+			$selected = ($klarna_paymentmethod == 'klarna_invoice' AND $method->virtuemart_paymentmethod_id == $cart->virtuemart_paymentmethod_id) ? $checked : "";
+			$html .= $this->renderByLayout ('displaypayment', array(
+				'stype'                       => 'invoice',
+				'id'                          => $payment_params['id'],
+				'module'                      => $payment_params['module'],
+				'klarna_form'                 => $payment_form,
+				'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id,
+				'klarna_paymentmethod'        => $klarna_paymentmethod,
+				'selected'                    => $selected
+			));
+		}
+		if (in_array ('part', $cData['payments_activated'])) {
+			if ($partPay > 0) {
+				if ($payment_params = $payments->get_payment_params ($method, 'part', $cart, $cData['virtuemart_currency_id'])) {
+					$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
+					$selected = ($klarna_paymentmethod == 'klarna_part' AND $method->virtuemart_paymentmethod_id == $cart->v) ? $checked : "";
+					$html .= $this->renderByLayout ('displaypayment', array(
+						'stype'                       => 'part',
+						'id'                          => $payment_params['id'],
+						'module'                      => $payment_params['module'],
+						'klarna_form'                 => $payment_form,
+						'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id,
+						'klarna_paymentmethod'        => $klarna_paymentmethod,
+						'selected'                    => $selected
+					));
+				}
 			}
 		}
 		// not tested yet

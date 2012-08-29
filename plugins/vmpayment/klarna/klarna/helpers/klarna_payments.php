@@ -164,7 +164,7 @@ class klarna_payments {
 			}
 
 			//$aTypes = array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED);
-						$aTypes = array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN);
+			$aTypes = array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN);
 
 		}
 		$payment_params['sType'] = $payment_type;
@@ -273,7 +273,7 @@ class klarna_payments {
 	/**
 	 * Build the Payment params
 	 */
-	public function getCheapestMonthlyCost (    $cart = NULL, $country_currency_code = '') {
+	public function getCheapestMonthlyCost ($cart = NULL, $country_currency_code = '') {
 
 		if (!class_exists ('CurrencyDisplay')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
@@ -301,7 +301,7 @@ class klarna_payments {
 
 		KlarnaHandler::getCheapestPclass ($kCheckout, $cheapest, $minimum);
 
-		if ($minimum==0 OR $billTotalInCountryCurrency < $minimum) {
+		if ($minimum == 0 OR $billTotalInCountryCurrency < $minimum) {
 			return NULL;
 		}
 		if (!class_exists ('VirtueMartModelCurrency')) {

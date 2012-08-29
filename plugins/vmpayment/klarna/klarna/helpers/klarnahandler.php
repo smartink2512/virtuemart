@@ -100,6 +100,7 @@ class KlarnaHandler {
 			$secret = 'klarna_sharedsecret_' . $lower_country;
 			$invoice_fee = 'klarna_invoicefee_' . $lower_country;
 			$min_amount = 'klarna_min_amount_part_' . $lower_country;
+			$payment_activated='klarna_payments_' . $lower_country;
 			$active = 'klarna_active_' . $lower_country;
 			$cData['eid'] = $method->$eid;
 			$cData['secret'] = $method->$secret;
@@ -110,6 +111,7 @@ class KlarnaHandler {
 			$cData['mode'] = KlarnaHandler::getKlarnaMode ($method, $country);
 			$cData['min_amount'] = $method->$min_amount;
 			$cData['active'] = $method->$active;
+			$cData['payments_activated'] = $method->$payment_activated;
 			return $cData;
 		} else {
 			return NULL;

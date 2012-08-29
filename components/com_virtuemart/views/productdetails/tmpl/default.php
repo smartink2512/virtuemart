@@ -23,13 +23,12 @@ defined('_JEXEC') or die('Restricted access');
 // addon for joomla modal Box
 JHTML::_('behavior.modal');
 // JHTML::_('behavior.tooltip');
-$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&virtuemart_category_id=' . $this->product->virtuemart_category_id . '&tmpl=component');
 $document = JFactory::getDocument();
 $document->addScriptDeclaration("
 	jQuery(document).ready(function($) {
 		$('a.ask-a-question').click( function(){
 			$.facebox({
-				iframe: '" . $url . "',
+				iframe: '" . $this->askquestion_url . "',
 				rev: 'iframe|550|550'
 			});
 			return false ;

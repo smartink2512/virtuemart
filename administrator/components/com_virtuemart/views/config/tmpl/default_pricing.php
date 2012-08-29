@@ -18,6 +18,24 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+		$js = '
+	jQuery(document).ready(function( $ ) {
+			if ( $("#show_prices").is(\':checked\') ) {
+				$("#show_hide_prices").show();
+			} else {
+				$("#show_hide_prices").hide();
+			}
+		 $("#show_prices").click(function() {
+			if ( $("#show_prices").is(\':checked\') ) {
+				$("#show_hide_prices").show();
+			} else {
+				$("#show_hide_prices").hide();
+			}
+		});
+	});
+	';
+$document = JFactory::getDocument();
+$document->addScriptDeclaration($js);
 ?>
 <br />
 <table>
@@ -64,6 +82,8 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo VmHTML::checkbox('show_prices', $this->config->get('show_prices')); ?>
 			</td>
 			</tr>
+			</table>
+		    <table class="admintable" id="show_hide_prices">
 			<tr>
 				<th></th>
 				<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_LABEL'); ?></th>

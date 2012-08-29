@@ -17,22 +17,22 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-$js = "
-window.onload = function() {
-   showHidePrices();
- }
- function showHidePrices() {
-	var priceDisplay = document.getElementById('show_hide_prices');
-			var value= document.getElementById('custom_price_display').value;
-			if(priceDisplay){
-			if(!document.getElementById('custom_price_display').checked){
-					priceDisplay.style.display='none';
-				}else{
-					priceDisplay.style.display='';
-				}
+		$js = '
+	jQuery(document).ready(function( $ ) {
+			if ( $("#custom_price_display").is(\':checked\') ) {
+				$("#show_hide_prices").show();
+			} else {
+				$("#show_hide_prices").hide();
 			}
-			return true;
-}";
+		 $("#custom_price_display").click(function() {
+			if ( $("#custom_price_display").is(\':checked\') ) {
+				$("#show_hide_prices").show();
+			} else {
+				$("#show_hide_prices").hide();
+			}
+		});
+	});
+	';
 
 $document = JFactory::getDocument();
 $document->addScriptDeclaration($js);
@@ -94,7 +94,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 		    </td>
 		    <td>
 <?php
-			     $attributes='onclick="return showHidePrices();"';
+			     $attributes='';
 			    echo VmHTML::checkbox('custom_price_display', $this->shoppergroup->custom_price_display,1,0,$attributes) ?>
 		    </td>
 		</tr>
