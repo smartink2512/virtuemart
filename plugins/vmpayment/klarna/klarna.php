@@ -361,7 +361,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			if ($partPay > 0) {
 				if ($payment_params = $payments->get_payment_params ($method, 'part', $cart, $cData['virtuemart_currency_id'])) {
 					$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
-					$selected = ($klarna_paymentmethod == 'klarna_part' AND $method->virtuemart_paymentmethod_id == $cart->v) ? $checked : "";
+					$selected = ($klarna_paymentmethod == 'klarna_part' AND $method->virtuemart_paymentmethod_id == $cart->virtuemart_paymentmethod_id) ? $checked : "";
 					$html .= $this->renderByLayout ('displaypayment', array(
 						'stype'                       => 'part',
 						'id'                          => $payment_params['id'],
