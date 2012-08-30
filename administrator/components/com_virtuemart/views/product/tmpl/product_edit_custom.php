@@ -57,7 +57,8 @@ if (isset($this->product->customfields_fromParent)) { ?>
 					} elseif ($customfield->field_type == 'E'){
 						$tables['fields'] .= '<tr class="removable">
 							<td>'.JText::_($customfield->custom_title).'</td>
-							<td colspan="3"><span>'.$customfield->display.$customfield->custom_tip.'</span>'.
+							<td>'.$customfield->custom_tip.'</td>
+							<td>'.$customfield->display.'</td>'.
 							VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 							.'</td>
 							<td>'.JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION').'</td>

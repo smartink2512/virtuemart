@@ -64,6 +64,20 @@ JPluginHelper::importPlugin('vmshipment');
 				<td><?php echo $this->orderstatuslist[$this->orderbt->order_status]; ?></td>
 			</tr>
 			<tr>
+				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_NAME') ?></strong></td>
+				<td><?php
+						$username=$this->orderbt->company ? $this->orderbt->company." ":"";
+			$username.=$this->orderbt->first_name." ".$this->orderbt->first_name." ";
+					if ($this->orderbt->virtuemart_user_id) {
+						$userlink = JROUTE::_ ('index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]=' . $this->orderbt->virtuemart_user_id);
+						echo JHTML::_ ('link', JRoute::_ ($userlink), $username, array('title' => JText::_ ('COM_VIRTUEMART_ORDER_EDIT_USER') . ' ' . $username));
+					} else {
+						echo $order->order_name;
+					}
+					?>
+				</td>
+			</tr>
+			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_IPADDRESS') ?></strong></td>
 				<td><?php echo $this->orderbt->ip_address; ?></td>
 			</tr>

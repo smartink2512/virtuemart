@@ -100,7 +100,7 @@ class KlarnaHandler {
 			$secret = 'klarna_sharedsecret_' . $lower_country;
 			$invoice_fee = 'klarna_invoicefee_' . $lower_country;
 			$min_amount = 'klarna_min_amount_part_' . $lower_country;
-			$payment_activated='klarna_payments_' . $lower_country;
+			$payment_activated = 'klarna_payments_' . $lower_country;
 			$active = 'klarna_active_' . $lower_country;
 			$cData['eid'] = $method->$eid;
 			$cData['secret'] = $method->$secret;
@@ -112,6 +112,11 @@ class KlarnaHandler {
 			$cData['min_amount'] = $method->$min_amount;
 			$cData['active'] = $method->$active;
 			$cData['payments_activated'] = $method->$payment_activated;
+			if (!class_exists ('VirtueMartModelVendor')) {
+				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+			}
+			$vendor_id = 1;
+			$cData['vendor_currency'] = VirtueMartModelVendor::getVendorCurrency ($vendor_id)->vendor_currency;
 			return $cData;
 		} else {
 			return NULL;
@@ -1054,18 +1059,21 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 	 * @param string $toCurrency
 	 * @return float
 	 */
-	static function convertPrice ($price, $cartPricesCurrency, $toCurrency = '') {
+	static function convertPrice ($price, $fromCurrency, $toCurrency = '', $cartPricesCurrency = '') {
 
 		if (!(is_int ($toCurrency) or is_numeric ($toCurrency)) && !empty($toCurrency)) {
 			$toCurrency = ShopFunctions::getCurrencyIDByName ($toCurrency);
 		}
-		if ($cartPricesCurrency == $toCurrency) {
+		if ($fromCurrency == $toCurrency) {
 			return $price;
 		}
 		$currencyToConvert = CurrencyDisplay::getInstance ($toCurrency);
 		// product prices or total in cart is always in vendor currency
 		$priceInNewCurrency = round ($currencyToConvert->convertCurrencyTo ($toCurrency, $price, FALSE), 2);
 		// set back the currency display
+		if (empty($cartPricesCurrency)) {
+			$cartPricesCurrency = $fromCurrency;
+		}
 		$cd = CurrencyDisplay::getInstance ($cartPricesCurrency);
 		vmDebug ('convertPrice', $price, $cartPricesCurrency, $toCurrency, $priceInNewCurrency);
 		return $priceInNewCurrency;
@@ -1384,5 +1392,23 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		return $klarnaFields;
 	}
 
+	function checkNLpriceCondition ($price) {
+
+		if ($price > 250) {
+			// We can't show our payment options for Dutch customers
+			// if price exceeds 250 euro. Will be replaced with ILT in
+			// the future.
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+	function checkPartNLpriceCondition ($cart) {
+
+		// convert price in euro
+		//$euro_currency_id = ShopFunctions::getCurrencyByName( 'EUR');
+		$price = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $cart->pricesCurrency, 'EUR');
+		return self::checkNLpriceCondition ($price);
+	}
 }
 

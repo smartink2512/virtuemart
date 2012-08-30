@@ -48,7 +48,7 @@ class klarna_productPrice {
 	 * @param $product
 	 * @return bool
 	 */
-	private function showPP ($product) {
+	private function showPP ($product, $cart) {
 
 		if (!isset($this->klarna_virtuemart) || !($this->klarna_virtuemart instanceof Klarna_virtuemart)) {
 			return FALSE;
@@ -60,9 +60,9 @@ class klarna_productPrice {
 		// the price is in the vendor currency
 		// convert price in NLD currency= euro
 
-		$price = KlarnaHandler::convertPrice ($product->prices['salesPrice'], $product->product_currency, 'EUR');
+		$price = KlarnaHandler::convertPrice ($product->prices['salesPrice'], $this->cData['vendor_currency'], 'EUR');
 
-		if (strtolower ($this->cData['country_code']) == 'nl' && $price > 250) {
+		if (strtolower ($this->cData['country_code']) == 'nl' && !KlarnaHandler::checkNLpriceCondition ($price )) {
 			vmDebug ('showPP', 'dont show price for NL', $this->cData['country_code'], $price);
 			return FALSE;
 		}
@@ -78,8 +78,8 @@ class klarna_productPrice {
 	 * @param $product
 	 * @return array|null
 	 */
-	public function showProductPrice ($product) {
-		if (!$this->showPP ($product)) {
+	public function showProductPrice ($product, $cart) {
+		if (!$this->showPP ($product, $cart)) {
 			return NULL;
 		}
 

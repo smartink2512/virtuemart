@@ -766,7 +766,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
   `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
   `virtuemart_custom_id` int(11) NOT NULL DEFAULT '1' COMMENT 'custom group id',
   `custom_value` varchar(8000) COMMENT 'field value',
-  `custom_price` char(255) COMMENT 'price',
+  `custom_price` decimal(15,5) COMMENT 'price',
   `custom_param` varchar(12800) COMMENT 'Param for Plugins',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
