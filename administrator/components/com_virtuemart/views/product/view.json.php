@@ -102,8 +102,7 @@ class VirtuemartViewProduct extends JView {
 							 else  $cartIcone= 'default-off';
 							 $html[] = '<div class="removable">
 								<td>'.$field->custom_title.'</td>
-								 <td>'.$display.$field->custom_tip.'
-								 </td>
+								 <td>'.$display.$field->custom_tip.'</td>
 								 <td>'.JText::_($fieldTypes[$field->field_type]).'
 								'.$this->model->setEditCustomHidden($field, $this->row).'
 								 </td>
@@ -121,16 +120,11 @@ class VirtuemartViewProduct extends JView {
 					 } else {
 					     $cartIcone= 'default-off';
 					 }
-					 if (!empty ($field->custom_tip) ) {
-					     $field->custom_tip = '<span> ('.$field->custom_tip.')</span>';
-					 } else {
-					     $field->custom_tip ='';
-					     }
 					 $html[] = '
 					<tr class="removable">
 						<td>'.$field->custom_title.'</td>
-						<td colspan="3"><span>'.$field->custom_tip.'</span>
-						'.$display.'
+						<td>'.$field->custom_tip.'</td>
+						<td>'.$display.'
 						'.$this->model->setEditCustomHidden($field, $this->row).'
 						<p>'.JTEXT::_('COM_VIRTUEMART_CUSTOM_ACTIVATE_JAVASCRIPT').'</p></td>
 						<td>'.JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION').'</td>

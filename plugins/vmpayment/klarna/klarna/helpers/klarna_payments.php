@@ -296,12 +296,12 @@ class klarna_payments {
 			return NULL;
 		}
 
-		$aTypes = array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN, KlarnaPClass::FIXED);
+		$aTypes = array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN);
 		$kCheckout = new KlarnaAPI($this->country, $this->lang, 'part', $billTotalInCountryCurrency, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, $aTypes, JPATH_VMKLARNAPLUGIN);
 
 		KlarnaHandler::getCheapestPclass ($kCheckout, $cheapest, $minimum);
 
-		if ($minimum == 0 OR $billTotalInCountryCurrency < $minimum) {
+		if ($billTotalInCountryCurrency < $minimum) {
 			return NULL;
 		}
 		if (!class_exists ('VirtueMartModelCurrency')) {

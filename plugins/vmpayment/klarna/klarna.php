@@ -357,13 +357,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				'selected'                    => $selected
 			));
 		}
-		$doPart = TRUE;
-		if (strtolower ($country_code) == 'nld') {
-			$doPart = KlarnaHandler::checkPartNLpriceCondition ($cart);
-		}
+
 
 		if (in_array ('part', $cData['payments_activated'])) {
-			if ($partPay > 0 and  $doPart) {
+			if ($partPay > 0  ) {
 				if ($payment_params = $payments->get_payment_params ($method, 'part', $cart, $cData['virtuemart_currency_id'])) {
 					$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
 					$selected = ($klarna_paymentmethod == 'klarna_part' AND $method->virtuemart_paymentmethod_id == $cart->virtuemart_paymentmethod_id) ? $checked : "";
@@ -460,7 +457,14 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			vmWarn ($msg);
 			//return false;
 		}
-
+		if (strtolower ($country_code) == 'nld') {
+			if(! KlarnaHandler::checkPartNLpriceCondition ($cart)) {
+				// We can't show our payment options for Dutch customers
+			// if price exceeds 250 euro. Will be replaced with ILT in
+			// the future.
+			return FALSE;
+			}
+		}
 		// Get the country settings
 		if (!class_exists ('KlarnaHandler')) {
 			require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
