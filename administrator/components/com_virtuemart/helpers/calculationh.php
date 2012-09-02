@@ -47,6 +47,7 @@ class calculationHelper {
 	public $product_discount_id = 0;
 	public $product_marge_id = 0;
 	public $vendorCurrency = 0;
+	public $inCart = FALSE;
 	private $exchangeRateVendor = 0;
 	private $exchangeRateShopper = 0;
 	private $_internalDigits = 6;
@@ -238,6 +239,7 @@ class calculationHelper {
 			}
 			$this->_cats = $product->categories;
 			$this->_product = $product;
+			$this->_product->amount = $amount;
 		} //Use it as productId
 		else {
 			vmError('getProductPrices no object given query time','getProductPrices no object given query time');
@@ -435,6 +437,7 @@ class calculationHelper {
 
 		$this->_cart = $cart;
 
+		$this->inCart = TRUE;
 		$pricesPerId = array();
 		$this->_cartPrices = array();
 		$this->_cartData = array();

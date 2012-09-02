@@ -180,7 +180,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	{
 // 		vmdebug('getOrdersList');
 		$this->_noLimit = $noLimit;
-		$selecct = " o.*, CONCAT_WS(' ',u.first_name,u.middle_name,u.last_name) AS order_name "
+		$select = " o.*, CONCAT_WS(' ',u.first_name,u.middle_name,u.last_name) AS order_name "
 		.',pm.payment_name AS payment_method ';
 		$from = $this->getOrdersListQuery();
 		/*		$_filter = array();
@@ -205,7 +205,18 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 
-			$where[] = ' ( u.first_name LIKE '.$search.' OR u.middle_name LIKE '.$search.' OR u.last_name LIKE '.$search.' OR `order_number` LIKE '.$search.')';
+			$searchFields = array();
+			$searchFields[] = 'u.first_name';
+			$searchFields[] = 'u.middle_name';
+			$searchFields[] = 'u.last_name';
+			$searchFields[] = 'o.order_number';
+			$searchFields[] = 'u.company';
+			$searchFields[] = 'u.email';
+			$searchFields[] = 'u.phone_1';
+			$searchFields[] = 'u.address_1';
+			$searchFields[] = 'u.zip';
+			$where[] = implode (' LIKE '.$search.' OR ', $searchFields) . ' LIKE '.$search.' ';
+			//$where[] = ' ( u.first_name LIKE '.$search.' OR u.middle_name LIKE '.$search.' OR u.last_name LIKE '.$search.' OR `order_number` LIKE '.$search.')';
 		}
 
 		if ($order_status_code = JRequest::getString('order_status_code', false)){
@@ -225,7 +236,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$ordering = ' order by o.modified_on DESC';
 		}
 
-		$this->_data = $this->exeSortSearchListQuery(0,$selecct,$from,$whereString,'',$ordering);
+		$this->_data = $this->exeSortSearchListQuery(0,$select,$from,$whereString,'',$ordering);
 
 
 		return $this->_data ;

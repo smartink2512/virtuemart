@@ -50,7 +50,7 @@ class Migrator extends VmModel{
 		if(!empty($jrmemory_limit)){
 			@ini_set( 'memory_limit', $jrmemory_limit.'M' );
 		} else {
-			$memory_limit = ini_get('memory_limit');
+			$memory_limit = (int) substr(ini_get('memory_limit'),0,-1);
 			if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
 		}
 
@@ -71,6 +71,7 @@ class Migrator extends VmModel{
 			$this->_app->enqueueMessage('Found prior migration process, resume migration maxScriptTime '.$this->maxScriptTime.' maxMemoryLimit '.$this->maxMemoryLimit/(1024*1024));
 		}
 
+		$this->_keepOldProductIds = VmConfig('keepOldProductIds',FALSE);
 	}
 
 	private function return_bytes($val) {
@@ -1176,6 +1177,9 @@ class Migrator extends VmModel{
 
 					$product['virtuemart_product_id'] = $productModel->store($product);
 
+					if($this->_keepOldProductIds){
+						$product['virtuemart_product_id'] = $product['product_id'];
+					}
 					if(!empty($product['product_id']) and !empty($product['virtuemart_product_id'])){
 						$alreadyKnownIds[$product['product_id']] = $product['virtuemart_product_id'];
 					} else {

@@ -1011,12 +1011,14 @@ class vmJsApi{
 			$uri = JPATH_THEMES .'/'. $template.'/'.$ext ;
 			$path= 'templates/'. $template .'/'.$ext ;
 		}
+
 		if (strpos($path, 'templates/'. $template ) !== FALSE)
 		{
 			// Search in template or fallback
 			if (!file_exists($uri.'/'. $file)) {
-				$assets_path = VmConfig::get('assets_general_path','components/com_virtuemart/assets') ;
-				$path = str_replace('templates/'. $template,$assets_path, $path);
+				$assets_path = VmConfig::get('assets_general_path','components/com_virtuemart/assets/') ;
+				$path = str_replace('templates/'. $template.'/',$assets_path, $path);
+				// vmdebug('setPath',$assets_path,$path);
 				// vmWarn('file not found in tmpl :'.$file );
 			}
 			$path = JURI::root(TRUE) .'/'.$path;
