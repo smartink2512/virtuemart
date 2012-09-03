@@ -103,6 +103,14 @@ AdminUIHelper::startAdminArea();
 			$showProductsLink = JRoute::_('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . $cat->virtuemart_category_id);
 
 			$categoryLevel = '';
+			if(!isset($cat->level)){
+				if($cat->category_parent_id){
+					$cat->level = 1;
+				} else {
+					$cat->level = 0;
+				}
+
+			}
 			$repeat = $cat->level;
 
 			if($repeat > 1){

@@ -162,12 +162,18 @@ class VirtueMartModelUser extends VmModel {
 		$this->_data->shopper_groups = $xrefTable->load($this->_id);
 		if(empty($this->_data->shopper_groups)){
 
-			// 			if(empty($this->_defaultShopperGroup)){
-			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
-			$this->_defaultShopperGroup = $shoppergroupmodel->getDefault($this->_data->JUser->guest);
+			$session = JFactory::getSession();
+			$shoppergroup_id = $session->get('vmshoppergroups',0,'vm');
 
-			$this->_data->shopper_groups = $this->_defaultShopperGroup->virtuemart_shoppergroup_id ;
-
+			if($shoppergroup_id!=0){
+				$this->_data->shopper_groups = $shoppergroup_id;
+				vmdebug('Anonymous case, set session shoppergroup '.$shoppergroup_id);
+			} else {
+				$shoppergroupmodel = VmModel::getModel('ShopperGroup');
+				$this->_defaultShopperGroup = $shoppergroupmodel->getDefault($this->_data->JUser->guest);
+				$this->_data->shopper_groups = $this->_defaultShopperGroup->virtuemart_shoppergroup_id ;
+				vmdebug('Anonymous case, set standard shoppergroup '.$shoppergroup_id);
+			}
 		}
 
 		$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"';

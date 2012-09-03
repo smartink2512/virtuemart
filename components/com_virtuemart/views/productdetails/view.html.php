@@ -181,9 +181,9 @@ class VirtueMartViewProductdetails extends VmView {
 	    $this->assignRef('category', $category);
 
 	    if ($category->parents) {
-		foreach ($category->parents as $c) {
-		    $pathway->addItem(strip_tags($c->category_name), JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $c->virtuemart_category_id));
-		}
+			foreach ($category->parents as $c) {
+			    $pathway->addItem(strip_tags($c->category_name), JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $c->virtuemart_category_id));
+			}
 	    }
 
 	    $vendorId = 1;

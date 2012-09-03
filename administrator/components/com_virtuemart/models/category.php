@@ -149,7 +149,7 @@ class VirtueMartModelCategory extends VmModel {
 // 		$q = 'SELECT * FROM '
 // 	}
 
-	public function getCategoryTree($parentId=0, $level = 0, $onlyPublished = true,$keyword = ""){
+	public function getCategoryTree($parentId=0, $level = 0, $onlyPublished = true,$keyword = ''){
 
 		$sortedCats = array();
 
@@ -158,9 +158,13 @@ class VirtueMartModelCategory extends VmModel {
 		$limit = $limits[1];
 
 // 		vmRam('What take the cats?');
-
 		$this->_noLimit = true;
-		$this->rekurseCats($parentId,$level,$onlyPublished,$keyword,$sortedCats);
+		if($keyword!=''){
+			$sortedCats = self::getCategories($onlyPublished, false, false, $keyword);
+		} else {
+
+			$this->rekurseCats($parentId,$level,$onlyPublished,$keyword,$sortedCats);
+		}
 
 		$this->_noLimit = false;
 		$this->_total = count($sortedCats);
