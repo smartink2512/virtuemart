@@ -312,9 +312,9 @@ if ($iBrowseCol != 1) { ?>
 <?php
 }
 ?>
-<!-- /div removed valerie -->
+
 	<div class="vm-pagination"><?php echo $this->vmPagination->getPagesLinks(); ?><span style="float:right"><?php echo $this->vmPagination->getPagesCounter(); ?></span></div>
-<!-- /div removed valerie -->
+
 <?php } elseif ($this->search !==null ) echo JText::_('COM_VIRTUEMART_NO_RESULT').($this->keyword? ' : ('. $this->keyword. ')' : '')
 ?>
 </div><!-- end browse-view -->
