@@ -155,7 +155,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		 */
 	function getNewStatus ($method) {
 
-		if (isset($method->status_pending)) {
+		if (isset($method->status_pending) and $method->status_pending!="") {
 			return $method->status_pending;
 		} else {
 			return 'P';
