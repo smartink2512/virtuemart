@@ -163,7 +163,7 @@ class VirtueMartModelUser extends VmModel {
 		if(empty($this->_data->shopper_groups)){
 
 			$session = JFactory::getSession();
-			$shoppergroup_id = $session->get('vmshoppergroups',0,'vm');
+			$shoppergroup_id = $session->get('vm_shoppergroups_add',0,'vm');
 
 			if($shoppergroup_id!=0){
 				$this->_data->shopper_groups = $shoppergroup_id;

@@ -72,7 +72,8 @@ JPluginHelper::importPlugin('vmshipment');
 						$userlink = JROUTE::_ ('index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]=' . $this->orderbt->virtuemart_user_id);
 						echo JHTML::_ ('link', JRoute::_ ($userlink), $username, array('title' => JText::_ ('COM_VIRTUEMART_ORDER_EDIT_USER') . ' ' . $username));
 					} else {
-						echo $order->order_name;
+						vmdebug('my this',$this);
+						echo $this->orderbt->first_name.' '.$this->orderbt->last_name;
 					}
 					?>
 				</td>
@@ -120,6 +121,13 @@ JPluginHelper::importPlugin('vmshipment');
 				else {
 					echo '<td align="center">'.JText::_('COM_VIRTUEMART_NO').'</td>';
 				}
+				if(!isset($this->orderstatuslist[$this->orderbt_event->order_status_code])){
+					if(empty($this->orderbt_event->order_status_code)){
+						$this->orderbt_event->order_status_code = 'unknown';
+					}
+					$_orderStatusList[$this->orderbt_event->order_status_code] = JText::_('COM_VIRTUEMART_UNKNOWN_ORDER_STATUS');
+				}
+
 				echo '<td align="center">'.$this->orderstatuslist[$this->orderbt_event->order_status_code].'</td>';
 				echo "<td>".$this->orderbt_event->comments."</td>\n";
 				echo "</tr>\n";

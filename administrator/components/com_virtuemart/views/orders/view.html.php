@@ -105,6 +105,13 @@ class VirtuemartViewOrders extends VmView {
 
 			}
 
+			if(!isset($_orderStatusList[$orderbt->order_status])){
+				if(empty($orderbt->order_status)){
+					$orderbt->order_status = 'unknown';
+				}
+				$_orderStatusList[$orderbt->order_status] = JText::_('COM_VIRTUEMART_UNKNOWN_ORDER_STATUS');
+			}
+
 			/* Assign the data */
 			$this->assignRef('orderdetails', $order);
 			$this->assignRef('orderID', $_orderID);
