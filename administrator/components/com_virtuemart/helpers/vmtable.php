@@ -536,9 +536,10 @@ class VmTable extends JTable{
 					}
 				}
 
-				if(!$admin and !empty($virtuemart_vendor_id) and $loggedVendorId!=$virtuemart_vendor_id ){
+				if(!$admin and !empty($virtuemart_vendor_id) and !empty($loggedVendorId) and $loggedVendorId!=$virtuemart_vendor_id ){
+
 					//vmWarn('COM_VIRTUEMART_NOT_SAME_VENDOR',$loggedVendorId,$virtuemart_vendor_id
-					vmWarn('Stop try to hack this store, you got logged');
+					//vmWarn('Stop try to hack this store, you got logged');
 					vmdebug('Hacking attempt stopped, logged vendor '.$loggedVendorId.' but data belongs to '.$virtuemart_vendor_id);
 					return false;
 				} else if (!$admin) {

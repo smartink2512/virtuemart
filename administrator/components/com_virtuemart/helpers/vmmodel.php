@@ -56,7 +56,7 @@ class VmModel extends JModel {
 			$this->setId((int)$idArray[0]);
 		}
 
-
+		$this->setToggleName('published');
 	}
 
 	static private $_vmmodels = array();
@@ -493,7 +493,7 @@ class VmModel extends JModel {
 
 	function toggle($field,$val = NULL, $cidname = 0,$tablename = 0  ) {
 		$ok = true;
-		$this->setToggleName('published');
+		//$this->setToggleName('published');
 		if (!in_array($field, $this->_togglesName)) {
 			return false ;
 		}

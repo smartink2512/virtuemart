@@ -38,6 +38,7 @@ class VirtueMartModelCategory extends VmModel {
 	function __construct() {
 		parent::__construct();
 		$this->setMainTable('categories');
+
 		$this->addvalidOrderingFieldName(array('category_name','category_description','c.ordering','cx.category_shared','c.published'));
 
 		$toCheck = VmConfig::get('browse_cat_orderby_field','category_name');

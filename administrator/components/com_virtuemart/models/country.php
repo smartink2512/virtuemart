@@ -41,6 +41,7 @@ class VirtueMartModelCountry extends VmModel {
 		array_unshift($this->_validOrderingFieldName,'country_name');
 		$this->_selectedOrdering = 'country_name';
 		$this->_selectedOrderingDir = 'ASC';
+
 	}
 
     /**

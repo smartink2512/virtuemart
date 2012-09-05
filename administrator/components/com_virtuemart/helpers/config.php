@@ -261,7 +261,7 @@ function vmTrace($notice,$force=FALSE){
 		ob_end_clean();
 		if(!VmConfig::$echoDebug){
 			$app = JFactory::getApplication();
-			$app ->enqueueMessage($notice.' <pre>'.$body.'</pre>');
+			$app ->enqueueMessage($notice.' '.$body.' ');
 		} else {
 			echo $notice.' <pre>'.$body.'</pre>';
 		}

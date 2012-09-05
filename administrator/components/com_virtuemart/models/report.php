@@ -125,8 +125,15 @@ class VirtuemartModelReport extends VmModel {
 		$groupBy = 'GROUP BY intervals ';
 
 		//$selectFields[] = 'COUNT(virtuemart_order_id) as number_of_orders';
-		$selectFields[] = 'SUM(product_subtotal_with_tax) as order_subtotal';
+		//with tax => brutto
+		//$selectFields[] = 'SUM(product_subtotal_with_tax) as order_total';
+
+		//without tax => netto
+		$selectFields[] = 'SUM(product_item_price) as order_subtotal';
+
+
 		$this->dates = ' DATE( o.created_on ) BETWEEN "'.$this->from_period.'" AND "'.$this->until_period.'" ';
+
 		$statusList = array();
 		// Filter by statut
 		if ($orderstates = JRequest::getVar('order_status_code',null)) {
@@ -179,13 +186,13 @@ class VirtuemartModelReport extends VmModel {
 				break;
 		}
 
-			$selectFields[] = 'COUNT(DISTINCT o.virtuemart_order_id) as count_order_id';
-			$selectFields[] = 'SUM(product_quantity) as product_quantity';
+		$selectFields[] = 'COUNT(DISTINCT o.virtuemart_order_id) as count_order_id';
+		$selectFields[] = 'SUM(product_quantity) as product_quantity';
 
 
-			$mainTable = '`#__virtuemart_order_items` as i';
+		$mainTable = '`#__virtuemart_order_items` as i';
 
-			$joinTables['orders'] = ' LEFT JOIN #__virtuemart_orders as o ON o.virtuemart_order_id=i.virtuemart_order_id ';
+		$joinTables['orders'] = ' LEFT JOIN #__virtuemart_orders as o ON o.virtuemart_order_id=i.virtuemart_order_id ';
 
 
 		if(count($selectFields)>0){
@@ -199,8 +206,13 @@ class VirtuemartModelReport extends VmModel {
 			}
 
 		} else {
-			$vmError('No select fields given in getRevenueSortListOrderQuery','No select fields given');
+			vmError('No select fields given in getRevenueSortListOrderQuery','No select fields given');
 			return false;
+		}
+
+		$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',FALSE);
+		if($virtuemart_product_id){
+			$where[] = 'i.virtuemart_product_id = "'.$virtuemart_product_id.'" ';
 		}
 
 		if(VmConfig::get('multix','none')!='none'){
@@ -326,7 +338,7 @@ class VirtuemartModelReport extends VmModel {
 	}
 
 	public function renderOrderstatesList() {
-		$orderstates = JRequest::getVar('order_status_code','');
+		$orderstates = JRequest::getVar('order_status_code','C');
 		//print_r($orderstates);
 		$query = 'SELECT `order_status_code` as value, `order_status_name` as text
 			FROM `#__virtuemart_orderstates`

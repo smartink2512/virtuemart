@@ -117,12 +117,14 @@ class calculationHelper {
 		$this->vendorCurrency = $id;
 	}
 
+	//static $allrules= array();
+	var $allrules= array();
 	public function setVendorId($id){
 
 		$this->productVendorId = $id;
+		//vmdebug('setVendorId $allrules '.$this->productVendorId,count($this->allrules));
 		if(empty($this->allrules[$this->productVendorId])){
 			$epoints = array("'Marge'","'Tax'","'VatTax'","'DBTax'","'DATax'");
-			$this->allrules = array();
 			$this->allrules[$this->productVendorId]['Marge'] = array();
 			$this->allrules[$this->productVendorId]['Tax'] 	= array();
 			$this->allrules[$this->productVendorId]['VatTax'] 	= array();
@@ -137,6 +139,7 @@ class calculationHelper {
 										OR `for_override` = "1" )';
 			$this->_db->setQuery($q);
 			$allrules = $this->_db->loadAssocList();
+
 			foreach ($allrules as $rule){
 				$this->allrules[$this->productVendorId][$rule["calc_kind"]][] = $rule;
 			}
@@ -249,6 +252,8 @@ class calculationHelper {
 			$this->productVendorId = isset($product->virtuemart_vendor_id)? $product->virtuemart_vendor_id:1;
 			if (empty($this->productVendorId)) {
 				$this->productVendorId = 1;
+			} else {
+				$this->setVendorId($this->productVendorId);
 			}
 			$this->_cats = $product->categories;
 			$this->_product = $product;

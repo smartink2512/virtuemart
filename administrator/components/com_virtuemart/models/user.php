@@ -68,29 +68,32 @@ class VirtueMartModelUser extends VmModel {
 		$user = JFactory::getUser();
 		//anonymous sets to 0 for a new entry
 		if(empty($user->id)){
-			$this->setUserId(0);
-			//			echo($this->_id,'Recognized anonymous case');
+			$userId = 0;
+			//echo($this->_id,'Recognized anonymous case');
 		} else {
-
 			//not anonymous, but no cid means already registered user edit own data
 			if(empty($cid)){
-				$this->setUserId($user->id);
+				$userId = $user->id;
 				// vmdebug('setId setCurrent $user',$user->get('id'));
 			} else {
 				if($cid != $user->id){
 					if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 					if(Permissions::getInstance()->check("admin")) {
-						$this->setUserId($cid);
+						$userId = $cid;
 						// 						vmdebug('Admin watches user, setId '.$cid);
 					} else {
 						JError::raiseWarning(1,'Hacking attempt');
-						$this->setUserId($user->id);
+						$userId = $user->id;
 					}
 				}else {
-					$this->setUserId($user->id);
+					$userId = $user->id;
 				}
 			}
 		}
+
+		$this->setUserId($userId);
+		return $userId;
+
 	}
 
 	/**

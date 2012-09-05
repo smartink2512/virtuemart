@@ -71,7 +71,7 @@ class Migrator extends VmModel{
 			$this->_app->enqueueMessage('Found prior migration process, resume migration maxScriptTime '.$this->maxScriptTime.' maxMemoryLimit '.$this->maxMemoryLimit/(1024*1024));
 		}
 
-		$this->_keepOldProductIds = VmConfig('keepOldProductIds',FALSE);
+		$this->_keepOldProductIds = VmConfig::get('keepOldProductIds',FALSE);
 	}
 
 	private function return_bytes($val) {

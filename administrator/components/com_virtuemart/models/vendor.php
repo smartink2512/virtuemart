@@ -195,8 +195,7 @@ class VirtueMartModelVendor extends VmModel {
 
 		if ($this->_id != $oldVendorId) {
 
-			$app = JFactory::getApplication ();
-			$app->enqueueMessage ('Developer notice, tried to update vendor xref should not appear in singlestore');
+			vmdebug('Developer notice, tried to update vendor xref should not appear in singlestore');
 
 			//update user table
 			$usertable = $this->getTable ('vmusers');
