@@ -1075,7 +1075,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			$cartPricesCurrency = $fromCurrency;
 		}
 		$cd = CurrencyDisplay::getInstance ($cartPricesCurrency);
-		vmDebug ('convertPrice', $price, $cartPricesCurrency, $toCurrency, $priceInNewCurrency);
+		vmDebug ('convertPrice', $price,  $toCurrency, $fromCurrency, $cartPricesCurrency,$priceInNewCurrency);
 		return $priceInNewCurrency;
 	}
 
@@ -1407,7 +1407,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 
 		// convert price in euro
 		//$euro_currency_id = ShopFunctions::getCurrencyByName( 'EUR');
-		$price = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $cart->pricesCurrency, 'EUR');
+		$price = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $cart->pricesCurrency, 'EUR',$cart->pricesCurrency);
 		return self::checkNLpriceCondition ($price);
 	}
 }

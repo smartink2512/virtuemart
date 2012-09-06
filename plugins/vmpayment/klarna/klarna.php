@@ -154,10 +154,12 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		foreach ($this->methods as $method) {
 			$cData = KlarnaHandler::getcData ($method, $this->getCartAddress ($cart, $type, FALSE));
 			if ($cData['active'] and in_array ('part', $cData['payments_activated'])) {
-				$productPrice = new klarna_productPrice($cData);
+				if (!empty($product->prices)) { // no price is set
+					$productPrice = new klarna_productPrice($cData);
 				if ($productViewData = $productPrice->showProductPrice ($product, $cart)) {
 					$productDisplayHtml = $this->renderByLayout ('productprice_layout', $productViewData, $method->payment_element, 'payment');
 					$productDisplay[] = $productDisplayHtml;
+				}
 				}
 			}
 		}
@@ -361,7 +363,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 		if (in_array ('part', $cData['payments_activated'])) {
 			if ($partPay > 0  ) {
-				if ($payment_params = $payments->get_payment_params ($method, 'part', $cart, $cData['virtuemart_currency_id'])) {
+				if ($payment_params = $payments->get_payment_params ($method, 'part', $cart, $cData['virtuemart_currency_id'], $cData['vendor_currency'])) {
 					$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
 					$selected = ($klarna_paymentmethod == 'klarna_part' AND $method->virtuemart_paymentmethod_id == $cart->virtuemart_paymentmethod_id) ? $checked : "";
 					$html .= $this->renderByLayout ('displaypayment', array(
@@ -1685,7 +1687,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 					$payments = new klarna_payments($cData, $shipTo);
 					//vmdebug('displaylogos',$cart_prices);
-					$totalInPaymentCurrency = KlarnaHandler::convertPrice ($total, $cartPricesCurrency, $cData['currency_code']);
+					$totalInPaymentCurrency = KlarnaHandler::convertPrice ($total, $cData['vendor_currency'],   $cData['virtuemart_currency_id']);
 					vmdebug ('totalInPaymentCurrency', $totalInPaymentCurrency);
 					if (isset($sessionKlarnaData->KLARNA_DATA)) {
 						$text = $payments->displayPclass ($sessionKlarnaData->KLARNA_DATA['pclass'], $totalInPaymentCurrency); // .' '.$total;
@@ -1792,7 +1794,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			}
 			$payments = new klarna_payments($cData, KlarnaHandler::getShipToAddress ($cart));
 			// TODO: change to there is a function in the API
-			$sFee = $payments->getCheapestMonthlyCost ($cart, $cData['virtuemart_currency_id']);
+			$sFee = $payments->getCheapestMonthlyCost ($cart, $cData );
 			if ($sFee) {
 				$payment_advertise[] = $this->renderByLayout ('cart_advertisement',
 					array("sFee"   => $sFee,

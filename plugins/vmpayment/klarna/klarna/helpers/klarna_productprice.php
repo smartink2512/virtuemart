@@ -60,7 +60,7 @@ class klarna_productPrice {
 		// the price is in the vendor currency
 		// convert price in NLD currency= euro
 
-		$price = KlarnaHandler::convertPrice ($product->prices['salesPrice'], $this->cData['vendor_currency'], 'EUR');
+		$price = KlarnaHandler::convertPrice ($product->prices['salesPrice'], $this->cData['vendor_currency'], 'EUR', $cart->pricesCurrency);
 
 		if (strtolower ($this->cData['country_code']) == 'nl' && !KlarnaHandler::checkNLpriceCondition ($price )) {
 			vmDebug ('showPP', 'dont show price for NL', $this->cData['country_code'], $price);
@@ -124,7 +124,7 @@ class klarna_productPrice {
 			$sTableHtml = "";
 			$monthTable = array();
 			// either in vendor's currency, or shipTo Currency
-			$countryCurrencyId = ShopFunctions::getCurrencyIDByName ($this->cData['currency_code']);
+			$countryCurrencyId = $this->cData['virtuemart_currency_id'];
 			$currency = CurrencyDisplay::getInstance ($countryCurrencyId);
 			$fromCurrency = $currency->getCurrencyForDisplay ();
 

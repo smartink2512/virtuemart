@@ -472,7 +472,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		$mb_data = JRequest::get ('post');
 
 		if (!isset($mb_data['transaction_id'])) {
-			$this->logInfo (__FUNCTION__ . ' transaction_id not set: ' . $mb_data['transaction_id'], 'message');
+			//$this->logInfo (__FUNCTION__ . ' transaction_id not set: ' . $mb_data['transaction_id'], 'message');
 			return;
 		}
 

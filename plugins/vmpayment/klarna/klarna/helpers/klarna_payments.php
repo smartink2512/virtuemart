@@ -130,7 +130,7 @@ class klarna_payments {
 	/**
 	 * Build the Payment params
 	 */
-	public function get_payment_params ($method, $payment_type, $cart = NULL, $country_currency_code = '') {
+	public function get_payment_params ($method, $payment_type, $cart = NULL, $country_currency_code = '', $vendor_currency='') {
 
 		if (!class_exists ('CurrencyDisplay')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
@@ -157,7 +157,7 @@ class klarna_payments {
 
 			$billTotalInCountryCurrency = 0;
 			if (isset($cart->pricesUnformatted['billTotal'])) {
-				$billTotalInCountryCurrency = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $cart->pricesCurrency, $country_currency_code);
+				$billTotalInCountryCurrency = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $vendor_currency, $country_currency_code, $cart->pricesCurrency);
 			}
 			if ($billTotalInCountryCurrency <= 0) {
 				return NULL;
@@ -273,7 +273,7 @@ class klarna_payments {
 	/**
 	 * Build the Payment params
 	 */
-	public function getCheapestMonthlyCost ($cart = NULL, $country_currency_code = '') {
+	public function getCheapestMonthlyCost ($cart = NULL, $cData) {
 
 		if (!class_exists ('CurrencyDisplay')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
@@ -290,16 +290,16 @@ class klarna_payments {
 
 		$billTotalInCountryCurrency = 0;
 		if (isset($cart->pricesUnformatted['billTotal'])) {
-			$billTotalInCountryCurrency = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $cart->pricesCurrency, $country_currency_code);
+			$billTotalInCountryCurrency = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $cData['vendor_currency'], $cData['virtuemart_currency_id'],  $cart->pricesCurrency);
 		}
 		if ($billTotalInCountryCurrency <= 0) {
 			return NULL;
 		}
-
 		$aTypes = array(KlarnaPClass::ACCOUNT, KlarnaPClass::CAMPAIGN);
 		$kCheckout = new KlarnaAPI($this->country, $this->lang, 'part', $billTotalInCountryCurrency, KlarnaFlags::CHECKOUT_PAGE, $this->klarna, $aTypes, JPATH_VMKLARNAPLUGIN);
 
 		KlarnaHandler::getCheapestPclass ($kCheckout, $cheapest, $minimum);
+vmdebug('getCheapestMonthlyCost',$cart->pricesUnformatted['billTotal'], $billTotalInCountryCurrency , $cheapest,$minimum);
 
 		if ($billTotalInCountryCurrency < $minimum) {
 			return NULL;

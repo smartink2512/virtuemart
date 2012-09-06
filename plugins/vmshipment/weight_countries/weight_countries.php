@@ -351,10 +351,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		} else {
 			$orderamount_cond = true;
 		}
-
-		vmAdminInfo ('weigth_countries _orderamountCond cart_amount:' . $cart_prices['salesPrice'] . ' method->orderamount_start:' . $method->orderamount_start .
+/*
+		vmAdminInfo ('weight_countries _orderamountCond cart_amount:' . $cart_prices['salesPrice'] . ' method->orderamount_start:' . $method->orderamount_start .
 			' method->orderamount_stop:' .
-			$method->orderamount_stop . ' result:', $orderamount_cond);
+			$method->orderamount_stop . ' result:', $orderamount_cond);*/
 		return $orderamount_cond;
 	}
 
@@ -382,10 +382,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		} else if(!empty($method->zip_start) or !empty( $method->zip_stop)){
 			$zip_cond = false;
 		}
-
-		vmAdminInfo ('weigth_countries _zipCond zip:' . $zip, ' method->zip_start:' . $method->zip_start .
+/*
+		vmAdminInfo ('weight_countries _zipCond zip:' . $zip, ' method->zip_start:' . $method->zip_start .
 			' method->zip_stop:' .
-			$method->zip_stop . ' result:' . $zip_cond);
+			$method->zip_stop . ' result:' . $zip_cond);*/
 		return $zip_cond;
 	}
 
