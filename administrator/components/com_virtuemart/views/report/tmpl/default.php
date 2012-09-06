@@ -40,8 +40,8 @@ if ( JVM_VERSION == 2 )
             <table>
                 <tr>
                     <td align="left" width="100%">
-						<?php echo JText::_('COM_VIRTUEMART_ORDERSTATUS').':'. $this->lists['state_list']; ?>
-						<?php echo JText::_('COM_VIRTUEMART_REPORT_INTERVAL').':'. $this->lists['intervals']; ?>
+						<?php echo JText::_('COM_VIRTUEMART_ORDERSTATUS') . $this->lists['state_list']; ?>
+						<?php echo JText::_('COM_VIRTUEMART_REPORT_INTERVAL') . $this->lists['intervals']; ?>
                         <?php echo JText::_('COM_VIRTUEMART_REPORT_SET_PERIOD') . $this->lists['select_date'];
 
                     echo JText::_('COM_VIRTUEMART_REPORT_FROM_PERIOD') .  vmJsApi::jDate($this->from_period, 'from_period');
@@ -77,6 +77,19 @@ if ( JVM_VERSION == 2 )
                     <th>
                         <?php echo $this->sort('order_subtotal', 'COM_VIRTUEMART_REPORT_BASIC_REVENUE') ; ?>
                     </th>
+                <?php
+                    $intervals = JRequest::getWord ('intervals', 'day');
+	                if($intervals=='product_s'){
+		        ?>
+		            <th>
+                        <?php echo $this->sort('order_item_name', 'COM_VIRTUEMART_PRODUCT_NAME') ; ?>
+                    </th>
+                    <th>
+	                    <?php echo $this->sort('virtuemart_product_id', 'COM_VIRTUEMART_PRODUCT_ID') ; ?>
+                    </th>
+		        <?php
+	                }
+		        ?>
                 </tr>
             </thead>
             <tbody>
@@ -105,6 +118,18 @@ if ( JVM_VERSION == 2 )
                     <td align="right">
                         <?php echo $r['order_subtotal'];?>
                     </td>
+		    <?php   if($intervals=='product_s'){
+	                ?>
+	                <td align="center">
+		                <?php echo $r['order_item_name'];?>
+	                </td>
+	                <td align="center">
+		                <?php echo $r['virtuemart_product_id'];?>
+	                </td>
+
+	         <?php  }
+			    ?>
+
                 </tr>
                 <?php
 	    	$i = 1-$i;
