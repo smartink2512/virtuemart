@@ -90,7 +90,7 @@ class VirtuemartModelReport extends VmModel {
 
 	function  getItemsByRevenue ($revenue) {
 
-		$q = 'select SUM(`product_quantity`) as product_quantity from `#__virtuemart_order_items` as i LEFT JOIN #__virtuemart_orders as o ON o.virtuemart_order_id=i.virtuemart_order_id ' . $this->whereItem . ' ' . $this->intervals . '="' . $revenue['intervals'] . '" ';
+		$q = 'select SUM(`product_quantity`) as product_quantity from `#__virtuemart_order_items` as i LEFT JOIN #__virtuemart_orders as o ON o.virtuemart_order_id=i.virtuemart_order_id ' . $this->whereItem . ' CAST(' . $this->intervals . ' AS DATE) = CAST("' . $revenue['intervals'] . '" AS DATE) ';
 		$this->_db->setQuery ($q);
 		//echo $this->_db->_sql;
 		return $this->_db->loadResult ();
@@ -130,7 +130,7 @@ class VirtuemartModelReport extends VmModel {
 // 		if(!empty($this->intervals)){
 // 			$orderBy = $this->_getOrdering('o.`created_on`');
 // 		}
-		$selectFields['intervals'] = $this->intervals . ' AS intervals, o.`created_on` ';
+		$selectFields['intervals'] = $this->intervals . ' AS intervals, CAST( o.`created_on` AS DATE ) AS created_on';
 		vmdebug('getRevenueSortListOrderQuery '.$intervals);
 		if($intervals=='product_s'){
 
@@ -195,7 +195,7 @@ class VirtuemartModelReport extends VmModel {
 				break;
 			default:
 				// invidual grouping
-				$orderBy = $this->_getOrdering ();
+				$orderBy = $this->_getOrdering ('`o`.');
 				vmdebug ('default case', $orderBy);
 				//$this->intervals= '`o`.`created_on`';
 // 				$orderBy = ' ORDER BY '.$filterorders.' '.$orderdir;

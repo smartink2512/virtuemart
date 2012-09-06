@@ -23,7 +23,7 @@ defined ('_JEXEC') or die('Restricted access');
 	if (!empty($this->product->prices)) {
 		echo "<strong>" . JText::_ ('COM_VIRTUEMART_CART_PRICE') . "</strong>";
 	}
-	if (empty($this->product->prices) and VmConfig::get ('askprice', 1)) {
+	if (empty($product->prices) and VmConfig::get ('askprice', 1) and empty($product->images[0]->file_is_downloadable)) {
 		?>
 		<a class="ask-a-question bold" href="<?php echo $this->askquestion_url ?>"><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_ASKPRICE') ?></a>
 		<?php
