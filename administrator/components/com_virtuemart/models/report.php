@@ -195,7 +195,7 @@ class VirtuemartModelReport extends VmModel {
 				break;
 			default:
 				// invidual grouping
-				$orderBy = $this->_getOrdering ('`o`.');
+				$orderBy = $this->_getOrdering ();
 				vmdebug ('default case', $orderBy);
 				//$this->intervals= '`o`.`created_on`';
 // 				$orderBy = ' ORDER BY '.$filterorders.' '.$orderdir;
