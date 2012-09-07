@@ -47,10 +47,9 @@ class calculationHelper {
 	public $product_discount_id = 0;
 	public $product_marge_id = 0;
 	public $vendorCurrency = 0;
-	public $inCart = FALSE;
 	private $exchangeRateVendor = 0;
 	private $exchangeRateShopper = 0;
-	private $_internalDigits = 6;
+	private $_internalDigits = 4;
 	private $_revert = false;
 	static $_instance;
 
@@ -117,29 +116,26 @@ class calculationHelper {
 		$this->vendorCurrency = $id;
 	}
 
-	//static $allrules= array();
-	var $allrules= array();
 	public function setVendorId($id){
 
 		$this->productVendorId = $id;
-		//vmdebug('setVendorId $allrules '.$this->productVendorId,count($this->allrules));
 		if(empty($this->allrules[$this->productVendorId])){
 			$epoints = array("'Marge'","'Tax'","'VatTax'","'DBTax'","'DATax'");
+			$this->allrules = array();
 			$this->allrules[$this->productVendorId]['Marge'] = array();
 			$this->allrules[$this->productVendorId]['Tax'] 	= array();
 			$this->allrules[$this->productVendorId]['VatTax'] 	= array();
 			$this->allrules[$this->productVendorId]['DBTax'] = array();
 			$this->allrules[$this->productVendorId]['DATax'] = array();
 			$q = 'SELECT * FROM #__virtuemart_calcs WHERE
-		                    `calc_kind` IN (' . implode(",",$epoints). ' )
-		                     AND `published`="1"
-		                     AND (`virtuemart_vendor_id`="' . $this->productVendorId . '" OR `shared`="1" )
-		                     AND ( ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
-		                        AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" )
-										OR `for_override` = "1" )';
+											                    `calc_kind` IN (' . implode(",",$epoints). ' )
+											                     AND `published`="1"
+											                     AND (`virtuemart_vendor_id`="' . $this->productVendorId . '" OR `shared`="1" )
+											                     AND ( ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
+											                     	AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" )
+																			OR `for_override` = "1" )';
 			$this->_db->setQuery($q);
 			$allrules = $this->_db->loadAssocList();
-
 			foreach ($allrules as $rule){
 				$this->allrules[$this->productVendorId][$rule["calc_kind"]][] = $rule;
 			}
@@ -174,21 +170,8 @@ class calculationHelper {
 				}
 			}
 			else if (empty($this->_shopperGroupId)) {
-				$session = JFactory::getSession();
-				$shoppergroup_id = $session->get('vm_shoppergroups_add',0,'vm');
-
-				if($shoppergroup_id!=0){
-					$this->_shopperGroupId[] = $shoppergroup_id;
-					$remove = $session->get('vm_shoppergroups_remove',0,'vm');
-					if(!empty($remove)){
-						unset($this->_shopperGroupId[$remove]);
-						vmdebug('Anonymous case, set session shoppergroup by plugin '.$shoppergroup_id);
-					}
-				} else {
-					$this->_db->setQuery('SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
-								WHERE `default`="'.($user->guest+1).'" AND `virtuemart_vendor_id`="' . (int) $vendorId . '"');
-					$this->_shopperGroupId = $this->_db->loadResultArray();
-				}
+				//We just define the shoppergroup with id = 1 to anonymous default shoppergroup
+				$this->_shopperGroupId[] = 1;
 			}
 		}
 	}
@@ -196,10 +179,11 @@ class calculationHelper {
 	private function setCountryState($cart=0) {
 
 		if ($this->_app->isAdmin())
-			return;
+		return;
 
 		if (empty($cart)) {
-			if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			if (!class_exists('VirtueMartCart'))
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 			$cart = VirtueMartCart::getCart();
 		}
 		$this->_cart = $cart;
@@ -252,12 +236,9 @@ class calculationHelper {
 			$this->productVendorId = isset($product->virtuemart_vendor_id)? $product->virtuemart_vendor_id:1;
 			if (empty($this->productVendorId)) {
 				$this->productVendorId = 1;
-			} else {
-				$this->setVendorId($this->productVendorId);
 			}
 			$this->_cats = $product->categories;
 			$this->_product = $product;
-			$this->_product->amount = $amount;
 		} //Use it as productId
 		else {
 			vmError('getProductPrices no object given query time','getProductPrices no object given query time');
@@ -404,27 +385,27 @@ class calculationHelper {
 	private function fillVoidPrices() {
 
 		if (!isset($prices['basePrice']))
-			$prices['basePrice'] = null;
+		$prices['basePrice'] = null;
 		if (!isset($prices['basePriceVariant']))
-			$prices['basePriceVariant'] = null;
+		$prices['basePriceVariant'] = null;
 		if (!isset($prices['basePriceWithTax']))
-			$prices['basePriceWithTax'] = null;
+		$prices['basePriceWithTax'] = null;
 		if (!isset($prices['discountedPriceWithoutTax']))
-			$prices['discountedPriceWithoutTax'] = null;
+		$prices['discountedPriceWithoutTax'] = null;
 		if (!isset($prices['priceBeforeTax']))
-			$prices['priceBeforeTax'] = null;
+		$prices['priceBeforeTax'] = null;
 		if (!isset($prices['taxAmount']))
-			$prices['taxAmount'] = null;
+		$prices['taxAmount'] = null;
 		if (!isset($prices['salesPriceWithDiscount']))
-			$prices['salesPriceWithDiscount'] = null;
+		$prices['salesPriceWithDiscount'] = null;
 		if (!isset($prices['salesPrice']))
-			$prices['salesPrice'] = null;
+		$prices['salesPrice'] = null;
 		if (!isset($prices['discountAmount']))
-			$prices['discountAmount'] = null;
+		$prices['discountAmount'] = null;
 		if (!isset($prices['priceWithoutTax']))
-			$prices['priceWithoutTax'] = null;
+		$prices['priceWithoutTax'] = null;
 		if (!isset($prices['variantModification']))
-			$prices['variantModification'] = null;
+		$prices['variantModification'] = null;
 	}
 
 	/** function to start the calculation, here it is for the invoice in the checkout
@@ -455,7 +436,6 @@ class calculationHelper {
 
 		$this->_cart = $cart;
 
-		$this->inCart = TRUE;
 		$pricesPerId = array();
 		$this->_cartPrices = array();
 		$this->_cartData = array();
@@ -670,7 +650,7 @@ class calculationHelper {
 		}
 
 		if (!class_exists('CouponHelper'))
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
+		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
 		if (!($_data = CouponHelper::getCouponDetails($_code))) {
 			return; // TODO give some error here
 		}
@@ -830,11 +810,11 @@ class calculationHelper {
 
 // 			$hitsAmount = true;
 // 			if (!empty($this->_amount)) {
-			//Test
+				//Test
 // 			}
 			if ($hitsCategory && $hitsShopper && $hitsDeliveryArea) {
 				if ($this->_debug)
-					echo '<br/ >Add rule ForProductPrice ' . $rule["virtuemart_calc_id"];
+				echo '<br/ >Add rule ForProductPrice ' . $rule["virtuemart_calc_id"];
 
 				$testedRules[] = $rule;
 			}
@@ -909,7 +889,7 @@ class calculationHelper {
 
 			if ($hitsDeliveryArea && $hitsShopper) {
 				if ($this->_debug)
-					echo '<br/ >Add Checkout rule ' . $rule["virtuemart_calc_id"] . '<br/ >';
+				echo '<br/ >Add Checkout rule ' . $rule["virtuemart_calc_id"] . '<br/ >';
 				$testedRules[] = $rule;
 			}
 		}
@@ -924,410 +904,415 @@ class calculationHelper {
 		return $testedRules;
 	}
 
-	//	/**
-	//	 * Gathers the effecting coupons for the calculation
-	//	 *
-	//	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
-	//	 * @author Max Milbers
-	//	 * @param 	$code 	The Id of the coupon
-	//	 * @return 	$rules 	ids of the coupons
-	//	 */
-	//	function calculateCouponPrices($code=array()){
-	//		if (empty($code)) return;
-	//		$couponCodesQuery = $this -> writeRulePartEffectingQuery($code,'coupon_code');
-	//		$q= 'SELECT * FROM #__virtuemart_coupons WHERE ' .
-	//			$couponCodesQuery .
-	//			' AND ( coupon_start_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_start_date <= '.$this->_db->Quote($this ->_now).' )' .
-	//			' AND ( coupon_expiry_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_expiry_date >= '.$this->_db->Quote($this ->_now).' )';
-	//		$this->_db->setQuery($q);
-	//		$rules = $this->_db->loadAssocList();
-	//		return $rules;
-	//	}
+		//	/**
+		//	 * Gathers the effecting coupons for the calculation
+		//	 *
+		//	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+		//	 * @author Max Milbers
+		//	 * @param 	$code 	The Id of the coupon
+		//	 * @return 	$rules 	ids of the coupons
+		//	 */
+		//	function calculateCouponPrices($code=array()){
+		//		if (empty($code)) return;
+		//		$couponCodesQuery = $this -> writeRulePartEffectingQuery($code,'coupon_code');
+		//		$q= 'SELECT * FROM #__virtuemart_coupons WHERE ' .
+		//			$couponCodesQuery .
+		//			' AND ( coupon_start_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_start_date <= '.$this->_db->Quote($this ->_now).' )' .
+		//			' AND ( coupon_expiry_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_expiry_date >= '.$this->_db->Quote($this ->_now).' )';
+		//		$this->_db->setQuery($q);
+		//		$rules = $this->_db->loadAssocList();
+		//		return $rules;
+		//	}
 
-	/**
-	 * Calculates the effecting Shipment prices for the calculation
-	 * @todo
-	 * @copyright (c) 2009 VirtueMart Team. All rights reserved.
-	 * @author Max Milbers
-	 * @author Valerie Isaksen
-	 * @param 	$code 	The Id of the coupon
-	 * @return 	$rules 	ids of the coupons
-	 */
-	function calculateShipmentPrice(  $cart, $ship_id, $checkAutomaticSelected=true) {
+		/**
+		 * Calculates the effecting Shipment prices for the calculation
+		 * @todo
+		 * @copyright (c) 2009 VirtueMart Team. All rights reserved.
+		 * @author Max Milbers
+		 * @author Valerie Isaksen
+		 * @param 	$code 	The Id of the coupon
+		 * @return 	$rules 	ids of the coupons
+		 */
+		function calculateShipmentPrice(  $cart, $ship_id, $checkAutomaticSelected=true) {
 
-		$this->_cartData['shipmentName'] = JText::_('COM_VIRTUEMART_CART_NO_SHIPMENT_SELECTED');
-		$this->_cartPrices['shipmentValue'] = 0; //could be automatically set to a default set in the globalconfig
-		$this->_cartPrices['shipmentTax'] = 0;
-		$this->_cartPrices['shipmentTotal'] = 0;
-		$this->_cartPrices['salesPriceShipment'] = 0;
-		// check if there is only one possible shipment method
+			$this->_cartData['shipmentName'] = JText::_('COM_VIRTUEMART_CART_NO_SHIPMENT_SELECTED');
+			$this->_cartPrices['shipmentValue'] = 0; //could be automatically set to a default set in the globalconfig
+			$this->_cartPrices['shipmentTax'] = 0;
+			$this->_cartPrices['shipmentTotal'] = 0;
+			$this->_cartPrices['salesPriceShipment'] = 0;
+			// check if there is only one possible shipment method
 
-		$automaticSelectedShipment =   $cart->CheckAutomaticSelectedShipment($this->_cartPrices, $checkAutomaticSelected);
-		if ($automaticSelectedShipment) $ship_id=$cart->virtuemart_shipmentmethod_id;
-		if (empty($ship_id)) return;
+			$automaticSelectedShipment =   $cart->CheckAutomaticSelectedShipment($this->_cartPrices, $checkAutomaticSelected);
+			if ($automaticSelectedShipment) $ship_id=$cart->virtuemart_shipmentmethod_id;
+			if (empty($ship_id)) return;
 
-		// Handling shipment plugins
-		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-		JPluginHelper::importPlugin('vmshipment');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmonSelectedCalculatePriceShipment',array(  $cart, &$this->_cartPrices, &$this->_cartData['shipmentName']  ));
+			// Handling shipment plugins
+			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+			JPluginHelper::importPlugin('vmshipment');
+			$dispatcher = JDispatcher::getInstance();
+			$returnValues = $dispatcher->trigger('plgVmonSelectedCalculatePriceShipment',array(  $cart, &$this->_cartPrices, &$this->_cartData['shipmentName']  ));
 
-		/*
-		   * Plugin return true if shipment rate is still valid
-		   * false if not any more
-		   */
-		$shipmentValid=0;
-		foreach ($returnValues as $returnValue) {
-			$shipmentValid += $returnValue;
+			/*
+			* Plugin return true if shipment rate is still valid
+			* false if not any more
+			*/
+			$shipmentValid=0;
+			foreach ($returnValues as $returnValue) {
+				    $shipmentValid += $returnValue;
+			 }
+			 if (!$shipmentValid) {
+				    $cart->virtuemart_shipmentmethod_id = 0;
+				    $cart->setCartIntoSession();
+			 }
+
+
+			return $this->_cartPrices;
 		}
-		if (!$shipmentValid) {
-			$cart->virtuemart_shipmentmethod_id = 0;
-			$cart->setCartIntoSession();
-		}
 
+		/**
+		 * Calculates the effecting Payment prices for the calculation
+		 * @todo
+		 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+		 * @author Max Milbers
+		 * @author Valerie Isaksen
+		 * @param 	$code 	The Id of the paymentmethod
+		 * @param	$value	amount of the money to transfere
+		 * @param	$value	$cartVendorId
+		 * @return 	$paymentCosts 	The amount of money the customer has to pay. Calculated in shop currency
+		 */
+		function calculatePaymentPrice($cart,   $payment_id , $checkAutomaticSelected=true) {
+			//		if (empty($code)) return 0.0;
+			//		$code=4;
+			$this->_cartData['paymentName'] = JText::_('COM_VIRTUEMART_CART_NO_PAYMENT_SELECTED');
+			$this->_cartPrices['paymentValue'] = 0; //could be automatically set to a default set in the globalconfig
+			$this->_cartPrices['paymentTax'] = 0;
+			$this->_cartPrices['paymentTotal'] = 0;
+			$this->_cartPrices['salesPricePayment'] = 0;
 
-		return $this->_cartPrices;
-	}
-
-	/**
-	 * Calculates the effecting Payment prices for the calculation
-	 * @todo
-	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
-	 * @author Max Milbers
-	 * @author Valerie Isaksen
-	 * @param 	$code 	The Id of the paymentmethod
-	 * @param	$value	amount of the money to transfere
-	 * @param	$value	$cartVendorId
-	 * @return 	$paymentCosts 	The amount of money the customer has to pay. Calculated in shop currency
-	 */
-	function calculatePaymentPrice($cart,   $payment_id , $checkAutomaticSelected=true) {
-		//		if (empty($code)) return 0.0;
-		//		$code=4;
-		$this->_cartData['paymentName'] = JText::_('COM_VIRTUEMART_CART_NO_PAYMENT_SELECTED');
-		$this->_cartPrices['paymentValue'] = 0; //could be automatically set to a default set in the globalconfig
-		$this->_cartPrices['paymentTax'] = 0;
-		$this->_cartPrices['paymentTotal'] = 0;
-		$this->_cartPrices['salesPricePayment'] = 0;
-
-		// check if there is only one possible payment method
-		$cart->automaticSelectedPayment =   $cart->CheckAutomaticSelectedPayment( $this->_cartPrices, $checkAutomaticSelected);
-		if ($cart->automaticSelectedPayment) $payment_id=$cart->virtuemart_paymentmethod_id;
-		if (empty($payment_id)) return;
+			// check if there is only one possible payment method
+			$cart->automaticSelectedPayment =   $cart->CheckAutomaticSelectedPayment( $this->_cartPrices, $checkAutomaticSelected);
+			if ($cart->automaticSelectedPayment) $payment_id=$cart->virtuemart_paymentmethod_id;
+			if (empty($payment_id)) return;
 
 /*
-			  // either there is only one payment method, either the old one is still valid
-			  if (!class_exists('TablePaymentmethods'))
-			  require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'paymentmethods.php');
+			// either there is only one payment method, either the old one is still valid
+			if (!class_exists('TablePaymentmethods'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'paymentmethods.php');
 
-			  $payment = new TablePaymentmethods($this->_db); /// we need that?
-			  $payment->load($payment_id);
+			$payment = new TablePaymentmethods($this->_db); /// we need that?
+			$payment->load($payment_id);
 */
 
-		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmonSelectedCalculatePricePayment',array( $cart, &$this->_cartPrices, &$this->_cartData['paymentName']  ));
+			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+			JPluginHelper::importPlugin('vmpayment');
+			$dispatcher = JDispatcher::getInstance();
+			$returnValues = $dispatcher->trigger('plgVmonSelectedCalculatePricePayment',array( $cart, &$this->_cartPrices, &$this->_cartData['paymentName']  ));
 
-		/*
-		   * Plugin return true if payment plugin is  valid
-		   * false if not  valid anymore
-		   * only one value is returned
-		   */
-		$paymentValid=0;
-		foreach ($returnValues as $returnValue) {
-			$paymentValid += $returnValue;
-		}
-		if (!$paymentValid) {
-			$cart->virtuemart_paymentmethod_id = 0;
-			$cart->setCartIntoSession();
-		}
-		return $this->_cartPrices;
-	}
-
-	function calculateCustomPriceWithTax($price, $override_id=0) {
-
-		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax', $override_id);
-		if(!empty($taxRules)){
-			$price = $this->executeCalculation($taxRules, $price, true);
+			/*
+			* Plugin return true if payment plugin is  valid
+			* false if not  valid anymore
+			* only one value is returned
+			*/
+			$paymentValid=0;
+			foreach ($returnValues as $returnValue) {
+				    $paymentValid += $returnValue;
+			 }
+			 if (!$paymentValid) {
+				    $cart->virtuemart_paymentmethod_id = 0;
+				    $cart->setCartIntoSession();
+			 }
+			return $this->_cartPrices;
 		}
 
-		$price = $this->roundInternal($price);
+		function calculateCustomPriceWithTax($price, $override_id=0) {
 
-		return $price;
-	}
+			$taxRules = $this->gatherEffectingRulesForProductPrice('Tax', $override_id);
+			if(!empty($taxRules)){
+				$price = $this->executeCalculation($taxRules, $price, true);
+			}
 
-	/**
-	 * This function just writes the query for gatherEffectingRulesForProductPrice
-	 * When a condition is not set, it is handled like a set condition that affects it. So the users have only to add a value
-	 * for the conditions they want to (You dont need to enter a start or end date when the rule should count everytime).
-	 *
-	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
-	 * @author Max Milbers
-	 * @param $data		the ids of the rule, for exampel the ids of the categories that affect the rule
-	 * @param $field	the name of the field in the db, for exampel calc_categories to write a rule that asks for the field calc_categories
-	 * @return $q		The query
-	 */
-	function writeRulePartEffectingQuery($data, $field, $setAnd=0) {
-		$q = '';
-		if (!empty($data)) {
-			if ($setAnd) {
-				$q = ' AND (';
+			$price = $this->roundInternal($price);
+
+			return $price;
+		}
+
+		/**
+		 * This function just writes the query for gatherEffectingRulesForProductPrice
+		 * When a condition is not set, it is handled like a set condition that affects it. So the users have only to add a value
+		 * for the conditions they want to (You dont need to enter a start or end date when the rule should count everytime).
+		 *
+		 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+		 * @author Max Milbers
+		 * @param $data		the ids of the rule, for exampel the ids of the categories that affect the rule
+		 * @param $field	the name of the field in the db, for exampel calc_categories to write a rule that asks for the field calc_categories
+		 * @return $q		The query
+		 */
+		function writeRulePartEffectingQuery($data, $field, $setAnd=0) {
+			$q = '';
+			if (!empty($data)) {
+				if ($setAnd) {
+					$q = ' AND (';
+				} else {
+					$q = ' (';
+				}
+				foreach ($data as $id) {
+					$q = $q . '`' . $field . '`="' . $id . '" OR';
+				}
+				$q = $q . '`' . $field . '`="0" )';
+			}
+			return $q;
+		}
+
+		/**
+		 * This functions interprets the String that is entered in the calc_value_mathop field
+		 * The first char is the signum of the function. The more this function can be enhanced
+		 * maybe with function that works like operators, the easier it will be to make more complex disount/commission/profit formulas
+		 * progressive, nonprogressive and so on.
+		 *
+		 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+		 * @author Max Milbers
+		 * @param 	$mathop 	String reprasentation of the mathematical operation, valid ('+','-','+%','-%')
+		 * @param	$value 	float	The value that affects the price
+		 * @param 	$currency int	the currency which should be used
+		 * @param	$price 	float	The price to calculate
+		 */
+		function interpreteMathOp($rule, $price) {
+
+			$mathop = $rule['calc_value_mathop'];
+			$value = $rule['calc_value'];
+			$currency = $rule['calc_currency'];
+			//$mathop, $value, $price, $currency='')
+
+			$coreMathOp = array('+','-','+%','-%');
+
+			if(!$this->_revert){
+				$plus = '+';
+				$minus = '-';
 			} else {
-				$q = ' (';
+				$plus = '-';
+				$minus = '+';
 			}
-			foreach ($data as $id) {
-				$q = $q . '`' . $field . '`="' . $id . '" OR';
-			}
-			$q = $q . '`' . $field . '`="0" )';
-		}
-		return $q;
-	}
+			if(in_array($mathop,$coreMathOp)){
+				$sign = substr($mathop, 0, 1);
 
-	/**
-	 * This functions interprets the String that is entered in the calc_value_mathop field
-	 * The first char is the signum of the function. The more this function can be enhanced
-	 * maybe with function that works like operators, the easier it will be to make more complex disount/commission/profit formulas
-	 * progressive, nonprogressive and so on.
-	 *
-	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
-	 * @author Max Milbers
-	 * @param 	$mathop 	String reprasentation of the mathematical operation, valid ('+','-','+%','-%')
-	 * @param	$value 	float	The value that affects the price
-	 * @param 	$currency int	the currency which should be used
-	 * @param	$price 	float	The price to calculate
-	 */
-	function interpreteMathOp($rule, $price) {
-
-		$mathop = $rule['calc_value_mathop'];
-		$value = $rule['calc_value'];
-		$currency = $rule['calc_currency'];
-		//$mathop, $value, $price, $currency='')
-
-		$coreMathOp = array('+','-','+%','-%');
-
-		if(!$this->_revert){
-			$plus = '+';
-			$minus = '-';
-		} else {
-			$plus = '-';
-			$minus = '+';
-		}
-		//vmdebug(' interpreteMathOp',$mathop,$rule['calc_name']);
-		//vmTrace(' interpreteMathOp');
-		if(in_array($mathop,$coreMathOp)){
-			$sign = substr($mathop, 0, 1);
-
-			$calculated = false;
-			if (strlen($mathop) == 2) {
-				$cmd = substr($mathop, 1, 2);
-				if ($cmd == '%') {
-					if(!$this->_revert){
-						$calculated = $price * $value / 100.0;
-					} else {
-
-						if($sign == $plus){
-							$calculated =  abs($price /(1 -  (100.0 / $value)));
+				$calculated = false;
+				if (strlen($mathop) == 2) {
+					$cmd = substr($mathop, 1, 2);
+					if ($cmd == '%') {
+						if(!$this->_revert){
+							$calculated = $price * $value / 100.0;
 						} else {
-							$calculated = abs($price /(1 +  (100.0 / $value)));
-						}
+
+							if($sign == $plus){
+								$calculated =  abs($price /(1 -  (100.0 / $value)));
+							} else {
+								$calculated = abs($price /(1 +  (100.0 / $value)));
+							}
 // 							vmdebug('interpreteMathOp $price'.$price.' $value '.$value.' $sign '.$sign.' '.$plus.' $calculated '.$calculated);
+						}
+					}
+				} else if (strlen($mathop) == 1){
+					$calculated = $this->_currencyDisplay->convertCurrencyTo($currency, $value);
+				}
+// 				vmdebug('interpreteMathOp',$price,$calculated,$plus);
+				if($sign == $plus){
+					return $price + (float)$calculated;
+				} else if($sign == $minus){
+					return $price - (float)$calculated;
+				} else {
+					VmWarn('Unrecognised mathop '.$mathop.' in calculation rule found');
+					return $price;
+				}
+			} else {
+
+				JPluginHelper::importPlugin('vmcalculation');
+				$dispatcher = JDispatcher::getInstance();
+				$calculated = $dispatcher->trigger('interpreteMathOp', array($this, $mathop, $value, $price, $currency,$this->_revert));
+				$calculated = $dispatcher->trigger('plgVmInterpreteMathOp', array($this, $rule, $price,$this->_revert));
+				if($calculated){
+					foreach($calculated as $calc){
+						if($calc) return $calc;
+					}
+				} else {
+					VmWarn('Unrecognised mathop '.$mathop.' in calculation rule found, seems you created this rule with plugin not longer accesible (deactivated, uninstalled?)');
+					return $price;
+				}
+			}
+
+		}
+
+		/**
+		 * Standard round function, we round every number with 6 fractionnumbers
+		 * We need at least 4 to calculate something like 9.25% => 0.0925
+		 * 2 digits
+		 * Should be setable via config (just for the crazy case)
+		 */
+		function roundInternal($value,$name = 0) {
+
+			if($name!=0){
+				if(isset($this->_priceConfig[$name][1])){
+					return round($value,$this->_priceConfig[$name][1]);
+				} else {
+					vmdebug('roundInternal rounding not found for '.$name);
+					if (VmConfig::get('prices_round_numbers')) {
+						return round($value, VmConfig::get('prices_round_numbers'));
+					} else {
+						return round($value, $this->_internalDigits);
 					}
 				}
-			} else if (strlen($mathop) == 1){
-				$calculated = $this->_currencyDisplay->convertCurrencyTo($currency, $value);
-			}
-// 				vmdebug('interpreteMathOp',$price,$calculated,$plus);
-			if($sign == $plus){
-				return $price + (float)$calculated;
-			} else if($sign == $minus){
-				return $price - (float)$calculated;
-			} else {
-				VmWarn('Unrecognised mathop '.$mathop.' in calculation rule found');
-				return $price;
-			}
-		} else {
 
-			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JDispatcher::getInstance();
-			$calculated = $dispatcher->trigger('interpreteMathOp', array($this, $mathop, $value, $price, $currency,$this->_revert));
-			$calculated = $dispatcher->trigger('plgVmInterpreteMathOp', array($this, $rule, $price,$this->_revert));
-			//vmdebug('result of plgVmInterpreteMathOp',$calculated);
-			if($calculated){
-				foreach($calculated as $calc){
-					if($calc) return $calc;
+			} else {
+				if (VmConfig::get('prices_round_numbers')) {
+					return round($value, VmConfig::get('prices_round_numbers'));
+				} else {
+					return round($value, $this->_internalDigits);
 				}
-			} else {
-				VmWarn('Unrecognised mathop '.$mathop.' in calculation rule found, seems you created this rule with plugin not longer accesible (deactivated, uninstalled?)');
-				return $price;
-			}
-		}
-
-	}
-
-	/**
-	 * Standard round function, we round every number with 6 fractionnumbers
-	 * We need at least 4 to calculate something like 9.25% => 0.0925
-	 * 2 digits
-	 * Should be setable via config (just for the crazy case)
-	 */
-	function roundInternal($value,$name = 0) {
-
-		if($name!=0){
-			if(isset($this->_priceConfig[$name][1])){
-				return round($value,$this->_priceConfig[$name][1]);
-			} else {
-				vmdebug('roundInternal rounding not found for '.$name);
-				return round($value, $this->_internalDigits);
 			}
 
-		} else {
-			return round($value, $this->_internalDigits);
 		}
 
-	}
-
-	/**
-	 * Round function for display with 6 fractionnumbers.
-	 * For more information please read http://en.wikipedia.org/wiki/Propagation_of_uncertainty
-	 * and http://www.php.net/manual/en/language.types.float.php
-	 * So in case of € or $ it is rounded in cents
-	 * Should be setable via config
-	 * @deprecated
-	 */
+		/**
+		 * Round function for display with 6 fractionnumbers.
+		 * For more information please read http://en.wikipedia.org/wiki/Propagation_of_uncertainty
+		 * and http://www.php.net/manual/en/language.types.float.php
+		 * So in case of € or $ it is rounded in cents
+		 * Should be setable via config
+		 * @deprecated
+		 */
 /*		function roundDisplay($value) {
-		   return round($value, 4);
-	   }*/
+			return round($value, 4);
+		}*/
 
-	/**
-	 * Can test the tablefields Category, Country, State
-	 *  If the the data is 0 false is returned
-	 */
-	function testRulePartEffecting($rule, $data) {
+		/**
+		 * Can test the tablefields Category, Country, State
+		 *  If the the data is 0 false is returned
+		 */
+		function testRulePartEffecting($rule, $data) {
 
-		if (!isset($rule))
+			if (!isset($rule))
 			return true;
-		if (!isset($data))
+			if (!isset($data))
 			return true;
 
-		if (is_array($rule)) {
-			if (count($rule) == 0)
+			if (is_array($rule)) {
+				if (count($rule) == 0)
 				return true;
-		} else {
-			$rule = array($rule);
-		}
-		if (!is_array($data))
+			} else {
+				$rule = array($rule);
+			}
+			if (!is_array($data))
 			$data = array($data);
 
-		$intersect = array_intersect($rule, $data);
-		if ($intersect) {
-			return true;
-		} else {
-			return false;
+			$intersect = array_intersect($rule, $data);
+			if ($intersect) {
+				return true;
+			} else {
+				return false;
+			}
 		}
-	}
 
-	/** Sorts indexed 2D array by a specified sub array key
-	 *
-	 * Copyright richard at happymango dot me dot uk
-	 * @author Max Milbers
-	 */
-	function record_sort($records, $field, $reverse=false) {
-		if (is_array($records)) {
-			$hash = array();
+		/** Sorts indexed 2D array by a specified sub array key
+		 *
+		 * Copyright richard at happymango dot me dot uk
+		 * @author Max Milbers
+		 */
+		function record_sort($records, $field, $reverse=false) {
+			if (is_array($records)) {
+				$hash = array();
 
-			foreach ($records as $record) {
+				foreach ($records as $record) {
 
-				$keyToUse = $record[$field];
-				while (array_key_exists($keyToUse, $hash)) {
-					$keyToUse = $keyToUse + 1;
+					$keyToUse = $record[$field];
+					while (array_key_exists($keyToUse, $hash)) {
+						$keyToUse = $keyToUse + 1;
+					}
+					$hash[$keyToUse] = $record;
 				}
-				$hash[$keyToUse] = $record;
+				($reverse) ? krsort($hash) : ksort($hash);
+				$records = array();
+				foreach ($hash as $record) {
+					$records [] = $record;
+				}
 			}
-			($reverse) ? krsort($hash) : ksort($hash);
-			$records = array();
-			foreach ($hash as $record) {
-				$records [] = $record;
-			}
+			return $records;
 		}
-		return $records;
-	}
 
-	/**
-	 * Calculate a pricemodification for a variant
-	 *
-	 * Variant values can be in the following format:
-	 * Array ( [Size] => Array ( [XL] => +1 [M] => [S] => -2 ) [Power] => Array ( [strong] => [middle] => [poor] => =24 ) )
-	 *
-	 * In the post is the data for the chosen variant, when there is a hit, it gets calculated
-	 *
-	 * Returns all variant modifications summed up or the highest price set with '='
-	 *
-	 * @todo could be slimmed a bit down, using smaller array for variantnames, this could be done by using the parseModifiers method, needs to adjust the post
-	 * @author Max Milbers
-	 * @param int $virtuemart_product_id the product ID the attribute price should be calculated for
-	 * @param array $variantnames the value of the variant
-	 * @return array The adjusted price modificator
-	 */
-	public function calculateModificators(&$product, $variants) {
+		/**
+		 * Calculate a pricemodification for a variant
+		 *
+		 * Variant values can be in the following format:
+		 * Array ( [Size] => Array ( [XL] => +1 [M] => [S] => -2 ) [Power] => Array ( [strong] => [middle] => [poor] => =24 ) )
+		 *
+		 * In the post is the data for the chosen variant, when there is a hit, it gets calculated
+		 *
+		 * Returns all variant modifications summed up or the highest price set with '='
+		 *
+		 * @todo could be slimmed a bit down, using smaller array for variantnames, this could be done by using the parseModifiers method, needs to adjust the post
+		 * @author Max Milbers
+		 * @param int $virtuemart_product_id the product ID the attribute price should be calculated for
+		 * @param array $variantnames the value of the variant
+		 * @return array The adjusted price modificator
+		 */
+		public function calculateModificators(&$product, $variants) {
 
-		$modificatorSum = 0.0;
-		//MarkerVarMods
-		foreach ($variants as $selected => $variant) {
-			if (!empty($selected)) {
+			$modificatorSum = 0.0;
+			//MarkerVarMods
+			foreach ($variants as $selected => $variant) {
+				if (!empty($selected)) {
 
-				$query = 'SELECT  C.* , field.*
+					$query = 'SELECT  C.* , field.*
 						FROM `#__virtuemart_customs` AS C
 						LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
 						WHERE field.`virtuemart_customfield_id`=' .(int) $selected;
-				$this->_db->setQuery($query);
-				$productCustomsPrice = $this->_db->loadObject();
+					$this->_db->setQuery($query);
+					$productCustomsPrice = $this->_db->loadObject();
 				//	echo 'calculateModificators '.$selected.' <pre>'.print_r($productCustomsPrice,1).'</pre>';
 // 					vmdebug('calculateModificators',$productCustomsPrice);
-				if (!empty($productCustomsPrice) and $productCustomsPrice->field_type =='E') {
-					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-					JPluginHelper::importPlugin('vmcustom');
-					$dispatcher = JDispatcher::getInstance();
-					$dispatcher->trigger('plgVmCalculateCustomVariant',array(&$product, &$productCustomsPrice,$selected,$modificatorSum));
-				}
+					if (!empty($productCustomsPrice) and $productCustomsPrice->field_type =='E') {
+						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+						JPluginHelper::importPlugin('vmcustom');
+						$dispatcher = JDispatcher::getInstance();
+						$dispatcher->trigger('plgVmCalculateCustomVariant',array(&$product, &$productCustomsPrice,$selected,$modificatorSum));
+					}
 
-				//$app = JFactory::getApplication();
-				if (!empty($productCustomsPrice->custom_price)) {
-					//TODO adding % and more We should use here $this->interpreteMathOp
-					$modificatorSum = $modificatorSum + $productCustomsPrice->custom_price;
-				}
-			}
-		}
-// 			echo ' $modificatorSum ',$modificatorSum;
-		return $modificatorSum;
-	}
-
-	public function parseModifier($name) {
-
-		$variants = array();
-		if ($index = strpos($name, '::')) {
-			$virtuemart_product_id = substr($name, 0, $index);
-			$allItems = substr($name, $index + 2);
-			$items = explode(';', $allItems);
-
-			foreach ($items as $item) {
-				if (!empty($item)) {
-					//vmdebug('parseModifier $item',$item);
-					$index2 = strpos($item, ':');
-					if($index2!=false){
-						$selected = substr($item, 0, $index2);
-						$variant = substr($item, $index2 + 1);
-						//	echo 'My selected '.$selected;
-						//	echo ' My $variant '.$variant.' ';
-						//TODO productCartId
-						//MarkerVarMods
-						$variants[$selected] = $variant; //this works atm not for the cart
-						//$variants[$variant] = $selected; //but then the orders are broken
+					//$app = JFactory::getApplication();
+					if (!empty($productCustomsPrice->custom_price)) {
+						//TODO adding % and more We should use here $this->interpreteMathOp
+						$modificatorSum = $modificatorSum + $productCustomsPrice->custom_price;
 					}
 				}
 			}
+// 			echo ' $modificatorSum ',$modificatorSum;
+			return $modificatorSum;
 		}
-		//vmdebug('parseModifier $variants',$variants);
-		return $variants;
-	}
+
+		public function parseModifier($name) {
+
+			$variants = array();
+			if ($index = strpos($name, '::')) {
+				$virtuemart_product_id = substr($name, 0, $index);
+				$allItems = substr($name, $index + 2);
+				$items = explode(';', $allItems);
+
+				foreach ($items as $item) {
+					if (!empty($item)) {
+ 						//vmdebug('parseModifier $item',$item);
+						$index2 = strpos($item, ':');
+						if($index2!=false){
+							$selected = substr($item, 0, $index2);
+							$variant = substr($item, $index2 + 1);
+						//	echo 'My selected '.$selected;
+						//	echo ' My $variant '.$variant.' ';
+							//TODO productCartId
+							//MarkerVarMods
+							$variants[$selected] = $variant; //this works atm not for the cart
+							//$variants[$variant] = $selected; //but then the orders are broken
+						}
+					}
+				}
+			}
+			//vmdebug('parseModifier $variants',$variants);
+			return $variants;
+		}
 
 }

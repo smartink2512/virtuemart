@@ -18,24 +18,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-		$js = '
-	jQuery(document).ready(function( $ ) {
-			if ( $("#show_prices").is(\':checked\') ) {
-				$("#show_hide_prices").show();
-			} else {
-				$("#show_hide_prices").hide();
-			}
-		 $("#show_prices").click(function() {
-			if ( $("#show_prices").is(\':checked\') ) {
-				$("#show_hide_prices").show();
-			} else {
-				$("#show_hide_prices").hide();
-			}
-		});
-	});
-	';
-$document = JFactory::getDocument();
-$document->addScriptDeclaration($js);
 ?>
 <br />
 <table>
@@ -44,6 +26,16 @@ $document->addScriptDeclaration($js);
 	    <fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CONFIGURATION') ?></legend>
 		<table class="admintable">
+		    <tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP'); ?>">
+			    <label for="price_show_packaging_pricelabel"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL'); ?>
+			    </span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('price_show_packaging_pricelabel', $this->config->get('price_show_packaging_pricelabel')); ?>
+			</td>
+		    </tr>
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_TAX_TIP'); ?>">
@@ -64,6 +56,16 @@ $document->addScriptDeclaration($js);
 			    <?php echo VmHTML::checkbox('askprice', $this->config->get('askprice')); ?>
 			</td>
 		    </tr>
+			<tr>
+				<td>
+					<span class="hasTip" title="<<?php echo JText::_('COM_VIRTUEMART_PRICES_ROUND_NUMBERS_TIP') ?>">
+						<label for="prices_round_numbers"><?php echo JText::_('COM_VIRTUEMART_PRICES_ROUND_NUMBERS') ?></label>
+					</span>
+				</td>
+				<td>
+					<input type="text" name="prices_round_numbers" size="4" class="inputbox" value="<?php echo $this->config->get('prices_round_numbers') ?>" />
+				</td>
+			</tr>
 		</table>
 	    </fieldset>
 
@@ -82,8 +84,6 @@ $document->addScriptDeclaration($js);
 			    <?php echo VmHTML::checkbox('show_prices', $this->config->get('show_prices')); ?>
 			</td>
 			</tr>
-			</table>
-		    <table class="admintable" id="show_hide_prices">
 			<tr>
 				<th></th>
 				<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_LABEL'); ?></th>
@@ -95,9 +95,9 @@ $document->addScriptDeclaration($js);
 			echo ShopFunctions::writePriceConfigLine($this->config,'basePrice','COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE');
 			echo ShopFunctions::writePriceConfigLine($this->config,'variantModification','COM_VIRTUEMART_ADMIN_CFG_PRICE_VARMOD');
 			echo ShopFunctions::writePriceConfigLine($this->config,'basePriceVariant','COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_VAR');
-			echo ShopFunctions::writePriceConfigLine($this->config,'discountedPriceWithoutTax','COM_VIRTUEMART_ADMIN_CFG_PRICE_DISCPRICE_WOTAX',0);
-			echo ShopFunctions::writePriceConfigLine($this->config,'priceWithoutTax','COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WOTAX',0);
-			echo ShopFunctions::writePriceConfigLine($this->config,'taxAmount','COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT',0);
+			echo ShopFunctions::writePriceConfigLine($this->config,'discountedPriceWithoutTax','COM_VIRTUEMART_ADMIN_CFG_PRICE_DISCPRICE_WOTAX');
+			echo ShopFunctions::writePriceConfigLine($this->config,'priceWithoutTax','COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WOTAX');
+			echo ShopFunctions::writePriceConfigLine($this->config,'taxAmount','COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT');
 			echo ShopFunctions::writePriceConfigLine($this->config,'basePriceWithTax','COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_WTAX');
 			echo ShopFunctions::writePriceConfigLine($this->config,'salesPrice','COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE');
 			echo ShopFunctions::writePriceConfigLine($this->config,'salesPriceWithDiscount','COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WD');
