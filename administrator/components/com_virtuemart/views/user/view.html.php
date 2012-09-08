@@ -79,7 +79,7 @@ class VirtuemartViewUser extends VmView {
 // 			$this->loadHelper('currencydisplay');
 			$this->loadHelper('image');
 
-			$userFieldsModel = VmModel::getModel('userfields');
+			//$userFieldsModel = VmModel::getModel('userfields');
 
 			$userDetails = $model->getUser();
 
