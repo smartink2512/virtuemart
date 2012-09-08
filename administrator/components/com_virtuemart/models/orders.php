@@ -181,7 +181,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 // 		vmdebug('getOrdersList');
 		$this->_noLimit = $noLimit;
 		$select = " o.*, CONCAT_WS(' ',u.first_name,u.middle_name,u.last_name) AS order_name "
-		.',pm.payment_name AS payment_method ';
+		.',u.email as order_email,pm.payment_name AS payment_method ';
 		$from = $this->getOrdersListQuery();
 		/*		$_filter = array();
 		 if ($uid > 0) {

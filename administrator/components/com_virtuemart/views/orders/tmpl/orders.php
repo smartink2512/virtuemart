@@ -42,6 +42,7 @@ AdminUIHelper::startAdminArea ();
 			<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count ($this->orderslist); ?>')"/></th>
 			<th><?php echo $this->sort ('order_number', 'COM_VIRTUEMART_ORDER_LIST_NUMBER')  ?></th>
 			<th><?php echo $this->sort ('order_name', 'COM_VIRTUEMART_ORDER_PRINT_NAME')  ?></th>
+			<th><?php echo $this->sort ('order_email', 'COM_VIRTUEMART_EMAIL')  ?></th>
 			<th><?php echo $this->sort ('payment_method', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL')  ?></th>
 			<th><?php echo JText::_ ('COM_VIRTUEMART_PRINT_VIEW'); ?></th>
 			<th><?php echo $this->sort ('created_on', 'COM_VIRTUEMART_ORDER_CDATE')  ?></th>
@@ -80,6 +81,11 @@ AdminUIHelper::startAdminArea ();
 					} else {
 						echo $order->order_name;
 					}
+					?>
+				</td>
+				<td>
+					<?php
+					echo $order->order_email;
 					?>
 				</td>
 				<!-- Payment method -->
