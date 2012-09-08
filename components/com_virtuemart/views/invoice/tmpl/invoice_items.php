@@ -189,18 +189,3 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 	</tr>
 
 </table>
-<?php if ($this->orderDetails['paymentInfo']) { ?>
-	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="html-email">
-		<tr>
-			<td align="top"><strong><?php echo $this->orderDetails['paymentName'] ?></strong></td>
-		</tr>
-		<?php if ($this->orderDetails['paymentDesc']) { ?>
-			<tr>
-				<td><?php echo $this->orderDetails['paymentDesc'] ?></td>
-			</tr>
-		<?php } ?>
-		<tr>
-			<td><?php echo $this->orderDetails['paymentInfo'] ?></td>
-		</tr>
-	</table>
-<?php } ?>
