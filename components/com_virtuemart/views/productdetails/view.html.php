@@ -100,7 +100,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 	    //Todo this should be redesigned to fit better for SEO
 	    $mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND'));
-	    
+
 	    $categoryLink = '';
 	    if (!$last_category_id) {
 		$last_category_id = JRequest::getInt('virtuemart_category_id', false);
@@ -146,6 +146,15 @@ class VirtueMartViewProductdetails extends VmView {
 
 	$product_model->addImages($product);
 	$this->assignRef('product', $product);
+	$has_file_is_downloadable=false;
+    foreach ($product->images as $image) {
+	    if ($image->file_is_downloadable) {
+		    $has_file_is_downloadable=true;
+		    break;
+	    }
+    }
+	$this->assignRef('has_file_is_downloadable', $has_file_is_downloadable);
+
 	if (isset($product->min_order_level) && (int) $product->min_order_level > 0) {
 	    $min_order_level = $product->min_order_level;
 	} else {
@@ -161,10 +170,10 @@ class VirtueMartViewProductdetails extends VmView {
 	$category_model = VmModel::getModel('category');
 
 	// Get the category ID
-	
+
 	if (in_array($last_category_id, $product->categories) ){
 		$virtuemart_category_id = $last_category_id;
-		
+
 	} else $virtuemart_category_id = JRequest::getInt('virtuemart_category_id',0);
 	if ($virtuemart_category_id == 0 ) {
 	    if (array_key_exists('0', $product->categories))
@@ -313,7 +322,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 	$currency = CurrencyDisplay::getInstance();
 	$this->assignRef('currency', $currency);
-	
+
 	if(JRequest::getCmd( 'layout', 'default' )=='notify') $this->setLayout('notify'); //Added by Seyi Awofadeju to catch notify layout
 
 

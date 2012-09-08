@@ -171,12 +171,19 @@ class VirtuemartViewCategory extends VmView {
 
 	    // Load the products in the given category
 	    $products = $productModel->getProductsInCategory($categoryId);
-	    $productModel->addImages($products,1);
-	    $this->assignRef('products', $products);
-
+	    $productModel->addImages($products); //no limit: we want to know if a downlodable file is attached to the product
 		foreach($products as $product){
 			$product->stock = $productModel->getStockIndicator($product);
+				 $product->has_file_is_downloadable=false;
+	            foreach ($product->images as $image) {
+		            if ($image->file_is_downloadable) {
+			            $product->has_file_is_downloadable=true;
+			            break;
+		            }
+	            }
 		}
+
+	    $this->assignRef('products', $products);
 
 		$ratingModel = VmModel::getModel('ratings');
 		$showRating = $ratingModel->showRating();
