@@ -1294,6 +1294,7 @@ class VirtueMartModelUser extends VmModel {
 		$select = ' DISTINCT ju.id AS id
 			, ju.name AS name
 			, ju.username AS username
+			, ju.email AS email
 			, vmu.user_is_vendor AS is_vendor
 			, vmu.perms AS perms
 			, ju.usertype AS usertype
@@ -1319,7 +1320,7 @@ class VirtueMartModelUser extends VmModel {
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			//$search = $this->_db->Quote($search, false);
 
-			$where = ' WHERE `name` LIKE '.$search.' OR `username` LIKE ' .$search;
+			$where = ' WHERE `name` LIKE '.$search.' OR `username` LIKE ' .$search.' OR `email` LIKE ' .$search.' OR `perms` LIKE ' .$search.' OR `usertype` LIKE ' .$search.' OR `shopper_group_name` LIKE ' .$search;
 			return ($where);
 		}
 		return ('');
