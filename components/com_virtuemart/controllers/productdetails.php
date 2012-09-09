@@ -208,7 +208,7 @@ class VirtueMartControllerProductdetails extends JController {
 			if (VmConfig::get ('recommend_unauth', 0) == '0') {
 				$user = JFactory::getUser ();
 				if (empty($user->id)) {
-					VmInfo (JText::_ ('YOU MUST LOGIN FIRST'));
+					VmInfo (JText::_ ('JGLOBAL_YOU_MUST_LOGIN_FIRST'));
 					return;
 				}
 			}
