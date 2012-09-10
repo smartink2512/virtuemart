@@ -191,9 +191,10 @@ echo $this->loadTemplate('images');
 		    }
 		}
 		// Product Price
-		if ($this->show_prices and (empty($this->product->images[0]) or $this->product->images[0]->file_is_downloadable == 0)) {
+		    // the test is done in show_prices
+		//if ($this->show_prices and (empty($this->product->images[0]) or $this->product->images[0]->file_is_downloadable == 0)) {
 		    echo $this->loadTemplate('showprices');
-		}
+		//}
 		?>
 
 		<?php
