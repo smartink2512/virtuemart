@@ -146,14 +146,6 @@ class VirtueMartViewProductdetails extends VmView {
 
 	$product_model->addImages($product);
 	$this->assignRef('product', $product);
-	$has_file_is_downloadable=false;
-    foreach ($product->images as $image) {
-	    if ($image->file_is_downloadable) {
-		    $has_file_is_downloadable=true;
-		    break;
-	    }
-    }
-	$this->assignRef('has_file_is_downloadable', $has_file_is_downloadable);
 
 	if (isset($product->min_order_level) && (int) $product->min_order_level > 0) {
 	    $min_order_level = $product->min_order_level;

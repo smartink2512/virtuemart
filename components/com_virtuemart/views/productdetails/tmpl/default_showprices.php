@@ -24,7 +24,7 @@ defined ('_JEXEC') or die('Restricted access');
 		echo "<strong>" . JText::_ ('COM_VIRTUEMART_CART_PRICE') . "</strong>";
 	}
 	vmdebug('prices',$this->product->prices);
-	if (empty($this->product->prices) and VmConfig::get ('askprice', 1) and !$this->has_file_is_downloadable) {
+	if (empty($this->product->prices) and VmConfig::get ('askprice', 1) and !$this->product->images[0]->file_is_downloadable) {
 		?>
 		<a class="ask-a-question bold" href="<?php echo $this->askquestion_url ?>"><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_ASKPRICE') ?></a>
 		<?php
