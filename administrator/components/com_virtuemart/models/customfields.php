@@ -838,6 +838,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 		}
 		$calculator = calculationHelper::getInstance ();
+		$calculator ->_product = $product;
 		if (!class_exists ('vmCustomPlugin')) {
 			require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 		}

@@ -36,6 +36,7 @@ class calculationHelper {
 	private $_currencyDisplay;
 	private $_cart = null;
 	private $_cartPrices;
+	var $productPrices;
 	private $_cartData;
 
 	public $_amount;
@@ -151,6 +152,10 @@ class calculationHelper {
 		return $this->_cartPrices;
 	}
 
+	public function setCartPrices($cartPrices) {
+		$this->_cartPrices = $cartPrices;
+	}
+
 	public function getCartData() {
 		return $this->_cartData;
 	}
@@ -249,15 +254,13 @@ class calculationHelper {
 			$product_override_price = isset($product->product_override_price)? $product->product_override_price:0;
 			$this->product_tax_id = isset($product->product_tax_id)? $product->product_tax_id:0;
 			$this->product_discount_id = isset($product->product_discount_id)? $product->product_discount_id:0;
-			$this->productVendorId = isset($product->virtuemart_vendor_id)? $product->virtuemart_vendor_id:1;
-			if (empty($this->productVendorId)) {
-				$this->productVendorId = 1;
-			} else {
-				$this->setVendorId($this->productVendorId);
-			}
+			$productVendorId = !empty($product->virtuemart_vendor_id)? $product->virtuemart_vendor_id:1;
+			$this->setVendorId($productVendorId);
+
 			$this->_cats = $product->categories;
 			$this->_product = $product;
 			$this->_product->amount = $amount;
+			$this->productPrices = array();
 		} //Use it as productId
 		else {
 			vmError('getProductPrices no object given query time','getProductPrices no object given query time');
@@ -278,11 +281,11 @@ class calculationHelper {
 		//For Profit, margin, and so on
 		$this->rules['Marge'] = $this->gatherEffectingRulesForProductPrice('Marge', $this->product_marge_id);
 
-		$prices['costPrice'] = $costPrice;
+		$this->productPrices['costPrice'] = $costPrice;
 		$basePriceShopCurrency = $this->roundInternal($this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $costPrice,true));
 		//vmdebug('my pure $basePriceShopCurrency',$costPrice,$this->productCurrency,$basePriceShopCurrency);
 		$basePriceMargin = $this->roundInternal($this->executeCalculation($this->rules['Marge'], $basePriceShopCurrency));
-		$this->basePrice = $basePriceShopCurrency = $prices['basePrice'] = !empty($basePriceMargin) ? $basePriceMargin : $basePriceShopCurrency;
+		$this->basePrice = $basePriceShopCurrency = $this->productPrices['basePrice'] = !empty($basePriceMargin) ? $basePriceMargin : $basePriceShopCurrency;
 
 		$this->rules['Tax'] = $this->gatherEffectingRulesForProductPrice('Tax', $this->product_tax_id);
 		$this->rules['VatTax'] = $this->gatherEffectingRulesForProductPrice('VatTax', $this->product_tax_id);
@@ -292,116 +295,116 @@ class calculationHelper {
 
 		if (!empty($variant)) {
 			$basePriceShopCurrency = $basePriceShopCurrency + doubleval($variant);
-			$prices['basePrice'] = $prices['basePriceVariant'] = $basePriceShopCurrency;
+			$this->productPrices['basePrice'] = $this->productPrices['basePriceVariant'] = $basePriceShopCurrency;
 		}
-		if (empty($prices['basePrice'])) {
-			return $this->fillVoidPrices($prices);
+		if (empty($this->productPrices['basePrice'])) {
+			return $this->fillVoidPrices($this->productPrices);
 		}
-		if (empty($prices['basePriceVariant'])) {
-			$prices['basePriceVariant'] = $prices['basePrice'];
+		if (empty($this->productPrices['basePriceVariant'])) {
+			$this->productPrices['basePriceVariant'] = $this->productPrices['basePrice'];
 		}
 
 
-		$prices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $prices['basePrice'], true));
+		$this->productPrices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $this->productPrices['basePrice'], true));
 		if(!empty($this->rules['VatTax'])){
-			$price = !empty($prices['basePriceWithTax']) ? $prices['basePriceWithTax'] : $prices['basePrice'];
-			$prices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $price,true),'basePriceWithTax');
+			$price = !empty($this->productPrices['basePriceWithTax']) ? $this->productPrices['basePriceWithTax'] : $this->productPrices['basePrice'];
+			$this->productPrices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $price,true),'basePriceWithTax');
 		}
 
-		$prices['discountedPriceWithoutTax'] = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $prices['basePrice']),'discountedPriceWithoutTax');
+		$this->productPrices['discountedPriceWithoutTax'] = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $this->productPrices['basePrice']),'discountedPriceWithoutTax');
 
 		if ($override==-1) {
-			$prices['discountedPriceWithoutTax'] = $product_override_price;
+			$this->productPrices['discountedPriceWithoutTax'] = $product_override_price;
 		}
 
-		$priceBeforeTax = !empty($prices['discountedPriceWithoutTax']) ? $prices['discountedPriceWithoutTax'] : $prices['basePrice'];
+		$priceBeforeTax = !empty($this->productPrices['discountedPriceWithoutTax']) ? $this->productPrices['discountedPriceWithoutTax'] : $this->productPrices['basePrice'];
 
-		$prices['priceBeforeTax'] = $priceBeforeTax;
-		$prices['salesPrice'] = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $priceBeforeTax, true),'salesPrice');
+		$this->productPrices['priceBeforeTax'] = $priceBeforeTax;
+		$this->productPrices['salesPrice'] = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $priceBeforeTax, true),'salesPrice');
 
-		$salesPrice = !empty($prices['salesPrice']) ? $prices['salesPrice'] : $priceBeforeTax;
+		$salesPrice = !empty($this->productPrices['salesPrice']) ? $this->productPrices['salesPrice'] : $priceBeforeTax;
 
-		$prices['taxAmount'] = $this->roundInternal($salesPrice - $priceBeforeTax);
+		$this->productPrices['taxAmount'] = $this->roundInternal($salesPrice - $priceBeforeTax);
 
 		if(!empty($this->rules['VatTax'])){
-			$prices['salesPrice'] = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $salesPrice),'salesPrice');
-			$salesPrice = !empty($prices['salesPrice']) ? $prices['salesPrice'] : $salesPrice;
+			$this->productPrices['salesPrice'] = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $salesPrice),'salesPrice');
+			$salesPrice = !empty($this->productPrices['salesPrice']) ? $this->productPrices['salesPrice'] : $salesPrice;
 		}
 
-		$prices['salesPriceWithDiscount'] = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $salesPrice),'salesPriceWithDiscount');
+		$this->productPrices['salesPriceWithDiscount'] = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $salesPrice),'salesPriceWithDiscount');
 
-// 		vmdebug('$$override salesPriceWithDiscount',$override,$prices['salesPriceWithDiscount'],$salesPrice);
-		$prices['salesPrice'] = !empty($prices['salesPriceWithDiscount']) ? $prices['salesPriceWithDiscount'] : $salesPrice;
+// 		vmdebug('$$override salesPriceWithDiscount',$override,$this->productPrices['salesPriceWithDiscount'],$salesPrice);
+		$this->productPrices['salesPrice'] = !empty($this->productPrices['salesPriceWithDiscount']) ? $this->productPrices['salesPriceWithDiscount'] : $salesPrice;
 
-		$prices['salesPriceTemp'] = $prices['salesPrice'];
+		$this->productPrices['salesPriceTemp'] = $this->productPrices['salesPrice'];
 		//Okey, this may not the best place, but atm we handle the override price as salesPrice
 		if ($override==1) {
-			$prices['salesPrice'] = $product_override_price;
-// 			$prices['discountedPriceWithoutTax'] = $this->product_override_price;
-// 			$prices['salesPriceWithDiscount'] = $this->product_override_price;
+			$this->productPrices['salesPrice'] = $product_override_price;
+// 			$this->productPrices['discountedPriceWithoutTax'] = $this->product_override_price;
+// 			$this->productPrices['salesPriceWithDiscount'] = $this->product_override_price;
 		} else {
 
 		}
 
 		if(!empty($product->product_packaging) and $product->product_packaging!='0.0000'){
-			$prices['unitPrice'] = $prices['salesPrice']/$product->product_packaging;
+			$this->productPrices['unitPrice'] = $this->productPrices['salesPrice']/$product->product_packaging;
 		} else {
-			$prices['unitPrice'] = 0.0;
+			$this->productPrices['unitPrice'] = 0.0;
 		}
 
 
 		if(!empty($this->rules['VatTax'])){
 			$this->_revert = true;
-			$prices['priceWithoutTax'] = $prices['salesPrice'] - $prices['taxAmount'];
-			$afterTax = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $prices['salesPrice']),'salesPrice');
+			$this->productPrices['priceWithoutTax'] = $this->productPrices['salesPrice'] - $this->productPrices['taxAmount'];
+			$afterTax = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $this->productPrices['salesPrice']),'salesPrice');
 
 			if(!empty($afterTax)){
-				$prices['taxAmount'] = $prices['salesPrice'] - $afterTax;
+				$this->productPrices['taxAmount'] = $this->productPrices['salesPrice'] - $afterTax;
 			}
 			$this->_revert = false;
 		}
 
-// 		vmdebug('getProductPrices',$prices['salesPrice'],$this->product_override_price);
+// 		vmdebug('getProductPrices',$this->productPrices['salesPrice'],$this->product_override_price);
 		//The whole discount Amount
-		//		$prices['discountAmount'] = $this->roundInternal($prices['basePrice'] + $prices['taxAmount'] - $prices['salesPrice']);
-		$basePriceWithTax = !empty($prices['basePriceWithTax']) ? $prices['basePriceWithTax'] : $prices['basePrice'];
+		//		$this->productPrices['discountAmount'] = $this->roundInternal($this->productPrices['basePrice'] + $this->productPrices['taxAmount'] - $this->productPrices['salesPrice']);
+		$basePriceWithTax = !empty($this->productPrices['basePriceWithTax']) ? $this->productPrices['basePriceWithTax'] : $this->productPrices['basePrice'];
 
 		//changed
-		//		$prices['discountAmount'] = $this->roundInternal($basePriceWithTax - $salesPrice);
-		$prices['discountAmount'] = $this->roundInternal($basePriceWithTax - $prices['salesPrice']);
+		//		$this->productPrices['discountAmount'] = $this->roundInternal($basePriceWithTax - $salesPrice);
+		$this->productPrices['discountAmount'] = $this->roundInternal($basePriceWithTax - $this->productPrices['salesPrice']);
 
 		//price Without Tax but with calculated discounts AFTER Tax. So it just shows how much the shopper saves, regardless which kind of tax
-		//		$prices['priceWithoutTax'] = $this->roundInternal($salesPrice - ($salesPrice - $discountedPrice));
-// 		$prices['priceWithoutTax'] = $prices['salesPrice'] - $prices['taxAmount'];
-		$prices['priceWithoutTax'] = $salesPrice - $prices['taxAmount'];
+		//		$this->productPrices['priceWithoutTax'] = $this->roundInternal($salesPrice - ($salesPrice - $discountedPrice));
+// 		$this->productPrices['priceWithoutTax'] = $this->productPrices['salesPrice'] - $this->productPrices['taxAmount'];
+		$this->productPrices['priceWithoutTax'] = $salesPrice - $this->productPrices['taxAmount'];
 
-		$prices['variantModification'] = $variant;
+		$this->productPrices['variantModification'] = $variant;
 
-		$prices['DBTax'] = array();
+		$this->productPrices['DBTax'] = array();
 		foreach($this->rules['DBTax'] as $dbtax){
-			$prices['DBTax'][] = array($dbtax['calc_name'],$dbtax['calc_value'],$dbtax['calc_value_mathop'],$dbtax['calc_shopper_published']);
+			$this->productPrices['DBTax'][] = array($dbtax['calc_name'],$dbtax['calc_value'],$dbtax['calc_value_mathop'],$dbtax['calc_shopper_published']);
 		}
 
-		$prices['Tax'] = array();
+		$this->productPrices['Tax'] = array();
 		foreach($this->rules['Tax'] as $tax){
-			$prices['Tax'][] =  array($tax['calc_name'],$tax['calc_value'],$tax['calc_value_mathop'],$tax['calc_shopper_published']);
+			$this->productPrices['Tax'][] =  array($tax['calc_name'],$tax['calc_value'],$tax['calc_value_mathop'],$tax['calc_shopper_published']);
 		}
 
-		$prices['VatTax'] = array();
+		$this->productPrices['VatTax'] = array();
 		foreach($this->rules['VatTax'] as $tax){
-			$prices['VatTax'][] =  array($tax['calc_name'],$tax['calc_value'],$tax['calc_value_mathop'],$tax['calc_shopper_published']);
+			$this->productPrices['VatTax'][] =  array($tax['calc_name'],$tax['calc_value'],$tax['calc_value_mathop'],$tax['calc_shopper_published']);
 		}
 
-		$prices['DATax'] = array();
+		$this->productPrices['DATax'] = array();
 		foreach($this->rules['DATax'] as $datax){
-			$prices['DATax'][] =  array($datax['calc_name'],$datax['calc_value'],$datax['calc_value_mathop'],$datax['calc_shopper_published']);
+			$this->productPrices['DATax'][] =  array($datax['calc_name'],$datax['calc_value'],$datax['calc_value_mathop'],$datax['calc_shopper_published']);
 		}
 
-// 		vmdebug('getProductPrices',$prices);
-		return $prices;
+// 		vmdebug('getProductPrices',$this->productPrices);
+		return $this->productPrices;
 	}
 
-	private function fillVoidPrices() {
+	private function fillVoidPrices(&$prices) {
 
 		if (!isset($prices['basePrice']))
 			$prices['basePrice'] = null;
@@ -417,6 +420,8 @@ class calculationHelper {
 			$prices['taxAmount'] = null;
 		if (!isset($prices['salesPriceWithDiscount']))
 			$prices['salesPriceWithDiscount'] = null;
+		if (!isset($prices['salesPriceTemp']))
+			$prices['salesPriceTemp'] = null;
 		if (!isset($prices['salesPrice']))
 			$prices['salesPrice'] = null;
 		if (!isset($prices['discountAmount']))
@@ -425,6 +430,9 @@ class calculationHelper {
 			$prices['priceWithoutTax'] = null;
 		if (!isset($prices['variantModification']))
 			$prices['variantModification'] = null;
+		if (!isset($prices['unitPrice']))
+			$prices['unitPrice'] = null;
+		return $prices;
 	}
 
 	/** function to start the calculation, here it is for the invoice in the checkout
