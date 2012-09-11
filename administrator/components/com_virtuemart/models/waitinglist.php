@@ -104,9 +104,8 @@ class VirtueMartModelWaitingList extends VmModel {
 		$vars['vendor'] = $vendor;
 
 		$vars['vendorAddress']= shopFunctions::renderVendorAddress($virtuemart_vendor_id);
-		$vendorEmail = $vendorModel->getVendorEmail ($virtuemart_vendor_id);
 
-		$vars['vendorAddress'] = shopFunctions::renderVendorAddress($virtuemart_vendor_id);
+		$vendorEmail = $vendorModel->getVendorEmail ($virtuemart_vendor_id);
 		$vars['vendorEmail'] = $vendorEmail;
 
 		$i = 0;

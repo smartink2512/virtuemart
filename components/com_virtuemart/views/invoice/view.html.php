@@ -223,6 +223,7 @@ class VirtuemartViewInvoice extends VmView {
 		$vendorModel = VmModel::getModel('vendor');
 		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 		$vendorModel->addImages($vendor);
+		$vendor->vendorFields = $vendorModel->getVendorAddressFields();
 		$this->assignRef('vendor', $vendor);
 
 // 		vmdebug('vendor', $vendor);
@@ -239,12 +240,11 @@ class VirtuemartViewInvoice extends VmView {
 		}
 		$this->assignRef('headFooter', $headFooter);
 
-		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		//Attention, this function will be removed, it wont be deleted, but it is obsoloete in any view.html.php
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-
 	    $vendorAddress= shopFunctions::renderVendorAddress($virtuemart_vendor_id, $lineSeparator);
-
 		$this->assignRef('vendorAddress', $vendorAddress);
+
 		$vendorEmail = $vendorModel->getVendorEmail($virtuemart_vendor_id);
 		$vars['vendorEmail'] = $vendorEmail;
 

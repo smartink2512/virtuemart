@@ -1888,6 +1888,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 		$vendorModel = VmModel::getModel ('vendor');
 		$vendor = $vendorModel->getVendor ($virtuemart_vendor_id);
 		$vendorModel->addImages ($vendor);
+		$vendor->vendorFields = $vendorModel->getVendorAddressFields();
 		$vars['vendor'] = $vendor;
 
 		$vars['vendorAddress']= shopFunctions::renderVendorAddress($virtuemart_vendor_id);
@@ -2024,6 +2025,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 		$vendorModel = VmModel::getModel ('vendor');
 		$vendor = $vendorModel->getVendor ($product->virtuemart_vendor_id);
 		$vendorModel->addImages ($vendor);
+		$vendor->vendorFields = $vendorModel->getVendorAddressFields();
 		$vars['vendor'] = $vendor;
 		$vars['vendorEmail'] = $vendorModel->getVendorEmail ($product->virtuemart_vendor_id);
 		$vars['vendorAddress'] = shopFunctions::renderVendorAddress ($product->virtuemart_vendor_id);

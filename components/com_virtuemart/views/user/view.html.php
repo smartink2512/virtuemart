@@ -413,13 +413,23 @@ class VirtuemartViewUser extends VmView {
 	$userFieldsModel = VmModel::getModel('UserFields');
 	$userFields = $userFieldsModel->getUserFields();
 	$this->userFields = $userFieldsModel->getUserFieldsFilled($userFields, $this->user);
-	$vendorModel = VmModel::getModel('vendor');
-	$this->vendor = $vendorModel->getVendor();
-	if (VmConfig::get('order_mail_html')) {
+
+
+    if (VmConfig::get('order_mail_html')) {
 	    $mailFormat = 'html';
-	} else {
+	    $lineSeparator="<br />";
+    } else {
 	    $mailFormat = 'raw';
-	}
+	    $lineSeparator="\n";
+    }
+
+    $virtuemart_vendor_id=1;
+    $vendorModel = VmModel::getModel('vendor');
+    $vendor = $vendorModel->getVendor($virtuemart_vendor_id);
+    $vendorModel->addImages($vendor);
+	$vendor->vendorFields = $vendorModel->getVendorAddressFields();
+    $this->assignRef('vendor', $vendor);
+
 	if (!$doVendor) {
 	    $this->subject = JText::sprintf('COM_VIRTUEMART_NEW_SHOPPER_SUBJECT', $this->user->username, $this->vendor->vendor_store_name);
 	    $tpl = 'mail_' . $mailFormat . '_reguser';

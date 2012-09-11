@@ -121,17 +121,19 @@ class VirtueMartModelUser extends VmModel {
 	private $_defaultShopperGroup = 0;
 
 	/**
-	 * Returns a user with given vendor Id
+	 * Sets the internal user id with given vendor Id
 	 *
 	 * @author Max Milbers
 	 * @param int $vendorId
 	 */
-	function getVendor($vendorId=1){
+	function getVendor($vendorId=1,$return=TRUE){
 		$vendorModel = VmModel::getModel('vendor');
 		$userId = VirtueMartModelVendor::getUserIdByVendorId($vendorId);
 		if($userId){
 			$this->setUserId($userId);
-			return $this->getUser();
+			if($return){
+				return $this->getUser();
+			}
 		} else {
 			return false;
 		}

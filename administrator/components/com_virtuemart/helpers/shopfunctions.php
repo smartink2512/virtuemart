@@ -257,9 +257,9 @@ class ShopFunctions {
 		VmConfig::loadConfig();
 		if(VmConfig::get('enableEnglish', 1)){
 		    $jlang =JFactory::getLanguage();
-		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, 'en-GB', true);
-		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
-		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, null, true);
+		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, 'en-GB', TRUE);
+		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, $jlang->getDefault(), TRUE);
+		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, NULL, TRUE);
 		}
 
         $sorted_countries = array();
@@ -688,22 +688,22 @@ class ShopFunctions {
 		}
 	}
 
-	/*
-	* used mostly in the email, to display the vendor address
-	*/
-	static public function renderVendorAddress ($vendorId,$lineSeparator="<br />", $skips = array('name','username','email')) {
+	/**
+	 * used mostly in the email, to display the vendor address
+	 * Attention, this function will be removed from any view.html.php
+	 *
+	 * @static
+	 * @param        $vendorId
+	 * @param string $lineSeparator
+	 * @param array  $skips
+	 * @return string
+	 */
+	static public function renderVendorAddress ($vendorId,$lineSeparator="<br />", $skips = array('name','username','email','agreed')) {
 
-		if (!class_exists ('VirtueMartModelVendor')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-		}
+		$vendorModel = VmModel::getModel('vendor');
+		$vendorModel->setId($vendorId);
+		$vendorFields = $vendorModel->getVendorAddressFields($vendorId);
 
-		$userId = VirtueMartModelVendor::getUserIdByVendorId ($vendorId);
-		$userModel = VmModel::getModel ('user');
-		$virtuemart_userinfo_id = $userModel->getBTuserinfo_id ($userId);
-		// this is needed to set the correct user id for the vendor when the user is logged
-		$userModel->getVendor($vendorId);
-		$vendorFieldsArray = $userModel->getUserInfoInUserFields ('mail', 'BT', $virtuemart_userinfo_id, FALSE, TRUE);
-		$vendorFields = $vendorFieldsArray[$virtuemart_userinfo_id];
 		$vendorAddress = '';
 		foreach ($vendorFields['fields'] as $field) {
 			if(in_array($field['name'],$skips)) continue;
@@ -718,6 +718,8 @@ class ShopFunctions {
 		}
 		return $vendorAddress;
 	}
+
+
 
 	public static $counter = 0;
 	public static $categoryTree = 0;

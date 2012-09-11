@@ -171,8 +171,10 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$vars['vendorEmail'] = $user->email;
 		$vendorModel = VmModel::getModel ('vendor');
-		$vars['vendor'] = $vendorModel->getVendor ($vars['product']->virtuemart_vendor_id);
+		$vendor = $vendorModel->getVendor ($vars['product']->virtuemart_vendor_id);
 		$vendorModel->addImages ($vars['vendor']);
+		$vendor->vendorFields = $vendorModel->getVendorAddressFields();
+		$vars['vendor'] = $vendor;
 		$vars['vendorAddress']= shopFunctions::renderVendorAddress($vars['product']->virtuemart_vendor_id);
 
 		$vars['vendorEmail']=  $user->email;

@@ -390,4 +390,23 @@ class VirtueMartModelVendor extends VmModel {
 		$vendorAddressBt->load ($virtuemart_userinfo_id);
 		return $vendorAddressBt;
 	}
+
+	private $_vendorFields = FALSE;
+	public function getVendorAddressFields(){
+
+		if(!$this->_vendorFields){
+			$userId = VirtueMartModelVendor::getUserIdByVendorId ($this->_id);
+			$userModel = VmModel::getModel ('user');
+			$virtuemart_userinfo_id = $userModel->getBTuserinfo_id ($userId);
+
+			// this is needed to set the correct user id for the vendor when the user is logged
+			$userModel->getVendor($this->_id,FALSE);
+
+			$vendorFieldsArray = $userModel->getUserInfoInUserFields ('mail', 'BT', $virtuemart_userinfo_id, FALSE, TRUE);
+			$this->_vendorFields = $vendorFieldsArray[$virtuemart_userinfo_id];
+		}
+
+		return $this->_vendorFields;
+	}
+
 }
