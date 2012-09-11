@@ -170,7 +170,7 @@ class calculationHelper {
 				$this->_db->setQuery('SELECT `usgr`.`virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups as `usgr`
  										JOIN `#__virtuemart_shoppergroups` as `sg` ON (`usgr`.`virtuemart_shoppergroup_id`=`sg`.`virtuemart_shoppergroup_id`)
  										WHERE `usgr`.`virtuemart_user_id`="' . $user->id . '" AND `sg`.`virtuemart_vendor_id`="' . (int) $vendorId . '" ');
-				$this->_shopperGroupId = $this->_db->loadResultArray();  //todo load as array and test it
+				$this->_shopperGroupId = $this->_db->loadResultArray();
 				if (empty($this->_shopperGroupId)) {
 
 					$this->_db->setQuery('SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
@@ -179,21 +179,12 @@ class calculationHelper {
 				}
 			}
 			else if (empty($this->_shopperGroupId)) {
-				$session = JFactory::getSession();
-				$shoppergroup_id = $session->get('vm_shoppergroups_add',0,'vm');
 
-				if($shoppergroup_id!=0){
-					$this->_shopperGroupId[] = $shoppergroup_id;
-					$remove = $session->get('vm_shoppergroups_remove',0,'vm');
-					if(!empty($remove)){
-						unset($this->_shopperGroupId[$remove]);
-						vmdebug('Anonymous case, set session shoppergroup by plugin '.$shoppergroup_id);
-					}
-				} else {
-					$this->_db->setQuery('SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
-								WHERE `default`="'.($user->guest+1).'" AND `virtuemart_vendor_id`="' . (int) $vendorId . '"');
-					$this->_shopperGroupId = $this->_db->loadResultArray();
-				}
+				$shoppergroupmodel = VmModel::getModel('ShopperGroup');
+				$site = JFactory::getApplication ()->isSite ();
+				$this->_shopperGroupId = array();
+				$shoppergroupmodel->appendShopperGroups($this->_shopperGroupId,$user,$site,$vendorId);
+
 			}
 		}
 	}

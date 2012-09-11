@@ -616,7 +616,6 @@ class VmConfig {
 
  	}
 
-
 	function setSession(){
 /*		$session = JFactory::getSession();
 		$session->clear('vmconfig');

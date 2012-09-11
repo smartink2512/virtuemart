@@ -128,10 +128,14 @@ class VirtueMartModelShopperGroup extends VmModel {
 	 * Get default shoppergroup for anonymous and non anonymous
 	 * @param unknown_type $kind
 	 */
-	function getDefault($kind = 1){
+	function getDefault($kind = 1, $onlyPublished = FALSE, $vendorId = 1){
 
 		$kind = $kind + 1;
-		$this->_db->setQuery('SELECT * FROM `#__virtuemart_shoppergroups` WHERE `default` = "'.$kind.'" AND `virtuemart_vendor_id` = "1" ');
+		$q = 'SELECT * FROM `#__virtuemart_shoppergroups` WHERE `default` = "'.$kind.'" AND (`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared` = "1") ';
+		if($onlyPublished){
+			$q .= ' AND `published`="1" ';
+		}
+		$this->_db->setQuery($q);
 
 		if(!$res = $this->_db->loadObject()){
 			$app = JFactory::getApplication();
@@ -140,6 +144,41 @@ class VirtueMartModelShopperGroup extends VmModel {
 			return $res;
 		}
 
+	}
+
+	function appendShopperGroups(&$shopperGroups,$user,$onlyPublished = FALSE,$vendorId=1){
+
+		$this->mergeSessionSgrps($shopperGroups);
+
+		if(count($shopperGroups)<1){
+
+			$_defaultShopperGroup = $this->getDefault($user->guest,$onlyPublished,$vendorId);
+			$shopperGroups[] = $_defaultShopperGroup->virtuemart_shoppergroup_id;
+		/*	$this->_db->setQuery('SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
+								WHERE `default`="'.($user->guest+1).'" AND `virtuemart_vendor_id`="' . (int) $vendorId . '"');
+			$this->_shopperGroupId = $this->_db->loadResultArray();*/
+		}
+		$this->removeSessionSgrps($shopperGroups);
+
+	}
+
+	function mergeSessionSgrps(&$ids){
+		$session = JFactory::getSession();
+		$shoppergroup_ids = $session->get('vm_shoppergroups_add',array(),'vm');
+		array_merge($ids,(array)$shoppergroup_ids);
+	}
+
+	function removeSessionSgrps(&$ids){
+		$session = JFactory::getSession();
+		$shoppergroup_ids_remove = $session->get('vm_shoppergroups_remove',array(),'vm');
+		if(!is_array($shoppergroup_ids_remove)){
+			unset($ids[$shoppergroup_ids_remove]);
+		} else {
+			foreach($shoppergroup_ids_remove as $id){
+				unset($ids[$id]);
+				vmdebug('Anonymous case, remove session shoppergroup by plugin '.$id);
+			}
+		}
 	}
 
 	function remove($ids){
