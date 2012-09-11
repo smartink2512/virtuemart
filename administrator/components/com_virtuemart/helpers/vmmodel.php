@@ -420,7 +420,7 @@ class VmModel extends JModel {
 
 	/**
 	 *
-	 * @author Max Milberes
+	 * @author Max Milbers
 	 *
 	 */
 
