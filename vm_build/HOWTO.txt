@@ -30,8 +30,8 @@ Open the file "config.properties" (should be in the same directory as this HOWTO
 package.abspath=/Users/valerie/VIRTUEMART/Packages/VirtueMart
 ; export.to: absolute path of the exported files
 export.to=/Users/valerie/VIRTUEMART/Packages/export/virtuemart
-; export.fom.repository: will export the files from the repository.
-export.from.repository=0
+; export.fom.repository: will export the files from the repository. Otherwise, export the files "manually" to "export.to"
+export.from.repository=1
 ; your svn bin C:\Program Files\Subversion\bin\svn.exe
 svn.path=
 
@@ -44,6 +44,15 @@ III. Run the Build files build_virtuemart2.xml
 - PHING.VM.CODENAME
 
 2. From your IDE, run the build file build_virtuemart2.xml
+
+3. create a zip called com_virtuemart.2.x.y_extract_first.zip containing :
+- com_virtuemart.2.x.y.zip
+- com_virtuemart.2.x.y_ext_aio.zip
+
+4. create a zip called com_virtuemart.2.x.y_extract_first.targz.zip containing :
+- com_virtuemart.2.0.xx.tar.gz
+- com_virtuemart.2.x.y_ext_aio.tar.gz
+
 
 IV. What does the script exactly ?
 ===================================
