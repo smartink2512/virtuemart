@@ -165,7 +165,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 	function mergeSessionSgrps(&$ids){
 		$session = JFactory::getSession();
 		$shoppergroup_ids = $session->get('vm_shoppergroups_add',array(),'vm');
-		array_merge($ids,(array)$shoppergroup_ids);
+		$ids = array_merge($ids,(array)$shoppergroup_ids);
 	}
 
 	function removeSessionSgrps(&$ids){
