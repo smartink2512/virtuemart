@@ -685,7 +685,8 @@ class VirtueMartModelCustomfields extends VmModel {
 					if ($media_id = $this->_db->loadResult ()) {
 						$thumb = $this->displayCustomMedia ($media_id);
 					}
-					return $display . JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id=' . $field->custom_value), $thumb . '<br /> ' . $related->product_name, array('title' => $related->product_name . '<br/>' . $related->product_s_desc));
+					$title= $related->product_s_desc?  $related->product_s_desc :'';
+					return $display . JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id=' . $field->custom_value), $thumb . '<br /> ' . $related->product_name, array('title' => $title));
 					break;
 				/* image */
 				case 'M':
@@ -1123,10 +1124,11 @@ class VirtueMartModelCustomfields extends VmModel {
 					$thumb = '';
 					$q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "' . (int)$value . '" AND (`ordering` = 0 OR `ordering` = 1)';
 					$this->_db->setQuery ($q);
+					$thumb="";
 					if ($media_id = $this->_db->loadResult ()) {
-						$thumb = $this->displayCustomMedia ($media_id);
-						return JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $value . '&virtuemart_category_id=' . $related->virtuemart_category_id), $thumb . ' ' . $related->product_name, array('title' => $related->product_name));
+						$thumb = $this->displayCustomMedia ($media_id).' ';
 					}
+					return JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $value . '&virtuemart_category_id=' . $related->virtuemart_category_id), $thumb   . $related->product_name, array('title' => $related->product_name));
 					break;
 				/* image */
 				case 'M':
