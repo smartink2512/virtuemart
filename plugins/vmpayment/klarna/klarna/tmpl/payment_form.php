@@ -441,6 +441,7 @@ if ($code2 == 'de') {
 </div>
 </div>
 </div>
+<input type="hidden" name="klarna_country_2_code" value="<?php echo $viewData['payment_params']['countryCode']; ?>"/>
 <?php if ($code2 != 'se') { ?>
 <input type="hidden" name="klarna_emailAddress" value="<?php echo $viewData["payment_params"]["fields"]['email']; ?>"/>
 <?php } ?>

@@ -1393,6 +1393,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 	}
 
 	function checkNLpriceCondition ($price) {
+		//  Since 12/09/12: merchants can sell goods with Klarna Invoice up to thousands of euros.
 
 		if ($price > 250) {
 			// We can't show our payment options for Dutch customers
@@ -1401,10 +1402,11 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			return FALSE;
 		}
 		return TRUE;
+
 	}
 
 	function checkPartNLpriceCondition ($cart) {
-
+//  Since 12/09/12: merchants can sell goods with Klarna Invoice up to thousands of euros.
 		// convert price in euro
 		//$euro_currency_id = ShopFunctions::getCurrencyByName( 'EUR');
 		$price = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $cart->pricesCurrency, 'EUR',$cart->pricesCurrency);
