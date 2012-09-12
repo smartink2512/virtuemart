@@ -170,15 +170,18 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 	function removeSessionSgrps(&$ids){
 		$session = JFactory::getSession();
-		$shoppergroup_ids_remove = $session->get('vm_shoppergroups_remove',array(),'vm');
-		if(!is_array($shoppergroup_ids_remove)){
-			unset($ids[$shoppergroup_ids_remove]);
-		} else {
-			foreach($shoppergroup_ids_remove as $id){
-				unset($ids[$id]);
-				vmdebug('Anonymous case, remove session shoppergroup by plugin '.$id);
+		$shoppergroup_ids_remove = $session->get('vm_shoppergroups_remove',0,'vm');
+		if($shoppergroup_ids_remove!==0){
+			if(!is_array($shoppergroup_ids_remove)){
+				unset($ids[$shoppergroup_ids_remove]);
+			} else {
+				foreach($shoppergroup_ids_remove as $id){
+					unset($ids[$id]);
+					vmdebug('Anonymous case, remove session shoppergroup by plugin '.$id);
+				}
 			}
 		}
+
 	}
 
 	function remove($ids){
