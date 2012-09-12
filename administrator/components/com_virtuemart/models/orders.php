@@ -906,15 +906,62 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	private function _createOrderCalcRules($order_id, $_cart)
 	{
 		$orderCalcRules = $this->getTable('order_calc_rules');
-		$calculation_kinds=array('DBTaxRulesBill', 'taxRulesBill', 'DATaxRulesBill');
+
+		$productKeys = array_keys($_cart->products);
+
+		$calculation_kinds = array('DBTax','Tax','VatTax','DATax');
+
+		//vmdebug('_createOrderCalcRules $productKeys',$productKeys);
+		foreach($productKeys as $key){
+
+			if ($index = strpos($key, '::')) {
+				$virtuemart_product_id = substr($key, 0, $index);
+			} else {
+				$virtuemart_product_id = $key;
+			}
+
+			foreach($calculation_kinds as $calculation_kind) {
+				$productRules =$_cart->pricesUnformatted[$key][$calculation_kind];
+				foreach($productRules as $rule){
+					$orderCalcRules->virtuemart_order_calc_rule_id= null;
+					$orderCalcRules->virtuemart_product_id = $virtuemart_product_id;
+					$orderCalcRules->calc_rule_name = $rule[0];
+					$orderCalcRules->calc_amount =  0;
+					$orderCalcRules->calc_mathop = $rule[2];
+					$orderCalcRules->calc_kind = $calculation_kind;
+					$orderCalcRules->calc_currency = $rule[4];
+					$orderCalcRules->calc_params = $rule[5];
+					$orderCalcRules->virtuemart_vendor_id = $rule[6];
+					$orderCalcRules->virtuemart_order_id=$order_id;
+
+					if (!$orderCalcRules->check()) {
+						vmError('_createOrderCalcRules check product rule '.$this->getError());
+						vmdebug('_createOrderCalcRules check product rule '.$this->getError());
+						return false;
+					}
+
+					// Save the record to the database
+					if (!$orderCalcRules->store()) {
+						vmError('_createOrderCalcRules store product rule '.$this->getError());
+						vmdebug('_createOrderCalcRules store product rule '.$this->getError());
+						return false;
+					}
+				}
+
+			}
+		}
+
+
+		$Bill_calculation_kinds=array('DBTaxRulesBill', 'taxRulesBill', 'DATaxRulesBill');
 	//	vmdebug('_createOrderCalcRules',$_cart );
-		foreach($calculation_kinds as $calculation_kind) {
+		foreach($Bill_calculation_kinds as $calculation_kind) {
 // 			if(empty($_cart->cartData)){
 // 				vmError('Cart data was empty, why?');
 // 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 // 				$calculator = calculationHelper::getInstance();
 // 				$_cart->cartData = $calculator->getCartData();
 // 			}
+
 		    foreach($_cart->cartData[$calculation_kind] as $rule){
 			     $orderCalcRules->virtuemart_order_calc_rule_id= null;
 			     $orderCalcRules->calc_rule_name= $rule['calc_name'];
@@ -922,13 +969,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			     $orderCalcRules->calc_kind=$calculation_kind;
 			     $orderCalcRules->virtuemart_order_id=$order_id;
 			     if (!$orderCalcRules->check()) {
-				    vmError($this->getError());
+				    vmError('_createOrderCalcRules store bill rule '.$this->getError());
 				    return false;
 			    }
 
 			    // Save the record to the database
 			    if (!$orderCalcRules->store()) {
-				    vmError($this->getError());
+				    vmError('_createOrderCalcRules store bill rule '.$this->getError());
 				    return false;
 			    }
 		    }

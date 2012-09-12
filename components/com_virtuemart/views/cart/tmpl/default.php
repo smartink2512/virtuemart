@@ -52,8 +52,8 @@ $document->addScriptDeclaration ("
 ");
 $document->addStyleDeclaration ('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
 
-//  vmdebug('car7t pricesUnformatted',$this->cart->pricesUnformatted);
-//  vmdebug('cart pricesUnformatted',$this->cart->cartData );
+//vmdebug('car7t pricesUnformatted',$this->cart->pricesUnformatted);
+//vmdebug('cart cart',$this->cart );
 ?>
 
 <div class="cart-view">

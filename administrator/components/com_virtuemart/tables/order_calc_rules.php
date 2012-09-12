@@ -45,7 +45,10 @@ class TableOrder_calc_rules extends VmTable {
 	/** @var decimal Product item price */
 	var $calc_amount = 0.00000;
 
-
+	var $calc_mathop = NULL;
+	var $calc_value = NULL;
+	var $calc_currency = NULL;
+	var $calc_params = NULL;
 
 	/**
 	 * @param $db Class constructor; connect to the database

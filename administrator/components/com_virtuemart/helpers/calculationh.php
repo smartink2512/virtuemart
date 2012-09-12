@@ -373,22 +373,22 @@ class calculationHelper {
 
 		$this->productPrices['DBTax'] = array();
 		foreach($this->rules['DBTax'] as $dbtax){
-			$this->productPrices['DBTax'][] = array($dbtax['calc_name'],$dbtax['calc_value'],$dbtax['calc_value_mathop'],$dbtax['calc_shopper_published']);
+			$this->productPrices['DBTax'][] = array($dbtax['calc_name'],$dbtax['calc_value'],$dbtax['calc_value_mathop'],$dbtax['calc_shopper_published'],$dbtax['calc_currency'],$dbtax['calc_params'], $dbtax['virtuemart_vendor_id']);
 		}
 
 		$this->productPrices['Tax'] = array();
 		foreach($this->rules['Tax'] as $tax){
-			$this->productPrices['Tax'][] =  array($tax['calc_name'],$tax['calc_value'],$tax['calc_value_mathop'],$tax['calc_shopper_published']);
+			$this->productPrices['Tax'][] =  array($tax['calc_name'],$tax['calc_value'],$tax['calc_value_mathop'],$tax['calc_shopper_published'],$tax['calc_currency'],$tax['calc_params'], $tax['virtuemart_vendor_id']);
 		}
 
 		$this->productPrices['VatTax'] = array();
 		foreach($this->rules['VatTax'] as $tax){
-			$this->productPrices['VatTax'][] =  array($tax['calc_name'],$tax['calc_value'],$tax['calc_value_mathop'],$tax['calc_shopper_published']);
+			$this->productPrices['VatTax'][] =  array($tax['calc_name'],$tax['calc_value'],$tax['calc_value_mathop'],$tax['calc_shopper_published'],$tax['calc_currency'],$tax['calc_params'], $tax['virtuemart_vendor_id']);
 		}
 
 		$this->productPrices['DATax'] = array();
 		foreach($this->rules['DATax'] as $datax){
-			$this->productPrices['DATax'][] =  array($datax['calc_name'],$datax['calc_value'],$datax['calc_value_mathop'],$datax['calc_shopper_published']);
+			$this->productPrices['DATax'][] =  array($datax['calc_name'],$datax['calc_value'],$datax['calc_value_mathop'],$datax['calc_shopper_published'],$datax['calc_currency'],$datax['calc_params'], $datax['virtuemart_vendor_id']);
 		}
 
 // 		vmdebug('getProductPrices',$this->productPrices);
