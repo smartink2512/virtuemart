@@ -888,6 +888,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				vmError($this->getError());
 				return false;
 			}
+			$_prod->virtuemart_order_item_id = $_orderItems->virtuemart_order_item_id;
 // 			vmdebug('_createOrderLines',$_prod);
 			$this->handleStockAfterStatusChangedPerProduct( $_orderItems->order_status,'N',$_orderItems,$_orderItems->product_quantity);
 
@@ -913,20 +914,14 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		//vmdebug('_createOrderCalcRules $productKeys',$productKeys);
 		foreach($productKeys as $key){
-
-			if ($index = strpos($key, '::')) {
-				$virtuemart_product_id = substr($key, 0, $index);
-			} else {
-				$virtuemart_product_id = $key;
-			}
-
 			foreach($calculation_kinds as $calculation_kind) {
 				$productRules =$_cart->pricesUnformatted[$key][$calculation_kind];
 				foreach($productRules as $rule){
 					$orderCalcRules->virtuemart_order_calc_rule_id= null;
-					$orderCalcRules->virtuemart_product_id = $virtuemart_product_id;
+					$orderCalcRules->virtuemart_order_item_id = $_cart->products[$key]->virtuemart_order_item_id;
 					$orderCalcRules->calc_rule_name = $rule[0];
 					$orderCalcRules->calc_amount =  0;
+					$orderCalcRules->calc_value = $rule[1];
 					$orderCalcRules->calc_mathop = $rule[2];
 					$orderCalcRules->calc_kind = $calculation_kind;
 					$orderCalcRules->calc_currency = $rule[4];

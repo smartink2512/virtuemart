@@ -37,7 +37,8 @@ class TableOrder_calc_rules extends VmTable {
 
 	/** @var int Vendor ID */
 	var $virtuemart_vendor_id = NULL;
-
+	/** @var int Product ID */
+	var $virtuemart_order_item_id = NULL;
 	/** @var string Calculation Rule name name */
 	var $calc_rule_name = NULL;
 	/** @var int Product Quantity */

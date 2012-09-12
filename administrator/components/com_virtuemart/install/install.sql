@@ -559,6 +559,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_calc_rules` (
   `virtuemart_order_calc_rule_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_order_id` int(11),
   `virtuemart_vendor_id` smallint(11) NOT NULL DEFAULT '1',
+  `virtuemart_order_item_id` int(11),
   `calc_rule_name`  char(64) NOT NULL DEFAULT '' COMMENT 'Name of the rule',
   `calc_kind` char(16) NOT NULL DEFAULT '' COMMENT 'Discount/Tax/Margin/Commission',
   `calc_mathop` char(16) NOT NULL DEFAULT '' COMMENT 'Discount/Tax/Margin/Commission',
