@@ -1590,6 +1590,9 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$calculator = calculationHelper::getInstance ();
 
+		// Add in the quantity in case the customfield plugins need it
+		$product->quantity = $quantity;
+
 		// Calculate the modificator
 		$variantPriceModification = $calculator->calculateModificators ($product, $customVariant);
 
