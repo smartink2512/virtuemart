@@ -443,7 +443,7 @@ class KlarnaHandler {
 
 			$item_price = self::convertPrice ($price, $order['details']['BT']->order_currency, $cData['currency_code']);
 			$item_price = (double)(round ($item_price, 2));
-			$item_tax_percent = (double)(round (self::getTaxPercent ($item->product_item_price + ($item->product_tax / $item->product_quantity), $item->product_item_price), 2));
+			$item_tax_percent = (double)(round (self::getTaxPercent ($item->product_item_price + $item->product_tax , $item->product_item_price), 2));
 			$item_discount_percent = (double)(round (abs (($item->product_subtotal_discount / $item->product_quantity) * 100 / $price), 2));
 			//vmdebug('addarticle', $item->order_item_sku, $item,  $item_tax_percent);
 			$klarna->addArticle ($item->product_quantity, utf8_decode ($item->order_item_sku), utf8_decode (strip_tags ($item->order_item_name)), $item_price, (double)$item_tax_percent, $item_discount_percent, KlarnaFlags::INC_VAT);
