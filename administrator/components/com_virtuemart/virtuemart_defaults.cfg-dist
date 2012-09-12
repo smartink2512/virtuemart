@@ -35,6 +35,7 @@ show_emailfriend=1
 show_printicon=0
 show_out_of_stock_products=1
 coupons_enable=0
+show_uncat_child_products=0
 coupons_default_expire=1,D
 weight_unit_default=KG
 lwh_unit_default=m

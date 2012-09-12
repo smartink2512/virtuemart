@@ -161,6 +161,16 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 	    	<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_UNCAT_CHILD_PRODUCTS_SHOW_EXPLAIN'); ?>">
+				<label for="show_uncat_child_products"><?php echo JText::_('COM_VIRTUEMART_UNCAT_CHILD_PRODUCTS_SHOW') ?></label>
+				</span>
+	   	 	</td>
+	    	<td>
+				<?php echo VmHTML::checkbox('show_uncat_child_products', $this->config->get('show_uncat_child_products')); ?>
+	    	</td>
+			</tr>
+			<tr>
+	    	<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_EXPIRE_EXPLAIN'); ?>">
 				<label for="coupons_default_expire"><?php echo JText::_('COM_VIRTUEMART_COUPONS_EXPIRE') ?></label>
 				</span>
