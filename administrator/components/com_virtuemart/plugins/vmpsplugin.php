@@ -190,7 +190,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		$cart_prices_name = '';
-		$cart_prices[$this->_psType . '_calc_id'] = 0;
 		$cart_prices['cost'] = 0;
 
 		if (!$this->checkConditions ($cart, $method, $cart_prices)) {
