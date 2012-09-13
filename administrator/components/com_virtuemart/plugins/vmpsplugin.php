@@ -906,10 +906,13 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (count ($taxrules) > 0) {
 			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value']), 'salesPrice');
 			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] - $cart_prices[$this->_psType . 'Value']), 'salesPrice');
+			$cart_prices[$this->_psType . '_calc_id'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] - $cart_prices[$this->_psType . 'Value']), 'salesPrice');
+
 		}
 		else {
 			$cart_prices['salesPrice' . $_psType] = $value;
 			$cart_prices[$this->_psType . 'Tax'] = 0;
+			$cart_prices[$this->_psType . '_calc_id'] =0;
 		}
 	}
 
@@ -1182,9 +1185,9 @@ abstract class vmPSPlugin extends vmPlugin {
 			$order['order_status'] = 'X';
 			$order['virtuemart_order_id'] = $virtuemart_order_id;
 			$order['customer_notified'] = 0;
-			$order['comments'] = '';
+			$order['comments'] = JText::_('COM_VIRTUEMART_PAYMENT_CANCELLED_BY_SHOPPER');
 			$modelOrder->updateStatusForOneOrder ($virtuemart_order_id, $order, TRUE);
-			$modelOrder->remove (array('virtuemart_order_id' => $virtuemart_order_id));
+			//$modelOrder->remove (array('virtuemart_order_id' => $virtuemart_order_id));
 		}
 	}
 

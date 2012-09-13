@@ -61,8 +61,6 @@ if(VmConfig::get('shop_is_offline',0)){
 	if (($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit') ) {
 		$app = JFactory::getApplication();
 
-		if ($task == 'save') $app->redirect('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.JRequest::getInt('virtuemart_product_id') );
-		else {
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			if	(Permissions::getInstance()->check("admin,storeadmin")) {
 				$jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
@@ -71,7 +69,6 @@ if(VmConfig::get('shop_is_offline',0)){
 			} else {
 				$app->redirect('index.php?option=com_virtuemart', jText::_('COM_VIRTUEMART_RESTRICTED_ACCESS') );
 			}
-		}
 
 	} elseif($_controller) {
 			$basePath = JPATH_VM_SITE;
