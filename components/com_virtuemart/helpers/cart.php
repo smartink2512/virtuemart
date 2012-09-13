@@ -429,6 +429,9 @@ class VirtueMartCart {
 
 				}
 
+				// Add in the quantity in case the customfield plugins need it
+				$product->quantity = $quantityPost;
+
 				if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 				JPluginHelper::importPlugin('vmcustom');
 				$dispatcher = JDispatcher::getInstance();
