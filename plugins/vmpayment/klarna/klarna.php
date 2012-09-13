@@ -1658,10 +1658,12 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$cart_prices['paymentTax'] = $invoice_fee - $calculator->roundInternal ($invoiceFeeWithoutTax);
 			$cart_prices['paymentValue'] = $invoiceFeeWithoutTax;
 			$calculator->setRevert (FALSE);
+			$cart_prices[$this->_psType . '_calc_id'] = $taxrules[0]['virtuemart_calc_id'];
 		} else {
 			$cart_prices['paymentValue'] = $invoice_fee;
 			$cart_prices['salesPricePayment'] = $invoice_fee;
 			$cart_prices['paymentTax'] = 0;
+			$cart_prices[$this->_psType . '_calc_id'] = 0;
 		}
 
 	}

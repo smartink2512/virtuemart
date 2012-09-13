@@ -982,9 +982,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			$orderCalcRules = $this->getTable('order_calc_rules');
 			$calcModel = VmModel::getModel('calc');
-
-			$calc = $calcModel->getCalc($_cart->payment_calc_id);
-
+			$calcModel->setId($_cart->pricesUnformatted['payment_calc_id']);
+			$calc = $calcModel->getCalc();
 			$orderCalcRules->virtuemart_order_calc_rule_id = null;
 			$orderCalcRules->calc_kind = 'payment';
 			$orderCalcRules->calc_rule_name = $calc->calc_name;
@@ -1011,8 +1010,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			$orderCalcRules = $this->getTable('order_calc_rules');
 			$calcModel = VmModel::getModel('calc');
-
-			$calc = $calcModel->getCalc($_cart->shipment_calc_id);
+			$calcModel->setId($_cart->pricesUnformatted['shipment_calc_id']);
+			$calc = $calcModel->getCalc();
 
 			$orderCalcRules->virtuemart_order_calc_rule_id = null;
 			$orderCalcRules->calc_kind = 'shipment';

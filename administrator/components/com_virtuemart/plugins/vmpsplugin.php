@@ -908,9 +908,8 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (count ($taxrules) > 0) {
 			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value']), 'salesPrice');
 			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] - $cart_prices[$this->_psType . 'Value']), 'salesPrice');
-
-		}
-		else {
+			$cart_prices[$this->_psType . '_calc_id'] = $taxrules[0]['virtuemart_calc_id'];
+		} else {
 			$cart_prices['salesPrice' . $_psType] = $value;
 			$cart_prices[$this->_psType . 'Tax'] = 0;
 			$cart_prices[$this->_psType . '_calc_id'] =0;

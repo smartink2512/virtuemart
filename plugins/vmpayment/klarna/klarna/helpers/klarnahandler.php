@@ -443,22 +443,38 @@ class KlarnaHandler {
 
 			$item_price = self::convertPrice ($price, $order['details']['BT']->order_currency, $cData['currency_code']);
 			$item_price = (double)(round ($item_price, 2));
-			$item_tax_percent = (double)(round (self::getTaxPercent ($item->product_item_price + $item->product_tax , $item->product_item_price), 2));
+			$item_tax_percent=0;
+			foreach ($order['calc_rules'] as $calc_rule) {
+				if ($calc_rule->virtuemart_order_item_id==$item->virtuemart_order_item_id AND $calc_rule->calc_kind== 'VatTax') {
+					$item_tax_percent=$calc_rule->calc_value;
+					break;
+				}
+			}
 			$item_discount_percent = (double)(round (abs (($item->product_subtotal_discount / $item->product_quantity) * 100 / $price), 2));
 			//vmdebug('addarticle', $item->order_item_sku, $item,  $item_tax_percent);
 			$klarna->addArticle ($item->product_quantity, utf8_decode ($item->order_item_sku), utf8_decode (strip_tags ($item->order_item_name)), $item_price, (double)$item_tax_percent, $item_discount_percent, KlarnaFlags::INC_VAT);
 		}
 		// Add shipping
 		$shipment = self::convertPrice ($order['details']['BT']->order_shipment + $order['details']['BT']->order_shipment_tax, $order['details']['BT']->order_currency, $cData['currency_code']);
-		$shipment_tax_percent = self::getTaxPercent ($order['details']['BT']->order_shipment + $order['details']['BT']->order_shipment_tax, $order['details']['BT']->order_shipment);
+ 			foreach ($order['calc_rules'] as $calc_rule) {
+				if ($calc_rule->calc_kind== 'shipment') {
+					$shipment_tax_percent=$calc_rule->calc_value;
+					break;
+				}
+			}
 		$klarna->addArticle (1, "shippingfee", JText::_ ('VMPAYMENT_KLARNA_SHIPMENT'), ((double)(round (($shipment), 2))), round ($shipment_tax_percent, 2), 0, KlarnaFlags::IS_SHIPMENT + KlarnaFlags::INC_VAT);
 
 		// Add invoice fee
 		if ($klarna_pclass == -1) { //Only for invoices!
 			$payment_without_tax = self::convertPrice ($order['details']['BT']->order_payment, $order['details']['BT']->order_currency, $cData['currency_code']);
 			$payment_with_tax = self::convertPrice ($order['details']['BT']->order_payment + $order['details']['BT']->order_payment_tax, $order['details']['BT']->order_currency, $cData['currency_code']);
-			$payment_tax_percent = self::getTaxPercent ($order['details']['BT']->order_payment + $order['details']['BT']->order_payment_tax, $order['details']['BT']->order_payment);
-			if ($payment_without_tax > 0) {
+			foreach ($order['calc_rules'] as $calc_rule) {
+				if ( $calc_rule->calc_kind== 'payment') {
+					$payment_tax_percent=$calc_rule->calc_value;
+					break;
+				}
+			}
+ 			if ($payment_without_tax > 0) {
 				//vmdebug('invoicefee', $payment, $payment_tax);
 				$klarna->addArticle (1, "invoicefee", JText::_ ('VMPAYMENT_KLARNA_INVOICE_FEE_TITLE'), ((double)(round (($payment_with_tax), 2))), (double)round ($payment_tax_percent, 2), 0, KlarnaFlags::IS_HANDLING + KlarnaFlags::INC_VAT);
 			}
@@ -567,19 +583,6 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		}
 	}
 
-	/**
-	 * @static
-	 * @param $pricewithVAT
-	 * @param $pricewithoutVAT
-	 * @return float
-	 */
-	static function getTaxPercent ($pricewithVAT, $pricewithoutVAT) {
-
-		if ($pricewithoutVAT == 0) {
-			return 0.0;
-		}
-		return (($pricewithVAT / $pricewithoutVAT) - 1) * 100;
-	}
 
 	/**
 	 * Returns a collection of addresses that are connected to the
