@@ -190,6 +190,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		$cart_prices_name = '';
+		//$cart_prices[$this->_psType . '_tax_id'] = 0;
 		$cart_prices['cost'] = 0;
 
 		if (!$this->checkConditions ($cart, $method, $cart_prices)) {
@@ -896,6 +897,8 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$taxrules = array();
 		if (!empty($method->tax_id)) {
+			$cart_prices[$this->_psType . '_calc_id'] = $method->tax_id;
+
 			$db = JFactory::getDBO ();
 			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $method->tax_id . '" ';
 			$db->setQuery ($q);
@@ -905,9 +908,12 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (count ($taxrules) > 0) {
 			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value']), 'salesPrice');
 			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] - $cart_prices[$this->_psType . 'Value']), 'salesPrice');
-		} else {
+
+		}
+		else {
 			$cart_prices['salesPrice' . $_psType] = $value;
 			$cart_prices[$this->_psType . 'Tax'] = 0;
+			$cart_prices[$this->_psType . '_calc_id'] =0;
 		}
 	}
 

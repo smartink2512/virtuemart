@@ -1288,9 +1288,9 @@ class VirtueMartModelUser extends VmModel {
 			, ju.name AS name
 			, ju.username AS username
 			, ju.email AS email
-			, vmu.user_is_vendor AS is_vendor
-			, vmu.perms AS perms
 			, ju.usertype AS usertype
+			, IFNULL(vmu.user_is_vendor,"0") AS is_vendor
+			, IFNULL(vmu.perms,"shopper") AS perms
 			, IFNULL(sg.shopper_group_name, "") AS shopper_group_name ';
 		$joinedTables = ' FROM #__users AS ju
 			LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id
