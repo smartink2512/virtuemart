@@ -337,7 +337,12 @@ class VmMediaHandler {
 		public function determineFoldersToTest(){
 
 			$file_path = str_replace('/',DS,$this->file_url_folder);
-			$this->addFoldersToTest(JPATH_ROOT.DS.$file_path);
+			if($this->file_is_forSale){
+				$this->addFoldersToTest($file_path);
+			} else {
+				$this->addFoldersToTest(JPATH_ROOT.DS.$file_path);
+			}
+
 
 			$file_path_thumb = str_replace('/',DS,$this->file_url_folder_thumb);
 			$this->addFoldersToTest(JPATH_ROOT.DS.$file_path_thumb);

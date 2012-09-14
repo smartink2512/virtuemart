@@ -537,7 +537,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			$vendor = $vendor_model->getVendor();
 			$currency_model = VmModel::getModel('currency');
 			$vendor_currency = $currency_model->getCurrency($vendor->vendor_currency);
-			$priceInput = '<span style="white-space: nowrap;"><input type="text" size="12" style="text-align:right;" value="' . (isset($field->custom_price) ?  $field->custom_price : '0.00') . '" name="field[' . $row . '][custom_price]" /> '.$vendor_currency->currency_symbol."</span>";
+			$priceInput = '<span style="white-space: nowrap;"><input type="text" size="12" style="text-align:right;" value="' . (isset($field->custom_price) ?  $field->custom_price : '0') . '" name="field[' . $row . '][custom_price]" /> '.$vendor_currency->currency_symbol."</span>";
 		}
 		else {
 			$priceInput = ' ';
