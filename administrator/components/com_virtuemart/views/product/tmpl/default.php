@@ -93,10 +93,10 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 		<?php } ?>
 		<th><?php echo $this->sort('mf_name', 'COM_VIRTUEMART_MANUFACTURER_S') ; ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_REVIEW_S'); ?></th>
-
+		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL'); ?>
+			 </th>
 		<th width="40px" ><?php echo $this->sort('published') ; ?></th>
 	                <th><?php echo $this->sort('p.virtuemart_product_id', 'COM_VIRTUEMART_ID')  ?></th>
-
         </tr>
 	</thead>
 	<tbody>
@@ -165,7 +165,14 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 				<!-- Reviews -->
 				<?php $link = 'index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$product->virtuemart_product_id; ?>
 				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('COM_VIRTUEMART_REVIEW_FORM_LBL').']'); ?></td>
-
+				<td>
+					<?php
+					if ($product->product_special == 1) {
+						echo JHtml::_('image','menu/icon-16-default.png', JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'), NULL, true);
+					} else {
+                        echo "&nbsp;";
+					} ?>
+				 </td>
 				<!-- published -->
 				<td><?php echo $published; ?></td>
                                 <!-- Vendor name -->
