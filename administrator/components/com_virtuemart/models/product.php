@@ -189,16 +189,15 @@ class VirtueMartModelProduct extends VmModel {
 		//User Q.Stanley said that removing group by is increasing the speed of product listing in a bigger shop (10k products) by factor 60
 		//So what was the reason for that we have it? TODO experiemental, find conditions for the need of group by
 		$groupBy = ' group by p.`virtuemart_product_id` ';
-		// $groupBy = ' ';
 
-			//administrative variables to organize the joining of tables
+		//administrative variables to organize the joining of tables
 		$joinCategory = FALSE;
 		$joinMf = FALSE;
 		$joinPrice = FALSE;
 		$joinCustom = FALSE;
 		$joinShopper = FALSE;
 		$joinChildren = FALSE;
-		$joinLang = TRUE; // test fix Patrick
+		$joinLang = TRUE;
 		$orderBy = ' ';
 
 		$where = array();
@@ -218,6 +217,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		if ($useCore) {
+			$isSite = $app->isSite ();
 // 		if ( $this->keyword !== "0" and $group ===false) {
 			if (!empty($this->keyword) and $this->keyword !== '' and $group === FALSE) {
 
@@ -276,7 +276,7 @@ class VirtueMartModelProduct extends VmModel {
 				$where[] = ' p.`published`="1" ';
 			}
 
-			if($app->isSite() && !VmConfig::get('use_as_catalog',0)) {
+			if($isSite and !VmConfig::get('use_as_catalog',0)) {
 				if (VmConfig::get('stockhandle','none')=='disableit_children') {
 					$where[] = ' (p.`product_in_stock` - p.`product_ordered` >"0" OR children.`product_in_stock` - children.`product_ordered` > "0") ';
 					$joinChildren = TRUE;
@@ -290,7 +290,7 @@ class VirtueMartModelProduct extends VmModel {
 				$where[] = ' `#__virtuemart_product_categories`.`virtuemart_category_id` = ' . $virtuemart_category_id;
 			}
 
-			if (!VmConfig::get('show_uncat_child_products')) {
+			if ($isSite and !VmConfig::get('show_uncat_child_products',TRUE)) {
 				$joinCategory = TRUE;
 				$where[] = ' `#__virtuemart_product_categories`.`virtuemart_category_id` > 0 ';
 			}
@@ -299,7 +299,7 @@ class VirtueMartModelProduct extends VmModel {
 				$where[] = ' p.`product_parent_id` = ' . $this->product_parent_id;
 			}
 
-			if ($app->isSite ()) {
+			if ($isSite) {
 				$usermodel = VmModel::getModel ('user');
 				$currentVMuser = $usermodel->getUser ();
 				$virtuemart_shoppergroup_ids = (array)$currentVMuser->shopper_groups;
@@ -411,8 +411,8 @@ class VirtueMartModelProduct extends VmModel {
 						$orderBy = ' ORDER BY p.`product_sales` '; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 						$this->filter_order_Dir = 'DESC';
 				}
-				// 			$joinCategory 	= false ; //creates error
-				// 			$joinMf 		= false ;	//creates error
+				//$joinCategory 	= false ; //creates error
+				//$joinMf 		= false ;	//creates error
 				$joinPrice = TRUE;
 				$this->searchplugin = FALSE;
 // 			$joinLang = false;

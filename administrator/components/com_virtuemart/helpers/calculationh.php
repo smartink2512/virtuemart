@@ -520,18 +520,10 @@ class calculationHelper {
 		}
 
 		$this->_cartData['DBTaxRulesBill'] = $DBTaxRules = $this->gatherEffectingRulesForBill('DBTaxBill');
-		//		$cBRules = $this->gatherEffectingRulesForCoupon($couponId);
-		//
-		$shipment_id = empty($cart->virtuemart_shipmentmethod_id) ? 0 : $cart->virtuemart_shipmentmethod_id;
 
-		//$this->calculateShipmentPrice($cart, $shipmentRateId);
-		$this->calculateShipmentPrice($cart,  $shipment_id, $checkAutomaticSelected);
-
-		//		$pBRules = $this->gatherEffectingRulesForPayment($paymId);
 		$this->_cartData['taxRulesBill'] = $taxRules = $this->gatherEffectingRulesForBill('TaxBill');
 		$this->_cartData['DATaxRulesBill'] = $DATaxRules = $this->gatherEffectingRulesForBill('DATaxBill');
 
-		//		$cBRules = $this->gatherEffectingRulesForCoupon();
 
 		$this->_cartPrices['discountBeforeTaxBill'] = $this->roundInternal($this->executeCalculation($DBTaxRules, $this->_cartPrices['salesPrice']));
 		$toTax = !empty($this->_cartPrices['discountBeforeTaxBill']) ? $this->_cartPrices['discountBeforeTaxBill'] : $this->_cartPrices['salesPrice'];
@@ -548,8 +540,10 @@ class calculationHelper {
 		$this->_cartPrices['withTax'] = $this->_cartPrices['discountAfterTax'] = !empty($discountAfterTax) ? $discountAfterTax : $toDisc;
 		$cartdiscountAfterTax = !empty($discountAfterTax) ? $discountAfterTax- $toDisc : 0;
 
+		$shipment_id = empty($cart->virtuemart_shipmentmethod_id) ? 0 : $cart->virtuemart_shipmentmethod_id;
+		$this->calculateShipmentPrice($cart,  $shipment_id, $checkAutomaticSelected);
+
 		$paymentId = empty($cart->virtuemart_paymentmethod_id) ? 0 : $cart->virtuemart_paymentmethod_id;
-		//$creditId = empty($cart->virtuemart_creditcard_id) ? 0 : $cart->virtuemart_creditcard_id;
 
 		$this->calculatePaymentPrice($cart, $paymentId, $checkAutomaticSelected);
 

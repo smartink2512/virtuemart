@@ -288,10 +288,11 @@ function virtuemartBuildRoute(&$query) {
 		unset($query['layout']);
 	}
 	// sef the slimbox View
-	if (isset($query['tmpl'])) {
-		if ( $query['tmpl'] = 'component') $segments[] = 'modal' ;
+/*	if (isset($query['tmpl'])) {
+		//if ( $query['tmpl'] = 'component') $segments[] = 'modal' ;
+		$segments[] = $query['tmpl'] ;
 		unset($query['tmpl']);
-	}
+	}*/
 	return $segments;
 }
 
@@ -1067,18 +1068,21 @@ class vmrouterHelper {
 		}
 
 	}
+
 	/*
 	 * Get language key or use $key in route
 	 */
 	public function lang($key) {
 		if ($this->seo_translate ) {
 			$jtext = (strtoupper( $key ) );
-			if ($this->Jlang->hasKey('COM_VIRTUEMART_SEF_'.$jtext) )
+			if ($this->Jlang->hasKey('COM_VIRTUEMART_SEF_'.$jtext) ){
 				return JText::_('COM_VIRTUEMART_SEF_'.$jtext);
+			}
 		}
 		//falldown
 		return $key;
 	}
+
 	/*
 	 * revert key or use $key in route
 	 */
