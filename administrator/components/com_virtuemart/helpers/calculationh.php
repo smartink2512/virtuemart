@@ -530,7 +530,7 @@ class calculationHelper {
 
 		//We add the price of the Shipment before the tax. The tax per bill is meant for all services. In the other case people should use taxes per
 		//  product or method
-		$toTax = $toTax + $this->_cartPrices['salesPriceShipment'];
+		//$toTax = $toTax + $this->_cartPrices['salesPriceShipment'];
 
 		$this->_cartPrices['withTax'] = $discountWithTax = $this->roundInternal($this->executeCalculation($taxRules, $toTax, true));
 		$toDisc = !empty($this->_cartPrices['withTax']) ? $this->_cartPrices['withTax'] : $toTax;
