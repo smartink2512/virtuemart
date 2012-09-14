@@ -397,6 +397,8 @@ class VirtueMartModelProduct extends VmModel {
 			//Group case from the modules
 			if ($group) {
 
+				$latest_products_days = VmConfig::get ('latest_products_days', 7);
+				$latest_products_orderBy = VmConfig::get ('latest_products_orderBy');
 				$groupBy = 'group by p.`virtuemart_product_id` ';
 				switch ($group) {
 					case 'featured':
@@ -404,10 +406,10 @@ class VirtueMartModelProduct extends VmModel {
 						$orderBy = 'ORDER BY RAND()';
 						break;
 					case 'latest':
-						$date = JFactory::getDate (time () - (60 * 60 * 24 * 7)); //Set on a week, maybe make that configurable
+						$date = JFactory::getDate (time () - (60 * 60 * 24 * $latest_products_days)); 
 						$dateSql = $date->toMySQL ();
-						$where[] = 'p.`modified_on` > "' . $dateSql . '" ';
-						$orderBy = 'ORDER BY p.`modified_on`';
+						$where[] = 'p.`' . $latest_products_orderBy . '` > "' . $dateSql . '" ';
+						$orderBy = 'ORDER BY p.`' . $latest_products_orderBy . '`';
 						$this->filter_order_Dir = 'DESC';
 						break;
 					case 'random':
@@ -417,8 +419,8 @@ class VirtueMartModelProduct extends VmModel {
 						$orderBy = ' ORDER BY p.`product_sales` '; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 						$this->filter_order_Dir = 'DESC';
 				}
-				//$joinCategory 	= false ; //creates error
-				//$joinMf 		= false ;	//creates error
+				// 			$joinCategory 	= false ; //creates error
+				// 			$joinMf 		= false ;	//creates error
 				$joinPrice = TRUE;
 				$this->searchplugin = FALSE;
 // 			$joinLang = false;

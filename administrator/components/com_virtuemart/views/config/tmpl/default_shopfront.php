@@ -216,6 +216,35 @@ echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lw
 				?>
 			</td>
 			</tr>
+			
+			<tr>
+	    	<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_LATEST_PRODUCTS_DAYS_EXPLAIN'); ?>">
+				<label for="latest_products_weeks"><?php echo JText::_('COM_VIRTUEMART_LATEST_PRODUCTS_DAYS') ?></label>
+				</span>
+	    	</td>
+			<td>
+				<input type="text" value="<?php echo $this->config->get('latest_products_days',7); ?>" class="inputbox" size="4" name="latest_products_days">
+			</td>
+			</tr>
+			
+			<tr>
+	    	<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY_EXPLAIN'); ?>">
+				<label for="latest_products_orderBy"><?php echo JText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY') ?></label>
+				</span>
+	    	</td>
+			<td>
+				<?php
+					
+					$latest_products_orderBy = array(
+						'modified_on'	=>	JText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY_MODIFIED'),
+						'created_on'	=>	JText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY_CREATED')
+					);
+echo VmHTML::selectList('latest_products_orderBy',$this->config->get('latest_products_orderBy'),$latest_products_orderBy);
+				?>
+			</td>
+			</tr>
 
 		</table>
 	</fieldset>
