@@ -1049,7 +1049,7 @@ class VmTable extends JTable{
 		$k = $this->_tbl_key;
 		$q = 'UPDATE `'.$this->_tbl.'` SET `'.$field.'` = "'.$this->$field.'" WHERE `'.$k.'` = "'.$this->$k.'" ';
 		$this->_db->setQuery($q);
-
+		vmdebug('toggle '.$q);
 		return ($this->_db->query());
 	}
 

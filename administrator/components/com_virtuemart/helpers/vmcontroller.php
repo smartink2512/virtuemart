@@ -237,8 +237,9 @@ class VmController extends JController{
 	public function toggle($field,$val=null){
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
+
 		$model = VmModel::getModel($this->_cname);
-		if (!$model->toggle($field,$val,$this->cidName)) {
+		if (!$model->toggle($field,$val,$this->_cidName)) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_ERROR',$this->mainLangKey);
 		} else{
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_SUCCESS',$this->mainLangKey);

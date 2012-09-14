@@ -5,7 +5,7 @@
  *
  * @package    VirtueMart
  * @subpackage
- * @author RolandD
+ * @author RolandD, Max Milbers, Patrick Kohl, Valerie Isaksen
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2012 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -75,7 +75,8 @@ class VirtueMartModelProduct extends VmModel {
 		//unset($this->_validOrderingFieldName[0]);//virtuemart_product_id
 		array_unshift ($this->_validOrderingFieldName, 'p.virtuemart_product_id');
 		$this->_selectedOrdering = VmConfig::get ('browse_orderby_field', 'category_name');
-// 			vmdebug('product allows following orderingFields ',$this->_validOrderingFieldName);
+
+		$this->setToggleName('product_special');
 
 		$this->initialiseRequests ();
 
@@ -351,8 +352,13 @@ class VirtueMartModelProduct extends VmModel {
 			// special  orders case
 			switch ($this->filter_order) {
 				case 'product_special':
-					$where[] = ' p.`product_special`="1" '; // TODO Change  to  a  individual button
-					$orderBy = 'ORDER BY RAND()';
+					if($isSite){
+						$where[] = ' p.`product_special`="1" '; // TODO Change  to  a  individual button
+						$orderBy = 'ORDER BY RAND()';
+					} else {
+						$orderBy = 'ORDER BY `product_special`';
+					}
+
 					break;
 				case 'category_name':
 					$orderBy = ' ORDER BY `category_name` ';
