@@ -1295,13 +1295,16 @@ class VirtueMartModelProduct extends VmModel {
 
 		//with the true, we do preloading and preserve so old values note by Max Milbers
 	//	$product_data->bindChecknStore ($data, $isChild);
-		$product_data->bindChecknStore ($data, TRUE);
+		$stored = $product_data->bindChecknStore ($data, TRUE);
 
 		$errors = $product_data->getErrors ();
-		foreach ($errors as $error) {
-			vmError ($error);
+		if($stored or count($errors)>0){
+			foreach ($errors as $error) {
+				vmError ('Product store '.$error);
+			}
 			return FALSE;
 		}
+
 
 		$this->_id = $data['virtuemart_product_id'] = $product_data->virtuemart_product_id;
 

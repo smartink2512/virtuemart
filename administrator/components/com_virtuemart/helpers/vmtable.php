@@ -642,21 +642,8 @@ class VmTable extends JTable{
 			$langTable->setProperties($langData);
 			$langTable->_translatable = false;
 
-			$this->bindChecknStoreNoLang($data,$preload);
-
-			$langTable->$tblKey = !empty($this->$tblKey) ? $this->$tblKey : 0;
-
+			//We must check the langtable BEFORE we store the normal table, cause the langtable is often defining if there are enough data to store it (for exmple the name)
 			$ok = true;
-
-			if($preload){
-				if(!empty($langTable->$tblKey)){
-					$id = $langTable->$tblKey;
-					if(!$langTable->load($id)){
-						$ok = false;
-					}
-				}
-			}
-
 			if($ok){
 				//vmdebug('my langtable before bind',$langTable->id);
 				if(!$langTable->bind($data)){
@@ -665,35 +652,59 @@ class VmTable extends JTable{
 					// 			vmdebug('Problem in bind '.get_class($this).' '.$this->_db->getErrorMsg());
 					vmdebug('Problem in bind '.get_class($this).' ');
 				}
-				//vmdebug('my langtable after bind ',$langTable->id);
 			}
-
 
 			if($ok){
 				if(!$langTable->check()){
 					$ok = false;
-					// $msg .= ' check';
 					vmdebug('Check returned false '.get_class($langTable).' '.$this->_tbl.' '.$langTable->_db->getErrorMsg());
 				}
 			}
 
 			if($ok){
-				if(!$langTable->store()){
-					$ok = false;
-					// $msg .= ' store';
-					vmdebug('Problem in store with langtable '.get_class($langTable).' with '.$tblKey.' = '.$this->$tblKey.' '.$langTable->_db->getErrorMsg());
-					//vmTrace('From where the heck comes this problem?');
-					return false;
-				} else {
-					//vmdebug('stored product_name '.$langTable->product_name);
+				$ok = $this->bindChecknStoreNoLang($data,$preload);
+
+				$langTable->$tblKey = !empty($this->$tblKey) ? $this->$tblKey : 0;
+
+				if($ok and $preload){
+					if(!empty($langTable->$tblKey)){
+						$id = $langTable->$tblKey;
+						if(!$langTable->load($id)){
+							$ok = false;
+							vmdebug('Preloading of language table failed, no id given, cannot store '.$this->_tbl);
+						}
+					}
+				}
+
+				if($ok){
+					if(!$langTable->bind($data)){
+						$ok = false;
+						vmdebug('Problem in bind '.get_class($this).' ');
+					}
+				}
+
+				if($ok){
+					if(!$langTable->check()){
+						$ok = false;
+						vmdebug('Check returned false '.get_class($langTable).' '.$this->_tbl.' '.$langTable->_db->getErrorMsg());
+					}
+				}
+
+				if($ok){
+					if(!$langTable->store()){
+						$ok = false;
+						// $msg .= ' store';
+						vmdebug('Problem in store with langtable '.get_class($langTable).' with '.$tblKey.' = '.$this->$tblKey.' '.$langTable->_db->getErrorMsg());
+					}
 				}
 			}
+
 
 		} else {
 			$this->bindChecknStoreNoLang($data,$preload);
 		}
 
-		return true;
+		return $ok;
 	}
 
 
