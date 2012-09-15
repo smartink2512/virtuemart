@@ -468,12 +468,12 @@ class ShopFunctions {
 
 		$weight_unit_default = array(
 			'KG' => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_KG')
-		, '100MG' => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100MG')
+		, 'DMG' => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100MG')
 		, 'M'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_M')
 		, 'SM'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_SM')
 		, 'CUBM'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_CUBM')
 		, 'L'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_L')
-		, '100ML'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100ML')
+		, 'DML'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100ML')
 		);
 		foreach ($weight_unit_default as  $key => $value) {
 			$wu_list[] = JHTML::_ ('select.option', $key, $value, $name);
