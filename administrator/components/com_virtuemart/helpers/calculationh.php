@@ -201,15 +201,15 @@ class calculationHelper {
 		$this->_cart = $cart;
 
 		if (!empty($this->_cart->ST['virtuemart_country_id'])) {
-			$this->_deliveryCountry = $this->_cart->ST['virtuemart_country_id'];
+			$this->_deliveryCountry = (int)$this->_cart->ST['virtuemart_country_id'];
 		} else if (!empty($this->_cart->BT['virtuemart_country_id'])) {
-			$this->_deliveryCountry = $this->_cart->BT['virtuemart_country_id'];
+			$this->_deliveryCountry = (int)$this->_cart->BT['virtuemart_country_id'];
 		}
 
 		if (!empty($this->_cart->ST['virtuemart_state_id'])) {
-			$this->_deliveryState = $this->_cart->ST['virtuemart_state_id'];
+			$this->_deliveryState = (int)$this->_cart->ST['virtuemart_state_id'];
 		} else if (!empty($cart->BT['virtuemart_state_id'])) {
-			$this->_deliveryState = $this->_cart->BT['virtuemart_state_id'];
+			$this->_deliveryState = (int)$this->_cart->BT['virtuemart_state_id'];
 		}
 	}
 
