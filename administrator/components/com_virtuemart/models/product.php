@@ -1289,16 +1289,12 @@ class VirtueMartModelProduct extends VmModel {
 			$data['product_packaging'] = str_replace(',','.',$data['product_packaging']);
 		}
 
-		// 		if(VmConfig::get('productlayout') == $data['layout']){
-		// 			$data['layout'] = 0;
-		// 		}
-
 		//with the true, we do preloading and preserve so old values note by Max Milbers
 	//	$product_data->bindChecknStore ($data, $isChild);
 		$stored = $product_data->bindChecknStore ($data, TRUE);
 
 		$errors = $product_data->getErrors ();
-		if($stored or count($errors)>0){
+		if(!$stored or count($errors)>0){
 			foreach ($errors as $error) {
 				vmError ('Product store '.$error);
 			}
@@ -1309,6 +1305,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->_id = $data['virtuemart_product_id'] = $product_data->virtuemart_product_id;
 
 		if (empty($this->_id)) {
+			vmError('Product not stored, no id');
 			return FALSE;
 		}
 

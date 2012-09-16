@@ -550,6 +550,9 @@ class VmTable extends JTable{
 					vmInfo('Admin with vendor id'.$loggedVendorId.' is using for storing vendor id '.$this->virtuemart_vendor_id);
 				}
 
+				if(empty($this->virtuemart_vendor_id) and get_class($this)!=='TableVmusers') {
+					$this->virtuemart_vendor_id = 1;
+				}
 			}
 
 			//tables to consider for multivendor
@@ -662,10 +665,10 @@ class VmTable extends JTable{
 			}
 
 			if($ok){
-				$ok = $this->bindChecknStoreNoLang($data,$preload);
+				$this->bindChecknStoreNoLang($data,$preload);
 
 				$langTable->$tblKey = !empty($this->$tblKey) ? $this->$tblKey : 0;
-
+				vmdebug('bindChecknStoreNoLang my $tblKey '.$tblKey.' '.$langTable->$tblKey);
 				if($ok and $preload){
 					if(!empty($langTable->$tblKey)){
 						$id = $langTable->$tblKey;
