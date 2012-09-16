@@ -140,92 +140,8 @@ defined('_JEXEC') or die('Restricted access');
 	    </tr>
       </table>
       </fieldset>
-	</td>
-	<td>
-      <fieldset>
-		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_HOMEPAGE_SETTINGS') ?></legend>
-                    <table class="admintable">
-                           <tr>
-			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIN_LAYOUT_TIP'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIN_LAYOUT') ?>
-			    </span>
-			</td>
-			<td>
-			    <?php
-			    echo JHTML::_('Select.genericlist', $this->vmLayoutList, 'vmlayout', 'size=1', 'value', 'text', $this->config->get('vmlayout'));
-			    ?>
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED_TIP'); ?>" >
-			    <label for="show_featured"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED') ?></label>
-			    </span>
-			</td>
-			<td>
-			    <?php echo VmHTML::checkbox('show_featured', $this->config->get('show_featured')); ?>
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEATURED_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEATURED_PRODUCTS_PER_ROW') ?>
-			    </span>
-			</td>
-			<td>
-			    <input type="text" name="featured_products_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('featured_products_per_row') ?>" />
-			</td>
-		    </tr>
-			<tr>
-			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN_TIP'); ?>" >
-			    <label for="show_topTen"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN') ?></label>
-			    </span>
-			</td>
-			<td>
-			    <?php echo VmHTML::checkbox('show_topTen', $this->config->get('show_topTen')); ?>
-			</td>
-		    </tr>
-		     <tr>
-			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TOPTEN_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TOPTEN_PRODUCTS_PER_ROW') ?>
-			    </span>
-			</td>
-			<td>
-			    <input type="text" name="topten_products_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('topten_products_per_row') ?>" />
-			</td>
-		    </tr>
-			<tr>
-			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT_TIP'); ?>" >
-			    <label for="show_recent"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT') ?></label>
-			    </span>
-			</td>
-			<td>
-			    <?php echo VmHTML::checkbox('show_recent', $this->config->get('show_recent')); ?>
-			</td>
-		    </tr>
-
-		    <tr>
-			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST_TIP'); ?>" >
-			    <label for="show_latest"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST') ?></label>
-			    </span>
-			</td>
-			<td>
-			    <?php echo VmHTML::checkbox('show_latest', $this->config->get('show_latest')); ?>
-			</td>
-		    </tr>
-		</table>
-	    </fieldset>
-	</td>
-</tr>
-
-<tr>
-	<td>
-	<fieldset>
+	  
+	  <fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_TITLE') ?></legend>
 		<table class="admintable">
 			<tr>
@@ -369,8 +285,122 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 		</table>
 		</fieldset>
+		
+	</td>
+	<td valign="top">
+      <fieldset>
+		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_HOMEPAGE_SETTINGS') ?></legend>
+                    <table class="admintable">
+                           <tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIN_LAYOUT_TIP'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIN_LAYOUT') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php
+			    echo JHTML::_('Select.genericlist', $this->vmLayoutList, 'vmlayout', 'size=1', 'value', 'text', $this->config->get('vmlayout'));
+			    ?>
+			</td>
+		    </tr>
+			
+			<tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCTS_PER_ROW') ?>
+			    </span>
+			</td>
+			<td>
+			    <input type="text" name="homepage_products_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('homepage_products_per_row',3) ?>" />
+			</td>
+		    </tr>
+			
+		    <tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED_TIP'); ?>" >
+			    <label for="show_featured"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED') ?></label>
+			    </span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('show_featured', $this->config->get('show_featured')); ?>
+			</td>
+		    </tr>
+		    <tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEAT_PROD_ROWS_EXPL'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEAT_PROD_ROWS') ?>
+			    </span>
+			</td>
+			<td>
+			    <input type="text" name="featured_products_rows" size="4" class="inputbox" value="<?php echo $this->config->get('featured_products_rows',1) ?>" />
+			</td>
+		    </tr>
+			
+			<tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN_TIP'); ?>" >
+			    <label for="show_topTen"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN') ?></label>
+			    </span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('show_topTen', $this->config->get('show_topTen')); ?>
+			</td>
+		    </tr>
+		    <tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TOPTEN_PROD_ROWS_EXPL'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TOPTEN_PROD_ROWS') ?>
+			    </span>
+			</td>
+			<td>
+			    <input type="text" name="topTen_products_rows" size="4" class="inputbox" value="<?php echo $this->config->get('topTen_products_rows',1) ?>" />
+			</td>
+		    </tr>
+			
+			<tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT_TIP'); ?>" >
+			    <label for="show_recent"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT') ?></label>
+			    </span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('show_recent', $this->config->get('show_recent')); ?>
+			</td>
+		    </tr>
+			<tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REC_PROD_ROWS_EXPL'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REC_PROD_ROWS') ?>
+			    </span>
+			</td>
+			<td>
+			    <input type="text" name="recent_products_rows" size="4" class="inputbox" value="<?php echo $this->config->get('recent_products_rows',1) ?>" />
+			</td>
+		    </tr>
 
-	<td>
+		    <tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST_TIP'); ?>" >
+			    <label for="show_latest"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST') ?></label>
+			    </span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('show_latest', $this->config->get('show_latest')); ?>
+			</td>
+		    </tr>
+			<tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LAT_PROD_ROWS_EXPL'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LAT_PROD_ROWS') ?>
+			    </span>
+			</td>
+			<td>
+			    <input type="text" name="latest_products_rows" size="4" class="inputbox" value="<?php echo $this->config->get('latest_products_rows',1) ?>" />
+			</td>
+		    </tr>
+		</table>
+	    </fieldset>
+		
 		<fieldset>
 		<legend class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS_JS_SETTINGS_TIP'); ?>"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS_JS_SETTINGS') ?></legend>
 		<table class="admintable">
@@ -429,7 +459,8 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 		</table>
 	    </fieldset>
+		
 	</td>
+</tr>
 
-  </tr>
 </table>

@@ -66,21 +66,41 @@ class VirtueMartViewVirtueMart extends VmView {
 			if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 			$currency = CurrencyDisplay::getInstance( );
 			$this->assignRef('currency', $currency);
+			
+			$products_per_row = VmConfig::get('homepage_products_per_row');
+			
+			$featured_products_rows = VmConfig::get('featured_products_rows');
+			$featured_products_count = $products_per_row * $featured_products_rows;
 
-			if (VmConfig::get('show_featured', 1)) {
-				$products['featured'] = $productModel->getProductListing('featured', 5);
+			if (!empty($featured_products_count) and VmConfig::get('show_featured', 1)) {
+				$products['featured'] = $productModel->getProductListing('featured', $featured_products_count);
 				$productModel->addImages($products['featured'],1);
 			}
+			
+			$latest_products_rows = VmConfig::get('latest_products_rows');
+			$latest_products_count = $products_per_row * $latest_products_rows;
 
-			if (VmConfig::get('show_latest', 1)) {
-				$products['latest']= $productModel->getProductListing('latest', 5);
+			if (!empty($latest_products_count) and VmConfig::get('show_latest', 1)) {
+				$products['latest']= $productModel->getProductListing('latest', $latest_products_count);
 				$productModel->addImages($products['latest'],1);
 			}
 
-			if (VmConfig::get('show_topTen', 1)) {
-				$products['topten']= $productModel->getProductListing('topten', 5);
+			$topTen_products_rows = VmConfig::get('topTen_products_rows');
+			$topTen_products_count = $products_per_row * $topTen_products_rows;
+			
+			if (!empty($topTen_products_count) and VmConfig::get('show_topTen', 1)) {
+				$products['topten']= $productModel->getProductListing('topten', $topTen_products_count);
 				$productModel->addImages($products['topten'],1);
 			}
+			
+			$recent_products_rows = VmConfig::get('recent_products_rows');
+			$recent_products_count = $products_per_row * $recent_products_rows;
+			
+			if (!empty($recent_products_count) and VmConfig::get('show_recent', 1)) {
+				$products['recent']= $productModel->getProductListing('recent', $recent_products_count);
+				$productModel->addImages($products['recent'],1);
+			}
+			
 			$this->assignRef('products', $products);
 
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
