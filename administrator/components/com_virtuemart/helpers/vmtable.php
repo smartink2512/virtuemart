@@ -550,9 +550,10 @@ class VmTable extends JTable{
 					vmInfo('Admin with vendor id'.$loggedVendorId.' is using for storing vendor id '.$this->virtuemart_vendor_id);
 				}
 
-				if(empty($this->virtuemart_vendor_id) and get_class($this)!=='TableVmusers') {
+				//It is better to consider vendor_id=0 as shared
+				/*if(empty($this->virtuemart_vendor_id) and get_class($this)!=='TableVmusers') {
 					$this->virtuemart_vendor_id = 1;
-				}
+				}*/
 			}
 
 			//tables to consider for multivendor
@@ -573,7 +574,7 @@ class VmTable extends JTable{
 	public function bindChecknStore(&$data,$preload=false){
 
 		$tblKey = $this->_tbl_key;
-
+		$ok = true;
 		if($this->_translatable){
 			if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 			$db = JFactory::getDBO();
@@ -646,7 +647,7 @@ class VmTable extends JTable{
 			$langTable->_translatable = false;
 
 			//We must check the langtable BEFORE we store the normal table, cause the langtable is often defining if there are enough data to store it (for exmple the name)
-			$ok = true;
+
 			if($ok){
 				//vmdebug('my langtable before bind',$langTable->id);
 				if(!$langTable->bind($data)){
@@ -704,7 +705,10 @@ class VmTable extends JTable{
 
 
 		} else {
-			$this->bindChecknStoreNoLang($data,$preload);
+
+			if(!$this->bindChecknStoreNoLang($data,$preload)){
+				$ok= false;
+			}
 		}
 
 		return $ok;
@@ -765,6 +769,7 @@ class VmTable extends JTable{
 				$ok = false;
 				$msg .= ' store';
 				vmdebug('Problem in store '.get_class($this).' '.$this->_db->getErrorMsg());
+				return false;
 			}
 		}
 

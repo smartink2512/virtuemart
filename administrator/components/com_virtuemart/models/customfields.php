@@ -616,9 +616,6 @@ class VirtueMartModelCustomfields extends VmModel {
 				case 'I':
 					return '<input type="text" value="' . $field->custom_value . '" name="field[' . $row . '][custom_value]" /></td><td>' . $priceInput;
 					break;
-				case 'I':
-					return '<input type="text" value="' . $field->custom_value . '" name="field[' . $row . '][custom_value]" /></td><td>' . $priceInput;
-					break;
 				//'X'=>'COM_VIRTUEMART_CUSTOM_EDITOR',
 				case 'X':
 					return '<textarea class="mceInsertContentNew" name="field[' . $row . '][custom_value]" id="field-' . $row . '-custom_value">' . $field->custom_value . '</textarea>

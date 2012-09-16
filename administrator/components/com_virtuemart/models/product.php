@@ -398,7 +398,7 @@ class VirtueMartModelProduct extends VmModel {
 			if ($group) {
 
 				$latest_products_days = VmConfig::get ('latest_products_days', 7);
-				$latest_products_orderBy = VmConfig::get ('latest_products_orderBy');
+				$latest_products_orderBy = VmConfig::get ('latest_products_orderBy','created_on');
 				$groupBy = 'group by p.`virtuemart_product_id` ';
 				switch ($group) {
 					case 'featured':

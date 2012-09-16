@@ -241,7 +241,7 @@ echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lw
 						'modified_on'	=>	JText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY_MODIFIED'),
 						'created_on'	=>	JText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY_CREATED')
 					);
-echo VmHTML::selectList('latest_products_orderBy',$this->config->get('latest_products_orderBy'),$latest_products_orderBy);
+echo VmHTML::selectList('latest_products_orderBy',$this->config->get('latest_products_orderBy','created_on'),$latest_products_orderBy);
 				?>
 			</td>
 			</tr>
