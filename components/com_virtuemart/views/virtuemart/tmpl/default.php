@@ -22,16 +22,15 @@ JHTML::_( 'behavior.modal' );
 ?>
 
 <?php # Vendor Store Description
-if (!empty($this->vendor->vendor_store_desc)) { ?>
+if (!empty($this->vendor->vendor_store_desc) and VmConfig::get('show_store_desc', 1)) { ?>
 <p class="vendor-store-desc">
 	<?php echo $this->vendor->vendor_store_desc; ?>
 </p>
 <?php } ?>
 
 <?php
-
 # load categories from front_categories if exist
-if ($this->categories) echo $this->loadTemplate('categories');
+if ($this->categories and VmConfig::get('show_categories', 1)) echo $this->loadTemplate('categories');
 
 # Show template for : topten,Featured, Latest Products if selected in config BE
 if (!empty($this->products) ) { ?>

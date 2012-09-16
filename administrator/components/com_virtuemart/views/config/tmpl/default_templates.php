@@ -306,12 +306,34 @@ defined('_JEXEC') or die('Restricted access');
 			
 			<tr>
 			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_STORE_DESC_TIP'); ?>" >
+			    <label for="show_store_desc"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_STORE_DESC') ?></label>
+			    </span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('show_store_desc', $this->config->get('show_store_desc', 0)); ?>
+			</td>
+		    </tr>
+			
+			<tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORIES_TIP'); ?>" >
+			    <label for="show_categories"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORIES') ?></label>
+			    </span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('show_categories', $this->config->get('show_categories', 0)); ?>
+			</td>
+		    </tr>
+			
+			<tr>
+			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCTS_PER_ROW') ?>
 			    </span>
 			</td>
 			<td>
-			    <input type="text" name="homepage_products_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('homepage_products_per_row',3) ?>" />
+			    <input type="text" name="homepage_products_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('homepage_products_per_row', 3) ?>" />
 			</td>
 		    </tr>
 			
@@ -332,7 +354,7 @@ defined('_JEXEC') or die('Restricted access');
 			    </span>
 			</td>
 			<td>
-			    <input type="text" name="featured_products_rows" size="4" class="inputbox" value="<?php echo $this->config->get('featured_products_rows',1) ?>" />
+			    <input type="text" name="featured_products_rows" size="4" class="inputbox" value="<?php echo $this->config->get('featured_products_rows', 1) ?>" />
 			</td>
 		    </tr>
 			
@@ -353,7 +375,7 @@ defined('_JEXEC') or die('Restricted access');
 			    </span>
 			</td>
 			<td>
-			    <input type="text" name="topTen_products_rows" size="4" class="inputbox" value="<?php echo $this->config->get('topTen_products_rows',1) ?>" />
+			    <input type="text" name="topTen_products_rows" size="4" class="inputbox" value="<?php echo $this->config->get('topTen_products_rows', 1) ?>" />
 			</td>
 		    </tr>
 			
@@ -374,7 +396,7 @@ defined('_JEXEC') or die('Restricted access');
 			    </span>
 			</td>
 			<td>
-			    <input type="text" name="recent_products_rows" size="4" class="inputbox" value="<?php echo $this->config->get('recent_products_rows',1) ?>" />
+			    <input type="text" name="recent_products_rows" size="4" class="inputbox" value="<?php echo $this->config->get('recent_products_rows', 1) ?>" />
 			</td>
 		    </tr>
 
@@ -395,7 +417,7 @@ defined('_JEXEC') or die('Restricted access');
 			    </span>
 			</td>
 			<td>
-			    <input type="text" name="latest_products_rows" size="4" class="inputbox" value="<?php echo $this->config->get('latest_products_rows',1) ?>" />
+			    <input type="text" name="latest_products_rows" size="4" class="inputbox" value="<?php echo $this->config->get('latest_products_rows', 1) ?>" />
 			</td>
 		    </tr>
 		</table>
