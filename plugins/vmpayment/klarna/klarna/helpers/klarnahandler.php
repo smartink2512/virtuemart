@@ -1263,6 +1263,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 			foreach ($errors as $error) {
 				$msg .= "<li>" . JText::_ ($error) . "</li>";
 			}
+			$option=NULL;
 			self::setKlarnaErrorInSession ($msg, $option);
 
 			return $msg;

@@ -41,7 +41,7 @@ class JElementGetKlarna extends JElement {
 	function fetchElement ($name, $value, &$node, $control_name) {
 
 		$jlang = JFactory::getLanguage ();
-		$lang = $jlang->getTag();
+		$lang = $jlang->getTag ();
 		$langArray = explode ("-", $lang);
 		$lang = strtolower ($langArray[1]);
 		$countriesData = KlarnaHandler::countriesData ();
@@ -52,9 +52,36 @@ class JElementGetKlarna extends JElement {
 				break;
 			}
 		}
+		/*
 		$logo = '<a href="https://merchants.klarna.com/signup?locale=' . $signLang . '&partner_id=7829355537eae268a17667c199e7c7662d3391f7" target="_blank">
 	             <img src="' . JURI::root () . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/get_klarna_now.png" /></a> ';
-		return $logo;
+*/
+		$logo = '<img src="' . JURI::root () . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/get_klarna_now.png" />';
+		$html = '<a href="#" id="klarna_getklarna_link" ">' . $logo . '</a>';
+
+		$html .= '<div id="klarna_getklarna_show_hide" >';
+		$url = "https://merchants.klarna.com/signup/choose_region?locale=' . $signLang . '&partner_id=7829355537eae268a17667c199e7c7662d3391f7";
+		$js = '
+		jQuery(document).ready(function( $ ) {
+			$("#klarna_getklarna_show_hide").hide();
+			jQuery("#klarna_getklarna_link").click( function() {
+				 if ( $("#klarna_getklarna_show_hide").is(":visible") ) {
+				  $("#klarna_getklarna_show_hide").hide("slow");
+			        $("#klarna_getklarna_link").html("' . addslashes ($logo) . '");
+				} else {
+				 $("#klarna_getklarna_show_hide").show("slow");
+			       $("#klarna_getklarna_link").html("' . addslashes (JText::_ ('VMPAYMENT_KLARNA_GET_KLARNA_HIDE')) . '");
+			    }
+		    });
+		});
+';
+
+		$doc = JFactory::getDocument ();
+		$doc->addScriptDeclaration ($js);
+
+		$html .= '<iframe src="' . $url . '" scrolling="yes" style="x-overflow: none;" frameborder="0" height="600px" width="850px"></iframe>';
+		$html .= '</div>';
+		return $html;
 	}
 
 }
