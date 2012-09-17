@@ -3,8 +3,8 @@
 <project name="VIRTUEMART2" default="VIRTUEMART2" basedir=".">
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
-    <property name="vm.version" value="2.0.11"/>
-    <property name="PHING.VM.CODENAME" value="subflow"/>
+    <property name="vm.version" value="2.0.11b"/>
+    <property name="PHING.VM.CODENAME" value="Subflow"/>
     <property file="build.properties"/>
     <target name="title">
         <echo message="BUILD VirtueMart 2 package FROM ${export.to}  TO ${package.abspath}"/>
@@ -33,7 +33,7 @@
     <property name="vm.extract.filename" value="${component.name}.${vm.version}_extract_first"/>
 
     <!-- DESTINATION -->
-    <property name="package.folder" value="${package.abspath}/${component.name}.${vm.version}"/>
+    <property name="package.folder" value="${package.abspath}/${component.name}.${vm.version}_extract_first"/>
     <property name="package.folder.main" value="${package.abspath}/${component.name}.${vm.version}/${component.name}.${vm.version}"/>
     <property name="package.folder.aio" value="${package.abspath}/${component.name}.${vm.version}/${component.name}.aio.${vm.version}"/>
     <property name="package.admin.folder.aio" value="${package.abspath}/${component.name}.${vm.version}/${component.name}.aio.${vm.version}/admin"/>

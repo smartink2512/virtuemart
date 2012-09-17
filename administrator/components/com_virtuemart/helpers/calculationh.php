@@ -543,6 +543,7 @@ class calculationHelper {
 		$shipment_id = empty($cart->virtuemart_shipmentmethod_id) ? 0 : $cart->virtuemart_shipmentmethod_id;
 		$this->calculateShipmentPrice($cart,  $shipment_id, $checkAutomaticSelected);
 
+		//$this->_cartPrices['salesPrice'] = $this->_cartPrices['salesPrice'] + $this->_cartPrices['salesPriceShipment'];
 		$paymentId = empty($cart->virtuemart_paymentmethod_id) ? 0 : $cart->virtuemart_paymentmethod_id;
 
 		$this->calculatePaymentPrice($cart, $paymentId, $checkAutomaticSelected);
@@ -552,7 +553,7 @@ class calculationHelper {
 		//		$this->_cartPrices['billSub']  = $sub + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'];
 		if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['discountAmount'] + $this->_cartPrices['discountBeforeTaxBill'] + $cartdiscountAfterTax;// + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'] ;
 		if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['shipmentTax'] + $this->_cartPrices['paymentTax'] + $cartTax; //+ $this->_cartPrices['withTax'] - $toTax
-		if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices['billTotal'] = $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
+		if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices['billTotal'] = $this->_cartPrices['salesPriceShipment'] + $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
 
 		// Last step is handling a coupon, if given
 		if (!empty($cart->couponCode)) {
@@ -916,26 +917,6 @@ class calculationHelper {
 
 		return $testedRules;
 	}
-
-	//	/**
-	//	 * Gathers the effecting coupons for the calculation
-	//	 *
-	//	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
-	//	 * @author Max Milbers
-	//	 * @param 	$code 	The Id of the coupon
-	//	 * @return 	$rules 	ids of the coupons
-	//	 */
-	//	function calculateCouponPrices($code=array()){
-	//		if (empty($code)) return;
-	//		$couponCodesQuery = $this -> writeRulePartEffectingQuery($code,'coupon_code');
-	//		$q= 'SELECT * FROM #__virtuemart_coupons WHERE ' .
-	//			$couponCodesQuery .
-	//			' AND ( coupon_start_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_start_date <= '.$this->_db->Quote($this ->_now).' )' .
-	//			' AND ( coupon_expiry_date = '.$this->_db->Quote($this ->_nullDate).' OR coupon_expiry_date >= '.$this->_db->Quote($this ->_now).' )';
-	//		$this->_db->setQuery($q);
-	//		$rules = $this->_db->loadAssocList();
-	//		return $rules;
-	//	}
 
 	/**
 	 * Calculates the effecting Shipment prices for the calculation
