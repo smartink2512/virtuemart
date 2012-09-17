@@ -409,20 +409,33 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 
 		if ($data->store()) {
-			$q = 'SELECT virtuemart_order_item_id
+
+			$task= JRequest::getCmd('task',0);
+			if($task=='edit'){
+				$update_lines = JRequest::getInt('update_lines');
+			} else if ('updatestatus') {
+				$update_lines = JRequest::getInt('orders['.$virtuemart_order_id.'][update_lines]');
+			} else {
+				$update_lines = TRUE;
+			}
+
+			if($update_lines){
+				$q = 'SELECT virtuemart_order_item_id
 												FROM #__virtuemart_order_items
 												WHERE virtuemart_order_id="'.$virtuemart_order_id.'"';
-			$db = JFactory::getDBO();
-			$db->setQuery($q);
-			$order_items = $db->loadObjectList();
-			if ($order_items) {
+				$db = JFactory::getDBO();
+				$db->setQuery($q);
+				$order_items = $db->loadObjectList();
+				if ($order_items) {
 // 				vmdebug('updateStatusForOneOrder',$data);
-				foreach ($order_items as $order_item) {
+					foreach ($order_items as $order_item) {
 
-					//$this->updateSingleItem($order_item->virtuemart_order_item_id, $data->order_status, $order['comments'] , $virtuemart_order_id, $data->order_pass);
-					$this->updateSingleItem($order_item->virtuemart_order_item_id, $data);
+						//$this->updateSingleItem($order_item->virtuemart_order_item_id, $data->order_status, $order['comments'] , $virtuemart_order_id, $data->order_pass);
+						$this->updateSingleItem($order_item->virtuemart_order_item_id, $data);
+					}
 				}
 			}
+
 
 			/* Update the order history */
 			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $inputOrder['customer_notified'], $inputOrder['comments']);
