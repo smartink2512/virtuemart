@@ -190,12 +190,23 @@ class TableMedias extends VmTable {
 		if (empty($this->file_mimetype)) {
 
 			$rel_path = str_replace ('/', DS, $this->file_url);
-//			return JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
+
+			//The function mime_content_type is deprecated, we may use
+			/*function _mime_content_type($filename)
+			{
+				$result = new finfo();
+
+				if (is_resource($result) === true)
+				{
+					return $result->file($filename, FILEINFO_MIME_TYPE);
+				}
+
+				return false;
+			}
 			if (function_exists ('mime_content_type')) {
 				$ok = TRUE;
 				$app = JFactory::getApplication ();
-//				set_error_handler(array($this, 'handleError'));
-//				try{
+
 				if (!$this->file_is_forSale) {
 					$this->file_mimetype = mime_content_type (JPATH_ROOT . DS . $rel_path);
 				}
@@ -214,27 +225,14 @@ class TableMedias extends VmTable {
 							return FALSE;
 						}
 					}
-					//vmError('file_mime '.$this->file_mimetype.' for '.$rel_path);
 				}
 				else {
 					vmError ('Couldnt resolve mime ' . $rel_path);
 					return FALSE;
 				}
-// 				     vmError('mime'.$this->file_mimetype);
-// 				     if($this->file_mimetype == 'directory'){
-// 				     		vmError('Couldnt resolve mime, because it is a '.$rel_path);
-// 					     return false;
-// 				     }
-// 				} catch (ErrorException $e){
 
-// 					$ok = false;
-// 				     $app->enqueueMessage('Couldnt resolve mime type for '.$rel_path);
-// 				    return false;
-// 				}
-//				restore_error_handler();
-				//$this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);
 			}
-			else {
+			else {*/
 				if (!class_exists ('JFile')) {
 					require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
 				}
@@ -342,7 +340,7 @@ class TableMedias extends VmTable {
 					vmInfo (JText::sprintf ('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE', $name));
 					$notice = TRUE;
 				}
-			}
+			//}
 		}
 
 		if ($ok) {

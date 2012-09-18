@@ -213,10 +213,24 @@ class VmTable extends JTable{
 			$user = JFactory::getUser();
 
 			$pkey = $this->_pkey;
-			if(empty($this->$pkey)){
-				$this->created_on = $today;
-				$this->created_by = $user->id;
+			//Lets check if the user is admin or the mainvendor
+			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+			$admin = Permissions::getInstance()->check('admin');
+			if($admin){
+				if(empty($this->$pkey) and empty($this->created_on)){
+					$this->created_on = $today;
+				}
+
+				if(empty($this->$pkey) and empty($this->created_by)){
+					$this->created_by = $user->id;
+				}
+			} else {
+				if(empty($this->$pkey)){
+					$this->created_on = $today;
+					$this->created_by = $user->id;
+				}
 			}
+
 			$this->modified_on = $today;
 			$this->modified_by = $user->id;
 		}
