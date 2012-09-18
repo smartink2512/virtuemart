@@ -253,89 +253,115 @@ class TableMedias extends VmTable {
 				}
 
 				//images
-				elseif ($file_extension === 'jpg' or $file_extension === 'jpeg' or $file_extension === 'jpe') {
+				elseif($file_extension === 'jpg' or $file_extension === 'jpeg' or $file_extension === 'jpe'){
 					$this->file_mimetype = 'image/jpeg';
 				}
-				elseif ($file_extension === 'gif') {
+				elseif($file_extension === 'gif'){
 					$this->file_mimetype = 'image/gif';
 				}
-				elseif ($file_extension === 'png') {
+				elseif($file_extension === 'png'){
 					$this->file_mimetype = 'image/png';
 				}
-				elseif ($file_extension === 'bmp') {
-					vmInfo (JText::sprintf ('COM_VIRTUEMART_MEDIA_SHOULD_NOT_BMP', $name));
-					$notice = TRUE;
+				elseif($file_extension === 'bmp'){
+					vmInfo(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_NOT_BMP',$name));
+					$notice = true;
 				}
 
 				//audio
-				elseif ($file_extension === 'mp3') {
+				elseif($file_extension === 'mp3'){
 					$this->file_mimetype = 'audio/mpeg';
 				}
-				elseif ($file_extension === 'ogg') {
+				elseif($file_extension === 'ogg'){
 					$this->file_mimetype = 'audio/ogg';
 				}
-				elseif ($file_extension === 'oga') {
+				elseif($file_extension === 'oga'){
 					$this->file_mimetype = 'audio/vorbis';
 				}
-				elseif ($file_extension === 'wma') {
+				elseif($file_extension === 'wma'){
 					$this->file_mimetype = 'audio-/x-ms-wma';
 				}
 
 				//video
 				//added missing mimetypes: m2v
-				elseif ($file_extension === 'mp4' or $file_extension === 'mpe' or $file_extension === 'mpeg' or $file_extension === 'mpg' or $file_extension === 'mpga' or $file_extension === 'm2v') {
+				elseif( $file_extension === 'mp4' or $file_extension === 'mpe' or $file_extension === 'mpeg' or $file_extension === 'mpg' or $file_extension === 'mpga' or $file_extension === 'm2v'){
 					$this->file_mimetype = 'video/mpeg';
 				}
-				elseif ($file_extension === 'avi') {
+				elseif($file_extension === 'avi'){
 					$this->file_mimetype = 'video/x-msvideo';
 				}
 
-				elseif ($file_extension === 'qt' or $file_extension === 'mov') {
+				elseif($file_extension === 'qt' or $file_extension === 'mov'){
 					$this->file_mimetype = 'video/quicktime';
 				}
-				elseif ($file_extension === 'wmv') {
+				elseif($file_extension === 'wmv'){
 					$this->file_mimetype = 'video/x-ms-wmv';
 				}
 
 				//Added missing formats
-				elseif ($file_extension === '3gp') {
+				elseif($file_extension === '3gp'){
 					$this->file_mimetype = 'video/3gpp';
 				}
-				elseif ($file_extension === 'ogv') {
+				elseif($file_extension === 'ogv'){
 					$this->file_mimetype = 'video/ogg';
 				}
-				elseif ($file_extension === 'flv') {
+				elseif($file_extension === 'flv'){
 					$this->file_mimetype = 'video/x-flv';
 				}
 
-				elseif ($file_extension === 'f4v') {
+				elseif($file_extension === 'f4v'){
 					$this->file_mimetype = 'video/x-f4v';
 				}
 
-				elseif ($file_extension === 'm4v') {
+				elseif($file_extension === 'm4v'){
 					$this->file_mimetype = 'video/x-m4v';
 				}
 
-				elseif ($file_extension === 'webm') {
+				elseif($file_extension === 'webm'){
 					$this->file_mimetype = 'video/webm';
 				}
 
 				//applications
-				elseif ($file_extension === 'zip') {
+				elseif($file_extension === 'zip'){
 					$this->file_mimetype = 'application/zip';
 				}
-				elseif ($file_extension === 'pdf') {
+				elseif($file_extension === 'pdf'){
 					$this->file_mimetype = 'application/pdf';
 				}
-				elseif ($file_extension === 'gz') {
+				elseif($file_extension === 'gz'){
 					$this->file_mimetype = 'application/x-gzip';
 				}
-				elseif ($file_extension === 'exe') {
+				elseif($file_extension === 'exe'){
 					$this->file_mimetype = 'application/octet-stream';
 				}
-				elseif ($file_extension === 'swf') {
+				elseif($file_extension === 'swf'){
 					$this->file_mimetype = 'application/x-shockwave-flash';
 				}
+				//missing types
+				elseif($file_extension === 'doc'){
+					$this->file_mimetype = 'application/msword';
+				}
+				elseif($file_extension === 'docx'){
+					$this->file_mimetype = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+				}
+				elseif($file_extension === 'xls'){
+					$this->file_mimetype = 'application/vnd.ms-excel';
+				}
+				elseif($file_extension === 'xlsx'){
+					$this->file_mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+				}
+				elseif($file_extension === 'ppt'){
+					$this->file_mimetype = 'application/vnd.ms-powerpoint';
+				}
+				elseif($file_extension === 'pptx'){
+					$this->file_mimetype = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+				}
+				elseif($file_extension === 'txt'){
+					$this->file_mimetype = 'text/plain';
+				}
+				elseif($file_extension === 'rar'){
+					$this->file_mimetype = 'application/x-rar-compressed';
+				}
+
 				else {
 					vmInfo (JText::sprintf ('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE', $name));
 					$notice = TRUE;

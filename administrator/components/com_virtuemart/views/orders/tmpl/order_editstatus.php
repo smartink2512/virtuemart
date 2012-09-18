@@ -48,7 +48,7 @@
 	<tr>
 		<td class="key"><?php echo JText::_('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS') ?></td>
 		<td><br />
-		<?php echo VmHTML::checkbox('update_lines', true); ?>
+		<?php echo VmHTML::checkbox('orders['.$this->orderID.'][update_lines]', true); ?>
 		</td>
 	</tr>
 	<tr>

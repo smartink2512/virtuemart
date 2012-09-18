@@ -411,15 +411,19 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if ($data->store()) {
 
 			$task= JRequest::getCmd('task',0);
-			if($task=='edit'){
+			$view= JRequest::getWord('view',0);
+
+			/*if($task=='edit'){
 				$update_lines = JRequest::getInt('update_lines');
-			} else if ('updatestatus') {
-				$update_lines = JRequest::getInt('orders['.$virtuemart_order_id.'][update_lines]');
+			} else /*/
+			if ($task=='updatestatus' and $view=='orders') {
+				$update_lines = JRequest::getVar('orders['.$virtuemart_order_id.'][update_lines]');
 			} else {
-				$update_lines = TRUE;
+				$update_lines = 1;
 			}
 
-			if($update_lines){
+			if($update_lines!==0){
+				vmdebug('$update_lines '.$update_lines);
 				$q = 'SELECT virtuemart_order_item_id
 												FROM #__virtuemart_order_items
 												WHERE virtuemart_order_id="'.$virtuemart_order_id.'"';
