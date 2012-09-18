@@ -249,7 +249,7 @@ class VirtueMartControllerCart extends JController {
 					break;
 				} else if ($_retVal === false ) {
 					$mainframe = JFactory::getApplication();
-					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editshipment',$this->useXHTML,$this->useSSL), $_retVal);
+					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $_retVal);
 					break;
 				}
 			}
