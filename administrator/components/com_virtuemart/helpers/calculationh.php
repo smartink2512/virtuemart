@@ -542,7 +542,6 @@ class calculationHelper {
 
 		$shipment_id = empty($cart->virtuemart_shipmentmethod_id) ? 0 : $cart->virtuemart_shipmentmethod_id;
 		$this->calculateShipmentPrice($cart,  $shipment_id, $checkAutomaticSelected);
-
 		//$this->_cartPrices['salesPrice'] = $this->_cartPrices['salesPrice'] + $this->_cartPrices['salesPriceShipment'];
 		$paymentId = empty($cart->virtuemart_paymentmethod_id) ? 0 : $cart->virtuemart_paymentmethod_id;
 
@@ -934,6 +933,7 @@ class calculationHelper {
 		$this->_cartPrices['shipmentTax'] = 0;
 		$this->_cartPrices['shipmentTotal'] = 0;
 		$this->_cartPrices['salesPriceShipment'] = 0;
+		$this->_cartPrices['shipment_calc_id'] = 0;
 		// check if there is only one possible shipment method
 
 		$automaticSelectedShipment =   $cart->CheckAutomaticSelectedShipment($this->_cartPrices, $checkAutomaticSelected);
@@ -982,7 +982,7 @@ class calculationHelper {
 		$this->_cartPrices['paymentTax'] = 0;
 		$this->_cartPrices['paymentTotal'] = 0;
 		$this->_cartPrices['salesPricePayment'] = 0;
-
+		$this->_cartPrices['payment_calc_id'] = 0;
 		// check if there is only one possible payment method
 		$cart->automaticSelectedPayment =   $cart->CheckAutomaticSelectedPayment( $this->_cartPrices, $checkAutomaticSelected);
 		if ($cart->automaticSelectedPayment) $payment_id=$cart->virtuemart_paymentmethod_id;
