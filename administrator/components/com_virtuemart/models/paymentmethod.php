@@ -158,22 +158,23 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	  	   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 	   		$data['virtuemart_vendor_id'] = VirtueMartModelVendor::getLoggedVendor();
 	  	}
-		// missing string FIX, Bad way ?
-		if (JVM_VERSION===1) {
-			$tb = '#__plugins';
-			$ext_id = 'id';
-		} else {
-			$tb = '#__extensions';
-			$ext_id = 'extension_id';
-		}
-		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['payment_jplugin_id'].'"';
-		$this->_db->setQuery($q);
-		$data['payment_element'] = $this->_db->loadResult();
+
 
 		$table = $this->getTable('paymentmethods');
 
-
 		if(isset($data['payment_jplugin_id'])){
+
+			// missing string FIX, Bad way ?
+			if (JVM_VERSION===1) {
+				$tb = '#__plugins';
+				$ext_id = 'id';
+			} else {
+				$tb = '#__extensions';
+				$ext_id = 'extension_id';
+			}
+			$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['payment_jplugin_id'].'"';
+			$this->_db->setQuery($q);
+			$data['payment_element'] = $this->_db->loadResult();
 
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
