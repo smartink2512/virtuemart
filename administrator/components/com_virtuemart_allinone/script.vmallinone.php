@@ -51,31 +51,30 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->path = JInstaller::getInstance()->getPath('extension_administrator');
 
 			$this->updateShipperToShipment();
-			$this->installPlugin('VM - Payment, Standard', 'plugin','standard', 'vmpayment');
-			$this->installPlugin('VM - Payment, Payzen', 'plugin','payzen', 'vmpayment');
-			$this->installPlugin('VM - Payment, SystemPay', 'plugin','systempay', 'vmpayment');
+			$this->installPlugin('Standard', 'plugin','standard', 'vmpayment');
+			$this->installPlugin('PayZen', 'plugin','payzen', 'vmpayment');
+			$this->installPlugin('SystemPay', 'plugin','systempay', 'vmpayment');
 			
 			//moneybookers
 			$src = $this->path . DS . 'plugins' . DS . 'vmpayment' . DS . 'moneybookers';
 			$dst = JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'moneybookers';
 			$this->recurse_copy($src, $dst, 'plugins');
-			$this->installPlugin('VM - Payment, Moneybookers Credit Cards', 'plugin', 'moneybookers_acc', 'vmpayment');
-			$this->installPlugin('VM - Payment, Moneybookers Lastschrift', 'plugin', 'moneybookers_did', 'vmpayment');
-			$this->installPlugin('VM - Payment, Moneybookers iDeal', 'plugin', 'moneybookers_idl', 'vmpayment');
-			$this->installPlugin('VM - Payment, Moneybookers Giropay', 'plugin', 'moneybookers_gir', 'vmpayment');
-			$this->installPlugin('VM - Payment, Moneybookers Sofortüberweisung', 'plugin', 'moneybookers_sft', 'vmpayment');
-			$this->installPlugin('VM - Payment, Moneybookers Przelewy24', 'plugin', 'moneybookers_pwy', 'vmpayment');
-			$this->installPlugin('VM - Payment, Moneybookers Online Bank Transfer', 'plugin', 'moneybookers_obt', 'vmpayment');
-			$this->installPlugin('VM - Payment, Moneybookers Skrill Digital Wallet', 'plugin', 'moneybookers_wlt', 'vmpayment');
-			$this->installPlugin('VM - Payment, Authorize.net', 'plugin','authorizenet', 'vmpayment');
-			$this->installPlugin('VM - Payment, Paypal', 'plugin', 'paypal', 'vmpayment');
-			$this->installPlugin('VM - Payment, Klarna', 'plugin', 'klarna', 'vmpayment');
-
-			$this->installPlugin('VM - Shipment, By weight, ZIP and countries','plugin', 'weight_countries', 'vmshipment');
-
-			$this->installPlugin('VM - Custom, customer text input','plugin', 'textinput', 'vmcustom');
-			$this->installPlugin('VM - Custom, product specification','plugin', 'specification', 'vmcustom');
-			$this->installPlugin('VM - Custom, stockable variants','plugin', 'stockable', 'vmcustom');
+			$this->installPlugin('Moneybookers Credit Cards', 'plugin', 'moneybookers_acc', 'vmpayment');
+			$this->installPlugin('Moneybookers Lastschrift', 'plugin', 'moneybookers_did', 'vmpayment');
+			$this->installPlugin('Moneybookers iDeal', 'plugin', 'moneybookers_idl', 'vmpayment');
+			$this->installPlugin('Moneybookers Giropay', 'plugin', 'moneybookers_gir', 'vmpayment');
+			$this->installPlugin('Moneybookers Sofortüberweisung', 'plugin', 'moneybookers_sft', 'vmpayment');
+			$this->installPlugin('Moneybookers Przelewy24', 'plugin', 'moneybookers_pwy', 'vmpayment');
+			$this->installPlugin('Moneybookers Online Bank Transfer', 'plugin', 'moneybookers_obt', 'vmpayment');
+			$this->installPlugin('Moneybookers Skrill Digital Wallet', 'plugin', 'moneybookers_wlt', 'vmpayment');
+			$this->installPlugin('Authorize.net', 'plugin','authorizenet', 'vmpayment');
+			$this->installPlugin('Paypal', 'plugin', 'paypal', 'vmpayment');
+			$this->installPlugin('Klarna', 'plugin', 'klarna', 'vmpayment');
+			$this->installPlugin('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
+			$this->installPlugin('By weight, ZIP and countries','plugin', 'weight_countries', 'vmshipment');
+			$this->installPlugin('Customer text input','plugin', 'textinput', 'vmcustom');
+			$this->installPlugin('Product specification','plugin', 'specification', 'vmcustom');
+			$this->installPlugin('Stockable variants','plugin', 'stockable', 'vmcustom');
 // 			$table = '#__virtuemart_customs';
 // 			$fieldname = 'field_type';
 // 			$fieldvalue = 'G';
@@ -86,7 +85,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 // 					'COM_VIRTUEMART_STOCKABLE_PRODUCT_DESC', 'G', 0, 0, 0, 1 );");
 
 
-			$this->installPlugin('VM - Search, Virtuemart Product', 'plugin', 'virtuemart', 'search');
+			$this->installPlugin('Virtuemart Product', 'plugin', 'virtuemart', 'search');
 
 			$task = JRequest::getCmd('task');
 			if($task!='updateDatabase'){
