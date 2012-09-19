@@ -139,7 +139,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		$session = JFactory::getSession ();
 		$return_context = $session->getId ();
 
-		$this->logInfo ('plgVmOnConfirmedOrderGetPaymentForm -- order number: ' . $order['details']['BT']->order_number, 'message');
+		$this->logInfo ('plgVmConfirmedOrder -- order number: ' . $order['details']['BT']->order_number, 'message');
 
 		if (!class_exists ('VadsApi')) {
 			require(JPATH_VMPAYMENTPLUGIN . DS . 'payzen' . DS . 'payzen_api.php');
@@ -196,7 +196,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 
 		$currency = $api->findCurrencyByNumCode ($currencyObj->currency_numeric_code);
 		if ($currency == NULL) {
-			$this->logInfo ('plgVmOnConfirmedOrderGetPaymentForm -- Could not find currency numeric code for currency : ' . $currencyObj->currency_numeric_code, 'error');
+			$this->logInfo ('plgVmConfirmedOrder -- Could not find currency numeric code for currency : ' . $currencyObj->currency_numeric_code, 'error');
 			vmInfo (JText::_ ('VMPAYMENT_' . $this->_name . '_CURRENCY_NOT_SUPPORTED'));
 			return NULL;
 		}
@@ -255,7 +255,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		$dbValues[$this->_name . '_custom'] = $return_context;
 		$this->storePSPluginInternalData ($dbValues);
 
-		$this->logInfo ('plgVmOnConfirmedOrderGetPaymentForm -- payment data saved to table ' . $this->_tablename, 'message');
+		$this->logInfo ('plgVmConfirmedOrder -- payment data saved to table ' . $this->_tablename, 'message');
 
 		// echo the redirect form
 		$form = '<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8" /><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
@@ -267,7 +267,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		$form .= '</form></div>';
 		$form .= '<script type="text/javascript">document.forms[0].submit();</script></body></html>';
 
-		$this->logInfo ('plgVmOnConfirmedOrderGetPaymentForm -- user redirected to ' . $this->_name, 'message');
+		$this->logInfo ('plgVmConfirmedOrder -- user redirected to ' . $this->_name, 'message');
 
 		echo $form;
 

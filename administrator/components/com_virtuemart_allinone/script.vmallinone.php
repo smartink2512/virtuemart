@@ -155,20 +155,20 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$src= $this->path .DS."languageFE" ;
 			$dst= JPATH_ROOT . DS . "language" ;
 			$this->recurse_copy( $src ,$dst  );
-			echo " VirtueMart2 language  moved to the joomla language FE folder   <br/ >" ;
+			echo " VirtueMart2 language moved to the joomla language FE folder<br/ >" ;
 
 			// language auto move
 			$src= $this->path .DS."languageBE" ;
 			$dst= JPATH_ADMINISTRATOR . DS . "language" ;
 			$this->recurse_copy( $src ,$dst );
-			echo " VirtueMart2 language   moved to the joomla language BE folder   <br/ >" ;
+			echo " VirtueMart2 language moved to the joomla language BE folder<br/ >" ;
 
 
 			// libraries auto move
 			$src= $this->path .DS."libraries" ;
 			$dst= JPATH_ROOT . DS . "libraries" ;
 			$this->recurse_copy( $src ,$dst );
-			echo " VirtueMart2 pdf   moved to the joomla libraries folder   <br/ >" ;
+			echo " VirtueMart2 pdf moved to the joomla libraries folder<br/ >" ;
 
 			//update plugins, make em loggable
 			/*			$loggables = array(	'created_on' => 'DATETIME NOT NULL DEFAULT "0000-00-00 00:00:00"',

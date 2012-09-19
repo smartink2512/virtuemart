@@ -2,7 +2,7 @@
 
 /**
  *
- * Controller for the Payement Response
+ * Controller for the Plugins Response
  *
  * @package	VirtueMart
  * @subpackage paymentResponse

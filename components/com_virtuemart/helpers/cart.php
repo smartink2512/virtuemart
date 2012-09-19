@@ -826,10 +826,10 @@ class VirtueMartCart {
 			//Add a hook here for other shipment methods, checking the data of the choosed plugin
 			$dispatcher = JDispatcher::getInstance();
 			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckDataShipment', array(  $this));
-
+vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 			foreach ($retValues as $retVal) {
 				if ($retVal === true) {
-					break; // Plugin completed succesful; nothing else to do
+					break; // Plugin completed succesfull; nothing else to do
 				} elseif ($retVal === false) {
 					// Missing data, ask for it (again)
 					return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=edit_shipment' , $redirectMsg);

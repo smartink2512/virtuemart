@@ -82,10 +82,12 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 	protected function getVmPluginCreateTableSQL () {
+
 		return $this->createTableSQL ('Payment AuthorizeNet Table');
 	}
 
 	function getTableSQLFields () {
+
 		$SQLfields = array(
 			'id'                                         => 'int(1) UNSIGNED NOT NULL AUTO_INCREMENT',
 			'virtuemart_order_id'                        => 'int(1) UNSIGNED',
@@ -118,6 +120,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	 * @author Valerie Cartan Isaksen
 	 */
 	function plgVmDisplayListFEPayment (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
+
 		//JHTML::_ ('behavior.tooltip');
 
 		if ($this->getPluginMethods ($cart->vendorId) === 0) {
@@ -125,8 +128,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 				$app = JFactory::getApplication ();
 				$app->enqueueMessage (JText::_ ('COM_VIRTUEMART_CART_NO_' . strtoupper ($this->_psType)));
 				return FALSE;
-			}
-			else {
+			} else {
 				return FALSE;
 			}
 		}
@@ -145,8 +147,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 				$html = $this->getPluginHtml ($method, $selected, $methodSalesPrice);
 				if ($selected == $method->virtuemart_paymentmethod_id) {
 					$this->_getAuthorizeNetFromSession ();
-				}
-				else {
+				} else {
 					$this->_cc_type = '';
 					$this->_cc_number = '';
 					$this->_cc_cvv = '';
@@ -241,8 +242,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		if (!empty($method->countries)) {
 			if (!is_array ($method->countries)) {
 				$countries[0] = $method->countries;
-			}
-			else {
+			} else {
 				$countries = $method->countries;
 			}
 		}
@@ -264,16 +264,17 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 	function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
+
 		if (preg_match ('/%$/', $method->cost_percent_total)) {
 			$cost_percent_total = substr ($method->cost_percent_total, 0, -1);
-		}
-		else {
+		} else {
 			$cost_percent_total = $method->cost_percent_total;
 		}
 		return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
 	}
 
 	function _setAuthorizeNetIntoSession () {
+
 		$session = JFactory::getSession ();
 		$sessionAuthorizeNet = new stdClass();
 		// card information
@@ -287,6 +288,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 	function _getAuthorizeNetFromSession () {
+
 		$session = JFactory::getSession ();
 		$authorizenetSession = $session->get ('authorizenet', 0, 'vm');
 
@@ -324,6 +326,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	 *
 	 */
 	function plgVmOnStoreInstallPaymentPluginTable ($jplugin_id) {
+
 		return parent::onStoreInstallPluginTable ($jplugin_id);
 	}
 
@@ -335,7 +338,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	 * @param VirtueMartCart $cart
 	 * @return null if payment not selected; true if card infos are correct; string containing the errors id cc is not valid
 	 */
-	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart,  &$msg) {
+	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart, &$msg) {
 
 		if (!$this->selectedThisByMethodId ($cart->virtuemart_paymentmethod_id)) {
 			return NULL; // Another method was selected, do nothing
@@ -384,12 +387,13 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		 */
 
 	protected function renderPluginName ($plugin) {
+
 		$return = '';
 		$plugin_name = $this->_psType . '_name';
 		$plugin_desc = $this->_psType . '_desc';
 		$description = '';
-// 		$params = new JParameter($plugin->$plugin_params);
-// 		$logo = $params->get($this->_psType . '_logos');
+		// 		$params = new JParameter($plugin->$plugin_params);
+		// 		$logo = $params->get($this->_psType . '_logos');
 		$logosFieldName = $this->_psType . '_logos';
 		$logos = $plugin->$logosFieldName;
 		if (!empty($logos)) {
@@ -411,6 +415,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
 	 */
 	function plgVmOnShowOrderBEPayment ($virtuemart_order_id, $virtuemart_payment_id) {
+
 		if (!$this->selectedThisByMethodId ($virtuemart_payment_id)) {
 			return NULL; // Another method was selected, do nothing
 		}
@@ -506,20 +511,17 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 			$new_status = $method->payment_declined_status;
 			$this->_handlePaymentCancel ($order['details']['BT']->virtuemart_order_id, $html);
 			return; // will not process the order
-		}
-		else {
+		} else {
 			if ($this->approved) {
 				$this->_clearAuthorizeNetSession ();
 				$new_status = $method->payment_approved_status;
-			}
-			else {
+			} else {
 				if ($this->declined) {
 					JRequest::setVar ('html', $html);
 					$new_status = $method->payment_declined_status;
 					$this->_handlePaymentCancel ($order['details']['BT']->virtuemart_order_id, $html);
 					return;
-				}
-				else {
+				} else {
 					if ($this->held) {
 						$this->_clearAuthorizeNetSession ();
 						$new_status = $method->payment_held_status;
@@ -539,6 +541,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 	function _handlePaymentCancel ($virtuemart_order_id, $html) {
+
 		if (!class_exists ('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
@@ -571,6 +574,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 	function _clearAuthorizeNetSession () {
+
 		$session = JFactory::getSession ();
 		$session->clear ('authorizenet', 'vm');
 	}
@@ -584,6 +588,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	 * @return string Payment method name
 	 */
 	function getExtraPluginNameInfo () {
+
 		$creditCardInfos = '';
 		if ($this->_validate_creditcard_data (FALSE)) {
 			$cc_number = "**** **** **** " . substr ($this->_cc_number, -4);
@@ -658,10 +663,12 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 	function _getLoginId ($method) {
+
 		return $method->sandbox ? $method->sandbox_login_id : $method->login_id;
 	}
 
 	function _getTransactionKey ($method) {
+
 		return $method->get ('sandbox') ? $method->sandbox_transaction_key : $method->transaction_key;
 	}
 
@@ -672,19 +679,17 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	 * @access protected
 	 */
 	function _getPostUrl ($method) {
+
 		if ($method->sandbox) {
 			if (isset($method->sandbox_hostname)) {
 				return $method->sandbox_hostname;
-			}
-			else {
+			} else {
 				return 'https://test.authorize.net/gateway/transact.dll';
 			}
-		}
-		else {
+		} else {
 			if (isset($method->hostname)) {
 				return $method->hostname;
-			}
-			else {
+			} else {
 				return 'https://secure.authorize.net/gateway/transact.dll';
 			}
 		}
@@ -706,10 +711,12 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 	function _setHeader () {
+
 		return $this->_authorizenet_params;
 	}
 
 	function _setMerchantData ($method) {
+
 		return array(
 			'x_login'          => $this->_getLoginId ($method),
 			'x_tran_key'       => $this->_getTransactionKey ($method),
@@ -718,6 +725,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 	function _setResponseConfiguration () {
+
 		return array(
 			'x_delim_data'     => 'TRUE',
 			'x_delim_char'     => '|',
@@ -726,13 +734,15 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 	function _getfield ($string, $length) {
+
 		return substr ($string, 0, $length);
 	}
 
 	function _setBillingInformation ($usrBT) {
+
 		// Customer Name and Billing Address
 		return array(
-			'x_email'      => isset($usrBT->email) ? $this->_getField ($usrBT->email, 100) : '',//get email
+			'x_email'      => isset($usrBT->email) ? $this->_getField ($usrBT->email, 100) : '', //get email
 			'x_first_name' => isset($usrBT->first_name) ? $this->_getField ($usrBT->first_name, 50) : '',
 			'x_last_name'  => isset($usrBT->last_name) ? $this->_getField ($usrBT->last_name, 50) : '',
 			'x_company'    => isset($usrBT->company) ? $this->_getField ($usrBT->company, 50) : '',
@@ -747,6 +757,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 	function _setShippingInformation ($usrST) {
+
 		// Customer Name and Billing Address
 		return array(
 			'x_ship_to_first_name' => isset($usrST->first_name) ? $this->_getField ($usrST->first_name, 50) : '',
@@ -761,11 +772,11 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 
 	function _setTransactionData ($orderDetails, $method) {
-// backward compatible
+
+		// backward compatible
 		if (isset($method->xtype)) {
 			$xtype = $method->xtype;
-		}
-		else {
+		} else {
 			$xtype = 'AUTH_CAPTURE';
 		}
 		return array(
@@ -790,10 +801,11 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	 *
 	 */
 	function _sendRequest ($post_url, $post_string) {
+
 		$this->logInfo ("_sendRequest" . "\n\n", 'message');
 		$curl_request = curl_init ($post_url);
-		 //Added the next line to fix SSL verification issue (CURL error verifying the far end SSL Cert)
-        curl_setopt ($curl_request, CURLOPT_SSL_VERIFYPEER, 0);
+		//Added the next line to fix SSL verification issue (CURL error verifying the far end SSL Cert)
+		curl_setopt ($curl_request, CURLOPT_SSL_VERIFYPEER, 0);
 		curl_setopt ($curl_request, CURLOPT_POSTFIELDS, $post_string);
 		curl_setopt ($curl_request, CURLOPT_HEADER, 0);
 		curl_setopt ($curl_request, CURLOPT_TIMEOUT, 45);
@@ -833,8 +845,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 			if ($encap_char) {
 				//$response_array = explode($encap_char . $delimiter . $encap_char, substr($response, 1, -1));
 				$response_array = explode ($encap_char, $response);
-			}
-			else {
+			} else {
 				$response_array = explode ($delimiter, $response);
 			}
 
@@ -944,16 +955,15 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 				$this->logInfo ($html, 'PAYMENT DECLINED');
 				return $html;
 			}
-		}
-		else {
+		} else {
 			$this->approved = FALSE;
 			$this->error = TRUE;
 			$this->logInfo (JText::_ ('VMPAYMENT_AUTHORIZENET_CONNECTING_ERROR'), 'ERROR');
 			$this->sendEmailToVendorAndAdmins (JText::_ ('VMPAYMENT_AUTHORIZENET_ERROR_EMAIL_SUBJECT'), JText::_ ('VMPAYMENT_AUTHORIZENET_CONNECTING_ERROR'));
 			return JText::_ ('VMPAYMENT_AUTHORIZENET_CONNECTING_ERROR');
 		}
-// Prep
-// get all know columns of the table
+		// Prep
+		// get all know columns of the table
 		$db = JFactory::getDBO ();
 		$query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
 		$db->setQuery ($query);
@@ -993,6 +1003,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	 * @return html with logos
 	 */
 	public function _displayCVVImages ($method) {
+
 		$cvv_images = $method->cvv_images;
 		$img = '';
 		if ($cvv_images) {
@@ -1017,11 +1028,11 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	 *
 	 */
 	function plgVmOnCheckAutomaticSelectedPayment (VirtueMartCart $cart, array $cart_prices = array(), &$paymentCounter) {
+
 		$return = $this->onCheckAutomaticSelected ($cart, $cart_prices);
 		if (isset($return)) {
 			return 0;
-		}
-		else {
+		} else {
 			return NULL;
 		}
 	}
@@ -1035,6 +1046,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	 * @author Valerie Isaksen
 	 */
 	protected function plgVmOnShowOrderFEPayment ($virtuemart_order_id, $virtuemart_paymentmethod_id, &$payment_name) {
+
 		$this->onShowOrderFE ($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
 		return TRUE;
 	}
@@ -1049,6 +1061,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	 * @author Valerie Isaksen
 	 */
 	function plgVmOnShowOrderPrintPayment ($order_number, $method_id) {
+
 		return parent::onShowOrderPrint ($order_number, $method_id);
 	}
 
@@ -1105,10 +1118,12 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	}
 	 */
 	function plgVmDeclarePluginParamsPayment ($name, $id, &$data) {
+
 		return $this->declarePluginParams ('payment', $name, $id, $data);
 	}
 
 	function plgVmSetOnTablePluginParamsPayment ($name, $id, &$table) {
+
 		return $this->setOnTablePluginParams ($name, $id, $table);
 	}
 

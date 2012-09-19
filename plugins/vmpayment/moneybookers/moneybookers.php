@@ -400,7 +400,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		}
 
 		$mb_data = JRequest::get ('post');
-		vmdebug ('MONEYBOOKERS plgVmOnPaymentResponseReceived', $mb_data);
+
 
 		// the payment itself should send the parameter needed.
 		$virtuemart_paymentmethod_id = JRequest::getInt ('pm', 0);
@@ -421,7 +421,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 			return '';
 		}
-
+		vmdebug ('MONEYBOOKERS plgVmOnPaymentResponseReceived', $mb_data);
 		$payment_name = $this->renderPluginName ($method);
 		$html = $this->_getPaymentResponseHtml ($paymentTable, $payment_name);
 

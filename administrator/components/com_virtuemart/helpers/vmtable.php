@@ -561,7 +561,7 @@ class VmTable extends JTable{
 						$this->virtuemart_vendor_id = $virtuemart_vendor_id;
 					}
 				} else if (!empty($virtuemart_vendor_id) and $loggedVendorId!=$virtuemart_vendor_id) {
-					vmInfo('Admin with vendor id'.$loggedVendorId.' is using for storing vendor id '.$this->virtuemart_vendor_id);
+					vmInfo('Admin with vendor id '.$loggedVendorId.' is using for storing vendor id '.$this->virtuemart_vendor_id);
 				}
 
 				//It is better to consider vendor_id=0 as shared
