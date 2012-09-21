@@ -71,16 +71,7 @@ class TableOrderstates extends VmTable {
 	 *
 	 * @return boolean True if the table buffer is contains valid data, false otherwise.
 	 */
-	function check()
-	{
-//        if (empty($this->order_status_code)) {
-//			vmError(JText::_('COM_VIRTUEMART_ORDER_TABLE_ERROR_CODE'));
-//			return false;
-//		}
-//		if (empty($this->order_status_name)) {
-//			vmError(JText::_('COM_VIRTUEMART_ORDER_TABLE_ERROR_NAME'));
-//			return false;
-//		}
+	function check(){
 
 		$db = JFactory::getDBO();
 		$q = 'SELECT count(*),virtuemart_orderstate_id FROM `#__virtuemart_orderstates` ';

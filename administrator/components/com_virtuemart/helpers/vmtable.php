@@ -540,11 +540,12 @@ class VmTable extends JTable{
 						$virtuemart_vendor_id = $vmuser[0];
 						$user_is_vendor = $vmuser[1];
 
-						if($multix == 'none' ){
-							if(empty($user_is_vendor)){
-								$this->virtuemart_vendor_id = 0;
-							} else {
-								$this->virtuemart_vendor_id = 1;
+
+						if(empty($user_is_vendor)){
+							$this->virtuemart_vendor_id = 0;
+						} else {
+							if($multix == 'none' ){
+								$this->virtuemart_vendor_id = $virtuemart_vendor_id;
 							}
 						}
 					}

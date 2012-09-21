@@ -69,11 +69,11 @@ AdminUIHelper::startAdminArea();
 			<th><?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>
 			<?php if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){ ?>
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_CALC_SHARED')  ?>
+				<?php echo JText::_( 'COM_VIRTUEMART_SHARED')  ?>
 			</th><?php }  ?>
 			<th><?php echo $this->sort('virtuemart_calc_id', 'COM_VIRTUEMART_ID')  ?></th>
 		<?php /*	<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_SHARED'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_SHARED'); ?>
 			</th> */ ?>
 		</tr>
 		</thead>

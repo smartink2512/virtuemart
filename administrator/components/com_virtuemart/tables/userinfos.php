@@ -56,11 +56,7 @@ class TableUserinfos extends VmTableData {
 // 	var $city = '';
 
 // 	var $zip = '';
-// 	var $extra_field_1 = '';
-// 	var $extra_field_2 = '';
-// 	var $extra_field_3 = '';
-// 	var $extra_field_4 = '';
-// 	var $extra_field_5 = '';
+
 
 	/**
 	 * @author RickG

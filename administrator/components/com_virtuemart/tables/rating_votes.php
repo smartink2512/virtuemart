@@ -46,7 +46,6 @@ class TableRating_votes extends VmTable {
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_rating_votes', 'virtuemart_rating_vote_id', $db);
 		$this->setPrimaryKey('virtuemart_rating_vote_id');
-//		$this->setObligatoryKeys('vote');
 
 		$this->setLoggable();
 	}

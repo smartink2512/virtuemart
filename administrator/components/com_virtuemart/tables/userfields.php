@@ -101,14 +101,7 @@ class TableUserfields extends VmTable {
 	 */
 	function check($nrOfValues)
 	{
-//		if (!$this->name) {
-//			vmError(JText::_('COM_VIRTUEMART_USERFIELD_MUST_HAVE_NAME'));
-//			return false;
-//		}
-//		if (!$this->title) {
-//			vmError(JText::_('COM_VIRTUEMART_USERFIELD_MUST_HAVE_TITLE'));
-//			return false;
-//		}
+
 		if (preg_match('/[^a-z0-9\._\-]/i', $this->name) > 0) {
 			vmError(JText::_('COM_VIRTUEMART_NAME_OF_USERFIELD_CONTAINS_INVALID_CHARACTERS'));
 			return false;
@@ -118,19 +111,7 @@ class TableUserfields extends VmTable {
 			vmError(JText::_('COM_VIRTUEMART_VALUES_ARE_REQUIRED_FOR_THIS_TYPE'));
 			return false;
 		}
-/**		if ($this->virtuemart_userfield_id == 0) {
-			$_sql = 'SELECT COUNT(*) AS c '
-					. 'FROM `#__virtuemart_userfields`'
-					. "WHERE name = '" . $this->_db->getEscaped($this->name) . "' ";
 
-			$this->_db->setQuery($_sql);
-			$_c = $this->_db->loadResultArray();
-
-			if ($_c[0] > 0) {
-				vmError(JText::_('COM_VIRTUEMART_USERFIELD_ERR_ALREADY', $this->name));
-				return false;
-			}
-		}*/
 		return parent::check();
 	}
 
@@ -152,38 +133,17 @@ class TableUserfields extends VmTable {
 			case 'multicheckbox':
 				$_fieldType = 'MEDIUMTEXT';
 				break;
-			/*
-			case 'letterman_subscription':
-			case 'yanc_subscription':
-			case 'anjel_subscription':
-			case 'ccnewsletter_subscription':
-				//TODO $this->params exists?
-				$this->params = 'newsletter='.substr($this->type,0,strpos($this->type, '_') )."\n";
-				$this->type = 'checkbox';
-			*/
 			case 'checkbox':
 				$_fieldType = 'TINYINT';
 				break;
-			/*
-			case 'euvatid':
-				$this->params = 'virtuemart_shoppergroup_id='.$_data['virtuemart_shoppergroup_id']."\n";
-				$_fieldType = 'VARCHAR(255)';
-				break;
-			*/
+
 			case 'age_verification':
 				$this->params = 'minimum_age='.(int)$_data['minimum_age']."\n";
 			default:
 				$_fieldType = 'VARCHAR(255)';
 				break;
 		}
-		// TODO MAX BETTER , but work
-		// if (strpos($this->type, 'plugin') !==false) {
-			// $this->params = '';
-			// foreach ( $_data['params'] as $key => $params )
-			// {
-				// $this->params .= $key.'='.$params."\n";
-			// }
-		// }
+
 		return $_fieldType;
 	}
 

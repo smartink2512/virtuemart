@@ -58,11 +58,6 @@ AdminUIHelper::startAdminArea();
 				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_S'); ?>
 			</th>
 
-			<!-- Commented out for future use
-			<th width="5%">
-				<?php echo $this->sort( 'cx.category_shared' , 'COM_VIRTUEMART_PRODUCT_LIST_SHARED') ?>
-			</th>
-			-->
 			<th align="left" width="13%">
 				<?php echo $this->sort( 'c.ordering' , 'COM_VIRTUEMART_ORDERING') ?>
 				<?php echo JHTML::_('grid.order', $this->categories, 'filesave.png', 'saveOrder' ); ?>
@@ -70,7 +65,13 @@ AdminUIHelper::startAdminArea();
 			<th align="center" width="5%">
 				<?php echo $this->sort('c.published' , 'COM_VIRTUEMART_PUBLISHED') ?>
 			</th>
-			  <th><?php echo $this->sort('virtuemart_category_id', 'COM_VIRTUEMART_ID')  ?></th>
+			<?php if(Vmconfig::get('multix','none')!=='none' and $this->perms->check('admin') ){ ?>
+            <th width="5%">
+				<?php echo $this->sort( 'cx.category_shared' , 'COM_VIRTUEMART_SHARED') ?>
+            </th>
+			<?php } ?>
+
+			<th><?php echo $this->sort('virtuemart_category_id', 'COM_VIRTUEMART_ID')  ?></th>
 
 		</tr>
 		</thead>
@@ -101,6 +102,7 @@ AdminUIHelper::startAdminArea();
 			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid=' . $cat->virtuemart_category_id);
 // 			$statelink	= JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $cat->virtuemart_category_id);
 			$showProductsLink = JRoute::_('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . $cat->virtuemart_category_id);
+			$shared = $this->toggle($cat->shared, $i, 'toggle.shared');
 
 			$categoryLevel = '';
 			if(!isset($cat->level)){
@@ -134,15 +136,12 @@ AdminUIHelper::startAdminArea();
 				</td>
 
 <?php
-		/*
-		 * html comment do a bug in some server
-		 * Used in the future Notice by Patrick Kohl
-				<td align="center">
-					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggleShared')" title="<?php echo ( $row->category_shared == 'Y' ) ?JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
-						<img src="images/<?php echo ( $row->category_shared) ? 'tick.png' : 'publish_x.png';?>" width="16" height="16" border="0" alt="<?php echo ( $row->category_shared == 'Y' ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>" />
-					</a>
-				</td>
-				*/
+				if((Vmconfig::get('multix','none')!='none')) {
+					?><td align="center">
+						<?php echo $shared; ?>
+                    </td>
+					<?php
+				}
 ?>
 				<td align="center" class="order">
 					<span><?php echo $this->catpagination->orderUpIcon( $i, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i - 1]]->category_parent_id), 'orderUp', JText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>

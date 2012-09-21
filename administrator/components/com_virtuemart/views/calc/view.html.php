@@ -39,7 +39,7 @@ class VirtuemartViewCalc extends VmView {
 		$this->loadHelper('html');
 
 		$model = VmModel::getModel('calc');
-		$this->loadHelper('permissions');
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		$perms = Permissions::getInstance();
 		$this->assignRef('perms', $perms);
 

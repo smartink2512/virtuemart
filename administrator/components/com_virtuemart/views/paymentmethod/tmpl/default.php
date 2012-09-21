@@ -58,7 +58,7 @@ AdminUIHelper::startAdminArea();
 			</th>
 			<?php if(Vmconfig::get('multix','none')!=='none'){ ?>
 			<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_SHARED'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_SHARED'); ?>
 			</th>
 			<?php } ?>
 			 <th><?php echo $this->sort('virtuemart_paymentmethod_id', 'COM_VIRTUEMART_ID')  ?></th>

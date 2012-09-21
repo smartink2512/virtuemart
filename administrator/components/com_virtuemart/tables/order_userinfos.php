@@ -35,23 +35,6 @@ class TableOrder_userinfos extends VmTable {
 	}
 
 	/**
-	 * Load the fieldlist
-	 */
-/*	private function loadFields(&$_db)
-	{
-		$_fieldlist = array();
-		$_q = "SHOW COLUMNS FROM `#__virtuemart_order_userinfos`";
-		$_db->setQuery($_q);
-		$_fields = $_db->loadObjectList();
-		if (count($_fields) > 0) {
-			foreach ($_fields as $key => $_f) {
-				$_fieldlist[$_f->Field] = $_f->Default;
-			}
-			$this->setProperties($_fieldlist);
-		}
-	}
-*/
-	/**
 	 * Add, change or drop userfields
 	 *
 	 * @param string $_act Action: ADD, DROP or CHANGE (synonyms available, see the switch cases)
