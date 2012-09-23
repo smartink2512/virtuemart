@@ -302,17 +302,10 @@ class CurrencyDisplay {
 	 * return string formatted price
 	 */
 	public function priceDisplay($price, $currencyId=0,$quantity = 1.0,$inToShopCurrency = false,$nb = -1){
-		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipment)
-		/*
-		 if(empty($currencyId)){
-		$currencyId = (int)$this->_app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$this->_vendorCurrency );
-		if(empty($currencyId)){
-		$currencyId = $this->_vendorCurrency;
-		}
-		}
-		*/
+
 		$currencyId = $this->getCurrencyForDisplay($currencyId);
-		$price = (float)$price * (float)$quantity;
+		$price = round((float)$price,$nb) * (float)$quantity;
+		//$price = (float)$price * (float)$quantity;
 		$price = $this->convertCurrencyTo($currencyId,$price,$inToShopCurrency);
 		return $this->getFormattedCurrency($price,$nb);
 	}
@@ -361,7 +354,6 @@ class CurrencyDisplay {
 
 		//The fallback, when this price is not configured
 		if(empty($this->_priceConfig[$name])){
-// 			echo 'createPriceDiv empty($this->_priceConfig[$name] '.$name.'<br />';
 			//This is a fallback because we remove the "salesPriceWithDiscount" ;
 			$name = "salesPrice";
 			if(is_array($product_price)){
@@ -372,12 +364,6 @@ class CurrencyDisplay {
 		} else {
 			$price = $product_price[$name] ;
 		}
-/*		if(!is_double($price)){
-// 			vmdebug('Price is not double? ',$price);
-			$price =  'Price is not double? '.$name.'<pre>'.print_r($price,1).'</pre>';
-		} else {
-			$price = $price * (float)$quantity;
-		}*/
 
 		//This could be easily extended by product specific settings
 		if(!empty($this->_priceConfig[$name][0])){

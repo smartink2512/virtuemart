@@ -496,21 +496,22 @@ class calculationHelper {
 // 			vmdebug('getCheckoutPrices',$product->prices);
 			$this->_cartPrices[$cartproductkey] = $product->prices;
 
-			if($this->_currencyDisplay->_priceConfig['basePrice']) $this->_cartPrices['basePrice'] += $product->prices['basePrice'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['basePrice']) $this->_cartPrices['basePrice'] += self::roundInternal($product->prices['basePrice'],'basePrice') * $product->quantity;
 			//				$this->_cartPrices['basePriceVariant'] = $this->_cartPrices['basePriceVariant'] + $pricesPerId[$product->virtuemart_product_id]['basePriceVariant']*$product->quantity;
-			if($this->_currencyDisplay->_priceConfig['basePriceWithTax']) $this->_cartPrices['basePriceWithTax'] = $this->_cartPrices['basePriceWithTax'] + $product->prices['basePriceWithTax'] * $product->quantity;
-			if($this->_currencyDisplay->_priceConfig['discountedPriceWithoutTax']) $this->_cartPrices['discountedPriceWithoutTax'] = $this->_cartPrices['discountedPriceWithoutTax'] + $product->prices['discountedPriceWithoutTax'] * $product->quantity;
-			if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices['salesPrice'] = $this->_cartPrices['salesPrice'] + $product->prices['salesPrice'] * $product->quantity;
-			if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cartPrices['taxAmount'] = $this->_cartPrices['taxAmount'] + $product->prices['taxAmount'] * $product->quantity;
-			if($this->_currencyDisplay->_priceConfig['salesPriceWithDiscount']) $this->_cartPrices['salesPriceWithDiscount'] = $this->_cartPrices['salesPriceWithDiscount'] + $product->prices['salesPriceWithDiscount'] * $product->quantity;
-			if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices['discountAmount'] = $this->_cartPrices['discountAmount'] - $product->prices['discountAmount'] * $product->quantity;
-			if($this->_currencyDisplay->_priceConfig['priceWithoutTax']) $this->_cartPrices['priceWithoutTax'] = $this->_cartPrices['priceWithoutTax'] + $product->prices['priceWithoutTax'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['basePriceWithTax']) $this->_cartPrices['basePriceWithTax'] += self::roundInternal($product->prices['basePriceWithTax']) * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['discountedPriceWithoutTax']) $this->_cartPrices['discountedPriceWithoutTax'] += self::roundInternal($product->prices['discountedPriceWithoutTax'],'discountedPriceWithoutTax') * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices['salesPrice'] += self::roundInternal($product->prices['salesPrice'],'salesPrice') * $product->quantity;
+
+			if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cartPrices['taxAmount'] += self::roundInternal($product->prices['taxAmount'],'taxAmount') * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['salesPriceWithDiscount']) $this->_cartPrices['salesPriceWithDiscount'] += self::roundInternal($product->prices['salesPriceWithDiscount'],'salesPriceWithDiscount') * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices['discountAmount'] = $this->_cartPrices['discountAmount'] - self::roundInternal($product->prices['discountAmount'],'discountAmount') * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['priceWithoutTax']) $this->_cartPrices['priceWithoutTax'] += self::roundInternal($product->prices['priceWithoutTax'],'priceWithoutTax') * $product->quantity;
 
 // 			if($this->_currencyDisplay_priceConfig['basePrice']) $this->_cartPrices[$cartproductkey]['subtotal'] = $product->prices['basePrice'] * $product->quantity;
-			if($this->_currencyDisplay->_priceConfig['priceWithoutTax']) $this->_cartPrices[$cartproductkey]['subtotal'] = $product->prices['priceWithoutTax'] * $product->quantity;
-			if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cartPrices[$cartproductkey]['subtotal_tax_amount'] = $product->prices['taxAmount'] * $product->quantity;
-			if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices[$cartproductkey]['subtotal_discount'] = - $product->prices['discountAmount'] * $product->quantity;
-			if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices[$cartproductkey]['subtotal_with_tax'] = $product->prices['salesPrice'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['priceWithoutTax']) $this->_cartPrices[$cartproductkey]['subtotal'] = self::roundInternal($product->prices['priceWithoutTax'],'priceWithoutTax') * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cartPrices[$cartproductkey]['subtotal_tax_amount'] = self::roundInternal($product->prices['taxAmount'],'taxAmount') * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices[$cartproductkey]['subtotal_discount'] = - self::roundInternal($product->prices['discountAmount'],'discountAmount') * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices[$cartproductkey]['subtotal_with_tax'] = self::roundInternal($product->prices['salesPrice']) * $product->quantity;
 
 			//			if(empty($this->_cartPrices['priceWithoutTax'])){ //before tax
 			//				$this->_cartPrices['subTotalProducts'] += $product->prices['discountedPriceWithoutTax']*$product->quantity;
@@ -1146,11 +1147,12 @@ class calculationHelper {
 	 */
 	function roundInternal($value,$name = 0) {
 
-		if($name!=0){
-			if(isset($this->_priceConfig[$name][1])){
-				return round($value,$this->_priceConfig[$name][1]);
+		if($name!==0){
+			if(isset($this->_currencyDisplay->_priceConfig[$name][1])){
+				//vmdebug('roundInternal rounding use '.$this->_currencyDisplay->_priceConfig[$name][1].' digits');
+				return round($value,$this->_currencyDisplay->_priceConfig[$name][1]);
 			} else {
-				vmdebug('roundInternal rounding not found for '.$name);
+				vmdebug('roundInternal rounding not found for '.$name,$this->_currencyDisplay->_priceConfig[$name]);
 				return round($value, $this->_internalDigits);
 			}
 
