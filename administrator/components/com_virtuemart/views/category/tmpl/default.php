@@ -134,15 +134,6 @@ AdminUIHelper::startAdminArea();
 					<?php echo  $this->catmodel->countProducts($cat->virtuemart_category_id);//ShopFunctions::countProductsByCategory($row->virtuemart_category_id);?>
 					&nbsp;<a href="<?php echo $showProductsLink; ?>">[ <?php echo JText::_('COM_VIRTUEMART_SHOW');?> ]</a>
 				</td>
-
-<?php
-				if((Vmconfig::get('multix','none')!='none')) {
-					?><td align="center">
-						<?php echo $shared; ?>
-                    </td>
-					<?php
-				}
-?>
 				<td align="center" class="order">
 					<span><?php echo $this->catpagination->orderUpIcon( $i, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i - 1]]->category_parent_id), 'orderUp', JText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
 					<span><?php echo $this->catpagination->orderDownIcon( $i, $nrows, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i + 1]]->category_parent_id), 'orderDown', JText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
@@ -151,6 +142,14 @@ AdminUIHelper::startAdminArea();
 				<td align="center">
 					<?php echo $published;?>
 				</td>
+				<?php
+				if((Vmconfig::get('multix','none')!='none')) {
+					?><td align="center">
+						<?php echo $shared; ?>
+                    </td>
+					<?php
+				}
+				?>
 				<td><?php echo $cat->virtuemart_category_id; // echo $product->vendor_name; ?></td>
 			</tr>
 		<?php

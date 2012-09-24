@@ -1274,8 +1274,19 @@ class VirtueMartModelProduct extends VmModel {
 	public function store (&$product, $isChild = FALSE) {
 
 		JRequest::checkToken () or jexit ('Invalid Token');
+
+
 		if ($product) {
 			$data = (array)$product;
+		}
+
+		if (!class_exists ('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+
+		$perm = Permissions::getInstance();
+		$superVendor = $perm->isSuperVendor();
+		if(empty($superVendor)){
+			vmError('You are not a vendor or administrator, storing of product cancelled');
+			return FALSE;
 		}
 
 		if (isset($data['intnotes'])) {
@@ -1291,12 +1302,16 @@ class VirtueMartModelProduct extends VmModel {
 
 		//with the true, we do preloading and preserve so old values note by Max Milbers
 	//	$product_data->bindChecknStore ($data, $isChild);
+
 		$stored = $product_data->bindChecknStore ($data, TRUE);
 
 		$errors = $product_data->getErrors ();
 		if(!$stored or count($errors)>0){
 			foreach ($errors as $error) {
 				vmError ('Product store '.$error);
+			}
+			if(!$stored){
+				vmError('You are not an administrator or the correct vendor, storing of product cancelled');
 			}
 			return FALSE;
 		}

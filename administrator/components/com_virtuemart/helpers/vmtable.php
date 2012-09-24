@@ -509,7 +509,6 @@ class VmTable extends JTable{
 			}
 		}
 
-
 		if(isset($this->virtuemart_vendor_id )){
 
 			$multix = Vmconfig::get('multix','none');
@@ -540,12 +539,13 @@ class VmTable extends JTable{
 						$virtuemart_vendor_id = $vmuser[0];
 						$user_is_vendor = $vmuser[1];
 
-
 						if(empty($user_is_vendor)){
 							$this->virtuemart_vendor_id = 0;
+							$virtuemart_vendor_id = 0;
 						} else {
 							if($multix == 'none' ){
 								$this->virtuemart_vendor_id = $virtuemart_vendor_id;
+								return true;
 							}
 						}
 					}
@@ -560,15 +560,17 @@ class VmTable extends JTable{
 				} else if (!$admin) {
 					if($virtuemart_vendor_id){
 						$this->virtuemart_vendor_id = $virtuemart_vendor_id;
+						vmdebug('Non admin is storing using loaded vendor_id');
+					} else {
+						vmdebug('Non admin is storing no vendorId there, use 0');
+						$this->virtuemart_vendor_id = 0;
 					}
+
 				} else if (!empty($virtuemart_vendor_id) and $loggedVendorId!=$virtuemart_vendor_id) {
 					vmInfo('Admin with vendor id '.$loggedVendorId.' is using for storing vendor id '.$this->virtuemart_vendor_id);
+					vmdebug('Admin with vendor id '.$loggedVendorId.' is using for storing vendor id '.$this->virtuemart_vendor_id);
+					$this->virtuemart_vendor_id = $virtuemart_vendor_id;
 				}
-
-				//It is better to consider vendor_id=0 as shared
-				/*if(empty($this->virtuemart_vendor_id) and get_class($this)!=='TableVmusers') {
-					$this->virtuemart_vendor_id = 1;
-				}*/
 			}
 
 			//tables to consider for multivendor

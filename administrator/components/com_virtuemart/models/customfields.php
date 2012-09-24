@@ -511,7 +511,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		JPluginHelper::importPlugin('vmcustom');
 		$dispatcher = JDispatcher::getInstance();
-		if (is_array($datas['plugin_param'])) {
+		if (isset($datas['plugin_param']) and is_array($datas['plugin_param'])) {
 			foreach ($datas['plugin_param'] as $key => $plugin_param ) {
 				$dispatcher->trigger('plgVmOnStoreProduct', array($datas, $plugin_param ));
 			}

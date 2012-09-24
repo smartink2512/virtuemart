@@ -81,8 +81,9 @@ AdminUIHelper::startAdminArea();
 				</td>
 				<td align="left">
 					<?php
-					if(empty($row->perms)) $row->perms = 'shopper';
-					echo $row->perms . ' / (' . $row->usertype . ')';
+					echo $this->perm->getPermissions($row->id);
+				//	if(empty($row->perms)) $row->perms = 'shopper';
+				//	echo $row->perms . ' / (' . $row->usertype . ')';
 					?>
 				</td>
 				<td align="left">

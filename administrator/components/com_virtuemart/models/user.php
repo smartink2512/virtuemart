@@ -155,12 +155,12 @@ class VirtueMartModelUser extends VmModel {
 		$this->_data->JUser = JUser::getInstance($this->_id);
 		// 		vmdebug('$this->_data->JUser',$this->_data->JUser);
 
-		if(empty($this->_data->perms)){
+		//if(empty($this->_data->perms)){
 
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			$this->_data->perms = Permissions::getInstance()->getPermissions((int)$this->_id);
 
-		}
+		//}
 
 		// Add the virtuemart_shoppergroup_ids
 		$xrefTable = $this->getTable('vmuser_shoppergroups');
@@ -1290,7 +1290,6 @@ class VirtueMartModelUser extends VmModel {
 			, ju.email AS email
 			, ju.usertype AS usertype
 			, IFNULL(vmu.user_is_vendor,"0") AS is_vendor
-			, IFNULL(vmu.perms,"shopper") AS perms
 			, IFNULL(sg.shopper_group_name, "") AS shopper_group_name ';
 		$joinedTables = ' FROM #__users AS ju
 			LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id

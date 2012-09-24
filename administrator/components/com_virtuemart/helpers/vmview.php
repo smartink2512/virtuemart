@@ -253,7 +253,7 @@ class VmView extends JView{
 
 		$taskName = ' <small><small>[ ' . JText::_('COM_VIRTUEMART_' . $task) . ' ]</small></small>';
 		JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $view . '_48');
-		$this->assignRef('viewName',$viewName);
+		$this->assignRef('viewName',$viewText); //was $viewName?
 	}
 
 	function sort($orderby ,$name=null ){

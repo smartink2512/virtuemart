@@ -44,7 +44,10 @@ defined('_JEXEC') or die('Restricted access');
 				</label>
 			</td>
 			<td>
-				<?php echo $this->lists['perms']; ?>
+				<?php
+				echo $this->userDetails->perms;
+
+				?>
 			</td>
 		</tr>
 
