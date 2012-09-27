@@ -508,10 +508,16 @@ class calculationHelper {
 			if($this->_currencyDisplay->_priceConfig['priceWithoutTax']) $this->_cartPrices['priceWithoutTax'] += self::roundInternal($product->prices['priceWithoutTax'],'priceWithoutTax') * $product->quantity;
 
 // 			if($this->_currencyDisplay_priceConfig['basePrice']) $this->_cartPrices[$cartproductkey]['subtotal'] = $product->prices['basePrice'] * $product->quantity;
-			if($this->_currencyDisplay->_priceConfig['priceWithoutTax']) $this->_cartPrices[$cartproductkey]['subtotal'] = self::roundInternal($product->prices['priceWithoutTax'],'priceWithoutTax') * $product->quantity;
+/*			if($this->_currencyDisplay->_priceConfig['priceWithoutTax']) $this->_cartPrices[$cartproductkey]['subtotal'] = self::roundInternal($product->prices['priceWithoutTax'],'priceWithoutTax') * $product->quantity;
 			if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cartPrices[$cartproductkey]['subtotal_tax_amount'] = self::roundInternal($product->prices['taxAmount'],'taxAmount') * $product->quantity;
 			if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices[$cartproductkey]['subtotal_discount'] = - self::roundInternal($product->prices['discountAmount'],'discountAmount') * $product->quantity;
 			if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices[$cartproductkey]['subtotal_with_tax'] = self::roundInternal($product->prices['salesPrice']) * $product->quantity;
+*/
+if($this->_currencyDisplay->_priceConfig['priceWithoutTax']) $this->_cartPrices[$cartproductkey]['subtotal'] = $this->_cartPrices['priceWithoutTax'];
+if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cartPrices[$cartproductkey]['subtotal_tax_amount'] = $this->_cartPrices['taxAmount'];
+if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices[$cartproductkey]['subtotal_discount'] = $this->_cartPrices['discountAmount'];
+if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices[$cartproductkey]['subtotal_with_tax'] = $this->_cartPrices['salesPrice'];
+
 
 			//			if(empty($this->_cartPrices['priceWithoutTax'])){ //before tax
 			//				$this->_cartPrices['subTotalProducts'] += $product->prices['discountedPriceWithoutTax']*$product->quantity;
