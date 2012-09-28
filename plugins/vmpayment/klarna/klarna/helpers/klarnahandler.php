@@ -476,14 +476,14 @@ class KlarnaHandler {
 			}
  			if ($payment_without_tax > 0) {
 				//vmdebug('invoicefee', $payment, $payment_tax);
-				$klarna->addArticle (1, "invoicefee", JText::_ ('VMPAYMENT_KLARNA_INVOICE_FEE_TITLE'), ((double)(round (($payment_with_tax), 2))), (double)round ($payment_tax_percent, 2), 0, KlarnaFlags::IS_HANDLING + KlarnaFlags::INC_VAT);
+				$klarna->addArticle (1, "invoicefee", utf8_decode(JText::_ ('VMPAYMENT_KLARNA_INVOICE_FEE_TITLE')), ((double)(round (($payment_with_tax), 2))), (double)round ($payment_tax_percent, 2), 0, KlarnaFlags::IS_HANDLING + KlarnaFlags::INC_VAT);
 			}
 		}
 		// Add coupon if there is any
 		if ($order['details']['BT']->coupon_discount > 0) {
 			$coupon_discount = self::convertPrice (round ($order['details']['BT']->coupon_discount), $order['details']['BT']->order_currency, $cData['currency_code']);
 			//vmdebug('discount', $coupon_discount);
-			$klarna->addArticle (1, 'discount', JText::_ ('VMPAYMENT_KLARNA_DISCOUNT') . ' ' . $order['details']['BT']->coupon_code, ((int)(round ($coupon_discount, 2) * -1)), 0, 0, KlarnaFlags::INC_VAT);
+			$klarna->addArticle (1, 'discount',utf8_decode(JText::_ ('VMPAYMENT_KLARNA_DISCOUNT')) . ' ' . utf8_decode($order['details']['BT']->coupon_code), ((int)(round ($coupon_discount, 2) * -1)), 0, 0, KlarnaFlags::INC_VAT);
 		}
 		/*
 $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true);
