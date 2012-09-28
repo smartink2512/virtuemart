@@ -841,7 +841,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 		}
 
-		$free = JText::_ ('COM_VIRTUEMART_CART_PRICE_FREE');
+		//$free = JText::_ ('COM_VIRTUEMART_CART_PRICE_FREE');
 		// render select list
 		foreach ($groups as $group) {
 
@@ -867,14 +867,8 @@ class VirtueMartModelCustomfields extends VmModel {
 			if ($group->field_type == 'V') {
 				$default = current ($group->options);
 				foreach ($group->options as $productCustom) {
-					if ((float)$productCustom->custom_price) {
-						$price = strip_tags ($currency->priceDisplay ($calculator->calculateCustomPriceWithTax ($productCustom->custom_price)));
-					}
-					else {
-						$price = ($productCustom->custom_price === '') ? '' : $free;
-					}
+					$price = self::_getCustomPrice($productCustom->custom_price, $currency, $calculator);
 					$productCustom->text = $productCustom->custom_value . ' ' . $price;
-
 				}
 				$group->display = VmHTML::select ('customPrice[' . $row . '][' . $group->virtuemart_custom_id . ']', $group->options, $default->custom_value, '', 'virtuemart_customfield_id', 'text', FALSE);
 			}
@@ -887,12 +881,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$group->display = '';
 
 						foreach ($group->options as $k=> $productCustom) {
-							if ((float)$productCustom->custom_price) {
-								$price = $currency->priceDisplay ($calculator->calculateCustomPriceWithTax ($productCustom->custom_price));
-							}
-							else {
-								$price = ($productCustom->custom_price === '') ? '' : $free;
-							}
+							$price = self::_getCustomPrice($productCustom->custom_price, $currency, $calculator);
 							$productCustom->text = $productCustom->custom_value . ' ' . $price;
 							$productCustom->virtuemart_customfield_id = $k;
 							if (!class_exists ('vmCustomPlugin')) {
@@ -917,12 +906,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					else {
 						if ($group->field_type == 'U') {
 							foreach ($group->options as $productCustom) {
-								if ((float)$productCustom->custom_price) {
-									$price = $currency->priceDisplay ($calculator->calculateCustomPriceWithTax ($productCustom->custom_price));
-								}
-								else {
-									$price = ($productCustom->custom_price === '') ? '' : $free;
-								}
+								$price = self::_getCustomPrice($productCustom->custom_price, $currency, $calculator);
 								$productCustom->text = $productCustom->custom_value . ' ' . $price;
 
 								$group->display .= '<input type="text" value="' . JText::_ ($productCustom->custom_value) . '" name="customPrice[' . $row . '][' . $group->virtuemart_custom_id . '][' . $productCustom->value . ']" /> ';
@@ -953,12 +937,7 @@ class VirtueMartModelCustomfields extends VmModel {
 								$checked = 'checked="checked"';
 								foreach ($group->options as $productCustom) {
 									//vmdebug('getProductCustomsFieldCart',$productCustom);
-									if ((float)$productCustom->custom_price) {
-										$price = $currency->priceDisplay ($calculator->calculateCustomPriceWithTax ($productCustom->custom_price));
-									}
-									else {
-										$price = ($productCustom->custom_price === '') ? '' : $free;
-									}
+									$price = self::_getCustomPrice($productCustom->custom_price, $currency, $calculator);
 									$productCustom->field_type = $group->field_type;
 									$productCustom->is_cart = 1;
 								//	$group->display .= '<input id="' . $productCustom->virtuemart_custom_id . '" ' . $checked . ' type="radio" value="' .
@@ -982,7 +961,18 @@ class VirtueMartModelCustomfields extends VmModel {
 		return $groups;
 
 	}
-
+	static function _getCustomPrice($customPrice, $currency, $calculator) {
+		if ((float)$customPrice) {
+			$price = strip_tags ($currency->priceDisplay ($calculator->calculateCustomPriceWithTax ($customPrice)));
+			if ($customPrice >0) {
+				$price ="+".$price;
+			}
+		}
+		else {
+			$price = ($customPrice === '') ? '' :  JText::_ ('COM_VIRTUEMART_CART_PRICE_FREE');
+		}
+		return $price;
+	}
 	/**
 	 * Formating front display by roles
 	 *  for product only !

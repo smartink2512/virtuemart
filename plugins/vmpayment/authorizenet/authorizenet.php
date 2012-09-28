@@ -91,7 +91,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		$SQLfields = array(
 			'id'                                         => 'int(1) UNSIGNED NOT NULL AUTO_INCREMENT',
 			'virtuemart_order_id'                        => 'int(1) UNSIGNED',
-			'order_number'                               => ' char(64)',
+			'order_number'                               => 'char(64)',
 			'virtuemart_paymentmethod_id'                => 'mediumint(1) UNSIGNED',
 			'payment_name'                               => 'varchar(5000)',
 			'return_context'                             => 'char(255)',
@@ -175,7 +175,6 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		        <td>' . $creditCardList .
 					'</td>
 		    </tr>
-
 		    <tr valign="top">
 		        <td nowrap width="10%" align="right">
 		        	<label for="cc_type">' . JText::_ ('VMPAYMENT_AUTHORIZENET_CCNUM') . '</label>

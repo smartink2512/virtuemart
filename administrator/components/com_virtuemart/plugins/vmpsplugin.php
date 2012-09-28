@@ -176,7 +176,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	* @cart_prices: array the new cart prices
 	* @return null if the method was not selected, false if the shipping rate is not valid any more, true otherwise
 	*
-	*
 	*/
 
 	public function onSelectedCalculatePrice (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
