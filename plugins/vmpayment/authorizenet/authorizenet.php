@@ -1,7 +1,6 @@
 <?php
 
 /**
- * @version $Id: standard.php,v 1.4 2005/05/27 19:33:57 ei
  *
  * a special type of 'cash on delivey':
  * @author Valérie Isaksen

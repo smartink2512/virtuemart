@@ -1,15 +1,21 @@
 <?php
 
 /**
- * @version		$Id: virtuemart.php 2789 2011-02-28 12:41:01Z oscar $
- * @package		Joomla
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
+ *
+ * a special type of 'cash on delivey':
+ * @author Valérie Isaksen
+ * @version $Id: authorize.php 5122 2011-12-18 22:24:49Z alatak $
+ * @package VirtueMart
+ * @subpackage payment
+ * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+ * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+ *
+ * http://virtuemart.net
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
@@ -165,7 +171,7 @@ if(!version_compare(JVERSION,'1.6.0','ge')) {
 function &plgSearchVirtuemartAreas() {
 
 	static $areas = array(
-'virtuemart' => 'Products'
+		'virtuemart' => 'PLG_SEARCH_VIRTUEMART_PRODUCTS'
 	);
 	return $areas;
 }
