@@ -24,15 +24,16 @@ if ($show_product_list) {
 	</div>
 	<div class="vm_cart_products">
 		<div class="container">
-		<?php foreach ($data->products as $product)
+		<?php foreach ($cart->products as $product)
 		{
+			vmdebug('$product->prices',$product->prices);
 			if ($show_price) { ?>
-				  <div class="prices" style="float: right;"><?php echo  $product['prices'] ?></div>
+				  <div class="prices" style="float: right;"><?php echo  $product->prices['salesPrice'] ?></div>
 				<?php } ?>
 			<div class="product_row">
-				<span class="quantity"><?php echo  $product['quantity'] ?></span>&nbsp;x&nbsp;<span class="product_name"><?php echo  $product['product_name'] ?></span>
+				<span class="quantity"><?php echo  $product->quantity ?></span>&nbsp;x&nbsp;<span class="product_name"><?php echo  $product->product_name ?></span>
 			</div>
-			<?php if ( !empty($product['product_attributes']) ) { ?>
+			<?php if ( !empty($product->product_attributes) ) { ?>
 				<div class="product_attributes"><?php echo $product['product_attributes'] ?></div>
 
 			<?php }
@@ -43,11 +44,11 @@ if ($show_product_list) {
 <?php } ?>
 
 <div class="total" style="float: right;">
-	<?php if ($data->totalProduct and $show_price) echo  $data->billTotal; ?>
+	<?php if ($cartData['totalProduct'] and $show_price) echo  $cartData['billTotalTxt']; ?>
 </div>
-<div class="total_products"><?php echo  $data->totalProductTxt ?></div>
+<div class="total_products"><?php echo  $cartData['totalProductTxt'] ?></div>
 <div class="show_cart">
-	<?php if ($data->totalProduct and $show_price) echo  $data->cart_show; ?>
+	<?php if ($cartData['totalProduct'] and $show_price) echo  $cartData['cart_show']; ?>
 </div>
 <div style="clear:both;"></div>
 

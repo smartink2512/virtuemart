@@ -1397,7 +1397,9 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 	function prepareAjaxData(){
 		// Added for the zone shipment module
 		//$vars["zone_qty"] = 0;
-		$this->prepareCartData(false);
+		$cartData = $this->prepareCartData(false);
+$cartData['dataValidated'] = $this->_dataValidated;
+		return $cartData;
 		$weight_total = 0;
 		$weight_subtotal = 0;
 
@@ -1406,7 +1408,7 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 		if(empty($this->data)){
 			$this->data = new stdClass();
 		}
-		$this->data->products = array();
+/*		$this->data->products = array();
 		$this->data->totalProduct = 0;
 		$i=0;
 		//OSP when prices removed needed to format billTotal for AJAX
@@ -1455,8 +1457,10 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 
 			$i++;
 		}
-		$this->data->billTotal = $currency->priceDisplay( $this->pricesUnformatted['billTotal'] );
+		$this->data->billTotal = $currency->priceDisplay( $this->pricesUnformatted['billTotal'] );//*/
+
 		$this->data->dataValidated = $this->_dataValidated ;
+		$this->data->pricesUnformatted &= $this->pricesUnformatted;
 		return $this->data ;
 	}
 }
