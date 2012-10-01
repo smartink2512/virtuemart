@@ -301,11 +301,11 @@ class CurrencyDisplay {
 	 * @param integer $currencyId
 	 * return string formatted price
 	 */
-	public function priceDisplay($price, $currencyId=0,$quantity = 1.0,$inToShopCurrency = false,$nb = -1){
+	public function priceDisplay($price, $currencyId=0,$quantity = 1.0,$inToShopCurrency = false,$nb= -1){
 
+		if($nb==-1) $nb = $this->_nbDecimal;
 		$currencyId = $this->getCurrencyForDisplay($currencyId);
-		$price = round((float)$price,$nb) * (float)$quantity;
-		//$price = (float)$price * (float)$quantity;
+		$price = round((float)$price,$nb) * (float)$quantity;//		//$price = (float)$price * (float)$quantity;
 		$price = $this->convertCurrencyTo($currencyId,$price,$inToShopCurrency);
 		return $this->getFormattedCurrency($price,$nb);
 	}
@@ -354,16 +354,20 @@ class CurrencyDisplay {
 
 		//The fallback, when this price is not configured
 		if(empty($this->_priceConfig[$name])){
-			//This is a fallback because we remove the "salesPriceWithDiscount" ;
-			$name = "salesPrice";
+			$this->_priceConfig[$name] = $this->_priceConfig['salesPrice'];
+		}
+
+		//This is a fallback because we removed the "salesPriceWithDiscount" ;
+		//if(empty($product_price[$name])){
+			//$name = "salesPrice";
 			if(is_array($product_price)){
 				$price = $product_price[$name] ;
 			} else {
 				$price = $product_price;
 			}
-		} else {
+	/*	} else {
 			$price = $product_price[$name] ;
-		}
+		}*/
 
 		//This could be easily extended by product specific settings
 		if(!empty($this->_priceConfig[$name][0])){

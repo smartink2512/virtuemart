@@ -535,18 +535,17 @@ class VmTable extends JTable{
 					$this->_db->setQuery($q);
 					$vmuser = $this->_db->loadRow();
 
-					if($vmuser and count($vmuser)>1){
+					if($vmuser and count($vmuser)===2){
 						$virtuemart_vendor_id = $vmuser[0];
 						$user_is_vendor = $vmuser[1];
 
-						if(empty($user_is_vendor)){
-							$this->virtuemart_vendor_id = 0;
-							$virtuemart_vendor_id = 0;
-						} else {
-							if($multix == 'none' ){
-								$this->virtuemart_vendor_id = $virtuemart_vendor_id;
-								return true;
+						if($multix == 'none' ){
+							if(empty($user_is_vendor)){
+								$this->virtuemart_vendor_id = 0;
+							} else {
+								$this->virtuemart_vendor_id = 1;
 							}
+							return true;
 						}
 					}
 				}
@@ -562,8 +561,10 @@ class VmTable extends JTable{
 						$this->virtuemart_vendor_id = $virtuemart_vendor_id;
 						vmdebug('Non admin is storing using loaded vendor_id');
 					} else {
-						vmdebug('Non admin is storing no vendorId there, use 0');
-						$this->virtuemart_vendor_id = 0;
+						if(get_class($this)=='TableVmusers'){
+							vmdebug('Non admin is storing TableVmusers, no vendorId given, use '.$loggedVendorId);
+							$this->virtuemart_vendor_id = $loggedVendorId;
+						}
 					}
 
 				} else if (!empty($virtuemart_vendor_id) and $loggedVendorId!=$virtuemart_vendor_id) {
