@@ -27,25 +27,14 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components'
 
 if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 $cart = VirtueMartCart::getCart(false);
-$cartData = $cart->prepareAjaxData();
-$data = $cart->pricesUnformatted;
+$data = $cart->prepareAjaxData();
 $lang = JFactory::getLanguage();
 $extension = 'com_virtuemart';
-vmdebug('hm ',$data,$cartData);
 $lang->load($extension);//  when AJAX it needs to be loaded manually here >> in case you are outside virtuemart !!!
-if ($cartData['totalProduct']>1) {
-	$cartData['totalProductTxt'] = JText::sprintf('COM_VIRTUEMART_CART_X_PRODUCTS', $cart->pricesUnformatted['billTotal']);
-
-}
-else if ($cartData['totalProduct'] == 1) {
-	$cartData['totalProductTxt'] = JText::_('COM_VIRTUEMART_CART_ONE_PRODUCT');
-}
-else {
-	$cartData['totalProductTxt'] = JText::_('COM_VIRTUEMART_EMPTY_CART');
-}
-
-
-if (false && $cartData['dataValidated'] == true) {
+if ($data->totalProduct>1) $data->totalProductTxt = JText::sprintf('COM_VIRTUEMART_CART_X_PRODUCTS', $data->totalProduct);
+else if ($data->totalProduct == 1) $data->totalProductTxt = JText::_('COM_VIRTUEMART_CART_ONE_PRODUCT');
+else $data->totalProductTxt = JText::_('COM_VIRTUEMART_EMPTY_CART');
+if (false && $data->dataValidated == true) {
 	$taskRoute = '&task=confirm';
 	$linkName = JText::_('COM_VIRTUEMART_CART_CONFIRM');
 } else {
@@ -54,8 +43,8 @@ if (false && $cartData['dataValidated'] == true) {
 }
 $useSSL = VmConfig::get('useSSL',0);
 $useXHTML = true;
-$cartData['cart_show'] = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart".$taskRoute,$useXHTML,$useSSL).'">'.$linkName.'</a>';
-$cartData['billTotalTxt'] = $lang->_('COM_VIRTUEMART_CART_TOTAL').' : <strong>'. $cart->pricesUnformatted['billTotal'] .'</strong>';
+$data->cart_show = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart".$taskRoute,$useXHTML,$useSSL).'">'.$linkName.'</a>';
+$data->billTotal = $lang->_('COM_VIRTUEMART_CART_TOTAL').' : <strong>'. $data->billTotal .'</strong>';
 
 vmJsApi::jPrice();
 vmJsApi::cssSite();
