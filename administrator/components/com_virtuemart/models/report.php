@@ -147,7 +147,9 @@ class VirtuemartModelReport extends VmModel {
 		//$selectFields[] = 'SUM(product_subtotal_with_tax) as order_total';
 
 		//without tax => netto
-		$selectFields[] = 'SUM(product_item_price) as order_subtotal';
+		//$selectFields[] = 'SUM(product_item_price) as order_subtotal';
+		$selectFields[] = 'SUM(product_item_price * product_quantity) as order_subtotal_netto';
+		$selectFields[] = 'SUM(product_subtotal_with_tax) as order_subtotal_brutto';
 
 		$this->dates = ' DATE( o.created_on ) BETWEEN "' . $this->from_period . '" AND "' . $this->until_period . '" ';
 
