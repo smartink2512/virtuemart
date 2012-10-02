@@ -546,6 +546,11 @@ class VmTable extends JTable{
 								$this->virtuemart_vendor_id = 1;
 							}
 							return true;
+						} else {
+							if (!$admin) {
+								$this->virtuemart_vendor_id = $loggedVendorId;
+								return true;
+							}
 						}
 					}
 				}
@@ -561,10 +566,7 @@ class VmTable extends JTable{
 						$this->virtuemart_vendor_id = $virtuemart_vendor_id;
 						vmdebug('Non admin is storing using loaded vendor_id');
 					} else {
-						if(get_class($this)=='TableVmusers'){
-							vmdebug('Non admin is storing TableVmusers, no vendorId given, use '.$loggedVendorId);
-							$this->virtuemart_vendor_id = $loggedVendorId;
-						}
+						//No id is stored, even users are allowed to use for the storage and vendorId, no change
 					}
 
 				} else if (!empty($virtuemart_vendor_id) and $loggedVendorId!=$virtuemart_vendor_id) {
