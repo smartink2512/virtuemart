@@ -42,8 +42,8 @@ class CurrencyDisplay {
 		if(empty($vendorId)) $vendorId = 1;
 
 		$this->_db = JFactory::getDBO();
-		$q = 'SELECT `vendor_currency`,`currency_code_3`,`currency_numeric_code` FROM `joke_virtuemart_vendors` AS v
-		LEFT JOIN `joke_virtuemart_currencies` AS c ON virtuemart_currency_id = vendor_currency
+		$q = 'SELECT `vendor_currency`,`currency_code_3`,`currency_numeric_code` FROM `#__virtuemart_vendors` AS v
+		LEFT JOIN `#__virtuemart_currencies` AS c ON virtuemart_currency_id = vendor_currency
 		WHERE v.`virtuemart_vendor_id`="'.(int)$vendorId.'"';
 
 		$this->_db->setQuery($q);
@@ -95,6 +95,7 @@ class CurrencyDisplay {
 
 		// 		vmdebug('hmmmmm getInstance given $currencyId '.$currencyId,self::$_instance->_currency_id);
 		// 		if(empty(self::$_instance) || empty(self::$_instance->_currency_id) || ($currencyId!=self::$_instance->_currency_id && !empty($currencyId)) ){
+
 		if(empty(self::$_instance)  || (!empty($currencyId) and $currencyId!=self::$_instance->_currency_id) ){
 
 			self::$_instance = new CurrencyDisplay($vendorId);
