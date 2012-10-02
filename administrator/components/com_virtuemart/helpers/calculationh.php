@@ -86,12 +86,14 @@ class calculationHelper {
 
 		if(!empty($this->_currencyDisplay->_vendorCurrency)){
 			$this->vendorCurrency = $this->_currencyDisplay->_vendorCurrency;
+			$this->vendorCurrency_code_3 = $this->_currencyDisplay->_vendorCurrency_code_3;
+			$this->vendorCurrency_numeric = $this->_currencyDisplay->_vendorCurrency_numeric;
 		}
-		else if(VmConfig::get('multix','none')!='none'){
+	/*	else if(VmConfig::get('multix','none')!='none'){
 			$this->_db->setQuery('SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="1" ');
 			$single = $this->_db->loadResult();
 			$this->vendorCurrency = $single;
-		}
+		}*/
 
 		$this->setShopperGroupIds();
 
@@ -257,7 +259,9 @@ class calculationHelper {
 			vmError('getProductPrices no object given query time','getProductPrices no object given query time');
 		}
 
-		if(VmConfig::get('multix','none')!='none' and empty($this->vendorCurrency )){
+
+
+		if(VmConfig::get('multix','none')!='none' and (empty($this->vendorCurrency) or $this->vendorCurrency!=$this->productVendorId)){
 			$this->_db->setQuery('SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="' . $this->productVendorId . '" ');
 			$single = $this->_db->loadResult();
 			$this->vendorCurrency = $single;
@@ -1164,7 +1168,14 @@ class calculationHelper {
 		if($name!==0){
 			if(isset($this->_currencyDisplay->_priceConfig[$name][1])){
 				//vmdebug('roundInternal rounding use '.$this->_currencyDisplay->_priceConfig[$name][1].' digits');
-				return round($value,$this->_currencyDisplay->_priceConfig[$name][1]);
+			//	if(strpos($this->_currencyDisplay->_priceConfig[$name][1],'.')!==FALSE){
+
+					//return round(2.0*$value,1)/2.0;
+			//	}
+				//else {
+					return round($value,$this->_currencyDisplay->_priceConfig[$name][1]);
+				//}
+
 			} else {
 				vmdebug('roundInternal rounding not found for '.$name,$this->_currencyDisplay->_priceConfig[$name]);
 				return round($value, $this->_internalDigits);

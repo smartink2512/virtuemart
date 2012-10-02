@@ -42,10 +42,17 @@ class CurrencyDisplay {
 		if(empty($vendorId)) $vendorId = 1;
 
 		$this->_db = JFactory::getDBO();
-		$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`="'.(int)$vendorId.'"';
-		$this->_db->setQuery($q);
-		$this->_vendorCurrency = $this->_db->loadResult();
+		$q = 'SELECT `vendor_currency`,`currency_code_3`,`currency_numeric_code` FROM `joke_virtuemart_vendors` AS v
+		LEFT JOIN `joke_virtuemart_currencies` AS c ON virtuemart_currency_id = vendor_currency
+		WHERE v.`virtuemart_vendor_id`="'.(int)$vendorId.'"';
 
+		$this->_db->setQuery($q);
+		$row = $this->_db->loadRow();
+		$this->_vendorCurrency = $row[0];
+		$this->_vendorCurrency_code_3 = $row[1];
+		$this->_vendorCurrency_numeric = (int)$row[2];
+
+		//vmdebug('$row ',$row);
 		$converterFile  = VmConfig::get('currency_converter_module');
 
 		if (file_exists( JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile )) {
@@ -61,7 +68,6 @@ class CurrencyDisplay {
 
 		}
 
-		$this->setPriceArray();
 	}
 
 	/**
@@ -130,6 +136,7 @@ class CurrencyDisplay {
 				//would be nice to automatically unpublish the product/currency or so
 			}
 		}
+		self::$_instance->setPriceArray();
 
 		return self::$_instance;
 	}
@@ -145,11 +152,12 @@ class CurrencyDisplay {
 	 * @param String $currencyStyle String containing the currency display settings
 	 */
 	private function setCurrencyDisplayToStyleStr($style) {
-
+		//vmdebug('setCurrencyDisplayToStyleStr ',$style);
 		$this->_currency_id = $style->virtuemart_currency_id;
 		$this->_symbol = $style->currency_symbol;
 		$this->_nbDecimal = $style->currency_decimal_place;
 		$this->_decimal = $style->currency_decimal_symbol;
+		$this->_numeric_code = (int)$style->currency_numeric_code;
 		$this->_thousands = $style->currency_thousands;
 		$this->_positivePos = $style->currency_positive_style;
 		$this->_negativePos = $style->currency_negative_style;
@@ -167,32 +175,6 @@ class CurrencyDisplay {
 		if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 
 		$user = JFactory::getUser();
-
-		//Not working for a user which is registered and should be in the standard group, but isnt (automap)
-		/*		if(!empty($user->id)){
-
-		$q = 'SELECT `price_display`,`custom_price_display` FROM `#__virtuemart_vmusers` as `u`
-		LEFT OUTER JOIN `#__virtuemart_vmuser_shoppergroups` AS `vx` ON `u`.`virtuemart_user_id`  = `vx`.`virtuemart_user_id`
-		LEFT OUTER JOIN `#__virtuemart_shoppergroups` AS `sg` ON `vx`.`virtuemart_shoppergroup_id` = `sg`.`virtuemart_shoppergroup_id`
-		WHERE `u`.`virtuemart_user_id` = "'.$user->id.'" ';
-
-		$this->_db->setQuery($q);
-		$result = $this->_db->loadRow();
-		// 			vmdebug('setPriceArray',$result);
-		if(!empty($result[0])){
-		$result[0] = unserialize($result[0]);
-		}
-		} else {
-		$q = 'SELECT `price_display`,`custom_price_display` FROM `#__virtuemart_shoppergroups` AS `sg`
-		WHERE `sg`.`default` = "2" ';
-
-		$this->_db->setQuery($q);
-		$result = $this->_db->loadRow();
-		// 			vmdebug('setPriceArray',$result);
-		if(!empty($result[0])){
-		$result[0] = unserialize($result[0]);
-		}
-		}*/
 
 		$result = false;
 		if(!empty($user->id)){
@@ -261,7 +243,11 @@ class CurrencyDisplay {
 					// 					vmdebug('$config_price_display');
 				}
 
-
+				//Map to currency
+				if($round==-1){
+					$round = $this->_nbDecimal;
+					//vmdebug('Use currency rounding '.$round);
+				}
 				$this->_priceConfig[$name] = array($show,$round,$text);
 			}
 		} else {
@@ -296,17 +282,30 @@ class CurrencyDisplay {
 	/**
 	 * This function is for the gui only!
 	 * Use this only in a view, plugin or modul, never in a model
-	 *
+	 * TODO for vm2.2 remove quantity option
 	 * @param float $price
 	 * @param integer $currencyId
 	 * return string formatted price
 	 */
 	public function priceDisplay($price, $currencyId=0,$quantity = 1.0,$inToShopCurrency = false,$nb= -1){
 
-		if($nb==-1) $nb = $this->_nbDecimal;
 		$currencyId = $this->getCurrencyForDisplay($currencyId);
-		$price = round((float)$price,$nb) * (float)$quantity;//		//$price = (float)$price * (float)$quantity;
+
+		if($nb==-1){
+			$nb = $this->_nbDecimal;
+		}
+
+		if($this->_vendorCurrency_numeric===756 and $this->_numeric_code!==$this->_vendorCurrency_numeric){
+			$price = round((float)$price * 2,1) * (float)$quantity/2.0;
+		} else {
+			$price = round((float)$price,$nb) * (float)$quantity;
+		}
+
 		$price = $this->convertCurrencyTo($currencyId,$price,$inToShopCurrency);
+
+		if($this->_numeric_code===756){
+			$price = round((float)$price * 2,1) * (float)$quantity/2.0;
+		}
 		return $this->getFormattedCurrency($price,$nb);
 	}
 

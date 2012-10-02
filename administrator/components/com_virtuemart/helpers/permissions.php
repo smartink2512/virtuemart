@@ -87,7 +87,7 @@ class Permissions extends JObject{
 		}
 
 		// only re-run authentication if we have a different user
-		vmdebug('getPermissions',$this->_virtuemart_user_id,$userId);
+		//vmdebug('getPermissions',$this->_virtuemart_user_id,$userId);
 		if ($userId != $this->_virtuemart_user_id) {
 			$perms = $this->doAuthentication($userId);
 		} else {
