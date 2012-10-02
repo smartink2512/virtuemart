@@ -152,7 +152,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$cart = VirtueMartCart::getCart ();
 
 		foreach ($this->methods as $method) {
-			$type=NULL;
+			$type = NULL;
 			$cData = KlarnaHandler::getcData ($method, $this->getCartAddress ($cart, $type, FALSE));
 			if ($cData['active'] and in_array ('part', $cData['payments_activated'])) {
 				if (!empty($product->prices)) { // no price is set
@@ -231,7 +231,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	 * @return null
 	 */
 	function _getCartAddressCountryId (VirtueMartCart $cart, $fld = 'country_3_code') {
-		$type="";
+
+		$type = "";
 		$address = $this->getCartAddress ($cart, $type, FALSE);
 		if (!isset($address['virtuemart_country_id'])) {
 			return NULL;
@@ -340,8 +341,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			vmError ($e->getMessage (), $e->getMessage ());
 			return NULL;
 		}
-		$specCamp=0;
-		$partPay=0;
+		$specCamp = 0;
+		$partPay = 0;
 		$this->getNbPClasses ($pclasses, $specCamp, $partPay);
 		$sessionKlarnaData = $this->getKlarnaSessionData ();
 
@@ -908,6 +909,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 		if (!class_exists ('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+		}
+
+		if (!class_exists ('JFile')) {
+			require(JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
 		}
 
 		$payment_methodid = JRequest::getInt ('payment_methodid');
@@ -1617,8 +1622,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$cart_prices[$this->_psType . '_tax_id'] = 0;
 		$cart_prices['cost'] = 0;
 		//vmdebug('cart prices',  $cart_prices);
-$country_code=NULL;
-		$countryId=0;
+		$country_code = NULL;
+		$countryId = 0;
 		$this->_getCountryCode ($cart, $country_code, $countryId, 'country_2_code');
 		if (isset($sessionKlarnaData->KLARNA_DATA) AND strcasecmp ($country_code, $sessionKlarnaData->KLARNA_DATA['country']) != 0) {
 			return FALSE;
@@ -1646,8 +1651,9 @@ $country_code=NULL;
 	 * @param                $method
 	 */
 	function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
-		$country=null;
-		$countryId=0;
+
+		$country = NULL;
+		$countryId = 0;
 		$this->_getCountryCode (NULL, $country, $countryId);
 		$invoice_fee = KlarnaHandler::getInvoiceFee ($method, $country);
 		$invoice_tax_id = KlarnaHandler::getInvoiceTaxId ($method, $country);
@@ -1705,8 +1711,8 @@ $country_code=NULL;
 			switch ($sessionKlarnaData->klarna_option) {
 				case 'invoice':
 					$image = '/klarna_invoice_' . $country2 . '.png';
-					$display_invoice_fee=null;
-					$invoice_fee=0;
+					$display_invoice_fee = NULL;
+					$invoice_fee = 0;
 					KlarnaHandler::getInvoiceFeeInclTax ($method, $cData['country_code_3'], $cartPricesCurrency, $cData['virtuemart_currency_id'], $display_invoice_fee, $invoice_fee);
 					$text = JText::sprintf ('VMPAYMENT_KLARNA_INVOICE_TITLE_NO_PRICE', $display_invoice_fee);
 					break;
@@ -1774,7 +1780,7 @@ $country_code=NULL;
 		}
 
 		foreach ($this->methods as $method) {
-			$type=null;
+			$type = NULL;
 			$cData = KlarnaHandler::getcData ($method, $this->getCartAddress ($cart, $type, FALSE));
 			if ($cData) {
 				if ($nb = (int)$this->checkCountryCondition ($method, $cData['country_code_3'], $cart)) {
