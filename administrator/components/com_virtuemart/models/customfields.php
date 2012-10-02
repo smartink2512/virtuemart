@@ -13,7 +13,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: custom.php 3057 2011-04-19 12:59:22Z Electrocity $
+ * @version $Id:$
  */
 
 // Check to ensure this file is included in Joomla!
