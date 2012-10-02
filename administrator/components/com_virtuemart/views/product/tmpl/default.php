@@ -153,7 +153,7 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 					echo $product->categoriesList;
 				?></td>
 				<!-- Reorder only when category ID is present -->
-				<?php if( $this->virtuemart_category_id ) { ?>
+				<?php if ($this->virtuemart_category_id ) { ?>
 					<td class="order">
 						<span><?php echo $this->pagination->orderUpIcon( $i, true, 'orderup', JText::_('COM_VIRTUEMART_MOVE_UP'), $product->ordering ); ?></span>
 						<span><?php echo $this->pagination->orderDownIcon( $i, $total , true, 'orderdown', JText::_('COM_VIRTUEMART_MOVE_DOWN'), $product->ordering ); ?></span>
