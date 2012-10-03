@@ -433,8 +433,7 @@ class CurrencyDisplay {
 		}
 		else {
 			//				$this->_db = JFactory::getDBO();
-			$q = 'SELECT `currency_exchange_rate`
-				FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.(int)$currency.'" ';
+			$q = 'SELECT `currency_exchange_rate` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.(int)$currency.'" ';
 			$this->_db->setQuery($q);
 			$exch = $this->_db->loadResult();
 			// 				vmdebug('begin convertCurrencyTo '.$exch);
