@@ -275,6 +275,7 @@ class ShopFunctions {
 		$countries_list=array();
 		$i=0;
 	    foreach ($sorted_countries as  $key=>$value) {
+		    $countries_list[$i] = new stdClass();
 	        $countries_list[$i]->$id = $key;
 			$countries_list[$i]->$name = $value;
 		    $i++;

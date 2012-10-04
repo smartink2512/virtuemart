@@ -169,11 +169,7 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 				<td align="center" >
 					<?php
 						echo $is_featured;
-					/*if ($product->product_special == 1) {
-						echo JHtml::_('image','menu/icon-16-default.png', JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'), NULL, true);
-					} else {
-                        echo "&nbsp;";
-					} */?>
+					?>
 				 </td>
 				<!-- published -->
 				<td align="center" ><?php echo $published; ?></td>

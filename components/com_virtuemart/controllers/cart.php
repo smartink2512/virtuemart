@@ -100,7 +100,7 @@ class VirtueMartControllerCart extends JController {
 		//maybe we should use $mainframe->close(); or jexit();instead of die;
 		/* Load the cart helper */
 		//require_once(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-		$this->json = null;
+		$this->json = new stdClass();
 		$cart = VirtueMartCart::getCart(false);
 		if ($cart) {
 			// Get a continue link */
