@@ -1710,7 +1710,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		if (isset($sessionKlarnaData->klarna_option)) {
 			switch ($sessionKlarnaData->klarna_option) {
 				case 'invoice':
+					$sType='invoice';
 					$image = '/klarna_invoice_' . $country2 . '.png';
+					//$logo = VMKLARNAPLUGINWEBASSETS . '/images/' . 'logo/klarna_' . $sType . '_' . $code2 . '.png';
+					$image ="https://cdn.klarna.com/public/images/".strtoupper($country2)."/badges/v1/". $sType ."/".$country2."_". $sType ."_badge_std_blue.png?height=55&eid=".$cData['eid'];
 					$display_invoice_fee = NULL;
 					$invoice_fee = 0;
 					KlarnaHandler::getInvoiceFeeInclTax ($method, $cData['country_code_3'], $cartPricesCurrency, $cData['virtuemart_currency_id'], $display_invoice_fee, $invoice_fee);
@@ -1718,7 +1721,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 					break;
 				case 'partpayment':
 				case 'part':
-					$image = '/klarna_part_' . $country2 . '.png';
+					$sType='account';
+					//$image = '/klarna_part_' . $country2 . '.png';
+					$image ="https://cdn.klarna.com/public/images/".strtoupper($country2)."/badges/v1/". $sType ."/".$country2."_". $sType ."_badge_std_blue.png?height=55&eid=".$cData['eid'];
+
 					$address['virtuemart_country_id'] = $virtuemart_country_id;
 					//$pclasses                         = KlarnaHandler::getPClasses(NULL,   KlarnaHandler::getKlarnaMode($method), $cData);
 					if (!class_exists ('Klarna_payments')) {

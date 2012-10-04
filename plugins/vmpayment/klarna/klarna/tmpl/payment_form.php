@@ -15,6 +15,11 @@ defined ('_JEXEC') or die();
 
 $code2 = $viewData['payment_params']['countryCode'];
 $sType = $viewData['payment_params']['sType'];
+if ($sType=='part') {
+	$imageType='account';
+} else {
+	$imageType='invoice';
+}
 // missing house_extension,ysalary,companyName
 ?>
 <!-- KLARNA BOX -->
@@ -73,7 +78,7 @@ $sType = $viewData['payment_params']['sType'];
 	//-->
 </script>
 <?php if ($sType == 'spec') { ?>
-<script src="https://static.klarna.com/external/js/klarnaspecial.js" type="text/javascript"></script>
+<script src="http://cdn.klarna.com/public/kitt/toc/v1.0/js/klarna.terms.min.js" type="text/javascript"></script>
 <?php } ?>
 <script type="text/javascript">
 	jQuery(function () {
@@ -136,7 +141,8 @@ $sType = $viewData['payment_params']['sType'];
 		$logo = VMKLARNAPLUGINWEBASSETS . '/images/' . 'logo/klarna_logo.png';
 	}
 	else {
-		$logo = VMKLARNAPLUGINWEBASSETS . '/images/' . 'logo/klarna_' . $sType . '_' . $code2 . '.png';
+		//$logo = VMKLARNAPLUGINWEBASSETS . '/images/' . 'logo/klarna_' . $sType . '_' . $code2 . '.png';
+		$logo ="https://cdn.klarna.com/public/images/".strtoupper($code2)."/badges/v1/". $imageType ."/".$code2."_". $imageType ."_badge_std_blue.png?height=55&eid=". $viewData['payment_params']['eid'];
 	}
 	?>
 	<img class="klarna_logo" src="<?php echo $logo ?>"

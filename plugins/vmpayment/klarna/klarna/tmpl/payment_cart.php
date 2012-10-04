@@ -15,7 +15,7 @@ defined('_JEXEC') or die();
 ?>
 
 <?php
-$logo = '<img src="' . JURI::base() . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo' . $viewData['logo'] . '"/>';
+$logo = '<img src="' .  $viewData['logo'] . '"/>';
 ?>
 
 
