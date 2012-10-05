@@ -174,6 +174,10 @@ class VirtuemartViewCategory extends VmView {
 	    $productModel->addImages($products,1);
 
 	    $this->assignRef('products', $products);
+		foreach($products as $product){
+              $product->stock = $productModel->getStockIndicator($product);
+         }
+
 
 		$ratingModel = VmModel::getModel('ratings');
 		$showRating = $ratingModel->showRating();
