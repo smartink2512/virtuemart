@@ -246,7 +246,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 
 				$db = JFactory::getDBO();
-				$q = 'SELECT '.$idfield.' FROM `'.$tableName.'` WHERE `element` = "'.$element.'" ';
+				$q = 'SELECT COUNT(*) FROM `'.$tableName.'` WHERE `element` = "'.$element.'" ';
 				$db->setQuery($q);
 				$count = $db->loadResult();
 
@@ -279,6 +279,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 						$app = JFactory::getApplication();
 						$app -> enqueueMessage( get_class( $this ).'::store '.$error);
 					}
+				// remove duplicated
+				} elseif ($count==2) {
+					$q = 'SELECT '.$idfield.' FROM `'.$tableName.'` WHERE `element` = "'.$element.'" ORDER BY  `'.$idfield.'` DESC  LIMIT 0,1';
+					$db->setQuery($q);
+					$duplicatedPlugin = $db->loadResult();
+					$q = 'DELETE FROM `'.$tableName.'` WHERE '.$idfield.' = '.$duplicatedPlugin;
+					$db->setQuery($q);
+					$db->query();
 				}
 			}
 
