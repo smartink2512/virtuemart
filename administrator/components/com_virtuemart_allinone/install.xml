@@ -7,8 +7,7 @@
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>Copyright (C) 2012 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <version status="MINOR">2.0.10.K5</version>
-
+    <version status="${PHING.VM.DEV_STATUS}">${PHING.VM.RELEASE}</version>
    <!-- Custom un/installer for 1.6 -->
    <scriptfile>script.vmallinone.php</scriptfile>
 	<!-- Custom installer for 1.5 -->

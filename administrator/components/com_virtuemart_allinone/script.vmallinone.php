@@ -246,7 +246,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 
 				$db = JFactory::getDBO();
-				$q = 'SELECT '.$idfield.' FROM `'.$tableName.'` WHERE `name` = "'.$name.'" ';
+				$q = 'SELECT '.$idfield.' FROM `'.$tableName.'` WHERE `element` = "'.$element.'" ';
 				$db->setQuery($q);
 				$count = $db->loadResult();
 
