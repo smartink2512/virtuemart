@@ -39,7 +39,7 @@ class JFormFieldOrderstatus extends JFormField {
 		foreach ($orderStatus as $orderState) {
 			$orderState->order_status_name = JText::_ ($orderState->order_status_name);
 		}
-		return JHTML::_ ('select.genericlist', $orderStatus, $this->name, 'class="inputbox" size="1"', 'order_status_code', 'order_status_name', $this->value, $this->id);
+		return JHTML::_ ('select.genericlist', $orderStatus, $this->name, 'class="inputbox" multiple="true" size="1"', 'order_status_code', 'order_status_name', $this->value, $this->id);
 	}
 
 }
