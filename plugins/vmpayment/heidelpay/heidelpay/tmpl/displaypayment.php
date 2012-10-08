@@ -14,15 +14,7 @@
  */
 ?>
 
-<div id="system-message-container">
-					<dl id="system-message">
-						<dt class="error">Error</dt>
-							<dd class="error message"> 
-								<ul>
-									<li><?php echo $viewData['ErrorText'] ?></li>
-									<li> - <?php echo $viewData['ErrorInfo'] ?>"</li>
-								</ul>
-								</dd>
-							</dt>
-						</dl>
-					</div>' ;
+<iframe id="payment_frame" width="500px" height="650px" frameborder="0"
+				border="0" src="<?php echo $viewData['response'] ?>" style="width: 450px; height: 650px; border: 0px solid #000;"></iframe></center>
+
+

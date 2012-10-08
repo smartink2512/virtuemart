@@ -37,8 +37,8 @@ $PATH = preg_replace('@plugins\/vmpayment\/heidelpay\/heidelpay\/heidelpay_respo
 $URL = $_SERVER['HTTP_HOST'] . $PATH ; 
 
 
-$redirectURL	 = $Protocol.$URL.'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on='.$_GET['on'].'&pm='.$_GET['pm'];
-$cancelURL	 = $Protocol.$URL.'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on='.$_GET['on'].'&pm='.$_GET['pm'];
+$redirectURL	 = $Protocol.$URL.'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on='.$_GET['on'].'&pm='.$_GET['pm'].'&Itemid='.$_GET['Itemid'];
+$cancelURL	 = $Protocol.$URL.'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on='.$_GET['on'].'&pm='.$_GET['pm'].'&Itemid='.$_GET['Itemid'];
 
 function updateHeidelpay($orderID, $connect) {
 	$comment="";

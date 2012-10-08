@@ -251,7 +251,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$count = $db->loadResult();
 
 				//We write only in the table, when it is not installed already
-				if(empty($count)){
+				if($count==0){
 	// 				$table->load($count);
 					if(version_compare(JVERSION,'1.6.0','ge')) {
 						$data['manifest_cache'] = json_encode(JApplicationHelper::parseXMLInstallFile($src.DS.$element.'.xml'));

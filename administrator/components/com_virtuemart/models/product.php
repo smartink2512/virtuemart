@@ -1832,7 +1832,7 @@ class VirtueMartModelProduct extends VmModel {
 			$level = 'lowstock';
 			$stock_tip = JText::_ ('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_LOW_TIP');
 		}
-		if ($stock_level == 0) {
+		if ($stock_level <= 0) {
 			$level = 'nostock';
 			$stock_tip = JText::_ ('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_OUT_TIP');
 		}

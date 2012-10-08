@@ -111,9 +111,10 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 		//Prevent making anonymous Shoppergroup as default
 		$adId = $this->getDefault(1);
+		 $anonymous_sg_id = $adId->virtuemart_shoppergroup_id;
 		if($adId == $id){
 			$group = $this->getShoppergroupById($id);
-			vmError(JText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_DEFAULT',$group->shopper_group_name,$id));
+			vmError(JText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_CANT_MAKE_DEFAULT',$group->shopper_group_name,$id));
 			return false;
 		}
 		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 0 WHERE `default`<"2"');
@@ -141,6 +142,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 			$app = JFactory::getApplication();
 			$app->enqueueMessage('Attention no standard shopper group set '.$this->_db->getErrorMsg());
 		} else {
+			vmdebug('getDefault', $res);
 			return $res;
 		}
 

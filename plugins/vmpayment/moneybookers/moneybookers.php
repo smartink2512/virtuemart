@@ -272,12 +272,16 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' .
 			                        $order['details']['BT']->order_number .
 			                        '&pm=' .
-			                        $order['details']['BT']->virtuemart_paymentmethod_id),
+			                        $order['details']['BT']->virtuemart_paymentmethod_id .
+		                            '&Itemid=' . JRequest::getInt ('Itemid')
+		                        ),
 		                        'cancel_url'               => JROUTE::_ (JURI::root () .
 			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' .
 			                        $order['details']['BT']->order_number .
 			                        '&pm=' .
-			                        $order['details']['BT']->virtuemart_paymentmethod_id),
+			                        $order['details']['BT']->virtuemart_paymentmethod_id .
+		                            '&Itemid=' . JRequest::getInt ('Itemid')
+		                        ),
 		                        'status_url'               => JROUTE::_ (JURI::root () .
 			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
 		                        'platform'                 => '21477272',
@@ -757,7 +761,6 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 	 * @param array $_formData Form data
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be
 	 * skipped!), or null when this method is not activated.
-	 * @author Oscar van Eijk
 
 	public function plgVmOnUpdateOrderPayment(  $_formData) {
 	return null;
@@ -769,7 +772,6 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 	 * @param array $_formData Form data
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be
 	 * skipped!), or null when this method is not actived.
-	 * @author Oscar van Eijk
 
 	public function plgVmOnUpdateOrderLine(  $_formData) {
 	return null;
@@ -783,7 +785,6 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 	 * @param integer $_orderId The order ID
 	 * @param integer $_lineId
 	 * @return mixed Null for method that aren't active, text (HTML) otherwise
-	 * @author Oscar van Eijk
 
 	public function plgVmOnEditOrderLineBE(  $_orderId, $_lineId) {
 	return null;
@@ -798,7 +799,6 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 	 * @param integer $_orderId The order ID
 	 * @param integer $_lineId
 	 * @return mixed Null for method that aren't active, text (HTML) otherwise
-	 * @author Oscar van Eijk
 
 	public function plgVmOnShowOrderLineFE(  $_orderId, $_lineId) {
 	return null;

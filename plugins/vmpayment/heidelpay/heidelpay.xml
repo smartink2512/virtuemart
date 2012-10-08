@@ -61,7 +61,6 @@
                default="31HA07BC81A71E2A47DA94B6ADC524D8"/>
         <param type="spacer" default=""/>
         <param name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_STANDARD_CURRENCY" description="VMPAYMENT_STANDARD_CURRENCY_DESC"/>
-
         <param name="HEIDELPAY_TRANSACTION_MODE" type="radio" default="1"
                label="VMPAYMENT_HEIDELPAY_TRANSACTION_MODE" description="VMPAYMENT_HEIDELPAY_TRANSACTION_MODE_DESC">
             <option value="0">VMPAYMENT_HEIDELPAY_INTEGRATOR_TEST</option>
@@ -90,11 +89,14 @@
         </param>
         <param type="spacer" default="" level="level1"/>
         <param type="spacer" default="" level="level1"/>
-        <param type="spacer" default="VMPAYMENT_HEIDELPAY_PAYMENT_PAGE"
+        <param type="spacer" default="VMPAYMENT_HEIDELPAY_RESTRICTIONS_CONFIG"
                level="level1"/>
-        <param type="spacer" default="" level="level1"/>
         <param name="min_amount" type="text" label="VMPAYMENT_HEIDELPAY_MIN_AMOUNT" description="VMPAYMENT_HEIDELPAY_MIN_AMOUNT_EXPLAIN"/>
         <param name="max_amount" type="text" label="VMPAYMENT_HEIDELPAY_MAX_AMOUNT" description="VMPAYMENT_HEIDELPAY_MAX_AMOUNT_EXPLAIN"/>
+         <param type="spacer" default="" level="level1"/>
+        <param type="spacer" default="" level="level1"/>
+        <param type="spacer" default="VMPAYMENT_HEIDELPAY_ORDER_STATUS_CONFIG"
+               level="level1"/>
         <param name="HEIDELPAY_STATUS_PENDING" type="vmorderstate" scope="com_virtuemart"
                default="U" label="VMPAYMENT_HEIDELPAY_STATUS_PENDING" description="VMPAYMENT_HEIDELPAY_STATUS_PENDING_DESC"/>
         <param name="HEIDELPAY_STATUS_SUCCESS" type="vmorderstate" scope="com_virtuemart"

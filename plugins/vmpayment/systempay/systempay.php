@@ -244,7 +244,6 @@ function getTableSQLFields() {
      * @param array $_formData Form data
      * @return mixed, True on success, false on failures (the rest of the save-process will be
      * skipped!), or null when this method is not actived.
-     * @author Oscar van Eijk
 
       public function plgVmOnUpdateOrderPayment(  $_formData) {
       return null;
@@ -256,7 +255,6 @@ function getTableSQLFields() {
      * @param array $_formData Form data
      * @return mixed, True on success, false on failures (the rest of the save-process will be
      * skipped!), or null when this method is not actived.
-     * @author Oscar van Eijk
 
       public function plgVmOnUpdateOrderLine(  $_formData) {
       return null;
@@ -270,7 +268,6 @@ function getTableSQLFields() {
      * @param integer $_orderId The order ID
      * @param integer $_lineId
      * @return mixed Null for method that aren't active, text (HTML) otherwise
-     * @author Oscar van Eijk
 
       public function plgVmOnEditOrderLineBE(  $_orderId, $_lineId) {
       return null;
@@ -285,7 +282,6 @@ function getTableSQLFields() {
      * @param integer $_orderId The order ID
      * @param integer $_lineId
      * @return mixed Null for method that aren't active, text (HTML) otherwise
-     * @author Oscar van Eijk
 
       public function plgVmOnShowOrderLineFE(  $_orderId, $_lineId) {
       return null;

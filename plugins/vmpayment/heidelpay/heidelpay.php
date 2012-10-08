@@ -255,7 +255,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		/*
 		* Add response and css path
 		*/
-		$params['FRONTEND.RESPONSE_URL'] = JROUTE::_ (JURI::root ()) . 'plugins/vmpayment/heidelpay/heidelpay/heidelpay_response.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id;
+		$params['FRONTEND.RESPONSE_URL'] = JROUTE::_ (JURI::root ()) . 'plugins/vmpayment/heidelpay/heidelpay/heidelpay_response.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id. '&Itemid=' . JRequest::getInt ('Itemid');
 		$cssFile = "heidelpay_default.css";
 		if (!empty($method->HEIDELPAY_STYLE)) {
 			$cssFile = $method->HEIDELPAY_STYLE ;
@@ -355,7 +355,7 @@ $virtuemart_paymentmethod_id = JRequest::getInt ('pm', 0);
 			vmInfo('VMPAYMENT_HEIDELPAY_PAYMENT_TESTMODE');
 		}
 		$orgSecret = $this->createSecretHash ($order_number, $method->HEIDELPAY_SECRET);
-
+		$order['comments']="";
 		if ($virtuemart_order_id) {
 			$order['customer_notified'] = 0;
 			$order['order_status'] = $this->getStatus ($method, $paymentData->processing_result);
