@@ -179,7 +179,7 @@ if ($sType=='part') {
 			<?php echo $viewData['payment_currency_info'] ?></div>
 		<?php if ( $code2 == 'nl' and $sType == 'part') { ?>
 	<div class="klarna_box_bottom_content_listPriceInfo">
-		<img src="<?php echo VMKLARNAPLUGINWEBASSETS . '/images/account/notice_nl.png' ?> "/>
+		<img src="<?php echo VMKLARNAPLUGINWEBASSETS . '/images/notice_nl.png' ?> "/>
                             </div>
 		<?php } ?>
 	</div>
