@@ -94,7 +94,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				$dst = JPATH_ROOT . DS . "modules";
 				$this->recurse_copy ($src, $dst);
 
-				echo "Installing VirtueMart2 modules<br/ >";
+				echo "Checking VirtueMart2 modules...";
 				if (!$this->VmModulesAlreadyInstalled ()) {
 					echo "Installing VirtueMart2 modules<br/ >";
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
