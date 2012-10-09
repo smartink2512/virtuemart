@@ -93,10 +93,10 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				$src = $this->path . DS . "modules";
 				$dst = JPATH_ROOT . DS . "modules";
 				$this->recurse_copy ($src, $dst);
-				echo " VirtueMart2 modules moved to the joomla modules folder<br/ >";
 
-				if (!$this->ModulesAlreadyInstalled ()) {
-
+				echo "Installing VirtueMart2 modules<br/ >";
+				if (!$this->VmModulesAlreadyInstalled ()) {
+					echo "Installing VirtueMart2 modules<br/ >";
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
 						$defaultParams = '{"text_before":"","product_currency":"","cache":"1","moduleclass_sfx":"","class_sfx":""}';
 					} else {
@@ -147,6 +147,8 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 						$defaultParams = "moduleclass_sfx=\nclass_sfx=\ncategory_name=default\ncache=no\n";
 					}
 					$this->installModule ('VM - Category', 'mod_virtuemart_category', 6, $defaultParams);
+				} else {
+					echo "VirtueMart2 modules already installed<br/ >";
 				}
 				// language auto move
 				$src = $this->path . DS . "languageFE";
@@ -513,10 +515,11 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 		}
 
 		public function VmModulesAlreadyInstalled () {
+
 			// when the modules are already installed publish=-2
 			$table = JTable::getInstance ('module');
 			$db = $table->getDBO ();
-			$q = 'SELECT count(*) FROM `#__modules` WHERE `module` LIKE "mod_virtuemart%"';
+			$q = 'SELECT count(*) FROM `#__modules` WHERE `module` LIKE "mod_virtuemart_%"';
 			$db->setQuery ($q);
 			$count = $db->loadResult ();
 			return $count;
