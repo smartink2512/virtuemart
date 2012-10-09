@@ -2,13 +2,13 @@
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/module-install.dtd">
 <install method="upgrade" type="component" version="1.5.0">
     <name>VirtueMart_allinone</name>
-    <creationDate>September 06 2012</creationDate>
-    <author>The VirtueMart Development Team</author>
+     <creationDate>${PHING.VM.RELDATE}</creationDate>
+    <copyright>${PHING.VM.COPYRIGHT}</copyright>
+    <license>${PHING.VM.LICENSE}</license>
+   <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
-    <copyright>Copyright (C) 2012 Virtuemart Team. All rights reserved.</copyright>
-    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-   <version status="${PHING.VM.DEV_STATUS}">${PHING.VM.RELEASE}</version>
-   <!-- Custom un/installer for 1.6 -->
+    <version>${PHING.VM.RELEASE}</version>
+        <!-- Custom un/installer for 1.6 -->
    <scriptfile>script.vmallinone.php</scriptfile>
 	<!-- Custom installer for 1.5 -->
 	<installfile>script.vmallinone.php</installfile>

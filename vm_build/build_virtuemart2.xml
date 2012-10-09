@@ -382,6 +382,9 @@
         <echo msg="copy file script vmallinone script from the admin ${package.admin.aio}...to root ${package.folder.aio}"/>
         <copy todir="${package.folder.aio}">
             <fileset refid="root.aio.refid"/>
+             <filterchain>
+                <expandproperties/>
+            </filterchain>
         </copy>
 
         <echo msg="Copying AIO: modules files to directory.."/>
