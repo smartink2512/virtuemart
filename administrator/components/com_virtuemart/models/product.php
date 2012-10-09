@@ -406,7 +406,7 @@ class VirtueMartModelProduct extends VmModel {
 						$orderBy = 'ORDER BY RAND()';
 						break;
 					case 'latest':
-						$date = JFactory::getDate (time () - (60 * 60 * 24 * $latest_products_days)); 
+						$date = JFactory::getDate (time () - (60 * 60 * 24 * $latest_products_days));
 						$dateSql = $date->toMySQL ();
 						$where[] = 'p.`' . $latest_products_orderBy . '` > "' . $dateSql . '" ';
 						$orderBy = 'ORDER BY p.`' . $latest_products_orderBy . '`';
@@ -1408,7 +1408,7 @@ class VirtueMartModelProduct extends VmModel {
 		if($preload){
 			$product_table_Parent->setOrderable('ordering',false);
 			$orderingA = $product_table_Parent->load($data['virtuemart_product_id']);
-			
+
 			if(isset($orderingA) and isset($orderingA[0])){
 				$product_table_Parent->ordering = $orderingA[0];
 			}
@@ -1479,6 +1479,13 @@ class VirtueMartModelProduct extends VmModel {
 		$product->field = $this->productCustomsfieldsClone ($id);
 // 		vmdebug('$product->field',$product->field);
 		$product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;
+		//Lets check if the user is admin or the mainvendor
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		$admin = Permissions::getInstance()->check('admin');
+		if($admin){
+			$product->created_on = false;
+			$product->created_by = 0;
+		}
 		$product->slug = $product->slug . '-' . $id;
 		$product->save_customfields = 1;
 		$this->store ($product);

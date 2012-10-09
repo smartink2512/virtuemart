@@ -270,8 +270,9 @@ class VirtuemartControllerProduct extends VmController {
 		JArrayHelper::toInteger($cids);
 
 		foreach($cids as $cid){
-			if ($model->createClone($cid)) $msg = JText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');
-			else {
+			if ($model->createClone($cid)) {
+				$msg = JText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');
+			} else {
 				$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_CLONED_SUCCESSFULLY');
 				$msgtype = 'error';
 			}
