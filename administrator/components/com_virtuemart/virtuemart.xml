@@ -12,7 +12,13 @@
 	<copyright>Copyright (C) 2004-2012 Virtuemart Team. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version status="${PHING.VM.DEV_STATUS}">${PHING.VM.RELEASE}</version>
-
+<description><![CDATA[
+	<div align="left"><img src="administrator/components/com_virtuemart/assets/images/vm_menulogo.png" alt="VirtueMart Logo" /></div>
+	<h2>VirtueMart 2 has been successfully installed</h2>
+VirtueMart 2 is a free, easy to use e-commerce solution	 for Joomla<br/>It allows
+	  <ul><li>ccc</li>
+	  <li>ddd,</li>
+	]]></description>
    <!-- Custom un/installer for 1.6 -->
    <scriptfile>install/script.virtuemart.php</scriptfile>
 	<!-- Custom installer for 1.5 -->

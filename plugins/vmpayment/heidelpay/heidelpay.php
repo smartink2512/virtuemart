@@ -255,13 +255,13 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		/*
 		* Add response and css path
 		*/
-		$params['FRONTEND.RESPONSE_URL'] = JROUTE::_ (JURI::root ()) . 'plugins/vmpayment/heidelpay/heidelpay/heidelpay_response.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id. '&Itemid=' . JRequest::getInt ('Itemid');
+		$params['FRONTEND.RESPONSE_URL'] = JROUTE::_ (JURI::root(), $xhtml=true, $ssl=0) . 'plugins/vmpayment/heidelpay/heidelpay/heidelpay_response.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id;
 		$cssFile = "heidelpay_default.css";
 		if (!empty($method->HEIDELPAY_STYLE)) {
 			$cssFile = $method->HEIDELPAY_STYLE ;
 		} 
 			
-		$params['FRONTEND.CSS_PATH'] = JROUTE::_ (JURI::root ()) . 'plugins/vmpayment/heidelpay/heidelpay/' . $cssFile;
+		$params['FRONTEND.CSS_PATH'] = JROUTE::_ (JURI::root(), $xhtml=true, $ssl=0) . 'plugins/vmpayment/heidelpay/heidelpay/' . $cssFile;
 
 		$requestUrl = $method->HEIDELPAY_PAYMENT_URL;
 		$params['SECURITY.SENDER'] = $method->HEIDELPAY_SECURITY_SENDER;

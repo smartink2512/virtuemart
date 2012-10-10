@@ -17,7 +17,6 @@ defined ('JPATH_BASE') or die();
  * Renders a label element
  */
 
-
 class JElementGetHeidelpay extends JElement {
 
 	/**
@@ -29,10 +28,11 @@ class JElementGetHeidelpay extends JElement {
 	var $_name = 'getHeidelpay';
 
 	function fetchElement ($name, $value, &$node, $control_name) {
-	$js = '
+
+		$js = '
 		jQuery(document).ready(function( $ ) {
-			$("#heidelpay_getheidelpay_show_hide").hide();
-			jQuery("#heidelpay_getheidelpay_link").click( function() {
+
+		    jQuery("#heidelpay_getheidelpay_link").click( function() {
 				 if ( $("#heidelpay_getheidelpay_show_hide").is(":visible") ) {
 				  $("#heidelpay_getheidelpay_show_hide").hide("slow");
 			        $("#heidelpay_getheidelpay_link").html("' . addslashes (JText::_ ('VMPAYMENT_HEIDELPAY_GET_HEIDELPAY_SHOW')) . '");
@@ -46,21 +46,46 @@ class JElementGetHeidelpay extends JElement {
 
 		$doc = JFactory::getDocument ();
 		$doc->addScriptDeclaration ($js);
-		
-		
-		$lang = $this->getLang();
+		$cid = jrequest::getvar ('cid', NULL, 'array');
+		if (is_Array ($cid)) {
+			$virtuemart_paymentmethod_id = $cid[0];
+		} else {
+			$virtuemart_paymentmethod_id = $cid;
+		}
 
+		$query = "SELECT payment_params FROM `#__virtuemart_paymentmethods` WHERE  virtuemart_paymentmethod_id = '" . $virtuemart_paymentmethod_id . "'";
+		$db = JFactory::getDBO ();
+		$db->setQuery ($query);
+		$params = $db->loadResult ();
 
+		$payment_params = explode ("|", $params);
+		foreach ($payment_params as $payment_param) {
+			if (empty($payment_param)) {
+				continue;
+			}
+			$param = explode ('=', $payment_param);
+			$payment_params[$param[0]] = substr ($param[1], 1, -1);
+		}
+		$id="";
 
-			$html = '<a href="#" id="heidelpay_getheidelpay_link" ">' . JText::_ ('VMPAYMENT_HEIDELPAY_GET_HEIDELPAY_SHOW') . '</a>';
+		if ($payment_params['HEIDELPAY_SECURITY_SENDER'] == '31HA07BC8124AD82A9E96D9A35FAFD2A' or $payment_params['HEIDELPAY_SECURITY_SENDER'] == '') {
+			$id = "heidelpay_getheidelpay_link";
+			$display='';
+			$html = '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_HEIDELPAY_ALREADY_ACCOUNT') . '</a>';
+		} else {
+			$id = "heidelpay_getheidelpay_link";
+			$display=' style="display: none;"';
+			$html = '<a href="#" id="' . $id . '">' . JText::_ ('VMPAYMENT_HEIDELPAY_CREATE_ACCOUNT') . '</a>';
+		}
+		$lang = $this->getLang ();
 
-		$html .= '<div id="heidelpay_getheidelpay_show_hide" >';
-		$url="http://demoshops.heidelpay.de/contactform/?campaign=vituemart&shop=vituemart&lang=".$lang;
-$html .= '<iframe src="' .$url . '" scrolling="yes" style="x-overflow: none;" frameborder="0" height="600px" width="650px"></iframe>';
-		$html .="</div>";
+		$html .= '<div id="heidelpay_getheidelpay_show_hide" align=""'.$display.' >';
+		$url = "http://demoshops.heidelpay.de/contactform/?campaign=vituemart&shop=vituemart&lang=" . $lang;
+		$html .= '<iframe src="' . $url . '" scrolling="yes" style="x-overflow: none;" frameborder="0" height="1400px" width="300px"></iframe>';
+		$html .= "</div>";
 		return $html;
 	}
-	
+
 	protected function getLang () {
 
 		$language =& JFactory::getLanguage ();

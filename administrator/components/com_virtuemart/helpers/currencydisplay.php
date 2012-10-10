@@ -301,7 +301,6 @@ class CurrencyDisplay {
 		} else {
 			$price = round((float)$price,$nb) * (float)$quantity;
 		}
-
 		$price = $this->convertCurrencyTo($currencyId,$price,$inToShopCurrency);
 
 		if($this->_numeric_code===756){
@@ -412,7 +411,7 @@ class CurrencyDisplay {
 		}
 
 		// If both currency codes match, do nothing
-		if( $currency == $this->_vendorCurrency) {
+		if( (is_Object($currency) and $currency->_currency_id == $this->_vendorCurrency)  or (!is_Object($currency) and $currency == $this->_vendorCurrency)) {
 			// 			vmdebug('  $currency == $this->_vendorCurrency ',$price);
 			return $price;
 		}
@@ -428,7 +427,7 @@ class CurrencyDisplay {
 		*/
 		//		if(empty($exchangeRate)){
 		if(is_Object($currency)){
-			$exchangeRate = $currency->_vendorCurrency;
+			$exchangeRate = $currency->exchangeRateShopper;
 			vmdebug('convertCurrencyTo OBJECT '.$exchangeRate);
 		}
 		else {
