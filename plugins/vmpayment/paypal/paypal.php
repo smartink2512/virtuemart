@@ -43,6 +43,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$varsToPush = array('paypal_merchant_email'  => array('', 'char'),
 		                    'paypal_verified_only'   => array('', 'int'),
 		                    'payment_currency'       => array('', 'int'),
+		                    'email_currency'         => array('', 'int'),
+		                    'log_ipn'                => array('', 'int'),
 		                    'sandbox'                => array(0, 'int'),
 		                    'sandbox_merchant_email' => array('', 'char'),
 		                    'payment_logos'          => array('', 'char'),
@@ -86,37 +88,38 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'order_number'                           => 'char(64)',
 			'virtuemart_paymentmethod_id'            => 'mediumint(1) UNSIGNED',
 			'payment_name'                           => 'varchar(5000)',
-			'payment_order_total'                    => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
-			'payment_currency'                       => 'char(3) ',
+			'payment_order_total'                    => 'decimal(15,5) NOT NULL',
+			'payment_currency'                       => 'smallint(1)',
+			'email_currency'                         => 'smallint(1)',
 			'cost_per_transaction'                   => 'decimal(10,2)',
 			'cost_percent_total'                     => 'decimal(10,2)',
 			'tax_id'                                 => 'smallint(1)',
 			'paypal_custom'                          => 'varchar(255)',
-			'paypal_response_mc_gross'               => 'decimal(10,2) NULL DEFAULT NULL',
-			'paypal_response_mc_currency'            => 'char(10) NULL DEFAULT NULL',
-			'paypal_response_invoice'                => 'char(32) NULL DEFAULT NULL',
-			'paypal_response_protection_eligibility' => 'char(128) NULL DEFAULT NULL',
-			'paypal_response_payer_id'               => 'char(13) NULL DEFAULT NULL',
-			'paypal_response_tax'                    => 'decimal(10,2) NULL DEFAULT NULL',
-			'paypal_response_payment_date'           => 'char(28) NULL DEFAULT NULL',
-			'paypal_response_payment_status'         => 'char(50) NULL DEFAULT NULL',
-			'paypal_response_pending_reason'         => 'char(50) NULL DEFAULT NULL',
-			'paypal_response_mc_fee'                 => 'decimal(10,2) NULL DEFAULT NULL',
-			'paypal_response_payer_email'            => 'char(128) NULL DEFAULT NULL',
-			'paypal_response_last_name'              => 'char(64) NULL DEFAULT NULL',
-			'paypal_response_first_name'             => 'char(64) NULL DEFAULT NULL',
-			'paypal_response_business'               => 'char(128) NULL DEFAULT NULL',
-			'paypal_response_receiver_email'         => 'char(128) NULL DEFAULT NULL',
-			'paypal_response_transaction_subject'    => 'char(128) NULL DEFAULT NULL',
-			'paypal_response_residence_country'      => 'char(2) NULL DEFAULT NULL',
-			'paypal_response_txn_id'                 => 'char(32) NULL DEFAULT NULL',
-			'paypal_response_txn_type'               => 'char(32) NULL DEFAULT NULL', //The kind of transaction for which the IPN message was sent
-			'paypal_response_parent_txn_id'          => 'char(32) NULL DEFAULT NULL',
-			'paypal_response_case_creation_date'     => 'char(32) NULL DEFAULT NULL',
-			'paypal_response_case_id'                => 'char(32) NULL DEFAULT NULL',
-			'paypal_response_case_type'              => 'char(32) NULL DEFAULT NULL',
-			'paypal_response_reason_code'            => 'char(32) NULL DEFAULT NULL',
-			'paypalresponse_raw'                     => 'varchar(512) NULL DEFAULT NULL',
+			'paypal_response_mc_gross'               => 'decimal(10,2) NULL',
+			'paypal_response_mc_currency'            => 'char(10) NULL',
+			'paypal_response_invoice'                => 'char(32) NULL',
+			'paypal_response_protection_eligibility' => 'char(128) NULL',
+			'paypal_response_payer_id'               => 'char(13) NULL',
+			'paypal_response_tax'                    => 'decimal(10,2) NULL',
+			'paypal_response_payment_date'           => 'char(28) NULL',
+			'paypal_response_payment_status'         => 'char(50) NULL',
+			'paypal_response_pending_reason'         => 'char(50) NULL',
+			'paypal_response_mc_fee'                 => 'decimal(10,2) NULL',
+			'paypal_response_payer_email'            => 'char(128) NULL',
+			'paypal_response_last_name'              => 'char(64) NULL',
+			'paypal_response_first_name'             => 'char(64) NULL',
+			'paypal_response_business'               => 'char(128) NULL',
+			'paypal_response_receiver_email'         => 'char(128) NULL',
+			'paypal_response_transaction_subject'    => 'char(128) NULL',
+			'paypal_response_residence_country'      => 'char(2) NULL',
+			'paypal_response_txn_id'                 => 'char(32) NULL',
+			'paypal_response_txn_type'               => 'char(32) NULL', //The kind of transaction for which the IPN message was sent
+			'paypal_response_parent_txn_id'          => 'char(32) NULL',
+			'paypal_response_case_creation_date'     => 'char(32) NULL',
+			'paypal_response_case_id'                => 'char(32) NULL',
+			'paypal_response_case_type'              => 'char(32) NULL',
+			'paypal_response_reason_code'            => 'char(32) NULL',
+			'paypalresponse_raw'                     => 'varchar(512) NULL',
 		);
 		return $SQLfields;
 	}
@@ -156,6 +159,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$vendor = $vendorModel->getVendor ();
 		$vendorModel->addImages ($vendor, 1);
 		$this->getPaymentCurrency ($method);
+		$email_currency = $this->getEmailCurrency ($method);
 		$currency_code_3 = shopFunctions::getCurrencyByID ($method->payment_currency, 'currency_code_3');
 
 		$paymentCurrency = CurrencyDisplay::getInstance ($method->payment_currency);
@@ -170,19 +174,23 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			vmInfo (JText::_ ('VMPAYMENT_PAYPAL_MERCHANT_EMAIL_NOT_SET'));
 			return FALSE;
 		}
-
+		$quantity = 0;
+		foreach ($cart->products as $key => $product) {
+			$quantity = $quantity + $product->quantity;
+		}
 		$post_variables = Array(
-			'cmd'              => '_ext-enter',
-			'redirect_cmd'     => '_xclick',
-			'upload'           => '1', //Indicates the use of third-party shopping cart
-			'business'         => $merchant_email, //Email address or account ID of the payment recipient (i.e., the merchant).
-			'receiver_email'   => $merchant_email, //Primary email address of the payment recipient (i.e., the merchant
-			'order_number'     => $order['details']['BT']->order_number,
-			"invoice"          => $order['details']['BT']->order_number,
-			'custom'           => $return_context,
-			'item_name'        => JText::_ ('VMPAYMENT_PAYPAL_ORDER_NUMBER') . ': ' . $order['details']['BT']->order_number,
-			"amount"           => $totalInPaymentCurrency,
-			"currency_code"    => $currency_code_3,
+			'cmd'               => '_ext-enter',
+			'redirect_cmd'      => '_xclick',
+			'upload'            => '1', //Indicates the use of third-party shopping cart
+			'business'          => $merchant_email, //Email address or account ID of the payment recipient (i.e., the merchant).
+			'receiver_email'    => $merchant_email, //Primary email address of the payment recipient (i.e., the merchant
+			'order_number'      => $order['details']['BT']->order_number,
+			"invoice"           => $order['details']['BT']->order_number,
+			'custom'            => $return_context,
+			'item_name'         => JText::_ ('VMPAYMENT_PAYPAL_ORDER_NUMBER') . ': ' . $order['details']['BT']->order_number,
+			'quantity'          => $quantity,
+			"amount"            => $totalInPaymentCurrency,
+			"currency_code"     => $currency_code_3,
 			/*
 					 * 1 – L'adresse spécifiée dans les variables pré-remplies remplace l'adresse de livraison enregistrée auprès de PayPal.
 					 * Le payeur voit l'adresse qui est transmise mais ne peut pas la modifier.
@@ -190,29 +198,29 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 					 * (par exemple si des champs requis, tel que le pays, sont manquants) ou pas incluse.
 					 * Valeurs autorisées : 0, 1. Valeur par défaut : 0
 					 */
-			"address_override" => isset($method->address_override) ? $method->address_override : 0, // 0 ??   Paypal does not allow your country of residence to ship to the country you wish to
-			"first_name"       => $address->first_name,
-			"last_name"        => $address->last_name,
-			"address1"         => $address->address_1,
-			"address2"         => isset($address->address_2) ? $address->address_2 : '',
-			"zip"              => $address->zip,
-			"city"             => $address->city,
-			"state"            => isset($address->virtuemart_state_id) ? ShopFunctions::getStateByID ($address->virtuemart_state_id) : '',
-			"country"          => ShopFunctions::getCountryByID ($address->virtuemart_country_id, 'country_2_code'),
-			"email"            => $order['details']['BT']->email,
-			"night_phone_b"    => $address->phone_1,
-			"return"           => JROUTE::_ (JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt ('Itemid')),
+			"address_override"  => isset($method->address_override) ? $method->address_override : 0, // 0 ??   Paypal does not allow your country of residence to ship to the country you wish to
+			"first_name"        => $address->first_name,
+			"last_name"         => $address->last_name,
+			"address1"          => $address->address_1,
+			"address2"          => isset($address->address_2) ? $address->address_2 : '',
+			"zip"               => $address->zip,
+			"city"              => $address->city,
+			"state"             => isset($address->virtuemart_state_id) ? ShopFunctions::getStateByID ($address->virtuemart_state_id) : '',
+			"country"           => ShopFunctions::getCountryByID ($address->virtuemart_country_id, 'country_2_code'),
+			"email"             => $order['details']['BT']->email,
+			"night_phone_b"     => $address->phone_1,
+			"return"            => JROUTE::_ (JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt ('Itemid')),
 			// Keep this line, needed when testing
 			//"return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
-			"notify_url"       => JROUTE::_ (JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
-			"cancel_return"    => JROUTE::_ (JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt ('Itemid')),
+			"notify_url"        => JROUTE::_ (JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
+			"cancel_return"     => JROUTE::_ (JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt ('Itemid')),
 			//"undefined_quantity" => "0",
-			"ipn_test"         => $method->debug,
-			"rm"               => '2', // the buyer’s browser is redirected to the return URL by using the POST method, and all payment variables are included
+			"ipn_test"          => $method->debug,
+			"rm"                => '2', // the buyer’s browser is redirected to the return URL by using the POST method, and all payment variables are included
 			//"pal" => "NRUBJXESJTY24",
-			"image_url"        => JURI::root () . $vendor->images[0]->file_url,
-			"no_shipping"      => isset($method->no_shipping) ? $method->no_shipping : 0,
-			"no_note"          => "1");
+			"image_url"         => JURI::root () . $vendor->images[0]->file_url,
+			"no_shipping"       => isset($method->no_shipping) ? $method->no_shipping : 0,
+			"no_note"           => "1");
 
 		/*
 					  $i = 1;
@@ -250,6 +258,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
 		$dbValues['cost_percent_total'] = $method->cost_percent_total;
 		$dbValues['payment_currency'] = $method->payment_currency;
+		$dbValues['email_currency'] = $email_currency;
 		$dbValues['payment_order_total'] = $totalInPaymentCurrency;
 		$dbValues['tax_id'] = $method->tax_id;
 		$this->storePSPluginInternalData ($dbValues);
@@ -305,6 +314,35 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		}
 		$this->getPaymentCurrency ($method);
 		$paymentCurrencyId = $method->payment_currency;
+	}
+
+	/**
+	 * @param $virtuemart_paymentmethod_id
+	 * @param $paymentCurrencyId
+	 * @return bool|null
+	 */
+	function plgVmgetEmailCurrency ($virtuemart_paymentmethod_id, $virtuemart_order_id, &$emailCurrencyId) {
+
+		if (!($method = $this->getVmPluginMethod ($virtuemart_paymentmethod_id))) {
+			return NULL; // Another method was selected, do nothing
+		}
+		if (!$this->selectedThisElement ($method->payment_element)) {
+			return FALSE;
+		}
+		if (!($payments = $this->_getPaypalInternalData ($virtuemart_order_id))) {
+			// JError::raiseWarning(500, $db->getErrorMsg());
+			return '';
+		}
+		if (empty($payments[0]->email_currency)) {
+			$vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
+			$db = JFactory::getDBO ();
+			$q = 'SELECT   `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`=' . $vendorId;
+			$db->setQuery ($q);
+			$emailCurrencyId = $db->loadResult ();
+		} else {
+			$emailCurrencyId = $payments[0]->email_currency;
+		}
+
 	}
 
 	/**
@@ -417,7 +455,9 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if (!$this->selectedThisElement ($method->payment_element)) {
 			return FALSE;
 		}
-
+		if (isset($method->log_ipn) and $method->log_ipn) {
+			$this->logIpn ();
+		}
 		$this->_debug = $method->debug;
 
 		$this->logInfo ('paypal_data ' . implode ('   ', $paypal_data), 'message');
@@ -501,6 +541,17 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		//die();
 	}
 
+	function logIpn () {
+
+		$file = JPATH_ROOT . "/logs/paypal-ipn.log";
+		$date = JFactory::getDate ();
+
+		$fp = fopen ($file, 'a');
+		fwrite ($fp, "\n\n" . $date->toFormat ('%Y-%m-%d %H:%M:%S'));
+		fwrite ($fp, "\n" . var_export ($_POST, TRUE));
+		fclose ($fp);
+	}
+
 	/**
 	 * @param $method
 	 * @param $paypal_data
@@ -578,8 +629,11 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			if ($first) {
 				$html .= $this->getHtmlRowBE ('PAYPAL_PAYMENT_NAME', $payment->payment_name);
 				// keep that test to have it backwards compatible. Old version was deleting that column  when receiving an IPN notification
-				if ($payment->payment_order_total and  $payment->payment_order_total !=  0.00) {
+				if ($payment->payment_order_total and  $payment->payment_order_total != 0.00) {
 					$html .= $this->getHtmlRowBE ('PAYPAL_PAYMENT_ORDER_TOTAL', $payment->payment_order_total . " " . shopFunctions::getCurrencyByID ($payment->payment_currency, 'currency_code_3'));
+				}
+				if ($payment->email_currency and  $payment->email_currency != 0) {
+					$html .= $this->getHtmlRowBE ('PAYPAL_PAYMENT_EMAIL_CURRENCY', shopFunctions::getCurrencyByID ($payment->email_currency, 'currency_code_3'));
 				}
 				$first = FALSE;
 			}
