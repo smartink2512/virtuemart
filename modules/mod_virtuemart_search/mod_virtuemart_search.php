@@ -14,13 +14,13 @@ defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allow
 */
 
 // Load the virtuemart main parse code
-$button			 = $params->get('button', '');
-$imagebutton	 = $params->get('imagebutton', '');
+$button			 = $params->get('button', 0);
+$imagebutton	 = $params->get('imagebutton', 0);
 $button_pos		 = $params->get('button_pos', 'left');
-$button_text	 = $params->get('button_text', JText::_('Search'));
+$button_text	 = $params->get('button_text', JText::_('MOD_VIRTUEMART_SEARCH_GO'));
 $width			 = intval($params->get('width', 20));
 $maxlength		 = $width > 20 ? $width : 20;
-$text			 = $params->get('text', JText::_('search...'));
+$text			 = $params->get('text', JText::_('MOD_VIRTUEMART_SEARCH_TEXT_TXT'));
 $set_Itemid		 = intval($params->get('set_itemid', 0));
 $moduleclass_sfx = $params->get('moduleclass_sfx', '');
 

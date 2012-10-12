@@ -155,7 +155,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$type = NULL;
 			$cData = KlarnaHandler::getcData ($method, $this->getCartAddress ($cart, $type, FALSE));
 			if ($cData['active'] and in_array ('part', $cData['payments_activated'])) {
-				if (!empty($product->prices)) { // no price is set
+				//if (!empty($product->prices)) { // no price is set
+				if (!empty($product->prices['salesPrice'])) {
 					$productPrice = new klarna_productPrice($cData);
 					if ($productViewData = $productPrice->showProductPrice ($product, $cart)) {
 						$productDisplayHtml = $this->renderByLayout ('productprice_layout', $productViewData, $method->payment_element, 'payment');

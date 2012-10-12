@@ -19,11 +19,11 @@
 	<param name="width" type="text" default="20" label="MOD_VIRTUEMART_SEARCH_BOX_WIDTH" description="MOD_VIRTUEMART_SEARCH_BOX_WIDTH_DESC" />
 	<param name="text" type="text" default="" label="MOD_VIRTUEMART_SEARCH_TEXT" description="MOD_VIRTUEMART_SEARCH_TEXT_DESC" />
 	<param name="@spacer" type="spacer" default="" label="" description="" />
-	<param name="filter_category" type="radio" default="" label="MOD_VIRTUEMART_SEARCH_FILTER_CATEGORY" description="MOD_VIRTUEMART_SEARCH_FILTER_CATEGORY_DESC">
+	<param name="filter_category" type="radio" default="0" label="MOD_VIRTUEMART_SEARCH_FILTER_CATEGORY" description="MOD_VIRTUEMART_SEARCH_FILTER_CATEGORY_DESC">
         <option value="0">No</option>
         <option value="1">Yes</option>
 	</param>
-	<param name="button" type="radio" default="" label="MOD_VIRTUEMART_SEARCH_BUTTON" description="MOD_VIRTUEMART_SEARCH_BUTTON_DESC">
+	<param name="button" type="radio" default="0" label="MOD_VIRTUEMART_SEARCH_BUTTON" description="MOD_VIRTUEMART_SEARCH_BUTTON_DESC">
         <option value="0">No</option>
         <option value="1">Yes</option>
 	</param>
@@ -33,7 +33,7 @@
 	    <option value="top">Top</option>
 	    <option value="bottom">Bottom</option>
 	</param>
-	<param name="imagebutton" type="radio" default="" label="MOD_VIRTUEMART_SEARCH_BUTTON_AS_IMG" description="MOD_VIRTUEMART_SEARCH_BUTTON_AS_IMG_DESC">
+	<param name="imagebutton" type="radio" default="0" label="MOD_VIRTUEMART_SEARCH_BUTTON_AS_IMG" description="MOD_VIRTUEMART_SEARCH_BUTTON_AS_IMG_DESC">
         <option value="0">No</option>
         <option value="1">Yes</option>
 	</param>
@@ -54,11 +54,11 @@
 		<field name="width" type="text" default="20" label="MOD_VIRTUEMART_SEARCH_BOX_WIDTH" description="MOD_VIRTUEMART_SEARCH_BOX_WIDTH_DESC" />
 		<field name="text" type="text" default="" label="MOD_VIRTUEMART_SEARCH_TEXT" description="MOD_VIRTUEMART_SEARCH_TEXT_DESC" />
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="filter_category" type="radio" default="" label="MOD_VIRTUEMART_SEARCH_FILTER_CATEGORY" description="MOD_VIRTUEMART_SEARCH_FILTER_CATEGORY_DESC">
+		<field name="filter_category" type="radio" default="0" label="MOD_VIRTUEMART_SEARCH_FILTER_CATEGORY" description="MOD_VIRTUEMART_SEARCH_FILTER_CATEGORY_DESC">
             <option value="0">No</option>
             <option value="1">Yes</option>
 		</field>
-		<field name="button" type="radio" default="" label="MOD_VIRTUEMART_SEARCH_BUTTON" description="MOD_VIRTUEMART_SEARCH_BUTTON_DESC">
+		<field name="button" type="radio" default="0" label="MOD_VIRTUEMART_SEARCH_BUTTON" description="MOD_VIRTUEMART_SEARCH_BUTTON_DESC">
             <option value="0">No</option>
             <option value="1">Yes</option>
 		</field>
@@ -72,7 +72,7 @@
 		    <option value="bottom">MOD_VIRTUEMART_SEARCH_FIELD_VALUE_BOTTOM
 		    </option>
 		</field>
-		<field name="imagebutton" type="radio" default="" label="MOD_VIRTUEMART_SEARCH_BUTTON_AS_IMG" description="MOD_VIRTUEMART_SEARCH_BUTTON_AS_IMG_DESC">
+		<field name="imagebutton" type="radio" default="0" label="MOD_VIRTUEMART_SEARCH_BUTTON_AS_IMG" description="MOD_VIRTUEMART_SEARCH_BUTTON_AS_IMG_DESC">
             <option value="0">No</option>
             <option value="1">Yes</option>
 		</field>

@@ -24,11 +24,11 @@ defined ('_JEXEC') or die('Restricted access');
 		echo "<strong>" . JText::_ ('COM_VIRTUEMART_CART_PRICE') . "</strong>";
 	}
 	//vmdebug('view productdetails layout default show prices, prices',$this->product->prices);
-	if (empty($this->product->prices) and VmConfig::get ('askprice', 1) and !$this->product->images[0]->file_is_downloadable) {
+	if (empty($this->product->prices['salesPrice']) and VmConfig::get ('askprice', 1) and !$this->product->images[0]->file_is_downloadable) {
 		?>
 		<a class="ask-a-question bold" href="<?php echo $this->askquestion_url ?>"><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_ASKPRICE') ?></a>
 		<?php
-	}
+	} else {
 	if ($this->showBasePrice) {
 		echo $this->currency->createPriceDiv ('basePrice', 'COM_VIRTUEMART_PRODUCT_BASEPRICE', $this->product->prices);
 		echo $this->currency->createPriceDiv ('basePriceVariant', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_VARIANT', $this->product->prices);
@@ -46,6 +46,6 @@ defined ('_JEXEC') or die('Restricted access');
 	echo $this->currency->createPriceDiv ('taxAmount', 'COM_VIRTUEMART_PRODUCT_TAX_AMOUNT', $this->product->prices);
 	$unitPriceDescription = JText::sprintf ('COM_VIRTUEMART_PRODUCT_UNITPRICE', $this->product->product_unit);
 	echo $this->currency->createPriceDiv ('unitPrice', $unitPriceDescription, $this->product->prices);
-
+	}
 	?>
 </div>

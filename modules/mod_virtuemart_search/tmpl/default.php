@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			    else :
 			        $button = '<input type="submit" value="'.$button_text.'" class="button'.$moduleclass_sfx.'" onclick="this.form.keyword.focus();"/>';
 			    endif;
-			endif;
+		
 
 			switch ($button_pos) :
 			    case 'top' :
@@ -34,7 +34,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				    $output = $button.$output;
 				    break;
 			endswitch;
-
+			endif;
+			
 			echo $output;
 ?>
 </div>
