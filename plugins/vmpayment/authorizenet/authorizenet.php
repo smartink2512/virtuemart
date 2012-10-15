@@ -179,10 +179,18 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		        	<label for="cc_type">' . JText::_ ('VMPAYMENT_AUTHORIZENET_CCNUM') . '</label>
 		        </td>
 		        <td>
-		        <input type="text" class="inputbox" id="cc_number_' . $method->virtuemart_paymentmethod_id . '" name="cc_number_' . $method->virtuemart_paymentmethod_id . '" value="' . $this->_cc_number . '"    autocomplete="off"   onchange="ccError=razCCerror(' . $method->virtuemart_paymentmethod_id . ');
-	CheckCreditCardNumber(this . value, ' . $method->virtuemart_paymentmethod_id . ');
-	if (!ccError) {
-	    this.value=\'\';}" />
+				<script type="text/javascript">
+				//<![CDATA[  
+				  function checkAuthorizeNet(id, el)
+				   {
+				     ccError=razCCerror(id);
+					CheckCreditCardNumber(el.value, id);
+					if (!ccError) {
+					el.value=\'\';}
+				   }
+				//]]> 
+				</script>
+		        <input type="text" class="inputbox" id="cc_number_' . $method->virtuemart_paymentmethod_id . '" name="cc_number_' . $method->virtuemart_paymentmethod_id . '" value="' . $this->_cc_number . '"    autocomplete="off"   onchange="javascript:checkAuthorizeNet('.$method->virtuemart_paymentmethod_id.', this);"  />
 		        <div id="cc_cardnumber_errormsg_' . $method->virtuemart_paymentmethod_id . '"></div>
 		    </td>
 		    </tr>
@@ -202,11 +210,21 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		        <td> ';
 				$html .= shopfunctions::listMonths ('cc_expire_month_' . $method->virtuemart_paymentmethod_id, $this->_cc_expire_month);
 				$html .= " / ";
-
-				$html .= shopfunctions::listYears ('cc_expire_year_' . $method->virtuemart_paymentmethod_id, $this->_cc_expire_year, NULL, 2022, "onchange=\"var month = document.getElementById('cc_expire_month_'.$method->virtuemart_paymentmethod_id); if(!CreditCardisExpiryDate(month.value,this.value, '.$method->virtuemart_paymentmethod_id.')){this.value='';month.value='';}\" ");
+				$html .= '
+				<script type="text/javascript">
+				//<![CDATA[  
+				  function changeDate(id, el)
+				   {
+				     var month = document.getElementById(\'cc_expire_month_\'+id); if(!CreditCardisExpiryDate(month.value,el.value, id))
+					 {el.value=\'\';
+					 month.value=\'\';}
+				   }
+				//]]> 
+				</script>';
+				$html .= shopfunctions::listYears ('cc_expire_year_' . $method->virtuemart_paymentmethod_id, $this->_cc_expire_year, NULL, 2022, " onchange=\"javascript:changeDate(".$method->virtuemart_paymentmethod_id.", this);\" ");
 				$html .= '<div id="cc_expiredate_errormsg_' . $method->virtuemart_paymentmethod_id . '"></div>';
 				$html .= '</td>  </tr>  	</table></span>';
-
+ 
 				$htmla[] = $html;
 			}
 		}

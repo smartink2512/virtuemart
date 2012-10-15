@@ -586,24 +586,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	}
 
 	/**
-	 * @param $virtuemart_order_id
-	 * @return mixed|string
-	 */
-	function _getTablepkeyValue ($virtuemart_order_id) {
-
-		$db = JFactory::getDBO ();
-		$q = 'SELECT ' . $this->_tablepkey . ' FROM `' . $this->_tablename . '` '
-			. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
-		$db->setQuery ($q);
-
-		if (!($pkey = $db->loadResult ())) {
-			JError::raiseWarning (500, $db->getErrorMsg ());
-			return '';
-		}
-		return $pkey;
-	}
-
-	/**
 	 * Display stored payment data for an order
 	 *
 	 * @see components/com_virtuemart/helpers/vmPSPlugin::plgVmOnShowOrderBEPayment()

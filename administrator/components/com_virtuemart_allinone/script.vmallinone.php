@@ -241,7 +241,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				$src = $this->path . DS . 'plugins' . DS . $group . DS . $element;
 
 				$db = JFactory::getDBO ();
-				$q = 'SELECT COUNT(*) FROM `' . $tableName . '` WHERE `element` = "' . $element . '" ';
+				$q = 'SELECT COUNT(*) FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group . '" ';
 				$db->setQuery ($q);
 				$count = $db->loadResult ();
 

@@ -1265,6 +1265,9 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		if ($jplugin_id != $this->_jid) {
 			return FALSE;
 		}
+		if (!class_exists ('JFile')) {
+			require(JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
+		}
 		/*
 		 * if the file Klarna.cfg does not exist, then create it
 		 */
