@@ -311,7 +311,7 @@ defined('_JEXEC') or die('Restricted access');
 			    </span>
 			</td>
 			<td>
-			    <?php echo VmHTML::checkbox('show_store_desc', $this->config->get('show_store_desc', 0)); ?>
+			    <?php echo VmHTML::checkbox('show_store_desc', $this->config->get('show_store_desc')); ?>
 			</td>
 		    </tr>
 			
@@ -322,7 +322,18 @@ defined('_JEXEC') or die('Restricted access');
 			    </span>
 			</td>
 			<td>
-			    <?php echo VmHTML::checkbox('show_categories', $this->config->get('show_categories', 0)); ?>
+			    <?php echo VmHTML::checkbox('show_categories', $this->config->get('show_categories')); ?>
+			</td>
+		    </tr>
+			
+			<tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORIES_PER_ROW_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORIES_PER_ROW') ?>
+			    </span>
+			</td>
+			<td>
+			    <input type="text" name="homepage_categories_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('homepage_categories_per_row', 3) ?>" />
 			</td>
 		    </tr>
 			
