@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" >
-    <name>Vm Payment plugin Moneybookers Sofortüberweisung</name>
+    <name>Vm Payment plugin Moneybookers Sofortueberweisung</name>
     <creationDate>April 2012</creationDate>
     <author>Skrill Holdings Limited</author>
     <authorUrl>http://www.skrill.com</authorUrl>
