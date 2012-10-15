@@ -12,7 +12,17 @@ defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allow
 *
 * www.virtuemart.net
 */
+if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
+VmConfig::loadConfig();
 
+
+//Lets load first englisch, then joomla default standard, then user language.
+$jlang =JFactory::getLanguage();
+if(VmConfig::get('enableEnglish', 1)){
+    $jlang->load('com_virtuemart', JPATH_SITE, 'en-GB', true);
+}
+$jlang->load('mod_virtuemart_search', JPATH_SITE, $jlang->getDefault(), true);
+$jlang->load('mod_virtuemart_search', JPATH_SITE, null, true);
 // Load the virtuemart main parse code
 $button			 = $params->get('button', 0);
 $imagebutton	 = $params->get('imagebutton', 0);

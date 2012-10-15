@@ -32,7 +32,7 @@ class klarna_productPrice {
 
 		$this->cData = $cData;
 		//$this->currencyId = ShopFunctions::getCurrencyIDByName($this->cData['currency_code']);
-		vmdebug ('klarna_productPrice', $this->cData);
+		//vmdebug ('klarna_productPrice', $this->cData);
 		try {
 			$this->klarna_virtuemart = new Klarna_virtuemart();
 			$this->klarna_virtuemart->config ($this->cData['eid'], $this->cData['secret'], $this->cData['country'], $this->cData['language'], $this->cData['currency'], $this->cData['mode'], VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), FALSE);
