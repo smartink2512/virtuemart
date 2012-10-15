@@ -465,7 +465,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @param                $cart_prices_name
 	 * @return bool|null
 	 */
-	public function plgVmonSelectedCalculatePriceShipment (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
+	public function plgVmOnSelectedCalculatePriceShipment (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
 
 		return $this->onSelectedCalculatePrice ($cart, $cart_prices, $cart_prices_name);
 	}
