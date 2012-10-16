@@ -667,15 +667,14 @@ class VirtueMartModelProduct extends VmModel {
 
 			}
 
-			//     	vmdebug('getProduct Time: '.$runtime);
-
+			//vmdebug('getProduct Time: '.$runtime);
 			$child->published = $published;
 			$child->virtuemart_product_id = $pId;
 			$child->product_parent_id = $ppId;
 
 			if ($withCalc) {
 				$child->prices = $this->getPrice ($child, array(), 1);
-// 				vmError('deprecated use of $child->prices = $this->getPrice($child,array(),1)');
+				vmdebug(' use of $child->prices = $this->getPrice($child,array(),1)');
 			}
 
 			if (empty($child->product_template)) {
@@ -741,9 +740,18 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 
-			$ppTable = $this->getTable ('product_prices');
-			$ppTable->load ($this->_id);
-			$product = (object)array_merge ((array)$ppTable, (array)$product);
+			$db = JFactory::getDbo();
+			$q = 'SELECT * FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$this->_id.'" ';
+			$db->setQuery($q);
+			$product->prices = $db->loadAssocList();
+			//Todo this is a fallback, if the work is done for the multiple prices, remove !
+			if(count($product->prices===1)){
+				//vmdebug('my prices ',$prices);
+				//$ppTable = $this->getTable ('product_prices');
+				//$ppTable->load ($this->_id);
+				$product = (object)array_merge ((array)$product->prices[0], (array)$product);
+			}
+
 
 			if (!empty($product->virtuemart_manufacturer_id)) {
 				$mfTable = $this->getTable ('manufacturers');
