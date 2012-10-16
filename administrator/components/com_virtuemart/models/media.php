@@ -347,7 +347,7 @@ class VirtueMartModelMedia extends VmModel {
 
 		if (isset($data['media_published'])){
 			$data['published'] = $data['media_published'];
-			vmdebug('$data["published"]',$data['published']);
+			//vmdebug('$data["published"]',$data['published']);
 		}
 
 		$table->bindChecknStore($data);

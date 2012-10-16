@@ -405,6 +405,36 @@ class VmTable extends JTable{
 		}
 		return true;
 	}
+
+
+	function checkCreateUnique($tbl_name,$name){
+
+		$i = 0;
+
+		while($i<20){
+
+			$tbl_key = $this->_tbl_key;
+			$q = 'SELECT `'.$name.'` FROM `'.$tbl_name.'` WHERE `'.$name.'` =  "'.$this->$name.'"  AND `'.$this->_tbl_key.'`!='.$this->$tbl_key ;
+			$this->_db->setQuery($q);
+			$existingSlugName =$this->_db->loadResult();
+
+			if(!empty($existingSlugName)){
+				if($i==0){
+					if(JVM_VERSION===1) $this->$name = $this->$name . JFactory::getDate()->toFormat("%Y-%m-%d-%H-%M-%S").'_';
+					else $this->$name = $this->$name . JFactory::getDate()->format('Y-m-d-H-i-s').'_';
+				} else{
+					$this->$name = $this->$name.rand(1,9);
+				}
+			} else {
+				return true;
+			}
+			$i++;
+		}
+
+		return false;
+
+	}
+
 	/**
 	 * @author Max Milbers
 	 * @param
@@ -416,20 +446,41 @@ class VmTable extends JTable{
 			$slugAutoName = $this->_slugAutoName;
 			$slugName = $this->_slugName;
 
-			if(empty($this->$slugName)){
-				// 				vmdebug('table check use _slugAutoName '.$slugAutoName.' '.$slugName);
-				$this->$slugName = $this->$slugAutoName;
-			}
-			$used = true;
-			$i = 0;
-			if(JVM_VERSION===1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
-			else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
-			if (!$this->$slugName){
-				$this->$slugName = trim(str_replace('-',' ',$this->$slugName) );
+			if(in_array($slugAutoName,$this->_translatableFields)){
+				$checkTable = $this->_tbl.'_'.VMLANG;
+			} else {
+				$checkTable = $this->_tbl;
 			}
 
-			$tbl_key = $this->_tbl_key;
-			while($used && $i<10){
+			if(empty($this->$slugName)){
+				// 				vmdebug('table check use _slugAutoName '.$slugAutoName.' '.$slugName);
+				if(!empty($this->$slugAutoName)){
+					$this->$slugName = $this->$slugAutoName;
+				} else {
+					vmError('VmTable '.$checkTable.' Check not passed. Neither slug nor obligatory value at '.$slugAutoName.' for auto slug creation is given');
+					return false;
+				}
+
+			}
+
+			if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
+			vmdebug('check $slug before stringURLSafe',$this->$slugName);
+			$this->$slugName = vmFile::makeSafe( $this->$slugName );
+
+			//if(JVM_VERSION===1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
+			//else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
+
+			//why was this just with !
+			if (!empty($this->$slugName)){
+				$this->$slugName = trim(str_replace('-',' ',$this->$slugName) );
+			}
+			vmdebug('check after stringURLSafe',$this->$slugName);
+
+			$valid = $this->checkCreateUnique($checkTable,$slugName);
+			if(!$valid){
+				return false;
+			}
+/*			while($used && $i<10){
 
 				if(in_array($slugAutoName,$this->_translatableFields)){
 					$checkTable = $this->_tbl.'_'.VMLANG;
@@ -456,6 +507,7 @@ class VmTable extends JTable{
 				}
 				$i++;
 			}
+*/
 		}
 
 
@@ -483,7 +535,12 @@ class VmTable extends JTable{
 					vmError('Non unique '.$this->_unique_name.' '.$error);
 					return false;
 				} else {
-					$q = 'SELECT `' . $this->_tbl_key . '`,`' . $this->_db->getEscaped($obkeys) . '` FROM `' . $this->_tbl . '` ';
+
+					$valid = $this->checkCreateUnique($this->_tbl,$obkeys);
+					if(!$valid){
+						return false;
+					}
+				/*	$q = 'SELECT `' . $this->_tbl_key . '`,`' . $this->_db->getEscaped($obkeys) . '` FROM `' . $this->_tbl . '` ';
 					$q .= 'WHERE `' . $this->_db->getEscaped($obkeys) . '`="' . $this->_db->getEscaped($this->$obkeys) . '"';
 					$this->_db->setQuery($q);
 					$unique_id = $this->_db->loadResultArray();
@@ -498,6 +555,7 @@ class VmTable extends JTable{
 							}
 						}
 					}
+				*/
 				}
 
 				/* if(empty($error)){
