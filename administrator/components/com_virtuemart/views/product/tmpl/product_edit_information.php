@@ -27,10 +27,10 @@ $i=0;
 <fieldset>
 	<legend>
 	<?php echo JText::_('COM_VIRTUEMART_PRODUCT_INFORMATION'); echo ' id: '.$this->product->virtuemart_product_id ?></legend>
-    <table>
+    <table width="100%">
 	    <tr>
-        <td>
-			<table class="adminform">
+        <td width="50%">
+			<table width="100%" class="adminform">
 				<tr class="row<?php echo $i?>">
 					<td ><div style="text-align: right; font-weight: bold;">
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PUBLISH') ?></div>
@@ -84,7 +84,7 @@ $i=0;
             </table>
     </td>
 	<td>
-        <table class="adminform">
+        <table width="100%" class="adminform">
 						<?php $i = 1 - $i; ?>
 			<?php	if(Vmconfig::get('multix','none')!=='none'){ ?>
 				<tr class="row<?php echo $i?>">
