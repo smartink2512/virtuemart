@@ -157,17 +157,17 @@ span.bold{font-weight:700;}
 .vm2-termsofservice-icon{background-position:0 -1309px;height:24px;margin-right:6px;vertical-align:middle;width:24px;display:inline-block;}
 .vm2-modallink{height:16px;margin-left: 3px;vertical-align:top;width:16px;display:inline-block; background: url("../images/icon_external_link.gif") no-repeat scroll left top transparent;}
 .vm2-warning{background-position:0 -1383px;width:50px;height:40px;}
-.vendor-store-desc,.category-view,.featured-view,.latest-view,.topten-view,.related-products-view,.browse-view,.order-view{margin-bottom:25px;}
+.vendor-store-desc,.category-view,.featured-view,.latest-view,.topten-view,.recent-view,.related-products-view,.browse-view,.order-view{margin-bottom:25px;}
 .main-image,.featured-view .product,.latest-view .product,.topten-view .product,.recent-view .product,.related-products-view .product,.center,span.center{text-align:center;}
-.main-image img.product-image,.featured-view .spacer img,.latest-view .spacer img,.topten-view .spacer img{max-width:100%;height:auto;width:auto;}
-.additional-images,.featured-view .product-price,.latest-view .product-price,.topten-view .product-price,.output-billto,.output-shipto{margin:10px 0;}
+.main-image img.product-image,.featured-view .spacer img,.latest-view .spacer img,.topten-view .spacer img,.recent-view .spacer img{max-width:100%;height:auto;width:auto;}
+.additional-images,.featured-view .product-price,.latest-view .product-price,.topten-view .product-price,.recent-view .product-price,.output-billto,.output-shipto{margin:10px 0;}
 .ask-a-question,.manufacturer,.manufacturer-details-view .email-weblink,.manufacturer-details-view .description{margin:10px 0 0;}
 .customer-reviews,.ask-a-question-view .form-field{margin:25px 0 0;}
 span.variant-name,span.custom-variant-name{width:100px;float:left;display:block;margin-bottom:5px;}
 span.addtocart-button input.addtocart-button:hover,span.addtocart-button input.notify-button:hover,input.highlight-button:hover,a.highlight:hover{background-position:0 -200px;color:#f2f2f2;}
-.category-view .row .category .spacer,.featured-view .spacer,.latest-view .spacer,.topten-view .spacer,.related-products-view .spacer,.browse-view .row .product .spacer{padding:6px;}
-.featured-view .spacer h3,.latest-view .spacer h3,.topten-view .spacer h3,.related-products-view .spacer h3,.browse-view .row .product .spacer h2{font-size:14px;margin:0 0 6px;padding:0;}
-.featured-view .spacer span,.latest-view .spacer span,.topten-view .spacer span,.related-products-view .spacer span,.browse-view .row .product .spacer span{font-size:11px;color:#666;}
+.category-view .row .category .spacer,.featured-view .spacer,.latest-view .spacer,.topten-view .spacer,.recent-view .spacer,.related-products-view .spacer,.browse-view .row .product .spacer{padding:6px;}
+.featured-view .spacer h3,.latest-view .spacer h3,.topten-view .spacer h3,.recent-view .spacer h3,.related-products-view .spacer h3,.browse-view .row .product .spacer h2{font-size:14px;margin:0 0 6px;padding:0;}
+.featured-view .spacer span,.latest-view .spacer span,.topten-view .spacer span,.recent-view .spacer span,.related-products-view .spacer span,.browse-view .row .product .spacer span{font-size:11px;color:#666;}
 .browse-view .row .product .spacer img,.related-products-view .row .product .spacer img{max-width:90%;height:auto;}
 .display-number,.control-buttons,.right{text-align:right !important;}
 .ask-a-question-view,.manufacturer-details-view .spacer{padding:30px;}
