@@ -115,8 +115,9 @@ class VirtuemartViewInvoice extends VmView {
 			return 0;
 		}
 		$this->assignRef('orderDetails', $orderDetails);
-
-		if(empty($this->invoiceNumber)){
+        $this->invoiceNumber = "";
+		$this->invoiceDate = "";
+		if(empty($this->invoiceNumber) and !$print){
 		    $invoiceNumberDate=array();
 			if (  $orderModel->createInvoiceNumber($orderDetails['details']['BT'], $invoiceNumberDate)) {
                 if (ShopFunctions::InvoiceNumberReserved( $invoiceNumberDate[0])) {
@@ -210,11 +211,11 @@ class VirtuemartViewInvoice extends VmView {
 		    $returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array( $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_paymentmethod_id,  &$orderDetails['paymentName']));
 			if(is_array($returnValues)){
 				foreach($returnValues as $val){
-					if($val==false and $layout != 'mail'){
+					if($val==false and $layout != 'mail' and !$print){
 						// don't send the invoice
 						$app = JFactory::getApplication();
 						$app->redirect('index.php?option=com_virtuemart&view=orders','Klarna is doing the invoice');
-		}
+					}
 				}
 			}
 		}

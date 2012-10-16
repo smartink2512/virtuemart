@@ -19,15 +19,17 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-
+<?php if ($this->invoiceNumber) { ?>
 <h1><?php echo JText::_('COM_VIRTUEMART_INVOICE').' '.$this->invoiceNumber; ?> </h1>
-
+<?php } ?>
 
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
+	<?php if ($this->invoiceNumber) { ?>
     <tr>
 	<td class=""><?php echo JText::_('COM_VIRTUEMART_INVOICE_DATE') ?></td>
 	<td align="left"><?php echo vmJsApi::date($this->invoiceDate, 'LC4', true); ?></td>
     </tr>
+	    <?php } ?>
     <tr>
 	<td ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></td>
 	<td align="left"><strong>
