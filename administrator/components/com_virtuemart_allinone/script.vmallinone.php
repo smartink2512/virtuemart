@@ -12,8 +12,13 @@ defined ('_JEXEC') or die('Restricted access');
 
 defined ('DS') or define('DS', DIRECTORY_SEPARATOR);
 
-@ini_set ('memory_limit', '32M');
-@ini_set ('max_execution_time', '120');
+$max_execution_time = ini_get('max_execution_time');
+if((int)$max_execution_time<120) {
+	@ini_set( 'max_execution_time', '120' );
+}
+$memory_limit = (int) substr(ini_get('memory_limit'),0,-1);
+if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
+
 // hack to prevent defining these twice in 1.6 installation
 if (!defined ('_VM_SCRIPT_INCLUDED')) {
 

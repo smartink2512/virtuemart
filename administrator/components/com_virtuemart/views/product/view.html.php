@@ -76,8 +76,19 @@ class VirtuemartViewProduct extends VmView {
 				$this->assignRef('category_tree', $category_tree);
 
 				//Get the shoppergoup list - Cleanshooter Custom Shopper Visibility
-				if (isset($product->shoppergroups)) $shoppergroupList = ShopFunctions::renderShopperGroupList($product->shoppergroups, true);
+				if (isset($product->shoppergroups)) $shoppergroupList = ShopFunctions::renderShopperGroupList($product->shoppergroups);
 				$this->assignRef('shoppergroupList', $shoppergroupList);
+
+				//the shoppergroup list for the prices must be done manual
+			/*	$shopperModel = VmModel::getModel ('shoppergroup');
+				$shoppergrps = $shopperModel->getShopperGroups (FALSE, TRUE);
+				$attrs = '';
+				$name = 'shopper_group_name';
+				$idA = $id = 'virtuemart_shoppergroup_id';
+				$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+				array_unshift ($shoppergrps, $emptyOption);
+
+				$listHTML = JHTML::_ ('select.genericlist', $shoppergrps, $idA, $attrs, $id, $name, $this->product->virtuemart_shoppergroup_id);*/
 
 				// Load the product price
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
@@ -139,11 +150,13 @@ class VirtuemartViewProduct extends VmView {
 				}
 				$this->assignRef('imagePath', $imagePath);
 
-				// Load the vendors
-				$vendor_model = VmModel::getModel('vendor');
+
 
 				// 				$vendors = $vendor_model->getVendors();
 				// 				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $product->virtuemart_vendor_id);
+
+				// Load the vendors
+				$vendor_model = VmModel::getModel('vendor');
 
 				if(Vmconfig::get('multix','none')!=='none'){
 					$lists['vendors'] = Shopfunctions::renderVendorList($product->virtuemart_vendor_id);
@@ -151,7 +164,9 @@ class VirtuemartViewProduct extends VmView {
 				// Load the currencies
 				$currency_model = VmModel::getModel('currency');
 
-				$vendor_model->setId(1);
+				$this->loadHelper('permissions');
+
+				$vendor_model->setId(Permissions::getInstance()->isSuperVendor());
 				$vendor = $vendor_model->getVendor();
 				if(empty($product->product_currency)){
 					$product->product_currency = $vendor->vendor_currency;
@@ -166,6 +181,7 @@ class VirtuemartViewProduct extends VmView {
 				if(count($manufacturers)>0 ){
 					$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
 				}
+
 
 				$lists['product_weight_uom'] = ShopFunctions::renderWeightUnitList('product_weight_uom',$task=='add'? VmConfig::get('weight_unit_default'): $product->product_weight_uom);
 				$lists['product_iso_uom'] = ShopFunctions::renderUnitIsoList('product_unit',$task=='add'? VmConfig::get('weight_unit_default'): $product->product_unit);
@@ -227,15 +243,17 @@ class VirtuemartViewProduct extends VmView {
 
 				$this->assignRef('tzoffset',	$tzoffset);
 
-				// Assign the values
-				$this->assignRef('pane', $pane);
-				$this->assignRef('editor', $editor);
+				// Assign the values ??
+				//$this->assignRef('pane', $pane);
+				//$this->assignRef('editor', $editor);
+				//$this->assignRef('related_products', $related_products);
+
 
 				$this->assignRef('product', $product);
 				$this->assignRef('currencies', $currencies);
 //no need moved to top $this->assignRef('manufacturers', $manufacturers);
 
-				$this->assignRef('related_products', $related_products);
+
 
 				$this->assignRef('product_parent', $product_parent);
 				/* Assign label values */

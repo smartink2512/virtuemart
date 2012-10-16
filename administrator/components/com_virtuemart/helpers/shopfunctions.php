@@ -1495,6 +1495,7 @@ class ShopFunctions {
 
 		$html = '';
 		$i=0;
+		if(empty($productShoppers)) return '';
 		foreach ($productShoppers as $email => $productShopper) {
 			$html .= '<tr  class="customer row'.$i.'" data-cid="' . $productShopper['email'] . '">
 			<td rowspan ="'.$productShopper['nb_orders'] .'">' . $productShopper['name'] . '</td>

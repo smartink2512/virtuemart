@@ -1238,41 +1238,58 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	function remove($userIds)
 	{
-		$userInfo = $this->getTable('userinfos');
-		$vm_shoppergroup_xref = $this->getTable('vmuser_shoppergroups');
-		$vmusers = $this->getTable('vmusers');
-		$_status = true;
-		foreach($userIds as $userId) {
-			if ($this->getSuperAdminCount() <= 1) {
-				// Prevent deletion of the only Super Admin
-				$_u = JUser::getInstance($userId);
-				if ($_u->get('gid') == __SUPER_ADMIN_GID) {
-					vmError(JText::_('COM_VIRTUEMART_USER_ERR_LASTSUPERADMIN'));
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if(Permissions::getInstance()->check('admin','storeadmin')) {
+
+			$userInfo = $this->getTable('userinfos');
+			$vm_shoppergroup_xref = $this->getTable('vmuser_shoppergroups');
+			$vmusers = $this->getTable('vmusers');
+			$_status = true;
+			foreach($userIds as $userId) {
+
+				$_JUser = JUser::getInstance($userId);
+
+				if ($this->getSuperAdminCount() <= 1) {
+					// Prevent deletion of the only Super Admin
+					//$_u = JUser::getInstance($userId);
+					if ($_JUser->get('gid') == __SUPER_ADMIN_GID) {
+						vmError(JText::_('COM_VIRTUEMART_USER_ERR_LASTSUPERADMIN'));
+						$_status = false;
+						continue;
+					}
+				}
+
+				if(Permissions::getInstance()->check('storeadmin')) {
+					if ($_JUser->get('gid') == __SUPER_ADMIN_GID) {
+						vmError(JText::_('COM_VIRTUEMART_USER_ERR_LASTSUPERADMIN'));
+						$_status = false;
+						continue;
+					}
+				}
+
+				if (!$userInfo->delete($userId)) {
+					vmError($userInfo->getError());
+					return false;
+				}
+				if (!$vm_shoppergroup_xref->delete($userId)) {
+					vmError($vm_shoppergroup_xref->getError()); // Signal but continue
+					$_status = false;
+					continue;
+				}
+				if (!$vmusers->delete($userId)) {
+					vmError($vmusers->getError()); // Signal but continue
+					$_status = false;
+					continue;
+				}
+
+				if (!$_JUser->delete()) {
+					vmError($_JUser->getError());
 					$_status = false;
 					continue;
 				}
 			}
-
-			if (!$userInfo->delete($userId)) {
-				vmError($userInfo->getError());
-				return false;
-			}
-			if (!$vm_shoppergroup_xref->delete($userId)) {
-				vmError($vm_shoppergroup_xref->getError()); // Signal but continue
-				$_status = false;
-				continue;
-			}
-			if (!$vmusers->delete($userId)) {
-				vmError($vmusers->getError()); // Signal but continue
-				$_status = false;
-				continue;
-			}
-			$_JUser = JUser::getInstance($userId);
-			if (!$_JUser->delete()) {
-				vmError($_JUser->getError());
-				return false;
-			}
 		}
+
 		return $_status;
 	}
 

@@ -156,15 +156,16 @@ class VirtuemartViewProduct extends JView {
 			$this->json['ok'] = 1 ;
 		} else if ($this->type=='userlist')
 		{
-
-			if ($status = JRequest::getvar('status')) {
+			$status = JRequest::getvar('status');
+			$productShoppers=0;
+			if ($status) {
 				$productModel = VmModel::getModel('product');
 				$productShoppers = $productModel->getProductShoppersByStatus($product_id ,$status);
-				if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-				$html = ShopFunctions::renderProductShopperList($productShoppers);
 			}
-
+			if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+			$html = ShopFunctions::renderProductShopperList($productShoppers);
 			$this->json['value'] = $html;
+
 		} else $this->json['ok'] = 0 ;
 
 		if ( empty($this->json)) {

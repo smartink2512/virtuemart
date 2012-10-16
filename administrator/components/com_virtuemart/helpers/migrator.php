@@ -42,6 +42,8 @@ class Migrator extends VmModel{
 		if(!empty($jrmax_execution_time)){
 			// 			vmdebug('$jrmax_execution_time',$jrmax_execution_time);
 			if($max_execution_time!=$jrmax_execution_time) @ini_set( 'max_execution_time', $jrmax_execution_time );
+		} else if((int)$max_execution_time<60) {
+			@ini_set( 'max_execution_time', 60 );
 		}
 
 		$this->maxScriptTime = ini_get('max_execution_time')*0.80-1;	//Lets use 30% of the execution time as reserve to store the progress

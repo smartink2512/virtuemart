@@ -22,27 +22,29 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <?php echo $this->langList;
 $i=0;
 ?>
-<table class="adminform">
-	<tr>
-		<td width="45%" valign="top">
-			<fieldset>
-				<legend>
-				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_INFORMATION'); echo ' id: '.$this->product->virtuemart_product_id ?></legend>
-				<table class="adminform">
-					<tr class="row<?php echo $i?>">
-						<td width="25%"><div style="text-align: right; font-weight: bold;">
-						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PUBLISH') ?></div>
-						</td>
-						<td >
-							<?php echo  VmHTML::checkbox('published', $this->product->published); ?>
-						</td>
-                        <td ><div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?></div>
-                        </td>
-                        <td >
-							<?php echo VmHTML::checkbox('product_special', $this->product->product_special); ?>
-                        </td>
-					</tr>
+
+
+<fieldset>
+	<legend>
+	<?php echo JText::_('COM_VIRTUEMART_PRODUCT_INFORMATION'); echo ' id: '.$this->product->virtuemart_product_id ?></legend>
+    <table>
+	    <tr>
+        <td>
+			<table class="adminform">
+				<tr class="row<?php echo $i?>">
+					<td ><div style="text-align: right; font-weight: bold;">
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PUBLISH') ?></div>
+					</td>
+					<td >
+						<?php echo  VmHTML::checkbox('published', $this->product->published); ?>
+					</td>
+                    <td ><div style="text-align:right;font-weight:bold;">
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?></div>
+                    </td>
+                    <td >
+						<?php echo VmHTML::checkbox('product_special', $this->product->product_special); ?>
+                    </td>
+				</tr>
 				<?php $i = 1 - $i; ?>
 				<tr class="row<?php echo $i?>">
 					<td  >
@@ -79,6 +81,10 @@ $i=0;
 						<input type="text" class="inputbox" name="product_url" value="<?php echo $this->product->product_url; ?>" size="32" maxlength="255" />
 					</td>
 				</tr>
+            </table>
+    </td>
+	<td>
+        <table class="adminform">
 						<?php $i = 1 - $i; ?>
 			<?php	if(Vmconfig::get('multix','none')!=='none'){ ?>
 				<tr class="row<?php echo $i?>">
@@ -140,10 +146,11 @@ $i=0;
 						<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'value', 'text', $this->product->layout); ?>
 					</td>
 				</tr>
-
-			</table>
-		</fieldset>
+            </table>
 		</td>
+        </tr>
+	</table>
+</fieldset>
 
 		<td valign="top">
 			<!-- Product pricing -->
