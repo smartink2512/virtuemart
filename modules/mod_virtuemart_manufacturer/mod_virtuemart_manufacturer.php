@@ -21,12 +21,10 @@ require('helper.php');
 if (!class_exists( 'VirtueMartModelManufacturer' ))
    JLoader::import( 'manufacturer', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models' );
 
-$jlang =JFactory::getLanguage();
-if(VmConfig::get('enableEnglish', 1)){
-    $jlang->load('mod_virtuemart_manufacturer', JPATH_SITE, 'en-GB', true);
-}
-$jlang->load('mod_virtuemart_manufacturer', JPATH_SITE, $jlang->getDefault(), true);
-$jlang->load('mod_virtuemart_manufacturer', JPATH_SITE, null, true);
+if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
+
+VmConfig::loadConfig();
+VmConfig::loadJLang('mod_virtuemart_manufacturer', true);
 $vendorId = JRequest::getInt('vendorid', 1);
 $model = VmModel::getModel('Manufacturer');
 

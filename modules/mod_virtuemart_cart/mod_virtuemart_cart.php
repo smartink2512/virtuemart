@@ -22,13 +22,13 @@ $jsVars  = ' jQuery(document).ready(function(){
 	jQuery(".vmCartModule").productUpdate();
 
 });' ;
-$jlang =JFactory::getLanguage();
-if(VmConfig::get('enableEnglish', 1)){
-    $jlang->load('mod_virtuemart_cart', JPATH_SITE, 'en-GB', true);
-}
-$jlang->load('mod_virtuemart_cart', JPATH_SITE, $jlang->getDefault(), true);
-$jlang->load('mod_virtuemart_cart', JPATH_SITE, null, true);
+
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
+
+VmConfig::loadConfig();
+VmConfig::loadJLang('mod_virtuemart_cart', true);
+
+
 
 if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 $cart = VirtueMartCart::getCart(false);

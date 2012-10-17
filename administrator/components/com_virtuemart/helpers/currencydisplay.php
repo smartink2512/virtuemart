@@ -489,7 +489,7 @@ class CurrencyDisplay {
 			$this->_db->setQuery($q);
 			$currInt = $this->_db->loadResult();
 			if(empty($currInt)){
-				JError::raiseWarning(E_WARNING,'Attention, couldnt find currency code in the table for id = '.$curr);
+				JError::raiseWarning(E_WARNING,'Attention, could not find currency code in the table for id = '.$curr);
 			}
 			return $currInt;
 		}

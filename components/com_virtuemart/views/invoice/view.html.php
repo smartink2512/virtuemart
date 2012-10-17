@@ -64,10 +64,15 @@ class VirtuemartViewInvoice extends VmView {
 		$this->assignRef('print', $print);
 
 		$this->format = JRequest::getWord('format','html');
-
 		if($layout == 'invoice'){
 			$document->setTitle( JText::_('COM_VIRTUEMART_INVOICE') );
 		}
+		$order_print=false;
+
+		if ($print and $this->format=='html') {
+			$order_print=true;
+		}
+
 
 		$orderModel = VmModel::getModel('orders');
 
@@ -115,18 +120,14 @@ class VirtuemartViewInvoice extends VmView {
 			return 0;
 		}
 		$this->assignRef('orderDetails', $orderDetails);
-        //$this->invoiceNumber = "";
-		//$this->invoiceDate = "";
-		//if(empty($this->invoiceNumber) and !$print){
-		if(empty($this->invoiceNumber) ){
+        // if it is order print, invoice number should not be created, either it is there, either it has not been created
+		if(empty($this->invoiceNumber) and !$order_print){
 		    $invoiceNumberDate=array();
 			if (  $orderModel->createInvoiceNumber($orderDetails['details']['BT'], $invoiceNumberDate)) {
                 if (ShopFunctions::InvoiceNumberReserved( $invoiceNumberDate[0])) {
-	                if (!JFactory::getApplication()->isSite() ){
-	                    vmInfo('COM_VIRTUEMART_INVOICE_NUMBER_RESERVED');
-	                }
 	                if  ($this->uselayout!='mail') {
-                    //    return ;
+		                $document->setTitle( JText::_('COM_VIRTUEMART_PAYMENT_INVOICE') );
+                        return ;
 	                }
                 }
 			    $this->invoiceNumber = $invoiceNumberDate[0];
@@ -140,7 +141,7 @@ class VirtuemartViewInvoice extends VmView {
 			} else {
 				// Could OR should not create Invoice Number, createInvoiceNumber failed
 				if  ($this->uselayout!='mail') {
-				//	return ;
+					return ;
 				}
 			}
 		}
@@ -210,16 +211,7 @@ class VirtuemartViewInvoice extends VmView {
 		    JPluginHelper::importPlugin('vmpayment');
 		    $dispatcher = JDispatcher::getInstance();
 		    $returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array( $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_paymentmethod_id,  &$orderDetails['paymentName']));
-			if(is_array($returnValues)){
-				foreach($returnValues as $val){
-					//if($val==false and $layout != 'mail' and !$print){
-					if($val==false and $layout != 'mail'){
-						// don't send the invoice
-						$app = JFactory::getApplication();
-						$app->redirect('index.php?option=com_virtuemart&view=orders',JText::_('Payment method is preventing virtuemart to display the invoice number, please visit the sit of the payment'));
-					}
-				}
-			}
+
 		}
 
 		$virtuemart_vendor_id=1;
@@ -277,6 +269,7 @@ class VirtuemartViewInvoice extends VmView {
 // 		$dumptrace = ob_get_contents();
 // 		ob_end_clean();
 // 		return false;
+
 
 		parent::display($tpl);
 	}
