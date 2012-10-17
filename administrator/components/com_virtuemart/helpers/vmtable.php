@@ -47,12 +47,15 @@ class VmTable extends JTable{
 	var $_translatable = false;
 	protected $_translatableFields = array();
 
+	static $_cache = null;
+
 	function __construct( $table, $key, &$db ){
 
 		$this->_tbl		= $table;
 		$this->_tbl_key	= $key;
 		$this->_db		=& $db;
 		$this->_pkey = $key;
+		$this->_cache = null;
 	}
 
 	function setPrimaryKey($key, $keyForm=0){
@@ -173,6 +176,36 @@ class VmTable extends JTable{
 			$this->setProperties($_fieldlist);
 		}
 	}
+
+	/**
+	 * Get the columns from database table.
+	 *
+	 * adjusted to vm2, We use the same, except that the cache is not a global static,.. we use static belonging to table
+	 * @return  mixed  An array of the field names, or false if an error occurs.
+	 *
+	 * @since   11.1
+	 */
+
+	public function getFields()
+	{
+		if ($this->_cache === null)
+		{
+			// Lookup the fields for this table only once.
+			$name = $this->_tbl;
+			$fields = $this->_db->getTableColumns($name, false);
+
+			if (empty($fields))
+			{
+				$e = new JException(JText::_('JLIB_DATABASE_ERROR_COLUMNS_NOT_FOUND'));
+				$this->setError($e);
+				return false;
+			}
+			$this->_cache = $fields;
+		}
+
+		return $this->_cache;
+	}
+
 
 	function checkDataContainsTableFields($from, $ignore=array()){
 
