@@ -464,7 +464,7 @@ class VmTable extends JTable{
 			}
 
 			if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
-			vmdebug('check $slug before stringURLSafe',$this->$slugName);
+			//vmdebug('check $slug before stringURLSafe',$this->$slugName);
 			$this->$slugName = vmFile::makeSafe( $this->$slugName );
 
 			//if(JVM_VERSION===1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
@@ -474,40 +474,12 @@ class VmTable extends JTable{
 			if (!empty($this->$slugName)){
 				$this->$slugName = trim(str_replace('-',' ',$this->$slugName) );
 			}
-			vmdebug('check after stringURLSafe',$this->$slugName);
 
 			$valid = $this->checkCreateUnique($checkTable,$slugName);
 			if(!$valid){
 				return false;
 			}
-/*			while($used && $i<10){
 
-				if(in_array($slugAutoName,$this->_translatableFields)){
-					$checkTable = $this->_tbl.'_'.VMLANG;
-				} else {
-					$checkTable = $this->_tbl;
-				}
-
-				$q = 'SELECT `'.$slugName.'` FROM `'.$checkTable.'` WHERE `'.$slugName.'` =  "'.$this->$slugName.'"  AND `'.$this->_tbl_key.'`!='.$this->$tbl_key ;
-				$this->_db->setQuery($q);
-				$existingSlugName =$this->_db->loadResult();
-
-				if(!empty($existingSlugName)){
-					if($i==0){
-						if(JVM_VERSION===1) $this->$slugName = $this->$slugName . JFactory::getDate()->toFormat("%Y-%m-%d-%H-%M-%S").'_';
-						else $this->$slugName = $this->$slugName . JFactory::getDate()->format('Y-m-d-H-i-s').'_';
-					} else{
-						$this->$slugName = $this->$slugName.rand(1,9);
-					}
-					$used = true;
-
-					// 					vmError(get_class($this).' ');
-				} else {
-					$used = false;
-				}
-				$i++;
-			}
-*/
 		}
 
 
@@ -540,30 +512,9 @@ class VmTable extends JTable{
 					if(!$valid){
 						return false;
 					}
-				/*	$q = 'SELECT `' . $this->_tbl_key . '`,`' . $this->_db->getEscaped($obkeys) . '` FROM `' . $this->_tbl . '` ';
-					$q .= 'WHERE `' . $this->_db->getEscaped($obkeys) . '`="' . $this->_db->getEscaped($this->$obkeys) . '"';
-					$this->_db->setQuery($q);
-					$unique_id = $this->_db->loadResultArray();
 
-					$tblKey = $this->_tbl_key;
-					if(!empty($unique_id)){
-						foreach($unique_id as $id){
-							if($id != $this->$tblKey){
-								//$datenow = JFactory::getDate();
-								$this->$obkeys = $this->$obkeys.rand();
-								vmWarn('COM_VIRTUEMART_NON_UNIQUE_WARN',$obkeys,$this->_tbl,$this->$obkeys);
-							}
-						}
-					}
-				*/
 				}
 
-				/* if(empty($error)){
-				 vmError(JText::_($error));
-				}else {
-				vmError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE', $this->_tbl, $obkeys . ': ' . $this->$obkeys));
-				}*/
-				//return false;
 			}
 		}
 

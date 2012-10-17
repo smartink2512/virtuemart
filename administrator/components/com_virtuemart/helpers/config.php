@@ -411,14 +411,18 @@ class VmConfig {
 	 * @param $name
 	 * @return bool
 	 */
-	static public function loadJLang($name){
+	static public function loadJLang($name,$site=false){
 
+		$path = JPATH_ADMINISTRATOR;
+		if($site){
+			$path = JPATH_SITE;
+		}
 		$jlang =JFactory::getLanguage();
 		if(VmConfig::get('enableEnglish', 1)){
-			$jlang->load($name, JPATH_ADMINISTRATOR, 'en-GB');
+			$jlang->load($name, $path, 'en-GB');
 		}
-		$jlang->load($name, JPATH_ADMINISTRATOR, $jlang->getDefault());
-		$jlang->load($name, JPATH_ADMINISTRATOR, NULL);
+		$jlang->load($name, $path, $jlang->getDefault());
+		$jlang->load($name, $path, NULL);
 		return TRUE;
 	}
 

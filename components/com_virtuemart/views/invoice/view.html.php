@@ -115,9 +115,10 @@ class VirtuemartViewInvoice extends VmView {
 			return 0;
 		}
 		$this->assignRef('orderDetails', $orderDetails);
-        $this->invoiceNumber = "";
-		$this->invoiceDate = "";
-		if(empty($this->invoiceNumber) and !$print){
+        //$this->invoiceNumber = "";
+		//$this->invoiceDate = "";
+		//if(empty($this->invoiceNumber) and !$print){
+		if(empty($this->invoiceNumber) ){
 		    $invoiceNumberDate=array();
 			if (  $orderModel->createInvoiceNumber($orderDetails['details']['BT'], $invoiceNumberDate)) {
                 if (ShopFunctions::InvoiceNumberReserved( $invoiceNumberDate[0])) {
@@ -125,7 +126,7 @@ class VirtuemartViewInvoice extends VmView {
 	                    vmInfo('COM_VIRTUEMART_INVOICE_NUMBER_RESERVED');
 	                }
 	                if  ($this->uselayout!='mail') {
-                        return ;
+                    //    return ;
 	                }
                 }
 			    $this->invoiceNumber = $invoiceNumberDate[0];
@@ -139,7 +140,7 @@ class VirtuemartViewInvoice extends VmView {
 			} else {
 				// Could OR should not create Invoice Number, createInvoiceNumber failed
 				if  ($this->uselayout!='mail') {
-					return ;
+				//	return ;
 				}
 			}
 		}
@@ -211,10 +212,11 @@ class VirtuemartViewInvoice extends VmView {
 		    $returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array( $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_paymentmethod_id,  &$orderDetails['paymentName']));
 			if(is_array($returnValues)){
 				foreach($returnValues as $val){
-					if($val==false and $layout != 'mail' and !$print){
+					//if($val==false and $layout != 'mail' and !$print){
+					if($val==false and $layout != 'mail'){
 						// don't send the invoice
 						$app = JFactory::getApplication();
-						$app->redirect('index.php?option=com_virtuemart&view=orders','Klarna is doing the invoice');
+						$app->redirect('index.php?option=com_virtuemart&view=orders',JText::_('Payment method is preventing virtuemart to display the invoice number, please visit the sit of the payment'));
 					}
 				}
 			}
