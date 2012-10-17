@@ -34,10 +34,10 @@ defined ('_JEXEC') or die('Restricted access');
 		echo $this->currency->createPriceDiv ('basePriceVariant', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_VARIANT', $this->product->prices);
 	}
 	echo $this->currency->createPriceDiv ('variantModification', 'COM_VIRTUEMART_PRODUCT_VARIANT_MOD', $this->product->prices);
-	if ($this->product->prices['basePriceWithTax'] !== $this->product->prices['salesPrice']) {
+	if (round($this->product->prices['basePriceWithTax'],VmConfig::get('salesPriceRounding')) != $this->product->prices['salesPrice']) {
 		echo '<span class="price-crossed" >' . $this->currency->createPriceDiv ('basePriceWithTax', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_WITHTAX', $this->product->prices) . "</span>";
 	}
-	if ($this->product->prices['salesPriceWithDiscount'] != $this->product->prices['salesPrice']) {
+	if (round($this->product->prices['salesPriceWithDiscount'],VmConfig::get('salesPriceRounding')) != $this->product->prices['salesPrice']) {
 		echo $this->currency->createPriceDiv ('salesPriceWithDiscount', 'COM_VIRTUEMART_PRODUCT_SALESPRICE_WITH_DISCOUNT', $this->product->prices);
 	}
 	echo $this->currency->createPriceDiv ('salesPrice', 'COM_VIRTUEMART_PRODUCT_SALESPRICE', $this->product->prices);
