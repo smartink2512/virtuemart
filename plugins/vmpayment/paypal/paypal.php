@@ -502,7 +502,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		// 1. check the payment_status is Completed
 		if (strcmp ($paypal_data['payment_status'], 'Completed') == 0) {
 			// 2. check that txn_id has not been previously processed
-			if ($this->_check_txn_id_already_processed ($payments, $paypal_data['txn_id'])) {
+			if ($this->_check_txn_id_already_processed ($payments, $paypal_data['txn_id'], $method)) {
 				return;
 			}
 			// 3. check email and amount currency is correct
@@ -717,14 +717,19 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		return '';
 	}
 
-	function _check_txn_id_already_processed ($payments, $txn_id) {
+	function _check_txn_id_already_processed ($payments, $txn_id, $method) {
 
-		foreach ($payments as $payment) {
-			if ($payment->paypal_response_txn_id == $txn_id) {
-				return TRUE;
+		$virtuemart_order_id = $payments[0] ->virtuemart_order_id;
+		$orderModel = VmModel::getModel ('orders');
+		$order = $orderModel->getOrder ($virtuemart_order_id);
+
+		if ($order['details']['BT']->order_status == $method->status_success) {
+			foreach ($payments as $payment) {
+				if ($payment->paypal_response_txn_id == $txn_id) {
+					return TRUE;
+				}
 			}
 		}
-
 		return FALSE;
 	}
 
