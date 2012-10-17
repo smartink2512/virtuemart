@@ -23,6 +23,13 @@ defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allow
  * Prices in the orders are saved in the shop currency; these fields are required
  * to show the prices to the user in a later stadium.
   */
+
+$jlang =JFactory::getLanguage();
+if(VmConfig::get('enableEnglish', 1)){
+    $jlang->load('mod_virtuemart_currencies', JPATH_SITE, 'en-GB', true);
+}
+$jlang->load('mod_virtuemart_currencies', JPATH_SITE, $jlang->getDefault(), true);
+$jlang->load('mod_virtuemart_currencies', JPATH_SITE, null, true);
 $mainframe = Jfactory::getApplication();
 $vendorId = JRequest::getInt('vendorid', 1);
 $text_before = $params->get( 'text_before', '');

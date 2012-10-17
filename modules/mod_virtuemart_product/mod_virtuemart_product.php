@@ -18,7 +18,12 @@ defined('_JEXEC') or die( 'Direct Access to '.basename(__FILE__).' is not allowe
 
 
 if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
-
+$jlang =JFactory::getLanguage();
+if(VmConfig::get('enableEnglish', 1)){
+    $jlang->load('mod_virtuemart_product', JPATH_SITE, 'en-GB', true);
+}
+$jlang->load('mod_virtuemart_product', JPATH_SITE, $jlang->getDefault(), true);
+$jlang->load('mod_virtuemart_product', JPATH_SITE, null, true);
 // Setting
 $max_items = 		$params->get( 'max_items', 2 ); //maximum number of items to display
 $layout = $params->get('layout','default');

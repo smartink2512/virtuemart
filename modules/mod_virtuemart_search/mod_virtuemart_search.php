@@ -19,7 +19,7 @@ VmConfig::loadConfig();
 //Lets load first englisch, then joomla default standard, then user language.
 $jlang =JFactory::getLanguage();
 if(VmConfig::get('enableEnglish', 1)){
-    $jlang->load('com_virtuemart', JPATH_SITE, 'en-GB', true);
+    $jlang->load('mod_virtuemart_search', JPATH_SITE, 'en-GB', true);
 }
 $jlang->load('mod_virtuemart_search', JPATH_SITE, $jlang->getDefault(), true);
 $jlang->load('mod_virtuemart_search', JPATH_SITE, null, true);
