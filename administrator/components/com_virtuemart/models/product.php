@@ -674,7 +674,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			if ($withCalc) {
 				$child->prices = $this->getPrice ($child, array(), 1);
-				vmdebug(' use of $child->prices = $this->getPrice($child,array(),1)');
+				//vmdebug(' use of $child->prices = $this->getPrice($child,array(),1)');
 			}
 
 			if (empty($child->product_template)) {

@@ -496,17 +496,14 @@ class VmTable extends JTable{
 
 			}
 
-			if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
+			//if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 			//vmdebug('check $slug before stringURLSafe',$this->$slugName);
-			$this->$slugName = vmFile::makeSafe( $this->$slugName );
+			//$this->$slugName = vmFile::makeSafe( $this->$slugName );
 
-			//if(JVM_VERSION===1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
-			//else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
-
-			//why was this just with !
-			if (!empty($this->$slugName)){
-				$this->$slugName = str_replace(' ','-',trim($this->$slugName) );
-			}
+			//$lang = JFactory::getLanguage();
+			//$this->$slugName = $lang->transliterate($this->$slugName);
+			if(JVM_VERSION===1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
+			else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
 
 			$valid = $this->checkCreateUnique($checkTable,$slugName);
 			if(!$valid){

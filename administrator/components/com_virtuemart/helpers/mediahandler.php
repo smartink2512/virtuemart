@@ -27,8 +27,8 @@ class vmFile {
 			$regex = array('#(\.){2,}#', '#[^\w\.\- ]#', '#^\.#');
 			return mb_ereg_replace($regex, '', $file);
 		} else {
-			jimport('joomla.filesystem.file');
-			return JFile::makeSafe($file);
+			$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#');
+			return preg_replace($regex, '', $file);
 		}
 	}
 }
