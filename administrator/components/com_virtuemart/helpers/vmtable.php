@@ -505,7 +505,7 @@ class VmTable extends JTable{
 
 			//why was this just with !
 			if (!empty($this->$slugName)){
-				$this->$slugName = trim(str_replace('-',' ',$this->$slugName) );
+				$this->$slugName = trim(str_replace(' ','-',$this->$slugName) );
 			}
 
 			$valid = $this->checkCreateUnique($checkTable,$slugName);
