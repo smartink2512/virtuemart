@@ -101,7 +101,7 @@ $productfileslist = $this->files;
 				<td><span class="vmicon vmicon-16-ext_<?php echo $productfile->file_extension; ?>"></span><?php echo $productfile->file_extension; ?></td>
 				<!-- published -->
 				<td><?php echo $published; ?></td>
-				<td><?php   echo $productfile->virtuemart_media_id; ?></td>
+				<td><?php echo $productfile->virtuemart_media_id; ?></td>
 			</tr>
 		<?php
 			$k = 1 - $k;

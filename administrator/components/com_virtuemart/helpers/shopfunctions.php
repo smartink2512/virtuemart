@@ -1471,7 +1471,8 @@ class ShopFunctions {
 			if(!$exists){
 				$uri = JFactory::getURI();
 				$configlink = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
-				VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_WRONG',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath,$configlink);
+				$suggestedPath=shopFunctions::getSuggestedSafePath();
+				VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_WRONG',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath,$configlink);
 				return FALSE;
 			} else{
 				return $safePath;
