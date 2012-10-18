@@ -422,9 +422,8 @@ class VmConfig {
 			$jlang->load($name, $path, 'en-GB');
 		}
 		$jlang->load($name, $path, $jlang->getDefault());
-		$jlang->load($name, $path, NULL);
-		return TRUE;
-	}
+		$jlang->load($name, $path, NULL, true);
+ 	}
 
 	/**
 	 * Loads the configuration and works as singleton therefore called static. The call using the program cache

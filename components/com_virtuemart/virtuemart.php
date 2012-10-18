@@ -28,13 +28,7 @@ vmRam('Start');
 // vmSetStartTime();
 vmSetStartTime('Start');
 
-//Lets load first englisch, then joomla default standard, then user language.
-$jlang =JFactory::getLanguage();
-if(VmConfig::get('enableEnglish', 1)){
-    $jlang->load('com_virtuemart', JPATH_SITE, 'en-GB', true);
-}
-$jlang->load('com_virtuemart', JPATH_SITE, $jlang->getDefault(), true);
-$jlang->load('com_virtuemart', JPATH_SITE, null, true);
+VmConfig::loadJLang('com_virtuemart', true);
 
 if(VmConfig::get('shop_is_offline',0)){
 	$_controller = 'virtuemart';
