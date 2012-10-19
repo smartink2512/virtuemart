@@ -95,8 +95,9 @@ class VirtueMartViewVirtueMart extends VmView {
 			
 			$recent_products_rows = VmConfig::get('recent_products_rows');
 			$recent_products_count = $products_per_row * $recent_products_rows;
+			$recent_products = $productModel->getProductListing('recent');
 			
-			if (!empty($recent_products_count) and VmConfig::get('show_recent', 1)) {
+			if (!empty($recent_products_count) and VmConfig::get('show_recent', 1) and !empty($recent_products)) {
 				$products['recent']= $productModel->getProductListing('recent', $recent_products_count);
 				$productModel->addImages($products['recent'],1);
 			}

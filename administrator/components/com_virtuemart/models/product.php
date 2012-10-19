@@ -418,6 +418,11 @@ class VirtueMartModelProduct extends VmModel {
 					case 'topten';
 						$orderBy = ' ORDER BY p.`product_sales` '; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 						$this->filter_order_Dir = 'DESC';
+					break;
+					case 'recent';
+						$rSession = JFactory::getSession();
+						$rIds = $rSession->get('vmlastvisitedproductids', array(), 'vm'); // get recent viewed from browser session
+						return $rIds;
 				}
 				// 			$joinCategory 	= false ; //creates error
 				// 			$joinMf 		= false ;	//creates error
