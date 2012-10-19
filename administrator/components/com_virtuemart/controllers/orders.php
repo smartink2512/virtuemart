@@ -226,6 +226,27 @@ class VirtuemartControllerOrders extends VmController {
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$_orderID);
 	}
+	
+	public function updateOrderHead()
+	{
+		//vmdebug('updateOrderItemStatus');
+		$mainframe = Jfactory::getApplication();
+		$model = VmModel::getModel();
+		$_items = JRequest::getVar('item_id',  0, '', 'array');
+
+		$_orderID = JRequest::getInt('virtuemart_order_id', '');
+		$model->UpdateOrderHead((int)$_orderID, JRequest::get('post'));
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$_orderID);
+	}
+
+	public function CreateOrderHead()
+	{
+		//vmdebug('updateOrderItemStatus');
+		$mainframe = Jfactory::getApplication();
+		$model = VmModel::getModel();
+		$orderid = $model->CreateOrderHead();
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$orderid );
+	}
 
 	/**
 	 * Update a single order item
@@ -239,23 +260,21 @@ class VirtuemartControllerOrders extends VmController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.JRequest::getInt('virtuemart_order_id', ''));
 		}
 		*/
-	/**
-	 * Save the given order item
-	 */
-	public function saveOrderItem() {
+
+
+	public function newOrderItem() {
 		//vmdebug('saveOrderItem');
 		$orderId = JRequest::getInt('virtuemart_order_id', '');
 		$model = VmModel::getModel();
 		$msg = '';
 		$data = JRequest::get('post');
-		if (!$model->saveOrderLineItem()) {
+		if (!$model->saveOrderLineItem($data)) {
 			$msg = $model->getError();
 		}
 
 		$editLink = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $orderId;
 		$this->setRedirect($editLink, $msg);
 	}
-
 
 	/**
 	 * Removes the given order item
@@ -322,4 +341,5 @@ class VirtuemartControllerOrders extends VmController {
 
 }
 // pure php no closing tag
+
 
