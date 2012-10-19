@@ -55,15 +55,25 @@ $document->addScriptDeclaration($js);
 			</td>
 		    </tr>
 		   <tr>
-			<td class="key">
+            <td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ASKPRICE_TIP'); ?>">
 			    <label for="show_tax"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ASKPRICE'); ?>
 			    </span>
-			</td>
-			<td>
-			    <?php echo VmHTML::checkbox('askprice', $this->config->get('askprice')); ?>
-			</td>
-		    </tr>
+            </td>
+            <td>
+				<?php echo VmHTML::checkbox('askprice', $this->config->get('askprice')); ?>
+            </td>
+        </tr>
+            <tr>
+                <td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_RAPPENRUNDUNG_TIP'); ?>">
+			    <label for="show_tax"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_RAPPENRUNDUNG'); ?>
+			    </span>
+                </td>
+                <td>
+					<?php echo VmHTML::checkbox('rappenrundung', $this->config->get('rappenrundung')); ?>
+                </td>
+            </tr>
 		</table>
 	    </fieldset>
 
