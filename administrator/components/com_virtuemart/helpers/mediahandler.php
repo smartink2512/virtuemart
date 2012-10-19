@@ -20,7 +20,7 @@ defined('_JEXEC') or die();
  *
  */
 class vmFile {
-	function makeSafe($string='') {
+	function makeSafe($string) {
 
 		$string = trim(JString::strtolower($string));
 
@@ -31,24 +31,25 @@ class vmFile {
 		$str = preg_replace('/\xE3\x80\x80/', ' ', $str);
 		$str = str_replace(' ', '-', $str);
 
-		if (JFactory::getConfig()->get('unicodeslugs') == 1){
-			$lang = JFactory::getLanguage();
+		if (JFactory::getConfig()->get('unicodeslugs') == 0){
 
+			$lang = JFactory::getLanguage();
 			$str = $lang->transliterate($str);
 
-			//$str = preg_replace('#[:\#\*"@+=;!><&\.%()\]\/\'\\\\|\[]#', " ", $str);
-		}
-
-		// Remove any duplicate whitespace and replace whitespaces by hyphens
-		//$str = preg_replace('#\x20+#', '-', $str);
-
-		if(function_exists('mb_ereg_replace')){
-			$regex = array('#(\.){2,}#', '#[^\w\.\- ]#', '#^\.#');
-			return mb_ereg_replace($regex, '', $str);
+			if(function_exists('mb_ereg_replace')){
+				$regex = array('#(\.){2,}#', '#[^\w\.\- ]#', '#^\.#');
+				return mb_ereg_replace($regex, '', $str);
+			} else {
+				$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#');
+				return preg_replace($regex, '', $str);
+			}
 		} else {
-			$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#');
-			return preg_replace($regex, '', $str);
+			// Remove any duplicate whitespace and replace whitespaces by hyphens
+			//$str = preg_replace('#\x20+#', '-', $str);
+			return $str = preg_replace('#[:\#\*"@+=;!><&\.%()\]\/\'\\\\|\[]#', " ", $str);
 		}
+
+
 	}
 }
 

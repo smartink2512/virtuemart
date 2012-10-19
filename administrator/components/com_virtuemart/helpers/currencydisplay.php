@@ -296,16 +296,17 @@ class CurrencyDisplay {
 			$nb = $this->_nbDecimal;
 		}
 
-		if($this->_vendorCurrency_numeric===756 and $this->_numeric_code!==$this->_vendorCurrency_numeric){
-			$price = round((float)$price * 2,1) * (float)$quantity/2.0;
-		} else {
+		vmdebug('priceDisplay',$quantity);
+	/*	if($this->_vendorCurrency_numeric===756){ // and $this->_numeric_code!==$this->_vendorCurrency_numeric){
+			$price = round((float)$price * 2,1) * 0.5 * (float)$quantity;
+		} else {*/
 			$price = round((float)$price,$nb) * (float)$quantity;
-		}
+		//}
 		$price = $this->convertCurrencyTo($currencyId,$price,$inToShopCurrency);
 
 		if($this->_numeric_code===756){
-			$price = round((float)$price * 2,1) * (float)$quantity/2.0;
-		}
+			$price = round((float)$price * 2,1) * 0.5;
+		}//*/
 		return $this->getFormattedCurrency($price,$nb);
 	}
 
@@ -372,7 +373,7 @@ class CurrencyDisplay {
 		if(!empty($this->_priceConfig[$name][0])){
 			if(!empty($price)){
 				$vis = "block";
-				$priceFormatted = $this->priceDisplay($price,0,(float)$quantity,false,$this->_priceConfig[$name][1] );
+				$priceFormatted = $this->priceDisplay($price,0,(float)$quantity,false,$this->_priceConfig[$name][1],$name );
 			} else {
 				$priceFormatted = '';
 				$vis = "none";
