@@ -188,7 +188,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			"invoice"           => $order['details']['BT']->order_number,
 			'custom'            => $return_context,
 			'item_name'         => JText::_ ('VMPAYMENT_PAYPAL_ORDER_NUMBER') . ': ' . $order['details']['BT']->order_number,
-			'quantity'          => $quantity,
+			//'quantity'          => $quantity,
 			"amount"            => $totalInPaymentCurrency,
 			"currency_code"     => $currency_code_3,
 			/*
