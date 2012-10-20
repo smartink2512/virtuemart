@@ -1735,7 +1735,7 @@ class VirtueMartModelProduct extends VmModel {
 							$manufacturerLink .= '<div><a title="' . $mf->mf_name . '" href="' . $link . '">' . $mf->mf_name . '</a></div>';
 						}
 						else {
-							$currentManufacturerLink = '<div class="activeOrder">' . $mf->mf_name . '</div>';
+							$currentManufacturerLink = '<div class="title">' . JText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') . '</div><div class="activeOrder">' . $mf->mf_name . '</div>';
 						}
 					}
 				}
