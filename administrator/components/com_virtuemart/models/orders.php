@@ -255,125 +255,126 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			ON o.virtuemart_paymentmethod_id = pm.virtuemart_paymentmethod_id ';
 	}
 
-/**
-	* Update an order item status
-	* @author Max Milbers
-	* @author Ondřej Spilka - used for item edit also
- */										
-public function updateSingleItem($virtuemart_order_item_id, &$orderdata)
-{
-	$table = $this->getTable('order_items');
-	$table->load($virtuemart_order_item_id);
-	$oldOrderStatus = $table->order_status;
-
-	if(empty($oldOrderStatus)){
-		$oldOrderStatus = $orderdata->current_order_status;
-	}
-
-	// 			$table->order_status = $orderdata->orderstatus;
-
-	/*
-	// 			JPluginHelper::importPlugin('vmcustom');
-	// 			$_dispatcher = JDispatcher::getInstance();
-	// 			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateSingleItem',array($table,&$orderdata));
-	*/
-	$dataT = get_object_vars($table);
-
-	$doUpdate = JRequest::getString('update_values');
-
-	$orderdatacopy = $orderdata;
-	$data = array_merge($dataT,(array)$orderdatacopy);
-	//if ( $doUpdate )
+	/**
+		* Update an order item status
+		* @author Max Milbers
+		* @author Ondřej Spilka - used for item edit also
+	 */										
+	public function updateSingleItem($virtuemart_order_item_id, &$orderdata)
 	{
-		$data['product_basePriceWithTax'] = sprintf("%f",($orderdata->product_tax) + floatval($orderdata->product_item_price));
-		$data['product_final_price'] = sprintf("%f",$data['product_basePriceWithTax']);
-		$data['product_subtotal_with_tax'] = sprintf("%f",floatval($orderdata->product_quantity) * floatval($data['product_final_price']));
-	}
+		$table = $this->getTable('order_items');
+		$table->load($virtuemart_order_item_id);
+		$oldOrderStatus = $table->order_status;
+		$app	= JFactory::getApplication();
+
+		if(empty($oldOrderStatus)){
+			$oldOrderStatus = $orderdata->current_order_status;
+		}
+
+		// 			$table->order_status = $orderdata->orderstatus;
+
+		/*
+		// 			JPluginHelper::importPlugin('vmcustom');
+		// 			$_dispatcher = JDispatcher::getInstance();
+		// 			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateSingleItem',array($table,&$orderdata));
+		*/
+		$dataT = get_object_vars($table);
+
+		//only at admin site
+		$doUpdate = !$app->isSite();//JRequest::getString('update_values');
+
+		$orderdatacopy = $orderdata;
+		$data = array_merge($dataT,(array)$orderdatacopy);
+		if ( $doUpdate )
+		{
+			$data['product_basePriceWithTax'] = sprintf("%f",($orderdata->product_tax) + floatval($orderdata->product_item_price));
+			$data['product_final_price'] = sprintf("%f",$data['product_basePriceWithTax']);
+			$data['product_subtotal_with_tax'] = sprintf("%f",floatval($orderdata->product_quantity) * floatval($data['product_final_price']));
+		}
 		
-	$table->bindChecknStore($data);
+		$table->bindChecknStore($data);
 
-	//if ( $doUpdate )
-	{
-			if ( empty($data['order_item_sku']) )
+		if ( $doUpdate )
+		{
+				if ( empty($data['order_item_sku']) )
+				{
+					//update product identification
+					$db = JFactory::getDBO();
+					$prolang = '#__virtuemart_products_' . VMLANG;
+					$oi = " #__virtuemart_order_items";
+					$protbl = "#__virtuemart_products";
+					$sql = "UPDATE $oi, $protbl,  $prolang" .
+						" SET $oi.order_item_sku=$protbl.product_sku, $oi.order_item_name=$prolang.product_name ".
+						" WHERE $oi.virtuemart_product_id=$protbl.virtuemart_product_id " . 
+						" and $oi.virtuemart_product_id=$prolang.virtuemart_product_id " .
+						" and $oi.virtuemart_order_item_id=$virtuemart_order_item_id";
+					$db->setQuery($sql);
+					if ($db->query() === false) {
+						vmError($db->getError());
+					}	
+				}
+			
+		}
+			
+		// Update the order item history
+		//$this->_updateOrderItemHist($id, $order_status, $customer_notified, $comment);
+		$errors = $table->getErrors();
+		foreach($errors as $error){
+			vmError( get_class( $this ).'::store '.$error);
+		}
+		// 			vmdebug('updateSingleItem '.$virtuemart_order_item_id.' old: '.$oldOrderStatus.' new: '.$orderdata->order_status);
+
+		//OSP update shipment/payment
+		//it would seem strange this is via item edit
+		//but in general, shipment and payment would be tractated as another items of the order
+		//in datas they are not, bu okay we have it here and functional
+		//moreover we can compute all aggregate values here via one aggregate SQL
+		if ( $doUpdate )
+		{
+			$db = JFactory::getDBO();
+			$ordid = $table->virtuemart_order_id;
+		
+			$os = JRequest::getString('order_shipment');
+			$ost = JRequest::getString('order_shipment_tax');
+				
+			if ( $os!="" )
 			{
-				//update product identification
-				$db = JFactory::getDBO();
-				$prolang = '#__virtuemart_products_' . VMLANG;
-				$oi = " #__virtuemart_order_items";
-				$protbl = "#__virtuemart_products";
-				$sql = "UPDATE $oi, $protbl,  $prolang" .
-					" SET $oi.order_item_sku=$protbl.product_sku, $oi.order_item_name=$prolang.product_name ".
-					" WHERE $oi.virtuemart_product_id=$protbl.virtuemart_product_id " . 
-					" and $oi.virtuemart_product_id=$prolang.virtuemart_product_id " .
-					" and $oi.virtuemart_order_item_id=$virtuemart_order_item_id";
+				$sql = "UPDATE `#__virtuemart_orders` SET `order_shipment`=$os,`order_shipment_tax`=$ost WHERE  `virtuemart_order_id`=$ordid";
 				$db->setQuery($sql);
 				if ($db->query() === false) {
 					vmError($db->getError());
-				}	
+				}		
 			}
-			
-	}
-			
-	// Update the order item history
-	//$this->_updateOrderItemHist($id, $order_status, $customer_notified, $comment);
-	$errors = $table->getErrors();
-	foreach($errors as $error){
-		vmError( get_class( $this ).'::store '.$error);
-	}
-	// 			vmdebug('updateSingleItem '.$virtuemart_order_item_id.' old: '.$oldOrderStatus.' new: '.$orderdata->order_status);
 
-	//OSP update shipment/payment
-	//it would seem strange this is via item edit
-	//but in general, shipment and payment would be tractated as another items of the order
-	//in datas they are not, bu okay we have it here and functional
-	//moreover we can compute all aggregate values here via one aggregate SQL
-	//if ( $doUpdate == "on" )
-	{
-		$db = JFactory::getDBO();
-		$ordid = $table->virtuemart_order_id;
+			$op = JRequest::getString('order_payment');
+			$opt = JRequest::getString('order_payment_tax');
+			if ( $op!="" )
+			{
+				$sql = "UPDATE `#__virtuemart_orders` SET `order_payment`=$op,`order_payment_tax`=$opt WHERE  `virtuemart_order_id`=$ordid";
+				$db->setQuery($sql);
+				if ($db->query() === false) {
+					vmError($db->getError());
+				}		
+			}
 		
-		$os = JRequest::getString('order_shipment');
-		$ost = JRequest::getString('order_shipment_tax');
-				
-		if ( $os!="" )
-		{
-			$sql = "UPDATE `#__virtuemart_orders` SET `order_shipment`=$os,`order_shipment_tax`=$ost WHERE  `virtuemart_order_id`=$ordid";
+			$sql = "					
+						UPDATE `#__virtuemart_orders` 
+						SET 
+						`order_total`=(SELECT sum(product_final_price*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid)+`order_shipment`+`order_payment`,
+						`order_salesPrice`=(SELECT sum(product_final_price*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid),
+						`order_billTaxAmount`=(SELECT sum( product_tax*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid),
+						`order_tax`=(SELECT sum( product_tax*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid)+`order_shipment_tax`+`order_payment_tax`,
+						`order_subtotal`=(SELECT sum( product_item_price*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid)
+						WHERE  `virtuemart_order_id`=$ordid";
+
+
 			$db->setQuery($sql);
 			if ($db->query() === false) {
 				vmError($db->getError());
 			}		
 		}
+		$this->handleStockAfterStatusChangedPerProduct($orderdata->order_status, $oldOrderStatus, $table,$table->product_quantity);
 
-		$op = JRequest::getString('order_payment');
-		$opt = JRequest::getString('order_payment_tax');
-		if ( $op!="" )
-		{
-			$sql = "UPDATE `#__virtuemart_orders` SET `order_payment`=$op,`order_payment_tax`=$opt WHERE  `virtuemart_order_id`=$ordid";
-			$db->setQuery($sql);
-			if ($db->query() === false) {
-				vmError($db->getError());
-			}		
-		}
-		
-		$sql = "					
-					UPDATE `#__virtuemart_orders` 
-					SET 
-					`order_total`=(SELECT sum(product_final_price*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid)+`order_shipment`+`order_payment`,
-					`order_salesPrice`=(SELECT sum(product_final_price*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid),
-					`order_billTaxAmount`=(SELECT sum( product_tax*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid),
-					`order_tax`=(SELECT sum( product_tax*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid)+`order_shipment_tax`+`order_payment_tax`,
-					`order_subtotal`=(SELECT sum( product_item_price*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid)
-					WHERE  `virtuemart_order_id`=$ordid";
-
-
-		$db->setQuery($sql);
-		if ($db->query() === false) {
-			vmError($db->getError());
-		}		
-	}
-	$this->handleStockAfterStatusChangedPerProduct($orderdata->order_status, $oldOrderStatus, $table,$table->product_quantity);
-
-	// 		}
 
 	}
 
