@@ -726,18 +726,18 @@ class VirtueMartModelProduct extends VmModel {
 			// Load the shoppers the product is available to for Custom Shopper Visibility
 			$product->shoppergroups = $this->getProductShoppergroups ($this->_id);
 
+			$usermodel = VmModel::getModel ('user');
+			$currentVMuser = $usermodel->getCurrentUser ();
+			if(!is_array($currentVMuser->shopper_groups)){
+				$virtuemart_shoppergroup_ids = (array)$currentVMuser->shopper_groups;
+			} else {
+				$virtuemart_shoppergroup_ids = $currentVMuser->shopper_groups;
+			}
+
 			if (!empty($product->shoppergroups) and $front) {
 				if (!class_exists ('VirtueMartModelUser')) {
 					require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
 				}
-				$usermodel = VmModel::getModel ('user');
-				$currentVMuser = $usermodel->getCurrentUser ();
-				if(!is_array($currentVMuser->shopper_groups)){
-					$virtuemart_shoppergroup_ids = (array)$currentVMuser->shopper_groups;
-				} else {
-					$virtuemart_shoppergroup_ids = $currentVMuser->shopper_groups;
-				}
-
 				$commonShpgrps = array_intersect ($virtuemart_shoppergroup_ids, $product->shoppergroups);
 				if (empty($commonShpgrps)) {
 					vmdebug('getProductSingle creating void product, usergroup does not fit ',$product->shoppergroups);
@@ -745,18 +745,69 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 
+		/*	$ppTable = $this->getTable ('product_prices');
+			$ppTable->load ($this->_id);
+
+			$product = (object)array_merge ((array)$ppTable, (array)$product);*/
+
 			$db = JFactory::getDbo();
+			$this->_nullDate = $db->getNullDate();
+			$jnow = JFactory::getDate();
+			$this->_now = $jnow->toMySQL();
 			$q = 'SELECT * FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$this->_id.'" ';
+
+			if($front){
+				if(count($virtuemart_shoppergroup_ids)>0){
+					$q .= ' AND (';
+					foreach($virtuemart_shoppergroup_ids as $sgrpId){
+						$q .= ' `virtuemart_shoppergroup_id` ="'.$sgrpId.'" AND ';
+					}
+					$q = substr($q,0,-4);
+					$q .= ' OR `virtuemart_shoppergroup_id` IS NULL OR `virtuemart_shoppergroup_id`="0") ';
+				}
+				$q .= ' AND ( (`product_price_publish_up` IS NULL OR `product_price_publish_up` = "' . $db->getEscaped($this->_nullDate) . '" OR `product_price_publish_up` <= "' .$db->getEscaped($this->_now) . '" )
+		        AND (`product_price_publish_down` IS NULL OR `product_price_publish_down` = "' .$db->getEscaped($this->_nullDate) . '" OR product_price_publish_down >= "' . $db->getEscaped($this->_now) . '" ) )';
+			}
+
 			$db->setQuery($q);
 			$product->prices = $db->loadAssocList();
+			//$err = $db->getErrorMsg();
+			//$iprices = coun;t($prices);
+			//vmdebug('query '.$q,$prices,$err);
 			//Todo this is a fallback, if the work is done for the multiple prices, remove !
-			if(count($product->prices===1)){
-				//vmdebug('my prices ',$prices);
+/*			if(count($prices)===0){
+				vmdebug('my prices count 0');
+				$prices = array(
+					'virtuemart_product_price_id' => 0
+					,'virtuemart_product_id' => 0
+					,'virtuemart_shoppergroup_id' => null
+					,'product_price'         => null
+					,'override'             => null
+					,'product_override_price' => null
+					,'product_tax_id'       => null
+					,'product_discount_id'  => null
+					,'product_currency'     => null
+					,'product_price_vdate'  => null
+					,'product_price_edate'  => null
+					,'price_quantity_start' => null
+					,'price_quantity_end'   => null
+				);
+				$product = (object)array_merge ((array)$prices, (array)$product);
+
+			} else */
+			if(count($product->prices)===1){
+				//vmdebug('my prices count 1',$prices[0]);
 				//$ppTable = $this->getTable ('product_prices');
 				//$ppTable->load ($this->_id);
 				$product = (object)array_merge ((array)$product->prices[0], (array)$product);
+			} else if ( $front and count($this->prices)>1 ) {
+				vmWarn('COM_VIRTUEMART_PRICE_AMBIGUOUS');
+				$product = (object)array_merge ((array)$product->prices[0], (array)$product);
 			}
 
+			if(!isset($product->product_price)) $product->product_price = null;
+			if(!isset($product->product_override_price)) $product->product_override_price = null;
+			if(!isset($product->override)) $product->override = null;
 
 			if (!empty($product->virtuemart_manufacturer_id)) {
 				$mfTable = $this->getTable ('manufacturers');
@@ -866,6 +917,7 @@ class VirtueMartModelProduct extends VmModel {
 				//				$product->vendor_name = VirtueMartModelVendor::getVendorName($product->virtuemart_vendor_id);
 
 				// set the custom variants
+				//vmdebug('getProductSingle id '.$product->virtuemart_product_id.' $product->virtuemart_customfield_id '.$product->virtuemart_customfield_id);
 				if (!empty($product->virtuemart_customfield_id)) {
 
 					$customfields = VmModel::getModel ('Customfields');
@@ -1640,7 +1692,7 @@ class VirtueMartModelProduct extends VmModel {
 		// Calculate the modificator
 		$variantPriceModification = $calculator->calculateModificators ($product, $customVariant);
 
-		$prices = $calculator->getProductPrices ($product, $product->categories, $variantPriceModification, $quantity);
+		$prices = $calculator->getProductPrices ($product, $variantPriceModification, $quantity);
 
 		return $prices;
 

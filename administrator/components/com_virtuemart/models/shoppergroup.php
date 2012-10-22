@@ -142,7 +142,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 			$app = JFactory::getApplication();
 			$app->enqueueMessage('Attention no standard shopper group set '.$this->_db->getErrorMsg());
 		} else {
-			vmdebug('getDefault', $res);
+			//vmdebug('getDefault', $res);
 			return $res;
 		}
 

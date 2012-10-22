@@ -20,7 +20,14 @@ defined('_JEXEC') or die();
  *
  */
 class vmFile {
-	function makeSafe($string) {
+
+	/**
+	 * This function does not allow unicode
+	 * @param      $string
+	 * @param bool $forceNoUni
+	 * @return mixed|string
+	 */
+	function makeSafe($string,$forceNoUni=false) {
 
 		$string = trim(JString::strtolower($string));
 
@@ -31,24 +38,16 @@ class vmFile {
 		$str = preg_replace('/\xE3\x80\x80/', ' ', $str);
 		$str = str_replace(' ', '-', $str);
 
-		if (JFactory::getConfig()->get('unicodeslugs') == 0){
+		$lang = JFactory::getLanguage();
+		$str = $lang->transliterate($str);
 
-			$lang = JFactory::getLanguage();
-			$str = $lang->transliterate($str);
-
-			if(function_exists('mb_ereg_replace')){
-				$regex = array('#(\.){2,}#', '#[^\w\.\- ]#', '#^\.#');
-				return mb_ereg_replace($regex, '', $str);
-			} else {
-				$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#');
-				return preg_replace($regex, '', $str);
-			}
+		if(function_exists('mb_ereg_replace')){
+			$regex = array('#(\.){2,}#', '#[^\w\.\- ]#', '#^\.#');
+			return mb_ereg_replace($regex, '', $str);
 		} else {
-			// Remove any duplicate whitespace and replace whitespaces by hyphens
-			//$str = preg_replace('#\x20+#', '-', $str);
-			return $str = preg_replace('#[:\#\*"@+=;!><&\.%()\]\/\'\\\\|\[]#', " ", $str);
+			$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#');
+			return preg_replace($regex, '', $str);
 		}
-
 
 	}
 }
@@ -590,11 +589,27 @@ class VmMediaHandler {
 				case 0:
 					$path_folder = str_replace('/',DS,$urlfolder);
 
+					//Sadly it does not work to upload unicode files,
+					// the ä for example is stored on windows as Ã¤, this seems to be a php issue (maybe a config setting)
+					//
 					//Sanitize name of media
-					$media['name'] = vmFile::makeSafe( $media['name'] );
+				/*	$dotPos = strrpos($media['name'],'.');
+					$safeMediaName = vmFile::makeSafe( $media['name'] );
+					if($dotPos!==FALSE){
+						$mediaPure = substr($media['name'],0,$dotPos);
+						$mediaExtension = strtolower(substr($media['name'],$dotPos));
+					} else{
+						$mediaPure = '';
+						$mediaExtension = '';
+					}
+				*/
+
+					$safeMediaName = vmFile::makeSafe( $media['name'] );
+					$media['name'] = $safeMediaName;
 
 					$mediaPure = JFile::stripExt($media['name']);
 					$mediaExtension = '.'.strtolower(JFile::getExt($media['name']));
+					vmdebug('uploadFile $safeMediaName',$media['name'],$safeMediaName,$mediaPure,$mediaExtension);
 
 					if(!$overwrite){
 						while (file_exists(JPATH_ROOT.DS.$path_folder.$mediaPure.$mediaExtension)) {

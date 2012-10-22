@@ -411,18 +411,20 @@ class VmConfig {
 	 * @param $name
 	 * @return bool
 	 */
-	static public function loadJLang($name,$site=false){
+	static public function loadJLang($name,$site=false,$loadCore=false){
 
 		$path = JPATH_ADMINISTRATOR;
 		if($site){
 			$path = JPATH_SITE;
 		}
 		$jlang =JFactory::getLanguage();
-		if(VmConfig::get('enableEnglish', 1)){
+		$tag = $jlang->getTag();
+		if(VmConfig::get('enableEnglish', 1) and $tag!='en-GB'){
 			$jlang->load($name, $path, 'en-GB');
 		}
-		$jlang->load($name, $path, $jlang->getDefault());
-		$jlang->load($name, $path, NULL, true);
+
+		$jlang->load($name, $path,$tag,true);
+
  	}
 
 	/**
@@ -575,7 +577,7 @@ class VmConfig {
 		$isBE = !JFactory::getApplication()->isSite();
 		if($isBE){
 			$siteLang = JRequest::getVar('vmlang',FALSE );// we must have this for edit form save
-			//Why not using the usterstae?
+			//Why not using the userstate?
 		} else {
 			if (!$siteLang = JRequest::getVar('vmlang',FALSE )) {
 				if ( JVM_VERSION===1 ) {

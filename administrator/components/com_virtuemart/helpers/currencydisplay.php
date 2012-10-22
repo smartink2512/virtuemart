@@ -296,7 +296,7 @@ class CurrencyDisplay {
 			$nb = $this->_nbDecimal;
 		}
 
-		vmdebug('priceDisplay',$quantity);
+		//vmdebug('priceDisplay',$quantity);
 	/*	if($this->_vendorCurrency_numeric===756){ // and $this->_numeric_code!==$this->_vendorCurrency_numeric){
 			$price = round((float)$price * 2,1) * 0.5 * (float)$quantity;
 		} else {*/

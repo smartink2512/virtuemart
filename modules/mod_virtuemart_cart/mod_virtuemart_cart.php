@@ -29,7 +29,6 @@ VmConfig::loadConfig();
 VmConfig::loadJLang('mod_virtuemart_cart', true);
 
 
-
 if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 $cart = VirtueMartCart::getCart(false);
 $data = $cart->prepareAjaxData();

@@ -57,6 +57,7 @@ if(VmConfig::get('shop_is_offline',0)){
 
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			if	(Permissions::getInstance()->check("admin,storeadmin")) {
+				$jlang =JFactory::getLanguage();
 				$jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
 				$basePath = JPATH_VM_ADMINISTRATOR;
 				$trigger = 'onVmAdminController';

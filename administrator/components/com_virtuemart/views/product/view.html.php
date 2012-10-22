@@ -93,7 +93,7 @@ class VirtuemartViewProduct extends VmView {
 				// Load the product price
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
-				$product->prices = $calculator -> getProductPrices($product);
+				//$product->prices = $calculator -> getProductPrices($product);
 
 				$product_childIds = $model->getProductChildIds($virtuemart_product_id);
 
@@ -103,7 +103,7 @@ class VirtuemartViewProduct extends VmView {
 				}
 				$this->assignRef('product_childs', $product_childs);
 
-				$DBTax = ''; 	//JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
+/*				$DBTax = ''; 	//JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
 				foreach($calculator->rules['DBTax'] as $rule){
 					$DBTax .= $rule['calc_name']. '<br />';
 				}
@@ -123,7 +123,7 @@ class VirtuemartViewProduct extends VmView {
 					$DATax .= $rule['calc_name']. '<br />';
 				}
 				$this->assignRef('DATaxRules', $DATax);
-
+*/
 // 				$this->assignRef('override', $calculator->override);
 // 				$this->assignRef('product_override_price', $calculator->product_override_price);
 

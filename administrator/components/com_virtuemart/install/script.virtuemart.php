@@ -233,7 +233,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					'COM_VIRTUEMART_STOCKABLE_PRODUCT_DESC', 'G', 0, 0, 0, 1 );");
 */
 
+			$this->alterTable('#__virtuemart_product_prices',array(
+				'product_price_vdate' => ' `product_price_publish_up` DATETIME NULL DEFAULT NULL AFTER `product_currency`',
+				'product_price_edate' => ' `product_price_publish_down` DATETIME NULL DEFAULT NULL AFTER `product_price_publish_up`'
+			));
+
 			$this->deleteReCreatePrimaryKey('#__virtuemart_userinfos','virtuemart_userinfo_id');
+
+			//$this->renameVdateToPublishDown();
 
 			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();
