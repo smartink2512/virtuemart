@@ -150,7 +150,9 @@ $i=0;
 		</td>
         </tr>
 	</table>
-
+</fieldset>
+	<fieldset>
+			<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICES'); ?></legend>
 <?php
     if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
     $calculator = calculationHelper::getInstance();
@@ -328,15 +330,7 @@ $i=0;
 ?>
 </fieldset>
 
-		<td valign="top">
-			<!-- Product pricing -->
-			<fieldset>
-				<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICES'); ?></legend>
 
-
-
-			</fieldset> <!-- Product rules overrides -->
-		</td>
 	</tr>
 	<tr>
 	<td colspan="2" >
