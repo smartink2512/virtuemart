@@ -568,7 +568,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$html .= JText::_('COM_VIRTUEMART_CUSTOM_PO').VmHTML::checkbox('field[' . $row . '][parentOrderable]',$field->parentOrderable,1,0,'');
 
 					$options = array();
-// 					$options[] = array( 'value' => 'product_name' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME')); Is anyway displayed there
+ 					$options[] = array('value' => 'product_name' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME'));
 					$options[] = array('value' => 'product_sku', 'text' => JText::_ ('COM_VIRTUEMART_PRODUCT_SKU'));
 					$options[] = array('value' => 'slug', 'text' => JText::_ ('COM_VIRTUEMART_PRODUCT_ALIAS'));
 					$options[] = array('value' => 'product_length', 'text' => JText::_ ('COM_VIRTUEMART_PRODUCT_LENGTH'));
@@ -1053,7 +1053,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$uncatChildren = $productModel->getUncategorizedChildren ($customfield->withParent);
 
 					foreach ($uncatChildren as $k => $child) {
-						$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id']), 'text' => $child['product_name']);
+						$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id']), 'text' => $child[$customfield->custom_value]);
 					}
 
 					$html .= JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][custom_value]', 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="inputbox"', "value", "text",
