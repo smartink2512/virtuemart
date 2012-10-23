@@ -29,7 +29,7 @@ $i=0;
 	<?php echo JText::_('COM_VIRTUEMART_PRODUCT_INFORMATION'); echo ' id: '.$this->product->virtuemart_product_id ?></legend>
     <table width="100%">
 	    <tr>
-        <td width="50%">
+        <td width="50%" valign="top">
 			<table width="100%" class="adminform">
 				<tr class="row<?php echo $i?>">
 					<td ><div style="text-align: right; font-weight: bold;">
@@ -83,9 +83,9 @@ $i=0;
 				</tr>
             </table>
     </td>
-	<td>
-        <table width="100%" class="adminform">
-						<?php $i = 1 - $i; ?>
+	<td valign="top">
+        <table width="100%" class="adminform" >
+						<?php $i =0; ?>
 			<?php	if(Vmconfig::get('multix','none')!=='none'){ ?>
 				<tr class="row<?php echo $i?>">
 					<td ><div style="text-align:right;font-weight:bold;">
@@ -99,7 +99,7 @@ $i=0;
 				<?php } ?>
 
 
-				<?php if(isset($this->lists['manufacturers'])){?>
+				<?php if(isset($this->lists['manufacturers'])){ ?>
 				<tr class="row<?php echo $i?>">
 					<td ><div style="text-align:right;font-weight:bold;">
 						<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER') ?></div>
