@@ -800,7 +800,7 @@ class VirtueMartModelProduct extends VmModel {
 				//$ppTable = $this->getTable ('product_prices');
 				//$ppTable->load ($this->_id);
 				$product = (object)array_merge ((array)$product->prices[0], (array)$product);
-			} else if ( $front and count($this->prices)>1 ) {
+			} else if ( $front and count($product->prices)>1 ) {
 				vmWarn('COM_VIRTUEMART_PRICE_AMBIGUOUS');
 				$product = (object)array_merge ((array)$product->prices[0], (array)$product);
 			}
