@@ -99,6 +99,9 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$db = JFactory::getDBO ();
 		$db->setQuery ($q);
 		$currency_code_3 = $db->loadResult ();
+		if (!class_exists ('CurrencyDisplay')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+		}
 		$paymentCurrency = CurrencyDisplay::getInstance ($method->payment_currency);
 		$totalInPaymentCurrency = round ($paymentCurrency->convertCurrencyTo ($method->payment_currency, $order['details']['BT']->order_total, FALSE), 2);
 		$cd = CurrencyDisplay::getInstance ($cart->pricesCurrency);
@@ -152,7 +155,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		 */
 	function getNewStatus ($method) {
 
-		if (isset($method->status_pending) and $method->status_pending!="") {
+		if (isset($method->status_pending) and $method->status_pending != "") {
 			return $method->status_pending;
 		} else {
 			return 'P';
@@ -201,7 +204,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 * @return true: if the conditions are fulfilled, false otherwise
 	 *
 	 */
-	protected function checkConditions ($cart, $method, $cart_prices) {
+	function checkConditions ($cart, $method, $cart_prices) {
 
 		$this->convert ($method);
 		// 		$params = new JParameter($payment->payment_params);

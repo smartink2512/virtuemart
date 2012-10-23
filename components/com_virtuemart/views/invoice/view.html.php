@@ -151,8 +151,17 @@ class VirtuemartViewInvoice extends VmView {
 
 		//Todo multix
 		$vendorId=1;
+		$emailCurrencyId=0;
+		$exchangeRate=FALSE;
+		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+		  JPluginHelper::importPlugin('vmpayment');
+	    $dispatcher = JDispatcher::getInstance();
+	    $dispatcher->trigger('plgVmgetEmailCurrency',array( $orderDetails['details']['BT']->virtuemart_paymentmethod_id, $orderDetails['details']['BT']->virtuemart_order_id, &$emailCurrencyId));
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-		$currency = CurrencyDisplay::getInstance('',$vendorId);
+		$currency = CurrencyDisplay::getInstance($emailCurrencyId,$vendorId);
+			if ($emailCurrencyId) {
+				$currency->exchangeRateShopper=$orderDetails['details']['BT']->user_currency_rate;
+			}
 		$this->assignRef('currency', $currency);
 
 		//Create BT address fields

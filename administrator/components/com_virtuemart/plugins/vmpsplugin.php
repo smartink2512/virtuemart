@@ -885,9 +885,9 @@ abstract class vmPSPlugin extends vmPlugin {
 
 			$q = 'SELECT   `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`=' . $vendorId;
 			$db->setQuery ($q);
-			$method->email_currency = $db->loadResult ();
+			return $db->loadResult ();
 		} else {
-			$method->email_currency = $method->payment_currency;
+			return $method->payment_currency; // either the vendor currency, either same currency as payment
 		}
 	}
 

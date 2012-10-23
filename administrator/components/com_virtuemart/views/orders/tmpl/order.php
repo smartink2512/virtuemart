@@ -564,7 +564,17 @@ $document->addScriptDeclaration ( "
 				<td   align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->priceDisplay($this->orderbt->order_total); ?></strong>
 				</td>
 			</tr>
-
+			<?php if ($this->orderbt->user_currency_rate != 1.0) { ?>
+		<tr>
+				<td align="right" colspan="5"><em><?php echo JText::_('COM_VIRTUEMART_ORDER_USER_CURRENCY_RATE') ?>:</em></td>
+				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
+				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
+				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
+				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
+				<td   align="right" style="padding-right: 5px;"><em><?php echo  $this->orderbt->user_currency_rate ?></em></td>
+			</tr>
+			<?php }
+			?>
 		</table>
 		</td>
 	</tr>
@@ -607,7 +617,7 @@ AdminUIHelper::endAdminArea(); ?>
 <!--
 jQuery('.show_element').click(function() {
   jQuery('.element-hidden').toggle();
-  return false
+  return false;
 });
 // jQuery('select#order_items_status').change(function() {
 	////selectItemStatusCode

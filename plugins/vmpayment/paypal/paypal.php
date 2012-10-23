@@ -19,7 +19,7 @@ defined ('_JEXEC') or die('Restricted access');
  * other free or open source software licenses.
  * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
  *
- * http://virtuemart.org
+ * http://virtuemart.net
  */
 if (!class_exists ('vmPSPlugin')) {
 	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
@@ -174,10 +174,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			vmInfo (JText::_ ('VMPAYMENT_PAYPAL_MERCHANT_EMAIL_NOT_SET'));
 			return FALSE;
 		}
-		$quantity = 0;
-		foreach ($cart->products as $key => $product) {
-			$quantity = $quantity + $product->quantity;
-		}
+
 		$post_variables = Array(
 			'cmd'               => '_ext-enter',
 			'redirect_cmd'      => '_xclick',
@@ -188,7 +185,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			"invoice"           => $order['details']['BT']->order_number,
 			'custom'            => $return_context,
 			'item_name'         => JText::_ ('VMPAYMENT_PAYPAL_ORDER_NUMBER') . ': ' . $order['details']['BT']->order_number,
-			//'quantity'          => $quantity,
 			"amount"            => $totalInPaymentCurrency,
 			"currency_code"     => $currency_code_3,
 			/*
@@ -284,7 +280,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		JRequest::setVar ('html', $html);
 
 		/*
-
 			  $qstring = '?';
 			  foreach ($post_variables AS $k => $v) {
 			  $qstring .= ( empty($qstring) ? '' : '&')
