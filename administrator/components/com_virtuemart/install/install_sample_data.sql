@@ -255,7 +255,7 @@ INSERT IGNORE INTO `#__virtuemart_product_manufacturers` (`virtuemart_product_id
 -- Dumping data for table `#__virtuemart_product_prices`
 --
 
-INSERT INTO `#__virtuemart_product_prices` (`virtuemart_product_price_id`, `virtuemart_product_id`, `product_price`, `override`, `product_override_price`, `product_tax_id`, `product_discount_id`, `product_currency`, `product_price_vdate`, `product_price_edate`, `virtuemart_shoppergroup_id`, `price_quantity_start`, `price_quantity_end`) VALUES
+INSERT INTO `#__virtuemart_product_prices` (`virtuemart_product_price_id`, `virtuemart_product_id`, `product_price`, `override`, `product_override_price`, `product_tax_id`, `product_discount_id`, `product_currency`, `product_price_publish_up`, `product_price_publish_down`, `virtuemart_shoppergroup_id`, `price_quantity_start`, `price_quantity_end`) VALUES
 (1, 5, '24.99000', 0, '0.00000', NULL, NULL, '144', 0, 0,  NULL, 0, 0),
 (2, 1, '4.49000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, 0, 0),
 (3, 2, '39.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, 0, 0),
@@ -271,7 +271,10 @@ INSERT INTO `#__virtuemart_product_prices` (`virtuemart_product_price_id`, `virt
 (13, 13, '79.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, 0, 0),
 (14, 14, '49.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, 0, 0),
 (15, 15, '59.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, 0, 0),
-(16, 16, '3.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, 0, 0);
+(16, 16, '3.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, 0, 0),
+(17, 3, '22.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, 3, 0, 0),
+(18, 4, '14.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, 3, 0, 0)
+;
 
 --
 -- Dumping data for table `#__virtuemart_shoppergroups`

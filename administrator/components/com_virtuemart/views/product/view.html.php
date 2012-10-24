@@ -92,7 +92,7 @@ class VirtuemartViewProduct extends VmView {
 
 				// Load the product price
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-				$calculator = calculationHelper::getInstance();
+				//$calculator = calculationHelper::getInstance();
 				//$product->prices = $calculator -> getProductPrices($product);
 
 				$product_childIds = $model->getProductChildIds($virtuemart_product_id);
@@ -127,7 +127,7 @@ class VirtuemartViewProduct extends VmView {
 // 				$this->assignRef('override', $calculator->override);
 // 				$this->assignRef('product_override_price', $calculator->product_override_price);
 
-				if(!isset($product->product_tax_id)){
+/*				if(!isset($product->product_tax_id)){
 					$product->product_tax_id=0;
 				}
 				$lists['taxrates'] = ShopFunctions::renderTaxList($product->product_tax_id,'product_tax_id');
@@ -135,7 +135,7 @@ class VirtuemartViewProduct extends VmView {
 					$product->product_discount_id=0;
 				}
 				$lists['discounts'] = $this -> renderDiscountList($product->product_discount_id);
-
+*/
 				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'config.php');
 				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
 				$this->assignRef('productLayouts', $productLayouts);
@@ -162,16 +162,19 @@ class VirtuemartViewProduct extends VmView {
 					$lists['vendors'] = Shopfunctions::renderVendorList($product->virtuemart_vendor_id);
 				}
 				// Load the currencies
-				$currency_model = VmModel::getModel('currency');
+
 
 				$this->loadHelper('permissions');
 
 				$vendor_model->setId(Permissions::getInstance()->isSuperVendor());
 				$vendor = $vendor_model->getVendor();
+
 				if(empty($product->product_currency)){
 					$product->product_currency = $vendor->vendor_currency;
 				}
-				$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'virtuemart_currency_id', 'currency_name', $product->product_currency);
+
+				$currency_model = VmModel::getModel('currency');
+				//$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'virtuemart_currency_id', 'currency_name', $product->product_currency);
 				$currency = $currency_model->getCurrency($product->product_currency);
 				$this->assignRef('product_currency', $currency->currency_symbol);
 				$currency = $currency_model->getCurrency($vendor->vendor_currency);
@@ -441,7 +444,7 @@ class VirtuemartViewProduct extends VmView {
 	 *
 	 * @author Max Milbers
 	 */
-	function renderDiscountList($selected,$before=false){
+	function renderDiscountList($selected,$name='product_discount_id'){
 
 		if(!class_exists('VirtueMartModelCalc')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'calc.php');
 		$discounts = VirtueMartModelCalc::getDiscounts();
@@ -458,7 +461,7 @@ class VirtuemartViewProduct extends VmView {
 		foreach($discounts as $discount){
 			$discountrates[] = JHTML::_('select.option', $discount->virtuemart_calc_id, $discount->calc_name, 'product_discount_id');
 		}
-		$listHTML = JHTML::_('Select.genericlist', $discountrates, 'product_discount_id', '', 'product_discount_id', 'text', $selected );
+		$listHTML = JHTML::_('Select.genericlist', $discountrates, $name, '', 'product_discount_id', 'text', $selected );
 		return $listHTML;
 
 	}

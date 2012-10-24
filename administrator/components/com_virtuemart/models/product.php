@@ -597,7 +597,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * @param boolean $front for frontend use
 	 * @param boolean $withCalc calculate prices?
 	 */
-	public function getProduct ($virtuemart_product_id = NULL, $front = TRUE, $withCalc = TRUE, $onlyPublished = TRUE) {
+	public function getProduct ($virtuemart_product_id = NULL, $front = TRUE, $withCalc = TRUE, $onlyPublished = TRUE, $quantity) {
 
 		if (isset($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId ($virtuemart_product_id);
@@ -615,7 +615,7 @@ class VirtueMartModelProduct extends VmModel {
 		static $_products = array();
 		if (!array_key_exists ($productKey, $_products)) {
 
-			$child = $this->getProductSingle ($virtuemart_product_id, $front);
+			$child = $this->getProductSingle ($virtuemart_product_id, $front,$quantity);
 			if (!$child->published && $onlyPublished) {
 				vmdebug('getProduct child is not published, returning zero');
 				return FALSE;
@@ -647,7 +647,7 @@ class VirtueMartModelProduct extends VmModel {
 						break;
 					}
 				}
-				$parentProduct = $this->getProductSingle ($child->product_parent_id, $front);
+				$parentProduct = $this->getProductSingle ($child->product_parent_id, $front,$quantity);
 				if ($child->product_parent_id === $parentProduct->product_parent_id) {
 					vmError('Error, parent product with virtuemart_product_id = '.$parentProduct->virtuemart_product_id.' has same parent id like the child with virtuemart_product_id '.$child->virtuemart_product_id);
 					break;
@@ -704,7 +704,7 @@ class VirtueMartModelProduct extends VmModel {
 		return $_products[$productKey];
 	}
 
-	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE) {
+	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1) {
 
 		//$this->fillVoidProduct($front);
 		if (!empty($virtuemart_product_id)) {
@@ -765,8 +765,12 @@ class VirtueMartModelProduct extends VmModel {
 					$q = substr($q,0,-4);
 					$q .= ' OR `virtuemart_shoppergroup_id` IS NULL OR `virtuemart_shoppergroup_id`="0") ';
 				}
+				$quantity = (int)$quantity;
 				$q .= ' AND ( (`product_price_publish_up` IS NULL OR `product_price_publish_up` = "' . $db->getEscaped($this->_nullDate) . '" OR `product_price_publish_up` <= "' .$db->getEscaped($this->_now) . '" )
 		        AND (`product_price_publish_down` IS NULL OR `product_price_publish_down` = "' .$db->getEscaped($this->_nullDate) . '" OR product_price_publish_down >= "' . $db->getEscaped($this->_now) . '" ) )';
+				$q .= ' AND( (`price_quantity_start` IS NULL OR `price_quantity_start`="0" OR `price_quantity_start` <= '.$quantity.') AND (`price_quantity_end` IS NULL OR `price_quantity_end`="0" OR `price_quantity_end` >= '.$quantity.') )';
+			} else {
+				$q .= ' ORDER BY `product_price` DESC';
 			}
 
 			$db->setQuery($q);
@@ -1157,14 +1161,8 @@ class VirtueMartModelProduct extends VmModel {
 			foreach ($productIds as $id) {
 				$i = 0;
 				if ($product = $this->getProductSingle ((int)$id, $front)) {
-					// 					if($onlyPublished && $product->published){
 					$products[] = $product;
 					$i++;
-					// 					}
-					// 					if(!$onlyPublished){
-					// 						$products[] = $product;
-					// 						$i++;
-					// 					}
 				}
 				if ($i > $maxNumber) {
 					vmdebug ('Better not to display more than ' . $maxNumber . ' products');
@@ -1400,23 +1398,56 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
  		//vmdebug('use_desired_price '.$this->_id.' '.$data['use_desired_price']);
-		if (!$isChild and isset($data['use_desired_price']) and $data['use_desired_price'] == "1") {
+		$mprices = $data['mprices'];
 
-			if (!class_exists ('calculationHelper')) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+		foreach($data['mprices']['product_price'] as $k => $product_price){
+
+			$pricesToStore = array();
+			$pricesToStore['virtuemart_product_id'] = (int)$data['virtuemart_product_id'];
+			$pricesToStore['virtuemart_product_price_id'] = (int)$data['mprices']['virtuemart_product_price_id'][$k];
+			$pricesToStore['product_price'] = $data['mprices']['product_price'][$k];
+			$pricesToStore['basePrice'] = $data['mprices']['basePrice'][$k];
+			$pricesToStore['salesPrice'] = $data['mprices']['salesPrice'][$k];
+			$pricesToStore['product_override_price'] = $data['mprices']['product_override_price'][$k];
+			$pricesToStore['override'] = (int)$data['mprices']['override'][$k];
+			$pricesToStore['virtuemart_shoppergroup_id'] = (int)$data['mprices']['virtuemart_shoppergroup_id'][$k];
+			$pricesToStore['product_tax_id'] = (int)$data['mprices']['product_tax_id'][$k];
+			$pricesToStore['product_discount_id'] = (int)$data['mprices']['product_discount_id'][$k];
+			$pricesToStore['product_currency'] = (int)$data['mprices']['product_currency'][$k];
+			$pricesToStore['product_price_publish_up'] = $data['mprices']['product_price_publish_up'][$k];
+			$pricesToStore['product_price_publish_down'] = $data['mprices']['product_price_publish_down'][$k];
+			$pricesToStore['price_quantity_start'] = (int)$data['mprices']['price_quantity_start'][$k];
+			$pricesToStore['price_quantity_end'] = (int)$data['mprices']['price_quantity_end'][$k];
+
+			if (!$isChild and isset($data['mprices']['use_desired_price'][$k]) and $data['mprices']['use_desired_price'][$k] == "1") {
+				if (!class_exists ('calculationHelper')) {
+					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+				}
+				$calculator = calculationHelper::getInstance ();
+				$pricesToStore['product_price'] = $data['mprices']['product_price'][$k] = $calculator->calculateCostprice ($this->_id, $pricesToStore);
+				unset($data['mprices']['use_desired_price'][$k]);
+				// 			vmdebug('product_price '.$data['product_price']);
 			}
-			$calculator = calculationHelper::getInstance ();
-			$data['product_price'] = $calculator->calculateCostprice ($this->_id, $data);
-			unset($data['use_desired_price']);
-			// 			vmdebug('product_price '.$data['product_price']);
-		}
-		if (isset($data['product_price'])) {
-			if ($isChild) {
-				unset($data['product_override_price']);
-				unset($data['override']);
+
+
+
+			if (isset($data['mprices']['product_price'][$k])) {
+
+
+
+				if ($isChild) {
+					unset($data['mprices']['product_override_price'][$k]);
+					unset($pricesToStore['product_override_price']);
+					unset($data['mprices']['override'][$k]);
+					unset($pricesToStore['override']);
+
+				}
+				//$data['mprices'][$k] = $data['virtuemart_product_id'];
+				vmdebug('my mprices to store',$pricesToStore);
+				$this->updateXrefAndChildTables ($pricesToStore, 'product_prices');
 			}
-			$data = $this->updateXrefAndChildTables ($data, 'product_prices');
 		}
+
 
 		if (!empty($data['childs'])) {
 			foreach ($data['childs'] as $productId => $child) {
@@ -1676,7 +1707,7 @@ class VirtueMartModelProduct extends VmModel {
 		// 		vmdebug('strange',$product);
 		if (!is_object ($product)) {
 // 		vmError('deprecated use of getPrice');
-			$product = $this->getProduct ($product, TRUE, FALSE, TRUE);
+			$product = $this->getProduct ($product, TRUE, FALSE, TRUE,$quantity);
 // 		return false;
 		}
 

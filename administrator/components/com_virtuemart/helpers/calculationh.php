@@ -242,6 +242,7 @@ class calculationHelper {
 		//We already have the productobject, no need for extra sql
 		if (is_object($product)) {
 			$costPrice = isset($product->product_price)? $product->product_price:0;
+
 			$this->productCurrency = isset($product->product_currency)? $product->product_currency:0;
 			$override = isset($product->override)? $product->override:0;
 			$product_override_price = isset($product->product_override_price)? $product->product_override_price:0;
@@ -397,6 +398,97 @@ class calculationHelper {
 
 // 		vmdebug('getProductPrices',$this->productPrices);
 		return $this->productPrices;
+	}
+
+	public function calculateCostprice($productId,$data){
+
+		$this->_revert = true;
+		vmdebug('calculationh.php calculateCostprice ',$data);
+		//vmSetStartTime('calculateCostprice');
+
+		if(empty($data['product_currency'])){
+			$this->_db->setQuery('SELECT * FROM #__virtuemart_product_prices  WHERE `virtuemart_product_id`="' . $productId . '" ');
+			$row = $this->_db->loadAssoc();
+			if ($row) {
+				if (!empty($row['product_price'])) {
+// 				$costPrice = $row['product_price'];
+					$this->productCurrency = $row['product_currency'];
+// 				$this->override = $row['override'];
+// 				$this->product_override_price = $row['product_override_price'];
+					$this->product_tax_id = $row['product_tax_id'];
+					$this->product_discount_id = $row['product_discount_id'];
+				} else {
+					$app = Jfactory::getApplication();
+					$app->enqueueMessage('cost Price empty, if child, everything okey, this is just a dev note');
+					return false;
+				}
+			}
+		} else {
+			$this->productCurrency = $data['product_currency'];
+			$this->product_tax_id = $data['product_tax_id'];
+			$this->product_discount_id = $data['product_discount_id'];
+
+		}
+
+		$this->_db->setQuery('SELECT `virtuemart_vendor_id` FROM #__virtuemart_products  WHERE `virtuemart_product_id`="' . $productId . '" ');
+		$single = $this->_db->loadResult();
+		$this->productVendorId = $single;
+		if (empty($this->productVendorId)) {
+			$this->productVendorId = 1;
+		}
+
+		$this->_db->setQuery('SELECT `virtuemart_category_id` FROM #__virtuemart_product_categories  WHERE `virtuemart_product_id`="' . $productId . '" ');
+		$this->_cats = $this->_db->loadResultArray();
+
+// 		vmTime('getProductPrices no object given query time','getProductCalcs');
+
+		if(VmConfig::get('multix','none')!='none' and empty($this->vendorCurrency )){
+			$this->_db->setQuery('SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="' . $this->productVendorId . '" ');
+			$single = $this->_db->loadResult();
+			$this->vendorCurrency = $single;
+		}
+
+		if (!empty($amount)) {
+			$this->_amount = $amount;
+		}
+
+		//$this->setCountryState($this->_cart);
+		$this->rules['Marge'] = $this->gatherEffectingRulesForProductPrice('Marge', $this->product_marge_id);
+		$this->rules['Tax'] = $this->gatherEffectingRulesForProductPrice('Tax', $this->product_tax_id);
+		$this->rules['VatTax'] = $this->gatherEffectingRulesForProductPrice('VatTax', $this->product_tax_id);
+		$this->rules['DBTax'] = $this->gatherEffectingRulesForProductPrice('DBTax', $this->product_discount_id);
+		$this->rules['DATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
+
+		$salesPrice = $data['salesPrice'];
+
+		$withoutVatTax = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $salesPrice));
+		$withoutVatTax = !empty($withoutVatTax) ? $withoutVatTax : $salesPrice;
+		vmdebug('calculateCostprice',$salesPrice,$withoutVatTax, $data);
+
+		$withDiscount = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $withoutVatTax));
+		$withDiscount = !empty($withDiscount) ? $withDiscount : $withoutVatTax;
+// 		vmdebug('Entered final price '.$salesPrice.' discount '.$withDiscount);
+		$withTax = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $withDiscount));
+		$withTax = !empty($withTax) ? $withTax : $withDiscount;
+
+		$basePriceP = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $withTax));
+		$basePriceP = !empty($basePriceP) ? $basePriceP : $withTax;
+
+		$basePrice = $this->roundInternal($this->executeCalculation($this->rules['Marge'], $basePriceP));
+		$basePrice = !empty($basePrice) ? $basePrice : $basePriceP;
+
+		$productCurrency = CurrencyDisplay::getInstance();
+		$costprice = $productCurrency->convertCurrencyTo( $this->productCurrency, $basePrice,false);
+// 		$productCurrency = CurrencyDisplay::getInstance();
+		$this->_revert = false;
+
+		//vmdebug('calculateCostprice',$salesPrice,$costprice, $data);
+		return $costprice;
+	}
+
+
+	public function setRevert($revert){
+		$this->_revert = $revert;
 	}
 
 	private function fillVoidPrices(&$prices) {
@@ -586,83 +678,6 @@ class calculationHelper {
 		return $this->_cartPrices;
 	}
 
-	public function calculateCostprice($productId,$data){
-
-		$this->_revert = true;
-
-		vmSetStartTime('calculateCostprice');
-		$this->_db->setQuery('SELECT * FROM #__virtuemart_product_prices  WHERE `virtuemart_product_id`="' . $productId . '" ');
-		$row = $this->_db->loadAssoc();
-		if ($row) {
-			if (!empty($row['product_price'])) {
-// 				$costPrice = $row['product_price'];
-				$this->productCurrency = $row['product_currency'];
-// 				$this->override = $row['override'];
-// 				$this->product_override_price = $row['product_override_price'];
-				$this->product_tax_id = $row['product_tax_id'];
-				$this->product_discount_id = $row['product_discount_id'];
-			} else {
-				$app = Jfactory::getApplication();
-				$app->enqueueMessage('cost Price empty, if child, everything okey, this is just a dev note');
-				return false;
-			}
-		}
-		$this->_db->setQuery('SELECT `virtuemart_vendor_id` FROM #__virtuemart_products  WHERE `virtuemart_product_id`="' . $productId . '" ');
-		$single = $this->_db->loadResult();
-		$this->productVendorId = $single;
-		if (empty($this->productVendorId)) {
-			$this->productVendorId = 1;
-		}
-
-		$this->_db->setQuery('SELECT `virtuemart_category_id` FROM #__virtuemart_product_categories  WHERE `virtuemart_product_id`="' . $productId . '" ');
-		$this->_cats = $this->_db->loadResultArray();
-
-// 		vmTime('getProductPrices no object given query time','getProductCalcs');
-
-
-		if(VmConfig::get('multix','none')!='none' and empty($this->vendorCurrency )){
-			$this->_db->setQuery('SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="' . $this->productVendorId . '" ');
-			$single = $this->_db->loadResult();
-			$this->vendorCurrency = $single;
-		}
-
-		if (!empty($amount)) {
-			$this->_amount = $amount;
-		}
-
-		//$this->setCountryState($this->_cart);
-		$this->rules['Marge'] = $this->gatherEffectingRulesForProductPrice('Marge', $this->product_marge_id);
-		$this->rules['Tax'] = $this->gatherEffectingRulesForProductPrice('Tax', $this->product_tax_id);
-		$this->rules['VatTax'] = $this->gatherEffectingRulesForProductPrice('VatTax', $this->product_tax_id);
-		$this->rules['DBTax'] = $this->gatherEffectingRulesForProductPrice('DBTax', $this->product_discount_id);
-		$this->rules['DATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
-
-		$salesPrice = $data['salesPrice'];
-
-		$withoutVatTax = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $salesPrice));
-		$withoutVatTax = !empty($withoutVatTax) ? $withoutVatTax : $salesPrice;
-
-		$withDiscount = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $withoutVatTax));
-		$withDiscount = !empty($withDiscount) ? $withDiscount : $withoutVatTax;
-// 		vmdebug('Entered final price '.$salesPrice.' discount '.$withDiscount);
-		$withTax = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $withDiscount));
-		$withTax = !empty($withTax) ? $withTax : $withDiscount;
-
-		$basePriceP = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $withTax));
-		$basePriceP = !empty($basePriceP) ? $basePriceP : $withTax;
-
-		$basePrice = $this->roundInternal($this->executeCalculation($this->rules['Marge'], $basePriceP));
-		$basePrice = !empty($basePrice) ? $basePrice : $basePriceP;
-
-		$productCurrency = CurrencyDisplay::getInstance();
-		$costprice = $productCurrency->convertCurrencyTo( $this->productCurrency, $basePrice,false);
-// 		$productCurrency = CurrencyDisplay::getInstance();
-		$this->_revert = false;
-		return $costprice;
-	}
-	public function setRevert($revert){
-		$this->_revert = $revert;
-	}
 	/**
 	 * Get coupon details and calculate the value
 	 * @author Oscar van Eijk

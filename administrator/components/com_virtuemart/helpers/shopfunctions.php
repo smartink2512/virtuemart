@@ -211,25 +211,28 @@ class ShopFunctions {
 	 * @param bool $multiple if the select list should allow multiple selections
 	 * @return string HTML select option list
 	 */
-	static public function renderShopperGroupList ($shopperGroupId = 0, $multiple = TRUE) {
+	static public function renderShopperGroupList ($shopperGroupId = 0, $multiple = TRUE,$name='virtuemart_shoppergroup_id') {
 
 		$shopperModel = VmModel::getModel ('shoppergroup');
 		$shoppergrps = $shopperModel->getShopperGroups (FALSE, TRUE);
 		$attrs = '';
-		$name = 'shopper_group_name';
-		$idA = $id = 'virtuemart_shoppergroup_id';
+		//$name = 'shopper_group_name';
+		//$idA = $id = 'virtuemart_shoppergroup_id';
 
 		if ($multiple) {
 			$attrs = 'multiple="multiple"';
-			$idA .= '[]';
+			if($name=='virtuemart_shoppergroup_id'){
+				$name.= '[]';
+			}
 		} else {
-			$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+			$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), 'virtuemart_shoppergroup_id', 'shopper_group_name');
 			array_unshift ($shoppergrps, $emptyOption);
 		}
-
-		$listHTML = JHTML::_ ('select.genericlist', $shoppergrps, $idA, $attrs, $id, $name, $shopperGroupId);
+		//vmdebug('renderShopperGroupList',$name,$shoppergrps);
+		$listHTML = JHTML::_ ('select.genericlist', $shoppergrps, $name, $attrs, 'virtuemart_shoppergroup_id', 'shopper_group_name', $shopperGroupId);
 		return $listHTML;
 	}
+
 
 	/**
 	 * Render a simple country list
@@ -357,6 +360,7 @@ class ShopFunctions {
 		foreach ($taxes as $tax) {
 			$taxrates[] = JHTML::_ ('select.option', $tax->virtuemart_calc_id, $tax->calc_name, $name);
 		}
+		//vmdebug('renderTaxList',$name,$taxrates);
 		$listHTML = JHTML::_ ('Select.genericlist', $taxrates, $name, $class, $name, 'text', $selected);
 		return $listHTML;
 	}

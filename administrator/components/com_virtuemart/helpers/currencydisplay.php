@@ -350,7 +350,10 @@ class CurrencyDisplay {
 	public function createPriceDiv($name,$description,$product_price,$priceOnly=false,$switchSequel=false,$quantity = 1.0,$forceNoLabel=false){
 
 		// 		vmdebug('createPriceDiv '.$name,$product_price[$name]);
-		if(empty($product_price)) return '';
+		if(empty($product_price)) {
+			vmdebug('createPriceDiv 3rd parameter is empty for price '.$name);
+			return '';
+		}
 
 		//The fallback, when this price is not configured
 		if(empty($this->_priceConfig[$name])){
@@ -361,7 +364,12 @@ class CurrencyDisplay {
 		//if(empty($product_price[$name])){
 			//$name = "salesPrice";
 			if(is_array($product_price)){
-				$price = $product_price[$name] ;
+				if(empty($product_price[$name])) {
+					vmdebug('createPriceDiv 3rd parameter $product_price['.$name.'] is empty');
+					return '';
+				} else {
+					$price = $product_price[$name] ;
+				}
 			} else {
 				$price = $product_price;
 			}
@@ -371,6 +379,7 @@ class CurrencyDisplay {
 
 		//This could be easily extended by product specific settings
 		if(!empty($this->_priceConfig[$name][0])){
+
 			if(!empty($price)){
 				$vis = "block";
 				$priceFormatted = $this->priceDisplay($price,0,(float)$quantity,false,$this->_priceConfig[$name][1],$name );
@@ -437,7 +446,7 @@ class CurrencyDisplay {
 			$this->_db->setQuery($q);
 			$exch = $this->_db->loadResult();
 			// 				vmdebug('begin convertCurrencyTo '.$exch);
-			if(!empty($exch) and $exch !== '0.00000'){
+			if(!empty($exch) and $exch !== '0.000000'){
 				$exchangeRate = $exch;
 			} else {
 				$exchangeRate = FALSE;
@@ -446,9 +455,9 @@ class CurrencyDisplay {
 		//	}
 		$this->exchangeRateShopper = $exchangeRate;
 		// 		vmdebug('convertCurrencyTo my currency ',$exchangeRate,$currency);
-		if(!empty($exchangeRate) && $exchangeRate!=FALSE){
+		if(!empty($exchangeRate) and $exchangeRate!=FALSE){
 
-			//vmdebug('convertCurrencyTo Use custom rate');
+			vmdebug('convertCurrencyTo Use custom rate ',$exchangeRate);
 			if($shop){
 				$price = $price / $exchangeRate;
 			} else {

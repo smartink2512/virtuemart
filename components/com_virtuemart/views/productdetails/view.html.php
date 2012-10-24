@@ -76,8 +76,14 @@ class VirtueMartViewProductdetails extends VmView {
 	} else {
 	    $virtuemart_product_id = $virtuemart_product_idArray;
 	}
+    $quantityArray = JRequest::getVar ('quantity', array()); //is sanitized then
+    JArrayHelper::toInteger ($quantityArray);
 
-	$product = $product_model->getProduct($virtuemart_product_id);
+    $quantity = 1;
+    if (!empty($quantityArray[0])) {
+	    $quantity = $quantityArray[0];
+    }
+	$product = $product_model->getProduct($virtuemart_product_id,TRUE,TRUE,TRUE,$quantity);
 
 // 		vmSetStartTime('customs');
 // 		for($k=0;$k<count($product->customfields);$k++){
@@ -183,7 +189,11 @@ class VirtueMartViewProductdetails extends VmView {
 
 	    if ($category->parents) {
 			foreach ($category->parents as $c) {
-			    $pathway->addItem(strip_tags($c->category_name), JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $c->virtuemart_category_id));
+				if(is_object($c) and isset($c->category_name)){
+					$pathway->addItem(strip_tags($c->category_name), JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $c->virtuemart_category_id));
+				} else {
+					vmdebug('Error, parent category has no name, breadcrumb maybe broken, category',$c);
+				}
 			}
 	    }
 
