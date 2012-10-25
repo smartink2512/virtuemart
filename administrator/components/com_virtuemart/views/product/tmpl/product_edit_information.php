@@ -85,7 +85,7 @@ $i=0;
     </td>
 	<td valign="top">
         <table width="100%" class="adminform" >
-						<?php $i =0; ?>
+						<?php $i =1; ?>
 
 				<?php if(isset($this->lists['manufacturers'])){ ?>
 				<tr class="row<?php echo $i?>">

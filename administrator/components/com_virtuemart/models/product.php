@@ -597,7 +597,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * @param boolean $front for frontend use
 	 * @param boolean $withCalc calculate prices?
 	 */
-	public function getProduct ($virtuemart_product_id = NULL, $front = TRUE, $withCalc = TRUE, $onlyPublished = TRUE, $quantity) {
+	public function getProduct ($virtuemart_product_id = NULL, $front = TRUE, $withCalc = TRUE, $onlyPublished = TRUE, $quantity = 1) {
 
 		if (isset($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId ($virtuemart_product_id);
@@ -805,8 +805,25 @@ class VirtueMartModelProduct extends VmModel {
 				//$ppTable->load ($this->_id);
 				$product = (object)array_merge ((array)$product->prices[0], (array)$product);
 			} else if ( $front and count($product->prices)>1 ) {
-				vmWarn('COM_VIRTUEMART_PRICE_AMBIGUOUS');
-				$product = (object)array_merge ((array)$product->prices[0], (array)$product);
+				foreach($product->prices as $price){
+
+					if(empty($price['virtuemart_shoppergroup_id'])){
+						if(empty($emptySpgrpPrice))$emptySpgrpPrice = $price;
+					} else if(in_array($price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids)){
+						$product = (object)array_merge ((array)$price, (array)$product);
+						break;
+					}
+					//$product = (object)array_merge ((array)$price, (array)$product);
+				}
+
+				if(!empty($emptySpgrpPrice)){
+
+					$product = (object)array_merge ((array)$emptySpgrpPrice, (array)$product);
+				} else {
+					vmWarn('COM_VIRTUEMART_PRICE_AMBIGUOUS');
+					$product = (object)array_merge ((array)$product->prices[0], (array)$product);
+				}
+
 			}
 
 			if(!isset($product->product_price)) $product->product_price = null;

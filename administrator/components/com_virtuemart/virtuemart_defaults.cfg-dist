@@ -39,7 +39,7 @@ show_uncat_child_products=0
 coupons_default_expire=1,D
 weight_unit_default=KG
 lwh_unit_default=m
-list_limit=10
+list_limit=20
 showReviewFor=all
 reviewMode=registered
 showRatingFor=all
@@ -47,6 +47,7 @@ ratingMode=registered
 reviews_autopublish=1
 reviews_minimum_comment_length=100
 reviews_maximum_comment_length=2000
+
 vmtemplate=default
 categorytemplate=default
 showCategory=1
@@ -54,27 +55,32 @@ categorylayout=default
 categories_per_row=3
 productlayout=default
 products_per_row=3
+homepage_categories_per_row=3
+homepage_products_per_row=3
+show_store_desc=1
 
 vmlayout=default
-    show_featured=1
-    featured_products_per_row=3
-    show_topTen=1
-    topten_products_per_row=3
-    show_recent=1
-    show_latest=1
+show_featured=1
+featured_products_rows=3
+show_topTen=1
+topTen_products_rows=3
+show_recent=1
+recent_products_rows=3
+show_latest=1
+latest_products_rows=3
 
 ##Paths
-    assets_general_path=components/com_virtuemart/assets/
-    media_category_path=images/stories/virtuemart/category/
-    media_product_path=images/stories/virtuemart/product/
-    media_manufacturer_path=images/stories/virtuemart/manufacturer/
-    media_vendor_path=images/stories/virtuemart/vendor/
-	forSale_path_thumb=images/stories/virtuemart/forSale/resized/
-    img_resize_enable=1
-    img_width=90
-    img_height=90
-    no_image_set=noimage.gif
-    no_image_found=warning.png
+assets_general_path=components/com_virtuemart/assets/
+media_category_path=images/stories/virtuemart/category/
+media_product_path=images/stories/virtuemart/product/
+media_manufacturer_path=images/stories/virtuemart/manufacturer/
+media_vendor_path=images/stories/virtuemart/vendor/
+forSale_path_thumb=images/stories/virtuemart/forSale/resized/
+img_resize_enable=1
+img_width=90
+img_height=90
+no_image_set=noimage.gif
+no_image_found=warning.png
     
 ##Product order settings
 

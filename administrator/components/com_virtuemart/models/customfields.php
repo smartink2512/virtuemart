@@ -941,13 +941,10 @@ class VirtueMartModelCustomfields extends VmModel {
 									$price = self::_getCustomPrice($productCustom->custom_price, $currency, $calculator);
 									$productCustom->field_type = $group->field_type;
 									$productCustom->is_cart = 1;
-								//	$group->display .= '<input id="' . $productCustom->virtuemart_custom_id . '" ' . $checked . ' type="radio" value="' .
-								//		$productCustom->virtuemart_custom_id . '" name="customPrice[' . $row . '][' . $productCustom->virtuemart_customfield_id . ']" /><label
-								//		for="' . $productCustom->virtuemart_custom_id . '">' . $this->displayProductCustomfieldFE ($productCustom, $row) . ' ' . $price . '</label>';
-						//MarkerVarMods
-									$group->display .= '<input id="' . $productCustom->virtuemart_custom_id . '" ' . $checked . ' type="radio" value="' .
+
+									$group->display .= '<input id="' . $productCustom->virtuemart_custom_id . $row . '" ' . $checked . ' type="radio" value="' .
 										$productCustom->virtuemart_customfield_id . '" name="customPrice[' . $row . '][' . $productCustom->virtuemart_custom_id . ']" /><label
-										for="' . $productCustom->virtuemart_custom_id . '" class="other-customfield">' . $this->displayProductCustomfieldFE ($product, $productCustom, $row) . ' ' . $price . '</label>';
+										for="' . $productCustom->virtuemart_custom_id . $row . '" >' . $this->displayProductCustomfieldFE ($product, $productCustom, $row) . ' ' . $price . '</label><br />';
 
 									$checked = '';
 								}
@@ -1053,7 +1050,11 @@ class VirtueMartModelCustomfields extends VmModel {
 					$uncatChildren = $productModel->getUncategorizedChildren ($customfield->withParent);
 
 					foreach ($uncatChildren as $k => $child) {
-						$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id']), 'text' => $child[$customfield->custom_value]);
+						if(!isset($child[$customfield->custom_value])){
+							vmdebug('The child has no value at index '.$customfield->custom_value,$customfield,$child);
+						} else {
+							$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id']), 'text' => $child[$customfield->custom_value]);
+						}
 					}
 
 					$html .= JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][custom_value]', 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="inputbox"', "value", "text",

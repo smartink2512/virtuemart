@@ -95,7 +95,7 @@ class VirtueMartCart {
 				self::$_cart = new VirtueMartCart;
 
 				self::$_cart->products = $sessionCart->products;
-				vmdebug('getCart product',self::$_cart->products);
+				//vmdebug('getCart product',self::$_cart->products);
 				self::$_cart->vendorId	 							= $sessionCart->vendorId;
 				self::$_cart->lastVisitedCategoryId	 			= $sessionCart->lastVisitedCategoryId;
 				self::$_cart->virtuemart_shipmentmethod_id	= $sessionCart->virtuemart_shipmentmethod_id;

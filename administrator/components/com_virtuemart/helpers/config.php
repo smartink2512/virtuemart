@@ -497,7 +497,7 @@ class VmConfig {
 
 		self::$_jpConfig = new VmConfig();
 
-
+		$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$query = 'SHOW TABLES LIKE "%virtuemart_configs%"';
 		$db->setQuery($query);
@@ -534,7 +534,15 @@ class VmConfig {
 				if(!empty($item[1])){
 					// if($item[0]!=='offline_message' && $item[0]!=='dateformat' ){
 					if($item[0]!=='offline_message' ){
-						$pair[$item[0]] = unserialize($item[1] );
+						try {
+							$pair[$item[0]] = @unserialize($item[1] );
+							if($pair[$item[0]]===FALSE){
+								$app ->enqueueMessage('Exception in loadConfig for unserialize '.$item[0]. ' '.$item[1]);
+							}
+						}catch (Exception $e) {
+							vmdebug('Exception in loadConfig for unserialize '. $e->getMessage(),$item);
+						}
+
 					} else {
 						$pair[$item[0]] = unserialize(base64_decode($item[1]) );
 					}
@@ -555,7 +563,7 @@ class VmConfig {
 			return self::$_jpConfig;
 		}
 
-		$app = JFactory::getApplication();
+
 		$app ->enqueueMessage('Attention config is empty');
 		return 'Was not able to create config';
 	}
