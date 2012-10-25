@@ -66,7 +66,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			$browseOrderByFields = ShopFunctions::getValidProductFilterArray ();
 			$this->addvalidOrderingFieldName (array('product_price','p.`product_sales`'));
-			$this->addvalidOrderingFieldName (array('product_price'));
+			//$this->addvalidOrderingFieldName (array('product_price'));
 			// 	vmdebug('$browseOrderByFields',$browseOrderByFields);
 		}
 		$this->addvalidOrderingFieldName ((array)$browseOrderByFields);
@@ -749,7 +749,6 @@ class VirtueMartModelProduct extends VmModel {
 			$ppTable->load ($this->_id);
 
 			$product = (object)array_merge ((array)$ppTable, (array)$product);*/
-
 			$db = JFactory::getDbo();
 			$this->_nullDate = $db->getNullDate();
 			$jnow = JFactory::getDate();

@@ -1248,6 +1248,7 @@ class vmJsApi{
 		}
 		static $jDate;
 
+		//TODO Why Patrick used here an own string for the date format?
 		$dateFormat = JText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_J16');//="m/d/y"
 		$search  = array('m', 'd');
 		$replace = array('mm', 'dd');

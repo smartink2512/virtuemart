@@ -153,7 +153,17 @@ $i=0;
 	<fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICES'); ?></legend>
 		<?php
-			echo $this->loadTemplate('price');
+
+			//$product = $this->product;
+
+			if (empty($this->product->prices)) {
+				$this->product->prices[] = array();
+			}
+			$this->i = 0;
+			foreach ($this->product->prices as $sprice) {
+				$this->sprices = $sprice;
+				echo $this->loadTemplate('price');
+			}
 		?>
 	</fieldset>
 </tr>

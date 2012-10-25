@@ -20,27 +20,21 @@
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access'); ?>
 <?php
-if (!class_exists ('calculationHelper')) {
-	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-}
-$calculator = calculationHelper::getInstance ();
-$product = $this->product;
 
-if (empty($product->prices)) {
-	$product->prices[] = array();
-}
-$i = 0;
-foreach ($product->prices as $pprice) {
-	//vmdebug('my $pprice',$pprice);
-	$product = (object)array_merge ((array)$product, (array)$pprice);
-	$price = $calculator->getProductPrices ($product);
-
-	if (empty($pprice['virtuemart_product_price_id'])) {
-		$pprice['virtuemart_product_price_id'] = '';
+	if (empty($this->sprices['virtuemart_product_price_id'])) {
+		$this->sprices['virtuemart_product_price_id'] = '';
 	}
 
+	if (!class_exists ('calculationHelper')) {
+		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+	}
+	$calculator = calculationHelper::getInstance ();
+
+	$product = (object)array_merge ((array)$this->product, (array)$this->sprices);
+	$price = $calculator->getProductPrices ($product);
+
 	$currency_model = VmModel::getModel ('currency');
-	$this->lists['currencies'] = JHTML::_ ('select.genericlist', $currency_model->getCurrencies (), 'mprices[product_currency][' . $i . ']', '', 'virtuemart_currency_id', 'currency_name', $product->product_currency);
+	$this->lists['currencies'] = JHTML::_ ('select.genericlist', $currency_model->getCurrencies (), 'mprices[product_currency][' . $this->i . ']', '', 'virtuemart_currency_id', 'currency_name', $product->product_currency);
 
 	$DBTax = ''; //JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
 	foreach ($calculator->rules['DBTax'] as $rule) {
@@ -66,13 +60,13 @@ foreach ($product->prices as $pprice) {
 	if (!isset($product->product_tax_id)) {
 		$product->product_tax_id = 0;
 	}
-	$this->lists['taxrates'] = ShopFunctions::renderTaxList ($product->product_tax_id, 'mprices[product_tax_id][' . $i . ']');
+	$this->lists['taxrates'] = ShopFunctions::renderTaxList ($product->product_tax_id, 'mprices[product_tax_id][' . $this->i . ']');
 	if (!isset($product->product_discount_id)) {
 		$product->product_discount_id = 0;
 	}
-	$this->lists['discounts'] = $this->renderDiscountList ($product->product_discount_id, 'mprices[product_discount_id][' . $i . ']');
+	$this->lists['discounts'] = $this->renderDiscountList ($product->product_discount_id, 'mprices[product_discount_id][' . $this->i . ']');
 
-	$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList ($product->virtuemart_shoppergroup_id, false, 'mprices[virtuemart_shoppergroup_id][' . $i . ']');
+	$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList ($product->virtuemart_shoppergroup_id, false, 'mprices[virtuemart_shoppergroup_id][' . $this->i . ']');
 	?>
 <table class="adminform">
 
@@ -95,7 +89,7 @@ foreach ($product->prices as $pprice) {
                 value="<?php echo $price['costPrice']; ?>"/>
             <input type="hidden"
                    name="mprices[virtuemart_product_price_id][]"
-                   value="<?php echo $pprice['virtuemart_product_price_id']; ?>"/>
+                   value="<?php echo $this->sprices['virtuemart_product_price_id']; ?>"/>
         </td>
         <td colspan="3">
 			<?php echo $this->lists['currencies']; ?>
@@ -212,7 +206,7 @@ foreach ($product->prices as $pprice) {
 // 							echo VmHtml::checkbox('override',$this->product->override);
 			$options = array(0 => JText::_ ('COM_VIRTUEMART_DISABLED'), 1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_FINAL'), -1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_PRICE_TAX'));
 
-			echo VmHtml::radioList ('mprices[override]['.$i.']', $product->override, $options);
+			echo VmHtml::radioList ('mprices[override]['.$this->i.']', $product->override, $options);
 
 			?>
         </td>
@@ -229,6 +223,6 @@ foreach ($product->prices as $pprice) {
     </tr>
 </table>
 <?php
-	$i++;
-}
+	$this->i++;
+
 ?>
