@@ -10,7 +10,6 @@
     <description>text input plugin for product</description>
     <languages>
         <language tag="en-GB">en-GB.plg_vmcustom_textinput.ini</language>
-        <language tag="fr-FR">fr-FR.plg_vmcustom_textinput.ini</language>
     </languages>
     <files>
         <filename plugin="textinput">textinput.php</filename>

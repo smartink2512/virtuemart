@@ -14,10 +14,7 @@
     <files>
 	<filename plugin="moneybookers_wlt">moneybookers_wlt.php</filename>
     </files>
-    <languages>
-	<language tag="en-GB">en-GB.plg_vmpayment_moneybookers_wlt.ini</language>
-	<language tag="en-US">en-GB.plg_vmpayment_moneybookers_wlt.ini</language>
-    </languages>
+
     <params addpath="/administrator/components/com_virtuemart/elements">
 	<param type="vmjpluginwarning" />
 	<param type="spacer" default="VMPAYMENT_MONEYBOOKERS_PAYMENT_TITLE" level="level1" />

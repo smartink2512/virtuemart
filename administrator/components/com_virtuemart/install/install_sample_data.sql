@@ -40,11 +40,11 @@ INSERT INTO `#__virtuemart_categories` (`virtuemart_category_id`, `virtuemart_ve
 (5, 1, 1, NULL, NULL, '', '', '', 1, 5, NULL, NULL, NULL, NULL, '', '');
 
 INSERT INTO `#__virtuemart_categories_XLANG` (`virtuemart_category_id`, `category_name`, `category_description`, `metadesc`, `metakey`, `slug`) VALUES
-	(1, 'Hand Tools', 'Hand Tools', '', '', 'handtools'),
-	(2, 'Power Tools', 'Power Tools', '', '', 'powertools'),
-	(3, 'Garden Tools', 'Garden Tools', '', '', 'gardentools'),
-	(4, 'Outdoor Tools', 'Outdoor Tools', '', '', 'outdoortools'),
-	(5, 'Indoor Tools', 'Indoor Tools', '', '', 'indoortools');
+(1, 'Hand Tools', 'Hand Tools', '', '', 'handtools'),
+(2, 'Power Tools', 'Power Tools', '', '', 'powertools'),
+(3, 'Garden Tools', 'Garden Tools', '', '', 'gardentools'),
+(4, 'Outdoor Tools', 'Outdoor Tools', '', '', 'outdoortools'),
+(5, 'Indoor Tools', 'Indoor Tools', '', '', 'indoortools');
 
 --
 -- Dumping data for table `#__virtuemart_category_categories`
@@ -148,7 +148,6 @@ INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`,`virtuemart_manufac
 --
 -- Dumping data for table `#__virtuemart_medias`
 --
-
 INSERT INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_vendor_id`, `file_title`, `file_description`, `file_meta`, `file_mimetype`, `file_type`, `file_url`, `file_url_thumb`, `file_is_product_image`, `file_is_downloadable`, `file_is_forSale`, `file_params`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 (1, 1, 'hand_saw.jpg', '', 'hand saw', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hand_saw.jpg', 'images/stories/virtuemart/product/resized/hand_saw_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '2012-10-26 10:25:23', 627, '0000-00-00 00:00:00', 0),
 (2, 1, 'hand_shovel.jpg', '', 'hand shovel', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hand_shovel.jpg', 'images/stories/virtuemart/product/resized/hand_shovel_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '2012-10-26 10:42:44', 627, '0000-00-00 00:00:00', 0),
@@ -171,43 +170,41 @@ INSERT INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_vendor_id
 
 
 INSERT INTO `#__virtuemart_products` (`virtuemart_product_id`, `virtuemart_vendor_id`, `product_parent_id`, `product_sku`, `product_weight`, `product_weight_uom`, `product_length`, `product_width`, `product_height`, `product_lwh_uom`, `product_url`, `product_in_stock`, `product_ordered`, `low_stock_notification`, `product_available_date`, `product_availability`, `product_special`, `product_sales`, `product_unit`, `product_packaging`, `product_params`, `hits`, `intnotes`, `metarobot`, `metaauthor`, `layout`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-(1, 1, 0, 'G01', 1.2000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 10, 0, 5, '2010-02-21 00:00:00', '48h.gif', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-26 10:36:01', 0, '2012-10-26 12:43:38', 627, '0000-00-00 00:00:00', 0),
-(2, 1, 0, 'G02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 76, 0, 5, '2010-02-21 00:00:00', '3-5d.gif', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 0, '2012-10-25 10:36:01', 0, '2012-10-26 12:34:43', 627, '0000-00-00 00:00:00', 0),
-(3, 1, 0, 'G03', 0.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 32, 0, 5, '2010-02-21 00:00:00', '7d.gif', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-23 10:36:01', 0, '2012-10-26 12:43:13', 627, '0000-00-00 00:00:00', 0),
-(4, 1, 0, 'G04', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 98, 0, 5, '2010-02-21 00:00:00', 'on-order.gif', 0, 0, '', 0.0000, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '2012-10-25 10:36:01', 0, '2012-10-26 10:36:01', 62, '0000-00-00 00:00:00', 0),
-(5, 1, 0, 'H01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 32, 0, 5, '2010-02-21 00:00:00', '1-4w.gif', 1, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-22 10:36:01', 0, '2012-10-26 10:36:01', 627, '0000-00-00 00:00:00', 0),
-(6, 1, 0, 'H02', 0.9000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 500, 0, 5, '2011-12-21 00:00:00', '24h.gif', 1, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-26 10:36:01', 0, '2012-10-26 12:43:57', 627, '0000-00-00 00:00:00', 0),
-(7, 1, 0, 'P01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 45, 0, 5, '2011-12-21 00:00:00', '48h.gif', 1, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-22 10:36:01', 0, '2012-10-26 10:19:12', 627, '0000-00-00 00:00:00', 0),
-(8, 1, 0, 'P02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 33, 0, 5, '2010-12-21 00:00:00', '3-5d.gif', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-23 10:36:01', 0, '2012-10-26 12:27:05', 627, '0000-00-00 00:00:00', 0),
-(9, 1, 0, 'P03', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 3, 0, 5, '2011-07-21 00:00:00', '2-3d.gif', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-24 10:36:01', 0, '2012-10-26 11:44:40', 627, '0000-00-00 00:00:00', 0),
-(10, 1, 0, 'P04', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 2, 0, 5, '2010-12-21 00:00:00', '1-2m.gif', 0, 0, '', 0.0000, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(11, 1, 1, 'G01-01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0.0000, 'min_order_level=null|max_order_level=null|product_box=null|', 0, '', '', '', '', 1, '2012-10-22 10:36:01', 0, '2012-10-26 12:43:38', 627, '0000-00-00 00:00:00', 0),
-(12, 1, 1, 'G01-02', 10.0000, '', 0.0000, 0.0000, 0.0000, '', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0.0000, 'min_order_level=null|max_order_level=null|product_box=null|', 0, '', '', '', '', 1, '2012-10-26 09:36:01', 0, '2012-10-26 12:43:38', 627, '0000-00-00 00:00:00', 0),
-(13, 1, 1, 'G01-03', 10.0000, '', 0.0000, 0.0000, 0.0000, '', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0.0000, 'min_order_level=null|max_order_level=null|product_box=null|', 0, '', '', '', '', 1, '2012-10-25 10:36:01', 0, '2012-10-26 12:43:38', 627, '0000-00-00 00:00:00', 0),
-(14, 1, 2, 'L01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 22, 0, 5, '2011-12-21 00:00:00', '', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-25 10:36:01', 0, '2012-10-26 12:39:17', 627, '0000-00-00 00:00:00', 0),
-(15, 1, 2, 'L02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-25 10:36:01', 0, '2012-10-26 12:40:49', 627, '0000-00-00 00:00:00', 0),
-(16, 1, 2, 'L03', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0.0000, 'min_order_level=null|max_order_level=null|product_box=null|', 0, '', '', '', '', 1, '2012-10-25 10:36:01', 0, '2012-10-26 12:34:43', 627, '0000-00-00 00:00:00', 0);
+(1, 1, 0, 'G01', 1.2000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 10, 0, 5, '2010-02-21 00:00:00', '48h.gif', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-26 10:36:01', 0, '2012-10-28 17:55:17', 627, '0000-00-00 00:00:00', 0),
+(2, 1, 0, 'G02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 76, 0, 5, '2010-02-21 00:00:00', '3-5d.gif', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 0, '2012-10-25 10:36:01', 0, '2012-10-28 17:52:31', 627, '0000-00-00 00:00:00', 0),
+(3, 1, 0, 'G03', 0.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 32, 0, 5, '2010-02-21 00:00:00', '7d.gif', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-23 10:36:01', 0, '2012-10-28 17:56:54', 627, '0000-00-00 00:00:00', 0),
+(4, 1, 0, 'G04', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 98, 0, 5, '2010-02-21 00:00:00', 'on-order.gif', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-25 10:36:01', 0, '2012-10-28 17:55:32', 627, '0000-00-00 00:00:00', 0),
+(5, 1, 0, 'H01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 32, 0, 5, '2010-02-21 00:00:00', '1-4w.gif', 1, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-22 10:36:01', 0, '2012-10-28 17:51:47', 627, '0000-00-00 00:00:00', 0),
+(6, 1, 0, 'H02', 0.9000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 500, 0, 5, '2011-12-21 00:00:00', '24h.gif', 1, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-26 10:36:01', 0, '2012-10-28 17:52:17', 627, '0000-00-00 00:00:00', 0),
+(7, 1, 0, 'P01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 45, 0, 5, '2011-12-21 00:00:00', '48h.gif', 1, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-22 10:36:01', 0, '2012-10-28 17:53:13', 627, '0000-00-00 00:00:00', 0),
+(8, 1, 0, 'P02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 33, 0, 5, '2010-12-21 00:00:00', '3-5d.gif', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-23 10:36:01', 0, '2012-10-28 17:53:51', 627, '0000-00-00 00:00:00', 0),
+(9, 1, 0, 'P03', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 3, 0, 5, '2011-07-21 00:00:00', '2-3d.gif', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-24 10:36:01', 0, '2012-10-28 17:53:00', 627, '0000-00-00 00:00:00', 0),
+(10, 1, 0, 'P04', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 2, 0, 5, '2010-12-21 00:00:00', '1-2m.gif', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '0000-00-00 00:00:00', 0, '2012-10-28 17:55:56', 627, '0000-00-00 00:00:00', 0),
+(11, 1, 1, 'G01-01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0.0000, 'min_order_level=null|max_order_level=null|product_box=null|', 0, '', '', '', '', 1, '2012-10-22 10:36:01', 0, '2012-10-28 17:55:17', 627, '0000-00-00 00:00:00', 0),
+(12, 1, 1, 'G01-02', 10.0000, '', 0.0000, 0.0000, 0.0000, '', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0.0000, 'min_order_level=null|max_order_level=null|product_box=null|', 0, '', '', '', '', 1, '2012-10-26 09:36:01', 0, '2012-10-28 17:55:17', 627, '0000-00-00 00:00:00', 0),
+(13, 1, 1, 'G01-03', 10.0000, '', 0.0000, 0.0000, 0.0000, '', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0.0000, 'min_order_level=null|max_order_level=null|product_box=null|', 0, '', '', '', '', 1, '2012-10-25 10:36:01', 0, '2012-10-28 17:55:17', 627, '0000-00-00 00:00:00', 0),
+(14, 1, 2, 'L01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 22, 0, 5, '2011-12-21 00:00:00', '', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 0, '2012-10-25 10:36:01', 0, '2012-10-28 17:52:31', 627, '0000-00-00 00:00:00', 0),
+(15, 1, 2, 'L02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 0, '2012-10-25 10:36:01', 0, '2012-10-28 17:52:31', 627, '0000-00-00 00:00:00', 0),
+(16, 1, 2, 'L03', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0.0000, 'min_order_level=null|max_order_level=null|product_box=null|', 0, '', '', '', '', 0, '2012-10-25 10:36:01', 0, '2012-10-28 17:52:31', 627, '0000-00-00 00:00:00', 0);
 
 
-INSERT INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_s_desc`, `product_desc`, `product_name`, `metadesc`, `metakey`, `customtitle`, `slug`) VALUES
-(1, '<p>Nice hand shovel to dig with in the yard.</p>', '<ul>\r\n<li>Hand crafted handle with maximum grip torque</li>\r\n<li>Titanium tipped shovel platter</li>\r\n<li>Half degree offset for less accidents</li>\r\n<li>Includes HowTo Video narrated by Bob Costas</li>\r\n</ul>\r\n<p><strong>Specifications</strong><br /> 5" Diameter<br /> Tungsten handle tip with 5 point loft</p>', 'Hand Shovel', '', '', '', 'hand-shovel'),
-(2, 'A really long ladder to reach high places.', '<ul>\r\n<li>Hand crafted handle with maximum grip torque</li>\r\n<li>Titanium tipped shovel platter</li>\r\n<li>Half degree offset for less accidents</li>\r\n<li>Includes HowTo Video narrated by Bob Costas</li>\r\n</ul>\r\n<p><strong>Specifications</strong><br /> 5" Diameter<br /> Tungsten handle tip with 5 point loft</p>', 'Ladder (Pattern)', '', '', '', 'ladder-pattern'),
-(3, 'Nice shovel.  You can dig your way to China with this one.', '<ul>\r\n<li>Hand crafted handle with maximum grip torque</li>\r\n<li>Titanium tipped shovel platter</li>\r\n<li>Half degree offset for less accidents</li>\r\n<li>Includes HowTo Video narrated by Bob Costas</li>\r\n</ul>\r\n<p><strong>Specifications</strong><br /> 5" Diameter<br /> Tungsten handle tip with 5 point loft</p>', 'Shovel', '', '', '', 'shovel'),
-(4, 'This shovel is smaller but you''ll be able to dig real quick.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', 'Smaller Shovel', '', '', '', 'smaller-shovel'),
-(5, 'This saw is great for getting cutting through downed limbs.', '<ul>\r\n<li>Hand crafted handle with maximum grip torque</li>\r\n<li>Titanium tipped shovel platter</li>\r\n<li>Half degree offset for less accidents</li>\r\n<li>Includes HowTo Video narrated by Bob Costas</li>\r\n</ul>\r\n<p><strong>Specifications</strong><br /> 5" Diameter<br /> Tungsten handle tip with 5 point loft</p>', 'Nice Saw', '', '', '', 'nice-saw'),
-(6, 'A great hammer to hammer away with.', '<ul>\r\n<li>Hand crafted handle with maximum grip torque</li>\r\n<li>Titanium tipped shovel platter</li>\r\n<li>Half degree offset for less accidents</li>\r\n<li>Includes HowTo Video narrated by Bob Costas</li>\r\n</ul>\r\n<p><strong>Specifications</strong><br /> 5" Diameter<br /> Tungsten handle tip with 5 point loft</p>', 'Hammer', '', '', '', 'hammer'),
-(7, 'Don''t do it with an axe.  Get a chain saw.', '<ul>\r\n<li>Tool-free tensioner for easy, convenient chain adjustment</li>\r\n<li>3-Way Auto Stop; stops chain a fraction of a second</li>\r\n<li>Automatic chain oiler regulates oil for proper chain lubrication</li>\r\n<li>Small radius guide bar reduces kick-back</li>\r\n</ul>', 'Chain Saw', '', '', '', 'chain-saw'),
-(8, 'Cut rings around wood.  This saw can handle the most delicate projects.', '<ul>\r\n<li>Patented Sightline; Window provides maximum visibility for straight cuts</li>\r\n<li>Adjustable dust chute for cleaner work area</li>\r\n<li>Bail handle for controlled cutting in 90ÔøΩ to 45ÔøΩ applications</li>\r\n<li>1-1/2 to 2-1/2 lbs. lighter and 40% less noise than the average circular saw</li>\r\n<li><strong>Includes:</strong>Carbide blade</li>\r\n</ul>\r\n<p><br /> <strong>Specifications</strong><br /> 10.0 AMPS <br /> 4,300 RPM <br /> Capacity: 2-1/16" at 90ÔøΩ, 1-3/4" at 45ÔøΩ</p>', 'Circular Saw', '', '', '', 'circular-saw'),
-(9, 'Drill through anything.  This drill has the power you need for those demanding hole boring duties.', '<ul>\r\n<li>High power motor and double gear reduction for increased durability and improved performance</li>\r\n<li>Mid-handle design and two finger trigger for increased balance and comfort</li>\r\n<li>Variable speed switch with lock-on button for continuous use</li>\r\n<li><strong>Includes:</strong> Chuck key &amp; holder</li>\r\n</ul>\r\n<p><span style="color: #000000; font-size: medium;"><br /> <strong>Specifications</strong><br /> 4.0 AMPS <br /> 0-1,350 RPM <br /> Capacity: 3/8" Steel, 1" Wood <br /><br /> </span></p>', 'Drill', '', '', '', 'drill'),
-(10, 'Blast away that paint job from the past.  Use this power sander to really show them you mean business.', '\r\n<ul>  <li>Lever activated paper clamps for simple sandpaper changes  </li><li>Dust sealed rocker switch extends product life and keeps dust out of motor  </li><li>Flush sands on three sides to get into corners  </li><li>Front handle for extra control  </li><li>Dust extraction port for cleaner work environment   </li></ul>  <br />  <b>Specifications</b><br />  1.2 AMPS    <br />   10,000 OPM    <br />\r\n', 'Power Sander', '', '', '', 'power-sander'),
-(11, '', '', 'Hand Shovel cheap', '', '', '', 'hand-shovel-g01'),
-(12, '', '', 'Hand Shovel enforced', '', '', '', 'hand-shovel-g02'),
-(13, '', '', 'Hand Shovel heavy duty', '', '', '', 'hand-shovel-g03'),
-(14, '', '', 'Metal Ladder', '', '', '', 'metal-ladder'),
-(15, '', '<p>Loft ladders provide a safe and convenient solution to loft access and are quick and simple to install.</p>', 'Wooden Ladder', '', '', '', 'wooden-ladder'),
-(16, '', '', 'Plastic Ladder', '', '', '', 'plastic-ladder');
-
-
+INSERT INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`,`product_name`, `product_s_desc`, `product_desc`,  `metadesc`, `metakey`, `customtitle`, `slug`) VALUES
+(1, 'Hand Shovel', 'Parent product custom field of type "Generic child variant" with template position="ontop"', '<p>Nice hand shovel to dig with in the yard.</p><ul><li>Hand crafted handle with maximum grip torque</li><li>Titanium tipped shovel platter</li><li>Half degree offset for less accidents</li><li>Includes HowTo Video narrated by Bob Costas</li></ul><p><strong>Example of product with Parent product and Child products. The parent product has a custom field of type "<span>Generic child variant", useful to control the stock of the child products.</span></strong></p>', '', '', '', 'hand-shovel'),
+(2, 'Ladder (Pattern)', 'Parent product used as pattern.', '<p>A really long ladder to reach high places.</p><ul><li>Hand crafted handle with maximum grip torque</li><li>Titanium tipped shovel platter</li><li>Half degree offset for less accidents</li><li>Includes HowTo Video narrated by Bob Costas</li></ul><p><strong>Example of a parent product used as pattern. The child products are added using the button "Child product" button from the product list. <br /><strong>For the child products, fields not filled in are taken from the parent. Fields that are changed are displayed.</strong><br /></strong></p>', '', '', '', 'ladder-pattern'),
+(3, 'Shovel', 'Nice shovel.  You can dig your way to China with this one.', '<ul><li>Hand crafted handle with maximum grip torque</li><li>Titanium tipped shovel platter</li><li>Half degree offset for less accidents</li><li>Includes HowTo Video narrated by Bob Costas</li></ul><p><strong>Specifications</strong><br /> 5" Diameter<br /> Tungsten handle tip with 5 point loft</p>',  '', '', '', 'shovel'),
+(4, 'Smaller Shovel', 'Product with Text input Plugin Custom field', 'This shovel is smaller but you''ll be able to dig real quick.<ul><li>Hand crafted handle with maximum grip torque</li><li>Titanium tipped shovel platter</li><li>Half degree offset for less accidents</li><li>Includes HowTo Video narrated by Bob Costas</li></ul>',  '', '', '', 'smaller-shovel'),
+(5,  'Nice Saw', 'Product with Related Categories and Related Products associated', '<p>This saw is great for getting cutting through downed limbs.</p><ul><li>Hand crafted handle with maximum grip torque</li><li>Titanium tipped shovel platter</li><li>Half degree offset for less accidents</li><li>Includes HowTo Video narrated by Bob Costas</li></ul>', '', '', '', 'nice-saw'),
+(6, 'Hammer', 'Product with custom fields with no cart attribute.', '<p>A great hammer to hammer away with.</p><ul><li>Hand crafted handle with maximum grip torque</li><li>Titanium tipped shovel platter</li><li>Half degree offset for less accidents</li><li>Includes HowTo Video narrated by Bob Costas</li></ul>',  '', '', '', 'hammer'),
+(7, 'Chain Saw', 'Product with Custom field of type Cart variant and customer review', '<p>Don''t do it with an axe.  Get a chain saw.</p><ul><li>Tool-free tensioner for easy, convenient chain adjustment</li><li>3-Way Auto Stop; stops chain a fraction of a second</li><li>Automatic chain oiler regulates oil for proper chain lubrication</li><li>Small radius guide bar reduces kick-back</li></ul>',  '', '', '', 'chain-saw'),
+(8, 'Circular Saw', 'Product with custom field of type Cart Variant', '<p>Cut rings around wood.  This saw can handle the most delicate projects.</p><ul><li>Patented Sightline; Window provides maximum visibility for straight cuts</li><li>Adjustable dust chute for cleaner work area</li><li>Bail handle for controlled cutting in 90ÔøΩ to 45ÔøΩ applications</li><li>1-1/2 to 2-1/2 lbs. lighter and 40% less noise than the average circular saw</li><li><strong>Includes:</strong>Carbide blade</li></ul>',  '', '', '', 'circular-saw'),
+(9, 'Drill', 'Drill through anything.  This drill has the power you need for those demanding hole boring duties.', '<ul><li>High power motor and double gear reduction for increased durability and improved performance</li><li>Mid-handle design and two finger trigger for increased balance and comfort</li><li>Variable speed switch with lock-on button for continuous use</li><li><strong>Includes:</strong> Chuck key &amp; holder</li></ul><p><span style="color: #000000; font-size: medium;"><br /> </span></p>',  '', '', '', 'drill'),
+(10, 'Power Sander', 'Blast away that paint job from the past.  Use this power sander to really show them you mean business.', '<ul><li>Lever activated paper clamps for simple sandpaper changes</li><li>Dust sealed rocker switch extends product life and keeps dust out of motor</li><li>Flush sands on three sides to get into corners</li><li>Front handle for extra control</li><li>Dust extraction port for cleaner work environment</li></ul>',  '', '', '', 'power-sander'),
+(11, 'Hand Shovel cheap','', '',  '', '', '', 'hand-shovel-g01'),
+(12, 'Hand Shovel enforced','', '',  '', '', '', 'hand-shovel-g02'),
+(13, 'Hand Shovel heavy duty','', '',  '', '', '', 'hand-shovel-g03'),
+(14, 'Metal Ladder','', '',  '', '', '', 'metal-ladder'),
+(15, 'Wooden Ladder','', '<p>Loft ladders provide a safe and convenient solution to loft access and are quick and simple to install.</p>',  '', '', '', 'wooden-ladder'),
+(16, 'Plastic Ladder','', '',  '', '', '', 'plastic-ladder');
 
 INSERT IGNORE INTO `#__virtuemart_product_medias` (`id`,`virtuemart_product_id`, `virtuemart_media_id`) VALUES
 (NULL, 1, 2),
@@ -286,10 +283,7 @@ INSERT INTO `#__virtuemart_product_prices` (`virtuemart_product_price_id`, `virt
 (13, 13, '79.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, 0, 0),
 (14, 14, '49.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, 0, 0),
 (15, 15, '59.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, 0, 0),
-(16, 16, '3.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, 0, 0),
-(17, 3, '22.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, 3, 0, 0),
-(18, 4, '14.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, 3, 0, 0)
-;
+(16, 16, '3.99000', 0, '0.00000', NULL, NULL, '144', 0, 0, NULL, 0, 0);
 
 --
 -- Dumping data for table `#__virtuemart_shoppergroups`
@@ -307,7 +301,7 @@ INSERT INTO `#__virtuemart_worldzones` (`virtuemart_worldzone_id`, `zone_name`, 
 (1, 'Default', '6.00', '35.00', 'This is the default Shipment Zone. This is the zone information that all countries will use until you assign each individual country to a Zone.', 2),
 (2, 'Zone 1', '1000.00', '10000.00', 'This is a zone example', 2),
 (3, 'Zone 2', '2.00', '22.00', 'This is the second zone. You can use this for notes about this zone', 2),
-(4, 'Zone 3', '11.00', '64.00', 'Another usefull thing might be details about this zone or special instructions.', 2);
+(4, 'Zone 3', '11.00', '64.00', 'Another useful thing might be details about this zone or special instructions.', 2);
 
 INSERT INTO `#__virtuemart_userfield_values` (`virtuemart_userfield_value_id`, `virtuemart_userfield_id`, `fieldtitle`, `fieldvalue`, `sys`, `ordering`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 (null, 10, 'Mr', 'Mr', 0, 0, '', 0, '', 0, '', 0),
@@ -315,7 +309,6 @@ INSERT INTO `#__virtuemart_userfield_values` (`virtuemart_userfield_value_id`, `
 
 INSERT INTO `#__virtuemart_ratings` (`virtuemart_rating_id`, `virtuemart_product_id`, `rates`, `ratingcount`, `rating`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`) VALUES
 (1, 7, 5, 1, 5.0, 1, '2012-10-26 10:28:32', 627, '2012-10-26 10:29:16', 627);
-
 
 INSERT INTO `#__virtuemart_rating_reviews` (`virtuemart_rating_review_id`, `virtuemart_product_id`, `comment`, `review_ok`, `review_rates`, `review_ratingcount`, `review_rating`, `review_editable`, `lastip`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 (1, 7, 'I just purchased this saw to cut up some tree branches that fell into my yard. I am so happy, it is light weight enough for me (a lady) to use.', 0, 10, 2, 5.00, 0, '::1', 1, '2012-10-26 10:28:32', 627, '2012-10-26 10:29:16', 627, '0000-00-00 00:00:00', 0);

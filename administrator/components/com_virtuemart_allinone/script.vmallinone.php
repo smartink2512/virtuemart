@@ -12,12 +12,14 @@ defined ('_JEXEC') or die('Restricted access');
 
 defined ('DS') or define('DS', DIRECTORY_SEPARATOR);
 
-$max_execution_time = ini_get('max_execution_time');
-if((int)$max_execution_time<120) {
-	@ini_set( 'max_execution_time', '120' );
+$max_execution_time = ini_get ('max_execution_time');
+if ((int)$max_execution_time < 120) {
+	@ini_set ('max_execution_time', '120');
 }
-$memory_limit = (int) substr(ini_get('memory_limit'),0,-1);
-if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
+$memory_limit = (int)substr (ini_get ('memory_limit'), 0, -1);
+if ($memory_limit < 128) {
+	@ini_set ('memory_limit', '128M');
+}
 
 // hack to prevent defining these twice in 1.6 installation
 if (!defined ('_VM_SCRIPT_INCLUDED')) {
@@ -56,8 +58,8 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->path = JInstaller::getInstance ()->getPath ('extension_administrator');
 
 			$this->updateShipperToShipment ();
-			$this->installPlugin ('Standard', 'plugin',  'standard', 'vmpayment');
-			$this->installPlugin ('Paypal',    'plugin', 'paypal',    'vmpayment');
+			$this->installPlugin ('Standard', 'plugin', 'standard', 'vmpayment');
+			$this->installPlugin ('Paypal', 'plugin', 'paypal', 'vmpayment');
 			$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
 			$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
 			//moneybookers
@@ -206,10 +208,9 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 		private function installPlugin ($name, $type, $element, $group) {
 
 			$task = JRequest::getCmd ('task');
-
+			$app = JFactory::getApplication ();
 			if ($task != 'updateDatabase') {
 				$data = array();
-
 				if (version_compare (JVERSION, '1.7.0', 'ge')) {
 
 					// Joomla! 1.7 code here
@@ -252,40 +253,103 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 				//We write only in the table, when it is not installed already
 				if ($count == 0) {
-					// 				$table->load($count);
+					echo 'Installing plugin ' . $name .' '. $group . '<br />';
+
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
 						$data['manifest_cache'] = json_encode (JApplicationHelper::parseXMLInstallFile ($src . DS . $element . '.xml'));
 					}
 
 					if (!$table->bind ($data)) {
-						$app = JFactory::getApplication ();
-						$app->enqueueMessage ('VMInstaller table->bind throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+						$app->enqueueMessage ('VM AIO installer table->bind throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
 					}
 
 					if (!$table->check ($data)) {
-						$app = JFactory::getApplication ();
-						$app->enqueueMessage ('VMInstaller table->check throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
-
+						$app->enqueueMessage ('VM AIO installer table->check throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
 					}
 
 					if (!$table->store ($data)) {
-						$app = JFactory::getApplication ();
-						$app->enqueueMessage ('VMInstaller table->store throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+						$app->enqueueMessage ('VM AIO installer table->store throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
 					}
 
 					$errors = $table->getErrors ();
 					foreach ($errors as $error) {
-						$app = JFactory::getApplication ();
 						$app->enqueueMessage (get_class ($this) . '::store ' . $error);
 					}
-					// remove duplicated
+					// only create an example when com_virtuemart is installed
+					if (!class_exists ('VmConfig')) {
+						require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+					}
+					if (class_exists ('VmConfig')) {
+						if (!class_exists ('VmModel')) {
+							require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'vmmodel.php');
+						}
+						// Install an example
+						if ($group == 'vmpayment' or $group == 'vmshipment' or ($group == 'vmcustom' && $element == 'textinput')) {
+							echo 'Installing plugin example ' . $name . ' ' . $group.'<br />';
+							$jplugin_id = $table->$idfield;
+							if ($group == 'vmpayment' or $group == 'vmshipment') {
+								$prefix = substr ($group, 2); // remove 'vm' from group name
+								$data[$prefix . '_jplugin_id'] = $jplugin_id;
+								$data[$prefix . '_name'] = $name;
+								$data['published'] = 0;
+								$data['virtuemart_vendor_id'] = 1;
+								$data['virtuemart_' . $name . 'method_id'] = 0;
+								$model = VmModel::getModel ($prefix . 'method');
+								$model->store ($data);
+							} else {
+								$app = JFactory::getApplication ();
+								$textInput = 'Engrave Your Initials';
+								$data['custom_jplugin_id'] = $jplugin_id;
+								$data['field_type'] = 'E';
+								$data['custom_title'] = $textInput;
+								$data['is_cart_attribute'] = 1;
+								$data['custom_parent_id'] = 0;
+								$data['custom_field_desc'] = "";
+								$data['custom_value'] = $element;
+								$data['custom_tip'] = '';
+								$data['layout_pos'] = '';
+								$data['admin_only'] = 0;
+								$data['is_list'] = 0;
+								$data['is_hidden'] = 0;
+								$data['params']['custom_title'] = $textInput;
+								$data['params']['custom_size'] = 10;
+								$data['params']['custom_price_by_letter'] = 0;
+								$data['custom_title'] = $name;
+								$data['custom_size'] = 10;
+								$data['custom_price_by_letter'] = 0;
+								$data['virtuemart_vendor_id'] = 1;
+								$data['custom_element'] = $element;
+								$modelName = 'custom';
+							}
+							$model = VmModel::getModel ($modelName);
+							$model->store ($data);
+							if (!class_exists ('VirtueMartModelCustomfields')) {
+								require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models' . DS . 'customfields.php');
+							}
+							// add this custom field to product id 4
+							$q = 'SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs` WHERE `custom_jplugin_id` = "' . $jplugin_id . '"';
+							$db->setQuery ($q);
+							$virtuemart_custom_id = $db->loadResult ();
+							$q = 'INSERT INTO `#__virtuemart_product_customfields` 	(`virtuemart_custom_id`, `virtuemart_product_id`, `custom_value` ) VALUES (' . $virtuemart_custom_id . ',4,"' . $element . '")';
+							$db->setQuery ($q);
+							if (!$db->query ()) {
+								$app->enqueueMessage (get_class ($this) . '::  ' . $db->getErrorMsg ());
+							}
+						}
+					} else {
+						$app->enqueueMessage (get_class ($this) . ':: VirtueMart2 component is not installed. Could not install plugin examples');
+					}
+
 				} elseif ($count == 2) {
+					// remove duplicated (bug from 2.0.12c)
 					$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" ORDER BY  `' . $idfield . '` DESC  LIMIT 0,1';
 					$db->setQuery ($q);
 					$duplicatedPlugin = $db->loadResult ();
 					$q = 'DELETE FROM `' . $tableName . '` WHERE ' . $idfield . ' = ' . $duplicatedPlugin;
 					$db->setQuery ($q);
 					$db->query ();
+				} else {
+					//$app->enqueueMessage ('VM AIO installer Plugin already installed: ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
 				}
 			}
 
@@ -334,7 +398,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 				//Let's get the global dispatcher
 				$dispatcher = JDispatcher::getInstance ();
-				$config = array('type'=> $group, 'name'=> $group, 'params'=> '');
+				$config = array('type' => $group, 'name' => $group, 'params' => '');
 				$plugin = new $pluginClassname($dispatcher, $config);
 				;
 				// 				$updateString = $plugin->getVmPluginCreateTableSQL();
@@ -371,7 +435,6 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				// 				}
 
 			} else {
-				$app = JFactory::getApplication ();
 				$app->enqueueMessage (get_class ($this) . ':: VirtueMart2 must be installed, or the tables cant be updated ' . $error);
 
 			}
@@ -448,17 +511,17 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			// 			if(empty($count)){
 			// 			if(!$table->bind($data)){
 			// 				$app = JFactory::getApplication();
-			// 				$app -> enqueueMessage('VMInstaller table->bind throws error for '.$title.' '.$module.' '.$params);
+			// 				$app -> enqueueMessage('VM AIO installer table->bind throws error for '.$title.' '.$module.' '.$params);
 			// 			}
 
 			if (!$table->check ()) {
 				$app = JFactory::getApplication ();
-				$app->enqueueMessage ('VMInstaller table->check throws error for ' . $title . ' ' . $module . ' ' . $params);
+				$app->enqueueMessage ('VM AIO installer table->check throws error for ' . $title . ' ' . $module . ' ' . $params);
 			}
 
 			if (!$table->store ()) {
 				$app = JFactory::getApplication ();
-				$app->enqueueMessage ('VMInstaller table->store throws error for for ' . $title . ' ' . $module . ' ' . $params);
+				$app->enqueueMessage ('VM AIO installer table->store throws error for for ' . $title . ' ' . $module . ' ' . $params);
 			}
 
 			$errors = $table->getErrors ();
@@ -637,12 +700,12 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 							if (JFile::exists ($dst . DS . $file)) {
 								if (!JFile::delete ($dst . DS . $file)) {
 									$app = JFactory::getApplication ();
-									$app->enqueueMessage ('Couldnt delete ' . $dst . DS . $file);
+									$app->enqueueMessage ('Could not delete ' . $dst . DS . $file);
 								}
 							}
 							if (!JFile::move ($src . DS . $file, $dst . DS . $file)) {
 								$app = JFactory::getApplication ();
-								$app->enqueueMessage ('Couldnt move ' . $src . DS . $file . ' to ' . $dst . DS . $file);
+								$app->enqueueMessage ('Could not move ' . $src . DS . $file . ' to ' . $dst . DS . $file);
 							}
 						}
 					}
@@ -653,7 +716,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				}
 			} else {
 				$app = JFactory::getApplication ();
-				$app->enqueueMessage ('Couldnt read dir ' . $dir . ' source ' . $src);
+				$app->enqueueMessage ('Could not read dir ' . $dir . ' source ' . $src);
 			}
 
 		}

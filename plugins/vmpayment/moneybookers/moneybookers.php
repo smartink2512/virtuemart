@@ -28,8 +28,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 
 		parent::__construct ($subject, $config);
 		// unique filelanguage for all moneybookers methods
-		$jlang = JFactory::getLanguage ();
-		$jlang->load ('plg_vmpayment_moneybookers', JPATH_ADMINISTRATOR, NULL, TRUE);
+		VmConfig::loadJLang('plg_vmpayment_moneybookers', false);
 		$this->_loggable = TRUE;
 		$this->_debug = TRUE;
 		$this->tableFields = array_keys ($this->getTableSQLFields ());
@@ -43,10 +42,8 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		                    'payment_currency'    => array('', 'char'),
 		                    'payment_logos'       => array('', 'char'),
 		                    'countries'           => array('', 'char'),
-		                    'cost_per_transaction'
-		                                          => array('', 'int'),
-		                    'cost_percent_total'
-		                                          => array('', 'int'),
+		                    'cost_per_transaction' => array('', 'int'),
+		                    'cost_percent_total'   => array('', 'int'),
 		                    'min_amount'          => array('', 'int'),
 		                    'max_amount'          => array('', 'int'),
 		                    'tax_id'              => array(0, 'int'),

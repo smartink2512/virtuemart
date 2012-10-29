@@ -1409,7 +1409,8 @@ class VirtueMartModelProduct extends VmModel {
 				if (!class_exists ('VirtueMartModelCustomfields')) {
 					require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'customfields.php');
 				}
-				VirtueMartModelCustomfields::storeProductCustomfields ('product', $data, $product_data->virtuemart_product_id);
+				$modelCustomfields = VmModel::getModel ('Customfields');
+				$modelCustomfields->storeProductCustomfields ('product', $data, $product_data->virtuemart_product_id);
 			}
 		}
 

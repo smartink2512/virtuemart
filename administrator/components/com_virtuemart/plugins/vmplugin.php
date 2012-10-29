@@ -67,20 +67,9 @@ abstract class vmPlugin extends JPlugin {
 
 		$this->_psType = substr ($this->_type, 2);
 
-		$lang = JFactory::getLanguage ();
 		$filename = 'plg_' . $this->_type . '_' . $this->_name;
+		VmConfig::loadJLang($filename, false);
 
-		if(VmConfig::get('enableEnglish', 1)){
-		    $lang->load($filename, JPATH_ADMINISTRATOR, 'en-GB', true);
-		}
-		$lang->load($filename, JPATH_ADMINISTRATOR, $lang->getDefault(), true);
-		$lang->load($filename, JPATH_ADMINISTRATOR, null, true);
-		/*
-		$knownLanguages=$lang->getKnownLanguages();
-		foreach($knownLanguages as $key => $knownLanguage) {
-			$lang->load ($filename, JPATH_ADMINISTRATOR, $key, TRUE);
-		}
-		*/
 		if (!class_exists ('JParameter')) {
 			require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php');
 		}
