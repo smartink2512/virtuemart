@@ -526,6 +526,7 @@ function virtuemartParseRoute($segments) {
 		if ( $helper->compareKey($segments[0] ,'edit_shipment') ) $vars['task'] = 'edit_shipment' ;
 		elseif ( $helper->compareKey($segments[0] ,'editpayment') ) $vars['task'] = 'editpayment' ;
 		elseif ( $helper->compareKey($segments[0] ,'delete') ) $vars['task'] = 'delete' ;
+		elseif ( $helper->compareKey($segments[0] ,'checkout') ) $vars['task'] = 'checkout' ;
 		else $vars['task'] = $segments[0];
 		return $vars;
 	}
