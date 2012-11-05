@@ -67,10 +67,11 @@ class VirtuemartViewProduct extends VmView {
 				$product = $model->getProductSingle ($virtuemart_product_id, false);
 				$customfields = VmModel::getModel ('Customfields');
 
-				$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($virtuemart_product_id);
+				$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($virtuemart_product_id,-1,FALSE);
+			//vmdebug('my $product->customfields',$product->customfields);
 				if (empty($product->customfields) and !empty($product->product_parent_id)) {
 
-					$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->product_parent_id);
+					$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->product_parent_id,-1,FALSE);
 					$product->customfields_fromParent = TRUE;
 					foreach ($product->customfields as $field) {
 						$field->custom_value = '';

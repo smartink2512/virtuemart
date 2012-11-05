@@ -255,9 +255,7 @@ class VirtueMartControllerProductdetails extends JController {
 	 */
 	public function recalculate () {
 
-		//$post = JRequest::get('request');
 
-//		echo '<pre>'.print_r($post,1).'</pre>';
 		jimport ('joomla.utilities.arrayhelper');
 		$virtuemart_product_idArray = JRequest::getVar ('virtuemart_product_id', array()); //is sanitized then
 		if(is_array($virtuemart_product_idArray)){
@@ -266,16 +264,13 @@ class VirtueMartControllerProductdetails extends JController {
 		} else {
 			$virtuemart_product_id = $virtuemart_product_idArray;
 		}
-
-		$productRow = JRequest::getInt('irgendwas',0);
-
-		$customPrices = array();
-		//$customVariants = JRequest::getVar ('customProductData', array()); //is sanitized then
 		$customProductData = JRequest::getVar ('customProductData', array()); //is sanitized then
-		//echo '<pre>'.print_r($customVariants,1).'</pre>';
+
 
 		//VmConfig::$echoDebug=TRUE;
-		//vmdebug('recalculate '.$productRow,$customProductData);
+		//$post = JRequest::get('request');
+		//vmdebug('recalculate ',$customProductData);
+		//vmdebug('post ',$post);
 
 		$quantityArray = JRequest::getVar ('quantity', array()); //is sanitized then
 		JArrayHelper::toInteger ($quantityArray);
@@ -287,7 +282,6 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$product_model = VmModel::getModel ('product');
 
-		VmConfig::$echoDebug = TRUE;
 		$prices = $product_model->getPrice ($virtuemart_product_id, $customProductData[$virtuemart_product_id], $quantity);
 
 		$priceFormated = array();

@@ -122,7 +122,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	}
 
 
-	function getCustomEmbeddedProductCustomFields($virtuemart_product_id, $cartattribute=-1){
+	function getCustomEmbeddedProductCustomFields($virtuemart_product_id, $cartattribute=-1,$front=TRUE){
 
 		$db= JFactory::getDBO ();
 		$q = $this->getProductCustomSelectFieldList();
@@ -131,8 +131,13 @@ class VirtueMartModelCustomfields extends VmModel {
 		if($cartattribute != -1){
 			$q .= ' AND is_cart_attribute = "'.$cartattribute.'" ';
 		}
-		$q .= ' GROUP BY `virtuemart_custom_id` ORDER BY field.`ordering`,`virtuemart_custom_id` ASC';
 
+		if($front){
+			$q .= ' GROUP BY `virtuemart_custom_id` ';
+		}
+		$q .= ' ORDER BY field.`ordering`,`virtuemart_custom_id` ASC';
+
+		vmdebug('getCustomEmbeddedProductCustomFields',$q);
 		$db->setQuery ($q);
 		$productCustoms = $db->loadObjectList ();
 		$err=$db->getErrorMsg();
@@ -169,7 +174,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			foreach ($productCustoms as $field) {
 				VirtueMartModelCustomfields::bindCustomEmbeddedFieldParams($field,$field->field_type);
 			}
-			vmdebug('getCustomEmbeddedProductCustomGroup',$productCustoms);
+			//vmdebug('getCustomEmbeddedProductCustomGroup',$productCustoms);
 			return $productCustoms;
 		} else {
 			return array();
@@ -193,6 +198,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			$vendor = $vendor_model->getVendor();
 			$currency_model = VmModel::getModel('currency');
 			$vendor_currency = $currency_model->getCurrency($vendor->vendor_currency);
+
 			$priceInput = '<span style="white-space: nowrap;"><input type="text" size="12" style="text-align:right;" value="' . (isset($field->custom_price) ?  $field->custom_price : '0') . '" name="field[' . $row . '][custom_price]" /> '.$vendor_currency->currency_symbol."</span>";
 		}
 		else {
@@ -208,7 +214,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 
 		        $currentValue = $field->customfield_value;
-			return JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][custom_value]', NULL, 'value', 'text', $currentValue) . '</td><td>' . $priceInput;
+			return JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', NULL, 'value', 'text', $currentValue) . '</td><td>' . $priceInput;
 		}
 		else {
 
@@ -238,6 +244,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					break;
 				// variants
 				case 'V':
+					//vmdebug('displayProductCustomfieldBE case v',$field->customfield_value);
 					return '<input type="text" value="' . $field->customfield_value . '" name="field[' . $row . '][custom_value]" /></td><td>' . $priceInput;
 					break;
 				/*
@@ -419,7 +426,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$options[] = array('value' => $val, 'text' => $val);
 				}
 				vmdebug('displayProductCustomfieldFE is a list ',$options);
-				return JHTML::_ ('select.genericlist', $options, 'field'.$productCounter.'[' . $row . '][custom_value]', NULL, 'value', 'text', FALSE, TRUE);
+				return JHTML::_ ('select.genericlist', $options, 'field'.$productCounter.'[' . $customfield->virtuemart_customfield_id . '][custom_value]', NULL, 'value', 'text', FALSE, TRUE);
 			}
 			else {
 				$html = '';
@@ -463,16 +470,18 @@ class VirtueMartModelCustomfields extends VmModel {
 			//vmdebug('getProductCustomsFieldCart options',$options);
 			$group->options = array();
 			foreach ($options as $option) {
+
 				$group->options[$option->virtuemart_customfield_id] = $option;
 			}
-
+			vmdebug('$group->options ',$group->options);
 			if ($group->field_type == 'V') {
 				$default = current ($group->options);
 				foreach ($group->options as $productCustom) {
 					$price = self::_getCustomPrice($productCustom->custom_price, $currency, $calculator);
 					$productCustom->text = $productCustom->customfield_value . ' ' . $price;
+					//$productCustom->formname = '['.$productCustom->virtuemart_customfield_id.'][selected]';
 				}
-				$group->display = VmHTML::select ('customProductData['.$productCounter.'][' . $row . '][' . $group->virtuemart_custom_id . ']', $group->options, $default->customfield_value, '', 'virtuemart_customfield_id', 'text', FALSE);
+				$group->display = VmHTML::select ('customProductData['.$product->virtuemart_product_id.']['.$default->virtuemart_custom_id.']', $group->options, $default->customfield_value, '', 'virtuemart_customfield_id', 'text', FALSE);
 			}
 			else {
 
@@ -484,8 +493,8 @@ class VirtueMartModelCustomfields extends VmModel {
 					$productCustom->is_cart = 1;
 
 					$group->display .= '<input id="' . $productCustom->virtuemart_custom_id . $row . '" ' . $checked . ' type="radio" value="' .
-						$productCustom->virtuemart_customfield_id . '" name="customProductData['.$productCounter.'][' . $row . '][' . $productCustom->virtuemart_custom_id . ']" /><label
-						for="' . $productCustom->virtuemart_custom_id . $row . '" >' . $this->displayProductCustomfieldFE ($product, $productCustom, $row) . ' ' . $price . '</label><br />';
+						$productCustom->virtuemart_customfield_id . '" name="customProductData['.$product->virtuemart_product_id.']['.$productCustom->virtuemart_custom_id.']" /><label
+						for="' . $productCustom->virtuemart_custom_id . $row . '" >' . $productCustom->customfield_value . ' ' . $price . '</label><br />';
 
 					$checked = '';
 				}
@@ -640,7 +649,12 @@ class VirtueMartModelCustomfields extends VmModel {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 
 		$variantmods = $product -> customProductData;
-		foreach ($variantmods as $selected => $nix) {
+		vmdebug('displayProductCustomfieldSelected',$variantmods);
+		foreach ($variantmods as $custom_id => $selected) {
+			if(is_array($selected)){
+				reset($selected);
+				$selected = key($selected);
+			}
 
 			if ($selected) {
 				$productCustom = self::getCustomEmbeddedProductCustomField ($selected);
@@ -780,9 +794,18 @@ class VirtueMartModelCustomfields extends VmModel {
 	public function calculateModificators(&$product, $variants) {
 
 		$modificatorSum = 0.0;
-
-		foreach ($variants as $selected => $variant) {
-
+		//vmdebug('calculateModificators $modificatorSum',$variants);
+		foreach ($variants as $custom_id => $selvalues) {
+			$variant = $selvalues;
+			if(is_array($selvalues)){
+				foreach($selvalues as $key => $value){
+					$variant = $value;
+					$selected =$key;
+				}
+			} else {
+				$selected = $selvalues;
+			}
+			//vmdebug('calculateModificators variant',$variant,$selected);
 			if (!empty($selected)) {
 
 				$productCustom = $this->getCustomEmbeddedProductCustomField($selected);
@@ -795,10 +818,11 @@ class VirtueMartModelCustomfields extends VmModel {
 				}
 
 				if (!empty($productCustom->custom_price)) {
+
 					//TODO adding % and more We should use here $this->interpreteMathOp
 					$modificatorSum = $modificatorSum + $productCustom->custom_price;
 				}
-			//	vmdebug('calculateModificators $modificatorSum',$modificatorSum);
+
 			}
 		}
 

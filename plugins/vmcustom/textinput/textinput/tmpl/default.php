@@ -10,7 +10,7 @@ $params = $viewData[1];
 	<input class="<?php echo $class ?>"
 	       type="text" value=""
 	       size="<?php echo $params->custom_size ?>"
-	       name="customProductData[<?php echo $product->virtuemart_product_id ?>][<?php echo $params->virtuemart_customfield_id ?>][comment]"><br />
+	       name="customProductData[<?php echo $product->virtuemart_product_id ?>][<?php echo $params->virtuemart_custom_id ?>][<?php echo $params->virtuemart_customfield_id ?>][comment]"><br />
 <?php
 	// preventing 2 x load javascript
 	static $textinputjs;
