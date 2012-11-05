@@ -151,7 +151,7 @@ class VirtueMartControllerUser extends JController
 
 	function saveAddressST(){
 
-		$msg = $this->saveData(false,true);
+		$msg = $this->saveData(false,true,true);
 		$layout = 'edit';// JRequest::getWord('layout','edit');
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout), $msg );
 
@@ -167,7 +167,7 @@ class VirtueMartControllerUser extends JController
 	 * @param boolean Defaults to false, the param is for the userModel->store function, which needs it to determine how to handle the data.
 	 * @return String it gives back the messages.
 	 */
-	private function saveData($cart=false,$register=false) {
+	private function saveData($cart=false,$register=false, $onlyAddress=false) {
 		$mainframe = JFactory::getApplication();
 		$currentUser = JFactory::getUser();
 		$msg = '';
@@ -191,8 +191,11 @@ class VirtueMartControllerUser extends JController
 			}
 
 			//It should always be stored
-			$ret = $userModel->store($data);
-
+			if($onlyAddress){
+				$ret = $userModel->storeAddress($data);
+			} else {
+				$ret = $userModel->store($data);
+			}
 			if($currentUser->guest==1){
 				$msg = (is_array($ret)) ? $ret['message'] : $ret;
 				$usersConfig = &JComponentHelper::getParams( 'com_users' );

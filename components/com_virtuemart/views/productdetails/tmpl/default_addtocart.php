@@ -23,10 +23,21 @@ defined ('_JEXEC') or die('Restricted access');
 
 	<form method="post" class="product js-recalculate" action="<?php echo JRoute::_ ('index.php'); ?>">
 		<?php // Product custom_fields
-		if (!empty($this->product->customfieldsCart)) {
+		$this->position = 'addtocart';
+
+		if (!empty($this->product->customfieldsSorted[$this->position])) {
 			?>
 			<div class="product-fields">
-				<?php foreach ($this->product->customfieldsCart as $field) { ?>
+				<?php //foreach ($this->product->customfields as $field) {
+
+				foreach ($this->product->customfieldsSorted[$this->position] as $field) {
+					//vmdebug('addtocart',$field);
+					//Dont mix the systems, why we should not allow that someone is using this position just for information
+				//if($field->is_cart_attribute==1){
+					//The fields must have now a row, also the products
+					$field->row = $this->row;
+					$this->customfieldsModel -> displayProductCustomfieldFE ($this->product, $field);
+					?>
 				<div class="product-field product-field-type-<?php echo $field->field_type ?>">
 					<span class="product-fields-title-wrapper"><span class="product-fields-title"><strong><?php echo JText::_ ($field->custom_title) ?></strong></span>
 					<?php if ($field->custom_tip) {
@@ -34,9 +45,10 @@ defined ('_JEXEC') or die('Restricted access');
 				} ?></span>
 					<span class="product-field-display"><?php echo $field->display ?></span>
 
-					<span class="product-field-desc"><?php echo $field->custom_field_desc ?></span>
+					<span class="product-field-desc"><?php echo $field->custom_desc ?></span>
 				</div><br/>
-				<?php
+					<?php
+				//}
 			}
 				?>
 			</div>

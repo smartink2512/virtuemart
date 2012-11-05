@@ -101,15 +101,15 @@ if (empty ( $this->product )) {
 				<div class="addtocart-area">
 
 	<?php // Product custom_fields
-	if (!empty($this->product->customfieldsCart)) {  ?>
+	if (!empty($this->product->customfieldsSorted['normal'])) {  ?>
 	<div class="product-fields">
-		<?php foreach ($this->product->customfieldsCart as $field)
+		<?php foreach ($this->product->customfieldsSorted['normal'] as $field)
 		{ ?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
 			<span class="product-fields-title" ><strong><?php echo $field->custom_title ?></strong></span>
 			<?php echo JHTML::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png'); ?>
 			<span class="product-field-display"><?php echo $field->display ?></span>
 
-			<span class="product-field-desc"><?php echo $field->custom_field_desc ?></span>
+			<span class="product-field-desc"><?php echo $field->custom_desc ?></span>
 			</div><br/ >
 			<?php
 		}
@@ -194,7 +194,7 @@ if (empty ( $this->product )) {
 				<?php //echo JHTML::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png');
 			} ?>
 			<span class="product-field-display"><?php echo $field->display ?></span>
-			<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>
+			<span class="product-field-desc"><?php echo jText::_($field->custom_desc) ?></span>
 			</div>
 			<?php
 			$custom_title = $field->custom_title;

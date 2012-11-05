@@ -72,7 +72,7 @@ class mod_virtuemart_product {
 								<span class="product-fields-title"><b><?php echo $field->custom_title ?></b></span>
 								<?php echo JHTML::tooltip ($field->custom_tip, $field->custom_title, 'tooltip.png'); ?>
 								<span class="product-field-display"><?php echo $field->display ?></span>
-								<span class="product-field-desc"><?php echo $field->custom_field_desc ?></span>
+								<span class="product-field-desc"><?php echo $field->custom_desc ?></span>
 							</div>
 
 							<?php } ?>

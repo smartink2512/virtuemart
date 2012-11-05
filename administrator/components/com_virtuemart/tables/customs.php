@@ -49,10 +49,10 @@ class TableCustoms extends VmTable {
     /** @var string custom Meta or alt  */
 	var $custom_value	= '';
     /** @var string custom Meta or alt  */
-	var $custom_field_desc	= '';
+	var $custom_desc	= '';
 
 	/** @var string parameter of the customplugin*/
-	var $custom_params				= 0;
+	var $custom_param				= 0;
 	/**
 	 *@var varchar(1)
 	 * Type = S:string,I:int,P:parent, B:bool,D:date,T:time,H:hidden
@@ -88,6 +88,8 @@ class TableCustoms extends VmTable {
 
 		$this->setLoggable();
 		$this->setOrderable('ordering',false);
+
+		$this->setParameterable('custom_param',array());
 	}
 
 	/*

@@ -163,7 +163,7 @@ $i = 0;
 	</tbody>
 </table>
 <script type="text/javascript">
-	<!--
+
 	var $customerMailLink = '<?php echo JURI::root () . '/index.php?option=com_virtuemart&view=productdetails&task=sentproductemailtoshoppers&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';
 	var $customerMailNotifyLink = '<?php echo 'index.php?option=com_virtuemart&view=product&task=ajax_notifyUsers&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';
 	var $customerListLink = '<?php echo 'index.php?option=com_virtuemart&view=product&format=json&type=userlist&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';
@@ -243,15 +243,16 @@ $i = 0;
 	});
 
 	/* JS for list changes */
-
-
 	function populate_customer_list($status) {
 		if ($status == "undefined" || $status == null) $status = '';
-		jQuery.getJSON($customerListLink, { status:$status  },
-			function (data) {
-				jQuery("#customers-list").html(data.value);
-			});
+		if($status !=''){
+            jQuery.getJSON($customerListLink, { status:$status  },
+                    function (data) {
+                        jQuery("#customers-list").html(data.value);
+                    });
+		}
 	}
+
 	function customer_initiliaze_boxes() {
 		email_type = jQuery("input:radio[name=customer_email_type]:checked").val();
 		if (email_type == 'notify') {
@@ -270,5 +271,4 @@ $i = 0;
 			jQuery('#customer-mail-notify-list').hide();
 		}
 	}
--->
 </script>

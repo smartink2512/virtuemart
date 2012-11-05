@@ -134,7 +134,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 *  Display product
 	 */
-	function plgVmOnDisplayProductFE($product,&$idx,&$group) {
+	function plgVmOnDisplayProductFE(&$product,&$group) {
 		// default return if it's not this plugin
 		if ($group->custom_element != $this->_name) return '';
 
@@ -167,8 +167,8 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 		return $this->setOnTablePluginParams($name, $id, $table);
 	}
 
-	function plgVmDeclarePluginParamsCustom($psType,$name,$id, &$data){
-		return $this->declarePluginParams('custom', $name, $id, $data);
+	function plgVmDeclarePluginParamsCustom(&$data){
+		return $this->declarePluginParams('custom', $data->custom_element, $data->custom_jplugin_id, $data);
 	}
 
 	/**

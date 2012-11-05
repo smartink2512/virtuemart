@@ -267,20 +267,15 @@ class VirtueMartControllerProductdetails extends JController {
 			$virtuemart_product_id = $virtuemart_product_idArray;
 		}
 
+		$productRow = JRequest::getInt('irgendwas',0);
+
 		$customPrices = array();
-		$customVariants = JRequest::getVar ('customPrice', array()); //is sanitized then
+		//$customVariants = JRequest::getVar ('customProductData', array()); //is sanitized then
+		$customProductData = JRequest::getVar ('customProductData', array()); //is sanitized then
 		//echo '<pre>'.print_r($customVariants,1).'</pre>';
 
-		//MarkerVarMods
-		foreach ($customVariants as $customVariant) {
-			//foreach ($customVariant as $selected => $priceVariant) {
-			//In this case it is NOT $selected => $variant, because we get it that way from the form
-			foreach ($customVariant as $priceVariant => $selected) {
-				//Important! sanitize array to int
-				$selected = (int)$selected;
-				$customPrices[$selected] = $priceVariant;
-			}
-		}
+		//VmConfig::$echoDebug=TRUE;
+		//vmdebug('recalculate '.$productRow,$customProductData);
 
 		$quantityArray = JRequest::getVar ('quantity', array()); //is sanitized then
 		JArrayHelper::toInteger ($quantityArray);
@@ -292,8 +287,8 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$product_model = VmModel::getModel ('product');
 
-		//VmConfig::$echoDebug = TRUE;
-		$prices = $product_model->getPrice ($virtuemart_product_id, $customPrices, $quantity);
+		VmConfig::$echoDebug = TRUE;
+		$prices = $product_model->getPrice ($virtuemart_product_id, $customProductData[$virtuemart_product_id], $quantity);
 
 		$priceFormated = array();
 		if (!class_exists ('CurrencyDisplay')) {

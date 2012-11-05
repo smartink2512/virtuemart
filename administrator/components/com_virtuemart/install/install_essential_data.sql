@@ -40,6 +40,14 @@ INSERT INTO `#__virtuemart_adminmenuentries` (`id`, `module_id`, `parent_id`, `n
 (null, 77, 0, 'COM_VIRTUEMART_USER_GROUP_S', '', '', 'vmicon vmicon-16-user', 2, 1, '', 'usergroups', '');
 
 --
+-- Dumping data for table `#___virtuemart_customs`
+--
+
+INSERT INTO `#__virtuemart_customs` ( `virtuemart_custom_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `layout_pos`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
+(1, 0, 'COM_VIRTUEMART_RELATED_PRODUCTS', 'COM_VIRTUEMART_RELATED_PRODUCTS_TIP', NULL, 'COM_VIRTUEMART_RELATED_PRODUCTS_DESC', 'R', 0, 0, 0, 'related_products', 1, '2011-05-25 21:52:43', 62, '2011-05-25 21:52:43', 62, '0000-00-00 00:00:00', 0),
+(2, 0, 'COM_VIRTUEMART_RELATED_CATEGORIES', 'COM_VIRTUEMART_RELATED_CATEGORIES_TIP', NULL, 'COM_VIRTUEMART_RELATED_CATEGORIES_DESC', 'Z', 0, 0, 0, 'related_categories', 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0);
+
+--
 -- Dumping data for table `#__virtuemart_modules`
 --
 

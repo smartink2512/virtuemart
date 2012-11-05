@@ -37,6 +37,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$this->_loggable = TRUE;
 
 		$this->_tableChecked = TRUE;
+
 	}
 
 	public function getVarsToPush () {

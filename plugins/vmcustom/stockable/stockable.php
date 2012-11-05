@@ -414,10 +414,10 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				formProduct = Opt.parents("form.product");
 				virtuemart_product_id = formProduct.find(\'input[name="virtuemart_product_id[]"]\').val();
 				//formProduct.find("#selectedStockable").remove();
-				//formProduct.append(\'<input id="stockableChild" type="hidden" value="\'+customfield_id[found_id]+\'" name="customPrice['.$row.'][\'+found_id+\']">\');
+				//formProduct.append(\'<input id="stockableChild" type="hidden" value="\'+customfield_id[found_id]+\'" name="customProductData['.$row.'][\'+found_id+\']">\');
 				formProduct.find(\'input[name*="customPlugin['.$field->virtuemart_customfield_id.']['.$this->_name.'][child_id]"]\').val(found_id);
 
-				//(\'<input id="stockableChild" type="hidden" value="\'+customfield_id[found_id]+\'" name="customPrice['.$row.'][\'+found_id+\']">\');
+				//(\'<input id="stockableChild" type="hidden" value="\'+customfield_id[found_id]+\'" name="customProductData['.$row.'][\'+found_id+\']">\');
 				Virtuemart.setproducttype(formProduct,virtuemart_product_id);
 			}
 			function isChildValid_'.$js_suffix.'(stockableBlockIndex, child_attrib, currentIndex) {
@@ -468,7 +468,11 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		return true;
 	}
 
-	function plgVmOnDisplayProductFE( $product, &$idx,&$group){}
+	function plgVmOnDisplayProductFE( &$product, &$group){
+		//TODO openglobal
+		//$this->plgVmOnDisplayProductVariantFE();
+	}
+
 	/**
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
 	 * @author Patrick Kohl
@@ -593,8 +597,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 // 		return $this->onStoreInstallPluginTable($psType);
 	}
 
-	function plgVmDeclarePluginParamsCustom($psType,$name,$id, &$data){
-		return $this->declarePluginParams('custom', $name, $id, $data);
+	function plgVmDeclarePluginParamsCustom(&$data){
+		return $this->declarePluginParams('custom', $data->custom_element, $data->custom_jplugin_id, $data);
 	}
 
 	function plgVmSetOnTablePluginParamsCustom($name, $id, &$table){

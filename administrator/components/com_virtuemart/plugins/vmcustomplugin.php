@@ -32,8 +32,6 @@ if (!class_exists ('vmPlugin')) {
 /**
  * @package    VirtueMart
  * @subpackage Plugins
- * @author Oscar van Eijk
- * @author Patrick Kohl
  * @author Max Milbers
  */
 abstract class vmCustomPlugin extends vmPlugin {
@@ -53,6 +51,7 @@ abstract class vmCustomPlugin extends vmPlugin {
 		$this->_tablename = '#__virtuemart_product_' . $this->_psType . '_plg_' . $this->_name;
 		$this->_idName = 'virtuemart_custom_id';
 		$this->_configTableFileName = $this->_psType . 's';
+		$this->_configTableFieldName = 'custom_param';
 		$this->_configTableClassName = 'Table' . ucfirst ($this->_psType) . 's'; //TablePaymentmethods
 		$this->_configTable = '#__virtuemart_customs';
 
@@ -83,29 +82,35 @@ abstract class vmCustomPlugin extends vmPlugin {
 		}
 	}
 
-	/*
+	/**
 	 * helper to parse plugin parameters as object
-	 *
+	 * @deprecated
 	 */
-	public function parseCustomParams (&$field, $xParams = 'custom_params') {
+	public function parseCustomParams (&$field, $xParams = 'custom_param') {
 
 		VmTable::bindParameterable ($field, $xParams, $this->_varsToPushParam);
 
 		if (empty($field->custom_element)) {
 			return 0;
 		}
-		if (!empty($field->custom_param) && is_string ($field->custom_param)) {
-			$custom_param = json_decode ($field->custom_param, TRUE);
+		if (!empty($field->customfield_param) && is_string ($field->customfield_param)) {
+			$custom_param = json_decode ($field->customfield_param, TRUE);
 		}
 		else {
 			return;
 		}
 		//$field->custom_param = $custom_param;
-		foreach ($custom_param as $k => $v) {
-			if (!empty($v)) {
-				$field->$k = $v;
+		//if(!empty($custom_param)){
+			foreach ($custom_param as $k => $v) {
+				if (!empty($v)) {
+					$field->$k = $v;
+				}
 			}
-		}
+		/*} else {
+			vmError('parseCustomParams the value $custom_param is empty '.$custom_param);
+
+		}*/
+
 	}
 
 	/*
@@ -114,7 +119,7 @@ abstract class vmCustomPlugin extends vmPlugin {
 		 */
 	public function getCustomParams (&$field) {
 
-		VmTable::bindParameterable ($field, 'custom_params', $this->_varsToPushParam);
+		VmTable::bindParameterable ($field, 'custom_param', $this->_varsToPushParam);
 
 		//Why do we have this?
 		if (empty($field->custom_element)) {
@@ -260,12 +265,13 @@ abstract class vmCustomPlugin extends vmPlugin {
 		}
 
 		vmPlugin::declarePluginParams ('custom', $productCustomsPrice->custom_element, $productCustomsPrice->custom_jplugin_id, $productCustomsPrice);
-// 		VmTable::bindParameterable($productCustomsPrice,'custom_params',$this->_varsToPushParam);
+// 		VmTable::bindParameterable($productCustomsPrice,'custom_param',$this->_varsToPushParam);
 
+		//TODO what was this? note by Max
 		$pluginFields = JRequest::getVar ('customPlugin', NULL);
-		if ($pluginFields == NULL) {
+		/*if ($pluginFields == NULL) {
 			$pluginFields = json_decode ($product->customPlugin, TRUE);
-		}
+		}*/
 
 		return $pluginFields[$productCustomsPrice->virtuemart_customfield_id][$this->_name];
 

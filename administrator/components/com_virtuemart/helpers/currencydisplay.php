@@ -360,12 +360,32 @@ class CurrencyDisplay {
 			$this->_priceConfig[$name] = $this->_priceConfig['salesPrice'];
 		}
 
+		if(is_object($product_price)){
+			if(isset($product_price->$name)){
+				$price = $product_price->$name;
+			} else{
+				vmdebug('createPriceDiv',$name,$product_price);
+				$price = $product_price;
+			}
+
+		} else {
+			if(is_array($product_price)){
+				if(empty($product_price[$name])) {
+					//vmdebug('createPriceDiv 3rd parameter $product_price['.$name.'] is empty');
+					return '';
+				} else {
+					$price = $product_price[$name] ;
+				}
+			} else {
+				$price = $product_price;
+			}
+		}
 		//This is a fallback because we removed the "salesPriceWithDiscount" ;
-		//if(empty($product_price[$name])){
+/*		//if(empty($product_price[$name])){
 			//$name = "salesPrice";
 			if(is_array($product_price)){
 				if(empty($product_price[$name])) {
-					vmdebug('createPriceDiv 3rd parameter $product_price['.$name.'] is empty');
+					//vmdebug('createPriceDiv 3rd parameter $product_price['.$name.'] is empty');
 					return '';
 				} else {
 					$price = $product_price[$name] ;

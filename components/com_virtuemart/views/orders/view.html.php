@@ -183,7 +183,12 @@ class VirtuemartViewOrders extends VmView {
 			if ($tmpl) {
 				$print = TRUE;
 			}
-			$this->prepareVendor ();
+
+			$vendorModel = VmModel::getModel ('vendor');
+			$vendor = $vendorModel->getVendor ();
+			$vendorModel->addImages ($vendor, 1);
+			$this->assignRef ('vendor', $vendor);
+
 			$this->assignRef ('print', $print);
 			$vendorId = 1;
 			$emailCurrencyId = 0;
@@ -262,17 +267,6 @@ class VirtuemartViewOrders extends VmView {
 		//shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 
 		parent::display ($tpl);
-	}
-
-
-	// add vendor for cart
-	function prepareVendor () {
-
-		$vendorModel = VmModel::getModel ('vendor');
-		$vendor = & $vendorModel->getVendor ();
-		$this->assignRef ('vendor', $vendor);
-		$vendorModel->addImages ($this->vendor, 1);
-
 	}
 
 }

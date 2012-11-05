@@ -42,12 +42,12 @@ class VmTable extends JTable{
 	protected $_slugAutoName = '';
 	protected $_slugName = '';
 	protected $_loggable = false;
-	protected $_xParams = 0;
-	protected $_varsToPushParam = array();
+	public $_xParams = 0;
+	public $_varsToPushParam = array();
 	var $_translatable = false;
 	protected $_translatableFields = array();
 
-	static $_cache = null;
+	static $_cache = NULL;
 
 	function __construct( $table, $key, &$db ){
 
@@ -55,7 +55,7 @@ class VmTable extends JTable{
 		$this->_tbl_key	= $key;
 		$this->_db		=& $db;
 		$this->_pkey = $key;
-		$this->_cache = null;
+		$this->_cache = NULL;
 	}
 
 	function setPrimaryKey($key, $keyForm=0){
@@ -131,6 +131,11 @@ class VmTable extends JTable{
 
 	}
 
+	var $_tablePreFix = '';
+	function setTableShortCut($prefix){
+		$this->_tablePreFix = $prefix.'.';
+	}
+
 	/**
 	 * This function defines a database field as parameter field, which means that some values get injected there
 	 * As delimiters are used | for the pair and = for key, value
@@ -141,7 +146,8 @@ class VmTable extends JTable{
 	 */
 	function setParameterable($paramsFieldName,$varsToPushParam,$overwrite = false){
 
-		if($this->_xParams===0)	$this->_xParams = $paramsFieldName;
+		//if($this->_xParams===0)
+		$this->_xParams = $paramsFieldName;
 
 		if($overwrite){
 			$this->_varsToPushParam = $varsToPushParam;
@@ -155,9 +161,55 @@ class VmTable extends JTable{
 		//vmdebug('setParameterable called '.$this->_xParams,$this->_varsToPushParam);
 	}
 
-	var $_tablePreFix = '';
-	function setTableShortCut($prefix){
-		$this->_tablePreFix = $prefix.'.';
+	/**
+	 * This function must be
+	 * Takes the bounded values at obj of the field $xParams
+	 * and adds them as attributs of obj
+	 * @param $obj
+	 * @param $xParams
+	 * @param $varsToPushParam
+	 */
+	static function bindParameterable(&$obj,$xParams,$varsToPushParam){
+
+		//$paramFields = $obj->$xParams;
+		//vmdebug('$obj->_xParams '.$xParams.' $obj->$xParams ',$paramFields);
+		if(!empty($obj->$xParams)){
+
+			//	if(strpos($obj->$xParams,'|')!==false){
+			$params = explode('|', $obj->$xParams);
+			foreach($params as $item){
+
+				$item = explode('=',$item);
+				$key = $item[0];
+				unset($item[0]);
+
+				$item = implode('=',$item);
+
+				if(!empty($item) && isset($varsToPushParam[$key][1]) ){
+					$obj->$key = json_decode($item);
+				}
+			}
+			/*	} else {
+					$params = json_decode($obj->$xParams);
+					foreach($params as $key=>$item){
+						if(!empty($item) && isset($varsToPushParam[$key][1]) ){
+							$obj->$key = $item;
+						}
+						//unset($item[0]);
+					}
+				}
+	*/
+		} else {
+			if(empty($xParams)){
+				vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error '.$obj);
+			}
+		}
+
+		foreach($varsToPushParam as $key=>$v){
+			if(!isset($obj->$key)){
+				$obj->$key = $v[0];
+			}
+		}
 	}
 
 	/**
@@ -188,7 +240,7 @@ class VmTable extends JTable{
 
 	public function getFields()
 	{
-		if ($this->_cache === null)
+		if ($this->_cache === NULL)
 		{
 			// Lookup the fields for this table only once.
 			$name = $this->_tbl;
@@ -279,7 +331,7 @@ class VmTable extends JTable{
 	 * @author Max Milbers
 	 * $TableJoins array of table names to add and left join to find ID
 	 */
-	function load($oid=null,$overWriteLoadName=0,$andWhere=0,$tableJoins= array(),$joinKey = 0){
+	function load($oid=NULL,$overWriteLoadName=0,$andWhere=0,$tableJoins= array(),$joinKey = 0){
 
 		if( $overWriteLoadName!=0 ){
 			$k = $overWriteLoadName;
@@ -288,14 +340,14 @@ class VmTable extends JTable{
 		}
 
 
-		if ($oid !== null) {
+		if ($oid !== NULL) {
 			$this->$k = $oid;
 		} else {
 			$oid = $this->$k;
 		}
 
 		// 		vmdebug('load '.$oid);
-		if ($oid === null) {
+		if ($oid === NULL) {
 			$oid = 0;
 		}
 		else if(empty($oid)){
@@ -366,49 +418,7 @@ class VmTable extends JTable{
 
 	}
 
-	static function bindParameterable(&$obj,$xParams,$varsToPushParam){
 
-		//$paramFields = $obj->$xParams;
-		//vmdebug('$obj->_xParams '.$xParams.' $obj->$xParams ',$paramFields);
-		if(!empty($obj->$xParams)){
-
-		//	if(strpos($obj->$xParams,'|')!==false){
-				$params = explode('|', $obj->$xParams);
-				foreach($params as $item){
-
-					$item = explode('=',$item);
-					$key = $item[0];
-					unset($item[0]);
-
-					$item = implode('=',$item);
-
-					if(!empty($item) && isset($varsToPushParam[$key][1]) ){
-						$obj->$key = json_decode($item);
-					}
-				}
-		/*	} else {
-				$params = json_decode($obj->$xParams);
-				foreach($params as $key=>$item){
-					if(!empty($item) && isset($varsToPushParam[$key][1]) ){
-						$obj->$key = $item;
-					}
-					//unset($item[0]);
-				}
-			}
-*/
-		} else {
-			if(empty($xParams)){
-				vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error '.$obj);
-			}
-		}
-
-		foreach($varsToPushParam as $key=>$v){
-			if(!isset($obj->$key)){
-				$obj->$key = $v[0];
-			}
-		}
-
-	}
 	/**
 	 * Technic to inject params as table attributes
 	 * @author Max Milbers
@@ -888,7 +898,7 @@ class VmTable extends JTable{
 		$this->_db->setQuery($sql, 0, 1);
 
 
-		$row = null;
+		$row = NULL;
 		$row = $this->_db->loadObject();
 		if(isset($row)){
 			$query = 'UPDATE ' . $this->_tbl
@@ -1024,13 +1034,13 @@ class VmTable extends JTable{
 	 * @param 	mixed	The primary key value for the row
 	 * @return	boolean	True if successful, or if checkout is not supported
 	 */
-	function checkout($who, $oid = null){
+	function checkout($who, $oid = NULL){
 		if(!in_array('locked_by', array_keys($this->getProperties()))){
 			return true;
 		}
 
 		$k = $this->_tbl_key;
-		if($oid !== null){
+		if($oid !== NULL){
 			$this->$k = $oid;
 		}
 
@@ -1055,7 +1065,7 @@ class VmTable extends JTable{
 	 * @param	mixed	The primary key value for the row
 	 * @return	boolean	True if successful, or if checkout is not supported
 	 */
-	function checkin($oid=null){
+	function checkin($oid=NULL){
 		if(!(
 		in_array('locked_by', array_keys($this->getProperties())) ||
 		in_array('locked_on', array_keys($this->getProperties()))
@@ -1065,7 +1075,7 @@ class VmTable extends JTable{
 
 		$k = $this->_tbl_key;
 
-		if($oid !== null){
+		if($oid !== NULL){
 			$this->$k = $oid;
 		}
 
@@ -1098,7 +1108,7 @@ class VmTable extends JTable{
 	 * 							a static function.
 	 * @return boolean
 	 */
-	function isCheckedOut($with = 0, $against = null){
+	function isCheckedOut($with = 0, $against = NULL){
 		if(isset($this) && is_a($this, 'JTable') && is_null($against)){
 			$against = $this->get('locked_by');
 		}
@@ -1141,7 +1151,7 @@ class VmTable extends JTable{
 
 	// TODO add Translatable delete  ???
 	//
-	function delete( $oid=null , $where = 0 ){
+	function delete( $oid=NULL , $where = 0 ){
 
 		$k = $this->_tbl_key;
 

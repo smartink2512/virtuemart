@@ -99,7 +99,7 @@ $customs = $this->customs->items;
 							 else  $cartIcon= 'default-off';
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $custom->custom_title, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$custom->custom_title)); ?></td>
-				<td><?php echo $custom->custom_field_desc; ?></td>
+				<td><?php echo $custom->custom_desc; ?></td>
 				<td><?php echo $custom->field_type_display; ?></td>
 				<td><span class="vmicon vmicon-16-<?php echo $cartIcon ?>"></span></td>
 				<td>

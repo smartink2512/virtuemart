@@ -403,7 +403,7 @@ class calculationHelper {
 	public function calculateCostprice($productId,$data){
 
 		$this->_revert = true;
-		vmdebug('calculationh.php calculateCostprice ',$data);
+		//vmdebug('calculationh.php calculateCostprice ',$data);
 		//vmSetStartTime('calculateCostprice');
 
 		if(empty($data['product_currency'])){
@@ -463,7 +463,7 @@ class calculationHelper {
 
 		$withoutVatTax = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $salesPrice));
 		$withoutVatTax = !empty($withoutVatTax) ? $withoutVatTax : $salesPrice;
-		vmdebug('calculateCostprice',$salesPrice,$withoutVatTax, $data);
+		//vmdebug('calculateCostprice',$salesPrice,$withoutVatTax, $data);
 
 		$withDiscount = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $withoutVatTax));
 		$withDiscount = !empty($withDiscount) ? $withDiscount : $withoutVatTax;
@@ -576,45 +576,53 @@ class calculationHelper {
 
 		$this->_amountCart = 0;
 		$this->_cartData['totalProduct'] = count($cart->products);
-		foreach ($cart->products as $name => $product) {
+
+		$customfieldModel = VmModel::getModel('customfields');
+		foreach ($cart->products as $k => &$product) {
 			//$product = $productModel->getProduct($product->virtuemart_product_id,false,false,true);
 			$productId = $product->virtuemart_product_id;
+
+			//Todo temporary, remove should be run with object or only array then
+			//$product = (object) $product;
 			if (empty($product->quantity) || empty($product->virtuemart_product_id)) {
 				JError::raiseWarning(710, 'Error the quantity of the product for calculation is 0, please notify the shopowner, the product id ' . $product->virtuemart_product_id);
 				continue;
 			}
-
-			$variantmods = $this->parseModifier($name);
-			$variantmod = $this->calculateModificators($product, $variantmods);
-
-			$cartproductkey = $name; //$product->virtuemart_product_id.$variantmod;
-			$product->prices = $pricesPerId[$cartproductkey] = $this->getProductPrices($product,$variantmod, $product->quantity);
+			//Todo $virtuemart_customfield_id needs a value of course
+			//$virtuemart_customfield_ids = array();
+			//$variantmods = $this->parseModifier($name);
+			$variantmod = $customfieldModel->calculateModificators($product,$product->customProductData);
+			vmdebug('my variantmod',$variantmod);
+			//$cartproductkey = $name; //$product->virtuemart_product_id.$variantmod;
+			//$product->prices = $pricesPerId[$cartproductkey] = $this->getProductPrices($product,$variantmod, $product->quantity);
+			$product->prices = $this->getProductPrices($product,$variantmod, $product->quantity);
+			//$cart->cartProductsData[$k]->prices = $this->getProductPrices($product,$variantmod, $product->quantity);
 			$this->_amountCart += $product->quantity;
 // 			vmdebug('getCheckoutPrices',$product->prices);
-			$this->_cartPrices[$cartproductkey] = $product->prices;
+			//$this->_cartPrices[$cartproductkey] = $product->prices;
 
 			if($this->_currencyDisplay->_priceConfig['basePrice']) $this->_cartPrices['basePrice'] += self::roundInternal($product->prices['basePrice'],'basePrice') * $product->quantity;
 			//				$this->_cartPrices['basePriceVariant'] = $this->_cartPrices['basePriceVariant'] + $pricesPerId[$product->virtuemart_product_id]['basePriceVariant']*$product->quantity;
 			if($this->_currencyDisplay->_priceConfig['basePriceWithTax']) $this->_cartPrices['basePriceWithTax'] += self::roundInternal($product->prices['basePriceWithTax']) * $product->quantity;
 			if($this->_currencyDisplay->_priceConfig['discountedPriceWithoutTax']) $this->_cartPrices['discountedPriceWithoutTax'] += self::roundInternal($product->prices['discountedPriceWithoutTax'],'discountedPriceWithoutTax') * $product->quantity;
 			if($this->_currencyDisplay->_priceConfig['salesPrice']){
-				$this->_cartPrices[$cartproductkey]['subtotal_with_tax'] = self::roundInternal($product->prices['salesPrice'],'salesPrice') * $product->quantity;
-				$this->_cartPrices['salesPrice'] += $this->_cartPrices[$cartproductkey]['subtotal_with_tax'];
+				$product->subtotal_with_tax = self::roundInternal($product->prices['salesPrice'],'salesPrice') * $product->quantity;
+				$this->_cartPrices['salesPrice'] += $product->subtotal_with_tax;
 			}
 
 			if($this->_currencyDisplay->_priceConfig['taxAmount']){
-				$this->_cartPrices[$cartproductkey]['subtotal_tax_amount'] = self::roundInternal($product->prices['taxAmount'],'taxAmount') * $product->quantity;
-				$this->_cartPrices['taxAmount'] += $this->_cartPrices[$cartproductkey]['subtotal_tax_amount'];
+				$product->subtotal_tax_amount = self::roundInternal($product->prices['taxAmount'],'taxAmount') * $product->quantity;
+				$this->_cartPrices['taxAmount'] += $product->subtotal_tax_amount;
 			}
 
 			if($this->_currencyDisplay->_priceConfig['salesPriceWithDiscount']) $this->_cartPrices['salesPriceWithDiscount'] += self::roundInternal($product->prices['salesPriceWithDiscount'],'salesPriceWithDiscount') * $product->quantity;
 			if($this->_currencyDisplay->_priceConfig['discountAmount']){
-				$this->_cartPrices[$cartproductkey]['subtotal_discount'] = $this->_cartPrices['discountAmount'] - self::roundInternal($product->prices['discountAmount'],'discountAmount') * $product->quantity;
-				$this->_cartPrices['discountAmount'] = $this->_cartPrices[$cartproductkey]['subtotal_discount'];
+				$product->subtotal_discount = $this->_cartPrices['discountAmount'] - self::roundInternal($product->prices['discountAmount'],'discountAmount') * $product->quantity;
+				$this->_cartPrices['discountAmount'] = $product->subtotal_discount;
 			}
 			if($this->_currencyDisplay->_priceConfig['priceWithoutTax']) {
-				$this->_cartPrices[$cartproductkey]['subtotal'] = self::roundInternal($product->prices['priceWithoutTax'],'priceWithoutTax') * $product->quantity;
-				$this->_cartPrices['priceWithoutTax'] += $this->_cartPrices[$cartproductkey]['subtotal'];
+				$product->subtotal = self::roundInternal($product->prices['priceWithoutTax'],'priceWithoutTax') * $product->quantity;
+				$this->_cartPrices['priceWithoutTax'] += $product->subtotal;
 			}
 
 // 			if($this->_currencyDisplay_priceConfig['basePrice']) $this->_cartPrices[$cartproductkey]['subtotal'] = $product->prices['basePrice'] * $product->quantity;
@@ -1284,8 +1292,9 @@ class calculationHelper {
 	 * @param array $variantnames the value of the variant
 	 * @return array The adjusted price modificator
 	 */
-	public function calculateModificators(&$product, $variants) {
+/*	public function calculateModificators(&$product, $variants) {
 
+		VmConfig::$echoDebug=TRUE;
 		$modificatorSum = 0.0;
 		//MarkerVarMods
 		foreach ($variants as $selected => $variant) {
@@ -1315,7 +1324,7 @@ class calculationHelper {
 		}
 // 			echo ' $modificatorSum ',$modificatorSum;
 		return $modificatorSum;
-	}
+	}*/
 
 	public function parseModifier($name) {
 

@@ -98,6 +98,7 @@ class VirtueMartViewCart extends VmView {
 			$this->prepareContinueLink();
 			$this->lSelectCoupon();
 
+			if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 			$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 			$this->assignRef('currencyDisplay',$currencyDisplay);
 
@@ -142,6 +143,9 @@ class VirtueMartViewCart extends VmView {
 				$checkout_link_html = '';
 			}
 			$this->assignRef('checkout_link_html', $checkout_link_html);
+
+			$customfieldsModel = VmModel::getModel ('Customfields');
+			$this->assignRef('customfieldsModel',$customfieldsModel);
 		}
 		//dump ($cart,'cart');
 		$useSSL = VmConfig::get('useSSL', 0);

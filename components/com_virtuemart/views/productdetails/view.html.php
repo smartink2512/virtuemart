@@ -85,9 +85,22 @@ class VirtueMartViewProductdetails extends VmView {
     }
 	$product = $product_model->getProduct($virtuemart_product_id,TRUE,TRUE,TRUE,$quantity);
 
-// 		vmSetStartTime('customs');
-// 		for($k=0;$k<count($product->customfields);$k++){
-// 			$custom = $product->customfields[$k];
+    if (!empty($product->virtuemart_customfield_id)) {
+	    $customfieldsModel = VmModel::getModel ('Customfields');
+	    $this->assignRef('customfieldsModel',$customfieldsModel);
+	    // Load the custom product fields
+	    $product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->virtuemart_product_id);
+	    if ($product->customfields){
+		    if (!class_exists ('vmCustomPlugin')) {
+			    require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+		    }
+	    }
+	    //$product->customfieldsRelatedCategories = $customfieldsModel->getProductCustomsFieldRelatedCategories ($product);
+	   // $product->customfieldsRelatedProducts = $customfieldsModel->getProductCustomsFieldRelatedProducts ($product);
+	    //  custom product fields for add to cart
+	    //$product->customfieldsCart = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->virtuemart_product_id,1);
+    }
+
 	if (!empty($product->customfields)) {
 	    foreach ($product->customfields as $k => $custom) {
 		if (!empty($custom->layout_pos)) {
@@ -337,7 +350,6 @@ class VirtueMartViewProductdetails extends VmView {
 	$this->assignRef('currency', $currency);
 
 	if(JRequest::getCmd( 'layout', 'default' )=='notify') $this->setLayout('notify'); //Added by Seyi Awofadeju to catch notify layout
-
 
 	parent::display($tpl);
     }

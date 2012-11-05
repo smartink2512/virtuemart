@@ -175,7 +175,7 @@ $i=0;
 		<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CHILD_PARENT'); ?></legend>
 		<table class="adminform">
 			<tr class="row<?php echo $i?>">
-				<td width="50%">
+				<td >
 				<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=createVariant&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() ); ?>
 
 						<div class="button2-left">
@@ -187,16 +187,15 @@ $i=0;
 						</div>
 				</td>
 
-				<td width="29%"><div style="text-align:right; font-weight: bold;">
+				<td ><div style="text-align:right; font-weight: bold;">
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PARENT') ?>
 				</td>
-				<td width="71%"> <?php
+				<td > <?php
 				if ($this->product->product_parent_id) {
 
-
 					$result = JText::_('COM_VIRTUEMART_EDIT').' ' . $this->product_parent->product_name;
-					echo ' | '.JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id
-						.'&option=com_virtuemart'), $this->product_parent->product_name, array('title' => $result)).' | '.$this->parentRelation;
+					echo JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id
+						.'&option=com_virtuemart'), $this->product_parent->product_name, array('title' => $result));
 				}
 				?>
 				</td>
@@ -219,7 +218,6 @@ $i=0;
                 		}
                 	}
 
-//					vmdebug('ma $customs',$customs);
 					?>
 
 					<table class="adminlist">
@@ -245,7 +243,7 @@ $i=0;
 								<td><?php echo $child->product_in_stock ?></td>
 								<td><?php echo $child->product_ordered ?></td>
 								<?php foreach($customs as $custom){
-									$attrib = $custom->custom_value;
+									$attrib = $custom->customfield_value;
 									if(isset($child->$attrib)){
 										$childAttrib = $child->$attrib;
 									} else {

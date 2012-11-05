@@ -152,14 +152,19 @@ foreach ($this->cart->products as $pkey => $prow) {
 			?>
 						</span>
 		<?php } ?>
-		<?php echo JHTML::link ($prow->url, $prow->product_name) . $prow->customfields; ?>
+		<?php echo JHTML::link ($prow->url, $prow->product_name);
+		//vmdebug('Hmm',$prow);
+		//foreach($prow->customfields as $customfield){
+			echo $this->customfieldsModel->CustomsFieldCartDisplay ($prow);
+		//}
+		 ?>
 
 	</td>
 	<td align="left"><?php  echo $prow->product_sku ?></td>
 	<td align="center">
 		<?php
 		// 					vmdebug('$this->cart->pricesUnformatted[$pkey]',$this->cart->pricesUnformatted[$pkey]['priceBeforeTax']);
-		echo $this->currencyDisplay->createPriceDiv ('basePriceVariant', '', $this->cart->pricesUnformatted[$pkey], FALSE);
+		echo $this->currencyDisplay->createPriceDiv ('basePriceVariant', '', $prow->prices, FALSE);
 		// 					echo $prow->salesPrice ;
 		?>
 	</td>
@@ -176,15 +181,15 @@ foreach ($this->cart->products as $pkey => $prow) {
 	</td>
 
 	<?php if (VmConfig::get ('show_tax')) { ?>
-	<td align="right"><?php echo "<span class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('taxAmount', '', $this->cart->pricesUnformatted[$pkey], FALSE, FALSE, $prow->quantity) . "</span>" ?></td>
+	<td align="right"><?php echo "<span class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('taxAmount', '', $prow->prices, FALSE, FALSE, $prow->quantity) . "</span>" ?></td>
 	<?php } ?>
-	<td align="right"><?php echo "<span class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('discountAmount', '', $this->cart->pricesUnformatted[$pkey], FALSE, FALSE, $prow->quantity) . "</span>" ?></td>
+	<td align="right"><?php echo "<span class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('discountAmount', '', $prow->prices, FALSE, FALSE, $prow->quantity) . "</span>" ?></td>
 	<td colspan="1" align="right">
 		<?php
-		if (VmConfig::get ('checkout_show_origprice', 1) && !empty($this->cart->pricesUnformatted[$pkey]['basePriceWithTax']) && $this->cart->pricesUnformatted[$pkey]['basePriceWithTax'] != $this->cart->pricesUnformatted[$pkey]['salesPrice']) {
-			echo '<span class="line-through">' . $this->currencyDisplay->createPriceDiv ('basePriceWithTax', '', $this->cart->pricesUnformatted[$pkey], TRUE, FALSE, $prow->quantity) . '</span><br />';
+		if (VmConfig::get ('checkout_show_origprice', 1) && !empty($prow->prices['basePriceWithTax']) && $prow->prices['basePriceWithTax'] != $prow->prices['salesPrice']) {
+			echo '<span class="line-through">' . $this->currencyDisplay->createPriceDiv ('basePriceWithTax', '', $prow->prices, TRUE, FALSE, $prow->quantity) . '</span><br />';
 		}
-		echo $this->currencyDisplay->createPriceDiv ('salesPrice', '', $this->cart->pricesUnformatted[$pkey], FALSE, FALSE, $prow->quantity) ?></td>
+		echo $this->currencyDisplay->createPriceDiv ('salesPrice', '', $prow->prices, FALSE, FALSE, $prow->quantity) ?></td>
 </tr>
 	<?php
 	$i = 1 ? 2 : 1;

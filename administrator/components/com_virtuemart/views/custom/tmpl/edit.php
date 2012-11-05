@@ -24,16 +24,16 @@ AdminUIHelper::startAdminArea();
     <fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD'); ?></legend>
 	<?php
-	$this->customfields->addHidden('view', 'custom');
-	$this->customfields->addHidden('task', '');
-	$this->customfields->addHidden(JUtility::getToken(), 1);
+	$this->addHidden('view', 'custom');
+	$this->addHidden('task', '');
+	$this->addHidden(JUtility::getToken(), 1);
 //if ($this->custom->custom_parent_id) $this->customfields->addHidden('custom_parent_id',$this->custom->custom_parent_id);
 	$attribute_id = JRequest::getVar('attribute_id', '');
 	if (!empty($attribute_id))
-	    $this->customfields->addHidden('attribute_id', $attribute_id);
+	    $this->addHidden('attribute_id', $attribute_id);
 	?>
 	<table class="admintable">
-	    <?php echo $this->customfields->displayCustomFields($this->custom); ?>
+	    <?php echo $this->displayCustomFields($this->custom); ?>
 
 	    <tr id="custom_plg">
 		<td valign="top"><?php echo JText::_('COM_VIRTUEMART_SELECT_CUSTOM_PLUGIN') ?></td>

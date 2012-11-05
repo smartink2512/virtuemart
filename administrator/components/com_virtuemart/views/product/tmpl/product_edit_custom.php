@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-if (isset($this->product->customfields_fromParent)) { ?>
+if ($this->product->customfields_fromParent) { ?>
 	<label><?php echo JText::_('COM_VIRTUEMART_CUSTOM_SAVE_FROM_CHILD');?><input type="checkbox" name="save_customfields" value="1" /></label>
 <?php } else {
 	?> <input type="hidden" name="save_customfields" value="1" />
@@ -28,10 +28,22 @@ if (isset($this->product->customfields_fromParent)) { ?>
 		<td valign="top" width="%100">
 
 		<?php
-			$i=0;
+
 			$tables= array('categories'=>'','products'=>'','fields'=>'','customPlugins'=>'',);
 			if (isset($this->product->customfields)) {
+				$customfieldsModel = VmModel::getModel('customfields');
+				$i=0;
+
 				foreach ($this->product->customfields as $customfield) {
+					//vmdebug('$customfield->field_type '.$customfield->field_type);
+					if($this->product->customfields_fromParent){
+						$virtuemart_product_id = $this->product->product_parent_id;
+					} else {
+						$virtuemart_product_id = $this->product->virtuemart_product_id;
+					}
+
+					$customfield->display = $customfieldsModel->displayProductCustomfieldBE ($customfield, $virtuemart_product_id, $i);
+
 					if ($customfield->is_cart_attribute) $cartIcone=  'default';
 					else  $cartIcone= 'default-off';
 					if ($customfield->field_type == 'Z') {

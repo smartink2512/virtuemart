@@ -126,7 +126,7 @@ class VirtueMartModelProduct extends VmModel {
 	function updateRequests () {
 
 		//hmm how to trigger that in the module or so?
-		$this->keyword = vmRequest::uword ('keyword', "0", ' ');
+		$this->keyword = vmRequest::uword ('keyword', "0", ' ,-,+');
 		if ($this->keyword == "0") {
 			$this->keyword = vmRequest::uword ('filter_product', "0", ' ');
 		}
@@ -564,7 +564,6 @@ class VirtueMartModelProduct extends VmModel {
 				$limit = $suglimit - $rest;
 			}
 
-			//vmdebug('my cat',$category);
 			//vmdebug('Looks like the category lastCatId '.$lastCatId.' actual id '.$cateid );
 		}
 		else {
@@ -745,6 +744,7 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 
+
 		/*	$ppTable = $this->getTable ('product_prices');
 			$ppTable->load ($this->_id);
 
@@ -899,28 +899,13 @@ class VirtueMartModelProduct extends VmModel {
 				$product->category_name = '';
 			}
 
-			if (!$front) {
-// 				if (!empty($product->virtuemart_customfield_id ) ){
-				$customfields = VmModel::getModel ('Customfields');
-				$product->customfields = $customfields->getproductCustomslist ($this->_id);
-
-				if (empty($product->customfields) and !empty($product->product_parent_id)) {
-					//$product->customfields = $this->productCustomsfieldsClone($product->product_parent_id,true) ;
-					$product->customfields = $customfields->getproductCustomslist ($product->product_parent_id, $this->_id);
-					$product->customfields_fromParent = TRUE;
-				}
-
-			}
-			else {
+			$product->customfields_fromParent = FALSE;
+			if ($front) {
 
 				// Add the product link  for canonical
 				$productCategory = empty($product->categories[0]) ? '' : $product->categories[0];
 				$product->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $productCategory;
 				$product->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $productCategory);
-
-				//only needed in FE productdetails, is now loaded in the view.html.php
-				//				/* Load the neighbours */
-				//				$product->neighbours = $this->getNeighborProducts($product);
 
 				// Fix the product packaging
 				if ($product->product_packaging) {
@@ -932,13 +917,10 @@ class VirtueMartModelProduct extends VmModel {
 					$product->box = '';
 				}
 
-				// Load the vendor details
-				//				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-				//				$product->vendor_name = VirtueMartModelVendor::getVendorName($product->virtuemart_vendor_id);
-
-				// set the custom variants
-				//vmdebug('getProductSingle id '.$product->virtuemart_product_id.' $product->virtuemart_customfield_id '.$product->virtuemart_customfield_id);
-				if (!empty($product->virtuemart_customfield_id)) {
+				//This is now moved to the frontend, the category browse dont want related categories or products
+				//Also the other customs are not interesting and can be easily loaded afterwards.
+				//For the inherting of customfields it is easier to load them directly here again
+/*				if (!empty($product->virtuemart_customfield_id)) {
 
 					$customfields = VmModel::getModel ('Customfields');
 					// Load the custom product fields
@@ -946,11 +928,11 @@ class VirtueMartModelProduct extends VmModel {
 					$product->customfieldsRelatedCategories = $customfields->getProductCustomsFieldRelatedCategories ($product);
 					$product->customfieldsRelatedProducts = $customfields->getProductCustomsFieldRelatedProducts ($product);
 					//  custom product fields for add to cart
-					$product->customfieldsCart = $customfields->getProductCustomsFieldCart ($product);
-					$child = $this->getProductChilds ($this->_id);
-					$product->customsChilds = $customfields->getProductCustomsChilds ($child, $this->_id);
+					$product->customfieldsCart = $customfields->getProductCustomsFieldCart ($product,$productCount);
+					//$child = $this->getProductChilds ($this->_id);
+					//$product->customsChilds = $customfields->getProductCustomsChilds ($child, $this->_id);
 				}
-
+*/
 // 				vmdebug('my product ',$product);
 
 				// Check the stock level
@@ -1294,8 +1276,8 @@ class VirtueMartModelProduct extends VmModel {
 		$pkey_orders = $this->_db->loadObjectList ();
 
 		$tableOrdering = array();
-		foreach ($pkey_orders as $order) {
-			$tableOrdering[$order->id] = $order->ordering;
+		foreach ($pkey_orders as $orderTmp) {
+			$tableOrdering[$orderTmp->id] = $orderTmp->ordering;
 		}
 		// set and save new ordering
 		foreach ($order as $key => $ord) {
@@ -1460,7 +1442,7 @@ class VirtueMartModelProduct extends VmModel {
 
 				}
 				//$data['mprices'][$k] = $data['virtuemart_product_id'];
-				vmdebug('my mprices to store',$pricesToStore);
+				//vmdebug('my mprices to store',$pricesToStore);
 				$this->updateXrefAndChildTables ($pricesToStore, 'product_prices');
 			}
 		}
@@ -1718,14 +1700,12 @@ class VirtueMartModelProduct extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	public function getPrice ($product, $customVariant, $quantity) {
+	public function getPrice ($product, $customVariants, $quantity) {
 
 		$this->_db = JFactory::getDBO ();
 		// 		vmdebug('strange',$product);
 		if (!is_object ($product)) {
-// 		vmError('deprecated use of getPrice');
 			$product = $this->getProduct ($product, TRUE, FALSE, TRUE,$quantity);
-// 		return false;
 		}
 
 		// Loads the product price details
@@ -1735,10 +1715,12 @@ class VirtueMartModelProduct extends VmModel {
 		$calculator = calculationHelper::getInstance ();
 
 		// Add in the quantity in case the customfield plugins need it
-		$product->quantity = $quantity;
+		//$product->quantity = $quantity;
+		$customfieldsModel = VmModel::getModel('customfields');
 
 		// Calculate the modificator
-		$variantPriceModification = $calculator->calculateModificators ($product, $customVariant);
+		$variantPriceModification = $customfieldsModel->calculateModificators ($product, $customVariants);
+
 
 		$prices = $calculator->getProductPrices ($product, $variantPriceModification, $quantity);
 
@@ -2115,7 +2097,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 	}
 
 // use lang table only TODO Look if this not cause errors
-	function getProductChilds ($product_id) {
+/*	function getProductChilds ($product_id) {
 
 		if (empty($product_id)) {
 			return array();
@@ -2127,7 +2109,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 		return $db->loadObjectList ();
 
 	}
-
+*/
 	function getProductChildIds ($product_id) {
 
 		if (empty($product_id)) {
@@ -2141,14 +2123,14 @@ function lowStockWarningEmail($virtuemart_product_id) {
 	}
 
 // use lang table only TODO Look if this not cause errors
-	function getProductParent ($product_parent_id) {
+	function getProductLanguageFields ($product_id) {
 
-		if (empty($product_parent_id)) {
+		if (empty($product_id)) {
 			return array();
 		}
-		$product_parent_id = (int)$product_parent_id;
+
 		$db = JFactory::getDBO ();
-		$db->setQuery (' SELECT * FROM `#__virtuemart_products_' . VMLANG . '` WHERE `virtuemart_product_id` =' . $product_parent_id);
+		$db->setQuery (' SELECT * FROM `#__virtuemart_products_' . VMLANG . '` WHERE `virtuemart_product_id` =' . (int) $product_id);
 		return $db->loadObject ();
 	}
 

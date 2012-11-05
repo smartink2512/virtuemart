@@ -492,7 +492,6 @@ function virtuemartParseRoute($segments) {
 				$vars['layout'] = 'edit' ;      //uncomment and lets test
 			}
 			else $vars['task'] = $segments[0] ;
-
 		}
 		return $vars;
 	}
@@ -549,6 +548,7 @@ function virtuemartParseRoute($segments) {
 		// if (isset($helper->activeMenu->virtuemart_manufacturer_id))
 		// $vars['virtuemart_manufacturer_id'] = $helper->activeMenu->virtuemart_manufacturer_id ;
 
+		vmdebug('my parsed URL vars',$vars);
 		return $vars;
 	}
 
@@ -1077,9 +1077,11 @@ class vmrouterHelper {
 		if ($this->seo_translate ) {
 			$jtext = (strtoupper( $key ) );
 			if ($this->Jlang->hasKey('COM_VIRTUEMART_SEF_'.$jtext) ){
+				//vmdebug('router lang translated '.$jtext);
 				return JText::_('COM_VIRTUEMART_SEF_'.$jtext);
 			}
 		}
+		//vmdebug('router lang '.$key);
 		//falldown
 		return $key;
 	}

@@ -25,6 +25,7 @@ if ($show_product_list) {
 	<div class="vm_cart_products">
 		<div class="container">
 		<?php foreach ($data->products as $product)
+			$product = array($product);
 		{
 			if ($show_price) { ?>
 				  <div class="prices" style="float: right;"><?php echo  $product['prices'] ?></div>

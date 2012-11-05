@@ -49,6 +49,10 @@ if (empty($this->product)) {
     echo '<br /><br />  ' . $this->continue_link_html;
     return;
 }
+
+// This is the rows for the customfields, as long you have only one product, just increase it by one,
+// if you have more than one product, reset it for every product
+$this->row = 0;
 ?>
 
 <div class="productdetails-view productdetails">
@@ -262,8 +266,8 @@ if (VmConfig::get('ask_question', 1) == 1) {
 	<?php
     } // Product Description END
 
-    if (!empty($this->product->customfieldsSorted['normal'])) {
-	$this->position = 'normal';
+    if (!empty($this->product->customfieldsSorted['content'])) {
+	$this->position = 'content';
 	echo $this->loadTemplate('customfields');
     } // Product custom_fields END
     // Product Packaging
@@ -290,21 +294,23 @@ if (VmConfig::get('ask_question', 1) == 1) {
     // $link = JRoute::_('index.php?view=productdetails&task=getfile&virtuemart_media_id='.$file->virtuemart_media_id.'&virtuemart_product_id='.$this->product->virtuemart_product_id);
     // echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
     // }
-    if (!empty($this->product->customfieldsRelatedProducts)) {
-	echo $this->loadTemplate('relatedproducts');
-    } // Product customfieldsRelatedProducts END
-
-    if (!empty($this->product->customfieldsRelatedCategories)) {
-	echo $this->loadTemplate('relatedcategories');
-    } // Product customfieldsRelatedCategories END
-    // Show child categories
-    if (VmConfig::get('showCategory', 1)) {
-	echo $this->loadTemplate('showcategory');
-    }
     if (!empty($this->product->customfieldsSorted['onbot'])) {
     	$this->position='onbot';
     	echo $this->loadTemplate('customfields');
     } // Product Custom ontop end
+    if (!empty($this->product->customfieldsSorted['related_products'])) {
+	    $this->position = 'related_products';
+	    echo $this->loadTemplate('customfields');
+    }
+    if (!empty($this->product->customfieldsSorted['related_categories'])) {
+	    $this->position = 'related_categories';
+	    echo $this->loadTemplate('customfields');
+    }
+    // Show child categories
+    if (VmConfig::get('showCategory', 1)) {
+		echo $this->loadTemplate('showcategory');
+    }
+
     ?>
 
 <?php // onContentAfterDisplay event

@@ -1344,6 +1344,10 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	function getUserAddressList($_uid = 0, $_type = 'ST',$_virtuemart_userinfo_id = -1){
 
+		//Todo, add perms, allow admin to see 0 entries.
+		if($_uid==0 and $this->_id==0){
+			return array();
+		}
 		$_q = 'SELECT * FROM #__virtuemart_userinfos  WHERE virtuemart_user_id="' . (($_uid==0)?$this->_id:(int)$_uid) .'"';
 		if ($_virtuemart_userinfo_id !== -1) {
 			$_q .= ' AND virtuemart_userinfo_id="'.(int)$_virtuemart_userinfo_id.'"';
