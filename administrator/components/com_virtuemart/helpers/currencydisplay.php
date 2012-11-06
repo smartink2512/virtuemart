@@ -173,6 +173,7 @@ class CurrencyDisplay {
 	 */
 	function setPriceArray(){
 
+		if(count($this->_priceConfig)==0){
 		if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 
 		$user = JFactory::getUser();
@@ -256,7 +257,7 @@ class CurrencyDisplay {
 				$this->_priceConfig[$name] = array(0,0,0);
 			}
 		}
-
+		}
 		// 		vmdebug('$this->_priceConfig',$this->_priceConfig);
 	}
 
@@ -461,16 +462,24 @@ class CurrencyDisplay {
 			vmdebug('convertCurrencyTo OBJECT '.$exchangeRate);
 		}
 		else {
-			//				$this->_db = JFactory::getDBO();
-			$q = 'SELECT `currency_exchange_rate` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.(int)$currency.'" ';
-			$this->_db->setQuery($q);
-			$exch = $this->_db->loadResult();
-			// 				vmdebug('begin convertCurrencyTo '.$exch);
-			if(!empty($exch) and $exch !== '0.000000'){
-				$exchangeRate = $exch;
+			static $exchangeRateCache = array();
+
+			if(!isset($exchangeRateCache[$currency])){
+				$q = 'SELECT `currency_exchange_rate` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.(int)$currency.'" ';
+				$this->_db->setQuery($q);
+				$exch = $this->_db->loadResult();
+				if(!empty($exch) and $exch !== '0.000000'){
+					$exchangeRate = $exch;
+				} else {
+					$exchangeRate = FALSE;
+				}
+				$exchangeRateCache[$currency] = $exchangeRate;
 			} else {
-				$exchangeRate = FALSE;
+				$exchangeRate = $exchangeRateCache[$currency];
 			}
+
+			// 				vmdebug('begin convertCurrencyTo '.$exch);
+
 		}
 		//	}
 		$this->exchangeRateShopper = $exchangeRate;
@@ -513,15 +522,24 @@ class CurrencyDisplay {
 	 */
 	function ensureUsingCurrencyCode($curr){
 
+		static $currencyCache = array();
+
 		if(is_numeric($curr) and $curr!=0){
-			$this->_db = JFactory::getDBO();
-			$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.(int)$curr.'"';
-			$this->_db->setQuery($q);
-			$currInt = $this->_db->loadResult();
-			if(empty($currInt)){
-				JError::raiseWarning(E_WARNING,'Attention, could not find currency code in the table for id = '.$curr);
+			if(!isset($currencyCache[$curr])){
+				$this->_db = JFactory::getDBO();
+				$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.(int)$curr.'"';
+				$this->_db->setQuery($q);
+				$currency_code_3 = $this->_db->loadResult();
+				if(empty($currency_code_3)){
+					JError::raiseWarning(E_WARNING,'Attention, could not find currency code in the table for id = '.(int)$curr);
+				} else {
+					$currencyCache[$curr] = $currency_code_3;
+				}
+			} else {
+				$currency_code_3 = $currencyCache[$curr];
 			}
-			return $currInt;
+
+			return $currency_code_3;
 		}
 		return $curr;
 	}

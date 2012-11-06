@@ -769,17 +769,25 @@ class vmrouterHelper {
 	/*get url safe names of category and parents categories  */
 	public function getCategoryNames($virtuemart_category_id,$catMenuId=0){
 
+		static $categoryNamesCache = array();
 		$strings = array();
 		$db = JFactory::getDBO();
 		$parents_id = array_reverse($this->getCategoryRecurse($virtuemart_category_id,$catMenuId)) ;
 
 		foreach ($parents_id as $id ) {
-			$q = 'SELECT `slug` as name
+			if(!isset($categoryNamesCache[$id])){
+				$q = 'SELECT `slug` as name
 					FROM  `#__virtuemart_categories_'.$this->vmlang.'`
 					WHERE  `virtuemart_category_id`='.(int)$id;
 
-			$db->setQuery($q);
-			$strings[] = $db->loadResult();
+				$db->setQuery($q);
+				$cslug = $db->loadResult();
+				$categoryNamesCache[$id] = $cslug;
+				$strings[] = $cslug;
+			} else {
+				$strings[] = $categoryNamesCache[$id];
+			}
+
 		}
 
 		if(function_exists('mb_strtolower')){
@@ -829,13 +837,21 @@ class vmrouterHelper {
 
 	/* Get URL safe Product name */
 	public function getProductName($id){
-		$db = JFactory::getDBO();
-		$query = 'SELECT `slug` FROM `#__virtuemart_products_'.$this->vmlang.'`  ' .
-			' WHERE `virtuemart_product_id` = ' . (int) $id;
 
-		$db->setQuery($query);
+		static $productNamesCache = array();
 
-		return $db->loadResult().$this->seo_sufix;
+		if(!isset($productNamesCache[$id])){
+			$db = JFactory::getDBO();
+			$query = 'SELECT `slug` FROM `#__virtuemart_products_'.$this->vmlang.'`  ' .
+				' WHERE `virtuemart_product_id` = ' . (int) $id;
+			$db->setQuery($query);
+			$name = $db->loadResult();
+			$productNamesCache[$id] = $name ;
+		} else {
+			$name = $productNamesCache[$id];
+		}
+
+		return $name.$this->seo_sufix;
 	}
 
 	var $counter = 0;

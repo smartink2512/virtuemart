@@ -155,59 +155,61 @@ class VirtueMartModelUser extends VmModel {
 		$this->_data->JUser = JUser::getInstance($this->_id);
 		// 		vmdebug('$this->_data->JUser',$this->_data->JUser);
 
-		//if(empty($this->_data->perms)){
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		$this	->_data->perms = Permissions::getInstance()->getPermissions((int)$this->_id);
 
-			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-			$this->_data->perms = Permissions::getInstance()->getPermissions((int)$this->_id);
-
-		//}
+		$this->_data->shopper_groups = array();
+		$this->_data->userInfo = array ();
 
 		// Add the virtuemart_shoppergroup_ids
-		$xrefTable = $this->getTable('vmuser_shoppergroups');
-		$this->_data->shopper_groups = $xrefTable->load($this->_id);
+		if($this->_id!=0){
+			$xrefTable = $this->getTable('vmuser_shoppergroups');
+			$this->_data->shopper_groups = $xrefTable->load($this->_id);
+
+
+			$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"';
+			$this->_db->setQuery($q);
+			$userInfo_ids = $this->_db->loadResultArray(0);
+			// 		vmdebug('my query',$this->_db->getQuery());
+			// 		vmdebug('my $_ui',$userInfo_ids,$this->_id);
+
+
+			$BTuid = 0;
+
+			foreach($userInfo_ids as $uid){
+
+				$this->_data->userInfo[$uid] = $this->getTable('userinfos');
+				$this->_data->userInfo[$uid]->load($uid);
+
+				if ($this->_data->userInfo[$uid]->address_type == 'BT') {
+					$BTuid = $uid;
+
+					$this->_data->userInfo[$BTuid]->name = $this->_data->JUser->name;
+					$this->_data->userInfo[$BTuid]->email = $this->_data->JUser->email;
+					$this->_data->userInfo[$BTuid]->username = $this->_data->JUser->username;
+					$this->_data->userInfo[$BTuid]->address_type = 'BT';
+					// 				vmdebug('$this->_data->vmusers',$this->_data);
+				}
+			}
+
+			// 		vmdebug('user_is_vendor ?',$this->_data->user_is_vendor);
+			if($this->_data->user_is_vendor){
+
+				$vendorModel = VmModel::getModel('vendor');
+				if(Vmconfig::get('multix','none')==='none'){
+					$this->_data->virtuemart_vendor_id = 1;
+				}
+				$vendorModel->setId($this->_data->virtuemart_vendor_id);
+				$this->_data->vendor = $vendorModel->getVendor();
+			}
+		}
+
 		if(empty($this->_data->shopper_groups)){
 			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
 			$site = JFactory::getApplication ()->isSite ();
-			$this->_data->shopper_groups = array();
+
 			$shoppergroupmodel->appendShopperGroups($this->_data->shopper_groups,$this->_data->JUser,$site);
 		}
-
-		$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"';
-		$this->_db->setQuery($q);
-		$userInfo_ids = $this->_db->loadResultArray(0);
-		// 		vmdebug('my query',$this->_db->getQuery());
-		// 		vmdebug('my $_ui',$userInfo_ids,$this->_id);
-		$this->_data->userInfo = array ();
-
-		$BTuid = 0;
-
-		foreach($userInfo_ids as $uid){
-
-			$this->_data->userInfo[$uid] = $this->getTable('userinfos');
-			$this->_data->userInfo[$uid]->load($uid);
-
-			if ($this->_data->userInfo[$uid]->address_type == 'BT') {
-				$BTuid = $uid;
-
-				$this->_data->userInfo[$BTuid]->name = $this->_data->JUser->name;
-				$this->_data->userInfo[$BTuid]->email = $this->_data->JUser->email;
-				$this->_data->userInfo[$BTuid]->username = $this->_data->JUser->username;
-				$this->_data->userInfo[$BTuid]->address_type = 'BT';
-				// 				vmdebug('$this->_data->vmusers',$this->_data);
-			}
-		}
-
-		// 		vmdebug('user_is_vendor ?',$this->_data->user_is_vendor);
-		if($this->_data->user_is_vendor){
-
-			$vendorModel = VmModel::getModel('vendor');
-			if(Vmconfig::get('multix','none')==='none'){
-				$this->_data->virtuemart_vendor_id = 1;
-			}
-			$vendorModel->setId($this->_data->virtuemart_vendor_id);
-			$this->_data->vendor = $vendorModel->getVendor();
-		}
-
 
 		return $this->_data;
 	}

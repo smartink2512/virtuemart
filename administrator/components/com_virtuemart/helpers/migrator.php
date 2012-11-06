@@ -1137,9 +1137,6 @@ class Migrator extends VmModel{
 
 					$product['published'] = $product['product_publish'] == 'Y' ? 1 : 0;
 
-					$product['product_price_quantity_start'] = $product['price_quantity_start'];
-					$product['product_price_quantity_end'] = $product['price_quantity_end'];
-
 					$product['created_on'] = $this->_changeToStamp($product['cdate']);
 					$product['modified_on'] = $this->_changeToStamp($product['mdate']); //we could remove this to set modified_on today
 					$product['product_available_date'] = $this->_changeToStamp($product['product_available_date']);
@@ -1186,6 +1183,14 @@ class Migrator extends VmModel{
 						$alreadyKnownIds[$product['product_id']] = $product['virtuemart_product_id'];
 					} else {
 						vmdebug('$product["virtuemart_product_id"] or $product["product_id"] is EMPTY?',$product);
+					}
+
+					//We must unset this, otherwise the prices are wrong, because the taxes and discounts are
+					// not importet.
+					$somethingWeAdlater = TRUE;
+					if($somethingWeAdlater){
+						unset($product['product_discount_id']);
+						unset($product['product_tax_id']);
 					}
 
 					$errors = $productModel->getErrors();
