@@ -1141,6 +1141,9 @@ class Migrator extends VmModel{
 					$product['modified_on'] = $this->_changeToStamp($product['mdate']); //we could remove this to set modified_on today
 					$product['product_available_date'] = $this->_changeToStamp($product['product_available_date']);
 
+                    $product['product_price_publish_up'] = $product['product_price_vdate'];
+					$product['product_price_publish_down'] = $product['product_price_edate'];
+
 					if(!empty($product['product_weight_uom'])){
 						$product['product_weight_uom'] = $this->parseWeightUom($product['product_weight_uom']);
 					}
