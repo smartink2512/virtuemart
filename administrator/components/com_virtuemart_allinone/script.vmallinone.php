@@ -49,7 +49,16 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 			jimport ('joomla.filesystem.file');
 			jimport ('joomla.installer.installer');
-
+			$vm_logo = '<img src="' . JURI::root (true) . 'components/com_virtuemart/assets/images/vm_menulogo.png" width="109" height="48" alt="VirtueMart AIO Component" align="right" />';
+			$header = "<h2>Installing Virtuemart AIO Plugins and modules</h2>";
+			$table_start = '<table class="adminlist">';
+			$table_start .= '<thead>';
+			$table_start .= '<tr>';
+			$table_start .= '<th class="title" colspan="2">Extension</th>';
+			$table_start .= '<th width="30%">Status</th>';
+			$table_start .= '</tr>';
+			$table_start .= '</thead>';
+			echo $vm_logo . $header . $table_start;
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmcalculation');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmcustom');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
@@ -79,6 +88,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
 
 			$this->installPlugin ('By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment');
+			$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation');
 
 			$this->installPlugin ('Customer text input', 'plugin', 'textinput', 'vmcustom');
 			$this->installPlugin ('Product specification', 'plugin', 'specification', 'vmcustom');
@@ -102,9 +112,9 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				$dst = JPATH_ROOT . DS . "modules";
 				$this->recurse_copy ($src, $dst);
 
-				echo "Checking VirtueMart2 modules...";
+				//echo "Checking VirtueMart2 modules...";
 				if (!$this->VmModulesAlreadyInstalled ()) {
-					echo "Installing VirtueMart2 modules<br/ >";
+					//echo "Installing VirtueMart2 modules<br/ >";
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
 						$defaultParams = '{"text_before":"","product_currency":"","cache":"1","moduleclass_sfx":"","class_sfx":""}';
 					} else {
@@ -156,26 +166,27 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 					}
 					$this->installModule ('VM - Category', 'mod_virtuemart_category', 6, $defaultParams);
 				} else {
-					echo "VirtueMart2 modules already installed<br/ >";
+					//echo "VirtueMart2 modules already installed<br/ >";
+					echo "<tr><td>VirtueMart2 modules</td><td>already installed</td></tr>";
 				}
 				// language auto move
 				$src = $this->path . DS . "languageFE";
 				$dst = JPATH_ROOT . DS . "language";
 				$this->recurse_copy ($src, $dst);
-				echo " VirtueMart2 language moved to the joomla language FE folder<br/ >";
-
+				//echo " VirtueMart2 language moved to the joomla language FE folder<br/ >";
+				echo "<tr><td>VirtueMart2 FE languages</td><td>installed</td></tr>";
 				// language auto move
 				$src = $this->path . DS . "languageBE";
 				$dst = JPATH_ADMINISTRATOR . DS . "language";
 				$this->recurse_copy ($src, $dst);
-				echo " VirtueMart2 language moved to the joomla language BE folder<br/ >";
-
+				//echo " VirtueMart2 language moved to the joomla language BE folder<br/ >";
+				echo "<tr><td>VirtueMart2 BE languages</td><td>installed</td></tr>";
 				// libraries auto move
 				$src = $this->path . DS . "libraries";
 				$dst = JPATH_ROOT . DS . "libraries";
 				$this->recurse_copy ($src, $dst);
-				echo " VirtueMart2 pdf moved to the joomla libraries folder<br/ >";
-
+				//echo " VirtueMart2 pdf moved to the joomla libraries folder<br/ >";
+				echo "<tr><td>VirtueMart2 PDF library</td><td>installed</td></tr>";
 				//update plugins, make em loggable
 				/*			$loggables = array(	'created_on' => 'DATETIME NOT NULL DEFAULT "0000-00-00 00:00:00"',
 				'created_by' => 'INT(11) NOT NULL DEFAULT "0"',
@@ -189,14 +200,16 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				$this->checkAddFieldToTable('#__virtuemart_payment_standard',$key,$value);
 				$this->checkAddFieldToTable('#__virtuemart_shipment_weight_countries',$key,$value);
 				}*/
+				echo "<tr><td colspan='2'><h2>Installing Virtuemart Plugins and modules Success</h2>
+					<H3>You may directly uninstall this component. Your plugins will remain</h3>
+					<H3>Ignore the message " . JText::_ ('JLIB_INSTALLER_ABORT_COMP_BUILDADMINMENUS_FAILED') . "</h3>
+					</td></tr>";
 
-				echo "<H3>Installing Virtuemart Plugins and modules Success.</h3>";
-				echo "<H3>You may directly uninstall this component. Your plugins will remain</h3>";
-
-				echo "<H3>Ignore the message " . JText::_ ('JLIB_INSTALLER_ABORT_COMP_BUILDADMINMENUS_FAILED') . "</h3>";
 			} else {
-				echo "<H3>Updated Virtuemart Plugin tables</h3>";
+				echo "<tr><td>Virtuemart Plugin tables</td><td>updated</td></tr>";
 			}
+			$table_end = '</table>';
+			echo $table_end;
 			return TRUE;
 
 		}
@@ -253,8 +266,8 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 				//We write only in the table, when it is not installed already
 				if ($count == 0) {
-					echo 'Installing plugin ' . $name .' '. $group . '<br />';
-
+					//echo 'Installing plugin ' . $name . ' ' . $group . '<br />';
+					$status = "Installed";
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
 						$data['manifest_cache'] = json_encode (JApplicationHelper::parseXMLInstallFile ($src . DS . $element . '.xml'));
 					}
@@ -279,13 +292,14 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 					if (!class_exists ('VmConfig')) {
 						require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 					}
+
 					if (class_exists ('VmConfig')) {
 						if (!class_exists ('VmModel')) {
 							require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'vmmodel.php');
 						}
 						// Install an example
 						if ($group == 'vmpayment' or $group == 'vmshipment' or ($group == 'vmcustom' && $element == 'textinput')) {
-							echo 'Installing plugin example ' . $name . ' ' . $group.'<br />';
+							echo 'Installing plugin example ' . $name . ' ' . $group . '<br />';
 							$jplugin_id = $table->$idfield;
 							if ($group == 'vmpayment' or $group == 'vmshipment') {
 								$prefix = substr ($group, 2); // remove 'vm' from group name
@@ -348,8 +362,11 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 					$q = 'DELETE FROM `' . $tableName . '` WHERE ' . $idfield . ' = ' . $duplicatedPlugin;
 					$db->setQuery ($q);
 					$db->query ();
+					$status = "removed duplicated entry";
 				} else {
 					//$app->enqueueMessage ('VM AIO installer Plugin already installed: ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+					$status = "already installed";
+
 				}
 			}
 
@@ -366,6 +383,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			}
 
 			if ($task != 'updateDatabase') {
+				$status="Updated";
 				$this->recurse_copy ($src, $dst);
 			}
 
@@ -376,7 +394,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 					$this->updatePluginTable ($name, $type, $element, $group, $dst);
 				}
 			}
-
+			echo "<tr><td>VirtueMart2 plugin " . $name . " (" . $group . ")</td><td>" . $status . "</td></tr>";
 		}
 
 
@@ -407,7 +425,8 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 				$tablename = '#__virtuemart_' . $_psType . '_plg_' . $element;
 				$db = JFactory::getDBO ();
-				$query = 'SHOW TABLES LIKE "%' . str_replace ('#__', '', $tablename) . '"';
+				$prefix=$db->getPrefix();
+				$query = 'SHOW TABLES LIKE "' . str_replace ('#__', $prefix, $tablename) . '"';
 				$db->setQuery ($query);
 				$result = $db->loadResult ();
 				//$app -> enqueueMessage( get_class( $this ).'::  '.$query.' '.$result);
@@ -581,6 +600,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				}
 
 			}
+			echo "<tr><td>VirtueMart2 module " . $title . " (" . $module . ")</td><td>installed</td></tr>";
 		}
 
 		public function VmModulesAlreadyInstalled () {
