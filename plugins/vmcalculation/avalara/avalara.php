@@ -134,7 +134,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		{
 			if(!class_exists('PingResult')) require (VMAVALARA_CLASS_PATH.DS.'PingResult.class.php');
 			$result = $client->ping("TEST");
-			$html .= '<tr><td class="key" colspan="2">Ping ResultCode is: '. $result->getResultCode()."</td></tr>";
+			$html .= '<tr><td class="key" colspan="2">Ping ResultCode is: '. $result->getResultCode()."<br />";
 			if(!class_exists('SeverityLevel')) require (VMAVALARA_CLASS_PATH.DS.'SeverityLevel.class.php');
 			if($result->getResultCode() != SeverityLevel::$Success)	// call failed
 			{
