@@ -49,7 +49,16 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 			jimport ('joomla.filesystem.file');
 			jimport ('joomla.installer.installer');
-
+			$vm_logo = '<img src="' . JURI::root (true) . '/administrator/components/com_virtuemart/assets/images/vm_menulogo.png" width="109" height="48" style="padding-right: 10px;" alt="VirtueMart AIO Component" align="left" />';
+			$header = "<h2>Installing Plugins, Modules and some languages for VirtueMart 2</h2>";
+			$table_start = '<table class="adminlist">';
+			$table_start .= '<thead>';
+			$table_start .= '<tr>';
+			$table_start .= '<th class="title" >Extension</th>';
+			$table_start .= '<th width="30%">Status</th>';
+			$table_start .= '</tr>';
+			$table_start .= '</thead>';
+			echo $vm_logo . $header . $table_start;
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmcalculation');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmcustom');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
@@ -103,101 +112,98 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				$dst = JPATH_ROOT . DS . "modules";
 				$this->recurse_copy ($src, $dst);
 
-				echo "Checking VirtueMart2 modules...";
-				if (!$this->VmModulesAlreadyInstalled ()) {
-					echo "Installing VirtueMart2 modules<br/ >";
-					if (version_compare (JVERSION, '1.6.0', 'ge')) {
-						$defaultParams = '{"text_before":"","product_currency":"","cache":"1","moduleclass_sfx":"","class_sfx":""}';
-					} else {
-						$defaultParams = "text_before=\nproduct_currency=\ncache=1\nmoduleclass_sfx=\nclass_sfx=\n";
-					}
-					$this->installModule ('VM - Currencies Selector', 'mod_virtuemart_currencies', 4, $defaultParams);
+				//echo "Checking VirtueMart2 modules...";
+				$modulename = "currencies";
 
-					if (version_compare (JVERSION, '1.6.0', 'ge')) {
-						$defaultParams = '{"product_group":"featured","max_items":"1","products_per_row":"1","display_style":"list","show_price":"1","show_addtocart":"1","headerText":"Best products","footerText":"","filter_category":"0","virtuemart_category_id":"0","cache":"0","moduleclass_sfx":"","class_sfx":""}';
-
-					} else {
-						$defaultParams = "product_group=featured\nmax_items=1\nproducts_per_row=1\ndisplay_style=list\nshow_price=1\nshow_addtocart=1\nheaderText=Best products\nfooterText=\nfilter_category=0\ncategory_id=1\ncache=0\nmoduleclass_sfx=\nclass_sfx=\n";
-					}
-					$this->installModule ('VM - Featured products', 'mod_virtuemart_product', 3, $defaultParams);
-
-					if (version_compare (JVERSION, '1.6.0', 'ge')) {
-						$defaultParams = '{"product_group":"topten","max_items":"1","products_per_row":"1","display_style":"list","show_price":"1","show_addtocart":"1","headerText":"","footerText":"","filter_category":"0","virtuemart_category_id":"0","cache":"0","moduleclass_sfx":"","class_sfx":""}';
-					} else {
-						$defaultParams = "product_group=topten\nmax_items=1\nproducts_per_row=1\ndisplay_style=list\nshow_price=1\nshow_addtocart=1\nheaderText=\nfooterText=\nfilter_category=0\ncategory_id=1\ncache=0\nmoduleclass_sfx=\nclass_sfx=\n";
-					}
-					$this->installModule ('VM - Best Sales', 'mod_virtuemart_product', 1, $defaultParams);
-
-					if (version_compare (JVERSION, '1.6.0', 'ge')) {
-
-						$defaultParams = '{"width":"20","text":"","button":"","button_pos":"right","imagebutton":"","button_text":""}';
-					} else {
-						$defaultParams = "width=20\ntext=\nbutton=\nbutton_pos=right\nimagebutton=\nbutton_text=\nmoduleclass_sfx=\ncache=1\ncache_time=900\n";
-					}
-					$this->installModule ('VM - Search in Shop', 'mod_virtuemart_search', 2, $defaultParams);
-
-					if (version_compare (JVERSION, '1.6.0', 'ge')) {
-						$defaultParams = '{"show":"all","display_style":"list","manufacturers_per_row":"1","headerText":"","footerText":""}';
-					} else {
-						$defaultParams = "show=all\ndisplay_style=div\nmanufacturers_per_row=1\nheaderText=\nfooterText=\ncache=0\nmoduleclass_sfx=\nclass_sfx=";
-					}
-					$this->installModule ('VM - Manufacturer', 'mod_virtuemart_manufacturer', 5, $defaultParams);
-
-					if (version_compare (JVERSION, '1.6.0', 'ge')) {
-						$defaultParams = '{"moduleclass_sfx":"","show_price":"1","show_product_list":"1"}';
-					} else {
-						$defaultParams = "moduleclass_sfx=\nshow_price=1\nshow_product_list=1\n";
-					}
-					$this->installModule ('VM - Shopping cart', 'mod_virtuemart_cart', 0, $defaultParams);
-
-					if (version_compare (JVERSION, '1.6.0', 'ge')) {
-						$defaultParams = '{"Parent_Category_id":"0","layout":"default","cache":"0","moduleclass_sfx":"","class_sfx":""}';
-					} else {
-						$defaultParams = "moduleclass_sfx=\nclass_sfx=\ncategory_name=default\ncache=no\n";
-					}
-					$this->installModule ('VM - Category', 'mod_virtuemart_category', 6, $defaultParams);
+				//echo "Installing VirtueMart2 modules<br/ >";
+				if (version_compare (JVERSION, '1.6.0', 'ge')) {
+					$defaultParams = '{"text_before":"","product_currency":"","cache":"1","moduleclass_sfx":"","class_sfx":""}';
 				} else {
-					echo "VirtueMart2 modules already installed<br/ >";
+					$defaultParams = "text_before=\nproduct_currency=\ncache=1\nmoduleclass_sfx=\nclass_sfx=\n";
 				}
-				// language auto move
-				$src = $this->path . DS . "languageFE";
-				$dst = JPATH_ROOT . DS . "language";
-				$this->recurse_copy ($src, $dst);
-				echo " VirtueMart2 language moved to the joomla language FE folder<br/ >";
+				$this->installModule ('VM - Currencies Selector', 'mod_virtuemart_currencies', 4, $defaultParams);
 
-				// language auto move
-				$src = $this->path . DS . "languageBE";
-				$dst = JPATH_ADMINISTRATOR . DS . "language";
-				$this->recurse_copy ($src, $dst);
-				echo " VirtueMart2 language moved to the joomla language BE folder<br/ >";
+				if (version_compare (JVERSION, '1.6.0', 'ge')) {
+					$defaultParams = '{"product_group":"featured","max_items":"1","products_per_row":"1","display_style":"list","show_price":"1","show_addtocart":"1","headerText":"Best products","footerText":"","filter_category":"0","virtuemart_category_id":"0","cache":"0","moduleclass_sfx":"","class_sfx":""}';
 
-				// libraries auto move
-				$src = $this->path . DS . "libraries";
-				$dst = JPATH_ROOT . DS . "libraries";
-				$this->recurse_copy ($src, $dst);
-				echo " VirtueMart2 pdf moved to the joomla libraries folder<br/ >";
+				} else {
+					$defaultParams = "product_group=featured\nmax_items=1\nproducts_per_row=1\ndisplay_style=list\nshow_price=1\nshow_addtocart=1\nheaderText=Best products\nfooterText=\nfilter_category=0\ncategory_id=1\ncache=0\nmoduleclass_sfx=\nclass_sfx=\n";
+				}
+				$this->installModule ('VM - Featured products', 'mod_virtuemart_product', 3, $defaultParams);
 
-				//update plugins, make em loggable
-				/*			$loggables = array(	'created_on' => 'DATETIME NOT NULL DEFAULT "0000-00-00 00:00:00"',
-				'created_by' => 'INT(11) NOT NULL DEFAULT "0"',
-				'modified_on'=> 'DATETIME NOT NULL DEFAULT "0000-00-00 00:00:00"',
-				'modified_by'=> 'INT(11) NOT NULL DEFAULT "0"',
-				'locked_on' =>'DATETIME NOT NULL DEFAULT "0000-00-00 00:00:00"',
-				'locked_by' =>'INT(11) NOT NULL DEFAULT "0"'
-				);
-				foreach($loggables as $key => $value){
-				$this->checkAddFieldToTable('#__virtuemart_payment_paypal',$key,$value);
-				$this->checkAddFieldToTable('#__virtuemart_payment_standard',$key,$value);
-				$this->checkAddFieldToTable('#__virtuemart_shipment_weight_countries',$key,$value);
-				}*/
+				if (version_compare (JVERSION, '1.6.0', 'ge')) {
+					$defaultParams = '{"product_group":"topten","max_items":"1","products_per_row":"1","display_style":"list","show_price":"1","show_addtocart":"1","headerText":"","footerText":"","filter_category":"0","virtuemart_category_id":"0","cache":"0","moduleclass_sfx":"","class_sfx":""}';
+				} else {
+					$defaultParams = "product_group=topten\nmax_items=1\nproducts_per_row=1\ndisplay_style=list\nshow_price=1\nshow_addtocart=1\nheaderText=\nfooterText=\nfilter_category=0\ncategory_id=1\ncache=0\nmoduleclass_sfx=\nclass_sfx=\n";
+				}
+				$this->installModule ('VM - Best Sales', 'mod_virtuemart_product', 1, $defaultParams);
 
-				echo "<H3>Installing Virtuemart Plugins and modules Success.</h3>";
-				echo "<H3>You may directly uninstall this component. Your plugins will remain</h3>";
+				if (version_compare (JVERSION, '1.6.0', 'ge')) {
 
-				echo "<H3>Ignore the message " . JText::_ ('JLIB_INSTALLER_ABORT_COMP_BUILDADMINMENUS_FAILED') . "</h3>";
-			} else {
-				echo "<H3>Updated Virtuemart Plugin tables</h3>";
+					$defaultParams = '{"width":"20","text":"","button":"","button_pos":"right","imagebutton":"","button_text":""}';
+				} else {
+					$defaultParams = "width=20\ntext=\nbutton=\nbutton_pos=right\nimagebutton=\nbutton_text=\nmoduleclass_sfx=\ncache=1\ncache_time=900\n";
+				}
+				$this->installModule ('VM - Search in Shop', 'mod_virtuemart_search', 2, $defaultParams);
+
+				if (version_compare (JVERSION, '1.6.0', 'ge')) {
+					$defaultParams = '{"show":"all","display_style":"list","manufacturers_per_row":"1","headerText":"","footerText":""}';
+				} else {
+					$defaultParams = "show=all\ndisplay_style=div\nmanufacturers_per_row=1\nheaderText=\nfooterText=\ncache=0\nmoduleclass_sfx=\nclass_sfx=";
+				}
+				$this->installModule ('VM - Manufacturer', 'mod_virtuemart_manufacturer', 5, $defaultParams);
+
+				if (version_compare (JVERSION, '1.6.0', 'ge')) {
+					$defaultParams = '{"moduleclass_sfx":"","show_price":"1","show_product_list":"1"}';
+				} else {
+					$defaultParams = "moduleclass_sfx=\nshow_price=1\nshow_product_list=1\n";
+				}
+				$this->installModule ('VM - Shopping cart', 'mod_virtuemart_cart', 0, $defaultParams);
+
+				if (version_compare (JVERSION, '1.6.0', 'ge')) {
+					$defaultParams = '{"Parent_Category_id":"0","layout":"default","cache":"0","moduleclass_sfx":"","class_sfx":""}';
+				} else {
+					$defaultParams = "moduleclass_sfx=\nclass_sfx=\ncategory_name=default\ncache=no\n";
+				}
+				$this->installModule ('VM - Category', 'mod_virtuemart_category', 6, $defaultParams);
 			}
+
+			// language auto move
+			$src = $this->path . DS . "languageFE";
+			$dst = JPATH_ROOT . DS . "language";
+			$filenames = $this->recurse_copy ($src, $dst);
+			//echo " VirtueMart2 language moved to the joomla language FE folder<br/ >";
+			echo "<tr><td>Front End languages: " . implode (", ", $filenames) . "</td><td>Installed</td></tr>";
+			// language auto move
+			$src = $this->path . DS . "languageBE";
+			$dst = JPATH_ADMINISTRATOR . DS . "language";
+			$filenames = $this->recurse_copy ($src, $dst);
+			//echo " VirtueMart2 language moved to the joomla language BE folder<br/ >";
+			echo "<tr><td>Back End languages: " . implode (", ", $filenames) . "</td><td>Installed</td></tr>";
+			// libraries auto move
+			$src = $this->path . DS . "libraries";
+			$dst = JPATH_ROOT . DS . "libraries";
+			$this->recurse_copy ($src, $dst);
+			//echo " VirtueMart2 pdf moved to the joomla libraries folder<br/ >";
+			echo "<tr><td>PDF library</td><td>Installed</td></tr>";
+			//update plugins, make em loggable
+			/*			$loggables = array(	'created_on' => 'DATETIME NOT NULL DEFAULT "0000-00-00 00:00:00"',
+			'created_by' => 'INT(11) NOT NULL DEFAULT "0"',
+			'modified_on'=> 'DATETIME NOT NULL DEFAULT "0000-00-00 00:00:00"',
+			'modified_by'=> 'INT(11) NOT NULL DEFAULT "0"',
+			'locked_on' =>'DATETIME NOT NULL DEFAULT "0000-00-00 00:00:00"',
+			'locked_by' =>'INT(11) NOT NULL DEFAULT "0"'
+			);
+			foreach($loggables as $key => $value){
+			$this->checkAddFieldToTable('#__virtuemart_payment_paypal',$key,$value);
+			$this->checkAddFieldToTable('#__virtuemart_payment_standard',$key,$value);
+			$this->checkAddFieldToTable('#__virtuemart_shipment_weight_countries',$key,$value);
+			}*/
+
+			echo "<tr><td colspan='2'><h2>Installing VirtueMart Plugins and modules Success</h2>
+					</td></tr>";
+			$table_end = '</table>';
+			echo $table_end;
 			return TRUE;
 
 		}
@@ -206,7 +212,8 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 		 * Installs a vm plugin into the database
 		 *
 		 */
-		private function installPlugin ($name, $type, $element, $group) {
+		private
+		function installPlugin ($name, $type, $element, $group) {
 
 			$task = JRequest::getCmd ('task');
 			$app = JFactory::getApplication ();
@@ -254,8 +261,8 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 				//We write only in the table, when it is not installed already
 				if ($count == 0) {
-					echo 'Installing plugin ' . $name .' '. $group . '<br />';
-
+					//echo 'Installing plugin ' . $name . ' ' . $group . '<br />';
+					$status = "Installed";
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
 						$data['manifest_cache'] = json_encode (JApplicationHelper::parseXMLInstallFile ($src . DS . $element . '.xml'));
 					}
@@ -280,13 +287,13 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 					if (!class_exists ('VmConfig')) {
 						require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 					}
+
 					if (class_exists ('VmConfig')) {
-						if (!class_exists ('VmModel')) {
+ 						if (!class_exists ('VmModel')) {
 							require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'vmmodel.php');
 						}
 						// Install an example
 						if ($group == 'vmpayment' or $group == 'vmshipment' or ($group == 'vmcustom' && $element == 'textinput')) {
-							echo 'Installing plugin example ' . $name . ' ' . $group.'<br />';
 							$jplugin_id = $table->$idfield;
 							if ($group == 'vmpayment' or $group == 'vmshipment') {
 								$prefix = substr ($group, 2); // remove 'vm' from group name
@@ -295,7 +302,9 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 								$data['published'] = 0;
 								$data['virtuemart_vendor_id'] = 1;
 								$data['virtuemart_' . $name . 'method_id'] = 0;
-								$model = VmModel::getModel ($prefix . 'method');
+
+								$modelName = $prefix . 'method';
+								$model = VmModel::getModel ($modelName);
 								$model->store ($data);
 							} else {
 								$app = JFactory::getApplication ();
@@ -321,20 +330,21 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 								$data['virtuemart_vendor_id'] = 1;
 								$data['custom_element'] = $element;
 								$modelName = 'custom';
-							}
-							$model = VmModel::getModel ($modelName);
-							$model->store ($data);
-							if (!class_exists ('VirtueMartModelCustomfields')) {
-								require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models' . DS . 'customfields.php');
-							}
-							// add this custom field to product id 4
-							$q = 'SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs` WHERE `custom_jplugin_id` = "' . $jplugin_id . '"';
-							$db->setQuery ($q);
-							$virtuemart_custom_id = $db->loadResult ();
-							$q = 'INSERT INTO `#__virtuemart_product_customfields` 	(`virtuemart_custom_id`, `virtuemart_product_id`, `custom_value` ) VALUES (' . $virtuemart_custom_id . ',4,"' . $element . '")';
-							$db->setQuery ($q);
-							if (!$db->query ()) {
-								$app->enqueueMessage (get_class ($this) . '::  ' . $db->getErrorMsg ());
+
+								$model = VmModel::getModel ($modelName);
+								$model->store ($data);
+								if (!class_exists ('VirtueMartModelCustomfields')) {
+									require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models' . DS . 'customfields.php');
+								}
+								// add this custom field to product id 4
+								$q = 'SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs` WHERE `custom_jplugin_id` = "' . $jplugin_id . '"';
+								$db->setQuery ($q);
+								$virtuemart_custom_id = $db->loadResult ();
+								$q = 'INSERT INTO `#__virtuemart_product_customfields` 	(`virtuemart_custom_id`, `virtuemart_product_id`, `custom_value` ) VALUES (' . $virtuemart_custom_id . ',4,"' . $element . '")';
+								$db->setQuery ($q);
+								if (!$db->query ()) {
+									$app->enqueueMessage (get_class ($this) . '::  ' . $db->getErrorMsg ());
+								}
 							}
 						}
 					} else {
@@ -349,8 +359,11 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 					$q = 'DELETE FROM `' . $tableName . '` WHERE ' . $idfield . ' = ' . $duplicatedPlugin;
 					$db->setQuery ($q);
 					$db->query ();
+					$status = "removed duplicated entry";
 				} else {
 					//$app->enqueueMessage ('VM AIO installer Plugin already installed: ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+					$status = "already installed";
+
 				}
 			}
 
@@ -367,6 +380,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			}
 
 			if ($task != 'updateDatabase') {
+				$status = "Updated";
 				$this->recurse_copy ($src, $dst);
 			}
 
@@ -377,11 +391,11 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 					$this->updatePluginTable ($name, $type, $element, $group, $dst);
 				}
 			}
-
+			echo "<tr><td>Plugin " . $group . " " . $name . "</td><td>" . $status . "</td></tr>";
 		}
 
-
-		public function updatePluginTable ($name, $type, $element, $group, $dst) {
+		public
+		function updatePluginTable ($name, $type, $element, $group, $dst) {
 
 			$app = JFactory::getApplication ();
 
@@ -408,7 +422,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 				$tablename = '#__virtuemart_' . $_psType . '_plg_' . $element;
 				$db = JFactory::getDBO ();
-				$prefix=$db->getPrefix();
+				$prefix = $db->getPrefix ();
 				$query = 'SHOW TABLES LIKE "%' . str_replace ('#__', $prefix, $tablename) . '"';
 				$db->setQuery ($query);
 				$result = $db->loadResult ();
@@ -443,8 +457,13 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 		}
 
-		public function installModule ($title, $module, $ordering, $params) {
+		public
+		function installModule ($title, $module, $ordering, $params) {
 
+			if ($this->VmModuleAlreadyInstalled ($module)) {
+				echo "<tr><td>" . $title . " (" . $module . ")</td><td>Example already installed</td></tr>";
+				return;
+			}
 			$params = '';
 
 			$table = JTable::getInstance ('module');
@@ -583,14 +602,16 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				}
 
 			}
+			echo "<tr><td>Module " . $title . " (" . $module . ")</td><td>Installed</td></tr>";
 		}
 
-		public function VmModulesAlreadyInstalled () {
+		public
+		function VmModuleAlreadyInstalled ($name) {
 
 			// when the modules are already installed publish=-2
 			$table = JTable::getInstance ('module');
 			$db = $table->getDBO ();
-			$q = 'SELECT count(*) FROM `#__modules` WHERE `module` LIKE "mod_virtuemart_%"';
+			$q = 'SELECT count(*) FROM `#__modules` WHERE `module` LIKE "' . $name . '"';
 			$db->setQuery ($q);
 			$count = $db->loadResult ();
 			return $count;
@@ -602,7 +623,8 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 		 * @param string $fields
 		 * @param string $command
 		 */
-		private function alterTable ($tablename, $fields, $command = 'CHANGE') {
+		private
+		function alterTable ($tablename, $fields, $command = 'CHANGE') {
 
 			if (empty($this->db)) {
 				$this->db = JFactory::getDBO ();
@@ -631,7 +653,8 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 		 * @param string $fieldType
 		 * @return boolean This gives true back, WHEN it altered the table, you may use this information to decide for extra post actions
 		 */
-		private function checkAddFieldToTable ($table, $field, $fieldType) {
+		private
+		function checkAddFieldToTable ($table, $field, $fieldType) {
 
 			$query = 'SHOW COLUMNS FROM `' . $table . '` ';
 			$this->db->setQuery ($query);
@@ -652,7 +675,8 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			return FALSE;
 		}
 
-		private function updateShipperToShipment () {
+		private
+		function updateShipperToShipment () {
 
 			if (empty($this->db)) {
 				$this->db = JFactory::getDBO ();
@@ -688,16 +712,19 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 		 * @param String $dst path
 		 * @param String $type modules, plugins, languageBE, languageFE
 		 */
-		private function recurse_copy ($src, $dst) {
+		private
+		function recurse_copy ($src, $dst) {
 
 			$dir = opendir ($src);
 			$this->createIndexFolder ($dst);
-
+			$filenames = array();
+			$i = 0;
 			if (is_resource ($dir)) {
 				while (FALSE !== ($file = readdir ($dir))) {
 					if (($file != '.') && ($file != '..')) {
 						if (is_dir ($src . DS . $file)) {
 							$this->recurse_copy ($src . DS . $file, $dst . DS . $file);
+							$filenames[$i++] = $file;
 						} else {
 							if (JFile::exists ($dst . DS . $file)) {
 								if (!JFile::delete ($dst . DS . $file)) {
@@ -720,11 +747,11 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				$app = JFactory::getApplication ();
 				$app->enqueueMessage ('Could not read dir ' . $dir . ' source ' . $src);
 			}
-
+			return $filenames;
 		}
 
-
-		public function uninstall () {
+		public
+		function uninstall () {
 
 			return TRUE;
 		}
@@ -735,7 +762,8 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 		 * @author Max Milbers
 		 *
 		 */
-		public function createIndexFolder ($path) {
+		public
+		function createIndexFolder ($path) {
 
 			if (JFolder::create ($path)) {
 				if (!JFile::exists ($path . DS . 'index.html')) {
@@ -747,7 +775,6 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 		}
 
 	}
-
 
 	// PLZ look in #vminstall.php# to add your plugin and module
 	function com_install () {
