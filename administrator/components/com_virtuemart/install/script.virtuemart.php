@@ -253,9 +253,23 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->adjustDefaultOrderStates();
 
 			$this->fixOrdersVendorId();
+			$this->updateCustomfieldsPublished();
+
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
+		}
+
+		private function updateCustomfieldsPublished(){
+
+			$db = JFactory::getDBO();
+			$q = 'UPDATE `#__virtuemart_product_customfields` SET `published`= "1"  WHERE `published`="0" ';
+			$db->setQuery($q);
+			$db->query();
+			$err = $db->getErrorMsg();
+			if(!empty($err)){
+				vmError('updateCustomfieldsPublished update published '.$err);
+			}
 		}
 
 		private function fixOrdersVendorId(){

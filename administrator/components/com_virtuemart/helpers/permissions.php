@@ -147,7 +147,6 @@ class Permissions extends JObject{
 	function doAuthentication ($user_id=null) {
 
 		$this->_db = JFactory::getDBO();
-		$session = JFactory::getSession();
 		$user = JFactory::getUser($user_id);
 
 		if (VmConfig::get('vm_price_access_level') != '') {

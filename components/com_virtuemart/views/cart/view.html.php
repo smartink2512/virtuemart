@@ -143,11 +143,6 @@ class VirtueMartViewCart extends VmView {
 			}
 			$this->assignRef('checkout_link_html', $checkout_link_html);
 
-	        //set order language
-            $lang = JFactory::getLanguage();
-			$order_language = $lang->getTag();
-		    $this->assignRef('order_language',$order_language);
-
 			$customfieldsModel = VmModel::getModel ('Customfields');
 			$this->assignRef('customfieldsModel',$customfieldsModel);
 		}

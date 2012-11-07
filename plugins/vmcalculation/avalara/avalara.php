@@ -317,6 +317,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	//	$request->setCompanyCode($calc->account);         // Your Company Code From the Dashboard
 		$request->setCompanyCode($calc->company_code);
 
+		//Use $SalesInvoice to store it at avalara, use $SalesOrder for the calculation not stored
 		$request->setDocType(DocumentType::$SalesInvoice);   	// Only supported types are SalesInvoice or SalesOrder
 
 		$request->setDocCode('PHPINV999');             //    invoice number
@@ -410,6 +411,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$lines[] = $line1;
 			//vmdebug('avalaragetTax ',$origin,$request);
 		}
+		//ADd here shipment as product line
+
 		//vmdebug('avalaragetTax setLines',$lines);
 		$request->setLines($lines);
 

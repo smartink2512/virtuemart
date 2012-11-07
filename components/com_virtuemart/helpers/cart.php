@@ -112,7 +112,6 @@ class VirtueMartCart {
 				self::$_cart->tosAccepted 							= $sessionCart->tosAccepted;
 				self::$_cart->customer_comment 					= base64_decode($sessionCart->customer_comment);
 				self::$_cart->couponCode 							= $sessionCart->couponCode;
-				self::$_cart->order_language 						= $sessionCart->order_language;
 				self::$_cart->cartData 								= $sessionCart->cartData;
 				self::$_cart->order_number							= $sessionCart->order_number;
 // 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
@@ -129,6 +128,9 @@ class VirtueMartCart {
 				self::$_cart->_dataValidated						= $sessionCart->_dataValidated;
 				self::$_cart->_confirmDone							= $sessionCart->_confirmDone;
 				self::$_cart->STsameAsBT							= $sessionCart->STsameAsBT;
+
+				$lang = JFactory::getLanguage();
+				self::$_cart->order_language = $lang->getTag();
 			}
 
 		}
@@ -656,7 +658,6 @@ class VirtueMartCart {
 		$this->tosAccepted = JRequest::getInt('tosAccepted', $this->tosAccepted);
 		$this->STsameAsBT = JRequest::getInt('STsameAsBT', $this->STsameAsBT);
 		$this->customer_comment = JRequest::getVar('customer_comment', $this->customer_comment);
-		$this->order_language = JRequest::getVar('order_language', $this->order_language);
 
 		// no HTML TAGS but permit all alphabet
 		$value =	preg_replace('@<[\/\!]*?[^<>]*?>@si','',$this->customer_comment);//remove all html tags
