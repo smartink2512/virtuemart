@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('_JEXEC'))
+die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * ValidateResult.class.php
  */
@@ -25,7 +26,7 @@
  * @see ValidAddress
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Address
  */
 

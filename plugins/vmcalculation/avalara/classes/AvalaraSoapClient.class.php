@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('_JEXEC'))
+die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * AvalaraSoapClient.class.php
  */
@@ -13,7 +14,7 @@
  * @see TaxServiceSoap
  * 
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Base
  */
 

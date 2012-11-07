@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('_JEXEC'))
+die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /** 
  * BaseResult.class.php
  */
@@ -7,7 +8,7 @@
  * The base class for result objects that return a ResultCode and Messages collection -- There is no reason for clients to create these.
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   Base
  */
  

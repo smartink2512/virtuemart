@@ -31,6 +31,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		parent::__construct ($subject, $config);
 		// 		vmdebug('Plugin stuff',$subject, $config);
 		$this->_loggable = TRUE;
+		$this->_tablepkey = 'id';
+		$this->_tableId = 'id';
 		$this->tableFields = array_keys ($this->getTableSQLFields ());
 
 		$varsToPush = $this->getVarsToPush ();

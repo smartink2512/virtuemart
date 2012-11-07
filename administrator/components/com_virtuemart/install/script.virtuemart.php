@@ -675,7 +675,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					border="0"
 					align="center"
 					src="components/com_virtuemart/assets/images/vm_menulogo.png"
-					alt="Cart" /> </a> <br /> <br />
+					alt="Logo" /> </a> <br /> <br />
 				<h2>
 
 				<?php echo JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>

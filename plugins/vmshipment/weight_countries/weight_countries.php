@@ -43,6 +43,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		parent::__construct ($subject, $config);
 
 		$this->_loggable = TRUE;
+		$this->_tablepkey = 'id';
+		$this->_tableId = 'id';
 		$this->tableFields = array_keys ($this->getTableSQLFields ());
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);

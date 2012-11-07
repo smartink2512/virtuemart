@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('_JEXEC'))
+die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * AddCustomerRequest.class.php
  */
@@ -9,7 +10,7 @@
  * @see AddCustomerResult
  *
  * @author    Avalara
- * @copyright © 2004 - 2011 Avalara, Inc.  All rights reserved.
+ * @copyright ï¿½ 2004 - 2011 Avalara, Inc.  All rights reserved.
  * @package   AvaCert
  */
 class AddCustomerRequest {
