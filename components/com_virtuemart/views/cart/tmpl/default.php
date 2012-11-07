@@ -159,6 +159,12 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 			?>
 		</div>
 		<?php // Continue and Checkout Button END ?>
+		
+		<?php //set order language
+        $lang = JFactory::getLanguage();
+		$order_language = $lang->getTag();
+		?>
+		<input type='hidden' name='order_language' value='<?php echo $order_language; ?>'/>
 		<input type='hidden' id='STsameAsBT' name='STsameAsBT' value='<?php echo $this->cart->STsameAsBT; ?>'/>
 		<input type='hidden' name='task' value='<?php echo $this->checkout_task; ?>'/>
 		<input type='hidden' name='option' value='com_virtuemart'/>

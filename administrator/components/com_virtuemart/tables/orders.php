@@ -86,6 +86,8 @@ class TableOrders extends VmTable {
 	var $customer_note = 0;
 	/** @var string Users IP Address */
 	var $ip_address = 0;
+	/** @var char Order language */
+	var $order_language = 0;
 
 
 	/**

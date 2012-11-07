@@ -478,6 +478,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `virtuemart_paymentmethod_id` mediumint(1) UNSIGNED,
   `virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED,
   `customer_note` varchar(21000),
+  `order_language` char(7),
   `ip_address` char(15) NOT NULL DEFAULT '',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
