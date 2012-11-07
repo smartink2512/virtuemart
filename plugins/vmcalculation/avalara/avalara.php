@@ -111,11 +111,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$html .= VmHTML::row('input','VMCALCULATION_AVALARA_LICENSE','license',$calc->license);
 	//	$html .= VmHTML::row('checkbox','VMCALCULATION_ISTRAXX_AVALARA_TRACE','trace',$calc->trace);
 
-		$html .= '</table></fieldset></td>
-		</tr>';
+
 		if ($calc->activated) {
 			$html .= $this->ping($calc);
 		}
+		$html .= '</table></fieldset></td></tr>';
 		return TRUE;
 	}
 
@@ -134,8 +134,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		{
 			if(!class_exists('PingResult')) require (VMAVALARA_CLASS_PATH.DS.'PingResult.class.php');
 			$result = $client->ping("TEST");
-			vmDebug('Ping ResultCode is: '. $result->getResultCode() );
-
+			$html .= '<tr><td class="key" colspan="2">Ping ResultCode is: '. $result->getResultCode()."</td></tr>";
 			if(!class_exists('SeverityLevel')) require (VMAVALARA_CLASS_PATH.DS.'SeverityLevel.class.php');
 			if($result->getResultCode() != SeverityLevel::$Success)	// call failed
 			{
@@ -147,8 +146,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			}
 			else // successful calll
 			{
-				vmdebug('Ping Version is: '. $result->getVersion() );
+				$html .= 'Ping Version is: '. $result->getVersion()."</td></tr>";
 			}
+			$html .= '</td></tr>';
 		}
 		catch(SoapFault $exception)
 		{
