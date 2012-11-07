@@ -868,7 +868,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		}
 
 		if(!empty($varsToPush)){
-			VmTable::bindParameterable($table,$table->_xParam,$varsToPush);
+			VmTable::bindParameterable($table,$table->_xParams,$varsToPush);
 		}
 
 	}

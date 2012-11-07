@@ -68,7 +68,7 @@ class VirtueMartModelCustom extends VmModel {
 		    }
 
 		    if(!empty($varsToPush)){
-			    VmTable::bindParameterable($this->_data,$this->_data->_xParam,$this->_data->varsToPush);
+			    VmTable::bindParameterable($this->_data,$this->_data->_xParams,$this->_data->varsToPush);
 		    }
 
     	}

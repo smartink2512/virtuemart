@@ -241,7 +241,7 @@ static function vmGetCharset() {
 	 * @param string $name
 	 * @param string $value
 	 */
-	public static function input($name,$value,$class='class="inputbox"',$readonly='',$size='37',$maxlength='255',$more=''){
+	public static function input($name,$value,$class='class="inputbox"',$readonly='',$size='45',$maxlength='255',$more=''){
 		return '<input type="text" '.$readonly.' '.$class.' id="'.$name.'" name="'.$name.'" size="'.$size.'" maxlength="'.$maxlength.'" value="'.htmlspecialchars($value).'" />'.$more;
 	}
 
