@@ -615,7 +615,7 @@ class VirtueMartModelProduct extends VmModel {
 		static $_products = array();
 		if (!array_key_exists ($productKey, $_products)) {
 
-			$child = $this->getProductSingle ($virtuemart_product_id, $front,$quantity);
+			$child = $this->getProductSingle ($productKey, $front,$quantity);
 			if (!$child->published && $onlyPublished) {
 				vmdebug('getProduct child is not published, returning zero');
 				return FALSE;
@@ -627,21 +627,11 @@ class VirtueMartModelProduct extends VmModel {
 			$pId = $child->virtuemart_product_id;
 			$ppId = $child->product_parent_id;
 			$published = $child->published;
-			$child->allParentIds = array();
+			$child->allIds[] = $pId;
 
-			$withCustoms = FALSE;
-			if ($withCustoms and!empty($child->virtuemart_customfield_id)) {
-				$db=JFactory::getDbo();
-				$q = 'SELECT `virtuemart_customfield_id`,`inherit` FROM `#__virtuemart_product_customfields` ';
-				$q .= 'WHERE `virtuemart_product_id` = "'.$pId.'" AND `published` = "1"';
-				$db->setQuery ($q);
-				$res = $db->loadAssocList();
-				$child->virtuemart_customfield_ids = $res;
-			}
 			//$this->product_parent_id = $child->product_parent_id;
 
 			$i = 0;
-			$runtime = microtime (TRUE) - $this->starttime;
 			//Check for all attributes to inherited by parent products
 			while (!empty($child->product_parent_id)) {
 				$runtime = microtime (TRUE) - $this->starttime;
@@ -657,7 +647,8 @@ class VirtueMartModelProduct extends VmModel {
 						break;
 					}
 				}
-				$child->allParentIds[] = $child->product_parent_id;
+				$child->allIds[] = $child->product_parent_id;
+
 				$parentProduct = $this->getProductSingle ($child->product_parent_id, $front,$quantity);
 				if ($child->product_parent_id === $parentProduct->product_parent_id) {
 					vmError('Error, parent product with virtuemart_product_id = '.$parentProduct->virtuemart_product_id.' has same parent id like the child with virtuemart_product_id '.$child->virtuemart_product_id);
@@ -712,7 +703,6 @@ class VirtueMartModelProduct extends VmModel {
 
 		}
 
-		vmdebug('getProduct ',$child->allParentIds);
 		return $_products[$productKey];
 	}
 
@@ -960,7 +950,6 @@ class VirtueMartModelProduct extends VmModel {
 
 		}
 		else {
-			$product = new stdClass();
 			return $this->fillVoidProduct ($front);
 		}
 		//		}
@@ -1394,13 +1383,13 @@ class VirtueMartModelProduct extends VmModel {
 
 		//We may need to change this, the reason it is not in the other list of commands for parents
 		if (!$isChild) {
-			if (!empty($data['save_customfields'])) {
+			//if (!empty($data['save_customfields'])) {
 				if (!class_exists ('VirtueMartModelCustomfields')) {
 					require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'customfields.php');
 				}
 				$modelCustomfields = VmModel::getModel ('Customfields');
 				$modelCustomfields->storeProductCustomfields ('product', $data, $product_data->virtuemart_product_id);
-			}
+			//}
 		}
 
  		//vmdebug('use_desired_price '.$this->_id.' '.$data['use_desired_price']);

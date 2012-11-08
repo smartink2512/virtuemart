@@ -89,16 +89,16 @@ class VirtueMartViewProductdetails extends VmView {
 	    $customfieldsModel = VmModel::getModel ('Customfields');
 	    $this->assignRef('customfieldsModel',$customfieldsModel);
 	    // Load the custom product fields
-	    $product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->virtuemart_product_id);
+	    //$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->virtuemart_product_id);
+	    //
+	    $product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
+	   // vmdebug('productdetails view.html.php ',$product->customfields);
 	    if ($product->customfields){
 		    if (!class_exists ('vmCustomPlugin')) {
 			    require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 		    }
 	    }
-	    //$product->customfieldsRelatedCategories = $customfieldsModel->getProductCustomsFieldRelatedCategories ($product);
-	   // $product->customfieldsRelatedProducts = $customfieldsModel->getProductCustomsFieldRelatedProducts ($product);
-	    //  custom product fields for add to cart
-	    //$product->customfieldsCart = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->virtuemart_product_id,1);
+
     }
 
 	if (!empty($product->customfields)) {

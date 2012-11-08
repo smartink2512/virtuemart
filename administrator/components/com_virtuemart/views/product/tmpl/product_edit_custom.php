@@ -88,8 +88,25 @@ if ($this->product->customfields_fromParent) { ?>
 								<span class="vmicon vmicon-16-remove"></span>
 							</tr>';*/
 					} else {
+						$fromParent = '';
+						if($customfield->virtuemart_product_id==$this->product->product_parent_id){
+							$fromParent = JText::_('COM_VIRTUEMART_CUSTOM_INHERITED');
+							$fromParent .= ' d:'.VmHtml::checkbox('field[' . $i . '][disabler]',0).' o:'.VmHtml::checkbox('field['.$i.'][override]',0,$customfield->virtuemart_customfield_id);
+
+						}
+						$override = '';
+						if($customfield->override){
+							$override = JText::_('COM_VIRTUEMART_CUSTOM_INHERITED').' '.$customfield->override;
+							$override .= ' d:'.VmHtml::checkbox('field[' . $i . '][disabler]',$customfield->disabler);
+							if($customfield->override!=0){
+								$override .= ' o:'.VmHtml::checkbox('field[' . $i . '][override]',$customfield->override,$customfield->override);
+							} else {
+								$override .= ' o:'.VmHtml::checkbox('field[' . $i . '][override]',$customfield->override);
+							}
+						}
+
 						$tables['fields'] .= '<tr class="removable">
-							<td>'.JText::_($customfield->custom_title).'</td>
+							<td>'.$fromParent.$override.JText::_($customfield->custom_title).$customfield->virtuemart_customfield_id.'</td>
 							<td>'.$customfield->custom_tip.'</td>
 							<td>'.$customfield->display.'</td>
 							<td>'.JText::_($this->fieldTypes[$customfield->field_type]).
