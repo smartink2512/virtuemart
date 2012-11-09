@@ -34,7 +34,7 @@ if ($this->product->customfields_fromParent) { ?>
 				$customfieldsModel = VmModel::getModel('customfields');
 				$i=0;
 
-				foreach ($this->product->customfields as $customfield) {
+				foreach ($this->product->customfields as $k=>$customfield) {
 					//vmdebug('$customfield->field_type '.$customfield->field_type);
 					if($this->product->customfields_fromParent){
 						$virtuemart_product_id = $this->product->product_parent_id;
@@ -96,17 +96,22 @@ if ($this->product->customfields_fromParent) { ?>
 						}
 						$override = '';
 						if($customfield->override){
-							$override = JText::_('COM_VIRTUEMART_CUSTOM_INHERITED').' '.$customfield->override;
-							$override .= ' d:'.VmHtml::checkbox('field[' . $i . '][disabler]',$customfield->disabler);
-							if($customfield->override!=0){
-								$override .= ' o:'.VmHtml::checkbox('field[' . $i . '][override]',$customfield->override,$customfield->override);
+							$override = JText::sprintf('COM_VIRTUEMART_CUSTOM_OVERRIDE',$customfield->override);
+							if($customfield->disabler!=0){
+								$override .= ' d:'.VmHtml::checkbox('field[' . $i . '][disabler]', $customfield->disabler, $customfield->disabler);
 							} else {
-								$override .= ' o:'.VmHtml::checkbox('field[' . $i . '][override]',$customfield->override);
+								$override .= ' d:'.VmHtml::checkbox('field[' . $i . '][disabler]', $customfield->disabler, $customfield->virtuemart_customfield_id);
+							}
+
+							if($customfield->override!=0){
+								$override .= ' o:'.VmHtml::checkbox('field[' . $i . '][override]', $customfield->override, $customfield->override);
+							} else {
+								$override .= ' o:'.VmHtml::checkbox('field[' . $i . '][override]', $customfield->override, $customfield->virtuemart_customfield_id);
 							}
 						}
 
 						$tables['fields'] .= '<tr class="removable">
-							<td>'.$fromParent.$override.JText::_($customfield->custom_title).$customfield->virtuemart_customfield_id.'</td>
+							<td>'.$fromParent.$override.JText::_($customfield->custom_title).'</td>
 							<td>'.$customfield->custom_tip.'</td>
 							<td>'.$customfield->display.'</td>
 							<td>'.JText::_($this->fieldTypes[$customfield->field_type]).
