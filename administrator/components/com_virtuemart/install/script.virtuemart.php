@@ -243,6 +243,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				'custom_params' => ' `customfield_param` VARCHAR(12800) NULL DEFAULT NULL'
 			));
 
+			//ALTER TABLE `joke_virtuemart_product_customfields` DROP INDEX `idx_custom_value`;
+		/*	$this->alterTable('#__virtuemart_product_customfields',array(
+				'idx_custom_value' => ' INDEX `idx_custom_value`',
+			),'DROP');*/
+			$this->alterTable('#__virtuemart_product_customfields',array(
+				'idx_custom_value' => ' INDEX `idx_customfield_value` (`customfield_value`) ',
+			));
+
 			$this->deleteReCreatePrimaryKey('#__virtuemart_userinfos','virtuemart_userinfo_id');
 
 			//$this->renameVdateToPublishDown();
@@ -429,6 +437,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			}
 		}
 
+
 		private function deleteReCreatePrimaryKey($tablename,$fieldname){
 
 			//Does not work, the keys must be regenerated
@@ -450,7 +459,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if($force or $fullColumns[0]->Field==$fieldname and strpos($fullColumns[0]->Type,'char')!==false){
 				vmdebug('Old key found, recreate');
 
-				// Yes, I know, it looks senselesss to create a field without autoincrement, to add a key and then the autoincrement and then they key again.
+				// Yes, I know, it looks senselesss to create a field without autoincrement, to add a key and then the autoincrement and then the key again.
 				// But seems the only method to drop and recreate primary, which has already data in it
 				//First drop it
 				$fields = array($fieldname => '');
