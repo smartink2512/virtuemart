@@ -324,7 +324,9 @@ class VirtueMartCart {
 		//Iterate through the prod_id's and perform an add to cart for each one
 		foreach ($virtuemart_product_ids as $p_key => $virtuemart_product_id) {
 
-			$tmpProduct = $this->getProduct((int) $virtuemart_product_id);
+			$quantityPost = (int) $post['quantity'][$p_key];
+
+			$tmpProduct = $this->getProduct((int) $virtuemart_product_id,$quantityPost);
 			//			dump($tmpProduct,'my product add to cart before');
 			// trying to save some space in the session table
 			$product = new stdClass();
@@ -393,8 +395,6 @@ class VirtueMartCart {
 			// This is extremly important for performance reasons, else the sessions becomes too big.
 			// Check if we have a product
 			if ($product) {
-				$quantityPost = (int) $post['quantity'][$p_key];
-
 				if(!empty( $post['virtuemart_category_id'][$p_key])){
 					$virtuemart_category_idPost = (int) $post['virtuemart_category_id'][$p_key];
 					$product->virtuemart_category_id = $virtuemart_category_idPost;
@@ -564,10 +564,10 @@ class VirtueMartCart {
 	 * @param int $virtuemart_product_id The product ID to get the object for
 	 * @return object The product details object
 	 */
-	private function getProduct($virtuemart_product_id) {
+	private function getProduct($virtuemart_product_id, $quantity) {
 		JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 		$model = JModel::getInstance('Product', 'VirtueMartModel');
-		$product = $model->getProduct($virtuemart_product_id, true, false);
+		$product = $model->getProduct($virtuemart_product_id, true, false,true,$quantity);
 
 		if ( VmConfig::get('oncheckout_show_images')){
 			$model->addImages($product,1);

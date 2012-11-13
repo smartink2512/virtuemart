@@ -63,9 +63,9 @@ class VmTableData extends VmTable {
 				. 'FROM `'.$this->_tbl.'` '
 				. 'WHERE `'.$this->_pkey.'` = "' . $this->$pKey.'" ';
 				$this->_db->setQuery($_qry);
-				$this->$tblKey = $this->_db->loadResult();
+				$storedtblKey = $this->_db->loadResult();
 			}
-			if ( !empty($this->$tblKey) ) {
+			if ( !empty($storedtblKey) ) {
 				$returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
 			} else {
 				$returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);

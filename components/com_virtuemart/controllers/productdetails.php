@@ -281,8 +281,7 @@ class VirtueMartControllerProductdetails extends JController {
 				$customPrices[$selected] = $priceVariant;
 			}
 		}
-		//echo '<pre>'.print_r($customPrices,1).'</pre>';
-		jimport ('joomla.utilities.arrayhelper');
+
 		$quantityArray = JRequest::getVar ('quantity', array()); //is sanitized then
 		JArrayHelper::toInteger ($quantityArray);
 
