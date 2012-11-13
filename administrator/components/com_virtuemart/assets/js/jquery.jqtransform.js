@@ -332,10 +332,10 @@
 			jQuery('input:checkbox', this).jqTransCheckBox();
 			jQuery('input:radio', this).jqTransRadio();
 			jQuery('textarea', this).jqTransTextarea();
-			
+
 			if( jQuery('select', this).jqTransSelect().length > 0 ){jqTransformAddDocumentListener();}
 			selfForm.bind('reset',function(){var action = function(){jqTransformReset(this);}; window.setTimeout(action, 10);});
-			
+
 			//preloading dont needed anymore since normal, focus and hover image are the same one
 			/*if(opt.preloadImg && !jqTransformImgPreloaded){
 				jqTransformImgPreloaded = true;

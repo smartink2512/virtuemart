@@ -59,28 +59,28 @@ class VirtuemartViewProduct extends VmView {
 
 				if (is_array ($virtuemart_product_id) && count ($virtuemart_product_id) > 0) {
 					$virtuemart_product_id = (int)$virtuemart_product_id[0];
-				}
-				else {
+				} else {
 					$virtuemart_product_id = (int)$virtuemart_product_id;
 				}
 
 				$product = $model->getProductSingle ($virtuemart_product_id, false);
+
 				$customfields = VmModel::getModel ('Customfields');
 
 				$product->allIds[] = $product->virtuemart_product_id;
 				$product->allIds[] = $product->product_parent_id;
-				$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->allIds,0);
-			//vmdebug('my $product->customfields',$product->customfields);
-			/*	if (empty($product->customfields) and !empty($product->product_parent_id)) {
+				$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->allIds, 0);
+				//vmdebug('my $product->customfields',$product->customfields);
+				/*	if (empty($product->customfields) and !empty($product->product_parent_id)) {
 
-					$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->product_parent_id,0);
-					$product->customfields_fromParent = TRUE;
-					foreach ($product->customfields as $field) {
-						$field->custom_value = '';
-						$field->virtuemart_customfield_id = '';
-						$field->custom_param = NULL;
-					}
-				}*/
+						$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->product_parent_id,0);
+						$product->customfields_fromParent = TRUE;
+						foreach ($product->customfields as $field) {
+							$field->custom_value = '';
+							$field->virtuemart_customfield_id = '';
+							$field->custom_param = NULL;
+						}
+					}*/
 
 				//$product_parent = $model->getProductLanguageFields ($product->product_parent_id);
 
@@ -91,8 +91,7 @@ class VirtuemartViewProduct extends VmView {
 				// Get the category tree
 				if (isset($product->categories)) {
 					$category_tree = ShopFunctions::categoryListTree ($product->categories);
-				}
-				else {
+				} else {
 					$category_tree = ShopFunctions::categoryListTree ();
 				}
 				$this->assignRef ('category_tree', $category_tree);
@@ -127,8 +126,7 @@ class VirtuemartViewProduct extends VmView {
 
 				if (is_Dir (VmConfig::get ('vmtemplate') . DS . 'images' . DS . 'availability' . DS)) {
 					$imagePath = VmConfig::get ('vmtemplate') . '/images/availability/';
-				}
-				else {
+				} else {
 					$imagePath = '/components/com_virtuemart/assets/images/availability/';
 				}
 				$this->assignRef ('imagePath', $imagePath);
@@ -200,12 +198,10 @@ class VirtuemartViewProduct extends VmView {
 					$dim_weight_label = JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_ITEM_DIM_WEIGHT_LBL');
 					$images_label = JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_ITEM_IMAGES_LBL');
 					$delete_message = JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_DELETE_ITEM_MSG');
-				}
-				else {
+				} else {
 					if ($task == 'add') {
 						$action = JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_NEW_PRODUCT_LBL');
-					}
-					else {
+					} else {
 						$action = JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_UPDATE_ITEM_LBL');
 					}
 
@@ -222,7 +218,22 @@ class VirtuemartViewProduct extends VmView {
 				$this->assignRef ('tzoffset', $tzoffset);
 
 				$this->assignRef ('product', $product);
-
+				$product_empty_price = array(
+					'virtuemart_product_price_id' => 0
+				, 'virtuemart_product_id'         => $virtuemart_product_id
+				, 'virtuemart_shoppergroup_id'    => NULL
+				, 'product_price'                 => NULL
+				, 'override'                      => NULL
+				, 'product_override_price'        => NULL
+				, 'product_tax_id'                => NULL
+				, 'product_discount_id'           => NULL
+				, 'product_currency'              => $vendor->vendor_currency
+				, 'product_price_publish_up'      => NULL
+				, 'product_price_publish_down'    => NULL
+				, 'price_quantity_start'          => NULL
+				, 'price_quantity_end'            => NULL
+				);
+				$this->assignRef ('product_empty_price', $product_empty_price);
 				//$this->assignRef ('product_parent', $product_parent);
 				/* Assign label values */
 				$this->assignRef ('action', $action);
@@ -237,15 +248,13 @@ class VirtuemartViewProduct extends VmView {
 				if ($task == 'edit') {
 					if ($product->product_sku) {
 						$sku = ' (' . $product->product_sku . ')';
-					}
-					else {
+					} else {
 						$sku = "";
 					}
 
 					if (!empty($product->virtuemart_product_id)) {
 						$text = '<a href="' . juri::root () . 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '" target="_blank" >' . $product->product_name . $sku . '<span class="vm2-modallink"></span></a>';
-					}
-					else {
+					} else {
 						$text = $product->product_name . $sku;
 					}
 				}
@@ -304,8 +313,7 @@ class VirtuemartViewProduct extends VmView {
 					$title = 'PRODUCT_CHILDREN_LIST';
 					$link_to_parent = JHTML::_ ('link', JRoute::_ ('index.php?view=product&task=edit&virtuemart_product_id=' . $product_parent_id . '&option=com_virtuemart'), $product_parent->product_name, array('title' => JText::_ ('COM_VIRTUEMART_EDIT_PARENT') . ' ' . $product_parent->product_name));
 					$msg = JText::_ ('COM_VIRTUEMART_PRODUCT_OF') . " " . $link_to_parent;
-				}
-				else {
+				} else {
 					$title = 'PRODUCT';
 					$msg = "";
 				}

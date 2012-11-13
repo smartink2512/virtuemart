@@ -351,13 +351,13 @@ class CurrencyDisplay {
 	public function createPriceDiv($name,$description,$product_price,$priceOnly=false,$switchSequel=false,$quantity = 1.0,$forceNoLabel=false){
 
 		// 		vmdebug('createPriceDiv '.$name,$product_price[$name]);
-		if(empty($product_price)) {
+		if(empty($product_price) and $name != 'billTotal')  {
 			vmdebug('createPriceDiv 3rd parameter is empty for price '.$name);
 			return '';
 		}
 
 		//The fallback, when this price is not configured
-		if(empty($this->_priceConfig[$name])){
+		if(empty($this->_priceConfig[$name]) ){
 			$this->_priceConfig[$name] = $this->_priceConfig['salesPrice'];
 		}
 
@@ -399,7 +399,7 @@ class CurrencyDisplay {
 		}*/
 
 		//This could be easily extended by product specific settings
-		if(!empty($this->_priceConfig[$name][0])){
+		if(!empty($this->_priceConfig[$name][0]) or $name == 'billTotal'){
 
 			if(!empty($price)){
 				$vis = "block";

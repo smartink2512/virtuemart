@@ -237,7 +237,13 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				'product_price_vdate' => ' `product_price_publish_up` DATETIME NULL DEFAULT NULL AFTER `product_currency`',
 				'product_price_edate' => ' `product_price_publish_down` DATETIME NULL DEFAULT NULL AFTER `product_price_publish_up`'
 			));
-
+			$this->alterTable('#__virtuemart_product_customfields',array(
+				'custom_param' => '`customfield_param` varchar(12800) COMMENT \'Param for Plugins\'',
+			));
+			$this->alterTable('#__virtuemart_customs',array(
+				'custom_field_desc' => '`custom_desc` char(255) COMMENT \'description or unit\'',
+				'custom_params' => '`custom_param` text',
+			));
 			$this->alterTable('#__virtuemart_product_customfields',array(
 				'custom_value' => ' `customfield_value` VARCHAR(8000) NULL DEFAULT NULL',
 				'custom_params' => ' `customfield_param` VARCHAR(12800) NULL DEFAULT NULL'

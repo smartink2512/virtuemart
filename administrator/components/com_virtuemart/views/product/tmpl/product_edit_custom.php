@@ -253,7 +253,8 @@ if ($this->product->customfields_fromParent) { ?>
 
 eventNames = "click.remove keydown.remove change.remove focus.remove"; // all events you wish to bind to
 
-function removeParent() {jQuery('#customfieldsParent').remove();console.log($(this));//jQuery('#customfieldsTable input').unbind(eventNames, removeParent)
+function removeParent() {jQuery('#customfieldsParent').remove();
+	//console.log($(this));//jQuery('#customfieldsTable input').unbind(eventNames, removeParent)
  }
 
 // jQuery('#customfieldsTable input').bind(eventNames, removeParent);

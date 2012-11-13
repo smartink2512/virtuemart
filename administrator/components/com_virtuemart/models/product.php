@@ -777,30 +777,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$db->setQuery($q);
 			$product->prices = $db->loadAssocList();
-			//$err = $db->getErrorMsg();
-			//$iprices = coun;t($prices);
-			//vmdebug('query '.$q,$prices,$err);
-			//Todo this is a fallback, if the work is done for the multiple prices, remove !
-/*			if(count($prices)===0){
-				vmdebug('my prices count 0');
-				$prices = array(
-					'virtuemart_product_price_id' => 0
-					,'virtuemart_product_id' => 0
-					,'virtuemart_shoppergroup_id' => null
-					,'product_price'         => null
-					,'override'             => null
-					,'product_override_price' => null
-					,'product_tax_id'       => null
-					,'product_discount_id'  => null
-					,'product_currency'     => null
-					,'product_price_vdate'  => null
-					,'product_price_edate'  => null
-					,'price_quantity_start' => null
-					,'price_quantity_end'   => null
-				);
-				$product = (object)array_merge ((array)$prices, (array)$product);
 
-			} else */
 			if(count($product->prices)===1){
 				//vmdebug('my prices count 1',$prices[0]);
 				//$ppTable = $this->getTable ('product_prices');
@@ -985,6 +962,8 @@ class VirtueMartModelProduct extends VmModel {
 		$product->product_currency = NULL;
 		$product->product_price_quantity_start = NULL;
 		$product->product_price_quantity_end = NULL;
+		$product->product_price_publish_up = NULL;
+		$product->product_price_publish_down = NULL;
 		$product->product_tax_id = NULL;
 		$product->product_discount_id = NULL;
 		$product->product_override_price = NULL;

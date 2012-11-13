@@ -47,14 +47,8 @@ class VirtuemartViewUserfields extends JView {
 				$this->plugin = $db ->loadObject();
 				$this->loadHelper('parameterparser');
 				$parameters = new vmParameters($this->plugin ,  $this->plugin->element , 'plugin' ,'vmuserfield');
-				$lang = JFactory::getLanguage();
 				$filename = 'plg_vmuserfield_' .  $this->plugin->element;
-				if(VmConfig::get('enableEnglish', 1)){
-		            $lang->load($filename, JPATH_ADMINISTRATOR, 'en-GB', true);
-				}
-				$lang->load($filename, JPATH_ADMINISTRATOR, $lang->getDefault(), true);
-				$lang->load($filename, JPATH_ADMINISTRATOR, null, true);
-
+				VmConfig::loadJLang($filename, false);
 				echo $parameters->render();
 				//echo '<input type="hidden" value="'.$this->plugin->element.'" name="custom_value">';
 				jExit();
