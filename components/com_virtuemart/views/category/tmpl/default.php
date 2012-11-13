@@ -251,7 +251,7 @@ if (!empty($this->products)) {
 					<?php } ?>
 
 					<?php
-					if (!VmConfig::get ('use_as_catalog')   && (VmConfig::get ('display_stock', 1))) {
+					if ( VmConfig::get ('display_stock', 1)) {
 						?>
 						<!-- 						if (!VmConfig::get('use_as_catalog') and !(VmConfig::get('stockhandle','none')=='none')){?> -->
 						<div class="paddingtop8">
