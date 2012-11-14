@@ -249,22 +249,13 @@ $i = 0;
 
 			?>
         <tr id="<?php echo $tmpl ?>" class="removable row<?php echo $rowColor?>">
-            <td>
+            <td width="100%">
+	             <span class="vmicon vmicon-16-move price_ordering"></span>
+                <span class="vmicon vmicon-16-new price-clone" ></span>
+                <span class="vmicon vmicon-16-remove price-remove"></span>
+				<?php //echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_ORDER'); ?>
 				<?php echo $this->loadTemplate ('price'); ?>
             </td>
-            <td class="price_ordering" valign="top">
-                <span class="vmicon vmicon-16-move"></span>
-				<?php //echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_ORDER'); ?>
-            </td>
-            <td class="price-clone" valign="top">
-                <span class="vmicon vmicon-16-new" ></span>
-				<?php //echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_CLONE'); ?>
-            </td>
-            <td class="price-remove" valign="top">
-                <span class="vmicon vmicon-16-remove" ></span><!--input class="price_ordering" type="hidden" value="<?php echo $this->priceCounter ?>" name="field['<?php echo $this->priceCounter ?>'][ordering]"/ -->
-            </td>
-
-
         </tr>
 			<?php
 			$this->priceCounter++;
