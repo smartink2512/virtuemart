@@ -258,11 +258,11 @@ $i = 0;
                 <span class="vmicon vmicon-16-move"></span>
 				<?php //echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_ORDER'); ?>
             </td>
-            <td class="price-clone">
+            <td class="price-clone" valign="top">
                 <span class="vmicon vmicon-16-new" valign="top"></span>
 				<?php //echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_CLONE'); ?>
             </td>
-            <td class="price-remove">
+            <td class="price-remove" valign="top">
                 <span class="vmicon vmicon-16-remove" valign="top"></span><!--input class="price_ordering" type="hidden" value="<?php echo $this->priceCounter ?>" name="field['<?php echo $this->priceCounter ?>'][ordering]"/ -->
             </td>
 
