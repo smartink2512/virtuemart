@@ -234,7 +234,7 @@ class calculationHelper {
 	 * 							'salesPrice'		The final price, with all kind of discounts and Tax, except stuff that is only in the checkout
 	 *
 	 */
-	public function getProductPrices($product, $catIds=0, $variant=0.0, $amount=0, $ignoreAmount=true, $currencydisplay=true) {
+	public function getProductPrices($product, $variant=0.0, $amount=0, $ignoreAmount=true, $currencydisplay=true) {
 
 
 		$costPrice = 0;
@@ -587,7 +587,7 @@ class calculationHelper {
 			$variantmod = $this->calculateModificators($product, $variantmods);
 
 			$cartproductkey = $name; //$product->virtuemart_product_id.$variantmod;
-			$product->prices = $pricesPerId[$cartproductkey] = $this->getProductPrices($product, 0, $variantmod, $product->quantity, true, false);
+			$product->prices = $pricesPerId[$cartproductkey] = $this->getProductPrices($product, $variantmod, $product->quantity, true, false);
 			$this->_amountCart += $product->quantity;
 // 			vmdebug('getCheckoutPrices',$product->prices);
 			$this->_cartPrices[$cartproductkey] = $product->prices;
