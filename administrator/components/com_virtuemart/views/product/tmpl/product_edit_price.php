@@ -52,9 +52,7 @@ $rowColor = 0;
 			<?php echo $this->lists['currencies']; ?>
         </td>
         <td colspan="2">
-            <div style="font-weight: bold;">
-				<?php echo JText::_ ('COM_VIRTUEMART_SHOPPER_FORM_GROUP'); ?>
-            </div>
+
 			<?php echo $this->lists['shoppergroups'];  ?>
         </td>
     </tr>
@@ -134,14 +132,10 @@ $rowColor = 0;
 		                    // 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
 						</span>
         </td>
-        <td>
-            <div style="font-weight: bold;">
-				<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_DATE_RANGE') ?>
-            </div>
+        <td  nowrap>
 			<?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_up, 'mprices[product_price_publish_up][]'); ?>
         </td>
-        <td>
-            <br/>
+        <td  nowrap>
 			<?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_down, 'mprices[product_price_publish_down][]'); ?>
         </td>
     </tr>
