@@ -674,7 +674,7 @@ class VirtueMartCart {
 
 		$this->setCartIntoSession();
 
-		$mainframe = JFactory::getApplication();
+		$this->prepareCartProducts();
 		if (count($this->products) == 0) {
 			return $this->redirecter('index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
 		} else {
@@ -861,7 +861,7 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 
 			$orderModel = VmModel::getModel('orders');
 
-			if (($orderID = $orderModel->createOrderFromCart($this)) === false) {
+			if (($orderID = $orderModel->createOrderFromCart()) === false) {
 				$mainframe = JFactory::getApplication();
 				JError::raiseWarning(500, 'No order created '.$orderModel->getError());
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart') );
@@ -1177,10 +1177,7 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 		return $cartData ;
 	}*/
 
-	/**
-	 *
-	 */
-	function prepareCartData(){
+	function prepareCartProducts(){
 
 		if(count($this->cartProductsData)>0){
 			$productsModel = VmModel::getModel('product');
@@ -1189,18 +1186,29 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 				if(isset($productdata['virtuemart_product_id'])){
 					$product = $productsModel->getProduct($productdata['virtuemart_product_id']);
 					$product -> customProductData = $productdata['customProductData'];
-					$product -> quantity = $productdata['quantity'];
+					$product -> quantity = (int)$productdata['quantity'];
 
 					//TODO for what we need the category id? atm it is empty anyway.
 					$product -> virtuemart_category_id = $productdata['virtuemart_category_id'];
 					//vmdebug('prepareCartData $product',$product);
 					$this->products[$k] = $product;
+					$this->totalProduct += $product -> quantity;
 				} else {
 					vmError('prepareCartData $productdata[virtuemart_product_id] was empty');
 				}
 			}
 		}
 
+	}
+	/**
+	 *
+	 */
+	function prepareCartData(){
+
+		$this->totalProduct = 0;
+		vmdebug('$this->cartProductsData',$this->cartProductsData);
+
+		$this->prepareCartProducts();
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 
@@ -1337,7 +1345,7 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 	function prepareAjaxData(){
 		// Added for the zone shipment module
 		//$vars["zone_qty"] = 0;
-		$this->prepareCartData(false);
+		$this->data = $this->prepareCartData(false);
 		$weight_total = 0;
 		$weight_subtotal = 0;
 
@@ -1397,8 +1405,8 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 		}
 
 		$this->data->products = $this->products;
-		$this->data->billTotal = $currency->priceDisplay( $this->pricesUnformatted['billTotal'] );
-		$this->data->dataValidated = $this->_dataValidated ;
+		//$this->data->billTotal = $currency->priceDisplay( $this->pricesUnformatted['billTotal'] );
+		//$this->data->dataValidated = $this->_dataValidated ;
 		return $this->data ;
 	}
 

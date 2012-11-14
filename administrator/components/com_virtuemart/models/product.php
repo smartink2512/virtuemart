@@ -777,7 +777,33 @@ class VirtueMartModelProduct extends VmModel {
 
 			$db->setQuery($q);
 			$product->prices = $db->loadAssocList();
+			$err = $db->getErrorMsg();
+			if($err){
+				vmError('getProductSingle getPrice error ',$db->getErrorMsg());
+			}
 
+			//vmdebug('query '.$q,$product->prices,$err);
+
+			if(count($product->prices)===0){
+				vmdebug('my prices count 0');
+				$prices = array(
+					'virtuemart_product_price_id' => 0
+					,'virtuemart_product_id' => 0
+					,'virtuemart_shoppergroup_id' => null
+					,'product_price'         => null
+					,'override'             => null
+					,'product_override_price' => null
+					,'product_tax_id'       => null
+					,'product_discount_id'  => null
+					,'product_currency'     => null
+					,'product_price_vdate'  => null
+					,'product_price_edate'  => null
+					,'price_quantity_start' => null
+					,'price_quantity_end'   => null
+				);
+				$product = (object)array_merge ((array)$prices, (array)$product);
+
+			} else
 			if(count($product->prices)===1){
 				//vmdebug('my prices count 1',$prices[0]);
 				//$ppTable = $this->getTable ('product_prices');

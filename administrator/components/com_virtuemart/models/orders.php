@@ -161,7 +161,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 //lets try group by `virtuemart_order_item_id`
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
-// Get the order items
+// Get the order calculation rules
 		$q = "SELECT  *
 			FROM #__virtuemart_order_calc_rules AS z
 			WHERE  virtuemart_order_id=".$virtuemart_order_id;
@@ -548,8 +548,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @param object $_cart The cart data
 	 * @return mixed The new ordernumber, false on errors
 	 */
-	public function createOrderFromCart($cart)
+	public function createOrderFromCart()
 	{
+
+		$cart = VirtueMartCart::getCart();
 		if ($cart === null) {
 			vmError('createOrderFromCart() called without a cart - that\'s a programming bug','Can\'t create order, sorry.');
 			return false;
@@ -561,6 +563,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			vmError('Couldn\'t create order','Couldn\'t create order');
 			return false;
 		}
+
 		if (!$this->_createOrderLines($orderID, $cart)) {
 			vmError('Couldn\'t create order items','Couldn\'t create order items');
 			return false;
@@ -879,44 +882,76 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	{
 		$_orderItems = $this->getTable('order_items');
 		//		$_lineCount = 0;
-		foreach ($_cart->products as $priceKey=>$_prod) {
 
-			if (!is_int($priceKey)) {
+		foreach ($_cart->cartProductsData  as $_prod) {
+
+			//if (!is_int($priceKey)) {
 
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
-				$variantmods = $calculator->parseModifier($priceKey);
+				//$variantmods = $calculator->parseModifier($priceKey);
 
 				$row=0 ;
 				//$product_id = (int)$priceKey;
-				$_prod->product_attribute = '';
+				//$_prod->product_attribute = '';
 				$product_attribute = array();
 				//MarkerVarMods
 				//foreach($variantmods as $variant=>$selected){
-				foreach($variantmods as $selected=>$variant){
+				foreach($_prod['customProductData'] as $custom=>$selected){
+				//foreach($_prod['customProductData'] as $selected=>$variant){
 					if ($selected) {
+						if(is_array($selected)){
+							$keys = array_keys($selected);
+							$key = $keys[0];
+						} else {
+							$key = $selected;
+						}
+						//The stored result in vm2.0.14 looks like this {"48":{"textinput":{"comment":"test"}}}
+						//and now {"32":[{"invala":"100"}]}
 						if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-						$productCustom = VirtueMartModelCustomfields::getCustomEmbeddedProductCustomField ($selected );
+						$productCustom = VirtueMartModelCustomfields::getCustomEmbeddedProductCustomField ($key );
 						//vmdebug('$_prod,$productCustom',$productCustom );
 						if ($productCustom->field_type == "E") {
 
 							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 
 							//We need something like this
-							$product_attribute[$selected] = $productCustom->virtuemart_custom_id;
+							//$product_attribute[$key] = $productCustom->virtuemart_custom_id;
+
 							//but seems we are forced to use this
 							//$product_attribute[$selected] = $selected;
-							if(!empty($_prod->param)){
-								foreach($_prod->param as $k => $plg){
+
+							if(!empty($productCustom->customfield_param)){
+								/*$param = stdClass();
+								$params = explode('|', $productCustom->customfield_param);
+								foreach($params as $item){
+
+									$item = explode('=',$item);
+									$key = $item[0];
+									unset($item[0]);
+
+									$item = implode('=',$item);
+
+									if(!empty($item) ){
+										$param->$key = json_decode($item);
+									}
+								}*/
+								if(is_array($selected)){
+
+									$product_attribute[$key] = array_values($selected);
+								}
+								/*foreach($param as $k => $plg){
 									if ($k == $selected){
 										//TODO productCartId
 										$product_attribute[$selected] = $plg ;
 									}
-								}
+								}*/
+							} else {
+
 							}
 
 						} else {
-							$product_attribute[$selected] = ' <span class="costumTitle">'.$productCustom->custom_title.'</span><span class="costumValue" >'.$productCustom->custom_value.'</span>';
+							$product_attribute[$key] = ' <span class="costumTitle">'.$productCustom->custom_title.'</span><span class="costumValue" >'.$productCustom->custom_value.'</span>';
 							//$product_attribute[$variant] = ' <span class="costumTitle">'.$productCustom->custom_title.'</span><span class="costumValue" >'.$productCustom->custom_value.'</span>';
 						}
 					}
@@ -925,9 +960,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				//if (isset($_prod->userfield )) $_prod->product_attribute .= '<br/ > <b>'.$_prod->userfield.' : </b>';
 				$_orderItems->product_attribute = json_encode($product_attribute);
 				//print_r($product_attribute);
-			} else {
-			    $_orderItems->product_attribute = null ;
-			}
+			//} else {
+			  //  $_orderItems->product_attribute = null ;
+		//	}
 			// TODO: add fields for the following data:
 			//    * [double] basePrice = 38.48
 			//    * [double] basePriceVariant = 38.48

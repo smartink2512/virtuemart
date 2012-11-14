@@ -95,7 +95,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		//vmdebug('bindCustomEmbeddedFieldParams end',$obj);
 	}
 
-	private function getProductCustomSelectFieldList(){
+	public static function getProductCustomSelectFieldList(){
 
 		$q = 'SELECT c.`virtuemart_custom_id`, `custom_parent_id`, c.`virtuemart_vendor_id`, `custom_jplugin_id`, `custom_element`, `admin_only`, `custom_title`, `custom_tip`,
 		c.`custom_value`, `custom_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `layout_pos`, `custom_param`, c.`shared`, c.`published`, c.`ordering`, ';
@@ -108,7 +108,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	function getCustomEmbeddedProductCustomField($virtuemart_customfield_id){
 
 		$db= JFactory::getDBO ();
-		$q = $this->getProductCustomSelectFieldList();
+		$q = VirtueMartModelCustomfields::getProductCustomSelectFieldList();
 		if($virtuemart_customfield_id){
 			$q .= ' WHERE `virtuemart_customfield_id` ="' . (int)$virtuemart_customfield_id . '"';
 		}
@@ -126,7 +126,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		vmSetStartTime('getCustomEmbeddedProductCustomFields');
 		$app = JFactory::getApplication();
 		$db= JFactory::getDBO ();
-		$q = $this->getProductCustomSelectFieldList();
+		$q = VirtueMartModelCustomfields::getProductCustomSelectFieldList();
 
 		if(is_array($productIds) and count($productIds)>0){
 			$q .= 'WHERE `virtuemart_product_id` IN ('.implode(',', $productIds).')';
@@ -664,17 +664,25 @@ class VirtueMartModelCustomfields extends VmModel {
 		if (!class_exists ('shopFunctionsF'))
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 
-		$variantmods = $product -> customProductData;
+		$variantmods = isset($product -> customProductData)?$product -> customProductData:$product -> product_attribute;
+		$variantmods = json_decode($variantmods);
 		vmdebug('displayProductCustomfieldSelected',$variantmods);
-		foreach ($variantmods as $custom_id => $selected) {
+		foreach ($variantmods as $customfield_id => $selected) {
 			if(is_array($selected)){
+				vmdebug('is array',$selected);
 				reset($selected);
 				$selected = key($selected);
 			}
 
-			if ($selected) {
-				$productCustom = self::getCustomEmbeddedProductCustomField ($selected);
-				//vmdebug('customFieldDisplay',$selected,$productCustom);
+			if ($customfield_id) {
+				$productCustom = self::getCustomEmbeddedProductCustomField ($customfield_id);
+				//The stored result in vm2.0.14 looks like this {"48":{"textinput":{"comment":"test"}}}
+				//and now {"32":[{"invala":"100"}]}
+				$test = json_decode('{"48":{"textinput":{"comment":"test"}}}');
+				$test2 = json_decode('{"34":" <span class=\"costumTitle\">Color<\/span><span class=\"costumValue\" >Choose a color<\/span>","32":[{"invala":"10"}]}');
+
+				vmdebug('displayProductCustomfieldSelected jsondecode test',$test,$test2);
+				vmdebug('customFieldDisplay',$customfield_id,$selected,$productCustom);
 				if (!empty($productCustom)) {
 					$html .= ' <span class="product-field-type-' . $productCustom->field_type . '">';
 					if ($productCustom->field_type == "E") {

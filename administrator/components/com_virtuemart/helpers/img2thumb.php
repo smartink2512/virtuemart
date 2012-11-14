@@ -55,6 +55,9 @@ class Img2Thumb	{
 	function Img2Thumb($filename, $newxsize=60, $newysize=60, $fileout='',
 		$thumbMaxSize=0, $bgred=0, $bggreen=0, $bgblue=0)
 	{
+		//Some big pictures need that
+		$memory_limit = (int) substr(ini_get('memory_limit'),0,-1);
+		if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
 
 		//	New modification - checks color int to be sure within range
 		if($thumbMaxSize)

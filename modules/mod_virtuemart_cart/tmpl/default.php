@@ -9,6 +9,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="vmCartModule <?php echo $params->get('moduleclass_sfx'); ?>" id="vmCartModule">
 <?php
 if ($show_product_list) {
+	$customfieldsModel = VmModel::getModel('customfields');
 	?>
 	<div id="hiddencontainer" style=" display: none; ">
 		<div class="container">
@@ -24,17 +25,18 @@ if ($show_product_list) {
 	</div>
 	<div class="vm_cart_products">
 		<div class="container">
-		<?php foreach ($data->products as $product)
-			$product = array($product);
+		<?php foreach ($cart->products as $product)
 		{
+			//vmdebug('$product',$product);
+			//$product = array($product);
 			if ($show_price) { ?>
-				  <div class="prices" style="float: right;"><?php echo  $product['prices'] ?></div>
+				  <div class="prices" style="float: right;"><?php echo  $product->prices['salesPrice'] ?></div>
 				<?php } ?>
 			<div class="product_row">
-				<span class="quantity"><?php echo  $product['quantity'] ?></span>&nbsp;x&nbsp;<span class="product_name"><?php echo  $product['product_name'] ?></span>
+				<span class="quantity"><?php echo  $product->quantity ?></span>&nbsp;x&nbsp;<span class="product_name"><?php echo  $product->product_name ?></span>
 			</div>
-			<?php if ( !empty($product['product_attributes']) ) { ?>
-				<div class="product_attributes"><?php echo $product['product_attributes'] ?></div>
+			<?php if ( !empty($product->product_customs) ) { ?>
+				<div class="product_attributes"><?php echo $customfieldsModel->CustomsFieldCartDisplay ($product); ?></div>
 
 			<?php }
 		}

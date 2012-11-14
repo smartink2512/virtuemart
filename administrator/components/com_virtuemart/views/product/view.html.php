@@ -69,20 +69,11 @@ class VirtuemartViewProduct extends VmView {
 
 				$product->allIds[] = $product->virtuemart_product_id;
 				$product->allIds[] = $product->product_parent_id;
-				$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->allIds, 0);
-				//vmdebug('my $product->customfields',$product->customfields);
-				/*	if (empty($product->customfields) and !empty($product->product_parent_id)) {
 
-						$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->product_parent_id,0);
-						$product->customfields_fromParent = TRUE;
-						foreach ($product->customfields as $field) {
-							$field->custom_value = '';
-							$field->virtuemart_customfield_id = '';
-							$field->custom_param = NULL;
-						}
-					}*/
+				$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->allIds,0);
 
-				//$product_parent = $model->getProductLanguageFields ($product->product_parent_id);
+				$product_parent = $model->getProductLanguageFields ($product->product_parent_id);
+				$this->assignRef ('product_parent', $product_parent);
 
 				$mf_model = VmModel::getModel ('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown ($product->virtuemart_manufacturer_id);
@@ -234,7 +225,7 @@ class VirtuemartViewProduct extends VmView {
 				, 'price_quantity_end'            => NULL
 				);
 				$this->assignRef ('product_empty_price', $product_empty_price);
-				//$this->assignRef ('product_parent', $product_parent);
+
 				/* Assign label values */
 				$this->assignRef ('action', $action);
 				$this->assignRef ('info_label', $info_label);
