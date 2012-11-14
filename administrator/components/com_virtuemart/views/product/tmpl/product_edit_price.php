@@ -51,8 +51,8 @@ $rowColor=0;
         <td colspan="3">
 			<?php echo $this->lists['currencies']; ?>
         </td>
-        <td>
-			<?php echo $this->lists['shoppergroups']; echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP')?>
+        <td colspan="2">
+			<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP'); echo $this->lists['shoppergroups'];  ?>
         </td>
     </tr>
      <tr class="row<?php echo $rowColor?>">
@@ -86,7 +86,10 @@ $rowColor=0;
 		                    </span>
         </td>
         <td>
-	       <?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_up, 'mprices[product_price_publish_up][]'); ?>
+	        <?php   ?>
+        </td>
+	     <td>
+	        <?php   ?>
         </td>
     </tr>
      <tr class="row<?php echo $rowColor?>">
@@ -127,13 +130,19 @@ $rowColor=0;
 						</span>
         </td>
         <td>
+	         <?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_DATE_RANGE') ?>
+
+	        <?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_up, 'mprices[product_price_publish_up][]'); ?>
+	        </td>
+	     <td>
+<br />
 	        <?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_down, 'mprices[product_price_publish_down][]'); ?>
         </td>
     </tr>
 
 
      <tr class="row<?php echo $rowColor?>">
-        <td  colspan="2" style="background-color:#EEEEEE">
+        <td  colspan="2"  >
 			<span
                     class="hasTip"
                     title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL_TIP'); ?>">
@@ -165,10 +174,15 @@ $rowColor=0;
 			?>
         </td>
         <td>
+	         <?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_QUANTITY_RANGE') ?>
+
             <input type="text"
                    size="12"
                    style="text-align:right;" name="mprices[price_quantity_start][]"
                    value="<?php echo $this->tempProduct->price_quantity_start ?>"/>
+	         </td>
+        <td>
+<br />
             <input type="text"
                    size="12"
                    style="text-align:right;" name="mprices[price_quantity_end][]"
