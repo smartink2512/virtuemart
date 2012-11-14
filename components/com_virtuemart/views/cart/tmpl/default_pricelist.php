@@ -153,10 +153,7 @@ foreach ($this->cart->products as $pkey => $prow) {
 						</span>
 		<?php } ?>
 		<?php echo JHTML::link ($prow->url, $prow->product_name);
-		//vmdebug('Hmm',$prow);
-		//foreach($prow->customfields as $customfield){
 			echo $this->customfieldsModel->CustomsFieldCartDisplay ($prow);
-		//}
 		 ?>
 
 	</td>

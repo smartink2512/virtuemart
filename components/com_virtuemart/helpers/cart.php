@@ -1119,7 +1119,6 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 		// Get the products for the cart
 		$this->cartData = $this->prepareCartData();
 
-		$this->prepareCartPrice() ;
 
 		$this->prepareAddressDataInCart();
 
@@ -1129,53 +1128,6 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 
 	}
 
-	private function prepareCartPrice(){
-
-		foreach ($this->products as $cart_item_id=>$product){
-			$product->virtuemart_category_id = $this->getCardCategoryId($product->virtuemart_product_id);
-			// No full link because Mail want absolute path and in shop is better relative path
-			$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHTML::link($url, $product->product_name);
-			if(!empty($product->customfieldsCart)){
-				if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-				$product->customfields = VirtueMartModelCustomfields::CustomsFieldCartDisplay($cart_item_id,$product);
-// 				vmdebug('prepareCartPrice',$product->customfields);
-			} else {
-				$product->customfields ='';
-			}
-			$product->cart_item_id = $cart_item_id ;
-		}
-	}
-
-	/**
-	 * prepare display of cart
-	 *
-	 * @author RolandD
-	 * @author Max Milbers
-	 * @access public
-	 */
-/*	public function prepareCartData($checkAutomaticSelected=true){
-
-		// Get the products for the cart
-		$product_prices = $this->getCartPrices($checkAutomaticSelected);
-
-		if (empty($product_prices)) return null;
-		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-		$currency = CurrencyDisplay::getInstance();
-
-		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-		$calculator = calculationHelper::getInstance();
-
-		$this->pricesCurrency = $currency->getCurrencyForDisplay();
-
-		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$this->paymentCurrency));
-		$cartData = $calculator->getCartData();
-
-// 		$this->setCartIntoSession();
-		return $cartData ;
-	}*/
 
 	function prepareCartProducts(){
 
@@ -1184,20 +1136,31 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 			foreach($this->cartProductsData as $k =>$productdata){
 				$productdata = (array)$productdata;
 				if(isset($productdata['virtuemart_product_id'])){
-					$product = $productsModel->getProduct($productdata['virtuemart_product_id']);
+					$productTemp = $productsModel->getProduct($productdata['virtuemart_product_id']);
+
+					//Very important! must be cloned, else all products with same id get the same productCustomData due the product cache
+					$product = clone($productTemp);
 					$product -> customProductData = $productdata['customProductData'];
 					$product -> quantity = (int)$productdata['quantity'];
 
 					//TODO for what we need the category id? atm it is empty anyway.
-					$product -> virtuemart_category_id = $productdata['virtuemart_category_id'];
-					//vmdebug('prepareCartData $product',$product);
+					//$product -> virtuemart_category_id = $productdata['virtuemart_category_id'];
+					//$product->virtuemart_category_id = $this->getCardCategoryId($product->virtuemart_product_id);
+
+					// No full link because Mail want absolute path and in shop is better relative path
+					$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHTML::link($url, $product->product_name);
+					$product->cart_item_id = $k ;
+
 					$this->products[$k] = $product;
 					$this->totalProduct += $product -> quantity;
+					$product = null;
 				} else {
 					vmError('prepareCartData $productdata[virtuemart_product_id] was empty');
 				}
 			}
 		}
+
+
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 
@@ -1213,7 +1176,6 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 		vmdebug('$this->cartProductsData',$this->cartProductsData);
 
 		$this->prepareCartProducts();
-
 
 		//return $this->pricesUnformatted;
 
@@ -1350,14 +1312,6 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 		$weight_total = 0;
 		$weight_subtotal = 0;
 
-		//of course, some may argue that the $this->data->products should be generated in the view.html.php, but
-		//
-	/*	if(empty($this->data)){
-			$this->data = new stdClass();
-		}
-		$this->data->products = array();
-		$this->data->totalProduct = 0;
-		$i=0;*/
 		//OSP when prices removed needed to format billTotal for AJAX
 		if (!class_exists('CurrencyDisplay'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
@@ -1370,44 +1324,17 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 			//Create product URL
 			$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$category_id);
 
-			// @todo Add variants
-			//$this->data->products[$i]['product_name'] = JHTML::link($url, $product->product_name);
-
-			// Add the variants
-		/*	if (!is_numeric($priceKey)) {
-				if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-				//  custom product fields display for cart
-				$this->data->products[$i]['product_attributes'] = VirtueMartModelCustomfields::CustomsFieldCartModDisplay($priceKey,$product);
-
-			}
-			$this->data->products[$i]['product_sku'] = $product->product_sku;*/
-
 			//** @todo WEIGHT CALCULATION
 			//$weight_subtotal = vmShipmentMethod::get_weight($product["virtuemart_product_id"]) * $product->quantity'];
 			//$weight_total += $weight_subtotal;
 
 
-			// product Price total for ajax cart
-// 			$this->data->products[$i]['prices'] = $this->prices[$priceKey]['subtotal_with_tax'];
-/*			$this->data->products[$i]['pricesUnformatted'] = $this->pricesUnformatted[$priceKey]['subtotal_with_tax'];
-			$this->data->products[$i]['prices'] = $currency->priceDisplay( $this->pricesUnformatted[$priceKey]['subtotal_with_tax'] );
-
-			// other possible option to use for display
-			$this->data->products[$i]['subtotal'] = $this->pricesUnformatted[$priceKey]['subtotal'];
-			$this->data->products[$i]['subtotal_tax_amount'] = $this->pricesUnformatted[$priceKey]['subtotal_tax_amount'];
-			$this->data->products[$i]['subtotal_discount'] = $this->pricesUnformatted[$priceKey]['subtotal_discount'];
-			$this->data->products[$i]['subtotal_with_tax'] = $this->pricesUnformatted[$priceKey]['subtotal_with_tax'];
-*/
-			// UPDATE CART / DELETE FROM CART
-			//$this->data->products[$i]['quantity'] = $product->quantity;
 			$this->data->totalProduct += $product->quantity ;
 
-			//$i++;
 		}
 
 		$this->data->products = $this->products;
-		//$this->data->billTotal = $currency->priceDisplay( $this->pricesUnformatted['billTotal'] );
-		//$this->data->dataValidated = $this->_dataValidated ;
+
 		return $this->data ;
 	}
 

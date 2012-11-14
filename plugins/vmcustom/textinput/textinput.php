@@ -78,6 +78,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		if (empty($product->productCustom->custom_element) or $product->productCustom->custom_element != $this->_name) return '';
 
 		foreach($product->customProductData[$product->productCustom->virtuemart_custom_id] as $name => $value){
+
 			$html .='<span>'.JText::_($product->productCustom->custom_title).' '.$value.'</span>';
 		}
 

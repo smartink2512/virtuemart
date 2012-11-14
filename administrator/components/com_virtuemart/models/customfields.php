@@ -669,10 +669,12 @@ class VirtueMartModelCustomfields extends VmModel {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 
 		$variantmods = isset($product -> customProductData)?$product -> customProductData:$product -> product_attribute;
+		//$variantmods = $product -> customProductData;
+
 		if(!is_array($variantmods)){
 			$variantmods = json_decode($variantmods);
 		}
-
+		//vmdebug('displayProductCustomfieldSelected $variantmods ',$variantmods);
 		foreach ($variantmods as $custom_id => $selected) {
 
 			if(is_object($selected)) $selected = (array)$selected;
@@ -704,8 +706,8 @@ class VirtueMartModelCustomfields extends VmModel {
 							require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 						JPluginHelper::importPlugin ('vmcustom');
 						$dispatcher = JDispatcher::getInstance ();
-						vmdebug('displayProductCustomfieldSelected is PLUGIN use trigger '.$trigger);
-						$dispatcher->trigger ($trigger, array($product, $row, &$html));
+						//vmdebug('displayProductCustomfieldSelected is PLUGIN use trigger '.$trigger,$selected);
+						$dispatcher->trigger ($trigger, array($product, $selected, &$html));
 
 					}
 					else {

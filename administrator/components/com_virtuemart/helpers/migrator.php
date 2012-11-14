@@ -563,7 +563,7 @@ class Migrator extends VmModel{
 
 		while($continue){
 
-			//Lets load all users from the joomla hmm or vm? VM1 users does NOT exist
+			//Lets load all users from the joomla or vm? VM1 users does NOT exist
 			$q = 'SELECT `p`.*,`ui`.*,`svx`.*,`aug`.*,`ag`.*,`vmu`.virtuemart_user_id FROM #__users AS `p`
 								LEFT OUTER JOIN #__vm_user_info AS `ui` ON `ui`.user_id = `p`.id
 								LEFT OUTER JOIN #__vm_shopper_vendor_xref AS `svx` ON `svx`.user_id = `p`.id
