@@ -660,41 +660,51 @@ class VirtueMartModelCustomfields extends VmModel {
 	 */
 	public function displayProductCustomfieldSelected ($product, $html, $trigger) {
 
+		if(isset($product->param)){
+			vmTrace('param found, seek and destroy');
+			return false;
+		}
 		$row = 0;
 		if (!class_exists ('shopFunctionsF'))
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 
 		$variantmods = isset($product -> customProductData)?$product -> customProductData:$product -> product_attribute;
-		$variantmods = json_decode($variantmods);
-		vmdebug('displayProductCustomfieldSelected',$variantmods);
-		foreach ($variantmods as $customfield_id => $selected) {
+		if(!is_array($variantmods)){
+			$variantmods = json_decode($variantmods);
+		}
+
+		foreach ($variantmods as $custom_id => $selected) {
+
+			if(is_object($selected)) $selected = (array)$selected;
 			if(is_array($selected)){
-				vmdebug('is array',$selected);
 				reset($selected);
-				$selected = key($selected);
+				$key = key($selected);
+				if(isset($key)){
+					$customfield_id = $key;
+				} else {
+					vmError('displayProductCustomfieldSelected unknown stored parameters');
+				}
+			//	vmdebug('displayProductCustomfieldSelected $custom_id ',$custom_id,$customfield_id,$key,$selected);
+			} else {
+				$customfield_id = $selected;
+			//	vmdebug('displayProductCustomfieldSelected NO PARAMS $custom_id ',$custom_id,$customfield_id);
 			}
 
 			if ($customfield_id) {
 				$productCustom = self::getCustomEmbeddedProductCustomField ($customfield_id);
 				//The stored result in vm2.0.14 looks like this {"48":{"textinput":{"comment":"test"}}}
 				//and now {"32":[{"invala":"100"}]}
-				$test = json_decode('{"48":{"textinput":{"comment":"test"}}}');
-				$test2 = json_decode('{"34":" <span class=\"costumTitle\">Color<\/span><span class=\"costumValue\" >Choose a color<\/span>","32":[{"invala":"10"}]}');
-
-				vmdebug('displayProductCustomfieldSelected jsondecode test',$test,$test2);
-				vmdebug('customFieldDisplay',$customfield_id,$selected,$productCustom);
 				if (!empty($productCustom)) {
 					$html .= ' <span class="product-field-type-' . $productCustom->field_type . '">';
 					if ($productCustom->field_type == "E") {
 
 						$product->productCustom = $productCustom;
 						$product->row = $row;
-						//vmdebug('CustomsFieldCartDisplay $productCustom',$productCustom);
-// 								vmdebug('customFieldDisplay $product->param selected '.$selected,$product->param);
 						if (!class_exists ('vmCustomPlugin'))
 							require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 						JPluginHelper::importPlugin ('vmcustom');
 						$dispatcher = JDispatcher::getInstance ();
+						vmdebug('displayProductCustomfieldSelected is PLUGIN use trigger '.$trigger);
 						$dispatcher->trigger ($trigger, array($product, $row, &$html));
 
 					}
@@ -735,7 +745,6 @@ class VirtueMartModelCustomfields extends VmModel {
 				}
 
 			}
-			$row++;
 		}
 
 	//	vmdebug ('customFieldDisplay html begin: ' . $html . ' end');
@@ -769,9 +778,9 @@ class VirtueMartModelCustomfields extends VmModel {
 	public function CustomsFieldOrderDisplay ($item, $view = 'FE', $absUrl = FALSE) {
 
 		if (!empty($item->product_attribute)) {
-			$item->param = json_decode ($item->product_attribute, TRUE);
-			if (!empty($item->param)) {
-				return self::displayProductCustomfieldSelected ($item, $item->param, '<div class="vm-customfield-cart">', 'plgVmDisplayInOrder' . $view);
+			$item->customProductData = json_decode ($item->product_attribute, TRUE);
+			if (!empty($item->customProductData)) {
+				return self::displayProductCustomfieldSelected ($item, '<div class="vm-customfield-cart">', 'plgVmDisplayInOrder' . $view);
 			} else {
 				vmdebug ('CustomsFieldOrderDisplay $item->param empty? ');
 			}

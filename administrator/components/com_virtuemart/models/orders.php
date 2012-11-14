@@ -840,18 +840,26 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		if (!empty($tableOrderItems->product_attribute)) {
 			if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-			$virtuemart_product_id = $tableOrderItems->virtuemart_product_id;
-			$product_attributes = json_decode($tableOrderItems->product_attribute,true);
-			foreach ($product_attributes as $virtuemart_customfield_id=>$param){
-				if ($param) {
-					if ($productCustom = VirtueMartModelCustomfields::getCustomEmbeddedProductCustomField ($virtuemart_customfield_id ) ) {
+
+			$variantmods = json_decode($tableOrderItems->product_attribute,true);
+			foreach ($variantmods as $custom_id => $selected) {
+				if(is_array($selected)){
+					vmdebug('is array',$selected);
+					reset($selected);
+					$customfield_id = key($selected);
+				} else {
+					$customfield_id = $selected;
+				}
+
+				if ($customfield_id) {
+					if ($productCustom = VirtueMartModelCustomfields::getCustomEmbeddedProductCustomField ($customfield_id ) ) {
 						if ($productCustom->field_type == "E") {
 								//$product = self::addParam($product);
 								if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 								JPluginHelper::importPlugin('vmcustom');
 								$dispatcher = JDispatcher::getInstance();
 							//vmdebug('handleStockAfterStatusChangedPerProduct ',$param);
-								$dispatcher->trigger('plgVmGetProductStockToUpdateByCustom',array(&$tableOrderItems,$param, $productCustom));
+								$dispatcher->trigger('plgVmGetProductStockToUpdateByCustom',array(&$tableOrderItems,$selected, $productCustom));
 						}
 					}
 				}
@@ -872,128 +880,38 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	/**
 	 * Create the ordered item records
 	 *
-	 * @author Oscar van Eijk
-	 * @author Kohl Patrick
+	 * @author Max Milbers
 	 * @param integer $_id integer Order ID
 	 * @param object $_cart array The cart data
 	 * @return boolean True on success
 	 */
-	private function _createOrderLines($_id, $_cart)
+	private function _createOrderLines($virtuemart_order_id, $cart)
 	{
 		$_orderItems = $this->getTable('order_items');
 		//		$_lineCount = 0;
 
-		foreach ($_cart->cartProductsData  as $_prod) {
+		foreach ($cart->products  as $product) {
 
-			//if (!is_int($priceKey)) {
 
-				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-				$calculator = calculationHelper::getInstance();
-				//$variantmods = $calculator->parseModifier($priceKey);
+			$_orderItems->product_attribute = json_encode($product->customProductData);
 
-				$row=0 ;
-				//$product_id = (int)$priceKey;
-				//$_prod->product_attribute = '';
-				$product_attribute = array();
-				//MarkerVarMods
-				//foreach($variantmods as $variant=>$selected){
-				foreach($_prod['customProductData'] as $custom=>$selected){
-				//foreach($_prod['customProductData'] as $selected=>$variant){
-					if ($selected) {
-						if(is_array($selected)){
-							$keys = array_keys($selected);
-							$key = $keys[0];
-						} else {
-							$key = $selected;
-						}
-						//The stored result in vm2.0.14 looks like this {"48":{"textinput":{"comment":"test"}}}
-						//and now {"32":[{"invala":"100"}]}
-						if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-						$productCustom = VirtueMartModelCustomfields::getCustomEmbeddedProductCustomField ($key );
-						//vmdebug('$_prod,$productCustom',$productCustom );
-						if ($productCustom->field_type == "E") {
-
-							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-
-							//We need something like this
-							//$product_attribute[$key] = $productCustom->virtuemart_custom_id;
-
-							//but seems we are forced to use this
-							//$product_attribute[$selected] = $selected;
-
-							if(!empty($productCustom->customfield_param)){
-								/*$param = stdClass();
-								$params = explode('|', $productCustom->customfield_param);
-								foreach($params as $item){
-
-									$item = explode('=',$item);
-									$key = $item[0];
-									unset($item[0]);
-
-									$item = implode('=',$item);
-
-									if(!empty($item) ){
-										$param->$key = json_decode($item);
-									}
-								}*/
-								if(is_array($selected)){
-
-									$product_attribute[$key] = array_values($selected);
-								}
-								/*foreach($param as $k => $plg){
-									if ($k == $selected){
-										//TODO productCartId
-										$product_attribute[$selected] = $plg ;
-									}
-								}*/
-							} else {
-
-							}
-
-						} else {
-							$product_attribute[$key] = ' <span class="costumTitle">'.$productCustom->custom_title.'</span><span class="costumValue" >'.$productCustom->custom_value.'</span>';
-							//$product_attribute[$variant] = ' <span class="costumTitle">'.$productCustom->custom_title.'</span><span class="costumValue" >'.$productCustom->custom_value.'</span>';
-						}
-					}
-					$row++;
-				}
-				//if (isset($_prod->userfield )) $_prod->product_attribute .= '<br/ > <b>'.$_prod->userfield.' : </b>';
-				$_orderItems->product_attribute = json_encode($product_attribute);
-				//print_r($product_attribute);
-			//} else {
-			  //  $_orderItems->product_attribute = null ;
-		//	}
-			// TODO: add fields for the following data:
-			//    * [double] basePrice = 38.48
-			//    * [double] basePriceVariant = 38.48
-			//    * [double] basePriceWithTax = 42.04
-			//    * [double] discountedPriceWithoutTax = 36.48
-			//    * [double] priceBeforeTax = 36.48
-			//    * [double] salesPrice = 39.85
-			//    * [double] salesPriceTemp = 39.85
-			//    * [double] taxAmount = 3.37
-			//    * [double] salesPriceWithDiscount = 0
-			//    * [double] discountAmount = 2.19
-			//    * [double] priceWithoutTax = 36.48
-			//    * [double] variantModification = 0
 			$_orderItems->virtuemart_order_item_id = null;
-			$_orderItems->virtuemart_order_id = $_id;
-// 			$_orderItems->virtuemart_userinfo_id = 'TODO'; //$_cart['BT']['virtuemart_userinfo_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
-			$_orderItems->virtuemart_vendor_id = $_prod->virtuemart_vendor_id;
-			$_orderItems->virtuemart_product_id = $_prod->virtuemart_product_id;
-			$_orderItems->order_item_sku = $_prod->product_sku;
-			$_orderItems->order_item_name = $_prod->product_name; //TODO Patrick
-			$_orderItems->product_quantity = $_prod->quantity;
-			$_orderItems->product_item_price = $_cart->pricesUnformatted[$priceKey]['basePrice'];
-			$_orderItems->product_basePriceWithTax = $_cart->pricesUnformatted[$priceKey]['basePriceWithTax'];
+			$_orderItems->virtuemart_order_id = $virtuemart_order_id;
+
+			$_orderItems->virtuemart_vendor_id = $product->virtuemart_vendor_id;
+			$_orderItems->virtuemart_product_id = $product->virtuemart_product_id;
+			$_orderItems->order_item_sku = $product->product_sku;
+			$_orderItems->order_item_name = $product->product_name;
+			$_orderItems->product_quantity = $product->quantity;
+			$_orderItems->product_item_price = $product->prices['basePrice'];
+			$_orderItems->product_basePriceWithTax = $product->prices['basePriceWithTax'];
 			//$_orderItems->product_tax = $_cart->pricesUnformatted[$priceKey]['subtotal_tax_amount'];
-			$_orderItems->product_tax = $_cart->pricesUnformatted[$priceKey]['taxAmount'];
-			$_orderItems->product_final_price = $_cart->pricesUnformatted[$priceKey]['salesPrice'];
-			$_orderItems->product_subtotal_discount = $_cart->pricesUnformatted[$priceKey]['subtotal_discount'];
-			$_orderItems->product_subtotal_with_tax = $_cart->pricesUnformatted[$priceKey]['subtotal_with_tax'];
+			$_orderItems->product_tax = $product->prices['taxAmount'];
+			$_orderItems->product_final_price = $product->prices['salesPrice'];
+			$_orderItems->product_subtotal_discount = $product->subtotal_discount;
+			$_orderItems->product_subtotal_with_tax = $product->subtotal_with_tax;
 			//			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
 			$_orderItems->order_status = 'P';
-
 
 			if (!$_orderItems->check()) {
 				vmError($this->getError());
@@ -1005,7 +923,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				vmError($this->getError());
 				return false;
 			}
-			$_prod->virtuemart_order_item_id = $_orderItems->virtuemart_order_item_id;
+			$product->virtuemart_order_item_id = $_orderItems->virtuemart_order_item_id;
 // 			vmdebug('_createOrderLines',$_prod);
 			$this->handleStockAfterStatusChangedPerProduct( $_orderItems->order_status,'N',$_orderItems,$_orderItems->product_quantity);
 
@@ -1030,13 +948,14 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$calculation_kinds = array('DBTax','Tax','VatTax','DATax');
 
 		//vmdebug('_createOrderCalcRules $productKeys',$productKeys);
-		foreach($productKeys as $key){
+		foreach($_cart->products as $key=>&$product){
 			foreach($calculation_kinds as $calculation_kind) {
-				$productRules =$_cart->pricesUnformatted[$key][$calculation_kind];
+				//$productRules =$_cart->pricesUnformatted[$key][$calculation_kind];
+				$productRules = $product->prices[$calculation_kind];
 				foreach($productRules as $rule){
 					$orderCalcRules = $this->getTable('order_calc_rules');
 					$orderCalcRules->virtuemart_order_calc_rule_id= null;
-					$orderCalcRules->virtuemart_order_item_id = $_cart->products[$key]->virtuemart_order_item_id;
+					$orderCalcRules->virtuemart_order_item_id = $product->virtuemart_order_item_id;
 					$orderCalcRules->calc_rule_name = $rule[0];
 					$orderCalcRules->calc_amount =  0;
 					$orderCalcRules->calc_value = $rule[1];

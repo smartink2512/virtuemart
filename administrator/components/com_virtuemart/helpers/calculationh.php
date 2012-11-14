@@ -592,7 +592,7 @@ class calculationHelper {
 			//$virtuemart_customfield_ids = array();
 			//$variantmods = $this->parseModifier($name);
 			$variantmod = $customfieldModel->calculateModificators($product,$product->customProductData);
-			vmdebug('my variantmod',$variantmod);
+			//vmdebug('my variantmod',$variantmod);
 			//$cartproductkey = $name; //$product->virtuemart_product_id.$variantmod;
 			//$product->prices = $pricesPerId[$cartproductkey] = $this->getProductPrices($product,$variantmod, $product->quantity);
 			$product->prices = $this->getProductPrices($product,$variantmod, $product->quantity);

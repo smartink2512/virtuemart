@@ -1198,7 +1198,11 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 				}
 			}
 		}
+		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		$calculator = calculationHelper::getInstance();
 
+		$this->pricesUnformatted = $calculator->getCheckoutPrices($this);
+		//vmdebug('cart $this->products',$this->products);
 	}
 	/**
 	 *
@@ -1209,10 +1213,7 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 		vmdebug('$this->cartProductsData',$this->cartProductsData);
 
 		$this->prepareCartProducts();
-		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-		$calculator = calculationHelper::getInstance();
 
-		$this->pricesUnformatted = $calculator->getCheckoutPrices($this);
 
 		//return $this->pricesUnformatted;
 
