@@ -25,96 +25,95 @@ defined ('_JEXEC') or die('Restricted access'); ?>
 <?php
 $rowColor=0;
 ?>
+<table class="adminform"  class="productPriceTable">
 
-<table width="100%" class="productPriceTable">
-<tr>
-<td width="50%" valign="top">
-    <table width="100%" class="adminform">
-        <tr class="row<?php echo $rowColor?>">
-            <td width="120px">
-                <div style="text-align: right; font-weight: bold;">
+     <tr class="row<?php echo $rowColor?>">
+        <td width="120px">
+            <div style="text-align: right; font-weight: bold;">
 								<span
                                         class="hasTip"
                                         title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP'); ?>">
 									<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST') ?>
 								</span>
-                </div>
-            </td>
-            <td width="140px"><input
-                    type="text"
-                    class="inputbox"
-                    name="mprices[product_price][]"
-                    size="12"
-                    style="text-align:right;"
-                    value="<?php echo $this->calculatedPrices['costPrice']; ?>"/>
-                <input type="hidden"
-                       name="mprices[virtuemart_product_price_id][]"
-                       value="<?php echo  $this->tempProduct->virtuemart_product_price_id; ?>"/>
-            </td>
-            <td colspan="3">
-				<?php echo $this->lists['currencies']; ?>
-            </td>
-
-        </tr>
-		<?php $rowColor = 1 - $rowColor; ?>
-        <tr class="row<?php echo $rowColor?>">
-            <td>
-                <div style="text-align: right; font-weight: bold;">
+            </div>
+        </td>
+        <td width="140px"><input
+                type="text"
+                class="inputbox"
+                name="mprices[product_price][]"
+                size="12"
+                style="text-align:right;"
+                value="<?php echo $this->calculatedPrices['costPrice']; ?>"/>
+            <input type="hidden"
+                   name="mprices[virtuemart_product_price_id][]"
+                   value="<?php echo  $this->tempProduct->virtuemart_product_price_id; ?>"/>
+        </td>
+        <td colspan="3">
+			<?php echo $this->lists['currencies']; ?>
+        </td>
+        <td>
+			<?php echo $this->lists['shoppergroups']; echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP')?>
+        </td>
+    </tr>
+     <tr class="row<?php echo $rowColor?>">
+        <td>
+            <div style="text-align: right; font-weight: bold;">
 								<span
                                         class="hasTip"
                                         title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE_TIP'); ?>">
 									<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE') ?>
 								</span>
-                </div>
-            </td>
-            <td><input
-                    type="text"
-                    readonly
-                    class="inputbox readonly"
-                    name="mprices[basePrice][]"
-                    size="12"
-                    value="<?php echo $this->calculatedPrices['basePrice']; ?>"/>&nbsp;
-				<?php echo $this->vendor_currency;   ?>
-            </td>
-			<?php /*    <td width="17%"><div style="text-align: right; font-weight: bold;">
+            </div>
+        </td>
+        <td><input
+                type="text"
+                readonly
+                class="inputbox readonly"
+                name="mprices[basePrice][]"
+                size="12"
+                value="<?php echo $this->calculatedPrices['basePrice']; ?>"/>&nbsp;
+			<?php echo $this->vendor_currency;   ?>
+        </td>
+		<?php /*    <td width="17%"><div style="text-align: right; font-weight: bold;">
 							<?php echo JText::_('COM_VIRTUEMART_RATE_FORM_VAT_ID') ?></div>
                         </td> */ ?>
-            <td colspan="2">
-				<?php echo $this->lists['taxrates']; ?><br/>
-            </td>
-            <td>
-                    <span class="hasTip" title="<?php echo JText::_ ('COM_VIRTUEMART_RULES_EFFECTING_TIP') ?>">
-					<?php echo JText::_ ('COM_VIRTUEMART_TAX_EFFECTING') . '<br />' . $this->taxRules ?>
-                    </span>
-            </td>
-
-        </tr>
-		<?php $rowColor = 1 - $rowColor; ?>
-        <tr class="row<?php echo $rowColor?>">
-            <td>
-                <div style="text-align: right; font-weight: bold;">
+        <td colspan="2">
+			<?php echo $this->lists['taxrates']; ?><br/>
+        </td>
+        <td>
+	                        <span class="hasTip" title="<?php echo JText::_ ('COM_VIRTUEMART_RULES_EFFECTING_TIP') ?>">
+							<?php echo JText::_ ('COM_VIRTUEMART_TAX_EFFECTING') . '<br />' . $this->taxRules ?>
+		                    </span>
+        </td>
+        <td>
+	       <?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_up, 'mprices[product_price_publish_up][]'); ?>
+        </td>
+    </tr>
+     <tr class="row<?php echo $rowColor?>">
+        <td>
+            <div style="text-align: right; font-weight: bold;">
 				<span
-                        class="hasTip"
-                        title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP'); ?>">
+	                class="hasTip"
+	                title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP'); ?>">
 					<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>
 				</span>
-                </div>
-            </td>
-            <td><input
-                    type="text"
-                    name="mprices[salesPrice][]"
-                    size="12"
-                    style="text-align:right;"
-                    value="<?php echo $this->calculatedPrices['salesPriceTemp']; ?>"/>
-				<?php echo $this->vendor_currency;   ?>
-            </td>
-			<?php /*  <td width="17%"><div style="text-align: right; font-weight: bold;">
+            </div>
+        </td>
+        <td><input
+                type="text"
+                name="mprices[salesPrice][]"
+                size="12"
+                style="text-align:right;"
+                value="<?php echo $this->calculatedPrices['salesPriceTemp']; ?>"/>
+			<?php echo $this->vendor_currency;   ?>
+        </td>
+		<?php /*  <td width="17%"><div style="text-align: right; font-weight: bold;">
 							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_TYPE') ?></div>
                         </td>*/ ?>
-            <td colspan="2">
-				<?php echo $this->lists['discounts']; ?> <br/>
-            </td>
-            <td>
+        <td colspan="2">
+			<?php echo $this->lists['discounts']; ?> <br/>
+        </td>
+        <td>
 	                    <span class="hasTip" title="<?php echo JText::_ ('COM_VIRTUEMART_RULES_EFFECTING_TIP') ?>">
 						<?php if (!empty($this->DBTaxRules)) {
 		                    echo JText::_ ('COM_VIRTUEMART_RULES_EFFECTING') . '</span><br />' . $this->DBTaxRules . '<br />';
@@ -124,104 +123,59 @@ $rowColor=0;
 			                    echo JText::_ ('COM_VIRTUEMART_RULES_EFFECTING') . '<br />' . $this->DATaxRules;
 		                    }
 
-		                    // 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
+// 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
 						</span>
-            </td>
+        </td>
+        <td>
+	        <?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_down, 'mprices[product_price_publish_down][]'); ?>
+        </td>
+    </tr>
 
-        </tr>
 
-		<?php $rowColor = 1 - $rowColor; ?>
-        <tr class="row<?php echo $rowColor?>">
-            <td colspan="2">
+     <tr class="row<?php echo $rowColor?>">
+        <td  colspan="2" style="background-color:#EEEEEE">
 			<span
                     class="hasTip"
                     title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL_TIP'); ?>">
 			<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL'); ?>
 			</span>
-                <input type="checkbox" name="mprices[use_desired_price][]" value="1"/>
-            </td>
-            <td width="60px">
-                <div style="text-align: right; font-weight: bold;">
+            <input type="checkbox" name="mprices[use_desired_price][]" value="1"/>
+        </td>
+        <td width="60px">
+            <div style="text-align: right; font-weight: bold;">
 				<span
                         class="hasTip"
                         title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_DISCOUNT_OVERRIDE_TIP'); ?>">
 					<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_DISCOUNT_OVERRIDE') ?>
 				</span>
-                </div>
-            </td>
-            <td width="120px">
-                <input type="text"
-                       size="12"
-                       style="text-align:right;" name="mprices[product_override_price][]"
-                       value="<?php echo $this->tempProduct->product_override_price ?>"/>
-				<?php echo $this->vendor_currency;   ?>
-            </td>
-            <td><?php
-				// 							echo VmHtml::checkbox('override',$this->product->override);
-				$options = array(0 => JText::_ ('COM_VIRTUEMART_DISABLED'), 1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_FINAL'), -1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_PRICE_TAX'));
+            </div>
+        </td>
+        <td width="120px">
+            <input type="text"
+                   size="12"
+                   style="text-align:right;" name="mprices[product_override_price][]"
+                   value="<?php echo $this->tempProduct->product_override_price ?>"/>
+			<?php echo $this->vendor_currency;   ?>
+        </td>
+        <td><?php
+// 							echo VmHtml::checkbox('override',$this->product->override);
+			$options = array(0 => JText::_ ('COM_VIRTUEMART_DISABLED'), 1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_FINAL'), -1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_PRICE_TAX'));
 
-				echo VmHtml::radioList ('mprices[override][' . $this->priceCounter . ']', $this->tempProduct->override, $options);
-
-				?>
-            </td>
-
-        </tr>
-
-    </table>
-</td>
-<?php $rowColor=0; ?>
-<td valign="top">
-    <table class="adminform">
-        <tr class="row<?php echo $rowColor?>">
-            <td>
-                <div style="text-align: right; font-weight: bold;">
-					<?php echo JText::_ ('COM_VIRTUEMART_SHOPPER_FORM_GROUP')?>
-                </div>
-            </td>
-            <td>
-				<?php echo $this->lists['shoppergroups']; ?>
-            </td>
-        </tr>
-		<?php $rowColor = 1 - $rowColor; ?>
-        <tr class="row<?php echo $rowColor?>">
-            <td>
-                <div style="text-align: right; font-weight: bold;">
-					<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_DATE_RANGE')?>
-                </div>
-            </td>
-            <td><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_FROM') ?>
-				<?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_up, 'mprices[product_price_publish_up][]'); ?>
-   <?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_TO')?>
-				<?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_down, 'mprices[product_price_publish_down][]'); ?>
-            </td>
-        </tr>
-
-		<?php $rowColor = 1 - $rowColor; ?>
-        <tr class="row<?php echo $rowColor ?>">
-            <td>
-                <div style="text-align: right; font-weight: bold;">
-					<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_QUANTITY_RANGE')?>
-                </div>
-            </td>
-            <td>
-<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_FROM')?>
-                <input type="text"
-                       size="12"
-                       style="text-align:right;" name="mprices[price_quantity_start][]"
-                       value="<?php echo $this->tempProduct->price_quantity_start ?>"/>
-
-              <?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_TO')?>
-
-
-                <input type="text"
-                       size="12"
-                       style="text-align:right;" name="mprices[price_quantity_end][]"
-                       value="<?php echo $this->tempProduct->price_quantity_end  ?>"/>
-            </td>
-        </tr>
-    </table>
-</td>
-</tr>
+			echo VmHtml::radioList ('mprices[override][' . $this->priceCounter . ']', $this->tempProduct->override, $options);
+			?>
+        </td>
+        <td>
+            <input type="text"
+                   size="12"
+                   style="text-align:right;" name="mprices[price_quantity_start][]"
+                   value="<?php echo $this->tempProduct->price_quantity_start ?>"/>
+            <input type="text"
+                   size="12"
+                   style="text-align:right;" name="mprices[price_quantity_end][]"
+                   value="<?php echo $this->tempProduct->price_quantity_end  ?>"/>
+        </td>
+    </tr>
 </table>
+
 
 

@@ -255,15 +255,15 @@ $i = 0;
 				?>
             </td>
             <td class="price_ordering">
-                <span class="vmicon vmicon-16-price-remove"></span>
+                <span class="vmicon vmicon-16-move"></span>
 				<?php //echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_ORDER'); ?>
             </td>
             <td class="price-clone">
-                <span class="vmicon vmicon-16-price-remove"></span>
+                <span class="vmicon vmicon-16-new"></span>
 				<?php //echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_CLONE'); ?>
             </td>
             <td class="price-remove">
-                <span class="vmicon vmicon-16-price-remove"></span><!--input class="price_ordering" type="hidden" value="<?php echo $this->priceCounter ?>" name="field['<?php echo $this->priceCounter ?>'][ordering]"/ -->
+                <span class="vmicon vmicon-16-remove"></span><!--input class="price_ordering" type="hidden" value="<?php echo $this->priceCounter ?>" name="field['<?php echo $this->priceCounter ?>'][ordering]"/ -->
             </td>
 
 
