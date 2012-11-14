@@ -23,11 +23,11 @@ defined ('_JEXEC') or die('Restricted access'); ?>
 
 
 <?php
-$rowColor=0;
+$rowColor = 0;
 ?>
-<table class="adminform"  class="productPriceTable">
+<table class="adminform" class="productPriceTable">
 
-     <tr class="row<?php echo $rowColor?>">
+    <tr class="row<?php echo $rowColor?>">
         <td width="120px">
             <div style="text-align: right; font-weight: bold;">
 								<span
@@ -52,10 +52,14 @@ $rowColor=0;
 			<?php echo $this->lists['currencies']; ?>
         </td>
         <td colspan="2">
-			<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP'); echo $this->lists['shoppergroups'];  ?>
+            <div style="font-weight: bold;">
+				<?php echo JText::_ ('COM_VIRTUEMART_SHOPPER_FORM_GROUP'); ?>
+            </div>
+			<?php echo $this->lists['shoppergroups'];  ?>
         </td>
     </tr>
-     <tr class="row<?php echo $rowColor?>">
+	<?php $rowColor = 1 - $rowColor; ?>
+    <tr class="row<?php echo $rowColor?>">
         <td>
             <div style="text-align: right; font-weight: bold;">
 								<span
@@ -86,18 +90,19 @@ $rowColor=0;
 		                    </span>
         </td>
         <td>
-	        <?php   ?>
+			<?php   ?>
         </td>
-	     <td>
-	        <?php   ?>
+        <td>
+			<?php   ?>
         </td>
     </tr>
-     <tr class="row<?php echo $rowColor?>">
+	<?php $rowColor = 1 - $rowColor; ?>
+    <tr class="row<?php echo $rowColor?>">
         <td>
             <div style="text-align: right; font-weight: bold;">
 				<span
-	                class="hasTip"
-	                title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP'); ?>">
+                        class="hasTip"
+                        title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP'); ?>">
 					<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>
 				</span>
             </div>
@@ -126,28 +131,31 @@ $rowColor=0;
 			                    echo JText::_ ('COM_VIRTUEMART_RULES_EFFECTING') . '<br />' . $this->DATaxRules;
 		                    }
 
-// 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
+		                    // 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
 						</span>
         </td>
         <td>
-	         <?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_DATE_RANGE') ?>
-
-	        <?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_up, 'mprices[product_price_publish_up][]'); ?>
-	        </td>
-	     <td>
-<br />
-	        <?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_down, 'mprices[product_price_publish_down][]'); ?>
+            <div style="font-weight: bold;">
+				<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_DATE_RANGE') ?>
+            </div>
+			<?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_up, 'mprices[product_price_publish_up][]'); ?>
+        </td>
+        <td>
+            <br/>
+			<?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_down, 'mprices[product_price_publish_down][]'); ?>
         </td>
     </tr>
 
-
-     <tr class="row<?php echo $rowColor?>">
-        <td  colspan="2"  >
+<?php $rowColor = 1 - $rowColor; ?>
+    <tr class="row<?php echo $rowColor?>">
+        <td colspan="2">
+	          <strong>
 			<span
                     class="hasTip"
                     title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL_TIP'); ?>">
 			<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL'); ?>
 			</span>
+		     </strong>
             <input type="checkbox" name="mprices[use_desired_price][]" value="1"/>
         </td>
         <td width="60px">
@@ -167,22 +175,23 @@ $rowColor=0;
 			<?php echo $this->vendor_currency;   ?>
         </td>
         <td><?php
-// 							echo VmHtml::checkbox('override',$this->product->override);
+			// 							echo VmHtml::checkbox('override',$this->product->override);
 			$options = array(0 => JText::_ ('COM_VIRTUEMART_DISABLED'), 1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_FINAL'), -1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_PRICE_TAX'));
 
 			echo VmHtml::radioList ('mprices[override][' . $this->priceCounter . ']', $this->tempProduct->override, $options);
 			?>
         </td>
         <td>
-	         <?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_QUANTITY_RANGE') ?>
-
+            <div style="font-weight: bold;">
+				<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_QUANTITY_RANGE') ?>
+            </div>
             <input type="text"
                    size="12"
                    style="text-align:right;" name="mprices[price_quantity_start][]"
                    value="<?php echo $this->tempProduct->price_quantity_start ?>"/>
-	         </td>
+        </td>
         <td>
-<br />
+            <br/>
             <input type="text"
                    size="12"
                    style="text-align:right;" name="mprices[price_quantity_end][]"
