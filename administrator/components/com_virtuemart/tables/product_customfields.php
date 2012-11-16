@@ -43,7 +43,7 @@ class TableProduct_customfields extends VmTable {
     /** @var string custom value */
 	var $customfield_value	= null;
     /** @var string price  */
-	var $custom_price	= null;
+	var $customfield_price	= null;
 
     var $customfield_param = '';
 	/** @var int custom published or not */
@@ -68,10 +68,10 @@ class TableProduct_customfields extends VmTable {
 
 	function check(){
 
-		if(!empty($this->custom_price)){
-			$this->custom_price = str_replace(array(',',' '),array('.',''),$this->custom_price);
+		if(!empty($this->customfield_price)){
+			$this->customfield_price = str_replace(array(',',' '),array('.',''),$this->customfield_price);
 		} else {
-			$this->custom_price = null;
+			$this->customfield_price = null;
 		}
 
 		return parent::check();

@@ -146,7 +146,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 		//VmConfig::$echoDebug= 1;
 		//vmdebug('plgVmCalculateCustomVariant textinput',$variantValues);
-		if (!empty($productCustomsPrice->custom_price)) {
+		if (!empty($productCustomsPrice->customfield_price)) {
 			//TODO adding % and more We should use here $this->interpreteMathOp
 			// eg. to calculate the price * comment text length
 
@@ -158,9 +158,9 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 				} else {
 					$charcount = 1.0;
 				}
-				$productCustomsPrice->custom_price = $charcount * $productCustomsPrice->custom_price ;
+				$productCustomsPrice->customfield_price = $charcount * $productCustomsPrice->customfield_price ;
 			} else {
-				$productCustomsPrice->custom_price = 0.0;
+				$productCustomsPrice->customfield_price = 0.0;
 			}
 
 		}

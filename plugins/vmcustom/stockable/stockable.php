@@ -89,8 +89,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			if(!empty($childList)) {
 				if (!array_key_exists($child->id, $childList) ) $childList[$child->id]['is_variant'] = 1;
 				if ($childList[$child->id]['is_variant'] ) $checked='checked';
-				if (array_key_exists('custom_price', $childList[$child->id] ) )
-					$price = $childList[$child->id]['custom_price'] ;
+				if (array_key_exists('customfield_price', $childList[$child->id] ) )
+					$price = $childList[$child->id]['customfield_price'] ;
 			}
 			//$html .= JHTML::_('select.genericlist', $childlist, 'custom_param['.$row.'][child_id]','','virtuemart_product_id','product_name',$param['child_id'],false,true);
 			$name='custom_param['.$row.'][child]['.$child->id.']';
@@ -104,7 +104,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			// if (!$customfield = $this->getFieldId($product_id, $child->id) ) $price ='' ;
 			// else
 
-			$html .='<input style="width:98px; display: inline-block;" type="text" name="'.$name.'[custom_price]" value="'.$price.'">';
+			$html .='<input style="width:98px; display: inline-block;" type="text" name="'.$name.'[customfield_price]" value="'.$price.'">';
 			// $html .='<input type="hidden" name="custom_param[c'.$child->id.'][field_type]" value="G">';
 			// $html .='<input type="hidden" name="field[c'.$child->id.'][virtuemart_custom_id]" value="'.$group_custom_id.'">';
 
@@ -154,7 +154,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 							'<input type=\"hidden\"  value=\"0\" name=\"'+name+'[is_variant]\">' +
 							'<span style=\"width:50px; display: inline-block;\"><input type=\"checkbox\" checked=\"checked\"  value=\"1\" name=\"'+name+'[is_variant]\"></span>' +
 							new_fields +
-							'<input style=\"width:98px; display: inline-block;\" type=\"text\" name=\"'+name+'[custom_price]\" value=\"'+Prod.find('input[name*=\"product_price\"]').val()+'\">' +
+							'<input style=\"width:98px; display: inline-block;\" type=\"text\" name=\"'+name+'[customfield_price]\" value=\"'+Prod.find('input[name*=\"product_price\"]').val()+'\">' +
 							' '+Prod.find('input[name*=\"product_name\"]').val()+' [".JText::_('COM_VIRTUEMART_PRODUCT_SKU')." : '+Prod.find('input[name*=\"product_sku\"]').val()+'] [".JText::_('COM_VIRTUEMART_PRODUCT_IN_STOCK')." : '+(Prod.find('input[name*=\"product_in_stock\"]').val() || 0)+']' +
 							'</div>');
 					Prod.find('input[name*=\"product_sku\"]').val('');
@@ -164,7 +164,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				});
 		});
 
-		jQuery('input[name=field\\\\[$row\\\\]\\\\[custom_price\\\\]]').val('');
+		jQuery('input[name=field\\\\[$row\\\\]\\\\[customfield_price\\\\]]').val('');
 	});
 	";
 		//$document = JFactory::getDocument();
@@ -247,9 +247,9 @@ class plgVmCustomStockable extends vmCustomPlugin {
 					}
 					//$field->child[$child_id]['product_availability'] = $stock->product_availability;
 
-					if ($attribut['custom_price'])
-						$js[]= '"'.$child_id.'" :'.$attribut['custom_price'];
-					unset ($attribut['custom_price']);
+					if ($attribut['customfield_price'])
+						$js[]= '"'.$child_id.'" :'.$attribut['customfield_price'];
+					unset ($attribut['customfield_price']);
 
 
 					foreach ($attribut as $key => $list) {
@@ -623,8 +623,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 		$param = json_decode($productCustomsPrice->custom_param,true);
 		if ($child = $this->getValideChild($selected)) {
-			if ($param['child'][$selected]['custom_price'] !=='') {
-				$productCustomsPrice->custom_price = (float)$param['child'][$selected]['custom_price'];
+			if ($param['child'][$selected]['customfield_price'] !=='') {
+				$productCustomsPrice->customfield_price = (float)$param['child'][$selected]['customfield_price'];
 			} else {
 				$db = JFactory::getDBO();
 				$db->setQuery('SELECT `product_price` FROM `#__virtuemart_product_prices`  WHERE `virtuemart_product_id`="' . (int)$selected . '" ');
