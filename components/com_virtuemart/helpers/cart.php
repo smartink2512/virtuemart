@@ -377,7 +377,7 @@ class VirtueMartCart {
 */
 			//vmdebug('cart add',$productData);
 			$unsetA = array();
-			$quantityChecked = false;
+			$found = false;
 
 			//VmConfig::$echoDebug=true;
 			//Now lets check if there is already a product stored with the same id, if yes, increase quantity and recalculate
@@ -403,7 +403,7 @@ class VirtueMartCart {
 								//$this->checkForQuantities($product, $cartProductData['quantity']);
 								//$quantityChecked = true;
 							}
-
+							$found = TRUE;
 							break;
 						} else {
 							vmdebug('product variant is different, I add to cart');
@@ -418,13 +418,16 @@ class VirtueMartCart {
 
 			}
 
-			if(!$product)$product = $this->getProduct( $productData['virtuemart_product_id'],$productData['quantity']);
-			if(!empty($product->virtuemart_product_id)){
-				$this->checkForQuantities($product, $productData['quantity']);
-				if(!empty($productData['quantity'])){
-					$this->cartProductsData[] = $productData;
+			if(!$found){
+				if(!$product)$product = $this->getProduct( $productData['virtuemart_product_id'],$productData['quantity']);
+				if(!empty($product->virtuemart_product_id)){
+					$this->checkForQuantities($product, $productData['quantity']);
+					if(!empty($productData['quantity'])){
+						$this->cartProductsData[] = $productData;
+					}
 				}
 			}
+
 
 			//Remove the products which have quantity=0
 			foreach($unsetA as $v){
