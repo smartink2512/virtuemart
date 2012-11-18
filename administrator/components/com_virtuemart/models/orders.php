@@ -844,7 +844,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$variantmods = json_decode($tableOrderItems->product_attribute,true);
 			foreach ($variantmods as $custom_id => $selected) {
 				if(is_array($selected)){
-					vmdebug('is array',$selected);
 					reset($selected);
 					$customfield_id = key($selected);
 				} else {

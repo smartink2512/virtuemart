@@ -612,7 +612,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$productKey = (int)$virtuemart_product_id;
 		static $_products = array();
-		if (!array_key_exists ($productKey, $_products)) {
+		if (!isset ($_products[$productKey][$quantity])) {
 
 			$child = $this->getProductSingle ($productKey, $front,$quantity);
 			if (!$child->published && $onlyPublished) {
@@ -697,12 +697,12 @@ class VirtueMartModelProduct extends VmModel {
 				vmdebug ('STOCK 0', VmConfig::get ('use_as_catalog', 0), VmConfig::get ('stockhandle', 'none'), $child->product_in_stock);
 				return FALSE;
 			} else {
-				$_products[$productKey] = $child;
+				$_products[$productKey][$quantity] = $child;
 			}
 
 		}
 
-		return $_products[$productKey];
+		return $_products[$productKey][$quantity];
 	}
 
 	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1) {

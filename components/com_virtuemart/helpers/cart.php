@@ -100,7 +100,7 @@ class VirtueMartCart {
 				//self::$_cart->products = $sessionCart->products;
 
 				self::$_cart->cartProductsData = $sessionCart->cartProductsData;
-				//vmdebug('getCart product',self::$_cart->products);
+				//vmdebug('getCart product',self::$_cart->cartProductsData);
 				self::$_cart->vendorId	 							= $sessionCart->vendorId;
 				self::$_cart->lastVisitedCategoryId	 			= $sessionCart->lastVisitedCategoryId;
 				self::$_cart->virtuemart_shipmentmethod_id	= $sessionCart->virtuemart_shipmentmethod_id;
@@ -291,12 +291,15 @@ class VirtueMartCart {
 			return false;
 		}
 
-		VmConfig::$echoDebug=true;
+		//VmConfig::$echoDebug=true;
 		//vmdebug('cart add',$virtuemart_product_ids,$post);
 
+		$productModel = VmModel::getModel('product');
+		$customFieldsModel = VmModel::getModel('customfields');
 		//Iterate through the prod_id's and perform an add to cart for each one
 		foreach ($virtuemart_product_ids as $p_key => $virtuemart_product_id) {
 
+			$product = false;
 			$updateSession = true;
 			$productData = array();
 
@@ -320,10 +323,50 @@ class VirtueMartCart {
 			}
 
 			if(!empty( $post['customProductData'][$virtuemart_product_id])){
-				$productData['customProductData'] = $post['customProductData'][$virtuemart_product_id];
+				//$productData['customProductData']
+				$customProductData  = $post['customProductData'][$virtuemart_product_id];
 			} else {
-				$productData['customProductData'] = array();
+				$customProductData = array();
 			}
+
+			//Now we check if the delivered customProductData is correct and add missing
+			if(!$product) $product = $this->getProduct( $productData['virtuemart_product_id'],$productData['quantity']);
+			$customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
+			$customProductDataTmp=array();
+			//VmConfig::$echoDebug=true;
+			//vmdebug('cart add product $customProductData',$customProductData);
+			foreach($customfields as $customfield){
+
+				if($customfield->is_input==1){
+					if(isset($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id])){
+
+						if(is_array($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id])){
+							if(!class_exists('vmFilter'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmfilter.php');
+							foreach($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id] as &$customData){
+								$muh = $customData;
+								$value = vmFilter::hl( $customData,array('deny_attribute'=>'*'));
+								$value = preg_replace('@<[\/\!]*?[^<>]*?>@si','',$value);//remove all html tags
+								$value = (string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
+								$value = trim(str_replace('"', ' ', $value),"'") ;
+								$customData = (string)preg_replace('#^\'#si','',$value);
+							}
+						}
+						$customProductDataTmp[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id] = $customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id];
+					}
+					else if(isset($customProductData[$customfield->virtuemart_custom_id])) {
+						$customProductDataTmp[$customfield->virtuemart_custom_id] = (int)$customProductData[$customfield->virtuemart_custom_id];
+
+					}
+					//	$customProductDataTmp[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id] = $customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id];
+					//}
+				} else {
+					$customProductDataTmp[$customfield->virtuemart_custom_id] = $customfield->virtuemart_customfield_id;
+				}
+
+			}
+
+			//vmdebug('cart add product $customProductDataTmp',$customProductDataTmp);
+			$productData['customProductData'] = $customProductDataTmp;
 
 		/*	if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 			JPluginHelper::importPlugin('vmcustom');
@@ -335,7 +378,8 @@ class VirtueMartCart {
 			//vmdebug('cart add',$productData);
 			$unsetA = array();
 			$quantityChecked = false;
-			$product = false;
+
+
 			//Now lets check if there is already a product stored with the same id, if yes, increase quantity and recalculate
 			foreach($this->cartProductsData as $k => $cartProductData){
 				$cartProductData = (array)$cartProductData;
@@ -348,19 +392,20 @@ class VirtueMartCart {
 
 							$cartProductData['quantity'] = $cartProductData['quantity'] + $productData['quantity'];
 
-							$product = $this->getProduct((int) $productData['virtuemart_product_id'],$cartProductData['quantity']);
+							if(!$product)$product = $this->getProduct((int) $productData['virtuemart_product_id'],$cartProductData['quantity']);
 							if(empty($product->virtuemart_product_id)){
 								vmWarn('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
 								$unsetA[] = $k;
 								//return false;
 							} else {
-								$this->checkForQuantities($product, $cartProductData['quantity']);
-								$quantityChecked = true;
+								//$this->checkForQuantities($product, $cartProductData['quantity']);
+								//$quantityChecked = true;
 							}
+						} else {
+
 						}
 					}
 				}
-
 
 				//add products to remove to array
 				if($cartProductData['quantity']==0){
@@ -369,15 +414,11 @@ class VirtueMartCart {
 
 			}
 
-			//Product was not already in the cart, so check for quantity and add it
-			if(!$quantityChecked){
-
-				if(!$product)$product = $this->getProduct( $productData['virtuemart_product_id'],$productData['quantity']);
-				if(!empty($product->virtuemart_product_id)){
-					$this->checkForQuantities($product, $productData['quantity']);
-					if(!empty($productData['quantity'])){
-						$this->cartProductsData[] = $productData;
-					}
+			if(!$product)$product = $this->getProduct( $productData['virtuemart_product_id'],$productData['quantity']);
+			if(!empty($product->virtuemart_product_id)){
+				$this->checkForQuantities($product, $productData['quantity']);
+				if(!empty($productData['quantity'])){
+					$this->cartProductsData[] = $productData;
 				}
 			}
 
@@ -386,11 +427,7 @@ class VirtueMartCart {
 				unset($this->cartProductsData[$v]);
 			}
 
-/*
-			$errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_UPDATED');
-			//$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED'));
-			// $errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
-*/
+			$this->prepareCartProducts();
 		}
 		if ($updateSession== false) return false ;
 		// End Iteration through Prod id's
@@ -408,11 +445,16 @@ class VirtueMartCart {
 	public function removeProductCart($prod_id=0) {
 		// Check for cart IDs
 		if (empty($prod_id))
-		$prod_id = JRequest::getVar('cart_virtuemart_product_id');
-		unset($this->products[$prod_id]);
+		$prod_id = JRequest::getInt('cart_virtuemart_product_id');
+		if(isset($this->cartProductsData[$prod_id])){
+			unset($this->cartProductsData[$prod_id]);
 
-		$this->setCartIntoSession();
-		return true;
+			$this->setCartIntoSession();
+			return true;
+		} else {
+			vmdebug('removeProductCart $prod_id '.$prod_id,$this->cartProductsData);
+			return false;
+		}
 	}
 
 	/**
@@ -425,13 +467,13 @@ class VirtueMartCart {
 	public function updateProductCart($cart_virtuemart_product_id=0) {
 
 		if (empty($cart_virtuemart_product_id))
-		$cart_virtuemart_product_id = JRequest::getString('cart_virtuemart_product_id');
+		$cart_virtuemart_product_id = JRequest::getInt('cart_virtuemart_product_id');
 		if (empty($quantity))
 		$quantity = JRequest::getInt('quantity');
 
 		//		foreach($cart_virtuemart_product_ids as $cart_virtuemart_product_id){
 		$updated = false;
-		if (array_key_exists($cart_virtuemart_product_id, $this->products)) {
+		if (array_key_exists($cart_virtuemart_product_id, $this->cartProductsData)) {
 			if (!empty($quantity)) {
 				if ($this->checkForQuantities($this->products[$cart_virtuemart_product_id], $quantity)) {
 					$this->products[$cart_virtuemart_product_id]->quantity = $quantity;
@@ -504,76 +546,6 @@ class VirtueMartCart {
 		$db->setQuery($q);
 		return $db->loadResult();
 	}
-
-	/** Checks if the quantity is correct
-	 *
-	 * @author Max Milbers
-	 */
-	private function checkForQuantities($product, &$quantity=0) {
-
-		$stockhandle = VmConfig::get('stockhandle','none');
-		$mainframe = JFactory::getApplication();
-		// Check for a valid quantity
-		if (!is_numeric( $quantity)) {
-			$errorMsg = JText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
-			$this->setError($errorMsg);
-			vmInfo($errorMsg,$product->product_name);
-			return false;
-		}
-		// Check for negative quantity
-		if ($quantity < 1) {
-			$errorMsg = JText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
-			$this->setError($errorMsg);
-			vmInfo($errorMsg,$product->product_name);
-			return false;
-		}
-
-		// Check to see if checking stock quantity
-		if ($stockhandle!='none' && $stockhandle!='risetime') {
-
-			$productsleft = $product->product_in_stock - $product->product_ordered;
-			// TODO $productsleft = $product->product_in_stock - $product->product_ordered - $quantityincart ;
-			if ($quantity > $productsleft ){
-				if($productsleft>0 and $stockhandle=='disableadd'){
-					$quantity = $productsleft;
-					$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_QUANTITY',$quantity);
-					$this->setError($errorMsg);
-					vmInfo($errorMsg.' '.$product->product_name);
-					// $mainframe->enqueueMessage($errorMsg);
-				} else {
-					$errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
-					$this->setError($errorMsg); // Private error retrieved with getError is used only by addJS, so only the latest is fine
-					// todo better key string
-					vmInfo($errorMsg. ' '.$product->product_name);
-					// $mainframe->enqueueMessage($errorMsg);
-					return false;
-				}
-			}
-		}
-
-		// Check for the minimum and maximum quantities
-		$min = $product->min_order_level;
-		$max = $product->max_order_level;
-		if ($min != 0 && $quantity < $min) {
-			//			$this->_error[] = 'Quantity reached not minimum';
-			//$quantity = $min;
-			$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_MIN_ORDER', $min);
-			$this->setError($errorMsg);
-			vmInfo($errorMsg. ' '.$product->product_name);
-			return false;
-		}
-		if ($max != 0 && $quantity > $max) {
-			//			$this->_error[] = 'Quantity reached over maximum';
-			//$quantity = $max;
-			$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_MAX_ORDER', $max);
-			$this->setError($errorMsg);
-			vmInfo($errorMsg. ' '.$product->product_name);
-			return false;
-		}
-
-		return true;
-	}
-
 
 	/**
 	 * Validate the coupon code. If ok,. set it in the cart
@@ -674,16 +646,17 @@ class VirtueMartCart {
 
 		$this->setCartIntoSession();
 
-		$this->prepareCartProducts();
-		if (count($this->products) == 0) {
+
+		if (count($this->cartProductsData) == 0) {
 			return $this->redirecter('index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
 		} else {
-			foreach ($this->products as $product) {
-				$redirectMsg = $this->checkForQuantities($product, $product->quantity);
+			$redirectMsg = $this->prepareCartProducts();
+		/*	foreach ($this->products as $product) {
+				$redirectMsg = $this->checkForQuantities($product, $product->quantity);*/
 				if (!$redirectMsg) {
 					return $this->redirecter('index.php?option=com_virtuemart&view=cart', $redirectMsg);
 				}
-			}
+			//}*/
 		}
 
 		// Check if a minimun purchase value is set
@@ -743,7 +716,7 @@ class VirtueMartCart {
 			//Add a hook here for other shipment methods, checking the data of the choosed plugin
 			$dispatcher = JDispatcher::getInstance();
 			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckDataShipment', array(  $this));
-vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
+
 			foreach ($retValues as $retVal) {
 				if ($retVal === true) {
 					break; // Plugin completed succesfull; nothing else to do
@@ -1133,11 +1106,20 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 
 		if(count($this->cartProductsData)>0){
 			$productsModel = VmModel::getModel('product');
+			$this->totalProduct = 0;
+			$this->productsQuantity = array();
 			foreach($this->cartProductsData as $k =>$productdata){
 				$productdata = (array)$productdata;
 				if(isset($productdata['virtuemart_product_id'])){
+					if(empty($productdata['virtuemart_product_id'])){
+						unset($this->cartProductsData[$k]);
+						continue;
+					}
 					$productTemp = $productsModel->getProduct($productdata['virtuemart_product_id']);
-
+					if(empty($productTemp->virtuemart_product_id)){
+						vmError('prepareCartData virtuemart_product_id is empty','The product is no longer available');
+						continue;
+					}
 					//Very important! must be cloned, else all products with same id get the same productCustomData due the product cache
 					$product = clone($productTemp);
 					$product -> customProductData = $productdata['customProductData'];
@@ -1153,11 +1135,20 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 
 					$this->products[$k] = $product;
 					$this->totalProduct += $product -> quantity;
+
+					if(isset($this->productsQuantity[$product->virtuemart_product_id])){
+						$this->productsQuantity[$product->virtuemart_product_id] += $product -> quantity;
+					} else {
+						$this->productsQuantity[$product->virtuemart_product_id] = $product -> quantity;
+					}
+
 					$product = null;
 				} else {
 					vmError('prepareCartData $productdata[virtuemart_product_id] was empty');
 				}
 			}
+		} else {
+			vmdebug('The array count($this->cartProductsData) is 0 ',$this->cartProductsData);
 		}
 
 
@@ -1165,15 +1156,104 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 		$calculator = calculationHelper::getInstance();
 
 		$this->pricesUnformatted = $calculator->getCheckoutPrices($this);
-		//vmdebug('cart $this->products',$this->products);
+		return $this->checkCartQuantities();
+
 	}
+
+	private function checkCartQuantities(){
+
+		if(!isset($this->productsQuantity)) return false;
+		foreach($this->productsQuantity as $productId => $quantity){
+			foreach($this->products as $product){
+				if($product->virtuemart_product_id == $productId) break;
+			}
+
+			$enough = $this->checkForQuantities($product,$quantity);
+			if(!$enough) return FALSE;
+		}
+
+		return TRUE;
+	}
+
+	/** Checks if the quantity is correct
+	 *
+	 * @author Max Milbers
+	 */
+	private function checkForQuantities($product, &$quantity=0) {
+
+		$stockhandle = VmConfig::get('stockhandle','none');
+		$mainframe = JFactory::getApplication();
+		// Check for a valid quantity
+		if (!is_numeric( $quantity)) {
+			$errorMsg = JText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
+			$this->setError($errorMsg);
+			vmInfo($errorMsg,$product->product_name);
+			return false;
+		}
+		// Check for negative quantity
+		if ($quantity < 1) {
+			$errorMsg = JText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
+			$this->setError($errorMsg);
+			vmInfo($errorMsg,$product->product_name);
+			return false;
+		}
+
+		// Check to see if checking stock quantity
+		if ($stockhandle!='none' && $stockhandle!='risetime') {
+
+			$productsleft = $product->product_in_stock - $product->product_ordered;
+
+			// TODO $productsleft = $product->product_in_stock - $product->product_ordered - $quantityincart ;
+			if ($quantity > $productsleft ){
+				vmdebug('my products left '.$productsleft.' and my quantity '.$quantity);
+				if($productsleft>0 and $stockhandle=='disableadd'){
+					$quantity = $productsleft;
+					$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_QUANTITY',$quantity);
+					$this->setError($errorMsg);
+					vmInfo($errorMsg.' '.$product->product_name);
+					// $mainframe->enqueueMessage($errorMsg);
+				} else {
+					$errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
+					$this->setError($errorMsg); // Private error retrieved with getError is used only by addJS, so only the latest is fine
+					// todo better key string
+					vmInfo($errorMsg. ' '.$product->product_name);
+					// $mainframe->enqueueMessage($errorMsg);
+					return false;
+				}
+			}
+		}
+
+		// Check for the minimum and maximum quantities
+		$min = $product->min_order_level;
+		$max = $product->max_order_level;
+		if ($min != 0 && $quantity < $min) {
+			//			$this->_error[] = 'Quantity reached not minimum';
+			//$quantity = $min;
+			$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_MIN_ORDER', $min);
+			$this->setError($errorMsg);
+			vmInfo($errorMsg. ' '.$product->product_name);
+			return false;
+		}
+		if ($max != 0 && $quantity > $max) {
+			//			$this->_error[] = 'Quantity reached over maximum';
+			//$quantity = $max;
+			$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_MAX_ORDER', $max);
+			$this->setError($errorMsg);
+			vmInfo($errorMsg. ' '.$product->product_name);
+			return false;
+		}
+
+		return true;
+	}
+
+
 	/**
 	 *
 	 */
 	function prepareCartData(){
 
 		$this->totalProduct = 0;
-		vmdebug('$this->cartProductsData',$this->cartProductsData);
+		//vmdebug('$this->cartProductsData',$this->cartProductsData);
 
 		$this->prepareCartProducts();
 
@@ -1308,11 +1388,11 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 	function prepareAjaxData(){
 		// Added for the zone shipment module
 		//$vars["zone_qty"] = 0;
-		$this->data = $this->prepareCartData(false);
+		$this->prepareCartData(false);
 		$weight_total = 0;
 		$weight_subtotal = 0;
 
-		//OSP when prices removed needed to format billTotal for AJAX
+/*		//OSP when prices removed needed to format billTotal for AJAX
 		if (!class_exists('CurrencyDisplay'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
@@ -1329,13 +1409,15 @@ vmdebug('plgVmOnCheckoutCheckDataShipment CART', $retValues);
 			//$weight_total += $weight_subtotal;
 
 
-			$this->data->totalProduct += $product->quantity ;
+			//$this->data->totalProduct += $product->quantity ;
 
 		}
-
+		VmConfig::$echoDebug = true;
+		vmdebug('Strange, this data? ',$this->data);
+		$this->data['totalProduct'] = $this->totalProduct;
 		$this->data->products = $this->products;
 
-		return $this->data ;
+		return $this->data ;*/
 	}
 
 }

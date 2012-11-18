@@ -52,7 +52,7 @@ $customs = $this->customs->items;
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($customs); ?>')" /></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_PARENT'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_GROUP'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_TITLE'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_FIELD_DESCRIPTION'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE'); ?></th>

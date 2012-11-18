@@ -245,7 +245,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				'custom_value' => ' `customfield_value` VARCHAR(8000) NULL DEFAULT NULL',
 				'custom_price' => ' `customfield_price` DECIMAL(15,6) NULL DEFAULT NULL COMMENT \'price\'',
 				'custom_params' => ' `customfield_param` VARCHAR(12800) NULL DEFAULT NULL',
-				'idx_custom_value' => ' INDEX `idx_customfield_value` (`customfield_value`)'
+				'idx_custom_value' => ' INDEX `idx_published` (`published`)'
 			));
 
 			//ALTER TABLE `joke_virtuemart_product_customfields` DROP INDEX `idx_custom_value`;
@@ -302,27 +302,23 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->_db->setQuery($q);
 				$res = $this->_db->loadResult();
 
-				if($res){
-					//vmdebug('fixOrdersVendorId ',$res);
-					$q = 'UPDATE #__virtuemart_orders SET `virtuemart_vendor_id`=1 WHERE virtuemart_vendor_id = "0" ';
-					$this->_db->setQuery($q);
-					$res = $this->_db->query();
-					$err = $this->_db->getErrorMsg();
-					if(!empty($err)){
-						vmError('fixOrdersVendorId update orders '.$err);
-					}
-					$q = 'UPDATE #__virtuemart_order_items SET `virtuemart_vendor_id`=1 WHERE virtuemart_vendor_id = "0" ';
-					$this->_db->setQuery($q);
-					$res = $this->_db->query();
-					$err = $this->_db->getErrorMsg();
-					if(!empty($err)){
-						vmError('fixOrdersVendorId update order_item '.$err);
-					}
+				//vmdebug('fixOrdersVendorId ',$res);
+				$q = 'UPDATE #__virtuemart_orders SET `virtuemart_vendor_id`=1 WHERE virtuemart_vendor_id = "0" ';
+				$this->_db->setQuery($q);
+				$res = $this->_db->query();
+				$err = $this->_db->getErrorMsg();
+				if(!empty($err)){
+					vmError('fixOrdersVendorId update orders '.$err);
+				}
+				$q = 'UPDATE #__virtuemart_order_items SET `virtuemart_vendor_id`=1 WHERE virtuemart_vendor_id = "0" ';
+				$this->_db->setQuery($q);
+				$res = $this->_db->query();
+				$err = $this->_db->getErrorMsg();
+				if(!empty($err)){
+					vmError('fixOrdersVendorId update order_item '.$err);
 				}
 
 			}
-
-
 
 		}
 
@@ -355,6 +351,53 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		}
 
 
+		private function migrateCustoms(){
+
+			$db = JFactory::getDBO();
+			$q = "UPDATE `#__virtuemart_customs` SET `field_type`='S',`is_cart_attribute`=1,`is_input`=1,`is_list`='0' WHERE `field_type`='V'";
+			$db->setQuery($q);
+			$db->query();
+			$err = $db->getErrorMsg();
+			if(!empty($err)){
+				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
+			}
+
+			$db = JFactory::getDBO();
+			$q = "UPDATE `#__virtuemart_customs` SET `field_type`='S' WHERE `field_type`='I'";
+			$db->setQuery($q);
+			$db->query();
+			$err = $db->getErrorMsg();
+			if(!empty($err)){
+				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
+			}
+
+			$db = JFactory::getDBO();
+			$q = "UPDATE `#__virtuemart_customs` SET `field_type`='S', `custom_value`='JYES;JNO',`is_list`='1' WHERE `field_type`='B'";
+			$db->setQuery($q);
+			$db->query();
+			$err = $db->getErrorMsg();
+			if(!empty($err)){
+				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
+			}
+
+			$db = JFactory::getDBO();
+			$q = "UPDATE `#__virtuemart_customs` SET `layout_pos`='addtocart' WHERE `is_input`='1'";
+			$db->setQuery($q);
+			$db->query();
+			$err = $db->getErrorMsg();
+			if(!empty($err)){
+				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
+			}
+
+			$db = JFactory::getDBO();
+			$q = "UPDATE `#__virtuemart_customs` SET `field_type`='G' WHERE `field_type`='P'";
+			$db->setQuery($q);
+			$db->query();
+			$err = $db->getErrorMsg();
+			if(!empty($err)){
+				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
+			}
+		}
 
 
 

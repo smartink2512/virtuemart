@@ -282,7 +282,14 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$product_model = VmModel::getModel ('product');
 
-		$prices = $product_model->getPrice ($virtuemart_product_id, $customProductData[$virtuemart_product_id], $quantity);
+		if(isset($customProductData[$virtuemart_product_id])){
+			$prices = $product_model->getPrice ($virtuemart_product_id, $customProductData[$virtuemart_product_id], $quantity);
+		} else {
+			//VmConfig::$echoDebug=true;
+			//vmdebug('recalculate',$customProductData);
+			jexit ();
+		}
+
 
 		$priceFormated = array();
 		if (!class_exists ('CurrencyDisplay')) {

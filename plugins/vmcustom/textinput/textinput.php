@@ -71,15 +71,15 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 	/**
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCart()
-	 * @author Patrick Kohl
+	 * @author Max Milbers
 	 */
 	function plgVmOnViewCart($product,$row,&$html) {
 
 		if (empty($product->productCustom->custom_element) or $product->productCustom->custom_element != $this->_name) return '';
 
 		foreach($product->customProductData[$product->productCustom->virtuemart_custom_id] as $name => $value){
-
-			$html .='<span>'.JText::_($product->productCustom->custom_title).' '.$value.'</span>';
+		//	vmdebug('plgVmOnViewCart ',$name,$value);
+			$html .='<span>'.JText::_($product->productCustom->custom_title).' '.$value['comment'].'</span>';
 		}
 
 		return true;

@@ -145,7 +145,7 @@ class VirtueMartModelCustom extends VmModel {
 		else {
 			$value = JRequest::getInt ('custom_parent_id', 0);
 		}
-		return VmHTML::row ('select', 'COM_VIRTUEMART_CUSTOM_PARENT', 'custom_parent_id', $customslist, $value);
+		return VmHTML::row ('select', 'COM_VIRTUEMART_CUSTOM_GROUP', 'custom_parent_id', $customslist, $value);
 	}
 
 	/**
@@ -300,6 +300,9 @@ class VirtueMartModelCustom extends VmModel {
 		$table->custom_element = $data['custom_element'];
 		$table->custom_jplugin_id = $data['custom_jplugin_id'];
 
+		if(!empty($data['is_input'])){
+			if(empty($data['layout_pos'])) $data['layout_pos'] = 'addtocart';
+		}
 		//We are in the custom and so the table contains the field_type, else not!!
 		VirtueMartModelCustomfields::setParameterableByFieldType($table,$table->field_type);
 		$table->_xParams = 'custom_param';

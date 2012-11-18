@@ -171,10 +171,10 @@ foreach ($this->cart->products as $pkey => $prow) {
 			<input type="text" title="<?php echo  JText::_ ('COM_VIRTUEMART_CART_UPDATE') ?>" class="inputbox" size="3" maxlength="4" name="quantity" value="<?php echo $prow->quantity ?>"/>
 			<input type="hidden" name="view" value="cart"/>
 			<input type="hidden" name="task" value="update"/>
-			<input type="hidden" name="cart_virtuemart_product_id" value="<?php echo $prow->cart_item_id  ?>"/>
+			<input type="hidden" name="cart_virtuemart_product_id" value="<?php echo $pkey  ?>"/>
 			<input type="submit" class="vmicon vm2-add_quantity_cart" name="update" title="<?php echo  JText::_ ('COM_VIRTUEMART_CART_UPDATE') ?>" align="middle" value=" "/>
 		</form>
-		<a class="vmicon vm2-remove_from_cart" title="<?php echo JText::_ ('COM_VIRTUEMART_CART_DELETE') ?>" align="middle" href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=delete&cart_virtuemart_product_id=' . $prow->cart_item_id) ?>"> </a>
+		<a class="vmicon vm2-remove_from_cart" title="<?php echo JText::_ ('COM_VIRTUEMART_CART_DELETE') ?>" align="middle" href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=delete&cart_virtuemart_product_id=' . $pkey) ?>"> </a>
 	</td>
 
 	<?php if (VmConfig::get ('show_tax')) { ?>
@@ -249,6 +249,7 @@ if (VmConfig::get ('coupons_enable')) {
 
 
 <?php
+
 foreach ($this->cart->cartData['DBTaxRulesBill'] as $rule) {
 	?>
 <tr class="sectiontableentry<?php echo   $i % 2 ?>">
