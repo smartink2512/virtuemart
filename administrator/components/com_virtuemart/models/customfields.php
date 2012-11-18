@@ -211,7 +211,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		//the option "is_cart_attribute" gives the possibility to set a price, there is no sense to set a price,
 		//if the custom is not stored in the order.
-		if ($field->is_cart_attribute) {
+		if ($field->is_input) {
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 			if(!class_exists('VirtueMartModelCurrency')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'currency.php');
 			$vendor_model = VmModel::getModel('vendor');
@@ -415,10 +415,10 @@ class VirtueMartModelCustomfields extends VmModel {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance ();
 
-		if ($customfield->customfield_price > 0) {
+		/*if ($customfield->customfield_price > 0) {
 
 			$price = $currency->priceDisplay ((float)$customfield->customfield_price);
-		}
+		}*/
 
 		switch ($type) {
 
@@ -468,7 +468,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			case 'D':
 				if(empty($customfield->custom_value)) $customfield->custom_value = 'LC2';
 				//Customer selects date
-				if($customfield->is_cart_attribute){
+				if($customfield->is_input){
 					$customfield->display =  '<span class="product_custom_date">' . vmJsApi::jDate ($customfield->customfield_value,$customProductDataName) . '</span>'; //vmJsApi::jDate($field->custom_value, 'field['.$row.'][custom_value]','field_'.$row.'_customvalue').$priceInput;
 				}
 				//Customer just sees a date
@@ -496,12 +496,22 @@ class VirtueMartModelCustomfields extends VmModel {
 						}
 					}*/
 					//vmdebug('case S $customfield->is_list',$customfield->customfield_value);
-					/*if($customfield->is_input){
+					if($customfield->is_input){
 
-						$customfield->display =  '<input type="text" readonly value="' . JText::_ ($customfield->customfield_value) . '" name="'.$customProductDataName.'" /> ' . JText::_ ('COM_VIRTUEMART_CART_PRICE') . $price . ' ';
-					} else {*/
+						$options = array();
+						$values = explode (';', $customfield->custom_value);
+
+						foreach ($values as $key => $val) {
+							$options[] = array('value' => $val, 'text' => $val);
+						}
+
+						$currentValue = $customfield->customfield_value;
+						$customfield->display = JHTML::_ ('select.genericlist', $options, $customProductDataName, NULL, 'value', 'text', $currentValue);
+
+						//$customfield->display =  '<input type="text" readonly value="' . JText::_ ($customfield->customfield_value) . '" name="'.$customProductDataName.'" /> ' . JText::_ ('COM_VIRTUEMART_CART_PRICE') . $price . ' ';
+					} else {
 						$customfield->display =  JText::_ ($customfield->customfield_value);
-					//}
+					}
 				} else {
 					if(isset($customfield->is_input)){
 
@@ -512,8 +522,7 @@ class VirtueMartModelCustomfields extends VmModel {
 							$customfield->options[$option->virtuemart_customfield_id] = $option;
 						}
 
-						reset($customfield->options);
-						$default = current ($customfield->options);
+						$default = reset($customfield->options);
 						foreach ($customfield->options as $productCustom) {
 							$price = self::_getCustomPrice($productCustom->customfield_price, $currency, $calculator);
 							$productCustom->text = $productCustom->customfield_value . ' ' . $price;

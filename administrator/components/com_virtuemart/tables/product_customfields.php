@@ -63,7 +63,7 @@ class TableProduct_customfields extends VmTable {
 		// $this->setSecondaryKey('virtuemart_customfield_id');
 		$this->setLoggable();
 		$this->setOrderable();
-
+		$this->_xParams='customfield_param';
 	}
 
 	function check(){
