@@ -504,7 +504,7 @@ class VmModel extends JModel {
 		//if(empty($cidName)) $cidName = $this->_cidName;
 
 		$ids = JRequest::getVar( $cidname, JRequest::getVar('cid',array(0)), 'post', 'array' );
-		vmdebug('toggle $cidname: '.$cidname,$ids);
+
 		foreach($ids as $id){
 			$table->load( (int)$id );
 

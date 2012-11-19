@@ -1140,8 +1140,11 @@ class VmTable extends JTable{
 		$k = $this->_tbl_key;
 		$q = 'UPDATE `'.$this->_tbl.'` SET `'.$field.'` = "'.$this->$field.'" WHERE `'.$k.'` = "'.$this->$k.'" ';
 		$this->_db->setQuery($q);
-		vmdebug('toggle '.$q);
-		return ($this->_db->query());
+		if(!$res = $this->_db->query()){
+			vmError('There was an error toggling ',$this->_db->getErrorMsg());
+		}
+
+		return $res;
 	}
 
 	public function resetErrors(){

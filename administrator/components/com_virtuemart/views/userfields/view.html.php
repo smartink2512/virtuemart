@@ -140,7 +140,7 @@ class VirtuemartViewUserfields extends VmView {
 			// Toggles
 			$lists['required']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_REQUIRED','required',$userField->required,$notoggle);
 			$lists['published']    =  VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$userField->published,$notoggle);
-			$lists['registration'] =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_REGISTRATION','registration',$userField->registration,$notoggle);
+			$lists['registration'] =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_CART','cart',$userField->cart,$notoggle);
 			$lists['shipment']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_SHIPPING','shipment',$userField->shipment,$notoggle);
 			$lists['account']      =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_ACCOUNT','account',$userField->account,$notoggle);
 			$lists['readonly']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_USERFIELDS_READONLY','readonly',$userField->readonly,$notoggle);
@@ -165,8 +165,8 @@ class VirtuemartViewUserfields extends VmView {
 			$bar= JToolBar::getInstance( 'toolbar' );
 			$bar->appendButton( 'Separator', '"><span class="bartext">'.$barText.'</span><hr style="display: none;' );
 //$bar->appendButton( 'publish', 'upload', $alt, '', 550, 400 );
-			JToolBarHelper::custom('toggle.registration.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_REGISTRATION');
-			JToolBarHelper::custom('toggle.registration.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_REGISTRATION');
+			JToolBarHelper::custom('toggle.cart.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_CART');
+			JToolBarHelper::custom('toggle.cart.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_CART');
 			JToolBarHelper::custom('toggle.shipment.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_SHIPPING');
 			JToolBarHelper::custom('toggle.shipment.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_SHIPPING');
 			JToolBarHelper::custom('toggle.account.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_ACCOUNT');

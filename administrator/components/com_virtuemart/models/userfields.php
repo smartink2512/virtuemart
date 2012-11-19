@@ -52,9 +52,8 @@ class VirtueMartModelUserfields extends VmModel {
 		parent::__construct('virtuemart_userfield_id');
 		$this->setMainTable('userfields');
 
-		$this->setToggleName('required');
-		$this->setToggleName('registration');
-		$this->setToggleName('shipment');
+		$this->setToggleName('cart');
+		$this->setToggleName('requiredt');		$this->setToggleName('shipment');
 		$this->setToggleName('account');
 		// Instantiate the Helper class
 		$this->_params = new ParamHelper();
@@ -162,7 +161,6 @@ class VirtueMartModelUserfields extends VmModel {
 	{
 		if (empty($this->_data)) {
 			$this->_data = $this->getTable('userfields');
-
 			$this->_data->load((int)$this->_id);
 		}
 
