@@ -271,21 +271,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->fixOrdersVendorId();
 			$this->updateCustomfieldsPublished();
 
+			$this->migrateCustoms();
+
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
-		}
-
-		private function updateCustomfieldsPublished(){
-
-			$db = JFactory::getDBO();
-			$q = 'UPDATE `#__virtuemart_product_customfields` SET `published`= "1"  WHERE `published`="0" ';
-			$db->setQuery($q);
-			$db->query();
-			$err = $db->getErrorMsg();
-			if(!empty($err)){
-				vmError('updateCustomfieldsPublished update published '.$err);
-			}
 		}
 
 		private function fixOrdersVendorId(){
@@ -352,6 +342,15 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 
 		private function migrateCustoms(){
+
+			$db = JFactory::getDBO();
+			$q = 'UPDATE `#__virtuemart_product_customfields` SET `published`= "1"  WHERE `published`="0" ';
+			$db->setQuery($q);
+			$db->query();
+			$err = $db->getErrorMsg();
+			if(!empty($err)){
+				vmError('updateCustomfieldsPublished update published '.$err);
+			}
 
 			$db = JFactory::getDBO();
 			$q = "UPDATE `#__virtuemart_customs` SET `field_type`='S',`is_cart_attribute`=1,`is_input`=1,`is_list`='0' WHERE `field_type`='V'";

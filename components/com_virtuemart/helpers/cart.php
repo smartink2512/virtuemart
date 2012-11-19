@@ -480,15 +480,19 @@ class VirtueMartCart {
 
 		//		foreach($cart_virtuemart_product_ids as $cart_virtuemart_product_id){
 		$updated = false;
+
 		if (array_key_exists($cart_virtuemart_product_id, $this->cartProductsData)) {
 			if (!empty($quantity)) {
-				if ($this->checkForQuantities($this->products[$cart_virtuemart_product_id], $quantity)) {
-					$this->products[$cart_virtuemart_product_id]->quantity = $quantity;
+				$productModel = VmModel::getModel('product');
+
+				$product = $productModel -> getProduct($this->cartProductsData[$cart_virtuemart_product_id]['virtuemart_product_id'], $quantity);
+				if ($this->checkForQuantities($product, $quantity)) {
+					$this->cartProductsData[$cart_virtuemart_product_id]['quantity'] = $quantity;
 					$updated = true;
 				}
 			} else {
 				//Todo when quantity is 0,  the product should be removed, maybe necessary to gather in array and execute delete func
-				unset($this->products[$cart_virtuemart_product_id]);
+				unset($this->cartProductsData[$cart_virtuemart_product_id]);
 				$updated = true;
 			}
 			// Save the cart

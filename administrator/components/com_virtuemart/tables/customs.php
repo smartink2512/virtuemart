@@ -61,7 +61,7 @@ class TableCustoms extends VmTable {
 
 	/** @var int(1)  1= Is this a list of value ? */
 	var $is_list		= 0;
-
+	var $is_input		= 0;
 	/** @var int(1)  1= hidden field info */
 	var $is_hidden		= 0;
 
