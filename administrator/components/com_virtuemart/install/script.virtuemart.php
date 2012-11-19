@@ -269,7 +269,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->adjustDefaultOrderStates();
 
 			$this->fixOrdersVendorId();
-			$this->updateCustomfieldsPublished();
 
 			$this->migrateCustoms();
 
