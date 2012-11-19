@@ -69,7 +69,7 @@ if ($this->showReview) {
 				?>
 
 				<?php // Loop through all reviews
-				if (!empty($this->rating_reviews) && $review->published) {
+				if (!empty($review) && $review->published) {
 					$reviews_published++;
 					?>
 					<div class="<?php echo $color ?>">
