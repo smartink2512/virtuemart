@@ -418,14 +418,17 @@ function virtuemartParseRoute($segments) {
 
 	}
 	if ( $helper->compareKey(end($segments) ,'askquestion') ) {
+		$vars = (array)$helper->activeMenu ;
 		$vars['task'] = 'askquestion';
 		array_pop($segments);
 
 	} elseif ( $helper->compareKey(end($segments) ,'recommend') ) {
+		$vars = (array)$helper->activeMenu ;
 		$vars['task'] = 'recommend';
 		array_pop($segments);
 
 	} elseif ( $helper->compareKey(end($segments) ,'notify') ) {
+		$vars = (array)$helper->activeMenu ;
 		$vars['layout'] = 'notify';
 		array_pop($segments);
 
