@@ -247,9 +247,12 @@ class VirtueMartModelProduct extends VmModel {
 						}
 					}
 					if (strpos ($searchField, '`') !== FALSE){
-						$filter_search[] =  $searchField . ' LIKE ' . $keyword;
+						$keywords_plural = preg_replace('/\s+/', '%" AND '.$searchField.' LIKE "%', $keyword);
+						$filter_search[] =  $searchField . ' LIKE ' . $keywords_plural;
 					} else {
-						$filter_search[] = '`' . $searchField . '` LIKE ' . $keyword;
+						$keywords_plural = preg_replace('/\s+/', '%" AND `'.$searchField.'` LIKE "%', $keyword);
+						$filter_search[] = '`'.$searchField.'` LIKE '.$keywords_plural;
+						//$filter_search[] = '`' . $searchField . '` LIKE ' . $keyword;
 					}
 
 
@@ -562,6 +565,12 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				$rest = $suglimit%$category->products_per_row;
 				$limit = $suglimit - $rest;
+				
+				//fix by hjet
+				$prod_per_page = explode(",",VmConfig::get('pagination_sequence'));
+				if($limit <= $prod_per_page['0'] && array_key_exists('0',$prod_per_page)){
+					$limit = $prod_per_page['0'];
+				}
 			}
 
 			//vmdebug('Looks like the category lastCatId '.$lastCatId.' actual id '.$cateid );

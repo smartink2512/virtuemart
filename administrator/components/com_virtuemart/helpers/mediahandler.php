@@ -56,7 +56,10 @@ class VmMediaHandler {
 
 	var $media_attributes = 0;
 	var $setRole = false;
-
+	var $file_name = '';
+	var $file_extension = '';
+	var $virtuemart_media_id = '';
+	
 	function __construct($id=0){
 
 		$this->virtuemart_media_id = $id;
@@ -582,6 +585,11 @@ class VmMediaHandler {
 		 */
 		function uploadFile($urlfolder,$overwrite = false){
 
+		if(empty($urlfolder) OR strlen($urlfolder)<2){
+				vmError('Not able to upload file, give path/url empty/too short '.$urlfolder.' please correct path in your virtuemart config');
+				return false;
+			}
+			
 			$media = JRequest::getVar('upload', array(), 'files');
 
 			$app = JFactory::getApplication();

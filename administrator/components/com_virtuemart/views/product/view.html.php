@@ -47,6 +47,10 @@ class VirtuemartViewProduct extends VmView {
 		//$category_model = VmModel::getModel('category');
 		$model = VmModel::getModel ();
 
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		$perms = Permissions::getInstance();
+		$this->assignRef('perms', $perms );
+
 		// Handle any publish/unpublish
 		switch ($task) {
 			case 'add':
@@ -128,8 +132,6 @@ class VirtuemartViewProduct extends VmView {
 				if (Vmconfig::get ('multix', 'none') !== 'none') {
 					$lists['vendors'] = Shopfunctions::renderVendorList ($product->virtuemart_vendor_id);
 				}
-
-				$this->loadHelper ('permissions');
 
 				$vendor_model->setId (Permissions::getInstance ()->isSuperVendor ());
 				$vendor = $vendor_model->getVendor ();
@@ -256,6 +258,7 @@ class VirtuemartViewProduct extends VmView {
 
 			case 'massxref_cats':
 			case 'massxref_cats_exe':
+
 				$this->SetViewTitle ('PRODUCT_MASSXREF');
 
 				$this->loadHelper ('permissions');

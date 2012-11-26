@@ -222,7 +222,7 @@ class VmView extends JView{
 		//I absolutly do not understand for that should be for, note by Max
 /*		if ($object) {
 		   if(Vmconfig::get('multix','none')!=='none'){
-				$this->loadHelper('permissions');
+				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 				if(!Permissions::getInstance()->check('admin')) {
 					if (!$object->virtuemart_vendor_id) {
 						if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');

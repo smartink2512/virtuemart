@@ -65,7 +65,7 @@ class VirtuemartViewShopperGroup extends VmView {
 			JToolBarHelper::makeDefault();
 
 
-			$this->loadHelper('permissions');
+			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			$showVendors = Permissions::getInstance()->check('admin');
 			$this->assignRef('showVendors',$showVendors);
 

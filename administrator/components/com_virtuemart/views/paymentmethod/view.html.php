@@ -40,7 +40,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 
 
-		$this->loadHelper('permissions');
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 
 		$this->loadHelper('html');
 

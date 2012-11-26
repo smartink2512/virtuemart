@@ -284,7 +284,7 @@ class VirtuemartViewUser extends VmView {
 
     function shopper($userFields) {
 
-	$this->loadHelper('permissions');
+	if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 	$this->loadHelper('shoppergroup');
 
 	// Shopper info
