@@ -222,7 +222,6 @@ class VirtueMartModelProduct extends VmModel {
 // 		if ( $this->keyword !== "0" and $group ===false) {
 			if (!empty($this->keyword) and $this->keyword !== '' and $group === FALSE) {
 
-				//		$keyword = trim(preg_replace('/\s+/', '%', $keyword), '%');
 				$keyword = '"%' . $this->_db->getEscaped ($this->keyword, TRUE) . '%"';
 
 				foreach ($this->valid_search_fields as $searchField) {
@@ -247,9 +246,12 @@ class VirtueMartModelProduct extends VmModel {
 						}
 					}
 					if (strpos ($searchField, '`') !== FALSE){
-						$filter_search[] =  $searchField . ' LIKE ' . $keyword;
+						$keywords_plural = preg_replace('/\s+/', '%" AND '.$searchField.' LIKE "%', $keyword);
+						$filter_search[] =  $searchField . ' LIKE ' . $keywords_plural;
 					} else {
-						$filter_search[] = '`' . $searchField . '` LIKE ' . $keyword;
+						$keywords_plural = preg_replace('/\s+/', '%" AND `'.$searchField.'` LIKE "%', $keyword);
+						$filter_search[] = '`'.$searchField.'` LIKE '.$keywords_plural;
+						//$filter_search[] = '`' . $searchField . '` LIKE ' . $keyword;
 					}
 
 
@@ -562,6 +564,12 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				$rest = $suglimit%$category->products_per_row;
 				$limit = $suglimit - $rest;
+
+				//fix by hjet
+				$prod_per_page = explode(",",VmConfig::get('pagination_sequence'));
+				if($limit <= $prod_per_page['0'] && array_key_exists('0',$prod_per_page)){
+					$limit = $prod_per_page['0'];
+				}
 			}
 
 			//vmdebug('my cat',$category);
