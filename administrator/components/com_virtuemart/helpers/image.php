@@ -102,6 +102,12 @@ class VmImage extends VmMediaHandler {
 	 */
 	public function createThumb() {
 
+		if(empty($this->file_url_folder)){
+			vmError('Couldnt create thumb, no directory given. Activate vmdebug to understand which database entry is creating thies error');
+			vmdebug('createThumb, no directory given',$this);
+			return FALSE;
+		}
+
 		$synchronise = JRequest::getString('synchronise',false);
 
 		if(!VmConfig::get('img_resize_enable') || $synchronise) return;

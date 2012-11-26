@@ -773,11 +773,13 @@ class VirtueMartModelProduct extends VmModel {
 			$err = $db->getErrorMsg();
 			if(!empty($err)){
 				vmError('getProductSingle '.$err);
+			} else {
+				//vmdebug('getProductSingle ',$product->prices);
 			}
-			//vmdebug('query '.$q,$prices,$err);
+
 
 			if(count($product->prices)===0){
-				vmdebug('my prices count 0');
+				//vmdebug('my prices count 0');
 				$prices = array(
 					'virtuemart_product_price_id' => 0
 					,'virtuemart_product_id' => 0
