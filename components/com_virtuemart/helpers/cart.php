@@ -406,7 +406,35 @@ class VirtueMartCart {
 				if (isset($post['customPrice'])) {
 
 					$product->customPrices = $post['customPrice'];
-					if (isset($post['customPlugin'])) $product->customPlugin = json_encode($post['customPlugin']);
+					if (isset($post['customPlugin'])){
+
+						if(!class_exists('vmFilter'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmfilter.php');
+
+						if(!is_array($post['customPlugin'])){
+							$customPluginPost = (array)	$post['customPlugin'];
+						} else {
+							$customPluginPost = $post['customPlugin'];
+						}
+						VmConfig::$echoDebug=TRUE;
+
+						foreach($customPluginPost as &$customPlugin){
+							if(is_array($customPlugin)){
+								foreach($customPlugin as &$customPlug){
+									if(is_array($customPlug)){
+										foreach($customPlug as &$customPl){
+											$value = vmFilter::hl( $customPl,array('deny_attribute'=>'*'));
+											$value = preg_replace('@<[\/\!]*?[^<>]*?>@si','',$value);//remove all html tags
+											$value = (string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
+											$value = trim(str_replace('"', ' ', $value),"'") ;
+											$customPl = (string)preg_replace('#^\'#si','',$value);
+										}
+									}
+								}
+							}
+						}
+
+						$product->customPlugin = json_encode($customPluginPost);
+					}
 
 					$productKey .= '::';
 
