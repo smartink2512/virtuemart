@@ -250,7 +250,23 @@ class VirtuemartViewProduct extends VmView {
 
 
 				$this->assignRef('product', $product);
-				$this->assignRef('currencies', $currencies);
+			$product_empty_price = array(
+					'virtuemart_product_price_id' => 0
+				, 'virtuemart_product_id'         => $virtuemart_product_id
+				, 'virtuemart_shoppergroup_id'    => NULL
+				, 'product_price'                 => NULL
+				, 'override'                      => NULL
+				, 'product_override_price'        => NULL
+				, 'product_tax_id'                => NULL
+				, 'product_discount_id'           => NULL
+				, 'product_currency'              => $vendor->vendor_currency
+				, 'product_price_publish_up'      => NULL
+				, 'product_price_publish_down'    => NULL
+				, 'price_quantity_start'          => NULL
+				, 'price_quantity_end'            => NULL
+				);
+				$this->assignRef ('product_empty_price', $product_empty_price);
+				//$this->assignRef('currencies', $currencies);
 //no need moved to top $this->assignRef('manufacturers', $manufacturers);
 
 

@@ -154,22 +154,112 @@ $i=0;
 
 		<td valign="top">
 			<!-- Product pricing -->
-            <fieldset>
-                <legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICES'); ?></legend>
-				<?php
+          <fieldset>
+    <legend><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICES'); ?></legend>
 
-				//$product = $this->product;
+	<?php
+	//$product = $this->product;
 
-				if (empty($this->product->prices)) {
-					$this->product->prices[] = array();
-				}
-				$this->i = 0;
-				foreach ($this->product->prices as $sprice) {
-					$this->sprices = $sprice;
-					echo $this->loadTemplate('price');
-				}
-				?>
-            </fieldset>
+	if (empty($this->product->prices)) {
+		$this->product->prices[] = array();
+	}
+	$this->i = 0;
+	$rowColor = 0;
+	if (!class_exists ('calculationHelper')) {
+		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+	}
+	$calculator = calculationHelper::getInstance ();
+	$currency_model = VmModel::getModel ('currency');
+	$currencies = $currency_model->getCurrencies ();
+	$nbPrice = count ($this->product->prices);
+	$this->priceCounter = 0;
+	$this->product->prices[$nbPrice] = $this->product_empty_price;
+	vmdebug ('prices', $this->product->prices);
+
+
+	if (!class_exists ('calculationHelper')) {
+		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+	}
+	$calculator = calculationHelper::getInstance ();
+	?>
+    <table border="0" width="100%" cellpadding="2" cellspacing="3" id="mainPriceTable" class="adminform">
+        <tbody id="productPriceBody">
+		<?php
+
+		foreach ($this->product->prices as $singlePrice) {
+			$this->sprices = $singlePrice;
+
+			if (empty($this->sprices['virtuemart_product_price_id'])) {
+				$this->sprices['virtuemart_product_price_id'] = '';
+			}
+
+			$this->tempProduct = (object)array_merge ((array)$this->product, (array)$this->sprices);
+			$this->calculatedPrices = $calculator->getProductPrices ($this->tempProduct);
+			vmdebug ("edit_price", $this->calculatedPrices, $this->tempProduct);
+
+			$currency_model = VmModel::getModel ('currency');
+			$this->lists['currencies'] = JHTML::_ ('select.genericlist', $currencies, 'mprices[product_currency][' . $this->priceCounter . ']', '', 'virtuemart_currency_id', 'currency_name', $this->tempProduct->product_currency);
+
+			$DBTax = ''; //JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
+			foreach ($calculator->rules['DBTax'] as $rule) {
+				$DBTax .= $rule['calc_name'] . '<br />';
+			}
+			$this->DBTaxRules = $DBTax;
+
+			$tax = ''; //JText::_('COM_VIRTUEMART_TAX_EFFECTING').'<br />';
+			foreach ($calculator->rules['Tax'] as $rule) {
+				$tax .= $rule['calc_name'] . '<br />';
+			}
+			foreach ($calculator->rules['VatTax'] as $rule) {
+				$tax .= $rule['calc_name'] . '<br />';
+			}
+			$this->taxRules = $tax;
+
+			$DATax = ''; //JText::_('COM_VIRTUEMART_RULES_EFFECTING');
+			foreach ($calculator->rules['DATax'] as $rule) {
+				$DATax .= $rule['calc_name'] . '<br />';
+			}
+			$this->DATaxRules = $DATax;
+
+			if (!isset($this->tempProduct->product_tax_id)) {
+				$this->tempProduct->product_tax_id = 0;
+			}
+			$this->lists['taxrates'] = ShopFunctions::renderTaxList ($this->tempProduct->product_tax_id, 'mprices[product_tax_id][' . $this->priceCounter . ']');
+			if (!isset($this->tempProduct->product_discount_id)) {
+				$this->tempProduct->product_discount_id = 0;
+			}
+			$this->lists['discounts'] = $this->renderDiscountList ($this->tempProduct->product_discount_id, 'mprices[product_discount_id][' . $this->priceCounter . ']');
+
+			$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList ($this->tempProduct->virtuemart_shoppergroup_id, false, 'mprices[virtuemart_shoppergroup_id][' . $this->priceCounter . ']');
+
+			if ($this->priceCounter == $nbPrice) {
+				$tmpl = "productPriceRowTmpl";
+			} else {
+				$tmpl = "productPriceRowTmpl_" . $this->priceCounter;
+			}
+
+			?>
+        <tr id="<?php echo $tmpl ?>" class="removable row<?php echo $rowColor?>">
+            <td width="100%">
+                <span class="vmicon vmicon-16-remove price-remove"></span>
+				<?php //echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_ORDER'); ?>
+				<?php echo $this->loadTemplate ('price'); ?>
+            </td>
+        </tr>
+			<?php
+			$this->priceCounter++;
+		}
+		?>
+        </tbody>
+    </table>
+    <div class="button2-left">
+        <div class="blank">
+            <a href="#" id="add_new_price" "><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_ADD_PRICE') ?> </a>
+        </div>
+    </div>
+
+</fieldset>
+</tr>
 		</td>
 	</tr>
 	<tr>
@@ -293,7 +383,30 @@ $i=0;
 	</tr>
 
 </table>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery("#mainPriceTable").dynoTable({
+            removeClass:'.price-remove', //remove class name in  table
+            cloneClass:'.price-clone', //Custom cloner class name in  table
+            addRowTemplateId:'#productPriceRowTmpl', //Custom id for  row template
+            addRowButtonId:'#add_new_price', //Click this to add a price
+            lastRowRemovable:false, //Don't let the table be empty.
+            orderable:true, //prices can be rearranged
+            dragHandleClass:".price_ordering", //class for the click and draggable drag handle
+            onRowRemove:function () {
+            },
+            onRowClone:function () {
+            },
+            onRowAdd:function () {
+            },
+            onTableEmpty:function () {
+            },
+            onRowReorder:function () {
+            }
+        });
+    });
 
+</script>
 
 <script type="text/javascript">
 var tax_rates = new Array();
