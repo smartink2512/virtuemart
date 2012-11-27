@@ -3,10 +3,9 @@
  *
  * Show the product details page
  *
- * @package	VirtueMart
+ * @package    VirtueMart
  * @subpackage
  * @author Max Milbers, Valerie Isaksen
-
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -17,31 +16,50 @@
  * @version $Id$
  */
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+defined ('_JEXEC') or die('Restricted access');
+		vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
+		vmJsApi::css('jquery.fancybox-1.3.4');
+$document = JFactory::getDocument ();
+$imageJS = '
+jQuery(document).ready(function() {
+	jQuery("a[rel=vm-additional-images]").fancybox({
+		"titlePosition" 	: "inside",
+		"transitionIn"	:	"elastic",
+		"transitionOut"	:	"elastic"
+	});
+});
+';
+$document->addScriptDeclaration ($imageJS);
 
-// Product Main Image
-if (!empty($this->product->images[0])) {
-    ?>
-    <div class="main-image">
-	<?php echo $this->product->images[0]->displayMediaFull('class="medium-image" id="medium-image"', false, "class='modal'", true); ?>
-    </div>
-<?php } // Product Main Image END ?>
-
-<?php
-// Showing The Additional Images
-// if(!empty($this->product->images) && count($this->product->images)>1) {
-if (!empty($this->product->images) and count ($this->product->images)>1) {
-    ?>
-    <div class="additional-images">
-	<?php
-	// List all Images
-	if (count($this->product->images) > 0) {
-	    foreach ($this->product->images as $image) {
-		echo '<div class="floatleft">' . $image->displayMediaThumb('class="product-image"', true, 'class="modal"', true, true) . '</div>'; //'class="modal"'
-	    }
-	}
+if (!empty($this->product->images)) {
+	$image = $this->product->images[0];
 	?>
+<div class="main-image">
+    <div class="floatleft">
+        <a title="<?php echo $image->file_description ?>" rel="vm-additional-images" href="<?php echo $image->file_url; ?>"><img src="<?php echo $image->file_url_thumb ?>" alt="<?php echo $image->file_description ?>"/></a>
+    </div>
+	 <div class="clear"></div>
+</div>
+<?php
+	$count_images = count ($this->product->images);
+	if ($count_images > 1) {
+		?>
+    <div class="additional-images">
+		<?php
+		for ($i = 1; $i < $count_images; $i++) {
+			$image = $this->product->images[$i];
+			?>
+            <div class="floatleft">
+                <a title="<?php echo $image->file_description ?>" rel="vm-additional-images" href="<?php echo $image->file_url; ?>"><img src="<?php echo $image->file_url_thumb ?>" alt="<?php echo $image->file_description ?>"/></a>
+            </div>
+			<?php
+		}
+		?>
         <div class="clear"></div>
     </div>
-<?php
-} // Showing The Additional Images END ?>
+	<?php
+	}
+}
+?>
+
+

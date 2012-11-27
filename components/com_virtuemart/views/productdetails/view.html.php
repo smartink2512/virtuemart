@@ -123,10 +123,10 @@ class VirtueMartViewProductdetails extends VmView {
 
 	    $categoryLink = '';
 	    if (!$last_category_id) {
-		$last_category_id = JRequest::getInt('virtuemart_category_id', false);
+			$last_category_id = JRequest::getInt('virtuemart_category_id', false);
 	    }
 	    if ($last_category_id) {
-		$categoryLink = '&virtuemart_category_id=' . $last_category_id;
+			$categoryLink = '&virtuemart_category_id=' . $last_category_id;
 	    }
 
 	    $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink . '&error=404'));

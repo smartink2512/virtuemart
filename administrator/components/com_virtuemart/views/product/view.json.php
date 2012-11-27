@@ -167,8 +167,7 @@ class VirtuemartViewProduct extends JView {
 
 			$this->json['value'] = $html;
 			$this->json['ok'] = 1 ;
-		} else if ($this->type=='userlist')
-		{
+		} else if ($this->type=='userlist') {
 			$status = JRequest::getvar('status');
 			if ($status) {
 				$productModel = VmModel::getModel('product');

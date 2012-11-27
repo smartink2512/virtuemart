@@ -1440,9 +1440,6 @@ class VirtueMartModelProduct extends VmModel {
 
 
 			if (isset($data['mprices']['product_price'][$k])) {
-
-
-
 				if ($isChild) {
 					unset($data['mprices']['product_override_price'][$k]);
 					unset($pricesToStore['product_override_price']);
