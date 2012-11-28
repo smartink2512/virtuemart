@@ -234,12 +234,12 @@ class VirtuemartViewOrders extends VmView {
 			}
 			$this->assignRef('orderlist', $orderList);
 		}
-
+/*
 		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 
 		$currency = CurrencyDisplay::getInstance();
 		$this->assignRef('currency', $currency);
-
+*/
 		$orderStatusModel = VmModel::getModel('orderstatus');
 
 		$_orderstatuses = $orderStatusModel->getOrderStatusList();

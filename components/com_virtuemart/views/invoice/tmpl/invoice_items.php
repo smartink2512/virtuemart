@@ -74,7 +74,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td align="right" class="priceCol"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($item->product_tax ,$this->currency, $qtt)."</span>" ?></td>
                                 <?php } ?>
 			<td align="right" class="priceCol" >
-				<?php echo  $this->currency->priceDisplay( $item->product_subtotal_discount );  //No quantity is already stored with it ?>
+				<?php echo  $this->currency->priceDisplay( $item->product_subtotal_discount, $this->currency );  //No quantity is already stored with it ?>
 			</td>
 			<td align="right"  class="priceCol">
 				<?php

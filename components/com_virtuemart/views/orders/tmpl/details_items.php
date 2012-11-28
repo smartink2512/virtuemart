@@ -84,7 +84,7 @@ if($this->format == 'pdf'){
 					echo '<span class="line-through" >'.$this->currency->priceDisplay($item->product_basePriceWithTax,$this->currency,$qtt) .'</span><br />' ;
 				}
 
-				echo $this->currency->priceDisplay(  $item->product_subtotal_with_tax ,0); //No quantity or you must use product_final_price ?>
+				echo $this->currency->priceDisplay(  $item->product_subtotal_with_tax ,$this->currency); //No quantity or you must use product_final_price ?>
 			</td>
 		</tr>
 
@@ -165,7 +165,7 @@ if ($this->orderdetails['details']['BT']->coupon_discount <> 0.00) {
 				<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->orderdetails['details']['BT']->order_shipment_tax)."</span>" ?></td>
                                 <?php } ?>
 				<td align="right">&nbsp;</td>
-				<td align="right"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_shipment+ $this->orderdetails['details']['BT']->order_shipment_tax); ?></td>
+				<td align="right"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_shipment+ $this->orderdetails['details']['BT']->order_shipment_tax, $this->currency); ?></td>
 
 	</tr>
 
@@ -173,10 +173,10 @@ if ($this->orderdetails['details']['BT']->coupon_discount <> 0.00) {
 		<td align="right" class="pricePad" colspan="6"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT') ?></td>
 
 			<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->orderdetails['details']['BT']->order_payment_tax)."</span>" ?></td>
+				<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->orderdetails['details']['BT']->order_payment_tax, $this->currency)."</span>" ?></td>
                                 <?php } ?>
 				<td align="right">&nbsp;</td>
-				<td align="right"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_payment+ $this->orderdetails['details']['BT']->order_payment_tax); ?></td>
+				<td align="right"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_payment+ $this->orderdetails['details']['BT']->order_payment_tax, $this->currency); ?></td>
 
 
 	</tr>
@@ -185,10 +185,10 @@ if ($this->orderdetails['details']['BT']->coupon_discount <> 0.00) {
 		<td align="right" class="pricePad" colspan="6"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></strong></td>
 
 		 <?php if ( VmConfig::get('show_tax')) {  ?>
-		<td align="right"><span  class='priceColor2'><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_billTaxAmount); ?></span></td>
+		<td align="right"><span  class='priceColor2'><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_billTaxAmount, $this->currency); ?></span></td>
 		 <?php } ?>
-		<td align="right"><span  class='priceColor2'><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_billDiscountAmount); ?></span></td>
-		<td align="right"><strong><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_total); ?></strong></td>
+		<td align="right"><span  class='priceColor2'><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_billDiscountAmount, $this->currency); ?></span></td>
+		<td align="right"><strong><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_total, $this->currency); ?></strong></td>
 	</tr>
 
 </table>

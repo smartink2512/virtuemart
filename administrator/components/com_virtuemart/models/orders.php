@@ -567,18 +567,17 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 
 		$_orderData->order_status = 'P';
+		$_orderData->order_currency = $this->getVendorCurrencyId($_orderData->virtuemart_vendor_id);
 
 		if (isset($_cart->pricesCurrency)) {
-			$_orderData->user_currency_id = $_cart->pricesCurrency ;//$this->getCurrencyIsoCode($_cart->pricesCurrency);
-			$currency = CurrencyDisplay::getInstance();
-			if(!empty($currency->exchangeRateShopper)){
-				$_orderData->user_currency_rate = $currency->exchangeRateShopper;
+			$_orderData->user_currency_id = $_cart->paymentCurrency ;//$this->getCurrencyIsoCode($_cart->pricesCurrency);
+			$currency = CurrencyDisplay::getInstance($_orderData->user_currency_id);
+			if($_orderData->user_currency_id != $_orderData->order_currency){
+				$_orderData->user_currency_rate =   $currency->convertCurrencyTo($_orderData->user_currency_id ,1.0,false);
 			} else {
-				$_orderData->user_currency_rate = 1.0;
+				$_orderData->user_currency_rate=1.0;
 			}
 		}
-
-		$_orderData->order_currency = $this->getVendorCurrencyId($_orderData->virtuemart_vendor_id);
 
 		$_orderData->virtuemart_paymentmethod_id = $_cart->virtuemart_paymentmethod_id;
 		$_orderData->virtuemart_shipmentmethod_id = $_cart->virtuemart_shipmentmethod_id;

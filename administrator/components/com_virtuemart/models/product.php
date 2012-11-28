@@ -1015,6 +1015,8 @@ class VirtueMartModelProduct extends VmModel {
 		$product->product_currency = NULL;
 		$product->product_price_quantity_start = NULL;
 		$product->product_price_quantity_end = NULL;
+		$product->product_price_publish_up = NULL;
+		$product->product_price_publish_down = NULL;
 		$product->product_tax_id = NULL;
 		$product->product_discount_id = NULL;
 		$product->product_override_price = NULL;
