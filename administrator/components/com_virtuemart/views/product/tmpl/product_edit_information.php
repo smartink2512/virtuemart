@@ -354,7 +354,7 @@ $i=0;
 								}
 								?>
 								<td>
-									<?php echo VmHTML::checkbox('childs['.$child->virtuemart_product_id.'][published]', $this->product->published) ?></td>
+									<?php echo VmHTML::checkbox('childs['.$child->virtuemart_product_id.'][published]', $child->published) ?></td>
 							</tr>
 							<?php
 						} ?>

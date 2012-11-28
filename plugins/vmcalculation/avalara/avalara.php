@@ -35,6 +35,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			'company_code'       => array('', 'char'),
 			'account'       => array('', 'char'),
 			'license'     => array('', 'char'),
+			'committ'   => array(0,'int'),
+			'vAddress'  => array(0,'int'),
 		);
 
 		$this->setConfigParameterable ('calc_params', $varsToPush);
@@ -98,18 +100,14 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 	function plgVmOnDisplayEdit(&$calc,&$html){
 
-	//	if (!class_exists ('VmTable')) {
-		//	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtable.php');
-	//	}
-		//VmTable::bindParameterable ($calc, $this->_xParams, $this->_varsToPushParam);
-
-		//$html .= '<fieldset><legend>'.JText::_('VMCALCULATION_AVALARA').'</legend>';
 		$html .= '<table>';
 
 		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_ACTIVATED','activated',$calc->activated);
 		$html .= VmHTML::row('input','VMCALCULATION_AVALARA_COMPANY_CODE','company_code',$calc->company_code);
 		$html .= VmHTML::row('input','VMCALCULATION_AVALARA_ACCOUNT','account',$calc->account);
 		$html .= VmHTML::row('input','VMCALCULATION_AVALARA_LICENSE','license',$calc->license);
+		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_COMMITT','committ',$calc->committ);
+		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_VADDRESS','vAddress',$calc->vAddress);
 	//	$html .= VmHTML::row('checkbox','VMCALCULATION_ISTRAXX_AVALARA_TRACE','trace',$calc->trace);
 
 		$html .= '</table></fieldset>';
@@ -134,7 +132,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		{
 			if(!class_exists('PingResult')) require (VMAVALARA_CLASS_PATH.DS.'PingResult.class.php');
 			$result = $client->ping("TEST");
-			vmDebug('Ping ResultCode is: '. $result->getResultCode() );
+			vmInfo('Avalara Ping ResultCode is: '. $result->getResultCode() );
 
 			if(!class_exists('SeverityLevel')) require (VMAVALARA_CLASS_PATH.DS.'SeverityLevel.class.php');
 			if($result->getResultCode() != SeverityLevel::$Success)	// call failed
@@ -147,7 +145,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			}
 			else // successful calll
 			{
-				vmdebug('Ping Version is: '. $result->getVersion() );
+				vmInfo('Avalara used Ping Version is: '. $result->getVersion() );
 			}
 		}
 		catch(SoapFault $exception)
@@ -174,7 +172,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 			$vmadd = $this->getShopperData();
 
-			if(!empty($vmadd)){
+			if(!empty($vmadd) and $calc->vAddress==1){
 				$config = $this->newATConfig($calc);
 			//	vmdebug('fillTestAvalaraAddress $vmadd not empty',$vmadd);
 				if(!class_exists('AddressServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'AddressServiceSoap.class.php');
@@ -319,7 +317,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	//	$request->setCompanyCode($calc->account);         // Your Company Code From the Dashboard
 		$request->setCompanyCode($calc->company_code);
 
-		$request->setDocType(DocumentType::$SalesInvoice);   	// Only supported types are SalesInvoice or SalesOrder
+		if($calc->committ){
+			$request->setDocType(DocumentType::$SalesInvoice);   	// Only supported types are SalesInvoice or SalesOrder
+		} else {
+			$request->setDocType(DocumentType::$SalesOrder);
+		}
 
 		$request->setDocCode('PHPINV999');             //    invoice number
 
@@ -396,7 +398,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$line1 = new Line();
 			$line1->setNo ($n);                  //string  // line Number of invoice
 			$line1->setItemCode($product->product_sku);            //string
-			$line1->setDescription("Invoice Calculated From PHP SDK");         //string
+			$line1->setDescription("Invoice Calculated From PHP SDK");         //product description, like in cart
 			$line1->setTaxCode("");             //string
 			$line1->setQty($product->amount);                 //decimal
 			$line1->setAmount($product->price);              //decimal // TotalAmmount
@@ -608,7 +610,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		//vmdebug('plgVmInterpreteMathOp',$calculationHelper);
 		$tax = 0.0;
 
-		if ($mathop=='avalara') {
+	//	if ($mathop=='avalara') {
 			$requestedProductId = JRequest::getInt('virtuemart_product_id');
 			//vmdebug('plgVmInterpreteMathOp',$calculationHelper);
 
@@ -638,7 +640,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 
 			//vmInfo("Number of addresses returned is ".$addresses);
-		}
+	//	}
 
 		if($revert){
 			$tax = -$tax;
