@@ -202,7 +202,7 @@ class VirtuemartViewProduct extends JView {
 		$customs = $this->db->loadObject();
 		foreach ($this->json as &$related) {
 
-			$customs->custom_value = $related->id;
+			//$customs->custom_value = $related->id;
 			$display = $this->customFieldsModel->displayProductCustomfieldBE($customs,$related->id,$this->row);
 			$html = '<div class="vm_thumb_image">
 				<span>'.$display.'</span>

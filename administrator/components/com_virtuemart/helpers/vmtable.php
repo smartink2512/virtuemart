@@ -361,7 +361,7 @@ class VmTable extends JTable{
 			return $this;
 		}
 
-		$this->reset();
+		//$this->reset();
 
 		$db = $this->getDBO();
 

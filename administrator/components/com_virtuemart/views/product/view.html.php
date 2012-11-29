@@ -304,9 +304,14 @@ class VirtuemartViewProduct extends VmView {
 			default:
 				if ($product_parent_id = JRequest::getInt ('product_parent_id', false)) {
 					$product_parent = $model->getProductLanguageFields ($product_parent_id);
-					$title = 'PRODUCT_CHILDREN_LIST';
-					$link_to_parent = JHTML::_ ('link', JRoute::_ ('index.php?view=product&task=edit&virtuemart_product_id=' . $product_parent_id . '&option=com_virtuemart'), $product_parent->product_name, array('title' => JText::_ ('COM_VIRTUEMART_EDIT_PARENT') . ' ' . $product_parent->product_name));
-					$msg = JText::_ ('COM_VIRTUEMART_PRODUCT_OF') . " " . $link_to_parent;
+					if($product_parent){
+						$title = 'PRODUCT_CHILDREN_LIST';
+						$link_to_parent = JHTML::_ ('link', JRoute::_ ('index.php?view=product&task=edit&virtuemart_product_id=' . $product_parent_id . '&option=com_virtuemart'), $product_parent->product_name, array('title' => JText::_ ('COM_VIRTUEMART_EDIT_PARENT') . ' ' . $product_parent->product_name));
+						$msg = JText::_ ('COM_VIRTUEMART_PRODUCT_OF') . " " . $link_to_parent;
+					} else {
+						$title='PRODUCT_CHILDREN_LIST' ;
+						$msg= 'Parent with product_parent_id '.$product_parent_id.' not found';
+					}
 				} else {
 					$title = 'PRODUCT';
 					$msg = "";

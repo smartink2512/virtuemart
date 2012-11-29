@@ -1387,7 +1387,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 
-		$this->_id = $data['virtuemart_product_id'] = $product_data->virtuemart_product_id;
+		$this->_id = $data['virtuemart_product_id'] = (int)$product_data->virtuemart_product_id;
 
 		if (empty($this->_id)) {
 			vmError('Product not stored, no id');
@@ -1405,13 +1405,14 @@ class VirtueMartModelProduct extends VmModel {
 			//}
 		}
 
- 		//vmdebug('use_desired_price '.$this->_id.' '.$data['use_desired_price']);
-		$mprices = $data['mprices'];
+ 		// Get old IDS
+		$this->_db->setQuery( 'SELECT `virtuemart_product_price_id` FROM `#__virtuemart_product_prices` WHERE virtuemart_product_id ='.$this->_id );
+		$old_price_ids = $this->_db->loadResultArray();
 
 		foreach($data['mprices']['product_price'] as $k => $product_price){
 
 			$pricesToStore = array();
-			$pricesToStore['virtuemart_product_id'] = (int)$data['virtuemart_product_id'];
+			$pricesToStore['virtuemart_product_id'] = $this->_id;
 			$pricesToStore['virtuemart_product_price_id'] = (int)$data['mprices']['virtuemart_product_price_id'][$k];
 			$pricesToStore['product_price'] = $data['mprices']['product_price'][$k];
 			$pricesToStore['basePrice'] = $data['mprices']['basePrice'][$k];
@@ -1437,8 +1438,6 @@ class VirtueMartModelProduct extends VmModel {
 				// 			vmdebug('product_price '.$data['product_price']);
 			}
 
-
-
 			if (isset($data['mprices']['product_price'][$k])) {
 				if ($isChild) {
 					unset($data['mprices']['product_override_price'][$k]);
@@ -1450,10 +1449,18 @@ class VirtueMartModelProduct extends VmModel {
 				//$data['mprices'][$k] = $data['virtuemart_product_id'];
 				//vmdebug('my mprices to store',$pricesToStore);
 				$this->updateXrefAndChildTables ($pricesToStore, 'product_prices');
+				
+				$key = array_search($pricesToStore['virtuemart_product_price_id'], $old_price_ids );
+				if ($key !== false ) unset( $old_price_ids[ $key ] );
 			}
 		}
 
-
+		if ( count($old_price_ids) ) {
+			// delete old unused Customfields
+			$this->_db->setQuery( 'DELETE FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_price_id` in ("'.implode('","', $old_price_ids ).'") ');
+			$this->_db->query();
+		}
+		
 		if (!empty($data['childs'])) {
 			foreach ($data['childs'] as $productId => $child) {
 				$child['product_parent_id'] = $data['virtuemart_product_id'];

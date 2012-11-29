@@ -48,18 +48,22 @@ class VirtueMartModelManufacturer extends VmModel {
 
     /**
      * Load a single manufacturer
+     * @author Max Milbers
      */
      public function getManufacturer() {
 
-     	if(empty($this->_data)){
-     		$this->_data = $this->getTable('manufacturers');
-     		$this->_data->load($this->_id);
+	    static $_manus = array();
+		if (!array_key_exists ($this->_id, $_manus)) {
+		    $this->_data = $this->getTable('manufacturers');
+		    $this->_data->load($this->_id);
 
-     		$xrefTable = $this->getTable('manufacturer_medias');
-     		$this->_data->virtuemart_media_id = $xrefTable->load($this->_id);
-     	}
+		    $xrefTable = $this->getTable('manufacturer_medias');
+		    $this->_data->virtuemart_media_id = $xrefTable->load($this->_id);
 
-     	return $this->_data;
+			$_manus[$this->_id] = $this->_data;
+	    }
+     	
+     	return $_manus[$this->_id];
      }
 
      /**
