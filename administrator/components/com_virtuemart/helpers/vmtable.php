@@ -309,7 +309,9 @@ class VmTable extends JTable{
 			return $this;
 		}
 
-		$this->reset();
+		//Why we have this reset? it is calling getFields, which is calling getTableColumns, which is calling SHOW COLUMNS, which is slow
+		//
+		//$this->reset();
 
 		$db = $this->getDBO();
 

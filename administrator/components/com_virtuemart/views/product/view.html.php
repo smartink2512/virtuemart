@@ -38,13 +38,9 @@ class VirtuemartViewProduct extends VmView {
 
 		// Load helpers
 		$this->loadHelper('currencydisplay');
-
-
 		$this->loadHelper('html');
 		$this->loadHelper('image');
 
-
-		//$category_model = VmModel::getModel('category');
 		$model = VmModel::getModel();
 
 		// Handle any publish/unpublish
@@ -79,17 +75,6 @@ class VirtuemartViewProduct extends VmView {
 				if (isset($product->shoppergroups)) $shoppergroupList = ShopFunctions::renderShopperGroupList($product->shoppergroups);
 				$this->assignRef('shoppergroupList', $shoppergroupList);
 
-				//the shoppergroup list for the prices must be done manual
-			/*	$shopperModel = VmModel::getModel ('shoppergroup');
-				$shoppergrps = $shopperModel->getShopperGroups (FALSE, TRUE);
-				$attrs = '';
-				$name = 'shopper_group_name';
-				$idA = $id = 'virtuemart_shoppergroup_id';
-				$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
-				array_unshift ($shoppergrps, $emptyOption);
-
-				$listHTML = JHTML::_ ('select.genericlist', $shoppergrps, $idA, $attrs, $id, $name, $this->product->virtuemart_shoppergroup_id);*/
-
 				// Load the product price
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				//$calculator = calculationHelper::getInstance();
@@ -103,39 +88,6 @@ class VirtuemartViewProduct extends VmView {
 				}
 				$this->assignRef('product_childs', $product_childs);
 
-			/*	$DBTax = ''; 	//JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
-				foreach($calculator->rules['DBTax'] as $rule){
-					$DBTax .= $rule['calc_name']. '<br />';
-				}
-				$this->assignRef('DBTaxRules', $DBTax);
-
-				$tax = ''; //JText::_('COM_VIRTUEMART_TAX_EFFECTING').'<br />';
-				foreach($calculator->rules['Tax'] as $rule){
-					$tax .= $rule['calc_name']. '<br />';
-				}
-				foreach($calculator->rules['VatTax'] as $rule){
-					$tax .= $rule['calc_name']. '<br />';
-				}
-				$this->assignRef('taxRules', $tax);
-
-				$DATax = '';//JText::_('COM_VIRTUEMART_RULES_EFFECTING');
-				foreach($calculator->rules['DATax'] as $rule){
-					$DATax .= $rule['calc_name']. '<br />';
-				}
-				$this->assignRef('DATaxRules', $DATax);
-*/
-// 				$this->assignRef('override', $calculator->override);
-// 				$this->assignRef('product_override_price', $calculator->product_override_price);
-
-/*				if(!isset($product->product_tax_id)){
-					$product->product_tax_id=0;
-				}
-				$lists['taxrates'] = ShopFunctions::renderTaxList($product->product_tax_id,'product_tax_id');
-				if(!isset($product->product_discount_id)){
-					$product->product_discount_id=0;
-				}
-				$lists['discounts'] = $this -> renderDiscountList($product->product_discount_id);
-*/
 				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'config.php');
 				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
 				$this->assignRef('productLayouts', $productLayouts);
@@ -149,11 +101,6 @@ class VirtuemartViewProduct extends VmView {
 					$imagePath = '/components/com_virtuemart/assets/images/availability/';
 				}
 				$this->assignRef('imagePath', $imagePath);
-
-
-
-				// 				$vendors = $vendor_model->getVendors();
-				// 				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $product->virtuemart_vendor_id);
 
 				// Load the vendors
 				$vendor_model = VmModel::getModel('vendor');
@@ -177,11 +124,9 @@ class VirtuemartViewProduct extends VmView {
 				$currency = $currency_model->getCurrency($vendor->vendor_currency);
 				$this->assignRef('vendor_currency', $currency->currency_symbol);
 
-
 				if(count($manufacturers)>0 ){
 					$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
 				}
-
 
 				$lists['product_weight_uom'] = ShopFunctions::renderWeightUnitList('product_weight_uom',$task=='add'? VmConfig::get('weight_unit_default'): $product->product_weight_uom);
 				$lists['product_iso_uom'] = ShopFunctions::renderUnitIsoList('product_unit',$task=='add'? VmConfig::get('weight_unit_default'): $product->product_unit);
@@ -243,14 +188,9 @@ class VirtuemartViewProduct extends VmView {
 
 				$this->assignRef('tzoffset',	$tzoffset);
 
-				// Assign the values ??
-				//$this->assignRef('pane', $pane);
-				//$this->assignRef('editor', $editor);
-				//$this->assignRef('related_products', $related_products);
-
 
 				$this->assignRef('product', $product);
-			$product_empty_price = array(
+				$product_empty_price = array(
 					'virtuemart_product_price_id' => 0
 				, 'virtuemart_product_id'         => $virtuemart_product_id
 				, 'virtuemart_shoppergroup_id'    => NULL
@@ -266,10 +206,6 @@ class VirtuemartViewProduct extends VmView {
 				, 'price_quantity_end'            => NULL
 				);
 				$this->assignRef ('product_empty_price', $product_empty_price);
-				//$this->assignRef('currencies', $currencies);
-//no need moved to top $this->assignRef('manufacturers', $manufacturers);
-
-
 
 				$this->assignRef('product_parent', $product_parent);
 				/* Assign label values */
@@ -321,7 +257,6 @@ class VirtuemartViewProduct extends VmView {
 
 				JToolBarHelper::custom('massxref_cats_exe', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_XREF_CAT_EXE'), false);
 
-
 				break;
 
 			case 'massxref_sgrps':
@@ -343,10 +278,17 @@ class VirtuemartViewProduct extends VmView {
 
 		default:
 			if ($product_parent_id=JRequest::getInt('product_parent_id',false) ) {
-				$product_parent= $model->getProduct($product_parent_id);
-				$title='PRODUCT_CHILDREN_LIST' ;
-				$link_to_parent =  JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$product_parent->virtuemart_product_id.'&option=com_virtuemart'), $product_parent->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT_PARENT').' '.$product_parent->product_name));
-				$msg= JText::_('COM_VIRTUEMART_PRODUCT_OF'). " ".$link_to_parent;
+				$product_parent= $model->getProductSingle($product_parent_id,false);
+
+				if($product_parent){
+					$title='PRODUCT_CHILDREN_LIST' ;
+					$link_to_parent =  JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$product_parent->virtuemart_product_id.'&option=com_virtuemart'), $product_parent->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT_PARENT').' '.$product_parent->product_name));
+					$msg= JText::_('COM_VIRTUEMART_PRODUCT_OF'). " ".$link_to_parent;
+				} else {
+					$title='PRODUCT_CHILDREN_LIST' ;
+					$msg= 'Parent with product_parent_id '.$product_parent_id.' not found';
+				}
+
 			} else {
 				$title='PRODUCT';
 				$msg="";
@@ -369,16 +311,11 @@ class VirtuemartViewProduct extends VmView {
 			$category_tree = ShopFunctions::categoryListTree(array($categoryId));
 			$this->assignRef('category_tree', $category_tree);
 
-			// Check for Media Items and Reviews, set the price
-
-			$media = VmModel::getModel('media');
-
-			$productreviews = VmModel::getModel('ratings');
-
 			/* Load the product price */
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
 			$vendor_model = VmModel::getModel('vendor');
+			$productreviews = VmModel::getModel('ratings');
 
 			foreach ($productlist as $virtuemart_product_id => $product) {
 				$product->mediaitems = count($product->virtuemart_media_id);
@@ -461,11 +398,6 @@ class VirtuemartViewProduct extends VmView {
 
 		if(!class_exists('VirtueMartModelCalc')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'calc.php');
 		$discounts = VirtueMartModelCalc::getDiscounts();
-		//		if($before){
-		//			$discounts = VirtueMartModelCalc::getDBDiscounts();
-		//		} else {
-		//			$discounts = VirtueMartModelCalc::getDADiscounts();
-		//		}
 
 		$discountrates = array();
 		$discountrates[] = JHTML::_('select.option', '-1', JText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_NONE'), 'product_discount_id' );

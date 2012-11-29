@@ -78,6 +78,9 @@ class VirtueMartModelMedia extends VmModel {
 
 		$app = JFactory::getApplication();
 		$medias = array();
+
+		static $_medias = array();
+
 		if(!empty($virtuemart_media_ids)){
 			if(!is_array($virtuemart_media_ids)) $virtuemart_media_ids = explode(',',$virtuemart_media_ids);
 
@@ -93,17 +96,20 @@ class VirtueMartModelMedia extends VmModel {
 					$id = $virtuemart_media_id;
 				}
 				if(!empty($id)){
-					$data->load((int)$id);
-					if($app->isSite()){
-						if($data->published==0){
-							continue;
+					if (!array_key_exists ($id, $_medias)) {
+						$data->load((int)$id);
+						if($app->isSite()){
+							if($data->published==0){
+								continue;
+							}
 						}
+						$file_type 	= empty($data->file_type)? $type:$data->file_type;
+						$mime		= empty($data->file_mimetype)? $mime:$data->file_mimetype;
+						$_medias[$id] = VmMediaHandler::createMedia($data,$file_type,$mime);
+						if(is_object($virtuemart_media_id) && !empty($virtuemart_media_id->product_name)) $_medias[$id]->product_name = $virtuemart_media_id->product_name;
 					}
-					$file_type 	= empty($data->file_type)? $type:$data->file_type;
-					$mime		= empty($data->file_mimetype)? $mime:$data->file_mimetype;
-					$media = VmMediaHandler::createMedia($data,$file_type,$mime);
-					if(is_object($virtuemart_media_id) && !empty($virtuemart_media_id->product_name)) $media->product_name = $virtuemart_media_id->product_name;
-					$medias[] = $media;
+
+					$medias[] = $_medias[$id];
 				}
 			}
 		}

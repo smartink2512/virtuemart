@@ -163,8 +163,11 @@ abstract class vmPlugin extends JPlugin {
 	/**
 	 * Checks if this plugin should be active by the trigger
 	 *
+	 * We should avoid this function, is expensive
+	 *
 	 * @author Max Milbers
 	 * @author Valérie Isaksen
+	 *
 	 * @param int/array $id the registered plugin id(s) of the joomla table
 	 */
 	function selectedThisByMethodId ($id = 'type') {

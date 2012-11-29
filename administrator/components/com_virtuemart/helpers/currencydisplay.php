@@ -173,6 +173,8 @@ class CurrencyDisplay {
 	 */
 	function setPriceArray(){
 
+		if(count($this->_priceConfig)>0)return true;
+
 		if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 
 		$user = JFactory::getUser();
