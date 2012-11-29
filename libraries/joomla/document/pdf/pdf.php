@@ -26,11 +26,9 @@ class JDocumentPDF extends JDocument
 {
 	var $_engine	= null;
 
-	var $_name		= 'joomla';
+	var $_name	= 'joomla';
 
 	var $_header	= null;
-	var $_header_font = 'courier';
-	var $_footer_font = 'courier';
 
 	var $_margin_header	= 5;
 	var $_margin_footer	= 10;
@@ -88,7 +86,7 @@ class JDocumentPDF extends JDocument
 		/*
 		 * Setup external configuration options
 		 */
-	//	define('K_TCPDF_EXTERNAL_CONFIG', true);
+	        //define('K_TCPDF_EXTERNAL_CONFIG', true);
 
 		/*
 		 * Path options
@@ -102,7 +100,6 @@ class JDocumentPDF extends JDocument
 
 		// Fonts path
 		define("K_PATH_FONTS", K_PATH_MAIN.DS.'fonts'.DS);
-		//define("K_PATH_FONTS", JPATH_ADMINISTRATOR.DS.'components'.DS.'com_phocapdf'.DS.'fonts'.DS)
 
 		// Cache directory path
 		define("K_PATH_CACHE", K_PATH_MAIN.DS."cache");
@@ -137,8 +134,8 @@ class JDocumentPDF extends JDocument
 		 */
 		// Default settings are a portrait layout with an A4 configuration using millimeters as units
 		if(!class_exists('TCPDF')) require(JPATH_ROOT.DS.'libraries'.DS.'tcpdf'.DS.'tcpdf.php');
-		$this->_engine = new TCPDF();
-
+		//$this->_engine = new TCPDF();
+                $this->_engine = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 		//set margins
 		$this->_engine->SetMargins($this->_margin_left, $this->_margin_top, $this->_margin_right);
 		//set auto page breaks
@@ -211,7 +208,7 @@ class JDocumentPDF extends JDocument
 		// Set PDF Header data
 		$pdf->setHeaderData('',0,$this->getTitle(), $this->getHeader());
 
-		// Set PDF Header and Footer fonts
+		// Set Language
 		 $lang = JFactory::getLanguage();
 		// $font = $lang->getPdfFontName();
 		// $font = ($font) ? $font : 'freesans';
@@ -219,12 +216,11 @@ class JDocumentPDF extends JDocument
 
 		$pdf->setRTL($lang->isRTL());
 
-		$pdf->SetFont('helvetica', '', 8, '', 'false');
-
-		$pdf->setHeaderFont(array($this->_header_font, '', 10));
-		$pdf->setFooterFont(array($this->_footer_font, '', 8));
-
-
+               // Set Header and Footer Fonts
+               $vmFont=VmConfig::get('inv_pdf_fonts','helvetica');
+               $pdf->SetFont($vmFont, '', 8, '', 'false');                 
+               $pdf->setHeaderFont(Array($vmFont, '', 10 ));
+               $pdf->setFooterFont(Array($vmFont, '', 8 ));
 
 		// Initialize PDF Document
 		$pdf->AliasNbPages();

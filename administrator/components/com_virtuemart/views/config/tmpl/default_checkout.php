@@ -156,6 +156,20 @@ defined('_JEXEC') or die('Restricted access');
 					?>
 			</td>
 		</tr>
+                
+                <tr>
+                        <td class="key"><span	class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SELECT_FONT_INVOICES_EXPLAIN'); ?>">
+				<label for="inv_pdf_fonts"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SELECT_FONT_INVOICES') ?>
+				</label> </span>
+			</td>    
+                        <td>
+                                <?php
+                                    echo JHTML::_('Select.genericlist', $this->invoiceFontsList, 'inv_pdf_fonts', 'size', 'value', 'text', $this->config->get('inv_pdf_fonts','helvetica'));
+                                    echo JHTML::link('http://dev.virtuemart.net/','Get More Fonts!','target="_blank"');
+                                ?>
+                        </td>
+                </tr>
+	
 	</table>
 </fieldset>
 

@@ -79,6 +79,9 @@ class VirtuemartViewConfig extends VmView {
 		$noimagelist = $model->getNoImageList();
 		$this->assignRef('noimagelist', $noimagelist);
 
+                $invoiceFontsList = $model->getTCPDFFontsList();
+                $this->assignRef('invoiceFontsList', $invoiceFontsList);
+                               
 		$orderStatusModel=VmModel::getModel('orderstatus');
 /*		$orderStates = $orderStatusModel->getOrderStatusList();
 		$orderStatusList = array();

@@ -179,9 +179,10 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 				}
 			}
 
-			// set header and footer fonts
-			$this->setHeaderFont(Array('helvetica', '', 8));
-			$this->setFooterFont(Array('helvetica', '', 10));
+			// Set Header and Footer Fonts
+                        $vmFont=VmConfig::get('inv_pdf_fonts','helvetica');
+                        $this->setHeaderFont(Array($vmFont, '', 8 ));
+                        $this->setFooterFont(Array($vmFont, '', 10 ));
 
 			// set default monospaced font
 			$this->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -208,7 +209,7 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 			// dejavusans is a UTF-8 Unicode font, if you only need to
 			// print standard ASCII chars, you can use core fonts like
 			// helvetica or times to reduce file size.
-			$this->SetFont('helvetica', '', 8, '', true);
+			$this->SetFont(VmConfig::get('inv_pdf_fonts','helvetica'), '', 8, '', 'false'); 
 
 			// Add a page
 			// This method has several options, check the source code documentation for more information.
@@ -247,7 +248,7 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 			// Position at 15 mm from bottom
 			$this->SetY(-15);
 			// Set font
-			$this->SetFont('helvetica', 'I', 8);
+			$this->SetFont(VmConfig::get('inv_pdf_fonts','helvetica'), 'I', 8);
 
 			$vendorModel = VmModel::getModel('vendor');
 			$vendor = & $vendorModel->getVendor();

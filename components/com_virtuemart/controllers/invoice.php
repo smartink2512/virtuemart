@@ -130,7 +130,6 @@ class VirtueMartControllerInvoice extends JController
 		$pdf->SetSubject(JText::sprintf('COM_VIRTUEMART_INVOICE_SUBJ',$view->vendor->vendor_store_name));
 		$pdf->SetKeywords('Invoice by VirtueMart 2');
 
-		//virtuemart.cloudaccess.net/index.php?option=com_virtuemart&view=invoice&layout=details&virtuemart_order_id=18&order_number=6e074d9b&order_pass=p_9cb9e2&task=checkStoreInvoice
 		if(empty($view->vendor->images[0])){
 			vmError('Vendor image given path empty ');
 		} else if(empty($view->vendor->images[0]->file_url_folder) or empty($view->vendor->images[0]->file_name) or empty($view->vendor->images[0]->file_extension) ){
@@ -147,9 +146,10 @@ class VirtueMartControllerInvoice extends JController
 			}
 		}
 
-		// set header and footer fonts
-		$pdf->setHeaderFont(Array('helvetica', '', 8));
-		$pdf->setFooterFont(Array('helvetica', '', 10));
+                // Set Header and Footer Fonts
+                $vmFont=VmConfig::get('inv_pdf_fonts','helvetica');
+                $pdf->setHeaderFont(Array($vmFont, '', 8 ));
+		$pdf->setFooterFont(Array($vmFont, '', 10 ));
 
 		// set default monospaced font
 		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -176,7 +176,8 @@ class VirtueMartControllerInvoice extends JController
 		// dejavusans is a UTF-8 Unicode font, if you only need to
 		// print standard ASCII chars, you can use core fonts like
 		// helvetica or times to reduce file size.
-		$pdf->SetFont('helvetica', '', 8, '', true);
+
+                $pdf->SetFont(VmConfig::get('inv_pdf_fonts','helvetica'), '', 8, '', 'false');                 
 
 		// Add a page
 		// This method has several options, check the source code documentation for more information.
@@ -196,9 +197,6 @@ class VirtueMartControllerInvoice extends JController
 
 	}
 }
-
-
-
 
 if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 	vmError('Controller invoice: For the pdf invoice, you must install the tcpdf library at '.JPATH_VM_LIBRARIES.DS.'tcpdf');
@@ -230,7 +228,7 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 			// Position at 15 mm from bottom
 			$this->SetY(-15);
 			// Set font
-			$this->SetFont('helvetica', 'I', 8);
+                        $this->SetFont(VmConfig::get('inv_pdf_fonts','helvetica'), 'I', 8);
 
 			$vendorModel = VmModel::getModel('vendor');
 			$vendor = & $vendorModel->getVendor();
@@ -245,8 +243,5 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 		}
 	}
 }
-
-
-
 
 // No closing tag
