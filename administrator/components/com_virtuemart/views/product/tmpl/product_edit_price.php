@@ -150,8 +150,11 @@ $rowColor = 0;
 			<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL'); ?>
 			</span>
 		     </strong>
-            <input type="checkbox" name="mprices[use_desired_price][]" value="1"/>
-        </td>
+	        <?php
+            $options = array(0 => JText::_ ('JNO'), 1 => JText::_ ('JYES'));
+           // echo VmHtml::radioList ('mprices[use_desired_price][' . $this->priceCounter . ']', $this->tempProduct->override, $options);
+            echo '<input type="checkbox" name="mprices[use_desired_price][' . $this->priceCounter . ']" value="1"/>'
+	        ?>    </td>
         <td width="60px">
             <div style="text-align: right; font-weight: bold;">
 				<span

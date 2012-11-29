@@ -1451,22 +1451,17 @@ class VirtueMartModelProduct extends VmModel {
 				$calculator = calculationHelper::getInstance ();
 				$pricesToStore['product_price'] = $data['mprices']['product_price'][$k] = $calculator->calculateCostprice ($this->_id, $pricesToStore);
 				unset($data['mprices']['use_desired_price'][$k]);
-				// 			vmdebug('product_price '.$data['product_price']);
 			}
 
-
-
 			if (isset($data['mprices']['product_price'][$k])) {
-
-
 
 				if ($isChild) {
 					unset($data['mprices']['product_override_price'][$k]);
 					unset($pricesToStore['product_override_price']);
 					unset($data['mprices']['override'][$k]);
 					unset($pricesToStore['override']);
-
 				}
+
 				//$data['mprices'][$k] = $data['virtuemart_product_id'];
 				vmdebug('my mprices to store',$pricesToStore);
 				$this->updateXrefAndChildTables ($pricesToStore, 'product_prices');

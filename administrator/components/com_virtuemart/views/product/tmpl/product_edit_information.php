@@ -174,7 +174,7 @@ $i=0;
 	$nbPrice = count ($this->product->prices);
 	$this->priceCounter = 0;
 	$this->product->prices[$nbPrice] = $this->product_empty_price;
-	vmdebug ('prices', $this->product->prices);
+
 
 
 	if (!class_exists ('calculationHelper')) {
@@ -195,7 +195,7 @@ $i=0;
 
 			$this->tempProduct = (object)array_merge ((array)$this->product, (array)$this->sprices);
 			$this->calculatedPrices = $calculator->getProductPrices ($this->tempProduct);
-			vmdebug ("edit_price", $this->calculatedPrices, $this->tempProduct);
+			//vmdebug ("edit_price", $this->calculatedPrices, $this->tempProduct);
 
 			$currency_model = VmModel::getModel ('currency');
 			$this->lists['currencies'] = JHTML::_ ('select.genericlist', $currencies, 'mprices[product_currency][' . $this->priceCounter . ']', '', 'virtuemart_currency_id', 'currency_name', $this->tempProduct->product_currency);

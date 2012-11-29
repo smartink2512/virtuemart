@@ -326,6 +326,8 @@ class VirtueMartCart {
 
 			$quantityPost = (int) $post['quantity'][$p_key];
 
+			if($quantityPost === 0) continue;
+
 			$tmpProduct = $this->getProduct((int) $virtuemart_product_id,$quantityPost);
 			//			dump($tmpProduct,'my product add to cart before');
 			// trying to save some space in the session table
@@ -458,7 +460,8 @@ class VirtueMartCart {
 				}
 
 				// Add in the quantity in case the customfield plugins need it
-				$product->quantity = $quantityPost;
+				$product->quantity = (int)$quantityPost;
+
 
 				if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 				JPluginHelper::importPlugin('vmcustom');
