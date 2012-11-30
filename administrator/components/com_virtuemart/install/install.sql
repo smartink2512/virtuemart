@@ -1089,7 +1089,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_permgroups` (
 --
 -- Table structure for table `#__virtuemart_userfields`
 --
-
 CREATE TABLE IF NOT EXISTS `#__virtuemart_userfields` (
   `virtuemart_userfield_id` smallint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '1',
@@ -1108,6 +1107,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userfields` (
   `cart` tinyint(1) NOT NULL DEFAULT '0',
   `shipment` tinyint(1) NOT NULL DEFAULT '0',
   `account` tinyint(1) NOT NULL DEFAULT '1',
+  `registration` tinyint(1) NOT NULL DEFAULT '0',
   `readonly` tinyint(1) NOT NULL DEFAULT '0',
   `calculated` tinyint(1) NOT NULL DEFAULT '0',
   `sys` tinyint(4) NOT NULL DEFAULT '0',
