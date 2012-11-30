@@ -29,9 +29,6 @@ if (!class_exists ('vmPSPlugin')) {
  */
 class plgVmShipmentWeight_countries extends vmPSPlugin {
 
-	// instance of class
-	public static $_this = FALSE;
-
 	/**
 	 * @param object $subject
 	 * @param array  $config

@@ -27,8 +27,6 @@ if (!class_exists ('vmPSPlugin')) {
 
 class plgVmPaymentPaypal extends vmPSPlugin {
 
-	// instance of class
-	public static $_this = FALSE;
 
 	function __construct (& $subject, $config) {
 

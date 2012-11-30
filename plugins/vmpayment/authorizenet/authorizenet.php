@@ -28,8 +28,6 @@ if (!class_exists ('vmPSPlugin')) {
 
 class plgVmpaymentAuthorizenet extends vmPSPlugin {
 
-	// instance of class
-	public static $_this = FALSE;
 	private $_cc_name = '';
 	private $_cc_type = '';
 	private $_cc_number = '';

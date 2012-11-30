@@ -31,8 +31,6 @@ else {
 
 class plgVMPaymentPayzen extends vmPSPlugin {
 
-	// instance of class
-	public static $_this = FALSE;
 
 	function __construct (& $subject, $config) {
 		//if (self::$_this)

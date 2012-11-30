@@ -313,7 +313,7 @@ class VirtueMartCart {
 			if(!empty( $post['quantity'][$p_key])){
 				$productData['quantity'] = (int) $post['quantity'][$p_key];
 			} else {
-				$productData['quantity'] = 0;
+					continue;
 			}
 
 			if(!empty( $post['virtuemart_category_id'][$p_key])){
@@ -1159,7 +1159,7 @@ class VirtueMartCart {
 				}
 			}
 		} else {
-			vmdebug('The array count($this->cartProductsData) is 0 ',$this->cartProductsData);
+			//vmdebug('The array count($this->cartProductsData) is 0 ',$this->cartProductsData);
 		}
 
 

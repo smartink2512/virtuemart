@@ -19,9 +19,6 @@ if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcalcula
 
 class plgVmCalculationAvalara extends vmCalculationPlugin {
 
-	// instance of class
-	// 	public static $_this = false;
-
 	var $_dev = TRUE;
 
 	function __construct(& $subject, $config) {

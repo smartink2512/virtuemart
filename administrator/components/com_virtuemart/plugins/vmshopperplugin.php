@@ -50,7 +50,9 @@ abstract class vmShopperPlugin extends VmPlugin
 	 * @return string HTML code (might contain form data_
 	 * @author Oscar van Eijk
 	 */
-	abstract public function plgVmOnUpdateOrderBEShopper($_orderID);
+/*	public function plgVmOnUpdateOrderBEShopper($_orderID){
+		return $_orderID;
+	}
 
 
 	public function plgVmOnUserStore($data){
@@ -60,5 +62,5 @@ abstract class vmShopperPlugin extends VmPlugin
 	public function plgVmAfterUserStore($data){
 		return $data;
 	}
-
+*/
 }

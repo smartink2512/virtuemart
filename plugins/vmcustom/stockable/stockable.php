@@ -24,8 +24,6 @@ if (!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcustompl
 class plgVmCustomStockable extends vmCustomPlugin {
 
 	private $stockhandle = 0;
-	// instance of class
-// 	public static $_this = false;
 
 	function __construct(& $subject, $config) {
 // 		if(self::$_this) return self::$_this;

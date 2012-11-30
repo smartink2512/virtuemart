@@ -104,6 +104,7 @@ class calculationHelper {
 		$this->rules['VatTax'] 	= array();
 		$this->rules['DBTax'] = array();
 		$this->rules['DATax'] = array();
+
 	}
 
 	static public function getInstance() {
@@ -285,6 +286,12 @@ class calculationHelper {
 
 		$this->rules['Tax'] = $this->gatherEffectingRulesForProductPrice('Tax', $this->product_tax_id);
 		$this->rules['VatTax'] = $this->gatherEffectingRulesForProductPrice('VatTax', $this->product_tax_id);
+		if(!empty($this->rules['VatTax'])){
+			if(empty($this->_cartData['VatTax'])){
+				$this->_cartData['VatTax'] = array();
+			}
+			$this->_cartData['VatTax'] = array_merge($this->_cartData['VatTax'],$this->rules['VatTax']);
+		}
 		$this->rules['DBTax'] = $this->gatherEffectingRulesForProductPrice('DBTax', $this->product_discount_id);
 		$this->rules['DATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
 
@@ -556,7 +563,7 @@ class calculationHelper {
 		$this->_cartData = array();
 		$resultWithTax = 0.0;
 		$resultWithOutTax = 0.0;
-
+		$this->_cartData['VatTax'] = array();
 		$this->_cartPrices['basePrice'] = 0;
 		$this->_cartPrices['basePriceWithTax'] = 0;
 		$this->_cartPrices['discountedPriceWithoutTax'] = 0;
@@ -671,18 +678,25 @@ class calculationHelper {
 		//		$this->_cartPrices['billSub']  = $sub + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'];
 		if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['discountAmount'] + $this->_cartPrices['discountBeforeTaxBill'] + $cartdiscountAfterTax;// + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'] ;
 		if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['shipmentTax'] + $this->_cartPrices['paymentTax'] + $cartTax; //+ $this->_cartPrices['withTax'] - $toTax
-		if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices['billTotal'] = $this->_cartPrices['salesPriceShipment'] + $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
-
+		
 		// Last step is handling a coupon, if given
 		if (!empty($cart->couponCode)) {
 			$this->couponHandler($cart->couponCode);
 		}
 
-// 		vmdebug('my cart prices before ',$this->_cartPrices);
-// 		foreach($this->_cartPrices as &$price){
-// 			$price = $this->roundInternal($price);
-// 		}
-// 		vmdebug('my cart prices after ',$this->_cartPrices);
+		if($this->_currencyDisplay->_priceConfig['salesPrice']){
+			$this->_cartPrices['billTotal'] = $this->_cartPrices['salesPriceShipment'] + $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
+			if(!empty($this->_cartPrices['billDiscountAmount']) and isset($this->_cartData['VatTax']) and count($this->_cartData['VatTax'])==1){
+				$this->_revert = true;
+				$tmp = $this->_cartPrices['billTotal']  - $this->_cartPrices['billTaxAmount'];
+				$afterTax = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $this->_cartPrices['billTotal'] ),'salesPrice');
+
+				if(!empty($afterTax)){
+					$this->_cartPrices['billTaxAmount'] = $this->_cartPrices['billTotal']  - $afterTax;
+				}
+				$this->_revert = false;
+			}
+		}
 		return $this->_cartPrices;
 	}
 
