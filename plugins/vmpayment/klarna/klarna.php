@@ -546,7 +546,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				$dbValues['virtuemart_paymentmethod_id'] = $order['details']['BT']->virtuemart_paymentmethod_id;
 				$dbValues['order_payment'] = $order['details']['BT']->order_payment;
 				$dbValues['klarna_pclass'] = $sessionKlarnaData->KLARNA_DATA['PCLASS'];
-				$dbValues['klarna_log'] = $log;
+				//$dbValues['klarna_log'] = $log;
 				$dbValues['klarna_status_code'] = $result['status_code'];
 				$dbValues['klarna_status_text'] = $result['status_text'];
 				$this->storePSPluginInternalData ($dbValues);
