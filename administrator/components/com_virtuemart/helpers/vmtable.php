@@ -569,11 +569,11 @@ class VmTable extends JTable{
 
 				$tbl_key = $this->_tbl_key ;
 				if(get_class($this)!=='TableVmusers'){
-					$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key.'`='.$this->$tbl_key;
+					$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key.'`="'.$this->$tbl_key.'" ';
 					$this->_db->setQuery($q);
 					$virtuemart_vendor_id = $this->_db->loadResult();
 				} else {
-					$q = 'SELECT `virtuemart_vendor_id`,`user_is_vendor` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key.'`='.$this->$tbl_key;
+					$q = 'SELECT `virtuemart_vendor_id`,`user_is_vendor` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key.'`="'.$this->$tbl_key.'" ';
 					$this->_db->setQuery($q);
 					$vmuser = $this->_db->loadRow();
 

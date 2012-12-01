@@ -401,10 +401,9 @@ class VmConfig {
 	}
 
 	/**
-	 * loads a language file, the trick for us is that always the config option enableEnglish is used
+	 * loads a language file, the trick for us is that always the config option enableEnglish is tested
 	 * and the path are already set and the correct order is used
-	 * We use first the english language, then the default, and then the language chosen by the user
-	 * We removed the fourth parameter of $jlang->load, so that languages are not unecessary loaded twice
+	 * We use first the english language, then the default
 	 *
 	 * @author Max Milbers
 	 * @static

@@ -762,10 +762,11 @@ class VirtueMartModelProduct extends VmModel {
 			if($front){
 				if(count($virtuemart_shoppergroup_ids)>0){
 					$q .= ' AND (';
+					$sqrpss = '';
 					foreach($virtuemart_shoppergroup_ids as $sgrpId){
-						$q .= ' `virtuemart_shoppergroup_id` ="'.$sgrpId.'" AND ';
+						$sqrpss .= ' `virtuemart_shoppergroup_id` ="'.$sgrpId.'" OR ';
 					}
-					$q = substr($q,0,-4);
+					$q .= substr($sqrpss,0,-4);
 					$q .= ' OR `virtuemart_shoppergroup_id` IS NULL OR `virtuemart_shoppergroup_id`="0") ';
 				}
 				$quantity = (int)$quantity;
@@ -782,9 +783,9 @@ class VirtueMartModelProduct extends VmModel {
 			if(!empty($err)){
 				vmError('getProductSingle '.$err);
 			} else {
+				//vmdebug('getProductSingle getPrice query',$q);
 				//vmdebug('getProductSingle ',$product->prices);
 			}
-
 
 			if(count($product->prices)===0){
 				//vmdebug('my prices count 0');
@@ -815,14 +816,17 @@ class VirtueMartModelProduct extends VmModel {
 					if(empty($price['virtuemart_shoppergroup_id'])){
 						if(empty($emptySpgrpPrice))$emptySpgrpPrice = $price;
 					} else if(in_array($price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids)){
-						$product = (object)array_merge ((array)$price, (array)$product);
+						$spgrpPrice = $price;
+						//$product = (object)array_merge ((array)$price, (array)$product);
 						break;
 					}
 					//$product = (object)array_merge ((array)$price, (array)$product);
 				}
 
-				if(!empty($emptySpgrpPrice)){
-
+				if(!empty($spgrpPrice)){
+					$product = (object)array_merge ((array)$spgrpPrice, (array)$product);
+				}
+				else if(!empty($emptySpgrpPrice)){
 					$product = (object)array_merge ((array)$emptySpgrpPrice, (array)$product);
 				} else {
 					vmWarn('COM_VIRTUEMART_PRICE_AMBIGUOUS');

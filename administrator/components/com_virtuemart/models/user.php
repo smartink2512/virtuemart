@@ -716,6 +716,8 @@ class VirtueMartModelUser extends VmModel {
 			//if(!class_exists('vmUserPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmuserplugin.php');
 			///if(!$returnValues){
 			$data['customer_number'] = md5($data['username']);
+			//We set this data so that vmshopper plugin know if they should set the customer nummer
+			$data['customer_number_bycore'] = 1;
 			//}
 		} else {
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');

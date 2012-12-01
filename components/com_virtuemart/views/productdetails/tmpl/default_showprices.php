@@ -20,7 +20,7 @@ defined ('_JEXEC') or die('Restricted access');
 ?>
 <div class="product-price" id="productPrice<?php echo $this->product->virtuemart_product_id ?>">
 	<?php
-	vmdebug('showprices', $this->product->prices);
+
 	if (!empty($this->product->prices)) {
 		echo "<strong>" . JText::_ ('COM_VIRTUEMART_CART_PRICE') . "</strong>";
 	}
