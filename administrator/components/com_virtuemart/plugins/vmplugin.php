@@ -68,6 +68,7 @@ abstract class vmPlugin extends JPlugin {
 		$this->_psType = substr ($this->_type, 2);
 
 		$filename = 'plg_' . $this->_type . '_' . $this->_name;
+
 		VmConfig::loadJLang($filename);
 
 		if (!class_exists ('JParameter')) {
