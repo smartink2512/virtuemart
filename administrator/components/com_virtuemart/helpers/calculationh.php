@@ -679,16 +679,17 @@ class calculationHelper {
 		if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['discountAmount'] + $this->_cartPrices['discountBeforeTaxBill'] + $cartdiscountAfterTax;// + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'] ;
 		if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['shipmentTax'] + $this->_cartPrices['paymentTax'] + $cartTax; //+ $this->_cartPrices['withTax'] - $toTax
 		
-		// Last step is handling a coupon, if given
-		if (!empty($cart->couponCode)) {
-			$this->couponHandler($cart->couponCode);
-		}
-
+		//The coupon handling is only necessary if a salesPrice is displayed, otherwise we have a kind of catalogue mode
 		if($this->_currencyDisplay->_priceConfig['salesPrice']){
 			$this->_cartPrices['billTotal'] = $this->_cartPrices['salesPriceShipment'] + $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
-			if(!empty($this->_cartPrices['billDiscountAmount']) and isset($this->_cartData['VatTax']) and count($this->_cartData['VatTax'])==1){
+
+			// Last step is handling a coupon, if given
+			if (!empty($cart->couponCode)) {
+				$this->couponHandler($cart->couponCode);
+			}
+
+			if((!empty($this->_cartPrices['billDiscountAmount']) and isset($this->_cartData['VatTax']) and count($this->_cartData['VatTax'])==1) or !empty($cart->couponCode)){
 				$this->_revert = true;
-				$tmp = $this->_cartPrices['billTotal']  - $this->_cartPrices['billTaxAmount'];
 				$afterTax = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $this->_cartPrices['billTotal'] ),'salesPrice');
 
 				if(!empty($afterTax)){
@@ -697,6 +698,7 @@ class calculationHelper {
 				$this->_revert = false;
 			}
 		}
+		
 		return $this->_cartPrices;
 	}
 
