@@ -681,7 +681,7 @@ class calculationHelper {
 				$this->couponHandler($cart->couponCode);
 			}
 
-			if(!empty($this->_cartPrices['billDiscountAmount']) and isset($this->_cartData['VatTax']) and count($this->_cartData['VatTax'])==1){
+			if((!empty($this->_cartPrices['billDiscountAmount']) and isset($this->_cartData['VatTax']) and count($this->_cartData['VatTax'])==1) or !empty($cart->couponCode)){
 				$this->_revert = true;
 				$afterTax = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $this->_cartPrices['billTotal'] ),'salesPrice');
 
