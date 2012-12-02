@@ -3,9 +3,9 @@
 defined ('_JEXEC') or die('Restricted access');
 
 /**
- * @version $Id: standard.php,v 1.4 2005/05/27 19:33:57 ei
  *
  * a special type of 'cash on delivey':
+ *
  * @author Max Milbers, Valérie Isaksen
  * @version $Id: standard.php 5122 2011-12-18 22:24:49Z alatak $
  * @package VirtueMart
@@ -31,10 +31,9 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		parent::__construct ($subject, $config);
 		// 		vmdebug('Plugin stuff',$subject, $config);
 		$this->_loggable = TRUE;
+		$this->tableFields = array_keys ($this->getTableSQLFields ());
 		$this->_tablepkey = 'id';
 		$this->_tableId = 'id';
-		$this->tableFields = array_keys ($this->getTableSQLFields ());
-
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
 
@@ -101,14 +100,18 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$db = JFactory::getDBO ();
 		$db->setQuery ($q);
 		$currency_code_3 = $db->loadResult ();
-		if (!class_exists ('CurrencyDisplay')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-		}
 		$paymentCurrency = CurrencyDisplay::getInstance ($method->payment_currency);
 		$totalInPaymentCurrency = round ($paymentCurrency->convertCurrencyTo ($method->payment_currency, $order['details']['BT']->order_total, FALSE), 2);
 		$cd = CurrencyDisplay::getInstance ($cart->pricesCurrency);
-
-		$dbValues['payment_name'] = $this->renderPluginName ($method) . '<br />' . $method->payment_info;
+		if (!empty($method->payment_info)) {
+			$lang = JFactory::getLanguage ();
+			if ($lang->hasKey ($method->payment_info)) {
+				$payment_info = JText::_ ($method->payment_info);
+			} else {
+				$payment_info = $method->payment_info;
+			}
+		}
+		$dbValues['payment_name'] = $dbValues['payment_name'] = $this->renderPluginName ($method) . ($payment_info ? ('<br />' . $payment_info) : "");
 		$dbValues['order_number'] = $order['details']['BT']->order_number;
 		$dbValues['virtuemart_paymentmethod_id'] = $order['details']['BT']->virtuemart_paymentmethod_id;
 		$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
@@ -120,13 +123,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 
 		$html = '<table class="vmorder-done">' . "\n";
 		$html .= $this->getHtmlRow ('STANDARD_PAYMENT_INFO', $dbValues['payment_name'], 'class="vmorder-done-payinfo"');
-		if (!empty($payment_info)) {
-			$lang = JFactory::getLanguage ();
-			if ($lang->hasKey ($method->payment_info)) {
-				$payment_info = JText::_ ($method->payment_info);
-			} else {
-				$payment_info = $method->payment_info;
-			}
+		if (!empty($method->payment_info)) {
 			$html .= $this->getHtmlRow ('STANDARD_PAYMENTINFO', $payment_info, 'class="vmorder-done-payinfo"');
 		}
 		if (!class_exists ('VirtueMartModelCurrency')) {
@@ -206,6 +203,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 * @return true: if the conditions are fulfilled, false otherwise
 	 *
 	 */
+	protected
 	function checkConditions ($cart, $method, $cart_prices) {
 
 		$this->convert ($method);
@@ -278,7 +276,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
 	 *
 	 */
-	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart, &$msg) {
+	public
+	function plgVmOnSelectCheckPayment (VirtueMartCart $cart, &$msg) {
 
 		return $this->OnSelectCheck ($cart);
 	}
@@ -295,7 +294,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 * @author Valerie Isaksen
 	 * @author Max Milbers
 	 */
-	public function plgVmDisplayListFEPayment (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
+	public
+	function plgVmDisplayListFEPayment (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
 
 		return $this->displayListFE ($cart, $selected, $htmlIn);
 	}
@@ -313,7 +313,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 *
 */
 
-	public function plgVmonSelectedCalculatePricePayment (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
+	public
+	function plgVmonSelectedCalculatePricePayment (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
 
 		return $this->onSelectedCalculatePrice ($cart, $cart_prices, $cart_prices_name);
 	}
@@ -356,7 +357,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 * @author Max Milbers
 	 * @author Valerie Isaksen
 	 */
-	public function plgVmOnShowOrderFEPayment ($virtuemart_order_id, $virtuemart_paymentmethod_id, &$payment_name) {
+	public
+	function plgVmOnShowOrderFEPayment ($virtuemart_order_id, $virtuemart_paymentmethod_id, &$payment_name) {
 
 		$this->onShowOrderFE ($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
 	}

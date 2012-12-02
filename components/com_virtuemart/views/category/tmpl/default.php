@@ -235,9 +235,9 @@ if (!empty($this->products)) {
 		<div class="product floatleft<?php echo $Browsecellwidth . $show_vertical_separator ?>">
 			<div class="spacer">
 				<div class="width30 floatleft center">
-					<?php /** @todo make image popup */
-					echo $product->images[0]->displayMediaThumb ('class="browseProductImage" border="0" title="' . $product->product_name . '" ', TRUE, 'class="modal"');
-					?>
+					         <a title="<?php echo $product->link ?>" rel="vm-additional-images" href="<?php echo $product->link; ?>">
+						         <img class="browseProductImage"  src="<?php echo $product->images[0]->file_url ?>" alt="<?php echo $product->images[0]->file_description ?>"/>
+					         </a>
 
 					<!-- The "Average Customer Rating" Part -->
 					<?php if ($this->showRating) { ?>

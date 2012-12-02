@@ -36,7 +36,7 @@ if (!empty($this->product->images)) {
 	?>
 <div class="main-image">
     <div class="floatleft">
-        <a title="<?php echo $image->file_description ?>" rel="vm-additional-images" href="<?php echo $image->file_url; ?>"><img src="<?php echo $image->file_url_thumb ?>" alt="<?php echo $image->file_description ?>"/></a>
+        <a title="<?php echo $image->file_description ?>" rel="vm-additional-images" href="<?php echo $image->file_url; ?>"><img class="medium-image" id="medium-image" src="<?php echo $image->file_url ?>" alt="<?php echo $image->file_description ?>"/></a>
     </div>
 	 <div class="clear"></div>
 </div>
