@@ -43,7 +43,6 @@ if(VmConfig::get('shop_is_offline',0)){
 	if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
 
 	/* Loading jQuery and VM scripts. */
-	vmJsApi::jPrice();
 	vmJsApi::jSite();
 	vmJsApi::cssSite();
 

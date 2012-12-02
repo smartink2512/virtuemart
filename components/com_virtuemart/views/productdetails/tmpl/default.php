@@ -146,13 +146,13 @@ $this->row = 0;
     ?>
 
     <div>
-	<div class="width50 floatleft">
+	<div class="width60 floatleft">
 <?php
 echo $this->loadTemplate('images');
 ?>
 	</div>
 
-	<div class="width50 floatright">
+	<div class="width40 floatright">
 	    <div class="spacer-buy-area">
 
 		<?php

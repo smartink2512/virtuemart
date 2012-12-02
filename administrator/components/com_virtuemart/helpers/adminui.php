@@ -31,6 +31,7 @@ class AdminUIHelper {
 		if (JRequest::getWord ( 'tmpl') =='component') self::$backEnd=false;
     	if(self::$vmAdminAreaStarted) return;
     	self::$vmAdminAreaStarted = true;
+    //Todo change asset paths to vmConfig
 		$front = JURI::root(true).'/components/com_virtuemart/assets/';
 		$admin = JURI::root(true).'/administrator/components/com_virtuemart/assets/';
 		$document = JFactory::getDocument();
