@@ -57,10 +57,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		if(!class_exists('ATConfig')) require (VMAVALARA_CLASS_PATH.DS.'ATConfig.class.php');
 
-// 		$this->tableFields = array('id','virtuemart_calc_id','calc_affected','calc_amount_cond','calc_amount_cond_min','calc_amount_cond_max','calc_amount_dimunit','calc_quantity_relvalue');
-
-// 		$this->_tableId = 'id';
-		// 		self::$_this = $this;
 	}
 
 
@@ -121,7 +117,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 	function ping ($calc) {
 
-		//require('./Credentials.php');	// where service URL, account, license key are set
 		$html = '';
 		$this->newATConfig($calc);
 
@@ -174,10 +169,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 			if(!empty($vmadd) and $calc->vAddress==1){
 				$config = $this->newATConfig($calc);
-			//	vmdebug('fillTestAvalaraAddress $vmadd not empty',$vmadd);
+
 				if(!class_exists('AddressServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'AddressServiceSoap.class.php');
 				$client = new AddressServiceSoap('Development',$config);
-				//$this->newATConfig($calc);
 
 				if(!class_exists('Address')) require (VMAVALARA_CLASS_PATH.DS.'Address.class.php');
 				$address = new Address();
@@ -187,8 +181,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				if(isset($vmadd['state'])) $address->setRegion($vmadd['state']);
 				if(isset($vmadd['zip'])) $address->setPostalCode($vmadd['zip']);
 
-
-				//VmConfig::$echoDebug = TRUE;
 				$address->Coordinates = 1;
 				$address->Taxability = TRUE;
 				$textCase = TextCase::$Mixed;
@@ -314,24 +306,29 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$request->setOriginAddress($origin);	      //Address
 		$request->setDestinationAddress	($destination);     //Address
 		//vmdebug('The date',$origin,$destination);
-	//	$request->setCompanyCode($calc->account);         // Your Company Code From the Dashboard
-		$request->setCompanyCode($calc->company_code);
+		$request->setCompanyCode($calc->company_code);   // Your Company Code From the Dashboard
 
 		if($calc->committ){
 			$request->setDocType(DocumentType::$SalesInvoice);   	// Only supported types are SalesInvoice or SalesOrder
+			//invoice number, problem is that the invoice number is at this time not known, but the order_number may reachable
+			$request->setDocCode('PHPINV999');
 		} else {
 			$request->setDocType(DocumentType::$SalesOrder);
+			//invoice number, problem is that the invoice number is at this time not known, neither the order_number
+			$request->setDocCode('PHPINV999');
 		}
-
-		$request->setDocCode('PHPINV999');             //    invoice number
 
 		$request->setDocDate(date('Y-m-d'));           //date
 
 		//$request->setSalespersonCode("");             // string Optional
-		$request->setCustomerCode("Cust123");        //string Required
+		$shopperData = $this->getShopperData();
+		$request->setCustomerCode($shopperData['customer_id']);        //string Required
 		$request->setCustomerUsageType("");   //string   Entity Usage
 		$request->setDiscount(0.00);            //decimal
 	//	$request->setPurchaseOrderNo("");     //string Optional
+
+		//If I understand correctly, we need to add for this an userfield, for example with the name
+		//exemption_no, then user could enter their number.
 		$request->setExemptionNo("");         //string   if not using ECMS which keys on customer code
 
 		$request->setDetailLevel('Tax');         //Summary or Document or Line or Tax or Diagnostic
@@ -344,28 +341,26 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 /////////////////////////////////////////
 
 		$products= array();
-		vmdebug('getTax price',$price);
+
 		if($calculationHelper->inCart){
 
 			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 			$cart = VirtueMartCart::getCart();
-			//vmdebug('my Cart',$cart);
+
 			$products = $cart->products;
 			$prices = $calculationHelper->getCartPrices();
 			foreach($products as $k => $product){
 
-				//$prices = $calculationHelper->_cartPrices[$k];
 				if(!empty($prices[$k]['discountedPriceWithoutTax'])){
 					$price = $prices[$k]['discountedPriceWithoutTax'];
 				} else if(!empty($prices[$k]['basePriceVariant'])){
 					$price = $prices[$k]['basePriceVariant'];
 				} else {
-					vmdebug('Hmmm there is no price in getTax for product '.$k.' ',$prices);
+					vmdebug('There is no price in getTax for product '.$k.' ',$prices);
 					$price = 0.0;
 				}
-				//$price = empty($cart->pricesUnformatted[$k]['discountedPriceWithoutTax'])? $cart->pricesUnformatted[$k]['basePrice'] : $cart->pricesUnformatted[$k]['discountedPriceWithoutTax'] ;
 				$product->price = $price;
-				//vmdebug('Avalara set price '.$price);
+
 				if(!empty($price[$k]['discountAmount'])){
 					$product->discount = $price[$k]['discountAmount'];
 				} else {
@@ -381,7 +376,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				$products[0]->amount = 1;
 			}
 
-			//vmdebug('my product $price'.$price);
 			if(isset($calculationHelper->productPrices['discountAmount'])){
 				$products[0]->discount = $calculationHelper->productPrices['discountAmount'];
 			} else {
@@ -393,12 +387,13 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$n = 0;
 		$lineNumbersToCartProductId = array();
 		foreach($products as $k=>$product){
+
 			$n++;
 			$lineNumbersToCartProductId[$n] = $k;
 			$line1 = new Line();
 			$line1->setNo ($n);                  //string  // line Number of invoice
 			$line1->setItemCode($product->product_sku);            //string
-			$line1->setDescription("Invoice Calculated From PHP SDK");         //product description, like in cart
+			$line1->setDescription($product->product_name);         //product description, like in cart, atm only the name, todo add customfields
 			$line1->setTaxCode("");             //string
 			$line1->setQty($product->amount);                 //decimal
 			$line1->setAmount($product->price);              //decimal // TotalAmmount
@@ -422,8 +417,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		{
 			if(!class_exists('TaxLine')) require (VMAVALARA_CLASS_PATH.DS.'TaxLine.class.php');
 			if(!class_exists('TaxDetail')) require (VMAVALARA_CLASS_PATH.DS.'TaxDetail.class.php');
-
+			vmSetStartTime('avagetTax');
 			$getTaxResult = $client->getTax($request);
+			vmTime('Avalara getTax','avagetTax');
 			/*
 			 * [0] => getDocCode
     [1] => getAdjustmentDescription
@@ -479,6 +475,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 				}
 
+				//Todo there is a problem, that products taken twice show too high tax (multiplied by amount)
 				if($calculationHelper->inCart){
 					$calculationHelper->setCartPrices($prices);
 				}
@@ -577,6 +574,25 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			} else {
 				if(!empty($cart->BT)) $vmadd = $cart->BT;
 			}
+			$jUser = JFactory::getUser ();
+			if($jUser->id){
+				$userModel = VmModel::getModel('user');
+				$userModel -> setId($jUser->id);
+				$vmadd['customer_id'] = $userModel ->getCustomerNumberById();
+			} else {
+				$firstName = empty($vmadd['first_name'])? '':$vmadd['first_name'];
+				$lastName = empty($vmadd['last_name'])? '':$vmadd['last_name'];
+				$email = empty($vmadd['email'])? '':$vmadd['email'];
+				$complete = $firstName.$lastName.$email;
+				if(!empty($complete)){
+					$vmadd['customer_id'] = 'nonreg_'.$vmadd['first_name'].'_'.$vmadd['last_name'].'_'.$vmadd['email'];
+				} else {
+					$vmadd['customer_id'] = '';
+				}
+
+			}
+
+
 			//vmdebug('getShopperData',$vmadd);
 			//Maybe the user is logged in, but has no cart yet.
 			if(empty($vmadd)){
@@ -604,13 +620,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$rule = (object)$rule;
 
 		$mathop = $rule->calc_value_mathop;
-		$value = $rule->calc_value;
-		$currency =  $rule->calc_currency;
-
-		//vmdebug('plgVmInterpreteMathOp',$calculationHelper);
 		$tax = 0.0;
 
-	//	if ($mathop=='avalara') {
+		if ($mathop=='avalara') {
 			$requestedProductId = JRequest::getInt('virtuemart_product_id');
 			//vmdebug('plgVmInterpreteMathOp',$calculationHelper);
 
@@ -618,11 +630,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				$productId = $calculationHelper->_product->virtuemart_product_id;
 			} else {
 				$productId = $requestedProductId;
-				//vmTrace('plgVmInterpreteMathOp avalara');
 			}
-
-			//VmConfig::$echoDebug = TRUE;
-			//vmdebug('plgVmInterpreteMathOp avalara $productId '.$productId.' $requestedProductId '.$requestedProductId);
 
 			if($productId==$requestedProductId or $calculationHelper->inCart ){
 				VmTable::bindParameterable ($rule, $this->_xParams, $this->_varsToPushParam);
@@ -630,36 +638,23 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 					$this->addresses = $this->fillValidateAvalaraAddress($rule);
 				}
 
-				//vmdebug('plgVmInterpreteMathOp $addresses ',$addresses);
 				if($this->addresses){
-
 					$tax = $this->getTax( $calculationHelper,$rule,$this->addresses[0],$price);
-
 				}
 			}
-
-
-			//vmInfo("Number of addresses returned is ".$addresses);
-	//	}
+		}
 
 		if($revert){
 			$tax = -$tax;
 		}
-		//vmdebug('plgVmInterpreteMathOp myTax '.$price,$tax);
+
 		return $price + (float)$tax;
 	}
 
-	public function plgVmInGatherEffectRulesBill(&$calculationHelper,&$rules){
+/*	public function plgVmInGatherEffectRulesBill(&$calculationHelper,&$rules){
 
-		//vmdebug('plgVmInGatherEffectRulesBill',$rules);
-		/*
-		$view = JRequest::getWord('view',0);
-		if($calculationHelper->inCart){
-
-		}
-		 */
 		return FALSE;
-	}
+	}*/
 
 	/**
 	 * We can only calculate it for the productdetails view
@@ -667,7 +662,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	 * @param $rules
 	 */
 	public function plgVmInGatherEffectRulesProduct(&$calculationHelper,&$rules){
-
 
 		//If in cart, the tax is calculated per bill, so the rule per product must be removed
 		if($calculationHelper->inCart){
@@ -677,7 +671,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				}
 			}
 		}
-		//vmdebug('plgVmInGatherEffectRulesProduct',$rules);
 	}
 
 
@@ -709,9 +702,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		return TRUE;
 
 	}
-
-
-
 
 	public function plgVmDeleteCalculationRow($id){
 		$this->removePluginInternalData($id);

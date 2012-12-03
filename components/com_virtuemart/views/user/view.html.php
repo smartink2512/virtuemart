@@ -64,7 +64,40 @@ class VirtuemartViewUser extends VmView {
 	$useXHTML = true;
 	$this->assignRef('useSSL', $useSSL);
 	$this->assignRef('useXHTML', $useXHTML);
+
+	$front = JURI::root(true).'/components/com_virtuemart/assets/';
 	$document = JFactory::getDocument();
+	$document->addStyleSheet($front.'css/chosen.css');
+	$document->addScript($front.'js/chosen.jquery.min.js');//*/
+
+	 /*   $front = JURI::root(true).'/components/com_virtuemart/assets/';
+	    $admin = JURI::root(true).'/administrator/components/com_virtuemart/assets/';
+	    $document = JFactory::getDocument();
+
+	    //loading defaut admin CSS
+	    $document->addStyleSheet($admin.'css/admin_ui.css');
+	    $document->addStyleSheet($admin.'css/admin_menu.css');
+	    $document->addStyleSheet($admin.'css/admin.styles.css');
+	    $document->addStyleSheet($admin.'css/toolbar_images.css');
+	    $document->addStyleSheet($admin.'css/menu_images.css');
+	    $document->addStyleSheet($front.'css/chosen.css');
+	    $document->addStyleSheet($front.'css/vtip.css');
+	    $document->addStyleSheet($front.'css/jquery.fancybox-1.3.4.css');
+	    //$document->addStyleSheet($admin.'css/jqtransform.css');
+
+	    //loading defaut script
+
+	    $document->addScript($front.'js/fancybox/jquery.mousewheel-3.0.4.pack.js');
+	    $document->addScript($front.'js/fancybox/jquery.easing-1.3.pack.js');
+	    $document->addScript($front.'js/fancybox/jquery.fancybox-1.3.4.pack.js');
+	    $document->addScript($admin.'js/jquery.coookie.js');
+	    $document->addScript($front.'js/chosen.jquery.min.js');
+	    $document->addScript($admin.'js/vm2admin.js');
+
+*/
+
+
+
 	$mainframe = JFactory::getApplication();
 	$pathway = $mainframe->getPathway();
 	$layoutName = $this->getLayout();

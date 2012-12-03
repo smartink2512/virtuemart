@@ -333,7 +333,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<td></td>
 	<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->pricesUnformatted['salesPriceShipment'], FALSE); ?> </td>
 </tr>
-
+<?php if ($this->cart->pricesUnformatted['salesPrice']>0.0 ) { ?>
 <tr class="sectiontableentry1">
 	<?php if (!$this->cart->automaticSelectedPayment) { ?>
 
@@ -356,6 +356,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<td align="right"><?php // Why is this commented? what is with payment discounts? echo "<span  class='priceColor2'>".$this->cart->pricesUnformatted['paymentDiscount']."</span>"; ?></td>
 	<td align="right"><?php  echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->pricesUnformatted['salesPricePayment'], FALSE); ?> </td>
 </tr>
+<?php } ?>
 <tr>
 	<td colspan="4">&nbsp;</td>
 	<td colspan="<?php echo $colspan ?>">

@@ -35,7 +35,7 @@ class calculationHelper {
 	private $_deliveryState;
 	private $_currencyDisplay;
 	private $_cart = null;
-	private $_cartPrices;
+	private $_cartPrices = false;
 	var $productPrices;
 	private $_cartData;
 
@@ -556,8 +556,11 @@ class calculationHelper {
 	//	function getCheckoutPrices($productIds,$variantMods=array(), $cartVendorId=1,$couponId=0,$shipId=0,$paymId=0){
 	public function getCheckoutPrices($cart, $checkAutomaticSelected=true) {
 
-		$this->_cart = $cart;
+		if(isset($this->_cartPrices) and is_array($this->_cartPrices) and count($this->_cartPrices)>0){
+			return $this->_cartPrices;
+		}
 
+		$this->_cart = $cart;
 		$this->inCart = TRUE;
 		$pricesPerId = array();
 		$this->_cartPrices = array();
@@ -691,8 +694,6 @@ class calculationHelper {
 				$this->_revert = false;
 			}
 		}
-
-		
 
 		return $this->_cartPrices;
 	}
@@ -920,6 +921,7 @@ class calculationHelper {
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();
 		$testedRules = array();
+
 		foreach ($rules as $rule) {
 
 			$q = 'SELECT `virtuemart_country_id` FROM #__virtuemart_calc_countries WHERE `virtuemart_calc_id`="' . $rule["virtuemart_calc_id"] . '"';
@@ -1152,11 +1154,14 @@ class calculationHelper {
 					if(!$this->_revert){
 						$calculated = $price * $value / 100.0;
 					} else {
-
-						if($sign == $plus){
-							$calculated =  abs($price /(1 -  (100.0 / $value)));
+						if(!empty($value)){
+							if($sign == $plus){
+								$calculated =  abs($price /(1 -  (100.0 / $value)));
+							} else {
+								$calculated = abs($price /(1 +  (100.0 / $value)));
+							}
 						} else {
-							$calculated = abs($price /(1 +  (100.0 / $value)));
+							vmdebug('interpreteMathOp $value is empty '.$rule->calc_name);
 						}
 // 							vmdebug('interpreteMathOp $price'.$price.' $value '.$value.' $sign '.$sign.' '.$plus.' $calculated '.$calculated);
 					}

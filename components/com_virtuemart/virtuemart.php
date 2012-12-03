@@ -44,6 +44,7 @@ if(VmConfig::get('shop_is_offline',0)){
 
 	/* Loading jQuery and VM scripts. */
 	//vmJsApi::jPrice();    //in create button
+	vmJsApi::jQuery();
 	vmJsApi::jSite();
 	vmJsApi::cssSite();
 
