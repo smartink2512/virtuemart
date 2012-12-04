@@ -101,7 +101,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	 */
 	function checkConditions ($cart, $method, $cart_prices) {
 		$this->convert ($method);
-		$amount = $cart_prices['salesPrice'];
+		$amount = $cart->pricesUnformatted['billTotal'];
 		$amount_cond = ($amount >= $method->min_amount && $amount <= $method->max_amount
 			|| ($amount >= $method->min_amount && empty($method->max_amount)));
 
