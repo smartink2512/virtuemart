@@ -81,7 +81,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('Customer text input', 'plugin', 'textinput', 'vmcustom');
 			$this->installPlugin ('Product specification', 'plugin', 'specification', 'vmcustom');
 			$this->installPlugin ('Stockable variants', 'plugin', 'stockable', 'vmcustom');
-			//$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation');
+			$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation');
 
 			// 			$table = '#__virtuemart_customs';
 			// 			$fieldname = 'field_type';
