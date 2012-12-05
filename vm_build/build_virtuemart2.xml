@@ -3,8 +3,8 @@
 <project name="VIRTUEMART2" default="VIRTUEMART2" basedir=".">
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
-    <property name="vm.version" value="2.0.12f"/>
-    <property name="PHING.VM.CODENAME" value="RedOctober"/>
+    <property name="vm.version" value="2.1.0"/>
+    <property name="PHING.VM.CODENAME" value="RedNovember"/>
     <property file="build.properties"/>
     <target name="title">
         <echo message="BUILD VirtueMart 2 package FROM ${export.to}  TO ${package.abspath}"/>
@@ -283,22 +283,22 @@
                 <expandproperties/>
             </filterchain>
         </copy>
-        <zip destfile="${package.language.dst.languageFE.name}">
+        <!--zip destfile="${package.language.dst.languageFE.name}">
             <fileset dir="${package.language.dst.languageFE}">
                 <include name="**"/>
             </fileset>
-        </zip>
+        </zip-->
         <copy todir="${package.language.dst.languageBE}" overwrite="true">
             <fileset refid="languageBE.files"/>
             <filterchain>
                 <expandproperties/>
             </filterchain>
         </copy>
-        <zip destfile="${package.language.dst.languageBE.name}">
+        <!--zip destfile="${package.language.dst.languageBE.name}">
             <fileset dir="${package.language.dst.languageBE}">
                 <include name="**"/>
             </fileset>
-        </zip>
+        </zip-->
         <copy todir="${package.language.dst.folder}" overwrite="true">
             <fileset refid="languageFE.xml"/>
             <filterchain>
@@ -312,8 +312,6 @@
         <zip destfile="${package.language.dst.zip}">
             <fileset dir="${package.language.dst.folder}">
                 <include name="**"/>
-                <exclude name="admin/**"/>
-                <exclude name="site/**"/>
             </fileset>
         </zip>
     </target>
