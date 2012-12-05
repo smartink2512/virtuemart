@@ -227,6 +227,16 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 			}
 		}
 		$htmlIn[] = $htmla;
+		 $js = '
+		 jQuery(document).ready(function( $ ) {
+			jQuery("#cc_number_'.$method->virtuemart_paymentmethod_id.'").focusin( function(){
+				jQuery("#payment_id_'.$method->virtuemart_paymentmethod_id.'").attr("checked", true);
+			});
+		 });
+		 ';
+		$doc = JFactory::getDocument ();
+		$doc->addScriptDeclaration ($js);
+
 
 		return TRUE;
 	}
