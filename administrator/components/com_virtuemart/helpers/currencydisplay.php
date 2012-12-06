@@ -430,25 +430,25 @@ class CurrencyDisplay {
 		*/
 		//		if(empty($exchangeRate)){
 		if(is_Object($currency)){
-			$exchangeRate = $currency->exchangeRateShopper;
+			$exchangeRate = (float)$currency->exchangeRateShopper;
 			vmdebug('convertCurrencyTo OBJECT '.$exchangeRate);
 		}
 		else {
 			//				$this->_db = JFactory::getDBO();
 			$q = 'SELECT `currency_exchange_rate` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.(int)$currency.'" ';
 			$this->_db->setQuery($q);
-			$exch = $this->_db->loadResult();
+			$exch = (float)$this->_db->loadResult();
 			// 				vmdebug('begin convertCurrencyTo '.$exch);
-			if(!empty($exch) and $exch !== '0.00000'){
+			if(!empty($exch)){
 				$exchangeRate = $exch;
 			} else {
-				$exchangeRate = FALSE;
+				$exchangeRate = 0;
 			}
 		}
 		//	}
-		$this->exchangeRateShopper = $exchangeRate;
+		//$this->exchangeRateShopper = $exchangeRate;
 		// 		vmdebug('convertCurrencyTo my currency ',$exchangeRate,$currency);
-		if(!empty($exchangeRate) && $exchangeRate!=FALSE){
+		if(!empty($exchangeRate) ){
 
 			//vmdebug('convertCurrencyTo Use custom rate');
 			if($shop){
