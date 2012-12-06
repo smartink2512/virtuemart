@@ -28,7 +28,6 @@ class DynamicSoapClient extends SoapClient
     {
         parent::__construct($wsdl,$options);
         $this->config = $config;
-	   // vmdebug('DynamicSoapClient ',$wsdl,$options,$config);
     }
 
 	public function __call($n,$args)

@@ -574,12 +574,11 @@ class VirtueMartCart {
 
 	public function getCartPrices($checkAutomaticSelected=true) {
 
-		if($this->pricesUnformatted===null){
-			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-			$calculator = calculationHelper::getInstance();
+		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		$calculator = calculationHelper::getInstance();
 
-			$this->pricesUnformatted = $calculator->getCheckoutPrices($this, $checkAutomaticSelected);
-		}
+		$this->pricesUnformatted = $calculator->getCheckoutPrices($this, $checkAutomaticSelected);
+
 
 		return $this->pricesUnformatted;
 	}

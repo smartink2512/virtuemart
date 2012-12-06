@@ -110,6 +110,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		if ($calc->activated) {
 			$html .= $this->ping($calc);
 		}
+		$html .= JText::_('VMCALCULATION_AVALARA_MANUAL');
 		return TRUE;
 	}
 
@@ -167,7 +168,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 			$vmadd = $this->getShopperData();
 
-			if(!empty($vmadd) and $calc->vAddress==1){
+			if(!empty($vmadd)){
 				$config = $this->newATConfig($calc);
 
 				if(!class_exists('AddressServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'AddressServiceSoap.class.php');
@@ -181,15 +182,23 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				if(isset($vmadd['state'])) $address->setRegion($vmadd['state']);
 				if(isset($vmadd['zip'])) $address->setPostalCode($vmadd['zip']);
 
+				if(!class_exists('SeverityLevel')) require (VMAVALARA_CLASS_PATH.DS.'SeverityLevel.class.php');
+				if(!class_exists('Message')) require (VMAVALARA_CLASS_PATH.DS.'Message.class.php');
+
+				if($calc->vAddress==0){
+					self::$validatedAddresses = array($address);
+					return self::$validatedAddresses;
+				}
+
 				$address->Coordinates = 1;
 				$address->Taxability = TRUE;
 				$textCase = TextCase::$Mixed;
 				$coordinates = 1;
+
 				if(!class_exists('ValidateResult')) require (VMAVALARA_CLASS_PATH.DS.'ValidateResult.class.php');
 				if(!class_exists('ValidateRequest')) require (VMAVALARA_CLASS_PATH.DS.'ValidateRequest.class.php');
 				if(!class_exists('ValidAddress')) require (VMAVALARA_CLASS_PATH.DS.'ValidAddress.class.php');
-				if(!class_exists('SeverityLevel')) require (VMAVALARA_CLASS_PATH.DS.'SeverityLevel.class.php');
-				if(!class_exists('Message')) require (VMAVALARA_CLASS_PATH.DS.'Message.class.php');
+
 
 				try
 				{
@@ -202,7 +211,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 						foreach($result->getMessages() as $msg)
 						{
 							vmdebug('fillValidateAvalaraAddress ' . $msg->getName().": ".$msg->getSummary()."\n");
-							vmdebug('fillValidateAvalaraAddress ERROR',$address);
+							//vmdebug('fillValidateAvalaraAddress ERROR',$address);
 						}
 					}
 					else
@@ -264,6 +273,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	static $stop = FALSE;
 	function getTax($calculationHelper,$calc,$destination,$price){
 
+		if($calc->activated==0) return false;
 		//if(self::$stop) return self::$stop;
 
 		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
@@ -323,13 +333,24 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		//$request->setSalespersonCode("");             // string Optional
 		$shopperData = $this->getShopperData();
 		$request->setCustomerCode($shopperData['customer_id']);        //string Required
-		$request->setCustomerUsageType("");   //string   Entity Usage
-		$request->setDiscount(0.00);            //decimal
-	//	$request->setPurchaseOrderNo("");     //string Optional
+
+		if(isset($shopperData['avatax_usage_type'])){
+			$request->setCustomerUsageType($shopperData['avatax_usage_type']);   //string   Entity Usage
+		}
+
+
+		$cartPrices = $calculationHelper->getCartPrices();
+		vmdebug('$cartPrices',$cartPrices);
+		$request->setDiscount($cartPrices['discountAmount']);            //decimal
+		//$request->setDiscount(0.0);
+		//	$request->setPurchaseOrderNo("");     //string Optional
 
 		//If I understand correctly, we need to add for this an userfield, for example with the name
 		//exemption_no, then user could enter their number.
-		$request->setExemptionNo("");         //string   if not using ECMS which keys on customer code
+		if(isset($shopperData['avatax_exemption_number'])){
+			$request->setExemptionNo($shopperData['avatax_exemption_number']);         //string   if not using ECMS which keys on customer code
+		}
+
 
 		$request->setDetailLevel('Tax');         //Summary or Document or Line or Tax or Diagnostic
 
@@ -412,6 +433,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		//vmdebug('avalaragetTax setLines',$lines);
 		$request->setLines($lines);
 
+		vmdebug('My request',$request);
 		$totalTax = 0.0;
 		try
 		{
@@ -464,6 +486,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				foreach($getTaxResult->getTaxLines() as $ctl)
 				{
 					if($calculationHelper->inCart){
+						//vmdebug('my $ctl',$ctl);
 						$prices[$lineNumbersToCartProductId[$ctl->getNo()]]['taxAmount'] = $ctl->getTax();
 					}
 					vmdebug( "     Line: ".$ctl->getNo()." Tax: ".$ctl->getTax()." TaxCode: ".$ctl->getTaxCode());
@@ -624,7 +647,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		if ($mathop=='avalara') {
 			$requestedProductId = JRequest::getInt('virtuemart_product_id');
-			//vmdebug('plgVmInterpreteMathOp',$calculationHelper);
+
 
 			if(isset($calculationHelper->_product)){
 				$productId = $calculationHelper->_product->virtuemart_product_id;
@@ -634,10 +657,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 			if($productId==$requestedProductId or $calculationHelper->inCart ){
 				VmTable::bindParameterable ($rule, $this->_xParams, $this->_varsToPushParam);
+				if($rule->activated==0) return $price;
 				if(empty($this->addresses)){
 					$this->addresses = $this->fillValidateAvalaraAddress($rule);
 				}
-
+				vmdebug('plgVmInterpreteMathOp',$this->addresses);
 				if($this->addresses){
 					$tax = $this->getTax( $calculationHelper,$rule,$this->addresses[0],$price);
 				}
