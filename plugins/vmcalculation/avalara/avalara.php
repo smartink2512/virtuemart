@@ -179,13 +179,23 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				if(isset($vmadd['address_1'])) $address->setLine1($vmadd['address_1']);
 				if(isset($vmadd['address_2'])) $address->setLine2($vmadd['address_2']);
 				if(isset($vmadd['city'])) $address->setCity($vmadd['city']);
-				if(isset($vmadd['state'])) $address->setRegion($vmadd['state']);
+
+				if(isset($vmadd['virtuemart_country_id'])){
+					$vmadd['country'] = ShopFunctions::getCountryByID($vmadd['virtuemart_country_id'],'country_2_code');
+					if(isset($vmadd['country'])) $address->setCountry($vmadd['country']);
+				}
+				if(isset($vmadd['virtuemart_state_id'])){
+					$vmadd['state'] = ShopFunctions::getStateByID($vmadd['virtuemart_state_id'],'state_2_code');
+					if(isset($vmadd['state'])) $address->setRegion($vmadd['state']);
+				}
+
 				if(isset($vmadd['zip'])) $address->setPostalCode($vmadd['zip']);
 
 				if(!class_exists('SeverityLevel')) require (VMAVALARA_CLASS_PATH.DS.'SeverityLevel.class.php');
 				if(!class_exists('Message')) require (VMAVALARA_CLASS_PATH.DS.'Message.class.php');
 
-				if($calc->vAddress==0){
+				//if($calc->vAddress==0){
+				if(isset($vmadd['country']) and $vmadd['country']!= 'US' and $vmadd['country']!= 'CA'){
 					self::$validatedAddresses = array($address);
 					return self::$validatedAddresses;
 				}
@@ -217,7 +227,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 					else
 					{
 						self::$validatedAddresses = $result->getvalidAddresses();
-						$echo = "";
+					/*	$echo = "";
 						foreach($result->getvalidAddresses() as $valid)
 						{
 							$echo .= "Line 1: ".$valid->getline1()."\n";
@@ -239,7 +249,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 								$echo .=  "Longitude: ".$valid->getlongitude()."\n";
 							}
 						}
-						//vmdebug('Normalized Address:',$echo);
+						//vmdebug('Normalized Address:',$echo);*/
 					}
 
 				}
@@ -271,7 +281,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	}
 
 	static $stop = FALSE;
-	function getTax($calculationHelper,$calc,$destination,$price){
+	function getTax($calculationHelper,$calc,$price,$sale,$committ=false){
 
 		if($calc->activated==0) return false;
 		//if(self::$stop) return self::$stop;
@@ -314,6 +324,12 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$origin->setPostalCode($vendorFields['fields']['zip']['value']);
 
 		$request->setOriginAddress($origin);	      //Address
+
+		if(isset($this->addresses[0])){
+			$destination = $this->addresses[0];
+		} else {
+			return FALSE;
+		}
 		$request->setDestinationAddress	($destination);     //Address
 		//vmdebug('The date',$origin,$destination);
 		$request->setCompanyCode($calc->company_code);   // Your Company Code From the Dashboard
@@ -338,9 +354,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$request->setCustomerUsageType($shopperData['avatax_usage_type']);   //string   Entity Usage
 		}
 
-
 		$cartPrices = $calculationHelper->getCartPrices();
-		vmdebug('$cartPrices',$cartPrices);
+		//vmdebug('$cartPrices',$cartPrices);
 		$request->setDiscount($cartPrices['discountAmount']);            //decimal
 		//$request->setDiscount(0.0);
 		//	$request->setPurchaseOrderNo("");     //string Optional
@@ -351,14 +366,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$request->setExemptionNo($shopperData['avatax_exemption_number']);         //string   if not using ECMS which keys on customer code
 		}
 
-
 		$request->setDetailLevel('Tax');         //Summary or Document or Line or Tax or Diagnostic
 
 	//	$request->setReferenceCode1("");       //string Optional
 	//	$request->setReferenceCode2("");       //string Optional
 	//	$request->setLocationCode("");        //string Optional - aka outlet id for tax forms
-
-
 /////////////////////////////////////////
 
 		$products= array();
@@ -419,16 +431,19 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$line1->setQty($product->amount);                 //decimal
 			$line1->setAmount($product->price);              //decimal // TotalAmmount
 
-
 			$line1->setDiscounted($product->discount);          //boolean
 			$line1->setRevAcct("");             //string
 			$line1->setRef1("");                //string
 			$line1->setRef2("");                //string
-			$line1->setExemptionNo("");         //string
-			$line1->setCustomerUsageType("");   //string
+
+			if(isset($shopperData['avatax_exemption_number'])){
+				$line1->setExemptionNo("");         //string
+			}
+			if(isset($shopperData['avatax_usage_type'])){
+				$line1->setCustomerUsageType("");   //string
+			}
 
 			$lines[] = $line1;
-			//vmdebug('avalaragetTax ',$origin,$request);
 		}
 		//vmdebug('avalaragetTax setLines',$lines);
 		$request->setLines($lines);
@@ -498,7 +513,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 				}
 
-				//Todo there is a problem, that products taken twice show too high tax (multiplied by amount)
 				if($calculationHelper->inCart){
 					$calculationHelper->setCartPrices($prices);
 				}
@@ -576,7 +590,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		}
 
-
 		return $config;
 	}
 
@@ -648,7 +661,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		if ($mathop=='avalara') {
 			$requestedProductId = JRequest::getInt('virtuemart_product_id');
 
-
 			if(isset($calculationHelper->_product)){
 				$productId = $calculationHelper->_product->virtuemart_product_id;
 			} else {
@@ -661,9 +673,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				if(empty($this->addresses)){
 					$this->addresses = $this->fillValidateAvalaraAddress($rule);
 				}
-				vmdebug('plgVmInterpreteMathOp',$this->addresses);
 				if($this->addresses){
-					$tax = $this->getTax( $calculationHelper,$rule,$this->addresses[0],$price);
+					$tax = $this->getTax( $calculationHelper,$rule,$price);
 				}
 			}
 		}
@@ -673,6 +684,10 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		}
 
 		return $price + (float)$tax;
+	}
+
+	function plgVmConfirmedOrder ($cart, $order) {
+
 	}
 
 /*	public function plgVmInGatherEffectRulesBill(&$calculationHelper,&$rules){
@@ -696,6 +711,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			}
 		}
 	}
+
 
 
 	public function plgVmStorePluginInternalDataCalc(&$data){
@@ -730,6 +746,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	public function plgVmDeleteCalculationRow($id){
 		$this->removePluginInternalData($id);
 	}
+
+
 }
 
 // No closing tag

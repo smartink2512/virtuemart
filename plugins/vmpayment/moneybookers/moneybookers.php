@@ -594,7 +594,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
-		$amount = $cart->pricesUnformatted['billTotal'];
+		$amount = $cart_prices['salesPrice'];
 		$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
 			OR
 			($method->min_amount <= $amount AND ($method->max_amount == 0)));
