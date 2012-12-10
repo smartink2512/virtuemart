@@ -302,9 +302,6 @@ INSERT INTO `#__virtuemart_worldzones` (`virtuemart_worldzone_id`, `zone_name`, 
 (3, 'Zone 2', '2.00', '22.00', 'This is the second zone. You can use this for notes about this zone', 2),
 (4, 'Zone 3', '11.00', '64.00', 'Another useful thing might be details about this zone or special instructions.', 2);
 
-INSERT INTO `#__virtuemart_userfield_values` (`virtuemart_userfield_value_id`, `virtuemart_userfield_id`, `fieldtitle`, `fieldvalue`, `sys`, `ordering`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-(null, 10, 'Mr', 'Mr', 0, 0, '', 0, '', 0, '', 0),
-(null, 10, 'Mrs', 'Mrs', 0, 1, '', 0, '', 0, '', 0);
 
 INSERT INTO `#__virtuemart_ratings` (`virtuemart_rating_id`, `virtuemart_product_id`, `rates`, `ratingcount`, `rating`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`) VALUES
 (1, 7, 5, 1, 5.0, 1, '2012-10-26 10:28:32', 627, '2012-10-26 10:29:16', 627);

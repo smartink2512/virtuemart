@@ -281,7 +281,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	}
 
 	static $stop = FALSE;
-	function getTax($calculationHelper,$calc,$price,$sale,$committ=false){
+	function getTax($calculationHelper,$calc,$price,$sale=false,$committ=false){
 
 		if($calc->activated==0) return false;
 		//if(self::$stop) return self::$stop;
@@ -334,15 +334,21 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		//vmdebug('The date',$origin,$destination);
 		$request->setCompanyCode($calc->company_code);   // Your Company Code From the Dashboard
 
-		if($calc->committ){
+
+		if($calc->committ and $sale){
 			$request->setDocType(DocumentType::$SalesInvoice);   	// Only supported types are SalesInvoice or SalesOrder
+			$request->setCommit($committ);
 			//invoice number, problem is that the invoice number is at this time not known, but the order_number may reachable
 			$request->setDocCode('PHPINV999');
+			vmdebug('Request as SalesInvoice');
 		} else {
 			$request->setDocType(DocumentType::$SalesOrder);
+			$request->setCommit(false);
 			//invoice number, problem is that the invoice number is at this time not known, neither the order_number
 			$request->setDocCode('PHPINV999');
+			vmdebug('Request as SalesOrder');
 		}
+
 
 		$request->setDocDate(date('Y-m-d'));           //date
 
@@ -350,8 +356,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$shopperData = $this->getShopperData();
 		$request->setCustomerCode($shopperData['customer_id']);        //string Required
 
-		if(isset($shopperData['avatax_usage_type'])){
-			$request->setCustomerUsageType($shopperData['avatax_usage_type']);   //string   Entity Usage
+		if(isset($shopperData['tax_usage_type'])){
+			$request->setCustomerUsageType($shopperData['tax_usage_type']);   //string   Entity Usage
 		}
 
 		$cartPrices = $calculationHelper->getCartPrices();
@@ -362,8 +368,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		//If I understand correctly, we need to add for this an userfield, for example with the name
 		//exemption_no, then user could enter their number.
-		if(isset($shopperData['avatax_exemption_number'])){
-			$request->setExemptionNo($shopperData['avatax_exemption_number']);         //string   if not using ECMS which keys on customer code
+		if(isset($shopperData['tax_exemption_number'])){
+			$request->setExemptionNo($shopperData['tax_exemption_number']);         //string   if not using ECMS which keys on customer code
 		}
 
 		$request->setDetailLevel('Tax');         //Summary or Document or Line or Tax or Diagnostic
@@ -373,12 +379,14 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	//	$request->setLocationCode("");        //string Optional - aka outlet id for tax forms
 /////////////////////////////////////////
 
+		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+		$cart = VirtueMartCart::getCart();
+
 		$products= array();
 
 		if($calculationHelper->inCart){
 
-			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-			$cart = VirtueMartCart::getCart();
+
 
 			$products = $cart->products;
 			$prices = $calculationHelper->getCartPrices();
@@ -429,26 +437,44 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$line1->setDescription($product->product_name);         //product description, like in cart, atm only the name, todo add customfields
 			$line1->setTaxCode("");             //string
 			$line1->setQty($product->amount);                 //decimal
-			$line1->setAmount($product->price);              //decimal // TotalAmmount
+			$line1->setAmount($product->price * $product->amount);              //decimal // TotalAmmount
 
 			$line1->setDiscounted($product->discount);          //boolean
 			$line1->setRevAcct("");             //string
 			$line1->setRef1("");                //string
 			$line1->setRef2("");                //string
 
-			if(isset($shopperData['avatax_exemption_number'])){
+			if(isset($shopperData['tax_exemption_number'])){
 				$line1->setExemptionNo("");         //string
 			}
-			if(isset($shopperData['avatax_usage_type'])){
+			if(isset($shopperData['tax_usage_type'])){
 				$line1->setCustomerUsageType("");   //string
 			}
 
 			$lines[] = $line1;
 		}
+
+		$line1 = new Line();
+		$line1->setNo (++$n);
+		$line1->setItemCode($cart->virtuemart_shipmentmethod_id);
+		$line1->setDescription('Shipment');
+		$line1->setQty(1);
+		$line1->setAmount($this->_cartPrices['shipmentValue']);
+		if(isset($shopperData['tax_exemption_number'])){
+			$line1->setExemptionNo("");         //string
+		}
+		if(isset($shopperData['tax_usage_type'])){
+			$line1->setCustomerUsageType("");   //string
+		}
+		//$this->_cartPrices['shipmentValue'] = 0; //could be automatically set to a default set in the globalconfig
+		//$this->_cartPrices['shipmentTax'] = 0;
+		//$this->_cartPrices['shipmentTotal'] = 0;
+
+
 		//vmdebug('avalaragetTax setLines',$lines);
 		$request->setLines($lines);
 
-		vmdebug('My request',$request);
+		//vmdebug('My request',$request);
 		$totalTax = 0.0;
 		try
 		{
@@ -495,16 +521,15 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				$totalTax = $getTaxResult->getTotalTax();
 				vmdebug( "TotalTax: ".$totalTax );
 
-				//vmdebug('my tax result ',$getTaxResult);
-
 
 				foreach($getTaxResult->getTaxLines() as $ctl)
 				{
 					if($calculationHelper->inCart){
-						//vmdebug('my $ctl',$ctl);
-						$prices[$lineNumbersToCartProductId[$ctl->getNo()]]['taxAmount'] = $ctl->getTax();
+						$quantity = $products[$lineNumbersToCartProductId[$ctl->getNo()]]->amount;
+						$prices[$lineNumbersToCartProductId[$ctl->getNo()]]['taxAmountQuantity'] = $ctl->getTax()/$quantity;
 					}
-					vmdebug( "     Line: ".$ctl->getNo()." Tax: ".$ctl->getTax()." TaxCode: ".$ctl->getTaxCode());
+					//vmdebug('my lines ',$ctl);
+					//vmdebug( "     Line: ".$ctl->getNo()." Tax: ".$ctl->getTax()." TaxCode: ".$ctl->getTaxCode());
 
 					foreach($ctl->getTaxDetails() as $ctd)
 					{
@@ -687,6 +712,42 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	}
 
 	function plgVmConfirmedOrder ($cart, $order) {
+
+		$avaTaxRule = 0;
+		if(isset($order['calc_rules'])){
+			foreach($order['calc_rules'] as $rule){
+				if($rule->calc_mathop=='avalara'){
+					$avaTaxRule=$rule;
+					break;
+				}
+			}
+		}
+
+		if($avaTaxRule!==0){
+			if(!empty($avaTaxRule->calc_params)){
+				VmTable::bindParameterable ($avaTaxRule, $this->_xParams, $this->_varsToPushParam);
+				vmdebug('$avaTaxRule',$avaTaxRule);
+				if($rule->activated==0)return false;
+				if(empty($this->addresses)){
+					$this->addresses = $this->fillValidateAvalaraAddress($rule);
+				}
+				if($this->addresses){
+					if (!class_exists ('calculationHelper')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+
+					$calculator = calculationHelper::getInstance ();
+					$tax = $this->getTax( $calculator,$rule,0,true);
+					vmdebug('Cart and order',$tax);
+				}
+			}
+		}
+	/*	VmTable::bindParameterable ($rule, $this->_xParams, $this->_varsToPushParam);
+		if($rule->activated==0) return $price;
+		if(empty($this->addresses)){
+			$this->addresses = $this->fillValidateAvalaraAddress($rule);
+		}
+		if($this->addresses){
+			$tax = $this->getTax( $calculationHelper,$rule,$price,true);
+		}*/
 
 	}
 

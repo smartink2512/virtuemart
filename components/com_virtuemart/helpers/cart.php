@@ -561,28 +561,6 @@ class VirtueMartCart {
 		return false;
 	}
 
-
-	/**
-	 * Function Description
-	 *
-	 * @author Max Milbers
-	 * @access public
-	 * @param array $cart the cart to get the products for
-	 * @return array of product objects
-	 */
-// 	$this->pricesUnformatted = $product_prices;
-
-	public function getCartPrices($checkAutomaticSelected=true) {
-
-		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-		$calculator = calculationHelper::getInstance();
-
-		$this->pricesUnformatted = $calculator->getCheckoutPrices($this, $checkAutomaticSelected);
-
-
-		return $this->pricesUnformatted;
-	}
-
 	/**
 	 * Proxy function for getting a product object
 	 *
@@ -785,9 +763,10 @@ class VirtueMartCart {
 			$this->validateUserData('ST', $stData[0]);
 		}
 
-		$this->setCartIntoSession();
+		$this->cartData = $this->prepareCartData();
+		$this->prepareCartPrice( ) ;
+		//$this->prepareAddressDataInCart();
 
-		$mainframe = JFactory::getApplication();
 		if (count($this->products) == 0) {
 			return $this->redirecter('index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
 		} else {
@@ -1075,6 +1054,9 @@ class VirtueMartCart {
 			foreach ($prepareUserFields as $fld) {
 				if(!empty($fld->name)){
 					$name = $fld->name;
+					/*if($fld->readonly){
+						vmdebug(' saveAddressInCart ',$data[$prefix.$name]);
+					}*/
 					if($fld->required){
 						if(!empty($data[$prefix.$name])){
 							$address[$name] = $data[$prefix.$name];
@@ -1237,8 +1219,7 @@ class VirtueMartCart {
 		// Get the products for the cart
 		$this->cartData = $this->prepareCartData();
 
-// 		$this->prepareCartPrice( $this->prices ) ;
-		$this->prepareCartPrice( $this->pricesUnformatted ) ;
+		$this->prepareCartPrice( ) ;
 
 		$this->prepareAddressDataInCart();
 		$this->prepareVendor();
@@ -1255,7 +1236,6 @@ class VirtueMartCart {
 	public function prepareCartData($checkAutomaticSelected=true){
 
 		// Get the products for the cart
-// 		$prices = array();
 		$product_prices = $this->getCartPrices($checkAutomaticSelected);
 
 		if (empty($product_prices)) return null;
@@ -1263,8 +1243,6 @@ class VirtueMartCart {
 		$currency = CurrencyDisplay::getInstance();
 
 		$calculator = calculationHelper::getInstance();
-
-// 		$this->prices = $prices;
 
 		$this->pricesCurrency = $currency->getCurrencyForDisplay();
 
@@ -1278,7 +1256,7 @@ class VirtueMartCart {
 		return $cartData ;
 	}
 
-	private function prepareCartPrice( $prices ){
+	private function prepareCartPrice( ){
 
 		foreach ($this->products as $cart_item_id=>$product){
 			$product->virtuemart_category_id = $this->getCardCategoryId($product->virtuemart_product_id);
@@ -1293,6 +1271,26 @@ class VirtueMartCart {
 			}
 			$product->cart_item_id = $cart_item_id ;
 		}
+	}
+
+	/**
+	 * Function Description
+	 *
+	 * @author Max Milbers
+	 * @access public
+	 * @param array $cart the cart to get the products for
+	 * @return array of product objects
+	 */
+// 	$this->pricesUnformatted = $product_prices;
+
+	public function getCartPrices($checkAutomaticSelected=true) {
+
+		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		$calculator = calculationHelper::getInstance();
+
+		$this->pricesUnformatted = $calculator->getCheckoutPrices($this, $checkAutomaticSelected);
+
+		return $this->pricesUnformatted;
 	}
 
 	function prepareAddressDataInCart($type='BT',$new = false){

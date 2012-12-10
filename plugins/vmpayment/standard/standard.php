@@ -235,7 +235,7 @@ public static $_this = FALSE;
 		if (!isset($address['virtuemart_country_id'])) {
 			$address['virtuemart_country_id'] = 0;
 		}
-		if (count ($countries) == 0 || in_array ($address['virtuemart_country_id'], $countries) || count ($countries) == 0) {
+		if (count ($countries) == 0 || in_array ($address['virtuemart_country_id'], $countries) ) {
 			return TRUE;
 		}
 

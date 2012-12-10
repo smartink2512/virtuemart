@@ -53,7 +53,7 @@ $document->addScriptDeclaration ("
 $document->addStyleDeclaration ('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
 
 //vmdebug('car7t pricesUnformatted',$this->cart->pricesUnformatted);
-//vmdebug('cart cart',$this->cart );
+//vmdebug('cart cart',$this->cart->pricesUnformatted );
 ?>
 
 <div class="cart-view">

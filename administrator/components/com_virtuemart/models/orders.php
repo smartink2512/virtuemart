@@ -980,7 +980,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			     $orderCalcRules->calc_rule_name= $rule['calc_name'];
 			     $orderCalcRules->calc_amount =  $_cart->pricesUnformatted[$rule['virtuemart_calc_id'].'Diff'];
 			     $orderCalcRules->calc_kind=$calculation_kind;
+			     $orderCalcRules->calc_mathop=$rule['calc_value_mathop'];
 			     $orderCalcRules->virtuemart_order_id=$order_id;
+			     $orderCalcRules->calc_params=$rule['calc_params'];
 			     if (!$orderCalcRules->check()) {
 				    vmError('_createOrderCalcRules store bill rule '.$this->getError());
 				    return false;

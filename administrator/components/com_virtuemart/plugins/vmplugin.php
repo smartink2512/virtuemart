@@ -440,7 +440,7 @@ abstract class vmPlugin extends JPlugin {
 		}
 
 		$this->_vmpItable->bindChecknStore ($values, $preload);
-		vmdebug('storePluginInternalData',$values,$this->_vmpItable);
+		//vmdebug('storePluginInternalData',$values,$this->_vmpItable);
 		$errors = $this->_vmpItable->getErrors ();
 		if (!empty($errors)) {
 			foreach ($errors as $error) {

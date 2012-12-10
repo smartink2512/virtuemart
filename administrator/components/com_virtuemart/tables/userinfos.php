@@ -59,7 +59,7 @@ class TableUserinfos extends VmTableData {
 
 
 	/**
-	 * @author RickG
+	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct($db) {
@@ -74,6 +74,7 @@ class TableUserinfos extends VmTableData {
 		$this->setLoggable();
 
 		$this->setTableShortCut('ui');
+
 	}
 
 	/**
@@ -156,12 +157,11 @@ class TableUserinfos extends VmTableData {
 				}
 			}
 
-			return parent::check();
-		}
-
-		if(empty($this->address_type)) $this->address_type = 'BT';
-		/* Check if a record exists */
-		$q = "SELECT virtuemart_userinfo_id
+			//return parent::check();
+		} else {
+			if(empty($this->address_type)) $this->address_type = 'BT';
+			/* Check if a record exists */
+			$q = "SELECT virtuemart_userinfo_id
 			FROM #__virtuemart_userinfos
 			WHERE virtuemart_user_id = ".$this->virtuemart_user_id."
 			AND address_type = ".$this->_db->Quote($this->address_type);
@@ -169,15 +169,15 @@ class TableUserinfos extends VmTableData {
 				$q .= " AND address_type_name = ".$this->_db->Quote($this->address_type_name);
 			}
 
-		$this->_db->setQuery($q);
-		$total = $this->_db->loadResultArray();
+			$this->_db->setQuery($q);
+			$total = $this->_db->loadResultArray();
 
-		if (count($total) > 0) {
-			$this->virtuemart_userinfo_id = (int)$total[0];
-		} else {
-			$this->virtuemart_userinfo_id = 0;//md5(uniqid($this->virtuemart_user_id));
+			if (count($total) > 0) {
+				$this->virtuemart_userinfo_id = (int)$total[0];
+			} else {
+				$this->virtuemart_userinfo_id = 0;//md5(uniqid($this->virtuemart_user_id));
+			}
 		}
-
 		return parent::check();
 
 	}

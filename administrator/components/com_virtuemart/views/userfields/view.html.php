@@ -174,7 +174,7 @@ class VirtuemartViewUserfields extends VmView {
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList();
 
-			$this->addStandardDefaultViewLists($model);
+			$this->addStandardDefaultViewLists($model,'ordering','ASC');
 
 			$userfieldsList = $model->getUserfieldsList();
 			$this->assignRef('userfieldsList', $userfieldsList);
