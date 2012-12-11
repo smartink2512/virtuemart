@@ -284,6 +284,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	function getTax($calculationHelper,$calc,$price,$sale=false,$committ=false){
 
 		if($calc->activated==0) return false;
+
+		$shopperData = $this->getShopperData();
+		if(!$shopperData){
+			return false;
+		}
 		//if(self::$stop) return self::$stop;
 
 		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
@@ -353,7 +358,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$request->setDocDate(date('Y-m-d'));           //date
 
 		//$request->setSalespersonCode("");             // string Optional
-		$shopperData = $this->getShopperData();
+
 		$request->setCustomerCode($shopperData['customer_id']);        //string Required
 
 		if(isset($shopperData['tax_usage_type'])){
@@ -385,8 +390,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$products= array();
 
 		if($calculationHelper->inCart){
-
-
 
 			$products = $cart->products;
 			$prices = $calculationHelper->getCartPrices();
@@ -431,45 +434,47 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 			$n++;
 			$lineNumbersToCartProductId[$n] = $k;
-			$line1 = new Line();
-			$line1->setNo ($n);                  //string  // line Number of invoice
-			$line1->setItemCode($product->product_sku);            //string
-			$line1->setDescription($product->product_name);         //product description, like in cart, atm only the name, todo add customfields
-			$line1->setTaxCode("");             //string
-			$line1->setQty($product->amount);                 //decimal
-			$line1->setAmount($product->price * $product->amount);              //decimal // TotalAmmount
+			$line = new Line();
+			$line->setNo ($n);                  //string  // line Number of invoice
+			$line->setItemCode($product->product_sku);            //string
+			$line->setDescription($product->product_name);         //product description, like in cart, atm only the name, todo add customfields
+			//$line->setTaxCode("");             //string
+			$line->setQty($product->amount);                 //decimal
+			$line->setAmount($product->price * $product->amount);              //decimal // TotalAmmount
+			$line->setDiscounted($product->discount * $product->amount);          //boolean
 
-			$line1->setDiscounted($product->discount);          //boolean
-			$line1->setRevAcct("");             //string
-			$line1->setRef1("");                //string
-			$line1->setRef2("");                //string
+			$line->setRevAcct("");             //string
+			$line->setRef1("");                //string
+			$line->setRef2("");                //string
 
 			if(isset($shopperData['tax_exemption_number'])){
-				$line1->setExemptionNo("");         //string
+				$line->setExemptionNo($shopperData['tax_exemption_number']);         //string
 			}
 			if(isset($shopperData['tax_usage_type'])){
-				$line1->setCustomerUsageType("");   //string
+				$line->setCustomerUsageType($shopperData['tax_usage_type']);   //string
 			}
 
-			$lines[] = $line1;
+			$lines[] = $line;
 		}
 
-		$line1 = new Line();
-		$line1->setNo (++$n);
-		$line1->setItemCode($cart->virtuemart_shipmentmethod_id);
-		$line1->setDescription('Shipment');
-		$line1->setQty(1);
-		$line1->setAmount($this->_cartPrices['shipmentValue']);
+		$line = new Line();
+		$line->setNo (++$n);
+		//$lineNumbersToCartProductId[$n] = count($products)+1;
+		$line->setItemCode($cart->virtuemart_shipmentmethod_id);
+		$line->setDescription('Shipment');
+		$line->setQty(1);
+		//$line->setTaxCode();
+		$cartPrices = $calculationHelper->getCartPrices();
+		//vmdebug('$calculationHelper $cartPrices',$cartPrices);
+		$line->setAmount($cartPrices['shipmentValue']);
 		if(isset($shopperData['tax_exemption_number'])){
-			$line1->setExemptionNo("");         //string
+			$line->setExemptionNo($shopperData['tax_exemption_number']);         //string
 		}
 		if(isset($shopperData['tax_usage_type'])){
-			$line1->setCustomerUsageType("");   //string
+			$line->setCustomerUsageType($shopperData['tax_usage_type']);   //string
 		}
-		//$this->_cartPrices['shipmentValue'] = 0; //could be automatically set to a default set in the globalconfig
-		//$this->_cartPrices['shipmentTax'] = 0;
-		//$this->_cartPrices['shipmentTotal'] = 0;
 
+		$lines[] = $line;
 
 		//vmdebug('avalaragetTax setLines',$lines);
 		$request->setLines($lines);
@@ -525,8 +530,31 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				foreach($getTaxResult->getTaxLines() as $ctl)
 				{
 					if($calculationHelper->inCart){
-						$quantity = $products[$lineNumbersToCartProductId[$ctl->getNo()]]->amount;
-						$prices[$lineNumbersToCartProductId[$ctl->getNo()]]['taxAmountQuantity'] = $ctl->getTax()/$quantity;
+						$nr = $ctl->getNo();
+						if(isset($lineNumbersToCartProductId[$nr])){
+							$quantity = $products[$lineNumbersToCartProductId[$nr]]->amount;
+
+							//on the long hand, the taxAmount must be replaced by taxAmountQuantity to avoid rounding errors
+							$prices[$lineNumbersToCartProductId[$ctl->getNo()]]['taxAmount'] = $ctl->getTax()/$quantity;
+							$prices[$lineNumbersToCartProductId[$ctl->getNo()]]['taxAmountQuantity'] = $ctl->getTax();
+
+						} else {
+
+							//$this->_cartPrices['shipmentValue'] = 0; //could be automatically set to a default set in the globalconfig
+							//$this->_cartPrices['shipmentTax'] = 0;
+							//$this->_cartPrices['shipmentTotal'] = 0;
+							//$prices = array('shipmentValue'=>$cartPrices['shipmentValue'],'shipmentTax'=> $ctl->getTax(), 'shipmentTotal' =>($cartPrices['shipmentValue'] +$ctl->getTax() ));
+							//vmdebug('my $cartPrices',$cartPrices);
+							$prices['shipmentTax'] = $ctl->getTax();
+							$prices['salesPriceShipment'] = ($prices['shipmentValue'] + $ctl->getTax() );
+								//$cartPrices = array_merge($prices,$cartPrices);
+
+							//$calculationHelper->setCartPrices( $cartPrices );
+							$totalTax = $totalTax - $ctl->getTax();
+							//vmdebug('my $cartPrices danach',$cartPrices);
+						}
+
+
 					}
 					//vmdebug('my lines ',$ctl);
 					//vmdebug( "     Line: ".$ctl->getNo()." Tax: ".$ctl->getTax()." TaxCode: ".$ctl->getTaxCode());
@@ -635,6 +663,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			} else {
 				if(!empty($cart->BT)) $vmadd = $cart->BT;
 			}
+
 			$jUser = JFactory::getUser ();
 			if($jUser->id){
 				$userModel = VmModel::getModel('user');
@@ -653,7 +682,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 			}
 
-
 			//vmdebug('getShopperData',$vmadd);
 			//Maybe the user is logged in, but has no cart yet.
 			if(empty($vmadd)){
@@ -665,8 +693,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				//vmdebug('getShopperData cart data was empty',$vmadd);
 			}
 
-			if(empty($vmadd)){
-				vmInfo('We cannot calculate your tax, please enter your shipment address');
+			//vmdebug('Tax $vmadd',$vmadd);
+			if(empty($vmadd) or !is_array($vmadd) or (is_array($vmadd) and count($vmadd) <2) ){
+				vmInfo('VMCALCULATION_AVALARA_INSUF_INFO');
 				$vmadd=FALSE;
 			}
 			self::$vmadd = $vmadd;

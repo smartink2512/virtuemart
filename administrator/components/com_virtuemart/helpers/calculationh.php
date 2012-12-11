@@ -662,6 +662,11 @@ class calculationHelper {
 		//  product or method
 		//$toTax = $toTax + $this->_cartPrices['salesPriceShipment'];
 
+		//Avalara wants to calculate the tax of the shipment. Only disadvantage to set shipping here is that the discounts per bill respectivly the tax per bill
+		// is not considered.
+		$shipment_id = empty($cart->virtuemart_shipmentmethod_id) ? 0 : $cart->virtuemart_shipmentmethod_id;
+		$this->calculateShipmentPrice($cart,  $shipment_id, $checkAutomaticSelected);
+
 		$this->_cartPrices['withTax'] = $discountWithTax = $this->roundInternal($this->executeCalculation($taxRules, $toTax, true));
 		$toDisc = !empty($this->_cartPrices['withTax']) ? $this->_cartPrices['withTax'] : $toTax;
 		$cartTax = !empty($toDisc) ? $toDisc - $toTax : 0;
@@ -671,8 +676,7 @@ class calculationHelper {
 		$cartdiscountAfterTax = !empty($discountAfterTax) ? $discountAfterTax- $toDisc : 0;
 		//$this->_cartPrices['discountAmount'] += $cartdiscountAfterTax;
 
-		$shipment_id = empty($cart->virtuemart_shipmentmethod_id) ? 0 : $cart->virtuemart_shipmentmethod_id;
-		$this->calculateShipmentPrice($cart,  $shipment_id, $checkAutomaticSelected);
+
 		//$this->_cartPrices['salesPrice'] = $this->_cartPrices['salesPrice'] + $this->_cartPrices['salesPriceShipment'];
 		$paymentId = empty($cart->virtuemart_paymentmethod_id) ? 0 : $cart->virtuemart_paymentmethod_id;
 
@@ -681,7 +685,6 @@ class calculationHelper {
 		//		$sub =!empty($this->_cartPrices['discountedPriceWithoutTax'])? $this->_cartPrices['discountedPriceWithoutTax']:$this->_cartPrices['basePrice'];
 		if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices['billSub'] = $this->_cartPrices['basePrice'] + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'];
 		//		$this->_cartPrices['billSub']  = $sub + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'];
-		vmdebug('billDiscountAmount',$this->_cartPrices['discountAmount'],$this->_cartPrices['discountBeforeTaxBill'],$cartdiscountAfterTax);
 		if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['discountAmount'] + $cartdiscountBeforeTax + $cartdiscountAfterTax;// + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'] ;
 		if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['shipmentTax'] + $this->_cartPrices['paymentTax'] + $cartTax; //+ $this->_cartPrices['withTax'] - $toTax
 
@@ -997,7 +1000,6 @@ class calculationHelper {
 		$this->_cartData['shipmentName'] = JText::_('COM_VIRTUEMART_CART_NO_SHIPMENT_SELECTED');
 		$this->_cartPrices['shipmentValue'] = 0; //could be automatically set to a default set in the globalconfig
 		$this->_cartPrices['shipmentTax'] = 0;
-		$this->_cartPrices['shipmentTotal'] = 0;
 		$this->_cartPrices['salesPriceShipment'] = 0;
 		$this->_cartPrices['shipment_calc_id'] = 0;
 		// check if there is only one possible shipment method

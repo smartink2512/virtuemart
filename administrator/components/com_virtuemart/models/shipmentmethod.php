@@ -179,8 +179,12 @@ class VirtueMartModelShipmentmethod extends VmModel {
 
 			JPluginHelper::importPlugin('vmshipment');
 			$dispatcher = JDispatcher::getInstance();
+			//bad trigger, we should just give it data, so that the plugins itself can check the data to be stored
+			//so this trigger is now deprecated and will be deleted in vm2.2
 			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsShipment',array( $data['shipment_element'],$data['shipment_jplugin_id'],&$table));
 
+			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginShipment',array( &$data,&$table));
+			vmdebug('my data after store ',$data);
 		}
 
 		$table->bindChecknStore($data);

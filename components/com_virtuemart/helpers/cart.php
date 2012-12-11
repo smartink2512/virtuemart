@@ -1112,6 +1112,9 @@ class VirtueMartCart {
 	*/
 	function CheckAutomaticSelectedShipment($cart_prices, $checkAutomaticSelected ) {
 
+		if(count($this->products)==0 ) {
+			return false;
+		}
 		$nbShipment = 0;
 		$virtuemart_shipmentmethod_id=0;
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');

@@ -360,16 +360,11 @@ class CurrencyDisplay {
 		}
 
 		//This is a fallback because we removed the "salesPriceWithDiscount" ;
-		//if(empty($product_price[$name])){
-			//$name = "salesPrice";
-			if(is_array($product_price)){
-				$price = $product_price[$name] ;
-			} else {
-				$price = $product_price;
-			}
-	/*	} else {
+		if(is_array($product_price)){
 			$price = $product_price[$name] ;
-		}*/
+		} else {
+			$price = $product_price;
+		}
 
 		//This could be easily extended by product specific settings
 		if(!empty($this->_priceConfig[$name][0])){
@@ -419,16 +414,6 @@ class CurrencyDisplay {
 			return $price;
 		}
 
-		/*		if($shop){
-			// TODO optimize this... the exchangeRate cant be cached, there are more than one currency possible
-		//			$exchangeRate = &$this->exchangeRateVendor;
-		$exchangeRate = 0;
-		} else {
-		//caches the exchangeRate between shopper and vendor
-		$exchangeRate = &$this->exchangeRateShopper;
-		}
-		*/
-		//		if(empty($exchangeRate)){
 		if(is_Object($currency)){
 			$exchangeRate = (float)$currency->exchangeRateShopper;
 			vmdebug('convertCurrencyTo OBJECT '.$exchangeRate);
@@ -445,25 +430,20 @@ class CurrencyDisplay {
 				$exchangeRate = 0;
 			}
 		}
-		//	}
-		//$this->exchangeRateShopper = $exchangeRate;
-		// 		vmdebug('convertCurrencyTo my currency ',$exchangeRate,$currency);
+
 		if(!empty($exchangeRate) ){
 
-			//vmdebug('convertCurrencyTo Use custom rate');
 			if($shop){
 				$price = $price / $exchangeRate;
 			} else {
 				$price = $price * $exchangeRate;
 			}
 
-			// 			vmdebug('!empty($exchangeRate) && $exchangeRate!=FALSE '.$price.' '.$exchangeRate);
 		} else {
 			$currencyCode = self::ensureUsingCurrencyCode($currency);
 			$vendorCurrencyCode = self::ensureUsingCurrencyCode($this->_vendorCurrency);
 			$globalCurrencyConverter=JRequest::getVar('globalCurrencyConverter');
 			if($shop){
-				//$oldprice = $price;
 				$price = $this ->_currencyConverter->convert( $price, $currencyCode, $vendorCurrencyCode);
 				//vmdebug('convertCurrencyTo Use dynamic rate in shop '.$oldprice .' => '.$price);
 			} else {
