@@ -48,8 +48,8 @@ class TableProduct_prices extends VmTableData {
     /** @var string Product currency */
     var $product_currency = null;
 
-    var $product_price_publish_up = null;
-    var $product_price_publish_down = null;
+    var $product_price_publish_up = 0;
+    var $product_price_publish_down = 0;
 
     /** @var int Price quantity start */
     var $price_quantity_start = null;

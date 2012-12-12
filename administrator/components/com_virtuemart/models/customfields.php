@@ -668,23 +668,23 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 				/* related product*/
 				case 'R':
-					if (!$product_id) {
+					if (!$field->custom_value) {
 						return '';
 					}
-					$q = 'SELECT `product_name`,`product_sku`,`product_s_desc` FROM `#__virtuemart_products_' . VMLANG . '` as l JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`) WHERE `virtuemart_product_id`=' . (int)$product_id;
+					$q = 'SELECT `product_name`,`product_sku`,`product_s_desc` FROM `#__virtuemart_products_' . VMLANG . '` as l JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`) WHERE `virtuemart_product_id`=' . (int)$field->custom_value;
 					$this->_db->setQuery ($q);
 					$related = $this->_db->loadObject ();
 					$display = $related->product_name . '(' . $related->product_sku . ')';
-					$display = '<input type="hidden" value="' . $product_id . '" name="field[' . $row . '][custom_value]" />';
+					$display = '<input type="hidden" value="' . $field->custom_value . '" name="field[' . $row . '][custom_value]" />';
 
-					$q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "' . (int)$product_id . '" AND (`ordering` = 0 OR `ordering` = 1)';
+					$q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "' . (int)$field->custom_value . '" AND (`ordering` = 0 OR `ordering` = 1)';
 					$this->_db->setQuery ($q);
 					$thumb = '';
 					if ($media_id = $this->_db->loadResult ()) {
 						$thumb = $this->displayCustomMedia ($media_id);
 					}
 					$title= $related->product_s_desc?  $related->product_s_desc :'';
-					return $display . JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id=' . $product_id), $thumb . '<br /> ' . $related->product_name, array('title' => $title));
+					return $display . JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id=' . $field->custom_value), $thumb . '<br /> ' . $related->product_name, array('title' => $title));
 					break;
 				/* image */
 				case 'M':

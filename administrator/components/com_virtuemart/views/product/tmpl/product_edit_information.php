@@ -186,14 +186,13 @@ $i=0;
         <tbody id="productPriceBody">
 		<?php
 
-		foreach ($this->product->prices as $singlePrice) {
-			$this->sprices = $singlePrice;
+		foreach ($this->product->prices as $sPrices) {
 
-			if (empty($this->sprices['virtuemart_product_price_id'])) {
-				$this->sprices['virtuemart_product_price_id'] = '';
+			if (empty($sPrices['virtuemart_product_price_id'])) {
+				$sPrices['virtuemart_product_price_id'] = '';
 			}
-
-			$this->tempProduct = (object)array_merge ((array)$this->product, (array)$this->sprices);
+			//vmdebug('my $sPrices ',$sPrices);
+			$this->tempProduct = (object)array_merge ((array)$this->product, (array)$sPrices);
 			$this->calculatedPrices = $calculator->getProductPrices ($this->tempProduct);
 			//vmdebug ("edit_price", $this->calculatedPrices, $this->tempProduct);
 
@@ -337,7 +336,7 @@ $i=0;
 							<tr class="row<?php echo $i ?>">
 								<td><?php echo JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_parent_id='.$this->product->virtuemart_product_id.'&virtuemart_product_id='.$child->virtuemart_product_id.'&option=com_virtuemart'), $child->slug, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name)) ?></td>
 								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_name]" size="32" value="<?php echo $child->product_name ?>" /></td>
-								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_price]" size="10" value="<?php echo $child->product_price ?>" /></td>
+								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][product_price][]" size="10" value="<?php echo $child->product_price ?>" /><input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][virtuemart_product_price_id][]" value="<?php echo $child->virtuemart_product_price_id?>"  ></td>
 								<td><?php echo $child->product_in_stock ?></td>
 								<td><?php echo $child->product_ordered ?></td>
 								<?php foreach($customs as $custom){

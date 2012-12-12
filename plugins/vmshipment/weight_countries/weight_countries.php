@@ -470,7 +470,11 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 					unset($data[$field]);
 				}
 			}
-			$toConvert = array('zip_start','zip_stop','nbproducts_start' , 'nbproducts_stop');
+
+			$data['nbproducts_start'] = (int) $data['nbproducts_start'];
+			$data['nbproducts_stop'] = (int) $data['nbproducts_stop'];
+			//I dont see a reason for it
+			/*$toConvert = array('zip_start','zip_stop','nbproducts_start' , 'nbproducts_stop');
 			foreach($toConvert as $field){
 				if(!empty($data[$field])){
 					$data[$field] = str_replace( ' ','',$data[$field]);
@@ -480,7 +484,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 				if (preg_match ("/[^0-9]/", $data[$field])) {
 					vmWarn( JText::sprintf('VMSHIPMENT_WEIGHT_COUNTRIES_NUMERIC', JText::_('VMSHIPMENT_WEIGHT_COUNTRIES_'.$field) ) );
 				}
-			}
+			}*/
 			//Reasonable tests:
 			if(!empty($data['zip_start']) and !empty($data['zip_stop']) and (int)$data['zip_start']>=(int)$data['zip_stop']){
 				vmWarn('VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_CONDITION_WRONG');

@@ -1141,7 +1141,7 @@ class calculationHelper {
 	function interpreteMathOp($rule, $price) {
 
 		$mathop = $rule['calc_value_mathop'];
-		$value = $rule['calc_value'];
+		$value = (float)$rule['calc_value'];
 		$currency = $rule['calc_currency'];
 		//$mathop, $value, $price, $currency='')
 
