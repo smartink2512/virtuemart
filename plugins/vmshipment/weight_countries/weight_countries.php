@@ -470,18 +470,31 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 					unset($data[$field]);
 				}
 			}
-
+			$toConvert = array('zip_start','zip_stop','nbproducts_start' , 'nbproducts_stop');
+			foreach($toConvert as $field){
+				if(!empty($data[$field])){
+					$data[$field] = str_replace( ' ','',$data[$field]);
+				} else {
+					unset($data[$field]);
+				}
+				if (preg_match ("/[^0-9]/", $data[$field])) {
+					vmWarn( JText::sprintf('VMSHIPMENT_WEIGHT_COUNTRIES_NUMERIC', JText::_('VMSHIPMENT_WEIGHT_COUNTRIES_'.$field) ) );
+				}
+			}
 			//Reasonable tests:
+			if(!empty($data['zip_start']) and !empty($data['zip_stop']) and (int)$data['zip_start']>=(int)$data['zip_stop']){
+				vmWarn('VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_CONDITION_WRONG');
+			}
 			if(!empty($data['weight_start']) and !empty($data['weight_stop']) and (float)$data['weight_start']>=(float)$data['weight_stop']){
-				vmWarn('You entered a nonsense weight condtion, your lowest weight is higher than the highest weight');
+				vmWarn('VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_CONDITION_WRONG');
 			}
 
 			if(!empty($data['orderamount_start']) and !empty($data['orderamount_stop']) and (float)$data['orderamount_start']>=(float)$data['orderamount_stop']){
-				vmWarn('You entered a nonsense order amount condtion, your lowest order amount is higher than the highest order amount');
+				vmWarn('VMSHIPMENT_WEIGHT_COUNTRIES_AMOUNT_CONDITION_WRONG');
 			}
 
 			if(!empty($data['nbproducts_start']) and !empty($data['nbproducts_stop']) and (float)$data['nbproducts_start']>=(float)$data['nbproducts_stop']){
-				vmWarn('You entered a nonsense number of products condtion, your lowest number of products is higher than the highest number of products');
+				vmWarn('VMSHIPMENT_WEIGHT_COUNTRIES_NBPRODUCTS_CONDITION_WRONG');
 			}
 
 			return $this->setOnTablePluginParams ($name, $id, $table);
