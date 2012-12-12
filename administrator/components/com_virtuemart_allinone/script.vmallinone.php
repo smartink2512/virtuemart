@@ -81,7 +81,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('Customer text input', 'plugin', 'textinput', 'vmcustom');
 			$this->installPlugin ('Product specification', 'plugin', 'specification', 'vmcustom');
 			$this->installPlugin ('Stockable variants', 'plugin', 'stockable', 'vmcustom');
-			$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation');
+			$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation', 0);
 
 			// 			$table = '#__virtuemart_customs';
 			// 			$fieldname = 'field_type';
@@ -205,7 +205,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 		 * Installs a vm plugin into the database
 		 *
 		 */
-		private function installPlugin ($name, $type, $element, $group) {
+		private function installPlugin ($name, $type, $element, $group, $published=1) {
 
 			$task = JRequest::getCmd ('task');
 
@@ -216,7 +216,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 					// Joomla! 1.7 code here
 					$table = JTable::getInstance ('extension');
-					$data['enabled'] = 1;
+					$data['enabled'] = $published;
 					$data['access'] = 1;
 					$tableName = '#__extensions';
 					$idfield = 'extension_id';
@@ -224,7 +224,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 					// Joomla! 1.6 code here
 					$table = JTable::getInstance ('extension');
-					$data['enabled'] = 1;
+					$data['enabled'] = $published;
 					$data['access'] = 1;
 					$tableName = '#__extensions';
 					$idfield = 'extension_id';
@@ -232,7 +232,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 					// Joomla! 1.5 code here
 					$table = JTable::getInstance ('plugin');
-					$data['published'] = 1;
+					$data['published'] = $published;
 					$data['access'] = 0;
 					$tableName = '#__plugins';
 					$idfield = 'id';
