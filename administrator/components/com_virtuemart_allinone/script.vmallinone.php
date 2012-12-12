@@ -88,7 +88,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
 
 			$this->installPlugin ('By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment');
-			$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation');
+			$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation', 0);
 
 			$this->installPlugin ('Customer text input', 'plugin', 'textinput', 'vmcustom');
 			$this->installPlugin ('Product specification', 'plugin', 'specification', 'vmcustom');
@@ -213,7 +213,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 		 *
 		 */
 		private
-		function installPlugin ($name, $type, $element, $group) {
+		function installPlugin ($name, $type, $element, $group, $published=1) {
 
 			$task = JRequest::getCmd ('task');
 			$app = JFactory::getApplication ();
@@ -223,7 +223,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 					// Joomla! 1.7 code here
 					$table = JTable::getInstance ('extension');
-					$data['enabled'] = 1;
+					$data['enabled'] = $published;
 					$data['access'] = 1;
 					$tableName = '#__extensions';
 					$idfield = 'extension_id';
@@ -231,7 +231,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 					// Joomla! 1.6 code here
 					$table = JTable::getInstance ('extension');
-					$data['enabled'] = 1;
+					$data['enabled'] = $published;
 					$data['access'] = 1;
 					$tableName = '#__extensions';
 					$idfield = 'extension_id';
@@ -239,7 +239,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 					// Joomla! 1.5 code here
 					$table = JTable::getInstance ('plugin');
-					$data['published'] = 1;
+					$data['published'] = $published;
 					$data['access'] = 0;
 					$tableName = '#__plugins';
 					$idfield = 'id';
