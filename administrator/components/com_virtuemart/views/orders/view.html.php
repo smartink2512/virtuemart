@@ -188,7 +188,7 @@ class VirtuemartViewOrders extends VmView {
 			JToolBarHelper::save('updatestatus', JText::_('COM_VIRTUEMART_UPDATE_STATUS'));
 
 			JToolBarHelper::deleteListX();
-
+			$this->showHelp();
 			/* Assign the data */
 			$this->assignRef('orderslist', $orderslist);
 

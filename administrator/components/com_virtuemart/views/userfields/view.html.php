@@ -83,7 +83,7 @@ class VirtuemartViewUserfields extends VmView {
 			JToolBarHelper::save();
 			JToolBarHelper::apply();
 			JToolBarHelper::cancel();
-
+			$this->showHelp();
 			$notoggle = (in_array($userField->name, $lists['coreFields']) ? 'class="readonly"' : '');
 
 			// Vendor selection
@@ -173,7 +173,8 @@ class VirtuemartViewUserfields extends VmView {
 			JToolBarHelper::custom('toggle.account.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_ACCOUNT');
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList();
-
+			JToolBarHelper::divider();
+			$this->showHelp();
 			$this->addStandardDefaultViewLists($model);
 
 			$userfieldsList = $model->getUserfieldsList();

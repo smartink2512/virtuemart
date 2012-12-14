@@ -217,7 +217,7 @@ class VirtuemartViewUser extends VmView {
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList();
 			JToolBarHelper::editListX();
-
+			$this->showHelp();
 			//This is intentionally, creating new user via BE is buggy and can be done by joomla
 			//JToolBarHelper::addNewX();
 			$this->addStandardDefaultViewLists($model,'ju.id');

@@ -250,8 +250,8 @@ $i = 0;
 			?>
         <tr id="<?php echo $tmpl ?>" class="removable row<?php echo $rowColor?>">
             <td width="100%">
-	             <span class="vmicon vmicon-16-move price_ordering"></span>
-                <span class="vmicon vmicon-16-new price-clone" ></span>
+                <span class="vmicon vmicon-16-move price_ordering"></span>
+                <span class="vmicon vmicon-16-new price-clone"></span>
                 <span class="vmicon vmicon-16-remove price-remove"></span>
 				<?php //echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_ORDER'); ?>
 				<?php echo $this->loadTemplate ('price'); ?>
@@ -265,7 +265,7 @@ $i = 0;
     </table>
     <div class="button2-left">
         <div class="blank">
-            <a href="#" id="add_new_price" "><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_ADD_PRICE') ?> </a>
+            <a href="#" id="add_new_price" ><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_ADD_PRICE') ?> </a>
         </div>
     </div>
 
@@ -379,8 +379,8 @@ $i = 0;
 
 <tr>
     <td width="100%"
-            valign="top"
-            colspan="2">
+        valign="top"
+        colspan="2">
         <fieldset>
             <legend>
 				<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRINT_INTNOTES'); ?></legend>
@@ -392,36 +392,43 @@ $i = 0;
 
 </table>
 <?php
-//$js = '
+$js = '';
 ?>
 <script type="text/javascript">
     jQuery(document).ready(function () {
         jQuery("#mainPriceTable").dynoTable({
-            removeClass:'.price-remove', //remove class name in  table
-            cloneClass:'.price-clone', //Custom cloner class name in  table
-            addRowTemplateId:'#productPriceRowTmpl', //Custom id for  row template
-            addRowButtonId:'#add_new_price', //Click this to add a price
-            lastRowRemovable:false, //Don't let the table be empty.
+            removeClass:".price-remove", //remove class name in  table
+            cloneClass:".price-clone", //Custom cloner class name in  table
+            addRowTemplateId:"#productPriceRowTmpl", //Custom id for  row template
+            addRowButtonId:"#add_new_pricexx", //Click this to add a price
+            lastRowRemovable:false, //Dont let the table be empty.
             orderable:true, //prices can be rearranged
             dragHandleClass:".price_ordering", //class for the click and draggable drag handle
             onRowRemove:function () {
             },
             onRowClone:function () {
             },
+            onBeforeRowAdd:function () {
+            },
             onRowAdd:function () {
-                addPriceRow();
             },
             onTableEmpty:function () {
             },
             onRowReorder:function () {
             }
         });
+
+	     /**
+             * Updates the current beer count
+             */
+            function displayMessage() {
+                $("#msg").html(  " XOXOX!");
+
+            }
+
     });
 
 
-    function addPriceRow() {
-
-    }
     jQuery(document).ready(function () {
         jQuery("#xxproductPriceBody").sortable();
         // Need to declare the update routine outside the sortable() function so
@@ -435,48 +442,19 @@ $i = 0;
         });
     });
     jQuery(document).ready(function ($) {
-        var tbody = $("#xxmainPriceTable").children("tbody").first();
-        var numRows = $(tbody).children("tr").length;
-        if (numRows == 1) {
-            // loading the page, if only one row, then cannot remove
-            $(".price-remove > span").removeClass("vmicon-16-price-remove");
-        }
-        jQuery("#xxadd_new_price").click(function () {
-            var newTr = $("#productPriceRowTmpl").clone();
-            var tbody = $("#mainPriceTable").children("tbody").first();
-            var numRows = $(tbody).children("tr").length;
-            $(newTr).find("*").andSelf().filter("[id]").each(function () {
-                //change to something else so we dont have ids with the same name
-                this.id += "_" + numRows;
-            });
 
-//http://www.simonbingham.me.uk/index.cfm/main/post/uuid/adding-a-row-to-a-table-containing-form-fields-using-jquery-18
-            // get the name attribute for the input and select fields
-            /*
-newTr.find("input,select").attr("name", function()
-	{
-		// break the field name and it's number into two parts
-		var parts = this.id.match(/(\D+)(\d+)$/);
-		// create a unique name for the new field by incrementing
-		// the number for the previous field by 1
-		return parts[1] + ++parts[2];
-	// repeat for id attributes
-	}).attr("id", function(){
-		var parts = this.id.match(/(\D+)(\d+)$/);
-		return parts[1] + ++parts[2];
-	});*/
+        jQuery("#add_new_price").click(function () {
 
-            //finally append new row to end of table
-            $(tbody).append(newTr);
-
-            //bindActions(newTr);
-            var numRows = $(tbody).children("tr").length;
-            if (numRows == 1) {
-                $(".price-remove > span").removeClass("vmicon-16-price-remove");
-            } else {
-                $(".price-remove > span").addClass("vmicon-16-price-remove");
-            }
+            jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=addNewPrice&row=<?php echo $this->priceCounter ?>&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>',
+                    function (data) {
+                        jQuery.each(data.value, function (index, value) {
+                            $('#add_new_price').html(value);
+                        });
+                    });
+            //nextPrice++;
         });
+
+
         jQuery("#xxmainPriceTable").delegate(".vmicon-16-price-remove", "click", function () {
             var numRows = jQuery('#mainPriceTable tr').length;
             if (numRows > 1) {
@@ -494,7 +472,7 @@ newTr.find("input,select").attr("name", function()
 </script>
 <?php
 //';
-$js = "";
+//$js = "";
 $doc = JFactory::getDocument ();
 $doc->addScriptDeclaration ($js);
 ?>

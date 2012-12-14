@@ -211,6 +211,7 @@ class VirtuemartViewProduct extends VmView {
 				$this->assignRef ('tzoffset', $tzoffset);
 
 				$this->assignRef ('product', $product);
+
 				$product_empty_price = array(
 					'virtuemart_product_price_id' => 0
 				, 'virtuemart_product_id'         => $virtuemart_product_id
