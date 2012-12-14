@@ -97,10 +97,11 @@ class VirtueMartModelUserfields extends VmModel {
 				break;
 			case 'email':
 			case 'emailaddress':
+				//vmdebug('emailaddress before filter',$value);
 				$value = vmFilter::mail( $value );
-				$value = str_replace('mailto:','', $value);
-				$value = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$value);
-			//vmdebug('mail',$value);
+				//$value = str_replace('mailto:','', $value);
+				//$value = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$value);
+				//vmdebug('emailaddress after filter',$value);
 				break;
 			// case 'phone':
 				// $value = vmFilter::phone( $value );

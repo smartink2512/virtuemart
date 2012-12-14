@@ -763,9 +763,10 @@ class VirtueMartCart {
 			$this->validateUserData('ST', $stData[0]);
 		}
 
+
 		$this->cartData = $this->prepareCartData();
 		$this->prepareCartPrice( ) ;
-		//$this->prepareAddressDataInCart();
+
 
 		if (count($this->products) == 0) {
 			return $this->redirecter('index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
@@ -783,6 +784,7 @@ class VirtueMartCart {
 			return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 		}
 
+		//$this->prepareAddressDataInCart();
 		//But we check the data again to be sure
 		if (empty($this->BT)) {
 			$redirectMsg = '';
@@ -937,7 +939,7 @@ class VirtueMartCart {
 		}
 
 		$usersModel = VmModel::getModel('user');
-		return $usersModel->validateUserData($type, $obj);
+		return $usersModel->validateUserData($obj,$type);
 
 	}
 
@@ -969,6 +971,7 @@ class VirtueMartCart {
 			JPluginHelper::importPlugin('vmshipment');
 			JPluginHelper::importPlugin('vmcustom');
 			JPluginHelper::importPlugin('vmpayment');
+			JPluginHelper::importPlugin('vmcalculation');
 			$returnValues = $dispatcher->trigger('plgVmConfirmedOrder', array($this, $order));
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
@@ -1017,6 +1020,7 @@ class VirtueMartCart {
 
 	function saveAddressInCart($data, $type, $putIntoSession = true) {
 
+		//vmdebug('email $data',$data['email']);
 		// VirtueMartModelUserfields::getUserFields() won't work
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = VmModel::getModel('userfields');
@@ -1035,7 +1039,9 @@ class VirtueMartCart {
 				}
 
 				if(empty($data['email'])){
-					$address['email'] = JFactory::getUser()->email;
+					$jUser = JFactory::getUser();
+					$address['email'] = $jUser->email;
+					//vmdebug('email was empty',$address['email']);
 				}
 
 			} else {
@@ -1058,6 +1064,7 @@ class VirtueMartCart {
 						vmdebug(' saveAddressInCart ',$data[$prefix.$name]);
 					}*/
 					if($fld->required){
+						//vmdebug('saveAddressInCart $prefix='.$prefix.' $name='.$name,$data);
 						if(!empty($data[$prefix.$name])){
 							$address[$name] = $data[$prefix.$name];
 						} else {
@@ -1098,6 +1105,7 @@ class VirtueMartCart {
 
 		$this->{$type} = $address;
 
+		//vmdebug('saveAddressInCart '.$type,$address);
 
 		if($putIntoSession){
 			$this->setCartIntoSession();

@@ -883,11 +883,12 @@ class VirtueMartModelUser extends VmModel {
 				//unset($data['virtuemart_userinfo_id']);
 			}
 
-			if(!$this->validateUserData('BT',(array)$data)){
+			if(!$this->validateUserData((array)$data,'BT')){
 				return false;
 			}
 
 			$userInfoData = self::_prepareUserFields($data, 'BT',$userinfo);
+			//vmdebug('model user storeAddress',$data);
 			if (!$userinfo->bindChecknStore($userInfoData)) {
 				vmError('storeAddress '.$userinfo->getError());
 			}
@@ -935,7 +936,7 @@ class VirtueMartModelUser extends VmModel {
 				}
 			}
 
-			if(!$this->validateUserData('ST',(array)$dataST)){
+			if(!$this->validateUserData((array)$dataST,'ST')){
 				return false;
 			}
 			$dataST['address_type'] = 'ST';
@@ -958,7 +959,7 @@ class VirtueMartModelUser extends VmModel {
 	* @param Object If given, an object with data address data that must be formatted to an array
 	* @return redirectMsg, if there is a redirectMsg, the redirect should be executed after
 	*/
-	public function validateUserData($type='BT', $data = null) {
+	public function validateUserData($data,$type='BT') {
 
 		if (!class_exists('VirtueMartModelUserfields'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
@@ -984,6 +985,7 @@ class VirtueMartModelUser extends VmModel {
 		$i = 0 ;
 
 		$return = true;
+
 		foreach ($neededFields as $field) {
 
 			if($field->required && empty($data[$field->name]) && $field->name != 'virtuemart_state_id'){
@@ -993,6 +995,8 @@ class VirtueMartModelUser extends VmModel {
 					vmInfo('COM_VIRTUEMART_CHECKOUT_PLEASE_ENTER_ADDRESS');
 					return false;
 				} else {
+					//vmdebug('validateUserData ',$field,$field->name,$data[$field->name],$data);
+					//vmTrace('validateUserData ');
 					vmInfo(JText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',JText::_($field->title)) );
 					$i++;
 					$return = false;
@@ -1053,7 +1057,7 @@ class VirtueMartModelUser extends VmModel {
 						vmdebug('property_exists userinfo->$fldName '.$fldName,$userinfo);
 						$data[$fldName] = $userinfo->$fldName;
 					} else {
-						vmError('Your tables seem to be broken, you have fields in your form which have no correspondign field in the db');
+						vmError('Your tables seem to be broken, you have fields in your form which have no corresponding field in the db');
 					}
 				}
 			} else {
