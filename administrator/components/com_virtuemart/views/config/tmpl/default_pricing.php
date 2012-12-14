@@ -51,7 +51,7 @@ $document->addScriptDeclaration($js);
 			    </span>
 			</td>
 			<td>
-			    <?php echo VmHTML::checkbox('show_tax', $this->config->get('show_tax')); ?>
+			    <?php echo VmHTML::checkbox('show_tax', VmConfig::get('show_tax')); ?>
 			</td>
 		    </tr>
 		   <tr>
@@ -61,7 +61,7 @@ $document->addScriptDeclaration($js);
 			    </span>
             </td>
             <td>
-				<?php echo VmHTML::checkbox('askprice', $this->config->get('askprice')); ?>
+				<?php echo VmHTML::checkbox('askprice', VmConfig::get('askprice')); ?>
             </td>
         </tr>
             <tr>
@@ -71,7 +71,7 @@ $document->addScriptDeclaration($js);
 			    </span>
                 </td>
                 <td>
-					<?php echo VmHTML::checkbox('rappenrundung', $this->config->get('rappenrundung')); ?>
+					<?php echo VmHTML::checkbox('rappenrundung', VmConfig::get('rappenrundung')); ?>
                 </td>
             </tr>
 		</table>
@@ -89,7 +89,7 @@ $document->addScriptDeclaration($js);
 			    </span>
 			</td>
 			<td>
-			    <?php echo VmHTML::checkbox('show_prices', $this->config->get('show_prices')); ?>
+			    <?php echo VmHTML::checkbox('show_prices', VmConfig::get('show_prices')); ?>
 			</td>
 			</tr>
 			</table>

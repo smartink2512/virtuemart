@@ -325,6 +325,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$origin->setLine2($vendorFields['fields']['address_2']['value']);
 		$origin->setCity($vendorFields['fields']['city']['value']);
 
+		$origin->setCountry($vendorFields['fields']['virtuemart_country_id']['country_2_code']);
 		$origin->setRegion($vendorFields['fields']['virtuemart_state_id']['state_2_code']);
 		$origin->setPostalCode($vendorFields['fields']['zip']['value']);
 
@@ -345,12 +346,12 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$request->setCommit(true);
 			//invoice number, problem is that the invoice number is at this time not known, but the order_number may reachable
 			$request->setDocCode($committ);
-			vmdebug('Request as SalesInvoice');
+			vmdebug('Request as SalesInvoice with invoiceNumber '.$committ);
 		} else {
 			$request->setDocType(DocumentType::$SalesOrder);
 			$request->setCommit(false);
 			//invoice number, problem is that the invoice number is at this time not known, neither the order_number
-			$request->setDocCode('PHPINV999');
+			$request->setDocCode('VM2.0.16_order_request');
 			vmdebug('Request as SalesOrder');
 		}
 
