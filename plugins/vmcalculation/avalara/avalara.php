@@ -342,9 +342,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		if($calc->committ and $sale){
 			$request->setDocType(DocumentType::$SalesInvoice);   	// Only supported types are SalesInvoice or SalesOrder
-			$request->setCommit($committ);
+			$request->setCommit(true);
 			//invoice number, problem is that the invoice number is at this time not known, but the order_number may reachable
-			$request->setDocCode('PHPINV999');
+			$request->setDocCode($committ);
 			vmdebug('Request as SalesInvoice');
 		} else {
 			$request->setDocType(DocumentType::$SalesOrder);
@@ -525,7 +525,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 				$totalTax = $getTaxResult->getTotalTax();
 				vmdebug( "TotalTax: ".$totalTax );
-
 
 				foreach($getTaxResult->getTaxLines() as $ctl)
 				{
@@ -763,9 +762,14 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				if($this->addresses){
 					if (!class_exists ('calculationHelper')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 
+					vmdebug('$order',$order);
+					$orderModel = VmModel::getModel('orders');
+					$invoiceNumber = 'onr_'.$order['details']['BT']->order_number;
+					$orderModel -> createInvoiceNumber($order['details']['BT'],$invoiceNumber);
 					$calculator = calculationHelper::getInstance ();
-					$tax = $this->getTax( $calculator,$rule,0,true);
-					vmdebug('Cart and order',$tax);
+					$tax = $this->getTax( $calculator,$rule,0,$invoiceNumber);
+
+				//	vmdebug('tax',$tax);
 				}
 			}
 		}

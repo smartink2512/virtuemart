@@ -694,10 +694,10 @@ class VirtueMartModelProduct extends VmModel {
 				$child->product_template = VmConfig::get ('producttemplate');
 			}
 
-			if (empty($child->layout)) {
+			/*if (empty($child->layout)) {
 				// product_layout ?
 				$child->layout = VmConfig::get ('productlayout');
-			}
+			}*/
 
 			$app = JFactory::getApplication ();
 			if ($app->isSite () and VmConfig::get ('stockhandle', 'none') == 'disableit' and ($child->product_in_stock - $child->product_ordered) <= 0) {

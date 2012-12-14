@@ -339,6 +339,11 @@ class shopFunctionsF {
 			$layout = VmConfig::get('vmlayout','default');
 			$view->setLayout(strtolower($layout));
 		} else {
+
+			if(empty($catLayout) and empty($prodLayout)){
+				$catLayout = VmConfig::get ('productlayout','default');
+			}
+
 			//Set specific category layout
 			if(!empty($catLayout) && empty($prodLayout)){
 				if(is_Int($catLayout)){
@@ -362,6 +367,7 @@ class shopFunctionsF {
 					$layout = $prodLayout;
 				}
 			}
+
 		}
 
 		if(!empty($layout)){
