@@ -64,14 +64,21 @@ class VirtueMartModelUserfields extends VmModel {
 		,'euvatid'          => 'virtuemart_shoppergroup_id'
 		,'webaddress'       => 'webaddresstype'
 		);
+		$this->_selectedOrdering = 'ordering';
+		$this->_selectedOrderingDir = 'ASC';
 	}
 
 
 	/**
 	 * Prepare a user field for database update
 	 */
-	public function prepareFieldDataSave($fieldType, $fieldName, $value, &$post,$params) {
-		//		$post = JRequest::get('post');
+	public function prepareFieldDataSave($field, &$data) {
+
+		$fieldType = $field->type;
+		$fieldName = $field->name;
+		$value = $data[$field->name];
+		$params = $field->params;
+
 		if(!class_exists('vmFilter'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmfilter.php');
 		switch(strtolower($fieldType)) {
 			case 'webaddress':
@@ -90,8 +97,8 @@ class VirtueMartModelUserfields extends VmModel {
 			case 'email':
 			case 'emailaddress':
 				$value = vmFilter::mail( $value );
-				$value = str_replace('mailto:','', $value);
-				$value = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$value);
+			//	$value = str_replace('mailto:','', $value);
+			//	$value = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$value);
 			//vmdebug('mail',$value);
 				break;
 			// case 'phone':
@@ -111,7 +118,7 @@ class VirtueMartModelUserfields extends VmModel {
 				$value = JRequest::getVar($fieldName, '', 'post', 'string' ,JREQUEST_ALLOWRAW);
 				$value = vmFilter::hl( $value,'text' );
 				break;
-			default:
+
 			case 'editorta':
 				$value = JRequest::getVar($fieldName, '', 'post', 'string' ,JREQUEST_ALLOWRAW);
 				$value = vmFilter::hl( $value,'no_js_flash' );
@@ -137,7 +144,7 @@ class VirtueMartModelUserfields extends VmModel {
 					JPluginHelper::importPlugin('vmuserfield');
 					$dispatcher = JDispatcher::getInstance();
 					// vmdebug('params',$params);
-					$dispatcher->trigger('plgVmPrepareUserfieldDataSave',array($fieldType, $fieldName, &$post, &$value, $params) );
+					$dispatcher->trigger('plgVmPrepareUserfieldDataSave',array($fieldType, $fieldName, &$data, &$value, $params) );
 					return $value;
 				}
 
@@ -270,7 +277,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 		if (!$field->check(count($fieldValues))) {
 			// Perform data checks
-			vmError($field->getError());
+			//vmError($field->getError());
 			return false;
 		}
 
@@ -372,7 +379,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	public function getUserFieldsFor($layoutName, $type,$userId = -1){
 
- 		vmdebug('getUserFieldsFor '.$layoutName.' '. $type .' ' . $userId);
+ 		//vmdebug('getUserFieldsFor '.$layoutName.' '. $type .' ' . $userId);
 		$register = false;
 
 		if(VmConfig::get('oncheckout_show_register',1) and $type=='BT'){
@@ -623,6 +630,11 @@ class VirtueMartModelUserfields extends VmModel {
 		,'links' => array()
 		);
 
+		$admin = false;
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if(Permissions::getInstance()->check('admin','storeadmin')){
+			$admin  = true;
+		}
 
 		// 		vmdebug('my user data in getUserFieldsFilled',$_selection,$_userData);
 		$_userData=(array)($_userData);
@@ -644,6 +656,12 @@ class VirtueMartModelUserfields extends VmModel {
 				,'description' => JText::_($_fld->description)
 				);
 
+				$readonly = '';
+				if(!$admin){
+					if($_fld->readonly ){
+						$readonly = ' readonly="readonly" ';
+					}
+				}
 // 				vmdebug ('getUserFieldsFilled',$_fld->name);
 				// 			if($_fld->name==='email') vmdebug('user data email getuserfieldbyuser',$_userData);
 				// First, see if there are predefined fields by checking the name
@@ -740,7 +758,7 @@ class VirtueMartModelUserfields extends VmModel {
 							. '" value="' . $_return['fields'][$_fld->name]['value'] .'" '
 							. ($_fld->required ? ' class="required"' : '')
 							. ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
-							. ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> ';
+								. $readonly . ' /> ';
 							$_return['fields'][$_fld->name]['hidden'] = true;
 							break;
 						case 'date':
@@ -781,13 +799,13 @@ class VirtueMartModelUserfields extends VmModel {
 							. '" value="' . $_return['fields'][$_fld->name]['value'] .'" '
 							. ($_fld->required ? ' class="required"' : '')
 							. ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
-							. ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> ';
+							. $readonly . ' /> ';
 							break;
 						case 'textarea':
 							$_return['fields'][$_fld->name]['formcode'] = '<textarea id="'
 							. $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name . '" cols="' . $_fld->cols
 							. '" rows="'.$_fld->rows . '" class="inputbox" '
-							. ($_fld->readonly ? ' readonly="readonly"' : '').'>'
+							. $readonly .'>'
 							. $_return['fields'][$_fld->name]['value'] .'</textarea>';
 							break;
 						case 'editorta':
@@ -829,7 +847,7 @@ class VirtueMartModelUserfields extends VmModel {
 								$_v->fieldtitle = JText::_($_v->fieldtitle);
 							}
 							$_attribs = array();
-							if ($_fld->readonly) {
+							if ($_fld->readonly and !$admin) {
 								$_attribs['readonly'] = 'readonly';
 							}
 							if ($_fld->required) {

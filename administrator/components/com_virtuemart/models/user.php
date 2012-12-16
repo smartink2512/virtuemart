@@ -714,18 +714,6 @@ class VirtueMartModelUser extends VmModel {
 
 		$noError = true;
 
-		if(empty($data['customer_number'])){
-			//if(!class_exists('vmUserPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmuserplugin.php');
-			///if(!$returnValues){
-			$data['customer_number'] = md5($data['username']);
-			//}
-		} else {
-			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-			if(!Permissions::getInstance()->check("admin,storeadmin")) {
-				unset($data['customer_number']);
-			}
-		}
-
 		$usertable = $this->getTable('vmusers');
 
 		$alreadyStoredUserData = $usertable->load($this->_id);
@@ -735,9 +723,24 @@ class VirtueMartModelUser extends VmModel {
 		$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
 		$data['virtuemart_vendor_id'] = $alreadyStoredUserData->virtuemart_vendor_id;
 
+		//vmdebug('saveUserData',$data);
+		unset($data['customer_number']);
+		if(empty($alreadyStoredUserData->customer_number)){
+			//if(!class_exists('vmUserPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmuserplugin.php');
+			///if(!$returnValues){
+			$data['customer_number'] = md5($data['username']);
+			//We set this data so that vmshopper plugin know if they should set the customer nummer
+			$data['customer_number_bycore'] = 1;
+			//}
+		} else {
+			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+			if(!Permissions::getInstance()->check("admin,storeadmin")) {
+				$data['customer_number'] = $alreadyStoredUserData->customer_number;
+			}
+		}
+
 		if($app->isSite()){
 			unset($data['perms']);
-
 			if(!empty($alreadyStoredUserData->perms)){
 				$data['perms'] = $alreadyStoredUserData->perms;
 			} else {
@@ -752,7 +755,7 @@ class VirtueMartModelUser extends VmModel {
 		if($trigger){
 			JPluginHelper::importPlugin('vmshopper');
 			$dispatcher = JDispatcher::getInstance();
-			//Todo to adjust to new pattern, using &
+
 			$plg_datas = $dispatcher->trigger('plgVmOnUserStore',array(&$data));
 			//vmdebug(',y $trigger',$plg_datas);
 			foreach($plg_datas as $plg_data){
@@ -769,25 +772,27 @@ class VirtueMartModelUser extends VmModel {
 			$noError = false;
 		}
 
-		$shoppergroupmodel = VmModel::getModel('ShopperGroup');
-		if(empty($this->_defaultShopperGroup)){
-			$this->_defaultShopperGroup = $shoppergroupmodel->getDefault(0);
-		}
+		if(Permissions::getInstance()->check("admin,storeadmin")) {
+			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
+			if(empty($this->_defaultShopperGroup)){
+				$this->_defaultShopperGroup = $shoppergroupmodel->getDefault(0);
+			}
 
-		if(empty($data['virtuemart_shoppergroup_id']) or $data['virtuemart_shoppergroup_id']==$this->_defaultShopperGroup->virtuemart_shoppergroup_id){
-			$data['virtuemart_shoppergroup_id'] = array();
-		}
+			if(empty($data['virtuemart_shoppergroup_id']) or $data['virtuemart_shoppergroup_id']==$this->_defaultShopperGroup->virtuemart_shoppergroup_id){
+				$data['virtuemart_shoppergroup_id'] = array();
+			}
 
-		// Bind the form fields to the table
-		if(!empty($data['virtuemart_shoppergroup_id'])){
-			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$data['virtuemart_shoppergroup_id']);
-			$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
-			$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
-			$errors = $user_shoppergroups_table->getErrors();
-			foreach($errors as $error){
-				$this->setError($error);
-				vmError('Set shoppergroup '.$error);
-				$noError = false;
+			// Bind the form fields to the table
+			if(!empty($data['virtuemart_shoppergroup_id'])){
+				$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$data['virtuemart_shoppergroup_id']);
+				$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
+				$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
+				$errors = $user_shoppergroups_table->getErrors();
+				foreach($errors as $error){
+					$this->setError($error);
+					vmError('Set shoppergroup '.$error);
+					$noError = false;
+				}
 			}
 		}
 
@@ -847,31 +852,46 @@ class VirtueMartModelUser extends VmModel {
 
 		$userinfo   = $this->getTable('userinfos');
 
-		if(isset($data['virtuemart_userinfo_id']) and $data['virtuemart_userinfo_id']!=0){
-
-			$data['virtuemart_userinfo_id'] = (int)$data['virtuemart_userinfo_id'];
-			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-			if(!Permissions::getInstance()->check('admin')){
-
-				$userinfo->load($data['virtuemart_userinfo_id']);
-
-				if($userinfo->virtuemart_user_id!=$user->id){
-					vmError('Hacking attempt as admin?','Hacking attempt storeAddress');
-					return false;
-				}
-			}
-		} else {
-			unset($data['virtuemart_userinfo_id']);
-		}
-
 		if($data['address_type'] == 'BT'){
 
-			if(!$this->validateUserData('BT',(array)$data)){
+			if(isset($data['virtuemart_userinfo_id']) and $data['virtuemart_userinfo_id']!=0){
+
+				$data['virtuemart_userinfo_id'] = (int)$data['virtuemart_userinfo_id'];
+				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+				if(!Permissions::getInstance()->check('admin')){
+
+					$userinfo->load($data['virtuemart_userinfo_id']);
+
+					if($userinfo->virtuemart_user_id!=$user->id){
+						vmError('Hacking attempt as admin?','Hacking attempt storeAddress');
+						return false;
+					}
+				}
+			} else {
+
+				$q = 'SELECT `virtuemart_userinfo_id` FROM #__virtuemart_userinfos
+				WHERE `virtuemart_user_id` = '.$user->id.'
+				AND `address_type` = "BT"';
+
+				$this->_db->setQuery($q);
+				$total = $this->_db->loadResultArray();
+
+				if (count($total) > 0) {
+					$data['virtuemart_userinfo_id'] = (int)$total[0];
+				} else {
+					$data['virtuemart_userinfo_id'] = 0;//md5(uniqid($this->virtuemart_user_id));
+				}
+				$userinfo->load($data['virtuemart_userinfo_id']);
+				//unset($data['virtuemart_userinfo_id']);
+			}
+
+			if(!$this->validateUserData((array)$data,'BT')){
 				return false;
 			}
-			$userfielddata = self::_prepareUserFields($data, 'BT');
 
-			if (!$userinfo->bindChecknStore($userfielddata)) {
+			$userInfoData = self::_prepareUserFields($data, 'BT',$userinfo);
+			//vmdebug('model user storeAddress',$data);
+			if (!$userinfo->bindChecknStore($userInfoData)) {
 				vmError('storeAddress '.$userinfo->getError());
 			}
 		}
@@ -918,17 +938,16 @@ class VirtueMartModelUser extends VmModel {
 				}
 			}
 
-			if(!$this->validateUserData('ST',(array)$dataST)){
+			if(!$this->validateUserData((array)$dataST,'ST')){
 				return false;
 			}
 			$dataST['address_type'] = 'ST';
-			$userfielddata = self::_prepareUserFields($dataST, 'ST');
+			$userfielddata = self::_prepareUserFields($dataST, 'ST',$userinfo);
 
 			if (!$userinfo->bindChecknStore($userfielddata)) {
 				vmError($userinfo->getError());
 			}
 		}
-
 
 		return $userinfo->virtuemart_userinfo_id;
 	}
@@ -941,7 +960,7 @@ class VirtueMartModelUser extends VmModel {
 	* @param Object If given, an object with data address data that must be formatted to an array
 	* @return redirectMsg, if there is a redirectMsg, the redirect should be executed after
 	*/
-	public function validateUserData($type='BT', $data = null) {
+	public function validateUserData($data, $type='BT') {
 
 		if (!class_exists('VirtueMartModelUserfields'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
@@ -998,7 +1017,7 @@ class VirtueMartModelUser extends VmModel {
 	}
 
 
-	function _prepareUserFields($data, $type)
+	function _prepareUserFields(&$data, $type, $userinfo = 0)
 	{
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = VmModel::getModel('userfields');
@@ -1017,10 +1036,31 @@ class VirtueMartModelUser extends VmModel {
 			);
 
 		}
+
+		$admin = false;
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if(Permissions::getInstance()->check('admin','storeadmin')){
+			$admin  = true;
+		}
+
 		// Format the data
-		foreach ($prepareUserFields as $_fld) {
-			if(empty($data[$_fld->name])) $data[$_fld->name] = '';
-			$data[$_fld->name] = $userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $data[$_fld->name],$data,$_fld->params);
+		foreach ($prepareUserFields as $fld) {
+			if(empty($data[$fld->name])) $data[$fld->name] = '';
+
+			if(!$admin and $fld->readonly){
+				$fldName = $fld->name;
+				unset($data[$fldName]);
+				if($userinfo!==0){
+					if(property_exists($userinfo,$fldName)){
+						vmdebug('property_exists userinfo->$fldName '.$fldName,$userinfo);
+						$data[$fldName] = $userinfo->$fldName;
+					} else {
+						vmError('Your tables seem to be broken, you have fields in your form which have no corresponding field in the db');
+					}
+				}
+			} else {
+				$data[$fld->name] = $userFieldsModel->prepareFieldDataSave($fld, $data);
+			}
 		}
 
 		return $data;
@@ -1166,12 +1206,10 @@ class VirtueMartModelUser extends VmModel {
 		$skips
 		);
 
-		$address = array();
-
 		// Format the data
 		foreach ($prepareUserFields as $_fld) {
 			if(empty($data[$_fld->name])) $data[$_fld->name] = '';
-			$data[$_fld->name] = $userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $data[$_fld->name],$data,$_fld->params);
+			$data[$_fld->name] = $userFieldsModel->prepareFieldDataSave($_fld, $data);
 		}
 
 		$this->store($data);
@@ -1318,7 +1356,8 @@ class VirtueMartModelUser extends VmModel {
 			LEFT JOIN #__virtuemart_vmuser_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id
 			LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.virtuemart_shoppergroup_id = sg.virtuemart_shoppergroup_id ';
 
-		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$this->_getFilter(),'GROUP BY vmu.virtuemart_user_id',$this->_getOrdering());
+		//group by only for vm shoppers = vmu.virtuemart_user_id , for all joomla users = ju.id
+		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$this->_getFilter(),' GROUP BY ju.id',$this->_getOrdering());
 
 	}
 

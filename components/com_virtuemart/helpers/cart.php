@@ -114,13 +114,9 @@ class VirtueMartCart {
 				self::$_cart->couponCode 							= $sessionCart->couponCode;
 				self::$_cart->cartData 								= $sessionCart->cartData;
 				self::$_cart->order_number							= $sessionCart->order_number;
-// 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-// 				$calculator = calculationHelper::getInstance();
-// 				self::$_cart->cartData								= $calculator->getCartData();
+
 				self::$_cart->lists 									= $sessionCart->lists;
-				// 				self::$_cart->user 									= $sessionCart->user;
-// 				self::$_cart->prices 								= $sessionCart->prices;
-				//self::$_cart->pricesUnformatted					= $sessionCart->pricesUnformatted;
+
 				self::$_cart->pricesCurrency						= $sessionCart->pricesCurrency;
 				self::$_cart->paymentCurrency						= $sessionCart->paymentCurrency;
 
@@ -212,9 +208,7 @@ class VirtueMartCart {
 		$sessionCart->order_language 						= $this->order_language;
 		$sessionCart->cartData 								= $this->cartData;
 		$sessionCart->lists 									= $this->lists;
-		// 		$sessionCart->user 									= $this->user;
-// 		$sessionCart->prices 								= $this->prices;
-	//	$sessionCart->pricesUnformatted					= $this->pricesUnformatted;
+
 		$sessionCart->pricesCurrency						= $this->pricesCurrency;
 		$sessionCart->paymentCurrency						= $this->paymentCurrency;
 
@@ -506,24 +500,6 @@ class VirtueMartCart {
 	}
 
 	/**
-	 * Function Description
-	 *
-	 * @author Max Milbers
-	 * @access public
-	 * @param array $cart the cart to get the products for
-	 * @return array of product objects
-	 */
-	public function getCartPrices($checkAutomaticSelected=true) {
-
-		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-		$calculator = calculationHelper::getInstance();
-
-		$this->pricesUnformatted = $calculator->getCheckoutPrices($this, $checkAutomaticSelected);
-
-		return $this->pricesUnformatted;
-	}
-
-	/**
 	 * Proxy function for getting a product object
 	 *
 	 * @author Max Milbers
@@ -655,9 +631,11 @@ class VirtueMartCart {
 			$this->validateUserData('ST', $stData[0]);
 		}
 
-		$this->setCartIntoSession();
+		$this->cartData = $this->prepareCartData();
+		//$this->prepareCartPrice( );
 
 
+		///if (count($this->products) == 0) {
 		if (count($this->cartProductsData) == 0) {
 			return $this->redirecter('index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
 		} else {
@@ -738,27 +716,30 @@ class VirtueMartCart {
 				}
 			}
 		}
-		//echo 'hier ';
+		
 		//Test Payment and show payment plugin
-		if (empty($this->virtuemart_paymentmethod_id)) {
-			return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=editpayment' , $redirectMsg);
-		} else {
-			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-			JPluginHelper::importPlugin('vmpayment');
-			//Add a hook here for other payment methods, checking the data of the choosed plugin
-			$dispatcher = JDispatcher::getInstance();
-			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckDataPayment', array( $this));
+		if($this->pricesUnformatted['salesPrice']>0.0){
+				if (empty($this->virtuemart_paymentmethod_id)) {
+				return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=editpayment' , $redirectMsg);
+			} else {
+				if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+				JPluginHelper::importPlugin('vmpayment');
+				//Add a hook here for other payment methods, checking the data of the choosed plugin
+				$dispatcher = JDispatcher::getInstance();
+				$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckDataPayment', array( $this));
 
-			foreach ($retValues as $retVal) {
-				if ($retVal === true) {
-					break; // Plugin completed succesful; nothing else to do
-				} elseif ($retVal === false) {
-					// Missing data, ask for it (again)
-					return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=editpayment' , $redirectMsg);
-					// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
+				foreach ($retValues as $retVal) {
+					if ($retVal === true) {
+						break; // Plugin completed succesful; nothing else to do
+					} elseif ($retVal === false) {
+						// Missing data, ask for it (again)
+						return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=editpayment' , $redirectMsg);
+						// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
+					}
 				}
 			}
 		}
+		
 
 		if (empty($this->tosAccepted)) {
 
@@ -826,7 +807,7 @@ class VirtueMartCart {
 		}
 
 		$usersModel = VmModel::getModel('user');
-		return $usersModel->validateUserData($type, $obj);
+		return $usersModel->validateUserData($obj,$type);
 
 	}
 
@@ -858,6 +839,7 @@ class VirtueMartCart {
 			JPluginHelper::importPlugin('vmshipment');
 			JPluginHelper::importPlugin('vmcustom');
 			JPluginHelper::importPlugin('vmpayment');
+			JPluginHelper::importPlugin('vmcalculation');
 			$returnValues = $dispatcher->trigger('plgVmConfirmedOrder', array($this, $order));
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
@@ -933,7 +915,8 @@ class VirtueMartCart {
 				}
 
 				if(empty($data->email)){
-					$address['email'] = JFactory::getUser()->email;
+					$jUser = JFactory::getUser();
+					$address['email'] = $jUser->email;
 				}
 			}
 		}
@@ -999,6 +982,9 @@ class VirtueMartCart {
 	*/
 	function CheckAutomaticSelectedShipment($cart_prices, $checkAutomaticSelected ) {
 
+		if(count($this->products)==0 ) {
+			return false;
+		}
 		$nbShipment = 0;
 		$virtuemart_shipmentmethod_id=0;
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
@@ -1112,6 +1098,25 @@ class VirtueMartCart {
 
 	}
 
+	/**
+	 * Function Description
+	 *
+	 * @author Max Milbers
+	 * @access public
+	 * @param array $cart the cart to get the products for
+	 * @return array of product objects
+	 */
+// 	$this->pricesUnformatted = $product_prices;
+
+	public function getCartPrices($checkAutomaticSelected=true) {
+
+		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		$calculator = calculationHelper::getInstance();
+
+		$this->pricesUnformatted = $calculator->getCheckoutPrices($this, $checkAutomaticSelected);
+
+		return $this->pricesUnformatted;
+	}
 
 	function prepareCartProducts(){
 

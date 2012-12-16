@@ -1,4 +1,5 @@
-<?php if (!defined('_JEXEC'))
+<?php
+if (!defined('_JEXEC'))
 die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * DynamicSoapClient.class.php
@@ -27,7 +28,6 @@ class DynamicSoapClient extends SoapClient
     {
         parent::__construct($wsdl,$options);
         $this->config = $config;
-	   // vmdebug('DynamicSoapClient ',$wsdl,$options,$config);
     }
 
 	public function __call($n,$args)

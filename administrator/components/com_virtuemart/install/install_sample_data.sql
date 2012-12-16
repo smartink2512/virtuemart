@@ -15,10 +15,9 @@ INSERT IGNORE INTO `#__virtuemart_calcs` (`virtuemart_calc_id`, `virtuemart_vend
 --
 -- Dumping data for table `#__virtuemart_calc_categories`
 --
-
-INSERT IGNORE INTO `#__virtuemart_calc_categories` (`id`, `virtuemart_calc_id`, `virtuemart_category_id`) VALUES
-(NULL, 3, 2);
-
+INSERT INTO `#__virtuemart_calc_categories` (`id`, `virtuemart_calc_id`, `virtuemart_category_id`) VALUES
+(1, 3, 2),
+(2, 2, 1);
 
 --
 -- Dumping data for table `#__virtuemart_calc_shoppergroups`
@@ -71,27 +70,27 @@ INSERT IGNORE INTO `#__virtuemart_category_medias` (`id`,`virtuemart_category_id
 --
 -- Dumping data for table `#__virtuemart_customs`
 --
-INSERT INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`, `virtuemart_vendor_id`,`admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `is_input`, `layout_pos`, `custom_param`, `shared`, `published`, `ordering`) VALUES
-(3, 11, 1, 0, 'Handle length (cm)', '', '100', '', 'S', 0, 0, 0, 0, '', '', 0, 1, 0),
-(4, 11, 1, 0, 'Replaceable Head', '', '0', '', 'S', 0, 0, 0, 0, '', '', 0, 1, 0),
-(7, 0, 1, 0, 'Photo', 'Give a media ID as default', '1', 'Add a photo', 'M', 0, 0, 0, 0, '', '', 0, 1, 0),
-(9, 0, 1, 0, 'Chain size', 'Select the chain size', '30', '(cm)', 'V', 0, 0, 1, 1, '', '', 0, 1, 0),
-(11, 0, 1, 0, 'Hammer Specifications', '', '', '', 'G', 0, 0, 0, 0, '', '', 0, 1, 0),
-(12, 11, 1, 0, 'Manufacturer Warranty', '', 'Lifetime against manufacturers defect', '', 'S', 0, 0, 0, 0, '', '', 0, 1, 0),
-(13, 0, 1, 0, 'Color', '', 'Choose a color', 'Be important on your construction site, buy a red one', 'S', 0, 0, 1, 1,'addtocart', '', 0, 1, 0),
-(17, 0, 1, 0, 'Diameter', 'Select the Diameter', '', '', 'S', 0, 0, 1, 1, 'addtocart', '0', 0, 1, 0),
-(15, 0, 1, 0, 'Select the Hand Shovel type', '', '', '', 'A', 0, 0, 0, 0, 'ontop', '0', 0, 1, 0),
-(16, 11, 1, 0, 'Handle color', '', 'Blue;Pink;Gold;Platine', '', 'S', 1, 0, 1, 0, '', '0', 0, 1, 0),
-(18, 0, 1, 0, 'Ladder Specifications', '', '', '', 'G', 0, 0, 0, 0, '', '0', 0, 1, 0),
-(19, 18, 1, 0, 'Height', '', '2,60', '', 'S', 0, 0, 0, 0,'', '0', 0, 1, 0),
-(20, 18, 1, 0, 'Type of ladder', '', 'Extensible', '', 'S', 0, 0, 0, 0, '', '0', 0, 1, 0)
+INSERT INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`, `virtuemart_vendor_id`, `custom_jplugin_id`, `custom_element`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `layout_pos`, `custom_params`, `shared`, `published`, `created_on`, `created_by`, `ordering`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
+(3, 11, 1, 0, '0', 0, 'Handle length (cm)', '', '100', '', 'I', 0, 0, 0, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 10:14:35', 627, '0000-00-00 00:00:00', 0),
+(4, 11, 1, 0, '0', 0, 'Replaceable Head', '', '0', '', 'B', 0, 0, 0, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 10:14:41', 627, '0000-00-00 00:00:00', 0),
+(7, 0, 1, 0, '', 0, 'Photo', 'Give a media ID as defaut', '1', 'Add a photo', 'M', 0, 0, 0, NULL, NULL, 0, 1, '0000-00-00 00:00:00', 0, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(9, 0, 1, 0, '0', 0, 'Chain size', 'Select the chain size', '30', '(cm)', 'V', 0, 0, 1, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 10:21:07', 627, '0000-00-00 00:00:00', 0),
+(11, 0, 1, 0, '0', 0, 'Hammer Specifications', '', '', '', 'P', 0, 0, 0, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 10:12:15', 627, '0000-00-00 00:00:00', 0),
+(12, 11, 1, 0, '0', 0, 'Manufacturer Warranty', '', 'Lifetime against manufacturers defect', '', 'S', 0, 0, 0, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 10:13:48', 627, '0000-00-00 00:00:00', 0),
+(13, 0, 1, 0, '', 0, 'Color', '', 'Choose a color', 'Be important on your construction site, buy a red one', 'S', 0, 0, 1, NULL, NULL, 0, 1, '0000-00-00 00:00:00', 0, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(17, 0, 1, 0, '0', 0, 'Diameter', 'Select the Diameter', '', '', 'V', 0, 0, 1, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 12:26:20', 627, '0000-00-00 00:00:00', 0),
+(15, 0, 1, 0, '0', 0, 'Select the Hand Shovel type', '', '', '', 'A', 0, 0, 0, 'ontop', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 10:45:53', 627, '0000-00-00 00:00:00', 0),
+(16, 11, 1, 0, '0', 0, 'Handle color', '', 'Blue;Pink;Gold;Platine', '', 'S', 1, 0, 0, '', '0', 0, 1, '2012-10-26 10:16:24', 627, 0, '2012-10-26 10:16:24', 627, '0000-00-00 00:00:00', 0),
+(18, 0, 1, 0, '0', 0, 'Ladder Specifications', '', '', '', 'P', 0, 0, 0, '', '0', 0, 1, '2012-10-26 12:27:52', 627, 0, '2012-10-26 12:27:52', 627, '0000-00-00 00:00:00', 0),
+(19, 18, 1, 0, '0', 0, 'Height', '', '2,60', '', 'I', 0, 0, 0, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 12:38:57', 627, '0000-00-00 00:00:00', 0),
+(20, 18, 1, 0, '0', 0, 'Type of ladder', '', 'Extensible', '', 'S', 0, 0, 0, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 12:29:48', 627, '0000-00-00 00:00:00', 0)
 ;
 
 --
 -- Dumping data for table  `#__virtuemart_product_customfields`
 --
 
-INSERT INTO `#__virtuemart_product_customfields` (`virtuemart_customfield_id`, `virtuemart_product_id`, `virtuemart_custom_id`, `customfield_value`, `customfield_price`, `customfield_param`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`, `ordering`) VALUES
+INSERT INTO `#__virtuemart_product_customfields` (`virtuemart_customfield_id`, `virtuemart_product_id`, `virtuemart_custom_id`, `custom_value`, `custom_price`, `custom_param`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`, `ordering`) VALUES
 (24, 5, 2, '5', NULL, '', 0, '0000-00-00 00:00:00', 0, '2012-10-26 10:25:23', 627, '0000-00-00 00:00:00', 0, 0),
 (22, 5, 1, '7', NULL, '', 0, '0000-00-00 00:00:00', 0, '2012-10-26 10:25:23', 627, '0000-00-00 00:00:00', 0, 0),
 (23, 5, 2, '2', NULL, '', 0, '0000-00-00 00:00:00', 0, '2012-10-26 10:25:23', 627, '0000-00-00 00:00:00', 0, 0),
@@ -158,7 +157,7 @@ INSERT INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_vendor_id
 (7, 1, 'garden_tools.jpg', '', 'garden tools', 'image/jpeg', 'category', 'images/stories/virtuemart/category/garden_tools.jpg', 'images/stories/virtuemart/category/resized/garden_tools_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
 (8, 1, 'hand_tools.jpg', '', 'hand tools', 'image/jpeg', 'category', 'images/stories/virtuemart/category/hand_tools.jpg', 'images/stories/virtuemart/category/resized/hand_tools_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
 (9, 1, 'power_indoor_tool.jpg', '', 'power indoor tool', 'image/jpeg', 'category', 'images/stories/virtuemart/category/power_indoor_tool.jpg', 'images/stories/virtuemart/category/resized/power_indoor_tool_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(10, 1, 'power_outdoor_tool.jpg', '', 'Power outdoor tool', 'image/jpeg', 'category', 'images/stories/virtuemart/category/power_outdoor_tool.jpg', 'images/stories/virtuemart/category/resized/power_outdoor_tool_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(10, 1, 'Power_outdoor_tool.jpg', '', 'Power outdoor tool', 'image/jpeg', 'category', 'images/stories/virtuemart/category/Power_outdoor_tool.jpg', 'images/stories/virtuemart/category/resized/Power_outdoor_tool_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
 (11, 1, 'power_tools.jpg', '', 'power tools', 'image/jpeg', 'category', 'images/stories/virtuemart/category/power_tools.jpg', 'images/stories/virtuemart/category/resized/power_tools_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '2012-10-26 10:24:06', 627, '0000-00-00 00:00:00', 0),
 (12, 1, 'manufacturersample.jpg', '', 'manufacturer sample', 'image/jpeg', 'manufacturer', 'images/stories/virtuemart/manufacturer/manufacturersample.jpg', 'images/stories/virtuemart/manufacturer/resized/manufacturersample_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
 (13, 1, 'washupito.gif', '', 'washupito', 'image/gif', 'vendor', 'images/stories/virtuemart/vendor/washupito.gif', 'images/stories/virtuemart/vendor/resized/washupito_90x90.gif', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
@@ -303,9 +302,6 @@ INSERT INTO `#__virtuemart_worldzones` (`virtuemart_worldzone_id`, `zone_name`, 
 (3, 'Zone 2', '2.00', '22.00', 'This is the second zone. You can use this for notes about this zone', 2),
 (4, 'Zone 3', '11.00', '64.00', 'Another useful thing might be details about this zone or special instructions.', 2);
 
-INSERT INTO `#__virtuemart_userfield_values` (`virtuemart_userfield_value_id`, `virtuemart_userfield_id`, `fieldtitle`, `fieldvalue`, `sys`, `ordering`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-(null, 10, 'Mr', 'Mr', 0, 0, '', 0, '', 0, '', 0),
-(null, 10, 'Mrs', 'Mrs', 0, 1, '', 0, '', 0, '', 0);
 
 INSERT INTO `#__virtuemart_ratings` (`virtuemart_rating_id`, `virtuemart_product_id`, `rates`, `ratingcount`, `rating`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`) VALUES
 (1, 7, 5, 1, 5.0, 1, '2012-10-26 10:28:32', 627, '2012-10-26 10:29:16', 627);

@@ -35,10 +35,8 @@ if (!empty($this->product->images)) {
 	$image = $this->product->images[0];
 	?>
 <div class="main-image">
-
-        <a title="<?php echo $image->file_description ?>" rel="vm-additional-images" href="<?php echo $image->file_url; ?>"><img src="<?php echo $image->file_url ?>" alt="<?php echo $image->file_description ?>"/></a>
-
-	 <div class="clear"></div>
+		<a title="<?php echo $image->file_description ?>" rel="vm-additional-images" href="<?php echo $image->file_url; ?>"><img src="<?php echo $image->file_url ?>" alt="<?php echo $image->file_description ?>"/></a>
+    <div class="clear"></div>
 </div>
 <?php
 	$count_images = count ($this->product->images);

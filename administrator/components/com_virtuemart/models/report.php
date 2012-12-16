@@ -111,16 +111,16 @@ class VirtuemartModelReport extends VmModel {
 		switch ($intervals) {
 
 			case 'day':
-				$this->intervals = 'DATE( o.created_on )';
+				$this->intervals = 'DATE( convert_tz(o.created_on, "UTC", "'.$this->tzoffset.'") )';
 				break;
 			case 'week':
-				$this->intervals = 'WEEK( o.created_on )';
+				$this->intervals = 'WEEK( convert_tz(o.created_on, "UTC", "'.$this->tzoffset.'") )';
 				break;
 			case 'month':
-				$this->intervals = 'MONTH( o.created_on )';
+				$this->intervals = 'MONTH( convert_tz(o.created_on, "UTC", "'.$this->tzoffset.'") )';
 				break;
 			case 'year':
-				$this->intervals = 'YEAR( o.created_on )';
+				$this->intervals = 'YEAR( convert_tz(o.created_on, "UTC", "'.$this->tzoffset.'") )';
 				break;
 			default:
 				// invidual grouping

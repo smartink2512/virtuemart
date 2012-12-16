@@ -401,10 +401,9 @@ class VmConfig {
 	}
 
 	/**
-	 * loads a language file, the trick for us is that always the config option enableEnglish is used
+	 * loads a language file, the trick for us is that always the config option enableEnglish is tested
 	 * and the path are already set and the correct order is used
-	 * We use first the english language, then the default, and then the language chosen by the user
-	 * We removed the fourth parameter of $jlang->load, so that languages are not unecessary loaded twice
+	 * We use first the english language, then the default
 	 *
 	 * @author Max Milbers
 	 * @static
@@ -458,46 +457,13 @@ class VmConfig {
 		vmSetStartTime('loadConfig');
 		if(!$force){
 			if(!empty(self::$_jpConfig) && !empty(self::$_jpConfig->_params)){
-// 				vmTime('loadConfig Program Cache','loadConfig');
 
 				return self::$_jpConfig;
 			}
-/*			else {
-				$session = JFactory::getSession();
-				$vmConfig = $session->get('vmconfig','','vm');
-				if(!empty($vmConfig)){
-					$params = unserialize($vmConfig);
-					if(!empty($params)) {
-						//This is our cache valid time, atm I use 5 minutes, that means that for exampel changes at the config
-						//have at least 5 minutes later an effect of a currently logged in user (shopper)
-						// 5 minutes until the config settings takes effect for OTHER users.
-						$app = JFactory::getApplication();
-						$cacheenabled = $app->getCfg('caching');
-						$cachetime = $app->getCfg('cachetime');
-
-						if(!empty($cacheenabled) and !empty($params['sctime']) and (microtime(true) - $params['sctime'])<$cachetime) {
-							$params['offline_message'] = base64_decode($params['offline_message']);
-							// $params['dateformat'] = base64_decode($params['dateformat']);
-
-							self::$_jpConfig = new VmConfig();
-							self::$_jpConfig->_params = $params;
-							self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
-							vmTime('loadConfig Session','loadConfig');
-
-							return self::$_jpConfig;
-						} else {
-// 							VmInfo('empty $params->sctime');
-						}
-
-					}
-				}
-
-			} */
 		}
 
 		self::$_jpConfig = new VmConfig();
 
-		$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$query = 'SHOW TABLES LIKE "%virtuemart_configs%"';
 		$db->setQuery($query);
@@ -508,6 +474,7 @@ class VmConfig {
 			self::$_jpConfig->installVMconfig();
 		}
 
+		$app = JFactory::getApplication();
 		$install = 'no';
 		if(empty(self::$_jpConfig->_raw)){
 			$query = ' SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1";';
@@ -520,12 +487,13 @@ class VmConfig {
 					self::$_jpConfig->_raw = $db->loadResult();
 					self::$_jpConfig->_params = NULL;
 				} else {
-					VmError('Error loading configuration file','Error loading configuration file, please contact the storeowner');
+					$app ->enqueueMessage('Error loading configuration file','Error loading configuration file, please contact the storeowner');
 				}
 			}
 		}
 
 		$i = 0;
+
 		$pair = array();
 		if (!empty(self::$_jpConfig->_raw)) {
 			$config = explode('|', self::$_jpConfig->_raw);
@@ -535,14 +503,16 @@ class VmConfig {
 					// if($item[0]!=='offline_message' && $item[0]!=='dateformat' ){
 					if($item[0]!=='offline_message' ){
 						try {
-							$pair[$item[0]] = @unserialize($item[1] );
-							if($pair[$item[0]]===FALSE){
+							$value = @unserialize($item[1] );
+
+							if($value===FALSE){
 								$app ->enqueueMessage('Exception in loadConfig for unserialize '.$item[0]. ' '.$item[1]);
+							} else {
+								$pair[$item[0]] = $value;
 							}
 						}catch (Exception $e) {
 							vmdebug('Exception in loadConfig for unserialize '. $e->getMessage(),$item);
 						}
-
 					} else {
 						$pair[$item[0]] = unserialize(base64_decode($item[1]) );
 					}
@@ -565,7 +535,7 @@ class VmConfig {
 
 
 		$app ->enqueueMessage('Attention config is empty');
-		return 'Was not able to create config';
+		return self::$_jpConfig;
 	}
 
 
@@ -654,7 +624,7 @@ class VmConfig {
 	 * @param string $key Key name to lookup
 	 * @return Value for the given key name
 	 */
-	static function get($key, $default='',$allow_load=TRUE)
+	static function get($key, $default='',$allow_load=FALSE)
 	{
 
 		$value = '';
@@ -1248,7 +1218,6 @@ class vmJsApi{
 		}
 		static $jDate;
 
-		//TODO Why Patrick used here an own string for the date format?
 		$dateFormat = JText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_J16');//="m/d/y"
 		$search  = array('m', 'd');
 		$replace = array('mm', 'dd');

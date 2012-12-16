@@ -1,4 +1,5 @@
-<?php if (!defined('_JEXEC'))
+<?php
+if (!defined('_JEXEC'))
 die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 /**
  * Enum.class.php

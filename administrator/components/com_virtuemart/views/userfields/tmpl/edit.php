@@ -132,7 +132,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 			</td>
 		</tr>
 		<?php echo VmHTML::row('editor','COM_VIRTUEMART_USERFIELDS_DESCRIPTION','description', $this->userField->description,'100%','300', array('image','pagebreak', 'readmore') ); ?>
-
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_DEFAULT','default',$this->userField->default,'class="inputbox"','',5); ?>
 		<?php echo $this->lists['required']; ?>
 		<?php echo $this->lists['registration']; ?>
 		<?php echo $this->lists['account']; ?>

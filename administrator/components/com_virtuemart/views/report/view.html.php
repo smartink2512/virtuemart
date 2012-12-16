@@ -64,7 +64,6 @@ class VirtuemartViewReport extends VmView {
 				$totalReport['number_of_ordersTotal'] += $j['count_order_id'];
 				$j['order_subtotal_netto'] = $myCurrencyDisplay->priceDisplay($j['order_subtotal_netto']);
 				$j['order_subtotal_brutto'] = $myCurrencyDisplay->priceDisplay($j['order_subtotal_brutto']);
-				//$j['product_quantity'] = $model->getItemsByRevenue($j);
 				$totalReport['itemsSoldTotal'] +=$j['product_quantity'];
 			}
 			$totalReport['revenueTotal_netto'] = $myCurrencyDisplay->priceDisplay($totalReport['revenueTotal_netto']);

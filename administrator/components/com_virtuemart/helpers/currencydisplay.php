@@ -455,7 +455,7 @@ class CurrencyDisplay {
 		*/
 		//		if(empty($exchangeRate)){
 		if(is_Object($currency)){
-			$exchangeRate = $currency->exchangeRateShopper;
+			$exchangeRate = (float)$currency->exchangeRateShopper;
 			vmdebug('convertCurrencyTo OBJECT '.$exchangeRate);
 		}
 		else {
@@ -464,7 +464,7 @@ class CurrencyDisplay {
 			if(!isset($exchangeRateCache[$currency])){
 				$q = 'SELECT `currency_exchange_rate` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.(int)$currency.'" ';
 				$this->_db->setQuery($q);
-				$exch = $this->_db->loadResult();
+				$exch = (float)$this->_db->loadResult();
 				if(!empty($exch) and $exch !== '0.000000'){
 					$exchangeRate = $exch;
 				} else {
@@ -481,7 +481,7 @@ class CurrencyDisplay {
 		//	}
 		$this->exchangeRateShopper = $exchangeRate;
 		// 		vmdebug('convertCurrencyTo my currency ',$exchangeRate,$currency);
-		if(!empty($exchangeRate) and $exchangeRate!=FALSE){
+		if(!empty($exchangeRate)){
 
 			vmdebug('convertCurrencyTo Use custom rate ',$exchangeRate);
 			if($shop){
@@ -496,7 +496,6 @@ class CurrencyDisplay {
 			$vendorCurrencyCode = self::ensureUsingCurrencyCode($this->_vendorCurrency);
 			$globalCurrencyConverter=JRequest::getVar('globalCurrencyConverter');
 			if($shop){
-				//$oldprice = $price;
 				$price = $this ->_currencyConverter->convert( $price, $currencyCode, $vendorCurrencyCode);
 				//vmdebug('convertCurrencyTo Use dynamic rate in shop '.$oldprice .' => '.$price);
 			} else {
