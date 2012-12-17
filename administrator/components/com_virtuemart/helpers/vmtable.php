@@ -264,6 +264,12 @@ class VmTable extends JTable{
 				}
 			}
 
+			//ADDED BY P2 PETER
+			if($this->created_on=="0000-00-00 00:00:00"){
+				$this->created_on = $this->$today;
+			}
+			//END ADD
+
 			$this->modified_on = $today;
 			$this->modified_by = $user->id;
 		}

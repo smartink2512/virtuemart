@@ -255,6 +255,7 @@ class VirtueMartControllerCart extends JController {
 			}
 
 			if ($cart->getInCheckOut()) {
+
 				$mainframe = JFactory::getApplication();
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout') );
 			}
@@ -400,6 +401,11 @@ class VirtueMartControllerCart extends JController {
 	}
 
 	function cancel() {
+
+		$cart = VirtueMartCart::getCart();
+		if ($cart) {
+			$cart->setOutOfCheckout();
+		}
 		$mainframe = JFactory::getApplication();
 		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), 'Cancelled');
 	}

@@ -271,14 +271,6 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 			} else {
 				return FALSE;
 			}
-			//$cond=$weight_cond AND $zip_cond AND $nbproducts_cond AND $orderamount_cond;
-
-/*			if ($cond) {
-				vmdebug('checkConditions '.$method->name.' fits?');
-				// this line does not work http://forum.virtuemart.net/index.php?topic=104642.15
-			//if ($weight_cond AND $zip_cond AND $nbproducts_cond AND $orderamount_cond) {
-				return TRUE;
-			}*/
 		}
 		vmdebug('checkConditions '.$method->name.' does not fit');
 		return FALSE;
@@ -424,6 +416,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		if ($shipCounter > 1) {
 			return 0;
 		}
+
 		return $this->onCheckAutomaticSelected ($cart, $cart_prices, $shipCounter);
 	}
 

@@ -276,6 +276,11 @@ class VirtueMartCart {
 		return $this->_inCheckOut;
 	}
 
+	public function setOutOfCheckout(){
+		$this->_inCheckOut = false;
+		$this->setCartIntoSession();
+	}
+
 	/**
 	 * Set the last error that occured.
 	 * This is used on error to pass back to the cart when addJS() is invoked.
@@ -687,6 +692,8 @@ class VirtueMartCart {
 		}
 		$this->couponCode = $coupon_code;
 		$this->setCartIntoSession();
+		$app = JFactory::getApplication();
+		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', JText::_('COM_VIRTUEMART_CART_COUPON_VALID')));
 		return '';
 	}
 
@@ -736,6 +743,7 @@ class VirtueMartCart {
 			$this->setCartIntoSession();
 			$app->redirect(JRoute::_($relUrl,$this->useXHTML,$this->useSSL), $redirectMsg);
 		} else {
+			$this->_inCheckOut = false;
 			$this->setCartIntoSession();
 			return false;
 		}
@@ -756,17 +764,15 @@ class VirtueMartCart {
 		$value = trim(str_replace('"', ' ', $value),"'") ;
 		$this->customer_comment=	(string)preg_replace('#^\'#si','',$value);//replace ' at start
 
+		$this->cartData = $this->prepareCartData();
+		$this->prepareCartPrice( ) ;
+
 		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 			$userModel = JModel::getInstance('user', 'VirtueMartModel');
 			$stData = $userModel->getUserAddressList(0, 'ST', $this->selected_shipto);
 			$this->validateUserData('ST', $stData[0]);
 		}
-
-
-		$this->cartData = $this->prepareCartData();
-		$this->prepareCartPrice( ) ;
-
 
 		if (count($this->products) == 0) {
 			return $this->redirecter('index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
