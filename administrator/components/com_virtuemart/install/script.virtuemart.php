@@ -10,7 +10,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 //Maybe it is possible to set this within the xml file note by Max Milbers
-@ini_set( 'memory_limit', '32M' );
+$memory_limit = (int) substr(ini_get('memory_limit'),0,-1);
+if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
+
 @ini_set( 'max_execution_time', '120' );
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);

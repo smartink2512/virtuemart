@@ -492,10 +492,13 @@ class ShopFunctions {
 	 */
 	static function convertWeigthUnit ($value, $from, $to) {
 
+		$from = strtoupper($from);
+		$to = strtoupper($to);
+		$value = str_replace (',', '.', $value);
 		if ($from === $to) {
 			return $value;
 		}
-		$value = str_replace (',', '.', $value);
+
 		$g = 1;
 
 		switch ($from) {
@@ -542,6 +545,8 @@ class ShopFunctions {
 	 */
 	static function convertDimensionUnit ($value, $from, $to) {
 
+		$from = strtoupper($from);
+		$to = strtoupper($to);
 		$value = (float)str_replace (',', '.', $value);
 		if ($from === $to) {
 			return $value;

@@ -85,8 +85,8 @@ class VirtueMartControllerInvoice extends JController
 		if (shopFunctions::InvoiceNumberReserved($invoiceNumber)) {
 			return 0;
 		}
-		$path .= 'vminvoice_'.$invoiceNumber.'.pdf';
 
+		$path .= preg_replace('/[^A-Za-z0-9_\-\.]/', '_', 'vminvoice_'.$invoiceNumber.'.pdf');
 
 		if(file_exists($path) and !$force){
 			return $path;

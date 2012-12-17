@@ -187,7 +187,7 @@ foreach ($this->cart->products as $pkey => $prow) {
 		echo $this->currencyDisplay->createPriceDiv ('salesPrice', '', $this->cart->pricesUnformatted[$pkey], FALSE, FALSE, $prow->quantity) ?></td>
 </tr>
 	<?php
-	$i = 1 ? 2 : 1;
+	$i = ($i==1) ? 2 : 1;
 } ?>
 <!--Begin of SubTotal, Tax, Shipment, Coupon Discount and Total listing -->
 <?php if (VmConfig::get ('show_tax')) {

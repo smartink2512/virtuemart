@@ -790,7 +790,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			FROM `#__virtuemart_customs` AS C
 			LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
 			Where `virtuemart_product_id` =' . (int)$product->virtuemart_product_id . ' and `field_type` = "R"';
-		$query .= ' and is_cart_attribute = 0 order by virtuemart_custom_id';
+		$query .= ' and is_cart_attribute = 0 order by virtuemart_customfield_id';
 		$this->_db->setQuery ($query);
 		if ($productCustoms = $this->_db->loadObjectList ()) {
 			$row = 0;

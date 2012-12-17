@@ -400,6 +400,7 @@ class VmConfig {
 		return self::$_debug;
 	}
 
+
 	/**
 	 * loads a language file, the trick for us is that always the config option enableEnglish is tested
 	 * and the path are already set and the correct order is used
@@ -507,6 +508,9 @@ class VmConfig {
 
 							if($value===FALSE){
 								$app ->enqueueMessage('Exception in loadConfig for unserialize '.$item[0]. ' '.$item[1]);
+								$uri = JFactory::getURI();
+								$configlink = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
+								$app ->enqueueMessage('To avoid this message, enter your virtuemart <a href="'.$configlink.'">config</a> and just save it one time');
 							} else {
 								$pair[$item[0]] = $value;
 							}

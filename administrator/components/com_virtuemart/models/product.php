@@ -855,8 +855,37 @@ class VirtueMartModelProduct extends VmModel {
 			//$product->categories = $this->getProductCategories ($this->_id, $front);
 			$product->categories = $this->getProductCategories ($this->_id, FALSE); //We need also the unpublished categories, else the calculation rules do not work
 
-			if (!empty($product->categories) and is_array ($product->categories) and !empty($product->categories[0])) {
-				$product->virtuemart_category_id = $product->categories[0];
+			$virtuemart_category_id = 0;
+			if ($front) {
+				if (!class_exists ('shopFunctionsF')) {
+					require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+				}
+				$last_category_id = shopFunctionsF::getLastVisitedCategoryId ();
+				if (in_array ($last_category_id, $product->categories)) {
+					$virtuemart_category_id = $last_category_id;
+				}
+				else {
+					$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
+				}
+
+				if ($virtuemart_category_id == 0) {
+					if (!empty($product->categories) and is_array ($product->categories) and array_key_exists ('0', $product->categories)) {
+						$virtuemart_category_id = $product->categories[0];
+					}
+				}
+			} else {
+				$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
+				if(!empty($virtuemart_category_id)){
+					$virtuemart_category_id = $virtuemart_category_id;
+				} else if (!empty($product->categories) and is_array ($product->categories) and !empty($product->categories[0])) {
+					$virtuemart_category_id = $product->categories[0];
+				} else {
+					$product->virtuemart_category_id = 0;
+				}
+			}
+
+			if(!empty($virtuemart_category_id)){
+				$product->virtuemart_category_id = $virtuemart_category_id;
 				$q = 'SELECT `ordering`,`id` FROM `#__virtuemart_product_categories`
 					WHERE `virtuemart_product_id` = "' . $this->_id . '" and `virtuemart_category_id`= "' . $product->virtuemart_category_id . '" ';
 				$this->_db->setQuery ($q);
@@ -868,19 +897,15 @@ class VirtueMartModelProduct extends VmModel {
 					$product->id = $ordering->id;
 				}
 
-			}
-			if (empty($product->virtuemart_category_id)) {
-
-				if (isset($product->categories[0])) {
-					$product->virtuemart_category_id = $product->categories[0];
-				}
-				else {
-					$product->virtuemart_category_id = 0;
-				}
-
+				$catTable = $this->getTable ('categories');
+				$catTable->load ($virtuemart_category_id);
+				$product->category_name = $catTable->category_name;
+			} else {
+				$product->category_name = '';
 			}
 
-			if (!empty($product->categories[0])) {
+
+		/*	if (!empty($product->categories[0])) {
 				$virtuemart_category_id = 0;
 				if ($front) {
 					if (!class_exists ('shopFunctionsF')) {
@@ -889,7 +914,6 @@ class VirtueMartModelProduct extends VmModel {
 					$last_category_id = shopFunctionsF::getLastVisitedCategoryId ();
 					if (in_array ($last_category_id, $product->categories)) {
 						$virtuemart_category_id = $last_category_id;
-
 					}
 					else {
 						$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
@@ -907,7 +931,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			else {
 				$product->category_name = '';
-			}
+			}*/
 
 			if (!$front) {
 // 				if (!empty($product->virtuemart_customfield_id ) ){
@@ -924,9 +948,8 @@ class VirtueMartModelProduct extends VmModel {
 			else {
 
 				// Add the product link  for canonical
-				$productCategory = empty($product->categories[0]) ? '' : $product->categories[0];
-				$product->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $productCategory;
-				$product->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $productCategory);
+				$product->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $virtuemart_category_id;
+				$product->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $virtuemart_category_id);
 
 				//only needed in FE productdetails, is now loaded in the view.html.php
 				//				/* Load the neighbours */
@@ -1306,8 +1329,8 @@ class VirtueMartModelProduct extends VmModel {
 		$pkey_orders = $this->_db->loadObjectList ();
 
 		$tableOrdering = array();
-		foreach ($pkey_orders as $order) {
-			$tableOrdering[$order->id] = $order->ordering;
+		foreach ($pkey_orders as $orderTmp) {
+			$tableOrdering[$orderTmp->id] = $orderTmp->ordering;
 		}
 		// set and save new ordering
 		foreach ($order as $key => $ord) {
@@ -1316,7 +1339,7 @@ class VirtueMartModelProduct extends VmModel {
 		asort ($tableOrdering);
 		$i = 1;
 		$ordered = 0;
-		foreach ($tableOrdering as $key => $order) {
+		foreach ($tableOrdering as $key => $ord) {
 // 			if ($order != $i) {
 			$this->_db->setQuery ('UPDATE `#__virtuemart_product_categories`
 					SET `ordering` = ' . $i . '
