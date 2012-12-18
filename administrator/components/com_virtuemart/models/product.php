@@ -95,6 +95,7 @@ class VirtueMartModelProduct extends VmModel {
 	var $filter_order = 'p.virtuemart_product_id';
 	var $filter_order_Dir = 'DESC';
 	var $valid_BE_search_fields = array('product_name', 'product_sku', 'product_s_desc', '`l`.`metadesc`');
+	private $_orderByString = 0;
 
 	/**
 	 * This function resets the variables holding request depended data to the initial values
@@ -290,12 +291,12 @@ class VirtueMartModelProduct extends VmModel {
 
 			if ($virtuemart_category_id > 0) {
 				$joinCategory = TRUE;
-				$where[] = ' `#__virtuemart_product_categories`.`virtuemart_category_id` = ' . $virtuemart_category_id;
+				$where[] = ' `pc`.`virtuemart_category_id` = ' . $virtuemart_category_id;
 			}
 
 			if ($isSite and !VmConfig::get('show_uncat_child_products',TRUE)) {
 				$joinCategory = TRUE;
-				$where[] = ' `#__virtuemart_product_categories`.`virtuemart_category_id` > 0 ';
+				$where[] = ' `pc`.`virtuemart_category_id` > 0 ';
 			}
 
 			if ($this->product_parent_id) {
@@ -375,7 +376,7 @@ class VirtueMartModelProduct extends VmModel {
 					$joinMf = TRUE;
 					break;
 				case 'ordering':
-					$orderBy = ' ORDER BY `#__virtuemart_product_categories`.`ordering` ';
+					$orderBy = ' ORDER BY `pc`.`ordering` ';
 					$joinCategory = TRUE;
 					break;
 				case 'product_price':
@@ -388,7 +389,7 @@ class VirtueMartModelProduct extends VmModel {
 					break;
 				default;
 					if (!empty($this->filter_order)) {
-						$orderBy = ' ORDER BY ' . $this->_db->getEscaped ($this->filter_order) . ' ';
+						$orderBy = ' ORDER BY ' . $this->filter_order . ' ';
 					}
 					else {
 						$this->filter_order_Dir = '';
@@ -447,8 +448,8 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		if ($joinCategory == TRUE) {
-			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_categories` ON p.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`
-			 LEFT JOIN `#__virtuemart_categories_' . VMLANG . '` as c ON c.`virtuemart_category_id` = `#__virtuemart_product_categories`.`virtuemart_category_id`';
+			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_categories` as pc ON p.`virtuemart_product_id` = `pc`.`virtuemart_product_id`
+			 LEFT JOIN `#__virtuemart_categories_' . VMLANG . '` as c ON c.`virtuemart_category_id` = `pc`.`virtuemart_category_id`';
 		}
 		if ($joinMf == TRUE) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON p.`virtuemart_product_id` = `#__virtuemart_product_manufacturers`.`virtuemart_product_id`
@@ -483,6 +484,7 @@ class VirtueMartModelProduct extends VmModel {
 			$whereString = '';
 		}
 		//vmdebug ( $joinedTables.' joined ? ',$select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir );		/* jexit();  */
+		$this->orderByString = $orderBy;
 		$product_ids = $this->exeSortSearchListQuery (2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir, $nbrReturnProducts);
 
 		// This makes products searchable, we decided that this is not good, because variant childs appear then in lists
@@ -1297,7 +1299,13 @@ class VirtueMartModelProduct extends VmModel {
 			if ($onlyPublished) {
 				$q .= ' AND p.`published`= 1';
 			}
-			$q .= ' ORDER BY `slug` ' . $direction . ' LIMIT 0,' . (int)$max;
+
+			if(!empty($this->orderByString)){
+				$orderBy = $this->orderByString;
+			} else {
+				$orderBy = ' ORDER BY `'.$this->filter_order.'` ';
+			}
+			$q .=  $orderBy . $direction . ' LIMIT 0,' . (int)$max;
 
 			$db->setQuery ($q);
 			if ($result = $db->loadAssocList ()) {
