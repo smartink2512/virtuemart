@@ -20,6 +20,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+//set variables, usually set by shopfunctionsf::getLoginForm in case this layout is differently used
+if (!isset( $this->show )) $this->show = TRUE;
+if (!isset( $this->from_cart )) $this->from_cart = FALSE;
+if (!isset( $this->order )) $this->order = FALSE ;
+
+
 if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 $comUserOption=shopfunctionsF::getComUserOption();
 if (empty($this->url)){
@@ -30,7 +36,7 @@ if (empty($this->url)){
 }
 
 $user = JFactory::getUser();
-if(!isset($this->show)) $this->show = true;
+
 if ($this->show and $user->id == 0  ) {
 JHtml::_('behavior.formvalidation');
 JHTML::_ ( 'behavior.modal' );

@@ -26,7 +26,7 @@
 		<filename>router.php</filename>
 		<filename>virtuemart.php</filename>
 		<filename>index.html</filename>
-
+        <filename>virtuemart_parser.php</filename>
 		<folder>assets</folder>
 		<folder>controllers</folder>
 		<folder>helpers</folder>
