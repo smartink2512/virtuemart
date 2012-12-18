@@ -688,14 +688,12 @@ class VirtueMartCart {
 		if (!empty($msg)) {
 			$this->couponCode = '';
 			$this->setCartIntoSession();
-			$app = JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', JText::_('COM_VIRTUEMART_CART_COUPON_VALID')));
 			return $msg;
 		}
 		$this->couponCode = $coupon_code;
 		$this->setCartIntoSession();
 		$app = JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', JText::_('COM_VIRTUEMART_CART_COUPON_VALID')));
+		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_COUPON_VALID'));
 		return '';
 	}
 
