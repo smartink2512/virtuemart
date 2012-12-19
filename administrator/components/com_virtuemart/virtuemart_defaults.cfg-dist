@@ -49,12 +49,12 @@ reviews_maximum_comment_length=2000
 vmtemplate=default
 categorytemplate=default
 showCategory=1
-categorylayout=default
+categorylayout=0
 categories_per_row=3
-productlayout=default
+productlayout=0
 products_per_row=3
 
-vmlayout=default
+vmlayout=0
     show_featured=1
     featured_products_per_row=3
     show_topTen=1

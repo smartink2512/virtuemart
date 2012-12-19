@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->jTemplateList, 'vmtemplate', 'size=1 width=200', 'value', 'name', VmConfig::get('vmtemplate'));
+			    echo JHTML::_('Select.genericlist', $this->jTemplateList, 'vmtemplate', 'size=1 width=200', 'value', 'name', VmConfig::get('vmtemplate','default'));
 			    ?>
 			</td>
 		    </tr>
@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->jTemplateList, 'categorytemplate', 'size=1', 'value', 'name', VmConfig::get('categorytemplate'));
+			    echo JHTML::_('Select.genericlist', $this->jTemplateList, 'categorytemplate', 'size=1', 'value', 'name', VmConfig::get('categorytemplate','default'));
 			    ?>
 			</td>
 		    </tr>
@@ -81,7 +81,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->categoryLayoutList, 'categorylayout', 'size=1', 'value', 'text', VmConfig::get('categorylayout'));
+			    echo JHTML::_('Select.genericlist', $this->categoryLayoutList, 'categorylayout', 'size=1', 'value', 'text', VmConfig::get('categorylayout',0));
 			    ?>
 			</td>
 		    </tr>
@@ -103,7 +103,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->productLayoutList, 'productlayout', 'size=1', 'value', 'text', VmConfig::get('productlayout'));
+			    echo JHTML::_('Select.genericlist', $this->productLayoutList, 'productlayout', 'size=1', 'value', 'text', VmConfig::get('productlayout',0));
 			    ?>
 			</td>
 		    </tr>
@@ -114,7 +114,7 @@ defined('_JEXEC') or die('Restricted access');
 			    </span>
 			</td>
 			<td>
-			    <input type="text" name="products_per_row" size="4" class="inputbox" value="<?php echo VmConfig::get('products_per_row') ?>" />
+			    <input type="text" name="products_per_row" size="4" class="inputbox" value="<?php echo VmConfig::get('products_per_row',3) ?>" />
 			</td>
 		    </tr>
 
@@ -125,7 +125,7 @@ defined('_JEXEC') or die('Restricted access');
 		    </span>
 		</td>
 		<td>
-		    <input type="text" name="manufacturer_per_row" size="4" class="inputbox" value="<?php echo VmConfig::get('manufacturer_per_row') ?>" />
+		    <input type="text" name="manufacturer_per_row" size="4" class="inputbox" value="<?php echo VmConfig::get('manufacturer_per_row',3) ?>" />
 		</td>
 	    </tr>
 	    <tr>
@@ -299,7 +299,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->vmLayoutList, 'vmlayout', 'size=1', 'value', 'text', VmConfig::get('vmlayout'));
+			    echo JHTML::_('Select.genericlist', $this->vmLayoutList, 'vmlayout', 'size=1', 'value', 'text', VmConfig::get('vmlayout',0));
 			    ?>
 			</td>
 		    </tr>
