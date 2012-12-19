@@ -38,7 +38,7 @@ if (!empty($this->product->images)) {
 <div class="main-image">
 
 	<?php
-		echo $image->displayMediaFull("vm-additional-images");
+		echo $image->displayMediaFull("",true,"rel='vm-additional-images'");
 	?>
 
 	 <div class="clear"></div>
@@ -54,7 +54,7 @@ if (!empty($this->product->images)) {
 			?>
             <div class="floatleft">
 	            <?php
-	                echo $image->displayMediaThumb("vm-additional-images");
+	                echo $image->displayMediaFull("",true,"rel='vm-additional-images'");
 	            ?>
             </div>
 			<?php

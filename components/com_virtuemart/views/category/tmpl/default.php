@@ -237,7 +237,7 @@ if (!empty($this->products)) {
 				<div class="width30 floatleft center">
 				    <a title="<?php echo $product->link ?>" rel="vm-additional-images" href="<?php echo $product->link; ?>">
 						<?php
-							echo $product->images[0]->displayMediaThumb('class="browseProductImage"');
+							echo $product->images[0]->displayMediaThumb('class="browseProductImage"', false);
 						?>
 					 </a>
 
