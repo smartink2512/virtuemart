@@ -658,7 +658,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$this->_db->setQuery ($q);
 						$thumb = '';
 						if ($media_id = $this->_db->loadResult ()) {
-							$thumb = $this->displayCustomMedia ($media_id);
+							$thumb = $this->displayCustomMedia ($media_id,'category');
 						}
 						$display = '<input type="hidden" value="' . $field->custom_value . '" name="field[' . $row . '][custom_value]" />';
 						return $display . JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . (int)$field->custom_value), $thumb . ' ' . $category->category_name, array('title' => $category->category_name)) . $display;
@@ -1131,7 +1131,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$this->_db->setQuery ($q);
 						$thumb = '';
 						if ($media_id = $this->_db->loadResult ()) {
-							$thumb = $this->displayCustomMedia ($media_id);
+							$thumb = $this->displayCustomMedia ($media_id,'category');
 						}
 						return JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id), $thumb . ' ' . $category->category_name, array('title' => $category->category_name));
 					}
