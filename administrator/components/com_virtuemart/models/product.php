@@ -95,7 +95,8 @@ class VirtueMartModelProduct extends VmModel {
 	var $filter_order = 'p.virtuemart_product_id';
 	var $filter_order_Dir = 'DESC';
 	var $valid_BE_search_fields = array('product_name', 'product_sku', 'product_s_desc', '`l`.`metadesc`');
-	private $_orderByString = 0;
+	private $orderByString = 0;
+	private $listing = FALSE;
 
 	/**
 	 * This function resets the variables holding request depended data to the initial values
@@ -906,46 +907,17 @@ class VirtueMartModelProduct extends VmModel {
 				$product->category_name = '';
 			}
 
-
-		/*	if (!empty($product->categories[0])) {
-				$virtuemart_category_id = 0;
-				if ($front) {
-					if (!class_exists ('shopFunctionsF')) {
-						require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-					}
-					$last_category_id = shopFunctionsF::getLastVisitedCategoryId ();
-					if (in_array ($last_category_id, $product->categories)) {
-						$virtuemart_category_id = $last_category_id;
-					}
-					else {
-						$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
-					}
-				}
-				if ($virtuemart_category_id == 0) {
-					if (array_key_exists ('0', $product->categories)) {
-						$virtuemart_category_id = $product->categories[0];
-					}
-				}
-
-				$catTable = $this->getTable ('categories');
-				$catTable->load ($virtuemart_category_id);
-				$product->category_name = $catTable->category_name;
-			}
-			else {
-				$product->category_name = '';
-			}*/
-
 			if (!$front) {
-// 				if (!empty($product->virtuemart_customfield_id ) ){
-				$customfields = VmModel::getModel ('Customfields');
-				$product->customfields = $customfields->getproductCustomslist ($this->_id);
+				if(!$this->listing){
+					$customfields = VmModel::getModel ('Customfields');
+					$product->customfields = $customfields->getproductCustomslist ($this->_id);
 
-				if (empty($product->customfields) and !empty($product->product_parent_id)) {
-					//$product->customfields = $this->productCustomsfieldsClone($product->product_parent_id,true) ;
-					$product->customfields = $customfields->getproductCustomslist ($product->product_parent_id, $this->_id);
-					$product->customfields_fromParent = TRUE;
+					if (empty($product->customfields) and !empty($product->product_parent_id)) {
+						//$product->customfields = $this->productCustomsfieldsClone($product->product_parent_id,true) ;
+						$product->customfields = $customfields->getproductCustomslist ($product->product_parent_id, $this->_id);
+						$product->customfields_fromParent = TRUE;
+					}
 				}
-
 			}
 			else {
 
@@ -967,10 +939,6 @@ class VirtueMartModelProduct extends VmModel {
 					$product->box = '';
 				}
 
-				// Load the vendor details
-				//				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-				//				$product->vendor_name = VirtueMartModelVendor::getVendorName($product->virtuemart_vendor_id);
-
 				// set the custom variants
 				//vmdebug('getProductSingle id '.$product->virtuemart_product_id.' $product->virtuemart_customfield_id '.$product->virtuemart_customfield_id);
 				if (!empty($product->virtuemart_customfield_id)) {
@@ -986,23 +954,10 @@ class VirtueMartModelProduct extends VmModel {
 					$product->customsChilds = $customfields->getProductCustomsChilds ($child, $this->_id);
 				}
 
-// 				vmdebug('my product ',$product);
-
 				// Check the stock level
 				if (empty($product->product_in_stock)) {
 					$product->product_in_stock = 0;
 				}
-
-				//TODO OpenGlobal add here the stock of parent, conditioned by $product->customfields type A
-				/*				if (0 == $product->product_parent_id) {
-					$q = 'SELECT SUM(IFNULL(children.`product_in_stock`,0)) + p.`product_in_stock` FROM `#__virtuemart_products` p LEFT OUTER JOIN `#__virtuemart_products` children ON p.`virtuemart_product_id` = children.`product_parent_id`
-						WHERE p.`virtuemart_product_id` = "'.$this->_id.'"';
-					$this->_db->setQuery($q);
-					// change for faster ordering
-					$product->product_in_stock = $this->_db->loadResult();
-				}*/
-				// Get stock indicator
-				//				$product->stock = $this->getStockIndicator($product);
 
 			}
 
@@ -1166,7 +1121,10 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$ids = $this->sortSearchListQuery ($onlyPublished, $this->virtuemart_category_id, $group, $nbrReturnProducts);
 
+		//quickndirty hack for the BE list, we can do that, because in vm2.1 this is anyway fixed correctly
+		$this->listing = TRUE;
 		$products = $this->getProducts ($ids, $front, $withCalc, $onlyPublished, $single);
+		$this->listing = FALSE;
 		return $products;
 	}
 
