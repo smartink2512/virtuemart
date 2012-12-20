@@ -621,8 +621,8 @@ class calculationHelper {
 
 			if($this->_currencyDisplay->_priceConfig['salesPriceWithDiscount']) $this->_cartPrices['salesPriceWithDiscount'] += self::roundInternal($product->prices['salesPriceWithDiscount'],'salesPriceWithDiscount') * $product->quantity;
 			if($this->_currencyDisplay->_priceConfig['discountAmount']){
-				$this->_cartPrices[$cartproductkey]['subtotal_discount'] = $this->_cartPrices['discountAmount'] - self::roundInternal($product->prices['discountAmount'],'discountAmount') * $product->quantity;
-				$this->_cartPrices['discountAmount'] = $this->_cartPrices[$cartproductkey]['subtotal_discount'];
+				$this->_cartPrices[$cartproductkey]['subtotal_discount'] = self::roundInternal($product->prices['discountAmount'],'discountAmount') * $product->quantity;
+				$this->_cartPrices['discountAmount'] += $this->_cartPrices[$cartproductkey]['subtotal_discount'];
 			}
 			if($this->_currencyDisplay->_priceConfig['priceWithoutTax']) {
 				$this->_cartPrices[$cartproductkey]['subtotal'] = self::roundInternal($product->prices['priceWithoutTax'],'priceWithoutTax') * $product->quantity;

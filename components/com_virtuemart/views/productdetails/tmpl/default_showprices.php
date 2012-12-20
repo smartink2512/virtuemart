@@ -20,8 +20,7 @@ defined ('_JEXEC') or die('Restricted access');
 ?>
 <div class="product-price" id="productPrice<?php echo $this->product->virtuemart_product_id ?>">
 	<?php
-
-	if (!empty($this->product->prices)) {
+	if (!empty($this->product->prices['salesPrice'])) {
 		echo "<strong>" . JText::_ ('COM_VIRTUEMART_CART_PRICE') . "</strong>";
 	}
 	//vmdebug('view productdetails layout default show prices, prices',$this->product);
