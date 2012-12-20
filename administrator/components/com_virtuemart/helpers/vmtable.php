@@ -226,9 +226,9 @@ class VmTable extends JTable{
 			// internal attributes of an object are ignored
 			if(!in_array($k, $ignore)){
 
-				if($fromArray && !empty($from[$k])){
+				if($fromArray && isset($from[$k])){
 					return true;
-				}else if($fromObject && !empty($from->$k)){
+				}else if($fromObject && isset($from->$k)){
 					return true;
 				}
 			}

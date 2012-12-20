@@ -391,7 +391,7 @@ $i=0;
             cloneClass:'.price-clone', //Custom cloner class name in  table
             addRowTemplateId:'#productPriceRowTmpl', //Custom id for  row template
             addRowButtonId:'#add_new_price', //Click this to add a price
-            lastRowRemovable:false, //Don't let the table be empty.
+            lastRowRemovable:true, //Don't let the table be empty.
             orderable:true, //prices can be rearranged
             dragHandleClass:".price_ordering", //class for the click and draggable drag handle
             onRowRemove:function () {

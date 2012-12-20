@@ -1427,7 +1427,6 @@ class VirtueMartModelProduct extends VmModel {
 
 			if (!$isChild){
 				//$pricesToStore['basePrice'] = $data['mprices']['basePrice'][$k];
-				$pricesToStore['salesPrice'] = $data['mprices']['salesPrice'][$k];
 				$pricesToStore['product_override_price'] = $data['mprices']['product_override_price'][$k];
 				$pricesToStore['override'] = (int)$data['mprices']['override'][$k];
 				$pricesToStore['virtuemart_shoppergroup_id'] = (int)$data['mprices']['virtuemart_shoppergroup_id'][$k];
@@ -1445,7 +1444,7 @@ class VirtueMartModelProduct extends VmModel {
 					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 				}
 				$calculator = calculationHelper::getInstance ();
-
+				$pricesToStore['salesPrice'] = $data['mprices']['salesPrice'][$k];
 				$pricesToStore['product_price'] = $data['mprices']['product_price'][$k] = $calculator->calculateCostprice ($this->_id, $pricesToStore);
 				unset($data['mprices']['use_desired_price'][$k]);
 			} else {
@@ -1462,7 +1461,7 @@ class VirtueMartModelProduct extends VmModel {
 				}
 
 				//$data['mprices'][$k] = $data['virtuemart_product_id'];
-				vmdebug('my mprices to store',$pricesToStore);
+
 				$this->updateXrefAndChildTables ($pricesToStore, 'product_prices',$isChild);
 
 				$key = array_search($pricesToStore['virtuemart_product_price_id'], $old_price_ids );
