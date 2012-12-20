@@ -59,7 +59,10 @@ defined ('_JEXEC') or die('Restricted access');
 				</div><br/>
 				<?php } ?>
 			</div>
-			<?php } ?>
+			<?php }
+
+		if (!VmConfig::get('use_as_catalog', 0) and !empty($this->product->prices['salesPrice'])) {
+		?>
 
 		<div class="addtocart-bar">
 
@@ -95,8 +98,8 @@ defined ('_JEXEC') or die('Restricted access');
 
 			<div class="clear"></div>
 		</div>
-
-		<?php // Display the add to cart button END  ?>
+		<?php }
+		 // Display the add to cart button END  ?>
 		<input type="hidden" class="pname" value="<?php echo htmlentities($this->product->product_name) ?>"/>
 		<input type="hidden" name="option" value="com_virtuemart"/>
 		<input type="hidden" name="view" value="cart"/>
