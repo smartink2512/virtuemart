@@ -198,9 +198,9 @@ class VirtueMartControllerUser extends JController
 			}
 			if($currentUser->guest==1){
 				$msg = (is_array($ret)) ? $ret['message'] : $ret;
-				$usersConfig = &JComponentHelper::getParams( 'com_users' );
+				$usersConfig = JComponentHelper::getParams( 'com_users' );
 				$useractivation = $usersConfig->get( 'useractivation' );
-				if (is_array($ret) && $ret['success'] && !$useractivation) {
+				if (is_array($ret) and $ret['success'] and !$useractivation) {
 					// Username and password must be passed in an array
 					$credentials = array('username' => $ret['user']->username,
 			  					'password' => $ret['user']->password_clear
