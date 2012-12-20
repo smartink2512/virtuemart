@@ -250,6 +250,7 @@ JPluginHelper::importPlugin('vmshipment');
 					<th class="title" width="50"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASEWITHTAX') ?></th>
 					<th class="title" width="50"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_GROSS') ?></th>
 					<th class="title" width="50"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_TAX') ?></th>
+					<th class="title" width="50"> <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_DISCOUNT') ?></th>
 					<th class="title" width="5%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></th>
 				</tr>
 			</thead>
@@ -315,6 +316,9 @@ JPluginHelper::importPlugin('vmshipment');
 					<?php echo $this->currency->priceDisplay( $item->product_tax); ?>
 				</td>
 				<td align="right" style="padding-right: 5px;">
+					<?php echo $this->currency->priceDisplay( $item->product_subtotal_discount); ?>
+				</td>
+				<td align="right" style="padding-right: 5px;">
 					<?php echo $this->currency->priceDisplay($item->product_subtotal_with_tax); ?>
 				</td>
 			</tr>
@@ -360,7 +364,7 @@ JPluginHelper::importPlugin('vmshipment');
 					</td>
 
 
-					<td colspan="5">
+					<td colspan="6">
 						<?php // echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/vm_witharrow.png', 'With selected'); $this->orderStatSelect; ?>
 						&nbsp;&nbsp;&nbsp;
 
@@ -386,6 +390,7 @@ JPluginHelper::importPlugin('vmshipment');
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td   align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_tax); ?></td>
+				<td align="right"> <?php echo $this->currency->priceDisplay($this->orderbt->order_discountAmount); ?></td>
 				<td width="15%" align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_salesPrice); ?></td>
 			</tr>
 			<?php
@@ -417,7 +422,7 @@ JPluginHelper::importPlugin('vmshipment');
 				<td align="right" colspan="3" > </td>
 
 				<td align="right"> </td>
-
+				<td align="right"> </td>
 				<td align="right"  style="padding-right: 5px;"><?php echo  $this->currency->priceDisplay($rule->calc_amount);  ?> </td>
 			</tr>
 			<?php
@@ -425,7 +430,7 @@ JPluginHelper::importPlugin('vmshipment');
 			<tr >
 				<td colspan="5"  align="right"  ><?php echo $rule->calc_rule_name ?> </td>
 				<td align="right" colspan="3" > </td>
-
+				<td align="right"> </td>
 				<td align="right"><?php    ?> </td>
 				<td align="right"  style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($rule->calc_amount);   ?> </td>
 			</tr>
@@ -436,7 +441,7 @@ JPluginHelper::importPlugin('vmshipment');
 				<td align="right" colspan="3" > </td>
 
 				<td align="right"> </td>
-
+				<td align="right"> </td>
 				<td align="right"  style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($rule->calc_amount);  ?> </td>
 			</tr>
 
@@ -454,6 +459,7 @@ JPluginHelper::importPlugin('vmshipment');
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment_tax); ?></td>
+				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment+$this->orderbt->order_shipment_tax); ?></td>
 
 			</tr>
@@ -463,6 +469,7 @@ JPluginHelper::importPlugin('vmshipment');
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment_tax); ?></td>
+				 <td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment+$this->orderbt->order_payment_tax); ?></td>
 
 			 </tr>
@@ -474,6 +481,7 @@ JPluginHelper::importPlugin('vmshipment');
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_billTaxAmount); ?></td>
+				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td   align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->priceDisplay($this->orderbt->order_total); ?></strong>
 				</td>
 			</tr>
@@ -484,6 +492,7 @@ JPluginHelper::importPlugin('vmshipment');
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
+			<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td   align="right" style="padding-right: 5px;"><em><?php echo  $this->orderbt->user_currency_rate ?></em></td>
 			</tr>
 			<?php }
