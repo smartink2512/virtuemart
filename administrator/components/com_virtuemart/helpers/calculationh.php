@@ -203,13 +203,14 @@ class calculationHelper {
 		}
 		$this->_cart = $cart;
 
-		if (!empty($this->_cart->ST['virtuemart_country_id'])) {
+		$stBased = VmConfig::get('taxSTbased',TRUE);
+		if ($stBased and !empty($this->_cart->ST['virtuemart_country_id'])) {
 			$this->_deliveryCountry = (int)$this->_cart->ST['virtuemart_country_id'];
 		} else if (!empty($this->_cart->BT['virtuemart_country_id'])) {
 			$this->_deliveryCountry = (int)$this->_cart->BT['virtuemart_country_id'];
 		}
 
-		if (!empty($this->_cart->ST['virtuemart_state_id'])) {
+		if ($stBased and !empty($this->_cart->ST['virtuemart_state_id'])) {
 			$this->_deliveryState = (int)$this->_cart->ST['virtuemart_state_id'];
 		} else if (!empty($cart->BT['virtuemart_state_id'])) {
 			$this->_deliveryState = (int)$this->_cart->BT['virtuemart_state_id'];

@@ -354,14 +354,18 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 		$app = JFactory::getApplication();
 		foreach ($tables as $table) {
-
-		    $db->setQuery('DROP TABLE ' . $table);
-		    if($db->query()){
-		    	$droppedTables[] = substr($table,strlen($prefix)-1);
-		    } else {
-		    	$errorTables[] = $table;
-		    	$app->enqueueMessage('Error drop virtuemart table ' . $table);
-		    }
+				
+				$name = substr($table,strlen($prefix)-1);
+				//if($name!='userfields'){
+					$db->setQuery('DROP TABLE ' . $table);
+					if($db->query()){
+						$droppedTables[] = $name;
+					} else {
+						$errorTables[] = $table;
+						$app->enqueueMessage('Error drop virtuemart table ' . $table);
+					}
+				//}
+		    
 		}
 
 

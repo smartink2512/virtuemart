@@ -278,9 +278,9 @@ class VmTable extends JTable{
 			// internal attributes of an object are ignored
 			if(!in_array($k, $ignore)){
 
-				if($fromArray && !empty($from[$k])){
+				if($fromArray && isset($from[$k])){
 					return true;
-				}else if($fromObject && !empty($from->$k)){
+				}else if($fromObject && isset($from->$k)){
 					return true;
 				}
 			}
@@ -315,6 +315,12 @@ class VmTable extends JTable{
 					$this->created_by = $user->id;
 				}
 			}
+
+			//ADDED BY P2 PETER
+			if($this->created_on=="0000-00-00 00:00:00"){
+				$this->created_on = $this->$today;
+			}
+			//END ADD
 
 			$this->modified_on = $today;
 			$this->modified_by = $user->id;

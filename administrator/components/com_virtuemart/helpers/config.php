@@ -8,7 +8,7 @@
  * @subpackage Helpers
  * @author RickG
  * @author Max Milbers
- * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009-2012 VirtueMart Team. All rights reserved.
  */
 defined('_JEXEC') or die('Restricted access');
 
@@ -400,6 +400,26 @@ class VmConfig {
 		return self::$_debug;
 	}
 
+	/**
+	 * @param $limit the limit in MB
+	 */
+	static function ensureMemoryLimit($minMemory=0){
+
+		if($minMemory === 0) $minMemory = (int) VmConfig::get('minMemory',128);
+		$memory_limit = (int) substr(ini_get('memory_limit'),0,-1);
+		if($memory_limit<$minMemory)  @ini_set( 'memory_limit', $minMemory.'M' );
+
+	}
+
+	static function ensureExecutionTime($minTime=0){
+
+		if($minTime === 0) $minTime = (int) VmConfig::get('minTime',120);
+		$max_execution_time = ini_get('max_execution_time');
+		if((int)$max_execution_time<$minTime) {
+			@ini_set( 'max_execution_time', $minTime );
+		}
+	}
+	
 	/**
 	 * loads a language file, the trick for us is that always the config option enableEnglish is tested
 	 * and the path are already set and the correct order is used

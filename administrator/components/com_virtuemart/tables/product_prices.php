@@ -77,15 +77,12 @@ class TableProduct_prices extends VmTableData {
 
 		if(!empty($this->product_price)){
 			$this->product_price = str_replace(array(',',' '),array('.',''),$this->product_price);
-		} else {
-			$this->product_price = null;
 		}
 
 		if(!empty($this->product_override_price)){
 			$this->product_override_price = str_replace(array(',',' '),array('.',''),$this->product_override_price);
-		} else {
-			$this->product_override_price = null;
 		}
+		
 		return parent::check();
 	}
 

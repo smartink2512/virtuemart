@@ -257,7 +257,7 @@ class VmModel extends JModel {
 	public function setPaginationLimits(){
 
 		$app = JFactory::getApplication();
-		$view = JRequest::getWord('view');
+		$view = JRequest::getWord('view',$this->_maintablename);
 
 		$limit = (int)$app->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit');
 		if(empty($limit)){

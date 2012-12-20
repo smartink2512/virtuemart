@@ -1112,7 +1112,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userfields` (
   `sys` tinyint(4) NOT NULL DEFAULT '0',
   `params` varchar(18000),
   `ordering` int(2) NOT NULL DEFAULT '0',
-  `shared` tinyint(1) NOT NULL DEFAULT '0',
+  `shared` tinyint(1) NOT NULL DEFAULT '1',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',

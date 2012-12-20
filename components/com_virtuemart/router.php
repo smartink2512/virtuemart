@@ -1009,6 +1009,7 @@ class vmrouterHelper {
 						$homeid = $item->id;
 					}
 				} else {
+					vmdebug('my item with empty $link["view"]',$item);
 					vmError('$link["view"] is empty');
 				}
 

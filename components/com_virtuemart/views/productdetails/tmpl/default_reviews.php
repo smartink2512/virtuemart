@@ -74,7 +74,7 @@ if ($this->showReview) {
 					?>
 					<div class="<?php echo $color ?>">
 						<span class="date"><?php echo JHTML::date ($review->created_on, JText::_ ('DATE_FORMAT_LC')); ?></span>
-						<span class="vote"><?php echo $stars[(int)$review->vote] ?></span>
+						<span class="vote"><?php echo $stars[(int)$review->review_rating] ?></span>
 						<blockquote><?php echo $review->comment; ?></blockquote>
 						<span class="bold"><?php echo $review->customer ?></span>
 					</div>

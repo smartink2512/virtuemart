@@ -35,7 +35,9 @@ if (!empty($this->product->images)) {
 	$image = $this->product->images[0];
 	?>
 <div class="main-image">
-		<a title="<?php echo $image->file_description ?>" rel="vm-additional-images" href="<?php echo $image->file_url; ?>"><img src="<?php echo $image->file_url ?>" alt="<?php echo $image->file_description ?>"/></a>
+		<?php
+		echo $image->displayMediaFull("",true,"rel='vm-additional-images'");
+	?>
     <div class="clear"></div>
 </div>
 <?php
@@ -48,7 +50,9 @@ if (!empty($this->product->images)) {
 			$image = $this->product->images[$i];
 			?>
             <div class="floatleft">
-                <a title="<?php echo $image->file_description ?>" rel="vm-additional-images" href="<?php echo $image->file_url; ?>"><img src="<?php echo $image->file_url_thumb ?>" alt="<?php echo $image->file_description ?>"/></a>
+                <?php
+	                echo $image->displayMediaFull("",true,"rel='vm-additional-images'");
+	            ?>
             </div>
 			<?php
 		}
