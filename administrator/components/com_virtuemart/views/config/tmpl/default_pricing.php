@@ -61,7 +61,7 @@ $document->addScriptDeclaration($js);
 			    </span>
             </td>
             <td>
-				<?php echo VmHTML::checkbox('askprice', VmConfig::get('askprice')); ?>
+				<?php echo VmHTML::checkbox('askprice', VmConfig::get('askprice',0)); ?>
             </td>
         </tr>
             <tr>
@@ -71,7 +71,17 @@ $document->addScriptDeclaration($js);
 			    </span>
                 </td>
                 <td>
-					<?php echo VmHTML::checkbox('rappenrundung', VmConfig::get('rappenrundung')); ?>
+					<?php echo VmHTML::checkbox('rappenrundung', VmConfig::get('rappenrundung',0)); ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CVARSWT_TIP'); ?>">
+			    <label for="show_tax"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CVARSWT'); ?>
+			    </span>
+                </td>
+                <td>
+					<?php echo VmHTML::checkbox('cVarswT', VmConfig::get('cVarswT',1)); ?>
                 </td>
             </tr>
 		</table>
@@ -89,7 +99,7 @@ $document->addScriptDeclaration($js);
 			    </span>
 			</td>
 			<td>
-			    <?php echo VmHTML::checkbox('show_prices', VmConfig::get('show_prices')); ?>
+			    <?php echo VmHTML::checkbox('show_prices', VmConfig::get('show_prices',1)); ?>
 			</td>
 			</tr>
 			</table>

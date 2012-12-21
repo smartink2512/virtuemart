@@ -1089,12 +1089,17 @@ class calculationHelper {
 
 	function calculateCustomPriceWithTax($price, $override_id=0) {
 
-		$taxRules = $this->gatherEffectingRulesForProductPrice('Tax', $override_id);
-		if(!empty($taxRules)){
-			$price = $this->executeCalculation($taxRules, $price, true);
+		if(VmConfig::get('cVarswT',1)){
+			$taxRules = $this->gatherEffectingRulesForProductPrice('Tax', $override_id);
+			$vattaxRules = $this->gatherEffectingRulesForProductPrice('VatTax', $override_id);
+			$rules = array_merge($taxRules,$vattaxRules);
+			if(!empty($rules)){
+				$price = $this->executeCalculation($rules, $price, true);
+			}
+
+			$price = $this->roundInternal($price);
 		}
 
-		$price = $this->roundInternal($price);
 
 		return $price;
 	}
