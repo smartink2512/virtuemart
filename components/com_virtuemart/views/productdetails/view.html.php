@@ -89,16 +89,7 @@ class VirtueMartViewProductdetails extends VmView {
 // 		vmSetStartTime('customs');
 // 		for($k=0;$k<count($product->customfields);$k++){
 // 			$custom = $product->customfields[$k];
-	if (!empty($product->customfields)) {
-	    foreach ($product->customfields as $k => $custom) {
-		if (!empty($custom->layout_pos)) {
-		    $product->customfieldsSorted[$custom->layout_pos][] = $custom;
-		    unset($product->customfields[$k]);
-		}
-	    }
-	    $product->customfieldsSorted['normal'] = $product->customfields;
-	    unset($product->customfields);
-	}
+
 
 // 		vmTime('Customs','customs');
 // 		vmdebug('my second $product->customfields',$product->customfields);
@@ -120,6 +111,17 @@ class VirtueMartViewProductdetails extends VmView {
 
 	    return;
 	}
+
+    if (!empty($product->customfields)) {
+	    foreach ($product->customfields as $k => $custom) {
+		    if (!empty($custom->layout_pos)) {
+			    $product->customfieldsSorted[$custom->layout_pos][] = $custom;
+			    unset($product->customfields[$k]);
+		    }
+	    }
+	    $product->customfieldsSorted['normal'] = $product->customfields;
+	    unset($product->customfields);
+    }
 
 	$product->event = new stdClass();
 	$product->event->afterDisplayTitle = '';
@@ -169,8 +171,7 @@ class VirtueMartViewProductdetails extends VmView {
 	$category_model = VmModel::getModel('category');
 
 	// Get the category ID
-
-	if (in_array($last_category_id, $product->categories) ){
+/*	if (in_array($last_category_id, $product->categories) ){
 		$virtuemart_category_id = $last_category_id;
 
 	} else $virtuemart_category_id = JRequest::getInt('virtuemart_category_id',0);
@@ -179,11 +180,12 @@ class VirtueMartViewProductdetails extends VmView {
 		$virtuemart_category_id = $product->categories[0];
 	}
 	$product->virtuemart_category_id = $virtuemart_category_id;
-	shopFunctionsF::setLastVisitedCategoryId($virtuemart_category_id);
+	shopFunctionsF::setLastVisitedCategoryId($virtuemart_category_id);*/
+	shopFunctionsF::setLastVisitedCategoryId($product->virtuemart_category_id);
 
 	if ($category_model) {
 
-		$category = $category_model->getCategory($virtuemart_category_id);
+		$category = $category_model->getCategory($product->virtuemart_category_id);
 
 	    $category_model->addImages($category, 1);
 	    $this->assignRef('category', $category);
@@ -199,7 +201,7 @@ class VirtueMartViewProductdetails extends VmView {
 		}
 
 	    $vendorId = 1;
-	    $category->children = $category_model->getChildCategoryList($vendorId, $virtuemart_category_id);
+	    $category->children = $category_model->getChildCategoryList($vendorId, $product->virtuemart_category_id);
 	    $category_model->addImages($category->children, 1);
 	}
 
@@ -330,7 +332,7 @@ class VirtueMartViewProductdetails extends VmView {
 	    $category->category_template = VmConfig::get('categorytemplate');
 	}
 
-	shopFunctionsF::setVmTemplate($this, $category->category_template, $product->product_template, $category->category_layout, $product->layout);
+	shopFunctionsF::setVmTemplate($this, $category->category_template, $product->product_template, $category->category_product_layout, $product->layout);
 
 	shopFunctionsF::addProductToRecent($virtuemart_product_id);
 

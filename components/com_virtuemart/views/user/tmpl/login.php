@@ -84,7 +84,7 @@ JHTML::_ ( 'behavior.modal' );
 
 	    <h1><?php echo JText::_('COM_VIRTUEMART_ORDER_ANONYMOUS') ?></h1>
 
-	    <form action="<?php echo JRoute::_( 'index.php', true, 0); ?>" method="post" name="com-login" >
+	    <form action="<?php echo JRoute::_( 'index.php', 1, $this->useSSL); ?>" method="post" name="com-login" >
 
 	    	<div class="width30 floatleft" id="com-form-order-number">
 	    		<label for="order_number"><?php echo JText::_('COM_VIRTUEMART_ORDER_NUMBER') ?></label><br />
@@ -111,7 +111,7 @@ JHTML::_ ( 'behavior.modal' );
 
 
     // XXX style CSS id com-form-login ?>
-    <form id="com-form-login" action="<?php echo JRoute::_('index.php'); ?>" method="post" name="com-login" >
+    <form id="com-form-login" action="<?php echo JRoute::_('index.php', $this->useXHTML, $this->useSSL); ?>" method="post" name="com-login" >
     <fieldset class="userdata">
 	<?php if (!$this->from_cart ) { ?>
 	<div>

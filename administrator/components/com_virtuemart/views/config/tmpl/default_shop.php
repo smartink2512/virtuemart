@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 	    <td class="key"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE_MSG') ?></td>
 	    <td>
-		<textarea rows="6" cols="50" name="offline_message"><?php echo VmConfig::get('offline_message'); ?></textarea>
+		<textarea rows="6" cols="50" name="offline_message"><?php echo VmConfig::get('offline_message','Our Shop is currently down for maintenance. Please check back again soon.'); ?></textarea>
 	    </td>
 	</tr>
 	<tr>
@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<?php echo VmHTML::checkbox('use_as_catalog', VmConfig::get('use_as_catalog')); ?>
+		<?php echo VmHTML::checkbox('use_as_catalog', VmConfig::get('use_as_catalog',0)); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -56,7 +56,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<?php echo JHTML::_('Select.genericlist', $this->currConverterList, 'currency_converter_module', 'size=1', 'value', 'text', VmConfig::get('currency_converter_module')); ?>
+		<?php echo JHTML::_('Select.genericlist', $this->currConverterList, 'currency_converter_module', 'size=1', 'value', 'text', VmConfig::get('currency_converter_module','convertECB.php')); ?>
 	    </td>
 	</tr>
 

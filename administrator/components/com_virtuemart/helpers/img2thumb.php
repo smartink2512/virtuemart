@@ -346,8 +346,10 @@ class Img2Thumb	{
 					return imagegif($new_img);
 					break;
 				}
+				//either there is missing a break or the else $this->NewImgShow is unecessary
 				else
 					$this->NewImgShow( $new_img, "jpg" );
+
 			case "jpg":
 				header ("Content-type: image/jpeg");
 				return imagejpeg($new_img);

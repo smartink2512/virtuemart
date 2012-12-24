@@ -931,7 +931,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		//vmdebug('_createOrderCalcRules $productKeys',$productKeys);
 		foreach($productKeys as $key){
 			foreach($calculation_kinds as $calculation_kind) {
-				$productRules =$_cart->pricesUnformatted[$key][$calculation_kind];
+				if(!isset($_cart->pricesUnformatted[$key][$calculation_kind])) continue;
+				$productRules = $_cart->pricesUnformatted[$key][$calculation_kind];
+
 				foreach($productRules as $rule){
 					$orderCalcRules = $this->getTable('order_calc_rules');
 					$orderCalcRules->virtuemart_order_calc_rule_id= null;
@@ -944,7 +946,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					$orderCalcRules->calc_currency = $rule[4];
 					$orderCalcRules->calc_params = $rule[5];
 					$orderCalcRules->virtuemart_vendor_id = $rule[6];
-					$orderCalcRules->virtuemart_order_id=$order_id;
+					$orderCalcRules->virtuemart_order_id = $order_id;
 
 					if (!$orderCalcRules->check()) {
 						vmError('_createOrderCalcRules check product rule '.$this->getError());

@@ -53,9 +53,9 @@ class CurrencyDisplay {
 		$this->_vendorCurrency_numeric = (int)$row[2];
 
 		//vmdebug('$row ',$row);
-		$converterFile  = VmConfig::get('currency_converter_module');
+		$converterFile  = VmConfig::get('currency_converter_module','convertECB.php');
 
-		if (file_exists( JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile )) {
+		if (file_exists( JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile ) and !is_dir(JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile)) {
 			$module_filename=substr($converterFile, 0, -4);
 			require_once(JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile);
 			if( class_exists( $module_filename )) {

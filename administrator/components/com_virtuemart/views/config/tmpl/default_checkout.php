@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 			</span>
 			</td>
 			<td>
-			<?php echo VmHTML::checkbox('vmlang_js', VmConfig::get('vmlang_js')); ?>
+			<?php echo VmHTML::checkbox('vmlang_js', VmConfig::get('vmlang_js',0)); ?>
 			</td>
 		</tr>
 		<tr>
@@ -58,7 +58,7 @@ defined('_JEXEC') or die('Restricted access');
 			</span>
 			</td>
 			<td>
-			<?php echo VmHTML::checkbox('automatic_shipment', VmConfig::get('automatic_shipment')); ?>
+			<?php echo VmHTML::checkbox('automatic_shipment', VmConfig::get('automatic_shipment',1)); ?>
 			</td>
 		</tr>
 		<tr>
@@ -70,7 +70,7 @@ defined('_JEXEC') or die('Restricted access');
 			</span>
 			</td>
 			<td>
-			<?php echo VmHTML::checkbox('automatic_payment', VmConfig::get('automatic_payment')); ?>
+			<?php echo VmHTML::checkbox('automatic_payment', VmConfig::get('automatic_payment',1)); ?>
 			</td>
 		</tr>
 		<tr>
@@ -82,7 +82,7 @@ defined('_JEXEC') or die('Restricted access');
 			</span>
 			</td>
 			<td>
-			<?php echo VmHTML::checkbox('agree_to_tos_onorder', VmConfig::get('agree_to_tos_onorder')); ?>
+			<?php echo VmHTML::checkbox('agree_to_tos_onorder', VmConfig::get('agree_to_tos_onorder',1)); ?>
 			</td>
 		</tr>
 
@@ -94,7 +94,7 @@ defined('_JEXEC') or die('Restricted access');
 				</label> </span>
 			</td>
 			<td>
-			<?php echo VmHTML::checkbox('oncheckout_show_legal_info', VmConfig::get('oncheckout_show_legal_info')); ?>
+			<?php echo VmHTML::checkbox('oncheckout_show_legal_info', VmConfig::get('oncheckout_show_legal_info',1)); ?>
 			</td>
 		</tr>
 		<tr>
@@ -105,7 +105,7 @@ defined('_JEXEC') or die('Restricted access');
 				</label> </span>
 			</td>
 			<td>
-			<?php echo VmHTML::checkbox('oncheckout_show_register', VmConfig::get('oncheckout_show_register')); ?>
+			<?php echo VmHTML::checkbox('oncheckout_show_register', VmConfig::get('oncheckout_show_register',1)); ?>
 			</td>
 		</tr>
 		<tr>
@@ -116,7 +116,7 @@ defined('_JEXEC') or die('Restricted access');
 				</label> </span>
 			</td>
 			<td>
-			<?php echo VmHTML::checkbox('oncheckout_only_registered', VmConfig::get('oncheckout_only_registered')); ?>
+			<?php echo VmHTML::checkbox('oncheckout_only_registered', VmConfig::get('oncheckout_only_registered',0)); ?>
 			</td>
 		</tr>
 		<tr>
@@ -127,7 +127,7 @@ defined('_JEXEC') or die('Restricted access');
 				</label> </span>
 			</td>
 			<td>
-			<?php echo VmHTML::checkbox('oncheckout_show_steps', VmConfig::get('oncheckout_show_steps')); ?>
+			<?php echo VmHTML::checkbox('oncheckout_show_steps', VmConfig::get('oncheckout_show_steps',0)); ?>
 			</td>
 		</tr>
 		<tr>
@@ -151,7 +151,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 					<?php
-					echo $this->orderStatusModel->renderOrderStatusList(VmConfig::get('inv_os'),'inv_os[]');
+					echo $this->orderStatusModel->renderOrderStatusList(VmConfig::get('inv_os',array()),'inv_os[]');
 					//echo VmHTML::selectList('inv_os',VmConfig::get('inv_os','C'),$this->orderStatusList);
 					?>
 			</td>

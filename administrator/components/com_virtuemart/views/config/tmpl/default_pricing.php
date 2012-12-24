@@ -51,7 +51,7 @@ $document->addScriptDeclaration($js);
 			    </span>
 			</td>
 			<td>
-			    <?php echo VmHTML::checkbox('show_tax', VmConfig::get('show_tax')); ?>
+			    <?php echo VmHTML::checkbox('show_tax', VmConfig::get('show_tax',1)); ?>
 			</td>
 		    </tr>
 		   <tr>

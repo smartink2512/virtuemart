@@ -200,7 +200,7 @@ class VmModel extends JModel {
 	}
 
 
-	var $_validOrderingFieldName = null;
+	var $_validOrderingFieldName = array();
 
 	function checkFilterOrder($toCheck){
 

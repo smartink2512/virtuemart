@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 							</label> </span>
 						</td>
 						<td>
-						<?php echo VmHTML::checkbox('show_emailfriend', VmConfig::get('show_emailfriend')); ?>
+						<?php echo VmHTML::checkbox('show_emailfriend', VmConfig::get('show_emailfriend',0)); ?>
 						</td>
 					</tr>
 					<tr>
@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 							</label> </span>
 						</td>
 						<td>
-						<?php echo VmHTML::checkbox('show_printicon', VmConfig::get('show_printicon')); ?>
+						<?php echo VmHTML::checkbox('show_printicon', VmConfig::get('show_printicon',1)); ?>
 						</td>
 					</tr>
 

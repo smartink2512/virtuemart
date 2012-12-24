@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<?php echo VmHTML::checkbox('feed_published', VmConfig::get('feed_published')); ?>
+		<?php echo VmHTML::checkbox('feed_published', VmConfig::get('feed_published',0)); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<?php echo VmHTML::checkbox('feed_cache', VmConfig::get('feed_cache')); ?>
+		<?php echo VmHTML::checkbox('feed_cache', VmConfig::get('feed_cache',0)); ?>
 		<br />
 		<input type="text" size="10" value="<?php echo VmConfig::get('feed_cachetime', '1800'); ?>" name="feed_cachetime" id="feed_cachetime" />
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_CACHETIME') ?>
@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 		</td>
 	    <td>
-		<input type="text" size="40" value="<?php echo VmConfig::get('feed_title'); ?>" name="feed_title" id="feed_title" /><br />
+		<input type="text" size="40" value="<?php echo VmConfig::get('feed_title',''); ?>" name="feed_title" id="feed_title" /><br />
 	    </td>
 	</tr>
 	<tr>

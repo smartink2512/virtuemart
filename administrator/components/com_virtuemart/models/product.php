@@ -57,7 +57,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$app = JFactory::getApplication ();
 		if ($app->isSite ()) {
-			$browseOrderByFields = VmConfig::get ('browse_orderby_fields');
+			$browseOrderByFields = VmConfig::get ('browse_orderby_fields',array('product_sku','category_name','mf_name','product_name'));
 
 		}
 		else {
@@ -139,7 +139,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		//Filter order and dir  This is unecessary complex and maybe even wrong, but atm it seems to work
 		if ($app->isSite ()) {
-			$filter_order = JRequest::getString ('orderby', VmConfig::get ('browse_orderby_field', 'p.virtuemart_product_id'));
+			$filter_order = JRequest::getString ('orderby', VmConfig::get ('browse_orderby_field', '`p`.virtuemart_product_id'));
 			$filter_order = $this->checkFilterOrder ($filter_order);
 
 			$filter_order_Dir = strtoupper (JRequest::getWord ('order', 'ASC'));
@@ -354,6 +354,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			// special  orders case
+			vmdebug('my filter ordering ',$this->filter_order);
 			switch ($this->filter_order) {
 				case 'product_special':
 					if($isSite){
@@ -376,7 +377,7 @@ class VirtueMartModelProduct extends VmModel {
 					$orderBy = ' ORDER BY `mf_name` ';
 					$joinMf = TRUE;
 					break;
-				case 'ordering':
+				case 'pc.ordering':
 					$orderBy = ' ORDER BY `pc`.`ordering` ';
 					$joinCategory = TRUE;
 					break;
@@ -858,37 +859,60 @@ class VirtueMartModelProduct extends VmModel {
 			//$product->categories = $this->getProductCategories ($this->_id, $front);
 			$product->categories = $this->getProductCategories ($this->_id, FALSE); //We need also the unpublished categories, else the calculation rules do not work
 
-			$virtuemart_category_id = 0;
+			$product->virtuemart_category_id = 0;
 			if ($front) {
-				if (!class_exists ('shopFunctionsF')) {
-					require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-				}
-				$last_category_id = shopFunctionsF::getLastVisitedCategoryId ();
-				if (in_array ($last_category_id, $product->categories)) {
-					$virtuemart_category_id = $last_category_id;
-				}
-				else {
-					$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
+
+				$canonCatLink = 0;
+				if (!empty($product->categories) and is_array ($product->categories) and count($product->categories)>1){
+
+					if (!class_exists ('shopFunctionsF')) {
+						require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+					}
+
+					//We must first check if we come from another category, due the canoncial link we would have always the same catgory id for a product
+					//But then we would have wrong neighbored products / category and product layouts
+					$last_category_id = shopFunctionsF::getLastVisitedCategoryId ();
+					if ($last_category_id!==0 and in_array ($last_category_id, $product->categories)) {
+						$product->virtuemart_category_id = $last_category_id;
+						vmdebug('I take for product the last category ',$last_category_id,$product->categories);
+					} else {
+						$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
+						if ($virtuemart_category_id!==0 and in_array ($virtuemart_category_id, $product->categories)) {
+							$product->virtuemart_category_id = $virtuemart_category_id;
+							vmdebug('I take for product the requested category ',$virtuemart_category_id,$product->categories);
+						} else {
+							if (!empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
+								$product->virtuemart_category_id = $product->categories[0];
+								vmdebug('I take for product the main category ',$product->virtuemart_category_id,$product->categories);
+							}
+						}
+					}
+
+					if (!empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
+						$canonCatLink = $product->categories[0];
+					}
+
+				} else if (!empty($product->categories) and is_array ($product->categories) and count($product->categories)===1){
+					$product->virtuemart_category_id = $canonCatLink = $product->categories[0];
+				} else {
+					$product->virtuemart_category_id = $canonCatLink = 0;
 				}
 
-				if ($virtuemart_category_id == 0) {
-					if (!empty($product->categories) and is_array ($product->categories) and array_key_exists ('0', $product->categories)) {
-						$virtuemart_category_id = $product->categories[0];
-					}
-				}
+				// Add the product link  for canonical
+				$product->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $canonCatLink;
+				$product->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $canonCatLink);
+
 			} else {
-				$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
-				if(!empty($virtuemart_category_id)){
-					$virtuemart_category_id = $virtuemart_category_id;
-				} else if (!empty($product->categories) and is_array ($product->categories) and !empty($product->categories[0])) {
-					$virtuemart_category_id = $product->categories[0];
+				$product->virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
+				if (!empty($product->categories) and is_array ($product->categories) and !empty($product->categories[0])) {
+					$product->virtuemart_category_id = $product->categories[0];
 				} else {
 					$product->virtuemart_category_id = 0;
 				}
 			}
 
-			if(!empty($virtuemart_category_id)){
-				$product->virtuemart_category_id = $virtuemart_category_id;
+			if(!empty($product->virtuemart_category_id)){
+
 				$q = 'SELECT `ordering`,`id` FROM `#__virtuemart_product_categories`
 					WHERE `virtuemart_product_id` = "' . $this->_id . '" and `virtuemart_category_id`= "' . $product->virtuemart_category_id . '" ';
 				$this->_db->setQuery ($q);
@@ -901,10 +925,12 @@ class VirtueMartModelProduct extends VmModel {
 				}
 
 				$catTable = $this->getTable ('categories');
-				$catTable->load ($virtuemart_category_id);
+				$catTable->load ($product->virtuemart_category_id);
 				$product->category_name = $catTable->category_name;
 			} else {
 				$product->category_name = '';
+				$product->virtuemart_category_id = 0;
+				vmdebug('$product->virtuemart_category_id is empty');
 			}
 
 			if (!$front) {
@@ -921,9 +947,6 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			else {
 
-				// Add the product link  for canonical
-				$product->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $virtuemart_category_id;
-				$product->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $virtuemart_category_id);
 
 				//only needed in FE productdetails, is now loaded in the view.html.php
 				//				/* Load the neighbours */
@@ -963,7 +986,6 @@ class VirtueMartModelProduct extends VmModel {
 
 		}
 		else {
-			$product = new stdClass();
 			return $this->fillVoidProduct ($front);
 		}
 		//		}
@@ -1229,7 +1251,7 @@ class VirtueMartModelProduct extends VmModel {
 				$q .= '	LEFT JOIN `#__virtuemart_product_shoppergroups` as `psgr` on (`psgr`.`virtuemart_product_id`=`l`.`virtuemart_product_id`)';
 			}
 
-			if ($app->isSite ()) {
+		/*	if ($app->isSite ()) {
 				if (!class_exists ('shopFunctionsF'))
 					require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopFunctionsF.php');
 				$lastId = shopFunctionsF::getLastVisitedCategoryId();
@@ -1237,9 +1259,9 @@ class VirtueMartModelProduct extends VmModel {
 					$lastId = (int)$product->virtuemart_category_id;
 				}
 				$q .= '	WHERE `virtuemart_category_id` = ' . $lastId;
-			} else {
+			} else {*/
 				$q .= '	WHERE `virtuemart_category_id` = ' . (int)$product->virtuemart_category_id;
-			}
+			//}
 
 			$q .= ' and `slug` ' . $op . ' "' . $product->slug . '" ';
 			if ($app->isSite ()) {

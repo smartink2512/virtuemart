@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<?php echo VmHTML::checkbox('seo_disabled', VmConfig::get('seo_disabled')); ?>
+		<?php echo VmHTML::checkbox('seo_disabled', VmConfig::get('seo_disabled',0)); ?>
 	    </td>
 	</tr>	<tr>
 	    <td class="key">		 
@@ -49,7 +49,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 		<td>
-			<?php echo VmHTML::checkbox('seo_translate', VmConfig::get('seo_translate')); ?>
+			<?php echo VmHTML::checkbox('seo_translate', VmConfig::get('seo_translate',1)); ?>
 		</td>
 	</tr>
 	<tr>

@@ -463,7 +463,7 @@ class VmMediaHandler {
 		 * @param string $effect alternative lightbox display
 		 * @param boolean $withDesc display the image media description
 		 */
-		function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal' rel='group'",$return = true,$withDescr = false,$absUrl = false){
+		function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal' rel='group'",$return = true,$withDescr = false,$absUrl = false, $width=0,$height=0){
 
 			if(empty($this->file_name)){
 
@@ -500,7 +500,9 @@ class VmMediaHandler {
 
 			if ((empty($this->file_url_thumb) || !file_exists($media_path)) && is_a($this,'VmImage')) {
 
-				$this->file_url_thumb = $this->createThumb();
+				if(empty($width)) $width = VmConfig::get('img_width', 90);
+				if(empty($height)) $height = VmConfig::get('img_height', 90);
+				$this->file_url_thumb = $this->createThumb($width,$height);
 				// 				vmdebug('displayMediaThumb',$this->file_url_thumb);
 				$media_path = JPATH_ROOT.DS.str_replace('/',DS,$this->file_url_thumb);
 				$file_url = $this->file_url_thumb;
