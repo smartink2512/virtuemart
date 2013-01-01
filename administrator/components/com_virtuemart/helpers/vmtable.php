@@ -48,6 +48,7 @@ class VmTable extends JTable{
 	protected $_translatableFields = array();
 
 	static $_cache = null;
+	static $_query_cache = null;
 
 	function __construct( $table, $key, &$db ){
 
@@ -56,6 +57,7 @@ class VmTable extends JTable{
 		$this->_db		=& $db;
 		$this->_pkey = $key;
 		$this->_cache = null;
+		$this->_query_cache = null;
 	}
 
 	function setPrimaryKey($key, $keyForm=0){
@@ -167,8 +169,12 @@ class VmTable extends JTable{
 	{
 		$_fieldlist = array();
 		$_q = 'SHOW COLUMNS FROM `'.$this->_tbl.'`';
+		if (!isset(self::$_query_cache[md5($_q)]))
+		{
 		$this->_db->setQuery($_q);
 		$_fields = $this->_db->loadObjectList();
+		}
+		else $_fields = self::$_query_cache[md5($_q)];
 		if (count($_fields) > 0) {
 			foreach ($_fields as $key => $_f) {
 				$_fieldlist[$_f->Field] = $_f->Default;
@@ -319,7 +325,7 @@ class VmTable extends JTable{
 		//
 		//$this->reset();
 
-		$db = $this->getDBO();
+		
 
 		//Version load the tables using JOIN
 		if($this->_translatable){
@@ -342,14 +348,23 @@ class VmTable extends JTable{
 		//the cast to int here destroyed the query for keys like virtuemart_userinfo_id, so no cast on $oid
 		// 		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = "'.$oid.'"';
 		$query = $select.$from.' WHERE '. $mainTable .'.`'.$k.'` = "'.$oid.'"';
-
+		
+		if (!isset(self::$_query_cache[md5($query)]))
+		{
+		$db = $this->getDBO();
 		$db->setQuery( $query );
 
 		$result = $db->loadAssoc( );
+		self::$_cache[md5($query)] = $result; 
 		$error = $db->getErrorMsg();
+		}
+		else
+		{
+		  $result = self::$_cache[md5($query)];
+		}
 		// 		vmdebug('vmtable load '.$db->getQuery(),$result);
 		if(!empty($error )){
-			vmError('vmTable load' . $db->getErrorMsg() );
+			vmError('vmTable load' . $error );
 			return false;
 		}
 		//vmdebug('load',$result );
@@ -456,9 +471,15 @@ class VmTable extends JTable{
 
 			$tbl_key = $this->_tbl_key;
 			$q = 'SELECT `'.$name.'` FROM `'.$tbl_name.'` WHERE `'.$name.'` =  "'.$this->$name.'"  AND `'.$this->_tbl_key.'`!='.$this->$tbl_key ;
+			
+			// stAn: using cache can be dangerous here if the function is called twice with an update in between
+			if (!isset(self::$_query_cache[md5($q)]))
+			{
 			$this->_db->setQuery($q);
 			$existingSlugName =$this->_db->loadResult();
-
+			}
+			else $existingSlugName = self::$_query_cache[md5($_q)];
+			
 			if(!empty($existingSlugName)){
 				if($i==0){
 					if(JVM_VERSION===1) $this->$name = $this->$name . JFactory::getDate()->toFormat("%Y-%m-%d-%H-%M-%S").'_';
@@ -576,13 +597,21 @@ class VmTable extends JTable{
 				$tbl_key = $this->_tbl_key ;
 				if(get_class($this)!=='TableVmusers'){
 					$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key.'`="'.$this->$tbl_key.'" ';
+					if (!isset(self::$_query_cache[md5($q)]))
+					{
 					$this->_db->setQuery($q);
 					$virtuemart_vendor_id = $this->_db->loadResult();
+					}
+					else $virtuemart_vendor_id = self::$_query_cache[md5($q)];
 				} else {
 					$q = 'SELECT `virtuemart_vendor_id`,`user_is_vendor` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key.'`="'.$this->$tbl_key.'" ';
-					$this->_db->setQuery($q);
-					$vmuser = $this->_db->loadRow();
-
+					if (!isset(self::$_query_cache[md5($q)]))
+					{
+					 $this->_db->setQuery($q);
+					 $vmuser = $this->_db->loadRow();
+					}
+					else $vmuser = self::$_query_cache[md5($q)];
+					
 					if($vmuser and count($vmuser)===2){
 						$virtuemart_vendor_id = $vmuser[0];
 						$user_is_vendor = $vmuser[1];
@@ -852,7 +881,45 @@ class VmTable extends JTable{
 		//This should return $ok and not the data, because it is already updated due use of reference
 		return $data;
 	}
+	/**
+	 * Description
+	 * will make sure that all items in the table are not using the same ordering values  
+	 * @author stAn
+	 * @access public
+	 * $where -> limits the categories if a child category of another one
+	 */
+	function fixOrdering($where='')
+	{
+	  $where = $where ? ' WHERE ' . $where : '';
+	  // fast check for duplicities
+	  $q = 'SELECT `'.$this->_tbl_key.'` FROM `'.$this->_tbl.'` GROUP BY `'.$this->_orderingKey.'` HAVING COUNT(*) >= 2 '.$where.' LIMIT 1';
+	  $this->_db->setQuery($q); 
+	  $res = $this->_db->loadAssocList(); 
+	  if (empty($res)) return true; 
+	  
+	  $q = ' SELECT `'.$this->_tbl_key.'` FROM `'.$this->_tbl.'` '.$where.' ORDER BY `'.$this->_orderingKey.'` ASC';
+	  $this->_db->setQuery($q, 0, 999999); 
+	  $res = $this->_db->loadAssocList(); 
+	  $e = $this->_db->getErrorMsg(); if (!empty($e)) {
+			 vmError(get_class($this) . $e);
+		 }
+	  echo $q."<br />\n";
+	  // no data in the table
+	  if (empty($res)) return true; 
+	  // we will set ordering to 5,10,15,20,25 so there is enough space in between for manual editing
+	  
+	  $start = 5; 
+	  // it is not really optimized to load full table into array, a while loop would be better especially when having thousands of categories	 
+	  foreach ($res as $row)
+	    {
+		   $q = 'UPDATE  `'.$this->_tbl.'` SET `'.$this->_orderingKey.'` = '.(int)$start.' WHERE `'.$this->_tbl_key.'`= '.$row[$this->_tbl_key].' LIMIT 1'; 
+		 
+		   $this->_db->setQuery($q); 
+		   $r = $this->_db->query($q);
+		   $start = $start + 5; 
+		}
 
+	}
 	/**
 	 * Description
 	 *
@@ -862,7 +929,50 @@ class VmTable extends JTable{
 	 * @param $where
 	 */
 	function move($dirn, $where='', $orderingkey=0){
-
+	// for some reason this function is not used from categories
+	$this->fixOrdering(); 
+		
+		$k = $this->_tbl_key;
+		// problem here was that $this->$k returned (0)
+		$cid = JRequest::getVar('cid'); 
+		if (!empty($cid) && (is_array($cid)))
+		{
+		  $cid = reset($cid); 
+		}
+		else
+		 {
+		    // either we fix custom fields or fix it here: 
+			$cid = JRequest::getVar('virtuemart_custom_id'); 
+			if (!empty($cid) && (is_array($cid)))
+			{
+				$cid = reset($cid); 
+			}
+			else
+			{
+			 vmError(get_class($this) . ' is missing cid information !');
+			 return false;
+			}
+		 }
+		 // stAn: if somebody knows how to get current `ordering` of selected cid (i.e. virtuemart_userinfo_id or virtuemart_category_id from defined vars, you can review the code below)
+		 $q = "SELECT `".$this->_orderingKey.'` FROM `'.$this->_tbl.'` WHERE `'.$this->_tbl_key."` = '".(int)$cid."' limit 0,1"; 
+			
+		 if (!isset(self::$_query_cache[md5($q)]))
+		 {
+		 $this->_db->setQuery($q); 
+		 $c_order = $this->_db->loadResult(); // current ordering value of cid 
+		 } else { $c_order = self::$_query_cache[md5($q)]; }
+		 
+		 $this->$orderingkey = $c_order; 
+		 
+		 $e = $this->_db->getErrorMsg(); if (!empty($e)) {
+			 vmError(get_class($this) . $e);
+		 }
+		// stAn addition: 
+		$where .= ' `'.$this->_tbl_key.'` <> '.(int)$cid.' ';
+		// explanation: 
+		// select one above or under which is not cid and update/set it's ordering of the original cid
+		// could be done with one complex query... but this is more straitforward and the speed is not that much needed in this one
+		
 		if(!empty($orderingkey))
 		$this->_orderingKey = $orderingkey;
 
@@ -871,62 +981,89 @@ class VmTable extends JTable{
 			return false;
 		}
 
-		$k = $this->_tbl_key;
-
-		$orderingKey = $this->_orderingKey;
+		$k = $this->_tbl_key;  // virtuemart_userfield_id column name
+		
+		$orderingKey = $this->_orderingKey;  // ordering column name
 
 		$sql = 'SELECT `' . $this->_tbl_key . '`, `' . $this->_orderingKey . '` FROM ' . $this->_tbl;
 
 		if($dirn < 0){
-			$sql .= ' WHERE `' . $this->_orderingKey . '` < ' . (int)$this->$orderingKey;
+			$sql .= ' WHERE `' . $this->_orderingKey . '` <= ' . (int)$c_order;
 			$sql .= ( $where ? ' AND ' . $where : '');
 			$sql .= ' ORDER BY `' . $this->_orderingKey . '` DESC';
 		}else if($dirn > 0){
-			$sql .= ' WHERE `' . $this->_orderingKey . '` > ' . (int)$this->$orderingKey;
+			$sql .= ' WHERE `' . $this->_orderingKey . '` >= ' . (int)$c_order;
 			$sql .= ( $where ? ' AND ' . $where : '');
 			$sql .= ' ORDER BY `' . $this->_orderingKey . '`';
 		}else {
-			$sql .= ' WHERE `' . $this->_orderingKey . '` = ' . (int)$this->$orderingKey;
+			$sql .= ' WHERE `' . $this->_orderingKey . '` = ' . (int)$c_order;
 			$sql .= ( $where ? ' AND ' . $where : '');
 			$sql .= ' ORDER BY `' . $this->_orderingKey . '`';
 		}
-
+		
+		
+		
+		if (!isset(self::$_query_cache[md5($sql)]))
+		{
 		$this->_db->setQuery($sql, 0, 1);
 
 
 		$row = null;
 		$row = $this->_db->loadObject();
+		}
+		else $row = self::$_query_cache[md5($sql)];
+		
+		
+		
+		
 		if(isset($row)){
+		
+				// ok, we have a problem here - previous or next item has the same ordering as the current one
+				// we need to fix the ordering be reordering it all
+				if ((int)$row->$orderingKey == $c_order)
+				 {
+				   // if we fix this while loading the ordering, it will slow down FE
+				 }
+			
+			// update the next or previous to have the same ordering as the selected
 			$query = 'UPDATE ' . $this->_tbl
-			. ' SET `' . $this->_orderingKey . '` = ' . (int)$row->$orderingKey
-			. ' WHERE ' . $this->_tbl_key . ' = "' . $this->_db->getEscaped($this->$k) . '"'
+			. ' SET `' . $this->_orderingKey . '` = ' . (int)$c_order
+			. ' WHERE ' . $this->_tbl_key . ' = ' . (int)$row->$k . ' LIMIT 1'
 			;
+			
 			$this->_db->setQuery($query);
-
-			if(!$this->_db->query()){
-				$err = $this->_db->getErrorMsg();
-				JError::raiseError(500, get_class( $this ).':: move isset row $this->$k'.$err);
-			}
-
-			$query = 'UPDATE ' . $this->_tbl
-			. ' SET `' . $this->_orderingKey . '` = ' . (int)$this->$orderingKey
-			. ' WHERE ' . $this->_tbl_key . ' = "' . $this->_db->getEscaped($row->$k) . '"'
-			;
-			$this->_db->setQuery($query);
-
+			echo "\n".$query.'<br />'; 
+			
 			if(!$this->_db->query()){
 				$err = $this->_db->getErrorMsg();
 				JError::raiseError(500, get_class( $this ).':: move isset row $row->$k'.$err);
 			}
-
-			$this->ordering = $row->ordering;
-		}else {
+			
+			// update the currently selected to have the same ordering as the next or previous
 			$query = 'UPDATE ' . $this->_tbl
-			. ' SET `' . $this->_orderingKey . '` = ' . (int)$this->$orderingKey
-			. ' WHERE ' . $this->_tbl_key . ' = "' . $this->_db->getEscaped($this->$k) . '"'
+			. ' SET `' . $this->_orderingKey . '` = ' . (int)$row->$orderingKey
+			. ' WHERE ' . $this->_tbl_key . ' = "' . (int)$cid . '" LIMIT 1'
 			;
 			$this->_db->setQuery($query);
-
+			//echo $query.'<br />'; die(); 
+			if(!$this->_db->query()){
+				$err = $this->_db->getErrorMsg();
+				JError::raiseError(500, get_class( $this ).':: move isset row $row->$k'.$err);
+			}
+			
+			// stAn, what for is this? 
+			$this->ordering = $row->$orderingKey;
+			
+			
+		}else {
+		    // stAn: why should we update the same line with the same information when no next or previous found (?)
+			
+			$query = 'UPDATE ' . $this->_tbl
+			. ' SET `' . $this->_orderingKey . '` = ' . (int)$this->$orderingKey
+			. ' WHERE ' . $this->_tbl_key . ' = "' . $this->_db->getEscaped($this->$k) . '" LIMIT 1'
+			;
+			$this->_db->setQuery($query);
+		
 			if(!$this->_db->query()){
 				$err = $this->_db->getErrorMsg();
 				JError::raiseError(500,  get_class( $this ).':: move update $this->$k'. $err);
@@ -956,9 +1093,12 @@ class VmTable extends JTable{
 		$query = 'SELECT MAX(`' . $this->_orderingKey . '`)' .
 	' FROM ' . $this->_tbl .
 		($where ? ' WHERE ' . $where : '');
-
+		if (!isset(self::$_query_cache[md5($query)]))
+		{
 		$this->_db->setQuery($query);
 		$maxord = $this->_db->loadResult();
+		}
+		else $maxord = self::$_query_cache[md5($sql)]; 
 
 		if($this->_db->getErrorNum()){
 			vmError(get_class($this) . ' getNextOrder ' . $this->_db->getErrorMsg());
@@ -1150,7 +1290,7 @@ class VmTable extends JTable{
 	function delete( $oid=null , $where = 0 ){
 
 		$k = $this->_tbl_key;
-
+	
 		if ($oid) {
 			$this->$k = intval( $oid );
 		}
@@ -1171,7 +1311,27 @@ class VmTable extends JTable{
 
 		return $mainTableError;
 	}
-
+	// author stAn
+	// returns true when mysql version is larger than 5.0
+	function isMysql51Plus()
+	{
+	  $r = $this->getMysqlVersion(); 
+	  return version_compare($r, '5.1.0', '>='); 
+	}
+	
+	// author: stan, added in 2.0.16+
+	// returns mysql version for query optimalization
+	function getMysqlVersion()
+	{
+	  $q = 'select version()'; 
+	  if (!isset(self::$_query_cache[md5($q)]))
+	  {
+	    $this->_db->setQuery($q);
+		return $this->_db->loadResult(); 
+	  }
+	  else return self::$_query_cache[md5($q)];
+	  
+	}
 	function checkAndDelete($table,$where = 0){
 		$ok = 1;
 		$k = $this->_tbl_key;
@@ -1187,6 +1347,9 @@ class VmTable extends JTable{
 		// 		vmdebug('checkAndDelete',$query);
 		$list = $this->_db->loadResultArray();
 		// 		vmdebug('checkAndDelete',$list);
+		
+		
+		
 		if($list){
 
 			foreach($list as $row){
@@ -1203,6 +1366,58 @@ class VmTable extends JTable{
 
 		}
 		return $ok;
+	}
+	
+	/**
+	 * Add, change or drop userfields
+	 *
+	 * @param string $_act Action: ADD, DROP or CHANGE (synonyms available, see the switch cases)
+	 * @param string $_col Column name
+	 * @param string $_type Fieldtype
+	 * @return boolean True on success
+	 * @author Oscar van Eijk
+	 *
+	 * stAn - note: i disabled deleting of user data when a column (shopper field) is deleted. If a deletion of specific user or order is needed, it can be done separatedly
+	 * The column if not set with $_col2 will be renamed to ORIGINALNAME_DELETED_{timestamp()} and depending on mysql version it's definition will change
+	 */
+	function _modifyColumn ($_act, $_col, $_type = '', $_col2='')
+	{
+		$_sql = "ALTER TABLE `".$this->_tbl."` ";
+		
+		
+		$_check_act = strtoupper(substr($_act, 0, 3));
+		switch ($_check_act) {
+			case 'ADD':
+			case 'CRE': // Create
+				$_sql .= "ADD $_col $_type ";
+				break;
+			case 'DRO': // Drop
+			case 'DEL': // Delete
+				//stAn, i strongly do not recommend to delete customer information only because a field was deleted
+				if (empty($_col2)) $_col2 = $_col.'_DELETED_'.time(); 
+				if (!$this->isMysql51Plus())
+				if (empty($_type)) $_type = 'TEXT CHARACTER SET utf8'; 
+				// NOT NULL not allowed for deleted columns
+				$t_type = str_ireplace(' NOT ', '', $_type); 
+				$_sql .= "CHANGE $_col $_col2 $_type ";
+				//was: $_sql .= "DROP $_col ";
+				break;
+			case 'MOD': // Modify
+			case 'UPD': // Update
+			case 'CHA': // Change
+				if (empty($col2)) $_col2 = $_col; // change type only
+				$_sql .= "CHANGE $_col $_col2 $_type ";
+				break;
+		}
+
+		$this->_db->setQuery($_sql);
+		
+		$this->_db->query();
+		if ($this->_db->getErrorNum() != 0) {
+			vmError(get_class( $this ).'::modify table - '.$this->_db->getErrorMsg());
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -1274,8 +1274,21 @@ class VirtueMartCart {
 
 	private function prepareCartPrice( ){
 
-		foreach ($this->products as $cart_item_id=>$product){
+		$productM = VmModel::getModel('product');
+		$usermodel = VmModel::getModel ('user');
+		$currentVMuser = $usermodel->getCurrentUser ();
+		if(!is_array($currentVMuser->shopper_groups)){
+			$virtuemart_shoppergroup_ids = (array)$currentVMuser->shopper_groups;
+		} else {
+			$virtuemart_shoppergroup_ids = $currentVMuser->shopper_groups;
+		}
+
+
+		foreach ($this->products as $cart_item_id=>&$product){
+
 			$product->virtuemart_category_id = $this->getCardCategoryId($product->virtuemart_product_id);
+			$productM->getProductPrices($product,$product->quantity,$virtuemart_shoppergroup_ids,true);
+
 			// No full link because Mail want absolute path and in shop is better relative path
 			$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHTML::link($url, $product->product_name);
 			if(!empty($product->customfieldsCart)){
@@ -1287,6 +1300,7 @@ class VirtueMartCart {
 			}
 			$product->cart_item_id = $cart_item_id ;
 		}
+		//vmdebug('my cart',$this->products);
 	}
 
 	/**

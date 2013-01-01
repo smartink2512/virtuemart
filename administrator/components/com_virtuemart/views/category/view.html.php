@@ -108,6 +108,10 @@ class VirtuemartViewCategory extends VmView {
 			$pagination = $model->getPagination();
 			$this->assignRef('catpagination', $pagination);
 
+			//we need a function of the FE shopfunctions helper to cut the category descriptions
+			if (!class_exists ('shopFunctionsF'))
+				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			jimport('joomla.filter.output');
 		}
 
 		parent::display($tpl);

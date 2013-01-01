@@ -256,14 +256,17 @@ class VirtueMartModelConfig extends JModel {
 	 * @author RickG
 	 * @return boolean True is successful, false otherwise
 	 */
-	function store(&$data) {
+	function store(&$data, $fresh=TRUE) {
 
 		JRequest::checkToken() or jexit( 'Invalid Token, in store config');
 
 		//$data['active_languages'] = strtolower(strtr($data['active_languages'],'-','_'));
 		//ATM we want to ensure that only one config is used
-		$config = VmConfig::loadConfig();
+
+		$config = VmConfig::loadConfig(TRUE,$fresh);
 		unset ($config->_params['pdf_invoice']); // parameter remove and replaced by inv_os
+
+
 		$config->setParams($data);
 
 		$confData = array();
@@ -384,7 +387,7 @@ class VirtueMartModelConfig extends JModel {
 	function deleteConfig(){
 
 		if($this->remove()){
-			return VmConfig::loadConfig(true);
+			return VmConfig::loadConfig(true,true);
 		} else {
 			return false;
 		}

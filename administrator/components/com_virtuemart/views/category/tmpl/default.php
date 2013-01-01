@@ -45,10 +45,10 @@ AdminUIHelper::startAdminArea();
 		<thead>
 		<tr>
 
-			<th width="20">
+			<th width="20px">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->categories); ?>);" />
 			</th>
-			<th align="left">
+			<th align="left" width="12%">
 				<?php echo $this->sort('category_name') ?>
 			</th>
 			<th align="left">
@@ -62,11 +62,11 @@ AdminUIHelper::startAdminArea();
 				<?php echo $this->sort( 'c.ordering' , 'COM_VIRTUEMART_ORDERING') ?>
 				<?php echo JHTML::_('grid.order', $this->categories, 'filesave.png', 'saveOrder' ); ?>
 			</th>
-			<th align="center" width="5%">
+			<th align="center" width="20px">
 				<?php echo $this->sort('c.published' , 'COM_VIRTUEMART_PUBLISHED') ?>
 			</th>
 			<?php if(Vmconfig::get('multix','none')!=='none' and $this->perms->check('admin') ){ ?>
-            <th width="5%">
+            <th width="20px">
 				<?php echo $this->sort( 'cx.category_shared' , 'COM_VIRTUEMART_SHARED') ?>
             </th>
 			<?php } ?>
@@ -128,7 +128,10 @@ AdminUIHelper::startAdminArea();
 					<a href="<?php echo $editlink;?>"><?php echo $this->escape($cat->category_name);?></a>
 				</td>
 				<td align="left">
-					<?php echo $cat->category_description; ?>
+
+					<?php
+
+					echo shopFunctionsF::limitStringByWord(JFilterOutput::cleanText($cat->category_description),500); ?>
 				</td>
 				<td>
 					<?php echo  $this->catmodel->countProducts($cat->virtuemart_category_id);//ShopFunctions::countProductsByCategory($row->virtuemart_category_id);?>

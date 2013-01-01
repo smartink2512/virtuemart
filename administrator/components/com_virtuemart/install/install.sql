@@ -1112,7 +1112,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userfields` (
   `cols` int(11),
   `rows` int(11),
   `value` char(50),
-  `default` int(11),
+  `default` char(255),
   `registration` tinyint(1) NOT NULL DEFAULT '0',
   `shipment` tinyint(1) NOT NULL DEFAULT '0',
   `account` tinyint(1) NOT NULL DEFAULT '1',

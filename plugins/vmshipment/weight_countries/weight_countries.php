@@ -112,6 +112,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 */
 	function plgVmConfirmedOrder (VirtueMartCart $cart, $order) {
 
+	
 		if (!($method = $this->getVmPluginMethod ($order['details']['BT']->virtuemart_shipmentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
 		}
@@ -216,7 +217,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 		$orderWeight = $this->getOrderWeight ($cart, $method->weight_unit);
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-
+		$type = (($cart->ST == 0) ? 'BT' : 'ST');
 		$countries = array();
 		if (!empty($method->countries)) {
 			if (!is_array ($method->countries)) {
@@ -248,30 +249,45 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		} else {
 			$orderamount_cond = FALSE;
 		}
-		if (isset($address['zip'])) {
-			$zip_cond = $this->testRange($address['zip'],$method,'zip_start','zip_stop','zip');
-		} else {
-			$zip_cond = FALSE;
-		}
 
-		//$zip_cond = $this->_zipCond ($address['zip'], $method);
+		$userFieldsModel =VmModel::getModel('Userfields');
+		if ($userFieldsModel->fieldPublished('zip', $type)){
+			if (isset($address['zip'])) {
 
-
-		if (!isset($address['virtuemart_country_id'])) {
-			$address['virtuemart_country_id'] = 0;
-		}
-
-		if (in_array ($address['virtuemart_country_id'], $countries) || count ($countries) == 0) {
-
-			//vmdebug('checkConditions '.$method->shipment_name.' fit ',$weight_cond,(int)$zip_cond,$nbproducts_cond,$orderamount_cond);
-
-			$allconditions = (int) $weight_cond + (int)$zip_cond + (int)$nbproducts_cond + (int)$orderamount_cond;
-			if($allconditions === 4){
-				return TRUE;
+				$zip_cond = $this->testRange($address['zip'],$method,'zip_start','zip_stop','zip');
 			} else {
-				return FALSE;
+
+				$zip_cond = false;
 			}
+		} else {
+			$zip_cond = true;
 		}
+
+		if ($userFieldsModel->fieldPublished('virtuemart_country_id', $type)){
+
+			if (!isset($address['virtuemart_country_id'])) {
+				$address['virtuemart_country_id'] = 0;
+			}
+
+
+			if (in_array ($address['virtuemart_country_id'], $countries) || count ($countries) == 0) {
+
+				//vmdebug('checkConditions '.$method->shipment_name.' fit ',$weight_cond,(int)$zip_cond,$nbproducts_cond,$orderamount_cond);
+				$country_cond = true;
+			}
+			else $country_cond = false;
+		} else {
+			$country_cond = true;
+		}
+
+		$allconditions = (int) $weight_cond + (int)$zip_cond + (int)$nbproducts_cond + (int)$orderamount_cond + (int)$country_cond;
+		if($allconditions === 5){
+			return TRUE;
+		} else {
+
+			return FALSE;
+		}
+
 		vmdebug('checkConditions '.$method->name.' does not fit');
 		return FALSE;
 	}

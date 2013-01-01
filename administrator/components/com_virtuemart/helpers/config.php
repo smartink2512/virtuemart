@@ -453,8 +453,11 @@ class VmConfig {
 	 * @author Max Milbers
 	 * @param $force boolean Forces the function to load the config from the db
 	 */
-	static public function loadConfig($force = FALSE) {
+	static public function loadConfig($force = FALSE,$fresh = FALSE) {
 
+		if($fresh){
+			return self::$_jpConfig = new VmConfig();
+		}
 		vmSetStartTime('loadConfig');
 		if(!$force){
 			if(!empty(self::$_jpConfig) && !empty(self::$_jpConfig->_params)){
@@ -1139,14 +1142,20 @@ class vmJsApi{
 		if ($jvalideForm) {
 			return;
 		}
+		vmJsApi::js( 'jquery.validationEngine');
+
 		$lg = JFactory::getLanguage();
 		$lang = substr($lg->getTag(), 0, 2);
-		$existingLang = array("cz", "da", "de", "en", "es", "fr", "it", "ja", "nl", "pl", "pt", "ro", "ru", "tr");
+		/*$existingLang = array("cz", "da", "de", "en", "es", "fr", "it", "ja", "nl", "pl", "pt", "ro", "ru", "tr");
 		if (!in_array ($lang, $existingLang)) {
 			$lang = "en";
+		}*/
+		$vlePath = vmJsApi::setPath('languages/jquery.validationEngine-'.$lang);
+		if(file_exists($vlePath) and !is_dir($vlePath)){
+			vmJsApi::js( 'languages/jquery.validationEngine-'.$lang );
+		} else {
+			vmJsApi::js( 'languages/jquery.validationEngine-en' );
 		}
-		vmJsApi::js( 'jquery.validationEngine');
-		vmJsApi::js( 'languages/jquery.validationEngine-'.$lang );
 
 		vmJsApi::css ( 'validationEngine.template' );
 		vmJsApi::css ( 'validationEngine.jquery' );

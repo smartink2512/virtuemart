@@ -716,6 +716,102 @@ class VirtueMartModelProduct extends VmModel {
 		return $_products[$productKey];
 	}
 
+	public function getProductPrices(&$product,$quantity,$virtuemart_shoppergroup_ids,$front){
+		$db = JFactory::getDbo();
+		$this->_nullDate = $db->getNullDate();
+		$jnow = JFactory::getDate();
+		$this->_now = $jnow->toMySQL();
+		$q = 'SELECT * FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$this->_id.'" ';
+
+		if($front){
+			if(count($virtuemart_shoppergroup_ids)>0){
+				$q .= ' AND (';
+				$sqrpss = '';
+				foreach($virtuemart_shoppergroup_ids as $sgrpId){
+					$sqrpss .= ' `virtuemart_shoppergroup_id` ="'.$sgrpId.'" OR ';
+				}
+				$q .= substr($sqrpss,0,-4);
+				$q .= ' OR `virtuemart_shoppergroup_id` IS NULL OR `virtuemart_shoppergroup_id`="0") ';
+			}
+			$quantity = (int)$quantity;
+			$q .= ' AND ( (`product_price_publish_up` IS NULL OR `product_price_publish_up` = "' . $db->getEscaped($this->_nullDate) . '" OR `product_price_publish_up` <= "' .$db->getEscaped($this->_now) . '" )
+		        AND (`product_price_publish_down` IS NULL OR `product_price_publish_down` = "' .$db->getEscaped($this->_nullDate) . '" OR product_price_publish_down >= "' . $db->getEscaped($this->_now) . '" ) )';
+			$q .= ' AND( (`price_quantity_start` IS NULL OR `price_quantity_start`="0" OR `price_quantity_start` <= '.$quantity.') AND (`price_quantity_end` IS NULL OR `price_quantity_end`="0" OR `price_quantity_end` >= '.$quantity.') )';
+		} else {
+			$q .= ' ORDER BY `product_price` DESC';
+		}
+
+		$db->setQuery($q);
+		$product->prices = $db->loadAssocList();
+		$err = $db->getErrorMsg();
+		if(!empty($err)){
+			vmError('getProductSingle '.$err);
+		} else {
+			//vmdebug('getProductSingle getPrice query',$q);
+		//	vmdebug('getProductSingle ',$quantity);
+			//vmTrace('hmpf');
+		}
+
+		if(count($product->prices)===0){
+			//vmdebug('my prices count 0');
+			$prices = array(
+				'virtuemart_product_price_id' => 0
+			,'virtuemart_product_id' => 0
+			,'virtuemart_shoppergroup_id' => null
+			,'product_price'         => null
+			,'override'             => null
+			,'product_override_price' => null
+			,'product_tax_id'       => null
+			,'product_discount_id'  => null
+			,'product_currency'     => null
+			,'product_price_publish_up'  => null
+			,'product_price_publish_down'  => null
+			,'price_quantity_start' => null
+			,'price_quantity_end'   => null
+			);
+			//$product = (object)array_merge ((array)$prices, (array)$product);
+
+		} else
+			if(count($product->prices)===1){
+
+				$product = (object)array_merge ((array)$product->prices[0], (array)$product);
+				//$prices = (array)$product->prices[0];
+
+			} else if ( $front and count($product->prices)>1 ) {
+				foreach($product->prices as $price){
+
+					if(empty($price['virtuemart_shoppergroup_id'])){
+						if(empty($emptySpgrpPrice))$emptySpgrpPrice = $price;
+					} else if(in_array($price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids)){
+						$spgrpPrice = $price;
+
+						//$product = (object)array_merge ((array)$price, (array)$product);
+						break;
+					}
+					//$product = (object)array_merge ((array)$price, (array)$product);
+				}
+
+				if(!empty($spgrpPrice)){
+					$product = (object)array_merge ((array)$spgrpPrice, (array)$product);
+					//$prices = (array)$spgrpPrice;
+				}
+				else if(!empty($emptySpgrpPrice)){
+					$product = (object)array_merge ((array)$emptySpgrpPrice, (array)$product);
+					//$prices = (array)$emptySpgrpPrice;
+				} else {
+					vmWarn('COM_VIRTUEMART_PRICE_AMBIGUOUS');
+					$product = (object)array_merge ((array)$product->prices[0], (array)$product);
+					//$prices = (array)$product->prices[0];
+				}
+
+			}
+
+		if(!isset($product->product_price)) $product->product_price = null;
+		if(!isset($product->product_override_price)) $product->product_override_price = null;
+		if(!isset($product->override)) $product->override = null;
+		//return $prices;
+	}
+
 	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1) {
 
 		//$this->fillVoidProduct($front);
@@ -757,91 +853,11 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 
-			$db = JFactory::getDbo();
-			$this->_nullDate = $db->getNullDate();
-			$jnow = JFactory::getDate();
-			$this->_now = $jnow->toMySQL();
-			$q = 'SELECT * FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$this->_id.'" ';
+			$this->getProductPrices($product,$quantity,$virtuemart_shoppergroup_ids,$front);
 
-			if($front){
-				if(count($virtuemart_shoppergroup_ids)>0){
-					$q .= ' AND (';
-					$sqrpss = '';
-					foreach($virtuemart_shoppergroup_ids as $sgrpId){
-						$sqrpss .= ' `virtuemart_shoppergroup_id` ="'.$sgrpId.'" OR ';
-					}
-					$q .= substr($sqrpss,0,-4);
-					$q .= ' OR `virtuemart_shoppergroup_id` IS NULL OR `virtuemart_shoppergroup_id`="0") ';
-				}
-				$quantity = (int)$quantity;
-				$q .= ' AND ( (`product_price_publish_up` IS NULL OR `product_price_publish_up` = "' . $db->getEscaped($this->_nullDate) . '" OR `product_price_publish_up` <= "' .$db->getEscaped($this->_now) . '" )
-		        AND (`product_price_publish_down` IS NULL OR `product_price_publish_down` = "' .$db->getEscaped($this->_nullDate) . '" OR product_price_publish_down >= "' . $db->getEscaped($this->_now) . '" ) )';
-				$q .= ' AND( (`price_quantity_start` IS NULL OR `price_quantity_start`="0" OR `price_quantity_start` <= '.$quantity.') AND (`price_quantity_end` IS NULL OR `price_quantity_end`="0" OR `price_quantity_end` >= '.$quantity.') )';
-			} else {
-				$q .= ' ORDER BY `product_price` DESC';
-			}
-
-			$db->setQuery($q);
-			$product->prices = $db->loadAssocList();
-			$err = $db->getErrorMsg();
-			if(!empty($err)){
-				vmError('getProductSingle '.$err);
-			} else {
-				//vmdebug('getProductSingle getPrice query',$q);
-				//vmdebug('getProductSingle ',$product->prices);
-			}
-
-			if(count($product->prices)===0){
-				//vmdebug('my prices count 0');
-				$prices = array(
-					'virtuemart_product_price_id' => 0
-					,'virtuemart_product_id' => 0
-					,'virtuemart_shoppergroup_id' => null
-					,'product_price'         => null
-					,'override'             => null
-					,'product_override_price' => null
-					,'product_tax_id'       => null
-					,'product_discount_id'  => null
-					,'product_currency'     => null
-					,'product_price_publish_up'  => null
-					,'product_price_publish_down'  => null
-					,'price_quantity_start' => null
-					,'price_quantity_end'   => null
-				);
-				$product = (object)array_merge ((array)$prices, (array)$product);
-
-			} else
-			if(count($product->prices)===1){
-				//vmdebug('my prices count 1',$prices[0]);
-				$product = (object)array_merge ((array)$product->prices[0], (array)$product);
-			} else if ( $front and count($product->prices)>1 ) {
-				foreach($product->prices as $price){
-
-					if(empty($price['virtuemart_shoppergroup_id'])){
-						if(empty($emptySpgrpPrice))$emptySpgrpPrice = $price;
-					} else if(in_array($price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids)){
-						$spgrpPrice = $price;
-						//$product = (object)array_merge ((array)$price, (array)$product);
-						break;
-					}
-					//$product = (object)array_merge ((array)$price, (array)$product);
-				}
-
-				if(!empty($spgrpPrice)){
-					$product = (object)array_merge ((array)$spgrpPrice, (array)$product);
-				}
-				else if(!empty($emptySpgrpPrice)){
-					$product = (object)array_merge ((array)$emptySpgrpPrice, (array)$product);
-				} else {
-					vmWarn('COM_VIRTUEMART_PRICE_AMBIGUOUS');
-					$product = (object)array_merge ((array)$product->prices[0], (array)$product);
-				}
-
-			}
-
-			if(!isset($product->product_price)) $product->product_price = null;
-			if(!isset($product->product_override_price)) $product->product_override_price = null;
-			if(!isset($product->override)) $product->override = null;
+			//$product = array_merge ($prices, (array)$product);
+			//$product = (object)array_merge ((array)$prices, (array)$product);
+			//vmdebug('my prices count 1',$product,$prices);
 
 			if (!empty($product->virtuemart_manufacturer_id)) {
 				$mfTable = $this->getTable ('manufacturers');
