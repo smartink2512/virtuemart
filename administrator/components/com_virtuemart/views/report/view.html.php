@@ -42,11 +42,8 @@ class VirtuemartViewReport extends VmView {
 		$this->loadHelper('reportFunctions');
 
 		$model		= VmModel::getModel();
-		// $config		= JFactory::getConfig();
-		// $tzoffset	= $config->getValue('config.offset');
+
 		JRequest::setvar('task','');
-		// set period
-		//$date_presets = $model->getDatePresets();
 
 		$this->SetViewTitle('REPORT');
 

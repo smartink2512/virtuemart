@@ -39,7 +39,7 @@ class VirtuemartModelReport extends VmModel {
 	var $from_period = '';
 	var $until_period = '';
 	private $date_presets = NULL;
-	private $tzoffset = NULL;
+	//private $tzoffset = NULL;
 	private $period = NULL;
 
 	function __construct () {
@@ -47,16 +47,13 @@ class VirtuemartModelReport extends VmModel {
 		parent::__construct ();
 		$this->setMainTable ('orders');
 
-		// set default values always used
-		$config = JFactory::getConfig ();
-		$this->tzoffset = $config->getValue ('config.offset');
 		$this->setDatePresets ();
 
 		$app = JFactory::getApplication ();
 		$this->period = $app->getUserStateFromRequest ('com_virtuemart.revenue.period', 'period', 'last30', 'string');
 
-		$post = JRequest::get ('post');
-		vmdebug ('$post ', $post);
+		//$post = JRequest::get ('post');
+		//vmdebug ('$post ', $post);
 		if (empty($this->period) or $this->period != 'none') {
 			$this->setPeriodByPreset ();
 		}
@@ -111,16 +108,16 @@ class VirtuemartModelReport extends VmModel {
 		switch ($intervals) {
 
 			case 'day':
-				$this->intervals = 'DATE( convert_tz(o.created_on, "UTC", "'.$this->tzoffset.'") )';
+				$this->intervals = 'DATE( o.created_on )';
 				break;
 			case 'week':
-				$this->intervals = 'WEEK( convert_tz(o.created_on, "UTC", "'.$this->tzoffset.'") )';
+				$this->intervals = 'WEEK( o.created_on )';
 				break;
 			case 'month':
-				$this->intervals = 'MONTH( convert_tz(o.created_on, "UTC", "'.$this->tzoffset.'") )';
+				$this->intervals = 'MONTH( o.created_on )';
 				break;
 			case 'year':
-				$this->intervals = 'YEAR( convert_tz(o.created_on, "UTC", "'.$this->tzoffset.'") )';
+				$this->intervals = 'YEAR( o.created_on )';
 				break;
 			default:
 				// invidual grouping

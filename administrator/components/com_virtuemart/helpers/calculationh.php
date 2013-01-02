@@ -69,7 +69,9 @@ class calculationHelper {
 	 */
 	private function __construct() {
 		$this->_db = JFactory::getDBO();
-		$jnow = JFactory::getDate();
+		$config = JFactory::getConfig();
+		$siteOffset = $config->getValue('config.offset');
+		$jnow = JFactory::getDate('now', $siteOffset);
 		$this->_app = JFactory::getApplication();
 		$this->_now = $jnow->toMySQL();
 		$this->_nullDate = $this->_db->getNullDate();

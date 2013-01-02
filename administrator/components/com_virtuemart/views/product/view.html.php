@@ -183,12 +183,6 @@ class VirtuemartViewProduct extends VmView {
 				}
 
 
-				$config = JFactory::getConfig();
-				$tzoffset = $config->getValue('config.offset');
-
-				$this->assignRef('tzoffset',	$tzoffset);
-
-
 				$this->assignRef('product', $product);
 				$product_empty_price = array(
 					'virtuemart_product_price_id' => 0

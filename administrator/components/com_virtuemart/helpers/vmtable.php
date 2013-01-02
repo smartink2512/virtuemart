@@ -247,7 +247,17 @@ class VmTable extends JTable{
 
 		if($this->_loggable){
 
-			$date = JFactory::getDate();
+			// set default values always used
+
+			$config = JFactory::getConfig();
+			$siteOffset = $config->getValue('config.offset');
+			$date = JFactory::getDate('now', $siteOffset);
+		/*/	$this->tzoffset = $dtnow->getOffsetFromGMT();
+			$hm = $dtnow->getTimezone();
+			$trans = $hm->getName();
+			vmdebug('my offset ',$hm,$trans,$this->tzoffset);*/
+
+			//$date = JFactory::getDate();
 			$today = $date->toMySQL();
 			$user = JFactory::getUser();
 
@@ -1180,7 +1190,10 @@ class VmTable extends JTable{
 			$this->$k = $oid;
 		}
 
-		$date = JFactory::getDate();
+		$config = JFactory::getConfig();
+		$siteOffset = $config->getValue('config.offset');
+		$date = JFactory::getDate('now', $siteOffset);
+
 		$time = $date->toMysql();
 
 		$query = 'UPDATE ' . $this->_db->nameQuote($this->_tbl) .
