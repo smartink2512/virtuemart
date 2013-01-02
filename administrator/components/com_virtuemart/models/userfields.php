@@ -285,7 +285,7 @@ class VirtueMartModelUserfields extends VmModel {
 			vmError($field->getError());
 			return false;
 		}
-
+	
 		if (!$field->check(count($fieldValues))) {
 			// Perform data checks
 			//vmError($field->getError());
@@ -317,6 +317,7 @@ class VirtueMartModelUserfields extends VmModel {
 		}
 
 		$_id = $field->store();
+			
 		if ($_id === false) {
 			// Write data to the DB
 			vmError($field->getError());
@@ -352,17 +353,17 @@ class VirtueMartModelUserfields extends VmModel {
 	private function storeFieldValues($_values, $_id)
 	{
 		// stAn - not true, because if previously we had more values, we have to delete them 
-		if (false)
+		/*
 		if (count($_values) == 0) {
 			return true; //Nothing to do
 		}
+		*/
 		$fieldvalue = $this->getTable('userfield_values');
 	
 		// get original values
 		$originalvalues = $this->getUserfieldValues($_id); 
-		//var_dump($_values); 
-		//var_dump($originalvalues); die(); 
 		
+		// for each orignal value search if it was deleted or modified
 		for ($i = 0; $i < count($originalvalues); $i++) {
 			if (isset($_values[$i]))
 			{
@@ -406,6 +407,36 @@ class VirtueMartModelUserfields extends VmModel {
 			
 			 }
 		}
+		// for each new value that was added
+		for ($i = count($originalvalues)-1; $i < count($_values) ; $i++) {
+		  
+		  // do a check here as we might not be using pure numeric arrays
+		  if (isset($_values[$i]))
+			{
+			if (!($_id === true)) {
+				// If $_id is true, it was not a new record
+				$_values[$i]['virtuemart_userfield_id'] = $_id;
+			}
+			if (!$fieldvalue->bind($_values[$i])) {
+				// Bind data
+				vmError($fieldvalue->getError());
+				return false;
+			}
+
+			if (!$fieldvalue->check()) {
+				// Perform data checks
+				vmError($fieldvalue->getError());
+				return false;
+			}
+
+			if (!$fieldvalue->store()) {
+				// Write data to the DB
+				vmError($fieldvalue->getError());
+				return false;
+			}
+			}
+		 
+		 }
 
 		return true;
 	}

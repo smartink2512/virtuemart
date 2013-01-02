@@ -130,7 +130,7 @@ class VirtuemartViewUserfields extends VmView {
 					$lists['userfield_values'] .=
 						 '<tr>'
 						 .'<td><input type="text" value="'.$userFieldValues[$i]->fieldvalue.'" name="vValues['.$i.']" /></td>'
-						.'<td><input type="text" size="50" value="'.$userFieldValues[$i]->fieldtitle.'" name="vNames['.$i.']"   />'.$translate.'</td>'
+						.'<td><input type="text" size="50" value="'.$userFieldValues[$i]->fieldtitle.'" name="vNames['.$i.']"   />'.$translate.'<input type="button" class="button deleteRow" value=" - " /></td>'
 						.'</tr>';
 				}
 			}
