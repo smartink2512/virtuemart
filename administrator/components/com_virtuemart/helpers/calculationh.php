@@ -51,7 +51,7 @@ class calculationHelper {
 	public $inCart = FALSE;
 	private $exchangeRateVendor = 0;
 	private $exchangeRateShopper = 0;
-	private $_internalDigits = 6;
+	private $_internalDigits = 8;
 	private $_revert = false;
 	static $_instance;
 
@@ -105,6 +105,8 @@ class calculationHelper {
 		$this->rules['DBTax'] = array();
 		$this->rules['DATax'] = array();
 
+		//round only with internal digits
+		$this->_roundindig = VmConfig::get('roundindig',FALSE);
 	}
 
 	static public function getInstance() {
@@ -256,12 +258,11 @@ class calculationHelper {
 			$this->_product = $product;
 			$this->_product->amount = $amount;
 			$this->productPrices = array();
+
 		} //Use it as productId
 		else {
 			vmError('getProductPrices no object given query time','getProductPrices no object given query time');
 		}
-
-
 
 		if(VmConfig::get('multix','none')!='none' and (empty($this->vendorCurrency) or $this->vendorCurrency!=$this->productVendorId)){
 			$this->_db->setQuery('SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="' . $this->productVendorId . '" ');
@@ -600,6 +601,7 @@ class calculationHelper {
 			$variantmod = $this->calculateModificators($product, $variantmods);
 
 			$cartproductkey = $name; //$product->virtuemart_product_id.$variantmod;
+
 			$product->prices = $pricesPerId[$cartproductkey] = $this->getProductPrices($product, $variantmod, $product->quantity, true, false);
 			$this->_amountCart += $product->quantity;
 // 			vmdebug('getCheckoutPrices',$product->prices);
@@ -1223,22 +1225,14 @@ class calculationHelper {
 	 */
 	function roundInternal($value,$name = 0) {
 
-		if($name!==0){
+		if(!$this->_roundindig and $name!==0){
 			if(isset($this->_currencyDisplay->_priceConfig[$name][1])){
 				//vmdebug('roundInternal rounding use '.$this->_currencyDisplay->_priceConfig[$name][1].' digits');
-			//	if(strpos($this->_currencyDisplay->_priceConfig[$name][1],'.')!==FALSE){
-
-					//return round(2.0*$value,1)/2.0;
-			//	}
-				//else {
-					return round($value,$this->_currencyDisplay->_priceConfig[$name][1]);
-				//}
-
+				return round($value,$this->_currencyDisplay->_priceConfig[$name][1]);
 			} else {
 				vmdebug('roundInternal rounding not found for '.$name,$this->_currencyDisplay->_priceConfig[$name]);
 				return round($value, $this->_internalDigits);
 			}
-
 		} else {
 			return round($value, $this->_internalDigits);
 		}

@@ -1233,9 +1233,9 @@ class VirtueMartCart {
 	function prepareCartViewData(){
 		$data = new stdClass();
 		// Get the products for the cart
-		$this->cartData = $this->prepareCartData();
-
 		$this->prepareCartPrice( ) ;
+
+		$this->cartData = $this->prepareCartData();
 
 		$this->prepareAddressDataInCart();
 		$this->prepareVendor();
@@ -1268,7 +1268,6 @@ class VirtueMartCart {
 		$returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$this->paymentCurrency));
 		$cartData = $calculator->getCartData();
 
-// 		$this->setCartIntoSession();
 		return $cartData ;
 	}
 
@@ -1283,7 +1282,6 @@ class VirtueMartCart {
 			$virtuemart_shoppergroup_ids = $currentVMuser->shopper_groups;
 		}
 
-
 		foreach ($this->products as $cart_item_id=>&$product){
 
 			$product->virtuemart_category_id = $this->getCardCategoryId($product->virtuemart_product_id);
@@ -1294,13 +1292,11 @@ class VirtueMartCart {
 			if(!empty($product->customfieldsCart)){
 				if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 				$product->customfields = VirtueMartModelCustomfields::CustomsFieldCartDisplay($cart_item_id,$product);
-// 				vmdebug('prepareCartPrice',$product->customfields);
 			} else {
 				$product->customfields ='';
 			}
 			$product->cart_item_id = $cart_item_id ;
 		}
-		//vmdebug('my cart',$this->products);
 	}
 
 	/**

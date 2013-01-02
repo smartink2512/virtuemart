@@ -120,22 +120,6 @@ class TableUserfields extends VmTable {
 			return $this->virtuemart_userfield_id;
 		}
 	}
-
-	/**
-	 * Reimplement the store method to return the last inserted ID
-	 *
-	 * @return mixed When a new record was succesfully inserted, return the ID, otherwise the status
-	 */
-	public function store($updateNulls = false)
-	{
-		$isNew = ($this->virtuemart_userfield_id == 0);
-		if (!parent::store($updateNulls)) { // Write data to the DB
-			vmError($this->getError());
-			return false;
-		} else {
-			return $this->virtuemart_userfield_id;
-		}
-	}
 	
 	function checkAndDelete($table,$where = 0){
 		$ok = 1;

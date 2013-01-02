@@ -76,6 +76,16 @@ $document->addScriptDeclaration($js);
             </tr>
             <tr>
                 <td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ROUNDINDIG_TIP'); ?>">
+			    <label for="show_tax"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ROUNDINDIG'); ?>
+			    </span>
+                </td>
+                <td>
+					<?php echo VmHTML::checkbox('roundindig', VmConfig::get('roundindig',FALSE)); ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CVARSWT_TIP'); ?>">
 			    <label for="show_tax"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CVARSWT'); ?>
 			    </span>

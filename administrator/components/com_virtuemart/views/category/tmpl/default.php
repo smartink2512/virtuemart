@@ -138,8 +138,13 @@ AdminUIHelper::startAdminArea();
 					&nbsp;<a href="<?php echo $showProductsLink; ?>">[ <?php echo JText::_('COM_VIRTUEMART_SHOW');?> ]</a>
 				</td>
 				<td align="center" class="order">
-					<span><?php echo $this->catpagination->orderUpIcon( $i, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i - 1]]->category_parent_id), 'orderUp', JText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
-					<span><?php echo $this->catpagination->orderDownIcon( $i, $nrows, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i + 1]]->category_parent_id), 'orderDown', JText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
+					<span><?php 
+					
+					
+					$cond = (($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$i - 1]->category_parent_id));
+					$cond2= ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$i + 1]->category_parent_id);
+					echo $this->catpagination->orderUpIcon( $i, $cond, 'orderUp', JText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
+					<span><?php echo $this->catpagination->orderDownIcon( $i, $nrows, $cond2, 'orderDown', JText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
 					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $cat->ordering; ?>" style="text-align: center" />
 				</td>
 				<td align="center">

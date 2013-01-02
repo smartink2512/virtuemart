@@ -721,7 +721,9 @@ class VirtueMartModelProduct extends VmModel {
 		$this->_nullDate = $db->getNullDate();
 		$jnow = JFactory::getDate();
 		$this->_now = $jnow->toMySQL();
-		$q = 'SELECT * FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$this->_id.'" ';
+
+		$productId = $this->_id===0? $product->virtuemart_product_id:$this->_id;
+		$q = 'SELECT * FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$productId.'" ';
 
 		if($front){
 			if(count($virtuemart_shoppergroup_ids)>0){
@@ -740,6 +742,7 @@ class VirtueMartModelProduct extends VmModel {
 		} else {
 			$q .= ' ORDER BY `product_price` DESC';
 		}
+
 
 		$db->setQuery($q);
 		$product->prices = $db->loadAssocList();
@@ -773,10 +776,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		} else
 			if(count($product->prices)===1){
-
-				$product = (object)array_merge ((array)$product->prices[0], (array)$product);
-				//$prices = (array)$product->prices[0];
-
+				$product = (object)array_merge ((array)$product, (array)$product->prices[0]);
 			} else if ( $front and count($product->prices)>1 ) {
 				foreach($product->prices as $price){
 
@@ -784,23 +784,20 @@ class VirtueMartModelProduct extends VmModel {
 						if(empty($emptySpgrpPrice))$emptySpgrpPrice = $price;
 					} else if(in_array($price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids)){
 						$spgrpPrice = $price;
-
-						//$product = (object)array_merge ((array)$price, (array)$product);
 						break;
 					}
-					//$product = (object)array_merge ((array)$price, (array)$product);
 				}
 
 				if(!empty($spgrpPrice)){
-					$product = (object)array_merge ((array)$spgrpPrice, (array)$product);
+					$product = (object)array_merge ((array)$product, (array)$spgrpPrice);
 					//$prices = (array)$spgrpPrice;
 				}
 				else if(!empty($emptySpgrpPrice)){
-					$product = (object)array_merge ((array)$emptySpgrpPrice, (array)$product);
+					$product = (object)array_merge ((array)$product, (array)$emptySpgrpPrice);
 					//$prices = (array)$emptySpgrpPrice;
 				} else {
 					vmWarn('COM_VIRTUEMART_PRICE_AMBIGUOUS');
-					$product = (object)array_merge ((array)$product->prices[0], (array)$product);
+					$product = (object)array_merge ((array)$product, (array)$product->prices[0]);
 					//$prices = (array)$product->prices[0];
 				}
 
