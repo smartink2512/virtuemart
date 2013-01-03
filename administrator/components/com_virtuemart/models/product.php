@@ -717,6 +717,17 @@ class VirtueMartModelProduct extends VmModel {
 	}
 
 	public function getProductPrices(&$product,$quantity,$virtuemart_shoppergroup_ids,$front){
+
+		$product->product_price = null;
+		$product->product_override_price = null;
+		$product->override = null;
+		$product->virtuemart_product_price_id = null;
+		$product->virtuemart_shoppergroup_id = null;
+		$product->product_price_publish_up = null;
+		$product->product_price_publish_down = null;
+		$product->price_quantity_start = null;
+		$product->price_quantity_end = null;
+
 		$db = JFactory::getDbo();
 		$this->_nullDate = $db->getNullDate();
 		$jnow = JFactory::getDate();
@@ -743,7 +754,6 @@ class VirtueMartModelProduct extends VmModel {
 			$q .= ' ORDER BY `product_price` DESC';
 		}
 
-
 		$db->setQuery($q);
 		$product->prices = $db->loadAssocList();
 		$err = $db->getErrorMsg();
@@ -755,58 +765,32 @@ class VirtueMartModelProduct extends VmModel {
 			//vmTrace('hmpf');
 		}
 
-		if(count($product->prices)===0){
-			//vmdebug('my prices count 0');
-			$prices = array(
-				'virtuemart_product_price_id' => 0
-			,'virtuemart_product_id' => 0
-			,'virtuemart_shoppergroup_id' => null
-			,'product_price'         => null
-			,'override'             => null
-			,'product_override_price' => null
-			,'product_tax_id'       => null
-			,'product_discount_id'  => null
-			,'product_currency'     => null
-			,'product_price_publish_up'  => null
-			,'product_price_publish_down'  => null
-			,'price_quantity_start' => null
-			,'price_quantity_end'   => null
-			);
-			//$product = (object)array_merge ((array)$prices, (array)$product);
+		if(count($product->prices)===1){
+			$product = (object)array_merge ((array)$product, (array)$product->prices[0]);
+		} else if ( $front and count($product->prices)>1 ) {
+			foreach($product->prices as $price){
 
-		} else
-			if(count($product->prices)===1){
-				$product = (object)array_merge ((array)$product, (array)$product->prices[0]);
-			} else if ( $front and count($product->prices)>1 ) {
-				foreach($product->prices as $price){
-
-					if(empty($price['virtuemart_shoppergroup_id'])){
-						if(empty($emptySpgrpPrice))$emptySpgrpPrice = $price;
-					} else if(in_array($price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids)){
-						$spgrpPrice = $price;
-						break;
-					}
+				if(empty($price['virtuemart_shoppergroup_id'])){
+					if(empty($emptySpgrpPrice))$emptySpgrpPrice = $price;
+				} else if(in_array($price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids)){
+					$spgrpPrice = $price;
+					break;
 				}
-
-				if(!empty($spgrpPrice)){
-					$product = (object)array_merge ((array)$product, (array)$spgrpPrice);
-					//$prices = (array)$spgrpPrice;
-				}
-				else if(!empty($emptySpgrpPrice)){
-					$product = (object)array_merge ((array)$product, (array)$emptySpgrpPrice);
-					//$prices = (array)$emptySpgrpPrice;
-				} else {
-					vmWarn('COM_VIRTUEMART_PRICE_AMBIGUOUS');
-					$product = (object)array_merge ((array)$product, (array)$product->prices[0]);
-					//$prices = (array)$product->prices[0];
-				}
-
 			}
 
-		if(!isset($product->product_price)) $product->product_price = null;
-		if(!isset($product->product_override_price)) $product->product_override_price = null;
-		if(!isset($product->override)) $product->override = null;
-		//return $prices;
+			if(!empty($spgrpPrice)){
+				$product = (object)array_merge ((array)$product, (array)$spgrpPrice);
+				//$prices = (array)$spgrpPrice;
+			}
+			else if(!empty($emptySpgrpPrice)){
+				$product = (object)array_merge ((array)$product, (array)$emptySpgrpPrice);
+				//$prices = (array)$emptySpgrpPrice;
+			} else {
+				vmWarn('COM_VIRTUEMART_PRICE_AMBIGUOUS');
+				$product = (object)array_merge ((array)$product, (array)$product->prices[0]);
+				//$prices = (array)$product->prices[0];
+			}
+		}
 	}
 
 	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1) {

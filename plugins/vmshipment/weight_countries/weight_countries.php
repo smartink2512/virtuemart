@@ -273,10 +273,15 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 			if (in_array ($address['virtuemart_country_id'], $countries) || count ($countries) == 0) {
 
 				//vmdebug('checkConditions '.$method->shipment_name.' fit ',$weight_cond,(int)$zip_cond,$nbproducts_cond,$orderamount_cond);
+				vmdebug('shipmentmethod '.$method->shipment_name.' = TRUE for variable virtuemart_country_id = '.implode($countries,', ').', Reason: Country in rule or none set');
 				$country_cond = true;
 			}
-			else $country_cond = false;
+			else{
+				vmdebug('shipmentmethod '.$method->shipment_name.' = FALSE for variable virtuemart_country_id = '.implode($countries,', ').', Reason: Country does not fit');
+				$country_cond = false;
+			}
 		} else {
+			vmdebug('shipmentmethod '.$method->shipment_name.' = TRUE for variable virtuemart_country_id, Reason: no boundary conditions set');
 			$country_cond = true;
 		}
 
@@ -343,27 +348,36 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		if(!empty($method->$floor) and !empty($method->$ceiling)){
 			$cond = (($value >= $method->$floor AND $value <= $method->$ceiling));
 			if(!$cond){
-				vmdebug('FALSE The variable '.$name.' = '.$value.' of the shipmentmethod '.$method->shipment_name.' is NOT within Range of the condition from '.$method->$floor.' to '.$method->$ceiling);
+				$result = 'FALSE';
+				$reason = 'is NOT within Range of the condition from '.$method->$floor.' to '.$method->$ceiling;
 			} else {
-				vmdebug('TRUE The variable '.$name.' = '.$value.' of the shipmentmethod '.$method->shipment_name.' is within Range of the condition from '.$method->$floor.' to '.$method->$ceiling);
+				$result = 'TRUE';
+				$reason = 'is within Range of the condition from '.$method->$floor.' to '.$method->$ceiling;
 			}
 		} else if(!empty($method->$floor)){
 			$cond = ($value >= $method->$floor);
 			if(!$cond){
-				vmdebug('FALSE The variable '.$name.' = '.$value.' of the shipmentmethod '.$method->shipment_name.' is not at least '.$method->$floor);
+				$result = 'FALSE';
+				$reason = 'is not at least '.$method->$floor;
 			} else {
-				vmdebug('TRUE The variable '.$name.' = '.$value.' of the shipmentmethod '.$method->shipment_name.' is over min limit '.$method->$floor);
+				$result = 'TRUE';
+				$reason = 'is over min limit '.$method->$floor;
 			}
 		} else if(!empty($method->$ceiling)){
 			$cond = ($value <= $method->$ceiling);
 			if(!$cond){
-				vmdebug('FALSE The variable '.$name.' = '.$value.' of the shipmentmethod '.$method->shipment_name.' is over '.$method->$ceiling);
+				$result = 'FALSE';
+				$reason = 'is over '.$method->$ceiling;
 			} else {
-				vmdebug('TRUE The variable '.$name.' = '.$value.' of the shipmentmethod '.$method->shipment_name.' is lower than the set '.$method->$ceiling);
+				$result = 'TRUE';
+				$reason = 'is lower than the set '.$method->$ceiling;
 			}
 		} else {
-			vmdebug('The value '.$name.' = '.$value.' passed, no boundary conditions set for the shipmentmethod '.$method->shipment_name);// the range from '.$method->$floor.' to '.$method->$ceiling.' of the shipmentmethod '.$method->shipment_name);
+			$result = 'TRUE';
+			$reason = 'no boundary conditions set';
 		}
+
+		vmdebug('shipmentmethod '.$method->shipment_name.' = '.$result.' for variable '.$name.' = '.$value.' Reason: '.$reason);
 		return $cond;
 	}
 

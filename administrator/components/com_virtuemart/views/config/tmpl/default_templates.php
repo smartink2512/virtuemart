@@ -92,7 +92,7 @@ defined('_JEXEC') or die('Restricted access');
 			    </span>
 			</td>
 			<td>
-			    <input type="text" name="categories_per_row" size="4" class="inputbox" value="<?php echo VmConfig::get('categories_per_row') ?>" />
+			    <input type="text" name="categories_per_row" size="4" class="inputbox" value="<?php echo VmConfig::get('categories_per_row',3) ?>" />
 			</td>
 		    </tr>
 		    <tr>

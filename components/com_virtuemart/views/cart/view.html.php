@@ -67,6 +67,7 @@ class VirtueMartViewCart extends VmView {
 
 		} else */
 		if ($layoutName == 'select_shipment') {
+			$cart->prepareCartViewData();
 			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmshipment');
 			$this->lSelectShipment();
@@ -78,7 +79,7 @@ class VirtueMartViewCart extends VmView {
 
 			/* Load the cart helper */
 			//			$cartModel = VmModel::getModel('cart');
-
+			$cart->prepareCartViewData();
 			$this->lSelectPayment();
 
 			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_OVERVIEW'), JRoute::_('index.php?option=com_virtuemart&view=cart'));
