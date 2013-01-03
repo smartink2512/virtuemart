@@ -67,6 +67,18 @@ class VirtuemartModelReport extends VmModel {
 
 	}
 
+
+	function correctTimeOffset(&$inputDate){
+
+		$config = JFactory::getConfig();
+		$this->siteOffset = $config->getValue('config.offset');
+
+		$date = new JDate($inputDate);
+
+		$date->setTimezone($this->siteTimezone);
+		$inputDate = $date->format('Y-m-d H:i:s',true);
+	}
+
 	/*
 	* Set Start & end Date
 	*/
@@ -74,6 +86,14 @@ class VirtuemartModelReport extends VmModel {
 
 		$this->from_period = JRequest::getVar ('from_period', $this->date_presets['last30']['from']);
 		$this->until_period = JRequest::getVar ('until_period', $this->date_presets['last30']['until']);
+
+		$config = JFactory::getConfig();
+		$siteOffset = $config->getValue('config.offset');
+		$this->siteTimezone = new DateTimeZone($siteOffset);
+
+		$this->correctTimeOffset($this->from_period);
+		$this->correctTimeOffset($this->until_period);
+
 	}
 
 	/*
@@ -83,6 +103,13 @@ class VirtuemartModelReport extends VmModel {
 
 		$this->from_period = $this->date_presets[$this->period]['from'];
 		$this->until_period = $this->date_presets[$this->period]['until'];
+
+		$config = JFactory::getConfig();
+		$siteOffset = $config->getValue('config.offset');
+		$this->siteTimezone = new DateTimeZone($siteOffset);
+
+		$this->correctTimeOffset($this->from_period);
+		$this->correctTimeOffset($this->until_period);
 	}
 
 	function  getItemsByRevenue ($revenue) {

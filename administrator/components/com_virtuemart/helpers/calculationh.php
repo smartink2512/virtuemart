@@ -69,10 +69,10 @@ class calculationHelper {
 	 */
 	private function __construct() {
 		$this->_db = JFactory::getDBO();
-		$config = JFactory::getConfig();
-		$siteOffset = $config->getValue('config.offset');
-		$jnow = JFactory::getDate('now', $siteOffset);
 		$this->_app = JFactory::getApplication();
+
+		//We store in UTC and use here of course also UTC
+		$jnow = JFactory::getDate();
 		$this->_now = $jnow->toMySQL();
 		$this->_nullDate = $this->_db->getNullDate();
 
@@ -115,6 +115,7 @@ class calculationHelper {
 		if (!is_object(self::$_instance)) {
 			self::$_instance = new calculationHelper();
 		} else {
+			//We store in UTC and use here of course also UTC
 			$jnow = JFactory::getDate();
 			self::$_instance->_now = $jnow->toMySQL();
 		}

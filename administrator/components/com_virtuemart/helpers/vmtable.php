@@ -249,16 +249,12 @@ class VmTable extends JTable{
 
 			// set default values always used
 
-			$config = JFactory::getConfig();
-			$siteOffset = $config->getValue('config.offset');
-			$date = JFactory::getDate('now', $siteOffset);
-		/*/	$this->tzoffset = $dtnow->getOffsetFromGMT();
-			$hm = $dtnow->getTimezone();
-			$trans = $hm->getName();
-			vmdebug('my offset ',$hm,$trans,$this->tzoffset);*/
 
-			//$date = JFactory::getDate();
+
+			//We store in UTC time, dont touch it!
+			$date = JFactory::getDate();
 			$today = $date->toMySQL();
+			//vmdebug('my today ',$date);
 			$user = JFactory::getUser();
 
 			$pkey = $this->_pkey;
