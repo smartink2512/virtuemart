@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
-		vmJsApi::css('jquery.fancybox-1.3.4');
+vmJsApi::css('jquery.fancybox-1.3.4');
 $document = JFactory::getDocument ();
 $imageJS = '
 jQuery(document).ready(function() {

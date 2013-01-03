@@ -202,6 +202,7 @@ td.orders-key{font-weight: bold; text-align: left; }
 
 .vm-customfield-mod img,.vm-customfield-cart img{ vertical-align: middle; width: 16px;}
 .vm-img-desc{display:block;}
+a:hover .vm-img-desc{background: #095197}
 .vmpayment_name, .vmpayment_cost, .vmshipment_name, .vmshipment_cost{padding:0 2px;}
 .vmpayment_description,.vmshipment_description {color:gray;font-size:9px;padding:0 2px;}
 .vmpayment_cardinfo {color:gray;font-size:9px;}
@@ -211,6 +212,7 @@ td.orders-key{font-weight: bold; text-align: left; }
 .product-fields .product-field label.other-customfield {width:25%;float:left;position:relative;top:20px;left:-18px;margin-bottom:27px;text-align:center;}  /* For 4 images across use width:17% */
 .product-fields .product-field input[type=radio] {position:relative;left:33px;}
 .product-fields .product-field .vm-img-desc {font-size:9px;}
+
 /* some more styles */
 .priceColor2{color:gray;}
 .line-through{text-decoration:line-through}

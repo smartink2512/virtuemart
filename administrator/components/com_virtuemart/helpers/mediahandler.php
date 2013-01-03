@@ -444,12 +444,12 @@ class VmMediaHandler {
 		}
 
 		/**
-		 * Just for overwriting purpose for childs. Take a look on VmImage to see an exampel
+		 * Just for overwriting purpose for childs. Take a look on VmImage to see an example
 		 *
 		 * @author Max Milbers
 		 */
 		function displayMediaFull(){
-			return $this->displayMediaThumb('id="vm_display_image"',false);
+			return $this->displayMediaThumb('id="vm_display_image"',false,'',true,true);
 		}
 
 		/**
@@ -570,8 +570,14 @@ class VmMediaHandler {
 				if ($file_alt ) $file_alt = 'title="'.$file_alt.'"';
 				if ($this->file_url and pathinfo($this->file_url, PATHINFO_EXTENSION) ) $href = JURI::root() .$this->file_url ;
 				else $href = $file_url ;
-				$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.'</a>';
-				return $lightboxImage.$desc;
+				if ($this->file_is_downloadable) {
+					$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.$desc.'</a>';
+				} else {
+					$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.'</a>';
+					$lightboxImage = $lightboxImage.$desc;
+				}
+
+				return $lightboxImage;
 			} else {
 				$root='';
 				if($absUrl) $root = JURI::root();
