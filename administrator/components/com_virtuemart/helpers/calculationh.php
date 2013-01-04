@@ -698,12 +698,13 @@ class calculationHelper {
 		if($this->_currencyDisplay->_priceConfig['salesPrice']){
 			$this->_cartPrices['billTotal'] = $this->_cartPrices['salesPriceShipment'] + $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
 
+			$this->_cartData->vmVat = True;
 			// Last step is handling a coupon, if given
 			if (!empty($cart->couponCode)) {
 				$this->couponHandler($cart->couponCode);
 			}
 
-			if((!empty($this->_cartPrices['billDiscountAmount']) and isset($this->_cartData['VatTax']) and count($this->_cartData['VatTax'])==1) or !empty($cart->couponCode)){
+			if($this->_cartData->vmVat and (!empty($this->_cartPrices['billDiscountAmount']) and isset($this->_cartData['VatTax']) and count($this->_cartData['VatTax'])==1) or !empty($cart->couponCode)){
 				$this->_revert = true;
 				$afterTax = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $this->_cartPrices['billTotal'] ),'salesPrice');
 

@@ -225,6 +225,7 @@ class VirtuemartViewOrders extends VmView {
 						require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 					}
 					$currency = CurrencyDisplay::getInstance ($emailCurrencyId, $vendorId);
+					$this->assignRef ('currency', $currency);
 					if ($emailCurrencyId) {
 						vmdebug ('exchangerate', $order->user_currency_rate);
 						$currency->exchangeRateShopper = $order->user_currency_rate;
