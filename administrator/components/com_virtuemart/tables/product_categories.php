@@ -39,7 +39,7 @@ class TableProduct_categories extends VmTableXarray {
 
 		$this->setPrimaryKey('virtuemart_product_id');
 		$this->setSecondaryKey('virtuemart_category_id');
-		$this->setOrderable();
+		$this->setOrderable('ordering',false);
 
 	}
 

@@ -484,7 +484,7 @@ class VmTable extends JTable{
 			$this->_db->setQuery($q);
 			$existingSlugName =$this->_db->loadResult();
 			}
-			else $existingSlugName = self::$_query_cache[md5($_q)];
+			else $existingSlugName = self::$_query_cache[md5($q)];
 			
 			if(!empty($existingSlugName)){
 				if($i==0){
@@ -1104,7 +1104,7 @@ class VmTable extends JTable{
 		$this->_db->setQuery($query);
 		$maxord = $this->_db->loadResult();
 		}
-		else $maxord = self::$_query_cache[md5($sql)]; 
+		else $maxord = self::$_query_cache[md5($query)];
 
 		if($this->_db->getErrorNum()){
 			vmError(get_class($this) . ' getNextOrder ' . $this->_db->getErrorMsg());

@@ -1516,7 +1516,7 @@ class VirtueMartModelProduct extends VmModel {
 			else {
 				$data['virtuemart_category_id'] = array();
 			}
-			$data = $this->updateXrefAndChildTables ($data, 'product_categories', TRUE);
+			$data = $this->updateXrefAndChildTables ($data, 'product_categories');
 
 			// Update waiting list
 			//TODO what is this doing?
