@@ -746,12 +746,12 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return true;
 		}
 		*/
-		if ($payments[0]->payment_order_total == $paypal_data['mc_gross']) {
-			return TRUE;
+		if ($payments[0]->payment_order_total != $paypal_data['mc_gross']) {
+			return FALSE;
 		}
 		$currency_code_3 = shopFunctions::getCurrencyByID ($payments[0]->payment_currency, 'currency_code_3');
-		if ($currency_code_3 == $paypal_data['mc_currency']) {
-			return TRUE;
+		if ($currency_code_3 != $paypal_data['mc_currency']) {
+			return FALSE;
 		}
 		$mailsubject = "PayPal Transaction";
 		$mailbody = "Hello,
