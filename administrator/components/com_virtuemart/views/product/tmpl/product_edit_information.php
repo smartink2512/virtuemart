@@ -185,16 +185,21 @@ $i=0;
     <table border="0" width="100%" cellpadding="2" cellspacing="3" id="mainPriceTable" class="adminform">
         <tbody id="productPriceBody">
 		<?php
-
+		//vmdebug('grummel ',$this->product->prices);
 		foreach ($this->product->prices as $sPrices) {
 
+			if(count($sPrices) == 0) continue;
 			if (empty($sPrices['virtuemart_product_price_id'])) {
 				$sPrices['virtuemart_product_price_id'] = '';
 			}
 			//vmdebug('my $sPrices ',$sPrices);
-			$this->tempProduct = (object)array_merge ((array)$this->product, (array)$sPrices);
+			$sPrices = (array)$sPrices;
+			$this->tempProduct = (object)array_merge ((array)$this->product, $sPrices);
 			$this->calculatedPrices = $calculator->getProductPrices ($this->tempProduct);
-			//vmdebug ("edit_price", $this->calculatedPrices, $this->tempProduct);
+
+			if((string)$sPrices['product_price']==='0' or (string)$sPrices['product_price']===''){
+				$this->calculatedPrices['costPrice'] = '';
+			}
 
 			$currency_model = VmModel::getModel ('currency');
 			$this->lists['currencies'] = JHTML::_ ('select.genericlist', $currencies, 'mprices[product_currency][' . $this->priceCounter . ']', '', 'virtuemart_currency_id', 'currency_name', $this->tempProduct->product_currency);

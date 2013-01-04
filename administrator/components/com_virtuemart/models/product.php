@@ -1467,10 +1467,13 @@ class VirtueMartModelProduct extends VmModel {
 				$pricesToStore['product_price'] = $data['mprices']['product_price'][$k] = $calculator->calculateCostprice ($this->_id, $pricesToStore);
 				unset($data['mprices']['use_desired_price'][$k]);
 			} else {
-				$pricesToStore['product_price'] = $data['mprices']['product_price'][$k];
+				if(isset($data['mprices']['product_price'][$k]) ){
+					$pricesToStore['product_price'] = $data['mprices']['product_price'][$k];
+				}
+
 			}
 
-			if (isset($data['mprices']['product_price'][$k])) {
+			if (isset($data['mprices']['product_price'][$k]) and $data['mprices']['product_price'][$k]!='') {
 
 				if ($isChild) {
 					unset($data['mprices']['product_override_price'][$k]);
