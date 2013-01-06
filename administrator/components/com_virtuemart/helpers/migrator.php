@@ -36,13 +36,13 @@ class Migrator extends VmModel{
 		$this->_oldToNew = new stdClass();
 		$this->starttime = microtime(true);
 
-		$max_execution_time = ini_get('max_execution_time');
+		$max_execution_time = (int)ini_get('max_execution_time');
 		$jrmax_execution_time= JRequest::getInt('max_execution_time');
 
 		if(!empty($jrmax_execution_time)){
 			// 			vmdebug('$jrmax_execution_time',$jrmax_execution_time);
 			if($max_execution_time!=$jrmax_execution_time) @ini_set( 'max_execution_time', $jrmax_execution_time );
-		} else if((int)$max_execution_time<60) {
+		} else if($max_execution_time<60) {
 			@ini_set( 'max_execution_time', 60 );
 		}
 
@@ -373,11 +373,15 @@ class Migrator extends VmModel{
 								}
 							}
 						}
-						$foldersInDir = $subfoldersInDir;
+
 						if((microtime(true)-$this->starttime) >= ($this->maxScriptTime*0.4)){
 							break;
 						}
 					}
+				}
+				$foldersInDir = $subfoldersInDir;
+				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime*0.4)){
+					break;
 				}
 			}
 			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime*0.4)){
@@ -1050,9 +1054,8 @@ class Migrator extends VmModel{
 
 		// 		vmdebug('$alreadyKnownIds',$alreadyKnownIds);
 		while($continue){
-
+$maxItems = 5;
 			$q = 'SELECT *,`p`.product_id as product_id FROM `#__vm_product` AS `p`
-			LEFT JOIN `#__vm_product_price` ON `#__vm_product_price`.`product_id` = `p`.`product_id`
 			LEFT JOIN `#__vm_product_mf_xref` ON `#__vm_product_mf_xref`.`product_id` = `p`.`product_id`
 			WHERE (`p`.product_id) IS NOT NULL
 			GROUP BY `p`.product_id ORDER BY `p`.product_parent_id LIMIT '.$startLimit.','.$maxItems;
@@ -1064,8 +1067,8 @@ class Migrator extends VmModel{
 			$startLimit = $res[1];
 			$continue = $res[2];
 
-// 			vmdebug('in product migrate $oldProducts ',$oldProducts);
-
+ 			//vmdebug('in product migrate $oldProducts ',$oldProducts);
+//$continue = false;
 			/* Not in VM1
 			slug low_stock_notification intnotes metadesc metakey metarobot metaauthor layout published
 
@@ -1137,10 +1140,28 @@ class Migrator extends VmModel{
 
 					$product['published'] = $product['product_publish'] == 'Y' ? 1 : 0;
 
-					$product['product_price_quantity_start'] = $product['price_quantity_start'];
-					$product['product_price_quantity_end'] = $product['price_quantity_end'];
-		             $product['product_price_publish_up'] = $product['product_price_vdate'];
-					$product['product_price_publish_down'] = $product['product_price_edate'];
+					$q = 'SELECT * FROM `#__vm_product_price` WHERE `product_id` = "'.$product['product_id'].'" ';
+					$this->_db->setQuery($q);
+					$entries = $this->_db->loadAssocList();
+					if($entries){
+						foreach($entries as $i=>$price){
+							$product['mprices']['product_price_id'][$i] = 0;
+							$product['mprices']['product_id'][$i] = $price['product_id'];
+							$product['mprices']['product_price'][$i] = $price['product_price'];
+							$product['mprices']['virtuemart_shoppergroup_id'][$i] = $price['shopper_group_id'];
+							$product['mprices']['product_currency'][$i] = $this->_ensureUsingCurrencyId($price['product_currency']);
+							$product['mprices']['price_quantity_start'][$i] = $price['price_quantity_start'];
+							$product['mprices']['price_quantity_end'][$i] = $price['price_quantity_end'];
+							$product['mprices']['product_price_publish_up'][$i] = $price['product_price_vdate'];
+							$product['mprices']['product_price_publish_down'][$i] = $price['product_price_edate'];
+							$product['mprices']['created_on'][$i] = $this->_changeToStamp($price['cdate']);
+							$product['mprices']['modified_on'][$i] = $this->_changeToStamp($price['mdate']);
+						}
+					}
+				//	$product['price_quantity_start'] = $product['price_quantity_start'];
+				//	$product['price_quantity_end'] = $product['price_quantity_end'];
+		        //    $product['product_price_publish_up'] = $product['product_price_vdate'];
+				//	$product['product_price_publish_down'] = $product['product_price_edate'];
 					$product['created_on'] = $this->_changeToStamp($product['cdate']);
 					$product['modified_on'] = $this->_changeToStamp($product['mdate']); //we could remove this to set modified_on today
 					$product['product_available_date'] = $this->_changeToStamp($product['product_available_date']);
@@ -1155,7 +1176,7 @@ class Migrator extends VmModel{
 					//$product['created_by'] = $user->id;
 					//$product['modified_by'] = $user->id;
 
-					$product['product_currency'] = $this->_ensureUsingCurrencyId($product['product_currency']);
+
 
 					if(!empty($product['product_s_desc'])){
 						$product['product_s_desc'] = stripslashes($product['product_s_desc']);

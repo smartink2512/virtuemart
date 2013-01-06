@@ -354,7 +354,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			// special  orders case
-			vmdebug('my filter ordering ',$this->filter_order);
+			//vmdebug('my filter ordering ',$this->filter_order);
 			switch ($this->filter_order) {
 				case 'product_special':
 					if($isSite){
@@ -529,26 +529,14 @@ class VirtueMartModelProduct extends VmModel {
 		$limitStartString  = 'com_virtuemart.' . $view . '.limitstart';
 		if ($app->isSite () and ($cateid != 0 or $manid != 0) ) {
 
-			if($cateid != 0){
-				$lastCatId = ShopFunctionsf::getLastVisitedCategoryId ();
-				if ($lastCatId != $cateid) {
-					$limitStart = 0;
-				}
-				else {
-					$limitStartString  = 'com_virtuemart.' . $view . 'c' . $cateid . '.limitstart';
-					$limitStart = $app->getUserStateFromRequest ($limitStartString, 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
-				}
+			$lastCatId = ShopFunctionsf::getLastVisitedCategoryId ();
+			$lastManId = ShopFunctionsf::getLastVisitedManuId ();
+			if ($lastCatId != $cateid or $lastManId != $manid) {
+				$limitStart = 0;
 			}
-
-			if($manid != 0){
-				$lastCatId = ShopFunctionsf::getLastVisitedManuId ();
-				if ($lastCatId != $manid) {
-					$limitStart = 0;
-				}
-				else {
-					$limitStartString  = 'com_virtuemart.' . $view . 'm' . $manid . '.limitstart';
-					$limitStart = $app->getUserStateFromRequest ($limitStartString, 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
-				}
+			else {
+				$limitStartString  = 'com_virtuemart.' . $view . 'c' . $cateid .'m'.$manid. '.limitstart';
+				$limitStart = $app->getUserStateFromRequest ($limitStartString, 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
 			}
 
 			$catModel= VmModel::getModel('category');
@@ -865,7 +853,11 @@ class VirtueMartModelProduct extends VmModel {
 					if (!class_exists ('shopFunctionsF')) {
 						require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 					}
-
+					if (!empty($product->categories) and is_array ($product->categories)) {
+						$categories = $this->getProductCategories ($this->_id, TRUE);   //only published
+						if(!is_array($categories)) $categories = (array)$categories;
+						$canonCatLink = $categories[0];
+					}
 					//We must first check if we come from another category, due the canoncial link we would have always the same catgory id for a product
 					//But then we would have wrong neighbored products / category and product layouts
 					$last_category_id = shopFunctionsF::getLastVisitedCategoryId ();
@@ -879,14 +871,10 @@ class VirtueMartModelProduct extends VmModel {
 							vmdebug('I take for product the requested category ',$virtuemart_category_id,$product->categories);
 						} else {
 							if (!empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
-								$product->virtuemart_category_id = $product->categories[0];
+								$product->virtuemart_category_id = $canonCatLink;
 								vmdebug('I take for product the main category ',$product->virtuemart_category_id,$product->categories);
 							}
 						}
-					}
-
-					if (!empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
-						$canonCatLink = $product->categories[0];
 					}
 
 				} else if (!empty($product->categories) and is_array ($product->categories) and count($product->categories)===1){

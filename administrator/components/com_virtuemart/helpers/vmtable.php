@@ -772,7 +772,7 @@ class VmTable extends JTable{
 				$this->bindChecknStoreNoLang($data,$preload);
 
 				$langTable->$tblKey = !empty($this->$tblKey) ? $this->$tblKey : 0;
-				vmdebug('bindChecknStoreNoLang my $tblKey '.$tblKey.' '.$langTable->$tblKey);
+				//vmdebug('bindChecknStoreNoLang my $tblKey '.$tblKey.' '.$langTable->$tblKey);
 				if($ok and $preload){
 					if(!empty($langTable->$tblKey)){
 						$id = $langTable->$tblKey;

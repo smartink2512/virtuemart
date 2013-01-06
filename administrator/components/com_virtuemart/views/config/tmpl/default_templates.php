@@ -322,7 +322,7 @@ defined('_JEXEC') or die('Restricted access');
 			    </span>
 			</td>
 			<td>
-			    <?php echo VmHTML::checkbox('show_categories', VmConfig::get('show_categories')); ?>
+			    <?php echo VmHTML::checkbox('show_categories', VmConfig::get('show_categories',1)); ?>
 			</td>
 		    </tr>
 			
