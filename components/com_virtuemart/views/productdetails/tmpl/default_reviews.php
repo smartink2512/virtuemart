@@ -107,6 +107,7 @@ if ($this->showReview) {
 
 			<?php // Show Review Length While Your Are Writing
 			$reviewJavascript = "
+//<![CDATA[
 			function check_reviewform() {
 				var form = document.getElementById('reviewform');
 
@@ -157,6 +158,7 @@ if ($this->showReview) {
 				});
 
 
+//]]>
 				";
 			$document = JFactory::getDocument ();
 			$document->addScriptDeclaration ($reviewJavascript);

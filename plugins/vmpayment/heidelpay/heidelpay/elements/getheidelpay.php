@@ -30,6 +30,7 @@ class JElementGetHeidelpay extends JElement {
 	function fetchElement ($name, $value, &$node, $control_name) {
 
 		$js = '
+//<![CDATA[
 		jQuery(document).ready(function( $ ) {
 
 		    jQuery("#heidelpay_getheidelpay_link").click( function() {
@@ -42,6 +43,7 @@ class JElementGetHeidelpay extends JElement {
 			    }
 		    });
 		});
+//]]>
 ';
 
 		$doc = JFactory::getDocument ();

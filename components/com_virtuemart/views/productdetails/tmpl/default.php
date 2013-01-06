@@ -25,6 +25,7 @@ JHTML::_('behavior.modal');
 // JHTML::_('behavior.tooltip');
 $document = JFactory::getDocument();
 $document->addScriptDeclaration("
+//<![CDATA[
 	jQuery(document).ready(function($) {
 		$('a.ask-a-question').click( function(){
 			$.facebox({
@@ -42,6 +43,7 @@ $document->addScriptDeclaration("
 			console.log(extension)
 		});*/
 	});
+//]]>
 ");
 /* Let's see if we found the product */
 if (empty($this->product)) {

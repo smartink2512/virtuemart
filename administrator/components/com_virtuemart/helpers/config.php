@@ -1075,12 +1075,14 @@ class vmJsApi{
 		vmJsApi::jSite();
 
 		$closeimage = JURI::root(TRUE) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
-		$jsVars  = "vmSiteurl = '". JURI::root( ) ."' ;\n" ;
+		$jsVars  = '
+//<![CDATA[
+		'."vmSiteurl = '". JURI::root( ) ."' ;\n" ;
 		if (VmConfig::get ('vmlang_js', 1))  {
 			$jsVars .= "vmLang = '&amp;lang=" . substr (VMLANG, 0, 2) . "' ;\n";
 		}
 		else {
-			$jsVars .= 'vmLang = ""' . "\n";
+			$jsVars .= 'vmLang = "";' . "\n";
 		}
 		$jsVars .= "vmCartText = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ADDED_JS') )."' ;\n" ;
 		$jsVars .= "vmCartError = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
@@ -1089,7 +1091,9 @@ class vmJsApi{
 		$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
 		// $jsVars .= 'faceboxHtml = \'<div id="facebox" style="display:none;"><div class="popup"><div class="content"></div> <a href="#" class="close"><img src="'.$closeimage.'" title="close" alt="X" class="close_image" /></a></div></div>\' '."\n";
 		$jsVars .= 'faceboxHtml = \'<div id="facebox" style="display:none;"><div class="popup"><div class="content"></div> <a href="#" class="close"></a></div></div>\' '." ;\n";
-
+		$jsVars .= '
+//]]>
+';
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($jsVars);
 		vmJsApi::js( 'facebox');
@@ -1118,9 +1122,13 @@ class vmJsApi{
 		}
 		$document = JFactory::getDocument();
 		VmJsApi::jSite();
-		$document->addScriptDeclaration(' jQuery( function($) {
+		$document->addScriptDeclaration(' 
+//<![CDATA[
+		jQuery( function($) {
 			$("select.virtuemart_country_id").vm2front("list",{dest : "#virtuemart_state_id",ids : "'.$stateIds.'"});
-		});');
+		});
+//]]>
+		');
 		$JcountryStateList = TRUE;
 		return;
 	}
@@ -1135,10 +1143,12 @@ class vmJsApi{
 		}
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration( "
-
+//<![CDATA[
 			jQuery(document).ready(function() {
 				jQuery('".$name."').validationEngine();
-			});"  );
+			});
+//]]>
+"  );
 		if ($jvalideForm) {
 			return;
 		}
@@ -1174,13 +1184,16 @@ class vmJsApi{
 		JFactory::getLanguage()->load('com_virtuemart');
 
 
-		$js = "var ccErrors = new Array ()
+		$js = "
+//<![CDATA[
+		var ccErrors = new Array ()
 		ccErrors [0] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_UNKNOWN_TYPE') ). "';
 		ccErrors [1] =  '" . addslashes( JText::_("COM_VIRTUEMART_CREDIT_CARD_NO_NUMBER") ). "';
 		ccErrors [2] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_FORMAT')) . "';
 		ccErrors [3] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_NUMBER')) . "';
 		ccErrors [4] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_WRONG_DIGIT')) . "';
 		ccErrors [5] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_EXPIRE_DATE')) . "';
+//]]>
 		";
 
 		$doc = JFactory::getDocument();
@@ -1261,6 +1274,7 @@ class vmJsApi{
 
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration('
+//<![CDATA[
 			jQuery(document).ready( function($) {
 			$(".datepicker").live( "focus", function() {
 				$( this ).datepicker({
@@ -1276,6 +1290,7 @@ class vmJsApi{
 				$(this).prev("input").val("'.JText::_('COM_VIRTUEMART_NEVER').'").prev("input").val("0");
 			});
 		});
+//]]>
 		');
 		vmJsApi::js ('jquery.ui.core',FALSE,'',TRUE);
 		vmJsApi::js ('jquery.ui.datepicker',FALSE,'',TRUE);

@@ -698,7 +698,7 @@ class calculationHelper {
 		if($this->_currencyDisplay->_priceConfig['salesPrice']){
 			$this->_cartPrices['billTotal'] = $this->_cartPrices['salesPriceShipment'] + $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
 
-			$this->_cartData['vmVat'] = True;
+			$this->_cartData['vmVat'] = TRUE;
 			// Last step is handling a coupon, if given
 			if (!empty($cart->couponCode)) {
 				$this->couponHandler($cart->couponCode);
@@ -1185,7 +1185,7 @@ class calculationHelper {
 								$calculated = abs($price /(1 +  (100.0 / $value)));
 							}
 						} else {
-							vmdebug('interpreteMathOp $value is empty '.$rule->calc_name);
+							vmdebug('interpreteMathOp $value is empty '.$rule['calc_name']);
 						}
 // 							vmdebug('interpreteMathOp $price'.$price.' $value '.$value.' $sign '.$sign.' '.$plus.' $calculated '.$calculated);
 					}

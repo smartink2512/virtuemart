@@ -13,6 +13,7 @@
 	//javascript to update price
 	$document = JFactory::getDocument();
 	$document->addScriptDeclaration('
+/* <![CDATA[ */
 jQuery(document).ready( function($) {
 	jQuery(".vmcustom-textinput").keyup(function() {
 			formProduct = $(this).parents("form.product");
@@ -21,4 +22,5 @@ jQuery(document).ready( function($) {
 		});
 
 });
+/* ]]> */
 	');

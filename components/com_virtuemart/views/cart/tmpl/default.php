@@ -24,6 +24,8 @@ vmJsApi::css ('facebox');
 JHtml::_ ('behavior.formvalidation');
 $document = JFactory::getDocument ();
 $document->addScriptDeclaration ("
+
+//<![CDATA[
 	jQuery(document).ready(function($) {
 		$('div#full-tos').hide();
 		$('a#terms-of-service').click(function(event) {
@@ -31,8 +33,12 @@ $document->addScriptDeclaration ("
 			$.facebox( { div: '#full-tos' }, 'my-groovy-style');
 		});
 	});
+
+//]]>
 ");
 $document->addScriptDeclaration ("
+
+//<![CDATA[
 	jQuery(document).ready(function($) {
 	if ( $('#STsameAsBTjs').is(':checked') ) {
 				$('#output-shipto-display').hide();
@@ -49,6 +55,9 @@ $document->addScriptDeclaration ("
 			}
 		});
 	});
+
+//]]>
+
 ");
 $document->addStyleDeclaration ('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
 

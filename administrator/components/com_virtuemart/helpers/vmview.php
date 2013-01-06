@@ -126,6 +126,7 @@ class VmView extends JView{
 
 		if (JVM_VERSION===1) {
 			$j = "
+//<![CDATA[
 	function submitbutton(pressbutton) {
 
 		jQuery( '#media-dialog' ).remove();
@@ -137,9 +138,12 @@ class VmView extends JView{
 			jQuery.cookie('vmapply', '0', options);
 		}
 		 submitform(pressbutton);
-	};" ;
+	};
+//]]>
+	" ;
 		}
 		else $j = "
+//<![CDATA[
 	Joomla.submitbutton=function(a){
 		var options = { path: '/', expires: 2}
 		if (a == 'apply') {
@@ -150,7 +154,9 @@ class VmView extends JView{
 		}
 		jQuery( '#media-dialog' ).remove();
 		Joomla.submitform(a);
-	};" ;
+	};
+//]]>
+	" ;
 		$document->addScriptDeclaration ( $j);
 
 		// LANGUAGE setting

@@ -914,12 +914,14 @@ class VmMediaHandler {
 			$this->_db->setQuery('SELECT FOUND_ROWS()');
 			$imagetotal = $this->_db->loadResult();
 			//vmJsApi::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
-
+			$j = '
+//<![CDATA[
+'; 
 			if (JVM_VERSION===1) {
-				$j = "
+				$j .= "
 			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','0') }); " ;
 			}
-			else $j = "
+			else $j .= "
 			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','0') }); " ;
 
 			$j .="
@@ -967,7 +969,9 @@ class VmMediaHandler {
 				});
 
 
-		}); ";
+		}); 
+//]]>
+		";
 
 			$document = JFactory::getDocument ();
 			$document->addScriptDeclaration ( $j);

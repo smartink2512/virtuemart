@@ -58,6 +58,7 @@ class AdminUIHelper {
 		if (JText::_('COM_VIRTUEMART_JS_STRINGS') == 'COM_VIRTUEMART_JS_STRINGS') $vm2string = "editImage: 'edit image',select_all_text: 'select all options',select_some_options_text: 'select some options'" ;
 		else $vm2string = JText::_('COM_VIRTUEMART_JS_STRINGS') ;
 		$document->addScriptDeclaration ( "
+//<![CDATA[
 		var tip_image='".JURI::root(true)."/components/com_virtuemart/assets/js/images/vtip_arrow.png';
 		var vm2string ={".$vm2string."} ;
 		 jQuery( function($) {
@@ -79,6 +80,7 @@ class AdminUIHelper {
 			});
 
 		});
+//]]>
 		");
 		?>
 		<?php if (!self::$backEnd) echo '<div class="toolbar" style="height: 84px;position: relative;">'.vmView::getToolbar().'</div>'; ?>
