@@ -190,7 +190,7 @@ class VirtueMartViewProductdetails extends VmView {
 	    $category_model->addImages($category, 1);
 	    $this->assignRef('category', $category);
 
-		/* Seems we dont need this anylonger, destroyed the breadcrumb
+		//Seems we dont need this anylonger, destroyed the breadcrumb
 		if ($category->parents) {
 			foreach ($category->parents as $c) {
 				if(is_object($c) and isset($c->category_name)){
@@ -200,7 +200,7 @@ class VirtueMartViewProductdetails extends VmView {
 				}
 			}
 		}
-		*/
+
 	    $vendorId = 1;
 	    $category->children = $category_model->getChildCategoryList($vendorId, $product->virtuemart_category_id);
 	    $category_model->addImages($category->children, 1);

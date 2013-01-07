@@ -623,6 +623,7 @@ class VirtueMartModelUser extends VmModel {
 				jimport('joomla.user.helper');
 				$user->set('activation', JUtility::getHash( JUserHelper::genRandomPassword()) );
 				$user->set('block', '1');
+				//$user->set('lastvisitDate', '0000-00-00 00:00:00');
 			}
 		}
 
@@ -635,13 +636,12 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
-
-
 		// Save the JUser object
 		if (!$user->save()) {
 			vmError(JText::_( $user->getError()) , JText::_( $user->getError()));
 			return false;
 		}
+		//vmdebug('my user, why logged in? ',$user);
 
 		$newId = $user->get('id');
 		$data['virtuemart_user_id'] = $newId;	//We need this in that case, because data is bound to table later

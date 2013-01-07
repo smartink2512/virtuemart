@@ -686,6 +686,10 @@ class VirtueMartModelProduct extends VmModel {
 				$child->product_template = VmConfig::get ('producttemplate');
 			}
 
+			// Add the product link  for canonical
+			$child->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $child->virtuemart_category_id;
+			$child->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $child->virtuemart_category_id);
+
 			/*if (empty($child->layout)) {
 				// product_layout ?
 				$child->layout = VmConfig::get ('productlayout');
@@ -880,12 +884,16 @@ class VirtueMartModelProduct extends VmModel {
 				} else if (!empty($product->categories) and is_array ($product->categories) and count($product->categories)===1){
 					$product->virtuemart_category_id = $canonCatLink = $product->categories[0];
 				} else {
-					$product->virtuemart_category_id = $canonCatLink = 0;
+					/*$last_category_id = shopFunctionsF::getLastVisitedCategoryId ();
+					if($last_category_id){
+						$product->virtuemart_category_id = $last_category_id;
+					}
+					//$product->virtuemart_category_id = $canonCatLink = 0;*/
 				}
 
 				// Add the product link  for canonical
-				$product->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $canonCatLink;
-				$product->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $canonCatLink);
+			//	$product->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $product->virtuemart_category_id;
+			//	$product->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $product->virtuemart_category_id);
 
 			} else {
 				$product->virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
@@ -913,8 +921,8 @@ class VirtueMartModelProduct extends VmModel {
 				$catTable->load ($product->virtuemart_category_id);
 				$product->category_name = $catTable->category_name;
 			} else {
-				$product->category_name = '';
-				$product->virtuemart_category_id = 0;
+				$product->category_name = null;
+				$product->virtuemart_category_id = null;
 				vmdebug('$product->virtuemart_category_id is empty');
 			}
 
@@ -2104,7 +2112,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 				$q .= ' AND p.`published`="1"';
 			}
 
-			$q .= ' GROUP BY `virtuemart_product_id` ORDER BY ordering DESC';
+			$q .= ' GROUP BY `virtuemart_product_id` ORDER BY pc.ordering DESC';
 			$this->_db->setQuery ($q);
 			$this->_uncategorizedChildren = $this->_db->loadAssocList ();
 			$err = $this->_db->getErrorMsg ();

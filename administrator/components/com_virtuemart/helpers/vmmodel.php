@@ -48,7 +48,7 @@ class VmModel extends JModel {
 		$this->_cidName = $cidName;
 
 		// Get the task
-		$task = JRequest::getWord('task');
+		$task = JRequest::getWord('task','');
 		if($task!=='add'){
 			// Get the id or array of ids.
 			$idArray = JRequest::getVar($this->_cidName,  0, '', 'array');
@@ -69,7 +69,7 @@ class VmModel extends JModel {
 	static function getModel($name=false){
 
 		if (!$name){
-			$name = JRequest::getCmd('view');
+			$name = JRequest::getCmd('view','');
 // 			vmdebug('Get standard model of the view');
 		}
 		$name = strtolower($name);
@@ -209,7 +209,7 @@ class VmModel extends JModel {
 			vmdebug('checkValidOrderingField:'.get_class($this).' programmer choosed invalid ordering '.$toCheck.', use '.$this->_selectedOrdering);
 			$toCheck = $this->_selectedOrdering;
 			$app = JFactory::getApplication();
-			$view = JRequest::getWord('view');
+			$view = JRequest::getWord('view','virtuemart');
 			$app->setUserState( 'com_virtuemart.'.$view.'.filter_order',$this->_selectedOrdering);
 		}
 		$this->_selectedOrdering = $toCheck;
@@ -225,7 +225,7 @@ class VmModel extends JModel {
 // 			vmdebug('checkFilterDir: programmer choosed invalid ordering direction '.$filter_order_Dir,$this->_validFilterDir);
 // 			vmTrace('checkFilterDir');
 			$filter_order_Dir = $this->_selectedOrderingDir;
-			$view = JRequest::getWord('view');
+			$view = JRequest::getWord('view','virtuemart');
 			$app = JFactory::getApplication();
 			$app->setUserState( 'com_virtuemart.'.$view.'.filter_order_Dir',$filter_order_Dir);
 		}
