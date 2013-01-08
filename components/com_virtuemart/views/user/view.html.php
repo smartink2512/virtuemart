@@ -93,9 +93,7 @@ class VirtuemartViewUser extends VmView {
 	    $document->addScript($admin.'js/jquery.coookie.js');
 	    $document->addScript($front.'js/chosen.jquery.min.js');
 	    $document->addScript($admin.'js/vm2admin.js');
-
 */
-
 
 
 	$mainframe = JFactory::getApplication();
