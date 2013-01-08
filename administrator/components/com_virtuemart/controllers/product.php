@@ -68,7 +68,7 @@ class VirtuemartControllerProduct extends VmController {
 			unset($data['published']);
 			unset($data['childs']);
 		}
-
+		$data['product_desc'] = JComponentHelper::filterText($data['product_desc']);
 		parent::save($data);
 	}
 
