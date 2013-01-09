@@ -65,8 +65,12 @@ class VirtuemartControllerProduct extends VmController {
 		} else  {
 			$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',2);
 			$data['product_desc'] = JComponentHelper::filterText($data['product_desc']);
-			unset($data['published']);
-			unset($data['childs']);
+			$multix = Vmconfig::get('multix','none');
+			if( $multix != 'none' ){
+				unset($data['published']);
+				unset($data['childs']);
+			}
+
 		}
 		parent::save($data);
 	}

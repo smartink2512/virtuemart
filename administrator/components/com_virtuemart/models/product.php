@@ -518,7 +518,7 @@ class VirtueMartModelProduct extends VmModel {
 	public function setPaginationLimits () {
 
 		$app = JFactory::getApplication ();
-		$view = JRequest::getWord ('view');
+		$view = JRequest::getWord ('view','virtuemart');
 
 		$cateid = JRequest::getInt ('virtuemart_category_id', 0);
 		$manid = JRequest::getInt ('virtuemart_manufacturer_id', 0);
@@ -687,8 +687,8 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			// Add the product link  for canonical
-			$child->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $child->virtuemart_category_id;
-			$child->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $child->virtuemart_category_id);
+			$child->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->virtuemart_category_id;
+			$child->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->virtuemart_category_id);
 
 			/*if (empty($child->layout)) {
 				// product_layout ?

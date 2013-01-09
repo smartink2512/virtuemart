@@ -103,7 +103,7 @@ defined ('_JEXEC') or die('Restricted access');
 		<input type="hidden" class="pname" value="<?php echo htmlentities($this->product->product_name, ENT_QUOTES, 'utf-8') ?>"/>
 		<input type="hidden" name="option" value="com_virtuemart"/>
 		<input type="hidden" name="view" value="cart"/>
-		<input type="hidden" name="task" value="add"/>
+		<noscript><input type="hidden" name="task" value="add"/></noscript>
 		<input type="hidden" name="virtuemart_product_id[]" value="<?php echo $this->product->virtuemart_product_id ?>"/>
 	</form>
 
