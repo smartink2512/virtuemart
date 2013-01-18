@@ -251,16 +251,16 @@ if (VmConfig::get ('coupons_enable')) {
 	<?php if (!empty($this->cart->cartData['couponCode'])) { ?>
 	<?php
 	echo $this->cart->cartData['couponCode'];
-	echo $this->cart->cartData['couponDescr'] ? (' (' . $this->cart->cartData['couponDescr'] . ')') : '';
+	echo $this->cart->cartData['couponDescr'] ? (' (' . '-' . $this->cart->cartData['couponDescr'] . ')') : '';
 	?>
 
 				</td>
 
 					 <?php if (VmConfig::get ('show_tax')) { ?>
-		<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('couponTax', '', $this->cart->pricesUnformatted['couponTax'], FALSE); ?> </td>
+		<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('couponTax', '', -$this->cart->pricesUnformatted['couponTax'], FALSE); ?> </td>
 		<?php } ?>
-	<td align="right"> </td>
-	<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceCoupon', '', $this->cart->pricesUnformatted['salesPriceCoupon'], FALSE); ?> </td>
+	<td align="right"><?php if($this->cart->pricesUnformatted['salesPriceCoupon'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->pricesUnformatted['salesPriceCoupon'], FALSE); ?></td>
+	<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceCoupon', '', -$this->cart->pricesUnformatted['salesPriceCoupon'], FALSE); ?> </td>
 	<?php } else { ?>
 	</td><td colspan="3" align="left">&nbsp;</td>
 	<?php

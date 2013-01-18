@@ -134,7 +134,7 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 			<td align="right"> </td>
 		<?php } ?>
 		<td align="right"></td>
-		<td align="right"><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->coupon_discount, $this->currency); ?></td>
+		<td align="right"><?php echo $this->currency->priceDisplay(-$this->orderDetails['details']['BT']->coupon_discount, $this->currency); ?></td>
 	</tr>
 <?php  } ?>
 
