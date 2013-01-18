@@ -67,7 +67,7 @@ JPluginHelper::importPlugin('vmshipment');
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_NAME') ?></strong></td>
 				<td><?php
 						$username=$this->orderbt->company ? $this->orderbt->company." ":"";
-			$username.=$this->orderbt->first_name." ".$this->orderbt->first_name." ";
+			$username.=$this->orderbt->first_name." ".$this->orderbt->last_name." ";
 					if ($this->orderbt->virtuemart_user_id) {
 						$userlink = JROUTE::_ ('index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]=' . $this->orderbt->virtuemart_user_id);
 						echo JHTML::_ ('link', JRoute::_ ($userlink), $username, array('title' => JText::_ ('COM_VIRTUEMART_ORDER_EDIT_USER') . ' ' . $username));

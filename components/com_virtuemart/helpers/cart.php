@@ -425,7 +425,10 @@ class VirtueMartCart {
 									if(is_array($customPlug)){
 										foreach($customPlug as &$customPl){
 											$value = vmFilter::hl( $customPl,array('deny_attribute'=>'*'));
-											$value = preg_replace('@<[\/\!]*?[^<>]*?>@si','',$value);//remove all html tags
+											//to strong
+											/* $value = preg_replace('@<[\/\!]*?[^<>]*?>@si','',$value);//remove all html tags  */
+											//lets use instead
+											$value = JComponentHelper::filterText($value);
 											$value = (string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
 											$value = trim(str_replace('"', ' ', $value),"'") ;
 											$customPl = (string)preg_replace('#^\'#si','',$value);

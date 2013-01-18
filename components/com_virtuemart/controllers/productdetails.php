@@ -309,7 +309,11 @@ class VirtueMartControllerProductdetails extends JController {
 
 		// Get the document object.
 		$document = JFactory::getDocument ();
-		$document->setName ('recalculate');
+		// stAn: setName works in JDocumentHTML and not JDocumentRAW
+		if (method_exists($document, 'setName')){
+			$document->setName ('recalculate');
+		}
+
 		JResponse::setHeader ('Cache-Control', 'no-cache, must-revalidate');
 		JResponse::setHeader ('Expires', 'Mon, 6 Jul 2000 10:00:00 GMT');
 		// Set the MIME type for JSON output.
