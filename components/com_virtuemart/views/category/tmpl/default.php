@@ -200,11 +200,7 @@ if (!empty($this->products)) {
 	// Separator
 	$verticalseparator = " vertical-separator";
 
-	// Count products ?? why not just count ($this->products)  ?? note by Max Milbers
-	$BrowseTotalProducts = 0;
-	foreach ($this->products as $product) {
-		$BrowseTotalProducts++;
-	}
+	$BrowseTotalProducts = count($this->products);
 
 	// Start the Output
 	foreach ($this->products as $product) {

@@ -838,6 +838,10 @@ class VirtueMartModelCustomfields extends VmModel {
 		}
 		$calculator = calculationHelper::getInstance ();
 		$calculator ->_product = $product;
+		$calculator->_cats = $product->categories;
+		$calculator->product_tax_id = isset($product->product_tax_id)? $product->product_tax_id:0;
+		$calculator->product_discount_id = isset($product->product_discount_id)? $product->product_discount_id:0;
+
 		if (!class_exists ('vmCustomPlugin')) {
 			require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 		}

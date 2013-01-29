@@ -95,6 +95,7 @@ class VirtueMartModelProduct extends VmModel {
 	var $filter_order = 'p.virtuemart_product_id';
 	var $filter_order_Dir = 'DESC';
 	var $valid_BE_search_fields = array('product_name', 'product_sku', 'product_s_desc', '`l`.`metadesc`');
+	private $_autoOrder = 0;
 	private $orderByString = 0;
 	private $listing = FALSE;
 
@@ -896,12 +897,26 @@ class VirtueMartModelProduct extends VmModel {
 			//	$product->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $product->virtuemart_category_id);
 
 			} else {
-				$product->virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
-				if (!empty($product->categories) and is_array ($product->categories) and !empty($product->categories[0])) {
-					$product->virtuemart_category_id = $product->categories[0];
-				} else {
-					$product->virtuemart_category_id = 0;
+				$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
+
+				if($virtuemart_category_id!==0 and !empty($product->categories) ) {
+					if(is_array($product->categories) and in_array ($virtuemart_category_id, $product->categories)){
+						$product->virtuemart_category_id = $virtuemart_category_id;
+					} else if($product->categories==$virtuemart_category_id) {
+						$product->virtuemart_category_id = $virtuemart_category_id;
+					}
+
 				}
+
+				if (empty($product->virtuemart_category_id)) {
+					if (!empty($product->categories) and is_array ($product->categories) and !empty($product->categories[0])) {
+						$product->virtuemart_category_id = $product->categories[0];
+					} else {
+						$product->virtuemart_category_id = null;
+					}
+				}
+
+				vmdebug('getProductSingle BE request $virtuemart_category_id',$virtuemart_category_id,$product->virtuemart_category_id);
 			}
 
 			if(!empty($product->virtuemart_category_id)){
@@ -913,8 +928,12 @@ class VirtueMartModelProduct extends VmModel {
 				$ordering = $this->_db->loadObject ();
 				if (!empty($ordering)) {
 					$product->ordering = $ordering->ordering;
-					//What is this? notice by Max Milbers
+					//This is the ordering id in the list to store the ordering notice by Max Milbers
 					$product->id = $ordering->id;
+				} else {
+					$product->ordering = $this->_autoOrder++;
+					$product->id = $ordering->id;
+					vmdebug('$product->virtuemart_category_id no ordering stored for '.$ordering->id);
 				}
 
 				$catTable = $this->getTable ('categories');
@@ -923,6 +942,8 @@ class VirtueMartModelProduct extends VmModel {
 			} else {
 				$product->category_name = null;
 				$product->virtuemart_category_id = null;
+				$product->ordering = null;
+				$product->id = $this->_autoOrder++;
 				vmdebug('$product->virtuemart_category_id is empty');
 			}
 
@@ -1184,6 +1205,7 @@ class VirtueMartModelProduct extends VmModel {
 		$maxNumber = VmConfig::get ('absMaxProducts', 700);
 		$products = array();
 		if ($single) {
+
 			foreach ($productIds as $id) {
 				$i = 0;
 				if ($product = $this->getProductSingle ((int)$id, $front)) {
@@ -1284,12 +1306,16 @@ class VirtueMartModelProduct extends VmModel {
 			if ($result = $db->loadAssocList ()) {
 				$neighbor = $result;
 			}
+			$err = $db->getErrorMsg();
+			if($err){
+				vmError('getNeighborProducts '.$err);
+			}
 			$direction = 'ASC';
 			$op = '>';
- 			//vmdebug('getNeighborProducts '.$db->getQuery());
+ 			vmdebug('getNeighborProducts '.$db->getQuery());
 			//vmdebug('getNeighborProducts '.$db->getErrorMsg());
 		}
-
+		//vmdebug('mist',$neighbors);
 		return $neighbors;
 	}
 

@@ -175,11 +175,15 @@ class VirtueMartModelShopperGroup extends VmModel {
 		$shoppergroup_ids_remove = $session->get('vm_shoppergroups_remove',0,'vm');
 		if($shoppergroup_ids_remove!==0){
 			if(!is_array($shoppergroup_ids_remove)){
-				unset($ids[$shoppergroup_ids_remove]);
+				if(isset($ids[$shoppergroup_ids_remove])){
+					unset($ids[$shoppergroup_ids_remove]);
+				}
 			} else {
 				foreach($shoppergroup_ids_remove as $id){
-					unset($ids[$id]);
-					vmdebug('Anonymous case, remove session shoppergroup by plugin '.$id);
+					if(isset($ids[$id])){
+						unset($ids[$id]);
+						vmdebug('Anonymous case, remove session shoppergroup by plugin '.$id);
+					}
 				}
 			}
 		}
