@@ -21,10 +21,7 @@ if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcalcula
 
 class plgVmCalculationAvalara extends vmCalculationPlugin {
 
-	// instance of class
-	// 	public static $_this = false;
-
-	var $_dev = TRUE;
+	var $_connectionType = 'Production';
 
 	function __construct(& $subject, $config) {
 		// 		if(self::$_this) return self::$_this;
@@ -122,7 +119,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$this->newATConfig($calc);
 
 		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
-		$client = new TaxServiceSoap('Development');
+		$client = new TaxServiceSoap($this->_connectionType);
 
 		try
 		{
@@ -152,9 +149,10 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				$err .= $exception->faultstring;
 
 			$err .='<br />';
-			$err .= $client->__getLastRequest().'<br />';
-			$err .= $client->__getLastResponse().'<br />';
+			$err .='last request: '. $client->__getLastRequest().'<br />';
+			$err .='last response: '. $client->__getLastResponse().'<br />';
 			vmError($err);
+			vmdebug('AvaTax the ping throws exception ',$exception);
 		}
 
 		return $html;
@@ -172,7 +170,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				$config = $this->newATConfig($calc);
 
 				if(!class_exists('AddressServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'AddressServiceSoap.class.php');
-				$client = new AddressServiceSoap('Development',$config);
+				$client = new AddressServiceSoap($this->_connectionType,$config);
 
 				if(!class_exists('Address')) require (VMAVALARA_CLASS_PATH.DS.'Address.class.php');
 				$address = new Address();
@@ -300,7 +298,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		if(!class_exists('GetTaxRequest')) require (VMAVALARA_CLASS_PATH.DS.'GetTaxRequest.class.php');
 		if(!class_exists('GetTaxResult')) require (VMAVALARA_CLASS_PATH.DS.'GetTaxResult.class.php');
 
-		$client = new TaxServiceSoap('Development');
+		$client = new TaxServiceSoap($this->_connectionType);
 		$request= new GetTaxRequest();
 		$origin = new Address();
 
@@ -613,7 +611,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			'account'   => '<your account number here>',
 			'license'   => '<your license key here>',
 			'adapter'   => 'avatax4php,5.10.0.0',
-			'client'    => 'AvalaraPHPInterface,1.0',
+			'client'    => 'VirtueMart2.0.16',
 			'name'    => 'PHPAdapter',
 			'TextCase' => TextCase::$Mixed,
 			'trace'     => TRUE);
@@ -621,25 +619,27 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		//VmConfig::$echoDebug = TRUE;
 		//if(!is_object())vmdebug($calc);
 		if(!class_exists('ATConfig')) require (VMAVALARA_CLASS_PATH.DS.'ATConfig.class.php');
-		if($this->_dev){
 
+		//Set this to TRUE for development account
+		if(FALSE){
+			$this->_connectionType = 'Development';
 			$devValues = array(
 				'url'       => 'https://development.avalara.net',
 				'account'   => $calc->account,
 				'license'   => $calc->license,
 				'trace'     => TRUE); // change to false for production
 			$resultingConfig = array_merge($standard,$devValues);
-			$config = new ATConfig('Development', $resultingConfig);
+			$config = new ATConfig($this->_connectionType, $resultingConfig);
 
 		} else {
-
+			$this->_connectionType = 'Production';
 			$prodValues = array(
 				'url'       => 'https://avatax.avalara.net',
 				'account'   => $calc->account,
 				'license'   => $calc->license,
 				'trace'     => FALSE);
 			$resultingConfig = array_merge($standard,$prodValues);
-			$config = new ATConfig('Production', $resultingConfig);
+			$config = new ATConfig($this->_connectionType, $resultingConfig);
 
 		}
 
