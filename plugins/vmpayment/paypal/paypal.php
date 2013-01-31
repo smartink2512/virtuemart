@@ -829,8 +829,9 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		} else {
 			$paypal_iplist1 = gethostbynamel ('www.paypal.com');
 			$paypal_iplist2 = gethostbynamel ('notify.paypal.com');
-			$paypal_iplist = array_merge ($paypal_iplist1, $paypal_iplist2);
-		}
+			$paypal_iplist3 = array( '216.113.188.202' , '216.113.188.203' , '216.113.188.204' , '66.211.170.66' );
+            $paypal_iplist = array_merge( $paypal_iplist1, $paypal_iplist2, $paypal_iplist3 );
+ 		}
 		$this->logInfo ('checkPaypalIps: ' . implode (",", $paypal_iplist) . " server is:" . $_SERVER['REMOTE_ADDR'], 'message');
 		$hostname = $this->_getPaypalUrl ($method);
 		//  test if the remote IP connected here is a valid IP address
