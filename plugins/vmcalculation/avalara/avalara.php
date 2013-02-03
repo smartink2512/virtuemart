@@ -279,7 +279,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	}
 
 	static $stop = FALSE;
-	function getTax($calculationHelper,$calc,$price,$sale=false,$committ=false){
+	function getTax($calculationHelper,$calc,$price,$invoiceNumber=false){
 
 		if($calc->activated==0) return false;
 
@@ -339,12 +339,12 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$request->setCompanyCode($calc->company_code);   // Your Company Code From the Dashboard
 
 
-		if($calc->committ and $sale){
+		if($calc->committ and $invoiceNumber){
 			$request->setDocType(DocumentType::$SalesInvoice);   	// Only supported types are SalesInvoice or SalesOrder
 			$request->setCommit(true);
 			//invoice number, problem is that the invoice number is at this time not known, but the order_number may reachable
-			$request->setDocCode($committ);
-			vmdebug('Request as SalesInvoice with invoiceNumber '.$committ);
+			$request->setDocCode($invoiceNumber);
+			vmdebug('Request as SalesInvoice with invoiceNumber '.$invoiceNumber);
 		} else {
 			$request->setDocType(DocumentType::$SalesOrder);
 			$request->setCommit(false);
@@ -766,8 +766,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 					vmdebug('$order',$order);
 					$orderModel = VmModel::getModel('orders');
 					$invoiceNumber = 'onr_'.$order['details']['BT']->order_number;
+					JRequest::setVar('create_invoice',1);
 					$orderModel -> createInvoiceNumber($order['details']['BT'],$invoiceNumber);
 					$calculator = calculationHelper::getInstance ();
+					//vmdebug('Hmm no invoicenumber? ',$invoiceNumber,$order);
+					if(is_array($invoiceNumber)) $invoiceNumber = $invoiceNumber[0];
 					$tax = $this->getTax( $calculator,$rule,0,$invoiceNumber);
 
 				//	vmdebug('tax',$tax);
@@ -842,6 +845,120 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$this->removePluginInternalData($id);
 	}
 
+	public function plgVmOnUpdateOrderPayment($data,$old_order_status){
+		if($data->order_status=='R'){
+			$this->cancelOrder($data,$old_order_status);
+		}
+
+	}
+
+	public function plgVmOnCancelPayment($data,$old_order_status){
+		$this->cancelOrder($data,$old_order_status);
+	}
+
+	function cancelOrder($data,$old_order_status){
+
+		$db = JFactory::getDbo();
+		$q = 'SELECT * FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$data->virtuemart_order_id.'"  AND `order_status` = "'.$old_order_status.'" ORDER BY created_on DESC ';
+		$db->setQuery($q);
+		$result = $db->loadAssocList();
+
+		if(!$result){
+			vmdebug('AvaTax, plgVmOnCancelPayment no result for '.$data->virtuemart_order_id.' and old orderstatus '.$old_order_status);
+			$err = $db->getErrorMsg();
+			if($err){
+				vmdebug('AvaTax, plgVmOnCancelPayment error in query '.$db->getQuery());
+			}
+			//No invoice number stored, we cannot cancel the order
+			return false;
+		}
+
+		$q = 'SELECT * FROM `#__virtuemart_order_calc_rules` WHERE `virtuemart_order_id`= "'.$data->virtuemart_order_id.'"  AND `calc_mathop` = "avalara" ';
+		$db->setQuery($q);
+		$calc = $db->loadObject();
+		if(!$calc){
+			vmdebug('AvaTax, plgVmOnCancelPayment no result for '.$data->virtuemart_order_id.' and old orderstatus '.$old_order_status);
+			$err = $db->getErrorMsg();
+			if($err){
+				vmdebug('AvaTax, plgVmOnCancelPayment error in query '.$db->getQuery());
+			}
+			//Without the data from the rule we cannot do anything
+			return false;
+		}
+
+		$params = explode('|', $calc->calc_params);
+		foreach($params as $item){
+
+			$item = explode('=',$item);
+			$key = $item[0];
+			unset($item[0]);
+
+			$item = implode('=',$item);
+
+			if(!empty($item) ){
+				$calc->$key = json_decode($item);
+			}
+		}
+
+		if(!function_exists('EnsureIsArray')) require(VMAVALARA_PATH.DS.'AvaTax.php');	// include in all Avalara Scripts
+		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
+		if(!class_exists('CancelTaxRequest')) require (VMAVALARA_CLASS_PATH.DS.'CancelTaxRequest.class.php');
+
+		$this->newATConfig($calc);
+
+		$client = new TaxServiceSoap($this->_connectionType);
+		$request= new CancelTaxRequest();
+		// Locate Document by Invoice Number (Document Code)
+		/*		echo "Enter Invoice Number (Document Code): ";
+				$STDIN = fopen('php://stdin', 'r');
+				$input = rtrim(fgets($STDIN));*/
+		//vmdebug('plgVmOnCancelPayment',$data);
+		$request->setDocCode($result[0]['invoice_number']);
+		$request->setDocType('SalesInvoice');
+
+
+
+		$request->setCompanyCode($calc->company_code);	// Dashboard Company Code
+
+		if($calc->committ==0) return false;
+
+		//CancelCode: Enter D for DocDeleted, or P for PostFailed: [D]
+		//I do not know the difference, I use always D (I assume this means order got deleted, cancelled, or refund)
+		$code = CancelCode::$DocDeleted;
+		//if($input == 'P')
+		//	$code = CancelCode::$PostFailed;
+
+		$request->setCancelCode($code);
+
+		try
+		{
+			$result = $client->cancelTax($request);
+
+			if ($result->getResultCode() != "Success")
+			{
+				$msg = '';
+				foreach($result->getMessages() as $msg)
+				{
+					$msg .= $msg->getName().": ".$msg->getSummary()."\n";
+				}
+				vmError($msg);
+			} else {
+				vmInfo('CancelTax ResultCode is: '.$result->getResultCode());
+			}
+		}
+		catch(SoapFault $exception)
+		{
+			$msg = "Exception: ";
+			if($exception)
+				$msg .= $exception->faultstring;
+
+			$msg .="\n";
+			$msg .= $client->__getLastRequest()."\n";
+			$msg .= $client->__getLastResponse()."\n";
+			vmError($msg);
+		}
+
+	}
 
 }
 

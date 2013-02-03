@@ -696,18 +696,18 @@ class VmPagination extends JPagination {
 			if(!empty($sequence)){
 				$sequenceArray = explode(',', $sequence);
 				foreach($sequenceArray as $items){
-					$limits[]=JHtml::_('select.option', JRoute::_( $link.'&limit='. $items), $items);
+					$limits[]=JHtml::_('select.option', JRoute::_( $link.'&limit='. $items, false), $items);
 				}
 
 			} else {
 				if($this->_perRow===1) $this->_perRow = 5;
 				$iterationAmount = 4;
 				for ($i = 1; $i <= $iterationAmount; $i ++) {
-					$limits[] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $i*$this->_perRow) ,$i*$this->_perRow );
+					$limits[] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $i*$this->_perRow, false) ,$i*$this->_perRow );
 				}
 
-				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 10) , $this->_perRow * 10 );
-				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 20) , $this->_perRow * 20 );
+				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 10, false) , $this->_perRow * 10 );
+				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 20, false) , $this->_perRow * 20 );
 	// 			vmdebug('getLimitBox',$this->_perRow);
 			}
 			$selected= JRoute::_( $link.'&limit='. $selected) ;

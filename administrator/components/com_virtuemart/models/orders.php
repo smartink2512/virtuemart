@@ -380,6 +380,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 				// Payment decides what to do when order status is updated
 				JPluginHelper::importPlugin('vmpayment');
+				JPluginHelper::importPlugin('vmcalculation');
 				$_dispatcher = JDispatcher::getInstance();											//Should we add this? $inputOrder
 				$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderPayment',array(&$data,$old_order_status));
 				foreach ($_returnValues as $_returnValue) {
@@ -401,8 +402,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			* some authorization needs to be voided
 			*/
 			if ($data->order_status == "X") {
-				JPluginHelper::importPlugin('vmpayment');																			//Should we add this? $inputOrder
+				JPluginHelper::importPlugin('vmpayment');			//Should we add this? $inputOrder
+				JPluginHelper::importPlugin('vmcalculation');
 				$_dispatcher = JDispatcher::getInstance();
+				//Should be renamed to plgVmOnCancelOrder
 				$_dispatcher->trigger('plgVmOnCancelPayment',array(&$data,$old_order_status));
 			}
 		}
@@ -922,7 +925,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 */
 	private function _createOrderCalcRules($order_id, $_cart)
 	{
-
 
 		$productKeys = array_keys($_cart->products);
 

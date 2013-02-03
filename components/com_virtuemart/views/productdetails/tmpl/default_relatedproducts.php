@@ -25,8 +25,10 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
     <?php
     foreach ($this->product->customfieldsRelatedProducts as $field) {
+	    if(!empty($field->display)) {
 	?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
 		    <span class="product-field-display"><?php echo $field->display ?></span>
 		</div>
-	<?php } ?>
+	<?php }
+	    } ?>
         </div>

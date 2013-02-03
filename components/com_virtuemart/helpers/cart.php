@@ -769,6 +769,17 @@ class VirtueMartCart {
 		$this->cartData = $this->prepareCartData();
 		$this->prepareCartPrice( ) ;
 
+		if (empty($this->tosAccepted)) {
+
+			$userFieldsModel = VmModel::getModel('Userfields');
+
+			$required = $userFieldsModel->getIfRequired('agreed');
+			if(!empty($required)){
+				$redirectMsg = JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
+			}
+		}
+
 		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 			$userModel = JModel::getInstance('user', 'VirtueMartModel');
@@ -877,18 +888,6 @@ class VirtueMartCart {
 						// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
 					}
 				}
-			}
-		}
-
-
-		if (empty($this->tosAccepted)) {
-
-			$userFieldsModel = VmModel::getModel('Userfields');
-
-			$required = $userFieldsModel->getIfRequired('agreed');
-			if(!empty($required)){
-				$redirectMsg = JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
-				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 			}
 		}
 

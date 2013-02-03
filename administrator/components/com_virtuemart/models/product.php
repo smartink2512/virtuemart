@@ -1999,7 +1999,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->_db = JFactory::getDBO ();
 
 		/* Assign class to indicator */
-		$stock_level = $product->product_in_stock;
+		$stock_level = $product->product_in_stock - $product->product_ordered;
 		$reorder_level = $product->low_stock_notification;
 		$level = 'normalstock';
 		$stock_tip = JText::_ ('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_NORMAL_TIP');

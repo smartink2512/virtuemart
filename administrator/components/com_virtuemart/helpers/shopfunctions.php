@@ -557,35 +557,35 @@ class ShopFunctions {
 		switch ($from) {
 			case 'CM':
 				$meter = (float)(0.01 * $value);
-			break;
+				break;
 			case 'MM':
 				$meter = (float)(0.001 * $value);
-			break;
-			case 'YD':
-				$meter = (float)(1.0936 * $value);
-			break;
-			case 'FT':
-				$meter = (float)(3.28083 * $value);
-			break;
-			case 'IN':
-				$meter =(float) (39.37 * $value);
-			break;
-		}
-		switch ($to) {
-			case 'CM' :
-				$value = (float)($meter * 0.01);
-				break;
-			case 'MM' :
-				$value = (float)($meter * 0.001);
 				break;
 			case 'YD' :
-				$value =(float) ($meter * 0.9144);
+				$meter =(float) (0.9144 * $value);
 				break;
 			case 'FT' :
-				$value = (float)($meter * 0.3048);
+				$meter = (float)(0.3048 * $value);
 				break;
 			case 'IN' :
-				$value = (float)($meter * 0.0254);
+				$meter = (float)(0.0254 * $value);
+				break;
+		}
+		switch ($to) {
+			case 'CM':
+				$value = (float)($meter / 0.01);
+				break;
+			case 'MM':
+				$value = (float)($meter / 0.001);
+				break;
+			case 'YD' :
+				$value =(float) ($meter / 0.9144);
+				break;
+			case 'FT' :
+				$value = (float)($meter / 0.3048);
+				break;
+			case 'IN' :
+				$value = (float)($meter / 0.0254);
 				break;
 		}
 		return $value;
