@@ -167,25 +167,32 @@ class VirtueMartModelShopperGroup extends VmModel {
 	function mergeSessionSgrps(&$ids){
 		$session = JFactory::getSession();
 		$shoppergroup_ids = $session->get('vm_shoppergroups_add',array(),'vm');
+
 		$ids = array_merge($ids,(array)$shoppergroup_ids);
+		$ids = array_unique($ids);
+		//$session->set('vm_shoppergroups_add',array(),'vm');
+		//vmdebug('mergeSessionSgrps',$shoppergroup_ids,$ids);
 	}
 
 	function removeSessionSgrps(&$ids){
 		$session = JFactory::getSession();
 		$shoppergroup_ids_remove = $session->get('vm_shoppergroups_remove',0,'vm');
 		if($shoppergroup_ids_remove!==0){
+
 			if(!is_array($shoppergroup_ids_remove)){
-				if(isset($ids[$shoppergroup_ids_remove])){
-					unset($ids[$shoppergroup_ids_remove]);
-				}
-			} else {
-				foreach($shoppergroup_ids_remove as $id){
-					if(isset($ids[$id])){
-						unset($ids[$id]);
+				$shoppergroup_ids_remove = (array) $shoppergroup_ids_remove;
+			}
+
+			foreach($shoppergroup_ids_remove as $k => $id){
+				if(in_array($id,$ids)){
+					$key=array_search($id, $ids);
+					if($key!==FALSE){
+						unset($ids[$key]);
 						vmdebug('Anonymous case, remove session shoppergroup by plugin '.$id);
 					}
 				}
 			}
+			//$session->set('vm_shoppergroups_remove',0,'vm');
 		}
 
 	}

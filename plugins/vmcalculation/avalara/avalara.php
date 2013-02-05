@@ -144,7 +144,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		catch(SoapFault $exception)
 		{
 
-			$err = "Exception: ";
+			$err = "Exception: ping ";
 			if($exception)
 				$err .= $exception->faultstring;
 
@@ -253,7 +253,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				}
 				catch(SoapFault $exception)
 				{
-					$msg = "Exception: ";
+					$msg = "Exception: fillValidateAvalaraAddress ";
 					if($exception)
 						$msg .= $exception->faultstring;
 
@@ -580,7 +580,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		}
 		catch(SoapFault $exception)
 		{
-			$msg = "Exception: ";
+			$msg = "Exception: getTax ";
 			if($exception)
 				$msg .= $exception->faultstring;
 
