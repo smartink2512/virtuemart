@@ -316,31 +316,41 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		$paymentCurrencyId = $method->payment_currency;
 	}
 
-	function plgVmOnPaymentResponseReceived (&$html) {
-$virtuemart_paymentmethod_id = JRequest::getInt ('pm', 0);
+  function plgVmOnPaymentResponseReceived (&$html) {
+    if (!class_exists ('VirtueMartCart')) {
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		}
+		if (!class_exists ('shopFunctionsF')) {
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+		}
+		if (!class_exists ('VirtueMartModelOrders')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+    }
+
+    $virtuemart_paymentmethod_id = JRequest::getInt ('pm', 0);
 		$order_number = JRequest::getString ('on', 0);
-
-		if (!($method = $this->getVmPluginMethod ($virtuemart_paymentmethod_id))) {
-			return NULL; // Another method was selected, do nothing
-		}
-		if (!$this->selectedThisElement ($method->payment_element)) {
+    
+    if (!($method = $this->getVmPluginMethod ($virtuemart_paymentmethod_id))) {
+      return NULL; // Another method was selected, do nothing
+    }
+    if (!$this->selectedThisElement ($method->payment_element)) {
 			return NULL;
-		}
-
-		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber ($order_number))) {
+    }
+    
+    if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber ($order_number))) {
 			return NULL;
-		}
-		$db = JFactory::getDBO ();
+    }
+ 		$db = JFactory::getDBO ();
 		$_q = 'SELECT * FROM `' . $this->_tablename . '` '
 			. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
 		$db->setQuery ($_q);
 		if (!($paymentData = $db->loadObject ())) {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 		}
-		vmdebug ('HEILDEPAY paymentdata', $paymentData);
+    vmdebug ('HEILDEPAY paymentdata', $paymentData);
 		$cart = VirtueMartCart::getCart ();
-		$cart->emptyCart ();
-
+    $cart->emptyCart ();
+ 
 		if ($paymentData->processing_result == "NOK") {
 			vmError ('VMPAYMENT_HEIDELPAY_PAYMENT_FAILED','VMPAYMENT_HEIDELPAY_PAYMENT_FAILED');
 			vmError (" - " . $paymentData->comment," - " . $paymentData->comment);
