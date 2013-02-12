@@ -1065,7 +1065,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * @author Kohl Patrick,RolandD,Max Milbers
 	 * @return array list of categories product is in
 	 */
-	private function getProductCategories ($virtuemart_product_id = 0, $front = FALSE) {
+	public function getProductCategories ($virtuemart_product_id = 0, $front = FALSE) {
 
 		$categories = array();
 		if ($virtuemart_product_id > 0) {

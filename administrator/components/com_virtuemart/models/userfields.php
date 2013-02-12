@@ -300,13 +300,13 @@ class VirtueMartModelUserfields extends VmModel {
 
 			// Alter the user_info table
 			if (!$userinfo->_modifyColumn ($_action, $data['name'], $_fieldType)) {
-				vmError($userinfo->getError());
+				vmError('userfield store modifyColumn userinfo',$userinfo->getError());
 				return false;
 			}
 
 			// Alter the order_userinfo table
 			if (!$orderinfo->_modifyColumn ($_action, $data['name'], $_fieldType)) {
-				vmError($orderinfo->getError());
+				vmError('userfield store modifyColumn orderinfo',$orderinfo->getError());
 				return false;
 			}
 		}

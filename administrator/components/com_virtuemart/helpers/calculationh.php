@@ -34,7 +34,7 @@ class calculationHelper {
 	private $_deliveryCountry;
 	private $_deliveryState;
 	private $_currencyDisplay;
-	private $_cart = null;
+	var $_cart = null;
 	private $_cartPrices = false;
 	var $productPrices;
 	private $_cartData;
@@ -261,7 +261,7 @@ class calculationHelper {
 			$this->_product = $product;
 			$this->_product->amount = $amount;
 			$this->productPrices = array();
-
+			if(!isset($this->_product->quantity)) $this->_product->quantity = 1;
 		} //Use it as productId
 		else {
 			vmError('getProductPrices no object given query time','getProductPrices no object given query time');

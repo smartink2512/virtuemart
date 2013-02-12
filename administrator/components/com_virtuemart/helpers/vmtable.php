@@ -1391,10 +1391,29 @@ class VmTable extends JTable{
 	 */
 	function _modifyColumn ($_act, $_col, $_type = '', $_col2='')
 	{
-		$_sql = "ALTER TABLE `".$this->_tbl."` ";
-		
-		
+		$_sql = 'ALTER TABLE `'.$this->_tbl.'` ';
+
+
 		$_check_act = strtoupper(substr($_act, 0, 3));
+		//Check if a column is there
+		$db = JFactory::getDbo();
+		$columns = $db ->getTableColumns($this->_tbl);
+		$res = array_key_exists($_col,$columns);
+
+		if($_check_act!='ADD' and $_check_act!='CRE'){
+			if(!$res){
+				vmdebug('_modifyColumn Command was '.$_check_act.' column does not exist, changed to ADD');
+				$_check_act = 'ADD';
+
+			}
+		} else {
+			if($res){
+				vmdebug('_modifyColumn Command was '.$_check_act.' column already exists, changed to MOD');
+				$_check_act = 'MOD';
+
+			}
+		}
+
 		switch ($_check_act) {
 			case 'ADD':
 			case 'CRE': // Create
@@ -1423,7 +1442,7 @@ class VmTable extends JTable{
 		
 		$this->_db->query();
 		if ($this->_db->getErrorNum() != 0) {
-			vmError(get_class( $this ).'::modify table - '.$this->_db->getErrorMsg());
+			vmError(get_class( $this ).'::modify table - '.$this->_db->getErrorMsg().'<br /> values: action '.$_act.', columname: '. $_col.', type: '.$_type.', columname2: '.$_col2);
 			return false;
 		}
 		return true;
