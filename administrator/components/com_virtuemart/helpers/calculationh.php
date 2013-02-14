@@ -37,7 +37,7 @@ class calculationHelper {
 	var $_cart = null;
 	private $_cartPrices = false;
 	var $productPrices;
-	private $_cartData;
+	var $_cartData;
 
 	public $_amount;
 
@@ -220,6 +220,7 @@ class calculationHelper {
 		} else if (!empty($cart->BT['virtuemart_state_id'])) {
 			$this->_deliveryState = (int)$this->_cart->BT['virtuemart_state_id'];
 		}
+		vmdebug('setCountryState state '.$this->_deliveryState,$this->_cart->BT);
 	}
 
 	/** function to start the calculation, here it is for the product
@@ -1025,10 +1026,12 @@ class calculationHelper {
 			$states = $this->_db->loadResultArray();
 
 			$hitsDeliveryArea = true;
+			//vmdebug('gatherEffectingRulesForBill $hitsDeliveryArea $countries and states  ',$countries,$states,$q);
 			if (!empty($countries) && empty($states)) {
 				$hitsDeliveryArea = $this->testRulePartEffecting($countries, $this->_deliveryCountry);
-			} else if (!empty($states)) {
+			} else if (!empty($states) ) {
 				$hitsDeliveryArea = $this->testRulePartEffecting($states, $this->_deliveryState);
+				vmdebug('gatherEffectingRulesForBill $hitsDeliveryArea '.(int)$hitsDeliveryArea.' '.$this->_deliveryState,$states);
 			}
 
 
@@ -1324,7 +1327,7 @@ class calculationHelper {
 		if (!isset($rule))
 			return true;
 		if (!isset($data))
-			return true;
+			return false;
 
 		if (is_array($rule)) {
 			if (count($rule) == 0)

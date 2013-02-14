@@ -163,10 +163,33 @@ foreach ($this->cart->products as $pkey => $prow) {
 		// 					echo $prow->salesPrice ;
 		?>
 	</td>
-	<td align="right">
+	<td align="right"><?php 
+//				$step=$prow->min_order_level; 
+				if ($prow->step_order_level)
+					$step=$prow->step_order_level;
+				else
+					$step=1;
+				if($step==0)
+					$step=1;
+				$alert=JText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
+				?> 
+                <script type="text/javascript">
+				function check<?php echo $step?>(obj) {
+ 				// use the modulus operator '%' to see if there is a remainder
+				remainder=obj.value % <?php echo $step?>;
+				quantity=obj.value;
+ 				if (remainder  != 0) {
+ 					alert('<?php echo $alert?>!');
+ 					obj.value = quantity-remainder;
+ 					return false;
+ 				}
+ 				return true;
+ 				}
+				</script> 
 		<form action="<?php echo JRoute::_ ('index.php'); ?>" method="post" class="inline">
 			<input type="hidden" name="option" value="com_virtuemart"/>
-			<input type="text" title="<?php echo  JText::_ ('COM_VIRTUEMART_CART_UPDATE') ?>" class="inputbox" size="3" maxlength="4" name="quantity" value="<?php echo $prow->quantity ?>"/>
+				<!--<input type="text" title="<?php echo  JText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="inputbox" size="3" maxlength="4" name="quantity" value="<?php echo $prow->quantity ?>" /> -->
+                <input type="text" onblur="check<?php echo $step?>(this);" onclick="check<?php echo $step?>(this);" onchange="check<?php echo $step?>(this);" onsubmit="check(<?php echo $step?>this);" title="<?php echo  JText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="quantity-input js-recalculate" size="3" maxlength="4" name="quantity" value="<?php echo $prow->quantity ?>" />
 			<input type="hidden" name="view" value="cart"/>
 			<input type="hidden" name="task" value="update"/>
 			<input type="hidden" name="cart_virtuemart_product_id" value="<?php echo $prow->cart_item_id  ?>"/>

@@ -49,18 +49,26 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<input type="text" class="inputbox js-change-stock"  name="product_ordered" value="<?php echo $this->product->product_ordered; ?>" size="10" />
 		</td>
 	</tr>
-	<!-- low stock notification -->
 	<tr class="row1">
+	<!-- low stock notification -->
 		<td>
 			<div style="text-align:right;font-weight:bold;">
 				<?php echo JText::_('COM_VIRTUEMART_LOW_STOCK_NOTIFICATION'); ?>
 			</div>
 		</td>
-		<td colspan="3">
+		<td>
 			<input type="text" class="inputbox" name="low_stock_notification" value="<?php echo $this->product->low_stock_notification; ?>" size="3" />
 		</td>
-	</tr>
+		<td>
+			<div style="text-align:right;font-weight:bold;">
+				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_STEP_ORDER') ?>
+			</div>
+		</td>
+		<td>
+			<input type="text" class="inputbox"  name="step_order_level" value="<?php echo $this->product->step_order_level; ?>" size="10" />
+		</td>
 	<!-- end low stock notification -->
+	</tr>
 	<tr class="row0">
 		<td>
 			<div style="text-align:right;font-weight:bold;">

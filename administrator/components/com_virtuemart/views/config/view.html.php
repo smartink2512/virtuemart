@@ -124,10 +124,32 @@ class VirtuemartViewConfig extends VmView {
 
 		shopFunctions::checkSafePath();
 
+		$this -> checkVmUserVendor();
 		parent::display($tpl);
 	}
 
+	private function checkVmUserVendor(){
 
+		$db = JFactory::getDBO();
+		$multix = Vmconfig::get('multix','none');
+
+		$q = 'select * from #__virtuemart_vmusers where user_is_vendor = 1';// and virtuemart_vendor_id '.$vendorWhere.' limit 1';
+		$db->setQuery($q);
+		$r = $db->loadAssocList();
+
+		if (empty($r)){
+			vmWarn('Your Virtuemart installation contains an error: No user as marked as vendor. Please fix this in your phpMyAdmin and set #__virtuemart_vmusers.user_is_vendor = 1 and #__virtuemart_vmusers.virtuemart_vendor_id = 1 to one of your administrator users. Please update all users to be associated with virtuemart_vendor_id 1.');
+		} else {
+			if($multix=='none' and count($r)!=1){
+				vmWarn('You are using single vendor mode, but it seems more than one user is set as vendor');
+			}
+			foreach($r as $entry){
+				if(empty($entry['virtuemart_vendor_id'])){
+					vmWarn('The user with virtuemart_user_id = '.$entry['virtuemart_user_id'].' is set as vendor, but has no referencing vendorId.');
+				}
+			}
+		}
+	}
 
 }
 // pure php no closing tag

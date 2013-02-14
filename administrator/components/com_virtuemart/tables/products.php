@@ -120,6 +120,7 @@ class TableProducts extends VmTable {
 		$varsToPushParam = array(
 				    				'min_order_level'=>array(null,'float'),
 				    				'max_order_level'=>array(null,'float'),
+				    				'step_order_level'=>array(null,'float'),
 									//'product_packaging'=>array(null,'float'),
 									'product_box'=>array(null,'float')
 									);

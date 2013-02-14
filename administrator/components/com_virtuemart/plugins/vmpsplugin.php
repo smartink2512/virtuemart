@@ -946,8 +946,21 @@ abstract class vmPSPlugin extends vmPlugin {
 			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $method->tax_id . '" ';
 			$db->setQuery ($q);
 			$taxrules = $db->loadAssocList ();
+		} else {
+			//This construction makes trouble, if there are products with different vats in the cart
+			//on the other side, it is very unlikely to have different vats in the cart and simultan it is not possible to use a fixed tax rule for the shipment
+			if(!empty($calculator->_cartData['VatTax']) and count ($calculator->_cartData['VatTax']) == 1){
+				$taxrules = $calculator->_cartData['VatTax'];
+				foreach($taxrules as &$rule){
+					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
+				}
+
+			} else {
+				$taxrules = $calculator->_cartData['taxRulesBill'];
+			}
 		}
 
+		vmdebug('VMPSplugin setCartPrices type '.$_psType.' price '.$cart_prices[$this->_psType . 'Value'].' $taxrules ',$taxrules);
 		if (count ($taxrules) > 0) {
 			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value']), 'salesPrice');
 			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] - $cart_prices[$this->_psType . 'Value']), 'salesPrice');

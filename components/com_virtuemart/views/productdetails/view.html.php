@@ -162,6 +162,12 @@ class VirtueMartViewProductdetails extends VmView {
 	    $min_order_level = 1;
 	}
 	$this->assignRef('min_order_level', $min_order_level);
+	if (isset($product->step_order_level) && (int) $product->step_order_level > 0) {
+	    $step_order_level = $product->step_order_level;
+	} else {
+	    $step_order_level = 1;
+	}
+	$this->assignRef('step_order_level', $step_order_level);
 	// Load the neighbours
 	$product->neighbours = $product_model->getNeighborProducts($product);
 //		if(!empty($product->neighbours) && is_array($product->neighbours) && !empty($product->neighbours[0]))$product_model->addImages($product->neighbours);

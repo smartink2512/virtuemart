@@ -17,11 +17,20 @@
  * @version $Id: default_addtocart.php 6433 2012-09-12 15:08:50Z openglobal $
  */
 // Check to ensure this file is included in Joomla!
-defined ('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die('Restricted access');
+if (isset($this->product->step_order_level))
+	$step=$this->product->step_order_level;
+else
+	$step=1;
+if($step==0)
+	$step=1;
+$alert=JText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 ?>
+
 <div class="addtocart-area">
 
 	<form method="post" class="product js-recalculate" action="<?php echo JRoute::_ ('index.php'); ?>">
+                <input name="quantity" type="hidden" value="<?php echo $step ?>" />
 		<?php // Product custom_fields
 		if (!empty($this->product->customfieldsCart)) {
 			?>
@@ -66,6 +75,20 @@ defined ('_JEXEC') or die('Restricted access');
 
 		<div class="addtocart-bar">
 
+<script type="text/javascript">
+		function check(obj) {
+ 		// use the modulus operator '%' to see if there is a remainder
+		remainder=obj.value % <?php echo $step?>;
+		quantity=obj.value;
+ 		if (remainder  != 0) {
+ 			alert('<?php echo $alert?>!');
+ 			obj.value = quantity-remainder;
+ 			return false;
+ 			}
+ 		return true;
+ 		}
+</script> 
+
 			<?php // Display the quantity box
 
 			$stockhandle = VmConfig::get ('stockhandle', 'none');
@@ -76,8 +99,8 @@ defined ('_JEXEC') or die('Restricted access');
 				<?php } else { ?>
 				<!-- <label for="quantity<?php echo $this->product->virtuemart_product_id; ?>" class="quantity_box"><?php echo JText::_ ('COM_VIRTUEMART_CART_QUANTITY'); ?>: </label> -->
 				<span class="quantity-box">
-		<input type="text" class="quantity-input js-recalculate" name="quantity[]" value="<?php if (isset($this->product->min_order_level) && (int)$this->product->min_order_level > 0) {
-			echo $this->product->min_order_level;
+		<input type="text" class="quantity-input js-recalculate" name="quantity[]" onblur="check(this);" value="<?php if (isset($this->product->step_order_level) && (int)$this->product->step_order_level > 0) {
+			echo $this->product->step_order_level;
 		} else {
 			echo '1';
 		} ?>"/>

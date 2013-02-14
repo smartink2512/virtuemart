@@ -88,6 +88,7 @@ if(typeof Virtuemart === "undefined")
 			product : function(carts) {
 				carts.each(function(){
 					var cart = jQuery(this),
+					step=cart.find('input[name="quantity"]'),
 					addtocart = cart.find('input.addtocart-button'),
 					plus   = cart.find('.quantity-plus'),
 					minus  = cart.find('.quantity-minus'),
@@ -102,17 +103,19 @@ if(typeof Virtuemart === "undefined")
 					});
 					plus.click(function() {
 						var Qtt = parseInt(quantity.val());
+						var Ste = parseInt(step.val());
 						if (!isNaN(Qtt)) {
-							quantity.val(Qtt + 1);
+							quantity.val(Qtt + Ste);
 						Virtuemart.setproducttype(cart,virtuemart_product_id);
 						}
 						
 					});
 					minus.click(function() {
 						var Qtt = parseInt(quantity.val());
-						if (!isNaN(Qtt) && Qtt>1) {
-							quantity.val(Qtt - 1);
-						} else quantity.val(1);
+						var Ste = parseInt(step.val());
+						if (!isNaN(Qtt) && Qtt>Ste) {
+							quantity.val(Qtt - Ste);
+						} else quantity.val(Ste);
 						Virtuemart.setproducttype(cart,virtuemart_product_id);
 					});
 					select.change(function() {
