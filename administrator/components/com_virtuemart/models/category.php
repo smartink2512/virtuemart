@@ -47,6 +47,9 @@ class VirtueMartModelCategory extends VmModel {
 		}
 		$this->_selectedOrdering = $toCheck;
 		$this->_selectedOrderingDir = 'ASC';
+
+		$this->setToggleName('shared');
+
 	}
 
 

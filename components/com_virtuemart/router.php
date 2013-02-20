@@ -332,6 +332,9 @@ function virtuemartParseRoute($segments) {
 
 	} else {
 		$vars['limitstart'] = 0 ;
+		if(vmrouterHelper::$limit === null){
+			vmrouterHelper::$limit = VmConfig::get('list_limit', 20);
+		}
 		$vars['limit'] = vmrouterHelper::$limit;
 
 	}

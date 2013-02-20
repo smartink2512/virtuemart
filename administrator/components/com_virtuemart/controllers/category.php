@@ -50,45 +50,7 @@ class VirtuemartControllerCategory extends VmController {
 		$data['category_name'] = JRequest::getVar('category_name','','post','STRING',JREQUEST_ALLOWHTML);
 		$data['category_description'] = JRequest::getVar('category_description','','post','STRING',JREQUEST_ALLOWHTML);
 
-		//TODO multi-x
-		$data['virtuemart_vendor_id'] = 1;
-
 		parent::save($data);
-	}
-
-	/**
-	 * Handle the shared/unshared action
-	 *
-	 * @author jseros
-	 */
-	public function toggleShared()
-	{
-		$mainframe = JFactory::getApplication();
-
-		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
-		$msg = '';
-
-		JArrayHelper::toInteger($cid);
-
-		if(count($cid) < 1) {
-			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_TOGGLE');
-			$mainframe->redirect('index.php?option=com_virtuemart&view=category', $msg, 'error');
-		}
-
-		$categoryModel = VmModel::getModel('category');
-		$status = $categoryModel->share($cid);
-
-		if( $status == 1 ){
-			$msg = JText::_('COM_VIRTUEMART_CATEGORY_SHARED_SUCCESS');
-		}
-		elseif( $status == -1 ){
-			$msg = JText::_('COM_VIRTUEMART_CATEGORY_UNSHARED_SUCCESS');
-		}
-
-		$mainframe->redirect('index.php?option=com_virtuemart&view=category', $msg);
 	}
 
 

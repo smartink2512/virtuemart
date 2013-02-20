@@ -295,7 +295,6 @@ class calculationHelper {
 		$this->rules['DBTax'] = $this->gatherEffectingRulesForProductPrice('DBTax', $this->product_discount_id);
 		$this->rules['DATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
 
-
 		if (!empty($variant)) {
 			$basePriceShopCurrency = $basePriceShopCurrency + doubleval($variant);
 			$this->productPrices['basePrice'] = $this->productPrices['basePriceVariant'] = $basePriceShopCurrency;
@@ -718,6 +717,7 @@ class calculationHelper {
 		//Avalara wants to calculate the tax of the shipment. Only disadvantage to set shipping here is that the discounts per bill respectivly the tax per bill
 		// is not considered.
 		$shipment_id = empty($cart->virtuemart_shipmentmethod_id) ? 0 : $cart->virtuemart_shipmentmethod_id;
+
 		$this->calculateShipmentPrice($cart,  $shipment_id, $checkAutomaticSelected);
 
 		$this->_cartPrices['withTax'] = $discountWithTax = $this->roundInternal($this->executeCalculation($this->_cartData['taxRulesBill'], $toTax, true));
