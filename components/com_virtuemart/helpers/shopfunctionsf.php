@@ -295,6 +295,22 @@ class shopFunctionsF {
 			}
 		}
 
+		// set proper sender
+		$sender = array();
+		if (!empty($view->vendorEmail))
+		{
+			$sender[0] = $view->vendorEmail;
+			$sender[1] = $view->vendor->vendor_name;
+		}
+		else
+		{
+			// use default joomla's mail sender
+			$app = JFactory::getApplication();
+			$sender[0] = $app->getCfg('mailfrom');
+			$sender[1] = $app->getCfg('fromname');
+		}
+		$mailer->setSender($sender);
+
 		return $mailer->Send();
 	}
 

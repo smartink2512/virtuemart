@@ -33,7 +33,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			'account'       => array('', 'char'),
 			'license'     => array('', 'char'),
 			'committ'   => array(0,'int'),
-			'avatax_virtuemart_country_id'  => array(0,'obj'), //TODO should be a country dropdown multiselect box
+			'only_cart' => array(0,'int'),
+			'avatax_virtuemart_country_id'  => array(0,'int'), //TODO should be a country dropdown multiselect box
 		);
 
 		$this->setConfigParameterable ('calc_params', $varsToPush);
@@ -100,7 +101,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$html .= VmHTML::row('input','VMCALCULATION_AVALARA_ACCOUNT','account',$calc->account);
 		$html .= VmHTML::row('input','VMCALCULATION_AVALARA_LICENSE','license',$calc->license);
 		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_COMMITT','committ',$calc->committ);
-
+		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_ONLYCART','only_cart',$calc->only_cart);
 
 		$label = 'VMCALCULATION_AVALARA_VADDRESS';
 		$lang =JFactory::getLanguage();
@@ -230,7 +231,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		if(!isset(self::$validatedAddresses)){
 
-			$vmadd = $this->getShopperData();
+			$vmadd = $this->getShopperData($calc);
 
 			if(!empty($vmadd)){
 
@@ -376,7 +377,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		if($calc->activated==0) return false;
 
-		$shopperData = $this->getShopperData();
+		$shopperData = $this->getShopperData($calc);
 		if(!$shopperData){
 			return false;
 		}
@@ -552,7 +553,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 							$line->setTaxCode($taxCode);
 							vmdebug('AvaTax setTaxCode '.$taxCode);
 						} else {
-							vmError('AvaTax setTaxCode, category could not be parsed');
+							vmError('AvaTax setTaxCode, category could not be parsed '.$catslug);
 						}
 
 						break;
@@ -600,7 +601,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		//vmdebug('avalaragetTax setLines',$lines);
 		$request->setLines($lines);
 
-		vmdebug('My request to AvaTax',$request);
+		vmdebug('My GetTaxRequest sent to AvaTax',$request);
 		$totalTax = 0.0;
 		try
 		{
@@ -720,9 +721,15 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 
 	static $vmadd = NULL;
-	private function getShopperData(){
+	private function getShopperData($calc){
 
 		if(!isset(self::$vmadd)){
+
+			$view = JRequest::getWord('view',0);
+			if($calc->only_cart == 1 and $view != 'cart'){
+				self::$vmadd = FALSE;
+				return self::$vmadd;
+			}
 			//We need for the tax calculation the shipment Address
 			//We have this usually in our cart.
 			if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
@@ -757,22 +764,28 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 			}
 
-			vmdebug('getShopperData',$vmadd);
+
 			//Maybe the user is logged in, but has no cart yet.
-			if(empty($vmadd)){
+		/*	if(empty($vmadd)){
 				$jUser = JFactory::getUser ();
 				$userModel = VmModel::getModel('user');
 				$userModel -> setId($jUser->id);
 				$BT_userinfo_id = $userModel->getBTuserinfo_id();
 				//Todo check if we actually need this fallback
 				//vmdebug('getShopperData cart data was empty',$vmadd);
-			}
+			}*/
 
 			//vmdebug('Tax $vmadd',$vmadd);
 			if(empty($vmadd) or !is_array($vmadd) or (is_array($vmadd) and count($vmadd) <2) ){
+
+				//VmTable::bindParameterable ($calc, $this->_xParams, $this->_varsToPushParam);
+				//vmdebug('Insufficient addres, my view '.$view. ' my param ',$calc);
+
 				vmInfo('VMCALCULATION_AVALARA_INSUF_INFO');
+
 				$vmadd=FALSE;
 			}
+			vmdebug('getShopperData',$vmadd);
 			self::$vmadd = $vmadd;
 		}
 

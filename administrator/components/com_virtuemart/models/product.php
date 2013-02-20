@@ -1312,7 +1312,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			$direction = 'ASC';
 			$op = '>';
- 			vmdebug('getNeighborProducts '.$db->getQuery());
+ 			//vmdebug('getNeighborProducts '.$db->getQuery());
 			//vmdebug('getNeighborProducts '.$db->getErrorMsg());
 		}
 		//vmdebug('mist',$neighbors);
