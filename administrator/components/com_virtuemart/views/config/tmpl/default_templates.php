@@ -140,7 +140,78 @@ defined('_JEXEC') or die('Restricted access');
 	    </tr>
       </table>
       </fieldset>
-	  
+	  		<fieldset>
+    <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CAT_FEED_SETTINGS') ?></legend>
+    <table class="admintable">
+	<tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE_TIP'); ?>">
+		<label for="feed_cat_published"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE') ?></label>
+		</span>
+	    </td>
+	    <td>
+		<?php echo VmHTML::checkbox('feed_cat_published', VmConfig::get('feed_cat_published',0)); ?>
+	    </td>
+	</tr>
+
+	<tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWIMAGES_TIP'); ?>">
+		<label for="feed_cat_show_images"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWIMAGES') ?></span>
+		</span>
+	    </td>
+	    <td>
+		<?php echo VmHTML::checkbox('feed_cat_show_images', VmConfig::get('feed_cat_show_images')); ?>
+	    </td>
+	</tr>
+	<tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWPRICES_TIP'); ?>">
+		<label for="feed_cat_show_prices"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWPRICES') ?></span>
+		</span>
+	    </td>
+	    <td>
+		<?php echo VmHTML::checkbox('feed_cat_show_prices', VmConfig::get('feed_cat_show_prices')); ?>
+	    </td>
+	</tr>
+	<tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWDESC_TIP'); ?>">
+		<label for="feed_cat_show_description"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWDESC') ?></span>
+		</span>
+	    </td>
+	    <td>
+		<?php echo VmHTML::checkbox('feed_cat_show_description', VmConfig::get('feed_cat_show_description')); ?>
+	    </td>
+	</tr>
+	<tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_DESCRIPTION_TYPE_TIP'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_DESCRIPTION_TYPE') ?>
+		</span>
+	    </td>
+	    <td>
+		<?php
+		$options = array();
+		$options[] = JHTML::_('select.option', 'product_s_desc', JText::_('COM_VIRTUEMART_PRODUCT_FORM_S_DESC'));
+		$options[] = JHTML::_('select.option', 'product_desc', JText::_('COM_VIRTUEMART_PRODUCT_FORM_DESCRIPTION'));
+		echo JHTML::_('Select.genericlist', $options, 'feed_cat_description_type', 'size=1', 'value', 'text', VmConfig::get('feed_cat_description_type'));
+		?>
+	    </td>
+	</tr>
+
+	<tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAX_TEXT_LENGTH_TIP'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_MAX_TEXT_LENGTH') ?>
+		</span>
+	    </td>
+	    <td>
+		<input type="text" size="10" value="<?php echo VmConfig::get('feed_cat_max_text_length', '500'); ?>" name="feed_cat_max_text_length" id="feed_cat_max_text_length" />
+	    </td>
+	</tr>
+    </table>
+</fieldset>
 	  <fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_TITLE') ?></legend>
 		<table class="admintable">
@@ -433,7 +504,127 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		</table>
 	    </fieldset>
-		
+		<fieldset>
+    <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_HOME_FEED_SETTINGS') ?></legend>
+    <table class="admintable">
+	<tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_LATEST_ENABLE_TIP'); ?>">
+		<label for="feed_latest_published"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_LATEST_ENABLE') ?></label>
+		</span>
+	    </td>
+	    <td>
+		<?php echo VmHTML::checkbox('feed_latest_published', VmConfig::get('feed_latest_published',0)); ?>
+	    </td>
+	</tr>
+	    <tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_LATEST_NB_TIP'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_LATEST_NB') ?>
+		</span>
+	    </td>
+	    <td>
+		<input type="text" size="10" value="<?php echo VmConfig::get('feed_latest_nb', '5'); ?>" name="feed_latest_nb" id="feed_latest_nb" />
+	    </td>
+	</tr>
+<tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_TOPTEN_ENABLE_TIP'); ?>">
+		<label for="feed_topten_published"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_TOPTEN_ENABLE') ?></label>
+		</span>
+	    </td>
+	    <td>
+		<?php echo VmHTML::checkbox('feed_topten_published', VmConfig::get('feed_topten_published',0)); ?>
+	    </td>
+	  <tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_TOPTEN_NB_TIP'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_TOPTEN_NB') ?>
+		</span>
+	    </td>
+	    <td>
+		<input type="text" size="10" value="<?php echo VmConfig::get('feed_topten_nb', '5'); ?>" name="feed_latest_nb" id="feed_topten_nb" />
+	    </td>
+	</tr>
+	</tr>
+	    <tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_FEATURED_ENABLE_TIP'); ?>">
+		<label for="feed_featured_published"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_FEATURED_ENABLE') ?></label>
+		</span>
+	    </td>
+	    <td>
+		<?php echo VmHTML::checkbox('feed_featured_published', VmConfig::get('feed_featured_published',0)); ?>
+	    </td>
+	</tr>
+	      <tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_FEATURED_NB_TIP'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_FEATURED_NB') ?>
+		</span>
+	    </td>
+	    <td>
+		<input type="text" size="10" value="<?php echo VmConfig::get('feed_featured_nb', '5'); ?>" name="feed_featured_nb" id="feed_featured_nb" />
+	    </td>
+	</tr>
+	<tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWIMAGES_TIP'); ?>">
+		<label for="feed_home_show_images"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWIMAGES') ?></span>
+		</span>
+	    </td>
+	    <td>
+		<?php echo VmHTML::checkbox('feed_home_show_images', VmConfig::get('feed_home_show_images')); ?>
+	    </td>
+	</tr>
+	<tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWPRICES_TIP'); ?>">
+		<label for="feed_home_show_prices"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWPRICES') ?></span>
+		</span>
+	    </td>
+	    <td>
+		<?php echo VmHTML::checkbox('feed_home_show_prices', VmConfig::get('feed_home_show_prices')); ?>
+	    </td>
+	</tr>
+	<tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWDESC_TIP'); ?>">
+		<label for="feed_home_show_description"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_SHOWDESC') ?></span>
+		</span>
+	    </td>
+	    <td>
+		<?php echo VmHTML::checkbox('feed_home_show_description', VmConfig::get('feed_home_show_description')); ?>
+	    </td>
+	</tr>
+	<tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_DESCRIPTION_TYPE_TIP'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_DESCRIPTION_TYPE') ?>
+		</span>
+	    </td>
+	    <td>
+		<?php
+		$options = array();
+		$options[] = JHTML::_('select.option', 'product_s_desc', JText::_('COM_VIRTUEMART_PRODUCT_FORM_S_DESC'));
+		$options[] = JHTML::_('select.option', 'product_desc', JText::_('COM_VIRTUEMART_PRODUCT_FORM_DESCRIPTION'));
+		echo JHTML::_('Select.genericlist', $options, 'feed_home_description_type', 'size=1', 'value', 'text', VmConfig::get('feed_home_description_type'));
+		?>
+	    </td>
+	</tr>
+
+	<tr>
+	    <td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAX_TEXT_LENGTH_TIP'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_MAX_TEXT_LENGTH') ?>
+		</span>
+	    </td>
+	    <td>
+		<input type="text" size="10" value="<?php echo VmConfig::get('feed_home_max_text_length', '500'); ?>" name="feed_home_max_text_length" id="feed_home_max_text_length" />
+	    </td>
+	</tr>
+    </table>
+</fieldset>
 		<fieldset>
 		<legend class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS_JS_SETTINGS_TIP'); ?>"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS_JS_SETTINGS') ?></legend>
 		<table class="admintable">

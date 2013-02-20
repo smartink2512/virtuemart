@@ -248,7 +248,7 @@ echo VmHTML::selectList('latest_products_orderBy',VmConfig::get('latest_products
 
 		</table>
 	</fieldset>
-
+</td>
 <td>
 			<fieldset class="checkboxes">
 				<legend><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_POOS_ENABLE_EXPLAIN'); ?>">
