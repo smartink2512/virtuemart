@@ -97,13 +97,17 @@ if(typeof Virtuemart === "undefined")
 					virtuemart_product_id = cart.find('input[name="virtuemart_product_id[]"]').val(),
 					quantity = cart.find('.quantity-input');
 
+                    var Ste = parseInt(step.val());
+                    //Fallback for layouts lower than 2.0.18b
+                    if(isNaN(Ste)){
+                        Ste = 1;
+                    }
 					addtocart.click(function(e) { 
 						Virtuemart.sendtocart(cart);
 						return false;
 					});
 					plus.click(function() {
 						var Qtt = parseInt(quantity.val());
-						var Ste = parseInt(step.val());
 						if (!isNaN(Qtt)) {
 							quantity.val(Qtt + Ste);
 						Virtuemart.setproducttype(cart,virtuemart_product_id);
@@ -112,7 +116,6 @@ if(typeof Virtuemart === "undefined")
 					});
 					minus.click(function() {
 						var Qtt = parseInt(quantity.val());
-						var Ste = parseInt(step.val());
 						if (!isNaN(Qtt) && Qtt>Ste) {
 							quantity.val(Qtt - Ste);
 						} else quantity.val(Ste);

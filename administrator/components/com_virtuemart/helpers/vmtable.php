@@ -1409,7 +1409,7 @@ class VmTable extends JTable{
 		} else {
 			if($res){
 				vmdebug('_modifyColumn Command was '.$_check_act.' column already exists, changed to MOD');
-				$_check_act = 'MOD';
+				$_check_act = 'UPD';
 
 			}
 		}
@@ -1445,6 +1445,7 @@ class VmTable extends JTable{
 			vmError(get_class( $this ).'::modify table - '.$this->_db->getErrorMsg().'<br /> values: action '.$_act.', columname: '. $_col.', type: '.$_type.', columname2: '.$_col2);
 			return false;
 		}
+		vmdebug('_modifyColumn executed successfully '.$_sql);
 		return true;
 	}
 

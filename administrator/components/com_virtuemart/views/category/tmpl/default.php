@@ -70,6 +70,7 @@ AdminUIHelper::startAdminArea();
 			</th>
 			<?php if(Vmconfig::get('multix','none')!=='none' and $this->perms->check('admin') ){ ?>
             <th width="20px">
+
 				<?php echo $this->sort( 'cx.category_shared' , 'COM_VIRTUEMART_SHARED') ?>
             </th>
 			<?php } ?>

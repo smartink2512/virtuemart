@@ -119,7 +119,8 @@ class VirtuemartViewUser extends VmView {
 			// Shopper info
 			$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups,true);
 			$this->lists['vendors'] = ShopFunctions::renderVendorList($userDetails->virtuemart_vendor_id);
-			$this->lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
+			$model->setId($userDetails->JUser->get('id'));
+			$this->lists['custnumber'] = $model->getCustomerNumberById();
 
 			// Shipment address(es)
 			$this->lists['shipTo'] = ShopFunctions::generateStAddressList($this,$model,'addST');

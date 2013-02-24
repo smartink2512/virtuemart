@@ -154,7 +154,9 @@ abstract class vmPSPlugin extends vmPlugin {
 		$method_name = $this->_psType . '_name';
 		foreach ($this->methods as $method) {
 			if ($this->checkConditions ($cart, $method, $cart->pricesUnformatted)) {
-				$methodSalesPrice = $this->calculateSalesPrice ($cart, $method, $cart->pricesUnformatted);
+
+				//$methodSalesPrice = $this->calculateSalesPrice ($cart, $method, $cart->pricesUnformatted);
+				$methodSalesPrice = $this->setCartPrices ($cart, $cart->pricesUnformatted,$method);
 				$method->$method_name = $this->renderPluginName ($method);
 				$html [] = $this->getPluginHtml ($method, $selected, $methodSalesPrice);
 			}
@@ -927,6 +929,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
 
+
 		if (!class_exists ('calculationHelper')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 		}
@@ -959,7 +962,7 @@ abstract class vmPSPlugin extends vmPlugin {
 				$taxrules = $calculator->_cartData['taxRulesBill'];
 			}
 		}
-
+		//vmdebug('setCartPrices called ',$taxrules);
 		if (count ($taxrules) > 0) {
 			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value']), 'salesPrice');
 			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] - $cart_prices[$this->_psType . 'Value']), 'salesPrice');
@@ -971,6 +974,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			$cart_prices[$this->_psType . 'Tax'] = 0;
 			$cart_prices[$this->_psType . '_calc_id'] = 0;
 		}
+		return $cart_prices['salesPrice' . $_psType];
 	}
 
 	/**
@@ -981,7 +985,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @return $salesPrice
 	 */
 
-	protected function calculateSalesPrice ($cart, $method, $cart_prices) {
+/*	protected function calculateSalesPrice ($cart, $method, $cart_prices) {
 
 		$value = $this->getCosts ($cart, $method, $cart_prices);
 
@@ -1020,7 +1024,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		return $salesPrice;
-	}
+	}*/
 
 	/**
 	 * logPaymentInfo

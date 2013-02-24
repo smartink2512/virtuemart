@@ -867,8 +867,15 @@ class VirtueMartModelUser extends VmModel {
 				}
 			} else {
 
+				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+				//Todo multi-x, also vendors should be allowed to change the user address.
+				if(!Permissions::getInstance()->check('admin')){
+					$userId = $user->id;
+				} else {
+					$userId = (int)$data['virtuemart_user_id'];
+				}
 				$q = 'SELECT `virtuemart_userinfo_id` FROM #__virtuemart_userinfos
-				WHERE `virtuemart_user_id` = '.$user->id.'
+				WHERE `virtuemart_user_id` = '.$userId.'
 				AND `address_type` = "BT"';
 
 				$this->_db->setQuery($q);
@@ -1414,10 +1421,10 @@ class VirtueMartModelUser extends VmModel {
 	 * @param int $_id User ID
 	 * @return string Customer Number
 	 */
-	function getCustomerNumberById($_id = 0)
+	function getCustomerNumberById()
 	{
 		$_q = "SELECT `customer_number` FROM `#__virtuemart_vmusers` "
-		."WHERE `virtuemart_user_id`='" . (($_id==0)?$this->_id:(int)$_id) . "' ";
+		."WHERE `virtuemart_user_id`='" . $this->_id . "' ";
 		$_r = $this->_getList($_q);
 		if(!empty($_r[0])){
 			return $_r[0]->customer_number;

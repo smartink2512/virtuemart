@@ -74,7 +74,8 @@ function myValidator(f) {
 		 msg += '</li></ul></dd></dl><div>';
 		jQuery('#element-box').before(msg);
 	}
-	event.preventDefault();
+	//Funny, works for chrome etc, but throws error on FF, but the error stops the script, so the effect is the same
+    jQuery().event.preventDefault();
 }
 </script>
 <?php AdminUIHelper::endAdminArea(); ?>

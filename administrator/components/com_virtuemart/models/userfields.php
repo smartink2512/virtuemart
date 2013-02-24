@@ -776,8 +776,17 @@ class VirtueMartModelUserfields extends VmModel {
 					// 					$_return['fields'][$_fld->name]['formcode'] = $_userData->email;
 					// 					break;
 					case 'virtuemart_country_id':
+
+						//For nice lists in the FE
+					/*	$app = JFactory::getApplication();
+						if($app->isSite()) {
+							$attrib = array('class'=>'chzn-select');
+						} else {
+							$attrib = array();
+						}*/
+						$attrib = array();
 						$_return['fields'][$_fld->name]['formcode'] =
-						ShopFunctions::renderCountryList($_return['fields'][$_fld->name]['value'], false, array(), $_prefix, $_fld->required);
+							ShopFunctions::renderCountryList($_return['fields'][$_fld->name]['value'], false, $attrib , $_prefix, $_fld->required);
 
 						if(!empty($_return['fields'][$_fld->name]['value'])){
 							// Translate the value from ID to name

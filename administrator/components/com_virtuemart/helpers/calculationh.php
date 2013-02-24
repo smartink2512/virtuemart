@@ -220,7 +220,7 @@ class calculationHelper {
 		} else if (!empty($cart->BT['virtuemart_state_id'])) {
 			$this->_deliveryState = (int)$this->_cart->BT['virtuemart_state_id'];
 		}
-		vmdebug('setCountryState state '.$this->_deliveryState,$this->_cart->BT);
+		//vmdebug('setCountryState state '.$this->_deliveryState,$this->_cart->BT);
 	}
 
 	/** function to start the calculation, here it is for the product
@@ -649,6 +649,7 @@ class calculationHelper {
 			}
 		}
 
+		$this->_product = null;
 		$this->_cartData['DBTaxRulesBill'] = $this->gatherEffectingRulesForBill('DBTaxBill');
 		$this->_cartData['taxRulesBill'] = $this->gatherEffectingRulesForBill('TaxBill');
 		$this->_cartData['DATaxRulesBill'] = $this->gatherEffectingRulesForBill('DATaxBill');

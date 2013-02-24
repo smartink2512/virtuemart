@@ -18,6 +18,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcalculationplugin.php');
 
+defined('AVATAX_DEV') or define('AVATAX_DEV', 0);
 
 class plgVmCalculationAvalara extends vmCalculationPlugin {
 
@@ -145,7 +146,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			'account'   => '<your account number here>',
 			'license'   => '<your license key here>',
 			'adapter'   => 'avatax4php,5.10.0.0',
-			'client'    => 'VirtueMart2.0.16',
+			'client'    => 'VirtueMart2.0.18',
 			'name'    => 'PHPAdapter',
 			'TextCase' => TextCase::$Mixed,
 			'trace'     => TRUE);
@@ -155,7 +156,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		if(!class_exists('ATConfig')) require (VMAVALARA_CLASS_PATH.DS.'ATConfig.class.php');
 
 		//Set this to TRUE for development account
-		if(FALSE){
+		if(AVATAX_DEV){
 			$this->_connectionType = 'Development';
 			$devValues = array(
 				'url'       => 'https://development.avalara.net',
@@ -373,14 +374,62 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	}
 
 	static $stop = FALSE;
+	private static $_taxResult = NULL;
 	function getTax($calculationHelper,$calc,$price,$invoiceNumber=false){
 
 		if($calc->activated==0) return false;
 
+		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+		$cart = VirtueMartCart::getCart();
+
+		$products= array();
+
+		if($calculationHelper->inCart){
+
+			$products = $cart->products;
+			$prices = $calculationHelper->getCartPrices();
+			foreach($products as $k => $product){
+
+				if(!empty($prices[$k]['discountedPriceWithoutTax'])){
+					$price = $prices[$k]['discountedPriceWithoutTax'];
+				} else if(!empty($prices[$k]['basePriceVariant'])){
+					$price = $prices[$k]['basePriceVariant'];
+				} else {
+					vmdebug('There is no price in getTax for product '.$k.' ',$prices);
+					$price = 0.0;
+				}
+				$product->price = $price;
+
+				if(!empty($price[$k]['discountAmount'])){
+					$product->discount = $price[$k]['discountAmount'];
+				} else {
+					$product->discount = FALSE;
+				}
+			}
+		} else {
+
+			$calculationHelper->_product->price = $price;
+
+			$products[0] = $calculationHelper->_product;
+			if(!isset($products[0]->amount)){
+				$products[0]->amount = 1;
+			}
+
+			if(isset($calculationHelper->productPrices['discountAmount'])){
+				$products[0]->discount = $calculationHelper->productPrices['discountAmount'];
+			} else {
+				$products[0]->discount = FALSE;
+			}
+		}
+
+		if(count($products) == 0){
+			return false;
+		}
 		$shopperData = $this->getShopperData($calc);
 		if(!$shopperData){
 			return false;
 		}
+
 		//if(self::$stop) return self::$stop;
 
 		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
@@ -475,48 +524,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	//	$request->setLocationCode("");        //string Optional - aka outlet id for tax forms
 /////////////////////////////////////////
 
-		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-		$cart = VirtueMartCart::getCart();
-
-		$products= array();
-
-		if($calculationHelper->inCart){
-
-			$products = $cart->products;
-			$prices = $calculationHelper->getCartPrices();
-			foreach($products as $k => $product){
-
-				if(!empty($prices[$k]['discountedPriceWithoutTax'])){
-					$price = $prices[$k]['discountedPriceWithoutTax'];
-				} else if(!empty($prices[$k]['basePriceVariant'])){
-					$price = $prices[$k]['basePriceVariant'];
-				} else {
-					vmdebug('There is no price in getTax for product '.$k.' ',$prices);
-					$price = 0.0;
-				}
-				$product->price = $price;
-
-				if(!empty($price[$k]['discountAmount'])){
-					$product->discount = $price[$k]['discountAmount'];
-				} else {
-					$product->discount = FALSE;
-				}
-			}
-		} else {
-
-			$calculationHelper->_product->price = $price;
-
-			$products[0] = $calculationHelper->_product;
-			if(!isset($products[0]->amount)){
-				$products[0]->amount = 1;
-			}
-
-			if(isset($calculationHelper->productPrices['discountAmount'])){
-				$products[0]->discount = $calculationHelper->productPrices['discountAmount'];
-			} else {
-				$products[0]->discount = FALSE;
-			}
-		}
 
 		$lines = array();
 		$n = 0;
@@ -601,15 +608,24 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		//vmdebug('avalaragetTax setLines',$lines);
 		$request->setLines($lines);
 
-		vmdebug('My GetTaxRequest sent to AvaTax',$request);
+	//	vmdebug('My GetTaxRequest sent to AvaTax',$request);
 		$totalTax = 0.0;
 		try
 		{
 			if(!class_exists('TaxLine')) require (VMAVALARA_CLASS_PATH.DS.'TaxLine.class.php');
 			if(!class_exists('TaxDetail')) require (VMAVALARA_CLASS_PATH.DS.'TaxDetail.class.php');
-			vmSetStartTime('avagetTax');
-			$getTaxResult = $client->getTax($request);
-			vmTime('Avalara getTax','avagetTax');
+
+			//$cache = JFactory::getCache('com_virtuemart','callback');
+
+			//self::$_taxResult = $cache->call( array( $client, 'getTax' ),$request );
+			if(!isset(self::$_taxResult)){
+				vmSetStartTime('avagetTax');
+				self::$_taxResult = $client->getTax($request);
+				vmTime('Avalara getTax','avagetTax');
+			}
+			
+
+			//vmTrace('get tax agaun');
 			/*
 			 * [0] => getDocCode
     [1] => getAdjustmentDescription
@@ -636,21 +652,21 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
     [22] => getResultCode
     [23] => getMessages
 			 */
-			//vmdebug( 'GetTax is: '. $getTaxResult->getResultCode(),$getTaxResult);
+			//vmdebug( 'GetTax is: '. self::$_taxResult->getResultCode(),self::$_taxResult);
 
-			if ($getTaxResult->getResultCode() == SeverityLevel::$Success)
+			if (self::$_taxResult->getResultCode() == SeverityLevel::$Success)
 			{
 				//vmdebug("DocCode: ".$request->getDocCode() );
-				//vmdebug("DocId: ".$getTaxResult->getDocId()."\n");
+				//vmdebug("DocId: ".self::$_taxResult->getDocId()."\n");
 
-				//vmdebug("TotalAmount: ".$getTaxResult->getTotalAmount() );
+				//vmdebug("TotalAmount: ".self::$_taxResult->getTotalAmount() );
 
-				$totalTax = $getTaxResult->getTotalTax();
+				$totalTax = self::$_taxResult->getTotalTax();
 
 				if($totalTax == 0 ){
-					vmdebug( "Avalara returned false: ", $getTaxResult);
+				//	vmdebug( "Avalara returned false: ", self::$_taxResult);
 				}
-				foreach($getTaxResult->getTaxLines() as $ctl)
+				foreach(self::$_taxResult->getTaxLines() as $ctl)
 				{
 					if($calculationHelper->inCart){
 						$nr = $ctl->getNo();
@@ -696,7 +712,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			}
 			else
 			{
-				foreach($getTaxResult->getMessages() as $msg)
+				foreach(self::$_taxResult->getMessages() as $msg)
 				{
 					vmError($msg->getName().": ".$msg->getSummary());
 				}
@@ -749,6 +765,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				$userModel = VmModel::getModel('user');
 				$userModel -> setId($jUser->id);
 				$vmadd['customer_id'] = $userModel ->getCustomerNumberById();
+				vmdebug('getShopperData customer_id by user '.$vmadd['customer_id']);
 			}
 
 			if(empty($vmadd['customer_id'])){
@@ -761,7 +778,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				} else {
 					$vmadd['customer_id'] = '';
 				}
-
+				vmdebug('getShopperData customer_id  '.$vmadd['customer_id']);
 			}
 
 
@@ -785,7 +802,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 				$vmadd=FALSE;
 			}
-			vmdebug('getShopperData',$vmadd);
+
 			self::$vmadd = $vmadd;
 		}
 
@@ -801,15 +818,15 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$tax = 0.0;
 
 		if ($mathop=='avalara') {
-			$requestedProductId = JRequest::getInt('virtuemart_product_id');
+			$requestedProductId = JRequest::getInt('virtuemart_product_id',0);
 
 			if(isset($calculationHelper->_product)){
 				$productId = $calculationHelper->_product->virtuemart_product_id;
 			} else {
 				$productId = $requestedProductId;
 			}
-
-			if($productId==$requestedProductId or $calculationHelper->inCart ){
+			//vmdebug('plgVmInterpreteMathOp avalara ',$rule);
+			if(($productId!=0 and $productId==$requestedProductId) or $calculationHelper->inCart ){
 				VmTable::bindParameterable ($rule, $this->_xParams, $this->_varsToPushParam);
 				if($rule->activated==0) return $price;
 				if(empty($this->addresses)){
@@ -943,6 +960,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	}
 
 	public function plgVmOnUpdateOrderPayment($data,$old_order_status){
+		vmdebug('plgVmOnUpdateOrderPayment cancel order for Avatax '.$old_order_status,$data->order_status);
 		if($data->order_status=='R' or $data->order_status=='X'){
 			$this->cancelOrder($data,$old_order_status);
 		}
@@ -950,11 +968,13 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	}
 
 	public function plgVmOnCancelPayment($data,$old_order_status){
+		vmdebug('plgVmOnCancelPayment cancel order for Avatax '.$old_order_status,$data->order_status);
 		$this->cancelOrder($data,$old_order_status);
 	}
 
 	function cancelOrder($data,$old_order_status){
 
+		vmdebug('Doing cancel order for Avatax');
 		$db = JFactory::getDbo();
 		$q = 'SELECT * FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$data->virtuemart_order_id.'"  AND `order_status` = "'.$old_order_status.'" ORDER BY created_on DESC ';
 		$db->setQuery($q);

@@ -326,7 +326,14 @@ class ShopFunctions {
 
 		if ($multiple) {
 			$attrs = 'multiple="multiple" size="12" name="' . $_prefix . 'virtuemart_state_id[]" ';
+			//$class = 'class="inputbox multiple"';
 		} else {
+			/*$app = JFactory::getApplication();
+			if($app->isSite()) {
+				$class = 'class="chzn-select"';
+			} else {
+				$class = 'class="inputbox multiple"';
+			}*/
 			$attrs = 'size="1"  name="' . $_prefix . 'virtuemart_state_id" ';
 		}
 
@@ -334,7 +341,9 @@ class ShopFunctions {
 			$attrs .= ' required';
 		}
 
-		$listHTML = '<select class="inputbox multiple" id="virtuemart_state_id" ' . $attrs . '>
+		$class = 'class="inputbox multiple"';
+
+		$listHTML = '<select '.$class.' id="virtuemart_state_id" ' . $attrs . '>
 						<option value="">' . JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>
 						</select>';
 
