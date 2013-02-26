@@ -18,7 +18,12 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcalculationplugin.php');
 
-defined('AVATAX_DEV') or define('AVATAX_DEV', 0);
+defined('AVATAX_DEV') or define('AVATAX_DEV', 1);
+defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 0);
+
+function avadebug($string,$arg){
+	if(AVATAX_DEBUG) vmdebug($string,$arg);
+}
 
 class plgVmCalculationAvalara extends vmCalculationPlugin {
 
@@ -608,7 +613,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		//vmdebug('avalaragetTax setLines',$lines);
 		$request->setLines($lines);
 
-	//	vmdebug('My GetTaxRequest sent to AvaTax',$request);
+		avadebug('My GetTaxRequest sent to AvaTax',$request);
 		$totalTax = 0.0;
 		try
 		{
@@ -967,10 +972,10 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 	}
 
-	public function plgVmOnCancelPayment($data,$old_order_status){
-		vmdebug('plgVmOnCancelPayment cancel order for Avatax '.$old_order_status,$data->order_status);
-		$this->cancelOrder($data,$old_order_status);
-	}
+	/*public function plgVmOnCancelPayment($data,$old_order_status){
+		//vmdebug('plgVmOnCancelPayment cancel order for Avatax '.$old_order_status,$data->order_status);
+		//$this->cancelOrder($data,$old_order_status);
+	}*/
 
 	function cancelOrder($data,$old_order_status){
 

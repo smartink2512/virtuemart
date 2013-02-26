@@ -201,6 +201,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 		$paramsName = $this->_psType . '_params';
 		$cart_prices_name = $this->renderPluginName ($method);
+
 		$this->setCartPrices ($cart, $cart_prices, $method);
 
 		return TRUE;
@@ -935,14 +936,14 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		$calculator = calculationHelper::getInstance ();
-
 		$value = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart_prices), 'salesPrice');
-
 		$_psType = ucfirst ($this->_psType);
 		$cart_prices[$this->_psType . 'Value'] = $value;
 
 		$taxrules = array();
-		if (!empty($method->tax_id)) {
+		if($method->tax_id == -1){
+
+		} else if (!empty($method->tax_id)) {
 			$cart_prices[$this->_psType . '_calc_id'] = $method->tax_id;
 
 			$db = JFactory::getDBO ();
@@ -959,10 +960,10 @@ abstract class vmPSPlugin extends vmPlugin {
 				}
 
 			} else {
-				$taxrules = $calculator->_cartData['taxRulesBill'];
+				$taxrules = $calculator->_cartData['taxRulesBill'];		
 			}
 		}
-		//vmdebug('setCartPrices called ',$taxrules);
+		
 		if (count ($taxrules) > 0) {
 			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value']), 'salesPrice');
 			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] - $cart_prices[$this->_psType . 'Value']), 'salesPrice');
