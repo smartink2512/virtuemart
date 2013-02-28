@@ -95,7 +95,7 @@ class VirtueMartModelOrders extends VmModel {
 	 *
 	 */
 
-	public function getOrderId($direction ='DESC', $order_id) {
+	public function getOrderId($order_id, $direction ='DESC') {
 
 		if ($direction == 'ASC') {
 			$arrow ='>';
@@ -489,6 +489,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 */
 	public function createOrderFromCart($cart)
 	{
+
 		if ($cart === null) {
 			vmError('createOrderFromCart() called without a cart - that\'s a programming bug','Can\'t create order, sorry.');
 			return false;

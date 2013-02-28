@@ -60,7 +60,7 @@ class VirtuemartControllerOrders extends VmController {
 	public function next($dir = 'ASC'){
 		$model = VmModel::getModel('orders');
 		$id = JRequest::getInt('virtuemart_order_id');
-		if (!$order_id = $model->getOrderId($dir,$id)) {
+		if (!$order_id = $model->getOrderId($id, $dir)) {
 			$order_id  = $id;
 			$msg = JText::_('COM_VIRTUEMART_NO_MORE_ORDERS');
 		} else {

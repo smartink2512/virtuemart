@@ -537,7 +537,7 @@ class VmConfig {
 			self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
 			self::$_jpConfig->setSession();
 			vmTime('loadConfig db '.$install,'loadConfig');
-						vmdebug('CONFIG', self::$_jpConfig);
+
 			return self::$_jpConfig;
 		}
 

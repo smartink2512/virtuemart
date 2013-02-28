@@ -960,16 +960,21 @@ abstract class vmPSPlugin extends vmPlugin {
 				}
 
 			} else {
-				$taxrules = $calculator->_cartData['taxRulesBill'];		
+				$taxrules = $calculator->_cartData['taxRulesBill'];
 			}
 		}
 		
 		if (count ($taxrules) > 0) {
-			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value']), 'salesPrice');
+			$subTotalTmp = array();
+			foreach($taxrules as &$rule){
+				unset($rule['subTotal']);
+			}
+			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value'],false,false), 'salesPrice');
 			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] - $cart_prices[$this->_psType . 'Value']), 'salesPrice');
 			reset($taxrules);
 			$taxrule =  current($taxrules);
 			$cart_prices[$this->_psType . '_calc_id'] = $taxrule['virtuemart_calc_id'];
+
 		} else {
 			$cart_prices['salesPrice' . $_psType] = $value;
 			$cart_prices[$this->_psType . 'Tax'] = 0;

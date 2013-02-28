@@ -1061,7 +1061,7 @@ class VirtueMartModelUser extends VmModel {
 				unset($data[$fldName]);
 				if($userinfo!==0){
 					if(property_exists($userinfo,$fldName)){
-						vmdebug('property_exists userinfo->$fldName '.$fldName,$userinfo);
+						//vmdebug('property_exists userinfo->$fldName '.$fldName,$userinfo);
 						$data[$fldName] = $userinfo->$fldName;
 					} else {
 						vmError('Your tables seem to be broken, you have fields in your form which have no corresponding field in the db');
