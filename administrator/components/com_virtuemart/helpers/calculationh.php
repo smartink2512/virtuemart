@@ -30,7 +30,7 @@ class calculationHelper {
 	private $_nullDate;
 	//	private $_currency;
 	private $_debug;
-
+	private $_manufacturerId;
 	private $_deliveryCountry;
 	private $_deliveryState;
 	private $_currencyDisplay;
@@ -263,6 +263,8 @@ class calculationHelper {
 			$this->_product->amount = $amount;
 			$this->productPrices = array();
 			if(!isset($this->_product->quantity)) $this->_product->quantity = 1;
+
+			$this->_manufacturerId = !empty($product->virtuemart_manufacturer_id) ? $product->virtuemart_manufacturer_id:0;
 		} //Use it as productId
 		else {
 			vmError('getProductPrices no object given query time','getProductPrices no object given query time');
@@ -1080,7 +1082,18 @@ class calculationHelper {
 				}
 			}
 
-			if ($hitsCategory && $hitsShopper && $hitsDeliveryArea) {
+			if(!isset($this->allrules[$this->productVendorId][$entrypoint][$i]['manufacturers'])){
+				$q = 'SELECT `virtuemart_manufacturer_id` FROM #__virtuemart_calc_manufacturers WHERE `virtuemart_calc_id`="' . $rule['virtuemart_calc_id'] . '"';
+				$this->_db->setQuery($q);
+				$this->allrules[$this->productVendorId][$entrypoint][$i]['manufacturers'] = $this->_db->loadResultArray();
+			}
+
+			$hitsManufacturer = true;
+			if (isset($this->_manufacturerId)) {
+				$hitsManufacturer = $this->testRulePartEffecting($this->allrules[$this->productVendorId][$entrypoint][$i]['manufacturers'], $this->_manufacturerId);
+			}
+
+			if ($hitsCategory and $hitsShopper and $hitsDeliveryArea and $hitsManufacturer) {
 				if ($this->_debug)
 					echo '<br/ >Add rule ForProductPrice ' . $rule["virtuemart_calc_id"];
 

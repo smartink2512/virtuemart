@@ -332,6 +332,7 @@ $i=0;
 							<?php foreach($customs as $custom){ ?>
 								<th><?php echo JText::sprintf('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD_N',JText::_('COM_VIRTUEMART_'.$custom->custom_value))?></th>
 							<?php } ?>
+							<th><?php echo JText::_('COM_VIRTUEMART_ORDERING')?></th>
 							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PUBLISH')?></th>
 						</tr>
 						<?php
@@ -359,6 +360,9 @@ $i=0;
 									<?php
 								}
 								?>
+								<td>
+                                    <input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][pordering]" size="2" value="<?php echo $child->pordering ?>" /></td>
+								</td>
 								<td>
 									<?php echo VmHTML::checkbox('childs['.$child->virtuemart_product_id.'][published]', $child->published) ?></td>
 							</tr>

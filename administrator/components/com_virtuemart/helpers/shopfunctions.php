@@ -234,6 +234,30 @@ class ShopFunctions {
 	}
 
 	/**
+	 * Renders the list of Manufacturers
+	 *
+	 * @author St. Kraft
+	 * Mod. <mediaDESIGN> St.Kraft 2013-02-24 Herstellerrabatt
+	 */
+	static public function renderManufacturerList ($manufacturerId = 0, $multiple = FALSE, $name = 'virtuemart_manufacturer_id') {
+
+		$manufacturerModel = VmModel::getModel ('manufacturer');
+		$manufacturers = $manufacturerModel->getManufacturers (FALSE, TRUE);
+		$attrs = '';
+
+		if ($multiple) {
+			$attrs = 'multiple="multiple"';
+			if($name=='virtuemart_manufacturer_id')	$name.= '[]';
+		} else {
+			$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), 'virtuemart_manufacturer_id', 'mf_name');
+			array_unshift ($manufacturers, $emptyOption);
+		}
+		// vmdebug('renderManufacturerList',$name,$manufacturers);
+		$listHTML = JHTML::_ ('select.genericlist', $manufacturers, $name, $attrs, 'virtuemart_manufacturer_id', 'mf_name', $manufacturerId);
+		return $listHTML;
+	}
+
+	/**
 	 * Render a simple country list
 	 *
 	 * @author jseros, Max Milbers, Valérie Isaksen

@@ -359,7 +359,7 @@ class VmModel extends JModel {
 			$this->_db->setQuery($q,$limitStart,$limit);
 // 			vmdebug('exeSortSearchListQuery '.get_class($this).' with limit');
 		}
-// 		vmdebug('exeSortSearchListQuery '.$orderBy .$filter_order_Dir);
+ 	//	vmdebug('exeSortSearchListQuery '.$orderBy .$filter_order_Dir,$q);
 
 		if($object == 2){
 			 $this->ids = $this->_db->loadResultArray();

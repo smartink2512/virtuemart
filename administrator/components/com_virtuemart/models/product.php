@@ -29,7 +29,7 @@ if (!class_exists ('VmModel')) {
  * Model for VirtueMart Products
  *
  * @package VirtueMart
- * @author RolandD
+ * @author Max Milbers
  * @todo Replace getOrderUp and getOrderDown with JTable move function. This requires the vm_product_category_xref table to replace the ordering with the ordering column
  */
 class VirtueMartModelProduct extends VmModel {
@@ -1266,17 +1266,7 @@ class VirtueMartModelProduct extends VmModel {
 				$q .= '	LEFT JOIN `#__virtuemart_product_shoppergroups` as `psgr` on (`psgr`.`virtuemart_product_id`=`l`.`virtuemart_product_id`)';
 			}
 
-		/*	if ($app->isSite ()) {
-				if (!class_exists ('shopFunctionsF'))
-					require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopFunctionsF.php');
-				$lastId = shopFunctionsF::getLastVisitedCategoryId();
-				if(empty($lastId)){
-					$lastId = (int)$product->virtuemart_category_id;
-				}
-				$q .= '	WHERE `virtuemart_category_id` = ' . $lastId;
-			} else {*/
-				$q .= '	WHERE `virtuemart_category_id` = ' . (int)$product->virtuemart_category_id;
-			//}
+			$q .= '	WHERE `virtuemart_category_id` = ' . (int)$product->virtuemart_category_id;
 
 			$q .= ' and `slug` ' . $op . ' "' . $product->slug . '" ';
 			if ($app->isSite ()) {
@@ -1290,7 +1280,7 @@ class VirtueMartModelProduct extends VmModel {
 					$q .= " AND ( " . implode (' OR ', $sgrgroups) . " ) ";
 				}
 			}
-		//	$q .= ' AND (`psgr`.`virtuemart_shoppergroup_id` IS NULL OR `psgr`.`virtuemart_shoppergroup_id`= "'..'"  ';
+
 			if ($onlyPublished) {
 				$q .= ' AND p.`published`= 1';
 			}
@@ -1298,7 +1288,7 @@ class VirtueMartModelProduct extends VmModel {
 			if(!empty($this->orderByString)){
 				$orderBy = $this->orderByString;
 			} else {
-				$orderBy = ' ORDER BY `'.$this->filter_order.'` ';
+				$orderBy = ' ORDER BY '.$this->filter_order.' ';
 			}
 			$q .=  $orderBy . $direction . ' LIMIT 0,' . (int)$max;
 
@@ -1315,7 +1305,7 @@ class VirtueMartModelProduct extends VmModel {
  			//vmdebug('getNeighborProducts '.$db->getQuery());
 			//vmdebug('getNeighborProducts '.$db->getErrorMsg());
 		}
-		//vmdebug('mist',$neighbors);
+
 		return $neighbors;
 	}
 
@@ -2138,7 +2128,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 				$q .= ' AND p.`published`="1"';
 			}
 
-			$q .= ' GROUP BY `virtuemart_product_id` ORDER BY pc.ordering DESC';
+			$q .= ' GROUP BY `virtuemart_product_id` ORDER BY p.pordering ASC';
 			$this->_db->setQuery ($q);
 			$this->_uncategorizedChildren = $this->_db->loadAssocList ();
 			$err = $this->_db->getErrorMsg ();

@@ -71,6 +71,15 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_categories` (
   UNIQUE KEY `i_virtuemart_calc_id` (`virtuemart_calc_id`,`virtuemart_category_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_manufacturers` (
+  `id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_calc_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_manufacturer_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `i_virtuemart_calc_id` (`virtuemart_calc_id`,`virtuemart_manufacturer_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 -- --------------------------------------------------------
 
 --
@@ -718,6 +727,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `metaauthor` varchar(400),
   `layout` char(16),
   `published` tinyint(1),
+  `pordering` smallint(2) UNSIGNED NOT NULL DEFAULT '0',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -726,9 +736,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `locked_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_product_id`),
   KEY `idx_product_virtuemart_vendor_id` (`virtuemart_vendor_id`),
-  KEY `idx_product_product_parent_id` (`product_parent_id`),
-  KEY `idx_product_sku` (`product_sku`)
-
+  KEY `idx_product_product_parent_id` (`product_parent_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='All products are stored here.' AUTO_INCREMENT=1 ;
 
 

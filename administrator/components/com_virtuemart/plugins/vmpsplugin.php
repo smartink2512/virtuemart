@@ -965,7 +965,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 		
 		if (count ($taxrules) > 0) {
-			$subTotalTmp = array();
 			foreach($taxrules as &$rule){
 				unset($rule['subTotal']);
 			}
@@ -991,9 +990,11 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @return $salesPrice
 	 */
 
-/*	protected function calculateSalesPrice ($cart, $method, $cart_prices) {
+	protected function calculateSalesPrice ($cart, $method, $cart_prices) {
 
-		$value = $this->getCosts ($cart, $method, $cart_prices);
+		return $this -> setCartPrices($cart,$cart_prices,$method);
+	}
+/*		$value = $this->getCosts ($cart, $method, $cart_prices);
 
 		$tax_id = @$method->tax_id;
 

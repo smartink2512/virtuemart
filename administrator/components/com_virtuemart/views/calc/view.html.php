@@ -56,6 +56,7 @@ class VirtuemartViewCalc extends VmView {
 		if ($layoutName == 'edit') {
 
 			$calc = $model->getCalc();
+			
 			$this->assignRef('calc',	$calc);
 
 			$isNew = ($calc->virtuemart_calc_id < 1);
@@ -108,6 +109,9 @@ class VirtuemartViewCalc extends VmView {
 			$statesList = ShopFunctions::renderStateList($calc->virtuemart_state_ids,'', True);
 			$this->assignRef('statesList', $statesList);
 
+			$manufacturerList= ShopFunctions::renderManufacturerList($calc->virtuemart_manufacturers,true);
+			$this->assignRef('manufacturerList', $manufacturerList);
+
 			if(Vmconfig::get('multix','none')!=='none'){
 				$vendorList= ShopFunctions::renderVendorList($calc->virtuemart_vendor_id,false);
 				$this->assignRef('vendorList', $vendorList);
@@ -126,6 +130,7 @@ class VirtuemartViewCalc extends VmView {
 
 			$search = JRequest::getWord('search', false);
 			$calcs = $model->getCalcs(false, false, $search);
+
 			$this->assignRef('calcs',	$calcs);
 
 			$pagination = $model->getPagination();

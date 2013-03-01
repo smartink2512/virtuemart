@@ -57,6 +57,7 @@ AdminUIHelper::startAdminArea();
 			<th><?php echo $this->sort('calc_value' , 'COM_VIRTUEMART_VALUE'); ?></th>
 			<th><?php echo $this->sort('calc_currency' , 'COM_VIRTUEMART_CURRENCY'); ?></th>
 			<th><?php echo JText::_('COM_VIRTUEMART_CATEGORY_S'); ?></th>
+			<th><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER'); // Mod. <mediaDESIGN> St.Kraft 2013-02-24  ?></th>
 			<th><?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_IDS'); ?></th>
 			<th><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_SHOPPER'); ?></th>
 <?php /*	<th width="10"><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_VENDOR'); ?></th> */  ?>
@@ -122,6 +123,9 @@ AdminUIHelper::startAdminArea();
 				<td>
 					<?php echo $row->calcCategoriesList; ?>
 				</td>
+        <td>
+        	<?php echo $row->calcManufacturersList; /* Mod. <mediaDESIGN> St.Kraft 2013-02-24 Herstellerrabatt */ ?>
+        </td>
 				<td>
 					<?php echo $row->calcShoppersList; ?>
 				</td>

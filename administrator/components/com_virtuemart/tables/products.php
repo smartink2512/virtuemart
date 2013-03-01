@@ -72,7 +72,8 @@ class TableProducts extends VmTable {
 	/** @var int File thumbnail image width */
 	var $product_special	= null;
 
-
+	/** @var int product internal ordering, it is for the ordering for child products under a parent null */
+	var $pordering = null;
 	/** @var int File thumbnail image width */
 	var $product_sales	= 0;
 

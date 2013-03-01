@@ -62,6 +62,7 @@ vmJsApi::jDate();
 		<?php echo VmHTML::row('raw','COM_VIRTUEMART_SHOPPERGROUP_IDS', $this->shopperGroupList ); ?>
 		<?php echo VmHTML::row('raw','COM_VIRTUEMART_COUNTRY', $this->countriesList ); ?>
 		<?php echo VmHTML::row('raw','COM_VIRTUEMART_STORE_FORM_STATE', $this->statesList ); ?>
+		<?php echo VmHTML::row('raw','COM_VIRTUEMART_MANUFACTURER', $this->manufacturerList ); /* Mod. <mediaDESIGN> St.Kraft 2013-02-24 Herstellerrabatt */ ?>
 
 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_VISIBLE_FOR_SHOPPER','calc_shopper_published',$this->calc->calc_shopper_published); ?>
 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_VISIBLE_FOR_VENDOR','calc_vendor_published',$this->calc->calc_vendor_published); ?>
