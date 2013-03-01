@@ -244,13 +244,13 @@ $i=0;
 
 			?>
         <tr id="<?php echo $tmpl ?>" class="removable row<?php echo $rowColor?>">
-	        <?php /*    <td width="100%">
-                  <span class="vmicon vmicon-16-move price_ordering"></span>
-                <span class="vmicon vmicon-16-new price-clone" ></span>
+	            <td width="100%">
+		        <span class="vmicon vmicon-16-move price_ordering"></span>
+		        <?php /* <span class="vmicon vmicon-16-new price-clone" ></span> */ ?>
                 <span class="vmicon vmicon-16-remove price-remove"></span>
-				<?php //echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_ORDER');  */ ?>
-				<?php echo $this->loadTemplate ('price'); ?>
-			<?php /*  </td>  */ ?>
+				<?php //echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_ORDER');
+				echo $this->loadTemplate ('price'); ?>
+			 </td>
         </tr>
 			<?php
 			$this->priceCounter++;

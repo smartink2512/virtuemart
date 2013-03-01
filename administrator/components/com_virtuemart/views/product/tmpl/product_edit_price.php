@@ -52,12 +52,7 @@ $rowColor = 0;
 			<?php echo $this->lists['currencies']; ?>
         </td>
         <td colspan="2">
-
 			<?php echo $this->lists['shoppergroups'];  ?>
-
-            <span class="vmicon vmicon-16-move price_ordering"></span>
-	        <?php //<span class="vmicon vmicon-16-new price-clone" ></span> ?>
-            <span class="vmicon vmicon-16-remove price-remove"></span>
         </td>
     </tr>
 	<?php $rowColor = 1 - $rowColor; ?>
