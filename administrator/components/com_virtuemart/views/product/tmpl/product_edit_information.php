@@ -244,13 +244,13 @@ $i=0;
 
 			?>
         <tr id="<?php echo $tmpl ?>" class="removable row<?php echo $rowColor?>">
-            <td width="100%">
+	        <?php /*    <td width="100%">
                   <span class="vmicon vmicon-16-move price_ordering"></span>
                 <span class="vmicon vmicon-16-new price-clone" ></span>
                 <span class="vmicon vmicon-16-remove price-remove"></span>
-				<?php //echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_ORDER'); ?>
+				<?php //echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_ORDER');  */ ?>
 				<?php echo $this->loadTemplate ('price'); ?>
-            </td>
+			<?php /*  </td>  */ ?>
         </tr>
 			<?php
 			$this->priceCounter++;
@@ -393,6 +393,7 @@ $i=0;
 	</tr>
 
 </table>
+
 <script type="text/javascript">
     jQuery(document).ready(function () {
         jQuery("#mainPriceTable").dynoTable({
@@ -400,12 +401,19 @@ $i=0;
             cloneClass:'.price-clone', //Custom cloner class name in  table
             addRowTemplateId:'#productPriceRowTmpl', //Custom id for  row template
             addRowButtonId:'#add_new_price', //Click this to add a price
-            lastRowRemovable:true, //Don't let the table be empty.
+            lastRowRemovable:true, //let the table be empty.
             orderable:true, //prices can be rearranged
             dragHandleClass:".price_ordering", //class for the click and draggable drag handle
             onRowRemove:function () {
             },
             onRowClone:function () {
+                //var myLastRow = jQuery('input [name="mprices[virtuemart_product_price_id][]"]',jQuery('#mainPriceTable tr:last') );
+                //var myLastRow = jQuery('#mainPriceTable tr:last' );
+	            /*jQuery.each(myLastRow,function(key, element1) {
+                           jQuery.each(element1,function(key, element) {
+                                alert('key: ' + key + '\n' + 'value: ' + element);
+                           })
+                });*/
             },
             onRowAdd:function () {
             },

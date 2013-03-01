@@ -46,7 +46,7 @@ $rowColor = 0;
                 value="<?php echo $this->calculatedPrices['costPrice']; ?>"/>
             <input type="hidden"
                    name="mprices[virtuemart_product_price_id][]"
-                   value=""/>
+                   value="<?php echo  $this->tempProduct->virtuemart_product_price_id; ?>"/>
         </td>
         <td colspan="3">
 			<?php echo $this->lists['currencies']; ?>
@@ -54,6 +54,10 @@ $rowColor = 0;
         <td colspan="2">
 
 			<?php echo $this->lists['shoppergroups'];  ?>
+
+            <span class="vmicon vmicon-16-move price_ordering"></span>
+	        <?php //<span class="vmicon vmicon-16-new price-clone" ></span> ?>
+            <span class="vmicon vmicon-16-remove price-remove"></span>
         </td>
     </tr>
 	<?php $rowColor = 1 - $rowColor; ?>
