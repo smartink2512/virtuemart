@@ -46,7 +46,7 @@ $rowColor = 0;
                 value="<?php echo $this->calculatedPrices['costPrice']; ?>"/>
             <input type="hidden"
                    name="mprices[virtuemart_product_price_id][]"
-                   value="<?php echo  $this->tempProduct->virtuemart_product_price_id; ?>"/>
+                   value=""/>
         </td>
         <td colspan="3">
 			<?php echo $this->lists['currencies']; ?>
