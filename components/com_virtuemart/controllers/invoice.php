@@ -18,6 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access for invoices');
+if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 
 // Load the controller framework
 jimport('joomla.application.component.controller');
@@ -29,21 +30,77 @@ jimport('joomla.application.component.controller');
  */
 class VirtueMartControllerInvoice extends JController
 {
-
-	public function display($cachable = false, $urlparams = false)  {
-
-		$format = JRequest::getWord('format','html');
-		if ($format=='pdf') {
-			$viewName='Pdf';
+	public function getOrderDetails() {
+		$orderModel = VmModel::getModel('orders');
+		$orderDetails = 0;
+		// If the user is not logged in, we will check the order number and order pass
+		if ($orderPass = JRequest::getString('order_pass',false) and $orderNumber = JRequest::getString('order_number',false)){
+			$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
+			if(empty($orderId)){
+				vmDebug ('Invalid order_number/password '.JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'));
+				return 0;
+			}
+			$orderDetails = $orderModel->getOrder($orderId);
 		}
-		else $viewName= 'Invoice';
 
-		$view = $this->getView($viewName, $format);
-// 		$view->headFooter = true;
-		$view->display();
+		if($orderDetails==0) {
+
+			$_currentUser = JFactory::getUser();
+			$cuid = $_currentUser->get('id');
+
+			// If the user is logged in, we will check if the order belongs to him
+				$virtuemart_order_id = JRequest::getInt('virtuemart_order_id',0) ;
+			if (!$virtuemart_order_id) {
+				$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber(JRequest::getString('order_number'));
+			}
+			$orderDetails = $orderModel->getOrder($virtuemart_order_id);
+
+			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+			if(!Permissions::getInstance()->check("admin")) {
+				if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
+					if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
+						echo 'view '.JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+						return ;
+					}
+				}
+			}
+		}
+		return $orderDetails;
 	}
 
-	function checkStoreInvoice($orderDetails = 0){
+	public function display($cachable = false, $urlparams = false)  {
+		$format = JRequest::getWord('format','html');
+
+		if ($format != 'pdf') {
+			$viewName='invoice';
+			$view = $this->getView($viewName, $format);
+			$view->headFooter = true;
+			$view->display();
+		} else {
+			$viewName='invoice';
+			$format="html";
+			/* Create the invoice PDF file on disk and send that back */
+			$orderModel = VmModel::getModel('orders');
+			$orderDetails = $this->getOrderDetails();
+			$fileName = $this->checkStoreInvoice($orderDetails, $viewName, $format);
+			if (file_exists ($fileName)) {
+				header ("Cache-Control: public");
+				header ("Content-Transfer-Encoding: binary\n");
+				header ('Content-Type: application/pdf');
+				$contentDisposition = 'attachment';
+				header ("Content-Disposition: $contentDisposition; filename=\"".basename($fileName)."\"");
+				$contents = file_get_contents ($fileName);
+				echo $contents;
+				JFactory::getApplication()->close();
+			} else {
+				// TODO: Error message 
+				// vmError("File $fileName not found!");
+			}
+		}
+
+	}
+
+	function checkStoreInvoice($orderDetails = 0, $viewName='invoice', $format='html', $force = true){
 
 		JRequest::setVar('task','checkStoreInvoice');
 
@@ -101,8 +158,6 @@ class VirtueMartControllerInvoice extends JController
 		$jlang->load('com_virtuemart', JPATH_SITE, null, true);
 
 		$this->addViewPath( JPATH_VM_SITE.DS.'views' );
-		$format = 'html';
-		$viewName= 'invoice';
 		$view = $this->getView($viewName, $format);
 
 		$view->addTemplatePath( JPATH_VM_SITE.DS.'views'.DS.$viewName.DS.'tmpl' );

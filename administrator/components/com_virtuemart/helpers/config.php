@@ -45,7 +45,8 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 //This number is for obstruction, similar to the prefix jos_ of joomla it should be avoided
 //to use the standard 7, choose something else between 1 and 99, it is added to the ordernumber as counter
 // and must not be lowered.
-define('VM_ORDER_OFFSET',3);
+defined('VM_ORDER_OFFSET') or define('VM_ORDER_OFFSET',3);
+
 
 require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 

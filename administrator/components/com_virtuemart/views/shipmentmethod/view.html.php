@@ -109,6 +109,10 @@ class VirtuemartViewShipmentmethod extends VmView {
 			$app = JFactory::getApplication();
 			$app -> enqueueMessage(JText::_('COM_VIRTUEMART_NO_SHIPMENT_PLUGINS_INSTALLED'));
 		}
+
+		foreach ($result as &$sh) {
+			$sh['name'] = JText::_($sh['name']);
+		}
 		return JHtml::_('select.genericlist', $result, 'shipment_jplugin_id', null, $ext_id, 'name', $selected);
 	}
 

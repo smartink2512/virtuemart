@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 
     <body style="background: #F2F2F2;word-wrap: break-word;">
 	<div style="background-color: #e6e6e6;" width="100%">
-	    <table style="margin: auto;" cellpadding="0" cellspacing="0" width="600" ><tr><td>
+	    <table style="margin: auto;" cellpadding="0" cellspacing="0"  ><tr><td>
 			<?php
 // Shop desc for shopper and vendor
 			if ($this->recipient == 'shopper') {
