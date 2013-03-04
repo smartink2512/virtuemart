@@ -70,7 +70,10 @@ vmJsApi::jDate();
 			echo VmHTML::row('raw','COM_VIRTUEMART_START_DATE', vmJsApi::jDate($this->calc->publish_up, 'publish_up') ); ?>
 		<?php
 			echo VmHTML::row('raw','COM_VIRTUEMART_END_DATE',  vmJsApi::jDate($this->calc->publish_down, 'publish_down') ); ?>
+
+        </table></fieldset>
 		<?php
+
 		if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
 		JPluginHelper::importPlugin('vmcalculation');
 		$dispatcher = JDispatcher::getInstance();
@@ -82,8 +85,8 @@ vmJsApi::jDate();
 			echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->vendorList );
 		}
 		?>
-	</table>
-	</fieldset>
+
+
 </div>
 
 	<input type="hidden" name="virtuemart_calc_id" value="<?php echo $this->calc->virtuemart_calc_id; ?>" />

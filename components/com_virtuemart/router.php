@@ -684,8 +684,8 @@ class vmrouterHelper {
 
 		if (!class_exists( 'VmConfig' )) {
 			require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
-			VmConfig::loadConfig();
 		}
+		VmConfig::loadConfig();
 
 		if (isset($query['langswitch']) ) {
 			if ($query['langswitch'] != VMLANG ) $instanceKey = $query['langswitch'] ;

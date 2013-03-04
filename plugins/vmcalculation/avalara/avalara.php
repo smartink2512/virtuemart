@@ -100,7 +100,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 	function plgVmOnDisplayEdit(&$calc,&$html){
 
-		$html .= '<table>';
+		$html .= '<fieldset>
+	<legend>'.JText::_('VMCALCULATION_AVALARA').'</legend>
+	<table class="admintable">';
 
 		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_ACTIVATED','activated',$calc->activated);
 		$html .= VmHTML::row('input','VMCALCULATION_AVALARA_COMPANY_CODE','company_code',$calc->company_code);
@@ -125,11 +127,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		//$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_VADDRESS','vAddress',$calc->vAddress);
 	//	$html .= VmHTML::row('checkbox','VMCALCULATION_ISTRAXX_AVALARA_TRACE','trace',$calc->trace);
 
-		$html .= '</table></fieldset>';
+		$html .= '</table>';
 		if ($calc->activated) {
 			$html .= $this->ping($calc);
 		}
-		$html .= JText::_('VMCALCULATION_AVALARA_MANUAL');
+		$html .= JText::_('VMCALCULATION_AVALARA_MANUAL').'</fieldset>';
 		return TRUE;
 	}
 
