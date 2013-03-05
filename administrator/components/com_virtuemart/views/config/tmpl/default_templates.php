@@ -543,7 +543,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<input type="text" size="10" value="<?php echo VmConfig::get('feed_topten_nb', '5'); ?>" name="feed_latest_nb" id="feed_topten_nb" />
+		<input type="text" size="10" value="<?php echo VmConfig::get('feed_topten_nb', '5'); ?>" name="feed_topten_nb" id="feed_topten_nb" />
 	    </td>
 	</tr>
 	</tr>
