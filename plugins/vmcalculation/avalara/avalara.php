@@ -703,6 +703,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				{
 					vmError($msg->getName().": ".$msg->getSummary());
 				}
+				avadebug('Error, but no exception in getTax avalara',self::$_taxResult);
 			}
 
 		}

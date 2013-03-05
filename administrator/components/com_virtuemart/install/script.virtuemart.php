@@ -243,6 +243,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				'product_price_edate' => ' `product_price_publish_down` DATETIME NULL DEFAULT NULL AFTER `product_price_publish_up`'
 			));
 
+			$this->alterTable('#__virtuemart_medias',array(
+				'file_params' => '`file_params` varchar(18500)'
+			));
+
 			$this->deleteReCreatePrimaryKey('#__virtuemart_userinfos','virtuemart_userinfo_id');
 
 			//$this->renameVdateToPublishDown();

@@ -101,7 +101,9 @@ $alert=JText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 				<span class="quantity-box">
 		<input type="text" class="quantity-input js-recalculate" name="quantity[]" onblur="check(this);" value="<?php if (isset($this->product->step_order_level) && (int)$this->product->step_order_level > 0) {
 			echo $this->product->step_order_level;
-		} else {
+		} else if(!empty($this->product->min_order_level)){
+			echo $this->product->min_order_level;
+		}else {
 			echo '1';
 		} ?>"/>
 	    </span>
