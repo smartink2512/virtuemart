@@ -71,48 +71,30 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 		if (empty($userId)) {
 		    $userId = $this->determineStoreOwner();
+			vmdebug('setStoreOwner $userId = '.$userId.' by determineStoreOwner');
 		}
-
-		$oldUserId	= "";
-		$oldVendorId = "";
 
 		$db = JFactory::getDBO();
-
-		$db->setQuery('SELECT * FROM  `#__virtuemart_vmusers` WHERE `virtuemart_vendor_id`= "1" ');
-		$db->query();
-		$oldVendorId = $db->loadResult();
-
 		$db->setQuery('SELECT * FROM  `#__virtuemart_vmusers` WHERE `virtuemart_user_id`= "' . $userId . '" ');
-		$db->query();
 		$oldUserId = $db->loadResult();
 
-		if (empty($oldVendorId) && empty($oldUserId)) {
-		    $db->setQuery('INSERT `#__virtuemart_vmusers` (`virtuemart_user_id`, `user_is_vendor`, `virtuemart_vendor_id`, `perms`) VALUES ("' . $userId . '", "1","1","admin")');
-		    if ($db->query() == false) {
-				JError::raiseWarning(1, 'setStoreOwner was not possible to execute INSERT __vmusers for virtuemart_user_id '.$userId);
-		    }
-		    else {
-		    	return $userId;
-		    }
-		}
-		else {
-		    if (empty($oldUserId)) {
-				$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_user_id` ="'.$userId.'", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_vendor_id` = "1" ');
-		    }
-		    else {
-				$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_user_id` ="'.$userId.'" ');
-				$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "0", `user_is_vendor` = "0", `perms` = "" WHERE `virtuemart_user_id` ="'.$oldUserId.'" ');
-
-				//$db->setQuery( 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "'.$oldUserId.'" ');
-		    }
-
+		if (!empty($oldUserId) and !empty($userId)) {
+		    $db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "0", `user_is_vendor` = "0", `perms` = "" WHERE `virtuemart_vendor_id` ="1" ');
 		    if ($db->query() == false ) {
-				JError::raiseWarning(1, 'UPDATE __vmusers failed for virtuemart_user_id '.$userId);
-		    } else {
-		    	return $userId;
+			    JError::raiseWarning(1, 'UPDATE __vmusers failed for virtuemart_user_id '.$userId);
+			    return false;
 		    }
+
+			$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_user_id` ="'.$userId.'" ');
+			if ($db->query() === false ) {
+				JError::raiseWarning(1, 'UPDATE __vmusers failed for virtuemart_user_id '.$userId);
+				return false;
+			} else {
+				vmInfo('setStoreOwner VmUser updated new vendor has user id  '.$userId);
+			}
 		}
 
+	    return $userId;
     }
 
 

@@ -968,6 +968,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 		
 		if (count ($taxrules) > 0) {
+
 			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value'],false,false), 'salesPrice');
 			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] - $cart_prices[$this->_psType . 'Value']), 'salesPrice');
 			reset($taxrules);
@@ -994,44 +995,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		return $this -> setCartPrices($cart,$cart_prices,$method);
 	}
-/*		$value = $this->getCosts ($cart, $method, $cart_prices);
 
-		$tax_id = @$method->tax_id;
-
-		if (!class_exists ('calculationHelper')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-		}
-		if (!class_exists ('CurrencyDisplay')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-		}
-		if (!class_exists ('VirtueMartModelVendor')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-		}
-
-		$vendor_id = 1;
-		$vendor_currency = VirtueMartModelVendor::getVendorCurrency ($vendor_id);
-
-		$db = JFactory::getDBO ();
-		$calculator = calculationHelper::getInstance ();
-		$currency = CurrencyDisplay::getInstance ();
-
-		$value = $currency->convertCurrencyTo ($vendor_currency->virtuemart_currency_id, $value);
-
-		$taxrules = array();
-		if (!empty($tax_id)) {
-			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $tax_id . '" ';
-			$db->setQuery ($q);
-			$taxrules = $db->loadAssocList ();
-		}
-
-		if (count ($taxrules) > 0) {
-			$salesPrice = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $value));
-		} else {
-			$salesPrice = $value;
-		}
-
-		return $salesPrice;
-	}*/
 
 	/**
 	 * logPaymentInfo

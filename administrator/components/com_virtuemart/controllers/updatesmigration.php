@@ -107,25 +107,6 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	}
 
 	/**
-	 * Install sample data into the database
-	 *
-	 * @author RickG
-	 * @author Max Milbers
-	 *
-	function userSync(){
-
-		$data = JRequest::get('get');
-		JRequest::setVar($data['token'], '1', 'post');
-		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
-		$this->checkPermissionForTools();
-
-		$model = $this->getModel('updatesMigration');
-		$msg = $model->integrateJoomlaUsers();
-
-		$this->setRedirect($this->redirectPath, $msg);
-	}
-
-	/**
 	 * Sets the storeowner to the currently logged in user
 	 * He needs to have admin rights todo so
 	 *
@@ -486,8 +467,32 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateAllInOne();
-		$msg = 'Migration finished';
+		if($result){
+			$msg = 'Migration finished';
+		} else {
+			$msg = 'Migration was interrupted by max_execution time, please restart';
+		}
 		$this->setRedirect($this->redirectPath, $msg);
+	}
+
+	function reOrderChilds(){
+
+		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
+		$this->checkPermissionForTools();
+
+		if(!VmConfig::get('dangeroustools', true)){
+			$msg = $this->_getMsgDangerousTools();
+			$this->setRedirect($this->redirectPath, $msg);
+			return false;
+		}
+
+		$this->storeMigrationOptionsInSession();
+		if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
+		$updater = new GenericTableUpdater();
+		$result = $updater->reOrderChilds();
+
+		//$msg = 'reOrderDone';
+		$this->setRedirect($this->redirectPath, $result);
 	}
 
 	function storeMigrationOptionsInSession(){
@@ -499,6 +504,8 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$session->set('migration_default_category_browse', JRequest::getString('migration_default_category_browse',''), 'vm');
 		$session->set('migration_default_category_fly', JRequest::getString('migration_default_category_fly',''), 'vm');
 	}
+
+
 
 	/**
 	 * This is executing the update table commands to adjust tables to the latest layout
@@ -532,5 +539,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			$db->query();
 		}*/
 	}
+
+
 }
 

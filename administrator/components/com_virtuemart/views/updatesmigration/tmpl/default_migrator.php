@@ -83,7 +83,7 @@ $session = JFactory::getSession();
 			'migrateProductsFromVmOne'	=> JText::_('COM_VIRTUEMART_UPDATE_PRODUCTS'),
 			'migrateOrdersFromVmOne'	=> JText::_('COM_VIRTUEMART_UPDATE_ORDERS'),
 			'migrateAllInOne'	=> JText::_('COM_VIRTUEMART_UPDATE_ALL'),
-			'setStoreOwner'	=> JText::_('COM_VIRTUEMART_SETSTOREOWNER')
+		//	'setStoreOwner'	=> JText::_('COM_VIRTUEMART_SETSTOREOWNER')
 		);
 		echo VmHTML::radioList('task', $session->get('migration_task', 'migrateAllInOne', 'vm'), $options);
 	?>
@@ -124,6 +124,17 @@ $session = JFactory::getSession();
 	</td>
 </tr>
 
+</table>
+    <!-- Hidden Fields -->
+    <input type="hidden" name="option" value="com_virtuemart" />
+    <input type="hidden" name="view" value="updatesmigration" />
+	<?php echo JHTML::_( 'form.token' ); ?>
+</form>
+
+<form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" >
+<input type="hidden" name="task" value="setStoreOwner" />
+
+<table>
 <tr>
 	<td>
 		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_STOREOWNERID'); ?>
@@ -131,12 +142,33 @@ $session = JFactory::getSession();
 	<td>
 		<input class="inputbox" type="text" name="storeOwnerId" size="15" value="" />
 	</td>
+    <td>
+        <button class="default" type="submit" ><?php echo JText::_('COM_VIRTUEMART_SETSTOREOWNER'); ?></button>
+    </td>
 </tr>
-
-
 </table>
+
 <!-- Hidden Fields -->
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="updatesmigration" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
+<?php /*
+<form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" >
+    <input type="hidden" name="task" value="reOrderChilds" />
+
+    <table>
+        <tr>
+            <td align="left" colspan="5" >
+                <h3> <?php echo JText::_('COM_VIRTUEMART_UPDATE_CHILD_ORDERING'); ?> </h3>
+            </td>
+        </tr>
+        <td>
+            <button class="default" type="submit" ><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
+        </td>
+    </table>
+    <!-- Hidden Fields -->
+    <input type="hidden" name="option" value="com_virtuemart" />
+    <input type="hidden" name="view" value="updatesmigration" />
+	<?php echo JHTML::_( 'form.token' ); ?>
+</form> */ ?>
