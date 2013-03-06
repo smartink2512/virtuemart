@@ -386,22 +386,22 @@ class calculationHelper {
 
 		$this->productPrices['DBTax'] = array();
 		foreach($this->rules['DBTax'] as $dbtax){
-			$this->productPrices['DBTax'][] = array($dbtax['calc_name'],$dbtax['calc_value'],$dbtax['calc_value_mathop'],$dbtax['calc_shopper_published'],$dbtax['calc_currency'],$dbtax['calc_params'], $dbtax['virtuemart_vendor_id']);
+			$this->productPrices['DBTax'][$dbtax['virtuemart_calc_id']] = array($dbtax['calc_name'],$dbtax['calc_value'],$dbtax['calc_value_mathop'],$dbtax['calc_shopper_published'],$dbtax['calc_currency'],$dbtax['calc_params'], $dbtax['virtuemart_vendor_id'], $dbtax['virtuemart_calc_id']);
 		}
 
 		$this->productPrices['Tax'] = array();
 		foreach($this->rules['Tax'] as $tax){
-			$this->productPrices['Tax'][] =  array($tax['calc_name'],$tax['calc_value'],$tax['calc_value_mathop'],$tax['calc_shopper_published'],$tax['calc_currency'],$tax['calc_params'], $tax['virtuemart_vendor_id']);
+			$this->productPrices['Tax'][$tax['virtuemart_calc_id']] =  array($tax['calc_name'],$tax['calc_value'],$tax['calc_value_mathop'],$tax['calc_shopper_published'],$tax['calc_currency'],$tax['calc_params'], $tax['virtuemart_vendor_id'], $tax['virtuemart_calc_id']);
 		}
 
 		$this->productPrices['VatTax'] = array();
 		foreach($this->rules['VatTax'] as $tax){
-			$this->productPrices['VatTax'][] =  array($tax['calc_name'],$tax['calc_value'],$tax['calc_value_mathop'],$tax['calc_shopper_published'],$tax['calc_currency'],$tax['calc_params'], $tax['virtuemart_vendor_id']);
+			$this->productPrices['VatTax'][$tax['virtuemart_calc_id']] =  array($tax['calc_name'],$tax['calc_value'],$tax['calc_value_mathop'],$tax['calc_shopper_published'],$tax['calc_currency'],$tax['calc_params'], $tax['virtuemart_vendor_id'], $tax['virtuemart_calc_id'],);
 		}
 
 		$this->productPrices['DATax'] = array();
 		foreach($this->rules['DATax'] as $datax){
-			$this->productPrices['DATax'][] =  array($datax['calc_name'],$datax['calc_value'],$datax['calc_value_mathop'],$datax['calc_shopper_published'],$datax['calc_currency'],$datax['calc_params'], $datax['virtuemart_vendor_id']);
+			$this->productPrices['DATax'][$datax['virtuemart_calc_id']] =  array($datax['calc_name'],$datax['calc_value'],$datax['calc_value_mathop'],$datax['calc_shopper_published'],$datax['calc_currency'],$datax['calc_params'], $datax['virtuemart_vendor_id'], $datax['virtuemart_calc_id']);
 		}
 
 		if(!empty($this->rules['VatTax'])){
@@ -738,8 +738,10 @@ class calculationHelper {
 			if (!empty($rule['subTotalPerTaxID'])) {
 				foreach ($rule['subTotalPerTaxID'] as $k=>$DBTax) {
 					$this->roundInternal($this->cartRuleCalculation($this->_cartData['DBTaxRulesBill'], $this->_cartPrices['salesPrice'], $k, true));
-					$categorydiscountBeforeTax += $this->_cartData['VatTax'][$k]['DBTax'][$rule['virtuemart_calc_id'] . 'DBTax'];
-					vmdebug('$categorydiscountBeforeTax',$categorydiscountBeforeTax);
+					if (!empty($this->_cartData['VatTax'][$k]['DBTax'][$rule['virtuemart_calc_id'] . 'DBTax'])) {
+						$categorydiscountBeforeTax += $this->_cartData['VatTax'][$k]['DBTax'][$rule['virtuemart_calc_id'] . 'DBTax'];
+					}
+					//vmdebug('$categorydiscountBeforeTax',$categorydiscountBeforeTax);
 				}
 			}
 		}
@@ -797,7 +799,7 @@ class calculationHelper {
 		//		$sub =!empty($this->_cartPrices['discountedPriceWithoutTax'])? $this->_cartPrices['discountedPriceWithoutTax']:$this->_cartPrices['basePrice'];
 		if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices['billSub'] = $this->_cartPrices['basePrice'] + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'];
 		//		$this->_cartPrices['billSub']  = $sub + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'];
-		if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['discountAmount'] + $cartdiscountBeforeTax + $cartdiscountAfterTax;// + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'] ;
+		if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices['billDiscountAmount'] = -$this->_cartPrices['discountAmount'] + $cartdiscountBeforeTax + $cartdiscountAfterTax;// + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'] ;
 		if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['shipmentTax'] + $this->_cartPrices['paymentTax'] + $cartTax; //+ $this->_cartPrices['withTax'] - $toTax
 
 		//The coupon handling is only necessary if a salesPrice is displayed, otherwise we have a kind of catalogue mode
@@ -820,9 +822,13 @@ class calculationHelper {
 				foreach($this->_cartData['VatTax'] as &$vattax){
 
 					//$vattax['DBTax'] = var_dump(array_sum($vattax['DBTax']));
-					if (isset($vattax['subTotal']))		$vattax['percentage'] = $vattax['subTotal'] / $this->_cartPrices['salesPrice'];
-														$vattax['DBTax'] = isset($vattax['DBTax']) ? $vattax['DBTax'] : 0;
-					if (isset($vattax['calc_value']))	$vattax['discountTaxAmount'] = round(($totalDiscount * $vattax['percentage'] + abs($vattax['DBTax'])) / (100 + $vattax['calc_value']) * $vattax['calc_value'],$this->_currencyDisplay->_priceConfig['taxAmount'][1]);
+					if (isset($vattax['subTotal'])) {
+						$vattax['percentage'] = $vattax['subTotal'] / $this->_cartPrices['salesPrice'];
+					}
+					$vattax['DBTax'] = isset($vattax['DBTax']) ? $vattax['DBTax'] : 0;
+					if (isset($vattax['calc_value'])) {
+						$vattax['discountTaxAmount'] = round(($totalDiscount * $vattax['percentage'] + abs($vattax['DBTax'])) / (100 + $vattax['calc_value']) * $vattax['calc_value'],$this->_currencyDisplay->_priceConfig['taxAmount'][1]);
+					}
 					//$vattax['subTotal'] = $vattax['subTotal'] - $vattax['percentage'] * $totalDiscount;
 
 					if (isset($vattax['discountTaxAmount'])) $this->_cartPrices['billTaxAmount'] -= $vattax['discountTaxAmount'];
@@ -838,11 +844,21 @@ class calculationHelper {
 		//Calculate VatTax result
 		if ($this->_cartPrices['shipment_calc_id']) $this->_cartData['VatTax'][$this->_cartPrices['shipment_calc_id']]['shipmentTax'] = $this->_cartPrices['shipmentTax'];
 		if ($this->_cartPrices['payment_calc_id']) $this->_cartData['VatTax'][$this->_cartPrices['payment_calc_id']]['paymentTax'] = $this->_cartPrices['paymentTax'];
-		foreach($this->_cartData['VatTax'] as &$vattax){
+		foreach($this->_cartData['VatTax'] as $k=>&$vattax){
 			$vattax['result'] = isset($vattax['taxAmount']) ? $vattax['taxAmount'] : 0;
 			if (isset($vattax['discountTaxAmount'])) $vattax['result'] -= $vattax['discountTaxAmount'];
 			if (isset($vattax['shipmentTax'])) $vattax['result'] += $vattax['shipmentTax'];
 			if (isset($vattax['paymentTax'])) $vattax['result'] += $vattax['paymentTax'];
+			if (!isset($vattax['virtuemart_calc_id'])) $vattax['virtuemart_calc_id'] = $this->getCalcRuleData($k)->virtuemart_calc_id;
+			if (!isset($vattax['calc_name'])) $vattax['calc_name'] = $this->getCalcRuleData($k)->calc_name;
+			if (!isset($vattax['calc_value'])) $vattax['calc_value'] = $this->getCalcRuleData($k)->calc_value;
+		}
+		foreach ($this->_cartData['taxRulesBill'] as $k=>&$rule) {
+			$this->_cartData['VatTax'][$k]['result'] = isset($this->_cartData['VatTax'][$k]['result']) ? $this->_cartData['VatTax'][$k]['result'] : 0;
+			$this->_cartData['VatTax'][$k]['result'] += round($this->_cartPrices[$rule['virtuemart_calc_id'] . 'Diff'],$this->_currencyDisplay->_priceConfig['salesPrice'][1]);
+			if(!isset($this->_cartData['VatTax'][$k]['virtuemart_calc_id'])) $this->_cartData['VatTax'][$k]['virtuemart_calc_id'] = $rule['virtuemart_calc_id'];
+			if(!isset($this->_cartData['VatTax'][$k]['calc_name'])) $this->_cartData['VatTax'][$k]['calc_name'] = $rule['calc_name'];
+			if(!isset($this->_cartData['VatTax'][$k]['calc_value'])) $this->_cartData['VatTax'][$k]['calc_value'] = $rule['calc_value'];
 		}
 
 		//$this->_cartData['taxRulesBill'] = array_merge($this->_cartData['taxRulesBill'],$this->_cartData['VatTax']);
@@ -852,6 +868,18 @@ class calculationHelper {
 		return $this->_cartPrices;
 	}
 
+
+	/**
+	 * Get the data of the CalcRule ID if it is not there
+	 * @author Maik Kuennemann
+	 * @param $VatTaxID ID of the taxe rule
+	 */
+	private function getCalcRuleData($calcRuleID) {
+		$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $calcRuleID . '"';
+		$this->_db->setQuery($q);
+		$calcRule = $this->_db->loadObject();
+		return $calcRule;
+	}
 
 	/**
 	 * Get coupon details and calculate the value

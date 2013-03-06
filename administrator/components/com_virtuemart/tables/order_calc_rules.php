@@ -32,6 +32,8 @@ class TableOrder_calc_rules extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_order_calc_rule_id = 0;
+	/** @var int Calculation ID */
+	var $virtuemart_calc_id = NULL;
 	/** @var int Order ID */
 	var $virtuemart_order_id = NULL;
 
@@ -45,6 +47,8 @@ class TableOrder_calc_rules extends VmTable {
 	var $calc_kind = NULL;
 	/** @var decimal Product item price */
 	var $calc_amount = 0.00000;
+	/** @var decimal Calculation Rule Result */
+	var $calc_result = 0.00000;
 
 	var $calc_mathop = NULL;
 	var $calc_value = NULL;

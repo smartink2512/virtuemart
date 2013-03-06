@@ -961,13 +961,13 @@ abstract class vmPSPlugin extends vmPlugin {
 
 			} else {
 				$taxrules = $calculator->_cartData['taxRulesBill'];
+				foreach($taxrules as &$rule){
+					unset($rule['subTotal']);
+				}
 			}
 		}
 		
 		if (count ($taxrules) > 0) {
-			foreach($taxrules as &$rule){
-				unset($rule['subTotal']);
-			}
 			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value'],false,false), 'salesPrice');
 			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] - $cart_prices[$this->_psType . 'Value']), 'salesPrice');
 			reset($taxrules);

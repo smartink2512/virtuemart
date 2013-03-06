@@ -47,6 +47,8 @@ class TableOrders extends VmTable {
 	var $order_salesPrice = 0.00000;
 	/** @var decimal Order Bill Tax amount */
 	var $order_billTaxAmount = 0.00000;
+	/** @var string Order Bill Tax */
+	var $order_billTax = 0;
 	/** @var decimal Order Bill Tax amount */
 	var $order_billDiscountAmount = 0.00000;
 	/** @var decimal Order  Products Discount amount */

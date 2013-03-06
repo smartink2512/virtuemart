@@ -469,6 +469,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `order_total` decimal(15,5) NOT NULL DEFAULT '0.00000',
   `order_salesPrice` decimal(15,5) NOT NULL DEFAULT '0.00000',
   `order_billTaxAmount` decimal(15,5) NOT NULL DEFAULT '0.00000',
+  `order_billTax` varchar(400),
   `order_billDiscountAmount` decimal(15,5) NOT NULL DEFAULT '0.00000',
   `order_discountAmount` decimal(15,5) NOT NULL DEFAULT '0.00000',
   `order_subtotal` decimal(15,5),
@@ -561,11 +562,12 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_items` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__virtuemart_order_items`
+-- Table structure for table `#__virtuemart_order_calc_rules`
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_order_calc_rules` (
   `virtuemart_order_calc_rule_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_calc_id` int(11),
   `virtuemart_order_id` int(11),
   `virtuemart_vendor_id` smallint(11) NOT NULL DEFAULT '1',
   `virtuemart_order_item_id` int(11),
@@ -573,6 +575,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_calc_rules` (
   `calc_kind` char(16) NOT NULL DEFAULT '' COMMENT 'Discount/Tax/Margin/Commission',
   `calc_mathop` char(16) NOT NULL DEFAULT '' COMMENT 'Discount/Tax/Margin/Commission',
   `calc_amount` decimal(15,5) NOT NULL DEFAULT '0.00000',
+  `calc_result` decimal(15,5) NOT NULL DEFAULT '0.00000',
   `calc_value` decimal(15,5) NOT NULL DEFAULT '0.00000',
   `calc_currency` smallint(1),
   `calc_params` varchar(18000),

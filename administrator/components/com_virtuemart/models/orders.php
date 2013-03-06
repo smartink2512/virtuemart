@@ -563,6 +563,17 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_orderData->order_payment = $_prices['paymentValue'];
 		$_orderData->order_payment_tax = $_prices['paymentTax'];
 
+		if (!empty($_cart->cartData['VatTax'])) {
+			$taxes = array();
+			foreach($_cart->cartData['VatTax'] as $k=>$VatTax) {
+				$taxes[$k]['virtuemart_calc_id'] = $k;
+				$taxes[$k]['calc_name'] = $VatTax['calc_name'];
+				$taxes[$k]['calc_value'] = $VatTax['calc_value'];
+				$taxes[$k]['result'] = $VatTax['result'];
+			}
+			$_orderData->order_billTax = json_encode($taxes);
+		}
+
 		if (!empty($_cart->couponCode)) {
 			$_orderData->coupon_code = $_cart->couponCode;
 			$_orderData->coupon_discount = $_prices['salesPriceCoupon'];
@@ -940,9 +951,15 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				foreach($productRules as $rule){
 					$orderCalcRules = $this->getTable('order_calc_rules');
 					$orderCalcRules->virtuemart_order_calc_rule_id= null;
+					$orderCalcRules->virtuemart_calc_id= $rule[7];
 					$orderCalcRules->virtuemart_order_item_id = $_cart->products[$key]->virtuemart_order_item_id;
 					$orderCalcRules->calc_rule_name = $rule[0];
 					$orderCalcRules->calc_amount =  0;
+					$orderCalcRules->calc_result =  0;
+					if ($calculation_kind == 'VatTax') {
+						$orderCalcRules->calc_amount =  $_cart->pricesUnformatted[$key]['taxAmount'];
+						$orderCalcRules->calc_result =  $_cart->cartData['VatTax'][$rule[7]]['result'];
+					}
 					$orderCalcRules->calc_value = $rule[1];
 					$orderCalcRules->calc_mathop = $rule[2];
 					$orderCalcRules->calc_kind = $calculation_kind;
@@ -982,8 +999,12 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		    foreach($_cart->cartData[$calculation_kind] as $rule){
 			    $orderCalcRules = $this->getTable('order_calc_rules');
 			     $orderCalcRules->virtuemart_order_calc_rule_id = null;
+				 $orderCalcRules->virtuemart_calc_id= $rule['virtuemart_calc_id'];
 			     $orderCalcRules->calc_rule_name= $rule['calc_name'];
 			     $orderCalcRules->calc_amount =  $_cart->pricesUnformatted[$rule['virtuemart_calc_id'].'Diff'];
+				 if ($calculation_kind == 'taxRulesBill' and !empty($_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['result'])) {
+					$orderCalcRules->calc_result =  $_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['result'];
+				 }
 			     $orderCalcRules->calc_kind=$calculation_kind;
 			     $orderCalcRules->calc_mathop=$rule['calc_value_mathop'];
 			     $orderCalcRules->virtuemart_order_id=$order_id;
@@ -1008,8 +1029,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$calcModel->setId($_cart->pricesUnformatted['payment_calc_id']);
 			$calc = $calcModel->getCalc();
 			$orderCalcRules->virtuemart_order_calc_rule_id = null;
+			$orderCalcRules->virtuemart_calc_id = $calc->virtuemart_calc_id;
 			$orderCalcRules->calc_kind = 'payment';
 			$orderCalcRules->calc_rule_name = $calc->calc_name;
+			$orderCalcRules->calc_amount = $_cart->pricesUnformatted['paymentTax'];
 			$orderCalcRules->calc_value = $calc->calc_value;
 			$orderCalcRules->calc_mathop = $calc->calc_value_mathop;
 			$orderCalcRules->calc_currency = $calc->calc_currency;
@@ -1037,8 +1060,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$calc = $calcModel->getCalc();
 
 			$orderCalcRules->virtuemart_order_calc_rule_id = null;
+			$orderCalcRules->virtuemart_calc_id = $calc->virtuemart_calc_id;
 			$orderCalcRules->calc_kind = 'shipment';
 			$orderCalcRules->calc_rule_name = $calc->calc_name;
+			$orderCalcRules->calc_amount = $_cart->pricesUnformatted['shipmentTax'];
 			$orderCalcRules->calc_value = $calc->calc_value;
 			$orderCalcRules->calc_mathop = $calc->calc_value_mathop;
 			$orderCalcRules->calc_currency = $calc->calc_currency;
