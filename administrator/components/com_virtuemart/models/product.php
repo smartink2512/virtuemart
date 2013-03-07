@@ -2131,13 +2131,14 @@ function lowStockWarningEmail($virtuemart_product_id) {
 			$q .= ' GROUP BY `virtuemart_product_id` ORDER BY p.pordering ASC';
 			$this->_db->setQuery ($q);
 			$this->_uncategorizedChildren = $this->_db->loadAssocList ();
+
 			$err = $this->_db->getErrorMsg ();
 			if (!empty($err)) {
 				vmError ('getUncategorizedChildren sql error ' . $err, 'getUncategorizedChildren sql error');
 				vmdebug ('getUncategorizedChildren ' . $err);
 				return FALSE;
 			}
-// 			vmdebug('getUncategorizedChildren '.$this->_db->getQuery());
+ //			vmdebug('getUncategorizedChildren '.$this->_db->getQuery(),$this->_uncategorizedChildren);
 		}
 		return $this->_uncategorizedChildren;
 	}
@@ -2179,7 +2180,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 			return array();
 		}
 		$db = JFactory::getDBO ();
-		$db->setQuery (' SELECT virtuemart_product_id FROM `#__virtuemart_products` WHERE `product_parent_id` =' . (int)$product_id);
+		$db->setQuery (' SELECT virtuemart_product_id FROM `#__virtuemart_products` WHERE `product_parent_id` =' . (int)$product_id.' ORDER BY pordering ASC');
 
 		return $db->loadResultArray ();
 

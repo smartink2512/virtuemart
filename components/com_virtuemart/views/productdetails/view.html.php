@@ -170,23 +170,10 @@ class VirtueMartViewProductdetails extends VmView {
 	$this->assignRef('step_order_level', $step_order_level);
 	// Load the neighbours
 	$product->neighbours = $product_model->getNeighborProducts($product);
-//		if(!empty($product->neighbours) && is_array($product->neighbours) && !empty($product->neighbours[0]))$product_model->addImages($product->neighbours);
-//		$product->related = $product_model->getRelatedProducts($virtuemart_product_id);
-//		if(!empty($product->related) && is_array($product->related) && !empty($product->related[0]))$product_model->addImages($product->related);
+
 	// Load the category
 	$category_model = VmModel::getModel('category');
 
-	// Get the category ID
-/*	if (in_array($last_category_id, $product->categories) ){
-		$virtuemart_category_id = $last_category_id;
-
-	} else $virtuemart_category_id = JRequest::getInt('virtuemart_category_id',0);
-	if ($virtuemart_category_id == 0 ) {
-	    if (array_key_exists('0', $product->categories))
-		$virtuemart_category_id = $product->categories[0];
-	}
-	$product->virtuemart_category_id = $virtuemart_category_id;
-	shopFunctionsF::setLastVisitedCategoryId($virtuemart_category_id);*/
 	shopFunctionsF::setLastVisitedCategoryId($product->virtuemart_category_id);
 
 	if ($category_model) {

@@ -297,7 +297,7 @@ class shopFunctionsF {
 
 		// set proper sender
 		$sender = array();
-		if (!empty($view->vendorEmail))
+		if (!empty($view->vendorEmail) and VmConfig::get('useVendorEmail',0))
 		{
 			$sender[0] = $view->vendorEmail;
 			$sender[1] = $view->vendor->vendor_name;

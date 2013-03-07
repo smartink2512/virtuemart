@@ -150,6 +150,16 @@ defined('_JEXEC') or die('Restricted access');
 			    </select>
 		    </td>
 	    </tr>
+		<tr>
+            <td class="key">
+			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_USEVENDOR_EXPLAIN'); ?>">
+			<label for="useVendorEmail"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_USEVENDOR') ?></span>
+                </span>
+            </td>
+			<td>
+                <?php echo VmHTML::checkbox('useVendorEmail', VmConfig::get('useVendorEmail',0)); ?>
+			</td>
+		</tr>
 		<!-- NOT YET -->
 	    <!--tr>
 		    <td class="key">
