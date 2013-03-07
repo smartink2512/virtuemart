@@ -155,7 +155,7 @@ INSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_worl
 (118, 1, 'Lebanon', 'LBN', 'LB'),
 (119, 1, 'Lesotho', 'LSO', 'LS'),
 (120, 1, 'Liberia', 'LBR', 'LR'),
-(121, 1, 'Libyan Arab Jamahiriya', 'LBY', 'LY'),
+(121, 1, 'Libya', 'LBY', 'LY'),
 (122, 1, 'Liechtenstein', 'LIE', 'LI'),
 (123, 1, 'Lithuania', 'LTU', 'LT'),
 (124, 1, 'Luxembourg', 'LUX', 'LU'),
