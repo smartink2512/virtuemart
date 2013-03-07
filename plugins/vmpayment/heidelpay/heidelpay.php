@@ -431,7 +431,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		return $this->onStoreInstallPluginTable ($jplugin_id);
 	}
 
-	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart) {
+	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart, &$msg) {
 
 		return $this->OnSelectCheck ($cart);
 	}
