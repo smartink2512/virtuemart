@@ -991,7 +991,7 @@ class vmJsApi{
 	/*
 	 * Set file path(look in template if relative path)
 	 */
-	public static function setPath( $namespace ,$path = FALSE ,$version='' ,$minified = NULL , $ext = 'js')
+	public static function setPath( $namespace ,$path = FALSE ,$version='' ,$minified = NULL , $ext = 'js', $absolute_path=false)
 	{
 
 		$version = $version ? '.'.$version : '';
@@ -1012,12 +1012,20 @@ class vmJsApi{
 				// vmdebug('setPath',$assets_path,$path);
 				// vmWarn('file not found in tmpl :'.$file );
 			}
-			$path = JURI::root(TRUE) .'/'.$path;
+			if ($absolute_path) {
+				$path = JPATH_BASE .'/'.$path;
+			} else {
+				$path = JURI::root(TRUE) .'/'.$path;
+			}
 
 		}
 		elseif (strpos($path, '//') === FALSE)
 		{
-			$path = JURI::root(TRUE) .'/'.$path;
+			if ($absolute_path) {
+				$path = JPATH_BASE .'/'.$path;
+			} else {
+				$path = JURI::root(TRUE) .'/'.$path;
+			}
 		}
 		return $path.'/'.$file ;
 	}
@@ -1162,7 +1170,7 @@ class vmJsApi{
 		if (!in_array ($lang, $existingLang)) {
 			$lang = "en";
 		}*/
-		$vlePath = vmJsApi::setPath('languages/jquery.validationEngine-'.$lang);
+		$vlePath = vmJsApi::setPath('languages/jquery.validationEngine-'.$lang, FALSE , '' ,$minified = NULL ,   'js', true);
 		if(file_exists($vlePath) and !is_dir($vlePath)){
 			vmJsApi::js( 'languages/jquery.validationEngine-'.$lang );
 		} else {
