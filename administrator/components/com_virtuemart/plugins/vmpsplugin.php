@@ -150,10 +150,13 @@ abstract class vmPSPlugin extends vmPlugin {
 			}
 		}
 
-		$html = array();
+		$retval = FALSE;
 		$method_name = $this->_psType . '_name';
 		foreach ($this->methods as $method) {
 			if ($this->checkConditions ($cart, $method, $cart->pricesUnformatted)) {
+				$retval = TRUE;
+				$o = $method->ordering;
+				$html = isset($htmlIn[$o])?$htmlIn[$o]:array();
 
 				//$methodSalesPrice = $this->calculateSalesPrice ($cart, $method, $cart->pricesUnformatted);
 				/* Because of OPC: the price must not be overwritten directly in the cart */
@@ -161,14 +164,11 @@ abstract class vmPSPlugin extends vmPlugin {
 				$methodSalesPrice = $this->setCartPrices ($cart, $pricesUnformatted,$method);
 				$method->$method_name = $this->renderPluginName ($method);
 				$html [] = $this->getPluginHtml ($method, $selected, $methodSalesPrice);
+				$htmlIn[$o] = $html;
 			}
 		}
-		if (!empty($html)) {
-			$htmlIn[] = $html;
-			return TRUE;
-		}
 
-		return FALSE;
+		return $retval;
 	}
 
 	/*

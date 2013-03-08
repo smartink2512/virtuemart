@@ -239,6 +239,7 @@ class VirtueMartViewCart extends VmView {
 		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmDisplayListFEShipment', array( $this->cart, $selectedShipment, &$shipments_shipment_rates));
+		ksort($shipments_shipment_rates);
 		// if no shipment rate defined
 		$found_shipment_method =count($shipments_shipment_rates);
 		if ($found_shipment_method== 0 AND empty($this->cart->BT))  {
@@ -283,6 +284,7 @@ class VirtueMartViewCart extends VmView {
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmDisplayListFEPayment', array($this->cart, $selectedPayment, &$paymentplugins_payments));
+			ksort($paymentplugins_payments);
 			// if no payment defined
 			$found_payment_method =count($paymentplugins_payments);
 		}
