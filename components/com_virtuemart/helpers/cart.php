@@ -185,7 +185,7 @@ class VirtueMartCart {
 
 				//Important DO NOT UNSET product_price
 				//unset($product->product_price);
-				unset($product->prices);
+				//unset($product->prices);
 				unset($product->pricesUnformatted);
 				unset($product->mf_name);
 				unset($product->mf_desc);
@@ -1240,7 +1240,7 @@ class VirtueMartCart {
 	* @author Valerie Isaksen
 	*/
 	function prepareCartViewData(){
-		$data = new stdClass();
+
 		// Get the products for the cart
 		$this->prepareCartPrice( ) ;
 
@@ -1292,10 +1292,10 @@ class VirtueMartCart {
 		}
 
 		foreach ($this->products as $cart_item_id=>&$product){
-			//vmdebug('my product in prepareCartPrice ',$product);
+			//vmdebug('my product in prepareCartPrice ',$product->prices);
 			$product->virtuemart_category_id = $this->getCardCategoryId($product->virtuemart_product_id);
-			$product = $productM->getProduct($product->virtuemart_product_id,true, true, true, $product->quantity);
-			//$productM->getProductPrices($product,$product->quantity,$virtuemart_shoppergroup_ids,true);
+			//$product = $productM->getProduct($product->virtuemart_product_id,true, true, true, $product->quantity);
+			$productM->getProductPrices($product,$product->quantity,$virtuemart_shoppergroup_ids,true,true);
 
 			// No full link because Mail want absolute path and in shop is better relative path
 			$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHTML::link($url, $product->product_name);

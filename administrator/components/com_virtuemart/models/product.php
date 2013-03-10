@@ -709,17 +709,7 @@ class VirtueMartModelProduct extends VmModel {
 		return $_products[$productKey];
 	}
 
-	public function getProductPrices(&$product,$quantity,$virtuemart_shoppergroup_ids,$front){
-
-		$product->product_price = null;
-		$product->product_override_price = null;
-		$product->override = null;
-		$product->virtuemart_product_price_id = null;
-		$product->virtuemart_shoppergroup_id = null;
-		$product->product_price_publish_up = null;
-		$product->product_price_publish_down = null;
-		$product->price_quantity_start = null;
-		$product->price_quantity_end = null;
+	private function loadProductPrices($productId,$quantity,$virtuemart_shoppergroup_ids,$front){
 
 		$db = JFactory::getDbo();
 		$this->_nullDate = $db->getNullDate();
@@ -727,7 +717,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->_now = $jnow->toMySQL();
 
 		//$productId = $this->_id===0? $product->virtuemart_product_id:$this->_id;
-		$productId = $product->virtuemart_product_id===0? $this->_id:$product->virtuemart_product_id;
+		//$productId = $product->virtuemart_product_id===0? $this->_id:$product->virtuemart_product_id;
 		$q = 'SELECT * FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$productId.'" ';
 
 		if($front){
@@ -749,15 +739,68 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		$db->setQuery($q);
-		$product->prices = $db->loadAssocList();
+		$prices = $db->loadAssocList();
 		$err = $db->getErrorMsg();
 		if(!empty($err)){
 			vmError('getProductSingle '.$err);
 		} else {
 			//vmdebug('getProductSingle getPrice query',$q);
-		//	vmdebug('getProductSingle ',$quantity);
-			//vmTrace('hmpf');
 		}
+		return $prices;
+	}
+
+	public function getProductPrices(&$product,$quantity,$virtuemart_shoppergroup_ids,$front,$loop=false){
+
+		$product->product_price = null;
+		$product->product_override_price = null;
+		$product->override = null;
+		$product->virtuemart_product_price_id = null;
+		$product->virtuemart_shoppergroup_id = null;
+		$product->product_price_publish_up = null;
+		$product->product_price_publish_down = null;
+		$product->price_quantity_start = null;
+		$product->price_quantity_end = null;
+
+		$productId = $product->virtuemart_product_id===0? $this->_id:$product->virtuemart_product_id;
+		$product->prices = $this->loadProductPrices($productId,$quantity,$virtuemart_shoppergroup_ids,$front);
+		$i = 0;
+		$runtime = microtime (TRUE) - $this->starttime;
+		$product_parent_id = $product->product_parent_id;
+		//Check for all attributes to inherited by parent products
+		if($loop) {
+			while ( $product_parent_id and !isset($product->prices['salesPrice'])) {
+				$runtime = microtime (TRUE) - $this->starttime;
+				if ($runtime >= $this->maxScriptTime) {
+					vmdebug ('Max execution time reached in model product getProductPrices() ', $product);
+					vmError ('Max execution time reached in model product getProductPrices() ' . $product->product_parent_id);
+					break;
+				}
+				else {
+					if ($i > 10) {
+						vmdebug ('Time: ' . $runtime . ' Too many child products in getProductPrices() ', $product);
+						vmError ('Time: ' . $runtime . ' Too many child products in getProductPrices() ' . $product->product_parent_id);
+						break;
+					}
+				}
+				$product->prices = $this->loadProductPrices($product_parent_id,$quantity,$virtuemart_shoppergroup_ids,$front);
+
+				$i++;
+				if(!isset($product->prices['salesPrice']) and $product->product_parent_id!=0){
+					$db = JFactory::getDbo();
+					$db->setQuery (' SELECT `product_parent_id` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` =' . $product_parent_id);
+					$product_parent_id = $db->loadResult ();
+				}
+			}
+		}
+
+
+
+	/*	if($loop){
+
+		} else {
+			$this->loadProductPrices($product,$quantity,$virtuemart_shoppergroup_ids,$front);
+		}*/
+
 
 		if(count($product->prices)===1){
 			$product = (object)array_merge ((array)$product, (array)$product->prices[0]);
