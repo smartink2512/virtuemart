@@ -165,18 +165,28 @@ class VirtuemartViewOrders extends VmView {
 
 			/* Apply currency This must be done per order since it's vendor specific */
 			$_currencies = array(); // Save the currency data during this loop for performance reasons
+
 			if ($orderslist) {
+
 			    foreach ($orderslist as $virtuemart_order_id => $order) {
 
-				    //This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
-				    if (!array_key_exists('v'.$order->virtuemart_vendor_id, $_currencies)) {
-					    $_currencies['v'.$order->virtuemart_vendor_id] = CurrencyDisplay::getInstance('',$order->virtuemart_vendor_id);
+				    if(!empty($order->order_currency)){
+					    $currency = $order->order_currency;
+				    } else if($order->virtuemart_vendor_id){
+					    VmModel::getModel('vendors');
+					    $currency = VirtueMartModelVendor::getVendorCurrency($order->virtuemart_vendor_id);
 				    }
-				    $order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->priceDisplay($order->order_total);
+				    //This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
+				    if (!array_key_exists('curr'.$currency, $_currencies)) {
+					    vmdebug('my order ',$order);
+					    $_currencies['curr'.$currency] = CurrencyDisplay::getInstance($currency,$order->virtuemart_vendor_id);
+				    }
+				    $order->order_total = $_currencies['curr'.$currency]->priceDisplay($order->order_total);
 				    $order->invoiceNumber = $model->getInvoiceNumber($order->virtuemart_order_id);
-
 			    }
+
 			}
+
 			/*
 			 * UpdateStatus removed from the toolbar; don't understand how this was intented to work but
 			 * the order ID's aren't properly passed. Might be readded later; the controller needs to handle

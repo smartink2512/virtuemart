@@ -328,8 +328,8 @@ class VirtueMartCart {
 
 			if($quantityPost === 0) continue;
 
-			$tmpProduct = $this->getProduct((int) $virtuemart_product_id,$quantityPost);
-			//			dump($tmpProduct,'my product add to cart before');
+			$tmpProduct = $this->getProduct((int) $virtuemart_product_id, true, false,true,$quantityPost);
+
 			// trying to save some space in the session table
 			$product = new stdClass();
 			$product -> virtuemart_manufacturer_id = $tmpProduct -> virtuemart_manufacturer_id;
@@ -1292,9 +1292,10 @@ class VirtueMartCart {
 		}
 
 		foreach ($this->products as $cart_item_id=>&$product){
-
+			//vmdebug('my product in prepareCartPrice ',$product);
 			$product->virtuemart_category_id = $this->getCardCategoryId($product->virtuemart_product_id);
-			$productM->getProductPrices($product,$product->quantity,$virtuemart_shoppergroup_ids,true);
+			$product = $productM->getProduct($product->virtuemart_product_id,true, true, true, $product->quantity);
+			//$productM->getProductPrices($product,$product->quantity,$virtuemart_shoppergroup_ids,true);
 
 			// No full link because Mail want absolute path and in shop is better relative path
 			$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHTML::link($url, $product->product_name);

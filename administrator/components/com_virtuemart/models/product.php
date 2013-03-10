@@ -726,7 +726,8 @@ class VirtueMartModelProduct extends VmModel {
 		$jnow = JFactory::getDate();
 		$this->_now = $jnow->toMySQL();
 
-		$productId = $this->_id===0? $product->virtuemart_product_id:$this->_id;
+		//$productId = $this->_id===0? $product->virtuemart_product_id:$this->_id;
+		$productId = $product->virtuemart_product_id===0? $this->_id:$product->virtuemart_product_id;
 		$q = 'SELECT * FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$productId.'" ';
 
 		if($front){
