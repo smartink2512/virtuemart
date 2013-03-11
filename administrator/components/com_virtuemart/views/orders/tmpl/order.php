@@ -537,10 +537,10 @@ AdminUIHelper::imitateTabs('end');
 AdminUIHelper::endAdminArea(); ?>
 
 <script type="text/javascript">
-<!--
+
 jQuery('.show_element').click(function() {
   jQuery('.element-hidden').toggle();
-  return false;
+  return false
 });
 // jQuery('select#order_items_status').change(function() {
 	////selectItemStatusCode

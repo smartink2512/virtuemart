@@ -132,8 +132,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$model->execSQLFile($this->path.DS.'install'.DS.'install_essential_data.sql',$lang);
 			$model->execSQLFile($this->path.DS.'install'.DS.'install_required_data.sql',$lang);
 
-			$id = $model->determineStoreOwner();
-			$model->setStoreOwner($id);
+			//$id = $model->determineStoreOwner();
+			$model->setStoreOwner();
 
 			//copy sampel media
 			$src = $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampleimages';

@@ -67,7 +67,14 @@ class VirtueMartModelUpdatesMigration extends JModel {
     /**
      * @author Max Milbers
      */
-    function setStoreOwner($userId=0) {
+    function setStoreOwner($userId=-1) {
+
+	    $allowInsert=FALSE;
+
+	    if($userId===-1){
+		    $allowInsert = TRUE;
+		    $userId = 0;
+	    }
 
 		if (empty($userId)) {
 		    $userId = $this->determineStoreOwner();
@@ -90,7 +97,15 @@ class VirtueMartModelUpdatesMigration extends JModel {
 				JError::raiseWarning(1, 'UPDATE __vmusers failed for virtuemart_user_id '.$userId);
 				return false;
 			} else {
-				vmInfo('setStoreOwner VmUser updated new vendor has user id  '.$userId);
+				vmInfo('setStoreOwner VmUser updated new main vendor has user id  '.$userId);
+			}
+		} else if($allowInsert){
+			$db->setQuery('INSERT `#__virtuemart_vmusers` (`virtuemart_user_id`, `user_is_vendor`, `virtuemart_vendor_id`, `perms`) VALUES ("' . $userId . '", "1","1","admin")');
+			if ($db->query() === false ) {
+				JError::raiseWarning(1, 'setStoreOwner was not possible to execute INSERT __vmusers for virtuemart_user_id '.$userId);
+				return false;
+			} else {
+				vmInfo('setStoreOwner VmUser inserted new main vendor has user id  '.$userId);
 			}
 		}
 

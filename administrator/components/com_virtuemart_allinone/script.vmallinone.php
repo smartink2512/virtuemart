@@ -375,7 +375,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 			} else {
 				$app = JFactory::getApplication ();
-				$app->enqueueMessage (get_class ($this) . ':: VirtueMart2 must be installed, or the tables cant be updated ' . $error);
+				$app->enqueueMessage (get_class ($this) . ':: VirtueMart2 must be installed, or the tables cant be updated ');
 
 			}
 
