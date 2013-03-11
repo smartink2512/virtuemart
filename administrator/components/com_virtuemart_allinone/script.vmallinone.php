@@ -12,12 +12,14 @@ defined ('_JEXEC') or die('Restricted access');
 
 defined ('DS') or define('DS', DIRECTORY_SEPARATOR);
 
-$max_execution_time = ini_get('max_execution_time');
-if((int)$max_execution_time<120) {
-	@ini_set( 'max_execution_time', '120' );
+$max_execution_time = ini_get ('max_execution_time');
+if ((int)$max_execution_time < 120) {
+	@ini_set ('max_execution_time', '120');
 }
-$memory_limit = (int) substr(ini_get('memory_limit'),0,-1);
-if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
+$memory_limit = (int)substr (ini_get ('memory_limit'), 0, -1);
+if ($memory_limit < 128) {
+	@ini_set ('memory_limit', '128M');
+}
 
 // hack to prevent defining these twice in 1.6 installation
 if (!defined ('_VM_SCRIPT_INCLUDED')) {
@@ -56,14 +58,11 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->path = JInstaller::getInstance ()->getPath ('extension_administrator');
 
 			$this->updateShipperToShipment ();
-			$this->installPlugin ('Standard', 'plugin',  'standard', 'vmpayment');
-			$this->installPlugin ('Paypal',    'plugin', 'paypal',    'vmpayment');
+			$this->installPlugin ('Standard', 'plugin', 'standard', 'vmpayment');
+			$this->installPlugin ('Paypal', 'plugin', 'paypal', 'vmpayment');
 			$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
 			$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
-			//moneybookers
-			$src = $this->path . DS . 'plugins' . DS . 'vmpayment' . DS . 'moneybookers';
-			$dst = JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'moneybookers';
-			$this->recurse_copy ($src, $dst, 'plugins');
+			$this->installPlugin ('Moneybookers', 'plugin', 'moneybookers', 'vmpayment', 0, 0);
 			$this->installPlugin ('Moneybookers Credit Cards', 'plugin', 'moneybookers_acc', 'vmpayment');
 			$this->installPlugin ('Moneybookers Lastschrift', 'plugin', 'moneybookers_did', 'vmpayment');
 			$this->installPlugin ('Moneybookers iDeal', 'plugin', 'moneybookers_idl', 'vmpayment');
@@ -205,92 +204,93 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 		 * Installs a vm plugin into the database
 		 *
 		 */
-		private function installPlugin ($name, $type, $element, $group, $published=1) {
+		private function installPlugin ($name, $type, $element, $group, $published = 1, $createJPluginTable = 1) {
 
 			$task = JRequest::getCmd ('task');
 
 			if ($task != 'updateDatabase') {
 				$data = array();
-
-				if (version_compare (JVERSION, '1.7.0', 'ge')) {
-
-					// Joomla! 1.7 code here
-					$table = JTable::getInstance ('extension');
-					$data['enabled'] = $published;
-					$data['access'] = 1;
-					$tableName = '#__extensions';
-					$idfield = 'extension_id';
-				} elseif (version_compare (JVERSION, '1.6.0', 'ge')) {
-
-					// Joomla! 1.6 code here
-					$table = JTable::getInstance ('extension');
-					$data['enabled'] = $published;
-					$data['access'] = 1;
-					$tableName = '#__extensions';
-					$idfield = 'extension_id';
-				} else {
-
-					// Joomla! 1.5 code here
-					$table = JTable::getInstance ('plugin');
-					$data['published'] = $published;
-					$data['access'] = 0;
-					$tableName = '#__plugins';
-					$idfield = 'id';
-				}
-
-				$data['name'] = $name;
-				$data['type'] = $type;
-				$data['element'] = $element;
-				$data['folder'] = $group;
-
-				$data['client_id'] = 0;
-
 				$src = $this->path . DS . 'plugins' . DS . $group . DS . $element;
 
-				$db = JFactory::getDBO ();
-				$q = 'SELECT COUNT(*) FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group . '" ';
-				$db->setQuery ($q);
-				$count = $db->loadResult ();
+				if ($createJPluginTable) {
+					if (version_compare (JVERSION, '1.7.0', 'ge')) {
 
-				//We write only in the table, when it is not installed already
-				if ($count == 0) {
-					// 				$table->load($count);
-					if (version_compare (JVERSION, '1.6.0', 'ge')) {
-						$data['manifest_cache'] = json_encode (JApplicationHelper::parseXMLInstallFile ($src . DS . $element . '.xml'));
+						// Joomla! 1.7 code here
+						$table = JTable::getInstance ('extension');
+						$data['enabled'] = $published;
+						$data['access'] = 1;
+						$tableName = '#__extensions';
+						$idfield = 'extension_id';
+					} elseif (version_compare (JVERSION, '1.6.0', 'ge')) {
+
+						// Joomla! 1.6 code here
+						$table = JTable::getInstance ('extension');
+						$data['enabled'] = $published;
+						$data['access'] = 1;
+						$tableName = '#__extensions';
+						$idfield = 'extension_id';
+					} else {
+
+						// Joomla! 1.5 code here
+						$table = JTable::getInstance ('plugin');
+						$data['published'] = $published;
+						$data['access'] = 0;
+						$tableName = '#__plugins';
+						$idfield = 'id';
 					}
 
-					if (!$table->bind ($data)) {
-						$app = JFactory::getApplication ();
-						$app->enqueueMessage ('VMInstaller table->bind throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
-					}
+					$data['name'] = $name;
+					$data['type'] = $type;
+					$data['element'] = $element;
+					$data['folder'] = $group;
 
-					if (!$table->check ($data)) {
-						$app = JFactory::getApplication ();
-						$app->enqueueMessage ('VMInstaller table->check throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+					$data['client_id'] = 0;
 
-					}
-
-					if (!$table->store ($data)) {
-						$app = JFactory::getApplication ();
-						$app->enqueueMessage ('VMInstaller table->store throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
-					}
-
-					$errors = $table->getErrors ();
-					foreach ($errors as $error) {
-						$app = JFactory::getApplication ();
-						$app->enqueueMessage (get_class ($this) . '::store ' . $error);
-					}
-					// remove duplicated
-				} elseif ($count == 2) {
-					$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" ORDER BY  `' . $idfield . '` DESC  LIMIT 0,1';
+					$db = JFactory::getDBO ();
+					$q = 'SELECT COUNT(*) FROM `' . $tableName . '` WHERE `element` = "' . $element . '" and folder = "' . $group . '" ';
 					$db->setQuery ($q);
-					$duplicatedPlugin = $db->loadResult ();
-					$q = 'DELETE FROM `' . $tableName . '` WHERE ' . $idfield . ' = ' . $duplicatedPlugin;
-					$db->setQuery ($q);
-					$db->query ();
+					$count = $db->loadResult ();
+
+					//We write only in the table, when it is not installed already
+					if ($count == 0) {
+						// 				$table->load($count);
+						if (version_compare (JVERSION, '1.6.0', 'ge')) {
+							$data['manifest_cache'] = json_encode (JApplicationHelper::parseXMLInstallFile ($src . DS . $element . '.xml'));
+						}
+
+						if (!$table->bind ($data)) {
+							$app = JFactory::getApplication ();
+							$app->enqueueMessage ('VMInstaller table->bind throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+						}
+
+						if (!$table->check ($data)) {
+							$app = JFactory::getApplication ();
+							$app->enqueueMessage ('VMInstaller table->check throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+
+						}
+
+						if (!$table->store ($data)) {
+							$app = JFactory::getApplication ();
+							$app->enqueueMessage ('VMInstaller table->store throws error for ' . $name . ' ' . $type . ' ' . $element . ' ' . $group);
+						}
+
+						$errors = $table->getErrors ();
+						foreach ($errors as $error) {
+							$app = JFactory::getApplication ();
+							$app->enqueueMessage (get_class ($this) . '::store ' . $error);
+						}
+						// remove duplicated
+					} elseif ($count == 2) {
+						$q = 'SELECT ' . $idfield . ' FROM `' . $tableName . '` WHERE `element` = "' . $element . '" ORDER BY  `' . $idfield . '` DESC  LIMIT 0,1';
+						$db->setQuery ($q);
+						$duplicatedPlugin = $db->loadResult ();
+						$q = 'DELETE FROM `' . $tableName . '` WHERE ' . $idfield . ' = ' . $duplicatedPlugin;
+						$db->setQuery ($q);
+						$db->query ();
+					}
 				}
-			}
 
+			}
 			if (version_compare (JVERSION, '1.7.0', 'ge')) {
 				// Joomla! 1.7 code here
 				$dst = JPATH_ROOT . DS . 'plugins' . DS . $group . DS . $element;
@@ -336,7 +336,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 				//Let's get the global dispatcher
 				$dispatcher = JDispatcher::getInstance ();
-				$config = array('type'=> $group, 'name'=> $group, 'params'=> '');
+				$config = array('type' => $group, 'name' => $group, 'params' => '');
 				$plugin = new $pluginClassname($dispatcher, $config);
 				;
 				// 				$updateString = $plugin->getVmPluginCreateTableSQL();
@@ -345,7 +345,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 				$tablename = '#__virtuemart_' . $_psType . '_plg_' . $element;
 				$db = JFactory::getDBO ();
-				$prefix=$db->getPrefix();
+				$prefix = $db->getPrefix ();
 				$query = 'SHOW TABLES LIKE "' . str_replace ('#__', $prefix, $tablename) . '"';
 				$db->setQuery ($query);
 				$result = $db->loadResult ();
@@ -355,7 +355,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 					$loggablefields = $plugin->getTableSQLLoggablefields ();
 					$tablesFields = array_merge ($SQLfields, $loggablefields);
 					$update[$tablename] = array($tablesFields, array(), array());
-vmdebug('install plugin',$update );
+					vmdebug ('install plugin', $update);
 					$app->enqueueMessage (get_class ($this) . ':: VirtueMart2 update ' . $tablename);
 
 					if (!class_exists ('GenericTableUpdater')) {
