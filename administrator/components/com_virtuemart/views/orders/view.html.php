@@ -206,8 +206,11 @@ class VirtuemartViewOrders extends VmView {
 
 		}
 
+		shopFunctions::checkSafePath();
+
 		parent::display($tpl);
 	}
+
 	public function renderOrderstatesList() {
 		$orderstates = JRequest::getWord('order_status_code','');
 		$query = 'SELECT `order_status_code` as value, `order_status_name` as text

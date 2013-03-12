@@ -16,16 +16,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 * http://virtuemart.net
 */
 
-
-// Access check.
-// if ( !JVM_VERSION===1) {
-	// if (!JFactory::getUser()->authorise('core.manage', 'com_virtuemart')) {
-		// return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-	// }
-// }
-// vmSetStartTime('test');
-// vmTime('Smallest Unit','test');
-
 //This is for akeeba release system, it must be executed before any other task
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 if(JRequest::getCmd('view','') == 'liveupdate') {
@@ -43,6 +33,7 @@ if(VmConfig::get('enableEnglish', 1)){
 }
 vmJsApi::jQuery();
 vmJsApi::jSite();
+
 // check for permission Only vendor and Admin can use VM2 BE
 // this makes trouble somehow, we need to check if the perm object works not too strict maybe
 if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
@@ -52,8 +43,6 @@ if(!Permissions::getInstance()->isSuperVendor()){
 	vmError( 'Access restricted to Vendor and Administrator only (you are admin and should not see this messsage?)','Access restricted to Vendors and Administrator only' );
 	$app->redirect('index.php');
 }
-
-
 
 // Require specific controller if requested
 if($_controller = JRequest::getWord('view', JRequest::getWord('controller', 'virtuemart'))) {

@@ -61,16 +61,8 @@ class ShopFunctions {
 		VmConfig::loadConfig();
 		VmConfig::loadJLang('com_virtuemart_countries');
 
-
-// 		'virtuemart_category_id','#__virtuemart_calc_categories','virtuemart_calc_id',$data->virtuemart_calc_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category'
 		//Sanitize input
 		$quantity = (int)$quantity;
-
-// 		if (!class_exists('TablePaymentmethods'))
-// 			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'paymentmethods.php');
-
-// 		$table = new TablePaymentmethods($this->_db); /// we need that?
-// 		$table->load($payment_id);
 
 		$db = JFactory::getDBO ();
 		$q = 'SELECT ' . $db->getEscaped ($fieldnameXref) . ' FROM ' . $db->getEscaped ($tableXref) . ' WHERE ' . $db->getEscaped ($fieldIdXref) . ' = "' . (int)$idXref . '"';
@@ -1097,25 +1089,6 @@ class ShopFunctions {
 	}
 
 	/**
-	 * TODO this should work with userfields
-	 * Lists titles for people
-	 *
-	 * @param string $t The selected title value
-	 * @param string $extra More attributes when needed
-	 * @param string $_prefix Optional prefix for the formtag name attribute
-	 */
-	/*	public function listUserTitle($t, $extra="", $_prefix = '') {
-		$vmConfig = VmConfig::loadConfig();
-	$titles = $vmConfig->get('titles');
-	$options = array();
-	foreach ($titles as $title) {
-	$option = JText::_($title);
-	$options[] = JHTML::_('select.option',$option ,$option);
-	}
-	return JHTML::_('select.genericlist', $options, $_prefix . 'title', $extra, 'value', 'text', $t);
-	}*/
-
-	/**
 	 * Creates an drop-down list with numbers from 1 to 31 or of the selected range,
 	 * dont use within virtuemart. It is just meant for paymentmethods
 	 *
@@ -1280,52 +1253,6 @@ class ShopFunctions {
 	}
 
 	/**
-	 *
-	 * @author RolandD
-	 * @param string $euvat EU-vat number to validate
-	 * @return boolean The result of the validation
-	 */
-	// public function validateEUVat($euvat) {
-		// if(!class_exists('VmEUVatCheck')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'euvatcheck.php');
-		// $vatcheck = new VmEUVatCheck($euvat);
-		// return $vatcheck->validvatid;
-
-	/*
-	 *
-	 *$return = validateEUVat(array(‘vatnumber’ => ‘BE0123456789′, ‘country’ => ‘BE’));
-	 * @depredecated
-	 */
-
-	function validateEUVat ($args = array()) {
-
-		if ('' != $args['vatnumber']) {
-			$vat_number = str_replace (array(' ', '.', '-', ',', ', '), '', $args['vatnumber']);
-			$countryCode = substr ($vat_number, 0, 2);
-			$vatNumber = substr ($vat_number, 2);
-
-			if (strlen ($countryCode) != 2 || is_numeric (substr ($countryCode, 0, 1)) || is_numeric (substr ($countryCode, 1, 2))) {
-				return FALSE; //format error 'message' => 'Your VAT Number syntax is not correct. You should have something like this: BE805670816B01'
-			}
-
-			if ($args['country'] != $countryCode) {
-				return FALSE; //'message' => 'Your VAT Number is not valid for the selected country.'
-			}
-
-			$client = new SoapClient("http://ec.europa.eu/taxation_customs/vies/services/checkVatService.wsdl");
-			$params = array('countryCode' => $countryCode, 'vatNumber' => $vatNumber);
-
-			$result = $client->checkVat ($params);
-
-			if (!$result->valid) {
-				return FALSE; // 'message' => sprintf('Invalid VAT Number. Check the validity on the customer VAT Number via <a href="%s">Europa VAT Number validation webservice</a>', 'http://ec.europa.eu/taxation_customs/vies/lang.do?fromWhichPage=vieshome'));
-			} else {
-				return TRUE;
-			}
-		}
-		return FALSE;
-	}
-
-	/**
 	 * Validates an email address by using regular expressions
 	 * Does not resolve the domain name!
 	 * ATM NOT USED
@@ -1435,14 +1362,14 @@ class ShopFunctions {
 		static $filterArray;
 
 		if (!isset($filterArray)) {
-			/*
+		/*
 		$filterArray = array('p.virtuemart_product_id', 'p.product_sku','pp.product_price','c.category_name','c.category_description',
 		'm.mf_name', 'l.product_s_desc', 'p.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width',
 		'p.product_height', 'p.product_lwh_uom', 'p.product_in_stock', 'p.low_stock_notification', 'p.product_available_date',
 		'p.product_availability', 'p.product_special', 'p.created_on', 'p.modified_on', 'l.product_name', 'p.product_sales',
 		'p.product_unit', 'p.product_packaging', 'p.intnotes', 'l.metadesc', 'l.metakey', 'p.metarobot', 'p.metaauthor');
 		}
-   */
+        */
 		$filterArray = array('product_name', '`p`.created_on', '`p`.product_sku',
 			'product_s_desc', 'product_desc',
 				'category_name', 'category_description', 'mf_name',
@@ -1497,27 +1424,44 @@ class ShopFunctions {
 		return $html;
 	}
 
+	static $tested = False;
 	static function checkSafePath($safePath=0){
 
-		if($safePath==0) $safePath = VmConfig::get('forSale_path',0);
+
+		if($safePath==0) {
+			$safePath = VmConfig::get('forSale_path',0);
+			if(self::$tested) return $safePath;
+		}
+
+		$warn = FALSE;
+		$uri = JFactory::getURI();
+		$configlink = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
+
 		if(empty($safePath)){
-			$suggestedPath=shopFunctions::getSuggestedSafePath();
-			$uri = JFactory::getURI();
-			$configlink = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
-			VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath,$configlink);
-			return FALSE;
+			$warn = 'COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET';
 		} else {
 			$exists = JFolder::exists($safePath);
 			if(!$exists){
-				$uri = JFactory::getURI();
-				$configlink = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
-				$suggestedPath=shopFunctions::getSuggestedSafePath();
-				VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_WRONG',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath,$configlink);
-				return FALSE;
+				$warn = 'COM_VIRTUEMART_WARN_SAFE_PATH_WRONG';
 			} else{
-				return $safePath;
+				if(!is_writable( $safePath )){
+					VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NOT_WRITEABLE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath,$configlink);
+				} else {
+					if(!is_writable( $safePath.'invoices' )){
+						VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_INV_NOT_WRITEABLE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath,$configlink);
+					}
+				}
 			}
 		}
+
+		if($warn){
+			$suggestedPath=shopFunctions::getSuggestedSafePath();
+
+			VmWarn($warn,JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath,$configlink);
+			return FALSE;
+		}
+
+		return $safePath;
 	}
 
 	/*

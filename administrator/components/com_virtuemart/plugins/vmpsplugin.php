@@ -941,7 +941,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$cart_prices[$this->_psType . 'Value'] = $value;
 
 		$taxrules = array();
-		if($method->tax_id == -1){
+		if(isset($method->tax_id) and (int)$method->tax_id === -1){
 
 		} else if (!empty($method->tax_id)) {
 			$cart_prices[$this->_psType . '_calc_id'] = $method->tax_id;

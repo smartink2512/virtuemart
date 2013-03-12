@@ -35,15 +35,13 @@ class VirtuemartViewConfig extends VmView {
 
 	function display($tpl = null) {
 
-		// Load the helper(s)
-
 		$this->loadHelper('image');
 		$this->loadHelper('html');
 
 		$model = VmModel::getModel();
 		$usermodel = VmModel::getModel('user');
 
-		 JToolBarHelper::title( JText::_('COM_VIRTUEMART_CONFIG') , 'head vm_config_48');
+		JToolBarHelper::title( JText::_('COM_VIRTUEMART_CONFIG') , 'head vm_config_48');
 
 		$this->addStandardEditViewCommands();
 
@@ -67,12 +65,6 @@ class VirtuemartViewConfig extends VmView {
 		$vmLayoutList = $model->getLayoutList('virtuemart');
 		$this->assignRef('vmLayoutList', $vmLayoutList);
 
-// Outcommented to revert rev. 2916
-//		$vendorList = ShopFunctions::renderVendorList(VmConfig::get('default_virtuemart_vendor_id'));
-//		// We must replace the fieldname and ID 'virtuemart_vendor_id' to 'default_vendor'
-//		$vendorList = preg_replace('/"virtuemart_vendor_id"/', '"default_virtuemart_vendor_id"', $vendorList);
-//		$this->assignRef('vendorList', $vendorList);
-
 		$categoryLayoutList = $model->getLayoutList('category');
 		$this->assignRef('categoryLayoutList', $categoryLayoutList);
 
@@ -83,26 +75,13 @@ class VirtuemartViewConfig extends VmView {
 		$this->assignRef('noimagelist', $noimagelist);
 
 		$orderStatusModel=VmModel::getModel('orderstatus');
-/*		$orderStates = $orderStatusModel->getOrderStatusList();
-		$orderStatusList = array();
-		$orderStatusList[0] = JText::_('COM_VIRTUEMART_NONE');
-		foreach ($orderStates as $orderState) {
-			$orderStatusList[$orderState->order_status_code] = JText::_($orderState->order_status_name);
-		}*/
-
 		$this->assignRef('orderStatusModel', $orderStatusModel);
 
-/*
-		$oderstatusModel = VmModel::getModel('Orderstatus');
-		$orderStatusList = $oderstatusModel->getOrderStatusList();
-		$this->assignRef('orderStatusList', $orderStatusList);
-*/
 		$currConverterList = $model->getCurrencyConverterList();
 		$this->assignRef('currConverterList', $currConverterList);
 		$moduleList = $model->getModuleList();
 		$this->assignRef('moduleList', $moduleList);
-		//$contentLinks = $model->getContentLinks();
-		//$this->assignRef('contentLinks', $contentLinks);
+
 		$activeLanguages = $model->getActiveLanguages( VmConfig::get('active_languages') );
 		$this->assignRef('activeLanguages', $activeLanguages);
 
