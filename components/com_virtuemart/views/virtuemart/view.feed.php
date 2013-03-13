@@ -59,7 +59,7 @@ class VirtueMartViewVirtueMart extends VmView {
 		}
 
 		if (VmConfig::get ('feed_latest_published', 1)) {
-			$latest_nb = VmConfig::get('feed_latest_number');
+			$latest_nb = VmConfig::get('feed_latest_nb');
 			$latest = $productModel->getProductListing ('latest', $latest_nb);
 		}
 
