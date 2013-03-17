@@ -766,9 +766,10 @@ class VirtueMartModelProduct extends VmModel {
 		$i = 0;
 		$runtime = microtime (TRUE) - $this->starttime;
 		$product_parent_id = $product->product_parent_id;
+
 		//Check for all attributes to inherited by parent products
 		if($loop) {
-			while ( $product_parent_id and !isset($product->prices['salesPrice'])) {
+			while ( $product_parent_id and count($product->prices)==0) {
 				$runtime = microtime (TRUE) - $this->starttime;
 				if ($runtime >= $this->maxScriptTime) {
 					vmdebug ('Max execution time reached in model product getProductPrices() ', $product);
@@ -785,6 +786,7 @@ class VirtueMartModelProduct extends VmModel {
 				$product->prices = $this->loadProductPrices($product_parent_id,$quantity,$virtuemart_shoppergroup_ids,$front);
 
 				$i++;
+
 				if(!isset($product->prices['salesPrice']) and $product->product_parent_id!=0){
 					$db = JFactory::getDbo();
 					$db->setQuery (' SELECT `product_parent_id` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` =' . $product_parent_id);
@@ -793,16 +795,8 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-
-
-	/*	if($loop){
-
-		} else {
-			$this->loadProductPrices($product,$quantity,$virtuemart_shoppergroup_ids,$front);
-		}*/
-
-
 		if(count($product->prices)===1){
+			unset($product->prices[0]['virtuemart_product_id']);
 			$product = (object)array_merge ((array)$product, (array)$product->prices[0]);
 		} else if ( $front and count($product->prices)>1 ) {
 			foreach($product->prices as $price){

@@ -61,6 +61,10 @@ class VirtuemartViewCategory extends VmView {
 		$vendorId = 1;
 
 		$category = $categoryModel->getCategory($categoryId);
+		if(!$category->published){
+			vmInfo('COM_VIRTUEMART_CAT_NOT_PUBL',$category->category_name,$categoryId);
+			return false;
+		}
 		$categoryModel->addImages($category,1);
 		$perRow = empty($category->products_per_row)? VmConfig::get('products_per_row',3):$category->products_per_row;
 // 		$categoryModel->setPerRow($perRow);
@@ -79,14 +83,10 @@ class VirtuemartViewCategory extends VmView {
 				$pathway->addItem(strip_tags($c->category_name),JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id));
 			}
 		}
-// 		static $counter = 0;
-// 		static $counter2 = 0;
-		//if($category->children)	$categoryModel->addImages($category->children);
+
 		$categoryModel->addImages($category,1);
 		$cache = JFactory::getCache('com_virtuemart','callback');
 		$category->children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $categoryId );
-		// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
-// 		vmTime('end loop categoryListTree '.$counter);
 
 		$categoryModel->addImages($category->children,1);
 
@@ -178,7 +178,6 @@ class VirtuemartViewCategory extends VmView {
               $product->stock = $productModel->getStockIndicator($product);
          }
 
-
 		$ratingModel = VmModel::getModel('ratings');
 		$showRating = $ratingModel->showRating();
 		$this->assignRef('showRating', $showRating);
@@ -194,12 +193,6 @@ class VirtuemartViewCategory extends VmView {
 
 	    $orderByList = $productModel->getOrderByList($categoryId);
 	    $this->assignRef('orderByList', $orderByList);
-
-// 	    $productRelatedManufacturerList = $productModel->getProductRelatedManufacturerList($categoryId);
-// 	    $this->assignRef('productRelatedManufacturerList', $productRelatedManufacturerList);
-
-		//$sortOrderButton = $productModel->getsortOrderButton();
-		//$this->assignRef('sortOrder', $sortOrderButton);
 
 	   if ($category->metadesc) {
 			$document->setDescription( $category->metadesc );
@@ -272,13 +265,10 @@ class VirtuemartViewCategory extends VmView {
 			}
 		}
 
-
 		// add search for declared plugins
 		JPluginHelper::importPlugin('vmcustom');
 		$dispatcher = JDispatcher::getInstance();
 		$plgDisplay = $dispatcher->trigger('plgVmSelectSearchableCustom',array( &$this->options,&$this->searchCustomValues,$this->custom_parent_id ) );
-
-
 
 		if(!empty($this->options)){
 			$this->options = array_merge(array($emptyOption), $this->options);

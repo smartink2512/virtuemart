@@ -497,6 +497,7 @@ class VirtueMartCart {
 					if ($this->checkForQuantities($product, $quantityPost,$errorMsg)) {
 						$this->products[$productKey] = $product;
 						$product->quantity = $quantityPost;
+
 						//$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED'));
 					} else {
 						// $errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
@@ -1292,7 +1293,7 @@ class VirtueMartCart {
 		}
 
 		foreach ($this->products as $cart_item_id=>&$product){
-			//vmdebug('my product in prepareCartPrice ',$product->prices);
+
 			$product->virtuemart_category_id = $this->getCardCategoryId($product->virtuemart_product_id);
 			//$product = $productM->getProduct($product->virtuemart_product_id,true, true, true, $product->quantity);
 			$productM->getProductPrices($product,$product->quantity,$virtuemart_shoppergroup_ids,true,true);
