@@ -267,8 +267,9 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		// add spin image
 		$html = '<html><head><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
-		$html .= '<form action="' . "https://" . $url . '" method="post" name="vm_paypal_form" >';
+		$html .= '<form action="' . "https://" . $url . '" method="post" name="vm_paypal_form"  accept-charset="UTF-8">';
 		$html .= '<input type="submit"  value="' . JText::_ ('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />';
+		$html .='<input type="hidden" name="charset" value="utf-8">';
 		foreach ($post_variables as $name => $value) {
 			$html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars ($value) . '" />';
 		}
