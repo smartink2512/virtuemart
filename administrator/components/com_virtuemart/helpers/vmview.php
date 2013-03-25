@@ -185,8 +185,6 @@ class VmView extends JView{
 			$this->assignRef('langList',$langList);
 			$this->assignRef('lang',$lang);
 
-
-
 			$token = JUtility::getToken();
 			$j = '
 			jQuery(function($) {
@@ -224,23 +222,6 @@ class VmView extends JView{
 			$this->assignRef('langList',$langList);
 			$this->assignRef('lang',$lang);
 		}
-
-		//I absolutly do not understand for that should be for, note by Max
-/*		if ($object) {
-		   if(Vmconfig::get('multix','none')!=='none'){
-				$this->loadHelper('permissions');
-				if(!Permissions::getInstance()->check('admin')) {
-					if (!$object->virtuemart_vendor_id) {
-						if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-						$object->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
-					}
-					$vendorList = '<input type="hidden" name="virtuemart_vendor_id" value="'.$object->virtuemart_vendor_id.'" />';
-				} else 	$vendorList= ShopFunctions::renderVendorList($object->virtuemart_vendor_id,false);
-		   } else {
-				$vendorList = '<input type="hidden" name="virtuemart_vendor_id" value="1" />';
-		   }
-		   $this->assignRef('vendorList', $vendorList);
-		}*/
 
 	}
 

@@ -36,6 +36,7 @@ class VirtueMartCart {
 	var $_inCheckOut = false;
 	var $_dataValidated = false;
 	var $_confirmDone = false;
+	var $_redirect = false;
 	var $_lastError = null; // Used to pass errmsg to the cart using addJS()
 	//todo multivendor stuff must be set in the add function, first product determines ownership of cart, or a fixed vendor is used
 	var $vendorId = 1;
@@ -752,6 +753,7 @@ class VirtueMartCart {
 		if($this->_redirect ){
 			$this->setCartIntoSession();
 			$app->redirect(JRoute::_($relUrl,$this->useXHTML,$this->useSSL), $redirectMsg);
+			return false;
 		} else {
 			$this->_inCheckOut = false;
 			$this->setCartIntoSession();
@@ -783,7 +785,9 @@ class VirtueMartCart {
 
 			$required = $userFieldsModel->getIfRequired('agreed');
 			if(!empty($required)){
-				$redirectMsg = JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+
+				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 			}
 		}

@@ -168,8 +168,11 @@ class VirtueMartViewProductdetails extends VmView {
 	    $step_order_level = 1;
 	}
 	$this->assignRef('step_order_level', $step_order_level);
+
 	// Load the neighbours
-	$product->neighbours = $product_model->getNeighborProducts($product);
+    if (VmConfig::get('product_navigation', 1)) {
+	    $product->neighbours = $product_model->getNeighborProducts($product);
+	}
 
 	// Load the category
 	$category_model = VmModel::getModel('category');

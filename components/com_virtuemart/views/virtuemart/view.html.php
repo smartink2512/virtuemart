@@ -162,8 +162,11 @@ class VirtueMartViewVirtueMart extends VmView {
 			$app = JFactory::getApplication();
 			$menus = $app->getMenu();
 			$menu = $menus->getActive();
-			if ($menu) $title = $menu->title;
-			if(empty($title)) $title = JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name);
+			$menuTitle = '';
+			if ($menu){
+				$menuTitle = $menu->title;
+			}
+			$title = JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name,$menuTitle);
 			$document->setTitle($title);
 		}
 

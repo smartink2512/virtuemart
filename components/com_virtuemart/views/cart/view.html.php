@@ -38,8 +38,7 @@ class VirtueMartViewCart extends VmView {
 		$document = JFactory::getDocument();
 
 		$layoutName = $this->getLayout();
-		if (!$layoutName)
-		$layoutName = JRequest::getWord('layout', 'default');
+		if (!$layoutName) $layoutName = JRequest::getWord('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
 		$format = JRequest::getWord('format');
 
@@ -103,10 +102,10 @@ class VirtueMartViewCart extends VmView {
 			$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 			$this->assignRef('currencyDisplay',$currencyDisplay);
 
-			$totalInPaymentCurrency =$this->getTotalInPaymentCurrency();
+			$totalInPaymentCurrency = $this->getTotalInPaymentCurrency();
 
 			$checkoutAdvertise =$this->getCheckoutAdvertise();
-			if ($cart && !VmConfig::get('use_as_catalog', 0)) {
+			if (!$cart->_redirect and !VmConfig::get('use_as_catalog', 0)) {
 				$cart->checkout(false);
 			}
 

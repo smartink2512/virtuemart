@@ -74,7 +74,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->removevalidOrderingFieldName ('product_sales');
 		//unset($this->_validOrderingFieldName[0]);//virtuemart_product_id
 		array_unshift ($this->_validOrderingFieldName, 'p.virtuemart_product_id');
-		$this->_selectedOrdering = VmConfig::get ('browse_orderby_field', 'category_name');
+		$this->_selectedOrdering = VmConfig::get ('browse_orderby_field', '`p`.virtuemart_product_id');
 
 		$this->setToggleName('product_special');
 
@@ -138,11 +138,17 @@ class VirtueMartModelProduct extends VmModel {
 		$option = 'com_virtuemart';
 		$view = 'product';
 
-		//Filter order and dir  This is unecessary complex and maybe even wrong, but atm it seems to work
 		if ($app->isSite ()) {
-			$filter_order = JRequest::getString ('orderby', VmConfig::get ('browse_orderby_field', '`p`.virtuemart_product_id'));
-			$filter_order = $this->checkFilterOrder ($filter_order);
+			$filter_order = JRequest::getString ('orderby', "0");
 
+			if($filter_order == "0"){
+				$filter_order_raw = $this->getLastProductOrdering($this->_selectedOrdering);
+				$filter_order = $this->checkFilterOrder ($filter_order_raw);
+			} else {
+				$filter_order = $this->checkFilterOrder ($filter_order);
+				$this->setLastProductOrdering($filter_order);
+
+			}
 			$filter_order_Dir = strtoupper (JRequest::getWord ('order', 'ASC'));
 			$valid_search_fields = VmConfig::get ('browse_search_fields');
 		}
@@ -169,6 +175,22 @@ class VirtueMartModelProduct extends VmModel {
 
 		$this->searchplugin = JRequest::getInt ('custom_parent_id', 0);
 
+	}
+
+	/**
+	 * @author Max Milbers
+	 */
+	public function getLastProductOrdering($default = 0){
+		$session = JFactory::getSession();
+		return $session->get('vmlastproductordering', $default, 'vm');
+	}
+
+	/**
+	 * @author Max Milbers
+	 */
+	public function setLastProductOrdering($ordering){
+		$session = JFactory::getSession();
+		return $session->set('vmlastproductordering', (string) $ordering, 'vm');
 	}
 
 	/**
@@ -898,8 +920,11 @@ class VirtueMartModelProduct extends VmModel {
 					}
 					if (!empty($product->categories) and is_array ($product->categories)) {
 						$categories = $this->getProductCategories ($this->_id, TRUE);   //only published
-						if(!is_array($categories)) $categories = (array)$categories;
-						$canonCatLink = $categories[0];
+						if($categories){
+							if(!is_array($categories)) $categories = (array)$categories;
+							$canonCatLink = $categories[0];
+						}
+
 					}
 					//We must first check if we come from another category, due the canoncial link we would have always the same catgory id for a product
 					//But then we would have wrong neighbored products / category and product layouts
@@ -1113,7 +1138,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			$q .= ' WHERE pc.`virtuemart_product_id` = ' . (int)$virtuemart_product_id;
 			if ($front) {
-				$q .= ' AND `published`=1';
+				$q .= ' AND `published`=1 ORDER BY `pc`.`ordering` ';
 			}
 			$this->_db->setQuery ($q);
 			$categories = $this->_db->loadResultArray ();
@@ -1294,6 +1319,17 @@ class VirtueMartModelProduct extends VmModel {
 			$currentVMuser = $usermodel->getUser ();
 			$virtuemart_shoppergroup_ids = (array)$currentVMuser->shopper_groups;
 		}
+
+		if(!empty($this->orderByString)){
+			$orderBy = $this->orderByString;
+
+		} else {
+			$orderBy = ' ORDER BY '.$this->filter_order.' ';
+		}
+
+		$joinPrice = strpos($orderBy,'product_price');
+		$joinCat = strpos($orderBy,'category_name');
+
 		foreach ($neighbors as &$neighbor) {
 
 			$q = 'SELECT `l`.`virtuemart_product_id`, `l`.`product_name`
@@ -1304,9 +1340,17 @@ class VirtueMartModelProduct extends VmModel {
 				$q .= '	LEFT JOIN `#__virtuemart_product_shoppergroups` as `psgr` on (`psgr`.`virtuemart_product_id`=`l`.`virtuemart_product_id`)';
 			}
 
+			if ($joinPrice) {
+				$q .= ' LEFT JOIN `#__virtuemart_product_prices` as pp ON p.`virtuemart_product_id` = pp.`virtuemart_product_id` ';
+			}
+
+			if ($joinCat) {
+				$q .= ' LEFT JOIN `#__virtuemart_categories_' . VMLANG . '` as `c` using (`virtuemart_category_id`) ';
+			}
+
 			$q .= '	WHERE `virtuemart_category_id` = ' . (int)$product->virtuemart_category_id;
 
-			$q .= ' and `slug` ' . $op . ' "' . $product->slug . '" ';
+			$q .= ' and `l`.`slug` ' . $op . ' "' . $product->slug . '" ';
 			if ($app->isSite ()) {
 
 				if (is_array ($virtuemart_shoppergroup_ids)) {
@@ -1323,11 +1367,7 @@ class VirtueMartModelProduct extends VmModel {
 				$q .= ' AND p.`published`= 1';
 			}
 
-			if(!empty($this->orderByString)){
-				$orderBy = $this->orderByString;
-			} else {
-				$orderBy = ' ORDER BY '.$this->filter_order.' ';
-			}
+
 			$q .=  $orderBy . $direction . ' LIMIT 0,' . (int)$max;
 
 			$db->setQuery ($q);
@@ -1336,7 +1376,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			$err = $db->getErrorMsg();
 			if($err){
-				vmError('getNeighborProducts '.$err);
+				vmError('getNeighborProducts '.$err,'getNeighborProducts error');
 			}
 			$direction = 'ASC';
 			$op = '>';

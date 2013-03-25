@@ -524,14 +524,11 @@ class ShopFunctions {
 			return $value;
 		}
 
-		$g = 1;
+		$g = (float)$value;
 
 		switch ($from) {
 			case 'KG':
 				$g = (float)(1000 * $value);
-			break;
-			case 'G':
-				$g = (float)$value;
 			break;
 			case 'MG':
 				$g = (float)($value / 1000);
@@ -576,7 +573,7 @@ class ShopFunctions {
 		if ($from === $to) {
 			return $value;
 		}
-		$meter = 1 * $value;
+		$meter = (float)$value;
 
 		// transform $value in meters
 		switch ($from) {
@@ -597,6 +594,9 @@ class ShopFunctions {
 				break;
 		}
 		switch ($to) {
+			case 'M' :
+				$value = $meter;
+				break;
 			case 'CM':
 				$value = (float)($meter / 0.01);
 				break;
@@ -634,7 +634,11 @@ class ShopFunctions {
 		, 'FT'                        => JText::_ ('COM_VIRTUEMART_UNIT_NAME_FOOT')
 		, 'IN'                        => JText::_ ('COM_VIRTUEMART_UNIT_NAME_INCH')
 		);
-		return VmHTML::selectList ($name, $selected, $lwh_unit_default);
+		foreach ($lwh_unit_default as  $key => $value) {
+			$lu_list[] = JHTML::_ ('select.option', $key, $value, $name);
+		}
+		$listHTML = JHTML::_ ('Select.genericlist', $lu_list, $name, '', $name, 'text', $selected);
+		return $listHTML;
 
 	}
 
