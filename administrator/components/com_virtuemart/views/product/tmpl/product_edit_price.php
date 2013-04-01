@@ -51,6 +51,7 @@ $rowColor = 0;
         <td colspan="3">
 			<?php echo $this->lists['currencies']; ?>
         </td>
+        <td style="padding:0;width:4px;"></td>
         <td colspan="2">
 			<?php echo $this->lists['shoppergroups'];  ?>
         </td>
@@ -86,6 +87,7 @@ $rowColor = 0;
 							<?php echo JText::_ ('COM_VIRTUEMART_TAX_EFFECTING') . '<br />' . $this->taxRules ?>
 		                    </span>
         </td>
+        <td style="padding:0;width:4px;"></td>
         <td>
 			<?php   ?>
         </td>
@@ -131,6 +133,7 @@ $rowColor = 0;
 		                    // 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
 						</span>
         </td>
+        <td style="padding:0;width:4px;"></td>
         <td  nowrap>
 			<?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_up, 'mprices[product_price_publish_up][]'); ?>
         </td>
@@ -177,6 +180,7 @@ $rowColor = 0;
 			echo VmHtml::radioList ('mprices[override][' . $this->priceCounter . ']', $this->tempProduct->override, $options);
 			?>
         </td>
+        <td style="background: #F9F9F9;padding:0;width:4px;">&nbsp;</td>
         <td>
             <div style="font-weight: bold;">
 				<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_QUANTITY_RANGE') ?>
