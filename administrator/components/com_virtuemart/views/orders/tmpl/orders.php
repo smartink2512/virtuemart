@@ -101,18 +101,18 @@ AdminUIHelper::startAdminArea ($this);
 
 				if (!$order->invoiceNumber) {
 					$invoice_url = juri::root () . 'index.php?option=com_virtuemart&view=invoice&layout=invoice&format=pdf&tmpl=component&virtuemart_order_id=' . $order->virtuemart_order_id . '&order_number=' . $order->order_number . '&order_pass=' . $order->order_pass . '&create_invoice=1';
-					$invoice_link .= "<a href=\"$invoice_url\"  >".'<span class="hasTip invoicenew_32" title="' . JText::_ ('COM_VIRTUEMART_INVOICE_CREATE') . '"></span></a>';
+					$invoice_link .= "<a href=\"$invoice_url\"  target=\"_blank\">".'<span class="hasTip invoicenew_32" title="' . JText::_ ('COM_VIRTUEMART_INVOICE_CREATE') . '"></span></a>';
 				} elseif (!shopFunctions::InvoiceNumberReserved ($order->invoiceNumber)) {
 					$invoice_url = juri::root () . 'index.php?option=com_virtuemart&view=invoice&layout=invoice&format=pdf&tmpl=component&virtuemart_order_id=' . $order->virtuemart_order_id . '&order_number=' . $order->order_number . '&order_pass=' . $order->order_pass;
-					$invoice_link = "<a href=\"$invoice_url\"  >" . '<span class="hasTip invoice_32" title="' . JText::_ ('COM_VIRTUEMART_INVOICE') . '"></span></a>';
+					$invoice_link = "<a href=\"$invoice_url\"  target=\"_blank\">" . '<span class="hasTip invoice_32" title="' . JText::_ ('COM_VIRTUEMART_INVOICE') . '"></span></a>';
 				}
 
 				if (!$order->invoiceNumber) {
 					$deliverynote_url = juri::root () . 'index.php?option=com_virtuemart&view=invoice&layout=deliverynote&format=pdf&tmpl=component&virtuemart_order_id=' . $order->virtuemart_order_id . '&order_number=' . $order->order_number . '&order_pass=' . $order->order_pass . '&create_invoice=1';
-					$deliverynote_link = "<a href=\"$deliverynote_url\"  >" . '<span class="hasTip deliverynotenew_32" title="' . JText::_ ('COM_VIRTUEMART_DELIVERYNOTE_CREATE') . '"></span></a>';
+					$deliverynote_link = "<a href=\"$deliverynote_url\" target=\"_blank\">" . '<span class="hasTip deliverynotenew_32" title="' . JText::_ ('COM_VIRTUEMART_DELIVERYNOTE_CREATE') . '"></span></a>';
 				} elseif (!shopFunctions::InvoiceNumberReserved ($order->invoiceNumber)) {
 					$deliverynote_url = juri::root () . 'index.php?option=com_virtuemart&view=invoice&layout=deliverynote&format=pdf&tmpl=component&virtuemart_order_id=' . $order->virtuemart_order_id . '&order_number=' . $order->order_number . '&order_pass=' . $order->order_pass;
-					$deliverynote_link = "<a href=\"$deliverynote_url\"  >" . '<span class="hasTip deliverynote_32" title="' . JText::_ ('COM_VIRTUEMART_DELIVERYNOTE') . '"></span></a>';
+					$deliverynote_link = "<a href=\"$deliverynote_url\" target=\"_blank\">" . '<span class="hasTip deliverynote_32" title="' . JText::_ ('COM_VIRTUEMART_DELIVERYNOTE') . '"></span></a>';
 				}
 
 
