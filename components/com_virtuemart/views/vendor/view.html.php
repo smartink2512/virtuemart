@@ -78,6 +78,9 @@ class VirtuemartViewVendor extends VmView {
 				$params = new JParameter('');
 
 				if (JVM_VERSION === 2) {
+					if (!isset($vendor->event)) {
+						$vendor->event = new stdClass();
+					}
 					$results = $dispatcher->trigger ('onContentPrepare', array('com_virtuemart.vendor', &$vendor, &$params, 0));
 					// More events for 3rd party content plugins
 					// This do not disturb actual plugins, because we don't modify $vendor->text

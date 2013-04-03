@@ -30,7 +30,7 @@ $option = JRequest::getWord('option');
 		<table>
 		  <tr>
 			 <td align="left" width="100%">
-				<?php echo $this->displayDefaultViewSearch('COM_VIRTUEMART_NAME','searchMedia') .' '. $this->lists['search_type']; ?>
+				<?php echo $this->displayDefaultViewSearch('COM_VIRTUEMART_NAME','searchMedia') .' '. $this->lists['search_type'].' '. $this->lists['search_role']; ?>
 			 </td>
 		  </tr>
 		</table>
@@ -51,7 +51,7 @@ $productfileslist = $this->files;
 		<th><?php echo JText::_('COM_VIRTUEMART_VIEW'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILENAME'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILETYPE'); ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?></th>
+		<th><?php echo $this->sort('published', 'COM_VIRTUEMART_PUBLISH'); ?></th>
 	  <th><?php echo $this->sort('virtuemart_media_id', 'COM_VIRTUEMART_ID')  ?></th>
 	</tr>
 	</thead>

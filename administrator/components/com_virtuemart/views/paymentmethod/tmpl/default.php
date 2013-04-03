@@ -34,27 +34,27 @@ AdminUIHelper::startAdminArea();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->payments); ?>);" />
 			</th>
 			<th >
-				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_LIST_NAME'); ?>
+				<?php echo $this->sort('payment_name', 'COM_VIRTUEMART_PAYMENT_LIST_NAME'); ?>
 			</th>
 			 <th>
 				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_LIST_DESCRIPTION_LBL'); ?>
 			</th>
 			<?php if($this->perms->check( 'admin' )){ ?>
 			<th >
-				<?php echo JText::_('COM_VIRTUEMART_VENDOR');  ?>
+				<?php echo $this->sort('virtuemart_vendor_id', 'COM_VIRTUEMART_VENDOR');  ?>
 			</th><?php }?>
 
 			<th  >
 				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_SHOPPERGROUPS'); ?>
 			</th>
 			<th >
-				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_ELEMENT'); ?>
+				<?php echo $this->sort('payment_element', 'COM_VIRTUEMART_PAYMENT_ELEMENT'); ?>
 			</th>
 			<th  >
-				<?php echo JText::_('COM_VIRTUEMART_LIST_ORDER'); ?>
+				<?php echo $this->sort('ordering', 'COM_VIRTUEMART_LIST_ORDER'); ?>
 			</th>
 			<th >
-				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
+				<?php echo $this->sort('published', 'COM_VIRTUEMART_PUBLISHED'); ?>
 			</th>
 			<?php if(Vmconfig::get('multix','none')!=='none'){ ?>
 			<th width="10">

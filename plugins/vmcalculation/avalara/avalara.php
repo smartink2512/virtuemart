@@ -471,6 +471,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$request->setCommit(true);
 			//invoice number, problem is that the invoice number is at this time not known, but the order_number may reachable
 			$request->setDocCode($invoiceNumber);
+			self::$_taxResult = null;
 			avadebug('Request as SalesInvoice with invoiceNumber '.$invoiceNumber);
 		} else {
 			$request->setDocType(DocumentType::$SalesOrder);
@@ -613,7 +614,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				self::$_taxResult = $client->getTax($request);
 				vmTime('Avalara getTax','avagetTax');
 			}
-			
+
 
 			//vmTrace('get tax agaun');
 			/*
@@ -652,7 +653,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				//avadebug("TotalAmount: ".self::$_taxResult->getTotalAmount() );
 
 				$totalTax = self::$_taxResult->getTotalTax();
-
+				if($invoiceNumber){
+					avadebug('My $_taxResult from AvaTax',self::$_taxResult);
+				}
 				if($totalTax == 0 ){
 				//	avadebug( "Avalara returned false: ", self::$_taxResult);
 				}

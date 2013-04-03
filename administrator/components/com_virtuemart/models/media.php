@@ -232,6 +232,19 @@ class VirtueMartModelMedia extends VmModel {
 			$where[] = 'file_type = "'.$type.'" ' ;
 		}
 
+		if ($role = JRequest::getWord('search_role')) {
+			if ($role == "file_is_downloadable") {
+				$where[] = '`file_is_downloadable` = 1';
+				$where[] = '`file_is_forSale` = 0';
+			} elseif ($role == "file_is_forSale") {
+				$where[] = '`file_is_downloadable` = 0';
+				$where[] = '`file_is_forSale` = 1';
+			} else {
+				$where[] = '`file_is_downloadable` = 0';
+				$where[] = '`file_is_forSale` = 0';
+			}
+		}
+		
 		if (!empty($where)) $whereItems = array_merge($whereItems,$where);
 
 

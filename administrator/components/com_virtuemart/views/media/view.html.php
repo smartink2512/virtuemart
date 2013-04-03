@@ -75,13 +75,21 @@ class VirtuemartViewMedia extends VmView {
 			JToolBarHelper::customX('synchronizeMedia', 'new', 'new', JText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'),false);
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model,null,null,'searchMedia');
-			$options = array( '' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'),
+			$options = array( '' => JText::_('COM_VIRTUEMART_LIST_ALL_TYPES'),
 				'product' => JText::_('COM_VIRTUEMART_PRODUCT'),
 				'category' => JText::_('COM_VIRTUEMART_CATEGORY'),
 				'manufacturer' => JText::_('COM_VIRTUEMART_MANUFACTURER'),
 				'vendor' => JText::_('COM_VIRTUEMART_VENDOR')
 				);
 			$this->lists['search_type'] = VmHTML::selectList('search_type', JRequest::getVar('search_type'),$options,1,'','onchange="this.form.submit();"');
+
+			VmConfig::loadJLang('com_virtuemart_media');
+			$options = array( '' => JText::_('COM_VIRTUEMART_LIST_ALL_ROLES'),
+				'file_is_displayable' => JText::_('COM_VIRTUEMART_FORM_MEDIA_DISPLAYABLE'),
+				'file_is_downloadable' => JText::_('COM_VIRTUEMART_FORM_MEDIA_DOWNLOADABLE'),
+				'file_is_forSale' => JText::_('COM_VIRTUEMART_FORM_MEDIA_SET_FORSALE'),
+				);
+			$this->lists['search_role'] = VmHTML::selectList('search_role', JRequest::getVar('search_role'),$options,1,'','onchange="this.form.submit();"');
 
 			$files = $model->getFiles(false,false,$virtuemart_product_id,$cat_id);
 			$this->assignRef('files',	$files);

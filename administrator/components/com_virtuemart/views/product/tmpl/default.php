@@ -162,7 +162,7 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 					</td>
 				<?php } ?>
 				<!-- Manufacturer name -->
-				<td><?php echo JHTML::_('link', JRoute::_('index.php?view=manufacturer&task=edit&virtuemart_manufacturer_id[]='.$product->virtuemart_manufacturer_id.'&option=com_virtuemart'), $product->mf_name); ?></td>
+				<td><?php if ($product->virtuemart_manufacturer_id) { echo JHTML::_('link', JRoute::_('index.php?view=manufacturer&task=edit&virtuemart_manufacturer_id[]='.$product->virtuemart_manufacturer_id.'&option=com_virtuemart'), $product->mf_name); } ?></td>
 				<!-- Reviews -->
 				<?php $link = 'index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$product->virtuemart_product_id; ?>
 				<td align="center" ><?php echo JHTML::_('link', $link, $product->reviews); ?></td>
