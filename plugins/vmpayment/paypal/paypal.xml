@@ -33,7 +33,7 @@
 	<param type="spacer" default="" level="level1" />
 	<param type="spacer" default="VMPAYMENT_PAYPAL_PARAMS" level="level1" />
 	<param type="text" name="paypal_merchant_email"  size="50" label="VMPAYMENT_PAYPAL_EMAIL"
-             default="your-PayPal-Merchant-email@domain.com" description="VMPAYMENT_PAYPAL_EMAIL_DESC" />
+             default="your PayPal Merchant email" description="VMPAYMENT_PAYPAL_EMAIL_DESC" />
 
 	<param name="paypal_verified_only" type="radio" default="0" label="VMPAYMENT_PAYPAL_ONLYVERIFIED" description="VMPAYMENT_PAYPAL_ONLYVERIFIED_EXPLAIN">
 	    <option value="0">COM_VIRTUEMART_NO</option>
