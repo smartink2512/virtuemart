@@ -257,7 +257,7 @@ if (VmConfig::get ('coupons_enable')) {
 					 <?php if (VmConfig::get ('show_tax')) { ?>
 		<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('couponTax', '', $this->cart->pricesUnformatted['couponTax'], FALSE); ?> </td>
 		<?php } ?>
-	<td align="right">&nbsp;</td>
+	<td align="right"><?php if($this->cart->pricesUnformatted['salesPriceCoupon'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->pricesUnformatted['salesPriceCoupon'], FALSE); ?></td>
 	<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceCoupon', '', $this->cart->pricesUnformatted['salesPriceCoupon'], FALSE); ?> </td>
 	<?php } else { ?>
 	<td colspan="6" align="left">&nbsp;</td>
@@ -353,7 +353,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<?php if (VmConfig::get ('show_tax')) { ?>
 	<td align="right"><?php echo "<span  class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('shipmentTax', '', $this->cart->pricesUnformatted['shipmentTax'], FALSE) . "</span>"; ?> </td>
 	<?php } ?>
-	<td></td>
+	<td align="right"><?php if($this->cart->pricesUnformatted['salesPriceShipment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->pricesUnformatted['salesPriceShipment'], FALSE); ?></td>
 	<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->pricesUnformatted['salesPriceShipment'], FALSE); ?> </td>
 </tr>
 <?php if ($this->cart->pricesUnformatted['salesPrice']>0.0 ) { ?>
@@ -376,7 +376,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<?php if (VmConfig::get ('show_tax')) { ?>
 	<td align="right"><?php echo "<span  class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('paymentTax', '', $this->cart->pricesUnformatted['paymentTax'], FALSE) . "</span>"; ?> </td>
 	<?php } ?>
-	<td align="right"><?php // Why is this commented? what is with payment discounts? echo "<span  class='priceColor2'>".$this->cart->pricesUnformatted['paymentDiscount']."</span>"; ?></td>
+	<td align="right"><?php if($this->cart->pricesUnformatted['salesPriceShipment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->pricesUnformatted['salesPricePayment'], FALSE); ?></td>
 	<td align="right"><?php  echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->pricesUnformatted['salesPricePayment'], FALSE); ?> </td>
 </tr>
 <?php } ?>
