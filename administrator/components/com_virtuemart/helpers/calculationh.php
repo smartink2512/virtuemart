@@ -817,7 +817,7 @@ class calculationHelper {
 
 		//The coupon handling is only necessary if a salesPrice is displayed, otherwise we have a kind of catalogue mode
 		if($this->_currencyDisplay->_priceConfig['salesPrice']){
-			$this->_cartPrices['billTotal'] = $this->_cartPrices['salesPriceShipment'] + $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'] - $this->_cartPrices['salesPriceCoupon'];
+			$this->_cartPrices['billTotal'] = $this->_cartPrices['salesPriceShipment'] + $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'] + $this->_cartPrices['salesPriceCoupon'];
 
 			if($this->_cartPrices['billTotal'] < 0){
 				$this->_cartPrices['billTotal'] = 0.0;
@@ -849,6 +849,10 @@ class calculationHelper {
 
 				}
 
+			}
+
+			if($this->_cartPrices['billTaxAmount'] < 0){
+				$this->_cartPrices['billTaxAmount'] = 0.0;
 			}
 		}
 
