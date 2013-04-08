@@ -819,6 +819,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		if(count($product->prices)===1){
 			unset($product->prices[0]['virtuemart_product_id']);
+			unset($product->prices[0]['created_on']);
 			$product = (object)array_merge ((array)$product, (array)$product->prices[0]);
 		} else if ( $front and count($product->prices)>1 ) {
 			foreach($product->prices as $price){
@@ -1184,7 +1185,7 @@ class VirtueMartModelProduct extends VmModel {
 	/**
 	 * Loads different kind of product lists.
 	 * you can load them with calculation or only published onces, very intersting is the loading of groups
-	 * valid values are latest, topten, featured.
+	 * valid values are latest, topten, featured, recent.
 	 *
 	 * The function checks itself by the config if the user is allowed to see the price or published products
 	 *
