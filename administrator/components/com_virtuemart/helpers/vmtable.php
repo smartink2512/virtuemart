@@ -46,6 +46,8 @@ class VmTable extends JTable{
 	protected $_varsToPushParam = array();
 	var $_translatable = false;
 	protected $_translatableFields = array();
+    protected $_langTag = null;
+    protected $_tbl_lang = null;
 
 	static $_cache = null;
 	static $_query_cache = null;
@@ -140,6 +142,7 @@ class VmTable extends JTable{
 	 * @author Max Milbers
 	 * @param string $paramsFieldName
 	 * @param string $varsToPushParam
+     * @param boolean $overwrite
 	 */
 	function setParameterable($paramsFieldName,$varsToPushParam,$overwrite = false){
 
@@ -755,7 +758,6 @@ class VmTable extends JTable{
 				//vmdebug('my langtable before bind',$langTable->id);
 				if(!$langTable->bind($data)){
 					$ok = false;
-					$msg = 'bind';
 					// 			vmdebug('Problem in bind '.get_class($this).' '.$this->_db->getErrorMsg());
 					vmdebug('Problem in bind '.get_class($this).' ');
 				}
@@ -1294,8 +1296,7 @@ class VmTable extends JTable{
 		$this->_errors = array();
 	}
 
-	// TODO add Translatable delete  ???
-	//
+
 	function delete( $oid=null , $where = 0 ){
 
 		$k = $this->_tbl_key;
@@ -1382,7 +1383,8 @@ class VmTable extends JTable{
 	 *
 	 * @param string $_act Action: ADD, DROP or CHANGE (synonyms available, see the switch cases)
 	 * @param string $_col Column name
-	 * @param string $_type Fieldtype
+	 * @param string $_type fieldtype
+     * @param string $_col2 Second Column name
 	 * @return boolean True on success
 	 * @author Oscar van Eijk
 	 *
@@ -1426,7 +1428,7 @@ class VmTable extends JTable{
 				if (!$this->isMysql51Plus())
 				if (empty($_type)) $_type = 'TEXT CHARACTER SET utf8'; 
 				// NOT NULL not allowed for deleted columns
-				$t_type = str_ireplace(' NOT ', '', $_type); 
+				//$t_type = str_ireplace(' NOT ', '', $_type);
 				$_sql .= "CHANGE $_col $_col2 $_type ";
 				//was: $_sql .= "DROP $_col ";
 				break;

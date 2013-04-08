@@ -527,11 +527,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 			if(!empty($product->categories)){
 
-				//$catTable = VmModel::getTable ('categories');
-
-
-				//$prodM = VmModel::getModel('product');
-				//$catNames = $prodM->getProductCategories($product->virtuemart_product_id,FALSE);
 				//avadebug('AvaTax setTaxCode Product has categories !',$catNames);
 				if (!class_exists ('TableCategories')) {
 					require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'categories.php');

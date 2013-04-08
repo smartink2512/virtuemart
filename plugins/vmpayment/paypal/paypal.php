@@ -52,6 +52,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		                    'status_pending'         => array('', 'char'),
 		                    'status_success'         => array('', 'char'),
 		                    'status_canceled'        => array('', 'char'),
+		                    'status_refunded'        => array('', 'char'),
 		                    'countries'              => array('', 'char'),
 		                    'min_amount'             => array('', 'int'),
 		                    'max_amount'             => array('', 'int'),
@@ -510,6 +511,9 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			}
 			$order['comments'] = JText::sprintf ('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PENDING', $order_number) . JText::_ ($key);
 			$order['order_status'] = $method->status_pending;
+		} elseif (strcmp ($paypal_data['payment_status'], 'Refunded') == 0) {
+			$order['comments'] = JText::sprintf ('VMPAYMENT_PAYPAL_PAYMENT_STATUS_REFUNDED', $order_number);
+			$order['order_status'] = $method->status_refunded;
 		} elseif (isset ($paypal_data['payment_status'])) {
 			$order['order_status'] = $method->status_canceled;
 		} else {
