@@ -41,7 +41,7 @@ class VmView extends JView{
 	 * set all commands and options for BE default.php views
 	* return $list filter_order and
 	*/
-	function addStandardDefaultViewCommands($showNew=true, $showDelete=true) {
+	function addStandardDefaultViewCommands($showNew=true, $showDelete=true, $showHelp=true) {
 
 		JToolBarHelper::divider();
 		JToolBarHelper::publishList();
@@ -53,6 +53,7 @@ class VmView extends JView{
 		if ($showDelete) {
 			JToolBarHelper::deleteList();
 		}
+		self::showHelp ( $showHelp);
 	}
 
 	/*
@@ -120,6 +121,7 @@ class VmView extends JView{
 		JToolBarHelper::save();
 		JToolBarHelper::apply();
 		JToolBarHelper::cancel();
+		self::showHelp();
 		}
 		// javascript for cookies setting in case of press "APPLY"
 		$document = JFactory::getDocument();
@@ -323,6 +325,29 @@ class VmView extends JView{
 			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
 				.'<img src="images/'. $img .'" border="0" alt="'. $alt .'" /></a>');
 		}
+
+	}
+	function showhelp(){
+		/* http://docs.joomla.org/Help_system/Adding_a_help_button_to_the_toolbar */
+
+			$task=JRequest::getWord('task', '');
+			$view=JRequest::getWord('view', '');
+			if ($task) {
+				if ($task=="add") {
+					$task="edit";
+				}
+				$task ="_".$task;
+			}
+			if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+			VmConfig::loadConfig();
+			VmConfig::loadJLang('com_virtuemart_help');
+ 		    $lang = JFactory::getLanguage();
+ 	        $key=  'COM_VIRTUEMART_HELP_'.$view.$task;
+	         if ($lang->hasKey($key)) {
+					$help_url  = JTEXT::_($key)."?tmpl=component";
+ 		            $bar = JToolBar::getInstance('toolbar');
+					$bar->appendButton( 'Popup', 'help', 'JTOOLBAR_HELP', $help_url, 960, 500 );
+	        }
 
 	}
 
