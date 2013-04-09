@@ -70,7 +70,7 @@ $alert=JText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 			</div>
 			<?php }
 
-		if (!VmConfig::get('use_as_catalog', 0) and !empty($this->product->prices['salesPrice'])) {
+		if (!VmConfig::get('use_as_catalog', 0)  ) {
 		?>
 
 		<div class="addtocart-bar">

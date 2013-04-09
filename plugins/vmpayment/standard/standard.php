@@ -358,7 +358,31 @@ public static $_this = FALSE;
 
 		$this->onShowOrderFE ($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
 	}
+/**
+	 * @param $orderDetails
+	 * @param $data
+	 * @return null
+	 */
 
+	function plgVmOnUserInvoice ($orderDetails, &$data) {
+
+		if (!($method = $this->getVmPluginMethod ($orderDetails['virtuemart_paymentmethod_id']))) {
+			return NULL; // Another method was selected, do nothing
+		}
+		if (!$this->selectedThisElement ($method->payment_element)) {
+			return NULL;
+		}
+		vmdebug('plgVmOnUserInvoice',$orderDetails, $method);
+
+		if (!isset($method->send_invoice_on_order_null) or $method->send_invoice_on_order_null==1 or $orderDetails['order_total'] > 0.00){
+			return NULL;
+		}
+
+		if ($orderDetails['order_salesPrice']==0.00) {
+			$data['invoice_number'] = 'reservedByPayment_' . $orderDetails['order_number']; // Nerver send the invoice via email
+		}
+
+	}
 	/**
 	 * This event is fired during the checkout process. It can be used to validate the
 	 * method data as entered by the user.
