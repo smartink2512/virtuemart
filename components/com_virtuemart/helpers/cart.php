@@ -50,6 +50,7 @@ class VirtueMartCart {
 	var $tosAccepted = null;
 	var $customer_comment = '';
 	var $couponCode = '';
+	var $order_language = '';
 	var $cartData = null;
 	var $lists = null;
 	var $order_number=null; // added to solve emptying cart for payment notification
@@ -107,6 +108,7 @@ class VirtueMartCart {
 				self::$_cart->tosAccepted 							= $sessionCart->tosAccepted;
 				self::$_cart->customer_comment 					= base64_decode($sessionCart->customer_comment);
 				self::$_cart->couponCode 							= $sessionCart->couponCode;
+				self::$_cart->order_language 						= $sessionCart->order_language;
 				self::$_cart->cartData 								= $sessionCart->cartData;
 				self::$_cart->order_number							= $sessionCart->order_number;
 				self::$_cart->lists 									= $sessionCart->lists;
@@ -219,6 +221,7 @@ class VirtueMartCart {
 		$sessionCart->tosAccepted 							= $this->tosAccepted;
 		$sessionCart->customer_comment 					= base64_encode($this->customer_comment);
 		$sessionCart->couponCode 							= $this->couponCode;
+		$sessionCart->order_language 						= $this->order_language;
 		$sessionCart->cartData 								= $this->cartData;
 		$sessionCart->lists 									= $this->lists;
 		// 		$sessionCart->user 									= $this->user;
@@ -769,6 +772,7 @@ class VirtueMartCart {
 		$this->tosAccepted = JRequest::getInt('tosAccepted', $this->tosAccepted);
 		$this->STsameAsBT = JRequest::getInt('STsameAsBT', $this->STsameAsBT);
 		$this->customer_comment = JRequest::getVar('customer_comment', $this->customer_comment);
+		$this->order_language = JRequest::getVar('order_language', $this->order_language);
 
 		// no HTML TAGS but permit all alphabet
 		$value =	preg_replace('@<[\/\!]*?[^<>]*?>@si','',$this->customer_comment);//remove all html tags
@@ -1030,6 +1034,7 @@ class VirtueMartCart {
 		$cartData->_confirmDone = false;
 		$cartData->customer_comment = '';
 		$cartData->couponCode = '';
+		$cartData->order_language = '';
 		$cartData->tosAccepted = null;
 		$cartData->virtuemart_shipmentmethod_id = 0; //OSP 2012-03-14
 		$cartData->virtuemart_paymentmethod_id = 0;

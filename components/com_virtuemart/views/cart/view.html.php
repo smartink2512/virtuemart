@@ -143,6 +143,11 @@ class VirtueMartViewCart extends VmView {
 				$checkout_link_html = '';
 			}
 			$this->assignRef('checkout_link_html', $checkout_link_html);
+
+			//set order language
+			$lang = JFactory::getLanguage();
+			$order_language = $lang->getTag();
+			$this->assignRef('order_language',$order_language);
 		}
 		//dump ($cart,'cart');
 		$useSSL = VmConfig::get('useSSL', 0);

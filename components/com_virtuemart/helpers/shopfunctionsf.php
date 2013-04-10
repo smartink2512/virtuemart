@@ -266,6 +266,9 @@ class shopFunctionsF {
 		}
 		$jlang->load('com_virtuemart', JPATH_SITE, $jlang->getDefault(), TRUE);
 		$jlang->load('com_virtuemart', JPATH_SITE, NULL, TRUE);
+		if(!empty($view->orderDetails['details']['BT']->order_language)) {
+			$jlang->load('com_virtuemart', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true);
+		}
 
 		ob_start();
 		$view->renderMailLayout($noVendorMail, $recipient);
