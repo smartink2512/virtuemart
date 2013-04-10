@@ -372,7 +372,7 @@ public static $_this = FALSE;
 		if (!$this->selectedThisElement ($method->payment_element)) {
 			return NULL;
 		}
-		vmdebug('plgVmOnUserInvoice',$orderDetails, $method);
+		//vmdebug('plgVmOnUserInvoice',$orderDetails, $method);
 
 		if (!isset($method->send_invoice_on_order_null) or $method->send_invoice_on_order_null==1 or $orderDetails['order_total'] > 0.00){
 			return NULL;
