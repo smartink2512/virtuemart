@@ -43,6 +43,7 @@ label.invalid {
 $tabarray = array();
 if($this->userDetails->user_is_vendor){
 	$tabarray['vendor'] = 'COM_VIRTUEMART_VENDOR';
+	$tabarray['vendorletter'] = 'COM_VIRTUEMART_VENDORLETTER';
 }
 $tabarray['shopper'] = 'COM_VIRTUEMART_SHOPPER_FORM_LBL';
 //$tabarray['user'] = 'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO';

@@ -18,15 +18,16 @@
  */
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access');
-/* TODO Change the header place in helper or assets ??? */
+
+
 ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="html-email">
 	<tr>
-		<td align="top">
-			<img src="<?php  echo JURI::root () . $this->vendor->images[0]->file_url ?>" />
-		</td>
-		<td>
-			<?php echo $this->vendorAddress; ?>
+		<td colspan=2 width="100%">
+			<div id="vmdoc-header" class="vmdoc-header" style="font-size: <?php echo $this->vendor->vendor_letter_header_font_size; ?>pt;">
+				<?php echo $this->vendor->vendor_letter_header_html; ?>
+			</div>
+			<?php if ($this->vendor->vendor_letter_header_line == 1) { ?><hr/><?php } ?>
 		</td>
 	</tr>
 	<tr>

@@ -98,6 +98,33 @@ class VirtueMartModelConfig extends JModel {
 
 
 	/**
+	 * Retrieve a list of available fonts to be used with PDF Invoice generation & PDF Product view on FE
+	 *
+         * @author Nikos Zagas
+	 * @return object List of available fonts
+	 */
+        function getTCPDFFontsList() {
+
+		$dir = JPATH_ROOT.DS.'libraries'.DS.'tcpdf'.DS.'fonts';
+		$specfiles = glob($dir.DS."*_specs.xml");
+		$result = '';
+		foreach ($specfiles as $file) {
+			$fontxml = @simpleXML_load_file($file);
+			if ($fontxml) {
+				if (file_exists($dir . DS . $fontxml->filename . '.php')) {
+					$result[] = JHTML::_('select.option', $fontxml->filename, JText::_($fontxml->fontname.' ('.$fontxml->fonttype.')'));
+				} else {
+					vmError ('A font master file is missing: ' . $dir . DS . 	$fontxml->filename . '.php');
+				}
+			} else {
+				vmError ('Wrong structure in font XML file: '. $dir . DS . $file);
+			}                             
+		}
+		return $result;
+	}
+        
+        
+	/**
 	 * Retrieve a list of possible images to be used for the 'no image' image.
 	 *
 	 * @author RickG

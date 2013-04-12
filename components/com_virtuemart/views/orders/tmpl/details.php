@@ -38,7 +38,7 @@ if($this->print){
 		echo $this->loadTemplate('items');
 		?>
 		</div>
-		<?php	echo $this->vendor->vendor_legal_info; ?>
+		<?php	echo $this->vendor->vendor_letter_footer_html; ?>
 		</body>
 		<?php
 } else {

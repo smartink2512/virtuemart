@@ -133,6 +133,10 @@ class GenericTableUpdater extends JModel{
 					$fields['vendor_terms_of_service'] = 'text '.$linedefaulttext;
 					$fields['vendor_legal_info'] = 'text '.$linedefaulttext;
 
+					$fields['vendor_letter_css'] = 'text '.$linedefaulttext;
+					$fields['vendor_letter_header_html'] = "varchar(8000) NOT NULL DEFAULT '<h1>{vm:vendorname}</h1><p>{vm:vendoraddress}</p>'";
+					$fields['vendor_letter_footer_html'] = "varchar(8000) NOT NULL DEFAULT '<p>{vm:vendorlegalinfo}<br />Page {vm:pagenum}/{vm:pagecount}</p>'";
+
 
 					$key = array_search('vendor_store_desc', $translatableFields);
 					unset($translatableFields[$key]);
@@ -142,6 +146,16 @@ class GenericTableUpdater extends JModel{
 
 					$key = array_search('vendor_legal_info', $translatableFields);
 					unset($translatableFields[$key]);
+					
+					$key = array_search('vendor_letter_css', $translatableFields);
+					unset($translatableFields[$key]);
+
+					$key = array_search('vendor_letter_header_html', $translatableFields);
+					unset($translatableFields[$key]);
+
+					$key = array_search('vendor_letter_footer_html', $translatableFields);
+					unset($translatableFields[$key]);
+
 				}
 			} else {
 				$fields['vendor_terms_of_service'] = 'text '.$linedefaulttext;

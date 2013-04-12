@@ -45,6 +45,9 @@ defined('_JEXEC') or die('Restricted access');
 	    .sectiontableentry2, .html-email th, .cart-summary th{ background: #ccc;margin: 0px;padding: 10px;}
 	    .sectiontableentry1, .html-email td, .cart-summary td {background: #fff;margin: 0px;padding: 10px;}
 	    .line-through{text-decoration:line-through}
+	    <?php echo $this->vendor->vendor_letter_css; ?> 
+	    /* Firefox has a hard-coded font-size style for tables, so it won't by default inherit the surrounding div's font-size! */
+	    #vmdoc-footer table, #vmdoc-header table, .vmdoc-footer table, .vmdoc-header table { font-size: inherit; }
 	</style>
 
     </head>

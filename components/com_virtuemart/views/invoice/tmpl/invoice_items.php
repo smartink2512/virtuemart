@@ -19,24 +19,30 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
- if ( VmConfig::get('show_tax')) {
-    $colspan=7;
- } else {
-    $colspan=8;
- }
-?>
+$colspan=8;
+
+if ($this->doctype != 'invoice') {
+    $colspan -= 4;
+} elseif ( ! VmConfig::get('show_tax')) {
+    $colspan -= 1;
+}
+ ?>
 <table class="html-email" width="100%" cellspacing="0" cellpadding="0" border="0">
 	<tr align="left" class="sectiontableheader">
 		<td align="left" width="5%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></strong></td>
 		<td align="left" colspan="2" width="38%" ><strong><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></strong></td>
 		<td align="center" width="10%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_STATUS') ?></strong></td>
+		<?php if ($this->doctype == 'invoice') { ?>
 		<td align="right" width="10%" ><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRICE') ?></strong></td>
+		<?php } ?>
 		<td align="right" width="6%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></strong></td>
+		<?php if ($this->doctype == 'invoice') { ?>
 		<?php if ( VmConfig::get('show_tax')) { ?>
 		<td align="right" width="10%" ><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_TAX') ?></strong></td>
 		  <?php } ?>
 		<td align="right" width="11%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL_DISCOUNT_AMOUNT') ?></strong></td>
 		<td align="right" width="11%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></strong></td>
+		<?php } ?>
 	</tr>
 
 <?php
@@ -64,12 +70,15 @@ defined('_JEXEC') or die('Restricted access');
 			<td align="center">
 				<?php echo $this->orderstatuses[$item->order_status]; ?>
 			</td>
+		<?php if ($this->doctype == 'invoice') { ?>
 			<td align="right"   class="priceCol" >
 			    <?php echo '<span >'.$this->currency->priceDisplay($item->product_item_price, $this->currency) .'</span><br />'; ?>
 			</td>
+		<?php } ?>
 			<td align="right" >
 				<?php echo $qtt; ?>
 			</td>
+		<?php if ($this->doctype == 'invoice') { ?>
 			<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right" class="priceCol"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($item->product_tax ,$this->currency, $qtt)."</span>" ?></td>
                                 <?php } ?>
@@ -86,11 +95,13 @@ defined('_JEXEC') or die('Restricted access');
 
 				echo $this->currency->priceDisplay(  $item->product_subtotal_with_tax ,$this->currency); //No quantity or you must use product_final_price ?>
 			</td>
+		<?php } ?>
 		</tr>
 
 <?php
 	}
 ?>
+<?php if ($this->doctype == 'invoice') { ?>
 <tr><td colspan="<?php echo $colspan ?>"></td></tr>
  <tr class="sectiontableentry1">
 			<td colspan="6" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_PRICES_TOTAL'); ?></td>
@@ -188,4 +199,5 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 		<td align="right"><strong><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_total, $this->currency); ?></strong></td>
 	</tr>
 
+<?php } ?>
 </table>

@@ -206,6 +206,12 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['vendor_name'] =  'Washupito';
 	$fields['perms']='admin';
 	$fields['vendor_legal_info']="VAT-ID: XYZ-DEMO<br />Reg.Nr: DEMONUMBER";
+	$fields['vendor_letter_css']='.vmdoc-header { }
+.vmdoc-footer { }
+';
+	$fields['vendor_letter_header_html']='<h1>{vm:vendorname}</h1><p>{vm:vendoraddress}</p>';
+	$fields['vendor_letter_header_image']='1';
+	$fields['vendor_letter_footer_html']='{vm:vendorlegalinfo}<br /> Page {vm:pagenum}/{vm:pagecount}';
 	if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 	$usermodel = VmModel::getModel('user');
 	$usermodel->setId($userId);

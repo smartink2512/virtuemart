@@ -21,6 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
 if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
+if (!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 
 // Set to '0' to use tabs i.s.o. sliders
 // Might be a config option later on, now just here for testing.
@@ -36,6 +37,8 @@ class VirtuemartViewInvoice extends VmView {
 	var $uselayout	= '';
 	var $orderDetails = 0;
 	var $invoiceNumber =0;
+	var $doctype = 'invoice';
+	var $showHeaderFooter = true;
 
 	public function display($tpl = null)
 	{
@@ -47,12 +50,27 @@ class VirtuemartViewInvoice extends VmView {
 		} else {
 			$layout = $this->uselayout;
 		}
-		if($layout == 'mail'){
-			if (VmConfig::get('order_mail_html')) {
-				$layout = 'mail_html';
-			} else {
-				$layout = 'mail_raw';
-			}
+		switch ($layout) {
+			case 'invoice':
+				$this->doctype = $layout;
+				$title = JText::_('COM_VIRTUEMART_INVOICE');
+				break;
+			case 'deliverynote':
+				$this->doctype = $layout;
+				$layout = 'invoice';
+				$title = JText::_('COM_VIRTUEMART_DELIVERYNOTE');
+				break;
+			case 'confirmation':
+				$this->doctype = $layout;
+				$layout = 'confirmation';
+				$title = JText::_('COM_VIRTUEMART_CONFIRMATION');
+				break;
+			case 'mail':
+				if (VmConfig::get('order_mail_html')) {
+					$layout = 'mail_html';
+				} else {
+					$layout = 'mail_raw';
+				}
 		}
 		$this->setLayout($layout);
 
@@ -231,18 +249,12 @@ class VirtuemartViewInvoice extends VmView {
 		$this->assignRef('vendor', $vendor);
 
 // 		vmdebug('vendor', $vendor);
-		$task = JRequest::getWord('task',0);
-		if($task == 'checkStoreInvoice'){
-			$headFooter = false;
-		} else {
-			$headFooter = true;
-		}
 		if (strpos($layout,'mail') !== false) {
 			$lineSeparator="<br />";
 		} else {
 			$lineSeparator="\n";
 		}
-		$this->assignRef('headFooter', $headFooter);
+		$this->assignRef('headFooter', $this->showHeaderFooter);
 
 		//Attention, this function will be removed, it wont be deleted, but it is obsoloete in any view.html.php
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');

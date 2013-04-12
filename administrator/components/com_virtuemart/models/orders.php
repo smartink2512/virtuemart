@@ -1310,7 +1310,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 						'view_path' => JPATH_VM_SITE.DS.'views'
 					));
 
-					$vars['mediaToSend'][] = $controller->checkStoreInvoice($order);
+					$vars['mediaToSend'][] = $controller->getInvoicePDF($order);
 				}
 			}
 
