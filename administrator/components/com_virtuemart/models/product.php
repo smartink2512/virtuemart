@@ -820,7 +820,14 @@ class VirtueMartModelProduct extends VmModel {
 		if(count($product->prices)===1){
 			unset($product->prices[0]['virtuemart_product_id']);
 			unset($product->prices[0]['created_on']);
+
+			// For merging of the price and product array, the shoppergroup id from price must be unsetted. 
+			// Otherwise the product becomes the shoppergroup from the price.
+			$priceShoppergroupID = $product->prices[0]['virtuemart_shoppergroup_id'];
+			unset($product->prices[0]['virtuemart_shoppergroup_id']);
 			$product = (object)array_merge ((array)$product, (array)$product->prices[0]);
+			$product->prices[0]['virtuemart_shoppergroup_id'] = $priceShoppergroupID;
+
 		} else if ( $front and count($product->prices)>1 ) {
 			foreach($product->prices as $price){
 
@@ -980,7 +987,7 @@ class VirtueMartModelProduct extends VmModel {
 					}
 				}
 
-				vmdebug('getProductSingle BE request $virtuemart_category_id',$virtuemart_category_id,$product->virtuemart_category_id);
+//				vmdebug('getProductSingle BE request $virtuemart_category_id',$virtuemart_category_id,$product->virtuemart_category_id);
 			}
 
 			if(!empty($product->virtuemart_category_id)){
@@ -1716,6 +1723,8 @@ class VirtueMartModelProduct extends VmModel {
 		$product->field = $this->productCustomsfieldsClone ($id);
 // 		vmdebug('$product->field',$product->field);
 		$product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;
+		$product->mprices = $this->productPricesClone ($id);
+
 		//Lets check if the user is admin or the mainvendor
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		$admin = Permissions::getInstance()->check('admin');
@@ -1727,6 +1736,30 @@ class VirtueMartModelProduct extends VmModel {
 		$product->save_customfields = 1;
 		$this->store ($product);
 		return $this->_id;
+	}
+	
+	private function productPricesClone ($virtuemart_product_id) {
+
+		$this->_db = JFactory::getDBO ();
+		$q = "SELECT * FROM `#__virtuemart_product_prices`";
+		$q .= " WHERE `virtuemart_product_id` = " . $virtuemart_product_id;
+		$this->_db->setQuery ($q);
+		$prices = $this->_db->loadAssocList ();
+
+		if ($prices) {
+			foreach ($prices as $k => &$price) {
+				unset($price['virtuemart_product_id'], $price['virtuemart_product_price_id']);
+				if(empty($mprices[$k])) $mprices[$k] = array();
+				foreach ($price as $i => $value) {
+					if(empty($mprices[$i])) $mprices[$i] = array();
+					$mprices[$i][$k] = $value;
+				}
+			}
+			return $mprices;
+		}
+		else {
+			return NULL;
+		}
 	}
 
 	/* look if whe have a product type */
