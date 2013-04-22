@@ -128,9 +128,9 @@
 
 
 	<?php if (VmConfig::get ('show_tax')) { ?>
-	<th align="right" width="60px"><?php  echo "<span  class='priceColor2'>" . JText::_ ('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') ?></th>
+	<th align="right" width="60px"><?php  echo "<span  class='priceColor2'>" . JText::_ ('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') . '</span>' ?></th>
 	<?php } ?>
-	<th align="right" width="60px"><?php echo "<span  class='priceColor2'>" . JText::_ ('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
+	<th align="right" width="60px"><?php echo "<span  class='priceColor2'>" . JText::_ ('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') . '</span>' ?></th>
 	<th align="right" width="70px"><?php echo JText::_ ('COM_VIRTUEMART_CART_TOTAL') ?></th>
 </tr>
 
@@ -163,8 +163,8 @@ foreach ($this->cart->products as $pkey => $prow) {
 		// 					echo $prow->salesPrice ;
 		?>
 	</td>
-	<td align="right"><?php 
-//				$step=$prow->min_order_level; 
+	<td align="right"><?php
+//				$step=$prow->min_order_level;
 				if ($prow->step_order_level)
 					$step=$prow->step_order_level;
 				else
@@ -172,7 +172,7 @@ foreach ($this->cart->products as $pkey => $prow) {
 				if($step==0)
 					$step=1;
 				$alert=JText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
-				?> 
+				?>
                 <script type="text/javascript">
 				function check<?php echo $step?>(obj) {
  				// use the modulus operator '%' to see if there is a remainder
@@ -185,7 +185,7 @@ foreach ($this->cart->products as $pkey => $prow) {
  				}
  				return true;
  				}
-				</script> 
+				</script>
 		<form action="<?php echo JRoute::_ ('index.php'); ?>" method="post" class="inline">
 			<input type="hidden" name="option" value="com_virtuemart"/>
 				<!--<input type="text" title="<?php echo  JText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="inputbox" size="3" maxlength="4" name="quantity" value="<?php echo $prow->quantity ?>" /> -->
