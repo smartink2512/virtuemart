@@ -133,9 +133,6 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 			}
 			$userFieldsModel = VmModel::getModel ('userfields');
 			if ($userFieldsModel->getIfRequired ('agreed')) {
-				?>
-				<label for="tosAccepted">
-					<?php
 					if (!class_exists ('VmHtml')) {
 						require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 					}
@@ -145,11 +142,13 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 						?>
 						<div class="terms-of-service">
 
-							<a href="<?php JRoute::_ ('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=1') ?>" class="terms-of-service" id="terms-of-service" rel="facebox"
-							   target="_blank">
-								<span class="vmicon vm2-termsofservice-icon"></span>
-								<?php echo JText::_ ('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED'); ?>
-							</a>
+							<label for="tosAccepted">
+								<a href="<?php JRoute::_ ('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=1') ?>" class="terms-of-service" id="terms-of-service" rel="facebox"
+							  	 target="_blank">
+									<span class="vmicon vm2-termsofservice-icon"></span>
+									<?php echo JText::_ ('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED'); ?>
+								</a>
+							</label>
 
 							<div id="full-tos">
 								<h2><?php echo JText::_ ('COM_VIRTUEMART_CART_TOS'); ?></h2>
@@ -160,9 +159,6 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 						<?php
 					} // VmConfig::get('oncheckout_show_legal_info',1)
 					//echo '<span class="tos">'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
-					?>
-				</label>
-				<?php
 			}
 			echo $this->checkout_link_html;
 			?>
