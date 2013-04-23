@@ -568,7 +568,7 @@ class VmMediaHandler {
 			if($lightbox){
 				$image = JHTML::image($file_url, $file_alt, $imageArgs);
 				if ($file_alt ) $file_alt = 'title="'.$file_alt.'"';
-				if ($this->file_url and pathinfo($this->file_url, PATHINFO_EXTENSION) ) $href = JURI::root() .$this->file_url ;
+				if ($this->file_url and pathinfo($this->file_url, PATHINFO_EXTENSION) and substr( $this->file_url, 0, 4) != "http") $href = JURI::root() .$this->file_url ;
 				else $href = $file_url ;
 				if ($this->file_is_downloadable) {
 					$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.$desc.'</a>';
