@@ -58,13 +58,43 @@ class VirtuemartViewCategory extends VmView {
 
 
 		$categoryId = JRequest::getInt('virtuemart_category_id', false);
-		$vendorId = 1;
 
-		$category = $categoryModel->getCategory($categoryId);
-		if(!$category->published){
-			vmInfo('COM_VIRTUEMART_CAT_NOT_PUBL',$category->category_name,$categoryId);
-			return false;
-		}
+        if($categoryId){
+            $vendorId = 1;
+            $category = $categoryModel->getCategory($categoryId);
+        }
+
+
+        if (!$categoryId or empty($category->slug) or !$category->published) {
+
+            if(empty($category->slug)){
+                vmInfo(JText::_('COM_VIRTUEMART_CAT_NOT_FOUND'));
+            } else {
+                if(!$category->published){
+                    vmInfo('COM_VIRTUEMART_CAT_NOT_PUBL',$category->category_name,$categoryId);
+                    //return false;
+                }
+            }
+
+            $categoryLink = '';
+            if ($category->category_parent_id) {
+                $categoryLink = '&view=category&virtuemart_category_id=' .$category->category_parent_id;
+            } else {
+                $last_category_id = shopFunctionsF::getLastVisitedCategoryId();
+                if (!$last_category_id or $categoryId == $last_category_id) {
+                    $last_category_id = JRequest::getInt('virtuemart_category_id', false);
+                }
+                if ($last_category_id and $categoryId != $last_category_id) {
+                    $categoryLink = '&view=category&virtuemart_category_id=' . $last_category_id;
+                }
+            }
+
+            $app->redirect(JRoute::_('index.php?option=com_virtuemart' . $categoryLink . '&error=404'));
+
+            return;
+        }
+
+
 		$categoryModel->addImages($category,1);
 		$perRow = empty($category->products_per_row)? VmConfig::get('products_per_row',3):$category->products_per_row;
 // 		$categoryModel->setPerRow($perRow);

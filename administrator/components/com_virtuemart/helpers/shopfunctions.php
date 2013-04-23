@@ -8,7 +8,6 @@ defined ('_JEXEC') or die('Direct Access to ' . basename (__FILE__) . ' is not a
  *
  * @package	VirtueMart
  * @subpackage Helpers
- * @author RolandD
  * @author Max Milbers
  * @author Patrick Kohl
  * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
@@ -136,7 +135,7 @@ class ShopFunctions {
 	/**
 	 * Creates a Drop Down list of available Vendors
 	 *
-	 * @author Max Milbers, RolandD
+	 * @author Max Milbers
 	 * @access public
 	 * @param int $virtuemart_shoppergroup_id the shopper group to pre-select
 	 * @param bool $multiple if the select list should allow multiple selections
@@ -197,7 +196,7 @@ class ShopFunctions {
 	/**
 	 * Creates a Drop Down list of available Shopper Groups
 	 *
-	 * @author Max Milbers, RolandD
+	 * @author Max Milbers
 	 * @access public
 	 * @param int $shopperGroupId the shopper group to pre-select
 	 * @param bool $multiple if the select list should allow multiple selections
@@ -337,8 +336,9 @@ class ShopFunctions {
 
 		if (is_array ($stateId)) {
 					$stateId = implode (",", $stateId);
-				}
-		vmJsApi::JcountryStateList ($stateId);
+		}
+
+		vmJsApi::JcountryStateList ($stateId,$_prefix);
 
 		if ($multiple) {
 			$attrs = 'multiple="multiple" size="12" name="' . $_prefix . 'virtuemart_state_id[]" ';
@@ -359,7 +359,7 @@ class ShopFunctions {
 
 		$class = 'class="inputbox multiple"';
 
-		$listHTML = '<select '.$class.' id="virtuemart_state_id" ' . $attrs . '>
+		$listHTML = '<select '.$class.' id="'.$_prefix.'virtuemart_state_id" ' . $attrs . '>
 						<option value="">' . JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>
 						</select>';
 
@@ -779,7 +779,7 @@ class ShopFunctions {
 	 * Creates structured option fields for all categories
 	 *
 	 * @todo: Connect to vendor data
-	 * @author RolandD, Max Milbers, jseros
+	 * @author Max Milbers, jseros
 	 * @param array 	$selectedCategories All category IDs that will be pre-selected
 	 * @param int 		$cid 		Internally used for recursion
 	 * @param int 		$level 		Internally used for recursion

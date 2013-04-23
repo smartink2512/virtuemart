@@ -820,7 +820,12 @@ class VirtueMartModelProduct extends VmModel {
 		if(count($product->prices)===1){
 			unset($product->prices[0]['virtuemart_product_id']);
 			unset($product->prices[0]['created_on']);
-
+			unset($product->prices[0]['created_by']);
+			unset($product->prices[0]['modified_on']);
+			unset($product->prices[0]['modified_by']);
+			unset($product->prices[0]['locked_on']);
+			unset($product->prices[0]['locked_by']);
+			vmdebug('getProductPrices my price ',$product->prices[0]);
 			// For merging of the price and product array, the shoppergroup id from price must be unsetted. 
 			// Otherwise the product becomes the shoppergroup from the price.
 			$priceShoppergroupID = $product->prices[0]['virtuemart_shoppergroup_id'];
@@ -1461,17 +1466,17 @@ class VirtueMartModelProduct extends VmModel {
 		JFactory::getApplication ()->redirect ('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . JRequest::getInt ('virtuemart_category_id', 0));
 	}
 
-	/**
-	 * Store a product
-	 *
-	 * @author RolandD
-	 * @author Max Milbers
-	 * @access public
-	 */
-	public function store (&$product, $isChild = FALSE) {
+    /**
+     * Store a product
+     *
+     * @author Max Milbers
+     * @param $product given as reference
+     * @param bool $isChild Means not that the product is child or not. It means if the product should be threated as child
+     * @return bool
+     */
+    public function store (&$product, $isChild = FALSE) {
 
 		JRequest::checkToken () or jexit ('Invalid Token');
-
 
 		if ($product) {
 			$data = (array)$product;
@@ -1532,9 +1537,10 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		// Get old IDS
-		$this->_db->setQuery( 'SELECT `virtuemart_product_price_id` FROM `#__virtuemart_product_prices` WHERE virtuemart_product_id ='.$this->_id );
-		$old_price_ids = $this->_db->loadResultArray();
-
+		/*$this->_db->setQuery( 'SELECT `virtuemart_product_price_id` FROM `#__virtuemart_product_prices` WHERE virtuemart_product_id ='.$this->_id );
+		$old_price_ids = $this->_db->loadResultArray();*/
+        $old_price_ids = $this->loadProductPrices($this->_id,0,0,false);
+        vmdebug('$old_price_ids ',$old_price_ids);
 		foreach($data['mprices']['product_price'] as $k => $product_price){
 
 			$pricesToStore = array();
@@ -1574,25 +1580,38 @@ class VirtueMartModelProduct extends VmModel {
 			if (isset($data['mprices']['product_price'][$k]) and $data['mprices']['product_price'][$k]!='') {
 
 				if ($isChild) {
-					unset($data['mprices']['product_override_price'][$k]);
-					unset($pricesToStore['product_override_price']);
-					unset($data['mprices']['override'][$k]);
-					unset($pricesToStore['override']);
+                    //$childPrices = $this->loadProductPrices($pricesToStore['virtuemart_product_price_id'],0,0,false);
+
+                    if(is_array($old_price_ids)){
+
+                        //We do not touch multiple child prices. Because in the parent list, we see no price, the gui is
+                        //missing to reflect the information properly.
+                        $pricesToStore = false;
+                        $old_price_ids = array();
+                    } else {
+                        unset($data['mprices']['product_override_price'][$k]);
+                        unset($pricesToStore['product_override_price']);
+                        unset($data['mprices']['override'][$k]);
+                        unset($pricesToStore['override']);
+                    }
+
 				}
 
 				//$data['mprices'][$k] = $data['virtuemart_product_id'];
+                if($pricesToStore){
+                    $this->updateXrefAndChildTables ($pricesToStore, 'product_prices',$isChild);
 
-				$this->updateXrefAndChildTables ($pricesToStore, 'product_prices',$isChild);
+                    $key = array_search($pricesToStore['virtuemart_product_price_id'], $old_price_ids );
+                    if ($key !== false ) unset( $old_price_ids[ $key ] );
+                }
 
-				$key = array_search($pricesToStore['virtuemart_product_price_id'], $old_price_ids );
-				if ($key !== false ) unset( $old_price_ids[ $key ] );
 
 			}
 		}
 
-
+        vmdebug('$old_price_ids ',$old_price_ids);
 		if ( count($old_price_ids) ) {
-			// delete old unused Customfields
+			// delete old unused Prices
 			$this->_db->setQuery( 'DELETE FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_price_id` in ("'.implode('","', $old_price_ids ).'") ');
 			$this->_db->query();
 		}

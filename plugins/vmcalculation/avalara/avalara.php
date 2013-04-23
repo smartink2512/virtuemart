@@ -18,7 +18,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcalculationplugin.php');
 
-defined('AVATAX_DEV') or define('AVATAX_DEV', 0);
+//defined('AVATAX_DEV') or define('AVATAX_DEV', 0);
 defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 0);
 
 function avadebug($string,$arg=NULL){
@@ -40,7 +40,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			'license'     => array('', 'char'),
 			'committ'   => array(0,'int'),
 			'only_cart' => array(0,'int'),
-			'avatax_virtuemart_country_id'  => array(0,'int'), //TODO should be a country dropdown multiselect box
+            'dev' => array(0,'int'),
+			'avatax_virtuemart_country_id'  => array(0,'int'),
+            'avatax_virtuemart_state_id'  => array(0,'int'),
 		);
 
 		$this->setConfigParameterable ('calc_params', $varsToPush);
@@ -110,17 +112,33 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$html .= VmHTML::row('input','VMCALCULATION_AVALARA_LICENSE','license',$calc->license);
 		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_COMMITT','committ',$calc->committ);
 		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_ONLYCART','only_cart',$calc->only_cart);
+        $html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_DEV','dev',$calc->dev);
 
 		$label = 'VMCALCULATION_AVALARA_VADDRESS';
 		$lang =JFactory::getLanguage();
 		$label = $lang->hasKey($label.'_TIP') ? '<span class="hasTip" title="'.JText::_($label.'_TIP').'">'.JText::_($label).'</span>' : JText::_($label) ;
-		$html .= '
-		<tr>
-			<td class="key">
-				'.$label.'
-			</td>
+        	$html .= '
+            <tr>
+                <td class="key">
+                    '.$label.'
+                </td>
+                <td>
+                    '.shopfunctions::renderCountryList($calc->avatax_virtuemart_country_id,TRUE,array(),'avatax_').'
+                </td>';
+
+
+     /*   $countriesList = ShopFunctions::renderCountryList($calc->calc_countries,True);
+                $this->assignRef('countriesList', $countriesList);
+
+                $statesList = ShopFunctions::renderStateList($calc->virtuemart_state_ids,'', True);
+                $this->assignRef('statesList', $statesList);
+
+            $label = 'VMCALCULATION_AVALARA_VADDRESS';
+            $lang =JFactory::getLanguage();
+            $label = $lang->hasKey($label.'_TIP') ? '<span class="hasTip" title="'.JText::_($label.'_TIP').'">'.JText::_($label).'</span>' : JText::_($label) ;
+        */  $html .= '
 			<td>
-				'.shopfunctions::renderCountryList($calc->avatax_virtuemart_country_id,TRUE,array(),'avatax_').'
+				'.shopfunctions::renderStateList($calc->avatax_virtuemart_state_id,'avatax_',TRUE).'
 			</td>
 		</tr>';
 
@@ -163,7 +181,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		if(!class_exists('ATConfig')) require (VMAVALARA_CLASS_PATH.DS.'ATConfig.class.php');
 
 		//Set this to TRUE for development account
-		if(AVATAX_DEV){
+		if($calc->dev){
 			$this->_connectionType = 'Development';
 			$devValues = array(
 				'url'       => 'https://development.avalara.net',

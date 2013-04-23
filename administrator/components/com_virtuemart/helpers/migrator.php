@@ -1184,11 +1184,12 @@ class Migrator extends VmModel{
 						$product['product_parent_id'] = 0;
 					}
 
-					$product['virtuemart_product_id'] = $productModel->store($product);
-
 					if($this->_keepOldProductIds){
 						$product['virtuemart_product_id'] = $product['product_id'];
 					}
+
+					$product['virtuemart_product_id'] = $productModel->store($product);
+
 					if(!empty($product['product_id']) and !empty($product['virtuemart_product_id'])){
 						$alreadyKnownIds[$product['product_id']] = $product['virtuemart_product_id'];
 					} else {
@@ -1215,11 +1216,13 @@ class Migrator extends VmModel{
 				}
 
 			}
-
 			$limitStartToStore = ', products_start = "'.($doneStart+$i).'" ';
 			$this->storeMigrationProgress('products',$alreadyKnownIds);
 			vmInfo('Migration: '.$i.' products processed ');
 		}
+
+
+
 		return $ok;
 	}
 
@@ -1569,7 +1572,7 @@ class Migrator extends VmModel{
 		$this->_db->setQuery($q);
 
 		$limit = $this->_db->loadResult();
-		vmdebug('$limit',$limit,$q);
+		vmdebug('Migrator _getStartLimit '.$name,$limit);
 		if(!empty($limit)) return $limit; else return 0;
 	}
 

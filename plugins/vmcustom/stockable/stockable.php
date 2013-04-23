@@ -397,6 +397,9 @@ class plgVmCustomStockable extends vmCustomPlugin {
 					$(".addtocart-bar").append(\'<a href="ind\'+\'ex.php?option=com_virtuemart&view=productdetails&layout=notify&virtuemart_product_id=\' + found_id + \'" class="notify">' . JText::_('COM_VIRTUEMART_CART_NOTIFY') . '</a>\');
 				} else {
 					var quantity = $(".addtocart-bar .quantity-input").val();
+					if (isNaN(quantity)) {
+					    quantity = 1;
+					}
 					$(".addtocart-bar>span").remove();
 					$(".addtocart-bar>div").remove();
 					$(".addtocart-bar>a.notify").remove();

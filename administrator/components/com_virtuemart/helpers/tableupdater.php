@@ -134,8 +134,8 @@ class GenericTableUpdater extends JModel{
 					$fields['vendor_legal_info'] = 'text '.$linedefaulttext;
 
 					$fields['vendor_letter_css'] = 'text '.$linedefaulttext;
-					$fields['vendor_letter_header_html'] = "varchar(8000) NOT NULL DEFAULT '<h1>{vm:vendorname}</h1><p>{vm:vendoraddress}</p>'";
-					$fields['vendor_letter_footer_html'] = "varchar(8000) NOT NULL DEFAULT '<p>{vm:vendorlegalinfo}<br />Page {vm:pagenum}/{vm:pagecount}</p>'";
+					$fields['vendor_letter_header_html'] = "text NOT NULL DEFAULT '<h1>{vm:vendorname}</h1><p>{vm:vendoraddress}</p>'";
+					$fields['vendor_letter_footer_html'] = "text NOT NULL DEFAULT '<p>{vm:vendorlegalinfo}<br />Page {vm:pagenum}/{vm:pagecount}</p>'";
 
 
 					$key = array_search('vendor_store_desc', $translatableFields);

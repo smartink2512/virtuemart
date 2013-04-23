@@ -5,7 +5,7 @@
  *
  * @package	VirtueMart
  * @subpackage
- * @author RolandD
+ * @author Max Milbers, Valerie Isaksen
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -106,7 +106,7 @@ class VirtuemartControllerOrders extends VmController {
 	/**
 	 * Update an order status
 	 *
-	 * @author RolandD
+	 * @author Max Milbers
 	 */
 	public function updatestatus() {
 		//vmdebug('updatestatus');
@@ -188,7 +188,7 @@ class VirtuemartControllerOrders extends VmController {
 	 * correct position, working with json? actually? WHat ist that?
 	 *
 	 * Get a list of related products
-	 * @author RolandD
+	 * @author Max Milbers
 	 */
 	public function getProducts() {
 		/* Create the view object */

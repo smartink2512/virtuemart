@@ -5,7 +5,7 @@
  *
  * @package	VirtueMart
  * @subpackage
- * @author RolandD
+ * @author Max Milbers
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -262,7 +262,7 @@ class VirtuemartControllerProduct extends VmController {
 	/**
 	 * Clone a product
 	 *
-	 * @author RolandD, Max Milbers
+	 * @author Max Milbers
 	 */
 	public function CloneProduct() {
 		$mainframe = Jfactory::getApplication();
@@ -293,8 +293,8 @@ class VirtuemartControllerProduct extends VmController {
 	/**
 	 * Get a list of related products, categories
 	 * or customfields
-	 * @author RolandD
-	 * Kohl Patrick
+	 * @author Max Milbers
+	 * @author Kohl Patrick
 	 */
 	public function getData() {
 
@@ -307,7 +307,7 @@ class VirtuemartControllerProduct extends VmController {
 
 	/**
 	 * Add a product rating
-	 * @author RolandD
+	 * @author Max Milbers
 	 */
 	public function addRating() {
 		$mainframe = Jfactory::getApplication();

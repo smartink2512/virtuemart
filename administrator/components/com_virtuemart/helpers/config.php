@@ -1124,22 +1124,23 @@ class vmJsApi{
 		vmJsApi::js('vmsite');
 	}
 
-	static function JcountryStateList($stateIds) {
-		static $JcountryStateList;
+	static function JcountryStateList($stateIds, $prefix='') {
+		static $JcountryStateList = array();
 		// If exist exit
-		if ($JcountryStateList) {
+		if (isset($JcountryStateList[$prefix])) {
 			return;
 		}
 		$document = JFactory::getDocument();
 		VmJsApi::jSite();
-		$document->addScriptDeclaration(' 
+        //vmdebug('renderStateList $_prefix ',$prefix);
+		$document->addScriptDeclaration('
 //<![CDATA[
 		jQuery( function($) {
-			$("select.virtuemart_country_id").vm2front("list",{dest : "#virtuemart_state_id",ids : "'.$stateIds.'"});
+			$("select.'.$prefix.'virtuemart_country_id").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id",ids : "'.$stateIds.'"});
 		});
 //]]>
 		');
-		$JcountryStateList = TRUE;
+		$JcountryStateList[$prefix] = TRUE;
 		return;
 	}
 

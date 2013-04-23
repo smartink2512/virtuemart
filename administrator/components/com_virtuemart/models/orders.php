@@ -5,7 +5,6 @@
  *
  * @package	VirtueMart
  * @subpackage
- * @author RolandD
  * @author Oscar van Eijk
  * @author Max Milbers
  * @author Patrick Kohl
@@ -23,7 +22,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+if(!class_exists('VmModel')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 
 /**
  * Model for VirtueMart Orders

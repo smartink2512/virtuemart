@@ -354,7 +354,7 @@ class VirtueMartModelCategory extends VmModel {
 	/**
 	* count the products in a category
 	*
-	* @author RolandD, Max Milbers
+	* @author Max Milbers
 	* @return array list of categories product is in
 	*/
 	public function countProducts($cat_id=0) {
@@ -651,40 +651,6 @@ class VirtueMartModelCategory extends VmModel {
 		}
 
 	}
-
-	/**
-	 * Creates a bulleted of the childen of this category if they exist
-	 *
-	 * @author RolandD
-	 * @todo Add vendor ID
-	 * @param int $virtuemart_category_id the category ID to create the list of
-	 * @return array containing the child categories
-	 */
-/*	public function getChildrenList($virtuemart_category_id,$limit=false) {
-		$db = JFactory::getDBO();
-		$childs = array();
-
-		$q = "SELECT `#__virtuemart_categories`.*, `category_child_id`
-			FROM `#__virtuemart_categories`, `#__virtuemart_category_categories`
-			WHERE `#__virtuemart_category_categories`.`category_parent_id` = ".(int)$virtuemart_category_id."
-			AND `#__virtuemart_categories`.`virtuemart_category_id`=`#__virtuemart_category_categories`.`category_child_id`
-			AND `#__virtuemart_categories`.`virtuemart_vendor_id` = 1
-			AND `#__virtuemart_categories`.`published` = 1
-			ORDER BY `#__virtuemart_categories`.`ordering`, `#__virtuemart_categories`.`category_name` ASC";
-		if ($limit) $q .=' limit 0,'.$limit;
-		$db->setQuery($q);
-		$childs = $db->loadObjectList();
-		// Get the products in the category
-		if(!empty($childs)){
-			foreach ($childs as $ckey => $child) {
-				$childs[$ckey]->number_of_products = $this->countProducts($child->category_child_id);
-			}
-		}
-
-
-		return $childs;
-	}
-*/
 
 	/**
 	 * Creates a bulleted of the childen of this category if they exist

@@ -15,11 +15,13 @@
 		list: function(options) {
 			var dest = options.dest;
 			var ids = options.ids;
+
 			methods.update(this,dest,ids);
 
 			$(this).change( function() { methods.update(this,dest)});
 		},
 		update: function(org,dest,ids) {
+
 			var opt = $(org),
 				optValues = opt.val() || [],
 				byAjax = [] ;
@@ -70,6 +72,7 @@
 					}
 				);
 			} else {
+                alert('test '+    dest);
 				methods.addToList(opt,optValues,dest)
 				$(dest).trigger("liszt:updated");
 			}
@@ -78,7 +81,7 @@
 		},
 		addToList: function(opt,values,dest) {
 			$.each(values, function(dataKey, dataValue) { 
-				var groupExist = $("#group"+dataValue+"").size(); 
+				var groupExist = $("#group"+dataValue+"").size();
 				if ( ! groupExist ) {
 					var datas = opt.data( 'd'+dataValue );
 					if (datas.length >0) {

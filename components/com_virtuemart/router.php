@@ -1007,7 +1007,7 @@ class vmrouterHelper {
 					elseif ($home == $view ) continue;
 					else $this->menu[$view]= $item->id ;
 
-					if ($item->home === 1) {
+					if ((int)$item->home === 1) {
 						$home = $view;
 						$homeid = $item->id;
 					}
