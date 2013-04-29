@@ -246,13 +246,17 @@ class VmTable extends JTable{
 		return false;
 	}
 
-	function setLoggableFieldsForStore(){
+    /**
+     * Function setting the loggable data hack procted
+     * In case you want to override the value for administrators, just set the created_on to "0000-00-00 00:00:00"
+     *
+     * @author Max Milbers
+     */
+    function setLoggableFieldsForStore(){
 
 		if($this->_loggable){
 
 			// set default values always used
-
-
 
 			//We store in UTC time, dont touch it!
 			$date = JFactory::getDate();
@@ -272,18 +276,18 @@ class VmTable extends JTable{
 				if(empty($this->$pkey) and empty($this->created_by)){
 					$this->created_by = $user->id;
 				}
+                //ADDED BY P2 PETER
+                if($this->created_on=="0000-00-00 00:00:00"){
+                    $this->created_on = $today;
+                    $this->created_by = $user->id;
+                }
+                //END ADD
 			} else {
 				if(empty($this->$pkey)){
 					$this->created_on = $today;
 					$this->created_by = $user->id;
 				}
 			}
-
-			//ADDED BY P2 PETER
-			if($this->created_on=="0000-00-00 00:00:00"){
-				$this->created_on = $this->$today;
-			}
-			//END ADD
 
 			$this->modified_on = $today;
 			$this->modified_by = $user->id;

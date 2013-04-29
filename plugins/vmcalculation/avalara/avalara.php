@@ -136,11 +136,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
             $label = 'VMCALCULATION_AVALARA_VADDRESS';
             $lang =JFactory::getLanguage();
             $label = $lang->hasKey($label.'_TIP') ? '<span class="hasTip" title="'.JText::_($label.'_TIP').'">'.JText::_($label).'</span>' : JText::_($label) ;
-        */  $html .= '
+         $html .= '
 			<td>
 				'.shopfunctions::renderStateList($calc->avatax_virtuemart_state_id,'avatax_',TRUE).'
-			</td>
-		</tr>';
+			</td> */
+        $html .= '</tr>';
 
 		//$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_VADDRESS','vAddress',$calc->vAddress);
 	//	$html .= VmHTML::row('checkbox','VMCALCULATION_ISTRAXX_AVALARA_TRACE','trace',$calc->trace);

@@ -50,7 +50,7 @@ $useXHTML = true;
 $data->cart_show = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart".$taskRoute,$useXHTML,$useSSL).'">'.$linkName.'</a>';
 $data->billTotal = $lang->_('COM_VIRTUEMART_CART_TOTAL').' : <strong>'. $data->billTotal .'</strong>';
 
-vmJsApi::jPrice();
+//vmJsApi::jPrice();
 vmJsApi::cssSite();
 $document = JFactory::getDocument();
 //$document->addScriptDeclaration($jsVars);

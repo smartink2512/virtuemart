@@ -72,7 +72,6 @@
 					}
 				);
 			} else {
-                alert('test '+    dest);
 				methods.addToList(opt,optValues,dest)
 				$(dest).trigger("liszt:updated");
 			}

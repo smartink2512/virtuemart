@@ -43,7 +43,7 @@ class VirtuemartViewCategory extends VmView {
 
 		$document = JFactory::getDocument();
 		// add javascript for price and cart
-		vmJsApi::jPrice();
+		//vmJsApi::jPrice();
 
 		$app = JFactory::getApplication();
 		$pathway = $app->getPathway();

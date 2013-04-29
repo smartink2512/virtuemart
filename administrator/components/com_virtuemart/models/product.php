@@ -1748,7 +1748,7 @@ class VirtueMartModelProduct extends VmModel {
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		$admin = Permissions::getInstance()->check('admin');
 		if($admin){
-			$product->created_on = false;
+			$product->created_on = "0000-00-00 00:00:00";
 			$product->created_by = 0;
 		}
 		$product->slug = $product->slug . '-' . $id;
