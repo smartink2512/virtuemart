@@ -281,8 +281,6 @@ class Permissions extends JObject{
 			if($this->check('admin,storeadmin') ){
 				$this->_vendorId = 1;
 				return $this->_vendorId;
-			} else {
-				return false;
 			}
 		}
 		return false;

@@ -63,8 +63,8 @@ class TableVendors extends VmTableData {
     /** @var text Vendor letter footer */
     var $vendor_letter_footer_html = '';
 
-    /* @author RickG, Max Milbers
-     * @param $db A database connector object
+    /** @author RickG, Max Milbers
+     * @param JDataBase $db
      */
     function __construct(&$db) {
 		parent::__construct('#__virtuemart_vendors', 'virtuemart_vendor_id', $db);

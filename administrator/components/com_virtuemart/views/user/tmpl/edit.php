@@ -77,6 +77,7 @@ function myValidator(f) {
 	}
 	//Funny, works for chrome etc, but throws error on FF, but the error stops the script, so the effect is the same
     jQuery().event.preventDefault();
+    return false;
 }
 </script>
 <?php AdminUIHelper::endAdminArea(); ?>

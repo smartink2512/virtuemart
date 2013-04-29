@@ -405,21 +405,21 @@ class VirtuemartViewProduct extends VmView {
 
 	}
 
-	function displayLinkToChildList($product_id, $product_name) {
+	static function displayLinkToChildList($product_id, $product_name) {
 
-		//$this->db = JFactory::getDBO();
-		$this->db->setQuery(' SELECT COUNT( * ) FROM `#__virtuemart_products` WHERE `product_parent_id` ='.$product_id);
-		if ($result = $this->db->loadResult()){
+        $db = JFactory::getDBO();
+        $db->setQuery(' SELECT COUNT( * ) FROM `#__virtuemart_products` WHERE `product_parent_id` ='.$product_id);
+		if ($result = $db->loadResult()){
 			$result = JText::sprintf('COM_VIRTUEMART_X_CHILD_PRODUCT', $result);
 			echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_id.'&option=com_virtuemart'), $result, array('title' => JText::sprintf('COM_VIRTUEMART_PRODUCT_LIST_X_CHILDREN',$product_name) ));
 		}
 	}
 
-	function displayLinkToParent($product_parent_id) {
+	static function displayLinkToParent($product_parent_id) {
 
-		//$this->db = JFactory::getDBO();
-		$this->db->setQuery(' SELECT * FROM `#__virtuemart_products_'.VMLANG.'` as l JOIN `#__virtuemart_products` using (`virtuemart_product_id`) WHERE `virtuemart_product_id` = '.$product_parent_id);
-		if ($parent = $this->db->loadObject()){
+		$db = JFactory::getDBO();
+		$db->setQuery(' SELECT * FROM `#__virtuemart_products_'.VMLANG.'` as l JOIN `#__virtuemart_products` using (`virtuemart_product_id`) WHERE `virtuemart_product_id` = '.$product_parent_id);
+		if ($parent = $db->loadObject()){
 			$result = JText::sprintf('COM_VIRTUEMART_LIST_CHILDREN_FROM_PARENT', $parent->product_name);
 			echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.'&option=com_virtuemart'), $parent->product_name, array('title' => $result));
 		}

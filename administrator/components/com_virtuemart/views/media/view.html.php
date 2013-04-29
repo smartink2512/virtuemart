@@ -42,7 +42,7 @@ class VirtuemartViewMedia extends VmView {
 		$this->SetViewTitle();
 
 
-		$model = VmModel::getModel();
+		$model = VmModel::getModel('media');
 		$perms = Permissions::getInstance();
 		$this->assignRef('perms', $perms);
 

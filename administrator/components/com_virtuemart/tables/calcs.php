@@ -66,7 +66,7 @@ class TableCalcs extends VmTable
 
 	/**
 	 * @author Max Milbers
-	 * @param $db A database connector object
+	 * @param JDataBase $db
 	 */
 	function __construct(&$db){
 		parent::__construct('#__virtuemart_calcs', 'virtuemart_calc_id', $db);

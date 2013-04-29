@@ -560,7 +560,7 @@ class shopFunctionsF {
 	 * @author Max Milbers
 	 * @author Patrick Kohl
 	 */
-	function translateTwoLangKeys($pkey,$skey){
+	static function translateTwoLangKeys($pkey,$skey){
 		$upper = strtoupper($pkey).'_2STRINGS';
 		if( JText::_($upper) !== $upper ) {
 			return JText::sprintf($upper,JText::_($skey));

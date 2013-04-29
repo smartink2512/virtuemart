@@ -133,11 +133,16 @@ class Migrator extends VmModel{
 	function migrateGeneral(){
 
 		$result = $this->portMedia();
-		$result = $this->portShoppergroups();
-		$result = $this->portCategories();
-		$result = $this->portManufacturerCategories();
-		$result = $this->portManufacturers();
+		$result1 = $this->portShoppergroups();
+		$result2 = $this->portCategories();
+		$result3 = $this->portManufacturerCategories();
+		$result4 = $this->portManufacturers();
 		// 		$result = $this->portOrderStatus();
+        if(((int)$result + (int)$result1 + (int)$result2 + (int)$result3 + (int)$result4) ==5){
+            $result = true;
+        } else {
+            $result = false;
+        }
 
 		$time = microtime(true) - $this->starttime;
 		vmInfo('Worked on general migration for '.$time.' seconds');
@@ -1011,12 +1016,14 @@ class Migrator extends VmModel{
 			$msg .= $this->getErrors();
 		}
 		$this->_app->enqueueMessage($msg);
+
+        return $ok;
 	}
 
 	private function portProducts(){
 
 		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
-			return;
+			return false;
 		}
 
 		$ok = true;
@@ -1475,6 +1482,7 @@ class Migrator extends VmModel{
 		$limitStartToStore = ', orders_start = "'.($doneStart+$i).'" ';
 		$this->storeMigrationProgress('orders',$alreadyKnownIds,$limitStartToStore);
 		vmInfo('Migration: '.$i.' orders processed '.($doneStart+$i).' done.');
+        return true;;
 	}
 
 	function portOrderStatus(){

@@ -62,6 +62,7 @@ class VirtueMartModelUserfields extends VmModel {
 		$this->setToggleName('shipment');
 		$this->setToggleName('account');
 		// Instantiate the Helper class
+
 		$this->_params = new ParamHelper();
 		self::$_cache_ordered = null; 
 		self::$_cache_named = array();  

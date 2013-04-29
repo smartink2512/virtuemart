@@ -23,12 +23,11 @@ defined('_JEXEC') or die('Restricted access');
 
 class TableOrder_userinfos extends VmTable {
 
-	/**
-	 * Constructor
-	 */
-	function __construct(&$_db)
-	{
-
+    /**
+     * @author Max Milbers
+     * @param string $_db
+     */
+    function __construct(&$_db){
 		parent::__construct('#__virtuemart_order_userinfos', 'virtuemart_order_userinfo_id', $_db);
 		parent::loadFields($_db);
 		$this->setLoggable();

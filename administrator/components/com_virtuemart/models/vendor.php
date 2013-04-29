@@ -272,7 +272,7 @@ class VirtueMartModelVendor extends VmModel {
 	function getUserIdByOrderId ($virtuemart_order_id) {
 
 		if (empty ($virtuemart_order_id)) {
-			return;
+			return 0;
 		}
 		$virtuemart_order_id = (int)$virtuemart_order_id;
 		$q = "SELECT `virtuemart_user_id` FROM `#__virtuemart_orders` WHERE `virtuemart_order_id`='.$virtuemart_order_id'";

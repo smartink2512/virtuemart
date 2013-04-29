@@ -78,7 +78,7 @@ class TableCustoms extends VmTable {
 
 	/**
 	 * @author  Patrick Kohl
-	 * @param $db A database connector object
+	 * @param JDataBase $db
 	 */
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_customs', 'virtuemart_custom_id', $db);

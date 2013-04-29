@@ -63,8 +63,8 @@ if (!class_exists ('VmModel')) {
  * and also vmInfo('COM_VIRTUEMART_MEDIA_NO_PATH_TYPE');
  *
  * @author Max Milbers
- * @param unknown_type $publicdescr
- * @param unknown_type $value
+ * @param string $publicdescr
+ * @param string $value
  */
 
 function vmInfo($publicdescr,$value=NULL){
@@ -798,7 +798,6 @@ class VmConfig {
 			JError::raiseWarning(1, 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE));
 			echo 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE);
 			die;
-			return FALSE;
 		}else {
 			//vmdebug('Config installed file, store values '.$_value);
 			return TRUE;
@@ -807,11 +806,11 @@ class VmConfig {
 	}
 
 	/**
-	 *
+	 * We should this move out of this file, because it is usually only used one time in a shop life
 	 * @author Oscar van Eijk
 	 * @author Max Milbers
 	 */
-	function readConfigFile($returnDangerousTools){
+	static function readConfigFile($returnDangerousTools){
 
 		$_datafile = JPATH_VM_ADMINISTRATOR.DS.'virtuemart.cfg';
 		if (!file_exists($_datafile)) {

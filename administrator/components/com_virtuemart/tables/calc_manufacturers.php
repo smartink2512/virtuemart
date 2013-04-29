@@ -33,7 +33,7 @@ class TableCalc_manufacturers extends VmTableXarray {
 	/**
 	 * @author St. Kraft
 	 * Mod. <mediaDESIGN> St.Kraft 2013-02-24 Herstellerrabatt
-	 * @param $db A database connector object
+	 * @param JDataBase $db
 	 */
 	function __construct(&$db){
 		parent::__construct('#__virtuemart_calc_manufacturers', 'id', $db);

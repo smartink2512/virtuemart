@@ -52,7 +52,12 @@ class VmTable extends JTable{
 	static $_cache = null;
 	static $_query_cache = null;
 
-	function __construct( $table, $key, &$db ){
+    /**
+     * @param string $table
+     * @param string $key
+     * @param JDatabase $db
+     */
+    function __construct( $table, $key, &$db ){
 
 		$this->_tbl		= $table;
 		$this->_tbl_key	= $key;
@@ -273,26 +278,32 @@ class VmTable extends JTable{
 				if(empty($this->$pkey) and empty($this->created_on)){
 					$this->created_on = $today;
 				} else if(empty($this->created_on)) {
+                    //If nothing is there, dont update it
                     $this->created_on = null;
-                }
+                } else //ADDED BY P2 PETER
+                    if($this->created_on=="0000-00-00 00:00:00"){
+                        $this->created_on = $today;
+                        $this->created_by = $user->id;
+                    }
+                //END ADD
 
 				if(empty($this->$pkey) and empty($this->created_by)){
 					$this->created_by = $user->id;
 				} else if(empty($this->created_by)) {
+                    //If nothing is there, dont update it
                     $this->created_by = null;
                 }
 
-                //ADDED BY P2 PETER
-                if($this->created_on=="0000-00-00 00:00:00"){
-                    $this->created_on = $today;
-                    $this->created_by = $user->id;
-                }
-                //END ADD
+
 			} else {
 				if(empty($this->$pkey)){
 					$this->created_on = $today;
 					$this->created_by = $user->id;
-				}
+				} else {
+                    //If nothing is there, dont update it
+                    $this->created_on = null;
+                    $this->created_by = null;
+                }
 			}
 
 			$this->modified_on = $today;
@@ -545,12 +556,6 @@ class VmTable extends JTable{
 
 			}
 
-			//if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
-			//vmdebug('check $slug before stringURLSafe',$this->$slugName);
-			//$this->$slugName = vmFile::makeSafe( $this->$slugName );
-
-			//$lang = JFactory::getLanguage();
-			//$this->$slugName = $lang->transliterate($this->$slugName);
 			if(JVM_VERSION===1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
 			else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
 
@@ -591,9 +596,7 @@ class VmTable extends JTable{
 					if(!$valid){
 						return false;
 					}
-
 				}
-
 			}
 		}
 

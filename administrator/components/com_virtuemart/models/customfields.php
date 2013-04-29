@@ -700,9 +700,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$options = $this->_db->loadObjectList ();
 					return JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][custom_value]', '', 'value', 'text', $field->custom_value) . '</td><td>' . $priceInput;
 					break;
-				/* Child product Group */
-				case 'G':
-					break;
+
 				/* Child product */
 				/*				case 'C':
 					if (empty($product)){

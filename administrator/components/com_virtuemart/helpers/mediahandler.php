@@ -15,7 +15,7 @@ defined('_JEXEC') or die();
 
 /**
  * Sanitizes the filenames and transliterates them also for non latin languages
- *
+ * maybe we should move this to vmfilter
  * @author constantined
  *
  */
@@ -27,7 +27,7 @@ class vmFile {
 	 * @param bool $forceNoUni
 	 * @return mixed|string
 	 */
-	function makeSafe($string,$forceNoUni=false) {
+	static function makeSafe($string,$forceNoUni=false) {
 
 		$string = trim(JString::strtolower($string));
 
@@ -191,7 +191,7 @@ class VmMediaHandler {
 	 * @param array $data
 	 * @param string $type
 	 */
-	public function prepareStoreMedia($table,$data,$type){
+	static public function prepareStoreMedia($table,$data,$type){
 
 		$media = VmMediaHandler::createMedia($table,$type);
 
@@ -1047,7 +1047,7 @@ class VmMediaHandler {
 		}
 
 
-		function displayImages($types ='',$page=0,$max=16 ) {
+		static function displayImages($types ='',$page=0,$max=16 ) {
 
 			$Images = array();
 			$list = VmMediaHandler::getImagesList($types,$page,$max);

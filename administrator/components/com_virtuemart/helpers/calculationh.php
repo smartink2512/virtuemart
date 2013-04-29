@@ -676,7 +676,7 @@ class calculationHelper {
 								if(!isset($dbrule['subTotalPerTaxID'][$product->product_tax_id])) $dbrule['subTotalPerTaxID'][$product->product_tax_id] = 0.0;
 								$dbrule['subTotalPerTaxID'][$product->product_tax_id] += $this->_cartPrices[$cartproductkey]['subtotal_with_tax'];
 							} else {
-								foreach($this->allrules[$product->virtuemart_vendor_id]['VatTax'] as $k=>&$rule){
+								foreach($this->allrules[$product->virtuemart_vendor_id]['VatTax'] as $rule){
 									$set = array_intersect($rule['cats'],$product->categories);
 									if(count($set)>0){
 										if(!isset($dbrule['subTotalPerTaxID'][$k])) $dbrule['subTotalPerTaxID'][$k] = 0.0;

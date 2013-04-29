@@ -78,7 +78,7 @@ class TableCategories extends VmTable {
 	 * Class contructor
 	 *
 	 * @author Max Milbers
-	 * @param $db A database connector object
+	 * @param $db database connector object
 	 */
 	public function __construct($db) {
 		parent::__construct('#__virtuemart_categories', 'virtuemart_category_id', $db);

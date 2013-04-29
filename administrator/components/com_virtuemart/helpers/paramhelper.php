@@ -27,6 +27,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package	VirtueMart
  * @subpackage Helper
  * @author Oscar van Eijk
+ * @deprecated
  */
 class ParamHelper {
 
@@ -36,6 +37,9 @@ class ParamHelper {
 	/** @var char seperator */
 	private $_sep;
 
+    /*
+     * @deprecated
+     */
 	public function __construct($p = null, $s = '\n')
 	{
 		// initialise
@@ -84,6 +88,7 @@ class ParamHelper {
 	/**
 	 * Parse a parameter string and fill the _data array with key/value pairs
 	 * @param string $p
+     * @deprecated
 	 */
 	public function parseParam  ($p)
 	{

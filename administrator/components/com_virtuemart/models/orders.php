@@ -121,7 +121,7 @@ class VirtueMartModelOrders extends VmModel {
      *
      * @return array
      */
-    public function getMyOrderDetails($orderID = 0){
+    public function getMyOrderDetails($orderID = 0, $orderNumber = false, $orderPass = false){
 
         $_currentUser = JFactory::getUser();
         $cuid = $_currentUser->get('id');
@@ -129,8 +129,8 @@ class VirtueMartModelOrders extends VmModel {
         // If the user is not logged in, we will check the order number and order pass
         if(empty($orderID) and empty($cuid)){
             // If the user is not logged in, we will check the order number and order pass
-            if ($orderPass = JRequest::getString('order_pass',false)){
-                $orderNumber = JRequest::getString('order_number',false);
+            if ($orderPass = JRequest::getString('order_pass',$orderPass)){
+                $orderNumber = JRequest::getString('order_number',$orderNumber);
                 $orderId = $this->getOrderIdByOrderPass($orderNumber,$orderPass);
                 if(empty($orderId)){
                     echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
@@ -1184,7 +1184,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @param integer $uid The user ID. Defaults to 0 for guests
 	 * @return string A unique ordernumber
 	 */
-	public function generateOrderNumber($uid = 0,$length=10, $virtuemart_vendor_id=1)
+	static public function generateOrderNumber($uid = 0,$length=10, $virtuemart_vendor_id=1)
 	{
 
 		$db = JFactory::getDBO();

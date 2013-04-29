@@ -30,7 +30,8 @@ class VmTableXarray extends VmTable {
 
 	protected $_autoOrdering = false;
 	protected $_orderable = false;
-
+    protected $_skey = '';
+    protected $_skeyForm = '';
 	protected $_pvalue = '';
 
 //    function setOrderable($key='ordering', $auto=true){

@@ -266,7 +266,7 @@ class VmView extends JView{
 		'. JHTML::_( 'form.token' );
 	}
 
-	function getToolbar() {
+	static function getToolbar() {
 
 		// add required stylesheets from admin template
 		$document    = JFactory::getDocument();

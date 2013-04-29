@@ -38,7 +38,7 @@ class TableConfigs extends VmTable {
 
 	/**
 	 * @author RickG
-	 * @param $db A database connector object
+	 * @param JDataBase $db
 	 */
 	function __construct(&$db)
 	{
