@@ -1522,11 +1522,14 @@ class calculationHelper {
 
 			foreach ($records as $record) {
 
-				$keyToUse = $record[$field];
-				while (array_key_exists($keyToUse, $hash)) {
-					$keyToUse = $keyToUse + 1;
-				}
-				$hash[$keyToUse] = $record;
+                if(isset($record[$field])){
+                    $keyToUse = $record[$field];
+                    while (array_key_exists($keyToUse, $hash)) {
+                        $keyToUse = $keyToUse + 1;
+                    }
+                    $hash[$keyToUse] = $record;
+                }
+
 			}
 			($reverse) ? krsort($hash) : ksort($hash);
 			$records = array();

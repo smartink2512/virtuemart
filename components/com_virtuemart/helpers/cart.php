@@ -1000,7 +1000,7 @@ class VirtueMartCart {
 			JPluginHelper::importPlugin('vmcustom');
 			JPluginHelper::importPlugin('vmpayment');
 			JPluginHelper::importPlugin('vmcalculation');
-			$returnValues = $dispatcher->trigger('plgVmConfirmedOrder', array($this, $order));
+			$returnValues = $dispatcher->trigger('plgVmConfirmedOrder', array($this, $orderDetails));
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 			// 1 = cart should be emptied, 0 cart should not be emptied

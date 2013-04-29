@@ -269,13 +269,19 @@ class VmTable extends JTable{
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			$admin = Permissions::getInstance()->check('admin');
 			if($admin){
+                vmdebug('setLoggableFieldsForStore ',$this->created_on);
 				if(empty($this->$pkey) and empty($this->created_on)){
 					$this->created_on = $today;
-				}
+				} else if(empty($this->created_on)) {
+                    $this->created_on = null;
+                }
 
 				if(empty($this->$pkey) and empty($this->created_by)){
 					$this->created_by = $user->id;
-				}
+				} else if(empty($this->created_by)) {
+                    $this->created_by = null;
+                }
+
                 //ADDED BY P2 PETER
                 if($this->created_on=="0000-00-00 00:00:00"){
                     $this->created_on = $today;
@@ -755,7 +761,6 @@ class VmTable extends JTable{
 
 			$langTable->setProperties($langData);
 			$langTable->_translatable = false;
-
 			//We must check the langtable BEFORE we store the normal table, cause the langtable is often defining if there are enough data to store it (for exmple the name)
 
 			if($ok){
@@ -775,8 +780,9 @@ class VmTable extends JTable{
 			}
 
 			if($ok){
+                vmdebug('Table storing brefore',$this->created_on,$this->$tblKey);
 				$this->bindChecknStoreNoLang($data,$preload);
-
+                vmdebug('Table storing after storing normal data ',$this->created_on,$this->$tblKey);
 				$langTable->$tblKey = !empty($this->$tblKey) ? $this->$tblKey : 0;
 				//vmdebug('bindChecknStoreNoLang my $tblKey '.$tblKey.' '.$langTable->$tblKey);
 				if($ok and $preload){
