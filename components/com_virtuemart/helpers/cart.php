@@ -986,7 +986,13 @@ class VirtueMartCart {
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart') );
 			}
 			$this->virtuemart_order_id = $orderID;
-			$order= $orderModel->getOrder($orderID);
+			//$order= $orderModel->getOrder($orderID);
+            $orderDetails = $orderModel ->getMyOrderDetails($orderID);
+
+            if(!$orderDetails or empty($orderDetails['details'])){
+                echo JText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
+                return;
+            }
 
 			$dispatcher = JDispatcher::getInstance();
 

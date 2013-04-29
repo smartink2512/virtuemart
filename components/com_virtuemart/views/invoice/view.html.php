@@ -98,38 +98,13 @@ class VirtuemartViewInvoice extends VmView {
 
 		if($orderDetails==0){
 
-			// If the user is not logged in, we will check the order number and order pass
-			if ($orderPass = JRequest::getString('order_pass',false) and $orderNumber = JRequest::getString('order_number',false)){
-				$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
-				if(empty($orderId)){
-					echo 'Invalid order_number/password '.JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-					return 0;
-				}
-				$orderDetails = $orderModel->getOrder($orderId);
+			$orderDetails = $orderModel ->getMyOrderDetails();
+
+			if(!$orderDetails or empty($orderDetails['details'])){
+				echo JText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
+				return;
 			}
 
-			if($orderDetails==0){
-
-				$_currentUser = JFactory::getUser();
-				$cuid = $_currentUser->get('id');
-
-				// If the user is logged in, we will check if the order belongs to him
-				$virtuemart_order_id = JRequest::getInt('virtuemart_order_id',0) ;
-				if (!$virtuemart_order_id) {
-					$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber(JRequest::getString('order_number'));
-				}
-				$orderDetails = $orderModel->getOrder($virtuemart_order_id);
-
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-				if(!Permissions::getInstance()->check("admin")) {
-					if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
-						if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
-							echo 'view '.JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-							return ;
-						}
-					}
-				}
-			}
 
 		}
 

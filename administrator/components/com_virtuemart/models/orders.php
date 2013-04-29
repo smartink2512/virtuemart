@@ -113,9 +113,61 @@ class VirtueMartModelOrders extends VmModel {
 		return 0 ;
 	}
 
+    /**
+     * This is a proxy function to return an order safely, we may set the getOrder function to private
+     * Maybe the right place would be the controller, cause there are JRequests in it. But for a fast solution,
+     * still better than to have it 3-4 times in the view.html.php of the views.
+     * @author Max Milbers
+     *
+     * @return array
+     */
+    public function getMyOrderDetails($orderID = 0){
+
+        $_currentUser = JFactory::getUser();
+        $cuid = $_currentUser->get('id');
+
+        // If the user is not logged in, we will check the order number and order pass
+        if(empty($orderID) and empty($cuid)){
+            // If the user is not logged in, we will check the order number and order pass
+            if ($orderPass = JRequest::getString('order_pass',false)){
+                $orderNumber = JRequest::getString('order_number',false);
+                $orderId = $this->getOrderIdByOrderPass($orderNumber,$orderPass);
+                if(empty($orderId)){
+                    echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+                    return false;
+                }
+                $orderDetails = $this->getOrder($orderId);
+            }
+        }
+        else {
+            // If the user is logged in, we will check if the order belongs to him
+            $virtuemart_order_id = JRequest::getInt('virtuemart_order_id',$orderID) ;
+            if (!$virtuemart_order_id) {
+                $virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber(JRequest::getString('order_number'));
+            }
+            $orderDetails = $this->getOrder($virtuemart_order_id);
+
+            if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+            if(!Permissions::getInstance()->check("admin")) {
+                if(!isset($orderDetails['details']['BT']->virtuemart_user_id)){
+                    $orderDetails['details']['BT']->virtuemart_user_id = 0;
+                }
+                //if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
+                vmdebug('getMyOrderDetails',$cuid,$orderDetails['details']['BT']->virtuemart_user_id);
+                if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
+                    echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+                    return false;
+                }
+                //}
+            }
+
+        }
+        return $orderDetails;
+    }
 
 	/**
-	 * Load a single order
+	 * Load a single order, Attention, this function is not protected! Do the right manangment before, to be certain
+     * we suggest to use getMyOrderDetails
 	 */
 	public function getOrder($virtuemart_order_id){
 

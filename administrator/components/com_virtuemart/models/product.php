@@ -1609,7 +1609,6 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-        vmdebug('$old_price_ids ',$old_price_ids);
 		if ( count($old_price_ids) ) {
 			// delete old unused Prices
 			$this->_db->setQuery( 'DELETE FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_price_id` in ("'.implode('","', $old_price_ids ).'") ');
