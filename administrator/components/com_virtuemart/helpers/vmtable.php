@@ -140,6 +140,11 @@ class VmTable extends JTable{
 
 	}
 
+    var $_tablePreFix = '';
+    function setTableShortCut($prefix){
+        $this->_tablePreFix = $prefix.'.';
+    }
+
 	/**
 	 * This function defines a database field as parameter field, which means that some values get injected there
 	 * As delimiters are used | for the pair and = for key, value
@@ -151,7 +156,8 @@ class VmTable extends JTable{
 	 */
 	function setParameterable($paramsFieldName,$varsToPushParam,$overwrite = false){
 
-		if($this->_xParams===0)	$this->_xParams = $paramsFieldName;
+		//if($this->_xParams===0)
+        $this->_xParams = $paramsFieldName;
 
 		if($overwrite){
 			$this->_varsToPushParam = $varsToPushParam;
@@ -165,10 +171,57 @@ class VmTable extends JTable{
 		//vmdebug('setParameterable called '.$this->_xParams,$this->_varsToPushParam);
 	}
 
-	var $_tablePreFix = '';
-	function setTableShortCut($prefix){
-		$this->_tablePreFix = $prefix.'.';
-	}
+
+    /**
+     * This function must be
+     * Takes the bounded values at obj of the field $xParams
+     * and adds them as attributs of obj
+     * @param $obj
+     * @param $xParams
+     * @param $varsToPushParam
+     */
+    static function bindParameterable(&$obj,$xParams,$varsToPushParam){
+
+        //$paramFields = $obj->$xParams;
+        //vmdebug('$obj->_xParams '.$xParams.' $obj->$xParams ',$paramFields);
+        if(!empty($obj->$xParams)){
+
+            //	if(strpos($obj->$xParams,'|')!==false){
+            $params = explode('|', $obj->$xParams);
+            foreach($params as $item){
+
+                $item = explode('=',$item);
+                $key = $item[0];
+                unset($item[0]);
+
+                $item = implode('=',$item);
+
+                if(!empty($item) && isset($varsToPushParam[$key][1]) ){
+                    $obj->$key = json_decode($item);
+                }
+            }
+            /*	} else {
+                    $params = json_decode($obj->$xParams);
+                    foreach($params as $key=>$item){
+                        if(!empty($item) && isset($varsToPushParam[$key][1]) ){
+                            $obj->$key = $item;
+                        }
+                        //unset($item[0]);
+                    }
+                }
+    */
+        } else {
+            if(empty($xParams)){
+                vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error '.$obj);
+            }
+        }
+
+        foreach($varsToPushParam as $key=>$v){
+            if(!isset($obj->$key)){
+                $obj->$key = $v[0];
+            }
+        }
+    }
 
 	/**
 	 * Load the fieldlist
@@ -377,8 +430,9 @@ class VmTable extends JTable{
 		}
 		//the cast to int here destroyed the query for keys like virtuemart_userinfo_id, so no cast on $oid
 		// 		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = "'.$oid.'"';
-		$query = $select.$from.' WHERE '. $mainTable .'.`'.$k.'` = "'.$oid.'"';
-		
+        if ($andWhere===0) $andWhere = '';
+        $query = $select.$from.' WHERE '. $mainTable .'.`'.$k.'` = "'.$oid.'" '.$andWhere;
+
 		if (!isset(self::$_query_cache[md5($query)]))
 		{
 		$db = $this->getDBO();
@@ -417,49 +471,7 @@ class VmTable extends JTable{
 
 	}
 
-	static function bindParameterable(&$obj,$xParams,$varsToPushParam){
 
-		//$paramFields = $obj->$xParams;
-		//vmdebug('$obj->_xParams '.$xParams.' $obj->$xParams ',$paramFields);
-		if(!empty($obj->$xParams)){
-
-		//	if(strpos($obj->$xParams,'|')!==false){
-				$params = explode('|', $obj->$xParams);
-				foreach($params as $item){
-
-					$item = explode('=',$item);
-					$key = $item[0];
-					unset($item[0]);
-
-					$item = implode('=',$item);
-
-					if(!empty($item) && isset($varsToPushParam[$key][1]) ){
-						$obj->$key = json_decode($item);
-					}
-				}
-		/*	} else {
-				$params = json_decode($obj->$xParams);
-				foreach($params as $key=>$item){
-					if(!empty($item) && isset($varsToPushParam[$key][1]) ){
-						$obj->$key = $item;
-					}
-					//unset($item[0]);
-				}
-			}
-*/
-		} else {
-			if(empty($xParams)){
-				vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error '.$obj);
-			}
-		}
-
-		foreach($varsToPushParam as $key=>$v){
-			if(!isset($obj->$key)){
-				$obj->$key = $v[0];
-			}
-		}
-
-	}
 	/**
 	 * Technic to inject params as table attributes
 	 * @author Max Milbers
@@ -770,6 +782,7 @@ class VmTable extends JTable{
 				//vmdebug('my langtable before bind',$langTable->id);
 				if(!$langTable->bind($data)){
 					$ok = false;
+                    $msg = 'bind';
 					// 			vmdebug('Problem in bind '.get_class($this).' '.$this->_db->getErrorMsg());
 					vmdebug('Problem in bind '.get_class($this).' ');
 				}
@@ -1300,8 +1313,11 @@ class VmTable extends JTable{
 		$k = $this->_tbl_key;
 		$q = 'UPDATE `'.$this->_tbl.'` SET `'.$field.'` = "'.$this->$field.'" WHERE `'.$k.'` = "'.$this->$k.'" ';
 		$this->_db->setQuery($q);
-		vmdebug('toggle '.$q);
-		return ($this->_db->query());
+        if(!$res = $this->_db->query()){
+            vmError('There was an error toggling '.$field,$this->_db->getErrorMsg());
+        }
+
+        return $res;
 	}
 
 	public function resetErrors(){

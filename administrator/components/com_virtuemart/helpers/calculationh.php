@@ -149,6 +149,7 @@ class calculationHelper {
 			$this->_db->setQuery($q);
 			$allrules = $this->_db->loadAssocList();
 
+            //By Maik, key of array is directly virtuemart_calc_id
 			foreach ($allrules as $rule){
 				$this->allrules[$this->productVendorId][$rule["calc_kind"]][$rule["virtuemart_calc_id"]] = $rule;
 			}
@@ -662,7 +663,7 @@ class calculationHelper {
 
 		foreach ($cart->products as $cartproductkey => $product) { 
 			//for Rules with Categories
-			foreach($this->_cartData['DBTaxRulesBill'] as $k=>&$dbrule){
+			foreach($this->_cartData['DBTaxRulesBill'] as &$dbrule){
 				if(!empty($dbrule['calc_categories'])){
 					if(!isset($dbrule['subTotal'])) $dbrule['subTotal'] = 0.0;
 					$set = array_intersect($dbrule['calc_categories'],$product->categories);
@@ -676,11 +677,11 @@ class calculationHelper {
 								if(!isset($dbrule['subTotalPerTaxID'][$product->product_tax_id])) $dbrule['subTotalPerTaxID'][$product->product_tax_id] = 0.0;
 								$dbrule['subTotalPerTaxID'][$product->product_tax_id] += $this->_cartPrices[$cartproductkey]['subtotal_with_tax'];
 							} else {
-								foreach($this->allrules[$product->virtuemart_vendor_id]['VatTax'] as $rule){
+								foreach($this->allrules[$product->virtuemart_vendor_id]['VatTax'] as $virtuemart_calc_id => $rule){
 									$set = array_intersect($rule['cats'],$product->categories);
 									if(count($set)>0){
-										if(!isset($dbrule['subTotalPerTaxID'][$k])) $dbrule['subTotalPerTaxID'][$k] = 0.0;
-										$dbrule['subTotalPerTaxID'][$k] += $this->_cartPrices[$cartproductkey]['subtotal_with_tax'];
+										if(!isset($dbrule['subTotalPerTaxID'][$virtuemart_calc_id])) $dbrule['subTotalPerTaxID'][$virtuemart_calc_id] = 0.0;
+										$dbrule['subTotalPerTaxID'][$virtuemart_calc_id] += $this->_cartPrices[$cartproductkey]['subtotal_with_tax'];
 									}
 								}
 							}
