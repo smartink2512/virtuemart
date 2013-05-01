@@ -279,6 +279,31 @@ class VirtuemartViewInvoice extends VmView {
 		$this->display();
 
 	}
+	
+	static function replaceVendorFields ($txt, $vendor) {
+		// TODO: Implement more Placeholders (ordernr, invoicenr, etc.); 
+		// REMEMBER TO CHANGE VmVendorPDF::replace_variables IN vmpdf.php, TOO!!!
+		// Page nrs. for mails is always "1"
+		$txt = str_replace('{vm:pagenum}', "1", $txt);
+		$txt = str_replace('{vm:pagecount}', "1", $txt);
+		$txt = str_replace('{vm:vendorname}', $vendor->vendor_store_name, $txt);
+		$imgrepl='';
+		if (!empty($vendor->images)) {
+			$img = $vendor->images[0];
+			$imgrepl = "<div class=\"vendor-image\">".$img->displayIt($img->file_url,'','',false, '', false, false)."</div>";
+		}
+		$txt = str_replace('{vm:vendorimage}', $imgrepl, $txt);
+		$vendorAddress = shopFunctions::renderVendorAddress($vendor->virtuemart_vendor_id, "<br/>");
+		// Trim the final <br/> from the address, which is inserted by renderVendorAddress automatically!
+		if (substr($vendorAddress, -5, 5) == '<br/>') {
+			$vendorAddress = substr($vendorAddress, 0, -5);
+		}
+		$txt = str_replace('{vm:vendoraddress}', $vendorAddress, $txt);
+		$txt = str_replace('{vm:vendorlegalinfo}', $vendor->vendor_legal_info, $txt);
+		$txt = str_replace('{vm:vendordescription}', $vendor->vendor_store_desc, $txt);
+		$txt = str_replace('{vm:tos}', $vendor->vendor_terms_of_service, $txt);
+		return "$txt";
+	}
 
 
 }
