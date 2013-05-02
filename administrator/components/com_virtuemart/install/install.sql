@@ -286,6 +286,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   `custom_element` char(50) NOT NULL DEFAULT '',
   `admin_only` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1:Display in admin only',
   `custom_title` char(255) NOT NULL DEFAULT '' COMMENT 'field title',
+  `show_title` tinyint(1) NOT NULL DEFAULT '1',
   `custom_tip` char(255) NOT NULL DEFAULT '' COMMENT 'tip',
   `custom_value` char(255) COMMENT 'defaut value',
   `custom_field_desc` char(255) COMMENT 'description or unit',

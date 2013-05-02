@@ -74,6 +74,8 @@ class TableCustoms extends VmTable {
 	var $published		= 1;
 	/** @var int listed Order */
 	var $ordering	= 0;
+	/** @var int show title or not */
+	var $show_title		= 1;
 
 
 	/**
