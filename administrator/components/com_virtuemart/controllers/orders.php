@@ -54,10 +54,10 @@ class VirtuemartControllerOrders extends VmController {
 
 	/**
 	 * NextOrder
-	 * TODO rename, the name is ambigous notice by Max Milbers
+	 * renamed, the name was ambigous notice by Max Milbers
 	 * @author Kohl Patrick
 	 */
-	public function next($dir = 'ASC'){
+	public function nextItem($dir = 'ASC'){
 		$model = VmModel::getModel('orders');
 		$id = JRequest::getInt('virtuemart_order_id');
 		if (!$order_id = $model->getOrderId($id, $dir)) {
@@ -71,12 +71,12 @@ class VirtuemartControllerOrders extends VmController {
 
 	/**
 	 * NextOrder
-	 * TODO rename, the name is ambigous notice by Max Milbers
+	 * renamed, the name was ambigous notice by Max Milbers
 	 * @author Kohl Patrick
 	 */
-	public function prev(){
+	public function prevItem(){
 
-		$this->next('DESC');
+		$this->nextItem('DESC');
 	}
 	/**
 	 * Generic cancel task

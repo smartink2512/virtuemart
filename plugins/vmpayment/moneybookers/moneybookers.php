@@ -22,8 +22,6 @@ if (!class_exists ('vmPSPlugin')) {
 
 class plgVmpaymentMoneybookers extends vmPSPlugin {
 
-	public static $_this = FALSE;
-
 	function __construct (& $subject, $config) {
 
 		parent::__construct ($subject, $config);

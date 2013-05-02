@@ -18,13 +18,10 @@ if (!class_exists ('vmPSPlugin')) {
 
 class plgVmPaymentHeidelpay extends vmPSPlugin {
 
-	public static $_this = FALSE;
 	protected $version = '12.09 Standard';
 
 	function __construct (& $subject, $config) {
 
-		//if (self::$_this)
-		//   return self::$_this;
 		parent::__construct ($subject, $config);
 
 		$this->_loggable = TRUE;
@@ -35,7 +32,6 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
-		//self::$_this = $this;
 	}
 
 	public function getVmPluginCreateTableSQL () {

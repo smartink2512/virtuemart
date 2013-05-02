@@ -108,7 +108,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 	/**
 	 * Sets the storeowner to the currently logged in user
-	 * He needs to have admin rights todo so
+	 * He needs admin rights
 	 *
 	 * @author Max Milbers
 	 */

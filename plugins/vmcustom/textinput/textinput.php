@@ -21,12 +21,8 @@ if (!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcustompl
 
 class plgVmCustomTextinput extends vmCustomPlugin {
 
-
-	// instance of class
-// 	public static $_this = false;
-
 	function __construct(& $subject, $config) {
-// 		if(self::$_this) return self::$_this;
+
 		parent::__construct($subject, $config);
 
 		$varsToPush = array(	'custom_size'=>array(0.0,'int'),

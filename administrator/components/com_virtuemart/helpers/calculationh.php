@@ -1234,7 +1234,6 @@ class calculationHelper {
 
 	/**
 	 * Calculates the effecting Shipment prices for the calculation
-	 * @todo
 	 * @copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author Max Milbers
 	 * @author Valerie Isaksen
@@ -1279,7 +1278,6 @@ class calculationHelper {
 
 	/**
 	 * Calculates the effecting Payment prices for the calculation
-	 * @todo
 	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author Max Milbers
 	 * @author Valerie Isaksen

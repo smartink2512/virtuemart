@@ -31,12 +31,8 @@ else {
 
 class plgVMPaymentPayzen extends vmPSPlugin {
 
-	// instance of class
-	public static $_this = FALSE;
-
 	function __construct (& $subject, $config) {
-		//if (self::$_this)
-		//   return self::$_this;
+
 		parent::__construct ($subject, $config);
 
 		$this->_loggable = TRUE;
@@ -46,7 +42,6 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
 
-		//self::$_this = $this;
 	}
 
 	protected function getVmPluginCreateTableSQL () {

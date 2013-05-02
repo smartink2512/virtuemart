@@ -19,7 +19,7 @@
  */
 
 //vmdebug('$this->category',$this->category);
-vmdebug ('$this->category ' . $this->category->category_name);
+//vmdebug ('$this->category ' . $this->category->category_name);
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access');
 JHTML::_ ('behavior.modal');
@@ -47,7 +47,7 @@ if (Permissions::getInstance()->check("admin,storeadmin")) {
 }
 
 echo $edit_link; */
-if (empty($this->keyword)) {
+if (empty($this->keyword) and !empty($this->category)) {
 	?>
 <div class="category_description">
 	<?php echo $this->category->category_description; ?>
@@ -58,7 +58,7 @@ if (empty($this->keyword)) {
 /* Show child categories */
 
 if (VmConfig::get ('showCategory', 1) and empty($this->keyword)) {
-	if ($this->category->haschildren) {
+	if (!empty($this->category->haschildren)) {
 
 		// Category and Columns Counter
 		$iCol = 1;

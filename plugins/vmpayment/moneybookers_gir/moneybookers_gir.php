@@ -23,7 +23,7 @@ if (!class_exists('plgVmpaymentMoneybookers'))
 
 class plgVmpaymentMoneybookers_Gir extends plgVmpaymentMoneybookers
     {
-    public static $_this = false;
+
 
     function __construct(& $subject, $config)
 	{

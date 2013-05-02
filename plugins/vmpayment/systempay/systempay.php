@@ -29,14 +29,8 @@ if (!class_exists('plgVMPaymentPayzen'))
     require(JPATH_VMPAYMENTPLUGIN_PAYZEN . DS . 'payzen.php');
 class plgVMPaymentSystempay extends plgVMPaymentPayzen {
 
-    // instance of class
-    public static $_this = false;
-
     function __construct(& $subject, $config) {
-	//if (self::$_this)
-	//   return self::$_this;
-	parent::__construct($subject, $config);
-
+		parent::__construct($subject, $config);
     }
 
 function getTableSQLFields() {

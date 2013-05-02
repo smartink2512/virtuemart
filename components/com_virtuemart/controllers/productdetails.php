@@ -226,8 +226,9 @@ class VirtueMartControllerProductdetails extends JController {
 		$view->display ();
 	}
 
-	/* Add or edit a review
-	 TODO  control and update in database the review */
+	/**
+	 * Add or edit a review
+	 */
 	public function review () {
 
 		$data = JRequest::get ('post');

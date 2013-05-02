@@ -57,9 +57,6 @@ if (is_file (VMKLARNA_CONFIG_FILE)) {
 
 class plgVmPaymentKlarna extends vmPSPlugin {
 
-	// instance of class
-	public static $_this = FALSE;
-
 	function __construct (& $subject, $config) {
 
 		parent::__construct ($subject, $config);

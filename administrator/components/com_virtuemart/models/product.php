@@ -825,7 +825,7 @@ class VirtueMartModelProduct extends VmModel {
 			unset($product->prices[0]['modified_by']);
 			unset($product->prices[0]['locked_on']);
 			unset($product->prices[0]['locked_by']);
-			vmdebug('getProductPrices my price ',$product->prices[0]);
+			//vmdebug('getProductPrices my price ',$product->prices[0]);
 			// For merging of the price and product array, the shoppergroup id from price must be unsetted. 
 			// Otherwise the product becomes the shoppergroup from the price.
 			$priceShoppergroupID = $product->prices[0]['virtuemart_shoppergroup_id'];

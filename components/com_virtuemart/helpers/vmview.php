@@ -38,4 +38,15 @@ class VmView extends JView{
 		else 		return '<a title="'. JText::_($altText).'" href="'.JRoute::_($link).'">'.$text.'</a>';
 	}
 
+	public function escape($var)
+	{
+		if (in_array($this->_escape, array('htmlspecialchars', 'htmlentities')))
+		{
+			$result = call_user_func($this->_escape, $var, ENT_COMPAT, $this->_charset);
+		} else {
+			$result =  call_user_func($this->_escape, $var);
+		}
+		vmdebug('Escape function '.$this->_escape.' charset '.$this->_charset,$var,$result);
+		return $result;
+	}
 }

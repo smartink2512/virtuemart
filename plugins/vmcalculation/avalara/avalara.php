@@ -30,7 +30,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	var $_connectionType = 'Production';
 
 	function __construct(& $subject, $config) {
-		// 		if(self::$_this) return self::$_this;
+
 		parent::__construct($subject, $config);
 
 		$varsToPush = array(

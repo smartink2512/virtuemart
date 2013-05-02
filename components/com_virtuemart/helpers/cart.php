@@ -767,7 +767,7 @@ class VirtueMartCart {
 
 		$this->_redirect = $redirect;
 		$this->_inCheckOut = true;
-
+		vmdebug('checkoutData',$this->BT);
 		$this->tosAccepted = JRequest::getInt('tosAccepted', $this->tosAccepted);
 		$this->STsameAsBT = JRequest::getInt('STsameAsBT', $this->STsameAsBT);
 		$this->customer_comment = JRequest::getVar('customer_comment', $this->customer_comment);
@@ -1367,7 +1367,7 @@ class VirtueMartCart {
 		,$data
 		,$preFix
 		);
-
+		//vmdebug('prepareAddressDataInCart',$this->$addresstype);
 		if(!empty($this->ST) && $type!=='ST'){
 			$data = (object)$this->ST;
 			if($new){

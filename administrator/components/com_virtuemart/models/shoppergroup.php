@@ -246,7 +246,6 @@ class VirtueMartModelShopperGroup extends VmModel {
 	/**
 	 * Retrieves the Shopper Group Info of the SG specified by $id
 	 *
-	 * @todo Vendor ID
 	 * @param int $id
 	 * @param boolean $default_group
 	 * @return array

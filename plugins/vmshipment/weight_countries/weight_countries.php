@@ -29,17 +29,12 @@ if (!class_exists ('vmPSPlugin')) {
  */
 class plgVmShipmentWeight_countries extends vmPSPlugin {
 
-	// instance of class
-	public static $_this = FALSE;
-
 	/**
 	 * @param object $subject
 	 * @param array  $config
 	 */
 	function __construct (& $subject, $config) {
 
-		//if (self::$_this)
-		//   return self::$_this;
 		parent::__construct ($subject, $config);
 
 		$this->_loggable = TRUE;
@@ -49,9 +44,6 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
 
-		// 		self::$_this
-		//$this->createPluginTable($this->_tablename);
-		//self::$_this = $this;
 	}
 
 	/**
