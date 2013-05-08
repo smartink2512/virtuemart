@@ -35,10 +35,11 @@ class VirtuemartViewCustom extends VmView {
 		// Load the helper(s)
 
 
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 		$this->loadHelper('vmcustomplugin');
 		$model = VmModel::getModel();
-		$this->loadHelper('permissions');
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		// TODO Make an Icon for custom
 		$this->SetViewTitle('PRODUCT_CUSTOM_FIELD');
 

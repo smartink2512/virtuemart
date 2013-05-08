@@ -35,7 +35,8 @@ class VirtuemartViewUser extends VmView {
 	function display($tpl = null) {
 
 		// Load the helper(s)
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		$perm = Permissions::getInstance();
 		$this->assignRef('perm',$perm);
@@ -67,18 +68,15 @@ class VirtuemartViewUser extends VmView {
 		}
 		$userId = $model->setId($userId);
 
-		$layoutName = JRequest::getWord('layout', 'default');
+		//$layoutName = JRequest::getWord('layout', 'default');
 		$layoutName = $this->getLayout();
 
 		if ($layoutName == 'edit' || $layoutName == 'edit_shipto') {
 
 			$editor = JFactory::getEditor();
 
-			// Get the required helpers
-			$this->loadHelper('shoppergroup');
-			$this->loadHelper('image');
-
-			//$userFieldsModel = VmModel::getModel('userfields');
+			if (!class_exists('VmImage'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 
 			$userDetails = $model->getUser();
 

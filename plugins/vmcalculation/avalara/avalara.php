@@ -18,7 +18,6 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcalculationplugin.php');
 
-//defined('AVATAX_DEV') or define('AVATAX_DEV', 0);
 defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 0);
 
 function avadebug($string,$arg=NULL){
@@ -28,6 +27,7 @@ function avadebug($string,$arg=NULL){
 class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 	var $_connectionType = 'Production';
+	var $vmVersion = '2.0.22';
 
 	function __construct(& $subject, $config) {
 
@@ -39,7 +39,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			'account'       => array('', 'char'),
 			'license'     => array('', 'char'),
 			'committ'   => array(0,'int'),
-			'only_cart' => array(0,'int'),
+			'only_cart' => array(1,'int'),
             'dev' => array(0,'int'),
 			'avatax_virtuemart_country_id'  => array(0,'int'),
             'avatax_virtuemart_state_id'  => array(0,'int'),
@@ -171,7 +171,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			'account'   => '<your account number here>',
 			'license'   => '<your license key here>',
 			'adapter'   => 'avatax4php,5.10.0.0',
-			'client'    => 'VirtueMart2.0.18',
+			'client'    => 'VirtueMart'.$this->vmVersion,
 			'name'    => 'PHPAdapter',
 			'TextCase' => TextCase::$Mixed,
 			'trace'     => TRUE);
@@ -311,53 +311,67 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				if(!class_exists('Message')) require (VMAVALARA_CLASS_PATH.DS.'Message.class.php');
 
 				//if($calc->vAddress==0){
-				if(isset($vmadd['country']) and $vmadd['country']!= 'US' and $vmadd['country']!= 'CA'){
-
+			/*	if(isset($vmadd['country']) and $vmadd['country']!= 'US' and $vmadd['country']!= 'CA'){
 
 					self::$validatedAddresses = array($address);
 					return self::$validatedAddresses;
-				}
+				}*/
 
 				$address->Coordinates = 1;
 				$address->Taxability = TRUE;
 				$textCase = TextCase::$Mixed;
 				$coordinates = 1;
 
-				if(!class_exists('ValidateResult')) require (VMAVALARA_CLASS_PATH.DS.'ValidateResult.class.php');
-				if(!class_exists('ValidateRequest')) require (VMAVALARA_CLASS_PATH.DS.'ValidateRequest.class.php');
-				if(!class_exists('ValidAddress')) require (VMAVALARA_CLASS_PATH.DS.'ValidAddress.class.php');
+				$hash = md5(implode($vmadd,','));
+				$session = JFactory::getSession ();
+				$validatedAddress = $session->get ('vm_avatax_address_checked.' . $hash, FALSE, 'vm');
 
-				//TODO add customer code //shopper_number
-				try
-				{
-					$request = new ValidateRequest($address, ($textCase ? $textCase : TextCase::$Default), $coordinates);
-					$result = $client->Validate($request);
+				if(!$validatedAddress){
 
-					//avadebug('Validate ResultCode is: '. $result->getResultCode());;
-					if($result->getResultCode() != SeverityLevel::$Success)
+					if(!class_exists('ValidateResult')) require (VMAVALARA_CLASS_PATH.DS.'ValidateResult.class.php');
+					if(!class_exists('ValidateRequest')) require (VMAVALARA_CLASS_PATH.DS.'ValidateRequest.class.php');
+					if(!class_exists('ValidAddress')) require (VMAVALARA_CLASS_PATH.DS.'ValidAddress.class.php');
+
+					//TODO add customer code //shopper_number
+					try
 					{
-						foreach($result->getMessages() as $msg)
+						$request = new ValidateRequest($address, ($textCase ? $textCase : TextCase::$Default), $coordinates);
+						vmSetStartTime('avaValAd');
+						$result = $client->Validate($request);
+						vmTime('Avatax validate Address','avaValAd');
+						//avadebug('Validate ResultCode is: '. $result->getResultCode());;
+						if($result->getResultCode() != SeverityLevel::$Success)
 						{
-							avadebug('fillValidateAvalaraAddress ' . $msg->getName().": ".$msg->getSummary()."\n");
-							//avadebug('fillValidateAvalaraAddress ERROR',$address);
+							foreach($result->getMessages() as $msg)
+							{
+								avadebug('fillValidateAvalaraAddress ' . $msg->getName().": ".$msg->getSummary()."\n");
+								//avadebug('fillValidateAvalaraAddress ERROR',$address);
+							}
 						}
+						else
+						{
+
+							self::$validatedAddresses = $result->getvalidAddresses();
+							//$encoded = json_encode(self::$validatedAddresses[0]);
+							//vmdebug('Avatax my address is validated ',$hash,  self::$validatedAddresses[0],$encoded);
+							$session->set ('vm_avatax_address_checked.' . $hash, TRUE, 'vm');
+						}
+
 					}
-					else
+					catch(SoapFault $exception)
 					{
-						self::$validatedAddresses = $result->getvalidAddresses();
+						$msg = "Exception: fillValidateAvalaraAddress ";
+						if($exception)
+							$msg .= $exception->faultstring;
+
+						$msg .= "\n";
+						$msg .= $client->__getLastRequest()."\n";
+						$msg .= $client->__getLastResponse()."\n";
+						vmError($msg);
 					}
+				} else {
+					self::$validatedAddresses[] = $address;
 
-				}
-				catch(SoapFault $exception)
-				{
-					$msg = "Exception: fillValidateAvalaraAddress ";
-					if($exception)
-						$msg .= $exception->faultstring;
-
-				 $msg .= "\n";
-					$msg .= $client->__getLastRequest()."\n";
-					$msg .= $client->__getLastResponse()."\n";
-					vmError($msg);
 				}
 
 				if(empty(self::$validatedAddresses)){
@@ -371,6 +385,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			//avadebug("Number of addresses fillValidateAvalaraAddress is ", self::$validatedAddresses);
 		}
 
+		//vmdebug('I return address ',self::$validatedAddresses);
+		//return false;
 		return self::$validatedAddresses;
 
 	}
@@ -443,7 +459,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		if(!class_exists('GetTaxRequest')) require (VMAVALARA_CLASS_PATH.DS.'GetTaxRequest.class.php');
 		if(!class_exists('GetTaxResult')) require (VMAVALARA_CLASS_PATH.DS.'GetTaxResult.class.php');
 
-		$client = new TaxServiceSoap($this->_connectionType);
+
 		$request= new GetTaxRequest();
 		$origin = new Address();
 
@@ -482,23 +498,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$request->setDestinationAddress	($destination);     //Address
 		//avadebug('The date',$origin,$destination);
 		$request->setCompanyCode($calc->company_code);   // Your Company Code From the Dashboard
-
-
-		if($calc->committ and $invoiceNumber){
-			$request->setDocType(DocumentType::$SalesInvoice);   	// Only supported types are SalesInvoice or SalesOrder
-			$request->setCommit(true);
-			//invoice number, problem is that the invoice number is at this time not known, but the order_number may reachable
-			$request->setDocCode($invoiceNumber);
-			self::$_taxResult = null;
-			avadebug('Request as SalesInvoice with invoiceNumber '.$invoiceNumber);
-		} else {
-			$request->setDocType(DocumentType::$SalesOrder);
-			$request->setCommit(false);
-			//invoice number, problem is that the invoice number is at this time not known, neither the order_number
-			$request->setDocCode('VM2.0.18_order_request');
-			avadebug('Request as SalesOrder');
-		}
-
 
 		$request->setDocDate(date('Y-m-d'));           //date
 
@@ -614,66 +613,73 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		}
 
 		$totalTax = 0.0;
-		try
-		{
-			if(!class_exists('TaxLine')) require (VMAVALARA_CLASS_PATH.DS.'TaxLine.class.php');
-			if(!class_exists('TaxDetail')) require (VMAVALARA_CLASS_PATH.DS.'TaxDetail.class.php');
 
-			//$cache = JFactory::getCache('com_virtuemart','callback');
+		$hash = '';
+		$session = JFactory::getSession ();
+		if($calc->committ and $invoiceNumber){
+			$request->setDocType(DocumentType::$SalesInvoice);   	// Only supported types are SalesInvoice or SalesOrder
+			$request->setCommit(true);
+			//invoice number, problem is that the invoice number is at this time not known, but the order_number may reachable
+			$request->setDocCode($invoiceNumber);
+			self::$_taxResult = FALSE;
+			avadebug('Request as SalesInvoice with invoiceNumber '.$invoiceNumber);
+		} else {
 
-			//self::$_taxResult = $cache->call( array( $client, 'getTax' ),$request );
-			if(!isset(self::$_taxResult)){
+			$hash .= serialize($shopperData). serialize($prices);
+			$hash = md5($hash);
+
+			$request->setDocType(DocumentType::$SalesOrder);
+			$request->setCommit(false);
+			//invoice number, problem is that the invoice number is at this time not known, neither the order_number
+			$request->setDocCode('VM'.$this->vmVersion.'_order_request');
+
+			//Requests are allowed to be cached
+			self::$_taxResult = $session->get ('vm_avatax_tax.' . $hash, FALSE, 'vm');
+			//avadebug('Request as SalesOrder '.$hash);
+		}
+
+		//self::$_taxResult = FALSE;
+		if(!self::$_taxResult){
+
+			//vmdebug('I get new tax, my has is '.$hash);
+			try
+			{
+				$client = new TaxServiceSoap($this->_connectionType);
+
+				if(!class_exists('TaxLine')) require (VMAVALARA_CLASS_PATH.DS.'TaxLine.class.php');
+				if(!class_exists('TaxDetail')) require (VMAVALARA_CLASS_PATH.DS.'TaxDetail.class.php');
+
 				vmSetStartTime('avagetTax');
-				self::$_taxResult = $client->getTax($request);
-				vmTime('Avalara getTax','avagetTax');
+				$_taxResult = $client->getTax($request);
+				vmTime('Avalara getTax hash '.$hash,'avagetTax');
+				//vmdebug('my request as array',(array)$request);
+			}
+			catch(SoapFault $exception)
+			{
+				$msg = "Exception: getTax ";
+				if($exception)
+					$msg .= $exception->faultstring;
+
+				avadebug( $msg.'<br />'.$client->__getLastRequest().'<br />'.$client->__getLastResponse());
+				$_taxResult->setResultCode('TotalError');
 			}
 
+			if ($_taxResult->getResultCode() == SeverityLevel::$Success){
 
-			//vmTrace('get tax agaun');
-			/*
-			 * [0] => getDocCode
-    [1] => getAdjustmentDescription
-    [2] => getAdjustmentReason
-    [3] => getDocDate
-    [4] => getTaxDate
-    [5] => getDocType
-    [6] => getDocStatus
-    [7] => getIsReconciled
-    [8] => getLocked
-    [9] => getTimestamp
-    [10] => getTotalAmount
-    [11] => getTotalDiscount
-    [12] => getTotalExemption
-    [13] => getTotalTaxable
-    [14] => getTotalTax
-    [15] => getHashCode
-    [16] => getVersion
-    [17] => getTaxLines
-    [18] => getTotalTaxCalculated
-    [19] => getTaxSummary
-    [20] => getTaxLine
-    [21] => getTransactionId
-    [22] => getResultCode
-    [23] => getMessages
-			 */
-			//avadebug( 'GetTax is: '. self::$_taxResult->getResultCode(),self::$_taxResult);
-
-			if (self::$_taxResult->getResultCode() == SeverityLevel::$Success)
-			{
 				//avadebug("DocCode: ".$request->getDocCode() );
 				//avadebug("DocId: ".self::$_taxResult->getDocId()."\n");
 
 				//avadebug("TotalAmount: ".self::$_taxResult->getTotalAmount() );
 
-				$totalTax = self::$_taxResult->getTotalTax();
+				$totalTax = $_taxResult->getTotalTax();
 				if($invoiceNumber){
-					avadebug('My $_taxResult from AvaTax',self::$_taxResult);
+					avadebug('My $_taxResult from AvaTax',$_taxResult);
 				}
 				if($totalTax == 0 ){
-				//	avadebug( "Avalara returned false: ", self::$_taxResult);
+					//	avadebug( "Avalara returned false: ", self::$_taxResult);
 				}
-				foreach(self::$_taxResult->getTaxLines() as $ctl)
-				{
+
+				foreach($_taxResult->getTaxLines() as $ctl){
 					if($calculationHelper->inCart){
 						$nr = $ctl->getNo();
 						if(isset($lineNumbersToCartProductId[$nr])){
@@ -689,51 +695,51 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 							//avadebug('my $cartPrices',$cartPrices);
 							$prices['shipmentTax'] = $ctl->getTax();
 							$prices['salesPriceShipment'] = ($prices['shipmentValue'] + $ctl->getTax() );
-								//$cartPrices = array_merge($prices,$cartPrices);
+							//$cartPrices = array_merge($prices,$cartPrices);
 
 							//$calculationHelper->setCartPrices( $cartPrices );
 							$totalTax = $totalTax - $ctl->getTax();
 							//avadebug('my $cartPrices danach',$cartPrices);
 						}
-
-
 					}
 					//avadebug('my lines ',$ctl);
 					//avadebug( "     Line: ".$ctl->getNo()." Tax: ".$ctl->getTax()." TaxCode: ".$ctl->getTaxCode());
 
-					foreach($ctl->getTaxDetails() as $ctd)
+					/*foreach($ctl->getTaxDetails() as $ctd)
 					{
 						//avadebug( "          Juris Type: ".$ctd->getJurisType()."; Juris Name: ".$ctd->getJurisName()."; Rate: ".$ctd->getRate()."; Amt: ".$ctd->getTax() );
-					}
-
+					}*/
 				}
-
-				if($calculationHelper->inCart){
-					$calculationHelper->setCartPrices($prices);
-				}
-
+				$prices['totalTax'] = $totalTax;
+				self::$_taxResult = $prices;
+				//vmdebug('my prices?',$prices);
+				$session->set ('vm_avatax_tax.' . $hash,  serialize($prices), 'vm');
 			}
-			else
-			{
-				foreach(self::$_taxResult->getMessages() as $msg)
-				{
+			else {
+				foreach(self::$_taxResult->getMessages() as $msg){
+
 					vmError($msg->getName().": ".$msg->getSummary());
 				}
-				avadebug('Error, but no exception in getTax avalara',self::$_taxResult);
+				vmdebug('Error, but no exception in getTax avalara',self::$_taxResult);
+			}
+		} else {
+			if(is_string(self::$_taxResult )){
+				self::$_taxResult =  unserialize(self::$_taxResult);
 			}
 
 		}
-		catch(SoapFault $exception)
-		{
-			$msg = "Exception: getTax ";
-			if($exception)
-				$msg .= $exception->faultstring;
 
-			avadebug( $msg.'<br />'.$client->__getLastRequest().'<br />'.$client->__getLastResponse());
+		if(self::$_taxResult){
+			if(isset(self::$_taxResult['totalTax'])){
+				$totalTax = self::$_taxResult['totalTax'];
+			}
 
+			if($calculationHelper->inCart){
+				$calculationHelper->setCartPrices(self::$_taxResult);
+			}
 		}
-		//self::$stop = $totalTax;
 
+		//vmdebug('Parsing taxResult, my hash is ',self::$_taxResult);
 		return $totalTax;
 	}
 
@@ -836,6 +842,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				if(empty($this->addresses)){
 					$this->addresses = $this->fillValidateAvalaraAddress($rule);
 				}
+
 				if($this->addresses){
 					$tax = $this->getTax( $calculationHelper,$rule,$price);
 				}

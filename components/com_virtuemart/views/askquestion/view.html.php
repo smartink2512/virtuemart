@@ -28,7 +28,6 @@ if (!class_exists ('VmView')) {
  * Product details
  *
  * @package VirtueMart
- * @author RolandD
  * @author Max Milbers
  */
 class VirtueMartViewAskquestion extends VmView {
@@ -36,7 +35,7 @@ class VirtueMartViewAskquestion extends VmView {
 	/**
 	 * Collect all data to show on the template
 	 *
-	 * @author RolandD, Max Milbers
+	 * @author Max Milbers
 	 */
 	function display ($tpl = NULL) {
 
@@ -49,18 +48,12 @@ class VirtueMartViewAskquestion extends VmView {
 		$this->assignRef ('show_prices', $show_prices);
 		$document = JFactory::getDocument ();
 
-		/* add javascript for price and cart */
-		//vmJsApi::jPrice ();
-
 		$mainframe = JFactory::getApplication ();
 		$pathway = $mainframe->getPathway ();
 		$task = JRequest::getCmd ('task');
 
-		// Set the helper path
-		$this->addHelperPath (JPATH_VM_ADMINISTRATOR . DS . 'helpers');
-
-		$this->loadHelper ('image');
-		$this->loadHelper ('addtocart');
+		if (!class_exists('VmImage'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 
 		// Load the product
 		$product_model = VmModel::getModel ('product');

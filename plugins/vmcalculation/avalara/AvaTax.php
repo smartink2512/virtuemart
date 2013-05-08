@@ -6,30 +6,6 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  *
  * @package Base
  */
- 
-/**
- * Defines class loading search path.
- */
-
-/*function __autoload_avalara_classes($class_name)
-{
-	if (JVM_VERSION === 2) {
-		$pluginBasePath =  (JPATH_ROOT . DS . 'plugins' . DS . 'vmcalculation' . DS . 'avalara' .DS.'AvaTax4PHP');
-	} else {
-		$pluginBasePath =   (JPATH_ROOT . DS . 'plugins' . DS . 'vmcalculation'.DS.'AvaTax4PHP');
-	}
-
-	$path=$pluginBasePath.DS.'classes'.DS.$class_name . '.class.php';
-	vmdebug('__autoload $path ',$path);
-	if(!file_exists($path))
-	{
-		$path=$pluginBasePath.DS.'classes'.DS.'BatchSvc'.DS.$class_name . '.class.php';
-		
-	}
-	
-	require_once $path;
-
-}*/
 
 function EnsureIsArray( $obj ) 
 {
@@ -43,8 +19,6 @@ function EnsureIsArray( $obj )
     }
     return $item;
 }
-
-
 
 /**
 * Takes xml as a string and returns it nicely indented
@@ -100,8 +74,5 @@ function getCurrentDate()
 	$dateTime=new DateTime();
 	return $dateTime->format("Y-m-d");
 } 
-
-
-
 
 ?>

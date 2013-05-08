@@ -52,13 +52,8 @@ class virtuemartViewrecommend extends VmView {
 		$pathway = $mainframe->getPathway();
 		$task = JRequest::getCmd('task');
 
-		/* Set the helper path */
-		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
-
-		//Load helpers
-		$this->loadHelper('image');
-		$this->loadHelper('addtocart');
-
+		if (!class_exists('VmImage'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 
 		// Load the product
 		$product_model = VmModel::getModel('product');

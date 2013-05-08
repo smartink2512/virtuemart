@@ -42,7 +42,8 @@ class VirtuemartViewCountry extends VmView {
 		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
 		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, null, true);
 		}
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 
 		$model = VmModel::getModel('country');

@@ -37,9 +37,12 @@ class VirtuemartViewProduct extends VmView {
 		$this->assignRef('task', $task);
 
 		// Load helpers
-		$this->loadHelper('currencydisplay');
-		$this->loadHelper('html');
-		$this->loadHelper('image');
+		if (!class_exists('CurrencyDisplay'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+		if (!class_exists('VmImage'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 
 		$model = VmModel::getModel();
 
@@ -111,7 +114,7 @@ class VirtuemartViewProduct extends VmView {
 				// Load the currencies
 				$currency_model = VmModel::getModel('currency');
 
-				$this->loadHelper('permissions');
+				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 
 				$vendor_model->setId(Permissions::getInstance()->isSuperVendor());
 				$vendor = $vendor_model->getVendor();
@@ -230,7 +233,7 @@ class VirtuemartViewProduct extends VmView {
 			case 'massxref_cats_exe':
 				$this->SetViewTitle('PRODUCT_MASSXREF');
 
-				$this->loadHelper('permissions');
+				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 				$showVendors = Permissions::getInstance()->check('admin');
 				$this->assignRef('showVendors',$showVendors);
 

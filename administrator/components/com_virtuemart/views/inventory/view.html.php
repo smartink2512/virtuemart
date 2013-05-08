@@ -35,9 +35,11 @@ class VirtuemartViewInventory extends VmView {
 
 		//Load helpers
 
-		$this->loadHelper('currencydisplay');
+		if (!class_exists('CurrencyDisplay'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		// Get the data
 		$model = VmModel::getModel('product');

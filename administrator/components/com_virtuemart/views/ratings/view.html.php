@@ -37,7 +37,8 @@ class VirtuemartViewRatings extends VmView {
 		//Load helpers
 
 
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		/* Get the review IDs to retrieve (input variable may be cid, cid[] or virtuemart_rating_review_id */
 		$cids = JRequest::getVar('cid', 0);

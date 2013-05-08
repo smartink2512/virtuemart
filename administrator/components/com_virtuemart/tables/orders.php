@@ -157,13 +157,14 @@ class TableOrders extends VmTable {
 			//Can we securely prevent this just using
 		//	'SELECT `shipment_element` FROM `#__virtuemart_shipmentmethods` , `#__virtuemart_orders`
 		//	WHERE `#__virtuemart_shipmentmethods`.`virtuemart_shipmentmethod_id` = `#__virtuemart_orders`.`virtuemart_shipmentmethod_id` AND `virtuemart_order_id` = ' . $id );
-		}
-		$shipmentTable = '#__virtuemart_shipment_plg_'. $shipmentName;
+		} else {
+			$shipmentTable = '#__virtuemart_shipment_plg_'. $shipmentName;
 
-		$this->_db->setQuery('DELETE from `'.$shipmentTable.'` WHERE `virtuemart_order_id` = ' . $id);
-		if ($this->_db->query() === false) {
-			vmError('TableOrders delete Order shipmentTable = '.$shipmentTable.' `virtuemart_order_id` = '.$id.' dbErrorMsg '.$this->_db->getError());
-			return false;
+			$this->_db->setQuery('DELETE from `'.$shipmentTable.'` WHERE `virtuemart_order_id` = ' . $id);
+			if ($this->_db->query() === false) {
+				vmError('TableOrders delete Order shipmentTable = '.$shipmentTable.' `virtuemart_order_id` = '.$id.' dbErrorMsg '.$this->_db->getError());
+				return false;
+			}
 		}
 
 		$_q = 'INSERT INTO `#__virtuemart_order_histories` ('

@@ -33,13 +33,11 @@ class VirtuemartViewReport extends VmView {
 	 */
 	function display($tpl = null){
 
-		// Load the helper(s)
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+		if (!class_exists('CurrencyDisplay'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 
-		$this->loadHelper('html');
-
-		$this->loadHelper('html');
-		$this->loadHelper('currencydisplay');
-		$this->loadHelper('reportFunctions');
 
 		$model		= VmModel::getModel();
 

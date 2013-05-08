@@ -35,7 +35,8 @@ class VirtuemartViewCategory extends VmView {
 
 	function display($tpl = null) {
 
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		$model = VmModel::getModel();
 		$layoutName = $this->getLayout();
@@ -79,10 +80,6 @@ class VirtuemartViewCategory extends VmView {
 			//Nice fix by Joe, the 4. param prevents setting an category itself as child
 			$categorylist = ShopFunctions::categoryListTree(array($parent->virtuemart_category_id), 0, 0, (array) $category->virtuemart_category_id);
 
-			$this->loadHelper('permissions');
-			$perms = Permissions::getInstance();
-			$this->assignRef('perms', $perms );
-
 			if(Vmconfig::get('multix','none')!=='none'){
 				$vendorList= ShopFunctions::renderVendorList($category->virtuemart_vendor_id,false);
 				$this->assignRef('vendorList', $vendorList);
@@ -109,7 +106,6 @@ class VirtuemartViewCategory extends VmView {
 			$this->assignRef('catpagination', $pagination);
 
 			//we need a function of the FE shopfunctions helper to cut the category descriptions
-
 			jimport('joomla.filter.output');
 		}
 

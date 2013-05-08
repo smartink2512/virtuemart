@@ -445,6 +445,7 @@ class VirtueMartModelProduct extends VmModel {
 						break;
 					case 'topten';
 						$orderBy = ' ORDER BY p.`product_sales` '; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
+						$where[] = 'pp.`product_price`>"0.0" ';
 						$this->filter_order_Dir = 'DESC';
 					break;
 					case 'recent';
@@ -2290,7 +2291,6 @@ function lowStockWarningEmail($virtuemart_product_id) {
 
 	}
 
-// use lang table only TODO Look if this not cause errors
 	function getProductChilds ($product_id) {
 
 		if (empty($product_id)) {
@@ -2316,7 +2316,6 @@ function lowStockWarningEmail($virtuemart_product_id) {
 
 	}
 
-// use lang table only TODO Look if this not cause errors
 	function getProductParent ($product_parent_id) {
 
 		if (empty($product_parent_id)) {

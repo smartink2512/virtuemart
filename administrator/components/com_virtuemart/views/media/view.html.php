@@ -32,8 +32,10 @@ class VirtuemartViewMedia extends VmView {
 
 	function display($tpl = null) {
 
-		$this->loadHelper('html');
-		$this->loadHelper('permissions');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		//@todo should be depended by loggedVendor
 		$vendorId=1;
 		$this->assignRef('vendorId', $vendorId);

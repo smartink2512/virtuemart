@@ -39,10 +39,10 @@ class VirtuemartViewPaymentMethod extends VmView {
 		// Load the helper(s)
 		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 
-		$this->loadHelper('permissions');
-
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		$this->addHelperPath(JPATH_VM_PLUGINS);
 		$this->loadHelper('vmplugin');
@@ -58,7 +58,6 @@ class VirtuemartViewPaymentMethod extends VmView {
 		// TODO logo
 		$this->SetViewTitle();
 
-
 		$layoutName = JRequest::getWord('layout', 'default');
 
 		$vendorModel = VmModel::getModel('vendor');
@@ -72,8 +71,8 @@ class VirtuemartViewPaymentMethod extends VmView {
 		if ($layoutName == 'edit') {
 
 			// Load the helper(s)
-			$this->loadHelper('image');
-			// $this->loadHelper('html');
+			if (!class_exists('VmImage'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 			$this->loadHelper('parameterparser');
 			// jimport('joomla.html.pane');
 

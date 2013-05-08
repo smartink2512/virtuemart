@@ -17,18 +17,6 @@
  *
  */
 
-// Check to ensure this file is included in Joomla!
-
-// jimport( 'joomla.application.component.view');
-// $viewEscape = new JView();
-// $viewEscape->setEscape('htmlspecialchars');
-
-$ret = htmlspecialchars('&', ENT_COMPAT, $this->_charset,false);
-$ret1 = htmlspecialchars('&', ENT_COMPAT, $this->_charset,true);
-$ret2 = htmlspecialchars('&amp;', ENT_COMPAT, $this->_charset,false);
-$ret3 = htmlspecialchars('&amp;', ENT_COMPAT, $this->_charset,true);
-vmdebug('htmlspecialchars & and &amp;',$ret,$ret1,$ret2,$ret3);
-
 ?>
 <div class="billto-shipto">
 	<div class="width50 floatleft">

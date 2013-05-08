@@ -733,7 +733,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `metaauthor` varchar(400),
   `layout` char(16),
   `published` tinyint(1),
-  `pordering` smallint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `pordering` mediumint(2) UNSIGNED NOT NULL DEFAULT '0',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',

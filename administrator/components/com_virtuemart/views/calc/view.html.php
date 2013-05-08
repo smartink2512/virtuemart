@@ -33,10 +33,8 @@ class VirtuemartViewCalc extends VmView {
 
 	function display($tpl = null) {
 
-		// Load the helper(s)
-
-
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		$model = VmModel::getModel('calc');
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');

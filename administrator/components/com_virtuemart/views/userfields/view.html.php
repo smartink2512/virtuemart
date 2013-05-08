@@ -40,7 +40,8 @@ class VirtuemartViewUserfields extends VmView {
 		// Load the helper(s)
 
 
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		$model = VmModel::getModel();

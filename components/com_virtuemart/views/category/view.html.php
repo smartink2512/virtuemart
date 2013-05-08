@@ -46,11 +46,8 @@ class VirtuemartViewCategory extends VmView {
 		$app = JFactory::getApplication();
 		$pathway = $app->getPathway();
 
-		/* Set the helper path */
-		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
-
-		//Load helpers
-		$this->loadHelper('image');
+		if (!class_exists('VmImage'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 		$categoryModel = VmModel::getModel('category');
 		$productModel = VmModel::getModel('product');
 
@@ -114,7 +111,6 @@ class VirtuemartViewCategory extends VmView {
 		shopFunctionsF::setLastVisitedManuId($virtuemart_manufacturer_id);
 
 
-
 		if($categoryId!==-1){
 			$vendorId = 1;
 			$category = $categoryModel->getCategory($categoryId);
@@ -127,7 +123,6 @@ class VirtuemartViewCategory extends VmView {
 		$this->assignRef('vmPagination', $pagination);
 
 		if(!empty($category)){
-			vmdebug('Kategorie',$category);
 
 			if ((!empty($categoryId) and $categoryId!==-1 ) and (empty($category->slug) or !$category->published)) {
 
@@ -237,7 +232,7 @@ class VirtuemartViewCategory extends VmView {
 		}
 
 		$this->assignRef('category', $category);
-		
+
 	    // Set the titles
 		if (!empty($category->customtitle)) {
         	$title = strip_tags($category->customtitle);
@@ -262,9 +257,6 @@ class VirtuemartViewCategory extends VmView {
 		if ($app->getCfg('MetaTitle') == '1') {
 			$document->setMetaData('title',  $title);
 		}
-
-
-
 
 		parent::display($tpl);
 	}
