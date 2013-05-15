@@ -54,36 +54,41 @@ if(typeof Virtuemart === "undefined")
 			},
 			cartEffect : function(form) {
 
-					var $ = jQuery ;
-					$.ajaxSetup({ cache: false })
-					var datas = form.serialize();
-					$.getJSON(vmSiteurl+'index.php?option=com_virtuemart&nosef=1&view=cart&task=addJS&format=json'+vmLang,encodeURIComponent(datas),
-					function(datas, textStatus) {
-						if(datas.stat ==1){
-							//var value = form.find('.quantity-input').val() ;
-							var txt = form.find(".pname").val()+' '+vmCartText;
-													$.facebox.settings.closeImage = closeImage;
-													$.facebox.settings.loadingImage = loadingImage;
-													$.facebox.settings.faceboxHtml = faceboxHtml;
-							$.facebox({ text: datas.msg +"<H4>"+txt+"</H4>" }, 'my-groovy-style');
-						} else if(datas.stat ==2){
-							var value = form.find('.quantity-input').val() ;
-							var txt = form.find(".pname").val();
-													$.facebox.settings.closeImage = closeImage;
-													$.facebox.settings.loadingImage = loadingImage;
-													$.facebox.settings.faceboxHtml = faceboxHtml;
-							$.facebox({ text: datas.msg +"<H4>"+txt+"</H4>" }, 'my-groovy-style');
-						} else {
-													$.facebox.settings.closeImage = closeImage;
-													$.facebox.settings.loadingImage = loadingImage;
-													$.facebox.settings.faceboxHtml = faceboxHtml;
-							$.facebox({ text: "<H4>"+vmCartError+"</H4>"+datas.msg }, 'my-groovy-style');
-						}
-						if ($(".vmCartModule")[0]) {
-							Virtuemart.productUpdate($(".vmCartModule"));
-						}
-					});
-					$.ajaxSetup({ cache: true });
+                var $ = jQuery ;
+                $.ajaxSetup({ cache: false });
+                var datas = form.serialize();
+
+                $.fancybox.showActivity();
+
+                $.getJSON(vmSiteurl+'index.php?option=com_virtuemart&nosef=1&view=cart&task=addJS&format=json'+vmLang,encodeURIComponent(datas),
+                function(datas, textStatus) {
+                    if(datas.stat ==1){
+
+                        var txt = datas.msg;
+                    } else if(datas.stat ==2){
+                        var txt = datas.msg +"<H4>"+form.find(".pname").val()+"</H4>";
+                    } else {
+                        var txt = "<H4>"+vmCartError+"</H4>"+datas.msg;
+                    }
+
+                    $.fancybox({
+                        "titlePosition" : 	"inside",
+                        "transitionIn"	:	"elastic",
+                        "transitionOut"	:	"elastic",
+                        "type"			:	"html",
+                        "autoCenter"    :   true,
+                        "closeBtn"      :   false,
+                        "closeClick"    :   false,
+                        "content"       :   txt
+                    }
+                    );
+
+                    if ($(".vmCartModule")[0]) {
+                        Virtuemart.productUpdate($(".vmCartModule"));
+                    }
+                });
+
+                $.ajaxSetup({ cache: true });
 			},
 			product : function(carts) {
 				carts.each(function(){

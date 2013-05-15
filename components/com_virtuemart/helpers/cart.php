@@ -516,7 +516,7 @@ class VirtueMartCart {
 		if ($success== false) return false ;
 		// End Iteration through Prod id's
 		$this->setCartIntoSession();
-		return true;
+		return $tmpProduct;
 	}
 
 	/**

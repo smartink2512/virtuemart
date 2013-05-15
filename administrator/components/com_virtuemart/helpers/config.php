@@ -1078,36 +1078,33 @@ class vmJsApi{
 			return;
 		}
 		vmJsApi::jQuery();
-		//JPlugin::loadLanguage('com_virtuemart');
+
 		$lang = JFactory::getLanguage();
 		$lang->load('com_virtuemart');
 		vmJsApi::jSite();
 
-		$closeimage = JURI::root(TRUE) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
-		$jsVars  = '
-//<![CDATA[
-		'."vmSiteurl = '". JURI::root( ) ."' ;\n" ;
+	$closeimage = JURI::root(TRUE) .'/components/com_virtuemart/assets/images/fancybox/fancy_close.png';
+
+		$jsVars = "//<![CDATA[ \n";
+		$jsVars .= "vmSiteurl = '". JURI::root( ) ."' ;\n" ;
 		if (VmConfig::get ('vmlang_js', 1))  {
 			$jsVars .= "vmLang = '&amp;lang=" . substr (VMLANG, 0, 2) . "' ;\n";
 		}
 		else {
 			$jsVars .= 'vmLang = "";' . "\n";
 		}
-		$jsVars .= "vmCartText = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ADDED_JS') )."' ;\n" ;
+		//$jsVars .= "vmCartText = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ADDED_JS') )."' ;\n" ;
 		$jsVars .= "vmCartError = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
 		$jsVars .= "loadingImage = '".JURI::root(TRUE) ."/components/com_virtuemart/assets/images/facebox/loading.gif' ;\n" ;
 		$jsVars .= "closeImage = '".$closeimage."' ; \n";
 		$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
-		// $jsVars .= 'faceboxHtml = \'<div id="facebox" style="display:none;"><div class="popup"><div class="content"></div> <a href="#" class="close"><img src="'.$closeimage.'" title="close" alt="X" class="close_image" /></a></div></div>\' '."\n";
-		$jsVars .= 'faceboxHtml = \'<div id="facebox" style="display:none;"><div class="popup"><div class="content"></div> <a href="#" class="close"></a></div></div>\' '." ;\n";
-		$jsVars .= '
-//]]>
-';
+
 		$document = JFactory::getDocument();
-		$document->addScriptDeclaration($jsVars);
-		vmJsApi::js( 'facebox');
+		$document->addScriptDeclaration ($jsVars);
+		vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
+		vmJsApi::css('jquery.fancybox-1.3.4');
+
 		vmJsApi::js( 'vmprices');
-		vmJsApi::css('facebox');
 
 		$jPrice = TRUE;
 		return TRUE;

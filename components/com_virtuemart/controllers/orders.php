@@ -41,8 +41,6 @@ class VirtueMartControllerOrders extends JController
 		else $viewName='orders';
 		$view = $this->getView($viewName, $format);
 
-		$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
-
 		// Display it all
 		$view->display();
 	}

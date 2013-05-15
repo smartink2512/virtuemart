@@ -40,7 +40,7 @@ class calculationHelper {
 	var $_cartData;
 
 	public $_amount;
-
+	public $_amountCart = 0.0;
 // 	public $override = 0;
 	public $productVendorId;
 	public $productCurrency;

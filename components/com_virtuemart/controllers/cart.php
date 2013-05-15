@@ -97,33 +97,26 @@ class VirtueMartControllerCart extends JController {
 	 */
 	public function addJS() {
 
-		//maybe we should use $mainframe->close(); or jexit();instead of die;
-		/* Load the cart helper */
-		//require_once(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 		$this->json = new stdClass();
 		$cart = VirtueMartCart::getCart(false);
 		if ($cart) {
-			// Get a continue link */
-			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
-			if ($virtuemart_category_id) {
-				$categoryLink = '&view=category&virtuemart_category_id=' . $virtuemart_category_id;
-			} else
-			$categoryLink = '';
-			$continue_link = JRoute::_('index.php?option=com_virtuemart' . $categoryLink);
-			$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
-			$errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
-			if ($cart->add($virtuemart_product_ids, $errorMsg )) {
 
-				$this->json->msg = '<a class="continue" href="' . $continue_link . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
-				$this->json->msg .= '<a class="showcart floatright" href="' . JRoute::_("index.php?option=com_virtuemart&view=cart") . '">' . JText::_('COM_VIRTUEMART_CART_SHOW_MODAL') . '</a>';
-				if ($errorMsg) $this->json->msg .= '<div>'.$errorMsg.'</div>';
+			$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
+			$view = $this->getView ('cart', 'json');
+			$errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
+			$product = $cart->add($virtuemart_product_ids, $errorMsg );
+			if ($product) {
+				$view->setLayout('padded');
 				$this->json->stat = '1';
 			} else {
-				// $this->json->msg = '<p>' . $cart->getError() . '</p>';
-				$this->json->msg = '<a class="continue" href="' . $continue_link . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
-				$this->json->msg .= '<div>'.$errorMsg.'</div>';
+				$view->setLayout('perror');
 				$this->json->stat = '2';
 			}
+			$view->assignRef('product',$product);
+			$view->assignRef('errorMsg',$errorMsg);
+			ob_start();
+			$view->display ();
+			$this->json->msg = ob_get_clean();
 		} else {
 			$this->json->msg = '<a href="' . JRoute::_('index.php?option=com_virtuemart') . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 			$this->json->msg .= '<p>' . JText::_('COM_VIRTUEMART_MINICART_ERROR') . '</p>';

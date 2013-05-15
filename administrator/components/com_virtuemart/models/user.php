@@ -473,14 +473,17 @@ class VirtueMartModelUser extends VmModel {
 	 * @author Oscar van Eijk
 	 * @return boolean True is the save was successful, false otherwise.
 	 */
-	public function store(&$data){
+	public function store(&$data,$checkToken = TRUE){
 
 		$message = '';
 		$user = '';
 		$newId = 0;
 
-		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save user' );
-		$mainframe = JFactory::getApplication() ;
+		if($checkToken){
+			JRequest::checkToken() or jexit( 'Invalid Token, while trying to save user' );
+			$mainframe = JFactory::getApplication() ;
+		}
+
 
 		if(empty($data)){
 			vmError('Developer notice, no data to store for user');
