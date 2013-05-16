@@ -23,15 +23,28 @@ defined('_JEXEC') or die('Restricted access');
 // addon for joomla modal Box
 JHTML::_('behavior.modal');
 // JHTML::_('behavior.tooltip');
+if(VmConfig::get('usefancy',1)){
+	vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
+	vmJsApi::css('jquery.fancybox-1.3.4');
+	$box = "$.fancybox({
+				href: '" . $this->askquestion_url . "',
+				type: 'iframe',
+				height: '550'
+			});";
+} else {
+	vmJsApi::js( 'facebox' );
+	vmJsApi::css( 'facebox' );
+	$box = "$.facebox({
+				iframe: '" . $this->askquestion_url . "',
+				rev: 'iframe|550|550'
+			});";
+}
 $document = JFactory::getDocument();
 $document->addScriptDeclaration("
 //<![CDATA[
 	jQuery(document).ready(function($) {
 		$('a.ask-a-question').click( function(){
-			$.facebox({
-				iframe: '" . $this->askquestion_url . "',
-				rev: 'iframe|550|550'
-			});
+			".$box."
 			return false ;
 		});
 	/*	$('.additional-images a').mouseover(function() {

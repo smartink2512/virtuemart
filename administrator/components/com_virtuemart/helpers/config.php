@@ -1093,17 +1093,31 @@ class vmJsApi{
 		else {
 			$jsVars .= 'vmLang = "";' . "\n";
 		}
-		//$jsVars .= "vmCartText = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ADDED_JS') )."' ;\n" ;
-		$jsVars .= "vmCartError = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
-		$jsVars .= "loadingImage = '".JURI::root(TRUE) ."/components/com_virtuemart/assets/images/facebox/loading.gif' ;\n" ;
-		$jsVars .= "closeImage = '".$closeimage."' ; \n";
-		$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
 
+		if(VmConfig::get('addtocart_popup',1)){
+			$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
+			if(VmConfig::get('usefancy',1)){
+				$jsVars .= "usefancy = true";
+				vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
+				vmJsApi::css('jquery.fancybox-1.3.4');
+			} else {//This is just there for the backward compatibility
+				$jsVars .= "vmCartText = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ADDED_JS') )."' ;\n" ;
+				$jsVars .= "vmCartError = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
+				$jsVars .= "loadingImage = '".JURI::root(TRUE) ."/components/com_virtuemart/assets/images/facebox/loading.gif' ;\n" ;
+				$jsVars .= "closeImage = '".$closeimage."' ; \n";
+				//This is necessary though and should not be removed without rethinking the whole construction
+
+				$jsVars .= "usefancy = false";
+				vmJsApi::js( 'facebox' );
+				vmJsApi::css( 'facebox' );
+			}
+		}
+
+		$jsVars .= '
+//]]>
+';
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration ($jsVars);
-		vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
-		vmJsApi::css('jquery.fancybox-1.3.4');
-
 		vmJsApi::js( 'vmprices');
 
 		$jPrice = TRUE;

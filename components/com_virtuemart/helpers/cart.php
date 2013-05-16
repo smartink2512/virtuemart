@@ -841,6 +841,14 @@ class VirtueMartCart {
 			}
 		}
 
+		if(VmConfig::get('oncheckout_only_registered',0)) {
+			$currentUser = JFactory::getUser();
+			if(empty($currentUser->id)){
+				$redirectMsg = JText::_('COM_VIRTUEMART_CART_ONLY_REGISTERED');
+				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
+			}
+		}
+
 		// Test Coupon
 		if (!empty($this->couponCode)) {
 			$prices = $this->getCartPrices();
@@ -904,14 +912,6 @@ class VirtueMartCart {
 				}
 			}
 		}
-
-		if(VmConfig::get('oncheckout_only_registered',0)) {
-			$currentUser = JFactory::getUser();
-			if(empty($currentUser->id)){
-				$redirectMsg = JText::_('COM_VIRTUEMART_CART_ONLY_REGISTERED');
-				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
-			}
-		 }
 
 		//Show cart and checkout data overview
 		$this->_inCheckOut = false;

@@ -39,6 +39,18 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td class="key"><span
+					class="hasTip"
+					title="<?php echo JText::_('COM_VIRTUEMART_CFG_POPUP_REL_TIP'); ?>">
+					<label for="popup_rel"><?php echo JText::_('COM_VIRTUEMART_CFG_POPUP_REL') ?>
+					</label>
+			</span>
+			</td>
+			<td>
+				<?php echo VmHTML::checkbox('popup_rel', VmConfig::get('popup_rel',1)); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="key"><span
 				class="hasTip"
 				title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LANGFIX_EXPLAIN'); ?>">
 					<label for="addtocart_popup"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LANGFIX') ?>

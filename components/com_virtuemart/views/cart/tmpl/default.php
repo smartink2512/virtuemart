@@ -19,12 +19,26 @@
 
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access');
-vmJsApi::js ('facebox');
-vmJsApi::css ('facebox');
-JHtml::_ ('behavior.formvalidation');
-$document = JFactory::getDocument ();
-$document->addScriptDeclaration ("
+if(VmConfig::get('usefancy',1)){
+	vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
+	vmJsApi::css('jquery.fancybox-1.3.4');
+	$box = "
+//<![CDATA[
+	jQuery(document).ready(function($) {
+		$('div#full-tos').hide();
+		var con = $('div#full-tos').html();
+		$('a#terms-of-service').click(function(event) {
+			event.preventDefault();
+			$.fancybox ({ div: '#full-tos', content: con });
+		});
+	});
 
+//]]>
+";
+} else {
+	vmJsApi::js ('facebox');
+	vmJsApi::css ('facebox');
+	$box = "
 //<![CDATA[
 	jQuery(document).ready(function($) {
 		$('div#full-tos').hide();
@@ -35,7 +49,12 @@ $document->addScriptDeclaration ("
 	});
 
 //]]>
-");
+";
+}
+
+JHtml::_ ('behavior.formvalidation');
+$document = JFactory::getDocument ();
+$document->addScriptDeclaration ($box);
 $document->addScriptDeclaration ("
 
 //<![CDATA[

@@ -58,7 +58,9 @@ if(typeof Virtuemart === "undefined")
                 $.ajaxSetup({ cache: false });
                 var datas = form.serialize();
 
-                $.fancybox.showActivity();
+                if(usefancy){
+                    $.fancybox.showActivity();
+                }
 
                 $.getJSON(vmSiteurl+'index.php?option=com_virtuemart&nosef=1&view=cart&task=addJS&format=json'+vmLang,encodeURIComponent(datas),
                 function(datas, textStatus) {
@@ -70,18 +72,24 @@ if(typeof Virtuemart === "undefined")
                     } else {
                         var txt = "<H4>"+vmCartError+"</H4>"+datas.msg;
                     }
-
-                    $.fancybox({
-                        "titlePosition" : 	"inside",
-                        "transitionIn"	:	"elastic",
-                        "transitionOut"	:	"elastic",
-                        "type"			:	"html",
-                        "autoCenter"    :   true,
-                        "closeBtn"      :   false,
-                        "closeClick"    :   false,
-                        "content"       :   txt
+                    if(usefancy){
+                        $.fancybox({
+                                "titlePosition" : 	"inside",
+                                "transitionIn"	:	"elastic",
+                                "transitionOut"	:	"elastic",
+                                "type"			:	"html",
+                                "autoCenter"    :   true,
+                                "closeBtn"      :   false,
+                                "closeClick"    :   false,
+                                "content"       :   txt
+                            }
+                        );
+                    } else {
+                        $.facebox.settings.closeImage = closeImage;
+                        $.facebox.settings.loadingImage = loadingImage;
+                        //$.facebox.settings.faceboxHtml = faceboxHtml;
+                        $.facebox({ text: txt }, 'my-groovy-style');
                     }
-                    );
 
                     if ($(".vmCartModule")[0]) {
                         Virtuemart.productUpdate($(".vmCartModule"));

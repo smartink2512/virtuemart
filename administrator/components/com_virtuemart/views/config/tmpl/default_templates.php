@@ -629,6 +629,16 @@ defined('_JEXEC') or die('Restricted access');
 		<legend class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS_JS_SETTINGS_TIP'); ?>"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS_JS_SETTINGS') ?></legend>
 		<table class="admintable">
 			<tr>
+				<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_FANCY_TIP'); ?>">
+				<label for="css"><?php echo JText::_('COM_VIRTUEMART_CFG_FANCY') ?></label>
+				</span>
+				</td>
+				<td>
+					<?php echo VmHTML::checkbox('usefancy', VmConfig::get('usefancy',1)); ?>
+				</td>
+			</tr>
+			<tr>
 			<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS_TIP'); ?>">
 				<label for="css"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS') ?></label>
