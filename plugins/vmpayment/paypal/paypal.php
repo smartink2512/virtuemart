@@ -138,16 +138,16 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$this->logInfo ('plgVmConfirmedOrder order number: ' . $order['details']['BT']->order_number, 'message');
 
 		if (!class_exists ('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require (JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 		if (!class_exists ('VirtueMartModelCurrency')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
+			require (JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 		}
 
 		$address = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
 
 		if (!class_exists ('TableVendors')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'table' . DS . 'vendors.php');
+			require (JPATH_VM_ADMINISTRATOR . DS . 'table' . DS . 'vendors.php');
 		}
 		$vendorModel = VmModel::getModel ('Vendor');
 		$vendorModel->setId (1);
@@ -200,7 +200,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			"address2"         => isset($address->address_2) ? $address->address_2 : '',
 			"zip"              => $address->zip,
 			"city"             => $address->city,
-			"state"            => isset($address->virtuemart_state_id) ? ShopFunctions::getStateByID ($address->virtuemart_state_id) : '',
+			"state"            => isset($address->virtuemart_state_id) ? ShopFunctions::getStateByID ($address->virtuemart_state_id, 'state_2_code') : '',
 			"country"          => ShopFunctions::getCountryByID ($address->virtuemart_country_id, 'country_2_code'),
 			"email"            => $order['details']['BT']->email,
 			"night_phone_b"    => $address->phone_1,
@@ -264,7 +264,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$html = '<html><head><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
 		$html .= '<form action="' . "https://" . $url . '" method="post" name="vm_paypal_form"  accept-charset="UTF-8">';
 		$html .= '<input type="submit"  value="' . JText::_ ('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />';
-		$html .='<input type="hidden" name="charset" value="utf-8">';
+		$html .= '<input type="hidden" name="charset" value="utf-8">';
 		foreach ($post_variables as $name => $value) {
 			$html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars ($value) . '" />';
 		}
@@ -348,13 +348,13 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	function plgVmOnPaymentResponseReceived (&$html) {
 
 		if (!class_exists ('VirtueMartCart')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			require (JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		if (!class_exists ('shopFunctionsF')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			require (JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 		if (!class_exists ('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require (JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 
 		//vmdebug('PAYPAL plgVmOnPaymentResponseReceived', $paypal_data);
@@ -392,7 +392,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	function plgVmOnUserPaymentCancel () {
 
 		if (!class_exists ('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require (JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 
 		$order_number = JRequest::getString ('on', '');
@@ -431,7 +431,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		//$this->_debug = true;
 		if (!class_exists ('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+			require (JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 		$paypal_data = JRequest::get ('post');
 		if (!isset($paypal_data['invoice'])) {
@@ -505,7 +505,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			}
 			$order['comments'] = JText::sprintf ('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PENDING', $order_number) . JText::_ ($key);
 			$order['order_status'] = $method->status_pending;
-		} elseif (strcmp ($paypal_data['payment_status'], 'Refunded') == 0) {
+		} elseif (strcmp ($paypal_data['payment_status'], 'Refunded') == 0 and isset($method->status_refunded)) {
 			$order['comments'] = JText::sprintf ('VMPAYMENT_PAYPAL_PAYMENT_STATUS_REFUNDED', $order_number);
 			$order['order_status'] = $method->status_refunded;
 		} elseif (isset ($paypal_data['payment_status'])) {
@@ -675,16 +675,16 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$post_msg .= "&$key=$value";
 			}
 		}
-/*
-				$header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
-				$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-				$header .= "Content-Length: " . strlen ($post_msg) . "\r\n\r\n";
-*/
-		 $header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
+		/*
+						$header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
+						$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
+		$header .= "Content-Length: " . strlen ($post_msg) . "\r\n\r\n";
+		*/
+		$header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
 		$header .= "User-Agent: PHP/" . phpversion () . "\r\n";
 		$header .= "Referer: " . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . @$_SERVER['QUERY_STRING'] . "\r\n";
 		$header .= "Server: " . $_SERVER['SERVER_SOFTWARE'] . "\r\n";
-		$header .= "Host: "  . $this->_getPaypalUrl ($method) . ":" . $port . "\r\n";
+		$header .= "Host: " . $this->_getPaypalUrl ($method) . ":" . $port . "\r\n";
 		$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
 		$header .= "Content-Length: " . strlen ($post_msg) . "\r\n";
 		$header .= "Accept: */*\r\n\r\n";
@@ -828,9 +828,23 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		} else {
 			$paypal_iplist1 = gethostbynamel ('www.paypal.com');
 			$paypal_iplist2 = gethostbynamel ('notify.paypal.com');
-			$paypal_iplist3 = array( '216.113.188.202' , '216.113.188.203' , '216.113.188.204' , '66.211.170.66' );
-            $paypal_iplist = array_merge( $paypal_iplist1, $paypal_iplist2, $paypal_iplist3 );
- 		}
+			$paypal_iplist3 = array('216.113.188.202', '216.113.188.203', '216.113.188.204', '66.211.170.66');
+			if (!is_array ($paypal_iplist1) or !is_array ($paypal_iplist2)) {
+				$mail_subject = "PayPal IPN Transaction Warning on your site: Could not resolve paypal hostname";
+				$mail_body = " One of the PayPal hostname could not be resolved \n";
+				if (!is_array ($paypal_iplist1)) {
+					$paypal_iplist1 = array();
+					$mail_body .= " www.paypal.com \n";
+				}
+				if (!is_array ($paypal_iplist2)) {
+					$paypal_iplist2 = array();
+					$mail_body .= " notify.paypal.com \n";
+				}
+				$this->sendEmailToVendorAndAdmins ($mail_subject, $mail_body);
+			}
+
+			$paypal_iplist = array_merge ($paypal_iplist1, $paypal_iplist2, $paypal_iplist3);
+		}
 		$this->logInfo ('checkPaypalIps: ' . implode (",", $paypal_iplist) . " server is:" . $_SERVER['REMOTE_ADDR'], 'message');
 		$hostname = $this->_getPaypalUrl ($method);
 		//  test if the remote IP connected here is a valid IP address
