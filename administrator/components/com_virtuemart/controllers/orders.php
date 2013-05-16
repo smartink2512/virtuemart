@@ -221,10 +221,28 @@ class VirtuemartControllerOrders extends VmController {
 			$data = (object)$value;
 			$data->virtuemart_order_id = $_orderID;
 			// 			$model->updateSingleItem((int)$key, $value['order_status'],$value['comments'],$_orderID);
-			$model->updateSingleItem((int)$key, $data);
+			$model->updateSingleItem((int)$key, $data, true);
 		}
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$_orderID);
+	}
+
+	public function updateOrderHead()
+	{
+		$mainframe = Jfactory::getApplication();
+		$model = VmModel::getModel();
+		$_items = JRequest::getVar('item_id',  0, '', 'array');
+		$_orderID = JRequest::getInt('virtuemart_order_id', '');
+		$model->UpdateOrderHead((int)$_orderID, JRequest::get('post'));
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$_orderID);
+	}
+
+	public function CreateOrderHead()
+	{
+		$mainframe = Jfactory::getApplication();
+		$model = VmModel::getModel();
+		$orderid = $model->CreateOrderHead();
+		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$orderid );
 	}
 
 	/**
@@ -239,23 +257,20 @@ class VirtuemartControllerOrders extends VmController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.JRequest::getInt('virtuemart_order_id', ''));
 		}
 		*/
-	/**
-	 * Save the given order item
-	 */
-	public function saveOrderItem() {
-		//vmdebug('saveOrderItem');
+
+	public function newOrderItem() {
+		//vmdebug('newOrderItem');
 		$orderId = JRequest::getInt('virtuemart_order_id', '');
 		$model = VmModel::getModel();
 		$msg = '';
 		$data = JRequest::get('post');
-		if (!$model->saveOrderLineItem()) {
+		if (!$model->saveOrderLineItem($data)) {
 			$msg = $model->getError();
 		}
 
 		$editLink = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $orderId;
 		$this->setRedirect($editLink, $msg);
 	}
-
 
 	/**
 	 * Removes the given order item

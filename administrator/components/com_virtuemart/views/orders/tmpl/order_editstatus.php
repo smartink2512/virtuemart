@@ -14,6 +14,25 @@
  * other free or open source software licenses.
  * @version $Id: order_editstatus.php 6468 2012-09-18 22:00:43Z Milbo $
  */
+ 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+$document = JFactory::getDocument();
+$document->addScriptDeclaration ( "
+
+		function cancelOrderStatFormEdit(e) {
+			jQuery('#orderStatForm').each(function(){
+				this.reset();
+			});
+			jQuery('#order_items_status')
+				.find('option:selected').prop('selected', true)
+				.end().trigger('liszt:updated');
+			jQuery('div#updateOrderStatus').hide();
+			e.preventDefault();
+		}
+
+		");
 ?>
 
 <form action="index.php" method="post" name="orderStatForm" id="orderStatForm">
@@ -55,7 +74,7 @@
 		<td colspan="2" align="center" class="key">
 		<a href="#" class="orderStatFormSubmit" >
 			<span class="icon-nofloat vmicon vmicon-16-save"></span>&nbsp;<?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></a>&nbsp;&nbsp;&nbsp;
-		<a href="#" title="<?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?>" onClick="javascript:document.orderStatForm.reset();" class="show_element[updateOrderStatus]">
+		<a href="#" title="<?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?>" onClick="javascript:cancelOrderStatFormEdit(event);" class="show_element[updateOrderStatus]">
 			<span class="icon-nofloat vmicon vmicon-16-remove"></span>&nbsp;<?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></a>
 		</td>
 <!--

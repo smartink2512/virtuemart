@@ -332,7 +332,7 @@ class VmTable extends JTable {
 			if (!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 			$admin = Permissions::getInstance()->check('admin');
 			if ($admin) {
-				vmdebug('setLoggableFieldsForStore ', $this->created_on);
+//				vmdebug('setLoggableFieldsForStore ', $this->created_on);
 				if (empty($this->$pkey) and empty($this->created_on)) {
 					$this->created_on = $today;
 				} else if (empty($this->created_on)) {
@@ -379,9 +379,9 @@ class VmTable extends JTable {
 	 * @author Max Milbers
 	 * $TableJoins array of table names to add and left join to find ID
 	 */
-	function load($oid = null, $overWriteLoadName = 0, $andWhere = 0, $tableJoins = array(), $joinKey = 0) {
+	function load($oid = null, $overWriteLoadName = '', $andWhere = '', $tableJoins = array(), $joinKey = 0) {
 
-		if ($overWriteLoadName != 0) {
+		if( !empty($overWriteLoadName) ){
 			$k = $overWriteLoadName;
 		} else {
 			$k = $this->_pkey;
@@ -448,7 +448,7 @@ class VmTable extends JTable {
 		}
 		// 		vmdebug('vmtable load '.$db->getQuery(),$result);
 		if (!empty($error)) {
-			vmError('vmTable load' . $error);
+			vmError('vmTable load x' . $error);
 			return false;
 		}
 		//vmdebug('load',$result );
