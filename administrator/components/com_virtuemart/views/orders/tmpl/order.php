@@ -277,7 +277,7 @@ $document->addScriptDeclaration ( "
 						</thead>
 					<tr>
 						<td><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') ?></td>
-						<?
+						<?php
 						$model = VmModel::getModel('paymentmethod');
 						$payments = $model->getPayments();
 						$model = VmModel::getModel('shipmentmethod');
