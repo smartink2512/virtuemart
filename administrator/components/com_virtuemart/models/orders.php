@@ -450,18 +450,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				if ($db->query() === false) {
 					vmError($db->getError());
 				}
-
-				$sql = "SELECT `payment_element` FROM `#__virtuemart_paymentmethods` WHERE `virtuemart_paymentmethod_id`=".JRequest::getVar('virtuemart_paymentmethod_id');
-				$this->_db->setQuery($sql);
-				$payment_element = $this->_db->loadResult();
-
-				$sql = "UPDATE `#__virtuemart_payment_plg_". $payment_element ."` 
-						SET `payment_order_total` = (SELECT sum(product_final_price*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid) + (SELECT `order_shipment`+`order_shipment_tax`+`order_payment`+`order_payment_tax` FROM #__virtuemart_orders where `virtuemart_order_id`=$ordid) + $calc_rules_amount 
-						WHERE `virtuemart_paymentmethod_id`=".JRequest::getVar('virtuemart_paymentmethod_id')." AND `virtuemart_order_id` = ". JRequest::getVar('virtuemart_order_id');
-				$this->_db->setQuery($sql);
-				if ($db->query() === false) {
-					vmError($db->getError());
-				}
 			}
 
 			$sql = "
