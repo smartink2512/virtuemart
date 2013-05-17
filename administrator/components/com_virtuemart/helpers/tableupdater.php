@@ -174,6 +174,8 @@ class GenericTableUpdater extends JModel{
 					$fields[$name] = 'char('.VmConfig::get('dbmetasize',100).') '.$linedefault;
 				} else if(strpos($name,'metakey')!==false ){
 					$fields[$name] = 'varchar('.VmConfig::get('dbmetasize',400).') '.$linedefault;
+				} else if(strpos($name,'metaauthor')!==false ){
+					$fields[$name] = 'char(64) '.$linedefault;
 				} else if(strpos($name,'slug')!==false ){
 					$fields[$name] = 'char('.VmConfig::get('dbslugsize',192).') '.$linedefault;
 					$slug = true;
@@ -181,7 +183,7 @@ class GenericTableUpdater extends JModel{
 					$fields[$name] = 'char(26) '.$linedefault;
 				}else if(strpos($name,'desc')!==false) {
 					if(VmConfig::get('dblayoutstrict',true)){
-						$fields[$name] = 'varchar('.VmConfig::get('dbdescsize',20000).') '.$linedefault;
+						$fields[$name] = 'varchar('.VmConfig::get('dbdescsize',19000).') '.$linedefault;
 					} else {
 						$fields[$name] = 'text '.$linedefaulttext;
 					}

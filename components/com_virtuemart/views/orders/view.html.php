@@ -33,6 +33,8 @@ class VirtuemartViewOrders extends VmView {
 
 	public function display($tpl = null)
 	{
+		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		$task = JRequest::getWord('task', 'list');

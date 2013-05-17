@@ -379,9 +379,9 @@ class VmTable extends JTable {
 	 * @author Max Milbers
 	 * $TableJoins array of table names to add and left join to find ID
 	 */
-	function load($oid = null, $overWriteLoadName = '', $andWhere = '', $tableJoins = array(), $joinKey = 0) {
+	function load($oid = null, $overWriteLoadName = 0, $andWhere = 0, $tableJoins = array(), $joinKey = 0) {
 
-		if( !empty($overWriteLoadName) ){
+		if( $overWriteLoadName!==0 ){
 			$k = $overWriteLoadName;
 		} else {
 			$k = $this->_pkey;

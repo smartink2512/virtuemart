@@ -25,6 +25,10 @@ if(JRequest::getCmd('view','') == 'liveupdate') {
 
 if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
+
+vmRam('Start');
+vmSetStartTime('Start');
+
 if(VmConfig::get('enableEnglish', 1)){
     $jlang =JFactory::getLanguage();
     $jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, 'en-GB', true);
@@ -69,6 +73,9 @@ $controller = new $_class();
 // Perform the Request task
 $controller->execute(JRequest::getWord('task', $_controller));
 
+vmTime($_class.' Finished task '.$_controller,'Start');
+vmRam('End');
+vmRamPeak('Peak');
 $controller->redirect();
 
 // pure php no closing tag

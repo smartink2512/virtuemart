@@ -171,6 +171,11 @@ class VirtueMartViewVirtueMart extends VmView {
 			}
 			$title = JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name,$menuTitle);
 			$document->setTitle($title);
+			if(!empty($vendor->metadesc)) $document->setMetaData('description',$vendor->metadesc);
+			if(!empty($vendor->metakey)) $document->setMetaData('keywords',$vendor->metakey);
+			if(!empty($vendor->metarobot)) $document->setMetaData('robots',$vendor->metarobot);
+			if(!empty($vendor->author)) $document->setMetaData('author',$vendor->metaauthor);
+
 		}
 
 		$template = VmConfig::get('vmtemplate','default');

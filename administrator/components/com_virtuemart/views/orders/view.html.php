@@ -31,8 +31,8 @@ class VirtuemartViewOrders extends VmView {
 
 	function display($tpl = null) {
 
+		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 		//Load helpers
-
 		if (!class_exists('CurrencyDisplay'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 

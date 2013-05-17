@@ -250,7 +250,6 @@ class VirtueMartModelConfig extends JModel {
 			$searchChecked = (array)$searchChecked;
 		}
 		$searchFieldsArray = ShopFunctions::getValidProductFilterArray ();
-// 		if ($type !== 'browse_orderby_fields' ) array_shift($searchFieldsArray);
 
 		$searchFields= new stdClass();
 		$searchFields->checkbox ='<div class="threecols"><ul>';
@@ -270,6 +269,7 @@ class VirtueMartModelConfig extends JModel {
 			}
 
 			$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
+
 			if ($type == 'browse_orderby_fields' ) $searchFields->select[] =  JHTML::_('select.option', $field, $text) ;
 			$searchFields->checkbox .= '<li><input type="checkbox" id="' .$type.$fieldWithoutPrefix.$key. '" name="'.$type.'[]" value="' .$field. '" ' .$checked. ' /><label for="' .$type.$fieldWithoutPrefix.$key. '">' .$text. '</label></li>';
 		}
@@ -314,18 +314,6 @@ class VirtueMartModelConfig extends JModel {
 					vmInfo('Corrected media url '.$urlkey.' added missing /');
 				}
 		}
-
-/*		$path = trim($config->get('forSale_path'));
-		$length = strlen($path);
-		if(strrpos($url,DS)!=($length-1)){
-			if(is_dir()){
-				$config->set('forSale_path',$path.DS);
-				vmInfo('Corrected safe path added missing '.DS);
-			} else {
-
-			}
-		}
-*/
 
 		$safePath = trim($config->get('forSale_path'));
 		if(!empty($safePath)){

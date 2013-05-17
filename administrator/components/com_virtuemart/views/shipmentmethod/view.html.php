@@ -37,17 +37,15 @@ class VirtuemartViewShipmentmethod extends VmView {
 		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		$this->loadHelper('vmpsplugin');
+		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 
 		if (!class_exists('VmHTML'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		$model = VmModel::getModel();
 
-
 		$layoutName = JRequest::getWord('layout', 'default');
 		$this->SetViewTitle();
-
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {

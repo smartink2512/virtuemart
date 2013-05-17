@@ -35,6 +35,8 @@ class VirtuemartViewConfig extends VmView {
 
 	function display($tpl = null) {
 
+		VmConfig::loadJLang('com_virtuemart_config');
+
 		if (!class_exists('VmImage'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 

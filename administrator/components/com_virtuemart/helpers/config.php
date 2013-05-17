@@ -371,8 +371,6 @@ class VmConfig {
 		if(self::$_debug===NULL){
 
 			$debug = VmConfig::get('debug_enable','none');
-			// 			$app = JFactory::getApplication();
-			// 			$app ->enqueueMessage($debug);
 
 			// 1 show debug only to admins
 			if($debug === 'admin' ){

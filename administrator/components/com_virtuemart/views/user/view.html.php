@@ -34,6 +34,7 @@ class VirtuemartViewUser extends VmView {
 
 	function display($tpl = null) {
 
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 		// Load the helper(s)
 		if (!class_exists('VmHTML'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
@@ -235,6 +236,9 @@ class VirtuemartViewUser extends VmView {
 			$this->assignRef('defaultShopperGroup', $defaultShopperGroup);
 		}
 
+		if(!empty($this->orderlist)){
+			VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+		}
 		parent::display($tpl);
 	}
 

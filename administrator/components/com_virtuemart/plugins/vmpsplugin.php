@@ -350,11 +350,11 @@ abstract class vmPSPlugin extends vmPlugin {
 		$html = '<table class="admintable">' . "\n"
 			. '	<thead>' . "\n"
 			. '		<tr>' . "\n"
-			. '			<td class="key" style="text-align: center;" colspan="2">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . $this->_type . '_LBL') . '</td>' . "\n"
+			. '			<td class="key" style="text-align: center;" colspan="2">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . strtoupper($this->_type) . '_LBL') . '</td>' . "\n"
 			. '		</tr>' . "\n"
 			. '	</thead>' . "\n"
 			. '	<tr>' . "\n"
-			. '		<td class="key">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . $this->_type . '_LBL') . ': </td>' . "\n"
+			. '		<td class="key">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . strtoupper($this->_type) . '_LBL') . ': </td>' . "\n"
 			. '		<td align="left">' . $order_name . '</td>' . "\n"
 			. '	</tr>' . "\n";
 
@@ -788,7 +788,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$class = "class='key'";
 		$html = ' 	<thead>' . "\n"
 			. '		<tr>' . "\n"
-			. '			<th ' . $class . ' style="text-align: center;" colspan="2">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . $this->_psType . '_LBL') . '</th>' . "\n"
+			. '			<th ' . $class . ' style="text-align: center;" colspan="2">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . strtoupper($this->_psType) . '_LBL') . '</th>' . "\n"
 			. '		</tr>' . "\n"
 			. '	</thead>' . "\n";
 

@@ -1218,6 +1218,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vendors` (
   `vendor_currency` int(11),
   `vendor_accepted_currencies` varchar(1536) NOT NULL DEFAULT '',
   `vendor_params` varchar(17000),
+  `metarobot` char(20),
+  `metaauthor` char(64),
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',

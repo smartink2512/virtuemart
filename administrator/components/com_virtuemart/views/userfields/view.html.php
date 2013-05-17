@@ -34,6 +34,7 @@ class VirtuemartViewUserfields extends VmView {
 
 	function display($tpl = null) {
 
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 		$option = JRequest::getCmd( 'option');
 		$mainframe = JFactory::getApplication() ;
 

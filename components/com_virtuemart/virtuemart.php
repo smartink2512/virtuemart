@@ -25,7 +25,6 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components'
 VmConfig::loadConfig();
 
 vmRam('Start');
-// vmSetStartTime();
 vmSetStartTime('Start');
 
 VmConfig::loadJLang('com_virtuemart', true);

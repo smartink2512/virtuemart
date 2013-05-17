@@ -421,7 +421,6 @@ class VirtueMartCart {
 						} else {
 							$customPluginPost = $post['customPlugin'];
 						}
-						VmConfig::$echoDebug=TRUE;
 
 						foreach($customPluginPost as &$customPlugin){
 							if(is_array($customPlugin)){

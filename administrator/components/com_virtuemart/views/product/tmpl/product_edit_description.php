@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');?>
 </fieldset>
 
 <fieldset>
-	<legend><?php echo JText::_('COM_VIRTUEMART_META_INFORMATION') ?></legend>
+	<legend><?php echo JText::_('COM_VIRTUEMART_METAINFO') ?></legend>
 	<table>
 <tr>
 			<td >
@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');?>
 		</tr>
 		<tr>
 			<td >
-				<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_METAROBOT'); ?> </div>
+				<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_METAROBOTS'); ?> </div>
 			</td>
 			<td valign="top">
 				<input type="text" class="inputbox" size="60" name="metarobot" value="<?php echo $this->product->metarobot ?>" />

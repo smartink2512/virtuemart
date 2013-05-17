@@ -76,12 +76,12 @@ $mainframe = JFactory::getApplication();
 		</td>
 		<td valign="top" style="width: 50%;">
 			<fieldset>
-				<legend><?php echo JText::_('COM_VIRTUEMART_META_INFORMATION'); ?></legend>
+				<legend><?php echo JText::_('COM_VIRTUEMART_METAINFO'); ?></legend>
 				<table>
 <?php echo VmHTML::row('input','COM_VIRTUEMART_CUSTOM_PAGE_TITLE','customtitle',$this->category->customtitle); ?>
-					<?php echo VmHTML::row('textarea','COM_VIRTUEMART_META_DESC','metadesc',$this->category->metadesc); ?>
-					<?php echo VmHTML::row('textarea','COM_VIRTUEMART_META_KEYWORDS','metakey',$this->category->metakey); ?>
-					<?php echo VmHTML::row('input','COM_VIRTUEMART_META_ROBOTS','metarobot',$this->category->metarobot); ?>
+					<?php echo VmHTML::row('textarea','COM_VIRTUEMART_METADESC','metadesc',$this->category->metadesc); ?>
+					<?php echo VmHTML::row('textarea','COM_VIRTUEMART_METAKEYWORDS','metakey',$this->category->metakey); ?>
+					<?php echo VmHTML::row('input','COM_VIRTUEMART_METAROBOTS','metarobot',$this->category->metarobot); ?>
 					<?php echo VmHTML::row('input','COM_VIRTUEMART_METAAUTHOR','metaauthor',$this->category->metaauthor); ?>
 				</table>
 			</fieldset>

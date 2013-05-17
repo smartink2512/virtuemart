@@ -47,6 +47,8 @@ class VirtuemartViewShopperGroup extends VmView {
 		$this->assignRef('task', $task);
 
 		if ($layoutName == 'edit') {
+			VmConfig::loadJLang('com_virtuemart_config');
+
 			$shoppergroup = $model->getShopperGroup();
 			$this->SetViewTitle('SHOPPERGROUP',$shoppergroup->shopper_group_name);
 

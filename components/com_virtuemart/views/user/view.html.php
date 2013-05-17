@@ -60,6 +60,7 @@ class VirtuemartViewUser extends VmView {
      */
     function display($tpl = null) {
 
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 	$useSSL = VmConfig::get('useSSL', 0);
 	$useXHTML = true;
 	$this->assignRef('useSSL', $useSSL);
@@ -291,6 +292,9 @@ class VirtuemartViewUser extends VmView {
 		$this->assignRef('currency', $currency);
 	    }
 	}
+		if($this->_orderList){
+			VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+		}
 	$this->assignRef('orderlist', $this->_orderList);
     }
 
@@ -397,7 +401,7 @@ class VirtuemartViewUser extends VmView {
 	    $this->assignRef('currencies', $currencies);
 
 	    if (!$this->_orderList) {
-		$this->lOrderlist();
+			$this->lOrderlist();
 	    }
 
 	    $vendorModel = VmModel::getModel('vendor');
