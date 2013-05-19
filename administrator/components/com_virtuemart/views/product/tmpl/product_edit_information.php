@@ -330,7 +330,7 @@ $i=0;
 							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK')?></th>
 							<th width="5%"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK')?></th>
 							<?php foreach($customs as $custom){ ?>
-								<th><?php echo JText::sprintf('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD_N',JText::_('COM_VIRTUEMART_'.$custom->custom_value))?></th>
+								<th><?php echo JText::sprintf('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD_N',JText::_('COM_VIRTUEMART_'.strtoupper($custom->custom_value)))?></th>
 							<?php } ?>
 							<th><?php echo JText::_('COM_VIRTUEMART_ORDERING')?></th>
 							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PUBLISH')?></th>

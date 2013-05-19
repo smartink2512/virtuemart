@@ -235,8 +235,8 @@ class VmView extends JView{
 		if ($msg) {
 			$msg = ' <span style="color: #666666; font-size: large;">' . $msg . '</span>';
 		}
-		//$text = strtoupper('COM_VIRTUEMART_'.$name );
-		$viewText = JText::_('COM_VIRTUEMART_' . $name);
+
+		$viewText = JText::_('COM_VIRTUEMART_' . strtoupper($name));
 		if (!$task = JRequest::getWord('task'))
 		$task = 'list';
 

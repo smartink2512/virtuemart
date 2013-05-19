@@ -82,7 +82,7 @@ $productfileslist = $this->files;
 				<!-- File role -->
 				<td><?php
 					//Just to have something, we could make this nicer with Icons
-					if(!empty($productfile->file_is_product_image)) echo JText::_('COM_VIRTUEMART_'.$productfile->file_type.'_IMAGE') ;
+					if(!empty($productfile->file_is_product_image)) echo JText::_('COM_VIRTUEMART_'.strtoupper($productfile->file_type).'_IMAGE') ;
 					if(!empty($productfile->file_is_downloadable)) echo JText::_('COM_VIRTUEMART_DOWNLOADABLE') ;
 					if(!empty($productfile->file_is_forSale)) echo  JText::_('COM_VIRTUEMART_FOR_SALE');
 

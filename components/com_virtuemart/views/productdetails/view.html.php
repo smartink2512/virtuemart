@@ -215,7 +215,7 @@ class VirtueMartViewProductdetails extends VmView {
 	}
 	if ($format == 'html') {
 	    // Set Canonic link
-	    $document->addHeadLink(JRoute::_($product->canonical, true, -1), 'canonical', 'rel', '');
+	    $document->addHeadLink($product->canonical, 'canonical', 'rel', '');
 	}
 
 	$uri = JURI::getInstance();

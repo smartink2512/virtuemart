@@ -288,11 +288,8 @@ class VirtuemartViewCategory extends VmView {
 			$format = JRequest::getWord('format', 'html');
 		}
 		if ($format == 'html') {
-			if($categoryId!==-1){
-				$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId) , 'canonical', 'rel', '' );
-			} else {
-				$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId) , 'canonical', 'rel', '' );
-			}
+
+			$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId) , 'canonical', 'rel', '' );
 
 		}
 	}

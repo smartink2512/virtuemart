@@ -32,17 +32,6 @@ defined('_JEXEC') or die('Restricted access');
 					<tr>
 						<td class="key"><span
 							class="hasTip"
-							title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_EMAILFRIEND_TIP'); ?>">
-								<label for="show_emailfriend"><?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_EMAILFRIEND') ?>
-							</label> </span>
-						</td>
-						<td>
-						<?php echo VmHTML::checkbox('show_emailfriend', VmConfig::get('show_emailfriend',0)); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="key"><span
-							class="hasTip"
 							title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_PRINTICON_TIP'); ?>">
 								<label for="show_printicon"><?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_PRINTICON') ?>
 							</label> </span>
@@ -63,6 +52,29 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo VmHTML::checkbox('pdf_icon', VmConfig::get('pdf_icon')); ?>
 						</td>
 					</tr>
+					<tr>
+						<td class="key"><span
+								class="hasTip"
+								title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_EMAILFRIEND_TIP'); ?>">
+								<label for="show_emailfriend"><?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_EMAILFRIEND') ?>
+								</label> </span>
+						</td>
+						<td>
+							<?php echo VmHTML::checkbox('show_emailfriend', VmConfig::get('show_emailfriend',0)); ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><span
+								class="hasTip"
+								title="<?php echo JText::_('COM_VIRTUEMART_RECCOMEND_UNATUH_EXPLAIN'); ?>">
+								<label for="recommend_unauth"><?php echo JText::_('COM_VIRTUEMART_RECCOMEND_UNATUH') ?>
+								</label> </span>
+						</td>
+						<td>
+							<?php echo VmHTML::checkbox('recommend_unauth', VmConfig::get('recommend_unauth')); ?>
+						</td>
+					</tr>
+					<tr>
 					<tr>
 						<td class="key"><span
 							class="hasTip"
@@ -107,18 +119,7 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo VmHTML::checkbox('product_navigation', VmConfig::get('product_navigation')); ?>
 						</td>
 					</tr>
-					<tr>
-						<td class="key"><span
-							class="hasTip"
-							title="<?php echo JText::_('COM_VIRTUEMART_RECCOMEND_UNATUH_EXPLAIN'); ?>">
-								<label for="ask_question"><?php echo JText::_('COM_VIRTUEMART_RECCOMEND_UNATUH') ?>
-							</label> </span>
-						</td>
-						<td>
-						<?php echo VmHTML::checkbox('recommend_unauth', VmConfig::get('recommend_unauth')); ?>
-						</td>
-					</tr>
-					<tr>
+
 			<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_LIST_LIMIT_EXPLAIN'); ?>">
 				<label for="list_limit"><?php echo JText::_('COM_VIRTUEMART_LIST_LIMIT') ?></label>
@@ -128,17 +129,6 @@ defined('_JEXEC') or die('Restricted access');
 				<input type="text" value="<?php echo VmConfig::get('list_limit',10); ?>" class="inputbox" size="4" name="list_limit">
 			</td>
 			</tr>
-<?php	/*		<tr>
-	    	<td class="key">
-				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN'); ?>">
-				<label for="show_products_out_of_stock"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS') ?></label>
-				</span>
-	    	</td>
-	    	<td valign="top">
-				<?php echo VmHTML::checkbox('show_products_out_of_stock', VmConfig::get('show_products_out_of_stock')); ?>
-	    	</td>
-			</tr>
-			<tr> */?>
 			<tr>
 	    	<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_DISPLAY_STOCK_EXPLAIN'); ?>">

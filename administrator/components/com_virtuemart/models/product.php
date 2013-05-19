@@ -711,13 +711,8 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			// Add the product link  for canonical
-			$child->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->virtuemart_category_id;
+			$child->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->canonCatLink;
 			$child->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->virtuemart_category_id);
-
-			/*if (empty($child->layout)) {
-				// product_layout ?
-				$child->layout = VmConfig::get ('productlayout');
-			}*/
 
 			$app = JFactory::getApplication ();
 			if ($app->isSite () and VmConfig::get ('stockhandle', 'none') == 'disableit' and ($child->product_in_stock - $child->product_ordered) <= 0) {
@@ -923,23 +918,23 @@ class VirtueMartModelProduct extends VmModel {
 			//$product->categories = $this->getProductCategories ($this->_id, $front);
 			$product->categories = $this->getProductCategories ($this->_id, FALSE); //We need also the unpublished categories, else the calculation rules do not work
 
+			if(!empty($product->categories)){
+				$categories = $this->getProductCategories ($this->_id, TRUE);   //only published
+				if($categories){
+					if(!is_array($categories)) $categories = (array)$categories;
+					$product->canonCatLink = $categories[0];
+				}
+			}
+
 			$product->virtuemart_category_id = 0;
 			if ($front) {
 
-				$canonCatLink = 0;
 				if (!empty($product->categories) and is_array ($product->categories) and count($product->categories)>1){
 
 					if (!class_exists ('shopFunctionsF')) {
 						require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 					}
-					if (!empty($product->categories) and is_array ($product->categories)) {
-						$categories = $this->getProductCategories ($this->_id, TRUE);   //only published
-						if($categories){
-							if(!is_array($categories)) $categories = (array)$categories;
-							$canonCatLink = $categories[0];
-						}
 
-					}
 					//We must first check if we come from another category, due the canoncial link we would have always the same catgory id for a product
 					//But then we would have wrong neighbored products / category and product layouts
 					$last_category_id = shopFunctionsF::getLastVisitedCategoryId ();
@@ -953,20 +948,17 @@ class VirtueMartModelProduct extends VmModel {
 							vmdebug('I take for product the requested category ',$virtuemart_category_id,$product->categories);
 						} else {
 							if (!empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
-								$product->virtuemart_category_id = $canonCatLink;
+								$product->virtuemart_category_id = $product->canonCatLink;
 								vmdebug('I take for product the main category ',$product->virtuemart_category_id,$product->categories);
 							}
 						}
 					}
 
-				} else if (!empty($product->categories) and is_array ($product->categories) and count($product->categories)===1){
-					$product->virtuemart_category_id = $canonCatLink = $product->categories[0];
-				} else {
-					/*$last_category_id = shopFunctionsF::getLastVisitedCategoryId ();
-					if($last_category_id){
-						$product->virtuemart_category_id = $last_category_id;
-					}
-					//$product->virtuemart_category_id = $canonCatLink = 0;*/
+				//}
+				//else if (!empty($product->categories) and is_array ($product->categories) and count($product->categories)===1){
+				//	$product->virtuemart_category_id = $product->categories[0];
+				} else if(!empty($product->canonCatLink)) {
+					$product->virtuemart_category_id = $product->canonCatLink;
 				}
 
 				// Add the product link  for canonical
@@ -1152,8 +1144,9 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			$q .= ' WHERE pc.`virtuemart_product_id` = ' . (int)$virtuemart_product_id;
 			if ($front) {
-				$q .= ' AND `published`=1 ORDER BY `pc`.`ordering` ';
+				$q .= ' AND `published`=1';
 			}
+			$q .= ' ORDER BY `pc`.`ordering`';
 			$this->_db->setQuery ($q);
 			$categories = $this->_db->loadResultArray ();
 		}
