@@ -1144,7 +1144,7 @@ class vmJsApi{
 		$document->addScriptDeclaration('
 //<![CDATA[
 		jQuery( function($) {
-			$("select.'.$prefix.'virtuemart_country_id").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id",ids : "'.$stateIds.'"});
+			$("select.'.$prefix.'virtuemart_country_id").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
 		});
 //]]>
 		');

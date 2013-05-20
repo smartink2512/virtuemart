@@ -338,6 +338,8 @@ class ShopFunctions {
 					$stateId = implode (",", $stateId);
 		}
 
+		//just temporarly
+		$_prefix = '';
 		vmJsApi::JcountryStateList ($stateId,$_prefix);
 
 		if ($multiple) {

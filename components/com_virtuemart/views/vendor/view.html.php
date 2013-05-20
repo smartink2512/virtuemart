@@ -143,6 +143,7 @@ class VirtuemartViewVendor extends VmView {
 
 
 	function renderMailLayout($doVendor, $recipient) {
+
 		$this->setLayout('mail_html_question');
 		$this->comment = JRequest::getString('comment');
 		$virtuemart_vendor_id = JRequest::getInt('virtuemart_vendor_id');

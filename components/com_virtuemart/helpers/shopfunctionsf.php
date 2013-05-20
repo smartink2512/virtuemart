@@ -278,6 +278,8 @@ class shopFunctionsF {
 		}
 
 		ob_start();
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 		$view->renderMailLayout( $noVendorMail, $recipient );
 		$body = ob_get_contents();
 		ob_end_clean();

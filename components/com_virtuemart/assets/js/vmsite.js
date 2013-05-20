@@ -15,12 +15,12 @@
 		list: function(options) {
 			var dest = options.dest;
 			var ids = options.ids;
+			var prefix = options.prefiks;
 
-			methods.update(this,dest,ids);
-
+			methods.update(this,dest,ids,prefix);
 			$(this).change( function() { methods.update(this,dest)});
 		},
-		update: function(org,dest,ids) {
+		update: function(org,dest,ids,prefix) {
 
 			var opt = $(org),
 				optValues = opt.val() || [],
@@ -36,6 +36,7 @@
 			$.each(optValues, function(optkey, optValue) {
 				if( opt.data( 'd'+optValue) === undefined ) byAjax.push( optValue );
 			});
+
 			if (byAjax.length >0) {
 				$.getJSON('index.php?option=com_virtuemart&view=state&format=json&virtuemart_country_id=' + byAjax,
 						function(result){
@@ -99,7 +100,7 @@
 	};
 
 	$.fn.vm2front = function( method ) {
-		
+
 		if ( methods[method] ) {
 		  return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
 		} else if ( typeof method === 'object' || ! method ) {

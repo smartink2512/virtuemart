@@ -196,10 +196,30 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			} else {
 				echo "<H3>Updated Virtuemart Plugin tables</h3>";
 			}
+			$this->updateOrderingExtensions();
+
 			return TRUE;
 
 		}
 
+		private function updateOrderingExtensions(){
+
+
+			$db = JFactory::getDBO ();
+
+			$q = 'UPDATE `#__extensions` SET `ordering`= 2 WHERE `folder` ="vmpayment"';
+			$db->setQuery($q);
+			$db->query();
+
+			$q = 'UPDATE `#__extensions` SET `ordering`= 1 WHERE `element` ="klarna"';
+			$db->setQuery($q);
+			$db->query();
+
+			$q = 'UPDATE `#__extensions` SET `ordering`= 2 WHERE `element` ="heidelpay"';
+			$db->setQuery($q);
+			$db->query();
+
+		}
 		/**
 		 * Installs a vm plugin into the database
 		 *
