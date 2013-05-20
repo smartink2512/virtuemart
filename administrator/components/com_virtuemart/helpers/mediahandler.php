@@ -1082,7 +1082,7 @@ class VmMediaHandler {
 		 */
 		function getImagesList($type = '',$page=0, $max=16) {
 
-			if(empty($this->_db)) $this->_db = JFactory::getDBO();
+			$db = JFactory::getDBO();
 			$list = array();
 			$vendorId=1;//TODO control the vendor
 			$q='SELECT SQL_CALC_FOUND_ROWS `virtuemart_media_id` FROM `#__virtuemart_medias` WHERE `published`=1
@@ -1091,28 +1091,28 @@ class VmMediaHandler {
 				$q .= ' AND `file_type` = "'.$type.'" ';
 			}
 			if ($search = JRequest::getString('term', false)){
-				$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+				$search = '"%' . $db->getEscaped( $search, true ) . '%"' ;
 				$q .=  ' AND (`file_title` LIKE '.$search.' OR `file_description` LIKE '.$search.' OR `file_meta` LIKE '.$search.') ';
 			}
 			$q .= ' LIMIT '.(int)$page*$max.', '.(int)$max;
 
 
-			$this->_db->setQuery($q);
+			$db->setQuery($q);
 			//		$result = $this->_db->loadAssocList();
-			if ($virtuemart_media_ids = $this->_db->loadResultArray()) {
-				$errMsg = $this->_db->getErrorMsg();
-				$errs = $this->_db->getErrors();
+			if ($virtuemart_media_ids = $db->loadResultArray()) {
+				$errMsg = $db->getErrorMsg();
+				$errs = $db->getErrors();
 
 				$model = VmModel::getModel('Media');
 
-				$this->_db->setQuery('SELECT FOUND_ROWS()');
-				$list['total'] = $this->_db->loadResult();
+				$db->setQuery('SELECT FOUND_ROWS()');
+				$list['total'] = $db->loadResult();
 
 				$list['images'] = $model->createMediaByIds($virtuemart_media_ids, $type);
 
 				if(!empty($errMsg)){
 					$app = JFactory::getApplication();
-					$errNum = $this->_db->getErrorNum();
+					$errNum = $db->getErrorNum();
 					$app->enqueueMessage('SQL-Error: '.$errNum.' '.$errMsg);
 				}
 

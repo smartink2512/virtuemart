@@ -13,7 +13,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: product_edit_customer.php 6272 2012-07-12 18:01:11Z Milbo $
+ * @version $Id: product_edit_customer.php 6608 2012-11-05 15:59:55Z Milbo $
  */
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access');
@@ -163,7 +163,7 @@ $i = 0;
 	</tbody>
 </table>
 <script type="text/javascript">
-	<!--
+
 	var $customerMailLink = '<?php echo JURI::root () . '/index.php?option=com_virtuemart&view=productdetails&task=sentproductemailtoshoppers&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';
 	var $customerMailNotifyLink = '<?php echo 'index.php?option=com_virtuemart&view=product&task=ajax_notifyUsers&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';
 	var $customerListLink = '<?php echo 'index.php?option=com_virtuemart&view=product&format=json&type=userlist&virtuemart_product_id=' . $this->product->virtuemart_product_id ?>';
@@ -243,15 +243,16 @@ $i = 0;
 	});
 
 	/* JS for list changes */
-
-
 	function populate_customer_list($status) {
 		if ($status == "undefined" || $status == null) $status = '';
-		jQuery.getJSON($customerListLink, { status:$status  },
-			function (data) {
-				jQuery("#customers-list").html(data.value);
-			});
+		if($status !=''){
+            jQuery.getJSON($customerListLink, { status:$status  },
+                    function (data) {
+                        jQuery("#customers-list").html(data.value);
+                    });
+		}
 	}
+
 	function customer_initiliaze_boxes() {
 		email_type = jQuery("input:radio[name=customer_email_type]:checked").val();
 		if (email_type == 'notify') {
@@ -270,5 +271,4 @@ $i = 0;
 			jQuery('#customer-mail-notify-list').hide();
 		}
 	}
--->
 </script>

@@ -643,7 +643,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_userinfos` (
   `virtuemart_state_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   `virtuemart_country_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   `zip` char(16) NOT NULL DEFAULT '',
-  `email` char(255),
+  `email` char(128),
   `agreed` tinyint(1) NOT NULL DEFAULT '0',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',

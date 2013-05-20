@@ -51,6 +51,8 @@ class VirtuemartViewProduct extends VmView {
 			case 'add':
 			case 'edit':
 
+				VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+				VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 				//this was in the controller for the edit tasks, I dont know if it is still needed,
 				$this->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product'.DS.'tmpl');
 
