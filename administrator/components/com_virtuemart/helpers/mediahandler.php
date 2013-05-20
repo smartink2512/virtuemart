@@ -921,11 +921,7 @@ class VmMediaHandler {
 			$j = '
 //<![CDATA[
 '; 
-			if (JVM_VERSION===1) {
-				$j .= "
-			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','0') }); " ;
-			}
-			else $j .= "
+			$j .= "
 			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','0') }); " ;
 
 			$j .="
@@ -994,32 +990,23 @@ class VmMediaHandler {
 			$html='';
 			$html .= '<fieldset class="checkboxes">' ;
 			$html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGES').'</legend>';
-			$html .=  '<span class="hasTip always-left" title="'.JText::_('COM_VIRTUEMART_SEARCH_MEDIA_TIP').'">'.JText::_('COM_VIRTUEMART_SEARCH_MEDIA') . '</span>';
+			$html .=  '<span style="height:18px;vertical-align: middle;margin:4px" class="hasTip always-left" title="'.JText::_('COM_VIRTUEMART_SEARCH_MEDIA_TIP').'">'.JText::_('COM_VIRTUEMART_SEARCH_MEDIA') . '</span>';
 			$html .=   '
-					<input type="text" name="searchMedia" id="searchMedia" data-start="0" value="' .JRequest::getString('searchMedia') . '" class="text_area always-left" />
-					<button class="reset-value fg-button">'.JText::_('COM_VIRTUEMART_RESET') .'</button>
-					<a class="js-pages js-previous fg-button ui-state-default fg-button-icon-left ui-corner-all" ><span class="ui-icon ui-icon-circle-minus" style="display:inline-block;"></span> 16 </a>
-					<a class="js-pages js-next fg-button ui-state-default fg-button-icon-right ui-corner-all"> 16 <span class="ui-icon ui-icon-circle-plus" style="display:inline-block;"></span></a>
-					<br class="clear"/>';
-			;
-			//$result = $this->getImagesList($type);
+					<input type="text" name="searchMedia" id="searchMedia" style="height:18px;vertical-align: middle;margin:4px;width:250px" data-start="0" value="' .JRequest::getString('searchMedia') . '" class="text_area always-left" />
+					<button class="reset-value fg-button" style="height:18px;vertical-align: middle;margin:4px">'.JText::_('COM_VIRTUEMART_RESET') .'</button>
+					<a style="height:18px;vertical-align: middle;margin:4px" class="js-pages js-previous fg-button ui-state-default fg-button-icon-left ui-corner-all" ><span class="ui-icon ui-icon-circle-minus" style="display:inline-block;"></span> 16 </a>
+					<a style="height:18px;vertical-align: middle;margin:4px" class="js-pages js-next fg-button ui-state-default fg-button-icon-right ui-corner-all"> 16 <span class="ui-icon ui-icon-circle-plus" style="display:inline-block;"></span></a>';
+			$html .='<br class="clear"/>';
+
+
 			$html .= '<div id="ImagesContainer">';
 
-			// 			$html .= ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_NAME','','searchMedia') ;
-
-			// if(empty($fileIds)) {
-			// return  $html;
-			// }
-			// $text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE_PRIMARY';
 			if(!empty($fileIds)) {
 				foreach($fileIds as $k=>$id){
 					$html .= $this->displayImage($id,$k );
 				}
 			}
-			//$html .= '<a id="addnewselectimage2" href="#media-dialog">'.JText::_('COM_VIRTUEMART_IMAGE_ATTACH_NEW').'</a>';
 			$html .= '</div>';
-
-
 
 			return $html.'</fieldset><div class="clear"></div>';
 		}
@@ -1051,7 +1038,9 @@ class VmMediaHandler {
 
 			$Images = array();
 			$list = VmMediaHandler::getImagesList($types,$page,$max);
-			if (empty($list['images'])) return JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND');
+			if (empty($list['images'])){
+				return JText::_('COM_VIRTUEMART_NO_MEDIA_FILES');
+			}
 
 			foreach ($list['images'] as $key =>$image) {
 				$htmlImages ='';
@@ -1080,7 +1069,7 @@ class VmMediaHandler {
 		 * @param name of the view
 		 * @return object List of flypage objects
 		 */
-		function getImagesList($type = '',$page=0, $max=16) {
+		function getImagesList($type = '',$limit=0, $max=16) {
 
 			$db = JFactory::getDBO();
 			$list = array();
@@ -1094,8 +1083,7 @@ class VmMediaHandler {
 				$search = '"%' . $db->getEscaped( $search, true ) . '%"' ;
 				$q .=  ' AND (`file_title` LIKE '.$search.' OR `file_description` LIKE '.$search.' OR `file_meta` LIKE '.$search.') ';
 			}
-			$q .= ' LIMIT '.(int)$page*$max.', '.(int)$max;
-
+			$q .= ' LIMIT '.(int)$limit.', '.(int)$max;
 
 			$db->setQuery($q);
 			//		$result = $this->_db->loadAssocList();

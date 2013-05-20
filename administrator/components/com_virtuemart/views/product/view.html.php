@@ -82,8 +82,6 @@ class VirtuemartViewProduct extends VmView {
 
 				// Load the product price
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-				//$calculator = calculationHelper::getInstance();
-				//$product->prices = $calculator -> getProductPrices($product);
 
 				$product_childIds = $model->getProductChildIds($virtuemart_product_id);
 
@@ -219,9 +217,9 @@ class VirtuemartViewProduct extends VmView {
 				$text="";
 				if ($task == 'edit') {
 					if ($product->product_sku) $sku=' ('.$product->product_sku.')'; else $sku="";
-
+					if (!empty($product->canonCatLink)) $canonLink = '&virtuemart_category_id=' . $product->canonCatLink; else $canonLink = '';
 					if(!empty($product->virtuemart_product_id)){
-						$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'" target="_blank" >'. $product->product_name.$sku.'<span class="vm2-modallink"></span></a>';
+						$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'" target="_blank" >'. $product->product_name.$sku.'<span class="vm2-modallink"></span></a>';
 					} else {
 						$text = $product->product_name.$sku;
 					}

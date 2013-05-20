@@ -714,6 +714,7 @@ class VirtueMartModelProduct extends VmModel {
 			$child->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->canonCatLink;
 			$child->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->virtuemart_category_id);
 
+
 			$app = JFactory::getApplication ();
 			if ($app->isSite () and VmConfig::get ('stockhandle', 'none') == 'disableit' and ($child->product_in_stock - $child->product_ordered) <= 0) {
 				vmdebug ('STOCK 0', VmConfig::get ('use_as_catalog', 0), VmConfig::get ('stockhandle', 'none'), $child->product_in_stock);
@@ -954,18 +955,12 @@ class VirtueMartModelProduct extends VmModel {
 						}
 					}
 
-				//}
-				//else if (!empty($product->categories) and is_array ($product->categories) and count($product->categories)===1){
-				//	$product->virtuemart_category_id = $product->categories[0];
 				} else if(!empty($product->canonCatLink)) {
 					$product->virtuemart_category_id = $product->canonCatLink;
 				}
 
-				// Add the product link  for canonical
-			//	$product->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $product->virtuemart_category_id;
-			//	$product->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->_id . '&virtuemart_category_id=' . $product->virtuemart_category_id);
-
 			} else {
+				//This construction should allow us to see category depended prices in the BE
 				$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
 
 				if($virtuemart_category_id!==0 and !empty($product->categories) ) {
@@ -1131,7 +1126,7 @@ class VirtueMartModelProduct extends VmModel {
 	/**
 	 * Load  the product category
 	 *
-	 * @author Kohl Patrick,RolandD,Max Milbers
+	 * @author Kohl Patrick,Max Milbers
 	 * @return array list of categories product is in
 	 */
 	public function getProductCategories ($virtuemart_product_id = 0, $front = FALSE) {
@@ -1144,11 +1139,12 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			$q .= ' WHERE pc.`virtuemart_product_id` = ' . (int)$virtuemart_product_id;
 			if ($front) {
-				$q .= ' AND `published`=1';
+				$q .= ' AND `published`=1 ORDER BY `c`.`ordering` ASC';
 			}
-			$q .= ' ORDER BY `pc`.`ordering`';
+			//$q .= ' ORDER BY `pc`.`ordering` DESC ';
 			$this->_db->setQuery ($q);
 			$categories = $this->_db->loadResultArray ();
+
 		}
 
 		return $categories;
@@ -1157,7 +1153,7 @@ class VirtueMartModelProduct extends VmModel {
 	/**
 	 * Load  the product shoppergroups
 	 *
-	 * @author Kohl Patrick,RolandD,Max Milbers, Cleanshooter
+	 * @author Kohl Patrick,Max Milbers, Cleanshooter
 	 * @return array list of updateProductShoppergroupsTable that can view the product
 	 */
 	private function getProductShoppergroups ($virtuemart_product_id = 0) {

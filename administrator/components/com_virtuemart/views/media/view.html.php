@@ -43,7 +43,6 @@ class VirtuemartViewMedia extends VmView {
 		// TODO add icon for media view
 		$this->SetViewTitle();
 
-
 		$model = VmModel::getModel('media');
 		$perms = Permissions::getInstance();
 		$this->assignRef('perms', $perms);
