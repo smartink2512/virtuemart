@@ -37,6 +37,7 @@ class JElementVMFiles extends JElement {
 		$path = JPATH_ROOT . DS . $rel_path;
 		$filter = $node->attributes ('filter');
 		$exclude = array($node->attributes ('exclude'), '.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html');
+		$pattern = implode ( "|", $exclude);
 		$stripExt = $node->attributes ('stripext');
 		if (!JFolder::exists ($path)) {
 			return JText::sprintf ('COM_VIRTUEMART_FOLDER_NOT_EXIST', $node->attributes ('directory'));
@@ -57,8 +58,7 @@ class JElementVMFiles extends JElement {
 		if (is_array ($files)) {
 			foreach ($files as $file) {
 				if ($exclude) {
-					vmdebug('$file ',$file,chr (1) . $exclude . chr (1));
-					if (preg_match (chr (1) . $exclude . chr (1), $file)) {
+					if (preg_match (chr (1) . $pattern . chr (1), $file)) {
 						continue;
 					}
 				}
