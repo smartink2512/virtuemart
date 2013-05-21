@@ -55,7 +55,7 @@ class VirtuemartViewMedia extends JView {
 			}
 		}
 		else {
-			$this->loadHelper('mediahandler');
+			if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 			$start = JRequest::getInt('start',0);
 
 			$type = JRequest::getWord('mediatype',0);

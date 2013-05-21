@@ -44,8 +44,6 @@ class VirtuemartViewProduct extends JView {
 	}
 	function display($tpl = null) {
 
-		//$this->loadHelper('customhandler');
-
 		$filter = JRequest::getVar('q', JRequest::getVar('term', false) );
 
 		$id = JRequest::getInt('id', false);

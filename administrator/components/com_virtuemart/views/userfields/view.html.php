@@ -311,7 +311,8 @@ class VirtuemartViewUserfields extends VmView {
 		$db ->setQuery($q);
 		$this->plugin = $db ->loadObject();
 		
-		$this->loadHelper('parameterparser');
+		if (!class_exists('vmParameters'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
 		$parameters = new vmParameters($params,  $this->plugin->element , 'plugin' ,'vmuserfield');
 		$lang = JFactory::getLanguage();
 		$filename = 'plg_vmuserfield_' .  $this->plugin->element;

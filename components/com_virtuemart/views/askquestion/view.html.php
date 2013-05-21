@@ -78,7 +78,7 @@ class VirtueMartViewAskquestion extends VmView {
 		// Set Canonic link
 		$format = JRequest::getWord('format', 'html');
 		if ($format == 'html') {
-			$document->addHeadLink ($product->canonical, 'canonical', 'rel', '');
+			$document->addHeadLink (JRoute::_($product->canonical), 'canonical', 'rel', '');
 		}
 
 

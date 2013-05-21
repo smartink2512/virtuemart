@@ -44,8 +44,9 @@ class VirtuemartViewPaymentMethod extends VmView {
 		if (!class_exists('VmHTML'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
-		$this->addHelperPath(JPATH_VM_PLUGINS);
-		$this->loadHelper('vmplugin');
+		if (!class_exists ('vmPlugin')) {
+			require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
+		}
 
 
 		$this->assignRef('perms', Permissions::getInstance());
@@ -73,8 +74,9 @@ class VirtuemartViewPaymentMethod extends VmView {
 			// Load the helper(s)
 			if (!class_exists('VmImage'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
-			$this->loadHelper('parameterparser');
-			// jimport('joomla.html.pane');
+
+			if (!class_exists('vmParameters'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
 
 			$payment = $model->getPayment();
 			$this->assignRef('payment',	$payment);

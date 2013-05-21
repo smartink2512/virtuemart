@@ -45,7 +45,8 @@ class VirtuemartViewUserfields extends JView {
 				$q = 'SELECT `params`,`element` FROM `' . $table . '` WHERE `element` = "'.$field.'"';
 				$db ->setQuery($q);
 				$this->plugin = $db ->loadObject();
-				$this->loadHelper('parameterparser');
+				if (!class_exists('vmParameters'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
 				$parameters = new vmParameters($this->plugin ,  $this->plugin->element , 'plugin' ,'vmuserfield');
 				$lang = JFactory::getLanguage();
 				$filename = 'plg_vmuserfield_' .  $this->plugin->element;

@@ -117,9 +117,6 @@ class VirtuemartControllerOrders extends VmController {
 		/* Load the view object */
 		$view = $this->getView('orders', 'html');
 
-		/* Load the helper */
-		$view->loadHelper('vendorHelper');
-
 		/* Update the statuses */
 		$model = VmModel::getModel('orders');
 
@@ -160,9 +157,6 @@ class VirtuemartControllerOrders extends VmController {
 
 		/* Load the view object */
 		$view = $this->getView('orders', 'html');
-
-		/* Load the helper */
-		$view->loadHelper('vendorHelper');
 
 		$data = JRequest::get('post');
 		$model = VmModel::getModel();

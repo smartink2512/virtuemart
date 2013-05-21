@@ -57,6 +57,7 @@ class JElementVMFiles extends JElement {
 		if (is_array ($files)) {
 			foreach ($files as $file) {
 				if ($exclude) {
+					vmdebug('$file ',$file,chr (1) . $exclude . chr (1));
 					if (preg_match (chr (1) . $exclude . chr (1), $file)) {
 						continue;
 					}

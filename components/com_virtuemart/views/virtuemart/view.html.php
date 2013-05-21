@@ -30,13 +30,6 @@ class VirtueMartViewVirtueMart extends VmView {
 
 	public function display($tpl = null) {
 
-		/* MULTI-X
-		 * $this->loadHelper('vendorHelper');
-		* $vendorModel = new Vendor;
-		* $vendor = $vendorModel->getVendor();
-		* $this->assignRef('vendor',	$vendor);
-		*/
-
 		$vendorId = JRequest::getInt('vendorid', 1);
 
 		$vendorModel = VmModel::getModel('vendor');

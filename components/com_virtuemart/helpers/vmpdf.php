@@ -68,7 +68,7 @@ class VmPdf {
 if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 	vmError('VmPDF helper: For the PDF invoice and other PDF business letters, you must install the tcpdf library at '.JPATH_VM_LIBRARIES.DS.'tcpdf');
 } else {
-	if(!class_exists('TCPDF'))require_once(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php');
+	if(!class_exists('TCPDF'))require(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php');
 	// Extend the TCPDF class to create custom Header and Footer as configured in the Backend
 	class VmVendorPDF extends TCPDF {
 		var $vendor = 0;

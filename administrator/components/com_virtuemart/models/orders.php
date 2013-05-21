@@ -1475,7 +1475,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			//TODO we need an array of orderstatus
 			if ( (in_array($order['details']['BT']->order_status,$orderstatusForInvoice))  or $pdfInvoice==1  or $force_create_invoice==1 ){
 				if (!shopFunctions::InvoiceNumberReserved($invoiceNumberDate[0])) {
-					if(!class_exists('VirtueMartControllerInvoice')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
+					if(!class_exists('VirtueMartControllerInvoice')) require( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
 					$controller = new VirtueMartControllerInvoice( array(
 						'model_path' => JPATH_VM_SITE.DS.'models',
 						'view_path' => JPATH_VM_SITE.DS.'views'

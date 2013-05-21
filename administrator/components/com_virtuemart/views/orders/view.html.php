@@ -138,7 +138,7 @@ class VirtuemartViewOrders extends VmView {
 			JToolBarHelper::custom( 'cancel', 'back','back','back',false,false);
 		}
 		else if ($curTask == 'editOrderItem') {
-			$this->loadHelper('calculationHelper');
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
 			$this->assignRef('orderstatuses', $orderStates);
 
