@@ -714,7 +714,7 @@ class VirtueMartModelProduct extends VmModel {
 			$child->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->canonCatLink;
 			$child->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->virtuemart_category_id);
 
-
+			$child->quantity = $quantity;
 			$app = JFactory::getApplication ();
 			if ($app->isSite () and VmConfig::get ('stockhandle', 'none') == 'disableit' and ($child->product_in_stock - $child->product_ordered) <= 0) {
 				vmdebug ('STOCK 0', VmConfig::get ('use_as_catalog', 0), VmConfig::get ('stockhandle', 'none'), $child->product_in_stock);
@@ -728,7 +728,7 @@ class VirtueMartModelProduct extends VmModel {
 		return $_products[$productKey];
 	}
 
-	private function loadProductPrices($productId,$quantity,$virtuemart_shoppergroup_ids,$front){
+	public function loadProductPrices($productId,$quantity,$virtuemart_shoppergroup_ids,$front){
 
 		$db = JFactory::getDbo();
 		$this->_nullDate = $db->getNullDate();
@@ -1898,9 +1898,6 @@ class VirtueMartModelProduct extends VmModel {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 		}
 		$calculator = calculationHelper::getInstance ();
-
-		// Add in the quantity in case the customfield plugins need it
-		$product->quantity = $quantity;
 
 		// Calculate the modificator
 		$variantPriceModification = $calculator->calculateModificators ($product, $customVariant);

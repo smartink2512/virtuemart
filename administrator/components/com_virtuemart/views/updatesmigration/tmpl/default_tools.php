@@ -91,7 +91,19 @@ if(!VmConfig::get('dangeroustools', false)){
 	</td>
     </tr>
   <tr>
+	  <td align="center" width="25%">
+		  <?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=resetThumbs&token='.JUtility::getToken() ); ?>
+		  <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_TOOLS_RESTHUMB_CONF'); ?>', '<?php echo $link; ?>');">
+				  <span class="vmicon48 vm_shop_products_48"></span>
+				  <br /><?php echo JText::_('COM_VIRTUEMART_TOOLS_RESTHUMB'); ?>
 
+			  </a></div>
+	  </td>
+
+	  <td align="left" width="25%" >
+
+		  <?php echo JText::_('COM_VIRTUEMART_TOOLS_RESTHUMB_TIP'); ?>
+	  </td>
     </tr>
 
     <tr><td align="left" colspan="4"><?php echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING'); ?></td></tr>

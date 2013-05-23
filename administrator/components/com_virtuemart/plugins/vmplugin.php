@@ -79,6 +79,10 @@ abstract class vmPlugin extends JPlugin {
 		$this->_tableChecked = FALSE;
 	}
 
+	function setPluginLoggable($set=TRUE){
+		$this->_loggable = $set;
+	}
+
 	/**
 	 * @return array
 	 */

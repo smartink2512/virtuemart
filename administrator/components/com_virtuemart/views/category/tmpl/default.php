@@ -186,5 +186,39 @@ AdminUIHelper::startAdminArea();
 	  ?>
 </form>
 
+<?php	//DragnDrop by StephanBais
+	//if ($this->virtuemart_category_id ) { ?>
+	<script>
+
+		jQuery(function() {
+
+			jQuery( ".adminlist" ).sortable({
+				items: 'tr:not(:first,:last)',
+				opacity: 0.8,
+				update: function(event, ui) {
+					var i = 1;
+					jQuery(function updaterows() {
+						jQuery(".order").each(function(index){
+							var row = jQuery(this).parent('td').parent('tr').prevAll().length;
+							jQuery(this).val(row);
+							i++;
+						});
+
+					});
+				},
+				stop: function () {
+					var inputs = jQuery('input.ordering');
+					var rowIndex = inputs.length;
+					jQuery('input.ordering').each(function(idx) {
+						jQuery(this).val(idx + 1);
+					});
+				}
+
+			});
+		});
+		jQuery('input.ordering').css({'color': '#666666', 'background-color': 'transparent','border': 'none' }).attr('readonly', true);
+	</script>
+
+<?php // } ?>
 
 <?php AdminUIHelper::endAdminArea(); ?>

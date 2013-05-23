@@ -141,7 +141,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<legend><?php echo JText::_('COM_VIRTUEMART_METAINFO'); ?></legend>
 				<table>
 					<?php echo VmHTML::row('textarea','COM_VIRTUEMART_METADESC','metadesc',$this->vendor->metadesc);
-					echo VmHTML::row('textarea','COM_VIRTUEMART_METAKEYWORDS','metakey',$this->vendor->metakey);
+					echo VmHTML::row('textarea','COM_VIRTUEMART_METAKEY','metakey',$this->vendor->metakey);
 					$options = array(
 							''	=>	JText::_('JGLOBAL_INDEX_FOLLOW'),
 							'noindex, follow'	=>	JText::_('JGLOBAL_NOINDEX_FOLLOW'),

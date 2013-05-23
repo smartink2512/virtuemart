@@ -675,11 +675,19 @@ class VmTable extends JTable {
 						//No id is stored, even users are allowed to use for the storage and vendorId, no change
 					}
 
-				} else if (!empty($virtuemart_vendor_id) and $loggedVendorId != $virtuemart_vendor_id) {
-					vmInfo('Admin with vendor id ' . $loggedVendorId . ' is using for storing vendor id ' . $this->virtuemart_vendor_id);
-					vmdebug('Admin with vendor id ' . $loggedVendorId . ' is using for storing vendor id ' . $this->virtuemart_vendor_id);
-					$this->virtuemart_vendor_id = $virtuemart_vendor_id;
+				} else {
+
+					if (!empty($virtuemart_vendor_id) and $loggedVendorId != $virtuemart_vendor_id) {
+						vmInfo('Admin with vendor id ' . $loggedVendorId . ' is using for storing vendor id ' . $this->virtuemart_vendor_id);
+						vmdebug('Admin with vendor id ' . $loggedVendorId . ' is using for storing vendor id ' . $this->virtuemart_vendor_id);
+						$this->virtuemart_vendor_id = $virtuemart_vendor_id;
+					}
+					//Admin forgot to select a vendor
+					else if (empty($virtuemart_vendor_id)) {
+						$this->virtuemart_vendor_id = 1;
+					}
 				}
+
 			}
 
 			//tables to consider for multivendor
@@ -791,9 +799,9 @@ class VmTable extends JTable {
 			}
 
 			if ($ok) {
-				vmdebug('Table storing brefore', $this->created_on, $this->$tblKey);
+
 				$this->bindChecknStoreNoLang($data, $preload);
-				vmdebug('Table storing after storing normal data ', $this->created_on, $this->$tblKey);
+
 				$langTable->$tblKey = !empty($this->$tblKey) ? $this->$tblKey : 0;
 				//vmdebug('bindChecknStoreNoLang my $tblKey '.$tblKey.' '.$langTable->$tblKey);
 				if ($ok and $preload) {

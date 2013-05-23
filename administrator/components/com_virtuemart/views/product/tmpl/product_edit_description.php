@@ -54,12 +54,17 @@ defined('_JEXEC') or die('Restricted access');?>
 			</td>
 		</tr>
 		<tr>
-			<td >
-				<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_METAROBOTS'); ?> </div>
-			</td>
-			<td valign="top">
-				<input type="text" class="inputbox" size="60" name="metarobot" value="<?php echo $this->product->metarobot ?>" />
-			</td>
+			<?php echo VmHTML::row('input','COM_VIRTUEMART_CUSTOM_PAGE_TITLE','customtitle',$this->category->customtitle);
+			echo VmHTML::row('textarea','COM_VIRTUEMART_METADESC','metadesc',$this->category->metadesc);
+			echo VmHTML::row('textarea','COM_VIRTUEMART_METAKEY','metakey',$this->category->metakey);
+			$options = array(
+				''	=>	JText::_('JGLOBAL_INDEX_FOLLOW'),
+				'noindex, follow'	=>	JText::_('JGLOBAL_NOINDEX_FOLLOW'),
+				'index, nofollow'	=>	JText::_('JGLOBAL_INDEX_NOFOLLOW'),
+				'noindex, nofollow'	=>	JText::_('JGLOBAL_NOINDEX_NOFOLLOW')
+			);
+			echo VmHtml::row('selectList','COM_VIRTUEMART_METAROBOTS','metarobot',$this->product->metarobot,$options);
+		?>
 		</tr>
 		<tr>
 			<td >

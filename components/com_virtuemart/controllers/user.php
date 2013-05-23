@@ -106,7 +106,7 @@ class VirtueMartControllerUser extends JController
 	 */
 	function saveCheckoutUser(){
 
-		$msg = $this->saveData(true);
+		$msg = $this->saveData(true,VmConfig::get('reg_silent',0));
 
 		//We may add here the option for silent registration.
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout',$this->useXHTML,$this->useSSL), $msg );
@@ -125,7 +125,7 @@ class VirtueMartControllerUser extends JController
 	 */
 	function saveCartUser(){
 
-		$msg = $this->saveData(true);
+		$msg = $this->saveData(true,VmConfig::get('reg_silent',0));
 		$this->setRedirect(JRoute::_( 'index.php?option=com_virtuemart&view=cart' ),$msg);
 	}
 

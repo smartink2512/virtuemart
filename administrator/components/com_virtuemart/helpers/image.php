@@ -79,6 +79,12 @@ class VmImage extends VmMediaHandler {
 	}
 
 
+	public function createThumbFileUrl(){
+
+		$file_name = $this->createThumbName();
+		$file_url_thumb = $this->file_url_folder.'resized/'.$this->file_name_thumb.'.'.$this->file_extension;
+		return $file_url_thumb;
+	}
 	/**
 	 * a small function that ensures that we always build the thumbnail name with the same method
 	 */
@@ -128,11 +134,9 @@ class VmImage extends VmMediaHandler {
 		$this->file_name_thumb = $this->createThumbName($width,$height);
 
 		if($this->file_is_forSale==0){
-
 			$rel_path = str_replace('/',DS,$this->file_url_folder);
 			$fullSizeFilenamePath = JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
 		} else {
-			$rel_path = str_replace('/',DS,$this->file_url_folder);
 			$fullSizeFilenamePath = $this->file_url_folder.$this->file_name.'.'.$this->file_extension;
 		}
 

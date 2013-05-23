@@ -481,10 +481,16 @@ class VmMediaHandler {
 			}
 
 			if(!empty($this->file_url_thumb)){
-				$file_url = $this->file_url_thumb;
+				$file_url_thumb = $this->file_url_thumb;
+			} else if(is_a($this,'VmImage')) {
+
+				$file_url_thumb = $this->createThumbFileUrl();
+
+			} else {
+				$file_url_thumb = '';
 			}
 
-			$media_path = JPATH_ROOT.DS.str_replace('/',DS,$this->file_url_thumb);
+			$media_path = JPATH_ROOT.DS.str_replace('/',DS,$file_url_thumb);
 
 			if(empty($this->file_meta)){
 				if(!empty($this->file_description)){
@@ -498,28 +504,30 @@ class VmMediaHandler {
 				$file_alt = $this->file_meta;
 			}
 
-			if ((empty($this->file_url_thumb) || !file_exists($media_path)) && is_a($this,'VmImage')) {
+			if ((empty($file_url_thumb) || !file_exists($media_path)) && is_a($this,'VmImage')) {
 
 				if(empty($width)) $width = VmConfig::get('img_width', 90);
 				if(empty($height)) $height = VmConfig::get('img_height', 90);
-				$this->file_url_thumb = $this->createThumb($width,$height);
+				$file_url_thumb = $this->createThumb($width,$height);
 				// 				vmdebug('displayMediaThumb',$this->file_url_thumb);
-				$media_path = JPATH_ROOT.DS.str_replace('/',DS,$this->file_url_thumb);
-				$file_url = $this->file_url_thumb;
+				$media_path = JPATH_ROOT.DS.str_replace('/',DS,$file_url_thumb);
+				//$file_url = $this->file_url_thumb;
 
 				//Here we need now to update the database field of $this->file_url_thumb to prevent dynamic thumbnailing in future
-				if(empty($this->_db)) $this->_db = JFactory::getDBO();
+				//We do not update anylonger, only if there is an override used
+				/*if(empty($this->_db)) $this->_db = JFactory::getDBO();
 				$query = 'UPDATE `#__virtuemart_medias` SET `file_url_thumb` = "'.$this->_db->getEscaped($this->file_url_thumb).'" WHERE `#__virtuemart_medias`.`virtuemart_media_id` = "'.(int)$this->virtuemart_media_id.'" ';
 				$this->_db->setQuery($query);
-				$this->_db->query();
+				$this->_db->query();*/
 			}
+			$this->file_url_thumb = $file_url_thumb;
 
 			if($withDescr) $withDescr = $this->file_description;
 			if (empty($this->file_url_thumb) || !file_exists($media_path)) {
 				return $this->getIcon($imageArgs,$lightbox,$return,$withDescr,$absUrl);
 			}
 
-			if($return) return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,$effect,$withDescr,$absUrl);
+			if($return) return $this->displayIt($file_url_thumb, $file_alt, $imageArgs,$lightbox,$effect,$withDescr,$absUrl);
 
 		}
 
@@ -1178,6 +1186,16 @@ class VmMediaHandler {
 			$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_META','file_meta');
 
 			$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL','file_url',$readonly);
+
+			//remove the file_url_thumb in case it is standard
+			if(!empty($this->file_url_thumb) and is_a($this,'VmImage')) {
+				$file_url_thumb = $this->createThumbFileUrl();
+				//vmdebug('my displayFileHandler ',$this,$file_url_thumb);
+
+				if($this->file_url_thumb == $file_url_thumb){
+					$this->file_url_thumb = JText::sprintf('COM_VIRTUEMART_DEFAULT_URL',$file_url_thumb);
+				}
+			}
 			$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL_THUMB','file_url_thumb',$readonly);
 
 			$this->addMediaAttributesByType();

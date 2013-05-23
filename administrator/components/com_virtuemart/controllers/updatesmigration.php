@@ -115,6 +115,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	function setStoreOwner(){
 
 		$data = JRequest::get('get');
+		JRequest::setVar($data['token'], '1', 'post');
 		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
 		$this->checkPermissionForTools();
 
@@ -521,19 +522,26 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		}
 
 		$this->setRedirect($this->redirectPath, 'is an update '.$update);
-/*		$db = JFactory::getDBO();
-		$query = 'SHOW COLUMNS FROM `#__virtuemart_products` ';
-		$db->setQuery($query);
-		$columns = $db->loadResultArray(0);
 
-		if(!in_array('product_ordered',$columns)){
-			echo 'is in array';
-			$query = 'ALTER TABLE `#__virtuemart_products` ADD product_ordered int(11)';
-			$db->setQuery($query);
-			$db->query();
-		}*/
 	}
 
 
+	function resetThumbs(){
+
+		$data = JRequest::get('get');
+		JRequest::setVar($data['token'], '1', 'post');
+		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
+		$this->checkPermissionForTools();
+
+		if(!VmConfig::get('dangeroustools', true)){
+			$msg = $this->_getMsgDangerousTools();
+			$this->setRedirect($this->redirectPath, $msg);
+			return false;
+		}
+
+		$model = VmModel::getModel('updatesMigration');
+		$result = $model->resetThumbs();
+		$this->setRedirect($this->redirectPath, $result);
+	}
 }
 

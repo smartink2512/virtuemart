@@ -54,6 +54,28 @@ class VirtueMartControllerCart extends JController {
 		$this->useXHTML = true;
 	}
 
+	/**
+	 * Override of display
+	 *
+	 * @return  JController  A JController object to support chaining.
+	 *
+	 * @since   11.1
+	 */
+	public function display($cachable = false)
+	{
+		$document = JFactory::getDocument();
+		$viewType = $document->getType();
+		$viewName = JRequest::getCmd('view', $this->default_view);
+		$viewLayout = JRequest::getCmd('layout', 'default');
+
+		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+
+		$view->assignRef('document', $document);
+
+		$view->display();
+
+		return $this;
+	}
 
 	/**
 	 * Add the product to the cart
@@ -103,7 +125,7 @@ class VirtueMartControllerCart extends JController {
 
 			$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
 			$view = $this->getView ('cart', 'json');
-			$errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
+			$errorMsg = 0;//JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
 			$product = $cart->add($virtuemart_product_ids, $errorMsg );
 			if ($product) {
 				$view->setLayout('padded');
@@ -198,7 +220,7 @@ class VirtueMartControllerCart extends JController {
 				}
 			}
 		}
-		parent::display();
+		$this->display();
 
 	}
 
@@ -255,7 +277,7 @@ class VirtueMartControllerCart extends JController {
 			}
 		}
 		// 	self::Cart();
-		parent::display();
+		$this->display();
 	}
 
 	/**
@@ -281,7 +303,7 @@ class VirtueMartControllerCart extends JController {
 	 */
 	function setpayment() {
 
-		/* Get the payment id of the cart */
+		// Get the payment id of the cart
 		//Now set the payment rate into the cart
 		$cart = VirtueMartCart::getCart();
 		if ($cart) {
@@ -314,8 +336,8 @@ class VirtueMartControllerCart extends JController {
 				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout'), $msg);
 			}
 		}
-		// 	self::Cart();
-		parent::display();
+
+		$this->display();
 	}
 
 	/**
@@ -359,7 +381,6 @@ class VirtueMartControllerCart extends JController {
 	 *
 	 * @author Max Milbers
 	 *
-	 *
 	 */
 	public function checkout() {
 		//Tests step for step for the necessary data, redirects to it, when something is lacking
@@ -375,7 +396,6 @@ class VirtueMartControllerCart extends JController {
 	 * cart object checks itself, if the data is valid
 	 *
 	 * @author Max Milbers
-	 *
 	 *
 	 */
 	public function confirm() {

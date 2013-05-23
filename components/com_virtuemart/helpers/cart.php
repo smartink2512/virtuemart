@@ -324,14 +324,20 @@ class VirtueMartCart {
 			return false;
 		}
 
+		$pModel = VmModel::getModel('product');
 		//Iterate through the prod_id's and perform an add to cart for each one
 		foreach ($virtuemart_product_ids as $p_key => $virtuemart_product_id) {
 
 			$quantityPost = (int) $post['quantity'][$p_key];
 
 			if($quantityPost === 0) continue;
+			//$pModel->setId($virtuemart_product_id);
+			$tmpProduct = $pModel->getProduct($virtuemart_product_id, true, false,true,$quantityPost);
 
-			$tmpProduct = $this->getProduct((int) $virtuemart_product_id, true, false,true,$quantityPost);
+			if ( VmConfig::get('oncheckout_show_images')){
+				$pModel->addImages($tmpProduct,1);
+			}
+
 
 			// trying to save some space in the session table
 			$product = new stdClass();
@@ -571,26 +577,6 @@ class VirtueMartCart {
 		return true;
 		else
 		return false;
-	}
-
-	/**
-	 * Proxy function for getting a product object
-	 *
-	 * @author Max Milbers
-	 * @todo Find out if the include path belongs here? For now it works.
-	 * @param int $virtuemart_product_id The product ID to get the object for
-	 * @return object The product details object
-	 */
-	private function getProduct($virtuemart_product_id, $quantity) {
-		JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
-		$model = JModel::getInstance('Product', 'VirtueMartModel');
-		$product = $model->getProduct($virtuemart_product_id, true, false,true,$quantity);
-
-		if ( VmConfig::get('oncheckout_show_images')){
-			$model->addImages($product,1);
-
-		}
-		return $product;
 	}
 
 

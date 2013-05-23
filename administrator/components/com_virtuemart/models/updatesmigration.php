@@ -410,6 +410,58 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		return true;
     }
 
+	/**
+	 * This function deletes all stored thumbs and deletes the entries for all thumbs, usually this is need for shops
+	 * older than vm2.0.22. The new pattern is now not storing the url as long it is not overwritten.
+	 * Of course the function deletes all overwrites, but you can now relativly easy change the thumbsize in your shop
+	 * @author Max Milbers
+	 */
+	function resetThumbs(){
+
+		$db = JFactory::getDbo();
+		$q = 'UPDATE `#__virtuemart_medias` SET `file_url_thumb`=""';
+
+		$db->setQuery($q);
+		$db->query();
+		$err = $db->getErrorMsg();
+		if(!empty($err)){
+			vmError('resetThumbs Update entries failed ',$err);
+		}
+		jimport('joomla.filesystem.folder');
+		$tmpimg_resize_enable = VmConfig::get('img_resize_enable',1);
+
+		VmConfig::set('img_resize_enable',0);
+		$this->deleteMediaThumbFolder('media_category_path');
+		$this->deleteMediaThumbFolder('media_product_path');
+		$this->deleteMediaThumbFolder('media_manufacturer_path');
+		$this->deleteMediaThumbFolder('media_vendor_path');
+		$this->deleteMediaThumbFolder('forSale_path_thumb','');
+
+		VmConfig::set('img_resize_enable',$tmpimg_resize_enable);
+		return true;
+
+	}
+
+	/**
+	 * Delets a thumb folder and recreates it, contains small nasty hack for the thumbnail folder of the "file for sale"
+	 * @author Max Milbers
+	 * @param $type
+	 * @param string $resized
+	 * @return bool
+	 */
+	private function deleteMediaThumbFolder($type,$resized='resized'){
+
+		if(!empty($resized)) $resized = DS.$resized;
+		$path = JPATH_ROOT.DS.str_replace('/',DS,VmConfig::get($type)).$resized;
+		$msg = JFolder::delete($path);
+		if(!$msg){
+			vmWarn('Problem deleting '.$type);
+		}
+		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+		$msg = JFolder::create($path);
+		return $msg;
+	}
+
 }
 
 //pure php no tag

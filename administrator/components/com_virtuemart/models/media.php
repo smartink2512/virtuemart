@@ -68,9 +68,9 @@ class VirtueMartModelMedia extends VmModel {
 	 * Kind of getFiles, it creates a bunch of image objects by an array of virtuemart_media_id
 	 *
 	 * @author Max Milbers
-	 * @param unknown_type $virtuemart_media_id
-	 * @param unknown_type $type
-	 * @param unknown_type $mime
+	 * @param int $virtuemart_media_id
+	 * @param string $type
+	 * @param string $mime
 	 */
 	function createMediaByIds($virtuemart_media_ids,$type='',$mime='',$limit =0){
 
@@ -188,8 +188,6 @@ class VirtueMartModelMedia extends VmModel {
 			} else{
 				$orderByTable = '`#__virtuemart_medias`.';
 			}
-
-
 		}
 
 		else if(!empty($cat_id)){
@@ -366,17 +364,27 @@ class VirtueMartModelMedia extends VmModel {
 	 */
 	public function store(&$data,$type) {
 
+		VmConfig::loadJLang('com_virtuemart_media');
 		//if(empty($data['media_action'])) return $table->virtuemart_media_id;
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
 		$table = $this->getTable('medias');
 
+	/*	$a = trim($data['file_url_thumb']);
+		$b = trim(JText::sprintf('COM_VIRTUEMART_DEFAULT_URL',$data['file_url_thumb']));
+		vmdebug(' the miese Assi',$a,$b);
+		if( $a == $b ){
+			vmdebug('Unset the miese Assi');
+			unset($data['file_url_thumb']);
+		}*/
+		//unset($data['file_url_thumb']);
 		$table->bind($data);
 		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
 
 		// workarround for media published and product published two fields in one form.
-
+		$tmpPublished = false;
 		if (isset($data['media_published'])){
+			$tmpPublished = $data['published'];
 			$data['published'] = $data['media_published'];
 			//vmdebug('$data["published"]',$data['published']);
 		}
@@ -385,6 +393,9 @@ class VirtueMartModelMedia extends VmModel {
 		$errors = $table->getErrors();
 		foreach($errors as $error){
 			vmError('store medias '.$error);
+		}
+		if($tmpPublished){
+			$data['published'] = $tmpPublished;
 		}
 // 		vmdebug('store media $table->virtuemart_media_id '.$table->virtuemart_media_id);
 		return $table->virtuemart_media_id;

@@ -167,7 +167,7 @@ class VirtueMartViewVirtueMart extends VmView {
 			if(!empty($vendor->metadesc)) $document->setMetaData('description',$vendor->metadesc);
 			if(!empty($vendor->metakey)) $document->setMetaData('keywords',$vendor->metakey);
 			if(!empty($vendor->metarobot)) $document->setMetaData('robots',$vendor->metarobot);
-			if(!empty($vendor->author)) $document->setMetaData('author',$vendor->metaauthor);
+			if(!empty($vendor->metaauthor)) $document->setMetaData('author',$vendor->metaauthor);
 
 		}
 

@@ -72,6 +72,7 @@ function vmInfo($publicdescr,$value=NULL){
 	VmConfig::$maxMessageCount++;
 	$app = JFactory::getApplication();
 
+	$msg = '';
 	if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
 		$lang = JFactory::getLanguage();
 		if($value!==NULL){
@@ -79,19 +80,25 @@ function vmInfo($publicdescr,$value=NULL){
 			$args = func_get_args();
 			if (count($args) > 0) {
 				$args[0] = $lang->_($args[0]);
-				$app ->enqueueMessage(call_user_func_array('sprintf', $args),'info');
+				$msg = call_user_func_array('sprintf', $args);
 			}
 		}	else {
 			// 		$app ->enqueueMessage('Info: '.JText::_($publicdescr));
 			$publicdescr = $lang->_($publicdescr);
-			$app ->enqueueMessage('Info: '.JText::_($publicdescr),'info');
+			$msg = JText::_($publicdescr);
 			// 		debug_print_backtrace();
 		}
 	}
 	else {
 		if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
-			$app->enqueueMessage ('Max messages reached', 'info');
+			$app->enqueueMessage ('Max messages reached', 'warning');
+			return false;
 		}
+	}
+	if(!empty($msg)){
+		$app ->enqueueMessage($msg);
+	} else {
+		vmTrace('vmInfo Message empty');
 	}
 
 }
@@ -156,7 +163,7 @@ function vmWarn($publicdescr,$value=NULL){
 	}
 	else {
 		if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
-			$app->enqueueMessage ('Max messages reached', 'info');
+			$app->enqueueMessage ('Max messages reached', 'warning');
 		}
 	}
 
@@ -1081,11 +1088,12 @@ class vmJsApi{
 		$lang->load('com_virtuemart');
 		vmJsApi::jSite();
 
-	$closeimage = JURI::root(TRUE) .'/components/com_virtuemart/assets/images/fancybox/fancy_close.png';
+		$closeimage = JURI::root(TRUE) .'/components/com_virtuemart/assets/images/fancybox/fancy_close.png';
 
 		$jsVars = "//<![CDATA[ \n";
 		$jsVars .= "vmSiteurl = '". JURI::root( ) ."' ;\n" ;
 		if (VmConfig::get ('vmlang_js', 1))  {
+			//$jsVars .= "vmLang = '" . substr (VMLANG, 0, 2) . "' ;\n";
 			$jsVars .= "vmLang = '&amp;lang=" . substr (VMLANG, 0, 2) . "' ;\n";
 		}
 		else {
@@ -1099,7 +1107,7 @@ class vmJsApi{
 				vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
 				vmJsApi::css('jquery.fancybox-1.3.4');
 			} else {//This is just there for the backward compatibility
-				$jsVars .= "vmCartText = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ADDED_JS') )."' ;\n" ;
+				$jsVars .= "vmCartText = '". addslashes( JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED') )."' ;\n" ;
 				$jsVars .= "vmCartError = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
 				$jsVars .= "loadingImage = '".JURI::root(TRUE) ."/components/com_virtuemart/assets/images/facebox/loading.gif' ;\n" ;
 				$jsVars .= "closeImage = '".$closeimage."' ; \n";
