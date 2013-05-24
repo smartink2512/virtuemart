@@ -50,7 +50,7 @@ class VirtuemartViewOrders extends VmView {
 
 		$curTask = JRequest::getWord('task');
 		if ($curTask == 'edit') {
-
+			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 			// Load addl models
 			$userFieldsModel = VmModel::getModel('userfields');
 			$productModel = VmModel::getModel('product');

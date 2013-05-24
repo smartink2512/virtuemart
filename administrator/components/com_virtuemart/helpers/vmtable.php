@@ -394,7 +394,6 @@ class VmTable extends JTable {
 			$oid = $this->$k;
 		}
 
-		// 		vmdebug('load '.$oid);
 		if ($oid === null) {
 			$oid = 0;
 		} else if (empty($oid)) {
@@ -409,9 +408,7 @@ class VmTable extends JTable {
 		}
 
 		//Why we have this reset? it is calling getFields, which is calling getTableColumns, which is calling SHOW COLUMNS, which is slow
-		//
 		//$this->reset();
-
 
 		//Version load the tables using JOIN
 		if ($this->_translatable) {
@@ -451,7 +448,7 @@ class VmTable extends JTable {
 			vmError('vmTable load x' . $error);
 			return false;
 		}
-		//vmdebug('load',$result );
+
 		if ($result) {
 			$this->bind($result);
 			if (!empty($this->_xParams)) {

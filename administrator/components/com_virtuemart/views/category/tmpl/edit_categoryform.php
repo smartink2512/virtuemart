@@ -77,19 +77,7 @@ $mainframe = JFactory::getApplication();
 		<td valign="top" style="width: 50%;">
 			<fieldset>
 				<legend><?php echo JText::_('COM_VIRTUEMART_METAINFO'); ?></legend>
-				<table>
-				<?php echo VmHTML::row('input','COM_VIRTUEMART_CUSTOM_PAGE_TITLE','customtitle',$this->category->customtitle);
-					echo VmHTML::row('textarea','COM_VIRTUEMART_METADESC','metadesc',$this->category->metadesc);
-					echo VmHTML::row('textarea','COM_VIRTUEMART_METAKEY','metakey',$this->category->metakey);
-					$options = array(
-					''	=>	JText::_('JGLOBAL_INDEX_FOLLOW'),
-					'noindex, follow'	=>	JText::_('JGLOBAL_NOINDEX_FOLLOW'),
-					'index, nofollow'	=>	JText::_('JGLOBAL_INDEX_NOFOLLOW'),
-					'noindex, nofollow'	=>	JText::_('JGLOBAL_NOINDEX_NOFOLLOW')
-					);
-					echo VmHtml::row('selectList','COM_VIRTUEMART_METAROBOTS','metarobot',$this->category->metarobot,$options);
-					echo VmHTML::row('input','COM_VIRTUEMART_METAAUTHOR','metaauthor',$this->category->metaauthor); ?>
-				</table>
+				<?php echo shopFunctions::renderMetaEdit($this->category); ?>
 			</fieldset>
 		</td>
 		</tr>

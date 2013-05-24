@@ -59,18 +59,8 @@ class VirtueMartViewProductdetails extends VmView {
 	$pathway = $mainframe->getPathway();
 	$task = JRequest::getCmd('task');
 
-
-	vmSetStartTime('lhelperclexi');
 	if (!class_exists('VmImage'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
-	vmTime('Time to loadHelper image','lhelperclexi');
-
-	//Load helpers
-/*	vmSetStartTime('lhelper');
-	// Set the helper path
-	$this->addHelperPath(JPATH_VM_ADMINISTRATOR . DS . 'helpers');
-	$this->loadHelper('image');
-	vmTime('Time to loadHelper image','lhelper');*/
 
 	// Load the product
 	//$product = $this->get('product');	//Why it is sensefull to use this construction? Imho it makes it just harder

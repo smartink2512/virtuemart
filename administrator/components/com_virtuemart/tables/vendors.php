@@ -62,6 +62,7 @@ class TableVendors extends VmTableData {
 	var $metarobot	= '';
 	/** @var string Meta author */
 	var $metaauthor	= '';
+	var $customtitle ='';
     var $vendor_legal_info = '';
     /** @var text Vendor letter CSS */
     var $vendor_letter_css = '';
@@ -79,7 +80,7 @@ class TableVendors extends VmTableData {
 		$this->setUniqueName('vendor_name');
 		$this->setSlug('vendor_store_name'); //Attention the slug autoname MUST be also in the translatable, if existing
 		$this->setLoggable();
-		$this->setTranslatable(array('vendor_store_name','vendor_phone','vendor_store_desc','vendor_terms_of_service','vendor_legal_info','vendor_url','metadesc','metakey','vendor_letter_css', 'vendor_letter_header_html', 'vendor_letter_footer_html'));
+		$this->setTranslatable(array('vendor_store_name','vendor_phone','vendor_store_desc','vendor_terms_of_service','vendor_legal_info','vendor_url','metadesc','metakey','customtitle','vendor_letter_css', 'vendor_letter_header_html', 'vendor_letter_footer_html'));
 
 		$varsToPushParam = array(
 		    				'vendor_min_pov'=>array(0.0,'float'),

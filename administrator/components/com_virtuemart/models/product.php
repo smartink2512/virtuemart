@@ -620,8 +620,11 @@ class VirtueMartModelProduct extends VmModel {
 	 * @param int     $virtuemart_product_id
 	 * @param boolean $front for frontend use
 	 * @param boolean $withCalc calculate prices?
+	 * @param boolean published
+	 * @param int quantity
+	 * @param boolean load customfields
 	 */
-	public function getProduct ($virtuemart_product_id = NULL, $front = TRUE, $withCalc = TRUE, $onlyPublished = TRUE, $quantity = 1) {
+	public function getProduct ($virtuemart_product_id = NULL, $front = TRUE, $withCalc = TRUE, $onlyPublished = TRUE, $quantity = 1,$customfields = TRUE) {
 
 		if (isset($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId ($virtuemart_product_id);
@@ -635,11 +638,23 @@ class VirtueMartModelProduct extends VmModel {
 				$virtuemart_product_id = $this->_id;
 			}
 		}
-		$productKey = (int)$virtuemart_product_id;
+		$productKey = md5($virtuemart_product_id.$front.$withCalc.$onlyPublished.$quantity.$customfields);
+		//vmdebug('getProduct',$productKey);
 		static $_products = array();
-		if (!array_key_exists ($productKey, $_products)) {
+		//VmConfig::$echoDebug=TRUE;
+		if (array_key_exists ($productKey, $_products)) {
+			vmdebug('getProduct, take from cache '.$productKey);
+			return $_products[$productKey];
+		} else if(!$customfields or !$withCalc){
+			$productKey = md5($virtuemart_product_id.$front.TRUE.$onlyPublished.$quantity.TRUE);
+		}
 
-			$child = $this->getProductSingle ($virtuemart_product_id, $front,$quantity);
+		if (array_key_exists ($productKey, $_products)) {
+
+			vmdebug('getProduct, take from cache full product '.$productKey);
+			return $_products[$productKey];
+		} else {
+			$child = $this->getProductSingle ($virtuemart_product_id, $front,$quantity,$customfields);
 			if (!$child->published && $onlyPublished) {
 				vmdebug('getProduct child is not published, returning zero');
 				return FALSE;
@@ -710,19 +725,29 @@ class VirtueMartModelProduct extends VmModel {
 				$child->product_template = VmConfig::get ('producttemplate');
 			}
 
-			// Add the product link  for canonical
-			$child->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->canonCatLink;
-			$child->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->virtuemart_category_id);
+
+			if(!empty($child->canonCatLink)) {
+				// Add the product link  for canonical
+				$child->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->canonCatLink;
+			} else {
+				$child->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id;
+			}
+
+			if(!empty($child->virtuemart_category_id)) {
+				$child->link = JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id . '&virtuemart_category_id=' . $child->virtuemart_category_id);
+			} else {
+				$child->link = $child->canonical;
+			}
+
 
 			$child->quantity = $quantity;
 			$app = JFactory::getApplication ();
 			if ($app->isSite () and VmConfig::get ('stockhandle', 'none') == 'disableit' and ($child->product_in_stock - $child->product_ordered) <= 0) {
 				vmdebug ('STOCK 0', VmConfig::get ('use_as_catalog', 0), VmConfig::get ('stockhandle', 'none'), $child->product_in_stock);
-				return FALSE;
+				$_products[$productKey] = FALSE;
 			} else {
 				$_products[$productKey] = $child;
 			}
-
 		}
 
 		return $_products[$productKey];
@@ -856,14 +881,27 @@ class VirtueMartModelProduct extends VmModel {
 		}
 	}
 
-	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1) {
+	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1,$customfields=TRUE) {
 
 		//$this->fillVoidProduct($front);
 		if (!empty($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId ($virtuemart_product_id);
 		}
 
-		//		if(empty($this->_data)){
+		$productKey = md5($virtuemart_product_id.$front.$quantity.$customfields);
+		static $_productsSingle = array();
+		if (array_key_exists ($productKey, $_productsSingle)) {
+			vmdebug('getProduct, take from cache '.$productKey);
+			return $_productsSingle[$productKey];
+		} else if(!$customfields){
+			$productKey = md5($virtuemart_product_id.$front.$quantity.TRUE);
+			vmdebug('getProduct, recreate $productKey '.$productKey);
+			if (array_key_exists ($productKey, $_productsSingle)) {
+				vmdebug('getProduct, take from cache ',$_productsSingle[$productKey]);
+				return $_productsSingle[$productKey];
+			}
+		}
+
 		if (!empty($this->_id)) {
 
 // 			$joinIds = array('virtuemart_product_price_id' =>'#__virtuemart_product_prices','virtuemart_manufacturer_id' =>'#__virtuemart_product_manufacturers','virtuemart_customfield_id' =>'#__virtuemart_product_customfields');
@@ -941,16 +979,16 @@ class VirtueMartModelProduct extends VmModel {
 					$last_category_id = shopFunctionsF::getLastVisitedCategoryId ();
 					if ($last_category_id!==0 and in_array ($last_category_id, $product->categories)) {
 						$product->virtuemart_category_id = $last_category_id;
-						vmdebug('I take for product the last category ',$last_category_id,$product->categories);
+						//vmdebug('I take for product the last category ',$last_category_id,$product->categories);
 					} else {
 						$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
 						if ($virtuemart_category_id!==0 and in_array ($virtuemart_category_id, $product->categories)) {
 							$product->virtuemart_category_id = $virtuemart_category_id;
-							vmdebug('I take for product the requested category ',$virtuemart_category_id,$product->categories);
+							//vmdebug('I take for product the requested category ',$virtuemart_category_id,$product->categories);
 						} else {
 							if (!empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
 								$product->virtuemart_category_id = $product->canonCatLink;
-								vmdebug('I take for product the main category ',$product->virtuemart_category_id,$product->categories);
+								//vmdebug('I take for product the main category ',$product->virtuemart_category_id,$product->categories);
 							}
 						}
 					}
@@ -1011,7 +1049,7 @@ class VirtueMartModelProduct extends VmModel {
 				vmdebug('$product->virtuemart_category_id is empty');
 			}
 
-			if (!$front) {
+			if (!$front and $customfields) {
 				if(!$this->listing){
 					$customfields = VmModel::getModel ('Customfields');
 					$product->customfields = $customfields->getproductCustomslist ($this->_id);
@@ -1023,7 +1061,7 @@ class VirtueMartModelProduct extends VmModel {
 					}
 				}
 			}
-			else {
+			else if($customfields){
 
 
 				//only needed in FE productdetails, is now loaded in the view.html.php
@@ -1059,17 +1097,16 @@ class VirtueMartModelProduct extends VmModel {
 				if (empty($product->product_in_stock)) {
 					$product->product_in_stock = 0;
 				}
-
 			}
-
+			$_productsSingle[$productKey] = $product;
 		}
 		else {
-			return $this->fillVoidProduct ($front);
+			$_productsSingle[$productKey] = $this->fillVoidProduct ($front);
 		}
-		//		}
 
-		$this->product = $product;
-		return $product;
+		$this->product = $_productsSingle[$productKey];
+
+		return $_productsSingle[$productKey];
 	}
 
 	/**

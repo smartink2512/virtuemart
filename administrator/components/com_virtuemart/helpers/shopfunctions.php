@@ -841,18 +841,6 @@ class ShopFunctions {
 		return $categoryTree;
 	}
 
-	/**
-	 * Gets the total number of product for category
-	 *
-	 * @author jseros
-	 * @param int $categoryId Own category id
-	 * @return int Total number of products
-	 */
-	static public function countProductsByCategory ($categoryId = 0) {
-
-		$categoryModel = VmModel::getModel ('category');
-		return $categoryModel->countProducts ($categoryId);
-	}
 
 	/**
 	 * Return the countryname or code of a given countryID
@@ -1259,22 +1247,6 @@ class ShopFunctions {
 	}
 
 	/**
-	 * Validates an email address by using regular expressions
-	 * Does not resolve the domain name!
-	 * ATM NOT USED
-	 * Joomla has it's own e-mail checker but is no good JMailHelper::isEmailAddress()
-	 * maybe in the future it will be better
-	 *
-	 * @param string $email
-	 * @return boolean The result of the validation
-	 */
-	function validateEmail ($email) {
-
-		$valid = preg_match ('/^[\w\.\-]+@\w+[\w\.\-]*?\.\w{1,4}$/', $email);
-		return $valid;
-	}
-
-	/**
 	 * Return $str with all but $display_length at the end as asterisks.
 	 *
 	 * @author gday
@@ -1525,6 +1497,26 @@ class ShopFunctions {
 				';
 		}
 
+		return $html;
+	}
+
+	static public function renderMetaEdit($obj){
+
+		$options = array(
+			''	=>	JText::_('JGLOBAL_INDEX_FOLLOW'),
+			'noindex, follow'	=>	JText::_('JGLOBAL_NOINDEX_FOLLOW'),
+			'index, nofollow'	=>	JText::_('JGLOBAL_INDEX_NOFOLLOW'),
+			'noindex, nofollow'	=>	JText::_('JGLOBAL_NOINDEX_NOFOLLOW'),
+			'noodp, noydir'	=>	JText::_('COM_VIRTUEMART_NOODP_NOYDIR'),
+			'noodp, noydir, nofollow'	=>	JText::_('COM_VIRTUEMART_NOODP_NOYDIR_NOFOLLOW'),
+		);
+		$html = '<table>
+					'.VmHTML::row('input','COM_VIRTUEMART_CUSTOM_PAGE_TITLE','customtitle',$obj->customtitle).'
+					'.VmHTML::row('textarea','COM_VIRTUEMART_METAKEY','metakey',$obj->metakey).'
+					'.VmHTML::row('textarea','COM_VIRTUEMART_METADESC','metadesc',$obj->metadesc).'
+					'.VmHtml::row('selectList','COM_VIRTUEMART_METAROBOTS','metarobot',$obj->metarobot,$options).'
+					'.VmHTML::row('input','COM_VIRTUEMART_METAAUTHOR','metaauthor',$obj->metaauthor).'
+				</table>';
 		return $html;
 	}
 }

@@ -64,6 +64,7 @@ if (empty($this->product)) {
     echo '<br /><br />  ' . $this->continue_link_html;
     return;
 }
+
 ?>
 
 <div class="productdetails-view productdetails">
