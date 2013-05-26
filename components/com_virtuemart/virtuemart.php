@@ -106,5 +106,5 @@ if (class_exists($_class)) {
 } else {
     vmDebug('VirtueMart controller not found: '. $_class);
     $mainframe = Jfactory::getApplication();
-    $mainframe->redirect(JRoute::_ ('index.php?option=com_virtuemart&view=virtuemart'));
+    $mainframe->redirect(JRoute::_ ('index.php?option=com_virtuemart&view=virtuemart', FALSE));
 }

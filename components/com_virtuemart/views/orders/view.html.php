@@ -74,7 +74,7 @@ class VirtuemartViewOrders extends VmView {
 		if ($layoutName == 'details') {
 			$order_list_link = FALSE;
 
-			$order_list_link = JRoute::_('index.php?option=com_virtuemart&view=orders&layout=list');
+			$order_list_link = JRoute::_('index.php?option=com_virtuemart&view=orders&layout=list', FALSE);
 
 			$this->assignRef('order_list_link', $order_list_link);
 

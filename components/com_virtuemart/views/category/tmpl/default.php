@@ -100,7 +100,7 @@ if (VmConfig::get ('showCategory', 1) and empty($this->keyword)) {
 				}
 
 				// Category Link
-				$caturl = JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id);
+				$caturl = JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id, FALSE);
 
 				// Show Category
 				?>
@@ -152,7 +152,7 @@ if (!empty($this->keyword)) {
 	<?php
 } ?>
 <?php if ($this->search !== NULL) { ?>
-<form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=category&limitstart=0&virtuemart_category_id=' . $this->category->virtuemart_category_id); ?>" method="get">
+<form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=category&limitstart=0&virtuemart_category_id=' . $this->category->virtuemart_category_id, FALSE); ?>" method="get">
 
 	<!--BEGIN Search Box -->
 	<div class="virtuemart_search">

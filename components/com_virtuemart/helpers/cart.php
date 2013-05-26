@@ -68,7 +68,7 @@ class VirtueMartCart {
 
 	private function __construct() {
 		$this->useSSL = VmConfig::get('useSSL',0);
-		$this->useXHTML = true;
+		$this->useXHTML = false;
 		self::$_triesValidateCoupon=0;
 	}
 
@@ -720,7 +720,7 @@ class VirtueMartCart {
 			$this->confirmedOrder();
 		} else {
 			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
 		}
 	}
 
@@ -729,7 +729,7 @@ class VirtueMartCart {
 		$this->checkoutData($redirect);
 		if ($this->_dataValidated && $redirect) {
 			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
 		}
 	}
 
@@ -967,7 +967,7 @@ class VirtueMartCart {
 			if (($orderID = $orderModel->createOrderFromCart($this)) === false) {
 				$mainframe = JFactory::getApplication();
 				JError::raiseWarning(500, 'No order created '.$orderModel->getError());
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart') );
+				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE) );
 			}
 			$this->virtuemart_order_id = $orderID;
 			//$order= $orderModel->getOrder($orderID);
@@ -1297,7 +1297,7 @@ class VirtueMartCart {
 			$productM->getProductPrices($product,$product->quantity,$virtuemart_shoppergroup_ids,true,true);
 
 			// No full link because Mail want absolute path and in shop is better relative path
-			$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHTML::link($url, $product->product_name);
+			$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id, FALSE);//JHTML::link($url, $product->product_name);
 			if(!empty($product->customfieldsCart)){
 				if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 				$product->customfields = VirtueMartModelCustomfields::CustomsFieldCartDisplay($cart_item_id,$product);
@@ -1483,7 +1483,7 @@ class VirtueMartCart {
 			//$vars["zone_qty"] += $product["quantity"];
 			$category_id = $this->getCardCategoryId($product->virtuemart_product_id);
 			//Create product URL
-			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$category_id);
+			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$category_id, FALSE);
 
 			// @todo Add variants
 			$this->data->products[$i]['product_name'] = JHTML::link($url, $product->product_name);

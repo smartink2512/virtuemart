@@ -103,9 +103,9 @@ AdminUIHelper::startAdminArea();
 
 			$checked = JHTML::_('grid.id', $i, $cat->virtuemart_category_id);
 			$published = JHTML::_('grid.published', $cat, $i);
-			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid=' . $cat->virtuemart_category_id);
+			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid=' . $cat->virtuemart_category_id, FALSE);
 // 			$statelink	= JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $cat->virtuemart_category_id);
-			$showProductsLink = JRoute::_('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . $cat->virtuemart_category_id);
+			$showProductsLink = JRoute::_('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . $cat->virtuemart_category_id, FALSE);
 			$shared = $this->toggle($cat->shared, $i, 'toggle.shared');
 
 			$categoryLevel = '';

@@ -94,9 +94,9 @@ class VirtuemartViewCategory extends VmView {
 		if ($products  && VmConfig::get('feed_cat_published', 0)==1) {
 			$link = '&format=feed&limitstart=';
 			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-			$document->addHeadLink(JRoute::_($link . '&type=rss'), 'alternate', 'rel', $attribs);
+			$document->addHeadLink(JRoute::_($link . '&type=rss', FALSE), 'alternate', 'rel', $attribs);
 			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-			$document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
+			$document->addHeadLink(JRoute::_($link . '&type=atom', FALSE), 'alternate', 'rel', $attribs);
 		}
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
@@ -104,7 +104,7 @@ class VirtuemartViewCategory extends VmView {
 		$this->assignRef('showBasePrice', $showBasePrice);
 
 		//set this after the $categoryId definition
-		$paginationAction=JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId );
+		$paginationAction=JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId , FALSE);
 		$this->assignRef('paginationAction', $paginationAction);
 
 		shopFunctionsF::setLastVisitedCategoryId($categoryId);
@@ -148,7 +148,7 @@ class VirtuemartViewCategory extends VmView {
 					}
 				}
 
-				$app->redirect(JRoute::_('index.php?option=com_virtuemart' . $categoryLink . '&error=404'));
+				$app->redirect(JRoute::_('index.php?option=com_virtuemart' . $categoryLink . '&error=404', FALSE));
 
 				return;
 			}
@@ -162,7 +162,7 @@ class VirtuemartViewCategory extends VmView {
 			// Add the category name to the pathway
 			if ($category->parents) {
 				foreach ($category->parents as $c){
-					$pathway->addItem(strip_tags($c->category_name),JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id));
+					$pathway->addItem(strip_tags($c->category_name),JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id, FALSE));
 				}
 			}
 
@@ -289,7 +289,7 @@ class VirtuemartViewCategory extends VmView {
 		}
 		if ($format == 'html') {
 
-			$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId) , 'canonical', 'rel', '' );
+			$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId, FALSE) , 'canonical', 'rel', '' );
 
 		}
 	}

@@ -97,13 +97,13 @@ class VirtuemartViewCategories extends VmView {
 		// Add the category name to the pathway
 		if ($category->parents) {
 			foreach ($category->parents as $c){
-				$pathway->addItem(strip_tags($c->category_name),JRoute::_('index.php?option=com_virtuemart&view=categories&virtuemart_category_id='.$c->virtuemart_category_id));
+				$pathway->addItem(strip_tags($c->category_name),JRoute::_('index.php?option=com_virtuemart&view=categories&virtuemart_category_id='.$c->virtuemart_category_id, FALSE));
 			}
 		} else {
 			if(!empty($category->category_name)){
-				$pathway->addItem(strip_tags($category->category_name,JRoute::_('index.php?option=com_virtuemart&view=categories&virtuemart_category_id='.$category->virtuemart_category_id)));
+				$pathway->addItem(strip_tags($category->category_name,JRoute::_('index.php?option=com_virtuemart&view=categories&virtuemart_category_id='.$category->virtuemart_category_id, FALSE)));
 			} else {
-				$pathway->addItem(strip_tags(JText::_('COM_VIRTUEMART_CATEGORY_TOP_LEVEL'),JRoute::_('index.php?option=com_virtuemart&view=categories&virtuemart_category_id='.$category->virtuemart_category_id)));
+				$pathway->addItem(strip_tags(JText::_('COM_VIRTUEMART_CATEGORY_TOP_LEVEL'),JRoute::_('index.php?option=com_virtuemart&view=categories&virtuemart_category_id='.$category->virtuemart_category_id, FALSE)));
 			}
 
 		}

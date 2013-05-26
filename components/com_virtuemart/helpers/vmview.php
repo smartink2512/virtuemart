@@ -34,8 +34,8 @@ class VmView extends JView{
 		if ( $use_icon ) $text .= JHtml::_('image.site', $boutonName.'.png', $folder, null, null, JText::_($altText));
 		if ( $use_text ) $text .= '&nbsp;'. JText::_($altText);
 		if ( $text=='' )  $text .= '&nbsp;'. JText::_($altText);
-		if ($modal) return '<a class="modal" rel="{handler: \'iframe\', size: {x: 700, y: 550}}" title="'. JText::_($altText).'" href="'.JRoute::_($link).'">'.$text.'</a>';
-		else 		return '<a title="'. JText::_($altText).'" href="'.JRoute::_($link).'">'.$text.'</a>';
+		if ($modal) return '<a class="modal" rel="{handler: \'iframe\', size: {x: 700, y: 550}}" title="'. JText::_($altText).'" href="'.JRoute::_($link, FALSE).'">'.$text.'</a>';
+		else 		return '<a title="'. JText::_($altText).'" href="'.JRoute::_($link, FALSE).'">'.$text.'</a>';
 	}
 
 	public function escape($var)

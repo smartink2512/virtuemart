@@ -492,7 +492,7 @@ class shopFunctionsF {
 		}
 
 		//VM homepage sef url (for example) - SEF url for be and fe. If you use clasic url will work also.
-		$link = JURI::root().substr( JRoute::_( 'index.php?option=com_virtuemart&view=virtuemart' ), strlen( JURI::base( TRUE ) ) + 1 );
+		$link = JURI::root().substr( JRoute::_( 'index.php?option=com_virtuemart&view=virtuemart', FALSE ), strlen( JURI::base( TRUE ) ) + 1 );
 
 		// Check if we are in the backend again
 		if(JPATH_BASE == JPATH_ADMINISTRATOR) {
