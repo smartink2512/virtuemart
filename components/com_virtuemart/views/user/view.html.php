@@ -60,7 +60,7 @@ class VirtuemartViewUser extends VmView {
      */
     function display($tpl = null) {
 
-		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+
 	$useSSL = VmConfig::get('useSSL', 0);
 	$useXHTML = true;
 	$this->assignRef('useSSL', $useSSL);
@@ -246,7 +246,7 @@ class VirtuemartViewUser extends VmView {
 	} else {
 
 	    if ($address_type == 'BT') {
-		$vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_INFORMATION');
+		$vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL');
 	    } else {
 
 		$vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');

@@ -28,7 +28,7 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components'
 VmConfig::loadConfig();
 VmConfig::loadJLang('mod_virtuemart_cart', true);
 
-
+//This is strange we have the whole thing again in controllers/cart.php public function viewJS()
 if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 $cart = VirtueMartCart::getCart(false);
 $data = $cart->prepareAjaxData();
@@ -40,7 +40,7 @@ else if ($data->totalProduct == 1) $data->totalProductTxt = JText::_('COM_VIRTUE
 else $data->totalProductTxt = JText::_('COM_VIRTUEMART_EMPTY_CART');
 if (false && $data->dataValidated == true) {
 	$taskRoute = '&task=confirm';
-	$linkName = JText::_('COM_VIRTUEMART_CART_CONFIRM');
+	$linkName = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
 } else {
 	$taskRoute = '';
 	$linkName = JText::_('COM_VIRTUEMART_CART_SHOW');

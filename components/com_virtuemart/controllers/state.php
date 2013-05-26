@@ -43,7 +43,7 @@ class VirtueMartControllerState extends JController
 		$countries = explode(',', $countries);
 
 		foreach($countries as $country){
-			$states[$country] = $stateModel->getStates( JFilterInput::clean($country, 'INTEGER'),true );
+			$states[$country] = $stateModel->getStates( JFilterInput::clean($country, 'INTEGER'),true,true );
 		}
 		echo json_encode($states);
 

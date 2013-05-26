@@ -46,7 +46,7 @@ class VmView extends JView{
 		} else {
 			$result =  call_user_func($this->_escape, $var);
 		}
-		vmdebug('Escape function '.$this->_escape.' charset '.$this->_charset,$var,$result);
+
 		return $result;
 	}
 }

@@ -35,7 +35,7 @@ class VirtueMartControllerUser extends JController
 		parent::__construct();
 		$this->useSSL = VmConfig::get('useSSL',0);
 		$this->useXHTML = true;
-
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 	}
 
 

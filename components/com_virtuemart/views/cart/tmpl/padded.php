@@ -21,11 +21,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 echo '<a class="continue" href="' . $this->continue_link . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
-echo '<a class="showcart floatright" href="' . JRoute::_("index.php?option=com_virtuemart&view=cart") . '">' . JText::_('COM_VIRTUEMART_CART_SHOW_MODAL') . '</a>';
+echo '<a class="showcart floatright" href="' . $this->cart_link . '">' . JText::_('COM_VIRTUEMART_CART_SHOW') . '</a>';
 if($this->product){
 	echo '<h4>'.JText::sprintf('COM_VIRTUEMART_CART_PRODUCT_ADDED',$this->product->product_name,$this->product->quantity).'</h4>';
-	//VmConfig::$echoDebug=1;
-	vmdebug('my product',$this->product);
 }
 
 if ($this->errorMsg) echo '<div>'.$this->errorMsg.'</div>';

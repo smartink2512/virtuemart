@@ -171,7 +171,7 @@ class VirtueMartControllerCart extends JController {
 		$this->data->totalProductTxt = JText::_('COM_VIRTUEMART_EMPTY_CART');
 		if ($this->data->dataValidated == true) {
 			$taskRoute = '&task=confirm';
-			$linkName = JText::_('COM_VIRTUEMART_CART_CONFIRM');
+			$linkName = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
 		} else {
 			$taskRoute = '';
 			$linkName = JText::_('COM_VIRTUEMART_CART_SHOW');
