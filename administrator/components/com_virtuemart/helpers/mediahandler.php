@@ -1010,7 +1010,9 @@ class VmMediaHandler {
 			$html .= '<div id="ImagesContainer">';
 
 			if(!empty($fileIds)) {
-				foreach($fileIds as $k=>$id){
+				$model = VmModel::getModel('Media');
+				$medias = $model->createMediaByIds($fileIds, $type);
+				foreach($medias as $k=>$id){
 					$html .= $this->displayImage($id,$k );
 				}
 			}
@@ -1020,12 +1022,8 @@ class VmMediaHandler {
 		}
 
 
-		function displayImage($virtuemart_media_id ,$key) {
+		function displayImage($image ,$key) {
 
-			$db = JFactory::getDBO();
-			$query='SELECT * FROM `#__virtuemart_medias` where `virtuemart_media_id`='.(int)$virtuemart_media_id;
-			$db->setQuery( $query );
-			$image = $db->loadObject();
 			if (isset($image->file_url)) {
 				$image->file_root = JURI::root(true).'/';
 				$image->msg =  'OK';

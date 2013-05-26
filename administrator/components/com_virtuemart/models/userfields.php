@@ -173,12 +173,18 @@ class VirtueMartModelUserfields extends VmModel {
 	/**
 	 * Retrieve the detail record for the current $id if the data has not already been loaded.
 	 */
-	function getUserfield()
+	function getUserfield($id = 0,$name = 0)
 	{
+		if($id === 0){
+			$id = $this->_id;
+		}
+
 		if (empty($this->_data)) {
 			$this->_data = $this->getTable('userfields');
-
-			$this->_data->load((int)$this->_id);
+			if($name !==0){
+				$this->_data->load($id, $name);
+			}
+			$this->_data->load($id);
 		}
 
 		if(strpos($this->_data->type,'plugin')!==false){
@@ -195,6 +201,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 		return $this->_data;
 	}
+
 
 	/**
 	 * Retrieve the value records for the current $id if available for the current type

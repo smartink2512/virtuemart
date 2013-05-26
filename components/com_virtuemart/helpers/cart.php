@@ -36,6 +36,7 @@ class VirtueMartCart {
 	var $_dataValidated = false;
 	var $_confirmDone = false;
 	var $_redirect = false;
+	var $_redirect_disabled = false;
 	var $_lastError = null; // Used to pass errmsg to the cart using addJS()
 	//todo multivendor stuff must be set in the add function, first product determines ownership of cart, or a fixed vendor is used
 	var $vendorId = 1;
@@ -303,6 +304,13 @@ class VirtueMartCart {
 		return ($this->_lastError);
 	}
 
+	/**
+	 * For one page checkouts, disable with this the redirects
+	 * @param bool $bool
+	 */
+	public function setRedirectDisabled($bool = TRUE){
+		$this->_redirect_disabled = $bool;
+	}
 	/**
 	 * Add a product to the cart
 	 *
@@ -737,7 +745,7 @@ class VirtueMartCart {
 
 		$this->_dataValidated = false;
 		$app = JFactory::getApplication();
-		if($this->_redirect ){
+		if($this->_redirect and !$this->_redirect_disabled){
 			$this->setCartIntoSession();
 			$app->redirect(JRoute::_($relUrl,$this->useXHTML,$this->useSSL), $redirectMsg);
 			return false;
@@ -770,12 +778,16 @@ class VirtueMartCart {
 
 			$userFieldsModel = VmModel::getModel('Userfields');
 
-			$required = $userFieldsModel->getIfRequired('agreed');
-			if(!empty($required)){
+			//$required = $userFieldsModel->getIfRequired('agreed');
+			$agreed = $userFieldsModel->getUserfield('agreed','name');
+			vmdebug('my new getUserfieldbyName',$agreed->default,$agreed->required);
+			if(!empty($agreed->required) and empty($agreed->default) and !empty($this->BT)){
 				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 
 				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
+			} else if($agreed->default){
+				$this->tosAccepted = $agreed->default;
 			}
 		}
 

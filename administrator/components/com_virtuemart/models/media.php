@@ -98,9 +98,11 @@ class VirtueMartModelMedia extends VmModel {
 				}
 				if(!empty($id)){
 					if (!array_key_exists ($id, $_medias)) {
+
 						$data->load((int)$id);
 						if($app->isSite()){
 							if($data->published==0){
+								$_medias[$id] = $this->createVoidMedia($type,$mime);
 								continue;
 							}
 						}
@@ -126,6 +128,16 @@ class VirtueMartModelMedia extends VmModel {
 		}
 
 		if(empty($medias)){
+			$medias[] = $this->createVoidMedia($type,$mime);
+		}
+
+		return $medias;
+	}
+
+	function createVoidMedia($type,$mime){
+
+		static $voidMedia = null;
+		if(empty($voidMedia)){
 			$data = $this->getTable('medias');
 
 			//Create empty data
@@ -146,10 +158,9 @@ class VirtueMartModelMedia extends VmModel {
 			$data->file_params = 0;
 			$data->file_lang = '';
 
-			$medias[] = VmMediaHandler::createMedia($data,$type,$mime);
+			$voidMedia = VmMediaHandler::createMedia($data,$type,$mime);
 		}
-
-		return $medias;
+		return $voidMedia;
 	}
 
 	/**
