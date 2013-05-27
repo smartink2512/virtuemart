@@ -18,7 +18,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcalculationplugin.php');
 
-defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 0);
+defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 1);
 
 function avadebug($string,$arg=NULL){
 	if(AVATAX_DEBUG) vmdebug($string,$arg);
@@ -253,11 +253,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 	static $validatedAddresses = NULL;
 
-	private function fillValidateAvalaraAddress($calc){
+	private function fillValidateAvalaraAddress($calc,$vmadd){
 
 		if(!isset(self::$validatedAddresses)){
-
-			$vmadd = $this->getShopperData($calc);
 
 			if(!empty($vmadd)){
 
@@ -817,7 +815,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				VmTable::bindParameterable ($rule, $this->_xParams, $this->_varsToPushParam);
 				if($rule->activated==0) return $price;
 				if(empty($this->addresses)){
-					$this->addresses = $this->fillValidateAvalaraAddress($rule);
+					$vmadd = $this->getShopperData($rule);
+					$this->addresses = $this->fillValidateAvalaraAddress($rule,$vmadd);
 				}
 
 				if($this->addresses){
@@ -851,7 +850,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				avadebug('$avaTaxRule',$avaTaxRule);
 				if($rule->activated==0)return false;
 				if(empty($this->addresses)){
-					$this->addresses = $this->fillValidateAvalaraAddress($rule);
+					$vmadd = $this->getShopperData($rule);
+					$this->addresses = $this->fillValidateAvalaraAddress($rule,$vmadd);
 				}
 				if($this->addresses){
 					if (!class_exists ('calculationHelper')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
@@ -955,17 +955,19 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		}
 
 		if($data->order_status=='R'){
+			avadebug('plgVmOnUpdateOrderPayment refund order for Avatax '.$old_order_status,$data->order_status);
 			$this->creditMemo($data,$old_order_status);
 		}
 	}
 
 	private function creditMemo($data,$old_order_status){
 
-		$calc = $this -> getOrderCalc ($data,$old_order_status);
+		$calcs = $this -> getOrderCalc ($data,$old_order_status);
+		$calc = $calcs['taxRulesBill'];
 
 		if(empty($calc['invoice_number'])) return false;
 
-		if($calc->activated==0) return false;
+		if($calc['activated']==0) return false;
 
 		if(!class_exists('calculationHelper')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 
@@ -982,6 +984,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 
 		$request= new GetTaxRequest();
+
+		if(!class_exists('Address')) require (VMAVALARA_CLASS_PATH.DS.'Address.class.php');
 		$origin = new Address();
 
 		//In Virtuemart we have not differenct warehouses, but we have a shipment address
@@ -990,11 +994,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		//But for now we just use the BT address
 		if (!class_exists ('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 
-		$userId = VirtueMartModelVendor::getUserIdByVendorId ($calc->virtuemart_vendor_id);
+		$userId = VirtueMartModelVendor::getUserIdByVendorId ($calc['virtuemart_vendor_id']);
 		$userModel = VmModel::getModel ('user');
 		$virtuemart_userinfo_id = $userModel->getBTuserinfo_id ($userId);
 		// this is needed to set the correct user id for the vendor when the user is logged
-		$userModel->getVendor($calc->virtuemart_vendor_id);
+		$userModel->getVendor($calc['virtuemart_vendor_id']);
 		$vendorFieldsArray = $userModel->getUserInfoInUserFields ('mail', 'BT', $virtuemart_userinfo_id, FALSE, TRUE);
 		$vendorFields = $vendorFieldsArray[$virtuemart_userinfo_id];
 		//avadebug('my vendor fields',$vendorFields);
@@ -1008,24 +1012,47 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		$request->setOriginAddress($origin);	      //Address
 
-		if(isset($this->addresses[0])){
-			$destination = $this->addresses[0];
-		} else {
-			return FALSE;
-		}
-		$request->setDestinationAddress	($destination);     //Address
+		if (!class_exists ('TableMedias'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'order_userinfos.php');
+
+		$db = JFactory::getDBO ();
+		$orderUserInfo = new TableOrder_userinfos($db);
+		$orderUserInfo->load ($data->virtuemart_order_id,'virtuemart_order_id',' AND `address_type`="BT" ');
+
+		$this->addresses = $this->fillValidateAvalaraAddress($calc,(array)$orderUserInfo);
+		vmdebug('creditMemo ',(array)$orderUserInfo);
+		/*$destination = new Address();
+		$destination->setLine1($orderUserInfo->address_1);
+		$destination->setLine2($orderUserInfo->address_2);
+		$destination->setCity($orderUserInfo->city);
+
+		$country_2_code = shopfunctions::getCountryByID($orderUserInfo->virtuemart_country_id,'country_2_code');
+		$destination->setCountry($country_2_code);
+		$state_2_code = shopfunctions::getStateByID($orderUserInfo->virtuemart_state_id,'state_2_code');
+		$destination->setRegion($state_2_code);
+		$destination->setPostalCode($orderUserInfo->zip);*/
+
+		$request->setDestinationAddress	($this->addresses[0]);     //Address
+
+
+
 		//avadebug('The date',$origin,$destination);
-		$request->setCompanyCode($calc->company_code);   // Your Company Code From the Dashboard
+		$request->setCompanyCode($calc['company_code']);   // Your Company Code From the Dashboard
 
 		$request->setDocDate(date('Y-m-d'));           //date
 
-		$request->setCustomerCode($data['customer_id']);  //string Required
+		/*$userModel = VmModel::getModel('user');
+		$userModel -> setId($orderUserInfo->virtuemart_user_id);
+		$vmadd['customer_id'] = $userModel ->getCustomerNumberById();*/
+		$request->setCustomerCode($this->addresses[0]['customer_id']);  //string Required
 
-		if(isset($shopperData['tax_usage_type'])){
-			$request->setCustomerUsageType($shopperData['tax_usage_type']);   //string   Entity Usage
+		if(isset($orderUserInfo->tax_usage_type)){
+			$request->setCustomerUsageType($orderUserInfo->tax_usage_type);   //string   Entity Usage
 		}
 
-		$cartPrices = $calculationHelper->getCartPrices();
+
+
+	/*	$cartPrices = $calculationHelper->getCartPrices();
 
 		$request->setDiscount($cartPrices['discountAmount']);            //decimal
 
@@ -1192,20 +1219,27 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 				}
 			}
-		}
+		}*/
+
 	}
 
 
 
 	private function cancelOrder($data,$old_order_status){
 
-		$calc = $this -> getOrderCalc ($data,$old_order_status);
+		$this -> getOrderCalc ($data,$old_order_status);
 
-		if(empty($calc['invoice_number'])) return false;
+		if(empty($data['invoice_number'])) return false;
 
 		if(!function_exists('EnsureIsArray')) require(VMAVALARA_PATH.DS.'AvaTax.php');	// include in all Avalara Scripts
 		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
 		if(!class_exists('CancelTaxRequest')) require (VMAVALARA_CLASS_PATH.DS.'CancelTaxRequest.class.php');
+		if(!empty($data->calcs['taxRulesBill'])){
+			$calc = $data->calcs['taxRulesBill'];
+		} else {
+			avadebug('Retrieving calculation rule for avatax failed in cancelOrder');
+			return false;
+		}
 
 		$this->newATConfig($calc);
 
@@ -1266,7 +1300,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		avadebug('Doing cancel order for Avatax');
 		$db = JFactory::getDbo();
-//		$q = 'SELECT * FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$data->virtuemart_order_id.'"  AND `order_status` = "'.$old_order_status.'" ORDER BY created_on DESC ';
 		$q = 'SELECT * FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$data->virtuemart_order_id.'"  ORDER BY created_on DESC ';
 		$db->setQuery($q);
 		$result = $db->loadAssocList();
@@ -1281,11 +1314,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			return false;
 		}
 
-		$q = 'SELECT * FROM `#__virtuemart_order_calc_rules` WHERE `virtuemart_order_id`= "'.$data->virtuemart_order_id.'"  AND `calc_mathop` = "avalara" AND `calc_kind`="taxRulesBill" ';
+		$q = 'SELECT * FROM `#__virtuemart_order_calc_rules` WHERE `virtuemart_order_id`= "'.$data->virtuemart_order_id.'"  AND `calc_mathop` = "avalara" ';
 		$db->setQuery($q);
-		$calc = $db->loadObject();
-		if(!$calc){
-			vmError('AvaTax, plgVmOnCancelPayment no result for '.$data->virtuemart_order_id.' and old orderstatus '.$old_order_status,$calc);
+		$calcs = $db->loadAssocList();
+		if(!$calcs){
+			vmError('AvaTax, plgVmOnCancelPayment no result for '.$data->virtuemart_order_id.' and old orderstatus '.$old_order_status,$calcs);
 			$err = $db->getErrorMsg();
 			if($err){
 				avadebug('AvaTax, plgVmOnCancelPayment error in query '.$db->getQuery());
@@ -1294,25 +1327,34 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			return false;
 		}
 
-		$params = explode('|', $calc->calc_params);
-		foreach($params as $item){
+		$calcsSorted = array();
+		foreach($calcs as $calc){
+			unset($calc['created_on']);
+			unset($calc['created_by']);
+			unset($calc['modified_on']);
+			unset($calc['modified_by']);
+			unset($calc['locked_on']);
+			unset($calc['locked_by']);
+			$params = explode('|', $calc['calc_params']);
+			foreach($params as $item){
 
-			$item = explode('=',$item);
-			$key = $item[0];
-			unset($item[0]);
+				$item = explode('=',$item);
+				$key = $item[0];
+				unset($item[0]);
 
-			$item = implode('=',$item);
+				$item = implode('=',$item);
 
-			if(!empty($item) ){
-				$calc->$key = json_decode($item);
+				if(!empty($item) ){
+					$calc[$key] = json_decode($item);
+				}
 			}
+			if(!empty($result[0]['invoice_number'])){
+				$calc['invoice_number'] = $result[0]['invoice_number'];
+			}
+			$calcsSorted[$calc['calc_kind']] = $calc;
 		}
 
-		if(!empty($result[0]['invoice_number'])){
-			$calc = $result[0]['invoice_number'];
-		}
-
-		return $calc;
+		return $calcsSorted;
 	}
 }
 

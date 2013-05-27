@@ -84,7 +84,6 @@ class VirtuemartViewMedia extends VmView {
 				);
 			$this->lists['search_type'] = VmHTML::selectList('search_type', JRequest::getVar('search_type'),$options,1,'','onchange="this.form.submit();"');
 
-			VmConfig::loadJLang('com_virtuemart_media');
 			$options = array( '' => JText::_('COM_VIRTUEMART_LIST_ALL_ROLES'),
 				'file_is_displayable' => JText::_('COM_VIRTUEMART_FORM_MEDIA_DISPLAYABLE'),
 				'file_is_downloadable' => JText::_('COM_VIRTUEMART_FORM_MEDIA_DOWNLOADABLE'),
