@@ -73,6 +73,7 @@ function vmInfo($publicdescr,$value=NULL){
 	$app = JFactory::getApplication();
 
 	$msg = '';
+	$type = 'info';
 	if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
 		$lang = JFactory::getLanguage();
 		if($value!==NULL){
@@ -91,16 +92,18 @@ function vmInfo($publicdescr,$value=NULL){
 	}
 	else {
 		if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
-			$app->enqueueMessage ('Max messages reached', 'warning');
-			return false;
+			$msg = 'Max messages reached';
+			$type = 'warning';
 		}
 	}
+
 	if(!empty($msg)){
-		$app ->enqueueMessage($msg);
+		$app ->enqueueMessage($msg,$type);
 	} else {
 		vmTrace('vmInfo Message empty');
 	}
 
+	return $msg;
 }
 
 /**
@@ -144,7 +147,7 @@ function vmWarn($publicdescr,$value=NULL){
 
 	VmConfig::$maxMessageCount++;
 	$app = JFactory::getApplication();
-
+	$msg = '';
 	if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
 		$lang = JFactory::getLanguage();
 		if($value!==NULL){
@@ -152,19 +155,28 @@ function vmWarn($publicdescr,$value=NULL){
 			$args = func_get_args();
 			if (count($args) > 0) {
 				$args[0] = $lang->_($args[0]);
-				$app ->enqueueMessage(call_user_func_array('sprintf', $args),'warning');
+				$msg = call_user_func_array('sprintf', $args);
+
 			}
 		}	else {
 			// 		$app ->enqueueMessage('Info: '.JText::_($publicdescr));
-			$publicdescr = $lang->_($publicdescr);
-			$app ->enqueueMessage('Info: '.$publicdescr,'warning');
+			$msg = $lang->_($publicdescr);
+			//$app ->enqueueMessage('Info: '.$publicdescr,'warning');
 			// 		debug_print_backtrace();
 		}
 	}
 	else {
 		if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
-			$app->enqueueMessage ('Max messages reached', 'warning');
+			$msg = 'Max messages reached';
 		}
+	}
+
+	if(!empty($msg)){
+		$app ->enqueueMessage($msg,'warning');
+		return $msg;
+	} else {
+		vmTrace('vmInfo Message empty');
+		return false;
 	}
 
 }
@@ -176,8 +188,8 @@ function vmWarn($publicdescr,$value=NULL){
 function vmError($descr,$publicdescr=''){
 
 	VmConfig::$maxMessageCount++;
-	$app = JFactory::getApplication();
 
+	$msg = '';
 	if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
 		if (empty($descr)) {
 			vmTrace ('vmError message empty');
@@ -187,24 +199,30 @@ function vmError($descr,$publicdescr=''){
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 		}
 		if(Permissions::getInstance()->check('admin')){
-			$app = JFactory::getApplication();
+			//$app = JFactory::getApplication();
 			$descr = $lang->_($descr);
-			$app ->enqueueMessage('vmError: '.$descr,'error');
+			$msg = 'vmError: '.$descr;
 		} else {
 			if(!empty($publicdescr)){
-				$app = JFactory::getApplication();
-
-				$publicdescr = $lang->_($publicdescr);
-				$app ->enqueueMessage($publicdescr,'error');
+				$msg = $lang->_($publicdescr);
 			}
 		}
 	}
 	else {
 		if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
-			$app->enqueueMessage ('Max messages reached', 'info');
+			$msg = 'Max messages reached';
 		}
 	}
 
+	if(!empty($msg)){
+		$app = JFactory::getApplication();
+		$app ->enqueueMessage($msg,'error');
+		return $msg;
+	} else {
+		vmTrace('vmError Message empty');
+	}
+
+	return $msg;
 
 }
 

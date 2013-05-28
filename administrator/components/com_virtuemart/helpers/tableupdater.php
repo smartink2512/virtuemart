@@ -524,7 +524,7 @@ class GenericTableUpdater extends JModel{
 	 * @param unknown_type $fields
 	 * @param unknown_type $command
 	 */
-	private function alterColumns($tablename,$fields,$reCreatePrimary){
+	public function alterColumns($tablename,$fields,$reCreatePrimary){
 
 
 		$after ='FIRST';

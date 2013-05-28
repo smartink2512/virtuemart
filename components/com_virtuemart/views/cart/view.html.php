@@ -85,13 +85,13 @@ class VirtueMartViewCart extends VmView {
 			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_SELECTPAYMENT'));
 			$document->setTitle(JText::_('COM_VIRTUEMART_CART_SELECTPAYMENT'));
 		} else if ($layoutName == 'order_done') {
-
+			VmConfig::loadJLang('com_virtuemart_shoppers');
 			$this->lOrderDone();
 
 			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_THANKYOU'));
 			$document->setTitle(JText::_('COM_VIRTUEMART_CART_THANKYOU'));
 		} else if ($layoutName == 'default') {
-
+			VmConfig::loadJLang('com_virtuemart_shoppers');
 			$cart->prepareCartViewData();
 
 			$cart->prepareAddressRadioSelection();

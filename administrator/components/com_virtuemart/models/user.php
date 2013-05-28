@@ -724,7 +724,6 @@ class VirtueMartModelUser extends VmModel {
 		$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
 		$data['virtuemart_vendor_id'] = $alreadyStoredUserData->virtuemart_vendor_id;
 
-		vmdebug('saveUserData',$data);
 		unset($data['customer_number']);
 		if(empty($alreadyStoredUserData->customer_number)){
 			//if(!class_exists('vmUserPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmuserplugin.php');
