@@ -144,6 +144,21 @@ if (!version_compare (JVERSION, '1.6.0', 'ge')) {
 				default:
 					$order = 'a.product_name DESC';
 			}
+
+			$where_shopper_group="";
+			$usermodel = VmModel::getModel ('user');
+			$currentVMuser = $usermodel->getUser ();
+			$virtuemart_shoppergroup_ids = (array)$currentVMuser->shopper_groups;
+
+			if (is_array ($virtuemart_shoppergroup_ids)) {
+				$sgrgroups = array();
+				foreach ($virtuemart_shoppergroup_ids as   $virtuemart_shoppergroup_id) {
+					$sgrgroups[] = 'psgr.`virtuemart_shoppergroup_id`= "' . (int)$virtuemart_shoppergroup_id . '" ';
+				}
+				$sgrgroups[] = 'psgr.`virtuemart_shoppergroup_id` IS NULL ';
+				$where_shopper_group = "AND ( " . implode (' OR ', $sgrgroups) . " ) ";
+			}
+
 			// search product //TODO  b.virtuemart_category_id>0 should be configurable
 			$text = $db->Quote ('%' . $db->getEscaped ($text, TRUE) . '%', FALSE);
 			$query = "SELECT DISTINCT CONCAT( a.product_name,' (',p.product_sku,')' ) AS title, a.virtuemart_product_id , b.virtuemart_category_id ,   a.product_s_desc   AS text, b.category_name as section,
@@ -151,8 +166,9 @@ if (!version_compare (JVERSION, '1.6.0', 'ge')) {
 					FROM `#__virtuemart_products_" . VMLANG . "` AS a
 					JOIN #__virtuemart_products as p using (`virtuemart_product_id`)
 					LEFT JOIN `#__virtuemart_product_categories` AS xref ON xref.`virtuemart_product_id` = a.`virtuemart_product_id`
-					LEFT JOIN `#__virtuemart_categories_" . VMLANG . "` AS b ON b.`virtuemart_category_id` = xref.`virtuemart_category_id`"
-				. ' WHERE ' . $where . ' and p.published=1 '
+					LEFT JOIN `#__virtuemart_categories_" . VMLANG . "` AS b ON b.`virtuemart_category_id` = xref.`virtuemart_category_id`
+					LEFT JOIN `#__virtuemart_product_shoppergroups` as `psgr` on (`psgr`.`virtuemart_product_id`=`a`.`virtuemart_product_id`) "
+				. ' WHERE ' . $where . ' and p.published=1 ' .$where_shopper_group
 				. (VmConfig::get ('show_uncat_child_products') ? '' : ' and b.virtuemart_category_id>0 ')
 				. ' ORDER BY ' . $order;
 			$db->setQuery ($query, 0, $limit);
