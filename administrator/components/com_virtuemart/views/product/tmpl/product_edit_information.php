@@ -276,13 +276,40 @@ $i=0;
 		<table class="adminform">
 			<tr class="row<?php echo $i?>">
 				<td width="50%">
-				<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=createVariant&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() ); ?>
-
-						<div class="button2-left">
+				<?php
+					if ($this->product->virtuemart_product_id) {
+						$link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=createVariant&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() );
+						$add_child_button="";
+					} else {
+						$link="";
+						$add_child_button=" not-active";
+					}
+?>
+						<div class="button2-left <?php echo $add_child_button ?>">
 							<div class="blank">
-								<a href="<?php echo $link ?>">
-								<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_ADD_CHILD'); ?>
-								</a>
+								<?php
+								if ($link) {
+								?>
+									<a href="<?php echo $link ?>">
+								<?php
+								} else {
+									?>
+									<span
+                                        class="hasTip"
+                                        title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_ADD_CHILD_TIP'); ?>">
+										<?php
+								}
+								echo Jtext::_('COM_VIRTUEMART_PRODUCT_ADD_CHILD');
+								if ($link) {
+								?>
+									</a>
+								<?php
+								} else{
+								?>
+									</span>
+								<?php
+								}
+								?>
 							</div>
 						</div>
 				</td>

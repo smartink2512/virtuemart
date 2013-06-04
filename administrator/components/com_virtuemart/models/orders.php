@@ -1719,22 +1719,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		if($_orderData['old_virtuemart_paymentmethod_id'] != $_orderData['virtuemart_paymentmethod_id']) {
 
-			/*
-			$q = "SELECT `payment_element` FROM `#__virtuemart_paymentmethods` WHERE `virtuemart_paymentmethod_id`=".$_orderData['virtuemart_paymentmethod_id'];
-			$this->_db->setQuery($q);
-			$payment_element = $this->_db->loadResult();
-
-			$q = "SELECT * FROM `#__virtuemart_payment_plg_". $payment_element ."` WHERE `virtuemart_paymentmethod_id`=".$_orderData['virtuemart_paymentmethod_id']." AND `virtuemart_order_id` = ". $virtuemart_order_id;
-			$this->_db->setQuery($q);
-			$paymentmethod = $this->_db->loadResult();
-
-			if(empty($paymentmethod)) {
-				JPluginHelper::importPlugin('vmpayment');
-			} else {
-				$q = "UPDATE `#__virtuemart_payment_plg_". $payment_element ."` SET `payment_order_total` = ".$order['details']['BT']->order_total ." WHERE `virtuemart_paymentmethod_id`=".$_orderData['virtuemart_paymentmethod_id']." AND `virtuemart_order_id` = ". $virtuemart_order_id;
-				$this->_db->setQuery($q);
-			}
-			*/
 
 			$this->_db->setQuery( 'SELECT `payment_element` FROM `#__virtuemart_paymentmethods` , `#__virtuemart_orders`
 					WHERE `#__virtuemart_paymentmethods`.`virtuemart_paymentmethod_id` = `#__virtuemart_orders`.`virtuemart_paymentmethod_id` AND `virtuemart_order_id` = ' . $virtuemart_order_id );
@@ -1753,23 +1737,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		// Update Shipment Method
 
 		if($_orderData['old_virtuemart_shipmentmethod_id'] != $_orderData['virtuemart_shipmentmethod_id']) {
-
-			/*
-			$q = "SELECT `shipment_element` FROM `#__virtuemart_shipmentmethods` WHERE `virtuemart_shipmentmethod_id`=".$_orderData['virtuemart_shipmentmethod_id'];
-			$this->_db->setQuery($q);
-			$shipment_element = $this->_db->loadResult();
-
-			$q = "SELECT * FROM `#__virtuemart_shipment_plg_". $shipment_element ."` WHERE `virtuemart_shipmentmethod_id`=".$_orderData['virtuemart_shipmentmethod_id']." AND `virtuemart_order_id` = ". $virtuemart_order_id;
-			$this->_db->setQuery($q);
-			$shipmentmethod = $this->_db->loadResult();
-
-			if(empty($shipmentmethod)) {
-				JPluginHelper::importPlugin('vmshipment');
-			} else {
-				$q = "UPDATE `#__virtuemart_shipment_plg_". $shipment_element ."` SET `shipment_order_total` = ".$order['details']['BT']->order_total ." WHERE `virtuemart_shipmentmethod_id`=".$_orderData['virtuemart_shipmentmethod_id']." AND `virtuemart_order_id` = ". $virtuemart_order_id;
-				$this->_db->setQuery($q);
-			}
-			*/
 
 			$this->_db->setQuery( 'SELECT `shipment_element` FROM `#__virtuemart_shipmentmethods` , `#__virtuemart_orders`
 					WHERE `#__virtuemart_shipmentmethods`.`virtuemart_shipmentmethod_id` = `#__virtuemart_orders`.`virtuemart_shipmentmethod_id` AND `virtuemart_order_id` = ' . $virtuemart_order_id );
