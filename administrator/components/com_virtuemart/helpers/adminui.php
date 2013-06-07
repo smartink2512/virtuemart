@@ -26,7 +26,7 @@ class AdminUIHelper {
      * in the left column and the content in the right column.  This function sets up the table and
      * displayes the admin menu in the left column.
      */
-    static function startAdminArea($backEnd=true) {
+   static function startAdminArea($selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL') {
 		if (JRequest::getWord ( 'format') =='pdf') return;
 		if (JRequest::getWord ( 'tmpl') =='component') self::$backEnd=false;
     	if(self::$vmAdminAreaStarted) return;
@@ -54,9 +54,15 @@ class AdminUIHelper {
 		$document->addScript($admin.'js/jquery.coookie.js');
 		$document->addScript($front.'js/chosen.jquery.min.js');
 		$document->addScript($admin.'js/vm2admin.js');
+
+	   $vm2string = "editImage: 'edit image',select_all_text: '".JText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".JText::_($selectText)."'" ;
+
 		//$document->addScript($admin.'js/jquery.jqtransform.js');
-		if (JText::_('COM_VIRTUEMART_JS_STRINGS') == 'COM_VIRTUEMART_JS_STRINGS') $vm2string = "editImage: 'edit image',select_all_text: 'select all options',select_some_options_text: 'select some options'" ;
+	/*	if (JText::_('COM_VIRTUEMART_JS_STRINGS') == 'COM_VIRTUEMART_JS_STRINGS') $vm2string = "editImage: 'edit image',select_all_text: 'select all options',select_some_options_text: 'select some options'" ;
 		else $vm2string = JText::_('COM_VIRTUEMART_JS_STRINGS') ;
+if (JText::_('COM_VIRTUEMART_JS_STRINGS2') == 'COM_VIRTUEMART_JS_STRINGS2') $vm2string2 = "editImage: 'edit image',select_all_text: 'select all options',select_some_options_text: 'All available options'" ;
+		else $vm2string2 = JText::_('COM_VIRTUEMART_JS_STRINGS2') ;
+*/
 		$document->addScriptDeclaration ( "
 //<![CDATA[
 		var tip_image='".JURI::root(true)."/components/com_virtuemart/assets/js/images/vtip_arrow.png';
@@ -67,7 +73,9 @@ class AdminUIHelper {
 			$('.virtuemart-admin-area .toggler').vm2admin('toggle');
 			$('#admin-ui-menu').vm2admin('accordeon');
 			if ( $('#admin-ui-tabs').length  ) {
-				$('#admin-ui-tabs').vm2admin('tabs',virtuemartcookie).find('select').chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text});
+				var select_array =$('select');
+console.log(select_array);
+				$('#admin-ui-tabs').vm2admin('tabs',virtuemartcookie).find('select').chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text}); 
 			}
 
 			$('#content-box [title]').vm2admin('tips',tip_image);

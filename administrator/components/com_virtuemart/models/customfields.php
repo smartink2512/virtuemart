@@ -835,6 +835,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$calculator->_cats = $product->categories;
 		$calculator->product_tax_id = isset($product->product_tax_id)? $product->product_tax_id:0;
 		$calculator->product_discount_id = isset($product->product_discount_id)? $product->product_discount_id:0;
+		$calculator->productCurrency = isset($product->product_currency)? $product->product_currency:$calculator->productCurrency;
 
 		if (!class_exists ('vmCustomPlugin')) {
 			require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
@@ -961,6 +962,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 	}
 	static function _getCustomPrice($customPrice, $currency, $calculator) {
+
 		if ((float)$customPrice) {
 			$price = strip_tags ($currency->priceDisplay ($calculator->calculateCustomPriceWithTax ($customPrice)));
 			if ($customPrice >0) {

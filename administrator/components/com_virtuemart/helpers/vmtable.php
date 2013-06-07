@@ -520,7 +520,6 @@ class VmTable extends JTable {
 
 			if (!empty($existingSlugName)) {
 				if ($i == 0) {
-					vmdebug('$existingSlugName $i == 0 '.$existingSlugName);
 					if (JVM_VERSION === 1) {
 						$this->$name = $this->$name . JFactory::getDate()->toFormat("%Y-%m-%d") . '-';
 					} else {
@@ -532,7 +531,6 @@ class VmTable extends JTable {
 					$posNbr = strrpos($this->$name,'-');
 					$existingNbr = (int)substr($this->$name,$posNbr);
 					$existingNbr++;
-					vmdebug('$existingSlugName $i '.$i.' $posNbr '.$posNbr.'  $existingNbr '.$existingNbr);
 					$this->$name = substr($this->$name,0,-$posNbr) . '-' . $existingNbr;
 				}
 			} else {

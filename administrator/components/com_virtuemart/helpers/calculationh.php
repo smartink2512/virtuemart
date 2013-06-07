@@ -1328,6 +1328,8 @@ class calculationHelper {
 
 	function calculateCustomPriceWithTax($price, $override_id=0) {
 
+		$price = $this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $price,true);
+
 		if(VmConfig::get('cVarswT',1)){
 			$taxRules = $this->gatherEffectingRulesForProductPrice('Tax', $override_id);
 			$vattaxRules = $this->gatherEffectingRulesForProductPrice('VatTax', $override_id);
@@ -1573,23 +1575,24 @@ class calculationHelper {
 						WHERE field.`virtuemart_customfield_id`=' .(int) $selected;
 				$this->_db->setQuery($query);
 				$productCustomsPrice = $this->_db->loadObject();
-				//	echo 'calculateModificators '.$selected.' <pre>'.print_r($productCustomsPrice,1).'</pre>';
-// 					vmdebug('calculateModificators',$productCustomsPrice);
-				if (!empty($productCustomsPrice) and $productCustomsPrice->field_type =='E') {
-					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-					JPluginHelper::importPlugin('vmcustom');
-					$dispatcher = JDispatcher::getInstance();
-					$dispatcher->trigger('plgVmCalculateCustomVariant',array(&$product, &$productCustomsPrice,$selected,$modificatorSum));
-				}
 
-				//$app = JFactory::getApplication();
 				if (!empty($productCustomsPrice->custom_price)) {
+					$productCustomsPrice->custom_price = $this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $productCustomsPrice->custom_price,true);
+
+					if ($productCustomsPrice->field_type =='E') {
+						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+						JPluginHelper::importPlugin('vmcustom');
+						$dispatcher = JDispatcher::getInstance();
+						$dispatcher->trigger('plgVmCalculateCustomVariant',array(&$product, &$productCustomsPrice,$selected,$modificatorSum));
+					}
+
+
 					//TODO adding % and more We should use here $this->interpreteMathOp
 					$modificatorSum = $modificatorSum + $productCustomsPrice->custom_price;
 				}
 			}
 		}
-// 			echo ' $modificatorSum ',$modificatorSum;
+
 		return $modificatorSum;
 	}
 
