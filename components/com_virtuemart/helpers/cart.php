@@ -544,7 +544,14 @@ class VirtueMartCart {
 		if (empty($prod_id))
 		$prod_id = JRequest::getVar('cart_virtuemart_product_id');
 		unset($this->products[$prod_id]);
-
+		if(isset($this->cartProductsData[$prod_id])){
+			// hook for plugin action "remove from cart"
+			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+			JPluginHelper::importPlugin('vmcustom');
+			$dispatcher = JDispatcher::getInstance();
+			$addToCartReturnValues = $dispatcher->trigger('plgVmOnRemoveFromCart',array($this,$prod_id));
+			unset($this->cartProductsData[$prod_id]);
+		}
 		$this->setCartIntoSession();
 		return true;
 	}

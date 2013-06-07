@@ -165,6 +165,11 @@ class calculationHelper {
 		$this->_cartPrices = $cartPrices;
 	}
 
+	public function setCartPricesMerge($cartPrices){
+
+		$this->_cartPrices = array_merge($this->_cartPrices,$cartPrices);
+	}
+
 	public function getCartData() {
 		return $this->_cartData;
 	}

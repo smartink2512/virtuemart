@@ -566,53 +566,45 @@ class VirtueMartModelCategory extends VmModel {
 
 		$table = $this->getTable('categories');
 
-		foreach($cids as $cid) {
-		    if( $this->clearProducts($cid) ) {
-				if (!$table->delete($cid)) {
-				    vmError($table->getError());
-				    return false;
-				}
-// TODO MULTI LANGUE REMOVE
-				//deleting relations
-				$query = "DELETE FROM `#__virtuemart_product_categories` WHERE `virtuemart_category_id` = ". (int)$cid;
-		    	$this->_db->setQuery($query);
+		foreach($cids as &$cid) {
 
-		    	if(!$this->_db->query()){
-		    		vmError( $this->_db->getErrorMsg() );
-		    	}
-
-		    	//updating parent relations
-				$query = "UPDATE `#__virtuemart_product_categories` SET `virtuemart_category_id` = 0 WHERE `virtuemart_category_id` = ". (int)$cid;
-		    	$this->_db->setQuery($query);
-
-		    	if(!$this->_db->query()){
-		    		vmError( $this->_db->getErrorMsg() );
-		    	}
-		    }
-		    else {
-				vmError('Could not clear category products');
-				return false;
-		    }
+			if (!$table->delete($cid)) {
+			    vmError($table->getError());
+			    return false;
+			}
 		}
-		return true;
-    }
 
+		$cidInString = implode(',',$cids);
 
-	/**
-     * Delete all relations between categories and products
-     *
-     * @author jseros
-     *
-     * @param  int $cid categories to remove
-     * @return boolean if the item remove was successful
-     */
-    public function clearProducts($cid) {
+		//Delete media xref
+		$query = 'DELETE FROM `#__virtuemart_category_medias` WHERE `virtuemart_category_id` IN ('. $cidInString .') ';
+		$this->_db->setQuery($query);
+		if(!$this->_db->query()){
+			vmError( $this->_db->getErrorMsg() );
+		}
 
-    	$query = "UPDATE `#__virtuemart_product_categories` SET `virtuemart_category_id` = 0 WHERE `virtuemart_category_id` =" . (int)$cid;
+		//deleting product relations
+		$query = 'DELETE FROM `#__virtuemart_product_categories` WHERE `virtuemart_category_id` IN ('. $cidInString .') ';
 		$this->_db->setQuery($query);
 
-		if( !$this->_db->query() ){
-			return false;
+		if(!$this->_db->query()){
+			vmError( $this->_db->getErrorMsg() );
+		}
+
+		//deleting product relations
+		$query = 'DELETE FROM `#__virtuemart_category_categories` WHERE `category_child_id` IN ('. $cidInString .') ';
+		$this->_db->setQuery($query);
+
+		if(!$this->_db->query()){
+			vmError( $this->_db->getErrorMsg() );
+		}
+
+		//updating parent relations
+		$query = 'UPDATE `#__virtuemart_category_categories` SET `category_parent_id` = 0 WHERE `category_parent_id` IN ('. $cidInString .') ';
+		$this->_db->setQuery($query);
+
+		if(!$this->_db->query()){
+			vmError( $this->_db->getErrorMsg() );
 		}
 
 		return true;
