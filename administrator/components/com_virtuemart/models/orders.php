@@ -1450,11 +1450,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		//Using this function garantue us that it is always there. If the vendor should be informed should be done by the plugins
 		//We may add later something to the method, defining this better
 		$vars['url'] = 'url';
+
 		if(!isset($vars['doVendor'])){
 			$orderstatusForVendorEmail = VmConfig::get('email_os_v',array('U','R','X'));
 			if(!is_array($orderstatusForVendorEmail)) $orderstatusForVendorEmail = array($orderstatusForVendorEmail);
-			if ( in_array($order['details']['BT']->order_status,$orderstatusForVendorEmail)){
+			if ( in_array((string)$order['details']['BT']->order_status,$orderstatusForVendorEmail)){
 				$vars['doVendor'] = true;
+
 			} else {
 				$vars['doVendor'] = false;
 			}
@@ -1497,7 +1499,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$orderstatusForShopperEmail = VmConfig::get('email_os_s',array('U','S','R','X'));
 		if(!is_array($orderstatusForShopperEmail)) $orderstatusForShopperEmail = array($orderstatusForShopperEmail);
-		if ( in_array($order['details']['BT']->order_status,$orderstatusForShopperEmail)){
+		if ( in_array((string)$order['details']['BT']->order_status,$orderstatusForShopperEmail)){
+
 			// Send the email
 			if (shopFunctionsF::renderMail('invoice', $order['details']['BT']->email, $vars, null,$vars['doVendor'])) {
 				$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_SEND_MSG';
@@ -1506,8 +1509,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
 			}
 		}
-
-
 
 		vmInfo( JText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
 

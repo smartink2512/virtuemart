@@ -266,8 +266,13 @@ abstract class vmPSPlugin extends vmPlugin {
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
 			. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
 		$db->setQuery ($q);
+		$err =$db->getErrorMsg ();
 		if (!($pluginInfo = $db->loadObject ())) {
-			vmWarn ('Attention, ' . $this->_tablename . ' has not any entry for the order ' . $db->getErrorMsg ());
+			vmdebug ('Attention, ' . $this->_tablename . ' has not any entry for order_id = '.$virtuemart_order_id);
+			if(!empty($err)){
+				vmWarn ('Attention, ' . $this->_tablename . ' has not any entry for order_id = '.$virtuemart_order_id. ' err = '.$err);
+			}
+
 			return NULL;
 		}
 		$idName = $this->_psType . '_name';
