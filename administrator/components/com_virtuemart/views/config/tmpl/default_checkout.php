@@ -168,6 +168,32 @@ defined('_JEXEC') or die('Restricted access');
 					?>
 			</td>
 		</tr>
+		<tr>
+			<td class="key"><span
+					class="hasTip"
+					title="<?php echo JText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_SHOPPER_TIP'); ?>">
+					 <?php echo JText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_SHOPPER') ?>
+				 </span>
+			</td>
+			<td>
+				<?php
+				echo $this->orderStatusModel->renderOrderStatusList(VmConfig::get('email_os_s',array('U','S','R','X')),'email_os_s[]');
+				?>
+			</td>
+		</tr>
+		<tr>
+			<td class="key"><span
+					class="hasTip"
+					title="<?php echo JText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_VENDOR_TIP'); ?>">
+					 <?php echo JText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_VENDOR') ?>
+				 </span>
+			</td>
+			<td>
+				<?php
+				echo $this->orderStatusModel->renderOrderStatusList(VmConfig::get('email_os_v',array('U','R','X')),'email_os_v[]');
+				?>
+			</td>
+		</tr>
 	</table>
 </fieldset>
 

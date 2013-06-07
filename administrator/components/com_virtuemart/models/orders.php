@@ -1451,7 +1451,14 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		//We may add later something to the method, defining this better
 		$vars['url'] = 'url';
 		if(!isset($vars['doVendor'])){
-			if(!isset($newOrderData['doVendor'])) $vars['doVendor'] = false; else $vars['doVendor'] = $newOrderData['doVendor'];
+			$orderstatusForVendorEmail = VmConfig::get('email_os_v',array('U','R','X'));
+			if(!is_array($orderstatusForVendorEmail)) $orderstatusForVendorEmail = array($orderstatusForVendorEmail);
+			if ( in_array($order['details']['BT']->order_status,$orderstatusForVendorEmail)){
+				$vars['doVendor'] = true;
+			} else {
+				$vars['doVendor'] = false;
+			}
+			//if(!isset($newOrderData['doVendor'])) $vars['doVendor'] = false; else $vars['doVendor'] = $newOrderData['doVendor'];
 		}
 		$virtuemart_vendor_id=1;
 		$vendorModel = VmModel::getModel('vendor');
@@ -1487,13 +1494,20 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		}
 
-		// Send the email
-		if (shopFunctionsF::renderMail('invoice', $order['details']['BT']->email, $vars, null,$vars['doVendor'])) {
-			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_SEND_MSG';
+
+		$orderstatusForShopperEmail = VmConfig::get('email_os_s',array('U','S','R','X'));
+		if(!is_array($orderstatusForShopperEmail)) $orderstatusForShopperEmail = array($orderstatusForShopperEmail);
+		if ( in_array($order['details']['BT']->order_status,$orderstatusForShopperEmail)){
+			// Send the email
+			if (shopFunctionsF::renderMail('invoice', $order['details']['BT']->email, $vars, null,$vars['doVendor'])) {
+				$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_SEND_MSG';
+			}
+			else {
+				$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
+			}
 		}
-		else {
-			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
-		}
+
+
 
 		vmInfo( JText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
 
