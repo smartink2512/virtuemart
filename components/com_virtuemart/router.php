@@ -522,17 +522,7 @@ function virtuemartParseRoute($segments) {
 		return $vars;
 
 	}
-	else if ( $helper->compareKey($view,'cart') || $helper->activeMenu->view == 'cart') {
-		$vars['view'] = 'cart';
-		if ( $helper->compareKey($view,'cart') ) {
-			array_shift($segments);
-			if (empty($segments)) return $vars;
-		}
-		if ( $helper->compareKey($segments[0] ,'edit_shipment') ) $vars['task'] = 'edit_shipment' ;
-		elseif ( $helper->compareKey($segments[0] ,'editpayment') ) $vars['task'] = 'editpayment' ;
-		elseif ( $helper->compareKey($segments[0] ,'delete') ) $vars['task'] = 'delete' ;
-		elseif ( $helper->compareKey($segments[0] ,'checkout') ) $vars['task'] = 'checkout' ;
-		elseif ( $helper->compareKey($segments[0] ,'pluginresponse') ) {
+	elseif ( $helper->compareKey($segments[0] ,'pluginresponse') ) {
 			$vars['view'] = 'pluginresponse';
 			array_shift($segments);
 			if ( !empty ($segments) ) {
@@ -543,10 +533,18 @@ function virtuemartParseRoute($segments) {
 				$vars['tmpl'] = 'component';
 				array_shift($segments);
 			}
-			vmdebug('my parsed URL vars',$vars);
 			return $vars;
+	}
+	else if ( $helper->compareKey($view,'cart') || $helper->activeMenu->view == 'cart') {
+		$vars['view'] = 'cart';
+		if ( $helper->compareKey($view,'cart') ) {
+			array_shift($segments);
+			if (empty($segments)) return $vars;
 		}
-
+		if ( $helper->compareKey($segments[0] ,'edit_shipment') ) $vars['task'] = 'edit_shipment' ;
+		elseif ( $helper->compareKey($segments[0] ,'editpayment') ) $vars['task'] = 'editpayment' ;
+		elseif ( $helper->compareKey($segments[0] ,'delete') ) $vars['task'] = 'delete' ;
+		elseif ( $helper->compareKey($segments[0] ,'checkout') ) $vars['task'] = 'checkout' ;
 		else $vars['task'] = $segments[0];
 		return $vars;
 	}

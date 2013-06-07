@@ -136,7 +136,7 @@ static function vmGetCharset() {
 	 * @param string $extra More attributes when needed
 	 * @return string HTML drop-down list
 	 */
-	static function selectList($name, $value, $arrIn, $size=1, $multiple="", $extra="", $data_placeholder='COM_VIRTUEMART_DRDOWN_AVA2ALL') {
+	static function selectList($name, $value, $arrIn, $size=1, $multiple="", $extra="", $data_placeholder='') {
 
 		$html = '';
 		if( empty( $arrIn ) ) {
@@ -148,10 +148,8 @@ static function vmGetCharset() {
 	        	 $arr=$arrIn;
 	        }
 		}
-		if (empty($multiple)) {
-			$data_placeholder="";
-		} else {
-				$data_placeholder='data-placeholder="'.JText::_($data_placeholder).'"';
+		if (!empty($data_placeholder)) {
+			$data_placeholder='data-placeholder="'.JText::_($data_placeholder).'"';
 		}
 
 		$html = '<select class="inputbox" id="'.$name.'" name="'.$name.'" size="'.$size.'" '.$multiple.' '.$extra.' '.$data_placeholder.' >';
