@@ -532,6 +532,21 @@ function virtuemartParseRoute($segments) {
 		elseif ( $helper->compareKey($segments[0] ,'editpayment') ) $vars['task'] = 'editpayment' ;
 		elseif ( $helper->compareKey($segments[0] ,'delete') ) $vars['task'] = 'delete' ;
 		elseif ( $helper->compareKey($segments[0] ,'checkout') ) $vars['task'] = 'checkout' ;
+		elseif ( $helper->compareKey($segments[0] ,'pluginresponse') ) {
+			$vars['view'] = 'pluginresponse';
+			array_shift($segments);
+			if ( !empty ($segments) ) {
+				$vars['task'] = $segments[0];
+				array_shift($segments);
+			}
+			if ( isset($segments[0]) && $segments[0] == 'modal') {
+				$vars['tmpl'] = 'component';
+				array_shift($segments);
+			}
+			vmdebug('my parsed URL vars',$vars);
+			return $vars;
+		}
+
 		else $vars['task'] = $segments[0];
 		return $vars;
 	}

@@ -42,7 +42,7 @@ class JElementVmCountries extends JElement {
         $fields = $db->loadObjectList();
         $class = '';
 
-        $class = 'multiple="true" size="10"';
+        $class = 'multiple="true" size="10" data-placeholder="'.JText::_('COM_VIRTUEMART_DRDOWN_AVA2ALL').'"';
         return JHTML::_('select.genericlist', $fields, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
     }
 

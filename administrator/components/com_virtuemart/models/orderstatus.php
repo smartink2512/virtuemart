@@ -91,7 +91,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 
 		if (!isset($this->_renderStatusList[$name])) {
 			$orderStates = $this->getOrderStatusNames();
-			$this->_renderStatusList[$name] = JHTML::_('select.genericlist', $orderStates, $name, 'multiple="multiple"', 'order_status_code', 'order_status_name', $value,$id,true);
+			$this->_renderStatusList[$name] = JHTML::_('select.genericlist', $orderStates, $name, 'multiple="multiple" data-placeholder="'.JText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS').'"', 'order_status_code', 'order_status_name', $value,$id,true);
 		}
 		return $this->_renderStatusList[$name] ;
 	}

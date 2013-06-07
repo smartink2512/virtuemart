@@ -232,7 +232,7 @@ class VirtueMartModelConfig extends JModel {
 			$activeLangs[] = JHTML::_('select.option', $jLang['tag'] , $jLang['name']) ;
 		}
 
-		return JHTML::_('select.genericlist', $activeLangs, 'active_languages[]', 'size=10 multiple="multiple"', 'value', 'text', $active_languages );// $activeLangs;
+		return JHTML::_('select.genericlist', $activeLangs, 'active_languages[]', 'size=10 multiple="multiple" data-placeholder="'.JText::_('COM_VIRTUEMART_DRDOWN_NOTMULTILINGUAL').'"', 'value', 'text', $active_languages );// $activeLangs;
 	}
 
 
