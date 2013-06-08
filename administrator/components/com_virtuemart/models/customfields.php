@@ -817,7 +817,12 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		$this->_db->setQuery ($query);
 		$groups = $this->_db->loadObjectList ();
-
+		$err = $this->_db->loadErrorMsg();
+		if(!empty($err)){
+			vmWarn('getProductCustomsFieldCart '.$err);
+		} else {
+			if(empty($groups)) return array();
+		}
 		if (!class_exists ('VmHTML')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 		}

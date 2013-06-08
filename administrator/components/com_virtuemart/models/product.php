@@ -94,7 +94,7 @@ class VirtueMartModelProduct extends VmModel {
 	var $searchplugin = 0;
 	var $filter_order = 'p.virtuemart_product_id';
 	var $filter_order_Dir = 'DESC';
-	var $valid_BE_search_fields = array('product_name', 'product_sku', 'product_s_desc', '`l`.`metadesc`');
+	var $valid_BE_search_fields = array('product_name', 'product_sku','`l`.`slug`', 'product_s_desc', '`l`.`metadesc`');
 	private $_autoOrder = 0;
 	private $orderByString = 0;
 	private $listing = FALSE;
@@ -129,11 +129,11 @@ class VirtueMartModelProduct extends VmModel {
 	function updateRequests () {
 
 		//hmm how to trigger that in the module or so?
-		$this->keyword = vmRequest::uword ('keyword', "0", ' ,-,+');
+		$this->keyword = vmRequest::uword ('keyword', "0", ' ,-,+,.,_');
 		if ($this->keyword == "0") {
-			$this->keyword = vmRequest::uword ('filter_product', "0", ' ,-,+');
+			$this->keyword = vmRequest::uword ('filter_product', "0", ' ,-,+,.,_');
 		}
-
+		vmdebug('Searching for '.$this->keyword);
 		$app = JFactory::getApplication ();
 		$option = 'com_virtuemart';
 		$view = 'product';
@@ -278,14 +278,13 @@ class VirtueMartModelProduct extends VmModel {
 						$filter_search[] = '`'.$searchField.'` LIKE '.$keywords_plural;
 						//$filter_search[] = '`' . $searchField . '` LIKE ' . $keyword;
 					}
-
-
 				}
 				if (!empty($filter_search)) {
 					$where[] = '(' . implode (' OR ', $filter_search) . ')';
 				}
 				else {
 					$where[] = '`product_name` LIKE ' . $keyword;
+
 					//If they have no check boxes selected it will default to product name at least.
 				}
 				$joinLang = TRUE;

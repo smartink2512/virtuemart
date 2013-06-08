@@ -124,14 +124,14 @@ AdminUIHelper::startAdminArea ();
 				<td><?php echo vmJsApi::date ($order->modified_on, 'LC2', TRUE); ?></td>
 				<!-- Status -->
 				<td style="position:relative;">
-					<?php echo JHTML::_ ('select.genericlist', $this->orderstatuses, "orders[" . $order->virtuemart_order_id . "][order_status]", '', 'order_status_code', 'order_status_name', $order->order_status, 'order_status' . $i, TRUE); ?>
+					<?php echo JHTML::_ ('select.genericlist', $this->orderstatuses, "orders[" . $order->virtuemart_order_id . "][order_status]", 'class="orderstatus_select"', 'order_status_code', 'order_status_name', $order->order_status, 'order_status' . $i, TRUE); ?>
 					<input type="hidden" name="orders[<?php echo $order->virtuemart_order_id; ?>][current_order_status]" value="<?php echo $order->order_status; ?>"/>
 					<br/>
 					<textarea class="element-hidden vm-order_comment vm-showable" name="orders[<?php echo $order->virtuemart_order_id; ?>][comments]" cols="5" rows="5"></textarea>
 					<?php echo JHTML::_ ('link', '#', JText::_ ('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_comment')); ?>
 				</td>
 				<!-- Update -->
-				<td><?php echo VmHTML::checkbox ('orders[' . $order->virtuemart_order_id . '][customer_notified]', 1) . JText::_ ('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?>
+				<td><?php echo VmHTML::checkbox ('orders[' . $order->virtuemart_order_id . '][customer_notified]', 0) . JText::_ ('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?>
 					<br/>
 					&nbsp;&nbsp;&nbsp;<?php echo VmHTML::checkbox ('orders[' . $order->virtuemart_order_id . '][customer_send_comment]', 1) . JText::_ ('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT'); ?>
 					<br/>
@@ -176,4 +176,38 @@ AdminUIHelper::startAdminArea ();
 		jQuery(this).hide();
 		});
 		-->
+</script>
+
+<script>
+	jQuery(document).ready(function() {
+		jQuery('.orderstatus_select').change( function() {
+
+			var name = jQuery(this).attr('name');
+			var brindex = name.indexOf("orders[");
+			if ( brindex >= 0){
+				//yeh, yeh, maybe not the most elegant way, but it does, what it should
+				var s = name.indexOf("[")+1;
+				var e = name.indexOf("]");
+				var id = name.substring(s,e);
+
+				<?php $orderstatusForShopperEmail = VmConfig::get('email_os_s',array('U','C','S','R','X'));
+					if(!is_array($orderstatusForShopperEmail)) $orderstatusForShopperEmail = array($orderstatusForShopperEmail);
+					$jsOrderStatusShopperEmail = json_encode($orderstatusForShopperEmail);
+				?>
+				var orderstatus = <?php echo $jsOrderStatusShopperEmail ?>;
+				var selected = jQuery(this).val();
+				var selStr = '[name="orders['+id+'][customer_notified]"]';
+				var elem = jQuery(selStr);
+
+				if(jQuery.inArray(selected, orderstatus)!=-1){
+					elem.attr("checked",true);
+				} else {
+					elem.attr("checked",false);
+				}
+
+			}
+
+		});
+
+	});
 </script>

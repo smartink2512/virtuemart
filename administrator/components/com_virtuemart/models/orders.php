@@ -1452,7 +1452,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$vars['url'] = 'url';
 
 		if(!isset($vars['doVendor'])){
-			$orderstatusForVendorEmail = VmConfig::get('email_os_v',array('U','R','X'));
+			$orderstatusForVendorEmail = VmConfig::get('email_os_v',array('U','C','R','X'));
 			if(!is_array($orderstatusForVendorEmail)) $orderstatusForVendorEmail = array($orderstatusForVendorEmail);
 			if ( in_array((string)$order['details']['BT']->order_status,$orderstatusForVendorEmail)){
 				$vars['doVendor'] = true;
@@ -1497,9 +1497,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 
 
-		$orderstatusForShopperEmail = VmConfig::get('email_os_s',array('U','S','R','X'));
+		$orderstatusForShopperEmail = VmConfig::get('email_os_s',array('U','C','S','R','X'));
 		if(!is_array($orderstatusForShopperEmail)) $orderstatusForShopperEmail = array($orderstatusForShopperEmail);
-		if ( in_array((string)$order['details']['BT']->order_status,$orderstatusForShopperEmail)){
+		if ( in_array((string)$order['details']['BT']->order_status,$orderstatusForShopperEmail) ){
 
 			// Send the email
 			if (shopFunctionsF::renderMail('invoice', $order['details']['BT']->email, $vars, null,$vars['doVendor'])) {

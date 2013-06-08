@@ -51,11 +51,6 @@ class VirtuemartViewCategory extends VmView {
 		$categoryModel = VmModel::getModel('category');
 		$productModel = VmModel::getModel('product');
 
-		// set search and keyword
-		if ($keyword = vmRequest::uword('keyword', '0', ' ,-,+')) {
-			$pathway->addItem($keyword);
-			//$title .=' ('.$keyword.')';
-		}
 		$search = JRequest::getvar('keyword', null);
 		if ($search !==null) {
 			$searchcustom = $this->getSearchCustom();
@@ -63,7 +58,7 @@ class VirtuemartViewCategory extends VmView {
 		$this->assignRef('keyword', $keyword);
 		$this->assignRef('search', $search);
 
-		$categoryId = JRequest::getInt('virtuemart_category_id', -1);
+		$categoryId = JRequest::getInt('virtuemart_category_id', ShopFunctionsF::getLastVisitedCategoryId());
 
 		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id',0 );
 
@@ -256,6 +251,12 @@ class VirtuemartViewCategory extends VmView {
 
 		if ($app->getCfg('MetaTitle') == '1') {
 			$document->setMetaData('title',  $title);
+		}
+
+		// set search and keyword
+		if ($keyword = vmRequest::uword('keyword', '0', ' ,-,+,.,_')) {
+			$pathway->addItem($keyword);
+			//$title .=' ('.$keyword.')';
 		}
 
 		parent::display($tpl);

@@ -293,8 +293,7 @@ class VirtueMartModelConfig extends JModel {
 		$config = VmConfig::loadConfig(TRUE);
 		unset ($config->_params['pdf_invoice']); // parameter remove and replaced by inv_os
 
-
-		$config->setParams($data);
+		vmdebug('store',$data);
 
 		$confData = array();
 		$query = 'SELECT * FROM `#__virtuemart_configs`';
@@ -307,20 +306,27 @@ class VirtueMartModelConfig extends JModel {
 
 		$urls = array('assets_general_path','media_category_path','media_product_path','media_manufacturer_path','media_vendor_path');
 		foreach($urls as $urlkey){
-				$url = trim($config->get($urlkey));
+				$url = trim($data[$urlkey]);
 				$length = strlen($url);
 				if(strrpos($url,'/')!=($length-1)){
-					$config->set($urlkey,$url.'/');
+					$data[$urlkey] = $url.'/';
 					vmInfo('Corrected media url '.$urlkey.' added missing /');
 				}
 		}
 
-		$safePath = trim($config->get('forSale_path'));
+		//If empty it is not sent by the form, other forms do it by using a table to store,
+		//the config is like a big xparams and so we check some values for this form manually
+		$toSetEmpty = array('active_languages','inv_os','email_os_v','email_os_s');
+		foreach($toSetEmpty as $item){
+			if(!isset($data[$item])) $data[$item] = array();
+		}
+
+		$safePath = trim($data['forSale_path']);
 		if(!empty($safePath)){
 			$length = strlen($safePath);
 			if(strrpos($safePath,DS)!=($length-1)){
 				$safePath = $safePath.DS;
-				$config->set('forSale_path',$safePath);
+				$data['forSale_path'] = $safePath;
 				vmInfo('Corrected safe path added missing '.DS);
 			}
 		}
@@ -340,7 +346,7 @@ class VirtueMartModelConfig extends JModel {
 			}
 		}
 
-
+		$config->setParams($data);
 		$confData['config'] = $config->toString();
 		// 		vmdebug('config to store',$confData);
 		$confTable = $this->getTable('configs');

@@ -177,7 +177,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 				<?php
-				echo $this->orderStatusModel->renderOrderStatusList(VmConfig::get('email_os_s',array('U','S','R','X')),'email_os_s[]');
+				echo $this->orderStatusModel->renderOrderStatusList(VmConfig::get('email_os_s',array('U','C','S','R','X')),'email_os_s[]');
 				?>
 			</td>
 		</tr>
@@ -190,7 +190,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 				<?php
-				echo $this->orderStatusModel->renderOrderStatusList(VmConfig::get('email_os_v',array('U','R','X')),'email_os_v[]');
+				echo $this->orderStatusModel->renderOrderStatusList(VmConfig::get('email_os_v',array('U','C','R','X')),'email_os_v[]');
 				?>
 			</td>
 		</tr>

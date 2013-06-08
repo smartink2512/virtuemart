@@ -1349,7 +1349,7 @@ class ShopFunctions {
 		}
         */
 		$filterArray = array('product_name', '`p`.created_on', '`p`.product_sku',
-			'product_s_desc', 'product_desc',
+			'product_s_desc', 'product_desc','`l`.slug',
 				'category_name', 'category_description', 'mf_name',
 			'product_price', 'product_special', 'product_sales', 'product_availability', '`p`.product_available_date',
 			'product_height', 'product_width', 'product_length', 'product_lwh_uom',
