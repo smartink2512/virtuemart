@@ -419,8 +419,16 @@ class VirtueMartModelMedia extends VmModel {
 
 				if(empty($object->virtuemart_media_id)) $virtuemart_media_id = null; else $virtuemart_media_id = $object->virtuemart_media_id;
 				$object->images = $this->createMediaByIds($virtuemart_media_id,$type,$mime,$limit);
-// 				vmdebug('$object->images',$object->images);
+
+				//This should not be used in fact. It is for legacy reasons there.
+				if(isset($object->images[0]->file_url_thumb)){
+					$object->file_url_thumb = $object->images[0]->file_url_thumb;
+					$object->file_url = $object->images[0]->file_url;
+
+				}
+
 			}
+
 		}
 	}
 
