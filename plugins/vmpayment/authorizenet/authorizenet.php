@@ -54,8 +54,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 	const ERROR = 3;
 	const HELD = 4;
 
-
-		const AUTHORIZE_PAYMENT_CURRENCY = "USD";
+	const AUTHORIZE_PAYMENT_CURRENCY = "USD";
 	/**
 	 * Constructor
 	 *
@@ -341,6 +340,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		if (!$this->selectedThisByMethodId($cart->virtuemart_paymentmethod_id)) {
 			return NULL; // Another method was selected, do nothing
 		}
+return true;
 		$this->_getAuthorizeNetFromSession();
 		return $this->_validate_creditcard_data(TRUE);
 	}
@@ -399,15 +399,91 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 			return FALSE;
 		}
 
-		$this->_getAuthorizeNetFromSession();
+		$authorizenet_data = $this->_getAuthorizeNetFromSession();
 		$cart_prices['payment_tax_id'] = 0;
 		$cart_prices['payment_value'] = 0;
 
 		if (!$this->checkConditions($cart, $method, $cart_prices)) {
 			return FALSE;
 		}
-		$payment_name = $this->renderPluginName($method);
+		//$payment_name = $this->renderPluginName($method);
+		$creditCards = $method->creditcards;
 
+				$creditCardList = '';
+				if ($creditCards) {
+					$creditCardList = ($this->_renderCreditCardList($creditCards, $this->_cc_type, $method->virtuemart_paymentmethod_id, FALSE));
+				}
+				$sandbox_msg = "";
+				if ($method->sandbox) {
+					$sandbox_msg .= '<br />' . JText::_('VMPAYMENT_AUTHORIZENET_SANDBOX_TEST_NUMBERS');
+				}
+
+				$cvv_images = $this->_displayCVVImages($method);
+		$payment_name = '<form method="get" id="authorizeForm" name="choosePaymentRate" action="'.JRoute::_('index.php').'" class="form-validate">';
+
+				$payment_name .= '<br /><span class="vmpayment_cardinfo">' . JText::_('VMPAYMENT_AUTHORIZENET_COMPLETE_FORM') . $sandbox_msg . '
+		    <table border="0" cellspacing="0" cellpadding="2" width="100%">
+		    <tr valign="top">
+		        <td nowrap width="10%" align="right">
+		        	<label for="creditcardtype">' . JText::_('VMPAYMENT_AUTHORIZENET_CCTYPE') . '</label>
+		        </td>
+		        <td>' . $creditCardList .
+					'</td>
+		    </tr>
+		    <tr valign="top">
+		        <td nowrap width="10%" align="right">
+		        	<label for="cc_type">' . JText::_('VMPAYMENT_AUTHORIZENET_CCNUM') . '</label>
+		        </td>
+		        <td>
+				<script type="text/javascript">
+				//<![CDATA[
+				  function checkAuthorizeNet(id, el)
+				   {
+				     ccError=razCCerror(id);
+					CheckCreditCardNumber(el.value, id);
+					if (!ccError) {
+					el.value=\'\';}
+				   }
+				//]]>
+				</script>
+		        <input type="text" class="inputbox" id="cc_number_' . $method->virtuemart_paymentmethod_id . '" name="cc_number_' . $method->virtuemart_paymentmethod_id . '" value="' . $this->_cc_number . '"    autocomplete="off"   onchange="javascript:checkAuthorizeNet(' . $method->virtuemart_paymentmethod_id . ', this);"  />
+		        <div id="cc_cardnumber_errormsg_' . $method->virtuemart_paymentmethod_id . '"></div>
+		    </td>
+		    </tr>
+		    <tr valign="top">
+		        <td nowrap width="10%" align="right">
+		        	<label for="cc_cvv">' . JText::_('VMPAYMENT_AUTHORIZENET_CVV2') . '</label>
+		        </td>
+		        <td>
+		            <input type="text" class="inputbox" id="cc_cvv_' . $method->virtuemart_paymentmethod_id . '" name="cc_cvv_' . $method->virtuemart_paymentmethod_id . '" maxlength="4" size="5" value="' . $this->_cc_cvv . '" autocomplete="off" />
+
+			<span class="hasTip" title="' . JText::_('VMPAYMENT_AUTHORIZENET_WHATISCVV') . '::' . JText::sprintf("VMPAYMENT_AUTHORIZENET_WHATISCVV_TOOLTIP", $cvv_images) . ' ">' .
+					JText::_('VMPAYMENT_AUTHORIZENET_WHATISCVV') . '
+			</span></td>
+		    </tr>
+		    <tr>
+		        <td nowrap width="10%" align="right">' . JText::_('VMPAYMENT_AUTHORIZENET_EXDATE') . '</td>
+		        <td> ';
+				$payment_name .= shopfunctions::listMonths('cc_expire_month_' . $method->virtuemart_paymentmethod_id, $this->_cc_expire_month);
+				$payment_name .= " / ";
+				$payment_name .= '
+				<script type="text/javascript">
+				//<![CDATA[
+				  function changeDate(id, el)
+				   {
+				     var month = document.getElementById(\'cc_expire_month_\'+id); if(!CreditCardisExpiryDate(month.value,el.value, id))
+					 {el.value=\'\';
+					 month.value=\'\';}
+				   }
+				//]]>
+				</script>';
+				$payment_name .= shopfunctions::listYears('cc_expire_year_' . $method->virtuemart_paymentmethod_id, $this->_cc_expire_year, NULL, 2022, " onchange=\"javascript:changeDate(" . $method->virtuemart_paymentmethod_id . ", this);\" ");
+				$payment_name .= '<div id="cc_expiredate_errormsg_' . $method->virtuemart_paymentmethod_id . '"></div>';
+				$payment_name .= '</td>  </tr>  	</table></span>
+					<input type="hidden" name="view" value="cart"/>
+			<input type="hidden" name="task" value="checkout"/>
+			<a class="vm-button-correct" href="javascript:document.authorizeForm.submit();" ><span>Confirm purchase</span></a>
+				</form>';
 		$this->setCartPrices($cart, $cart_prices, $method);
 
 		return TRUE;
@@ -1089,15 +1165,10 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 	 * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
 	 *
 	 */
-	function plgVmOnCheckAutomaticSelectedPayment (VirtueMartCart $cart, array $cart_prices = array(), &$paymentCounter)
-	{
 
-		$return = $this->onCheckAutomaticSelected($cart, $cart_prices);
-		if (isset($return)) {
-			return 0;
-		} else {
-			return NULL;
-		}
+	function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart, array $cart_prices = array(), &$paymentCounter) {
+
+		return $this->onCheckAutomaticSelected($cart, $cart_prices, $paymentCounter);
 	}
 
 	/**
