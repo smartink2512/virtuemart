@@ -446,7 +446,7 @@ class VmConfig {
 		if(VmConfig::get('enableEnglish', 1) and $tag!='en-GB'){
 			$jlang->load($name, $path, 'en-GB');
 		}
-
+		//vmdebug('loadJLang',$name);
 		$jlang->load($name, $path,$tag,true);
 
  	}

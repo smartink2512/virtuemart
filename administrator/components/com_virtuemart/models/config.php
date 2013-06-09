@@ -100,10 +100,10 @@ class VirtueMartModelConfig extends JModel {
 	/**
 	 * Retrieve a list of available fonts to be used with PDF Invoice generation & PDF Product view on FE
 	 *
-         * @author Nikos Zagas
+	 * @author Nikos Zagas
 	 * @return object List of available fonts
 	 */
-        function getTCPDFFontsList() {
+	function getTCPDFFontsList() {
 
 		$dir = JPATH_ROOT.DS.'libraries'.DS.'tcpdf'.DS.'fonts';
 		$specfiles = glob($dir.DS."*_specs.xml");
@@ -118,12 +118,12 @@ class VirtueMartModelConfig extends JModel {
 				}
 			} else {
 				vmError ('Wrong structure in font XML file: '. $dir . DS . $file);
-			}                             
+			}
 		}
 		return $result;
 	}
-        
-        
+
+
 	/**
 	 * Retrieve a list of possible images to be used for the 'no image' image.
 	 *
@@ -221,7 +221,7 @@ class VirtueMartModelConfig extends JModel {
 	/*
 	 * Get the joomla list of languages
 	 */
-    function getActiveLanguages($active_languages) {
+	function getActiveLanguages($active_languages) {
 
 		$activeLangs = array() ;
 		$language =JFactory::getLanguage();
@@ -293,8 +293,7 @@ class VirtueMartModelConfig extends JModel {
 		$config = VmConfig::loadConfig(TRUE);
 		unset ($config->_params['pdf_invoice']); // parameter remove and replaced by inv_os
 
-		vmdebug('store',$data);
-
+		$config->setParams($data);
 		$confData = array();
 		$query = 'SELECT * FROM `#__virtuemart_configs`';
 		$this->_db->setQuery($query);
@@ -306,30 +305,34 @@ class VirtueMartModelConfig extends JModel {
 
 		$urls = array('assets_general_path','media_category_path','media_product_path','media_manufacturer_path','media_vendor_path');
 		foreach($urls as $urlkey){
-				$url = trim($data[$urlkey]);
-				$length = strlen($url);
-				if(strrpos($url,'/')!=($length-1)){
-					$data[$urlkey] = $url.'/';
-					vmInfo('Corrected media url '.$urlkey.' added missing /');
-				}
+			$url = trim($config->get($urlkey));
+			$length = strlen($url);
+			if(strrpos($url,'/')!=($length-1)){
+				$config->set($urlkey,$url.'/');
+				vmInfo('Corrected media url '.$urlkey.' added missing /');
+			}
 		}
+
 
 		//If empty it is not sent by the form, other forms do it by using a table to store,
 		//the config is like a big xparams and so we check some values for this form manually
 		$toSetEmpty = array('active_languages','inv_os','email_os_v','email_os_s');
 		foreach($toSetEmpty as $item){
-			if(!isset($data[$item])) $data[$item] = array();
+			if(!isset($data[$item])) {
+				$config->set($item,array());
+			}
 		}
 
-		$safePath = trim($data['forSale_path']);
 		if(!empty($safePath)){
 			$length = strlen($safePath);
 			if(strrpos($safePath,DS)!=($length-1)){
 				$safePath = $safePath.DS;
-				$data['forSale_path'] = $safePath;
+				$config->set('forSale_path',$safePath);
 				vmInfo('Corrected safe path added missing '.DS);
 			}
 		}
+
+		$safePath = trim($config->get('forSale_path'));
 		if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		$safePath = shopFunctions::checkSafePath($safePath);
 
@@ -346,7 +349,7 @@ class VirtueMartModelConfig extends JModel {
 			}
 		}
 
-		$config->setParams($data);
+
 		$confData['config'] = $config->toString();
 		// 		vmdebug('config to store',$confData);
 		$confTable = $this->getTable('configs');

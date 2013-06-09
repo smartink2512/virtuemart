@@ -43,6 +43,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
             'dev' => array(0,'int'),
 			'avatax_virtuemart_country_id'  => array(0,'int'),
             'avatax_virtuemart_state_id'  => array(0,'int'),
+			'accrual'		=> array(0,'int'),
 		);
 
 		$this->setConfigParameterable ('calc_params', $varsToPush);
@@ -112,8 +113,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$html .= VmHTML::row('input','VMCALCULATION_AVALARA_LICENSE','license',$calc->license);
 		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_COMMITT','committ',$calc->committ);
 		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_ONLYCART','only_cart',$calc->only_cart);
-        $html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_DEV','dev',$calc->dev);
-
+        $html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_ACCRUAL','accrual',$calc->accrual);
+		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_DEV','dev',$calc->dev);
 		$label = 'VMCALCULATION_AVALARA_VADDRESS';
 		$lang =JFactory::getLanguage();
 		$label = $lang->hasKey($label.'_TIP') ? '<span class="hasTip" title="'.JText::_($label.'_TIP').'">'.JText::_($label).'</span>' : JText::_($label) ;
@@ -152,731 +153,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$html .= JText::_('VMCALCULATION_AVALARA_MANUAL').'</fieldset>';
 		return TRUE;
 	}
-
-	function newATConfig($calc){
-
-		if(!class_exists('TextCase')) require (VMAVALARA_CLASS_PATH.DS.'TextCase.class.php');
-
-		$__wsdldir = VMAVALARA_CLASS_PATH."/wsdl";
-		$standard = array(
-			'url'       => 'no url specified',
-			'addressService' => '/Address/AddressSvc.asmx',
-			'taxService' => '/Tax/TaxSvc.asmx',
-			'batchService'=> '/Batch/BatchSvc.asmx',
-			'avacertService'=> '/AvaCert/AvaCertSvc.asmx',
-			'addressWSDL' => 'file://'.$__wsdldir.'/Address.wsdl',
-			'taxWSDL'  => 'file://'.$__wsdldir.'/Tax.wsdl',
-			'batchWSDL'  => 'file://'.$__wsdldir.'/BatchSvc.wsdl',
-			'avacertWSDL'  => 'file://'.$__wsdldir.'/AvaCertSvc.wsdl',
-			'account'   => '<your account number here>',
-			'license'   => '<your license key here>',
-			'adapter'   => 'avatax4php,5.10.0.0',
-			'client'    => 'VirtueMart'.$this->vmVersion,
-			'name'    => 'PHPAdapter',
-			'TextCase' => TextCase::$Mixed,
-			'trace'     => TRUE);
-
-		//VmConfig::$echoDebug = TRUE;
-		//if(!is_object())avadebug($calc);
-		if(!class_exists('ATConfig')) require (VMAVALARA_CLASS_PATH.DS.'ATConfig.class.php');
-
-		//Set this to TRUE for development account
-		if($calc->dev){
-			$this->_connectionType = 'Development';
-			$devValues = array(
-				'url'       => 'https://development.avalara.net',
-				'account'   => $calc->account,
-				'license'   => $calc->license,
-				'trace'     => TRUE); // change to false for production
-			$resultingConfig = array_merge($standard,$devValues);
-			$config = new ATConfig($this->_connectionType, $resultingConfig);
-
-		} else {
-			$this->_connectionType = 'Production';
-			$prodValues = array(
-				'url'       => 'https://avatax.avalara.net',
-				'account'   => $calc->account,
-				'license'   => $calc->license,
-				'trace'     => FALSE);
-			$resultingConfig = array_merge($standard,$prodValues);
-			$config = new ATConfig($this->_connectionType, $resultingConfig);
-
-		}
-
-		return $config;
-	}
-
-	function ping ($calc) {
-
-		$html = '';
-		$this->newATConfig($calc);
-
-		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
-		$client = new TaxServiceSoap($this->_connectionType);
-
-		try
-		{
-			if(!class_exists('PingResult')) require (VMAVALARA_CLASS_PATH.DS.'PingResult.class.php');
-			$result = $client->ping("TEST");
-			vmInfo('Avalara Ping ResultCode is: '. $result->getResultCode() );
-
-			if(!class_exists('SeverityLevel')) require (VMAVALARA_CLASS_PATH.DS.'SeverityLevel.class.php');
-			if($result->getResultCode() != SeverityLevel::$Success)	// call failed
-			{
-				foreach($result->Messages() as $msg)
-				{
-					$html .= $msg->Name().": ".$msg->Summary()."<br />";
-				}
-
-			}
-			else // successful calll
-			{
-				vmInfo('Avalara used Ping Version is: '. $result->getVersion() );
-			}
-		}
-		catch(SoapFault $exception)
-		{
-
-			$err = "Exception: ping ";
-			if($exception)
-				$err .= $exception->faultstring;
-
-			$err .='<br />';
-			$err .='last request: '. $client->__getLastRequest().'<br />';
-			$err .='last response: '. $client->__getLastResponse().'<br />';
-			vmError($err);
-			avadebug('AvaTax the ping throws exception ',$exception);
-		}
-
-		return $html;
-	}
-
-	static $validatedAddresses = NULL;
-
-	private function fillValidateAvalaraAddress($calc,$vmadd){
-
-		if(!isset(self::$validatedAddresses)){
-
-			if(!empty($vmadd)){
-				$vmadd = get_object_vars($vmadd);
-
-				//First country check
-				if(empty($vmadd['virtuemart_country_id'])){
-
-					self::$validatedAddresses = FALSE;
-					return self::$validatedAddresses;
-				} else {
-					if(empty($calc->avatax_virtuemart_country_id)){
-						vmError('AvaTax, please select countries, to validate');
-						self::$validatedAddresses = FALSE;
-						return self::$validatedAddresses;
-					} else {
-						if(!is_array($calc->avatax_virtuemart_country_id)){
-							//Suppress Warning
-							$calc->avatax_virtuemart_country_id = @unserialize($calc->avatax_virtuemart_country_id);
-						}
-						if(!in_array($vmadd['virtuemart_country_id'],$calc->avatax_virtuemart_country_id)){
-							avadebug('fillValidateAvalaraAddress not validated, country not set');
-							self::$validatedAddresses = FALSE;
-							return self::$validatedAddresses;
-						}
-
-					}
-				}
-				$config = $this->newATConfig($calc);
-
-				if(!class_exists('AddressServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'AddressServiceSoap.class.php');
-				$client = new AddressServiceSoap($this->_connectionType,$config);
-
-				if(!class_exists('Address')) require (VMAVALARA_CLASS_PATH.DS.'Address.class.php');
-				$address = new Address();
-				if(isset($vmadd['address_1'])) $address->setLine1($vmadd['address_1']);
-				if(isset($vmadd['address_2'])) $address->setLine2($vmadd['address_2']);
-				if(isset($vmadd['city'])) $address->setCity($vmadd['city']);
-
-				if(isset($vmadd['virtuemart_country_id'])){
-
-					$vmadd['country'] = ShopFunctions::getCountryByID($vmadd['virtuemart_country_id'],'country_2_code');
-					if(isset($vmadd['country'])) $address->setCountry($vmadd['country']);
-				}
-				if(isset($vmadd['virtuemart_state_id'])){
-					$vmadd['state'] = ShopFunctions::getStateByID($vmadd['virtuemart_state_id'],'state_2_code');
-					if(isset($vmadd['state'])) $address->setRegion($vmadd['state']);
-				}
-
-				if(isset($vmadd['zip'])) $address->setPostalCode($vmadd['zip']);
-
-				if(!class_exists('SeverityLevel')) require (VMAVALARA_CLASS_PATH.DS.'SeverityLevel.class.php');
-				if(!class_exists('Message')) require (VMAVALARA_CLASS_PATH.DS.'Message.class.php');
-
-				//if($calc->vAddress==0){
-			/*	if(isset($vmadd['country']) and $vmadd['country']!= 'US' and $vmadd['country']!= 'CA'){
-
-					self::$validatedAddresses = array($address);
-					return self::$validatedAddresses;
-				}*/
-
-				$address->Coordinates = 1;
-				$address->Taxability = TRUE;
-				$textCase = TextCase::$Mixed;
-				$coordinates = 1;
-
-				$hash = md5(implode($vmadd,','));
-				$session = JFactory::getSession ();
-				$validatedAddress = $session->get ('vm_avatax_address_checked.' . $hash, FALSE, 'vm');
-
-				if(!$validatedAddress){
-
-					if(!class_exists('ValidateResult')) require (VMAVALARA_CLASS_PATH.DS.'ValidateResult.class.php');
-					if(!class_exists('ValidateRequest')) require (VMAVALARA_CLASS_PATH.DS.'ValidateRequest.class.php');
-					if(!class_exists('ValidAddress')) require (VMAVALARA_CLASS_PATH.DS.'ValidAddress.class.php');
-
-					//TODO add customer code //shopper_number
-					try
-					{
-						$request = new ValidateRequest($address, ($textCase ? $textCase : TextCase::$Default), $coordinates);
-						vmSetStartTime('avaValAd');
-						$result = $client->Validate($request);
-						vmTime('Avatax validate Address','avaValAd');
-						//avadebug('Validate ResultCode is: '. $result->getResultCode());;
-						if($result->getResultCode() != SeverityLevel::$Success)
-						{
-							foreach($result->getMessages() as $msg)
-							{
-								avadebug('fillValidateAvalaraAddress ' . $msg->getName().": ".$msg->getSummary()."\n");
-								//avadebug('fillValidateAvalaraAddress ERROR',$address);
-							}
-						}
-						else
-						{
-
-							self::$validatedAddresses = $result->getvalidAddresses();
-							//$encoded = json_encode(self::$validatedAddresses[0]);
-							//vmdebug('Avatax my address is validated ',$hash,  self::$validatedAddresses[0],$encoded);
-							$session->set ('vm_avatax_address_checked.' . $hash, TRUE, 'vm');
-						}
-
-					}
-					catch(SoapFault $exception)
-					{
-						$msg = "Exception: fillValidateAvalaraAddress ";
-						if($exception)
-							$msg .= $exception->faultstring;
-
-						$msg .= "\n";
-						$msg .= $client->__getLastRequest()."\n";
-						$msg .= $client->__getLastResponse()."\n";
-						vmError($msg);
-					}
-				} else {
-					self::$validatedAddresses[] = $address;
-
-				}
-
-				if(empty(self::$validatedAddresses)){
-					self::$validatedAddresses = FALSE;
-				}
-
-				//then for BT and/or $cart->STsameAsBT
-			} else {
-				self::$validatedAddresses = FALSE;
-			}
-			//avadebug("Number of addresses fillValidateAvalaraAddress is ", self::$validatedAddresses);
-		}
-
-		return self::$validatedAddresses;
-
-	}
-
-	private function getCartProducts($calculationHelper,$price){
-
-		if($calculationHelper->inCart){
-
-			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-			$cart = VirtueMartCart::getCart();
-
-			$products = $cart->products;
-			$prices = $calculationHelper->getCartPrices();
-			foreach($products as $k => $product){
-
-				if(!empty($prices[$k]['discountedPriceWithoutTax'])){
-					$price = $prices[$k]['discountedPriceWithoutTax'];
-				} else if(!empty($prices[$k]['basePriceVariant'])){
-					$price = $prices[$k]['basePriceVariant'];
-				} else {
-					avadebug('There is no price in getTax for product '.$k.' ',$prices);
-					$price = 0.0;
-				}
-				$product->price = $price;
-
-				if(!empty($price[$k]['discountAmount'])){
-					$product->discount = $price[$k]['discountAmount'];
-				} else {
-					$product->discount = FALSE;
-				}
-			}
-
-			//if(!empty($cart->virtuemart_shipmentmethod_id)){
-				$shipment = new stdClass();
-				$shipment->product_sku = $cart->virtuemart_shipmentmethod_id;
-				$shipment->product_name = 'Shipment';
-				$shipment->amount = 1;
-				$shipment->price = $prices['shipmentValue'];              //decimal // TotalAmmount
-				$shipment->discount = 0.0;
-				$products[] = $shipment;
-			//}
-			$products['discountAmount'] = $prices['discountAmount'];
-		} else {
-
-			$calculationHelper->_product->price = $price;
-
-			$products[0] = $calculationHelper->_product;
-			if(!isset($products[0]->amount)){
-				$products[0]->amount = 1;
-			}
-
-			if(isset($calculationHelper->productPrices['discountAmount'])){
-				$products[0]->discount = $calculationHelper->productPrices['discountAmount'];
-			} else {
-				$products[0]->discount = FALSE;
-			}
-		}
-
-		return $products;
-	}
-
-	function createStandardRequest($calc,$shopperData,$products){
-
-		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
-		if(!class_exists('DocumentType')) require (VMAVALARA_CLASS_PATH.DS.'DocumentType.class.php');
-		if(!class_exists('DetailLevel')) require (VMAVALARA_CLASS_PATH.DS.'DetailLevel.class.php');
-		if(!class_exists('Line')) require (VMAVALARA_CLASS_PATH.DS.'Line.class.php');
-		if(!class_exists('ServiceMode')) require (VMAVALARA_CLASS_PATH.DS.'ServiceMode.class.php');
-		if(!class_exists('Line')) require (VMAVALARA_CLASS_PATH.DS.'Line.class.php');
-		if(!class_exists('GetTaxRequest')) require (VMAVALARA_CLASS_PATH.DS.'GetTaxRequest.class.php');
-		if(!class_exists('GetTaxResult')) require (VMAVALARA_CLASS_PATH.DS.'GetTaxResult.class.php');
-
-
-		$request= new GetTaxRequest();
-		$origin = new Address();
-
-		//In Virtuemart we have not differenct warehouses, but we have a shipment address
-		//So when the vendor has a shipment address, we assume that it is his warehouse
-		//Later we can combine products with shipment addresses for different warehouse (yehye, future music)
-		//But for now we just use the BT address
-		if (!class_exists ('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-
-		$userId = VirtueMartModelVendor::getUserIdByVendorId ($calc->virtuemart_vendor_id);
-		$userModel = VmModel::getModel ('user');
-		$virtuemart_userinfo_id = $userModel->getBTuserinfo_id ($userId);
-		// this is needed to set the correct user id for the vendor when the user is logged
-		$userModel->getVendor($calc->virtuemart_vendor_id);
-		$vendorFieldsArray = $userModel->getUserInfoInUserFields ('mail', 'BT', $virtuemart_userinfo_id, FALSE, TRUE);
-		$vendorFields = $vendorFieldsArray[$virtuemart_userinfo_id];
-		//avadebug('my vendor fields',$vendorFields);
-		$origin->setLine1($vendorFields['fields']['address_1']['value']);
-		$origin->setLine2($vendorFields['fields']['address_2']['value']);
-		$origin->setCity($vendorFields['fields']['city']['value']);
-
-		$origin->setCountry($vendorFields['fields']['virtuemart_country_id']['country_2_code']);
-		$origin->setRegion($vendorFields['fields']['virtuemart_state_id']['state_2_code']);
-		$origin->setPostalCode($vendorFields['fields']['zip']['value']);
-
-		$request->setOriginAddress($origin);	      //Address
-
-		if(isset($this->addresses[0])){
-			$destination = $this->addresses[0];
-		} else {
-			return FALSE;
-		}
-		$request->setDestinationAddress	($destination);     //Address
-		//avadebug('The date',$origin,$destination);
-		$request->setCompanyCode($calc->company_code);   // Your Company Code From the Dashboard
-
-		$request->setDocDate(date('Y-m-d'));           //date
-
-		$request->setCustomerCode($shopperData['customer_id']);  //string Required
-
-		if(isset($shopperData['tax_usage_type'])){
-			$request->setCustomerUsageType($shopperData['tax_usage_type']);   //string   Entity Usage
-		}
-
-		if(!empty($products['discountAmount'])){
-			$request->setDiscount($products['discountAmount']);            //decimal
-			unset($products['discountAmount']);
-		}
-
-		if(isset($shopperData['tax_exemption_number'])){
-			$request->setExemptionNo($shopperData['tax_exemption_number']);         //string   if not using ECMS which keys on customer code
-		}
-
-		$request->setDetailLevel('Tax');         //Summary or Document or Line or Tax or Diagnostic
-
-		$lines = array();
-		$n = 0;
-		$this->_lineNumbersToCartProductId = array();
-		foreach($products as $k=>$product){
-
-			$n++;
-			$this->_lineNumbersToCartProductId[$n] = $k;
-			$line = new Line();
-			$line->setNo ($n);                  //string  // line Number of invoice
-			$line->setItemCode($product->product_sku);            //string
-			$line->setDescription($product->product_name);         //product description, like in cart, atm only the name, todo add customfields
-
-			if(!empty($product->categories)){
-
-				//avadebug('AvaTax setTaxCode Product has categories !',$catNames);
-				if (!class_exists ('TableCategories')) {
-					require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'categories.php');
-				}
-				$db = JFactory::getDbo();
-				$catTable = new TableCategories($db);
-				foreach($product->categories as $cat){
-					$catTable->load ($cat);
-					$catslug = $catTable->slug;
-
-					if(strpos($catslug,'avatax-')!==FALSE){
-						$taxCode = substr($catslug,7);
-						if(!empty($taxCode)){
-							$line->setTaxCode($taxCode);
-							avadebug('AvaTax setTaxCode '.$taxCode);
-						} else {
-							vmError('AvaTax setTaxCode, category could not be parsed '.$catslug);
-						}
-
-						break;
-					}
-				}
-			}
-			//$line->setTaxCode("");             //string
-			$line->setQty($product->amount);                 //decimal
-			$line->setAmount($product->price * $product->amount);              //decimal // TotalAmmount
-			$line->setDiscounted($product->discount * $product->amount);          //boolean
-
-			$line->setRevAcct("");             //string
-			$line->setRef1("");                //string
-			$line->setRef2("");                //string
-
-			if(isset($shopperData['tax_exemption_number'])){
-				$line->setExemptionNo($shopperData['tax_exemption_number']);         //string
-			}
-			if(isset($shopperData['tax_usage_type'])){
-				$line->setCustomerUsageType($shopperData['tax_usage_type']);   //string
-			}
-
-			$lines[] = $line;
-		}
-
-		$request->setLines($lines);
-
-		return $request;
-	}
-
-	private static $_taxResult = NULL;
-
-	function getAvaTax($calculationHelper,$calc,$products,$invoiceNumber=false,$orderNumber = false){
-
-		if($calc->activated==0) return false;
-
-		if(count($products) == 0){
-			return false;
-		}
-
-		$shopperData = $this->getShopperData($calc);
-		if(!$shopperData){
-			return false;
-		}
-
-		$request = $this->createStandardRequest($calc,$shopperData,$products);
-
-		if($orderNumber){
-			$request->setPurchaseOrderNo($orderNumber);     //string Optional
-		}
-		if($invoiceNumber){
-			avadebug('My GetTaxRequest sent to AvaTax',$request);
-		}
-
-		$totalTax = 0.0;
-
-		$hash = '';
-		$session = JFactory::getSession ();
-		if($calc->committ and $invoiceNumber){
-			$request->setDocType(DocumentType::$SalesInvoice);   	// Only supported types are SalesInvoice or SalesOrder
-			$request->setCommit(true);
-			//invoice number, problem is that the invoice number is at this time not known, but the order_number may reachable
-			$request->setDocCode($invoiceNumber);
-			self::$_taxResult = FALSE;
-			avadebug('Request as SalesInvoice with invoiceNumber '.$invoiceNumber);
-		} else {
-
-			$hash .= serialize($shopperData). serialize($products);
-			$hash = md5($hash);
-
-			$request->setDocType(DocumentType::$SalesOrder);
-			$request->setCommit(false);
-			//invoice number, problem is that the invoice number is at this time not known, neither the order_number
-			$request->setDocCode('VM'.$this->vmVersion.'_order_request');
-
-			//Requests are allowed to be cached
-			self::$_taxResult = $session->get ('vm_avatax_tax.' . $hash, FALSE, 'vm');
-			//avadebug('Request as SalesOrder '.$hash);
-		}
-
-		if(!self::$_taxResult){
-			vmSetStartTime('avagetTax');
-			foreach($products as &$product){
-				$product = (array)$product;
-			}
-
-			$prices = $calculationHelper->getCartPrices();
-
-			self::$_taxResult = $this->executeRequest($request,$products,$prices);
-			vmTime('Avalara executeRequest hash '.$hash,'avagetTax');
-			$session->set ('vm_avatax_tax.' . $hash,  serialize(self::$_taxResult), 'vm');
-		} else {
-			if(is_string(self::$_taxResult )){
-				self::$_taxResult =  unserialize(self::$_taxResult);
-			}
-
-		}
-
-		if(self::$_taxResult){
-			if(isset(self::$_taxResult['totalTax'])){
-				$totalTax = self::$_taxResult['totalTax'];
-			}
-
-		}
-
-		return $totalTax;
-	}
-
-	function executeRequest($request,$products,$prices){
-		try
-		{
-			$client = new TaxServiceSoap($this->_connectionType);
-
-			if(!class_exists('TaxLine')) require (VMAVALARA_CLASS_PATH.DS.'TaxLine.class.php');
-			if(!class_exists('TaxDetail')) require (VMAVALARA_CLASS_PATH.DS.'TaxDetail.class.php');
-
-
-			$_taxResult = $client->getTax($request);
-
-			//vmdebug('my request as array',(array)$request);
-		}
-		catch(SoapFault $exception)
-		{
-			$msg = "Exception: getTax ";
-			if($exception)
-				$msg .= $exception->faultstring;
-
-			avadebug( $msg.'<br />'.$client->__getLastRequest().'<br />'.$client->__getLastResponse());
-
-			$_taxResult->setResultCode('TotalError');
-		}
-
-		if ($_taxResult->getResultCode() == SeverityLevel::$Success){
-
-			//avadebug("DocCode: ".$request->getDocCode() );
-			//avadebug("DocId: ".self::$_taxResult->getDocId()."\n");
-
-			//avadebug("TotalAmount: ".self::$_taxResult->getTotalAmount() );
-
-			$totalTax = $_taxResult->getTotalTax();
-			if($totalTax == 0 ){
-				//	avadebug( "Avalara returned false: ", self::$_taxResult);
-			}
-			$taxlines = $_taxResult->getTaxLines();
-			$taxlinexCount = count($taxlines);
-			foreach($taxlines as $ctl){
-
-				$nr = $ctl->getNo();
-
-				if(isset($this->_lineNumbersToCartProductId[$nr]) and $nr < $taxlinexCount){
-					$quantity = $products[$this->_lineNumbersToCartProductId[$nr]]['amount'];
-
-					//on the long hand, the taxAmount must be replaced by taxAmountQuantity to avoid rounding errors
-					$prices[$this->_lineNumbersToCartProductId[$nr]]['taxAmount'] = $ctl->getTax()/$quantity;
-					$prices[$this->_lineNumbersToCartProductId[$nr]]['taxAmountQuantity'] = $ctl->getTax();
-
-				} else {
-
-					//$prices = array('shipmentValue'=>$cartPrices['shipmentValue'],'shipmentTax'=> $ctl->getTax(), 'shipmentTotal' =>($cartPrices['shipmentValue'] +$ctl->getTax() ));
-					//avadebug('my $cartPrices',$cartPrices);
-					$prices['shipmentTax'] = $ctl->getTax();
-					$prices['salesPriceShipment'] = ($prices['shipmentValue'] + $ctl->getTax() );
-
-					//We need to substract the tax of the shipemt from the total
-					$totalTax = $totalTax - $ctl->getTax();
-
-				}
-
-			}
-			$prices['totalTax'] = $totalTax;
-
-
-		}
-		else {
-			foreach($_taxResult->getMessages() as $msg){
-
-				vmError($msg->getName().": ".$msg->getSummary());
-			}
-			vmdebug('Error, but no exception in getTax avalara',self::$_taxResult);
-		}
-
-		return $prices;
-	}
-
-	static $vmadd = NULL;
-	private function getShopperData($calc){
-
-		if(!isset(self::$vmadd)){
-
-			$view = JRequest::getWord('view',0);
-			if($calc->only_cart == 1 and $view != 'cart'){
-				self::$vmadd = FALSE;
-				return self::$vmadd;
-			}
-			//We need for the tax calculation the shipment Address
-			//We have this usually in our cart.
-			if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-			$cart = VirtueMartCart::getCart();
-
-			//Test first for ST
-			if($cart->STsameAsBT){
-				if(!empty($cart->BT)) $vmadd = $cart->BT;
-			} else if(!empty($cart->ST)){
-				$vmadd = $cart->ST;
-			} else {
-				if(!empty($cart->BT)) $vmadd = $cart->BT;
-			}
-
-			$jUser = JFactory::getUser ();
-			if($jUser->id){
-				$userModel = VmModel::getModel('user');
-				$userModel -> setId($jUser->id);
-				$vmadd['customer_id'] = $userModel ->getCustomerNumberById();
-				avadebug('getShopperData customer_id by user '.$vmadd['customer_id']);
-			}
-
-			if(empty($vmadd['customer_id'])){
-				$firstName = empty($vmadd['first_name'])? '':$vmadd['first_name'];
-				$lastName = empty($vmadd['last_name'])? '':$vmadd['last_name'];
-				$email = empty($vmadd['email'])? '':$vmadd['email'];
-				$complete = $firstName.$lastName.$email;
-				if(!empty($complete)){
-					$vmadd['customer_id'] = 'nonreg_'.$vmadd['first_name'].'_'.$vmadd['last_name'].'_'.$vmadd['email'];
-				} else {
-					$vmadd['customer_id'] = '';
-				}
-				avadebug('getShopperData customer_id  '.$vmadd['customer_id']);
-			}
-
-			//avadebug('Tax $vmadd',$vmadd);
-			if(empty($vmadd) or !is_array($vmadd) or (is_array($vmadd) and count($vmadd) <2) ){
-
-				//VmTable::bindParameterable ($calc, $this->_xParams, $this->_varsToPushParam);
-				//avadebug('Insufficient addres, my view '.$view. ' my param ',$calc);
-
-				vmInfo('VMCALCULATION_AVALARA_INSUF_INFO');
-
-				$vmadd=FALSE;
-			}
-
-			self::$vmadd = $vmadd;
-		}
-
-
-		return self::$vmadd;
-	}
-
-	public function plgVmInterpreteMathOp ($calculationHelper, $rule, $price,$revert){
-
-		$rule = (object)$rule;
-
-		$mathop = $rule->calc_value_mathop;
-		$tax = 0.0;
-
-		if ($mathop=='avalara') {
-			$requestedProductId = JRequest::getInt('virtuemart_product_id',0);
-
-			if(isset($calculationHelper->_product)){
-				$productId = $calculationHelper->_product->virtuemart_product_id;
-			} else {
-				$productId = $requestedProductId;
-			}
-			//avadebug('plgVmInterpreteMathOp avalara ',$rule);
-			if(($productId!=0 and $productId==$requestedProductId) or $calculationHelper->inCart ){
-				VmTable::bindParameterable ($rule, $this->_xParams, $this->_varsToPushParam);
-				if($rule->activated==0) return $price;
-				if(empty($this->addresses)){
-					$vmadd = $this->getShopperData($rule);
-					$this->addresses = $this->fillValidateAvalaraAddress($rule,$vmadd);
-				}
-
-				if($this->addresses){
-					$products = $this->getCartProducts($calculationHelper,$price);
-
-					$tax = $this->getAvaTax( $calculationHelper,$rule,$products);
-				}
-			}
-		}
-
-		if($revert){
-			$tax = -$tax;
-		}
-
-		return $price + (float)$tax;
-	}
-
-	function plgVmConfirmedOrder ($cart, $order) {
-
-		$avaTaxRule = 0;
-		if(isset($order['calc_rules'])){
-			foreach($order['calc_rules'] as $rule){
-				if($rule->calc_mathop == 'avalara' and $rule->calc_kind == 'taxRulesBill'){
-					$avaTaxRule=$rule;
-					break;
-				}
-			}
-		}
-
-		if($avaTaxRule!==0){
-			if(!empty($avaTaxRule->calc_params)){
-				VmTable::bindParameterable ($avaTaxRule, $this->_xParams, $this->_varsToPushParam);
-				avadebug('$avaTaxRule',$avaTaxRule);
-				if($rule->activated==0)return false;
-				if(empty($this->addresses)){
-					$vmadd = $this->getShopperData($rule);
-					$this->addresses = $this->fillValidateAvalaraAddress($rule,$vmadd);
-				}
-				if($this->addresses){
-					if (!class_exists ('calculationHelper')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-
-					$orderModel = VmModel::getModel('orders');
-					$invoiceNumber = 'onr_'.$order['details']['BT']->order_number;
-					JRequest::setVar('create_invoice',1);
-					$orderModel -> createInvoiceNumber($order['details']['BT'],$invoiceNumber);
-					$calculator = calculationHelper::getInstance ();
-
-					avadebug('avatax plgVmConfirmedOrder $order',$invoiceNumber,$order);
-					if(is_array($invoiceNumber)) $invoiceNumber = $invoiceNumber[0];
-					$products = $this->getCartProducts($calculator,0);
-					$tax = $this->getAvaTax( $calculator,$rule,$products,$invoiceNumber,$order['details']['BT']->order_number);
-					if($calculator->inCart){
-						$calculator->setCartPricesMerge(self::$_taxResult);
-					}
-				//	avadebug('tax',$tax);
-				}
-			}
-		}
-
-	}
-
-/*	public function plgVmInGatherEffectRulesBill(&$calculationHelper,&$rules){
-
-		return FALSE;
-	}*/
 
 	/**
 	 * We can only calculate it for the productdetails view
@@ -939,6 +215,781 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$this->removePluginInternalData($id);
 	}
 
+	function newATConfig($calc){
+
+		if(is_object($calc)){
+			$calc = get_object_vars($calc);
+		}
+		if(!class_exists('TextCase')) require (VMAVALARA_CLASS_PATH.DS.'TextCase.class.php');
+
+		$__wsdldir = VMAVALARA_CLASS_PATH."/wsdl";
+		$standard = array(
+			'url'       => 'no url specified',
+			'addressService' => '/Address/AddressSvc.asmx',
+			'taxService' => '/Tax/TaxSvc.asmx',
+			'batchService'=> '/Batch/BatchSvc.asmx',
+			'avacertService'=> '/AvaCert/AvaCertSvc.asmx',
+			'addressWSDL' => 'file://'.$__wsdldir.'/Address.wsdl',
+			'taxWSDL'  => 'file://'.$__wsdldir.'/Tax.wsdl',
+			'batchWSDL'  => 'file://'.$__wsdldir.'/BatchSvc.wsdl',
+			'avacertWSDL'  => 'file://'.$__wsdldir.'/AvaCertSvc.wsdl',
+			'account'   => '<your account number here>',
+			'license'   => '<your license key here>',
+			'adapter'   => 'avatax4php,5.10.0.0',
+			'client'    => 'VirtueMart'.$this->vmVersion,
+			'name'    => 'PHPAdapter',
+			'TextCase' => TextCase::$Mixed,
+			'trace'     => TRUE);
+
+		//VmConfig::$echoDebug = TRUE;
+		//if(!is_object())avadebug($calc);
+		if(!class_exists('ATConfig')) require (VMAVALARA_CLASS_PATH.DS.'ATConfig.class.php');
+
+		//Set this to TRUE for development account
+		if($calc['dev']){
+			$this->_connectionType = 'Development';
+			$devValues = array(
+				'url'       => 'https://development.avalara.net',
+				'account'   => $calc['account'],
+				'license'   => $calc['license'],
+				'trace'     => TRUE); // change to false for production
+			$resultingConfig = array_merge($standard,$devValues);
+			$config = new ATConfig($this->_connectionType, $resultingConfig);
+
+		} else {
+			$this->_connectionType = 'Production';
+			$prodValues = array(
+				'url'       => 'https://avatax.avalara.net',
+				'account'   => $calc['account'],
+				'license'   => $calc['license'],
+				'trace'     => FALSE);
+			$resultingConfig = array_merge($standard,$prodValues);
+			$config = new ATConfig($this->_connectionType, $resultingConfig);
+
+		}
+
+		return $config;
+	}
+
+	function ping ($calc) {
+
+		$html = '';
+		$this->newATConfig($calc);
+
+		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
+		$client = new TaxServiceSoap($this->_connectionType);
+
+		try
+		{
+			if(!class_exists('PingResult')) require (VMAVALARA_CLASS_PATH.DS.'PingResult.class.php');
+			$result = $client->ping("TEST");
+			vmInfo('Avalara Ping ResultCode is: '. $result->getResultCode() );
+
+			if(!class_exists('SeverityLevel')) require (VMAVALARA_CLASS_PATH.DS.'SeverityLevel.class.php');
+			if($result->getResultCode() != SeverityLevel::$Success)	// call failed
+			{
+				foreach($result->Messages() as $msg)
+				{
+					$html .= $msg->Name().": ".$msg->Summary()."<br />";
+				}
+
+			}
+			else // successful calll
+			{
+				vmInfo('Avalara used Ping Version is: '. $result->getVersion() );
+			}
+		}
+		catch(SoapFault $exception)
+		{
+
+			$err = "Exception: ping ";
+			if($exception)
+				$err .= $exception->faultstring;
+
+			$err .='<br />';
+			$err .='last request: '. $client->__getLastRequest().'<br />';
+			$err .='last response: '. $client->__getLastResponse().'<br />';
+			vmError($err);
+			avadebug('AvaTax the ping throws exception ',$exception);
+		}
+
+		return $html;
+	}
+
+	static $validatedAddresses = NULL;
+
+	private function fillValidateAvalaraAddress($calc,$vmadd){
+
+		if(!isset(self::$validatedAddresses)){
+
+			if(!empty($vmadd)){
+				if(is_object($vmadd)){
+					$vmadd = get_object_vars($vmadd);
+				}
+				if(is_object($calc)){
+					$calc = get_object_vars($calc);
+				}
+
+
+				//First country check
+				if(empty($vmadd['virtuemart_country_id'])){
+
+					self::$validatedAddresses = FALSE;
+					return self::$validatedAddresses;
+				} else {
+					if(empty($calc['avatax_virtuemart_country_id'])){
+						vmError('AvaTax, please select countries, to validate');
+						self::$validatedAddresses = FALSE;
+						return self::$validatedAddresses;
+					} else {
+						if(!is_array($calc['avatax_virtuemart_country_id'])){
+							//Suppress Warning
+							$calc['avatax_virtuemart_country_id'] = @unserialize($calc['avatax_virtuemart_country_id']);
+						}
+						if(!in_array($vmadd['virtuemart_country_id'],$calc['avatax_virtuemart_country_id'])){
+							avadebug('fillValidateAvalaraAddress not validated, country not set');
+							self::$validatedAddresses = FALSE;
+							return self::$validatedAddresses;
+						}
+
+					}
+				}
+				$config = $this->newATConfig($calc);
+
+				if(!class_exists('AddressServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'AddressServiceSoap.class.php');
+				$client = new AddressServiceSoap($this->_connectionType,$config);
+
+				if(!class_exists('Address')) require (VMAVALARA_CLASS_PATH.DS.'Address.class.php');
+				$address = new Address();
+				if(isset($vmadd['address_1'])) $address->setLine1($vmadd['address_1']);
+				if(isset($vmadd['address_2'])) $address->setLine2($vmadd['address_2']);
+				if(isset($vmadd['city'])) $address->setCity($vmadd['city']);
+
+				if(isset($vmadd['virtuemart_country_id'])){
+
+					$vmadd['country'] = ShopFunctions::getCountryByID($vmadd['virtuemart_country_id'],'country_2_code');
+					if(isset($vmadd['country'])) $address->setCountry($vmadd['country']);
+				}
+				if(isset($vmadd['virtuemart_state_id'])){
+					$vmadd['state'] = ShopFunctions::getStateByID($vmadd['virtuemart_state_id'],'state_2_code');
+					if(isset($vmadd['state'])) $address->setRegion($vmadd['state']);
+				}
+
+				if(isset($vmadd['zip'])) $address->setPostalCode($vmadd['zip']);
+
+				if(!class_exists('SeverityLevel')) require (VMAVALARA_CLASS_PATH.DS.'SeverityLevel.class.php');
+				if(!class_exists('Message')) require (VMAVALARA_CLASS_PATH.DS.'Message.class.php');
+
+				//if($calc->vAddress==0){
+			/*	if(isset($vmadd['country']) and $vmadd['country']!= 'US' and $vmadd['country']!= 'CA'){
+
+					self::$validatedAddresses = array($address);
+					return self::$validatedAddresses;
+				}*/
+
+				$address->Coordinates = 1;
+				$address->Taxability = TRUE;
+				$textCase = TextCase::$Mixed;
+				$coordinates = 1;
+
+				$hash = md5(implode($vmadd,','));
+				$session = JFactory::getSession ();
+				$validatedAddress = $session->get ('vm_avatax_address_checked.' . $hash, FALSE, 'vm');
+				$validatedAddress = FALSE;
+				if(!$validatedAddress){
+
+					if(!class_exists('ValidateResult')) require (VMAVALARA_CLASS_PATH.DS.'ValidateResult.class.php');
+					if(!class_exists('ValidateRequest')) require (VMAVALARA_CLASS_PATH.DS.'ValidateRequest.class.php');
+					if(!class_exists('ValidAddress')) require (VMAVALARA_CLASS_PATH.DS.'ValidAddress.class.php');
+
+					//TODO add customer code //shopper_number
+					try
+					{
+						$request = new ValidateRequest($address, ($textCase ? $textCase : TextCase::$Default), $coordinates);
+						vmSetStartTime('avaValAd');
+						//avadebug('my request for validate address ',$request);
+						$result = $client->Validate($request);
+						vmTime('Avatax validate Address','avaValAd');
+						//avadebug('Validate ResultCode is: '. $result->getResultCode());;
+						if($result->getResultCode() != SeverityLevel::$Success)
+						{
+							foreach($result->getMessages() as $msg)
+							{
+								avadebug('fillValidateAvalaraAddress ' . $msg->getName().": ".$msg->getSummary()."\n");
+								//avadebug('fillValidateAvalaraAddress ERROR',$address);
+							}
+						}
+						else
+						{
+
+							self::$validatedAddresses = $result->getvalidAddresses();
+							//$encoded = json_encode(self::$validatedAddresses[0]);
+							//vmdebug('Avatax my address is validated ',$hash,  self::$validatedAddresses[0],$encoded);
+							$session->set ('vm_avatax_address_checked.' . $hash, TRUE, 'vm');
+						}
+
+					}
+					catch(SoapFault $exception)
+					{
+						$msg = "Exception: fillValidateAvalaraAddress ";
+						if($exception)
+							$msg .= $exception->faultstring;
+
+						$msg .= "\n";
+						$msg .= $client->__getLastRequest()."\n";
+						$msg .= $client->__getLastResponse()."\n";
+						vmError($msg);
+					}
+				} else {
+					self::$validatedAddresses[] = $address;
+
+				}
+
+				if(empty(self::$validatedAddresses)){
+					self::$validatedAddresses = FALSE;
+				}
+
+				//then for BT and/or $cart->STsameAsBT
+			} else {
+				self::$validatedAddresses = FALSE;
+			}
+			//avadebug("Number of addresses fillValidateAvalaraAddress is ", self::$validatedAddresses);
+		}
+
+		return self::$validatedAddresses;
+
+	}
+
+	private function getCartProducts($calculationHelper,$price){
+
+		if($calculationHelper->inCart){
+
+			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+			$cart = VirtueMartCart::getCart();
+			$count = count($cart->products);
+			if($count===0){
+				vmdebug('getCartProducts No Product');
+				return false;
+			}
+			$products = $cart->products;
+			$prices = $calculationHelper->getCartPrices();
+			foreach($products as $k => $product){
+
+				if(!empty($prices[$k]['discountedPriceWithoutTax'])){
+					$price = $prices[$k]['discountedPriceWithoutTax'];
+				} else if(!empty($prices[$k]['basePriceVariant'])){
+					$price = $prices[$k]['basePriceVariant'];
+				} else {
+					avadebug('There is no price in getTax for product '.$k.' ',$prices);
+					$price = 0.0;
+				}
+				$product->price = $price;
+
+				if(!empty($price[$k]['discountAmount'])){
+					$product->discount = $price[$k]['discountAmount'];
+				} else {
+					$product->discount = FALSE;
+				}
+			}
+
+			if(!empty($cart->virtuemart_shipmentmethod_id)){
+				$shipment = array();
+				$shipment['product_sku'] = 'VMShipmentId_'.$cart->virtuemart_shipmentmethod_id;
+				$shipmentModel = VmModel::getModel('Shipmentmethod');
+				$shipmentModel->setId($cart->virtuemart_shipmentmethod_id);
+				$shipmentMethod = $shipmentModel->getShipment();
+				$shipment['product_name'] = $shipmentMethod->shipment_name;
+				$shipment['amount'] = 1;
+				$shipment['price'] = $prices['shipmentValue'];              //decimal // TotalAmmount
+				$shipment['discount'] = 0.0;
+				$products[] = $shipment;
+			}
+			$products['discountAmount'] = $prices['discountAmount'];
+		} else {
+
+			$calculationHelper->_product->price = $price;
+
+			$products[0] = $calculationHelper->_product;
+			if(!isset($products[0]->amount)){
+				$products[0]->amount = 1;
+			}
+
+			if(isset($calculationHelper->productPrices['discountAmount'])){
+				$products[0]->discount = $calculationHelper->productPrices['discountAmount'];
+			} else {
+				$products[0]->discount = FALSE;
+			}
+		}
+
+		return $products;
+	}
+
+	static $vmadd = NULL;
+	private function getShopperData($calc){
+
+		if(!isset(self::$vmadd)){
+
+			$view = JRequest::getWord('view',0);
+			if($calc->only_cart == 1 and $view != 'cart'){
+				self::$vmadd = FALSE;
+				return self::$vmadd;
+			}
+			//We need for the tax calculation the shipment Address
+			//We have this usually in our cart.
+			if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			$cart = VirtueMartCart::getCart();
+
+			//Test first for ST
+			if($cart->STsameAsBT){
+				if(!empty($cart->BT)) $vmadd = $cart->BT;
+			} else if(!empty($cart->ST)){
+				$vmadd = $cart->ST;
+			} else {
+				if(!empty($cart->BT)) $vmadd = $cart->BT;
+			}
+			$vmadd['customer_number'] = $cart->customer_number;
+			/*	$jUser = JFactory::getUser ();
+				if($jUser->id){
+					$userModel = VmModel::getModel('user');
+					$userModel -> setId($jUser->id);
+					$vmadd['customer_id'] = $userModel ->getCustomerNumberById();
+					avadebug('getShopperData customer_id by user '.$vmadd['customer_id']);
+				}
+
+				if(empty($vmadd['customer_id'])){
+					$firstName = empty($vmadd['first_name'])? '':$vmadd['first_name'];
+					$lastName = empty($vmadd['last_name'])? '':$vmadd['last_name'];
+					$email = empty($vmadd['email'])? '':$vmadd['email'];
+					$complete = $firstName.$lastName.$email;
+					if(!empty($complete)){
+						$vmadd['customer_id'] = 'nonreg_'.$complete;
+					} else {
+						$vmadd['customer_id'] = '';
+					}
+					$cart->customer_number = $vmadd['customer_id'];
+					avadebug('getShopperData customer_id  '.$vmadd['customer_id']);
+				}
+	*/
+			//avadebug('Tax $vmadd',$vmadd);
+			if(empty($vmadd) or !is_array($vmadd) or (is_array($vmadd) and count($vmadd) <2) ){
+
+				//VmTable::bindParameterable ($calc, $this->_xParams, $this->_varsToPushParam);
+				//avadebug('Insufficient addres, my view '.$view. ' my param ',$calc);
+
+				vmInfo('VMCALCULATION_AVALARA_INSUF_INFO');
+
+				$vmadd=FALSE;
+			}
+
+			self::$vmadd = $vmadd;
+		}
+
+
+		return self::$vmadd;
+	}
+
+	private static $_taxResult = NULL;
+
+	function getAvaTax($calc,$products,$invoiceNumber=false,$orderNumber = false){
+
+		if($calc->activated==0) return false;
+
+		if(count($products) == 0){
+			$this->blockCheckout();
+			return false;
+		}
+
+		if(!self::$vmadd){
+			$this->blockCheckout();
+			return false;
+		}
+
+		$request = $this->createStandardRequest($calc,$products);
+
+		if($orderNumber){
+			$request->setPurchaseOrderNo($orderNumber);     //string Optional
+		}
+		if($invoiceNumber){
+			avadebug('My GetTaxRequest sent to AvaTax',$request);
+		}
+
+		$totalTax = 0.0;
+
+		$hash = '';
+		$session = JFactory::getSession ();
+		if($calc->committ and $invoiceNumber){
+			$request->setDocType(DocumentType::$SalesInvoice);   	// Only supported types are SalesInvoice or SalesOrder
+			$request->setCommit(true);
+			//invoice number, problem is that the invoice number is at this time not known, but the order_number may reachable
+			$request->setDocCode($invoiceNumber);
+			self::$_taxResult = FALSE;
+			avadebug('Request as SalesInvoice with invoiceNumber '.$invoiceNumber);
+		} else {
+
+			$hash .= serialize(self::$vmadd). serialize($products);
+			$hash = md5($hash);
+
+			$request->setDocType(DocumentType::$SalesOrder);
+			$request->setCommit(false);
+			//invoice number, problem is that the invoice number is at this time not known, neither the order_number
+			$request->setDocCode('VM'.$this->vmVersion.'_order_request');
+
+			//Requests are allowed to be cached
+			self::$_taxResult = $session->get ('vm_avatax_tax.' . $hash, FALSE, 'vm');
+			//avadebug('Request as SalesOrder '.$hash);
+		}
+
+		if(!self::$_taxResult){
+			vmSetStartTime('avagetTax');
+
+			self::$_taxResult = $this->executeRequest($request);
+
+			vmTime('Avalara executeRequest hash '.$hash,'avagetTax');
+			$session->set ('vm_avatax_tax.' . $hash,  serialize(self::$_taxResult), 'vm');
+		} else {
+			if(is_string(self::$_taxResult )){
+				self::$_taxResult =  unserialize(self::$_taxResult);
+			}
+
+		}
+
+		if(self::$_taxResult){
+			if(isset(self::$_taxResult['totalTax'])){
+				$totalTax = self::$_taxResult['totalTax'];
+			}
+
+		}
+
+		return $totalTax;
+	}
+
+	function createStandardRequest($calc,$products,$sign=1){
+
+		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
+		if(!class_exists('DocumentType')) require (VMAVALARA_CLASS_PATH.DS.'DocumentType.class.php');
+		if(!class_exists('DetailLevel')) require (VMAVALARA_CLASS_PATH.DS.'DetailLevel.class.php');
+		if(!class_exists('Line')) require (VMAVALARA_CLASS_PATH.DS.'Line.class.php');
+		if(!class_exists('ServiceMode')) require (VMAVALARA_CLASS_PATH.DS.'ServiceMode.class.php');
+		if(!class_exists('Line')) require (VMAVALARA_CLASS_PATH.DS.'Line.class.php');
+		if(!class_exists('GetTaxRequest')) require (VMAVALARA_CLASS_PATH.DS.'GetTaxRequest.class.php');
+		if(!class_exists('GetTaxResult')) require (VMAVALARA_CLASS_PATH.DS.'GetTaxResult.class.php');
+
+		if(is_object($calc)){
+			$calc = get_object_vars($calc);
+		}
+		$request= new GetTaxRequest();
+		$origin = new Address();
+
+		$shopperData = self::$vmadd;
+		//In Virtuemart we have not differenct warehouses, but we have a shipment address
+		//So when the vendor has a shipment address, we assume that it is his warehouse
+		//Later we can combine products with shipment addresses for different warehouse (yehye, future music)
+		//But for now we just use the BT address
+		if (!class_exists ('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+
+		$userId = VirtueMartModelVendor::getUserIdByVendorId ($calc['virtuemart_vendor_id']);
+		$userModel = VmModel::getModel ('user');
+		$virtuemart_userinfo_id = $userModel->getBTuserinfo_id ($userId);
+		// this is needed to set the correct user id for the vendor when the user is logged
+		$userModel->getVendor($calc['virtuemart_vendor_id']);
+		$vendorFieldsArray = $userModel->getUserInfoInUserFields ('mail', 'BT', $virtuemart_userinfo_id, FALSE, TRUE);
+		$vendorFields = $vendorFieldsArray[$virtuemart_userinfo_id];
+		//avadebug('my vendor fields',$vendorFields);
+		$origin->setLine1($vendorFields['fields']['address_1']['value']);
+		$origin->setLine2($vendorFields['fields']['address_2']['value']);
+		$origin->setCity($vendorFields['fields']['city']['value']);
+
+		$origin->setCountry($vendorFields['fields']['virtuemart_country_id']['country_2_code']);
+		$origin->setRegion($vendorFields['fields']['virtuemart_state_id']['state_2_code']);
+		$origin->setPostalCode($vendorFields['fields']['zip']['value']);
+
+		$request->setOriginAddress($origin);	      //Address
+
+		if(isset($this->addresses[0])){
+			$destination = $this->addresses[0];
+		} else {
+			return FALSE;
+		}
+		$request->setDestinationAddress	($destination);     //Address
+		//avadebug('The date',$origin,$destination);
+		$request->setCompanyCode($calc['company_code']);   // Your Company Code From the Dashboard
+
+		$request->setDocDate(date('Y-m-d'));           //date
+
+		$request->setCustomerCode($shopperData['customer_number']);  //string Required
+
+		if(isset($shopperData['tax_usage_type'])){
+			$request->setCustomerUsageType($shopperData['tax_usage_type']);   //string   Entity Usage
+		}
+
+		if(!empty($products['discountAmount'])){
+			$request->setDiscount($products['discountAmount']);            //decimal
+			unset($products['discountAmount']);
+		}
+
+		if(isset($shopperData['tax_exemption_number'])){
+			$request->setExemptionNo($shopperData['tax_exemption_number']);         //string   if not using ECMS which keys on customer code
+		}
+
+		$request->setDetailLevel('Tax');         //Summary or Document or Line or Tax or Diagnostic
+
+		$lines = array();
+		$n = 0;
+		$this->_lineNumbersToCartProductId = array();
+
+		foreach($products as $k=>$product){
+
+			//Yehyeh nasty hack
+			if($k==='discountAmount'){
+				continue;
+			}
+
+			$n++;
+			$this->_lineNumbersToCartProductId[$n] = $k;
+			$line = new Line();
+			$line->setNo ($n);                  //string  // line Number of invoice
+			$line->setItemCode($product['product_sku']);            //string
+			$line->setDescription($product['product_name']);         //product description, like in cart, atm only the name, todo add customfields
+
+			if(!empty($product['categories'])){
+
+				//avadebug('AvaTax setTaxCode Product has categories !',$catNames);
+				if (!class_exists ('TableCategories')) {
+					require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'categories.php');
+				}
+				$db = JFactory::getDbo();
+				$catTable = new TableCategories($db);
+				foreach($product['categories'] as $cat){
+					$catTable->load ($cat);
+					$catslug = $catTable->slug;
+
+					if(strpos($catslug,'avatax-')!==FALSE){
+						$taxCode = substr($catslug,7);
+						if(!empty($taxCode)){
+							$line->setTaxCode($taxCode);
+							avadebug('AvaTax setTaxCode '.$taxCode);
+						} else {
+							vmError('AvaTax setTaxCode, category could not be parsed '.$catslug);
+						}
+
+						break;
+					}
+				}
+			}
+			//$line->setTaxCode("");             //string
+			$line->setQty($product['amount']);                 //decimal
+			$line->setAmount($sign * $product['price'] * $product['amount']);              //decimal // TotalAmmount
+			$line->setDiscounted($product['discount'] * $product['amount']);          //boolean
+
+			$line->setRevAcct("");             //string
+			$line->setRef1("");                //string
+			$line->setRef2("");                //string
+
+			if(isset($shopperData['tax_exemption_number'])){
+				$line->setExemptionNo($shopperData['tax_exemption_number']);         //string
+			}
+			if(isset($shopperData['tax_usage_type'])){
+				$line->setCustomerUsageType($shopperData['tax_usage_type']);   //string
+			}
+			//vmdebug('my $line',$line);
+			$lines[] = $line;
+		}
+
+		$request->setLines($lines);
+
+		return $request;
+	}
+
+	function executeRequest($request){
+
+		$prices = array();
+		$client = new TaxServiceSoap($this->_connectionType);
+		try
+		{
+
+			if(!class_exists('TaxLine')) require (VMAVALARA_CLASS_PATH.DS.'TaxLine.class.php');
+			if(!class_exists('TaxDetail')) require (VMAVALARA_CLASS_PATH.DS.'TaxDetail.class.php');
+
+
+			$_taxResult = $client->getTax($request);
+
+			if ($_taxResult->getResultCode() == SeverityLevel::$Success){
+
+				//avadebug("DocCode: ".$request->getDocCode() );
+				//avadebug("DocId: ".self::$_taxResult->getDocId()."\n");
+
+				//avadebug("TotalAmount: ".self::$_taxResult->getTotalAmount() );
+
+				$totalTax = $_taxResult->getTotalTax();
+				if($totalTax == 0 ){
+					//	avadebug( "Avalara returned false: ", self::$_taxResult);
+				}
+				$taxlines = $_taxResult->getTaxLines();
+				$taxlinexCount = count($taxlines);
+				//avadebug('my $request, $taxlines',$taxlines);
+
+				foreach($taxlines as $ctl){
+
+					$nr = $ctl->getNo();
+
+					if(isset($this->_lineNumbersToCartProductId[$nr]) and $nr <= $taxlinexCount){
+
+						$line = $request->getLine($nr);
+						//vmdebug('my $line',$line);
+
+						if(strpos($line->getItemCode(),'VMShipmentId')===0){
+							$prices['shipmentTax'] = $ctl->getTax();
+							$totalTax = $totalTax - $ctl->getTax();
+						} else {
+							$quantity = $request->getLine($nr)->getQty();//$ctl->getQty();//$products[$this->_lineNumbersToCartProductId[$nr]]['amount'];
+							//avadebug('my $request qty ',$quantity);
+							//on the long hand, the taxAmount must be replaced by taxAmountQuantity to avoid rounding errors
+							$prices[$this->_lineNumbersToCartProductId[$nr]]['taxAmount'] = $ctl->getTax()/$quantity;
+							$prices[$this->_lineNumbersToCartProductId[$nr]]['taxAmountQuantity'] = $ctl->getTax();
+						}
+
+
+					} else {
+						avadebug('Hmm got more lines back, then requested => my $ctl',$ctl);
+					}
+
+				}
+				$prices['totalTax'] = $totalTax;
+
+
+			}
+			else {
+				$this->blockCheckout();
+				foreach($_taxResult->getMessages() as $msg){
+
+					vmError($msg->getName().": ".$msg->getSummary(),'AvaTax Error '.$msg->getSummary());
+				}
+				vmdebug('Error, but no exception in getAvaTax',self::$_taxResult);
+			}
+		}
+		catch(SoapFault $exception)
+		{
+			$this->blockCheckout();
+			$msg = "Exception: in getAvaTax, while executeRequest ";
+			if($exception)
+				$msg .= $exception->faultstring;
+
+			avadebug( $msg,$request,$client->__getLastRequest(),$client->__getLastResponse());
+
+		}
+
+		return $prices;
+	}
+
+
+
+	public function plgVmInterpreteMathOp ($calculationHelper, $rule, $price,$revert){
+
+		$rule = (object)$rule;
+
+		$mathop = $rule->calc_value_mathop;
+		$tax = 0.0;
+
+		if ($mathop=='avalara') {
+			$requestedProductId = JRequest::getInt('virtuemart_product_id',0);
+
+			if(isset($calculationHelper->_product)){
+				$productId = $calculationHelper->_product->virtuemart_product_id;
+			} else {
+				$productId = $requestedProductId;
+			}
+			//avadebug('plgVmInterpreteMathOp avalara ',$rule);
+			if(($productId!=0 and $productId==$requestedProductId) or $calculationHelper->inCart ){
+				VmTable::bindParameterable ($rule, $this->_xParams, $this->_varsToPushParam);
+				if($rule->activated==0) return $price;
+				if(empty($this->addresses)){
+					$vmadd = $this->getShopperData($rule);
+					$this->addresses = $this->fillValidateAvalaraAddress($rule,$vmadd);
+				}
+
+				if($this->addresses){
+					$products = $this->getCartProducts($calculationHelper,$price);
+					if(!$products){
+						$this->blockCheckout();
+						return $price;
+					}
+					$tax = $this->getAvaTax( $rule,$products);
+					if($calculationHelper->inCart){
+						$prices =  $calculationHelper->getCartPrices();
+						if(isset($prices['shipmentValue']) and isset(self::$_taxResult['shipmentTax'] )) {
+							self::$_taxResult['salesPriceShipment'] = ($prices['shipmentValue'] + self::$_taxResult['shipmentTax'] );
+							self::$_taxResult['paymentTax'] = 0.0;
+						}
+
+						$calculationHelper->setCartPricesMerge(self::$_taxResult);
+					}
+				}
+			}
+		}
+
+		if($revert){
+			$tax = -$tax;
+		}
+
+		return $price + (float)$tax;
+	}
+
+	function plgVmConfirmedOrder ($cart, $order) {
+
+		$avaTaxRule = 0;
+		if(isset($order['calc_rules'])){
+			foreach($order['calc_rules'] as $rule){
+				if($rule->calc_mathop == 'avalara' and $rule->calc_kind == 'taxRulesBill'){
+					$avaTaxRule=$rule;
+					break;
+				}
+			}
+		}
+
+		if($avaTaxRule!==0){
+			if(!empty($avaTaxRule->calc_params)){
+				VmTable::bindParameterable ($avaTaxRule, $this->_xParams, $this->_varsToPushParam);
+				avadebug('$avaTaxRule',$avaTaxRule);
+				if($rule->activated==0)return false;
+				if($rule->accrual==0)return false;
+				if(empty($this->addresses)){
+					$vmadd = $this->getShopperData($rule);
+					$this->addresses = $this->fillValidateAvalaraAddress($rule,$vmadd);
+				}
+				if($this->addresses){
+					if (!class_exists ('calculationHelper')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+
+					$orderModel = VmModel::getModel('orders');
+					$invoiceNumber = 'onr_'.$order['details']['BT']->order_number;
+					JRequest::setVar('create_invoice',1);
+					$orderModel -> createInvoiceNumber($order['details']['BT'],$invoiceNumber);
+					$calculator = calculationHelper::getInstance ();
+
+					avadebug('avatax plgVmConfirmedOrder $order',$invoiceNumber,$order);
+					if(is_array($invoiceNumber)) $invoiceNumber = $invoiceNumber[0];
+					$products = $this->getCartProducts($calculator,0);
+					$tax = $this->getAvaTax( $rule,$products,$invoiceNumber,$order['details']['BT']->order_number);
+					//Todo adjust for BE
+					$prices =  $calculator->getCartPrices();
+					if($prices) {
+						self::$_taxResult['salesPriceShipment'] = ($prices['shipmentValue'] + self::$_taxResult['shipmentTax'] );
+						self::$_taxResult['paymentTax'] = 0.0;
+					}
+					$calculator->setCartPricesMerge(self::$_taxResult);
+				//	avadebug('tax',$tax);
+				}
+			}
+		}
+
+	}
+
+/*	public function plgVmInGatherEffectRulesBill(&$calculationHelper,&$rules){
+
+		return FALSE;
+	}*/
+
+
+
 	public function plgVmOnUpdateOrderPayment($data,$old_order_status){
 
 		if($data->order_status=='X'){
@@ -946,22 +997,36 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$this->cancelOrder($data,$old_order_status);
 		}
 
-		if($data->order_status=='R'){
-			avadebug('plgVmOnUpdateOrderPayment refund order for Avatax '.$old_order_status,$data->order_status);
-			$this->creditMemo($data,$old_order_status);
+		$toInvoice = VmConfig::get('inv_os',array('R','C'));
+		if(!is_array($toInvoice)) $toInvoice = (array)$toInvoice;
+		if($data->order_status=='R' or in_array($data->order_status,$toInvoice)){
+			//avadebug('plgVmOnUpdateOrderPayment refund order for Avatax '.$old_order_status,$data->order_status);
+			$this->creditMemo($data);
 		}
 	}
+//to check Notice: Array to string conversion in C:\Users\Milbo\Coden\_workspace\VM2014mp\plugins\vmcalculation\avalara\classes\DynamicSoapClient.class.php on line 43
+	private function creditMemo($data){
 
-	private function creditMemo($data,$old_order_status){
-
-		$calcs = $this -> getOrderCalc ($data,$old_order_status);
+		$calcs = $this -> getOrderCalc ($data);
 		$calc = $calcs['taxRulesBill'];
+		if(is_object($calc)){
+			$calc = get_object_vars($calc);
+		}
+		if(!is_array($calc['avatax_virtuemart_country_id'])){
+			//Suppress Warning
+			$calc['avatax_virtuemart_country_id'] = @unserialize($calc['avatax_virtuemart_country_id']);
+		}
 
-		if(empty($calc['invoice_number'])) return false;
+		if($calc['activated']==0){
+			avadebug('Avatax creditMemo rule not activated',$calc);
+			return false;
+		}
 
-		if($calc['activated']==0) return false;
+		/*if(empty($calc['invoice_number'])){
+			return false;
+		}*/
 
-		if(!class_exists('calculationHelper')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+		//if(!class_exists('calculationHelper')) require(JPATH_VM_SITE.DS.'helpers'.DS.'calculationh.php');
 
 		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
 		if(!class_exists('DocumentType')) require (VMAVALARA_CLASS_PATH.DS.'DocumentType.class.php');
@@ -1010,10 +1075,17 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$orderUserInfo->load ($data->virtuemart_order_id,'virtuemart_order_id',' AND `address_type`="BT" ');*/
 		$orderModel = VmModel::getModel('orders');
 		$orderDetails = $orderModel->getOrder($data->virtuemart_order_id);
-		vmdebug('creditMemo $calc and $data ',$calc,(array)$orderDetails);
+		//vmdebug('creditMemo $calc and $data ',$calc,(array)$orderDetails);
 
 		$this->addresses = $this->fillValidateAvalaraAddress($calc,(array)$orderDetails['details']['BT']);
-		//vmdebug('creditMemo $orderUserInfo',(array)$orderUserInfo);
+
+		if(!$this->addresses){
+			vmdebug('Avatax: on order status updateno valid addresses');
+			return false;
+		}
+
+		//VmConfig::$echoDebug=true;
+		vmdebug('creditMemo $orderDetails',(array)$orderDetails);
 
 		$request->setDestinationAddress	($this->addresses[0]);     //Address
 
@@ -1025,40 +1097,73 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		/*$userModel = VmModel::getModel('user');
 		$userModel -> setId($orderUserInfo->virtuemart_user_id);
 		$vmadd['customer_id'] = $userModel ->getCustomerNumberById();*/
-		$request->setCustomerCode($this->addresses[0]['customer_id']);  //string Required
+		$request->setCustomerCode($orderDetails['details']['BT']->customer_number);  //string Required
 
 		if(isset($orderDetails['details']['BT']->tax_usage_type)){
 			$request->setCustomerUsageType($orderDetails['details']['BT']->tax_usage_type);   //string   Entity Usage
 		}
 
 
-		$shopperData = $this->getShopperData($calc);
-		if(!$shopperData){
-			return false;
+
+		$shopperData = (array)$orderDetails['details']['BT'];
+		if(is_object($shopperData)){
+			$shopperData = get_object_vars($orderDetails['details']['BT']);
 		}
+		vmdebug('my shopper data ',$shopperData);
+		//create the products
+		$products = array();
+		foreach($orderDetails['items'] as $item){
+			$product = array();
+			$item = (array)$item;
+			$product['product_sku'] = $item['order_item_sku'];
+			$product['product_name'] = $item['order_item_name'];
+			$product['amount'] = $item['product_quantity'];
+			$product['price'] = $item['product_item_price'];
+			$product['discount'] = $item['product_subtotal_discount'];
+			$products[] = $product;
+		}
+		if(!empty($orderDetails['details']['BT']->virtuemart_shipmentmethod_id)){
+			$shipment = array();
+			$shipment['product_sku'] = 'VMShipmentId_'.$orderDetails['details']['BT']->virtuemart_shipmentmethod_id;
+			$shipmentModel = VmModel::getModel('Shipmentmethod');
+			$shipmentModel->setId($orderDetails['details']['BT']->virtuemart_shipmentmethod_id);
+			$shipmentMethod = $shipmentModel->getShipment();
+			$shipment['product_name'] = $shipmentMethod->shipment_name;
+			$shipment['amount'] = 1;
+			$shipment['price'] = $orderDetails['details']['BT']->order_shipment;              //decimal // TotalAmmount
+			$shipment['discount'] = 0.0;
+			$products[] = $shipment;
+		}
+		$products['discountAmount'] = $orderDetails['details']['BT']->order_discountAmount;
 
+		//VmConfig::$echoDebug= TRUE;
+		vmdebug('Fuck',$products);
 		//Hmm so how to get the products?
+		if($data->order_status=='R') {
+			$sign = -1;
+		} else {
+			$sign = 1;
+		}
+		$request = $this->createStandardRequest($calc,$products,$sign);
 
-
-
-
-		$request = $this->createStandardRequest($calc,$shopperData,$orderDetails['items']);
-		return false;
-		if($calc['order_number']){
-			$request->setPurchaseOrderNo($calc['order_number']);     //string Optional
+		if($orderDetails['details']['BT']->order_number){
+			$request->setPurchaseOrderNo($orderDetails['details']['BT']->order_number);     //string Optional
 		}
 
 		$totalTax = 0.0;
 
-		$hash = '';
-		$session = JFactory::getSession ();
-		if($calc->committ and $calc['invoice_number']){
+		$invoiceNumber = 'onr_'.$orderDetails['details']['BT']->order_number;
+		JRequest::setVar('create_invoice',1);
+		$orderModel -> createInvoiceNumber($orderDetails['details']['BT'],$invoiceNumber);
+
+		if($calc['committ'] and $invoiceNumber){
 			$request->setDocType(DocumentType::$SalesInvoice);   	// Only supported types are SalesInvoice or SalesOrder
 			$request->setCommit(true);
 			//invoice number, problem is that the invoice number is at this time not known, but the order_number may reachable
-			$request->setDocCode($calc['invoice_number']);
+			$request->setDocCode($invoiceNumber);
+			$request->setTaxOverride($orderDetails['details']['BT']->created_on);	//date of the order? or the actual date?
 			self::$_taxResult = FALSE;
-			avadebug('Request as SalesInvoice with invoiceNumber '.$calc['invoice_number']);
+			avadebug('Request as SalesInvoice with invoiceNumber '.$calc['invoice_number'].' and ordernumber '.$orderDetails['details']['BT']->order_number);
 		}
 
 
@@ -1066,11 +1171,12 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		//Hmm so how to get the prices?
 		//$prices = $calculationHelper->getCartPrices();
+		vmdebug('creditMemo $request ',$request);
 
+		self::$_taxResult = $this->executeRequest($request);
+		vmTime('Avalara executeRequest ','avagetTax');
 
-		self::$_taxResult = $this->executeRequest($request,$products,$prices);
-		vmTime('Avalara executeRequest hash '.$hash,'avagetTax');
-
+		vmdebug('my tax result refund ',self::$_taxResult);
 
 		if(self::$_taxResult){
 			if(isset(self::$_taxResult['totalTax'])){
@@ -1086,9 +1192,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 	private function cancelOrder($data,$old_order_status){
 
-		$this -> getOrderCalc ($data,$old_order_status);
+		//$calcs = $this -> getOrderCalc ($data,$old_order_status);
 
-		if(empty($data['invoice_number'])) return false;
+		if(empty($data->invoice_number)) return false;
 
 		if(!function_exists('EnsureIsArray')) require(VMAVALARA_PATH.DS.'AvaTax.php');	// include in all Avalara Scripts
 		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
@@ -1112,9 +1218,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$request->setDocCode($calc['invoice_number']);
 		$request->setDocType('SalesInvoice');
 
-		$request->setCompanyCode($calc->company_code);	// Dashboard Company Code
+		$request->setCompanyCode($calc['company_code']);	// Dashboard Company Code
 
-		if($calc->committ==0) return false;
+		if($calc['committ']==0) return false;
 
 		//CancelCode: Enter D for DocDeleted, or P for PostFailed: [D]
 		//I do not know the difference, I use always D (I assume this means order got deleted, cancelled, or refund)
@@ -1155,29 +1261,28 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 	}
 
-	private function getOrderCalc($data,$old_order_status){
+	private function getOrderCalc($data){
 
-		avadebug('Doing cancel order for Avatax');
 		$db = JFactory::getDbo();
 		$q = 'SELECT * FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$data->virtuemart_order_id.'"  ORDER BY created_on DESC ';
 		$db->setQuery($q);
 		$result = $db->loadAssocList();
 
 		if(!$result){
-			vmError('AvaTax, plgVmOnCancelPayment no result for '.$data->virtuemart_order_id.' and old orderstatus '.$old_order_status);
+			//vmError('AvaTax, plgVmOnCancelPayment no result for '.$data->virtuemart_order_id);
 			$err = $db->getErrorMsg();
 			if($err){
 				avadebug('AvaTax, plgVmOnCancelPayment error in query '.$db->getQuery());
 			}
 			//No invoice number stored, we cannot cancel the order
-			return false;
+			//return false;
 		}
 
 		$q = 'SELECT * FROM `#__virtuemart_order_calc_rules` WHERE `virtuemart_order_id`= "'.$data->virtuemart_order_id.'"  AND `calc_mathop` = "avalara" ';
 		$db->setQuery($q);
 		$calcs = $db->loadAssocList();
 		if(!$calcs){
-			vmError('AvaTax, plgVmOnCancelPayment no result for '.$data->virtuemart_order_id.' and old orderstatus '.$old_order_status,$calcs);
+			vmError('AvaTax, plgVmOnCancelPayment no result for '.$data->virtuemart_order_id,$calcs);
 			$err = $db->getErrorMsg();
 			if($err){
 				avadebug('AvaTax, plgVmOnCancelPayment error in query '.$db->getQuery());
@@ -1214,6 +1319,17 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		}
 
 		return $calcsSorted;
+	}
+
+	public function blockCheckout(){
+
+		$app = JFactory::getApplication();
+		if($app->isSite()){
+			if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			$cart = VirtueMartCart::getCart();
+			$cart->blockConfirm();
+		}
+
 	}
 }
 

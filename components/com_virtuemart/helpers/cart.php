@@ -34,6 +34,7 @@ class VirtueMartCart {
 	var $products = array();
 	var $_inCheckOut = false;
 	var $_dataValidated = false;
+	var $_blockConfirm = false;
 	var $_confirmDone = false;
 	var $_redirect = false;
 	var $_redirect_disabled = false;
@@ -54,6 +55,7 @@ class VirtueMartCart {
 	var $cartData = null;
 	var $lists = null;
 	var $order_number=null; // added to solve emptying cart for payment notification
+	var $customer_number=null;
 	// 	var $user = null;
 // 	var $prices = null;
 	var $pricesUnformatted = null;
@@ -121,7 +123,7 @@ class VirtueMartCart {
 				self::$_cart->_dataValidated						= $sessionCart->_dataValidated;
 				self::$_cart->_confirmDone							= $sessionCart->_confirmDone;
 				self::$_cart->STsameAsBT							= $sessionCart->STsameAsBT;
-
+				self::$_cart->customer_number						= $sessionCart->customer_number;
 			}
 
 		}
@@ -143,8 +145,8 @@ class VirtueMartCart {
 	*/
 	public function setPreferred() {
 
-		$usermodel = VmModel::getModel('user');
-		$user = $usermodel->getCurrentUser();
+		$userModel = VmModel::getModel('user');
+		$user = $userModel->getCurrentUser();
 
 		if (empty($this->BT) || (!empty($this->BT) && count($this->BT) <=1) ) {
 			foreach ($user->userInfo as $address) {
@@ -166,6 +168,30 @@ class VirtueMartCart {
 		if((!empty($user->agreed) || !empty($this->BT['agreed'])) && !VmConfig::get('agree_to_tos_onorder',0) ){
 				$this->tosAccepted = 1;
 		}
+
+		//if($type == 'BT'){
+			//$jUser = JFactory::getUser ();
+			//if($jUser->id){
+			//	$userModel = VmModel::getModel('user');
+			//	$userModel -> setId($jUser->id);
+				$customer_number = $userModel ->getCustomerNumberById();
+				vmdebug('getShopperData customer_id by user '.$customer_number);
+			//}
+
+			if(empty($customer_number)){
+				$firstName = empty($this->BT['first_name'])? '':$this->BT['first_name'];
+				$lastName = empty($this->BT['last_name'])? '':$this->BT['last_name'];
+				$email = empty($this->BT['email'])? '':$this->BT['email'];
+				$complete = $firstName.$lastName.$email;
+				if(!empty($complete)){
+					$customer_number = 'nonreg_'.$complete;
+				} else {
+					$customer_number = '';
+				}
+				vmdebug('getShopperData customer_id  '.$customer_number);
+			}
+			$this->customer_number = $customer_number;
+		//}
 	}
 
 	/**
@@ -235,6 +261,7 @@ class VirtueMartCart {
 		$sessionCart->_dataValidated						= $this->_dataValidated;
 		$sessionCart->_confirmDone							= $this->_confirmDone;
 		$sessionCart->STsameAsBT							= $this->STsameAsBT;
+		$sessionCart->customer_number						= $this->customer_number;
 
 		if(!empty($sessionCart->pricesUnformatted)){
 			foreach($sessionCart->pricesUnformatted as &$prices){
@@ -282,7 +309,12 @@ class VirtueMartCart {
 
 	public function setOutOfCheckout(){
 		$this->_inCheckOut = false;
+		$this->_dataValidated = false;
 		$this->setCartIntoSession();
+	}
+
+	public function blockConfirm(){
+		$this->_blockConfirm = true;
 	}
 
 	/**
@@ -428,7 +460,7 @@ class VirtueMartCart {
 					$product->customPrices = $post['customPrice'];
 					if (isset($post['customPlugin'])){
 
-						if(!class_exists('vmFilter'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmfilter.php');
+						//if(!class_exists('vmFilter'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmfilter.php');
 
 						if(!is_array($post['customPlugin'])){
 							$customPluginPost = (array)	$post['customPlugin'];
@@ -441,11 +473,11 @@ class VirtueMartCart {
 								foreach($customPlugin as &$customPlug){
 									if(is_array($customPlug)){
 										foreach($customPlug as &$customPl){
-											$value = vmFilter::hl( $customPl,array('deny_attribute'=>'*'));
+											//$value = vmFilter::hl( $customPl,array('deny_attribute'=>'*'));
 											//to strong
 											/* $value = preg_replace('@<[\/\!]*?[^<>]*?>@si','',$value);//remove all html tags  */
 											//lets use instead
-											$value = JComponentHelper::filterText($value);
+											$value = JComponentHelper::filterText($customPl);
 											$value = (string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
 											$value = trim(str_replace('"', ' ', $value),"'") ;
 											$customPl = (string)preg_replace('#^\'#si','',$value);
@@ -779,7 +811,7 @@ class VirtueMartCart {
 		$this->customer_comment=	(string)preg_replace('#^\'#si','',$value);//replace ' at start
 
 		$this->cartData = $this->prepareCartData();
-		$this->prepareCartPrice( ) ;
+		$this->prepareCartPrice();
 
 		if (empty($this->tosAccepted)) {
 
@@ -893,7 +925,7 @@ class VirtueMartCart {
 				}
 			}
 		}
-		//echo 'hier ';
+
 		//Test Payment and show payment plugin
 		if($this->pricesUnformatted['salesPrice']>0.0){
 			if (empty($this->virtuemart_paymentmethod_id)) {
@@ -917,13 +949,18 @@ class VirtueMartCart {
 			}
 		}
 
+
 		//Show cart and checkout data overview
 		$this->_inCheckOut = false;
-		$this->_dataValidated = true;
 
-		$this->setCartIntoSession();
+		if($this->_blockConfirm){
+			return $this->redirecter('index.php?option=com_virtuemart&view=cart','');
+		} else {
+			$this->_dataValidated = true;
+			$this->setCartIntoSession();
+			return true;
+		}
 
-		return true;
 	}
 
 	/**
@@ -1021,7 +1058,7 @@ class VirtueMartCart {
 	 */
 	public function emptyCart(){
 
-		self::emptyCartValues($this);
+		//self::emptyCartValues($this);
 
 		$this->setCartIntoSession();
 	}
@@ -1137,13 +1174,14 @@ class VirtueMartCart {
 
 		$this->{$type} = $address;
 
-		//vmdebug('saveAddressInCart '.$type,$address);
+
 
 		if($putIntoSession){
 			$this->setCartIntoSession();
 		}
 
 	}
+
 	/*
 	 * CheckAutomaticSelectedShipment
 	* If only one shipment is available for this amount, then automatically select it

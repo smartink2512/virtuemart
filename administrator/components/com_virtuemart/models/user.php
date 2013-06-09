@@ -108,6 +108,7 @@ class VirtueMartModelUser extends VmModel {
 		if($this->_id!=$id){
 			$this->_id = (int)$id;
 			$this->_data = null;
+			$this->customer_number = 0;
 		}
 		// 		}
 	}
@@ -1423,17 +1424,22 @@ class VirtueMartModelUser extends VmModel {
 	 * @param int $_id User ID
 	 * @return string Customer Number
 	 */
-	function getCustomerNumberById()
+	private $customer_number = 0;
+	public function getCustomerNumberById()
 	{
-		$_q = "SELECT `customer_number` FROM `#__virtuemart_vmusers` "
-		."WHERE `virtuemart_user_id`='" . $this->_id . "' ";
-		$_r = $this->_getList($_q);
-		if(!empty($_r[0])){
-			return $_r[0]->customer_number;
-		}else {
-			return false;
+		if($this->customer_number===0){
+			$_q = "SELECT `customer_number` FROM `#__virtuemart_vmusers` "
+				."WHERE `virtuemart_user_id`='" . $this->_id . "' ";
+			$_r = $this->_getList($_q);
+			vmdebug('GET CUSTOMER NUMBER NUMBER NUMBER');
+			if(!empty($_r[0])){
+				$this->customer_number = $_r[0]->customer_number;
+			}else {
+				$this->customer_number = false;
+			}
 		}
 
+		return $this->customer_number;
 	}
 
 	/**

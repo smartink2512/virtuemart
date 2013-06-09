@@ -39,6 +39,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 	 */
 	function __construct() {
 		parent::__construct();
+		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 		$this->setMainTable('orderstates');
 	}
 
@@ -81,13 +82,8 @@ class VirtueMartModelOrderstatus extends VmModel {
 	function renderOrderStatusList($value, $name = 'order_status[]' )
 	{
 
-			$id = substr($name,0,-2);
-			$attrs = 'multiple="multiple"';
-			//$name ='order_status[]';
-		//} else {
-		//	$name ='order_status';
-			//$attrs ='';
-		//}
+		$id = substr($name,0,-2);
+		$attrs = 'multiple="multiple"';
 
 		if (!isset($this->_renderStatusList[$name])) {
 			$orderStates = $this->getOrderStatusNames();

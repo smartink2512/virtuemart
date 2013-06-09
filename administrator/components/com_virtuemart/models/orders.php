@@ -717,7 +717,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_orderData->virtuemart_order_id = null;
 		$_orderData->virtuemart_user_id = $_usr->get('id');
 		$_orderData->virtuemart_vendor_id = $_cart->vendorId;
-
+		$_orderData->customer_number = $_cart->customer_number;
+		vmdebug('_createOrder',$_cart->customer_number);
 		//Note as long we do not have an extra table only storing addresses, the virtuemart_userinfo_id is not needed.
 		//The virtuemart_userinfo_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.
 		//the saved order should be an snapshot with plain data written in it.
@@ -1508,9 +1509,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			else {
 				$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
 			}
+			vmInfo( JText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
 		}
-
-		vmInfo( JText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
 
 		return true;
 	}

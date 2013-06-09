@@ -133,7 +133,7 @@ class VirtueMartModelProduct extends VmModel {
 		if ($this->keyword == "0") {
 			$this->keyword = vmRequest::uword ('filter_product', "0", ' ,-,+,.,_');
 		}
-		vmdebug('Searching for '.$this->keyword);
+
 		$app = JFactory::getApplication ();
 		$option = 'com_virtuemart';
 		$view = 'product';
@@ -738,8 +738,8 @@ class VirtueMartModelProduct extends VmModel {
 				$child->link = $child->canonical;
 			}
 
-
 			$child->quantity = $quantity;
+
 			$app = JFactory::getApplication ();
 			if ($app->isSite () and VmConfig::get ('stockhandle', 'none') == 'disableit' and ($child->product_in_stock - $child->product_ordered) <= 0) {
 				vmdebug ('STOCK 0', VmConfig::get ('use_as_catalog', 0), VmConfig::get ('stockhandle', 'none'), $child->product_in_stock);

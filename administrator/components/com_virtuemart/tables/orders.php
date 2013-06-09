@@ -40,7 +40,7 @@ class TableOrders extends VmTable {
 	/** @var int Order number */
 	var $order_number = NULL;
 	var $order_pass = NULL;
-
+	var $customer_number = NULL;
 	/** @var decimal Order total */
 	var $order_total = 0.00000;
 	/** @var decimal Products sales prices */

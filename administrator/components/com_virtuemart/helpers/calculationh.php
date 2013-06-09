@@ -167,7 +167,19 @@ class calculationHelper {
 
 	public function setCartPricesMerge($cartPrices){
 
-		$this->_cartPrices = array_merge($this->_cartPrices,$cartPrices);
+		foreach($cartPrices as $k=>$item){
+
+			if($k===0) {
+				vmdebug('setCartPricesMerge k === 0 ? item ',$item);
+				continue;
+			}
+			if(isset($this->_cartPrices[$k]) and is_array($this->_cartPrices[$k])){
+				$this->_cartPrices[$k] = array_merge($this->_cartPrices[$k],$item);
+			} else {
+				$this->_cartPrices[$k] = $item;
+			}
+		}
+
 	}
 
 	public function getCartData() {
