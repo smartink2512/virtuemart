@@ -326,8 +326,13 @@ class VirtuemartControllerProduct extends VmController {
 	public function ajax_notifyUsers(){
 
 		//vmdebug('updatestatus');
-		
-		$virtuemart_product_id = (int)JRequest::getVar('virtuemart_product_id', 0);
+		$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY');
+		if(is_array($virtuemart_product_id) and count($virtuemart_product_id) > 0){
+			$virtuemart_product_id = (int)$virtuemart_product_id[0];
+		} else {
+			$virtuemart_product_id = (int)$virtuemart_product_id;
+		}
+
 		$subject = JRequest::getVar('subject', '');
 		$mailbody = JRequest::getVar('mailbody',  '');
 		$max_number = (int)JRequest::getVar('max_number', '');
@@ -338,8 +343,13 @@ class VirtuemartControllerProduct extends VmController {
 	}
 	
 	public function ajax_waitinglist() {
-		
-		$virtuemart_product_id = (int)JRequest::getVar('virtuemart_product_id', 0);
+
+		$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY');
+		if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
+			$virtuemart_product_id = (int)$virtuemart_product_id[0];
+		} else {
+			$virtuemart_product_id = (int)$virtuemart_product_id;
+		}
 
 		$waitinglistmodel = VmModel::getModel('waitinglist');
 		$waitinglist = $waitinglistmodel->getWaitingusers($virtuemart_product_id);

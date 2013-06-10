@@ -1042,7 +1042,12 @@ class VirtueMartModelCustomfields extends VmModel {
 					//There exists already other customs and in special plugins which wanna disable or change the add to cart button.
 					//I suggest that we manipulate the button with a message "choose a variant first"
 					//if(!isset($customfield->pre_selected)) $customfield->pre_selected = 0;
-					$selected = JRequest::getInt ('virtuemart_product_id',0);
+					$selected = JRequest::getVar ('virtuemart_product_id',0);
+					if(is_array($selected) ) {
+						$selected = $selected[0];
+					}
+					$selected = (int) $selected;
+
 
 					$html = '';
 					$uncatChildren = $productModel->getUncategorizedChildren ($customfield->withParent);

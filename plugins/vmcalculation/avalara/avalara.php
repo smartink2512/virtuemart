@@ -622,6 +622,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$request->setCommit(true);
 			//invoice number, problem is that the invoice number is at this time not known, but the order_number may reachable
 			$request->setDocCode($invoiceNumber);
+
 			self::$_taxResult = FALSE;
 			avadebug('Request as SalesInvoice with invoiceNumber '.$invoiceNumber);
 		} else {
@@ -891,7 +892,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$tax = 0.0;
 
 		if ($mathop=='avalara') {
-			$requestedProductId = JRequest::getInt('virtuemart_product_id',0);
+			$requestedProductId = JRequest::getVar ('virtuemart_product_id',0);
+			if(is_array($requestedProductId) and count($requestedProductId) > 0) {
+				$requestedProductId = $requestedProductId[0];
+			}
+			$requestedProductId = (int) $requestedProductId;
 
 			if(isset($calculationHelper->_product)){
 				$productId = $calculationHelper->_product->virtuemart_product_id;
