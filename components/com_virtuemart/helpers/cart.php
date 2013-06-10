@@ -169,14 +169,9 @@ class VirtueMartCart {
 				$this->tosAccepted = 1;
 		}
 
-		//if($type == 'BT'){
-			//$jUser = JFactory::getUser ();
-			//if($jUser->id){
-			//	$userModel = VmModel::getModel('user');
-			//	$userModel -> setId($jUser->id);
-				$customer_number = $userModel ->getCustomerNumberById();
-				vmdebug('getShopperData customer_id by user '.$customer_number);
-			//}
+
+			$customer_number = $userModel ->getCustomerNumberById();
+
 
 			if(empty($customer_number)){
 				$firstName = empty($this->BT['first_name'])? '':$this->BT['first_name'];
@@ -191,7 +186,7 @@ class VirtueMartCart {
 				vmdebug('getShopperData customer_id  '.$customer_number);
 			}
 			$this->customer_number = $customer_number;
-		//}
+
 	}
 
 	/**

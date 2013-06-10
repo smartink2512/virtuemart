@@ -157,7 +157,13 @@ class VirtuemartControllerProduct extends VmController {
 		$model = VmModel::getModel('product');
 
 		//$cids = JRequest::getVar('cid');
-		$cid = JRequest::getInt('virtuemart_product_id',0);
+		//$cid = JRequest::getInt('virtuemart_product_id',0);
+		$cid = JRequest::getVar('virtuemart_product_id',array(),'', 'array');
+		if(is_array($cid) && count($cid) > 0){
+			$cid = (int)$cid[0];
+		} else {
+			$cid = (int)$cid;
+		}
 
 		if(empty($cid)){
 			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NO_CHILD_CREATED_SUCCESSFULLY');

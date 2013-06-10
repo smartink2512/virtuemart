@@ -890,13 +890,13 @@ class VirtueMartModelProduct extends VmModel {
 		$productKey = md5($virtuemart_product_id.$front.$quantity.$customfields);
 		static $_productsSingle = array();
 		if (array_key_exists ($productKey, $_productsSingle)) {
-			vmdebug('getProduct, take from cache '.$productKey);
+			//vmdebug('getProduct, take from cache '.$productKey);
 			return $_productsSingle[$productKey];
 		} else if(!$customfields){
 			$productKey = md5($virtuemart_product_id.$front.$quantity.TRUE);
 			vmdebug('getProduct, recreate $productKey '.$productKey);
 			if (array_key_exists ($productKey, $_productsSingle)) {
-				vmdebug('getProduct, take from cache ',$_productsSingle[$productKey]);
+				//vmdebug('getProduct, take from cache ',$_productsSingle[$productKey]);
 				return $_productsSingle[$productKey];
 			}
 		}
@@ -1565,8 +1565,8 @@ class VirtueMartModelProduct extends VmModel {
 		// Get old IDS
 		/*$this->_db->setQuery( 'SELECT `virtuemart_product_price_id` FROM `#__virtuemart_product_prices` WHERE virtuemart_product_id ='.$this->_id );
 		$old_price_ids = $this->_db->loadResultArray();*/
-        $old_price_ids = $this->loadProductPrices($this->_id,0,0,false);
-        vmdebug('$old_price_ids ',$old_price_ids);
+		$old_price_ids = $this->loadProductPrices($this->_id,0,0,false);
+		//vmdebug('$old_price_ids ',$old_price_ids);
 		foreach($data['mprices']['product_price'] as $k => $product_price){
 
 			$pricesToStore = array();

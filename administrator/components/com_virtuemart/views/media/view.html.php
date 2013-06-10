@@ -54,23 +54,17 @@ class VirtuemartViewMedia extends VmView {
 			$this->assignRef('media',	$media);
 
 			$isNew = ($media->virtuemart_media_id < 1);
-/*			if ($isNew) {
-				if(!Permissions::getInstance()->check('admin')) {
-					$usermodel = VmModel::getModel('user');
-// 					$usermodel->setCurrent();
-					$userDetails = $usermodel->getUser();
-					if(empty($userDetails->virtuemart_vendor_id)){
-						JError::raiseError(403,'Forbidden for non vendors');
-					}
-				} else $media->virtuemart_vendor_id = 1;
-				if(empty($media->virtuemart_vendor_id))$media->virtuemart_vendor_id = $userDetails->virtuemart_vendor_id;
-			}
-*/
+
 			$this->addStandardEditViewCommands();
 
         }
         else {
-        	$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
+			$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',array(),'', 'array');
+			if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
+				$virtuemart_product_id = (int)$virtuemart_product_id[0];
+			} else {
+				$virtuemart_product_id = (int)$virtuemart_product_id;
+			}
         	$cat_id = JRequest::getInt('virtuemart_category_id',0);
 
 			JToolBarHelper::customX('synchronizeMedia', 'new', 'new', JText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'),false);

@@ -47,7 +47,12 @@ class VirtuemartViewProduct extends JView {
 		$filter = JRequest::getVar('q', JRequest::getVar('term', false) );
 
 		$id = JRequest::getInt('id', false);
-		$product_id = JRequest::getInt('virtuemart_product_id', 0);
+		$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',array(),'', 'array');
+		if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
+			$product_id = (int)$virtuemart_product_id[0];
+		} else {
+			$product_id = (int)$virtuemart_product_id;
+		}
 		//$customfield = $this->model->getcustomfield();
 		/* Get the task */
 		if ($this->type=='relatedproducts') {

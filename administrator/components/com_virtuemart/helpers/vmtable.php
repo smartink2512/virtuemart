@@ -193,43 +193,63 @@ class VmTable extends JTable {
 
 		//$paramFields = $obj->$xParams;
 		//vmdebug('$obj->_xParams '.$xParams.' $obj->$xParams ',$paramFields);
-		if (!empty($obj->$xParams)) {
+		if(is_object($obj)){
+			if (!empty($obj->$xParams)) {
 
-			//	if(strpos($obj->$xParams,'|')!==false){
-			$params = explode('|', $obj->$xParams);
-			foreach ($params as $item) {
+				$params = explode('|', $obj->$xParams);
+				foreach ($params as $item) {
 
-				$item = explode('=', $item);
-				$key = $item[0];
-				unset($item[0]);
+					$item = explode('=', $item);
+					$key = $item[0];
+					unset($item[0]);
 
-				$item = implode('=', $item);
+					$item = implode('=', $item);
 
-				if (!empty($item) && isset($varsToPushParam[$key][1])) {
-					$obj->$key = json_decode($item);
-				}
-			}
-			/*	} else {
-					$params = json_decode($obj->$xParams);
-					foreach($params as $key=>$item){
-						if(!empty($item) && isset($varsToPushParam[$key][1]) ){
-							$obj->$key = $item;
-						}
-						//unset($item[0]);
+					if (!empty($item) && isset($varsToPushParam[$key][1])) {
+						$obj->$key = json_decode($item);
 					}
 				}
-	*/
+
+			} else {
+				if (empty($xParams)) {
+					vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error ' . $obj);
+				}
+			}
+
+			foreach ($varsToPushParam as $key => $v) {
+				if (!isset($obj->$key)) {
+					$obj->$key = $v[0];
+				}
+			}
 		} else {
-			if (empty($xParams)) {
-				vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error ' . $obj);
+			if (!empty($obj[$xParams])) {
+
+				$params = explode('|', $obj[$xParams]);
+				foreach ($params as $item) {
+
+					$item = explode('=', $item);
+					$key = $item[0];
+					unset($item[0]);
+
+					$item = implode('=', $item);
+
+					if (!empty($item) && isset($varsToPushParam[$key][1])) {
+						$obj[$key] = json_decode($item);
+					}
+				}
+			} else {
+				if (empty($xParams)) {
+					vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error ' . $obj);
+				}
+			}
+
+			foreach ($varsToPushParam as $key => $v) {
+				if (!isset($obj[$key])) {
+					$obj[$key] = $v[0];
+				}
 			}
 		}
 
-		foreach ($varsToPushParam as $key => $v) {
-			if (!isset($obj->$key)) {
-				$obj->$key = $v[0];
-			}
-		}
 	}
 
 	/**
