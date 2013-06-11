@@ -482,7 +482,7 @@ $document->addScriptDeclaration ( "
 				</td>
 				<td align="right" style="padding-right: 5px;">
 					<?php echo $this->currency->priceDisplay( $item->product_subtotal_discount); ?>
-					<input class='orderedit' type="hidden" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_subtotal_discount]" value="<?php echo $item->product_subtotal_discount; ?>"/>
+					<input class='orderedit' type="text" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_subtotal_discount]" value="<?php echo $item->product_subtotal_discount; ?>"/>
 				</td>
 				<td align="right" style="padding-right: 5px;">
 					<?php echo $this->currency->priceDisplay($item->product_subtotal_with_tax); ?>

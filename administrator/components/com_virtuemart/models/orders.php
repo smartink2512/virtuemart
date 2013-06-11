@@ -357,7 +357,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			if($data['calculate_product_tax']) {
 				$data['product_tax'] = round(round($data['product_final_price'], $rounding) * $taxCalcValue / ($taxCalcValue + 100), $rounding);
 			}
-			$data['product_subtotal_discount'] = (round($orderdata->product_final_price, $rounding) - round($data['product_basePriceWithTax'], $rounding)) * $orderdata->product_quantity;
+			//$data['product_subtotal_discount'] = (round($orderdata->product_final_price, $rounding) - round($data['product_basePriceWithTax'], $rounding)) * $orderdata->product_quantity;
 			$data['product_subtotal_with_tax'] = round($data['product_final_price'], $rounding) * $orderdata->product_quantity;
 		}
 
