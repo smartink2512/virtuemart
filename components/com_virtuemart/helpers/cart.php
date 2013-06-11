@@ -169,10 +169,8 @@ class VirtueMartCart {
 				$this->tosAccepted = 1;
 		}
 
-
+		if(!empty($this->customer_number)){
 			$customer_number = $userModel ->getCustomerNumberById();
-
-
 			if(empty($customer_number)){
 				$firstName = empty($this->BT['first_name'])? '':$this->BT['first_name'];
 				$lastName = empty($this->BT['last_name'])? '':$this->BT['last_name'];
@@ -183,9 +181,10 @@ class VirtueMartCart {
 				} else {
 					$customer_number = '';
 				}
-				vmdebug('getShopperData customer_id  '.$customer_number);
+				vmdebug('getShopperData customer_number  '.$customer_number);
 			}
 			$this->customer_number = $customer_number;
+		}
 
 	}
 
@@ -1092,75 +1091,45 @@ class VirtueMartCart {
 
 		$prepareUserFields = $userFieldsModel->getUserFieldsFor('cart',$type);
 
+		if(!is_array($data)){
+			$data = get_object_vars($data);
+		}
 		//STaddress may be obsolete
 		if ($type == 'STaddress' || $type =='ST') {
 			$prefix = 'shipto_';
 
 		} else { // BT
-			if(is_array($data)){
-				if(!empty($data['agreed'])){
-					$this->tosAccepted = $data['agreed'];
-				}
-
-				if(empty($data['email'])){
-					$jUser = JFactory::getUser();
-					$address['email'] = $jUser->email;
-					//vmdebug('email was empty',$address['email']);
-				}
-
-			} else {
-				if(!empty($data->agreed)){
-					$this->tosAccepted = $data->agreed;
-				}
-
-				if(empty($data->email)){
-					$address['email'] = JFactory::getUser()->email;
-				}
+			if(!empty($data['agreed'])){
+				$this->tosAccepted = $data['agreed'];
 			}
+
+			if(empty($data['email'])){
+				$jUser = JFactory::getUser();
+				$address['email'] = $jUser->email;
+				//vmdebug('email was empty',$address['email']);
+			}
+
 		}
 
 		$address = array();
-		if(is_array($data)){
-			foreach ($prepareUserFields as $fld) {
-				if(!empty($fld->name)){
-					$name = $fld->name;
-					/*if($fld->readonly){
-						vmdebug(' saveAddressInCart ',$data[$prefix.$name]);
-					}*/
-					if($fld->required){
-						//vmdebug('saveAddressInCart $prefix='.$prefix.' $name='.$name,$data);
-						if(!empty($data[$prefix.$name])){
-							$address[$name] = $data[$prefix.$name];
-						} else {
-							$address[$name] = $this->{$type}[$name];
-						}
+		foreach ($prepareUserFields as $fld) {
+			if(!empty($fld->name)){
+				$name = $fld->name;
+				/*if($fld->readonly){
+					vmdebug(' saveAddressInCart ',$data[$prefix.$name]);
+				}*/
+
+				//vmdebug('saveAddressInCart $prefix='.$prefix.' $name='.$name,$data);
+				if(!empty($data[$prefix.$name])){
+					$address[$name] = $data[$prefix.$name];
+				} else {
+					if($fld->required){	//Why we have this fallback to the already stored value?
+						$address[$name] = $this->{$type}[$name];
 					} else {
-						if(!empty($data[$prefix.$name])){
-							$address[$name] = $data[$prefix.$name];
-						} else {
-							$address[$name] = '';
-							//vmdebug('saveAddressInCart the $data[$prefix.$name] ($prefix.$name = '.$prefix.$name.' is empty');
-						}
+						$address[$name] = '';
 					}
 				}
 			}
-
-		} else {
-			foreach ($prepareUserFields as $fld) {
-				if(!empty($fld->name)){
-					$name = $fld->name;
-					if($fld->required){
-						if(!empty($data->{$prefix.$name})){
-							$address[$name] = $data->{$prefix.$name};
-						} else {
-							$address[$name] = $this->{$type}[$name];
-						}
-					}else {
-						$address[$name] = $data->{$prefix.$name};
-					}
-				}
-			}
-
 		}
 
 		//dont store passwords in the session
@@ -1168,8 +1137,6 @@ class VirtueMartCart {
 		unset($address['password2']);
 
 		$this->{$type} = $address;
-
-
 
 		if($putIntoSession){
 			$this->setCartIntoSession();

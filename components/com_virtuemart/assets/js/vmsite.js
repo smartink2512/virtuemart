@@ -18,10 +18,9 @@
 			var prefix = options.prefiks;
 
 			methods.update(this,dest,ids,prefix);
-			$(this).change( function() { methods.update(this,dest)});
+			$(this).change( function() { methods.update(this,dest,ids,prefix)});
 		},
 		update: function(org,dest,ids,prefix) {
-
 			var opt = $(org),
 				optValues = opt.val() || [],
 				byAjax = [] ;
@@ -42,7 +41,7 @@
 						function(result){
 						
 						// Max Bitte Testen
-						var virtuemart_state_id = $('#virtuemart_state_id');
+						var virtuemart_state_id = $('#'+prefix+'virtuemart_state_id');
 						var status = virtuemart_state_id.attr('required');
 						
 						if(status == 'required') {

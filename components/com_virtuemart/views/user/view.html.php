@@ -72,12 +72,12 @@ class VirtuemartViewUser extends VmView {
 	$document->addScript($front.'js/chosen.jquery.min.js');//*/
 
 	//For the nice lists, check shopfunctions::renderStateList and userfields getUserFieldsFilled()
-/*	$k = 'jQuery(function(cash) { jQuery(".chzn-select").chosen(); })';
+	$k = 'jQuery(function(cash) { jQuery(".chzn-select").chosen(); })';
 	$document =& JFactory::getDocument();
 	$document->addScript(JURI::base() . 'components/com_virtuemart/assets/js/chosen.jquery.min.js');
 	$document->addStyleSheet(JURI::base() . 'components/com_virtuemart/assets/css/chosen.css');
 	$document->addScriptDeclaration ( $k);
-*/
+
 	$mainframe = JFactory::getApplication();
 	$pathway = $mainframe->getPathway();
 	$layoutName = $this->getLayout();

@@ -1166,11 +1166,10 @@ class vmJsApi{
 		}
 		$document = JFactory::getDocument();
 		VmJsApi::jSite();
-        //vmdebug('renderStateList $_prefix ',$prefix);
 		$document->addScriptDeclaration('
 //<![CDATA[
 		jQuery( function($) {
-			$("select.'.$prefix.'virtuemart_country_id").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
+			$("#'.$prefix.'virtuemart_country_id").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
 		});
 //]]>
 		');

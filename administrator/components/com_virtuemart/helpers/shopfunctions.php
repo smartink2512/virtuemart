@@ -268,16 +268,12 @@ class ShopFunctions {
 		$name = 'country_name';
 		$id = 'virtuemart_country_id';
 		$idA = $_prefix . 'virtuemart_country_id';
-		$attrs['class'] = 'virtuemart_country_id';
+		//$attrs['class'] = 'virtuemart_country_id';
+		$attrs['class'] = 'chzn-select';
 		// Load helpers and  languages files
 		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 		VmConfig::loadConfig();
-		if(VmConfig::get('enableEnglish', 1)){
-		    $jlang =JFactory::getLanguage();
-		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, 'en-GB', TRUE);
-		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, $jlang->getDefault(), TRUE);
-		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, NULL, TRUE);
-		}
+		VmConfig::loadJLang('com_virtuemart_countries');
 
         $sorted_countries = array();
 		$lang = JFactory::getLanguage();
@@ -318,6 +314,8 @@ class ShopFunctions {
 			$attrs[$_a[0]] = $_a[1];
 		}
 
+		//Todo remove inline style
+		$attrs['style'] = 'width:270px;';
 		return JHTML::_ ('select.genericlist', $countries_list, $idA, $attrs, $id, $name, $countryId);
 	}
 
@@ -338,8 +336,6 @@ class ShopFunctions {
 					$stateId = implode (",", $stateId);
 		}
 
-		//just temporarly
-		$_prefix = '';
 		vmJsApi::JcountryStateList ($stateId,$_prefix);
 
 		if ($multiple) {
@@ -358,8 +354,11 @@ class ShopFunctions {
 		if ($required != 0) {
 			$attrs .= ' required';
 		}
+		$class = '';
 
-		$class = 'class="inputbox multiple"';
+		//$class = 'class="inputbox multiple"';
+		//Todo remove inline style
+		$class = 'class="chzn-select" style="width:270px;" ';
 
 		$listHTML = '<select '.$class.' id="'.$_prefix.'virtuemart_state_id" ' . $attrs . '>
 						<option value="">' . JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>

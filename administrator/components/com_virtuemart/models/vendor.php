@@ -93,6 +93,7 @@ class VirtueMartModelVendor extends VmModel {
 				$this->_data->vendor_accepted_currencies = array();
 			}
 
+			//Todo, check this construction
 			$xrefTable = $this->getTable ('vendor_medias');
 			$this->_data->virtuemart_media_id = $xrefTable->load ($this->_id);
 
