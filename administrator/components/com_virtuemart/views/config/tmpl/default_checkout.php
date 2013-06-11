@@ -157,7 +157,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td class="key"><span
 				class="hasTip"
-				title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_STATUS_PDF_INVOICES_EXPLAIN'); ?>">
+				title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_STATUS_PDF_INVOICES_TIP'); ?>">
 					 <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_STATUS_PDF_INVOICES') ?>
 				 </span>
 			</td>

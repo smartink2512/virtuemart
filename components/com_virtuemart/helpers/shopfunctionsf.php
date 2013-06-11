@@ -201,7 +201,7 @@ class shopFunctionsF {
 	 * @param array $vars variables to assign to the view
 	 */
 	//TODO this is quirk, why it is using here $noVendorMail, but everywhere else it is using $doVendor => this make logic trouble
-	static public function renderMail ($viewName, $recipient, $vars = array(), $controllerName = NULL, $noVendorMail = FALSE) {
+	static public function renderMail ($viewName, $recipient, $vars = array(), $controllerName = NULL, $noVendorMail = FALSE,$useDefault=true) {
 
 		if(!class_exists( 'VirtueMartControllerVirtuemart' )) require(JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
 // 		$format = (VmConfig::get('order_html_email',1)) ? 'html' : 'raw';
@@ -247,10 +247,42 @@ class shopFunctionsF {
 			$view->$key = $val;
 		}
 
-		$user = self::sendVmMail( $view, $recipient, $noVendorMail );
-		if(isset($view->doVendor) && !$noVendorMail) {
-			self::sendVmMail( $view, $view->vendorEmail, TRUE );
+
+		if(isset($vars['orderDetails'])){
+
+			//If the JRequest is there, the update is done by the order list view BE and so the checkbox does override the defaults.
+			//$name = 'orders['.$order['details']['BT']->virtuemart_order_id.'][customer_notified]';
+			//$customer_notified = JRequest::getVar($name,-1);
+			if(!$useDefault and isset($vars['newOrderData']['customer_notified']) and $vars['newOrderData']['customer_notified']==1 ){
+				$user = self::sendVmMail( $view, $recipient, $noVendorMail );
+				vmdebug('renderMail by overwrite');
+			} else {
+				$orderstatusForShopperEmail = VmConfig::get('email_os_s',array('U','C','S','R','X'));
+				if(!is_array($orderstatusForShopperEmail)) $orderstatusForShopperEmail = array($orderstatusForShopperEmail);
+				if ( in_array((string) $vars['orderDetails']['details']['BT']->order_status,$orderstatusForShopperEmail) ){
+					$user = self::sendVmMail( $view, $recipient, $noVendorMail );
+					vmdebug('renderMail by default');
+				}
+			}
+
+		} else {
+			$user = self::sendVmMail( $view, $recipient, $noVendorMail );
 		}
+
+		if(isset($view->doVendor) && !$noVendorMail) {
+			if(isset($vars['orderDetails'])){
+				$order = $vars['orderDetails'];
+				$orderstatusForVendorEmail = VmConfig::get('email_os_v',array('U','C','R','X'));
+				if(!is_array($orderstatusForVendorEmail)) $orderstatusForVendorEmail = array($orderstatusForVendorEmail);
+				if ( in_array((string)$order['details']['BT']->order_status,$orderstatusForVendorEmail)){
+					self::sendVmMail( $view, $view->vendorEmail, TRUE );
+				}
+			} else {
+				self::sendVmMail( $view, $view->vendorEmail, TRUE );
+			}
+
+		}
+
 		return $user;
 
 	}
@@ -287,7 +319,7 @@ class shopFunctionsF {
 		$subject = (isset($view->subject)) ? $view->subject : JText::_( 'COM_VIRTUEMART_DEFAULT_MESSAGE_SUBJECT' );
 		$mailer = JFactory::getMailer();
 		$mailer->addRecipient( $recipient );
-		$mailer->setSubject( $subject );
+		$mailer->setSubject(  html_entity_decode( $subject) );
 		$mailer->isHTML( VmConfig::get( 'order_mail_html', TRUE ) );
 		$mailer->setBody( $body );
 

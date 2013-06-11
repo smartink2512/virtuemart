@@ -18,7 +18,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcalculationplugin.php');
 
-defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 1);
+defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 0);
 
 function avadebug($string,$arg=NULL){
 	if(AVATAX_DEBUG) vmdebug($string,$arg);
@@ -324,6 +324,14 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			} else {
 				$productId = $requestedProductId;
 			}
+
+			if($calculationHelper->inCart){
+				$products = $this->getCartProducts($calculationHelper,$price);
+				if(!$products){
+					$this->blockCheckout();
+					return $price;
+				}
+			}
 			//avadebug('plgVmInterpreteMathOp avalara ',$rule);
 			if(($productId!=0 and $productId==$requestedProductId) or $calculationHelper->inCart ){
 				VmTable::bindParameterable ($rule, $this->_xParams, $this->_varsToPushParam);
@@ -334,11 +342,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				}
 
 				if($this->addresses){
-					$products = $this->getCartProducts($calculationHelper,$price);
-					if(!$products){
-						$this->blockCheckout();
-						return $price;
-					}
+					if(empty($products))$products = $this->getCartProducts($calculationHelper,$price);
 					$tax = $this->getAvaTax( $rule,$products);
 					if($calculationHelper->inCart){
 						$prices =  $calculationHelper->getCartPrices();
@@ -459,7 +463,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				if(is_object($vmadd)){
 					$vmadd = get_object_vars($vmadd);
 				}
-				//vmdebug('my $vmadd',$vmadd);
+				//avadebug('my $vmadd',$vmadd);
 				//First country check
 				if(empty($vmadd['virtuemart_country_id'])){
 
@@ -591,13 +595,14 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$cart = VirtueMartCart::getCart();
 			$count = count($cart->products);
 			if($count===0){
-				vmdebug('getCartProducts No Product');
+				avadebug('getCartProducts No Product');
 				return false;
 			}
 			$products = $cart->products;
 			$prices = $calculationHelper->getCartPrices();
 			foreach($products as $k => &$product){
 				$product = (array) $product;
+
 				if(!empty($prices[$k]['discountedPriceWithoutTax'])){
 					$price = $prices[$k]['discountedPriceWithoutTax'];
 				} else if(!empty($prices[$k]['basePriceVariant'])){
@@ -608,9 +613,10 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				}
 				$product['price'] = $price;
 
-				if(!empty($price[$k]['discountAmount'])){
-					$product['discount'] = $price[$k]['discountAmount'];
+				if(!empty($prices[$k]['discountAmount'])){
+					$product['discount'] = $prices[$k]['discountAmount'];
 				} else {
+					avadebug('no discount for '.$k,$prices[$k]);
 					$product['discount'] = FALSE;
 				}
 			}
@@ -692,7 +698,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			//Requests are allowed to be cached
 			self::$_taxResult = $session->get ('vm_avatax_tax.' . $hash, FALSE, 'vm');
 		}
-		//vmdebug('my request ',$request);
 		if(!self::$_taxResult){
 			vmSetStartTime('avagetTax');
 			self::$_taxResult = $this->executeRequest($request);
@@ -1041,8 +1046,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		if($calc['committ'] and $invoiceNumber){
 			$request->setDocType(DocumentType::$SalesInvoice);   	// Only supported types are SalesInvoice or SalesOrder
 			$request->setCommit(true);
-			//invoice number, problem is that the invoice number is at this time not known, but the order_number may reachable
-			//$request->setDocCode($invoiceNumber);
+			$request->setDocCode($invoiceNumber);
 			self::$_taxResult = FALSE;
 		}
 
@@ -1060,24 +1064,30 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	}
 
 	private function cancelOrder($data,$old_order_status){
-
-		if(empty($data->invoice_number)) return false;
-
-		if(!function_exists('EnsureIsArray')) require(VMAVALARA_PATH.DS.'AvaTax.php');	// include in all Avalara Scripts
-		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
-		if(!class_exists('CancelTaxRequest')) require (VMAVALARA_CLASS_PATH.DS.'CancelTaxRequest.class.php');
+	//	vmdebug('my data on cancelOrder ',$data);
+	//	if(empty($data->invoice_number)) return false;
 
 		$orderModel = VmModel::getModel('orders');
 		$orderDetails = $orderModel->getOrder($data->virtuemart_order_id);
 		$calc = $this->getOrderCalc($orderDetails);
 		if(!$calc) return false;
 
+		$invoiceNumber = 'onr_'.$orderDetails['details']['BT']->order_number;
+		$orderModel -> createInvoiceNumber($orderDetails['details']['BT'],$invoiceNumber);
+		if(!$invoiceNumber){
+			vmInfo('No invoice created, no reason to cancel at Avatax');
+			return false;
+		}
+		if(!function_exists('EnsureIsArray')) require(VMAVALARA_PATH.DS.'AvaTax.php');	// include in all Avalara Scripts
+		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
+		if(!class_exists('CancelTaxRequest')) require (VMAVALARA_CLASS_PATH.DS.'CancelTaxRequest.class.php');
+
 		$this->newATConfig($calc);
 
 		$client = new TaxServiceSoap($this->_connectionType);
 		$request= new CancelTaxRequest();
 
-		$request->setDocCode($calc['invoice_number']);
+		$request->setDocCode($invoiceNumber);
 		$request->setDocType('SalesInvoice');
 
 		$request->setCompanyCode($calc['company_code']);	// Dashboard Company Code
@@ -1087,7 +1097,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		//CancelCode: Enter D for DocDeleted, or P for PostFailed: [D]
 		//I do not know the difference, I use always D (I assume this means order got deleted, cancelled, or refund)
 		$code = CancelCode::$DocDeleted;
-
 		$request->setCancelCode($code);
 
 		try

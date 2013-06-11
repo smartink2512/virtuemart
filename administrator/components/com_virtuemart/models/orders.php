@@ -492,6 +492,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @param unknown_type $order_status
          * @author Max Milbers
 	 */
+	var $useDefaultEmailOrderStatus = true;
 	public function updateOrderStatus($orders=0, $order_id =0,$order_status=0){
 
 		//General change of orderstatus
@@ -522,7 +523,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			// $comments = JRequest::getVar('comments', array()); // ???
 			foreach ($orders as $virtuemart_order_id => $order) {
 				if  ($order_id >0) $virtuemart_order_id= $order_id;
-
+				$this->useDefaultEmailOrderStatus = false;
 				if($this->updateStatusForOneOrder($virtuemart_order_id,$order)){
 					$updated ++;
 				} else {
@@ -1445,24 +1446,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$vars['orderDetails']=$order;
 
-
 		//$vars['includeComments'] = JRequest::getVar('customer_notified', array());
 		//I think this is misleading, I think it should always ask for example $vars['newOrderData']['doVendor'] directly
 		//Using this function garantue us that it is always there. If the vendor should be informed should be done by the plugins
 		//We may add later something to the method, defining this better
 		$vars['url'] = 'url';
+		if(!isset($newOrderData['doVendor'])) $vars['doVendor'] = false; else $vars['doVendor'] = $newOrderData['doVendor'];
 
-		if(!isset($vars['doVendor'])){
-			$orderstatusForVendorEmail = VmConfig::get('email_os_v',array('U','C','R','X'));
-			if(!is_array($orderstatusForVendorEmail)) $orderstatusForVendorEmail = array($orderstatusForVendorEmail);
-			if ( in_array((string)$order['details']['BT']->order_status,$orderstatusForVendorEmail)){
-				$vars['doVendor'] = true;
-
-			} else {
-				$vars['doVendor'] = false;
-			}
-			//if(!isset($newOrderData['doVendor'])) $vars['doVendor'] = false; else $vars['doVendor'] = $newOrderData['doVendor'];
-		}
 		$virtuemart_vendor_id=1;
 		$vendorModel = VmModel::getModel('vendor');
 		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
@@ -1497,20 +1487,15 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		}
 
-
-		$orderstatusForShopperEmail = VmConfig::get('email_os_s',array('U','C','S','R','X'));
-		if(!is_array($orderstatusForShopperEmail)) $orderstatusForShopperEmail = array($orderstatusForShopperEmail);
-		if ( in_array((string)$order['details']['BT']->order_status,$orderstatusForShopperEmail) ){
-
-			// Send the email
-			if (shopFunctionsF::renderMail('invoice', $order['details']['BT']->email, $vars, null,$vars['doVendor'])) {
-				$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_SEND_MSG';
-			}
-			else {
-				$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
-			}
-			vmInfo( JText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
+		// Send the email
+		if (shopFunctionsF::renderMail('invoice', $order['details']['BT']->email, $vars, null,$vars['doVendor'],$this->useDefaultEmailOrderStatus)) {
+			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_SEND_MSG';
 		}
+		else {
+			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
+		}
+		vmInfo( JText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
+
 
 		return true;
 	}

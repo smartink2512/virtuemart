@@ -1431,7 +1431,7 @@ class VirtueMartModelUser extends VmModel {
 			$_q = "SELECT `customer_number` FROM `#__virtuemart_vmusers` "
 				."WHERE `virtuemart_user_id`='" . $this->_id . "' ";
 			$_r = $this->_getList($_q);
-			vmdebug('GET CUSTOMER NUMBER NUMBER NUMBER');
+
 			if(!empty($_r[0])){
 				$this->customer_number = $_r[0]->customer_number;
 			}else {
