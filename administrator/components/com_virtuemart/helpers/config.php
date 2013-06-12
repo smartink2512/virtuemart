@@ -1161,7 +1161,7 @@ class vmJsApi{
 	static function JcountryStateList($stateIds, $prefix='') {
 		static $JcountryStateList = array();
 		// If exist exit
-		if (isset($JcountryStateList[$prefix])) {
+		if (isset($JcountryStateList[$prefix]) or !VmConfig::get ('jsite', TRUE)) {
 			return;
 		}
 		$document = JFactory::getDocument();
@@ -1177,6 +1177,35 @@ class vmJsApi{
 		return;
 	}
 
+	static function chosenDropDowns(){
+
+		static $chosenDropDowns = false;
+
+		if(!$chosenDropDowns){
+
+			if(VmConfig::get ('jchosen', 0)){
+				vmJsApi::js('chosen.jquery.min');
+				vmJsApi::css('chosen');
+				$document = JFactory::getDocument();
+				//For the nice lists, check shopfunctions::renderStateList and userfields getUserFieldsFilled()
+				//$document->addScript(JURI::base(true) . 'components/com_virtuemart/assets/js/chosen.jquery.min.js');
+				//$document->addStyleSheet(JURI::base(true) . 'components/com_virtuemart/assets/css/chosen.css');
+
+				$selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL';
+				$vm2string = "editImage: 'edit image',select_all_text: '".JText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".JText::_($selectText)."'" ;
+				$document->addScriptDeclaration ( '
+//<![CDATA[
+		var vm2string ={'.$vm2string.'} ;
+		 jQuery( function($) {
+			$("select").chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text});
+		});
+//]]>
+				');
+			}
+			$chosenDropDowns = true;
+		}
+		return;
+	}
 
 	static function JvalideForm($name='#adminForm')
 	{

@@ -988,9 +988,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$toInvoice = VmConfig::get('inv_os',array('C'));
 		if(!is_array($toInvoice)) $toInvoice = (array)$toInvoice;
 		if($calc['accrual'] and in_array($data->order_status,$toInvoice)){
-			$taxOverride = $orderDetails['details']['BT']->created_on;	//date of the order? or the actual date?
+			//$taxOverride = $orderDetails['details']['BT']->created_on;	//date of the order? or the actual date?
+			$taxOverride = date('Y-m-d');
 		} else if($data->order_status=='R'){
-			$taxOverride = $orderDetails['details']['BT']->created_on;
+			//$taxOverride = $orderDetails['details']['BT']->created_on;
+			$taxOverride = date('Y-m-d');
 		} else {
 			$taxOverride = null;
 		}

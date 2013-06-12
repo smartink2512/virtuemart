@@ -678,10 +678,19 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo VmHTML::checkbox('jsite', VmConfig::get('jsite',1)); ?>
 			</td>
 			</tr>
-
 			<tr>
 				<td class="key">
-		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_GOOGLE_JQUERY_EXPLAIN'); ?>">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JCHOSEN_TIP'); ?>">
+				<label for="jsite"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JCHOSEN') ?></label>
+				</span>
+				</td>
+				<td>
+					<?php echo VmHTML::checkbox('jchosen', VmConfig::get('jchosen',1)); ?>
+				</td>
+			</tr>
+			<tr>
+				<td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_GOOGLE_JQUERY_TIP'); ?>">
 		<label for="google_jquery"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_GOOGLE_JQUERY') ?>
 		</span>
 				</td>

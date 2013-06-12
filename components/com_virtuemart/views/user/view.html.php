@@ -66,18 +66,6 @@ class VirtuemartViewUser extends VmView {
 	$this->assignRef('useSSL', $useSSL);
 	$this->assignRef('useXHTML', $useXHTML);
 
-	$front = JURI::root(true).'/components/com_virtuemart/assets/';
-	$document = JFactory::getDocument();
-	$document->addStyleSheet($front.'css/chosen.css');
-	$document->addScript($front.'js/chosen.jquery.min.js');//*/
-
-	//For the nice lists, check shopfunctions::renderStateList and userfields getUserFieldsFilled()
-	$k = 'jQuery(function(cash) { jQuery(".chzn-select").chosen(); })';
-	$document =& JFactory::getDocument();
-	$document->addScript(JURI::base() . 'components/com_virtuemart/assets/js/chosen.jquery.min.js');
-	$document->addStyleSheet(JURI::base() . 'components/com_virtuemart/assets/css/chosen.css');
-	$document->addScriptDeclaration ( $k);
-
 	$mainframe = JFactory::getApplication();
 	$pathway = $mainframe->getPathway();
 	$layoutName = $this->getLayout();
@@ -154,12 +142,12 @@ class VirtuemartViewUser extends VmView {
 	    $task = JRequest::getWord('task', '');
 	} else {
 		$userFields = $this->_model->getUserInfoInUserFields($layoutName, $address_type, $virtuemart_userinfo_id);
-	   if (!$new && empty($userFields[$virtuemart_userinfo_id])) {
+		if (!$new && empty($userFields[$virtuemart_userinfo_id])) {
 			$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
 // 			vmdebug('Try to get $virtuemart_userinfo_id by type BT', $virtuemart_userinfo_id);
 		}
-	   $userFields = $userFields[$virtuemart_userinfo_id];
-	   $task = 'editaddressST';
+		$userFields = $userFields[$virtuemart_userinfo_id];
+		$task = 'editaddressST';
 	}
 
 	$this->assignRef('userFields', $userFields);
@@ -259,6 +247,8 @@ class VirtuemartViewUser extends VmView {
 	    $add_product_link = $this->linkIcon($add_product_link, 'COM_VIRTUEMART_PRODUCT_ADD_PRODUCT', 'new', false, false, true, true);
 	}
 	$this->assignRef('add_product_link', $add_product_link);
+
+	$document = JFactory::getDocument();
 	$document->setTitle($pathway_text);
 	$pathway->additem($pathway_text);
 	$this->assignRef('page_title', $pathway_text);

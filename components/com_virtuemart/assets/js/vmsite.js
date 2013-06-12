@@ -16,9 +16,8 @@
 			var dest = options.dest;
 			var ids = options.ids;
 			var prefix = options.prefiks;
-
-			methods.update(this,dest,ids,prefix);
 			$(this).change( function() { methods.update(this,dest,ids,prefix)});
+            methods.update(this,dest,ids,prefix);
 		},
 		update: function(org,dest,ids,prefix) {
 			var opt = $(org),

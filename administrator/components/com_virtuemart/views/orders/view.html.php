@@ -63,6 +63,7 @@ class VirtuemartViewOrders extends VmView {
 			$orderbt = $order['details']['BT'];
 			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 			$orderbt ->invoiceNumber = $orderModel->getInvoiceNumber($orderbt->virtuemart_order_id);
+
 			$currency = CurrencyDisplay::getInstance('',$order['details']['BT']->virtuemart_vendor_id);
 
 			$this->assignRef('currency', $currency);
@@ -87,6 +88,7 @@ class VirtuemartViewOrders extends VmView {
 			$shipmentfields = $userFieldsModel->getUserFieldsFilled(
 					 $_userFields
 					,$orderst
+					,'ST_'
 			);
 
 			// Create an array to allow orderlinestatuses to be translated

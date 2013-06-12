@@ -268,12 +268,13 @@ class ShopFunctions {
 		$name = 'country_name';
 		$id = 'virtuemart_country_id';
 		$idA = $_prefix . 'virtuemart_country_id';
-		//$attrs['class'] = 'virtuemart_country_id';
-		$attrs['class'] = 'chzn-select';
+		$attrs['class'] = 'virtuemart_country_id';
+		//$attrs['class'] = 'chzn-select';
 		// Load helpers and  languages files
 		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 		VmConfig::loadConfig();
 		VmConfig::loadJLang('com_virtuemart_countries');
+		vmJsApi::chosenDropDowns();
 
         $sorted_countries = array();
 		$lang = JFactory::getLanguage();
@@ -300,7 +301,7 @@ class ShopFunctions {
 
 		if ($multiple) {
 			$attrs['multiple'] = 'multiple';
-			$attrs['size'] = '12';
+			//$attrs['size'] = '12';
 			$idA .= '[]';
 		} else {
 			$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
@@ -315,7 +316,7 @@ class ShopFunctions {
 		}
 
 		//Todo remove inline style
-		$attrs['style'] = 'width:270px;';
+		//$attrs['style'] = 'width:270px;';
 		return JHTML::_ ('select.genericlist', $countries_list, $idA, $attrs, $id, $name, $countryId);
 	}
 
@@ -358,7 +359,7 @@ class ShopFunctions {
 
 		//$class = 'class="inputbox multiple"';
 		//Todo remove inline style
-		$class = 'class="chzn-select" style="width:270px;" ';
+		$class = ' style="width:200px;" ';
 
 		$listHTML = '<select '.$class.' id="'.$_prefix.'virtuemart_state_id" ' . $attrs . '>
 						<option value="">' . JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>

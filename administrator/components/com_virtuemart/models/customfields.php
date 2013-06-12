@@ -1008,7 +1008,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				foreach ($values as $key => $val) {
 					$options[] = array('value' => $val, 'text' => $val);
 				}
-				vmdebug('displayProductCustomfieldFE is a list ',$options);
+				vmJsApi::chosenDropDowns();
 				return JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][custom_value]', NULL, 'value', 'text', FALSE, TRUE);
 			}
 			else {
@@ -1061,6 +1061,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id'],FALSE), 'text' => $child['product_name']);
 					}
 
+					vmJsApi::chosenDropDowns();
 					$html .= JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][custom_value]', 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="inputbox"', "value", "text",
 						JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $selected,FALSE));
 					//vmdebug('$customfield',$customfield);

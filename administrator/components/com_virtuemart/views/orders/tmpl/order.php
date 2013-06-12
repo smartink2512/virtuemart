@@ -333,7 +333,18 @@ $document->addScriptDeclaration ( "
 
 			<?php
 			foreach ($this->userfields['fields'] as $_field ) {
-				$fn = $_field['name'];
+
+				echo '		<tr>'."\n";
+				echo '			<td class="key">'."\n";
+				echo '				<label for="'.$_field['name'].'_field">'."\n";
+				echo '					'.$_field['title'] . ($_field['required']?' *': '')."\n";
+				echo '				</label>'."\n";
+				echo '			</td>'."\n";
+				echo '			<td>'."\n";
+				echo '				'.$_field['formcode']."\n";
+				echo '			</td>'."\n";
+				echo '		</tr>'."\n"; //*/
+			/*	$fn = $_field['name'];
 				$fv = $_field['value'];
 				$ft = $_field['title'];
 				echo '		<tr>'."\n";
@@ -343,7 +354,7 @@ $document->addScriptDeclaration ( "
 				echo '			<td>'."\n";
 				echo "				<input name='BT_$fn' id='$fn' value='$fv' size='50'>\n";
 				echo '			</td>'."\n";
-				echo '		</tr>'."\n";
+				echo '		</tr>'."\n";*/
 			}
 			?>
 
@@ -359,15 +370,14 @@ $document->addScriptDeclaration ( "
 
 			<?php
 			foreach ($this->shipmentfields['fields'] as $_field ) {
-				$fn = $_field['name'];
-				$fv = $_field['value'];
-				$ft = $_field['title'];
 				echo '		<tr>'."\n";
 				echo '			<td class="key">'."\n";
-				echo '				'.$ft."\n";
+				echo '				<label for="'.$_field['name'].'_field">'."\n";
+				echo '					'.$_field['title'] . ($_field['required']?' *': '')."\n";
+				echo '				</label>'."\n";
 				echo '			</td>'."\n";
 				echo '			<td>'."\n";
-				echo "				<input name='ST_$fn' id='$fn' value='$fv' size='50'>\n";
+				echo '				'.$_field['formcode']."\n";
 				echo '			</td>'."\n";
 				echo '		</tr>'."\n";
 			}
