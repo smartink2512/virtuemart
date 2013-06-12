@@ -1186,11 +1186,8 @@ class vmJsApi{
 			if(VmConfig::get ('jchosen', 0)){
 				vmJsApi::js('chosen.jquery.min');
 				vmJsApi::css('chosen');
-				$document = JFactory::getDocument();
-				//For the nice lists, check shopfunctions::renderStateList and userfields getUserFieldsFilled()
-				//$document->addScript(JURI::base(true) . 'components/com_virtuemart/assets/js/chosen.jquery.min.js');
-				//$document->addStyleSheet(JURI::base(true) . 'components/com_virtuemart/assets/css/chosen.css');
 
+				$document = JFactory::getDocument();
 				$selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL';
 				$vm2string = "editImage: 'edit image',select_all_text: '".JText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".JText::_($selectText)."'" ;
 				$document->addScriptDeclaration ( '

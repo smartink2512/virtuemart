@@ -169,21 +169,19 @@ class VirtueMartCart {
 				$this->tosAccepted = 1;
 		}
 
-		if(!empty($this->customer_number)){
-			$customer_number = $userModel ->getCustomerNumberById();
-			if(empty($customer_number)){
-				$firstName = empty($this->BT['first_name'])? '':$this->BT['first_name'];
-				$lastName = empty($this->BT['last_name'])? '':$this->BT['last_name'];
-				$email = empty($this->BT['email'])? '':$this->BT['email'];
-				$complete = $firstName.$lastName.$email;
-				if(!empty($complete)){
-					$customer_number = 'nonreg_'.$complete;
-				} else {
-					$customer_number = '';
-				}
-				vmdebug('getShopperData customer_number  '.$customer_number);
-			}
-			$this->customer_number = $customer_number;
+		//if(empty($this->customer_number) or ($user->virtuemart_user_id!=0 and strpos($this->customer_number,'nonreg_')!==FALSE ) ){
+		if($user->virtuemart_user_id!=0){
+			$this->customer_number = $userModel ->getCustomerNumberById();
+			vmdebug('my customer number $userModel'.$this->customer_number);
+
+		}
+
+		if(empty($this->customer_number) and strpos($this->customer_number,'nonreg_')!==FALSE){
+			$firstName = empty($this->BT['first_name'])? '':$this->BT['first_name'];
+			$lastName = empty($this->BT['last_name'])? '':$this->BT['last_name'];
+			$email = empty($this->BT['email'])? '':$this->BT['email'];
+			$this->customer_number = 'nonreg_'.$firstName.$lastName.$email;
+			vmdebug('getShopperData customer_number  '.$user->virtuemart_user_id);
 		}
 
 	}

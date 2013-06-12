@@ -435,6 +435,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			} else {
 				if(!empty($cart->BT)) $vmadd = $cart->BT;
 			}
+			vmdebug('my cart customer number '.$cart->customer_number);
 			$vmadd['customer_number'] = $cart->customer_number;
 
 			if(empty($vmadd) or !is_array($vmadd) or (is_array($vmadd) and count($vmadd) <2) ){
@@ -988,15 +989,14 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$toInvoice = VmConfig::get('inv_os',array('C'));
 		if(!is_array($toInvoice)) $toInvoice = (array)$toInvoice;
 		if($calc['accrual'] and in_array($data->order_status,$toInvoice)){
-			//$taxOverride = $orderDetails['details']['BT']->created_on;	//date of the order? or the actual date?
-			$taxOverride = date('Y-m-d');
+			self::$vmadd['taxOverride'] = $orderDetails['details']['BT']->created_on;	//date of the order? or the actual date?
+			//$taxOverride = date('Y-m-d');
 		} else if($data->order_status=='R'){
-			//$taxOverride = $orderDetails['details']['BT']->created_on;
-			$taxOverride = date('Y-m-d');
+			self::$vmadd['taxOverride'] = $orderDetails['details']['BT']->created_on;
+			//$taxOverride = date('Y-m-d');
 		} else {
-			$taxOverride = null;
+			self::$vmadd['taxOverride'] = null;
 		}
-		self::$vmadd['taxOverride'] = $taxOverride;
 
 		//create the products
 		$products = array();
