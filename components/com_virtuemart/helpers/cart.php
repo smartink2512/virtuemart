@@ -170,13 +170,13 @@ class VirtueMartCart {
 		}
 
 		//if(empty($this->customer_number) or ($user->virtuemart_user_id!=0 and strpos($this->customer_number,'nonreg_')!==FALSE ) ){
-		if($user->virtuemart_user_id!=0){
+		if($user->virtuemart_user_id!=0 and empty($this->customer_number) or strpos($this->customer_number,'nonreg_')!==FALSE){
 			$this->customer_number = $userModel ->getCustomerNumberById();
 			vmdebug('my customer number $userModel'.$this->customer_number);
 
 		}
 
-		if(empty($this->customer_number) and strpos($this->customer_number,'nonreg_')!==FALSE){
+		if(empty($this->customer_number) or strpos($this->customer_number,'nonreg_')!==FALSE){
 			$firstName = empty($this->BT['first_name'])? '':$this->BT['first_name'];
 			$lastName = empty($this->BT['last_name'])? '':$this->BT['last_name'];
 			$email = empty($this->BT['email'])? '':$this->BT['email'];

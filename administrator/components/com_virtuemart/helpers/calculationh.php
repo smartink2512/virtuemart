@@ -33,7 +33,7 @@ class calculationHelper {
 	private $_manufacturerId;
 	private $_deliveryCountry;
 	private $_deliveryState;
-	private $_currencyDisplay;
+	public $_currencyDisplay;
 	var $_cart = null;
 	private $_cartPrices = false;
 	var $productPrices;

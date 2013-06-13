@@ -18,7 +18,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcalculationplugin.php');
 
-defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 0);
+defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 1);
 
 function avadebug($string,$arg=NULL){
 	if(AVATAX_DEBUG) vmdebug($string,$arg);
@@ -326,7 +326,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			}
 
 			if($calculationHelper->inCart){
-				$products = $this->getCartProducts($calculationHelper,$price);
+				$products = $this->getCartProducts($calculationHelper);
 				if(!$products){
 					$this->blockCheckout();
 					return $price;
@@ -342,7 +342,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				}
 
 				if($this->addresses){
-					if(empty($products))$products = $this->getCartProducts($calculationHelper,$price);
+					if(empty($products))$products = $this->prepareSingleProduct($calculationHelper,$price);
 					$tax = $this->getAvaTax( $rule,$products);
 					if($calculationHelper->inCart){
 						$prices =  $calculationHelper->getCartPrices();
@@ -388,16 +388,16 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				}
 				if($this->addresses){
 					if (!class_exists ('calculationHelper')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-
+					$calculator = calculationHelper::getInstance ();
 					$orderModel = VmModel::getModel('orders');
 					$invoiceNumber = 'onr_'.$order['details']['BT']->order_number;
 					JRequest::setVar('create_invoice',1);
 					$orderModel -> createInvoiceNumber($order['details']['BT'],$invoiceNumber);
-					$calculator = calculationHelper::getInstance ();
+
 
 					avadebug('avatax plgVmConfirmedOrder $order',$invoiceNumber,$order);
 					if(is_array($invoiceNumber)) $invoiceNumber = $invoiceNumber[0];
-					$products = $this->getCartProducts($calculator,0);
+					$products = $this->getCartProducts($calculator);
 					$tax = $this->getAvaTax( $rule,$products,$invoiceNumber,$order['details']['BT']->order_number);
 					//Todo adjust for BE
 					$prices =  $calculator->getCartPrices();
@@ -435,7 +435,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			} else {
 				if(!empty($cart->BT)) $vmadd = $cart->BT;
 			}
-			vmdebug('my cart customer number '.$cart->customer_number);
+
 			$vmadd['customer_number'] = $cart->customer_number;
 
 			if(empty($vmadd) or !is_array($vmadd) or (is_array($vmadd) and count($vmadd) <2) ){
@@ -588,9 +588,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		return self::$validatedAddresses;
 	}
 
-	private function getCartProducts($calculationHelper,$price){
+	private function getCartProducts($calculationHelper){
 
-		if($calculationHelper->inCart){
+
 
 			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 			$cart = VirtueMartCart::getCart();
@@ -606,6 +606,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 				if(!empty($prices[$k]['discountedPriceWithoutTax'])){
 					$price = $prices[$k]['discountedPriceWithoutTax'];
+					avadebug('getAvatax getCartProducts take discountedPriceWithoutTax for i='.$k.' '.$price);
 				} else if(!empty($prices[$k]['basePriceVariant'])){
 					$price = $prices[$k]['basePriceVariant'];
 				} else {
@@ -635,22 +636,26 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				$products[] = $shipment;
 			}
 			$products['discountAmount'] = $prices['discountAmount'];
-		} else {
 
-			$calculationHelper->_product->price = $price;
 
-			$products[0] = $calculationHelper->_product;
-			if(!isset($products[0]->amount)){
-				$products[0]->amount = 1;
-			}
+		return $products;
+	}
 
-			if(isset($calculationHelper->productPrices['discountAmount'])){
-				$products[0]->discount = $calculationHelper->productPrices['discountAmount'];
-			} else {
-				$products[0]->discount = FALSE;
-			}
+	function prepareSingleProduct($calculationHelper,$price){
+
+		$products = array();
+		$calculationHelper->_product->price = $price;
+
+		$products[0] = $calculationHelper->_product;
+		if(!isset($products[0]->amount)){
+			$products[0]->amount = 1;
 		}
 
+		if(isset($calculationHelper->productPrices['discountAmount'])){
+			$products[0]->discount = $calculationHelper->productPrices['discountAmount'];
+		} else {
+			$products[0]->discount = FALSE;
+		}
 		return $products;
 	}
 
@@ -750,7 +755,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$userModel->getVendor($calc['virtuemart_vendor_id']);
 		$vendorFieldsArray = $userModel->getUserInfoInUserFields ('mail', 'BT', $virtuemart_userinfo_id, FALSE, TRUE);
 		$vendorFields = $vendorFieldsArray[$virtuemart_userinfo_id];
-		//avadebug('my vendor fields',$vendorFields);
+
 		$origin->setLine1($vendorFields['fields']['address_1']['value']);
 		$origin->setLine2($vendorFields['fields']['address_2']['value']);
 		$origin->setCity($vendorFields['fields']['city']['value']);
@@ -766,6 +771,10 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		} else {
 			return FALSE;
 		}
+
+		if (!class_exists ('calculationHelper')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+		$calculator = calculationHelper::getInstance ();
+		$request->setCurrencyCode($calculator->_currencyDisplay->_vendorCurrency_code_3); //CurrencyCode
 		$request->setDestinationAddress	($destination);     //Address
 		$request->setCompanyCode($calc['company_code']);   // Your Company Code From the Dashboard
 		$request->setDocDate(date('Y-m-d'));           //date
@@ -779,11 +788,20 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$request->setExemptionNo(self::$vmadd['tax_exemption_number']);         //string   if not using ECMS which keys on customer code
 		}
 
+		if(isset(self::$vmadd['paymentDate'])){
+			//I give the correct payment date and it is not stored, so doing a refund does not work, because the given
+			//payment date is not the one stored
+			//$request->setPaymentDate(self::$vmadd['paymentDate']);
+			avadebug('I set payment date '.self::$vmadd['paymentDate']);
+		}
+
 		if(isset(self::$vmadd['taxOverride'])){
+			//self::$vmadd['taxOverride'] = substr(self::$vmadd['taxOverride'],0,10);
 			$request->setTaxOverride(self::$vmadd['taxOverride']);
+			avadebug('I set tax override '.self::$vmadd['taxOverride']);
 		}
 		if(!empty($products['discountAmount'])){
-			$request->setDiscount($products['discountAmount']);            //decimal
+			$request->setDiscount($sign * $products['discountAmount']);            //decimal
 			unset($products['discountAmount']);
 		}
 
@@ -794,11 +812,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$this->_lineNumbersToCartProductId = array();
 
 		foreach($products as $k=>$product){
-
-			//Yehyeh nasty hack
-			if($k==='discountAmount'){
-				continue;
-			}
 
 			$n++;
 			$this->_lineNumbersToCartProductId[$n] = $k;
@@ -912,7 +925,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				foreach($_taxResult->getMessages() as $msg){
 					vmError($msg->getName().": ".$msg->getSummary(),'AvaTax Error '.$msg->getSummary());
 				}
-				vmdebug('Error, but no exception in getAvaTax',self::$_taxResult);
+				vmdebug('Error, but no exception in getAvaTax',$msg);
 			}
 		}
 		catch(SoapFault $exception)
@@ -988,7 +1001,46 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		$toInvoice = VmConfig::get('inv_os',array('C'));
 		if(!is_array($toInvoice)) $toInvoice = (array)$toInvoice;
-		if($calc['accrual'] and in_array($data->order_status,$toInvoice)){
+
+		//Lets find first if the committ was already done, the committ was already done, if one of history orderstatuses
+		//have one status for create invoice.
+		//vmdebug('my orderDetails ',$orderDetails);
+		self::$vmadd['taxOverride'] = null;
+		//if(!$calc['accrual']){
+		foreach($orderDetails['history'] as $item){
+			if(in_array($item->order_status_code,$toInvoice)){
+				//self::$vmadd['taxOverride'] = $orderDetails['details']['BT']->created_on;
+				//the date of the order status used to create the invoice
+				//self::$vmadd['taxOverride'] = $item->created_on;
+				self::$vmadd['paymentDate'] = substr($item->created_on,0,10);
+					//Date when order is created
+				self::$vmadd['taxOverride'] = $orderDetails['details']['BT']->created_on;
+				break;
+			}
+		}
+		//if(!empty(self::$vmadd['taxOverride'])){
+			//For the moment we set the payment date the same as the invoice date,
+			//because it is the same in the usual setup (you set confirmed, if the order is payed)
+			//self::$vmadd['paymentDate'] = substr(self::$vmadd['taxOverride'],0,10);
+			//self::$vmadd['paymentDate'] = self::$vmadd['taxOverride'];
+		//} else {
+		if(empty(self::$vmadd['paymentDate'])){
+			if(in_array($data->order_status,$toInvoice)){
+				self::$vmadd['paymentDate'] = date('Y-m-d');
+			}
+		}
+
+		//}
+
+		//Accrual Accounting means the committ is done directly after pressing the confirm button in the cart
+		//Therefore the date of the committ/invoice is the first order date and we dont need to check the order history
+		if(empty(self::$vmadd['taxOverride']) and $calc['accrual']){
+			self::$vmadd['taxOverride'] = $orderDetails['details']['BT']->created_on;
+		}
+
+		//}
+
+		/*if($calc['accrual'] and in_array($data->order_status,$toInvoice)){
 			self::$vmadd['taxOverride'] = $orderDetails['details']['BT']->created_on;	//date of the order? or the actual date?
 			//$taxOverride = date('Y-m-d');
 		} else if($data->order_status=='R'){
@@ -996,7 +1048,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			//$taxOverride = date('Y-m-d');
 		} else {
 			self::$vmadd['taxOverride'] = null;
-		}
+		}/*/
 
 		//create the products
 		$products = array();
@@ -1006,7 +1058,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$product['product_sku'] = $item['order_item_sku'];
 			$product['product_name'] = $item['order_item_name'];
 			$product['amount'] = $item['product_quantity'];
-			$product['price'] = $item['product_item_price'];
+			$product['price'] = $item['product_final_price'];
 			$product['discount'] = $item['product_subtotal_discount'];
 			$model = VmModel::getModel('product');
 			$rProduct = $model->getProduct($item['virtuemart_product_id']);
@@ -1034,20 +1086,22 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		}
 
 		$request = $this->createStandardRequest($calc,$products,$sign);
-
 		$request->setCompanyCode($calc['company_code']);   // Your Company Code From the Dashboard
 		$request->setDocDate(date('Y-m-d'));           //date
 		$request->setCustomerCode($orderDetails['details']['BT']->customer_number);  //string Required
-
+		if($orderDetails['details']['BT']->order_number){
+			$request->setPurchaseOrderNo($orderDetails['details']['BT']->order_number);     //string Optional
+		}
 		$totalTax = 0.0;
 
 		$invoiceNumber = 'onr_'.$orderDetails['details']['BT']->order_number;
 		JRequest::setVar('create_invoice',1);
 		$orderModel -> createInvoiceNumber($orderDetails['details']['BT'],$invoiceNumber);
-
+		if(is_array($invoiceNumber)) $invoiceNumber = $invoiceNumber[0];
 		if($calc['committ'] and $invoiceNumber){
 			$request->setDocType(DocumentType::$SalesInvoice);   	// Only supported types are SalesInvoice or SalesOrder
 			$request->setCommit(true);
+
 			$request->setDocCode($invoiceNumber);
 			self::$_taxResult = FALSE;
 		}
@@ -1080,6 +1134,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			vmInfo('No invoice created, no reason to cancel at Avatax');
 			return false;
 		}
+		if(is_array($invoiceNumber)) $invoiceNumber = $invoiceNumber[0];#
+
 		if(!function_exists('EnsureIsArray')) require(VMAVALARA_PATH.DS.'AvaTax.php');	// include in all Avalara Scripts
 		if(!class_exists('TaxServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'TaxServiceSoap.class.php');
 		if(!class_exists('CancelTaxRequest')) require (VMAVALARA_CLASS_PATH.DS.'CancelTaxRequest.class.php');
