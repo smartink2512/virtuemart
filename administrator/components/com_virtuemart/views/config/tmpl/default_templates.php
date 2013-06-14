@@ -685,7 +685,7 @@ defined('_JEXEC') or die('Restricted access');
 				</span>
 				</td>
 				<td>
-					<?php echo VmHTML::checkbox('jchosen', VmConfig::get('jchosen',1)); ?>
+					<?php echo VmHTML::checkbox('jchosen', VmConfig::get('jchosen',0)); ?>
 				</td>
 			</tr>
 			<tr>

@@ -1,5 +1,7 @@
 <?php // no direct access
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access');
+vmJsApi::chosenDropDowns();
+?>
 
 <!-- Currency Selector Module -->
 <?php echo $text_before ?>

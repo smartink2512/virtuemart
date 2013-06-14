@@ -247,7 +247,7 @@ class shopFunctionsF {
 			$view->$key = $val;
 		}
 
-
+		$user = FALSE;
 		if(isset($vars['orderDetails'])){
 
 			//If the JRequest is there, the update is done by the order list view BE and so the checkbox does override the defaults.
