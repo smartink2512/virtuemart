@@ -44,6 +44,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			'avatax_virtuemart_country_id'  => array(0,'int'),
             'avatax_virtuemart_state_id'  => array(0,'int'),
 			'accrual'		=> array(0,'int'),
+			'prevCheckoutAddInv' => array(1,'int')
 		);
 
 		$this->setConfigParameterable ('calc_params', $varsToPush);
@@ -115,6 +116,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_ONLYCART','only_cart',$calc->only_cart);
         $html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_ACCRUAL','accrual',$calc->accrual);
 		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_DEV','dev',$calc->dev);
+		$html .= VmHTML::row('checkbox','VMCALCULATION_AVALARA_PREVCHECKOUT_AD_INVALID','prevCheckoutAddInv',$calc->prevCheckoutAddInv);
 		$label = 'VMCALCULATION_AVALARA_VADDRESS';
 		$lang =JFactory::getLanguage();
 		$label = $lang->hasKey($label.'_TIP') ? '<span class="hasTip" title="'.JText::_($label.'_TIP').'">'.JText::_($label).'</span>' : JText::_($label) ;
@@ -668,7 +670,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			return false;
 		}
 
-		if(!self::$validatedAddresses){
+		if(!self::$validatedAddresses and $calc->prevCheckoutAddInv){
 			$this->blockCheckout();
 			return false;
 		}
@@ -786,14 +788,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		if(isset(self::$vmadd['tax_exemption_number'])){
 			$request->setExemptionNo(self::$vmadd['tax_exemption_number']);         //string   if not using ECMS which keys on customer code
 		}
-
-		//not supported yet
-		//if(isset(self::$vmadd['paymentDate'])){
-			//I give the correct payment date and it is not stored, so doing a refund does not work, because the given
-			//payment date is not the one stored
-			//$request->setPaymentDate(self::$vmadd['paymentDate']);
-			//avadebug('I set payment date '.self::$vmadd['paymentDate']);
-		//}
 
 		if(isset(self::$vmadd['taxOverride'])){
 			//self::$vmadd['taxOverride'] = substr(self::$vmadd['taxOverride'],0,10);
@@ -969,10 +963,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			return false;
 		}
 
-		//if($calc['accrual'] and $data->order_status == 'C'){
-		/*$toInvoice = VmConfig::get('inv_os',array('C'));
-		if(!is_array($toInvoice)) $toInvoice = (array)$toInvoice;
-		if($calc['accrual'] and in_array($data->order_status,$toInvoice)){*/
 		if($calc['accrual'] and $data->order_status != 'R'){
 			avadebug('Avatax creditMemo, type is accrual and not a Refund',$calc);
 			return false;
@@ -1006,42 +996,22 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		//have one status for create invoice.
 		//vmdebug('my orderDetails ',$orderDetails);
 		self::$vmadd['taxOverride'] = null;
-		//if(!$calc['accrual']){
 		foreach($orderDetails['history'] as $item){
 			if(in_array($item->order_status_code,$toInvoice)){
-				//self::$vmadd['taxOverride'] = $orderDetails['details']['BT']->created_on;
 				//the date of the order status used to create the invoice
-				//self::$vmadd['taxOverride'] = $item->created_on;
+				self::$vmadd['taxOverride'] = $item->created_on;
 				//self::$vmadd['paymentDate'] = substr($item->created_on,0,10);
 					//Date when order is created
-				self::$vmadd['taxOverride'] = $orderDetails['details']['BT']->created_on;
+				//self::$vmadd['taxOverride'] = $orderDetails['details']['BT']->created_on;
 				break;
 			}
 		}
-
-	/*	if(empty(self::$vmadd['paymentDate'])){
-			if(in_array($data->order_status,$toInvoice)){
-				self::$vmadd['paymentDate'] = date('Y-m-d');
-			}
-		}*/
 
 		//Accrual Accounting means the committ is done directly after pressing the confirm button in the cart
 		//Therefore the date of the committ/invoice is the first order date and we dont need to check the order history
 		if(empty(self::$vmadd['taxOverride']) and $calc['accrual']){
 			self::$vmadd['taxOverride'] = $orderDetails['details']['BT']->created_on;
 		}
-
-		//}
-
-		/*if($calc['accrual'] and in_array($data->order_status,$toInvoice)){
-			self::$vmadd['taxOverride'] = $orderDetails['details']['BT']->created_on;	//date of the order? or the actual date?
-			//$taxOverride = date('Y-m-d');
-		} else if($data->order_status=='R'){
-			self::$vmadd['taxOverride'] = $orderDetails['details']['BT']->created_on;
-			//$taxOverride = date('Y-m-d');
-		} else {
-			self::$vmadd['taxOverride'] = null;
-		}/*/
 
 		//create the products
 		$products = array();
