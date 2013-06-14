@@ -720,7 +720,12 @@ class GenericTableUpdater extends JModel{
 
 	private function getdefault($string){
 		if (isset($string)) {
-			return  " DEFAULT '".trim($string)."'";
+			if(strpos($string,'CURRENT_TIMESTAMP')!==FALSE){
+				return  " DEFAULT ".trim($string);
+			} else {
+				return  " DEFAULT '".trim($string)."'";
+			}
+
 		} else {
 			return '';
 		}

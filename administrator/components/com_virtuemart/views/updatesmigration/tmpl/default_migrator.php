@@ -83,6 +83,8 @@ $session = JFactory::getSession();
 			'migrateProductsFromVmOne'	=> JText::_('COM_VIRTUEMART_UPDATE_PRODUCTS'),
 			'migrateOrdersFromVmOne'	=> JText::_('COM_VIRTUEMART_UPDATE_ORDERS'),
 			'migrateAllInOne'	=> JText::_('COM_VIRTUEMART_UPDATE_ALL'),
+			'portVmAttributes'	=> JText::_('COM_VIRTUEMART_UPDATE_ATTR'),
+			'portVmRelatedProducts'	=> JText::_('COM_VIRTUEMART_UPDATE_REL'),
 		//	'setStoreOwner'	=> JText::_('COM_VIRTUEMART_SETSTOREOWNER')
 		);
 		echo VmHTML::radioList('task', $session->get('migration_task', 'migrateAllInOne', 'vm'), $options);

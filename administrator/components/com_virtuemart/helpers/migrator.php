@@ -1932,5 +1932,164 @@ class Migrator extends VmModel{
 		}
 		return json_encode($newAttributes,JSON_FORCE_OBJECT);
 	}
+
+/**
+	 * Roughly taken from the forum, a bit rewritten by Max Milbers to use the joomla database
+	 * Thank you raycarter
+	 *
+	 * http://forum.virtuemart.net/index.php?topic=102083.0
+	 * @author raycarter
+	 */
+
+	function portVm1Attributes(){
+
+		$prefix = '#_';
+		$oldtable = '#__vm_product';
+		$db = JFactory::getDbo();
+		$db->setQuery("SELECT product_sku, attribute FROM " . $oldtable);
+		$rows = $db->loadObjectList();
+
+		foreach ($rows as $product) {
+
+			$db->setQuery("SELECT virtuemart_product_id FROM " . $prefix . "_virtuemart_products WHERE product_sku=" . $db->Quote($product->product_sku));
+			$productid = $db->loadResult();
+			$ignore = JRequest::getVar('prodIdsToIgnore',array());
+			if(!is_array($ignore)) $ignore = array($ignore);
+			foreach($ignore as &$ig){
+				$ig = (int)$ig;
+			}
+			$ign = false;
+			if (count($ignore) && $productid) {
+				foreach ($ignore as $ig) {
+					if ($ig == $productid) {
+						$ign = true;
+						echo "ignoring product_id =" . $productid . "<br/>";
+						break;
+					}
+				}
+			}
+			if (!$ign) {
+
+
+				$attrStr = explode(";", $product->attribute);
+
+
+				foreach ($attrStr as $attributes) {
+					$result = "adding attributes for product_id :" . $productid . "<br/>";
+					$attrData = array();
+					$attrData = explode(",", $attributes);
+					//its the parent, create it,it does not exist before
+					$db->setQuery("SELECT virtuemart_custom_id FROM " . $prefix . "_virtuemart_customs WHERE custom_title =" . $db->Quote($attrData[0]));
+					$parent = $db->loadResult();
+					if ($parent) {
+						$pid = $parent;
+						$result.="found parent with id=" . $parent . "<br/>";
+					} else {
+						$query = 'INSERT INTO ' . $prefix . '_virtuemart_customs (custom_title,custom_tip,field_type,is_cart_attribute,published) VALUES
+        (' . $db->Quote($attrData[0]) . ',"","V","1","1")';
+						$db->setQuery($query);
+						if (!$db->query()) die($query);
+
+
+						$pid = $db->insertid();
+						$result.= "<p>inserted parent " . $attrData[0] . "</p>";
+					}
+					foreach ($attrData as $key => $attr) {
+						if ($key != '0') {
+							$priceset = explode("\[", $attr);
+							$price = 0;
+							if (count($priceset) > 1) {
+								$price = substr($priceset[1], 0, -1);
+							}
+							$cleaned = $priceset[0];
+							//get ordering of the last element and add 1 to it
+							$db->setQuery('SELECT MAX(ordering) from ' . $prefix . '_virtuemart_product_customfields');
+							$ordering = $db->loadResult() + 1;
+							$query = 'INSERT INTO ' . $prefix . '_virtuemart_product_customfields (virtuemart_product_id,virtuemart_custom_id,custom_value,custom_price,ordering) VALUES
+                (' . $productid . ',' . $pid . ',' . $db->Quote($cleaned) . ',' . $price . ',' . $ordering . ')';
+							$db->setQuery($query);
+							if (!$db->query()) {
+								$result.="query failed for attribute :" . $cleaned . ", query :" . $query . "</br>";
+							};
+							$result.="inserted attribute for parent :" . $attrData[0] . ", atttribute name :" . $cleaned . "<br/>";
+						}
+					}
+					echo $result;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Roughly taken from the forum, a bit rewritten by Max Milbers to use the joomla database
+	 * Thank you oneforallsoft
+	 *
+	 * http://forum.virtuemart.net/index.php?topic=116403.0
+	 * http://www.oneforallsoft.com/related-products-missing-after-virtuemart-upgrade/
+	 * @author oneforallsoft
+	 */
+	function portVm1RelatedProducts(){
+
+		$db = JFactory::getDbo();
+		$db->setQuery('select * from #__vm_product_relations');
+		$r=$db->query();
+		$sql='';
+		$out=array();
+		$out2=array();
+
+		while($v=mysql_fetch_assoc($r)){
+			$pid=$v['product_id'];
+			$ids=explode('|',$v['related_products']);
+			$out=array_merge($ids,$out);
+			$out[]=$pid;
+			$out2[$pid]=$ids;
+			/*foreach($ids as $id){
+				$sql.=",($pid,1,$id,'".date('Y-m-d H:i:s',time())."')";
+			}*/
+		}
+		mysql_free_result($r);
+		$db->setQuery("select product_id,product_sku from #__vm_product where product_id in (".implode(',',$out).")") or die(mysql_error());
+		$r=$db->query();
+		$skus=array();
+		while($v=mysql_fetch_assoc($r)){
+			$skus[$v['product_id']]=$v['product_sku'];
+		}
+		mysql_free_result($r);
+		$out=array();
+		foreach($out2 as $k=>$v){
+			$tmp=array();
+			foreach($v as $vv){
+				if(isset($skus[$vv]))
+					$tmp[]=$skus[$vv];
+			}
+			$out[$skus[$k]]=$tmp;
+		}
+
+		$db->setQuery("select virtuemart_product_id,product_sku from #__virtuemart_products where product_sku in ('".implode("','",$skus)."')") or die(mysql_error());
+		$r=$db->query();
+		$out3=array();
+		while($v=mysql_fetch_assoc($r)){
+			$out3[$v['product_sku']]=$v["virtuemart_product_id"];
+		}
+
+		mysql_free_result($r);
+//mysql_close($l);
+//var_dump($out3);exit;
+//print_r($out);
+//mysql_query("truncate table {$newvm_tableprefix}_virtuemart_product_customfields") or die(mysql_error());
+		$now=date('Y-m-d H:i:s',time());
+		$sql='';
+		foreach($out as $k => $v){
+			foreach($v as $vv){
+				if(isset($out3[$k]) and isset($out3[$vv]))
+					$sql.=",({$out3[$k]},1,{$out3[$vv]},'".$now."')";
+			}
+		}
+		$db->setQuery("insert into #__virtuemart_product_customfields (virtuemart_product_id,virtuemart_custom_id,custom_value,modified_on) values ".substr($sql,1), getlink()) or die(mysql_error());
+		$db->query();
+//echo $sql;
+		//mysql_close($l);
+
+	}
 }
 

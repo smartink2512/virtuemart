@@ -1099,7 +1099,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			} else {
 				$request->setDocType(DocumentType::$SalesInvoice);
 			}
-			
+
 			// Only supported types are SalesInvoice or SalesOrder
 			$request->setCommit(true);
 

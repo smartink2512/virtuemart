@@ -244,7 +244,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			));
 
 			$this->alterTable('#__virtuemart_medias',array(
-				'file_params' => '`file_params` varchar(17500)'
+				`file_url` => '`file_url` varchar(1800) NOT NULL DEFAULT ""'
 			));
 
 			$this->deleteReCreatePrimaryKey('#__virtuemart_userinfos','virtuemart_userinfo_id');
