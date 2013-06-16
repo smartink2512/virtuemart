@@ -66,8 +66,7 @@ class AdminUIHelper {
 			$('.virtuemart-admin-area .toggler').vm2admin('toggle');
 			$('#admin-ui-menu').vm2admin('accordeon');
 			if ( $('#admin-ui-tabs').length  ) {
-				var select_array =$('select');
-console.log(select_array);
+
 				$('#admin-ui-tabs').vm2admin('tabs',virtuemartcookie).find('select').chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text}); 
 			}
 

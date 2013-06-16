@@ -339,6 +339,8 @@ static function vmGetCharset() {
 		$option  = array($key =>"0", $text => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
 		$options = array_merge(array($option), $options);
 		}
+		vmJsApi::chosenDropDowns();
+		$attrib .= ' class="vm-chzn-select"';
 		return JHTML::_('select.genericlist', $options,$name,$attrib,$key,$text,$default,false,true);
 	}
 	/**

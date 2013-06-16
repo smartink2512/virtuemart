@@ -1016,6 +1016,7 @@ class VirtueMartModelUserfields extends VmModel {
 									break;
 								case 'multiselect':
 									$_attribs['multiple'] = 'multiple';
+									$_attribs['class'] = 'vm-chzn-select';
 									$field_values="";
 									$_return['fields'][$_fld->name]['formcode'] = JHTML::_('select.genericlist', $_values, $_prefix.$_fld->name.'[]', $_attribs, 'fieldvalue', 'fieldtitle', $_selected);
 									$separator_form = '<br />';
@@ -1029,6 +1030,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 									break;
 								case 'select':
+									$_attribs['class'] = 'vm-chzn-select';
 									$_return['fields'][$_fld->name]['formcode'] = JHTML::_('select.genericlist', $_values, $_prefix.$_fld->name, $_attribs, 'fieldvalue', 'fieldtitle', $_selected);
 									foreach ($_values as $_val) {
 										 if (  $_val->fieldvalue==$_selected) {

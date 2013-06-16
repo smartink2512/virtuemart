@@ -325,7 +325,8 @@ class VirtuemartViewCategory extends VmView {
 		if(!empty($this->options)){
 			$this->options = array_merge(array($emptyOption), $this->options);
 			// render List of available groups
-			$this->searchCustomList = JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHTML::_('select.genericlist',$this->options, 'custom_parent_id', 'class="inputbox"', 'virtuemart_custom_id', 'custom_title', $this->custom_parent_id);
+			vmJsApi::chosenDropDowns();
+			$this->searchCustomList = JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHTML::_('select.genericlist',$this->options, 'custom_parent_id', 'class="inputbox vm-chzn-select"', 'virtuemart_custom_id', 'custom_title', $this->custom_parent_id);
 		} else {
 			$this->searchCustomList = '';
 		}

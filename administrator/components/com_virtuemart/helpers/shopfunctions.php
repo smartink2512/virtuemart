@@ -269,7 +269,7 @@ class ShopFunctions {
 		$id = 'virtuemart_country_id';
 		$idA = $_prefix . 'virtuemart_country_id';
 		$attrs['class'] = 'virtuemart_country_id';
-		//$attrs['class'] = 'chzn-select';
+		$attrs['class'] = 'vm-chzn-select';
 		// Load helpers and  languages files
 		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 		VmConfig::loadConfig();
@@ -301,7 +301,6 @@ class ShopFunctions {
 
 		if ($multiple) {
 			$attrs['multiple'] = 'multiple';
-			//$attrs['size'] = '12';
 			$idA .= '[]';
 		} else {
 			$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
@@ -349,19 +348,16 @@ class ShopFunctions {
 			} else {
 				$class = 'class="inputbox multiple"';
 			}*/
-			$attrs = 'size="1"  name="' . $_prefix . 'virtuemart_state_id" ';
+			$attrs = 'name="' . $_prefix . 'virtuemart_state_id" ';
 		}
 
 		if ($required != 0) {
 			$attrs .= ' required';
 		}
-		$class = '';
+		$attrs .= ' class="vm-chzn-select"';
 
-		//$class = 'class="inputbox multiple"';
-		//Todo remove inline style
-		$class = ' style="width:200px;" ';
 
-		$listHTML = '<select '.$class.' id="'.$_prefix.'virtuemart_state_id" ' . $attrs . '>
+		$listHTML = '<select  id="'.$_prefix.'virtuemart_state_id" ' . $attrs . '>
 						<option value="">' . JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>
 						</select>';
 
