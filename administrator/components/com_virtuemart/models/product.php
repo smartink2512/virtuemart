@@ -894,7 +894,7 @@ class VirtueMartModelProduct extends VmModel {
 			return $_productsSingle[$productKey];
 		} else if(!$customfields){
 			$productKey = md5($virtuemart_product_id.$front.$quantity.TRUE);
-			vmdebug('getProduct, recreate $productKey '.$productKey);
+			vmdebug('getProductSingle, recreate $productKey '.$productKey);
 			if (array_key_exists ($productKey, $_productsSingle)) {
 				//vmdebug('getProduct, take from cache ',$_productsSingle[$productKey]);
 				return $_productsSingle[$productKey];

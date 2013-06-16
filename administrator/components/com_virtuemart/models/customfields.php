@@ -1061,7 +1061,9 @@ class VirtueMartModelCustomfields extends VmModel {
 						$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id'],FALSE), 'text' => $child['product_name']);
 					}
 
-					vmJsApi::chosenDropDowns();
+
+					//vmJsApi::chosenDropDowns(); would need class="inputbox vm-chzn-select", but it does not work, in case people have two times the same product,
+					//because both dropdowns have then the same id and the js does not work.
 					$html .= JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][custom_value]', 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="inputbox vm-chzn-select"', "value", "text",
 						JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $selected,FALSE));
 					//vmdebug('$customfield',$customfield);

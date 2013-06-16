@@ -1445,7 +1445,7 @@ class calculationHelper {
 			} else if($sign == $minus){
 				return $price - (float)$calculated;
 			} else {
-				VmWarn('Unrecognised mathop '.$mathop.' in calculation rule found');
+				VmError('Unrecognised mathop '.$mathop.' in calculation rule found');
 				return $price;
 			}
 		} else {
@@ -1460,7 +1460,7 @@ class calculationHelper {
 					if($calc) return $calc;
 				}
 			} else {
-				VmWarn('Unrecognised mathop '.$mathop.' in calculation rule found, seems you created this rule with plugin not longer accesible (deactivated, uninstalled?)');
+				VmError('Unrecognised mathop '.$mathop.' in calculation rule found, seems you created this rule with plugin not longer accesible (deactivated, uninstalled?)');
 				return $price;
 			}
 		}

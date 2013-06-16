@@ -85,7 +85,7 @@ function vmInfo($publicdescr,$value=NULL){
 			}
 		}	else {
 			// 		$app ->enqueueMessage('Info: '.JText::_($publicdescr));
-			$publicdescr = $lang->_($publicdescr);
+			//$publicdescr = $lang->_($publicdescr);
 			$msg = JText::_($publicdescr);
 			// 		debug_print_backtrace();
 		}
@@ -94,13 +94,15 @@ function vmInfo($publicdescr,$value=NULL){
 		if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
 			$msg = 'Max messages reached';
 			$type = 'warning';
+		} else {
+			return false;
 		}
 	}
 
 	if(!empty($msg)){
 		$app ->enqueueMessage($msg,$type);
 	} else {
-		vmTrace('vmInfo Message empty');
+		vmTrace('vmInfo Message empty '.$msg);
 	}
 
 	return $msg;
@@ -137,6 +139,8 @@ function vmAdminInfo($publicdescr,$value=NULL){
 		else {
 			if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
 				$app->enqueueMessage ('Max messages reached', 'info');
+			}else {
+				return false;
 			}
 		}
 	}
@@ -168,6 +172,8 @@ function vmWarn($publicdescr,$value=NULL){
 	else {
 		if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
 			$msg = 'Max messages reached';
+		} else {
+			return false;
 		}
 	}
 
@@ -175,7 +181,7 @@ function vmWarn($publicdescr,$value=NULL){
 		$app ->enqueueMessage($msg,'warning');
 		return $msg;
 	} else {
-		vmTrace('vmInfo Message empty');
+		vmTrace('vmWarn Message empty');
 		return false;
 	}
 
@@ -190,7 +196,7 @@ function vmError($descr,$publicdescr=''){
 	VmConfig::$maxMessageCount++;
 
 	$msg = '';
-	if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
+	if(VmConfig::$maxMessageCount< (VmConfig::$maxMessage+5)){
 		if (empty($descr)) {
 			vmTrace ('vmError message empty');
 		}
@@ -209,8 +215,10 @@ function vmError($descr,$publicdescr=''){
 		}
 	}
 	else {
-		if (VmConfig::$maxMessageCount == VmConfig::$maxMessage) {
+		if (VmConfig::$maxMessageCount == (VmConfig::$maxMessage+5)) {
 			$msg = 'Max messages reached';
+		} else {
+			return false;
 		}
 	}
 
