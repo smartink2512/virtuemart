@@ -172,12 +172,12 @@ $i = 0;
 
 	jQuery(document).ready(function () {
 
-		populate_customer_list(jQuery('select#order_items_status').val());
+		populate_customer_list(jQuery('select#order_status').val());
 		customer_initiliaze_boxes();
 		jQuery("input:radio[name=customer_email_type],input:checkbox[name=notification_template]").click(function () {
 			customer_initiliaze_boxes();
 		});
-		jQuery('select#order_items_status').chosen({enable_select_all:true, select_some_options_text:vm2string.select_some_options_text}).change(function () {
+		jQuery('select#order_status').chosen({enable_select_all:true, select_some_options_text:vm2string.select_some_options_text}).change(function () {
 			populate_customer_list(jQuery(this).val());
 		})
 		jQuery('.mailing .button2-left').click(function () {
