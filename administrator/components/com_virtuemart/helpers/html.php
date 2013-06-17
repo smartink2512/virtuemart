@@ -334,13 +334,15 @@ static function vmGetCharset() {
 	 * @param boolean $zero add  a '0' value in the option
 	 * return a select list
 	 */
-	public static function select($name, $options, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true){
+	public static function select($name, $options, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true, $chosenDropDowns=true){
 		if ($zero==true) {
 		$option  = array($key =>"0", $text => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
 		$options = array_merge(array($option), $options);
 		}
-		vmJsApi::chosenDropDowns();
-		$attrib .= ' class="vm-chzn-select"';
+		if ($chosenDropDowns) {
+			vmJsApi::chosenDropDowns();
+			$attrib .= ' class="vm-chzn-select"';
+		}
 		return JHTML::_('select.genericlist', $options,$name,$attrib,$key,$text,$default,false,true);
 	}
 	/**

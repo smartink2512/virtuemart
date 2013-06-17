@@ -225,7 +225,7 @@ $i = 0;
 					alert("<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_EMAIL_ENTER_BODY')?>");
 				}
 				else {
-					var $statut = jQuery('select#order_items_status').val();
+					var $statut = jQuery('select#order_status').val();
 					jQuery.post($customerMailLink, { subject:$subject, mailbody:$body, statut:$statut, token:'<?php echo JUtility::getToken () ?>' },
 						function (data) {
 							alert('<?php echo addslashes (JTExt::_ ('COM_VIRTUEMART_PRODUCT_NOTIFY_MESSAGE_SENT')); ?>');
