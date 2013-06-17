@@ -285,7 +285,11 @@ class VmTable extends JTable {
 		if ($this->_cache === null) {
 			// Lookup the fields for this table only once.
 			$name = $this->_tbl;
-			$fields = $this->_db->getTableColumns($name, false);
+			if(JVM_VERSION===1){
+				$fields = $this->getTableColumns($name, false);
+			} else {
+				$fields = $this->_db->getTableColumns($name, false);
+			}
 
 			if (empty($fields)) {
 				$e = new JException(JText::_('JLIB_DATABASE_ERROR_COLUMNS_NOT_FOUND'));
@@ -298,6 +302,45 @@ class VmTable extends JTable {
 		return $this->_cache;
 	}
 
+	/**
+	 * Original from joomla2.5
+	 * Retrieves field information about a given table.
+	 *
+	 * @param   string   $table     The name of the database table.
+	 * @param   boolean  $typeOnly  True to only return field types.
+	 *
+	 * @return  array  An array of fields for the database table.
+	 *
+	 * @since   11.1
+	 * @throws  JDatabaseException
+	 */
+	public function getTableColumns($table, $typeOnly = true)
+	{
+		$result = array();
+
+		// Set the query to get the table fields statement.
+		$this->setQuery('SHOW FULL COLUMNS FROM ' . $this->quoteName($this->escape($table)));
+		$fields = $this->loadObjectList();
+
+		// If we only want the type as the value add just that to the list.
+		if ($typeOnly)
+		{
+			foreach ($fields as $field)
+			{
+				$result[$field->Field] = preg_replace("/[(0-9)]/", '', $field->Type);
+			}
+		}
+		// If we want the whole field data object add that to the list.
+		else
+		{
+			foreach ($fields as $field)
+			{
+				$result[$field->Field] = $field;
+			}
+		}
+
+		return $result;
+	}
 
 	function checkDataContainsTableFields($from, $ignore = array()) {
 
@@ -1455,7 +1498,12 @@ class VmTable extends JTable {
 		$_check_act = strtoupper(substr($_act, 0, 3));
 		//Check if a column is there
 		$db = JFactory::getDbo();
-		$columns = $db->getTableColumns($this->_tbl);
+		if(JVM_VERSION===1){
+			$columns = $this->getTableColumns($this->_tbl);
+		} else {
+			$columns = $this->_db->getTableColumns($this->_tbl);
+		}
+
 		$res = array_key_exists($_col, $columns);
 
 		if ($_check_act != 'ADD' and $_check_act != 'CRE') {

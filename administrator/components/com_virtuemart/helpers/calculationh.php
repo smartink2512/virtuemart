@@ -1338,13 +1338,13 @@ class calculationHelper {
 		return $this->_cartPrices;
 	}
 
-	function calculateCustomPriceWithTax($price, $override_id=0) {
+	function calculateCustomPriceWithTax($price) {
 
 		$price = $this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $price,true);
 
 		if(VmConfig::get('cVarswT',1)){
-			$taxRules = $this->gatherEffectingRulesForProductPrice('Tax', $override_id);
-			$vattaxRules = $this->gatherEffectingRulesForProductPrice('VatTax', $override_id);
+			$taxRules = $this->gatherEffectingRulesForProductPrice('Tax', $this->product_tax_id);
+			$vattaxRules = $this->gatherEffectingRulesForProductPrice('VatTax', $this->product_tax_id);
 			$rules = array_merge($taxRules,$vattaxRules);
 			if(!empty($rules)){
 				$price = $this->executeCalculation($rules, $price, true);
