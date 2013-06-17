@@ -191,12 +191,12 @@ class VirtueMartModelVendor extends VmModel {
 // 	$dbv = $table->getDBO();
 // 	if(empty($this->_id)) $this->_id = $dbv->insertid();
 		if (empty($this->_id)) {
-			$this->_id = $table->virtuemart_vendor_id;
+			$data['virtuemart_vendor_id'] = $this->_id = $table->virtuemart_vendor_id;
 		}
 
 		if ($this->_id != $oldVendorId) {
 
-			vmdebug('Developer notice, tried to update vendor xref should not appear in singlestore');
+			vmdebug('Developer notice, tried to update vendor xref should not appear in singlestore $oldVendorId = '.$oldVendorId.' newId = '.$this->_id);
 
 			//update user table
 			$usertable = $this->getTable ('vmusers');

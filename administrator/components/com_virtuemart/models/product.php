@@ -40,7 +40,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * @var integer
 	 */
 	var $products = NULL;
-
+	var $decimals = array('product_length','product_width','product_height','product_weight','product_packaging');
 	/**
 	 * constructs a VmModel
 	 * setMainTable defines the maintable of the model
@@ -696,7 +696,7 @@ class VirtueMartModelProduct extends VmModel {
 					if ('product_in_stock' != $k and 'product_ordered' != $k) {// Do not copy parent stock into child
 						if (strpos ($k, '_') !== 0 and empty($child->$k)) {
 							$child->$k = $v;
-// 							vmdebug($child->product_parent_id.' $child->$k',$child->$k);
+ 						//	vmdebug($child->product_parent_id.' $child->$k',$child->$k);
 						}
 					}
 				}
@@ -1522,16 +1522,31 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		// Setup some place holders
 		$product_data = $this->getTable ('products');
-
-		//Set the product packaging
-		if (array_key_exists ('product_packaging', $data)) {
-			$data['product_packaging'] = str_replace(',','.',$data['product_packaging']);
+		if(!empty($data['virtuemart_product_id'])){
+			$product_data -> load($data['virtuemart_product_id']);
 		}
+
+		//Set the decimals like product packaging
+		//$decimals = array('product_length','product_width','product_height','product_weight','product_packaging');
+		foreach($this->decimals as $decimal){
+			if (array_key_exists ($decimal, $data)) {
+				if(!empty($data[$decimal])){
+					$data[$decimal] = str_replace(',','.',$data[$decimal]);
+				} else {
+					$data[$decimal] = null;
+					$product_data->$decimal = null;
+					vmdebug('Store product, set $decimal '.$decimal.' = null');
+				}
+			}
+		}
+
 
 		//with the true, we do preloading and preserve so old values note by Max Milbers
 	//	$product_data->bindChecknStore ($data, $isChild);
-
-		$stored = $product_data->bindChecknStore ($data, TRUE);
+		if(!empty($product_data->product_parent_id) and $product_data->product_parent_id == $data['virtuemart_product_id']){
+			$product_data->product_parent_id = 0;
+		}
+		$stored = $product_data->bindChecknStore ($data, false);
 
 		$errors = $product_data->getErrors ();
 		if(!$stored or count($errors)>0){
@@ -1563,8 +1578,6 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		// Get old IDS
-		/*$this->_db->setQuery( 'SELECT `virtuemart_product_price_id` FROM `#__virtuemart_product_prices` WHERE virtuemart_product_id ='.$this->_id );
-		$old_price_ids = $this->_db->loadResultArray();*/
 		$old_price_ids = $this->loadProductPrices($this->_id,0,0,false);
 		//vmdebug('$old_price_ids ',$old_price_ids);
 		foreach($data['mprices']['product_price'] as $k => $product_price){
@@ -1603,6 +1616,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			}
 
+
 			if (isset($data['mprices']['product_price'][$k]) and $data['mprices']['product_price'][$k]!='') {
 
 				if ($isChild) {
@@ -1626,7 +1640,7 @@ class VirtueMartModelProduct extends VmModel {
 				//$data['mprices'][$k] = $data['virtuemart_product_id'];
                 if($pricesToStore){
                     $this->updateXrefAndChildTables ($pricesToStore, 'product_prices',$isChild);
-
+					vmdebug('Storing price ',$pricesToStore);
                     $key = array_search($pricesToStore['virtuemart_product_price_id'], $old_price_ids );
                     if ($key !== false ) unset( $old_price_ids[ $key ] );
                 }
@@ -1636,9 +1650,17 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		if ( count($old_price_ids) ) {
+			$oldPriceIdsSql = array();
+			foreach($old_price_ids as $oldPride){
+				$oldPriceIdsSql[] = $oldPride['virtuemart_product_price_id'];
+			}
 			// delete old unused Prices
-			$this->_db->setQuery( 'DELETE FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_price_id` in ("'.implode('","', $old_price_ids ).'") ');
+			$this->_db->setQuery( 'DELETE FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_price_id` in ("'.implode('","', $oldPriceIdsSql ).'") ');
 			$this->_db->query();
+			$err = $this->_db->getErrorMsg();
+			if(!empty($err)){
+				vmWarn('In store prodcut, deleting old price error',$err);
+			}
 		}
 
 		if (!empty($data['childs'])) {

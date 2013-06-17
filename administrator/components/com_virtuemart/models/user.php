@@ -202,9 +202,11 @@ class VirtueMartModelUser extends VmModel {
 		if($this->_data->user_is_vendor){
 
 			$vendorModel = VmModel::getModel('vendor');
-			if(Vmconfig::get('multix','none')==='none'){
+			if(Vmconfig::get('multix','none')=='none'){
 				$this->_data->virtuemart_vendor_id = 1;
+				vmdebug('user model, single vendor',$this->_data->virtuemart_vendor_id);
 			}
+
 			$vendorModel->setId($this->_data->virtuemart_vendor_id);
 			$this->_data->vendor = $vendorModel->getVendor();
 		}
@@ -670,7 +672,7 @@ class VirtueMartModelUser extends VmModel {
 
 
 		if((int)$data['user_is_vendor']==1){
-			// 			vmdebug('vendor recognised');
+			vmdebug('vendor recognised '.$data['virtuemart_vendor_id']);
 			if($this ->storeVendorData($data)){
 				if ($new) {
 					if ($doUserActivation ) {
@@ -817,8 +819,9 @@ class VirtueMartModelUser extends VmModel {
 
 			//TODO Attention this is set now to virtuemart_vendor_id=1, because using a vendor with different id then 1 is not completly supported and can lead to bugs
 			//So we disable the possibility to store vendors not with virtuemart_vendor_id = 1
-			if(Vmconfig::get('multix','none')==='none' ){
+			if(Vmconfig::get('multix','none')=='none' ){
 				$data['virtuemart_vendor_id'] = 1;
+				vmdebug('no multivendor, set virtuemart_vendor_id = 1');
 			}
 			$vendorModel->setId($data['virtuemart_vendor_id']);
 

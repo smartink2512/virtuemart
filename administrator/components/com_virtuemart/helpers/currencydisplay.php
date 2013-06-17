@@ -33,9 +33,11 @@ class CurrencyDisplay {
 	private $_thousands 		= ' '; 	// Thousands separator ('', ' ', ',')
 	private $_positivePos	= '{number}{symbol}';	// Currency symbol position with Positive values :
 	private $_negativePos	= '{sign}{number}{symbol}';	// Currency symbol position with Negative values :
+	private $_numeric_code = 0;
 	var $_priceConfig	= array();	//holds arrays of 0 and 1 first is if price should be shown, second is rounding
 	var $exchangeRateShopper = 1.0;
 	var $_vendorCurrency_code_3 = null;
+
 
 	private function __construct ($vendorId = 0){
 

@@ -653,7 +653,8 @@ class VmTable extends JTable {
 				$admin = Permissions::getInstance()->check('admin');
 
 				$tbl_key = $this->_tbl_key;
-				if (get_class($this) !== 'TableVmusers') {
+				$className = get_class($this);
+				if ($className !== 'TableVmusers') {
 					$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . '`="' . $this->$tbl_key . '" ';
 					if (!isset(self::$_query_cache[md5($q)])) {
 						$this->_db->setQuery($q);
@@ -709,7 +710,12 @@ class VmTable extends JTable {
 					}
 					//Admin forgot to select a vendor
 					else if (empty($virtuemart_vendor_id)) {
-						$this->virtuemart_vendor_id = 1;
+						/*if ($className !== 'TableVmusers' and $this->_tbl!== '#__virtuemart_vendors') {
+							vmInfo('We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl.', Set to mainvendor '.$this->virtuemart_vendor_id);
+							$this->virtuemart_vendor_id = 1;
+							//return false;
+						}*/
+
 					}
 				}
 
@@ -924,7 +930,7 @@ class VmTable extends JTable {
 		}
 
 		if ($ok) {
-			if (!$this->store()) {
+			if (!$this->store(true)) {
 				$ok = false;
 				$msg .= ' store';
 				vmdebug('Problem in store ' . get_class($this) . ' ' . $this->_db->getErrorMsg());
@@ -1334,6 +1340,8 @@ class VmTable extends JTable {
 		$this->_db->setQuery($q);
 		if (!$res = $this->_db->query()) {
 			vmError('There was an error toggling ' . $field, $this->_db->getErrorMsg());
+		} else {
+			vmdebug('Toggled '.$q );
 		}
 
 		return $res;
