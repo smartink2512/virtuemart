@@ -4,14 +4,14 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  *
- * a special type of 'paypal ':
+ * Paypal payment plugin
  *
  * @author Max Milbers
  * @author Valérie Isaksen
- * @version $Id: paypal.php 5177 2011-12-28 18:44:10Z alatak $
+ * @version $Id$
  * @package VirtueMart
  * @subpackage payment
- * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
+ * ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
