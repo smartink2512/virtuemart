@@ -1043,6 +1043,8 @@ class Migrator extends VmModel{
 		//$oldtonewProducts = array();
 		$oldtonewManus = $this->getMigrationProgress('manus');
 
+		$oldToNewShoppergroups = $this->getMigrationProgress('shoppergroups');
+
 		$productModel = VmModel::getModel('product');
 
 		// 		vmdebug('$alreadyKnownIds',$alreadyKnownIds);
@@ -1140,7 +1142,7 @@ class Migrator extends VmModel{
 							$product['mprices']['product_price_id'][$i] = 0;
 							$product['mprices']['product_id'][$i] = $price['product_id'];
 							$product['mprices']['product_price'][$i] = $price['product_price'];
-							$product['mprices']['virtuemart_shoppergroup_id'][$i] = $price['shopper_group_id'];
+							$product['mprices']['virtuemart_shoppergroup_id'][$i] = $oldToNewShoppergroups[$price['shopper_group_id']];
 							$product['mprices']['product_currency'][$i] = $this->_ensureUsingCurrencyId($price['product_currency']);
 							$product['mprices']['price_quantity_start'][$i] = $price['price_quantity_start'];
 							$product['mprices']['price_quantity_end'][$i] = $price['price_quantity_end'];
@@ -1224,7 +1226,7 @@ class Migrator extends VmModel{
 
 			}
 			$limitStartToStore = ', products_start = "'.($doneStart+$i).'" ';
-			$this->storeMigrationProgress('products',$alreadyKnownIds);
+			$this->storeMigrationProgress('products',$alreadyKnownIds,$limitStartToStore);
 			vmInfo('Migration: '.$i.' products processed ');
 		}
 
@@ -2015,17 +2017,20 @@ class Migrator extends VmModel{
 		vmSetStartTime('vm1related');
 		$db = JFactory::getDbo();
 		$db->setQuery('select * from #__vm_product_relations');
-		$r=$db->query();
+		//$r=$db->query();
+
 		$sql='';
 		$out=array();
 		$out2=array();
 
-		while($v=mysql_fetch_assoc($r)){
+		while($v=$db->loadNextRow()){
+		//while($v=mysql_fetch_assoc($r)){
 			$pid=$v['product_id'];
 			$ids=explode('|',$v['related_products']);
 			$out=array_merge($ids,$out);
 			$out[]=$pid;
 			$out2[$pid]=$ids;
+
 			/*foreach($ids as $id){
 				$sql.=",($pid,1,$id,'".date('Y-m-d H:i:s',time())."')";
 			}*/
@@ -2035,14 +2040,14 @@ class Migrator extends VmModel{
 			vmdebug ('no related products found');
 			return;
 		}
-		mysql_free_result($r);
+		//mysql_free_result($r);
 		$db->setQuery("select product_id,product_sku from #__vm_product where product_id in (".implode(',',$out).")") or die(mysql_error());
 		$r=$db->query();
 		$skus=array();
-		while($v=mysql_fetch_assoc($r)){
+		while($v=$db->loadNextRow()){
 			$skus[$v['product_id']]=$v['product_sku'];
 		}
-		mysql_free_result($r);
+
 		$out=array();
 		foreach($out2 as $k=>$v){
 			$tmp=array();
@@ -2056,11 +2061,11 @@ class Migrator extends VmModel{
 		$db->setQuery("select virtuemart_product_id,product_sku from #__virtuemart_products where product_sku in ('".implode("','",$skus)."')") or die(mysql_error());
 		$r=$db->query();
 		$out3=array();
-		while($v=mysql_fetch_assoc($r)){
+		while($v=$db->loadNextRow()){
 			$out3[$v['product_sku']]=$v["virtuemart_product_id"];
 		}
 
-		mysql_free_result($r);
+		//mysql_free_result($r);
 //mysql_close($l);
 //var_dump($out3);exit;
 //print_r($out);

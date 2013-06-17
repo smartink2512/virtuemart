@@ -1473,8 +1473,9 @@ class ShopFunctions {
 			$html .= $order_info['order_item_status_name'];
 			$html .= '</td>
 			<td class="order_number">';
-				$link = '/index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $order_info['order_id'];
-				$html .= JHTML::_ ('link', JRoute::_ ($link,FALSE), $order_info['order_number'], array('title' => JText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $order_info['order_number']));
+				$uri = JFactory::getURI();
+				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $order_info['order_id'];
+				$html .= JHTML::_ ('link', $link, $order_info['order_number'], array('title' => JText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $order_info['order_number']));
 			$first=FALSE;
 			$html .= '
 					</td>

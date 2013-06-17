@@ -508,59 +508,6 @@ class shopFunctionsF {
 		echo $html;
 	}
 
-	/**
-	 * Creates also for BE app a correct site link
-	 * @static
-	 * @param $link
-	 */
-	static function getSiteUrl ($link) {
-
-		//site url if use administrator application
-		$be_site = substr( JURI::root(), 0, -1 );
-
-		// Checking if we are in the backend and change to the app site
-		if(JPATH_BASE == JPATH_ADMINISTRATOR) {
-			JFactory::$application = JApplication::getInstance( 'site' );
-		}
-
-		//VM homepage sef url (for example) - SEF url for be and fe. If you use clasic url will work also.
-		$link = JURI::root().substr( JRoute::_( 'index.php?option=com_virtuemart&view=virtuemart', FALSE ), strlen( JURI::base( TRUE ) ) + 1 );
-
-		// Check if we are in the backend again
-		if(JPATH_BASE == JPATH_ADMINISTRATOR) {
-			// when link produced in be we need to remove livesite/administrator in case that been added from URL (usually added instead
-			//we have set the application to the site app)
-			$link = str_replace( $be_site.'/administrator', $be_site, $link );
-			//echo $link;
-
-			// Setting back the administrator app
-			JFactory::$application = JApplication::getInstance( 'administrator' );
-		}
-		return $link;
-	}
-
-	/**
-	 * Align in plain text the strings
-	 * $string text to resize
-	 * $size, number of char
-	 * $toUpper uppercase Y/N ?
-	 * @author kohl patrick
-	 */
-	function tabPrint ($size, $string, $header = FALSE) {
-
-		if($header) $string = strtoupper( JText::_( $string ) );
-		sprintf( "%".$size.".".$size."s", $string );
-
-	}
-
-	function toupper ($strings) {
-
-		foreach( $strings as &$string ) {
-			$string = strtoupper( JText::_( $string ) );
-		}
-		return $strings;
-
-	}
 
 
 	static function getComUserOption () {
