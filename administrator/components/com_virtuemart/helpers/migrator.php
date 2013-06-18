@@ -2014,7 +2014,7 @@ class Migrator extends VmModel{
 	function portVm1RelatedProducts(){
 
 		if($this->_stop || (microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
-			//return;
+			return;
 		}
 		vmSetStartTime('relatedproducts');
 
