@@ -505,7 +505,6 @@ class Migrator extends VmModel{
 			return false;
 		}
 		//declaration _vm_userfield >> _virtuemart_userfields`
-
 		// vendor_id >> virtuemart_vendor_id
 		$this->_db->setQuery('select `name` FROM `#__virtuemart_userfields`');
 		$vm2Fields = $this->_db->loadResultArray ();
@@ -703,8 +702,11 @@ class Migrator extends VmModel{
 		$this->_db->setQuery( 'SELECT *, vendor_id as virtuemart_vendor_id FROM `#__vm_vendor`' );
 		$vendor = $this->_db->loadAssoc() ;
 		$currency_code_3 = explode( ',', $vendor['vendor_accepted_currencies'] );//EUR,USD
-		$this->_db->query( 'SELECT currency_id FROM `#__virtuemart_currencies` WHERE `currency_code_3` IN ( "'.implode('","',$currency_code_3).'" ) ' );
-		$vendor['vendor_accepted_currencies'] = $this->_db->loadResultArray();
+		$this->_db->setQuery( 'SELECT virtuemart_currency_id FROM `#__virtuemart_currencies` WHERE `currency_code_3` IN ( "'.implode('","',$currency_code_3).'" ) ' );
+		$vendor['vendor_accepted_currencies'] = implode(",",$this->_db->loadResultArray());
+
+		$this->_db->setQuery( 'SELECT virtuemart_currency_id FROM `#__virtuemart_currencies` WHERE `currency_code_3` =  "'. $vendor['vendor_currency'].'"  ' );
+		$vendor['vendor_currency']= $this->_db->loadResult();
 
 		$vendorModel = VmModel::getModel('vendor');
 		$vendorId = $vendorModel->store($vendor);
@@ -2012,77 +2014,107 @@ class Migrator extends VmModel{
 	function portVm1RelatedProducts(){
 
 		if($this->_stop || (microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
-			return;
+			//return;
 		}
-		vmSetStartTime('vm1related');
-		$db = JFactory::getDbo();
-		$db->setQuery('select * from #__vm_product_relations');
-		//$r=$db->query();
+		vmSetStartTime('relatedproducts');
 
-		$sql='';
+	    $maxItems = $this->_getMaxItems('relatedproducts');
+		$startLimit = $this->_getStartLimit('relatedproducts_start');;
+		$i=0;
+		$continue = true;
+
+		$alreadyKnownIds = $this->getMigrationProgress('relatedproducts');
+
 		$out=array();
 		$out2=array();
 
-		while($v=$db->loadNextRow()){
-		//while($v=mysql_fetch_assoc($r)){
-			$pid=$v['product_id'];
-			$ids=explode('|',$v['related_products']);
-			$out=array_merge($ids,$out);
-			$out[]=$pid;
-			$out2[$pid]=$ids;
+		while($continue){
+			$q ='select * from #__vm_product_relations LIMIT '.$startLimit.','.$maxItems;
 
-			/*foreach($ids as $id){
-				$sql.=",($pid,1,$id,'".date('Y-m-d H:i:s',time())."')";
-			}*/
+			$doneStart = $startLimit;
+			$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port Related products');
+			$oldVm1relateds = $res[0];
+
+			$startLimit = $res[1];
+			$continue = $res[2];
+
+			foreach($oldVm1relateds as $v){
+				$pid=$v['product_id'];
+				$ids=explode('|',$v['related_products']);
+				$out=array_merge($ids,$out);
+				$out[]=$pid;
+				$out2[$pid]=$ids;
+				$i++;
+			}
+			// GET SkuS for Products
+			$skus=array();
+			$q="select product_id,product_sku from #__vm_product where product_id in (".implode(',',$out).") ";
+			$this->_db->setQuery($q );
+			$product_skus = $this->_db->loadAssocList();
+			if (empty($product_skus)) {
+				vmError("Port Related products: The following SKUs were not found ".implode(',',$out) );
+				break;
+			}
+			foreach ($product_skus as $v) {
+				$skus[$v['product_id']]=$v['product_sku'];
+			}
+
+			foreach($out2 as $k=>$v){
+				$tmp=array();
+				foreach($v as $vv){
+					if(isset($skus[$vv]))
+						$tmp[]=$skus[$vv];
+				}
+				$out[$skus[$k]]=$tmp;
+			}
+
+			// GET virtuemart_product_id for those SKUs
+			$q="select virtuemart_product_id,product_sku from #__virtuemart_products where product_sku in ('".implode("','",$skus)."') ";
+			$this->_db->setQuery($q);
+			$out3=array();
+			$products = $this->_db->loadAssocList();
+			if (empty($products)) {
+				vmError("Port Related products: Some of those SKUs were not found ".implode(',',$skus) );
+				break;
+			}
+			foreach ($products as $v) {
+				$out3[$v['product_sku']]=$v["virtuemart_product_id"];
+			}
+			$now=date('Y-m-d H:i:s',time());
+			$sql='';
+			foreach($out as $k => $v){
+				foreach($v as $vv){
+					if(isset($out3[$k]) and isset($out3[$vv]))
+						$sql.=",({$out3[$k]},1,{$out3[$vv]},'".$now."')";
+				}
+			}
+			if (empty($sql)) {
+				vmError("Port Related products: Error while inserting new related products " );
+				break;
+			}
+			$q="INSERT INTO #__virtuemart_product_customfields (virtuemart_product_id,virtuemart_custom_id,custom_value,modified_on) values ".substr($sql,1);
+			$this->_db->setQuery($q) ;
+			$this->_db->query();
+
+			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+				vmdebug('Related products import breaked, you may rise the execution time, this is not an error, just a hint');
+				$continue = false;
+				break;
+			}
 		}
-
 		if($out and count($out)==0){
 			vmdebug ('no related products found');
 			return;
-		}
-		//mysql_free_result($r);
-		$db->setQuery("select product_id,product_sku from #__vm_product where product_id in (".implode(',',$out).")") or die(mysql_error());
-		$r=$db->query();
-		$skus=array();
-		while($v=$db->loadNextRow()){
-			$skus[$v['product_id']]=$v['product_sku'];
+		} else {
+			vmdebug ('FOUND Related products ',count($out) );
 		}
 
-		$out=array();
-		foreach($out2 as $k=>$v){
-			$tmp=array();
-			foreach($v as $vv){
-				if(isset($skus[$vv]))
-					$tmp[]=$skus[$vv];
-			}
-			$out[$skus[$k]]=$tmp;
-		}
-
-		$db->setQuery("select virtuemart_product_id,product_sku from #__virtuemart_products where product_sku in ('".implode("','",$skus)."')") or die(mysql_error());
-		$r=$db->query();
-		$out3=array();
-		while($v=$db->loadNextRow()){
-			$out3[$v['product_sku']]=$v["virtuemart_product_id"];
-		}
-
-		//mysql_free_result($r);
-//mysql_close($l);
-//var_dump($out3);exit;
-//print_r($out);
-//mysql_query("truncate table {$newvm_tableprefix}_virtuemart_product_customfields") or die(mysql_error());
-		$now=date('Y-m-d H:i:s',time());
-		$sql='';
-		foreach($out as $k => $v){
-			foreach($v as $vv){
-				if(isset($out3[$k]) and isset($out3[$vv]))
-					$sql.=",({$out3[$k]},1,{$out3[$vv]},'".$now."')";
-			}
-		}
-		$db->setQuery("insert into #__virtuemart_product_customfields (virtuemart_product_id,virtuemart_custom_id,custom_value,modified_on) values ".substr($sql,1)) or die(mysql_error());
-		$db->query();
-//echo $sql;
-		//mysql_close($l);
-		vmSetStartTime('Time to process '.count($skus).' products with related ones','vm1related');
+		$limitStartToStore = ', relatedproducts = "'.($doneStart+$i).'" ';
+		$this->storeMigrationProgress('relatedproducts',$alreadyKnownIds,$limitStartToStore);
+		vmInfo('Migration: '.$i.' Related products processed ');
 	}
+
+
+
 }
 

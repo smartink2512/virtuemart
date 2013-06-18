@@ -319,8 +319,8 @@ class VmTable extends JTable {
 		$result = array();
 
 		// Set the query to get the table fields statement.
-		$this->setQuery('SHOW FULL COLUMNS FROM ' . $this->quoteName($this->escape($table)));
-		$fields = $this->loadObjectList();
+		$this->_db->setQuery('SHOW FULL COLUMNS  FROM `'.$table.'` ') ;
+		$fields = $this->_db->loadObjectList();
 
 		// If we only want the type as the value add just that to the list.
 		if ($typeOnly)
