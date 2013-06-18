@@ -158,7 +158,9 @@ class VirtuemartViewOrders extends VmView {
 
 			$model = VmModel::getModel();
 			$this->addStandardDefaultViewLists($model,'created_on');
-			$this->lists['state_list'] = $this->renderOrderstatesList();
+			$orderStatusModel =VmModel::getModel('orderstatus');
+			$orderstates = JRequest::getWord('order_status_code','');
+			$this->lists['state_list'] = $orderStatusModel->renderOSList($orderstates,'order_status_code',FALSE,' class="inputbox" onchange="this.form.submit();" ');
 			$orderslist = $model->getOrdersList();
 
 			$this->assignRef('orderstatuses', $orderStates);
@@ -215,17 +217,6 @@ class VirtuemartViewOrders extends VmView {
 
 		parent::display($tpl);
 	}
-
-	public function renderOrderstatesList() {
-		$orderstates = JRequest::getWord('order_status_code','');
-		$query = 'SELECT `order_status_code` as value, `order_status_name` as text
-			FROM `#__virtuemart_orderstates`
-			WHERE published=1 ' ;
-			$db = JFactory::getDBO();
-		$db->setQuery($query);
-		$list = $db->loadObjectList();
-		return VmHTML::select( 'order_status_code', $list,  $orderstates,'class="inputbox" onchange="this.form.submit();"');
-    }
 
 }
 

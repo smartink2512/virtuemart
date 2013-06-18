@@ -37,9 +37,7 @@ class VirtuemartControllerReport extends VmController {
 	 */
 	function __constuct(){
 		parent::__construct();
-
 	}
-
 
 }
 // pure php no closing tag

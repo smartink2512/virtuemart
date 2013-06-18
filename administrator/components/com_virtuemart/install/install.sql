@@ -138,7 +138,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `products_per_row` tinyint(2),
   `limit_list_start` smallint(1) UNSIGNED,
   `limit_list_step` smallint(1) UNSIGNED,
-  `limit_list_max` smallint(1) UNSIGNED,
   `limit_list_initial` smallint(1) UNSIGNED,
   `hits` int(1) unsigned NOT NULL DEFAULT '0',
   `metarobot` char(40) NOT NULL DEFAULT '',

@@ -608,7 +608,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		return $this->onDisplayEditBECustom($virtuemart_custom_id,$customPlugin);
 	}
 
-	public function plgVmCalculateCustomVariant(&$product, &$productCustomsPrice,$selected){
+	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected){
+
 
 		if ($productCustomsPrice->custom_element != $this->_name) return false;
 
@@ -621,6 +622,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		if ($child = $this->getValideChild($selected)) {
 			if ($param['child'][$selected]['custom_price'] !=='') {
 				$productCustomsPrice->custom_price = (float)$param['child'][$selected]['custom_price'];
+
 			} else {
 				$db = JFactory::getDBO();
 				$db->setQuery('SELECT `product_price` FROM `#__virtuemart_product_prices`  WHERE `virtuemart_product_id`="' . (int)$selected . '" ');

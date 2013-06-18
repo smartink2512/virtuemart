@@ -180,7 +180,7 @@ class ShopFunctions {
 				$idA = $id = 'virtuemart_vendor_id';
 
 				if ($multiple) {
-					$attrs = 'multiple="multiple"';
+					$attrs = ' multiple="multiple" ';
 					$idA .= '[]';
 				} else {
 					$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);

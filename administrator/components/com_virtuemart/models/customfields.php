@@ -817,7 +817,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		$this->_db->setQuery ($query);
 		$groups = $this->_db->loadObjectList ();
-		$err = $this->_db->loadErrorMsg();
+		$err = $this->_db->getErrorMsg();
 		if(!empty($err)){
 			vmWarn('getProductCustomsFieldCart '.$err);
 		} else {
@@ -1111,6 +1111,10 @@ class VirtueMartModelCustomfields extends VmModel {
 				case 'R':
 					$pModel = VmModel::getModel('product');
 					$related = $pModel->getProduct((int)$value,TRUE,TRUE,TRUE,1,FALSE);
+					if(!$related){
+						vmError('related product is missing, maybe unpublished');
+						return false;
+					}
 					$thumb ='';
 					if (!empty($related->virtuemart_media_id[0])) {
 						$thumb = $this->displayCustomMedia ($related->virtuemart_media_id[0]).' ';

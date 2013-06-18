@@ -65,6 +65,8 @@ class VirtuemartControllerProduct extends VmController {
 		} else  {
 			$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',2);
 			$data['product_desc'] = JComponentHelper::filterText($data['product_desc']);
+
+			//Why we have this?
 			$multix = Vmconfig::get('multix','none');
 			if( $multix != 'none' ){
 				unset($data['published']);

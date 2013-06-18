@@ -632,7 +632,11 @@ class VmPagination extends JPagination {
 	 * @since   11.1
 	 */
 
-	function getLimitBox()
+	function setSequence($sequence){
+		$this->_sequence = $sequence;
+	}
+
+	function getLimitBox($sequence=0)
 	{
 		$app = JFactory::getApplication();
 
@@ -641,7 +645,14 @@ class VmPagination extends JPagination {
 
 		// Make the option list
 		//for 3 = 3,6,12,24,60,90 rows, 4 rows, 6 rows
-		$sequence = VmConfig::get('pagination_sequence',0);
+		if(empty($sequence)){
+			$sequence = VmConfig::get('pagination_sequence',0);
+		}
+		//Fallback for old wrong entries, we may remove this later for example in vm2.4
+		$sequenceArray = explode(',', $sequence);
+		if(count($sequenceArray)===1){
+			$sequence = 0;
+		}
 
 		$selected = $this->_viewall ? 0 : $this->limit;
 		// Build the select list

@@ -387,20 +387,6 @@ class VirtuemartModelReport extends VmModel {
 		return $listHTML;
 	}
 
-	public function renderOrderstatesList () {
-
-		$orderstates = JRequest::getVar ('order_status_code', 'C');
-		//print_r($orderstates);
-		$query = 'SELECT `order_status_code` as value, `order_status_name` as text
-			FROM `#__virtuemart_orderstates`
-			WHERE published=1 ';
-		$this->_db->setQuery ($query);
-		$list = $this->_db->loadObjectList ();
-		//$html = VmHTML::select ('order_status_code[]', $list, $orderstates, 'size="7" class="inputbox" onchange="this.form.submit();" multiple="multiple"');
-		$html = VmHTML::select ('order_status_code[]', $list, $orderstates, 'size="7" class="inputbox"  multiple="multiple"');
-		return $html;
-	}
-
 	public function renderIntervalsList () {
 
 		$intervals = JRequest::getWord ('intervals', 'day');

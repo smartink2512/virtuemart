@@ -148,7 +148,7 @@ class VirtuemartViewProduct extends VmView {
 				$productShoppers = $model->getProductShoppersByStatus($product->virtuemart_product_id,array('S') );
 				$this->assignRef('productShoppers', $productShoppers);
 				$orderstatusModel = VmModel::getModel('orderstatus');
-				$lists['OrderStatus'] = $orderstatusModel->renderOrderStatusList(array());
+				$lists['OrderStatus'] = $orderstatusModel->renderOSList(array(),'order_status',TRUE);
 				$field_model = VmModel::getModel('customfields');
 				$fieldTypes = $field_model->getField_types();
 				$this->assignRef('fieldTypes', $fieldTypes);

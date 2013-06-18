@@ -65,7 +65,7 @@ $i=0;
 				</tr>
 				<?php $i = 1 - $i; ?>
 				<tr class="row<?php echo $i?>">
-					<td  height="18"><div style="text-align:right;font-weight:bold;">
+					<td height="18"><div style="text-align:right;font-weight:bold;">
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ALIAS') ?></div>
 					</td>
 					<td  height="18" colspan="3" >

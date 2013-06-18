@@ -1128,7 +1128,7 @@ class vmJsApi{
 
 		if(VmConfig::get('addtocart_popup',1)){
 			$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
-			if(VmConfig::get('usefancy',1)){
+			if(VmConfig::get('usefancy',0)){
 				$jsVars .= "usefancy = true";
 				vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
 				vmJsApi::css('jquery.fancybox-1.3.4');

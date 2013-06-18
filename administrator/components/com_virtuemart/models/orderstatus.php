@@ -79,10 +79,53 @@ class VirtueMartModelOrderstatus extends VmModel {
 
 	}
 
+	function renderOSList($value,$name = 'order_status',$multiple=FALSE,$attrsIn=0,$langkey=''){
+
+		$idA = $id = $name;
+
+		$attrs = ' class="inputbox" ';
+		if ($multiple) {
+			$attrs .= ' multiple="multiple" ';
+			if(empty($langkey)) $langkey = 'COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS';
+			$idA .= '[]';
+		} else {
+			if(empty($langkey)) $langkey = 'COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS';
+
+		}
+
+		$chosenDropDowns = FALSE;
+		if ($chosenDropDowns) {
+			vmJsApi::chosenDropDowns();
+			$attrs .=  ' data-placeholder="'.JText::_($langkey).'"';
+		}
+
+		if(is_array($value)){
+			$hashValue = implode($value);
+		} else {
+			$hashValue = $value;
+		}
+		vmdebug('hashing order list ',$hashValue,$name,$attrs);
+		$hash = md5($hashValue.$name.$attrs);
+		if (!isset($this->_renderStatusList[$hash])) {
+			$orderStates = $this->getOrderStatusNames();
+			if (!$multiple) {
+				$emptyOption = JHTML::_ ('select.option', 0, JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, 'order_status_name');
+				array_unshift ($orderStates, $emptyOption);
+			} else {
+				$attrs .=' size="'.count($orderStates).'" ';
+			}
+			if($attrsIn!==0){
+				$attrs = $attrsIn;
+			}
+			$this->_renderStatusList[$hash] = JHTML::_('select.genericlist', $orderStates, $idA, $attrs, 'order_status_code', 'order_status_name', $value,$id,true);
+		}
+		return $this->_renderStatusList[$hash] ;
+	}
+
 	function renderOrderStatusList($value, $name = 'order_status[]' )
 	{
-
 		$id = substr($name,0,-2);
+		return $this->renderOSList($value,$id,TRUE);
 		$attrs = 'multiple="multiple"';
 
 		if (!isset($this->_renderStatusList[$name])) {

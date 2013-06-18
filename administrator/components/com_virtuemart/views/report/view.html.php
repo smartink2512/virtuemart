@@ -87,9 +87,10 @@ class VirtuemartViewReport extends VmView {
 		// $productList = $model->getOrderItems();
 		// $this->assignRef('productList', $productList);
 
-
+		$orderstatusM =VmModel::getModel('orderstatus');
 		$this->lists['select_date'] = $model->renderDateSelectList();
-		$this->lists['state_list'] = $model->renderOrderstatesList();
+		$orderstates = JRequest::getVar ('order_status_code', array('C','S'));
+		$this->lists['state_list'] = $orderstatusM->renderOSList($orderstates,'order_status_code',TRUE,' class="inputbox" ');
 		$this->lists['intervals'] = $model->renderIntervalsList();
 		$this->assignRef('from_period', $model->from_period);
 		$this->assignRef('until_period', $model->until_period);

@@ -554,25 +554,26 @@ class VirtueMartModelProduct extends VmModel {
 
 			$lastCatId = ShopFunctionsf::getLastVisitedCategoryId ();
 			$lastManId = ShopFunctionsf::getLastVisitedManuId ();
+			$catModel= VmModel::getModel('category');
+			$category = $catModel->getCategory();
 			if ($lastCatId != $cateid or $lastManId != $manid) {
-				$limitStart = 0;
+				$limitStart = $category->limit_list_initial;
 			}
 			else {
 				$limitStartString  = 'com_virtuemart.' . $view . 'c' . $cateid .'m'.$manid. '.limitstart';
 				$limitStart = $app->getUserStateFromRequest ($limitStartString, 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
 			}
 
-			$catModel= VmModel::getModel('category');
-			$category = $catModel->getCategory();
+
 			if(empty($limit)){
 				if(!empty($category->limit_list_initial)){
 					$suglimit = $category->limit_list_initial;
 				} else {
-					if(empty($category->limit_list_step)){
-						$suglimit = VmConfig::get ('list_limit', 20);
-					} else {
+					//if(empty($category->limit_list_step)){
+					$suglimit = VmConfig::get ('list_limit', 20);
+					/*} else {
 						$suglimit = $category->limit_list_step;
-					}
+					}*/
 				}
 				if(empty($category->products_per_row)){
 					$category->products_per_row = VmConfig::get ('products_per_row', 3);
@@ -580,8 +581,13 @@ class VirtueMartModelProduct extends VmModel {
 				$rest = $suglimit%$category->products_per_row;
 				$limit = $suglimit - $rest;
 
-				//fix by hjet
-				$prod_per_page = explode(",",VmConfig::get('pagination_sequence'));
+				if(!empty($category->limit_list_step)){
+					$prod_per_page = explode(",",$category->limit_list_step);
+				} else {
+					//fix by hjet
+					$prod_per_page = explode(",",VmConfig::get('pagination_sequence'));
+				}
+
 				if($limit <= $prod_per_page['0'] && array_key_exists('0',$prod_per_page)){
 					$limit = $prod_per_page['0'];
 				}
@@ -773,10 +779,12 @@ class VirtueMartModelProduct extends VmModel {
 				$q .= substr($sqrpss,0,-4);
 				$q .= ' OR `virtuemart_shoppergroup_id` IS NULL OR `virtuemart_shoppergroup_id`="0") ';
 			}
-			$quantity = (int)$quantity;
 			$q .= ' AND ( (`product_price_publish_up` IS NULL OR `product_price_publish_up` = "' . $db->getEscaped($this->_nullDate) . '" OR `product_price_publish_up` <= "' .$db->getEscaped($this->_now) . '" )
 		        AND (`product_price_publish_down` IS NULL OR `product_price_publish_down` = "' .$db->getEscaped($this->_nullDate) . '" OR product_price_publish_down >= "' . $db->getEscaped($this->_now) . '" ) )';
-			$q .= ' AND( (`price_quantity_start` IS NULL OR `price_quantity_start`="0" OR `price_quantity_start` <= '.$quantity.') AND (`price_quantity_end` IS NULL OR `price_quantity_end`="0" OR `price_quantity_end` >= '.$quantity.') )';
+			$quantity = (int)$quantity;
+			if(!empty($quantity)){
+				$q .= ' AND( (`price_quantity_start` IS NULL OR `price_quantity_start`="0" OR `price_quantity_start` <= '.$quantity.') AND (`price_quantity_end` IS NULL OR `price_quantity_end`="0" OR `price_quantity_end` >= '.$quantity.') )';
+			}
 		} else {
 			$q .= ' ORDER BY `product_price` DESC';
 		}
@@ -787,7 +795,10 @@ class VirtueMartModelProduct extends VmModel {
 		if(!empty($err)){
 			vmError('getProductSingle '.$err);
 		} else {
-			//vmdebug('getProductSingle getPrice query',$q);
+			if($prices and count($prices)==0){
+				vmdebug('getProductSingle getPrice query',$q);
+			}
+
 		}
 		return $prices;
 	}
@@ -1543,6 +1554,8 @@ class VirtueMartModelProduct extends VmModel {
 
 		//with the true, we do preloading and preserve so old values note by Max Milbers
 	//	$product_data->bindChecknStore ($data, $isChild);
+
+		//We prevent with this line, that someone is storing a product as its own parent
 		if(!empty($product_data->product_parent_id) and $product_data->product_parent_id == $data['virtuemart_product_id']){
 			$product_data->product_parent_id = 0;
 		}
@@ -1617,12 +1630,12 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 
-			if (isset($data['mprices']['product_price'][$k]) and $data['mprices']['product_price'][$k]!='') {
+			if (isset($pricesToStore['product_price']) and $pricesToStore['product_price']!='') {
 
 				if ($isChild) {
                     //$childPrices = $this->loadProductPrices($pricesToStore['virtuemart_product_price_id'],0,0,false);
 
-                    if(is_array($old_price_ids)){
+                    if(is_array($old_price_ids) and count($old_price_ids)>1){
 
                         //We do not touch multiple child prices. Because in the parent list, we see no price, the gui is
                         //missing to reflect the information properly.
@@ -1639,13 +1652,23 @@ class VirtueMartModelProduct extends VmModel {
 
 				//$data['mprices'][$k] = $data['virtuemart_product_id'];
                 if($pricesToStore){
+					$toUnset = array();
+					foreach($old_price_ids as $key => $oldprice){
+						if(array_search($pricesToStore['virtuemart_product_price_id'], $oldprice )){
+							vmdebug('My $pricesToStore before',$pricesToStore);
+							$pricesToStore = array_merge($oldprice,$pricesToStore);
+							vmdebug('My $pricesToStore after',$pricesToStore);
+							$toUnset[] = $key;
+						}
+					}
                     $this->updateXrefAndChildTables ($pricesToStore, 'product_prices',$isChild);
 					vmdebug('Storing price ',$pricesToStore);
-                    $key = array_search($pricesToStore['virtuemart_product_price_id'], $old_price_ids );
-                    if ($key !== false ) unset( $old_price_ids[ $key ] );
+
+					foreach($toUnset as $key){
+						unset( $old_price_ids[ $key ] );
+					}
+
                 }
-
-
 			}
 		}
 
@@ -1881,32 +1904,32 @@ class VirtueMartModelProduct extends VmModel {
 				$ok = FALSE;
 			}
 
-			if (!$cats->delete ($id)) {
+			if (!$cats->delete ($id, 'virtuemart_product_id')) {
 				vmError ('Product delete categories ' . $cats->getError ());
 				$ok = FALSE;
 			}
 
-			if (!$customs->delete ($id)) {
+			if (!$customs->delete ($id, 'virtuemart_product_id')) {
 				vmError ('Product delete customs ' . $customs->getError ());
 				$ok = FALSE;
 			}
 
-			if (!$manufacturers->delete ($id)) {
+			if (!$manufacturers->delete ($id, 'virtuemart_product_id')) {
 				vmError ('Product delete manufacturer ' . $manufacturers->getError ());
 				$ok = FALSE;
 			}
 
-			if (!$medias->delete ($id)) {
+			if (!$medias->delete ($id, 'virtuemart_product_id')) {
 				vmError ('Product delete medias ' . $medias->getError ());
 				$ok = FALSE;
 			}
 
-			if (!$prices->delete ($id)) {
+			if (!$prices->delete ($id, 'virtuemart_product_id')) {
 				vmError ('Product delete prices ' . $prices->getError ());
 				$ok = FALSE;
 			}
 
-			if (!$shop->delete ($id)) {
+			if (!$shop->delete ($id, 'virtuemart_product_id')) {
 				vmError ('Product delete shoppergroups ' . $shop->getError ());
 				$ok = FALSE;
 			}

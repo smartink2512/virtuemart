@@ -1588,16 +1588,16 @@ class calculationHelper {
 				$this->_db->setQuery($query);
 				$productCustomsPrice = $this->_db->loadObject();
 
+				//A plugin can have a zero price and create it, so no if(!empty(customprice here
+				if ($productCustomsPrice->field_type =='E') {
+					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+					JPluginHelper::importPlugin('vmcustom');
+					$dispatcher = JDispatcher::getInstance();
+					$dispatcher->trigger('plgVmCalculateCustomVariant',array(&$product, &$productCustomsPrice,$selected,$modificatorSum));
+				}
+
 				if (!empty($productCustomsPrice->custom_price)) {
 					$productCustomsPrice->custom_price = $this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $productCustomsPrice->custom_price,true);
-
-					if ($productCustomsPrice->field_type =='E') {
-						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-						JPluginHelper::importPlugin('vmcustom');
-						$dispatcher = JDispatcher::getInstance();
-						$dispatcher->trigger('plgVmCalculateCustomVariant',array(&$product, &$productCustomsPrice,$selected,$modificatorSum));
-					}
-
 
 					//TODO adding % and more We should use here $this->interpreteMathOp
 					$modificatorSum = $modificatorSum + $productCustomsPrice->custom_price;

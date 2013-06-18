@@ -197,7 +197,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		                   'mb_rec_payment_type'     => 'varchar(16)',
 		                   'mb_amount'               => 'decimal(19,2)',
 		                   'mb_currency'             => 'char(3)',
-		                   'mb_status'               => 'tinyint',
+		                   'mb_status'               => 'tinyint(1)',
 		                   'mb_md5sig'               => 'char(32)',
 		                   'mb_sha2sig'              => 'char(64)',
 		                   'mbresponse_raw'          => 'varchar(512)');

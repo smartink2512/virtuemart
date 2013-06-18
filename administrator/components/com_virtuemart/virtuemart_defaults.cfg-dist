@@ -24,9 +24,10 @@ order_mail_html=1
 useSSL=0
 dangeroustools=0
 debug_enable=none
-google_jquery=1
+google_jquery=0
 multix=none
-
+usefancy=1
+jchosen=1
 
 ##Shopfront
 pdf_button_enable=1
