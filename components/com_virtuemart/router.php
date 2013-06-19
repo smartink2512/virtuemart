@@ -5,7 +5,8 @@ if(  !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not
  * @package VirtueMart
  * @Author Kohl Patrick
  * @subpackage router
- * @copyright Copyright (C) 2010 Kohl Patrick - Virtuemart Team - All rights reserved.
+ * @version $Id$
+ * ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or

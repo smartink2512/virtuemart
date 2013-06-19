@@ -131,9 +131,12 @@ $i=0;
 				<?php $i = 1 - $i; ?>
 				<tr class="row<?php echo $i?>">
 					<td><div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?></div>
+						<span class="hasTip"
+                                        title="<?php echo JText::_ ('COM_VIRTUEMART_SHOPPER_FORM_GROUP_PRODUCT_TIP'); ?>">
+						<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?></span></div>
 					</td>
 					<td  colspan="3">
+
 						<?php echo $this->shoppergroupList; ?>
 					</td>
 				</tr>
