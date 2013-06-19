@@ -77,6 +77,7 @@ class VirtuemartViewOrders extends VmView {
 			$userfields = $userFieldsModel->getUserFieldsFilled(
 					 $_userFields
 					,$orderbt
+					,'BT_'
 			);
 
 			$_userFields = $userFieldsModel->getUserFields(
