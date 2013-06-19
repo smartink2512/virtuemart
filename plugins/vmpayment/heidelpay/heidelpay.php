@@ -3,9 +3,11 @@
 defined ('_JEXEC') or die();
 
 /**
+ * @version $Id$
+
  * Heidelpay credit card plugin
  *
- * @author Heidelberger Paymenrt GmbH <Jens Richter>
+ * @author Heidelberger Payment GmbH <Jens Richter>
  * @version 12.05
  * @package VirtueMart
  * @subpackage payment
@@ -18,10 +20,13 @@ if (!class_exists ('vmPSPlugin')) {
 
 class plgVmPaymentHeidelpay extends vmPSPlugin {
 
-	protected $version = '12.09 Standard';
+	public static $_this = FALSE;
+	protected $version = '13.06 Standard';
 
 	function __construct (& $subject, $config) {
 
+		//if (self::$_this)
+		//   return self::$_this;
 		parent::__construct ($subject, $config);
 
 		$this->_loggable = TRUE;
@@ -32,6 +37,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
+		//self::$_this = $this;
 	}
 
 	public function getVmPluginCreateTableSQL () {
@@ -116,15 +122,6 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 	}
 
 
-	function plgVmOnConfirmedOrderStorePaymentData ($virtuemart_order_id, $orderData, $priceData) {
-
-		if (!$this->selectedThisPayment ($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
-			return NULL; // Another method was selected, do nothing
-		}
-		return FALSE;
-	}
-
-
 	function plgVmConfirmedOrder ($cart, $order) {
 
 		if (!($method = $this->getVmPluginMethod ($order['details']['BT']->virtuemart_paymentmethod_id))) {
@@ -183,7 +180,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		$params['TRANSACTION.CHANNEL'] = $method->HEIDELPAY_CHANNEL_ID;
 
 		/*
-		 * Spacial case for paypal without hco iframe
+		 * Special case for paypal without hco iframe
 		 */
 
 		if ($method->HEIDELPAY_PAYMENT_TYPE == "VAPAYPAL") {
@@ -193,6 +190,22 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			$params['FRONTEND.PM.0.ENABLED'] = "true";
 			$params['FRONTEND.PM.0.METHOD'] = "VA";
 			$params['FRONTEND.PM.0.SUBTYPES'] = "PAYPAL";
+		}
+		/*
+		 * Special case for MangirKart without hco iframe
+		*/
+		if ($method->HEIDELPAY_PAYMENT_TYPE == "PCMANGIR") {
+			$params['PAYMENT.CODE'] = "PC.PA";
+			$params['ACCOUNT.BRAND'] = "MANGIRKART";
+			
+		}
+		/*
+		 * Special case for BarPay without hco iframe
+		*/
+		if ($method->HEIDELPAY_PAYMENT_TYPE == "PPBARPAY") {
+			$params['PAYMENT.CODE'] = "PP.PA";
+			$params['ACCOUNT.BRAND'] = "BARPAY";
+				
 		}
 
 		/*
@@ -213,7 +226,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			* Add debug informations for merchiant support
 				 */
 
-		$params['SHOP.TYPE'] = 'VirtueMart2.0.12f';
+		$params['SHOP.TYPE'] = 'VirtueMart${PHING.VM.RELEASE}';
 		$params['SHOPMODUL.VERSION'] = $this->version;
 
 		$params['CRITERION.PAYMENT_NAME'] = JText::_ ('VMPAYMENT_HEIDELPAY_' . $method->HEIDELPAY_PAYMENT_TYPE);
@@ -343,7 +356,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		if (!($paymentData = $db->loadObject ())) {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 		}
-    vmdebug ('HEILDEPAY paymentdata', $paymentData);
+    vmdebug ('HEIDELPAY paymentdata', $paymentData);
 		$cart = VirtueMartCart::getCart ();
     $cart->emptyCart ();
  
@@ -353,7 +366,10 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		} else {
 			vmInfo ('VMPAYMENT_HEIDELPAY_PAYMENT_SUCESS');
 			$html  = "<h3>".JText::sprintf ('VMPAYMENT_HEIDELPAY_ORDER_NR') . ': ' . $order_number . " </h3>" ; 
-			$html .= $paymentData->comment;
+			$tmpkom	= preg_replace("/\(-/", '<a href="', $paymentData->comment);
+			$tmpkom	= preg_replace('/-\)/', '" target="_blank">Barcode runterladen</a>', $tmpkom );
+			$html .= $tmpkom;
+			
 			
 		}
 		// if payment is in test mode

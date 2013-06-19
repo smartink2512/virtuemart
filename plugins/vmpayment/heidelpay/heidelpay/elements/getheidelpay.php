@@ -17,6 +17,7 @@ defined ('JPATH_BASE') or die();
  * Renders a label element
  */
 
+
 class JElementGetHeidelpay extends JElement {
 
 	/**
