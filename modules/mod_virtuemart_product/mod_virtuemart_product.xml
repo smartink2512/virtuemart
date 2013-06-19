@@ -5,8 +5,8 @@
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
-    <copyright>Copyright (C) 2004-2012 Virtuemart Team. All rights reserved.</copyright>
-    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <copyright>${PHING.VM.COPYRIGH}</copyright>
+    <license>${PHING.VM.LICENSE}</license>
     <version>${PHING.VM.RELEASE}</version>
     <description>MOD_VIRTUEMART_PRODUCT_DESC</description>
     <files>
@@ -103,6 +103,7 @@
 		    <option value="latest">MOD_VIRTUEMART_PRODUCT_LATEST_PRODUCTS</option>
 		    <option value="random">MOD_VIRTUEMART_PRODUCT_RANDOM_PRODUCTS</option>
 		    <option value="topten">MOD_VIRTUEMART_PRODUCT_BEST_SALES</option>
+             <option value="recent">MOD_VIRTUEMART_PRODUCT_RECENT_PRODUCTS</option>
 		</field>
 		<field name="max_items" type="text" default="2"
 			label="MOD_VIRTUEMART_PRODUCT_MAX_ITEMS"

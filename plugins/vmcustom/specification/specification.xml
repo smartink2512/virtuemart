@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmcustom" >
     <name>VMCustom - specification</name>
-    <creationDate>${PHING.VM.RELDATE}</creationDate>
+    <creationDate>January 09 2013</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>Copyright (C) 2004-2012 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <version>${PHING.VM.RELEASE}</version>
+    <version>2.0.18a</version>
     <description>text input plugin for product</description>
     <languages>
         <language tag="en-GB">en-GB.plg_vmcustom_specification.ini</language>
