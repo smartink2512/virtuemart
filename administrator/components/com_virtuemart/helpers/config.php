@@ -69,7 +69,6 @@ if (!class_exists ('VmModel')) {
 
 function vmInfo($publicdescr,$value=NULL){
 
-	VmConfig::$maxMessageCount++;
 	$app = JFactory::getApplication();
 
 	$msg = '';
@@ -100,6 +99,7 @@ function vmInfo($publicdescr,$value=NULL){
 	}
 
 	if(!empty($msg)){
+		VmConfig::$maxMessageCount++;
 		$app ->enqueueMessage($msg,$type);
 	} else {
 		vmTrace('vmInfo Message empty '.$msg);
@@ -117,7 +117,7 @@ function vmAdminInfo($publicdescr,$value=NULL){
 
 	if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 	if(Permissions::getInstance()->isSuperVendor()){
-		VmConfig::$maxMessageCount++;
+
 		$app = JFactory::getApplication();
 
 		if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
@@ -127,9 +127,11 @@ function vmAdminInfo($publicdescr,$value=NULL){
 				$args = func_get_args();
 				if (count($args) > 0) {
 					$args[0] = $lang->_($args[0]);
+					VmConfig::$maxMessageCount++;
 					$app ->enqueueMessage(call_user_func_array('sprintf', $args),'info');
 				}
 			}	else {
+				VmConfig::$maxMessageCount++;
 				// 		$app ->enqueueMessage('Info: '.JText::_($publicdescr));
 				$publicdescr = $lang->_($publicdescr);
 				$app ->enqueueMessage('Info: '.JText::_($publicdescr),'info');
@@ -149,7 +151,7 @@ function vmAdminInfo($publicdescr,$value=NULL){
 
 function vmWarn($publicdescr,$value=NULL){
 
-	VmConfig::$maxMessageCount++;
+
 	$app = JFactory::getApplication();
 	$msg = '';
 	if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
@@ -178,6 +180,7 @@ function vmWarn($publicdescr,$value=NULL){
 	}
 
 	if(!empty($msg)){
+		VmConfig::$maxMessageCount++;
 		$app ->enqueueMessage($msg,'warning');
 		return $msg;
 	} else {
@@ -193,7 +196,7 @@ function vmWarn($publicdescr,$value=NULL){
  */
 function vmError($descr,$publicdescr=''){
 
-	VmConfig::$maxMessageCount++;
+
 
 	$msg = '';
 	if(VmConfig::$maxMessageCount< (VmConfig::$maxMessage+5)){
@@ -223,6 +226,7 @@ function vmError($descr,$publicdescr=''){
 	}
 
 	if(!empty($msg)){
+		VmConfig::$maxMessageCount++;
 		$app = JFactory::getApplication();
 		$app ->enqueueMessage($msg,'error');
 		return $msg;
@@ -245,7 +249,7 @@ function vmdebug($debugdescr,$debugvalues=NULL){
 
 	if(VMConfig::showDebug()  ){
 
-		VmConfig::$maxMessageCount++;
+
 		$app = JFactory::getApplication();
 
 		if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
@@ -265,9 +269,11 @@ function vmdebug($debugdescr,$debugvalues=NULL){
 			}
 
 			if(!VmConfig::$echoDebug){
+				VmConfig::$maxMessageCount++;
 				$app = JFactory::getApplication();
 				$app ->enqueueMessage('<span class="vmdebug" >vmdebug '.$debugdescr.'</span>');
 			} else {
+				VmConfig::$maxMessageCount++;
 				echo $debugdescr;
 			}
 

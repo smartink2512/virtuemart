@@ -184,7 +184,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsShipment',array( $data['shipment_element'],$data['shipment_jplugin_id'],&$table));
 
 			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginShipment',array( &$data,&$table));
-			vmdebug('my data after store ',$data);
+
 		}
 
 		$table->bindChecknStore($data);

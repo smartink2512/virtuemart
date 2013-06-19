@@ -778,7 +778,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$request->setCurrencyCode($calculator->_currencyDisplay->_vendorCurrency_code_3); //CurrencyCode
 		$request->setDestinationAddress	($destination);     //Address
 		$request->setCompanyCode($calc['company_code']);   // Your Company Code From the Dashboard
-		$request->setDocDate(date('Y-m-d'));           //date
+		$request->setDocDate(date('Y-m-d'));           //date, checked
 		$request->setCustomerCode(self::$vmadd['customer_number']);  //string Required
 
 		if(isset(self::$vmadd['tax_usage_type'])){
@@ -856,6 +856,12 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			}
 
 			if(isset(self::$vmadd['taxOverride'])){
+
+				//create new TaxOverride Object set
+				$taxOverride->setTaxOverrideType($value);   //TaxOverrideType
+				$taxOverride->setTaxAmount($value);         //decimal
+				$taxOverride->setTaxDate($value);        //date format?
+				$taxOverride->setReason($string);
 				$line->setTaxOverride(self::$vmadd['taxOverride']);
 			}
 

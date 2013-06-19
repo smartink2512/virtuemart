@@ -323,6 +323,7 @@ class VirtueMartModelConfig extends JModel {
 			}
 		}
 
+		$safePath = trim($config->get('forSale_path'));
 		if(!empty($safePath)){
 			$length = strlen($safePath);
 			if(strrpos($safePath,DS)!=($length-1)){
@@ -332,7 +333,6 @@ class VirtueMartModelConfig extends JModel {
 			}
 		}
 
-		$safePath = trim($config->get('forSale_path'));
 		if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		$safePath = shopFunctions::checkSafePath($safePath);
 

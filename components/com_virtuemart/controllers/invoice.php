@@ -127,7 +127,7 @@ class VirtueMartControllerInvoice extends JController
 // 		$force = true;
 
 		$path = VmConfig::get('forSale_path',0);
-		if($path===0 ){
+		if(empty($path) ){
 			vmError('No path set to store invoices');
 			return false;
 		} else {
