@@ -14,8 +14,7 @@
 	<filename>index.html</filename>
 	<filename>helper.php</filename>
 	<filename>tmpl/default.php</filename>
-	<filename>tmpl/default2.php</filename>
-	<filename>tmpl/default3.php</filename>
+	<filename>tmpl/single.php</filename>
 	<filename>tmpl/index.html</filename>
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements">
@@ -32,6 +31,7 @@
 	    <option value="latest">MOD_VIRTUEMART_PRODUCT_LATEST_PRODUCTS</option>
 	    <option value="random">MOD_VIRTUEMART_PRODUCT_RANDOM_PRODUCTS</option>
 	    <option value="topten">MOD_VIRTUEMART_PRODUCT_BEST_SALES</option>
+        <option value="recent">MOD_VIRTUEMART_PRODUCT_RECENT_PRODUCTS</option>
 	</param>
 	<param name="max_items" type="text" default="2"
 			label="MOD_VIRTUEMART_PRODUCT_MAX_ITEMS"
