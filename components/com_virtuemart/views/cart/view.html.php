@@ -36,6 +36,7 @@ class VirtueMartViewCart extends VmView {
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		$document = JFactory::getDocument();
+		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
 		$layoutName = $this->getLayout();
 		if (!$layoutName) $layoutName = JRequest::getWord('layout', 'default');
@@ -159,6 +160,8 @@ class VirtueMartViewCart extends VmView {
 		// @max: quicknirty
 		$cart->setCartIntoSession();
 		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
+
+
 
 // 		vmdebug('my cart ',$cart);
 		parent::display($tpl);

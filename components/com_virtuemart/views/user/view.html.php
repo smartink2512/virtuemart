@@ -251,6 +251,7 @@ class VirtuemartViewUser extends VmView {
 	$document = JFactory::getDocument();
 	$document->setTitle($pathway_text);
 	$pathway->additem($pathway_text);
+	$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 	$this->assignRef('page_title', $pathway_text);
 	$this->assignRef('corefield_title', $corefield_title);
 	$this->assignRef('vmfield_title', $vmfield_title);

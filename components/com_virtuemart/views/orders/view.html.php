@@ -134,6 +134,13 @@ class VirtuemartViewOrders extends VmView {
 			$this->assignRef('payment_name', $payment_name);
 			$this->assignRef('orderdetails', $orderDetails);
 
+			if($_currentUser->guest){
+				$details_url = juri::root().'index.php?option=com_virtuemart&view=orders&layout=details&tmpl=component&order_pass=' . JRequest::getString('order_pass',false) .'&order_number='.JRequest::getString('order_number',false);
+			} else {
+				$details_url = juri::root().'index.php?option=com_virtuemart&view=orders&layout=details&tmpl=component&virtuemart_order_id=' . $this->orderdetails['details']['BT']->virtuemart_order_id;
+			}
+			$this->assignRef('details_url', $details_url);
+
 			$tmpl = JRequest::getWord('tmpl');
 			$print = false;
 			if($tmpl){
@@ -218,6 +225,9 @@ class VirtuemartViewOrders extends VmView {
 		$this->assignRef('orderstatuses', $orderstatuses);
 
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+
+		$document = JFactory::getDocument();
+		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
 		// this is no setting in BE to change the layout !
 		//shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
