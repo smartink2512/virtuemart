@@ -38,6 +38,9 @@ class VirtuemartViewCategory extends VmView {
 		if (!class_exists('VmHTML'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
+		if (!class_exists ('shopFunctionsF'))
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+
 		$model = VmModel::getModel();
 		$layoutName = $this->getLayout();
 
@@ -52,8 +55,15 @@ class VirtuemartViewCategory extends VmView {
 
 			$category = $model->getCategory('',false);
 
+
+			// Toolbar
+			$text='';
 			if (isset($category->category_name)) $name = $category->category_name; else $name ='';
-			$this->SetViewTitle('CATEGORY',$name);
+			if(!empty($category->virtuemart_category_id)){
+				$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$category->virtuemart_category_id.'" target="_blank" >'. $name.'<span class="vm2-modallink"></span></a>';
+			}
+
+			$this->SetViewTitle('CATEGORY',$text);
 
 			$model->addImages($category);
 

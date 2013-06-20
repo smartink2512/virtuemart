@@ -214,15 +214,12 @@ class VirtuemartViewProduct extends VmView {
 				$this->assignRef('delete_message', $delete_message);
 				$this->assignRef('lists', $lists);
 				// Toolbar
-				$text="";
-				if ($task == 'edit') {
-					if ($product->product_sku) $sku=' ('.$product->product_sku.')'; else $sku="";
-					if (!empty($product->canonCatLink)) $canonLink = '&virtuemart_category_id=' . $product->canonCatLink; else $canonLink = '';
-					if(!empty($product->virtuemart_product_id)){
-						$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'" target="_blank" >'. $product->product_name.$sku.'<span class="vm2-modallink"></span></a>';
-					} else {
-						$text = $product->product_name.$sku;
-					}
+				if ($product->product_sku) $sku=' ('.$product->product_sku.')'; else $sku="";
+				if (!empty($product->canonCatLink)) $canonLink = '&virtuemart_category_id=' . $product->canonCatLink; else $canonLink = '';
+				if(!empty($product->virtuemart_product_id)){
+					$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'" target="_blank" >'. $product->product_name.$sku.'<span class="vm2-modallink"></span></a>';
+				} else {
+					$text = $product->product_name.$sku;
 				}
 				$this->SetViewTitle('PRODUCT',$text);
 

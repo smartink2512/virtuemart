@@ -161,7 +161,7 @@ class VirtuemartViewOrders extends VmView {
 			$this->addStandardDefaultViewLists($model,'created_on');
 			$orderStatusModel =VmModel::getModel('orderstatus');
 			$orderstates = JRequest::getWord('order_status_code','');
-			$this->lists['state_list'] = $orderStatusModel->renderOSList($orderstates,'order_status_code',FALSE,' class="inputbox" onchange="this.form.submit();" ');
+			$this->lists['state_list'] = $orderStatusModel->renderOSList($orderstates,'order_status_code',FALSE,' onchange="this.form.submit();" ');
 			$orderslist = $model->getOrdersList();
 
 			$this->assignRef('orderstatuses', $orderStates);

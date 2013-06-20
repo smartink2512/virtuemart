@@ -52,8 +52,8 @@ class VirtueMartViewProductdetails extends VmView {
 
 	$document = JFactory::getDocument();
 
-	/* add javascript for price and cart */
-	//vmJsApi::jPrice();
+	// add javascript for price and cart, need even for quantity buttons, so we need it almost anywhere
+	vmJsApi::jPrice();
 
 	$mainframe = JFactory::getApplication();
 	$pathway = $mainframe->getPathway();

@@ -38,6 +38,9 @@ class VirtueMartViewCart extends VmView {
 		$document = JFactory::getDocument();
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
+		// add javascript for price and cart, need even for quantity buttons, so we need it almost anywhere
+		//vmJsApi::jPrice();
+
 		$layoutName = $this->getLayout();
 		if (!$layoutName) $layoutName = JRequest::getWord('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);

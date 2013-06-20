@@ -104,7 +104,8 @@ class VmMediaHandler {
 			$choosed = true;
 		}
 		else if($type == 'forSale' || $type== 'file_is_forSale'){
-
+			if (!class_exists ('shopFunctionsF'))
+				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 			$relUrl = shopFunctions::checkSafePath();
 			if($relUrl){
 				$choosed = true;
@@ -227,6 +228,8 @@ class VmMediaHandler {
 			$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
 			$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
 		} else {
+			if (!class_exists ('shopFunctionsF'))
+				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 			$safePath = shopFunctions::checkSafePath();
 			if(!$safePath){
 				return FALSE;

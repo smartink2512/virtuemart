@@ -820,7 +820,8 @@ class VirtueMartModelUserfields extends VmModel {
 						break;
 
 					case 'virtuemart_state_id':
-
+						if (!class_exists ('shopFunctionsF'))
+							require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 						$_return['fields'][$_fld->name]['formcode'] =
 						shopFunctions::renderStateList(	$_return['fields'][$_fld->name]['value'],
 						$_prefix,

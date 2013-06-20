@@ -552,49 +552,45 @@ class VirtueMartModelProduct extends VmModel {
 		$limitStartString  = 'com_virtuemart.' . $view . '.limitstart';
 		if ($app->isSite () and ($cateid != 0 or $manid != 0) ) {
 
+			vmdebug('setPaginationLimits is site and $cateid,$manid ',$cateid,$manid);
 			$lastCatId = ShopFunctionsf::getLastVisitedCategoryId ();
 			$lastManId = ShopFunctionsf::getLastVisitedManuId ();
 			$catModel= VmModel::getModel('category');
-			$category = $catModel->getCategory();
+			$category = $catModel->getCategory($cateid);
 			if ($lastCatId != $cateid or $lastManId != $manid) {
-				$limitStart = $category->limit_list_initial;
+				$limitStart = $category->limit_list_start;
 			}
 			else {
 				$limitStartString  = 'com_virtuemart.' . $view . 'c' . $cateid .'m'.$manid. '.limitstart';
 				$limitStart = $app->getUserStateFromRequest ($limitStartString, 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
 			}
 
+			if(!empty($category->limit_list_initial)){
+				$suglimit = $category->limit_list_initial;
+			}
+			else if(!empty($limit)){
+				$suglimit = $limit;
+			} else {
+				$suglimit = VmConfig::get ('list_limit', 20);
+			}
+			if(empty($category->products_per_row)){
+				$category->products_per_row = VmConfig::get ('products_per_row', 3);
+			}
+			$rest = $suglimit%$category->products_per_row;
+			$limit = $suglimit - $rest;
 
-			if(empty($limit)){
-				if(!empty($category->limit_list_initial)){
-					$suglimit = $category->limit_list_initial;
-				} else {
-					//if(empty($category->limit_list_step)){
-					$suglimit = VmConfig::get ('list_limit', 20);
-					/*} else {
-						$suglimit = $category->limit_list_step;
-					}*/
-				}
-				if(empty($category->products_per_row)){
-					$category->products_per_row = VmConfig::get ('products_per_row', 3);
-				}
-				$rest = $suglimit%$category->products_per_row;
-				$limit = $suglimit - $rest;
-
-				if(!empty($category->limit_list_step)){
-					$prod_per_page = explode(",",$category->limit_list_step);
-				} else {
-					//fix by hjet
-					$prod_per_page = explode(",",VmConfig::get('pagination_sequence'));
-				}
-
-				if($limit <= $prod_per_page['0'] && array_key_exists('0',$prod_per_page)){
-					$limit = $prod_per_page['0'];
-				}
+			if(!empty($category->limit_list_step)){
+				$prod_per_page = explode(",",$category->limit_list_step);
+			} else {
+				//fix by hjet
+				$prod_per_page = explode(",",VmConfig::get('pagination_sequence'));
 			}
 
-			//vmdebug('my cat',$category);
-			//vmdebug('Looks like the category lastCatId '.$lastCatId.' actual id '.$cateid );
+			if($limit <= $prod_per_page['0'] && array_key_exists('0',$prod_per_page)){
+				$limit = $prod_per_page['0'];
+			}
+
+			vmdebug('Calculated $limit  ',$limit,$suglimit);
 		}
 		else {
 			$limitStart = $app->getUserStateFromRequest ('com_virtuemart.' . $view . '.limitstart', 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
@@ -1655,14 +1651,11 @@ class VirtueMartModelProduct extends VmModel {
 					$toUnset = array();
 					foreach($old_price_ids as $key => $oldprice){
 						if(array_search($pricesToStore['virtuemart_product_price_id'], $oldprice )){
-							vmdebug('My $pricesToStore before',$pricesToStore);
 							$pricesToStore = array_merge($oldprice,$pricesToStore);
-							vmdebug('My $pricesToStore after',$pricesToStore);
 							$toUnset[] = $key;
 						}
 					}
                     $this->updateXrefAndChildTables ($pricesToStore, 'product_prices',$isChild);
-					vmdebug('Storing price ',$pricesToStore);
 
 					foreach($toUnset as $key){
 						unset( $old_price_ids[ $key ] );

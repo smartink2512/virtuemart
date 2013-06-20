@@ -79,11 +79,11 @@ class VirtueMartModelOrderstatus extends VmModel {
 
 	}
 
-	function renderOSList($value,$name = 'order_status',$multiple=FALSE,$attrsIn=0,$langkey=''){
+	function renderOSList($value,$name = 'order_status',$multiple=FALSE,$attrs='',$langkey=''){
 
 		$idA = $id = $name;
 
-		$attrs = ' class="inputbox" ';
+		$attrs .= ' class="inputbox" ';
 		if ($multiple) {
 			$attrs .= ' multiple="multiple" ';
 			if(empty($langkey)) $langkey = 'COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS';
@@ -114,9 +114,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 			} else {
 				$attrs .=' size="'.count($orderStates).'" ';
 			}
-			if($attrsIn!==0){
-				$attrs = $attrsIn;
-			}
+
 			$this->_renderStatusList[$hash] = JHTML::_('select.genericlist', $orderStates, $idA, $attrs, 'order_status_code', 'order_status_name', $value,$id,true);
 		}
 		return $this->_renderStatusList[$hash] ;

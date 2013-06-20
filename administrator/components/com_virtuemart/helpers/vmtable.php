@@ -48,6 +48,7 @@ class VmTable extends JTable {
 	protected $_translatableFields = array();
 	protected $_langTag = null;
 	protected $_tbl_lang = null;
+	protected $_updateNulls = false;
 
 	static $_cache = null;
 	static $_query_cache = null;
@@ -417,6 +418,7 @@ class VmTable extends JTable {
 
 
 			} else {
+
 				if (empty($this->$pkey)) {
 					$this->created_on = $today;
 					$this->created_by = $user->id;
@@ -973,7 +975,7 @@ class VmTable extends JTable {
 		}
 
 		if ($ok) {
-			if (!$this->store(true)) {
+			if (!$this->store($this->_updateNulls)) {
 				$ok = false;
 				$msg .= ' store';
 				vmdebug('Problem in store ' . get_class($this) . ' ' . $this->_db->getErrorMsg());

@@ -56,11 +56,11 @@ class TableCategories extends VmTable {
 	/** @var int category limit start*/
 	var $limit_list_start 	 = 0;
 	/** @var int category limit step*/
-	var $limit_list_step 	 = 10;
+	var $limit_list_step 	 = 0;
 	/** @var int category limit max */
 	var $limit_list_max	= 0;
 	/** @var int category limit initial */
-	var $limit_list_initial	= 10;
+	var $limit_list_initial	= 0;
 	/** @var string Meta description */
 	var $metadesc	= '';
 	/** @var string custom title */
@@ -72,7 +72,7 @@ class TableCategories extends VmTable {
 	/** @var string Meta author */
 	var $metaauthor	= '';
         /** @var integer Category publish or not */
-	var $published			= 1;
+	var $published			= 0;
 
 	/**
 	 * Class contructor
