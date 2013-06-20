@@ -94,7 +94,7 @@ $document->addScriptDeclaration($js);
 					</tr>
 					<tr>
 						<td class="key">
-                            <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CVARSWT_TIP'); ?>">
+                            <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CVARSWT_EXPLAIN'); ?>">
                             	<label for="show_tax">
 									<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CVARSWT'); ?>
 	                            </label>
