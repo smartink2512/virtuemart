@@ -202,7 +202,7 @@ class ShopFunctions {
 	 * @param bool $multiple if the select list should allow multiple selections
 	 * @return string HTML select option list
 	 */
-	static public function renderShopperGroupList ($shopperGroupId = 0, $multiple = TRUE,$name='virtuemart_shoppergroup_id' ) {
+	static public function renderShopperGroupList ($shopperGroupId = 0, $multiple = TRUE,$name='virtuemart_shoppergroup_id', $select_attribute='COM_VIRTUEMART_DRDOWN_AVA2ALL' ) {
 
 		$shopperModel = VmModel::getModel ('shoppergroup');
 		$shoppergrps = $shopperModel->getShopperGroups (FALSE, TRUE);
@@ -211,12 +211,12 @@ class ShopFunctions {
 		//$idA = $id = 'virtuemart_shoppergroup_id';
 
 		if ($multiple) {
-			$attrs = 'multiple="multiple" data-placeholder="'.JText::_('COM_VIRTUEMART_DRDOWN_AVA2ALL').'"';
+			$attrs = 'multiple="multiple" data-placeholder="'.JText::_($select_attribute).'"';
 			if($name=='virtuemart_shoppergroup_id'){
 				$name.= '[]';
 			}
 		} else {
-			$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), 'virtuemart_shoppergroup_id', 'shopper_group_name');
+			$emptyOption = JHTML::_ ('select.option', '', JText::_ ($select_attribute), 'virtuemart_shoppergroup_id', 'shopper_group_name');
 			array_unshift ($shoppergrps, $emptyOption);
 		}
 		//vmdebug('renderShopperGroupList',$name,$shoppergrps);

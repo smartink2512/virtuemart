@@ -508,8 +508,14 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PENDING', $order_number) . JText::_($key);
 			$order['order_status'] = $method->status_pending;
 		} elseif (strcmp($paypal_data['payment_status'], 'Refunded') == 0 and isset($method->status_refunded)) {
-			$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_REFUNDED', $order_number);
-			$order['order_status'] = $method->status_refunded;
+			if ($this->_is_full_refund($payments, $paypal_data)) {
+				$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_REFUNDED', $order_number);
+				$order['order_status'] = $method->status_refunded;
+			} else {
+				$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PARTIAL_REFUNDED', $order_number);
+				$order['order_status'] = isset($method->status_partial_refunded) ? $method->status_partial_refunded:'R' ;
+			}
+
 		} elseif (isset ($paypal_data['payment_status'])) {
 			$order['order_status'] = $method->status_canceled;
 		} else {
@@ -778,7 +784,13 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		return FALSE;
 	}
-
+	function  _is_full_refund($payments, $paypal_data) {
+		if (($payments[0]->payment_order_total == $paypal_data['mc_gross'])) {
+				return TRUE;
+			} else {
+				return FALSE;
+		}
+	}
 	/**
 	 * @param $method
 	 * @return mixed
