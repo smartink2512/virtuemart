@@ -13,7 +13,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: orders.php 5432 2012-02-14 02:20:35Z Milbo $
+ * @version $Id$
  */
 
 // Check to ensure this file is included in Joomla!
@@ -131,7 +131,7 @@ class VirtueMartControllerInvoice extends JController
 			vmError('No path set to store invoices');
 			return false;
 		} else {
-			$path .= 'invoices'.DS;
+			$path .= shopFunctions::getInvoiceFolderName().DS;
 			if(!file_exists($path)){
 				vmError('Path wrong to store invoices, folder invoices does not exist '.$path);
 				return false;

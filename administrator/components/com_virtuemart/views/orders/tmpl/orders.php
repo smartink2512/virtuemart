@@ -13,7 +13,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: orders.php 6408 2012-09-08 11:23:40Z Milbo $
+ * @version $Id$
  */
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access');
@@ -151,7 +151,7 @@ AdminUIHelper::startAdminArea ();
 		</tbody>
 		<tfoot>
 		<tr>
-			<td colspan="11">
+			<td colspan="12">
 				<?php echo $this->pagination->getListFooter (); ?>
 			</td>
 		</tr>

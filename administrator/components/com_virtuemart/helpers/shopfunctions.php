@@ -1422,7 +1422,7 @@ class ShopFunctions {
 					VmConfig::loadJLang('com_virtuemart_config');
 					VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NOT_WRITEABLE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath,$configlink);
 				} else {
-					if(!is_writable( $safePath.'invoices' )){
+					if(!is_writable(self::getInvoicePath($safePath) )){
 						VmConfig::loadJLang('com_virtuemart_config');
 						VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_INV_NOT_WRITEABLE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath,$configlink);
 					}
@@ -1438,6 +1438,21 @@ class ShopFunctions {
 		}
 
 		return $safePath;
+	}
+	/*
+	 * get The invoice Folder Name
+	 * @return the invoice folder name
+	 */
+	static function getInvoiceFolderName() {
+		return   'invoices' ;
+	}
+	/*
+	 * get The invoice path
+	 * @param $safePath the safepath from the config
+	 * @return the path where the invoice are stored
+	 */
+	static function getInvoicePath($safePath) {
+		return  $safePath.self::getInvoiceFolderName() ;
 	}
 
 	/*

@@ -16,7 +16,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: orders.php 6468 2012-09-18 22:00:43Z Milbo $
+ * @version $Id$
  */
 
 // Check to ensure this file is included in Joomla!
@@ -1622,6 +1622,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			foreach( $item_ids as $item_id ) {
 			    $this->removeOrderLineItem($item_id);
 			}
+			// rename invoice number by adding the date, and update the invoice table
+			 $this->renameInvoice($id);
+
 
 			if (!$table->delete((int)$id)) {
 				vmError(get_class( $this ).'::remove '.$id.' '.$table->getError());
@@ -1849,7 +1852,46 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		return $_orderID;
 	}
 
+	/** Rename Invoice Number (when it is deleted, or modified
+	 *
+	 * @author Valérie Isaksen
+	 * @param $order_id Id of the order
+	 * @return boolean true if deleted successful, false if there was a problem
+	 */
+	function renameInvoice($order_id) {
+		$db = JFactory::getDBO();
 
+		$q = 'SELECT * FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$order_id.'" ';
+
+		$db->setQuery($q);
+		$data = $db->loadAssoc();
+		if(!$data or   empty($data['invoice_number']) ){
+			return true;
+		}
+
+		// rename invoice pdf file
+		$invoice_prefix='vminvoice_';
+		$path = shopFunctions::getInvoicePath(VmConfig::get('forSale_path',0));
+		$invoice_name_src = $path.DS.$invoice_prefix.$data['invoice_number'].'.pdf';
+
+		if(!file_exists($invoice_name_src)){
+			vmError ('Invoice '.$invoice_name_src.' does not exist' );
+		}
+		$date = date("Ymd");
+		$data['invoice_number'] = $data['invoice_number'].'_'.$date;
+		$invoice_name_dst = $path.$data['invoice_number'].'.pdf';
+		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+		if (!JFile::move($invoice_name_src, $invoice_name_dst)) {
+			vmError ('Could not rename Invoice '.$invoice_name_src.'to '. $invoice_name_dst );
+		}
+		// update the invoice table
+		$table = $this->getTable('invoices');
+		$table->bindChecknStore($data);
+
+		return true;
+
+
+	}
 }
 
 // No closing tag

@@ -161,7 +161,7 @@ defined('_JEXEC') or die('Restricted access');
 				</span>
 			</td>
 			<td>
-				<?php echo $this->orderStatusModel->renderOSList(VmConfig::get('inv_os',array('C')),'inv_os',TRUE); ?>
+				<?php echo $this->orderStatusModel->renderOSList(VmConfig::get('inv_os',array('C')),'inv_os',TRUE,'','COM_VIRTUEMART_DRDOWN_NONE'); ?>
 			</td>
 		</tr>
 		<tr>
@@ -171,7 +171,7 @@ defined('_JEXEC') or die('Restricted access');
 				 </span>
 			</td>
 			<td>
-				<?php echo $this->orderStatusModel->renderOSList(VmConfig::get('email_os_s',array('U','C','S','R','X')),'email_os_s',TRUE); ?>
+				<?php echo $this->orderStatusModel->renderOSList(VmConfig::get('email_os_s',array('U','C','S','R','X')),'email_os_s',TRUE,'','COM_VIRTUEMART_DRDOWN_NONE'); ?>
 			</td>
 		</tr>
 		<tr>
@@ -181,7 +181,7 @@ defined('_JEXEC') or die('Restricted access');
 				</span>
 			</td>
 			<td>
-				<?php echo $this->orderStatusModel->renderOSList(VmConfig::get('email_os_v',array('U','C','R','X')),'email_os_v',TRUE); ?>
+				<?php echo $this->orderStatusModel->renderOSList(VmConfig::get('email_os_v',array('U','C','R','X')),'email_os_v',TRUE,'','COM_VIRTUEMART_DRDOWN_NONE'); ?>
 			</td>
 		</tr>
 	</table>
