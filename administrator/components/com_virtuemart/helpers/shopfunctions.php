@@ -843,8 +843,8 @@ class ShopFunctions {
 	 *
 	 * @author Oscar van Eijk
 	 * @access public
-	 * @param int $_id Country ID
-	 * @param char $_fld Field to return: country_name (default), country_2_code or country_3_code.
+	 * @param int $id Country ID
+	 * @param char $fld Field to return: country_name (default), country_2_code or country_3_code.
 	 * @return string Country name or code
 	 */
 	static public function getCountryByID ($id, $fld = 'country_name') {
@@ -862,13 +862,13 @@ class ShopFunctions {
 	}
 
 	/**
-	 * Return the countryID of a given country name
+	 * Return the virtuemart_country_id of a given country name
 	 *
 	 * @author Oscar van Eijk
 	 * @author Max Milbers
 	 * @access public
-	 * @param string $_name Country name
-	 * @return int Country ID
+	 * @param string $name Country name (can be country_name or country_3_code  or country_2_code )
+	 * @return int virtuemart_country_id
 	 */
 	static public function getCountryIDByName ($name) {
 
@@ -893,12 +893,12 @@ class ShopFunctions {
 	}
 
 	/**
-	 * Return the statename or code of a given countryID
+	 * Return the statename or code of a given virtuemart_state_id
 	 *
 	 * @author Oscar van Eijk
 	 * @access public
-	 * @param int $_id State ID
-	 * @param char $_fld Field to return: state_name (default), state_2_code or state_3_code.
+	 * @param int $id State ID
+	 * @param char $fld Field to return: state_name (default), state_2_code or state_3_code.
 	 * @return string state name or code
 	 */
 	static public function getStateByID ($id, $fld = 'state_name') {
@@ -918,8 +918,8 @@ class ShopFunctions {
 	 *
 	 * @author Max Milbers
 	 * @access public
-	 * @param string $_name Country name
-	 * @return int Country ID
+	 * @param string $name Country name
+	 * @return int virtuemart_state_id
 	 */
 	static public function getStateIDByName ($name) {
 
@@ -943,12 +943,12 @@ class ShopFunctions {
 	}
 
 	/*
-	 * Return the Tax or code of a given taxID
+	 * Returns the associative array for a given virtuemart_calc_id
 	*
 	* @author Valérie Isaksen
 	* @access public
-	* @param int $_d TAx ID
-	* @return string Country name or code
+	* @param int $id virtuemart_calc_id
+	* @return array Result row
 	*/
 	static public function getTaxByID ($id) {
 
@@ -965,12 +965,12 @@ class ShopFunctions {
 	}
 
 	/**
-	 * Return the currencyname or code of a given currencyID
+	 * Return any field  from table '#__virtuemart_currencies'
 	 *
 	 * @author Valérie Isaksen
 	 * @access public
-	 * @param int $_id Currency ID
-	 * @param char $_fld Field to return: currency_name (default), currency_2_code or currency_3_code.
+	 * @param int $id Currency ID
+	 * @param char $fld Field from table '#__virtuemart_currencies' to return: currency_name (default), currency_code_2, currency_code_3 etc.
 	 * @return string Currency name or code
 	 */
 	static public function getCurrencyByID ($id, $fld = 'currency_name') {
@@ -988,12 +988,12 @@ class ShopFunctions {
 	}
 
 	/**
-	 * Return the countryID of a given Currency name
+	 * Return the currencyID of a given Currency name
 	 *
 	 * @author Valerie Isaksen
 	 * @access public
-	 * @param string $_name Currency name
-	 * @return int Currency ID
+	 * @param string $name Currency name
+	 * @return int virtuemart_currency_id
 	 */
 	static public function getCurrencyIDByName ($name) {
 
