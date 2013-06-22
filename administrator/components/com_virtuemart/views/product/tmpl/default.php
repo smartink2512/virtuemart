@@ -292,7 +292,9 @@ if ($this->virtuemart_category_id ) { ?>
 	</script>
 
 <?php }
-else { ?> /// SORTABLE SCRIPT WHEN NO CATEGORY SELECTED
+else {
+/// SORTABLE SCRIPT WHEN NO CATEGORY SELECTED
+	?>
 	<script>
 
 		jQuery(function() {
