@@ -72,7 +72,10 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 	<thead>
 	<tr>
 		<th width="20px"><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->productlist); ?>')" /></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_IMAGE'); ?></th>
+		<?php if($this->pagination->limit<21){
+			echo '<th width="20px">'. JText::_('COM_VIRTUEMART_IMAGE').'</th>';
+		} ?>
+
 		<th><?php echo $this->sort('product_name',$col_product_name) ?> </th>
 		<?php if (!$product_parent_id ) { ?>
                 <th><?php echo $this->sort('product_parent_id','COM_VIRTUEMART_PRODUCT_CHILDREN_OF'); ?></th>
@@ -94,12 +97,9 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 		<?php } ?>
 		<th><?php echo $this->sort('mf_name', 'COM_VIRTUEMART_MANUFACTURER_S') ; ?></th>
 		<th width="40px" ><?php echo JText::_('COM_VIRTUEMART_REVIEW_S'); ?></th>
-		<th width="40px" ><?php echo $this->sort('product_special', 'COM_VIRTUEMART_PRODUCT_FORM_SPECIAL'); ?>
-			 </th>
+		<th width="40px" ><?php echo $this->sort('product_special', 'COM_VIRTUEMART_PRODUCT_FORM_SPECIAL'); ?> </th>
 		<th width="40px" ><?php echo $this->sort('published') ; ?></th>
-	                <th><?php echo $this->sort('p.virtuemart_product_id', 'COM_VIRTUEMART_ID')  ?></th>
-		<th><?php //echo  JText::_('COM_VIRTUEMART_PRODUCT_ORDERING'); ?> </th>
-
+	    <th><?php echo $this->sort('p.virtuemart_product_id', 'COM_VIRTUEMART_ID')  ?></th>
 	</tr>
 
 	</thead>
@@ -117,16 +117,20 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 			?>
 			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->
-				<td align="right" ><?php echo $checked; ?></td>
+				<td align="right" ><?php echo $checked; ?><span class="vmicon vmicon-16-move"></span></td>
 				<!-- Product image & Product name -->
 
-				<td align ="left>"><?php
+				<!-- We show the images only when less than 21 products are displayeed -->
+				<?php if($this->pagination->limit<21 or $total<21){ ?>
+					<td align ="left>"><?php
 					/* Product list should be ordered */
 					$parent_id = JRequest::getVar('product_parent_id');
 					$this->model->addImages($product,1);
 					$img = $product->images[0]->displayMediaThumb('class="vm_mini_image"',false );?>
 					<?php echo JHTML::_('link', JRoute::_($link), $img,  array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name));?>
-				</td>
+					</td>
+				<?php } ?>
+
 				<td align ="left>">
   				<span style="float:left; clear:left">
   				<?php echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)); ?>
@@ -191,9 +195,6 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 				<td align="center" ><?php echo $published; ?></td>
                                 <!-- Vendor name -->
 				<td align="right"><?php echo $product->virtuemart_product_id; // echo $product->vendor_name; ?></td>
-				<td align ="left>">
- 					<span class="vmicon vmicon-16-move"></span>
-				</td>
 			</tr>
 		<?php
 			$k = 1 - $k;
@@ -217,25 +218,7 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 </form>
 
 <?php AdminUIHelper::endAdminArea();
-?>
 
-<script type="text/javascript">
-    <!--
-
-    jQuery('.show_comment').click(function() {
-	jQuery(this).prev('.element-hidden').show();
-	return false
-    });
-
-    jQuery('.element-hidden').mouseleave(function() {
-	jQuery(this).hide();
-    });
-    jQuery('.element-hidden').mouseout(function() {
-	jQuery(this).hide();
-    });
-    -->
-</script>
-<?php
 // DONE BY stephanbais
 /// DRAG AND DROP PRODUCT ORDER HACK
 if ($this->virtuemart_category_id ) { ?>
@@ -253,7 +236,6 @@ if ($this->virtuemart_category_id ) { ?>
 						});
 					});
 
-
 					jQuery(function updaterows() {
 						jQuery(".order").each(function(index){
 							var row = jQuery(this).parent('td').parent('tr').prevAll().length;
@@ -261,30 +243,9 @@ if ($this->virtuemart_category_id ) { ?>
 							i++;
 						});
 
-					});
-				},
-				create: function (event, ui) {
-					jQuery(function deleterow() {
-						jQuery(".vmicon-16-remove").click(function(){
-							jQuery(this).parent('td').parent('tr').fadeOut("500",function() {jQuery(this).remove();});
-							jQuery('input.ordering').each(function(idx) {
-								jQuery(this).val(idx);
-							});
-						});
-
-					});
-					jQuery(function updaterows() {
-						jQuery(".order").each(function(index){
-							var row = jQuery(this).parent('td').parent('tr').prevAll().length;
-							jQuery(this).val(row);
-							i++;
-						});
 					});
 				}
-			});
 
-			jQuery(".vmicon-16-remove").click(function() {
-				jQuery(this).parent().parent().parent().fadeOut("500",function() {jQuery(this).remove()})
 			});
 		});
 
@@ -292,46 +253,7 @@ if ($this->virtuemart_category_id ) { ?>
 	</script>
 
 <?php }
-else {
-/// SORTABLE SCRIPT WHEN NO CATEGORY SELECTED
-	?>
-	<script>
 
-		jQuery(function() {
-
-			jQuery( ".adminlist" ).sortable({
-				items: 'tr:not(:first,:last)',
-				opacity: 0.8,
-				create: function (event, ui) {
-					jQuery(function deleterow() {
-						jQuery(".vmicon-16-remove").click(function(){
-							jQuery(this).parent('td').parent('tr').fadeOut("500",function() {jQuery(this).remove();});
-							jQuery('input.ordering').each(function(idx) {
-								jQuery(this).val(idx);
-							});
-						});
-
-					});
-					jQuery(function updaterows() {
-						jQuery(".order").each(function(index){
-							var row = jQuery(this).parent('td').parent('tr').prevAll().length;
-							jQuery(this).val(row);
-							i++;
-						});
-					});
-				}
-			});
-
-			jQuery(".vmicon-16-remove").click(function() {
-				jQuery(this).parent().parent().parent().fadeOut("500",function() {jQuery(this).remove()})
-			});
-		});
-
-		jQuery('input.ordering').css({'color': '#666666', 'background-color': 'transparent','border': 'none' }).attr('readonly', true);
-	</script>
-
-<?php
-}
 
 /// END PRODUCT ORDER HACK
 ?>

@@ -129,7 +129,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
                     '.shopfunctions::renderCountryList($calc->avatax_virtuemart_country_id,TRUE,array(),'avatax_').'
                 </td>';
 
-
     /*   $countriesList = ShopFunctions::renderCountryList($calc->calc_countries,True);
                 $this->assignRef('countriesList', $countriesList);
                 $statesList = ShopFunctions::renderStateList($calc->virtuemart_state_ids,'', True);
@@ -474,21 +473,21 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 					return self::$validatedAddresses;
 				} else {
 					if(empty($calc['avatax_virtuemart_country_id'])){
-						vmError('AvaTax, please select countries, to validate');
+						vmError('AvaTax, please select countries, to validate. Use fallback for USA and Canada');
+						//But lets use a fallback
+						$calc['avatax_virtuemart_country_id'] = array('223','38');	//For USA and Canada
+					}
+
+					if(!is_array($calc['avatax_virtuemart_country_id'])){
+						//Suppress Warning
+						$calc['avatax_virtuemart_country_id'] = @unserialize($calc['avatax_virtuemart_country_id']);
+					}
+					if(!in_array($vmadd['virtuemart_country_id'],$calc['avatax_virtuemart_country_id'])){
+						avadebug('fillValidateAvalaraAddress not validated, country not set',$vmadd['virtuemart_country_id'],$calc['avatax_virtuemart_country_id']);
 						self::$validatedAddresses = FALSE;
 						return self::$validatedAddresses;
-					} else {
-						if(!is_array($calc['avatax_virtuemart_country_id'])){
-							//Suppress Warning
-							$calc['avatax_virtuemart_country_id'] = @unserialize($calc['avatax_virtuemart_country_id']);
-						}
-						if(!in_array($vmadd['virtuemart_country_id'],$calc['avatax_virtuemart_country_id'])){
-							avadebug('fillValidateAvalaraAddress not validated, country not set');
-							self::$validatedAddresses = FALSE;
-							return self::$validatedAddresses;
-						}
-
 					}
+
 				}
 				$config = $this->newATConfig($calc);
 
@@ -619,7 +618,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				if(!empty($prices[$k]['discountAmount'])){
 					$product['discount'] = $prices[$k]['discountAmount'];
 				} else {
-					avadebug('no discount for '.$k,$prices[$k]);
+					//avadebug('no discount for '.$k,$prices[$k]);
 					$product['discount'] = FALSE;
 				}
 			}
@@ -790,9 +789,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		}
 
 		if(isset(self::$vmadd['taxOverride'])){
-			//self::$vmadd['taxOverride'] = substr(self::$vmadd['taxOverride'],0,10);
+
 			$request->setTaxOverride(self::$vmadd['taxOverride']);
-			avadebug('I set tax override '.self::$vmadd['taxOverride']);
+			avadebug('I set tax override ',self::$vmadd['taxOverride']);
 		}
 		if(!empty($products['discountAmount'])){
 			$request->setDiscount($sign * $products['discountAmount'] * (-1));            //decimal
@@ -858,10 +857,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			if(isset(self::$vmadd['taxOverride'])){
 
 				//create new TaxOverride Object set
-				$taxOverride->setTaxOverrideType($value);   //TaxOverrideType
-				$taxOverride->setTaxAmount($value);         //decimal
-				$taxOverride->setTaxDate($value);        //date format?
-				$taxOverride->setReason($string);
 				$line->setTaxOverride(self::$vmadd['taxOverride']);
 			}
 
@@ -1005,7 +1000,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		foreach($orderDetails['history'] as $item){
 			if(in_array($item->order_status_code,$toInvoice)){
 				//the date of the order status used to create the invoice
-				self::$vmadd['taxOverride'] = $item->created_on;
+				self::$vmadd['taxOverride'] = $this->createTaxOverride($item->created_on,$data->order_status,$item->comments);
 				//self::$vmadd['paymentDate'] = substr($item->created_on,0,10);
 					//Date when order is created
 				//self::$vmadd['taxOverride'] = $orderDetails['details']['BT']->created_on;
@@ -1016,7 +1011,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		//Accrual Accounting means the committ is done directly after pressing the confirm button in the cart
 		//Therefore the date of the committ/invoice is the first order date and we dont need to check the order history
 		if(empty(self::$vmadd['taxOverride']) and $calc['accrual']){
-			self::$vmadd['taxOverride'] = $orderDetails['details']['BT']->created_on;
+			self::$vmadd['taxOverride'] = $this->createTaxOverride($orderDetails['details']['BT']->created_on,$data->order_status);
 		}
 
 		//create the products
@@ -1191,6 +1186,24 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			avadebug('rule had no parameters',$calc);
 			return false;
 		}
+	}
+
+	private function createTaxOverride($date,$orderStatus='R',$reason=''){
+
+		if(!class_exists('TaxOverride')) require (VMAVALARA_CLASS_PATH.DS.'TaxOverride.class.php');
+		if(!class_exists('TaxOverrideType')) require (VMAVALARA_CLASS_PATH.DS.'TaxOverrideType.class.php');
+		$taxOverride = new TaxOverride();
+		$taxOverride->setTaxOverrideType(TaxOverrideType::$TaxDate);   //TaxOverrideType $None, $TaxAmount, $Exemption, $TaxDate ???
+		//$taxOverride->setTaxAmount($value);         //decimal
+		$taxOverride->setTaxDate($date);        //date format?
+
+		if(empty($reason)){
+			$user = JFactory::getUser();
+			$reason = 'Vm_'.$orderStatus.'_by_'.$user->name;
+		}
+		$taxOverride->setReason($reason);
+
+		return $taxOverride;
 	}
 
 	public function blockCheckout(){

@@ -101,10 +101,9 @@ class VirtueMartModelOrderstatus extends VmModel {
 		$hash = md5($hashValue.$name.$attrs);
 		if (!isset($this->_renderStatusList[$hash])) {
 			$orderStates = $this->getOrderStatusNames();
-			if (!$multiple) {
-				$emptyOption = JHTML::_ ('select.option', 0, JText::_ ($langkey), $id, 'order_status_name');
-				array_unshift ($orderStates, $emptyOption);
-			} else {
+			$emptyOption = JHTML::_ ('select.option', -1, JText::_ ($langkey), 'order_status_code', 'order_status_name');
+			array_unshift ($orderStates, $emptyOption);
+			if ($multiple) {
 				$attrs .=' size="'.count($orderStates).'" ';
 			}
 

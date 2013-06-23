@@ -23,19 +23,19 @@ defined('_JEXEC') or die();
 
 class calculationHelper {
 
-	private $_db;
-	private $_shopperGroupId;
+	protected $_db;
+	protected $_shopperGroupId;
 	var $_cats;
-	private $_now;
-	private $_nullDate;
-	//	private $_currency;
-	private $_debug;
-	private $_manufacturerId;
-	private $_deliveryCountry;
-	private $_deliveryState;
+	protected $_now;
+	protected $_nullDate;
+	//	protected $_currency;
+	protected $_debug;
+	protected $_manufacturerId;
+	protected $_deliveryCountry;
+	protected $_deliveryState;
 	public $_currencyDisplay;
 	var $_cart = null;
-	private $_cartPrices = false;
+	protected $_cartPrices = false;
 	var $productPrices;
 	var $_cartData;
 
@@ -49,10 +49,10 @@ class calculationHelper {
 	public $product_marge_id = 0;
 	public $vendorCurrency = 0;
 	public $inCart = FALSE;
-	private $exchangeRateVendor = 0;
-	private $exchangeRateShopper = 0;
-	private $_internalDigits = 8;
-	private $_revert = false;
+	protected $exchangeRateVendor = 0;
+	protected $exchangeRateShopper = 0;
+	protected $_internalDigits = 8;
+	protected $_revert = false;
 	static $_instance;
 
 	//	public $basePrice;		//simular to costprice, basePrice is calculated in the shopcurrency
@@ -186,7 +186,7 @@ class calculationHelper {
 		return $this->_cartData;
 	}
 
-	private function setShopperGroupIds($shopperGroupIds=0, $vendorId=1) {
+	protected function setShopperGroupIds($shopperGroupIds=0, $vendorId=1) {
 
 		if (!empty($shopperGroupIds)) {
 			$this->_shopperGroupId = $shopperGroupIds;
@@ -215,7 +215,7 @@ class calculationHelper {
 		}
 	}
 
-	private function setCountryState($cart=0) {
+	protected function setCountryState($cart=0) {
 
 		if ($this->_app->isAdmin())
 			return;
@@ -538,7 +538,7 @@ class calculationHelper {
 		$this->_revert = $revert;
 	}
 
-	private function fillVoidPrices(&$prices) {
+	protected function fillVoidPrices(&$prices) {
 
 		if (!isset($prices['basePrice']))
 			$prices['basePrice'] = null;
@@ -907,7 +907,7 @@ class calculationHelper {
 	 * @author Maik Kuennemann
 	 * @param $VatTaxID ID of the taxe rule
 	 */
-	private function getCalcRuleData($calcRuleID) {
+	protected function getCalcRuleData($calcRuleID) {
 		$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $calcRuleID . '"';
 		$this->_db->setQuery($q);
 		$calcRule = $this->_db->loadObject();
@@ -919,7 +919,7 @@ class calculationHelper {
 	 * @author Oscar van Eijk
 	 * @param $_code Coupon code
 	 */
-	private function couponHandler($_code) {
+	protected function couponHandler($_code) {
 
 		JPluginHelper::importPlugin('vmcoupon');
 		$dispatcher = JDispatcher::getInstance();

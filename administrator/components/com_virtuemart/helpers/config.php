@@ -196,8 +196,6 @@ function vmWarn($publicdescr,$value=NULL){
  */
 function vmError($descr,$publicdescr=''){
 
-
-
 	$msg = '';
 	if(VmConfig::$maxMessageCount< (VmConfig::$maxMessage+5)){
 		if (empty($descr)) {
@@ -230,8 +228,6 @@ function vmError($descr,$publicdescr=''){
 		$app = JFactory::getApplication();
 		$app ->enqueueMessage($msg,'error');
 		return $msg;
-	} else {
-		vmTrace('vmError Message empty');
 	}
 
 	return $msg;
