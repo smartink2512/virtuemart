@@ -271,7 +271,7 @@
 
             jQuery("#admin-ui-tabs").delegate("div.vmicon-16-remove", "click", function () {
                 jQuery(this).closest(".vm_thumb_image").fadeOut("500", function () {
-                    jQuery(this).remove()
+                    jQuery(this).remove();
                 });
             });
             jQuery("#admin-ui-tabs").delegate("span.vmicon-16-remove", "click", function () {

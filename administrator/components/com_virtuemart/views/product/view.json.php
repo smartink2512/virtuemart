@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: view.json.php 6543 2012-10-16 06:41:27Z Milbo $
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
@@ -133,6 +133,7 @@ class VirtuemartViewProduct extends JView {
 						<td>'.JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION').'</td>
 						<td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
 						<td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" /></td>
+						<td><span class="vmicon vmicon-16-move"></span></td>
 					</tr>';
 					$this->row++;
 
@@ -150,6 +151,7 @@ class VirtuemartViewProduct extends JView {
 						</td>
 						 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
 						 <td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" /></td>
+						 <td><span class="vmicon vmicon-16-move"></span></td>
 						</tr>';
 					$this->row++;
 				}

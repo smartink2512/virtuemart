@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: default.php 6477 2012-09-24 14:33:54Z Milbo $
+* @version $Id$
 */
 
 // Check to ensure this file is included in Joomla!
@@ -76,7 +76,7 @@ AdminUIHelper::startAdminArea();
 			<?php } ?>
 
 			<th><?php echo $this->sort('virtuemart_category_id', 'COM_VIRTUEMART_ID')  ?></th>
-
+			<th></th>
 		</tr>
 		</thead>
 		<tbody>
@@ -163,6 +163,9 @@ AdminUIHelper::startAdminArea();
 				}
 				?>
 				<td><?php echo $cat->virtuemart_category_id; // echo $product->vendor_name; ?></td>
+				<td >
+					<span class="vmicon vmicon-16-move"></span>
+				</td>
 			</tr>
 		<?php
 			$k = 1 - $k;
@@ -193,6 +196,7 @@ AdminUIHelper::startAdminArea();
 		jQuery(function() {
 
 			jQuery( ".adminlist" ).sortable({
+				handle: ".vmicon-16-move",
 				items: 'tr:not(:first,:last)',
 				opacity: 0.8,
 				update: function(event, ui) {

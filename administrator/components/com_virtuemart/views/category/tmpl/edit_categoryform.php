@@ -56,13 +56,13 @@ $mainframe = JFactory::getApplication();
 			<fieldset>
 				<legend><?php echo JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
 				<table>
-					<?php echo VmHTML::row('raw','COM_VIRTUEMART_ORDERING', ShopFunctions::getEnumeratedCategories(true, true, $this->parent->virtuemart_category_id, 'ordering', '', 'ordering', 'category_name', $this->category->ordering) ); ?>
 					<?php $categorylist = '
 						<select name="category_parent_id" id="category_parent_id" class="inputbox">
 							<option value="">'.JText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL').'</option>
 							'.$this->categorylist.'
 						</select>';
-						echo VmHTML::row('raw','COM_VIRTUEMART_CATEGORY_ORDERING', $categorylist ); ?>
+					echo VmHTML::row('raw','COM_VIRTUEMART_CATEGORY_PARENT', $categorylist ); ?>
+					<?php echo VmHTML::row('raw','COM_VIRTUEMART_CATEGORY_ORDERING', ShopFunctions::getEnumeratedCategories(true, true, $this->parent->virtuemart_category_id, 'ordering', '', 'ordering', 'category_name', $this->category->ordering) ); ?>
 					<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_FORM_PRODUCTS_PER_ROW','products_per_row',$this->category->products_per_row); ?>
 					<?php echo  VmHTML::row('input','COM_VIRTUEMART_CATEGORY_FORM_LIMIT_LIST_START','limit_list_start',$this->category->limit_list_start); ?>
 					<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_FORM_LIMIT_LIST_STEP','limit_list_step',$this->category->limit_list_step); ?>
