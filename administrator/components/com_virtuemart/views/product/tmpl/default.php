@@ -226,6 +226,7 @@ if ($this->virtuemart_category_id ) { ?>
 		jQuery(function() {
 
 			jQuery( ".adminlist" ).sortable({
+				handle: ".vmicon-16-move",
 				items: 'tr:not(:first,:last)',
 				opacity: 0.8,
 				update: function() {
