@@ -593,7 +593,7 @@ $document->addScriptDeclaration ( "
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td   align="right" style="padding-right: 5px;"><?php
-				echo "- ".$this->currency->priceDisplay($this->orderbt->coupon_discount);  ?></td>
+				echo $this->currency->priceDisplay($this->orderbt->coupon_discount);  ?></td>
 			</tr>
 			<?php
 				//}

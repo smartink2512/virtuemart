@@ -251,7 +251,7 @@ if (VmConfig::get ('coupons_enable')) {
 					 <?php if (VmConfig::get ('show_tax')) { ?>
 		<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('couponTax', '', $this->cart->pricesUnformatted['couponTax'], FALSE); ?> </td>
 		<?php } ?>
-	<td align="right"><?php if($this->cart->pricesUnformatted['salesPriceCoupon'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->pricesUnformatted['salesPriceCoupon'], FALSE); ?></td>
+	<td align="right"> </td>
 	<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceCoupon', '', $this->cart->pricesUnformatted['salesPriceCoupon'], FALSE); ?> </td>
 	<?php } else { ?>
 	<td colspan="6" align="left">&nbsp;</td>

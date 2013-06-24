@@ -117,14 +117,12 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
     $coupon_code=$this->orderDetails['details']['BT']->coupon_code?' ('.$this->orderDetails['details']['BT']->coupon_code.')':'';
 	?>
 	<tr>
-		<td align="right" class="pricePad" colspan="5"><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT').$coupon_code ?></td>
-			<td align="right"></td>
-
-			<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"> </td>
-                                <?php } ?>
-		<td align="right"><?php echo '- '.$this->currency->priceDisplay($this->orderDetails['details']['BT']->coupon_discount, $this->currency); ?></td>
+		<td align="right" class="pricePad" colspan="6"><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT').$coupon_code ?></td>
+		<?php if ( VmConfig::get('show_tax')) { ?>
+			<td align="right"> </td>
+		<?php } ?>
 		<td align="right"></td>
+		<td align="right"><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->coupon_discount, $this->currency); ?></td>
 	</tr>
 <?php  } ?>
 

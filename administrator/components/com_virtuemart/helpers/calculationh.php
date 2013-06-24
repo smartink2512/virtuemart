@@ -855,7 +855,7 @@ class calculationHelper {
 						$vattax['percentage'] = $vattax['subTotal'] / $this->_cartPrices['salesPrice'];
 					}
 					$vattax['DBTax'] = isset($vattax['DBTax']) ? $vattax['DBTax'] : 0;
-					if (isset($vattax['calc_value'])) {
+					if (isset($vattax['calc_value']) && isset($vattax['percentage'])) {
 						$vattax['discountTaxAmount'] = round(($totalDiscount * $vattax['percentage'] + $vattax['DBTax']) / (100 + $vattax['calc_value']) * $vattax['calc_value'],$this->_currencyDisplay->_priceConfig['taxAmount'][1]);
 					}
 					//$vattax['subTotal'] = $vattax['subTotal'] - $vattax['percentage'] * $totalDiscount;
