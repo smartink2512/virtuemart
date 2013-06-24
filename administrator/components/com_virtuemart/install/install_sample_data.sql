@@ -31,12 +31,12 @@ INSERT IGNORE INTO `#__virtuemart_calc_shoppergroups` (`id`, `virtuemart_calc_id
 -- Dumping data for table `#__virtuemart_categories`
 --
 
-INSERT INTO `#__virtuemart_categories` (`virtuemart_category_id`, `virtuemart_vendor_id`,`published`, `created_on`, `modified_on`, `category_template`, `category_layout`, `category_product_layout`, `products_per_row`, `ordering`, `limit_list_start`, `limit_list_step`, `limit_list_initial`, `metarobot`, `metaauthor`) VALUES
-(1, 1, 1, NULL, NULL, '0', 'default', 'default', 3, 1, 0, 10, 10, '', ''),
-(2, 1, 1, NULL, NULL, '', '', '', 4, 2, NULL, NULL, NULL, '', ''),
-(3, 1, 1, NULL, NULL, '', '', '', 2, 3, NULL, NULL, NULL, '', ''),
-(4, 1, 1, NULL, NULL, '', '', '', 1, 4, NULL, NULL, NULL, '', ''),
-(5, 1, 1, NULL, NULL, '', '', '', 1, 5, NULL, NULL, NULL, '', '');
+INSERT INTO `#__virtuemart_categories` (`virtuemart_category_id`, `virtuemart_vendor_id`,`published`, `created_on`, `modified_on`, `category_template`, `category_layout`, `category_product_layout`, `products_per_row`, `ordering`, `limit_list_step`, `limit_list_initial`, `metarobot`, `metaauthor`) VALUES
+(1, 1, 1, NULL, NULL, '0', 'default', 'default', 3, 1, 0, 10, '', ''),
+(2, 1, 1, NULL, NULL, '', '', '', 4, 2, NULL, NULL, '', ''),
+(3, 1, 1, NULL, NULL, '', '', '', 2, 3, NULL, NULL, '', ''),
+(4, 1, 1, NULL, NULL, '', '', '', 1, 4, NULL, NULL, '', ''),
+(5, 1, 1, NULL, NULL, '', '', '', 1, 5, NULL, NULL, '', '');
 
 INSERT INTO `#__virtuemart_categories_XLANG` (`virtuemart_category_id`, `category_name`, `category_description`, `metadesc`, `metakey`, `slug`) VALUES
 (1, 'Hand Tools', 'Hand Tools', '', '', 'handtools'),

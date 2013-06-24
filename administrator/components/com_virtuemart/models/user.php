@@ -1362,6 +1362,43 @@ class VirtueMartModelUser extends VmModel {
 
 		//$select = ' * ';
 		//$joinedTables = ' FROM #__users AS ju LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id';
+		$search = JRequest::getString('search', false);
+		$where = '';
+		if ($search) {
+
+			//$search = $this->_db->Quote($search, false);
+			$searchArray = array('ju.name','username','email','perms','usertype','shopper_group_name');
+
+			if(!class_exists('TableUserinfos'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'userinfos.php');
+			$db = JFactory::getDbo();
+			$userfieldTable = new TableUserinfos($db);
+			$userfieldFields = get_object_vars($userfieldTable);
+			$userFieldSearchArray = array('company','first_name','last_name','phone_1','address_1');
+			//We must validate if the userfields actually exists, they could be removed
+			$userFieldsValid = array();
+
+			foreach($userFieldSearchArray as $ufield){
+				if(key_exists($ufield,$userfieldFields)){
+					$userFieldsValid[] = $ufield;
+				}
+			}
+			$where = ' WHERE ';
+
+			$searchArray = array_merge($userFieldsValid,$searchArray);
+
+			$searches = explode(' ',$search);
+			foreach($searches as &$sear){
+				$sear= '"%' . $this->_db->getEscaped( $sear, true ) . '%"' ;
+			}
+
+			foreach($searchArray as $field){
+				foreach($searches as $search){
+					$where.= ' '.$field.' LIKE '.$search.' OR ';
+				}
+			}
+			$where = substr($where,0,-3);
+		}
+
 		$select = ' DISTINCT ju.id AS id
 			, ju.name AS name
 			, ju.username AS username
@@ -1369,12 +1406,21 @@ class VirtueMartModelUser extends VmModel {
 			, ju.usertype AS usertype
 			, IFNULL(vmu.user_is_vendor,"0") AS is_vendor
 			, IFNULL(sg.shopper_group_name, "") AS shopper_group_name ';
+		if ($search) {
+			$select .= ' , ui.name as uiname ';
+			foreach($userFieldsValid as $ufield){
+				$select .= ' , '.$ufield;
+			}
+		}
 		$joinedTables = ' FROM #__users AS ju
 			LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id
 			LEFT JOIN #__virtuemart_vmuser_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id
 			LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.virtuemart_shoppergroup_id = sg.virtuemart_shoppergroup_id ';
+		if ($search) {
+			$joinedTables .= ' LEFT JOIN #__virtuemart_userinfos AS ui ON ui.virtuemart_user_id = vmu.virtuemart_user_id';
+		}
 
-		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$this->_getFilter(),' GROUP BY ju.id',$this->_getOrdering());
+		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$where,' GROUP BY ju.id',$this->_getOrdering());
 
 	}
 
@@ -1386,11 +1432,17 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	function _getFilter()
 	{
-		if ($search = JRequest::getWord('search', false)) {
+		if ($search = JRequest::getString('search', false)) {
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			//$search = $this->_db->Quote($search, false);
+			$searchArray = array('name','username','email','perms','usertype','shopper_group_name');
 
-			$where = ' WHERE `name` LIKE '.$search.' OR `username` LIKE ' .$search.' OR `email` LIKE ' .$search.' OR `perms` LIKE ' .$search.' OR `usertype` LIKE ' .$search.' OR `shopper_group_name` LIKE ' .$search;
+			$where = ' WHERE ';
+			foreach($searchArray as $field){
+				$where.= ' `'.$field.'` LIKE '.$search.' OR ';
+			}
+			$where = substr($where,0,-3);
+			//$where = ' WHERE `name` LIKE '.$search.' OR `username` LIKE ' .$search.' OR `email` LIKE ' .$search.' OR `perms` LIKE ' .$search.' OR `usertype` LIKE ' .$search.' OR `shopper_group_name` LIKE ' .$search;
 			return ($where);
 		}
 		return ('');

@@ -283,7 +283,7 @@ class VirtueMartModelConfig extends JModel {
 	 * @author RickG
 	 * @return boolean True is successful, false otherwise
 	 */
-	function store(&$data) {
+	function store(&$data,$replace = FALSE) {
 
 		JRequest::checkToken() or jexit( 'Invalid Token, in store config');
 
@@ -293,7 +293,7 @@ class VirtueMartModelConfig extends JModel {
 		$config = VmConfig::loadConfig(TRUE);
 
 
-		$config->setParams($data);
+		$config->setParams($data,$replace);
 		$confData = array();
 		$query = 'SELECT * FROM `#__virtuemart_configs`';
 		$this->_db->setQuery($query);
@@ -313,13 +313,25 @@ class VirtueMartModelConfig extends JModel {
 			}
 		}
 
-
 		//If empty it is not sent by the form, other forms do it by using a table to store,
 		//the config is like a big xparams and so we check some values for this form manually
-		$toSetEmpty = array('active_languages','inv_os','email_os_v','email_os_s');
+		/*$toSetEmpty = array('active_languages','inv_os','email_os_v','email_os_s');
 		foreach($toSetEmpty as $item){
 			if(!isset($data[$item])) {
 				$config->set($item,array());
+			}
+		}*/
+
+		$checkCSVInput = array('pagseq','pagseq_1','pagseq_2','pagseq_3','pagseq_4','pagseq_5');
+		foreach($checkCSVInput as $csValueKey){
+			$csValue = $config->get($csValueKey);
+			if(!empty($csValue)){
+				$sequenceArray = explode(',', $csValue);
+				foreach($sequenceArray as &$csV){
+					$csV = (int)trim($csV);
+				}
+				$csValue = implode(',',$sequenceArray);
+				$config->set($csValueKey,$csValue);
 			}
 		}
 

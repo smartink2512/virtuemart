@@ -982,7 +982,10 @@ class VirtueMartModelProduct extends VmModel {
 			//$product->categories = $this->getProductCategories ($this->_id, $front);
 			$product->categories = $this->getProductCategories ($this->_id, FALSE); //We need also the unpublished categories, else the calculation rules do not work
 
-			if(!empty($product->categories)){
+			if(!empty($product->product_url)){
+				$product->canonCatLink = $product->product_url;
+			}
+			else if(!empty($product->categories)){
 				$categories = $this->getProductCategories ($this->_id, TRUE);   //only published
 				if($categories){
 					if(!is_array($categories)) $categories = (array)$categories;

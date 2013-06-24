@@ -717,7 +717,7 @@ class VmConfig {
 	 * For setting params, needs assoc array
 	 * @author Max Milbers
 	 */
-	function setParams($params){
+	function setParams($params,$replace=FALSE){
 
 		if (!class_exists ('Permissions')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
@@ -727,11 +727,16 @@ class VmConfig {
 			//But we doubt that anyone does it, because the vm team itself never uses it.
 			//To avoid errors like unserialize hidemainmenu b:0;, we just replace now the config with the data,
 			//Hmm does not work, because people may use config values, not in the config form
-			unset($this->_params['hidemenu']);
+			unset($this->_params['hidemainmenu']);
 			unset($this->_params['pdf_invoice']); // parameter remove and replaced by inv_os
 			unset($this->_params['list_limit']);
 			unset($this->_params['pagination_sequence']);
-			self::$_jpConfig->_params = array_merge($this->_params,$params);
+			if($replace){
+				self::$_jpConfig->_params = $params;
+			} else {
+				self::$_jpConfig->_params = array_merge($this->_params,$params);
+			}
+
 			//self::$_jpConfig->_params = $params;
 		}
 

@@ -655,18 +655,17 @@ class VmPagination extends JPagination {
 			if(empty($sequence)){
 				$sequence = VmConfig::get('pagseq',0);
 			}
-			//Fallback for old wrong entries, we may remove this later for example in vm2.4
-			$sequenceArray = explode(',', $sequence);
-			if(count($sequenceArray)===1){
-				$sequence = 0;
-			}
+
 			if(!empty($sequence)){
 				$sequenceArray = explode(',', $sequence);
-				foreach($sequenceArray as $items){
-					$limits[]=JHtml::_('select.option', $items);
+				if(count($sequenceArray>1)){
+					foreach($sequenceArray as $items){
+						$limits[]=JHtml::_('select.option', $items);
+					}
 				}
+			}
 
-			} else {
+			if(empty($limits)){
 				$limits[] = JHTML::_('select.option', 15);
 				$limits[] = JHTML::_('select.option', 30);
 				$limits[] = JHTML::_('select.option', 50);
@@ -708,12 +707,14 @@ class VmPagination extends JPagination {
 			}
 			if(!empty($sequence)){
 				$sequenceArray = explode(',', $sequence);
-				foreach($sequenceArray as $items){
-					$limits[]=JHtml::_('select.option', JRoute::_( $link.'&limit='. $items, false), $items);
+				if(count($sequenceArray>1)){
+					foreach($sequenceArray as $items){
+						$limits[]=JHtml::_('select.option', JRoute::_( $link.'&limit='. $items, false), $items);
+					}
 				}
-
 			}
-			if(empty($limits) or !is_array($limits) or count($limits)<2){
+
+			if(empty($limits) or !is_array($limits)){
 				if($this->_perRow===1) $this->_perRow = 5;
 				$limits[] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 5, false) ,$this->_perRow * 5);
 				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 10, false) , $this->_perRow * 10 );
