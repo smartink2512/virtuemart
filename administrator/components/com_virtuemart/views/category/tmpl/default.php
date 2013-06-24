@@ -76,7 +76,7 @@ AdminUIHelper::startAdminArea();
 			<?php } ?>
 
 			<th><?php echo $this->sort('virtuemart_category_id', 'COM_VIRTUEMART_ID')  ?></th>
-			<th></th>
+			<!--th></th-->
 		</tr>
 		</thead>
 		<tbody>
@@ -163,9 +163,9 @@ AdminUIHelper::startAdminArea();
 				}
 				?>
 				<td><?php echo $cat->virtuemart_category_id; // echo $product->vendor_name; ?></td>
-				<td >
+				<!--td >
 					<span class="vmicon vmicon-16-move"></span>
-				</td>
+				</td-->
 			</tr>
 		<?php
 			$k = 1 - $k;
@@ -189,9 +189,11 @@ AdminUIHelper::startAdminArea();
 	  ?>
 </form>
 
-<?php	//DragnDrop by StephanBais
+<?php
+// Removed for the moment,categories can only be drag and drop within their sublevel
+//DragnDrop by StephanBais
 	//if ($this->virtuemart_category_id ) { ?>
-	<script>
+	<!--script>
 
 		jQuery(function() {
 
@@ -221,7 +223,7 @@ AdminUIHelper::startAdminArea();
 			});
 		});
 		jQuery('input.ordering').css({'color': '#666666', 'background-color': 'transparent','border': 'none' }).attr('readonly', true);
-	</script>
+	</script-->
 
 <?php // } ?>
 
