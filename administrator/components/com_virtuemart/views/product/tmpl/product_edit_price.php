@@ -48,10 +48,23 @@ $rowColor = 0;
                    name="mprices[virtuemart_product_price_id][]"
                    value="<?php echo  $this->tempProduct->virtuemart_product_price_id; ?>"/>
         </td>
-        <td colspan="3">
+        <td colspan="2">
 			<?php echo $this->lists['currencies']; ?>
         </td>
-        <td style="background: #F9F9F9;padding:0;width:4px;"></td>
+		<td colspan="2">
+			<strong>
+			<span
+				class="hasTip"
+				title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL_TIP'); ?>">
+			<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL'); ?>
+			</span>
+			</strong>
+			<?php
+			$options = array(0 => JText::_ ('JNO'), 1 => JText::_ ('JYES'));
+			// echo VmHtml::radioList ('mprices[use_desired_price][' . $this->priceCounter . ']', $this->tempProduct->override, $options);
+			echo '<input type="checkbox" name="mprices[use_desired_price][' . $this->priceCounter . ']" value="1"/>'
+			?>    </td>
+
         <td colspan="2">
  			<span class="hasTip" style="font-weight: bold;"
                title="<?php echo JText::_ ('COM_VIRTUEMART_SHOPPER_FORM_GROUP_PRICE_TIP'); ?>">
@@ -147,19 +160,7 @@ $rowColor = 0;
 
 <?php $rowColor = 1 - $rowColor; ?>
     <tr class="row<?php echo $rowColor?>">
-        <td colspan="2">
-	          <strong>
-			<span
-                    class="hasTip"
-                    title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL_TIP'); ?>">
-			<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL'); ?>
-			</span>
-		     </strong>
-	        <?php
-            $options = array(0 => JText::_ ('JNO'), 1 => JText::_ ('JYES'));
-           // echo VmHtml::radioList ('mprices[use_desired_price][' . $this->priceCounter . ']', $this->tempProduct->override, $options);
-            echo '<input type="checkbox" name="mprices[use_desired_price][' . $this->priceCounter . ']" value="1"/>'
-	        ?>    </td>
+
         <td width="60px">
             <div style="text-align: right; font-weight: bold;">
 				<span
@@ -176,7 +177,7 @@ $rowColor = 0;
                    value="<?php echo $this->tempProduct->product_override_price ?>"/>
 			<?php echo $this->vendor_currency;   ?>
         </td>
-        <td><?php
+        <td colspan="2"><?php
 			// 							echo VmHtml::checkbox('override',$this->product->override);
 			$options = array(0 => JText::_ ('COM_VIRTUEMART_DISABLED'), 1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_FINAL'), -1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_PRICE_TAX'));
 

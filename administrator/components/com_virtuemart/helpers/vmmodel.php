@@ -712,13 +712,15 @@ class VmPagination extends JPagination {
 
 			} else {
 				if($this->_perRow===1) $this->_perRow = 5;
-				$iterationAmount = 4;
-				for ($i = 1; $i <= $iterationAmount; $i ++) {
-					$limits[] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $i*$this->_perRow, false) ,$i*$this->_perRow );
-				}
+				//$iterationAmount = 4;
+				//for ($i = 1; $i <= $iterationAmount; $i ++) {
+				$limits[] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $i*$this->_perRow, false) ,$this->_perRow * 5);
+
+			//	}
 
 				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 10, false) , $this->_perRow * 10 );
 				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 20, false) , $this->_perRow * 20 );
+				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 20, false) , $this->_perRow * 50 );
 	// 			vmdebug('getLimitBox',$this->_perRow);
 			}
 			$selected= JRoute::_( $link.'&limit='. $selected) ;

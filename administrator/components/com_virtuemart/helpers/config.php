@@ -723,7 +723,11 @@ class VmConfig {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 		}
 		if(Permissions::getInstance()->check('admin')){
-			self::$_jpConfig->_params = array_merge($this->_params,$params);
+			//The idea with the merge was that 3rd party use the config to store stuff there,
+			//But we doubt that anyone does it, because the vm team itself never uses it.
+			//To avoid errors like unserialize hidemainmenu b:0;, we just replace now the config with the data,
+			//self::$_jpConfig->_params = array_merge($this->_params,$params);
+			self::$_jpConfig->_params = $params;
 		}
 
 	}

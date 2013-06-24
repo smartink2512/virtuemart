@@ -119,18 +119,8 @@ defined('_JEXEC') or die('Restricted access');?>
 		<?php echo VmHTML::checkbox('product_navigation', VmConfig::get('product_navigation')); ?>
 	</td>
 </tr>
-<tr>
-	<td class="key">
-<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_LIST_LIMIT_EXPLAIN'); ?>">
-	<label for="list_limit">
-		<?php echo JText::_('COM_VIRTUEMART_LIST_LIMIT'); ?>
-	</label>
-</span>
-	</td>
-	<td>
-		<input type="text" value="<?php echo VmConfig::get('list_limit', 10); ?>" class="inputbox" size="4" name="list_limit">
-	</td>
-</tr>
+
+
 <tr>
 	<td class="key">
 <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_DISPLAY_STOCK_EXPLAIN'); ?>">

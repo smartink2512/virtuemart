@@ -543,21 +543,34 @@ class VirtueMartModelProduct extends VmModel {
 		$app = JFactory::getApplication ();
 		$view = JRequest::getWord ('view','virtuemart');
 
-		$cateid = JRequest::getInt ('virtuemart_category_id', 0);
+		$cateid = JRequest::getInt ('virtuemart_category_id', -1);
 		$manid = JRequest::getInt ('virtuemart_manufacturer_id', 0);
 
 		$limitString = 'com_virtuemart.' . $view . 'c' . $cateid . '.limit';
 		$limit = (int)$app->getUserStateFromRequest ($limitString, 'limit');
 
 		$limitStartString  = 'com_virtuemart.' . $view . '.limitstart';
-		if ($app->isSite () and ($cateid != 0 or $manid != 0) ) {
+		if ($app->isSite () and ($cateid != -1 or $manid != 0) ) {
 
 			vmdebug('setPaginationLimits is site and $cateid,$manid ',$cateid,$manid);
 			$lastCatId = ShopFunctionsf::getLastVisitedCategoryId ();
 			$lastManId = ShopFunctionsf::getLastVisitedManuId ();
-			$catModel= VmModel::getModel('category');
-			$category = $catModel->getCategory($cateid);
+
+			if( !empty($cateid) and $cateid != -1) {
+				$gCatId = $cateid;
+			} else if( !empty($lastCatId) ) {
+				$gCatId = $lastCatId;
+			}
+
+			if(!empty($gCatId)){
+				$catModel= VmModel::getModel('category');
+				$category = $catModel->getCategory($gCatId);
+			} else {
+				$category = new stdClass();
+			}
+
 			if ($lastCatId != $cateid or $lastManId != $manid) {
+				if(empty($category->limit_list_start)) $category->limit_list_start =  VmConfig::get ('limit_list_start', 0);
 				$limitStart = $category->limit_list_start;
 			}
 			else {

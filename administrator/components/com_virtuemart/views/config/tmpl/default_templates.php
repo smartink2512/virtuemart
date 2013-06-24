@@ -117,6 +117,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<input type="text" name="manufacturer_per_row" size="4" class="inputbox" value="<?php echo VmConfig::get('manufacturer_per_row', 3) ?>"/>
 			</td>
 		</tr>
+
 		<tr>
 			<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PAGINATION_SEQUENCE_EXPLAIN'); ?>">
@@ -124,11 +125,26 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</span>
 			</td>
 			<td>
-				<input type="text" name="pagination_sequence" class="inputbox" value="<?php echo VmConfig::get('pagination_sequence') ?>"/>
+				<input type="text" name="pagination_sequence1" class="inputbox" value="<?php echo VmConfig::get('pagination_sequence1') ?>"/>
 			</td>
 		</tr>
 	</table>
 </fieldset>
+<fieldset>
+<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PAGINATION_SEQUENCE'); ?></legend>
+<table class="admintable">
+	<?php echo VmHTML::row('input','COM_VIRTUEMART_LLIMIT_INIT_BE','list_limit_BE',VmConfig::get('list_limit_BE', VmConfig::get('list_limit', 10))); ?>
+	<?php echo VmHTML::row('input','COM_VIRTUEMART_LLIMIT_INIT_FE','list_limit_FE',VmConfig::get('list_limit_FE', VmConfig::get('list_limit', 10))); ?>
+	<?php echo VmHTML::row('input','COM_VIRTUEMART_LIST_LIMIT','list_limit',VmConfig::get('list_limit',VmConfig::get('pagination_sequence'))); ?>
+	<?php echo VmHTML::row('input','COM_VIRTUEMART_CFG_PAGSEQ_1','pagination_sequence1',VmConfig::get('pagseq_1',VmConfig::get('pagination_sequence'))); ?>
+	<?php echo VmHTML::row('input','COM_VIRTUEMART_CFG_PAGSEQ_2','pagination_sequence2',VmConfig::get('pagseq_2',VmConfig::get('pagination_sequence'))); ?>
+	<?php echo VmHTML::row('input','COM_VIRTUEMART_CFG_PAGSEQ_3','pagination_sequence3',VmConfig::get('pagseq_3',VmConfig::get('pagination_sequence'))); ?>
+	<?php echo VmHTML::row('input','COM_VIRTUEMART_CFG_PAGSEQ_4','pagination_sequence4',VmConfig::get('pagseq_4',VmConfig::get('pagination_sequence'))); ?>
+	<?php echo VmHTML::row('input','COM_VIRTUEMART_CFG_PAGSEQ_5','pagination_sequence5',VmConfig::get('pagseq_5',VmConfig::get('pagination_sequence'))); ?>
+
+</table>
+</fieldset>
+
 <fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CAT_FEED_SETTINGS'); ?></legend>
 	<table class="admintable">
