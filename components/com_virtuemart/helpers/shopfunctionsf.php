@@ -261,6 +261,8 @@ class shopFunctionsF {
 				if ( in_array((string) $vars['orderDetails']['details']['BT']->order_status,$orderstatusForShopperEmail) ){
 					$user = self::sendVmMail( $view, $recipient, $noVendorMail );
 					vmdebug('renderMail by default');
+				} else{
+					$user = TRUE;
 				}
 			}
 
@@ -275,6 +277,8 @@ class shopFunctionsF {
 				if(!is_array($orderstatusForVendorEmail)) $orderstatusForVendorEmail = array($orderstatusForVendorEmail);
 				if ( in_array((string)$order['details']['BT']->order_status,$orderstatusForVendorEmail)){
 					self::sendVmMail( $view, $view->vendorEmail, TRUE );
+				}else{
+					$user = TRUE;
 				}
 			} else {
 				self::sendVmMail( $view, $view->vendorEmail, TRUE );
