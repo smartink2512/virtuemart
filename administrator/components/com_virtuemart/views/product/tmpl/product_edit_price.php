@@ -52,18 +52,7 @@ $rowColor = 0;
 			<?php echo $this->lists['currencies']; ?>
         </td>
 		<td >
-			<strong>
-			<span
-				class="hasTip"
-				title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL_TIP'); ?>">
-			<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL'); ?>
-			</span>
-			</strong>
-			<?php
-			$options = array(0 => JText::_ ('JNO'), 1 => JText::_ ('JYES'));
-			// echo VmHtml::radioList ('mprices[use_desired_price][' . $this->priceCounter . ']', $this->tempProduct->override, $options);
-			echo '<input type="checkbox" name="mprices[use_desired_price][' . $this->priceCounter . ']" value="1"/>'
-			?>    </td>
+			  </td>
 		<td style="background: #d5d5d5;padding:0;width:1px;"></td>
 
         <td colspan="2">
@@ -171,18 +160,31 @@ $rowColor = 0;
 				</span>
             </div>
         </td>
-        <td width="120px">
-            <input type="text"
+        <td width="120px"  colspan="3">
+			<strong>
+			<span
+				class="hasTip"
+				title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL_TIP'); ?>">
+			<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL'); ?>
+			</span>
+			</strong>
+			<?php
+			$options = array(0 => JText::_ ('JNO'), 1 => JText::_ ('JYES'));
+			// echo VmHtml::radioList ('mprices[use_desired_price][' . $this->priceCounter . ']', $this->tempProduct->override, $options);
+			echo '<input type="checkbox" name="mprices[use_desired_price][' . $this->priceCounter . ']" value="1"/>'
+			?>
+			<br />
+			<input type="text"
                    size="12"
                    style="text-align:right;" name="mprices[product_override_price][]"
                    value="<?php echo $this->tempProduct->product_override_price ?>"/>
 			<?php echo $this->vendor_currency;   ?>
-        </td>
-        <td colspan="2"><?php
+			<br />
+ <?php
 			// 							echo VmHtml::checkbox('override',$this->product->override);
 			$options = array(0 => JText::_ ('COM_VIRTUEMART_DISABLED'), 1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_FINAL'), -1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_PRICE_TAX'));
 
-			echo VmHtml::radioList ('mprices[override][' . $this->priceCounter . ']', $this->tempProduct->override, $options);
+			echo VmHtml::radioList ('mprices[override][' . $this->priceCounter . ']', $this->tempProduct->override, $options,'',' ');
 			?>
         </td>
 		<td style="background: #d5d5d5;padding:0;width:1px;"></td>

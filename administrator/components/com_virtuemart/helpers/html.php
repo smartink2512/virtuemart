@@ -249,7 +249,7 @@ static function vmGetCharset() {
 	 * @param string $extra
 	 * @return string
 	 */
-	static function radioList($name, $value, &$arr, $extra="") {
+	static function radioList($name, $value, &$arr, $extra="", $separator='<br />') {
 		$html = '';
 		if( empty( $arr ) ) {
 			$arr = array();
@@ -269,7 +269,7 @@ static function vmGetCharset() {
 				}
 			}
 			$html .= '<input type="radio" name="'.$name.'" id="'.$name.$i.'" value="'.htmlspecialchars($key, ENT_QUOTES).'" '.$checked.' '.$extra." />\n";
-			$html .= '<label for="'.$name.$i++.'">'.$val."</label><br />\n";
+			$html .= '<label for="'.$name.$i++.'">'.$val."</label>".$separator."\n";
 		}
 
 		return $html;
