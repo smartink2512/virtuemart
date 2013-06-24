@@ -29,7 +29,7 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-echo strip_tags(JText::_('COM_VIRTUEMART_MAIL_SHOPPER_YOUR_ORDER')) . "\n" . "\n";
+echo strip_tags(JText::_('COM_VIRTUEMART_MAIL_SHOPPER_YOUR_ORDER')) . "\n" . $this->orderDetails['details']['BT']->order_number . "\n";
 echo strip_tags(JText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_SUMMARY', $this->vendor->vendor_store_name)) . "\n" . "\n";
 
 echo JText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_CONTENT', $this->shopperName, $this->vendor->vendor_store_name, $this->orderDetails['details']['BT']->order_total, $this->orderDetails['details']['BT']->order_number, $this->orderDetails['details']['BT']->order_pass, $this->orderDetails['details']['BT']->created_on) . "\n" . "\n";
