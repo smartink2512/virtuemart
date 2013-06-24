@@ -1488,14 +1488,18 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 
 		// Send the email
-		if (shopFunctionsF::renderMail('invoice', $order['details']['BT']->email, $vars, null,$vars['doVendor'],$this->useDefaultEmailOrderStatus)) {
+		$res = shopFunctionsF::renderMail('invoice', $order['details']['BT']->email, $vars, null,$vars['doVendor'],$this->useDefaultEmailOrderStatus);
+
+		//We need this, to prevent that a false alert is thrown.
+		if ($res and $res!=-1) {
 			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_SEND_MSG';
 		}
-		else {
+		else if (!$res) {
 			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
 		}
-		vmInfo( JText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
-
+		if($res!=-1){
+			vmInfo( JText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
+		}
 
 		return true;
 	}
