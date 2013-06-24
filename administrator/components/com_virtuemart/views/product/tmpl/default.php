@@ -72,9 +72,6 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 	<thead>
 	<tr>
 		<th width="20px"><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->productlist); ?>')" /></th>
-		<?php if($this->pagination->limit<21){
-			echo '<th width="52px">'. JText::_('COM_VIRTUEMART_IMAGE').'</th>';
-		} ?>
 
 		<th><?php echo $this->sort('product_name',$col_product_name) ?> </th>
 		<?php if (!$product_parent_id ) { ?>
@@ -118,18 +115,6 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->
 				<td align="right" ><?php echo $checked; ?></td>
-				<!-- Product image & Product name -->
-
-				<!-- We show the images only when less than 21 products are displayeed -->
-				<?php if($this->pagination->limit<21 or $total<21){ ?>
-					<td align ="left>"><?php
-					// Product list should be ordered
-					$parent_id = JRequest::getVar('product_parent_id');
-					$this->model->addImages($product,1);
-					$img = $product->images[0]->displayMediaThumb('class="vm_mini_image"',false );?>
-					<?php echo JHTML::_('link', JRoute::_($link), $img,  array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name));?>
-					</td>
-				<?php } ?>
 
 				<td align ="left>">
 					<!--<span style="float:left; clear:left"> -->
@@ -139,10 +124,10 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 
                 <?php if (!$product_parent_id ) { ?>
 				<td><?php
-                                if ($product->product_parent_id  ) {
-							VirtuemartViewProduct::displayLinkToParent($product->product_parent_id);
-						}
-                                   ?></td>
+					if ($product->product_parent_id  ) {
+						VirtuemartViewProduct::displayLinkToParent($product->product_parent_id);
+					}
+					?></td>
 				<!-- Vendor name -->
                                 <?php } ?>
 				<td><?php
@@ -154,8 +139,21 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 					// Create URL
 					$link = JRoute::_('index.php?view=media&virtuemart_product_id='.$product->virtuemart_product_id.'&option=com_virtuemart');
 				?>
-				<td align="center"><?php echo JHTML::_('link', $link, '<span class="icon-nofloat vmicon vmicon-16-media"></span> ('.$product->mediaitems.')', 'title ="'. JText::_('COM_VIRTUEMART_MEDIA_MANAGER').'" ' );
-				 ?></td>
+				<td align="center">
+					<?php
+					// We show the images only when less than 21 products are displayeed -->
+					if($this->pagination->limit<21 or $total<21){
+						// Product list should be ordered
+						$this->model->addImages($product,1);
+						$img = '<span>('.$product->mediaitems.')</span>'.$product->images[0]->displayMediaThumb('class="vm_mini_image"',false );
+						//echo JHTML::_('link', $link, $img,  array('title' => JText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name));
+					} else {
+						//echo JHTML::_('link', $link, '<span class="icon-nofloat vmicon vmicon-16-media"></span> ('.$product->mediaitems.')', array('title' => JText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name) );
+						$img = '<span class="icon-nofloat vmicon vmicon-16-media"></span> ('.$product->mediaitems.')';
+					}
+					echo JHTML::_('link', $link, $img,  array('title' => JText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name));
+					?>
+					</td>
 				<!-- Product SKU -->
 				<td><?php echo $product->product_sku; ?></td>
 				<!-- Product price -->
@@ -252,7 +250,7 @@ if ($this->virtuemart_category_id ) { ?>
 			});
 		});
 
-		jQuery('input.ordering').css({'color': '#666666', 'background-color': 'transparent','border': 'none' }).attr('readonly', true);
+		//jQuery('input.ordering').css({'color': '#666666', 'background-color': 'transparent','border': 'none' }).attr('readonly', true);
 	</script>
 
 <?php }
