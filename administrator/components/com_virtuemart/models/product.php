@@ -570,10 +570,11 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			if ($lastCatId != $cateid or $lastManId != $manid) {
-				if(empty($category->limit_list_start)) $category->limit_list_start =  VmConfig::get ('limit_list_start', 0);
-				$limitStart = $category->limit_list_start;
+				//We are in a new category or another manufacturer, so we start at page 1
+				$limitStart = 0;
 			}
 			else {
+				//We were already in the category/manufacturer, so we take the value stored in the session
 				$limitStartString  = 'com_virtuemart.' . $view . 'c' . $cateid .'m'.$manid. '.limitstart';
 				$limitStart = $app->getUserStateFromRequest ($limitStartString, 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
 			}
@@ -584,7 +585,7 @@ class VirtueMartModelProduct extends VmModel {
 			else if(!empty($limit)){
 				$suglimit = $limit;
 			} else {
-				$suglimit = VmConfig::get ('list_limit', 20);
+				$suglimit = VmConfig::get ('llimit_init_FE', 20);
 			}
 			if(empty($category->products_per_row)){
 				$category->products_per_row = VmConfig::get ('products_per_row', 3);
@@ -596,7 +597,7 @@ class VirtueMartModelProduct extends VmModel {
 				$prod_per_page = explode(",",$category->limit_list_step);
 			} else {
 				//fix by hjet
-				$prod_per_page = explode(",",VmConfig::get('pagination_sequence'));
+				$prod_per_page = explode(",",VmConfig::get('pagseq_'.$category->products_per_row));
 			}
 
 			if($limit <= $prod_per_page['0'] && array_key_exists('0',$prod_per_page)){
@@ -610,7 +611,12 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		if(empty($limit)){
-			$limit = VmConfig::get ('list_limit', 20);
+			if ($app->isSite ()){
+				$limit = VmConfig::get ('llimit_init_FE', 20);
+			} else {
+				$limit = VmConfig::get ('llimit_init_BE', 20);
+			}
+
 		}
 		$this->setState ('limit', $limit);
 		$this->setState ($limitString, $limit);

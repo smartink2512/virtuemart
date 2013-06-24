@@ -291,7 +291,7 @@ class VirtueMartModelConfig extends JModel {
 		//ATM we want to ensure that only one config is used
 
 		$config = VmConfig::loadConfig(TRUE);
-		unset ($config->_params['pdf_invoice']); // parameter remove and replaced by inv_os
+
 
 		$config->setParams($data);
 		$confData = array();

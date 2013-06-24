@@ -48,7 +48,7 @@ $rowColor = 0;
                    name="mprices[virtuemart_product_price_id][]"
                    value="<?php echo  $this->tempProduct->virtuemart_product_price_id; ?>"/>
         </td>
-        <td  >
+        <td width="185px" >
 			<?php echo $this->lists['currencies']; ?>
         </td>
 		<td >
@@ -132,9 +132,9 @@ $rowColor = 0;
 		                    echo JText::_ ('COM_VIRTUEMART_RULES_EFFECTING') . '</span><br />' . $this->DBTaxRules . '<br />';
 
 	                    }
-		                    if (!empty($this->DATaxRules)) {
-			                    echo JText::_ ('COM_VIRTUEMART_RULES_EFFECTING') . '<br />' . $this->DATaxRules;
-		                    }
+		                if (!empty($this->DATaxRules)) {
+			               echo JText::_ ('COM_VIRTUEMART_RULES_EFFECTING') . '<br />' . $this->DATaxRules;
+		                }
 
 		                    // 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
 						</span>

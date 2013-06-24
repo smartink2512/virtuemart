@@ -261,7 +261,12 @@ class VmModel extends JModel {
 
 		$limit = (int)$app->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit');
 		if(empty($limit)){
-			$limit = VmConfig::get ('list_limit', 20);
+			if($app->isSite()){
+				$limit = VmConfig::get ('llimit_init_FE', 20);
+			} else {
+				$limit = VmConfig::get ('llimit_init_BE', 20);
+			}
+
 		}
 		$this->setState('limit', $limit);
 		$this->setState('com_virtuemart.'.$view.'.limit',$limit);
@@ -642,22 +647,19 @@ class VmPagination extends JPagination {
 
 		// Initialize variables
 		$limits = array ();
-
-		// Make the option list
-		//for 3 = 3,6,12,24,60,90 rows, 4 rows, 6 rows
-		if(empty($sequence)){
-			$sequence = VmConfig::get('pagination_sequence',0);
-		}
-		//Fallback for old wrong entries, we may remove this later for example in vm2.4
-		$sequenceArray = explode(',', $sequence);
-		if(count($sequenceArray)===1){
-			$sequence = 0;
-		}
-
 		$selected = $this->_viewall ? 0 : $this->limit;
+
 		// Build the select list
 		if ($app->isAdmin()) {
-// 			$limits[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_ALL'));
+
+			if(empty($sequence)){
+				$sequence = VmConfig::get('pagseq',0);
+			}
+			//Fallback for old wrong entries, we may remove this later for example in vm2.4
+			$sequenceArray = explode(',', $sequence);
+			if(count($sequenceArray)===1){
+				$sequence = 0;
+			}
 			if(!empty($sequence)){
 				$sequenceArray = explode(',', $sequence);
 				foreach($sequenceArray as $items){
@@ -665,19 +667,18 @@ class VmPagination extends JPagination {
 				}
 
 			} else {
-				if($this->_perRow===1) $this->_perRow = 5;
-				$iterationAmount = 4;
-				for ($i = 1; $i <= $iterationAmount; $i ++) {
-					$limits[] = JHtml::_('select.option', $i*$this->_perRow);
-				}
-
-				$limits[] = JHTML::_('select.option', $this->_perRow * 10);
-				$limits[] = JHTML::_('select.option', $this->_perRow * 20);
-				$limits[] = JHTML::_('select.option', $this->_perRow * 40);
-				$limits[] = JHTML::_('select.option', $this->_perRow * 80);
-	// 			vmdebug('getLimitBox',$this->_perRow);
+				$limits[] = JHTML::_('select.option', 15);
+				$limits[] = JHTML::_('select.option', 30);
+				$limits[] = JHTML::_('select.option', 50);
+				$limits[] = JHTML::_('select.option', 100);
+				$limits[] = JHTML::_('select.option', 200);
+				$limits[] = JHTML::_('select.option', 400);
 			}
 
+			if(!array_key_exists($this->limit,$limits)){
+				$limits[] = JHTML::_('select.option', $this->limit);
+				sort($limits);
+			}
 			$namespace = '';
 			if (JVM_VERSION!==1) {
 				$namespace = 'Joomla.';
@@ -702,26 +703,26 @@ class VmPagination extends JPagination {
 			}
 			$link[0] = "?";
 			$link = 'index.php'.$link ;
-			// $limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit=0'), JText::_('all'));
-
+			if(empty($sequence)){
+				$sequence = VmConfig::get('paqseq'.$this->_perRow);
+			}
 			if(!empty($sequence)){
 				$sequenceArray = explode(',', $sequence);
 				foreach($sequenceArray as $items){
 					$limits[]=JHtml::_('select.option', JRoute::_( $link.'&limit='. $items, false), $items);
 				}
 
-			} else {
+			}
+			if(empty($limits) or !is_array($limits) or count($limits)<2){
 				if($this->_perRow===1) $this->_perRow = 5;
-				//$iterationAmount = 4;
-				//for ($i = 1; $i <= $iterationAmount; $i ++) {
-				$limits[] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $i*$this->_perRow, false) ,$this->_perRow * 5);
-
-			//	}
-
+				$limits[] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 5, false) ,$this->_perRow * 5);
 				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 10, false) , $this->_perRow * 10 );
 				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 20, false) , $this->_perRow * 20 );
 				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 20, false) , $this->_perRow * 50 );
-	// 			vmdebug('getLimitBox',$this->_perRow);
+			}
+			if(!array_key_exists($this->limit,$limits)){
+				$limits[] = JHTML::_('select.option', JRoute::_( $link.'&limit='.$this->limit,false),$this->limit);
+				sort($limits);
 			}
 			$selected= JRoute::_( $link.'&limit='. $selected) ;
 			$js = 'onchange="window.top.location.href=this.options[this.selectedIndex].value"';

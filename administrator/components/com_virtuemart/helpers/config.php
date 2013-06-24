@@ -726,8 +726,13 @@ class VmConfig {
 			//The idea with the merge was that 3rd party use the config to store stuff there,
 			//But we doubt that anyone does it, because the vm team itself never uses it.
 			//To avoid errors like unserialize hidemainmenu b:0;, we just replace now the config with the data,
-			//self::$_jpConfig->_params = array_merge($this->_params,$params);
-			self::$_jpConfig->_params = $params;
+			//Hmm does not work, because people may use config values, not in the config form
+			unset($this->_params['hidemenu']);
+			unset($this->_params['pdf_invoice']); // parameter remove and replaced by inv_os
+			unset($this->_params['list_limit']);
+			unset($this->_params['pagination_sequence']);
+			self::$_jpConfig->_params = array_merge($this->_params,$params);
+			//self::$_jpConfig->_params = $params;
 		}
 
 	}
@@ -828,7 +833,7 @@ class VmConfig {
 		$_value = join('|', $_value);
 		$qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES ('1', '$_value')";
 
-		self::$_jpConfig->raw = $_value;
+		self::$_jpConfig->_raw = $_value;
 
 		$_db->setQuery($qry);
 		if (!$_db->query()) {

@@ -64,7 +64,6 @@ echo $this->langList ?>
 						</select>';
 					echo VmHTML::row('raw','COM_VIRTUEMART_CATEGORY_ORDERING', $categorylist ); ?>
 					<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_FORM_PRODUCTS_PER_ROW','products_per_row',$this->category->products_per_row); ?>
-					<?php echo  VmHTML::row('input','COM_VIRTUEMART_CATEGORY_FORM_LIMIT_LIST_START','limit_list_start',$this->category->limit_list_start); ?>
 					<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_FORM_LIMIT_LIST_STEP','limit_list_step',$this->category->limit_list_step); ?>
 					<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_FORM_INITIAL_DISPLAY_RECORDS','limit_list_initial',$this->category->limit_list_initial); ?>
 					<?php echo VmHTML::row('select','COM_VIRTUEMART_CATEGORY_FORM_TEMPLATE', 'category_template', $this->jTemplateList ,$this->category->category_template,'','directory', 'name',false) ; ?>
