@@ -57,8 +57,6 @@ class TableCategories extends VmTable {
 	var $limit_list_start 	 = 0;
 	/** @var int category limit step*/
 	var $limit_list_step 	 = 0;
-	/** @var int category limit max */
-	var $limit_list_max	= 0;
 	/** @var int category limit initial */
 	var $limit_list_initial	= 0;
 	/** @var string Meta description */
