@@ -160,7 +160,19 @@ $rowColor = 0;
 				</span>
             </div>
         </td>
-        <td width="120px"  colspan="3">
+        <td   colspan="3">
+<div style="margin-right: 20px; display: inline">
+			<input type="text"
+                   size="12"
+                   style="text-align:right;" name="mprices[product_override_price][]"
+                   value="<?php echo $this->tempProduct->product_override_price ?>"/>
+			<?php echo $this->vendor_currency;   ?>
+</div>
+			<?php
+			$options = array(0 => JText::_ ('JNO'), 1 => JText::_ ('JYES'));
+			// echo VmHtml::radioList ('mprices[use_desired_price][' . $this->priceCounter . ']', $this->tempProduct->override, $options);
+			echo '<input type="checkbox" name="mprices[use_desired_price][' . $this->priceCounter . ']" value="1"/>'
+			?>
 			<strong>
 			<span
 				class="hasTip"
@@ -168,17 +180,7 @@ $rowColor = 0;
 			<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL'); ?>
 			</span>
 			</strong>
-			<?php
-			$options = array(0 => JText::_ ('JNO'), 1 => JText::_ ('JYES'));
-			// echo VmHtml::radioList ('mprices[use_desired_price][' . $this->priceCounter . ']', $this->tempProduct->override, $options);
-			echo '<input type="checkbox" name="mprices[use_desired_price][' . $this->priceCounter . ']" value="1"/>'
-			?>
-			<br />
-			<input type="text"
-                   size="12"
-                   style="text-align:right;" name="mprices[product_override_price][]"
-                   value="<?php echo $this->tempProduct->product_override_price ?>"/>
-			<?php echo $this->vendor_currency;   ?>
+
 			<br />
  <?php
 			// 							echo VmHtml::checkbox('override',$this->product->override);
