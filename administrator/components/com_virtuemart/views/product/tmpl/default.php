@@ -145,7 +145,7 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 					if($this->pagination->limit<21 or $total<21){
 						// Product list should be ordered
 						$this->model->addImages($product,1);
-						$img = '<span>('.$product->mediaitems.')</span>'.$product->images[0]->displayMediaThumb('class="vm_mini_image"',false );
+						$img = '<span style="display:block">('.$product->mediaitems.')</span>'.$product->images[0]->displayMediaThumb('class="vm_mini_image"',false );
 						//echo JHTML::_('link', $link, $img,  array('title' => JText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name));
 					} else {
 						//echo JHTML::_('link', $link, '<span class="icon-nofloat vmicon vmicon-16-media"></span> ('.$product->mediaitems.')', array('title' => JText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name) );
