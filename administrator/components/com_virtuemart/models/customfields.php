@@ -677,6 +677,8 @@ class VirtueMartModelCustomfields extends VmModel {
 					$thumb ='';
 					if (!empty($related->virtuemart_media_id[0])) {
 						$thumb = $this->displayCustomMedia ($related->virtuemart_media_id[0]).' ';
+					} else {
+						$thumb = $this->displayCustomMedia (0).' ';
 					}
 					$display = '<input type="hidden" value="' . $field->custom_value . '" name="field[' . $row . '][custom_value]" />';
 					$display .= JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id,FALSE), $thumb   . $related->product_name, array('title' => $related->product_name));
@@ -1118,6 +1120,8 @@ class VirtueMartModelCustomfields extends VmModel {
 					$thumb ='';
 					if (!empty($related->virtuemart_media_id[0])) {
 						$thumb = $this->displayCustomMedia ($related->virtuemart_media_id[0]).' ';
+					} else {
+						$thumb = $this->displayCustomMedia (0).' ';
 					}
 					return JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id,FALSE), $thumb   . $related->product_name, array('title' => $related->product_name));
 					break;
@@ -1164,6 +1168,9 @@ class VirtueMartModelCustomfields extends VmModel {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'mediahandler.php');
 		$media = VmMediaHandler::createMedia ($data, $table);
 
+		//if($media_id==0){
+		//	return $media->getIcon('', FALSE, TRUE, TRUE,$absUrl);
+		//}
 		return $media->displayMediaThumb ('', FALSE, '', TRUE, TRUE, $absUrl);
 
 	}

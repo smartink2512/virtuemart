@@ -611,13 +611,16 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		if(empty($limit)){
-			if ($app->isSite ()){
-				$limit = VmConfig::get ('llimit_init_FE', 20);
+			if($app->isSite()){
+				$limit = VmConfig::get ('llimit_init_FE');
 			} else {
-				$limit = VmConfig::get ('llimit_init_BE', 20);
+				$limit = VmConfig::get ('llimit_init_BE');
 			}
-
+			if(empty($limit)){
+				$limit = 30;
+			}
 		}
+
 		$this->setState ('limit', $limit);
 		$this->setState ($limitString, $limit);
 		$this->_limit = $limit;

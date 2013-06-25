@@ -262,12 +262,15 @@ class VmModel extends JModel {
 		$limit = (int)$app->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit');
 		if(empty($limit)){
 			if($app->isSite()){
-				$limit = VmConfig::get ('llimit_init_FE', 20);
+				$limit = VmConfig::get ('llimit_init_FE');
 			} else {
-				$limit = VmConfig::get ('llimit_init_BE', 20);
+				$limit = VmConfig::get ('llimit_init_BE');
 			}
-
+			if(empty($limit)){
+				$limit = 30;
+			}
 		}
+
 		$this->setState('limit', $limit);
 		$this->setState('com_virtuemart.'.$view.'.limit',$limit);
 		$this->_limit = $limit;
