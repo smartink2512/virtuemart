@@ -229,6 +229,25 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	if(!$this->execSQLFile($filename)){
 		vmError(JText::_('Problems execution of SQL File '.$filename));
 	} else {
+		//update jplugin_id from shipment and payment
+		$db = JFactory::getDBO();
+		$q = 'SELECT `extension_id` FROM #__extensions WHERE element = "weight_countries" AND folder = "vmshipment"';
+		$db->setQuery($q);
+		$shipment_plg_id = $db->loadResult();
+		if(!empty($shipment_plg_id)){
+			$q = 'UPDATE #__virtuemart_shipmentmethods SET `shipment_jplugin_id`="'.$shipment_plg_id.'" WHERE shipment_element = "weight_countries" ';
+			$db->setQuery($q);
+			$db->query();
+		}
+		$q = 'SELECT `extension_id` FROM #__extensions WHERE element = "standard" AND folder = "vmpayment"';
+		$db->setQuery($q);
+		$payment_plg_id = $db->loadResult();
+		if(!empty($payment_plg_id)){
+			$q = 'UPDATE #__virtuemart_paymentmethods SET `payment_jplugin_id`="'.$payment_plg_id.'" WHERE payment_element = "standard" ';
+			$db->setQuery($q);
+			$db->query();
+		}
+
 		vmInfo(JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED'));
 	}
 

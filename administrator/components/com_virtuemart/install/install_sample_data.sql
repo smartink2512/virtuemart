@@ -311,3 +311,23 @@ INSERT INTO `#__virtuemart_rating_reviews` (`virtuemart_rating_review_id`, `virt
 
 INSERT INTO `#__virtuemart_rating_votes` (`virtuemart_rating_vote_id`, `virtuemart_product_id`, `vote`, `lastip`, `created_on`, `created_by`, `modified_on`, `modified_by`) VALUES
 (1, 7, 5, '::1', '2012-10-26 10:28:32', 627, '2012-10-26 10:29:16', 627);
+
+--
+-- Dumping data for table `#__virtuemart_shipmentmethods`
+--
+
+INSERT INTO `#__virtuemart_shipmentmethods` (`virtuemart_shipmentmethod_id`, `virtuemart_vendor_id`, `shipment_jplugin_id`, `slug`, `shipment_element`, `shipment_params`, `ordering`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
+(1, 1, 0, '', 'weight_countries', 'shipment_logos=""|countries=""|zip_start=""|zip_stop=""|weight_start=""|weight_stop=""|weight_unit="KG"|nbproducts_start=0|nbproducts_stop=0|orderamount_start=""|orderamount_stop=""|cost="0"|package_fee=""|tax_id="0"|free_shipment=""|', 0, 0, 1, '2012-10-25 10:36:01', 0, '2012-10-26 10:29:16', 627, '0000-00-00 00:00:00', 0);
+
+INSERT INTO `#__virtuemart_shipmentmethods_XLANG` (`virtuemart_shipmentmethod_id`, `shipment_name`, `shipment_desc`, `slug`) VALUES
+(1, 'Self pick-up', '', 'Self pick-up');
+
+--
+-- Dumping data for table `#__virtuemart_paymentmethods`
+--
+
+INSERT INTO `#__virtuemart_paymentmethods` (`virtuemart_paymentmethod_id`, `virtuemart_vendor_id`, `payment_jplugin_id`, `slug`, `payment_element`, `payment_params`, `shared`, `ordering`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
+(1, 1, 0, '', 'standard', 'payment_logos=""|countries=""|payment_currency="0"|status_pending="U"|send_invoice_on_order_null="1"|min_amount=""|max_amount=""|cost_per_transaction=""|cost_percent_total=""|tax_id="0"|payment_info=""|', 0, 0, 1, '2012-10-25 10:36:01', 0, '2012-10-26 10:29:16', 627, '0000-00-00 00:00:00', 0);
+
+INSERT INTO `#__virtuemart_paymentmethods_XLANG` (`virtuemart_paymentmethod_id`, `payment_name`, `payment_desc`, `slug`) VALUES
+(1, 'Cash on delivery', '', 'Cash on delivery');
