@@ -1915,15 +1915,14 @@ class Migrator extends VmModel{
 		$prefix = '#_';
 		$oldtable = '#__vm_product';
 		$db = JFactory::getDbo();
-		$db->setQuery("SELECT product_sku, attribute FROM " . $oldtable);
+		$db->setQuery("SELECT product_sku, attribute FROM " . $oldtable . " WHERE ( attribute IS NULL or attribute <> '') ");
 		$rows = $db->loadObjectList();
 
 		foreach ($rows as $product) {
 
-
-				$db->setQuery("SELECT virtuemart_product_id FROM " . $prefix . "_virtuemart_products WHERE product_sku=" . $db->Quote($product->product_sku));
-				$productid = (int)$db->loadResult();
-				if(!in_array($productid,$alreadyKnownIds)){
+			$db->setQuery("SELECT virtuemart_product_id FROM " . $prefix . "_virtuemart_products WHERE product_sku=" . $db->Quote($product->product_sku));
+			$productid = (int)$db->loadResult();
+			if(!in_array($productid,$alreadyKnownIds)){
 				$ignore = JRequest::getVar('prodIdsToIgnore',array());
 				if(!is_array($ignore)) $ignore = array($ignore);
 				foreach($ignore as &$ig){
@@ -1967,10 +1966,18 @@ class Migrator extends VmModel{
 						}
 						foreach ($attrData as $key => $attr) {
 							if ($key != '0') {
-								$priceset = explode("\[", $attr);
+								$priceset = explode("[", $attr);
 								$price = 0;
+								$warning='';
 								if (count($priceset) > 1) {
-									$price = substr($priceset[1], 0, -1);
+									$price = substr($priceset[1], 0, -1); // remove ]
+									if ('=' == substr ($price, 0,1)) {
+										// Don't port, set the price to 0
+										$price = 0;
+										$warning='WARNING: Price for this attribute has been set to 0';
+									} elseif  ("+" == substr($price, 0,1)) {
+										$price =  substr($price, 1); // remove the +
+									}
 								}
 								$cleaned = $priceset[0];
 								//get ordering of the last element and add 1 to it
@@ -1983,7 +1990,7 @@ class Migrator extends VmModel{
 									$result.="query failed for attribute :" . $cleaned . ", query :" . $query . "</br>";
 									vmWarn('portVm1Attributes '.$result);
 								};
-								$result.="inserted attribute for parent :" . $attrData[0] . ", atttribute name :" . $cleaned . "<br/>";
+								$result.="inserted attribute for parent :" . $attrData[0] . ", atttribute name :" . $cleaned . ' '.$warning. "<br/>";
 
 							}
 						}
