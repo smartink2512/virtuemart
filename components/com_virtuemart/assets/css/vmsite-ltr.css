@@ -15,7 +15,6 @@ span.title{font-weight:700;display:block;border-bottom:solid #CAC9C9 1px;font-si
 .additional-images img{margin-right:8px;width:50px;height:auto;}
 .product-price{margin:0 0 15px;}
 .price-crossed div.PricebasePriceWithTax .PricebasePriceWithTax{text-decoration: line-through;}
-.price-crossed > div.PricebasePriceWithTax {font-size: 13px; color: #333;}
 .productdetails-view .addtocart-bar{margin:15px 0 0;padding:0 0 0 38px;}
 .availability{text-align:center;margin:15px 0 0;}
 .customer-reviews h4{border-bottom:solid #CAC9C9 1px;font-size:14px;margin:0 0 10px;padding:0 0 6px;}
@@ -170,7 +169,7 @@ span.variant-name,span.custom-variant-name{width:100px;float:left;display:block;
 span.addtocart-button input.addtocart-button:hover,span.addtocart-button input.notify-button:hover,input.highlight-button:hover,a.highlight:hover{background-position:0 -200px;color:#f2f2f2;}
 .category-view .row .category .spacer,.featured-view .spacer,.latest-view .spacer,.topten-view .spacer,.recent-view .spacer,.related-products-view .spacer,.browse-view .row .product .spacer{padding:6px;}
 .featured-view .spacer h3,.latest-view .spacer h3,.topten-view .spacer h3,.recent-view .spacer h3,.related-products-view .spacer h3,.browse-view .row .product .spacer h2{font-size:14px;margin:0 0 6px;padding:0;}
-.featured-view .spacer span,.latest-view .spacer span,.topten-view .spacer span,.recent-view .spacer span,.related-products-view .spacer span,.browse-view .row .product .spacer span{font-size:11px;color:#666;}
+.featured-view .spacer span,.latest-view .spacer span,.topten-view .spacer span,.recent-view .spacer span,.related-products-view .spacer span,.browse-view .row .product .spacer span{font-size:0.85em;color:#666;}
 .browse-view .row .product .spacer img,.related-products-view .row .product .spacer img{max-width:90%;height:auto;}
 .display-number,.control-buttons,.right{text-align:right !important;}
 .ask-a-question-view,.manufacturer-details-view .spacer{padding:30px;}
