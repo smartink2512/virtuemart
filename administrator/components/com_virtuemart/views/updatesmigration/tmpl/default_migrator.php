@@ -92,39 +92,17 @@ $session = JFactory::getSession();
 	</td>
 </tr>
 
-<tr>
-	<td>
-		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_REWRITE_ORDER_NUMBER'); ?>
-	</td>
-	<td>
-		<?php echo VmHTML::checkbox('reWriteOrderNumber', $session->get('reWriteOrderNumber', 1, 'vm')); ?>
-	</td>
-</tr>
-<tr>
-	<td>
-		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_USER_ORDER_ID'); ?>
-	</td>
-	<td>
-		<?php echo VmHTML::checkbox('userOrderId', $session->get('userOrderId', 0, 'vm')); ?>
-	</td>
-</tr>
-<tr>
-	<td>
-		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_DCAT_BROWSE'); ?>
-	</td>
-	<td>
-		<input class="inputbox" type="text" name="migration_default_category_browse" size="15" value="<?php echo $session->get('migration_default_category_browse', '', 'vm') ?>" />
-	</td>
-</tr>
+<?php
 
-<tr>
-	<td>
-		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_DCAT_FLY'); ?>
-	</td>
-	<td>
-		<input class="inputbox" type="text" name="migration_default_category_fly" size="" value="<?php echo $session->get('migration_default_category_fly', '', 'vm') ?>" />
-	</td>
-</tr>
+echo VmHTML::row('checkbox','COM_VIRTUEMART_MIGRATION_REWRITE_ORDER_NUMBER','reWriteOrderNumber',$session->get('reWriteOrderNumber', 1, 'vm'));
+echo VmHTML::row('checkbox','COM_VIRTUEMART_MIGRATION_USER_ORDER_ID','userOrderId',$session->get('userOrderId', 0, 'vm'));
+echo VmHTML::row('checkbox','COM_VIRTUEMART_MIGRA_SGRP_PRICES','userSgrpPrices',$session->get('userSgrpPrices', 0, 'vm'));
+echo VmHTML::row('checkbox','COM_VIRTUEMART_MIGRA_PORTFLY','portFlypages',$session->get('portFlypages', 0, 'vm'));
+echo VmHTML::row('input','COM_VIRTUEMART_MIGRATION_DCAT_BROWSE','migration_default_category_browse',$session->get('migration_default_category_browse', 0, 'vm'));
+echo VmHTML::row('input','COM_VIRTUEMART_MIGRATION_DCAT_FLY','migration_default_category_fly',$session->get('migration_default_category_fly', 0, 'vm'));
+
+
+?>
 
 </table>
     <!-- Hidden Fields -->

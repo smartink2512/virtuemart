@@ -29,4 +29,20 @@ defined('_JEXEC') or die('Restricted access');
 		else echo $this->product->images[0]->displayFilesHandler(null,'product');
 	?>
 	</div>
+	<div>
+		<?php
+			//echo '<div width="100px">'.JText::_('COM_VIRTUEMART_RTB_AD').'</div>';
+			$jlang =JFactory::getLanguage();
+			$tag = $jlang->getTag();
+			$imgUrl = 'http://www.removethebackground.de//images/logoremove.png';
+			if(strpos($tag,'de')!==FALSE){
+				$url = 'http://www.removethebackground.de/virtuemart.aspx';
+			} else if(strpos($tag,'fr')!==FALSE){
+				$url = 'http://www.removethebackground.fr/virtuemart.aspx';
+			} else {
+				$url = 'http://www.removethebackground.co.uk/virtuemart.aspx';
+			}
+			echo '<a href="'.$url.'" target="_blank" alt="'.JText::_('COM_VIRTUEMART_RTB_AD').'"><img  height="60" src="'.$imgUrl.'" title="'.JText::_('COM_VIRTUEMART_RTB_AD').'"></a>';
+		?>
+	</div>
 </div>

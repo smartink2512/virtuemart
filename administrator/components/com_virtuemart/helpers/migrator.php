@@ -731,7 +731,7 @@ class Migrator extends VmModel{
 
 		$default_category_fly = JRequest::getString('migration_default_category_fly','');
 
-		$portFlypages = JRequest::getInt('migration_default_category_fly',0);
+		$portFlypages = JRequest::getInt('portFlypages',0);
 
 		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 			return;
@@ -762,17 +762,17 @@ class Migrator extends VmModel{
 // 				$category['modified_on'] = $oldcategory['mdate'];
 				$category['created_on'] = $this->_changeToStamp($oldcategory['cdate']);
 				$category['modified_on'] = $this->_changeToStamp($oldcategory['mdate']);
-				/*				if($default_category_browse!=$oldcategory['category_browsepage']){
-				 $browsepage = $oldcategory['category_browsepage'];
-				if (strcmp($browsepage, 'managed') ==0 ) {
-				$browsepage="browse_".$oldcategory['products_per_row'];
-				}
-				$category['category_layout'] = $browsepage;
-				}
 
-				if($portFlypages && $default_category_fly!=$oldcategory['category_flypage']){
-				$category['category_product_layout'] = $oldcategory['category_flypage'];
-				}*/
+				if($default_category_browse!=$oldcategory['category_browsepage']){
+					$browsepage = $oldcategory['category_browsepage'];
+					if (strcmp($browsepage, 'managed') ==0 ) {
+						$browsepage="browse_".$oldcategory['products_per_row'];
+					}
+					$category['category_layout'] = $browsepage;
+}
+					if($portFlypages && $default_category_fly!=$oldcategory['category_flypage']){
+					$category['category_product_layout'] = $oldcategory['category_flypage'];
+				}
 
 				//idea was to do it by the layout, but we store this information additionally for enhanced pagination
 				$category['products_per_row'] = $oldcategory['products_per_row'];
@@ -792,7 +792,6 @@ class Migrator extends VmModel{
 					}
 					break;
 				}
-
 
 				$alreadyKnownIds[$oldcategory['category_id']] = $category_id;
 				unset($category['virtuemart_category_id']);
@@ -1045,9 +1044,15 @@ class Migrator extends VmModel{
 		//$oldtonewProducts = array();
 		$oldtonewManus = $this->getMigrationProgress('manus');
 
-		$oldToNewShoppergroups = $this->getMigrationProgress('shoppergroups');
+		$userSgrpPrices = JRequest::getInt('userSgrpPrices',0);
+		if($userSgrpPrices){
+			$oldToNewShoppergroups = $this->getMigrationProgress('shoppergroups');
+		}
+
 
 		$productModel = VmModel::getModel('product');
+
+
 
 		// 		vmdebug('$alreadyKnownIds',$alreadyKnownIds);
 		while($continue){
@@ -1144,7 +1149,9 @@ class Migrator extends VmModel{
 							$product['mprices']['product_price_id'][$i] = 0;
 							$product['mprices']['product_id'][$i] = $price['product_id'];
 							$product['mprices']['product_price'][$i] = $price['product_price'];
-							$product['mprices']['virtuemart_shoppergroup_id'][$i] = $oldToNewShoppergroups[$price['shopper_group_id']];
+							if($userSgrpPrices){
+								$product['mprices']['virtuemart_shoppergroup_id'][$i] = $oldToNewShoppergroups[$price['shopper_group_id']];
+							}
 							$product['mprices']['product_currency'][$i] = $this->_ensureUsingCurrencyId($price['product_currency']);
 							$product['mprices']['price_quantity_start'][$i] = $price['price_quantity_start'];
 							$product['mprices']['price_quantity_end'][$i] = $price['price_quantity_end'];
