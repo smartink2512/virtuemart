@@ -472,7 +472,15 @@ $document->addScriptDeclaration ( "
 
 				</td>
 				<td align="right" style="padding-right: 5px;">
-					<?php echo $this->currency->priceDisplay($item->product_item_price); ?>
+					<?php
+					$item->product_discountedPriceWithoutTax = (float) $item->product_discountedPriceWithoutTax;
+					if (!empty($item->product_discountedPriceWithoutTax)) {
+						echo '<span style="text-decoration:line-through">'.$this->currency->priceDisplay($item->product_item_price) .'</span><br />';
+						echo '<span >'.$this->currency->priceDisplay($item->product_discountedPriceWithoutTax) .'</span><br />';
+					} else {
+						echo '<span >'.$this->currency->priceDisplay($item->product_item_price) .'</span><br />'; 
+					}
+					?>
 					<input class='orderedit' type="hidden" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_item_price]" value="<?php echo $item->product_item_price; ?>"/>
 				</td>
 				<td align="right" style="padding-right: 5px;">
@@ -495,7 +503,16 @@ $document->addScriptDeclaration ( "
 					<input class='orderedit' type="text" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_subtotal_discount]" value="<?php echo $item->product_subtotal_discount; ?>"/>
 				</td>
 				<td align="right" style="padding-right: 5px;">
-					<?php echo $this->currency->priceDisplay($item->product_subtotal_with_tax); ?>
+					<?php 
+					$item->product_basePriceWithTax = (float) $item->product_basePriceWithTax;
+					if(!empty($item->product_basePriceWithTax) && $item->product_basePriceWithTax != $item->product_final_price ) {
+						echo '<span style="text-decoration:line-through" >'.$this->currency->priceDisplay($item->product_basePriceWithTax,$this->currency,$item->product_quantity) .'</span><br />' ;
+					}
+					elseif (empty($item->product_basePriceWithTax) && $item->product_item_price != $item->product_final_price) {
+						echo '<span style="text-decoration:line-through">' . $this->currency->priceDisplay($item->product_item_price,$this->currency,$item->product_quantity) . '</span><br />';
+					}
+					echo $this->currency->priceDisplay($item->product_subtotal_with_tax);
+					?>
 					<input class='orderedit' type="hidden" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_subtotal_with_tax]" value="<?php echo $item->product_subtotal_with_tax; ?>"/>
 				</td>
 			</tr>

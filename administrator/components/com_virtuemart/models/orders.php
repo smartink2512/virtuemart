@@ -199,7 +199,7 @@ class VirtueMartModelOrders extends VmModel {
 		// Get the order items
 $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
     order_item_sku, i.virtuemart_product_id, product_item_price,
-    product_final_price, product_basePriceWithTax, product_subtotal_with_tax, product_subtotal_discount, product_tax, product_attribute, order_status,
+    product_final_price, product_basePriceWithTax, product_discountedPriceWithoutTax, product_subtotal_with_tax, product_subtotal_discount, product_tax, product_attribute, order_status,
     intnotes, virtuemart_category_id
    FROM (#__virtuemart_order_items i
    LEFT JOIN #__virtuemart_products p
@@ -1074,6 +1074,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$_orderItems->product_quantity = $_prod->quantity;
 			$_orderItems->product_item_price = $_cart->pricesUnformatted[$priceKey]['basePrice'];
 			$_orderItems->product_basePriceWithTax = $_cart->pricesUnformatted[$priceKey]['basePriceWithTax'];
+			$_orderItems->product_discountedPriceWithoutTax = $_cart->pricesUnformatted[$priceKey]['discountedPriceWithoutTax'];
 			//$_orderItems->product_tax = $_cart->pricesUnformatted[$priceKey]['subtotal_tax_amount'];
 			$_orderItems->product_tax = $_cart->pricesUnformatted[$priceKey]['taxAmount'];
 			$_orderItems->product_final_price = $_cart->pricesUnformatted[$priceKey]['salesPrice'];

@@ -72,7 +72,15 @@ if ($this->doctype != 'invoice') {
 			</td>
 		<?php if ($this->doctype == 'invoice') { ?>
 			<td align="right"   class="priceCol" >
-			    <?php echo '<span >'.$this->currency->priceDisplay($item->product_item_price, $this->currency) .'</span><br />'; ?>
+				<?php
+				$item->product_discountedPriceWithoutTax = (float) $item->product_discountedPriceWithoutTax;
+				if (!empty($item->product_discountedPriceWithoutTax)) {
+					echo '<span class="line-through">'.$this->currency->priceDisplay($item->product_item_price, $this->currency) .'</span><br />';
+					echo '<span >'.$this->currency->priceDisplay($item->product_discountedPriceWithoutTax, $this->currency) .'</span><br />';
+				} else {
+					echo '<span >'.$this->currency->priceDisplay($item->product_item_price, $this->currency) .'</span><br />'; 
+				}
+				?>
 			</td>
 		<?php } ?>
 			<td align="right" >
@@ -91,6 +99,9 @@ if ($this->doctype != 'invoice') {
 				$class = '';
 				if(!empty($item->product_basePriceWithTax) && $item->product_basePriceWithTax != $item->product_final_price ) {
 					echo '<span class="line-through" >'.$this->currency->priceDisplay($item->product_basePriceWithTax,$this->currency,$qtt) .'</span><br />' ;
+				}
+				elseif (empty($item->product_basePriceWithTax) && $item->product_item_price != $item->product_final_price) {
+					echo '<span class="line-through">' . $this->currency->priceDisplay($item->product_item_price,$this->currency,$qtt) . '</span><br />';
 				}
 
 				echo $this->currency->priceDisplay(  $item->product_subtotal_with_tax ,$this->currency); //No quantity or you must use product_final_price ?>

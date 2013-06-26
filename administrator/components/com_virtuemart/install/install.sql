@@ -546,6 +546,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_items` (
   `product_item_price` decimal(15,5),
   `product_tax` decimal(15,5),
   `product_basePriceWithTax` decimal(15,5),
+  `product_discountedPriceWithoutTax` decimal(15,5) NOT NULL DEFAULT '0.00000',
   `product_final_price` decimal(15,5) NOT NULL DEFAULT '0.00000',
   `product_subtotal_discount` decimal(15,5) NOT NULL DEFAULT '0.00000',
   `product_subtotal_with_tax` decimal(15,5) NOT NULL DEFAULT '0.00000',
