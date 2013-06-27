@@ -127,7 +127,7 @@ class VirtuemartViewCategory extends VmView {
 				if(empty($category->slug)){
 					vmInfo(JText::_('COM_VIRTUEMART_CAT_NOT_FOUND'));
 				} else {
-					if(!$category->published){
+					if($category->virtuemart_id!==0 and !$category->published){
 						vmInfo('COM_VIRTUEMART_CAT_NOT_PUBL',$category->category_name,$categoryId);
 						//return false;
 					}
