@@ -563,16 +563,25 @@ class Migrator extends VmModel{
 		$startLimit = 0;
 		$goForST = true;
 
+		/*$jUserArray = array('id','username','name','password','usertype','block','sendEmail','registerDate',
+							'lastvisitDate','activation','params','lastResetTime','resetCount');
+		$JUserString = '`p`.`'.implode('`,`p`.`',$jUserArray).'`';
+		//vmdebug('muhh',$JUserString);
+		//$continue=false;
+
+		$q = 'SELECT * FROM `#__vm_auth_group` ';
+		$this->_db->setQuery($q);
+		$groups = $this->_db->loadAssocList();*/
+
 		while($continue){
 
 			//Lets load all users from the joomla hmm or vm? VM1 users does NOT exist
-			$q = 'SELECT `p`.*,`ui`.*,`svx`.*,`aug`.*,`ag`.*,`vmu`.virtuemart_user_id FROM #__users AS `p`
-								LEFT OUTER JOIN #__vm_user_info AS `ui` ON `ui`.user_id = `p`.id
-								LEFT OUTER JOIN #__vm_shopper_vendor_xref AS `svx` ON `svx`.user_id = `p`.id
-								LEFT OUTER JOIN #__vm_auth_user_group AS `aug` ON `aug`.user_id = `p`.id
-								LEFT OUTER JOIN #__vm_auth_group AS `ag` ON `ag`.group_id = `aug`.group_id
-								LEFT OUTER JOIN #__virtuemart_vmusers AS `vmu` ON `vmu`.virtuemart_user_id = `p`.id
-								WHERE (`vmu`.virtuemart_user_id) IS NULL  LIMIT '.$startLimit.','.$maxItems ;
+			$q = 'SELECT `ui`.*,`svx`.*,'.$JUserString.',`vmu`.virtuemart_user_id FROM #__vm_user_info AS `ui`
+				LEFT OUTER JOIN #__vm_shopper_vendor_xref AS `svx` ON `svx`.user_id = `ui`.user_id
+				LEFT OUTER JOIN #__users AS `p` ON `p`.id = `ui`.user_id
+				LEFT OUTER JOIN #__virtuemart_vmusers AS `vmu` ON `vmu`.virtuemart_user_id = `ui`.user_id
+				WHERE (`vmu`.virtuemart_user_id) IS NULL  LIMIT '.$startLimit.','.$maxItems ;
+
 
 			$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port shoppers');
 			$oldUsers = $res[0];
@@ -590,29 +599,44 @@ class Migrator extends VmModel{
 					$user['virtuemart_shoppergroups_id'] = $oldToNewShoppergroups[$user['shopper_group_id']];
 				}
 
-				$user['virtuemart_user_id'] = $user['id'];
+				if(!empty($user['id'])){
+					$user['virtuemart_user_id'] = $user['id'];
+				}
+
+				if(!empty($user['user_email'])){
+					$user['email'] = $user['user_email'];
+				}
+
 				//$userModel->setUserId($user['id']);
 				$userModel->setId($user['id']);		//Should work with setId, because only administrators are allowed todo the migration
 
-				//Save the VM user stuff
-				if(!$saveUserData=$userModel->saveUserData($user,false)){
-					vmdebug('Error migration saveUserData ');
-					// 					vmError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA'));
-				}
 
-
-				$userfielddata = $userModel->_prepareUserFields($user, 'BT');
-
-				$userinfo = $this->getTable('userinfos');
-				if (!$userinfo->bindChecknStore($userfielddata)) {
-					vmError('Migration storeAddress BT '.$userinfo->getError());
-				}
-
-				if(!empty($user['user_is_vendor']) && $user['user_is_vendor'] === 1){
-					if (!$userModel->storeVendorData($user)){
-						vmError('Migrator portUsers '.$userModel->getError());
+				//Joomla user does exist
+				//if(!empty($user['email'])){
+					//Save the VM user stuff
+					if(!$saveUserData=$userModel->saveUserData($user,false)){
+						vmdebug('Error migration saveUserData ');
+						// 					vmError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA'));
 					}
-				}
+
+					$userfielddata = $userModel->_prepareUserFields($user, 'BT');
+
+					$userinfo = $this->getTable('userinfos');
+					if (!$userinfo->bindChecknStore($userfielddata)) {
+						vmError('Migration storeAddress BT '.$userinfo->getError());
+					}
+
+					if(!empty($user['user_is_vendor']) && $user['user_is_vendor'] === 1){
+						if (!$userModel->storeVendorData($user)){
+							vmError('Migrator portUsers '.$userModel->getError());
+						}
+					}
+				/*} else //There is no joomla user, but there is a user
+					if(!empty($user['user_email'])){
+
+						//vmdebug('Hmm joomla user is missing, what todo?',$user['user_id']);
+				}*/
+
 
 				$i++;
 

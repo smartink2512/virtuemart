@@ -1373,7 +1373,7 @@ class VirtueMartModelUser extends VmModel {
 			$db = JFactory::getDbo();
 			$userfieldTable = new TableUserinfos($db);
 			$userfieldFields = get_object_vars($userfieldTable);
-			$userFieldSearchArray = array('company','first_name','last_name','phone_1','address_1');
+			$userFieldSearchArray = array('company','first_name','last_name');
 			//We must validate if the userfields actually exists, they could be removed
 			$userFieldsValid = array();
 
@@ -1386,15 +1386,20 @@ class VirtueMartModelUser extends VmModel {
 
 			$searchArray = array_merge($userFieldsValid,$searchArray);
 
-			$searches = explode(' ',$search);
+			/*$searches = explode(' ',$search);
 			foreach($searches as &$sear){
 				$sear= '"%' . $this->_db->getEscaped( $sear, true ) . '%"' ;
-			}
+			}*/
 
-			foreach($searchArray as $field){
+			/*foreach($searchArray as $field){
 				foreach($searches as $search){
 					$where.= ' '.$field.' LIKE '.$search.' OR ';
 				}
+			}*/
+			$search = str_replace(' ','%',$this->_db->getEscaped( $search, true ));
+			foreach($searchArray as $field){
+
+					$where.= ' '.$field.' LIKE "%'.$search.'%" OR ';
 			}
 			$where = substr($where,0,-3);
 		}
@@ -1403,7 +1408,6 @@ class VirtueMartModelUser extends VmModel {
 			, ju.name AS name
 			, ju.username AS username
 			, ju.email AS email
-			, ju.usertype AS usertype
 			, IFNULL(vmu.user_is_vendor,"0") AS is_vendor
 			, IFNULL(sg.shopper_group_name, "") AS shopper_group_name ';
 		if ($search) {

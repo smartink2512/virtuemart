@@ -247,7 +247,8 @@ class VirtueMartModelProduct extends VmModel {
 // 		if ( $this->keyword !== "0" and $group ===false) {
 			if (!empty($this->keyword) and $this->keyword !== '' and $group === FALSE) {
 
-				$keyword = '"%' . $this->_db->getEscaped ($this->keyword, TRUE) . '%"';
+				$keyword =  '"%' .str_replace(array(' ','-'),'%',$this->_db->getEscaped( $this->keyword, true )). '%"';
+				//$keyword = '"%' . $this->_db->getEscaped ($this->keyword, TRUE) . '%"';
 
 				foreach ($this->valid_search_fields as $searchField) {
 					if ($searchField == 'category_name' || $searchField == 'category_description') {
