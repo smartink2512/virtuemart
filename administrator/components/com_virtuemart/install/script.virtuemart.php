@@ -611,7 +611,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				// 				VmConfig::loadConfig(true);
 
 				$this->_db = JFactory::getDBO();
-				$q = 'SHOW TABLES LIKE "%virtuemart_configs%"'; //=>jos_virtuemart_shipment_plg_weight_countries
+				$q = 'SHOW TABLES LIKE #__virtuemart_configs'; //=>jos_virtuemart_shipment_plg_weight_countries
 				$this->_db->setQuery($q);
 				$res = $this->_db->loadResult();
 				if(!empty($res)){

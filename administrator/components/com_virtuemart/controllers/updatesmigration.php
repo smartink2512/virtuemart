@@ -332,7 +332,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	function setDangerousToolsOff(){
 
 		$db = JFactory::getDBO();
-		$q = 'SHOW TABLES LIKE "%virtuemart_configs%"'; //=>jos_virtuemart_shipment_plg_weight_countries
+		$q = 'SHOW TABLES LIKE  "#__virtuemart_configs"'; //=>jos_virtuemart_shipment_plg_weight_countries
 		$db->setQuery($q);//vmdebug('$db',$db->loadResult());
 		$res = $db->loadResult();
 		if(!empty($res)){

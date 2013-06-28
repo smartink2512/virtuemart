@@ -503,7 +503,7 @@ class VmConfig {
 		self::$_jpConfig = new VmConfig();
 
 		$db = JFactory::getDBO();
-		$query = 'SHOW TABLES LIKE "%virtuemart_configs%"';
+		$query = 'SHOW TABLES LIKE #__virtuemart_configs';
 		$db->setQuery($query);
 		$configTable = $db->loadResult();
 // 		self::$_debug = true;
