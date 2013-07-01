@@ -306,10 +306,10 @@ class VirtueMartModelProduct extends VmModel {
 
 			if($isSite and !VmConfig::get('use_as_catalog',0)) {
 				if (VmConfig::get('stockhandle','none')=='disableit_children') {
-					$where[] = ' (p.`product_in_stock` - p.`product_ordered` >"0" OR children.`product_in_stock` - children.`product_ordered` > "0") ';
+					$where[] = ' (IFNULL(p.`product_in_stock`,"0") - IFNULL(p.`product_ordered`,"0") >"0" OR (IFNULL(children.`product_in_stock`,"0")  - IFNULL(children.`product_ordered`,"0") > "0") ';
 					$joinChildren = TRUE;
 				} else if (VmConfig::get('stockhandle','none')=='disableit') {
-					$where[] = ' p.`product_in_stock` - p.`product_ordered` >"0" ';
+					$where[] = ' IFNULL(p.`product_in_stock`,"0") - IFNULL(p.`product_ordered`,"0") >"0" ';
 				}
  			}
 
@@ -368,7 +368,7 @@ class VirtueMartModelProduct extends VmModel {
 						$where[] = 'pp.`product_price` IS NULL';
 						break;
 					case 'stockout':
-						$where[] = 'p.`product_in_stock`- p.`product_ordered` < 1';
+						$where[] = ' p.`product_in_stock`- p.`product_ordered` < 1';
 						break;
 					case 'stocklow':
 						$where[] = 'p.`product_in_stock`- p.`product_ordered` < p.`low_stock_notification`';
@@ -469,7 +469,7 @@ class VirtueMartModelProduct extends VmModel {
 			$joinedTables = ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)';
 		}
 		else {
-			$select = ' p.`virtuemart_product_id` FROM `#__virtuemart_products` as p';
+			$select = ' p.`virtuemart_product_id`, FROM `#__virtuemart_products` as p';
 			$joinedTables = '';
 		}
 
@@ -2268,7 +2268,7 @@ class VirtueMartModelProduct extends VmModel {
 			//note by Max Milbers
 			if ($signInStock == '+') {
 
-				$this->_db->setQuery ('SELECT (`product_in_stock`+`product_ordered`) < `low_stock_notification` '
+				$this->_db->setQuery ('SELECT (IFNULL(`product_in_stock`,"0")+IFNULL(`product_ordered`,"0")) < IFNULL(`low_stock_notification`,"0") '
 						. 'FROM `#__virtuemart_products` '
 						. 'WHERE `virtuemart_product_id` = ' . $id
 				);

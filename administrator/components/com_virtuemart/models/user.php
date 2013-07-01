@@ -1386,16 +1386,6 @@ class VirtueMartModelUser extends VmModel {
 
 			$searchArray = array_merge($userFieldsValid,$searchArray);
 
-			/*$searches = explode(' ',$search);
-			foreach($searches as &$sear){
-				$sear= '"%' . $this->_db->getEscaped( $sear, true ) . '%"' ;
-			}*/
-
-			/*foreach($searchArray as $field){
-				foreach($searches as $search){
-					$where.= ' '.$field.' LIKE '.$search.' OR ';
-				}
-			}*/
 			$search = str_replace(' ','%',$this->_db->getEscaped( $search, true ));
 			foreach($searchArray as $field){
 
@@ -1404,7 +1394,7 @@ class VirtueMartModelUser extends VmModel {
 			$where = substr($where,0,-3);
 		}
 
-		$select = ' DISTINCT ju.id AS id
+		$select = ' ju.id AS id
 			, ju.name AS name
 			, ju.username AS username
 			, ju.email AS email

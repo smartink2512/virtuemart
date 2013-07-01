@@ -502,10 +502,13 @@ class VmConfig {
 
 		self::$_jpConfig = new VmConfig();
 
+		if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'config.php');
+		$configTable  = VirtueMartModelConfig::checkConfigTableExists();
+
 		$db = JFactory::getDBO();
-		$query = 'SHOW TABLES LIKE #__virtuemart_configs';
+	/*	$query = 'SHOW TABLES LIKE "%virtuemart_configs%"';
 		$db->setQuery($query);
-		$configTable = $db->loadResult();
+		$configTable = $db->loadResult();/*/
 // 		self::$_debug = true;
 
 		if(empty($configTable)){
@@ -873,6 +876,7 @@ class VmConfig {
 
 		} else {
 			vmInfo('Taking config from file');
+			//vmTrace('read config file, why?',TRUE);
 		}
 
 		$_section = '[CONFIG]';

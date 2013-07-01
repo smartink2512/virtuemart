@@ -331,10 +331,8 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	 */
 	function setDangerousToolsOff(){
 
-		$db = JFactory::getDBO();
-		$q = 'SHOW TABLES LIKE  "#__virtuemart_configs"'; //=>jos_virtuemart_shipment_plg_weight_countries
-		$db->setQuery($q);//vmdebug('$db',$db->loadResult());
-		$res = $db->loadResult();
+		if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'config.php');
+		$res  = VirtueMartModelConfig::checkConfigTableExists();
 		if(!empty($res)){
 			$model = $this->getModel('config');
 			$model->setDangerousToolsOff();

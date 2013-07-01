@@ -379,6 +379,20 @@ class VirtueMartModelConfig extends JModel {
 		return true;
 	}
 
+	public static function checkConfigTableExists(){
+
+		$db = JFactory::getDBO();
+		$query = 'SHOW TABLES LIKE "'.$db->getPrefix().'virtuemart_configs"';
+		$db->setQuery($query);
+		$configTable = $db->loadResult();
+		$err = $db->getErrorMsg();
+		if(!empty($err) or !$configTable){
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	/**
 	 * Dangerous tools get disabled after execution an operation which needed that rights.
 	 * This is the function actually doing it.

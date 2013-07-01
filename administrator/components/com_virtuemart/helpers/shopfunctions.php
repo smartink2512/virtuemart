@@ -494,7 +494,7 @@ class ShopFunctions {
 
 		$weight_unit_default = array(
 			'KG' => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_KG')
-		, 'DMG' => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100MG')
+		, 'DG' => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100G')
 		, 'M'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_M')
 		, 'SM'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_SM')
 		, 'CUBM'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_CUBM')

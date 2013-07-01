@@ -609,11 +609,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 				$this->loadVm();
 				// 				VmConfig::loadConfig(true);
+				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'config.php');
+				$res  = VirtueMartModelConfig::checkConfigTableExists();
 
-				$this->_db = JFactory::getDBO();
-				$q = 'SHOW TABLES LIKE #__virtuemart_configs'; //=>jos_virtuemart_shipment_plg_weight_countries
-				$this->_db->setQuery($q);
-				$res = $this->_db->loadResult();
 				if(!empty($res)){
 					JRequest::setVar(JUtility::getToken(), '1', 'post');
 					$config = JModel::getInstance('config', 'VirtueMartModel');
