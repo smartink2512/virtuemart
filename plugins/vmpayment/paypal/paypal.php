@@ -215,7 +215,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			//"undefined_quantity" => "0",
 			"ipn_test" => $method->debug,
 			"rm" => '2', // the buyer’s browser is redirected to the return URL by using the POST method, and all payment variables are included
-			//"pal" => "NRUBJXESJTY24",
+			"bn" => "VirtueMart_Cart_PPA",
 			"image_url" => JURI::root() . $vendor->images[0]->file_url,
 			"no_shipping" => isset($method->no_shipping) ? $method->no_shipping : 0,
 			"no_note" => "1");
