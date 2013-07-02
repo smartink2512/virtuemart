@@ -937,7 +937,7 @@ class VmMediaHandler {
 
 			$j .="
 			jQuery(document).ready(function($){
-			var medialink = 'index.php?option=com_virtuemart&view=media&task=viewJson&format=json&mediatype=".$type."';
+			var medialink = '". JURI::root(false) ."administrator/index.php?option=com_virtuemart&view=media&task=viewJson&format=json&mediatype=".$type."';
 			var media = $('#searchMedia').data();
 			var searchMedia = $('input#searchMedia');
 			searchMedia.click(function () {
@@ -948,7 +948,7 @@ class VmMediaHandler {
 				source: medialink,
 				select: function(event, ui){
 					$('#ImagesContainer').append(ui.item.label);
-					//$(this).autocomplete( 'option' , 'source' , 'index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
+					//$(this).autocomplete( 'option' , 'source' , '". JURI::root(false) ."administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
 
 				},
 				minLength:1,

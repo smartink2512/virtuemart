@@ -306,10 +306,10 @@ class VirtueMartModelProduct extends VmModel {
 
 			if($isSite and !VmConfig::get('use_as_catalog',0)) {
 				if (VmConfig::get('stockhandle','none')=='disableit_children') {
-					$where[] = ' (IFNULL(p.`product_in_stock`,"0") - IFNULL(p.`product_ordered`,"0") >"0" OR (IFNULL(children.`product_in_stock`,"0")  - IFNULL(children.`product_ordered`,"0") > "0") ';
+					$where[] = ' (p.`product_in_stock` - p.`product_ordered` >"0" OR children.`product_in_stock` - children.`product_ordered` > "0") ';
 					$joinChildren = TRUE;
 				} else if (VmConfig::get('stockhandle','none')=='disableit') {
-					$where[] = ' IFNULL(p.`product_in_stock`,"0") - IFNULL(p.`product_ordered`,"0") >"0" ';
+					$where[] = ' p.`product_in_stock` - p.`product_ordered` >"0" ';
 				}
  			}
 
@@ -469,7 +469,7 @@ class VirtueMartModelProduct extends VmModel {
 			$joinedTables = ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)';
 		}
 		else {
-			$select = ' p.`virtuemart_product_id`, FROM `#__virtuemart_products` as p';
+			$select = ' p.`virtuemart_product_id` FROM `#__virtuemart_products` as p';
 			$joinedTables = '';
 		}
 

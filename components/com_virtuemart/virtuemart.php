@@ -55,15 +55,20 @@ if(VmConfig::get('shop_is_offline',0)){
 	if (($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit') ) {
 		$app = JFactory::getApplication();
 
-			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-			if	(Permissions::getInstance()->check("admin,storeadmin")) {
-				$jlang =JFactory::getLanguage();
-				$jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
-				$basePath = JPATH_VM_ADMINISTRATOR;
-				$trigger = 'onVmAdminController';
-			} else {
-				$app->redirect('index.php?option=com_virtuemart', jText::_('COM_VIRTUEMART_RESTRICTED_ACCESS') );
-			}
+		if(VmConfig::get('google_jquery',TRUE)){
+			vmJsApi::js ('jquery-ui', '//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16', '', TRUE);
+		} else {
+			vmJsApi::js ('jquery-ui', FALSE, '', TRUE);
+		}
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if	(Permissions::getInstance()->check("admin,storeadmin")) {
+			$jlang =JFactory::getLanguage();
+			$jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
+			$basePath = JPATH_VM_ADMINISTRATOR;
+			$trigger = 'onVmAdminController';
+		} else {
+			$app->redirect('index.php?option=com_virtuemart', jText::_('COM_VIRTUEMART_RESTRICTED_ACCESS') );
+		}
 
 	} elseif($_controller) {
 			$basePath = JPATH_VM_SITE;

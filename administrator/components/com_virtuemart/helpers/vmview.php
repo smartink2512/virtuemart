@@ -283,8 +283,7 @@ class VmView extends JView{
 			'<![endif]-->'."\n".
 			'<!--[if gte IE 8]>'."\n\n".
 			'<link href="administrator/templates/bluestork/css/ie8.css" rel="stylesheet" type="text/css" />'."\n".
-			'<![endif]-->'."\n".
-			'<link rel="stylesheet" href="administrator/templates/bluestork/css/rounded.css" type="text/css" />'."\n"
+			'<![endif]-->'."\n"
 			);
 		//load the JToolBar library and create a toolbar
 		jimport('joomla.html.toolbar');
