@@ -1084,16 +1084,18 @@ class vmJsApi{
 	 * Prevent duplicate load of script
 	 * @ Author KOHL Patrick
 	 */
-	static function jQuery() {
+	static function jQuery($isSite=-1) {
 
-		if (JFactory::getApplication ()->get ('jquery')) {
+		/*if (JFactory::getApplication ()->get ('jquery')) {
 			return FALSE;
-		}
-		$isSite = JFactory::getApplication()->isSite();
+		}*/
+		vmdebug('is  site ',$isSite);
+		if($isSite===-1)$isSite = JFactory::getApplication()->isSite();
+
 		if (!VmConfig::get ('jquery', TRUE) and $isSite) {
 			return FALSE;
 		}
-		$document = JFactory::getDocument();
+
 		if(VmConfig::get('google_jquery',TRUE)){
 			vmJsApi::js('jquery','//ajax.googleapis.com/ajax/libs/jquery/1.6.4','',TRUE);
 			//$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js');
@@ -1111,9 +1113,10 @@ class vmJsApi{
 		}
 		if (!$isSite) {
 			vmJsApi::js ('jquery.ui.autocomplete.html');
+
 		}
 		vmJsApi::js( 'jquery.noConflict');
-		JFactory::getApplication()->set('jquery',TRUE);
+		//JFactory::getApplication()->set('jquery',TRUE);
 		return TRUE;
 	}
 	// Virtuemart product and price script
