@@ -239,6 +239,17 @@ class VirtueMartModelUpdatesMigration extends JModel {
 			$db->setQuery($q);
 			$db->query();
 		}
+		//Create table of the plugin
+
+		if(JVM_VERSION!=1){
+			$url = '/plugins/vmshipment/weight_countries';
+		} else{
+			$url = '/plugins/vmshipment';
+		}
+		if (!class_exists ('plgVmShipmentWeight_countries')) require(JPATH_ROOT . DS . $url . DS . 'weight_countries.php');
+		$this->_tablename = '#__virtuemart_' . $this->_psType . '_plg_' . $this->_name;
+		$this->installPluginTable('plgVmShipmentWeight_countries','#__virtuemart_shipment_plg_weight_countries','Shipment Weight Countries Table');
+
 		$q = 'SELECT `extension_id` FROM #__extensions WHERE element = "standard" AND folder = "vmpayment"';
 		$db->setQuery($q);
 		$payment_plg_id = $db->loadResult();
@@ -248,12 +259,48 @@ class VirtueMartModelUpdatesMigration extends JModel {
 			$db->query();
 		}
 
+		if(JVM_VERSION!=1){
+			$url = '/plugins/vmpayment/standard';
+		} else{
+			$url = '/plugins/vmpayment';
+		}
+		if (!class_exists ('plgVmPaymentStandard')) require(JPATH_ROOT . DS . $url . DS . 'standard.php');
+		$this->installPluginTable('plgVmPaymentStandard','#__virtuemart_payment_plg_standard','Payment Standard Table');
+
 		vmInfo(JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED'));
 	}
 
 	return true;
 
     }
+
+	function installPluginTable ($className,$tablename,$tableComment) {
+
+		$query = "CREATE TABLE IF NOT EXISTS `" . $tablename . "` (";
+		if(!empty($tablesFields)){
+			foreach ($tablesFields as $fieldname => $fieldtype) {
+				$query .= '`' . $fieldname . '` ' . $fieldtype . " , ";
+			}
+		} else {
+			$SQLfields = $className::getTableSQLFields ();
+			$loggablefields = $className::getTableSQLLoggablefields ();
+			foreach ($SQLfields as $fieldname => $fieldtype) {
+				$query .= '`' . $fieldname . '` ' . $fieldtype . " , ";
+			}
+			foreach ($loggablefields as $fieldname => $fieldtype) {
+				$query .= '`' . $fieldname . '` ' . $fieldtype . ", ";
+			}
+		}
+
+		$query .= "	      PRIMARY KEY (`id`)
+	    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='" . $tableComment . "' AUTO_INCREMENT=1 ;";
+		$db = JFactory::getDBO();
+		$db->setQuery($query);
+		if (!$db->query ()) {
+			vmError ( $className.'::onStoreInstallPluginTable: ' . JText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE));
+		}
+
+	}
 
 
     function restoreSystemDefaults() {

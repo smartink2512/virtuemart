@@ -1086,10 +1086,7 @@ class vmJsApi{
 	 */
 	static function jQuery($isSite=-1) {
 
-		/*if (JFactory::getApplication ()->get ('jquery')) {
-			return FALSE;
-		}*/
-		vmdebug('is  site ',$isSite);
+
 		if($isSite===-1)$isSite = JFactory::getApplication()->isSite();
 
 		if (!VmConfig::get ('jquery', TRUE) and $isSite) {
@@ -1116,7 +1113,7 @@ class vmJsApi{
 
 		}
 		vmJsApi::js( 'jquery.noConflict');
-		//JFactory::getApplication()->set('jquery',TRUE);
+
 		return TRUE;
 	}
 	// Virtuemart product and price script
