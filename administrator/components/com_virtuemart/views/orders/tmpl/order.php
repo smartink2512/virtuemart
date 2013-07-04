@@ -474,7 +474,7 @@ $document->addScriptDeclaration ( "
 				<td align="right" style="padding-right: 5px;">
 					<?php
 					$item->product_discountedPriceWithoutTax = (float) $item->product_discountedPriceWithoutTax;
-					if (!empty($item->product_discountedPriceWithoutTax)) {
+					if (!empty($item->product_priceWithoutTax) && $item->product_discountedPriceWithoutTax != $item->product_priceWithoutTax) {
 						echo '<span style="text-decoration:line-through">'.$this->currency->priceDisplay($item->product_item_price) .'</span><br />';
 						echo '<span >'.$this->currency->priceDisplay($item->product_discountedPriceWithoutTax) .'</span><br />';
 					} else {

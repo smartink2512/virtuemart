@@ -172,7 +172,7 @@ class VirtuemartModelReport extends VmModel {
 
 		//without tax => netto
 		//$selectFields[] = 'SUM(product_item_price) as order_subtotal';
-		$selectFields[] = 'SUM(product_item_price * product_quantity) as order_subtotal_netto';
+		$selectFields[] = 'SUM(product_discountedPriceWithoutTax * product_quantity) as order_subtotal_netto';
 		$selectFields[] = 'SUM(product_subtotal_with_tax) as order_subtotal_brutto';
 
 		$this->dates = ' DATE( o.created_on ) BETWEEN "' . $this->from_period . '" AND "' . $this->until_period . '" ';
@@ -401,5 +401,12 @@ class VirtuemartModelReport extends VmModel {
 		//$listHTML = JHTML::_ ('select.genericlist', $options, 'intervals', 'class="inputbox" onchange="this.form.submit();" size="5"', 'text', 'value', $intervals);
 		$listHTML = JHTML::_ ('select.genericlist', $options, 'intervals', 'class="inputbox" size="6"', 'text', 'value', $intervals);
 		return $listHTML;
+	}
+
+	public function updateOrderItems () {
+		$q = 'UPDATE #__virtuemart_order_items SET `product_discountedPriceWithoutTax`=(product_final_price - product_tax) WHERE `product_discountedPriceWithoutTax` IS NULL';
+		$this->_db = JFactory::getDBO();
+		$this->_db->setQuery($q);
+		$this->_db->query();
 	}
 }

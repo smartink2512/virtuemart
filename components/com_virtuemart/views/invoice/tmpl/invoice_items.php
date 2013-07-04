@@ -74,7 +74,7 @@ if ($this->doctype != 'invoice') {
 			<td align="right"   class="priceCol" >
 				<?php
 				$item->product_discountedPriceWithoutTax = (float) $item->product_discountedPriceWithoutTax;
-				if (!empty($item->product_discountedPriceWithoutTax)) {
+				if (!empty($item->product_priceWithoutTax) && $item->product_discountedPriceWithoutTax != $item->product_priceWithoutTax) {
 					echo '<span class="line-through">'.$this->currency->priceDisplay($item->product_item_price, $this->currency) .'</span><br />';
 					echo '<span >'.$this->currency->priceDisplay($item->product_discountedPriceWithoutTax, $this->currency) .'</span><br />';
 				} else {

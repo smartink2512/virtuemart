@@ -152,7 +152,7 @@ foreach ($this->cart->products as $pkey => $prow) {
 	<td align="left"><?php  echo $prow->product_sku ?></td>
 	<td align="center">
 		<?php
-		if (VmConfig::get ('checkout_show_origprice', 1) && $this->cart->pricesUnformatted[$pkey]['discountedPriceWithoutTax']) {
+		if (VmConfig::get ('checkout_show_origprice', 1) && $this->cart->pricesUnformatted[$pkey]['discountedPriceWithoutTax'] != $this->cart->pricesUnformatted[$pkey]['priceWithoutTax']) {
 			echo '<span class="line-through">' . $this->currencyDisplay->createPriceDiv ('basePriceVariant', '', $this->cart->pricesUnformatted[$pkey], TRUE, FALSE) . '</span><br />';
 		}
 		if ($this->cart->pricesUnformatted[$pkey]['discountedPriceWithoutTax']) {

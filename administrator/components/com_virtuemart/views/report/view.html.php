@@ -47,6 +47,16 @@ class VirtuemartViewReport extends VmView {
 
 		$myCurrencyDisplay = CurrencyDisplay::getInstance();
 
+		//update order items button
+		$q = 'SELECT * FROM #__virtuemart_order_items WHERE `product_discountedPriceWithoutTax` IS NULL ';
+		$db = JFactory::getDBO();
+		$db->setQuery($q);
+		$res = $db->loadRow();
+		if($res) {
+			JToolBarHelper::customX('updateOrderItems', 'new', 'new', JText::_('COM_VIRTUEMART_REPORT_UPDATEORDERITEMS'),false);
+			vmError('COM_VIRTUEMART_REPORT_UPDATEORDERITEMS_WARN');
+		}
+
 		$this->addStandardDefaultViewLists($model);
 		$revenueBasic = $model->getRevenue();
 

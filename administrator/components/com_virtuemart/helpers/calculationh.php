@@ -405,7 +405,7 @@ class calculationHelper {
 // 		$this->productPrices['priceWithoutTax'] = $this->productPrices['salesPrice'] - $this->productPrices['taxAmount'];
 		$this->productPrices['priceWithoutTax'] = $salesPrice - $this->productPrices['taxAmount'];
 
-		if ($override==1) {
+		if ($override==1 || $this->productPrices['discountedPriceWithoutTax'] == 0) {
 			$this->productPrices['discountedPriceWithoutTax'] = $this->productPrices['salesPrice'] - $this->productPrices['taxAmount'];
 		}
 

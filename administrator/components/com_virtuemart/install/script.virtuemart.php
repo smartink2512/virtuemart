@@ -239,13 +239,20 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				'product_price_edate' => ' `product_price_publish_down` DATETIME NULL DEFAULT NULL AFTER `product_price_publish_up`'
 			));
 
-			 $this->alterTable('#__virtuemart_medias',
+			$this->alterTable('#__virtuemart_medias',
 				 array(
 					'file_url' => '`file_url` varchar(900) NOT NULL DEFAULT ""',
 					'file_params' => '`file_params` varchar(17500)',
 					'file_url_thumb' => '`file_url_thumb` varchar(900) NOT NULL DEFAULT ""',
    				)
  			);
+
+			$this->alterTable('#__virtuemart_order_items',
+				array(
+					'product_discountedPriceWithoutTax' => '',
+				),
+				'DROP'
+			);
 
 			$this->deleteReCreatePrimaryKey('#__virtuemart_userinfos','virtuemart_userinfo_id');
 
