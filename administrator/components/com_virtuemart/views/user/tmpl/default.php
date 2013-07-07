@@ -30,6 +30,14 @@ AdminUIHelper::startAdminArea();
 				<td width="100%">
 					<?php echo JText::_('COM_VIRTUEMART_FILTER'); ?>:
 					<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
+					<?php
+					$selected = JRequest::getString('searchTable','juser');
+					$searchOptionTables = array(
+						'0' => array('searchTable' => 'juser', 'searchTable_name' => JText::_('COM_VIRTUEMART_ONLY_JUSER')),
+						'1' => array('searchTable' => 'all', 'searchTable_name' => JText::_('JALL'))
+					);
+					echo JHTML::_('Select.genericlist', $searchOptionTables, 'searchTable', '', 'searchTable', 'searchTable_name', $selected );
+					?>
 					<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
 					<button onclick="document.adminForm.search.value='';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
 				</td>

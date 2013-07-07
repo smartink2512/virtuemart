@@ -18,7 +18,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcalculationplugin.php');
 
-defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 1);
+defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 0);
 
 function avadebug($string,$arg=NULL){
 	if(AVATAX_DEBUG) vmdebug($string,$arg);
@@ -350,8 +350,13 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 						$prices =  $calculationHelper->getCartPrices();
 						if(isset($prices['shipmentValue']) and isset(self::$_taxResult['shipmentTax'] )) {
 							self::$_taxResult['salesPriceShipment'] = ($prices['shipmentValue'] + self::$_taxResult['shipmentTax'] );
-							self::$_taxResult['paymentTax'] = 0.0;
+							//self::$_taxResult['paymentTax'] = 0.0;
 						}
+
+						/*if(isset($prices['paymentValue']) and isset(self::$_taxResult['paymentTax'] )) {
+							self::$_taxResult['paymentTax'] = 0.0;
+							self::$_taxResult['salesPricePayment'] = ($prices['paymentValue'] + self::$_taxResult['paymentTax'] );
+						}*/
 
 						$calculationHelper->setCartPricesMerge(self::$_taxResult);
 					}
@@ -636,6 +641,25 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				$shipment['discount'] = 0.0;
 				$products[] = $shipment;
 			}
+
+			/*if(!empty($cart->virtuemart_paymentmethod_id)){
+				$payment = array();
+				$payment['product_sku'] = 'VMPaymentId_'.$cart->virtuemart_paymentmethod_id;
+				$paymentModel = VmModel::getModel('Paymentmethod');
+				$paymentModel->setId($cart->virtuemart_paymentmethod_id);
+				$paymentMethod = $paymentModel->getPayment();
+				$payment['product_name'] = $paymentMethod->payment_name;
+				$payment['amount'] = 1;
+				if(isset($prices['paymentValue'])){
+					$payment['price'] = $prices['paymentValue'];              //decimal // TotalAmmount
+				} else {
+					$payment['price'] = 0.0;
+				}
+				$payment['discount'] = 0.0;
+
+				$products[] = $payment;
+			}*/
+
 			$products['discountAmount'] = $prices['discountAmount'];
 
 
@@ -703,7 +727,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$request->setDocCode('VM'.$this->vmVersion.'_order_request');
 
 			//Requests are allowed to be cached
-			self::$_taxResult = $session->get ('vm_avatax_tax.' . $hash, FALSE, 'vm');
+			if(!AVATAX_DEBUG) self::$_taxResult = $session->get ('vm_avatax_tax.' . $hash, FALSE, 'vm');
 		}
 		if(!self::$_taxResult){
 			vmSetStartTime('avagetTax');
@@ -912,7 +936,12 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 						if(strpos($line->getItemCode(),'VMShipmentId')===0){
 							$prices['shipmentTax'] = $ctl->getTax();
 							$totalTax = $totalTax - $ctl->getTax();
-						} else {
+						/*} else if(strpos($line->getItemCode(),'VMPaymentId')===0){
+
+							$prices['paymentTax'] = $ctl->getTax();
+							$totalTax = $totalTax - $ctl->getTax();
+							vmdebug('VMPaymentId '.$prices['paymentTax']);*/
+						}else {
 							$quantity = $line->getQty();
 							//avadebug('my $request qty ',$quantity);
 							//on the long hand, the taxAmount must be replaced by taxAmountQuantity to avoid rounding errors

@@ -1363,28 +1363,29 @@ class VirtueMartModelUser extends VmModel {
 		//$select = ' * ';
 		//$joinedTables = ' FROM #__users AS ju LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id';
 		$search = JRequest::getString('search', false);
+		$tableToUse = JRequest::getString('searchTable','juser');
+
 		$where = '';
 		if ($search) {
-
-			//$search = $this->_db->Quote($search, false);
-			$searchArray = array('ju.name','username','email','perms','usertype','shopper_group_name');
-
-			if(!class_exists('TableUserinfos'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'userinfos.php');
-			$db = JFactory::getDbo();
-			$userfieldTable = new TableUserinfos($db);
-			$userfieldFields = get_object_vars($userfieldTable);
-			$userFieldSearchArray = array('company','first_name','last_name');
-			//We must validate if the userfields actually exists, they could be removed
-			$userFieldsValid = array();
-
-			foreach($userFieldSearchArray as $ufield){
-				if(key_exists($ufield,$userfieldFields)){
-					$userFieldsValid[] = $ufield;
-				}
-			}
 			$where = ' WHERE ';
 
-			$searchArray = array_merge($userFieldsValid,$searchArray);
+			$searchArray = array('ju.name','username','email','perms','usertype','shopper_group_name');
+			if($tableToUse!='juser'){
+
+				if(!class_exists('TableUserinfos'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'userinfos.php');
+				$db = JFactory::getDbo();
+				$userfieldTable = new TableUserinfos($db);
+				$userfieldFields = get_object_vars($userfieldTable);
+				$userFieldSearchArray = array('company','first_name','last_name');
+				//We must validate if the userfields actually exists, they could be removed
+				$userFieldsValid = array();
+				foreach($userFieldSearchArray as $ufield){
+					if(key_exists($ufield,$userfieldFields)){
+						$userFieldsValid[] = $ufield;
+					}
+				}
+				$searchArray = array_merge($userFieldsValid,$searchArray);
+			}
 
 			$search = str_replace(' ','%',$this->_db->getEscaped( $search, true ));
 			foreach($searchArray as $field){
@@ -1401,8 +1402,11 @@ class VirtueMartModelUser extends VmModel {
 			, IFNULL(vmu.user_is_vendor,"0") AS is_vendor
 			, IFNULL(sg.shopper_group_name, "") AS shopper_group_name ';
 		if ($search) {
-			$select .= ' , ui.name as uiname ';
-			foreach($userFieldsValid as $ufield){
+			if($tableToUse!='juser'){
+				$select .= ' , ui.name as uiname ';
+			}
+
+			foreach($searchArray as $ufield){
 				$select .= ' , '.$ufield;
 			}
 		}
@@ -1410,7 +1414,7 @@ class VirtueMartModelUser extends VmModel {
 			LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id
 			LEFT JOIN #__virtuemart_vmuser_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id
 			LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.virtuemart_shoppergroup_id = sg.virtuemart_shoppergroup_id ';
-		if ($search) {
+		if ($search and $tableToUse!='juser') {
 			$joinedTables .= ' LEFT JOIN #__virtuemart_userinfos AS ui ON ui.virtuemart_user_id = vmu.virtuemart_user_id';
 		}
 
