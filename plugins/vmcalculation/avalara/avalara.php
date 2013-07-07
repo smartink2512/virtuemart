@@ -343,6 +343,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				}
 
 				if($this->addresses){
+
 					if(empty($products))$products = $this->prepareSingleProduct($calculationHelper,$price);
 					$tax = $this->getAvaTax( $rule,$products);
 					if($calculationHelper->inCart){
@@ -708,7 +709,10 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			vmSetStartTime('avagetTax');
 			self::$_taxResult = $this->executeRequest($request);
 			vmTime('Avalara executeRequest hash '.$hash,'avagetTax');
-			$session->set ('vm_avatax_tax.' . $hash,  serialize(self::$_taxResult), 'vm');
+			if(self::$_taxResult!==FALSE){
+				$session->set ('vm_avatax_tax.' . $hash,  serialize(self::$_taxResult), 'vm');
+			}
+
 		} else {
 			if(is_string(self::$_taxResult )){
 				self::$_taxResult =  unserialize(self::$_taxResult);
@@ -793,8 +797,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$request->setTaxOverride(self::$vmadd['taxOverride']);
 			avadebug('I set tax override ',self::$vmadd['taxOverride']);
 		}
-		if(!empty($products['discountAmount'])){
-			$request->setDiscount($sign * $products['discountAmount'] * (-1));            //decimal
+
+		if(isset($products['discountAmount'])){
+			if(!empty($products['discountAmount'])){
+				$request->setDiscount($sign * $products['discountAmount'] * (-1));            //decimal
+			}
 			unset($products['discountAmount']);
 		}
 
@@ -872,15 +879,18 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		$prices = array();
 		$client = new TaxServiceSoap($this->_connectionType);
+
 		try
 		{
 			if(!class_exists('TaxLine')) require (VMAVALARA_CLASS_PATH.DS.'TaxLine.class.php');
 			if(!class_exists('TaxDetail')) require (VMAVALARA_CLASS_PATH.DS.'TaxDetail.class.php');
 
-			avadebug('executeRequest $request',$request);
+			//avadebug('executeRequest $request',$request);
 			$_taxResult = $client->getTax($request);
-			avadebug('executeRequest $_taxResult',$_taxResult);
-			if ($_taxResult->getResultCode() == SeverityLevel::$Success){
+			//avadebug('executeRequest $_taxResult',$_taxResult);
+
+
+			if ( $_taxResult->getResultCode() == SeverityLevel::$Success){
 
 				//avadebug("DocCode: ".$request->getDocCode() );
 				//avadebug("DocId: ".self::$_taxResult->getDocId()."\n");
@@ -920,7 +930,8 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				foreach($_taxResult->getMessages() as $msg){
 					vmError($msg->getName().": ".$msg->getSummary(),'AvaTax Error '.$msg->getSummary());
 				}
-				vmdebug('Error, but no exception in getAvaTax',$msg);
+				vmdebug('Error, but no exception in getAvaTax '.SeverityLevel::$Success,$_taxResult);
+				return false;
 			}
 		}
 		catch(SoapFault $exception)
@@ -928,9 +939,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$this->blockCheckout();
 			$msg = "Exception: in getAvaTax, while executeRequest ";
 			if($exception) $msg .= $exception->faultstring;
-			avadebug( $msg,$request,$client->__getLastRequest(),$client->__getLastResponse());
+			avadebug( $msg,$request);
+			return false;
 		}
-
 		return $prices;
 	}
 

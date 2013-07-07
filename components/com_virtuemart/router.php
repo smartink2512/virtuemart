@@ -309,6 +309,7 @@ function virtuemartParseRoute($segments) {
 		}
 		return $vars;
 	}
+
 	if (empty($segments)) {
 		return $vars;
 	}
@@ -373,6 +374,12 @@ function virtuemartParseRoute($segments) {
 		$vars['view'] = 'product';
 		$vars['task'] = $segments[1];
 		$vars['tmpl'] = 'component';
+		return $vars;
+	}
+
+	if ( $segments[0] == 'checkout') {
+		$vars['view'] = 'cart';
+		$vars['task'] = $segments[0];
 		return $vars;
 	}
 

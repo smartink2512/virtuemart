@@ -1555,10 +1555,10 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		// Setup some place holders
 		$product_data = $this->getTable ('products');
+
 		if(!empty($data['virtuemart_product_id'])){
 			$product_data -> load($data['virtuemart_product_id']);
 		}
-
 		//Set the decimals like product packaging
 		//$decimals = array('product_length','product_width','product_height','product_weight','product_packaging');
 		foreach($this->decimals as $decimal){
@@ -1581,6 +1581,7 @@ class VirtueMartModelProduct extends VmModel {
 		if(!empty($product_data->product_parent_id) and $product_data->product_parent_id == $data['virtuemart_product_id']){
 			$product_data->product_parent_id = 0;
 		}
+
 		$stored = $product_data->bindChecknStore ($data, false);
 
 		$errors = $product_data->getErrors ();

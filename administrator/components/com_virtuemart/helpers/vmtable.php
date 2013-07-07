@@ -798,10 +798,10 @@ class VmTable extends JTable {
 			if (is_object($data)) {
 
 				foreach ($this->_translatableFields as $name) {
-					if (!empty($data->$name)) {
+					if (isset($data->$name)) {
 						$langData[$name] = $data->$name;
 					} else {
-						$langData[$name] = '';
+					//	$langData[$name] = '';
 					}
 					unset($this->$name);
 
@@ -821,10 +821,10 @@ class VmTable extends JTable {
 				// 				$langTable->$tblKey = $data->$tblKey;
 			} else {
 				foreach ($this->_translatableFields as $name) {
-					if (!empty($data[$name])) {
+					if (isset($data[$name])) {
 						$langData[$name] = $data[$name];
 					} else {
-						$langData[$name] = '';
+					//	$langData[$name] = '';
 					}
 					unset($this->$name);
 

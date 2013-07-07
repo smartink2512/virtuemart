@@ -761,6 +761,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				</div>
 			</td>
 		</tr>
+		<tr>
+			<td>
+				<?php echo JText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
+			</td>
+		</tr>
 	</table>
 </div>
 

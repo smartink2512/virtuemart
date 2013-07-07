@@ -119,6 +119,9 @@ defined('_JEXEC') or die('Restricted access');?>
 			<td>
 				<?php echo $this->activeLanguages; ?>
 			</td>
+			<td>
+				<?php echo JText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
+			</td>
 		</tr>
 		<tr>
 			<td class="key">

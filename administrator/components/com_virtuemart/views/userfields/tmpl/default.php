@@ -88,7 +88,8 @@ AdminUIHelper::startAdminArea();
 			$coreField = (in_array($row->name, $this->lists['coreFields']));
 			$image = (JVM_VERSION===1) ? 'checked_out.png' : 'admin/checked_out.png';
 			$image = JHtml::_('image.administrator', $image, '/images/', null, null, JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'));
-			$checked = '<div style="position: relative;">'.JHTML::_('grid.id', $i, $row->virtuemart_userfield_id);
+			//$checked = '<div style="position: relative;">'.JHTML::_('grid.id', $i, null,$row->virtuemart_userfield_id);
+			$checked = JHTML::_('grid.id', $i ,$row->virtuemart_userfield_id,null,'virtuemart_userfield_id');
 			if ($coreField) $checked.='<span class="hasTip" style="position: absolute; margin-left:-3px;" title="'. JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>';
 			$checked .= '</div>';
 			// There is no reason not to allow moving of the core fields. We only need to disable deletion of them
@@ -140,7 +141,7 @@ AdminUIHelper::startAdminArea();
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 			</td>
 			<td width="10">
-					<?php echo JText::_($row->virtuemart_userfield_id); ?>
+					<?php echo $row->virtuemart_userfield_id; ?>
 				</td>
 			</tr>
 			<?php

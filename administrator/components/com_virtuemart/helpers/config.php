@@ -632,8 +632,12 @@ class VmConfig {
 		}
 
 		if(!in_array($siteLang, $langs)) {
-			$params = JComponentHelper::getParams('com_languages');
-			$siteLang = $params->get('site', 'en-GB');//use default joomla
+			if(!empty($langs[0])){
+				$siteLang = $langs[0];
+			} else {
+				$params = JComponentHelper::getParams('com_languages');
+				$siteLang = $params->get('site', 'en-GB');//use default joomla
+			}
 		}
 
 		self::$_jpConfig->lang = strtolower(strtr($siteLang,'-','_'));
