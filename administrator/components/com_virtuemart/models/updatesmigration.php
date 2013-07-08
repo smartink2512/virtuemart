@@ -249,20 +249,20 @@ class VirtueMartModelUpdatesMigration extends JModel {
  			$q = 'INSERT INTO `#__virtuemart_shipmentmethods_'.$lang.'` (`virtuemart_shipmentmethod_id`, `shipment_name`, `shipment_desc`, `slug`) VALUES (1, "Self pick-up", "", "Self-pick-up")';
 			$db->setQuery($q);
 			$db->query();
+
+			//Create table of the plugin
+
+			if(JVM_VERSION!=1){
+				$url = '/plugins/vmshipment/weight_countries';
+			} else{
+				$url = '/plugins/vmshipment';
+			}
+
+
+			if (!class_exists ('plgVmShipmentWeight_countries')) require(JPATH_ROOT . DS . $url . DS . 'weight_countries.php');
+			$this->_tablename = '#__virtuemart_' . $this->_psType . '_plg_' . $this->_name;
+			$this->installPluginTable('plgVmShipmentWeight_countries','#__virtuemart_shipment_plg_weight_countries','Shipment Weight Countries Table');
 		}
-		//Create table of the plugin
-
-		if(JVM_VERSION!=1){
-			$url = '/plugins/vmshipment/weight_countries';
-		} else{
-			$url = '/plugins/vmshipment';
-		}
-
-
-		if (!class_exists ('plgVmShipmentWeight_countries')) require(JPATH_ROOT . DS . $url . DS . 'weight_countries.php');
-		$this->_tablename = '#__virtuemart_' . $this->_psType . '_plg_' . $this->_name;
-		$this->installPluginTable('plgVmShipmentWeight_countries','#__virtuemart_shipment_plg_weight_countries','Shipment Weight Countries Table');
-
 
 		$q = 'SELECT `extension_id` FROM #__extensions WHERE element = "standard" AND folder = "vmpayment"';
 		$db->setQuery($q);
@@ -276,16 +276,15 @@ class VirtueMartModelUpdatesMigration extends JModel {
 			$q="INSERT INTO `#__virtuemart_paymentmethods_".$lang."` (`virtuemart_paymentmethod_id`, `payment_name`, `payment_desc`, `slug`) VALUES	(1, 'Cash on delivery', '', 'Cash-on-delivery')";
 			$db->setQuery($q);
 			$db->query();
-		}
 
-		if(JVM_VERSION!=1){
-			$url = '/plugins/vmpayment/standard';
-		} else{
-			$url = '/plugins/vmpayment';
+			if(JVM_VERSION!=1){
+				$url = '/plugins/vmpayment/standard';
+			} else{
+				$url = '/plugins/vmpayment';
+			}
+			if (!class_exists ('plgVmPaymentStandard')) require(JPATH_ROOT . DS . $url . DS . 'standard.php');
+			$this->installPluginTable('plgVmPaymentStandard','#__virtuemart_payment_plg_standard','Payment Standard Table');
 		}
-		if (!class_exists ('plgVmPaymentStandard')) require(JPATH_ROOT . DS . $url . DS . 'standard.php');
-		$this->installPluginTable('plgVmPaymentStandard','#__virtuemart_payment_plg_standard','Payment Standard Table');
-
 		vmInfo(JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED'));
 	}
 
