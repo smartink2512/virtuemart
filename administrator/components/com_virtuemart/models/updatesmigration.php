@@ -226,6 +226,13 @@ class VirtueMartModelUpdatesMigration extends JModel {
 // 	$lang = $params->get('site', 'en-GB');//use default joomla
 // 	$this->installSampleSQL($lang);
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
+	    if(!defined('VMLANG')){
+		    $params = JComponentHelper::getParams('com_languages');
+		    $lang = $params->get('site', 'en-GB');//use default joomla
+		    $lang = strtolower(strtr($lang,'-','_'));
+	    } else {
+		    $lang = VMLANG;
+	    }
 	if(!$this->execSQLFile($filename)){
 		vmError(JText::_('Problems execution of SQL File '.$filename));
 	} else {
@@ -235,7 +242,11 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$db->setQuery($q);
 		$shipment_plg_id = $db->loadResult();
 		if(!empty($shipment_plg_id)){
-			$q = 'UPDATE #__virtuemart_shipmentmethods SET `shipment_jplugin_id`="'.$shipment_plg_id.'" WHERE shipment_element = "weight_countries" ';
+			$q = 'INSERT INTO `#__virtuemart_shipmentmethods` (`virtuemart_shipmentmethod_id`, `virtuemart_vendor_id`, `shipment_jplugin_id`, `shipment_element`, `shipment_params`, `ordering`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
+			(1, 1, '.$shipment_plg_id.', "weight_countries", \'shipment_logos=""|countries=""|zip_start=""|zip_stop=""|weight_start=""|weight_stop=""|weight_unit="KG"|nbproducts_start=0|nbproducts_stop=0|orderamount_start=""|orderamount_stop=""|cost="0"|package_fee=""|tax_id="0"|free_shipment=""|\', 0, 0, 1, "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0)';
+			$db->setQuery($q);
+			$db->query();
+ 			$q = 'INSERT INTO `#__virtuemart_shipmentmethods_'.$lang.'` (`virtuemart_shipmentmethod_id`, `shipment_name`, `shipment_desc`, `slug`) VALUES (1, "Self pick-up", "", "Self-pick-up")';
 			$db->setQuery($q);
 			$db->query();
 		}
@@ -246,15 +257,23 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		} else{
 			$url = '/plugins/vmshipment';
 		}
+
+
 		if (!class_exists ('plgVmShipmentWeight_countries')) require(JPATH_ROOT . DS . $url . DS . 'weight_countries.php');
 		$this->_tablename = '#__virtuemart_' . $this->_psType . '_plg_' . $this->_name;
 		$this->installPluginTable('plgVmShipmentWeight_countries','#__virtuemart_shipment_plg_weight_countries','Shipment Weight Countries Table');
+
 
 		$q = 'SELECT `extension_id` FROM #__extensions WHERE element = "standard" AND folder = "vmpayment"';
 		$db->setQuery($q);
 		$payment_plg_id = $db->loadResult();
 		if(!empty($payment_plg_id)){
-			$q = 'UPDATE #__virtuemart_paymentmethods SET `payment_jplugin_id`="'.$payment_plg_id.'" WHERE payment_element = "standard" ';
+			$q='INSERT INTO `#__virtuemart_paymentmethods` (`virtuemart_paymentmethod_id`, `virtuemart_vendor_id`, `payment_jplugin_id`,  `payment_element`, `payment_params`, `shared`, `ordering`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
+			(1, 1, '.$payment_plg_id.',  "standard", \'payment_logos=""|countries=""|payment_currency="0"|status_pending="U"|send_invoice_on_order_null="1"|min_amount=""|max_amount=""|cost_per_transaction=""|cost_percent_total=""|tax_id="0"|payment_info=""|\', 0, 0, 1,  "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0)';
+			$db->setQuery($q);
+			$db->query();
+
+			$q="INSERT INTO `#__virtuemart_paymentmethods_".$lang."` (`virtuemart_paymentmethod_id`, `payment_name`, `payment_desc`, `slug`) VALUES	(1, 'Cash on delivery', '', 'Cash-on-delivery')";
 			$db->setQuery($q);
 			$db->query();
 		}

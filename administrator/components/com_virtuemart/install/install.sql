@@ -669,7 +669,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethods` (
   `virtuemart_paymentmethod_id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_vendor_id` smallint(11) NOT NULL DEFAULT '1',
   `payment_jplugin_id` int(11) NOT NULL DEFAULT '0',
-  `slug` char(255) NOT NULL DEFAULT '',
   `payment_element` char(50) NOT NULL DEFAULT '',
   `payment_params` varchar(19000),
   `shared` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'valide for all vendors?',
