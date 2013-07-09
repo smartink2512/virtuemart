@@ -810,9 +810,12 @@ abstract class vmPSPlugin extends vmPlugin {
 		$key_text = '';
 		$complete_key = strtoupper ($this->_type . '_' . $key);
 		// vmdebug('getHtmlRow',$key,$complete_key);
-		//if ($lang->hasKey($complete_key)) {
-		$key_text = JText::_ ($complete_key);
-		//}
+		// vmdebug('getHtmlRow',$key,$complete_key);
+		if ($lang->hasKey($complete_key)) {
+			$key_text = JText::_ ($complete_key);
+		} else {
+			$key_text = JText::_ ($key);
+		}
 		$more_key = $complete_key . '_' . $value;
 		if ($lang->hasKey ($more_key)) {
 			$value .= " (" . JText::_ ($more_key) . ")";
