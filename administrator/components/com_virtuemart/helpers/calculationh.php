@@ -408,6 +408,7 @@ class calculationHelper {
 		if ($override==1 || $this->productPrices['discountedPriceWithoutTax'] == 0) {
 			$this->productPrices['discountedPriceWithoutTax'] = $this->productPrices['salesPrice'] - $this->productPrices['taxAmount'];
 		}
+		if (!isset($this->productPrices['discountedPriceWithoutTax'])) $this->productPrices['discountedPriceWithoutTax'] = 0.0;
 
 		$this->productPrices['variantModification'] = $variant;
 
