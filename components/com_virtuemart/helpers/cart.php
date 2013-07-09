@@ -826,7 +826,10 @@ class VirtueMartCart {
 			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 			$userModel = JModel::getInstance('user', 'VirtueMartModel');
 			$stData = $userModel->getUserAddressList(0, 'ST', $this->selected_shipto);
-			$this->validateUserData('ST', $stData[0]);
+			$stData = get_object_vars($stData[0]);
+			if($this->validateUserData('ST', $stData)){
+				$this->ST = $stData;
+			}
 		}
 
 		if (count($this->products) == 0) {

@@ -105,7 +105,12 @@ static function vmGetCharset() {
 		return $lang->hasKey($value) ? JText::_($value) : $value;
 	}
 
-	/* simple raw render */
+	/**
+	 * The sense is unclear !
+	 * @deprecated
+	 * @param $value
+	 * @return mixed
+	 */
 	static function raw( $value ){
 		return $value;
 	}
