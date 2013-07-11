@@ -562,16 +562,21 @@ class Migrator extends VmModel{
 		$i=0;
 		$startLimit = 0;
 		$goForST = true;
+		if ( JVM_VERSION===1 ) {
+			$jUserArray = array('id','username','name','password','usertype','block','sendEmail','registerDate',
+			                    'lastvisitDate','activation','params' );
+		} else {
+			$jUserArray = array('id','username','name','password','usertype','block','sendEmail','registerDate',
+			                    'lastvisitDate','activation','params','lastResetTime','resetCount');
+		}
 
-		/*$jUserArray = array('id','username','name','password','usertype','block','sendEmail','registerDate',
-							'lastvisitDate','activation','params','lastResetTime','resetCount');
 		$JUserString = '`p`.`'.implode('`,`p`.`',$jUserArray).'`';
 		//vmdebug('muhh',$JUserString);
 		//$continue=false;
 
 		$q = 'SELECT * FROM `#__vm_auth_group` ';
 		$this->_db->setQuery($q);
-		$groups = $this->_db->loadAssocList();*/
+		$groups = $this->_db->loadAssocList();
 
 		while($continue){
 
@@ -1387,8 +1392,8 @@ class Migrator extends VmModel{
 					$orderData->order_total = $order['order_total'];
 					$orderData->order_subtotal = $order['order_subtotal'];
 					$orderData->order_tax = empty($order['order_tax'])? 0:$order['order_tax'];
-					$orderData->order_shipment = empty($order['order_shipment'])? 0:$order['order_shipment'];
-					$orderData->order_shipment_tax = empty($order['order_shipment_tax'])? 0:$order['order_shipment_tax'];
+					$orderData->order_shipment = empty($order['order_shipping'])? 0:$order['order_shipping'];
+					$orderData->order_shipment_tax = empty($order['order_shipping_tax'])? 0:$order['order_shipping_tax'];
 					if(!empty($order['coupon_code'])){
 						$orderData->coupon_code = $order['coupon_code'];
 						$orderData->coupon_discount = $order['coupon_discount'];
