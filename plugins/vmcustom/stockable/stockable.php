@@ -560,6 +560,9 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @author Matt Lewis-Garner
 	 */
 	function getValideChild($child_id ) {
+
+		//$productModel = VmModel::getModel('product');
+		//$child = $productModel->getProduct($child_id,true,false,true,1,false);
 		$db = JFactory::getDBO();
 		$q = 'SELECT `product_sku`,`product_name`,`product_in_stock`,`product_ordered`,`product_availability` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_'.VMLANG.'` as l using (`virtuemart_product_id`) WHERE `published`=1 and `virtuemart_product_id` ='.(int)$child_id ;
 		$db->setQuery($q);
@@ -609,7 +612,6 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	}
 
 	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected){
-
 
 		if ($productCustomsPrice->custom_element != $this->_name) return false;
 

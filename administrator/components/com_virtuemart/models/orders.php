@@ -255,6 +255,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if ($search = JRequest::getString('search', false)){
 
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+			$search = str_replace(' ','%',$search);
 
 			$searchFields = array();
 			$searchFields[] = 'u.first_name';
@@ -270,7 +271,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			//$where[] = ' ( u.first_name LIKE '.$search.' OR u.middle_name LIKE '.$search.' OR u.last_name LIKE '.$search.' OR `order_number` LIKE '.$search.')';
 		}
 
-		if ($order_status_code = JRequest::getString('order_status_code', false)){
+		$order_status_code = JRequest::getString('order_status_code', false);
+		if ($order_status_code and $order_status_code!=-1){
 			$where[] = ' o.order_status = "'.$order_status_code.'" ';
 		}
 
@@ -552,6 +554,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				// Payment decides what to do when order status is updated
 				JPluginHelper::importPlugin('vmpayment');
 				JPluginHelper::importPlugin('vmcalculation');
+				JPluginHelper::importPlugin('vmcustom');
 				$_dispatcher = JDispatcher::getInstance();											//Should we add this? $inputOrder
 				$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderPayment',array(&$data,$old_order_status));
 				foreach ($_returnValues as $_returnValue) {

@@ -1063,8 +1063,8 @@ class Migrator extends VmModel{
 		$maxItems = $this->_getMaxItems('Products');
 // 		$maxItems = 100;
 		$startLimit = $this->_getStartLimit('products_start');;
-		$i=0;
-		$continue = true;
+		$j=0;
+
 
 		$alreadyKnownIds = $this->getMigrationProgress('products');
 		$oldToNewCats = $this->getMigrationProgress('cats');
@@ -1078,12 +1078,14 @@ class Migrator extends VmModel{
 			$oldToNewShoppergroups = $this->getMigrationProgress('shoppergroups');
 		}
 
-
 		$productModel = VmModel::getModel('product');
 
+		if(count($alreadyKnownIds)==($startLimit+$maxItems) ){
+			$continue = false;
+		} else {
+			$continue = true;
+		}
 
-
-		// 		vmdebug('$alreadyKnownIds',$alreadyKnownIds);
 		while($continue){
 
 			$q = 'SELECT *,`p`.product_id as product_id FROM `#__vm_product` AS `p`
@@ -1253,7 +1255,7 @@ class Migrator extends VmModel{
 						$continue = false;
 						break;
 					}
-					$i++;
+					$j++;
 				}
 
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
@@ -1263,7 +1265,7 @@ class Migrator extends VmModel{
 				}
 
 			}
-			$limitStartToStore = ', products_start = "'.($doneStart+$i).'" ';
+			$limitStartToStore = ', products_start = "'.($doneStart+$j).'" ';
 			$this->storeMigrationProgress('products',$alreadyKnownIds,$limitStartToStore);
 			vmInfo('Migration: '.$i.' products processed ');
 		}
@@ -1349,7 +1351,11 @@ class Migrator extends VmModel{
 		$startLimit = $this->_getStartLimit('orders_start');
 		vmdebug('portOrders $startLimit '.$startLimit);
 		$i = 0;
-		$continue=true;
+		if(count($alreadyKnownIds)==($startLimit+$maxItems) ){
+			$continue = false;
+		} else {
+			$continue = true;
+		}
 
 		$reWriteOrderNumber = JRequest::getInt('reWriteOrderNumber',0);
 		$userOrderId = JRequest::getInt('userOrderId',0);
@@ -1448,6 +1454,8 @@ class Migrator extends VmModel{
 						$item['modified_on'] = $this->_changeToStamp($item['mdate']); //we could remove this to set modified_on today
 						$item['product_attribute'] = $this->_attributesToJson($item['product_attribute']); //we could remove this to set modified_on today
 
+						$item['product_discountedPriceWithoutTax'] = $item['product_final_price']   -  $item['product_tax'];
+						$item['product_subtotal_with_tax'] = $item['product_final_price']   *  $item['product_quantity'];
 						$orderItemsTable = $this->getTable('order_items');
 						$orderItemsTable->bindChecknStore($item);
 						$errors = $orderItemsTable->getErrors();

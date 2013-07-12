@@ -606,7 +606,6 @@ class VmConfig {
 				if ( JVM_VERSION===1 ) {
 				// try to find in session lang
 				// this work with joomfish j1.5 (application.data.lang)
-
 				$session  =JFactory::getSession();
 				$registry = $session->get('registry');
 				$siteLang = $registry->getValue('application.data.lang') ;
@@ -615,28 +614,21 @@ class VmConfig {
 				jimport('joomla.language.helper');
 				$languages = JLanguageHelper::getLanguages('lang_code');
 				$siteLang = JFactory::getLanguage()->getTag();
-				}
-				if ( ! $siteLang ) {
-					// use user default
-					$lang =JFactory::getLanguage();
-					$siteLang = $lang->getTag();
+					vmdebug('My selected language by JFactory::getLanguage()->getTag() '.$siteLang);
 				}
 			}
-			/*//What is the difference of this?
-			$params = JComponentHelper::getParams('com_languages');
-			$siteLang = $params->get('site', 'en_gb');
+		}
 
-			//or this
-			$siteLang =JFactory::getLanguage()->getTag();
-			*/
+		if ( empty( $siteLang) ) {
+			// use site default
+			$params = JComponentHelper::getParams('com_languages');
+			$siteLang = $params->get('site', 'en-GB');//use default joomla
+			vmdebug('My selected language by getParams(com_languages) '.$siteLang);
 		}
 
 		if(!in_array($siteLang, $langs)) {
 			if(!empty($langs[0])){
 				$siteLang = $langs[0];
-			} else {
-				$params = JComponentHelper::getParams('com_languages');
-				$siteLang = $params->get('site', 'en-GB');//use default joomla
 			}
 		}
 

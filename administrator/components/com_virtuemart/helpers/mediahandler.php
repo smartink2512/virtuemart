@@ -228,8 +228,8 @@ class VmMediaHandler {
 			$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
 			$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
 		} else {
-			if (!class_exists ('shopFunctionsF'))
-				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			if (!class_exists ('shopFunctions'))
+				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctions.php');
 			$safePath = shopFunctions::checkSafePath();
 			if(!$safePath){
 				return FALSE;
@@ -511,7 +511,9 @@ class VmMediaHandler {
 
 				if(empty($width)) $width = VmConfig::get('img_width', 90);
 				if(empty($height)) $height = VmConfig::get('img_height', 90);
+				//vmSetStartTime('thumb');
 				$file_url_thumb = $this->createThumb($width,$height);
+				//vmTime('Time to create thumb','thumb');
 				// 				vmdebug('displayMediaThumb',$this->file_url_thumb);
 				$media_path = JPATH_ROOT.DS.str_replace('/',DS,$file_url_thumb);
 				//$file_url = $this->file_url_thumb;

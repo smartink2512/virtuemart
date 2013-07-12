@@ -89,9 +89,9 @@ class VirtueMartViewVirtueMart extends VmView {
 			$currency = CurrencyDisplay::getInstance( );
 			$this->assignRef('currency', $currency);
 			
-			$products_per_row = VmConfig::get('homepage_products_per_row');
+			$products_per_row = VmConfig::get('homepage_products_per_row',3);
 			
-			$featured_products_rows = VmConfig::get('featured_products_rows');
+			$featured_products_rows = VmConfig::get('featured_products_rows',1);
 			$featured_products_count = $products_per_row * $featured_products_rows;
 
 			if (!empty($featured_products_count) and VmConfig::get('show_featured', 1)) {
@@ -155,15 +155,27 @@ class VirtueMartViewVirtueMart extends VmView {
 		if(!empty($error)){
 			$document->setTitle(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND').JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name));
 		} else {
-			$app = JFactory::getApplication();
-			$menus = $app->getMenu();
-			$menu = $menus->getActive();
-			$menuTitle = '';
-			if ($menu){
-				$menuTitle = $menu->title;
+
+			if(empty($vendor->customtitle)){
+				$app = JFactory::getApplication();
+				$menus = $app->getMenu();
+				$menu = $menus->getActive();
+
+				if ($menu){
+					$menuTitle = $menu->params->get('page_title');
+					if(empty($menuTitle)) {
+						$menuTitle = JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name);
+					}
+					$document->setTitle($menuTitle);
+				} else {
+					$title = JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name);
+					$document->setTitle($title);
+				}
+			} else {
+				$document->setTitle($vendor->customtitle);
 			}
-			$title = JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name,$menuTitle);
-			$document->setTitle($title);
+
+
 			if(!empty($vendor->metadesc)) $document->setMetaData('description',$vendor->metadesc);
 			if(!empty($vendor->metakey)) $document->setMetaData('keywords',$vendor->metakey);
 			if(!empty($vendor->metarobot)) $document->setMetaData('robots',$vendor->metarobot);

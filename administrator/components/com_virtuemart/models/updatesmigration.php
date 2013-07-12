@@ -258,9 +258,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 				$url = '/plugins/vmshipment';
 			}
 
-
 			if (!class_exists ('plgVmShipmentWeight_countries')) require(JPATH_ROOT . DS . $url . DS . 'weight_countries.php');
-			$this->_tablename = '#__virtuemart_' . $this->_psType . '_plg_' . $this->_name;
 			$this->installPluginTable('plgVmShipmentWeight_countries','#__virtuemart_shipment_plg_weight_countries','Shipment Weight Countries Table');
 		}
 
@@ -300,8 +298,10 @@ class VirtueMartModelUpdatesMigration extends JModel {
 				$query .= '`' . $fieldname . '` ' . $fieldtype . " , ";
 			}
 		} else {
-			$SQLfields = $className::getTableSQLFields ();
-			$loggablefields = $className::getTableSQLLoggablefields ();
+			$SQLfields = call_user_func($className."::getTableSQLFields");
+			//$SQLfields = $className::getTableSQLFields ();
+		//	$loggablefields = $className::getTableSQLLoggablefields ();
+			$loggablefields = call_user_func($className."::getTableSQLLoggablefields");
 			foreach ($SQLfields as $fieldname => $fieldtype) {
 				$query .= '`' . $fieldname . '` ' . $fieldtype . " , ";
 			}
@@ -536,14 +536,21 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	private function deleteMediaThumbFolder($type,$resized='resized'){
 
 		if(!empty($resized)) $resized = DS.$resized;
-		$path = JPATH_ROOT.DS.str_replace('/',DS,VmConfig::get($type)).$resized;
-		$msg = JFolder::delete($path);
-		if(!$msg){
-			vmWarn('Problem deleting '.$type);
+		$typePath = VmConfig::get($type);
+		if(!empty($typePath)){
+			$path = JPATH_ROOT.DS.str_replace('/',DS,$typePath).$resized;
+			$msg = JFolder::delete($path);
+			if(!$msg){
+				vmWarn('Problem deleting '.$type);
+			}
+			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+			$msg = JFolder::create($path);
+			return $msg;
+		} else {
+
+			return 'Config path for '.$type.' empty';
 		}
-		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-		$msg = JFolder::create($path);
-		return $msg;
+
 	}
 
 }

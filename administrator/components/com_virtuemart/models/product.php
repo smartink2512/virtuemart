@@ -129,9 +129,9 @@ class VirtueMartModelProduct extends VmModel {
 	function updateRequests () {
 
 		//hmm how to trigger that in the module or so?
-		$this->keyword = vmRequest::uword ('keyword', "0", ' ,-,+,.,_');
+		$this->keyword = vmRequest::uword ('keyword', "0", ' ,-,+,.,_,#,/');
 		if ($this->keyword == "0") {
-			$this->keyword = vmRequest::uword ('filter_product', "0", ' ,-,+,.,_');
+			$this->keyword = vmRequest::uword ('filter_product', "0", ' ,-,+,.,_,#,/');
 		}
 
 		$app = JFactory::getApplication ();
@@ -1568,7 +1568,7 @@ class VirtueMartModelProduct extends VmModel {
 				} else {
 					$data[$decimal] = null;
 					$product_data->$decimal = null;
-					vmdebug('Store product, set $decimal '.$decimal.' = null');
+					//vmdebug('Store product, set $decimal '.$decimal.' = null');
 				}
 			}
 		}

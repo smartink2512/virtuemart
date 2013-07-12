@@ -589,7 +589,7 @@ class VmTable extends JTable {
 						$this->$name = $this->$name . JFactory::getDate()->toFormat("%Y-%m-%d") . '-';
 					} else {
 						$this->$name .= '-' .JFactory::getDate()->format('Y-m-d') . '-';
-						vmdebug('with date '.$this->$name);
+						//vmdebug('with date '.$this->$name);
 					}
 				} else {
 

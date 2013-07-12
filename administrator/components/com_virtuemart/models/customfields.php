@@ -1240,8 +1240,6 @@ class VirtueMartModelCustomfields extends VmModel {
 					foreach ((array)$selected as $key => $value) {
 						$html .= '<br/ >Couldnt find customfield' . ($key ? '<span>' . $key . ' </span>' : '') . $value;
 					}
-					vmdebug ('CustomsFieldOrderDisplay, $item->productCustom empty? ' . $variant);
-					vmdebug ('customFieldDisplay, $productCustom is EMPTY ');
 				}
 
 			}
