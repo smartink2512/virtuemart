@@ -344,7 +344,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	if (!empty($this->layoutName) && $this->layoutName == 'default' && !$this->cart->automaticSelectedShipment) {
 		echo JHTML::_ ('link', JRoute::_ ('index.php?view=cart&task=edit_shipment', $this->useXHTML, $this->useSSL), $this->select_shipment_text, 'class=""');
 	} else {
-		JText::_ ('COM_VIRTUEMART_CART_SHIPPING');
+		echo JText::_ ('COM_VIRTUEMART_CART_SHIPPING');
 	}
 } else {
 	?>
@@ -369,7 +369,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 		<?php if (!empty($this->layoutName) && $this->layoutName == 'default') {
 		echo JHTML::_ ('link', JRoute::_ ('index.php?view=cart&task=editpayment', $this->useXHTML, $this->useSSL), $this->select_payment_text, 'class=""');
 	} else {
-		JText::_ ('COM_VIRTUEMART_CART_PAYMENT');
+		echo JText::_ ('COM_VIRTUEMART_CART_PAYMENT');
 	} ?> </td>
 
 	</td>
