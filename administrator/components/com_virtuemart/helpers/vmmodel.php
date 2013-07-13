@@ -663,23 +663,23 @@ class VmPagination extends JPagination {
 				$sequenceArray = explode(',', $sequence);
 				if(count($sequenceArray>1)){
 					foreach($sequenceArray as $items){
-						$limits[]=JHtml::_('select.option', $items);
+						$limits[$items]=JHtml::_('select.option', $items);
 					}
 				}
 			}
 
 			if(empty($limits)){
-				$limits[] = JHTML::_('select.option', 15);
-				$limits[] = JHTML::_('select.option', 30);
-				$limits[] = JHTML::_('select.option', 50);
-				$limits[] = JHTML::_('select.option', 100);
-				$limits[] = JHTML::_('select.option', 200);
-				$limits[] = JHTML::_('select.option', 400);
+				$limits[15] = JHTML::_('select.option', 15);
+				$limits[30] = JHTML::_('select.option', 30);
+				$limits[50] = JHTML::_('select.option', 50);
+				$limits[100] = JHTML::_('select.option', 100);
+				$limits[200] = JHTML::_('select.option', 200);
+				$limits[400] = JHTML::_('select.option', 400);
 			}
 
 			if(!array_key_exists($this->limit,$limits)){
-				$limits[] = JHTML::_('select.option', $this->limit);
-				sort($limits);
+				$limits[$this->limit] = JHTML::_('select.option', $this->limit);
+				ksort($limits);
 			}
 			$namespace = '';
 			if (JVM_VERSION!==1) {
@@ -706,27 +706,27 @@ class VmPagination extends JPagination {
 			$link[0] = "?";
 			$link = 'index.php'.$link ;
 			if(empty($sequence)){
-				$sequence = VmConfig::get('paqseq'.$this->_perRow);
+				$sequence = VmConfig::get('pagseq_'.$this->_perRow);
 			}
 			if(!empty($sequence)){
 				$sequenceArray = explode(',', $sequence);
 				if(count($sequenceArray>1)){
 					foreach($sequenceArray as $items){
-						$limits[]=JHtml::_('select.option', JRoute::_( $link.'&limit='. $items, false), $items);
+						$limits[$items]=JHtml::_('select.option', JRoute::_( $link.'&limit='. $items, false), $items);
 					}
 				}
 			}
 
 			if(empty($limits) or !is_array($limits)){
 				if($this->_perRow===1) $this->_perRow = 5;
-				$limits[] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 5, false) ,$this->_perRow * 5);
-				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 10, false) , $this->_perRow * 10 );
-				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 20, false) , $this->_perRow * 20 );
-				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 20, false) , $this->_perRow * 50 );
+				$limits[$this->_perRow * 5] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 5, false) ,$this->_perRow * 5);
+				$limits[$this->_perRow * 10] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 10, false) , $this->_perRow * 10 );
+				$limits[$this->_perRow * 20] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 20, false) , $this->_perRow * 20 );
+				$limits[$this->_perRow * 50] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 50, false) , $this->_perRow * 50 );
 			}
 			if(!array_key_exists($this->limit,$limits)){
 				$limits[] = JHTML::_('select.option', JRoute::_( $link.'&limit='.$this->limit,false),$this->limit);
-				sort($limits);
+				ksort($limits);
 			}
 			$selected= JRoute::_( $link.'&limit='. $selected) ;
 			$js = 'onchange="window.top.location.href=this.options[this.selectedIndex].value"';
