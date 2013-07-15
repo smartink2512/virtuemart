@@ -61,7 +61,10 @@ static function vmGetCharset() {
 
     /**
      * Generate HTML code for a row using VmHTML function
-     *
+     * works also with shopfunctions, for example
+	 * $html .= VmHTML::row (array('ShopFunctions', 'renderShopperGroupList'),
+	 * 			'VMCUSTOM_BUYER_GROUP_SHOPPER', $field->shopper_groups, TRUE, 'custom_param['.$row.'][shopper_groups][]', ' ');
+	 *
      * @func string  : function to call
      * @label string : Text Label
      * @args array : arguments
@@ -69,6 +72,9 @@ static function vmGetCharset() {
      */
     static function row($func,$label){
 		$VmHTML="VmHTML";
+		if (!is_array($func)) {
+			$func = array($VmHTML, $func);
+		}
 		$passedArgs = func_get_args();
 		array_shift( $passedArgs );//remove function
 		array_shift( $passedArgs );//remove label
@@ -94,7 +100,7 @@ static function vmGetCharset() {
 				'.$label.'
 			</td>
 			<td>
-				'.call_user_func_array(array($VmHTML, $func), $args).'
+				'.call_user_func_array($func, $args).'
 			</td>
 		</tr>';
 		return $html ;

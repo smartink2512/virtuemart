@@ -21,18 +21,9 @@ defined('_JEXEC') or die('Restricted access');?>
 <fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_SETTINGS'); ?></legend>
 	<table class="admintable">
-		<tr>
-			<td class="key">
-				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE_TIP'); ?>">
- 					<label for="shop_is_offline">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE', false); ?>
-					 </label>
-				</span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('shop_is_offline', VmConfig::get('shop_is_offline', 0)); ?>
-			</td>
-		</tr>
+		<?php
+			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE','shop_is_offline',VmConfig::get('shop_is_offline',0));
+		?>
 		<tr>
 			<td class="key">
 				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE_MSG'); ?>
@@ -42,19 +33,9 @@ defined('_JEXEC') or die('Restricted access');?>
 				          style="text-align: left;"><?php echo VmConfig::get('offline_message', 'Our Shop is currently down for maintenance. Please check back again soon.'); ?></textarea>
 			</td>
 		</tr>
-		<tr>
-			<td class="key">
-				<span class="hasTip"
-				      title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN'); ?>">
-					<label for="use_as_catalog">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_USE_ONLY_AS_CATALOGUE'); ?>
-					</label>
-				</span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('use_as_catalog', VmConfig::get('use_as_catalog', 0)); ?>
-			</td>
-		</tr>
+		<?php
+			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_USE_ONLY_AS_CATALOGUE','use_as_catalog',VmConfig::get('use_as_catalog',0));
+		?>
 		<tr>
 			<td class="key">
             	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_CURRENCY_MODULE_TIP'); ?>">
@@ -65,45 +46,16 @@ defined('_JEXEC') or die('Restricted access');?>
 				<?php echo JHTML::_('Select.genericlist', $this->currConverterList, 'currency_converter_module', 'size=1', 'value', 'text', VmConfig::get('currency_converter_module', 'convertECB.php')); ?>
 			</td>
 		</tr>
-		<tr>
-			<td class="key">
-            	<span class="hasTip"
-	                  title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_CONTENT_PLUGIN_EXPLAIN'); ?>">
-            		<label for="enable_content_plugin">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_CONTENT_PLUGIN'); ?>
-		            </label>
-            	</span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('enable_content_plugin', VmConfig::get('enable_content_plugin', '0')); ?>
-			</td>
-		</tr>
-		<?php    /* <tr>
-			<td class="key">
-			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT_EXPLAIN'); ?>">
-	
-	<?php	/* <tr>
-		<	td class="key">
-			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT_EXPLAIN'); ?>">
-			<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT') ?>
-			</span>
-			</td>
-			<td>
-			<input type="text" name="dateformat" class="inputbox" value="<?php echo VmConfig::get('dateformat') ?>" />
-			</td>
-		</tr> */ ?>
-		<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SSL_EXPLAIN'); ?>">
-            		<label for="useSSL">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SSL'); ?>
-		            </label>
-            	</span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('useSSL', VmConfig::get('useSSL', 0)); ?>
-			</td>
-		</tr>
+		<?php
+			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_ENABLE_CONTENT_PLUGIN','enable_content_plugin',VmConfig::get('enable_content_plugin',0));
+		?>
+
+		<?php    /*
+     		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT','dateformat',VmConfig::get('dateformat'));
+    		*/ ?>
+		<?php
+			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SSL','useSSL',VmConfig::get('useSSL',0));
+		?>
 	</table>
 </fieldset>
 
@@ -123,18 +75,10 @@ defined('_JEXEC') or die('Restricted access');?>
 				<?php echo JText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
 			</td>
 		</tr>
-		<tr>
-			<td class="key">
-					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_ENGLISH_EXPLAIN'); ?>">
-						<label for="enableEnglish">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_ENGLISH'); ?>
-					</label>
-                </span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('enableEnglish', VmConfig::get('enableEnglish', '1')); ?>
-			</td>
-		</tr>
+		<?php
+			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_ENABLE_ENGLISH','enableEnglish',VmConfig::get('enableEnglish',1));
+		?>
+
 	</table>
 </fieldset>
 
@@ -162,18 +106,9 @@ defined('_JEXEC') or die('Restricted access');?>
 				</select>
 			</td>
 		</tr>
-		<tr>
-			<td class="key">
-				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_USEVENDOR_EXPLAIN'); ?>">
-					<label for="useVendorEmail">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_USEVENDOR'); ?>
-					</label>
-					</span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('useVendorEmail', VmConfig::get('useVendorEmail', 0)); ?>
-			</td>
-		</tr>
+		<?php
+			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_MAIL_USEVENDOR','useVendorEmail',VmConfig::get('useVendorEmail',1));
+		?>
 
 		<?php /*?>		<!-- NOT YET -->
 	    <!--tr>
@@ -220,18 +155,10 @@ defined('_JEXEC') or die('Restricted access');?>
 				?>
 			</td>
 		</tr>
-		<tr>
-			<td class="key">
-					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS_EXPLAIN'); ?>">
-						<label for="dangeroustools">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'); ?>
-						</label>
-					</span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('dangeroustools', VmConfig::get('dangeroustools')); ?>
-			</td>
-		</tr>
+		<?php
+			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS','dangeroustools',VmConfig::get('dangeroustools',0));
+		?>
+
 		<tr>
 			<td class="key">
 					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_EXPLAIN'); ?>">

@@ -142,7 +142,8 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 				<td align="center">
 					<?php
 					// We show the images only when less than 21 products are displayeed -->
-					if($this->pagination->limit<21 or $total<21){
+					$mediaLimit = (int)VmConfig::get('mediaLimit',20);
+					if($this->pagination->limit<=$mediaLimit or $total<=$mediaLimit){
 						// Product list should be ordered
 						$this->model->addImages($product,1);
 						$img = '<span >('.$product->mediaitems.')</span>'.$product->images[0]->displayMediaThumb('class="vm_mini_image"',false );

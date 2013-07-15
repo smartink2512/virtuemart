@@ -612,7 +612,7 @@ class VmConfig {
 				} else  {
 				// TODO test wiht j1.7
 				jimport('joomla.language.helper');
-				$languages = JLanguageHelper::getLanguages('lang_code');
+				//$languages = JLanguageHelper::getLanguages('lang_code');
 				$siteLang = JFactory::getLanguage()->getTag();
 					vmdebug('My selected language by JFactory::getLanguage()->getTag() '.$siteLang);
 				}

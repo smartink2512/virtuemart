@@ -55,7 +55,7 @@ class VirtuemartViewCategories extends VmView {
 //		$categoryId = 0;	//The idea is that you can choose a parent catgory, this value should come from the joomla view parameter stuff
 		$category = $categoryModel->getCategory($categoryId);
 
-		if($category->virtuemart_category_id!==0 and !empty($category->published)){
+		if(!empty($category->virtuemart_category_id) and empty($category->published)){
 			vmInfo('COM_VIRTUEMART_CAT_NOT_PUBL',$category->category_name,$categoryId);
 			return false;
 		}

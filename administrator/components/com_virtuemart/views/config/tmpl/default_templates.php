@@ -122,6 +122,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <fieldset>
 <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PAGINATION_SEQUENCE'); ?></legend>
 <table class="admintable">
+	<?php echo VmHTML::row('input','COM_VIRTUEMART_LIST_MEDIA','mediaLimit',VmConfig::get('mediaLimit',20)); ?>
 	<?php echo VmHTML::row('input','COM_VIRTUEMART_LLIMIT_INIT_BE','llimit_init_BE',VmConfig::get('llimit_init_BE',20)); ?>
 	<?php echo VmHTML::row('input','COM_VIRTUEMART_CFG_PAGSEQ_BE','pagseq',VmConfig::get('pagseq')); ?>
 

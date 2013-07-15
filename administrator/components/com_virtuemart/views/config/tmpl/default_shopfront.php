@@ -24,139 +24,43 @@ defined('_JEXEC') or die('Restricted access');?>
 <fieldset>
 <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MORE_CORE_SETTINGS'); ?></legend>
 <table class="admintable">
-<tr>
-	<td class="key">
-	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_PRINTICON_TIP'); ?>">
-								<label for="show_printicon">
-									<?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_PRINTICON'); ?>
-								</label>
-							</span>
-	</td>
-	<td>
-		<?php echo VmHTML::checkbox('show_printicon', VmConfig::get('show_printicon', 1)); ?>
-	</td>
-</tr>
-<tr>
-	<td class="key">
-	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PDF_ICON_SHOW_EXPLAIN'); ?>">
-	<label for="pdf_icon">
-		<?php echo JText::_('COM_VIRTUEMART_PDF_ICON_SHOW'); ?>
-	</label>
-</span>
-	</td>
-	<td>
-		<?php echo VmHTML::checkbox('pdf_icon', VmConfig::get('pdf_icon')); ?>
-	</td>
-</tr>
-<tr>
-	<td class="key">
-	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_EMAILFRIEND_TIP'); ?>">
-								<label for="show_emailfriend">
-									<?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_EMAILFRIEND'); ?>
-								</label>
-							</span>
-	</td>
-	<td>
-		<?php echo VmHTML::checkbox('show_emailfriend', VmConfig::get('show_emailfriend', 0)); ?>
-	</td>
-</tr>
-<tr>
-	<td class="key">
-	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_RECCOMEND_UNATUH_EXPLAIN'); ?>">
-								<label for="recommend_unauth">
-									<?php echo JText::_('COM_VIRTUEMART_RECCOMEND_UNATUH'); ?>
-								</label>
-							</span>
-	</td>
-	<td>
-		<?php echo VmHTML::checkbox('recommend_unauth', VmConfig::get('recommend_unauth')); ?>
-	</td>
-</tr>
-<tr>
-	<td class="key">
-	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_SHOW_EXPLAIN'); ?>">
-								<label for="ask_question">
-									<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_SHOW'); ?>
-								</label>
-</span>
-	</td>
-	<td>
-		<?php echo VmHTML::checkbox('ask_question', VmConfig::get('ask_question')); ?>
-	</td>
-</tr>
-<tr>
-	<td class="key">
-	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MIN_LENGTH_EXPLAIN'); ?>">
-								<label for="ask_question">
-									<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MIN_LENGTH'); ?>
-								</label>
-</span>
-	</td>
-	<td>
-		<input type="text" value="<?php echo VmConfig::get('asks_minimum_comment_length', 50); ?>" class="inputbox" size="4" name="asks_minimum_comment_length">
-	</td>
-</tr>
-<tr>
-	<td class="key">
-	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MAX_LENGTH_EXPLAIN'); ?>">
-								<label for="ask_question">
-									<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MAX_LENGTH'); ?>
-								</label>
-							</span>
-	</td>
-	<td>
-		<input type="text" value="<?php echo VmConfig::get('asks_maximum_comment_length', 2000); ?>" class="inputbox" size="4" name="asks_maximum_comment_length">
-	</td>
-</tr>
-<tr>
-	<td class="key">
-		<span class="hasTip"`title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAVIGATION_SHOW_EXPLAIN'); ?>">
-		<label for="product_navigation">
-			<?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAVIGATION_SHOW'); ?>
-		</label></span>
-	</td>
-	<td>
-		<?php echo VmHTML::checkbox('product_navigation', VmConfig::get('product_navigation')); ?>
-	</td>
-</tr>
+	<?php echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_SHOW_PRINTICON','show_printicon',VmConfig::get('show_printicon',1));
+	echo VmHTML::row('checkbox','COM_VIRTUEMART_PDF_ICON_SHOW','pdf_icon',VmConfig::get('pdf_icon',0));
+	echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_SHOW_EMAILFRIEND','show_emailfriend',VmConfig::get('show_emailfriend',0));
+	echo VmHTML::row('checkbox','COM_VIRTUEMART_RECCOMEND_UNATUH','recommend_unauth',VmConfig::get('recommend_unauth',0));
+	echo VmHTML::row('checkbox','COM_VIRTUEMART_ASK_QUESTION_SHOW','ask_question',VmConfig::get('ask_question',0));
+	?>
+	<tr>
+		<td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MIN_LENGTH_EXPLAIN'); ?>">
+									<label for="ask_question">
+										<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MIN_LENGTH'); ?>
+									</label>
+	</span>
+		</td>
+		<td>
+			<input type="text" value="<?php echo VmConfig::get('asks_minimum_comment_length', 50); ?>" class="inputbox" size="4" name="asks_minimum_comment_length">
+		</td>
+	</tr>
+	<tr>
+		<td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MAX_LENGTH_EXPLAIN'); ?>">
+									<label for="ask_question">
+										<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MAX_LENGTH'); ?>
+									</label>
+								</span>
+		</td>
+		<td>
+			<input type="text" value="<?php echo VmConfig::get('asks_maximum_comment_length', 2000); ?>" class="inputbox" size="4" name="asks_maximum_comment_length">
+		</td>
+	</tr>
+	<?php
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_PRODUCT_NAVIGATION_SHOW','product_navigation',VmConfig::get('product_navigation',0));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_DISPLAY_STOCK','display_stock',VmConfig::get('display_stock',0));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_COUPONS_ENABLE','coupons_enable',VmConfig::get('coupons_enable',0));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_UNCAT_CHILD_PRODUCTS_SHOW','show_uncat_child_products',VmConfig::get('show_uncat_child_products',0));
+	?>
 
-
-<tr>
-	<td class="key">
-<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_DISPLAY_STOCK_EXPLAIN'); ?>">
-	<label for="display_stock">
-		<?php echo JText::_('COM_VIRTUEMART_DISPLAY_STOCK'); ?>
-	</label>
-</span>
-	</td>
-	<td>
-		<?php echo VmHTML::checkbox('display_stock', VmConfig::get('display_stock')); ?>
-	</td>
-</tr>
-<tr>
-	<td class="key">
-<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_ENABLE_EXPLAIN'); ?>">
-	<label for="coupons_enable">
-		<?php echo JText::_('COM_VIRTUEMART_COUPONS_ENABLE'); ?>
-	</label>
-</span>
-	</td>
-	<td>
-		<?php echo VmHTML::checkbox('coupons_enable', VmConfig::get('coupons_enable')); ?>
-	</td>
-</tr>
-<tr>
-	<td class="key">
-<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_UNCAT_CHILD_PRODUCTS_SHOW_EXPLAIN'); ?>">
-	<label for="show_uncat_child_products">
-		<?php echo JText::_('COM_VIRTUEMART_UNCAT_CHILD_PRODUCTS_SHOW'); ?>
-	</label>
-</span>
-	</td>
-	<td>
-		<?php echo VmHTML::checkbox('show_uncat_child_products', VmConfig::get('show_uncat_child_products')); ?>
-	</td>
-</tr>
 <tr>
 	<td class="key">
 <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_EXPIRE_EXPLAIN'); ?>">
