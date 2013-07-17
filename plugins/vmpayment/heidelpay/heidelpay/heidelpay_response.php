@@ -5,13 +5,13 @@
 
  * Heidelpay response page for Heidelpay plugin
  * @author Heidelberger Paymenrt GmbH <Jens Richter> 
- * @version 13.06
+ * @version 13.07
  * @package VirtueMart
  * @subpackage payment
  * @copyright Copyright (C) Heidelberger Payment GmbH
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
- 
+
 include('../../../../configuration.php');
 $config = new JConfig();
 
@@ -44,7 +44,7 @@ $cancelURL	 = $Protocol.$URL.'index.php?option=com_virtuemart&view=pluginrespons
 
 function updateHeidelpay($orderID, $connect) {
 	$comment="";
-	if ( preg_match('/^[A-Za-z0-9]+$/', $orderID , $str)) {
+	if ( preg_match('/^[A-Za-z0-9 -]+$/', $orderID , $str)) {
 		$link = mysql_connect($connect->host, $connect->user , $connect->password);
 		mysql_select_db($connect->db);	
 		$result = mysql_query("SELECT virtuemart_order_id FROM ".$connect->dbprefix."virtuemart_orders"." WHERE  order_number = '".$orderID."';");

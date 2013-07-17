@@ -21,7 +21,7 @@ if (!class_exists ('vmPSPlugin')) {
 class plgVmPaymentHeidelpay extends vmPSPlugin {
 
 	public static $_this = FALSE;
-	protected $version = '13.06 Standard';
+	protected $version = '13.07 Standard';
 
 	function __construct (& $subject, $config) {
 
@@ -264,7 +264,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		/*
 		* Add response and css path
 		*/
-		$params['FRONTEND.RESPONSE_URL'] = JROUTE::_ (JURI::root(), $xhtml=true, $ssl=0) . 'plugins/vmpayment/heidelpay/heidelpay/heidelpay_response.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id;
+		$params['FRONTEND.RESPONSE_URL'] = JROUTE::_ (JURI::root(), $xhtml=true, $ssl=0) . 'plugins/vmpayment/heidelpay/heidelpay/heidelpay_response.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . urlencode($order['details']['BT']->order_number) . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id;
 		$cssFile = "heidelpay_default.css";
 		if (!empty($method->HEIDELPAY_STYLE)) {
 			$cssFile = $method->HEIDELPAY_STYLE ;

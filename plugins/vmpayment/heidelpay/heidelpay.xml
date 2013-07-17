@@ -8,7 +8,7 @@
     <authorUrl>http://www.heidelpay.de</authorUrl>
     <copyright>Copyright Heidelberger Payment GmbH</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-    <version>13.06</version>
+    <version>13.07</version>
     <description><![CDATA[<h2>Virtuemart Plugin von:</h2><p><a href="http://www.Heidelpay.de" target="_blank"><img src="http://www.heidelpay.de/gfx/logo.gif" style="margin-right:20px;"/></a></p> ]]></description>
     <languages folder="languages">
         <language tag="de-DE" client="administrator">de-DE.plg_vmpayment_heidelpay.ini
