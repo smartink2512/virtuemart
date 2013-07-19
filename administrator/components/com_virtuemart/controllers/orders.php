@@ -218,7 +218,7 @@ class VirtuemartControllerOrders extends VmController {
 			// 			$model->updateSingleItem((int)$key, $value['order_status'],$value['comments'],$_orderID);
 			$model->updateSingleItem((int)$key, $data, true);
 		}
-
+		$model->deleteInvoice($_orderID);
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$_orderID);
 	}
 
@@ -229,6 +229,7 @@ class VirtuemartControllerOrders extends VmController {
 		$_items = JRequest::getVar('item_id',  0, '', 'array');
 		$_orderID = JRequest::getInt('virtuemart_order_id', '');
 		$model->UpdateOrderHead((int)$_orderID, JRequest::get('post'));
+		$model->deleteInvoice($_orderID);
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$_orderID);
 	}
 
@@ -262,7 +263,7 @@ class VirtuemartControllerOrders extends VmController {
 		if (!$model->saveOrderLineItem($data)) {
 			$msg = $model->getError();
 		}
-
+		$model->deleteInvoice($orderId);
 		$editLink = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $orderId;
 		$this->setRedirect($editLink, $msg);
 	}
@@ -281,7 +282,7 @@ class VirtuemartControllerOrders extends VmController {
 		if (!$model->removeOrderLineItem($orderLineItem)) {
 			$msg = $model->getError();
 		}
-
+		$model->deleteInvoice($orderId);
 		$editLink = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $orderId;
 		$this->setRedirect($editLink, $msg);
 	}

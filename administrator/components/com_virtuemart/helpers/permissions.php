@@ -256,11 +256,9 @@ class Permissions extends JObject{
 			$user = JFactory::getUser();
 
 			if(!empty( $user->id)){
-				$q = 'SELECT `virtuemart_vendor_id`
-							FROM `#__virtuemart_vmusers` `au`
-							LEFT JOIN `#__virtuemart_userinfos` `u`
-							ON (au.virtuemart_user_id = u.virtuemart_user_id)
-							WHERE `u`.`virtuemart_user_id`="' .$user->id.'" AND `au`.`user_is_vendor` = "1" ';
+				$q='SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vmusers` `au`
+				WHERE `au`.`virtuemart_user_id`="' .$user->id.'" AND `au`.`user_is_vendor` = "1" ';
+
 				$db= JFactory::getDbo();
 				$db->setQuery($q);
 				$virtuemart_vendor_id = $db->loadResult();
