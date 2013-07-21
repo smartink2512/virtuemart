@@ -590,6 +590,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$data->load($virtuemart_order_id);
 		$old_order_status = $data->order_status;
 		$data->bind($inputOrder);
+			JPluginHelper::importPlugin('vmcustom');
 
 		$cp_rm = VmConfig::get('cp_rm',array('C'));
 		if(!is_array($cp_rm)) $cp_rm = array($cp_rm);
