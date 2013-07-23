@@ -210,7 +210,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 			// Keep this line, needed when testing
 			//"return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
-			"notify_url"       => JROUTE::_ (JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
+			"notify_url"       => substr(JURI::root(false,''),0,-1) . JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
 			"cancel_return" =>substr(JURI::root(false,''),0,-1). JROUTE::_( 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid')),
 			//"undefined_quantity" => "0",
 			"ipn_test" => $method->debug,
@@ -328,7 +328,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if (!$this->selectedThisElement($method->payment_element)) {
 			return FALSE;
 		}
-		if (!($payments = $this->_getPaypalInternalData($virtuemart_order_id))) {
+		if (!($payments = $this->getDatasByOrderId($virtuemart_order_id))) {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 			return '';
 		}
@@ -381,7 +381,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		}
 		$payment_name = $this->renderPluginName($method);
 		$html = $this->_getPaymentResponseHtml($paymentTable, $payment_name);
-
 		//We delete the old stuff
 		// get the correct cart / session
 		$cart = VirtueMartCart::getCart();
@@ -593,7 +592,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return NULL; // Another method was selected, do nothing
 		}
 
-		if (!($payments = $this->_getPaypalInternalData($virtuemart_order_id))) {
+		if (!($payments = $this->getDatasByOrderId($virtuemart_order_id))) {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 			return '';
 		}
@@ -606,7 +605,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$html .= '<tr class="row1"><td>' . JText::_('VMPAYMENT_PAYPAL_DATE') . '</td><td align="left">' . $payment->created_on . '</td></tr>';
 			// Now only the first entry has this data when creating the order
 			if ($first) {
-				$html .= $this->getHtmlRowBE('PAYPAL_PAYMENT_NAME', $payment->payment_name);
+				$html .= $this->getHtmlRowBE('COM_VIRTUEMART_PAYMENT_NAME', $payment->payment_name);
 				// keep that test to have it backwards compatible. Old version was deleting that column  when receiving an IPN notification
 				if ($payment->payment_order_total and  $payment->payment_order_total != 0.00) {
 					$html .= $this->getHtmlRowBE('PAYPAL_PAYMENT_ORDER_TOTAL', $payment->payment_order_total . " " . shopFunctions::getCurrencyByID($payment->payment_currency, 'currency_code_3'));
@@ -630,28 +629,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		return $html;
 	}
 
-	/**
-	 * @param        $virtuemart_order_id
-	 * @param string $order_number
-	 * @return mixed|string
-	 */
-	function _getPaypalInternalData($virtuemart_order_id, $order_number = '') {
 
-		$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `' . $this->_tablename . '` WHERE ';
-		if ($order_number) {
-			$q .= " `order_number` = '" . $order_number . "'";
-		} else {
-			$q .= ' `virtuemart_order_id` = ' . $virtuemart_order_id;
-		}
-
-		$db->setQuery($q);
-		if (!($payments = $db->loadObjectList())) {
-			// JError::raiseWarning(500, $db->getErrorMsg());
-			return '';
-		}
-		return $payments;
-	}
 
 	/**
 	 * Get ipn data, send verification to PayPal, run corresponding handler
@@ -897,9 +875,10 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	 * @return string
 	 */
 	function _getPaymentResponseHtml($paypalTable, $payment_name) {
+		VmConfig::loadJLang('com_virtuemart');
 
 		$html = '<table>' . "\n";
-		$html .= $this->getHtmlRow('PAYPAL_PAYMENT_NAME', $payment_name);
+		$html .= $this->getHtmlRow('COM_VIRTUEMART_PAYMENT_NAME', $payment_name);
 		if (!empty($paypalTable)) {
 			$html .= $this->getHtmlRow('PAYPAL_ORDER_NUMBER', $paypalTable->order_number);
 			//$html .= $this->getHtmlRow('PAYPAL_AMOUNT', $paypalTable->payment_order_total. " " . $paypalTable->payment_currency);
