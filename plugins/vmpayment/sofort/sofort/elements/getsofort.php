@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Id: getheidelpay.php 6369 2012-08-22 14:33:46Z alatak $
+ * @version $Id$
  *
  * @author Valérie Isaksen
  * @package VirtueMart
