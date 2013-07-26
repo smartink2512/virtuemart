@@ -15,10 +15,30 @@
  * @version $Id$
  */
 defined('_JEXEC') or die('Restricted access');
+$js = '
+		jQuery(document).ready(function( $ ) {
+				if ( $("#oncheckout_opc").is(\':checked\') ) {
+					$(".not_opc_param").hide();
+				} else {
+					$(".not_opc_param").show();
+				}
+			 $("#oncheckout_opc").click(function() {
+				if ( $(".not_opc_param").is(\':checked\') ) {
+					$(".not_opc_param").hide();
+				} else {
+					$(".not_opc_param").show();
+				}
+			});
+		});
+	';
+$document = JFactory::getDocument();
+$document->addScriptDeclaration($js);
+
 /*
  <table width="100%">
 <tr>
-<td valign="top" width="50%"> */ ?>
+<td valign="top" width="50%"> */
+?>
 <fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECKOUT_SETTINGS'); ?></legend>
 	<table class="admintable">
@@ -48,17 +68,30 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LANGFIX_EXPLAIN'); ?>">
-					<label for="addtocart_popup">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LANGFIX'); ?>
+            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CHECKOUT_OPC_TIP'); ?>">
+					<label for="oncheckout_opc">
+						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CHECKOUT_OPC'); ?>
 					</label>
-				</span>
+                </span>
 			</td>
 			<td>
-				<?php echo VmHTML::checkbox('vmlang_js', VmConfig::get('vmlang_js',0)); ?>
+				<?php echo VmHTML::checkbox('oncheckout_opc', VmConfig::get('oncheckout_opc',0)); ?>
 			</td>
 		</tr>
-		<tr>
+		<div id="not_opc_param">
+		<tr class="not_opc_param">
+			<td class="key">
+            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS_TIP'); ?>">
+					<label for="oncheckout_show_steps">
+						<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS'); ?>
+					</label>
+                </span>
+			</td>
+			<td>
+				<?php echo VmHTML::checkbox('oncheckout_show_steps', VmConfig::get('oncheckout_show_steps',0)); ?>
+			</td>
+		</tr>
+		<tr  class="not_opc_param">
 			<td class="key">
             	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT_EXPLAIN'); ?>">
 					<label for="automatic_shipment">
@@ -70,7 +103,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo VmHTML::checkbox('automatic_shipment', VmConfig::get('automatic_shipment',1)); ?>
 			</td>
 		</tr>
-		<tr>
+		<tr  class="not_opc_param">
 			<td class="key">
             	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENT_EXPLAIN'); ?>">
 					<label for="automatic_payment">
@@ -82,6 +115,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo VmHTML::checkbox('automatic_payment', VmConfig::get('automatic_payment',1)); ?>
 			</td>
 		</tr>
+		</div>
 		<tr>
 			<td class="key">
             	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN'); ?>">
@@ -130,18 +164,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo VmHTML::checkbox('oncheckout_only_registered', VmConfig::get('oncheckout_only_registered',0)); ?>
 			</td>
 		</tr>
-		<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS_TIP'); ?>">
-					<label for="oncheckout_show_steps">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS'); ?>
-					</label>
-                </span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('oncheckout_show_steps', VmConfig::get('oncheckout_show_steps',0)); ?>
-			</td>
-		</tr>
+
 		<tr>
 			<td class="key">
             	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_PRODUCTIMAGES_TIP'); ?>">
@@ -182,6 +205,18 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 				<?php echo $this->orderStatusModel->renderOSList(VmConfig::get('email_os_v',array('U','C','R','X')),'email_os_v',TRUE); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="key">
+            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LANGFIX_EXPLAIN'); ?>">
+					<label for="addtocart_popup">
+						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LANGFIX'); ?>
+					</label>
+				</span>
+			</td>
+			<td>
+				<?php echo VmHTML::checkbox('vmlang_js', VmConfig::get('vmlang_js',0)); ?>
 			</td>
 		</tr>
 	</table>

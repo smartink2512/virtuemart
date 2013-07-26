@@ -18,7 +18,11 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+if (VmConfig::get('oncheckout_opc', 0)) {
+	$headerLevel = 3;
+} else {
+	$headerLevel =1;
+}
 ?>
 
 <?php
@@ -29,22 +33,23 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 <form method="post" id="userForm" name="chooseShipmentRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate">
 <?php
 
-	echo "<h1>".JText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT')."</h1>";
+	echo "<h".$headerLevel.">".JText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT')."</h".$headerLevel.">";
 	if($this->cart->getInCheckOut()){
 		$buttonclass = 'button vm-button-correct';
 	} else {
 		$buttonclass = 'default';
 	}
 	?>
+
 	<div class="buttonBar-right">
 
 	        <button class="<?php echo $buttonclass ?>" type="submit" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>  &nbsp;
 	<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 	</div>
+
 <?php
-    if ($this->found_shipment_method) {
-
-
+    if ($this->found_shipment_method OR (VmConfig::get('oncheckout_opc', 0)) ) { ?>
+<?php
 	   echo "<fieldset>\n";
 	// if only one Shipment , should be checked by default
 	    foreach ($this->shipments_shipment_rates as $shipment_shipment_rates) {
@@ -56,7 +61,7 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 	    }
 	    echo "</fieldset>\n";
     } else {
-	 echo "<h1>".$this->shipment_not_found_text."</h1>";
+	 echo "<h".$headerLevel.">".$this->shipment_not_found_text."</h".$headerLevel.">";
     }
 
     ?>

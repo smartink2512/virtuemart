@@ -89,6 +89,9 @@ input.readonly{  border: 0 none;}
 /* vmdebug */
 .vmdebug pre{ padding-left: 32px;}
 
+.adminform th{text-align: right!important;}
+
+
 dl#system-message dd .vmdebug  { font-size:10px; }
 /* Fieldset */
 .virtuemart-admin-area fieldset {border-radius: 6px;-moz-border-radius: 6px;-webkit-border-radius: 6px;}

@@ -667,7 +667,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (!isset($values['virtuemart_order_id'])) {
 			$values['virtuemart_order_id'] = VirtueMartModelOrders::getOrderIdByOrderNumber ($values['order_number']);
 		}
-		$this->storePluginInternalData ($values, $primaryKey, 0, $preload);
+		return $this->storePluginInternalData ($values, $primaryKey, 0, $preload);
 	}
 
 	/**

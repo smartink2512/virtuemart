@@ -193,7 +193,7 @@ class VmView extends JView{
 				var oldflag = "";
 				$("select#vmlang").chosen().change(function() {
 					langCode = $(this).find("option:selected").val();
-					flagClass = "flag-"+langCode.substr(0,2) ;
+					flagClass = "flag-"+langCode.substr(3,5).toLowerCase() ;
 					$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1" ,
 						function(data) {
 							var items = [];

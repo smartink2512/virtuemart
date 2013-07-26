@@ -18,7 +18,12 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+$addClass="";
+if (VmConfig::get('oncheckout_opc', 0)) {
+	$headerLevel = 3;
+} else {
+	$headerLevel =1;
+}
 ?>
 
 <?php
@@ -26,22 +31,25 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
     echo '<div class="checkoutStep" id="checkoutStep3">' . JText::_('COM_VIRTUEMART_USER_FORM_CART_STEP3') . '</div>';
 }
 ?>
-<form method="post" id="paymentForm" name="choosePaymentRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate">
+<form method="post" id="paymentForm" name="choosePaymentRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate <?php echo $addClass ?>">
 <?php
-	echo "<h1>".JText::_('COM_VIRTUEMART_CART_SELECT_PAYMENT')."</h1>";
+	echo "<h".$headerLevel.">".JText::_('COM_VIRTUEMART_CART_SELECT_PAYMENT')."</h".$headerLevel.">";
 	if($this->cart->getInCheckOut()){
 		$buttonclass = 'button vm-button-correct';
 	} else {
 		$buttonclass = 'default';
 	}
 ?>
+
 <div class="buttonBar-right">
+
 <button class="<?php echo $buttonclass ?>" type="submit"><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
      &nbsp;
 <button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
     </div>
+
 <?php
-     if ($this->found_payment_method) {
+     if ($this->found_payment_method OR (VmConfig::get('oncheckout_opc', 0) )) {
 
 
     echo "<fieldset>";

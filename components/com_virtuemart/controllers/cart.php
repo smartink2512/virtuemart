@@ -260,7 +260,7 @@ class VirtueMartControllerCart extends JController {
 			$dataValid = true;
 			foreach ($_retValues as $_retVal) {
 				if ($_retVal === true ) {
-					// Plugin completed succesfull; nothing else to do
+					// Plugin completed successfull; nothing else to do
 					$cart->setCartIntoSession();
 					break;
 				} else if ($_retVal === false ) {

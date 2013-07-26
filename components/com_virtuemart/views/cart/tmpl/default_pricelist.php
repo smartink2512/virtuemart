@@ -342,7 +342,13 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<br/>
 	<?php
 	if (!empty($this->layoutName) && $this->layoutName == 'default' && !$this->cart->automaticSelectedShipment) {
-		echo JHTML::_ ('link', JRoute::_ ('index.php?view=cart&task=edit_shipment', $this->useXHTML, $this->useSSL), $this->select_shipment_text, 'class=""');
+		if (VmConfig::get('oncheckout_opc', 0)) {
+			$previouslayout = $this->setLayout('select');
+			echo $this->loadTemplate('shipment');
+			$this->setLayout($previouslayout);
+		} else {
+			echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_shipment', $this->useXHTML, $this->useSSL), $this->select_shipment_text, 'class=""');
+		}
 	} else {
 		echo JText::_ ('COM_VIRTUEMART_CART_SHIPPING');
 	}
@@ -367,8 +373,14 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 		<?php echo $this->cart->cartData['paymentName']; ?>
 		<br/>
 		<?php if (!empty($this->layoutName) && $this->layoutName == 'default') {
-		echo JHTML::_ ('link', JRoute::_ ('index.php?view=cart&task=editpayment', $this->useXHTML, $this->useSSL), $this->select_payment_text, 'class=""');
-	} else {
+			if (VmConfig::get('oncheckout_opc', 0)) {
+				$previouslayout = $this->setLayout('select');
+				echo $this->loadTemplate('payment');
+				$this->setLayout($previouslayout);
+			} else {
+				echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment', $this->useXHTML, $this->useSSL), $this->select_payment_text, 'class=""');
+			}
+		} else {
 		echo JText::_ ('COM_VIRTUEMART_CART_PAYMENT');
 	} ?> </td>
 
