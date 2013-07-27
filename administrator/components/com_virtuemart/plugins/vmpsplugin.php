@@ -156,7 +156,9 @@ abstract class vmPSPlugin extends vmPlugin {
 			if ($this->checkConditions ($cart, $method, $cart->pricesUnformatted)) {
 
 				//$methodSalesPrice = $this->calculateSalesPrice ($cart, $method, $cart->pricesUnformatted);
-				$methodSalesPrice = $this->setCartPrices ($cart, $cart->pricesUnformatted,$method);
+				/* Because of OPC: the price must not be overwritten directly in the cart */
+				$pricesUnformatted= $cart->pricesUnformatted;
+				$methodSalesPrice = $this->setCartPrices ($cart, $pricesUnformatted,$method);
 				$method->$method_name = $this->renderPluginName ($method);
 				$html [] = $this->getPluginHtml ($method, $selected, $methodSalesPrice);
 			}
