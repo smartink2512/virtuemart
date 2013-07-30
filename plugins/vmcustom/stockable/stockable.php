@@ -288,7 +288,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				}
 				if ($show_select) {
 					$html .='<div style="width:200px;"><span style="vertical-align: top;width:98px; display: inline-block;color:#000;">'.JTEXT::_($listname).'</span>';
-					$html .= JHTML::_('select.genericlist', $option,$optionName ,'class="attribute_list customfield_id_'.$js_suffix.'" style="width:100px !important;"','value','text',reset($options),'selectoptions'.$i,false)."</div>\n";
+					$html .= JHTML::_('select.genericlist', $option,$optionName ,'class="attribute_list no-vm-bind customfield_id_'.$js_suffix.'" style="width:100px !important;"','value','text',reset($options),'selectoptions'.$i,false)."</div>\n";
 				} else $html .='<input id="'.$keys.'" class="attribute_list" type="hidden" value="'.$val.'" name="'.$optionName.'">' ;
 			}
 			$i++;
@@ -560,9 +560,9 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @author Matt Lewis-Garner
 	 */
 	function getValideChild($child_id ) {
-
+		//TODO
 		//$productModel = VmModel::getModel('product');
-		//$child = $productModel->getProduct($child_id,true,false,true,1,false);
+        //$child = $productModel->getProduct($child_id,true,false,true,1,false);
 		$db = JFactory::getDBO();
 		$q = 'SELECT `product_sku`,`product_name`,`product_in_stock`,`product_ordered`,`product_availability` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_'.VMLANG.'` as l using (`virtuemart_product_id`) WHERE `published`=1 and `virtuemart_product_id` ='.(int)$child_id ;
 		$db->setQuery($q);
@@ -626,16 +626,50 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				$productCustomsPrice->custom_price = (float)$param['child'][$selected]['custom_price'];
 
 			} else {
-				$db = JFactory::getDBO();
+				// Get the user details
+				$usermodel = VmModel::getModel ('user');
+				$currentVMuser = $usermodel->getCurrentUser ();
+
+				$db = JFactory::getDbo();
+				if (is_array($currentVMuser->shopper_groups)) {
+					$shgroup = $currentVMuser->shopper_groups[0];
+				} else {
+					$shgroup = $currentVMuser->shopper_groups;
+				}
+
+				$query = $db->getQuery(true)
+					->select($db->qn('product_price'))
+					->from($db->qn('#__virtuemart_product_prices'))
+					->where($db->qn('virtuemart_product_id').' = '.(int)$selected)
+					->where($db->qn('virtuemart_shoppergroup_id').' = '.$shgroup);
+
+				$db->setQuery($query);
+
+				$price = $db->loadResult();
+
+				if (empty($price)) {
+					// Check for price to show to all
+					$query->clear('where')
+					->where($db->qn('virtuemart_product_id').' = '.(int)$selected)
+					->where('('.$db->qn('virtuemart_shoppergroup_id').' = 0 OR '.$db->qn('virtuemart_shoppergroup_id').' = NULL)');
+					$db->setQuery($query);
+
+					$price = $db->loadResult();
+				}
+
+				if (!empty($price)) $product->product_price = (float)$price;
+				/*$db = JFactory::getDBO();
 				$db->setQuery('SELECT `product_price` FROM `#__virtuemart_product_prices`  WHERE `virtuemart_product_id`="' . (int)$selected . '" ');
-				if ($price = $db->loadResult()) $product->product_price = (float)$price;
+				if ($price = $db->loadResult()) $product->product_price = (float)$price;*/
 			}
+			//TODO merge parent and child (eg product_weight)
 			return $child;
 		}
 		else return false;
 		// find the selected child
 
 	}
+
 	public function plgVmOnAddToCart(&$product){
 		$customPlugin = JRequest::getVar('customPlugin',0);
 
@@ -658,6 +692,24 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			if ($child->product_name)
 				$product->product_name = $child->product_name;
 			$product->product_in_stock = $child->product_in_stock;
+
+			$this->stockhandle = VmConfig::get('stockhandle','none');
+			if ('disableit' == $this->stockhandle || 'disableit_children' == $this->stockhandle || 'disableadd' == $this->stockhandle) {
+				if (!class_exists ('VirtueMartCart')) {
+					require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+				}
+				$cart = VirtueMartCart::getCart ();
+
+				$orderedQuantity = $product->quantity;
+				foreach ($cart->products as $cartProduct) {
+					if ($cartProduct->virtuemart_product_id == $product->virtuemart_product_id) {
+						$orderedQuantity += $cartProduct->quantity;
+						if ($orderedQuantity > $product->product_in_stock) {
+							return false;
+						}
+					}
+				}
+			}
 		}
 	}
 

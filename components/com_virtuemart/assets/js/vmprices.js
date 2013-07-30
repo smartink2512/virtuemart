@@ -105,8 +105,8 @@ if(typeof Virtuemart === "undefined")
 					addtocart = cart.find('input.addtocart-button'),
 					plus   = cart.find('.quantity-plus'),
 					minus  = cart.find('.quantity-minus'),
-					select = cart.find('select'),
-					radio = cart.find('input:radio'),
+					select = cart.find('select:not(.no-vm-bind)'),
+					radio = cart.find('input:radio:not(.no-vm-bind)'),
 					virtuemart_product_id = cart.find('input[name="virtuemart_product_id[]"]').val(),
 					quantity = cart.find('.quantity-input');
 
@@ -153,7 +153,7 @@ if(typeof Virtuemart === "undefined")
 			Virtuemart.product($("form.product"));
 
 			$("form.js-recalculate").each(function(){
-				if ($(this).find(".product-fields").length) {
+				if ($(this).find(".product-fields").length && !$(this).find(".no-vm-bind").length) {
 					var id= $(this).find('input[name="virtuemart_product_id[]"]').val();
 					Virtuemart.setproducttype($(this),id);
 
