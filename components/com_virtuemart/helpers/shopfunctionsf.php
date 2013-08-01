@@ -59,10 +59,10 @@ class shopFunctionsF {
 	/**
 	 * @author Max Milbers
 	 */
-	static public function getLastVisitedCategoryId () {
+	static public function getLastVisitedCategoryId ($default = 0) {
 
 		$session = JFactory::getSession();
-		return $session->get( 'vmlastvisitedcategoryid', 0, 'vm' );
+		return $session->get( 'vmlastvisitedcategoryid', $default, 'vm' );
 
 	}
 
@@ -447,7 +447,12 @@ class shopFunctionsF {
 			if(is_dir( JPATH_THEMES.DS.$template )) {
 				//$this->addTemplatePath(JPATH_THEMES.DS.$template);
 				$mainframe = JFactory::getApplication( 'site' );
-				$mainframe->set( 'setTemplate', $template );
+				if(JVM_VERSION === 1){
+					$mainframe->set( 'setTemplate', $template );
+				} else {
+					$mainframe->setTemplate($template);
+				}
+
 			} else {
 				JError::raiseWarning( 412, 'The chosen template couldnt find on the filesystem: '.$template );
 			}

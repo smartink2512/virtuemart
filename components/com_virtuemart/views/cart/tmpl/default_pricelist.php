@@ -189,7 +189,12 @@ foreach ($this->cart->products as $pkey => $prow) {
 		<form action="<?php echo JRoute::_ ('index.php'); ?>" method="post" class="inline">
 			<input type="hidden" name="option" value="com_virtuemart"/>
 				<!--<input type="text" title="<?php echo  JText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="inputbox" size="3" maxlength="4" name="quantity" value="<?php echo $prow->quantity ?>" /> -->
-                <input type="text" onblur="check<?php echo $step?>(this);" onclick="check<?php echo $step?>(this);" onchange="check<?php echo $step?>(this);" onsubmit="check(<?php echo $step?>this);" title="<?php echo  JText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="quantity-input js-recalculate" size="3" maxlength="4" name="quantity" value="<?php echo $prow->quantity ?>" />
+            <input type="text"
+				   onblur="check<?php echo $step?>(this);"
+				   onclick="check<?php echo $step?>(this);"
+				   onchange="check<?php echo $step?>(this);"
+				   onsubmit="check<?php echo $step?>(this);"
+				   title="<?php echo  JText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="quantity-input js-recalculate" size="3" maxlength="4" name="quantity" value="<?php echo $prow->quantity ?>" />
 			<input type="hidden" name="view" value="cart"/>
 			<input type="hidden" name="task" value="update"/>
 			<input type="hidden" name="cart_virtuemart_product_id" value="<?php echo $prow->cart_item_id  ?>"/>

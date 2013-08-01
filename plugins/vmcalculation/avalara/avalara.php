@@ -461,62 +461,68 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 	private function fillValidateAvalaraAddress($calc,$vmadd){
 
-		if(!isset(self::$validatedAddresses)){
 
-			if(!empty($vmadd)){
+		if(!empty($vmadd)){
 
-				if(is_object($calc)){
-					$calc = get_object_vars($calc);
+			if(is_object($vmadd)){
+				$vmadd = get_object_vars($vmadd);
+			}
+
+			if(is_object($calc)){
+				$calc = get_object_vars($calc);
+			}
+
+			//avadebug('my $vmadd',$vmadd);
+			//First country check
+			if(empty($vmadd['virtuemart_country_id'])){
+
+				self::$validatedAddresses = FALSE;
+				return self::$validatedAddresses;
+			} else {
+				if(empty($calc['avatax_virtuemart_country_id'])){
+					vmError('AvaTax, please select countries, to validate. Use fallback for USA and Canada');
+					//But lets use a fallback
+					$calc['avatax_virtuemart_country_id'] = array('223','38');	//For USA and Canada
 				}
-				if(is_object($vmadd)){
-					$vmadd = get_object_vars($vmadd);
-				}
-				//avadebug('my $vmadd',$vmadd);
-				//First country check
-				if(empty($vmadd['virtuemart_country_id'])){
 
+				if(!is_array($calc['avatax_virtuemart_country_id'])){
+					//Suppress Warning
+					$calc['avatax_virtuemart_country_id'] = @unserialize($calc['avatax_virtuemart_country_id']);
+				}
+				if(!in_array($vmadd['virtuemart_country_id'],$calc['avatax_virtuemart_country_id'])){
+					avadebug('fillValidateAvalaraAddress not validated, country not set',$vmadd['virtuemart_country_id'],$calc['avatax_virtuemart_country_id']);
 					self::$validatedAddresses = FALSE;
 					return self::$validatedAddresses;
-				} else {
-					if(empty($calc['avatax_virtuemart_country_id'])){
-						vmError('AvaTax, please select countries, to validate. Use fallback for USA and Canada');
-						//But lets use a fallback
-						$calc['avatax_virtuemart_country_id'] = array('223','38');	//For USA and Canada
-					}
-
-					if(!is_array($calc['avatax_virtuemart_country_id'])){
-						//Suppress Warning
-						$calc['avatax_virtuemart_country_id'] = @unserialize($calc['avatax_virtuemart_country_id']);
-					}
-					if(!in_array($vmadd['virtuemart_country_id'],$calc['avatax_virtuemart_country_id'])){
-						avadebug('fillValidateAvalaraAddress not validated, country not set',$vmadd['virtuemart_country_id'],$calc['avatax_virtuemart_country_id']);
-						self::$validatedAddresses = FALSE;
-						return self::$validatedAddresses;
-					}
-
 				}
+
+			}
+
+			if(!class_exists('Address')) require (VMAVALARA_CLASS_PATH.DS.'Address.class.php');
+			$address = new Address();
+			if(isset($vmadd['address_1'])) $address->setLine1($vmadd['address_1']);
+			if(isset($vmadd['address_2'])) $address->setLine2($vmadd['address_2']);
+			if(isset($vmadd['city'])) $address->setCity($vmadd['city']);
+
+			if(isset($vmadd['virtuemart_country_id'])){
+
+				$vmadd['country'] = ShopFunctions::getCountryByID($vmadd['virtuemart_country_id'],'country_2_code');
+				if(isset($vmadd['country'])) $address->setCountry($vmadd['country']);
+			}
+			if(isset($vmadd['virtuemart_state_id'])){
+				$vmadd['state'] = ShopFunctions::getStateByID($vmadd['virtuemart_state_id'],'state_2_code');
+				if(isset($vmadd['state'])) $address->setRegion($vmadd['state']);
+			}
+
+			$hash = md5(implode($vmadd,','));
+			$session = JFactory::getSession ();
+			$validatedAddress = $session->get ('vm_avatax_address_checked.' . $hash, FALSE, 'vm');
+			if(!$validatedAddress){
+				if(isset($vmadd['zip'])) $address->setPostalCode($vmadd['zip']);
+
 				$config = $this->newATConfig($calc);
 
 				if(!class_exists('AddressServiceSoap')) require (VMAVALARA_CLASS_PATH.DS.'AddressServiceSoap.class.php');
 				$client = new AddressServiceSoap($this->_connectionType,$config);
-
-				if(!class_exists('Address')) require (VMAVALARA_CLASS_PATH.DS.'Address.class.php');
-				$address = new Address();
-				if(isset($vmadd['address_1'])) $address->setLine1($vmadd['address_1']);
-				if(isset($vmadd['address_2'])) $address->setLine2($vmadd['address_2']);
-				if(isset($vmadd['city'])) $address->setCity($vmadd['city']);
-
-				if(isset($vmadd['virtuemart_country_id'])){
-
-					$vmadd['country'] = ShopFunctions::getCountryByID($vmadd['virtuemart_country_id'],'country_2_code');
-					if(isset($vmadd['country'])) $address->setCountry($vmadd['country']);
-				}
-				if(isset($vmadd['virtuemart_state_id'])){
-					$vmadd['state'] = ShopFunctions::getStateByID($vmadd['virtuemart_state_id'],'state_2_code');
-					if(isset($vmadd['state'])) $address->setRegion($vmadd['state']);
-				}
-
-				if(isset($vmadd['zip'])) $address->setPostalCode($vmadd['zip']);
 
 				if(!class_exists('SeverityLevel')) require (VMAVALARA_CLASS_PATH.DS.'SeverityLevel.class.php');
 				if(!class_exists('Message')) require (VMAVALARA_CLASS_PATH.DS.'Message.class.php');
@@ -533,63 +539,55 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				$textCase = TextCase::$Mixed;
 				$coordinates = 1;
 
-				$hash = md5(implode($vmadd,','));
-				$session = JFactory::getSession ();
-				$validatedAddress = $session->get ('vm_avatax_address_checked.' . $hash, FALSE, 'vm');
-				if(!$validatedAddress){
+				if(!class_exists('ValidateResult')) require (VMAVALARA_CLASS_PATH.DS.'ValidateResult.class.php');
+				if(!class_exists('ValidateRequest')) require (VMAVALARA_CLASS_PATH.DS.'ValidateRequest.class.php');
+				if(!class_exists('ValidAddress')) require (VMAVALARA_CLASS_PATH.DS.'ValidAddress.class.php');
 
-					if(!class_exists('ValidateResult')) require (VMAVALARA_CLASS_PATH.DS.'ValidateResult.class.php');
-					if(!class_exists('ValidateRequest')) require (VMAVALARA_CLASS_PATH.DS.'ValidateRequest.class.php');
-					if(!class_exists('ValidAddress')) require (VMAVALARA_CLASS_PATH.DS.'ValidAddress.class.php');
-
-					//TODO add customer code //shopper_number
-					try
+				//TODO add customer code //shopper_number
+				try
+				{
+					$request = new ValidateRequest($address, ($textCase ? $textCase : TextCase::$Default), $coordinates);
+					vmSetStartTime('avaValAd');
+					//avadebug('my request for validate address ',$request);
+					$result = $client->Validate($request);
+					vmTime('Avatax validate Address','avaValAd');
+					//avadebug('Validate ResultCode is: '. $result->getResultCode());;
+					if($result->getResultCode() != SeverityLevel::$Success)
 					{
-						$request = new ValidateRequest($address, ($textCase ? $textCase : TextCase::$Default), $coordinates);
-						vmSetStartTime('avaValAd');
-						//avadebug('my request for validate address ',$request);
-						$result = $client->Validate($request);
-						vmTime('Avatax validate Address','avaValAd');
-						//avadebug('Validate ResultCode is: '. $result->getResultCode());;
-						if($result->getResultCode() != SeverityLevel::$Success)
+						foreach($result->getMessages() as $msg)
 						{
-							foreach($result->getMessages() as $msg)
-							{
-								avadebug('fillValidateAvalaraAddress ' . $msg->getName().": ".$msg->getSummary()."\n");
-							}
+							avadebug('fillValidateAvalaraAddress ' . $msg->getName().": ".$msg->getSummary()."\n");
 						}
-						else
-						{
-
-							self::$validatedAddresses = $result->getvalidAddresses();
-							$session->set ('vm_avatax_address_checked.' . $hash, TRUE, 'vm');
-						}
-
 					}
-					catch(SoapFault $exception)
+					else
 					{
-						$msg = "Exception: fillValidateAvalaraAddress ";
-						if($exception)
-							$msg .= $exception->faultstring;
 
-						$msg .= "\n";
-						$msg .= $client->__getLastRequest()."\n";
-						$msg .= $client->__getLastResponse()."\n";
-						vmError($msg);
+						self::$validatedAddresses = $result->getvalidAddresses();
+						$session->set ('vm_avatax_address_checked.' . $hash, TRUE, 'vm');
 					}
-				} else {
-					self::$validatedAddresses[] = $address;
 
 				}
+				catch(SoapFault $exception)
+				{
+					$msg = "Exception: fillValidateAvalaraAddress ";
+					if($exception)
+						$msg .= $exception->faultstring;
 
-				if(empty(self::$validatedAddresses)){
-					self::$validatedAddresses = FALSE;
+					$msg .= "\n";
+					$msg .= $client->__getLastRequest()."\n";
+					$msg .= $client->__getLastResponse()."\n";
+					vmError($msg);
 				}
+			} else {
+				self::$validatedAddresses[] = $address;
+
+			}
 
 				//then for BT and/or $cart->STsameAsBT
-			} else {
-				self::$validatedAddresses = FALSE;
-			}
+		}
+
+		if(empty(self::$validatedAddresses)){
+			self::$validatedAddresses = FALSE;
 		}
 
 		return self::$validatedAddresses;
@@ -871,7 +869,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			//$line->setTaxCode("");             //string
 			$line->setQty($product['amount']);                 //decimal
 			$line->setAmount($sign * $product['price'] * $product['amount']);              //decimal // TotalAmmount
-			$line->setDiscounted($product['discount'] * $product['amount']);          //boolean
+			$line->setDiscounted($sign * $product['discount'] * $product['amount']);          //boolean
 
 			$line->setRevAcct("");             //string
 			$line->setRef1("");                //string
@@ -888,7 +886,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			if(isset(self::$vmadd['taxOverride'])){
 
 				//create new TaxOverride Object set
-				$line->setTaxOverride(self::$vmadd['taxOverride']);
+				//$line->setTaxOverride(self::$vmadd['taxOverride']);
 			}
 
 			$lines[] = $line;
@@ -1040,7 +1038,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		foreach($orderDetails['history'] as $item){
 			if(in_array($item->order_status_code,$toInvoice)){
 				//the date of the order status used to create the invoice
-				self::$vmadd['taxOverride'] = $this->createTaxOverride($item->created_on,$data->order_status,$item->comments);
+				self::$vmadd['taxOverride'] = $this->createTaxOverride(substr($item->created_on,0,10),$data->order_status,$item->comments);
 				//self::$vmadd['paymentDate'] = substr($item->created_on,0,10);
 					//Date when order is created
 				//self::$vmadd['taxOverride'] = $orderDetails['details']['BT']->created_on;

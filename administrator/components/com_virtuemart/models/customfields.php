@@ -898,6 +898,7 @@ class VirtueMartModelCustomfields extends VmModel {
 							//legacy, it will be removed 2.2
 							$productCustom->value = $productCustom->virtuemart_customfield_id;
 							JPluginHelper::importPlugin ('vmcustom');
+							JPluginHelper::importPlugin ('vmcalculation');
 							$dispatcher = JDispatcher::getInstance ();
 							$fieldsToShow = $dispatcher->trigger ('plgVmOnDisplayProductVariantFE', array($productCustom, &$row, &$group));
 

@@ -61,14 +61,24 @@ class VirtuemartViewCategory extends VmView {
 		$this->assignRef('keyword', $keyword);
 		$this->assignRef('search', $search);
 
-		$categoryId = JRequest::getInt('virtuemart_category_id', ShopFunctionsF::getLastVisitedCategoryId());
+		$categoryId = JRequest::getInt('virtuemart_category_id', ShopFunctionsF::getLastVisitedCategoryId(false));
+
 
 		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id',0 );
+		if ($categoryId === false and isset($virtuemart_manufacturer_id)){
 
-		$this->setCanonicalLink($tpl,$document,$categoryId);
+			$catType = 'manufacturer';
+			$this->setCanonicalLink($tpl,$document,$virtuemart_manufacturer_id,$catType);
+		} else {
+			$catType = 'category';
+			$this->setCanonicalLink($tpl,$document,$categoryId,$catType);
+		}
+
 
 		// Load the products in the given category
-		$products = $productModel->getProductsInCategory($categoryId);
+		$ids = $productModel->sortSearchListQuery (TRUE, $categoryId);
+		$products = $productModel->getProducts ($ids);
+		//$products = $productModel->getProductsInCategory($categoryId);
 		$productModel->addImages($products,1);
 
 		$this->assignRef('products', $products);
@@ -284,7 +294,7 @@ class VirtuemartViewCategory extends VmView {
 		return $title;
 	}
 
-	public function setCanonicalLink($tpl,$document,$categoryId){
+	public function setCanonicalLink($tpl,$document,$categoryId,$catType){
 		// Set Canonic link
 		if (!empty($tpl)) {
 			$format = $tpl;
@@ -293,7 +303,7 @@ class VirtuemartViewCategory extends VmView {
 		}
 		if ($format == 'html') {
 
-			$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId, FALSE) , 'canonical', 'rel', '' );
+			$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_'.$catType.'_id='.$categoryId, FALSE) , 'canonical', 'rel', '' );
 
 		}
 	}
