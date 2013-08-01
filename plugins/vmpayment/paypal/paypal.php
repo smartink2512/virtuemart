@@ -431,7 +431,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	 */
 	function plgVmOnPaymentNotification() {
 
-		//$this->_debug = true;
+		$this->_debug = true;
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
@@ -666,14 +666,14 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 						$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
 		$header .= "Content-Length: " . strlen ($post_msg) . "\r\n\r\n";
 		*/
-		$header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
-		$header .= "User-Agent: PHP/" . phpversion() . "\r\n";
+		$header="POST /cgi-bin/webscr HTTP/1.1\r\n";
+		$header .= "User-Agent: PHP/" . phpversion () . "\r\n";
 		$header .= "Referer: " . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . @$_SERVER['QUERY_STRING'] . "\r\n";
 		$header .= "Server: " . $_SERVER['SERVER_SOFTWARE'] . "\r\n";
-		$header .= "Host: " . $this->_getPaypalUrl($method) . ":" . $port . "\r\n";
+		$header .= "Host: "  . $this->_getPaypalUrl ($method) . ":" . $port . "\r\n";
 		$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-		$header .= "Content-Length: " . strlen($post_msg) . "\r\n";
-		$header .= "Accept: */*\r\n\r\n";
+		$header .= "Content-Length: " . strlen ($post_msg) . "\r\n";
+		$header .="Connection: close\r\n\r\n";
 
 		$fps = fsockopen($protocol . $paypal_url, $port, $errno, $errstr, 30);
 
