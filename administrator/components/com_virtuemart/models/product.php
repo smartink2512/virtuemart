@@ -1652,8 +1652,9 @@ class VirtueMartModelProduct extends VmModel {
 
 			}
 
+			if ($isChild) $childPrices = $this->loadProductPrices($this->_id,0,0,false);
 
-			if (isset($pricesToStore['product_price']) and $pricesToStore['product_price']!='') {
+			if ((isset($pricesToStore['product_price']) and $pricesToStore['product_price']!='') || (isset($childPrices) and count($childPrices)>1)) {
 
 				if ($isChild) {
                     //$childPrices = $this->loadProductPrices($pricesToStore['virtuemart_product_price_id'],0,0,false);
