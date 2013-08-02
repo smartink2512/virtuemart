@@ -122,7 +122,9 @@ class shopFunctionsF {
 		array_unshift( $products_ids, $productId );
 		$products_ids = array_unique( $products_ids );
 
-		$maxSize = VmConfig::get( 'max_recent_products', 3 );
+		$recent_products_rows = VmConfig::get('recent_products_rows', 1);
+		$products_per_row = VmConfig::get('homepage_products_per_row',3);
+		$maxSize = $products_per_row * $recent_products_rows;
 		if(count( $products_ids )>$maxSize) {
 			array_splice( $products_ids, $maxSize );
 		}
