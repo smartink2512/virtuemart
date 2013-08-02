@@ -219,6 +219,7 @@ class AdminUIHelper {
 	static function showAdminMenu() {
 		$document = JFactory::getDocument ();
 		$moduleId = JRequest::getInt ( 'module_id', 0 );
+		$user = JFactory::getUser();
 
 		$menuItems = AdminUIHelper::_getAdminMenu ( $moduleId );
 		?>
@@ -250,11 +251,13 @@ class AdminUIHelper {
 							$url .= $link ['task'] ? "&task=" . $link ['task'] : '';
 							// $url .= $link['extra'] ? $link['extra'] : '';
 						}
-						?>
-					<li>
-						<a href="<?php echo $url; ?>" <?php echo $target; ?>><span class="<?php echo $link ['icon_class'] ?>"></span><?php echo JText::_ ( $link ['name'] )?></a>
-					</li>
-					<?php
+						if ($user->authorise('core.admin', 'com_virtuemart') || $user->authorise('vm.'.$link ['view'], 'com_virtuemart') || $target || $link ['view']=='about' || $link ['view']=='virtuemart') {
+							?>
+							<li>
+								<a href="<?php echo $url; ?>" <?php echo $target; ?>><span class="<?php echo $link ['icon_class'] ?>"></span><?php echo JText::_ ( $link ['name'] )?></a>
+							</li>
+							<?php
+						}
 					}
 				}
 				?>

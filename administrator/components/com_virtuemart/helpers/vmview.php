@@ -36,6 +36,62 @@ class VmView extends JView{
 	// }
 	var $lists = array();
 
+	protected $canDo;
+	function __construct() {
+		parent::__construct();
+		// What Access Permissions does this user have? What can (s)he do?
+		$this->canDo = self::getActions();
+	}
+	
+	/*
+	* Override the display function to include ACL
+	* Redirect to the control panel when user does not have access
+	*/
+	public function display($tpl = null)
+	{
+		$view = JRequest::getCmd('view', JRequest::getCmd('controller','virtuemart'));
+		
+		if ($view == 'virtuemart' //Virtuemart view is always allowed since this is the page we redirect to in case the user does not have the rights
+			|| $view == 'about' //About view always displayed
+			|| $this->canDo->get('core.admin')) { //Super administrators always have access
+			
+			parent::display($tpl);
+			return;
+		}
+		
+		if (!$this->canDo->get('vm.'.$view)) {
+			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', JText::_('JERROR_ALERTNOAUTHOR'), 'error');
+		}
+
+		parent::display($tpl);
+	}
+	
+
+	/*
+	* Get the ACL actions
+	*/
+	public static function getActions() {
+		$user	= JFactory::getUser();
+		$result	= new JObject;
+
+		//Get the core actions
+		$core_actions = JAccess::getActions('com_virtuemart','component');
+		foreach ($core_actions as $action) {
+			$result->set($action->name, $user->authorise($action->name, 'com_virtuemart'));
+		}
+
+		//Get the actions for each section
+		$sections=array('product','category','manufacturer','orders','other');
+		foreach ($sections as $section) {
+			$section_actions = JAccess::getActions('com_virtuemart',$section);
+			foreach ($section_actions as $action) {
+				$result->set($action->name, $user->authorise($action->name, 'com_virtuemart'));
+			}
+		}
+		
+		return $result;
+	}
+
 
 	/*
 	 * set all commands and options for BE default.php views
@@ -43,17 +99,24 @@ class VmView extends JView{
 	*/
 	function addStandardDefaultViewCommands($showNew=true, $showDelete=true, $showHelp=true) {
 
+		$view = JRequest::getCmd('view', JRequest::getCmd('controller','virtuemart'));
+
 		JToolBarHelper::divider();
-		JToolBarHelper::publishList();
-		JToolBarHelper::unpublishList();
-		JToolBarHelper::editListX();
-		if ($showNew) {
+		if ($this->canDo->get('vm.'.$view.'.edit.state')) {
+			JToolBarHelper::publishList();
+			JToolBarHelper::unpublishList();
+		}
+		if ($this->canDo->get('vm.'.$view.'.edit')) {
+			JToolBarHelper::editListX();
+		}
+		if ($showNew && $this->canDo->get('vm.'.$view.'.create')) {
 			JToolBarHelper::addNewX();
 		}
-		if ($showDelete) {
+		if ($showDelete && $this->canDo->get('vm.'.$view.'.delete')) {
 			JToolBarHelper::deleteList();
 		}
 		self::showHelp ( $showHelp);
+		self::showACLPref($view);
 	}
 
 	/*
@@ -113,15 +176,20 @@ class VmView extends JView{
 	}
 
 	function addStandardEditViewCommands($id = 0,$object = null) {
+		$view = JRequest::getCmd('view', JRequest::getCmd('controller','virtuemart'));
+
 		if (JRequest::getCmd('tmpl') =='component' ) {
 			if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
 		} else {
-// 		JRequest::setVar('hidemainmenu', true);
-		JToolBarHelper::divider();
-		JToolBarHelper::save();
-		JToolBarHelper::apply();
-		JToolBarHelper::cancel();
-		self::showHelp();
+	// 		JRequest::setVar('hidemainmenu', true);
+			JToolBarHelper::divider();
+			if ($this->canDo->get('vm.'.$view.'.edit')) {
+				JToolBarHelper::save();
+				JToolBarHelper::apply();
+			}
+			JToolBarHelper::cancel();
+			self::showHelp();
+			self::showACLPref($view);
 		}
 		// javascript for cookies setting in case of press "APPLY"
 		$document = JFactory::getDocument();
@@ -288,8 +356,11 @@ class VmView extends JView{
 		//load the JToolBar library and create a toolbar
 		jimport('joomla.html.toolbar');
 		JToolBarHelper::divider();
-		JToolBarHelper::save();
-		JToolBarHelper::apply();
+		$view = JRequest::getCmd('view', JRequest::getCmd('controller','virtuemart'));
+		if ($this->canDo->get('vm.'.$view.'.edit')) {
+			JToolBarHelper::save();
+			JToolBarHelper::apply();
+		}
 		JToolBarHelper::cancel();
 		$bar = new JToolBar( 'toolbar' );
 		//and make whatever calls you require
@@ -350,6 +421,22 @@ class VmView extends JView{
  		            $bar = JToolBar::getInstance('toolbar');
 					$bar->appendButton( 'Popup', 'help', 'JTOOLBAR_HELP', $help_url, 960, 500 );
 	        }
+
+	}
+
+	function showACLPref(){
+		
+		//print_a($this->canDo);
+
+		if ($this->canDo->get('core.admin')) {
+			JToolBarHelper::divider();
+			$path = urlencode($path);
+			$top = 0;
+			$left = 0;
+			$bar = JToolBar::getInstance('toolbar');
+			// Add a configuration button.
+			$bar->appendButton('Popup', 'lock', 'JCONFIG_PERMISSIONS_LABEL', 'index.php?option=com_config&amp;view=component&amp;component=com_virtuemart&amp;tmpl=component', 875, 550, 0, 0, '');
+		}
 
 	}
 

@@ -45,6 +45,11 @@ class VirtuemartControllerCategory extends VmController {
 	 */
 	function save($data = 0){
 
+		//ACL
+		if (!JFactory::getUser()->authorise('vm.category.edit', 'com_virtuemart')) {
+			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', JText::_('JERROR_ALERTNOAUTHOR'), 'error');
+		}
+		
 		$data = JRequest::get('post');
 
 		$data['category_name'] = JRequest::getVar('category_name','','post','STRING',JREQUEST_ALLOWHTML);
@@ -61,6 +66,11 @@ class VirtuemartControllerCategory extends VmController {
 	*/
 	public function orderUp()
 	{
+		//ACL
+		if (!JFactory::getUser()->authorise('vm.category.edit', 'com_virtuemart')) {
+			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', JText::_('JERROR_ALERTNOAUTHOR'), 'error');
+		}
+
 		// Check token
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
@@ -96,6 +106,11 @@ class VirtuemartControllerCategory extends VmController {
 	*/
 	public function orderDown()
 	{
+		//ACL
+		if (!JFactory::getUser()->authorise('vm.category.edit', 'com_virtuemart')) {
+			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', JText::_('JERROR_ALERTNOAUTHOR'), 'error');
+		}
+		
 		// Check token
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
@@ -129,6 +144,11 @@ class VirtuemartControllerCategory extends VmController {
 	*/
 	public function saveOrder()
 	{
+		//ACL
+		if (!JFactory::getUser()->authorise('vm.category.edit', 'com_virtuemart')) {
+			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', JText::_('JERROR_ALERTNOAUTHOR'), 'error');
+		}
+		
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
