@@ -426,13 +426,8 @@ class VmView extends JView{
 
 	function showACLPref(){
 		
-		//print_a($this->canDo);
-
 		if ($this->canDo->get('core.admin')) {
 			JToolBarHelper::divider();
-			$path = urlencode($path);
-			$top = 0;
-			$left = 0;
 			$bar = JToolBar::getInstance('toolbar');
 			// Add a configuration button.
 			$bar->appendButton('Popup', 'lock', 'JCONFIG_PERMISSIONS_LABEL', 'index.php?option=com_config&amp;view=component&amp;component=com_virtuemart&amp;tmpl=component', 875, 550, 0, 0, '');
