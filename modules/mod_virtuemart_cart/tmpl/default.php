@@ -12,7 +12,7 @@ if ($show_product_list) {
 	?>
 	<div id="hiddencontainer" style=" display: none; ">
 		<div class="container">
-			<?php if ($show_price) { ?>
+			<?php if ($show_price and $currencyDisplay->_priceConfig['salesPrice'][0]) { ?>
 			  <div class="prices" style="float: right;"></div>
 			<?php } ?>
 			<div class="product_row">
@@ -43,10 +43,11 @@ if ($show_product_list) {
 		</div>
 	</div>
 <?php } ?>
-
-<div class="total" style="float: right;">
-	<?php if ($data->totalProduct and $show_price and $currencyDisplay->_priceConfig['salesPrice'][0]) echo  $data->billTotal; ?>
-</div>
+<?php if ($data->totalProduct and $show_price and $currencyDisplay->_priceConfig['salesPrice'][0]) { ?>
+	<div class="total" style="float: right;">
+		<?php echo $data->billTotal; ?>
+	</div>
+<?php } ?>
 <div class="total_products"><?php echo  $data->totalProductTxt ?></div>
 <div class="show_cart">
 	<?php if ($data->totalProduct and $show_price) echo  $data->cart_show; ?>
