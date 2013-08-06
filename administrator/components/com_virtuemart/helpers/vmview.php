@@ -58,7 +58,13 @@ class VmView extends JView{
 			parent::display($tpl);
 			return;
 		}
-		
+
+        //Super administrator always has access
+        if ($this->canDo->get('core.admin')) {
+            parent::display($tpl);
+            return;
+        }
+
 		if (!$this->canDo->get('vm.'.$view)) {
 			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', JText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
@@ -81,7 +87,7 @@ class VmView extends JView{
 		}
 
 		//Get the actions for each section
-		$sections=array('product','category','manufacturer','orders','other');
+		$sections=array('product','category','manufacturer','orders','shop','other');
 		foreach ($sections as $section) {
 			$section_actions = JAccess::getActions('com_virtuemart',$section);
 			foreach ($section_actions as $action) {
@@ -102,17 +108,17 @@ class VmView extends JView{
 		$view = JRequest::getCmd('view', JRequest::getCmd('controller','virtuemart'));
 
 		JToolBarHelper::divider();
-		if ($this->canDo->get('vm.'.$view.'.edit.state')) {
+		if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit.state')) {
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 		}
-		if ($this->canDo->get('vm.'.$view.'.edit')) {
+		if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit')) {
 			JToolBarHelper::editListX();
 		}
-		if ($showNew && $this->canDo->get('vm.'.$view.'.create')) {
+		if ($this->canDo->get('core.admin') || $showNew && $this->canDo->get('vm.'.$view.'.create')) {
 			JToolBarHelper::addNewX();
 		}
-		if ($showDelete && $this->canDo->get('vm.'.$view.'.delete')) {
+		if ($this->canDo->get('core.admin') || $showDelete && $this->canDo->get('vm.'.$view.'.delete')) {
 			JToolBarHelper::deleteList();
 		}
 		self::showHelp ( $showHelp);
@@ -183,7 +189,7 @@ class VmView extends JView{
 		} else {
 	// 		JRequest::setVar('hidemainmenu', true);
 			JToolBarHelper::divider();
-			if ($this->canDo->get('vm.'.$view.'.edit')) {
+			if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit')) {
 				JToolBarHelper::save();
 				JToolBarHelper::apply();
 			}
@@ -357,7 +363,7 @@ class VmView extends JView{
 		jimport('joomla.html.toolbar');
 		JToolBarHelper::divider();
 		$view = JRequest::getCmd('view', JRequest::getCmd('controller','virtuemart'));
-		if ($this->canDo->get('vm.'.$view.'.edit')) {
+		if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit')) {
 			JToolBarHelper::save();
 			JToolBarHelper::apply();
 		}
