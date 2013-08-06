@@ -32,6 +32,8 @@ VmConfig::loadJLang('mod_virtuemart_cart', true);
 if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 $cart = VirtueMartCart::getCart(false);
 $data = $cart->prepareAjaxData();
+if (!class_exists('CurrencyDisplay')) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'currencydisplay.php');
+$currencyDisplay = CurrencyDisplay::getInstance( );
 $lang = JFactory::getLanguage();
 $extension = 'com_virtuemart';
 $lang->load($extension);//  when AJAX it needs to be loaded manually here >> in case you are outside virtuemart !!!

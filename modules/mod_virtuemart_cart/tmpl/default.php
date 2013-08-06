@@ -28,7 +28,7 @@ if ($show_product_list) {
 		<?php
 			foreach ($data->products as $product)
 		{
-			if ($show_price) { ?>
+			if ($show_price and $currencyDisplay->_priceConfig['salesPrice'][0]) { ?>
 				  <div class="prices" style="float: right;"><?php echo  $product['prices'] ?></div>
 				<?php } ?>
 			<div class="product_row">
@@ -45,7 +45,7 @@ if ($show_product_list) {
 <?php } ?>
 
 <div class="total" style="float: right;">
-	<?php if ($data->totalProduct and $show_price) echo  $data->billTotal; ?>
+	<?php if ($data->totalProduct and $show_price and $currencyDisplay->_priceConfig['salesPrice'][0]) echo  $data->billTotal; ?>
 </div>
 <div class="total_products"><?php echo  $data->totalProductTxt ?></div>
 <div class="show_cart">
