@@ -151,8 +151,9 @@ if (!empty($this->keyword)) {
 <h3><?php echo $this->keyword; ?></h3>
 	<?php
 } ?>
-<?php if ($this->search !== NULL) { ?>
-<form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=category&limitstart=0&virtuemart_category_id=' . $this->category->virtuemart_category_id, FALSE); ?>" method="get">
+<?php if ($this->search !== NULL) {
+	$category_id  = JRequest::getInt ('virtuemart_category_id', 0); ?>
+<form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=category&limitstart=0', FALSE); ?>" method="get">
 
 	<!--BEGIN Search Box -->
 	<div class="virtuemart_search">
@@ -164,6 +165,8 @@ if (!empty($this->keyword)) {
 	</div>
 	<input type="hidden" name="search" value="true"/>
 	<input type="hidden" name="view" value="category"/>
+	<input type="hidden" name="option" value="com_virtuemart"/>
+	<input type="hidden" name="virtuemart_category_id" value="<?php echo $category_id; ?>"/>
 
 </form>
 <!-- End Search Box -->
