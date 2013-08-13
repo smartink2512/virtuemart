@@ -73,7 +73,7 @@ span.addtocart-button input.addtocart-button-disabled {width:auto;background:#f2
 .ask-a-question-view .form-field textarea.field{width:394px;background:#fff url(../images/vmgeneral/default_bg.jpg) bottom repeat-x;border:solid #CAC9C9 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;color:#777;text-align:left;padding:12px;}
 .ask-a-question-view .form-field textarea.field:hover{background:#fff url(../images/vmgeneral/default_hover_bg.jpg) top repeat-x;color:#000;}
 .ask-a-question-view .form-field .submit{width:418px;}
-.ask-a-question-view input.counter,.ask-a-question-view input#email{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border:solid #ccc 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;color:#777;display:inline-block;margin:0 0 0 10px;padding:5px 5px 4px;}
+.ask-a-question-view input.counter,.ask-a-question-view input#name,.ask-a-question-view input#email{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border:solid #ccc 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;color:#777;display:inline-block;margin:0 0 0 10px;padding:5px 5px 4px;}
 .vmquote{font-size:smaller;}
 .manufacturer-details-view img{float:right;margin:0 0 10px 20px;}
 .manufacturer-details-view .email-weblink a{margin-right:15px;}

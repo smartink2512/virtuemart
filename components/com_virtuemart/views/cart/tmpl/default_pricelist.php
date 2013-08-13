@@ -396,7 +396,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<?php if (VmConfig::get ('show_tax')) { ?>
 	<td align="right"><?php echo "<span  class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('paymentTax', '', $this->cart->pricesUnformatted['paymentTax'], FALSE) . "</span>"; ?> </td>
 	<?php } ?>
-	<td align="right"><?php if($this->cart->pricesUnformatted['salesPriceShipment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->pricesUnformatted['salesPricePayment'], FALSE); ?></td>
+	<td align="right"><?php if($this->cart->pricesUnformatted['salesPricePayment'] < 0) echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->pricesUnformatted['salesPricePayment'], FALSE); ?></td>
 	<td align="right"><?php  echo $this->currencyDisplay->createPriceDiv ('salesPricePayment', '', $this->cart->pricesUnformatted['salesPricePayment'], FALSE); ?> </td>
 </tr>
 <?php } ?>

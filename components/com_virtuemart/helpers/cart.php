@@ -405,6 +405,8 @@ class VirtueMartCart {
 
 			$product -> product_in_stock = $tmpProduct -> product_in_stock;
 			$product -> product_ordered = $tmpProduct -> product_ordered;
+			$product -> product_available_date = $tmpProduct -> product_available_date;
+			$product -> product_availability = $tmpProduct -> product_availability;
 
 			$product -> product_sales = $tmpProduct -> product_sales;
 			$product -> product_unit = $tmpProduct -> product_unit;

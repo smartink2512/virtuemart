@@ -609,4 +609,35 @@ class shopFunctionsF {
 		}
 
 	}
+	
+	/**
+	 * Get Virtuemart itemID from joomla menu
+	 * @author Maik Künnemann
+	 */
+	function getMenuItemId( $lang = '*' ) {
+
+		$itemID = '';
+
+		if(empty($lang)) $lang = '*';
+
+		$component	= JComponentHelper::getComponent('com_virtuemart');
+
+		$db = JFactory::getDbo();
+		$q = 'SELECT * FROM `#__menu` WHERE `component_id` = "'. $component->id .'" and `language` = "'. $lang .'"';
+		$db->setQuery( $q );
+		$items = $db->loadObjectList();
+
+		foreach ($items as $item) {
+			if(strstr($item->link, 'view=virtuemart')) {
+				$itemID = $item->id;
+				break;
+			}
+		}
+
+		if(empty($itemID) && !empty($items[0]->id)) {
+			$itemID = $items[0]->id;
+		}
+
+		return $itemID;
+	}
 }

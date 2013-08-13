@@ -46,10 +46,12 @@ if ($this->doctype != 'invoice') {
 	</tr>
 
 <?php
+	$menuItemID = shopFunctionsF::getMenuItemId($this->orderDetails['details']['BT']->order_language);
+
 	foreach($this->orderDetails['items'] as $item) {
 		$qtt = $item->product_quantity ;
 		$product_link = JURI::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $item->virtuemart_category_id .
-			'&virtuemart_product_id=' . $item->virtuemart_product_id;
+			'&virtuemart_product_id=' . $item->virtuemart_product_id . '&Itemid=' . $menuItemID;
 
 		?>
 		<tr valign="top">

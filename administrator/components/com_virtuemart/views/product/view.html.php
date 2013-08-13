@@ -217,7 +217,9 @@ class VirtuemartViewProduct extends VmView {
 				if ($product->product_sku) $sku=' ('.$product->product_sku.')'; else $sku="";
 				if (!empty($product->canonCatLink)) $canonLink = '&virtuemart_category_id=' . $product->canonCatLink; else $canonLink = '';
 				if(!empty($product->virtuemart_product_id)){
-					$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'" target="_blank" >'. $product->product_name.$sku.'<span class="vm2-modallink"></span></a>';
+					if (!class_exists ('shopFunctionsF')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+					$menuItemID = shopFunctionsF::getMenuItemId(JFactory::getLanguage()->getTag());
+					$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'&Itemid='. $menuItemID .'" target="_blank" >'. $product->product_name.$sku.'<span class="vm2-modallink"></span></a>';
 				} else {
 					$text = $product->product_name.$sku;
 				}

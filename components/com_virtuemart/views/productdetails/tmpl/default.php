@@ -222,10 +222,17 @@ echo $this->loadTemplate('images');
 		?>
 
 		<?php
-		// Availability Image
+		// Availability
 		$stockhandle = VmConfig::get('stockhandle', 'none');
+		$product_available_date = substr($this->product->product_available_date,0,10);
+		$current_date = date("Y-m-d");
 		if (($this->product->product_in_stock - $this->product->product_ordered) < 1) {
-			if ($stockhandle == 'risetime' and VmConfig::get('rised_availability') and empty($this->product->product_availability)) {
+			if ($product_available_date != '0000-00-00' and $current_date < $product_available_date) {
+			?>	<div class="availability">
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_AVAILABLE_DATE') .': '. JHTML::_('date', $this->product->product_available_date, JText::_('DATE_FORMAT_LC4')); ?>
+				</div>
+		    <?php
+			} else if ($stockhandle == 'risetime' and VmConfig::get('rised_availability') and empty($this->product->product_availability)) {
 			?>	<div class="availability">
 			    <?php echo (file_exists(JPATH_BASE . DS . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability'))) ? JHTML::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability', '7d.gif'), VmConfig::get('rised_availability', '7d.gif'), array('class' => 'availability')) : JText::_(VmConfig::get('rised_availability')); ?>
 			</div>
@@ -237,6 +244,12 @@ echo $this->loadTemplate('images');
 			</div>
 			<?php
 			}
+		}
+		else if ($product_available_date != '0000-00-00' and $current_date < $product_available_date) {
+		?>	<div class="availability">
+				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_AVAILABLE_DATE') .': '. JHTML::_('date', $this->product->product_available_date, JText::_('DATE_FORMAT_LC4')); ?>
+			</div>
+		<?php
 		}
 		?>
 
