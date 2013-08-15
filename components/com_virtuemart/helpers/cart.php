@@ -83,7 +83,7 @@ class VirtueMartCart {
 	 * @param null  $cartData: if not empty, do no get the cart data from session
 	 * @return null|VirtueMartCart
 	 */
-	public static function getCart($setCart=true, $options = array(), $cartData=NULL) {
+	public static function getCart($setCart=true, $options = array()) {
 
 		//What does this here? for json stuff?
 		if (!class_exists('JTable')
@@ -91,13 +91,8 @@ class VirtueMartCart {
 // 		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
 
 		if(empty(self::$_cart)){
-			if (empty($cartData)) {
-				$session = JFactory::getSession($options);
-				$cartSession = $session->get('vmcart', 0, 'vm');
-			} else {
-				$cartSession=$cartData;
-			}
-
+			$session = JFactory::getSession($options);
+			$cartSession = $session->get('vmcart', 0, 'vm');
 
 			if (!empty($cartSession)) {
 				$sessionCart = unserialize( $cartSession );
@@ -145,6 +140,8 @@ class VirtueMartCart {
 
 		return self::$_cart;
 	}
+
+
 
 	/*
 	 * Set non product info in object
