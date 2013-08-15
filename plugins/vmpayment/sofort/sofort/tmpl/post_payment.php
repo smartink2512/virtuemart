@@ -22,10 +22,13 @@ defined ('_JEXEC') or die();
 	<span class=post_payment_order_number_title"><?php echo JText::_ ('COM_VIRTUEMART_ORDER_NUMBER'); ?> </span>
 	<?php echo  $viewData['order']['details']['BT']->order_number; ?>
 </div>
-<div class="post_payment_transaction" style="width: 100%">
+<?php if ($viewData['paymentInfos']->sofort_response_transaction)  { ?>
+	<div class="post_payment_transaction" style="width: 100%">
 	<span class="post_payment_transaction_title"><?php echo JText::_ ('VMPAYMENT_SOFORT_RESPONSE_TRANSACTION'); ?> </span>
-	<?php echo  $viewData['paymentInfos']->sofort_response_transaction; ?>
+<?php echo  $viewData['paymentInfos']->sofort_response_transaction; ?>
 </div>
+<?php } ?>
+
 <div class="post_payment_order_total" style="width: 100%">
 	<span class="post_payment_order_total_title"><?php echo JText::_ ('COM_VIRTUEMART_ORDER_PRINT_TOTAL'); ?> </span>
 	<?php echo  $viewData['totalInPaymentCurrency']; ?>

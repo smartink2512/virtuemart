@@ -56,11 +56,7 @@
         <!-- BY DEFAULT paypal currency= vendor currency -->
         <param name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_SOFORT_CURRENCY"
                description="VMPAYMENT_SOFORT_CURRENCY_DESC"/>
-        <param name="email_currency" type="list" default="vendor" label="VMPAYMENT_SOFORT_EMAIL_CURRENCY"
-               description="VMPAYMENT_SOFORT_EMAIL_CURRENCY_DESC">
-            <option value="vendor">VMPAYMENT_SOFORT_EMAIL_CURRENCY_VENDOR</option>
-            <option value="payment">VMPAYMENT_SOFORT_EMAIL_CURRENCY_PAYMENT</option>
-        </param>
+
 
         <param type="spacer" default="" level="level1"/>
         <param type="spacer" default="VMPAYMENT_SOFORT_RESTRICTIONS" level="level1"/>

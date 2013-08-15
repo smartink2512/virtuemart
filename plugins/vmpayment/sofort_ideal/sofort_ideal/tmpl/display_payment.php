@@ -24,7 +24,7 @@
 
     <span class="vmpayment">
         <?php if (!empty($viewData['payment_logo'] )) { ?>
-	        <span class="vmCartPaymentLogo"><?php echo $viewData ['payment_logo']; ?> </span>
+	        <span class="vmpayment_logo"><?php echo $viewData ['payment_logo']; ?> </span>
         <?php } ?>
 	    <span class="vmpayment_name"><?php echo $viewData['plugin']->payment_name; ?></span>
 	    <?php if (!empty($viewData['plugin']->payment_desc )) { ?>

@@ -22,7 +22,7 @@ if (!class_exists('vmPSPlugin')) {
 
 class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 	const RELEASE = 'VM ${PHING.VM.RELEASE}';
-
+	const PAYMENT_CURRENCY_CODE_3 = 'EUR';
 
 	function __construct (& $subject, $config) {
 
@@ -59,7 +59,6 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 			'payment_name' => 'varchar(1000)',
 			'payment_order_total' => 'decimal(15,5) NOT NULL',
 			'payment_currency' => 'smallint(1)',
-			'email_currency' => 'smallint(1)',
 			'cost_per_transaction' => 'decimal(10,2)',
 			'cost_percent_total' => 'decimal(10,2)',
 			'tax_id' => 'smallint(1)',
@@ -241,14 +240,13 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		}
 
 		if (!class_exists('TableVendors')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'table' . DS . 'vendors.php');
+			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'vendors.php');
 		}
 
-		$this->getPaymentCurrency($method);
-		$email_currency = $this->getEmailCurrency($method);
-		$currency_code_3 = shopFunctions::getCurrencyByID($method->payment_currency, 'currency_code_3');
-		$paymentCurrency = CurrencyDisplay::getInstance($method->payment_currency);
-		$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($method->payment_currency, $order['details']['BT']->order_total, FALSE), 2);
+		$currency_code_3 = self::PAYMENT_CURRENCY_CODE_3; //
+		$currency_id = shopFunctions::getCurrencyIDByName($currency_code_3);
+		$paymentCurrency = CurrencyDisplay::getInstance($currency_id);
+		$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($currency_id, $order['details']['BT']->order_total, FALSE), 2);
 
 		$address = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
 
@@ -263,8 +261,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		$dbValues['virtuemart_paymentmethod_id'] = $cart->virtuemart_paymentmethod_id;
 		$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
 		$dbValues['cost_percent_total'] = $method->cost_percent_total;
-		$dbValues['payment_currency'] = $method->payment_currency;
-		$dbValues['email_currency'] = $email_currency;
+		$dbValues['payment_currency'] = $currency_id;
 		$dbValues['payment_order_total'] = $totalInPaymentCurrency;
 		$dbValues['tax_id'] = $method->tax_id;
 		$dbValues['sofort_custom'] = $return_context;
@@ -293,7 +290,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 
 		$url = $sofort_ideal->getPaymentUrl();
 
-		$this->storePSPluginInternalData($dbValues);
+		//$this->storePSPluginInternalData($dbValues);
 		$mainframe = JFactory::getApplication();
 		$mainframe->redirect($url);
 
@@ -324,34 +321,56 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 	 * @return bool','null','string
 	 */
 	function plgVmOnPaymentResponseReceived (&$html) {
-		function _getPaymentResponseHtml ($method, $order, $paymentTables) {
-			VmConfig::loadJLang('com_virtuemart_orders', TRUE);
-			if (!class_exists('CurrencyDisplay')
-			) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-			}
+		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
+		if (!class_exists('CurrencyDisplay')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+		}
+		if (!class_exists('VirtueMartCart')) {
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		}
+		if (!class_exists('shopFunctionsF')) {
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+		}
+		if (!class_exists('VirtueMartModelOrders')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+		}
 
-			if (!class_exists('VirtueMartCart')) {
-				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-			}
+		$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
+		$order_number = JRequest::getString('on', 0);
 
-			$cart = VirtueMartCart::getCart();
+		if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
+			return NULL; // Another method was selected, do nothing
+		}
+		if (!$this->selectedThisElement($method->payment_element)) {
+			return NULL;
+		}
 
-			$paymentCurrency = CurrencyDisplay::getInstance($order['details']['BT']->order_currency);
-			$totalInPaymentCurrency = $paymentCurrency->priceDisplay($order['details']['BT']->order_total, $order['details']['BT']->order_currency);
-			$currencyDisplay = CurrencyDisplay::getInstance($cart->pricesCurrency);
-			$nb = count($paymentTables);
+		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number))) {
+			return NULL;
+		}
+		if (!($paymentTables = $this->getDatasByOrderId($virtuemart_order_id))) {
+			// JError::raiseWarning(500, $db->getErrorMsg());
+			return '';
+		}
+		VmConfig::loadJLang('com_virtuemart');
+		$orderModel = VmModel::getModel('orders');
+		$order = $orderModel->getOrder($virtuemart_order_id);
+		$paymentCurrency = CurrencyDisplay::getInstance($order['details']['BT']->order_currency);
+		$totalInPaymentCurrency = $paymentCurrency->priceDisplay($order['details']['BT']->order_total, $order['details']['BT']->order_currency);
+		$cart = VirtueMartCart::getCart();
+		$currencyDisplay = CurrencyDisplay::getInstance($cart->pricesCurrency);
+		$nb = count($paymentTables);
 			$pluginName = $this->renderPluginName($method, $where = 'post_payment');
 			$html = $this->renderByLayout('post_payment', array(
-			                                                   'order' => $order,
+
 			                                                   'paymentInfos' => $paymentTables[$nb - 1],
 			                                                   'pluginName' => $pluginName,
 			                                                   'totalInPaymentCurrency' => $totalInPaymentCurrency
 			                                              ));
-			//vmdebug('_getPaymentResponseHtml', $html,$pluginName,$paypalTable );
+			vmdebug('_getPaymentResponseHtml' ,$paymentTables );
 
 			return $html;
-		}
+
 	}
 
 	/**
@@ -377,7 +396,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 					vmInfo(JText::sprintf('VMPAYMENT_SOFORT_IDEAL_ERROR_CODES_UNKNOWN_CODE', $error));
 				}
 			}
-			return false;
+			//return false;
 		}
 		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number))) {
 			return NULL;
@@ -393,16 +412,20 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 			return NULL;
 		}
 		vmdebug(__CLASS__ . '::' . __FUNCTION__, 'VMPAYMENT_SOFORT_PAYMENT_CANCELLED', $error_codes);
-
+if (empty($error_codes)) {
 		VmInfo(Jtext::_('VMPAYMENT_SOFORT_PAYMENT_CANCELLED'));
+	$comment='';
+} else {
+	$comment=JText::_($lang_key);
+}
 		$session = JFactory::getSession();
 		$return_context = $session->getId();
+		vmDebug('handlePaymentUserCancel', $virtuemart_order_id, $paymentTable->sofort_custom, $return_context);
 		if (strcmp($paymentTable->sofort_custom, $return_context) === 0) {
-			vmDebug('handlePaymentUserCancel');
-			$this->handlePaymentUserCancel($virtuemart_order_id);
+			vmDebug('handlePaymentUserCancel', $virtuemart_order_id);
+			$this->handlePaymentUserCancel($virtuemart_order_id, $method->status_canceled, $comment);
 		} else {
 			vmDebug('Return context', $paymentTable->sofort_custom, $return_context);
-
 		}
 		return TRUE;
 	}
@@ -419,13 +442,14 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 	 * @return bool','null
 	 */
 	function plgVmOnPaymentNotification () {
-/*
-				$this->_debug = true;
+		/*
 
-				 $this->logInfo('plgVmOnPaymentNotification '.var_export($_POST, true) , 'message');
-				 $this->logInfo('plgVmOnPaymentNotification  '.var_export($_REQUEST, true) , 'message');
-				// $paymentmethod_id = JRequest::getString('reason_2');
-*/
+					$this->_debug = true;
+
+					 $this->logInfo('plgVmOnPaymentNotification '.var_export($_POST, true) , 'message')			/*
+					 $this->logInfo('plgVmOnPaymentNotification  '.var_export($_REQUEST, true) , 'message');
+					// $paymentmethod_id = JRequest::getString('reason_2');
+	*/
 		$order_number = JRequest::getString('reason_1'); // is order number
 
 		if (!class_exists('VirtueMartModelOrders')) {
@@ -516,6 +540,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 			}
 		}
 		$dbvalues['hidden_hash'] = JRequest::getString('hash', '');;
+		$dbvalues['virtuemart_paymentmethod_id'] = $payments[0]->virtuemart_paymentmethod_id;
 		$dbvalues['virtuemart_order_id'] = $virtuemart_order_id;
 		$dbvalues['order_number'] = $order_number;
 
@@ -523,22 +548,21 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		$order = array();
 		$this->logInfo('before getNewOrderStatus   '. var_export($dbvalues, true), 'message');
 		$status = $this->getNewOrderStatus($dbvalues);
-		$this->logInfo('after getNewOrderStatus   '. var_export($dbvalues, true), 'message');
 
 		$order['order_status'] = $method->$status;
 		$order['comments'] = JText::_('VMPAYMENT_SOFORT_IDEAL_RESPONSE_' . $status);
 		$order['customer_notified'] = 1;
 
-		$this->logInfo('before storePSPluginInternalData   ' , 'message');
-		$this->storePSPluginInternalData($dbvalues);
-		$this->logInfo('after storePSPluginInternalData   ' , 'message');
+		//$this->logInfo('before storePSPluginInternalData   ' , 'message');
+	$this->storePSPluginInternalData($dbvalues);
+		$this->logInfo('after storePSPluginInternalData   '. var_export($dbvalues, true), 'message');
 
 		$this->logInfo('plgVmOnPaymentNotification return new_status:' . $order['order_status'], 'message');
 
-		$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, TRUE);
+		$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, false);
 		//// remove vmcart
-		if (isset($sofort_data['custom'])) {
-			$this->emptyCart($sofort_data['custom'], $order_number);
+		if (isset($payments[0]->sofort_custom)) {
+			$this->emptyCart($payments[0]->sofort_custom, $order_number);
 		}
 	}
 
@@ -569,8 +593,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 			'pending' => array('not_credited_yet' => 'status_pending'),
 			'received' => array('credited' => 'status_confirmed'),
 			'loss' => array('not_credited' => 'status_canceled'),
-			'refunded' => array('refunded' => 'status_refunded'),
-			'refunded' => array('compensation' => 'status_compensation'),
+			'refunded' => array('refunded' => 'status_refunded','compensation' => 'status_compensation'),
 			// Special case is the following status that can occur (only with iDEAL payments),
 			//if after a timeout in our system the payment is marked as loss and then iDEAL reports (too late) a successful iDEAL payment.
 			// Then our SOFORT backend starts an automatic refund which is reported to the shopsystem as follows:
@@ -586,7 +609,8 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 			$this->logInfo('IN 1 getNewOrderStatus   array_key_exists PROBLEM' , 'message');
 
 			$this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_SOFORT_ERROR_ORDER_STATUS_SUB'), JText::sprintf('VMPAYMENT_SOFORT_ERROR_ORDER_STATUS_BODY', $dbvalues['sofort_ideal_response_status'], $dbvalues['sofort_ideal_response_status_reason'], $dbvalues['order_number']));
-			$this->logInfo('IN 1 sendEmailToVendorAndAdmins   ' , 'message');
+			$this->logInfo('IN 1 sendEmailToVendorAndAdmins   '.$dbvalues['sofort_ideal_response_status'].'/'.$dbvalues['sofort_ideal_response_status_reason'] , 'message');
+			$this->logInfo('  '.array_key_exists($dbvalues['sofort_ideal_response_status'], $newOrderStatus).'/'.array_key_exists($dbvalues['sofort_ideal_response_status_reason'], $newOrderStatus[$dbvalues['sofort_ideal_response_status']]) , 'message');
 
 			return 'pending';
 		}
@@ -597,35 +621,6 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 
 	}
 
-	/**
-	 * @param $method
-	 * @param $paypal_data
-	 * @param $virtuemart_order_id
-	 */
-	function _storeSofortIdealInternalData ($method, $sofort_data, $virtuemart_order_id, $virtuemart_paymentmethod_id) {
-
-		// get all know columns of the table
-		$db = JFactory::getDBO();
-		$query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
-		$db->setQuery($query);
-		$columns = $db->loadResultArray(0);
-		$post_msg = '';
-		foreach ($sofort_data as $key => $value) {
-			$table_key = 'response_' . $key;
-			if (in_array($table_key, $columns)) {
-				$response_fields[$table_key] = $value;
-			}
-		}
-
-		//$response_fields[$this->_tablepkey] = $this->_getTablepkeyValue($virtuemart_order_id);
-		$response_fields['payment_name'] = $this->renderPluginName($method);
-		$response_fields['order_number'] = $sofort_data['reason_1'];
-		$response_fields['virtuemart_order_id'] = $virtuemart_order_id;
-		$response_fields['virtuemart_paymentmethod_id'] = $virtuemart_paymentmethod_id;
-
-		//$preload=true   preload the data here too preserve not updated data
-		$this->storePSPluginInternalData($response_fields);
-	}
 
 
 	/**
@@ -657,15 +652,13 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 				if ($payment->payment_order_total and  $payment->payment_order_total != 0.00) {
 					$html .= $this->getHtmlRowBE('SOFORT_PAYMENT_ORDER_TOTAL', $payment->payment_order_total . " " . shopFunctions::getCurrencyByID($payment->payment_currency, 'currency_code_3'));
 				}
-				if ($payment->email_currency and  $payment->email_currency != 0) {
-					$html .= $this->getHtmlRowBE('SOFORT_PAYMENT_EMAIL_CURRENCY', shopFunctions::getCurrencyByID($payment->email_currency, 'currency_code_3'));
-				}
+					$html .= $this->getHtmlRowBE('SOFORT_PAYMENT_EMAIL_CURRENCY', shopFunctions::getCurrencyByID($payment->payment_currency, 'currency_code_3'));
+
 				$first = FALSE;
 			} else {
 				foreach ($payment as $key => $value) {
 					// only displays if there is a value or the value is different from 0.00 and the value
 					if ($value) {
-						$complete_key = strtoupper($this->_type . '_' . $key);
 						if (substr($key, 0, strlen($code)) == $code) {
 							$html .= $this->getHtmlRowBE($key, $value);
 						}

@@ -76,13 +76,14 @@ class VirtueMartCart {
 	}
 
 	/**
-	 * Get the cart from the session
 	 *
 	 * @author Max Milbers
-	 * @access public
-	 * @param array $cart the cart to store in the session
+	 * @param bool  $setCart: set the Cart into Session
+	 * @param array $options : options for getSession
+	 * @param null  $cartData: if not empty, do no get the cart data from session
+	 * @return null|VirtueMartCart
 	 */
-	public static function getCart($setCart=true, $options = array()) {
+	public static function getCart($setCart=true, $options = array(), $cartData=NULL) {
 
 		//What does this here? for json stuff?
 		if (!class_exists('JTable')
@@ -90,8 +91,13 @@ class VirtueMartCart {
 // 		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
 
 		if(empty(self::$_cart)){
-			$session = JFactory::getSession($options);
-			$cartSession = $session->get('vmcart', 0, 'vm');
+			if (empty($cartData)) {
+				$session = JFactory::getSession($options);
+				$cartSession = $session->get('vmcart', 0, 'vm');
+			} else {
+				$cartSession=$cartData;
+			}
+
 
 			if (!empty($cartSession)) {
 				$sessionCart = unserialize( $cartSession );
@@ -190,7 +196,6 @@ class VirtueMartCart {
 	 * @author RolandD
 	 *
 	 * @access public
-	 * @param array $cart the cart to store in the session
 	 */
 	public function setCartIntoSession() {
 
@@ -1008,7 +1013,7 @@ class VirtueMartCart {
 	 * will show the orderdone page (thank you page)
 	 *
 	 */
-	private function confirmedOrder() {
+	 function confirmedOrder() {
 
 		//Just to prevent direct call
 		if ($this->_dataValidated && $this->_confirmDone) {
@@ -1039,9 +1044,10 @@ class VirtueMartCart {
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 			// 1 = cart should be emptied, 0 cart should not be emptied
+			return $orderID;
 
 		}
-
+		return NULL;
 
 	}
 
@@ -1153,20 +1159,24 @@ class VirtueMartCart {
 	*/
 	function CheckAutomaticSelectedShipment($cart_prices, $checkAutomaticSelected ) {
 
-		if(count($this->products)==0 ) {
+		if (count($this->products) == 0) {
 			return false;
 		}
 		$nbShipment = 0;
-		$virtuemart_shipmentmethod_id=0;
-		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+		$virtuemart_shipmentmethod_id = 0;
+		if (!class_exists('vmPSPlugin')) {
+			require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+		}
 
 		JPluginHelper::importPlugin('vmshipment');
 		if (VmConfig::get('automatic_shipment',1) && $checkAutomaticSelected) {
-		    $shipCounter=0;
+			$shipCounter=0;
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipment', array(  $this,$cart_prices, &$shipCounter));
+			vmdebug('CheckAutomaticSelectedShipment', $returnValues);
+
 			foreach ($returnValues as $returnValue) {
-				 if ( isset($returnValue )) {
+				if ( isset($returnValue )) {
 					$nbShipment ++;
 					if ($returnValue) $virtuemart_shipmentmethod_id = $returnValue;
 				}
@@ -1184,7 +1194,6 @@ class VirtueMartCart {
 		} else {
 			return false;
 		}
-
 
 	}
 
@@ -1338,7 +1347,7 @@ class VirtueMartCart {
 	 */
 // 	$this->pricesUnformatted = $product_prices;
 
-	public function getCartPrices($checkAutomaticSelected=true) {
+	public function getCartPrices($checkAutomaticSelected=true ) {
 
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
