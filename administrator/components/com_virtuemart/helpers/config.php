@@ -647,6 +647,8 @@ class VmConfig {
 		if(!in_array($siteLang, $langs)) {
 			if(!empty($langs[0])){
 				$siteLang = $langs[0];
+			} else {
+				$siteLang = 'en_gb';
 			}
 		}
 

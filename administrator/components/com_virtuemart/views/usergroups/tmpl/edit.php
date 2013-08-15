@@ -39,7 +39,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-AdminUIHelper::startAdminArea();
+AdminUIHelper::startAdminArea($this);
 
 ?>
 

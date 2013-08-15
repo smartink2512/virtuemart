@@ -16,7 +16,7 @@
 * @version $Id$
 */
 
-AdminUIHelper::startAdminArea();
+AdminUIHelper::startAdminArea($this);
 
 jimport('joomla.filesystem.file');
 

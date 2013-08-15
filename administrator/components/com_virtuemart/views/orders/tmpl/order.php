@@ -18,7 +18,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminUIHelper::startAdminArea();
+AdminUIHelper::startAdminArea($this);
 AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDER_PRINT_PO_LBL');
 
 // Get the plugins

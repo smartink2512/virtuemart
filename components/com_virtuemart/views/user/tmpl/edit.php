@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//AdminMenuHelper::startAdminArea();
+//AdminMenuHelper::startAdminArea($this);
 // vmdebug('User edit',$this);
 // Implement Joomla's form validation
 JHTML::_('behavior.formvalidation');

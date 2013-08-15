@@ -2,9 +2,9 @@
 
 <project name="VIRTUEMART2" default="VIRTUEMART2" basedir=".">
     <!-- value can be: major, minor, bugfix -->
-    <property name="releasetype" value="MINOR"/>
-    <property name="vm.version" value="2.0.22a"/>
-    <property name="svn.lastrevision" value="7072"/>
+    <property name="releasetype" value="MAYOR"/>
+    <property name="vm.version" value="2.1.0"/>
+    <property name="svn.lastrevision" value="7106"/>
     <property name="PHING.VM.CODENAME" value="Snowden"/>
     <property file="build.properties"/>
     <target name="title">
