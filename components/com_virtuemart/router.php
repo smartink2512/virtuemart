@@ -463,7 +463,7 @@ function virtuemartParseRoute($segments) {
 			array_shift($segments);
 		}
 		if ( !empty($segments) ) {
-			if ($segments[0] ='number')
+			if ($segments[0] =='number')
 				$vars['order_number'] = $segments[1] ;
 			else $vars['virtuemart_order_id'] = $segments[1] ;
 			$vars['layout'] = 'details';

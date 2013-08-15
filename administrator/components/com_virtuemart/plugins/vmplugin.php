@@ -404,6 +404,7 @@ abstract class vmPlugin extends JPlugin {
 
 	/**
 	 * @param $int
+	 * @param $cache
 	 * @return mixed
 	 */
 	protected function getVmPluginMethod ($int, $cache = true) {
@@ -425,15 +426,17 @@ abstract class vmPlugin extends JPlugin {
 		return $this->_vmpCtable->load ($int);
 	}
 
-	/**
-	 * This stores the data of the plugin, attention NOT the configuration of the pluginmethod,
-	 * this function should never be triggered only called from triggered functions.
-	 *
-	 * @author Max Milbers
-	 * @param array  $values array or object with the data to store
-	 * @param string $tableName When different then the default of the plugin, provid it here
-	 * @param string $tableKey an additionally unique key
-	 */
+    /**
+     * This stores the data of the plugin, attention NOT the configuration of the pluginmethod,
+     * this function should never be triggered only called from triggered functions.
+     *
+     * @author Max Milbers
+     * @param array $values array or object with the data to store
+     * @param int|string $primaryKey
+     * @param int|string $id
+     * @param boolean $preload
+     * @return array
+     */
 	protected function storePluginInternalData (&$values, $primaryKey = 0, $id = 0, $preload = FALSE) {
 
 		if ($primaryKey === 0) {
@@ -526,7 +529,6 @@ abstract class vmPlugin extends JPlugin {
 	/**
 	 * Get the path to a layout for a type
 	 *
-	 * @param   string  $type  The name of the type
 	 * @param   string  $layout  The name of the type layout. If alternative
 	 *                           layout, in the form template:filename.
 	 * @param   array   $viewData  The data you want to use in the layout

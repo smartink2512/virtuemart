@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="1.6" type="plugin" group="search">
-	<name>plg_search_virtuemart</name>
-    <creationDate>January 09 2013</creationDate>
+	<name>Search - VirtueMart</name>
+    <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>${PHING.VM.COPYRIGHT}</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <version>2.0.18a</version>
+    <version>${PHING.VM.RELEASE}</version>
 	<description>Allows Searching of VirtueMart Component</description>
 	<languages>
 		<language tag="en-GB">en-GB.plg_search_virtuemart.ini</language>

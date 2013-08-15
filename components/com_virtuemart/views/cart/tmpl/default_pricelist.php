@@ -341,7 +341,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 } ?>
 
 
-<tr class="sectiontableentry1">
+<tr class="sectiontableentry1" valign="top">
 	<?php if (!$this->cart->automaticSelectedShipment) { ?>
 
 	<?php /*	<td colspan="2" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING'); ?> </td> */ ?>
@@ -374,7 +374,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceShipment', '', $this->cart->pricesUnformatted['salesPriceShipment'], FALSE); ?> </td>
 </tr>
 <?php if ($this->cart->pricesUnformatted['salesPrice']>0.0 ) { ?>
-<tr class="sectiontableentry1">
+<tr class="sectiontableentry1"  valign="top">
 	<?php if (!$this->cart->automaticSelectedPayment) { ?>
 
 	<td colspan="4" align="left">

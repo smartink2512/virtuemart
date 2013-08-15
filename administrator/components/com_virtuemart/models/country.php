@@ -68,7 +68,7 @@ class VirtueMartModelCountry extends VmModel {
 
 	$query = 'SELECT *';
 	$query .= ' FROM `#__virtuemart_countries`';
-	$query .= ' WHERE `' . $countryCodeFieldname . '` = ' . (int)$code;
+	$query .= ' WHERE `' . $countryCodeFieldname . '` = ' . $code;
 	$db->setQuery($query);
 
 	return $db->loadObject();
