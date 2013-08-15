@@ -39,7 +39,7 @@ $li = '<br />';
 
     <body style="background: #F2F2F2;word-wrap: break-word;">
 	<div style="background-color: #e6e6e6;" width="100%">
-	    <table style="margin: auto;" cellpadding="0" cellspacing="0" width="600" >
+	    <table style="margin: auto;" cellpadding="0" cellspacing="0"  >
 		<tr>
 		    <td>
 			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="html-email">

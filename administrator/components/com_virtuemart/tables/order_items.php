@@ -47,8 +47,12 @@ class TableOrder_items extends VmTable {
 	var $product_quantity = NULL;
 	/** @var decimal Product item price */
 	var $product_item_price = 0.00000;
-	/** @var decimal Product Base  price with tax*/
-	var $product_basePriceWithTax= 0.00000;
+	/** @var decimal Product Base price with tax*/
+	var $product_basePriceWithTax = 0.00000;
+	/** @var decimal Product discounted price without tax*/
+	var $product_discountedPriceWithoutTax = 0.00000;
+	/** @var decimal Product final price without tax*/
+	var $product_priceWithoutTax = 0.00000;
 	/** @var tax amount */
 	var $product_tax = 0.00000;
 	/** @var decimal Product final price */

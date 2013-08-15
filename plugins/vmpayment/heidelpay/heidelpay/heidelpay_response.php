@@ -1,15 +1,17 @@
 <?php
 
 /**
- * Heidelpay respons page for Heidelpay plugin
+ * @version $Id$
+
+ * Heidelpay response page for Heidelpay plugin
  * @author Heidelberger Paymenrt GmbH <Jens Richter> 
- * @version 12.05
+ * @version 13.07
  * @package VirtueMart
  * @subpackage payment
  * @copyright Copyright (C) Heidelberger Payment GmbH
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  */
- 
+
 include('../../../../configuration.php');
 $config = new JConfig();
 
@@ -42,7 +44,7 @@ $cancelURL	 = $Protocol.$URL.'index.php?option=com_virtuemart&view=pluginrespons
 
 function updateHeidelpay($orderID, $connect) {
 	$comment="";
-	if ( preg_match('/^[A-Za-z0-9]+$/', $orderID , $str)) {
+	if ( preg_match('/^[A-Za-z0-9 -]+$/', $orderID , $str)) {
 		$link = mysql_connect($connect->host, $connect->user , $connect->password);
 		mysql_select_db($connect->db);	
 		$result = mysql_query("SELECT virtuemart_order_id FROM ".$connect->dbprefix."virtuemart_orders"." WHERE  order_number = '".$orderID."';");
@@ -78,7 +80,23 @@ function updateHeidelpay($orderID, $connect) {
 					'.$_POST['IDENTIFICATION_SHORTID'].'<br />
 					as the descriptor and nothing else. Otherwise we cannot match your transaction!</b><br />';
 			}
-				
+		
+				if($_POST['ACCOUNT_BRAND'] == 'BARPAY')
+						
+						{
+										
+										
+							$comment = '(-'.$_POST['CRITERION_BARPAY_PAYCODE_URL'].'-)
+									</b><br />
+									</b><br />
+									Drucken Sie den Barcode aus oder speichern Sie diesen auf Ihrem mobilen Endger�t. 
+									Gehen Sie nun zu einer Kasse der 18.000 Akzeptanzstellen in Deutschland und bezahlen 
+									Sie ganz einfach in bar. In dem Augenblick, wenn der Rechnungsbetrag beglichen wird, 
+									erh�lt der Online-H�ndler die Information �ber den Zahlungseingang.Die bestellte Ware 
+									oder Dienstleistung geht umgehend in den Versand
+								';
+						}	
+						
 		}
 		if (!empty($row->virtuemart_order_id)) {
 			$sql = "INSERT ".$connect->dbprefix."virtuemart_payment_plg_heidelpay SET " .

@@ -3,8 +3,9 @@
 <project name="VIRTUEMART2" default="VIRTUEMART2" basedir=".">
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
-    <property name="vm.version" value="2.1.0"/>
-    <property name="PHING.VM.CODENAME" value="RedNovember"/>
+    <property name="vm.version" value="2.0.22a"/>
+    <property name="svn.lastrevision" value="7072"/>
+    <property name="PHING.VM.CODENAME" value="Snowden"/>
     <property file="build.properties"/>
     <target name="title">
         <echo message="BUILD VirtueMart 2 package FROM ${export.to}  TO ${package.abspath}"/>
@@ -48,18 +49,15 @@
     <property name="package.libraries.aio" value="${package.admin.aio}/libraries"/>
 
     <!-- loop through languages, delete those languages from the AIO, create a language package with them -->
-    <property name="languages" value="cs-CZ,da-DK,et-EE,lt-LT,hu-HU,nb-NO,nl-NL,pl-PL,pt-PT,sl-SI,sv-SE,tr-TR,sk-SK,zh-TW,zh-CN,el-GR,ru-RU,fi-FI,it-IT,bg-BG"/>
+    <!--property name="languages" value="cs-CZ,da-DK,et-EE,lt-LT,hu-HU,nb-NO,nl-NL,pl-PL,pt-PT,sl-SI,sv-SE,tr-TR,sk-SK,zh-TW,zh-CN,el-GR,ru-RU,fi-FI,it-IT,bg-BG"/-->
+    <property name="languages" value=""/>
 
     <!-- ============================================  -->
     <!-- SVN EXPORT variables -->
     <!-- ============================================  -->
-    <property name="svn.main.repository" value="https://dev.virtuemart.net/svn/virtuemart/trunk/virtuemart"/>
+    <property name="svn.main.repository" value="https://dev.virtuemart.net/svn/virtuemart/branches/com_virtuemart2.0.14mp"/>
     <property name="svn.main.path" value="virtuemart"/>
 
-    <svnlastrevision
-            svnpath="{$svn.path}"
-            repositoryurl="${svn.main.repository}"
-            propertyname="svn.lastrevision"/>
 
     <!-- ============================================  -->
     <!-- used in version.php , and .xml files variables -->
@@ -491,13 +489,13 @@
         <echo msg="AIO Component compressed OK!"/>
     </target>
     <target name="LANGUAGE" depends="build.language.loop">
-        <echo msg="Creating Language PACKAGE  ..."/>
+        <!-- echo msg="Creating Language PACKAGE  ..."/>
         <zip destfile="${package.folder}/${component.name}.${vm.version}_languages_extract_first.zip">
             <fileset dir="${package.folder.language}">
                 <include name="*.zip"/>
             </fileset>
         </zip>
-        <echo msg="Language package Component compressed OK!"/>
+        <echo msg="Language package Component compressed OK!"/ -->
     </target>
     <target name="VIRTUEMART2" depends="title, clean ,svn.export, Main, AIO">
         <echo msg="LATEST REVISION is ${svn.lastrevision}"/>

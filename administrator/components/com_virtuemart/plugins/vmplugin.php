@@ -68,7 +68,8 @@ abstract class vmPlugin extends JPlugin {
 		$this->_psType = substr ($this->_type, 2);
 
 		$filename = 'plg_' . $this->_type . '_' . $this->_name;
-		VmConfig::loadJLang($filename, false);
+
+		VmConfig::loadJLang($filename);
 
 		if (!class_exists ('JParameter')) {
 			require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php');
@@ -76,6 +77,10 @@ abstract class vmPlugin extends JPlugin {
 
 		$this->_tablename = '#__virtuemart_' . $this->_psType . '_plg_' . $this->_name;
 		$this->_tableChecked = FALSE;
+	}
+
+	function setPluginLoggable($set=TRUE){
+		$this->_loggable = $set;
 	}
 
 	/**
@@ -113,14 +118,14 @@ abstract class vmPlugin extends JPlugin {
 
 		if ($psType !== 0) {
 			if ($psType != $this->_psType) {
-				//vmdebug ('selectedThis $psType does not fit');
+				vmdebug ('selectedThis $psType does not fit');
 				return FALSE;
 			}
 		}
 
 		if ($name !== 0) {
 			if ($name != $this->_name) {
-				//vmdebug ('selectedThis $name ' . $name . ' does not fit pluginname ' . $this->_name);
+				vmdebug ('selectedThis $name ' . $name . ' does not fit pluginname ' . $this->_name);
 				return FALSE;
 			}
 		}
@@ -134,13 +139,13 @@ abstract class vmPlugin extends JPlugin {
 			}
 			if (is_array ($jid)) {
 				if (!in_array ($this->_jid, $jid)) {
-					//vmdebug ('selectedThis id ' . $jid . ' not in array does not fit ' . $this->_jid);
+					vmdebug ('selectedThis id ' . $jid . ' not in array does not fit ' . $this->_jid);
 					return FALSE;
 				}
 			}
 			else {
 				if ($jid != $this->_jid) {
-					//vmdebug ('selectedThis $jid ' . $jid . ' does not fit ' . $this->_jid);
+					vmdebug ('selectedThis $jid ' . $jid . ' does not fit ' . $this->_jid);
 					return FALSE;
 				}
 			}
@@ -152,11 +157,14 @@ abstract class vmPlugin extends JPlugin {
 	/**
 	 * Checks if this plugin should be active by the trigger
 	 *
+	 * We should avoid this function, is expensive
+	 *
 	 * @author Max Milbers
 	 * @author Valérie Isaksen
+	 *
 	 * @param int/array $id the registered plugin id(s) of the joomla table
 	 */
-	protected function selectedThisByMethodId ($id = 'type') {
+	function selectedThisByMethodId ($id = 'type') {
 
 		//if($psType!=$this->_psType) return false;
 
@@ -343,30 +351,9 @@ abstract class vmPlugin extends JPlugin {
 	 * @param string $paramsFieldName
 	 * @param array  $varsToPushParam
 	 */
-	//TODO rename this, cause it is changing the parameter of the other table, not of the pure config
 	function setConfigParameterable ($paramsFieldName, $varsToPushParam) {
 		$this->_varsToPushParam = $varsToPushParam;
 		$this->_xParams = $paramsFieldName;
-	}
-
-	/**
-	 *
-	 * @param $psType
-	 * @param $name
-	 * @param $id
-	 * @param $xParams
-	 * @param $varsToPush
-	 * @return bool
-	 */
-	protected function getTablePluginParams ($psType,$name, $id, &$xParams,&$varsToPush) {
-		//vmdebug('getTablePluginParams $this->_psType '.$this->_psType.' sets $psType '.$psType.' $name',$name);
-		if (!empty($this->_psType) and !$this->selectedThis ($psType, $name, $id)) {
-			return FALSE;
-		}
-
-		$varsToPush = $this->_varsToPushParam;
-		$xParams = $this->_xParams;
-		//vmdebug('getTablePluginParams '.$name.' sets xParams '.$xParams.' vars',$varsToPush);
 	}
 
 	/**
@@ -396,25 +383,23 @@ abstract class vmPlugin extends JPlugin {
 	 * @param $data
 	 * @return bool
 	 */
-	protected function declarePluginParams ($psType, $name, $id, &$table) {
-
+	protected function declarePluginParams ($psType, $name, $id, &$data) {
 
 		//vmdebug('declarePluginParams '.$this->_psType.' '.$psType);
 		//Todo I know a test only on seledtThis is wrong here, it works now with extra !empty($this->_psType)
 		if(!empty($this->_psType) and !$this->selectedThis($psType,$name,$id)){
 			return FALSE;
 		}
-
 		if (!class_exists ('VmTable')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtable.php');
 		}
-		$xParams = $table->_xParams;
-		$varsToPushParam = $this->_varsToPushParam;
-		//vmdebug('Executing declarePluginParams ',$varsToPushParam,$xParams);
-		VmTable::bindParameterable ($table, $xParams, $varsToPushParam);
-		//vmdebug('declarePluginParams table after bind',$data);
+		VmTable::bindParameterable ($data, $this->_xParams, $this->_varsToPushParam);
 		return TRUE;
-
+		// 			vmdebug('getDeclaredPluginParams return '.$this->_xParams);
+		// 			return array($this->_xParams,$this->_varsToPushParam);
+		// 		} else {
+		// 			return false;
+		// 		}
 	}
 
 	/**
@@ -431,7 +416,7 @@ abstract class vmPlugin extends JPlugin {
 			}
 			$this->_vmpCtable = new $this->_configTableClassName($db);
 			if ($this->_xParams !== 0) {
-				$this->_vmpCtable->setParameterable ($this->_configTableFieldName, $this->_varsToPushParam);
+				$this->_vmpCtable->setParameterable ($this->_xParams, $this->_varsToPushParam);
 			}
 
 			// 			$this->_vmpCtable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$this->_loggable);
@@ -440,9 +425,6 @@ abstract class vmPlugin extends JPlugin {
 		return $this->_vmpCtable->load ($int);
 	}
 
-	protected function storeVmPluginMethod () {
-
-	}
 	/**
 	 * This stores the data of the plugin, attention NOT the configuration of the pluginmethod,
 	 * this function should never be triggered only called from triggered functions.
@@ -460,8 +442,9 @@ abstract class vmPlugin extends JPlugin {
 		if ($this->_vmpItable === 0) {
 			$this->_vmpItable = $this->createPluginTableObject ($this->_tablename, $this->tableFields, $primaryKey, $this->_tableId, $this->_loggable);
 		}
-		//vmdebug('storePluginInternalData',$value);
+
 		$this->_vmpItable->bindChecknStore ($values, $preload);
+		//vmdebug('storePluginInternalData',$values,$this->_vmpItable);
 		$errors = $this->_vmpItable->getErrors ();
 		if (!empty($errors)) {
 			foreach ($errors as $error) {
@@ -562,7 +545,7 @@ abstract class vmPlugin extends JPlugin {
 			$psType = $this->_psType;
 		}
 		$layout = vmPlugin::_getLayoutPath ($name, 'vm' . $psType, $layout);
-		//vmdebug('renderByLayout '.$layout,$viewData);
+
 		ob_start ();
 		include ($layout);
 		return ob_get_clean ();

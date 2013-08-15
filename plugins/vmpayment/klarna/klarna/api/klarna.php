@@ -109,7 +109,8 @@ class Klarna {
      *
      * @var string
      */
-    private static $beta_addr = 'payment-beta.klarna.com';
+    //private static $beta_addr = 'payment-beta.klarna.com';
+    private static $beta_addr = 'payment.testdrive.klarna.com';
 
     /**
      * Indicates whether the communications is over SSL or not.

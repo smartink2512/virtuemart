@@ -48,7 +48,7 @@ class VmModel extends JModel {
 		$this->_cidName = $cidName;
 
 		// Get the task
-		$task = JRequest::getWord('task');
+		$task = JRequest::getWord('task','');
 		if($task!=='add'){
 			// Get the id or array of ids.
 			$idArray = JRequest::getVar($this->_cidName,  0, '', 'array');
@@ -69,7 +69,7 @@ class VmModel extends JModel {
 	static function getModel($name=false){
 
 		if (!$name){
-			$name = JRequest::getCmd('view');
+			$name = JRequest::getCmd('view','');
 // 			vmdebug('Get standard model of the view');
 		}
 		$name = strtolower($name);
@@ -200,7 +200,7 @@ class VmModel extends JModel {
 	}
 
 
-	var $_validOrderingFieldName = null;
+	var $_validOrderingFieldName = array();
 
 	function checkFilterOrder($toCheck){
 
@@ -209,7 +209,7 @@ class VmModel extends JModel {
 			vmdebug('checkValidOrderingField:'.get_class($this).' programmer choosed invalid ordering '.$toCheck.', use '.$this->_selectedOrdering);
 			$toCheck = $this->_selectedOrdering;
 			$app = JFactory::getApplication();
-			$view = JRequest::getWord('view');
+			$view = JRequest::getWord('view','virtuemart');
 			$app->setUserState( 'com_virtuemart.'.$view.'.filter_order',$this->_selectedOrdering);
 		}
 		$this->_selectedOrdering = $toCheck;
@@ -225,7 +225,7 @@ class VmModel extends JModel {
 // 			vmdebug('checkFilterDir: programmer choosed invalid ordering direction '.$filter_order_Dir,$this->_validFilterDir);
 // 			vmTrace('checkFilterDir');
 			$filter_order_Dir = $this->_selectedOrderingDir;
-			$view = JRequest::getWord('view');
+			$view = JRequest::getWord('view','virtuemart');
 			$app = JFactory::getApplication();
 			$app->setUserState( 'com_virtuemart.'.$view.'.filter_order_Dir',$filter_order_Dir);
 		}
@@ -261,8 +261,16 @@ class VmModel extends JModel {
 
 		$limit = (int)$app->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit');
 		if(empty($limit)){
-			$limit = VmConfig::get ('list_limit', 20);
+			if($app->isSite()){
+				$limit = VmConfig::get ('llimit_init_FE');
+			} else {
+				$limit = VmConfig::get ('llimit_init_BE');
+			}
+			if(empty($limit)){
+				$limit = 30;
+			}
 		}
+
 		$this->setState('limit', $limit);
 		$this->setState('com_virtuemart.'.$view.'.limit',$limit);
 		$this->_limit = $limit;
@@ -359,7 +367,7 @@ class VmModel extends JModel {
 			$this->_db->setQuery($q,$limitStart,$limit);
 // 			vmdebug('exeSortSearchListQuery '.get_class($this).' with limit');
 		}
-// 		vmdebug('exeSortSearchListQuery '.$orderBy .$filter_order_Dir);
+ 	//	vmdebug('exeSortSearchListQuery '.$orderBy .$filter_order_Dir,$q);
 
 		if($object == 2){
 			 $this->ids = $this->_db->loadResultArray();
@@ -632,41 +640,47 @@ class VmPagination extends JPagination {
 	 * @since   11.1
 	 */
 
-	function getLimitBox()
+	function setSequence($sequence){
+		$this->_sequence = $sequence;
+	}
+
+	function getLimitBox($sequence=0)
 	{
 		$app = JFactory::getApplication();
 
 		// Initialize variables
 		$limits = array ();
-
-		// Make the option list
-		//for 3 = 3,6,12,24,60,90 rows, 4 rows, 6 rows
-		$sequence = VmConfig::get('pagination_sequence',0);
-
 		$selected = $this->_viewall ? 0 : $this->limit;
+
 		// Build the select list
 		if ($app->isAdmin()) {
-// 			$limits[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_ALL'));
-			if(!empty($sequence)){
-				$sequenceArray = explode(',', $sequence);
-				foreach($sequenceArray as $items){
-					$limits[]=JHtml::_('select.option', $items);
-				}
 
-			} else {
-				if($this->_perRow===1) $this->_perRow = 5;
-				$iterationAmount = 4;
-				for ($i = 1; $i <= $iterationAmount; $i ++) {
-					$limits[] = JHtml::_('select.option', $i*$this->_perRow);
-				}
-
-				$limits[] = JHTML::_('select.option', $this->_perRow * 10);
-				$limits[] = JHTML::_('select.option', $this->_perRow * 20);
-				$limits[] = JHTML::_('select.option', $this->_perRow * 40);
-				$limits[] = JHTML::_('select.option', $this->_perRow * 80);
-	// 			vmdebug('getLimitBox',$this->_perRow);
+			if(empty($sequence)){
+				$sequence = VmConfig::get('pagseq',0);
 			}
 
+			if(!empty($sequence)){
+				$sequenceArray = explode(',', $sequence);
+				if(count($sequenceArray>1)){
+					foreach($sequenceArray as $items){
+						$limits[$items]=JHtml::_('select.option', $items);
+					}
+				}
+			}
+
+			if(empty($limits)){
+				$limits[15] = JHTML::_('select.option', 15);
+				$limits[30] = JHTML::_('select.option', 30);
+				$limits[50] = JHTML::_('select.option', 50);
+				$limits[100] = JHTML::_('select.option', 100);
+				$limits[200] = JHTML::_('select.option', 200);
+				$limits[400] = JHTML::_('select.option', 400);
+			}
+
+			if(!array_key_exists($this->limit,$limits)){
+				$limits[$this->limit] = JHTML::_('select.option', $this->limit);
+				ksort($limits);
+			}
 			$namespace = '';
 			if (JVM_VERSION!==1) {
 				$namespace = 'Joomla.';
@@ -691,24 +705,28 @@ class VmPagination extends JPagination {
 			}
 			$link[0] = "?";
 			$link = 'index.php'.$link ;
-			// $limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit=0'), JText::_('all'));
-
+			if(empty($sequence)){
+				$sequence = VmConfig::get('pagseq_'.$this->_perRow);
+			}
 			if(!empty($sequence)){
 				$sequenceArray = explode(',', $sequence);
-				foreach($sequenceArray as $items){
-					$limits[]=JHtml::_('select.option', JRoute::_( $link.'&limit='. $items), $items);
+				if(count($sequenceArray>1)){
+					foreach($sequenceArray as $items){
+						$limits[$items]=JHtml::_('select.option', JRoute::_( $link.'&limit='. $items, false), $items);
+					}
 				}
+			}
 
-			} else {
+			if(empty($limits) or !is_array($limits)){
 				if($this->_perRow===1) $this->_perRow = 5;
-				$iterationAmount = 4;
-				for ($i = 1; $i <= $iterationAmount; $i ++) {
-					$limits[] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $i*$this->_perRow) ,$i*$this->_perRow );
-				}
-
-				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 10) , $this->_perRow * 10 );
-				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 20) , $this->_perRow * 20 );
-	// 			vmdebug('getLimitBox',$this->_perRow);
+				$limits[$this->_perRow * 5] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 5, false) ,$this->_perRow * 5);
+				$limits[$this->_perRow * 10] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 10, false) , $this->_perRow * 10 );
+				$limits[$this->_perRow * 20] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 20, false) , $this->_perRow * 20 );
+				$limits[$this->_perRow * 50] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 50, false) , $this->_perRow * 50 );
+			}
+			if(!array_key_exists($this->limit,$limits)){
+				$limits[] = JHTML::_('select.option', JRoute::_( $link.'&limit='.$this->limit,false),$this->limit);
+				ksort($limits);
 			}
 			$selected= JRoute::_( $link.'&limit='. $selected) ;
 			$js = 'onchange="window.top.location.href=this.options[this.selectedIndex].value"';

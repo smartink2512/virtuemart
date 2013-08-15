@@ -100,33 +100,30 @@ class VirtueMartModelConfig extends JModel {
 	/**
 	 * Retrieve a list of available fonts to be used with PDF Invoice generation & PDF Product view on FE
 	 *
-         * @author Nikos Zagas
+	 * @author Nikos Zagas
 	 * @return object List of available fonts
 	 */
-        function getTCPDFFontsList() {
+	function getTCPDFFontsList() {
 
 		$dir = JPATH_ROOT.DS.'libraries'.DS.'tcpdf'.DS.'fonts';
+		$specfiles = glob($dir.DS."*_specs.xml");
 		$result = '';
-			if ($handle = opendir($dir)) {
-				while (false !== ($file = readdir($handle))) {
-                                        if (pathinfo($file, PATHINFO_EXTENSION)==='xml') {
-                                            $fontxml = @simpleXML_load_file($dir . DS . $file);
-                                            if ($fontxml) {
-                                                if (file_exists($dir . DS . $fontxml->filename . '.php')) {
-                                                    $result[] = JHTML::_('select.option', $fontxml->filename, JText::_($fontxml->fontname.' ('.$fontxml->fonttype.')'));
-                                                    } else {
-                                                        vmError ('A font master file is missing: ' . $dir . DS . $fontxml->filename . '.php');
-                                                        }
-                                              } else {
-                                                vmError ('Wrong structure in font XML file: '. $dir . DS . $file);
-                                              }                             
-                                           }
-					}
+		foreach ($specfiles as $file) {
+			$fontxml = @simpleXML_load_file($file);
+			if ($fontxml) {
+				if (file_exists($dir . DS . $fontxml->filename . '.php')) {
+					$result[] = JHTML::_('select.option', $fontxml->filename, JText::_($fontxml->fontname.' ('.$fontxml->fonttype.')'));
+				} else {
+					vmError ('A font master file is missing: ' . $dir . DS . 	$fontxml->filename . '.php');
 				}
+			} else {
+				vmError ('Wrong structure in font XML file: '. $dir . DS . $file);
+			}
+		}
 		return $result;
 	}
-        
-        
+
+
 	/**
 	 * Retrieve a list of possible images to be used for the 'no image' image.
 	 *
@@ -224,7 +221,7 @@ class VirtueMartModelConfig extends JModel {
 	/*
 	 * Get the joomla list of languages
 	 */
-    function getActiveLanguages($active_languages) {
+	function getActiveLanguages($active_languages) {
 
 		$activeLangs = array() ;
 		$language =JFactory::getLanguage();
@@ -235,7 +232,7 @@ class VirtueMartModelConfig extends JModel {
 			$activeLangs[] = JHTML::_('select.option', $jLang['tag'] , $jLang['name']) ;
 		}
 
-		return JHTML::_('select.genericlist', $activeLangs, 'active_languages[]', 'size=10 multiple="multiple"', 'value', 'text', $active_languages );// $activeLangs;
+		return JHTML::_('select.genericlist', $activeLangs, 'active_languages[]', 'size=10 multiple="multiple" data-placeholder="'.JText::_('COM_VIRTUEMART_DRDOWN_NOTMULTILINGUAL').'"', 'value', 'text', $active_languages );// $activeLangs;
 	}
 
 
@@ -253,7 +250,6 @@ class VirtueMartModelConfig extends JModel {
 			$searchChecked = (array)$searchChecked;
 		}
 		$searchFieldsArray = ShopFunctions::getValidProductFilterArray ();
-// 		if ($type !== 'browse_orderby_fields' ) array_shift($searchFieldsArray);
 
 		$searchFields= new stdClass();
 		$searchFields->checkbox ='<div class="threecols"><ul>';
@@ -273,6 +269,7 @@ class VirtueMartModelConfig extends JModel {
 			}
 
 			$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
+
 			if ($type == 'browse_orderby_fields' ) $searchFields->select[] =  JHTML::_('select.option', $field, $text) ;
 			$searchFields->checkbox .= '<li><input type="checkbox" id="' .$type.$fieldWithoutPrefix.$key. '" name="'.$type.'[]" value="' .$field. '" ' .$checked. ' /><label for="' .$type.$fieldWithoutPrefix.$key. '">' .$text. '</label></li>';
 		}
@@ -286,16 +283,17 @@ class VirtueMartModelConfig extends JModel {
 	 * @author RickG
 	 * @return boolean True is successful, false otherwise
 	 */
-	function store(&$data) {
+	function store(&$data,$replace = FALSE) {
 
 		JRequest::checkToken() or jexit( 'Invalid Token, in store config');
 
 		//$data['active_languages'] = strtolower(strtr($data['active_languages'],'-','_'));
 		//ATM we want to ensure that only one config is used
-		$config = VmConfig::loadConfig();
-		unset ($config->_params['pdf_invoice']); // parameter remove and replaced by inv_os
-		$config->setParams($data);
 
+		$config = VmConfig::loadConfig(TRUE);
+
+
+		$config->setParams($data,$replace);
 		$confData = array();
 		$query = 'SELECT * FROM `#__virtuemart_configs`';
 		$this->_db->setQuery($query);
@@ -307,25 +305,35 @@ class VirtueMartModelConfig extends JModel {
 
 		$urls = array('assets_general_path','media_category_path','media_product_path','media_manufacturer_path','media_vendor_path');
 		foreach($urls as $urlkey){
-				$url = trim($config->get($urlkey));
-				$length = strlen($url);
-				if(strrpos($url,'/')!=($length-1)){
-					$config->set($urlkey,$url.'/');
-					vmInfo('Corrected media url '.$urlkey.' added missing /');
-				}
-		}
-
-/*		$path = trim($config->get('forSale_path'));
-		$length = strlen($path);
-		if(strrpos($url,DS)!=($length-1)){
-			if(is_dir()){
-				$config->set('forSale_path',$path.DS);
-				vmInfo('Corrected safe path added missing '.DS);
-			} else {
-
+			$url = trim($config->get($urlkey));
+			$length = strlen($url);
+			if(strrpos($url,'/')!=($length-1)){
+				$config->set($urlkey,$url.'/');
+				vmInfo('Corrected media url '.$urlkey.' added missing /');
 			}
 		}
-*/
+
+		//If empty it is not sent by the form, other forms do it by using a table to store,
+		//the config is like a big xparams and so we check some values for this form manually
+		/*$toSetEmpty = array('active_languages','inv_os','email_os_v','email_os_s');
+		foreach($toSetEmpty as $item){
+			if(!isset($data[$item])) {
+				$config->set($item,array());
+			}
+		}*/
+
+		$checkCSVInput = array('pagseq','pagseq_1','pagseq_2','pagseq_3','pagseq_4','pagseq_5');
+		foreach($checkCSVInput as $csValueKey){
+			$csValue = $config->get($csValueKey);
+			if(!empty($csValue)){
+				$sequenceArray = explode(',', $csValue);
+				foreach($sequenceArray as &$csV){
+					$csV = (int)trim($csV);
+				}
+				$csValue = implode(',',$sequenceArray);
+				$config->set($csValueKey,$csValue);
+			}
+		}
 
 		$safePath = trim($config->get('forSale_path'));
 		if(!empty($safePath)){
@@ -336,6 +344,7 @@ class VirtueMartModelConfig extends JModel {
 				vmInfo('Corrected safe path added missing '.DS);
 			}
 		}
+
 		if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		$safePath = shopFunctions::checkSafePath($safePath);
 
@@ -368,6 +377,20 @@ class VirtueMartModelConfig extends JModel {
 		$result = $updater->createLanguageTables();
 
 		return true;
+	}
+
+	public static function checkConfigTableExists(){
+
+		$db = JFactory::getDBO();
+		$query = 'SHOW TABLES LIKE "'.$db->getPrefix().'virtuemart_configs"';
+		$db->setQuery($query);
+		$configTable = $db->loadResult();
+		$err = $db->getErrorMsg();
+		if(!empty($err) or !$configTable){
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	/**
@@ -414,7 +437,7 @@ class VirtueMartModelConfig extends JModel {
 	function deleteConfig(){
 
 		if($this->remove()){
-			return VmConfig::loadConfig(true);
+			return VmConfig::loadConfig(true,true);
 		} else {
 			return false;
 		}

@@ -35,21 +35,21 @@ class VirtuemartViewCustom extends VmView {
 		// Load the helper(s)
 
 
-		$this->loadHelper('html');
-		$this->loadHelper('vmcustomplugin');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+		if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+
 		$model = VmModel::getModel();
-		if (!class_exists ('Permissions')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-		}
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		// TODO Make an Icon for custom
 		$this->SetViewTitle('PRODUCT_CUSTOM_FIELD');
-
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 			$this->addStandardEditViewCommands();
 			$customPlugin = '';
-			$this->loadHelper('parameterparser');
+			if (!class_exists('vmParameters'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
 			$custom = $model->getCustom();
 			$customfields = VmModel::getModel('customfields');
 // 			vmdebug('VirtuemartViewCustom',$custom);
@@ -124,8 +124,6 @@ class VirtuemartViewCustom extends VmView {
 		//return JHtml::_('select.genericlist', $result, 'custom_jplugin_id', null, $ext_id, 'name', $selected);
 	}
 
-	private $_hidden = array();
-
 	/**
 	 * This displays a custom handler.
 	 *
@@ -181,7 +179,6 @@ class VirtuemartViewCustom extends VmView {
 
 		return $html;
 	}
-
 	/**
 	 * child classes can add their own options and you can get them with this function
 	 *

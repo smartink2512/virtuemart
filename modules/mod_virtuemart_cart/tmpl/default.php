@@ -9,11 +9,10 @@ defined('_JEXEC') or die('Restricted access');
 <div class="vmCartModule <?php echo $params->get('moduleclass_sfx'); ?>" id="vmCartModule">
 <?php
 if ($show_product_list) {
-	$customfieldsModel = VmModel::getModel('customfields');
 	?>
 	<div id="hiddencontainer" style=" display: none; ">
 		<div class="container">
-			<?php if ($show_price) { ?>
+			<?php if ($show_price and $currencyDisplay->_priceConfig['salesPrice'][0]) { ?>
 			  <div class="prices" style="float: right;"></div>
 			<?php } ?>
 			<div class="product_row">
@@ -25,18 +24,18 @@ if ($show_product_list) {
 	</div>
 	<div class="vm_cart_products">
 		<div class="container">
-		<?php foreach ($cart->products as $product)
+
+		<?php
+			foreach ($cart->products as $product)
 		{
-			//vmdebug('$product',$product);
-			//$product = array($product);
-			if ($show_price) { ?>
+			if ($show_price and $currencyDisplay->_priceConfig['salesPrice'][0]) { ?>
 				  <div class="prices" style="float: right;"><?php echo  $product->prices['salesPrice'] ?></div>
 				<?php } ?>
 			<div class="product_row">
 				<span class="quantity"><?php echo  $product->quantity ?></span>&nbsp;x&nbsp;<span class="product_name"><?php echo  $product->product_name ?></span>
 			</div>
-			<?php if ( !empty($product->product_customs) ) { ?>
-				<div class="product_attributes"><?php echo $customfieldsModel->CustomsFieldCartDisplay ($product); ?></div>
+			<?php if ( !empty($product->product_attributes) ) { ?>
+				<div class="product_attributes"><?php echo $product->product_attributes ?></div>
 
 			<?php }
 		}
@@ -44,13 +43,14 @@ if ($show_product_list) {
 		</div>
 	</div>
 <?php } ?>
-
-<div class="total" style="float: right;">
-	<?php if ($data->totalProduct and $show_price) echo  $data->billTotal; ?>
-</div>
-<div class="total_products"><?php echo  $data->totalProductTxt ?></div>
+<?php if ($cart->totalProduct and $show_price and $currencyDisplay->_priceConfig['salesPrice'][0]) { ?>
+	<div class="total" style="float: right;">
+		<?php echo $cart->billTotal; ?>
+	</div>
+<?php } ?>
+<div class="total_products"><?php echo  $cart->totalProductTxt ?></div>
 <div class="show_cart">
-	<?php if ($data->totalProduct and $show_price) echo  $data->cart_show; ?>
+	<?php if ($cart->totalProduct and $show_price) echo  $cart->cart_show; ?>
 </div>
 <div style="clear:both;"></div>
 

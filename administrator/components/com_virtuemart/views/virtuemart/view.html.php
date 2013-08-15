@@ -33,9 +33,8 @@ class VirtuemartViewVirtuemart extends VmView {
 
 	function display($tpl = null) {
 
-		// Load the helper(s)
-
-		$this->loadHelper('image');
+		if (!class_exists('VmImage'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 
 		$model = VmModel::getModel('virtuemart');
 

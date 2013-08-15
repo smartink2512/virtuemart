@@ -5,7 +5,7 @@
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>${PHING.VM.COPYRIGHT}</copyright>
-    <license>${PHING.VM.LICENSE}</license>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <version>${PHING.VM.RELEASE}</version>
     <description>VMPAYMENT_KLARNA_CONF_PLUGIN_DESC</description>
     <languages>

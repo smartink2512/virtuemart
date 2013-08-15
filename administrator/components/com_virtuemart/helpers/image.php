@@ -79,6 +79,12 @@ class VmImage extends VmMediaHandler {
 	}
 
 
+	public function createThumbFileUrl(){
+
+		$file_name = $this->createThumbName();
+		$file_url_thumb = $this->file_url_folder.'resized/'.$this->file_name_thumb.'.'.$this->file_extension;
+		return $file_url_thumb;
+	}
 	/**
 	 * a small function that ensures that we always build the thumbnail name with the same method
 	 */
@@ -100,19 +106,20 @@ class VmImage extends VmMediaHandler {
 	 * @param boolean $save Execute update function
 	 * @return name of the thumbnail
 	 */
-	public function createThumb() {
+	public function createThumb($width=0,$height=0) {
 
 		if(empty($this->file_url_folder)){
 			vmError('Couldnt create thumb, no directory given. Activate vmdebug to understand which database entry is creating thies error');
 			vmdebug('createThumb, no directory given',$this);
 			return FALSE;
 		}
+
 		$synchronise = JRequest::getString('synchronise',false);
 
 		if(!VmConfig::get('img_resize_enable') || $synchronise) return;
 		//now lets create the thumbnail, saving is done in this function
-		$width = VmConfig::get('img_width', 90);
-		$height = VmConfig::get('img_height', 90);
+		if(empty($width)) $width = VmConfig::get('img_width', 90);
+		if(empty($height)) $height = VmConfig::get('img_height', 90);
 
 		// Don't allow sizes beyond 2000 pixels //I dont think that this is good, should be config
 //		$width = min($width, 2000);
@@ -124,14 +131,12 @@ class VmImage extends VmMediaHandler {
 		$bgblue = 255;
 
 		$root = '';
-		$this->file_name_thumb = $this->createThumbName();
+		$this->file_name_thumb = $this->createThumbName($width,$height);
 
 		if($this->file_is_forSale==0){
-
 			$rel_path = str_replace('/',DS,$this->file_url_folder);
 			$fullSizeFilenamePath = JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
 		} else {
-			$rel_path = str_replace('/',DS,$this->file_url_folder);
 			$fullSizeFilenamePath = $this->file_url_folder.$this->file_name.'.'.$this->file_extension;
 		}
 
@@ -142,7 +147,7 @@ class VmImage extends VmMediaHandler {
 
 		if (file_exists($fullSizeFilenamePath)) {
 			if (!class_exists('Img2Thumb')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'img2thumb.php');
-			$createdImage = new Img2Thumb($fullSizeFilenamePath, $width, $height, $resizedFilenamePath, $maxsize, $bgred, $bggreen, $bgblue);
+			$createdImage = new Img2Thumb($fullSizeFilenamePath, (int)$width, (int)$height, $resizedFilenamePath, $maxsize, $bgred, $bggreen, $bgblue);
 			if($createdImage){
 				return $this->file_url_folder_thumb.$this->file_name_thumb.'.'.$this->file_extension;
 			} else {

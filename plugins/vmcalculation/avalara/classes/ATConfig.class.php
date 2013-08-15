@@ -65,7 +65,7 @@ new ATConfig('Default', array(
     'account'   => '<your account number here>',
     'license'   => '<your license key here>',
     'adapter'   => 'avatax4php,5.10.0.0',
-    'client'    => 'AvalaraPHPInterface,1.0',
+    'client'    => 'VirtueMart2.0.16',
 	'name'    => 'PHPAdapter',
     'trace'     => true) // change to false for production
 );

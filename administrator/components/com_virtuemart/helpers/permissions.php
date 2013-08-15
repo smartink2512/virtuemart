@@ -147,6 +147,7 @@ class Permissions extends JObject{
 	function doAuthentication ($user_id=null) {
 
 		$this->_db = JFactory::getDBO();
+		$session = JFactory::getSession();
 		$user = JFactory::getUser($user_id);
 
 		if (VmConfig::get('vm_price_access_level') != '') {
@@ -255,11 +256,9 @@ class Permissions extends JObject{
 			$user = JFactory::getUser();
 
 			if(!empty( $user->id)){
-				$q = 'SELECT `virtuemart_vendor_id`
-							FROM `#__virtuemart_vmusers` `au`
-							LEFT JOIN `#__virtuemart_userinfos` `u`
-							ON (au.virtuemart_user_id = u.virtuemart_user_id)
-							WHERE `u`.`virtuemart_user_id`="' .$user->id.'" AND `au`.`user_is_vendor` = "1" ';
+				$q='SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vmusers` `au`
+				WHERE `au`.`virtuemart_user_id`="' .$user->id.'" AND `au`.`user_is_vendor` = "1" ';
+
 				$db= JFactory::getDbo();
 				$db->setQuery($q);
 				$virtuemart_vendor_id = $db->loadResult();
@@ -280,8 +279,6 @@ class Permissions extends JObject{
 			if($this->check('admin,storeadmin') ){
 				$this->_vendorId = 1;
 				return $this->_vendorId;
-			} else {
-				return false;
 			}
 		}
 		return false;
@@ -487,19 +484,6 @@ class Permissions extends JObject{
 
 		ksort($list);
 		return $list;
-	}
-
-	/**
-	* Check if the price should be shown including tax
-	*
-	* @author RolandD
-	* @todo Figure out where to get the setting from
-	* @access public
-	* @param
-	* @return bool true if price with tax is shown otherwise false
-	*/
-	public function showPriceIncludingTax() {
-		return true;
 	}
 }
 

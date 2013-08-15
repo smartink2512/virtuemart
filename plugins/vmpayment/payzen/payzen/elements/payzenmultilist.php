@@ -59,7 +59,7 @@ class JElementPayzenMultiList extends JElement
                 }
                 if ($m = $node->attributes( 'multiple' ))
                 {
-                        $attribs       .= ' multiple="multiple"';
+                        $attribs = 'multiple="true"   data-placeholder="'.JText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS').'"';
                         $ctrl          .= '[]';
                 }
 

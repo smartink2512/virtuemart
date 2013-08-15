@@ -1,5 +1,5 @@
 <?php
-
+defined('JPATH_BASE') or die();
 /**
  *
  * a special type of Klarna
@@ -16,7 +16,7 @@
  *
  * http://virtuemart.net
  */
-defined('JPATH_BASE') or die();
+
 if (JVM_VERSION === 2) {
     if (!defined('JPATH_VMKLARNAPLUGIN'))
 	define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna');

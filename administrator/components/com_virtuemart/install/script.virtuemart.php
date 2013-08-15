@@ -10,8 +10,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 //Maybe it is possible to set this within the xml file note by Max Milbers
-@ini_set( 'memory_limit', '32M' );
-@ini_set( 'max_execution_time', '120' );
+$memory_limit = (int) substr(ini_get('memory_limit'),0,-1);
+if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
+
+$maxtime = (int) ini_get('max_execution_time');
+if($maxtime < 140){
+	@ini_set( 'max_execution_time', '140' );
+}
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('JPATH_VM_ADMINISTRATOR') or define('JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart');
@@ -112,7 +117,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				return $this->update($loadVm);
 			}
 
-
 			$this -> joomlaSessionDBToMediumText();
 
 			// install essential and required data
@@ -127,8 +131,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$model->execSQLFile($this->path.DS.'install'.DS.'install_essential_data.sql',$lang);
 			$model->execSQLFile($this->path.DS.'install'.DS.'install_required_data.sql',$lang);
 
-			$id = $model->determineStoreOwner();
-			$model->setStoreOwner($id);
+			//$id = $model->determineStoreOwner();
+			$model->setStoreOwner();
 
 			//copy sampel media
 			$src = $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampleimages';
@@ -154,9 +158,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->recurse_copy($src,$dst);
 
-			$params = JComponentHelper::getParams('com_languages');
-			$lang = $params->get('site', 'en-GB');//use default joomla
-			$lang = strtolower(strtr($lang,'-','_'));
 			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();
 			$updater->createLanguageTables();
@@ -248,11 +249,20 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				'idx_custom_value' => ' INDEX `idx_published` (`published`)'
 			));
 
-			//ALTER TABLE `joke_virtuemart_product_customfields` DROP INDEX `idx_custom_value`;
-		/*	$this->alterTable('#__virtuemart_product_customfields',array(
-				'idx_custom_value' => ' INDEX `idx_custom_value`',
-			),'DROP');*/
+			$this->alterTable('#__virtuemart_medias',
+				 array(
+					'file_url' => '`file_url` varchar(900) NOT NULL DEFAULT ""',
+					'file_params' => '`file_params` varchar(17500)',
+					'file_url_thumb' => '`file_url_thumb` varchar(900) NOT NULL DEFAULT ""',
+   				)
+ 			);
 
+			$this->alterTable('#__virtuemart_order_items',
+				array(
+					'product_discountedPriceWithoutTax' => '',
+				),
+				'DROP'
+			);
 
 			$this->deleteReCreatePrimaryKey('#__virtuemart_userinfos','virtuemart_userinfo_id');
 
@@ -270,11 +280,35 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->fixOrdersVendorId();
 
+			$this->fixConfigValues();
 			$this->migrateCustoms();
-
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
+		}
+
+		private function fixConfigValues(){
+			if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+			VmConfig::loadConfig();
+
+			$data = array();
+			$list_limit = VmConfig::get('list_limit',0);
+			if(!empty($list_limit)){
+				$data['llimit_init_BE'] = $list_limit;
+				$data['llimit_init_FE'] = $list_limit;
+			}
+			$pagseq = VmConfig::get('pagination_sequence',0);
+			if(!empty($pagseq)){
+				$data['pagseq'] = $pagseq;
+				$data['pagseq_1'] = $pagseq;
+				$data['pagseq_2'] = $pagseq;
+				$data['pagseq_3'] = $pagseq;
+				$data['pagseq_4'] = $pagseq;
+				$data['pagseq_5'] = $pagseq;
+			}
+
+			$configModel = VmModel::getModel('config');
+			$configModel->store($data);
 		}
 
 		private function fixOrdersVendorId(){
@@ -291,23 +325,27 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->_db->setQuery($q);
 				$res = $this->_db->loadResult();
 
-				//vmdebug('fixOrdersVendorId ',$res);
-				$q = 'UPDATE #__virtuemart_orders SET `virtuemart_vendor_id`=1 WHERE virtuemart_vendor_id = "0" ';
-				$this->_db->setQuery($q);
-				$res = $this->_db->query();
-				$err = $this->_db->getErrorMsg();
-				if(!empty($err)){
-					vmError('fixOrdersVendorId update orders '.$err);
-				}
-				$q = 'UPDATE #__virtuemart_order_items SET `virtuemart_vendor_id`=1 WHERE virtuemart_vendor_id = "0" ';
-				$this->_db->setQuery($q);
-				$res = $this->_db->query();
-				$err = $this->_db->getErrorMsg();
-				if(!empty($err)){
-					vmError('fixOrdersVendorId update order_item '.$err);
+				if($res){
+					//vmdebug('fixOrdersVendorId ',$res);
+					$q = 'UPDATE #__virtuemart_orders SET `virtuemart_vendor_id`=1 WHERE virtuemart_vendor_id = "0" ';
+					$this->_db->setQuery($q);
+					$res = $this->_db->query();
+					$err = $this->_db->getErrorMsg();
+					if(!empty($err)){
+						vmError('fixOrdersVendorId update orders '.$err);
+					}
+					$q = 'UPDATE #__virtuemart_order_items SET `virtuemart_vendor_id`=1 WHERE virtuemart_vendor_id = "0" ';
+					$this->_db->setQuery($q);
+					$res = $this->_db->query();
+					$err = $this->_db->getErrorMsg();
+					if(!empty($err)){
+						vmError('fixOrdersVendorId update order_item '.$err);
+					}
 				}
 
 			}
+
+
 
 		}
 
@@ -396,9 +434,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
 			}
 		}
-
-
-
 		/**
 		 * @author Max Milbers
 		 * @param unknown_type $tablename
@@ -481,7 +516,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			}
 		}
 
-
 		private function deleteReCreatePrimaryKey($tablename,$fieldname){
 
 			//Does not work, the keys must be regenerated
@@ -503,7 +537,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if($force or $fullColumns[0]->Field==$fieldname and strpos($fullColumns[0]->Type,'char')!==false){
 				vmdebug('Old key found, recreate');
 
-				// Yes, I know, it looks senselesss to create a field without autoincrement, to add a key and then the autoincrement and then the key again.
+				// Yes, I know, it looks senselesss to create a field without autoincrement, to add a key and then the autoincrement and then they key again.
 				// But seems the only method to drop and recreate primary, which has already data in it
 				//First drop it
 				$fields = array($fieldname => '');
@@ -646,11 +680,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 				$this->loadVm();
 				// 				VmConfig::loadConfig(true);
+				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'config.php');
+				$res  = VirtueMartModelConfig::checkConfigTableExists();
 
-				$this->_db = JFactory::getDBO();
-				$q = 'SHOW TABLES LIKE "%virtuemart_configs%"'; //=>jos_virtuemart_shipment_plg_weight_countries
-				$this->_db->setQuery($q);
-				$res = $this->_db->loadResult();
 				if(!empty($res)){
 					JRequest::setVar(JUtility::getToken(), '1', 'post');
 					$config = JModel::getInstance('config', 'VirtueMartModel');
@@ -747,7 +779,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					border="0"
 					align="center"
 					src="components/com_virtuemart/assets/images/vm_menulogo.png"
-					alt="Logo" /> </a> <br /> <br />
+					alt="Cart" /> </a> <br /> <br />
 				<h2>
 
 				<?php echo JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>
@@ -791,6 +823,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					<br /><?php echo JText::_('COM_VIRTUEMART_INSTALL_GO_SHOP') ?>
 				</a>
 				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<?php echo JText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
 			</td>
 		</tr>
 	</table>

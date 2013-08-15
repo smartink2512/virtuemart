@@ -37,7 +37,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		$this->_loggable = TRUE;
 
 		$this->_tableChecked = TRUE;
-
 	}
 
 	public function getVarsToPush () {
@@ -155,7 +154,11 @@ abstract class vmPSPlugin extends vmPlugin {
 		$method_name = $this->_psType . '_name';
 		foreach ($this->methods as $method) {
 			if ($this->checkConditions ($cart, $method, $cart->pricesUnformatted)) {
-				$methodSalesPrice = $this->calculateSalesPrice ($cart, $method, $cart->pricesUnformatted);
+
+				//$methodSalesPrice = $this->calculateSalesPrice ($cart, $method, $cart->pricesUnformatted);
+				/* Because of OPC: the price must not be overwritten directly in the cart */
+				$pricesUnformatted= $cart->pricesUnformatted;
+				$methodSalesPrice = $this->setCartPrices ($cart, $pricesUnformatted,$method);
 				$method->$method_name = $this->renderPluginName ($method);
 				$html [] = $this->getPluginHtml ($method, $selected, $methodSalesPrice);
 			}
@@ -200,6 +203,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 		$paramsName = $this->_psType . '_params';
 		$cart_prices_name = $this->renderPluginName ($method);
+
 		$this->setCartPrices ($cart, $cart_prices, $method);
 
 		return TRUE;
@@ -264,8 +268,13 @@ abstract class vmPSPlugin extends vmPlugin {
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
 			. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
 		$db->setQuery ($q);
+		$err =$db->getErrorMsg ();
 		if (!($pluginInfo = $db->loadObject ())) {
-			vmWarn ('Attention, ' . $this->_tablename . ' has not any entry for the order ' . $db->getErrorMsg ());
+			vmdebug ('Attention, ' . $this->_tablename . ' has not any entry for order_id = '.$virtuemart_order_id);
+			if(!empty($err)){
+				vmWarn ('Attention, ' . $this->_tablename . ' has not any entry for order_id = '.$virtuemart_order_id. ' err = '.$err);
+			}
+
 			return NULL;
 		}
 		$idName = $this->_psType . '_name';
@@ -348,11 +357,11 @@ abstract class vmPSPlugin extends vmPlugin {
 		$html = '<table class="admintable">' . "\n"
 			. '	<thead>' . "\n"
 			. '		<tr>' . "\n"
-			. '			<td class="key" style="text-align: center;" colspan="2">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . $this->_type . '_LBL') . '</td>' . "\n"
+			. '			<td class="key" style="text-align: center;" colspan="2">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . strtoupper($this->_type) . '_LBL') . '</td>' . "\n"
 			. '		</tr>' . "\n"
 			. '	</thead>' . "\n"
 			. '	<tr>' . "\n"
-			. '		<td class="key">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . $this->_type . '_LBL') . ': </td>' . "\n"
+			. '		<td class="key">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . strtoupper($this->_type) . '_LBL') . ': </td>' . "\n"
 			. '		<td align="left">' . $order_name . '</td>' . "\n"
 			. '	</tr>' . "\n";
 
@@ -548,7 +557,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		foreach ($user->shopper_groups as $groups) {
 			$q .= ' s.`virtuemart_shoppergroup_id`= "' . (int)$groups . '" OR';
 		}
-		$q .= ' (s.`virtuemart_shoppergroup_id`) IS NULL ) ORDER BY v.`ordering`';
+		$q .= ' (s.`virtuemart_shoppergroup_id`) IS NULL ) GROUP BY v.`virtuemart_' . $this->_psType . 'method_id` ORDER BY v.`ordering`';
 
 		$db->setQuery ($q);
 
@@ -618,6 +627,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		static $weight = 0.0;
 		if(count($cart->products)>0 and empty($weight)){
 			foreach ($cart->products as $product) {
+				vmdebug('getOrderWeight',$product->product_weight);
 				$weight += (ShopFunctions::convertWeigthUnit ($product->product_weight, $product->product_weight_uom, $to_weight_unit) * $product->quantity);
 			}
 		}
@@ -659,7 +669,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (!isset($values['virtuemart_order_id'])) {
 			$values['virtuemart_order_id'] = VirtueMartModelOrders::getOrderIdByOrderNumber ($values['order_number']);
 		}
-		$this->storePluginInternalData ($values, $primaryKey, 0, $preload);
+		return $this->storePluginInternalData ($values, $primaryKey, 0, $preload);
 	}
 
 	/**
@@ -785,7 +795,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$class = "class='key'";
 		$html = ' 	<thead>' . "\n"
 			. '		<tr>' . "\n"
-			. '			<th ' . $class . ' style="text-align: center;" colspan="2">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . $this->_psType . '_LBL') . '</th>' . "\n"
+			. '			<th ' . $class . ' style="text-align: center;" colspan="2">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . strtoupper($this->_psType) . '_LBL') . '</th>' . "\n"
 			. '		</tr>' . "\n"
 			. '	</thead>' . "\n";
 
@@ -802,9 +812,12 @@ abstract class vmPSPlugin extends vmPlugin {
 		$key_text = '';
 		$complete_key = strtoupper ($this->_type . '_' . $key);
 		// vmdebug('getHtmlRow',$key,$complete_key);
-		//if ($lang->hasKey($complete_key)) {
-		$key_text = JText::_ ($complete_key);
-		//}
+		// vmdebug('getHtmlRow',$key,$complete_key);
+		if ($lang->hasKey($complete_key)) {
+			$key_text = JText::_ ($complete_key);
+		} else {
+			$key_text = JText::_ ($key);
+		}
 		$more_key = $complete_key . '_' . $value;
 		if ($lang->hasKey ($more_key)) {
 			$value .= " (" . JText::_ ($more_key) . ")";
@@ -927,36 +940,57 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
 
+
 		if (!class_exists ('calculationHelper')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 		}
 
 		$calculator = calculationHelper::getInstance ();
-
 		$value = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart_prices), 'salesPrice');
-
 		$_psType = ucfirst ($this->_psType);
 		$cart_prices[$this->_psType . 'Value'] = $value;
 
 		$taxrules = array();
-		if (!empty($method->tax_id)) {
+		if(isset($method->tax_id) and (int)$method->tax_id === -1){
+
+		} else if (!empty($method->tax_id)) {
 			$cart_prices[$this->_psType . '_calc_id'] = $method->tax_id;
 
 			$db = JFactory::getDBO ();
 			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $method->tax_id . '" ';
 			$db->setQuery ($q);
 			$taxrules = $db->loadAssocList ();
-		}
+		} else {
+			//This construction makes trouble, if there are products with different vats in the cart
+			//on the other side, it is very unlikely to have different vats in the cart and simultan it is not possible to use a fixed tax rule for the shipment
+			if(!empty($calculator->_cartData['VatTax']) and count ($calculator->_cartData['VatTax']) == 1){
+				$taxrules = $calculator->_cartData['VatTax'];
+				foreach($taxrules as &$rule){
+					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
+				}
 
+			} else {
+				$taxrules = $calculator->_cartData['taxRulesBill'];
+				foreach($taxrules as &$rule){
+					unset($rule['subTotal']);
+				}
+			}
+		}
+		
 		if (count ($taxrules) > 0) {
-			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value']), 'salesPrice');
+
+			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value'],false,false), 'salesPrice');
 			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] - $cart_prices[$this->_psType . 'Value']), 'salesPrice');
-			$cart_prices[$this->_psType . '_calc_id'] = $taxrules[0]['virtuemart_calc_id'];
+			reset($taxrules);
+			$taxrule =  current($taxrules);
+			$cart_prices[$this->_psType . '_calc_id'] = $taxrule['virtuemart_calc_id'];
+
 		} else {
 			$cart_prices['salesPrice' . $_psType] = $value;
 			$cart_prices[$this->_psType . 'Tax'] = 0;
 			$cart_prices[$this->_psType . '_calc_id'] = 0;
 		}
+		return $cart_prices['salesPrice' . $_psType];
 	}
 
 	/**
@@ -969,44 +1003,9 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	protected function calculateSalesPrice ($cart, $method, $cart_prices) {
 
-		$value = $this->getCosts ($cart, $method, $cart_prices);
-
-		$tax_id = @$method->tax_id;
-
-		if (!class_exists ('calculationHelper')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-		}
-		if (!class_exists ('CurrencyDisplay')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-		}
-		if (!class_exists ('VirtueMartModelVendor')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-		}
-
-		$vendor_id = 1;
-		$vendor_currency = VirtueMartModelVendor::getVendorCurrency ($vendor_id);
-
-		$db = JFactory::getDBO ();
-		$calculator = calculationHelper::getInstance ();
-		$currency = CurrencyDisplay::getInstance ();
-
-		$value = $currency->convertCurrencyTo ($vendor_currency->virtuemart_currency_id, $value);
-
-		$taxrules = array();
-		if (!empty($tax_id)) {
-			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $tax_id . '" ';
-			$db->setQuery ($q);
-			$taxrules = $db->loadAssocList ();
-		}
-
-		if (count ($taxrules) > 0) {
-			$salesPrice = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $value));
-		} else {
-			$salesPrice = $value;
-		}
-
-		return $salesPrice;
+		return $this -> setCartPrices($cart,$cart_prices,$method);
 	}
+
 
 	/**
 	 * logPaymentInfo
@@ -1054,7 +1053,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			// error while processing the payment
 			$mainframe = JFactory::getApplication ();
 			$mainframe->enqueueMessage ($html);
-			$mainframe->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=cart'), JText::_ ('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
+			$mainframe->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=cart',FALSE), JText::_ ('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 		}
 	}
 

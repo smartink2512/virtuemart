@@ -33,7 +33,7 @@ class TableCalc_shoppergroups extends VmTableXarray {
 
 	/**
 	 * @author Max Milbers
-	 * @param $db A database connector object
+	 * @param JDataBase $db
 	 */
 	function __construct(&$db){
 		parent::__construct('#__virtuemart_calc_shoppergroups', 'id', $db);

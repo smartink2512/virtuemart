@@ -31,12 +31,12 @@ INSERT IGNORE INTO `#__virtuemart_calc_shoppergroups` (`id`, `virtuemart_calc_id
 -- Dumping data for table `#__virtuemart_categories`
 --
 
-INSERT INTO `#__virtuemart_categories` (`virtuemart_category_id`, `virtuemart_vendor_id`,`published`, `created_on`, `modified_on`, `category_template`, `category_layout`, `category_product_layout`, `products_per_row`, `ordering`, `limit_list_start`, `limit_list_step`, `limit_list_max`, `limit_list_initial`, `metarobot`, `metaauthor`) VALUES
-(1, 1, 1, NULL, NULL, '0', 'default', 'default', 3, 1, 0, 10, 0, 10, '', ''),
-(2, 1, 1, NULL, NULL, '', '', '', 4, 2, NULL, NULL, NULL, NULL, '', ''),
-(3, 1, 1, NULL, NULL, '', '', '', 2, 3, NULL, NULL, NULL, NULL, '', ''),
-(4, 1, 1, NULL, NULL, '', '', '', 1, 4, NULL, NULL, NULL, NULL, '', ''),
-(5, 1, 1, NULL, NULL, '', '', '', 1, 5, NULL, NULL, NULL, NULL, '', '');
+INSERT INTO `#__virtuemart_categories` (`virtuemart_category_id`, `virtuemart_vendor_id`,`published`, `created_on`, `modified_on`, `category_template`, `category_layout`, `category_product_layout`, `products_per_row`, `ordering`, `limit_list_step`, `limit_list_initial`, `metarobot`, `metaauthor`) VALUES
+(1, 1, 1, NULL, NULL, '0', 'default', 'default', 3, 1, 0, 10, '', ''),
+(2, 1, 1, NULL, NULL, '', '', '', 4, 2, NULL, NULL, '', ''),
+(3, 1, 1, NULL, NULL, '', '', '', 2, 3, NULL, NULL, '', ''),
+(4, 1, 1, NULL, NULL, '', '', '', 1, 4, NULL, NULL, '', ''),
+(5, 1, 1, NULL, NULL, '', '', '', 1, 5, NULL, NULL, '', '');
 
 INSERT INTO `#__virtuemart_categories_XLANG` (`virtuemart_category_id`, `category_name`, `category_description`, `metadesc`, `metakey`, `slug`) VALUES
 (1, 'Hand Tools', 'Hand Tools', '', '', 'handtools'),
@@ -70,27 +70,27 @@ INSERT IGNORE INTO `#__virtuemart_category_medias` (`id`,`virtuemart_category_id
 --
 -- Dumping data for table `#__virtuemart_customs`
 --
-INSERT INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`, `virtuemart_vendor_id`, `custom_jplugin_id`, `custom_element`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `layout_pos`, `custom_params`, `shared`, `published`, `created_on`, `created_by`, `ordering`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-(3, 11, 1, 0, '0', 0, 'Handle length (cm)', '', '100', '', 'I', 0, 0, 0, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 10:14:35', 627, '0000-00-00 00:00:00', 0),
-(4, 11, 1, 0, '0', 0, 'Replaceable Head', '', '0', '', 'B', 0, 0, 0, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 10:14:41', 627, '0000-00-00 00:00:00', 0),
-(7, 0, 1, 0, '', 0, 'Photo', 'Give a media ID as defaut', '1', 'Add a photo', 'M', 0, 0, 0, NULL, NULL, 0, 1, '0000-00-00 00:00:00', 0, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(9, 0, 1, 0, '0', 0, 'Chain size', 'Select the chain size', '30', '(cm)', 'V', 0, 0, 1, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 10:21:07', 627, '0000-00-00 00:00:00', 0),
-(11, 0, 1, 0, '0', 0, 'Hammer Specifications', '', '', '', 'P', 0, 0, 0, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 10:12:15', 627, '0000-00-00 00:00:00', 0),
-(12, 11, 1, 0, '0', 0, 'Manufacturer Warranty', '', 'Lifetime against manufacturers defect', '', 'S', 0, 0, 0, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 10:13:48', 627, '0000-00-00 00:00:00', 0),
-(13, 0, 1, 0, '', 0, 'Color', '', 'Choose a color', 'Be important on your construction site, buy a red one', 'S', 0, 0, 1, NULL, NULL, 0, 1, '0000-00-00 00:00:00', 0, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(17, 0, 1, 0, '0', 0, 'Diameter', 'Select the Diameter', '', '', 'V', 0, 0, 1, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 12:26:20', 627, '0000-00-00 00:00:00', 0),
-(15, 0, 1, 0, '0', 0, 'Select the Hand Shovel type', '', '', '', 'A', 0, 0, 0, 'ontop', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 10:45:53', 627, '0000-00-00 00:00:00', 0),
-(16, 11, 1, 0, '0', 0, 'Handle color', '', 'Blue;Pink;Gold;Platine', '', 'S', 1, 0, 0, '', '0', 0, 1, '2012-10-26 10:16:24', 627, 0, '2012-10-26 10:16:24', 627, '0000-00-00 00:00:00', 0),
-(18, 0, 1, 0, '0', 0, 'Ladder Specifications', '', '', '', 'P', 0, 0, 0, '', '0', 0, 1, '2012-10-26 12:27:52', 627, 0, '2012-10-26 12:27:52', 627, '0000-00-00 00:00:00', 0),
-(19, 18, 1, 0, '0', 0, 'Height', '', '2,60', '', 'I', 0, 0, 0, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 12:38:57', 627, '0000-00-00 00:00:00', 0),
-(20, 18, 1, 0, '0', 0, 'Type of ladder', '', 'Extensible', '', 'S', 0, 0, 0, '', '0', 0, 1, '0000-00-00 00:00:00', 0, 0, '2012-10-26 12:29:48', 627, '0000-00-00 00:00:00', 0)
+INSERT INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`, `virtuemart_vendor_id`,`admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `is_input`, `layout_pos`, `custom_param`, `shared`, `published`, `ordering`) VALUES
+(3, 11, 1, 0, 'Handle length (cm)', '', '100', '', 'S', 0, 0, 0, 0, '', '', 0, 1, 0),
+(4, 11, 1, 0, 'Replaceable Head', '', '0', '', 'S', 0, 0, 0, 0, '', '', 0, 1, 0),
+(7, 0, 1, 0, 'Photo', 'Give a media ID as default', '1', 'Add a photo', 'M', 0, 0, 0, 0, '', '', 0, 1, 0),
+(9, 0, 1, 0, 'Chain size', 'Select the chain size', '30', '(cm)', 'V', 0, 0, 1, 1, '', '', 0, 1, 0),
+(11, 0, 1, 0, 'Hammer Specifications', '', '', '', 'G', 0, 0, 0, 0, '', '', 0, 1, 0),
+(12, 11, 1, 0, 'Manufacturer Warranty', '', 'Lifetime against manufacturers defect', '', 'S', 0, 0, 0, 0, '', '', 0, 1, 0),
+(13, 0, 1, 0, 'Color', '', 'Choose a color', 'Be important on your construction site, buy a red one', 'S', 0, 0, 1, 1,'addtocart', '', 0, 1, 0),
+(17, 0, 1, 0, 'Diameter', 'Select the Diameter', '', '', 'S', 0, 0, 1, 1, 'addtocart', '0', 0, 1, 0),
+(15, 0, 1, 0, 'Select the Hand Shovel type', '', '', '', 'A', 0, 0, 0, 0, 'ontop', '0', 0, 1, 0),
+(16, 11, 1, 0, 'Handle color', '', 'Blue;Pink;Gold;Platine', '', 'S', 1, 0, 1, 0, '', '0', 0, 1, 0),
+(18, 0, 1, 0, 'Ladder Specifications', '', '', '', 'G', 0, 0, 0, 0, '', '0', 0, 1, 0),
+(19, 18, 1, 0, 'Height', '', '2,60', '', 'S', 0, 0, 0, 0,'', '0', 0, 1, 0),
+(20, 18, 1, 0, 'Type of ladder', '', 'Extensible', '', 'S', 0, 0, 0, 0, '', '0', 0, 1, 0)
 ;
 
 --
 -- Dumping data for table  `#__virtuemart_product_customfields`
 --
 
-INSERT INTO `#__virtuemart_product_customfields` (`virtuemart_customfield_id`, `virtuemart_product_id`, `virtuemart_custom_id`, `custom_value`, `custom_price`, `custom_param`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`, `ordering`) VALUES
+INSERT INTO `#__virtuemart_product_customfields` (`virtuemart_customfield_id`, `virtuemart_product_id`, `virtuemart_custom_id`, `customfield_value`, `customfield_price`, `customfield_param`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`, `ordering`) VALUES
 (24, 5, 2, '5', NULL, '', 0, '0000-00-00 00:00:00', 0, '2012-10-26 10:25:23', 627, '0000-00-00 00:00:00', 0, 0),
 (22, 5, 1, '7', NULL, '', 0, '0000-00-00 00:00:00', 0, '2012-10-26 10:25:23', 627, '0000-00-00 00:00:00', 0, 0),
 (23, 5, 2, '2', NULL, '', 0, '0000-00-00 00:00:00', 0, '2012-10-26 10:25:23', 627, '0000-00-00 00:00:00', 0, 0),
@@ -148,22 +148,22 @@ INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`,`virtuemart_manufac
 -- Dumping data for table `#__virtuemart_medias`
 --
 INSERT INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_vendor_id`, `file_title`, `file_description`, `file_meta`, `file_mimetype`, `file_type`, `file_url`, `file_url_thumb`, `file_is_product_image`, `file_is_downloadable`, `file_is_forSale`, `file_params`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-(1, 1, 'hand_saw.jpg', '', 'hand saw', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hand_saw.jpg', 'images/stories/virtuemart/product/resized/hand_saw_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '2012-10-26 10:25:23', 627, '0000-00-00 00:00:00', 0),
-(2, 1, 'hand_shovel.jpg', '', 'hand shovel', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hand_shovel.jpg', 'images/stories/virtuemart/product/resized/hand_shovel_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '2012-10-26 10:42:44', 627, '0000-00-00 00:00:00', 0),
-(3, 1, 'ladder.jpg', '', 'ladder', 'image/jpeg', 'product', 'images/stories/virtuemart/product/ladder.jpg', 'images/stories/virtuemart/product/resized/ladder_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(4, 1, 'power_drill.jpg', '', 'power drill', 'image/jpeg', 'product', 'images/stories/virtuemart/product/power_drill.jpg', 'images/stories/virtuemart/product/resized/power_drill_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(5, 1, 'power_sander.jpg', '', 'power sander', 'image/jpeg', 'product', 'images/stories/virtuemart/product/power_sander.jpg', 'images/stories/virtuemart/product/resized/power_sander_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(6, 1, 'shovel.jpg', '', 'shovel', 'image/jpeg', 'product', 'images/stories/virtuemart/product/shovel.jpg', 'images/stories/virtuemart/product/resized/shovel_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(7, 1, 'garden_tools.jpg', '', 'garden tools', 'image/jpeg', 'category', 'images/stories/virtuemart/category/garden_tools.jpg', 'images/stories/virtuemart/category/resized/garden_tools_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(8, 1, 'hand_tools.jpg', '', 'hand tools', 'image/jpeg', 'category', 'images/stories/virtuemart/category/hand_tools.jpg', 'images/stories/virtuemart/category/resized/hand_tools_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(9, 1, 'power_indoor_tool.jpg', '', 'power indoor tool', 'image/jpeg', 'category', 'images/stories/virtuemart/category/power_indoor_tool.jpg', 'images/stories/virtuemart/category/resized/power_indoor_tool_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(10, 1, 'Power_outdoor_tool.jpg', '', 'Power outdoor tool', 'image/jpeg', 'category', 'images/stories/virtuemart/category/Power_outdoor_tool.jpg', 'images/stories/virtuemart/category/resized/Power_outdoor_tool_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(11, 1, 'power_tools.jpg', '', 'power tools', 'image/jpeg', 'category', 'images/stories/virtuemart/category/power_tools.jpg', 'images/stories/virtuemart/category/resized/power_tools_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '2012-10-26 10:24:06', 627, '0000-00-00 00:00:00', 0),
-(12, 1, 'manufacturersample.jpg', '', 'manufacturer sample', 'image/jpeg', 'manufacturer', 'images/stories/virtuemart/manufacturer/manufacturersample.jpg', 'images/stories/virtuemart/manufacturer/resized/manufacturersample_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(13, 1, 'washupito.gif', '', 'washupito', 'image/gif', 'vendor', 'images/stories/virtuemart/vendor/washupito.gif', 'images/stories/virtuemart/vendor/resized/washupito_90x90.gif', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(14, 1, 'hammer.jpg', '', 'hammer', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hammer.jpg', 'images/stories/virtuemart/product/resized/hammer_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '2012-10-26 10:16:59', 627, '0000-00-00 00:00:00', 0),
-(15, 1, 'chain_saw.jpg', '', 'chain saw', 'image/jpeg', 'product', 'images/stories/virtuemart/product/chain_saw.jpg', 'images/stories/virtuemart/product/resized/chain_saw_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '2012-10-26 10:19:12', 627, '0000-00-00 00:00:00', 0),
-(16, 1, 'circular_saw.jpg', '', 'circular saw', 'image/jpeg', 'product', 'images/stories/virtuemart/product/circular_saw.jpg', 'images/stories/virtuemart/product/resized/circular_saw_90x90.jpg', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0);
+(1, 1, 'hand_saw.jpg', '', 'hand saw', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hand_saw.jpg', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '2012-10-26 10:25:23', 627, '0000-00-00 00:00:00', 0),
+(2, 1, 'hand_shovel.jpg', '', 'hand shovel', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hand_shovel.jpg', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '2012-10-26 10:42:44', 627, '0000-00-00 00:00:00', 0),
+(3, 1, 'ladder.jpg', '', 'ladder', 'image/jpeg', 'product', 'images/stories/virtuemart/product/ladder.jpg', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(4, 1, 'power_drill.jpg', '', 'power drill', 'image/jpeg', 'product', 'images/stories/virtuemart/product/power_drill.jpg', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(5, 1, 'power_sander.jpg', '', 'power sander', 'image/jpeg', 'product', 'images/stories/virtuemart/product/power_sander.jpg', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(6, 1, 'shovel.jpg', '', 'shovel', 'image/jpeg', 'product', 'images/stories/virtuemart/product/shovel.jpg', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(7, 1, 'garden_tools.jpg', '', 'garden tools', 'image/jpeg', 'category', 'images/stories/virtuemart/category/garden_tools.jpg', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(8, 1, 'hand_tools.jpg', '', 'hand tools', 'image/jpeg', 'category', 'images/stories/virtuemart/category/hand_tools.jpg', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(9, 1, 'power_indoor_tool.jpg', '', 'power indoor tool', 'image/jpeg', 'category', 'images/stories/virtuemart/category/power_indoor_tool.jpg', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(10, 1, 'power_outdoor_tool.jpg', '', 'Power outdoor tool', 'image/jpeg', 'category', 'images/stories/virtuemart/category/power_outdoor_tool.jpg', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(11, 1, 'power_tools.jpg', '', 'power tools', 'image/jpeg', 'category', 'images/stories/virtuemart/category/power_tools.jpg', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '2012-10-26 10:24:06', 627, '0000-00-00 00:00:00', 0),
+(12, 1, 'manufacturersample.jpg', '', 'manufacturer sample', 'image/jpeg', 'manufacturer', 'images/stories/virtuemart/manufacturer/manufacturersample.jpg', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(13, 1, 'washupito.gif', '', 'washupito', 'image/gif', 'vendor', 'images/stories/virtuemart/vendor/washupito.gif', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
+(14, 1, 'hammer.jpg', '', 'hammer', 'image/jpeg', 'product', 'images/stories/virtuemart/product/hammer.jpg', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '2012-10-26 10:16:59', 627, '0000-00-00 00:00:00', 0),
+(15, 1, 'chain_saw.jpg', '', 'chain saw', 'image/jpeg', 'product', 'images/stories/virtuemart/product/chain_saw.jpg', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '2012-10-26 10:19:12', 627, '0000-00-00 00:00:00', 0),
+(16, 1, 'circular_saw.jpg', '', 'circular saw', 'image/jpeg', 'product', 'images/stories/virtuemart/product/circular_saw.jpg', '', 0, 0, 0, '', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0);
 
 
 
@@ -182,9 +182,9 @@ INSERT INTO `#__virtuemart_products` (`virtuemart_product_id`, `virtuemart_vendo
 (11, 1, 1, 'G01-01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0.0000, 'min_order_level=null|max_order_level=null|product_box=null|', 0, '', '', '', '', 1, '2012-10-22 10:36:01', 0, '2012-10-28 17:55:17', 627, '0000-00-00 00:00:00', 0),
 (12, 1, 1, 'G01-02', 10.0000, '', 0.0000, 0.0000, 0.0000, '', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0.0000, 'min_order_level=null|max_order_level=null|product_box=null|', 0, '', '', '', '', 1, '2012-10-26 09:36:01', 0, '2012-10-28 17:55:17', 627, '0000-00-00 00:00:00', 0),
 (13, 1, 1, 'G01-03', 10.0000, '', 0.0000, 0.0000, 0.0000, '', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0.0000, 'min_order_level=null|max_order_level=null|product_box=null|', 0, '', '', '', '', 1, '2012-10-25 10:36:01', 0, '2012-10-28 17:55:17', 627, '0000-00-00 00:00:00', 0),
-(14, 1, 2, 'L01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 22, 0, 5, '2011-12-21 00:00:00', '', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 0, '2012-10-25 10:36:01', 0, '2012-10-28 17:52:31', 627, '0000-00-00 00:00:00', 0),
-(15, 1, 2, 'L02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 0, '2012-10-25 10:36:01', 0, '2012-10-28 17:52:31', 627, '0000-00-00 00:00:00', 0),
-(16, 1, 2, 'L03', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0.0000, 'min_order_level=null|max_order_level=null|product_box=null|', 0, '', '', '', '', 0, '2012-10-25 10:36:01', 0, '2012-10-28 17:52:31', 627, '0000-00-00 00:00:00', 0);
+(14, 1, 2, 'L01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 22, 0, 5, '2011-12-21 00:00:00', '', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-25 10:36:01', 0, '2012-10-28 17:52:31', 627, '0000-00-00 00:00:00', 0),
+(15, 1, 2, 'L02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, 'KG', 0.0000, 'min_order_level=""|max_order_level=""|product_box=""|', 0, '', '', '', '0', 1, '2012-10-25 10:36:01', 0, '2012-10-28 17:52:31', 627, '0000-00-00 00:00:00', 0),
+(16, 1, 2, 'L03', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0.0000, 'min_order_level=null|max_order_level=null|product_box=null|', 0, '', '', '', '', 1, '2012-10-25 10:36:01', 0, '2012-10-28 17:52:31', 627, '0000-00-00 00:00:00', 0);
 
 
 INSERT INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`,`product_name`, `product_s_desc`, `product_desc`,  `metadesc`, `metakey`, `customtitle`, `slug`) VALUES
@@ -311,3 +311,4 @@ INSERT INTO `#__virtuemart_rating_reviews` (`virtuemart_rating_review_id`, `virt
 
 INSERT INTO `#__virtuemart_rating_votes` (`virtuemart_rating_vote_id`, `virtuemart_product_id`, `vote`, `lastip`, `created_on`, `created_by`, `modified_on`, `modified_by`) VALUES
 (1, 7, 5, '::1', '2012-10-26 10:28:32', 627, '2012-10-26 10:29:16', 627);
+

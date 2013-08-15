@@ -32,52 +32,7 @@ class TableUserfields extends VmTable {
 
 // 	/** @var var Primary Key*/
 	var $virtuemart_userfield_id		= 0;
-// 	/** @var string Internal fielname*/
-// 	var $name			= null;
-// 	/** @var string Visible title*/
-// 	var $title			= null;
-// 	/** @var string Description*/
-// 	var $description	= null;
-// 	/** @var string Input type*/
-// 	var $type			= null;
-// 	/** @var int Max size of string inputs*/
-// 	var $maxlength		= 0;
-// 	/** @var int Fieldsize*/
-// 	var $size			= 0;
-// 	/** @var boolean True if required*/
-// 	var $required		= 0;
-// 	/** @var int Field ordering*/
-// 	var $ordering		= 0;
-// 	/** @var int Nr of columns for textarea*/
-// 	var $cols			= 0;
-// 	/** @var int Nr of rows for textarea*/
-// 	var $rows			= 0;
-// 	/** @var string */
-// 	var $value			= null;
-// 	/** @var int */
-// 	var $default		= 0;
-// 	/** @var boolean True if publised*/
-// 	var $published		= 1;
-// 	/** @var boolean True to display in registration form*/
-// 	var $registration	= 0;
-// 	/** @var boolean True to display in shipment form*/
-// 	var $shipment		= 0;
-// 	/** @var boolean True to display in account maintenance*/
-// 	var $account		= 1;
-// 	/** @var boolean True if readonly*/
-// 	var $readonly		= 0;
-// 	/** @var boolean */
-// 	var $calculated		= 0;
-// 	/** @var boolean True if part of the VirtueMart installation; False for User specified*/
-// 	var $sys			= 0;
-// 	/** @var int The Vendor ID, if vendor specific*/
-// 	var $virtuemart_vendor_id		= 0;
-// 	/** @var mediumtex Additional type-specific parameters */
-// 	var $params			= null;
-//              /** @var boolean */
-//	var $locked_on	= 0;
-//	/** @var time */
-//	var $locked_by	= 0;
+
 	/**
 	 * @param $db Class constructor; connect to the database
 	 */
@@ -106,14 +61,14 @@ class TableUserfields extends VmTable {
 			vmError(JText::_('COM_VIRTUEMART_NAME_OF_USERFIELD_CONTAINS_INVALID_CHARACTERS'));
 			return false;
 		}
-
 		if($this->name !='virtuemart_country_id' and $this->name !='virtuemart_state_id'){
 			$reqValues = array('select', 'multiselect', 'radio', 'multicheckbox');
-			if (in_array($this->type, $reqValues) && $nrOfValues == 0) {
+			if (in_array($this->type, $reqValues) and $nrOfValues == 0 ) {
 				vmError(JText::_('COM_VIRTUEMART_VALUES_ARE_REQUIRED_FOR_THIS_TYPE'));
 				return false;
 			}
 		}
+
 
 		return parent::check();
 	}
@@ -165,7 +120,54 @@ class TableUserfields extends VmTable {
 			return $this->virtuemart_userfield_id;
 		}
 	}
+	
+	function checkAndDelete($table,$where = 0){
+		$ok = 1;
+		$k = $this->_tbl_key;
 
+		if($where!==0){
+			$whereKey = $where;
+		} else {
+			$whereKey = $this->_pkey;
+		}
+		
+		$query = 'SELECT `'.$this->_tbl_key.'` FROM `'.$table.'` WHERE '.$whereKey.' = "' .$this->$k . '"';
+		
+		// stAn - it should be better to add this directly to the controller of the shopper fields
+		// only additionally, controllers are not considered as safe.
+		if (isset($this->name))
+		 {
+		    
+			$umodel = VmModel::getModel('userfields'); 
+			$arr = $umodel->getCoreFields(); 
+			
+			if (in_array($this->name, $arr))
+			 {
+			  vmError('Cannot delete core field!'); 
+			  return false; 
+			 }
+		 }
+
+		$this->_db->setQuery( $query );
+		$list = $this->_db->loadResultArray();
+
+		if($list){
+
+			foreach($list as $row){
+				$ok = $row;
+				$query = 'DELETE FROM `'.$table.'` WHERE '.$this->_tbl_key.' = "'.$row.'"';
+				$this->_db->setQuery( $query );
+
+				if (!$this->_db->query()){
+					$this->setError($this->_db->getErrorMsg());
+					vmError('checkAndDelete '.$this->_db->getErrorMsg());
+					$ok = 0;
+				}
+			}
+
+		}
+		return $ok;
+	}
 }
 
 //No CLosing Tag

@@ -21,10 +21,8 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
 if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
+if (!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 
-// Set to '0' to use tabs i.s.o. sliders
-// Might be a config option later on, now just here for testing.
-define ('__VM_ORDER_USE_SLIDERS', 0);
 
 /**
  * Handle the orders view
@@ -36,6 +34,8 @@ class VirtuemartViewInvoice extends VmView {
 	var $uselayout	= '';
 	var $orderDetails = 0;
 	var $invoiceNumber =0;
+	var $doctype = 'invoice';
+	var $showHeaderFooter = true;
 
 	public function display($tpl = null)
 	{
@@ -47,12 +47,27 @@ class VirtuemartViewInvoice extends VmView {
 		} else {
 			$layout = $this->uselayout;
 		}
-		if($layout == 'mail'){
-			if (VmConfig::get('order_mail_html')) {
-				$layout = 'mail_html';
-			} else {
-				$layout = 'mail_raw';
-			}
+		switch ($layout) {
+			case 'invoice':
+				$this->doctype = $layout;
+				$title = JText::_('COM_VIRTUEMART_INVOICE');
+				break;
+			case 'deliverynote':
+				$this->doctype = $layout;
+				$layout = 'invoice';
+				$title = JText::_('COM_VIRTUEMART_DELIVERYNOTE');
+				break;
+			case 'confirmation':
+				$this->doctype = $layout;
+				$layout = 'confirmation';
+				$title = JText::_('COM_VIRTUEMART_CONFIRMATION');
+				break;
+			case 'mail':
+				if (VmConfig::get('order_mail_html')) {
+					$layout = 'mail_html';
+				} else {
+					$layout = 'mail_raw';
+				}
 		}
 		$this->setLayout($layout);
 
@@ -80,38 +95,13 @@ class VirtuemartViewInvoice extends VmView {
 
 		if($orderDetails==0){
 
-			// If the user is not logged in, we will check the order number and order pass
-			if ($orderPass = JRequest::getString('order_pass',false) and $orderNumber = JRequest::getString('order_number',false)){
-				$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
-				if(empty($orderId)){
-					echo 'Invalid order_number/password '.JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-					return 0;
-				}
-				$orderDetails = $orderModel->getOrder($orderId);
+			$orderDetails = $orderModel ->getMyOrderDetails();
+
+			if(!$orderDetails or empty($orderDetails['details'])){
+				echo JText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
+				return;
 			}
 
-			if($orderDetails==0){
-
-				$_currentUser = JFactory::getUser();
-				$cuid = $_currentUser->get('id');
-
-				// If the user is logged in, we will check if the order belongs to him
-				$virtuemart_order_id = JRequest::getInt('virtuemart_order_id',0) ;
-				if (!$virtuemart_order_id) {
-					$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber(JRequest::getString('order_number'));
-				}
-				$orderDetails = $orderModel->getOrder($virtuemart_order_id);
-
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-				if(!Permissions::getInstance()->check("admin")) {
-					if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
-						if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
-							echo 'view '.JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-							return ;
-						}
-					}
-				}
-			}
 
 		}
 
@@ -231,18 +221,12 @@ class VirtuemartViewInvoice extends VmView {
 		$this->assignRef('vendor', $vendor);
 
 // 		vmdebug('vendor', $vendor);
-		$task = JRequest::getWord('task',0);
-		if($task == 'checkStoreInvoice'){
-			$headFooter = false;
-		} else {
-			$headFooter = true;
-		}
 		if (strpos($layout,'mail') !== false) {
 			$lineSeparator="<br />";
 		} else {
 			$lineSeparator="\n";
 		}
-		$this->assignRef('headFooter', $headFooter);
+		$this->assignRef('headFooter', $this->showHeaderFooter);
 
 		//Attention, this function will be removed, it wont be deleted, but it is obsoloete in any view.html.php
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
@@ -259,10 +243,10 @@ class VirtuemartViewInvoice extends VmView {
 		if (strpos($layout,'mail') !== false) {
 		    if ($this->doVendor) {
 		    	 //Old text key COM_VIRTUEMART_MAIL_SUBJ_VENDOR_C
-			    $this->subject = JText::sprintf('COM_VIRTUEMART_MAIL_SUBJ_VENDOR_'.$orderDetails['details']['BT']->order_status, $this->shopperName, strip_tags($currency->priceDisplay($orderDetails['details']['BT']->order_total)), $orderDetails['details']['BT']->order_number);
+			    $this->subject = JText::sprintf('COM_VIRTUEMART_MAIL_SUBJ_VENDOR_'.$orderDetails['details']['BT']->order_status, $this->shopperName, strip_tags($currency->priceDisplay($orderDetails['details']['BT']->order_total, $currency)), $orderDetails['details']['BT']->order_number);
 			    $recipient = 'vendor';
 		    } else {
-			    $this->subject = JText::sprintf('COM_VIRTUEMART_MAIL_SUBJ_SHOPPER_'.$orderDetails['details']['BT']->order_status, $vendor->vendor_store_name, strip_tags($currency->priceDisplay($orderDetails['details']['BT']->order_total)), $orderDetails['details']['BT']->order_number );
+			    $this->subject = JText::sprintf('COM_VIRTUEMART_MAIL_SUBJ_SHOPPER_'.$orderDetails['details']['BT']->order_status, $vendor->vendor_store_name, strip_tags($currency->priceDisplay($orderDetails['details']['BT']->order_total, $currency)), $orderDetails['details']['BT']->order_number );
 			    $recipient = 'shopper';
 		    }
 		    $this->assignRef('recipient', $recipient);
@@ -291,6 +275,31 @@ class VirtuemartViewInvoice extends VmView {
 		$this->uselayout = 'mail';
 		$this->display();
 
+	}
+	
+	static function replaceVendorFields ($txt, $vendor) {
+		// TODO: Implement more Placeholders (ordernr, invoicenr, etc.); 
+		// REMEMBER TO CHANGE VmVendorPDF::replace_variables IN vmpdf.php, TOO!!!
+		// Page nrs. for mails is always "1"
+		$txt = str_replace('{vm:pagenum}', "1", $txt);
+		$txt = str_replace('{vm:pagecount}', "1", $txt);
+		$txt = str_replace('{vm:vendorname}', $vendor->vendor_store_name, $txt);
+		$imgrepl='';
+		if (!empty($vendor->images)) {
+			$img = $vendor->images[0];
+			$imgrepl = "<div class=\"vendor-image\">".$img->displayIt($img->file_url,'','',false, '', false, false)."</div>";
+		}
+		$txt = str_replace('{vm:vendorimage}', $imgrepl, $txt);
+		$vendorAddress = shopFunctions::renderVendorAddress($vendor->virtuemart_vendor_id, "<br/>");
+		// Trim the final <br/> from the address, which is inserted by renderVendorAddress automatically!
+		if (substr($vendorAddress, -5, 5) == '<br/>') {
+			$vendorAddress = substr($vendorAddress, 0, -5);
+		}
+		$txt = str_replace('{vm:vendoraddress}', $vendorAddress, $txt);
+		$txt = str_replace('{vm:vendorlegalinfo}', $vendor->vendor_legal_info, $txt);
+		$txt = str_replace('{vm:vendordescription}', $vendor->vendor_store_desc, $txt);
+		$txt = str_replace('{vm:tos}', $vendor->vendor_terms_of_service, $txt);
+		return "$txt";
 	}
 
 

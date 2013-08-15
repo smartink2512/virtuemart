@@ -35,7 +35,7 @@ class VirtueMartControllerUser extends JController
 		parent::__construct();
 		$this->useSSL = VmConfig::get('useSSL',0);
 		$this->useXHTML = true;
-
+		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 	}
 
 
@@ -106,7 +106,7 @@ class VirtueMartControllerUser extends JController
 	 */
 	function saveCheckoutUser(){
 
-		$msg = $this->saveData(true);
+		$msg = $this->saveData(true,VmConfig::get('reg_silent',0));
 
 		//We may add here the option for silent registration.
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout',$this->useXHTML,$this->useSSL), $msg );
@@ -125,13 +125,13 @@ class VirtueMartControllerUser extends JController
 	 */
 	function saveCartUser(){
 
-		$msg = $this->saveData(true);
-		$this->setRedirect(JRoute::_( 'index.php?option=com_virtuemart&view=cart' ),$msg);
+		$msg = $this->saveData(true,VmConfig::get('reg_silent',0));
+		$this->setRedirect(JRoute::_( 'index.php?option=com_virtuemart&view=cart', FALSE ),$msg);
 	}
 
 	function registerCartuser(){
 		$msg = $this->saveData(true, true);
-		$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart') , $msg);
+		$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE) , $msg);
 	}
 
 
@@ -146,14 +146,14 @@ class VirtueMartControllerUser extends JController
 
 		$msg = $this->saveData(false,true);
 		$layout = JRequest::getWord('layout','edit');
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
 	}
 
 	function saveAddressST(){
 
 		$msg = $this->saveData(false,true,true);
 		$layout = 'edit';// JRequest::getWord('layout','edit');
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
 
 	}
 
@@ -176,7 +176,6 @@ class VirtueMartControllerUser extends JController
 
 		$data['address_type'] = JRequest::getWord('addrtype','BT');
 		if($currentUser->guest!=1 || $register){
-			$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 			$userModel = VmModel::getModel('user');
 
 			if(!$cart){
@@ -188,6 +187,9 @@ class VirtueMartControllerUser extends JController
 				$data['vendor_store_name'] = JRequest::getVar('vendor_store_name','','post','STRING',JREQUEST_ALLOWHTML);
 				$data['vendor_store_desc'] = JRequest::getVar('vendor_store_desc','','post','STRING',JREQUEST_ALLOWHTML);
 				$data['vendor_terms_of_service'] = JRequest::getVar('vendor_terms_of_service','','post','STRING',JREQUEST_ALLOWHTML);
+				$data['vendor_letter_css'] = JRequest::getVar('vendor_letter_css','','post','STRING',JREQUEST_ALLOWHTML);
+				$data['vendor_letter_header_html'] = JRequest::getVar('vendor_letter_header_html','','post','STRING',JREQUEST_ALLOWHTML);
+				$data['vendor_letter_footer_html'] = JRequest::getVar('vendor_letter_footer_html','','post','STRING',JREQUEST_ALLOWHTML);
 			}
 
 			//It should always be stored
@@ -198,15 +200,20 @@ class VirtueMartControllerUser extends JController
 			}
 			if($currentUser->guest==1){
 				$msg = (is_array($ret)) ? $ret['message'] : $ret;
-				$usersConfig = &JComponentHelper::getParams( 'com_users' );
+				$usersConfig = JComponentHelper::getParams( 'com_users' );
 				$useractivation = $usersConfig->get( 'useractivation' );
-				if (is_array($ret) && $ret['success'] && !$useractivation) {
+
+				if (is_array($ret) and $ret['success'] and !$useractivation) {
 					// Username and password must be passed in an array
 					$credentials = array('username' => $ret['user']->username,
 			  					'password' => $ret['user']->password_clear
 					);
 					$return = $mainframe->login($credentials);
+				} else if(VmConfig::get('oncheckout_only_registered',0)){
+					$layout = JRequest::getWord('layout','edit');
+					$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
 				}
+
 			}
 
 		}
@@ -235,7 +242,7 @@ class VirtueMartControllerUser extends JController
 	 */
 	function cancelCartUser(){
 
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart')  );
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE)  );
 	}
 
 	/**
@@ -276,7 +283,7 @@ class VirtueMartControllerUser extends JController
 			$msg = vmInfo('Address has been successfully deleted.');
 		}
 		$layout = JRequest::getWord('layout','edit');
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
 	}
 }
 // No closing tag

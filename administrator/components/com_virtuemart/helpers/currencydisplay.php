@@ -33,8 +33,11 @@ class CurrencyDisplay {
 	private $_thousands 		= ' '; 	// Thousands separator ('', ' ', ',')
 	private $_positivePos	= '{number}{symbol}';	// Currency symbol position with Positive values :
 	private $_negativePos	= '{sign}{number}{symbol}';	// Currency symbol position with Negative values :
+	private $_numeric_code = 0;
 	var $_priceConfig	= array();	//holds arrays of 0 and 1 first is if price should be shown, second is rounding
 	var $exchangeRateShopper = 1.0;
+	var $_vendorCurrency_code_3 = null;
+
 
 	private function __construct ($vendorId = 0){
 
@@ -52,9 +55,10 @@ class CurrencyDisplay {
 		$this->_vendorCurrency_code_3 = $row[1];
 		$this->_vendorCurrency_numeric = (int)$row[2];
 
+		//vmdebug('$row ',$row);
 		$converterFile  = VmConfig::get('currency_converter_module','convertECB.php');
 
-		if (file_exists( JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile )) {
+		if (file_exists( JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile ) and !is_dir(JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile)) {
 			$module_filename=substr($converterFile, 0, -4);
 			require_once(JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile);
 			if( class_exists( $module_filename )) {
@@ -91,6 +95,9 @@ class CurrencyDisplay {
 	 * @return string
 	 */
 	static public function getInstance($currencyId=0,$vendorId=0){
+
+		// 		vmdebug('hmmmmm getInstance given $currencyId '.$currencyId,self::$_instance->_currency_id);
+		// 		if(empty(self::$_instance) || empty(self::$_instance->_currency_id) || ($currencyId!=self::$_instance->_currency_id && !empty($currencyId)) ){
 
 		if(empty(self::$_instance)  || (!empty($currencyId) and $currencyId!=self::$_instance->_currency_id) ){
 
@@ -169,7 +176,8 @@ class CurrencyDisplay {
 	 */
 	function setPriceArray(){
 
-		if(count($this->_priceConfig)==0){
+		if(count($this->_priceConfig)>0)return true;
+
 		if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 
 		$user = JFactory::getUser();
@@ -253,7 +261,7 @@ class CurrencyDisplay {
 				$this->_priceConfig[$name] = array(0,0,0);
 			}
 		}
-		}
+
 		// 		vmdebug('$this->_priceConfig',$this->_priceConfig);
 	}
 
@@ -347,57 +355,23 @@ class CurrencyDisplay {
 	public function createPriceDiv($name,$description,$product_price,$priceOnly=false,$switchSequel=false,$quantity = 1.0,$forceNoLabel=false){
 
 		// 		vmdebug('createPriceDiv '.$name,$product_price[$name]);
-		if(empty($product_price) and $name != 'billTotal')  {
-			vmdebug('createPriceDiv 3rd parameter is empty for price '.$name);
-			return '';
-		}
+		if(empty($product_price) and $name != 'billTotal' and $name != 'billTaxAmount') return '';
 
 		//The fallback, when this price is not configured
-		if(empty($this->_priceConfig[$name]) ){
+		if(empty($this->_priceConfig[$name])){
 			$this->_priceConfig[$name] = $this->_priceConfig['salesPrice'];
 		}
 
-		if(is_object($product_price)){
-			if(isset($product_price->$name)){
-				$price = $product_price->$name;
-			} else{
-				vmdebug('createPriceDiv',$name,$product_price);
-				$price = $product_price;
-			}
-
-		} else {
-			if(is_array($product_price)){
-				if(empty($product_price[$name])) {
-					//vmdebug('createPriceDiv 3rd parameter $product_price['.$name.'] is empty');
-					return '';
-				} else {
-					$price = $product_price[$name] ;
-				}
-			} else {
-				$price = $product_price;
-			}
-		}
 		//This is a fallback because we removed the "salesPriceWithDiscount" ;
-/*		//if(empty($product_price[$name])){
-			//$name = "salesPrice";
-			if(is_array($product_price)){
-				if(empty($product_price[$name])) {
-					//vmdebug('createPriceDiv 3rd parameter $product_price['.$name.'] is empty');
-					return '';
-				} else {
-					$price = $product_price[$name] ;
-				}
-			} else {
-				$price = $product_price;
-			}
-	/*	} else {
+		if(is_array($product_price)){
 			$price = $product_price[$name] ;
-		}*/
+		} else {
+			$price = $product_price;
+		}
 
 		//This could be easily extended by product specific settings
-		if(!empty($this->_priceConfig[$name][0]) or $name == 'billTotal'){
-
-			if(!empty($price)){
+		if(!empty($this->_priceConfig[$name][0])){
+			if(!empty($price) or $name == 'billTotal' or $name == 'billTaxAmount'){
 				$vis = "block";
 				$priceFormatted = $this->priceDisplay($price,0,(float)$quantity,false,$this->_priceConfig[$name][1],$name );
 			} else {
@@ -443,53 +417,31 @@ class CurrencyDisplay {
 			return $price;
 		}
 
-		/*		if($shop){
-			// TODO optimize this... the exchangeRate cant be cached, there are more than one currency possible
-		//			$exchangeRate = &$this->exchangeRateVendor;
-		$exchangeRate = 0;
-		} else {
-		//caches the exchangeRate between shopper and vendor
-		$exchangeRate = &$this->exchangeRateShopper;
-		}
-		*/
-		//		if(empty($exchangeRate)){
 		if(is_Object($currency)){
 			$exchangeRate = (float)$currency->exchangeRateShopper;
 			vmdebug('convertCurrencyTo OBJECT '.$exchangeRate);
 		}
 		else {
-			static $exchangeRateCache = array();
-
-			if(!isset($exchangeRateCache[$currency])){
-				$q = 'SELECT `currency_exchange_rate` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.(int)$currency.'" ';
-				$this->_db->setQuery($q);
-				$exch = (float)$this->_db->loadResult();
-				if(!empty($exch) and $exch !== '0.000000'){
-					$exchangeRate = $exch;
-				} else {
-					$exchangeRate = FALSE;
-				}
-				$exchangeRateCache[$currency] = $exchangeRate;
-			} else {
-				$exchangeRate = $exchangeRateCache[$currency];
-			}
-
+			//				$this->_db = JFactory::getDBO();
+			$q = 'SELECT `currency_exchange_rate` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.(int)$currency.'" ';
+			$this->_db->setQuery($q);
+			$exch = (float)$this->_db->loadResult();
 			// 				vmdebug('begin convertCurrencyTo '.$exch);
-
+			if(!empty($exch)){
+				$exchangeRate = $exch;
+			} else {
+				$exchangeRate = 0;
+			}
 		}
-		//	}
-		$this->exchangeRateShopper = $exchangeRate;
-		// 		vmdebug('convertCurrencyTo my currency ',$exchangeRate,$currency);
-		if(!empty($exchangeRate)){
 
-			vmdebug('convertCurrencyTo Use custom rate ',$exchangeRate);
+		if(!empty($exchangeRate) ){
+
 			if($shop){
 				$price = $price / $exchangeRate;
 			} else {
 				$price = $price * $exchangeRate;
 			}
 
-			// 			vmdebug('!empty($exchangeRate) && $exchangeRate!=FALSE '.$price.' '.$exchangeRate);
 		} else {
 			$currencyCode = self::ensureUsingCurrencyCode($currency);
 			$vendorCurrencyCode = self::ensureUsingCurrencyCode($this->_vendorCurrency);
@@ -517,24 +469,15 @@ class CurrencyDisplay {
 	 */
 	function ensureUsingCurrencyCode($curr){
 
-		static $currencyCache = array();
-
 		if(is_numeric($curr) and $curr!=0){
-			if(!isset($currencyCache[$curr])){
-				$this->_db = JFactory::getDBO();
-				$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.(int)$curr.'"';
-				$this->_db->setQuery($q);
-				$currency_code_3 = $this->_db->loadResult();
-				if(empty($currency_code_3)){
-					JError::raiseWarning(E_WARNING,'Attention, could not find currency code in the table for id = '.(int)$curr);
-				} else {
-					$currencyCache[$curr] = $currency_code_3;
-				}
-			} else {
-				$currency_code_3 = $currencyCache[$curr];
+			$this->_db = JFactory::getDBO();
+			$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.(int)$curr.'"';
+			$this->_db->setQuery($q);
+			$currInt = $this->_db->loadResult();
+			if(empty($currInt)){
+				JError::raiseWarning(E_WARNING,'Attention, could not find currency code in the table for id = '.$curr);
 			}
-
-			return $currency_code_3;
+			return $currInt;
 		}
 		return $curr;
 	}

@@ -51,7 +51,7 @@ if (count($this->orderlist) == 0) {
 	<?php
 		$k = 0;
 		foreach ($this->orderlist as $row) {
-			$editlink = JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number=' . $row->order_number);
+			$editlink = JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number=' . $row->order_number, FALSE);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td align="left">
@@ -67,7 +67,7 @@ if (count($this->orderlist) == 0) {
 					<?php echo ShopFunctions::getOrderStatusName($row->order_status); ?>
 				</td>
 				<td align="left">
-					<?php echo $row->currency->priceDisplay($row->order_total, $row->currency); ?>
+					<?php echo $this->currency->priceDisplay($row->order_total, $row->currency); ?>
 				</td>
 			</tr>
 	<?php

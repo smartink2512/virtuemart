@@ -30,7 +30,7 @@ $keyword = JRequest::getWord('keyword', null);
 <div id="header">
 	<div>
 		<?php
-			if (JRequest::getInt('virtuemart_product_id', false)) echo JHTML::_('link', JRoute::_('index.php?view=custom&option='.$option), JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
+			if (JRequest::getInt('virtuemart_product_id', false)) echo JHTML::_('link', JRoute::_('index.php?option='.$option.'&view=custom',FALSE), JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
 		echo $this->customs->customsSelect ;
 		echo JText::_('COM_VIRTUEMART_SEARCH_LBL') .' '.JText::_('COM_VIRTUEMART_TITLE') ?>&nbsp;
 		<input type="text" value="<?php echo $keyword; ?>" name="keyword" size="25" class="inputbox" />
@@ -90,7 +90,7 @@ $customs = $this->customs->items;
                             $lang = JFactory::getLanguage();
                             $text = $lang->hasKey($custom->custom_parent_title) ? JText::_($custom->custom_parent_title) : $custom->custom_parent_title;
 
-                                echo JHTML::_('link', JRoute::_($link),$text, array('title' => JText::_('COM_VIRTUEMART_FILTER_BY').' '.$text)); ?></td>
+                                echo JHTML::_('link', JRoute::_($link,FALSE),$text, array('title' => JText::_('COM_VIRTUEMART_FILTER_BY').' '.$text)); ?></td>
 
 				<!-- Product name -->
 				<?php
@@ -98,7 +98,7 @@ $customs = $this->customs->items;
 				if ($custom->is_cart_attribute) $cartIcon=  'default';
 							 else  $cartIcon= 'default-off';
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link), $custom->custom_title, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$custom->custom_title)); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_($link, FALSE), $custom->custom_title, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$custom->custom_title)); ?></td>
 				<td><?php echo $custom->custom_desc; ?></td>
 				<td><?php echo $custom->field_type_display; ?></td>
 				<td><span class="vmicon vmicon-16-<?php echo $cartIcon ?>"></span></td>

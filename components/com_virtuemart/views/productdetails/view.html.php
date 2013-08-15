@@ -52,30 +52,27 @@ class VirtueMartViewProductdetails extends VmView {
 
 	$document = JFactory::getDocument();
 
-	/* add javascript for price and cart */
+	// add javascript for price and cart, need even for quantity buttons, so we need it almost anywhere
 	vmJsApi::jPrice();
 
 	$mainframe = JFactory::getApplication();
 	$pathway = $mainframe->getPathway();
 	$task = JRequest::getCmd('task');
 
-	/* Set the helper path */
-	$this->addHelperPath(JPATH_VM_ADMINISTRATOR . DS . 'helpers');
+	if (!class_exists('VmImage'))
+		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 
-	//Load helpers
-	$this->loadHelper('image');
-
-
-	/* Load the product */
-//		$product = $this->get('product');	//Why it is sensefull to use this construction? Imho it makes it just harder
+	// Load the product
+	//$product = $this->get('product');	//Why it is sensefull to use this construction? Imho it makes it just harder
 	$product_model = VmModel::getModel('product');
 	$this->assignRef('product_model', $product_model);
-	$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id', 0);
-	if (is_array($virtuemart_product_idArray)) {
-	    $virtuemart_product_id = $virtuemart_product_idArray[0];
+	$virtuemart_product_idArray = JRequest::getVar('virtuemart_product_id', 0);
+	if (is_array($virtuemart_product_idArray) and count($virtuemart_product_idArray) > 0) {
+	    $virtuemart_product_id = (int)$virtuemart_product_idArray[0];
 	} else {
-	    $virtuemart_product_id = $virtuemart_product_idArray;
+	    $virtuemart_product_id = (int)$virtuemart_product_idArray;
 	}
+
     $quantityArray = JRequest::getVar ('quantity', array()); //is sanitized then
     JArrayHelper::toInteger ($quantityArray);
 
@@ -83,7 +80,7 @@ class VirtueMartViewProductdetails extends VmView {
     if (!empty($quantityArray[0])) {
 	    $quantity = $quantityArray[0];
     }
-	$product = $product_model->getProduct($virtuemart_product_id,TRUE,TRUE,TRUE,$quantity);
+    $product = $product_model->getProduct($virtuemart_product_id,TRUE,TRUE,TRUE,$quantity);
 
     if (!empty($product->virtuemart_customfield_id)) {
 	    $customfieldsModel = VmModel::getModel ('Customfields');
@@ -101,7 +98,6 @@ class VirtueMartViewProductdetails extends VmView {
 	    }
 
     }
-
 // 		vmTime('Customs','customs');
 // 		vmdebug('my second $product->customfields',$product->customfields);
 	$last_category_id = shopFunctionsF::getLastVisitedCategoryId();
@@ -112,28 +108,28 @@ class VirtueMartViewProductdetails extends VmView {
 
 	    $categoryLink = '';
 	    if (!$last_category_id) {
-			$last_category_id = JRequest::getInt('virtuemart_category_id', false);
+		$last_category_id = JRequest::getInt('virtuemart_category_id', false);
 	    }
 	    if ($last_category_id) {
-			$categoryLink = '&virtuemart_category_id=' . $last_category_id;
+		$categoryLink = '&virtuemart_category_id=' . $last_category_id;
 	    }
 
-	    $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink . '&error=404'));
+	    $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink . '&error=404', FALSE));
 
 	    return;
 	}
 
-	if (!empty($product->customfields)) {
+    if (!empty($product->customfields)) {
 	    foreach ($product->customfields as $k => $custom) {
-		if (!empty($custom->layout_pos)) {
-		    $product->customfieldsSorted[$custom->layout_pos][] = $custom;
-		    unset($product->customfields[$k]);
-		}
+		    if (!empty($custom->layout_pos)) {
+			    $product->customfieldsSorted[$custom->layout_pos][] = $custom;
+			    unset($product->customfields[$k]);
+		    }
 	    }
 	    $product->customfieldsSorted['normal'] = $product->customfields;
 	    unset($product->customfields);
-	}
-	
+    }
+
 	$product->event = new stdClass();
 	$product->event->afterDisplayTitle = '';
 	$product->event->beforeDisplayContent = '';
@@ -173,46 +169,43 @@ class VirtueMartViewProductdetails extends VmView {
 	    $min_order_level = 1;
 	}
 	$this->assignRef('min_order_level', $min_order_level);
+	if (isset($product->step_order_level) && (int) $product->step_order_level > 0) {
+	    $step_order_level = $product->step_order_level;
+	} else {
+	    $step_order_level = 1;
+	}
+	$this->assignRef('step_order_level', $step_order_level);
+
 	// Load the neighbours
-	$product->neighbours = $product_model->getNeighborProducts($product);
-//		if(!empty($product->neighbours) && is_array($product->neighbours) && !empty($product->neighbours[0]))$product_model->addImages($product->neighbours);
-//		$product->related = $product_model->getRelatedProducts($virtuemart_product_id);
-//		if(!empty($product->related) && is_array($product->related) && !empty($product->related[0]))$product_model->addImages($product->related);
+    if (VmConfig::get('product_navigation', 1)) {
+	    $product->neighbours = $product_model->getNeighborProducts($product);
+	}
+
 	// Load the category
 	$category_model = VmModel::getModel('category');
 
-	// Get the category ID
-
-/*	if (in_array($last_category_id, $product->categories) ){
-		$virtuemart_category_id = $last_category_id;
-
-	} else $virtuemart_category_id = JRequest::getInt('virtuemart_category_id',0);
-	if ($virtuemart_category_id == 0 ) {
-	    if (array_key_exists('0', $product->categories))
-		$virtuemart_category_id = $product->categories[0];
-	}
-	$product->virtuemart_category_id = $virtuemart_category_id;*/
 	shopFunctionsF::setLastVisitedCategoryId($product->virtuemart_category_id);
 
 	if ($category_model) {
 
-		$category = $category_model->getCategory($virtuemart_category_id);
+		$category = $category_model->getCategory($product->virtuemart_category_id);
 
 	    $category_model->addImages($category, 1);
 	    $this->assignRef('category', $category);
 
-	    if ($category->parents) {
+		//Seems we dont need this anylonger, destroyed the breadcrumb
+		if ($category->parents) {
 			foreach ($category->parents as $c) {
 				if(is_object($c) and isset($c->category_name)){
-					$pathway->addItem(strip_tags($c->category_name), JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $c->virtuemart_category_id));
+					$pathway->addItem(strip_tags($c->category_name), JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $c->virtuemart_category_id, FALSE));
 				} else {
 					vmdebug('Error, parent category has no name, breadcrumb maybe broken, category',$c);
 				}
 			}
-	    }
+		}
 
 	    $vendorId = 1;
-	    $category->children = $category_model->getChildCategoryList($vendorId, $virtuemart_category_id);
+	    $category->children = $category_model->getChildCategoryList($vendorId, $product->virtuemart_category_id);
 	    $category_model->addImages($category->children, 1);
 	}
 
@@ -223,7 +216,7 @@ class VirtueMartViewProductdetails extends VmView {
 	}
 	if ($format == 'html') {
 	    // Set Canonic link
-	    $document->addHeadLink(JRoute::_($product->canonical, true, -1), 'canonical', 'rel', '');
+	    $document->addHeadLink($product->canonical, 'canonical', 'rel', '');
 	}
 
 	$uri = JURI::getInstance();
@@ -290,7 +283,7 @@ class VirtueMartViewProductdetails extends VmView {
 	$this->assignRef('edit_link', $edit_link);
 
 	// todo: atm same form for "call for price" and "ask a question". Title of the form should be different
-	$askquestion_url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id . '&tmpl=component');
+	$askquestion_url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id . '&tmpl=component', FALSE);
 	$this->assignRef('askquestion_url', $askquestion_url);
 
 	// Load the user details
@@ -343,7 +336,7 @@ class VirtueMartViewProductdetails extends VmView {
 	    $category->category_template = VmConfig::get('categorytemplate');
 	}
 
-	shopFunctionsF::setVmTemplate($this, $category->category_template, $product->product_template, $category->category_layout, $product->layout);
+	shopFunctionsF::setVmTemplate($this, $category->category_template, $product->product_template, $category->category_product_layout, $product->layout);
 
 	shopFunctionsF::addProductToRecent($virtuemart_product_id);
 
@@ -351,6 +344,7 @@ class VirtueMartViewProductdetails extends VmView {
 	$this->assignRef('currency', $currency);
 
 	if(JRequest::getCmd( 'layout', 'default' )=='notify') $this->setLayout('notify'); //Added by Seyi Awofadeju to catch notify layout
+
 
 	parent::display($tpl);
     }
@@ -373,7 +367,7 @@ class VirtueMartViewProductdetails extends VmView {
 		if ($virtuemart_category_id) {
 		    $categoryLink = '&virtuemart_category_id=' . $virtuemart_category_id;
 		}
-		$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink);
+		$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink, FALSE);
 
 		$continue_link_html = '<a href="' . $continue_link . '" />' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 		$this->assignRef('continue_link_html', $continue_link_html);

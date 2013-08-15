@@ -32,7 +32,7 @@ AdminUIHelper::startAdminArea();
 <div class="shop_info">
 	<span style="font-style: italic;"><?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_DETAILS') ?></span><br />
 	<ul>
-		<li><?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_DESCRIPTION') ?>: <?php echo vmGet($packageContents,'description',null, VMREQUEST_ALLOWHTML ) ?></li>
+		<li><?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_DESCRIPTION') ?>: <?php echo vmGet($packageContents,'description',null, JREQUEST_ALLOWHTML ) ?></li>
 		<li><?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_DATE') ?>: <?php echo $packageContents['releasedate'] ?></li>
 	</ul>
 </div>

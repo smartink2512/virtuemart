@@ -5,7 +5,8 @@ if(  !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not
  * @package VirtueMart
  * @Author Kohl Patrick
  * @subpackage router
- * @copyright Copyright (C) 2010 Kohl Patrick - Virtuemart Team - All rights reserved.
+ * @version $Id$
+ * ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -308,6 +309,7 @@ function virtuemartParseRoute($segments) {
 		}
 		return $vars;
 	}
+
 	if (empty($segments)) {
 		return $vars;
 	}
@@ -332,6 +334,9 @@ function virtuemartParseRoute($segments) {
 
 	} else {
 		$vars['limitstart'] = 0 ;
+		if(vmrouterHelper::$limit === null){
+			vmrouterHelper::$limit = VmConfig::get('list_limit', 20);
+		}
 		$vars['limit'] = vmrouterHelper::$limit;
 
 	}
@@ -369,6 +374,12 @@ function virtuemartParseRoute($segments) {
 		$vars['view'] = 'product';
 		$vars['task'] = $segments[1];
 		$vars['tmpl'] = 'component';
+		return $vars;
+	}
+
+	if ( $segments[0] == 'checkout') {
+		$vars['view'] = 'cart';
+		$vars['task'] = $segments[0];
 		return $vars;
 	}
 
@@ -518,6 +529,19 @@ function virtuemartParseRoute($segments) {
 
 		return $vars;
 
+	}
+	elseif ( $helper->compareKey($segments[0] ,'pluginresponse') ) {
+			$vars['view'] = 'pluginresponse';
+			array_shift($segments);
+			if ( !empty ($segments) ) {
+				$vars['task'] = $segments[0];
+				array_shift($segments);
+			}
+			if ( isset($segments[0]) && $segments[0] == 'modal') {
+				$vars['tmpl'] = 'component';
+				array_shift($segments);
+			}
+			return $vars;
 	}
 	else if ( $helper->compareKey($view,'cart') || $helper->activeMenu->view == 'cart') {
 		$vars['view'] = 'cart';
@@ -681,8 +705,8 @@ class vmrouterHelper {
 
 		if (!class_exists( 'VmConfig' )) {
 			require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
-			VmConfig::loadConfig();
 		}
+		VmConfig::loadConfig();
 
 		if (isset($query['langswitch']) ) {
 			if ($query['langswitch'] != VMLANG ) $instanceKey = $query['langswitch'] ;
@@ -968,7 +992,7 @@ class vmrouterHelper {
 		//get all vm menus
 
 		$db			= JFactory::getDBO();
-		$query = 'SELECT * FROM `#__menu`  where `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language="'.$this->langTag.'")'  ;
+		$query = 'SELECT * FROM `#__menu`  where `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language LIKE "'.$this->langTag.'")'  ;
 		$db->setQuery($query);
 		// 		vmdebug('setMenuItemIdJ17 q',$query);
 		$this->menuVmitems= $db->loadObjectList();
@@ -1004,7 +1028,7 @@ class vmrouterHelper {
 					elseif ($home == $view ) continue;
 					else $this->menu[$view]= $item->id ;
 
-					if ($item->home === 1) {
+					if ((int)$item->home === 1) {
 						$home = $view;
 						$homeid = $item->id;
 					}

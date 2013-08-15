@@ -22,13 +22,12 @@ if (!class_exists ('vmPSPlugin')) {
 
 class plgVmpaymentMoneybookers extends vmPSPlugin {
 
-	public static $_this = FALSE;
-
 	function __construct (& $subject, $config) {
 
 		parent::__construct ($subject, $config);
 		// unique filelanguage for all moneybookers methods
-		VmConfig::loadJLang('plg_vmpayment_moneybookers', false);
+		$jlang = JFactory::getLanguage ();
+		$jlang->load ('plg_vmpayment_moneybookers', JPATH_ADMINISTRATOR, NULL, TRUE);
 		$this->_loggable = TRUE;
 		$this->_debug = TRUE;
 		$this->tableFields = array_keys ($this->getTableSQLFields ());
@@ -42,8 +41,10 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		                    'payment_currency'    => array('', 'char'),
 		                    'payment_logos'       => array('', 'char'),
 		                    'countries'           => array('', 'char'),
-		                    'cost_per_transaction' => array('', 'int'),
-		                    'cost_percent_total'   => array('', 'int'),
+		                    'cost_per_transaction'
+		                                          => array('', 'int'),
+		                    'cost_percent_total'
+		                                          => array('', 'int'),
 		                    'min_amount'          => array('', 'int'),
 		                    'max_amount'          => array('', 'int'),
 		                    'tax_id'              => array(0, 'int'),
@@ -194,9 +195,9 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		                   'mb_transaction_id'       => 'varchar(15)',
 		                   'mb_rec_payment_id'       => 'int(10) UNSIGNED',
 		                   'mb_rec_payment_type'     => 'varchar(16)',
-		                   'mb_amount'               => 'decimal(19, 2)',
+		                   'mb_amount'               => 'decimal(19,2)',
 		                   'mb_currency'             => 'char(3)',
-		                   'mb_status'               => 'tinyint',
+		                   'mb_status'               => 'tinyint(1)',
 		                   'mb_md5sig'               => 'char(32)',
 		                   'mb_sha2sig'              => 'char(64)',
 		                   'mbresponse_raw'          => 'varchar(512)');

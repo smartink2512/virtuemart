@@ -49,7 +49,7 @@ class TableCoupons extends VmTable {
 
 	/**
 	 * @author RickG, Max Milbers
-	 * @param $db A database connector object
+	 * @param JDataBase $db
 	 */
 	function __construct(&$db)
 	{

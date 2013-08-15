@@ -36,7 +36,8 @@ class VirtuemartViewState extends VmView {
 		// Load the helper(s)
 
 
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		$this->SetViewTitle();
 

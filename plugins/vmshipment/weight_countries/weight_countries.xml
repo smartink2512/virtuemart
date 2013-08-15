@@ -5,7 +5,7 @@
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>${PHING.VM.COPYRIGHT}</copyright>
-    <license>${PHING.VM.LICENSE}</license>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <version>${PHING.VM.RELEASE}</version>
     <description>VMSHIPMENT_WEIGHT_COUNTRIES_PLUGIN_DESC</description>
     <languages>
@@ -13,6 +13,7 @@
     </languages>
     <files>
 	<filename plugin="weight_countries">weight_countries.php</filename>
+	<folder>weight_countries</folder>
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements">
 	<param type="vmjpluginwarning" />

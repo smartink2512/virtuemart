@@ -39,18 +39,21 @@ class VirtuemartViewProduct extends JView {
 		$this->type = JRequest::getWord('type', false);
 		$this->row = JRequest::getInt('row', false);
 		$this->db = JFactory::getDBO();
-		$this->customFieldsModel = VmModel::getModel('Customfields') ;
+		$this->model = VmModel::getModel('Customfields') ;
 
 	}
 	function display($tpl = null) {
 
-		//$this->loadHelper('customhandler');
-
 		$filter = JRequest::getVar('q', JRequest::getVar('term', false) );
 
 		$id = JRequest::getInt('id', false);
-		$product_id = JRequest::getInt('virtuemart_product_id', 0);
-		//$customfield = $this->customFieldsModel->getcustomfield();
+		$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',array(),'', 'array');
+		if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
+			$product_id = (int)$virtuemart_product_id[0];
+		} else {
+			$product_id = (int)$virtuemart_product_id;
+		}
+		//$customfield = $this->model->getcustomfield();
 		/* Get the task */
 		if ($this->type=='relatedproducts') {
 			$query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
@@ -59,13 +62,15 @@ class VirtuemartViewProduct extends JView {
 			if ($filter) $query .= " WHERE product_name LIKE '%". $this->db->getEscaped( $filter, true ) ."%' or product_sku LIKE '%". $this->db->getEscaped( $filter, true ) ."%' limit 0,10";
 			self::setRelatedHtml($query,'R');
 		}
-		else if ($this->type=='relatedcategories') {
+		else if ($this->type=='relatedcategories')
+		{
 			$query = "SELECT virtuemart_category_id AS id, CONCAT(category_name, '::', virtuemart_category_id) AS value
 				FROM #__virtuemart_categories_".VMLANG;
 			if ($filter) $query .= " WHERE category_name LIKE '%". $this->db->getEscaped( $filter, true ) ."%' limit 0,10";
 			self::setRelatedHtml($query,'Z');
 		}
-		else if ($this->type=='custom') {
+		else if ($this->type=='custom')
+		{
 			$query = "SELECT CONCAT(virtuemart_custom_id, '|', custom_value, '|', field_type) AS id, CONCAT(custom_title, '::', custom_tip) AS value
 				FROM #__virtuemart_customs";
 			if ($filter) $query .= " WHERE custom_title LIKE '%".$filter."%' limit 0,50";
@@ -73,30 +78,18 @@ class VirtuemartViewProduct extends JView {
 			$this->json['value'] = $this->db->loadObjectList();
 			$this->json['ok'] = 1 ;
 		}
-		else if ($this->type=='fields') {
-			$fieldTypes= $this->customFieldsModel->getField_types() ;
+		else if ($this->type=='fields')
+		{
+			$fieldTypes= $this->model->getField_types() ;
 
-			$customModel = VmModel::getModel('custom');
-
-		/*	$query = "SELECT *,custom_value as value FROM #__virtuemart_customs
+			$query = "SELECT *,custom_value as value FROM #__virtuemart_customs
 			WHERE (`virtuemart_custom_id`=".$id." or `custom_parent_id`=".$id.")";
 			$query .=" order by custom_parent_id asc";
 			$this->db->setQuery($query);
-			$rows = $this->db->loadObjectlist();*/
+			$rows = $this->db->loadObjectlist();
 
-			$q = 'SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs` WHERE `custom_parent_id`="'.$id.'"';
-			$this->db->setQuery($q);
-			$ids = $this->db->loadColumn();
-			$ids[] = $id;
-			//VmConfig::$echoDebug = true;
-
-
-			//$rows = $customModel->getCustoms($id);
 			$html = array ();
-			foreach ($ids as $field) {
-				$customModel->setId($field);
-				$field = $customModel->getCustom();
-				//vmdebug('json display',$field);
+			foreach ($rows as $field) {
 				if ($field->field_type =='C' ){
 					$this->json['table'] = 'childs';
 					$q='SELECT `virtuemart_product_id` FROM `#__virtuemart_products` WHERE `published`=1
@@ -107,16 +100,16 @@ class VirtuemartViewProduct extends JView {
 					// Get childs
 						foreach ($childIds as $childId) {
 							$field->custom_value = $childId;
-							$display = $this->customFieldsModel->displayProductCustomfieldBE($field,$childId,$this->row);
-							 if ($field->is_cart_attribute) $cartIcon=  'default';
-							 else  $cartIcon= 'default-off';
+							$display = $this->model->displayProductCustomfieldBE($field,$childId,$this->row);
+							 if ($field->is_cart_attribute) $cartIcone=  'default';
+							 else  $cartIcone= 'default-off';
 							 $html[] = '<div class="removable">
 								<td>'.$field->custom_title.'</td>
 								 <td>'.$display.$field->custom_tip.'</td>
 								 <td>'.JText::_($fieldTypes[$field->field_type]).'
-								'.VirtueMartModelCustomfields::setEditCustomHidden($field, $this->row).'
+								'.$this->model->setEditCustomHidden($field, $this->row).'
 								 </td>
-								 <td><span class="vmicon vmicon-16-'.$cartIcon.'"></span></td>
+								 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
 								 <td></td>
 								</div>';
 							$this->row++;
@@ -124,28 +117,29 @@ class VirtuemartViewProduct extends JView {
 					}
 				} elseif ($field->field_type =='E') {
 					$this->json['table'] = 'customPlugins';
-					$display = $this->customFieldsModel->displayProductCustomfieldBE($field,$product_id,$this->row);
+					$display = $this->model->displayProductCustomfieldBE($field,$product_id,$this->row);
 					 if ($field->is_cart_attribute) {
-					     $cartIcon=  'default';
+					     $cartIcone=  'default';
 					 } else {
-					     $cartIcon= 'default-off';
+					     $cartIcone= 'default-off';
 					 }
 					 $html[] = '
 					<tr class="removable">
 						<td>'.$field->custom_title.'</td>
 						<td>'.$field->custom_tip.'</td>
 						<td>'.$display.'
-						'.VirtueMartModelCustomfields::setEditCustomHidden($field, $this->row).'
+						'.$this->model->setEditCustomHidden($field, $this->row).'
 						<p>'.JTEXT::_('COM_VIRTUEMART_CUSTOM_ACTIVATE_JAVASCRIPT').'</p></td>
 						<td>'.JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION').'</td>
-						<td><span class="vmicon vmicon-16-'.$cartIcon.'"></span></td>
+						<td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
 						<td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" /></td>
+						<td><span class="vmicon vmicon-16-move"></span></td>
 					</tr>';
 					$this->row++;
 
 				} else {
 					$this->json['table'] = 'fields';
-					$display = $this->customFieldsModel->displayProductCustomfieldBE($field,$product_id,$this->row);
+					$display = $this->model->displayProductCustomfieldBE($field,$product_id,$this->row);
 					 if ($field->is_cart_attribute) $cartIcone=  'default';
 					 else  $cartIcone= 'default-off';
 					 $html[] = '<tr class="removable">
@@ -153,10 +147,11 @@ class VirtuemartViewProduct extends JView {
 						<td>'.$field->custom_tip.'</td>
 						 <td>'.$display.'</td>
 						 <td>'.JText::_($fieldTypes[$field->field_type]).'
-							'.VirtueMartModelCustomfields::setEditCustomHidden($field, $this->row).'
+							'.$this->model->setEditCustomHidden($field, $this->row).'
 						</td>
 						 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
 						 <td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" /></td>
+						 <td><span class="vmicon vmicon-16-move"></span></td>
 						</tr>';
 					$this->row++;
 				}
@@ -164,42 +159,19 @@ class VirtuemartViewProduct extends JView {
 
 			$this->json['value'] = $html;
 			$this->json['ok'] = 1 ;
-		} else if ($this->type=='userlist') {
+		} else if ($this->type=='userlist')
+		{
 			$status = JRequest::getvar('status');
+			$productShoppers=0;
 			if ($status) {
 				$productModel = VmModel::getModel('product');
 				$productShoppers = $productModel->getProductShoppersByStatus($product_id ,$status);
-				if($productShoppers){
-					if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-					$html = ShopFunctions::renderProductShopperList($productShoppers);
-					$this->json['value'] = $html;
-				}
 			}
-} else if ($this->type=='addNewPrice') {
-			$vendor_model = VmModel::getModel ('vendor');
-				$vendor = $vendor_model->getVendor ();
-				$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList ($this->tempProduct->virtuemart_shoppergroup_id, false, 'mprices[virtuemart_shoppergroup_id][' . $this->priceCounter . ']');
+			if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+			$html = ShopFunctions::renderProductShopperList($productShoppers);
+			$this->json['value'] = $html;
 
-$product_empty_price = array(
-					'virtuemart_product_price_id' => 0
-				, 'virtuemart_product_id'         => $product_id
-				, 'virtuemart_shoppergroup_id'    => 1
-				, 'product_price'                 => 2
-				, 'override'                      => 3
-				, 'product_override_price'        => NULL
-				, 'product_tax_id'                => NULL
-				, 'product_discount_id'           => NULL
-				, 'product_price_publish_up'      => NULL
-				, 'product_price_publish_down'    => NULL
-				, 'price_quantity_start'          => NULL
-				, 'price_quantity_end'            => 6
-	//, 'product_currency'              => $vendor->vendor_currency
-				);
-					$this->json['value'] = $product_empty_price;
-
-		} else {
-			$this->json['ok'] = 0 ;
-		}
+		} else $this->json['ok'] = 0 ;
 
 		if ( empty($this->json)) {
 			$this->json['value'] = null;
@@ -220,11 +192,11 @@ $product_empty_price = array(
 		$customs = $this->db->loadObject();
 		foreach ($this->json as &$related) {
 
-			//$customs->custom_value = $related->id;
-			$display = $this->customFieldsModel->displayProductCustomfieldBE($customs,$related->id,$this->row);
+			$customs->custom_value = $related->id;
+			$display = $this->model->displayProductCustomfieldBE($customs,$related->id,$this->row);
 			$html = '<div class="vm_thumb_image">
 				<span>'.$display.'</span>
-				'.VirtueMartModelCustomfields::setEditCustomHidden($customs, $this->row).'
+				'.$this->model->setEditCustomHidden($customs, $this->row).'
 				<div class="vmicon vmicon-16-remove"></div></div>';
 
 			$related->label = $html;

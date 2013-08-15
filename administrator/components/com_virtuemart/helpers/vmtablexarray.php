@@ -30,7 +30,8 @@ class VmTableXarray extends VmTable {
 
 	protected $_autoOrdering = false;
 	protected $_orderable = false;
-
+    protected $_skey = '';
+    protected $_skeyForm = '';
 	protected $_pvalue = '';
 
 //    function setOrderable($key='ordering', $auto=true){
@@ -45,7 +46,7 @@ class VmTableXarray extends VmTable {
 		$this->$key			= array();
 		$this->_skeyForm	= empty($keyForm)? $key:$keyForm;
 
-        }
+    }
 
 	function setOrderableFormname($orderAbleFormName){
 		$this->_okeyForm = $orderAbleFormName;
@@ -148,6 +149,13 @@ class VmTableXarray extends VmTable {
 			$this->_svalue = $data[$this->_skeyForm];
 		}
 
+		if($this->_orderable){
+			$orderingKey = $this->_orderingKey;
+			if(!empty($data[$orderingKey])){
+				$this->$orderingKey = $data[$this->_orderingKey];
+			}
+		}
+
 		return true;
 
 	}
@@ -160,8 +168,8 @@ class VmTableXarray extends VmTable {
     public function store($updateNulls = false) {
 
     	$returnCode = true;
-	$this->setLoggableFieldsForStore();
-	$db = JFactory::getDBO();
+		$this->setLoggableFieldsForStore();
+		$db = JFactory::getDBO();
 
         $pkey = $this->_pkey;
         $skey = $this->_skey;
@@ -182,10 +190,10 @@ class VmTableXarray extends VmTable {
 
         // We make another database object list with the values that we want to insert into the database
         $newArray = array();
-	if(!empty($this->_svalue)){
-            if(!is_array($this->_svalue)) $this->_svalue = array($this->_svalue);
-            foreach($this->_svalue as $value) $newArray[] = array($pkey=>$this->_pvalue, $skey=>$value);
-	}
+		if(!empty($this->_svalue)){
+	            if(!is_array($this->_svalue)) $this->_svalue = array($this->_svalue);
+	            foreach($this->_svalue as $value) $newArray[] = array($pkey=>$this->_pvalue, $skey=>$value);
+		}
 
         // Inserts and Updates
         if(count($newArray)>0){

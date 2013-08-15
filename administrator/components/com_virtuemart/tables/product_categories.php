@@ -32,14 +32,14 @@ class TableProduct_categories extends VmTableXarray {
 
 	/**
 	 * @author Max Milbers
-	 * @param $db A database connector object
+	 * @param JDataBase $db
 	 */
 	function __construct(&$db){
 		parent::__construct('#__virtuemart_product_categories', 'id', $db);
 
 		$this->setPrimaryKey('virtuemart_product_id');
 		$this->setSecondaryKey('virtuemart_category_id');
-		$this->setOrderable();
+		$this->setOrderable('ordering',false);
 
 	}
 

@@ -22,6 +22,10 @@
 	<language tag="fr-FR">languageBE/fr-FR.plg_vmpayment_payzen.ini</language>
     </languages>
 
+    <media folder="images" destination="../images/stories/virtuemart/payment">
+	<filename>PayZen.png</filename>
+    </media>
+
     <params addpath="/plugins/vmpayment/payzen/elements" />
     <params addpath="/plugins/vmpayment/payzen/payzen/elements" />
 
@@ -45,7 +49,7 @@
 	<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_PAYZEN_LOGOS"
 		description="VMPAYMENT_PAYZEN_LOGOS_DESC"
 		directory="/images/stories/virtuemart/payment"
-		default="" hide_default="1" hide_none="1"
+		default="payzen.jpg" hide_default="1" hide_none="1"
 		stripext="0" exclude="^_" />
 	<param name="cost_per_transaction" type="text" label="VMPAYMENT_PAYZEN_COST_PER_TRANSACTION" description="VMPAYMENT_PAYZEN_COST_PER_TRANSACTION_DESC" />
 	<param name="cost_percent_total" type="text" label="VMPAYMENT_PAYZEN_COST_PERCENT_TOTAL" description="VMPAYMENT_PAYZEN_COST_PERCENT_TOTAL_DESC" />

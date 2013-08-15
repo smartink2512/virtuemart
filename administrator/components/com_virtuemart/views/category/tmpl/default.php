@@ -19,6 +19,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if (!class_exists ('shopFunctionsF'))
+	require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+
 AdminUIHelper::startAdminArea();
 
 ?>
@@ -45,10 +48,10 @@ AdminUIHelper::startAdminArea();
 		<thead>
 		<tr>
 
-			<th width="20">
+			<th width="20px">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->categories); ?>);" />
 			</th>
-			<th align="left">
+			<th align="left" width="12%">
 				<?php echo $this->sort('category_name') ?>
 			</th>
 			<th align="left">
@@ -62,17 +65,18 @@ AdminUIHelper::startAdminArea();
 				<?php echo $this->sort( 'c.ordering' , 'COM_VIRTUEMART_ORDERING') ?>
 				<?php echo JHTML::_('grid.order', $this->categories, 'filesave.png', 'saveOrder' ); ?>
 			</th>
-			<th align="center" width="5%">
+			<th align="center" width="20px">
 				<?php echo $this->sort('c.published' , 'COM_VIRTUEMART_PUBLISHED') ?>
 			</th>
 			<?php if(Vmconfig::get('multix','none')!=='none' and $this->perms->check('admin') ){ ?>
-            <th width="5%">
+            <th width="20px">
+
 				<?php echo $this->sort( 'cx.category_shared' , 'COM_VIRTUEMART_SHARED') ?>
             </th>
 			<?php } ?>
 
 			<th><?php echo $this->sort('virtuemart_category_id', 'COM_VIRTUEMART_ID')  ?></th>
-
+			<!--th></th-->
 		</tr>
 		</thead>
 		<tbody>
@@ -99,9 +103,9 @@ AdminUIHelper::startAdminArea();
 
 			$checked = JHTML::_('grid.id', $i, $cat->virtuemart_category_id);
 			$published = JHTML::_('grid.published', $cat, $i);
-			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid=' . $cat->virtuemart_category_id);
+			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid=' . $cat->virtuemart_category_id, FALSE);
 // 			$statelink	= JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $cat->virtuemart_category_id);
-			$showProductsLink = JRoute::_('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . $cat->virtuemart_category_id);
+			$showProductsLink = JRoute::_('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . $cat->virtuemart_category_id, FALSE);
 			$shared = $this->toggle($cat->shared, $i, 'toggle.shared');
 
 			$categoryLevel = '';
@@ -128,15 +132,23 @@ AdminUIHelper::startAdminArea();
 					<a href="<?php echo $editlink;?>"><?php echo $this->escape($cat->category_name);?></a>
 				</td>
 				<td align="left">
-					<?php echo $cat->category_description; ?>
+
+					<?php
+
+					echo shopFunctionsF::limitStringByWord(JFilterOutput::cleanText($cat->category_description),200); ?>
 				</td>
 				<td>
 					<?php echo  $this->catmodel->countProducts($cat->virtuemart_category_id);//ShopFunctions::countProductsByCategory($row->virtuemart_category_id);?>
 					&nbsp;<a href="<?php echo $showProductsLink; ?>">[ <?php echo JText::_('COM_VIRTUEMART_SHOW');?> ]</a>
 				</td>
 				<td align="center" class="order">
-					<span><?php echo $this->catpagination->orderUpIcon( $i, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i - 1]]->category_parent_id), 'orderUp', JText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
-					<span><?php echo $this->catpagination->orderDownIcon( $i, $nrows, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i + 1]]->category_parent_id), 'orderDown', JText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
+					<span><?php 
+					
+					
+					$cond = (($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$i - 1]->category_parent_id));
+					$cond2= ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$i + 1]->category_parent_id);
+					echo $this->catpagination->orderUpIcon( $i, $cond, 'orderUp', JText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
+					<span><?php echo $this->catpagination->orderDownIcon( $i, $nrows, $cond2, 'orderDown', JText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
 					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $cat->ordering; ?>" style="text-align: center" />
 				</td>
 				<td align="center">
@@ -151,6 +163,9 @@ AdminUIHelper::startAdminArea();
 				}
 				?>
 				<td><?php echo $cat->virtuemart_category_id; // echo $product->vendor_name; ?></td>
+				<!--td >
+					<span class="vmicon vmicon-16-move"></span>
+				</td-->
 			</tr>
 		<?php
 			$k = 1 - $k;
@@ -174,5 +189,42 @@ AdminUIHelper::startAdminArea();
 	  ?>
 </form>
 
+<?php
+// Removed for the moment,categories can only be drag and drop within their sublevel
+//DragnDrop by StephanBais
+	//if ($this->virtuemart_category_id ) { ?>
+	<!--script>
+
+		jQuery(function() {
+
+			jQuery( ".adminlist" ).sortable({
+				handle: ".vmicon-16-move",
+				items: 'tr:not(:first,:last)',
+				opacity: 0.8,
+				update: function(event, ui) {
+					var i = 1;
+					jQuery(function updaterows() {
+						jQuery(".order").each(function(index){
+							var row = jQuery(this).parent('td').parent('tr').prevAll().length;
+							jQuery(this).val(row);
+							i++;
+						});
+
+					});
+				},
+				stop: function () {
+					var inputs = jQuery('input.ordering');
+					var rowIndex = inputs.length;
+					jQuery('input.ordering').each(function(idx) {
+						jQuery(this).val(idx + 1);
+					});
+				}
+
+			});
+		});
+		jQuery('input.ordering').css({'color': '#666666', 'background-color': 'transparent','border': 'none' }).attr('readonly', true);
+	</script-->
+
+<?php // } ?>
 
 <?php AdminUIHelper::endAdminArea(); ?>

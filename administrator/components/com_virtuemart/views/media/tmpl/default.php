@@ -30,7 +30,7 @@ $option = JRequest::getWord('option');
 		<table>
 		  <tr>
 			 <td align="left" width="100%">
-				<?php echo $this->displayDefaultViewSearch('COM_VIRTUEMART_NAME','searchMedia') .' '. $this->lists['search_type']; ?>
+				<?php echo $this->displayDefaultViewSearch('COM_VIRTUEMART_NAME','searchMedia') .' '. $this->lists['search_type'].' '. $this->lists['search_role']; ?>
 			 </td>
 		  </tr>
 		</table>
@@ -51,7 +51,7 @@ $productfileslist = $this->files;
 		<th><?php echo JText::_('COM_VIRTUEMART_VIEW'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILENAME'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILETYPE'); ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?></th>
+		<th><?php echo $this->sort('published', 'COM_VIRTUEMART_PUBLISHED'); ?></th>
 	  <th><?php echo $this->sort('virtuemart_media_id', 'COM_VIRTUEMART_ID')  ?></th>
 	</tr>
 	</thead>
@@ -73,16 +73,16 @@ $productfileslist = $this->files;
 				<?php
 				$link = ""; //"index.php?view=media&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&option=".$option;
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link), empty($productfile->product_name)? '': $productfile->product_name); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_($link, FALSE), empty($productfile->product_name)? '': $productfile->product_name); ?></td>
 				<!-- File name -->
 				<?php
 				$link = 'index.php?option='.$option.'&view=media&task=edit&virtuemart_media_id[]='.$productfile->virtuemart_media_id;
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link), $productfile->file_title, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$productfile->file_title)); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_($link, FALSE), $productfile->file_title, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$productfile->file_title)); ?></td>
 				<!-- File role -->
 				<td><?php
 					//Just to have something, we could make this nicer with Icons
-					if(!empty($productfile->file_is_product_image)) echo JText::_('COM_VIRTUEMART_'.$productfile->file_type.'_IMAGE') ;
+					if(!empty($productfile->file_is_product_image)) echo JText::_('COM_VIRTUEMART_'.strtoupper($productfile->file_type).'_IMAGE') ;
 					if(!empty($productfile->file_is_downloadable)) echo JText::_('COM_VIRTUEMART_DOWNLOADABLE') ;
 					if(!empty($productfile->file_is_forSale)) echo  JText::_('COM_VIRTUEMART_FOR_SALE');
 

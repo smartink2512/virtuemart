@@ -39,7 +39,7 @@ class VirtuemartModelReport extends VmModel {
 	var $from_period = '';
 	var $until_period = '';
 	private $date_presets = NULL;
-	private $tzoffset = NULL;
+	//private $tzoffset = NULL;
 	private $period = NULL;
 
 	function __construct () {
@@ -47,16 +47,13 @@ class VirtuemartModelReport extends VmModel {
 		parent::__construct ();
 		$this->setMainTable ('orders');
 
-		// set default values always used
-		$config = JFactory::getConfig ();
-		$this->tzoffset = $config->getValue ('config.offset');
 		$this->setDatePresets ();
 
 		$app = JFactory::getApplication ();
 		$this->period = $app->getUserStateFromRequest ('com_virtuemart.revenue.period', 'period', 'last30', 'string');
 
-		$post = JRequest::get ('post');
-		vmdebug ('$post ', $post);
+		//$post = JRequest::get ('post');
+		//vmdebug ('$post ', $post);
 		if (empty($this->period) or $this->period != 'none') {
 			$this->setPeriodByPreset ();
 		}
@@ -70,6 +67,18 @@ class VirtuemartModelReport extends VmModel {
 
 	}
 
+
+	function correctTimeOffset(&$inputDate){
+
+		$config = JFactory::getConfig();
+		$this->siteOffset = $config->getValue('config.offset');
+
+		$date = new JDate($inputDate);
+
+		$date->setTimezone($this->siteTimezone);
+		$inputDate = $date->format('Y-m-d H:i:s',true);
+	}
+
 	/*
 	* Set Start & end Date
 	*/
@@ -77,6 +86,14 @@ class VirtuemartModelReport extends VmModel {
 
 		$this->from_period = JRequest::getVar ('from_period', $this->date_presets['last30']['from']);
 		$this->until_period = JRequest::getVar ('until_period', $this->date_presets['last30']['until']);
+
+		$config = JFactory::getConfig();
+		$siteOffset = $config->getValue('config.offset');
+		$this->siteTimezone = new DateTimeZone($siteOffset);
+
+		$this->correctTimeOffset($this->from_period);
+		$this->correctTimeOffset($this->until_period);
+
 	}
 
 	/*
@@ -86,6 +103,13 @@ class VirtuemartModelReport extends VmModel {
 
 		$this->from_period = $this->date_presets[$this->period]['from'];
 		$this->until_period = $this->date_presets[$this->period]['until'];
+
+		$config = JFactory::getConfig();
+		$siteOffset = $config->getValue('config.offset');
+		$this->siteTimezone = new DateTimeZone($siteOffset);
+
+		$this->correctTimeOffset($this->from_period);
+		$this->correctTimeOffset($this->until_period);
 	}
 
 	function  getItemsByRevenue ($revenue) {
@@ -111,16 +135,16 @@ class VirtuemartModelReport extends VmModel {
 		switch ($intervals) {
 
 			case 'day':
-				$this->intervals = 'DATE( convert_tz(o.created_on, "UTC", "'.$this->tzoffset.'") )';
+				$this->intervals = 'DATE( o.created_on )';
 				break;
 			case 'week':
-				$this->intervals = 'WEEK( convert_tz(o.created_on, "UTC", "'.$this->tzoffset.'") )';
+				$this->intervals = 'WEEK( o.created_on )';
 				break;
 			case 'month':
-				$this->intervals = 'MONTH( convert_tz(o.created_on, "UTC", "'.$this->tzoffset.'") )';
+				$this->intervals = 'MONTH( o.created_on )';
 				break;
 			case 'year':
-				$this->intervals = 'YEAR( convert_tz(o.created_on, "UTC", "'.$this->tzoffset.'") )';
+				$this->intervals = 'YEAR( o.created_on )';
 				break;
 			default:
 				// invidual grouping
@@ -148,7 +172,7 @@ class VirtuemartModelReport extends VmModel {
 
 		//without tax => netto
 		//$selectFields[] = 'SUM(product_item_price) as order_subtotal';
-		$selectFields[] = 'SUM(product_item_price * product_quantity) as order_subtotal_netto';
+		$selectFields[] = 'SUM(product_discountedPriceWithoutTax * product_quantity) as order_subtotal_netto';
 		$selectFields[] = 'SUM(product_subtotal_with_tax) as order_subtotal_brutto';
 
 		$this->dates = ' DATE( o.created_on ) BETWEEN "' . $this->from_period . '" AND "' . $this->until_period . '" ';
@@ -363,20 +387,6 @@ class VirtuemartModelReport extends VmModel {
 		return $listHTML;
 	}
 
-	public function renderOrderstatesList () {
-
-		$orderstates = JRequest::getVar ('order_status_code', 'C');
-		//print_r($orderstates);
-		$query = 'SELECT `order_status_code` as value, `order_status_name` as text
-			FROM `#__virtuemart_orderstates`
-			WHERE published=1 ';
-		$this->_db->setQuery ($query);
-		$list = $this->_db->loadObjectList ();
-		//$html = VmHTML::select ('order_status_code[]', $list, $orderstates, 'size="7" class="inputbox" onchange="this.form.submit();" multiple="multiple"');
-		$html = VmHTML::select ('order_status_code[]', $list, $orderstates, 'size="7" class="inputbox"  multiple="multiple"');
-		return $html;
-	}
-
 	public function renderIntervalsList () {
 
 		$intervals = JRequest::getWord ('intervals', 'day');
@@ -391,5 +401,12 @@ class VirtuemartModelReport extends VmModel {
 		//$listHTML = JHTML::_ ('select.genericlist', $options, 'intervals', 'class="inputbox" onchange="this.form.submit();" size="5"', 'text', 'value', $intervals);
 		$listHTML = JHTML::_ ('select.genericlist', $options, 'intervals', 'class="inputbox" size="6"', 'text', 'value', $intervals);
 		return $listHTML;
+	}
+
+	public function updateOrderItems () {
+		$q = 'UPDATE #__virtuemart_order_items SET `product_discountedPriceWithoutTax`=( (IF(product_final_price is NULL, 0.00,product_final_price)   - IF(product_tax is NULL, 0.00,product_tax)  )) WHERE `product_discountedPriceWithoutTax` IS NULL';
+		$this->_db = JFactory::getDBO();
+		$this->_db->setQuery($q);
+		$this->_db->query();
 	}
 }

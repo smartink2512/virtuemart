@@ -32,7 +32,7 @@ AdminUIHelper::startAdminArea();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shipments); ?>);" />
 			</th>
 			<th>
-				<?php echo JText::_('COM_VIRTUEMART_SHIPMENT_NAME_LBL'); ?>
+				<?php echo $this->sort('shipment_name', 'COM_VIRTUEMART_SHIPMENT_NAME_LBL'); ?>
 			</th>
                         <th>
 				<?php echo JText::_('COM_VIRTUEMART_SHIPMENT_LIST_DESCRIPTION_LBL'); ?>
@@ -41,12 +41,12 @@ AdminUIHelper::startAdminArea();
 				<?php echo JText::_('COM_VIRTUEMART_SHIPPING_SHOPPERGROUPS'); ?>
 			</th>
                         <th>
-				<?php echo JText::_('COM_VIRTUEMART_SHIPMENTMETHOD'); ?>
+				<?php echo $this->sort('shipment_element', 'COM_VIRTUEMART_SHIPMENTMETHOD'); ?>
 			</th>
 			<th>
-				<?php echo JText::_('COM_VIRTUEMART_LIST_ORDER'); ?>
+				<?php echo $this->sort('ordering', 'COM_VIRTUEMART_LIST_ORDER'); ?>
 			</th>
-			<th width="20"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>
+			<th width="20"><?php echo $this->sort('published', 'COM_VIRTUEMART_PUBLISHED'); ?></th>
 			 <th><?php echo $this->sort('virtuemart_shipmentmethod_id', 'COM_VIRTUEMART_ID')  ?></th>
 		</tr>
 		</thead>

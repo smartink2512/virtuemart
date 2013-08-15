@@ -60,10 +60,12 @@ class VirtuemartViewCustom extends JView {
 			$q = 'SELECT `params`,`element` FROM `' . $table . '` WHERE `' . $ext_id . '` = "'.$custom_jplugin_id.'"';
 			$db ->setQuery($q);
 			$this->plugin = $db ->loadObject();
-			$this->loadHelper('parameterparser');
+			if (!class_exists('vmParameters'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
 			$parameters = new vmParameters($this->plugin->params,  $this->plugin->element , 'plugin' ,'vmcustom');
+			$lang = JFactory::getLanguage();
 			$filename = 'plg_vmcustom_' .  $this->plugin->element;
-			VmConfig::loadJLang($filename, false);
+			$lang->load($filename, JPATH_ADMINISTRATOR);
 			echo $parameters->render();
 			echo '<input type="hidden" value="'.$this->plugin->element.'" name="custom_value">';
 			jExit();

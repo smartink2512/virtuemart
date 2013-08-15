@@ -26,12 +26,11 @@ class AdminUIHelper {
      * in the left column and the content in the right column.  This function sets up the table and
      * displayes the admin menu in the left column.
      */
-    static function startAdminArea($backEnd=true) {
+   static function startAdminArea($selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL') {
 		if (JRequest::getWord ( 'format') =='pdf') return;
 		if (JRequest::getWord ( 'tmpl') =='component') self::$backEnd=false;
     	if(self::$vmAdminAreaStarted) return;
     	self::$vmAdminAreaStarted = true;
-    //Todo change asset paths to vmConfig
 		$front = JURI::root(true).'/components/com_virtuemart/assets/';
 		$admin = JURI::root(true).'/administrator/components/com_virtuemart/assets/';
 		$document = JFactory::getDocument();
@@ -55,11 +54,10 @@ class AdminUIHelper {
 		$document->addScript($admin.'js/jquery.coookie.js');
 		$document->addScript($front.'js/chosen.jquery.min.js');
 		$document->addScript($admin.'js/vm2admin.js');
-		//$document->addScript($admin.'js/jquery.jqtransform.js');
-		if (JText::_('COM_VIRTUEMART_JS_STRINGS') == 'COM_VIRTUEMART_JS_STRINGS') $vm2string = "editImage: 'edit image',select_all_text: 'select all options',select_some_options_text: 'select some options'" ;
-		else $vm2string = JText::_('COM_VIRTUEMART_JS_STRINGS') ;
 
+		$vm2string = "editImage: 'edit image',select_all_text: '".JText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".JText::_($selectText)."'" ;
 		$document->addScriptDeclaration ( "
+//<![CDATA[
 		var tip_image='".JURI::root(true)."/components/com_virtuemart/assets/js/images/vtip_arrow.png';
 		var vm2string ={".$vm2string."} ;
 		 jQuery( function($) {
@@ -68,8 +66,10 @@ class AdminUIHelper {
 			$('.virtuemart-admin-area .toggler').vm2admin('toggle');
 			$('#admin-ui-menu').vm2admin('accordeon');
 			if ( $('#admin-ui-tabs').length  ) {
-				$('#admin-ui-tabs').vm2admin('tabs',virtuemartcookie).find('select').chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text});
+
+				$('#admin-ui-tabs').vm2admin('tabs',virtuemartcookie).find('select').chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text}); 
 			}
+
 			$('#content-box [title]').vm2admin('tips',tip_image);
 			$('.modal').fancybox();
 			$('.reset-value').click( function(e){
@@ -80,8 +80,8 @@ class AdminUIHelper {
 			});
 
 		});
+//]]>
 		");
-
 		?>
 		<?php if (!self::$backEnd) echo '<div class="toolbar" style="height: 84px;position: relative;">'.vmView::getToolbar().'</div>'; ?>
 		<div class="virtuemart-admin-area">
@@ -219,6 +219,7 @@ class AdminUIHelper {
 	static function showAdminMenu() {
 		$document = JFactory::getDocument ();
 		$moduleId = JRequest::getInt ( 'module_id', 0 );
+		$user = JFactory::getUser();
 
 		$menuItems = AdminUIHelper::_getAdminMenu ( $moduleId );
 		?>
@@ -250,11 +251,13 @@ class AdminUIHelper {
 							$url .= $link ['task'] ? "&task=" . $link ['task'] : '';
 							// $url .= $link['extra'] ? $link['extra'] : '';
 						}
-						?>
-					<li>
-						<a href="<?php echo $url; ?>" <?php echo $target; ?>><span class="<?php echo $link ['icon_class'] ?>"></span><?php echo JText::_ ( $link ['name'] )?></a>
-					</li>
-					<?php
+						if ($user->authorise('core.admin', 'com_virtuemart') || $user->authorise('vm.'.$link ['view'], 'com_virtuemart') || $target || $link ['view']=='about' || $link ['view']=='virtuemart') {
+							?>
+							<li>
+								<a href="<?php echo $url; ?>" <?php echo $target; ?>><span class="<?php echo $link ['icon_class'] ?>"></span><?php echo JText::_ ( $link ['name'] )?></a>
+							</li>
+							<?php
+						}
 					}
 				}
 				?>

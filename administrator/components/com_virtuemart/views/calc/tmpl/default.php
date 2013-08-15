@@ -57,9 +57,10 @@ AdminUIHelper::startAdminArea();
 			<th><?php echo $this->sort('calc_value' , 'COM_VIRTUEMART_VALUE'); ?></th>
 			<th><?php echo $this->sort('calc_currency' , 'COM_VIRTUEMART_CURRENCY'); ?></th>
 			<th><?php echo JText::_('COM_VIRTUEMART_CATEGORY_S'); ?></th>
+			<th><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER'); // Mod. <mediaDESIGN> St.Kraft 2013-02-24  ?></th>
 			<th><?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_IDS'); ?></th>
-			<th><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_SHOPPER'); ?></th>
-<?php /*	<th width="10"><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_VENDOR'); ?></th> */  ?>
+			<?php /*		<th><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_SHOPPER'); ?></th>
+			<th width="10"><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_VENDOR'); ?></th> */  ?>
 			<th><?php echo $this->sort('publish_up' , 'COM_VIRTUEMART_START_DATE'); ?></th>
 			<th><?php echo $this->sort('publish_down' , 'COM_VIRTUEMART_END_DATE'); ?></th>
 <?php /*	<th width="20"><?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_COND'); ?></th>
@@ -122,15 +123,18 @@ AdminUIHelper::startAdminArea();
 				<td>
 					<?php echo $row->calcCategoriesList; ?>
 				</td>
+        <td>
+        	<?php echo $row->calcManufacturersList; /* Mod. <mediaDESIGN> St.Kraft 2013-02-24 Herstellerrabatt */ ?>
+        </td>
 				<td>
 					<?php echo $row->calcShoppersList; ?>
 				</td>
-				<td align="center">
+				<?php /*				<td align="center">
 					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggle.calc_shopper_published')" title="<?php echo ( $row->calc_shopper_published == '1' ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
 						<?php echo JHtml::_('image.administrator', ((JVM_VERSION===1) ? '' : 'admin/') . ($row->calc_shopper_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>
 				</td>
-<?php /*				<td align="center">
+				<td align="center">
 					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggle.calc_vendor_published')" title="<?php echo ( $row->calc_vendor_published == '1' ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
 						<?php echo JHtml::_('image.administrator', ((JVM_VERSION===1) ? '' : 'admin/') . ($row->calc_vendor_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>

@@ -34,8 +34,10 @@ class VirtuemartViewUser extends VmView {
 
 	function display($tpl = null) {
 
+
 		// Load the helper(s)
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		$perm = Permissions::getInstance();
 		$this->assignRef('perm',$perm);
@@ -67,18 +69,15 @@ class VirtuemartViewUser extends VmView {
 		}
 		$userId = $model->setId($userId);
 
-		$layoutName = JRequest::getWord('layout', 'default');
+		//$layoutName = JRequest::getWord('layout', 'default');
 		$layoutName = $this->getLayout();
 
 		if ($layoutName == 'edit' || $layoutName == 'edit_shipto') {
 
 			$editor = JFactory::getEditor();
 
-			// Get the required helpers
-			$this->loadHelper('shoppergroup');
-			$this->loadHelper('image');
-
-			//$userFieldsModel = VmModel::getModel('userfields');
+			if (!class_exists('VmImage'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 
 			$userDetails = $model->getUser();
 
@@ -117,9 +116,10 @@ class VirtuemartViewUser extends VmView {
 			$this->lists['params'] = $userDetails->JUser->getParameters(true);
 
 			// Shopper info
-			$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups,true);
+			$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups,true, 'virtuemart_shoppergroup_id', 'COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS');
 			$this->lists['vendors'] = ShopFunctions::renderVendorList($userDetails->virtuemart_vendor_id);
-			$this->lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
+			$model->setId($userDetails->JUser->get('id'));
+			$this->lists['custnumber'] = $model->getCustomerNumberById();
 
 			// Shipment address(es)
 			$this->lists['shipTo'] = ShopFunctions::generateStAddressList($this,$model,'addST');
@@ -199,6 +199,9 @@ class VirtuemartViewUser extends VmView {
 				$currencyModel = VmModel::getModel('currency');
 				$_currencies = $currencyModel->getCurrencies();
 				$this->assignRef('currencies', $_currencies);
+				
+				$configModel = VmModel::getModel('config');
+				$this->assignRef('pdfFonts', $configModel->getTCPDFFontsList());
 
 			}
 
@@ -217,7 +220,7 @@ class VirtuemartViewUser extends VmView {
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList();
 			JToolBarHelper::editListX();
-			$this->showHelp();
+
 			//This is intentionally, creating new user via BE is buggy and can be done by joomla
 			//JToolBarHelper::addNewX();
 			$this->addStandardDefaultViewLists($model,'ju.id');
@@ -233,6 +236,9 @@ class VirtuemartViewUser extends VmView {
 			$this->assignRef('defaultShopperGroup', $defaultShopperGroup);
 		}
 
+		if(!empty($this->orderlist)){
+			VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+		}
 		parent::display($tpl);
 	}
 

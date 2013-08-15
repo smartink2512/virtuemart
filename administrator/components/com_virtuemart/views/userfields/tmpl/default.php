@@ -65,7 +65,7 @@ AdminUIHelper::startAdminArea();
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_CART'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_REGISTRATION'); ?>
 			</th>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_SHIPPING'); ?>
@@ -88,9 +88,14 @@ AdminUIHelper::startAdminArea();
 			$coreField = (in_array($row->name, $this->lists['coreFields']));
 			$image = (JVM_VERSION===1) ? 'checked_out.png' : 'admin/checked_out.png';
 			$image = JHtml::_('image.administrator', $image, '/images/', null, null, JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'));
-			$checked = ($coreField) ?
-				'<span class="hasTip" title="'. JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>' :
-				JHTML::_('grid.id', $i, $row->virtuemart_userfield_id);
+			//$checked = '<div style="position: relative;">'.JHTML::_('grid.id', $i, null,$row->virtuemart_userfield_id);
+			$checked = JHTML::_('grid.id', $i ,$row->virtuemart_userfield_id,null,'virtuemart_userfield_id');
+			if ($coreField) $checked.='<span class="hasTip" style="position: absolute; margin-left:-3px;" title="'. JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>';
+			$checked .= '</div>';
+			// There is no reason not to allow moving of the core fields. We only need to disable deletion of them
+			// ($coreField) ?
+			// 	'<span class="hasTip" title="'. JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>' :
+				
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=userfields&task=edit&virtuemart_userfield_id=' . $row->virtuemart_userfield_id);
 			$required = $this->toggle($row->required, $i, 'toggle.required', $coreField);
 //			$published = JHTML::_('grid.published', $row, $i);
@@ -136,7 +141,7 @@ AdminUIHelper::startAdminArea();
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 			</td>
 			<td width="10">
-					<?php echo JText::_($row->virtuemart_userfield_id); ?>
+					<?php echo $row->virtuemart_userfield_id; ?>
 				</td>
 			</tr>
 			<?php

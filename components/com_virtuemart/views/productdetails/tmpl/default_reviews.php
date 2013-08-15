@@ -39,7 +39,7 @@ if ($this->allowRating || $this->showReview) {
 
 
 	<div class="customer-reviews">
-		<form method="post" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&virtuemart_category_id=' . $this->product->virtuemart_category_id); ?>" name="reviewForm" id="reviewform">
+		<form method="post" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&virtuemart_category_id=' . $this->product->virtuemart_category_id, FALSE); ?>" name="reviewForm" id="reviewform">
 	<?php
 }
 
@@ -69,7 +69,7 @@ if ($this->showReview) {
 				?>
 
 				<?php // Loop through all reviews
-				if (!empty($review) && $review->published) {
+				if (!empty($this->rating_reviews) && $review->published) {
 					$reviews_published++;
 					?>
 					<div class="<?php echo $color ?>">
@@ -107,6 +107,7 @@ if ($this->showReview) {
 
 			<?php // Show Review Length While Your Are Writing
 			$reviewJavascript = "
+//<![CDATA[
 			function check_reviewform() {
 				var form = document.getElementById('reviewform');
 
@@ -157,6 +158,7 @@ if ($this->showReview) {
 				});
 
 
+//]]>
 				";
 			$document = JFactory::getDocument ();
 			$document->addScriptDeclaration ($reviewJavascript);

@@ -65,8 +65,14 @@ AdminUIHelper::startAdminArea();
 </form>
 <script type="text/javascript">
 function submitbutton(pressbutton) {
-	if (pressbutton=='cancel') submitform(pressbutton);
-	if (jQuery('#adminForm').validationEngine('validate')== true) submitform(pressbutton);
+	if (pressbutton=='cancel'){
+        submitform(pressbutton);
+        return true;
+    }
+	if (jQuery('#adminForm').validationEngine('validate')== true){
+        submitform(pressbutton);
+        return true;
+    }
 	else return false ;
 }
 jQuery(function($) {

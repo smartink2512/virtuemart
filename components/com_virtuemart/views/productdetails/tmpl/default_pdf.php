@@ -154,7 +154,7 @@ if (empty ( $this->product )) {
 				<?php //echo JHTML::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png');
 			} ?>
 			<span class="product-field-display"><?php echo $field->display ?></span>
-			<span class="product-field-desc"><?php echo jText::_($field->custom_desc) ?></span>
+			<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>
 			</div>
 			<?php
 			$custom_title = $field->custom_title;
@@ -290,11 +290,7 @@ if (empty ( $this->product )) {
 				} else {
 					$color = 'highlight';
 				}
-
-				/* Check if user already commented */
-//				if ($review->virtuemart_userid == $this->user->id) {
-//					$alreadycommented = true;
-//				} ?>
+ ?>
 
 				<?php // Loop through all reviews
 				if (!empty($this->rating_reviews)) { ?>
@@ -326,10 +322,7 @@ if (empty ( $this->product )) {
 
 <?php
 	}
-//					} else {
-//						echo '<strong>'.JText::_('COM_VIRTUEMART_DEAR').$this->user->name.',</strong><br />' ;
-//						echo JText::_('COM_VIRTUEMART_REVIEW_ALREADYDONE');
-//					}
+
 
 	if($this->allowRating || $this->showReview) {
 	?>
@@ -337,7 +330,5 @@ if (empty ( $this->product )) {
 	<?php
 	}
 
-
-	// else echo JText::_('COM_VIRTUEMART_REVIEW_LOGIN'); // Login to write a review!
 	?>
 </div>

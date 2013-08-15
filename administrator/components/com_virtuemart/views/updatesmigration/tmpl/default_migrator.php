@@ -83,47 +83,38 @@ $session = JFactory::getSession();
 			'migrateProductsFromVmOne'	=> JText::_('COM_VIRTUEMART_UPDATE_PRODUCTS'),
 			'migrateOrdersFromVmOne'	=> JText::_('COM_VIRTUEMART_UPDATE_ORDERS'),
 			'migrateAllInOne'	=> JText::_('COM_VIRTUEMART_UPDATE_ALL'),
-			'setStoreOwner'	=> JText::_('COM_VIRTUEMART_SETSTOREOWNER')
+			'portVmAttributes'	=> JText::_('COM_VIRTUEMART_UPDATE_ATTR').'<br />'.JText::_('COM_VIRTUEMART_UPDATE_ATTR_2'),
+			'portVmRelatedProducts'	=> JText::_('COM_VIRTUEMART_UPDATE_REL'),
+		//	'setStoreOwner'	=> JText::_('COM_VIRTUEMART_SETSTOREOWNER')
 		);
 		echo VmHTML::radioList('task', $session->get('migration_task', 'migrateAllInOne', 'vm'), $options);
 	?>
 	</td>
 </tr>
 
-<tr>
-	<td>
-		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_REWRITE_ORDER_NUMBER'); ?>
-	</td>
-	<td>
-		<?php echo VmHTML::checkbox('reWriteOrderNumber', $session->get('reWriteOrderNumber', 1, 'vm')); ?>
-	</td>
-</tr>
-<tr>
-	<td>
-		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_USER_ORDER_ID'); ?>
-	</td>
-	<td>
-		<?php echo VmHTML::checkbox('userOrderId', $session->get('userOrderId', 0, 'vm')); ?>
-	</td>
-</tr>
-<tr>
-	<td>
-		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_DCAT_BROWSE'); ?>
-	</td>
-	<td>
-		<input class="inputbox" type="text" name="migration_default_category_browse" size="15" value="<?php echo $session->get('migration_default_category_browse', '', 'vm') ?>" />
-	</td>
-</tr>
+<?php
 
-<tr>
-	<td>
-		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_DCAT_FLY'); ?>
-	</td>
-	<td>
-		<input class="inputbox" type="text" name="migration_default_category_fly" size="" value="<?php echo $session->get('migration_default_category_fly', '', 'vm') ?>" />
-	</td>
-</tr>
+echo VmHTML::row('checkbox','COM_VIRTUEMART_MIGRATION_REWRITE_ORDER_NUMBER','reWriteOrderNumber',$session->get('reWriteOrderNumber', 1, 'vm'));
+echo VmHTML::row('checkbox','COM_VIRTUEMART_MIGRATION_USER_ORDER_ID','userOrderId',$session->get('userOrderId', 0, 'vm'));
+echo VmHTML::row('checkbox','COM_VIRTUEMART_MIGRA_SGRP_PRICES','userSgrpPrices',$session->get('userSgrpPrices', 0, 'vm'));
+echo VmHTML::row('checkbox','COM_VIRTUEMART_MIGRA_PORTFLY','portFlypages',$session->get('portFlypages', 0, 'vm'));
+echo VmHTML::row('input','COM_VIRTUEMART_MIGRATION_DCAT_BROWSE','migration_default_category_browse',$session->get('migration_default_category_browse', 0, 'vm'));
+echo VmHTML::row('input','COM_VIRTUEMART_MIGRATION_DCAT_FLY','migration_default_category_fly',$session->get('migration_default_category_fly', 0, 'vm'));
 
+
+?>
+
+</table>
+    <!-- Hidden Fields -->
+    <input type="hidden" name="option" value="com_virtuemart" />
+    <input type="hidden" name="view" value="updatesmigration" />
+	<?php echo JHTML::_( 'form.token' ); ?>
+</form>
+
+<form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" >
+<input type="hidden" name="task" value="setStoreOwner" />
+
+<table>
 <tr>
 	<td>
 		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_STOREOWNERID'); ?>
@@ -131,12 +122,33 @@ $session = JFactory::getSession();
 	<td>
 		<input class="inputbox" type="text" name="storeOwnerId" size="15" value="" />
 	</td>
+    <td>
+        <button class="default" type="submit" ><?php echo JText::_('COM_VIRTUEMART_SETSTOREOWNER'); ?></button>
+    </td>
 </tr>
-
-
 </table>
+
 <!-- Hidden Fields -->
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="updatesmigration" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
+<?php /*
+<form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" >
+    <input type="hidden" name="task" value="reOrderChilds" />
+
+    <table>
+        <tr>
+            <td align="left" colspan="5" >
+                <h3> <?php echo JText::_('COM_VIRTUEMART_UPDATE_CHILD_ORDERING'); ?> </h3>
+            </td>
+        </tr>
+        <td>
+            <button class="default" type="submit" ><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
+        </td>
+    </table>
+    <!-- Hidden Fields -->
+    <input type="hidden" name="option" value="com_virtuemart" />
+    <input type="hidden" name="view" value="updatesmigration" />
+	<?php echo JHTML::_( 'form.token' ); ?>
+</form> */ ?>

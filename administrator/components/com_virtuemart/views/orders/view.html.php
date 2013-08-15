@@ -31,11 +31,13 @@ class VirtuemartViewOrders extends VmView {
 
 	function display($tpl = null) {
 
+
 		//Load helpers
+		if (!class_exists('CurrencyDisplay'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 
-		$this->loadHelper('currencydisplay');
-
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 
@@ -48,12 +50,10 @@ class VirtuemartViewOrders extends VmView {
 
 		$curTask = JRequest::getWord('task');
 		if ($curTask == 'edit') {
-
+			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 			// Load addl models
-
 			$userFieldsModel = VmModel::getModel('userfields');
 			$productModel = VmModel::getModel('product');
-
 
 			// Get the data
 			$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
@@ -63,6 +63,7 @@ class VirtuemartViewOrders extends VmView {
 			$orderbt = $order['details']['BT'];
 			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 			$orderbt ->invoiceNumber = $orderModel->getInvoiceNumber($orderbt->virtuemart_order_id);
+
 			$currency = CurrencyDisplay::getInstance('',$order['details']['BT']->virtuemart_vendor_id);
 
 			$this->assignRef('currency', $currency);
@@ -76,6 +77,7 @@ class VirtuemartViewOrders extends VmView {
 			$userfields = $userFieldsModel->getUserFieldsFilled(
 					 $_userFields
 					,$orderbt
+					,'BT_'
 			);
 
 			$_userFields = $userFieldsModel->getUserFields(
@@ -87,6 +89,7 @@ class VirtuemartViewOrders extends VmView {
 			$shipmentfields = $userFieldsModel->getUserFieldsFilled(
 					 $_userFields
 					,$orderst
+					,'ST_'
 			);
 
 			// Create an array to allow orderlinestatuses to be translated
@@ -132,13 +135,13 @@ class VirtuemartViewOrders extends VmView {
 			$this->assignRef('currentOrderStat', $_currentOrderStat);
 
 			/* Toolbar */
-			JToolBarHelper::custom( 'prev', 'back','','COM_VIRTUEMART_ITEM_PREVIOUS',false);
-			JToolBarHelper::custom( 'next', 'forward','','COM_VIRTUEMART_ITEM_NEXT',false);
+			JToolBarHelper::custom( 'prevItem', 'back','','COM_VIRTUEMART_ITEM_PREVIOUS',false);
+			JToolBarHelper::custom( 'nextItem', 'forward','','COM_VIRTUEMART_ITEM_NEXT',false);
 			JToolBarHelper::divider();
 			JToolBarHelper::custom( 'cancel', 'back','back','back',false,false);
 		}
 		else if ($curTask == 'editOrderItem') {
-			$this->loadHelper('calculationHelper');
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
 			$this->assignRef('orderstatuses', $orderStates);
 
@@ -156,7 +159,9 @@ class VirtuemartViewOrders extends VmView {
 
 			$model = VmModel::getModel();
 			$this->addStandardDefaultViewLists($model,'created_on');
-			$this->lists['state_list'] = $this->renderOrderstatesList();
+			$orderStatusModel =VmModel::getModel('orderstatus');
+			$orderstates = JRequest::getWord('order_status_code','');
+			$this->lists['state_list'] = $orderStatusModel->renderOSList($orderstates,'order_status_code',FALSE,' onchange="this.form.submit();" ');
 			$orderslist = $model->getOrdersList();
 
 			$this->assignRef('orderstatuses', $orderStates);
@@ -165,30 +170,42 @@ class VirtuemartViewOrders extends VmView {
 
 			/* Apply currency This must be done per order since it's vendor specific */
 			$_currencies = array(); // Save the currency data during this loop for performance reasons
+
 			if ($orderslist) {
+
 			    foreach ($orderslist as $virtuemart_order_id => $order) {
 
+				    if(!empty($order->order_currency)){
+					    $currency = $order->order_currency;
+				    } else if($order->virtuemart_vendor_id){
+					    if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+					    $currObj = VirtueMartModelVendor::getVendorCurrency($order->virtuemart_vendor_id);
+				        $currency = $currObj->virtuemart_currency_id;
+				   }
 				    //This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
-				    if (!array_key_exists('v'.$order->virtuemart_vendor_id, $_currencies)) {
-					    $_currencies['v'.$order->virtuemart_vendor_id] = CurrencyDisplay::getInstance('',$order->virtuemart_vendor_id);
-				    }
-				    $order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->priceDisplay($order->order_total);
-				    $order->invoiceNumber = $model->getInvoiceNumber($order->virtuemart_order_id);
+				    if (!array_key_exists('curr'.$currency, $_currencies)) {
 
+					    $_currencies['curr'.$currency] = CurrencyDisplay::getInstance($currency,$order->virtuemart_vendor_id);
+				    }
+
+				    $order->order_total = $_currencies['curr'.$currency]->priceDisplay($order->order_total);
+				    $order->invoiceNumber = $model->getInvoiceNumber($order->virtuemart_order_id);
 			    }
+
 			}
+
 			/*
 			 * UpdateStatus removed from the toolbar; don't understand how this was intented to work but
 			 * the order ID's aren't properly passed. Might be readded later; the controller needs to handle
 			 * the arguments.
 			 */
 
-			 /* Toolbar */
-			JToolBarHelper::customX( 'CreateOrderHead', 'new','new','New',false);
+			/* Toolbar */
+			//JToolBarHelper::customX( 'CreateOrderHead', 'new','new','New',false);
 			JToolBarHelper::save('updatestatus', JText::_('COM_VIRTUEMART_UPDATE_STATUS'));
 
 			JToolBarHelper::deleteListX();
-			$this->showHelp();
+
 			/* Assign the data */
 			$this->assignRef('orderslist', $orderslist);
 
@@ -197,18 +214,10 @@ class VirtuemartViewOrders extends VmView {
 
 		}
 
+		shopFunctions::checkSafePath();
+
 		parent::display($tpl);
 	}
-	public function renderOrderstatesList() {
-		$orderstates = JRequest::getWord('order_status_code','');
-		$query = 'SELECT `order_status_code` as value, `order_status_name` as text
-			FROM `#__virtuemart_orderstates`
-			WHERE published=1 ' ;
-			$db = JFactory::getDBO();
-		$db->setQuery($query);
-		$list = $db->loadObjectList();
-		return VmHTML::select( 'order_status_code', $list,  $orderstates,'class="inputbox" onchange="this.form.submit();"');
-    }
 
 }
 

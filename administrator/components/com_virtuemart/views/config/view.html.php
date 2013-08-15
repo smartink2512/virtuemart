@@ -35,15 +35,16 @@ class VirtuemartViewConfig extends VmView {
 
 	function display($tpl = null) {
 
-		// Load the helper(s)
+		if (!class_exists('VmImage'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 
-		$this->loadHelper('image');
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		$model = VmModel::getModel();
 		$usermodel = VmModel::getModel('user');
 
-		 JToolBarHelper::title( JText::_('COM_VIRTUEMART_CONFIG') , 'head vm_config_48');
+		JToolBarHelper::title( JText::_('COM_VIRTUEMART_CONFIG') , 'head vm_config_48');
 
 		$this->addStandardEditViewCommands();
 
@@ -51,7 +52,7 @@ class VirtuemartViewConfig extends VmView {
 		if(!empty($config->_params)){
 			unset ($config->_params['pdf_invoice']); // parameter remove and replaced by inv_os
 		}
-		
+
 		$this->assignRef('config', $config);
 
 		$mainframe = JFactory::getApplication();
@@ -67,12 +68,6 @@ class VirtuemartViewConfig extends VmView {
 		$vmLayoutList = $model->getLayoutList('virtuemart');
 		$this->assignRef('vmLayoutList', $vmLayoutList);
 
-// Outcommented to revert rev. 2916
-//		$vendorList = ShopFunctions::renderVendorList(VmConfig::get('default_virtuemart_vendor_id'));
-//		// We must replace the fieldname and ID 'virtuemart_vendor_id' to 'default_vendor'
-//		$vendorList = preg_replace('/"virtuemart_vendor_id"/', '"default_virtuemart_vendor_id"', $vendorList);
-//		$this->assignRef('vendorList', $vendorList);
-
 		$categoryLayoutList = $model->getLayoutList('category');
 		$this->assignRef('categoryLayoutList', $categoryLayoutList);
 
@@ -82,30 +77,14 @@ class VirtuemartViewConfig extends VmView {
 		$noimagelist = $model->getNoImageList();
 		$this->assignRef('noimagelist', $noimagelist);
 
-		$invoiceFontsList = $model->getTCPDFFontsList();
-		$this->assignRef('invoiceFontsList', $invoiceFontsList);
-
 		$orderStatusModel=VmModel::getModel('orderstatus');
-/*		$orderStates = $orderStatusModel->getOrderStatusList();
-		$orderStatusList = array();
-		$orderStatusList[0] = JText::_('COM_VIRTUEMART_NONE');
-		foreach ($orderStates as $orderState) {
-			$orderStatusList[$orderState->order_status_code] = JText::_($orderState->order_status_name);
-		}*/
-
 		$this->assignRef('orderStatusModel', $orderStatusModel);
 
-/*
-		$oderstatusModel = VmModel::getModel('Orderstatus');
-		$orderStatusList = $oderstatusModel->getOrderStatusList();
-		$this->assignRef('orderStatusList', $orderStatusList);
-*/
 		$currConverterList = $model->getCurrencyConverterList();
 		$this->assignRef('currConverterList', $currConverterList);
 		$moduleList = $model->getModuleList();
 		$this->assignRef('moduleList', $moduleList);
-		//$contentLinks = $model->getContentLinks();
-		//$this->assignRef('contentLinks', $contentLinks);
+
 		$activeLanguages = $model->getActiveLanguages( VmConfig::get('active_languages') );
 		$this->assignRef('activeLanguages', $activeLanguages);
 
@@ -127,10 +106,32 @@ class VirtuemartViewConfig extends VmView {
 
 		shopFunctions::checkSafePath();
 
+		$this -> checkVmUserVendor();
 		parent::display($tpl);
 	}
 
+	private function checkVmUserVendor(){
 
+		$db = JFactory::getDBO();
+		$multix = Vmconfig::get('multix','none');
+
+		$q = 'select * from #__virtuemart_vmusers where user_is_vendor = 1';// and virtuemart_vendor_id '.$vendorWhere.' limit 1';
+		$db->setQuery($q);
+		$r = $db->loadAssocList();
+
+		if (empty($r)){
+			vmWarn('Your Virtuemart installation contains an error: No user as marked as vendor. Please fix this in your phpMyAdmin and set #__virtuemart_vmusers.user_is_vendor = 1 and #__virtuemart_vmusers.virtuemart_vendor_id = 1 to one of your administrator users. Please update all users to be associated with virtuemart_vendor_id 1.');
+		} else {
+			if($multix=='none' and count($r)!=1){
+				vmWarn('You are using single vendor mode, but it seems more than one user is set as vendor');
+			}
+			foreach($r as $entry){
+				if(empty($entry['virtuemart_vendor_id'])){
+					vmWarn('The user with virtuemart_user_id = '.$entry['virtuemart_user_id'].' is set as vendor, but has no referencing vendorId.');
+				}
+			}
+		}
+	}
 
 }
 // pure php no closing tag

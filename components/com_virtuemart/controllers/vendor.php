@@ -39,7 +39,7 @@ class VirtueMartControllerVendor extends JController
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-		$this->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
+
 		$model = VmModel::getModel('vendor');
 		$mainframe = JFactory::getApplication();
 		$vars = array();
@@ -56,7 +56,7 @@ class VirtueMartControllerVendor extends JController
 		//$vendorUser = JFactory::getUser($userId);
 
 		if ( $commentSize<$min || $commentSize>$max || !$validMail ) {
-			$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=vendor&task=contact&virtuemart_vendor_id=' . $virtuemart_vendor_id ),JText::_('COM_VIRTUEMART_COMMENT_NOT_VALID_JS'));
+			$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=vendor&task=contact&virtuemart_vendor_id=' . $virtuemart_vendor_id , FALSE),JText::_('COM_VIRTUEMART_COMMENT_NOT_VALID_JS'));
 			return ;
 		}
 

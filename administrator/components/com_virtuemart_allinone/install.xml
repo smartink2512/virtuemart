@@ -3,8 +3,8 @@
 <install method="upgrade" type="component" version="1.5.0">
     <name>VirtueMart_allinone</name>
      <creationDate>${PHING.VM.RELDATE}</creationDate>
-    <copyright>${PHING.VM.COPYRIGHT}</copyright>
-    <license>${PHING.VM.LICENSE}</license>
+    <copyright>Copyright (C) 2004-2012 Virtuemart Team. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
    <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <version>${PHING.VM.RELEASE}</version>

@@ -37,24 +37,25 @@ class VirtuemartViewShipmentmethod extends VmView {
 		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		$this->loadHelper('vmpsplugin');
+		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		$model = VmModel::getModel();
-
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		$this->SetViewTitle();
 
-
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 		        $shipment = $model->getShipment();
-			$this->loadHelper('image');
-			// $this->loadHelper('html');
-			$this->loadHelper('parameterparser');
-			// jimport('joomla.html.pane');
+			if (!class_exists('VmImage'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
+
+				if (!class_exists('vmParameters'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
+
 			 if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 			 $vendor_id = 1;
 			 $currency=VirtueMartModelVendor::getVendorCurrency ($vendor_id);
@@ -108,6 +109,10 @@ class VirtuemartViewShipmentmethod extends VmView {
 		if(empty($result)){
 			$app = JFactory::getApplication();
 			$app -> enqueueMessage(JText::_('COM_VIRTUEMART_NO_SHIPMENT_PLUGINS_INSTALLED'));
+		}
+
+		foreach ($result as &$sh) {
+			$sh['name'] = JText::_($sh['name']);
 		}
 		return JHtml::_('select.genericlist', $result, 'shipment_jplugin_id', null, $ext_id, 'name', $selected);
 	}

@@ -23,18 +23,15 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 <div class="product-fields">
 	    <?php
 	    $custom_title = null;
+		vmdebug('$this->product->customfieldsSorted[$this->position] '.$this->position,$this->product->customfieldsSorted[$this->position]);
 	    foreach ($this->product->customfieldsSorted[$this->position] as $field) {
-
-		    //if($field->)
-
 	    	if ( $field->is_hidden ) //OSP http://forum.virtuemart.net/index.php?topic=99320.0
 	    		continue;
 		    $field->row = $this->row;
 		    $this->customfieldsModel -> displayProductCustomfieldFE ($this->product, $field);
-		    //vmdebug('My customfields',$field);
 			if ($field->display) {
 	    ?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
-		    <?php if ($field->custom_title != $custom_title) { ?>
+		    <?php if ($field->custom_title != $custom_title && $field->show_title) { ?>
 			    <span class="product-fields-title" ><?php echo JText::_($field->custom_title); ?></span>
 			    <?php
 			    if ($field->custom_tip)

@@ -48,8 +48,8 @@ class TableProduct_prices extends VmTableData {
     /** @var string Product currency */
     var $product_currency = null;
 
-    var $product_price_publish_up = null;
-    var $product_price_publish_down = null;
+    var $product_price_publish_up = 0;
+    var $product_price_publish_down = 0;
 
     /** @var int Price quantity start */
     var $price_quantity_start = null;
@@ -58,7 +58,7 @@ class TableProduct_prices extends VmTableData {
 
     /**
      * @author RolandD
-     * @param $db A database connector object
+     * @param JDataBase $db
      */
     function __construct(&$db) {
         parent::__construct('#__virtuemart_product_prices', 'virtuemart_product_price_id', $db);
@@ -66,6 +66,7 @@ class TableProduct_prices extends VmTableData {
         $this->setPrimaryKey('virtuemart_product_price_id');
 		$this->setLoggable();
 		$this->setTableShortCut('pp');
+		$this->_updateNulls = true;
     }
 
     /**
@@ -79,10 +80,10 @@ class TableProduct_prices extends VmTableData {
 			$this->product_price = str_replace(array(',',' '),array('.',''),$this->product_price);
 		}
 
-		if(!empty($this->product_override_price)){
+		if(isset($this->product_override_price)){
 			$this->product_override_price = str_replace(array(',',' '),array('.',''),$this->product_override_price);
 		}
-		
+
 		return parent::check();
 	}
 

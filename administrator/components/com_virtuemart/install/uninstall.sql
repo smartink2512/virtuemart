@@ -26,6 +26,7 @@ DROP TABLE
 `#__virtuemart_product_manufacturers`,
 `#__virtuemart_product_prices`,
 `#__virtuemart_product_producttypes`,
+`#__virtuemart_product_relations`,
 `#__virtuemart_rating_reviews`,
 `#__virtuemart_producttypes`,
 `#__virtuemart_producttype_customfields`,

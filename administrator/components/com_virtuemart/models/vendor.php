@@ -93,6 +93,7 @@ class VirtueMartModelVendor extends VmModel {
 				$this->_data->vendor_accepted_currencies = array();
 			}
 
+			//Todo, check this construction
 			$xrefTable = $this->getTable ('vendor_medias');
 			$this->_data->virtuemart_media_id = $xrefTable->load ($this->_id);
 
@@ -190,12 +191,12 @@ class VirtueMartModelVendor extends VmModel {
 // 	$dbv = $table->getDBO();
 // 	if(empty($this->_id)) $this->_id = $dbv->insertid();
 		if (empty($this->_id)) {
-			$this->_id = $table->virtuemart_vendor_id;
+			$data['virtuemart_vendor_id'] = $this->_id = $table->virtuemart_vendor_id;
 		}
 
 		if ($this->_id != $oldVendorId) {
 
-			vmdebug('Developer notice, tried to update vendor xref should not appear in singlestore');
+			vmdebug('Developer notice, tried to update vendor xref should not appear in singlestore $oldVendorId = '.$oldVendorId.' newId = '.$this->_id);
 
 			//update user table
 			$usertable = $this->getTable ('vmusers');
@@ -238,17 +239,22 @@ class VirtueMartModelVendor extends VmModel {
 	 * @param $_vendorId Vendor ID
 	 * @return string Currency code
 	 */
+
+	static $_vendorCurrencies = array();
 	static function getVendorCurrency ($_vendorId) {
 
-		$db = JFactory::getDBO ();
+		if(!isset(self::$_vendorCurrencies[$_vendorId])){
+			$db = JFactory::getDBO ();
 
-		$q = 'SELECT *  FROM `#__virtuemart_currencies` AS c
+			$q = 'SELECT *  FROM `#__virtuemart_currencies` AS c
 			, `#__virtuemart_vendors` AS v
 			WHERE v.virtuemart_vendor_id = ' . (int)$_vendorId . '
 			AND   v.vendor_currency = c.virtuemart_currency_id';
-		$db->setQuery ($q);
-		$r = $db->loadObject ();
-		return $r;
+			$db->setQuery ($q);
+			self::$_vendorCurrencies[$_vendorId] = $db->loadObject ();
+		}
+
+		return self::$_vendorCurrencies[$_vendorId];
 	}
 
 	/**
@@ -267,7 +273,7 @@ class VirtueMartModelVendor extends VmModel {
 	function getUserIdByOrderId ($virtuemart_order_id) {
 
 		if (empty ($virtuemart_order_id)) {
-			return;
+			return 0;
 		}
 		$virtuemart_order_id = (int)$virtuemart_order_id;
 		$q = "SELECT `virtuemart_user_id` FROM `#__virtuemart_orders` WHERE `virtuemart_order_id`='.$virtuemart_order_id'";

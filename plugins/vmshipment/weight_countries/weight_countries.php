@@ -29,17 +29,12 @@ if (!class_exists ('vmPSPlugin')) {
  */
 class plgVmShipmentWeight_countries extends vmPSPlugin {
 
-	// instance of class
-	public static $_this = FALSE;
-
 	/**
 	 * @param object $subject
 	 * @param array  $config
 	 */
 	function __construct (& $subject, $config) {
 
-		//if (self::$_this)
-		//   return self::$_this;
 		parent::__construct ($subject, $config);
 
 		$this->_loggable = TRUE;
@@ -49,9 +44,6 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
 
-		// 		self::$_this
-		//$this->createPluginTable($this->_tablename);
-		//self::$_this = $this;
 	}
 
 	/**
@@ -112,6 +104,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 */
 	function plgVmConfirmedOrder (VirtueMartCart $cart, $order) {
 
+	
 		if (!($method = $this->getVmPluginMethod ($order['details']['BT']->virtuemart_shipmentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
 		}
@@ -216,7 +209,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 		$orderWeight = $this->getOrderWeight ($cart, $method->weight_unit);
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-
+		$type = (($cart->ST == 0) ? 'BT' : 'ST');
 		$countries = array();
 		if (!empty($method->countries)) {
 			if (!is_array ($method->countries)) {
@@ -248,38 +241,50 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		} else {
 			$orderamount_cond = FALSE;
 		}
-		if (isset($address['zip'])) {
-			$zip_cond = $this->testRange($address['zip'],$method,'zip_start','zip_stop','zip');
-		} else {
-			$zip_cond = FALSE;
-		}
 
-		//$zip_cond = $this->_zipCond ($address['zip'], $method);
+		$userFieldsModel =VmModel::getModel('Userfields');
+		if ($userFieldsModel->fieldPublished('zip', $type)){
+			if (isset($address['zip'])) {
 
-
-		if (!isset($address['virtuemart_country_id'])) {
-			$address['virtuemart_country_id'] = 0;
-		}
-
-		if (in_array ($address['virtuemart_country_id'], $countries) || count ($countries) == 0) {
-
-			//vmdebug('checkConditions '.$method->shipment_name.' fit ',$weight_cond,(int)$zip_cond,$nbproducts_cond,$orderamount_cond);
-
-			$allconditions = (int) $weight_cond + (int)$zip_cond + (int)$nbproducts_cond + (int)$orderamount_cond;
-			if($allconditions === 4){
-				return TRUE;
+				$zip_cond = $this->testRange($address['zip'],$method,'zip_start','zip_stop','zip');
 			} else {
-				return FALSE;
-			}
-			//$cond=$weight_cond AND $zip_cond AND $nbproducts_cond AND $orderamount_cond;
 
-/*			if ($cond) {
-				vmdebug('checkConditions '.$method->name.' fits?');
-				// this line does not work http://forum.virtuemart.net/index.php?topic=104642.15
-			//if ($weight_cond AND $zip_cond AND $nbproducts_cond AND $orderamount_cond) {
-				return TRUE;
-			}*/
+				$zip_cond = false;
+			}
+		} else {
+			$zip_cond = true;
 		}
+
+		if ($userFieldsModel->fieldPublished('virtuemart_country_id', $type)){
+
+			if (!isset($address['virtuemart_country_id'])) {
+				$address['virtuemart_country_id'] = 0;
+			}
+
+
+			if (in_array ($address['virtuemart_country_id'], $countries) || count ($countries) == 0) {
+
+				//vmdebug('checkConditions '.$method->shipment_name.' fit ',$weight_cond,(int)$zip_cond,$nbproducts_cond,$orderamount_cond);
+				vmdebug('shipmentmethod '.$method->shipment_name.' = TRUE for variable virtuemart_country_id = '.implode($countries,', ').', Reason: Country in rule or none set');
+				$country_cond = true;
+			}
+			else{
+				vmdebug('shipmentmethod '.$method->shipment_name.' = FALSE for variable virtuemart_country_id = '.implode($countries,', ').', Reason: Country does not fit');
+				$country_cond = false;
+			}
+		} else {
+			vmdebug('shipmentmethod '.$method->shipment_name.' = TRUE for variable virtuemart_country_id, Reason: no boundary conditions set');
+			$country_cond = true;
+		}
+
+		$allconditions = (int) $weight_cond + (int)$zip_cond + (int)$nbproducts_cond + (int)$orderamount_cond + (int)$country_cond;
+		if($allconditions === 5){
+			return TRUE;
+		} else {
+
+			return FALSE;
+		}
+
 		vmdebug('checkConditions '.$method->name.' does not fit');
 		return FALSE;
 	}
@@ -335,27 +340,36 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		if(!empty($method->$floor) and !empty($method->$ceiling)){
 			$cond = (($value >= $method->$floor AND $value <= $method->$ceiling));
 			if(!$cond){
-				vmdebug('FALSE The variable '.$name.' = '.$value.' of the shipmentmethod '.$method->shipment_name.' is NOT within Range of the condition from '.$method->$floor.' to '.$method->$ceiling);
+				$result = 'FALSE';
+				$reason = 'is NOT within Range of the condition from '.$method->$floor.' to '.$method->$ceiling;
 			} else {
-				vmdebug('TRUE The variable '.$name.' = '.$value.' of the shipmentmethod '.$method->shipment_name.' is within Range of the condition from '.$method->$floor.' to '.$method->$ceiling);
+				$result = 'TRUE';
+				$reason = 'is within Range of the condition from '.$method->$floor.' to '.$method->$ceiling;
 			}
 		} else if(!empty($method->$floor)){
 			$cond = ($value >= $method->$floor);
 			if(!$cond){
-				vmdebug('FALSE The variable '.$name.' = '.$value.' of the shipmentmethod '.$method->shipment_name.' is not at least '.$method->$floor);
+				$result = 'FALSE';
+				$reason = 'is not at least '.$method->$floor;
 			} else {
-				vmdebug('TRUE The variable '.$name.' = '.$value.' of the shipmentmethod '.$method->shipment_name.' is over min limit '.$method->$floor);
+				$result = 'TRUE';
+				$reason = 'is over min limit '.$method->$floor;
 			}
 		} else if(!empty($method->$ceiling)){
 			$cond = ($value <= $method->$ceiling);
 			if(!$cond){
-				vmdebug('FALSE The variable '.$name.' = '.$value.' of the shipmentmethod '.$method->shipment_name.' is over '.$method->$ceiling);
+				$result = 'FALSE';
+				$reason = 'is over '.$method->$ceiling;
 			} else {
-				vmdebug('TRUE The variable '.$name.' = '.$value.' of the shipmentmethod '.$method->shipment_name.' is lower than the set '.$method->$ceiling);
+				$result = 'TRUE';
+				$reason = 'is lower than the set '.$method->$ceiling;
 			}
 		} else {
-			vmdebug('The value '.$name.' = '.$value.' passed, no boundary conditions set for the shipmentmethod '.$method->shipment_name);// the range from '.$method->$floor.' to '.$method->$ceiling.' of the shipmentmethod '.$method->shipment_name);
+			$result = 'TRUE';
+			$reason = 'no boundary conditions set';
 		}
+
+		vmdebug('shipmentmethod '.$method->shipment_name.' = '.$result.' for variable '.$name.' = '.$value.' Reason: '.$reason);
 		return $cond;
 	}
 
@@ -424,6 +438,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		if ($shipCounter > 1) {
 			return 0;
 		}
+
 		return $this->onCheckAutomaticSelected ($cart, $cart_prices, $shipCounter);
 	}
 

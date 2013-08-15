@@ -32,7 +32,7 @@ class TableCalc_states extends VmTableXarray {
 
 	/**
 	 * @author Max Milbers
-	 * @param $db A database connector object
+	 * @param JDataBase $db
 	 */
 	function __construct(&$db){
 		parent::__construct('#__virtuemart_calc_states', 'id', $db);

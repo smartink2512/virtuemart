@@ -1,5 +1,4 @@
 <?php
-
 /**
 *
 * Orders table
@@ -8,7 +7,7 @@
 * @subpackage Orders
 * @author RolandD
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2012 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -41,13 +40,15 @@ class TableOrders extends VmTable {
 	/** @var int Order number */
 	var $order_number = NULL;
 	var $order_pass = NULL;
-
+	var $customer_number = NULL;
 	/** @var decimal Order total */
 	var $order_total = 0.00000;
 	/** @var decimal Products sales prices */
 	var $order_salesPrice = 0.00000;
 	/** @var decimal Order Bill Tax amount */
 	var $order_billTaxAmount = 0.00000;
+	/** @var string Order Bill Tax */
+	var $order_billTax = 0;
 	/** @var decimal Order Bill Tax amount */
 	var $order_billDiscountAmount = 0.00000;
 	/** @var decimal Order  Products Discount amount */
@@ -156,13 +157,14 @@ class TableOrders extends VmTable {
 			//Can we securely prevent this just using
 		//	'SELECT `shipment_element` FROM `#__virtuemart_shipmentmethods` , `#__virtuemart_orders`
 		//	WHERE `#__virtuemart_shipmentmethods`.`virtuemart_shipmentmethod_id` = `#__virtuemart_orders`.`virtuemart_shipmentmethod_id` AND `virtuemart_order_id` = ' . $id );
-		}
-		$shipmentTable = '#__virtuemart_shipment_plg_'. $shipmentName;
+		} else {
+			$shipmentTable = '#__virtuemart_shipment_plg_'. $shipmentName;
 
-		$this->_db->setQuery('DELETE from `'.$shipmentTable.'` WHERE `virtuemart_order_id` = ' . $id);
-		if ($this->_db->query() === false) {
-			vmError('TableOrders delete Order shipmentTable = '.$shipmentTable.' `virtuemart_order_id` = '.$id.' dbErrorMsg '.$this->_db->getError());
-			return false;
+			$this->_db->setQuery('DELETE from `'.$shipmentTable.'` WHERE `virtuemart_order_id` = ' . $id);
+			if ($this->_db->query() === false) {
+				vmError('TableOrders delete Order shipmentTable = '.$shipmentTable.' `virtuemart_order_id` = '.$id.' dbErrorMsg '.$this->_db->getError());
+				return false;
+			}
 		}
 
 		$_q = 'INSERT INTO `#__virtuemart_order_histories` ('

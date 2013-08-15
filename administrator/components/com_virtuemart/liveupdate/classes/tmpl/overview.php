@@ -78,7 +78,7 @@ defined('_JEXEC') or die();
 			</div>
 			<div class="liveupdate-row row0">
 			<iframe src="http://virtuemart.net/index.php?option=com_content&id=416&tmpl=component" width="90%" height="400" name="Live update information">
-  <p>Your browser blocks to display iFrames, pleasee use the following link instead: <a href="http://virtuemart.net/index.php?option=com_content&id=416&tmpl=component">Live update information</a></p>
+  <p>Your browser blocks to display iFrames, please use the following link instead: <a href="http://virtuemart.net/index.php?option=com_content&id=416&tmpl=component">Live update information</a></p>
 </iframe>
 			</div>
 		</div>

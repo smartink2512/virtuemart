@@ -8,6 +8,7 @@ defined('_JEXEC') or die('Restricted access');
 * @package	VirtueMart
 * @subpackage  Calculation tool
 * @author Max Milbers
+* @author mediaDESIGN> St.Kraft 2013-02-24 manufacturer relation added
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -35,11 +36,13 @@ class VirtueMartModelCalc extends VmModel {
 
     	parent::__construct();
 
-		$this->setMainTable('calcs');
-		$this->setToggleName('calc_shopper_published');
-		$this->setToggleName('calc_vendor_published');
-	    $this->setToggleName('shared');
-		$this->addvalidOrderingFieldName(array('virtuemart_category_id','virtuemart_country_id','virtuemart_state_id','virtuemart_shoppergroup_id'));
+			$this->setMainTable('calcs');
+			$this->setToggleName('calc_shopper_published');
+			$this->setToggleName('calc_vendor_published');
+	  	$this->setToggleName('shared');
+			$this->addvalidOrderingFieldName(array('virtuemart_category_id','virtuemart_country_id','virtuemart_state_id','virtuemart_shoppergroup_id'
+				,'virtuemart_manufacturer_id'
+			)); 
     }
 
 
@@ -50,8 +53,8 @@ class VirtueMartModelCalc extends VmModel {
      */
 	public function getCalc(){
 
-  		if (empty($this->_data)) {
-  			if(empty($this->_db)) $this->_db = JFactory::getDBO();
+  	if (empty($this->_data)) {
+  		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
    		$this->_data = $this->getTable('calcs');
    		$this->_data->load((int)$this->_id);
@@ -80,11 +83,18 @@ class VirtueMartModelCalc extends VmModel {
 				vmError(get_class( $this ).' virtuemart_state_ids '.$xrefTable->getError());
 			}
 
+			$xrefTable = $this->getTable('calc_manufacturers');
+			$this->_data->virtuemart_manufacturers = $xrefTable->load($this->_id);
+			if ( $xrefTable->getError() ) {
+				vmError(get_class( $this ).' calc_manufacturers '.$xrefTable->getError());
+			}
+
+			
 			JPluginHelper::importPlugin('vmcalculation');
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('plgVmGetPluginInternalDataCalc',array(&$this->_data));
 
-  		}
+  	}
 
 // 		if($errs = $this->getErrors()){
 // 			$app = JFactory::getApplication();
@@ -98,7 +108,7 @@ class VirtueMartModelCalc extends VmModel {
 	}
 
 	/**
-	 * Retireve a list of calculation rules from the database.
+	 * Retrieve a list of calculation rules from the database.
 	 *
      * @author Max Milbers
      * @param string $onlyPuiblished True to only retreive the published Calculation rules, false otherwise
@@ -138,6 +148,9 @@ class VirtueMartModelCalc extends VmModel {
 
 			/* Write the first 5 states in the list */
 			$data->calcStatesList = shopfunctions::renderGuiList('virtuemart_state_id','#__virtuemart_calc_states','virtuemart_calc_id',$data->virtuemart_calc_id,'state_name','#__virtuemart_states','virtuemart_state_id','state',4,false);
+
+			/* Write the first 5 manufacturers in the list */
+			$data->calcManufacturersList = shopfunctions::renderGuiList('virtuemart_manufacturer_id','#__virtuemart_calc_manufacturers','virtuemart_calc_id',$data->virtuemart_calc_id,'mf_name','#__virtuemart_manufacturers','virtuemart_manufacturer_id','manufacturer');
 
 			$query = 'SELECT `currency_name` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` = "'.(int)$data->calc_currency.'" ';
 			$this->_db->setQuery($query);
@@ -200,6 +213,12 @@ class VirtueMartModelCalc extends VmModel {
 		}
 
 		$xrefTable = $this->getTable('calc_states');
+    	$xrefTable->bindChecknStore($data);
+    	if($xrefTable->getError()){
+			vmError('Calculation store '.$xrefTable->getError());
+		}
+
+		$xrefTable = $this->getTable('calc_manufacturers');
     	$xrefTable->bindChecknStore($data);
     	if($xrefTable->getError()){
 			vmError('Calculation store '.$xrefTable->getError());
@@ -271,6 +290,7 @@ class VirtueMartModelCalc extends VmModel {
 		$sgrp = $this->getTable('calc_shoppergroups');
 		$countries = $this->getTable('calc_countries');
 		$states = $this->getTable('calc_states');
+		$manufacturers = $this->getTable('calc_manufacturers');
 
 		$ok = true;
 
@@ -299,6 +319,12 @@ class VirtueMartModelCalc extends VmModel {
 
 			if (!$states->delete($id)) {
 				vmError(get_class( $this ).'::remove '.$id.' '.$states->getError());
+				$ok = false;
+			}
+
+			// Mod. <mediaDESIGN> St.Kraft 2013-02-24
+			if (!$manufacturers->delete($id)) {
+				vmError(get_class( $this ).'::remove '.$id.' '.$manufacturers->getError());
 				$ok = false;
 			}
 

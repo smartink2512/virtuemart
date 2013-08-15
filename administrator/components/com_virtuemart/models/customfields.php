@@ -95,7 +95,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 	public static function getProductCustomSelectFieldList(){
 
-		$q = 'SELECT c.`virtuemart_custom_id`, `custom_parent_id`, c.`virtuemart_vendor_id`, `custom_jplugin_id`, `custom_element`, `admin_only`, `custom_title`, `custom_tip`,
+		$q = 'SELECT c.`virtuemart_custom_id`, `custom_parent_id`, c.`virtuemart_vendor_id`, `custom_jplugin_id`, `custom_element`, `admin_only`, `custom_title`, `show_title` , `custom_tip`,
 		c.`custom_value`, `custom_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `is_input`, `layout_pos`, `custom_param`, c.`shared`, c.`published`, c.`ordering`, ';
 		$q .= 'field.`virtuemart_customfield_id`, `virtuemart_product_id`, field.`customfield_value`, field.`customfield_price`,
 		field.`customfield_param`, field.`published` as fpublished, field.`override`, field.`disabler`, field.`ordering`
@@ -193,6 +193,24 @@ class VirtueMartModelCustomfields extends VmModel {
 			return $productCustoms;
 		} else {
 			return array();
+		}
+	}
+
+	/**
+	 *
+	 * Enter description here ...
+	 *
+	 * @param unknown_type $product_id
+	 * @return string|Ambigous <string, mixed, multitype:>
+	 */
+	function getProductParentRelation ($product_id) {
+
+		$this->_db->setQuery (' SELECT `custom_value` FROM `#__virtuemart_product_customfields` WHERE  `virtuemart_product_id` =' . (int)$product_id);
+		if ($childcustom = $this->_db->loadResult ()) {
+			return '(' . $childcustom . ')';
+		}
+		else {
+			return JText::_ ('COM_VIRTUEMART_CUSTOM_NO_PARENT_RELATION');
 		}
 	}
 
@@ -338,7 +356,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$thumb = $this->displayCustomMedia ($media_id,'category');
 					}
 					$display = '<input type="hidden" value="' . $product_id . '" name="field[' . $row . '][customfield_value]" />';
-					return $display . JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . $product_id), $thumb . ' ' . $category->category_name, array('title' => $category->category_name)) . $display;
+					return $display . JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . $product_id,FALSE), $thumb . ' ' . $category->category_name, array('title' => $category->category_name)) . $display;
 				}
 				else {
 					return 'no result';
@@ -349,6 +367,20 @@ class VirtueMartModelCustomfields extends VmModel {
 					return '';
 				}
 
+				$pModel = VmModel::getModel('product');
+				$related = $pModel->getProduct((int)$product_id,FALSE,FALSE,FALSE,1,FALSE);
+				$thumb ='';
+				if (!empty($related->virtuemart_media_id[0])) {
+					$thumb = $this->displayCustomMedia ($related->virtuemart_media_id[0]).' ';
+				} else {
+					$thumb = $this->displayCustomMedia (0).' ';
+				}
+				$display = '<input type="hidden" value="' . $product_id . '" name="field[' . $row . '][custom_value]" />';
+				$display .= JHTML::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
+				return $display;
+
+				/* Old method, original vm2.1 code of 2012, the code above is the new one of 2.0.22a
+				 *
 				$q = 'SELECT `product_name`,`product_sku`,`product_s_desc` FROM `#__virtuemart_products_' . VMLANG . '` AS l LEFT JOIN `#__virtuemart_products` using (`virtuemart_product_id`) WHERE `virtuemart_product_id`=' . (int)$product_id ;
 				$this->_db->setQuery ($q);
 				$related = $this->_db->loadObject ();
@@ -368,7 +400,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				}
 				$title= $related->product_s_desc?  $related->product_s_desc :'';
 				return $display . JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id=' . $product_id), $thumb . '<br /> ' . $related->product_name, array('title' => $title));
-				break;
+				break;*/
 
 
 		}
@@ -497,7 +529,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						}
 					}*/
 					//vmdebug('case S $customfield->is_list',$customfield->customfield_value);
-					if($customfield->is_input){
+					if(!empty($customfield->is_input)){
 
 						$options = array();
 						$values = explode (';', $customfield->custom_value);
@@ -514,7 +546,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$customfield->display =  JText::_ ($customfield->customfield_value);
 					}
 				} else {
-					if(isset($customfield->is_input)){
+					if(!empty($customfield->is_input)){
 
 						$options = $this->getCustomEmbeddedProductCustomFields($product->allIds,$customfield->virtuemart_custom_id);
 						//vmdebug('getProductCustomsFieldCart options',$options,$product->allIds);
@@ -978,5 +1010,19 @@ class VirtueMartModelCustomfields extends VmModel {
 		return $html;
 
 	}
+
+	private $_hidden = array();
+	/**
+	 * Use this to adjust the hidden fields of the displaycustomHandler to your form
+	 *
+	 * @author Max Milbers
+	 * @param string $name for exampel view
+	 * @param string $value for exampel custom
+	 */
+	public function addHidden ($name, $value = '') {
+
+		$this->_hidden[$name] = $value;
+	}
+
 }
 // pure php no closing tag

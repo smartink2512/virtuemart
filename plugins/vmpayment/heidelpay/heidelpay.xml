@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="plugin" version="2.5" group="vmpayment"
            method="upgrade">
-    <name>VMPAYMENT_HEIDELPAY</name>
+    <name>Heidelpay</name>
     <creationDate>12-Sep-2012</creationDate>
     <author>Heidelberger Payment GmbH</author>
     <authorEmail>info@heidelpay.de</authorEmail>
     <authorUrl>http://www.heidelpay.de</authorUrl>
     <copyright>Copyright Heidelberger Payment GmbH</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-    <version>12.09</version>
+    <version>13.07</version>
     <description><![CDATA[<h2>Virtuemart Plugin von:</h2><p><a href="http://www.Heidelpay.de" target="_blank"><img src="http://www.heidelpay.de/gfx/logo.gif" style="margin-right:20px;"/></a></p> ]]></description>
     <languages folder="languages">
         <language tag="de-DE" client="administrator">de-DE.plg_vmpayment_heidelpay.ini
@@ -61,6 +61,7 @@
                default="31HA07BC81A71E2A47DA94B6ADC524D8"/>
         <param type="spacer" default=""/>
         <param name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_STANDARD_CURRENCY" description="VMPAYMENT_STANDARD_CURRENCY_DESC"/>
+
         <param name="HEIDELPAY_TRANSACTION_MODE" type="radio" default="1"
                label="VMPAYMENT_HEIDELPAY_TRANSACTION_MODE" description="VMPAYMENT_HEIDELPAY_TRANSACTION_MODE_DESC">
             <option value="0">VMPAYMENT_HEIDELPAY_INTEGRATOR_TEST</option>
@@ -80,6 +81,8 @@
             <option value="IV">VMPAYMENT_HEIDELPAY_IV</option>
             <option value="PP">VMPAYMENT_HEIDELPAY_PP</option>
             <option value="VAPAYPAL">VMPAYMENT_HEIDELPAY_VAPAYPAL</option>
+            <option value="PCMANGIR">VMPAYMENT_HEIDELPAY_PCMANGIR</option>
+            <option value="PPBARPAY">VMPAYMENT_HEIDELPAY_BARPAY</option>
         </param>
 		<param type="spacer" default=""/>
         <param name="HEIDELPAY_PAYMENT_METHOD" type="radio" default="DB"

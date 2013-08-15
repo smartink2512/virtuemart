@@ -26,25 +26,30 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		parent::__construct($subject, $config);
 
 		$varsToPush = array(	'custom_size'=>array(0.0,'int'),
-						    	'custom_price_by_letter'=>array(0.0,'bool')
+						    		'custom_price_by_letter'=>array(0.0,'bool')
 		);
 
-		$this->setConfigParameterable('customfield_param',$varsToPush);
+		$this->setConfigParameterable('custom_params',$varsToPush);
 
 	}
 
 	// get product param for this plugin on edit
 	function plgVmOnProductEdit($field, $product_id, &$row,&$retValue) {
 		if ($field->custom_element != $this->_name) return '';
+		// $html .='<input type="text" value="'.$field->custom_size.'" size="10" name="custom_param['.$row.'][custom_size]">';
+		$this->parseCustomParams($field);
+
 		$html ='
 			<fieldset>
 				<legend>'. JText::_('VMCUSTOM_TEXTINPUT') .'</legend>
 				<table class="admintable">
-					'.VmHTML::row('input','VMCUSTOM_TEXTINPUT_SIZE','custom_param['.$row.'][custom_size]',$field->custom_size);
-		$options = array(0=>'VMCUSTOM_TEXTINPUT_PRICE_BY_INPUT',1=>'VMCUSTOM_TEXTINPUT_PRICE_BY_LETTER');
-		$html .= VmHTML::row('select','VMCUSTOM_TEXTINPUT_PRICE_BY_LETTER_OR_INPUT','custom_param['.$row.'][custom_price_by_letter]',$options,$field->custom_price_by_letter,'','value','text',false);
-
-		//$html .= ($field->custom_price_by_letter==1)?JText::_('VMCUSTOM_TEXTINPUT_PRICE_BY_LETTER'):JText::_('VMCUSTOM_TEXTINPUT_PRICE_BY_INPUT');
+					'.VmHTML::row('input','VMCUSTOM_TEXTINPUT_SIZE','custom_param['.$row.'][custom_size]',$field->custom_size).
+					'<tr>
+			<td class="key">'.
+				JText::_('VMCUSTOM_TEXTINPUT_PRICE_BY_LETTER_OR_INPUT').
+			'</td>
+			<td>';
+			$html .= ($field->custom_price_by_letter==1)?JText::_('VMCUSTOM_TEXTINPUT_PRICE_BY_LETTER'):JText::_('VMCUSTOM_TEXTINPUT_PRICE_BY_INPUT');
 			$html .='</td>
 		</tr>
 				</table>
@@ -54,12 +59,22 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		return true ;
 	}
 
-	function plgVmOnDisplayProductFE(&$product,&$group) {
-		if ($group->custom_element != $this->_name) return '';
-		$group->display .= $this->renderByLayout('default',array(&$product,&$group) );
-		return true;
-	}
+	/**
+	 * @ idx plugin index
+	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onDisplayProductFE()
+	 * @author Patrick Kohl
+	 * eg. name="customPlugin['.$idx.'][comment] save the comment in the cart & order
+	 */
+	function plgVmOnDisplayProductVariantFE($field,&$idx,&$group) {
+		// default return if it's not this plugin
+		 if ($field->custom_element != $this->_name) return '';
+		$this->getCustomParams($field);
+		$group->display .= $this->renderByLayout('default',array($field,&$idx,&$group ) );
 
+		return true;
+//         return $html;
+    }
+	//function plgVmOnDisplayProductFE( $product, &$idx,&$group){}
 	/**
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
 	 * @author Patrick Kohl
@@ -71,16 +86,20 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 	/**
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCart()
-	 * @author Max Milbers
+	 * @author Patrick Kohl
 	 */
 	function plgVmOnViewCart($product,$row,&$html) {
-
 		if (empty($product->productCustom->custom_element) or $product->productCustom->custom_element != $this->_name) return '';
+		if (!$plgParam = $this->GetPluginInCart($product)) return '' ;
 
-		foreach($product->customProductData[$product->productCustom->virtuemart_custom_id] as $name => $value){
-		//	vmdebug('plgVmOnViewCart ',$name,$value);
-			$html .='<span>'.JText::_($product->productCustom->custom_title).' '.$value['comment'].'</span>';
-		}
+		foreach($plgParam as $k => $item){
+
+			if(!empty($item['comment']) ){
+				if($product->productCustom->virtuemart_customfield_id==$k){
+					$html .='<span>'.JText::_($product->productCustom->custom_title).' '.$item['comment'].'</span>';
+				}
+			}
+		 }
 
 		return true;
     }
@@ -119,19 +138,12 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	}
 
 
-	function plgVmDeclarePluginParamsCustom(&$data){
-		return $this->declarePluginParams('custom',$data->custom_element, $data->custom_jplugin_id, $data);
+	function plgVmDeclarePluginParamsCustom($psType,$name,$id, &$data){
+		return $this->declarePluginParams('custom', $name, $id, $data);
 	}
 
-/*	function plgVmDeclarePluginParamsCustomfield(&$data){
-		return $this->declarePluginParams('custom',$data->custom_element, $data->custom_jplugin_id, $data);
-	}*/
-
-	function plgVmGetTablePluginParams($psType, $name, $id, &$xParams, &$varsToPush){
-		return $this->getTablePluginParams($psType, $name, $id, $xParams, $varsToPush);
-	}
-	function plgVmSetOnTablePluginParamsCustom($name, $id, &$table,$xParams){
-		return $this->setOnTablePluginParams($name, $id, $table,$xParams);
+	function plgVmSetOnTablePluginParamsCustom($name, $id, &$table){
+		return $this->setOnTablePluginParams($name, $id, $table);
 	}
 
 	/**
@@ -141,26 +153,22 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		return $this->onDisplayEditBECustom($virtuemart_custom_id,$customPlugin);
 	}
 
-	public function plgVmCalculateCustomVariant(&$product, &$productCustomsPrice,$variantValues){
+	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected){
 		if ($productCustomsPrice->custom_element !==$this->_name) return ;
-
-		//VmConfig::$echoDebug= 1;
-		//vmdebug('plgVmCalculateCustomVariant textinput',$variantValues);
-		if (!empty($productCustomsPrice->customfield_price)) {
+		$customVariant = $this->getCustomVariant($product, $productCustomsPrice,$selected);
+		if (!empty($productCustomsPrice->custom_price)) {
 			//TODO adding % and more We should use here $this->interpreteMathOp
 			// eg. to calculate the price * comment text length
 
-			//$selected = array_keys($variantValues);
-			//$customVariant = $variantValues[$selected[0]];
-			if (!empty($variantValues['comment'])) {
+			if (!empty($customVariant['comment'])) {
 				if ($productCustomsPrice->custom_price_by_letter ==1) {
-					$charcount = strlen ($variantValues['comment']);
+					$charcount = strlen ($customVariant['comment']);
 				} else {
 					$charcount = 1.0;
 				}
-				$productCustomsPrice->customfield_price = $charcount * $productCustomsPrice->customfield_price ;
+				$productCustomsPrice->custom_price = $charcount * $productCustomsPrice->custom_price ;
 			} else {
-				$productCustomsPrice->customfield_price = 0.0;
+				$productCustomsPrice->custom_price = 0.0;
 			}
 
 		}

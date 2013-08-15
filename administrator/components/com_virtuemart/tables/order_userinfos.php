@@ -23,52 +23,15 @@ defined('_JEXEC') or die('Restricted access');
 
 class TableOrder_userinfos extends VmTable {
 
-	/**
-	 * Constructor
-	 */
-	function __construct(&$_db)
-	{
-
+    /**
+     * @author Max Milbers
+     * @param string $_db
+     */
+    function __construct(&$_db){
 		parent::__construct('#__virtuemart_order_userinfos', 'virtuemart_order_userinfo_id', $_db);
 		parent::loadFields($_db);
 		$this->setLoggable();
 	}
 
-	/**
-	 * Add, change or drop userfields
-	 *
-	 * @param string $_act Action: ADD, DROP or CHANGE (synonyms available, see the switch cases)
-	 * @param string $_col Column name
-	 * @param string $_type Fieldtype
-	 * @return boolean True on success
-	 */
-	function _modifyColumn ($_act, $_col, $_type = '')
-	{
-		$_sql = "ALTER TABLE `#__virtuemart_order_userinfos` ";
-
-		$_check_act = strtoupper(substr($_act, 0, 3));
-		switch ($_check_act) {
-			case 'ADD':
-			case 'CRE': // Create
-				$_sql .= "ADD $_col $_type ";
-				break;
-			case 'DRO': // Drop
-			case 'DEL': // Delete
-				$_sql .= "DROP $_col ";
-				break;
-			case 'MOD': // Modify
-			case 'UPD': // Update
-			case 'CHA': // Change
-				$_sql .= "CHANGE $_col $_col $_type ";
-				break;
-		}
-		$this->_db->setQuery($_sql);
-		$this->_db->query();
-		if ($this->_db->getErrorNum() != 0) {
-			vmError(get_class( $this ).'::modify table - '.$this->_db->getErrorMsg());
-			return false;
-		}
-		return true;
-	}
 }
 // No closing tag

@@ -61,7 +61,10 @@ static function vmGetCharset() {
 
     /**
      * Generate HTML code for a row using VmHTML function
-     *
+     * works also with shopfunctions, for example
+	 * $html .= VmHTML::row (array('ShopFunctions', 'renderShopperGroupList'),
+	 * 			'VMCUSTOM_BUYER_GROUP_SHOPPER', $field->shopper_groups, TRUE, 'custom_param['.$row.'][shopper_groups][]', ' ');
+	 *
      * @func string  : function to call
      * @label string : Text Label
      * @args array : arguments
@@ -69,6 +72,9 @@ static function vmGetCharset() {
      */
     static function row($func,$label){
 		$VmHTML="VmHTML";
+		if (!is_array($func)) {
+			$func = array($VmHTML, $func);
+		}
 		$passedArgs = func_get_args();
 		array_shift( $passedArgs );//remove function
 		array_shift( $passedArgs );//remove label
@@ -77,14 +83,24 @@ static function vmGetCharset() {
 			    $args[] = &$passedArgs[$k];
 			}
 		$lang =JFactory::getLanguage();
-		$label = $lang->hasKey($label.'_TIP') ? '<span class="hasTip" title="'.JText::_($label.'_TIP').'">'.JText::_($label).'</span>' : JText::_($label) ;
+		if($lang->hasKey($label.'_TIP')){
+			$labelHint = JText::_($label.'_TIP');
+			$label = '<span class="hasTip" title="'.JText::_($label.'_TIP').'">'.JText::_($label).'</span>' ;
+		} //Fallback
+		else if($lang->hasKey($label.'_EXPLAIN')){
+			$labelHint = JText::_($label.'_EXPLAIN');
+			$label = '<span class="hasTip" title="'.JText::_($label.'_EXPLAIN').'">'.JText::_($label).'</span>' ;
+		} else {
+			$label = JText::_($label);
+		}
+
 		$html = '
 		<tr>
 			<td class="key">
 				'.$label.'
 			</td>
 			<td>
-				'.call_user_func_array(array($VmHTML, $func), $args).'
+				'.call_user_func_array($func, $args).'
 			</td>
 		</tr>';
 		return $html ;
@@ -95,7 +111,12 @@ static function vmGetCharset() {
 		return $lang->hasKey($value) ? JText::_($value) : $value;
 	}
 
-	/* simple raw render */
+	/**
+	 * The sense is unclear !
+	 * @deprecated
+	 * @param $value
+	 * @return mixed
+	 */
 	static function raw( $value ){
 		return $value;
 	}
@@ -116,7 +137,7 @@ static function vmGetCharset() {
 	else {
 	    $checked = '';
 	}
-	$htmlcode = '<input type="hidden" name="' . $name . '" value="' . $uncheckedValue . '">';
+	$htmlcode = '<input type="hidden" name="' . $name . '" value="' . $uncheckedValue . '" />';
 	$htmlcode .= '<input '.$extraAttribs.' id="' . $id . '" type="checkbox" name="' . $name . '" value="' . $checkedValue . '" ' . $checked . ' />';
 	return $htmlcode;
     }
@@ -136,7 +157,7 @@ static function vmGetCharset() {
 	 * @param string $extra More attributes when needed
 	 * @return string HTML drop-down list
 	 */
-	static function selectList($name, $value, $arrIn, $size=1, $multiple="", $extra="") {
+	static function selectList($name, $value, $arrIn, $size=1, $multiple="", $extra="", $data_placeholder='') {
 
 		$html = '';
 		if( empty( $arrIn ) ) {
@@ -148,9 +169,11 @@ static function vmGetCharset() {
 	        	 $arr=$arrIn;
 	        }
 		}
+		if (!empty($data_placeholder)) {
+			$data_placeholder='data-placeholder="'.JText::_($data_placeholder).'"';
+		}
 
-
-		$html = '<select class="inputbox" id="'.$name.'" name="'.$name.'" size="'.$size.'" '.$multiple.' '.$extra.'>';
+		$html = '<select class="inputbox" id="'.$name.'" name="'.$name.'" size="'.$size.'" '.$multiple.' '.$extra.' '.$data_placeholder.' >';
 
 		while (list($key, $val) = each($arr)) {
 //		foreach ($arr as $key=>$val){
@@ -176,6 +199,58 @@ static function vmGetCharset() {
 		return $html;
 	}
 
+
+//	/**
+//	 *
+//	 */
+//    function selectListParamParser( $arrIn, $tag_name, $tag_attribs, $key, $text, $selected, $required=0 ) {
+////    function selectListParamParser($tag_name ,$tag_attribs ,$arrIn , $key, $text, $selected, $required=0 ) {
+//
+//        echo '<br />$tag_name '.$tag_name;
+//        echo '<br />$tag_attribs '.$tag_attribs;
+//        echo '<br />$key '.$key;
+//        echo '<br />$text '.$text;
+//        echo '<br />$selected '.$selected;
+//        if(empty($arrIn)){
+//        	 return 'Error selectListParamParser no first argument given';
+//        }
+//        if(!is_array($arrIn)){
+//        	 $arr=array($arrIn);
+//        } else {
+//        	 $arr=$arrIn;
+//        }
+//        reset( $arr );
+//        $html = "\n<select name=\"$tag_name\" id=\"".str_replace('[]', '', $tag_name)."\" $tag_attribs>";
+//        if(!$required) $html .= "\n\t<option value=\"\">".JText::_('COM_VIRTUEMART_SELECT')."</option>";
+//        $n=count( $arr );
+//        for ($i=0; $i < $n; $i++ ) {
+//
+//                $k = stripslashes($arr[$i]->$key);
+//                $t = stripslashes($arr[$i]->$text);
+//                $id = isset($arr[$i]->id) ? $arr[$i]->id : null;
+//
+//                $extra = '';
+//                $extra .= $id ? " id=\"" . $arr[$i]->id . "\"" : '';
+//                if (is_array( $selected )) {
+//                        foreach ($selected as $obj) {
+//                                $k2 = stripslashes($obj->$key);
+//                                if ($k == $k2) {
+//                                        $extra .= " selected=\"selected\"";
+//                                        break;
+//                                }
+//                        }
+//                } else {
+//                        $extra .= ($k == stripslashes($selected) ? " selected=\"selected\"" : '');
+//                }
+//                $html .= "\n\t<option value=\"".$k."\"$extra>";
+//				if( $t[0] == '_' ) $t = substr( $t, 1 );
+//				$html .= JText::_($t);
+//                $html .= "</option>";
+//        }
+//        $html .= "\n</select>\n";
+//        return $html;
+//	}
+
 	/**
 	 * Creates a Radio Input List
 	 *
@@ -185,7 +260,7 @@ static function vmGetCharset() {
 	 * @param string $extra
 	 * @return string
 	 */
-	static function radioList($name, $value, &$arr, $extra="") {
+	static function radioList($name, $value, &$arr, $extra="", $separator='<br />') {
 		$html = '';
 		if( empty( $arr ) ) {
 			$arr = array();
@@ -205,7 +280,7 @@ static function vmGetCharset() {
 				}
 			}
 			$html .= '<input type="radio" name="'.$name.'" id="'.$name.$i.'" value="'.htmlspecialchars($key, ENT_QUOTES).'" '.$checked.' '.$extra." />\n";
-			$html .= '<label for="'.$name.$i++.'">'.$val."</label><br />\n";
+			$html .= '<label for="'.$name.$i++.'">'.$val."</label>".$separator."\n";
 		}
 
 		return $html;
@@ -241,7 +316,7 @@ static function vmGetCharset() {
 	 * @param string $name
 	 * @param string $value
 	 */
-	public static function input($name,$value,$class='class="inputbox"',$readonly='',$size='45',$maxlength='255',$more=''){
+	public static function input($name,$value,$class='class="inputbox"',$readonly='',$size='37',$maxlength='255',$more=''){
 		return '<input type="text" '.$readonly.' '.$class.' id="'.$name.'" name="'.$name.'" size="'.$size.'" maxlength="'.$maxlength.'" value="'.htmlspecialchars($value).'" />'.$more;
 	}
 
@@ -280,14 +355,17 @@ static function vmGetCharset() {
 	 * @param boolean $zero add  a '0' value in the option
 	 * return a select list
 	 */
-	public static function select($name, $options, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true){
+	public static function select($name, $options, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true, $chosenDropDowns=true){
 		if ($zero==true) {
 		$option  = array($key =>"0", $text => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
 		$options = array_merge(array($option), $options);
 		}
+		if ($chosenDropDowns) {
+			vmJsApi::chosenDropDowns();
+			$attrib .= ' class="vm-chzn-select"';
+		}
 		return JHTML::_('select.genericlist', $options,$name,$attrib,$key,$text,$default,false,true);
 	}
-
 	/**
 	 * renders the hidden input
 	 * @author Max Milbers

@@ -4,7 +4,9 @@ defined('_JEXEC') or die('Restricted access');
 
 /* ID for jQuery dropdown */
 $ID = str_replace('.', '_', substr(microtime(true), -8, 8));
-$js="jQuery(document).ready(function() {
+$js="
+//<![CDATA[
+jQuery(document).ready(function() {
 		jQuery('#VMmenu".$ID." li.VmClose ul').hide();
 		jQuery('#VMmenu".$ID." li .VmArrowdown').click(
 		function() {
@@ -15,11 +17,12 @@ $js="jQuery(document).ready(function() {
 				jQuery(this).parents('li').addClass('VmOpen').removeClass('VmClose');
 			}
 		});
-	});" ;
+	});
+//]]>
+" ;
 
 		$document = JFactory::getDocument();
-		$document->addScriptDeclaration($js);
-?>
+		$document->addScriptDeclaration($js);?>
 
 <ul class="VMmenu<?php echo $class_sfx ?>" id="<?php echo "VMmenu".$ID ?>" >
 <?php foreach ($categories as $category) {

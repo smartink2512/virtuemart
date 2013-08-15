@@ -74,11 +74,13 @@ class TableCustoms extends VmTable {
 	var $published		= 1;
 	/** @var int listed Order */
 	var $ordering	= 0;
+	/** @var int show title or not */
+	var $show_title		= 1;
 
 
 	/**
 	 * @author  Patrick Kohl
-	 * @param $db A database connector object
+	 * @param JDataBase $db
 	 */
 	function __construct(&$db) {
 		parent::__construct('#__virtuemart_customs', 'virtuemart_custom_id', $db);
@@ -88,7 +90,6 @@ class TableCustoms extends VmTable {
 
 		$this->setLoggable();
 		$this->setOrderable('ordering',false);
-
 		$this->setParameterable('custom_param',array());
 	}
 

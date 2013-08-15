@@ -37,7 +37,8 @@ class VirtuemartViewRatings extends VmView {
 		//Load helpers
 
 
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		/* Get the review IDs to retrieve (input variable may be cid, cid[] or virtuemart_rating_review_id */
 		$cids = JRequest::getVar('cid', 0);
@@ -64,7 +65,12 @@ class VirtuemartViewRatings extends VmView {
 			case 'listreviews':
 				/* Get the data */
 				$this->addStandardDefaultViewLists($model);
-				$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
+				$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',array(),'', 'array');
+				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
+					$virtuemart_product_id = (int)$virtuemart_product_id[0];
+				} else {
+					$virtuemart_product_id = (int)$virtuemart_product_id;
+				}
 				$reviewslist = $model->getReviews($virtuemart_product_id);
 
 				$lists = array();

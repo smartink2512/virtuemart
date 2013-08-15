@@ -31,10 +31,8 @@ else {
 
 class plgVMPaymentPayzen extends vmPSPlugin {
 
-
 	function __construct (& $subject, $config) {
-		//if (self::$_this)
-		//   return self::$_this;
+
 		parent::__construct ($subject, $config);
 
 		$this->_loggable = TRUE;
@@ -44,7 +42,6 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
 
-		//self::$_this = $this;
 	}
 
 	protected function getVmPluginCreateTableSQL () {
@@ -210,7 +207,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		$available_languages = !is_array ($available_languages) ? $available_languages : (in_array ("", $available_languages) ? "" : implode (";", $available_languages));
 		$api->set ('available_languages', $available_languages);
 
-		$api->set ('contrib', 'VirtueMart${PHING.VM.RELEASE}');
+		$api->set ('contrib', 'VirtueMart2.0.12f');
 
 		// Set customer info
 		// $usr = JFactory::getUser();

@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage Manufacturer
-* @author RolandD, Patrick Kohl, Max Milbers
+* @author Patrick Kohl, Max Milbers
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -26,7 +26,7 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  *
  * @package VirtueMart
  * @subpackage Manufacturer
- * @author RolandD, Max Milbers
+ * @author Max Milbers
  * @todo Replace getOrderUp and getOrderDown with JTable move function. This requires the virtuemart_product_category_xref table to replace the ordering with the ordering column
  */
 class VirtueMartModelManufacturer extends VmModel {
@@ -48,7 +48,6 @@ class VirtueMartModelManufacturer extends VmModel {
 
     /**
      * Load a single manufacturer
-     * @author Max Milbers
      */
      public function getManufacturer() {
 
@@ -62,7 +61,7 @@ class VirtueMartModelManufacturer extends VmModel {
 
 			$_manus[$this->_id] = $this->_data;
 	    }
-     	
+
      	return $_manus[$this->_id];
      }
 
@@ -96,7 +95,7 @@ class VirtueMartModelManufacturer extends VmModel {
 
     /**
      * Returns a dropdown menu with manufacturers
-     * @author RolandD
+     * @author Max Milbers
 	 * @return object List of manufacturer to build filter select box
 	 */
 	function getManufacturerDropDown() {

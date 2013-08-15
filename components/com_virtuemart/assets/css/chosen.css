@@ -1,12 +1,12 @@
 /* @group Base */
 .chzn-container {
-  font-size: 13px;
+  /* font-size: 13px; */
   position: relative;
   display: inline-block;
   zoom: 1;
   *display: inline;
 }
-.tabs select{ width:300px;}
+.tabs select{ width:180px;}
 .chzn-container .chzn-drop {
   background: #fff;
   border: 1px solid #aaa;
@@ -48,6 +48,7 @@
   position: relative;
   height: 23px;
   line-height: 24px;
+
   padding: 0 0 0 8px;
   color: #444444;
   text-decoration: none;
@@ -68,7 +69,7 @@
   top: 6px;
   width: 12px;
   height: 13px;
-  font-size: 1px;
+  /* font-size: 1px; */
   background: url(chosen-sprite.png) right top no-repeat;
 }
 .chzn-container-single .chzn-single abbr:hover {
@@ -117,6 +118,7 @@
   -moz-background-clip   : padding;
   -webkit-background-clip: padding-box;
   background-clip        : padding-box;
+
 }
 /* @end */
 
@@ -327,6 +329,7 @@
   -moz-border-radius-bottomright: 0;
   border-bottom-left-radius : 0;
   border-bottom-right-radius: 0;
+
 }
 .chzn-container-active .chzn-single-with-drop div {
   background: transparent;
@@ -334,6 +337,7 @@
 }
 .chzn-container-active .chzn-single-with-drop div b {
   background-position: -18px 1px;
+
 }
 .chzn-container-active .chzn-choices {
   -webkit-box-shadow: 0 0 5px rgba(0,0,0,.3);

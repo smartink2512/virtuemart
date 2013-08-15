@@ -40,7 +40,10 @@ class TableUsergroups extends VmTable {
 
 	var $published = 0;
 
-	function __construct(&$db)
+    /**
+     * @param JDataBase $db
+     */
+    function __construct(&$db)
 	{
 		parent::__construct('#__virtuemart_permgroups', 'virtuemart_permgroup_id', $db);
 

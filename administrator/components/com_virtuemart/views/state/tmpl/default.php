@@ -45,7 +45,7 @@ AdminUIHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_STATE_3_CODE'); ?>
 		    </th>
 		    <th width="20">
-			<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 		    </th>
 		</tr>
 	    </thead>

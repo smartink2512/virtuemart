@@ -28,19 +28,5 @@ jimport('joomla.application.component.controller');
  */
 class VirtuemartControllerAbout extends JController
 {
-	/**
-	 * Method to display the view
-	 *
-	 * @access	public
-	 */
-	// function display()
-	// {
 
-		// $document = JFactory::getDocument();
-		// $viewName = JRequest::getWord('view', '');
-		// $viewType = $document->getType();
-		// $view = $this->getView($viewName, $viewType);
-
-		// parent::display();
-	// }
 }

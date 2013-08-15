@@ -240,8 +240,8 @@ td.flag-nb,.flag-nb{ background: url(../images/flag/nb.png) no-repeat 0 0; paddi
 td.flag-nl,.flag-nl{ background: url(../images/flag/nl.png) no-repeat 0 0; padding-left:20px !important;}
 td.flag-nn,.flag-nn{ background: url(../images/flag/nn.png) no-repeat 0 0; padding-left:20px !important;}
 td.flag-pl,.flag-pl{ background: url(../images/flag/pl.png) no-repeat 0 0; padding-left:20px !important;}
-td.flag-pt,.flag-pt-br{ background: url(../images/flag/pt-br.png) no-repeat 0 0; padding-left:20px !important;}
-td.flag-pt,.flag-pt-pt{ background: url(../images/flag/pt-pt.png) no-repeat 0 0; padding-left:20px !important;}
+td.flag-br,.flag-br{ background: url(../images/flag/br.png) no-repeat 0 0; padding-left:20px !important;}
+td.flag-pt,.flag-pt{ background: url(../images/flag/pt.png) no-repeat 0 0; padding-left:20px !important;}
 td.flag-ro,.flag-ro{ background: url(../images/flag/ro.png) no-repeat 0 0; padding-left:20px !important;}
 td.flag-ru,.flag-ru{ background: url(../images/flag/ru.png) no-repeat 0 0; padding-left:20px !important;}
 td.flag-sco,.flag-sco{ background: url(../images/flag/sco.png) no-repeat 0 0; padding-left:20px !important;}
@@ -256,5 +256,5 @@ td.flag-tl,.flag-tl{ background: url(../images/flag/tl.png) no-repeat 0 0; paddi
 td.flag-tr,.flag-tr{ background: url(../images/flag/tr.png) no-repeat 0 0; padding-left:20px !important;}
 td.flag-uk,.flag-uk{ background: url(../images/flag/uk.png) no-repeat 0 0; padding-left:20px !important;}
 td.flag-vi,.flag-vi{ background: url(../images/flag/vi.png) no-repeat 0 0; padding-left:20px !important;}
-td.flag-zh,.flag-zh-hans{ background: url(../images/flag/zh-hans.png) no-repeat 0 0; padding-left:20px !important;}
-td.flag-zh,.flag-zh-hant{ background: url(../images/flag/zh-hant.png) no-repeat 0 0; padding-left:20px !important;}
+td.flag-hans,.flag-hans{ background: url(../images/flag/hans.png) no-repeat 0 0; padding-left:20px !important;}
+td.flag-hans,.flag-hant{ background: url(../images/flag/hant.png) no-repeat 0 0; padding-left:20px !important;}

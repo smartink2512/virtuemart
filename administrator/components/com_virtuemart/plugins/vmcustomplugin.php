@@ -32,6 +32,8 @@ if (!class_exists ('vmPlugin')) {
 /**
  * @package    VirtueMart
  * @subpackage Plugins
+ * @author Oscar van Eijk
+ * @author Patrick Kohl
  * @author Max Milbers
  */
 abstract class vmCustomPlugin extends vmPlugin {
@@ -82,9 +84,9 @@ abstract class vmCustomPlugin extends vmPlugin {
 		}
 	}
 
-	/**
+	/*
 	 * helper to parse plugin parameters as object
-	 * @deprecated
+	 *
 	 */
 	public function parseCustomParams (&$field, $xParams = 'custom_param') {
 
@@ -100,17 +102,11 @@ abstract class vmCustomPlugin extends vmPlugin {
 			return;
 		}
 		//$field->custom_param = $custom_param;
-		//if(!empty($custom_param)){
-			foreach ($custom_param as $k => $v) {
-				if (!empty($v)) {
-					$field->$k = $v;
-				}
+		foreach ($custom_param as $k => $v) {
+			if (!empty($v)) {
+				$field->$k = $v;
 			}
-		/*} else {
-			vmError('parseCustomParams the value $custom_param is empty '.$custom_param);
-
-		}*/
-
+		}
 	}
 
 	/*
@@ -267,11 +263,10 @@ abstract class vmCustomPlugin extends vmPlugin {
 		vmPlugin::declarePluginParams ('custom', $productCustomsPrice->custom_element, $productCustomsPrice->custom_jplugin_id, $productCustomsPrice);
 // 		VmTable::bindParameterable($productCustomsPrice,'custom_param',$this->_varsToPushParam);
 
-		//TODO what was this? note by Max
 		$pluginFields = JRequest::getVar ('customPlugin', NULL);
-		/*if ($pluginFields == NULL) {
+		if ($pluginFields == NULL and isset($product->customPlugin)) {
 			$pluginFields = json_decode ($product->customPlugin, TRUE);
-		}*/
+		}
 
 		return $pluginFields[$productCustomsPrice->virtuemart_customfield_id][$this->_name];
 

@@ -8,7 +8,6 @@ defined ('_JEXEC') or die('Direct Access to ' . basename (__FILE__) . ' is not a
  *
  * @package	VirtueMart
  * @subpackage Helpers
- * @author RolandD
  * @author Max Milbers
  * @author Patrick Kohl
  * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
@@ -61,16 +60,8 @@ class ShopFunctions {
 		VmConfig::loadConfig();
 		VmConfig::loadJLang('com_virtuemart_countries');
 
-
-// 		'virtuemart_category_id','#__virtuemart_calc_categories','virtuemart_calc_id',$data->virtuemart_calc_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category'
 		//Sanitize input
 		$quantity = (int)$quantity;
-
-// 		if (!class_exists('TablePaymentmethods'))
-// 			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'paymentmethods.php');
-
-// 		$table = new TablePaymentmethods($this->_db); /// we need that?
-// 		$table->load($payment_id);
 
 		$db = JFactory::getDBO ();
 		$q = 'SELECT ' . $db->getEscaped ($fieldnameXref) . ' FROM ' . $db->getEscaped ($tableXref) . ' WHERE ' . $db->getEscaped ($fieldIdXref) . ' = "' . (int)$idXref . '"';
@@ -96,7 +87,7 @@ class ShopFunctions {
 					} else {
 						$cid = 'virtuemart_user_id';
 					}
-					$links .= JHTML::_ ('link', JRoute::_ ('index.php?option=com_virtuemart&view=' . $view . '&task=edit&' . $cid . '[]=' . $value), JText::_($tmp)) . ', ';
+					$links .= JHTML::_ ('link', JRoute::_ ('index.php?option=com_virtuemart&view=' . $view . '&task=edit&' . $cid . '[]=' . $value, FALSE), JText::_($tmp)) . ', ';
 				}
 				$ttip .= $tmp . ', ';
 
@@ -144,7 +135,7 @@ class ShopFunctions {
 	/**
 	 * Creates a Drop Down list of available Vendors
 	 *
-	 * @author Max Milbers, RolandD
+	 * @author Max Milbers
 	 * @access public
 	 * @param int $virtuemart_shoppergroup_id the shopper group to pre-select
 	 * @param bool $multiple if the select list should allow multiple selections
@@ -189,7 +180,7 @@ class ShopFunctions {
 				$idA = $id = 'virtuemart_vendor_id';
 
 				if ($multiple) {
-					$attrs = 'multiple="multiple"';
+					$attrs = ' multiple="multiple" ';
 					$idA .= '[]';
 				} else {
 					$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
@@ -205,13 +196,13 @@ class ShopFunctions {
 	/**
 	 * Creates a Drop Down list of available Shopper Groups
 	 *
-	 * @author Max Milbers, RolandD
+	 * @author Max Milbers
 	 * @access public
 	 * @param int $shopperGroupId the shopper group to pre-select
 	 * @param bool $multiple if the select list should allow multiple selections
 	 * @return string HTML select option list
 	 */
-	static public function renderShopperGroupList ($shopperGroupId = 0, $multiple = TRUE,$name='virtuemart_shoppergroup_id') {
+	static public function renderShopperGroupList ($shopperGroupId = 0, $multiple = TRUE,$name='virtuemart_shoppergroup_id', $select_attribute='COM_VIRTUEMART_DRDOWN_AVA2ALL' ) {
 
 		$shopperModel = VmModel::getModel ('shoppergroup');
 		$shoppergrps = $shopperModel->getShopperGroups (FALSE, TRUE);
@@ -220,12 +211,12 @@ class ShopFunctions {
 		//$idA = $id = 'virtuemart_shoppergroup_id';
 
 		if ($multiple) {
-			$attrs = 'multiple="multiple"';
+			$attrs = 'multiple="multiple" data-placeholder="'.JText::_($select_attribute).'"';
 			if($name=='virtuemart_shoppergroup_id'){
 				$name.= '[]';
 			}
 		} else {
-			$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), 'virtuemart_shoppergroup_id', 'shopper_group_name');
+			$emptyOption = JHTML::_ ('select.option', '', JText::_ ($select_attribute), 'virtuemart_shoppergroup_id', 'shopper_group_name');
 			array_unshift ($shoppergrps, $emptyOption);
 		}
 		//vmdebug('renderShopperGroupList',$name,$shoppergrps);
@@ -233,6 +224,29 @@ class ShopFunctions {
 		return $listHTML;
 	}
 
+	/**
+	 * Renders the list of Manufacturers
+	 *
+	 * @author St. Kraft
+	 * Mod. <mediaDESIGN> St.Kraft 2013-02-24 Herstellerrabatt
+	 */
+	static public function renderManufacturerList ($manufacturerId = 0, $multiple = FALSE, $name = 'virtuemart_manufacturer_id') {
+
+		$manufacturerModel = VmModel::getModel ('manufacturer');
+		$manufacturers = $manufacturerModel->getManufacturers (FALSE, TRUE);
+		$attrs = '';
+
+		if ($multiple) {
+			$attrs = 'multiple="multiple"';
+			if($name=='virtuemart_manufacturer_id')	$name.= '[]';
+		} else {
+			$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), 'virtuemart_manufacturer_id', 'mf_name');
+			array_unshift ($manufacturers, $emptyOption);
+		}
+		// vmdebug('renderManufacturerList',$name,$manufacturers);
+		$listHTML = JHTML::_ ('select.genericlist', $manufacturers, $name, $attrs, 'virtuemart_manufacturer_id', 'mf_name', $manufacturerId);
+		return $listHTML;
+	}
 
 	/**
 	 * Render a simple country list
@@ -255,15 +269,12 @@ class ShopFunctions {
 		$id = 'virtuemart_country_id';
 		$idA = $_prefix . 'virtuemart_country_id';
 		$attrs['class'] = 'virtuemart_country_id';
+		$attrs['class'] = 'vm-chzn-select';
 		// Load helpers and  languages files
 		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 		VmConfig::loadConfig();
-		if(VmConfig::get('enableEnglish', 1)){
-		    $jlang =JFactory::getLanguage();
-		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, 'en-GB', TRUE);
-		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, $jlang->getDefault(), TRUE);
-		    $jlang->load('com_virtuemart_countries', JPATH_ADMINISTRATOR, NULL, TRUE);
-		}
+		VmConfig::loadJLang('com_virtuemart_countries');
+		vmJsApi::chosenDropDowns();
 
         $sorted_countries = array();
 		$lang = JFactory::getLanguage();
@@ -290,7 +301,6 @@ class ShopFunctions {
 
 		if ($multiple) {
 			$attrs['multiple'] = 'multiple';
-			$attrs['size'] = '12';
 			$idA .= '[]';
 		} else {
 			$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
@@ -322,20 +332,30 @@ class ShopFunctions {
 
 		if (is_array ($stateId)) {
 					$stateId = implode (",", $stateId);
-				}
-		vmJsApi::JcountryStateList ($stateId);
+		}
+
+		vmJsApi::JcountryStateList ($stateId,$_prefix);
 
 		if ($multiple) {
 			$attrs = 'multiple="multiple" size="12" name="' . $_prefix . 'virtuemart_state_id[]" ';
+			//$class = 'class="inputbox multiple"';
 		} else {
-			$attrs = 'size="1"  name="' . $_prefix . 'virtuemart_state_id" ';
+			/*$app = JFactory::getApplication();
+			if($app->isSite()) {
+				$class = 'class="chzn-select"';
+			} else {
+				$class = 'class="inputbox multiple"';
+			}*/
+			$attrs = 'name="' . $_prefix . 'virtuemart_state_id" ';
 		}
 
 		if ($required != 0) {
 			$attrs .= ' required';
 		}
+		$attrs .= ' class="vm-chzn-select"';
 
-		$listHTML = '<select class="inputbox multiple" id="virtuemart_state_id" ' . $attrs . '>
+
+		$listHTML = '<select  id="'.$_prefix.'virtuemart_state_id" ' . $attrs . '>
 						<option value="">' . JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>
 						</select>';
 
@@ -360,7 +380,6 @@ class ShopFunctions {
 		foreach ($taxes as $tax) {
 			$taxrates[] = JHTML::_ ('select.option', $tax->virtuemart_calc_id, $tax->calc_name, $name);
 		}
-		//vmdebug('renderTaxList',$name,$taxrates);
 		$listHTML = JHTML::_ ('Select.genericlist', $taxrates, $name, $class, $name, 'text', $selected);
 		return $listHTML;
 	}
@@ -473,12 +492,12 @@ class ShopFunctions {
 
 		$weight_unit_default = array(
 			'KG' => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_KG')
-		, 'DMG' => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100MG')
+		, '100G' => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100G')
 		, 'M'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_M')
 		, 'SM'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_SM')
 		, 'CUBM'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_CUBM')
 		, 'L'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_L')
-		, 'DML'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100ML')
+		, '100ML'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100ML')
 		);
 		foreach ($weight_unit_default as  $key => $value) {
 			$wu_list[] = JHTML::_ ('select.option', $key, $value, $name);
@@ -497,19 +516,15 @@ class ShopFunctions {
 		$from = strtoupper($from);
 		$to = strtoupper($to);
 		$value = str_replace (',', '.', $value);
-		
 		if ($from === $to) {
 			return $value;
 		}
-		
-		$g = 1;
+
+		$g = (float)$value;
 
 		switch ($from) {
 			case 'KG':
 				$g = (float)(1000 * $value);
-			break;
-			case 'G':
-				$g = (float)$value;
 			break;
 			case 'MG':
 				$g = (float)($value / 1000);
@@ -554,41 +569,44 @@ class ShopFunctions {
 		if ($from === $to) {
 			return $value;
 		}
-		$meter = 1 * $value;
+		$meter = (float)$value;
 
 		// transform $value in meters
 		switch ($from) {
 			case 'CM':
 				$meter = (float)(0.01 * $value);
-			break;
+				break;
 			case 'MM':
 				$meter = (float)(0.001 * $value);
-			break;
-			case 'YD':
-				$meter = (float)(1.0936 * $value);
-			break;
-			case 'FT':
-				$meter = (float)(3.28083 * $value);
-			break;
-			case 'IN':
-				$meter =(float) (39.37 * $value);
-			break;
-		}
-		switch ($to) {
-			case 'CM' :
-				$value = (float)($meter * 0.01);
-				break;
-			case 'MM' :
-				$value = (float)($meter * 0.001);
 				break;
 			case 'YD' :
-				$value =(float) ($meter * 0.9144);
+				$meter =(float) (0.9144 * $value);
 				break;
 			case 'FT' :
-				$value = (float)($meter * 0.3048);
+				$meter = (float)(0.3048 * $value);
 				break;
 			case 'IN' :
-				$value = (float)($meter * 0.0254);
+				$meter = (float)(0.0254 * $value);
+				break;
+		}
+		switch ($to) {
+			case 'M' :
+				$value = $meter;
+				break;
+			case 'CM':
+				$value = (float)($meter / 0.01);
+				break;
+			case 'MM':
+				$value = (float)($meter / 0.001);
+				break;
+			case 'YD' :
+				$value =(float) ($meter / 0.9144);
+				break;
+			case 'FT' :
+				$value = (float)($meter / 0.3048);
+				break;
+			case 'IN' :
+				$value = (float)($meter / 0.0254);
 				break;
 		}
 		return $value;
@@ -612,7 +630,11 @@ class ShopFunctions {
 		, 'FT'                        => JText::_ ('COM_VIRTUEMART_UNIT_NAME_FOOT')
 		, 'IN'                        => JText::_ ('COM_VIRTUEMART_UNIT_NAME_INCH')
 		);
-		return VmHTML::selectList ($name, $selected, $lwh_unit_default);
+		foreach ($lwh_unit_default as  $key => $value) {
+			$lu_list[] = JHTML::_ ('select.option', $key, $value, $name);
+		}
+		$listHTML = JHTML::_ ('Select.genericlist', $lu_list, $name, '', $name, 'text', $selected);
+		return $listHTML;
 
 	}
 
@@ -753,7 +775,7 @@ class ShopFunctions {
 	 * Creates structured option fields for all categories
 	 *
 	 * @todo: Connect to vendor data
-	 * @author RolandD, Max Milbers, jseros
+	 * @author Max Milbers, jseros
 	 * @param array 	$selectedCategories All category IDs that will be pre-selected
 	 * @param int 		$cid 		Internally used for recursion
 	 * @param int 		$level 		Internally used for recursion
@@ -813,26 +835,14 @@ class ShopFunctions {
 		return $categoryTree;
 	}
 
-	/**
-	 * Gets the total number of product for category
-	 *
-	 * @author jseros
-	 * @param int $categoryId Own category id
-	 * @return int Total number of products
-	 */
-	static public function countProductsByCategory ($categoryId = 0) {
-
-		$categoryModel = VmModel::getModel ('category');
-		return $categoryModel->countProducts ($categoryId);
-	}
 
 	/**
 	 * Return the countryname or code of a given countryID
 	 *
 	 * @author Oscar van Eijk
 	 * @access public
-	 * @param int $_id Country ID
-	 * @param char $_fld Field to return: country_name (default), country_2_code or country_3_code.
+	 * @param int $id Country ID
+	 * @param char $fld Field to return: country_name (default), country_2_code or country_3_code.
 	 * @return string Country name or code
 	 */
 	static public function getCountryByID ($id, $fld = 'country_name') {
@@ -850,13 +860,13 @@ class ShopFunctions {
 	}
 
 	/**
-	 * Return the countryID of a given country name
+	 * Return the virtuemart_country_id of a given country name
 	 *
 	 * @author Oscar van Eijk
 	 * @author Max Milbers
 	 * @access public
-	 * @param string $_name Country name
-	 * @return int Country ID
+	 * @param string $name Country name (can be country_name or country_3_code  or country_2_code )
+	 * @return int virtuemart_country_id
 	 */
 	static public function getCountryIDByName ($name) {
 
@@ -881,12 +891,12 @@ class ShopFunctions {
 	}
 
 	/**
-	 * Return the statename or code of a given countryID
+	 * Return the statename or code of a given virtuemart_state_id
 	 *
 	 * @author Oscar van Eijk
 	 * @access public
-	 * @param int $_id State ID
-	 * @param char $_fld Field to return: state_name (default), state_2_code or state_3_code.
+	 * @param int $id State ID
+	 * @param char $fld Field to return: state_name (default), state_2_code or state_3_code.
 	 * @return string state name or code
 	 */
 	static public function getStateByID ($id, $fld = 'state_name') {
@@ -906,8 +916,8 @@ class ShopFunctions {
 	 *
 	 * @author Max Milbers
 	 * @access public
-	 * @param string $_name Country name
-	 * @return int Country ID
+	 * @param string $name Country name
+	 * @return int virtuemart_state_id
 	 */
 	static public function getStateIDByName ($name) {
 
@@ -931,12 +941,12 @@ class ShopFunctions {
 	}
 
 	/*
-	 * Return the Tax or code of a given taxID
+	 * Returns the associative array for a given virtuemart_calc_id
 	*
 	* @author Valérie Isaksen
 	* @access public
-	* @param int $_d TAx ID
-	* @return string Country name or code
+	* @param int $id virtuemart_calc_id
+	* @return array Result row
 	*/
 	static public function getTaxByID ($id) {
 
@@ -953,12 +963,12 @@ class ShopFunctions {
 	}
 
 	/**
-	 * Return the currencyname or code of a given currencyID
+	 * Return any field  from table '#__virtuemart_currencies'
 	 *
 	 * @author Valérie Isaksen
 	 * @access public
-	 * @param int $_id Currency ID
-	 * @param char $_fld Field to return: currency_name (default), currency_2_code or currency_3_code.
+	 * @param int $id Currency ID
+	 * @param char $fld Field from table '#__virtuemart_currencies' to return: currency_name (default), currency_code_2, currency_code_3 etc.
 	 * @return string Currency name or code
 	 */
 	static public function getCurrencyByID ($id, $fld = 'currency_name') {
@@ -976,12 +986,12 @@ class ShopFunctions {
 	}
 
 	/**
-	 * Return the countryID of a given Currency name
+	 * Return the currencyID of a given Currency name
 	 *
 	 * @author Valerie Isaksen
 	 * @access public
-	 * @param string $_name Currency name
-	 * @return int Currency ID
+	 * @param string $name Currency name
+	 * @return int virtuemart_currency_id
 	 */
 	static public function getCurrencyIDByName ($name) {
 
@@ -1065,25 +1075,6 @@ class ShopFunctions {
 	        return TRUE;
 	   }
 	}
-
-	/**
-	 * TODO this should work with userfields
-	 * Lists titles for people
-	 *
-	 * @param string $t The selected title value
-	 * @param string $extra More attributes when needed
-	 * @param string $_prefix Optional prefix for the formtag name attribute
-	 */
-	/*	public function listUserTitle($t, $extra="", $_prefix = '') {
-		$vmConfig = VmConfig::loadConfig();
-	$titles = $vmConfig->get('titles');
-	$options = array();
-	foreach ($titles as $title) {
-	$option = JText::_($title);
-	$options[] = JHTML::_('select.option',$option ,$option);
-	}
-	return JHTML::_('select.genericlist', $options, $_prefix . 'title', $extra, 'value', 'text', $t);
-	}*/
 
 	/**
 	 * Creates an drop-down list with numbers from 1 to 31 or of the selected range,
@@ -1250,68 +1241,6 @@ class ShopFunctions {
 	}
 
 	/**
-	 *
-	 * @author RolandD
-	 * @param string $euvat EU-vat number to validate
-	 * @return boolean The result of the validation
-	 */
-	// public function validateEUVat($euvat) {
-		// if(!class_exists('VmEUVatCheck')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'euvatcheck.php');
-		// $vatcheck = new VmEUVatCheck($euvat);
-		// return $vatcheck->validvatid;
-
-	/*
-	 *
-	 *$return = validateEUVat(array(‘vatnumber’ => ‘BE0123456789′, ‘country’ => ‘BE’));
-	 * @depredecated
-	 */
-
-	function validateEUVat ($args = array()) {
-
-		if ('' != $args['vatnumber']) {
-			$vat_number = str_replace (array(' ', '.', '-', ',', ', '), '', $args['vatnumber']);
-			$countryCode = substr ($vat_number, 0, 2);
-			$vatNumber = substr ($vat_number, 2);
-
-			if (strlen ($countryCode) != 2 || is_numeric (substr ($countryCode, 0, 1)) || is_numeric (substr ($countryCode, 1, 2))) {
-				return FALSE; //format error 'message' => 'Your VAT Number syntax is not correct. You should have something like this: BE805670816B01'
-			}
-
-			if ($args['country'] != $countryCode) {
-				return FALSE; //'message' => 'Your VAT Number is not valid for the selected country.'
-			}
-
-			$client = new SoapClient("http://ec.europa.eu/taxation_customs/vies/services/checkVatService.wsdl");
-			$params = array('countryCode' => $countryCode, 'vatNumber' => $vatNumber);
-
-			$result = $client->checkVat ($params);
-
-			if (!$result->valid) {
-				return FALSE; // 'message' => sprintf('Invalid VAT Number. Check the validity on the customer VAT Number via <a href="%s">Europa VAT Number validation webservice</a>', 'http://ec.europa.eu/taxation_customs/vies/lang.do?fromWhichPage=vieshome'));
-			} else {
-				return TRUE;
-			}
-		}
-		return FALSE;
-	}
-
-	/**
-	 * Validates an email address by using regular expressions
-	 * Does not resolve the domain name!
-	 * ATM NOT USED
-	 * Joomla has it's own e-mail checker but is no good JMailHelper::isEmailAddress()
-	 * maybe in the future it will be better
-	 *
-	 * @param string $email
-	 * @return boolean The result of the validation
-	 */
-	function validateEmail ($email) {
-
-		$valid = preg_match ('/^[\w\.\-]+@\w+[\w\.\-]*?\.\w{1,4}$/', $email);
-		return $valid;
-	}
-
-	/**
 	 * Return $str with all but $display_length at the end as asterisks.
 	 *
 	 * @author gday
@@ -1405,16 +1334,16 @@ class ShopFunctions {
 		static $filterArray;
 
 		if (!isset($filterArray)) {
-			/*
+		/*
 		$filterArray = array('p.virtuemart_product_id', 'p.product_sku','pp.product_price','c.category_name','c.category_description',
 		'm.mf_name', 'l.product_s_desc', 'p.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width',
 		'p.product_height', 'p.product_lwh_uom', 'p.product_in_stock', 'p.low_stock_notification', 'p.product_available_date',
 		'p.product_availability', 'p.product_special', 'p.created_on', 'p.modified_on', 'l.product_name', 'p.product_sales',
 		'p.product_unit', 'p.product_packaging', 'p.intnotes', 'l.metadesc', 'l.metakey', 'p.metarobot', 'p.metaauthor');
 		}
-   */
+        */
 		$filterArray = array('product_name', '`p`.created_on', '`p`.product_sku',
-			'product_s_desc', 'product_desc',
+			'product_s_desc', 'product_desc','`l`.slug',
 				'category_name', 'category_description', 'mf_name',
 			'product_price', 'product_special', 'product_sales', 'product_availability', '`p`.product_available_date',
 			'product_height', 'product_width', 'product_length', 'product_lwh_uom',
@@ -1467,27 +1396,61 @@ class ShopFunctions {
 		return $html;
 	}
 
+	static $tested = False;
 	static function checkSafePath($safePath=0){
 
-		if($safePath==0) $safePath = VmConfig::get('forSale_path',0);
+
+		if($safePath==0) {
+			$safePath = VmConfig::get('forSale_path',0);
+			if(self::$tested) return $safePath;
+		}
+
+		$warn = FALSE;
+		$uri = JFactory::getURI();
+		$configlink = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
+
 		if(empty($safePath)){
-			$suggestedPath=shopFunctions::getSuggestedSafePath();
-			$uri = JFactory::getURI();
-			$configlink = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
-			VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath,$configlink);
-			return FALSE;
+			$warn = 'COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET';
 		} else {
 			$exists = JFolder::exists($safePath);
 			if(!$exists){
-				$uri = JFactory::getURI();
-				$configlink = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
-				$suggestedPath=shopFunctions::getSuggestedSafePath();
-				VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_WRONG',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath,$configlink);
-				return FALSE;
+				$warn = 'COM_VIRTUEMART_WARN_SAFE_PATH_WRONG';
 			} else{
-				return $safePath;
+				if(!is_writable( $safePath )){
+					VmConfig::loadJLang('com_virtuemart_config');
+					VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NOT_WRITEABLE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath,$configlink);
+				} else {
+					if(!is_writable(self::getInvoicePath($safePath) )){
+						VmConfig::loadJLang('com_virtuemart_config');
+						VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_INV_NOT_WRITEABLE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath,$configlink);
+					}
+				}
 			}
 		}
+
+		if($warn){
+			$suggestedPath=shopFunctions::getSuggestedSafePath();
+			VmConfig::loadJLang('com_virtuemart_config');
+			VmWarn($warn,JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath,$configlink);
+			return FALSE;
+		}
+
+		return $safePath;
+	}
+	/*
+	 * get The invoice Folder Name
+	 * @return the invoice folder name
+	 */
+	static function getInvoiceFolderName() {
+		return   'invoices' ;
+	}
+	/*
+	 * get The invoice path
+	 * @param $safePath the safepath from the config
+	 * @return the path where the invoice are stored
+	 */
+	static function getInvoicePath($safePath) {
+		return  $safePath.self::getInvoiceFolderName() ;
 	}
 
 	/*
@@ -1523,8 +1486,9 @@ class ShopFunctions {
 			$html .= $order_info['order_item_status_name'];
 			$html .= '</td>
 			<td class="order_number">';
-				$link = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $order_info['order_id'];
-				$html .= JHTML::_ ('link', JRoute::_ ($link), $order_info['order_number'], array('title' => JText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $order_info['order_number']));
+				$uri = JFactory::getURI();
+				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $order_info['order_id'];
+				$html .= JHTML::_ ('link', $link, $order_info['order_number'], array('title' => JText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $order_info['order_number']));
 			$first=FALSE;
 			$html .= '
 					</td>
@@ -1543,6 +1507,26 @@ class ShopFunctions {
 				';
 		}
 
+		return $html;
+	}
+
+	static public function renderMetaEdit($obj){
+
+		$options = array(
+			''	=>	JText::_('JGLOBAL_INDEX_FOLLOW'),
+			'noindex, follow'	=>	JText::_('JGLOBAL_NOINDEX_FOLLOW'),
+			'index, nofollow'	=>	JText::_('JGLOBAL_INDEX_NOFOLLOW'),
+			'noindex, nofollow'	=>	JText::_('JGLOBAL_NOINDEX_NOFOLLOW'),
+			'noodp, noydir'	=>	JText::_('COM_VIRTUEMART_NOODP_NOYDIR'),
+			'noodp, noydir, nofollow'	=>	JText::_('COM_VIRTUEMART_NOODP_NOYDIR_NOFOLLOW'),
+		);
+		$html = '<table>
+					'.VmHTML::row('input','COM_VIRTUEMART_CUSTOM_PAGE_TITLE','customtitle',$obj->customtitle).'
+					'.VmHTML::row('textarea','COM_VIRTUEMART_METAKEY','metakey',$obj->metakey).'
+					'.VmHTML::row('textarea','COM_VIRTUEMART_METADESC','metadesc',$obj->metadesc).'
+					'.VmHtml::row('selectList','COM_VIRTUEMART_METAROBOTS','metarobot',$obj->metarobot,$options).'
+					'.VmHTML::row('input','COM_VIRTUEMART_METAAUTHOR','metaauthor',$obj->metaauthor).'
+				</table>';
 		return $html;
 	}
 }

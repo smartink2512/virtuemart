@@ -35,7 +35,8 @@ class VirtuemartViewUsergroups extends VmView {
 
 
 
-		$this->loadHelper('html');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		$model = VmModel::getModel();
 		// TODO icon for this view

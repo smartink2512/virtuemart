@@ -50,7 +50,6 @@ class VirtuemartControllerUserfields extends VmController {
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView('userfields', $viewType);
-		$view->loadHelper('paramhelper');
 
 		parent::display();
 	}

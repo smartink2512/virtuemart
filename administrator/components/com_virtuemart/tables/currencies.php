@@ -52,7 +52,7 @@ class TableCurrencies extends VmTableData {
 
 	/**
 	 * @author Max Milbers
-	 * @param $db A database connector object
+	 * @param JDataBase $db
 	 */
 	function __construct(&$db)
 	{

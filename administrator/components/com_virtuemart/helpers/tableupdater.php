@@ -36,14 +36,14 @@ class GenericTableUpdater extends JModel{
 		$this->starttime = microtime(true);
 
 		$max_execution_time = ini_get('max_execution_time');
-		$jrmax_execution_time= JRequest::getInt('max_execution_time',120);
+		$jrmax_execution_time= JRequest::getInt('max_execution_time',300);
 
 		if(!empty($jrmax_execution_time)){
 			// 			vmdebug('$jrmax_execution_time',$jrmax_execution_time);
 			if($max_execution_time!==$jrmax_execution_time) @ini_set( 'max_execution_time', $jrmax_execution_time );
 		}
-		@ini_set( 'max_execution_time', 300 );
-		$this->maxScriptTime = ini_get('max_execution_time')*0.90-1;	//Lets use 5% of the execution time as reserve to store the progress
+
+		$this->maxScriptTime = ini_get('max_execution_time')*0.90-1;	//Lets use 10% of the execution time as reserve to store the progress
 
 		$memory_limit = ini_get('memory_limit');
 		if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
@@ -57,108 +57,9 @@ class GenericTableUpdater extends JModel{
 		$this->reCreaKey = VmConfig::get('reCreaKey',1);
 	}
 
-	/**
-	 *
-	 * @deprecated since 2.0.0
-	 * @param unknown_type $langs
-	 */
-	public function portOldLanguageToNewTables($langs){
+	public function reOrderChilds(){
 
-		//create language tables
-		// 		$this->createLanguageTables($langs);
-		// 		$this->portLanguageFields();
-	}
-
-	private function portLanguageFields(){
-
-		$config = JFactory::getConfig();
-		$lang = $config->getValue('language');
-
-		$ok = false;
-		foreach($this->tables as $table=>$tblKey){
-			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
-				vmWarn('language fields not copied, please rise execution time and do again');
-				return false;
-			}
-			vmTime('$portLanguageFields $table '.$table);
-			$db = JFactory::getDBO();
-			$tableName = '#__virtuemart_'.$table;
-			$className = 'Table'.ucfirst ($table);
-			// 			if(!class_exists($className)) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.$table.'.php');
-			$langTable = $this->getTable($table);
-			// 			$langTable = new $className($tableName,$tblKey,$db) ;
-
-			$query = 'SHOW COLUMNS FROM `'.$tableName.'` ';
-			$this->_db->setQuery($query);
-			$columns = $this->_db->loadResultArray(0);
-			// 			vmdebug('$portLanguageFields contains language fields ',$columns);
-
-			$translatableFields = $langTable->getTranslatableFields();
-			$translatableFields = array_intersect($translatableFields,$columns);
-			// 			if(in_array($translatableFields[0],$columns)){
-			if(count($translatableFields)>1){
-
-				$ok = true;
-				//approximatly 100 products take a 1 MB
-				$maxItems = $this->_getMaxItems('Language '.$table);
-
-				$startLimit = 0;
-				$i = 0;
-				$continue=true;
-				while($continue){
-
-					$q = 'SELECT * FROM '.$tableName. ' LIMIT '.$startLimit.','.$maxItems;
-					$this->_db->setQuery($q);
-					$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port Language '.$table);
-					$resultList = $res[0];
-					$startLimit = $res[1];
-					$continue = $res[2];
-
-					foreach($resultList as $row){
-
-						if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
-							vmWarn('language fields not copied, please rise execution time and do again');
-							return false;
-						}
-
-						$db = JFactory::getDBO();
-						// 						$dummy = array($tblKey=>$row[$tblKey]);
-						// 						$langTable = new $className($tableName,$tblKey,$db) ;
-						$langTable = $this->getTable($table);
-						$langTable->bindChecknStore($row);
-						$errors = $langTable->getErrors();
-						if(!empty($errors)){
-							foreach($errors as $error){
-								$this->setError($error);
-								vmError('portLanguageFields'.$error);
-								vmdebug('portLanguageFields table',$langTable);
-							}
-							$ok = false;
-							break;
-						}
-					}
-				}
-
-				//Okey stuff copied, now lets remove the old fields
-				if($ok){
-					vmdebug('I delete the columns ');
-					foreach($translatableFields as $fieldname){
-						if(in_array($fieldname,$columns)){
-							vmdebug('I delete the column '.$tableName.' '.$fieldname);
-							$this->_db->setQuery('ALTER TABLE `'.$tableName.'` DROP COLUMN `'.$fieldname.'` ');
-							if(!$this->_db->query()){
-								VmError('portLanguageFields: Deleting of '.$tableName.' '.$fieldname.' failed. '.$this->_db->getQuery());
-							} else {
-								vmdebug('I deleted the column '.$this->_db->getQuery());
-							}
-
-						}
-					}
-				}
-
-			}
-			vmTime('$portLanguageFields $table '.$table);
-		}
+		vmdebug('I am in reOrderChilds');
 	}
 
 	var $tables = array( 	'products'=>'virtuemart_product_id',
@@ -232,6 +133,10 @@ class GenericTableUpdater extends JModel{
 					$fields['vendor_terms_of_service'] = 'text '.$linedefaulttext;
 					$fields['vendor_legal_info'] = 'text '.$linedefaulttext;
 
+					$fields['vendor_letter_css'] = 'text '.$linedefaulttext;
+					$fields['vendor_letter_header_html'] = "varchar(8000) NOT NULL DEFAULT '<h1>{vm:vendorname}</h1><p>{vm:vendoraddress}</p>'";
+					$fields['vendor_letter_footer_html'] = "varchar(8000) NOT NULL DEFAULT '<p>{vm:vendorlegalinfo}<br />Page {vm:pagenum}/{vm:pagecount}</p>'";
+
 
 					$key = array_search('vendor_store_desc', $translatableFields);
 					unset($translatableFields[$key]);
@@ -241,6 +146,16 @@ class GenericTableUpdater extends JModel{
 
 					$key = array_search('vendor_legal_info', $translatableFields);
 					unset($translatableFields[$key]);
+					
+					$key = array_search('vendor_letter_css', $translatableFields);
+					unset($translatableFields[$key]);
+
+					$key = array_search('vendor_letter_header_html', $translatableFields);
+					unset($translatableFields[$key]);
+
+					$key = array_search('vendor_letter_footer_html', $translatableFields);
+					unset($translatableFields[$key]);
+
 				}
 			} else {
 				$fields['vendor_terms_of_service'] = 'text '.$linedefaulttext;
@@ -259,6 +174,8 @@ class GenericTableUpdater extends JModel{
 					$fields[$name] = 'char('.VmConfig::get('dbmetasize',100).') '.$linedefault;
 				} else if(strpos($name,'metakey')!==false ){
 					$fields[$name] = 'varchar('.VmConfig::get('dbmetasize',400).') '.$linedefault;
+				} else if(strpos($name,'metaauthor')!==false ){
+					$fields[$name] = 'char(64) '.$linedefault;
 				} else if(strpos($name,'slug')!==false ){
 					$fields[$name] = 'char('.VmConfig::get('dbslugsize',192).') '.$linedefault;
 					$slug = true;
@@ -266,7 +183,7 @@ class GenericTableUpdater extends JModel{
 					$fields[$name] = 'char(26) '.$linedefault;
 				}else if(strpos($name,'desc')!==false) {
 					if(VmConfig::get('dblayoutstrict',true)){
-						$fields[$name] = 'varchar('.VmConfig::get('dbdescsize',20000).') '.$linedefault;
+						$fields[$name] = 'varchar('.VmConfig::get('dbdescsize',19000).') '.$linedefault;
 					} else {
 						$fields[$name] = 'text '.$linedefaulttext;
 					}
@@ -435,7 +352,7 @@ class GenericTableUpdater extends JModel{
 
 	public function createTable($tablename,$table){
 
-// 		vmdebug(' create table '.$tablename,$table);
+// 		vmdebug('hmm create table '.$tablename,$table);
 		$q = 'CREATE TABLE IF NOT EXISTS `'.$tablename.'` (
 				';
 		foreach($table[0] as $fieldname => $alterCommand){
@@ -607,7 +524,7 @@ class GenericTableUpdater extends JModel{
 	 * @param unknown_type $fields
 	 * @param unknown_type $command
 	 */
-	private function alterColumns($tablename,$fields,$reCreatePrimary){
+	public function alterColumns($tablename,$fields,$reCreatePrimary){
 
 
 		$after ='FIRST';
@@ -803,7 +720,12 @@ class GenericTableUpdater extends JModel{
 
 	private function getdefault($string){
 		if (isset($string)) {
-			return  " DEFAULT '".trim($string)."'";
+			if(strpos($string,'CURRENT_TIMESTAMP')!==FALSE){
+				return  " DEFAULT ".trim($string);
+			} else {
+				return  " DEFAULT '".trim($string)."'";
+			}
+
 		} else {
 			return '';
 		}

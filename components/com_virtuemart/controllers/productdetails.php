@@ -226,8 +226,9 @@ class VirtueMartControllerProductdetails extends JController {
 		$view->display ();
 	}
 
-	/* Add or edit a review
-	 TODO  control and update in database the review */
+	/**
+	 * Add or edit a review
+	 */
 	public function review () {
 
 		$data = JRequest::get ('post');
@@ -242,7 +243,7 @@ class VirtueMartControllerProductdetails extends JController {
 			$msg = ($error) . '<br />';
 		}
 
-		$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . (int)$data['virtuemart_product_id']), $msg);
+		$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . (int)$data['virtuemart_product_id'], FALSE), $msg);
 
 	}
 
@@ -255,7 +256,9 @@ class VirtueMartControllerProductdetails extends JController {
 	 */
 	public function recalculate () {
 
+		//$post = JRequest::get('request');
 
+//		//echo '<pre>'.print_r($post,1).'</pre>';
 		jimport ('joomla.utilities.arrayhelper');
 		$virtuemart_product_idArray = JRequest::getVar ('virtuemart_product_id', array()); //is sanitized then
 		if(is_array($virtuemart_product_idArray)){
@@ -266,11 +269,20 @@ class VirtueMartControllerProductdetails extends JController {
 		}
 		$customProductData = JRequest::getVar ('customProductData', array()); //is sanitized then
 
+		/*$customPrices = array();
+		$customVariants = JRequest::getVar ('customPrice', array()); //is sanitized then
+		//echo '<pre>'.print_r($customVariants,1).'</pre>';
 
-		//VmConfig::$echoDebug=TRUE;
-		//$post = JRequest::get('request');
-		//vmdebug('recalculate ',$customProductData);
-		//vmdebug('post ',$post);
+		//MarkerVarMods
+		foreach ($customVariants as $customVariant) {
+			//foreach ($customVariant as $selected => $priceVariant) {
+			//In this case it is NOT $selected => $variant, because we get it that way from the form
+			foreach ($customVariant as $priceVariant => $selected) {
+				//Important! sanitize array to int
+				$selected = (int)$selected;
+				$customPrices[$selected] = $priceVariant;
+			}
+		}*/
 
 		$quantityArray = JRequest::getVar ('quantity', array()); //is sanitized then
 		JArrayHelper::toInteger ($quantityArray);
@@ -282,14 +294,16 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$product_model = VmModel::getModel ('product');
 
+		//VmConfig::$echoDebug=1;
+
 		if(isset($customProductData[$virtuemart_product_id])){
 			$prices = $product_model->getPrice ($virtuemart_product_id, $customProductData[$virtuemart_product_id], $quantity);
+			//vmdebug('Wie siehts aus? ',$customProductData,$prices);
 		} else {
 			//VmConfig::$echoDebug=true;
 			//vmdebug('recalculate',$customProductData);
 			jexit ();
 		}
-
 
 		$priceFormated = array();
 		if (!class_exists ('CurrencyDisplay')) {
@@ -305,7 +319,11 @@ class VirtueMartControllerProductdetails extends JController {
 
 		// Get the document object.
 		$document = JFactory::getDocument ();
-		$document->setName ('recalculate');
+		// stAn: setName works in JDocumentHTML and not JDocumentRAW
+		if (method_exists($document, 'setName')){
+			$document->setName ('recalculate');
+		}
+
 		JResponse::setHeader ('Cache-Control', 'no-cache, must-revalidate');
 		JResponse::setHeader ('Expires', 'Mon, 6 Jul 2000 10:00:00 GMT');
 		// Set the MIME type for JSON output.
@@ -339,10 +357,10 @@ class VirtueMartControllerProductdetails extends JController {
 			foreach ($errors as $error) {
 				$msg = ($error) . '<br />';
 			}
-			$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&layout=notify&virtuemart_product_id=' . $data['virtuemart_product_id']), $msg);
+			$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&layout=notify&virtuemart_product_id=' . $data['virtuemart_product_id'], FALSE), $msg);
 		} else {
 			$msg = JText::sprintf ('COM_VIRTUEMART_STRING_SAVED', JText::_ ('COM_VIRTUEMART_CART_NOTIFY'));
-			$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $data['virtuemart_product_id']), $msg);
+			$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $data['virtuemart_product_id'], FALSE), $msg);
 		}
 
 	}

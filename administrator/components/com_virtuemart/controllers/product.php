@@ -5,7 +5,7 @@
  *
  * @package	VirtueMart
  * @subpackage
- * @author RolandD
+ * @author Max Milbers
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -62,8 +62,20 @@ class VirtuemartControllerProduct extends VmController {
 		if(Permissions::getInstance()->check('admin')){
 			$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',2);
 			$data['product_s_desc'] = JRequest::getVar('product_s_desc','','post','STRING',2);
-		}
+		} else  {
+			$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',2);
+			$data['product_desc'] = JComponentHelper::filterText($data['product_desc']);
 
+			//Why we have this?
+			$multix = Vmconfig::get('multix','none');
+			if( $multix != 'none' ){
+				//in fact this shoudl be used, when the mode is administrated and the sysetm is so that
+				//every product must be approved by an admin.
+				unset($data['published']);
+				//unset($data['childs']);
+			}
+
+		}
 		parent::save($data);
 	}
 
@@ -149,7 +161,13 @@ class VirtuemartControllerProduct extends VmController {
 		$model = VmModel::getModel('product');
 
 		//$cids = JRequest::getVar('cid');
-		$cid = JRequest::getInt('virtuemart_product_id',0);
+		//$cid = JRequest::getInt('virtuemart_product_id',0);
+		$cid = JRequest::getVar('virtuemart_product_id',array(),'', 'array');
+		if(is_array($cid) && count($cid) > 0){
+			$cid = (int)$cid[0];
+		} else {
+			$cid = (int)$cid;
+		}
 
 		if(empty($cid)){
 			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NO_CHILD_CREATED_SUCCESSFULLY');
@@ -254,7 +272,7 @@ class VirtuemartControllerProduct extends VmController {
 	/**
 	 * Clone a product
 	 *
-	 * @author RolandD, Max Milbers
+	 * @author Max Milbers
 	 */
 	public function CloneProduct() {
 		$mainframe = Jfactory::getApplication();
@@ -285,8 +303,8 @@ class VirtuemartControllerProduct extends VmController {
 	/**
 	 * Get a list of related products, categories
 	 * or customfields
-	 * @author RolandD
-	 * Kohl Patrick
+	 * @author Max Milbers
+	 * @author Kohl Patrick
 	 */
 	public function getData() {
 
@@ -299,7 +317,7 @@ class VirtuemartControllerProduct extends VmController {
 
 	/**
 	 * Add a product rating
-	 * @author RolandD
+	 * @author Max Milbers
 	 */
 	public function addRating() {
 		$mainframe = Jfactory::getApplication();
@@ -318,8 +336,13 @@ class VirtuemartControllerProduct extends VmController {
 	public function ajax_notifyUsers(){
 
 		//vmdebug('updatestatus');
-		
-		$virtuemart_product_id = (int)JRequest::getVar('virtuemart_product_id', 0);
+		$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY');
+		if(is_array($virtuemart_product_id) and count($virtuemart_product_id) > 0){
+			$virtuemart_product_id = (int)$virtuemart_product_id[0];
+		} else {
+			$virtuemart_product_id = (int)$virtuemart_product_id;
+		}
+
 		$subject = JRequest::getVar('subject', '');
 		$mailbody = JRequest::getVar('mailbody',  '');
 		$max_number = (int)JRequest::getVar('max_number', '');
@@ -330,8 +353,13 @@ class VirtuemartControllerProduct extends VmController {
 	}
 	
 	public function ajax_waitinglist() {
-		
-		$virtuemart_product_id = (int)JRequest::getVar('virtuemart_product_id', 0);
+
+		$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY');
+		if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
+			$virtuemart_product_id = (int)$virtuemart_product_id[0];
+		} else {
+			$virtuemart_product_id = (int)$virtuemart_product_id;
+		}
 
 		$waitinglistmodel = VmModel::getModel('waitinglist');
 		$waitinglist = $waitinglistmodel->getWaitingusers($virtuemart_product_id);

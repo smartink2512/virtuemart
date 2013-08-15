@@ -15,7 +15,7 @@ defined('_JEXEC') or die();
 
 /**
  * Sanitizes the filenames and transliterates them also for non latin languages
- *
+ * maybe we should move this to vmfilter
  * @author constantined
  *
  */
@@ -27,7 +27,7 @@ class vmFile {
 	 * @param bool $forceNoUni
 	 * @return mixed|string
 	 */
-	function makeSafe($string,$forceNoUni=false) {
+	static function makeSafe($string,$forceNoUni=false) {
 
 		$string = trim(JString::strtolower($string));
 
@@ -59,7 +59,8 @@ class VmMediaHandler {
 	var $file_name = '';
 	var $file_extension = '';
 	var $virtuemart_media_id = '';
-	
+
+
 	function __construct($id=0){
 
 		$this->virtuemart_media_id = $id;
@@ -103,7 +104,8 @@ class VmMediaHandler {
 			$choosed = true;
 		}
 		else if($type == 'forSale' || $type== 'file_is_forSale'){
-
+			if (!class_exists ('shopFunctionsF'))
+				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 			$relUrl = shopFunctions::checkSafePath();
 			if($relUrl){
 				$choosed = true;
@@ -190,7 +192,7 @@ class VmMediaHandler {
 	 * @param array $data
 	 * @param string $type
 	 */
-	public function prepareStoreMedia($table,$data,$type){
+	static public function prepareStoreMedia($table,$data,$type){
 
 		$media = VmMediaHandler::createMedia($table,$type);
 
@@ -226,6 +228,8 @@ class VmMediaHandler {
 			$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
 			$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
 		} else {
+			if (!class_exists ('shopFunctions'))
+				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctions.php');
 			$safePath = shopFunctions::checkSafePath();
 			if(!$safePath){
 				return FALSE;
@@ -443,12 +447,12 @@ class VmMediaHandler {
 		}
 
 		/**
-		 * Just for overwriting purpose for childs. Take a look on VmImage to see an exampel
+		 * Just for overwriting purpose for childs. Take a look on VmImage to see an example
 		 *
 		 * @author Max Milbers
 		 */
 		function displayMediaFull(){
-			return $this->displayMediaThumb('id="vm_display_image"',false);
+			return $this->displayMediaThumb('id="vm_display_image"',false,'',true,true);
 		}
 
 		/**
@@ -462,7 +466,7 @@ class VmMediaHandler {
 		 * @param string $effect alternative lightbox display
 		 * @param boolean $withDesc display the image media description
 		 */
-		function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal' rel='group'",$return = true,$withDescr = false,$absUrl = false){
+		function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal' rel='group'",$return = true,$withDescr = false,$absUrl = false, $width=0,$height=0){
 
 			if(empty($this->file_name)){
 
@@ -480,10 +484,16 @@ class VmMediaHandler {
 			}
 
 			if(!empty($this->file_url_thumb)){
-				$file_url = $this->file_url_thumb;
+				$file_url_thumb = $this->file_url_thumb;
+			} else if(is_a($this,'VmImage')) {
+
+				$file_url_thumb = $this->createThumbFileUrl();
+
+			} else {
+				$file_url_thumb = '';
 			}
 
-			$media_path = JPATH_ROOT.DS.str_replace('/',DS,$this->file_url_thumb);
+			$media_path = JPATH_ROOT.DS.str_replace('/',DS,$file_url_thumb);
 
 			if(empty($this->file_meta)){
 				if(!empty($this->file_description)){
@@ -497,26 +507,32 @@ class VmMediaHandler {
 				$file_alt = $this->file_meta;
 			}
 
-			if ((empty($this->file_url_thumb) || !file_exists($media_path)) && is_a($this,'VmImage')) {
+			if ((empty($file_url_thumb) || !file_exists($media_path)) && is_a($this,'VmImage')) {
 
-				$this->file_url_thumb = $this->createThumb();
+				if(empty($width)) $width = VmConfig::get('img_width', 90);
+				if(empty($height)) $height = VmConfig::get('img_height', 90);
+				//vmSetStartTime('thumb');
+				$file_url_thumb = $this->createThumb($width,$height);
+				//vmTime('Time to create thumb','thumb');
 				// 				vmdebug('displayMediaThumb',$this->file_url_thumb);
-				$media_path = JPATH_ROOT.DS.str_replace('/',DS,$this->file_url_thumb);
-				$file_url = $this->file_url_thumb;
+				$media_path = JPATH_ROOT.DS.str_replace('/',DS,$file_url_thumb);
+				//$file_url = $this->file_url_thumb;
 
 				//Here we need now to update the database field of $this->file_url_thumb to prevent dynamic thumbnailing in future
-				if(empty($this->_db)) $this->_db = JFactory::getDBO();
+				//We do not update anylonger, only if there is an override used
+				/*if(empty($this->_db)) $this->_db = JFactory::getDBO();
 				$query = 'UPDATE `#__virtuemart_medias` SET `file_url_thumb` = "'.$this->_db->getEscaped($this->file_url_thumb).'" WHERE `#__virtuemart_medias`.`virtuemart_media_id` = "'.(int)$this->virtuemart_media_id.'" ';
 				$this->_db->setQuery($query);
-				$this->_db->query();
+				$this->_db->query();*/
 			}
+			$this->file_url_thumb = $file_url_thumb;
 
 			if($withDescr) $withDescr = $this->file_description;
 			if (empty($this->file_url_thumb) || !file_exists($media_path)) {
 				return $this->getIcon($imageArgs,$lightbox,$return,$withDescr,$absUrl);
 			}
 
-			if($return) return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,$effect,$withDescr,$absUrl);
+			if($return) return $this->displayIt($file_url_thumb, $file_alt, $imageArgs,$lightbox,$effect,$withDescr,$absUrl);
 
 		}
 
@@ -565,10 +581,16 @@ class VmMediaHandler {
 			if($lightbox){
 				$image = JHTML::image($file_url, $file_alt, $imageArgs);
 				if ($file_alt ) $file_alt = 'title="'.$file_alt.'"';
-				if ($this->file_url and pathinfo($this->file_url, PATHINFO_EXTENSION) ) $href = JURI::root() .$this->file_url ;
+				if ($this->file_url and pathinfo($this->file_url, PATHINFO_EXTENSION) and substr( $this->file_url, 0, 4) != "http") $href = JURI::root() .$this->file_url ;
 				else $href = $file_url ;
-				$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.'</a>';
-				return $lightboxImage.$desc;
+				if ($this->file_is_downloadable) {
+					$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.$desc.'</a>';
+				} else {
+					$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.'</a>';
+					$lightboxImage = $lightboxImage.$desc;
+				}
+
+				return $lightboxImage;
 			} else {
 				$root='';
 				if($absUrl) $root = JURI::root();
@@ -585,11 +607,10 @@ class VmMediaHandler {
 		 */
 		function uploadFile($urlfolder,$overwrite = false){
 
-		if(empty($urlfolder) OR strlen($urlfolder)<2){
+			if(empty($urlfolder) OR strlen($urlfolder)<2){
 				vmError('Not able to upload file, give path/url empty/too short '.$urlfolder.' please correct path in your virtuemart config');
 				return false;
 			}
-			
 			$media = JRequest::getVar('upload', array(), 'files');
 
 			$app = JFactory::getApplication();
@@ -910,17 +931,15 @@ class VmMediaHandler {
 			$this->_db->setQuery('SELECT FOUND_ROWS()');
 			$imagetotal = $this->_db->loadResult();
 			//vmJsApi::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
-
-			if (JVM_VERSION===1) {
-				$j = "
-			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','0') }); " ;
-			}
-			else $j = "
+			$j = '
+//<![CDATA[
+'; 
+			$j .= "
 			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','0') }); " ;
 
 			$j .="
 			jQuery(document).ready(function($){
-			var medialink = 'index.php?option=com_virtuemart&view=media&task=viewJson&format=json&mediatype=".$type."';
+			var medialink = '". JURI::root(false) ."administrator/index.php?option=com_virtuemart&view=media&task=viewJson&format=json&mediatype=".$type."';
 			var media = $('#searchMedia').data();
 			var searchMedia = $('input#searchMedia');
 			searchMedia.click(function () {
@@ -931,7 +950,7 @@ class VmMediaHandler {
 				source: medialink,
 				select: function(event, ui){
 					$('#ImagesContainer').append(ui.item.label);
-					//$(this).autocomplete( 'option' , 'source' , 'index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
+					//$(this).autocomplete( 'option' , 'source' , '". JURI::root(false) ."administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
 
 				},
 				minLength:1,
@@ -963,7 +982,9 @@ class VmMediaHandler {
 				});
 
 
-		}); ";
+		}); 
+//]]>
+		";
 
 			$document = JFactory::getDocument ();
 			$document->addScriptDeclaration ( $j);
@@ -982,43 +1003,32 @@ class VmMediaHandler {
 			$html='';
 			$html .= '<fieldset class="checkboxes">' ;
 			$html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGES').'</legend>';
-			$html .=  '<span class="hasTip always-left" title="'.JText::_('COM_VIRTUEMART_SEARCH_MEDIA_TIP').'">'.JText::_('COM_VIRTUEMART_SEARCH_MEDIA') . '</span>';
+			$html .=  '<span style="height:18px;vertical-align: middle;margin:4px" class="hasTip always-left" title="'.JText::_('COM_VIRTUEMART_SEARCH_MEDIA_TIP').'">'.JText::_('COM_VIRTUEMART_SEARCH_MEDIA') . '</span>';
 			$html .=   '
-					<input type="text" name="searchMedia" id="searchMedia" data-start="0" value="' .JRequest::getString('searchMedia') . '" class="text_area always-left" />
-					<button class="reset-value fg-button">'.JText::_('COM_VIRTUEMART_RESET') .'</button>
-					<a class="js-pages js-previous fg-button ui-state-default fg-button-icon-left ui-corner-all" ><span class="ui-icon ui-icon-circle-minus" style="display:inline-block;"></span> 16 </a>
-					<a class="js-pages js-next fg-button ui-state-default fg-button-icon-right ui-corner-all"> 16 <span class="ui-icon ui-icon-circle-plus" style="display:inline-block;"></span></a>
-					<br class="clear"/>';
-			;
-			//$result = $this->getImagesList($type);
+					<input type="text" name="searchMedia" id="searchMedia" style="height:18px;vertical-align: middle;margin:4px;width:250px" data-start="0" value="' .JRequest::getString('searchMedia') . '" class="text_area always-left" />
+					<button class="reset-value fg-button" style="height:18px;vertical-align: middle;margin:4px">'.JText::_('COM_VIRTUEMART_RESET') .'</button>
+					<a style="height:18px;vertical-align: middle;margin:4px" class="js-pages js-previous fg-button ui-state-default fg-button-icon-left ui-corner-all" ><span class="ui-icon ui-icon-circle-minus" style="display:inline-block;"></span> 16 </a>
+					<a style="height:18px;vertical-align: middle;margin:4px" class="js-pages js-next fg-button ui-state-default fg-button-icon-right ui-corner-all"> 16 <span class="ui-icon ui-icon-circle-plus" style="display:inline-block;"></span></a>';
+			$html .='<br class="clear"/>';
+
+
 			$html .= '<div id="ImagesContainer">';
 
-			// 			$html .= ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_NAME','','searchMedia') ;
-
-			// if(empty($fileIds)) {
-			// return  $html;
-			// }
-			// $text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE_PRIMARY';
 			if(!empty($fileIds)) {
-				foreach($fileIds as $k=>$id){
+				$model = VmModel::getModel('Media');
+				$medias = $model->createMediaByIds($fileIds, $type);
+				foreach($medias as $k=>$id){
 					$html .= $this->displayImage($id,$k );
 				}
 			}
-			//$html .= '<a id="addnewselectimage2" href="#media-dialog">'.JText::_('COM_VIRTUEMART_IMAGE_ATTACH_NEW').'</a>';
 			$html .= '</div>';
-
-
 
 			return $html.'</fieldset><div class="clear"></div>';
 		}
 
 
-		function displayImage($virtuemart_media_id ,$key) {
+		function displayImage($image ,$key) {
 
-			$db = JFactory::getDBO();
-			$query='SELECT * FROM `#__virtuemart_medias` where `virtuemart_media_id`='.(int)$virtuemart_media_id;
-			$db->setQuery( $query );
-			$image = $db->loadObject();
 			if (isset($image->file_url)) {
 				$image->file_root = JURI::root(true).'/';
 				$image->msg =  'OK';
@@ -1035,11 +1045,13 @@ class VmMediaHandler {
 		}
 
 
-		function displayImages($types ='',$page=0,$max=16 ) {
+		static function displayImages($types ='',$page=0,$max=16 ) {
 
 			$Images = array();
 			$list = VmMediaHandler::getImagesList($types,$page,$max);
-			if (empty($list['images'])) return JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND');
+			if (empty($list['images'])){
+				return JText::_('COM_VIRTUEMART_NO_MEDIA_FILES');
+			}
 
 			foreach ($list['images'] as $key =>$image) {
 				$htmlImages ='';
@@ -1068,9 +1080,9 @@ class VmMediaHandler {
 		 * @param name of the view
 		 * @return object List of flypage objects
 		 */
-		function getImagesList($type = '',$page=0, $max=16) {
+		function getImagesList($type = '',$limit=0, $max=16) {
 
-			if(empty($this->_db)) $this->_db = JFactory::getDBO();
+			$db = JFactory::getDBO();
 			$list = array();
 			$vendorId=1;//TODO control the vendor
 			$q='SELECT SQL_CALC_FOUND_ROWS `virtuemart_media_id` FROM `#__virtuemart_medias` WHERE `published`=1
@@ -1079,28 +1091,27 @@ class VmMediaHandler {
 				$q .= ' AND `file_type` = "'.$type.'" ';
 			}
 			if ($search = JRequest::getString('term', false)){
-				$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+				$search = '"%' . $db->getEscaped( $search, true ) . '%"' ;
 				$q .=  ' AND (`file_title` LIKE '.$search.' OR `file_description` LIKE '.$search.' OR `file_meta` LIKE '.$search.') ';
 			}
-			$q .= ' LIMIT '.(int)$page*$max.', '.(int)$max;
+			$q .= ' LIMIT '.(int)$limit.', '.(int)$max;
 
-
-			$this->_db->setQuery($q);
+			$db->setQuery($q);
 			//		$result = $this->_db->loadAssocList();
-			if ($virtuemart_media_ids = $this->_db->loadResultArray()) {
-				$errMsg = $this->_db->getErrorMsg();
-				$errs = $this->_db->getErrors();
+			if ($virtuemart_media_ids = $db->loadResultArray()) {
+				$errMsg = $db->getErrorMsg();
+				$errs = $db->getErrors();
 
 				$model = VmModel::getModel('Media');
 
-				$this->_db->setQuery('SELECT FOUND_ROWS()');
-				$list['total'] = $this->_db->loadResult();
+				$db->setQuery('SELECT FOUND_ROWS()');
+				$list['total'] = $db->loadResult();
 
 				$list['images'] = $model->createMediaByIds($virtuemart_media_ids, $type);
 
 				if(!empty($errMsg)){
 					$app = JFactory::getApplication();
-					$errNum = $this->_db->getErrorNum();
+					$errNum = $db->getErrorNum();
 					$app->enqueueMessage('SQL-Error: '.$errNum.' '.$errMsg);
 				}
 
@@ -1126,7 +1137,6 @@ class VmMediaHandler {
 		public function displayFileHandler(){
 
 			VmConfig::loadJLang('com_virtuemart_media');
-			//VmConfig::loadJLang('com_virtuemart_media');
 			$identify = ''; // ':'.$this->virtuemart_media_id;
 
 			$this->addHiddenByType();
@@ -1179,6 +1189,16 @@ class VmMediaHandler {
 			$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_META','file_meta');
 
 			$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL','file_url',$readonly);
+
+			//remove the file_url_thumb in case it is standard
+			if(!empty($this->file_url_thumb) and is_a($this,'VmImage')) {
+				$file_url_thumb = $this->createThumbFileUrl();
+				//vmdebug('my displayFileHandler ',$this,$file_url_thumb);
+
+				if($this->file_url_thumb == $file_url_thumb){
+					$this->file_url_thumb = JText::sprintf('COM_VIRTUEMART_DEFAULT_URL',$file_url_thumb);
+				}
+			}
 			$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL_THUMB','file_url_thumb',$readonly);
 
 			$this->addMediaAttributesByType();

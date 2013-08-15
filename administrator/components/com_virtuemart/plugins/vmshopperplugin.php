@@ -26,7 +26,7 @@ jimport('joomla.plugin.plugin');
 *
 * @package	VirtueMart
 * @subpackage Plugins
-* @author Oscar van Eijk
+* @author Max Milbers
 */
 if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
 
@@ -50,9 +50,7 @@ abstract class vmShopperPlugin extends VmPlugin
 	 * @return string HTML code (might contain form data_
 	 * @author Oscar van Eijk
 	 */
-/*	public function plgVmOnUpdateOrderBEShopper($_orderID){
-		return $_orderID;
-	}
+	abstract public function plgVmOnUpdateOrderBEShopper($_orderID);
 
 
 	public function plgVmOnUserStore($data){
@@ -62,5 +60,5 @@ abstract class vmShopperPlugin extends VmPlugin
 	public function plgVmAfterUserStore($data){
 		return $data;
 	}
-*/
+
 }

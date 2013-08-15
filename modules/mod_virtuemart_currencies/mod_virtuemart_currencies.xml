@@ -5,7 +5,7 @@
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
-    <copyright>${PHING.VM.COPYRIGHT}</copyright>
+    <copyright>${PHING.VM.COPYRIGH}</copyright>
     <license>${PHING.VM.LICENSE}</license>
     <version>${PHING.VM.RELEASE}</version>
     <description>MOD_VIRTUEMART_CURRENCIES_DESC</description>

@@ -37,10 +37,11 @@ class VirtuemartViewUpdatesMigration extends VmView {
 		$latestVersion = JRequest::getVar('latestverison', '');
 
 		JToolBarHelper::title(JTEXT::_('COM_VIRTUEMART_UPDATE_MIGRATION'), 'head vm_config_48');
-		$this->showHelp();
-// 		$this->loadHelper('connection');
-		$this->loadHelper('image');
-		$this->loadHelper('html');
+
+		if (!class_exists('VmImage'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		$this->assignRef('checkbutton_style', $checkbutton_style);
 		$this->assignRef('downloadbutton_style', $downloadbutton_style);

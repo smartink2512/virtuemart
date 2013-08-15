@@ -28,7 +28,6 @@ if (!class_exists ('VmView')) {
  * Product details
  *
  * @package VirtueMart
- * @author RolandD
  * @author Max Milbers
  */
 class VirtueMartViewAskquestion extends VmView {
@@ -36,7 +35,7 @@ class VirtueMartViewAskquestion extends VmView {
 	/**
 	 * Collect all data to show on the template
 	 *
-	 * @author RolandD, Max Milbers
+	 * @author Max Milbers
 	 */
 	function display ($tpl = NULL) {
 
@@ -49,18 +48,12 @@ class VirtueMartViewAskquestion extends VmView {
 		$this->assignRef ('show_prices', $show_prices);
 		$document = JFactory::getDocument ();
 
-		/* add javascript for price and cart */
-		vmJsApi::jPrice ();
-
 		$mainframe = JFactory::getApplication ();
 		$pathway = $mainframe->getPathway ();
 		$task = JRequest::getCmd ('task');
 
-		// Set the helper path
-		$this->addHelperPath (JPATH_VM_ADMINISTRATOR . DS . 'helpers');
-
-		$this->loadHelper ('image');
-		$this->loadHelper ('addtocart');
+		if (!class_exists('VmImage'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 
 		// Load the product
 		$product_model = VmModel::getModel ('product');
@@ -85,7 +78,7 @@ class VirtueMartViewAskquestion extends VmView {
 		// Set Canonic link
 		$format = JRequest::getWord('format', 'html');
 		if ($format == 'html') {
-			$document->addHeadLink ($product->link, 'canonical', 'rel', '');
+			$document->addHeadLink ($product->canonical, 'canonical', 'rel', '');
 		}
 
 
@@ -115,11 +108,11 @@ class VirtueMartViewAskquestion extends VmView {
 		if ($category_model) {
 			$category = $category_model->getCategory ($virtuemart_category_id);
 			$this->assignRef ('category', $category);
-			$pathway->addItem ($category->category_name, JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $virtuemart_category_id));
+			$pathway->addItem ($category->category_name, JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $virtuemart_category_id, FALSE));
 		}
 
 		//$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
-		$pathway->addItem ($product->product_name, JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $product->virtuemart_product_id));
+		$pathway->addItem ($product->product_name, JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $product->virtuemart_product_id, FALSE));
 
 		// for askquestion
 		$pathway->addItem (JText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION'));
@@ -176,7 +169,7 @@ class VirtueMartViewAskquestion extends VmView {
 		if ($virtuemart_category_id) {
 			$categoryLink = '&virtuemart_category_id=' . $virtuemart_category_id;
 		}
-		$continue_link = JRoute::_ ('index.php?option=com_virtuemart&view=category' . $categoryLink);
+		$continue_link = JRoute::_ ('index.php?option=com_virtuemart&view=category' . $categoryLink, FALSE);
 
 		$continue_link_html = '<a href="' . $continue_link . '" />' . JText::_ ('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 		$this->assignRef ('continue_link_html', $continue_link_html);
