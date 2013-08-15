@@ -860,14 +860,14 @@ class VirtueMartCart {
 	 * will show the orderdone page (thank you page)
 	 *
 	 */
-	private function confirmedOrder() {
+	 function confirmedOrder() {
 
 		//Just to prevent direct call
 		if ($this->_dataValidated && $this->_confirmDone) {
 
 			$orderModel = VmModel::getModel('orders');
 
-			if (($orderID = $orderModel->createOrderFromCart()) === false) {
+			if (($orderID = $orderModel->createOrderFromCart($this)) === false) {
 				$mainframe = JFactory::getApplication();
 				JError::raiseWarning(500, 'No order created '.$orderModel->getError());
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE) );

@@ -998,6 +998,7 @@ class vmrouterHelper {
 		$this->menuVmitems= $db->loadObjectList();
 		$homeid =0;
 		if(empty($this->menuVmitems)){
+            VmConfig::loadJLang('com_virtuemart', true);
 			vmWarn(JText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
 		} else {
 
@@ -1066,7 +1067,8 @@ class vmrouterHelper {
 		$items = $menus->getItems('componentid', $component->id);
 
 		if(empty($items)){
-			vmWarn(JText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
+            VmConfig::loadJLang('com_virtuemart', true);
+            vmWarn(JText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
 		} else {
 			// Search  Virtuemart itemID in joomla menu
 			foreach ($items as $item)	{
