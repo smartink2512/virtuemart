@@ -317,7 +317,7 @@ if (!class_exists ('vmPSPlugin')) {
 
 		return $this->onSelectedCalculatePrice ($cart, $cart_prices, $cart_prices_name);
 	}
-		function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
+	function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
 
 
 			if (!class_exists ('calculationHelper')) {
@@ -362,7 +362,7 @@ if (!class_exists ('vmPSPlugin')) {
 				if (preg_match ('/%$/', $method->cost_percent_total)) {
 					$cost_percent_total = (substr ($method->cost_percent_total, 0, -1))/100;
 				} else {
-					$cost_percent_total = $method->cost_percent_total;
+					$cost_percent_total = $method->cost_percent_total /100;
 				}
 			} else {
 				$cost_percent_total=0;
