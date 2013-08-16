@@ -1078,7 +1078,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
             if (preg_match ('/%$/', $method->cost_percent_total)) {
                 $cost_percent_total = (substr ($method->cost_percent_total, 0, -1))/100;
             } else {
-                $cost_percent_total = $method->cost_percent_total;
+                $cost_percent_total = $method->cost_percent_total /100;
             }
         } else {
             $cost_percent_total=0;
