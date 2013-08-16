@@ -897,7 +897,7 @@ class VirtueMartCart {
 	 */
 	public function emptyCart(){
 
-		self::emptyCartValues($this);
+	//	self::emptyCartValues($this);
 
 		$this->setCartIntoSession();
 	}
@@ -908,7 +908,7 @@ class VirtueMartCart {
 	 * @author Valerie Cartan Isaksen
 	 *
 	 */
-	static public function emptyCartValues($cartData){
+	static public function emptyCartValues(&$cartData){
 
 		//We delete the old stuff
 		$cartData->products = array();
