@@ -648,7 +648,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * @param int quantity
 	 * @param boolean load customfields
 	 */
-	public function getProduct ($virtuemart_product_id = NULL, $front = TRUE, $withCalc = TRUE, $onlyPublished = TRUE, $quantity = 1,$customfields = TRUE) {
+	public function getProduct ($virtuemart_product_id = NULL, $front = TRUE, $withCalc = TRUE, $onlyPublished = TRUE, $quantity = 1) {
 
 		if (isset($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId ($virtuemart_product_id);
@@ -662,15 +662,15 @@ class VirtueMartModelProduct extends VmModel {
 				$virtuemart_product_id = $this->_id;
 			}
 		}
-		$productKey = md5($virtuemart_product_id.$front.$withCalc.$onlyPublished.$quantity.$customfields);
+		$productKey = md5($virtuemart_product_id.$front.$withCalc.$onlyPublished.$quantity);
 		//vmdebug('getProduct',$productKey);
 		static $_products = array();
 		//VmConfig::$echoDebug=TRUE;
 		if (array_key_exists ($productKey, $_products)) {
 			vmdebug('getProduct, take from cache '.$productKey);
 			return $_products[$productKey];
-		} else if(!$customfields or !$withCalc){
-			$productKey = md5($virtuemart_product_id.$front.TRUE.$onlyPublished.$quantity.TRUE);
+		} else if(!$withCalc){
+			$productKey = md5($virtuemart_product_id.$front.TRUE.$onlyPublished.$quantity);
 		}
 
 		if (array_key_exists ($productKey, $_products)) {
@@ -678,7 +678,7 @@ class VirtueMartModelProduct extends VmModel {
 			vmdebug('getProduct, take from cache full product '.$productKey);
 			return $_products[$productKey];
 		} else {
-			$child = $this->getProductSingle ($virtuemart_product_id, $front,$quantity,$customfields);
+			$child = $this->getProductSingle ($virtuemart_product_id, $front,$quantity);
 			if (!$child->published && $onlyPublished) {
 				vmdebug('getProduct child is not published, returning zero');
 				return FALSE;
@@ -911,26 +911,17 @@ class VirtueMartModelProduct extends VmModel {
 		}
 	}
 
-	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1,$customfields=FALSE) {
+	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1) {
 
-		$customfields = FALSE;
-		//$this->fillVoidProduct($front);
 		if (!empty($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId ($virtuemart_product_id);
 		}
 
-		$productKey = md5($virtuemart_product_id.$front.$quantity.$customfields);
+		$productKey = md5($virtuemart_product_id.$front.$quantity);
 		static $_productsSingle = array();
 		if (array_key_exists ($productKey, $_productsSingle)) {
 			//vmdebug('getProduct, take from cache '.$productKey);
 			return $_productsSingle[$productKey];
-		} else if(!$customfields){
-			$productKey = md5($virtuemart_product_id.$front.$quantity.TRUE);
-			vmdebug('getProductSingle, recreate $productKey '.$productKey);
-			if (array_key_exists ($productKey, $_productsSingle)) {
-				//vmdebug('getProduct, take from cache ',$_productsSingle[$productKey]);
-				return $_productsSingle[$productKey];
-			}
 		}
 
 		if (!empty($this->_id)) {

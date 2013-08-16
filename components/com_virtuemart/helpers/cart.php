@@ -650,7 +650,8 @@ class VirtueMartCart {
 			return $this->redirecter('index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
 		} else {
 
-			$redirectMsg = $this->prepareCartProducts();
+			$redirectMsg = $this->prepareCartData();
+
 			if (!$redirectMsg) {
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart', $redirectMsg);
 			}
@@ -685,8 +686,8 @@ class VirtueMartCart {
 			}
 		}
 
-		$this->cartData = $this->getCartPrices();
-
+		$this->getCartPrices();
+		$this->cartData = $this->calculator->getCartData();
 
 		// Check if a minimun purchase value is set
 		if (($redirectMsg = $this->checkPurchaseValue()) != null) {
@@ -1090,19 +1091,6 @@ class VirtueMartCart {
 		}
 	}
 
-
-	/**
-	 *
-	 */
-	public function prepareCartProducts($checkAutomaticSelected=true){
-
-
-		$this->prepareCartData();
-
-
-	}
-
-
 	/**
 	 * Function Description
 	 *
@@ -1117,14 +1105,14 @@ class VirtueMartCart {
 
 		//if(empty($this->pricesUnformatted)){
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-			$calculator = calculationHelper::getInstance();
+			$this->calculator = calculationHelper::getInstance();
 
-			$this->pricesCurrency = $calculator->_currencyDisplay->getCurrencyForDisplay();
+			$this->pricesCurrency = $this->calculator->_currencyDisplay->getCurrencyForDisplay();
 
 			//vmdebug('getCartPrices',$this->products[0]->prices);
-			$calculator->getCheckoutPrices($this, $checkAutomaticSelected);
+		$this->calculator->getCheckoutPrices($this, $checkAutomaticSelected);
 
-			$this->pricesUnformatted = $calculator->getCartPrices();
+			$this->pricesUnformatted = $this->calculator->getCartPrices();
 		//}
 
 		//vmdebug('How often this is called? getCartPrices');
@@ -1182,6 +1170,7 @@ class VirtueMartCart {
 		}
 
 		$this->getCartPrices();
+
 		$this->checkCartQuantities();
 
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
@@ -1189,9 +1178,8 @@ class VirtueMartCart {
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$this->paymentCurrency));
 
-		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-		$calculator = calculationHelper::getInstance();
-		$this->cartData = $calculator->getCartData();
+
+		$this->cartData = $this->calculator->getCartData();
 
 		return $this->cartData ;
 

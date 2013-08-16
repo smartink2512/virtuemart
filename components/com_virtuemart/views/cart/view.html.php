@@ -53,14 +53,14 @@ class VirtueMartViewCart extends VmView {
 
 		//Why is this here, when we have view.raw.php
 		if ($format == 'raw') {
-			$this->prepareCartViewData($cart);
+			$this->prepareCartViewData();
 			JRequest::setVar('layout', 'mini_cart');
 			$this->setLayout('mini_cart');
 			$this->prepareContinueLink();
 		}
 
 		if ($layoutName == 'select_shipment') {
-			$this->prepareCartViewData($cart);
+			$this->prepareCartViewData();
 			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmshipment');
 			$this->lSelectShipment();
@@ -71,8 +71,8 @@ class VirtueMartViewCart extends VmView {
 		} else if ($layoutName == 'select_payment') {
 
 			/* Load the cart helper */
-			//			$cartModel = VmModel::getModel('cart');
-			$this->prepareCartViewData($cart);
+			//			$this->cartModel = VmModel::getModel('cart');
+			$this->prepareCartViewData();
 			$this->lSelectPayment();
 
 			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_OVERVIEW'), JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
@@ -87,24 +87,26 @@ class VirtueMartViewCart extends VmView {
 		} else if ($layoutName == 'default') {
 			VmConfig::loadJLang('com_virtuemart_shoppers');
 			// Get the products for the cart
-			$cart->prepareAddressDataInCart();
+			$this->cart->prepareAddressDataInCart();
 
 			$this->prepareAddressRadioSelection();
 
 			$this->prepareContinueLink();
 
-			if (!$cart->_redirect and !VmConfig::get('use_as_catalog', 0)) {
-				$cart->checkout(false);
+
+
+			if (!$this->cart->_redirect and !VmConfig::get('use_as_catalog', 0)) {
+				$this->cart->checkout(false);
 			} else if(!VmConfig::get('use_as_catalog', 0)) {
-				$cart->prepareCartData();
+				$this->cart->prepareCartData();
 			} else {
 				$mainframe->redirect($this->continue_link);
 			}
 
 
 			$vendorModel = VmModel::getModel('vendor');
-			$cart->vendor = $vendorModel->getVendor(1);
-			$vendorModel->addImages($cart->vendor,1);
+			$this->cart->vendor = $vendorModel->getVendor(1);
+			$vendorModel->addImages($this->cart->vendor,1);
 
 
 			$customfieldsModel = VmModel::getModel ('Customfields');
@@ -122,7 +124,7 @@ class VirtueMartViewCart extends VmView {
 			$checkoutAdvertise =$this->getCheckoutAdvertise();
 
 
-			if ($cart->getDataValidated()) {
+			if ($this->cart->getDataValidated()) {
 				$pathway->addItem(JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
 				$document->setTitle(JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
 				$text = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
@@ -136,14 +138,14 @@ class VirtueMartViewCart extends VmView {
 			$this->assignRef('checkout_task', $checkout_task);
 			$this->checkPaymentMethodsConfigured();
 			$this->checkShipmentMethodsConfigured();
-			if ($cart->virtuemart_shipmentmethod_id) {
+			if ($this->cart->virtuemart_shipmentmethod_id) {
 				$shippingText =  JText::_('COM_VIRTUEMART_CART_CHANGE_SHIPPING');
 			} else {
 				$shippingText = JText::_('COM_VIRTUEMART_CART_EDIT_SHIPPING');
 			}
 			$this->assignRef('select_shipment_text', $shippingText);
 
-			if ($cart->virtuemart_paymentmethod_id) {
+			if ($this->cart->virtuemart_paymentmethod_id) {
 				$paymentText = JText::_('COM_VIRTUEMART_CART_CHANGE_PAYMENT');
 			} else {
 				$paymentText = JText::_('COM_VIRTUEMART_CART_EDIT_PAYMENT');
@@ -171,7 +173,7 @@ class VirtueMartViewCart extends VmView {
 			$order_language = $lang->getTag();
 			$this->assignRef('order_language',$order_language);
 		}
-		//dump ($cart,'cart');
+		//dump ($this->cart,'cart');
 		$useSSL = VmConfig::get('useSSL', 0);
 		$useXHTML = true;
 		$this->assignRef('useSSL', $useSSL);
@@ -179,13 +181,10 @@ class VirtueMartViewCart extends VmView {
 		$this->assignRef('totalInPaymentCurrency', $totalInPaymentCurrency);
 		$this->assignRef('checkoutAdvertise', $checkoutAdvertise);
 		// @max: quicknirty
-		$cart->setCartIntoSession();
+		$this->cart->setCartIntoSession();
 		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
 
-		foreach($cart->products as $product){
-			vmdebug('Cart view.html.php my product_id',$product->customProductData);
-		}
-		vmdebug('Cart view.html.php my product_id',$cart->cartProductsData);
+		
 
 		parent::display($tpl);
 	}
@@ -197,16 +196,16 @@ class VirtueMartViewCart extends VmView {
 * @author Patrick Kohl
 * @author Valerie Isaksen
 */
-	function prepareCartViewData($cart){
+	function prepareCartViewData(){
 
 		// Get the products for the cart
-		$cart->prepareCartData();
+		$this->cart->prepareCartData();
 
-		$cart->prepareAddressDataInCart();
+		$this->cart->prepareAddressDataInCart();
 
 		$vendorModel = VmModel::getModel('vendor');
-		$cart->vendor = $vendorModel->getVendor(1);
-		$vendorModel->addImages($cart->vendor,1);
+		$this->cart->vendor = $vendorModel->getVendor(1);
+		$vendorModel->addImages($this->cart->vendor,1);
 
 	}
 
