@@ -88,7 +88,7 @@ class VirtueMartViewProductdetails extends VmView {
 	    // Load the custom product fields
 	    //$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->virtuemart_product_id);
 	    //
-	    $product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
+	    $product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($virtuemart_product_id);
 
 	   // vmdebug('productdetails view.html.php ',$product->customfields);
 	    if ($product->customfields){

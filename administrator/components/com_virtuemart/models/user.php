@@ -1352,6 +1352,22 @@ class VirtueMartModelUser extends VmModel {
 		return $_status;
 	}
 
+	function removeAddress($virtuemart_userinfo_id){
+
+		$db = JFactory::getDBO();
+
+		if ( isset($virtuemart_userinfo_id) and $this->_id != 0 ) {
+			//$userModel -> deleteAddressST();
+			$q = 'DELETE FROM #__virtuemart_userinfos  WHERE virtuemart_user_id="'. $this->_id .'" AND virtuemart_userinfo_id="'. (int)$virtuemart_userinfo_id .'"';
+			$db->setQuery($q);
+			if($db->query()){
+				vmInfo('Address has been successfully deleted.');
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Retrieve a list of users from the database.
 	 *

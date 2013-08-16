@@ -459,13 +459,10 @@ class VirtueMartCart {
 				}
 			}
 
-
 			//Remove the products which have quantity=0
 			foreach($unsetA as $v){
 				unset($this->cartProductsData[$v]);
 			}
-
-			$this->prepareCartProducts();
 		}
 		if ($updateSession== false) return false ;
 		// End Iteration through Prod id's
@@ -649,8 +646,17 @@ class VirtueMartCart {
 		$value = trim(str_replace('"', ' ', $value),"'") ;
 		$this->customer_comment=	(string)preg_replace('#^\'#si','',$value);//replace ' at start
 
-		$this->prepareCartProducts();
-		$this->cartData = $this->prepareCartData();
+		if (count($this->cartProductsData) == 0) {
+			return $this->redirecter('index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
+		} else {
+
+			$redirectMsg = $this->prepareCartProducts();
+			if (!$redirectMsg) {
+				return $this->redirecter('index.php?option=com_virtuemart&view=cart', $redirectMsg);
+			}
+
+		}
+
 
 		if (empty($this->tosAccepted)) {
 
@@ -679,22 +685,8 @@ class VirtueMartCart {
 			}
 		}
 
-		
-		//$this->prepareCartPrice( );
+		$this->cartData = $this->getCartPrices();
 
-
-		///if (count($this->products) == 0) {
-		if (count($this->cartProductsData) == 0) {
-			return $this->redirecter('index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
-		} else {
-
-			$redirectMsg = $this->prepareCartProducts();
-
-			if (!$redirectMsg) {
-				return $this->redirecter('index.php?option=com_virtuemart&view=cart', $redirectMsg);
-			}
-
-		}
 
 		// Check if a minimun purchase value is set
 		if (($redirectMsg = $this->checkPurchaseValue()) != null) {
@@ -1102,32 +1094,11 @@ class VirtueMartCart {
 	/**
 	 *
 	 */
-	public function prepareCartData($checkAutomaticSelected=true){
+	public function prepareCartProducts($checkAutomaticSelected=true){
 
-		$this->totalProduct = 0;
-		//vmdebug('$this->cartProductsData',$this->cartProductsData);
 
-		//$this->prepareCartProducts();
+		$this->prepareCartData();
 
-		//return $this->pricesUnformatted;
-
-		//if (empty($product_prices)) return null;
-		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-		$currency = CurrencyDisplay::getInstance();
-
-		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-		$calculator = calculationHelper::getInstance();
-
-		$this->pricesCurrency = $currency->getCurrencyForDisplay();
-
-		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$this->paymentCurrency));
-		$this->cartData = $calculator->getCartData();
-
-		//vmdebug('prepareCartData',$this->cartProductsData);
-		return $this->cartData ;
 
 	}
 
@@ -1144,30 +1115,33 @@ class VirtueMartCart {
 
 	public function getCartPrices($checkAutomaticSelected=true) {
 
-		if(empty($this->pricesUnformatted)){
+		//if(empty($this->pricesUnformatted)){
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 			$calculator = calculationHelper::getInstance();
+
+			$this->pricesCurrency = $calculator->_currencyDisplay->getCurrencyForDisplay();
 
 			//vmdebug('getCartPrices',$this->products[0]->prices);
 			$calculator->getCheckoutPrices($this, $checkAutomaticSelected);
 
 			$this->pricesUnformatted = $calculator->getCartPrices();
-		}
+		//}
 
+		//vmdebug('How often this is called? getCartPrices');
 		return $this->pricesUnformatted;
 	}
 
-	var $productsPrepared = false;
-	function prepareCartProducts(){
+	function prepareCartData(){
 
-		if(!$this->productsPrepared and empty($this->products) and count($this->cartProductsData)>0){
+		$this->totalProduct = 0;
+		if(empty($this->products) and count($this->cartProductsData)>0){
 			$productsModel = VmModel::getModel('product');
 			$this->totalProduct = 0;
 			$this->productsQuantity = array();
 			foreach($this->cartProductsData as $k =>$productdata){
 				$productdata = (array)$productdata;
 				if(isset($productdata['virtuemart_product_id'])){
-					if(empty($productdata['virtuemart_product_id'])){
+					if(empty($productdata['virtuemart_product_id']) or empty($productdata['quantity'])){
 						unset($this->cartProductsData[$k]);
 						continue;
 					}
@@ -1203,13 +1177,23 @@ class VirtueMartCart {
 					vmError('prepareCartData $productdata[virtuemart_product_id] was empty');
 				}
 			}
-			$this->productsPrepared = true;
 		} else {
 			//vmdebug('The array count($this->cartProductsData) is 0 ',$this->cartProductsData);
 		}
 
 		$this->getCartPrices();
-		return $this->checkCartQuantities();
+		$this->checkCartQuantities();
+
+		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+		JPluginHelper::importPlugin('vmpayment');
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$this->paymentCurrency));
+
+		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		$calculator = calculationHelper::getInstance();
+		$this->cartData = $calculator->getCartData();
+
+		return $this->cartData ;
 
 	}
 
@@ -1303,8 +1287,6 @@ class VirtueMartCart {
 		return true;
 	}
 
-
-
 	function prepareAddressDataInCart($type='BT',$new = false){
 
 		$userFieldsModel =VmModel::getModel('Userfields');
@@ -1341,82 +1323,6 @@ class VirtueMartCart {
 			,$preFix
 			);
 		}
-
-	}
-
-	function prepareAddressRadioSelection(){
-
-		//Just in case
-		$this->user = VmModel::getModel('user');
-
-		$this->userDetails = $this->user->getUser();
-
-		$_addressBT = array();
-
-		// Shipment address(es)
-		if($this->user){
-			$_addressBT = $this->user->getUserAddressList($this->userDetails->JUser->get('id') , 'BT');
-
-			// Overwrite the address name for display purposes
-			if(empty($_addressBT[0])) $_addressBT[0] = new stdClass();
-			$_addressBT[0]->address_type_name = JText::_('COM_VIRTUEMART_ACC_BILL_DEF');
-
-			$_addressST = $this->user->getUserAddressList($this->userDetails->JUser->get('id') , 'ST');
-
-		} else {
-
-			$_addressBT[0]->address_type_name = '<a href="index.php'
-			.'?option=com_virtuemart'
-			.'&view=user'
-			.'&task=editaddresscart'
-			.'&addrtype=BT'
-			. '">'.JText::_('COM_VIRTUEMART_ACC_BILL_DEF').'</a>'.'<br />';
-			$_addressST = array();
-		}
-
-		$addressList = array_merge(
-		array($_addressBT[0])// More BT addresses can exist for shopowners :-(
-		, $_addressST );
-
-		if($this->user){
-			for ($_i = 0; $_i < count($addressList); $_i++) {
-				$addressList[$_i]->address_type_name = '<a href="index.php'
-				.'?option=com_virtuemart'
-				.'&view=user'
-				.'&task=editaddresscart'
-				.'&addrtype='.(($_i == 0) ? 'BT' : 'ST')
-				.'&virtuemart_userinfo_id='.(empty($addressList[$_i]->virtuemart_userinfo_id)? 0 : $addressList[$_i]->virtuemart_userinfo_id)
-				. '">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
-			}
-
-			if(!empty($addressList[0]->virtuemart_userinfo_id)){
-				$_selectedAddress = (
-				empty($this->_cart->selected_shipto)
-				? $addressList[0]->virtuemart_userinfo_id // Defaults to 1st BillTo
-				: $this->_cart->selected_shipto
-				);
-				$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'virtuemart_userinfo_id', 'address_type_name', $_selectedAddress);
-			}else{
-				$_selectedAddress = 0;
-				$this->lists['shipTo'] = '';
-			}
-
-
-		} else {
-			$_selectedAddress = 0;
-			$this->lists['shipTo'] = '';
-		}
-
-		$this->lists['billTo'] = empty($addressList[0]->virtuemart_userinfo_id)? 0 : $addressList[0]->virtuemart_userinfo_id;
-	}
-
-	// Render the code for Ajax Cart
-	function prepareAjaxData(){
-		// Added for the zone shipment module
-		//$vars["zone_qty"] = 0;
-		$this->prepareCartProducts();
-		return $this->prepareCartData(false);
-
 
 	}
 

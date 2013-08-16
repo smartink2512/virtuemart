@@ -194,13 +194,13 @@ class VirtuemartViewCategory extends VmView {
 					// More events for 3rd party content plugins
 					// This do not disturb actual plugins, because we don't modify $product->text
 					$res = $dispatcher->trigger('onContentAfterTitle', array('com_virtuemart.category', &$category, &$params, 0));
-					$category->event->afterDisplayTitle = trim(implode("\n", $res));
+					if(!empty($res[0]))$category->event->afterDisplayTitle = trim(implode("\n", $res));
 
 					$res = $dispatcher->trigger('onContentBeforeDisplay', array('com_virtuemart.category', &$category, &$params, 0));
-					$category->event->beforeDisplayContent = trim(implode("\n", $res));
+					if(!empty($res[0]))$category->event->beforeDisplayContent = trim(implode("\n", $res));
 
 					$res = $dispatcher->trigger('onContentAfterDisplay', array('com_virtuemart.category', &$category, &$params, 0));
-					$category->event->afterDisplayContent = trim(implode("\n", $res));
+					if(!empty($res[0]))$category->event->afterDisplayContent = trim(implode("\n", $res));
 				} else {
 					$results = $dispatcher->trigger('onPrepareContent', array(& $category, & $params, 0));
 				}

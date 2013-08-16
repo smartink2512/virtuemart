@@ -31,7 +31,6 @@ VmConfig::loadJLang('mod_virtuemart_cart', true);
 //This is strange we have the whole thing again in controllers/cart.php public function viewJS()
 if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 $cart = VirtueMartCart::getCart(false);
-$cart ->prepareCartProducts();
 $cart -> prepareCartData();
 
 //$data->totalProduct = $cart->totalProduct;

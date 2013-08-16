@@ -86,16 +86,32 @@ class VirtueMartViewCart extends VmView {
 			$document->setTitle(JText::_('COM_VIRTUEMART_CART_THANKYOU'));
 		} else if ($layoutName == 'default') {
 			VmConfig::loadJLang('com_virtuemart_shoppers');
-			$this->prepareCartViewData($cart);
+			// Get the products for the cart
+			$cart->prepareAddressDataInCart();
+
+			$this->prepareAddressRadioSelection();
+
+			$this->prepareContinueLink();
+
+			if (!$cart->_redirect and !VmConfig::get('use_as_catalog', 0)) {
+				$cart->checkout(false);
+			} else if(!VmConfig::get('use_as_catalog', 0)) {
+				$cart->prepareCartData();
+			} else {
+				$mainframe->redirect($this->continue_link);
+			}
+
+
+			$vendorModel = VmModel::getModel('vendor');
+			$cart->vendor = $vendorModel->getVendor(1);
+			$vendorModel->addImages($cart->vendor,1);
 
 
 			$customfieldsModel = VmModel::getModel ('Customfields');
 			$this->assignRef('customfieldsModel',$customfieldsModel);
 
 
-			$cart->prepareAddressRadioSelection();
 
-			$this->prepareContinueLink();
 			$this->lSelectCoupon();
 
 			$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
@@ -104,9 +120,7 @@ class VirtueMartViewCart extends VmView {
 			$totalInPaymentCurrency = $this->getTotalInPaymentCurrency();
 
 			$checkoutAdvertise =$this->getCheckoutAdvertise();
-			if (!$cart->_redirect and !VmConfig::get('use_as_catalog', 0)) {
-				$cart->checkout(false);
-			}
+
 
 			if ($cart->getDataValidated()) {
 				$pathway->addItem(JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
@@ -168,6 +182,11 @@ class VirtueMartViewCart extends VmView {
 		$cart->setCartIntoSession();
 		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
 
+		foreach($cart->products as $product){
+			vmdebug('Cart view.html.php my product_id',$product->customProductData);
+		}
+		vmdebug('Cart view.html.php my product_id',$cart->cartProductsData);
+
 		parent::display($tpl);
 	}
 
@@ -204,6 +223,7 @@ class VirtueMartViewCart extends VmView {
 		$continue_link_html = '<a class="continue_link" href="' . $continue_link . '" ><span>' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</span></a>';
 		$this->assignRef('continue_link_html', $continue_link_html);
 		$this->assignRef('continue_link', $continue_link);
+
 	}
 
 	private function lSelectCoupon() {
@@ -372,6 +392,72 @@ class VirtueMartViewCart extends VmView {
 			return false;
 		}
 		return true;
+	}
+
+	function prepareAddressRadioSelection(){
+
+		//Just in case
+		$this->user = VmModel::getModel('user');
+
+		$this->userDetails = $this->user->getUser();
+
+		$_addressBT = array();
+
+		// Shipment address(es)
+		if($this->user){
+			$_addressBT = $this->user->getUserAddressList($this->userDetails->JUser->get('id') , 'BT');
+
+			// Overwrite the address name for display purposes
+			if(empty($_addressBT[0])) $_addressBT[0] = new stdClass();
+			$_addressBT[0]->address_type_name = JText::_('COM_VIRTUEMART_ACC_BILL_DEF');
+
+			$_addressST = $this->user->getUserAddressList($this->userDetails->JUser->get('id') , 'ST');
+
+		} else {
+
+			$_addressBT[0]->address_type_name = '<a href="index.php'
+				.'?option=com_virtuemart'
+				.'&view=user'
+				.'&task=editaddresscart'
+				.'&addrtype=BT'
+				. '">'.JText::_('COM_VIRTUEMART_ACC_BILL_DEF').'</a>'.'<br />';
+			$_addressST = array();
+		}
+
+		$addressList = array_merge(
+			array($_addressBT[0])// More BT addresses can exist for shopowners :-(
+			, $_addressST );
+
+		if($this->user){
+			for ($_i = 0; $_i < count($addressList); $_i++) {
+				$addressList[$_i]->address_type_name = '<a href="index.php'
+					.'?option=com_virtuemart'
+					.'&view=user'
+					.'&task=editaddresscart'
+					.'&addrtype='.(($_i == 0) ? 'BT' : 'ST')
+					.'&virtuemart_userinfo_id='.(empty($addressList[$_i]->virtuemart_userinfo_id)? 0 : $addressList[$_i]->virtuemart_userinfo_id)
+					. '">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
+			}
+
+			if(!empty($addressList[0]->virtuemart_userinfo_id)){
+				$_selectedAddress = (
+				empty($this->_cart->selected_shipto)
+					? $addressList[0]->virtuemart_userinfo_id // Defaults to 1st BillTo
+					: $this->_cart->selected_shipto
+				);
+				$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'virtuemart_userinfo_id', 'address_type_name', $_selectedAddress);
+			}else{
+				$_selectedAddress = 0;
+				$this->lists['shipTo'] = '';
+			}
+
+
+		} else {
+			$_selectedAddress = 0;
+			$this->lists['shipTo'] = '';
+		}
+
+		$this->lists['billTo'] = empty($addressList[0]->virtuemart_userinfo_id)? 0 : $addressList[0]->virtuemart_userinfo_id;
 	}
 
 }

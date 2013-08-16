@@ -165,7 +165,6 @@ class VirtueMartControllerCart extends JController {
 		if (!class_exists('VirtueMartCart'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart(false);
-		//$this->data = $cart->prepareAjaxData();
 		$lang = JFactory::getLanguage();
 		$extension = 'com_virtuemart';
 		$lang->load($extension); //  when AJAX it needs to be loaded manually here >> in case you are outside virtuemart !!!
