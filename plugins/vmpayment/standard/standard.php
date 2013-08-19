@@ -329,6 +329,7 @@ if (!class_exists ('vmPSPlugin')) {
 
             $calculator = calculationHelper::getInstance ();
             $_psType = ucfirst ($this->_psType);
+            $taxrules=array();
 
             if(isset($method->tax_id) and (int)$method->tax_id === -1){
 
@@ -359,9 +360,9 @@ if (!class_exists ('vmPSPlugin')) {
             $cartTotalAmount=$cart_prices['salesPrice'] + $cart_prices['salesPriceShipment'] - $cart_prices['salesPriceCoupon'] ;
             if (isset($method->cost_percent_total)) {
                 if (preg_match ('/%$/', $method->cost_percent_total)) {
-                    $cost_percent_total = (substr ($method->cost_percent_total, 0, -1))/100;
+                    $cost_percent_total = (substr ($method->cost_percent_total, 0, -1))* 0.01;
                 } else {
-                    $cost_percent_total = $method->cost_percent_total /100;
+                    $cost_percent_total = $method->cost_percent_total * 0.01;
                 }
             } else {
                 $cost_percent_total=0;
