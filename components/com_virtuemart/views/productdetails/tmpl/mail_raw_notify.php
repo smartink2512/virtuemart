@@ -31,8 +31,6 @@ if(!empty($this->mailbody)) {
 
 echo "\n";
 
-// $uri    = JURI::getInstance();
-// $prefix = $uri->toString(array('scheme', 'host', 'port'));
 $link = JURI::root().'index.php?option=com_virtuemart';
 
 echo "\n\n";

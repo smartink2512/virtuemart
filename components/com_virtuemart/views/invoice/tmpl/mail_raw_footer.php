@@ -25,9 +25,6 @@ if (empty($this->vendor)) {
 		$this->vendor = $vendorModel->getVendor();
 }
 
-// $uri    = JURI::getInstance();
-// $prefix = $uri->toString(array('scheme', 'host', 'port'));
-
 $link = JURI::root(). 'index.php?option=com_virtuemart' ;
 
 echo "\n\n";
