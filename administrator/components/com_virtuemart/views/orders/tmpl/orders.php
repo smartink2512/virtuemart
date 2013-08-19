@@ -201,6 +201,8 @@ AdminUIHelper::startAdminArea($this);
 
 				if(jQuery.inArray(selected, orderstatus)!=-1){
 					elem.attr("checked",true);
+					// for the checkbox
+					jQuery(this).parent().parent().find('input[name="cid[]"]').attr("checked",true);
 				} else {
 					elem.attr("checked",false);
 				}

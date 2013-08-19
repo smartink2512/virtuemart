@@ -342,11 +342,11 @@ class VirtueMartCart {
 					continue;
 			}
 
-			if(!empty( $post['virtuemart_category_id'][$p_key])){
+			/*if(!empty( $post['virtuemart_category_id'][$p_key])){
 				$productData['virtuemart_category_id'] = (int) $post['virtuemart_category_id'][$p_key];
 			} else {
 				$productData['virtuemart_category_id'] = 0;
-			}
+			}*/
 
 			if(!empty( $post['customProductData'][$virtuemart_product_id])){
 				//$productData['customProductData']
@@ -371,7 +371,7 @@ class VirtueMartCart {
 						if(is_array($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id])){
 							if(!class_exists('vmFilter'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmfilter.php');
 							foreach($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id] as &$customData){
-								$muh = $customData;
+
 								$value = vmFilter::hl( $customData,array('deny_attribute'=>'*'));
 								//to strong
 								/* $value = preg_replace('@<[\/\!]*?[^<>]*?>@si','',$value);//remove all html tags  */
@@ -1126,7 +1126,8 @@ class VirtueMartCart {
 			$productsModel = VmModel::getModel('product');
 			$this->totalProduct = 0;
 			$this->productsQuantity = array();
-			foreach($this->cartProductsData as $k =>$productdata){
+			vmdebug('$this->cartProductsData',$this->cartProductsData);
+			foreach($this->cartProductsData as $k =>&$productdata){
 				$productdata = (array)$productdata;
 				if(isset($productdata['virtuemart_product_id'])){
 					if(empty($productdata['virtuemart_product_id']) or empty($productdata['quantity'])){
@@ -1140,12 +1141,13 @@ class VirtueMartCart {
 					}
 					//Very important! must be cloned, else all products with same id get the same productCustomData due the product cache
 					$product = clone($productTemp);
+					$productdata['quantity'] = (int)$productdata['quantity'];
+					$productdata['virtuemart_product_id'] = (int)$productdata['virtuemart_product_id'];
+					/*foreach($productdata as $key => $data){
+						$product ->$key = $data;
+					}*/
 					$product -> customProductData = $productdata['customProductData'];
-					$product -> quantity = (int)$productdata['quantity'];
-
-					//TODO for what we need the category id? atm it is empty anyway.
-					//$product -> virtuemart_category_id = $productdata['virtuemart_category_id'];
-					//$product->virtuemart_category_id = $this->getCardCategoryId($product->virtuemart_product_id);
+					$product -> quantity = $productdata['quantity'];
 
 					// No full link because Mail want absolute path and in shop is better relative path
 					$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHTML::link($url, $product->product_name);

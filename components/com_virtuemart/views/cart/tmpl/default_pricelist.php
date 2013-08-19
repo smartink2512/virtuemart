@@ -135,6 +135,7 @@ $i = 1;
 
 foreach ($this->cart->products as $pkey => $prow) {
 
+
 	?>
 <tr valign="top" class="sectiontableentry<?php echo $i ?>">
 	<td align="left">

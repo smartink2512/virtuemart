@@ -93,8 +93,6 @@ class VirtueMartViewCart extends VmView {
 
 			$this->prepareContinueLink();
 
-
-
 			if (!$this->cart->_redirect and !VmConfig::get('use_as_catalog', 0)) {
 				$this->cart->checkout(false);
 			} else if(!VmConfig::get('use_as_catalog', 0)) {
@@ -103,21 +101,20 @@ class VirtueMartViewCart extends VmView {
 				$mainframe->redirect($this->continue_link);
 			}
 
-
 			$vendorModel = VmModel::getModel('vendor');
 			$this->cart->vendor = $vendorModel->getVendor(1);
 			$vendorModel->addImages($this->cart->vendor,1);
 
+			if (!class_exists ('CurrencyDisplay'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+
+			$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
+			$this->assignRef('currencyDisplay',$currencyDisplay);
 
 			$customfieldsModel = VmModel::getModel ('Customfields');
 			$this->assignRef('customfieldsModel',$customfieldsModel);
 
-
-
 			$this->lSelectCoupon();
-
-			$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
-			$this->assignRef('currencyDisplay',$currencyDisplay);
 
 			$totalInPaymentCurrency = $this->getTotalInPaymentCurrency();
 
