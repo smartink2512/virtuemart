@@ -219,8 +219,6 @@ class VirtueMartViewProductdetails extends VmView {
 	    $document->addHeadLink($product->canonical, 'canonical', 'rel', '');
 	}
 
-	$uri = JURI::getInstance();
-	//$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
 	$pathway->addItem(strip_tags($product->product_name));
 	// Set the titles
 	// $document->setTitle should be after the additem pathway
@@ -293,7 +291,7 @@ class VirtueMartViewProductdetails extends VmView {
 	// More reviews link
 	$uri = JURI::getInstance();
 	$uri->setVar('showall', 1);
-	$uristring = $uri->toString();
+	$uristring = strip_tags($uri->toString());
 	$this->assignRef('more_reviews', $uristring);
 
 	if ($product->metadesc) {

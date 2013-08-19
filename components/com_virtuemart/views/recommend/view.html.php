@@ -80,8 +80,6 @@ class virtuemartViewrecommend extends VmView {
 
 		/* Set the titles */
 		$document->setTitle(JText::sprintf('COM_VIRTUEMART_PRODUCT_DETAILS_TITLE',$product->product_name.' - '.JText::_('COM_VIRTUEMART_PRODUCT_RECOMMEND')));
-		$uri = JURI::getInstance();
-
 		$this->assignRef('product', $product);
 
 		if(empty($product)){

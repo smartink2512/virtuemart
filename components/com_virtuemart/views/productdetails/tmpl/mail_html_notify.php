@@ -73,8 +73,6 @@ defined('_JEXEC') or die('');
 		</tr>
 	</table>
 	<?php
-	// $uri    = JURI::getInstance();
-	// $prefix = $uri->toString(array('scheme', 'host', 'port'));
 	$link = JRoute::_ ( 'index.php?option=com_virtuemart',true,-1);
 
 	echo '<br/><br/>';
