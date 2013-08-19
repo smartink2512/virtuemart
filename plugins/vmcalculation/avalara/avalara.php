@@ -18,7 +18,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcalculationplugin.php');
 
-defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 0);
+defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 1);
 
 function avadebug($string,$arg=NULL){
 	if(AVATAX_DEBUG) vmdebug($string,$arg);
@@ -216,6 +216,13 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		if(is_object($calc)){
 			$calc = get_object_vars($calc);
 		}
+
+		if(!empty($calc['dev'])){
+			$this->_connectionType = 'Development';
+		} else {
+			$this->_connectionType = 'Production';
+		}
+
 		if(!class_exists('TextCase')) require (VMAVALARA_CLASS_PATH.DS.'TextCase.class.php');
 
 		$__wsdldir = VMAVALARA_CLASS_PATH."/wsdl";
@@ -241,9 +248,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		//if(!is_object())avadebug($calc);
 		if(!class_exists('ATConfig')) require (VMAVALARA_CLASS_PATH.DS.'ATConfig.class.php');
 
-		//Set this to TRUE for development account
-		if($calc['dev']){
-			$this->_connectionType = 'Development';
+		if($this->_connectionType == 'Development'){
 			$devValues = array(
 				'url'       => 'https://development.avalara.net',
 				'account'   => $calc['account'],
@@ -253,7 +258,6 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$config = new ATConfig($this->_connectionType, $resultingConfig);
 
 		} else {
-			$this->_connectionType = 'Production';
 			$prodValues = array(
 				'url'       => 'https://avatax.avalara.net',
 				'account'   => $calc['account'],
@@ -513,11 +517,13 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				if(isset($vmadd['state'])) $address->setRegion($vmadd['state']);
 			}
 
+			if(isset($vmadd['zip'])) $address->setPostalCode($vmadd['zip']);
+
 			$hash = md5(implode($vmadd,','));
 			$session = JFactory::getSession ();
 			$validatedAddress = $session->get ('vm_avatax_address_checked.' . $hash, FALSE, 'vm');
 			if(!$validatedAddress){
-				if(isset($vmadd['zip'])) $address->setPostalCode($vmadd['zip']);
+
 
 				$config = $this->newATConfig($calc);
 
@@ -891,7 +897,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 			$lines[] = $line;
 		}
-
+		$this->newATConfig($calc);
 		$request->setLines($lines);
 
 		return $request;
@@ -901,12 +907,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		$prices = array();
 		$client = new TaxServiceSoap($this->_connectionType);
-
 		try
 		{
 			if(!class_exists('TaxLine')) require (VMAVALARA_CLASS_PATH.DS.'TaxLine.class.php');
 			if(!class_exists('TaxDetail')) require (VMAVALARA_CLASS_PATH.DS.'TaxDetail.class.php');
-
+			if(!class_exists('SeverityLevel')) require (VMAVALARA_CLASS_PATH.DS.'SeverityLevel.class.php');
 			//avadebug('executeRequest $request',$request);
 			$_taxResult = $client->getTax($request);
 			//avadebug('executeRequest $_taxResult',$_taxResult);
