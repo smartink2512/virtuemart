@@ -74,8 +74,8 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('Authorize.net', 'plugin', 'authorizenet', 'vmpayment');
 			$this->installPlugin ('Klarna', 'plugin', 'klarna', 'vmpayment');
 			$this->installPlugin ('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
-			$this->installPlugin ('Sofort', 'plugin', 'sofort', 'vmpayment');
-			$this->installPlugin ('Sofort Ideal', 'plugin', 'sofort_ideal', 'vmpayment');
+			//$this->installPlugin ('Sofort', 'plugin', 'sofort', 'vmpayment');
+			//$this->installPlugin ('Sofort Ideal', 'plugin', 'sofort_ideal', 'vmpayment');
 
 			$this->installPlugin ('By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment');
 
