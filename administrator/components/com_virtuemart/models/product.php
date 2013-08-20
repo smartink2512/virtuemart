@@ -744,7 +744,7 @@ class VirtueMartModelProduct extends VmModel {
 			$child->product_parent_id = $ppId;
 
 			if ($withCalc) {
-				$child->prices = $this->getPrice ($child, array(), 1);
+				$child->prices[$child->selectedPrice] = $this->getPrice ($child, array(), 1);
 				//vmdebug(' use of $child->prices = $this->getPrice($child,array(),1)');
 			}
 
@@ -803,10 +803,12 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			$q .= ' AND ( (`product_price_publish_up` IS NULL OR `product_price_publish_up` = "' . $db->getEscaped($this->_nullDate) . '" OR `product_price_publish_up` <= "' .$db->getEscaped($this->_now) . '" )
 		        AND (`product_price_publish_down` IS NULL OR `product_price_publish_down` = "' .$db->getEscaped($this->_nullDate) . '" OR product_price_publish_down >= "' . $db->getEscaped($this->_now) . '" ) )';
+		/*	//We disable this filter, usually it is interesting to show a table with the different pricing options,
+			//therefore we load now all prices
 			$quantity = (int)$quantity;
 			if(!empty($quantity)){
 				$q .= ' AND( (`price_quantity_start` IS NULL OR `price_quantity_start`="0" OR `price_quantity_start` <= '.$quantity.') AND (`price_quantity_end` IS NULL OR `price_quantity_end`="0" OR `price_quantity_end` >= '.$quantity.') )';
-			}
+			}*/
 		} else {
 			$q .= ' ORDER BY `product_price` DESC';
 		}
@@ -825,17 +827,7 @@ class VirtueMartModelProduct extends VmModel {
 		return $prices;
 	}
 
-	public function getProductPrices(&$product,$quantity,$virtuemart_shoppergroup_ids,$front,$loop=false){
-
-		$product->product_price = null;
-		$product->product_override_price = null;
-		$product->override = null;
-		$product->virtuemart_product_price_id = null;
-		$product->virtuemart_shoppergroup_id = null;
-		$product->product_price_publish_up = null;
-		$product->product_price_publish_down = null;
-		$product->price_quantity_start = null;
-		$product->price_quantity_end = null;
+	public function getRawProductPrices(&$product,$quantity,$virtuemart_shoppergroup_ids,$front){
 
 		$productId = $product->virtuemart_product_id===0? $this->_id:$product->virtuemart_product_id;
 		$product->prices = $this->loadProductPrices($productId,$quantity,$virtuemart_shoppergroup_ids,$front);
@@ -844,7 +836,7 @@ class VirtueMartModelProduct extends VmModel {
 		$product_parent_id = $product->product_parent_id;
 
 		//Check for all attributes to inherited by parent products
-		if($loop) {
+		if($front and !empty($product_parent_id)) {
 			while ( $product_parent_id and count($product->prices)==0) {
 				$runtime = microtime (TRUE) - $this->starttime;
 				if ($runtime >= $this->maxScriptTime) {
@@ -871,46 +863,39 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-		if(count($product->prices)===1){
-			unset($product->prices[0]['virtuemart_product_id']);
-			unset($product->prices[0]['created_on']);
-			unset($product->prices[0]['created_by']);
-			unset($product->prices[0]['modified_on']);
-			unset($product->prices[0]['modified_by']);
-			unset($product->prices[0]['locked_on']);
-			unset($product->prices[0]['locked_by']);
-			//vmdebug('getProductPrices my price ',$product->prices[0]);
-			// For merging of the price and product array, the shoppergroup id from price must be unsetted. 
-			// Otherwise the product becomes the shoppergroup from the price.
-			$priceShoppergroupID = $product->prices[0]['virtuemart_shoppergroup_id'];
-			unset($product->prices[0]['virtuemart_shoppergroup_id']);
-			$product = (object)array_merge ((array)$product, (array)$product->prices[0]);
-			$product->prices[0]['virtuemart_shoppergroup_id'] = $priceShoppergroupID;
+		$product->selectedPrice = -1;
 
-		} else if ( $front and count($product->prices)>1 ) {
-			foreach($product->prices as $price){
+		if(!empty($product->prices) and is_array($product->prices)){
 
-				if(empty($price['virtuemart_shoppergroup_id'])){
-					if(empty($emptySpgrpPrice))$emptySpgrpPrice = $price;
-				} else if(in_array($price['virtuemart_shoppergroup_id'],$virtuemart_shoppergroup_ids)){
-					$spgrpPrice = $price;
+			foreach($product->prices as $pInd=>$price){
+				if(empty($price['price_quantity_start'])){
+					$price['price_quantity_start'] = 0;
+				}
+				if( (empty($price['price_quantity_end']) and $price['price_quantity_start'] <= $quantity) or ($price['price_quantity_start'] <= $quantity and $quantity <= $price['price_quantity_end']) ){
+					$product->selectedPrice = $pInd;
 					break;
 				}
 			}
-
-			if(!empty($spgrpPrice)){
-				$product = (object)array_merge ((array)$product, (array)$spgrpPrice);
-				//$prices = (array)$spgrpPrice;
-			}
-			else if(!empty($emptySpgrpPrice)){
-				$product = (object)array_merge ((array)$product, (array)$emptySpgrpPrice);
-				//$prices = (array)$emptySpgrpPrice;
-			} else {
-				vmWarn('COM_VIRTUEMART_PRICE_AMBIGUOUS');
-				$product = (object)array_merge ((array)$product, (array)$product->prices[0]);
-				//$prices = (array)$product->prices[0];
-			}
 		}
+
+		//This is just for backward compatibility, this will be removed next day
+		/*if(!empty($product->prices[$product->selectedPrice])){
+			unset($product->prices[$product->selectedPrice]['virtuemart_product_id']);
+			unset($product->prices[$product->selectedPrice]['created_on']);
+			unset($product->prices[$product->selectedPrice]['created_by']);
+			unset($product->prices[$product->selectedPrice]['modified_on']);
+			unset($product->prices[$product->selectedPrice]['modified_by']);
+			unset($product->prices[$product->selectedPrice]['locked_on']);
+			unset($product->prices[$product->selectedPrice]['locked_by']);
+			//vmdebug('getProductPrices my price ',$product->prices[$product->selectedPrice]);
+			// For merging of the price and product array, the shoppergroup id from price must be unsetted.
+			// Otherwise the product becomes the shoppergroup from the price.
+			$priceShoppergroupID = $product->prices[$product->selectedPrice]['virtuemart_shoppergroup_id'];
+			unset($product->prices[$product->selectedPrice]['virtuemart_shoppergroup_id']);
+			$product = (object)array_merge ((array)$product, (array)$product->prices[$product->selectedPrice]);
+			$product->prices[$product->selectedPrice]['virtuemart_shoppergroup_id'] = $priceShoppergroupID;
+		}*/
+
 	}
 
 	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1) {
@@ -959,7 +944,7 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 
-			$this->getProductPrices($product,$quantity,$virtuemart_shoppergroup_ids,$front);
+			$this->getRawProductPrices($product,$quantity,$virtuemart_shoppergroup_ids,$front);
 
 			//$product = array_merge ($prices, (array)$product);
 			//$product = (object)array_merge ((array)$prices, (array)$product);

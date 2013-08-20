@@ -29,7 +29,7 @@ if ($show_product_list) {
 			foreach ($cart->products as $product)
 		{
 			if ($show_price and $currencyDisplay->_priceConfig['salesPrice'][0]) { ?>
-				  <div class="prices" style="float: right;"><?php echo  $product->prices['salesPrice'] ?></div>
+				  <div class="prices" style="float: right;"><?php echo  $product->prices[$product->selectedPrice]['salesPrice'] ?></div>
 				<?php } ?>
 			<div class="product_row">
 				<span class="quantity"><?php echo  $product->quantity ?></span>&nbsp;x&nbsp;<span class="product_name"><?php echo  $product->product_name ?></span>

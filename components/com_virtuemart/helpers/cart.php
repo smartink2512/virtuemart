@@ -186,7 +186,6 @@ class VirtueMartCart {
 			$lastName = empty($this->BT['last_name'])? '':$this->BT['last_name'];
 			$email = empty($this->BT['email'])? '':$this->BT['email'];
 			$this->customer_number = 'nonreg_'.$firstName.$lastName.$email;
-			vmdebug('getShopperData customer_number  '.$user->virtuemart_user_id);
 		}
 
 	}
@@ -1103,19 +1102,16 @@ class VirtueMartCart {
 
 	public function getCartPrices($checkAutomaticSelected=true) {
 
-		//if(empty($this->pricesUnformatted)){
-			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-			$this->calculator = calculationHelper::getInstance();
 
-			$this->pricesCurrency = $this->calculator->_currencyDisplay->getCurrencyForDisplay();
+		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+		$this->calculator = calculationHelper::getInstance();
 
-			//vmdebug('getCartPrices',$this->products[0]->prices);
+		$this->pricesCurrency = $this->calculator->_currencyDisplay->getCurrencyForDisplay();
+
 		$this->calculator->getCheckoutPrices($this, $checkAutomaticSelected);
 
-			$this->pricesUnformatted = $this->calculator->getCartPrices();
-		//}
+		$this->pricesUnformatted = $this->calculator->getCartPrices();
 
-		//vmdebug('How often this is called? getCartPrices');
 		return $this->pricesUnformatted;
 	}
 
@@ -1126,7 +1122,7 @@ class VirtueMartCart {
 			$productsModel = VmModel::getModel('product');
 			$this->totalProduct = 0;
 			$this->productsQuantity = array();
-			vmdebug('$this->cartProductsData',$this->cartProductsData);
+			//vmdebug('$this->cartProductsData',$this->cartProductsData);
 			foreach($this->cartProductsData as $k =>&$productdata){
 				$productdata = (array)$productdata;
 				if(isset($productdata['virtuemart_product_id'])){
