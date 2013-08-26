@@ -13,15 +13,17 @@
  *
  * www.virtuemart.net
  */
-	if (!class_exists ('VmConfig')) {
-		require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
-	}
-	VmConfig::loadConfig ();
-	// Load the language file of com_virtuemart.
-	JFactory::getLanguage ()->load ('com_virtuemart');
-	if (!class_exists ('calculationHelper')) {
-		require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'calculationh.php');
-	}
+
+if (!class_exists ('VmConfig')) {
+	require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+}
+VmConfig::loadConfig ();
+
+// Load the language file of com_virtuemart.
+JFactory::getLanguage ()->load ('com_virtuemart');
+if (!class_exists ('calculationHelper')) {
+	require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'calculationh.php');
+}
 	if (!class_exists ('CurrencyDisplay')) {
 		require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'currencydisplay.php');
 	}
@@ -40,6 +42,7 @@
 	if (!class_exists ('VirtueMartModelProduct')) {
 		JLoader::import ('product', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models');
 	}
+
 
 class mod_virtuemart_product {
 

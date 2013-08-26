@@ -54,6 +54,8 @@
 			<filename>index.html</filename>
 			<filename>version.php</filename>
 			<filename>virtuemart_defaults.cfg-dist</filename>
+			<filename>config.xml</filename>
+			<filename>access.xml</filename>
 			<folder>assets</folder>
 			<folder>controllers</folder>
 			<folder>elements</folder>

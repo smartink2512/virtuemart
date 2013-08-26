@@ -280,7 +280,7 @@ class VirtueMartViewProductdetails extends VmView {
 	// More reviews link
 	$uri = JURI::getInstance();
 	$uri->setVar('showall', 1);
-	$uristring = strip_tags($uri->toString());
+	$uristring = vmURI::getCleanUrl();
 	$this->assignRef('more_reviews', $uristring);
 
 	if ($product->metadesc) {

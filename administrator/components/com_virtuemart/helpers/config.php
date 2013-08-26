@@ -959,10 +959,18 @@ class vmRequest{
  			return preg_replace('/[^\w'.preg_quote($custom).']/', '', $source);
  		}
  	}
-
-
 }
 
+class vmURI{
+
+	static function getCleanUrl ($JURIInstance = 0,$parts = array('scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment')) {
+
+		if(!class_exists('JFilterInput')) require (JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filter'.DS.'input.php');
+		$_filter = JFilterInput::getInstance(array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
+		if($JURIInstance===0)$JURIInstance = JURI::getInstance();
+		return $_filter->clean($JURIInstance->toString($parts));
+	}
+}
 /**
  *
  * Class to provide js API of vm
