@@ -303,7 +303,7 @@ class VirtueMartCart {
 	 * @access public
 	 */
 	public function add($virtuemart_product_ids=null,&$errorMsg='') {
-		$mainframe = JFactory::getApplication();
+
 		$updateSession = false;
 		$post = JRequest::get('default');
 
@@ -390,7 +390,7 @@ class VirtueMartCart {
 					//	$customProductDataTmp[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id] = $customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id];
 					//}
 				} else {
-					$customProductDataTmp[$customfield->virtuemart_custom_id] = $customfield->virtuemart_customfield_id;
+					$customProductDataTmp[$customfield->virtuemart_custom_id] = (int)$customfield->virtuemart_customfield_id;
 				}
 
 			}
@@ -398,13 +398,8 @@ class VirtueMartCart {
 			//vmdebug('cart add product $customProductDataTmp',$customProductDataTmp);
 			$productData['customProductData'] = $customProductDataTmp;
 
-		/*	if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-			JPluginHelper::importPlugin('vmcustom');
-			$dispatcher = JDispatcher::getInstance();
-			// on returning false the product have not to be added to cart
-			if ( $dispatcher->trigger('plgVmOnAddToCart',array(&$product)) === false )
-				continue;
-*/
+
+
 			//vmdebug('cart add',$productData);
 			$unsetA = array();
 			$found = false;
@@ -430,7 +425,7 @@ class VirtueMartCart {
 								//return false;
 							} else {
 
-								//$this->checkForQuantities($product, $cartProductData['quantity']);
+								$this->checkForQuantities($product, $cartProductData['quantity']);
 								//$quantityChecked = true;
 							}
 							$found = TRUE;
@@ -449,7 +444,7 @@ class VirtueMartCart {
 			}
 
 			if(!$found){
-				if(!$product)$product = $this->getProduct( $productData['virtuemart_product_id'],$productData['quantity']);
+				if(!$product)$product = $this->getProduct( (int)$productData['virtuemart_product_id'],$productData['quantity']);
 				if(!empty($product->virtuemart_product_id)){
 					$this->checkForQuantities($product, $productData['quantity']);
 					if(!empty($productData['quantity'])){
@@ -1122,7 +1117,8 @@ class VirtueMartCart {
 			$productsModel = VmModel::getModel('product');
 			$this->totalProduct = 0;
 			$this->productsQuantity = array();
-			//vmdebug('$this->cartProductsData',$this->cartProductsData);
+			vmdebug('$this->cartProductsData',$this->cartProductsData);
+			$customFieldsModel = VmModel::getModel('customfields');
 			foreach($this->cartProductsData as $k =>&$productdata){
 				$productdata = (array)$productdata;
 				if(isset($productdata['virtuemart_product_id'])){
@@ -1139,6 +1135,8 @@ class VirtueMartCart {
 					$product = clone($productTemp);
 					$productdata['quantity'] = (int)$productdata['quantity'];
 					$productdata['virtuemart_product_id'] = (int)$productdata['virtuemart_product_id'];
+
+
 					/*foreach($productdata as $key => $data){
 						$product ->$key = $data;
 					}*/
@@ -1149,8 +1147,24 @@ class VirtueMartCart {
 					$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHTML::link($url, $product->product_name);
 					$product->cart_item_id = $k ;
 
+					$customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
+					/*if($customfields){
+						foreach($customfields as $field){
+
+							if($field->field_type == 'E'){
+								if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+								JPluginHelper::importPlugin('vmcustom');
+								$dispatcher = JDispatcher::getInstance();
+								// on returning false the product have not to be added to cart
+								if ( $dispatcher->trigger('plgVmProductInCart',array(&$product,&$productdata)) === false );
+									//continue;							}
+							}
+						}
+					}*/
+					$product->customfields = $customfields;
 					$this->products[$k] = $product;
 					$this->totalProduct += $product -> quantity;
+
 
 					if(isset($this->productsQuantity[$product->virtuemart_product_id])){
 						$this->productsQuantity[$product->virtuemart_product_id] += $product -> quantity;
@@ -1167,9 +1181,9 @@ class VirtueMartCart {
 			//vmdebug('The array count($this->cartProductsData) is 0 ',$this->cartProductsData);
 		}
 
-		$this->getCartPrices();
-
 		$this->checkCartQuantities();
+
+		$this->getCartPrices();
 
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');

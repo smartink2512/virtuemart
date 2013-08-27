@@ -208,7 +208,6 @@ class VirtuemartViewCategory extends VmView {
 			}
 
 
-
 			if ($category->metadesc) {
 				$document->setDescription( $category->metadesc );
 			}
@@ -218,7 +217,6 @@ class VirtuemartViewCategory extends VmView {
 			if ($category->metarobot) {
 				$document->setMetaData('robots', $category->metarobot);
 			}
-
 
 			if ($app->getCfg('MetaAuthor') == '1') {
 				$document->setMetaData('author', $category->metaauthor);

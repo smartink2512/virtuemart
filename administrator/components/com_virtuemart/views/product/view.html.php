@@ -156,8 +156,8 @@ class VirtuemartViewProduct extends VmView {
 				$this->assignRef('productShoppers', $productShoppers);
 				$orderstatusModel = VmModel::getModel('orderstatus');
 				$lists['OrderStatus'] = $orderstatusModel->renderOSList(array(),'order_status',TRUE);
-				$field_model = VmModel::getModel('customfields');
-				$fieldTypes = $field_model->getField_types();
+
+				$fieldTypes = $customfields->getField_types();
 				$this->assignRef('fieldTypes', $fieldTypes);
 
 				/* Load product types lists */
@@ -172,7 +172,7 @@ class VirtuemartViewProduct extends VmView {
 
 				if ($product->product_parent_id > 0) {
 
-					$parentRelation= $field_model->getProductParentRelation($product->virtuemart_product_id);
+					$parentRelation= $customfields->getProductParentRelation($product->virtuemart_product_id);
 					$this->assignRef('parentRelation',$parentRelation);
 
 					// Set up labels

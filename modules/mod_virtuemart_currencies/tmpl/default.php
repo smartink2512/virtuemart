@@ -6,7 +6,8 @@ vmJsApi::chosenDropDowns();
 
 <!-- Currency Selector Module -->
 <?php echo $text_before ?>
-<form action="<?php echo strip_tags(JURI::getInstance()->toString()); ?>" method="post">
+
+<form action="<?php echo vmURI::getCleanUrl() ?>" method="post">
 
 	<br />
     <input class="button" type="submit" name="submit" value="<?php echo JText::_('MOD_VIRTUEMART_CURRENCIES_CHANGE_CURRENCIES') ?>" />

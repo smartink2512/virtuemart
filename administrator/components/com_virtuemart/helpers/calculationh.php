@@ -269,6 +269,7 @@ class calculationHelper {
 
 			if(!empty($product->prices[$product->selectedPrice])){
 				$prices = $product->prices[$product->selectedPrice];
+				//mdebug('my prices in getProductPrices',$prices);
 				$costPrice = $prices['product_price'];
 				$this->productCurrency = $prices['product_currency'];
 				$override = $prices['override'];
@@ -465,6 +466,7 @@ class calculationHelper {
 			}
 		}
 
+		$this->productPrices = array_merge($prices,$this->productPrices);
 // 		vmdebug('getProductPrices',$this->productPrices);
 		return $this->productPrices;
 	}
@@ -662,7 +664,7 @@ class calculationHelper {
 			}
 
 
-			$variantmod = $customfieldModel->calculateModificators($productCart,$productCart->customProductData);
+			$variantmod = $customfieldModel->calculateModificators($productCart);
 
 
 
@@ -1483,7 +1485,7 @@ class calculationHelper {
 
 			JPluginHelper::importPlugin('vmcalculation');
 			$dispatcher = JDispatcher::getInstance();
-			//$calculated = $dispatcher->trigger('interpreteMathOp', array($this, $mathop, $value, $price, $currency,$this->_revert));
+
 			$calculated = $dispatcher->trigger('plgVmInterpreteMathOp', array($this, $rule, $price,$this->_revert));
 			//vmdebug('result of plgVmInterpreteMathOp',$calculated);
 			if($calculated){
@@ -1590,6 +1592,8 @@ class calculationHelper {
 	}
 
 	/**
+	 * moved to customfields model
+	 *
 	 * Calculate a pricemodification for a variant
 	 *
 	 * Variant values can be in the following format:
@@ -1605,67 +1609,9 @@ class calculationHelper {
 	 * @param array $variantnames the value of the variant
 	 * @return array The adjusted price modificator
 	 */
-	public function calculateModificators(&$product, $variants) {
+/*	public function calculateModificators(&$product, $variants) {
 
-		$modificatorSum = 0.0;
-		//MarkerVarMods
-		foreach ($variants as $selected => $variant) {
-			if (!empty($selected)) {
 
-				$query = 'SELECT  C.* , field.*
-						FROM `#__virtuemart_customs` AS C
-						LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-						WHERE field.`virtuemart_customfield_id`=' .(int) $selected;
-				$this->_db->setQuery($query);
-				$productCustomsPrice = $this->_db->loadObject();
-
-				//A plugin can have a zero price and create it, so no if(!empty(customprice here
-				if ($productCustomsPrice->field_type =='E') {
-					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-					JPluginHelper::importPlugin('vmcustom');
-					$dispatcher = JDispatcher::getInstance();
-					$dispatcher->trigger('plgVmCalculateCustomVariant',array(&$product, &$productCustomsPrice,$selected,$modificatorSum));
-				}
-
-				if (!empty($productCustomsPrice->custom_price)) {
-					$productCustomsPrice->custom_price = $this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $productCustomsPrice->custom_price,true);
-
-					//TODO adding % and more We should use here $this->interpreteMathOp
-					$modificatorSum = $modificatorSum + $productCustomsPrice->custom_price;
-				}
-			}
-		}
-
-		return $modificatorSum;
-	}
-
-	public function parseModifier($name) {
-
-		$variants = array();
-		if ($index = strpos($name, '::')) {
-			$virtuemart_product_id = substr($name, 0, $index);
-			$allItems = substr($name, $index + 2);
-			$items = explode(';', $allItems);
-
-			foreach ($items as $item) {
-				if (!empty($item)) {
-					//vmdebug('parseModifier $item',$item);
-					$index2 = strpos($item, ':');
-					if($index2!=false){
-						$selected = substr($item, 0, $index2);
-						$variant = substr($item, $index2 + 1);
-						//	echo 'My selected '.$selected;
-						//	echo ' My $variant '.$variant.' ';
-						//TODO productCartId
-						//MarkerVarMods
-						$variants[$selected] = $variant; //this works atm not for the cart
-						//$variants[$variant] = $selected; //but then the orders are broken
-					}
-				}
-			}
-		}
-		//vmdebug('parseModifier $variants',$variants);
-		return $variants;
-	}
+	} */
 
 }

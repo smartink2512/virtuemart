@@ -1973,9 +1973,16 @@ class VirtueMartModelProduct extends VmModel {
 		$this->_db = JFactory::getDBO ();
 		// 		vmdebug('strange',$product);
 		if (!is_object ($product)) {
-// 		vmError('deprecated use of getPrice');
 			$product = $this->getProduct ($product, TRUE, FALSE, TRUE,$quantity);
-// 		return false;
+		}
+
+		if (empty($product->customfields) and !empty($product->virtuemart_customfield_id)) {
+			$customfieldsModel = VmModel::getModel ('Customfields');
+			//$this->assignRef('customfieldsModel',$customfieldsModel);
+			// Load the custom product fields
+			//$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->virtuemart_product_id);
+			//
+			$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
 		}
 
 		// Loads the product price details

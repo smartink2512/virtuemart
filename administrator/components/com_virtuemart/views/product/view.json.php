@@ -117,6 +117,8 @@ class VirtuemartViewProduct extends JView {
 					}
 				} elseif ($field->field_type =='E') {
 					$this->json['table'] = 'customPlugins';
+
+					$this->model->bindCustomEmbeddedFieldParams($field,'E');
 					$display = $this->model->displayProductCustomfieldBE($field,$product_id,$this->row);
 					 if ($field->is_cart_attribute) {
 					     $cartIcone=  'default';

@@ -88,13 +88,14 @@ class VirtueMartViewProductdetails extends VmView {
 	    // Load the custom product fields
 	    //$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->virtuemart_product_id);
 	    //
-	    $product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($virtuemart_product_id);
+	    $product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
 
 	   // vmdebug('productdetails view.html.php ',$product->customfields);
 	    if ($product->customfields){
 		    if (!class_exists ('vmCustomPlugin')) {
 			    require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 		    }
+			$customfieldsModel -> displayProductCustomfieldFE ($product, $product->customfields);
 	    }
 
     }
@@ -120,6 +121,7 @@ class VirtueMartViewProductdetails extends VmView {
 	}
 
     if (!empty($product->customfields)) {
+
 	    foreach ($product->customfields as $k => $custom) {
 		    if (!empty($custom->layout_pos)) {
 			    $product->customfieldsSorted[$custom->layout_pos][] = $custom;
@@ -291,7 +293,7 @@ class VirtueMartViewProductdetails extends VmView {
 	// More reviews link
 	$uri = JURI::getInstance();
 	$uri->setVar('showall', 1);
-	$uristring = strip_tags($uri->toString());
+	$uristring = vmURI::getCleanUrl();
 	$this->assignRef('more_reviews', $uristring);
 
 	if ($product->metadesc) {

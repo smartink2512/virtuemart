@@ -89,7 +89,7 @@ class VirtueMartViewCart extends VmView {
 			// Get the products for the cart
 			$this->cart->prepareAddressDataInCart();
 
-			$this->prepareAddressRadioSelection();
+			$this->prepareAddressRadioSelection($this->cart);
 
 			$this->prepareContinueLink();
 
@@ -383,7 +383,7 @@ class VirtueMartViewCart extends VmView {
 			vmInfo('COM_VIRTUEMART_NO_SHIPPING_METHODS_CONFIGURED', $text);
 
 			$tmp = 0;
-			$this->assignRef('found_shipment_method', $tmp);
+			$this->cart->assignRef('found_shipment_method', $tmp);
 
 			return false;
 		}
@@ -393,21 +393,21 @@ class VirtueMartViewCart extends VmView {
 	function prepareAddressRadioSelection(){
 
 		//Just in case
-		$this->user = VmModel::getModel('user');
+		$this->cart->user = VmModel::getModel('user');
 
-		$this->userDetails = $this->user->getUser();
+		$this->cart->userDetails = $this->cart->user->getUser();
 
 		$_addressBT = array();
 
 		// Shipment address(es)
-		if($this->user){
-			$_addressBT = $this->user->getUserAddressList($this->userDetails->JUser->get('id') , 'BT');
+		if($this->cart->user){
+			$_addressBT = $this->cart->user->getUserAddressList($this->cart->userDetails->JUser->get('id') , 'BT');
 
 			// Overwrite the address name for display purposes
 			if(empty($_addressBT[0])) $_addressBT[0] = new stdClass();
 			$_addressBT[0]->address_type_name = JText::_('COM_VIRTUEMART_ACC_BILL_DEF');
 
-			$_addressST = $this->user->getUserAddressList($this->userDetails->JUser->get('id') , 'ST');
+			$_addressST = $this->cart->user->getUserAddressList($this->cart->userDetails->JUser->get('id') , 'ST');
 
 		} else {
 
@@ -424,7 +424,7 @@ class VirtueMartViewCart extends VmView {
 			array($_addressBT[0])// More BT addresses can exist for shopowners :-(
 			, $_addressST );
 
-		if($this->user){
+		if($this->cart->user){
 			for ($_i = 0; $_i < count($addressList); $_i++) {
 				$addressList[$_i]->address_type_name = '<a href="index.php'
 					.'?option=com_virtuemart'
@@ -437,23 +437,23 @@ class VirtueMartViewCart extends VmView {
 
 			if(!empty($addressList[0]->virtuemart_userinfo_id)){
 				$_selectedAddress = (
-				empty($this->_cart->selected_shipto)
+				empty($this->cart->selected_shipto)
 					? $addressList[0]->virtuemart_userinfo_id // Defaults to 1st BillTo
-					: $this->_cart->selected_shipto
+					: $this->cart->selected_shipto
 				);
-				$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'virtuemart_userinfo_id', 'address_type_name', $_selectedAddress);
+				$this->cart->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'virtuemart_userinfo_id', 'address_type_name', $_selectedAddress);
 			}else{
 				$_selectedAddress = 0;
-				$this->lists['shipTo'] = '';
+				$this->cart->lists['shipTo'] = '';
 			}
 
 
 		} else {
 			$_selectedAddress = 0;
-			$this->lists['shipTo'] = '';
+			$this->cart->lists['shipTo'] = '';
 		}
 
-		$this->lists['billTo'] = empty($addressList[0]->virtuemart_userinfo_id)? 0 : $addressList[0]->virtuemart_userinfo_id;
+		$this->cart->lists['billTo'] = empty($addressList[0]->virtuemart_userinfo_id)? 0 : $addressList[0]->virtuemart_userinfo_id;
 	}
 
 }

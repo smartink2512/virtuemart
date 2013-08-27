@@ -86,15 +86,12 @@ class VirtueMartControllerProductdetails extends JController {
 			if ($commentSize < $min) {
 				vmdebug ('mailAskquestion', $min, $commentSize);
 				$errmsg = JText::_ ('COM_VIRTUEMART_ASKQU_CS_MIN');
-				;
 			} else {
 				if ($commentSize > $max) {
 					$errmsg = JText::_ ('COM_VIRTUEMART_ASKQU_CS_MAX');
-					;
 				} else {
 					if (!$validMail) {
 						$errmsg = JText::_ ('COM_VIRTUEMART_ASKQU_INV_MAIL');
-						;
 					}
 				}
 			}

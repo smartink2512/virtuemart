@@ -315,7 +315,8 @@ class Img2Thumb	{
 			case "jpg":
 				if (strtolower(substr($fileout,strlen($fileout)-4,4))!=".jpg")
 					$fileout .= ".jpg";
-				return imagejpeg($new_img, $fileout, 100);
+				$quality = 89;
+				return imagejpeg($new_img, $fileout, $quality);
 				break;
 			case "png":
 				if (strtolower(substr($fileout,strlen($fileout)-4,4))!=".png")

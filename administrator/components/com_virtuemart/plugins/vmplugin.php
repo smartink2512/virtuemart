@@ -118,14 +118,14 @@ abstract class vmPlugin extends JPlugin {
 
 		if ($psType !== 0) {
 			if ($psType != $this->_psType) {
-				vmdebug ('selectedThis $psType does not fit');
+				//vmdebug ('selectedThis $psType does not fit');
 				return FALSE;
 			}
 		}
 
 		if ($name !== 0) {
 			if ($name != $this->_name) {
-				vmdebug ('selectedThis $name ' . $name . ' does not fit pluginname ' . $this->_name);
+				//vmdebug ('selectedThis $name ' . $name . ' does not fit pluginname ' . $this->_name);
 				return FALSE;
 			}
 		}
@@ -139,13 +139,13 @@ abstract class vmPlugin extends JPlugin {
 			}
 			if (is_array ($jid)) {
 				if (!in_array ($this->_jid, $jid)) {
-					vmdebug ('selectedThis id ' . $jid . ' not in array does not fit ' . $this->_jid);
+					//vmdebug ('selectedThis id ' . $jid . ' not in array does not fit ' . $this->_jid);
 					return FALSE;
 				}
 			}
 			else {
 				if ($jid != $this->_jid) {
-					vmdebug ('selectedThis $jid ' . $jid . ' does not fit ' . $this->_jid);
+					//vmdebug ('selectedThis $jid ' . $jid . ' does not fit ' . $this->_jid);
 					return FALSE;
 				}
 			}
@@ -357,6 +357,26 @@ abstract class vmPlugin extends JPlugin {
 	}
 
 	/**
+	 *
+	 * @param $psType
+	 * @param $name
+	 * @param $id
+	 * @param $xParams
+	 * @param $varsToPush
+	 * @return bool
+	 */
+	protected function getTablePluginParams ($psType,$name, $id, &$xParams,&$varsToPush) {
+		//vmdebug('getTablePluginParams $this->_psType '.$this->_psType.' sets $psType '.$psType.' $name',$name);
+		if (!empty($this->_psType) and !$this->selectedThis ($psType, $name, $id)) {
+			return FALSE;
+		}
+
+		$varsToPush = $this->_varsToPushParam;
+		$xParams = $this->_xParams;
+		//vmdebug('getTablePluginParams '.$name.' sets xParams '.$xParams.' vars',$varsToPush);
+	}
+
+	/**
 	 * @param $name
 	 * @param $id
 	 * @param $table
@@ -383,11 +403,11 @@ abstract class vmPlugin extends JPlugin {
 	 * @param $data
 	 * @return bool
 	 */
-	protected function declarePluginParams ($psType, $name, $id, &$data) {
+	protected function declarePluginParams ($psType, &$data) {
 
 		//vmdebug('declarePluginParams '.$this->_psType.' '.$psType);
 		//Todo I know a test only on seledtThis is wrong here, it works now with extra !empty($this->_psType)
-		if(!empty($this->_psType) and !$this->selectedThis($psType,$name,$id)){
+		if(!empty($this->_psType) and !$this->selectedThis($psType,$data->custom_element,$data->custom_jplugin_id)){
 			return FALSE;
 		}
 		if (!class_exists ('VmTable')) {
@@ -417,7 +437,7 @@ abstract class vmPlugin extends JPlugin {
 			}
 			$this->_vmpCtable = new $this->_configTableClassName($db);
 			if ($this->_xParams !== 0) {
-				$this->_vmpCtable->setParameterable ($this->_xParams, $this->_varsToPushParam);
+				$this->_vmpCtable->setParameterable ($this->_configTableFieldName, $this->_varsToPushParam);
 			}
 
 			// 			$this->_vmpCtable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$this->_loggable);

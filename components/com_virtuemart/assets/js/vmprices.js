@@ -10,6 +10,7 @@ if(typeof Virtuemart === "undefined")
 				}
 				datas = datas.replace("&view=cart", "");
 				prices.fadeTo("fast", 0.75);
+                //alert('my data '+datas.toString());
 				$.getJSON(window.vmSiteurl + 'index.php?option=com_virtuemart&nosef=1&view=productdetails&task=recalculate&virtuemart_product_id='+id+'&format=json' + window.vmLang, encodeURIComponent(datas),
 					function (datas, textStatus) {
 						prices.fadeTo("fast", 1);

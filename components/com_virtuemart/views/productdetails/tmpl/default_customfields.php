@@ -28,7 +28,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 	    	if ( $field->is_hidden ) //OSP http://forum.virtuemart.net/index.php?topic=99320.0
 	    		continue;
 		    $field->row = $this->row;
-		    $this->customfieldsModel -> displayProductCustomfieldFE ($this->product, $field);
+		    //$this->customfieldsModel -> displayProductCustomfieldFE ($this->product, $field);
 			if ($field->display) {
 	    ?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
 		    <?php if ($field->custom_title != $custom_title && $field->show_title) { ?>

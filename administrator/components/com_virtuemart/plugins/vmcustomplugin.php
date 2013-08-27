@@ -255,22 +255,33 @@ abstract class vmCustomPlugin extends vmPlugin {
 	 * or price is returned defaut custom_price
 	 */
 	// 	 public function plgVmCalculatePluginVariant( $product, $field,$selected,$row){
-	public function getCustomVariant ($product, &$productCustomsPrice, $selected) {
+	/*public function getCustomVariant ($product, &$productCustomsPrice, $selected) {
+
 		if ($productCustomsPrice->custom_element !== $this->_name) {
 			return FALSE;
 		}
 
-		vmPlugin::declarePluginParams ('custom', $productCustomsPrice->custom_element, $productCustomsPrice->custom_jplugin_id, $productCustomsPrice);
-// 		VmTable::bindParameterable($productCustomsPrice,'custom_param',$this->_varsToPushParam);
+		vmPlugin::declarePluginParams ('custom', $productCustomsPrice);
 
-		$pluginFields = JRequest::getVar ('customPlugin', NULL);
+		if(isset($product->cart_item_id)){
+			if (!class_exists('VirtueMartCart'))
+				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			$cart = VirtueMartCart::getCart();
+			//vmdebug('Return getCustomVariant',$cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustomsPrice->virtuemart_custom_id][$productCustomsPrice->virtuemart_customfield_id]);
+
+			if(isset($cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustomsPrice->virtuemart_custom_id][$productCustomsPrice->virtuemart_customfield_id])){
+				return $cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustomsPrice->virtuemart_custom_id][$productCustomsPrice->virtuemart_customfield_id];
+			}
+		}
+
+		$pluginFields = JRequest::getVar ('customProductData', NULL);
 		if ($pluginFields == NULL and isset($product->customPlugin)) {
 			$pluginFields = json_decode ($product->customPlugin, TRUE);
 		}
+		return $pluginFields[$product->virtuemart_product_id][$productCustomsPrice->virtuemart_custom_id][$productCustomsPrice->virtuemart_customfield_id];
+		//return $pluginFields[$productCustomsPrice->virtuemart_customfield_id][$this->_name];
 
-		return $pluginFields[$productCustomsPrice->virtuemart_customfield_id][$this->_name];
-
-	}
+	}*/
 
 	/**
 	 * convert param for render and

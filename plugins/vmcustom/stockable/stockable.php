@@ -468,7 +468,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		return true;
 	}
 
-	function plgVmOnDisplayProductFE( $product, &$idx,&$group){}
+	function plgVmOnDisplayProductFE( &$product,&$group){}
 	/**
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
 	 * @author Patrick Kohl
@@ -596,8 +596,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 // 		return $this->onStoreInstallPluginTable($psType);
 	}
 
-	function plgVmDeclarePluginParamsCustom($psType,$name,$id, &$data){
-		return $this->declarePluginParams('custom', $name, $id, $data);
+	function plgVmDeclarePluginParamsCustom(&$data){
+		return $this->declarePluginParams('custom', $data);
 	}
 
 	function plgVmSetOnTablePluginParamsCustom($name, $id, &$table){
@@ -611,7 +611,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		return $this->onDisplayEditBECustom($virtuemart_custom_id,$customPlugin);
 	}
 
-	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected){
+	public function plgVmPrepareCartProduct($product, &$productCustomsPrice,$selected){
 
 		if ($productCustomsPrice->custom_element != $this->_name) return false;
 

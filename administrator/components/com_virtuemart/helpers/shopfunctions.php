@@ -976,19 +976,23 @@ class ShopFunctions {
 		if (empty($id)) {
 			return '';
 		}
+		static $currencyNameById = array();
+		if(!isset($currencyNameById[$fld][$id])){
+			$id = (int)$id;
+			$db = JFactory::getDBO ();
 
-		$id = (int)$id;
-		$db = JFactory::getDBO ();
+			$q = 'SELECT ' . $db->getEscaped ($fld) . ' AS fld FROM `#__virtuemart_currencies` WHERE virtuemart_currency_id = ' . (int)$id;
+			$db->setQuery ($q);
+			$currencyNameById[$fld][$id] = $db->loadResult ();
+		}
 
-		$q = 'SELECT ' . $db->getEscaped ($fld) . ' AS fld FROM `#__virtuemart_currencies` WHERE virtuemart_currency_id = ' . (int)$id;
-		$db->setQuery ($q);
-		return $db->loadResult ();
+		return $currencyNameById[$fld][$id];
 	}
 
 	/**
 	 * Return the currencyID of a given Currency name
 	 *
-	 * @author Valerie Isaksen
+	 * @author Valerie Isaksen, Max Milbers
 	 * @access public
 	 * @param string $name Currency name
 	 * @return int virtuemart_currency_id
@@ -998,21 +1002,25 @@ class ShopFunctions {
 		if (empty($name)) {
 			return 0;
 		}
-		$db = JFactory::getDBO ();
-
-		if (strlen ($name) === 2) {
-			$fieldname = 'currency_code_2';
-		} else {
-			if (strlen ($name) === 3) {
-				$fieldname = 'currency_code_3';
+		static $currencyIdByName = array();
+		if(!isset($currencyIdByName[$name])){
+			$db = JFactory::getDBO ();
+			vmdebug('getCurrencyIDByName',$name);
+			if (strlen ($name) === 2) {
+				$fieldname = 'currency_code_2';
 			} else {
-				$fieldname = 'currency_name';
+				if (strlen ($name) === 3) {
+					$fieldname = 'currency_code_3';
+				} else {
+					$fieldname = 'currency_name';
+				}
 			}
+			$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `' . $fieldname . '` = "' . $db->getEscaped ($name) . '"';
+			$db->setQuery ($q);
+			$currencyIdByName[$name] = $db->loadResult ();
 		}
-		$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `' . $fieldname . '` = "' . $db->getEscaped ($name) . '"';
-		$db->setQuery ($q);
-		$r = $db->loadResult ();
-		return $r;
+
+		return $currencyIdByName[$name];
 	}
 
 	/**

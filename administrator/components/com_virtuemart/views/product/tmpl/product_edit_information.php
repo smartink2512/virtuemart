@@ -380,8 +380,7 @@ $i=0;
 										$childAttrib = $child->$attrib;
 									} else {
 										vmdebug('unset? use Fallback product_name instead $attrib '.$attrib,$custom);
-										$attrib = 'product_name';
-										$childAttrib = $child->$attrib;
+										$childAttrib = $child->product_name;
 
 									}
 									?>

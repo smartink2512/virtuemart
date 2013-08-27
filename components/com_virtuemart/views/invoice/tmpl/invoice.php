@@ -60,14 +60,10 @@ if ($this->headFooter) {
 
 if ($this->print) {
     ?>
-
 <body onload="javascript:print();">
+<?php   }
+?>
 
-<div class='spaceStyle'>
-    <?php
-// 			echo require(__DIR__.'/mail_html_shopper.php');
-    ?>
-</div>
 <div class='spaceStyle'>
     <?php
     echo $this->loadTemplate('order');
@@ -76,9 +72,16 @@ if ($this->print) {
 
 <div class='spaceStyle'>
     <?php
-    echo $this->loadTemplate('items');
+    if ($this->print) {
+	echo $this->loadTemplate('items');
+    } else {
+	// NOT in print mode, full HTML view for a browser:
+        $tabarray = array('items'=>'COM_VIRTUEMART_ORDER_ITEM', 'history'=>'COM_VIRTUEMART_ORDER_HISTORY');
+	shopFunctionsF::buildTabs( $this, $tabarray);
+    }
     ?>
 </div>
+<br clear="all"/><br/>
     <?php    
 if ($this->headFooter) {
     echo ($this->format=="html")?$this->replaceVendorFields($this->vendor->vendor_letter_footer_html, $this->vendor):$this->vendor->vendor_letter_footer_html;
@@ -89,39 +92,11 @@ if ($this->vendor->vendor_letter_add_tos) {?>
     <?php echo $this->vendor->vendor_terms_of_service; ?>
 </div>
 <?php }
-?>
+
+if ($this->print) { ?>
 </body>
 <?php
-} else {
-
-// NOT in print mode, full HTML view for a browser:
-
-    ?>
-
-<?php
-
-    echo $this->loadTemplate('order');
-
-    ?>
-
-
-	<div class='spaceStyle'>
-	<?php
-
-    $tabarray = array();
-
-    $tabarray['items'] = 'COM_VIRTUEMART_ORDER_ITEM';
-    $tabarray['history'] = 'COM_VIRTUEMART_ORDER_HISTORY';
-
-    shopFunctionsF::buildTabs( $this, $tabarray);
-    echo '</div>
-	    <br clear="all"/><br/>';
-}
-
-
-?>
-
-
+} ?>
 
 
 
