@@ -383,7 +383,7 @@ class VirtueMartViewCart extends VmView {
 			vmInfo('COM_VIRTUEMART_NO_SHIPPING_METHODS_CONFIGURED', $text);
 
 			$tmp = 0;
-			$this->cart->assignRef('found_shipment_method', $tmp);
+			$this->assignRef('found_shipment_method', $tmp);
 
 			return false;
 		}

@@ -683,23 +683,31 @@ class calculationHelper {
 			if($this->_currencyDisplay->_priceConfig['basePriceWithTax']) $this->_cartPrices['basePriceWithTax'] += self::roundInternal($productCart->prices[$productCart->selectedPrice]['basePriceWithTax']) * $productCart->quantity;
 			if($this->_currencyDisplay->_priceConfig['discountedPriceWithoutTax']) $this->_cartPrices['discountedPriceWithoutTax'] += self::roundInternal($productCart->prices[$productCart->selectedPrice]['discountedPriceWithoutTax'],'discountedPriceWithoutTax') * $productCart->quantity;
 			if($this->_currencyDisplay->_priceConfig['salesPrice']){
-				$this->_cartPrices[$cartproductkey]['subtotal_with_tax'] = self::roundInternal($productCart->prices[$productCart->selectedPrice]['salesPrice'],'salesPrice') * $productCart->quantity;
-				$this->_cartPrices['salesPrice'] += $this->_cartPrices[$cartproductkey]['subtotal_with_tax'];
+//				$this->_cartPrices[$cartproductkey]['subtotal_with_tax'] = self::roundInternal($productCart->prices[$productCart->selectedPrice]['salesPrice'],'salesPrice') * $productCart->quantity;
+				$productCart->prices[$productCart->selectedPrice]['subtotal_with_tax'] = self::roundInternal($productCart->prices[$productCart->selectedPrice]['salesPrice'],'salesPrice') * $productCart->quantity;
+//				$this->_cartPrices['salesPrice'] += $this->_cartPrices[$cartproductkey]['subtotal_with_tax'];
+				$this->_cartPrices['salesPrice'] += $productCart->prices[$productCart->selectedPrice]['subtotal_with_tax'];
 			}
 
 			if($this->_currencyDisplay->_priceConfig['taxAmount']){
-				$this->_cartPrices[$cartproductkey]['subtotal_tax_amount'] = self::roundInternal($productCart->prices[$productCart->selectedPrice]['taxAmount'],'taxAmount') * $productCart->quantity;
-				$this->_cartPrices['taxAmount'] += $this->_cartPrices[$cartproductkey]['subtotal_tax_amount'];
+//				$this->_cartPrices[$cartproductkey]['subtotal_tax_amount'] = self::roundInternal($productCart->prices[$productCart->selectedPrice]['taxAmount'],'taxAmount') * $productCart->quantity;
+				$productCart->prices[$productCart->selectedPrice]['subtotal_tax_amount'] = self::roundInternal($productCart->prices[$productCart->selectedPrice]['taxAmount'],'taxAmount') * $productCart->quantity;
+//				$this->_cartPrices['taxAmount'] += $this->_cartPrices[$cartproductkey]['subtotal_tax_amount'];
+				$this->_cartPrices['taxAmount'] += $productCart->prices[$productCart->selectedPrice]['subtotal_tax_amount'];
 			}
 
 			if($this->_currencyDisplay->_priceConfig['salesPriceWithDiscount']) $this->_cartPrices['salesPriceWithDiscount'] += self::roundInternal($productCart->prices[$productCart->selectedPrice]['salesPriceWithDiscount'],'salesPriceWithDiscount') * $productCart->quantity;
 			if($this->_currencyDisplay->_priceConfig['discountAmount']){
-				$this->_cartPrices[$cartproductkey]['subtotal_discount'] = self::roundInternal($productCart->prices[$productCart->selectedPrice]['discountAmount'],'discountAmount') * $productCart->quantity;
-				$this->_cartPrices['discountAmount'] += $this->_cartPrices[$cartproductkey]['subtotal_discount'];
+//				$this->_cartPrices[$cartproductkey]['subtotal_discount'] = self::roundInternal($productCart->prices[$productCart->selectedPrice]['discountAmount'],'discountAmount') * $productCart->quantity;
+				$productCart->prices[$productCart->selectedPrice]['subtotal_discount'] = self::roundInternal($productCart->prices[$productCart->selectedPrice]['discountAmount'],'discountAmount') * $productCart->quantity;
+//				$this->_cartPrices['discountAmount'] += $this->_cartPrices[$cartproductkey]['subtotal_discount'];
+				$this->_cartPrices['discountAmount'] += $productCart->prices[$productCart->selectedPrice]['subtotal_discount'];
 			}
 			if($this->_currencyDisplay->_priceConfig['priceWithoutTax']) {
-				$this->_cartPrices[$cartproductkey]['subtotal'] = self::roundInternal($productCart->prices[$productCart->selectedPrice]['priceWithoutTax'],'priceWithoutTax') * $productCart->quantity;
-				$this->_cartPrices['priceWithoutTax'] += $this->_cartPrices[$cartproductkey]['subtotal'];
+//				$this->_cartPrices[$cartproductkey]['subtotal'] = self::roundInternal($productCart->prices[$productCart->selectedPrice]['priceWithoutTax'],'priceWithoutTax') * $productCart->quantity;
+				$productCart->prices[$productCart->selectedPrice]['subtotal'] = self::roundInternal($productCart->prices[$productCart->selectedPrice]['priceWithoutTax'],'priceWithoutTax') * $productCart->quantity;
+//				$this->_cartPrices['priceWithoutTax'] += $this->_cartPrices[$cartproductkey]['subtotal'];
+				$this->_cartPrices['priceWithoutTax'] += $productCart->prices[$productCart->selectedPrice]['subtotal'];
 			}
 
 		}

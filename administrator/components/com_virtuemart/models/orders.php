@@ -1018,9 +1018,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		foreach ($cart->products  as $priceKey=>$product) {
 
 			//VmConfig::$echoDebug=1;
- 			vmdebug('_createOrderLines',$product->prices,$cart->pricesUnformatted[$priceKey]);
+//			vmdebug('_createOrderLines',$product->prices,$cart->pricesUnformatted[$priceKey]);
 
-			$prices = $cart->pricesUnformatted[$priceKey];
+//			$prices = $cart->pricesUnformatted[$priceKey];
 			$_orderItems->product_attribute = json_encode($product->customProductData);
 
 			$_orderItems->virtuemart_order_item_id = null;
@@ -1031,16 +1031,16 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$_orderItems->order_item_sku = $product->product_sku;
 			$_orderItems->order_item_name = $product->product_name;
 			$_orderItems->product_quantity = $product->quantity;
-			$_orderItems->product_item_price = $product->prices['basePrice'];
-			$_orderItems->product_basePriceWithTax = $product->prices['basePriceWithTax'];
+			$_orderItems->product_item_price = $product->prices[$product->selectedPrice]['basePrice'];
+			$_orderItems->product_basePriceWithTax = $product->prices[$product->selectedPrice]['basePriceWithTax'];
 
 			//$_orderItems->product_tax = $_cart->pricesUnformatted[$priceKey]['subtotal_tax_amount'];
-			$_orderItems->product_tax = $product->prices['taxAmount'];
-			$_orderItems->product_final_price = $product->prices['salesPrice'];
-			$_orderItems->product_subtotal_discount = $prices['subtotal_discount'];
-			$_orderItems->product_subtotal_with_tax =  $prices['subtotal_with_tax'];
-			$_orderItems->product_priceWithoutTax = $product->prices['priceWithoutTax'];
-			$_orderItems->product_discountedPriceWithoutTax = $product->prices['discountedPriceWithoutTax'];
+			$_orderItems->product_tax = $product->prices[$product->selectedPrice]['taxAmount'];
+			$_orderItems->product_final_price = $product->prices[$product->selectedPrice]['salesPrice'];
+			$_orderItems->product_subtotal_discount = $product->prices[$product->selectedPrice]['subtotal_discount'];
+			$_orderItems->product_subtotal_with_tax =  $product->prices[$product->selectedPrice]['subtotal_with_tax'];
+			$_orderItems->product_priceWithoutTax = $product->prices[$product->selectedPrice]['priceWithoutTax'];
+			$_orderItems->product_discountedPriceWithoutTax = $product->prices[$product->selectedPrice]['discountedPriceWithoutTax'];
 			if (!$_orderItems->check()) {
 				vmError($this->getError());
 				return false;
