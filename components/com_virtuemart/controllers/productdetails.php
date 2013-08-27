@@ -5,7 +5,7 @@
  *
  * @package    VirtueMart
  * @subpackage
- * @author RolandD
+ * @author Max Milbers
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -26,7 +26,7 @@ jimport ('joomla.application.component.controller');
  * VirtueMart Component Controller
  *
  * @package VirtueMart
- * @author RolandD
+ * @author Max Milbers
  */
 class VirtueMartControllerProductdetails extends JController {
 
@@ -58,16 +58,23 @@ class VirtueMartControllerProductdetails extends JController {
 	 */
 	public function mailAskquestion () {
 
-		// Display it all
-		$view = $this->getView ('askquestion', 'html');
-		if(!VmConfig::get('ask_question',false)){
-			$view->display ();
-		}
 		JRequest::checkToken () or jexit ('Invalid Token');
+
+		$app = JFactory::getApplication ();
+		if(!VmConfig::get('ask_question',false)){
+			$app->redirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . JRequest::getInt ('virtuemart_product_id', 0)), 'Function disabled');
+		}
+
+		if(!VmConfig::get('recommend_unauth',false)){
+			$user = JFactory::getUser();
+			if($user->guest){
+				$app->redirect(JRoute::_('index.php?option=com_virtuemart','JGLOBAL_YOU_MUST_LOGIN_FIRST'));
+			}
+		}
+		$view = $this->getView ('askquestion', 'html');
 		if (!class_exists ('shopFunctionsF')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
-		$mainframe = JFactory::getApplication ();
 		$vars = array();
 		$min = VmConfig::get ('asks_minimum_comment_length', 50) + 1;
 		$max = VmConfig::get ('asks_maximum_comment_length', 2000) - 1;
@@ -127,7 +134,7 @@ class VirtueMartControllerProductdetails extends JController {
 		} else {
 			$string = 'COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY';
 		}
-		$mainframe->enqueueMessage (JText::_ ($string));
+		$app->enqueueMessage (JText::_ ($string));
 
 
 		$view->setLayout ('mail_confirmed');
@@ -142,18 +149,24 @@ class VirtueMartControllerProductdetails extends JController {
 	public function mailRecommend () {
 
 		JRequest::checkToken () or jexit ('Invalid Token');
+
+		$app = JFactory::getApplication ();
+		if(!VmConfig::get('show_emailfriend',false)){
+			$app->redirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . JRequest::getInt ('virtuemart_product_id', 0)), 'Function disabled');
+		}
+		if(!VmConfig::get('recommend_unauth',false)){
+			$user = JFactory::getUser();
+			if($user->guest){
+				$app->redirect(JRoute::_('index.php?option=com_virtuemart','JGLOBAL_YOU_MUST_LOGIN_FIRST'));
+			}
+		}
 		// Display it all
 		$view = $this->getView ('recommend', 'html');
-
-		if(!VmConfig::get('show_emailfriend',false)){
-			$view->display ();
-		}
 		if (!class_exists ('shopFunctionsF')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
-		$mainframe = JFactory::getApplication ();
 		$vars = array();
 
 		$virtuemart_product_idArray = JRequest::getInt ('virtuemart_product_id', 0);
@@ -189,7 +202,7 @@ class VirtueMartControllerProductdetails extends JController {
 		} else {
 			$string = 'COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY';
 		}
-		$mainframe->enqueueMessage (JText::_ ($string));
+		$app->enqueueMessage (JText::_ ($string));
 
 // 		vmdebug('my email vars ',$vars,$TOMail);
 
@@ -204,16 +217,15 @@ class VirtueMartControllerProductdetails extends JController {
 	 */
 	public function MailForm () {
 
-		if (JRequest::getCmd ('task') == 'recommend') {
-
-			/*OSP 2012-03-14 ...Track #375; allowed by setting */
-			if (VmConfig::get ('recommend_unauth', 0) == '0') {
-				$user = JFactory::getUser ();
-				if (empty($user->id)) {
-					VmInfo (JText::_ ('JGLOBAL_YOU_MUST_LOGIN_FIRST'));
-					return;
-				}
+		/*OSP 2012-03-14 ...Track #375; allowed by setting */
+		if (VmConfig::get ('recommend_unauth', 0) == '0') {
+			$user = JFactory::getUser ();
+			if (empty($user->id)) {
+				VmInfo (JText::_ ('JGLOBAL_YOU_MUST_LOGIN_FIRST'));
+				return;
 			}
+		}
+		if (JRequest::getCmd ('task') == 'recommend') {
 			$view = $this->getView ('recommend', 'html');
 		} else {
 			$view = $this->getView ('askquestion', 'html');

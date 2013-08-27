@@ -6,7 +6,7 @@
  *
  * @package VirtueMart
  * @subpackage
- * @author RolandD
+ * @author Max Milbers
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -38,6 +38,18 @@ class VirtueMartViewAskquestion extends VmView {
 	 * @author Max Milbers
 	 */
 	function display ($tpl = NULL) {
+
+		if(!VmConfig::get('ask_question',false) and !VmConfig::get('askprice',false)){
+			$app = JFactory::getApplication();
+			$app->redirect(JRoute::_('index.php?option=com_virtuemart'));
+		}
+
+		if(!VmConfig::get('recommend_unauth',false)){
+			$user = JFactory::getUser();
+			if($user->guest){
+				$app->redirect(JRoute::_('index.php?option=com_virtuemart','COM_VIRTUEMART_MAIL_ONLY_REGISTERED'));
+			}
+		}
 
 		$show_prices = VmConfig::get ('show_prices', 1);
 		if ($show_prices == '1') {
