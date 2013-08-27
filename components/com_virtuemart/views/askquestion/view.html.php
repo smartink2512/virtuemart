@@ -39,6 +39,18 @@ class VirtueMartViewAskquestion extends VmView {
 	 */
 	function display ($tpl = NULL) {
 
+		$app = JFactory::getApplication();
+		if(!VmConfig::get('ask_question',false) and !VmConfig::get('askprice',false)){
+			$app->redirect(JRoute::_('index.php?option=com_virtuemart','Disabled function'));
+		}
+
+		if(!VmConfig::get('recommend_unauth',false)){
+			$user = JFactory::getUser();
+			if($user->guest){
+				$app->redirect(JRoute::_('index.php?option=com_virtuemart','JGLOBAL_YOU_MUST_LOGIN_FIRST'));
+			}
+		}
+
 		$show_prices = VmConfig::get ('show_prices', 1);
 		if ($show_prices == '1') {
 			if (!class_exists ('calculationHelper')) {

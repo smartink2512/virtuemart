@@ -26,7 +26,6 @@ if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
 * Product details
 *
 * @package VirtueMart
-* @author RolandD
 * @author Max Milbers
 */
 class virtuemartViewrecommend extends VmView {
@@ -34,10 +33,22 @@ class virtuemartViewrecommend extends VmView {
 	/**
 	* Collect all data to show on the template
 	*
-	* @author RolandD, Max Milbers
+	* @author Max Milbers
 	*/
 	function display($tpl = null) {
 
+		$app = JFactory::getApplication();
+		if(!VmConfig::get('show_emailfriend',false)){
+
+			$app->redirect(JRoute::_('index.php?option=com_virtuemart'));
+		}
+
+		if(!VmConfig::get('recommend_unauth',false)){
+			$user = JFactory::getUser();
+			if($user->guest){
+				$app->redirect(JRoute::_('index.php?option=com_virtuemart','JGLOBAL_YOU_MUST_LOGIN_FIRST'));
+			}
+		}
 		$show_prices  = VmConfig::get('show_prices',1);
 		if($show_prices == '1'){
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
