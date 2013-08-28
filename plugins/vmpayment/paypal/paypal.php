@@ -220,34 +220,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			"no_shipping" => isset($method->no_shipping) ? $method->no_shipping : 0,
 			"no_note" => "1");
 
-		/*
-					  $i = 1;
-					  foreach ($cart->products as $key => $product) {
-					  $post_variables["item_name_" . $i] = substr(strip_tags($product->product_name), 0, 127);
-					  $post_variables["item_number_" . $i] = $i;
-					  $post_variables["amount_" . $i] = $cart->pricesUnformatted[$key]['salesPrice'];
-					  $post_variables["quantity_" . $i] = $product->quantity;
-					  $i++;
-					  }
-					  if ($cart->pricesUnformatted ['shipmentValue']) {
-					  $post_variables["item_name_" . $i] = JText::_('VMPAYMENT_PAYPAL_SHIPMENT_PRICE');
-					  $post_variables["item_number_" . $i] = $i;
-					  $post_variables["amount_" . $i] = $cart->pricesUnformatted ['shipmentValue'];
-					  $post_variables["quantity_" . $i] = 1;
-					  $i++;
-					  }
-					  if ($cart->pricesUnformatted ['paymentValue']) {
-					  $post_variables["item_name_" . $i] = JText::_('VMPAYMENT_PAYPAL_PAYMENT_PRICE');
-					  $post_variables["item_number_" . $i] = $i;
-					  $post_variables["amount_" . $i] = $cart->pricesUnformatted ['paymentValue'];
-					  $post_variables["quantity_" . $i] = 1;
-					  $i++;
-					  }
-					  if (!empty($order->cart->coupon)) {
-					  $post_variables["discount_amount_cart"] = $cart->pricesUnformatted['discountAmount'];
-					  }
-					 */
-
 		// Prepare data that should be stored in the database
 		$dbValues['order_number'] = $order['details']['BT']->order_number;
 		$dbValues['payment_name'] = $this->renderPluginName($method, $order);
@@ -801,12 +773,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		return $url;
 	}
 
-	/*
-		 * CheckPaypalIPs
-		 * Cannot be checked with Sandbox
-		 * From VM1.1
-		 */
-
 	/**
 	 * @param $test_ipn
 	 * @return mixed
@@ -1010,18 +976,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		return $this->displayListFE($cart, $selected, $htmlIn);
 	}
 
-	/*
-		 * plgVmonSelectedCalculatePricePayment
-		 * Calculate the price (value, tax_id) of the selected method
-		 * It is called by the calculator
-		 * This function does NOT to be reimplemented. If not reimplemented, then the default values from this function are taken.
-		 * @author Valerie Isaksen
-		 * @cart: VirtueMartCart the current cart
-		 * @cart_prices: array the new cart prices
-		 * @return null if the method was not selected, false if the shiiping rate is not valid any more, true otherwise
-		 *
-		 *
-		 */
 
 	/**
 	 * @param VirtueMartCart $cart
@@ -1033,6 +987,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		return $this->onSelectedCalculatePrice($cart, $cart_prices, $cart_prices_name);
 	}
+
 	function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
 
 
@@ -1146,17 +1101,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$this->onShowOrderFE($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
 	}
 
-	/**
-	 * This event is fired during the checkout process. It can be used to validate the
-	 * method data as entered by the user.
-	 *
-	 * @return boolean True when the data was valid, false otherwise. If the plugin is not activated, it should return null.
-	 * @author Max Milbers
-
-	public function plgVmOnCheckoutCheckDataPayment($psType, VirtueMartCart $cart) {
-	return null;
-	}
-	 */
 
 	/**
 	 * This method is fired when showing when priting an Order
@@ -1172,59 +1116,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		return $this->onShowOrderPrint($order_number, $method_id);
 	}
 
-	/**
-	 * Save updated order data to the method specific table
-	 *
-	 * @param array $_formData Form data
-	 * @return mixed, True on success, false on failures (the rest of the save-process will be
-	 * skipped!), or null when this method is not actived.
-	 * @author Oscar van Eijk
 
-	public function plgVmOnUpdateOrderPayment(  $_formData) {
-	return null;
-	}
-	 */
-	/**
-	 * Save updated orderline data to the method specific table
-	 *
-	 * @param array $_formData Form data
-	 * @return mixed, True on success, false on failures (the rest of the save-process will be
-	 * skipped!), or null when this method is not actived.
-	 * @author Oscar van Eijk
-
-	public function plgVmOnUpdateOrderLine(  $_formData) {
-	return null;
-	}
-	 */
-	/**
-	 * plgVmOnEditOrderLineBE
-	 * This method is fired when editing the order line details in the backend.
-	 * It can be used to add line specific package codes
-	 *
-	 * @param integer $_orderId The order ID
-	 * @param integer $_lineId
-	 * @return mixed Null for method that aren't active, text (HTML) otherwise
-	 * @author Oscar van Eijk
-
-	public function plgVmOnEditOrderLineBE(  $_orderId, $_lineId) {
-	return null;
-	}
-	 */
-
-	/**
-	 * This method is fired when showing the order details in the frontend, for every orderline.
-	 * It can be used to display line specific package codes, e.g. with a link to external tracking and
-	 * tracing systems
-	 *
-	 * @param integer $_orderId The order ID
-	 * @param integer $_lineId
-	 * @return mixed Null for method that aren't active, text (HTML) otherwise
-	 * @author Oscar van Eijk
-
-	public function plgVmOnShowOrderLineFE(  $_orderId, $_lineId) {
-	return null;
-	}
-	 */
 	function plgVmDeclarePluginParamsPayment($name, $id, &$data) {
 
 		return $this->declarePluginParams('payment', $name, $id, $data);
