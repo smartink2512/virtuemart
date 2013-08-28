@@ -261,6 +261,11 @@ class VmView extends JView{
 			$this->assignRef('langList',$langList);
 			$this->assignRef('lang',$lang);
 
+			if ($editView =='product') {
+				$productModel = VmModel::getModel('product');
+				$childproducts = $productModel->getProductChilds($id) ? $productModel->getProductChilds($id) : '';
+			}
+
 			$token = JUtility::getToken();
 			$j = '
 			jQuery(function($) {
@@ -280,8 +285,29 @@ class VmView extends JView{
 									if (cible.parent().addClass(flagClass).children().hasClass("mce_editable") && data.structure !== "empty" ) tinyMCE.execInstanceCommand(key,"mceSetContent",false,val);
 									else if (data.structure !== "empty") cible.val(val);
 									});
-								oldflag = flagClass ;
-							} else alert(data.msg);
+
+							} else alert(data.msg);';
+
+							if($editView =='product' && !empty($childproducts)) {
+								foreach($childproducts as $child) {
+								$j .= '
+									$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$child->virtuemart_product_id.'&editView='.$editView.'&'.$token.'=1" ,
+										function(data) {
+											cible = jQuery("#child'. $child->virtuemart_product_id .'product_name");
+											cible.parent().removeClass(oldflag)
+											cible.parent().addClass(flagClass);
+											cible.val(data.fields["product_name"]);
+											jQuery("#child'. $child->virtuemart_product_id .'slug").val(data.fields["slug"]);
+											
+											oldflag = flagClass ;
+										}
+									)
+								';
+								}
+							}
+							else $j .= 'oldflag = flagClass ;';
+
+						$j .= '
 						}
 					)
 				});
