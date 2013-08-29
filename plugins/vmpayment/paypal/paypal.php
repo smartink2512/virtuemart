@@ -633,11 +633,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$post_msg .= "&$key=$value";
 			}
 		}
-		/*
-						$header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
-						$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-		$header .= "Content-Length: " . strlen ($post_msg) . "\r\n\r\n";
-		*/
+
 		$header="POST /cgi-bin/webscr HTTP/1.1\r\n";
 		$header .= "User-Agent: PHP/" . phpversion () . "\r\n";
 		$header .= "Referer: " . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . @$_SERVER['QUERY_STRING'] . "\r\n";
@@ -1001,7 +997,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		$calculator = calculationHelper::getInstance ();
 		$_psType = ucfirst ($this->_psType);
-
+		$taxrules=array();
 		if(isset($method->tax_id) and (int)$method->tax_id === -1){
 
 		} else if (!empty($method->tax_id)) {
@@ -1055,17 +1051,16 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 				$cart_prices[$this->_psType . 'Tax']=$feeWithVat-$feeNoVat;
 				$cart_prices['salesPrice' . $_psType] =$feeWithVat;
-				$cart_prices[ $_psType.'Value'] = $feeNoVat;
+				$cart_prices[ $this->_psType .'Value'] = $feeNoVat;
 
 				reset($taxrules);
 				$taxrule =  current($taxrules);
 				$cart_prices[$this->_psType . '_calc_id'] = $taxrule['virtuemart_calc_id'];
-
 			} else {
 				$NewTotalAmount=($cartTotalAmount+ $method->cost_per_transaction) / (1 -$cost_percent_total);
 				$fee=$NewTotalAmount-$cartTotalAmount;
 				$cart_prices['salesPrice' . $_psType] = $fee;
-				$cart_prices[$this->_psType . 'Tax'] = 0;
+				$cart_prices[$this->_psType . 'Tax']  = 0;
 				$cart_prices[$this->_psType . '_calc_id'] = 0;
 			}
 

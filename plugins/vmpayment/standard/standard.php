@@ -330,6 +330,7 @@ if (!class_exists ('vmPSPlugin')) {
 
 			$calculator = calculationHelper::getInstance ();
 			$_psType = ucfirst ($this->_psType);
+			$taxrules=array();
 
 			if(isset($method->tax_id) and (int)$method->tax_id === -1){
 
@@ -384,7 +385,7 @@ if (!class_exists ('vmPSPlugin')) {
 
 				$cart_prices[$this->_psType . 'Tax']=$feeWithVat-$feeNoVat;
 				$cart_prices['salesPrice' . $_psType] =$feeWithVat;
-				$cart_prices[ $_psType.'Value'] = $feeNoVat;
+				$cart_prices[ $this->_psType .'Value'] = $feeNoVat;
 
 				reset($taxrules);
 				$taxrule =  current($taxrules);
