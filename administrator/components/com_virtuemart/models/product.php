@@ -53,6 +53,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->setMainTable ('products');
 		$this->starttime = microtime (TRUE);
 		$this->maxScriptTime = ini_get ('max_execution_time') * 0.95 - 1;
+		$this->memory_limit = (int) substr(ini_get('memory_limit'),0,-1) -4; // 4 MB reserve
 		// 	$this->addvalidOrderingFieldName(array('m.mf_name','pp.product_price'));
 
 		$app = JFactory::getApplication ();
@@ -665,9 +666,9 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 		$productKey = md5($virtuemart_product_id.$front.$withCalc.$onlyPublished.$quantity.$customfields);
-		//vmdebug('getProduct',$productKey);
+
 		static $_products = array();
-		//VmConfig::$echoDebug=TRUE;
+
 		if (array_key_exists ($productKey, $_products)) {
 			vmdebug('getProduct, take from cache '.$productKey);
 			return $_products[$productKey];
@@ -680,6 +681,11 @@ class VirtueMartModelProduct extends VmModel {
 			vmdebug('getProduct, take from cache full product '.$productKey);
 			return $_products[$productKey];
 		} else {
+			if ($this->memory_limit<$mem = round(memory_get_usage(FALSE)/(1024*1024),2)) {
+				vmdebug ('Memory limit reached in model product getProduct('.$virtuemart_product_id.'), $customfields= '.$customfields.' consumed: '.$mem.'M');
+				vmError ('Memory limit reached in model product getProduct() ' . $virtuemart_product_id);
+				return false;
+			}
 			$child = $this->getProductSingle ($virtuemart_product_id, $front,$quantity,$customfields);
 			if (!$child->published && $onlyPublished) {
 				vmdebug('getProduct child is not published, returning zero');
@@ -693,10 +699,9 @@ class VirtueMartModelProduct extends VmModel {
 			$ppId = $child->product_parent_id;
 			$published = $child->published;
 
-			//$this->product_parent_id = $child->product_parent_id;
-
 			$i = 0;
 			$runtime = microtime (TRUE) - $this->starttime;
+
 			//Check for all attributes to inherited by parent products
 			while (!empty($child->product_parent_id)) {
 				$runtime = microtime (TRUE) - $this->starttime;
@@ -712,7 +717,7 @@ class VirtueMartModelProduct extends VmModel {
 						break;
 					}
 				}
-				$parentProduct = $this->getProductSingle ($child->product_parent_id, $front,$quantity);
+				$parentProduct = $this->getProductSingle ($child->product_parent_id, $front,$quantity,$customfields);
 				if ($child->product_parent_id === $parentProduct->product_parent_id) {
 					vmError('Error, parent product with virtuemart_product_id = '.$parentProduct->virtuemart_product_id.' has same parent id like the child with virtuemart_product_id '.$child->virtuemart_product_id);
 					break;
@@ -1085,12 +1090,12 @@ class VirtueMartModelProduct extends VmModel {
 
 			if (!$front and $customfields) {
 				if(!$this->listing){
-					$customfields = VmModel::getModel ('Customfields');
-					$product->customfields = $customfields->getproductCustomslist ($this->_id);
+					$customfieldModel = VmModel::getModel ('Customfields');
+					$product->customfields = $customfieldModel->getproductCustomslist ($this->_id);
 
 					if (empty($product->customfields) and !empty($product->product_parent_id)) {
 						//$product->customfields = $this->productCustomsfieldsClone($product->product_parent_id,true) ;
-						$product->customfields = $customfields->getproductCustomslist ($product->product_parent_id, $this->_id);
+						$product->customfields = $customfieldModel->getproductCustomslist ($product->product_parent_id, $this->_id);
 						$product->customfields_fromParent = TRUE;
 					}
 				}
@@ -1116,15 +1121,15 @@ class VirtueMartModelProduct extends VmModel {
 				//vmdebug('getProductSingle id '.$product->virtuemart_product_id.' $product->virtuemart_customfield_id '.$product->virtuemart_customfield_id);
 				if (!empty($product->virtuemart_customfield_id)) {
 
-					$customfields = VmModel::getModel ('Customfields');
+					$customfieldModel = VmModel::getModel ('Customfields');
 					// Load the custom product fields
-					$product->customfields = $customfields->getProductCustomsField ($product);
-					$product->customfieldsRelatedCategories = $customfields->getProductCustomsFieldRelatedCategories ($product);
-					$product->customfieldsRelatedProducts = $customfields->getProductCustomsFieldRelatedProducts ($product);
+					$product->customfields = $customfieldModel->getProductCustomsField ($product);
+					$product->customfieldsRelatedCategories = $customfieldModel->getProductCustomsFieldRelatedCategories ($product);
+					$product->customfieldsRelatedProducts = $customfieldModel->getProductCustomsFieldRelatedProducts ($product);
 					//  custom product fields for add to cart
-					$product->customfieldsCart = $customfields->getProductCustomsFieldCart ($product);
+					$product->customfieldsCart = $customfieldModel->getProductCustomsFieldCart ($product);
 					$child = $this->getProductChilds ($this->_id);
-					$product->customsChilds = $customfields->getProductCustomsChilds ($child, $this->_id);
+					$product->customsChilds = $customfieldModel->getProductCustomsChilds ($child, $this->_id);
 				}
 
 				// Check the stock level
