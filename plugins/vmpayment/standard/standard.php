@@ -384,7 +384,7 @@ if (!class_exists ('vmPSPlugin')) {
 
                 $cart_prices[$this->_psType . 'Tax']=$feeWithVat-$feeNoVat;
                 $cart_prices['salesPrice' . $_psType] =$feeWithVat;
-                $cart_prices[ $_psType.'Value'] = $feeNoVat;
+                $cart_prices[ $this->_psType .'Value'] = $feeNoVat;
 
                 reset($taxrules);
                 $taxrule =  current($taxrules);
