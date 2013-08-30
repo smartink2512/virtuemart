@@ -373,6 +373,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 			$cart_prices['salesPrice' . $_psType] = $fee;
 			$cart_prices[$this->_psType . 'Tax']  = 0;
 			$cart_prices[$this->_psType . '_calc_id'] = 0;
+			$cart_prices[ $this->_psType .'Value'] = $fee;
 		}
 
 		return $cart_prices['salesPrice' . $_psType];
