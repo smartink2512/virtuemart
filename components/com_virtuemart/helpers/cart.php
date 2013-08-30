@@ -780,7 +780,8 @@ class VirtueMartCart {
 		$app = JFactory::getApplication();
 		if($this->_redirect and !$this->_redirect_disabled){
 			$this->setCartIntoSession();
-			$app->redirect(JRoute::_($relUrl,$this->useXHTML,$this->useSSL), $redirectMsg);
+			//This is an internal redirect, therefore $this->useXHTML is always false
+			$app->redirect(JRoute::_($relUrl,false,$this->useSSL), $redirectMsg);
 			return false;
 		} else {
 			$this->_inCheckOut = false;

@@ -1454,7 +1454,7 @@ class VmTable extends JTable {
 			$whereKey = $this->_pkey;
 		}
 
-		$query = 'SELECT `' . $this->_tbl_key . '` FROM `' . $table . '` WHERE ' . $whereKey . ' = "' . $this->$k . '"';
+		$query = 'SELECT `' . $this->_tbl_key . '` FROM `' . $table . '` WHERE `' . $whereKey . '` = "' . $this->$k . '"';
 		$this->_db->setQuery($query);
 		// 		vmdebug('checkAndDelete',$query);
 		$list = $this->_db->loadResultArray();
