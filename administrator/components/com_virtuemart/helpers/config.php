@@ -264,13 +264,15 @@ function vmdebug($debugdescr,$debugvalues=NULL){
 				}
 			}
 
-			if(!VmConfig::$echoDebug){
+			if(VmConfig::$echoDebug){
+				VmConfig::$maxMessageCount++;
+				echo $debugdescr;
+			} else if(VmConfig::$logDebug){
+				logInfo($debugdescr,'vmdebug');
+			}else {
 				VmConfig::$maxMessageCount++;
 				$app = JFactory::getApplication();
 				$app ->enqueueMessage('<span class="vmdebug" >vmdebug '.$debugdescr.'</span>');
-			} else {
-				VmConfig::$maxMessageCount++;
-				echo $debugdescr;
 			}
 
 		}
@@ -295,11 +297,13 @@ function vmTrace($notice,$force=FALSE){
 		echo '</pre>';
 		$body = ob_get_contents();
 		ob_end_clean();
-		if(!VmConfig::$echoDebug){
+		if(VmConfig::$echoDebug){
+			echo $notice.' <pre>'.$body.'</pre>';
+		} else if(VmConfig::$logDebug){
+			logInfo($body,$notice);
+		} else {
 			$app = JFactory::getApplication();
 			$app ->enqueueMessage($notice.' '.$body.' ');
-		} else {
-			echo $notice.' <pre>'.$body.'</pre>';
 		}
 
 	}
@@ -347,13 +351,13 @@ function vmTime($descr,$name='current'){
 }
 
 /**
- * logPaymentInfo
+ * logInfo
  * to help debugging Payment notification for example
  */
 function logInfo ($text, $type = 'message') {
 
 	if (VMConfig::showDebug()) {
-		$file = JPATH_ROOT . "/logs/" . $this->_name . ".log";
+		$file = JPATH_ROOT . "/logs/" . VmConfig::$logFileName . ".log";
 		$date = JFactory::getDate ();
 
 		$fp = fopen ($file, 'a');
@@ -362,6 +366,7 @@ function logInfo ($text, $type = 'message') {
 		fclose ($fp);
 	}
 }
+
 
 /**
 * The time how long the config in the session is valid.
@@ -384,6 +389,8 @@ class VmConfig {
 	public static $maxMessageCount = 0;
 	public static $maxMessage = 100;
 	public static $echoDebug = FALSE;
+	public static $logDebug = FALSE;
+	public static $logFileName = 'vmdebug';
 
 	var $lang = FALSE;
 
@@ -451,7 +458,37 @@ class VmConfig {
 		return self::$_debug;
 	}
 
+	/**
+	 * @param $limit the limit in MB
+	 */
+	static function ensureMemoryLimit($minMemory=0){
 
+		if($minMemory === 0) $minMemory = (int) VmConfig::get('minMemory','128M');
+		$iniValue = ini_get('memory_limit');
+		if($iniValue===-1) return;	//We do not need to alter an unlimited setting
+		$iniValue = strtolower($iniValue);
+		if(strpos($iniValue,'M')!==FALSE){
+			$memory_limit = (int) substr($iniValue,0,-1);
+		} else if(strpos($iniValue,'K')!==FALSE){
+			$memory_limit = (int) substr($iniValue,0,-1) * 1024;
+		} else if(strpos($iniValue,'G')!==FALSE){
+			$memory_limit = (int) substr($iniValue,0,-1) / 1024.0;
+		} else {
+			$memory_limit = (int) $iniValue * 1048576;
+		}
+
+		if($memory_limit<$minMemory)  @ini_set( 'memory_limit', $minMemory.'M' );
+
+	}
+
+	static function ensureExecutionTime($minTime=0){
+
+		if($minTime === 0) $minTime = (int) VmConfig::get('minTime',120);
+		$max_execution_time = ini_get('max_execution_time');
+		if((int)$max_execution_time<$minTime) {
+			@ini_set( 'max_execution_time', $minTime );
+		}
+	}
 	/**
 	 * loads a language file, the trick for us is that always the config option enableEnglish is tested
 	 * and the path are already set and the correct order is used
@@ -646,6 +683,8 @@ class VmConfig {
 		if(!in_array($siteLang, $langs)) {
 			if(!empty($langs[0])){
 				$siteLang = $langs[0];
+			} else {
+				$siteLang = 'en_gb';
 			}
 		}
 
@@ -1174,7 +1213,7 @@ class vmJsApi{
 		if(VmConfig::get('addtocart_popup',1)){
 			$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
 			if(VmConfig::get('usefancy',0)){
-				$jsVars .= "usefancy = true";
+				$jsVars .= "usefancy = true;";
 				vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
 				vmJsApi::css('jquery.fancybox-1.3.4');
 			} else {//This is just there for the backward compatibility
@@ -1184,7 +1223,7 @@ class vmJsApi{
 				$jsVars .= "closeImage = '".$closeimage."' ; \n";
 				//This is necessary though and should not be removed without rethinking the whole construction
 
-				$jsVars .= "usefancy = false";
+				$jsVars .= "usefancy = false;";
 				vmJsApi::js( 'facebox' );
 				vmJsApi::css( 'facebox' );
 			}
