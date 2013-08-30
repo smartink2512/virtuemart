@@ -347,6 +347,24 @@ function vmTime($descr,$name='current'){
 }
 
 /**
+ * logInfo
+ * to help debugging Payment notification for example
+ */
+function logInfo ($text, $type = 'message') {
+
+	if (VMConfig::showDebug()) {
+		$file = JPATH_ROOT . "/logs/" . VmConfig::$logFileName . ".log";
+		$date = JFactory::getDate ();
+
+		$fp = fopen ($file, 'a');
+		fwrite ($fp, "\n\n" . $date->toFormat ('%Y-%m-%d %H:%M:%S'));
+		fwrite ($fp, "\n" . $type . ': ' . $text);
+		fclose ($fp);
+	}
+}
+
+
+/**
 * The time how long the config in the session is valid.
 * While configuring the store, you should lower the time to 10 seconds.
 * Later in a big store it maybe useful to rise this time up to 1 hr.
@@ -367,6 +385,8 @@ class VmConfig {
 	public static $maxMessageCount = 0;
 	public static $maxMessage = 100;
 	public static $echoDebug = FALSE;
+	public static $logDebug = FALSE;
+	public static $logFileName = 'vmdebug';
 
 	var $lang = FALSE;
 
