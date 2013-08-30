@@ -422,14 +422,11 @@ class CurrencyDisplay {
 			vmdebug('convertCurrencyTo OBJECT '.$exchangeRate);
 		}
 		else {
-			//				$this->_db = JFactory::getDBO();
 			static $currency_exchange_rate = array();
 			if(!isset($currency_exchange_rate[$currency])){
 				$q = 'SELECT `currency_exchange_rate` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.(int)$currency.'" ';
 				$this->_db->setQuery($q);
 				$currency_exchange_rate[$currency] = (float)$this->_db->loadResult();
-
-				// 				vmdebug('begin convertCurrencyTo '.$exch);
 			}
 
 			if(!empty($currency_exchange_rate[$currency])){
@@ -475,18 +472,9 @@ class CurrencyDisplay {
 	function ensureUsingCurrencyCode($curr){
 
 		if(is_numeric($curr) and $curr!=0){
-
 			if (!class_exists('ShopFunctions'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 			return ShopFunctions::getCurrencyByID($curr,'currency_code_3');
-			/*$this->_db = JFactory::getDBO();
-			$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.(int)$curr.'"';
-			$this->_db->setQuery($q);
-			$currInt = $this->_db->loadResult();
-			if(empty($currInt)){
-				JError::raiseWarning(E_WARNING,'Attention, could not find currency code in the table for id = '.$curr);
-			}
-			return $currInt;*/
 		}
 		return $curr;
 	}
@@ -499,22 +487,13 @@ class CurrencyDisplay {
 	 * @author Kohl Patrick
 	 */
 	function getCurrencyIdByField($value=0,$fieldName ='currency_code_3'){
+		if(is_string($value) ){
+			if (!class_exists('ShopFunctions'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 
-		if (!class_exists('ShopFunctions'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
-
-		return ShopFunctions::getCurrencyIDByName($value,$fieldName);
-		/*if(is_string($value) ){
-			$this->_db = JFactory::getDBO();
-			$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `'.$fieldName.'`="'.$value.'"';
-			$this->_db->setQuery($q);
-			$currency_id = $this->_db->loadResult();
-			if(empty($currency_id)){
-				JError::raiseWarning(E_WARNING,'Attention, couldnt find currency_id in the table for '.$fieldName.' = '.$value);
-			}
-			return $currency_id;
+			return ShopFunctions::getCurrencyIDByName($value,$fieldName);
 		}
-		return $value;*/
+		return $value;
 	}
 
 

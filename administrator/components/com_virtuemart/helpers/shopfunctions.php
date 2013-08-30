@@ -977,21 +977,21 @@ class ShopFunctions {
 			return '';
 		}
 		static $currencyNameById = array();
-		if(!isset($currencyNameById[$fld][$id])){
+		if(!isset($currencyNameById[$id][$fld])){
 			$id = (int)$id;
 			$db = JFactory::getDBO ();
 
 			$q = 'SELECT ' . $db->getEscaped ($fld) . ' AS fld FROM `#__virtuemart_currencies` WHERE virtuemart_currency_id = ' . (int)$id;
 			$db->setQuery ($q);
-			$currencyNameById[$fld][$id] = $db->loadResult ();
+			$currencyNameById[$id][$fld] = $db->loadResult ();
 		}
 
-		return $currencyNameById[$fld][$id];
+		return $currencyNameById[$id][$fld];
 	}
 
 	/**
 	 * Return the currencyID of a given Currency name
-	 *
+	 * This function becomes dangerous if there is a currency name with 3 letters
 	 * @author Valerie Isaksen, Max Milbers
 	 * @access public
 	 * @param string $name Currency name
@@ -1005,7 +1005,6 @@ class ShopFunctions {
 		static $currencyIdByName = array();
 		if(!isset($currencyIdByName[$name])){
 			$db = JFactory::getDBO ();
-			vmdebug('getCurrencyIDByName',$name);
 			if (strlen ($name) === 2) {
 				$fieldname = 'currency_code_2';
 			} else {
@@ -1015,7 +1014,7 @@ class ShopFunctions {
 					$fieldname = 'currency_name';
 				}
 			}
-			$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `' . $fieldname . '` = "' . $db->getEscaped ($name) . '"';
+			$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `' . $fieldname . '` = "' . ($name) . '"';
 			$db->setQuery ($q);
 			$currencyIdByName[$name] = $db->loadResult ();
 		}

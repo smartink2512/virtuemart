@@ -53,6 +53,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->setMainTable ('products');
 		$this->starttime = microtime (TRUE);
 		$this->maxScriptTime = ini_get ('max_execution_time') * 0.95 - 1;
+		$this->memory_limit = (int) substr(ini_get('memory_limit'),0,-1) -4; // 4 MB reserve
 		// 	$this->addvalidOrderingFieldName(array('m.mf_name','pp.product_price'));
 
 		$app = JFactory::getApplication ();
@@ -680,6 +681,11 @@ class VirtueMartModelProduct extends VmModel {
 			vmdebug('getProduct, take from cache full product '.$productKey);
 			return $_products[$productKey];
 		} else {
+      		if ($this->memory_limit<$mem = round(memory_get_usage(FALSE)/(1024*1024),2)) {
+				vmdebug ('Memory limit reached in model product getProduct('.$virtuemart_product_id.'), consumed: '.$mem.'M');
+				vmError ('Memory limit reached in model product getProduct() ' . $virtuemart_product_id);
+				return false;
+			}
 			$child = $this->getProductSingle ($virtuemart_product_id, $front,$quantity);
 			if (!$child->published && $onlyPublished) {
 				vmdebug('getProduct child is not published, returning zero');
@@ -716,6 +722,7 @@ class VirtueMartModelProduct extends VmModel {
 				$parentProduct = $this->getProductSingle ($child->product_parent_id, $front,$quantity);
 				if ($child->product_parent_id === $parentProduct->product_parent_id) {
 					vmError('Error, parent product with virtuemart_product_id = '.$parentProduct->virtuemart_product_id.' has same parent id like the child with virtuemart_product_id '.$child->virtuemart_product_id);
+					vmTrace('Error, parent product with virtuemart_product_id = '.$parentProduct->virtuemart_product_id.' has same parent id like the child with virtuemart_product_id '.$child->virtuemart_product_id);
 					break;
 				}
 				$attribs = get_object_vars ($parentProduct);
@@ -878,24 +885,6 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-		//This is just for backward compatibility, this will be removed next day
-		/*if(!empty($product->prices[$product->selectedPrice])){
-			unset($product->prices[$product->selectedPrice]['virtuemart_product_id']);
-			unset($product->prices[$product->selectedPrice]['created_on']);
-			unset($product->prices[$product->selectedPrice]['created_by']);
-			unset($product->prices[$product->selectedPrice]['modified_on']);
-			unset($product->prices[$product->selectedPrice]['modified_by']);
-			unset($product->prices[$product->selectedPrice]['locked_on']);
-			unset($product->prices[$product->selectedPrice]['locked_by']);
-			//vmdebug('getProductPrices my price ',$product->prices[$product->selectedPrice]);
-			// For merging of the price and product array, the shoppergroup id from price must be unsetted.
-			// Otherwise the product becomes the shoppergroup from the price.
-			$priceShoppergroupID = $product->prices[$product->selectedPrice]['virtuemart_shoppergroup_id'];
-			unset($product->prices[$product->selectedPrice]['virtuemart_shoppergroup_id']);
-			$product = (object)array_merge ((array)$product, (array)$product->prices[$product->selectedPrice]);
-			$product->prices[$product->selectedPrice]['virtuemart_shoppergroup_id'] = $priceShoppergroupID;
-		}*/
-
 	}
 
 	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1) {
@@ -907,7 +896,7 @@ class VirtueMartModelProduct extends VmModel {
 		$productKey = md5($virtuemart_product_id.$front.$quantity);
 		static $_productsSingle = array();
 		if (array_key_exists ($productKey, $_productsSingle)) {
-			//vmdebug('getProduct, take from cache '.$productKey);
+			vmdebug('getProduct, take from cache '.$productKey);
 			return $_productsSingle[$productKey];
 		}
 
@@ -1026,7 +1015,7 @@ class VirtueMartModelProduct extends VmModel {
 					if (!empty($product->categories) and is_array ($product->categories) and !empty($product->categories[0])) {
 						$product->virtuemart_category_id = $product->categories[0];
 					} else {
-						$product->virtuemart_category_id = null;
+						$product->virtuemart_category_id = 0;
 					}
 				}
 
@@ -1061,53 +1050,6 @@ class VirtueMartModelProduct extends VmModel {
 				vmdebug('$product->virtuemart_category_id is empty');
 			}
 
-			/*
-			if (!$front and $customfields) {
-				if(!$this->listing){
-					$customfields = VmModel::getModel ('Customfields');
-					$product->customfields = $customfields->getproductCustomslist ($this->_id);
-
-					if (empty($product->customfields) and !empty($product->product_parent_id)) {
-						//$product->customfields = $this->productCustomsfieldsClone($product->product_parent_id,true) ;
-						$product->customfields = $customfields->getproductCustomslist ($product->product_parent_id, $this->_id);
-						$product->customfields_fromParent = TRUE;
-					}
-				}
-			}
-			else if($customfields){
-
-
-				//only needed in FE productdetails, is now loaded in the view.html.php
-				//				// Load the neighbours
-				//				$product->neighbours = $this->getNeighborProducts($product);
-
-				// Fix the product packaging
-				if ($product->product_packaging) {
-					$product->packaging = $product->product_packaging & 0xFFFF;
-					$product->box = ($product->product_packaging >> 16) & 0xFFFF;
-				}
-				else {
-					$product->packaging = '';
-					$product->box = '';
-				}
-
-				// set the custom variants
-				//vmdebug('getProductSingle id '.$product->virtuemart_product_id.' $product->virtuemart_customfield_id '.$product->virtuemart_customfield_id);
-				if (!empty($product->virtuemart_customfield_id)) {
-
-					$customfields = VmModel::getModel ('Customfields');
-					// Load the custom product fields
-					$product->customfields = $customfields->getProductCustomsField ($product);
-					$product->customfieldsRelatedCategories = $customfields->getProductCustomsFieldRelatedCategories ($product);
-					$product->customfieldsRelatedProducts = $customfields->getProductCustomsFieldRelatedProducts ($product);
-					//  custom product fields for add to cart
-					$product->customfieldsCart = $customfields->getProductCustomsFieldCart ($product);
-					$child = $this->getProductChilds ($this->_id);
-					$product->customsChilds = $customfields->getProductCustomsChilds ($child, $this->_id);
-				}
-
-
-			} */
 			// Check the stock level
 			if (empty($product->product_in_stock)) {
 				$product->product_in_stock = 0;
@@ -1599,83 +1541,83 @@ class VirtueMartModelProduct extends VmModel {
 		// Get old IDS
 		$old_price_ids = $this->loadProductPrices($this->_id,0,0,false);
 		//vmdebug('$old_price_ids ',$old_price_ids);
-		foreach($data['mprices']['product_price'] as $k => $product_price){
+		if (isset($data['mprices']['product_price']) and count($data['mprices']['product_price']) > 0){
+			foreach($data['mprices']['product_price'] as $k => $product_price){
 
-			$pricesToStore = array();
-			$pricesToStore['virtuemart_product_id'] = $this->_id;
-			$pricesToStore['virtuemart_product_price_id'] = (int)$data['mprices']['virtuemart_product_price_id'][$k];
+				$pricesToStore = array();
+				$pricesToStore['virtuemart_product_id'] = $this->_id;
+				$pricesToStore['virtuemart_product_price_id'] = (int)$data['mprices']['virtuemart_product_price_id'][$k];
 
 
-			if (!$isChild){
-				//$pricesToStore['basePrice'] = $data['mprices']['basePrice'][$k];
-				$pricesToStore['product_override_price'] = $data['mprices']['product_override_price'][$k];
-				$pricesToStore['override'] = (int)$data['mprices']['override'][$k];
-				$pricesToStore['virtuemart_shoppergroup_id'] = (int)$data['mprices']['virtuemart_shoppergroup_id'][$k];
-				$pricesToStore['product_tax_id'] = (int)$data['mprices']['product_tax_id'][$k];
-				$pricesToStore['product_discount_id'] = (int)$data['mprices']['product_discount_id'][$k];
-				$pricesToStore['product_currency'] = (int)$data['mprices']['product_currency'][$k];
-				$pricesToStore['product_price_publish_up'] = $data['mprices']['product_price_publish_up'][$k];
-				$pricesToStore['product_price_publish_down'] = $data['mprices']['product_price_publish_down'][$k];
-				$pricesToStore['price_quantity_start'] = (int)$data['mprices']['price_quantity_start'][$k];
-				$pricesToStore['price_quantity_end'] = (int)$data['mprices']['price_quantity_end'][$k];
-			}
-
-			if (!$isChild and isset($data['mprices']['use_desired_price'][$k]) and $data['mprices']['use_desired_price'][$k] == "1") {
-				if (!class_exists ('calculationHelper')) {
-					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-				}
-				$calculator = calculationHelper::getInstance ();
-				$pricesToStore['salesPrice'] = $data['mprices']['salesPrice'][$k];
-				$pricesToStore['product_price'] = $data['mprices']['product_price'][$k] = $calculator->calculateCostprice ($this->_id, $pricesToStore);
-				unset($data['mprices']['use_desired_price'][$k]);
-			} else {
-				if(isset($data['mprices']['product_price'][$k]) ){
-					$pricesToStore['product_price'] = $data['mprices']['product_price'][$k];
+				if (!$isChild){
+					//$pricesToStore['basePrice'] = $data['mprices']['basePrice'][$k];
+					$pricesToStore['product_override_price'] = $data['mprices']['product_override_price'][$k];
+					$pricesToStore['override'] = (int)$data['mprices']['override'][$k];
+					$pricesToStore['virtuemart_shoppergroup_id'] = (int)$data['mprices']['virtuemart_shoppergroup_id'][$k];
+					$pricesToStore['product_tax_id'] = (int)$data['mprices']['product_tax_id'][$k];
+					$pricesToStore['product_discount_id'] = (int)$data['mprices']['product_discount_id'][$k];
+					$pricesToStore['product_currency'] = (int)$data['mprices']['product_currency'][$k];
+					$pricesToStore['product_price_publish_up'] = $data['mprices']['product_price_publish_up'][$k];
+					$pricesToStore['product_price_publish_down'] = $data['mprices']['product_price_publish_down'][$k];
+					$pricesToStore['price_quantity_start'] = (int)$data['mprices']['price_quantity_start'][$k];
+					$pricesToStore['price_quantity_end'] = (int)$data['mprices']['price_quantity_end'][$k];
 				}
 
-			}
-
-			if ($isChild) $childPrices = $this->loadProductPrices($this->_id,0,0,false);
-
-			if ((isset($pricesToStore['product_price']) and $pricesToStore['product_price']!='') || (isset($childPrices) and count($childPrices)>1)) {
-
-				if ($isChild) {
-                    //$childPrices = $this->loadProductPrices($pricesToStore['virtuemart_product_price_id'],0,0,false);
-
-                    if(is_array($old_price_ids) and count($old_price_ids)>1){
-
-                        //We do not touch multiple child prices. Because in the parent list, we see no price, the gui is
-                        //missing to reflect the information properly.
-                        $pricesToStore = false;
-                        $old_price_ids = array();
-                    } else {
-                        unset($data['mprices']['product_override_price'][$k]);
-                        unset($pricesToStore['product_override_price']);
-                        unset($data['mprices']['override'][$k]);
-                        unset($pricesToStore['override']);
-                    }
+				if (!$isChild and isset($data['mprices']['use_desired_price'][$k]) and $data['mprices']['use_desired_price'][$k] == "1") {
+					if (!class_exists ('calculationHelper')) {
+						require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+					}
+					$calculator = calculationHelper::getInstance ();
+					$pricesToStore['salesPrice'] = $data['mprices']['salesPrice'][$k];
+					$pricesToStore['product_price'] = $data['mprices']['product_price'][$k] = $calculator->calculateCostprice ($this->_id, $pricesToStore);
+					unset($data['mprices']['use_desired_price'][$k]);
+				} else {
+					if(isset($data['mprices']['product_price'][$k]) ){
+						$pricesToStore['product_price'] = $data['mprices']['product_price'][$k];
+					}
 
 				}
 
-				//$data['mprices'][$k] = $data['virtuemart_product_id'];
-                if($pricesToStore){
-					$toUnset = array();
-					foreach($old_price_ids as $key => $oldprice){
-						if(array_search($pricesToStore['virtuemart_product_price_id'], $oldprice )){
-							$pricesToStore = array_merge($oldprice,$pricesToStore);
-							$toUnset[] = $key;
+				if ($isChild) $childPrices = $this->loadProductPrices($this->_id,0,0,false);
+
+				if ((isset($pricesToStore['product_price']) and $pricesToStore['product_price']!='') || (isset($childPrices) and count($childPrices)>1)) {
+
+					if ($isChild) {
+						//$childPrices = $this->loadProductPrices($pricesToStore['virtuemart_product_price_id'],0,0,false);
+
+						if(is_array($old_price_ids) and count($old_price_ids)>1){
+
+							//We do not touch multiple child prices. Because in the parent list, we see no price, the gui is
+							//missing to reflect the information properly.
+							$pricesToStore = false;
+							$old_price_ids = array();
+						} else {
+							unset($data['mprices']['product_override_price'][$k]);
+							unset($pricesToStore['product_override_price']);
+							unset($data['mprices']['override'][$k]);
+							unset($pricesToStore['override']);
+						}
+
+					}
+
+					//$data['mprices'][$k] = $data['virtuemart_product_id'];
+					if($pricesToStore){
+						$toUnset = array();
+						foreach($old_price_ids as $key => $oldprice){
+							if(array_search($pricesToStore['virtuemart_product_price_id'], $oldprice )){
+								$pricesToStore = array_merge($oldprice,$pricesToStore);
+								$toUnset[] = $key;
+							}
+						}
+						$this->updateXrefAndChildTables ($pricesToStore, 'product_prices',$isChild);
+
+						foreach($toUnset as $key){
+							unset( $old_price_ids[ $key ] );
 						}
 					}
-                    $this->updateXrefAndChildTables ($pricesToStore, 'product_prices',$isChild);
-
-					foreach($toUnset as $key){
-						unset( $old_price_ids[ $key ] );
-					}
-
-                }
+				}
 			}
 		}
-
 		if ( count($old_price_ids) ) {
 			$oldPriceIdsSql = array();
 			foreach($old_price_ids as $oldPride){
@@ -1884,11 +1826,12 @@ class VirtueMartModelProduct extends VmModel {
 		$table = $this->getTable ($this->_maintablename);
 
 		$cats = $this->getTable ('product_categories');
-		$customs = $this->getTable ('product_customfields');
+		$customfields = $this->getTable ('product_customfields');
 		$manufacturers = $this->getTable ('product_manufacturers');
 		$medias = $this->getTable ('product_medias');
 		$prices = $this->getTable ('product_prices');
 		$shop = $this->getTable ('product_shoppergroups');
+
 		$rating = $this->getTable ('ratings');
 		$review = $this->getTable ('rating_reviews');
 		$votes = $this->getTable ('rating_votes');
@@ -1913,8 +1856,13 @@ class VirtueMartModelProduct extends VmModel {
 				$ok = FALSE;
 			}
 
-			if (!$customs->delete ($id, 'virtuemart_product_id')) {
-				vmError ('Product delete customs ' . $customs->getError ());
+			if (!$customfields->delete ($id, 'virtuemart_product_id')) {
+				vmError ('Product delete customs ' . $customfields->getError ());
+				$ok = FALSE;
+			}
+
+			if (!$customfields->delete ($id, 'customfield_value')) {
+				vmError ('Product delete customfields ' . $customfields->getError ());
 				$ok = FALSE;
 			}
 
@@ -1932,6 +1880,8 @@ class VirtueMartModelProduct extends VmModel {
 				vmError ('Product delete prices ' . $prices->getError ());
 				$ok = FALSE;
 			}
+
+
 
 			if (!$shop->delete ($id, 'virtuemart_product_id')) {
 				vmError ('Product delete shoppergroups ' . $shop->getError ());
@@ -1993,7 +1943,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		// Calculate the modificator
 		$customfieldsModel = VmModel::getModel('Customfields');
-		$variantPriceModification = $customfieldsModel->calculateModificators ($product, $customVariant);
+		$variantPriceModification = $customfieldsModel->calculateModificators ($product);
 		//$variantPriceModification = $calculator->calculateModificators ($product, $customVariant);
 
 		$prices = $calculator->getProductPrices ($product, $variantPriceModification, $quantity);

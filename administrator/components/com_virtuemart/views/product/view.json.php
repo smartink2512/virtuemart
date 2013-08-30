@@ -144,11 +144,16 @@ class VirtuemartViewProduct extends JView {
 					$display = $this->model->displayProductCustomfieldBE($field,$product_id,$this->row);
 					 if ($field->is_cart_attribute) $cartIcone=  'default';
 					 else  $cartIcone= 'default-off';
+					if(isset($fieldTypes[$field->field_type])){
+						$type =JText::_($fieldTypes[$field->field_type]);
+					} else {
+						$type = 'deprecated';
+					}
 					 $html[] = '<tr class="removable">
 						<td>'.$field->custom_title.'</td>
 						<td>'.$field->custom_tip.'</td>
 						 <td>'.$display.'</td>
-						 <td>'.JText::_($fieldTypes[$field->field_type]).'
+						 <td>'.$type.'
 							'.$this->model->setEditCustomHidden($field, $this->row).'
 						</td>
 						 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
@@ -194,7 +199,8 @@ class VirtuemartViewProduct extends JView {
 		$customs = $this->db->loadObject();
 		foreach ($this->json as &$related) {
 
-			$customs->custom_value = $related->id;
+			$customs->customfield_value = $related->id;
+			//$customs->virtuemart_product_id  = $related->id;
 			$display = $this->model->displayProductCustomfieldBE($customs,$related->id,$this->row);
 			$html = '<div class="vm_thumb_image">
 				<span>'.$display.'</span>

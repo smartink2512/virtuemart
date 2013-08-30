@@ -663,10 +663,7 @@ class calculationHelper {
 				continue;
 			}
 
-
 			$variantmod = $customfieldModel->calculateModificators($productCart);
-
-
 
 			//$cartproductkey = $name.serialize($productCart->customProductData); //$product->virtuemart_product_id.$variantmod;
 			//$cartproductkey = $productCart->cart_item_id;

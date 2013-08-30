@@ -1454,11 +1454,11 @@ class VmTable extends JTable {
 			$whereKey = $this->_pkey;
 		}
 
-		$query = 'SELECT `' . $this->_tbl_key . '` FROM `' . $table . '` WHERE ' . $whereKey . ' = "' . $this->$k . '"';
+		$query = 'SELECT `' . $this->_tbl_key . '` FROM `' . $table . '` WHERE `' . $whereKey . '` = "' . $this->$k . '"';
 		$this->_db->setQuery($query);
-		// 		vmdebug('checkAndDelete',$query);
+		//vmdebug('checkAndDelete',$query);
 		$list = $this->_db->loadResultArray();
-		// 		vmdebug('checkAndDelete',$list);
+		//vmdebug('checkAndDelete',$list);
 
 
 		if ($list) {
@@ -1467,7 +1467,7 @@ class VmTable extends JTable {
 				$ok = $row;
 				$query = 'DELETE FROM `' . $table . '` WHERE ' . $this->_tbl_key . ' = "' . $row . '"';
 				$this->_db->setQuery($query);
-
+				//vmdebug('checkAndDelete',$query);
 				if (!$this->_db->query()) {
 					$this->setError($this->_db->getErrorMsg());
 					vmError('checkAndDelete ' . $this->_db->getErrorMsg());

@@ -541,7 +541,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	// IMPORTANT: The $inputOrder can contain extra data by plugins			//also strange $useTriggers is always activated?
 	function updateStatusForOneOrder($virtuemart_order_id,$inputOrder,$useTriggers=true){
 
-// 		vmdebug('updateStatusForOneOrder', $inputOrder);
+ 		vmdebug('updateStatusForOneOrder', $inputOrder);
 		/* Update the order */
 		$data = $this->getTable('orders');
 		$data->load($virtuemart_order_id);
@@ -644,16 +644,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 	}
 
-	/**
-	 * Update an order status and send e-mail if needed
-	 * @author RolandD
-	 * @author Oscar van Eijk
-	 * @deprecated
-	 */
-	public function updateStatus( $orders=null,$virtuemart_order_id =0){
-		$this -> updateOrderStatus($orders,$virtuemart_order_id);
-		return;
-	}
 
 	/**
 	 * Get the information from the cart and create an order from it
@@ -823,13 +813,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$vendorCurrency =  $db->loadResult();
 		return $vendorCurrency;
 // 		return $this->getCurrencyIsoCode($vendorCurrency);
-	}
-
-	private function getCurrencyIsoCode($vmCode){
-		$q = 'SELECT `currency_numeric_code` FROM  `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$vmCode.'" ';
-		$db = JFactory::getDBO();
-		$db->setQuery($q);
-		return $db->loadResult();
 	}
 
 	/**

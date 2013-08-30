@@ -351,7 +351,7 @@ $i=0;
 //					vmdebug('ma $customs',$customs);
 					?>
 
-					<table class="adminlist">
+					<table class="adminform">
 						<tr>
 							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD') ?></th>
 							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD_NAME')?></th>
@@ -369,9 +369,12 @@ $i=0;
 							$i = 1 - $i;
 							 ?>
 							<tr class="row<?php echo $i ?>">
-								<td><?php echo JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_parent_id='.$this->product->virtuemart_product_id.'&virtuemart_product_id='.$child->virtuemart_product_id.'&option=com_virtuemart'), $child->slug, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name)) ?></td>
-								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_name]" size="32" value="<?php echo htmlspecialchars($child->product_name) ?>" /></td>
-								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][product_price][]" size="10" value="<?php echo $child->product_price ?>" /><input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][virtuemart_product_price_id][]" value="<?php echo $child->virtuemart_product_price_id?>"  ></td>
+								<td>
+									<?php echo JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_parent_id='.$this->product->virtuemart_product_id.'&virtuemart_product_id='.$child->virtuemart_product_id.'&option=com_virtuemart'), $child->slug, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name)) ?>
+									<input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][slug]" id="child<?php echo $child->virtuemart_product_id ?>slug" value="<?php echo $child->slug ?>" />
+								</td>
+								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_name]" id="child<?php echo $child->virtuemart_product_id ?>product_name" size="32" value="<?php echo htmlspecialchars($child->product_name) ?>" /></td>
+								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][product_price][]" size="10" value="<?php echo $child->prices[$child->selectedPrice]['product_price'] ?>" /><input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][virtuemart_product_price_id][]" value="<?php echo $child->prices[$child->selectedPrice]['virtuemart_product_price_id'] ?>"  ></td>
 								<td><?php echo $child->product_in_stock ?></td>
 								<td><?php echo $child->product_ordered ?></td>
 								<?php foreach($customs as $custom){
@@ -392,7 +395,8 @@ $i=0;
                                     <input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][pordering]" size="2" value="<?php echo $child->pordering ?>" /></td>
 								</td>
 								<td>
-									<?php echo VmHTML::checkbox('childs['.$child->virtuemart_product_id.'][published]', $child->published) ?></td>
+									<?php echo VmHTML::checkbox('childs['.$child->virtuemart_product_id.'][published]', $child->published) ?>
+								</td>
 							</tr>
 							<?php
 						} ?>

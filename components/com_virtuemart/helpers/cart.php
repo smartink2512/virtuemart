@@ -33,6 +33,7 @@ class VirtueMartCart {
 
 	//	var $productIds = array();
 	var $products = array();
+	var $_productAdded = false;
 	var $_inCheckOut = false;
 	var $_dataValidated = false;
 	var $_blockConfirm = false;
@@ -318,7 +319,7 @@ class VirtueMartCart {
 
 		//VmConfig::$echoDebug=true;
 		//vmdebug('cart add',$virtuemart_product_ids,$post);
-
+		$this->_productAdded = true;
 		$productModel = VmModel::getModel('product');
 		$customFieldsModel = VmModel::getModel('customfields');
 		//Iterate through the prod_id's and perform an add to cart for each one
@@ -891,7 +892,7 @@ class VirtueMartCart {
 	 */
 	public function emptyCart(){
 
-	//	self::emptyCartValues($this);
+		self::emptyCartValues($this);
 
 		$this->setCartIntoSession();
 	}
@@ -1113,7 +1114,7 @@ class VirtueMartCart {
 	function prepareCartData(){
 
 		$this->totalProduct = 0;
-		if(empty($this->products) and count($this->cartProductsData)>0){
+		if(count($this->products) != count($this->cartProductsData) or $this->_productAdded){
 			$productsModel = VmModel::getModel('product');
 			$this->totalProduct = 0;
 			$this->productsQuantity = array();
@@ -1192,7 +1193,8 @@ class VirtueMartCart {
 
 
 		$this->cartData = $this->calculator->getCartData();
-
+		//vmdebug('my cart',$this);
+		$this->_productAdded = false;
 		return $this->cartData ;
 
 	}
@@ -1326,4 +1328,86 @@ class VirtueMartCart {
 
 	}
 
+	// Render the code for Ajax Cart
+	function prepareAjaxData(){
+		// Added for the zone shipment module
+		//$vars["zone_qty"] = 0;
+		$this->prepareCartData();
+
+		//of course, some may argue that the $this->data->products should be generated in the view.html.php, but
+		//
+		//if(empty($this->data)){
+			$data = new stdClass();
+		//}
+		$data->products = array();
+		$data->totalProduct = 0;
+		$i=0;
+		//OSP when prices removed needed to format billTotal for AJAX
+		if (!class_exists('CurrencyDisplay'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+		$currencyDisplay = CurrencyDisplay::getInstance();
+
+		foreach ($this->products as $priceKey=>$product){
+
+			//VmConfig::$echoDebug=true;
+			//vmdebug('$data',$this->pricesUnformatted[$priceKey]);
+			//$vars["zone_qty"] += $product["quantity"];
+			$category_id = $this->getCardCategoryId($product->virtuemart_product_id);
+			//Create product URL
+			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$category_id, FALSE);
+
+			// @todo Add variants
+			$data->products[$i]['product_name'] = JHTML::link($url, $product->product_name);
+
+			// Add the variants
+			//if (!is_numeric($priceKey)) {
+				if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+				//  custom product fields display for cart
+				$data->products[$i]['customProductData'] = VirtueMartModelCustomfields::CustomsFieldCartModDisplay($product);
+
+			//}
+			$data->products[$i]['product_sku'] = $product->product_sku;
+
+			//** @todo WEIGHT CALCULATION
+			//$weight_subtotal = vmShipmentMethod::get_weight($product["virtuemart_product_id"]) * $product->quantity'];
+			//$weight_total += $weight_subtotal;
+
+
+			// product Price total for ajax cart
+// 			$data->products[$i]['prices'] = $this->prices[$priceKey]['subtotal_with_tax'];
+			//$data->products[$i]['pricesUnformatted'] = $this->pricesUnformatted[$priceKey]['subtotal_with_tax'];
+			$data->products[$i]['prices'] = $currencyDisplay->priceDisplay( $product->prices[$product->selectedPrice]['subtotal']);
+
+			// other possible option to use for display
+			$data->products[$i]['subtotal'] = $product->prices[$product->selectedPrice]['subtotal'];
+			$data->products[$i]['subtotal_tax_amount'] = $product->prices[$product->selectedPrice]['subtotal_tax_amount'];
+			$data->products[$i]['subtotal_discount'] = $product->prices[$product->selectedPrice]['subtotal_discount'];
+			$data->products[$i]['subtotal_with_tax'] = $product->prices[$product->selectedPrice]['subtotal_with_tax'];
+
+			// UPDATE CART / DELETE FROM CART
+			$data->products[$i]['quantity'] = $product->quantity;
+			$data->totalProduct += $product->quantity ;
+
+			$i++;
+		}
+		$data->billTotal = $currencyDisplay->priceDisplay( $this->pricesUnformatted['billTotal'] );
+		$data->dataValidated = $this->_dataValidated ;
+
+
+		if ($data->totalProduct>1) $data->totalProductTxt = JText::sprintf('COM_VIRTUEMART_CART_X_PRODUCTS', $data->totalProduct);
+		else if ($data->totalProduct == 1) $data->totalProductTxt = JText::_('COM_VIRTUEMART_CART_ONE_PRODUCT');
+		else $data->totalProductTxt = JText::_('COM_VIRTUEMART_EMPTY_CART');
+		if (false && $data->dataValidated == true) {
+			$taskRoute = '&task=confirm';
+			$linkName = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
+		} else {
+			$taskRoute = '';
+			$linkName = JText::_('COM_VIRTUEMART_CART_SHOW');
+		}
+
+		$data->cart_show = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart".$taskRoute,true,VmConfig::get('useSSL',0)).'">'.$linkName.'</a>';
+		$data->billTotal = JText::_('COM_VIRTUEMART_CART_TOTAL').' : <strong>'. $data->billTotal .'</strong>';
+
+		return $data ;
+	}
 }

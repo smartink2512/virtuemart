@@ -264,13 +264,15 @@ function vmdebug($debugdescr,$debugvalues=NULL){
 				}
 			}
 
-			if(!VmConfig::$echoDebug){
+			if(VmConfig::$echoDebug){
+				VmConfig::$maxMessageCount++;
+				echo $debugdescr;
+			} else if(VmConfig::$logDebug){
+				logInfo($debugdescr,'vmdebug');
+			}else {
 				VmConfig::$maxMessageCount++;
 				$app = JFactory::getApplication();
 				$app ->enqueueMessage('<span class="vmdebug" >vmdebug '.$debugdescr.'</span>');
-			} else {
-				VmConfig::$maxMessageCount++;
-				echo $debugdescr;
 			}
 
 		}
@@ -295,11 +297,13 @@ function vmTrace($notice,$force=FALSE){
 		echo '</pre>';
 		$body = ob_get_contents();
 		ob_end_clean();
-		if(!VmConfig::$echoDebug){
+		if(VmConfig::$echoDebug){
+			echo $notice.' <pre>'.$body.'</pre>';
+		} else if(VmConfig::$logDebug){
+			logInfo($body,$notice);
+		} else {
 			$app = JFactory::getApplication();
 			$app ->enqueueMessage($notice.' '.$body.' ');
-		} else {
-			echo $notice.' <pre>'.$body.'</pre>';
 		}
 
 	}
@@ -459,8 +463,20 @@ class VmConfig {
 	 */
 	static function ensureMemoryLimit($minMemory=0){
 
-		if($minMemory === 0) $minMemory = (int) VmConfig::get('minMemory',128);
-		$memory_limit = (int) substr(ini_get('memory_limit'),0,-1);
+		if($minMemory === 0) $minMemory = (int) VmConfig::get('minMemory','128M');
+		$iniValue = ini_get('memory_limit');
+		if($iniValue===-1) return;	//We do not need to alter an unlimited setting
+		$iniValue = strtolower($iniValue);
+		if(strpos($iniValue,'M')!==FALSE){
+			$memory_limit = (int) substr($iniValue,0,-1);
+		} else if(strpos($iniValue,'K')!==FALSE){
+			$memory_limit = (int) substr($iniValue,0,-1) * 1024;
+		} else if(strpos($iniValue,'G')!==FALSE){
+			$memory_limit = (int) substr($iniValue,0,-1) / 1024.0;
+		} else {
+			$memory_limit = (int) $iniValue * 1048576;
+		}
+
 		if($memory_limit<$minMemory)  @ini_set( 'memory_limit', $minMemory.'M' );
 
 	}
