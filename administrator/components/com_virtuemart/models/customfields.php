@@ -1036,6 +1036,10 @@ class VirtueMartModelCustomfields extends VmModel {
 					$virtuemart_category_id = $session->get ('vmlastvisitedcategoryid', 0, 'vm');
 
 					$productModel = VmModel::getModel ('product');
+                    //Note by Jeremy Magne (Daycounts) 2013-08-31
+                    //Previously the the product model is loaded but we need to ensure the correct product id is set because the getUncategorizedChildren does not get the product id as parameter.
+                    //In case the product model was previously loaded, by a related product for example, this would generate wrong uncategorized children list
+                    $productModel->setId($customfield->virtuemart_product_id);
 
 					//parseCustomParams
 					VirtueMartModelCustomfields::bindParameterableByFieldType($customfield);
