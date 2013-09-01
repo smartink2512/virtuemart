@@ -299,13 +299,17 @@ class VirtueMartModelCustom extends VmModel {
 		$table->field_type = $data['field_type'];
 		$table->custom_element = $data['custom_element'];
 		$table->custom_jplugin_id = $data['custom_jplugin_id'];
+		$table->_xParams = 'custom_param';
 
+		if(isset($data['custom_title'])){
+			$data['custom_title'] = htmlentities($data['custom_title'], ENT_QUOTES, "UTF-8");
+		}
 		if(!empty($data['is_input'])){
 			if(empty($data['layout_pos'])) $data['layout_pos'] = 'addtocart';
 		}
 		//We are in the custom and so the table contains the field_type, else not!!
 		VirtueMartModelCustomfields::setParameterableByFieldType($table,$table->field_type);
-		$table->_xParams = 'custom_param';
+
 
 	/*	if(!isset($data['clone'])){
 			VirtueMartModelCustomfields::bindParameterableByFieldType($table,$data['field_type']);
@@ -317,6 +321,7 @@ class VirtueMartModelCustom extends VmModel {
 		foreach($errors as $error){
 			vmError($error);
 		}
+
 
 		return $table->virtuemart_custom_id ;
 

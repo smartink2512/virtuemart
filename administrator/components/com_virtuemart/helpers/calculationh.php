@@ -487,8 +487,7 @@ class calculationHelper {
 					$this->product_tax_id = $row['product_tax_id'];
 					$this->product_discount_id = $row['product_discount_id'];
 				} else {
-					$app = Jfactory::getApplication();
-					$app->enqueueMessage('cost Price empty, if child, everything okey, this is just a dev note');
+					vmdebug('cost Price empty, if child, everything okey, this is just a dev note');
 					return false;
 				}
 			}

@@ -450,12 +450,15 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					$productModel = VmModel::getModel ('product');
 
+					//Note by Jeremy Magne (Daycounts) 2013-08-31
+					//Previously the the product model is loaded but we need to ensure the correct product id is set because the getUncategorizedChildren does not get the product id as parameter.
+					//In case the product model was previously loaded, by a related product for example, this would generate wrong uncategorized children list
+					$productModel->setId($customfield->virtuemart_product_id);
+
 					//Todo preselection as dropdown of children
 					//Note by Max Milbers: This is not necessary, in this case it is better to unpublish the parent and to give the child which should be preselected a category
 					//Or it is withParent, in that case there exists the case, that a parent should be used as a kind of mini category and not be orderable.
 					//There exists already other customs and in special plugins which wanna disable or change the add to cart button.
-					//I suggest that we manipulate the button with a message "choose a variant first"
-					//if(!isset($customfield->pre_selected)) $customfield->pre_selected = 0;
 					$selected = JRequest::getInt ('virtuemart_product_id',0);
 
 					$html = '';
@@ -952,14 +955,14 @@ class VirtueMartModelCustomfields extends VmModel {
 						$fields['disabler'] = $fields['virtuemart_customfield_id'];
 						$fields['virtuemart_customfield_id'] = 0;
 						unset($fields['virtuemart_product_id']);
-						vmdebug('storeProductCustomfields I am in field from parent and create a clone');
+						//vmdebug('storeProductCustomfields I am in field from parent and create a clone');
 					}
 					else {
 						//we do not store customfields inherited by the parent, therefore
-						vmdebug('storeProductCustomfields I am in field from parent => not storing');
+						//vmdebug('storeProductCustomfields I am in field from parent => not storing');
 						$key = array_search($fields['virtuemart_customfield_id'], $old_customfield_ids );
 						if ($key !== false ){
-							vmdebug('storeProductCustomfields unsetting from $old_customfild_ids',$key);
+							//vmdebug('storeProductCustomfields unsetting from $old_customfild_ids',$key);
 							unset( $old_customfield_ids[ $key ] );
 						}
 						continue;
@@ -977,7 +980,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				VirtueMartModelCustomfields::setParameterableByFieldType($tableCustomfields,$fields['field_type'],$fields['custom_element'],$fields['custom_jplugin_id']);
 				$tmpObj = get_object_vars($tableCustomfields);
-				vmdebug('storeProductCustomfields I am in field ',$tmpObj);
+				//vmdebug('storeProductCustomfields I am in field ',$tmpObj);
 				$tableCustomfields->bindChecknStore($fields);
 				$errors = $tableCustomfields->getErrors();
 
