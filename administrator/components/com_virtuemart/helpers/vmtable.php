@@ -799,7 +799,9 @@ class VmTable extends JTable {
 
 				foreach ($this->_translatableFields as $name) {
 					if (isset($data->$name)) {
-						$langData[$name] = $data->$name;
+						//We directly store language stuff "escaped"
+						$langData[$name] = htmlentities($data->$name, ENT_QUOTES, "UTF-8");
+						vmdebug('html_entities for '.$langData[$name]);
 					} else {
 					//	$langData[$name] = '';
 					}
@@ -822,7 +824,10 @@ class VmTable extends JTable {
 			} else {
 				foreach ($this->_translatableFields as $name) {
 					if (isset($data[$name])) {
-						$langData[$name] = $data[$name];
+						//$langData[$name] = $data[$name];
+
+						$langData[$name] = htmlentities($data[$name], ENT_QUOTES, "UTF-8");
+						vmdebug('html_entities for '.$langData[$name]);
 					} else {
 					//	$langData[$name] = '';
 					}

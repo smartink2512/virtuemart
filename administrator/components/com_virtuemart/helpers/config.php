@@ -1012,7 +1012,8 @@ class vmRequest{
  			//$source is string that will be filtered, $custom is string that contains custom characters
  			return mb_ereg_replace('[^\w'.preg_quote($custom).']', '', $source);
  		} else {
- 			return preg_replace('/[^\w'.preg_quote($custom).']/', '', $source);
+ 			//return preg_replace('/[^\w'.preg_quote($custom).']/', '', $source);
+			return preg_replace('/([^\w'.preg_quote($custom).'])/', '', $source);
  		}
  	}
 }

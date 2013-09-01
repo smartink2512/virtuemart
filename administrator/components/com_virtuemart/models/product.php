@@ -133,6 +133,9 @@ class VirtueMartModelProduct extends VmModel {
 		$this->keyword = vmRequest::uword ('keyword', "0", ' ,-,+,.,_,#,/');
 		if ($this->keyword == "0") {
 			$this->keyword = vmRequest::uword ('filter_product', "0", ' ,-,+,.,_,#,/');
+			JRequest::setVar('filter_product',$this->keyword);
+		} else {
+			JRequest::setVar('keyword',$this->keyword);
 		}
 
 		$app = JFactory::getApplication ();

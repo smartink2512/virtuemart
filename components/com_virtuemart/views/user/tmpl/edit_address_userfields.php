@@ -36,15 +36,15 @@ foreach($this->userFields['fields'] as $field) {
 			</table>
 		</fieldset>
 		<?php
-		} ?>
-
-		<fieldset>
+		} else {
+			?>
+			<fieldset>
 			<span class="userfields_info"><?php echo $field['title'] ?></span>
 
-		<?php
-		$closeDelimiter = true;
-		$openTable = true;
-
+			<?php
+			$closeDelimiter = true;
+			$openTable = true;
+		}
 	} elseif ($field['hidden'] == true) {
 
 		// We collect all hidden fields
