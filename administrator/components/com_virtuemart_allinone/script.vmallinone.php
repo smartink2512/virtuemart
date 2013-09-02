@@ -60,7 +60,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->updateShipperToShipment ();
 			$this->installPlugin ('Standard', 'plugin', 'standard', 'vmpayment');
 			$this->installPlugin ('Klarna', 'plugin', 'klarna', 'vmpayment');
-			$this->installPlugin ('Sofort', 'plugin', 'sofort', 'vmpayment');
+			$this->installPlugin ('SOFORT Gateway', 'plugin', 'sofort', 'vmpayment');
 			$this->installPlugin ('Paypal', 'plugin', 'paypal', 'vmpayment');
 			$this->installPlugin ('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
 			$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
