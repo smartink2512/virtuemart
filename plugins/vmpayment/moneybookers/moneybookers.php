@@ -101,9 +101,10 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 	}
 
 	function _getPaymentResponseHtml ($paymentTable, $payment_name) {
+		VmConfig::loadJLang('com_virtuemart');
 
 		$html = '<table>' . "\n";
-		$html .= $this->getHtmlRow ('MONEYBOOKERS_PAYMENT_NAME', $payment_name);
+		$html .= $this->getHtmlRow ('COM_VIRTUEMART_PAYMENT_NAME', $payment_name);
 		if (!empty($paymentTable)) {
 			$html .= $this->getHtmlRow ('MONEYBOOKERS_ORDER_NUMBER', $paymentTable->order_number);
 		}
@@ -230,7 +231,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		$address = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
 
 		if (!class_exists ('TableVendors')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'table' . DS . 'vendors.php');
+			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'vendors.php');
 		}
 		$vendorModel = VmModel::getModel ('Vendor');
 		$vendorModel->setId (1);

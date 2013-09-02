@@ -144,7 +144,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		$address = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
 
 		if (!class_exists ('TableVendors')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'table' . DS . 'vendors.php');
+			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'vendors.php');
 		}
 		$vendorModel = VmModel::getModel ('Vendor');
 		$vendorModel->setId (1);
