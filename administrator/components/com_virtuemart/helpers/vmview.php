@@ -369,7 +369,7 @@ class VmView extends JView{
 		'. JHTML::_( 'form.token' );
 	}
 
-	static function getToolbar() {
+	static function getToolbar($vmView) {
 
 		// add required stylesheets from admin template
 		$document    = JFactory::getDocument();
@@ -389,7 +389,7 @@ class VmView extends JView{
 		jimport('joomla.html.toolbar');
 		JToolBarHelper::divider();
 		$view = JRequest::getCmd('view', JRequest::getCmd('controller','virtuemart'));
-		if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit')) {
+		if ($vmView->canDo->get('core.admin') || $vmView->canDo->get('vm.'.$view.'.edit')) {
 			JToolBarHelper::save();
 			JToolBarHelper::apply();
 		}

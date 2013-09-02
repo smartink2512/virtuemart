@@ -32,7 +32,7 @@ $i=0;
         <td width="50%">
 			<table width="100%" class="adminform">
 				<tr class="row<?php echo $i?>">
-					<th style="text-align:right;">
+					<th >
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PUBLISH') ?>
 					</th>
 					<td >
@@ -47,7 +47,7 @@ $i=0;
 				</tr>
 				<?php $i = 1 - $i; ?>
 				<tr class="row<?php echo $i?>">
-					<th style="text-align:right;">
+					<th >
 						 <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SKU') ?>
 					</th>
 					<td  height="2" colspan="3" >
@@ -56,7 +56,7 @@ $i=0;
 				</tr>
 				<?php $i = 1 - $i; ?>
 				<tr class="row<?php echo $i?>">
-					<th style="text-align:right;">
+					<th >
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME') ?>
 					</th>
 					<td  colspan="3" >
@@ -65,7 +65,7 @@ $i=0;
 				</tr>
 				<?php $i = 1 - $i; ?>
 				<tr class="row<?php echo $i?>">
-					<th style="text-align:right;">
+					<th >
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ALIAS') ?>
 					</th>
 					<td  height="18" colspan="3" >
@@ -74,7 +74,7 @@ $i=0;
 				</tr>
 				<?php $i = 1 - $i; ?>
 				<tr class="row<?php echo $i?>">
-					<th style="text-align:right;">
+					<th >
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_URL') ?>
 					</th>
 					<td colspan="3">
@@ -88,7 +88,7 @@ $i=0;
 						<?php $i = 1 - $i; ?>
 			<?php	if(Vmconfig::get('multix','none')!=='none'){ ?>
 				<tr class="row<?php echo $i?>">
-					<th style="text-align:right;">
+					<th >
 						<?php echo JText::_('COM_VIRTUEMART_VENDOR') ?>
 					</th>
 				<td  colspan="3">
@@ -101,7 +101,7 @@ $i=0;
 
 				<?php if(isset($this->lists['manufacturers'])){?>
 				<tr class="row<?php echo $i?>">
-					<th style="text-align:right;">
+					<th >
 						<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER') ?>
 					</th>
 					<td colspan="3" >
@@ -111,7 +111,7 @@ $i=0;
 				<?php $i = 1 - $i; ?>
 				<?php }?>
 				<tr class="row<?php echo $i?>">
-					<th style="text-align:right;">
+					<th >
 						<?php echo JText::_('COM_VIRTUEMART_CATEGORY_S') ?>
 					</th>
 					<td colspan="3">
@@ -129,7 +129,7 @@ $i=0;
 				</tr>
 				<?php $i = 1 - $i; ?>
 				<tr class="row<?php echo $i?>">
-					<th style="text-align:right;">
+					<th >
 						<span class="hasTip"
                                         title="<?php echo JText::_ ('COM_VIRTUEMART_SHOPPER_FORM_GROUP_PRODUCT_TIP'); ?>">
 						<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?></span>
@@ -141,7 +141,7 @@ $i=0;
 				</tr>
 				<?php $i = 1 - $i; ?>
 				<tr class="row<?php echo $i?>">
-					<th style="text-align:right;">
+					<th >
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_PAGE') ?>
 					</th>
 					<td colspan="3">
@@ -316,7 +316,7 @@ $i=0;
 						</div>
 				</td>
 
-				<th style="text-align:right;">
+				<th >
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PARENT') ?>
 				</th>
 				<td width="71%"> <?php
