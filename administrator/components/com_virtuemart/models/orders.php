@@ -552,9 +552,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if($useTriggers){
 				if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 				// Payment decides what to do when order status is updated
-				JPluginHelper::importPlugin('vmpayment');
-				JPluginHelper::importPlugin('vmcalculation');
 				JPluginHelper::importPlugin('vmcustom');
+				JPluginHelper::importPlugin('vmcalculation');
+				JPluginHelper::importPlugin('vmshipment');
+				JPluginHelper::importPlugin('vmpayment');
 				$_dispatcher = JDispatcher::getInstance();											//Should we add this? $inputOrder
 				$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderPayment',array(&$data,$old_order_status));
 				foreach ($_returnValues as $_returnValue) {
@@ -565,23 +566,23 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					}
 					// Ignore null status and look for the next returnValue
 				}
-
-			JPluginHelper::importPlugin('vmshipment');
+			//we need only one trigger for this whole thing.
+			/*JPluginHelper::importPlugin('vmshipment');
 			$_dispatcher = JDispatcher::getInstance();											//Should we add this? $inputOrder
 			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderShipment',array(&$data,$old_order_status));
-
+/*
 
 			/**
 			* If an order gets cancelled, fire a plugin event, perhaps
 			* some authorization needs to be voided
 			*/
-			if ($data->order_status == "X") {
+			/*if ($data->order_status == "X") {
 				JPluginHelper::importPlugin('vmpayment');			//Should we add this? $inputOrder
 				JPluginHelper::importPlugin('vmcalculation');
 				$_dispatcher = JDispatcher::getInstance();
 				//Should be renamed to plgVmOnCancelOrder
 				$_dispatcher->trigger('plgVmOnCancelPayment',array(&$data,$old_order_status));
-			}
+			}*/
 		}
 
 
@@ -899,6 +900,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$StatutWhiteList['N'] = Array ( 'order_status_id' => 0 , 'order_status_code' => 'N' , 'order_stock_handle' => 'A');
 		if(!array_key_exists($oldState,$StatutWhiteList) or !array_key_exists($newState,$StatutWhiteList)) {
 			vmError('The workflow for '.$newState.' or  '.$oldState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Can\'t process workflow, contact the shopowner. Status is'.$newState);
+			vmTrace('Workflow unknown');
 			return ;
 		}
 		//vmdebug( 'updatestock qt :' , $quantity.' id :'.$productId);
@@ -1024,6 +1026,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$_orderItems->product_subtotal_with_tax =  $product->prices[$product->selectedPrice]['subtotal_with_tax'];
 			$_orderItems->product_priceWithoutTax = $product->prices[$product->selectedPrice]['priceWithoutTax'];
 			$_orderItems->product_discountedPriceWithoutTax = $product->prices[$product->selectedPrice]['discountedPriceWithoutTax'];
+			$_orderItems->order_status = 'P';
 			if (!$_orderItems->check()) {
 				vmError($this->getError());
 				return false;

@@ -453,7 +453,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					//Note by Jeremy Magne (Daycounts) 2013-08-31
 					//Previously the the product model is loaded but we need to ensure the correct product id is set because the getUncategorizedChildren does not get the product id as parameter.
 					//In case the product model was previously loaded, by a related product for example, this would generate wrong uncategorized children list
-					$productModel->setId($customfield->virtuemart_product_id);
+					$productModel->setId($product->virtuemart_product_id);
 
 					//Todo preselection as dropdown of children
 					//Note by Max Milbers: This is not necessary, in this case it is better to unpublish the parent and to give the child which should be preselected a category
