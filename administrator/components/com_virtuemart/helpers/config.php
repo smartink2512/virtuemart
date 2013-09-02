@@ -653,9 +653,6 @@ class VmConfig {
 		$langs = (array)self::$_jpConfig->get('active_languages',array());
 
 		$siteLang = JRequest::getString('vmlang',FALSE );
-		if(strlen($siteLang)>5 or strpos($siteLang,'-')===FALSE){
-			$siteLang = 0;
-		}
 
 		if( JFactory::getApplication()->isSite()){
 			if (!$siteLang) {
