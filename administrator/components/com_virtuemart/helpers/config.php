@@ -641,7 +641,7 @@ class VmConfig {
 	/*
 	 * Set defaut language tag for translatable table
 	 *
-	 * @author Patrick Kohl
+	 * @author Max Milbers
 	 * @return string valid langtag
 	 */
 	static public function setdbLanguageTag($langTag = 0) {
@@ -668,6 +668,9 @@ class VmConfig {
 				$siteLang = JFactory::getLanguage()->getTag();
 					vmdebug('My selected language by JFactory::getLanguage()->getTag() '.$siteLang);
 				}
+				if(!in_array($siteLang,$langs)){
+					$langs[] = $siteLang;
+				}
 			}
 		}
 
@@ -675,15 +678,14 @@ class VmConfig {
 			// use site default
 			$params = JComponentHelper::getParams('com_languages');
 			$siteLang = $params->get('site', 'en-GB');//use default joomla
+			if(!in_array($siteLang,$langs)){
+				$langs[] = $siteLang;
+			}
 			vmdebug('My selected language by getParams(com_languages) '.$siteLang);
 		}
 
 		if(!in_array($siteLang, $langs)) {
-			if(!empty($langs[0])){
-				$siteLang = $langs[0];
-			} else {
-				$siteLang = 'en_gb';
-			}
+			$siteLang = 'en_gb';
 		}
 
 		self::$_jpConfig->lang = strtolower(strtr($siteLang,'-','_'));
@@ -691,7 +693,6 @@ class VmConfig {
 		defined('VMLANG') or define('VMLANG', self::$_jpConfig->lang );
 
 		return self::$_jpConfig->lang;
-
  	}
 
 	function setSession(){

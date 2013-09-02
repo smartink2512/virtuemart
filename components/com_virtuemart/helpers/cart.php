@@ -733,7 +733,6 @@ class VirtueMartCart {
 		}
 
 		if(count($this->_triesValidateCoupon)<8){
-
 			$msg = CouponHelper::ValidateCouponCode($coupon_code, $prices['salesPrice']);;
 		} else{
 			$msg = JText::_('COM_VIRTUEMART_CART_COUPON_TOO_MANY_TRIES');
@@ -828,7 +827,7 @@ class VirtueMartCart {
 
 			//$required = $userFieldsModel->getIfRequired('agreed');
 			$agreed = $userFieldsModel->getUserfield('agreed','name');
-			vmdebug('my new getUserfieldbyName',$agreed->default,$agreed->required);
+			//vmdebug('my new getUserfieldbyName',$agreed->default,$agreed->required);
 			if(!empty($agreed->required) and empty($agreed->default) and !empty($this->BT)){
 				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 
@@ -903,20 +902,18 @@ class VirtueMartCart {
 			if (!class_exists('CouponHelper')) {
 				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
 			}
-			vmdebug('$this->_triesValidateCoupon',$this->_triesValidateCoupon);
 			if(!in_array($this->couponCode,$this->_triesValidateCoupon)){
 				$this->_triesValidateCoupon[] = $this->couponCode;
 			}
 			if(count($this->_triesValidateCoupon)<8){
-
 				$redirectMsg = CouponHelper::ValidateCouponCode($this->couponCode, $this->pricesUnformatted['salesPrice']);
 			} else{
 				$redirectMsg = JText::_('COM_VIRTUEMART_CART_COUPON_TOO_MANY_TRIES');
 			}
 
 			if (!empty($redirectMsg)) {
-
 				$this->couponCode = '';
+				$this->getCartPrices();
 				$this->setCartIntoSession();
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 			}
