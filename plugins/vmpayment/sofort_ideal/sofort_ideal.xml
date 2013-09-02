@@ -34,7 +34,7 @@
                directory="/images/stories/virtuemart/payment"
                default="default" hide_default="1" hide_none="1"
                stripext="0" exclude="^_"/>
-        <param type="getsofort" level="level1"/>
+        <!-- param type="getsofort" level="level1"/ -->
         <param type="spacer" default="" level="level1"/>
         <param type="spacer" default="VMPAYMENT_SOFORT_PARAMS" level="level1"/>
         <param type="text" name="configuration_key" size="100" label="VMPAYMENT_SOFORT_CONFIGURATION_KEY"
