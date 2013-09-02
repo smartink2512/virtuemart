@@ -1029,7 +1029,7 @@ class calculationHelper {
 
 				if(isset($rule['subTotal'])){
 					$cIn = $rule['subTotal'];
-					vmdebug('executeCalculation use subTotal of rule '.$rule['subTotal']);
+					//vmdebug('executeCalculation use subTotal of rule '.$rule['subTotal']);
 				}
 				else if ($relateToBaseAmount) {
 					$cIn = $baseprice;

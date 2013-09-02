@@ -63,16 +63,16 @@ class VirtueMartCart {
 	var $paymentCurrency = null;
 	var $STsameAsBT = 0;
 	var $productParentOrderable = TRUE;
+	var $_triesValidateCoupon = array();
 
 	private static $_cart = null;
-	private static $_triesValidateCoupon;
+
 	var $useSSL = 1;
 	// 	static $first = true;
 
 	private function __construct() {
 		$this->useSSL = VmConfig::get('useSSL',0);
 		$this->useXHTML = false;
-		self::$_triesValidateCoupon=0;
 	}
 
 	/**
@@ -111,6 +111,7 @@ class VirtueMartCart {
 				self::$_cart->tosAccepted 							= $sessionCart->tosAccepted;
 				self::$_cart->customer_comment 					= base64_decode($sessionCart->customer_comment);
 				self::$_cart->couponCode 							= $sessionCart->couponCode;
+				self::$_cart->_triesValidateCoupon					= $sessionCart->_triesValidateCoupon;
 				self::$_cart->order_language 						= $sessionCart->order_language;
 				self::$_cart->cartData 								= $sessionCart->cartData;
 				self::$_cart->order_number							= $sessionCart->order_number;
@@ -239,6 +240,7 @@ class VirtueMartCart {
 		$sessionCart->tosAccepted 							= $this->tosAccepted;
 		$sessionCart->customer_comment 					= base64_encode($this->customer_comment);
 		$sessionCart->couponCode 							= $this->couponCode;
+		$sessionCart->_triesValidateCoupon				= $this->_triesValidateCoupon;
 		$sessionCart->order_language 						= $this->order_language;
 		$sessionCart->cartData 								= $this->cartData;
 		$sessionCart->lists 									= $this->lists;
@@ -720,11 +722,23 @@ class VirtueMartCart {
 	 * @return string On error the message text, otherwise an empty string
 	 */
 	public function setCouponCode($coupon_code) {
+		if(empty($coupon_code)) return false;
 		if (!class_exists('CouponHelper')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
 		}
 		$prices = $this->getCartPrices();
-		$msg = CouponHelper::ValidateCouponCode($coupon_code, $prices['salesPrice']);
+
+		if(!in_array($coupon_code,$this->_triesValidateCoupon)){
+			$this->_triesValidateCoupon[] = $coupon_code;
+		}
+
+		if(count($this->_triesValidateCoupon)<8){
+
+			$msg = CouponHelper::ValidateCouponCode($coupon_code, $prices['salesPrice']);;
+		} else{
+			$msg = JText::_('COM_VIRTUEMART_CART_COUPON_TOO_MANY_TRIES');
+		}
+
 		if (!empty($msg)) {
 			$this->couponCode = '';
 			$this->setCartIntoSession();
@@ -882,23 +896,29 @@ class VirtueMartCart {
 				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
 			}
 		}
-
+		vmdebug('ValidateCouponCode ValidateCouponCode ValidateCouponCode',$this->couponCode);
 		// Test Coupon
 		if (!empty($this->couponCode)) {
-			$prices = $this->getCartPrices();
+			//$prices = $this->getCartPrices();
 			if (!class_exists('CouponHelper')) {
 				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
 			}
-			if(self::$_triesValidateCoupon<8){
-				$redirectMsg = CouponHelper::ValidateCouponCode($this->couponCode, $prices['salesPrice']);
+			vmdebug('$this->_triesValidateCoupon',$this->_triesValidateCoupon);
+			if(!in_array($this->couponCode,$this->_triesValidateCoupon)){
+				$this->_triesValidateCoupon[] = $this->couponCode;
+			}
+			if(count($this->_triesValidateCoupon)<8){
+
+				$redirectMsg = CouponHelper::ValidateCouponCode($this->couponCode, $this->pricesUnformatted['salesPrice']);
 			} else{
 				$redirectMsg = JText::_('COM_VIRTUEMART_CART_COUPON_TOO_MANY_TRIES');
 			}
-			self::$_triesValidateCoupon++;// = self::$_triesValidateCoupon + 1;
+
 			if (!empty($redirectMsg)) {
 
 				$this->couponCode = '';
-				return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=edit_coupon' , $redirectMsg);
+				$this->setCartIntoSession();
+				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 			}
 		}
 		$redirectMsg = '';

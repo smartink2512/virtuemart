@@ -93,7 +93,7 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 	} ?>
 		<div class="width50 floatleft right">
 			<?php // Continue Shopping Button
-			if ($this->continue_link_html != '') {
+			if (!empty($this->continue_link_html)) {
 				echo $this->continue_link_html;
 			} ?>
 		</div>

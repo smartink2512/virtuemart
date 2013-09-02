@@ -651,12 +651,14 @@ class VmConfig {
 		}
 
 		$langs = (array)self::$_jpConfig->get('active_languages',array());
-		$isBE = !JFactory::getApplication()->isSite();
-		if($isBE){
-			$siteLang = JRequest::getVar('vmlang',FALSE );// we must have this for edit form save
-			//Why not using the userstate?
-		} else {
-			if (!$siteLang = JRequest::getVar('vmlang',FALSE )) {
+
+		$siteLang = JRequest::getString('vmlang',FALSE );
+		if(strlen($siteLang)>5 or strpos($siteLang,'-')===FALSE){
+			$siteLang = 0;
+		}
+
+		if( JFactory::getApplication()->isSite()){
+			if (!$siteLang) {
 				if ( JVM_VERSION===1 ) {
 				// try to find in session lang
 				// this work with joomfish j1.5 (application.data.lang)
@@ -664,9 +666,8 @@ class VmConfig {
 				$registry = $session->get('registry');
 				$siteLang = $registry->getValue('application.data.lang') ;
 				} else  {
-				// TODO test wiht j1.7
+
 				jimport('joomla.language.helper');
-				//$languages = JLanguageHelper::getLanguages('lang_code');
 				$siteLang = JFactory::getLanguage()->getTag();
 					vmdebug('My selected language by JFactory::getLanguage()->getTag() '.$siteLang);
 				}

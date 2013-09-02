@@ -59,7 +59,10 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 			$this->updateShipperToShipment ();
 			$this->installPlugin ('Standard', 'plugin', 'standard', 'vmpayment');
+			$this->installPlugin ('Klarna', 'plugin', 'klarna', 'vmpayment');
+			$this->installPlugin ('Sofort', 'plugin', 'sofort', 'vmpayment');
 			$this->installPlugin ('Paypal', 'plugin', 'paypal', 'vmpayment');
+			$this->installPlugin ('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
 			$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
 			$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
 			$this->installPlugin ('Moneybookers', 'plugin', 'moneybookers', 'vmpayment', 0, 0);
@@ -72,9 +75,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('Moneybookers Online Bank Transfer', 'plugin', 'moneybookers_obt', 'vmpayment');
 			$this->installPlugin ('Moneybookers Skrill Digital Wallet', 'plugin', 'moneybookers_wlt', 'vmpayment');
 			$this->installPlugin ('Authorize.net', 'plugin', 'authorizenet', 'vmpayment');
-			$this->installPlugin ('Klarna', 'plugin', 'klarna', 'vmpayment');
-			$this->installPlugin ('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
-			//$this->installPlugin ('Sofort', 'plugin', 'sofort', 'vmpayment');
+
 			//$this->installPlugin ('Sofort Ideal', 'plugin', 'sofort_ideal', 'vmpayment');
 
 			$this->installPlugin ('By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment');
