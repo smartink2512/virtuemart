@@ -59,9 +59,8 @@ if ($this->doctype != 'invoice') {
 				<?php echo $item->order_item_sku; ?>
 			</td>
 			<td align="left" colspan="2" >
-				<a href="<?php echo $product_link; ?>"><?php echo $item->order_item_name; ?></a>
+				<div><a href="<?php echo $product_link; ?>"><?php echo $item->order_item_name; ?></a></div>
 				<?php
-// 				vmdebug('$item',$item);
 					if (!empty($item->product_attribute)) {
 							if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 							$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'FE');

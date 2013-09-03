@@ -254,7 +254,7 @@ class VirtueMartModelCategory extends VmModel {
 		$ordering = $this->_getOrdering();
 
 		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
-		vmdebug('my ordering in cats ',$this->_category_tree);
+
 		return $this->_category_tree;
 
 	}
