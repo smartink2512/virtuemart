@@ -626,7 +626,7 @@ class VmConfig {
 
 			self::$_jpConfig->set('sctime',microtime(TRUE));
 			self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
-			self::$_jpConfig->setSession();
+
 			vmTime('loadConfig db '.$install,'loadConfig');
 
 			return self::$_jpConfig;
@@ -654,38 +654,33 @@ class VmConfig {
 
 		$siteLang = JRequest::getString('vmlang',FALSE );
 
+		$params = JComponentHelper::getParams('com_languages');
+		$defaultLang = $params->get('site', 'en-GB');//use default joomla
+
 		if( JFactory::getApplication()->isSite()){
 			if (!$siteLang) {
 				if ( JVM_VERSION===1 ) {
-				// try to find in session lang
-				// this work with joomfish j1.5 (application.data.lang)
-				$session  =JFactory::getSession();
-				$registry = $session->get('registry');
-				$siteLang = $registry->getValue('application.data.lang') ;
+					// try to find in session lang
+					// this work with joomfish j1.5 (application.data.lang)
+					$session  =JFactory::getSession();
+					$registry = $session->get('registry');
+					$siteLang = $registry->getValue('application.data.lang') ;
 				} else  {
-
-				jimport('joomla.language.helper');
-				$siteLang = JFactory::getLanguage()->getTag();
+					jimport('joomla.language.helper');
+					$siteLang = JFactory::getLanguage()->getTag();
 					vmdebug('My selected language by JFactory::getLanguage()->getTag() '.$siteLang);
 				}
-				if(!in_array($siteLang,$langs)){
-					$langs[] = $siteLang;
-				}
 			}
-		}
-
-		if ( empty( $siteLang) ) {
-			// use site default
-			$params = JComponentHelper::getParams('com_languages');
-			$siteLang = $params->get('site', 'en-GB');//use default joomla
-			if(!in_array($siteLang,$langs)){
-				$langs[] = $siteLang;
-			}
-			vmdebug('My selected language by getParams(com_languages) '.$siteLang);
+		} else {
+			$siteLang = $defaultLang;
 		}
 
 		if(!in_array($siteLang, $langs)) {
-			$siteLang = 'en_gb';
+			if(count($langs)===0){
+				$siteLang = $defaultLang;
+			} else {
+				$siteLang = $langs[0];
+			}
 		}
 
 		self::$_jpConfig->lang = strtolower(strtr($siteLang,'-','_'));
@@ -694,24 +689,6 @@ class VmConfig {
 
 		return self::$_jpConfig->lang;
  	}
-
-	function setSession(){
-/*		$session = JFactory::getSession();
-		$session->clear('vmconfig');
-		// 		$app = JFactory::getApplication();
-		// 		$app ->enqueueMessage('setSession session cache <pre>'.print_r(self::$_jpConfig->_params,1).'</pre>');
-
-// 		$session->set('vmconfig', base64_encode(serialize(self::$_jpConfig)),'vm');
-
-		//We must use base64 for text fields
-		$params = self::$_jpConfig->_params;
-		$params['offline_message'] = base64_encode($params['offline_message']);
-		// $params['dateformat'] = base64_encode($params['dateformat']);
-
-		$params['sctime'] = microtime(true);
-		$session->set('vmconfig', serialize($params),'vm');*/
-		self::$loaded = TRUE;
-	}
 
 	/**
 	 * Find the configuration value for a given key
@@ -761,7 +738,6 @@ class VmConfig {
 		if(Permissions::getInstance()->check('admin')){
 			if (!empty(self::$_jpConfig->_params)) {
 				self::$_jpConfig->_params[$key] = $value;
-				self::$_jpConfig->setSession();
 			}
 		}
 

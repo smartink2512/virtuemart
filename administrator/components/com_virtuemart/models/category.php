@@ -46,7 +46,7 @@ class VirtueMartModelCategory extends VmModel {
 			$toCheck = 'category_name';
 		}
 		$this->_selectedOrdering = $toCheck;
-		$this->_selectedOrderingDir = 'ASC';
+		$this->_selectedOrderingDir = VmConfig::get('cat_brws_orderby_dir', 'ASC');;
 
 		$this->setToggleName('shared');
 
@@ -113,7 +113,7 @@ class VirtueMartModelCategory extends VmModel {
 	 * @param int $virtuemart_category_id Category id to check for child categories
 	 * @return object List of objects containing the child categories
 	 */
-	static public function getChildCategoryList($vendorId, $virtuemart_category_id) {
+	static public function getChildCategoryList($vendorId, $virtuemart_category_id,$selectedOrdering = 'category_name', $orderDir='ASC') {
 
 		$key = (int)$vendorId.'_'.(int)$virtuemart_category_id ;
 
@@ -127,7 +127,7 @@ class VirtueMartModelCategory extends VmModel {
 			//$query .= 'AND C.`virtuemart_category_id` = CC.`category_child_id` ';
 			$query .= 'AND C.`virtuemart_vendor_id` = ' . (int)$vendorId . ' ';
 			$query .= 'AND C.`published` = 1 ';
-			$query .= ' ORDER BY C.`ordering`, L.`category_name` ASC';
+			$query .= ' ORDER BY C.`ordering`, L.`'.$selectedOrdering.'` '.$orderDir;
 
 			$db = JFactory::getDBO();
 			$db->setQuery( $query);
@@ -254,7 +254,7 @@ class VirtueMartModelCategory extends VmModel {
 		$ordering = $this->_getOrdering();
 
 		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
-
+		vmdebug('my ordering in cats ',$this->_category_tree);
 		return $this->_category_tree;
 
 	}

@@ -76,6 +76,7 @@ if (VmConfig::get ('showCategory', 1) and empty($this->keyword)) {
 
 		<?php // Start the Output
 		if (!empty($this->category->children)) {
+
 			foreach ($this->category->children as $category) {
 
 				// Show the horizontal seperator

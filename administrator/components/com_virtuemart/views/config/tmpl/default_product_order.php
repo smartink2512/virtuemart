@@ -30,11 +30,16 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								</span>
 						</td>
 						<td>
-							<?php echo JHTML::_('Select.genericlist', $this->orderByFields->select, 'browse_orderby_field', 'size=1', 'value', 'text', VmConfig::get('browse_orderby_field', 'product_name'), 'product_name'); ?>
+							<?php echo JHTML::_('Select.genericlist', $this->orderByFields->select, 'browse_orderby_field', 'size=1', 'value', 'text', VmConfig::get('browse_orderby_field', 'product_name'), 'product_name');
+							$orderDirs[] = JHTML::_('select.option', 'ASC' , JText::_('Ascending')) ;
+							$orderDirs[] = JHTML::_('select.option', 'DESC' , JText::_('Descending')) ;
+
+							echo JHTML::_('select.genericlist', $orderDirs, 'prd_brws_orderby_dir', 'size=10', 'value', 'text', VmConfig::get('prd_brws_orderby_dir', 'ASC') ); ?>
 							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_BROWSE_CAT_ORDERBY_DEFAULT_FIELD_LBL_TIP'); ?>">
 									<?php echo JText::_('COM_VIRTUEMART_BROWSE_CAT_ORDERBY_DEFAULT_FIELD_LBL'); ?>
 								</span>
-							<?php echo JHTML::_('Select.genericlist', $this->orderByFields->select, 'browse_cat_orderby_field', 'size=1', 'value', 'text', VmConfig::get('browse_cat_orderby_field', 'category_name'), 'category_name'); ?>
+							<?php echo JHTML::_('Select.genericlist', $this->orderByFields->select, 'browse_cat_orderby_field', 'size=1', 'value', 'text', VmConfig::get('browse_cat_orderby_field', 'category_name'), 'category_name');
+							echo JHTML::_('select.genericlist', $orderDirs, 'cat_brws_orderby_dir', 'size=10', 'value', 'text', VmConfig::get('cat_brws_orderby_dir', 'ASC') ); ?>
 						</td>
 					</tr>
 					<tr>

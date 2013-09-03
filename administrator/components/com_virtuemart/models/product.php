@@ -116,7 +116,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->searchplugin = 0;
 		$this->filter_order = VmConfig::get ('browse_orderby_field');
 		;
-		$this->filter_order_Dir = 'DESC';
+		$this->filter_order_Dir = VmConfig::get('prd_brws_orderby_dir', 'ASC');
 
 		$this->_uncategorizedChildren = null;
 	}
@@ -155,7 +155,7 @@ class VirtueMartModelProduct extends VmModel {
 				$this->setLastProductOrdering($filter_order);
 
 			}
-			$filter_order_Dir = strtoupper (JRequest::getWord ('order', 'ASC'));
+			$filter_order_Dir = strtoupper (JRequest::getWord ('order', VmConfig::get('prd_brws_orderby_dir', 'ASC')));
 			$valid_search_fields = VmConfig::get ('browse_search_fields');
 		}
 		else {
@@ -1966,12 +1966,6 @@ class VirtueMartModelProduct extends VmModel {
 				vmError ('Product delete prices ' . $prices->getError ());
 				$ok = FALSE;
 			}
-
-      if (!$customfields->delete ($id, 'virtuemart_product_id')) {
-				vmError ('Product delete customfields ' . $customfields->getError ());
-				$ok = FALSE;
-			}
-			
 			if (!$shop->delete ($id, 'virtuemart_product_id')) {
 				vmError ('Product delete shoppergroups ' . $shop->getError ());
 				$ok = FALSE;

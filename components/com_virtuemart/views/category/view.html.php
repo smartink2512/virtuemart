@@ -176,7 +176,7 @@ class VirtuemartViewCategory extends VmView {
 
 			$categoryModel->addImages($category,1);
 			$cache = JFactory::getCache('com_virtuemart','callback');
-			$category->children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $categoryId );
+			$category->children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $categoryId, $categoryModel->getDefaultOrdering(), $categoryModel->_selectedOrderingDir );
 
 			$categoryModel->addImages($category->children,1);
 
