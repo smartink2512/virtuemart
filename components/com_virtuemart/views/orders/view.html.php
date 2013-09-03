@@ -53,8 +53,7 @@ class VirtuemartViewOrders extends VmView {
 			$document->setTitle( JText::_('COM_VIRTUEMART_INVOICE') );
 
 			//PDF needs more RAM than usual
-			$memory_limit = ini_get('memory_limit');
-			if($memory_limit<40)  @ini_set( 'memory_limit', '40M' );
+			VmConfig::ensureMemoryLimit(64);
 
 		} else {
 		    if ($layoutName == 'details') {

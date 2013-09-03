@@ -45,8 +45,7 @@ class GenericTableUpdater extends JModel{
 
 		$this->maxScriptTime = ini_get('max_execution_time')*0.90-1;	//Lets use 10% of the execution time as reserve to store the progress
 
-		$memory_limit = ini_get('memory_limit');
-		if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
+		VmConfig::ensureMemoryLimit(128);
 
 		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) * 0.85;
 

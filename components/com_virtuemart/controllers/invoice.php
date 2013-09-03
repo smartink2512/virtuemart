@@ -85,6 +85,9 @@ class VirtueMartControllerInvoice extends JController
 
 		if ($format != 'pdf') {
 			$viewName='invoice';
+			//PDF needs more RAM than usual
+			VmConfig::ensureMemoryLimit(64);
+
 			$view = $this->getView($viewName, $format);
 			$view->headFooter = true;
 			$view->display();

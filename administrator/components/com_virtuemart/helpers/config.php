@@ -463,7 +463,7 @@ class VmConfig {
 	 */
 	static function ensureMemoryLimit($minMemory=0){
 
-		if($minMemory === 0) $minMemory = (int) VmConfig::get('minMemory','128M');
+		if($minMemory === 0) $minMemory = VmConfig::get('minMemory','128M');
 		$iniValue = ini_get('memory_limit');
 		if($iniValue===-1) return;	//We do not need to alter an unlimited setting
 		$iniValue = strtolower($iniValue);
