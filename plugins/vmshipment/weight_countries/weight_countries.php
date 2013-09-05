@@ -292,18 +292,18 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	/**
 	 * @param $method
 	 */
-	function convert (&$method) {
+    function convert (&$method) {
 
-		//$method->weight_start = (float) $method->weight_start;
-		//$method->weight_stop = (float) $method->weight_stop;
-		$method->orderamount_start = (float)$method->orderamount_start;
-		$method->orderamount_stop = (float)$method->orderamount_stop;
-		$method->zip_start = (int)$method->zip_start;
-		$method->zip_stop = (int)$method->zip_stop;
-		$method->nbproducts_start = (int)$method->nbproducts_start;
-		$method->nbproducts_stop = (int)$method->nbproducts_stop;
-		$method->free_shipment = (float)$method->free_shipment;
-	}
+        //$method->weight_start = (float) $method->weight_start;
+        //$method->weight_stop = (float) $method->weight_stop;
+        $method->orderamount_start =  (float)str_replace(',','.',$method->orderamount_start);
+        $method->orderamount_stop =   (float)str_replace(',','.',$method->orderamount_stop);
+        $method->zip_start = (int)$method->zip_start;
+        $method->zip_stop = (int)$method->zip_stop;
+        $method->nbproducts_start = (int)$method->nbproducts_start;
+        $method->nbproducts_stop = (int)$method->nbproducts_stop;
+        $method->free_shipment = (float)str_replace(',','.',$method->free_shipment);
+    }
 
 	/**
 	 * @param $cart

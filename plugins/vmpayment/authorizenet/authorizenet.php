@@ -238,22 +238,22 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		return TRUE;
 	}
 
-	/**
-	 * Check if the payment conditions are fulfilled for this payment method
-	 *
-	 * @author: Valerie Isaksen
-	 *
-	 * @param $cart_prices: cart prices
-	 * @param $payment
-	 * @return true: if the conditions are fulfilled, false otherwise
-	 *
-	 */
+    /**
+     * Check if the payment conditions are fulfilled for this payment method
+     *
+     * @author: Valerie Isaksen
+     *
+     * @param \VirtueMartCart $cart : VirtueMartCart
+     * @param int $method
+     * @param array $cart_prices
+     * @return true: if the conditions are fulfilled, false otherwise
+     */
 	protected function checkConditions ($cart, $method, $cart_prices)
 	{
+        $this->convert_condition_amount($method);
+        $amount = $this->getCartAmount($cart_prices);
+        $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
-		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-
-		$amount = $cart_prices['salesPrice'];
 		$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
 			OR
 			($method->min_amount <= $amount AND ($method->max_amount == 0)));
@@ -335,7 +335,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
         }
 
 
-        $cartTotalAmount=$cart_prices['salesPrice'] + $cart_prices['salesPriceShipment'] - $cart_prices['salesPriceCoupon'] ;
+        $cartTotalAmount=$this->getCartAmount($cart_prices);
         if (isset($method->cost_percent_total)) {
             if (preg_match ('/%$/', $method->cost_percent_total)) {
                 $cost_percent_total = (substr ($method->cost_percent_total, 0, -1)) * 0.01;

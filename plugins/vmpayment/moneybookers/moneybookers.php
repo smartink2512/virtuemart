@@ -588,11 +588,10 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 
 	protected function checkConditions ($cart, $method, $cart_prices) {
 
-		$this->convert ($method);
+        $this->convert_condition_amount($method);
+        $amount = $this->getCartAmount($cart_prices);
+        $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
-		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-
-		$amount = $cart_prices['salesPrice'];
 		$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
 			OR
 			($method->min_amount <= $amount AND ($method->max_amount == 0)));
@@ -622,12 +621,6 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		}
 
 		return FALSE;
-	}
-
-	function convert ($method) {
-
-		$method->min_amount = (float)$method->min_amount;
-		$method->max_amount = (float)$method->max_amount;
 	}
 
 	/**

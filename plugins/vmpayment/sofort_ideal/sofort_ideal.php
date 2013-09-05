@@ -769,12 +769,10 @@ if (empty($error_codes)) {
 	 */
 	protected function checkConditions ($cart, $method, $cart_prices) {
 
+        $this->convert_condition_amount($method);
+        $amount = $this->getCartAmount($cart_prices);
+        $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
-		$this->convert($method);
-
-		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-
-		$amount = $cart_prices['salesPrice'];
 		$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
 			OR
 			($method->min_amount <= $amount AND ($method->max_amount == 0)));
@@ -805,14 +803,7 @@ if (empty($error_codes)) {
 		return FALSE;
 	}
 
-	/**
-	 * @param $method
-	 */
-	function convert ($method) {
 
-		$method->min_amount = (float)$method->min_amount;
-		$method->max_amount = (float)$method->max_amount;
-	}
 
 	/**
 	 * We must reimplement this triggers for joomla 1.7

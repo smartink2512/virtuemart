@@ -192,25 +192,21 @@ if (!class_exists ('vmPSPlugin')) {
 		return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
 	}
 
-	/**
-	 * Check if the payment conditions are fulfilled for this payment method
-	 *
-	 * @author: Valerie Isaksen
-	 *
-	 * @param $cart_prices: cart prices
-	 * @param $payment
-	 * @return true: if the conditions are fulfilled, false otherwise
-	 *
-	 */
+        /**
+         * Check if the payment conditions are fulfilled for this payment method
+         *
+         * @author: Valerie Isaksen
+         *
+         * @param \VirtueMartCart $cart
+         * @param int $method
+         * @param array $cart_prices
+         * @return true: if the conditions are fulfilled, false otherwise
+         */
 	protected function checkConditions ($cart, $method, $cart_prices) {
 
-		$this->convert ($method);
-		// 		$params = new JParameter($payment->payment_params);
-		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-
-		// We come from the calculator, the $cart->pricesUnformatted does not exist yet
-		//$amount = $cart->pricesUnformatted['billTotal'];
-		$amount = $cart_prices['salesPrice'];
+        $this->convert_condition_amount($method);
+        $amount = $this->getCartAmount($cart_prices);
+        $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
 		$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
 			OR
@@ -243,11 +239,7 @@ if (!class_exists ('vmPSPlugin')) {
 		return FALSE;
 	}
 
-	function convert ($method) {
 
-		$method->min_amount = (float)$method->min_amount;
-		$method->max_amount = (float)$method->max_amount;
-	}
 
 	/*
 * We must reimplement this triggers for joomla 1.7
@@ -266,141 +258,146 @@ if (!class_exists ('vmPSPlugin')) {
 		return $this->onStoreInstallPluginTable ($jplugin_id);
 	}
 
-	/**
-	 * This event is fired after the payment method has been selected. It can be used to store
-	 * additional payment info in the cart.
-	 *
-	 * @author Max Milbers
-	 * @author Valérie isaksen
-	 *
-	 * @param VirtueMartCart $cart: the actual cart
-	 * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
-	 *
-	 */
+        /**
+         * This event is fired after the payment method has been selected. It can be used to store
+         * additional payment info in the cart.
+         *
+         * @author Max Milbers
+         * @author Valérie isaksen
+         *
+         * @param VirtueMartCart $cart: the actual cart
+         * @param $msg
+         * @return null if the payment was not selected, true if the data is valid, error message if the data is not valid
+         */
 	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart, &$msg) {
 
 		return $this->OnSelectCheck ($cart);
 	}
 
-	/**
-	 * plgVmDisplayListFEPayment
-	 * This event is fired to display the pluginmethods in the cart (edit shipment/payment) for exampel
-	 *
-	 * @param object  $cart Cart object
-	 * @param integer $selected ID of the method selected
-	 * @return boolean True on succes, false on failures, null when this plugin was not selected.
-	 * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
-	 *
-	 * @author Valerie Isaksen
-	 * @author Max Milbers
-	 */
+        /**
+         * plgVmDisplayListFEPayment
+         * This event is fired to display the plugin methods in the cart (edit shipment/payment) for example
+         *
+         * @param object|\VirtueMartCart $cart Cart object
+         * @param integer $selected ID of the method selected
+         * @param $htmlIn
+         * @return boolean True on success, false on failures, null when this plugin was not selected.
+         * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
+         *
+         * @author Valerie Isaksen
+         * @author Max Milbers
+         */
 	public function plgVmDisplayListFEPayment (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
 
 		return $this->displayListFE ($cart, $selected, $htmlIn);
 	}
 
-	/*
-* plgVmonSelectedCalculatePricePayment
-* Calculate the price (value, tax_id) of the selected method
-* It is called by the calculator
-* This function does NOT to be reimplemented. If not reimplemented, then the default values from this function are taken.
-* @author Valerie Isaksen
-* @cart: VirtueMartCart the current cart
-* @cart_prices: array the new cart prices
-* @return null if the method was not selected, false if the shiiping rate is not valid any more, true otherwise
-*
-*
-*/
+        /**
+         * plgVmonSelectedCalculatePricePayment
+         * Calculate the price (value, tax_id) of the selected method
+         * It is called by the calculator
+         * This function does NOT to be reimplemented. If not reimplemented, then the default values from this function are taken.
+         * @author Valerie Isaksen
+         * @cart: VirtueMartCart the current cart
+         * @cart_prices: array the new cart prices
+         * @param VirtueMartCart $cart
+         * @param array $cart_prices
+         * @param $cart_prices_name
+         * @return null if the method was not selected, false if the payment rate is not valid any more, true otherwise
+         *
+         *
+         */
 
 	public function plgVmonSelectedCalculatePricePayment (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
 
 		return $this->onSelectedCalculatePrice ($cart, $cart_prices, $cart_prices_name);
 	}
-        function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
+    function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
 
 
-            if (!class_exists ('calculationHelper')) {
-                require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-            }
-
-            if (!class_exists ('calculationHelper')) {
-                require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-            }
-
-            $calculator = calculationHelper::getInstance ();
-            $_psType = ucfirst ($this->_psType);
-            $taxrules=array();
-
-            if(isset($method->tax_id) and (int)$method->tax_id === -1){
-
-            } else if (!empty($method->tax_id)) {
-                $cart_prices[$this->_psType . '_calc_id'] = $method->tax_id;
-
-                $db = JFactory::getDBO ();
-                $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $method->tax_id . '" ';
-                $db->setQuery ($q);
-                $taxrules = $db->loadAssocList ();
-            } else {
-                //This construction makes trouble, if there are products with different vats in the cart
-                //on the other side, it is very unlikely to have different vats in the cart and simultaneous it is not possible to use a fixed tax rule for the shipment
-                if(!empty($calculator->_cartData['VatTax']) and count ($calculator->_cartData['VatTax']) == 1){
-                    $taxrules = $calculator->_cartData['VatTax'];
-                    foreach($taxrules as &$rule){
-                        $rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
-                    }
-                } else {
-                    $taxrules = $calculator->_cartData['taxRulesBill'];
-                    foreach($taxrules as &$rule){
-                        unset($rule['subTotal']);
-                    }
-                }
-            }
-
-
-            $cartTotalAmount=$cart_prices['salesPrice'] + $cart_prices['salesPriceShipment'] - $cart_prices['salesPriceCoupon'] ;
-            if (isset($method->cost_percent_total)) {
-                if (preg_match ('/%$/', $method->cost_percent_total)) {
-                    $cost_percent_total = (substr ($method->cost_percent_total, 0, -1))* 0.01;
-                } else {
-                    $cost_percent_total = $method->cost_percent_total * 0.01;
-                }
-            } else {
-                $cost_percent_total=0;
-            }
-            if (isset($method->cost_per_transaction)) {
-                $cost_per_transaction=$method->cost_per_transaction;
-            } else {
-                $cost_per_transaction=0;
-            }
-            if (count ($taxrules) > 0) {
-                $cost_percent_total_vat =  $calculator->executeCalculation($taxrules, $cost_percent_total, true);
-                $cost_per_transaction_vat =  $calculator->executeCalculation($taxrules, $cost_per_transaction, true);
-                $NewTotalAmount= ($cartTotalAmount+$cost_per_transaction_vat) / ( 1 -  $cost_percent_total_vat );
-                $feeWithVat=$NewTotalAmount-$cartTotalAmount;
-
-                $calculator->setRevert(true);
-                $feeNoVat = $calculator->roundInternal($calculator->executeCalculation($taxrules,$feeWithVat, true), 'salesPrice');
-                $calculator->setRevert(false);
-
-                $cart_prices[$this->_psType . 'Tax']=$feeWithVat-$feeNoVat;
-                $cart_prices['salesPrice' . $_psType] =$feeWithVat;
-                $cart_prices[ $this->_psType .'Value'] = $feeNoVat;
-
-                reset($taxrules);
-                $taxrule =  current($taxrules);
-                $cart_prices[$this->_psType . '_calc_id'] = $taxrule['virtuemart_calc_id'];
-
-            } else {
-                $NewTotalAmount=($cartTotalAmount+ $method->cost_per_transaction) / (1 -$cost_percent_total);
-                $fee=$NewTotalAmount-$cartTotalAmount;
-                $cart_prices['salesPrice' . $_psType] = $fee;
-                $cart_prices[$this->_psType . 'Tax'] = 0;
-                $cart_prices[$this->_psType . '_calc_id'] = 0;
-                $cart_prices[ $this->_psType .'Value'] = $fee;
-            }
-
-            return $cart_prices['salesPrice' . $_psType];
+        if (!class_exists ('calculationHelper')) {
+            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
         }
+
+        if (!class_exists ('calculationHelper')) {
+            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+        }
+
+        $calculator = calculationHelper::getInstance ();
+        $_psType = ucfirst ($this->_psType);
+        $taxrules=array();
+
+        if(isset($method->tax_id) and (int)$method->tax_id === -1){
+
+        } else if (!empty($method->tax_id)) {
+            $cart_prices[$this->_psType . '_calc_id'] = $method->tax_id;
+
+            $db = JFactory::getDBO ();
+            $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $method->tax_id . '" ';
+            $db->setQuery ($q);
+            $taxrules = $db->loadAssocList ();
+        } else {
+            //This construction makes trouble, if there are products with different vats in the cart
+            //on the other side, it is very unlikely to have different vats in the cart and simultaneous it is not possible to use a fixed tax rule for the shipment
+            if(!empty($calculator->_cartData['VatTax']) and count ($calculator->_cartData['VatTax']) == 1){
+                $taxrules = $calculator->_cartData['VatTax'];
+                foreach($taxrules as &$rule){
+                    $rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
+                }
+            } else {
+                $taxrules = $calculator->_cartData['taxRulesBill'];
+                foreach($taxrules as &$rule){
+                    unset($rule['subTotal']);
+                }
+            }
+        }
+
+        $cartTotalAmount=$this->getCartAmount($cart_prices);
+        if (isset($method->cost_percent_total)) {
+            if (preg_match ('/%$/', $method->cost_percent_total)) {
+                $cost_percent_total = (substr ($method->cost_percent_total, 0, -1))* 0.01;
+            } else {
+                $cost_percent_total = $method->cost_percent_total * 0.01;
+            }
+        } else {
+            $cost_percent_total=0;
+        }
+        if (isset($method->cost_per_transaction)) {
+            $cost_per_transaction=$method->cost_per_transaction;
+        } else {
+            $cost_per_transaction=0;
+        }
+        if (count ($taxrules) > 0) {
+            $cost_percent_total_vat =  $calculator->executeCalculation($taxrules, $cost_percent_total, true);
+            $cost_per_transaction_vat =  $calculator->executeCalculation($taxrules, $cost_per_transaction, true);
+            $NewTotalAmount= ($cartTotalAmount+$cost_per_transaction_vat) / ( 1 -  $cost_percent_total_vat );
+            $feeWithVat=$NewTotalAmount-$cartTotalAmount;
+
+            $calculator->setRevert(true);
+            $feeNoVat = $calculator->roundInternal($calculator->executeCalculation($taxrules,$feeWithVat, true), 'salesPrice');
+            $calculator->setRevert(false);
+
+            $cart_prices[$this->_psType . 'Tax']=$feeWithVat-$feeNoVat;
+            $cart_prices['salesPrice' . $_psType] =$feeWithVat;
+            $cart_prices[ $this->_psType .'Value'] = $feeNoVat;
+
+            reset($taxrules);
+            $taxrule =  current($taxrules);
+            $cart_prices[$this->_psType . '_calc_id'] = $taxrule['virtuemart_calc_id'];
+
+        } else {
+            $NewTotalAmount=($cartTotalAmount+ $method->cost_per_transaction) / (1 -$cost_percent_total);
+            $fee=$NewTotalAmount-$cartTotalAmount;
+            $cart_prices['salesPrice' . $_psType] = $fee;
+            $cart_prices[$this->_psType . 'Tax'] = 0;
+            $cart_prices[$this->_psType . '_calc_id'] = 0;
+            $cart_prices[ $this->_psType .'Value'] = $fee;
+        }
+
+        return $cart_prices['salesPrice' . $_psType];
+    }
+
+
 	function plgVmgetPaymentCurrency ($virtuemart_paymentmethod_id, &$paymentCurrencyId) {
 
 		if (!($method = $this->getVmPluginMethod ($virtuemart_paymentmethod_id))) {
@@ -432,22 +429,22 @@ if (!class_exists ('vmPSPlugin')) {
 		return $this->onCheckAutomaticSelected ($cart, $cart_prices, $paymentCounter);
 	}
 
-        /**
-         * This method is fired when showing the order details in the frontend.
-         * It displays the method-specific data.
-         *
-         * @param integer $virtuemart_order_id The order ID
-         * @param integer $virtuemart_paymentmethod_id The payment ID
-         * @param integer $payment_name The payment name
-         * @return mixed Null for methods that aren't active, text (HTML) otherwise
-         * @author Max Milbers
-         * @author Valerie Isaksen
-         */
+    /**
+     * This method is fired when showing the order details in the frontend.
+     * It displays the method-specific data.
+     *
+     * @param integer $virtuemart_order_id The order ID
+     * @param integer $virtuemart_paymentmethod_id The payment ID
+     * @param integer $payment_name The payment name
+     * @return mixed Null for methods that aren't active, text (HTML) otherwise
+     * @author Max Milbers
+     * @author Valerie Isaksen
+     */
 	public function plgVmOnShowOrderFEPayment ($virtuemart_order_id, $virtuemart_paymentmethod_id, &$payment_name) {
 
 		$this->onShowOrderFE ($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
 	}
-/**
+    /**
 	 * @param $orderDetails
 	 * @param $data
 	 * @return null
@@ -485,7 +482,7 @@ if (!class_exists ('vmPSPlugin')) {
 	 */
 
         /**
-         * This method is fired when showing when priting an Order
+         * This method is fired when showing when printing an Order
          * It displays the the payment method-specific data.
          *
          * @param string $order_number The order number
@@ -515,14 +512,14 @@ if (!class_exists ('vmPSPlugin')) {
 	 *
 	 * @param array   $_formData Form data
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be
-	 * skipped!), or null when this method is not actived.
+	 * skipped!), or null when this method is not activated.
 	 *
 	public function plgVmOnUpdateOrderPayment(  $_formData) {
 	return null;
 	}
 
 	/**
-	 * Save updated orderline data to the method specific table
+	 * Save updated order line data to the method specific table
 	 *
 	 * @param array   $_formData Form data
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be

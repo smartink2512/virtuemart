@@ -874,10 +874,37 @@ abstract class vmPSPlugin extends vmPlugin {
 		return FALSE;
 	}
 
-	function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
+    /**
+     * @param VirtueMartCart $cart
+     * @param $method
+     * @param $cart_prices
+     * @return int
+     */
+    function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
 
 		return 0;
 	}
+
+    /**
+     * @param $method
+     */
+    function convert_condition_amount (&$method) {
+        $method->min_amount = (float)str_replace(',','.',$method->min_amount);
+        $method->max_amount = (float)str_replace(',','.',$method->max_amount);
+    }
+
+    /**
+     * Get the cart amount for checking conditions if the payment / shipment conditions are fullfilled
+     * @param $cart_prices
+     * @return mixed
+     */
+    function getCartAmount($cart_prices){
+        $amount= $cart_prices['salesPrice'] + $cart_prices['salesPriceShipment'] + $cart_prices['salesPriceCoupon'] ;
+        if ($amount <= 0) $amount=0;
+        return $amount;
+
+    }
+
 
 	function getPaymentCurrency (&$method, $getCurrency = FALSE) {
 
