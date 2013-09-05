@@ -1014,7 +1014,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				}
 			}
 		}
-		$this->convert_cost($method);
+		//$this->convert_cost($method);
 
 		$cartTotalAmount=$this->getCartAmount($cart_prices);
 			if (isset($method->cost_percent_total)) {
