@@ -49,8 +49,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'status_canceled' => array('', 'char'),
 			'status_refunded' => array('', 'char'),
 			'countries' => array('', 'char'),
-			'min_amount' => array('', 'int'),
-			'max_amount' => array('', 'int'),
+			'min_amount' => array('', 'float'),
+			'max_amount' => array('', 'float'),
 			'secure_post' => array('', 'int'),
 			'ipn_test' => array('', 'int'),
 			'no_shipping' => array('', 'int'),
@@ -878,11 +878,10 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	 */
 	protected function checkConditions($cart, $method, $cart_prices) {
 
-		$this->convert($method);
-
+		$this->convert_condition_amount($method);
+		$amount = $this->getCartAmount($cart_prices);
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
-		$amount = $cart_prices['salesPrice'];
 		$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
 			OR
 			($method->min_amount <= $amount AND ($method->max_amount == 0)));
@@ -913,14 +912,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		return FALSE;
 	}
 
-	/**
-	 * @param $method
-	 */
-	function convert($method) {
 
-		$method->min_amount = (float)$method->min_amount;
-		$method->max_amount = (float)$method->max_amount;
-	}
 
 	/**
 	 * We must reimplement this triggers for joomla 1.7
@@ -1022,9 +1014,9 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				}
 			}
 		}
+		$this->convert_cost($method);
 
-
-		$cartTotalAmount=$cart_prices['salesPrice'] + $cart_prices['salesPriceShipment'] - $cart_prices['salesPriceCoupon'] ;
+		$cartTotalAmount=$this->getCartAmount($cart_prices);
 			if (isset($method->cost_percent_total)) {
 				if (preg_match ('/%$/', $method->cost_percent_total)) {
 					$cost_percent_total = (substr ($method->cost_percent_total, 0, -1)) * 0.01;

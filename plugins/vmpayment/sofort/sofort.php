@@ -99,7 +99,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	function displayErrors ($errors) {
 
 		foreach ($errors as $error) {
-			// TODO
+			vmError(JText::sprintf('VMPAYMENT_SOFORT_ERROR_FROM', $error ['message'], $error ['field'], $error ['code']));
 			vmInfo(JText::sprintf('VMPAYMENT_SOFORT_ERROR_FROM', $error ['message'], $error ['field'], $error ['code']));
 			if ($error ['message'] == 401) {
 				vmdebug('check you payment parameters: custom_id, project_id, api key');
@@ -609,11 +609,10 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	 */
 	protected function checkConditions ($cart, $method, $cart_prices) {
 
-		$this->convert($method);
-
+		$this->convert_condition_amount($method);
+		$amount = $this->getCartAmount($cart_prices);
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
-		$amount = $cart_prices['salesPrice'];
 		$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
 			OR
 			($method->min_amount <= $amount AND ($method->max_amount == 0)));
@@ -644,14 +643,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		return FALSE;
 	}
 
-	/**
-	 * @param $method
-	 */
-	function convert ($method) {
 
-		$method->min_amount = (float)$method->min_amount;
-		$method->max_amount = (float)$method->max_amount;
-	}
 
 	/**
 	 * We must reimplement this triggers for joomla 1.7

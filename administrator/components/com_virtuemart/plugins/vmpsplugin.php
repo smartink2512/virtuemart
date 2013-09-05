@@ -878,7 +878,30 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		return 0;
 	}
+	/**
+	 * @param $method
+	 */
+	function convert_condition_amount (&$method) {
+		$method->min_amount = (float)str_replace(',','.',$method->min_amount);
+		$method->max_amount = (float)str_replace(',','.',$method->max_amount);
+	}
 
+	/**
+	 * Get the cart amount for checking conditions if the payment conditions are fullfilled
+	 * @param $cart_prices
+	 * @return mixed
+	 */
+	function getCartAmount($cart_prices){
+		$amount= $cart_prices['salesPrice'] + $cart_prices['salesPriceShipment'] + $cart_prices['salesPriceCoupon'] ;
+		if ($amount <= 0) $amount=0;
+		return $amount;
+
+	}
+
+	/**
+	 * @param      $method
+	 * @param bool $getCurrency
+	 */
 	function getPaymentCurrency (&$method, $getCurrency = FALSE) {
 
 		if (!isset($method->payment_currency) or empty($method->payment_currency) or !$method->payment_currency or $getCurrency) {
