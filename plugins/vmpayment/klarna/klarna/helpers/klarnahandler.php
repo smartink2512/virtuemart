@@ -1036,10 +1036,10 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 	 * @return int
 	 */
 	static function getKlarnaMode ($method, $country) {
-
+		//return Klarna::BETA;
 		// It is the VM specific store ID to test
 		$merchant_id = strtolower ('klarna_merchantid_' . $country);
-		if ($method->$merchant_id == VMPAYMENT_KLARNA_MERCHANT_ID_VM or $method->$merchant_id == VMPAYMENT_KLARNA_MERCHANT_ID_DEMO) {
+		if ($method->$merchant_id == VMPAYMENT_KLARNA_MERCHANT_ID_VM or $method->$merchant_id == VMPAYMENT_KLARNACHECKOUT_MERCHANT_ID_VM or $method->$merchant_id == VMPAYMENT_KLARNA_MERCHANT_ID_DEMO) {
 			return Klarna::BETA;
 		} else {
 			return Klarna::LIVE;
@@ -1415,6 +1415,65 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		//$euro_currency_id = ShopFunctions::getCurrencyByName( 'EUR');
 		$price = KlarnaHandler::convertPrice ($cart->pricesUnformatted['billTotal'], $cart->pricesCurrency, 'EUR',$cart->pricesCurrency);
 		return self::checkNLpriceCondition ($price);
+	}
+
+
+	/**
+	 * @param $klarna_invoice_pdf
+	 * @param $vm_invoice_name
+	 * @return bool
+	 */
+	static function copyInvoice ($klarna_invoice_pdf, &$vm_invoice_name) {
+
+		$path = VmConfig::get ('forSale_path', 0);
+		if ($path === 0) {
+			vmError ('No path set to store invoices', 'No path set to store invoices');
+			return FALSE;
+		} else {
+			$path .= DS . 'invoices' . DS;
+			if (!file_exists ($path)) {
+				vmError ('Path wrong to store invoices, folder invoices does not exist ' . $path, 'Path wrong to store invoices, folder invoices does not exist ' . $path);
+				return FALSE;
+			} else {
+				if (!is_writable ($path)) {
+					vmError ('Cannot store pdf, directory not writeable ' . $path, 'Cannot store pdf, directory not writeable ' . $path);
+					return FALSE;
+				}
+			}
+		}
+		//$klarna_invoice = explode ('/', $klarna_invoice_pdf);
+		$klarna_invoice_name = $klarna_invoice_pdf[1];
+		$vm_invoice_name = 'klarna_' . $klarna_invoice_name.'.pdf';
+		$path .= $vm_invoice_name;
+		if (file_exists ($path)) {
+			// invoice has already been copied , don't do it again
+			return FALSE;
+		}
+		$ch = curl_init ($klarna_invoice_name);
+		$timeout = 10;
+		curl_setopt ($ch, CURLOPT_TIMEOUT, $timeout);
+		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+		$pdf = curl_exec ($ch);
+		if (!$pdf) {
+			$error=curl_error (  $ch );
+			vmError ('Curl Error while copying invoice from Klarna: ' . $error);
+			return FALSE;
+		}
+		curl_close ($ch);
+
+		$f = fopen ($path, 'wb');
+		if (!$f) {
+			vmError ('Unable to create output file: ' . $path);
+			return FALSE;
+		}
+		if (fwrite ($f, $pdf) === FALSE) {
+			vmError ('Unable to write output file: ' . $path);
+			return FALSE;
+		}
+		fclose ($f);
+		return TRUE;
 	}
 }
 
