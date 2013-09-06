@@ -541,7 +541,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	// IMPORTANT: The $inputOrder can contain extra data by plugins			//also strange $useTriggers is always activated?
 	function updateStatusForOneOrder($virtuemart_order_id,$inputOrder,$useTriggers=true){
 
- 		vmdebug('updateStatusForOneOrder', $inputOrder);
+ 		//vmdebug('updateStatusForOneOrder', $inputOrder);
 		/* Update the order */
 		$data = $this->getTable('orders');
 		$data->load($virtuemart_order_id);
@@ -662,8 +662,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 
 		$usr = JFactory::getUser();
-		$prices = $cart->getCartPrices();
-		if (($orderID = $this->_createOrder($cart, $usr, $prices)) == 0) {
+		//$prices = $cart->getCartPrices();
+		if (($orderID = $this->_createOrder($cart, $usr)) == 0) {
 			vmError('Couldn\'t create order','Couldn\'t create order');
 			return false;
 		}
@@ -693,7 +693,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @param array $_prices Price data
 	 * @return integer The new ordernumber
 	 */
-	private function _createOrder($_cart, $_usr, $_prices)
+	private function _createOrder($_cart, $_usr)
 	{
 		//		TODO We need tablefields for the new values:
 		//		Shipment:
@@ -713,7 +713,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_orderData->virtuemart_user_id = $_usr->get('id');
 		$_orderData->virtuemart_vendor_id = $_cart->vendorId;
 		$_orderData->customer_number = $_cart->customer_number;
-
+		$_prices = $_cart->cartPrices;
 		//Note as long we do not have an extra table only storing addresses, the virtuemart_userinfo_id is not needed.
 		//The virtuemart_userinfo_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.
 		//the saved order should be an snapshot with plain data written in it.
@@ -1064,8 +1064,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		//vmdebug('_createOrderCalcRules $productKeys',$productKeys);
 		foreach($productKeys as $key){
 			foreach($calculation_kinds as $calculation_kind) {
-				if(!isset($_cart->pricesUnformatted[$key][$calculation_kind])) continue;
-				$productRules = $_cart->pricesUnformatted[$key][$calculation_kind];
+				if(!isset($_cart->cartPrices[$key][$calculation_kind])) continue;
+				$productRules = $_cart->cartPrices[$key][$calculation_kind];
 
 				foreach($productRules as $rule){
 					$orderCalcRules = $this->getTable('order_calc_rules');
@@ -1076,7 +1076,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					$orderCalcRules->calc_amount =  0;
 					$orderCalcRules->calc_result =  0;
 					if ($calculation_kind == 'VatTax') {
-						$orderCalcRules->calc_amount =  $_cart->pricesUnformatted[$key]['taxAmount'];
+						$orderCalcRules->calc_amount =  $_cart->cartPrices[$key]['taxAmount'];
 						$orderCalcRules->calc_result =  $_cart->cartData['VatTax'][$rule[7]]['result'];
 					}
 					$orderCalcRules->calc_value = $rule[1];
@@ -1120,7 +1120,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			     $orderCalcRules->virtuemart_order_calc_rule_id = null;
 				 $orderCalcRules->virtuemart_calc_id= $rule['virtuemart_calc_id'];
 			     $orderCalcRules->calc_rule_name= $rule['calc_name'];
-			     $orderCalcRules->calc_amount =  $_cart->pricesUnformatted[$rule['virtuemart_calc_id'].'Diff'];
+			     $orderCalcRules->calc_amount =  $_cart->cartPrices[$rule['virtuemart_calc_id'].'Diff'];
 				 if ($calculation_kind == 'taxRulesBill' and !empty($_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['result'])) {
 					$orderCalcRules->calc_result =  $_cart->cartData['VatTax'][$rule['virtuemart_calc_id']]['result'];
 				 }
@@ -1145,13 +1145,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			$orderCalcRules = $this->getTable('order_calc_rules');
 			$calcModel = VmModel::getModel('calc');
-			$calcModel->setId($_cart->pricesUnformatted['payment_calc_id']);
+			$calcModel->setId($_cart->cartPrices['payment_calc_id']);
 			$calc = $calcModel->getCalc();
 			$orderCalcRules->virtuemart_order_calc_rule_id = null;
 			$orderCalcRules->virtuemart_calc_id = $calc->virtuemart_calc_id;
 			$orderCalcRules->calc_kind = 'payment';
 			$orderCalcRules->calc_rule_name = $calc->calc_name;
-			$orderCalcRules->calc_amount = $_cart->pricesUnformatted['paymentTax'];
+			$orderCalcRules->calc_amount = $_cart->cartPrices['paymentTax'];
 			$orderCalcRules->calc_value = $calc->calc_value;
 			$orderCalcRules->calc_mathop = $calc->calc_value_mathop;
 			$orderCalcRules->calc_currency = $calc->calc_currency;
@@ -1175,14 +1175,14 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			$orderCalcRules = $this->getTable('order_calc_rules');
 			$calcModel = VmModel::getModel('calc');
-			$calcModel->setId($_cart->pricesUnformatted['shipment_calc_id']);
+			$calcModel->setId($_cart->cartPrices['shipment_calc_id']);
 			$calc = $calcModel->getCalc();
 
 			$orderCalcRules->virtuemart_order_calc_rule_id = null;
 			$orderCalcRules->virtuemart_calc_id = $calc->virtuemart_calc_id;
 			$orderCalcRules->calc_kind = 'shipment';
 			$orderCalcRules->calc_rule_name = $calc->calc_name;
-			$orderCalcRules->calc_amount = $_cart->pricesUnformatted['shipmentTax'];
+			$orderCalcRules->calc_amount = $_cart->cartPrices['shipmentTax'];
 			$orderCalcRules->calc_value = $calc->calc_value;
 			$orderCalcRules->calc_mathop = $calc->calc_value_mathop;
 			$orderCalcRules->calc_currency = $calc->calc_currency;

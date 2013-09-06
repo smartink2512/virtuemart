@@ -67,7 +67,6 @@ class VmTable extends JTable {
 		self::$_cache = null;
 		self::$_query_cache = null;
 	}
-
 	function setPrimaryKey($key, $keyForm = 0) {
 
 		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($key)));
@@ -801,7 +800,6 @@ class VmTable extends JTable {
 					if (isset($data->$name)) {
 						//We directly store language stuff "escaped"
 						$langData[$name] = htmlentities($data->$name, ENT_QUOTES, "UTF-8");
-						vmdebug('html_entities for '.$langData[$name]);
 					} else {
 					//	$langData[$name] = '';
 					}
@@ -825,9 +823,7 @@ class VmTable extends JTable {
 				foreach ($this->_translatableFields as $name) {
 					if (isset($data[$name])) {
 						//$langData[$name] = $data[$name];
-
 						$langData[$name] = htmlentities($data[$name], ENT_QUOTES, "UTF-8");
-						vmdebug('html_entities for '.$langData[$name]);
 					} else {
 					//	$langData[$name] = '';
 					}

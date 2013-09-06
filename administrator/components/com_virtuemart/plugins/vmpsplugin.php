@@ -153,12 +153,12 @@ abstract class vmPSPlugin extends vmPlugin {
 		$html = array();
 		$method_name = $this->_psType . '_name';
 		foreach ($this->methods as $method) {
-			if ($this->checkConditions ($cart, $method, $cart->pricesUnformatted)) {
+			if ($this->checkConditions ($cart, $method, $cart->cartPrices)) {
 
 				//$methodSalesPrice = $this->calculateSalesPrice ($cart, $method, $cart->pricesUnformatted);
 				/* Because of OPC: the price must not be overwritten directly in the cart */
-				$pricesUnformatted= $cart->pricesUnformatted;
-				$methodSalesPrice = $this->setCartPrices ($cart, $pricesUnformatted,$method);
+				//$pricesUnformatted= $cart->pricesUnformatted;
+				$methodSalesPrice = $this->setCartPrices ($cart, $cart->cartPrices,$method);
 				$method->$method_name = $this->renderPluginName ($method);
 				$html [] = $this->getPluginHtml ($method, $selected, $methodSalesPrice);
 			}
@@ -990,14 +990,14 @@ abstract class vmPSPlugin extends vmPlugin {
 		} else {
 			//This construction makes trouble, if there are products with different vats in the cart
 			//on the other side, it is very unlikely to have different vats in the cart and simultan it is not possible to use a fixed tax rule for the shipment
-			if(!empty($calculator->_cartData['VatTax']) and count ($calculator->_cartData['VatTax']) == 1){
-				$taxrules = $calculator->_cartData['VatTax'];
+			if(!empty($calculator->_cart->cartData['VatTax']) and count ($calculator->_cart->cartData['VatTax']) == 1){
+				$taxrules = $calculator->_cart->cartData['VatTax'];
 				foreach($taxrules as &$rule){
 					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
 				}
 
 			} else {
-				$taxrules = $calculator->_cartData['taxRulesBill'];
+				$taxrules = $calculator->_cart->cartData['taxRulesBill'];
 				foreach($taxrules as &$rule){
 					unset($rule['subTotal']);
 				}

@@ -36,7 +36,8 @@ foreach($this->userFields['fields'] as $field) {
 			</table>
 		</fieldset>
 		<?php
-		} else {
+			$closeDelimiter = false;
+		} //else {
 			?>
 			<fieldset>
 			<span class="userfields_info"><?php echo $field['title'] ?></span>
@@ -44,7 +45,7 @@ foreach($this->userFields['fields'] as $field) {
 			<?php
 			$closeDelimiter = true;
 			$openTable = true;
-		}
+		//}
 
 	} elseif ($field['hidden'] == true) {
 

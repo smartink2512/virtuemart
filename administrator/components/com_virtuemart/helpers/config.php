@@ -463,7 +463,7 @@ class VmConfig {
 	 */
 	static function ensureMemoryLimit($minMemory=0){
 
-		if($minMemory === 0) $minMemory = (int) VmConfig::get('minMemory','128M');
+		if($minMemory === 0) $minMemory = VmConfig::get('minMemory','128M');
 		$iniValue = ini_get('memory_limit');
 		if($iniValue===-1) return;	//We do not need to alter an unlimited setting
 		$iniValue = strtolower($iniValue);
@@ -626,7 +626,7 @@ class VmConfig {
 
 			self::$_jpConfig->set('sctime',microtime(TRUE));
 			self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
-			self::$_jpConfig->setSession();
+
 			vmTime('loadConfig db '.$install,'loadConfig');
 
 			return self::$_jpConfig;
@@ -637,11 +637,10 @@ class VmConfig {
 		return self::$_jpConfig;
 	}
 
-
-	/*
+	 /*
 	 * Set defaut language tag for translatable table
 	 *
-	 * @author Patrick Kohl
+	 * @author Max Milbers
 	 * @return string valid langtag
 	 */
 	static public function setdbLanguageTag($langTag = 0) {
@@ -651,40 +650,37 @@ class VmConfig {
 		}
 
 		$langs = (array)self::$_jpConfig->get('active_languages',array());
-		$isBE = !JFactory::getApplication()->isSite();
-		if($isBE){
-			$siteLang = JRequest::getVar('vmlang',FALSE );// we must have this for edit form save
-			//Why not using the userstate?
-		} else {
-			if (!$siteLang = JRequest::getVar('vmlang',FALSE )) {
+
+		$siteLang = JRequest::getString('vmlang',FALSE );
+
+		$params = JComponentHelper::getParams('com_languages');
+		$defaultLang = $params->get('site', 'en-GB');//use default joomla
+
+		if( JFactory::getApplication()->isSite()){
+			if (!$siteLang) {
 				if ( JVM_VERSION===1 ) {
-				// try to find in session lang
-				// this work with joomfish j1.5 (application.data.lang)
-				$session  =JFactory::getSession();
-				$registry = $session->get('registry');
-				$siteLang = $registry->getValue('application.data.lang') ;
+					// try to find in session lang
+					// this work with joomfish j1.5 (application.data.lang)
+					$session  =JFactory::getSession();
+					$registry = $session->get('registry');
+					$siteLang = $registry->getValue('application.data.lang') ;
 				} else  {
-				// TODO test wiht j1.7
-				jimport('joomla.language.helper');
-				//$languages = JLanguageHelper::getLanguages('lang_code');
-				$siteLang = JFactory::getLanguage()->getTag();
+					jimport('joomla.language.helper');
+					$siteLang = JFactory::getLanguage()->getTag();
 					vmdebug('My selected language by JFactory::getLanguage()->getTag() '.$siteLang);
 				}
 			}
-		}
-
-		if ( empty( $siteLang) ) {
-			// use site default
-			$params = JComponentHelper::getParams('com_languages');
-			$siteLang = $params->get('site', 'en-GB');//use default joomla
-			vmdebug('My selected language by getParams(com_languages) '.$siteLang);
+		} else {
+			if(!$siteLang){
+				$siteLang = $defaultLang;
+			}
 		}
 
 		if(!in_array($siteLang, $langs)) {
-			if(!empty($langs[0])){
-				$siteLang = $langs[0];
+			if(count($langs)===0){
+				$siteLang = $defaultLang;
 			} else {
-				$siteLang = 'en_gb';
+				$siteLang = $langs[0];
 			}
 		}
 
@@ -693,26 +689,7 @@ class VmConfig {
 		defined('VMLANG') or define('VMLANG', self::$_jpConfig->lang );
 
 		return self::$_jpConfig->lang;
-
  	}
-
-	function setSession(){
-/*		$session = JFactory::getSession();
-		$session->clear('vmconfig');
-		// 		$app = JFactory::getApplication();
-		// 		$app ->enqueueMessage('setSession session cache <pre>'.print_r(self::$_jpConfig->_params,1).'</pre>');
-
-// 		$session->set('vmconfig', base64_encode(serialize(self::$_jpConfig)),'vm');
-
-		//We must use base64 for text fields
-		$params = self::$_jpConfig->_params;
-		$params['offline_message'] = base64_encode($params['offline_message']);
-		// $params['dateformat'] = base64_encode($params['dateformat']);
-
-		$params['sctime'] = microtime(true);
-		$session->set('vmconfig', serialize($params),'vm');*/
-		self::$loaded = TRUE;
-	}
 
 	/**
 	 * Find the configuration value for a given key
@@ -762,7 +739,6 @@ class VmConfig {
 		if(Permissions::getInstance()->check('admin')){
 			if (!empty(self::$_jpConfig->_params)) {
 				self::$_jpConfig->_params[$key] = $value;
-				self::$_jpConfig->setSession();
 			}
 		}
 

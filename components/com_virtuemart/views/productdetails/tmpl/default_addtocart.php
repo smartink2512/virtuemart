@@ -96,7 +96,7 @@ $alert=JText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 				<a href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&layout=notify&virtuemart_product_id=' . $this->product->virtuemart_product_id); ?>" class="notify"><?php echo JText::_ ('COM_VIRTUEMART_CART_NOTIFY') ?></a>
 
 				<?php } else {
-					$tmpPrice = (float) $this->product->prices['costPrice'];
+					$tmpPrice = (float) $this->product->prices[$this->product->selectedPrice]['costPrice'];
 					if (!( VmConfig::get('askprice', 0) and empty($tmpPrice) ) ) {
 				?>
 				<!-- <label for="quantity<?php echo $this->product->virtuemart_product_id; ?>" class="quantity_box"><?php echo JText::_ ('COM_VIRTUEMART_CART_QUANTITY'); ?>: </label> -->

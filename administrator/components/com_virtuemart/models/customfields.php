@@ -465,6 +465,9 @@ class VirtueMartModelCustomfields extends VmModel {
 					$uncatChildren = $productModel->getUncategorizedChildren ($customfield->withParent);
 
 
+					if(!$customfield->withParent or ($customfield->withParent and $customfield->parentOrderable){
+						$options[0] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $product->virtuemart_product_id,FALSE), 'text' => JText::_ ('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT'));
+					}
 					foreach ($uncatChildren as $k => $child) {
 						if(!isset($child[$customfield->customfield_value])){
 							vmdebug('The child has no value at index '.$customfield->customfield_value,$customfield,$child);
@@ -642,7 +645,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		if(!is_array($variantmods)){
 			$variantmods = json_decode($variantmods);
 		}
-		vmdebug('displayProductCustomfieldSelected $variantmods ',$variantmods);
+		//vmdebug('displayProductCustomfieldSelected $variantmods ',$variantmods);
 		foreach ($variantmods as $custom_id => $selected) {
 
 			if(is_object($selected)) $selected = (array)$selected;
@@ -860,7 +863,6 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 		}
 
- 		vmdebug(' $modificatorSum ',$modificatorSum);
 		return $modificatorSum;
 	}
 

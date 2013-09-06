@@ -37,8 +37,8 @@ class VmView extends JView{
 	var $lists = array();
 
 	protected $canDo;
-	function __construct() {
-		parent::__construct();
+	function __construct($config = array()) {
+		parent::__construct($config);
 		// What Access Permissions does this user have? What can (s)he do?
 		$this->canDo = self::getActions();
 	}

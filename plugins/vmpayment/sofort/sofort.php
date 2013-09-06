@@ -602,6 +602,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	 *
 	 * @author: Valerie Isaksen
 	 *
+	 * Todo for vm2.1: nonsense that we have here $cart and $cart_prices
 	 * @param $cart_prices: cart prices
 	 * @param $payment
 	 * @return true: if the conditions are fulfilled, false otherwise
@@ -705,9 +706,9 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		VmConfig::loadJLang('com_virtuemart');
 		$currency = CurrencyDisplay::getInstance();
 		foreach ($this->methods as $method) {
-			if ($this->checkConditions($cart, $method, $cart->pricesUnformatted)) {
-				$pricesUnformatted = $cart->pricesUnformatted;
-				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $pricesUnformatted);
+			if ($this->checkConditions($cart, $method, $cart->cartPrices)) {
+				//$pricesUnformatted = $cart->pricesUnformatted;
+				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $cart->cartPrices);
 
 				$logo = $this->displayLogos($method->payment_logos);
 				$payment_cost = '';
@@ -875,7 +876,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	 */
 	function plgVmDeclarePluginParamsPayment ($name, $id, &$data) {
 
-		return $this->declarePluginParams('payment', $name, $id, $data);
+		return $this->declarePluginParams('payment', $data);
 	}
 
 	/**

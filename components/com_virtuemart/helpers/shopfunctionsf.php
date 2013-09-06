@@ -453,6 +453,8 @@ class shopFunctionsF {
 					$mainframe->set( 'setTemplate', $template );
 				} else {
 					$mainframe->setTemplate($template);
+					$templateParams = JFactory::getApplication()->getTemplate(true)->params;
+
 				}
 
 			} else {

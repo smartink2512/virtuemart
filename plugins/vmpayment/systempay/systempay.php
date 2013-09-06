@@ -282,7 +282,7 @@ function getTableSQLFields() {
       }
      */
     function plgVmDeclarePluginParamsPayment($name, $id, &$data) {
-	return parent::declarePluginParams('payment', $name, $id, $data);
+	return parent::declarePluginParams('payment', $data);
     }
 
     function plgVmSetOnTablePluginParamsPayment($name, $id, &$table) {

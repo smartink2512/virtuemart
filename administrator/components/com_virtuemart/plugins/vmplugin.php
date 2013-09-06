@@ -405,10 +405,15 @@ abstract class vmPlugin extends JPlugin {
 	 */
 	protected function declarePluginParams ($psType, &$data) {
 
-		//vmdebug('declarePluginParams '.$this->_psType.' '.$psType);
-		//Todo I know a test only on seledtThis is wrong here, it works now with extra !empty($this->_psType)
-		if(!empty($this->_psType) and !$this->selectedThis($psType,$data->custom_element,$data->custom_jplugin_id)){
-			return FALSE;
+		//vmdebug('declarePluginParams ',$this->_psType,$data);
+		if(!empty($this->_psType)){
+			$element = $this->_psType.'_element';
+			$jplugin_id = $this->_psType.'_jplugin_id';
+			//vmdebug('declarePluginParams $element '.$element.'  $jplugin_id '.$jplugin_id,$data->$element,$data->$jplugin_id);
+			if(!isset($data->$element) or !isset($data->$jplugin_id)) return FALSE;
+			if(!$this->selectedThis($psType,$data->$element,$data->$jplugin_id)){
+				return FALSE;
+			}
 		}
 		if (!class_exists ('VmTable')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtable.php');

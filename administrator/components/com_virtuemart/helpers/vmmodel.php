@@ -296,13 +296,14 @@ class VmModel extends JModel {
 	public function getTotal() {
 
 		if (empty($this->_total)) {
+			$db = JFactory::getDbo();
 			$query = 'SELECT `'.$this->_db->getEscaped($this->_idName).'` FROM `'.$this->_db->getEscaped($this->_maintable).'`';;
-			$this->_db->setQuery( $query );
-			if(!$this->_db->query()){
+			$db->setQuery( $query );
+			if(!$db->query()){
 				if(empty($this->_maintable)) vmError('Model '.get_class( $this ).' has no maintable set');
 				$this->_total = 0;
 			} else {
-				$this->_total = $this->_db->getNumRows();
+				$this->_total = $db->getNumRows();
 			}
 			//			$this->_total = $this->_getListCount($query);
 		}
@@ -333,9 +334,7 @@ class VmModel extends JModel {
 
 	public function exeSortSearchListQuery($object, $select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $filter_order_Dir = '', $nbrReturnProducts = false){
 
-		// 		vmSetStartTime('exe');
-		// 		if(USE_SQL_CALC_FOUND_ROWS){
-
+		$db = JFactory::getDbo();
 		//and the where conditions
 		$joinedTables .= $whereString .$groupBy .$orderBy .$filter_order_Dir ;
 		// 			$joinedTables .= $whereString .$groupBy .$orderBy;
@@ -362,29 +361,29 @@ class VmModel extends JModel {
 
 		if($this->_noLimit or empty($limit)){
 // 			vmdebug('exeSortSearchListQuery '.get_class($this).' no limit');
-			$this->_db->setQuery($q);
+			$db->setQuery($q);
 		} else {
-			$this->_db->setQuery($q,$limitStart,$limit);
+			$db->setQuery($q,$limitStart,$limit);
 // 			vmdebug('exeSortSearchListQuery '.get_class($this).' with limit');
 		}
- 	//	vmdebug('exeSortSearchListQuery '.$orderBy .$filter_order_Dir,$q);
+ 		//vmdebug('exeSortSearchListQuery '.$orderBy .$filter_order_Dir,$q);
 
 		if($object == 2){
-			 $this->ids = $this->_db->loadResultArray();
+			 $this->ids = $db->loadResultArray();
 		} else if($object == 1 ){
-			 $this->ids = $this->_db->loadAssocList();
+			 $this->ids = $db->loadAssocList();
 		} else {
-			 $this->ids = $this->_db->loadObjectList();
+			 $this->ids = $db->loadObjectList();
 		}
-		if($err=$this->_db->getErrorMsg()){
+		if($err=$db->getErrorMsg()){
 			vmError('exeSortSearchListQuery '.$err);
 		}
- 		//vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q ',$this->_db->getQuery() );
+ 		//vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q ',$db->getQuery() );
 
 		if($this->_withCount){
 
-			$this->_db->setQuery('SELECT FOUND_ROWS()');
-			$count = $this->_db->loadResult();
+			$db->setQuery('SELECT FOUND_ROWS()');
+			$count = $db->loadResult();
 
 			if($count == false){
 				$count = 0;
@@ -395,13 +394,13 @@ class VmModel extends JModel {
 					$limit = 1.0;
 				}
 				$limitStart = floor($count/$limit);
-				$this->_db->setQuery($q,$limitStart,$limit);
+				$db->setQuery($q,$limitStart,$limit);
 				if($object == 2){
-					$this->ids = $this->_db->loadResultArray();
+					$this->ids = $db->loadResultArray();
 				} else if($object == 1 ){
-					$this->ids = $this->_db->loadAssocList();
+					$this->ids = $db->loadAssocList();
 				} else {
-					$this->ids = $this->_db->loadObjectList();
+					$this->ids = $db->loadObjectList();
 				}
 			}
 // 			$this->getPagination(true);
@@ -410,12 +409,12 @@ class VmModel extends JModel {
 			$this->_withCount = true;
 		}
 
-		//print_r( $this->_db->_sql );
+		//print_r( $db->_sql );
 		// 			vmdebug('my $list',$list);
 		if(empty($this->ids)){
-			$errors = $this->_db->getErrorMsg();
+			$errors = $db->getErrorMsg();
 			if( !empty( $errors)){
-				vmdebug('exeSortSearchListQuery error in class '.get_class($this).' sql:',$this->_db->getErrorMsg());
+				vmdebug('exeSortSearchListQuery error in class '.get_class($this).' sql:',$db->getErrorMsg());
 			}
 			if($object == 2 or $object == 1){
 				$this->ids = array();
@@ -538,12 +537,12 @@ class VmModel extends JModel {
 	{
 		$table = $this->getTable($this->_maintablename);
 		if (!$table->load($this->_id)) {
-			vmError('VmModel move '.$this->_db->getErrorMsg());
+			vmError('VmModel move '.$table->getDbo()->getErrorMsg());
 			return false;
 		}
 
 		if (!$table->move( $direction, $filter )) {
-			vmError('VmModel move '.$this->_db->getErrorMsg());
+			vmError('VmModel move '.$table->getDbo()->getErrorMsg());
 			return false;
 		}
 
@@ -573,7 +572,7 @@ class VmModel extends JModel {
 			{
 				$table->ordering = $order[$i];
 				if (!$table->store()) {
-					vmError('VmModel saveorder '.$this->_db->getErrorMsg());
+					vmError('VmModel saveorder '.$table->getDbo()->getErrorMsg());
 					return false;
 				}
 			}

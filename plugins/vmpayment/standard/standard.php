@@ -339,13 +339,13 @@ if (!class_exists ('vmPSPlugin')) {
         } else {
             //This construction makes trouble, if there are products with different vats in the cart
             //on the other side, it is very unlikely to have different vats in the cart and simultaneous it is not possible to use a fixed tax rule for the shipment
-            if(!empty($calculator->_cartData['VatTax']) and count ($calculator->_cartData['VatTax']) == 1){
-                $taxrules = $calculator->_cartData['VatTax'];
+            if(!empty($calculator->_cart->cartData['VatTax']) and count ($calculator->_cart->cartData['VatTax']) == 1){
+                $taxrules = $calculator->_cart->cartData['VatTax'];
                 foreach($taxrules as &$rule){
                     $rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
                 }
             } else {
-                $taxrules = $calculator->_cartData['taxRulesBill'];
+                $taxrules = $calculator->_cart->cartData['taxRulesBill'];
                 foreach($taxrules as &$rule){
                     unset($rule['subTotal']);
                 }
@@ -497,7 +497,7 @@ if (!class_exists ('vmPSPlugin')) {
 
 	function plgVmDeclarePluginParamsPayment ($name, $id, &$data) {
 
-		return $this->declarePluginParams ('payment', $name, $id, $data);
+		return $this->declarePluginParams ('payment', $data);
 	}
 
 	function plgVmSetOnTablePluginParamsPayment ($name, $id, &$table) {

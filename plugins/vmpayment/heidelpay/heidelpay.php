@@ -475,7 +475,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 
 	function plgVmDeclarePluginParamsPayment ($name, $id, &$data) {
 
-		return $this->declarePluginParams ('payment', $name, $id, $data);
+		return $this->declarePluginParams ('payment', $data);
 	}
 
 	function plgVmSetOnTablePluginParamsPayment ($name, $id, &$table) {

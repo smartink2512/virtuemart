@@ -145,8 +145,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		$htmla = '';
 		$html = array();
 		foreach ($this->methods as $method) {
-			if ($this->checkConditions($cart, $method, $cart->pricesUnformatted)) {
-				$methodSalesPrice = $this->setCartPrices($cart, $cart->pricesUnformatted, $method);
+			if ($this->checkConditions($cart, $method, $cart->cartPrices)) {
+				$methodSalesPrice = $this->setCartPrices($cart, $cart->cartPrices, $method);
 				$method->$method_name = $this->renderPluginName($method);
 				$html = $this->getPluginHtml($method, $selected, $methodSalesPrice);
 				if ($selected == $method->virtuemart_paymentmethod_id) {
@@ -321,13 +321,13 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
         } else {
             //This construction makes trouble, if there are products with different vats in the cart
             //on the other side, it is very unlikely to have different vats in the cart and simultaneous it is not possible to use a fixed tax rule for the shipment
-            if(!empty($calculator->_cartData['VatTax']) and count ($calculator->_cartData['VatTax']) == 1){
-                $taxrules = $calculator->_cartData['VatTax'];
+            if(!empty($calculator->_cart->cartData['VatTax']) and count ($calculator->_cart->cartData['VatTax']) == 1){
+                $taxrules = $calculator->_cart->cartData['VatTax'];
                 foreach($taxrules as &$rule){
                     $rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
                 }
             } else {
-                $taxrules = $calculator->_cartData['taxRulesBill'];
+                $taxrules = $calculator->_cart->cartData['taxRulesBill'];
                 foreach($taxrules as &$rule){
                     unset($rule['subTotal']);
                 }
@@ -675,7 +675,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		// error while processing the payment
 		$mainframe = JFactory::getApplication();
 		$mainframe->enqueueMessage($html);
-		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment'), JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
+		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',FALSE), JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 	}
 
 	function plgVmGetPaymentCurrency ($virtuemart_paymentmethod_id, &$paymentCurrencyId)
@@ -1265,7 +1265,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 	function plgVmDeclarePluginParamsPayment ($name, $id, &$data)
 	{
 
-		return $this->declarePluginParams('payment', $name, $id, $data);
+		return $this->declarePluginParams('payment', $data);
 	}
 
 	function plgVmSetOnTablePluginParamsPayment ($name, $id, &$table)
