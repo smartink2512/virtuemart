@@ -287,7 +287,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 
 		if (count($paymentTables) == 1) {
 			$cart = VirtueMartCart::getCart();
-			$this->sendTransactionRequest($cart, $order, false);
+			$this->sendTransactionRequest($method,$cart, $order, false);
 		}
 
 		$html = $this->_getPaymentResponseHtml($method, $order, $paymentTables);
@@ -344,7 +344,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	 */
 	function plgVmOnPaymentNotification () {
 
-		$this->_debug = true;
+		//$this->_debug = true;
 
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
@@ -365,6 +365,9 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$this->logInfo('plgVmOnPaymentNotification OK ', 'message');
 
 		$method = $this->getVmPluginMethod($payments[0]->virtuemart_paymentmethod_id);
+		if (!$this->selectedThisElement($method->payment_element)) {
+			return FALSE;
+		}
 		if (!class_exists('SofortLib')) {
 			require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib.php');
 
@@ -396,17 +399,6 @@ class plgVmPaymentSofort extends vmPSPlugin {
 			$this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_SOFORT_ERROR_NOTIFICATION'), $emailBody);
 			return false;
 		}
-/*
-		$this->logInfo('plgVmOnPaymentNotification check security OK', 'message');
-		$this->logInfo('plgVmOnPaymentNotification isLoss?' . $sofortLib_TransactionData->isLoss() . ' ', 'message');
-		$this->logInfo('plgVmOnPaymentNotification isPending?' . $sofortLib_TransactionData->isPending() . ' ', 'message');
-		$this->logInfo('plgVmOnPaymentNotification isSofortvorkasse?' . $sofortLib_TransactionData->isSofortvorkasse() . ' ', 'message');
-		$this->logInfo('plgVmOnPaymentNotification isSofortrechnung?' . $sofortLib_TransactionData->isSofortrechnung() . ' ', 'message');
-		$this->logInfo('plgVmOnPaymentNotification getStatusReason?' . $sofortLib_TransactionData->getStatusReason() . ' ', 'message');
-		$this->logInfo('plgVmOnPaymentNotification isReceived?' . $sofortLib_TransactionData->isReceived() . ' ', 'message');
-		$this->logInfo('plgVmOnPaymentNotification isRefunded?' . $sofortLib_TransactionData->isRefunded() . ' ', 'message');
-		$this->logInfo('plgVmOnPaymentNotification getPaymentMethod?' . $sofortLib_TransactionData->getPaymentMethod() . ' ', 'message');
-*/
 
 		$paymentMethod = $sofortLib_TransactionData->getPaymentMethod();
 		if ($paymentMethod != self::SU_SOFORTBANKING) {
@@ -737,7 +729,42 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		return true;
 	}
 
+	/**
+	 * displays the logos of a VirtueMart plugin
+	 *
+	 * @author Valerie Isaksen
+	 * @author Max Milbers
+	 * @param array $logo_list
+	 * @return html with logos
+	 */
+	protected function xdisplayLogos ($logo_list) {
 
+		$img = "";
+		$jlang = JFactory::getLanguage ();
+		$lang = $jlang->getTag ();
+		$langArray = explode ("-", $lang);
+		$lang = strtolower ($langArray[1]);
+		$listOfLangs=array('de','en','nl', 'pl', 'fr', 'it','es');
+		$linkLang='en';
+		if (in_array($lang,$listOfLangs)) {
+			$linkLang=$lang;
+		}
+		$link="https://images.sofort.com/".$linkLang."/su/landing.php";
+		$linkText=JText::_('VMPAYMENT_SOFORT_GOTO');
+
+		if (!(empty($logo_list))) {
+			$url = JURI::root () . 'images/stories/virtuemart/' . $this->_psType . '/';
+			if (!is_array ($logo_list)) {
+				$logo_list = (array)$logo_list;
+			}
+			foreach ($logo_list as $logo) {
+				$alt_text = substr ($logo, 0, strpos ($logo, '.'));
+
+				$img .= '<span class="vmCartPaymentLogo" ><a href="'.$link.'" alt="'.$linkText.'" target="_blank"><img align="middle" src="' . $url . $logo . '"  alt="' . $alt_text . '" /></a></span> ';
+			}
+		}
+		return $img;
+	}
 	/*
 		 * plgVmonSelectedCalculatePricePayment
 		 * Calculate the price (value, tax_id) of the selected method
