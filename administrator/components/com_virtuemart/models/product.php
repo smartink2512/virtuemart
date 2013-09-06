@@ -1947,11 +1947,28 @@ class VirtueMartModelProduct extends VmModel {
 				$ok = FALSE;
 			}
 
-      if (!$customfields->delete ($id, 'custom_value')) {
-				vmError ('Product delete customfields ' . $customfields->getError ());
-				$ok = FALSE;
+			$db = JFactory::getDbo();
+			$q = 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_product_customfields` as pc ';
+			$q .= 'LEFT JOIN `#__virtuemart_customs`as c using (`virtuemart_custom_id`) WHERE pc.`custom_value` = "' . $id . '" AND `field_type`= "R"';
+			$db->setQuery($q);
+			$list = $db->loadResultArray();
+
+			if ($list) {
+
+				foreach ($list as $row) {
+					$ok = $row;
+					$query = 'DELETE FROM `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` = "' . $row . '"';
+					$this->_db->setQuery($query);
+
+					if (!$this->_db->query()) {
+						$this->setError($this->_db->getErrorMsg());
+						vmError('product remove related ' . $this->_db->getErrorMsg());
+						$ok = 0;
+					}
+				}
+
 			}
-			
+
 			if (!$manufacturers->delete ($id, 'virtuemart_product_id')) {
 				vmError ('Product delete manufacturer ' . $manufacturers->getError ());
 				$ok = FALSE;
