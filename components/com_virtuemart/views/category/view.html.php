@@ -61,11 +61,14 @@ class VirtuemartViewCategory extends VmView {
 		$this->assignRef('keyword', $keyword);
 		$this->assignRef('search', $search);
 
-		$categoryId = JRequest::getInt('virtuemart_category_id', ShopFunctionsF::getLastVisitedCategoryId(false));
+		$categoryId = JRequest::getInt('virtuemart_category_id', false);
+		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', false );
+		if ($categoryId === false and $virtuemart_manufacturer_id === false){
 
-
-		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id',0 );
-		if ($categoryId === false and isset($virtuemart_manufacturer_id)){
+			$categoryId = ShopFunctionsF::getLastVisitedCategoryId();
+			$catType = 'category';
+			$this->setCanonicalLink($tpl,$document,$categoryId,$catType);
+		} else if ($categoryId === false and $virtuemart_manufacturer_id){
 
 			$catType = 'manufacturer';
 			$this->setCanonicalLink($tpl,$document,$virtuemart_manufacturer_id,$catType);
@@ -73,7 +76,6 @@ class VirtuemartViewCategory extends VmView {
 			$catType = 'category';
 			$this->setCanonicalLink($tpl,$document,$categoryId,$catType);
 		}
-
 
 		// Load the products in the given category
 		$ids = $productModel->sortSearchListQuery (TRUE, $categoryId);

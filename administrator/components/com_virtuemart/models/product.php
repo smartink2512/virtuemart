@@ -130,9 +130,9 @@ class VirtueMartModelProduct extends VmModel {
 	function updateRequests () {
 
 		//hmm how to trigger that in the module or so?
-		$this->keyword = vmRequest::uword ('keyword', "0", ' ,-,+,.,_,#,/');
-		if ($this->keyword == "0") {
-			$this->keyword = vmRequest::uword ('filter_product', "0", ' ,-,+,.,_,#,/');
+		$this->keyword = vmRequest::uword ('keyword', "", ' ,-,+,.,_,#,/');
+		if ($this->keyword == "") {
+			$this->keyword = vmRequest::uword ('filter_product', "", ' ,-,+,.,_,#,/');
 			JRequest::setVar('filter_product',$this->keyword);
 		} else {
 			JRequest::setVar('keyword',$this->keyword);
@@ -559,7 +559,7 @@ class VirtueMartModelProduct extends VmModel {
 		$limitStartString  = 'com_virtuemart.' . $view . '.limitstart';
 		if ($app->isSite () and ($cateid != -1 or $manid != 0) ) {
 
-			vmdebug('setPaginationLimits is site and $cateid,$manid ',$cateid,$manid);
+			//vmdebug('setPaginationLimits is site and $cateid,$manid ',$cateid,$manid);
 			$lastCatId = ShopFunctionsf::getLastVisitedCategoryId ();
 			$lastManId = ShopFunctionsf::getLastVisitedManuId ();
 
@@ -611,7 +611,7 @@ class VirtueMartModelProduct extends VmModel {
 				$limit = $prod_per_page['0'];
 			}
 
-			vmdebug('Calculated $limit  ',$limit,$suglimit);
+			//vmdebug('Calculated $limit  ',$limit,$suglimit);
 		}
 		else {
 			$limitStart = $app->getUserStateFromRequest ('com_virtuemart.' . $view . '.limitstart', 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
@@ -2079,14 +2079,10 @@ class VirtueMartModelProduct extends VmModel {
 		$manufacturerTxt = '';
 		$manufacturerLink = '';
 		if (VmConfig::get ('show_manufacturers')) {
-			$tmp = $this->_noLimit;
-			$this->_noLimit = TRUE;
 
-			$this->_noLimit = $tmp;
 
 			// manufacturer link list
-
-			$virtuemart_manufacturer_id = JRequest::getInt ('virtuemart_manufacturer_id', 0);
+			$virtuemart_manufacturer_id = JRequest::getInt ('virtuemart_manufacturer_id', '');
 			if ($virtuemart_manufacturer_id != '') {
 				$manufacturerTxt = '&virtuemart_manufacturer_id=' . $virtuemart_manufacturer_id;
 			}

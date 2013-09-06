@@ -672,7 +672,9 @@ class VmConfig {
 				}
 			}
 		} else {
-			$siteLang = $defaultLang;
+			if(!$siteLang){
+				$siteLang = $defaultLang;
+			}
 		}
 
 		if(!in_array($siteLang, $langs)) {

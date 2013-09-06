@@ -305,7 +305,8 @@ class CurrencyDisplay {
 	/*	if($this->_vendorCurrency_numeric===756){ // and $this->_numeric_code!==$this->_vendorCurrency_numeric){
 			$price = round((float)$price * 2,1) * 0.5 * (float)$quantity;
 		} else {*/
-			$price = round((float)$price,$nb) * (float)$quantity;
+			$price = (float)$price * (float)$quantity;
+			$price = round($price,$nb);
 		//}
 		$price = $this->convertCurrencyTo($currencyId,$price,$inToShopCurrency);
 

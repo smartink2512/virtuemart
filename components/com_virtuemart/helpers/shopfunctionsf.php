@@ -448,11 +448,31 @@ class shopFunctionsF {
 		if(!empty($template) && $template != 'default') {
 			if(is_dir( JPATH_THEMES.DS.$template )) {
 				//$this->addTemplatePath(JPATH_THEMES.DS.$template);
-				$mainframe = JFactory::getApplication( 'site' );
+				$app = JFactory::getApplication( 'site' );
 				if(JVM_VERSION === 1){
-					$mainframe->set( 'setTemplate', $template );
+					$app->set( 'setTemplate', $template );
 				} else {
-					$mainframe->setTemplate($template);
+
+					// Load styles
+					/*$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query->select('id, home, template, s.params');
+					$query->from('#__template_styles as s');
+					$query->where('s.client_id = 0');
+					$query->where('e.enabled = 1 AND e.name="'.$template.'"');
+					$query->leftJoin('#__extensions as e ON e.element=s.template AND e.type='.$db->quote('template').' AND e.client_id=s.client_id');
+
+					$db->setQuery($query);
+					$templates = $db->loadObjectList('id');
+
+					if(count($templates)===1){
+						foreach($templates as $templat){
+							$registry = new JRegistry;
+							$registry->loadString($templat->params);
+							$app->setTemplate($template,$registry);
+						}
+					}
+*/					$app->setTemplate($template);
 				}
 
 			} else {
@@ -612,7 +632,7 @@ class shopFunctionsF {
 	
 	/**
 	 * Get Virtuemart itemID from joomla menu
-	 * @author Maik Künnemann
+	 * @author Maik Kï¿½nnemann
 	 */
 	function getMenuItemId( $lang = '*' ) {
 

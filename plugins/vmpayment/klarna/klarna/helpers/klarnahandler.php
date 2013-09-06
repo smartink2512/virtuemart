@@ -711,7 +711,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		//$_SESSION['klarna_error'] = addslashes($message);
 		$app = JFactory::getApplication ();
 		$app->enqueueMessage ($message);
-		$app->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=cart'), JText::_ ('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
+		$app->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=cart',FALSE), JText::_ ('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 	}
 
 	/**
