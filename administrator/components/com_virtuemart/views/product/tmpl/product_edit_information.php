@@ -353,11 +353,11 @@ $i=0;
 
 					<table class="adminform">
 						<tr>
-							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD') ?></th>
-							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD_NAME')?></th>
-							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST')?></th>
-							<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK')?></th>
-							<th width="5%"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK')?></th>
+							<th style="text-align: left !important;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD') ?></th>
+							<th style="text-align: left !important;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD_NAME')?></th>
+							<th style="text-align: left !important;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST')?></th>
+							<th style="text-align: left !important;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK')?></th>
+							<th style="text-align: left !important;" width="5%"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK')?></th>
 							<?php foreach($customs as $custom){ ?>
 								<th><?php echo JText::sprintf('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD_N',JText::_('COM_VIRTUEMART_'.strtoupper($custom->custom_value)))?></th>
 							<?php } ?>
