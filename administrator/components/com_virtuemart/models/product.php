@@ -1954,19 +1954,13 @@ class VirtueMartModelProduct extends VmModel {
 			$list = $db->loadResultArray();
 
 			if ($list) {
-
-				foreach ($list as $row) {
-					$ok = $row;
-					$query = 'DELETE FROM `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` = "' . $row . '"';
-					$this->_db->setQuery($query);
-
-					if (!$this->_db->query()) {
-						$this->setError($this->_db->getErrorMsg());
-						vmError('product remove related ' . $this->_db->getErrorMsg());
-						$ok = 0;
-					}
+				$listInString = implode(',',$list);
+				//Delete media xref
+				$query = 'DELETE FROM `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` IN ('. $listInString .') ';
+				$this->_db->setQuery($query);
+				if(!$this->_db->query()){
+					vmError( $this->_db->getErrorMsg() );
 				}
-
 			}
 
 			if (!$manufacturers->delete ($id, 'virtuemart_product_id')) {
