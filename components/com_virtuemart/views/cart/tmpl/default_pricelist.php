@@ -156,13 +156,13 @@ foreach ($this->cart->products as $pkey => $prow) {
 	<td align="left"><?php  echo $prow->product_sku ?></td>
 	<td align="center">
 		<?php
-		if (VmConfig::get ('checkout_show_origprice', 1) && $prow->prices[$prow->selectedPrice]['discountedPriceWithoutTax'] != $prow->prices[$prow->selectedPrice]['priceWithoutTax']) {
-			echo '<span class="line-through">' . $this->currencyDisplay->createPriceDiv ('basePriceVariant', '', $prow->prices[$prow->selectedPrice], TRUE, FALSE) . '</span><br />';
+		if (VmConfig::get ('checkout_show_origprice', 1) && $prow->prices['discountedPriceWithoutTax'] != $prow->prices['priceWithoutTax']) {
+			echo '<span class="line-through">' . $this->currencyDisplay->createPriceDiv ('basePriceVariant', '', $prow->prices, TRUE, FALSE) . '</span><br />';
 		}
 		if ($prow->prices[$prow->selectedPrice]['discountedPriceWithoutTax']) {
-			echo $this->currencyDisplay->createPriceDiv ('discountedPriceWithoutTax', '', $prow->prices[$prow->selectedPrice], FALSE, FALSE);
+			echo $this->currencyDisplay->createPriceDiv ('discountedPriceWithoutTax', '', $prow->prices, FALSE, FALSE);
 		} else {
-			echo $this->currencyDisplay->createPriceDiv ('basePriceVariant', '', $prow->prices[$prow->selectedPrice], FALSE, FALSE);
+			echo $this->currencyDisplay->createPriceDiv ('basePriceVariant', '', $prow->prices, FALSE, FALSE);
 		}
 		// 					echo $prow->salesPrice ;
 		?>

@@ -173,9 +173,9 @@ $i=0;
 	$calculator = calculationHelper::getInstance ();
 	$currency_model = VmModel::getModel ('currency');
 	$currencies = $currency_model->getCurrencies ();
-	$nbPrice = count ($this->product->prices);
+	$nbPrice = count ($this->product->allPrices);
 	$this->priceCounter = 0;
-	$this->product->prices[$nbPrice] = $this->product_empty_price;
+	$this->product->allPrices[$nbPrice] = $this->product_empty_price;
 
 
 
@@ -188,7 +188,7 @@ $i=0;
         <tbody id="productPriceBody">
 		<?php
 		//vmdebug('grummel ',$this->product->prices);
-		foreach ($this->product->prices as $sPrices) {
+		foreach ($this->product->allPrices as $sPrices) {
 
 			if(count($sPrices) == 0) continue;
 			if (empty($sPrices['virtuemart_product_price_id'])) {
@@ -374,7 +374,7 @@ $i=0;
 									<input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][slug]" id="child<?php echo $child->virtuemart_product_id ?>slug" value="<?php echo $child->slug ?>" />
 								</td>
 								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_name]" id="child<?php echo $child->virtuemart_product_id ?>product_name" size="32" value="<?php echo htmlspecialchars($child->product_name) ?>" /></td>
-								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][product_price][]" size="10" value="<?php echo $child->prices[$child->selectedPrice]['product_price'] ?>" /><input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][virtuemart_product_price_id][]" value="<?php echo $child->prices[$child->selectedPrice]['virtuemart_product_price_id'] ?>"  ></td>
+								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][product_price][]" size="10" value="<?php echo $child->allPrices[$child->selectedPrice]['product_price'] ?>" /><input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][mprices][virtuemart_product_price_id][]" value="<?php echo $child->allPrices[$child->selectedPrice]['virtuemart_product_price_id'] ?>"  ></td>
 								<td><?php echo $child->product_in_stock ?></td>
 								<td><?php echo $child->product_ordered ?></td>
 								<?php foreach($customs as $custom){

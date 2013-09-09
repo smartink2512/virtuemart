@@ -443,26 +443,44 @@ class shopFunctionsF {
 	 *
 	 * @author Max Milbers
 	 */
-	static function setTemplate ($template) {
+		static function setTemplate ($template) {
 
 		if(!empty($template) && $template != 'default') {
-			if(is_dir( JPATH_THEMES.DS.$template )) {
-				//$this->addTemplatePath(JPATH_THEMES.DS.$template);
-				$mainframe = JFactory::getApplication( 'site' );
-				if(JVM_VERSION === 1){
-					$mainframe->set( 'setTemplate', $template );
-				} else {
-					$mainframe->setTemplate($template);
-					$templateParams = JFactory::getApplication()->getTemplate(true)->params;
 
+			//$this->addTemplatePath(JPATH_THEMES.DS.$template);
+			$app = JFactory::getApplication( 'site' );
+			if(JVM_VERSION === 1){
+				if(is_dir( JPATH_THEMES.DS.$template )) {
+					$app->set( 'setTemplate', $template );
+				} else {
+					JError::raiseWarning( 412, 'The chosen template couldnt find on the filesystem: '.$template );
 				}
 
 			} else {
-				JError::raiseWarning( 412, 'The chosen template couldnt find on the filesystem: '.$template );
+
+				$registry = null;
+				if(is_numeric($template)){
+					$db = JFactory::getDbo();
+					$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$template.'" ';
+					$db->setQuery($query);
+					$res = $db->loadAssoc();
+					if($res){
+						$registry = new JRegistry;
+						$registry->loadString($res['params']);
+						$template = $res['template'];
+					}
+				} else {
+					vmAdminInfo('Your template settings are old, please check your template settings in the vm config and in your categories');
+					vmdebug('Your template settings are old, please check your template settings in the vm config and in your categories');
+				}
+				if(is_dir( JPATH_THEMES.DS.$template )) {
+					$app->setTemplate($template,$registry);
+				} else {
+					JError::raiseWarning( 412, 'The chosen template couldnt find on the filesystem: '.$template );
+				}
 			}
-		} else {
-			//JError::raiseWarning('No template set : '.$template);
 		}
+
 	}
 
 	/**

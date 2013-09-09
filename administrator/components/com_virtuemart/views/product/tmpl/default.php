@@ -161,10 +161,6 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 				<td align="right" ><?php
 					if(isset($product->product_price_display)) {
 						echo $product->product_price_display;
-					} elseif(!empty($product->prices)) {
-						echo JText::_('COM_VIRTUEMART_MULTIPLE_PRICES');
-					} else {
-						echo JText::_('COM_VIRTUEMART_NO_PRICE_SET');
 					}
 				?></td>
 				<!-- Category name -->

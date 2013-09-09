@@ -1016,16 +1016,16 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$_orderItems->order_item_sku = $product->product_sku;
 			$_orderItems->order_item_name = $product->product_name;
 			$_orderItems->product_quantity = $product->quantity;
-			$_orderItems->product_item_price = $product->prices[$product->selectedPrice]['basePrice'];
-			$_orderItems->product_basePriceWithTax = $product->prices[$product->selectedPrice]['basePriceWithTax'];
+			$_orderItems->product_item_price = $product->allPrices[$product->selectedPrice]['basePrice'];
+			$_orderItems->product_basePriceWithTax = $product->allPrices[$product->selectedPrice]['basePriceWithTax'];
 
 			//$_orderItems->product_tax = $_cart->pricesUnformatted[$priceKey]['subtotal_tax_amount'];
-			$_orderItems->product_tax = $product->prices[$product->selectedPrice]['taxAmount'];
-			$_orderItems->product_final_price = $product->prices[$product->selectedPrice]['salesPrice'];
-			$_orderItems->product_subtotal_discount = $product->prices[$product->selectedPrice]['subtotal_discount'];
-			$_orderItems->product_subtotal_with_tax =  $product->prices[$product->selectedPrice]['subtotal_with_tax'];
-			$_orderItems->product_priceWithoutTax = $product->prices[$product->selectedPrice]['priceWithoutTax'];
-			$_orderItems->product_discountedPriceWithoutTax = $product->prices[$product->selectedPrice]['discountedPriceWithoutTax'];
+			$_orderItems->product_tax = $product->allPrices[$product->selectedPrice]['taxAmount'];
+			$_orderItems->product_final_price = $product->allPrices[$product->selectedPrice]['salesPrice'];
+			$_orderItems->product_subtotal_discount = $product->allPrices[$product->selectedPrice]['subtotal_discount'];
+			$_orderItems->product_subtotal_with_tax =  $product->allPrices[$product->selectedPrice]['subtotal_with_tax'];
+			$_orderItems->product_priceWithoutTax = $product->allPrices[$product->selectedPrice]['priceWithoutTax'];
+			$_orderItems->product_discountedPriceWithoutTax = $product->allPrices[$product->selectedPrice]['discountedPriceWithoutTax'];
 			$_orderItems->order_status = 'P';
 			if (!$_orderItems->check()) {
 				vmError($this->getError());

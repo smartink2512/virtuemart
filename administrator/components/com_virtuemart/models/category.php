@@ -572,6 +572,22 @@ class VirtueMartModelCategory extends VmModel {
 			    vmError($table->getError());
 			    return false;
 			}
+			
+			$db = JFactory::getDbo();
+			$q = 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_product_customfields` as pc ';
+			$q .= 'LEFT JOIN `#__virtuemart_customs`as c using (`virtuemart_custom_id`) WHERE pc.`custom_value` = "' . $cid . '" AND `field_type`= "Z"';
+			$db->setQuery($q);
+			$list = $db->loadResultArray();
+
+			if ($list) {
+				$listInString = implode(',',$list);
+				//Delete media xref
+				$query = 'DELETE FROM `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` IN ('. $listInString .') ';
+				$this->_db->setQuery($query);
+				if(!$this->_db->query()){
+					vmError( $this->_db->getErrorMsg() );
+				}
+			}
 		}
 
 		$cidInString = implode(',',$cids);
@@ -591,7 +607,7 @@ class VirtueMartModelCategory extends VmModel {
 			vmError( $this->_db->getErrorMsg() );
 		}
 
-		//deleting product relations
+		//deleting category relations
 		$query = 'DELETE FROM `#__virtuemart_category_categories` WHERE `category_child_id` IN ('. $cidInString .') ';
 		$this->_db->setQuery($query);
 

@@ -396,8 +396,8 @@ class ShopFunctions {
 	static public function renderTemplateList ($defaultText = 0, $defaultOption = TRUE) {
 
 		if (empty($defaultText)) {
-					$defaultText = JText::_ ('COM_VIRTUEMART_TEMPLATE_DEFAULT');
-				}
+			$defaultText = JText::_ ('COM_VIRTUEMART_TEMPLATE_DEFAULT');
+		}
 
 		$defaulttemplate = array();
 		if ($defaultOption) {
@@ -412,21 +412,21 @@ class ShopFunctions {
 						require (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_templates' . DS . 'helpers' . DS . 'template.php');
 					}
 			$jtemplates = TemplatesHelper::parseXMLTemplateFiles (JPATH_SITE . DS . 'templates');
+			foreach ($jtemplates as $key => $template) {
+				$template->value = $template->name;
+			}
 		} else {
-			require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_templates' . DS . 'helpers' . DS . 'templates.php');
-			require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_templates' . DS . 'models' . DS . 'templates.php');
-			$templatesModel = new TemplatesModelTemplates();
-			$jtemplates = $templatesModel->getItems ();
-		}
 
-		foreach ($jtemplates as $key => $template) {
-			$template->value = $template->name;
-			if (JVM_VERSION === 2) {
-				if ($template->client_id == '0') {
-					$template->directory = $template->element;
-				} else {
-					unset($jtemplates[$key]);
-				}
+			$q = 'SELECT * FROM `#__template_styles` WHERE `client_id`="0"';
+			$db = JFactory::getDbo();
+			$db->setQuery($q);
+
+			$jtemplates = $db->loadObjectList();
+			vmdebug('$jtemplates',$jtemplates);
+			foreach ($jtemplates as $key => $template) {
+				$template->name = $template->title;
+				$template->value = $template->id;
+				$template->directory = $template->template;
 			}
 		}
 

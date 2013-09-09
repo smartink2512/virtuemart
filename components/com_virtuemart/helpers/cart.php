@@ -1394,13 +1394,13 @@ class VirtueMartCart {
 			// product Price total for ajax cart
 // 			$data->products[$i]['prices'] = $this->prices[$priceKey]['subtotal_with_tax'];
 			//$data->products[$i]['pricesUnformatted'] = $this->pricesUnformatted[$priceKey]['subtotal_with_tax'];
-			$data->products[$i]['prices'] = $currencyDisplay->priceDisplay( $product->prices[$product->selectedPrice]['subtotal']);
+			$data->products[$i]['prices'] = $currencyDisplay->priceDisplay( $product->allPrices[$product->selectedPrice]['subtotal']);
 
 			// other possible option to use for display
-			$data->products[$i]['subtotal'] = $product->prices[$product->selectedPrice]['subtotal'];
-			$data->products[$i]['subtotal_tax_amount'] = $product->prices[$product->selectedPrice]['subtotal_tax_amount'];
-			$data->products[$i]['subtotal_discount'] = $product->prices[$product->selectedPrice]['subtotal_discount'];
-			$data->products[$i]['subtotal_with_tax'] = $product->prices[$product->selectedPrice]['subtotal_with_tax'];
+			$data->products[$i]['subtotal'] = $product->allPrices[$product->selectedPrice]['subtotal'];
+			$data->products[$i]['subtotal_tax_amount'] = $product->allPrices[$product->selectedPrice]['subtotal_tax_amount'];
+			$data->products[$i]['subtotal_discount'] = $product->allPrices[$product->selectedPrice]['subtotal_discount'];
+			$data->products[$i]['subtotal_with_tax'] = $product->allPrices[$product->selectedPrice]['subtotal_with_tax'];
 
 			// UPDATE CART / DELETE FROM CART
 			$data->products[$i]['quantity'] = $product->quantity;

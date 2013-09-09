@@ -125,12 +125,12 @@ class VirtuemartViewProduct extends VmView {
 
 				$vendor_model->setId(Permissions::getInstance()->isSuperVendor());
 				$vendor = $vendor_model->getVendor();
-				if(empty($product->product_currency)){
+				/*if(empty($product->product_currency)){
 					$product->product_currency = $vendor->vendor_currency;
-				}
+				}*/
 				//$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'virtuemart_currency_id', 'currency_name', $product->product_currency);
-				$currency = $currency_model->getCurrency($product->product_currency);
-				$this->assignRef('product_currency', $currency->currency_symbol);
+				//$currency = $currency_model->getCurrency($product->product_currency);
+				//$this->assignRef('product_currency', $currency->currency_symbol);
 				$currency = $currency_model->getCurrency($vendor->vendor_currency);
 				$this->assignRef('vendor_currency', $currency->currency_symbol);
 
@@ -328,8 +328,13 @@ class VirtuemartViewProduct extends VmView {
 
 				$currencyDisplay = CurrencyDisplay::getInstance($vendor->vendor_currency,$vendor->virtuemart_vendor_id);
 
-				if(!empty($product->product_price) && !empty($product->product_currency) ){
-					$product->product_price_display = $currencyDisplay->priceDisplay($product->product_price,(int)$product->product_currency,1,true);
+				//vmdebug('$product->prices',$product->prices);
+				if(!empty($product->prices['product_price']) && !empty($product->prices['product_currency']) ){
+					$product->product_price_display = $currencyDisplay->priceDisplay($product->prices['product_price'],(int)$product->prices['product_currency'],1,true);
+				} else if(!empty($product->allPrices) and count($product->allPrices)>1 ) {
+					$product->product_price_display = JText::_('COM_VIRTUEMART_MULTIPLE_PRICES');
+				} else {
+					$product->product_price_display = JText::_('COM_VIRTUEMART_NO_PRICE_SET');
 				}
 
 				/* Write the first 5 categories in the list */
