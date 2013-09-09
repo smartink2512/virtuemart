@@ -795,7 +795,7 @@ class VirtueMartModelProduct extends VmModel {
 		return $_products[$productKey];
 	}
 
-	public function loadProductPrices($productId,$quantity,$virtuemart_shoppergroup_ids,$front){
+	public function loadProductPrices($productId,$virtuemart_shoppergroup_ids,$front){
 
 		$db = JFactory::getDbo();
 		if(!isset($this->_nullDate))$this->_nullDate = $db->getNullDate();
@@ -830,31 +830,38 @@ class VirtueMartModelProduct extends VmModel {
 			$q .= ' ORDER BY `product_price` DESC';
 		}
 
-		$db->setQuery($q);
-		$prices = $db->loadAssocList();
-		$err = $db->getErrorMsg();
-		if(!empty($err)){
-			vmError('getProductSingle '.$err);
-		} else {
-			if($prices and count($prices)==0){
-				vmdebug('getProductSingle getPrice query',$q);
+		static $loadedProductPrices = array();
+		$hash = md5($q);
+		if(!isset($loadedProductPrices[$hash])){
+			$db->setQuery($q);
+			$prices = $db->loadAssocList();
+			$err = $db->getErrorMsg();
+			if(!empty($err)){
+				vmError('getProductSingle '.$err);
+			} else {
+				if($prices and count($prices)==0){
+					vmdebug('getProductSingle getPrice query',$q);
+					$loadedProductPrices[$hash] = false;
+				} else {
+					$loadedProductPrices[$hash] = $prices ;
+				}
 			}
-
 		}
-		return $prices;
+
+		return $loadedProductPrices[$hash];
 	}
 
-	public function getRawProductPrices(&$product,$quantity,$virtuemart_shoppergroup_ids,$front){
+	public function getRawProductPrices(&$product,$quantity,$virtuemart_shoppergroup_ids,$front,$withParent){
 
 		$productId = $product->virtuemart_product_id===0? $this->_id:$product->virtuemart_product_id;
-		$product->prices = $this->loadProductPrices($productId,$quantity,$virtuemart_shoppergroup_ids,$front);
+		$product->allPrices = $this->loadProductPrices($productId,$virtuemart_shoppergroup_ids,$front);
 		$i = 0;
 		$runtime = microtime (TRUE) - $this->starttime;
 		$product_parent_id = $product->product_parent_id;
-
+		vmdebug('getRawProductPrices ',$product->allPrices);
 		//Check for all attributes to inherited by parent products
 		if($front and !empty($product_parent_id)) {
-			while ( $product_parent_id and count($product->prices)==0) {
+			while ( $product_parent_id and count($product->allPrices)==0) {
 				$runtime = microtime (TRUE) - $this->starttime;
 				if ($runtime >= $this->maxScriptTime) {
 					vmdebug ('Max execution time reached in model product getProductPrices() ', $product);
@@ -868,11 +875,11 @@ class VirtueMartModelProduct extends VmModel {
 						break;
 					}
 				}
-				$product->prices = $this->loadProductPrices($product_parent_id,$quantity,$virtuemart_shoppergroup_ids,$front);
+				$product->allPrices = $this->loadProductPrices($product_parent_id,$virtuemart_shoppergroup_ids,$front);
 
 				$i++;
 
-				if(!isset($product->prices['salesPrice']) and $product->product_parent_id!=0){
+				if(!isset($product->allPrices['salesPrice']) and $product_parent_id!=0){
 					$db = JFactory::getDbo();
 					$db->setQuery (' SELECT `product_parent_id` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` =' . $product_parent_id);
 					$product_parent_id = $db->loadResult ();
@@ -882,15 +889,15 @@ class VirtueMartModelProduct extends VmModel {
 
 		$product->selectedPrice = null;
 
-		if(!empty($product->prices) and is_array($product->prices)){
+		if(!empty($product->allPrices) and is_array($product->allPrices)){
 
-			foreach($product->prices as $pInd=>$price){
+			foreach($product->allPrices as $pInd=>$price){
 				if(empty($price['price_quantity_start'])){
 					$price['price_quantity_start'] = 0;
 				}
 				if( (empty($price['price_quantity_end']) and $price['price_quantity_start'] <= $quantity) or ($price['price_quantity_start'] <= $quantity and $quantity <= $price['price_quantity_end']) ){
 					$product->selectedPrice = $pInd;
-					$product->cPrices = &$product->prices[$product->selectedPrice];
+					$product->prices = &$product->allPrices[$product->selectedPrice];
 					break;
 				}
 			}
@@ -946,9 +953,6 @@ class VirtueMartModelProduct extends VmModel {
 
 			$this->getRawProductPrices($product,$quantity,$virtuemart_shoppergroup_ids,$front);
 
-			//$product = array_merge ($prices, (array)$product);
-			//$product = (object)array_merge ((array)$prices, (array)$product);
-			//vmdebug('my prices count 1',$product,$prices);
 
 			if (!empty($product->virtuemart_manufacturer_id)) {
 				$mfTable = $this->getTable ('manufacturers');
@@ -1555,7 +1559,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		// Get old IDS
-		$old_price_ids = $this->loadProductPrices($this->_id,0,0,false);
+		$old_price_ids = $this->loadProductPrices($this->_id,0,false);
 		//vmdebug('$old_price_ids ',$old_price_ids);
 		if (isset($data['mprices']['product_price']) and count($data['mprices']['product_price']) > 0){
 			foreach($data['mprices']['product_price'] as $k => $product_price){
@@ -1594,7 +1598,7 @@ class VirtueMartModelProduct extends VmModel {
 
 				}
 
-				if ($isChild) $childPrices = $this->loadProductPrices($this->_id,0,0,false);
+				if ($isChild) $childPrices = $this->loadProductPrices($this->_id,0,false);
 
 				if ((isset($pricesToStore['product_price']) and $pricesToStore['product_price']!='') || (isset($childPrices) and count($childPrices)>1)) {
 
@@ -1878,9 +1882,20 @@ class VirtueMartModelProduct extends VmModel {
 				$ok = FALSE;
 			}
 
-			if (!$customfields->delete ($id, 'customfield_value')) {
-				vmError ('Product delete customfields ' . $customfields->getError ());
-				$ok = FALSE;
+			$db = JFactory::getDbo();
+			$q = 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_product_customfields` as pc ';
+			$q .= 'LEFT JOIN `#__virtuemart_customs`as c using (`virtuemart_custom_id`) WHERE pc.`custom_value` = "' . $id . '" AND `field_type`= "R"';
+			$db->setQuery($q);
+			$list = $db->loadResultArray();
+
+			if ($list) {
+				$listInString = implode(',',$list);
+				//Delete media xref
+				$query = 'DELETE FROM `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` IN ('. $listInString .') ';
+				$this->_db->setQuery($query);
+				if(!$this->_db->query()){
+					vmError( $this->_db->getErrorMsg() );
+				}
 			}
 
 			if (!$manufacturers->delete ($id, 'virtuemart_product_id')) {
