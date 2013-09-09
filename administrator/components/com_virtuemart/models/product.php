@@ -690,7 +690,7 @@ class VirtueMartModelProduct extends VmModel {
 				vmError ('Memory limit reached in model product getProduct() ' . $virtuemart_product_id);
 				return false;
 			}
-			$child = $this->getProductSingle ($virtuemart_product_id, $front,$quantity);
+			$child = $this->getProductSingle ($virtuemart_product_id, $front,$quantity,true);
 			if (!$child->published && $onlyPublished) {
 				vmdebug('getProduct child is not published, returning zero');
 				return FALSE;
@@ -760,7 +760,7 @@ class VirtueMartModelProduct extends VmModel {
 				if(!isset($child->selectedPrice)){
 					$child->selectedPrice = 0;
 				}
-				$child->prices[$child->selectedPrice] = $this->getPrice ($child, array(), 1);
+				$child->allPrices[$child->selectedPrice] = $this->getPrice ($child, array(), 1);
 			}
 
 			if (empty($child->product_template)) {
@@ -839,28 +839,30 @@ class VirtueMartModelProduct extends VmModel {
 			if(!empty($err)){
 				vmError('getProductSingle '.$err);
 			} else {
-				if($prices and count($prices)==0){
-					vmdebug('getProductSingle getPrice query',$q);
-					$loadedProductPrices[$hash] = false;
+
+				if(empty($prices)){
+
+					$loadedProductPrices[$hash] = $this->fillVoidPrice();;
+					vmdebug('getProductSingle getPrice empty  query', count($prices),$productId);
 				} else {
 					$loadedProductPrices[$hash] = $prices ;
 				}
 			}
 		}
-
+		//vmdebug('getRawProductPrices ',$productId);
 		return $loadedProductPrices[$hash];
 	}
 
-	public function getRawProductPrices(&$product,$quantity,$virtuemart_shoppergroup_ids,$front,$withParent){
+	public function getRawProductPrices(&$product,$quantity,$virtuemart_shoppergroup_ids,$front,$withParent=0){
 
 		$productId = $product->virtuemart_product_id===0? $this->_id:$product->virtuemart_product_id;
 		$product->allPrices = $this->loadProductPrices($productId,$virtuemart_shoppergroup_ids,$front);
 		$i = 0;
 		$runtime = microtime (TRUE) - $this->starttime;
 		$product_parent_id = $product->product_parent_id;
-		vmdebug('getRawProductPrices ',$product->allPrices);
+
 		//Check for all attributes to inherited by parent products
-		if($front and !empty($product_parent_id)) {
+		if(($front or $withParent)and !empty($product_parent_id)) {
 			while ( $product_parent_id and count($product->allPrices)==0) {
 				$runtime = microtime (TRUE) - $this->starttime;
 				if ($runtime >= $this->maxScriptTime) {
@@ -905,7 +907,7 @@ class VirtueMartModelProduct extends VmModel {
 
 	}
 
-	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1) {
+	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1, $withParent=false) {
 
 		if (!empty($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId ($virtuemart_product_id);
@@ -951,7 +953,7 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 
-			$this->getRawProductPrices($product,$quantity,$virtuemart_shoppergroup_ids,$front);
+			$this->getRawProductPrices($product,$quantity,$virtuemart_shoppergroup_ids,$front,$withParent);
 
 
 			if (!empty($product->virtuemart_manufacturer_id)) {
@@ -1104,24 +1106,10 @@ class VirtueMartModelProduct extends VmModel {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 		}
 		//$product->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
-
-		$product->product_price = NULL;
-		$product->product_currency = NULL;
-		$product->product_price_quantity_start = NULL;
-		$product->product_price_quantity_end = NULL;
-		$product->product_price_publish_up = NULL;
-		$product->product_price_publish_down = NULL;
-		$product->product_tax_id = NULL;
-		$product->product_discount_id = NULL;
-		$product->product_override_price = NULL;
-		$product->override = NULL;
-		$product->categories = array();
-		$product->shoppergroups = array();
+		$product->allPrices = $this->fillVoidPrice();
 
 		if ($front) {
 			$product->link = '';
-
-			$product->prices = array();
 			$product->virtuemart_category_id = 0;
 			$product->virtuemart_shoppergroup_id = 0;
 			$product->mf_name = '';
@@ -1131,6 +1119,24 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		return $product;
+	}
+
+	private function fillVoidPrice(){
+		$allPrices = array();
+		$allPrices[0] = array();
+		$allPrices[0]['product_price'] = NULL;
+		$allPrices[0]['product_currency'] = NULL;
+		$allPrices[0]['product_price_quantity_start'] = NULL;
+		$allPrices[0]['product_price_quantity_end'] = NULL;
+		$allPrices[0]['product_price_publish_up'] = NULL;
+		$allPrices[0]['product_price_publish_down'] = NULL;
+		$allPrices[0]['product_tax_id'] = NULL;
+		$allPrices[0]['product_discount_id'] = NULL;
+		$allPrices[0]['product_override_price'] = NULL;
+		$allPrices[0]['override'] = NULL;
+		$allPrices[0]['categories'] = array();
+		$allPrices[0]['shoppergroups'] = array();
+		$product->prices = &$product->allPrices[0];
 	}
 
 	/**
@@ -1286,7 +1292,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			foreach ($productIds as $id) {
 				$i = 0;
-				if ($product = $this->getProductSingle ((int)$id, $front)) {
+				if ($product = $this->getProductSingle ((int)$id, $front,1,true)) {
 					$products[] = $product;
 					$i++;
 				}

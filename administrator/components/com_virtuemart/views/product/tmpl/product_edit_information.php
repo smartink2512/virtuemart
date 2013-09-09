@@ -382,7 +382,7 @@ $i=0;
 									if(isset($child->$attrib)){
 										$childAttrib = $child->$attrib;
 									} else {
-										vmdebug('unset? use Fallback product_name instead $attrib '.$attrib,$custom);
+										//vmdebug('unset? use Fallback product_name instead $attrib '.$attrib,$custom);
 										$childAttrib = $child->product_name;
 
 									}

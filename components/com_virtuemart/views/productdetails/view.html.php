@@ -82,6 +82,7 @@ class VirtueMartViewProductdetails extends VmView {
     }
     $product = $product_model->getProduct($virtuemart_product_id,TRUE,TRUE,TRUE,$quantity);
 
+		//vmdebug('my product',$product);
     if (!empty($product->virtuemart_customfield_id)) {
 	    $customfieldsModel = VmModel::getModel ('Customfields');
 	    $this->assignRef('customfieldsModel',$customfieldsModel);
