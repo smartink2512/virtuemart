@@ -402,17 +402,8 @@ class VmConfig {
 
 		if(function_exists('mb_ereg_replace')){
 			mb_regex_encoding('UTF-8');
+			mb_internal_encoding('UTF-8');
 		}
-
-
-		//todo
-		/*	if(strpos(JVERSION,'1.5') === false){
-			$jlang = JFactory::getLanguage();
-			$jlang->load('virtuemart', null, 'en-GB', true); // Load English (British)
-			$jlang->load('virtuemart', null, $jlang->getDefault(), true); // Load the site's default language
-			$jlang->load('virtuemart', null, null, true); // Load the currently selected language
-		}*/
-
 
 	}
 
@@ -989,8 +980,10 @@ class vmRequest{
  			//$source is string that will be filtered, $custom is string that contains custom characters
  			return mb_ereg_replace('[^\w'.preg_quote($custom).']', '', $source);
  		} else {
- 			//return preg_replace('/[^\w'.preg_quote($custom).']/', '', $source);
-			return preg_replace('/([^\w'.preg_quote($custom).'])/', '', $source);
+ 			//return preg_replace('/[^\w'.preg_quote($custom).']/', '', $source);	//creates error Warning: preg_replace(): Unknown modifier ']'
+			//return preg_replace('/([^\w'.preg_quote($custom).'])/', '', $source);	//Warning: preg_replace(): Unknown modifier ']'
+			//return preg_replace("[^\w".preg_quote($custom)."]", '', $source);	//This seems to work even there is no seperator, the change is just the use of " instead '
+			return preg_replace("~[^\w".preg_quote($custom,'~')."]~", '', $source);	//We use Tilde as separator, and give the preq_quote function the used separator
  		}
  	}
 }

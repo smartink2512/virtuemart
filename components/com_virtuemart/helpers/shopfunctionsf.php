@@ -446,41 +446,41 @@ class shopFunctionsF {
 	static function setTemplate ($template) {
 
 		if(!empty($template) && $template != 'default') {
-			if(is_dir( JPATH_THEMES.DS.$template )) {
-				//$this->addTemplatePath(JPATH_THEMES.DS.$template);
-				$app = JFactory::getApplication( 'site' );
-				if(JVM_VERSION === 1){
+
+			//$this->addTemplatePath(JPATH_THEMES.DS.$template);
+			$app = JFactory::getApplication( 'site' );
+			if(JVM_VERSION === 1){
+				if(is_dir( JPATH_THEMES.DS.$template )) {
 					$app->set( 'setTemplate', $template );
 				} else {
-
-					// Load styles
-					/*$db = JFactory::getDbo();
-					$query = $db->getQuery(true);
-					$query->select('id, home, template, s.params');
-					$query->from('#__template_styles as s');
-					$query->where('s.client_id = 0');
-					$query->where('e.enabled = 1 AND e.name="'.$template.'"');
-					$query->leftJoin('#__extensions as e ON e.element=s.template AND e.type='.$db->quote('template').' AND e.client_id=s.client_id');
-
-					$db->setQuery($query);
-					$templates = $db->loadObjectList('id');
-
-					if(count($templates)===1){
-						foreach($templates as $templat){
-							$registry = new JRegistry;
-							$registry->loadString($templat->params);
-							$app->setTemplate($template,$registry);
-						}
-					}
-*/					$app->setTemplate($template);
+					JError::raiseWarning( 412, 'The chosen template couldnt find on the filesystem: '.$template );
 				}
 
 			} else {
-				JError::raiseWarning( 412, 'The chosen template couldnt find on the filesystem: '.$template );
+
+				$registry = null;
+				if(is_numeric($template)){
+					$db = JFactory::getDbo();
+					$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$template.'" ';
+					$db->setQuery($query);
+					$res = $db->loadAssoc();
+					if($res){
+						$registry = new JRegistry;
+						$registry->loadString($res['params']);
+						$template = $res['template'];
+					}
+				} else {
+					vmAdminInfo('Your template settings are old, please check your template settings in the vm config and in your categories');
+					vmdebug('Your template settings are old, please check your template settings in the vm config and in your categories');
+				}
+				if(is_dir( JPATH_THEMES.DS.$template )) {
+					$app->setTemplate($template,$registry);
+				} else {
+					JError::raiseWarning( 412, 'The chosen template couldnt find on the filesystem: '.$template );
+				}
 			}
-		} else {
-			//JError::raiseWarning('No template set : '.$template);
 		}
+
 	}
 
 	/**
