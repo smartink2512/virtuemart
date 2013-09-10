@@ -564,7 +564,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		//$productModel = VmModel::getModel('product');
         //$child = $productModel->getProduct($child_id,true,false,true,1,false);
 		$db = JFactory::getDBO();
-		$q = 'SELECT `product_sku`,`product_name`,`product_in_stock`,`product_ordered`,`product_availability` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_'.VMLANG.'` as l using (`virtuemart_product_id`) WHERE `published`=1 and `virtuemart_product_id` ='.(int)$child_id ;
+		$q = 'SELECT `product_sku`,`product_name`,`product_in_stock`,`product_ordered`,`product_availability`,`product_weight` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_'.VMLANG.'` as l using (`virtuemart_product_id`) WHERE `published`=1 and `virtuemart_product_id` ='.(int)$child_id ;
 		$db->setQuery($q);
 		$child = $db->loadObject();
 		if ($child) {
@@ -702,7 +702,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 				$orderedQuantity = $product->quantity;
 				foreach ($cart->products as $cartProduct) {
-					if ($cartProduct->virtuemart_product_id == $product->virtuemart_product_id) {
+					if ($cartProduct->param[$productCustomsPrice->virtuemart_customfield_id]['stockable']['child_id'] == $selected) {
 						$orderedQuantity += $cartProduct->quantity;
 						if ($orderedQuantity > $product->product_in_stock) {
 							return false;
