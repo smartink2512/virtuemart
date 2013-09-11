@@ -19,6 +19,38 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+
+$j = "
+//<![CDATA[
+jQuery(document).ready(function($){
+	$('#custom_categories').sortable({
+		update: function(event, ui) {
+			$(this).find('.ordering').each(function(index,element) {
+				$(element).val(index);
+				//console.log(index+' ');
+
+			});
+
+		}
+	});
+	$('#custom_products').sortable({
+		update: function(event, ui) {
+			$(this).find('.ordering').each(function(index,element) {
+				$(element).val(index);
+				//console.log(index+' ');
+
+			});
+
+		}
+	});
+});
+//]]>";
+
+$document = JFactory::getDocument ();
+$document->addScriptDeclaration($j);
+
+
 if (isset($this->product->customfields_fromParent)) { ?>
 	<label><?php echo JText::_('COM_VIRTUEMART_CUSTOM_SAVE_FROM_CHILD');?><input type="checkbox" name="save_customfields" value="1" /></label>
 <?php } else {
