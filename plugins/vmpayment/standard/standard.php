@@ -93,16 +93,15 @@ if (!class_exists ('vmPSPlugin')) {
 		if (!class_exists ('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
-		$this->getPaymentCurrency ($method, TRUE);
 
-		// END printing out HTML Form code (Payment Extra Info)
-		$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $method->payment_currency . '" ';
-		$db = JFactory::getDBO ();
-		$db->setQuery ($q);
-		$currency_code_3 = $db->loadResult ();
-		$paymentCurrency = CurrencyDisplay::getInstance ($method->payment_currency);
-		$totalInPaymentCurrency = round ($paymentCurrency->convertCurrencyTo ($method->payment_currency, $order['details']['BT']->order_total, FALSE), 2);
-		$cd = CurrencyDisplay::getInstance ($cart->pricesCurrency);
+		$this->getPaymentCurrency($method);
+		$currency_code_3 = shopFunctions::getCurrencyByID($method->payment_currency, 'currency_code_3');
+
+		$paymentCurrency = CurrencyDisplay::getInstance($method->payment_currency);
+		$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($method->payment_currency, $order['details']['BT']->order_total, FALSE), 2);
+		$totalInPaymentCurrencyDisplay = $paymentCurrency->priceDisplay( $order['details']['BT']->order_total,$method->payment_currency) ;
+		$cd = CurrencyDisplay::getInstance($cart->pricesCurrency);
+
 
 		$dbValues['payment_name'] = $this->renderPluginName ($method) . '<br />' . $method->payment_info;
 		$dbValues['order_number'] = $order['details']['BT']->order_number;
@@ -131,6 +130,11 @@ if (!class_exists ('vmPSPlugin')) {
 		$currency = CurrencyDisplay::getInstance ('', $order['details']['BT']->virtuemart_vendor_id);
 		$html .= $this->getHtmlRow ('STANDARD_ORDER_NUMBER', $order['details']['BT']->order_number, "vmorder-done-nr");
 		$html .= $this->getHtmlRow ('STANDARD_AMOUNT', $currency->priceDisplay ($order['details']['BT']->order_total), "vmorder-done-amount");
+
+		if ($method->payment_currency != $order['details']['BT']->order_currency) {
+			$html .= $this->getHtmlRow ('COM_VIRTUEMART_CART_TOTAL_PAYMENT', $totalInPaymentCurrencyDisplay, "vmorder-done-amount");
+		}
+
 		//$html .= $this->getHtmlRow('STANDARD_INFO', $method->payment_info);
 		//$html .= $this->getHtmlRow('STANDARD_AMOUNT', $totalInPaymentCurrency.' '.$currency_code_3);
 		$html .= '</table>' . "\n";

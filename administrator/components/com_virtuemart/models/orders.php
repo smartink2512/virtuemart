@@ -1889,7 +1889,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		} else {
 			$date = date("Ymd");
 			$data['invoice_number'] = $data['invoice_number'].'_'.$date;
-			$invoice_name_dst = $path.$data['invoice_number'].'.pdf';
+			$invoice_name_dst = $path.DS.$data['invoice_number'].'.pdf';
 
 			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 			if (!JFile::move($invoice_name_src, $invoice_name_dst)) {

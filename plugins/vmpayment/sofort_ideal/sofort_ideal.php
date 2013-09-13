@@ -442,14 +442,15 @@ if (empty($error_codes)) {
 	 * @return bool','null
 	 */
 	function plgVmOnPaymentNotification () {
-		/*
 
+/*
 					$this->_debug = true;
 
-					 $this->logInfo('plgVmOnPaymentNotification '.var_export($_POST, true) , 'message')			/*
+					 $this->logInfo('plgVmOnPaymentNotification '.var_export($_POST, true) , 'message')	;
 					 $this->logInfo('plgVmOnPaymentNotification  '.var_export($_REQUEST, true) , 'message');
 					// $paymentmethod_id = JRequest::getString('reason_2');
-	*/
+*/
+
 		$order_number = JRequest::getString('reason_1'); // is order number
 
 		if (!class_exists('VirtueMartModelOrders')) {
@@ -777,14 +778,8 @@ if (empty($error_codes)) {
 			OR
 			($method->min_amount <= $amount AND ($method->max_amount == 0)));
 
-		$countries = array();
-		if (!empty($method->countries)) {
-			if (!is_array($method->countries)) {
-				$countries[0] = $method->countries;
-			} else {
-				$countries = $method->countries;
-			}
-		}
+
+		$countries[0]  = ShopFunctions::getCountryIDByName('NL');
 		// probably did not gave his BT:ST address
 		if (!is_array($address)) {
 			$address = array();

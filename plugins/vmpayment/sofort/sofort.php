@@ -33,7 +33,25 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$this->tableFields = array_keys($this->getTableSQLFields());
 		$this->_tablepkey = 'id'; //virtuemart_sofort_id';
 		$this->_tableId = 'id'; //'virtuemart_sofort_id';
-		$varsToPush = $this->getVarsToPush();
+
+		$varsToPush = array('payment_logos' => array('', 'char'),
+		                    'configuration_key' => array('', 'char'),
+		                    'buyer_protection' => array('', 'int'),
+		                    'payment_currency' => array('', 'int'),
+		                    'email_currency' => array('', 'int'),
+		                    'countries' => array('', 'char'),
+		                    'min_amount' => array('', 'float'),
+		                    'max_amount' => array('', 'float'),
+		                    'cost_per_transaction' => array('', 'char'),
+		                    'cost_percent_total' => array('', 'char'),
+		                    'tax_id' => array('', 'int'),
+		                    'status_pending' => array('', 'char'),
+		                    'status_received' => array('', 'char'),
+		                    'status_received' => array('', 'char'),
+		                    'status_loss' => array('', 'char'),
+		                    'status_refunded' => array('', 'char'),
+		                    'debug' => array('', 'int'),
+		);
 
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
 
@@ -171,6 +189,13 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$sofort->setNotificationUrl(self::getNotificationUrl($security, $order['details']['BT']->order_number));
 		$sofort->setSofortueberweisung();
 		$sofort->setSofortueberweisungCustomerprotection($method->buyer_protection);
+
+		$jlang = JFactory::getLanguage ();
+		$lang = $jlang->getTag ();
+		$langArray = explode ("-", $lang);
+		$lang = strtolower ($langArray[1]);
+		$sofort->setLanguageCode($lang);
+
 		$sofort->sendRequest();
 		vmdebug('SOFORT plgVmConfirmedOrder ... SofortLib_Multipay ... sendRequest()');
 		if ($sofort->isError()) {
@@ -675,14 +700,12 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	 *
 	 * @param object  $cart Cart object
 	 * @param integer $selected ID of the method selected
-	 * @return boolean True on succes, false on failures, null when this plugin was not selected.
+	 * @return boolean True on success, false on failures, null when this plugin was not selected.
 	 * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
 	 *
 	 * @author Valerie Isaksen
 	 */
 	public function plgVmDisplayListFEPayment (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
-		//return $this->displayListFE($cart, $selected, $htmlIn);
-
 
 		if ($this->getPluginMethods($cart->vendorId) === 0) {
 			if (empty($this->_name)) {
@@ -703,6 +726,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $pricesUnformatted);
 
 				$logo = $this->displayLogos($method->payment_logos);
+				$logo_link = $this->getLogoLink();
 				$payment_cost = '';
 				if ($methodSalesPrice) {
 					$payment_cost = $currency->priceDisplay($methodSalesPrice);
@@ -716,6 +740,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 				                                                       'plugin' => $method,
 				                                                       'checked' => $checked,
 				                                                       'payment_logo' => $logo,
+				                                                       'payment_logo_link' => $logo_link,
 				                                                       'payment_cost' => $payment_cost,
 				                                                  ));
 
@@ -733,13 +758,11 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	 * displays the logos of a VirtueMart plugin
 	 *
 	 * @author Valerie Isaksen
-	 * @author Max Milbers
 	 * @param array $logo_list
 	 * @return html with logos
 	 */
-	protected function xdisplayLogos ($logo_list) {
+	protected function getLogoLink () {
 
-		$img = "";
 		$jlang = JFactory::getLanguage ();
 		$lang = $jlang->getTag ();
 		$langArray = explode ("-", $lang);
@@ -749,21 +772,9 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		if (in_array($lang,$listOfLangs)) {
 			$linkLang=$lang;
 		}
-		$link="https://images.sofort.com/".$linkLang."/su/landing.php";
-		$linkText=JText::_('VMPAYMENT_SOFORT_GOTO');
+		$logoLink="https://images.sofort.com/".$linkLang."/su/landing.php";
 
-		if (!(empty($logo_list))) {
-			$url = JURI::root () . 'images/stories/virtuemart/' . $this->_psType . '/';
-			if (!is_array ($logo_list)) {
-				$logo_list = (array)$logo_list;
-			}
-			foreach ($logo_list as $logo) {
-				$alt_text = substr ($logo, 0, strpos ($logo, '.'));
-
-				$img .= '<span class="vmCartPaymentLogo" ><a href="'.$link.'" alt="'.$linkText.'" target="_blank"><img align="middle" src="' . $url . $logo . '"  alt="' . $alt_text . '" /></a></span> ';
-			}
-		}
-		return $img;
+		return $logoLink;
 	}
 	/*
 		 * plgVmonSelectedCalculatePricePayment
