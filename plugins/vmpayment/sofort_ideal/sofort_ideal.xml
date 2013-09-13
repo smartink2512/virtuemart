@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment">
-    <name>Sofort iDeal</name>
+    <name>VMPAYMENT_SOFORT</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
@@ -26,6 +26,7 @@
 
         <param type="vmjpluginwarning"/>
         <param type="spacer" default="VMPAYMENT_SOFORT_IDEAL_PAYMENT_TITLE" level="level1"/>
+        <param type="getsofort" level="level1"/>
 
         <param type="spacer" default="" level="level1"/>
         <param type="spacer" default="VMPAYMENT_SOFORT_PAYMENT_SETTINGS" level="level1"/>
@@ -34,7 +35,7 @@
                directory="/images/stories/virtuemart/payment"
                default="default" hide_default="1" hide_none="1"
                stripext="0" exclude="^_"/>
-        <param type="getsofort" level="level1"/>
+        <!-- param type="getsofort" level="level1"/ -->
         <param type="spacer" default="" level="level1"/>
         <param type="spacer" default="VMPAYMENT_SOFORT_PARAMS" level="level1"/>
         <param type="text" name="configuration_key" size="100" label="VMPAYMENT_SOFORT_CONFIGURATION_KEY"
@@ -47,6 +48,14 @@
         <param type="text" name="notification_password" size="50" label="VMPAYMENT_SOFORT_IDEAL_NOTIFICATION_PASSWORD"
                default="" description="VMPAYMENT_SOFORT_NOTIFICATION_PASSWORD_DESC"/>
 
+        <param type="spacer" default="" level="level1"/>
+        <param type="spacer" default="VMPAYMENT_SOFORT_PAYMENT_PAGE" level="level1"/>
+        <param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="U" label="VMPAYMENT_SOFORT_STATUS_PENDING" description="VMPAYMENT_SOFORT_STATUS_PENDING_DESC"/>
+        <param name="status_confirmed" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_SOFORT_IDEAL_STATUS_CONFIRMED" description="VMPAYMENT_SOFORT_IDEAL_STATUS_CONFIRMED_DESC"/>
+        <param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X"  label="VMPAYMENT_SOFORT_IDEAL_STATUS_CANCELED" description="VMPAYMENT_SOFORT_IDEAL_STATUS_CANCELED_DESC"/>
+        <param name="status_compensation" type="vmorderstate" scope="com_virtuemart" default="R" label="VMPAYMENT_SOFORT_IDEAL_STATUS_COMPENSATION" description="VMPAYMENT_SOFORT_IDEAL_STATUS_COMPENSATION_DESC"/>
+        <param name="status_refunded" type="vmorderstate" scope="com_virtuemart" default="R" label="VMPAYMENT_SOFORT_STATUS_REFUNDED" description="VMPAYMENT_SOFORT_STATUS_REFUNDED_DESC"/>
+        <param type="spacer" default="" level="level1"/>
 
         <param type="spacer" default="" level="level1"/>
         <param type="spacer" default="" level="level1"/>
@@ -60,8 +69,7 @@
 
         <param type="spacer" default="" level="level1"/>
         <param type="spacer" default="VMPAYMENT_SOFORT_RESTRICTIONS" level="level1"/>
-        <param name="countries" type="vmcountries" scope="com_virtuemart" default="" label="VMPAYMENT_SOFORT_COUNTRIES"
-               description="VMPAYMENT_SOFORT_COUNTRIES_DESC"/>
+
         <param name="min_amount" type="text" label="VMPAYMENT_SOFORT_MIN_AMOUNT"
                description="VMPAYMENT_SOFORT_MIN_AMOUNT_DESC"/>
         <param name="max_amount" type="text" label="VMPAYMENT_SOFORT_MAX_AMOUNT"
@@ -72,18 +80,10 @@
                description="VMPAYMENT_SOFORT_COST_PERCENT_TOTAL_DESC"/>
         <param name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_SOFORT_TAX"
                description="VMPAYMENT_SOFORT_TAX_DESC"/>
-        <param type="spacer" default="" level="level1"/>
-        <param type="spacer" default="VMPAYMENT_SOFORT_PAYMENT_PAGE" level="level1"/>
-        <param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="U" label="VMPAYMENT_SOFORT_STATUS_PENDING" description="VMPAYMENT_SOFORT_STATUS_PENDING_DESC"/>
-        <param name="status_confirmed" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_SOFORT_IDEAL_STATUS_CONFIRMED" description="VMPAYMENT_SOFORT_IDEAL_STATUS_CONFIRMED_DESC"/>
-        <param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X"  label="VMPAYMENT_SOFORT_IDEAL_STATUS_CANCELED" description="VMPAYMENT_SOFORT_IDEAL_STATUS_CANCELED_DESC"/>
-        <param name="status_compensation" type="vmorderstate" scope="com_virtuemart" default="R" label="VMPAYMENT_SOFORT_IDEAL_STATUS_COMPENSATION" description="VMPAYMENT_SOFORT_IDEAL_STATUS_COMPENSATION_DESC"/>
-        <param name="status_refunded" type="vmorderstate" scope="com_virtuemart" default="R" label="VMPAYMENT_SOFORT_STATUS_REFUNDED" description="VMPAYMENT_SOFORT_STATUS_REFUNDED_DESC"/>
-        <param type="spacer" default="" level="level1"/>
         <!--param name="log_ipn" type="list" default="0" label="VMPAYMENT_SOFORT_LOG_IPN" description="VMPAYMENT_SOFORT_LOG_IPN_DESC" >
-        <option value="0">COM_VIRTUEMART_NO</option>
-        <option value="1">COM_VIRTUEMART_YES</option>
-    </param-->
+       <option value="0">COM_VIRTUEMART_NO</option>
+       <option value="1">COM_VIRTUEMART_YES</option>
+   </param-->
         <param name="debug" type="radio" default="0" label="VMPAYMENT_SOFORT_DEBUG"
                description="VMPAYMENT_SOFORT_DEBUG_DESC">
             <option value="0">COM_VIRTUEMART_NO</option>
