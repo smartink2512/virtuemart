@@ -1,5 +1,6 @@
 <?php
 defined ('_JEXEC') or die();
+
 /**
  * @author Valérie Isaksen
  * @version $Id$
