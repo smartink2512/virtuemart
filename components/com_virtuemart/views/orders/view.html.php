@@ -149,7 +149,7 @@ class VirtuemartViewOrders extends VmView {
 			$this->assignRef('print', $print);
 
 			$vendorId = 1;
-			$emailCurrencyId = 0;
+			$emailCurrencyId = $orderDetails['details']['BT']->user_currency_id;
 			$exchangeRate = FALSE;
 			if (!class_exists ('vmPSPlugin')) {
 				require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
@@ -184,7 +184,7 @@ class VirtuemartViewOrders extends VmView {
 				$orderList = $orderModel->getOrdersList($_currentUser->get('id'), TRUE);
 				foreach ($orderList as $order) {
 					$vendorId = 1;
-					$emailCurrencyId = 0;
+					$emailCurrencyId = $order['details']['BT']->user_currency_id;
 					$exchangeRate = FALSE;
 					if (!class_exists ('vmPSPlugin')) {
 						require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
