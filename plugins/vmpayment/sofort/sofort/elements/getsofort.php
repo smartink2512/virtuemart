@@ -68,29 +68,7 @@ class JElementGetSofort extends JElement {
 
 		// MOre information
 		$getSofortLInk="https://www.sofort.com/payment/users/register/688";
-		$html .= '<div><a href="#" id="getsogort_link" ">' . JText::_ ('VMPAYMENT_SOFORT_REGISTERNOW') . '</a>';
-		$html .= '<div id="getsogort_show_hide" >';
-
-		$js = '
-		jQuery(document).ready(function( $ ) {
-			$("#getsogort_show_hide").hide();
-			jQuery("#getsogort_link").click( function() {
-				 if ( $("#getsogort_show_hide").is(":visible") ) {
-				  $("#getsogort_show_hide").hide("slow");
-			        $("#getsogort_link").html("' . addslashes (JText::_ ('VMPAYMENT_SOFORT_REGISTERNOW')) . '");
-				} else {
-				 $("#getsogort_show_hide").show("slow");
-			       $("#getsogort_link").html("' . addslashes (JText::_ ('VMPAYMENT_SOFORT_HIDE')) . '");
-			    }
-		    });
-		});
-';
-
-		$doc = JFactory::getDocument ();
-		$doc->addScriptDeclaration ($js);
-
-		$html .= '<iframe src="' . $getSofortLInk . '" scrolling="yes" style="x-overflow: none;" frameborder="0" height="500px" width="850px"></iframe>';
-		$html .= '</div>';
+		$html .= '<div><a target="_blank" href="'.$getSofortLInk.'" id="getsogort_link" ">' . JText::_ ('VMPAYMENT_SOFORT_REGISTERNOW') . '</a>';
 		$html .= '</div>';
 
 		return $html;
