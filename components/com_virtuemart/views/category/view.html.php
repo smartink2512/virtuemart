@@ -34,7 +34,6 @@ class VirtuemartViewCategory extends VmView {
 
 	public function display($tpl = null) {
 
-
 		$show_prices  = VmConfig::get('show_prices',1);
 		if($show_prices == '1'){
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
@@ -54,12 +53,17 @@ class VirtuemartViewCategory extends VmView {
 		$categoryModel = VmModel::getModel('category');
 		$productModel = VmModel::getModel('product');
 
-		$search = JRequest::getvar('keyword', null);
-		if ($search !==null) {
+		// set search and keyword
+		if ($keyword = vmRequest::uword('keyword', '0', ' ,-,+,.,_')) {
+			$pathway->addItem($keyword);
+			//$title .=' ('.$keyword.')';
+		}
+		//$search = VmRequest::uword('keyword', null);
+		if ($keyword !=='0') {
 			$searchcustom = $this->getSearchCustom();
 		}
 		$this->assignRef('keyword', $keyword);
-		$this->assignRef('search', $search);
+		$this->assignRef('search', $keyword);
 
 		$categoryId = JRequest::getInt('virtuemart_category_id', false);
 		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', false );
@@ -77,63 +81,60 @@ class VirtuemartViewCategory extends VmView {
 			$this->setCanonicalLink($tpl,$document,$categoryId,$catType);
 		}
 
-		// Load the products in the given category
-		$ids = $productModel->sortSearchListQuery (TRUE, $categoryId);
-		$products = $productModel->getProducts ($ids);
-		//$products = $productModel->getProductsInCategory($categoryId);
-		$productModel->addImages($products,1);
-
-		$this->assignRef('products', $products);
-
-		if ($products) {
-			$currency = CurrencyDisplay::getInstance( );
-			$this->assignRef('currency', $currency);
-			foreach($products as $product){
-				$product->stock = $productModel->getStockIndicator($product);
-			}
-		}
-
-		$ratingModel = VmModel::getModel('ratings');
-		$showRating = $ratingModel->showRating();
-		$this->assignRef('showRating', $showRating);
-
-		$orderByList = $productModel->getOrderByList($categoryId);
-		$this->assignRef('orderByList', $orderByList);
-
-		// Add feed links
-		if ($products  && VmConfig::get('feed_cat_published', 0)==1) {
-			$link = '&format=feed&limitstart=';
-			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-			$document->addHeadLink(JRoute::_($link . '&type=rss', FALSE), 'alternate', 'rel', $attribs);
-			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-			$document->addHeadLink(JRoute::_($link . '&type=atom', FALSE), 'alternate', 'rel', $attribs);
-		}
-
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
-		$this->assignRef('showBasePrice', $showBasePrice);
-
-		//set this after the $categoryId definition
-		$paginationAction=JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId , FALSE);
-		$this->assignRef('paginationAction', $paginationAction);
-
-		shopFunctionsF::setLastVisitedCategoryId($categoryId);
-		shopFunctionsF::setLastVisitedManuId($virtuemart_manufacturer_id);
-
-
 		if($categoryId!==-1){
 			$vendorId = 1;
 			$category = $categoryModel->getCategory($categoryId);
 		}
 
-		$perRow = empty($category->products_per_row)? VmConfig::get('products_per_row',3):$category->products_per_row;
-		$this->assignRef('perRow', $perRow);
-
-		$pagination = $productModel->getPagination($perRow);
-		$this->assignRef('vmPagination', $pagination);
-
 		if(!empty($category)){
 
+			if(empty($category->category_layout) or $category->category_layout == 'default') {
+				// Load the products in the given category
+				$ids = $productModel->sortSearchListQuery (TRUE, $categoryId);
+
+				$perRow = empty($category->products_per_row)? VmConfig::get('products_per_row',3):$category->products_per_row;
+				$this->assignRef('perRow', $perRow);
+
+				$pagination = $productModel->getPagination($perRow);
+				$this->assignRef('vmPagination', $pagination);
+
+				$products = $productModel->getProducts ($ids);
+				//$products = $productModel->getProductsInCategory($categoryId);
+				$productModel->addImages($products,1);
+
+				$this->assignRef('products', $products);
+
+				if ($products) {
+					$currency = CurrencyDisplay::getInstance( );
+					$this->assignRef('currency', $currency);
+					foreach($products as $product){
+						$product->stock = $productModel->getStockIndicator($product);
+					}
+				}
+
+				$ratingModel = VmModel::getModel('ratings');
+				$showRating = $ratingModel->showRating();
+				$this->assignRef('showRating', $showRating);
+
+				$orderByList = $productModel->getOrderByList($categoryId);
+				$this->assignRef('orderByList', $orderByList);
+
+				// Add feed links
+				if ($products  && VmConfig::get('feed_cat_published', 0)==1) {
+					$link = '&format=feed&limitstart=';
+					$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+					$document->addHeadLink(JRoute::_($link . '&type=rss', FALSE), 'alternate', 'rel', $attribs);
+					$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+					$document->addHeadLink(JRoute::_($link . '&type=atom', FALSE), 'alternate', 'rel', $attribs);
+				}
+
+				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+				$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
+				$this->assignRef('showBasePrice', $showBasePrice);
+
+			}
+
+			//No redirect here, for category id = 0 means show ALL categories! note by Max Milbers
 			if ((!empty($categoryId) and $categoryId!==-1 ) and (empty($category->slug) or !$category->published)) {
 
 				if(empty($category->slug)){
@@ -141,10 +142,10 @@ class VirtuemartViewCategory extends VmView {
 				} else {
 					if($category->virtuemart_id!==0 and !$category->published){
 						vmInfo('COM_VIRTUEMART_CAT_NOT_PUBL',$category->category_name,$categoryId);
-						//return false;
 					}
 				}
 
+				//Fallback
 				$categoryLink = '';
 				if ($category->category_parent_id) {
 					$categoryLink = '&view=category&virtuemart_category_id=' .$category->category_parent_id;
@@ -163,11 +164,8 @@ class VirtuemartViewCategory extends VmView {
 				return;
 			}
 
-			//No redirect here, category id = 0 means show ALL categories! note by Max Milbers
-			/*		if(empty($category->virtuemart_vendor_id) && $search == null ) {
-						$app -> enqueueMessage(JText::_('COM_VIRTUEMART_CATEGORY_NOT_FOUND'));
-						$app -> redirect( 'index.php');
-					}*/
+			shopFunctionsF::setLastVisitedCategoryId($categoryId);
+			shopFunctionsF::setLastVisitedManuId($virtuemart_manufacturer_id);
 
 			// Add the category name to the pathway
 			if ($category->parents) {
@@ -266,12 +264,6 @@ class VirtuemartViewCategory extends VmView {
 
 		if ($app->getCfg('MetaTitle') == '1') {
 			$document->setMetaData('title',  $title);
-		}
-
-		// set search and keyword
-		if ($keyword = vmRequest::uword('keyword', '0', ' ,-,+,.,_')) {
-			$pathway->addItem($keyword);
-			//$title .=' ('.$keyword.')';
 		}
 
 		parent::display($tpl);

@@ -447,7 +447,6 @@ class shopFunctionsF {
 
 		if(!empty($template) && $template != 'default') {
 
-			//$this->addTemplatePath(JPATH_THEMES.DS.$template);
 			$app = JFactory::getApplication( 'site' );
 			if(JVM_VERSION === 1){
 				if(is_dir( JPATH_THEMES.DS.$template )) {

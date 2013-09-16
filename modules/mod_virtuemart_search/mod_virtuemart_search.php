@@ -37,4 +37,5 @@ if ($params->get ('filter_category', 0)) {
 	$category_id = 0;
 }
 require(JModuleHelper::getLayoutPath ('mod_virtuemart_search'));
+
 ?>

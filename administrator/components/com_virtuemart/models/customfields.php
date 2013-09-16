@@ -960,7 +960,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						//MarkerVarMods
 									$group->display .= '<input id="' . $productCustom->virtuemart_custom_id .$row. '" ' . $checked . ' type="radio" value="' .
 										$productCustom->virtuemart_customfield_id . '" name="customPrice[' . $row . '][' . $productCustom->virtuemart_custom_id . ']" /><label
-										for="' . $productCustom->virtuemart_custom_id . '" class="other-customfield">' . $this->displayProductCustomfieldFE ($product, $productCustom, $row) . ' ' . $price . '</label>';
+										for="' . $productCustom->virtuemart_custom_id .$row. '" class="other-customfield">' . $this->displayProductCustomfieldFE ($product, $productCustom, $row) . ' ' . $price . '</label>';
 
 									$checked = '';
 								}
@@ -1374,8 +1374,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			<input type="hidden" value="' . $customfield->field_type . '" name="field[' . $i . '][field_type]" />
 			<input type="hidden" value="' . $customfield->virtuemart_custom_id . '" name="field[' . $i . '][virtuemart_custom_id]" />
 			<input type="hidden" value="' . $customfield->virtuemart_customfield_id . '" name="field[' . $i . '][virtuemart_customfield_id]" />
-			<input type="hidden" value="' . $customfield->admin_only . '" checked="checked" name="field[' . $i . '][admin_only]" />
-			<input type="hidden" class="ordering" value="' . $customfield->ordering . '" name="field[' . $i . '][ordering]" />';
+			<input type="hidden" value="' . $customfield->admin_only . '" checked="checked" name="field[' . $i . '][admin_only]" />';
 		return $html;
 
 	}
