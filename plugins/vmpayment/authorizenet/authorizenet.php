@@ -285,7 +285,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		return FALSE;
 	}
 
-	function getCosts (VirtueMartCart $cart, $method, $cart_prices)
+/*	function getCosts (VirtueMartCart $cart, $method, $cart_prices)
 	{
 
 		if (preg_match('/%$/', $method->cost_percent_total)) {
@@ -294,8 +294,9 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 			$cost_percent_total = $method->cost_percent_total;
 		}
 		return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
-	}
-	function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
+	}*/
+
+/*	function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
 
 
 		if (!class_exists ('calculationHelper')) {
@@ -377,7 +378,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		}
 
 		return $cart_prices['salesPrice' . $_psType];
-	}
+	}*/
+
 	function _setAuthorizeNetIntoSession ()
 	{
 

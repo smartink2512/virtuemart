@@ -78,7 +78,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		return $SQLfields;
 	}
 
-	function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
+/*	function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
 		if (preg_match ('/%$/', $method->cost_percent_total)) {
 			$cost_percent_total = substr ($method->cost_percent_total, 0, -1);
 		}
@@ -87,7 +87,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		}
 
 		return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
-	}
+	}*/
 
 	/**
 	 * Reimplementation of vmPaymentPlugin::checkPaymentConditions()

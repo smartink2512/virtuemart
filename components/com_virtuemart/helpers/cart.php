@@ -1302,10 +1302,10 @@ class VirtueMartCart {
 	 * @access public
 	 */
 	public function prepareCartData($checkAutomaticSelected=true){
-
+		vmSetStartTime('prepareCartData');
 		// Get the products for the cart
 		$product_prices = $this->getCartPrices($checkAutomaticSelected);
-
+		vmTime('getCartPrices finished','prepareCartData');
 		if (empty($product_prices)) return null;
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
@@ -1505,7 +1505,9 @@ class VirtueMartCart {
 	function prepareAjaxData(){
 		// Added for the zone shipment module
 		//$vars["zone_qty"] = 0;
+
 		$this->prepareCartData(false);
+
 		$weight_total = 0;
 		$weight_subtotal = 0;
 

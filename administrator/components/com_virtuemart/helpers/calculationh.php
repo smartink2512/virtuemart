@@ -677,7 +677,7 @@ class calculationHelper {
 				$this->_cartPrices['priceWithoutTax'] += $this->_cartPrices[$cartproductkey]['subtotal'];
 			}
 		}
-
+		vmTime('getCartPrices finished products','prepareCartData');
 		$this->_product = null;
 		$this->_cartData['DBTaxRulesBill'] = $this->gatherEffectingRulesForBill('DBTaxBill');
 		$this->_cartData['taxRulesBill'] = $this->gatherEffectingRulesForBill('TaxBill');
@@ -781,7 +781,7 @@ class calculationHelper {
 				}
 			}
 		}
-
+		vmTime('getCartPrices checked discount rules','prepareCartData');
 		// combine the discounts before tax for each taxID
 		foreach ($this->_cartData['VatTax'] as &$rule) {
 			if (!empty($rule['DBTax'])) {
@@ -800,7 +800,7 @@ class calculationHelper {
 		// is not considered.
 		$shipment_id = empty($cart->virtuemart_shipmentmethod_id) ? 0 : $cart->virtuemart_shipmentmethod_id;
 		$this->calculateShipmentPrice($cart,  $shipment_id, $checkAutomaticSelected);
-
+		vmTime('getCartPrices calculated shipment price','prepareCartData');
 		// next step is handling a coupon, if given
 		$this->_cartData['vmVat'] = TRUE;
 		$this->_cartPrices['salesPriceCoupon'] = 0.0;
@@ -833,7 +833,7 @@ class calculationHelper {
 		$paymentId = empty($cart->virtuemart_paymentmethod_id) ? 0 : $cart->virtuemart_paymentmethod_id;
 
 		$this->calculatePaymentPrice($cart, $paymentId, $checkAutomaticSelected);
-
+		vmTime('getCartPrices calculated payment price','prepareCartData');
 		//		$sub =!empty($this->_cartPrices['discountedPriceWithoutTax'])? $this->_cartPrices['discountedPriceWithoutTax']:$this->_cartPrices['basePrice'];
 		if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices['billSub'] = $this->_cartPrices['basePrice'] + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'];
 		//		$this->_cartPrices['billSub']  = $sub + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'];
@@ -1286,9 +1286,9 @@ class calculationHelper {
 		$returnValues = $dispatcher->trigger('plgVmonSelectedCalculatePriceShipment',array(  $cart, &$this->_cartPrices, &$this->_cartData['shipmentName']  ));
 
 		/*
-		   * Plugin return true if shipment rate is still valid
-		   * false if not any more
-		   */
+		 * Plugin return true if shipment rate is still valid
+		 * false if not any more
+		 */
 		$shipmentValid=0;
 		foreach ($returnValues as $returnValue) {
 			$shipmentValid += $returnValue;
