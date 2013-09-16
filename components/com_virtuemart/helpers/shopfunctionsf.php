@@ -617,7 +617,7 @@ class shopFunctionsF {
 			if($isPopup) {
 				// Print Preview button - used when viewing page
 				$html = '<span class="vmNoPrint">
-					<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'.JText::_( 'COM_VIRTUEMART_PRINT' ).'">
+					<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'.JText::_( 'COM_VIRTUEMART_PRINT' ).'" rel="nofollow">
 					'.$text.'
 					</a></span>';
 				return $html;

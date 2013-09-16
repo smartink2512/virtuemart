@@ -1453,7 +1453,7 @@ class VirtueMartCart {
 				.'&task=editaddresscart'
 				.'&addrtype='.(($_i == 0) ? 'BT' : 'ST')
 				.'&virtuemart_userinfo_id='.(empty($addressList[$_i]->virtuemart_userinfo_id)? 0 : $addressList[$_i]->virtuemart_userinfo_id)
-				. '">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
+				. '" rel="nofollow">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
 			}
 
 			if(!empty($addressList[0]->virtuemart_userinfo_id)){

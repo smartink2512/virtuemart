@@ -42,6 +42,9 @@ class VirtuemartViewInvoice extends VmView {
 
 		$document = JFactory::getDocument();
 
+		//We never want that the cart is indexed
+		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
+
 		if(empty($this->uselayout)){
 			$layout = JRequest::getWord('layout','mail');
 		} else {

@@ -55,7 +55,7 @@ if (count($this->orderlist) == 0) {
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td align="left">
-					<a href="<?php echo $editlink; ?>"><?php echo $row->order_number; ?></a>
+					<a href="<?php echo $editlink; ?>" rel="nofollow"><?php echo $row->order_number; ?></a>
 				</td>
 				<td align="left">
 					<?php echo vmJsApi::date($row->created_on,'LC4',true); ?>

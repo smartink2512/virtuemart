@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td align="left">
-					<a href="<?php echo $editlink; ?>"><?php echo $row->order_number; ?></a>
+					<a href="<?php echo $editlink; ?>" rel="nofollow"><?php echo $row->order_number; ?></a>
 				</td>
 				<td align="left">
 					<?php echo JHTML::_('date', $row->created_on); ?>
