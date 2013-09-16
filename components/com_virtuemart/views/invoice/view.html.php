@@ -141,7 +141,7 @@ class VirtuemartViewInvoice extends VmView {
 
 		//Todo multix
 		$vendorId=1;
-		$emailCurrencyId=0;
+        $emailCurrencyId = $orderDetails['details']['BT']->user_currency_id;
 		$exchangeRate=FALSE;
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		  JPluginHelper::importPlugin('vmpayment');
