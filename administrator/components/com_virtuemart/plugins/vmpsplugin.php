@@ -874,15 +874,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		return FALSE;
 	}
 
-	function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
 
-		if (preg_match ('/%$/', $method->cost_percent_total)) {
-			$cost_percent_total = substr ($method->cost_percent_total, 0, -1);
-		} else {
-			$cost_percent_total = $method->cost_percent_total;
-		}
-		return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
-	}
 
 	/**
 	 * @param $method
@@ -892,17 +884,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		$method->max_amount = (float)str_replace(',','.',$method->max_amount);
 	}
 
-	/**
-	 * Get the cart amount for checking conditions if the payment conditions are fullfilled
-	 * @param $cart_prices
-	 * @return mixed
-	 */
-	function getCartAmount($cart_prices){
-		$amount= $cart_prices['salesPrice'] + $cart_prices['salesPriceShipment'] + $cart_prices['salesPriceCoupon'] ;
-		if ($amount <= 0) $amount=0;
-		return $amount;
-
-	}
 
 	/**
 	 * @param      $method
@@ -957,6 +938,32 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $html;
 	}
 
+	function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
+
+		if (preg_match ('/%$/', $method->cost_percent_total)) {
+			$method->cost_percent_total = substr ($method->cost_percent_total, 0, -1);
+		} else {
+			$method->cost_percent_total = $method->cost_percent_total;
+		}
+		return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $method->cost_percent_total * 0.01));
+	}
+
+
+	/**
+	 * Get the cart amount for checking conditions if the payment conditions are fullfilled
+	 * @param $cart_prices
+	 * @return mixed
+	 */
+	function getCartAmount($cart_prices){
+		if(empty($cart_prices['salesPrice'])) $cart_prices['salesPrice'] = 0.0;
+		if(empty($cart_prices['salesPriceShipment'])) $cart_prices['salesPriceShipment'] = 0.0;
+		if(empty($cart_prices['salesPriceCoupon'])) $cart_prices['salesPriceCoupon'] = 0.0;
+		$amount= $cart_prices['salesPrice'] + $cart_prices['salesPriceShipment'] + $cart_prices['salesPriceCoupon'] ;
+		if ($amount <= 0) $amount=0;
+		return $amount;
+
+	}
+
 	/**
 	 * update the plugin cart_prices
 	 *
@@ -975,9 +982,9 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		$calculator = calculationHelper::getInstance ();
-		$value = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart_prices), 'salesPrice');
+		$cart_prices[$this->_psType . 'Value'] = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart_prices), 'salesPrice');
+
 		$_psType = ucfirst ($this->_psType);
-		$cart_prices[$this->_psType . 'Value'] = $value;
 
 		$taxrules = array();
 		if(isset($method->tax_id) and (int)$method->tax_id === -1){
@@ -1006,27 +1013,39 @@ abstract class vmPSPlugin extends vmPlugin {
 			}
 		}
 
+		if(empty($method->cost_per_transaction)) $method->cost_per_transaction = 0.0;
+		if(empty($method->cost_percent_total)) $method->cost_percent_total = 0.0;
+
+
 		if($this->_psType=='payment'){
-			$cartAmountToUse=$this->getCartAmount($cart_prices);
-		} else {
-			$cartAmountToUse=$cart_prices[$this->_psType . 'Value'];
+			$cartTotalAmountOrig=$this->getCartAmount($cart_prices);
+			$cartTotalAmount=($cartTotalAmountOrig+ $method->cost_per_transaction) / (1 -($method->cost_percent_total * 0.01));
+			$cart_prices[$this->_psType . 'Value'] = $cartTotalAmount - $cartTotalAmountOrig;
 		}
 
-		//vmdebug('$cartAmountToUse ',$cartAmountToUse);
-		if (count ($taxrules) > 0) {
+		//If the taxing via unpublished categories is used, then the rules use the subtotal which is now overriden here
+		if (count ($taxrules) == 1 and isset($taxrules[1]['subTotal'] )) {
+			$taxrules[1]['subTotal'] = $cart_prices[$this->_psType . 'Value'];
+		}
 
-			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cartAmountToUse,false,false), 'salesPrice');
-			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] - $cart_prices[$this->_psType . 'Value']), 'salesPrice');
+		if (count ($taxrules) > 0 ) {
+
+			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value'],false,false), 'salesPrice');
+			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] -  $cart_prices[$this->_psType . 'Value']), 'salesPrice');
+
 			reset($taxrules);
 			$taxrule =  current($taxrules);
 			$cart_prices[$this->_psType . '_calc_id'] = $taxrule['virtuemart_calc_id'];
 
 		} else {
-			$cart_prices['salesPrice' . $_psType] = $value;
+			$cart_prices['salesPrice' . $_psType] = $cart_prices[$this->_psType . 'Value'];
 			$cart_prices[$this->_psType . 'Tax'] = 0;
 			$cart_prices[$this->_psType . '_calc_id'] = 0;
 		}
+
+
 		return $cart_prices['salesPrice' . $_psType];
+
 	}
 
 	/**

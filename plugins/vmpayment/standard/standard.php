@@ -214,7 +214,7 @@ if (!class_exists ('vmPSPlugin')) {
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
 
-		vmdebug('standard checkConditions',  $amount, $cart_prices['salesPrice'],  $cart_prices['salesPriceCoupon']);
+		//vmdebug('standard checkConditions',  $amount, $cart_prices['salesPrice'],  $cart_prices['salesPriceCoupon']);
  		$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
 			OR
 			($method->min_amount <= $amount AND ($method->max_amount == 0)));

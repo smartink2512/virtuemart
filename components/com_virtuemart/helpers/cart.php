@@ -1174,7 +1174,7 @@ class VirtueMartCart {
 	*/
 	function CheckAutomaticSelectedShipment($cart_prices, $checkAutomaticSelected ) {
 
-		if (count($this->products) == 0) {
+		if (!$checkAutomaticSelected or count($this->products) == 0 or !VmConfig::get('automatic_shipment',1)) {
 			return false;
 		}
 		$nbShipment = 0;
@@ -1183,30 +1183,25 @@ class VirtueMartCart {
 			require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		}
 
-		JPluginHelper::importPlugin('vmshipment');
-		if (VmConfig::get('automatic_shipment',1) && $checkAutomaticSelected) {
-			$shipCounter=0;
-			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipment', array(  $this,$cart_prices, &$shipCounter));
-			vmdebug('CheckAutomaticSelectedShipment', $returnValues);
+		$shipCounter=0;
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipment', array(  $this,$cart_prices, &$shipCounter));
+		vmdebug('CheckAutomaticSelectedShipment', $returnValues);
 
-			foreach ($returnValues as $returnValue) {
-				if ( isset($returnValue )) {
-					$nbShipment ++;
-					if ($returnValue) $virtuemart_shipmentmethod_id = $returnValue;
-				}
+		foreach ($returnValues as $returnValue) {
+			if ( isset($returnValue )) {
+				$nbShipment ++;
+				if ($returnValue) $virtuemart_shipmentmethod_id = $returnValue;
 			}
-			if ($nbShipment==1 && $virtuemart_shipmentmethod_id) {
-				$this->virtuemart_shipmentmethod_id = $virtuemart_shipmentmethod_id;
-				$this->automaticSelectedShipment=true;
-				$this->setCartIntoSession();
-				return true;
-			} else {
-				$this->automaticSelectedShipment=false;
-				$this->setCartIntoSession();
-				return false;
-			}
+		}
+		if ($nbShipment==1 && $virtuemart_shipmentmethod_id) {
+			$this->virtuemart_shipmentmethod_id = $virtuemart_shipmentmethod_id;
+			$this->automaticSelectedShipment=true;
+			$this->setCartIntoSession();
+			return true;
 		} else {
+			$this->automaticSelectedShipment=false;
+			$this->setCartIntoSession();
 			return false;
 		}
 
@@ -1222,9 +1217,9 @@ class VirtueMartCart {
 
 		$nbPayment = 0;
 		$virtuemart_paymentmethod_id=0;
-		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-		JPluginHelper::importPlugin('vmpayment');
-		if (VmConfig::get('automatic_payment',1) && $checkAutomaticSelected ) {
+		if ($checkAutomaticSelected and VmConfig::get('automatic_payment',1) ) {
+			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
 			$paymentCounter=0;
 			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedPayment', array( $this, $cart_prices, &$paymentCounter));
