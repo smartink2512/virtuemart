@@ -115,6 +115,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		}
 		$htmla = array();
 		$html = '';
+		vmdebug('methods', $this->methods);
 		VmConfig::loadJLang('com_virtuemart');
 		$currency = CurrencyDisplay::getInstance();
 		foreach ($this->methods as $method) {
@@ -130,13 +131,17 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 				}
 
 				$selected_bank = self::_getSelectedBank($method->virtuemart_paymentmethod_id);
+				if (empty($method->configuration_key) or empty($method->project_password)) {
+					vmError('Missing essentials infos for this published payment. Check the configuration  key and the password:'. $method->payment_name. ' ('.$method->virtuemart_paymentmethod_id.')');
+					continue;
+				}
 				$sofort_ideal = new SofortLib_iDealClassic($method->configuration_key, $method->project_password);
 				$relatedBanks = $sofort_ideal->getRelatedBanks();
 				if (empty($relatedBanks)) {
-					vmError('getRelatedBanks: error, returned NULL');
+					vmError('getRelatedBanks: error, returned NULL'.$method->virtuemart_paymentmethod_id. '.');
 					continue;
 				}
-				$relatedBanksOptionList = $this->getRelatedBanksOtionList($relatedBanks, $method->virtuemart_paymentmethod_id, $selected_bank);
+				$relatedBanksDropDown = $this->getRelatedBanksDropDown($relatedBanks, $method->virtuemart_paymentmethod_id, $selected_bank);
 				$logo = $this->displayLogos($method->payment_logos);
 				$payment_cost = '';
 				if ($methodSalesPrice) {
@@ -152,7 +157,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 				                                                       'checked' => $checked,
 				                                                       'payment_logo' => $logo,
 				                                                       'payment_cost' => $payment_cost,
-				                                                       'relatedBanks' => $relatedBanksOptionList
+				                                                       'relatedBanks' => $relatedBanksDropDown
 				                                                  ));
 
 				$htmla[] = $html;
@@ -174,7 +179,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		return $session_params['sofort_ideal_bank_selected_' . $paymentmethod_id];
 	}
 
-	function getRelatedBanksOtionList ($relatedBanks, $paymentmethod_id, $selected_bank) {
+	function getRelatedBanksDropDown ($relatedBanks, $paymentmethod_id, $selected_bank) {
 		//vmdebug('getRelatedBanks', $relatedBanks);
 
 		$attrs = '';
