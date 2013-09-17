@@ -268,7 +268,7 @@ if (VmConfig::get ('coupons_enable')) {
 	<td align="right"> </td>
 	<td align="right"><?php echo $this->currencyDisplay->createPriceDiv ('salesPriceCoupon', '', $this->cart->pricesUnformatted['salesPriceCoupon'], FALSE); ?> </td>
 	<?php } else { ?>
-	<td colspan="6" align="left">&nbsp;</td>
+	</td><td colspan="3" align="left">&nbsp;</td>
 	<?php
 }
 
@@ -356,7 +356,9 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 		}
 	} else {
 		echo JText::_ ('COM_VIRTUEMART_CART_SHIPPING');
-	}
+	}?>
+	</td>
+<?php
 } else {
 	?>
 	<td colspan="4" align="left">
@@ -413,7 +415,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	<td align="right"> <?php echo "<span  class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('billTaxAmount', '', $this->cart->pricesUnformatted['billTaxAmount'], FALSE) . "</span>" ?> </td>
 	<?php } ?>
 	<td align="right"> <?php echo "<span  class='priceColor2'>" . $this->currencyDisplay->createPriceDiv ('billDiscountAmount', '', $this->cart->pricesUnformatted['billDiscountAmount'], FALSE) . "</span>" ?> </td>
-	<td align="right"><strong><?php echo $this->currencyDisplay->createPriceDiv ('billTotal', '', $this->cart->pricesUnformatted['billTotal'], FALSE); ?></strong></td>
+	<td align="right"><div class="bold"><?php echo $this->currencyDisplay->createPriceDiv ('billTotal', '', $this->cart->pricesUnformatted['billTotal'], FALSE); ?></div></td>
 </tr>
 <?php
 if ($this->totalInPaymentCurrency) {
