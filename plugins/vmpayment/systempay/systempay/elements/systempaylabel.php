@@ -2,15 +2,15 @@
 #####################################################################################################
 #
 #					Module pour la plateforme de paiement Systempay
-#						Version : 1.2 (révision 33398)
+#						Version : 1.3c (révision 46701)
 #									########################
 #					Développé pour VirtueMart
-#						Version : 2.0.0
+#						Version : 2.0.8
 #						Compatibilité plateforme : V2
 #									########################
 #					Développé par Lyra Network
 #						http://www.lyra-network.com/
-#						20/02/2012
+#						29/04/2013
 #						Contact : supportvad@lyra-network.com
 #
 #####################################################################################################

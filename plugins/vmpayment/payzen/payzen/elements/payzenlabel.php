@@ -2,21 +2,21 @@
 #####################################################################################################
 #
 #					Module pour la plateforme de paiement PayZen
-#						Version : 1.2 (révision 33398)
+#						Version : 1.3c (révision 46701)
 #									########################
 #					Développé pour VirtueMart
-#						Version : 2.0.0
+#						Version : 2.0.8
 #						Compatibilité plateforme : V2
 #									########################
 #					Développé par Lyra Network
 #						http://www.lyra-network.com/
-#						20/02/2012
+#						29/04/2013
 #						Contact : support@payzen.eu
 #
 #####################################################################################################
 
 // Check to ensure this file is within the rest of the framework
-defined ('_JEXEC') or die('Restricted access');
+defined('JPATH_BASE') or die();
 
 /**
  * Renders a label element
