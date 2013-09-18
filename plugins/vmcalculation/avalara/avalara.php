@@ -27,7 +27,7 @@ function avadebug($string,$arg=NULL){
 class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 	var $_connectionType = 'Production';
-	var $vmVersion = '2.0.22';
+	var $vmVersion = '2.0.22e';
 
 	function __construct(& $subject, $config) {
 
@@ -349,8 +349,18 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				if($this->addresses){
 
 					if(empty($products))$products = $this->prepareSingleProduct($calculationHelper,$price);
+
+					if($calculationHelper->inCart){
+						$prices =  $calculationHelper->getCartPrices();
+						if(!empty($prices['salesPriceCoupon'])){
+							if(!isset($products['discountAmount'])) $products['discountAmount'] = 0.0;
+							$products['discountAmount'] -= $prices['salesPriceCoupon'];
+							vmdebug('Adding couponvalue to discount '.$products['discountAmount']);
+						}
+					}
 					$tax = $this->getAvaTax( $rule,$products);
 					if($calculationHelper->inCart){
+
 						$prices =  $calculationHelper->getCartPrices();
 						if(isset($prices['shipmentValue']) and isset(self::$_taxResult['shipmentTax'] )) {
 							self::$_taxResult['salesPriceShipment'] = ($prices['shipmentValue'] + self::$_taxResult['shipmentTax'] );
@@ -639,6 +649,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 				$shipmentModel = VmModel::getModel('Shipmentmethod');
 				$shipmentModel->setId($cart->virtuemart_shipmentmethod_id);
 				$shipmentMethod = $shipmentModel->getShipment();
+
 				$shipment['product_name'] = $shipmentMethod->shipment_name;
 				$shipment['amount'] = 1;
 				$shipment['price'] = $prices['shipmentValue'];              //decimal // TotalAmmount
@@ -828,7 +839,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		if(isset($products['discountAmount'])){
 			if(!empty($products['discountAmount'])){
-				$request->setDiscount($sign * $products['discountAmount'] * (-1));            //decimal
+				//$request->setDiscount($sign * $products['discountAmount'] * (-1));            //decimal
+				$request->setDiscount($sign * $products['discountAmount'] );            //decimal
+				vmdebug('We sent as discount '.$request->getDiscount());
 			}
 			unset($products['discountAmount']);
 		}
@@ -875,7 +888,13 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			//$line->setTaxCode("");             //string
 			$line->setQty($product['amount']);                 //decimal
 			$line->setAmount($sign * $product['price'] * $product['amount']);              //decimal // TotalAmmount
-			$line->setDiscounted($sign * $product['discount'] * $product['amount']);          //boolean
+
+			if(!empty($product['discount']) or !empty($products['discountAmount'])){
+				$line->setDiscounted(true);
+			} else {
+				$line->setDiscounted(false);
+			}
+
 
 			$line->setRevAcct("");             //string
 			$line->setRef1("");                //string

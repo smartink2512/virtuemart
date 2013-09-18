@@ -1174,7 +1174,7 @@ class VirtueMartCart {
 	*/
 	function CheckAutomaticSelectedShipment($cart_prices, $checkAutomaticSelected ) {
 
-		if (!$checkAutomaticSelected or count($this->products) == 0 or !VmConfig::get('automatic_shipment',1)) {
+		if (!$checkAutomaticSelected or count($this->products) == 0 or  VmConfig::get('automatic_shipment','1')!='1') {
 			return false;
 		}
 		$nbShipment = 0;
@@ -1186,7 +1186,6 @@ class VirtueMartCart {
 		$shipCounter=0;
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipment', array(  $this,$cart_prices, &$shipCounter));
-		vmdebug('CheckAutomaticSelectedShipment', $returnValues);
 
 		foreach ($returnValues as $returnValue) {
 			if ( isset($returnValue )) {
@@ -1217,18 +1216,20 @@ class VirtueMartCart {
 
 		$nbPayment = 0;
 		$virtuemart_paymentmethod_id=0;
-		if ($checkAutomaticSelected and VmConfig::get('automatic_payment',1) ) {
+
+		if ($checkAutomaticSelected and VmConfig::get('automatic_payment','1')=='1' ) {
+
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
 			$paymentCounter=0;
 			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedPayment', array( $this, $cart_prices, &$paymentCounter));
 			foreach ($returnValues as $returnValue) {
-				  if ( isset($returnValue )) {
-					 $nbPayment++;
-					    if($returnValue) $virtuemart_paymentmethod_id = $returnValue;
-				     }
-			    }
+				if ( isset($returnValue )) {
+					$nbPayment++;
+					if($returnValue) $virtuemart_paymentmethod_id = $returnValue;
+				}
+			}
 			if ($nbPayment==1 && $virtuemart_paymentmethod_id) {
 				$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;
 				$this->automaticSelectedPayment=true;
@@ -1300,7 +1301,7 @@ class VirtueMartCart {
 		vmSetStartTime('prepareCartData');
 		// Get the products for the cart
 		$product_prices = $this->getCartPrices($checkAutomaticSelected);
-		vmTime('getCartPrices finished','prepareCartData');
+
 		if (empty($product_prices)) return null;
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();

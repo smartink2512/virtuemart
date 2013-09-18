@@ -88,7 +88,7 @@ class VirtuemartViewCategory extends VmView {
 
 		if(!empty($category)){
 
-			if(empty($category->category_layout) or $category->category_layout == 'default') {
+			if(empty($category->category_layout) or $category->category_layout != 'category') {
 				// Load the products in the given category
 				$ids = $productModel->sortSearchListQuery (TRUE, $categoryId);
 

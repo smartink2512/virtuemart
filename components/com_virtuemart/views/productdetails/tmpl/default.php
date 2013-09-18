@@ -78,11 +78,11 @@ if (empty($this->product)) {
 	    if (!empty($this->product->neighbours ['previous'][0])) {
 		$prev_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['previous'][0] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id, FALSE);
 		echo JHTML::_('link', $prev_link, $this->product->neighbours ['previous'][0]
-			['product_name'], array('class' => 'previous-page'));
+			['product_name'], array('rel'=>'prev', 'class' => 'previous-page'));
 	    }
 	    if (!empty($this->product->neighbours ['next'][0])) {
 		$next_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['next'][0] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id, FALSE);
-		echo JHTML::_('link', $next_link, $this->product->neighbours ['next'][0] ['product_name'], array('class' => 'next-page'));
+		echo JHTML::_('link', $next_link, $this->product->neighbours ['next'][0] ['product_name'], array('rel'=>'next''class' => 'next-page'));
 	    }
 	    ?>
     	<div class="clear"></div>

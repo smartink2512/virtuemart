@@ -185,7 +185,9 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	public function onSelectedCalculatePrice (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
 
+
 		$id = $this->_idName;
+		vmTime('onSelectedCalculatePrice before test '.$cart->$id,'prepareCartData');
 		if (!($method = $this->selectedThisByMethodId ($cart->$id))) {
 			return NULL; // Another method was selected, do nothing
 		}
@@ -201,11 +203,12 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (!$this->checkConditions ($cart, $method, $cart_prices)) {
 			return FALSE;
 		}
+		//vmTime('onSelectedCalculatePrice after checkConditions'.$cart->$id,'prepareCartData');
 		$paramsName = $this->_psType . '_params';
 		$cart_prices_name = $this->renderPluginName ($method);
-
+		//vmTime('onSelectedCalculatePrice after renderPluginName'.$cart->$id,'prepareCartData');
 		$this->setCartPrices ($cart, $cart_prices, $method);
-
+		vmTime('onSelectedCalculatePrice after setCartPrices '.$cart_prices_name,'prepareCartData');
 		return TRUE;
 	}
 
@@ -227,10 +230,12 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$nbMethod = $this->getSelectable ($cart, $virtuemart_pluginmethod_id, $cart_prices);
 		$methodCounter += $nbMethod;
+
 		if ($nbMethod == NULL) {
 			return NULL;
 		} else {
 			if ($nbMethod == 1) {
+				vmdebug('onCheckAutomaticSelected return ',$methodCounter,$nbMethod,$virtuemart_pluginmethod_id);
 				return $virtuemart_pluginmethod_id;
 			} else {
 				return 0;

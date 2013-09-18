@@ -107,7 +107,7 @@ class VirtueMartModelConfig extends JModel {
 
 		$dir = JPATH_ROOT.DS.'libraries'.DS.'tcpdf'.DS.'fonts';
 		$specfiles = glob($dir.DS."*_specs.xml");
-		$result = '';
+		$result = array();
 		foreach ($specfiles as $file) {
 			$fontxml = @simpleXML_load_file($file);
 			if ($fontxml) {
