@@ -18,7 +18,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcalculationplugin.php');
 
-defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 1);
+defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 0);
 
 function avadebug($string,$arg=NULL){
 	if(AVATAX_DEBUG) vmdebug($string,$arg);
@@ -733,7 +733,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			avadebug('Request as SalesInvoice with invoiceNumber '.$invoiceNumber);
 		} else {
 
-			$hash .= serialize(self::$vmadd). serialize($products);
+			$hash = serialize(self::$vmadd). serialize($request->getLines()). serialize($request->getDiscount());
 			$hash = md5($hash);
 
 			$request->setDocType(DocumentType::$SalesOrder);

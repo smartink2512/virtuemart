@@ -225,7 +225,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	function onCheckAutomaticSelected (VirtueMartCart $cart, array $cart_prices = array(), &$methodCounter = 0) {
 
-		$nbPlugin = 0;
 		$virtuemart_pluginmethod_id = 0;
 
 		$nbMethod = $this->getSelectable ($cart, $virtuemart_pluginmethod_id, $cart_prices);
@@ -235,7 +234,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			return NULL;
 		} else {
 			if ($nbMethod == 1) {
-				vmdebug('onCheckAutomaticSelected return ',$methodCounter,$nbMethod,$virtuemart_pluginmethod_id);
+
 				return $virtuemart_pluginmethod_id;
 			} else {
 				return 0;
@@ -577,7 +576,7 @@ abstract class vmPSPlugin extends vmPlugin {
 				VmTable::bindParameterable ($method, $this->_xParams, $this->_varsToPushParam);
 			}
 		}
-		// 		vmdebug('getPluginMethods',$this->methods);
+
 		return count ($this->methods);
 	}
 

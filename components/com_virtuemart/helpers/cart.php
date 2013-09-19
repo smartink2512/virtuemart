@@ -1174,15 +1174,17 @@ class VirtueMartCart {
 	*/
 	function CheckAutomaticSelectedShipment($cart_prices, $checkAutomaticSelected ) {
 
+
 		if (!$checkAutomaticSelected or count($this->products) == 0 or  VmConfig::get('automatic_shipment','1')!='1') {
 			return false;
 		}
+
 		$nbShipment = 0;
 		$virtuemart_shipmentmethod_id = 0;
 		if (!class_exists('vmPSPlugin')) {
 			require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		}
-
+		JPluginHelper::importPlugin('vmshipment');
 		$shipCounter=0;
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipment', array(  $this,$cart_prices, &$shipCounter));
@@ -1218,7 +1220,6 @@ class VirtueMartCart {
 		$virtuemart_paymentmethod_id=0;
 
 		if ($checkAutomaticSelected and VmConfig::get('automatic_payment','1')=='1' ) {
-
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
@@ -1498,11 +1499,11 @@ class VirtueMartCart {
 	}
 
 	// Render the code for Ajax Cart
-	function prepareAjaxData(){
+	function prepareAjaxData($checkAutomaticSelected=false){
 		// Added for the zone shipment module
 		//$vars["zone_qty"] = 0;
 
-		$this->prepareCartData(false);
+		$this->prepareCartData($checkAutomaticSelected);
 
 		$weight_total = 0;
 		$weight_subtotal = 0;

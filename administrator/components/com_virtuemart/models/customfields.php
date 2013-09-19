@@ -1291,7 +1291,6 @@ class VirtueMartModelCustomfields extends VmModel {
 			$calculator = calculationHelper::getInstance ();
 		}
 
-		vmdebug('CustomsFieldCartDisplay ',$priceKey);
 		$variantmods = $calculator->parseModifier ($priceKey);
 
 		return self::customFieldDisplay ($product, $variantmods, '<div class="vm-customfield-cart">', 'plgVmOnViewCart');
@@ -1310,7 +1309,6 @@ class VirtueMartModelCustomfields extends VmModel {
 // 					$html = '<div class="vm-customfield-cart">';
 			if (!empty($item->param)) {
 				return self::customFieldDisplay ($item, $item->param, '<div class="vm-customfield-cart">', 'plgVmDisplayInOrder' . $view);
-
 			}
 			else {
 				vmdebug ('CustomsFieldOrderDisplay $item->param empty? ');

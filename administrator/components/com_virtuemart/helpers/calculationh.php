@@ -608,6 +608,7 @@ class calculationHelper {
 		if(isset($this->_cartPrices) and is_array($this->_cartPrices) and count($this->_cartPrices)>0 and isset($this->_cartData['totalProduct']) and $this->_cartData['totalProduct']==count($cart->products) and $checkAutomaticSelected ===$this->_checkAutomaticSelected){
 			return $this->_cartPrices;
 		}
+
 		$this->_checkAutomaticSelected = $checkAutomaticSelected;
 
 		$this->_cart = $cart;
@@ -1273,8 +1274,7 @@ class calculationHelper {
 		$this->_cartPrices['shipment_calc_id'] = 0;
 		// check if there is only one possible shipment method
 
-		$automaticSelectedShipment =   $cart->CheckAutomaticSelectedShipment($this->_cartPrices, $checkAutomaticSelected);
-		if($automaticSelectedShipment) $cart->virtuemart_shipmentmethod_id = $automaticSelectedShipment;
+		$cart->CheckAutomaticSelectedShipment($this->_cartPrices, $checkAutomaticSelected);
 
 		if (empty($cart->virtuemart_shipmentmethod_id)) return;
 
@@ -1324,6 +1324,7 @@ class calculationHelper {
 		// check if there is only one possible payment method
 		$cart->automaticSelectedPayment =   $cart->CheckAutomaticSelectedPayment( $this->_cartPrices, $checkAutomaticSelected);
 		if ($cart->automaticSelectedPayment) $cart->virtuemart_paymentmethod_id = $cart->automaticSelectedPayment;
+
 		if (empty($cart->virtuemart_paymentmethod_id)) return;
 
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
