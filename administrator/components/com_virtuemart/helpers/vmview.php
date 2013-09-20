@@ -262,6 +262,7 @@ class VmView extends JView{
             $activeVmLangs = (vmconfig::get('active_languages') );
             $flagCss="";
             $imgFlags= new stdClass();
+            $missing_flags=array();
             foreach ($languages as $k => &$joomlaLang) {
                 if (in_array($joomlaLang['value'], $activeVmLangs) ) {
                     // $joomlaLang['value'] and $jlang->lang_code   are the same
@@ -269,8 +270,14 @@ class VmView extends JView{
                     $img=$languagesByCode[$joomlaLang['value']]->image;
                     $key=$img.':'.$joomlaLang['value'];
                     $languageFlags[$key]=$joomlaLang['text'];
-                    // todo: maybe images flag are in the template, it should find includeRelativeFiles
-                    $flagCss .="td.flag-".$img.",.flag-".$img."{ background: url(../media/mod_languages/images/".$img.".gif) no-repeat 0 0; padding-left:20px !important;}\n";
+                    if (isset($joomlaLang['selected'])) {
+                        $selectedLangue=$key;
+                    }
+                    $image_flag="../media/mod_languages/images/".$img.".gif";
+                    if (!file_exists ($image_flag)) {
+                        vmerror(JText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $image_flag,$joomlaLang['text'] ) );
+                    }
+                    $flagCss .="td.flag-".$img.",.flag-".$img."{background: url( ".$image_flag.") no-repeat 0 0; padding-left:20px !important;}\n";
                 }
             }
             JFactory::getDocument()->addStyleDeclaration($flagCss);
@@ -341,7 +348,7 @@ class VmView extends JView{
             $langs = $jlang->getKnownLanguages();
             //$languagesByCode[$jlang->lang_code]
             $defautName = $langs[$selectedLangue]['name'];
-            $defaultImg= JHtml::_('image', 'mod_languages/'. $languagesByCode[$selectedLangue]->image.'.gif',  $languagesByCode[$selectedLangue]->title_native, array('title'=> $languagesByCode[$selectedLangue]->title_native), true);
+            $defaultImg= JHtml::_('image', 'mod_languages/'. $languagesByCode[$selectedLangue]->image.'.gif',  $languagesByCode[$selectedLangue]->title_native, array('title'=> $languagesByCode[$selectedLangue]->title_native));
             $langList = '<input name ="vmlang" type="hidden" value="'.$selectedLangue.'" >'.$defaultImg.' <b> '.$defautName.'</b>';
             $this->assignRef('langList',$langList);
             $this->assignRef('lang',$lang);
