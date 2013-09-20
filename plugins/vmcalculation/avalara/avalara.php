@@ -837,11 +837,13 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			avadebug('I set tax override ',self::$vmadd['taxOverride']);
 		}
 
+		$setAllDiscounted = false;
 		if(isset($products['discountAmount'])){
 			if(!empty($products['discountAmount'])){
 				//$request->setDiscount($sign * $products['discountAmount'] * (-1));            //decimal
 				$request->setDiscount($sign * $products['discountAmount'] );            //decimal
 				vmdebug('We sent as discount '.$request->getDiscount());
+				$setAllDiscounted = true;
 			}
 			unset($products['discountAmount']);
 		}
@@ -889,12 +891,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$line->setQty($product['amount']);                 //decimal
 			$line->setAmount($sign * $product['price'] * $product['amount']);              //decimal // TotalAmmount
 
-			if(!empty($product['discount']) or !empty($products['discountAmount'])){
-				$line->setDiscounted(true);
+			if($setAllDiscounted or !empty($product['discount'])) {
+				$line->setDiscounted(1);
 			} else {
-				$line->setDiscounted(false);
+				$line->setDiscounted(0);
 			}
-
 
 			$line->setRevAcct("");             //string
 			$line->setRef1("");                //string
@@ -1105,7 +1106,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$shipment['discount'] = 0.0;
 			$products[] = $shipment;
 		}
-		$products['discountAmount'] = $orderDetails['details']['BT']->order_discountAmount;
+		$products['discountAmount'] = $orderDetails['details']['BT']->order_discountAmount - $orderDetails['details']['BT']->coupon_discount;
 
 		if($data->order_status=='R') {
 			$sign = -1;
@@ -1126,6 +1127,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		JRequest::setVar('create_invoice',1);
 		$orderModel -> createInvoiceNumber($orderDetails['details']['BT'],$invoiceNumber);
 		if(is_array($invoiceNumber)) $invoiceNumber = $invoiceNumber[0];
+
 		if($calc['committ'] and $invoiceNumber){
 			if($data->order_status=='R') {
 				$request->setDocType(DocumentType::$ReturnInvoice);

@@ -54,16 +54,23 @@ class VirtuemartViewCategory extends VmView {
 		$productModel = VmModel::getModel('product');
 
 		// set search and keyword
-		if ($keyword = vmRequest::uword('keyword', '0', ' ,-,+,.,_')) {
+		if ($keyword = vmRequest::uword('keyword', false, ' ,-,+,.,_')) {
 			$pathway->addItem($keyword);
 			//$title .=' ('.$keyword.')';
 		}
 		//$search = VmRequest::uword('keyword', null);
-		if ($keyword !=='0') {
-			$searchcustom = $this->getSearchCustom();
+		$this->searchcustom = '';
+		$this->searchcustomvalues = '';
+		if (!empty($keyword)) {
+			$this->searchcustom = $this->getSearchCustom();
+			$search = $keyword;
+		} else {
+			$keyword ='';
+			$search = NULL;
 		}
+		$this->assignRef('search', $search);
 		$this->assignRef('keyword', $keyword);
-		$this->assignRef('search', $keyword);
+
 
 		$categoryId = JRequest::getInt('virtuemart_category_id', false);
 		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', false );
@@ -338,8 +345,8 @@ class VirtuemartViewCategory extends VmView {
 			$this->searchCustomList = '';
 		}
 
-		$this->assignRef('searchcustom', $this->searchCustomList);
-		$this->assignRef('searchcustomvalues', $this->searchCustomValues);
+		//$this->assignRef('searchcustom', $this->searchCustomList);
+		//$this->assignRef('searchcustomvalues', $this->searchCustomValues);
 	}
 }
 
