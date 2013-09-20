@@ -187,7 +187,7 @@ class VmView extends JView{
 		if (JRequest::getCmd('tmpl') =='component' ) {
 			if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
 		} else {
-	// 		JRequest::setVar('hidemainmenu', true);
+			// 		JRequest::setVar('hidemainmenu', true);
 			JToolBarHelper::divider();
 			if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit')) {
 				JToolBarHelper::save();
@@ -244,12 +244,6 @@ class VmView extends JView{
 		$selectedLangue = $params->get('site', 'en-GB');
 
 		$lang = strtolower(strtr($selectedLangue,'-','_'));
-
-		$allLanguages	= JLanguageHelper::getLanguages();
-		foreach ($allLanguages as $jlang) {
-			$languagesByCode[$jlang->lang_code]=$jlang;
-		}
-
 		// only add if ID and view not null
 		if ($editView and $id and (count(vmconfig::get('active_languages'))>1) ) {
 
@@ -258,31 +252,12 @@ class VmView extends JView{
 			jimport('joomla.language.helper');
 			$lang = JRequest::getVar('vmlang', $lang);
 			$languages = JLanguageHelper::createLanguageList($selectedLangue, constant('JPATH_SITE'), true);
-
 			$activeVmLangs = (vmconfig::get('active_languages') );
-			$flagCss="";
-			$imgFlags= new stdClass();
-			$missing_flags=array();
-			foreach ($languages as $k => &$joomlaLang) {
-				if (in_array($joomlaLang['value'], $activeVmLangs) ) {
-					// $joomlaLang['value'] and $jlang->lang_code   are the same
-					// the key is flag_image:language_code
-					$img=$languagesByCode[$joomlaLang['value']]->image;
-					$key=$img.':'.$joomlaLang['value'];
-					$languageFlags[$key]=$joomlaLang['text'];
-					if (isset($joomlaLang['selected'])) {
-						$selectedLangue=$key;
-					}
-					$image_flag="../media/mod_languages/images/".$img.".gif";
-					if (!file_exists ($image_flag)) {
-						vmerror(JText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $image_flag,$joomlaLang['text'] ) );
-					}
-					$flagCss .="td.flag-".$img.",.flag-".$img."{background: url( ".$image_flag.") no-repeat 0 0; padding-left:20px !important;}\n";
-				}
-			}
-			JFactory::getDocument()->addStyleDeclaration($flagCss);
 
-			$langList = JHTML::_('select.genericlist',  $languageFlags, 'vmlang', 'class="inputbox"', 'value', 'text', $selectedLangue , 'vmlang');
+			foreach ($languages as $k => &$joomlaLang) {
+				if (!in_array($joomlaLang['value'], $activeVmLangs) )  unset($languages[$k] );
+			}
+			$langList = JHTML::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox"', 'value', 'text', $selectedLangue , 'vmlang');
 			$this->assignRef('langList',$langList);
 			$this->assignRef('lang',$lang);
 
@@ -296,11 +271,8 @@ class VmView extends JView{
 			jQuery(function($) {
 				var oldflag = "";
 				$("select#vmlang").chosen().change(function() {
-					langImgCode = $(this).find("option:selected").val();
-					separatorImg=langImgCode.indexOf(":");
-					langImg =  langImgCode.substr(0,separatorImg) ;
-					langCode =  langImgCode.substr(separatorImg+1) ;
-					flagClass = "flag-"+langImg ;
+					langCode = $(this).find("option:selected").val();
+					flagClass = "flag-"+langCode.substr(3,5).toLowerCase() ;
 					$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1" ,
 						function(data) {
 							var items = [];
@@ -316,9 +288,9 @@ class VmView extends JView{
 
 							} else alert(data.msg);';
 
-							if($editView =='product' && !empty($childproducts)) {
-								foreach($childproducts as $child) {
-								$j .= '
+			if($editView =='product' && !empty($childproducts)) {
+				foreach($childproducts as $child) {
+					$j .= '
 									$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$child->virtuemart_product_id.'&editView='.$editView.'&'.$token.'=1" ,
 										function(data) {
 											cible = jQuery("#child'. $child->virtuemart_product_id .'product_name");
@@ -326,16 +298,16 @@ class VmView extends JView{
 											cible.parent().addClass(flagClass);
 											cible.val(data.fields["product_name"]);
 											jQuery("#child'. $child->virtuemart_product_id .'slug").val(data.fields["slug"]);
-											
+
 											oldflag = flagClass ;
 										}
 									)
 								';
-								}
-							}
-							else $j .= 'oldflag = flagClass ;';
+				}
+			}
+			else $j .= 'oldflag = flagClass ;';
 
-						$j .= '
+			$j .= '
 						}
 					)
 				});
@@ -346,15 +318,16 @@ class VmView extends JView{
 			// $lang = $params->get('site', 'en-GB');
 			$jlang = JFactory::getLanguage();
 			$langs = $jlang->getKnownLanguages();
-			//$languagesByCode[$jlang->lang_code]
 			$defautName = $langs[$selectedLangue]['name'];
-			$defaultImg= JHtml::_('image', 'mod_languages/'. $languagesByCode[$selectedLangue]->image.'.gif',  $languagesByCode[$selectedLangue]->title_native, array('title'=> $languagesByCode[$selectedLangue]->title_native));
-			$langList = '<input name ="vmlang" type="hidden" value="'.$selectedLangue.'" >'.$defaultImg.' <b> '.$defautName.'</b>';
+			$flagImg =JURI::root( true ).'/administrator/components/com_virtuemart/assets/images/flag/'.substr($lang,0,2).'.png';
+			$langList = '<input name ="vmlang" type="hidden" value="'.$selectedLangue.'" ><img style="vertical-align: middle;" alt="'.$defautName.'" src="'.$flagImg.'"> <b> '.$defautName.'</b>';
 			$this->assignRef('langList',$langList);
 			$this->assignRef('lang',$lang);
 		}
 
 	}
+
+
 
 
 	function SetViewTitle($name ='', $msg ='') {
