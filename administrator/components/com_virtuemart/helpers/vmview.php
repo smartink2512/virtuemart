@@ -1,7 +1,7 @@
 <?php
 /**
  * abstract controller class containing get,store,delete,publish and pagination
- *
+ ** @version $Id$
  *
  * This class provides the functions for the calculations
  *
@@ -244,7 +244,7 @@ class VmView extends JView{
         $selectedLangue = $params->get('site', 'en-GB');
 
         $lang = strtolower(strtr($selectedLangue,'-','_'));
-
+        // Get all the published languages defined in Language manager > Content
         $allLanguages	= JLanguageHelper::getLanguages();
         foreach ($allLanguages as $jlang) {
             $languagesByCode[$jlang->lang_code]=$jlang;
@@ -257,6 +257,7 @@ class VmView extends JView{
             //$params = JComponentHelper::getParams('com_languages');
             jimport('joomla.language.helper');
             $lang = JRequest::getVar('vmlang', $lang);
+            // list of languages installed in #__extensions (may be more than the ones in the Language manager > Content if the user did not added them)
             $languages = JLanguageHelper::createLanguageList($selectedLangue, constant('JPATH_SITE'), true);
             $activeVmLangs = (vmconfig::get('active_languages') );
             $flagCss="";
@@ -268,18 +269,13 @@ class VmView extends JView{
                     $img=$languagesByCode[$joomlaLang['value']]->image;
                     $image_flag="../media/mod_languages/images/".$img.".gif";
                     if (!file_exists ($image_flag)) {
-                        $missing_flags[$key]['img']=$image_flag;
-                        $missing_flags[$key]['language']=$joomlaLang['text'] ;
+                        vmerror(JText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $image_flag,$joomlaLang['text'] ) );
                     }
                     $flagCss .="td.flag-".$key.",.flag-".$key."{background: url( ".$image_flag.") no-repeat 0 0; padding-left:20px !important;}\n";
                 }
             }
             JFactory::getDocument()->addStyleDeclaration($flagCss);
-            if (!empty($missing_flags)) {
-                foreach ($missing_flags as $missing_flag) {
-                    vmerror(JText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $missing_flag['img'],$missing_flag['language'] ) );
-                }
-            }
+
             $langList = JHTML::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox"', 'value', 'text', $selectedLangue , 'vmlang');
             $this->assignRef('langList',$langList);
             $this->assignRef('lang',$lang);
@@ -349,7 +345,6 @@ class VmView extends JView{
         }
 
     }
-
 
 
     function SetViewTitle($name ='', $msg ='') {
