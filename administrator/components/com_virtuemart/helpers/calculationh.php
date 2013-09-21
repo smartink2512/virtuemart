@@ -605,13 +605,20 @@ class calculationHelper {
 	//	function getCheckoutPrices($productIds,$variantMods=array(), $cartVendorId=1,$couponId=0,$shipId=0,$paymId=0){
 	public function getCheckoutPrices($cart, $checkAutomaticSelected=true) {
 
-		if(isset($this->_cartPrices) and is_array($this->_cartPrices) and count($this->_cartPrices)>0 and isset($this->_cartData['totalProduct']) and $this->_cartData['totalProduct']==count($cart->products) and $checkAutomaticSelected ===$this->_checkAutomaticSelected){
+		if(isset($this->_cartPrices) and
+			is_array($this->_cartPrices) and
+			count($this->_cartPrices)>0 and
+			isset($this->_cartData['totalProduct']) and
+			$this->_cartData['totalProduct']==count($cart->products) and
+			$cart->couponCode == $this->couponCode and
+			$checkAutomaticSelected ===$this->_checkAutomaticSelected 	){
 			return $this->_cartPrices;
 		}
 
 		$this->_checkAutomaticSelected = $checkAutomaticSelected;
 
 		$this->_cart = $cart;
+		$this->couponCode = $cart->couponCode;
 		$this->inCart = TRUE;
 		$pricesPerId = array();
 		$this->_cartPrices = array();

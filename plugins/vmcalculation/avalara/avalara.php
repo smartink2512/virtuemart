@@ -10,7 +10,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * @package VirtueMart
  * @subpackage Plugins - avalara
  * @author Max Milbers
- * @copyright Copyright (C) 2012 iStraxx - All rights reserved.
+ * @copyright Copyright (C) 2012 - 2013 iStraxx - All rights reserved.
  * @license http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  *
  *

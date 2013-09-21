@@ -66,6 +66,8 @@ abstract class CouponHelper
 			self::RemoveCoupon($_code, true);
 			return JText::_('COM_VIRTUEMART_COUPON_CODE_EXPIRED');
 		}
+
+
 		if ($_billTotal < $couponData->coupon_value_valid) {
 			if (!class_exists('CurrencyDisplay'))
 			    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
