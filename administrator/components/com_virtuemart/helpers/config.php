@@ -450,26 +450,40 @@ class VmConfig {
 	}
 
 	/**
-	 * @param $limit the limit in MB
+	 * Ensures a certain Memory limit for php (if server supports it)
+	 * @author Max Milbers
+	 * @param int $minMemory
 	 */
 	static function ensureMemoryLimit($minMemory=0){
 
 		if($minMemory === 0) $minMemory = VmConfig::get('minMemory','128M');
-		$iniValue = ini_get('memory_limit');
-		if($iniValue===-1) return;	//We do not need to alter an unlimited setting
-		$iniValue = strtolower($iniValue);
-		if(strpos($iniValue,'M')!==FALSE){
-			$memory_limit = (int) substr($iniValue,0,-1);
-		} else if(strpos($iniValue,'K')!==FALSE){
-			$memory_limit = (int) substr($iniValue,0,-1) * 1024;
-		} else if(strpos($iniValue,'G')!==FALSE){
-			$memory_limit = (int) substr($iniValue,0,-1) / 1024.0;
-		} else {
-			$memory_limit = (int) $iniValue * 1048576;
-		}
+		$memory_limit = VmConfig::getMemoryLimit();
 
 		if($memory_limit<$minMemory)  @ini_set( 'memory_limit', $minMemory.'M' );
 
+	}
+
+	/**
+	 * Returns the PHP memory limit of the server in MB, regardless the used unit
+	 * @author Max Milbers
+	 * @return float|int PHP memory limit in MB
+	 */
+	static function getMemoryLimit(){
+
+		$iniValue = ini_get('memory_limit');
+
+		if($iniValue===-1) return 2048;	//We assume 2048MB as unlimited setting
+		$iniValue = strtoupper($iniValue);
+		if(strpos($iniValue,'M')!==FALSE){
+			$memory_limit = (int) substr($iniValue,0,-1);
+		} else if(strpos($iniValue,'K')!==FALSE){
+			$memory_limit = (int) substr($iniValue,0,-1) / 1024.0;
+		} else if(strpos($iniValue,'G')!==FALSE){
+			$memory_limit = (int) substr($iniValue,0,-1) * 1024.0;
+		} else {
+			$memory_limit = (int) $iniValue / 1048576.0;
+		}
+		return $memory_limit;
 	}
 
 	static function ensureExecutionTime($minTime=0){

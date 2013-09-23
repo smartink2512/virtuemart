@@ -1329,9 +1329,7 @@ class calculationHelper {
 		$this->_cartPrices['payment_calc_id'] = 0;
 
 		// check if there is only one possible payment method
-		$cart->automaticSelectedPayment =   $cart->CheckAutomaticSelectedPayment( $this->_cartPrices, $checkAutomaticSelected);
-		if ($cart->automaticSelectedPayment) $cart->virtuemart_paymentmethod_id = $cart->automaticSelectedPayment;
-
+		$cart->CheckAutomaticSelectedPayment($this->_cartPrices, $checkAutomaticSelected);
 		if (empty($cart->virtuemart_paymentmethod_id)) return;
 
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');

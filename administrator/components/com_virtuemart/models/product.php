@@ -53,7 +53,8 @@ class VirtueMartModelProduct extends VmModel {
 		$this->setMainTable ('products');
 		$this->starttime = microtime (TRUE);
 		$this->maxScriptTime = ini_get ('max_execution_time') * 0.95 - 1;
-		$this->memory_limit = (int) substr(ini_get('memory_limit'),0,-1) -4; // 4 MB reserve
+		$this->memory_limit = VmConfig::getMemoryLimit()-4;
+
 		// 	$this->addvalidOrderingFieldName(array('m.mf_name','pp.product_price'));
 
 		$app = JFactory::getApplication ();

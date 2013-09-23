@@ -1023,7 +1023,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		if($this->_psType=='payment'){
 			$cartTotalAmountOrig=$this->getCartAmount($cart_prices);
-			$cartTotalAmount=($cartTotalAmountOrig+ $method->cost_per_transaction) / (1 -($method->cost_percent_total * 0.01));
+			$cartTotalAmount=($cartTotalAmountOrig + $method->cost_per_transaction) / (1 -($method->cost_percent_total * 0.01));
 			$cart_prices[$this->_psType . 'Value'] = $cartTotalAmount - $cartTotalAmountOrig;
 		}
 
