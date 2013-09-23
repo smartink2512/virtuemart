@@ -160,11 +160,7 @@ $i=0;
     <legend><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICES'); ?></legend>
 
 	<?php
-	//$product = $this->product;
 
-	if (empty($this->product->prices)) {
-		$this->product->prices[] = array();
-	}
 	$this->i = 0;
 	$rowColor = 0;
 	if (!class_exists ('calculationHelper')) {
@@ -175,9 +171,7 @@ $i=0;
 	$currencies = $currency_model->getCurrencies ();
 	$nbPrice = count ($this->product->allPrices);
 	$this->priceCounter = 0;
-	$this->product->allPrices[$nbPrice] = $this->product_empty_price;
-
-
+	$this->product->allPrices[$nbPrice] = VmModel::getModel()->fillVoidPrice();
 
 	if (!class_exists ('calculationHelper')) {
 		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
@@ -187,24 +181,15 @@ $i=0;
     <table border="0" width="100%" cellpadding="2" cellspacing="3" id="mainPriceTable" class="adminform">
         <tbody id="productPriceBody">
 		<?php
-		//vmdebug('grummel ',$this->product->prices);
-		foreach ($this->product->allPrices as $sPrices) {
 
-			if(count($sPrices) == 0) continue;
-			if (empty($sPrices['virtuemart_product_price_id'])) {
-				$sPrices['virtuemart_product_price_id'] = '';
-			}
-			//vmdebug('my $sPrices ',$sPrices);
-			$sPrices = (array)$sPrices;
-			$this->tempProduct = (object)array_merge ((array)$this->product, $sPrices);
-			$this->calculatedPrices = $calculator->getProductPrices ($this->tempProduct);
+		foreach ($this->product->allPrices as $k => $sPrices) {
 
-			if((string)$sPrices['product_price']==='0' or (string)$sPrices['product_price']===''){
-				$this->calculatedPrices['costPrice'] = '';
-			}
+			$this->product->selectedPrice = $k;
+			$this->calculatedPrices = $calculator->getProductPrices ($this->product);
+			$this->product->allPrices[$k] = array_merge($this->product->allPrices[$k],$this->calculatedPrices);
 
 			$currency_model = VmModel::getModel ('currency');
-			$this->lists['currencies'] = JHTML::_ ('select.genericlist', $currencies, 'mprices[product_currency][' . $this->priceCounter . ']', '', 'virtuemart_currency_id', 'currency_name', $this->tempProduct->product_currency);
+			$this->lists['currencies'] = JHTML::_ ('select.genericlist', $currencies, 'mprices[product_currency][' . $this->priceCounter . ']', '', 'virtuemart_currency_id', 'currency_name', $this->product->allPrices[$k]['product_currency']);
 
 			$DBTax = ''; //JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
 			foreach ($calculator->rules['DBTax'] as $rule) {
@@ -227,19 +212,20 @@ $i=0;
 			}
 			$this->DATaxRules = $DATax;
 
-			if (!isset($this->tempProduct->product_tax_id)) {
-				$this->tempProduct->product_tax_id = 0;
+			if (!isset($this->product->product_tax_id)) {
+				$this->product->product_tax_id = 0;
 			}
-			$this->lists['taxrates'] = ShopFunctions::renderTaxList ($this->tempProduct->product_tax_id, 'mprices[product_tax_id][' . $this->priceCounter . ']');
-			if (!isset($this->tempProduct->product_discount_id)) {
-				$this->tempProduct->product_discount_id = 0;
+			$this->lists['taxrates'] = ShopFunctions::renderTaxList ($this->product->allPrices[$k]['product_tax_id'], 'mprices[product_tax_id][' . $this->priceCounter . ']');
+			if (!isset($this->product->allPrices[$k]['product_discount_id'])) {
+				$this->product->allPrices[$k]['product_discount_id'] = 0;
 			}
-			$this->lists['discounts'] = $this->renderDiscountList ($this->tempProduct->product_discount_id, 'mprices[product_discount_id][' . $this->priceCounter . ']');
+			$this->lists['discounts'] = $this->renderDiscountList ($this->product->allPrices[$k]['product_discount_id'], 'mprices[product_discount_id][' . $this->priceCounter . ']');
 
-			$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList ($this->tempProduct->virtuemart_shoppergroup_id, false, 'mprices[virtuemart_shoppergroup_id][' . $this->priceCounter . ']');
+			$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList ($this->product->allPrices[$k]['virtuemart_shoppergroup_id'], false, 'mprices[virtuemart_shoppergroup_id][' . $this->priceCounter . ']');
 
 			if ($this->priceCounter == $nbPrice) {
 				$tmpl = "productPriceRowTmpl";
+				$this->product->allPrices[$k]['virtuemart_product_price_id'] = '';
 			} else {
 				$tmpl = "productPriceRowTmpl_" . $this->priceCounter;
 			}

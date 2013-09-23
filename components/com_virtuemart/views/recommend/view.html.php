@@ -55,7 +55,7 @@ class virtuemartViewrecommend extends VmView {
 		}
 		$this->assignRef('show_prices', $show_prices);
 		$document = JFactory::getDocument();
-
+		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 		/* add javascript for price and cart */
 		//vmJsApi::jPrice();
 
@@ -136,9 +136,6 @@ class virtuemartViewrecommend extends VmView {
 			$document->setMetaData('keywords', $product->metakey);
 		}
 
-		if ($product->metarobot) {
-			$document->setMetaData('robots', $product->metarobot);
-		}
 
 		if ($mainframe->getCfg('MetaTitle') == '1') {
 			$document->setMetaData('title', $product->product_s_desc);  //Maybe better product_name

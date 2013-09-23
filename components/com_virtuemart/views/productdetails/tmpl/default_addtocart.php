@@ -120,12 +120,13 @@ $alert=JText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
           			<span class="addtocart-button">
           			<?php echo shopFunctionsF::getAddToCartButton ($this->product->orderable);
 						// Display the add to cart button END  ?>
+         			</span>
 						<input type="hidden" class="pname" value="<?php echo htmlentities($this->product->product_name, ENT_QUOTES, 'utf-8') ?>"/>
 						<input type="hidden" name="view" value="cart"/>
 						<noscript><input type="hidden" name="task" value="add"/></noscript>
 						<input type="hidden" name="virtuemart_product_id[]" value="<?php echo $this->product->virtuemart_product_id ?>"/>
-         			 </span>
-				<?php }
+
+					<?php }
 				?>
 				
 				<?php } ?>

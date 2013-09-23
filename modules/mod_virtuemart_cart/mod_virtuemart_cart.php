@@ -27,7 +27,13 @@ VmConfig::loadJLang('com_virtuemart', true);
 //This is strange we have the whole thing again in controllers/cart.php public function viewJS()
 if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 $cart = VirtueMartCart::getCart(false);
-$data = $cart -> prepareAjaxData();
+$viewName = JRequest::getString('view',0);
+if($viewName=='cart'){
+	$checkAutomaticPS = true;
+} else {
+	$checkAutomaticPS = false;
+}
+$data = $cart->prepareAjaxData($checkAutomaticPS);
 
 if (!class_exists('CurrencyDisplay'))
 	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');

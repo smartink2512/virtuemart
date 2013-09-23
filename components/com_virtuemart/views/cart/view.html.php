@@ -291,7 +291,7 @@ class VirtueMartViewCart extends VmView {
 
 		if (!$found_payment_method) {
 			$link=''; // todo
-			$payment_not_found_text = JText::sprintf('COM_VIRTUEMART_CART_NO_PAYMENT_METHOD_PUBLIC', '<a href="'.$link.'">'.$link.'</a>');
+			$payment_not_found_text = JText::sprintf('COM_VIRTUEMART_CART_NO_PAYMENT_METHOD_PUBLIC', '<a href="'.$link.'" rel="nofollow">'.$link.'</a>');
 		}
 
 		$this->assignRef('payment_not_found_text', $payment_not_found_text);
@@ -351,7 +351,7 @@ class VirtueMartViewCart extends VmView {
 			if (Permissions::getInstance()->check("admin,storeadmin")) {
 				$uri = JFactory::getURI();
 				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=paymentmethod';
-				$text = JText::sprintf('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED_LINK', '<a href="' . $link . '">' . $link . '</a>');
+				$text = JText::sprintf('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED_LINK', '<a href="' . $link . '" rel="nofollow">' . $link . '</a>');
 			}
 
 			vmInfo('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED', $text);
@@ -377,7 +377,7 @@ class VirtueMartViewCart extends VmView {
 			if (Permissions::getInstance()->check("admin,storeadmin")) {
 				$uri = JFactory::getURI();
 				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=shipmentmethod';
-				$text = JText::sprintf('COM_VIRTUEMART_NO_SHIPPING_METHODS_CONFIGURED_LINK', '<a href="' . $link . '">' . $link . '</a>');
+				$text = JText::sprintf('COM_VIRTUEMART_NO_SHIPPING_METHODS_CONFIGURED_LINK', '<a href="' . $link . '" rel="nofollow">' . $link . '</a>');
 			}
 
 			vmInfo('COM_VIRTUEMART_NO_SHIPPING_METHODS_CONFIGURED', $text);
@@ -432,7 +432,7 @@ class VirtueMartViewCart extends VmView {
 					.'&task=editaddresscart'
 					.'&addrtype='.(($_i == 0) ? 'BT' : 'ST')
 					.'&virtuemart_userinfo_id='.(empty($addressList[$_i]->virtuemart_userinfo_id)? 0 : $addressList[$_i]->virtuemart_userinfo_id)
-					. '">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
+					. '" rel="nofollow">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
 			}
 
 			if(!empty($addressList[0]->virtuemart_userinfo_id)){

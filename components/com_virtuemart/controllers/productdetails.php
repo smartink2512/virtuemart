@@ -306,7 +306,7 @@ class VirtueMartControllerProductdetails extends JController {
 		//VmConfig::$echoDebug=1;
 
 		if(isset($customProductData[$virtuemart_product_id])){
-			$prices = $product_model->getPrice ($virtuemart_product_id, $customProductData[$virtuemart_product_id], $quantity);
+			$prices = $product_model->getPrice ($virtuemart_product_id, $quantity);
 			//vmdebug('Wie siehts aus? ',$customProductData,$prices);
 		} else {
 			//VmConfig::$echoDebug=true;

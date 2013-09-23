@@ -4,7 +4,7 @@ if(typeof Virtuemart === "undefined")
 			setproducttype : function (form, id) {
 				form.view = null;
 				var $ = jQuery, datas = form.serialize();
-				var prices = form.parents(".productdetails").find(".product-price");
+				var prices = form.parent(".productdetails").find(".product-price");
 				if (0 == prices.length) {
 					prices = $("#productPrice" + id);
 				}

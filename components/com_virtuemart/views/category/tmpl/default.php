@@ -39,14 +39,6 @@ jQuery(document).ready(function () {
 $document = JFactory::getDocument ();
 $document->addScriptDeclaration ($js);
 
-/*$edit_link = '';
-if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-if (Permissions::getInstance()->check("admin,storeadmin")) {
-	$edit_link = '<a href="'.JURI::root().'index.php?option=com_virtuemart&tmpl=component&view=category&task=edit&virtuemart_category_id='.$this->category->virtuemart_category_id.'">
-		'.JHTML::_('image', 'images/M_images/edit.png', JText::_('COM_VIRTUEMART_PRODUCT_FORM_EDIT_PRODUCT'), array('width' => 16, 'height' => 16, 'border' => 0)).'</a>';
-}
-
-echo $edit_link; */
 if (empty($this->keyword) and !empty($this->category)) {
 	?>
 <div class="category_description">
@@ -146,12 +138,14 @@ if (VmConfig::get ('showCategory', 1) and empty($this->keyword)) {
 ?>
 <div class="browse-view">
 <?php
+
 if (!empty($this->keyword)) {
 	?>
 <h3><?php echo $this->keyword; ?></h3>
 	<?php
 } ?>
-<?php if ($this->search !== NULL) {
+
+<?php if ($this->search != false) {
 	$category_id  = JRequest::getInt ('virtuemart_category_id', 0); ?>
 <form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=category&limitstart=0', FALSE); ?>" method="get">
 

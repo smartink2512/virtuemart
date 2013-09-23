@@ -148,11 +148,11 @@ JHTML::_ ( 'behavior.modal' );
         <div class="clr"></div>
 
         <div class="width30 floatleft">
-            <a href="<?php echo JRoute::_('index.php?option='.$comUserOption.'&view=remind'); ?>">
+            <a href="<?php echo JRoute::_('index.php?option='.$comUserOption.'&view=remind'); ?>" rel="nofollow">
             <?php echo JText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_USERNAME'); ?></a>
         </div>
         <div class="width30 floatleft">
-            <a href="<?php echo JRoute::_('index.php?option='.$comUserOption.'&view=reset'); ?>">
+            <a href="<?php echo JRoute::_('index.php?option='.$comUserOption.'&view=reset'); ?>" rel="nofollow">
             <?php echo JText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_PASSWORD'); ?></a>
         </div>
 

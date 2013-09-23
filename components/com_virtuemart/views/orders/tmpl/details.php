@@ -59,7 +59,7 @@ if($this->print){
 <?php if($this->order_list_link){ ?>
 	<div class='spaceStyle'>
 	    <div class="floatright">
-		<a href="<?php echo $this->order_list_link ?>"><?php echo JText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE'); ?></a>
+		<a href="<?php echo $this->order_list_link ?>" rel="nofollow"><?php echo JText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE'); ?></a>
 	    </div>
 	    <div class="clear"></div>
 	</div>

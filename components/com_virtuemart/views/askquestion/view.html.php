@@ -137,9 +137,8 @@ class VirtueMartViewAskquestion extends VmView {
 			$document->setMetaData ('keywords', $product->metakey);
 		}
 
-		if ($product->metarobot) {
-			$document->setMetaData ('robots', $product->metarobot);
-		}
+		//We never want that ask a question is indexed
+		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
 		if ($mainframe->getCfg ('MetaTitle') == '1') {
 			$document->setMetaData ('title', $product->product_s_desc); //Maybe better product_name

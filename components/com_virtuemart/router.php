@@ -384,8 +384,11 @@ function virtuemartParseRoute($segments) {
 	}
 
 	if (  $helper->compareKey($segments[0] ,'manufacturer') ) {
-		array_shift($segments);
-		$vars['virtuemart_manufacturer_id'] =  $helper->getManufacturerId($segments[0]);
+		if(!empty($segments[1])){
+			array_shift($segments);
+			$vars['virtuemart_manufacturer_id'] =  $helper->getManufacturerId($segments[0]);
+		}
+
 		array_shift($segments);
 		// OSP 2012-02-29 removed search malforms SEF path and search is performed
 		// $vars['search'] = 'true';
@@ -417,7 +420,6 @@ function virtuemartParseRoute($segments) {
 		array_shift($segments);
 		if ( !empty ($segments) ) {
 			$vars['keyword'] = array_shift($segments);
-
 		}
 		$vars['view'] = 'category';
 		$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
@@ -790,6 +792,7 @@ class vmrouterHelper {
 			}
 			self::$_catRoute[$virtuemart_category_id . $this->vmlang] = $category;
 		}
+
 		return self::$_catRoute[$virtuemart_category_id . $this->vmlang] ;
 	}
 
@@ -1102,7 +1105,7 @@ class vmrouterHelper {
 			} else {
 				$menuItem = $menu->getActive();
 			}
-
+			//vmdebug('hmm what is my active menu now?',$menuItem);
 			$this->activeMenu = new stdClass();
 			$this->activeMenu->view			= (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
 			$this->activeMenu->virtuemart_category_id	= (empty($menuItem->query['virtuemart_category_id'])) ? 0 : $menuItem->query['virtuemart_category_id'];

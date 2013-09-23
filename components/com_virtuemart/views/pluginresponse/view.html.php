@@ -42,7 +42,7 @@ class VirtueMartViewPluginresponse extends VmView {
 		$layoutName = $this->getLayout();
 
 
-
+		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 		parent::display($tpl);
 	}
 

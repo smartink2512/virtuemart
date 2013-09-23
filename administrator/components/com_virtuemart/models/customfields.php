@@ -205,7 +205,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 */
 	function getProductParentRelation ($product_id) {
 
-		$this->_db->setQuery (' SELECT `custom_value` FROM `#__virtuemart_product_customfields` WHERE  `virtuemart_product_id` =' . (int)$product_id);
+		$this->_db->setQuery (' SELECT `customfield_value` FROM `#__virtuemart_product_customfields` WHERE  `virtuemart_product_id` =' . (int)$product_id);
 		if ($childcustom = $this->_db->loadResult ()) {
 			return '(' . $childcustom . ')';
 		}
@@ -313,6 +313,12 @@ class VirtueMartModelCustomfields extends VmModel {
 
 			//'X'=>'COM_VIRTUEMART_CUSTOM_EDITOR',
 			case 'X':
+        // Not sure why this block is needed to get it to work when editing the customfield (the subsequent block works fine when creating it, ie. in JS)
+				$document=& JFactory::getDocument();
+				if (get_class($document) == 'JDocumentHTML') {
+					$editor =& JFactory::getEditor();
+					return $editor->display('field['.$row.'][custom_value]',$field->custom_value, '550', '400', '60', '20', false).'</td><td>';
+				}
 				return '<textarea class="mceInsertContentNew" name="field[' . $row . '][customfield_value]" id="field-' . $row . '-customfield_value">' . $field->customfield_value . '</textarea>
 						<script type="text/javascript">// Creates a new editor instance
 							tinymce.execCommand("mceAddControl",true,"field-' . $row . '-customfield_value")

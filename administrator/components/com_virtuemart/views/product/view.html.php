@@ -195,22 +195,6 @@ class VirtuemartViewProduct extends VmView {
 
 
 				$this->assignRef('product', $product);
-				$product_empty_price = array(
-					'virtuemart_product_price_id' => 0
-				, 'virtuemart_product_id'         => $virtuemart_product_id
-				, 'virtuemart_shoppergroup_id'    => NULL
-				, 'product_price'                 => NULL
-				, 'override'                      => NULL
-				, 'product_override_price'        => NULL
-				, 'product_tax_id'                => NULL
-				, 'product_discount_id'           => NULL
-				, 'product_currency'              => $vendor->vendor_currency
-				, 'product_price_publish_up'      => NULL
-				, 'product_price_publish_down'    => NULL
-				, 'price_quantity_start'          => NULL
-				, 'price_quantity_end'            => NULL
-				);
-				$this->assignRef ('product_empty_price', $product_empty_price);
 
 				$this->assignRef('product_parent', $product_parent);
 				/* Assign label values */
@@ -329,8 +313,8 @@ class VirtuemartViewProduct extends VmView {
 				$currencyDisplay = CurrencyDisplay::getInstance($vendor->vendor_currency,$vendor->virtuemart_vendor_id);
 
 				//vmdebug('$product->prices',$product->prices);
-				if(!empty($product->prices['product_price']) && !empty($product->prices['product_currency']) ){
-					$product->product_price_display = $currencyDisplay->priceDisplay($product->prices['product_price'],(int)$product->prices['product_currency'],1,true);
+				if(!empty($product->allPrices[$product->selectedPrice]['product_price']) && !empty($product->allPrices[$product->selectedPrice]['product_currency']) ){
+					$product->product_price_display = $currencyDisplay->priceDisplay($product->allPrices[$product->selectedPrice]['product_price'],(int)$product->allPrices[$product->selectedPrice]['product_currency'],1,true);
 				} else if(!empty($product->allPrices) and count($product->allPrices)>1 ) {
 					$product->product_price_display = JText::_('COM_VIRTUEMART_MULTIPLE_PRICES');
 				} else {

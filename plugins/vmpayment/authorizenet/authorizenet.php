@@ -285,7 +285,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		return FALSE;
 	}
 
-	function getCosts (VirtueMartCart $cart, $method, $cart_prices)
+/*	function getCosts (VirtueMartCart $cart, $method, $cart_prices)
 	{
 
 		if (preg_match('/%$/', $method->cost_percent_total)) {
@@ -294,13 +294,14 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 			$cost_percent_total = $method->cost_percent_total;
 		}
 		return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
-	}
-    function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
+	}*/
+
+/*	function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
 
 
-        if (!class_exists ('calculationHelper')) {
-            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-        }
+		if (!class_exists ('calculationHelper')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+		}
 
         if (!class_exists ('calculationHelper')) {
             require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
@@ -374,10 +375,11 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
             $cart_prices[$this->_psType . 'Tax']  = 0;
             $cart_prices[$this->_psType . '_calc_id'] = 0;
             $cart_prices[ $this->_psType .'Value'] = $fee;
-        }
+		}
 
-        return $cart_prices['salesPrice' . $_psType];
-    }
+		return $cart_prices['salesPrice' . $_psType];
+	}*/
+
 	function _setAuthorizeNetIntoSession ()
 	{
 

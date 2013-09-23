@@ -43,10 +43,10 @@ $rowColor = 0;
                 name="mprices[product_price][]"
                 size="12"
                 style="text-align:right;"
-                value="<?php echo $this->calculatedPrices['costPrice']; ?>"/>
+                value="<?php echo $this->product->allPrices[$this->product->selectedPrice]['costPrice']; ?>"/>
             <input type="hidden"
                    name="mprices[virtuemart_product_price_id][]"
-                   value="<?php echo  $this->tempProduct->virtuemart_product_price_id; ?>"/>
+                   value="<?php echo $this->product->allPrices[$this->product->selectedPrice]['virtuemart_product_price_id']; ?>"/>
         </td>
         <td width="185px" >
 			<?php echo $this->lists['currencies']; ?>
@@ -79,7 +79,7 @@ $rowColor = 0;
                 class="inputbox readonly"
                 name="mprices[basePrice][]"
                 size="12"
-                value="<?php echo $this->calculatedPrices['basePrice']; ?>"/>&nbsp;
+                value="<?php echo $this->product->allPrices[$this->product->selectedPrice]['basePrice']; ?>"/>&nbsp;
 			<?php echo $this->vendor_currency;   ?>
         </td>
 		<?php /*    <td width="17%"><div style="text-align: right; font-weight: bold;">
@@ -117,7 +117,7 @@ $rowColor = 0;
                 name="mprices[salesPrice][]"
                 size="12"
                 style="text-align:right;"
-                value="<?php echo $this->calculatedPrices['salesPriceTemp']; ?>"/>
+                value="<?php echo $this->product->allPrices[$this->product->selectedPrice]['salesPriceTemp']; ?>"/>
 			<?php echo $this->vendor_currency;   ?>
         </td>
 		<?php /*  <td width="17%"><div style="text-align: right; font-weight: bold;">
@@ -141,10 +141,10 @@ $rowColor = 0;
         </td>
 		<td style="background: #d5d5d5;padding:0;width:1px;"></td>
         <td  nowrap>
-			<?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_up, 'mprices[product_price_publish_up][]'); ?>
+			<?php echo  vmJsApi::jDate ($this->product->allPrices[$this->product->selectedPrice]['product_price_publish_up'], 'mprices[product_price_publish_up][]'); ?>
         </td>
         <td  nowrap>
-			<?php echo  vmJsApi::jDate ($this->tempProduct->product_price_publish_down, 'mprices[product_price_publish_down][]'); ?>
+			<?php echo  vmJsApi::jDate ($this->product->allPrices[$this->product->selectedPrice]['product_price_publish_down'], 'mprices[product_price_publish_down][]'); ?>
         </td>
     </tr>
 
@@ -165,12 +165,12 @@ $rowColor = 0;
 			<input type="text"
                    size="12"
                    style="text-align:right;" name="mprices[product_override_price][]"
-                   value="<?php echo $this->tempProduct->product_override_price ?>"/>
+                   value="<?php echo $this->product->allPrices[$this->product->selectedPrice]['product_override_price'] ?>"/>
 			<?php echo $this->vendor_currency;   ?>
 </div>
 			<?php
 			$options = array(0 => JText::_ ('JNO'), 1 => JText::_ ('JYES'));
-			// echo VmHtml::radioList ('mprices[use_desired_price][' . $this->priceCounter . ']', $this->tempProduct->override, $options);
+			// echo VmHtml::radioList ('mprices[use_desired_price][' . $this->priceCounter . ']', $this->product->override, $options);
 			echo '<input type="checkbox" name="mprices[use_desired_price][' . $this->priceCounter . ']" value="1"/>'
 			?>
 			<strong>
@@ -186,7 +186,7 @@ $rowColor = 0;
 			// 							echo VmHtml::checkbox('override',$this->product->override);
 			$options = array(0 => JText::_ ('COM_VIRTUEMART_DISABLED'), 1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_FINAL'), -1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_PRICE_TAX'));
 
-			echo VmHtml::radioList ('mprices[override][' . $this->priceCounter . ']', $this->tempProduct->override, $options,'',' ');
+			echo VmHtml::radioList ('mprices[override][' . $this->priceCounter . ']', $this->product->allPrices[$this->product->selectedPrice]['override'], $options,'',' ');
 			?>
         </td>
 		<td style="background: #d5d5d5;padding:0;width:1px;"></td>
@@ -197,14 +197,14 @@ $rowColor = 0;
             <input type="text"
                    size="12"
                    style="text-align:right;" name="mprices[price_quantity_start][]"
-                   value="<?php echo $this->tempProduct->price_quantity_start ?>"/>
+                   value="<?php echo $this->product->allPrices[$this->product->selectedPrice]['price_quantity_start'] ?>"/>
         </td>
         <td>
             <br/>
             <input type="text"
                    size="12"
                    style="text-align:right;" name="mprices[price_quantity_end][]"
-                   value="<?php echo $this->tempProduct->price_quantity_end  ?>"/>
+                   value="<?php echo $this->product->allPrices[$this->product->selectedPrice]['price_quantity_end']  ?>"/>
         </td>
     </tr>
 </table>

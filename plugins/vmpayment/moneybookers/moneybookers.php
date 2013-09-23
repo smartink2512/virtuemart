@@ -574,7 +574,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		return $html;
 	}
 
-	function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
+/*	function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
 
 		if (preg_match ('/%$/', $method->cost_percent_total)) {
 			$cost_percent_total = substr ($method->cost_percent_total, 0, -1);
@@ -585,10 +585,10 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		return ($method->cost_per_transaction +
 			($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
 	}
-
+*/
 	protected function checkConditions ($cart, $method, $cart_prices) {
 
-        $this->convert_condition_amount($method);
+		$this->convert_condition_amount($method);
         $amount = $this->getCartAmount($cart_prices);
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 

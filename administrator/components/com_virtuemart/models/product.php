@@ -53,8 +53,12 @@ class VirtueMartModelProduct extends VmModel {
 		$this->setMainTable ('products');
 		$this->starttime = microtime (TRUE);
 		$this->maxScriptTime = ini_get ('max_execution_time') * 0.95 - 1;
-		$this->memory_limit = (int) substr(ini_get('memory_limit'),0,-1) -4; // 4 MB reserve
-		// 	$this->addvalidOrderingFieldName(array('m.mf_name','pp.product_price'));
+		$memoryLimit = ini_get('memory_limit');
+		if($memoryLimit!=-1){
+			$this->memory_limit = (int) substr($memoryLimit,0,-1) -4; // 4 MB reserve
+		} else {
+			$this->memory_limit = '1024M';
+		}
 
 		$app = JFactory::getApplication ();
 		if ($app->isSite ()) {
@@ -756,17 +760,12 @@ class VirtueMartModelProduct extends VmModel {
 
 			if ($withCalc) {
 
-				//vmdebug(' use of $child->prices = $this->getPrice($child,array(),1)');
-				if(!isset($child->selectedPrice)){
-					$child->selectedPrice = 0;
-				}
-				$child->allPrices[$child->selectedPrice] = $this->getPrice ($child, array(), 1);
+				$child->allPrices[$child->selectedPrice] = $this->getPrice ($child, 1);
 			}
 
 			if (empty($child->product_template)) {
 				$child->product_template = VmConfig::get ('producttemplate');
 			}
-
 
 			if(!empty($child->canonCatLink)) {
 				// Add the product link  for canonical
@@ -842,7 +841,7 @@ class VirtueMartModelProduct extends VmModel {
 
 				if(empty($prices)){
 
-					$loadedProductPrices[$hash] = $this->fillVoidPrice();;
+					$loadedProductPrices[$hash] = false; //$this->fillVoidPrice();;
 					vmdebug('getProductSingle getPrice empty  query', count($prices),$productId);
 				} else {
 					$loadedProductPrices[$hash] = $prices ;
@@ -899,10 +898,20 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				if( (empty($price['price_quantity_end']) and $price['price_quantity_start'] <= $quantity) or ($price['price_quantity_start'] <= $quantity and $quantity <= $price['price_quantity_end']) ){
 					$product->selectedPrice = $pInd;
-					$product->prices = &$product->allPrices[$product->selectedPrice];
 					break;
 				}
 			}
+		}
+
+		//vmdebug(' use of $child->prices = $this->getPrice($child,array(),1)');
+		if(!isset($product->selectedPrice)){
+			$product->selectedPrice = 0;
+			$product->allPrices[$product->selectedPrice] = $this->fillVoidPrice();
+		}
+		//We map the new price to the old variable for easy updating
+		$app = JFactory::getApplication();
+		if($app->isSite()){	//Todo remove this for stable release, just in case 3rd party use it
+			$product->prices = &$product->allPrices[$product->selectedPrice];
 		}
 
 	}
@@ -1106,7 +1115,8 @@ class VirtueMartModelProduct extends VmModel {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 		}
 		//$product->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
-		$product->allPrices = $this->fillVoidPrice();
+		$product->selectedPrice = 0;
+		$product->allPrices[0] = $this->fillVoidPrice();
 
 		if ($front) {
 			$product->link = '';
@@ -1121,22 +1131,25 @@ class VirtueMartModelProduct extends VmModel {
 		return $product;
 	}
 
-	private function fillVoidPrice(){
-		$allPrices = array();
-		$allPrices[0] = array();
-		$allPrices[0]['product_price'] = NULL;
-		$allPrices[0]['product_currency'] = NULL;
-		$allPrices[0]['product_price_quantity_start'] = NULL;
-		$allPrices[0]['product_price_quantity_end'] = NULL;
-		$allPrices[0]['product_price_publish_up'] = NULL;
-		$allPrices[0]['product_price_publish_down'] = NULL;
-		$allPrices[0]['product_tax_id'] = NULL;
-		$allPrices[0]['product_discount_id'] = NULL;
-		$allPrices[0]['product_override_price'] = NULL;
-		$allPrices[0]['override'] = NULL;
-		$allPrices[0]['categories'] = array();
-		$allPrices[0]['shoppergroups'] = array();
-		$product->prices = &$product->allPrices[0];
+	public function fillVoidPrice(){
+
+		$prices = array();
+		$prices['product_price'] = 0;
+		$prices['product_currency'] = NULL;
+		$prices['price_quantity_start'] = NULL;
+		$prices['price_quantity_end'] = NULL;
+		$prices['product_price_publish_up'] = NULL;
+		$prices['product_price_publish_down'] = NULL;
+		$prices['product_tax_id'] = NULL;
+		$prices['product_discount_id'] = NULL;
+		$prices['product_override_price'] = NULL;
+		$prices['override'] = NULL;
+		$prices['categories'] = array();
+		$prices['shoppergroups'] = array();
+		$prices['virtuemart_shoppergroup_id'] = NULL;
+
+		return $prices;
+		//$product->prices = &$product->allPrices[0];
 	}
 
 	/**
@@ -1956,7 +1969,7 @@ class VirtueMartModelProduct extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	public function getPrice ($product, $customVariant, $quantity) {
+	public function getPrice ($product, $quantity) {
 
 		$db = JFactory::getDBO ();
 		// 		vmdebug('strange',$product);
@@ -1966,10 +1979,6 @@ class VirtueMartModelProduct extends VmModel {
 
 		if (empty($product->customfields) and !empty($product->virtuemart_customfield_id)) {
 			$customfieldsModel = VmModel::getModel ('Customfields');
-			//$this->assignRef('customfieldsModel',$customfieldsModel);
-			// Load the custom product fields
-			//$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->virtuemart_product_id);
-			//
 			$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
 		}
 

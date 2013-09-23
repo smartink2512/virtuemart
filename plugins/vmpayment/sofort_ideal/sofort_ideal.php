@@ -745,21 +745,21 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
     /**
      * @param VirtueMartCart $cart
      * @param                $method
-     * @param                $cart_prices
-     * @return int
-     */
-    function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
+	 * @param                $cart_prices
+	 * @return int
+	 */
+/*	function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
 
-        if (preg_match('/%$/', $method->cost_percent_total)) {
-            $cost_percent_total = substr($method->cost_percent_total, 0, -1);
+		if (preg_match('/%$/', $method->cost_percent_total)) {
+			$cost_percent_total = substr($method->cost_percent_total, 0, -1);
         } else {
-            $cost_percent_total = $method->cost_percent_total;
-        }
-        return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
-    }
+			$cost_percent_total = $method->cost_percent_total;
+		}
+		return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
+	}*/
 
-    /**
-     * Check if the payment conditions are fulfilled for this payment method
+	/**
+	 * Check if the payment conditions are fulfilled for this payment method
      *
      * @author: Valerie Isaksen
      *

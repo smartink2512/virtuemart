@@ -48,6 +48,7 @@ class calculationHelper {
 	public $product_marge_id = 0;
 	public $vendorCurrency = 0;
 	public $inCart = FALSE;
+	public $checkAutomaticSelected = false;
 	protected $exchangeRateVendor = 0;
 	protected $exchangeRateShopper = 0;
 	protected $_internalDigits = 8;
@@ -557,7 +558,7 @@ class calculationHelper {
 		$this->_revert = $revert;
 	}
 
-	protected function fillVoidPrices(&$prices) {
+	public function fillVoidPrices(&$prices) {
 
 		if (!isset($prices['basePrice']))
 			$prices['basePrice'] = null;
@@ -831,8 +832,7 @@ class calculationHelper {
 
 		//Avalara wants to calculate the tax of the shipment. Only disadvantage to set shipping here is that the discounts per bill respectivly the tax per bill
 		// is not considered.
-		$shipment_id = empty($this->_cart->virtuemart_shipmentmethod_id) ? 0 : $this->_cart->virtuemart_shipmentmethod_id;
-		$this->calculateShipmentPrice($this->_cart,  $shipment_id, $checkAutomaticSelected);
+		$this->calculateShipmentPrice($this->_cart, $checkAutomaticSelected);
 
 		// next step is handling a coupon, if given
 		$this->_cart->cartData['vmVat'] = TRUE;
@@ -863,9 +863,7 @@ class calculationHelper {
 		$this->_cart->cartPrices['withTax'] = $toDisc + $cartdiscountAfterTax;
 
 		
-		$paymentId = empty($this->_cart->virtuemart_paymentmethod_id) ? 0 : $this->_cart->virtuemart_paymentmethod_id;
-
-		$this->calculatePaymentPrice($this->_cart, $paymentId, $checkAutomaticSelected);
+		$this->calculatePaymentPrice($this->_cart, $checkAutomaticSelected);
 
 		//		$sub =!empty($this->_cart->cartPrices['discountedPriceWithoutTax'])? $this->_cart->cartPrices['discountedPriceWithoutTax']:$this->_cart->cartPrices['basePrice'];
 		if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cart->cartPrices['billSub'] = $this->_cart->cartPrices['basePrice'] + $this->_cart->cartPrices['shipmentValue'] + $this->_cart->cartPrices['paymentValue'];
@@ -1295,7 +1293,7 @@ class calculationHelper {
 	 * @param 	$code 	The Id of the coupon
 	 * @return 	$rules 	ids of the coupons
 	 */
-	function calculateShipmentPrice(  $cart, $ship_id, $checkAutomaticSelected=true) {
+	function calculateShipmentPrice( $cart, $checkAutomaticSelected=true) {
 
 		$this->_cart->cartData['shipmentName'] = JText::_('COM_VIRTUEMART_CART_NO_SHIPMENT_SELECTED');
 		$this->_cart->cartPrices['shipmentValue'] = 0; //could be automatically set to a default set in the globalconfig
@@ -1304,9 +1302,9 @@ class calculationHelper {
 		$this->_cart->cartPrices['shipment_calc_id'] = 0;
 		// check if there is only one possible shipment method
 
-		$automaticSelectedShipment =   $cart->CheckAutomaticSelectedShipment($this->_cart->cartPrices, $checkAutomaticSelected);
-		if ($automaticSelectedShipment) $ship_id=$cart->virtuemart_shipmentmethod_id;
-		if (empty($ship_id)) return;
+		$cart->CheckAutomaticSelectedShipment($this->_cart->cartPrices, $checkAutomaticSelected);
+
+		if (empty($cart->virtuemart_shipmentmethod_id)) return;
 
 		// Handling shipment plugins
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
@@ -1341,7 +1339,7 @@ class calculationHelper {
 	 * @param	$value	$cartVendorId
 	 * @return 	$paymentCosts 	The amount of money the customer has to pay. Calculated in shop currency
 	 */
-	function calculatePaymentPrice($cart,   $payment_id , $checkAutomaticSelected=true) {
+	function calculatePaymentPrice($cart, $checkAutomaticSelected=true) {
 		//		if (empty($code)) return 0.0;
 		//		$code=4;
 		$this->_cart->cartData['paymentName'] = JText::_('COM_VIRTUEMART_CART_NO_PAYMENT_SELECTED');
@@ -1351,9 +1349,8 @@ class calculationHelper {
 		$this->_cart->cartPrices['salesPricePayment'] = 0;
 		$this->_cart->cartPrices['payment_calc_id'] = 0;
 		// check if there is only one possible payment method
-		$cart->automaticSelectedPayment =   $cart->CheckAutomaticSelectedPayment( $this->_cart->cartPrices, $checkAutomaticSelected);
-		if ($cart->automaticSelectedPayment) $payment_id=$cart->virtuemart_paymentmethod_id;
-		if (empty($payment_id)) return;
+		$cart->CheckAutomaticSelectedPayment($this->_cart->cartPrices, $checkAutomaticSelected);
+		if (empty($cart->virtuemart_paymentmethod_id)) return;
 
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
