@@ -76,7 +76,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('Moneybookers Skrill Digital Wallet', 'plugin', 'moneybookers_wlt', 'vmpayment');
 			$this->installPlugin ('Authorize.net', 'plugin', 'authorizenet', 'vmpayment');
 
-			//$this->installPlugin ('Sofort iDeal', 'plugin', 'sofort_ideal', 'vmpayment');
+			$this->installPlugin ('Sofort iDeal', 'plugin', 'sofort_ideal', 'vmpayment');
 
 			$this->installPlugin ('By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment');
 
