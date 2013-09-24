@@ -36,7 +36,8 @@ var klarna = {
             }
 
             jQuery('#klarna_red_baloon_content').html(errorHTML);
-            showRedBaloon(parentBox);
+            if (typeof showRedBaloon != 'undefined')
+             showRedBaloon(parentBox);
         },
 
         /**
