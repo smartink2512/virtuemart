@@ -134,7 +134,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 
 //$this->_debug = $method->debug;
 		//$this->logInfo('plgVmConfirmedOrder order number: ' . $order['details']['BT']->order_number, 'message');
-		vmdebug('SOFORT plgVmConfirmedOrder');
+		vmdebug('SOFORT sendTransactionRequest');
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
@@ -175,7 +175,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$dbValues['security'] = $security;
 
 
-		vmdebug('SOFORT plgVmConfirmedOrder ... after storePSPluginInternalData', $security);
+		vmdebug('SOFORT sendTransactionRequest ... after storePSPluginInternalData', $security);
 
 		if (!class_exists('SofortLib')) {
 			require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'sofort' . DS . 'sofort' . DS . 'library' . DS . 'sofortLib.php');
@@ -197,10 +197,10 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$sofort->setLanguageCode($lang);
 
 		$sofort->sendRequest();
-		vmdebug('SOFORT plgVmConfirmedOrder ... SofortLib_Multipay ... sendRequest()');
+		vmdebug('SOFORT sendTransactionRequest ... SofortLib_Multipay ... sendRequest()');
 		if ($sofort->isError()) {
 			$errors = $sofort->getErrors();
-			vmdebug('SOFORT plgVmConfirmedOrder ... SofortLib_Multipay ... getErrors()', $errors);
+			vmdebug('SOFORT sendTransactionRequest ... SofortLib_Multipay ... getErrors()', $errors);
 			$this->displayErrors($errors);
 			// TODO redirect to cancel URL
 			//return $cancel_url;
