@@ -23,6 +23,10 @@
                stripext="0" exclude="^_"/>
         <param name="countries" type="vmcountries" scope="com_virtuemart" default="" label="VMPAYMENT_STANDARD_COUNTRIES" description="VMPAYMENT_STANDARD_COUNTRIES_DESC"/>
         <param name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_STANDARD_CURRENCY" description="VMPAYMENT_STANDARD_CURRENCY_DESC"/>
+        <param name="email_currency" type="list" default="vendor" label="VMPAYMENT_PAYPAL_EMAIL_CURRENCY" description="VMPAYMENT_PAYPAL_EMAIL_CURRENCY_DESC"  >
+            <option value="vendor">VMPAYMEN_STANDARD_EMAIL_CURRENCY_VENDOR</option>
+            <option value="payment">VMPAYMENT_STANDARD_EMAIL_CURRENCY_PAYMENT</option>
+        </param>
         <param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="U" label="VMPAYMENT_STANDARD_STATUS_PENDING" description="VMPAYMENT_STANDARD_STATUS_PENDING_EXPLAIN"/>
         <param name="send_invoice_on_order_null" type="radio" scope="com_virtuemart" default="1" label="VMPAYMENT_STANDARD_SEND_INVOICE_ON_ORDER_NULL" description="VMPAYMENT_STANDARD_SEND_INVOICE_ON_ORDER_NULL_EXPLAIN">
             <option value="0">COM_VIRTUEMART_NO</option>

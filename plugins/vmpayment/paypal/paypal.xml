@@ -62,7 +62,7 @@
 	<param name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_PAYPAL_CURRENCY" description="VMPAYMENT_PAYPAL_CURRENCY_DESC" />
 	<param name="email_currency" type="list" default="vendor" label="VMPAYMENT_PAYPAL_EMAIL_CURRENCY" description="VMPAYMENT_PAYPAL_EMAIL_CURRENCY_DESC"  >
 	    <option value="vendor">VMPAYMENT_PAYPAL_EMAIL_CURRENCY_VENDOR</option>
-	    <option value="apyment">VMPAYMENT_PAYPAL_EMAIL_CURRENCY_PAYMENT</option>
+	    <option value="payment">VMPAYMENT_PAYPAL_EMAIL_CURRENCY_PAYMENT</option>
 	</param>
 
 	<param name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMPAYMENT_PAYPAL_COUNTRIES" description="VMPAYMENT_PAYPAL_COUNTRIES_DESC"/>

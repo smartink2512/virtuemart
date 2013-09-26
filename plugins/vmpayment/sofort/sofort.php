@@ -47,7 +47,6 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		                    'tax_id' => array('', 'int'),
 		                    'status_pending' => array('', 'char'),
 		                    'status_received' => array('', 'char'),
-		                    'status_received' => array('', 'char'),
 		                    'status_loss' => array('', 'char'),
 		                    'status_refunded' => array('', 'char'),
 		                    'debug' => array('', 'int'),

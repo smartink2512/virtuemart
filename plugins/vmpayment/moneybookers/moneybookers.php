@@ -48,7 +48,6 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		                    'min_amount'          => array('', 'int'),
 		                    'max_amount'          => array('', 'int'),
 		                    'tax_id'              => array(0, 'int'),
-		                    'countries'           => array('', 'char'),
 		                    'status_pending'      => array('', 'char'),
 		                    'status_success'      => array('', 'char'),
 		                    'status_canceled'     => array('', 'char'));

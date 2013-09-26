@@ -64,6 +64,7 @@ if (!class_exists ('vmPSPlugin')) {
 			'payment_name'                => 'varchar(5000)',
 			'payment_order_total'         => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
 			'payment_currency'            => 'char(3)',
+			'email_currency'            => 'char(3)',
 			'cost_per_transaction'        => 'decimal(10,2)',
 			'cost_percent_total'          => 'decimal(10,2)',
 			'tax_id'                      => 'smallint(1)'
@@ -96,6 +97,7 @@ if (!class_exists ('vmPSPlugin')) {
 
 		$this->getPaymentCurrency($method);
 		$currency_code_3 = shopFunctions::getCurrencyByID($method->payment_currency, 'currency_code_3');
+		$email_currency = $this->getEmailCurrency($method);
 
 		$paymentCurrency = CurrencyDisplay::getInstance($method->payment_currency);
 		$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($method->payment_currency, $order['details']['BT']->order_total, FALSE), 2);
@@ -109,6 +111,7 @@ if (!class_exists ('vmPSPlugin')) {
 		$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
 		$dbValues['cost_percent_total'] = $method->cost_percent_total;
 		$dbValues['payment_currency'] = $currency_code_3;
+		$dbValues['email_currency'] = $email_currency;
 		$dbValues['payment_order_total'] = $totalInPaymentCurrency;
 		$dbValues['tax_id'] = $method->tax_id;
 		$this->storePSPluginInternalData ($dbValues);
@@ -183,6 +186,9 @@ if (!class_exists ('vmPSPlugin')) {
 		$html .= $this->getHtmlHeaderBE ();
 		$html .= $this->getHtmlRowBE ('COM_VIRTUEMART_PAYMENT_NAME', $paymentTable->payment_name);
 		$html .= $this->getHtmlRowBE ('STANDARD_PAYMENT_TOTAL_CURRENCY', $paymentTable->payment_order_total . ' ' . $paymentTable->payment_currency);
+		if ($paymentTable->email_currency) {
+			$html .= $this->getHtmlRowBE ('STANDARD_PAYMENT_EMAIL_CURRENCY', $paymentTable->email_currency );
+		}
 		$html .= '</table>' . "\n";
 		return $html;
 	}

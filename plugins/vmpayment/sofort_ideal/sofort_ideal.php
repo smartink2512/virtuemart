@@ -88,7 +88,6 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 			'sofort_ideal_response_status_reason' => 'varchar(20)',
 			'sofort_ideal_response_status_modified' => 'varchar(20)',
 			'sofort_ideal_hidden_response_hash' => 'varchar(20)', // hash is stored, but we do not need to display it
-			'sofort_ideal_response_status_modified' => 'varchar(20)',
 			// even though this parameter is in the doc
 			//'sofort_ideal_response_amount_refunded' => 'decimal(15,5) NOT NULL',
 			'sofort_ideal_hidden_response_amount_refunded_integer' => 'int(1) ',
@@ -417,12 +416,12 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 			return NULL;
 		}
 		vmdebug(__CLASS__ . '::' . __FUNCTION__, 'VMPAYMENT_SOFORT_PAYMENT_CANCELLED', $error_codes);
-if (empty($error_codes)) {
-		VmInfo(Jtext::_('VMPAYMENT_SOFORT_PAYMENT_CANCELLED'));
-	$comment='';
-} else {
-	$comment=JText::_($lang_key);
-}
+		if (empty($error_codes)) {
+				VmInfo(Jtext::_('VMPAYMENT_SOFORT_PAYMENT_CANCELLED'));
+			$comment='';
+		} else {
+			$comment=JText::_($lang_key);
+		}
 		$session = JFactory::getSession();
 		$return_context = $session->getId();
 		vmDebug('handlePaymentUserCancel', $virtuemart_order_id, $paymentTable->sofort_custom, $return_context);

@@ -624,12 +624,16 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		/*
 		 * Before we can trust the contents of the message, we must first verify that the message came from PayPal.
 		 * To verify the message, we must send back the contents in the exact order they
-		*  were received and precede it with the command _notify-validate,
+		 * were received and precede it with the command _notify-validate,
 		 */
 		$post_msg = 'cmd=_notify-validate';
 		foreach ($paypal_data as $key => $value) {
 			if ($key != 'view' && $key != 'layout') {
-				$value = urlencode($value);
+				// linebreak fix
+				$value = str_replace('\r\n', "QQLINEBREAKQQ", $value);
+				$value = urlencode( stripslashes($value) );
+				$value = str_replace( "QQLINEBREAKQQ", "\r\n", $value );
+
 				$post_msg .= "&$key=$value";
 			}
 		}
