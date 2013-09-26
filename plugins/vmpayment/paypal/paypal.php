@@ -48,6 +48,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'status_success' => array('', 'char'),
 			'status_canceled' => array('', 'char'),
 			'status_refunded' => array('', 'char'),
+			'status_partial_refunded' => array('', 'char'),
 			'countries' => array('', 'char'),
 			'min_amount' => array('', 'float'),
 			'max_amount' => array('', 'float'),
