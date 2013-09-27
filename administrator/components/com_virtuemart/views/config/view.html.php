@@ -110,7 +110,7 @@ class VirtuemartViewConfig extends VmView {
 		$cache = JFactory::getCache ('_virtuemart');
 		$cached = $cache->getCaching();
 		if($cached){
-			vmInfo('COM_VIRTUEMART_CFG_CACHE_ACTIV');
+			vmInfo('COM_VIRTUEMART_CFG_CACHE_ACTIVE');
 		}
 
 		parent::display($tpl);

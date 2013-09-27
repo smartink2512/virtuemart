@@ -54,23 +54,16 @@ class VirtuemartViewCategory extends VmView {
 		$productModel = VmModel::getModel('product');
 
 		// set search and keyword
-		if ($keyword = vmRequest::uword('keyword', false, ' ,-,+,.,_')) {
+		if ($keyword = vmRequest::uword('keyword', '0', ' ,-,+,.,_')) {
 			$pathway->addItem($keyword);
 			//$title .=' ('.$keyword.')';
 		}
 		//$search = VmRequest::uword('keyword', null);
-		$this->searchcustom = '';
-		$this->searchcustomvalues = '';
-		if (!empty($keyword)) {
-			$this->searchcustom = $this->getSearchCustom();
-			$search = $keyword;
-		} else {
-			$keyword ='';
-			$search = NULL;
+		if ($keyword !=='0') {
+			$searchcustom = $this->getSearchCustom();
 		}
-		$this->assignRef('search', $search);
 		$this->assignRef('keyword', $keyword);
-
+		$this->assignRef('search', $keyword);
 
 		$categoryId = JRequest::getInt('virtuemart_category_id', false);
 		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', false );
@@ -95,7 +88,7 @@ class VirtuemartViewCategory extends VmView {
 
 		if(!empty($category)){
 
-			if(empty($category->category_layout) or $category->category_layout != 'category') {
+			if(empty($category->category_layout) or $category->category_layout == 'default') {
 				// Load the products in the given category
 				$ids = $productModel->sortSearchListQuery (TRUE, $categoryId);
 
@@ -345,8 +338,8 @@ class VirtuemartViewCategory extends VmView {
 			$this->searchCustomList = '';
 		}
 
-		//$this->assignRef('searchcustom', $this->searchCustomList);
-		//$this->assignRef('searchcustomvalues', $this->searchCustomValues);
+		$this->assignRef('searchcustom', $this->searchCustomList);
+		$this->assignRef('searchcustomvalues', $this->searchCustomValues);
 	}
 }
 
