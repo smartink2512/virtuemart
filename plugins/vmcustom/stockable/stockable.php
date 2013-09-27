@@ -476,7 +476,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	function plgVmOnViewCartModule( $product, $row,&$html) {
 		if (empty($product->productCustom->custom_element) or $product->productCustom->custom_element != $this->_name) return '';
 		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
-		foreach ($plgParam as $k => $attributes) {
+		foreach ($plgParam as $attributes) {
 			foreach ($attributes as $k => $attribute) {
 				if ($k =='child_id') continue;
 				$html .='<span class="stockablecartvariant_attribute"> '.JText::_($attribute).' </span>';

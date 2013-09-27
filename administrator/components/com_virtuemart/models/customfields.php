@@ -1070,7 +1070,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						break;
 					}
 
-					foreach ($uncatChildren as $k => $child) {
+					foreach ($uncatChildren as $child) {
 						$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id'],FALSE), 'text' => $child['product_name']);
 					}
 

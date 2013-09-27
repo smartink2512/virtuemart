@@ -87,7 +87,7 @@ class VirtueMartModelProduct extends VmModel {
 
 	}
 
-	var $keyword = "0";
+	var $keyword = "";
 	var $product_parent_id = FALSE;
 	var $virtuemart_manufacturer_id = FALSE;
 	var $virtuemart_category_id = 0;
@@ -108,7 +108,7 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	function initialiseRequests () {
 
-		$this->keyword = "0";
+		$this->keyword = "";
 		$this->valid_search_fields = $this->valid_BE_search_fields;
 		$this->product_parent_id = FALSE;
 		$this->virtuemart_manufacturer_id = FALSE;
@@ -450,12 +450,12 @@ class VirtueMartModelProduct extends VmModel {
 					case 'random':
 						$orderBy = ' ORDER BY RAND() '; //LIMIT 0, '.(int)$nbrReturnProducts ; //TODO set limit LIMIT 0, '.(int)$nbrReturnProducts;
 						break;
-					case 'topten';
+					case 'topten':
 						$orderBy = ' ORDER BY p.`product_sales` '; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 						$where[] = 'pp.`product_price`>"0.0" ';
 						$this->filter_order_Dir = 'DESC';
 					break;
-					case 'recent';
+					case 'recent':
 						$rSession = JFactory::getSession();
 						$rIds = $rSession->get('vmlastvisitedproductids', array(), 'vm'); // get recent viewed from browser session
 						return $rIds;

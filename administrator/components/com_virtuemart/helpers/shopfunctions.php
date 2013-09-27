@@ -424,7 +424,7 @@ class ShopFunctions {
 			$db->setQuery($q);
 
 			$jtemplates = $db->loadObjectList();
-			vmdebug('$jtemplates',$jtemplates);
+
 			foreach ($jtemplates as $key => $template) {
 				$template->name = $template->title;
 				$template->value = $template->id;
@@ -764,8 +764,10 @@ class ShopFunctions {
 		if (empty(self::$categoryTree)) {
 // 			vmTime('Start with categoryListTree');
 			$cache = JFactory::getCache ('_virtuemart');
+			$cached = $cache->getCaching();
 			$cache->setCaching (1);
 			self::$categoryTree = $cache->call (array('ShopFunctions', 'categoryListTreeLoop'), $selectedCategories, $cid, $level, $disabledFields);
+			$cache->setCaching ($cached);
 			// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
 // 			vmTime('end loop categoryListTree '.self::$counter);
 		}

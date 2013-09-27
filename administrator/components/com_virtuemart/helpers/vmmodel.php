@@ -726,7 +726,7 @@ class VmPagination extends JPagination {
 				$limits[] = JHTML::_('select.option', JRoute::_( $link.'&limit='.$this->limit,false),$this->limit);
 				ksort($limits);
 			}
-			$selected= JRoute::_( $link.'&limit='. $selected) ;
+			$selected= JRoute::_( $link.'&limit='. $selected,false) ;
 			$js = 'onchange="window.top.location.href=this.options[this.selectedIndex].value"';
 
 			$html = JHTML::_('select.genericlist',  $limits, '', 'class="inputbox" size="1" '.$js , 'value', 'text', $selected);
