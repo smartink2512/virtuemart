@@ -217,9 +217,10 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			"ipn_test" => $method->debug,
 			"rm" => '2', // the buyer’s browser is redirected to the return URL by using the POST method, and all payment variables are included
 			"bn" => "VirtueMart_Cart_PPA",
-			"image_url" => JURI::root() . $vendor->images[0]->file_url,
+			"image_url" => JURI::base() . $vendor->images[0]->file_url,
 			"no_shipping" => isset($method->no_shipping) ? $method->no_shipping : 0,
 			"no_note" => "1");
+
 
 		// Prepare data that should be stored in the database
 		$dbValues['order_number'] = $order['details']['BT']->order_number;
@@ -736,8 +737,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		return FALSE;
 	}
 	function  _is_full_refund($payments, $paypal_data) {
-		if (($payments[0]->payment_order_total == $paypal_data['mc_gross'])) {
-				return TRUE;
+		if (($payments[0]->payment_order_total == (-1*$paypal_data['mc_gross']))) {
+			return TRUE;
 			} else {
 				return FALSE;
 		}
