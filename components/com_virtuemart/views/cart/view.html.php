@@ -97,6 +97,9 @@ class VirtueMartViewCart extends VmView {
 		} else if ($layoutName == 'default') {
 			VmConfig::loadJLang('com_virtuemart_shoppers');
 			$cart->prepareCartViewData();
+			if (VmConfig::get('enable_content_plugin', 0)) {
+				shopFunctionsF::triggerContentPlugin($cart->vendor, 'vendor','vendor_terms_of_service');
+			}
 
 			$cart->prepareAddressRadioSelection();
 

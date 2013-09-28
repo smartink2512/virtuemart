@@ -658,4 +658,33 @@ class shopFunctionsF {
 
 		return $itemID;
 	}
+
+	static function triggerContentPlugin(  $article, $context, $field) {
+	// add content plugin //
+		$dispatcher = & JDispatcher::getInstance ();
+		JPluginHelper::importPlugin ('content');
+		$article->text = $article->$field;
+		jimport ('joomla.html.parameter');
+		$params = new JParameter('');
+
+		if (JVM_VERSION === 2) {
+			if (!isset($article->event)) {
+				$article->event = new stdClass();
+			}
+			$results = $dispatcher->trigger ('onContentPrepare', array('com_virtuemart.'.$context, &$article, &$params, 0));
+			// More events for 3rd party content plugins
+			// This do not disturb actual plugins, because we don't modify $vendor->text
+			$res = $dispatcher->trigger ('onContentAfterTitle', array('com_virtuemart.'.$context, &$article, &$params, 0));
+			$article->event->afterDisplayTitle = trim (implode ("\n", $res));
+
+			$res = $dispatcher->trigger ('onContentBeforeDisplay', array('com_virtuemart.'.$context, &$article, &$params, 0));
+			$article->event->beforeDisplayContent = trim (implode ("\n", $res));
+
+			$res = $dispatcher->trigger ('onContentAfterDisplay', array('com_virtuemart.'.$context, &$article, &$params, 0));
+			$article->event->afterDisplayContent = trim (implode ("\n", $res));
+		} else {
+			$results = $dispatcher->trigger ('onPrepareContent', array(& $article, & $params, 0));
+		}
+		$article->$field = $article->text;
+	}
 }
