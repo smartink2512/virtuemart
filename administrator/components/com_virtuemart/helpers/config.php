@@ -1442,6 +1442,7 @@ class vmJsApi{
 		vmJsApi::js ('jquery.ui.core',FALSE,'',TRUE);
 		vmJsApi::js ('jquery.ui.datepicker',FALSE,'',TRUE);
 
+		vmJsApi::css ('jquery.ui.all',$front.'css/ui' ) ;
 		$lg = JFactory::getLanguage();
 		$lang = $lg->getTag();
 
