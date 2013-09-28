@@ -51,6 +51,9 @@ class VirtuemartViewManufacturer extends VmView {
 			$model->addImages($manufacturer,1);
 
 			$manufacturerImage = $manufacturer->images[0]->displayMediaThumb('class="manufacturer-image"',false);
+			if (VmConfig::get('enable_content_plugin', 0)) {
+				shopFunctionsF::triggerContentPlugin($manufacturer, 'manufacturer','mf_desc');
+			}
 
 			$document->setTitle(JText::_('COM_VIRTUEMART_MANUFACTURER_DETAILS').' '.strip_tags($manufacturer->mf_name));
 //added so that the canonical points to page with visible products thx to P2Peter
