@@ -44,6 +44,7 @@ class AdminUIHelper {
 		$document->addStyleSheet($front.'css/chosen.css');
 		$document->addStyleSheet($front.'css/vtip.css');
 		$document->addStyleSheet($front.'css/jquery.fancybox-1.3.4.css');
+		$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
 		//$document->addStyleSheet($admin.'css/jqtransform.css');
 
 		//loading defaut script
