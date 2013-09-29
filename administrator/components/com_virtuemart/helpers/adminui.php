@@ -1,5 +1,6 @@
 <?php
 /**
+ * @version: $Id$
  * Administrator menu helper class
  *
  * This class was derived from the show_image_in_imgtag.php and imageTools.class.php files in VM.  It provides some
@@ -44,6 +45,7 @@ class AdminUIHelper {
 		$document->addStyleSheet($front.'css/chosen.css');
 		$document->addStyleSheet($front.'css/vtip.css');
 		$document->addStyleSheet($front.'css/jquery.fancybox-1.3.4.css');
+        $document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
 		//$document->addStyleSheet($admin.'css/jqtransform.css');
 
 		//loading defaut script

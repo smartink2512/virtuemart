@@ -3,12 +3,12 @@
  * abstract controller class containing get,store,delete,publish and pagination
  ** @version $Id$
  *
- * This class provides the functions for the calculations
+ * This class provides the functions for the Views
  *
  * @package	VirtueMart
  * @subpackage Helpers
  * @author Max Milbers
- * @copyright Copyright (c) 2011 VirtueMart Team. All rights reserved.
+ * @copyright ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
