@@ -1012,6 +1012,7 @@ class vmURI{
 		return $_filter->clean($JURIInstance->toString($parts));
 	}
 }
+
 /**
  *
  * Class to provide js API of vm
