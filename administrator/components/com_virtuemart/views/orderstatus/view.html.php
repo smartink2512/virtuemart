@@ -43,7 +43,7 @@ class VirtuemartViewOrderstatus extends VmView {
 
 
 
-		$layoutName = JRequest::getWord('layout', 'default');
+		$layoutName = VmRequest::getCmd('layout', 'default');
 
 // 'A' : sotck Available
 		// 'O' : stock Out

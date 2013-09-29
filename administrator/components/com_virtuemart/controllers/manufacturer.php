@@ -55,9 +55,9 @@ class VirtuemartControllerManufacturer extends VmController {
 	function save($data = 0){
 
 		/* Load the data */
-		$data = JRequest::get('post');
+		$data = VmRequest::get('post');
 		/* add the mf desc as html code */
-		$data['mf_desc'] = JRequest::getVar('mf_desc', '', 'post', 'string', JREQUEST_ALLOWHTML );
+		$data['mf_desc'] = VmRequest::getVar('mf_desc', '', 'post', 'string', JREQUEST_ALLOWHTML );
 
 		parent::save($data);
 	}

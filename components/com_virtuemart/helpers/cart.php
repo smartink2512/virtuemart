@@ -311,10 +311,10 @@ class VirtueMartCart {
 	public function add($virtuemart_product_ids=null,&$errorMsg='') {
 
 		$updateSession = false;
-		$post = JRequest::get('default');
+		$post = VmRequest::get('default');
 
 		if(empty($virtuemart_product_ids)){
-			$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array'); //is sanitized then
+			$virtuemart_product_ids = VmRequest::getVar('virtuemart_product_id', array(), 'default', 'array'); //is sanitized then
 		}
 
 		if (empty($virtuemart_product_ids)) {
@@ -480,7 +480,7 @@ class VirtueMartCart {
 	public function removeProductCart($prod_id=0) {
 		// Check for cart IDs
 		if (empty($prod_id))
-		$prod_id = JRequest::getInt('cart_virtuemart_product_id');
+		$prod_id = VmRequest::getInt('cart_virtuemart_product_id');
 		unset($this->products[$prod_id]);
 		if(isset($this->cartProductsData[$prod_id])){
 			// hook for plugin action "remove from cart"
@@ -508,9 +508,9 @@ class VirtueMartCart {
 	public function updateProductCart($cart_virtuemart_product_id=0) {
 
 		if (empty($cart_virtuemart_product_id))
-		$cart_virtuemart_product_id = JRequest::getInt('cart_virtuemart_product_id');
+		$cart_virtuemart_product_id = VmRequest::getInt('cart_virtuemart_product_id');
 		if (empty($quantity))
-		$quantity = JRequest::getInt('quantity');
+		$quantity = VmRequest::getInt('quantity');
 
 		//		foreach($cart_virtuemart_product_ids as $cart_virtuemart_product_id){
 		$updated = false;
@@ -648,10 +648,10 @@ class VirtueMartCart {
 		$this->_redirect = $redirect;
 		$this->_inCheckOut = true;
 
-		$this->tosAccepted = JRequest::getInt('tosAccepted', $this->tosAccepted);
-		$this->STsameAsBT = JRequest::getInt('STsameAsBT', $this->STsameAsBT);
-		$this->customer_comment = JRequest::getVar('customer_comment', $this->customer_comment);
-		$this->order_language = JRequest::getVar('order_language', $this->order_language);
+		$this->tosAccepted = VmRequest::getInt('tosAccepted', $this->tosAccepted);
+		$this->STsameAsBT = VmRequest::getInt('STsameAsBT', $this->STsameAsBT);
+		$this->customer_comment = VmRequest::getVar('customer_comment', $this->customer_comment);
+		$this->order_language = VmRequest::getVar('order_language', $this->order_language);
 
 		// no HTML TAGS but permit all alphabet
 		$value =	preg_replace('@<[\/\!]*?[^<>]*?>@si','',$this->customer_comment);//remove all html tags
@@ -690,7 +690,7 @@ class VirtueMartCart {
 			}
 		}
 
-		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
+		if (($this->selected_shipto = VmRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 			$userModel = JModel::getInstance('user', 'VirtueMartModel');
 			$stData = $userModel->getUserAddressList(0, 'ST', $this->selected_shipto);

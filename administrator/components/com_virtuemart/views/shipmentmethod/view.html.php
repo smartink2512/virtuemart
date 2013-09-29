@@ -44,10 +44,10 @@ class VirtuemartViewShipmentmethod extends VmView {
 
 		$model = VmModel::getModel();
 
-		$layoutName = JRequest::getWord('layout', 'default');
+		$layoutName = VmRequest::getCmd('layout', 'default');
 		$this->SetViewTitle();
 
-		$layoutName = JRequest::getWord('layout', 'default');
+		$layoutName = VmRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 		        $shipment = $model->getShipment();
 			if (!class_exists('VmImage'))

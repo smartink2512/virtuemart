@@ -43,11 +43,11 @@ class VirtuemartViewCurrency extends VmView {
 
 
 		$config = JFactory::getConfig();
-		$layoutName = JRequest::getWord('layout', 'default');
+		$layoutName = VmRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
-			$cid	= JRequest::getVar( 'cid' );
+			$cid	= VmRequest::getVar( 'cid' );
 
-			$task = JRequest::getWord('task', 'add');
+			$task = VmRequest::getCmd('task', 'add');
 			//JArrayHelper::toInteger($cid);
 			if($task!='add' && !empty($cid) && !empty($cid[0])){
 				$cid = (int)$cid[0];
@@ -69,7 +69,7 @@ class VirtuemartViewCurrency extends VmView {
 
 			$this->addStandardDefaultViewLists($model,0,'ASC');
 
-			$currencies = $model->getCurrenciesList(JRequest::getWord('search', false));
+			$currencies = $model->getCurrenciesList(VmRequest::getCmd('search', false));
 			$this->assignRef('currencies',	$currencies);
 
 			$pagination = $model->getPagination();

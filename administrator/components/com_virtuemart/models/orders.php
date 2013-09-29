@@ -129,8 +129,8 @@ class VirtueMartModelOrders extends VmModel {
         // If the user is not logged in, we will check the order number and order pass
         if(empty($orderID) and empty($cuid)){
             // If the user is not logged in, we will check the order number and order pass
-            if ($orderPass = JRequest::getString('order_pass',$orderPass)){
-                $orderNumber = JRequest::getString('order_number',$orderNumber);
+            if ($orderPass = VmRequest::getString('order_pass',$orderPass)){
+                $orderNumber = VmRequest::getString('order_number',$orderNumber);
                 $orderId = $this->getOrderIdByOrderPass($orderNumber,$orderPass);
                 if(empty($orderId)){
                     echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
@@ -141,9 +141,9 @@ class VirtueMartModelOrders extends VmModel {
         }
         else {
             // If the user is logged in, we will check if the order belongs to him
-            $virtuemart_order_id = JRequest::getInt('virtuemart_order_id',$orderID) ;
+            $virtuemart_order_id = VmRequest::getInt('virtuemart_order_id',$orderID) ;
             if (!$virtuemart_order_id) {
-                $virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber(JRequest::getString('order_number'));
+                $virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber(VmRequest::getString('order_number'));
             }
             $orderDetails = $this->getOrder($virtuemart_order_id);
 
@@ -252,7 +252,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 
 
-		if ($search = JRequest::getString('search', false)){
+		if ($search = VmRequest::getString('search', false)){
 
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			$search = str_replace(' ','%',$search);
@@ -271,7 +271,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			//$where[] = ' ( u.first_name LIKE '.$search.' OR u.middle_name LIKE '.$search.' OR u.last_name LIKE '.$search.' OR `order_number` LIKE '.$search.')';
 		}
 
-		$order_status_code = JRequest::getString('order_status_code', false);
+		$order_status_code = VmRequest::getString('order_status_code', false);
 		if ($order_status_code and $order_status_code!=-1){
 			$where[] = ' o.order_status = "'.$order_status_code.'" ';
 		}
@@ -283,7 +283,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$whereString = '';
 		}
 
-		if ( JRequest::getCmd('view') == 'orders') {
+		if ( VmRequest::getCmd('view') == 'orders') {
 			$ordering = $this->_getOrdering();
 		} else {
 			$ordering = ' order by o.modified_on DESC';
@@ -334,7 +334,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 */
 		$dataT = get_object_vars($table);
 
-//		$doUpdate = JRequest::getString('update_values');
+//		$doUpdate = VmRequest::getString('update_values');
 
 		$orderdatacopy = $orderdata;
 		$data = array_merge($dataT,(array)$orderdatacopy);
@@ -404,7 +404,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$ordid = $table->virtuemart_order_id;
 
 			//cartRules
-			$calc_rules = JRequest::getVar('calc_rules','', '', 'array');
+			$calc_rules = VmRequest::getVar('calc_rules','', '', 'array');
 			$calc_rules_amount = 0;
 			$calc_rules_discount_amount = 0;
 			$calc_rules_tax_amount = 0;
@@ -430,8 +430,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 
 			//shipment
-			$os = JRequest::getString('order_shipment');
-			$ost = JRequest::getString('order_shipment_tax');
+			$os = VmRequest::getString('order_shipment');
+			$ost = VmRequest::getString('order_shipment_tax');
 
 			if ( $os!="" )
 			{
@@ -443,8 +443,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 
 			//payment
-			$op = JRequest::getString('order_payment');
-			$opt = JRequest::getString('order_payment_tax');
+			$op = VmRequest::getString('order_payment');
+			$opt = VmRequest::getString('order_payment_tax');
 			if ( $op!="" )
 			{
 				$sql = "UPDATE `#__virtuemart_orders` SET `order_payment`=$op,`order_payment_tax`=$opt WHERE  `virtuemart_order_id`=$ordid";
@@ -464,10 +464,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					`order_tax`=(SELECT sum( product_tax*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid),
 					`order_subtotal`=(SELECT sum(ROUND(product_item_price, ". $rounding .")*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid),";
 
-			if(JRequest::getString('calculate_billTaxAmount')) {
+			if(VmRequest::getString('calculate_billTaxAmount')) {
 				$sql .= "`order_billTaxAmount`=(SELECT sum( product_tax*product_quantity) FROM #__virtuemart_order_items where `virtuemart_order_id`=$ordid)+`order_shipment_tax`+`order_payment_tax`+$calc_rules_tax_amount";
 			} else {
-				$sql .= "`order_billTaxAmount`=".JRequest::getString('order_billTaxAmount');
+				$sql .= "`order_billTaxAmount`=".VmRequest::getString('order_billTaxAmount');
 			}
 
 			$sql .= " WHERE  `virtuemart_order_id`=$ordid";
@@ -501,7 +501,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$total = 1 ;
 		if(empty($orders)){
 			$orders = array();
-			$orderslist = JRequest::getVar('orders',  array());
+			$orderslist = VmRequest::getVar('orders',  array());
 			$total = 0 ;
 			// Get the list of orders in post to update
 			foreach ($orderslist as $key => $order) {
@@ -521,8 +521,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$updated = 0;
 		$error = 0;
 		if ($orders) {
-			// $notify = JRequest::getVar('customer_notified', array()); // ???
-			// $comments = JRequest::getVar('comments', array()); // ???
+			// $notify = VmRequest::getVar('customer_notified', array()); // ???
+			// $comments = VmRequest::getVar('comments', array()); // ???
 			foreach ($orders as $virtuemart_order_id => $order) {
 				if  ($order_id >0) $virtuemart_order_id= $order_id;
 				$this->useDefaultEmailOrderStatus = false;
@@ -588,14 +588,14 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		if ($data->store()) {
 
-			$task= JRequest::getCmd('task',0);
-			$view= JRequest::getWord('view',0);
+			$task= VmRequest::getCmd('task',0);
+			$view= VmRequest::getCmd('view',0);
 
 			/*if($task=='edit'){
-				$update_lines = JRequest::getInt('update_lines');
+				$update_lines = VmRequest::getInt('update_lines');
 			} else /*/
 			if ($task=='updatestatus' and $view=='orders') {
-				$lines = JRequest::getVar('orders');
+				$lines = VmRequest::getVar('orders');
 				$update_lines = $lines[$virtuemart_order_id]['update_lines'];
 			} else {
 				$update_lines = 1;
@@ -795,7 +795,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		if (!empty($_cart->couponCode)) {
 			//set the virtuemart_order_id in the Request for 3rd party coupon components (by Seyi and Max)
-			JRequest::setVar ( 'virtuemart_order_id', $_orderData->virtuemart_order_id );
+			VmRequest::setVar ( 'virtuemart_order_id', $_orderData->virtuemart_order_id );
 			// If a gift coupon was used, remove it now
 			CouponHelper::RemoveCoupon($_cart->couponCode);
 		}
@@ -1311,7 +1311,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			    $orderstatusForInvoice = VmConfig::get('inv_os',array('C'));
 				if(!is_array($orderstatusForInvoice)) $orderstatusForInvoice = array($orderstatusForInvoice); //for backward compatibility 2.0.8e
 			    $pdfInvoice = (int)VmConfig::get('pdf_invoice', 0); // backwards compatible
-			    $force_create_invoice=JRequest::getInt('create_invoice', 0);
+			    $force_create_invoice=VmRequest::getInt('create_invoice', 0);
 			    // florian : added if pdf invoice are enabled
 			    if ( in_array($orderDetails['order_status'],$orderstatusForInvoice)  or $pdfInvoice==1  or $force_create_invoice==1 ){
 					$q = 'SELECT COUNT(1) FROM `#__virtuemart_invoices` WHERE `virtuemart_vendor_id`= "'.$orderDetails['virtuemart_vendor_id'].'" '; // AND `order_status` = "'.$orderDetails->order_status.'" ';
@@ -1391,7 +1391,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$vars['orderDetails']=$order;
 
-		//$vars['includeComments'] = JRequest::getVar('customer_notified', array());
+		//$vars['includeComments'] = VmRequest::getVar('customer_notified', array());
 		//I think this is misleading, I think it should always ask for example $vars['newOrderData']['doVendor'] directly
 		//Using this function garantue us that it is always there. If the vendor should be informed should be done by the plugins
 		//We may add later something to the method, defining this better
@@ -1416,7 +1416,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$orderstatusForInvoice = VmConfig::get('inv_os',array('C'));
 			if(!is_array($orderstatusForInvoice)) $orderstatusForInvoice = array($orderstatusForInvoice);   // for backward compatibility 2.0.8e
 			$pdfInvoice = (int)VmConfig::get('pdf_invoice', 0); // backwards compatible
-			$force_create_invoice=JRequest::getInt('create_invoice', 0);
+			$force_create_invoice=VmRequest::getInt('create_invoice', 0);
 			//TODO we need an array of orderstatus
 			if ( (in_array($order['details']['BT']->order_status,$orderstatusForInvoice))  or $pdfInvoice==1  or $force_create_invoice==1 ){
 				if (!shopFunctions::InvoiceNumberReserved($invoiceNumberDate[0])) {
@@ -1758,8 +1758,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_orderData->order_status = 'P';
 		$_orderData->order_currency = $this->getVendorCurrencyId($_orderData->virtuemart_vendor_id);
 
-		$_orderData->virtuemart_paymentmethod_id = JRequest::getInt('virtuemart_paymentmethod_id');
-		$_orderData->virtuemart_shipmentmethod_id = JRequest::getInt('virtuemart_shipmentmethod_id');
+		$_orderData->virtuemart_paymentmethod_id = VmRequest::getInt('virtuemart_paymentmethod_id');
+		$_orderData->virtuemart_shipmentmethod_id = VmRequest::getInt('virtuemart_shipmentmethod_id');
 
 		$_orderData->customer_note = '';
 		$_orderData->ip_address = $_SERVER['REMOTE_ADDR'];

@@ -55,7 +55,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 	function getOrderStatusList()
 	{
 
-		if (JRequest::getWord('view') !== 'orderstatus') $ordering = ' order by `ordering` ';
+		if (VmRequest::getCmd('view') !== 'orderstatus') $ordering = ' order by `ordering` ';
 		else $ordering = $this->_getOrdering();
 		$this->_noLimit=true;
 		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_orderstates`','','',$ordering);

@@ -611,7 +611,7 @@ class VmMediaHandler {
 				vmError('Not able to upload file, give path/url empty/too short '.$urlfolder.' please correct path in your virtuemart config');
 				return false;
 			}
-			$media = JRequest::getVar('upload', array(), 'files');
+			$media = VmRequest::getVar('upload', array(), 'files');
 
 			$app = JFactory::getApplication();
 			switch ($media['error']) {
@@ -1005,7 +1005,7 @@ class VmMediaHandler {
 			$html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGES').'</legend>';
 			$html .=  '<span style="height:18px;vertical-align: middle;margin:4px" class="hasTip always-left" title="'.JText::_('COM_VIRTUEMART_SEARCH_MEDIA_TIP').'">'.JText::_('COM_VIRTUEMART_SEARCH_MEDIA') . '</span>';
 			$html .=   '
-					<input type="text" name="searchMedia" id="searchMedia" style="height:18px;vertical-align: middle;margin:4px;width:250px" data-start="0" value="' .JRequest::getString('searchMedia') . '" class="text_area always-left" />
+					<input type="text" name="searchMedia" id="searchMedia" style="height:18px;vertical-align: middle;margin:4px;width:250px" data-start="0" value="' .VmRequest::getString('searchMedia') . '" class="text_area always-left" />
 					<button class="reset-value fg-button" style="height:18px;vertical-align: middle;margin:4px">'.JText::_('COM_VIRTUEMART_RESET') .'</button>
 					<a style="height:18px;vertical-align: middle;margin:4px" class="js-pages js-previous fg-button ui-state-default fg-button-icon-left ui-corner-all" ><span class="ui-icon ui-icon-circle-minus" style="display:inline-block;"></span> 16 </a>
 					<a style="height:18px;vertical-align: middle;margin:4px" class="js-pages js-next fg-button ui-state-default fg-button-icon-right ui-corner-all"> 16 <span class="ui-icon ui-icon-circle-plus" style="display:inline-block;"></span></a>';
@@ -1090,7 +1090,7 @@ class VmMediaHandler {
 			if(!empty($type)){
 				$q .= ' AND `file_type` = "'.$type.'" ';
 			}
-			if ($search = JRequest::getString('term', false)){
+			if ($search = VmRequest::getString('term', false)){
 				$search = '"%' . $db->getEscaped( $search, true ) . '%"' ;
 				$q .=  ' AND (`file_title` LIKE '.$search.' OR `file_description` LIKE '.$search.' OR `file_meta` LIKE '.$search.') ';
 			}

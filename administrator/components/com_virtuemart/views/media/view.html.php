@@ -47,7 +47,7 @@ class VirtuemartViewMedia extends VmView {
 		$perms = Permissions::getInstance();
 		$this->assignRef('perms', $perms);
 
-		$layoutName = JRequest::getWord('layout', 'default');
+		$layoutName = VmRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 
 			$media = $model->getFile();
@@ -59,13 +59,13 @@ class VirtuemartViewMedia extends VmView {
 
         }
         else {
-			$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',array(),'', 'array');
+			$virtuemart_product_id = VmRequest::getVar('virtuemart_product_id',array(),'', 'array');
 			if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 				$virtuemart_product_id = (int)$virtuemart_product_id[0];
 			} else {
 				$virtuemart_product_id = (int)$virtuemart_product_id;
 			}
-        	$cat_id = JRequest::getInt('virtuemart_category_id',0);
+        	$cat_id = VmRequest::getInt('virtuemart_category_id',0);
 
 			JToolBarHelper::customX('synchronizeMedia', 'new', 'new', JText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'),false);
 			$this->addStandardDefaultViewCommands();
@@ -76,14 +76,14 @@ class VirtuemartViewMedia extends VmView {
 				'manufacturer' => JText::_('COM_VIRTUEMART_MANUFACTURER'),
 				'vendor' => JText::_('COM_VIRTUEMART_VENDOR')
 				);
-			$this->lists['search_type'] = VmHTML::selectList('search_type', JRequest::getVar('search_type'),$options,1,'','onchange="this.form.submit();"');
+			$this->lists['search_type'] = VmHTML::selectList('search_type', VmRequest::getVar('search_type'),$options,1,'','onchange="this.form.submit();"');
 
 			$options = array( '' => JText::_('COM_VIRTUEMART_LIST_ALL_ROLES'),
 				'file_is_displayable' => JText::_('COM_VIRTUEMART_FORM_MEDIA_DISPLAYABLE'),
 				'file_is_downloadable' => JText::_('COM_VIRTUEMART_FORM_MEDIA_DOWNLOADABLE'),
 				'file_is_forSale' => JText::_('COM_VIRTUEMART_FORM_MEDIA_SET_FORSALE'),
 				);
-			$this->lists['search_role'] = VmHTML::selectList('search_role', JRequest::getVar('search_role'),$options,1,'','onchange="this.form.submit();"');
+			$this->lists['search_role'] = VmHTML::selectList('search_role', VmRequest::getVar('search_role'),$options,1,'','onchange="this.form.submit();"');
 
 			$files = $model->getFiles(false,false,$virtuemart_product_id,$cat_id);
 			$this->assignRef('files',	$files);

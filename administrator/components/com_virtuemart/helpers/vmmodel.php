@@ -48,12 +48,19 @@ class VmModel extends JModel {
 		$this->_cidName = $cidName;
 
 		// Get the task
-		$task = JRequest::getWord('task','');
+		$task = VmRequest::getCmd('task','');
 		if($task!=='add'){
 			// Get the id or array of ids.
-			$idArray = JRequest::getVar($this->_cidName,  0, '', 'array');
-			if(empty($idArray[0])) $idArray[0] = 0;
-			$this->setId((int)$idArray[0]);
+			$idArray = VmRequest::getVar($this->_cidName,  0, '', 'array');
+			vmdebug('my array',$idArray);
+			if($idArray){
+				if(is_array($idArray) and !empty($idArray[0])){
+					$this->setId((int)$idArray[0]);
+				} else{
+					$this->setId((int)$idArray);
+				}
+			}
+
 		}
 
 		$this->setToggleName('published');
@@ -69,7 +76,7 @@ class VmModel extends JModel {
 	static function getModel($name=false){
 
 		if (!$name){
-			$name = JRequest::getCmd('view','');
+			$name = VmRequest::getCmd('view','');
 // 			vmdebug('Get standard model of the view');
 		}
 		$name = strtolower($name);
@@ -207,7 +214,7 @@ class VmModel extends JModel {
 			vmdebug('checkValidOrderingField:'.get_class($this).' programmer choosed invalid ordering '.$toCheck.', use '.$this->_selectedOrdering);
 			$toCheck = $this->_selectedOrdering;
 			$app = JFactory::getApplication();
-			$view = JRequest::getWord('view','virtuemart');
+			$view = VmRequest::getCmd('view','virtuemart');
 			$app->setUserState( 'com_virtuemart.'.$view.'.filter_order',$this->_selectedOrdering);
 		}
 		$this->_selectedOrdering = $toCheck;
@@ -223,7 +230,7 @@ class VmModel extends JModel {
 // 			vmdebug('checkFilterDir: programmer choosed invalid ordering direction '.$filter_order_Dir,$this->_validFilterDir);
 // 			vmTrace('checkFilterDir');
 			$filter_order_Dir = $this->_selectedOrderingDir;
-			$view = JRequest::getWord('view','virtuemart');
+			$view = VmRequest::getCmd('view','virtuemart');
 			$app = JFactory::getApplication();
 			$app->setUserState( 'com_virtuemart.'.$view.'.filter_order_Dir',$filter_order_Dir);
 		}
@@ -255,7 +262,7 @@ class VmModel extends JModel {
 	public function setPaginationLimits(){
 
 		$app = JFactory::getApplication();
-		$view = JRequest::getWord('view',$this->_maintablename);
+		$view = VmRequest::getCmd('view',$this->_maintablename);
 
 		$limit = (int)$app->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit');
 		if(empty($limit)){
@@ -273,7 +280,7 @@ class VmModel extends JModel {
 		$this->setState('com_virtuemart.'.$view.'.limit',$limit);
 		$this->_limit = $limit;
 
-		$limitStart = $app->getUserStateFromRequest('com_virtuemart.'.$view.'.limitstart', 'limitstart',  JRequest::getInt('limitstart',0), 'int');
+		$limitStart = $app->getUserStateFromRequest('com_virtuemart.'.$view.'.limitstart', 'limitstart',  VmRequest::getInt('limitstart',0), 'int');
 
 		//There is a strange error in the frontend giving back 9 instead of 10, or 24 instead of 25
 		//This functions assures that the steps of limitstart fit with the limit
@@ -508,7 +515,7 @@ class VmModel extends JModel {
 		$table = $this->getTable($tablename);
 		//if(empty($cidName)) $cidName = $this->_cidName;
 
-		$ids = JRequest::getVar( $cidname, JRequest::getVar('cid',array(0)), 'post', 'array' );
+		$ids = VmRequest::getVar( $cidname, VmRequest::getVar('cid',array(0)), 'post', 'array' );
 
 		foreach($ids as $id){
 			$table->load( (int)$id );
@@ -686,7 +693,7 @@ class VmPagination extends JPagination {
 			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="'.$namespace.'submitform();"', 'value', 'text', $selected);
 		} else {
 
-			$getArray = (JRequest::get( 'get' ));
+			$getArray = (VmRequest::get( 'get' ));
 			$link ='';
 			unset ($getArray['limit']);
 
@@ -725,7 +732,7 @@ class VmPagination extends JPagination {
 				$limits[] = JHTML::_('select.option', JRoute::_( $link.'&limit='.$this->limit,false),$this->limit);
 				ksort($limits);
 			}
-			$selected= JRoute::_( $link.'&limit='. $selected) ;
+			$selected= JRoute::_( $link.'&limit='. $selected, false) ;
 			$js = 'onchange="window.top.location.href=this.options[this.selectedIndex].value"';
 
 			$html = JHTML::_('select.genericlist',  $limits, '', 'class="inputbox" size="1" '.$js , 'value', 'text', $selected);

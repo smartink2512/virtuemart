@@ -251,9 +251,9 @@ class shopFunctionsF {
 		$user = FALSE;
 		if(isset($vars['orderDetails'])){
 
-			//If the JRequest is there, the update is done by the order list view BE and so the checkbox does override the defaults.
+			//If the VmRequest is there, the update is done by the order list view BE and so the checkbox does override the defaults.
 			//$name = 'orders['.$order['details']['BT']->virtuemart_order_id.'][customer_notified]';
-			//$customer_notified = JRequest::getVar($name,-1);
+			//$customer_notified = VmRequest::getVar($name,-1);
 			if(!$useDefault and isset($vars['newOrderData']['customer_notified']) and $vars['newOrderData']['customer_notified']==1 ){
 				$user = self::sendVmMail( $view, $recipient, $noVendorMail );
 				vmdebug('renderMail by overwrite');
@@ -396,7 +396,7 @@ class shopFunctionsF {
 		shopFunctionsF::setTemplate( $template );
 
 		//Lets get here the layout set in the shopconfig, if there is nothing set, get the joomla standard
-		if(JRequest::getWord( 'view' ) == 'virtuemart') {
+		if(VmRequest::getCmd( 'view' ) == 'virtuemart') {
 			$layout = VmConfig::get( 'vmlayout', 'default' );
 			$view->setLayout( strtolower( $layout ) );
 		} else {
@@ -614,7 +614,7 @@ class shopFunctionsF {
 			} else {
 				$text = '|&nbsp;'.JText::_( 'COM_VIRTUEMART_PRINT' ).'&nbsp;|';
 			}
-			$isPopup = JRequest::getVar( 'pop' );
+			$isPopup = VmRequest::getVar( 'pop' );
 			if($isPopup) {
 				// Print Preview button - used when viewing page
 				$html = '<span class="vmNoPrint">

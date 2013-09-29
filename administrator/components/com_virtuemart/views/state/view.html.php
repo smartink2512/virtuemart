@@ -44,11 +44,11 @@ class VirtuemartViewState extends VmView {
 
 		$model = VmModel::getModel();
 
-//		$stateId = JRequest::getVar('virtuemart_state_id');
+//		$stateId = VmRequest::getVar('virtuemart_state_id');
 //		$model->setId($stateId);
 		$state = $model->getSingleState();
 
-		$countryId = JRequest::getInt('virtuemart_country_id', 0);
+		$countryId = VmRequest::getInt('virtuemart_country_id', 0);
 		if(empty($countryId)) $countryId = $state->virtuemart_country_id;
 		$this->assignRef('virtuemart_country_id',	$countryId);
 
@@ -64,7 +64,7 @@ class VirtuemartViewState extends VmView {
 		$this->assignRef('country_name', $country->getData()->country_name);
 
 
-		$layoutName = JRequest::getWord('layout', 'default');
+		$layoutName = VmRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 
 

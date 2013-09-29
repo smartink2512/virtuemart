@@ -43,7 +43,7 @@ class VmController extends JController{
 		$this->_cname = strtolower(substr(get_class( $this ), 20));
 		$this->mainLangKey = JText::_('COM_VIRTUEMART_'.strtoupper($this->_cname));
 		$this->redirectPath = 'index.php?option=com_virtuemart&view='.$this->_cname;
-		$task = explode ('.',JRequest::getCmd( 'task'));
+		$task = explode ('.',VmRequest::getCmd( 'task'));
 		if ($task[0] == 'toggle') {
 			$val = (isset($task[2])) ? $task[2] : NULL;
 			$this->toggle($task[1],$val);
@@ -70,13 +70,13 @@ class VmController extends JController{
 		$document	= JFactory::getDocument();
 		$viewType	= $document->getType();
 		if(JVM_VERSION==2){
-			$viewName	= JRequest::getCmd('view', $this->default_view);
-			$viewLayout	= JRequest::getCmd('layout', 'default');
+			$viewName	= VmRequest::getCmd('view', $this->default_view);
+			$viewLayout	= VmRequest::getCmd('layout', 'default');
 
 			$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath));
 		} else {
-			$viewName	= JRequest::getCmd('view', '');
-			$viewLayout	= JRequest::getCmd('layout', 'default');
+			$viewName	= VmRequest::getCmd('view', '');
+			$viewLayout	= VmRequest::getCmd('layout', 'default');
 
 			$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->_basePath));
 		}
@@ -90,7 +90,7 @@ class VmController extends JController{
 
 		// Display the view
 		if ($cachable && $viewType != 'feed' && $conf->get('caching') >= 1) {
-			$option	= JRequest::getCmd('option');
+			$option	= VmRequest::getCmd('option');
 			$cache	= JFactory::getCache($option, 'view');
 
 			if (is_array($urlparams)) {
@@ -129,10 +129,10 @@ class VmController extends JController{
 	 */
 	function edit($layout='edit'){
 
-		JRequest::setVar('controller', $this->_cname);
-		JRequest::setVar('view', $this->_cname);
-		JRequest::setVar('layout', $layout);
-// 		JRequest::setVar('hidemenu', 1);
+		VmRequest::setVar('controller', $this->_cname);
+		VmRequest::setVar('view', $this->_cname);
+		VmRequest::setVar('layout', $layout);
+// 		VmRequest::setVar('hidemenu', 1);
 
 		if(empty($view)){
 			$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
@@ -154,9 +154,9 @@ class VmController extends JController{
 	 */
 	function save($data = 0){
 
-		JRequest::checkToken() or jexit( 'Invalid Token save' );
+		VmRequest::checkToken() or jexit( 'Invalid Token save' );
 
-		if($data===0)$data = JRequest::get('post');
+		if($data===0)$data = VmRequest::get('post');
 
 		$model = VmModel::getModel($this->_cname);
 		$id = $model->store($data);
@@ -173,7 +173,7 @@ class VmController extends JController{
 
 		$redir = $this->redirectPath;
 		//vmInfo($msg);
-		if(JRequest::getCmd('task') == 'apply'){
+		if(VmRequest::getCmd('task') == 'apply'){
 
 			$redir .= '&task=edit&'.$this->_cidName.'[]='.$id;
 		} //else $this->display();
@@ -188,9 +188,9 @@ class VmController extends JController{
 	 */
 	function remove(){
 
-		JRequest::checkToken() or jexit( 'Invalid Token remove' );
+		VmRequest::checkToken() or jexit( 'Invalid Token remove' );
 
-		$ids = JRequest::getVar($this->_cidName, JRequest::getVar('cid',array(),'', 'ARRAY'), '', 'ARRAY');
+		$ids = VmRequest::getVar($this->_cidName, VmRequest::getVar('cid',array(),'', 'ARRAY'), '', 'ARRAY');
 		jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($ids);
 
@@ -234,7 +234,7 @@ class VmController extends JController{
 
 	public function toggle($field,$val=null){
 
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		VmRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$model = VmModel::getModel($this->_cname);
 		if (!$model->toggle($field,$val,$this->_cidName)) {
@@ -253,7 +253,7 @@ class VmController extends JController{
 	 */
 	public function publish($cidname=0,$table=0,$redirect = 0){
 
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		VmRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$model = VmModel::getModel($this->_cname);
 
@@ -278,7 +278,7 @@ class VmController extends JController{
 	 */
 	function unpublish($cidname=0,$table=0,$redirect = 0){
 
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		VmRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$model = VmModel::getModel($this->_cname);
 
@@ -297,7 +297,7 @@ class VmController extends JController{
 
 	function orderup() {
 
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		VmRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$model = VmModel::getModel($this->_cname);
 		$model->move(-1);
@@ -307,7 +307,7 @@ class VmController extends JController{
 
 	function orderdown() {
 
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		VmRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$model = VmModel::getModel($this->_cname);
 		$model->move(1);
@@ -317,10 +317,10 @@ class VmController extends JController{
 
 	function saveorder() {
 
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		VmRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$cid 	= JRequest::getVar( $this->_cidName, JRequest::getVar('cid',array(0)), 'post', 'array' );
-		$order 	= JRequest::getVar( 'order', array(), 'post', 'array' );
+		$cid 	= VmRequest::getVar( $this->_cidName, VmRequest::getVar('cid',array(0)), 'post', 'array' );
+		$order 	= VmRequest::getVar( 'order', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);
 		JArrayHelper::toInteger($order);
 

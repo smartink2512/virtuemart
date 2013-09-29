@@ -55,7 +55,7 @@ class VirtuemartControllerCustom extends VmController {
 	}
 
 	function save($data = 0) {
-		$data = JRequest::get('post');
+		$data = VmRequest::get('post');
 		// onSaveCustom plugin;
 		parent::save($data);
 	}
@@ -73,7 +73,7 @@ class VirtuemartControllerCustom extends VmController {
 
 		$model = VmModel::getModel('custom');
 		$msgtype = '';
-		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_custom_id',array(),'', 'ARRAY'), '', 'ARRAY');
+		$cids = VmRequest::getVar($this->_cidName, VmRequest::getVar('virtuemart_custom_id',array(),'', 'ARRAY'), '', 'ARRAY');
 		jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($cids);
 		foreach ($cids as $custom_id) {

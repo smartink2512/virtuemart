@@ -106,7 +106,7 @@ class CurrencyDisplay {
 			if(empty($currencyId)){
 
 				if(self::$_instance->_app->isSite()){
-					self::$_instance->_currency_id = self::$_instance->_app->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',JRequest::getInt('virtuemart_currency_id', 0));
+					self::$_instance->_currency_id = self::$_instance->_app->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',VmRequest::getInt('virtuemart_currency_id', 0));
 				}
 				if(empty(self::$_instance->_currency_id)){
 					self::$_instance->_currency_id = self::$_instance->_vendorCurrency;
@@ -130,7 +130,7 @@ class CurrencyDisplay {
 					$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=user&task=editshop';
 					JError::raiseWarning('1', JText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_CURRENCY_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
 				} else{
-					if(JRequest::getWord('view')!='currency'){
+					if(VmRequest::getCmd('view')!='currency'){
 						$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.self::$_instance->_currency_id;
 						JError::raiseWarning('1', JText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_FORMAT_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
 					}
@@ -448,7 +448,7 @@ class CurrencyDisplay {
 		} else {
 			$currencyCode = self::ensureUsingCurrencyCode($currency);
 			$vendorCurrencyCode = self::ensureUsingCurrencyCode($this->_vendorCurrency);
-			$globalCurrencyConverter=JRequest::getVar('globalCurrencyConverter');
+			$globalCurrencyConverter=VmRequest::getVar('globalCurrencyConverter');
 			if($shop){
 				$price = $this ->_currencyConverter->convert( $price, $currencyCode, $vendorCurrencyCode);
 				//vmdebug('convertCurrencyTo Use dynamic rate in shop '.$oldprice .' => '.$price);

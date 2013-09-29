@@ -50,7 +50,7 @@ class VirtuemartViewOrders extends VmView {
 
 		/* Get the data */
 
-		$virtuemart_order_id = JRequest::getvar('virtuemart_order_id');
+		$virtuemart_order_id = VmRequest::getvar('virtuemart_order_id');
 		$order = $orderModel->getOrder($virtuemart_order_id);
 		//$order = $this->get('Order');
 		$orderNumber = $order['details']['BT']->virtuemart_order_number;

@@ -46,7 +46,7 @@ class VirtuemartViewInvoice extends VmView {
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
 		if(empty($this->uselayout)){
-			$layout = JRequest::getWord('layout','mail');
+			$layout = VmRequest::getCmd('layout','mail');
 		} else {
 			$layout = $this->uselayout;
 		}
@@ -74,14 +74,14 @@ class VirtuemartViewInvoice extends VmView {
 		}
 		$this->setLayout($layout);
 
-		$tmpl = JRequest::getWord('tmpl');
+		$tmpl = VmRequest::getCmd('tmpl');
 		$print = false;
 		if($tmpl){
 			$print = true;
 		}
 		$this->assignRef('print', $print);
 
-		$this->format = JRequest::getWord('format','html');
+		$this->format = VmRequest::getCmd('format','html');
 		if($layout == 'invoice'){
 			$document->setTitle( JText::_('COM_VIRTUEMART_INVOICE') );
 		}

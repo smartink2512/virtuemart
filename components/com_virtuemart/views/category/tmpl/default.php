@@ -146,7 +146,7 @@ if (!empty($this->keyword)) {
 } ?>
 
 <?php if ($this->search != false) {
-	$category_id  = JRequest::getInt ('virtuemart_category_id', 0); ?>
+	$category_id  = VmRequest::getInt ('virtuemart_category_id', 0); ?>
 <form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=category&limitstart=0', FALSE); ?>" method="get">
 
 	<!--BEGIN Search Box -->

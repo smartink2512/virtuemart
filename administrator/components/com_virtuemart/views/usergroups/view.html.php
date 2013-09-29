@@ -43,7 +43,7 @@ class VirtuemartViewUsergroups extends VmView {
 		$this->SetViewTitle();
 
 
-		$layoutName = JRequest::getWord('layout', 'default');
+		$layoutName = VmRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 
 			$usergroup = $model->getUsergroup();

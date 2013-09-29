@@ -43,7 +43,7 @@ class VirtuemartControllerState extends VmController {
 	function __construct() {
 		parent::__construct('virtuemart_state_id');
 
-		$country = JRequest::getInt('virtuemart_country_id', 0);
+		$country = VmRequest::getInt('virtuemart_country_id', 0);
 		$this->redirectPath .= ($country > 0) ? '&virtuemart_country_id=' . $country : '';
 	}
 

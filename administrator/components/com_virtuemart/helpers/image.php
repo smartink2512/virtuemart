@@ -114,7 +114,7 @@ class VmImage extends VmMediaHandler {
 			return FALSE;
 		}
 
-		$synchronise = JRequest::getString('synchronise',false);
+		$synchronise = VmRequest::getString('synchronise',false);
 
 		if(!VmConfig::get('img_resize_enable') || $synchronise) return;
 		//now lets create the thumbnail, saving is done in this function

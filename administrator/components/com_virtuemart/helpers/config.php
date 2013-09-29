@@ -391,7 +391,7 @@ class VmConfig {
 	public static $echoDebug = FALSE;
 	public static $logDebug = FALSE;
 	public static $logFileName = 'vmdebug';
-
+	public static $vmFilter = false;
 	var $lang = FALSE;
 
 	var $_params = array();
@@ -405,6 +405,7 @@ class VmConfig {
 			mb_internal_encoding('UTF-8');
 		}
 
+		self::$vmFilter = JFactory::getApplication()->input;
 	}
 
 	static function getStartTime(){
@@ -656,7 +657,7 @@ class VmConfig {
 
 		$langs = (array)self::$_jpConfig->get('active_languages',array());
 
-		$siteLang = JRequest::getString('vmlang',FALSE );
+		$siteLang = VmRequest::getString('vmlang',FALSE );
 
 		$params = JComponentHelper::getParams('com_languages');
 		$defaultLang = $params->get('site', 'en-GB');//use default joomla
@@ -983,12 +984,11 @@ class VmConfig {
 
 }
 
-class vmRequest{
+class vmRequest {
 
 	static function uword($field, $default, $custom=''){
 
- 		$source = JRequest::getVar($field,$default);
-
+		$source = VmConfig::$vmFilter->getVar($field,$default);
  		if(function_exists('mb_ereg_replace')){
  			//$source is string that will be filtered, $custom is string that contains custom characters
  			return mb_ereg_replace('[^\w'.preg_quote($custom).']', '', $source);
@@ -999,6 +999,31 @@ class vmRequest{
 			return preg_replace("~[^\w".preg_quote($custom,'~')."]~", '', $source);	//We use Tilde as separator, and give the preq_quote function the used separator
  		}
  	}
+
+	public static function getVar($name, $default = null, $hash = 'default', $type = 'none', $mask = 0){
+		return Vmconfig::$vmFilter->getVar($name, $default, $hash, $type, $mask);
+	}
+
+	public static function getString($name, $default = '', $hash = 'default', $mask = 0){
+		// Cast to string, in case JREQUEST_ALLOWRAW was specified for mask
+		return (string) VmConfig::$vmFilter->getVar($name, $default, $hash, 'string', $mask);
+	}
+
+	public static function getCmd($name, $default = '', $hash = 'default'){
+		return VmConfig::$vmFilter->getVar($name, $default, $hash, 'cmd');
+	}
+
+	public static function getInt($name, $default = 0, $hash = 'default'){
+		return VmConfig::$vmFilter->getVar($name, $default, $hash, 'int');
+	}
+
+	public static function get($hash = 'default', $mask = 0){
+		return VmConfig::$vmFilter->get($hash,$mask);
+	}
+
+	public static function setVar($name, $value = null, $hash = 'method', $overwrite = true){
+		return VmConfig::$vmFilter->setVar($name, $value, $hash, $overwrite);
+	}
 }
 
 

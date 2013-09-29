@@ -65,8 +65,8 @@ class VirtuemartViewCategory extends VmView {
 		$this->assignRef('keyword', $keyword);
 		$this->assignRef('search', $keyword);
 
-		$categoryId = JRequest::getInt('virtuemart_category_id', false);
-		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', false );
+		$categoryId = VmRequest::getInt('virtuemart_category_id', false);
+		$virtuemart_manufacturer_id = VmRequest::getInt('virtuemart_manufacturer_id', false );
 		if ($categoryId === false and $virtuemart_manufacturer_id === false){
 
 			$categoryId = ShopFunctionsF::getLastVisitedCategoryId();
@@ -152,7 +152,7 @@ class VirtuemartViewCategory extends VmView {
 				} else {
 					$last_category_id = shopFunctionsF::getLastVisitedCategoryId();
 					if (!$last_category_id or $categoryId == $last_category_id) {
-						$last_category_id = JRequest::getInt('virtuemart_category_id', false);
+						$last_category_id = VmRequest::getInt('virtuemart_category_id', false);
 					}
 					if ($last_category_id and $categoryId != $last_category_id) {
 						$categoryLink = '&view=category&virtuemart_category_id=' . $last_category_id;
@@ -225,7 +225,7 @@ class VirtuemartViewCategory extends VmView {
 			$title = $this->setTitleByJMenu($app);
 		}
 
-	  	if(JRequest::getInt('error')){
+	  	if(VmRequest::getInt('error')){
 			$title .=' '.JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
 		}
 		if(!empty($keyword)){
@@ -235,7 +235,7 @@ class VirtuemartViewCategory extends VmView {
 		if ($virtuemart_manufacturer_id and !empty($products[0])) $title .=' '.$products[0]->mf_name ;
 		$document->setTitle( $title );
 		// Override Category name when viewing manufacturers products !IMPORTANT AFTER page title.
-		if (JRequest::getInt('virtuemart_manufacturer_id' ) and !empty($products[0]) and isset($category->category_name)) $category->category_name =$products[0]->mf_name ;
+		if (VmRequest::getInt('virtuemart_manufacturer_id' ) and !empty($products[0]) and isset($category->category_name)) $category->category_name =$products[0]->mf_name ;
 
 		if ($app->getCfg('MetaTitle') == '1') {
 			$document->setMetaData('title',  $title);
@@ -268,7 +268,7 @@ class VirtuemartViewCategory extends VmView {
 		if (!empty($tpl)) {
 			$format = $tpl;
 		} else {
-			$format = JRequest::getWord('format', 'html');
+			$format = VmRequest::getCmd('format', 'html');
 		}
 		if ($format == 'html') {
 
@@ -287,7 +287,7 @@ class VirtuemartViewCategory extends VmView {
 		$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE `field_type` ="P"');
 		$this->options = $this->_db->loadAssocList();
 
-		if ($this->custom_parent_id = JRequest::getInt('custom_parent_id', 0)) {
+		if ($this->custom_parent_id = VmRequest::getInt('custom_parent_id', 0)) {
 			$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE custom_parent_id='.$this->custom_parent_id);
 			$this->selected = $this->_db->loadObjectList();
 			$this->searchCustomValues ='';

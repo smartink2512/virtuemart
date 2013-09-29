@@ -32,10 +32,10 @@ $this->media->addHidden(JUtility::getToken(),1);
 $this->media->addHidden('file_type',$this->media->file_type);
 
 
-$virtuemart_product_id = JRequest::getInt('virtuemart_product_id', '');
+$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id', '');
 if(!empty($virtuemart_product_id)) $this->media->addHidden('virtuemart_product_id',$virtuemart_product_id);
 
-$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', '');
+$virtuemart_category_id = VmRequest::getInt('virtuemart_category_id', '');
 if(!empty($virtuemart_category_id)) $this->media->addHidden('virtuemart_category_id',$virtuemart_category_id);
 
 echo $this->media->displayFileHandler();

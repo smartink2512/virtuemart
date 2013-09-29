@@ -47,7 +47,7 @@ class VirtuemartViewUser extends VmView {
 		$currentUser = JFactory::getUser();
 
 
-		$task = JRequest::getWord('task', 'edit');
+		$task = VmRequest::getCmd('task', 'edit');
 		if($task == 'editshop'){
 
 			if(Vmconfig::get('multix','none') !=='none'){
@@ -61,7 +61,7 @@ class VirtuemartViewUser extends VmView {
 		} else if ($task == 'add'){
 			$userId  = 0;
 		} else {
-			$userId = JRequest::getVar('virtuemart_user_id',0);
+			$userId = VmRequest::getVar('virtuemart_user_id',0);
 			if(is_array($userId)){
 				$userId = $userId[0];
 			}
@@ -69,7 +69,7 @@ class VirtuemartViewUser extends VmView {
 		}
 		$userId = $model->setId($userId);
 
-		//$layoutName = JRequest::getWord('layout', 'default');
+		//$layoutName = VmRequest::getCmd('layout', 'default');
 		$layoutName = $this->getLayout();
 
 		if ($layoutName == 'edit' || $layoutName == 'edit_shipto') {
@@ -125,7 +125,7 @@ class VirtuemartViewUser extends VmView {
 			$this->lists['shipTo'] = ShopFunctions::generateStAddressList($this,$model,'addST');
 
 			$new = false;
-			if(JRequest::getInt('new','0')===1){
+			if(VmRequest::getInt('new','0')===1){
 				$new = true;
 			}
 
@@ -153,7 +153,7 @@ class VirtuemartViewUser extends VmView {
 			$this->assignRef('userInfoID', $virtuemart_userinfo_id_BT);
 
 
-			$virtuemart_userinfo_id = JRequest::getString('virtuemart_userinfo_id', '0','');
+			$virtuemart_userinfo_id = VmRequest::getString('virtuemart_userinfo_id', '0','');
 			$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'ST',$virtuemart_userinfo_id,false);
 
 			if($new ){

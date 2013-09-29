@@ -22,20 +22,6 @@ class ShopFunctions {
 
 	}
 
-	/*
-	 * Add simple search to form
-	* @param $searchLabel text to display before searchbox
-	* @param $name 		 lists and id name
-	* ??JText::_('COM_VIRTUEMART_NAME')
-	*/
-
-	static public function displayDefaultViewSearch ($searchLabel, $value, $name = 'search') {
-
-		return JText::_ ('COM_VIRTUEMART_FILTER') . ' ' . JText::_ ($searchLabel) . ':
-		<input type="text" name="' . $name . '" id="' . $name . '" value="' . $value . '" class="text_area" />
-		<button onclick="this.form.submit();">' . JText::_ ('COM_VIRTUEMART_GO') . '</button>
-		<button onclick="document.getElementById(\'' . $name . '\').value=\'\';this.form.submit();">' . JText::_ ('COM_VIRTUEMART_RESET') . '</button>';
-	}
 
 	/**
 	 * Builds an enlist for information (not chooseable)
@@ -422,7 +408,7 @@ class ShopFunctions {
 			$db->setQuery($q);
 
 			$jtemplates = $db->loadObjectList();
-			vmdebug('$jtemplates',$jtemplates);
+
 			foreach ($jtemplates as $key => $template) {
 				$template->name = $template->title;
 				$template->value = $template->id;
@@ -762,8 +748,10 @@ class ShopFunctions {
 		if (empty(self::$categoryTree)) {
 // 			vmTime('Start with categoryListTree');
 			$cache = JFactory::getCache ('_virtuemart');
+			$cached = $cache->getCaching();
 			$cache->setCaching (1);
 			self::$categoryTree = $cache->call (array('ShopFunctions', 'categoryListTreeLoop'), $selectedCategories, $cid, $level, $disabledFields);
+			$cache->setCaching ($cached);
 			// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
 // 			vmTime('end loop categoryListTree '.self::$counter);
 		}

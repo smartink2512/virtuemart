@@ -85,10 +85,10 @@ class VirtueMartModelCustomfields extends VmModel {
 
 	static function bindCustomEmbeddedFieldParams(&$obj,$fieldtype){
 		//vmdebug('bindCustomEmbeddedFieldParams begin',$obj);
-		$obj ->_xParams = 'custom_param';
+		$obj ->_xParams = 'custom_params';
 		VirtueMartModelCustomfields::bindParameterableByFieldType($obj,$fieldtype);
 		//vmdebug('bindCustomEmbeddedFieldParams middle',$obj);
-		$obj ->_xParams = 'customfield_param';
+		$obj ->_xParams = 'customfield_params';
 		VirtueMartModelCustomfields::bindParameterableByFieldType($obj,$fieldtype);
 		//vmdebug('bindCustomEmbeddedFieldParams end',$obj);
 	}
@@ -96,9 +96,9 @@ class VirtueMartModelCustomfields extends VmModel {
 	public static function getProductCustomSelectFieldList(){
 
 		$q = 'SELECT c.`virtuemart_custom_id`, `custom_parent_id`, c.`virtuemart_vendor_id`, `custom_jplugin_id`, `custom_element`, `admin_only`, `custom_title`, `show_title` , `custom_tip`,
-		c.`custom_value`, `custom_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `is_input`, `layout_pos`, `custom_param`, c.`shared`, c.`published`, c.`ordering`, ';
+		c.`custom_value`, `custom_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `is_input`, `layout_pos`, `custom_params`, c.`shared`, c.`published`, c.`ordering`, ';
 		$q .= 'field.`virtuemart_customfield_id`, `virtuemart_product_id`, field.`customfield_value`, field.`customfield_price`,
-		field.`customfield_param`, field.`published` as fpublished, field.`override`, field.`disabler`, field.`ordering`
+		field.`customfield_params`, field.`published` as fpublished, field.`override`, field.`disabler`, field.`ordering`
 		FROM `#__virtuemart_customs` AS c LEFT JOIN `#__virtuemart_product_customfields` AS field ON c.`virtuemart_custom_id` = field.`virtuemart_custom_id` ';
 		return $q;
 	}
@@ -465,7 +465,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					//Note by Max Milbers: This is not necessary, in this case it is better to unpublish the parent and to give the child which should be preselected a category
 					//Or it is withParent, in that case there exists the case, that a parent should be used as a kind of mini category and not be orderable.
 					//There exists already other customs and in special plugins which wanna disable or change the add to cart button.
-					$selected = JRequest::getInt ('virtuemart_product_id',0);
+					$selected = VmRequest::getInt ('virtuemart_product_id',0);
 
 					$html = '';
 					$uncatChildren = $productModel->getUncategorizedChildren ($customfield->withParent);
@@ -834,7 +834,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					//vmdebug('my $productCustom->customfield_price',$selected,$productCustom->virtuemart_custom_id,$productCustom->virtuemart_customfield_id,$cart->cartProductsData[$product->cart_item_id]['customProductData']);
 				} else {
 
-					$pluginFields = JRequest::getVar ('customProductData', NULL);
+					$pluginFields = VmRequest::getVar ('customProductData', NULL);
 
 					if ($pluginFields == NULL and isset($product->customPlugin)) {
 						$pluginFields = json_decode ($product->customPlugin, TRUE);
@@ -937,7 +937,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	public function storeProductCustomfields($table,$datas, $id) {
 
 		//vmdebug('storeProductCustomfields',$datas);
-		JRequest::checkToken() or jexit( 'Invalid Token, in store customfields');
+		VmRequest::checkToken() or jexit( 'Invalid Token, in store customfields');
 		//Sanitize id
 		$id = (int)$id;
 
@@ -980,9 +980,9 @@ class VirtueMartModelCustomfields extends VmModel {
 				$fields['virtuemart_'.$table.'_id'] =$id;
 				$tableCustomfields = $this->getTable($table.'_customfields');
 				$tableCustomfields->setPrimaryKey('virtuemart_product_id');
-				if (!empty($datas['custom_param'][$key]) and !isset($datas['clone']) ) {
-					if (array_key_exists( $key,$datas['custom_param'])) {
-						$fields = array_merge ((array)$fields, (array)$datas['custom_param'][$key]);
+				if (!empty($datas['custom_params'][$key]) and !isset($datas['clone']) ) {
+					if (array_key_exists( $key,$datas['custom_params'])) {
+						$fields = array_merge ((array)$fields, (array)$datas['custom_params'][$key]);
 					}
 				}
 

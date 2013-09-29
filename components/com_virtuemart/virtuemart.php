@@ -32,7 +32,7 @@ VmConfig::loadJLang('com_virtuemart', true);
 if(VmConfig::get('shop_is_offline',0)){
 	$_controller = 'virtuemart';
 	require (JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
-	JRequest::setVar('view', 'virtuemart');
+	VmRequest::setVar('view', 'virtuemart');
 	$task='';
 	$basePath = JPATH_VM_SITE;
 } else {
@@ -47,10 +47,10 @@ if(VmConfig::get('shop_is_offline',0)){
 	vmJsApi::jSite();
 	vmJsApi::cssSite();
 
-	$_controller = JRequest::getWord('view', JRequest::getWord('controller', 'virtuemart')) ;
+	$_controller = VmRequest::getCmd('view', VmRequest::getCmd('controller', 'virtuemart')) ;
 	$trigger = 'onVmSiteController';
-// 	$task = JRequest::getWord('task',JRequest::getWord('layout',$_controller) );		$this makes trouble!
-	$task = JRequest::getWord('task','') ;
+// 	$task = VmRequest::getCmd('task',VmRequest::getCmd('layout',$_controller) );		$this makes trouble!
+	$task = VmRequest::getCmd('task','') ;
 
 	if (($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit') ) {
 		$app = JFactory::getApplication();

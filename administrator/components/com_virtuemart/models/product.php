@@ -137,9 +137,9 @@ class VirtueMartModelProduct extends VmModel {
 		$this->keyword = vmRequest::uword ('keyword', "", ' ,-,+,.,_,#,/');
 		if ($this->keyword == "") {
 			$this->keyword = vmRequest::uword ('filter_product', "", ' ,-,+,.,_,#,/');
-			JRequest::setVar('filter_product',$this->keyword);
+			VmRequest::setVar('filter_product',$this->keyword);
 		} else {
-			JRequest::setVar('keyword',$this->keyword);
+			VmRequest::setVar('keyword',$this->keyword);
 		}
 
 		$app = JFactory::getApplication ();
@@ -147,7 +147,7 @@ class VirtueMartModelProduct extends VmModel {
 		$view = 'product';
 
 		if ($app->isSite ()) {
-			$filter_order = JRequest::getString ('orderby', "0");
+			$filter_order = VmRequest::getString ('orderby', "0");
 
 			if($filter_order == "0"){
 				$filter_order_raw = $this->getLastProductOrdering($this->_selectedOrdering);
@@ -159,7 +159,7 @@ class VirtueMartModelProduct extends VmModel {
 				$this->setLastProductOrdering($filter_order);
 
 			}
-			$filter_order_Dir = strtoupper (JRequest::getWord ('order', VmConfig::get('prd_brws_orderby_dir', 'ASC')));
+			$filter_order_Dir = strtoupper (VmRequest::getCmd ('order', VmConfig::get('prd_brws_orderby_dir', 'ASC')));
 			$valid_search_fields = VmConfig::get ('browse_search_fields');
 		}
 		else {
@@ -175,15 +175,15 @@ class VirtueMartModelProduct extends VmModel {
 		$this->filter_order_Dir = $filter_order_Dir;
 		$this->valid_search_fields = $valid_search_fields;
 
-		$this->product_parent_id = JRequest::getInt ('product_parent_id', FALSE);
+		$this->product_parent_id = VmRequest::getInt ('product_parent_id', FALSE);
 
-		$this->virtuemart_manufacturer_id = JRequest::getInt ('virtuemart_manufacturer_id', FALSE);
+		$this->virtuemart_manufacturer_id = VmRequest::getInt ('virtuemart_manufacturer_id', FALSE);
 
-		$this->search_type = JRequest::getVar ('search_type', '');
+		$this->search_type = VmRequest::getVar ('search_type', '');
 
-		$this->searchcustoms = JRequest::getVar ('customfields', array(), 'default', 'array');
+		$this->searchcustoms = VmRequest::getVar ('customfields', array(), 'default', 'array');
 
-		$this->searchplugin = JRequest::getInt ('custom_parent_id', 0);
+		$this->searchplugin = VmRequest::getInt ('custom_parent_id', 0);
 
 	}
 
@@ -362,17 +362,17 @@ class VirtueMartModelProduct extends VmModel {
 
 			// Time filter
 			if ($this->search_type != '') {
-				$search_order = $db->getEscaped (JRequest::getWord ('search_order') == 'bf' ? '<' : '>');
+				$search_order = $db->getEscaped (VmRequest::getCmd ('search_order') == 'bf' ? '<' : '>');
 				switch ($this->search_type) {
 					case 'parent':
 						$where[] = 'p.`product_parent_id` = "0"';
 						break;
 					case 'product':
-						$where[] = 'p.`modified_on` ' . $search_order . ' "' . $db->getEscaped (JRequest::getVar ('search_date')) . '"';
+						$where[] = 'p.`modified_on` ' . $search_order . ' "' . $db->getEscaped (VmRequest::getVar ('search_date')) . '"';
 						break;
 					case 'price':
 						$joinPrice = TRUE;
-						$where[] = 'pp.`modified_on` ' . $search_order . ' "' . $db->getEscaped (JRequest::getVar ('search_date')) . '"';
+						$where[] = 'pp.`modified_on` ' . $search_order . ' "' . $db->getEscaped (VmRequest::getVar ('search_date')) . '"';
 						break;
 					case 'withoutprice':
 						$joinPrice = TRUE;
@@ -454,12 +454,12 @@ class VirtueMartModelProduct extends VmModel {
 					case 'random':
 						$orderBy = ' ORDER BY RAND() '; //LIMIT 0, '.(int)$nbrReturnProducts ; //TODO set limit LIMIT 0, '.(int)$nbrReturnProducts;
 						break;
-					case 'topten';
+					case 'topten':
 						$orderBy = ' ORDER BY p.`product_sales` '; //LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 						$where[] = 'pp.`product_price`>"0.0" ';
 						$this->filter_order_Dir = 'DESC';
 					break;
-					case 'recent';
+					case 'recent':
 						$rSession = JFactory::getSession();
 						$rIds = $rSession->get('vmlastvisitedproductids', array(), 'vm'); // get recent viewed from browser session
 						return $rIds;
@@ -553,10 +553,10 @@ class VirtueMartModelProduct extends VmModel {
 	public function setPaginationLimits () {
 
 		$app = JFactory::getApplication ();
-		$view = JRequest::getWord ('view','virtuemart');
+		$view = VmRequest::getCmd ('view','virtuemart');
 
-		$cateid = JRequest::getInt ('virtuemart_category_id', -1);
-		$manid = JRequest::getInt ('virtuemart_manufacturer_id', 0);
+		$cateid = VmRequest::getInt ('virtuemart_category_id', -1);
+		$manid = VmRequest::getInt ('virtuemart_manufacturer_id', 0);
 
 		$limitString = 'com_virtuemart.' . $view . 'c' . $cateid . '.limit';
 		$limit = (int)$app->getUserStateFromRequest ($limitString, 'limit');
@@ -588,7 +588,7 @@ class VirtueMartModelProduct extends VmModel {
 			else {
 				//We were already in the category/manufacturer, so we take the value stored in the session
 				$limitStartString  = 'com_virtuemart.' . $view . 'c' . $cateid .'m'.$manid. '.limitstart';
-				$limitStart = $app->getUserStateFromRequest ($limitStartString, 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
+				$limitStart = $app->getUserStateFromRequest ($limitStartString, 'limitstart', VmRequest::getInt ('limitstart', 0), 'int');
 			}
 
 			if(!empty($category->limit_list_initial)){
@@ -619,7 +619,7 @@ class VirtueMartModelProduct extends VmModel {
 			//vmdebug('Calculated $limit  ',$limit,$suglimit);
 		}
 		else {
-			$limitStart = $app->getUserStateFromRequest ('com_virtuemart.' . $view . '.limitstart', 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
+			$limitStart = $app->getUserStateFromRequest ('com_virtuemart.' . $view . '.limitstart', 'limitstart', VmRequest::getInt ('limitstart', 0), 'int');
 		}
 
 		if(empty($limit)){
@@ -1008,7 +1008,7 @@ class VirtueMartModelProduct extends VmModel {
 						$product->virtuemart_category_id = $last_category_id;
 						//vmdebug('I take for product the last category ',$last_category_id,$product->categories);
 					} else {
-						$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
+						$virtuemart_category_id = VmRequest::getInt ('virtuemart_category_id', 0);
 						if ($virtuemart_category_id!==0 and in_array ($virtuemart_category_id, $product->categories)) {
 							$product->virtuemart_category_id = $virtuemart_category_id;
 							//vmdebug('I take for product the requested category ',$virtuemart_category_id,$product->categories);
@@ -1026,7 +1026,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			} else {
 				//This construction should allow us to see category depended prices in the BE
-				$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
+				$virtuemart_category_id = VmRequest::getInt ('virtuemart_category_id', 0);
 
 				if($virtuemart_category_id!==0 and !empty($product->categories) ) {
 					if(is_array($product->categories) and in_array ($virtuemart_category_id, $product->categories)){
@@ -1270,7 +1270,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$app = JFactory::getApplication ();
 		if (!$app->isSite ()) { //persisted filter only in admin
-			$view = JRequest::getWord ('view');
+			$view = VmRequest::getCmd ('view');
 			$mainframe = JFactory::getApplication ();
 			$this->virtuemart_category_id = $mainframe->getUserStateFromRequest ('com_virtuemart.' . $view . '.filter.virtuemart_category_id', 'virtuemart_category_id', 0, 'int');
 			$this->setState ('virtuemart_category_id', $this->virtuemart_category_id);
@@ -1278,7 +1278,7 @@ class VirtueMartModelProduct extends VmModel {
 			$this->setState ('virtuemart_manufacturer_id', $this->virtuemart_manufacturer_id);
 		}
 		else {
-			$this->virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', FALSE);
+			$this->virtuemart_category_id = VmRequest::getInt ('virtuemart_category_id', FALSE);
 		}
 	}
 
@@ -1427,10 +1427,10 @@ class VirtueMartModelProduct extends VmModel {
 	*/
 	function saveorder ($cid = array(), $order, $filter = NULL) {
 
-		JRequest::checkToken () or jexit ('Invalid Token');
+		VmRequest::checkToken () or jexit ('Invalid Token');
 
 		$db = JFactory::getDbo();
-		$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id', 0);
+		$virtuemart_category_id = VmRequest::getInt ('virtuemart_category_id', 0);
 
 		$q = 'SELECT `id`,`ordering` FROM `#__virtuemart_product_categories`
 			WHERE virtuemart_category_id=' . (int)$virtuemart_category_id . '
@@ -1479,13 +1479,13 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	function move ($direction, $filter = NULL) {
 
-		JRequest::checkToken () or jexit ('Invalid Token');
+		VmRequest::checkToken () or jexit ('Invalid Token');
 
 		// Check for request forgeries
 		$table = $this->getTable ('product_categories');
 		$table->move ($direction);
 
-		JFactory::getApplication ()->redirect ('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . JRequest::getInt ('virtuemart_category_id', 0));
+		JFactory::getApplication ()->redirect ('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . VmRequest::getInt ('virtuemart_category_id', 0));
 	}
 
     /**
@@ -1498,7 +1498,7 @@ class VirtueMartModelProduct extends VmModel {
      */
     public function store (&$product, $isChild = FALSE) {
 
-		JRequest::checkToken () or jexit ('Invalid Token');
+		VmRequest::checkToken () or jexit ('Invalid Token');
 
 		if ($product) {
 			$data = (array)$product;
@@ -1719,7 +1719,7 @@ class VirtueMartModelProduct extends VmModel {
 
 	public function updateXrefAndChildTables ($data, $tableName, $preload = FALSE) {
 
-		JRequest::checkToken () or jexit ('Invalid Token');
+		VmRequest::checkToken () or jexit ('Invalid Token');
 		//First we load the xref table, to get the old data
 		$product_table_Parent = $this->getTable ($tableName);
 		//We must go that way, because the load function of the vmtablexarry
@@ -2013,7 +2013,7 @@ class VirtueMartModelProduct extends VmModel {
 	 **/
 	function getOrderByList ($virtuemart_category_id = FALSE) {
 
-		$getArray = (JRequest::get ('get'));
+		$getArray = (VmRequest::get ('get'));
 		$link = '';
 		$fieldLink = '';
 		// remove setted variable
@@ -2035,13 +2035,13 @@ class VirtueMartModelProduct extends VmModel {
 		$fieldLink = 'index.php' . $fieldLink;
 		$orderTxt = '';
 
-		$order = JRequest::getWord ('order', 'ASC');
+		$order = VmRequest::getCmd ('order', 'ASC');
 		if ($order == 'DESC') {
 			$orderTxt .= '&order=' . $order;
 		}
 
 		$orderbyTxt = '';
-		$orderby = JRequest::getVar ('orderby', VmConfig::get ('browse_orderby_field'));
+		$orderby = VmRequest::getVar ('orderby', VmConfig::get ('browse_orderby_field'));
 		$orderby = $this->checkFilterOrder ($orderby);
 
 		$orderbyCfg = VmConfig::get ('browse_orderby_field');
@@ -2055,7 +2055,7 @@ class VirtueMartModelProduct extends VmModel {
 
 
 			// manufacturer link list
-			$virtuemart_manufacturer_id = JRequest::getInt ('virtuemart_manufacturer_id', '');
+			$virtuemart_manufacturer_id = VmRequest::getInt ('virtuemart_manufacturer_id', '');
 			if ($virtuemart_manufacturer_id != '') {
 				$manufacturerTxt = '&virtuemart_manufacturer_id=' . $virtuemart_manufacturer_id;
 			}
@@ -2419,13 +2419,13 @@ function lowStockWarningEmail($virtuemart_product_id) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 		}
 
-		$product_id = JRequest::getVar ('virtuemart_product_id', '');
+		$product_id = VmRequest::getVar ('virtuemart_product_id', '');
 		vmdebug ('sentProductEmailToShoppers product id', $product_id);
 		$vars = array();
-		$vars['subject'] = JRequest::getVar ('subject');
-		$vars['mailbody'] = JRequest::getVar ('mailbody');
+		$vars['subject'] = VmRequest::getVar ('subject');
+		$vars['mailbody'] = VmRequest::getVar ('mailbody');
 
-		$order_states = JRequest::getVar ('statut', array(), '', 'ARRAY');
+		$order_states = VmRequest::getVar ('statut', array(), '', 'ARRAY');
 		$productShoppers = $this->getProductShoppersByStatus ($product_id, $order_states);
 		vmdebug ('productShoppers ', $productShoppers);
 

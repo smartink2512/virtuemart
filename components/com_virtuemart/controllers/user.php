@@ -145,14 +145,14 @@ class VirtueMartControllerUser extends JController
 	function saveUser(){
 
 		$msg = $this->saveData(false,true);
-		$layout = JRequest::getWord('layout','edit');
+		$layout = VmRequest::getCmd('layout','edit');
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
 	}
 
 	function saveAddressST(){
 
 		$msg = $this->saveData(false,true,true);
-		$layout = 'edit';// JRequest::getWord('layout','edit');
+		$layout = 'edit';// VmRequest::getCmd('layout','edit');
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
 
 	}
@@ -172,9 +172,9 @@ class VirtueMartControllerUser extends JController
 		$currentUser = JFactory::getUser();
 		$msg = '';
 
-		$data = JRequest::get('post');
+		$data = VmRequest::get('post');
 
-		$data['address_type'] = JRequest::getWord('addrtype','BT');
+		$data['address_type'] = VmRequest::getCmd('addrtype','BT');
 		if($currentUser->guest!=1 || $register){
 			$userModel = VmModel::getModel('user');
 
@@ -184,12 +184,12 @@ class VirtueMartControllerUser extends JController
 					$data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 				}
 
-				$data['vendor_store_name'] = JRequest::getVar('vendor_store_name','','post','STRING',JREQUEST_ALLOWHTML);
-				$data['vendor_store_desc'] = JRequest::getVar('vendor_store_desc','','post','STRING',JREQUEST_ALLOWHTML);
-				$data['vendor_terms_of_service'] = JRequest::getVar('vendor_terms_of_service','','post','STRING',JREQUEST_ALLOWHTML);
-				$data['vendor_letter_css'] = JRequest::getVar('vendor_letter_css','','post','STRING',JREQUEST_ALLOWHTML);
-				$data['vendor_letter_header_html'] = JRequest::getVar('vendor_letter_header_html','','post','STRING',JREQUEST_ALLOWHTML);
-				$data['vendor_letter_footer_html'] = JRequest::getVar('vendor_letter_footer_html','','post','STRING',JREQUEST_ALLOWHTML);
+				$data['vendor_store_name'] = VmRequest::getVar('vendor_store_name','','post','STRING',JREQUEST_ALLOWHTML);
+				$data['vendor_store_desc'] = VmRequest::getVar('vendor_store_desc','','post','STRING',JREQUEST_ALLOWHTML);
+				$data['vendor_terms_of_service'] = VmRequest::getVar('vendor_terms_of_service','','post','STRING',JREQUEST_ALLOWHTML);
+				$data['vendor_letter_css'] = VmRequest::getVar('vendor_letter_css','','post','STRING',JREQUEST_ALLOWHTML);
+				$data['vendor_letter_header_html'] = VmRequest::getVar('vendor_letter_header_html','','post','STRING',JREQUEST_ALLOWHTML);
+				$data['vendor_letter_footer_html'] = VmRequest::getVar('vendor_letter_footer_html','','post','STRING',JREQUEST_ALLOWHTML);
 			}
 
 			//It should always be stored
@@ -210,7 +210,7 @@ class VirtueMartControllerUser extends JController
 					);
 					$return = $mainframe->login($credentials);
 				} else if(VmConfig::get('oncheckout_only_registered',0)){
-					$layout = JRequest::getWord('layout','edit');
+					$layout = VmRequest::getCmd('layout','edit');
 					$this->redirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
 				}
 
@@ -268,13 +268,13 @@ class VirtueMartControllerUser extends JController
 
 	function removeAddressST(){
 
-		$virtuemart_userinfo_id = JRequest::getVar('virtuemart_userinfo_id');
+		$virtuemart_userinfo_id = VmRequest::getVar('virtuemart_userinfo_id');
 
 		//Lets do it dirty for now
 		$userModel = VmModel::getModel('user');
 		$userModel->removeAddress();
 
-		$layout = JRequest::getWord('layout','edit');
+		$layout = VmRequest::getCmd('layout','edit');
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, $this->useXHTML,$this->useSSL) );
 	}
 }

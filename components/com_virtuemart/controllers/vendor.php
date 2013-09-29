@@ -36,7 +36,7 @@ class VirtueMartControllerVendor extends JController
 	*/
 	public function mailAskquestion () {
 
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		VmRequest::checkToken() or jexit( 'Invalid Token' );
 
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 
@@ -45,10 +45,10 @@ class VirtueMartControllerVendor extends JController
 		$vars = array();
 		$min = VmConfig::get('asks_minimum_comment_length', 50)+1;
 		$max = VmConfig::get('asks_maximum_comment_length', 2000)-1 ;
-		$commentSize = mb_strlen( JRequest::getString('comment') );
-		$validMail = filter_var(JRequest::getVar('email'), FILTER_VALIDATE_EMAIL);
+		$commentSize = mb_strlen( VmRequest::getString('comment') );
+		$validMail = filter_var(VmRequest::getVar('email'), FILTER_VALIDATE_EMAIL);
 
-		$virtuemart_vendor_id = JRequest::getInt('virtuemart_vendor_id',1);
+		$virtuemart_vendor_id = VmRequest::getInt('virtuemart_vendor_id',1);
 
 		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		$userId = VirtueMartModelVendor::getUserIdByVendorId($virtuemart_vendor_id);
@@ -62,8 +62,8 @@ class VirtueMartControllerVendor extends JController
 
 		$user = JFactory::getUser();
 
-		$fromMail = JRequest::getVar('email');	//is sanitized then
-		$fromName = JRequest::getVar('name','');//is sanitized then
+		$fromMail = VmRequest::getVar('email');	//is sanitized then
+		$fromName = VmRequest::getVar('name','');//is sanitized then
 		$fromMail = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$fromMail);
 		$fromName = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$fromName);
 		if (!empty($user->id)) {

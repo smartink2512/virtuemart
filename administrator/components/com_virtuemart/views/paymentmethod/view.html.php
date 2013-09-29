@@ -59,7 +59,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 		// TODO logo
 		$this->SetViewTitle();
 
-		$layoutName = JRequest::getWord('layout', 'default');
+		$layoutName = VmRequest::getCmd('layout', 'default');
 
 		$vendorModel = VmModel::getModel('vendor');
 

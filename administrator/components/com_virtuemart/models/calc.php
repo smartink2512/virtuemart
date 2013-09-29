@@ -172,7 +172,7 @@ class VirtueMartModelCalc extends VmModel {
 	 */
     public function store(&$data) {
 
-		JRequest::checkToken() or jexit( 'Invalid Token, in store calc');
+		VmRequest::checkToken() or jexit( 'Invalid Token, in store calc');
 
 		$table = $this->getTable('calcs');
 
@@ -283,7 +283,7 @@ class VirtueMartModelCalc extends VmModel {
 	*/
 	public function remove($cids) {
 
-		JRequest::checkToken() or jexit( 'Invalid Token, in remove category');
+		VmRequest::checkToken() or jexit( 'Invalid Token, in remove category');
 
 		$table = $this->getTable($this->_maintablename);
 		$cat = $this->getTable('calc_categories');

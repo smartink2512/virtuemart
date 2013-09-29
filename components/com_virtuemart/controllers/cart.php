@@ -65,8 +65,8 @@ class VirtueMartControllerCart extends JController {
 	{
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
-		$viewName = JRequest::getCmd('view', $this->default_view);
-		$viewLayout = JRequest::getCmd('layout', 'default');
+		$viewName = VmRequest::getCmd('view', $this->default_view);
+		$viewLayout = VmRequest::getCmd('layout', 'default');
 
 		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
 
@@ -93,7 +93,7 @@ class VirtueMartControllerCart extends JController {
 		}
 		$cart = VirtueMartCart::getCart();
 		if ($cart) {
-			$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
+			$virtuemart_product_ids = VmRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
 			$success = true;
 			if ($cart->add($virtuemart_product_ids,$success)) {
 				$msg = JText::_('COM_VIRTUEMART_PRODUCT_ADDED_SUCCESSFULLY');
@@ -129,7 +129,7 @@ class VirtueMartControllerCart extends JController {
 			} else
 			$categoryLink = '';
 			$continue_link = JRoute::_('index.php?option=com_virtuemart' . $categoryLink);
-			$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
+			$virtuemart_product_ids = VmRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
 			$view = $this->getView ('cart', 'json');
 			$errorMsg = 0;//JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
 			$product = $cart->add($virtuemart_product_ids, $errorMsg );
@@ -193,7 +193,7 @@ class VirtueMartControllerCart extends JController {
 	public function setcoupon() {
 
 		/* Get the coupon_code of the cart */
-		$coupon_code = JRequest::getVar('coupon_code', ''); //TODO VAR OR INT OR WORD?
+		$coupon_code = VmRequest::getVar('coupon_code', ''); //TODO VAR OR INT OR WORD?
 		if ($coupon_code) {
 
 			$cart = VirtueMartCart::getCart();
@@ -237,7 +237,7 @@ class VirtueMartControllerCart extends JController {
 	public function setshipment() {
 
 		/* Get the shipment ID from the cart */
-		$virtuemart_shipmentmethod_id = JRequest::getInt('virtuemart_shipmentmethod_id', '0');
+		$virtuemart_shipmentmethod_id = VmRequest::getInt('virtuemart_shipmentmethod_id', '0');
 		$cart = VirtueMartCart::getCart();
 		if ($cart) {
 			//Now set the shipment ID into the cart
@@ -300,7 +300,7 @@ class VirtueMartControllerCart extends JController {
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			//Some Paymentmethods needs extra Information like
-			$virtuemart_paymentmethod_id = JRequest::getInt('virtuemart_paymentmethod_id', '0');
+			$virtuemart_paymentmethod_id = VmRequest::getInt('virtuemart_paymentmethod_id', '0');
 			$cart->setPaymentMethod($virtuemart_paymentmethod_id);
 
 			//Add a hook here for other payment methods, checking the data of the choosed plugin

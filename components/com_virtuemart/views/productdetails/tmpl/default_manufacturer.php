@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
     $text = $this->product->mf_name;
 
     /* Avoid JavaScript on PDF Output */
-    if (strtolower(JRequest::getWord('output')) == "pdf") {
+    if (strtolower(VmRequest::getCmd('output')) == "pdf") {
 	echo JHTML::_('link', $link, $text);
     } else {
 	?>

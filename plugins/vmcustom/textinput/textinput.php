@@ -29,7 +29,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 			'custom_price_by_letter'=>array(0.0,'bool')
 		);
 
-		$this->setConfigParameterable('customfield_param',$varsToPush);
+		$this->setConfigParameterable('customfield_params',$varsToPush);
 
 	}
 

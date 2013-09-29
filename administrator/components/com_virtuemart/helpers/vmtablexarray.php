@@ -63,11 +63,11 @@ class VmTableXarray extends VmTable {
     		vmError( 'No secondary keys defined in VmTableXarray '.$this->_tbl );
     		return false;
     	}
-		$skeyId = JRequest::getInt($this->_skey, 0);
+		$skeyId = VmRequest::getInt($this->_skey, 0);
 		// Initialize variables
 		$db		= JFactory::getDBO();
-		$cid	= JRequest::getVar( $this->_pkey , array(), 'post', 'array' );
-		$order	= JRequest::getVar( 'order', array(), 'post', 'array' );
+		$cid	= VmRequest::getVar( $this->_pkey , array(), 'post', 'array' );
+		$order	= VmRequest::getVar( 'order', array(), 'post', 'array' );
 
 		$query = 'SELECT `id` FROM `' . $this->_tbl . '` WHERE $this->_pkey = '.(int)$cid[0].' AND `virtuemart_category_id` = '.(int)$skeyId ;
 		$this->_db->setQuery( $query );

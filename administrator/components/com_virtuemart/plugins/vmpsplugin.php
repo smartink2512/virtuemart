@@ -1098,13 +1098,13 @@ function setCartPrices (VirtueMartCart $cart, $cartPrices = 0,$method) {
 			//shopFunctionsF::sentOrderConfirmedEmail($order);
 			//We delete the old stuff
 			$cart->emptyCart ();
-			JRequest::setVar ('html', $html);
+			VmRequest::setVar ('html', $html);
 			// payment echos form, but cart should not be emptied, data is valid
 		} elseif ($returnValue == 2) {
 			$cart->_confirmDone = FALSE;
 			$cart->_dataValidated = FALSE;
 			$cart->setCartIntoSession ();
-			JRequest::setVar ('html', $html);
+			VmRequest::setVar ('html', $html);
 		} elseif ($returnValue == 0) {
 			// error while processing the payment
 			$mainframe = JFactory::getApplication ();

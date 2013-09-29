@@ -56,15 +56,15 @@ class VirtuemartControllerProduct extends VmController {
 	 */
 	function save($data = 0){
 
-		$data = JRequest::get('post');
+		$data = VmRequest::get('post');
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(Permissions::getInstance()->check('admin')){
-			$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',2);
-			$data['product_s_desc'] = JRequest::getVar('product_s_desc','','post','STRING',2);
-			$data['customtitle'] = JRequest::getVar('customtitle','','post','STRING',2);
+			$data['product_desc'] = VmRequest::getVar('product_desc','','post','STRING',2);
+			$data['product_s_desc'] = VmRequest::getVar('product_s_desc','','post','STRING',2);
+			$data['customtitle'] = VmRequest::getVar('customtitle','','post','STRING',2);
 		} else  {
-			$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',2);
+			$data['product_desc'] = VmRequest::getVar('product_desc','','post','STRING',2);
 			$data['product_desc'] = JComponentHelper::filterText($data['product_desc']);
 
 			//Why we have this?
@@ -81,10 +81,10 @@ class VirtuemartControllerProduct extends VmController {
 	}
 
 	function saveJS(){
-		$data = JRequest::get('get');
-		JRequest::setVar($data['token'], '1', 'post');
+		$data = VmRequest::get('get');
+		VmRequest::setVar($data['token'], '1', 'post');
 
-		JRequest::checkToken() or jexit( 'Invalid Token save' );
+		VmRequest::checkToken() or jexit( 'Invalid Token save' );
 		$model = VmModel::getModel($this->_cname);
 		$id = $model->store($data);
 
@@ -124,8 +124,8 @@ class VirtuemartControllerProduct extends VmController {
 
 		$model = VmModel::getModel('product');
 
-		//$cids = JRequest::getVar('cid');
-		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
+		//$cids = VmRequest::getVar('cid');
+		$cids = VmRequest::getVar($this->_cidName, VmRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
 		//jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($cids);
 
@@ -150,9 +150,9 @@ class VirtuemartControllerProduct extends VmController {
 	*/
 	public function createVariant(){
 
-		$data = JRequest::get('get');
-		JRequest::setVar($data['token'], '1', 'post');
-		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
+		$data = VmRequest::get('get');
+		VmRequest::setVar($data['token'], '1', 'post');
+		VmRequest::checkToken() or jexit('Invalid Token, in ' . VmRequest::getCmd('task'));
 
 		$app = Jfactory::getApplication();
 
@@ -161,9 +161,9 @@ class VirtuemartControllerProduct extends VmController {
 
 		$model = VmModel::getModel('product');
 
-		//$cids = JRequest::getVar('cid');
-		//$cid = JRequest::getInt('virtuemart_product_id',0);
-		$cid = JRequest::getVar('virtuemart_product_id',array(),'', 'array');
+		//$cids = VmRequest::getVar('cid');
+		//$cid = VmRequest::getInt('virtuemart_product_id',0);
+		$cid = VmRequest::getVar('virtuemart_product_id',array(),'', 'array');
 		if(is_array($cid) && count($cid) > 0){
 			$cid = (int)$cid[0];
 		} else {
@@ -195,7 +195,7 @@ class VirtuemartControllerProduct extends VmController {
 
 	public function massxref_sgrps_exe(){
 
-		$virtuemart_shoppergroup_ids = JRequest::getVar('virtuemart_shoppergroup_id',array(),'', 'ARRAY');
+		$virtuemart_shoppergroup_ids = VmRequest::getVar('virtuemart_shoppergroup_id',array(),'', 'ARRAY');
 		JArrayHelper::toInteger($virtuemart_shoppergroup_ids);
 
 		$session = JFactory::getSession();
@@ -216,7 +216,7 @@ class VirtuemartControllerProduct extends VmController {
 
 	public function massxref_cats_exe(){
 
-		$virtuemart_cat_ids = JRequest::getVar('cid',array(),'', 'ARRAY');
+		$virtuemart_cat_ids = VmRequest::getVar('cid',array(),'', 'ARRAY');
 		JArrayHelper::toInteger($virtuemart_cat_ids);
 
 		$session = JFactory::getSession();
@@ -236,9 +236,9 @@ class VirtuemartControllerProduct extends VmController {
 	 */
 	public function massxref($layoutName){
 
-		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
+		VmRequest::checkToken() or jexit('Invalid Token, in ' . VmRequest::getCmd('task'));
 
-		$cids = JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY');
+		$cids = VmRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY');
 		JArrayHelper::toInteger($cids);
 		if(empty($cids)){
 			$session = JFactory::getSession();
@@ -283,8 +283,8 @@ class VirtuemartControllerProduct extends VmController {
 
 		$model = VmModel::getModel('product');
 		$msgtype = '';
-		//$cids = JRequest::getInt('virtuemart_product_id',0);
-		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
+		//$cids = VmRequest::getInt('virtuemart_product_id',0);
+		$cids = VmRequest::getVar($this->_cidName, VmRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
 		//jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($cids);
 
@@ -325,7 +325,7 @@ class VirtuemartControllerProduct extends VmController {
 
 		/* Get the product ID */
 		// 		$cids = array();
-		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
+		$cids = VmRequest::getVar($this->_cidName, VmRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
 		jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($cids);
 		// 		if (!is_array($cids)) $cids = array($cids);
@@ -337,16 +337,16 @@ class VirtuemartControllerProduct extends VmController {
 	public function ajax_notifyUsers(){
 
 		//vmdebug('updatestatus');
-		$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY');
+		$virtuemart_product_id = VmRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY');
 		if(is_array($virtuemart_product_id) and count($virtuemart_product_id) > 0){
 			$virtuemart_product_id = (int)$virtuemart_product_id[0];
 		} else {
 			$virtuemart_product_id = (int)$virtuemart_product_id;
 		}
 
-		$subject = JRequest::getVar('subject', '');
-		$mailbody = JRequest::getVar('mailbody',  '');
-		$max_number = (int)JRequest::getVar('max_number', '');
+		$subject = VmRequest::getVar('subject', '');
+		$mailbody = VmRequest::getVar('mailbody',  '');
+		$max_number = (int)VmRequest::getVar('max_number', '');
 		
 		$waitinglist = VmModel::getModel('Waitinglist');
 		$waitinglist->notifyList($virtuemart_product_id,$subject,$mailbody,$max_number);
@@ -355,7 +355,7 @@ class VirtuemartControllerProduct extends VmController {
 	
 	public function ajax_waitinglist() {
 
-		$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY');
+		$virtuemart_product_id = VmRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY');
 		if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 			$virtuemart_product_id = (int)$virtuemart_product_id[0];
 		} else {

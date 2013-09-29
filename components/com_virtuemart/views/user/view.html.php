@@ -71,7 +71,7 @@ class VirtuemartViewUser extends VmView {
 	$layoutName = $this->getLayout();
 	// 	vmdebug('layout by view '.$layoutName);
 	if (empty($layoutName) or $layoutName == 'default') {
-	    $layoutName = JRequest::getWord('layout', 'edit');
+	    $layoutName = VmRequest::getCmd('layout', 'edit');
 		if ($layoutName == 'default'){
 			$layoutName = 'edit';
 		}
@@ -110,18 +110,18 @@ class VirtuemartViewUser extends VmView {
 
 	$this->assignRef('userDetails', $this->_userDetails);
 
-	$address_type = JRequest::getWord('addrtype', 'BT');
+	$address_type = VmRequest::getCmd('addrtype', 'BT');
 	$this->assignRef('address_type', $address_type);
 
 	$new = false;
-	if (JRequest::getInt('new', '0') == 1) {
+	if (VmRequest::getInt('new', '0') == 1) {
 	    $new = true;
 	}
 
 	if ($new) {
 	    $virtuemart_userinfo_id = 0;
 	} else {
-	    $virtuemart_userinfo_id = JRequest::getString('virtuemart_userinfo_id', '0', '');
+	    $virtuemart_userinfo_id = VmRequest::getString('virtuemart_userinfo_id', '0', '');
 	}
 
 	$this->assignRef('virtuemart_userinfo_id', $virtuemart_userinfo_id);
@@ -139,7 +139,7 @@ class VirtuemartViewUser extends VmView {
 
 	    $userFields = $cart->$fieldtype;
 
-	    $task = JRequest::getWord('task', '');
+	    $task = VmRequest::getCmd('task', '');
 	} else {
 		$userFields = $this->_model->getUserInfoInUserFields($layoutName, $address_type, $virtuemart_userinfo_id);
 		if (!$new && empty($userFields[$virtuemart_userinfo_id])) {

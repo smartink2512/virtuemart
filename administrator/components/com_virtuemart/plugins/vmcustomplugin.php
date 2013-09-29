@@ -53,7 +53,7 @@ abstract class vmCustomPlugin extends vmPlugin {
 		$this->_tablename = '#__virtuemart_product_' . $this->_psType . '_plg_' . $this->_name;
 		$this->_idName = 'virtuemart_custom_id';
 		$this->_configTableFileName = $this->_psType . 's';
-		$this->_configTableFieldName = 'custom_param';
+		$this->_configTableFieldName = 'custom_params';
 		$this->_configTableClassName = 'Table' . ucfirst ($this->_psType) . 's'; //TablePaymentmethods
 		$this->_configTable = '#__virtuemart_customs';
 
@@ -88,21 +88,21 @@ abstract class vmCustomPlugin extends vmPlugin {
 	 * helper to parse plugin parameters as object
 	 *
 	 */
-	public function parseCustomParams (&$field, $xParams = 'custom_param') {
+	public function parseCustomParams (&$field, $xParams = 'custom_params') {
 
 		VmTable::bindParameterable ($field, $xParams, $this->_varsToPushParam);
 
 		if (empty($field->custom_element)) {
 			return 0;
 		}
-		if (!empty($field->customfield_param) && is_string ($field->customfield_param)) {
-			$custom_param = json_decode ($field->customfield_param, TRUE);
+		if (!empty($field->customfield_params) && is_string ($field->customfield_params)) {
+			$custom_params = json_decode ($field->customfield_params, TRUE);
 		}
 		else {
 			return;
 		}
 		//$field->custom_param = $custom_param;
-		foreach ($custom_param as $k => $v) {
+		foreach ($custom_params as $k => $v) {
 			if (!empty($v)) {
 				$field->$k = $v;
 			}
@@ -115,7 +115,7 @@ abstract class vmCustomPlugin extends vmPlugin {
 		 */
 	public function getCustomParams (&$field) {
 
-		VmTable::bindParameterable ($field, 'custom_param', $this->_varsToPushParam);
+		VmTable::bindParameterable ($field, 'custom_params', $this->_varsToPushParam);
 
 		//Why do we have this?
 		if (empty($field->custom_element)) {
@@ -131,14 +131,14 @@ abstract class vmCustomPlugin extends vmPlugin {
 			// vmdebug('fields org '.$this->_name,$this->params);
 		}
 		$this->virtuemart_custom_id = $field->virtuemart_custom_id;
-		if (!empty($field->custom_param) && is_string ($field->custom_param)) {
-			$this->params = json_decode ($field->custom_param);
+		if (!empty($field->custom_params) && is_string ($field->custom_params)) {
+			$this->params = json_decode ($field->custom_params);
 		}
 		else {
 			return;
 		}
 
-		//$field->custom_param = $custom_param;
+		//$field->custom_params = $custom_params;
 		//vmdebug('$this->_varsToPushParam '.$this->_name,$this->_varsToPushParam );
 		foreach ($this->_varsToPushParam as $k => $v) {
 			if (!isset($this->params->$k)) {
@@ -274,7 +274,7 @@ abstract class vmCustomPlugin extends vmPlugin {
 			}
 		}
 
-		$pluginFields = JRequest::getVar ('customProductData', NULL);
+		$pluginFields = VmRequest::getVar ('customProductData', NULL);
 		if ($pluginFields == NULL and isset($product->customPlugin)) {
 			$pluginFields = json_decode ($product->customPlugin, TRUE);
 		}

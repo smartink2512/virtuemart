@@ -52,7 +52,7 @@ class VirtuemartViewCountry extends VmView {
 		$this->SetViewTitle();
 
 
-		$layoutName = JRequest::getWord('layout', 'default');
+		$layoutName = VmRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 			$country = $model->getData();
 
@@ -70,7 +70,7 @@ class VirtuemartViewCountry extends VmView {
 			//First the view lists, it sets the state of the model
 			$this->addStandardDefaultViewLists($model,0,'ASC');
 
-			$filter_country = JRequest::getWord('filter_country', false);
+			$filter_country = VmRequest::getCmd('filter_country', false);
 			$countries = $model->getCountries(false, false, $filter_country);
 			$this->assignRef('countries',	$countries);
 

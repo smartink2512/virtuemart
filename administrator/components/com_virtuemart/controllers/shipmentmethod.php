@@ -50,10 +50,10 @@ class VirtuemartControllerShipmentmethod extends VmController {
 	 * @author Max Milbers
 	 */
 	function save($data = 0){
-		$data = JRequest::get('post');
+		$data = VmRequest::get('post');
 		// TODO disallow shipment_name as HTML
-		$data['shipment_name'] = JRequest::getVar('shipment_name','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['shipment_desc'] = JRequest::getVar('shipment_desc','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['shipment_name'] = VmRequest::getVar('shipment_name','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['shipment_desc'] = VmRequest::getVar('shipment_desc','','post','STRING',JREQUEST_ALLOWHTML);
 
 		parent::save($data);
 
@@ -71,8 +71,8 @@ class VirtuemartControllerShipmentmethod extends VmController {
 
 		$model = VmModel::getModel('shipmentmethod');
 		$msgtype = '';
-		//$cids = JRequest::getInt('virtuemart_product_id',0);
-		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_shipment_id',array(),'', 'ARRAY'), '', 'ARRAY');
+		//$cids = VmRequest::getInt('virtuemart_product_id',0);
+		$cids = VmRequest::getVar($this->_cidName, VmRequest::getVar('virtuemart_shipment_id',array(),'', 'ARRAY'), '', 'ARRAY');
 		//jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($cids);
 

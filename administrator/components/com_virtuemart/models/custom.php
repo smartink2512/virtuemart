@@ -59,7 +59,7 @@ class VirtueMartModelCustom extends VmModel {
 		    $this->_data->field_types = $customfields->getField_types() ;
 
 		    $this->_data->varsToPush = VirtueMartModelCustomfields::getVarsToPush($this->_data->field_type);
-		    $this->_data->_xParams = 'custom_param';
+		    $this->_data->_xParams = 'custom_params';
 
 		    if ($this->_data->field_type == 'E') {
 			    JPluginHelper::importPlugin ('vmcustom');
@@ -143,7 +143,7 @@ class VirtueMartModelCustom extends VmModel {
 			$value = $this->virtuemart_custom_id;
 		}
 		else {
-			$value = JRequest::getInt ('custom_parent_id', 0);
+			$value = VmRequest::getInt ('custom_parent_id', 0);
 		}
 		return VmHTML::row ('select', 'COM_VIRTUEMART_CUSTOM_GROUP', 'custom_parent_id', $customslist, $value);
 	}
@@ -165,7 +165,7 @@ class VirtueMartModelCustom extends VmModel {
 		if ($publishedOnly) {
 			$q .= 'AND `published`=1';
 		}
-		if ($ID = JRequest::getInt ('virtuemart_custom_id', 0)) {
+		if ($ID = VmRequest::getInt ('virtuemart_custom_id', 0)) {
 			$q .= ' AND `virtuemart_custom_id`!=' . (int)$ID;
 		}
 		//if (isset($this->virtuemart_custom_id)) $q.=' and virtuemart_custom_id !='.$this->virtuemart_custom_id;
@@ -240,7 +240,7 @@ class VirtueMartModelCustom extends VmModel {
 	 **/
 	public function saveChildCustomRelation($table,$datas) {
 
-		JRequest::checkToken() or jexit( 'Invalid Token, in store customfields');
+		VmRequest::checkToken() or jexit( 'Invalid Token, in store customfields');
 		//Table whitelist
 		$tableWhiteList = array('product','category','manufacturer');
 		if(!in_array($table,$tableWhiteList)) return false;
@@ -299,7 +299,7 @@ class VirtueMartModelCustom extends VmModel {
 		$table->field_type = $data['field_type'];
 		$table->custom_element = $data['custom_element'];
 		$table->custom_jplugin_id = $data['custom_jplugin_id'];
-		$table->_xParams = 'custom_param';
+		$table->_xParams = 'custom_params';
 
 		if(isset($data['custom_title'])){
 			$data['custom_title'] = htmlentities($data['custom_title'], ENT_QUOTES, "UTF-8");

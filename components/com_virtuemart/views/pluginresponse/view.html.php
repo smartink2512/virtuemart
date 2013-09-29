@@ -35,10 +35,10 @@ class VirtueMartViewPluginresponse extends VmView {
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		$document = JFactory::getDocument();
-//       $paymentResponse = JRequest::getVar('paymentResponse', '');
+//       $paymentResponse = VmRequest::getVar('paymentResponse', '');
 
       //Why do you we allow raw here?
-//       $paymentResponseHtml = JRequest::getVar('paymentResponseHtml','','default','STRING',JREQUEST_ALLOWRAW);
+//       $paymentResponseHtml = VmRequest::getVar('paymentResponseHtml','','default','STRING',JREQUEST_ALLOWRAW);
 		$layoutName = $this->getLayout();
 
 

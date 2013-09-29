@@ -1051,12 +1051,12 @@ class VmTable extends JTable {
 
 		$k = $this->_tbl_key;
 		// problem here was that $this->$k returned (0)
-		$cid = JRequest::getVar('cid');
+		$cid = VmRequest::getVar('cid');
 		if (!empty($cid) && (is_array($cid))) {
 			$cid = reset($cid);
 		} else {
 			// either we fix custom fields or fix it here:
-			$cid = JRequest::getVar('virtuemart_custom_id');
+			$cid = VmRequest::getVar('virtuemart_custom_id');
 			if (!empty($cid) && (is_array($cid))) {
 				$cid = reset($cid);
 			} else {

@@ -35,7 +35,7 @@ class VirtuemartViewCustom extends JView {
 
 	function display($tpl = null) {
 			$db = JFactory::getDBO();
-		if ( $virtuemart_media_id = JRequest::getInt('virtuemart_media_id') ) {
+		if ( $virtuemart_media_id = VmRequest::getInt('virtuemart_media_id') ) {
 			//$db = JFactory::getDBO();
 			$query='SELECT `file_url`,`file_title` FROM `#__virtuemart_medias` where `virtuemart_media_id`='.$virtuemart_media_id;
 			$db->setQuery( $query );
@@ -49,7 +49,7 @@ class VirtuemartViewCustom extends JView {
 				echo json_encode($json);
 			}
 		}
-		elseif ( $custom_jplugin_id = JRequest::getInt('custom_jplugin_id') ) {
+		elseif ( $custom_jplugin_id = VmRequest::getInt('custom_jplugin_id') ) {
 			if (JVM_VERSION===1) {
 				$table = '#__plugins';
 				$ext_id = 'id';

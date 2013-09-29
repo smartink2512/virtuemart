@@ -41,7 +41,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 	//TODO get plugins running
 //		$dispatcher	= JDispatcher::getInstance();
-//		$limitstart	= JRequest::getVar('limitstart', 0, '', 'int');
+//		$limitstart	= VmRequest::getVar('limitstart', 0, '', 'int');
 
 	$show_prices = VmConfig::get('show_prices', 1);
 	if ($show_prices == '1') {
@@ -57,7 +57,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 	$mainframe = JFactory::getApplication();
 	$pathway = $mainframe->getPathway();
-	$task = JRequest::getCmd('task');
+	$task = VmRequest::getCmd('task');
 
 	if (!class_exists('VmImage'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
@@ -66,14 +66,14 @@ class VirtueMartViewProductdetails extends VmView {
 	//$product = $this->get('product');	//Why it is sensefull to use this construction? Imho it makes it just harder
 	$product_model = VmModel::getModel('product');
 	$this->assignRef('product_model', $product_model);
-	$virtuemart_product_idArray = JRequest::getVar('virtuemart_product_id', 0);
+	$virtuemart_product_idArray = VmRequest::getVar('virtuemart_product_id', 0);
 	if (is_array($virtuemart_product_idArray) and count($virtuemart_product_idArray) > 0) {
 	    $virtuemart_product_id = (int)$virtuemart_product_idArray[0];
 	} else {
 	    $virtuemart_product_id = (int)$virtuemart_product_idArray;
 	}
 
-    $quantityArray = JRequest::getVar ('quantity', array()); //is sanitized then
+    $quantityArray = VmRequest::getVar ('quantity', array()); //is sanitized then
     JArrayHelper::toInteger ($quantityArray);
 
     $quantity = 1;
@@ -101,7 +101,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 	    $categoryLink = '';
 	    if (!$last_category_id) {
-		$last_category_id = JRequest::getInt('virtuemart_category_id', false);
+		$last_category_id = VmRequest::getInt('virtuemart_category_id', false);
 	    }
 	    if ($last_category_id) {
 		$categoryLink = '&virtuemart_category_id=' . $last_category_id;
@@ -184,7 +184,7 @@ class VirtueMartViewProductdetails extends VmView {
 	if (!empty($tpl)) {
 	    $format = $tpl;
 	} else {
-	    $format = JRequest::getWord('format', 'html');
+	    $format = VmRequest::getCmd('format', 'html');
 	}
 	if ($format == 'html') {
 	    // Set Canonic link
@@ -313,7 +313,7 @@ class VirtueMartViewProductdetails extends VmView {
 	$currency = CurrencyDisplay::getInstance();
 	$this->assignRef('currency', $currency);
 
-	if(JRequest::getCmd( 'layout', 'default' )=='notify') $this->setLayout('notify'); //Added by Seyi Awofadeju to catch notify layout
+	if(VmRequest::getCmd( 'layout', 'default' )=='notify') $this->setLayout('notify'); //Added by Seyi Awofadeju to catch notify layout
 
 
 	parent::display($tpl);

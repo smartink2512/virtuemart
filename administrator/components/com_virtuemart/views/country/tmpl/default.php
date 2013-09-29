@@ -30,7 +30,7 @@ $states = JText::_('COM_VIRTUEMART_STATE_S');
 			<tr>
 				<td align="left" width="100%">
 					<?php echo JText::_('COM_VIRTUEMART_FILTER') ?>:
-					&nbsp;<input type="text" value="<?php echo JRequest::getVar('filter_country'); ?>" name="filter_country" size="25" />
+					&nbsp;<input type="text" value="<?php echo VmRequest::getVar('filter_country'); ?>" name="filter_country" size="25" />
 					<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
 				</td>
 			</tr>

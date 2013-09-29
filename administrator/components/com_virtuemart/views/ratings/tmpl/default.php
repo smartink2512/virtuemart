@@ -23,7 +23,7 @@
 defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea($this);
 /* Get the component name */
-$option = JRequest::getWord('option');
+$option = VmRequest::getCmd('option');
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="header">
@@ -32,7 +32,7 @@ $option = JRequest::getWord('option');
 	  <tr>
 		 <td align="left" width="100%">
 			<?php echo JText::_('COM_VIRTUEMART_FILTER'); ?>:
-			<input type="text" name="filter_ratings" value="<?php echo JRequest::getVar('filter_ratings', ''); ?>" />
+			<input type="text" name="filter_ratings" value="<?php echo VmRequest::getVar('filter_ratings', ''); ?>" />
 			<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
 			<button onclick="document.adminForm.filter_ratings.value='';"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
 		 </td>
@@ -58,7 +58,7 @@ $option = JRequest::getWord('option');
 	if (count($this->ratingslist) > 0) {
 		$i = 0;
 		$k = 0;
-		$keyword = JRequest::getWord('keyword');
+		$keyword = VmRequest::getCmd('keyword');
 		foreach ($this->ratingslist as $key => $review) {
 			$checked = JHTML::_('grid.id', $i , $review->virtuemart_rating_id);
 			$published = JHTML::_('grid.published', $review, $i );

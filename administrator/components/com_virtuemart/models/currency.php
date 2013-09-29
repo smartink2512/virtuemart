@@ -74,7 +74,7 @@ class VirtueMartModelCurrency extends VmModel {
 		}
 
 		if(empty($search)){
-			$search = JRequest::getString('search', false);
+			$search = VmRequest::getString('search', false);
 		}
 		/* add filters */
 		if($search){
@@ -83,7 +83,7 @@ class VirtueMartModelCurrency extends VmModel {
 			$where[] = '`currency_name` LIKE '.$search.' OR `currency_code_2` LIKE '.$search.' OR `currency_code_3` LIKE '.$search;
 		}
 
-		// 		if (JRequest::getString('search', false)) $where[] = '`currency_name` LIKE "%'.$this->_db->getEscaped(JRequest::getString('search')).'%"';
+		// 		if (VmRequest::getString('search', false)) $where[] = '`currency_name` LIKE "%'.$this->_db->getEscaped(VmRequest::getString('search')).'%"';
 
 		$whereString='';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;

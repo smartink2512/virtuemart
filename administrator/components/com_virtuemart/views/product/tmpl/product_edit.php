@@ -47,6 +47,6 @@ AdminUIHelper::buildTabs ( $this,  $tabarray, $this->product->virtuemart_product
 <!-- Hidden Fields -->
 	<?php echo $this->addStandardHiddenToForm(); ?>
 <input type="hidden" name="virtuemart_product_id" value="<?php echo $this->product->virtuemart_product_id; ?>" />
-<input type="hidden" name="product_parent_id" value="<?php echo JRequest::getInt('product_parent_id', $this->product->product_parent_id); ?>" />
+<input type="hidden" name="product_parent_id" value="<?php echo VmRequest::getInt('product_parent_id', $this->product->product_parent_id); ?>" />
 </form>
 <?php AdminUIHelper::endAdminArea(); ?>

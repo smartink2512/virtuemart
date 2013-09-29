@@ -86,11 +86,11 @@ if (empty ( $this->product )) {
 				</div>
 			</div>
 
-			<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
+			<input type="hidden" name="virtuemart_product_id" value="<?php echo VmRequest::getInt('virtuemart_product_id',0); ?>" />
 			<input type="hidden" name="tmpl" value="component" />
 			<input type="hidden" name="view" value="productdetails" />
 			<input type="hidden" name="option" value="com_virtuemart" />
-			<input type="hidden" name="virtuemart_category_id" value="<?php echo JRequest::getInt('virtuemart_category_id'); ?>" />
+			<input type="hidden" name="virtuemart_category_id" value="<?php echo VmRequest::getInt('virtuemart_category_id'); ?>" />
 			<input type="hidden" name="task" value="mailAskquestion" />
 			<?php echo JHTML::_( 'form.token' ); ?>
 		</form>

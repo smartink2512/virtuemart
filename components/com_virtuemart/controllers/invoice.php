@@ -45,7 +45,7 @@ class VirtueMartControllerInvoice extends JController
 		$orderModel = VmModel::getModel('orders');
 		$orderDetails = 0;
 		// If the user is not logged in, we will check the order number and order pass
-		if ($orderPass = JRequest::getString('order_pass',false) and $orderNumber = JRequest::getString('order_number',false)){
+		if ($orderPass = VmRequest::getString('order_pass',false) and $orderNumber = VmRequest::getString('order_number',false)){
 			$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
 			if(empty($orderId)){
 				vmDebug ('Invalid order_number/password '.JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'));
@@ -60,9 +60,9 @@ class VirtueMartControllerInvoice extends JController
 			$cuid = $_currentUser->get('id');
 
 			// If the user is logged in, we will check if the order belongs to him
-				$virtuemart_order_id = JRequest::getInt('virtuemart_order_id',0) ;
+				$virtuemart_order_id = VmRequest::getInt('virtuemart_order_id',0) ;
 			if (!$virtuemart_order_id) {
-				$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber(JRequest::getString('order_number'));
+				$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber(VmRequest::getString('order_number'));
 			}
 			$orderDetails = $orderModel->getOrder($virtuemart_order_id);
 
@@ -80,8 +80,8 @@ class VirtueMartControllerInvoice extends JController
 	}
 
 	public function display($cachable = false, $urlparams = false)  {
-		$format = JRequest::getWord('format','html');
-		$layout = JRequest::getWord('layout', 'invoice');
+		$format = VmRequest::getCmd('format','html');
+		$layout = VmRequest::getCmd('layout', 'invoice');
 
 		if ($format != 'pdf') {
 			$viewName='invoice';

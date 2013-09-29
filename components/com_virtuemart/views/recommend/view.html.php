@@ -61,7 +61,7 @@ class virtuemartViewrecommend extends VmView {
 
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
-		$task = JRequest::getCmd('task');
+		$task = VmRequest::getCmd('task');
 
 		if (!class_exists('VmImage'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
@@ -69,7 +69,7 @@ class virtuemartViewrecommend extends VmView {
 		// Load the product
 		$product_model = VmModel::getModel('product');
 
-		$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id',0);
+		$virtuemart_product_idArray = VmRequest::getInt('virtuemart_product_id',0);
 		if(is_array($virtuemart_product_idArray)){
 			$virtuemart_product_id=(int)$virtuemart_product_idArray[0];
 		} else {
@@ -83,7 +83,7 @@ class virtuemartViewrecommend extends VmView {
 		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		$product = $product_model->getProduct($virtuemart_product_id);
 		/* Set Canonic link */
-		$format = JRequest::getWord('format', 'html');
+		$format = VmRequest::getCmd('format', 'html');
 		if ($format == 'html') {
 			$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
 		}
@@ -104,7 +104,7 @@ class virtuemartViewrecommend extends VmView {
 		/* Load the category */
 		$category_model = VmModel::getModel('category');
 		/* Get the category ID */
-		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
+		$virtuemart_category_id = VmRequest::getInt('virtuemart_category_id');
 		if ($virtuemart_category_id == 0 && !empty($product)) {
 			if (array_key_exists('0', $product->categories)) $virtuemart_category_id = $product->categories[0];
 		}
@@ -149,7 +149,7 @@ class virtuemartViewrecommend extends VmView {
 
 	function renderMailLayout($doVendor, $recipient) {
 
-		$this->comment = nl2br(JRequest::getString('comment'));
+		$this->comment = nl2br(VmRequest::getString('comment'));
 	 	$this->subject = JText::sprintf('COM_VIRTUEMART_RECOMMEND_PRODUCT',$recipient, $this->product->product_name);
 
 		if (VmConfig::get ('order_mail_html')) {

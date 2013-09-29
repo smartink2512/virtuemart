@@ -240,12 +240,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			));
 			$this->alterTable('#__virtuemart_customs',array(
 				'custom_field_desc' => '`custom_desc` char(255) COMMENT \'description or unit\'',
-				'custom_params' => '`custom_param` text',
 			));
 			$this->alterTable('#__virtuemart_product_customfields',array(
 				'custom_value' => ' `customfield_value` text NULL DEFAULT NULL',
 				'custom_price' => ' `customfield_price` DECIMAL(15,6) NULL DEFAULT NULL COMMENT \'price\'',
-				'custom_params' => ' `customfield_param` text NULL DEFAULT NULL',
+				'custom_param' => ' `customfield_params` text NULL DEFAULT NULL',
 				'idx_custom_value' => ' INDEX `idx_published` (`published`)'
 			));
 

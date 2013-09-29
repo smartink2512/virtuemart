@@ -28,8 +28,8 @@ class AdminUIHelper {
      * displayes the admin menu in the left column.
      */
    static function startAdminArea($vmView, $selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL') {
-		if (JRequest::getWord ( 'format') =='pdf') return;
-		if (JRequest::getWord ( 'tmpl') =='component') self::$backEnd=false;
+		if (VmRequest::getCmd ( 'format') =='pdf') return;
+		if (VmRequest::getCmd ( 'tmpl') =='component') self::$backEnd=false;
     	if(self::$vmAdminAreaStarted) return;
     	self::$vmAdminAreaStarted = true;
 		$front = JURI::root(true).'/components/com_virtuemart/assets/';
@@ -140,7 +140,7 @@ class AdminUIHelper {
 	 * @example 'shop' => 'COM_VIRTUEMART_ADMIN_CFG_SHOPTAB'
 	 */
 	static public function buildTabs($view, $load_template = array(),$cookieName='') {
-		$cookieName = JRequest::getWord('view','virtuemart').$cookieName;
+		$cookieName = VmRequest::getCmd('view','virtuemart').$cookieName;
 		$document = JFactory::getDocument ();
 		$document->addScriptDeclaration ( '
 		var virtuemartcookie="'.$cookieName.'";
@@ -220,7 +220,7 @@ class AdminUIHelper {
 	 */
 	static function showAdminMenu() {
 		$document = JFactory::getDocument ();
-		$moduleId = JRequest::getInt ( 'module_id', 0 );
+		$moduleId = VmRequest::getInt ( 'module_id', 0 );
 		$user = JFactory::getUser();
 
 		$menuItems = AdminUIHelper::_getAdminMenu ( $moduleId );

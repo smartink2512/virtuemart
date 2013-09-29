@@ -44,7 +44,7 @@ class VirtuemartViewCategory extends VmView {
 		$model = VmModel::getModel();
 		$layoutName = $this->getLayout();
 
-		$task = JRequest::getWord('task',$layoutName);
+		$task = VmRequest::getCmd('task',$layoutName);
 		$this->assignRef('task', $task);
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');

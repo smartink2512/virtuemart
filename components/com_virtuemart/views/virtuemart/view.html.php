@@ -30,7 +30,7 @@ class VirtueMartViewVirtueMart extends VmView {
 
 	public function display($tpl = null) {
 
-		$vendorId = JRequest::getInt('vendorid', 1);
+		$vendorId = VmRequest::getInt('vendorid', 1);
 
 		$vendorModel = VmModel::getModel('vendor');
 
@@ -48,7 +48,7 @@ class VirtueMartViewVirtueMart extends VmView {
 			$categoryModel = VmModel::getModel('category');
 			$productModel = VmModel::getModel('product');
 			$products = array();
-			$categoryId = JRequest::getInt('catid', 0);
+			$categoryId = VmRequest::getInt('catid', 0);
 			$cache = JFactory::getCache('com_virtuemart','callback');
 
 			$categoryChildren = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $categoryId );
@@ -125,7 +125,7 @@ class VirtueMartViewVirtueMart extends VmView {
 			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
 			$document->addHeadLink(JRoute::_($link . '&type=atom', FALSE), 'alternate', 'rel', $attribs);
 		}
-		$error = JRequest::getInt('error',0);
+		$error = VmRequest::getInt('error',0);
 
 		//Todo this may not work everytime as expected, because the error must be set in the redirect links.
 		if(!empty($error)){

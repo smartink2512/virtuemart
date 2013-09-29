@@ -37,7 +37,7 @@ class VirtuemartViewMedia extends JView {
 		$document =JFactory::getDocument();
 		$document->setMimeEncoding( 'application/json' );
 
-		if ($virtuemart_media_id = JRequest::getInt('virtuemart_media_id')) {
+		if ($virtuemart_media_id = VmRequest::getInt('virtuemart_media_id')) {
 			//JResponse::setHeader( 'Content-Disposition', 'attachment; filename="media'.$virtuemart_media_id.'.json"' );
 
 			$model = VmModel::getModel('Media');
@@ -56,9 +56,9 @@ class VirtuemartViewMedia extends JView {
 		}
 		else {
 			if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
-			$start = JRequest::getInt('start',0);
+			$start = VmRequest::getInt('start',0);
 
-			$type = JRequest::getWord('mediatype',0);
+			$type = VmRequest::getCmd('mediatype',0);
 			$list = VmMediaHandler::displayImages($type,$start );
 			echo @json_encode($list);
 		}

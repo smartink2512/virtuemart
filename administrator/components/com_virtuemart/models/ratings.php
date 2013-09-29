@@ -43,8 +43,8 @@ class VirtueMartModelRatings extends VmModel {
 		$this->setMainTable('ratings');
 
 
-		$layout = JRequest::getString('layout','default');
-		$task = JRequest::getCmd('task','default');
+		$layout = VmRequest::getString('layout','default');
+		$task = VmRequest::getCmd('task','default');
 		if($layout == 'list_reviews' or $task == 'listreviews'){
 			vmdebug('in review list');
 			$myarray = array('pr.created_on','virtuemart_rating_review_id','vote');
@@ -105,8 +105,8 @@ class VirtueMartModelRatings extends VmModel {
 	    }
 
 		/* Add some variables for a new rating */
-		if (JRequest::getWord('task') == 'add') {
-			$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',array(),'', 'array');
+		if (VmRequest::getCmd('task') == 'add') {
+			$virtuemart_product_id = VmRequest::getVar('virtuemart_product_id',array(),'', 'array');
 			if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 				$virtuemart_product_id = (int)$virtuemart_product_id[0];
 			} else {

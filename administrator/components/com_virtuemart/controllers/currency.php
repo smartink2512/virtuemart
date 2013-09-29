@@ -53,10 +53,10 @@ class VirtuemartControllerCurrency extends VmController {
 	 */
 	function save($data = 0){
 
-		$data = JRequest::get('post');
+		$data = VmRequest::get('post');
 
-		$data['currency_positive_style'] = JRequest::getVar('currency_positive_style','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['currency_negative_style'] = JRequest::getVar('currency_negative_style','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['currency_positive_style'] = VmRequest::getVar('currency_positive_style','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['currency_negative_style'] = VmRequest::getVar('currency_negative_style','','post','STRING',JREQUEST_ALLOWHTML);
 
 		parent::save($data);
 	}

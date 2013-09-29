@@ -20,7 +20,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 AdminUIHelper::startAdminArea($this);
 /* Load some variables */
 $rows = count( $this->report );
-$intervalTitle = JRequest::getVar('intervals','day');
+$intervalTitle = VmRequest::getVar('intervals','day');
 if ( ($intervalTitle =='week') or ($intervalTitle =='month') ) $addDateInfo = true ;
 else $addDateInfo = false;
 
@@ -47,7 +47,7 @@ if ( JVM_VERSION == 2 )
                     echo JText::_('COM_VIRTUEMART_REPORT_FROM_PERIOD') .  vmJsApi::jDate($this->from_period, 'from_period');
                    echo JText::_('COM_VIRTUEMART_REPORT_UNTIL_PERIOD') . vmJsApi::jDate($this->until_period, 'until_period');
                         if(VmConfig::get('multix','none')!='none'){
-                        	$vendorId = JRequest::getInt('virtuemart_vendor_id',1);
+                        	$vendorId = VmRequest::getInt('virtuemart_vendor_id',1);
                         	echo ShopFunctions::renderVendorList($vendorId,false);
                         } ?>
                         <button onclick="this.form.period.value='';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?>
@@ -81,7 +81,7 @@ if ( JVM_VERSION == 2 )
 		                <?php echo $this->sort('order_subtotal_brutto', 'COM_VIRTUEMART_REPORT_BASIC_REVENUE_BRUTTO') ; ?>
                     </th>
                 <?php
-                    $intervals = JRequest::getWord ('intervals', 'day');
+                    $intervals = VmRequest::getCmd ('intervals', 'day');
 	                if($intervals=='product_s'){
 		        ?>
 		            <th>

@@ -39,7 +39,7 @@ class VirtueMartControllerState extends JController
 		$states = array();
 
 		//retrieving countries id
-		$countries = JRequest::getString('virtuemart_country_id');
+		$countries = VmRequest::getString('virtuemart_country_id');
 		$countries = explode(',', $countries);
 
 		foreach($countries as $country){

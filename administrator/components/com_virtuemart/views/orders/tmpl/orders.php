@@ -59,7 +59,7 @@ AdminUIHelper::startAdminArea($this);
 		if (count ($this->orderslist) > 0) {
 			$i = 0;
 			$k = 0;
-			$keyword = JRequest::getWord ('keyword');
+			$keyword = VmRequest::getCmd ('keyword');
 
 			foreach ($this->orderslist as $key => $order) {
 				$checked = JHTML::_ ('grid.id', $i, $order->virtuemart_order_id);

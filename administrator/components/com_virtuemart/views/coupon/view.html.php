@@ -49,7 +49,7 @@ class VirtuemartViewCoupon extends VmView {
 		$this->SetViewTitle('', $coupon->coupon_code);
 
 
-		$layoutName = JRequest::getWord('layout', 'default');
+		$layoutName = VmRequest::getCmd('layout', 'default');
 
 
 // 		if(Vmconfig::get('multix','none')!=='none'){

@@ -50,10 +50,10 @@ class VirtuemartControllerCategory extends VmController {
 			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', JText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
 		
-		$data = JRequest::get('post');
+		$data = VmRequest::get('post');
 
-		$data['category_name'] = JRequest::getVar('category_name','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['category_description'] = JRequest::getVar('category_description','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['category_name'] = VmRequest::getVar('category_name','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['category_description'] = VmRequest::getVar('category_description','','post','STRING',JREQUEST_ALLOWHTML);
 
 		parent::save($data);
 	}
@@ -72,11 +72,11 @@ class VirtuemartControllerCategory extends VmController {
 		}
 
 		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		VmRequest::checkToken() or jexit( 'Invalid Token' );
 
 		//capturing virtuemart_category_id
 		$id = 0;
-		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$cid	= VmRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);
 
 		if (isset($cid[0]) && $cid[0]) {
@@ -112,11 +112,11 @@ class VirtuemartControllerCategory extends VmController {
 		}
 		
 		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		VmRequest::checkToken() or jexit( 'Invalid Token' );
 
 		//capturing virtuemart_category_id
 		$id = 0;
-		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$cid	= VmRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);
 
 		if (isset($cid[0]) && $cid[0]) {
@@ -150,14 +150,14 @@ class VirtuemartControllerCategory extends VmController {
 		}
 		
 		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		VmRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );	//is sanitized
+		$cid	= VmRequest::getVar( 'cid', array(), 'post', 'array' );	//is sanitized
 		JArrayHelper::toInteger($cid);
 
 		$model = VmModel::getModel('category');
 
-		$order	= JRequest::getVar('order', array(), 'post', 'array');
+		$order	= VmRequest::getVar('order', array(), 'post', 'array');
 		JArrayHelper::toInteger($order);
 
 		if ($model->setOrder($cid,$order)) {

@@ -63,13 +63,13 @@ class VirtuemartControllerMedia extends VmController {
 		$fileModel = VmModel::getModel('media');
 
 		//Now we try to determine to which this media should be long to
-		$data = JRequest::get('post');
+		$data = VmRequest::get('post');
 
-		//$data['file_title'] = JRequest::getVar('file_title','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['file_description'] = JRequest::getVar('file_description','','post','STRING',JREQUEST_ALLOWHTML);
+		//$data['file_title'] = VmRequest::getVar('file_title','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['file_description'] = VmRequest::getVar('file_description','','post','STRING',JREQUEST_ALLOWHTML);
 
-		$data['media_attributes'] = JRequest::getWord('media_attributes');
-		$data['file_type'] = JRequest::getWord('file_type');
+		$data['media_attributes'] = VmRequest::getCmd('media_attributes');
+		$data['file_type'] = VmRequest::getCmd('file_type');
 		if(empty($data['file_type'])){
 			$data['file_type'] = $data['media_attributes'];
 		}
@@ -80,7 +80,7 @@ class VirtuemartControllerMedia extends VmController {
 			$msg = $fileModel->getError();
 		}
 
-		$cmd = JRequest::getCmd('task');
+		$cmd = VmRequest::getCmd('task');
 		if($cmd == 'apply'){
 			$redirection = 'index.php?option=com_virtuemart&view=media&task=edit&virtuemart_media_id='.$id;
 		} else {

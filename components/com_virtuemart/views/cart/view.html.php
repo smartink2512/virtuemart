@@ -42,9 +42,9 @@ class VirtueMartViewCart extends VmView {
 		//vmJsApi::jPrice();
 
 		$layoutName = $this->getLayout();
-		if (!$layoutName) $layoutName = JRequest::getWord('layout', 'default');
+		if (!$layoutName) $layoutName = VmRequest::getCmd('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
-		$format = JRequest::getWord('format');
+		$format = VmRequest::getCmd('format');
 
 		if (!class_exists('VirtueMartCart'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
@@ -54,7 +54,7 @@ class VirtueMartViewCart extends VmView {
 		//Why is this here, when we have view.raw.php
 		if ($format == 'raw') {
 			$this->prepareCartViewData();
-			JRequest::setVar('layout', 'mini_cart');
+			VmRequest::setVar('layout', 'mini_cart');
 			$this->setLayout('mini_cart');
 			$this->prepareContinueLink();
 		}
@@ -334,7 +334,7 @@ class VirtueMartViewCart extends VmView {
 }
 
 	private function lOrderDone() {
-		$html = JRequest::getVar('html', JText::_('COM_VIRTUEMART_ORDER_PROCESSED'), 'default', 'STRING', JREQUEST_ALLOWRAW);
+		$html = VmRequest::getVar('html', JText::_('COM_VIRTUEMART_ORDER_PROCESSED'), 'default', 'STRING', JREQUEST_ALLOWRAW);
 		$this->assignRef('html', $html);
 
 		//Show Thank you page or error due payment plugins like paypal express

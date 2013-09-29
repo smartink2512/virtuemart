@@ -52,10 +52,10 @@ class VirtuemartControllerCalc extends VmController {
 	 */
 	function save($data = 0){
 
-		$data = JRequest::get('post');
+		$data = VmRequest::get('post');
 
-		$data['calc_name'] = JRequest::getVar('calc_name','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['calc_descr'] = JRequest::getVar('calc_descr','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['calc_name'] = VmRequest::getVar('calc_name','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['calc_descr'] = VmRequest::getVar('calc_descr','','post','STRING',JREQUEST_ALLOWHTML);
 
 		parent::save($data);
 	}
@@ -69,10 +69,10 @@ class VirtuemartControllerCalc extends VmController {
 	public function orderUp()
 	{
 		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		VmRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$id = 0;
-		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$cid	= VmRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);
 
 		if (isset($cid[0]) && $cid[0]) {
@@ -103,10 +103,10 @@ class VirtuemartControllerCalc extends VmController {
 	public function orderDown()
 	{
 		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		VmRequest::checkToken() or jexit( 'Invalid Token' );
 
 		$id = 0;
-		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$cid	= VmRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);
 
 		if (isset($cid[0]) && $cid[0]) {
@@ -135,14 +135,14 @@ class VirtuemartControllerCalc extends VmController {
 	public function saveOrder()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		VmRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$cid	= VmRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);
 
 		$model = VmModel::getModel('calc');
 
-		$order	= JRequest::getVar('order', array(), 'post', 'array');
+		$order	= VmRequest::getVar('order', array(), 'post', 'array');
 		JArrayHelper::toInteger($order);
 
 		if ($model->setOrder($cid,$order)) {

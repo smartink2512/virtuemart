@@ -62,7 +62,7 @@ class VirtueMartViewAskquestion extends VmView {
 
 		$mainframe = JFactory::getApplication ();
 		$pathway = $mainframe->getPathway ();
-		$task = JRequest::getCmd ('task');
+		$task = VmRequest::getCmd ('task');
 
 		if (!class_exists('VmImage'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
@@ -71,7 +71,7 @@ class VirtueMartViewAskquestion extends VmView {
 		$product_model = VmModel::getModel ('product');
 		$category_model = VmModel::getModel ('Category');
 
-		$virtuemart_product_idArray = JRequest::getInt ('virtuemart_product_id', 0);
+		$virtuemart_product_idArray = VmRequest::getInt ('virtuemart_product_id', 0);
 		if (is_array ($virtuemart_product_idArray)) {
 			$virtuemart_product_id = $virtuemart_product_idArray[0];
 		} else {
@@ -88,7 +88,7 @@ class VirtueMartViewAskquestion extends VmView {
 		}
 		$product = $product_model->getProduct ($virtuemart_product_id);
 		// Set Canonic link
-		$format = JRequest::getWord('format', 'html');
+		$format = VmRequest::getCmd('format', 'html');
 		if ($format == 'html') {
 			$document->addHeadLink ($product->canonical, 'canonical', 'rel', '');
 		}
@@ -107,7 +107,7 @@ class VirtueMartViewAskquestion extends VmView {
 		$product_model->addImages ($product, 1);
 
 		/* Get the category ID */
-		$virtuemart_category_id = JRequest::getInt ('virtuemart_category_id');
+		$virtuemart_category_id = VmRequest::getInt ('virtuemart_category_id');
 		if ($virtuemart_category_id == 0 && !empty($product)) {
 			if (array_key_exists ('0', $product->categories)) {
 				$virtuemart_category_id = $product->categories[0];
@@ -153,7 +153,7 @@ class VirtueMartViewAskquestion extends VmView {
 	function renderMailLayout () {
 
 		$this->setLayout ('mail_html_question');
-		$this->comment = JRequest::getString ('comment');
+		$this->comment = VmRequest::getString ('comment');
 
 		$vendorModel = VmModel::getModel ('vendor');
 		$this->vendor = $vendorModel->getVendor ();

@@ -33,16 +33,16 @@ class VirtueMartControllerVirtuemart extends JController
 	function __construct() {
 		parent::__construct();
 		if (VmConfig::get('shop_is_offline') == '1') {
-		    JRequest::setVar( 'layout', 'off_line' );
+		    VmRequest::setVar( 'layout', 'off_line' );
 	    }
 	    else {
-		    JRequest::setVar( 'layout', 'default' );
+		    VmRequest::setVar( 'layout', 'default' );
 	    }
 	}
 
 	function virtuemart() {
 
-		$view = $this->getView(JRequest::getWord('view', 'virtuemart'), 'html');
+		$view = $this->getView(VmRequest::getCmd('view', 'virtuemart'), 'html');
 
 		// Display it all
 		$safeurlparams = array('virtuemart_category_id'=>'INT','virtuemart_currency_id'=>'INT','return'=>'BASE64','lang'=>'CMD');

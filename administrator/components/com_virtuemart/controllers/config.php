@@ -54,11 +54,11 @@ class VirtuemartControllerConfig extends VmController {
 	 */
 	function save($data = 0){
 
-		JRequest::checkToken() or jexit( 'Invalid Token' );
+		VmRequest::checkToken() or jexit( 'Invalid Token' );
 		$model = VmModel::getModel('config');
 
-		$data = JRequest::get('post');
-		$data['offline_message'] = JRequest::getVar('offline_message','','post','STRING',JREQUEST_ALLOWHTML);
+		$data = VmRequest::get('post');
+		$data['offline_message'] = VmRequest::getVar('offline_message','','post','STRING',JREQUEST_ALLOWHTML);
 
 		if(strpos($data['offline_message'],'|')!==false){
 			$data['offline_message'] = str_replace('|','',$data['offline_message']);
@@ -74,7 +74,7 @@ class VirtuemartControllerConfig extends VmController {
 		}
 
 		$redir = 'index.php?option=com_virtuemart';
-		if(JRequest::getCmd('task') == 'apply'){
+		if(VmRequest::getCmd('task') == 'apply'){
 			$redir = $this->redirectPath;
 		}
 

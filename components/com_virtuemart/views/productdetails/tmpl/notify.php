@@ -36,7 +36,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 	<input type="hidden" name="virtuemart_product_id" value="<?php echo $this->product->virtuemart_product_id; ?>" />
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="virtuemart_category_id" value="<?php echo JRequest::getInt('virtuemart_category_id'); ?>" />
+	<input type="hidden" name="virtuemart_category_id" value="<?php echo VmRequest::getInt('virtuemart_category_id'); ?>" />
 	<input type="hidden" name="virtuemart_user_id" value="<?php echo $this->user->id; ?>" />
 	<input type="hidden" name="task" value="notifycustomer" />
 	<?php echo JHTML::_( 'form.token' ); ?>

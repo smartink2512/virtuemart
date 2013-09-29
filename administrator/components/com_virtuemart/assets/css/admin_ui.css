@@ -126,14 +126,6 @@ textarea {width: 100%;}
 ////////////// Table /////////////////
 ////////////////////////////////////*/
 table.adminlist .right{text-align: right;}
-/*form {overflow: auto;}
-table.admin-table {table-layout: auto;border-collapse: collapse;width: 100%;overflow: auto;}
-table.admin-table th {background: #7c7d7f url(../images/admin_ui/admin_table_th_header_background.png) bottom repeat-x;padding: 20px 5px 5px 5px;color: #fff;font-size: 12px;text-shadow: 0px -1px 1px #000;letter-spacing: 0px;font-weight: normal;vertical-align: top;}
-table.admin-table th a {color: #fff;font-size: 13px;text-shadow: 0px -1px 1px #000;cursor:pointer;letter-spacing: 1px;font-weight: normal;}
-table.admin-table tr td {padding: 6px 5px 6px 5px;letter-spacing: 0px;cursor: pointer;font-size: 11px;}
-table.admin-table tr.row0:hover, table.admin-table tr.row1:hover {background: #8297ba url(../images/admin_ui/admin_table_tr_hover_background.png) top repeat-x;color: #fff;}
-table.admin-table tr.row0:hover a, table.admin-table tr.row1:hover a {color: #fff;text-shadow: 0px -1px 1px #5a74a6;}
-table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}*/
 
 /*////////////////////////////////////
 //////////// Admin Menu //////////////
@@ -146,7 +138,7 @@ table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}*
 .menu-notice a:link ,.menu-notice a span {color :#000 ;}
 #admin-ui-menu h3.current,#admin-ui-menu h3.menu-title:hover { background:url("../images/admin_ui/tabs-ul-background.png") repeat-x scroll center bottom #7C7D7F; color :#efefef ; }
 
-#admin-ui-menu .menu-list {border-top: 1px solid #94B1CF;}
+#admin-ui-menu .menu-list {border-top: 1px solid #94B1CF;overflow: hidden !important;}
 #admin-ui-menu .menu-list ul {margin: 0px;padding: 4px 10px;background:none repeat scroll 0 0 #F7F7F7;border-bottom: 1px solid #888888;}
 #admin-ui-menu .menu-list ul li {list-style: none;}
 #admin-ui-menu .menu-list ul li a {color: #000000;display: block;font-size: 12px;margin: 12px 0;padding: 0 15px 0 4px;text-decoration: none;    opacity : 0.8;

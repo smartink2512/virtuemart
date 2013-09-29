@@ -263,8 +263,8 @@ class JFormFieldVmRules extends JFormFieldRules
 			. "',$$('div#permissions-sliders-".$section." div#permissions-sliders.pane-sliders .panel h3').indexOf(toggler));},"
 			. "onBackground: function(toggler, i) {toggler.addClass('pane-toggler');toggler.removeClass('pane-toggler-down');i.addClass('pane-hide');"
 			. "i.removeClass('pane-down');}, duration: 300, display: "
-			. JRequest::getInt('jpanesliders_permissions-sliders' . $component, 0, 'cookie') . ", show: "
-			. JRequest::getInt('jpanesliders_permissions-sliders' . $component, 0, 'cookie') . ", alwaysHide:true, opacity: false}); });";
+			. VmRequest::getInt('jpanesliders_permissions-sliders' . $component, 0, 'cookie') . ", show: "
+			. VmRequest::getInt('jpanesliders_permissions-sliders' . $component, 0, 'cookie') . ", alwaysHide:true, opacity: false}); });";
 
 		JFactory::getDocument()->addScriptDeclaration($js);
 		

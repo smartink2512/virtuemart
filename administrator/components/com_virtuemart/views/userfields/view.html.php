@@ -35,7 +35,7 @@ class VirtuemartViewUserfields extends VmView {
 	function display($tpl = null) {
 
 		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
-		$option = JRequest::getCmd( 'option');
+		$option = VmRequest::getCmd( 'option');
 		$mainframe = JFactory::getApplication() ;
 
 		// Load the helper(s)
@@ -44,7 +44,7 @@ class VirtuemartViewUserfields extends VmView {
 		if (!class_exists('VmHTML'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
-		$layoutName = JRequest::getWord('layout', 'default');
+		$layoutName = VmRequest::getCmd('layout', 'default');
 		$model = VmModel::getModel();
 
 		// The list of fields which can't be toggled

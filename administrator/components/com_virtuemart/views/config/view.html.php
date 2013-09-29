@@ -58,7 +58,9 @@ class VirtuemartViewConfig extends VmView {
 		$mainframe = JFactory::getApplication();
 		$this->assignRef('joomlaconfig', $mainframe);
 
-		$userparams = JComponentHelper::getParams('com_users');
+		$app = JFactory::getApplication();
+		$userparams =  & $app->getParams('com_users');
+		//$userparams = JComponentHelper::getParams('com_users');
 		$this->assignRef('userparams', $userparams);
 
 		$templateList = ShopFunctions::renderTemplateList(JText::_('COM_VIRTUEMART_ADMIN_CFG_JOOMLA_TEMPLATE_DEFAULT'));
@@ -105,8 +107,14 @@ class VirtuemartViewConfig extends VmView {
 		$this->assignRef('imagePath', $imagePath);
 
 		shopFunctions::checkSafePath();
-
 		$this -> checkVmUserVendor();
+
+		$cache = JFactory::getCache ('_virtuemart');
+		$cached = $cache->getCaching();
+		if($cached){
+			vmInfo('COM_VIRTUEMART_CFG_CACHE_ACTIV');
+		}
+
 		parent::display($tpl);
 	}
 

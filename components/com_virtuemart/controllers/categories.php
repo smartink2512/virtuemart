@@ -41,7 +41,7 @@ class VirtueMartControllerCategories extends JController {
 
 		$view = $this->getView('categories', 'json');
 
-		$layoutName = JRequest::getWord('layout', 'default');
+		$layoutName = VmRequest::getCmd('layout', 'default');
 		$view->setLayout($layoutName);
 
 		// Display it all

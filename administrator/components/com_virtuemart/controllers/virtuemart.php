@@ -38,8 +38,8 @@ class VirtuemartControllerVirtuemart extends JController {
 	 * @author Max Milbers
 	 */
 	public function disableDangerousTools(){
-		$data = JRequest::get('get');
-		JRequest::setVar($data['token'], '1', 'post');
+		$data = VmRequest::get('get');
+		VmRequest::setVar($data['token'], '1', 'post');
 		$config = JModel::getInstance('config', 'VirtueMartModel');
 		$config->setDangerousToolsOff();
 		$this->display();
