@@ -24,7 +24,8 @@ jimport( 'joomla.application.component.view');
 if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 if (!class_exists('AdminUIHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'adminui.php');
 if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
-class VmView extends JView{
+
+class VmView extends JViewLegacy {
 
 	/**
 	 * Sets automatically the shortcut for the language and the redirect path
@@ -285,7 +286,7 @@ class VmView extends JView{
                 $childproducts = $productModel->getProductChilds($id) ? $productModel->getProductChilds($id) : '';
             }
 
-            $token = JUtility::getToken();
+            $token = JSession::getFormToken();
             $j = '
 			jQuery(function($) {
 				var oldflag = "";

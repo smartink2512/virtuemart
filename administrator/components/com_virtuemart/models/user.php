@@ -388,7 +388,7 @@ class VirtueMartModelUser extends VmModel {
 			$user = JFactory::getUser();
 			if ($user->authorise('core.edit', 'com_users') && $user->authorise('core.manage', 'com_users'))
 			{
-			$model = JModel::getInstance('Groups', 'UsersModel', array('ignore_request' => true));
+			$model = VmModel::getInstance('Groups', 'UsersModel', array('ignore_request' => true));
 			return $model->getItems();
 			}
 			else
@@ -483,7 +483,7 @@ class VirtueMartModelUser extends VmModel {
 		$newId = 0;
 
 		if($checkToken){
-			VmRequest::checkToken() or jexit( 'Invalid Token, while trying to save user' );
+			JSession::checkToken() or jexit( 'Invalid Token, while trying to save user' );
 			$mainframe = JFactory::getApplication() ;
 		}
 
@@ -609,7 +609,7 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 			$date = JFactory::getDate();
-			$user->set('registerDate', $date->toMySQL());
+			$user->set('registerDate', $date->toSQL());
 
 			// If user activation is turned on, we need to set the activation information
 			$useractivation = $usersConfig->get( 'useractivation' );
@@ -1360,7 +1360,7 @@ class VirtueMartModelUser extends VmModel {
 			//$userModel -> deleteAddressST();
 			$q = 'DELETE FROM #__virtuemart_userinfos  WHERE virtuemart_user_id="'. $this->_id .'" AND virtuemart_userinfo_id="'. (int)$virtuemart_userinfo_id .'"';
 			$db->setQuery($q);
-			if($db->query()){
+			if($db->execute()){
 				vmInfo('Address has been successfully deleted.');
 				return true;
 			}

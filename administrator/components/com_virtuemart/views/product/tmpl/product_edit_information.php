@@ -266,7 +266,7 @@ $i=0;
 				<td width="50%">
 				<?php
 					if ($this->product->virtuemart_product_id) {
-						$link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=createVariant&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() );
+						$link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=createVariant&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JSession::getFormToken() );
 						$add_child_button="";
 					} else {
 						$link="";

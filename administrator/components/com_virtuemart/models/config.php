@@ -21,7 +21,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the model framework
-if(!class_exists('JModel')) require JPATH_VM_LIBRARIES.DS.'joomla'.DS.'application'.DS.'component'.DS.'model.php';
+//if(!class_exists('JModel')) require JPATH_VM_LIBRARIES.DS.'joomla'.DS.'application'.DS.'component'.DS.'model.php';
 
 /**
  * Model class for shop configuration
@@ -31,7 +31,7 @@ if(!class_exists('JModel')) require JPATH_VM_LIBRARIES.DS.'joomla'.DS.'applicati
  * @author Max Milbers
  * @author RickG
  */
-class VirtueMartModelConfig extends JModel {
+class VirtueMartModelConfig extends VmModel {
 
 
 	/**
@@ -285,7 +285,7 @@ class VirtueMartModelConfig extends JModel {
 	 */
 	function store(&$data,$replace = FALSE) {
 
-		VmRequest::checkToken() or jexit( 'Invalid Token, in store config');
+		JSession::checkToken() or jexit( 'Invalid Token, in store config');
 
 		//$data['active_languages'] = strtolower(strtr($data['active_languages'],'-','_'));
 		//ATM we want to ensure that only one config is used

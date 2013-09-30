@@ -54,7 +54,7 @@ class VirtuemartControllerConfig extends VmController {
 	 */
 	function save($data = 0){
 
-		VmRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 		$model = VmModel::getModel('config');
 
 		$data = VmRequest::get('post');

@@ -102,7 +102,7 @@ class TableCustoms extends VmTable {
 		$this->_db->setQuery('DELETE X,C FROM `#__virtuemart_customs` AS C
 			LEFT JOIN  `#__virtuemart_product_customfields` AS X ON  X.`virtuemart_custom_id` = C.`virtuemart_custom_id`
 			WHERE C.`virtuemart_custom_id`=' . $id);
-		if ($this->_db->query() === false) {
+		if ($this->_db->execute() === false) {
 			vmError($this->_db->getError());
 			return false;
 		}

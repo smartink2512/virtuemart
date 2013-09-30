@@ -134,7 +134,7 @@ class TableOrders extends VmTable {
 	function delete( $id=null , $where = 0 ){
 
 		$this->_db->setQuery('DELETE from `#__virtuemart_order_userinfos` WHERE `virtuemart_order_id` = ' . $id);
-		if ($this->_db->query() === false) {
+		if ($this->_db->execute() === false) {
 			vmError($this->_db->getError());
 			return false;
 		}
@@ -144,7 +144,7 @@ class TableOrders extends VmTable {
 		$paymentTable = '#__virtuemart_payment_plg_'. $this->_db->loadResult();
 
 		$this->_db->setQuery('DELETE from `'.$paymentTable.'` WHERE `virtuemart_order_id` = ' . $id);
-		if ($this->_db->query() === false) {
+		if ($this->_db->execute() === false) {
 			vmError($this->_db->getError());
 			return false;
 		}		/*vm_order_shipment NOT EXIST  have to find the table name*/
@@ -161,7 +161,7 @@ class TableOrders extends VmTable {
 			$shipmentTable = '#__virtuemart_shipment_plg_'. $shipmentName;
 
 			$this->_db->setQuery('DELETE from `'.$shipmentTable.'` WHERE `virtuemart_order_id` = ' . $id);
-			if ($this->_db->query() === false) {
+			if ($this->_db->execute() === false) {
 				vmError('TableOrders delete Order shipmentTable = '.$shipmentTable.' `virtuemart_order_id` = '.$id.' dbErrorMsg '.$this->_db->getError());
 				return false;
 			}
@@ -184,7 +184,7 @@ class TableOrders extends VmTable {
 			.')';
 
 		$this->_db->setQuery($_q);
-		$this->_db->query(); // Ignore error here
+		$this->_db->execute(); // Ignore error here
 		return parent::delete($id);
 
 	}

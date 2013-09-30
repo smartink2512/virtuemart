@@ -20,6 +20,7 @@ defined('_JEXEC') or die('Restricted access');
  *  $vmConfig -> jQuery(); // for use of jQuery
  *  Then always use the defined paths below to ensure future stability
  */
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 define( 'JPATH_VM_SITE', JPATH_ROOT.DS.'components'.DS.'com_virtuemart' );
 defined('JPATH_VM_ADMINISTRATOR') or define('JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart');
 // define( 'JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
@@ -40,7 +41,7 @@ else {
 	}
 }
 
-defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+
 
 //This number is for obstruction, similar to the prefix jos_ of joomla it should be avoided
 //to use the standard 7, choose something else between 1 and 99, it is added to the ordernumber as counter
@@ -860,15 +861,15 @@ class VmConfig {
 		$qry = self::$_jpConfig->getCreateConfigTableQuery();
 		$_db = JFactory::getDBO();
 		$_db->setQuery($qry);
-		$_db->query();
+		$_db->execute();
 
 		$query = 'SELECT `virtuemart_config_id` FROM `#__virtuemart_configs`
 						 WHERE `virtuemart_config_id` = 1';
 		$_db->setQuery( $query );
-		if ($_db->query()){
+		if ($_db->execute()){
 			$qry = 'DELETE FROM `#__virtuemart_configs` WHERE `virtuemart_config_id`=1';
 			$_db->setQuery($qry);
-			$_db->query();
+			$_db->execute();
 		}
 
 
@@ -878,7 +879,7 @@ class VmConfig {
 		self::$_jpConfig->_raw = $_value;
 
 		$_db->setQuery($qry);
-		if (!$_db->query()) {
+		if (!$_db->execute()) {
 			JError::raiseWarning(1, 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE));
 			echo 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE);
 			die;
@@ -1156,10 +1157,10 @@ class vmJsApi{
 	 */
 	static function jQuery($isSite=-1) {
 
-		//Very important convention with other 3rd pary developers, must be kept
-		if (JFactory::getApplication ()->get ('jquery')) {
+		//Very important convention with other 3rd pary developers, must be kept. DOES NOT WORK IN J3
+		/*if (JFactory::getApplication ()->get ('jquery')) {
 			return FALSE;
-		}
+		}*/
 		if($isSite===-1)$isSite = JFactory::getApplication()->isSite();
 
 		if (!VmConfig::get ('jquery', TRUE) and $isSite) {
@@ -1186,8 +1187,8 @@ class vmJsApi{
 
 		}
 		vmJsApi::js( 'jquery.noConflict');
-		//Very important convention with other 3rd pary developers, must be kept
-		JFactory::getApplication()->set('jquery',TRUE);
+		//Very important convention with other 3rd pary developers, must be kept DOES NOT WORK IN J3
+		//JFactory::getApplication()->set('jquery',TRUE);
 		return TRUE;
 	}
 	// Virtuemart product and price script

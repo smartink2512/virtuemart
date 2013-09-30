@@ -408,7 +408,7 @@ class VirtueMartModelUserfields extends VmModel {
 			  $q = 'DELETE from `#__virtuemart_userfield_values` WHERE `virtuemart_userfield_value_id` = ' . (int)$originalvalues[$i]->virtuemart_userfield_value_id.' and `virtuemart_userfield_id` = '.(int)$_id;
 
 			  $db->setQuery($q);
-		      if ($db->query() === false) {
+		      if ($db->execute() === false) {
 					vmError($db->getError());
 					return false;
 				}

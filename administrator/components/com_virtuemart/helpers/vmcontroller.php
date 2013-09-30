@@ -21,7 +21,7 @@
 jimport('joomla.application.component.controller');
 if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
-class VmController extends JController{
+class VmController extends JControllerLegacy{
 
 	protected $_cidName = 0;
 	protected $_cname = 0;
@@ -154,7 +154,7 @@ class VmController extends JController{
 	 */
 	function save($data = 0){
 
-		VmRequest::checkToken() or jexit( 'Invalid Token save' );
+		JSession::checkToken() or jexit( 'Invalid Token save' );
 
 		if($data===0)$data = VmRequest::get('post');
 
@@ -188,7 +188,7 @@ class VmController extends JController{
 	 */
 	function remove(){
 
-		VmRequest::checkToken() or jexit( 'Invalid Token remove' );
+		JSession::checkToken() or jexit( 'Invalid Token remove' );
 
 		$ids = VmRequest::getVar($this->_cidName, VmRequest::getVar('cid',array(),'', 'ARRAY'), '', 'ARRAY');
 		jimport( 'joomla.utilities.arrayhelper' );
@@ -234,7 +234,7 @@ class VmController extends JController{
 
 	public function toggle($field,$val=null){
 
-		VmRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 
 		$model = VmModel::getModel($this->_cname);
 		if (!$model->toggle($field,$val,$this->_cidName)) {
@@ -253,7 +253,7 @@ class VmController extends JController{
 	 */
 	public function publish($cidname=0,$table=0,$redirect = 0){
 
-		VmRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 
 		$model = VmModel::getModel($this->_cname);
 
@@ -278,7 +278,7 @@ class VmController extends JController{
 	 */
 	function unpublish($cidname=0,$table=0,$redirect = 0){
 
-		VmRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 
 		$model = VmModel::getModel($this->_cname);
 
@@ -297,7 +297,7 @@ class VmController extends JController{
 
 	function orderup() {
 
-		VmRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 
 		$model = VmModel::getModel($this->_cname);
 		$model->move(-1);
@@ -307,7 +307,7 @@ class VmController extends JController{
 
 	function orderdown() {
 
-		VmRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 
 		$model = VmModel::getModel($this->_cname);
 		$model->move(1);
@@ -317,7 +317,7 @@ class VmController extends JController{
 
 	function saveorder() {
 
-		VmRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 
 		$cid 	= VmRequest::getVar( $this->_cidName, VmRequest::getVar('cid',array(0)), 'post', 'array' );
 		$order 	= VmRequest::getVar( 'order', array(), 'post', 'array' );

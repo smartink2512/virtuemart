@@ -161,7 +161,7 @@ class TableCategories extends VmTable {
 			;
 			$this->_db->setQuery( $query );
 
-			if (!$this->_db->query())
+			if (!$this->_db->execute())
 			{
 				$err = $this->_db->getErrorMsg();
 				JError::raiseError( 500, 'TableCategories move isset row this->k '.$err );
@@ -173,7 +173,7 @@ class TableCategories extends VmTable {
 			;
 			$this->_db->setQuery( $query );
 
-			if (!$this->_db->query())
+			if (!$this->_db->execute())
 			{
 				$err = $this->_db->getErrorMsg();
 				JError::raiseError( 500, 'TableCategories move isset row $row->$k '.$err );
@@ -189,7 +189,7 @@ class TableCategories extends VmTable {
 			;
 			$this->_db->setQuery( $query );
 
-			if (!$this->_db->query())
+			if (!$this->_db->execute())
 			{
 				$err = $this->_db->getErrorMsg();
 				JError::raiseError( 500, 'TableCategories move update '.$err );
@@ -243,7 +243,7 @@ class TableCategories extends VmTable {
 					. ' WHERE '. $k .' = '. $this->_db->Quote($orders[$i]->$k)
 					;
 					$this->_db->setQuery( $query);
-					$this->_db->query();
+					$this->_db->execute();
 				}
 			}
 		}

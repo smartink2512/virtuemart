@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the model framework
-if(!class_exists('JModel')) require JPATH_VM_LIBRARIES.DS.'joomla'.DS.'application'.DS.'component'.DS.'model.php';
+//if(!class_exists('JModel')) require JPATH_VM_LIBRARIES.DS.'joomla'.DS.'application'.DS.'component'.DS.'model.php';
 
 
 /**
@@ -30,7 +30,7 @@ if(!class_exists('JModel')) require JPATH_VM_LIBRARIES.DS.'joomla'.DS.'applicati
  * @subpackage updatesMigration
  * @author Max Milbers, RickG
  */
-class VirtueMartModelUpdatesMigration extends JModel {
+class VirtueMartModelUpdatesMigration extends VmModel {
 
     /**
      * Checks the VirtueMart Server for the latest available Version of VirtueMart
@@ -87,13 +87,13 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 		if (!empty($oldUserId) and !empty($userId)) {
 		    $db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "0", `user_is_vendor` = "0", `perms` = "" WHERE `virtuemart_vendor_id` ="1" ');
-		    if ($db->query() == false ) {
+		    if ($db->execute() == false ) {
 			    JError::raiseWarning(1, 'UPDATE __vmusers failed for virtuemart_user_id '.$userId);
 			    return false;
 		    }
 
 			$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_user_id` ="'.$userId.'" ');
-			if ($db->query() === false ) {
+			if ($db->execute() === false ) {
 				JError::raiseWarning(1, 'UPDATE __vmusers failed for virtuemart_user_id '.$userId);
 				return false;
 			} else {
@@ -101,7 +101,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 			}
 		} else if($allowInsert){
 			$db->setQuery('INSERT `#__virtuemart_vmusers` (`virtuemart_user_id`, `user_is_vendor`, `virtuemart_vendor_id`, `perms`) VALUES ("' . $userId . '", "1","1","admin")');
-			if ($db->query() === false ) {
+			if ($db->execute() === false ) {
 				JError::raiseWarning(1, 'setStoreOwner was not possible to execute INSERT __vmusers for virtuemart_user_id '.$userId);
 				return false;
 			} else {
@@ -245,10 +245,10 @@ class VirtueMartModelUpdatesMigration extends JModel {
 			$q = 'INSERT INTO `#__virtuemart_shipmentmethods` (`virtuemart_shipmentmethod_id`, `virtuemart_vendor_id`, `shipment_jplugin_id`, `shipment_element`, `shipment_params`, `ordering`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 			(1, 1, '.$shipment_plg_id.', "weight_countries", \'shipment_logos=""|countries=""|zip_start=""|zip_stop=""|weight_start=""|weight_stop=""|weight_unit="KG"|nbproducts_start=0|nbproducts_stop=0|orderamount_start=""|orderamount_stop=""|cost="0"|package_fee=""|tax_id="0"|free_shipment=""|\', 0, 0, 1, "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0)';
 			$db->setQuery($q);
-			$db->query();
+			$db->execute();
  			$q = 'INSERT INTO `#__virtuemart_shipmentmethods_'.$lang.'` (`virtuemart_shipmentmethod_id`, `shipment_name`, `shipment_desc`, `slug`) VALUES (1, "Self pick-up", "", "Self-pick-up")';
 			$db->setQuery($q);
-			$db->query();
+			$db->execute();
 
 			//Create table of the plugin
 
@@ -269,11 +269,11 @@ class VirtueMartModelUpdatesMigration extends JModel {
 			$q='INSERT INTO `#__virtuemart_paymentmethods` (`virtuemart_paymentmethod_id`, `virtuemart_vendor_id`, `payment_jplugin_id`,  `payment_element`, `payment_params`, `shared`, `ordering`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 			(1, 1, '.$payment_plg_id.',  "standard", \'payment_logos=""|countries=""|payment_currency="0"|status_pending="U"|send_invoice_on_order_null="1"|min_amount=""|max_amount=""|cost_per_transaction=""|cost_percent_total=""|tax_id="0"|payment_info=""|\', 0, 0, 1,  "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0)';
 			$db->setQuery($q);
-			$db->query();
+			$db->execute();
 
 			$q="INSERT INTO `#__virtuemart_paymentmethods_".$lang."` (`virtuemart_paymentmethod_id`, `payment_name`, `payment_desc`, `slug`) VALUES	(1, 'Cash on delivery', '', 'Cash-on-delivery')";
 			$db->setQuery($q);
-			$db->query();
+			$db->execute();
 
 			if(JVM_VERSION!=1){
 				$url = '/plugins/vmpayment/standard';
@@ -413,7 +413,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		    		$query = str_replace('XLANG',$lang,$query);
 		    	}
 			$db->setQuery($query);
-				if (!$db->query()) {
+				if (!$db->execute()) {
 				    JError::raiseWarning(1, 'JInstaller::install: '.$sqlfile.' '.JText::_('COM_VIRTUEMART_SQL_ERROR')." ".$db->stderr(true));
 				    $ok = false;
 				}
@@ -443,7 +443,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		foreach ($tables as $table) {
 
 		    $db->setQuery('DROP TABLE ' . $table);
-		    if($db->query()){
+		    if($db->execute()){
 		    	$droppedTables[] = substr($table,strlen($prefix)-1);
 		    } else {
 		    	$errorTables[] = $table;
@@ -485,7 +485,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 			if($translatedTables= $this->_db->loadResultArray()) {
 				foreach ($translatedTables as $translatedTable) {
 					$this->_db->setQuery('TRUNCATE TABLE `'.$translatedTable.'`');
-					if($this->_db->query()) vmInfo( $translatedTable.' empty');
+					if($this->_db->execute()) vmInfo( $translatedTable.' empty');
 					else vmError($translatedTable.' language table Cannot be deleted');
 				}
 			} else vmInfo('No '.$table.' language table found to delete '.$query);
@@ -506,7 +506,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$q = 'UPDATE `#__virtuemart_medias` SET `file_url_thumb`=""';
 
 		$db->setQuery($q);
-		$db->query();
+		$db->execute();
 		$err = $db->getErrorMsg();
 		if(!empty($err)){
 			vmError('resetThumbs Update entries failed ',$err);

@@ -43,7 +43,7 @@ class VirtuemartControllerReport extends VmController {
 
 		$data = VmRequest::get('get');
 		VmRequest::setVar($data['token'], '1', 'post');
-		VmRequest::checkToken() or jexit('Invalid Token, in ' . VmRequest::getCmd('task'));
+		JSession::checkToken() or jexit('Invalid Token, in ' . VmRequest::getCmd('task'));
 
 		$model = VmModel::getModel('report');
 		$model->updateOrderItems();

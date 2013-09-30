@@ -36,7 +36,7 @@ class VirtueMartControllerVendor extends JController
 	*/
 	public function mailAskquestion () {
 
-		VmRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 

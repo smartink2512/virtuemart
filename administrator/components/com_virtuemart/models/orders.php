@@ -379,7 +379,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					" and $oi.virtuemart_product_id=$prolang.virtuemart_product_id " .
 					" and $oi.virtuemart_order_item_id=$virtuemart_order_item_id";
 				$db->setQuery($sql);
-				if ($db->query() === false) {
+				if ($db->execute() === false) {
 					vmError($db->getError());
 				}	
 			}
@@ -422,7 +422,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 						if ($calc_kind == 'taxRulesBill') {
 							$calc_rules_tax_amount += $calc_amount;
 						}
-						if ($db->query() === false) {
+						if ($db->execute() === false) {
 							vmError($db->getError());
 						}
 					}
@@ -437,7 +437,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			{
 				$sql = "UPDATE `#__virtuemart_orders` SET `order_shipment`=$os,`order_shipment_tax`=$ost WHERE  `virtuemart_order_id`=$ordid";
 				$db->setQuery($sql);
-				if ($db->query() === false) {
+				if ($db->execute() === false) {
 					vmError($db->getError());
 				}
 			}
@@ -449,7 +449,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			{
 				$sql = "UPDATE `#__virtuemart_orders` SET `order_payment`=$op,`order_payment_tax`=$opt WHERE  `virtuemart_order_id`=$ordid";
 				$db->setQuery($sql);
-				if ($db->query() === false) {
+				if ($db->execute() === false) {
 					vmError($db->getError());
 				}
 			}
@@ -473,7 +473,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$sql .= " WHERE  `virtuemart_order_id`=$ordid";
 
 			$db->setQuery($sql); 
-			if ($db->query() === false) {
+			if ($db->execute() === false) {
 				vmError($db->getError());
 			}
 
@@ -1322,7 +1322,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					if(empty($data['invoice_number'])) {
 						//$variable_fixed=sprintf("%05s",$num_rows);
 						$date = date("Y-m-d");
-	// 					$date = JFactory::getDate()->toMySQL();
+	// 					$date = JFactory::getDate()->toSQL();
 						$data['invoice_number'] = str_replace('-', '', substr($date,2,8)).substr(md5($orderDetails['order_number'].$orderDetails['order_status']),0,3).'0'.$count;
 					}
 			    } else {
@@ -1519,7 +1519,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$q ='DELETE from `#__virtuemart_order_items` WHERE `virtuemart_order_id` = ' .(int) $virtuemart_order_id;
 		$this->_db->setQuery($q);
 
-		if ($this->_db->query() === false) {
+		if ($this->_db->execute() === false) {
 			vmError($this->_db->getError());
 			return false;
 		}
@@ -1677,7 +1677,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$paymentTable = '#__virtuemart_payment_plg_'. $this->_db->loadResult();
 
 			$this->_db->setQuery("DELETE from `". $paymentTable ."` WHERE `virtuemart_order_id` = " . $virtuemart_order_id);
-			if ($this->_db->query() === false) {
+			if ($this->_db->execute() === false) {
 				vmError($this->_db->getError());
 				return false;
 			} else {
@@ -1695,7 +1695,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$shipmentTable = '#__virtuemart_shipment_plg_'. $this->_db->loadResult();
 
 			$this->_db->setQuery("DELETE from `". $shipmentTable ."` WHERE `virtuemart_order_id` = " . $virtuemart_order_id);
-			if ($this->_db->query() === false) {
+			if ($this->_db->execute() === false) {
 				vmError($this->_db->getError());
 				return false;
 			} else {

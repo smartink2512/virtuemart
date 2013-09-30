@@ -493,7 +493,7 @@ class VirtueMartModelCategory extends VmModel {
 	 */
     public function store(&$data) {
 
-    	VmRequest::checkToken() or jexit( 'Invalid Token, in store category');
+    	JSession::checkToken() or jexit( 'Invalid Token, in store category');
 
 		$table = $this->getTable('categories');
 
@@ -562,7 +562,7 @@ class VirtueMartModelCategory extends VmModel {
      */
     public function remove($cids) {
 
-    	VmRequest::checkToken() or jexit( 'Invalid Token, in remove category');
+    	JSession::checkToken() or jexit( 'Invalid Token, in remove category');
 
 		$table = $this->getTable('categories');
 
@@ -584,7 +584,7 @@ class VirtueMartModelCategory extends VmModel {
 				//Delete media xref
 				$query = 'DELETE FROM `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` IN ('. $listInString .') ';
 				$this->_db->setQuery($query);
-				if(!$this->_db->query()){
+				if(!$this->_db->execute()){
 					vmError( $this->_db->getErrorMsg() );
 				}
 			}
@@ -595,7 +595,7 @@ class VirtueMartModelCategory extends VmModel {
 		//Delete media xref
 		$query = 'DELETE FROM `#__virtuemart_category_medias` WHERE `virtuemart_category_id` IN ('. $cidInString .') ';
 		$this->_db->setQuery($query);
-		if(!$this->_db->query()){
+		if(!$this->_db->execute()){
 			vmError( $this->_db->getErrorMsg() );
 		}
 
@@ -603,7 +603,7 @@ class VirtueMartModelCategory extends VmModel {
 		$query = 'DELETE FROM `#__virtuemart_product_categories` WHERE `virtuemart_category_id` IN ('. $cidInString .') ';
 		$this->_db->setQuery($query);
 
-		if(!$this->_db->query()){
+		if(!$this->_db->execute()){
 			vmError( $this->_db->getErrorMsg() );
 		}
 
@@ -611,7 +611,7 @@ class VirtueMartModelCategory extends VmModel {
 		$query = 'DELETE FROM `#__virtuemart_category_categories` WHERE `category_child_id` IN ('. $cidInString .') ';
 		$this->_db->setQuery($query);
 
-		if(!$this->_db->query()){
+		if(!$this->_db->execute()){
 			vmError( $this->_db->getErrorMsg() );
 		}
 
@@ -619,7 +619,7 @@ class VirtueMartModelCategory extends VmModel {
 		$query = 'UPDATE `#__virtuemart_category_categories` SET `category_parent_id` = 0 WHERE `category_parent_id` IN ('. $cidInString .') ';
 		$this->_db->setQuery($query);
 
-		if(!$this->_db->query()){
+		if(!$this->_db->execute()){
 			vmError( $this->_db->getErrorMsg() );
 		}
 
@@ -649,7 +649,7 @@ class VirtueMartModelCategory extends VmModel {
 			FROM `#__virtuemart_category_categories`
 			WHERE `category_parent_id` = ".(int)$virtuemart_category_id;
 		$db->setQuery($q);
-		$db->query();
+		$db->execute();
 		if ($db->getAffectedRows() > 0){
 // 			vmTime('hasChildren YES','hasChildren');
 			return true;

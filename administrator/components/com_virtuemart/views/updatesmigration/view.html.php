@@ -70,7 +70,7 @@ class VirtuemartViewUpdatesMigration extends VmView {
 // 			$db->setQuery('SELECT * FROM '.$table.' PROCEDURE ANALYSE(); ');
 			$db->setQuery('SELECT * FROM #__virtuemart_countries PROCEDURE ANALYSE(); ');
 
-			if($db->query()){
+			if($db->execute()){
 				vmdebug('Analyse',$db->loadObjectList());
 			} else {
 				$app->enqueueMessage('Error drop virtuemart table ' . $db->getErrorMsg());

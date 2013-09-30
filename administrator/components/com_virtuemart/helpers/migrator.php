@@ -67,7 +67,7 @@ class Migrator extends VmModel{
 		if(empty($res)){
 			$q = 'INSERT INTO `#__virtuemart_migration_oldtonew_ids` (`id`) VALUES ("1")';
 			$this->_db->setQuery($q);
-			$this->_db->query();
+			$this->_db->execute();
 			$this->_app->enqueueMessage('Start with a new migration process and setup log maxScriptTime '.$this->maxScriptTime.' maxMemoryLimit '.$this->maxMemoryLimit/(1024*1024));
 		} else {
 			$this->_app->enqueueMessage('Found prior migration process, resume migration maxScriptTime '.$this->maxScriptTime.' maxMemoryLimit '.$this->maxMemoryLimit/(1024*1024));
@@ -121,7 +121,7 @@ class Migrator extends VmModel{
 		$q = 'UPDATE `#__virtuemart_migration_oldtonew_ids` SET `'.$group.'`="'.serialize($array).'" '.$limit.' WHERE `id` = "1"';
 
 		$this->_db->setQuery($q);
-		if(!$this->_db->query()){
+		if(!$this->_db->execute()){
 			$this->_app->enqueueMessage('storeMigrationProgress failed to update query '.$this->_db->getQuery());
 			$this->_app->enqueueMessage('and ErrrorMsg '.$this->_db->getErrorMsg());
 			return false;
@@ -521,7 +521,7 @@ class Migrator extends VmModel{
 				$q = 'INSERT INTO `#__virtuemart_userfields` ( `name`, `title`, `description`, `type`, `maxlength`, `size`, `required`, `ordering`, `cols`, `rows`, `value`, `default`, `published`, `registration`, `shipment`, `account`, `readonly`, `calculated`, `sys`, `virtuemart_vendor_id`, `params`)
 					VALUES ( "'.$field->name.'"," '.$field->title .'"," '.$field->description .'"," '.$field->type .'"," '.$field->maxlength .'"," '.$field->size .'"," '.$field->required .'"," '.$field->ordering .'"," '.$field->cols .'"," '.$field->rows .'"," '.$field->value .'"," '.$field->default .'"," '.$field->published .'"," '.$field->registration .'"," '.$field->shipment .'"," '.$field->account .'"," '.$field->readonly .'"," '.$field->calculated .'"," '.$field->sys .'"," '.$field->vendor_id .'"," '.$field->params .'" )';
 				$this->_db->setQuery($q);
-				$this->_db->query();
+				$this->_db->execute();
 				if ($this->_db->getErrorNum()) {
 					vmError ($this->_db->getErrorMsg() );
 				}
@@ -1327,7 +1327,7 @@ class Migrator extends VmModel{
 				$q = 'INSERT INTO `#__virtuemart_orderstates` ( `virtuemart_vendor_id`, `order_status_code`, `order_status_name`, `order_status_description`, `order_stock_handle`, `ordering`, `published`)
 					VALUES ( "'.$field->vendor_id.'","'.$field->order_status_code .'","'.$field->order_status_name .'","'.$field->order_status_description .'","A","'.$field->list_order .'", 1 )';
 				$this->_db->setQuery($q);
-				$this->_db->query();
+				$this->_db->execute();
 				if ($this->_db->getErrorNum()) {
 					vmError ($this->_db->getErrorMsg() );
 				}
@@ -1581,7 +1581,7 @@ class Migrator extends VmModel{
 	private function _changeToStamp($dateIn){
 
 		$date = JFactory::getDate($dateIn);
-		return $date->toMySQL();
+		return $date->toSQL();
 	}
 
 	private function _ensureUsingCurrencyId($curr){
@@ -1821,7 +1821,7 @@ class Migrator extends VmModel{
 
 		$continue = true;
 		$this->_db->setQuery($q);
-		if(!$this->_db->query()){
+		if(!$this->_db->execute()){
 			vmError($msg.' db error '. $this->_db->getErrorMsg());
 			vmError($msg.' db error '. $this->_db->getQuery());
 			$entries = array();
@@ -1900,7 +1900,7 @@ class Migrator extends VmModel{
 
 					// Drop the current active table.
 					$this->_db->setQuery('DROP TABLE IF EXISTS '.$this->_db->nameQuote($restoreTable));
-					$this->_db->query();
+					$this->_db->execute();
 
 					// Check for errors.
 					if ($this->_db->getErrorNum()) {
@@ -1910,7 +1910,7 @@ class Migrator extends VmModel{
 
 					// Rename the current table to the backup table.
 					$this->_db->setQuery('RENAME TABLE '.$this->_db->nameQuote($table).' TO '.$this->_db->nameQuote($restoreTable));
-					$this->_db->query();
+					$this->_db->execute();
 
 					// Check for errors.
 					if ($this->_db->getErrorNum()) {
@@ -2002,7 +2002,7 @@ class Migrator extends VmModel{
 							$query = 'INSERT INTO ' . $prefix . '_virtuemart_customs (custom_title,custom_tip,field_type,is_cart_attribute,published) VALUES
         (' . $db->Quote($attrData[0]) . ',"","V","1","1")';
 							$db->setQuery($query);
-							if (!$db->query()) die($query);
+							if (!$db->execute()) die($query);
 
 
 							$pid = $db->insertid();
@@ -2030,7 +2030,7 @@ class Migrator extends VmModel{
 								$query = 'INSERT INTO ' . $prefix . '_virtuemart_product_customfields (virtuemart_product_id,virtuemart_custom_id,custom_value,custom_price,ordering) VALUES
                 (' . $productid . ',' . $pid . ',' . $db->Quote($cleaned) . ',' . $price . ',' . $ordering . ')';
 								$db->setQuery($query);
-								if (!$db->query()) {
+								if (!$db->execute()) {
 									$result.="query failed for attribute :" . $cleaned . ", query :" . $query . "</br>";
 									vmWarn('portVm1Attributes '.$result);
 								};
@@ -2145,7 +2145,7 @@ class Migrator extends VmModel{
 			}
 			$q="INSERT INTO #__virtuemart_product_customfields (virtuemart_product_id,virtuemart_custom_id,custom_value,modified_on) values ".substr($sql,1);
 			$this->_db->setQuery($q) ;
-			$this->_db->query();
+			$this->_db->execute();
 
 			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 				vmdebug('Related products import breaked, you may rise the execution time, this is not an error, just a hint');

@@ -1,14 +1,27 @@
 <?php
 /**
  * @package LiveUpdate
- * @copyright Copyright ©2011 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos / AkeebaBackup.com
  * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
  */
 
 defined('_JEXEC') or die();
+
+JHtml::_('behavior.framework');
+JHtml::_('behavior.modal');
 ?>
 
 <div class="liveupdate">
+
+	<?php if($this->updateInfo->releasenotes): ?>
+	<div style="display:none;">
+		<div id="liveupdate-releasenotes">
+			<div class="liveupdate-releasenotes-text">
+			<?php echo $this->updateInfo->releasenotes ?>
+			</div>
+		</div>
+	</div>
+	<?php endif; ?>
 
 	<?php if(!$this->updateInfo->supported): ?>
 	<div class="liveupdate-notsupported">
@@ -50,37 +63,65 @@ defined('_JEXEC') or die();
 	<div class="liveupdate-<?php echo $class?>">
 		<h3><?php echo JText::_('LIVEUPDATE_'.strtoupper($class).'_HEAD') ?></h3>
 		<div class="liveupdate-infotable">
-			<div class="liveupdate-row row1">
-				<span ><?php echo JText::_('LIVEUPDATE_CONSIDER_COMPATIBILITY') ?></span>
-			</div>
 			<div class="liveupdate-row row0">
-				<span ><?php echo JText::_('LIVEUPDATE_REMEMBER_TO_UPDATE_AIO') ?></span>
-			</div>
-			<div class="liveupdate-row row1">
 				<span class="liveupdate-label"><?php echo JText::_('LIVEUPDATE_CURRENTVERSION') ?></span>
 				<span class="liveupdate-data"><?php echo $this->updateInfo->extInfo->version ?></span>
 			</div>
-			<div class="liveupdate-row row0">
+			<div class="liveupdate-row row1">
 				<span class="liveupdate-label"><?php echo JText::_('LIVEUPDATE_LATESTVERSION') ?></span>
 				<span class="liveupdate-data"><?php echo $this->updateInfo->version ?></span>
 			</div>
-			<div class="liveupdate-row row1">
+			<div class="liveupdate-row row0">
 				<span class="liveupdate-label"><?php echo JText::_('LIVEUPDATE_LATESTRELEASED') ?></span>
 				<span class="liveupdate-data"><?php echo $this->updateInfo->date ?></span>
 			</div>
-			<div class="liveupdate-row row0">
+			<div class="liveupdate-row row1">
 				<span class="liveupdate-label"><?php echo JText::_('LIVEUPDATE_DOWNLOADURL') ?></span>
 				<span class="liveupdate-data"><a href="<?php echo $this->updateInfo->downloadURL.$auth?>"><?php echo $this->escape($this->updateInfo->downloadURL)?></a></span>
 			</div>
+			<?php if(!empty($this->updateInfo->releasenotes) || !empty($this->updateInfo->infoURL)): ?>
 			<div class="liveupdate-row row1">
-			<?php require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'version.php'); ?>
-				<span ><?php echo $myVersion ?></span>
+				<span class="liveupdate-label"><?php echo JText::_('LIVEUPDATE_RELEASEINFO') ?></span>
+				<span class="liveupdate-data">
+					<?php if($this->updateInfo->releasenotes): ?>
+					<a href="#" id="btnLiveUpdateReleaseNotes"><?php echo JText::_('LIVEUPDATE_RELEASENOTES') ?></a>
+					<?php
+					JHTML::_('behavior.framework');
+					JHTML::_('behavior.modal');
+
+					$script = <<<ENDSCRIPT
+					window.addEvent( 'domready' ,  function() {
+						$('btnLiveUpdateReleaseNotes').addEvent('click', showLiveUpdateReleaseNotes);
+					});
+
+					function showLiveUpdateReleaseNotes()
+					{
+						var liveupdateReleasenotes = $('liveupdate-releasenotes').clone();
+						
+						SqueezeBox.fromElement(
+							liveupdateReleasenotes, {
+								handler: 'adopt',
+								size: {
+									x: 450,
+									y: 350
+								}
+							}
+						);
+					}
+ENDSCRIPT;
+					$document = JFactory::getDocument();
+					$document->addScriptDeclaration($script,'text/javascript');
+					?>
+					<?php endif; ?>
+					<?php if($this->updateInfo->releasenotes && $this->updateInfo->infoURL): ?>
+					&nbsp;&bull;&nbsp;
+					<?php endif; ?>
+					<?php if($this->updateInfo->infoURL): ?>
+					<a href="<?php echo $this->updateInfo->infoURL ?>" target="_blank"><?php echo JText::_('LIVEUPDATE_READMOREINFO') ?></a>
+					<?php endif; ?>
+				</span>
 			</div>
-			<div class="liveupdate-row row0">
-			<iframe src="http://virtuemart.net/index.php?option=com_content&id=416&tmpl=component" width="90%" height="400" name="Live update information">
-  <p>Your browser blocks to display iFrames, please use the following link instead: <a href="http://virtuemart.net/index.php?option=com_content&id=416&tmpl=component">Live update information</a></p>
-</iframe>
-			</div>
+			<?php endif; ?>
 		</div>
 
 		<p class="liveupdate-buttons">

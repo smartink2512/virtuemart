@@ -25,7 +25,7 @@ jimport('joomla.application.component.controller');
  *
  * @package		VirtueMart
  */
-class VirtuemartControllerVirtuemart extends JController {
+class VirtuemartControllerVirtuemart extends VmController {
 
 
 	public function __construct() {
@@ -40,7 +40,7 @@ class VirtuemartControllerVirtuemart extends JController {
 	public function disableDangerousTools(){
 		$data = VmRequest::get('get');
 		VmRequest::setVar($data['token'], '1', 'post');
-		$config = JModel::getInstance('config', 'VirtueMartModel');
+		$config = VmModel::getInstance('config', 'VirtueMartModel');
 		$config->setDangerousToolsOff();
 		$this->display();
 	}

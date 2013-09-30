@@ -76,28 +76,19 @@ class VirtueMartModelCurrency extends VmModel {
 		if(empty($search)){
 			$search = VmRequest::getString('search', false);
 		}
-		/* add filters */
+		// add filters
 		if($search){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			//$search = $this->_db->Quote($search, false);
 			$where[] = '`currency_name` LIKE '.$search.' OR `currency_code_2` LIKE '.$search.' OR `currency_code_3` LIKE '.$search;
 		}
 
-		// 		if (VmRequest::getString('search', false)) $where[] = '`currency_name` LIKE "%'.$this->_db->getEscaped(VmRequest::getString('search')).'%"';
-
 		$whereString='';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		// 		if (count($where) > 0) $this->_query .= ' WHERE '.implode(' AND ', $where) ;
-		// 		$this->_query .= $this->_getOrdering('currency_name');
-		// 		$this->_data = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit'));
-		// 		$this->_total = $this->_getListCount($this->_query) ;
-
-		// 		$object, $select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $filter_order_Dir = '', $nbrReturnProducts = false
 		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_currencies`',$whereString,'',$this->_getOrdering());
 
 		return $this->_data;
-		// 		return $this->_data;
 	}
 
 	/**

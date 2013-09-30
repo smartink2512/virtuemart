@@ -22,9 +22,9 @@ defined('_JEXEC') or die('Restricted access');
  * @author Milbo
  *
  */
-if(!class_exists('JModel')) require(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'application'.DS.'component'.DS.'model.php');
+if(!class_exists('VmModel')) require JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php';
 
-class GenericTableUpdater extends JModel{
+class GenericTableUpdater extends VmModel{
 
 	public function __construct(){
 
@@ -51,7 +51,7 @@ class GenericTableUpdater extends JModel{
 		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) * 0.85;
 
 		$config = JFactory::getConfig();
-		$this->_prefix = $config->getValue('config.dbprefix');
+		$this->_prefix = $config->get('config.dbprefix');
 
 		$this->reCreaPri = VmConfig::get('reCreaPri',0);
 		$this->reCreaKey = VmConfig::get('reCreaKey',1);
@@ -324,7 +324,7 @@ class GenericTableUpdater extends JModel{
 				$this->createTable($tablename,$table);
 			}
 			// 			$this->_db->setQuery('OPTIMIZE '.$tablename);
-			// 			$this->_db->query();
+			// 			$this->_db->execute();
 			$i++;
 
 		}
@@ -376,7 +376,7 @@ class GenericTableUpdater extends JModel{
 		$q .= ") ENGINE=MyISAM  DEFAULT CHARSET=utf8".$comment." AUTO_INCREMENT=1 ;";
 
 		$this->_db->setQuery($q);
-		if(!$this->_db->query()){
+		if(!$this->_db->execute()){
 			vmError('createTable ERROR :'.$this->_db->getErrorMsg() );
 		} else {
 			vmInfo('created table '.$tablename);
@@ -394,7 +394,7 @@ class GenericTableUpdater extends JModel{
 		$q = substr($q,0,-1);
 
 		// 		$this->_db->setQuery($q);
-		// 		if(!$this->_db->query()){
+		// 		if(!$this->_db->execute()){
 		// 			$this->_app->enqueueMessage('dropTables ERROR :'.$this->_db->getErrorMsg() );
 		// 		}
 		$this->_app->enqueueMessage($q);
@@ -452,7 +452,7 @@ class GenericTableUpdater extends JModel{
 
 				if(!empty($query)){
 					$this->_db->setQuery($query);
-					if(!$this->_db->query()){
+					if(!$this->_db->execute()){
 						$this->_app->enqueueMessage('alterTable DROP '.$tablename.'.'.$name.' :'.$this->_db->getErrorMsg() );
 					} else {
 						$dropped++;
@@ -489,7 +489,7 @@ class GenericTableUpdater extends JModel{
 
 			if(!empty($query)){
 				$this->_db->setQuery($query);
-				if(!$this->_db->query()){
+				if(!$this->_db->execute()){
 					$this->_app = JFactory::getApplication();
 					$this->_app->enqueueMessage('alterKey '.$action.' INDEX '.$name.': '.$this->_db->getErrorMsg() );
 				} else {
@@ -559,7 +559,7 @@ class GenericTableUpdater extends JModel{
 						$dropped++;
 
 						$this->_db->setQuery($query);
-						if(!$this->_db->query()){
+						if(!$this->_db->execute()){
 							$this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
 						}
 					}
@@ -637,7 +637,7 @@ class GenericTableUpdater extends JModel{
 			if (!empty($query)) {
 				$this->_db->setQuery($query);
 				$err = $this->_db->getErrorMsg();
-				if(!$this->_db->query() or !empty($err) ){
+				if(!$this->_db->execute() or !empty($err) ){
 					vmError('alterTable '.$action.' '.$tablename.'.'.$fieldname.' : '.$err );
 				} else {
 					vmInfo('alterTable '.$action.' '.$tablename.'.'.$fieldname.' : '. $query);
@@ -767,7 +767,7 @@ class GenericTableUpdater extends JModel{
 
 		$continue = true;
 		$this->_db->setQuery($q);
-		if(!$this->_db->query()){
+		if(!$this->_db->execute()){
 			vmError($msg.' db error '. $this->_db->getErrorMsg());
 			vmError($msg.' db error '. $this->_db->getQuery());
 			$entries = array();

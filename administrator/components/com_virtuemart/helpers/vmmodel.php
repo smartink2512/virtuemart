@@ -21,9 +21,8 @@ defined('_JEXEC') or die();
 
 define('USE_SQL_CALC_FOUND_ROWS' , true);
 
-if(!class_exists('JModel')) require JPATH_VM_LIBRARIES.DS.'joomla'.DS.'application'.DS.'component'.DS.'model.php';
 
-class VmModel extends JModel {
+class VmModel extends JObject {
 
 	var $_id 			= 0;
 	var $_data			= null;
@@ -52,7 +51,6 @@ class VmModel extends JModel {
 		if($task!=='add'){
 			// Get the id or array of ids.
 			$idArray = VmRequest::getVar($this->_cidName,  0, '', 'array');
-			vmdebug('my array',$idArray);
 			if($idArray){
 				if(is_array($idArray) and !empty($idArray[0])){
 					$this->setId((int)$idArray[0]);
@@ -62,11 +60,218 @@ class VmModel extends JModel {
 			}
 
 		}
-
+		$this->_db = JFactory::getDbo();
 		$this->setToggleName('published');
 	}
 
 	static private $_vmmodels = array();
+
+	/**
+	 * Create the filename for a resource
+	 *
+	 * @param   string  $type   The resource type to create the filename for.
+	 * @param   array   $parts  An associative array of filename information.
+	 *
+	 * @return  string  The filename
+	 *
+	 * @since   11.1
+	 */
+	protected static function _createFileName($type, $parts = array())
+	{
+		$filename = '';
+
+		switch ($type)
+		{
+			case 'model':
+				$filename = strtolower($parts['name']) . '.php';
+				break;
+
+		}
+		return $filename;
+	}
+
+	/**
+	 * Add a directory where JModel should search for models. You may
+	 * either pass a string or an array of directories.
+	 *
+	 * @param   mixed   $path    A path or array[sting] of paths to search.
+	 * @param   string  $prefix  A prefix for models.
+	 *
+	 * @return  array  An array with directory elements. If prefix is equal to '', all directories are returned.
+	 *
+	 * @since   11.1
+	 */
+	public static function addIncludePath($path = '', $prefix = '')
+	{
+		static $paths;
+
+		if (!isset($paths))
+		{
+			$paths = array();
+		}
+
+		if (!isset($paths[$prefix]))
+		{
+			$paths[$prefix] = array();
+		}
+
+		if (!isset($paths['']))
+		{
+			$paths[''] = array();
+		}
+
+		if (!empty($path))
+		{
+			jimport('joomla.filesystem.path');
+
+			if (!in_array($path, $paths[$prefix]))
+			{
+				array_unshift($paths[$prefix], JPath::clean($path));
+			}
+
+			if (!in_array($path, $paths['']))
+			{
+				array_unshift($paths[''], JPath::clean($path));
+			}
+		}
+
+		return $paths[$prefix];
+	}
+
+	/**
+	 * Method to get a table object, load it if necessary.
+	 *
+	 * @param   string  $name     The table name. Optional.
+	 * @param   string  $prefix   The class prefix. Optional.
+	 * @param   array   $options  Configuration array for model. Optional.
+	 *
+	 * @return  JTable  A JTable object
+	 *
+	 * @since   11.1
+	 */
+	public function getTable($name = '', $prefix = 'Table', $options = array())
+	{
+		if (empty($name))
+		{
+			$name = $this->getName();
+		}
+
+		if ($table = $this->_createTable($name, $prefix, $options))
+		{
+			return $table;
+		}
+
+		JError::raiseError(0, JText::sprintf('JLIB_APPLICATION_ERROR_TABLE_NAME_NOT_SUPPORTED', $name));
+
+		return null;
+	}
+
+
+	/**
+	 * Method to load and return a model object.
+	 *
+	 * @param   string  $name    The name of the view
+	 * @param   string  $prefix  The class prefix. Optional.
+	 * @param   array   $config  Configuration settings to pass to JTable::getInstance
+	 *
+	 * @return  mixed  Model object or boolean false if failed
+	 *
+	 * @since   11.1
+	 * @see     JTable::getInstance
+	 */
+	protected function _createTable($name, $prefix = 'Table', $config = array())
+	{
+		// Clean the model name
+		$name = preg_replace('/[^A-Z0-9_]/i', '', $name);
+		$prefix = preg_replace('/[^A-Z0-9_]/i', '', $prefix);
+
+		// Make sure we are returning a DBO object
+		if (!array_key_exists('dbo', $config))
+		{
+			$config['dbo'] = JFactory::getDbo();
+		}
+
+		return JTable::getInstance($name, $prefix, $config);
+	}
+
+	/**
+	 * Returns a Model object, always creating it
+	 *
+	 * @param   string  $type    The model type to instantiate
+	 * @param   string  $prefix  Prefix for the model class name. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
+	 *
+	 * @return  mixed   A model object or false on failure
+	 *
+	 * @since   11.1
+	 */
+	public static function getInstance($type, $prefix = '', $config = array())
+	{
+		$type = preg_replace('/[^A-Z0-9_\.-]/i', '', $type);
+		$modelClass = $prefix . ucfirst($type);
+
+		if (!class_exists($modelClass))
+		{
+			jimport('joomla.filesystem.path');
+			$path = JPath::find(self::addIncludePath(null, $prefix), self::_createFileName('model', array('name' => $type)));
+			if (!$path)
+			{
+				$path = JPath::find(self::addIncludePath(null, ''), self::_createFileName('model', array('name' => $type)));
+			}
+			if ($path)
+			{
+				require_once $path;
+
+				if (!class_exists($modelClass))
+				{
+					JError::raiseWarning(0, JText::sprintf('JLIB_APPLICATION_ERROR_MODELCLASS_NOT_FOUND', $modelClass));
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		return new $modelClass($config);
+	}
+
+	/**
+	 * Gets an array of objects from the results of database query.
+	 *
+	 * @param   string   $query       The query.
+	 * @param   integer  $limitstart  Offset.
+	 * @param   integer  $limit       The number of records.
+	 *
+	 * @return  array  An array of results.
+	 *
+	 * @since   11.1
+	 */
+	protected function _getList($query, $limitstart = 0, $limit = 0)
+	{
+		$this->_db->setQuery($query, $limitstart, $limit);
+		$result = $this->_db->loadObjectList();
+
+		return $result;
+	}
+
+	/**
+	 * Returns a record count for the query
+	 *
+	 * @param   string  $query  The query.
+	 *
+	 * @return  integer  Number of rows for query
+	 *
+	 * @since   11.1
+	 */
+	protected function _getListCount($query)
+	{
+		$this->_db->setQuery($query);
+		$this->_db->execute();
+
+		return $this->_db->getNumRows();
+	}
 
 	/**
 	 *
@@ -304,13 +509,12 @@ class VmModel extends JModel {
 			$db = JFactory::getDbo();
 			$query = 'SELECT `'.$this->_db->getEscaped($this->_idName).'` FROM `'.$this->_db->getEscaped($this->_maintable).'`';;
 			$db->setQuery( $query );
-			if(!$db->query()){
+			if(!$db->execute()){
 				if(empty($this->_maintable)) vmError('Model '.get_class( $this ).' has no maintable set');
 				$this->_total = 0;
 			} else {
 				$this->_total = $db->getNumRows();
 			}
-			//			$this->_total = $this->_getListCount($query);
 		}
 
 		return $this->_total;

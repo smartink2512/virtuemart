@@ -58,7 +58,7 @@ class VirtueMartControllerProductdetails extends JController {
 	 */
 	public function mailAskquestion () {
 
-		VmRequest::checkToken () or jexit ('Invalid Token');
+		JSession::checkToken () or jexit ('Invalid Token');
 
 		$app = JFactory::getApplication ();
 		if(!VmConfig::get('ask_question',false)){
@@ -145,7 +145,7 @@ class VirtueMartControllerProductdetails extends JController {
 	 */
 	public function mailRecommend () {
 
-		VmRequest::checkToken () or jexit ('Invalid Token');
+		JSession::checkToken () or jexit ('Invalid Token');
 
 		$app = JFactory::getApplication ();
 		if(!VmConfig::get('show_emailfriend',false)){

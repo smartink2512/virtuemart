@@ -51,7 +51,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		// Check of the xml file exists
 		$filePath = JPath::clean ($filename);
 		if (is_file ($filePath)) {
-			$xml = JFactory::getXMLParser ('simple');
+			$xml = JFactory::getXML ('simple');
 			$result = $xml->loadFile ($filename);
 			if ($result) {
 				if ($params = $xml->document->params) {

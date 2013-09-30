@@ -523,7 +523,7 @@ class VmMediaHandler {
 				/*if(empty($this->_db)) $this->_db = JFactory::getDBO();
 				$query = 'UPDATE `#__virtuemart_medias` SET `file_url_thumb` = "'.$this->_db->getEscaped($this->file_url_thumb).'" WHERE `#__virtuemart_medias`.`virtuemart_media_id` = "'.(int)$this->virtuemart_media_id.'" ';
 				$this->_db->setQuery($query);
-				$this->_db->query();*/
+				$this->_db->execute();*/
 			}
 			$this->file_url_thumb = $file_url_thumb;
 

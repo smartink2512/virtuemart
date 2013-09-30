@@ -59,8 +59,8 @@ class VirtuemartViewConfig extends VmView {
 		$this->assignRef('joomlaconfig', $mainframe);
 
 		$app = JFactory::getApplication();
-		$userparams =  & $app->getParams('com_users');
-		//$userparams = JComponentHelper::getParams('com_users');
+		//$userparams =  & $app->getParams('com_users');
+		$userparams = JComponentHelper::getParams('com_users');
 		$this->assignRef('userparams', $userparams);
 
 		$templateList = ShopFunctions::renderTemplateList(JText::_('COM_VIRTUEMART_ADMIN_CFG_JOOMLA_TEMPLATE_DEFAULT'));

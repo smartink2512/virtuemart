@@ -69,7 +69,7 @@ class VirtuemartControllerCalc extends VmController {
 	public function orderUp()
 	{
 		// Check token
-		VmRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 
 		$id = 0;
 		$cid	= VmRequest::getVar( 'cid', array(), 'post', 'array' );
@@ -103,7 +103,7 @@ class VirtuemartControllerCalc extends VmController {
 	public function orderDown()
 	{
 		// Check token
-		VmRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 
 		$id = 0;
 		$cid	= VmRequest::getVar( 'cid', array(), 'post', 'array' );
@@ -135,7 +135,7 @@ class VirtuemartControllerCalc extends VmController {
 	public function saveOrder()
 	{
 		// Check for request forgeries
-		VmRequest::checkToken() or jexit( 'Invalid Token' );
+		JSession::checkToken() or jexit( 'Invalid Token' );
 
 		$cid	= VmRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);

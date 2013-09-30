@@ -66,7 +66,9 @@ class VmTable extends JTable {
 		$this->_pkey = $key;
 		self::$_cache = null;
 		self::$_query_cache = null;
+		parent::__construct($table, $key, $db);
 	}
+
 	function setPrimaryKey($key, $keyForm = 0) {
 
 		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($key)));
@@ -386,7 +388,7 @@ class VmTable extends JTable {
 
 			//We store in UTC time, dont touch it!
 			$date = JFactory::getDate();
-			$today = $date->toMySQL();
+			$today = $date->toSQL();
 			//vmdebug('my today ',$date);
 			$user = JFactory::getUser();
 
@@ -1030,7 +1032,7 @@ class VmTable extends JTable {
 			$q = 'UPDATE  `' . $this->_tbl . '` SET `' . $this->_orderingKey . '` = ' . (int)$start . ' WHERE `' . $this->_tbl_key . '`= ' . $row[$this->_tbl_key] . ' LIMIT 1';
 
 			$this->_db->setQuery($q);
-			$r = $this->_db->query($q);
+			$r = $this->_db->execute($q);
 			$start = $start + 5;
 		}
 
@@ -1140,7 +1142,7 @@ class VmTable extends JTable {
 			$this->_db->setQuery($query);
 			echo "\n" . $query . '<br />';
 
-			if (!$this->_db->query()) {
+			if (!$this->_db->execute()) {
 				$err = $this->_db->getErrorMsg();
 				JError::raiseError(500, get_class($this) . ':: move isset row $row->$k' . $err);
 			}
@@ -1151,7 +1153,7 @@ class VmTable extends JTable {
 				. ' WHERE ' . $this->_tbl_key . ' = "' . (int)$cid . '" LIMIT 1';
 			$this->_db->setQuery($query);
 			//echo $query.'<br />'; die();
-			if (!$this->_db->query()) {
+			if (!$this->_db->execute()) {
 				$err = $this->_db->getErrorMsg();
 				JError::raiseError(500, get_class($this) . ':: move isset row $row->$k' . $err);
 			}
@@ -1168,7 +1170,7 @@ class VmTable extends JTable {
 				. ' WHERE ' . $this->_tbl_key . ' = "' . $this->_db->getEscaped($this->$k) . '" LIMIT 1';
 			$this->_db->setQuery($query);
 
-			if (!$this->_db->query()) {
+			if (!$this->_db->execute()) {
 				$err = $this->_db->getErrorMsg();
 				JError::raiseError(500, get_class($this) . ':: move update $this->$k' . $err);
 			}
@@ -1254,7 +1256,7 @@ class VmTable extends JTable {
 						. ' SET `' . $this->_orderingKey . '` = "' . $this->_db->getEscaped($orders[$i]->$orderingKey) . '"
 					 WHERE ' . $k . ' = "' . $this->_db->getEscaped($orders[$i]->$k) . '"';
 					$this->_db->setQuery($query);
-					$this->_db->query();
+					$this->_db->execute();
 				}
 			}
 		}
@@ -1295,7 +1297,7 @@ class VmTable extends JTable {
 		$this->locked_by = $who;
 		$this->locked_on = $time;
 
-		return $this->_db->query();
+		return $this->_db->execute();
 	}
 
 	/**
@@ -1333,7 +1335,7 @@ class VmTable extends JTable {
 		$this->locked_by = 0;
 		$this->locked_on = '';
 
-		return $this->_db->query();
+		return $this->_db->execute();
 	}
 
 	/**
@@ -1384,7 +1386,7 @@ class VmTable extends JTable {
 		$k = $this->_tbl_key;
 		$q = 'UPDATE `' . $this->_tbl . '` SET `' . $field . '` = "' . $this->$field . '" WHERE `' . $k . '` = "' . $this->$k . '" ';
 		$this->_db->setQuery($q);
-		if (!$res = $this->_db->query()) {
+		if (!$res = $this->_db->execute()) {
 			vmError('There was an error toggling ' . $field, $this->_db->getErrorMsg());
 		} else {
 			vmdebug('Toggled '.$q );
@@ -1469,7 +1471,7 @@ class VmTable extends JTable {
 				$query = 'DELETE FROM `' . $table . '` WHERE ' . $this->_tbl_key . ' = "' . $row . '"';
 				$this->_db->setQuery($query);
 				//vmdebug('checkAndDelete',$query);
-				if (!$this->_db->query()) {
+				if (!$this->_db->execute()) {
 					$this->setError($this->_db->getErrorMsg());
 					vmError('checkAndDelete ' . $this->_db->getErrorMsg());
 					$ok = 0;
@@ -1549,7 +1551,7 @@ class VmTable extends JTable {
 
 		$this->_db->setQuery($_sql);
 
-		$this->_db->query();
+		$this->_db->execute();
 		if ($this->_db->getErrorNum() != 0) {
 			vmError(get_class($this) . '::modify table - ' . $this->_db->getErrorMsg() . '<br /> values: action ' . $_act . ', columname: ' . $_col . ', type: ' . $_type . ', columname2: ' . $_col2);
 			return false;

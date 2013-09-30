@@ -446,7 +446,7 @@ class VirtueMartModelProduct extends VmModel {
 						break;
 					case 'latest':
 						$date = JFactory::getDate (time () - (60 * 60 * 24 * $latest_products_days));
-						$dateSql = $date->toMySQL ();
+						$dateSql = $date->toSQL ();
 						$where[] = 'p.`' . $latest_products_orderBy . '` > "' . $dateSql . '" ';
 						$orderBy = 'ORDER BY p.`' . $latest_products_orderBy . '`';
 						$this->filter_order_Dir = 'DESC';
@@ -800,7 +800,7 @@ class VirtueMartModelProduct extends VmModel {
 		if(!isset($this->_nullDate))$this->_nullDate = $db->getNullDate();
 		if(!isset($this->_now)){
 			$jnow = JFactory::getDate();
-			$this->_now = $jnow->toMySQL();
+			$this->_now = $jnow->toSQL();
 		}
 
 		//$productId = $this->_id===0? $product->virtuemart_product_id:$this->_id;
@@ -1427,7 +1427,7 @@ class VirtueMartModelProduct extends VmModel {
 	*/
 	function saveorder ($cid = array(), $order, $filter = NULL) {
 
-		VmRequest::checkToken () or jexit ('Invalid Token');
+		JSession::checkToken () or jexit ('Invalid Token');
 
 		$db = JFactory::getDbo();
 		$virtuemart_category_id = VmRequest::getInt ('virtuemart_category_id', 0);
@@ -1479,7 +1479,7 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	function move ($direction, $filter = NULL) {
 
-		VmRequest::checkToken () or jexit ('Invalid Token');
+		JSession::checkToken () or jexit ('Invalid Token');
 
 		// Check for request forgeries
 		$table = $this->getTable ('product_categories');
@@ -1498,7 +1498,7 @@ class VirtueMartModelProduct extends VmModel {
      */
     public function store (&$product, $isChild = FALSE) {
 
-		VmRequest::checkToken () or jexit ('Invalid Token');
+		JSession::checkToken () or jexit ('Invalid Token');
 
 		if ($product) {
 			$data = (array)$product;
@@ -1665,7 +1665,7 @@ class VirtueMartModelProduct extends VmModel {
 			$db = JFactory::getDbo();
 			// delete old unused Prices
 			$db->setQuery( 'DELETE FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_price_id` in ("'.implode('","', $oldPriceIdsSql ).'") ');
-			$db->query();
+			$db->execute();
 			$err = $db->getErrorMsg();
 			if(!empty($err)){
 				vmWarn('In store prodcut, deleting old price error',$err);
@@ -1719,7 +1719,7 @@ class VirtueMartModelProduct extends VmModel {
 
 	public function updateXrefAndChildTables ($data, $tableName, $preload = FALSE) {
 
-		VmRequest::checkToken () or jexit ('Invalid Token');
+		JSession::checkToken () or jexit ('Invalid Token');
 		//First we load the xref table, to get the old data
 		$product_table_Parent = $this->getTable ($tableName);
 		//We must go that way, because the load function of the vmtablexarry
@@ -1912,7 +1912,7 @@ class VirtueMartModelProduct extends VmModel {
 				//Delete media xref
 				$query = 'DELETE FROM `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` IN ('. $listInString .') ';
 				$this->_db->setQuery($query);
-				if(!$this->_db->query()){
+				if(!$this->_db->execute()){
 					vmError( $this->_db->getErrorMsg() );
 				}
 			}

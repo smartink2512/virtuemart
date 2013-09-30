@@ -240,7 +240,7 @@ class VirtueMartModelCustom extends VmModel {
 	 **/
 	public function saveChildCustomRelation($table,$datas) {
 
-		VmRequest::checkToken() or jexit( 'Invalid Token, in store customfields');
+		JSession::checkToken() or jexit( 'Invalid Token, in store customfields');
 		//Table whitelist
 		$tableWhiteList = array('product','category','manufacturer');
 		if(!in_array($table,$tableWhiteList)) return false;
@@ -250,7 +250,7 @@ class VirtueMartModelCustom extends VmModel {
 		foreach ($datas as $child_id =>$fields) {
 			$fields['virtuemart_'.$table.'_id']=$child_id;
 			$this->_db->setQuery( 'DELETE PC FROM `#__virtuemart_'.$table.'_customfields` as `PC`, `#__virtuemart_customs` as `C` WHERE `PC`.`virtuemart_custom_id` = `C`.`virtuemart_custom_id` AND field_type="C" and virtuemart_'.$table.'_id ='.$child_id );
-			if(!$this->_db->query()){
+			if(!$this->_db->execute()){
 				vmError('Error in deleting child relation '); //.$this->_db->getQuery()); Dont give hackers too much info
 			}
 

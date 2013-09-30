@@ -937,7 +937,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	public function storeProductCustomfields($table,$datas, $id) {
 
 		//vmdebug('storeProductCustomfields',$datas);
-		VmRequest::checkToken() or jexit( 'Invalid Token, in store customfields');
+		JSession::checkToken() or jexit( 'Invalid Token, in store customfields');
 		//Sanitize id
 		$id = (int)$id;
 
@@ -1006,7 +1006,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		if ( count($old_customfield_ids) ) {
 			// delete old unused Customfields
 			$this->_db->setQuery( 'DELETE FROM `#__virtuemart_'.$table.'_customfields` WHERE `virtuemart_customfield_id` in ("'.implode('","', $old_customfield_ids ).'") ');
-			$this->_db->query();
+			$this->_db->execute();
 			vmdebug('Deleted $old_customfield_ids',$old_customfield_ids);
 		}
 

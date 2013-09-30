@@ -73,7 +73,7 @@ class calculationHelper {
 
 		//We store in UTC and use here of course also UTC
 		$jnow = JFactory::getDate();
-		$this->_now = $jnow->toMySQL();
+		$this->_now = $jnow->toSQL();
 		$this->_nullDate = $this->_db->getNullDate();
 
 		//Attention, this is set to the mainvendor atm.
@@ -117,7 +117,7 @@ class calculationHelper {
 		} else {
 			//We store in UTC and use here of course also UTC
 			$jnow = JFactory::getDate();
-			self::$_instance->_now = $jnow->toMySQL();
+			self::$_instance->_now = $jnow->toSQL();
 		}
 		return self::$_instance;
 	}

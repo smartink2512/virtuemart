@@ -30,7 +30,7 @@ $task = JRequest::getCmd('task');
 if($task=='updateDatabase'){
 	$data = JRequest::get('get');
 	JRequest::setVar($data['token'], '1', 'post');
-	JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
+	JSession::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
 
 	//Update Tables
 	if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');

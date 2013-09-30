@@ -277,7 +277,7 @@ class VirtueMartModelVendor extends VmModel {
 		}
 		$virtuemart_order_id = (int)$virtuemart_order_id;
 		$q = "SELECT `virtuemart_user_id` FROM `#__virtuemart_orders` WHERE `virtuemart_order_id`='.$virtuemart_order_id'";
-//		$db->query( $q );
+//		$db->execute( $q );
 		$this->_db->setQuery ($q);
 
 //		if($db->next_record()){

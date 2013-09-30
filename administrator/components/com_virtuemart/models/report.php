@@ -407,6 +407,6 @@ class VirtuemartModelReport extends VmModel {
 		$q = 'UPDATE #__virtuemart_order_items SET `product_discountedPriceWithoutTax`=( (IF(product_final_price is NULL, 0.00,product_final_price)   - IF(product_tax is NULL, 0.00,product_tax)  )) WHERE `product_discountedPriceWithoutTax` IS NULL';
 		$this->_db = JFactory::getDBO();
 		$this->_db->setQuery($q);
-		$this->_db->query();
+		$this->_db->execute();
 	}
 }
