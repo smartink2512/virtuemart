@@ -20,6 +20,7 @@ defined('_JEXEC') or die('Restricted access');
  *  $vmConfig -> jQuery(); // for use of jQuery
  *  Then always use the defined paths below to ensure future stability
  */
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 define( 'JPATH_VM_SITE', JPATH_ROOT.DS.'components'.DS.'com_virtuemart' );
 defined('JPATH_VM_ADMINISTRATOR') or define('JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart');
 // define( 'JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
@@ -39,8 +40,6 @@ else {
 		defined ('JVM_VERSION') or define ('JVM_VERSION', 1);
 	}
 }
-
-defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 
 //This number is for obstruction, similar to the prefix jos_ of joomla it should be avoided
 //to use the standard 7, choose something else between 1 and 99, it is added to the ordernumber as counter
@@ -1186,8 +1185,16 @@ class vmJsApi{
 
 		$closeimage = JURI::root(TRUE) .'/components/com_virtuemart/assets/images/fancybox/fancy_close.png';
 
+		$uri = JURI::getInstance();
+
 		$jsVars = "//<![CDATA[ \n";
-		$jsVars .= "vmSiteurl = '". JURI::root( ) ."' ;\n" ;
+		if(VmConfig::get('useSSL',false)){
+			$jsVars .= "vmSiteurl = '". $uri->root( true ) ."/' ;\n" ;
+		} else {
+			$jsVars .= "vmSiteurl = '". $uri->root( ) ."' ;\n" ;
+		}
+
+
 		if (VmConfig::get ('vmlang_js', 1))  {
 			//$jsVars .= "vmLang = '" . substr (VMLANG, 0, 2) . "' ;\n";
 			$jsVars .= "vmLang = '&amp;lang=" . substr (VMLANG, 0, 2) . "' ;\n";

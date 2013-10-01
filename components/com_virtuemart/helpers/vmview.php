@@ -25,7 +25,7 @@ jimport( 'joomla.application.component.view');
 
 class VmView extends JView{
 
-	function linkIcon($link,$altText ='',$boutonName,$verifyConfigValue=false, $modal = true, $use_icon=true,$use_text=false){
+	function linkIcon($link,$altText ='',$boutonName,$verifyConfigValue=false, $modal = true, $use_icon=true,$use_text=false,$class = ''){
 		if ($verifyConfigValue) {
 			if ( !VmConfig::get($verifyConfigValue, 0) ) return '';
 		}
@@ -35,7 +35,7 @@ class VmView extends JView{
 		if ( $use_text ) $text .= '&nbsp;'. JText::_($altText);
 		if ( $text=='' )  $text .= '&nbsp;'. JText::_($altText);
 		if ($modal) return '<a class="modal" rel="{handler: \'iframe\', size: {x: 700, y: 550}}" title="'. JText::_($altText).'" href="'.JRoute::_($link, FALSE).'">'.$text.'</a>';
-		else 		return '<a title="'. JText::_($altText).'" href="'.JRoute::_($link, FALSE).'">'.$text.'</a>';
+		else 		return '<a '.$class.' title="'. JText::_($altText).'" href="'.JRoute::_($link, FALSE).'">'.$text.'</a>';
 	}
 
 	public function escape($var)
