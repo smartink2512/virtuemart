@@ -887,7 +887,14 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 	 */
 	function plgVmOnCheckAutomaticSelectedPayment (VirtueMartCart $cart, array $cart_prices = array(), &$paymentCounter) {
 
-		return false;
+		$virtuemart_pluginmethod_id = 0;
+		$nbMethod = $this->getSelectable ($cart, $virtuemart_pluginmethod_id, $cart_prices);
+
+		if ($nbMethod == NULL) {
+			return NULL;
+		} else {
+			return 0;
+		}
 	}
 
 	/**
