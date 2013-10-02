@@ -15,7 +15,7 @@
     <fieldset name="permissions_orders" label="COM_VIRTUEMART_ORDER_MOD" description="">
         <field name="orders_rules" type="vmrules" label="" class="inputbox" validate="rules" filter="rules" component="com_virtuemart" section="orders" />
     </fieldset>
-    <fieldset name="permissions_orders" label="COM_VIRTUEMART_STORE" description="">
+    <fieldset name="permissions_shop" label="COM_VIRTUEMART_STORE" description="">
         <field name="orders_rules" type="vmrules" label="" class="inputbox" validate="rules" filter="rules" component="com_virtuemart" section="shop" />
     </fieldset>
     <fieldset name="permissions_other" label="COM_VIRTUEMART_CONFIGURATION" description="">
