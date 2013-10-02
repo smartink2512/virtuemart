@@ -91,7 +91,7 @@ class VirtueMartModelCalc extends VmModel {
 
 			
 			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('plgVmGetPluginInternalDataCalc',array(&$this->_data));
 
   	}
@@ -157,7 +157,7 @@ class VirtueMartModelCalc extends VmModel {
 			$data->currencyName = $this->_db->loadResult();
 
 			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$error = $dispatcher->trigger('plgVmGetPluginInternalDataCalcList',array(&$data));
 		}
 
@@ -226,7 +226,7 @@ class VirtueMartModelCalc extends VmModel {
 
 		if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
 		JPluginHelper::importPlugin('vmcalculation');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$error = $dispatcher->trigger('plgVmStorePluginInternalDataCalc',array(&$data));
 
     	$errMsg = $this->_db->getErrorMsg();
@@ -330,7 +330,7 @@ class VirtueMartModelCalc extends VmModel {
 
 // 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmDeleteCalculationRow', array( $id));
 
 		}

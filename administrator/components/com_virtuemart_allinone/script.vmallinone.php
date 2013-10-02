@@ -359,7 +359,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				$pluginClassname = 'plg' . ucfirst ($group) . ucfirst ($element);
 
 				//Let's get the global dispatcher
-				$dispatcher = JDispatcher::getInstance ();
+				$dispatcher = JEventDispatcher::getInstance ();
 				$config = array('type' => $group, 'name' => $group, 'params' => '');
 				$plugin = new $pluginClassname($dispatcher, $config);
 				;

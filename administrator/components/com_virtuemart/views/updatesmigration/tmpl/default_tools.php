@@ -62,7 +62,7 @@ if(!VmConfig::get('dangeroustools', false)){
 	</td>*/ ?>
 
  	<td align="center" width="25%">
-		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=portMedia&token='.JSession::getFormToken() ); ?>
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=portMedia&'.JSession::getFormToken().'=1' ); ?>
 	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING_CONFIRM', JText::_('COM_VIRTUEMART_MEDIA_S')); ?>', '<?php echo $link; ?>');">
 			<span class="vmicon48 vm_shop_products_48"></span>
 			<br /><?php echo JText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'); ?>
@@ -117,7 +117,7 @@ if(!VmConfig::get('dangeroustools', false)){
 		</a></div>
 	</td>
 	   <td align="center">
-		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=refreshCompleteInstallAndSample&token='.JSession::getFormToken() ); ?>
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=refreshCompleteInstallAndSample&'.JSession::getFormToken() .'=1' ); ?>
 	    <div class="icon"><a onclick="javascript:confirmation('<?php echo addslashes( JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_SAMPLE_CONFIRM_JS') ); ?>', '<?php echo $link; ?>');">
 		<span class="vmicon48 vm_trash_48"></span>
 	    <br />

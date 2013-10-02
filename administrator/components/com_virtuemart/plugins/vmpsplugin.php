@@ -43,7 +43,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$black_list = array('spacer');
 		$data = array();
-		if (JVM_VERSION === 2) {
+		if (JVM_VERSION > 1) {
 			$filename = JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/' . $this->_name . '.xml';
 		} else {
 			$filename = JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '.xml';

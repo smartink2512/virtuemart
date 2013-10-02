@@ -16,7 +16,7 @@ if(  !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not
  *
  * http://virtuemart.net
  */
-
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 
 function virtuemartBuildRoute(&$query) {
 

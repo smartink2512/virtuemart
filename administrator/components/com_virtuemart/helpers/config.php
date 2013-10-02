@@ -26,6 +26,9 @@ defined('JPATH_VM_ADMINISTRATOR') or define('JPATH_VM_ADMINISTRATOR', JPATH_ROOT
 // define( 'JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
 define( 'JPATH_VM_PLUGINS', JPATH_VM_ADMINISTRATOR.DS.'plugins' );
 
+if(version_compare(JVERSION,'3.0.0','ge')) {
+	defined('JVM_VERSION') or define ('JVM_VERSION', 3);
+}
 if(version_compare(JVERSION,'1.7.0','ge')) {
 	defined('JPATH_VM_LIBRARIES') or define ('JPATH_VM_LIBRARIES', JPATH_PLATFORM);
 	defined('JVM_VERSION') or define ('JVM_VERSION', 2);
@@ -73,7 +76,7 @@ function vmInfo($publicdescr,$value=NULL){
 	$app = JFactory::getApplication();
 
 	$msg = '';
-	$type = 'info';
+	$type = 'notice';//'info';
 	if(VmConfig::$maxMessageCount<VmConfig::$maxMessage){
 		$lang = JFactory::getLanguage();
 		if($value!==NULL){
@@ -322,7 +325,8 @@ function vmRamPeak($notice,$value=NULL){
 
 function vmSetStartTime($name='current'){
 
-	VmConfig::setStartTime($name, microtime(TRUE));
+	VmConfig::$_starttime[$name] = microtime(TRUE);
+
 }
 
 function vmTime($descr,$name='current'){
@@ -422,7 +426,7 @@ class VmConfig {
 		//return self::$_debug = true;	//this is only needed, when you want to debug THIS file
 		if(self::$_debug===NULL){
 
-			$debug = VmConfig::get('debug_enable','none');
+			$debug = 'all'; VmConfig::get('debug_enable','none');
 
 			// 1 show debug only to admins
 			if($debug === 'admin' ){
@@ -609,8 +613,8 @@ class VmConfig {
 
 							if($value===FALSE){
 								$app ->enqueueMessage('Exception in loadConfig for unserialize '.$item[0]. ' '.$item[1]);
-								$uri = JFactory::getURI();
-								$configlink = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
+								//$uri = JFactory::getURI();
+								$configlink = JURI::root() . 'administrator/index.php?option=com_virtuemart&view=config';
 								$app ->enqueueMessage('To avoid this message, enter your virtuemart <a href="'.$configlink.'">config</a> and just save it one time');
 							} else {
 								$pair[$item[0]] = $value;
@@ -985,8 +989,14 @@ class VmConfig {
 
 }
 
+/**
+ * Class vmRequest
+ * Gets filtered request values.
+ * @author Max Milbers
+ */
 class vmRequest {
 
+	//static $filters = array( '' =>);
 	static function uword($field, $default, $custom=''){
 
 		$source = VmConfig::$vmFilter->getVar($field,$default);
@@ -1001,29 +1011,95 @@ class vmRequest {
  		}
  	}
 
-	public static function getVar($name, $default = null, $hash = 'default', $type = 'none', $mask = 0){
-		return Vmconfig::$vmFilter->getVar($name, $default, $hash, $type, $mask);
+	public static function getInt($name, $default = 0){
+		return VmRequest::get($name, $default, FILTER_SANITIZE_NUMBER_INT);
 	}
 
-	public static function getString($name, $default = '', $hash = 'default', $mask = 0){
-		// Cast to string, in case JREQUEST_ALLOWRAW was specified for mask
-		return (string) VmConfig::$vmFilter->getVar($name, $default, $hash, 'string', $mask);
+	public static function getFloat($name,$default=0.0){
+		return VmRequest::get($name,$default,FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_SCIENTIFIC|FILTER_FLAG_ALLOW_FRACTION);
 	}
 
-	public static function getCmd($name, $default = '', $hash = 'default'){
-		return VmConfig::$vmFilter->getVar($name, $default, $hash, 'cmd');
+	/**
+	 * - Strips all characters that has a numerical value <32.
+	 * - Strips all html.
+	 *
+	 * @param $name
+	 * @param null $default
+	 * @return mixed|null
+	 */
+	public static function getVar($name, $default = null){
+
+		return VmRequest::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW );
+		//return VmConfig::$vmFilter->getVar($name, $default, $hash, $type, $mask);
 	}
 
-	public static function getInt($name, $default = 0, $hash = 'default'){
-		return VmConfig::$vmFilter->getVar($name, $default, $hash, 'int');
+	/**
+	 * - Strips all characters that has a numerical value <32.
+	 * - encodes html
+	 *
+	 * @param $name
+	 * @param string $default
+	 * @return mixed|null
+	 */
+	public static function getString($name, $default = ''){
+		return VmRequest::get($name, $default, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_STRIP_LOW);
 	}
 
-	public static function get($hash = 'default', $mask = 0){
-		return VmConfig::$vmFilter->get($hash,$mask);
+	/**
+	 * Gets a filtered request value
+	 * - Strips all characters that has a numerical value <32 and >127.
+	 * - strips html
+	 * @author Max Milbers
+	 * @param $name
+	 * @param string $default
+	 * @return mixed|null
+	 */
+
+	public static function getCmd($name, $default = ''){
+		return VmRequest::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
 	}
 
-	public static function setVar($name, $value = null, $hash = 'method', $overwrite = true){
-		return VmConfig::$vmFilter->setVar($name, $value, $hash, $overwrite);
+	public static function get($name, $default = null, $filter = FILTER_UNSAFE_RAW, $flags = FILTER_FLAG_STRIP_LOW){
+		//vmSetStartTime();
+		if($name !== null){
+			if(!isset($_REQUEST[$name])) return $default;
+
+			if(strpos($name,'[]'!==FALSE)){
+
+				return filter_var_array($_REQUEST[$name], $filter, $flags | FILTER_FORCE_ARRAY);
+			} else {
+				return filter_var($_REQUEST[$name], $filter, $flags);
+			}
+
+		} else {
+			return $default;
+		}
+
+	}
+
+	/**
+	 * Gets the request and filters it directly. It uses the standard php function filter_var_array,
+	 * The standard filter allows all chars, also the special ones. But removes dangerous html tags.
+	 *
+	 * @author Max Milbers
+	 * @param array $filter
+	 * @return mixed cleaned $_REQUEST
+	 */
+	public static function getRequest( ){
+		return  filter_var_array($_REQUEST, FILTER_SANITIZE_STRING);
+	}
+
+	public static function setVar($name, $value = null){
+		if(isset($_REQUEST[$name])){
+			$tmp = $_REQUEST[$name];
+			$_REQUEST[$name] = $value;
+			return $tmp;
+		} else {
+			$_REQUEST[$name] = $value;
+			return null;
+		}
+
+
 	}
 }
 
@@ -1161,6 +1237,11 @@ class vmJsApi{
 		/*if (JFactory::getApplication ()->get ('jquery')) {
 			return FALSE;
 		}*/
+		if(JVM_VERSION>2){
+			JHtml::_('jquery.framework');
+			return true;
+		}
+
 		if($isSite===-1)$isSite = JFactory::getApplication()->isSite();
 
 		if (!VmConfig::get ('jquery', TRUE) and $isSite) {

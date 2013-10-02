@@ -339,7 +339,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				}
 				//vmdebug('displayProductCustomfieldBE $field',$field);
 				JPluginHelper::importPlugin ('vmcustom', $field->custom_element);
-				$dispatcher = JDispatcher::getInstance ();
+				$dispatcher = JEventDispatcher::getInstance ();
 				$retValue = '';
 				$dispatcher->trigger ('plgVmOnProductEdit', array($field, $product_id, &$row, &$retValue));
 
@@ -422,7 +422,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			if ($customfield->field_type == "E") {
 
 				JPluginHelper::importPlugin ('vmcustom');
-				$dispatcher = JDispatcher::getInstance ();
+				$dispatcher = JEventDispatcher::getInstance ();
 				$ret = $dispatcher->trigger ('plgVmOnDisplayProductFE', array(&$product, &$customfield));
 				//return; // $customfield->display;
 				continue;
@@ -687,7 +687,7 @@ class VirtueMartModelCustomfields extends VmModel {
 							if (!class_exists ('vmCustomPlugin'))
 								require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 							JPluginHelper::importPlugin ('vmcustom');
-							$dispatcher = JDispatcher::getInstance ();
+							$dispatcher = JEventDispatcher::getInstance ();
 							//vmdebug('displayProductCustomfieldSelected is PLUGIN use trigger '.$trigger,$customfield_id);
 							$dispatcher->trigger ($trigger, array(&$product, &$productCustom, &$html));
 
@@ -858,7 +858,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 					JPluginHelper::importPlugin('vmcustom');
-					$dispatcher = JDispatcher::getInstance();
+					$dispatcher = JEventDispatcher::getInstance();
 					$dispatcher->trigger('plgVmPrepareCartProduct',array(&$product, &$product->customfields[$k],$selected,&$modificatorSum));
 				} else {
 					if ($productCustom->customfield_price) {
@@ -888,7 +888,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		if ($type == 'E') {
 			JPluginHelper::importPlugin ('vmcustom');
-			$dispatcher = JDispatcher::getInstance ();
+			$dispatcher = JEventDispatcher::getInstance ();
 			$retValue = $dispatcher->trigger ('plgVmGetTablePluginParams', array('custom',$custom_element, $custom_jplugin_id, &$xParams, &$varsToPush));
 		}
 
@@ -905,7 +905,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$xParams = $table->_xParams;
 		if ($type == 'E') {
 			JPluginHelper::importPlugin ('vmcustom');
-			$dispatcher = JDispatcher::getInstance ();
+			$dispatcher = JEventDispatcher::getInstance ();
 			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustom', array(&$table));
 		}
 
@@ -1012,7 +1012,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 
 		JPluginHelper::importPlugin('vmcustom');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		if (isset($datas['plugin_param']) and is_array($datas['plugin_param'])) {
 			foreach ($datas['plugin_param'] as $key => $plugin_param ) {
 				$dispatcher->trigger('plgVmOnStoreProduct', array($datas, $plugin_param ));

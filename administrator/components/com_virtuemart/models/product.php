@@ -243,7 +243,7 @@ class VirtueMartModelProduct extends VmModel {
 			//reset generic filters ! Why? the plugin can do it, if it wishes it.
 			// 			if ($this->keyword ==='') $where=array();
 			JPluginHelper::importPlugin ('vmcustom');
-			$dispatcher = JDispatcher::getInstance ();
+			$dispatcher = JEventDispatcher::getInstance ();
 			$PluginJoinTables = array();
 			$ret = $dispatcher->trigger ('plgVmAddToSearch', array(&$where, &$PluginJoinTables, $this->searchplugin));
 			foreach ($ret as $r) {
@@ -1956,7 +1956,7 @@ class VirtueMartModelProduct extends VmModel {
 			// delete plugin on product delete
 			// $ok must be set to false if an error occurs
 			JPluginHelper::importPlugin ('vmcustom');
-			$dispatcher = JDispatcher::getInstance ();
+			$dispatcher = JEventDispatcher::getInstance ();
 			$dispatcher->trigger ('plgVmOnDeleteProduct', array($id, &$ok));
 		}
 

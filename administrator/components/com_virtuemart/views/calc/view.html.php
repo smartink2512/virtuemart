@@ -192,7 +192,7 @@ class VirtuemartViewCalc extends VmView {
 
 		if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
 		JPluginHelper::importPlugin('vmcalculation');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 
 		$answer = $dispatcher->trigger('plgVmAddMathOp', array(&$mathOps));
 

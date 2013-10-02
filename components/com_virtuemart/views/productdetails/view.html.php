@@ -40,7 +40,7 @@ class VirtueMartViewProductdetails extends VmView {
     function display($tpl = null) {
 
 	//TODO get plugins running
-//		$dispatcher	= JDispatcher::getInstance();
+//		$dispatcher	= JEventDispatcher::getInstance();
 //		$limitstart	= VmRequest::getVar('limitstart', 0, '', 'int');
 
 	$show_prices = VmConfig::get('show_prices', 1);
@@ -295,7 +295,7 @@ class VirtueMartViewProductdetails extends VmView {
 	    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 	JPluginHelper::importPlugin('vmshipment');
 	JPluginHelper::importPlugin('vmpayment');
-	$dispatcher = JDispatcher::getInstance();
+	$dispatcher = JEventDispatcher::getInstance();
 	$returnValues = $dispatcher->trigger('plgVmOnProductDisplayShipment', array($product, &$productDisplayShipments));
 	$returnValues = $dispatcher->trigger('plgVmOnProductDisplayPayment', array($product, &$productDisplayPayments));
 

@@ -5,7 +5,7 @@
  * a special type of 'cash on delivey':
  *
  * @author Valérie Isaksen
- * @version $Id: authorize.php 5122 2011-12-18 22:24:49Z alatak $
+ * @version $Id: authorise.php 5122 2011-12-18 22:24:49Z alatak $
  * @package VirtueMart
  * @subpackage payment
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.

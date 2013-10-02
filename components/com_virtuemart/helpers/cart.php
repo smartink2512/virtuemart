@@ -486,7 +486,7 @@ class VirtueMartCart {
 			// hook for plugin action "remove from cart"
 			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 			JPluginHelper::importPlugin('vmcustom');
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$addToCartReturnValues = $dispatcher->trigger('plgVmOnRemoveFromCart',array($this,$prod_id));
 			unset($this->cartProductsData[$prod_id]);
 
@@ -769,7 +769,7 @@ class VirtueMartCart {
 			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmshipment');
 			//Add a hook here for other shipment methods, checking the data of the choosed plugin
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckDataShipment', array(  $this));
 
 			foreach ($retValues as $retVal) {
@@ -791,7 +791,7 @@ class VirtueMartCart {
 				if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 				JPluginHelper::importPlugin('vmpayment');
 				//Add a hook here for other payment methods, checking the data of the choosed plugin
-				$dispatcher = JDispatcher::getInstance();
+				$dispatcher = JEventDispatcher::getInstance();
 				$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckDataPayment', array( $this));
 
 				foreach ($retValues as $retVal) {
@@ -891,7 +891,7 @@ class VirtueMartCart {
                 echo JText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
                 return;
             }
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 
 			JPluginHelper::importPlugin('vmshipment');
 			JPluginHelper::importPlugin('vmcustom');
@@ -1026,7 +1026,7 @@ class VirtueMartCart {
 		}
 
 		$shipCounter=0;
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipment', array(  $this,$cart_prices, &$shipCounter));
 
 		foreach ($returnValues as $returnValue) {
@@ -1063,7 +1063,7 @@ class VirtueMartCart {
 
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$paymentCounter=0;
 			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedPayment', array( $this, $cart_prices, &$paymentCounter));
 			foreach ($returnValues as $returnValue) {
@@ -1102,7 +1102,7 @@ class VirtueMartCart {
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
 		JPluginHelper::importPlugin('vmshipment');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnCheckShipmentIsValid', array( $this));
 		foreach ($returnValues as $returnValue) {
 			$shipmentValid += $returnValue;
@@ -1179,7 +1179,7 @@ class VirtueMartCart {
 							if($field->field_type == 'E'){
 								if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 								JPluginHelper::importPlugin('vmcustom');
-								$dispatcher = JDispatcher::getInstance();
+								$dispatcher = JEventDispatcher::getInstance();
 								// on returning false the product have not to be added to cart
 								if ( $dispatcher->trigger('plgVmProductInCart',array(&$product,&$productdata)) === false );
 									//continue;							}
@@ -1212,7 +1212,7 @@ class VirtueMartCart {
 		//vmdebug('$this->cart prepareCartData ',$this->cartPrices);
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$this->paymentCurrency));
 
 		$this->_productAdded = false;

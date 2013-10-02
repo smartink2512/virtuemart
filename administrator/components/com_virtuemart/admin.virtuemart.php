@@ -56,7 +56,7 @@ if($_controller = VmRequest::getCmd('view', VmRequest::getCmd('controller', 'vir
 	} else {
 		// try plugins
 		JPluginHelper::importPlugin('vmextended');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$results = $dispatcher->trigger('onVmAdminController', array($_controller));
 		if (empty($results)) {
 			$app = JFactory::getApplication();

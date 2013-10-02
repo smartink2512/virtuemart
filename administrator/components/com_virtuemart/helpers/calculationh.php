@@ -958,7 +958,7 @@ class calculationHelper {
 	protected function couponHandler($_code) {
 
 		JPluginHelper::importPlugin('vmcoupon');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmCouponHandler', array($_code,&$this->_cart->cartData, &$this->_cart->cartPrices));
 		if(!empty($returnValues)){
 			foreach ($returnValues as $returnValue) {
@@ -1203,7 +1203,7 @@ class calculationHelper {
 		//Test rules in plugins
 		if(!empty($testedRules)){
 			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('plgVmInGatherEffectRulesProduct',array(&$this,&$testedRules));
 		}
 
@@ -1278,7 +1278,7 @@ class calculationHelper {
 		//Test rules in plugins
 		if(!empty($testedRules)){
 			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 			$dispatcher->trigger('plgVmInGatherEffectRulesBill', array(&$this, &$testedRules));
 		}
 
@@ -1309,7 +1309,7 @@ class calculationHelper {
 		// Handling shipment plugins
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmonSelectedCalculatePriceShipment',array(  $cart, &$this->_cart->cartPrices, &$this->_cart->cartData['shipmentName']  ));
 
 		/*
@@ -1354,7 +1354,7 @@ class calculationHelper {
 
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmonSelectedCalculatePricePayment',array( $cart, &$this->_cart->cartPrices, &$this->_cart->cartData['paymentName']  ));
 
 		/*
@@ -1486,7 +1486,7 @@ class calculationHelper {
 		} else {
 
 			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 
 			$calculated = $dispatcher->trigger('plgVmInterpreteMathOp', array($this, $rule, $price,$this->_revert));
 			//vmdebug('result of plgVmInterpreteMathOp',$calculated);

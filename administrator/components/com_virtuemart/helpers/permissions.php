@@ -152,7 +152,7 @@ class Permissions extends JObject{
 
 		if (VmConfig::get('vm_price_access_level') != '') {
 			// Is the user allowed to see the prices?
-			$this->_show_prices  = $user->authorize( 'virtuemart', 'prices' );
+			$this->_show_prices  = $user->authorise( 'virtuemart', 'prices' );
 		}
 		else {
 			$this->_show_prices = 1;
@@ -167,7 +167,7 @@ class Permissions extends JObject{
 
 			//We must prevent that Administrators or Managers are 'just' shoppers
 			//TODO rewrite it working correctly with jooomla ACL
-			if(JVM_VERSION === 2 ){
+			if(JVM_VERSION > 1 ){
 				if($user->authorise('core.admin')){
 					$perm  = 'admin';
 				}
@@ -179,7 +179,7 @@ class Permissions extends JObject{
 
 			if(empty($perm)){
 
-				if(JVM_VERSION === 2 ){
+				if(JVM_VERSION > 1 ){
 					if($user->groups){
 						if($user->authorise('core.admin')){
 							$perm  = 'admin';

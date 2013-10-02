@@ -66,7 +66,7 @@ JHTML::_ ( 'behavior.modal' );
 
     $html = '';
     JPluginHelper::importPlugin('vmpayment');
-    $dispatcher = JDispatcher::getInstance();
+    $dispatcher = JEventDispatcher::getInstance();
     $returnValues = $dispatcher->trigger('plgVmDisplayLogin', array($this, &$html, $this->from_cart));
 
     if (is_array($html)) {

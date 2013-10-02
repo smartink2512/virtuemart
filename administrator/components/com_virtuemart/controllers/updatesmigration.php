@@ -257,9 +257,11 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 	function refreshCompleteInstall($sample=false){
 
-		$data = VmRequest::get('get');
-		VmRequest::setVar($data['token'], '1', 'post');
-		JSession::checkToken() or jexit('Invalid Token, in ' . VmRequest::getCmd('task'));
+		//$data = VmRequest::getRequest();
+		//$app = JFactory::getApplication();
+		//$app->input->set($data['token'],true);
+		//VmRequest::setVar($data['token'], '1');
+		JSession::checkToken('get') or jexit('Invalid Token, in ' . VmRequest::getCmd('task'));
 		$this->checkPermissionForTools();
 
 		if(VmConfig::get('dangeroustools', true)){

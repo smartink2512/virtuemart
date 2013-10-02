@@ -65,7 +65,7 @@ class VmElementVmCategories extends VmElements {
 }
 
 
-if (JVM_VERSION === 2 ) {
+if (JVM_VERSION > 1 ) {
 
     class JFormFieldVmCategories extends VmElementVmCategories {
 

@@ -42,7 +42,78 @@ class VmModel extends JObject {
 	var $_noLimit = false;
 
 	public function __construct($cidName='cid', $config=array()){
-		parent::__construct($config);
+		// Guess the option from the class name (Option)Model(View).
+		if (empty($this->option))
+		{
+			$r = null;
+
+			if (!preg_match('/(.*)Model/i', get_class($this), $r))
+			{
+				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_MODEL_GET_NAME'), 500);
+			}
+
+			$this->option = 'com_' . strtolower($r[1]);
+		}
+
+		// Set the view name
+		if (empty($this->name))
+		{
+			if (array_key_exists('name', $config))
+			{
+				$this->name = $config['name'];
+			}
+			else
+			{
+				$this->name = $this->getName();
+			}
+		}
+
+		// Set the model state
+		if (array_key_exists('state', $config))
+		{
+			$this->state = $config['state'];
+		}
+		else
+		{
+			$this->state = new JObject;
+		}
+
+		// Set the model dbo
+		if (array_key_exists('dbo', $config))
+		{
+			$this->_db = $config['dbo'];
+		}
+		else
+		{
+			$this->_db = JFactory::getDbo();
+		}
+
+		// Set the default view search path
+		if (array_key_exists('table_path', $config))
+		{
+			$this->addTablePath($config['table_path']);
+		}
+		elseif (defined('JPATH_COMPONENT_ADMINISTRATOR'))
+		{
+			$this->addTablePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
+			$this->addTablePath(JPATH_COMPONENT_ADMINISTRATOR . '/table');
+		}
+
+		// Set the internal state marker - used to ignore setting state from the request
+		if (!empty($config['ignore_request']))
+		{
+			$this->__state_set = true;
+		}
+
+		// Set the clean cache event
+		if (isset($config['event_clean_cache']))
+		{
+			$this->event_clean_cache = $config['event_clean_cache'];
+		}
+		elseif (empty($this->event_clean_cache))
+		{
+			$this->event_clean_cache = 'onContentCleanCache';
+		}
 
 		$this->_cidName = $cidName;
 
@@ -67,6 +138,46 @@ class VmModel extends JObject {
 	static private $_vmmodels = array();
 
 	/**
+	 * Method to get the model name
+	 *
+	 * The model name. By default parsed using the classname or it can be set
+	 * by passing a $config['name'] in the class constructor
+	 *
+	 * @return  string  The name of the model
+	 *
+	 * @since   12.2
+	 * @throws  Exception
+	 */
+	public function getName()
+	{
+		if (empty($this->name))
+		{
+			$r = null;
+			if (!preg_match('/Model(.*)/i', get_class($this), $r))
+			{
+				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_MODEL_GET_NAME'), 500);
+			}
+			$this->name = strtolower($r[1]);
+		}
+
+		return $this->name;
+	}
+
+	/**
+	 * Adds to the stack of model table paths in LIFO order.
+	 *
+	 * @param   mixed  $path  The directory as a string or directories as an array to add.
+	 *
+	 * @return  void
+	 *
+	 * @since   12.2
+	 */
+	public static function addTablePath($path)
+	{
+		JTable::addIncludePath($path);
+	}
+
+	/**
 	 * Create the filename for a resource
 	 *
 	 * @param   string  $type   The resource type to create the filename for.
@@ -88,6 +199,21 @@ class VmModel extends JObject {
 
 		}
 		return $filename;
+	}
+
+	/**
+	 * Method to set model state variables
+	 *
+	 * @param   string  $property  The name of the property.
+	 * @param   mixed   $value     The value of the property to set or null.
+	 *
+	 * @return  mixed  The previous value of the property or null if not set.
+	 *
+	 * @since   12.2
+	 */
+	public function setState($property, $value = null)
+	{
+		return $this->state->set($property, $value);
 	}
 
 	/**
@@ -858,7 +984,8 @@ class VmPagination extends JPagination {
 
 		// Initialize variables
 		$limits = array ();
-		$selected = $this->_viewall ? 0 : $this->limit;
+		//$selected = $this->_viewall ? 0 : $this->limit;
+		$selected = $this->limit;
 
 		// Build the select list
 		if ($app->isAdmin()) {

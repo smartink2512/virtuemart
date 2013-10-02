@@ -364,9 +364,9 @@ class VirtuemartViewUser extends VmView {
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 	$comUserOption = shopfunctionsF::getComUserOption();
 
-	$this->_lists['canBlock'] = ($this->_currentUser->authorize($comUserOption, 'block user')
+	$this->_lists['canBlock'] = ($this->_currentUser->authorise($comUserOption, 'block user')
 		&& ($this->_model->getId() != $this->_cuid)); // Can't block myself TODO I broke that, please retest if it is working again
-	$this->_lists['canSetMailopt'] = $this->_currentUser->authorize('workflow', 'email_events');
+	$this->_lists['canSetMailopt'] = $this->_currentUser->authorise('workflow', 'email_events');
 	$this->_lists['block'] = JHTML::_('select.booleanlist', 'block', 'class="inputbox"', $this->_userDetails->JUser->get('block'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 	$this->_lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 'class="inputbox"', $this->_userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 

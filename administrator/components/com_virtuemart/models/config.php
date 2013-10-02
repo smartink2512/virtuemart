@@ -52,7 +52,7 @@ class VirtueMartModelConfig extends VmModel {
 		//This method does not work, we get the Template of the backend
 		//$app = JFactory::getApplication('site');
 		//$tplpath = $app->getTemplate();vmdebug('template',$tplpath);
-		if (JVM_VERSION === 2) {
+		if (JVM_VERSION > 1) {
 			$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id` ="0" AND `home`="1" ';
 		} else {
 			$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id` ="0" ';
@@ -291,7 +291,6 @@ class VirtueMartModelConfig extends VmModel {
 		//ATM we want to ensure that only one config is used
 
 		$config = VmConfig::loadConfig(TRUE);
-
 
 		$config->setParams($data,$replace);
 		$confData = array();

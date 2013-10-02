@@ -178,7 +178,7 @@ class CurrencyDisplay {
 
 		if(count($this->_priceConfig)>0)return true;
 
-		if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+		//if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 
 		$user = JFactory::getUser();
 

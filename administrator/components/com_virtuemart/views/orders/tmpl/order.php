@@ -229,7 +229,7 @@ $document->addScriptDeclaration ( "
 
 			<?php
 				// Load additional plugins
-				$_dispatcher = JDispatcher::getInstance();
+				$_dispatcher = JEventDispatcher::getInstance();
 				$_returnValues1 = $_dispatcher->trigger('plgVmOnUpdateOrderBEPayment',array($this->orderID));
 				$_returnValues2 = $_dispatcher->trigger('plgVmOnUpdateOrderBEShipment',array(  $this->orderID));
 				$_returnValues = array_merge($_returnValues1, $_returnValues2);
@@ -441,7 +441,7 @@ $document->addScriptDeclaration ( "
 								$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'BE');
 							echo '<div>'.$product_attribute.'</div>';
 						}
-						$_dispatcher = JDispatcher::getInstance();
+						$_dispatcher = JEventDispatcher::getInstance();
 						$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderLineBEShipment',array(  $this->orderID,$item->virtuemart_order_item_id));
 						$_plg = '';
 						foreach ($_returnValues as $_returnValue) {
@@ -738,7 +738,7 @@ $document->addScriptDeclaration ( "
 	<tr>
 		<td valign="top" width="50%"><?php
 		JPluginHelper::importPlugin('vmshipment');
-		$_dispatcher = JDispatcher::getInstance();
+		$_dispatcher = JEventDispatcher::getInstance();
 		$returnValues = $_dispatcher->trigger('plgVmOnShowOrderBEShipment',array(  $this->orderID,$this->orderbt->virtuemart_shipmentmethod_id, $this->orderdetails));
 
 		foreach ($returnValues as $returnValue) {
@@ -750,7 +750,7 @@ $document->addScriptDeclaration ( "
 		</td>
 		<td valign="top"><?php
 		JPluginHelper::importPlugin('vmpayment');
-		$_dispatcher = JDispatcher::getInstance();
+		$_dispatcher = JEventDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderBEPayment',array( $this->orderID,$this->orderbt->virtuemart_paymentmethod_id, $this->orderdetails));
 
 		foreach ($_returnValues as $_returnValue) {

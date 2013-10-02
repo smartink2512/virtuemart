@@ -19,7 +19,7 @@ defined('_JEXEC') or die('Restricted access');
 if (!class_exists('vmPSPlugin'))
     require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 if (!class_exists('plgVmpaymentMoneybookers')) {
-	if (JVM_VERSION === 2) {
+	if (JVM_VERSION > 1) {
     	require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'moneybookers' . DS . 'moneybookers.php');
 	} else {
     	require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS  . 'moneybookers.php');

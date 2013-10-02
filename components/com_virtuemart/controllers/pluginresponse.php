@@ -30,7 +30,7 @@ jimport('joomla.application.component.controller');
  * @author Valérie Isaksen
  *
  */
-class VirtueMartControllerPluginresponse extends JController {
+class VirtueMartControllerPluginresponse extends JControllerLegacy {
 
     /**
      * Construct the cart
@@ -67,7 +67,7 @@ class VirtueMartControllerPluginresponse extends JController {
 	    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php'); JPluginHelper::importPlugin('vmpayment');
 
 	$return_context = "";
-	$dispatcher = JDispatcher::getInstance();
+	$dispatcher = JEventDispatcher::getInstance();
 	$html = "";
 	$paymentResponse = Jtext::_('COM_VIRTUEMART_CART_THANKYOU');
 	$returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array( 'html' => &$html,&$paymentResponse));
@@ -93,7 +93,7 @@ class VirtueMartControllerPluginresponse extends JController {
 	    JPluginHelper::importPlugin('vmshipment');
 
 	    $return_context = "";
-	    $dispatcher = JDispatcher::getInstance();
+	    $dispatcher = JEventDispatcher::getInstance();
 
 	    $html = "";
 	    $shipmentResponse = Jtext::_('COM_VIRTUEMART_CART_THANKYOU');
@@ -131,7 +131,7 @@ class VirtueMartControllerPluginresponse extends JController {
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 
 	JPluginHelper::importPlugin('vmpayment');
-	$dispatcher = JDispatcher::getInstance();
+	$dispatcher = JEventDispatcher::getInstance();
 	$dispatcher->trigger('plgVmOnUserPaymentCancel', array());
 
 	// return to cart view
@@ -162,7 +162,7 @@ class VirtueMartControllerPluginresponse extends JController {
 
 	JPluginHelper::importPlugin('vmpayment');
 
-	$dispatcher = JDispatcher::getInstance();
+	$dispatcher = JEventDispatcher::getInstance();
 	$returnValues = $dispatcher->trigger('plgVmOnPaymentNotification', array());
 
     }

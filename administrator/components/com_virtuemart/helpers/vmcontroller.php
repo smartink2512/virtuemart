@@ -69,7 +69,7 @@ class VmController extends JControllerLegacy{
 	{
 		$document	= JFactory::getDocument();
 		$viewType	= $document->getType();
-		if(JVM_VERSION==2){
+		if(JVM_VERSION > 1){
 			$viewName	= VmRequest::getCmd('view', $this->default_view);
 			$viewLayout	= VmRequest::getCmd('layout', 'default');
 

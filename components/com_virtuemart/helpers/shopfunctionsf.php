@@ -639,13 +639,13 @@ class shopFunctionsF {
      */
     static function triggerContentPlugin(  $article, $context, $field) {
         // add content plugin //
-        $dispatcher = & JDispatcher::getInstance ();
+        $dispatcher = & JEventDispatcher::getInstance ();
         JPluginHelper::importPlugin ('content');
         $article->text = $article->$field;
         jimport ('joomla.html.parameter');
         $params = new JParameter('');
 
-        if (JVM_VERSION === 2) {
+        if (JVM_VERSION > 1) {
             if (!isset($article->event)) {
                 $article->event = new stdClass();
             }

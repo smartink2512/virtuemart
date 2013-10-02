@@ -20,7 +20,7 @@ defined('_JEXEC') or die();
  */
 // if(!class_exists('JFakeElementBase')) {
 jimport('joomla.form.formfield');
-if (JVM_VERSION === 2) {
+if (JVM_VERSION > 1) {
 
     class VmElements extends JFormField {
 

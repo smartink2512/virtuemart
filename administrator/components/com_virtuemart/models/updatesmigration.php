@@ -324,7 +324,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
     function restoreSystemDefaults() {
 
 		JPluginHelper::importPlugin('vmextended');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$dispatcher->trigger('onVmSqlRemove', $this);
 
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_essential_data.sql';
@@ -348,7 +348,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 
 
 		JPluginHelper::importPlugin('vmextended');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$dispatcher->trigger('onVmSqlRestore', $this);
     }
 
@@ -370,7 +370,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		$updater->createLanguageTables();
 
 		JPluginHelper::importPlugin('vmextended');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$dispatcher->trigger('onVmSqlRestore', $this);
     }
 
@@ -397,14 +397,15 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 
 		// Create an array of queries from the sql file
 		jimport('joomla.installer.helper');
-		$queries = JInstallerHelper::splitSql(file_get_contents($sqlfile));
+		$db = JFactory::getDBO();
+		$queries = $db->splitSql(file_get_contents($sqlfile));
 
 		if (count($queries) == 0) {
 		    vmError('SQL file has no queries!');
 		    return false;
 		}
 		$ok = true;
-		$db = JFactory::getDBO();
+
 		// Process each query in the $queries array (split out of sql file).
 		foreach ($queries as $query) {
 		    $query = trim($query);
@@ -432,9 +433,9 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		$db = JFactory::getDBO();
 		$config = JFactory::getConfig();
 
-		$prefix = $config->getValue('config.dbprefix').'virtuemart_%';
+		$prefix = $config->get('dbprefix').'virtuemart_%';
 		$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
-		if (!$tables = $db->loadResultArray()) {
+		if (!$tables = $db->loadColumn()) {
 		    vmError ($db->getErrorMsg());
 		    return false;
 		}
@@ -450,7 +451,6 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		    	$app->enqueueMessage('Error drop virtuemart table ' . $table);
 		    }
 		}
-
 
 		if(!empty($droppedTables)){
 			$app->enqueueMessage('Dropped virtuemart table ' . implode(', ',$droppedTables));
@@ -472,7 +472,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
      */
     function removeAllVMData() {
 		JPluginHelper::importPlugin('vmextended');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$dispatcher->trigger('onVmSqlRemove', $this);
 
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_data.sql';

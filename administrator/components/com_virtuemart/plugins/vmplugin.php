@@ -587,7 +587,7 @@ abstract class vmPlugin extends JPlugin {
 	private function _getLayoutPath ($pluginName, $group, $layout = 'default') {
 		$app = JFactory::getApplication ();
 		// get the template and default paths for the layout
-		if (JVM_VERSION === 2) {
+		if (JVM_VERSION > 1) {
 			$templatePath = JPATH_SITE . DS . 'templates' . DS . $app->getTemplate () . DS . 'html' . DS . $group . DS . $pluginName . DS . $layout . '.php';
 			$defaultPath = JPATH_SITE . DS . 'plugins' . DS . $group . DS . $pluginName . DS . $pluginName . DS . 'tmpl' . DS . $layout . '.php';
 		}

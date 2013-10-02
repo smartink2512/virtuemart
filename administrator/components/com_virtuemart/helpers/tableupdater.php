@@ -51,7 +51,7 @@ class GenericTableUpdater extends VmModel{
 		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) * 0.85;
 
 		$config = JFactory::getConfig();
-		$this->_prefix = $config->get('config.dbprefix');
+		$this->_prefix = $config->get('dbprefix');
 
 		$this->reCreaPri = VmConfig::get('reCreaPri',0);
 		$this->reCreaKey = VmConfig::get('reCreaKey',1);
@@ -291,7 +291,7 @@ class GenericTableUpdater extends VmModel{
 // 		vmdebug('updateMyVmTables $tables',$tables); return false;
 		// 	vmdebug('Parsed tables',$tables); //return;
 		$this->_db->setQuery('SHOW TABLES LIKE "%'.$like.'%"');
-		if (!$existingtables = $this->_db->loadResultArray()) {
+		if (!$existingtables = $this->_db->loadColumn()) {
 			vmError('updateMyVmTables '.$this->_db->getErrorMsg());
 			return false;
 		}
@@ -363,7 +363,7 @@ class GenericTableUpdater extends VmModel{
 			';
 		}
 
-		foreach($table[1] as $name => $value){
+		foreach($table[1] as $value){
 				$q .= $value.',
 						';
 		}
@@ -379,7 +379,7 @@ class GenericTableUpdater extends VmModel{
 		if(!$this->_db->execute()){
 			vmError('createTable ERROR :'.$this->_db->getErrorMsg() );
 		} else {
-			vmInfo('created table '.$tablename);
+			vmInfo('created table '.$tablename. ' '.$q);
 		}
 // 		$this->_app->enqueueMessage($q);
 	}
@@ -408,7 +408,7 @@ class GenericTableUpdater extends VmModel{
 			return false;
 		}
 
-		$demandFieldNames = array();
+		$demandedFieldNames = array();
 		foreach($keys as $i=>$line){
 			$demandedFieldNames[] = $i;
 		}
@@ -419,7 +419,7 @@ class GenericTableUpdater extends VmModel{
 		if(!$eKeys = $this->_db->loadObjectList() ){
 			$this->_app->enqueueMessage('alterKey show index:'.$this->_db->getErrorMsg() );
 		} else {
-			$eKeyNames= $this->_db->loadResultArray(2);
+			$eKeyNames= $this->_db->loadColumn(2);
 		}
 
 // 				vmdebug('my $eKeys',$eKeys);
@@ -432,7 +432,7 @@ class GenericTableUpdater extends VmModel{
 
 			//doubled keys are listed twice, but gets both deleted with one command, so we must check if the key is still there
 			$this->_db->setQuery("SHOW INDEXES  FROM `".$tablename."` "); //SHOW {INDEX | INDEXES | KEYS}
-			$eKeyNamesNOW= $this->_db->loadResultArray(2);
+			$eKeyNamesNOW= $this->_db->loadColumn(2);
 
 			$oldcolum = $this->reCreateKeyByTableAttributes($eKeys[$i]);
 
@@ -544,7 +544,7 @@ class GenericTableUpdater extends VmModel{
 		$query = 'SHOW FULL COLUMNS  FROM `'.$tablename.'` ';
 		$this->_db->setQuery($query);
 		$fullColumns = $this->_db->loadObjectList();
-		$columns = $this->_db->loadResultArray(0);
+		$columns = $this->_db->loadColumn(0);
 
 		//Attention user_infos is not in here, because it an contain customised fields. #__virtuemart_order_userinfos #__virtuemart_userinfos
 		//This is currently not working as intended, because the config is not deleted before, it is better to create an extra command for this, when we need it later

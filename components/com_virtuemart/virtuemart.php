@@ -83,7 +83,7 @@ if (file_exists($basePath.DS.'controllers'.DS.$_controller.'.php')) {
 else {
 	// try plugins
 	JPluginHelper::importPlugin('vmextended');
-	$dispatcher = JDispatcher::getInstance();
+	$dispatcher = JEventDispatcher::getInstance();
 	$dispatcher->trigger($trigger, array($_controller));
 }
 
@@ -93,7 +93,7 @@ if (class_exists($_class)) {
 
 	// try plugins
 	JPluginHelper::importPlugin('vmuserfield');
-	$dispatcher = JDispatcher::getInstance();
+	$dispatcher = JEventDispatcher::getInstance();
 	$dispatcher->trigger('plgVmOnMainController', array($_controller));
 
     /* Perform the Request task */

@@ -31,7 +31,7 @@ jimport('joomla.application.component.controller');
  * @author RolandD
  * @author Max Milbers
  */
-class VirtueMartControllerCart extends JController {
+class VirtueMartControllerCart extends JControllerLegacy {
 
 	/**
 	 * Construct the cart
@@ -57,7 +57,7 @@ class VirtueMartControllerCart extends JController {
 	/**
 	 * Override of display
 	 *
-	 * @return  JController  A JController object to support chaining.
+	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
 	 *
 	 * @since   11.1
 	 */
@@ -245,7 +245,7 @@ class VirtueMartControllerCart extends JController {
 			JPluginHelper::importPlugin('vmshipment');
 			$cart->setShipment($virtuemart_shipmentmethod_id);
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
-			$_dispatcher = JDispatcher::getInstance();
+			$_dispatcher = JEventDispatcher::getInstance();
 			$_retValues = $_dispatcher->trigger('plgVmOnSelectCheckShipment', array(   &$cart));
 			$dataValid = true;
 			foreach ($_retValues as $_retVal) {
@@ -305,7 +305,7 @@ class VirtueMartControllerCart extends JController {
 
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$msg = '';
-			$_dispatcher = JDispatcher::getInstance();
+			$_dispatcher = JEventDispatcher::getInstance();
 			$_retValues = $_dispatcher->trigger('plgVmOnSelectCheckPayment', array( $cart, &$msg));
 			$dataValid = true;
 			foreach ($_retValues as $_retVal) {

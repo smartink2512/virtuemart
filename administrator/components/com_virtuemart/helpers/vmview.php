@@ -114,10 +114,10 @@ class VmView extends JViewLegacy {
 			JToolBarHelper::unpublishList();
 		}
 		if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit')) {
-			JToolBarHelper::editListX();
+			JToolBarHelper::editList();
 		}
 		if ($this->canDo->get('core.admin') || $showNew && $this->canDo->get('vm.'.$view.'.create')) {
-			JToolBarHelper::addNewX();
+			JToolBarHelper::addNew();
 		}
 		if ($this->canDo->get('core.admin') || $showDelete && $this->canDo->get('vm.'.$view.'.delete')) {
 			JToolBarHelper::deleteList();

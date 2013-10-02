@@ -16,7 +16,7 @@ defined ('JPATH_BASE') or die();
 /**
  * Renders a label element
  */
-if (JVM_VERSION === 2) {
+if (JVM_VERSION > 1) {
 	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
 	if (!class_exists ('KlarnaHandler')) {
 		require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');

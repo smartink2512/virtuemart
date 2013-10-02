@@ -175,7 +175,7 @@ class VirtueMartModelUser extends VmModel {
 
 		$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"';
 		$this->_db->setQuery($q);
-		$userInfo_ids = $this->_db->loadResultArray(0);
+		$userInfo_ids = $this->_db->loadColumn(0);
 		// 		vmdebug('my query',$this->_db->getQuery());
 		// 		vmdebug('my $_ui',$userInfo_ids,$this->_id);
 		$this->_data->userInfo = array ();
@@ -246,7 +246,7 @@ class VirtueMartModelUser extends VmModel {
 	 */
 
 	function get_object_id( $var_1 = null, $var_2 = null, $var_3 = null ) {
-		if ( JVM_VERSION === 2) {
+		if ( JVM_VERSION > 1) {
 			$return		=	$var_2;
 		} else {
 			$return		=	$this->_acl->get_object_id( $var_1, $var_2, $var_3 );
@@ -299,7 +299,7 @@ class VirtueMartModelUser extends VmModel {
 		foreach ( $selected as $k => $v ) {
 			if ( ! is_numeric( $v ) ) {
 				if ( ! $ps ) {
-					if ( JVM_VERSION === 2 ) {
+					if ( JVM_VERSION > 1 ) {
 						$ps				=	array( 'Root' => 0 , 'Users' => 0 , 'Public' =>  1, 'Registered' =>  2, 'Author' =>  3, 'Editor' =>  4, 'Publisher' =>  5, 'Backend' => 0 , 'Manager' =>  6, 'Administrator' =>  7, 'Superadministrator' =>  8 );
 					} else {
 						$ps				=	array( 'Root' => 17, 'Users' => 28, 'Public' => 29, 'Registered' => 18, 'Author' => 19, 'Editor' => 20, 'Publisher' => 21, 'Backend' => 30, 'Manager' => 23, 'Administrator' => 24, 'Superadministrator' => 25 );
@@ -329,7 +329,7 @@ class VirtueMartModelUser extends VmModel {
 			$var_4						=	true;
 		}
 
-		if ( JVM_VERSION === 2 ) {
+		if ( JVM_VERSION > 1 ) {
 			$query						=	'SELECT a.' . $_CB_database->NameQuote( 'id' ) . ' AS value'
 			.	', a.' . $_CB_database->NameQuote( 'title' ) . ' AS text'
 			.	', COUNT( DISTINCT b.' . $_CB_database->NameQuote( 'id' ) . ' ) AS level'
@@ -374,7 +374,7 @@ class VirtueMartModelUser extends VmModel {
 	function getGroupList()
 	{
 
-		if(JVM_VERSION === 2) {
+		if(JVM_VERSION > 1) {
 
 			//hm CB thing also not help
 			// 			$_grpList = $this->get_groups_below_me();
@@ -400,7 +400,7 @@ class VirtueMartModelUser extends VmModel {
 			// 			$authGroups = $user->getAuthorisedGroups();
 			// 			vmdebug('getGroupList j17',$authGroups);
 
-			$db		= $this->getDbo();
+			$db		= JFactory::getDbo();
 			$where = implode($authGroups,'" OR `id` = "').'"';
 			$q = 'SELECT `id` as value,`title` as text FROM #__usergroups WHERE `id` = "'.$where;
 
@@ -483,7 +483,7 @@ class VirtueMartModelUser extends VmModel {
 		$newId = 0;
 
 		if($checkToken){
-			JSession::checkToken() or jexit( 'Invalid Token, while trying to save user' );
+			JSession::checkToken('get') or jexit( 'Invalid Token, while trying to save user' );
 			$mainframe = JFactory::getApplication() ;
 		}
 
@@ -506,7 +506,7 @@ class VirtueMartModelUser extends VmModel {
 
 		// Preformat and control user datas by plugin
 		JPluginHelper::importPlugin('vmuserfield');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 
 		$valid = true ;
 		$dispatcher->trigger('plgVmOnBeforeUserfieldDataSave',array(&$valid,$this->_id,&$data,$user ));
@@ -758,7 +758,7 @@ class VirtueMartModelUser extends VmModel {
 
 		if($trigger){
 			JPluginHelper::importPlugin('vmshopper');
-			$dispatcher = JDispatcher::getInstance();
+			$dispatcher = JEventDispatcher::getInstance();
 
 			$plg_datas = $dispatcher->trigger('plgVmOnUserStore',array(&$data));
 			foreach($plg_datas as $plg_data){
@@ -1254,7 +1254,7 @@ class VirtueMartModelUser extends VmModel {
 
 		if ($doUserActivation) {
 			jimport('joomla.user.helper');
-			if(JVM_VERSION === 2) {
+			if(JVM_VERSION > 1) {
 				$com_users = 'com_users';
 				$activationLink = 'index.php?option='.$com_users.'&task=registration.activate&token='.$user->get('activation');
 			} else {
