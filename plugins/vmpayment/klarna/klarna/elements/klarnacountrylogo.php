@@ -17,7 +17,7 @@ defined ('JPATH_BASE') or die();
  * Renders a label element
  */
 
-class JElementKlarnaCountryLogo extends JElement {
+class JElementKlarnaCountryLogo extends JFormField {
 
 	/**
 	 * Element name

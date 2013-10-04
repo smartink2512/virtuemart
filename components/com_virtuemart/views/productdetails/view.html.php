@@ -315,7 +315,6 @@ class VirtueMartViewProductdetails extends VmView {
 
 	if(VmRequest::getCmd( 'layout', 'default' )=='notify') $this->setLayout('notify'); //Added by Seyi Awofadeju to catch notify layout
 
-
 	parent::display($tpl);
     }
 

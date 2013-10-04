@@ -95,7 +95,7 @@ if (!version_compare (JVERSION, '1.6.0', 'ge')) {
 			$wheres = array();
 			switch ($phrase) {
 				case 'exact':
-					$text = $db->Quote ('%' . $db->getEscaped ($text, TRUE) . '%', FALSE);
+					$text = $db->Quote ('%' . $db->escape ($text, TRUE) . '%', FALSE);
 					$wheres2 = array();
 					$wheres2[] = 'p.product_sku LIKE ' . $text;
 					$wheres2[] = 'a.product_name LIKE ' . $text;
@@ -111,7 +111,7 @@ if (!version_compare (JVERSION, '1.6.0', 'ge')) {
 					$words = explode (' ', $text);
 					$wheres = array();
 					foreach ($words as $word) {
-						$word = $db->Quote ('%' . $db->getEscaped ($word, TRUE) . '%', FALSE);
+						$word = $db->Quote ('%' . $db->escape ($word, TRUE) . '%', FALSE);
 						$wheres2 = array();
 						$wheres2[] = 'p.product_sku LIKE ' . $word;
 						$wheres2[] = 'a.product_name LIKE ' . $word;
@@ -160,7 +160,7 @@ if (!version_compare (JVERSION, '1.6.0', 'ge')) {
 			}
 
 			// search product //TODO  b.virtuemart_category_id>0 should be configurable
-			$text = $db->Quote ('%' . $db->getEscaped ($text, TRUE) . '%', FALSE);
+			$text = $db->Quote ('%' . $db->escape ($text, TRUE) . '%', FALSE);
 			$query = "SELECT DISTINCT CONCAT( a.product_name,' (',p.product_sku,')' ) AS title, a.virtuemart_product_id , b.virtuemart_category_id ,   a.product_s_desc   AS text, b.category_name as section,
 					 p.created_on as created, '2' AS browsernav
 					FROM `#__virtuemart_products_" . VMLANG . "` AS a
@@ -237,7 +237,7 @@ function plgSearchVirtuemart ($text, $phrase = '', $ordering = '', $areas = NULL
 	$wheres = array();
 	switch ($phrase) {
 		case 'exact':
-			$text = $db->Quote ('%' . $db->getEscaped ($text, TRUE) . '%', FALSE);
+			$text = $db->Quote ('%' . $db->escape ($text, TRUE) . '%', FALSE);
 			$wheres2 = array();
 			$wheres2[] = 'p.product_sku LIKE ' . $text;
 			$wheres2[] = 'a.product_name LIKE ' . $text;
@@ -253,7 +253,7 @@ function plgSearchVirtuemart ($text, $phrase = '', $ordering = '', $areas = NULL
 			$words = explode (' ', $text);
 			$wheres = array();
 			foreach ($words as $word) {
-				$word = $db->Quote ('%' . $db->getEscaped ($word, TRUE) . '%', FALSE);
+				$word = $db->Quote ('%' . $db->escape ($word, TRUE) . '%', FALSE);
 				$wheres2 = array();
 				$wheres2[] = 'p.product_sku LIKE ' . $word;
 				$wheres2[] = 'a.product_name LIKE ' . $word;
@@ -287,7 +287,7 @@ function plgSearchVirtuemart ($text, $phrase = '', $ordering = '', $areas = NULL
 			$order = 'a.product_name DESC';
 	}
 
-	$text = $db->Quote ('%' . $db->getEscaped ($text, TRUE) . '%', FALSE);
+	$text = $db->Quote ('%' . $db->escape ($text, TRUE) . '%', FALSE);
 	$query = "SELECT DISTINCT CONCAT( a.product_name,' (',p.product_sku,')' ) AS title, a.virtuemart_product_id , b.virtuemart_category_id ,   a.product_s_desc   AS text, b.category_name as section,
 		 p.created_on as created, '2' AS browsernav
 		FROM `#__virtuemart_products_" . VMLANG . "` AS a

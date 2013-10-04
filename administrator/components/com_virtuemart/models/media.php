@@ -229,7 +229,7 @@ class VirtueMartModelMedia extends VmModel {
 		}
 
 		if ($search = VmRequest::getString('searchMedia', false)){
-			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+			$search = '"%' . $this->_db->escape( $search, true ) . '%"' ;
 			$where[] = ' (`file_title` LIKE '.$search.'
 								OR `file_description` LIKE '.$search.'
 								OR `file_meta` LIKE '.$search.'

@@ -526,7 +526,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
         $db = JFactory::getDBO();
         $query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
         $db->setQuery($query);
-        $columns = $db->loadResultArray(0);
+        $columns = $db->loadColumn(0);
         $prefix = 'sofort_ideal_response_';
         $prefix_hidden = 'sofort_ideal_hidden_response_';
         $prefix_len = strlen($prefix);

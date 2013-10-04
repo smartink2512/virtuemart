@@ -1167,7 +1167,7 @@ class VmTable extends JTable {
 
 			$query = 'UPDATE ' . $this->_tbl
 				. ' SET `' . $this->_orderingKey . '` = ' . (int)$this->$orderingKey
-				. ' WHERE ' . $this->_tbl_key . ' = "' . $this->_db->getEscaped($this->$k) . '" LIMIT 1';
+				. ' WHERE ' . $this->_tbl_key . ' = "' . $this->_db->escape($this->$k) . '" LIMIT 1';
 			$this->_db->setQuery($query);
 
 			if (!$this->_db->execute()) {
@@ -1186,8 +1186,8 @@ class VmTable extends JTable {
 	 */
 	function getNextOrder($where = '', $orderingkey = 0) {
 
-		$where = $this->_db->getEscaped($where);
-		$orderingkey = $this->_db->getEscaped($orderingkey);
+		$where = $this->_db->escape($where);
+		$orderingkey = $this->_db->escape($orderingkey);
 
 		if (!empty($orderingkey))
 			$this->_orderingKey = $orderingkey;
@@ -1219,8 +1219,8 @@ class VmTable extends JTable {
 	 */
 	function reorder($where = '', $orderingkey = 0) {
 
-		$where = $this->_db->getEscaped($where);
-		$orderingkey = $this->_db->getEscaped($orderingkey);
+		$where = $this->_db->escape($where);
+		$orderingkey = $this->_db->escape($orderingkey);
 
 		if (!empty($orderingkey))
 			$this->_orderingKey = $orderingkey;
@@ -1253,8 +1253,8 @@ class VmTable extends JTable {
 				if ($orders[$i]->$orderingKey != $i + 1) {
 					$orders[$i]->$orderingKey = $i + 1;
 					$query = 'UPDATE ' . $this->_tbl
-						. ' SET `' . $this->_orderingKey . '` = "' . $this->_db->getEscaped($orders[$i]->$orderingKey) . '"
-					 WHERE ' . $k . ' = "' . $this->_db->getEscaped($orders[$i]->$k) . '"';
+						. ' SET `' . $this->_orderingKey . '` = "' . $this->_db->escape($orders[$i]->$orderingKey) . '"
+					 WHERE ' . $k . ' = "' . $this->_db->escape($orders[$i]->$k) . '"';
 					$this->_db->setQuery($query);
 					$this->_db->execute();
 				}
@@ -1284,14 +1284,14 @@ class VmTable extends JTable {
 		}
 
 		$config = JFactory::getConfig();
-		$siteOffset = $config->getValue('config.offset');
+		$siteOffset = $config->get('offset');
 		$date = JFactory::getDate('now', $siteOffset);
 
 		$time = $date->toMysql();
 
 		$query = 'UPDATE ' . $this->_db->nameQuote($this->_tbl) .
-			' SET locked_by = ' . (int)$who . ', locked_on = "' . $this->_db->getEscaped($time) . '"
-			 WHERE ' . $this->_tbl_key . ' = "' . $this->_db->getEscaped($this->$k) . '"';
+			' SET locked_by = ' . (int)$who . ', locked_on = "' . $this->_db->escape($time) . '"
+			 WHERE ' . $this->_tbl_key . ' = "' . $this->_db->escape($this->$k) . '"';
 		$this->_db->setQuery($query);
 
 		$this->locked_by = $who;
@@ -1328,8 +1328,8 @@ class VmTable extends JTable {
 		}
 
 		$query = 'UPDATE ' . $this->_db->nameQuote($this->_tbl) .
-			' SET locked_by = 0, locked_on = "' . $this->_db->getEscaped($this->_db->getNullDate()) . '"
-				 WHERE ' . $this->_tbl_key . ' = "' . $this->_db->getEscaped($this->$k) . '"';
+			' SET locked_by = 0, locked_on = "' . $this->_db->escape($this->_db->getNullDate()) . '"
+				 WHERE ' . $this->_tbl_key . ' = "' . $this->_db->escape($this->$k) . '"';
 		$this->_db->setQuery($query);
 
 		$this->locked_by = 0;
@@ -1460,7 +1460,7 @@ class VmTable extends JTable {
 		$query = 'SELECT `' . $this->_tbl_key . '` FROM `' . $table . '` WHERE `' . $whereKey . '` = "' . $this->$k . '"';
 		$this->_db->setQuery($query);
 		//vmdebug('checkAndDelete',$query);
-		$list = $this->_db->loadResultArray();
+		$list = $this->_db->loadColumn();
 		//vmdebug('checkAndDelete',$list);
 
 

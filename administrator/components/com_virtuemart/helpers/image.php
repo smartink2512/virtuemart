@@ -164,6 +164,9 @@ class VmImage extends VmMediaHandler {
 
 		$elements = explode(DS,$path);
 		$examine = JPATH_ROOT;
+		if(!class_exists('JFolder')){
+			require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+		}
 		foreach($elements as $piece){
 			$examine = $examine.DS.$piece;
 			if(!JFolder::exists($examine)){

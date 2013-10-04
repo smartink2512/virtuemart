@@ -51,7 +51,7 @@ class VirtueMartModelOrders extends VmModel {
 	public function getOrderIdByOrderPass($orderNumber,$orderPass){
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_pass`="'.$db->getEscaped($orderPass).'" AND `order_number`="'.$db->getEscaped($orderNumber).'"';
+		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_pass`="'.$db->escape($orderPass).'" AND `order_number`="'.$db->escape($orderNumber).'"';
 		$db->setQuery($q);
 		$orderId = $db->loadResult();
 
@@ -66,7 +66,7 @@ class VirtueMartModelOrders extends VmModel {
 	public static function getOrderIdByOrderNumber($orderNumber){
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_number`="'.$db->getEscaped($orderNumber).'"';
+		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_number`="'.$db->escape($orderNumber).'"';
 		$db->setQuery($q);
 		$orderId = $db->loadResult();
 		return $orderId;
@@ -254,7 +254,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		if ($search = VmRequest::getString('search', false)){
 
-			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+			$search = '"%' . $this->_db->escape( $search, true ) . '%"' ;
 			$search = str_replace(' ','%',$search);
 
 			$searchFields = array();
@@ -1567,7 +1567,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$q = "SELECT `virtuemart_order_item_id` FROM `#__virtuemart_order_items`
 				WHERE `virtuemart_order_id`=".$id;
 			$this->_db->setQuery($q);
-			$item_ids = $this->_db->loadResultArray();
+			$item_ids = $this->_db->loadColumn();
 			foreach( $item_ids as $item_id ) {
 			    $this->removeOrderLineItem($item_id);
 			}

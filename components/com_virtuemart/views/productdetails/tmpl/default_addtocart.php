@@ -30,7 +30,7 @@ $alert=JText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 <div class="addtocart-area">
 
 	<form method="post" class="product js-recalculate" action="<?php echo JRoute::_ ('index.php'); ?>">
-                <input name="quantity" type="hidden" value="<?php echo $step ?>" />
+                <input name="quantity[]" type="hidden" value="<?php echo $step ?>" />
 		<?php // Product custom_fields
 		/*if (!empty($this->product->customfieldsSorted['addtocart'])) {
 			$this->position = 'addtocart';

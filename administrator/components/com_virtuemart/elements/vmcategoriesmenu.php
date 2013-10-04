@@ -29,7 +29,7 @@ if (!class_exists('VmElements'))
  * Should be that way
  */
 
-class JElementVmcategoriesmenu extends JElement {
+class JElementVmcategoriesmenu extends JFormField {
 
     var $_name = 'categoriesmenu';
 

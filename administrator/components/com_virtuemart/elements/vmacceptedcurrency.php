@@ -21,11 +21,11 @@ if (!class_exists('VmConfig'))
 /*
  * This class is used by VirtueMart Payment or Shipment Plugins
  * which uses JParameter
- * So It should be an extension of JElement
+ * So It should be an extension of JFormField
  * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
 
-class JElementVmAcceptedCurrency extends JElement {
+class JElementVmAcceptedCurrency extends JForm {
 
     /**
      * Element name
@@ -33,9 +33,9 @@ class JElementVmAcceptedCurrency extends JElement {
      * @access	protected
      * @var		string
      */
-    var $_name = 'AcceptedCurrency';
+    var $type = 'AcceptedCurrency';
 
-    function fetchElement($name, $value, &$node, $control_name) {
+    function getInput($name, $value, &$node, $control_name) {
 	if (!class_exists('VirtueMartModelVendor'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 	$vendorId = 1;//VirtueMartModelVendor::getLoggedVendor();

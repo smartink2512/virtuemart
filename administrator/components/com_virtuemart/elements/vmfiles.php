@@ -14,7 +14,7 @@ defined ('_JEXEC') or die();
  * other free or open source software licenses.
  * @version $Id: $
  */
-class JElementVMFiles extends JElement {
+class JElementVMFiles extends JFormField {
 
 	/**
 	 * Element name

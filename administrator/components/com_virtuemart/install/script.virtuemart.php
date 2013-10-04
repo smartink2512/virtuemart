@@ -480,7 +480,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$query = 'SHOW COLUMNS FROM `'.$table.'` ';
 			$this->_db->setQuery($query);
-			$columns = $this->_db->loadResultArray(0);
+			$columns = $this->_db->loadColumn(0);
 
 			if(!in_array($field,$columns)){
 

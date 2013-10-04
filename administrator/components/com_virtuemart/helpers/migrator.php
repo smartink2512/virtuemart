@@ -253,7 +253,7 @@ class Migrator extends VmModel{
 				OR vm.`virtuemart_media_id` = "'.$media->virtuemart_media_id.'" ';
 
 				$this->_db->setQuery($q);
-				$res = $this->_db->loadResultArray();
+				$res = $this->_db->loadColumn();
 				vmdebug('so',$res);
 				if(count($res)>0){
 				vmInfo('File for '.$media->file_url.' is missing, but used ');
@@ -507,7 +507,7 @@ class Migrator extends VmModel{
 		//declaration _vm_userfield >> _virtuemart_userfields`
 		// vendor_id >> virtuemart_vendor_id
 		$this->_db->setQuery('select `name` FROM `#__virtuemart_userfields`');
-		$vm2Fields = $this->_db->loadResultArray ();
+		$vm2Fields = $this->_db->loadColumn ();
 		$this->_db->setQuery('select * FROM `#__vm_userfield`');
 		$oldfields = $this->_db->loadObjectList();
 		$migratedfields ='';
@@ -732,7 +732,7 @@ class Migrator extends VmModel{
 		$vendor = $this->_db->loadAssoc() ;
 		$currency_code_3 = explode( ',', $vendor['vendor_accepted_currencies'] );//EUR,USD
 		$this->_db->setQuery( 'SELECT virtuemart_currency_id FROM `#__virtuemart_currencies` WHERE `currency_code_3` IN ( "'.implode('","',$currency_code_3).'" ) ' );
-		$vendor['vendor_accepted_currencies'] = implode(",",$this->_db->loadResultArray());
+		$vendor['vendor_accepted_currencies'] = implode(",",$this->_db->loadColumn());
 
 		$this->_db->setQuery( 'SELECT virtuemart_currency_id FROM `#__virtuemart_currencies` WHERE `currency_code_3` =  "'. $vendor['vendor_currency'].'"  ' );
 		$vendor['vendor_currency']= $this->_db->loadResult();
@@ -1129,7 +1129,7 @@ class Migrator extends VmModel{
 
 					$q = 'SELECT `category_id` FROM #__vm_product_category_xref WHERE #__vm_product_category_xref.product_id = "'.$product['product_id'].'" ';
 					$this->_db->setQuery($q);
-					$productCats = $this->_db->loadResultArray();
+					$productCats = $this->_db->loadColumn();
 
 					$productcategories = array();
 					if(!empty($productCats)){
@@ -1290,8 +1290,8 @@ class Migrator extends VmModel{
 			return $this->mediaIdFilename[$type][$filename];
 		} else {
 			$q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_medias`
-										WHERE `file_title`="' .  $this->_db->getEscaped($filename) . '"
-										AND `file_type`="' . $this->_db->getEscaped($type) . '"';
+										WHERE `file_title`="' .  $this->_db->escape($filename) . '"
+										AND `file_type`="' . $this->_db->escape($type) . '"';
 			$this->_db->setQuery($q);
 			$virtuemart_media_id = $this->_db->loadResult();
 			if($this->_db->getErrors()){
@@ -1318,7 +1318,7 @@ class Migrator extends VmModel{
 
 		if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 		$this->_db->setQuery('select `order_status_code` FROM `#__virtuemart_orderstates` `');
-		$vm2Fields = $this->_db->loadResultArray ();
+		$vm2Fields = $this->_db->loadColumn ();
 		$this->_db->setQuery('select * FROM `#__vm_order_status`');
 		$oldfields = $this->_db->loadObjectList();
 		$migratedfields ='';
@@ -1589,7 +1589,7 @@ class Migrator extends VmModel{
 		$currInt = '';
 		if(!empty($curr)){
 			$this->_db = JFactory::getDBO();
-			$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `currency_code_3`="' . $this->_db->getEscaped($curr) . '"';
+			$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `currency_code_3`="' . $this->_db->escape($curr) . '"';
 			$this->_db->setQuery($q);
 			$currInt = $this->_db->loadResult();
 			if(empty($currInt)){
@@ -1672,7 +1672,7 @@ class Migrator extends VmModel{
 		}
 
 		$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies`
-					WHERE `' . $code . '` = "' . $this->_db->getEscaped($name) . '" ';
+					WHERE `' . $code . '` = "' . $this->_db->escape($name) . '" ';
 		$this->_db->setQuery($q);
 
 		return $this->_db->loadResult();

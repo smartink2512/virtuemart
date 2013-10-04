@@ -118,7 +118,7 @@ class VmTableXarray extends VmTable {
 		$q = 'SELECT `'.$this->_skey.'` FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'.(int)$oid.'" '.$orderby;
 		$db->setQuery($q);
 
-		$result = $db->loadResultArray();
+		$result = $db->loadColumn();
 // 		vmdebug('my q ',$q,$result);
 		$error = $db->getErrorMsg();
 		if(!empty($error)){

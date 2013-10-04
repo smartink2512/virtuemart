@@ -23,15 +23,18 @@ defined('_JEXEC') or die('');
 jimport( 'joomla.application.component.view');
 // Load default helpers
 
+//jimport('cms.html.html.bootstrap');
+
 class VmView extends JViewLegacy{
 
-	function linkIcon($link,$altText ='',$boutonName,$verifyConfigValue=false, $modal = true, $use_icon=true,$use_text=false,$class = ''){
+
+	function linkIcon($link,$altText ='',$buttonName,$verifyConfigValue=false, $modal = true, $use_icon=true,$use_text=false,$class = ''){
 		if ($verifyConfigValue) {
 			if ( !VmConfig::get($verifyConfigValue, 0) ) return '';
 		}
 		$folder = (JVM_VERSION===1) ? '/images/M_images/' : '/media/system/images/';
 		$text='';
-		if ( $use_icon ) $text .= JHtml::_('image.site', $boutonName.'.png', $folder, null, null, JText::_($altText));
+		if ( $use_icon ) $text .= '<img src="' .$folder.$buttonName. '.png" alt="' . $altText . '" ' . $buttonName . ' />'; ;;//JHtml::_('image.site', $boutonName.'.png', $folder, null, null, JText::_($altText));
 		if ( $use_text ) $text .= '&nbsp;'. JText::_($altText);
 		if ( $text=='' )  $text .= '&nbsp;'. JText::_($altText);
 		if ($modal) return '<a class="modal" rel="{handler: \'iframe\', size: {x: 700, y: 550}}" title="'. JText::_($altText).'" href="'.JRoute::_($link, FALSE).'">'.$text.'</a>';

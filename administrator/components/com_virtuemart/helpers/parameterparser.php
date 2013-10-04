@@ -138,9 +138,9 @@ class FileUtilities {
 
 }
 
-if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'form'.DS.'form.php' );
 
-class vmParameters extends JParameter {
+class vmParameters extends JFormField {
 
 	//	/** @var string Path to the xml setup file */
 	var $_path = null;
@@ -160,19 +160,11 @@ class vmParameters extends JParameter {
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_'.$pluginfolder.'_' . $element,JPATH_ADMINISTRATOR);
 
-		if (JVM_VERSION > 1) {
-			$path = JPATH_PLUGINS . DS . $pluginfolder . DS . basename($element). DS . basename($element) . '.xml';
-		} else {
-			$path = JPATH_PLUGINS . DS . $pluginfolder . DS . basename($element) . '.xml';
-		}
+		$path = JPATH_PLUGINS . DS . $pluginfolder . DS . basename($element). DS . basename($element) . '.xml';
+
 		parent::__construct($element, $path);
 		$this->_type = $type;
-		if (JVM_VERSION > 1) {
 
-		} else {
-
-		}
-// 		$this->_raw = $data;
 		$this->bind($data);
 	}
 
@@ -461,16 +453,16 @@ class vmParameters extends JParameter {
 		$sorting = strtoupper($node->attributes('sorting')) == 'DESC' ? 'DESC' : 'ASC';
 		$multiselect = $node->attributes('multiselect');
 
-		$query = "SELECT `" . $db->getEscaped($valuefield) . '`, `' . $db->getEscaped($textfield) . "`"
-		. "\n FROM `" . $db->getEscaped($table) . "`";
+		$query = "SELECT `" . $db->escape($valuefield) . '`, `' . $db->escape($textfield) . "`"
+		. "\n FROM `" . $db->escape($table) . "`";
 		if ($condition != '') {
 			$query .= "\n WHERE " . $condition;
 		}
 		if ($orderfield) {
-			$query .= "\n ORDER BY `" . $db->getEscaped($orderfield) . "` " . $sorting;
+			$query .= "\n ORDER BY `" . $db->escape($orderfield) . "` " . $sorting;
 		}
 		$db->setQuery($query);
-		$array = $db->loadResultArray();
+		$array = $db->loadColumn();
 
 		if ($multiselect == '1') {
 			$multiple = 'multiple="multiple"';

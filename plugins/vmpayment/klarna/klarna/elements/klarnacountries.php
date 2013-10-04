@@ -15,10 +15,10 @@
 /*
  * This class is used by VirtueMart Payment or Shipping Plugins
  * which uses JParameter
- * So It should be an extension of JElement
+ * So It should be an extension of JFormField
  * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
-class JElementKlarnaCountries extends JElement {
+class JElementKlarnaCountries extends JFormField {
 
     /**
      * Element name

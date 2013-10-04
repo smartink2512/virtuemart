@@ -17,7 +17,7 @@ defined ('JPATH_BASE') or die();
  * Renders a label element
  */
 
-class JElementGetSofort extends JElement {
+class JElementGetSofort extends JFormField {
 
     /**
      * Element name

@@ -11,6 +11,7 @@ defined('JPATH_PLATFORM') or die;
 
 JFormHelper::loadFieldClass('rules');
 
+if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.'/administrator/components/com_virtuemart/helpers/config.php');
 /**
 * This is an overload of the core Rules form field
 * It address the issue where several rules cannot be used in the same configuration file

@@ -59,14 +59,14 @@ class VirtuemartViewProduct extends JView {
 			$query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
 				FROM #__virtuemart_products_".VMLANG."
 				 JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)";
-			if ($filter) $query .= " WHERE product_name LIKE '%". $this->db->getEscaped( $filter, true ) ."%' or product_sku LIKE '%". $this->db->getEscaped( $filter, true ) ."%' limit 0,10";
+			if ($filter) $query .= " WHERE product_name LIKE '%". $this->db->escape( $filter, true ) ."%' or product_sku LIKE '%". $this->db->escape( $filter, true ) ."%' limit 0,10";
 			self::setRelatedHtml($query,'R');
 		}
 		else if ($this->type=='relatedcategories')
 		{
 			$query = "SELECT virtuemart_category_id AS id, CONCAT(category_name, '::', virtuemart_category_id) AS value
 				FROM #__virtuemart_categories_".VMLANG;
-			if ($filter) $query .= " WHERE category_name LIKE '%". $this->db->getEscaped( $filter, true ) ."%' limit 0,10";
+			if ($filter) $query .= " WHERE category_name LIKE '%". $this->db->escape( $filter, true ) ."%' limit 0,10";
 			self::setRelatedHtml($query,'Z');
 		}
 		else if ($this->type=='custom')
@@ -96,7 +96,7 @@ class VirtuemartViewProduct extends JView {
 					AND `product_parent_id`= '.VmRequest::getInt('virtuemart_product_id');
 					//$this->db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products` WHERE `product_parent_id` ='.(int)$product_id);
 					$this->db->setQuery($q);
-					if ($childIds = $this->db->loadResultArray()) {
+					if ($childIds = $this->db->loadColumn()) {
 					// Get childs
 						foreach ($childIds as $childId) {
 							$field->custom_value = $childId;

@@ -14,7 +14,7 @@ defined ('_JEXEC') or die('Restricted access');
  * other free or open source software licenses.
  */
 
-class JElementKlarnaCurl extends JElement {
+class JElementKlarnaCurl extends JFormField {
 
 	var $_name = 'klarnacurl';
 

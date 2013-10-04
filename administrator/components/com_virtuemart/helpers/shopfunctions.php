@@ -50,9 +50,9 @@ class ShopFunctions {
 		$quantity = (int)$quantity;
 
 		$db = JFactory::getDBO ();
-		$q = 'SELECT ' . $db->getEscaped ($fieldnameXref) . ' FROM ' . $db->getEscaped ($tableXref) . ' WHERE ' . $db->getEscaped ($fieldIdXref) . ' = "' . (int)$idXref . '"';
+		$q = 'SELECT ' . $db->escape ($fieldnameXref) . ' FROM ' . $db->escape ($tableXref) . ' WHERE ' . $db->escape ($fieldIdXref) . ' = "' . (int)$idXref . '"';
 		$db->setQuery ($q);
-		$tempArray = $db->loadResultArray ();
+		$tempArray = $db->loadColumn ();
 		//echo $db->_sql;
 		if (isset($tempArray)) {
 			$links = '';
@@ -61,9 +61,9 @@ class ShopFunctions {
 			foreach ($tempArray as $value) {
 				if ($translate) {
 					$mainTable = $table . '_' . VMLANG;
-					$q = 'SELECT ' . $db->getEscaped ($fieldname) . ' FROM ' . $db->getEscaped ($mainTable) . ' JOIN ' . $table . ' using (`' . $fieldnameXref . '`) WHERE ' . $db->getEscaped ($fieldId) . ' = "' . (int)$value . '"';
+					$q = 'SELECT ' . $db->escape ($fieldname) . ' FROM ' . $db->escape ($mainTable) . ' JOIN ' . $table . ' using (`' . $fieldnameXref . '`) WHERE ' . $db->escape ($fieldId) . ' = "' . (int)$value . '"';
 				} else {
-					$q = 'SELECT ' . $db->getEscaped ($fieldname) . ' FROM ' . $db->getEscaped ($table) . ' WHERE ' . $db->getEscaped ($fieldId) . ' = "' . (int)$value . '"';
+					$q = 'SELECT ' . $db->escape ($fieldname) . ' FROM ' . $db->escape ($table) . ' WHERE ' . $db->escape ($fieldId) . ' = "' . (int)$value . '"';
 				}
 				$db->setQuery ($q);
 				$tmp = $db->loadResult ();
@@ -842,7 +842,7 @@ class ShopFunctions {
 		$id = (int)$id;
 		$db = JFactory::getDBO ();
 
-		$q = 'SELECT ' . $db->getEscaped ($fld) . ' AS fld FROM `#__virtuemart_countries` WHERE virtuemart_country_id = ' . (int)$id;
+		$q = 'SELECT `' . $db->escape ($fld) . '` AS fld FROM `#__virtuemart_countries` WHERE virtuemart_country_id = ' . (int)$id;
 		$db->setQuery ($q);
 		return $db->loadResult ();
 	}
@@ -872,7 +872,7 @@ class ShopFunctions {
 				$fieldname = 'country_name';
 			}
 		}
-		$q = 'SELECT `virtuemart_country_id` FROM `#__virtuemart_countries` WHERE `' . $fieldname . '` = "' . $db->getEscaped ($name) . '"';
+		$q = 'SELECT `virtuemart_country_id` FROM `#__virtuemart_countries` WHERE `' . $fieldname . '` = "' . $db->escape ($name) . '"';
 		$db->setQuery ($q);
 		$r = $db->loadResult ();
 		return $r;
@@ -893,7 +893,7 @@ class ShopFunctions {
 			return '';
 		}
 		$db = JFactory::getDBO ();
-		$q = 'SELECT ' . $db->getEscaped ($fld) . ' AS fld FROM `#__virtuemart_states` WHERE virtuemart_state_id = "' . (int)$id . '"';
+		$q = 'SELECT ' . $db->escape ($fld) . ' AS fld FROM `#__virtuemart_states` WHERE virtuemart_state_id = "' . (int)$id . '"';
 		$db->setQuery ($q);
 		$r = $db->loadObject ();
 		return $r->fld;
@@ -922,7 +922,7 @@ class ShopFunctions {
 				$fieldname = 'state_name';
 			}
 		}
-		$q = 'SELECT `virtuemart_state_id` FROM `#__virtuemart_states` WHERE `' . $fieldname . '` = "' . $db->getEscaped ($name) . '"';
+		$q = 'SELECT `virtuemart_state_id` FROM `#__virtuemart_states` WHERE `' . $fieldname . '` = "' . $db->escape ($name) . '"';
 		$db->setQuery ($q);
 		$r = $db->loadResult ();
 		return $r;
@@ -969,7 +969,7 @@ class ShopFunctions {
 			$id = (int)$id;
 			$db = JFactory::getDBO ();
 
-			$q = 'SELECT ' . $db->getEscaped ($fld) . ' AS fld FROM `#__virtuemart_currencies` WHERE virtuemart_currency_id = ' . (int)$id;
+			$q = 'SELECT ' . $db->escape ($fld) . ' AS fld FROM `#__virtuemart_currencies` WHERE virtuemart_currency_id = ' . (int)$id;
 			$db->setQuery ($q);
 			$currencyNameById[$id][$fld] = $db->loadResult ();
 		}
@@ -1047,7 +1047,7 @@ class ShopFunctions {
 
 		$db = JFactory::getDBO ();
 
-		$_q = 'SELECT `order_status_name` FROM `#__virtuemart_orderstates` WHERE `order_status_code` = "' . $db->getEscaped ($_code) . '"';
+		$_q = 'SELECT `order_status_name` FROM `#__virtuemart_orderstates` WHERE `order_status_code` = "' . $db->escape ($_code) . '"';
 		$db->setQuery ($_q);
 		$_r = $db->loadObject ();
 		if (empty($_r->order_status_name)) {

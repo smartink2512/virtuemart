@@ -226,13 +226,9 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 // 	$lang = $params->get('site', 'en-GB');//use default joomla
 // 	$this->installSampleSQL($lang);
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
-	    if(!defined('VMLANG')){
-		    $params = JComponentHelper::getParams('com_languages');
-		    $lang = $params->get('site', 'en-GB');//use default joomla
-		    $lang = strtolower(strtr($lang,'-','_'));
-	    } else {
-		    $lang = VMLANG;
-	    }
+	if(!defined('VMLANG')){
+		Vmconfig::setdbLanguageTag();
+	}
 	if(!$this->execSQLFile($filename)){
 		vmError(JText::_('Problems execution of SQL File '.$filename));
 	} else {
@@ -246,7 +242,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 			(1, 1, '.$shipment_plg_id.', "weight_countries", \'shipment_logos=""|countries=""|zip_start=""|zip_stop=""|weight_start=""|weight_stop=""|weight_unit="KG"|nbproducts_start=0|nbproducts_stop=0|orderamount_start=""|orderamount_stop=""|cost="0"|package_fee=""|tax_id="0"|free_shipment=""|\', 0, 0, 1, "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0)';
 			$db->setQuery($q);
 			$db->execute();
- 			$q = 'INSERT INTO `#__virtuemart_shipmentmethods_'.$lang.'` (`virtuemart_shipmentmethod_id`, `shipment_name`, `shipment_desc`, `slug`) VALUES (1, "Self pick-up", "", "Self-pick-up")';
+ 			$q = 'INSERT INTO `#__virtuemart_shipmentmethods_'.VMLANG.'` (`virtuemart_shipmentmethod_id`, `shipment_name`, `shipment_desc`, `slug`) VALUES (1, "Self pick-up", "", "Self-pick-up")';
 			$db->setQuery($q);
 			$db->execute();
 
@@ -271,7 +267,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 			$db->setQuery($q);
 			$db->execute();
 
-			$q="INSERT INTO `#__virtuemart_paymentmethods_".$lang."` (`virtuemart_paymentmethod_id`, `payment_name`, `payment_desc`, `slug`) VALUES	(1, 'Cash on delivery', '', 'Cash-on-delivery')";
+			$q="INSERT INTO `#__virtuemart_paymentmethods_".VMLANG."` (`virtuemart_paymentmethod_id`, `payment_name`, `payment_desc`, `slug`) VALUES	(1, 'Cash on delivery', '', 'Cash-on-delivery')";
 			$db->setQuery($q);
 			$db->execute();
 
@@ -482,7 +478,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		foreach ($tables as $table) {
 			$query = 'SHOW TABLES LIKE "'.$prefix.'virtuemart_'.$table.'_%"';
 			$this->_db->setQuery($query);
-			if($translatedTables= $this->_db->loadResultArray()) {
+			if($translatedTables= $this->_db->loadColumn()) {
 				foreach ($translatedTables as $translatedTable) {
 					$this->_db->setQuery('TRUNCATE TABLE `'.$translatedTable.'`');
 					if($this->_db->execute()) vmInfo( $translatedTable.' empty');

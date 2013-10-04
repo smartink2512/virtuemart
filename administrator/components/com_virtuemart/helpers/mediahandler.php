@@ -521,7 +521,7 @@ class VmMediaHandler {
 				//Here we need now to update the database field of $this->file_url_thumb to prevent dynamic thumbnailing in future
 				//We do not update anylonger, only if there is an override used
 				/*if(empty($this->_db)) $this->_db = JFactory::getDBO();
-				$query = 'UPDATE `#__virtuemart_medias` SET `file_url_thumb` = "'.$this->_db->getEscaped($this->file_url_thumb).'" WHERE `#__virtuemart_medias`.`virtuemart_media_id` = "'.(int)$this->virtuemart_media_id.'" ';
+				$query = 'UPDATE `#__virtuemart_medias` SET `file_url_thumb` = "'.$this->_db->escape($this->file_url_thumb).'" WHERE `#__virtuemart_medias`.`virtuemart_media_id` = "'.(int)$this->virtuemart_media_id.'" ';
 				$this->_db->setQuery($query);
 				$this->_db->execute();*/
 			}
@@ -1091,14 +1091,14 @@ class VmMediaHandler {
 				$q .= ' AND `file_type` = "'.$type.'" ';
 			}
 			if ($search = VmRequest::getString('term', false)){
-				$search = '"%' . $db->getEscaped( $search, true ) . '%"' ;
+				$search = '"%' . $db->escape( $search, true ) . '%"' ;
 				$q .=  ' AND (`file_title` LIKE '.$search.' OR `file_description` LIKE '.$search.' OR `file_meta` LIKE '.$search.') ';
 			}
 			$q .= ' LIMIT '.(int)$limit.', '.(int)$max;
 
 			$db->setQuery($q);
 			//		$result = $this->_db->loadAssocList();
-			if ($virtuemart_media_ids = $db->loadResultArray()) {
+			if ($virtuemart_media_ids = $db->loadColumn()) {
 				$errMsg = $db->getErrorMsg();
 				$errs = $db->getErrors();
 

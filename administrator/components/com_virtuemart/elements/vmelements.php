@@ -33,7 +33,7 @@ if (JVM_VERSION > 1) {
 
 } else {
 
-    class VmElements extends JElement {
+    class VmElements extends JFormField {
 
     }
 

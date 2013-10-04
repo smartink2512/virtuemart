@@ -28,7 +28,7 @@ require(JPATH_VM_ADMINISTRATOR . DS . 'elements' . DS . 'vmelements.php');
 * Should be that way
 */
 
-class JElementVmproductsmenu extends JElement {
+class JElementVmproductsmenu extends JFormField {
 
 	var $_name = 'productsmenu';
 

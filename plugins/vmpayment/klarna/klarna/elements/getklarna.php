@@ -28,7 +28,7 @@ if (JVM_VERSION > 1) {
 	}
 }
 
-class JElementGetKlarna extends JElement {
+class JElementGetKlarna extends JFormField {
 
 	/**
 	 * Element name

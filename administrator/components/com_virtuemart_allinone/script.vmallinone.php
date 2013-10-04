@@ -523,7 +523,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 						$manifest_cache = json_encode (JApplicationHelper::parseXMLInstallFile ($src . DS . $module . '.xml'));
 					}
 					$q = 'INSERT INTO `#__extensions` 	(`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `ordering`) VALUES
-																	( "' . $module . '" , "module", "' . $module . '", "", "0", "1","' . $access . '", "0", "' . $db->getEscaped ($manifest_cache) . '", "' . $params . '","' . $ordering . '");';
+																	( "' . $module . '" , "module", "' . $module . '", "", "0", "1","' . $access . '", "0", "' . $db->escape ($manifest_cache) . '", "' . $params . '","' . $ordering . '");';
 				} else {
 
 					/*					$q = 'UPDATE `#__extensions` SET 	`name`= "'.$module.'",
@@ -572,7 +572,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 			$query = 'SHOW COLUMNS FROM `' . $tablename . '` ';
 			$this->db->setQuery ($query);
-			$columns = $this->db->loadResultArray (0);
+			$columns = $this->db->loadColumn (0);
 
 			foreach ($fields as $fieldname => $alterCommand) {
 				if (in_array ($fieldname, $columns)) {
@@ -597,7 +597,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 			$query = 'SHOW COLUMNS FROM `' . $table . '` ';
 			$this->db->setQuery ($query);
-			$columns = $this->db->loadResultArray (0);
+			$columns = $this->db->loadColumn (0);
 
 			if (!in_array ($field, $columns)) {
 

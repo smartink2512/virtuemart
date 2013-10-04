@@ -258,8 +258,8 @@ class VirtueMartModelProduct extends VmModel {
 // 		if ( $this->keyword !== "0" and $group ===false) {
 			if (!empty($this->keyword) and $this->keyword !== '' and $group === FALSE) {
 
-				$keyword =  '"%' .str_replace(array(' ','-'),'%',$db->getEscaped( $this->keyword, true )). '%"';
-				//$keyword = '"%' . $db->getEscaped ($this->keyword, TRUE) . '%"';
+				$keyword =  '"%' .str_replace(array(' ','-'),'%',$db->escape( $this->keyword, true )). '%"';
+				//$keyword = '"%' . $db->escape ($this->keyword, TRUE) . '%"';
 
 				foreach ($this->valid_search_fields as $searchField) {
 					if ($searchField == 'category_name' || $searchField == 'category_description') {
@@ -306,7 +306,7 @@ class VirtueMartModelProduct extends VmModel {
 			if (!empty($this->searchcustoms)) {
 				$joinCustom = TRUE;
 				foreach ($this->searchcustoms as $key => $searchcustom) {
-					$custom_search[] = '(pf.`virtuemart_custom_id`="' . (int)$key . '" and pf.`custom_value` like "%' . $db->getEscaped ($searchcustom, TRUE) . '%")';
+					$custom_search[] = '(pf.`virtuemart_custom_id`="' . (int)$key . '" and pf.`custom_value` like "%' . $db->escape ($searchcustom, TRUE) . '%")';
 				}
 				$where[] = " ( " . implode (' OR ', $custom_search) . " ) ";
 			}
@@ -362,17 +362,17 @@ class VirtueMartModelProduct extends VmModel {
 
 			// Time filter
 			if ($this->search_type != '') {
-				$search_order = $db->getEscaped (VmRequest::getCmd ('search_order') == 'bf' ? '<' : '>');
+				$search_order = $db->escape (VmRequest::getCmd ('search_order') == 'bf' ? '<' : '>');
 				switch ($this->search_type) {
 					case 'parent':
 						$where[] = 'p.`product_parent_id` = "0"';
 						break;
 					case 'product':
-						$where[] = 'p.`modified_on` ' . $search_order . ' "' . $db->getEscaped (VmRequest::getVar ('search_date')) . '"';
+						$where[] = 'p.`modified_on` ' . $search_order . ' "' . $db->escape (VmRequest::getVar ('search_date')) . '"';
 						break;
 					case 'price':
 						$joinPrice = TRUE;
-						$where[] = 'pp.`modified_on` ' . $search_order . ' "' . $db->getEscaped (VmRequest::getVar ('search_date')) . '"';
+						$where[] = 'pp.`modified_on` ' . $search_order . ' "' . $db->escape (VmRequest::getVar ('search_date')) . '"';
 						break;
 					case 'withoutprice':
 						$joinPrice = TRUE;
@@ -817,8 +817,8 @@ class VirtueMartModelProduct extends VmModel {
 				$q .= substr($sqrpss,0,-4);
 				$q .= ' OR `virtuemart_shoppergroup_id` IS NULL OR `virtuemart_shoppergroup_id`="0") ';
 			}
-			$q .= ' AND ( (`product_price_publish_up` IS NULL OR `product_price_publish_up` = "' . $db->getEscaped($this->_nullDate) . '" OR `product_price_publish_up` <= "' .$db->getEscaped($this->_now) . '" )
-		        AND (`product_price_publish_down` IS NULL OR `product_price_publish_down` = "' .$db->getEscaped($this->_nullDate) . '" OR product_price_publish_down >= "' . $db->getEscaped($this->_now) . '" ) )';
+			$q .= ' AND ( (`product_price_publish_up` IS NULL OR `product_price_publish_up` = "' . $db->escape($this->_nullDate) . '" OR `product_price_publish_up` <= "' .$db->escape($this->_now) . '" )
+		        AND (`product_price_publish_down` IS NULL OR `product_price_publish_down` = "' .$db->escape($this->_nullDate) . '" OR product_price_publish_down >= "' . $db->escape($this->_now) . '" ) )';
 		/*	//We disable this filter, usually it is interesting to show a table with the different pricing options,
 			//therefore we load now all prices
 			$quantity = (int)$quantity;
@@ -1173,7 +1173,7 @@ class VirtueMartModelProduct extends VmModel {
 			//$q .= ' ORDER BY `pc`.`ordering` DESC ';
 			$db = JFactory::getDbo();
 			$db->setQuery ($q);
-			$categories = $db->loadResultArray ();
+			$categories = $db->loadColumn ();
 
 		}
 
@@ -1193,7 +1193,7 @@ class VirtueMartModelProduct extends VmModel {
 			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_product_shoppergroups` WHERE `virtuemart_product_id` = "' . (int)$virtuemart_product_id . '"';
 			$db = JFactory::getDbo();
 			$db->setQuery ($q);
-			$shoppergroups = $db->loadResultArray ();
+			$shoppergroups = $db->loadColumn ();
 		}
 
 		return $shoppergroups;
@@ -1905,7 +1905,7 @@ class VirtueMartModelProduct extends VmModel {
 			$q = 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_product_customfields` as pc ';
 			$q .= 'LEFT JOIN `#__virtuemart_customs`as c using (`virtuemart_custom_id`) WHERE pc.`custom_value` = "' . $id . '" AND `field_type`= "R"';
 			$db->setQuery($q);
-			$list = $db->loadResultArray();
+			$list = $db->loadColumn();
 
 			if ($list) {
 				$listInString = implode(',',$list);
@@ -2396,7 +2396,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 		$db = JFactory::getDBO ();
 		$db->setQuery (' SELECT virtuemart_product_id FROM `#__virtuemart_products` WHERE `product_parent_id` =' . (int)$product_id.' ORDER BY pordering ASC');
 
-		return $db->loadResultArray ();
+		return $db->loadColumn ();
 
 	}
 

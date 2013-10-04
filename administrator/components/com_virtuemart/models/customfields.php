@@ -947,7 +947,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		// Get old IDS
 		$this->_db->setQuery( 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_'.$table.'_customfields` as `PC` WHERE `PC`.virtuemart_'.$table.'_id ='.$id );
-		$old_customfield_ids = $this->_db->loadResultArray();
+		$old_customfield_ids = $this->_db->loadColumn();
 
 		if (array_key_exists('field', $datas)) {
 

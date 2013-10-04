@@ -238,7 +238,7 @@ class VirtueMartModelCategory extends VmModel {
 		}
 
 		if( !empty( $keyword ) ) {
-			$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
+			$keyword = '"%' . $this->_db->escape( $keyword, true ) . '%"' ;
 			//$keyword = $this->_db->Quote($keyword, false);
 			$where[] = ' ( l.`category_name` LIKE '.$keyword.'
 							   OR l.`category_description` LIKE '.$keyword.') ';
@@ -577,7 +577,7 @@ class VirtueMartModelCategory extends VmModel {
 			$q = 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_product_customfields` as pc ';
 			$q .= 'LEFT JOIN `#__virtuemart_customs`as c using (`virtuemart_custom_id`) WHERE pc.`custom_value` = "' . $cid . '" AND `field_type`= "Z"';
 			$db->setQuery($q);
-			$list = $db->loadResultArray();
+			$list = $db->loadColumn();
 
 			if ($list) {
 				$listInString = implode(',',$list);
@@ -784,7 +784,7 @@ class VirtueMartModelCategory extends VmModel {
 			$query .= " L.`virtuemart_category_id`=`#__virtuemart_category_categories`.`category_child_id` ";
 
 			if( !empty( $keyword ) ) {
-				$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
+				$keyword = '"%' . $this->_db->escape( $keyword, true ) . '%"' ;
 				//$keyword = $this->_db->Quote($keyword, false);
 
 				$query .= 'AND ( `category_name` LIKE '.$keyword.'

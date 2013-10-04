@@ -40,31 +40,8 @@ class VirtuemartModelManufacturercategories extends VmModel {
 		parent::__construct('virtuemart_manufacturercategories_id');
 		$this->setMainTable('manufacturercategories');
 		$this->addvalidOrderingFieldName(array('mf_category_name'));
-		$config=JFactory::getConfig();
 	}
 
-    /**
-     * Retrieve the detail record for the current $id if the data has not already been loaded.
-     *
-     */
-	// function getManufacturerCategory(){
-
-		//// $db = JFactory::getDBO();
-
-  		// if (empty($this->_data)) {
-   			// $this->_data = $this->getTable('manufacturercategories');
-   			// $this->_data->load((int)$this->_id);
-  		// }
-
-		//// print_r( $this->_db->_sql );
-  		// if (!$this->_data) {
-   			// $this->_data = new stdClass();
-   			// $this->_id = 0;
-   			// $this->_data = null;
-  		// }
-
-  		// return $this->_data;
-	// }
 	/**
 	 * Delete all record ids selected
      *

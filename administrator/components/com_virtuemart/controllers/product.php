@@ -255,7 +255,7 @@ class VirtuemartControllerProduct extends VmController {
 			$db = JFactory::getDbo();
 			$db->setQuery($q);
 
-			$productNames = $db->loadResultArray();
+			$productNames = $db->loadColumn();
 
 			vmInfo('COM_VIRTUEMART_PRODUCT_XREF_NAMES',implode(', ',$productNames));
 		}

@@ -18,7 +18,7 @@ defined ('JPATH_BASE') or die();
  */
 
 
-class JElementGetHeidelpay extends JElement {
+class JElementGetHeidelpay extends JFormField {
 
 	/**
 	 * Element name

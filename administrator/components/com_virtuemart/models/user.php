@@ -483,7 +483,7 @@ class VirtueMartModelUser extends VmModel {
 		$newId = 0;
 
 		if($checkToken){
-			JSession::checkToken('get') or jexit( 'Invalid Token, while trying to save user' );
+			JSession::checkToken() or jexit( 'Invalid Token, while trying to save user' );
 			$mainframe = JFactory::getApplication() ;
 		}
 
@@ -885,7 +885,7 @@ class VirtueMartModelUser extends VmModel {
 				AND `address_type` = "BT"';
 
 				$this->_db->setQuery($q);
-				$total = $this->_db->loadResultArray();
+				$total = $this->_db->loadColumn();
 
 				if (count($total) > 0) {
 					$data['virtuemart_userinfo_id'] = (int)$total[0];
@@ -1403,7 +1403,7 @@ class VirtueMartModelUser extends VmModel {
 				$searchArray = array_merge($userFieldsValid,$searchArray);
 			}
 
-			$search = str_replace(' ','%',$this->_db->getEscaped( $search, true ));
+			$search = str_replace(' ','%',$this->_db->escape( $search, true ));
 			foreach($searchArray as $field){
 
 					$where.= ' '.$field.' LIKE "%'.$search.'%" OR ';
@@ -1447,7 +1447,7 @@ class VirtueMartModelUser extends VmModel {
 	function _getFilter()
 	{
 		if ($search = VmRequest::getString('search', false)) {
-			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+			$search = '"%' . $this->_db->escape( $search, true ) . '%"' ;
 			//$search = $this->_db->Quote($search, false);
 			$searchArray = array('name','username','email','perms','usertype','shopper_group_name');
 

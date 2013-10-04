@@ -633,7 +633,7 @@ class VmModel extends JObject {
 
 		if (empty($this->_total)) {
 			$db = JFactory::getDbo();
-			$query = 'SELECT `'.$this->_db->getEscaped($this->_idName).'` FROM `'.$this->_db->getEscaped($this->_maintable).'`';;
+			$query = 'SELECT `'.$this->_db->escape($this->_idName).'` FROM `'.$this->_db->escape($this->_maintable).'`';;
 			$db->setQuery( $query );
 			if(!$db->execute()){
 				if(empty($this->_maintable)) vmError('Model '.get_class( $this ).' has no maintable set');
@@ -704,7 +704,7 @@ class VmModel extends JObject {
  		//vmdebug('exeSortSearchListQuery '.$orderBy .$filter_order_Dir,$q);
 
 		if($object == 2){
-			 $this->ids = $db->loadResultArray();
+			 $this->ids = $db->loadColumn();
 		} else if($object == 1 ){
 			 $this->ids = $db->loadAssocList();
 		} else {
@@ -731,7 +731,7 @@ class VmModel extends JObject {
 				$limitStart = floor($count/$limit);
 				$db->setQuery($q,$limitStart,$limit);
 				if($object == 2){
-					$this->ids = $db->loadResultArray();
+					$this->ids = $db->loadColumn();
 				} else if($object == 1 ){
 					$this->ids = $db->loadAssocList();
 				} else {

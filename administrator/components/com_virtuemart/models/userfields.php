@@ -1210,7 +1210,7 @@ class VirtueMartModelUserfields extends VmModel {
 	{
 		$db = JFactory::getDBO();
 		if ($search = VmRequest::getCmd('search', false)) {
-			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+			$search = '"%' . $this->_db->escape( $search, true ) . '%"' ;
 			//$search = $this->_db->Quote($search, false);
 			return (' WHERE `name` LIKE ' .$search);
 		}

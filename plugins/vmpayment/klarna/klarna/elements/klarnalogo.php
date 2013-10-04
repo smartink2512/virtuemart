@@ -27,7 +27,7 @@ if (JVM_VERSION > 1) {
     require ( JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
 }
 
-class JElementKlarnaLogo extends JElement {
+class JElementKlarnaLogo extends JFormField {
 
     /**
      * Element name

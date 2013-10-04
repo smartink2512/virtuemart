@@ -30,7 +30,7 @@ if (!class_exists( 'VirtueMartModelManufacturer' ))
  * Should be that way
  */
 
-class JElementVmManufacturersmenu extends JElement {
+class JElementVmManufacturersmenu extends JFormField {
 
     var $_name = 'manufacturersmenu';
 

@@ -126,12 +126,16 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
 			if ($virtuemart_category_id) {
 				$categoryLink = '&view=category&virtuemart_category_id=' . $virtuemart_category_id;
-			} else
+			}
 			$categoryLink = '';
 			$continue_link = JRoute::_('index.php?option=com_virtuemart' . $categoryLink);
-			$virtuemart_product_ids = VmRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
+			//VmConfig::$echoDebug=true;
+			$virtuemart_product_ids = VmRequest::getInt('virtuemart_product_id', array());
+			//vmdebug('vmRequest get ',$virtuemart_product_ids);
+			//VmConfig::$echoDebug=false;jExit();
 			$view = $this->getView ('cart', 'json');
 			$errorMsg = 0;//JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
+
 			$product = $cart->add($virtuemart_product_ids, $errorMsg );
 			if ($product) {
 				$view->setLayout('padded');

@@ -17,7 +17,7 @@ defined('_JEXEC') or die();
 /*
  * This class is used by VirtueMart Payment or Shipment Plugins
  * which uses JParameter
- * So It should be an extension of JElement
+ * So It should be an extension of JFormField
  * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
 
@@ -27,7 +27,7 @@ if (!class_exists('VmConfig'))
 if (!class_exists('ShopFunctions'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 
-class JElementVmWeightunit extends JElement {
+class JElementVmWeightunit extends JFormField {
 
     /**
      * Element name

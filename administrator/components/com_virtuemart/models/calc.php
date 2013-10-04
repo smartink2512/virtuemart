@@ -125,7 +125,7 @@ class VirtueMartModelCalc extends VmModel {
 
 		if($search){
 			$db = JFactory::getDBO();
-			$search = '"%' . $db->getEscaped( $search, true ) . '%"' ;
+			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			$where[] = ' `calc_name` LIKE '.$search.' OR `calc_descr` LIKE '.$search.' OR `calc_value` LIKE '.$search.' ';
 		}
 
@@ -261,8 +261,8 @@ class VirtueMartModelCalc extends VmModel {
 		}
 		$q=substr($q,0,-3);
 
-		$q .= 'AND ( publish_up = "' . $db->getEscaped($nullDate) . '" OR publish_up <= "' . $db->getEscaped($now) . '" )
-				AND ( publish_down = "' . $db->getEscaped($nullDate) . '" OR publish_down >= "' . $db->getEscaped($now) . '" ) ';
+		$q .= 'AND ( publish_up = "' . $db->escape($nullDate) . '" OR publish_up <= "' . $db->escape($now) . '" )
+				AND ( publish_down = "' . $db->escape($nullDate) . '" OR publish_down >= "' . $db->escape($now) . '" ) ';
 
 
 		$db->setQuery($q);

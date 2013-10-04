@@ -28,7 +28,7 @@ if (!class_exists('VmElements'))
  * Should be that way
  */
 
-class JElementVmvendormenu extends JElement {
+class JElementVmvendormenu extends JFormField {
 
     var $_name = 'vendormenu';
 

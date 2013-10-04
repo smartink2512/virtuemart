@@ -1011,6 +1011,16 @@ class vmRequest {
  		}
  	}
 
+	public static function getBool($name, $default = 0){
+		$tmp = VmRequest::get($name, $default, FILTER_SANITIZE_NUMBER_INT);
+		if($tmp){
+			$tmp = true;
+		} else {
+			$tmp = false;
+		}
+		return $tmp;
+	}
+
 	public static function getInt($name, $default = 0){
 		return VmRequest::get($name, $default, FILTER_SANITIZE_NUMBER_INT);
 	}
@@ -1062,12 +1072,14 @@ class vmRequest {
 	public static function get($name, $default = null, $filter = FILTER_UNSAFE_RAW, $flags = FILTER_FLAG_STRIP_LOW){
 		//vmSetStartTime();
 		if($name !== null){
+
 			if(!isset($_REQUEST[$name])) return $default;
 
-			if(strpos($name,'[]'!==FALSE)){
-
-				return filter_var_array($_REQUEST[$name], $filter, $flags | FILTER_FORCE_ARRAY);
-			} else {
+			//if(strpos($name,'[]'!==FALSE)){
+			if(is_array($_REQUEST[$name])){
+				return filter_var_array($_REQUEST[$name], $filter );
+			}
+			else {
 				return filter_var($_REQUEST[$name], $filter, $flags);
 			}
 

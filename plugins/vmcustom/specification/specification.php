@@ -98,7 +98,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 		if ($keyword = vmRequest::uword('custom_specification_name1', null, ' ')) {
 			$db = JFactory::getDBO();
 			if ($this->_name != $this->GetNameByCustomId($custom_id)) return;
-			$keyword = '"%' . $db->getEscaped( $keyword, true ) . '%"' ;
+			$keyword = '"%' . $db->escape( $keyword, true ) . '%"' ;
 			$where[] = $this->_name .'.`custom_specification_default1` LIKE '.$keyword;
 			$PluginJoinTables[] = $this->_name ;
 		}
