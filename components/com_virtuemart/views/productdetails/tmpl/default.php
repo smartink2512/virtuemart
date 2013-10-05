@@ -20,37 +20,72 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/* Let's see if we found the product */
+if (empty($this->product)) {
+	echo JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
+	echo '<br /><br />  ' . $this->continue_link_html;
+	return;
+}
+
 // addon for joomla modal Box
 JHTML::_('behavior.modal');
 // JHTML::_('behavior.tooltip');
+$MailLink = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&virtuemart_category_id=' . $this->product->virtuemart_category_id . '&tmpl=component';
+
 if(VmConfig::get('usefancy',0)){
 	vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
 	vmJsApi::css('jquery.fancybox-1.3.4');
-	$box = "$.fancybox({
+	if(VmConfig::get('show_emailfriend',0)){
+		$boxReco = "jQuery.fancybox({
+				href: '" . $MailLink . "',
+				type: 'iframe',
+				height: '550'
+			});";
+	}
+	if(VmConfig::get('ask_question', 0)){
+		$boxAsk = "jQuery.fancybox({
 				href: '" . $this->askquestion_url . "',
 				type: 'iframe',
 				height: '550'
 			});";
+	}
+
 } else {
 	vmJsApi::js( 'facebox' );
 	vmJsApi::css( 'facebox' );
-	$box = "$.facebox({
+	if(VmConfig::get('show_emailfriend',0)){
+		$boxReco = "jQuery.facebox({
+				iframe: '" . $MailLink . "',
+				rev: 'iframe|550|550'
+			});";
+	}
+	if(VmConfig::get('ask_question', 0)){
+		$boxAsk = "jQuery.facebox({
 				iframe: '" . $this->askquestion_url . "',
 				rev: 'iframe|550|550'
 			});";
+	}
 }
-$document = JFactory::getDocument();
-$document->addScriptDeclaration("
+if(VmConfig::get('show_emailfriend',0) ){
+	$boxFuncReco = "jQuery('a.recommened-to-friend').click( function(){
+					".$boxReco."
+			return false ;
+		});";
+}
+if(VmConfig::get('ask_question', 0)){
+	$boxFuncAsk = "jQuery('a.ask-a-question').click( function(){
+					".$boxAsk."
+			return false ;
+		});";
+}
+
+if(!empty($boxFuncAsk) or !empty($boxFuncReco)){
+	$document = JFactory::getDocument();
+	$document->addScriptDeclaration("
 //<![CDATA[
 	jQuery(document).ready(function($) {
-		$('a.ask-a-question').click( function(){
-			".$box."
-			return false ;
-		});
-		$('a.recommened-to-friend').click( function(){
-			".$box."
-			return false ;
-		});
+		".$boxFuncReco."
+		".$boxFuncAsk."
 	/*	$('.additional-images a').mouseover(function() {
 			var himg = this.href ;
 			var extension=himg.substring(himg.lastIndexOf('.')+1);
@@ -62,12 +97,8 @@ $document->addScriptDeclaration("
 	});
 //]]>
 ");
-/* Let's see if we found the product */
-if (empty($this->product)) {
-    echo JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
-    echo '<br /><br />  ' . $this->continue_link_html;
-    return;
 }
+
 
 ?>
 
@@ -128,7 +159,6 @@ if (empty($this->product)) {
 	    <?php
 	    //$link = (JVM_VERSION===1) ? 'index2.php' : 'index.php';
 	    $link = 'index.php?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->virtuemart_product_id;
-	    $MailLink = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&virtuemart_category_id=' . $this->product->virtuemart_category_id . '&tmpl=component';
 
 		echo $this->linkIcon($link . '&format=pdf', 'COM_VIRTUEMART_PDF', 'pdf_button', 'pdf_icon', false);
 	    echo $this->linkIcon($link . '&print=1', 'COM_VIRTUEMART_PRINT', 'printButton', 'show_printicon');
@@ -257,7 +287,7 @@ echo $this->loadTemplate('images');
 
 <?php
 // Ask a question about this product
-if (VmConfig::get('ask_question', 1) == 1) {
+if (VmConfig::get('ask_question', 0) == 1) {
     ?>
     		<div class="ask-a-question">
     		    <a class="ask-a-question" href="<?php echo $this->askquestion_url ?>" rel="nofollow" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>

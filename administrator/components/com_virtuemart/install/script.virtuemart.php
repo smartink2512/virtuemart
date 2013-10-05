@@ -218,21 +218,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if(!class_exists('VirtueMartModelUpdatesMigration')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'updatesmigration.php');
 			$model = new VirtueMartModelUpdatesMigration(); //JModel::getInstance('updatesmigration', 'VirtueMartModel');
 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql',$lang);
-			// 			$this->displayFinished(true);
-			//return false;
 
 			$this -> joomlaSessionDBToMediumText();
 
-// 			$this->portOverwritePrices();
-/*			$table = '#__virtuemart_customs';
-			$fieldname = 'field_type';
-			$fieldvalue = 'G';
-			$this->addToRequired($table,$fieldname,$fieldvalue,"INSERT INTO `#__virtuemart_customs`
-					(`custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`,
-					 `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `published`) VALUES
-						(0, 0, 'COM_VIRTUEMART_STOCKABLE_PRODUCT', 'COM_VIRTUEMART_STOCKABLE_PRODUCT_TIP', NULL,
-					'COM_VIRTUEMART_STOCKABLE_PRODUCT_DESC', 'G', 0, 0, 0, 1 );");
-*/
 
 			$this->alterTable('#__virtuemart_product_prices',
 				array(
@@ -248,16 +236,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
    				)
  			);
 
-			$this->alterTable('#__virtuemart_order_items',
-				array(
-					'product_discountedPriceWithoutTax' => '',
-				),
-				'DROP'
-			);
-
 			$this->deleteReCreatePrimaryKey('#__virtuemart_userinfos','virtuemart_userinfo_id');
-
-			//$this->renameVdateToPublishDown();
 
 			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();

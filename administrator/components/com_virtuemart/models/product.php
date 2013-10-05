@@ -1225,7 +1225,6 @@ class VirtueMartModelProduct extends VmModel {
 			//$q .= ' ORDER BY `pc`.`ordering` DESC ';
 			$this->_db->setQuery ($q);
 			$categories = $this->_db->loadResultArray ();
-
 		}
 
 		return $categories;

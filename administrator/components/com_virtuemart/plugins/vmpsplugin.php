@@ -878,7 +878,13 @@ abstract class vmPSPlugin extends vmPlugin {
 		return FALSE;
 	}
 
-
+  /**
+	 * @param $method
+	 */
+	function convert_condition_amount (&$method) {
+		$method->min_amount = (float)str_replace(',','.',$method->min_amount);
+		$method->max_amount = (float)str_replace(',','.',$method->max_amount);
+	}
 
 	/**
 	 * @param $method
@@ -949,7 +955,8 @@ abstract class vmPSPlugin extends vmPlugin {
 		} else {
 			$method->cost_percent_total = $method->cost_percent_total;
 		}
-		return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $method->cost_percent_total * 0.01));
+		$cartPrice = !empty($cart_prices['withTax'])? $cart_prices['withTax']:$cart_prices['salesPrice'];
+		return ($method->cost_per_transaction + ($cartPrice * $method->cost_percent_total * 0.01));
 	}
 
 
@@ -960,9 +967,10 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	function getCartAmount($cart_prices){
 		if(empty($cart_prices['salesPrice'])) $cart_prices['salesPrice'] = 0.0;
+		$cartPrice = !empty($cart_prices['withTax'])? $cart_prices['withTax']:$cart_prices['salesPrice'];
 		if(empty($cart_prices['salesPriceShipment'])) $cart_prices['salesPriceShipment'] = 0.0;
 		if(empty($cart_prices['salesPriceCoupon'])) $cart_prices['salesPriceCoupon'] = 0.0;
-		$amount= $cart_prices['salesPrice'] + $cart_prices['salesPriceShipment'] + $cart_prices['salesPriceCoupon'] ;
+		$amount= $cartPrice + $cart_prices['salesPriceShipment'] + $cart_prices['salesPriceCoupon'] ;
 		if ($amount <= 0) $amount=0;
 		return $amount;
 
@@ -984,11 +992,17 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (!class_exists ('calculationHelper')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 		}
-
+		$_psType = ucfirst ($this->_psType);
 		$calculator = calculationHelper::getInstance ();
+
 		$cart_prices[$this->_psType . 'Value'] = $calculator->roundInternal ($this->getCosts ($cart, $method, $cart_prices), 'salesPrice');
 
-		$_psType = ucfirst ($this->_psType);
+		if($this->_psType=='payment'){
+			$cartTotalAmountOrig=$this->getCartAmount($cart_prices);
+			$cartTotalAmount=($cartTotalAmountOrig + $method->cost_per_transaction) / (1 -($method->cost_percent_total * 0.01));
+			$cart_prices[$this->_psType . 'Value'] = $cartTotalAmount - $cartTotalAmountOrig;
+		}
+
 
 		$taxrules = array();
 		if(isset($method->tax_id) and (int)$method->tax_id === -1){
@@ -1019,13 +1033,6 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		if(empty($method->cost_per_transaction)) $method->cost_per_transaction = 0.0;
 		if(empty($method->cost_percent_total)) $method->cost_percent_total = 0.0;
-
-
-		if($this->_psType=='payment'){
-			$cartTotalAmountOrig=$this->getCartAmount($cart_prices);
-			$cartTotalAmount=($cartTotalAmountOrig + $method->cost_per_transaction) / (1 -($method->cost_percent_total * 0.01));
-			$cart_prices[$this->_psType . 'Value'] = $cartTotalAmount - $cartTotalAmountOrig;
-		}
 
 		//If the taxing via unpublished categories is used, then the rules use the subtotal which is now overriden here
 		if (count ($taxrules) == 1 and isset($taxrules[1]['subTotal'] )) {
