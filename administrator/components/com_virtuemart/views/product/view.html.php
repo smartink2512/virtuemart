@@ -56,13 +56,13 @@ class VirtuemartViewProduct extends VmView {
 				//this was in the controller for the edit tasks, I dont know if it is still needed,
 				$this->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product'.DS.'tmpl');
 
-				$virtuemart_product_id = VmRequest::getVar('virtuemart_product_id', array());
+				$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
 
-				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
+				/*if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 					$virtuemart_product_id = (int)$virtuemart_product_id[0];
 				} else {
 					$virtuemart_product_id = (int)$virtuemart_product_id;
-				}
+				}*/
 
 				$product = $model->getProductSingle($virtuemart_product_id,false);
 				$product_parent= $model->getProductParent($product->product_parent_id);
@@ -75,17 +75,17 @@ class VirtuemartViewProduct extends VmView {
 				$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->allIds,0);
 
 				$mf_model = VmModel::getModel('manufacturer');
-				$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
-				$this->assignRef('manufacturers',	$manufacturers);
+				$this->manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
+				//$this->assignRef('manufacturers',	$manufacturers);
 
 				// Get the category tree
-				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
-				else $category_tree = ShopFunctions::categoryListTree();
-				$this->assignRef('category_tree', $category_tree);
+				if (isset($product->categories)) $this->category_tree = ShopFunctions::categoryListTree($product->categories);
+				else $this->category_tree = ShopFunctions::categoryListTree();
+				//$this->assignRef('category_tree', $category_tree);
 
 				//Get the shoppergoup list - Cleanshooter Custom Shopper Visibility
-				if (isset($product->shoppergroups)) $shoppergroupList = ShopFunctions::renderShopperGroupList($product->shoppergroups);
-				$this->assignRef('shoppergroupList', $shoppergroupList);
+				if (isset($product->shoppergroups)) $this->shoppergroupList = ShopFunctions::renderShopperGroupList($product->shoppergroups);
+				//$this->assignRef('shoppergroupList', $shoppergroupList);
 
 				// Load the product price
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
@@ -96,11 +96,11 @@ class VirtuemartViewProduct extends VmView {
 				foreach($product_childIds as $id){
 					$product_childs[] = $model->getProductSingle($id,false);
 				}
-				$this->assignRef('product_childs', $product_childs);
+				$this->product_childs = $product_childs;
 
 				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'config.php');
 				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
-				$this->assignRef('productLayouts', $productLayouts);
+				$this->productLayouts = $productLayouts;
 
 				// Load Images
 				$model->addImages($product);
@@ -110,7 +110,7 @@ class VirtuemartViewProduct extends VmView {
 				} else {
 					$imagePath = '/components/com_virtuemart/assets/images/availability/';
 				}
-				$this->assignRef('imagePath', $imagePath);
+				$this->imagePath = $imagePath;
 
 				// Load the vendors
 				$vendor_model = VmModel::getModel('vendor');
@@ -132,10 +132,10 @@ class VirtuemartViewProduct extends VmView {
 				//$currency = $currency_model->getCurrency($product->product_currency);
 				//$this->assignRef('product_currency', $currency->currency_symbol);
 				$currency = $currency_model->getCurrency($vendor->vendor_currency);
-				$this->assignRef('vendor_currency', $currency->currency_symbol);
+				$this->vendor_currency = $currency->currency_symbol;
 
-				if(count($manufacturers)>0 ){
-					$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
+				if(count($this->manufacturers)>0 ){
+					$lists['manufacturers'] = JHTML::_('select.genericlist', $this->manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
 				}
 
 				$lists['product_weight_uom'] = ShopFunctions::renderWeightUnitList('product_weight_uom',$task=='add'? VmConfig::get('weight_unit_default'): $product->product_weight_uom);

@@ -30,7 +30,7 @@ if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.
  * @package		VirtueMart
  * @author
  */
-class VirtuemartViewProduct extends JView {
+class VirtuemartViewProduct extends JViewLegacy {
 
 	var $json = array();
 

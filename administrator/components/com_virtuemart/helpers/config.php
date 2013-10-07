@@ -997,9 +997,9 @@ class VmConfig {
 class vmRequest {
 
 	//static $filters = array( '' =>);
-	static function uword($field, $default, $custom=''){
+	static function uword($field, $default='', $custom=''){
 
-		$source = VmConfig::$vmFilter->getVar($field,$default);
+		$source = self::getVar($field,$default);
  		if(function_exists('mb_ereg_replace')){
  			//$source is string that will be filtered, $custom is string that contains custom characters
  			return mb_ereg_replace('[^\w'.preg_quote($custom).']', '', $source);
@@ -1012,7 +1012,7 @@ class vmRequest {
  	}
 
 	public static function getBool($name, $default = 0){
-		$tmp = VmRequest::get($name, $default, FILTER_SANITIZE_NUMBER_INT);
+		$tmp = self::get($name, $default, FILTER_SANITIZE_NUMBER_INT);
 		if($tmp){
 			$tmp = true;
 		} else {
@@ -1022,11 +1022,11 @@ class vmRequest {
 	}
 
 	public static function getInt($name, $default = 0){
-		return VmRequest::get($name, $default, FILTER_SANITIZE_NUMBER_INT);
+		return self::get($name, $default, FILTER_SANITIZE_NUMBER_INT);
 	}
 
 	public static function getFloat($name,$default=0.0){
-		return VmRequest::get($name,$default,FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_SCIENTIFIC|FILTER_FLAG_ALLOW_FRACTION);
+		return self::get($name,$default,FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_SCIENTIFIC|FILTER_FLAG_ALLOW_FRACTION);
 	}
 
 	/**
@@ -1039,7 +1039,7 @@ class vmRequest {
 	 */
 	public static function getVar($name, $default = null){
 
-		return VmRequest::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW );
+		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW );
 		//return VmConfig::$vmFilter->getVar($name, $default, $hash, $type, $mask);
 	}
 
@@ -1052,11 +1052,11 @@ class vmRequest {
 	 * @return mixed|null
 	 */
 	public static function getString($name, $default = ''){
-		return VmRequest::get($name, $default, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_STRIP_LOW);
+		return self::get($name, $default, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_STRIP_LOW);
 	}
 
 	public static function getHtml($name, $default = ''){
-		$tmp = VmRequest::get($name, $default);
+		$tmp = self::get($name, $default);
 		return JComponentHelper::filterText($tmp);
 	}
 	/**
@@ -1070,7 +1070,7 @@ class vmRequest {
 	 */
 
 	public static function getCmd($name, $default = ''){
-		return VmRequest::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
+		return self::get($name, $default, FILTER_SANITIZE_STRING,FILTER_FLAG_STRIP_LOW|FILTER_FLAG_STRIP_HIGH);
 	}
 
 	public static function get($name, $default = null, $filter = FILTER_UNSAFE_RAW, $flags = FILTER_FLAG_STRIP_LOW){
@@ -1103,6 +1103,10 @@ class vmRequest {
 	 */
 	public static function getRequest( ){
 		return  filter_var_array($_REQUEST, FILTER_SANITIZE_STRING);
+	}
+
+	public static function getFiles($name){
+		return  filter_var_array($_FILES[$name], FILTER_SANITIZE_STRING);
 	}
 
 	public static function setVar($name, $value = null){

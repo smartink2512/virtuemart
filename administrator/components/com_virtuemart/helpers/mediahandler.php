@@ -27,27 +27,32 @@ class vmFile {
 	 * @param bool $forceNoUni
 	 * @return mixed|string
 	 */
-	static function makeSafe($string,$forceNoUni=false) {
+	static function makeSafe($str,$forceNoUni=false) {
 
-		$string = trim(JString::strtolower($string));
+		$str = trim(JString::strtolower($str));
 
 		// Delete all '?'
-		$str = str_replace('?', '', $string);
+		$str = str_replace('?', '', $str);
 
 		// Replace double byte whitespaces by single byte (East Asian languages)
 		$str = preg_replace('/\xE3\x80\x80/', ' ', $str);
-		$str = str_replace(' ', '-', $str);
+		//$str = str_replace(' ', '-', $str);
 
 		$lang = JFactory::getLanguage();
 		$str = $lang->transliterate($str);
+		vmdebug('makeSafe',$str);
+		$str = filter_var($str, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
 
-		if(function_exists('mb_ereg_replace')){
+		//$str = vmRequest::uword($str,'','_,-');
+		vmdebug('makeSafe',$str);
+		return $str;
+		/*if(function_exists('mb_ereg_replace')){
 			$regex = array('#(\.){2,}#', '#[^\w\.\- ]#', '#^\.#');
 			return mb_ereg_replace($regex, '', $str);
 		} else {
 			$regex = array('#(\.){2,}#', '#[^A-Za-z0-9\.\_\- ]#', '#^\.#');
 			return preg_replace($regex, '', $str);
-		}
+		}*/
 
 	}
 }
@@ -192,8 +197,9 @@ class VmMediaHandler {
 	 * @param array $data
 	 * @param string $type
 	 */
-	static public function prepareStoreMedia($table,$data,$type){
+	static public function prepareStoreMedia($table,$data){
 
+		$type= $data['file_type'];
 		$media = VmMediaHandler::createMedia($table,$type);
 
 		$data = $media->processAttributes($data);
@@ -611,8 +617,9 @@ class VmMediaHandler {
 				vmError('Not able to upload file, give path/url empty/too short '.$urlfolder.' please correct path in your virtuemart config');
 				return false;
 			}
-			$media = VmRequest::getVar('upload', array(), 'files');
-
+			$media = vmRequest::getFiles('upload');
+			$data = vmRequest::getRequest();
+			vmdebug('uploadFile',$data,$media);
 			$app = JFactory::getApplication();
 			switch ($media['error']) {
 				case 0:
