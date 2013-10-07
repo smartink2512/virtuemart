@@ -887,15 +887,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/**
-	 * @param $method
-	 */
-	function convert_condition_amount (&$method) {
-		$method->min_amount = (float)str_replace(',','.',$method->min_amount);
-		$method->max_amount = (float)str_replace(',','.',$method->max_amount);
-	}
-
-
-	/**
 	 * @param      $method
 	 * @param bool $getCurrency
 	 */
