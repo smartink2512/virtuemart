@@ -98,7 +98,6 @@ if(!empty($boxFuncAsk) or !empty($boxFuncReco)){
 //]]>
 ");
 }
-
 // This is the rows for the customfields, as long you have only one product, just increase it by one,
 // if you have more than one product, reset it for every product
 $this->row = 0;

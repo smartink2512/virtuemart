@@ -110,7 +110,7 @@ if ($product_parent_id=VmRequest::getInt('product_parent_id', false))   $col_pro
 			$checked = JHTML::_('grid.id', $i , $product->virtuemart_product_id,null,'virtuemart_product_id');
 			$published = JHTML::_('grid.published', $product, $i );
 			$is_featured = $this->toggle($product->product_special, $i, 'toggle.product_special');
-			$link = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id.'&product_parent_id='.$product->product_parent_id;
+			$link = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id;
 			?>
 			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->

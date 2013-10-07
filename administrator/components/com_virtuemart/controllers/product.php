@@ -56,16 +56,15 @@ class VirtuemartControllerProduct extends VmController {
 	 */
 	function save($data = 0){
 
-		$data = VmRequest::get('post');
+		$data = VmRequest::getRequest();
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(Permissions::getInstance()->check('admin')){
-			$data['product_desc'] = VmRequest::getVar('product_desc','','post','STRING',2);
-			$data['product_s_desc'] = VmRequest::getVar('product_s_desc','','post','STRING',2);
-			$data['customtitle'] = VmRequest::getVar('customtitle','','post','STRING',2);
+			$data['product_desc'] = VmRequest::get('product_desc','');
+			$data['product_s_desc'] = VmRequest::get('product_s_desc','');
+			$data['customtitle'] = VmRequest::get('customtitle','');
 		} else  {
-			$data['product_desc'] = VmRequest::getVar('product_desc','','post','STRING',2);
-			$data['product_desc'] = JComponentHelper::filterText($data['product_desc']);
+			$data['product_desc'] = VmRequest::getHtml('product_desc','');
 
 			//Why we have this?
 			$multix = Vmconfig::get('multix','none');
@@ -216,8 +215,8 @@ class VirtuemartControllerProduct extends VmController {
 
 	public function massxref_cats_exe(){
 
-		$virtuemart_cat_ids = VmRequest::getVar('cid',array(),'', 'ARRAY');
-		JArrayHelper::toInteger($virtuemart_cat_ids);
+		$virtuemart_cat_ids = VmRequest::getInt('cid', array() );
+		//JArrayHelper::toInteger($virtuemart_cat_ids);
 
 		$session = JFactory::getSession();
 		$cids = unserialize($session->get('vm_product_ids', array(), 'vm'));

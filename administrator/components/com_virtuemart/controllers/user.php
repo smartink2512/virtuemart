@@ -99,20 +99,20 @@ class VirtuemartControllerUser extends VmController {
 		} else {
 			$model = VmModel::getModel('user');
 
-			$data = VmRequest::get('post');
+			$data = vmRequest::getRequest();
 
 			// Store multiple selectlist entries as a ; separated string
 			if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 			    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 			}
 			// TODO disallow vendor_store_name as HTML ?
-			$data['vendor_store_name'] = VmRequest::getVar('vendor_store_name','','post','STRING',JREQUEST_ALLOWHTML);
-			$data['vendor_store_desc'] = VmRequest::getVar('vendor_store_desc','','post','STRING',JREQUEST_ALLOWHTML);
-			$data['vendor_terms_of_service'] = VmRequest::getVar('vendor_terms_of_service','','post','STRING',JREQUEST_ALLOWHTML);
-			$data['vendor_legal_info'] = VmRequest::getVar('vendor_legal_info','','post','STRING',JREQUEST_ALLOWHTML);
-			$data['vendor_letter_css'] = VmRequest::getVar('vendor_letter_css','','post','STRING',JREQUEST_ALLOWHTML);
-			$data['vendor_letter_header_html'] = VmRequest::getVar('vendor_letter_header_html','','post','STRING',JREQUEST_ALLOWHTML);
-			$data['vendor_letter_footer_html'] = VmRequest::getVar('vendor_letter_footer_html','','post','STRING',JREQUEST_ALLOWHTML);
+			$data['vendor_store_name'] = VmRequest::getHtml('vendor_store_name');
+			$data['vendor_store_desc'] = VmRequest::getHtml('vendor_store_desc');
+			$data['vendor_terms_of_service'] = VmRequest::getHtml('vendor_terms_of_service');
+			$data['vendor_legal_info'] = VmRequest::getHtml('vendor_legal_info');
+			$data['vendor_letter_css'] = VmRequest::getHtml('vendor_letter_css');
+			$data['vendor_letter_header_html'] = VmRequest::getHtml('vendor_letter_header_html');
+			$data['vendor_letter_footer_html'] = VmRequest::getHtml('vendor_letter_footer_html');
 
 			$ret=$model->store($data);
 			if(!$ret){

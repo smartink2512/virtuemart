@@ -35,7 +35,6 @@ class VirtuemartControllerCategory extends VmController {
 
 	public function __construct() {
 		parent::__construct();
-
 	}
 
 	/**
@@ -50,10 +49,10 @@ class VirtuemartControllerCategory extends VmController {
 			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', JText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
 		
-		$data = VmRequest::get('post');
+		$data = vmRequest::getRequest();
 
-		$data['category_name'] = VmRequest::getVar('category_name','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['category_description'] = VmRequest::getVar('category_description','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['category_name'] = VmRequest::getHtml('category_name','');
+		$data['category_description'] = VmRequest::getHtml('category_description','');
 
 		parent::save($data);
 	}
@@ -76,8 +75,8 @@ class VirtuemartControllerCategory extends VmController {
 
 		//capturing virtuemart_category_id
 		$id = 0;
-		$cid	= VmRequest::getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger($cid);
+		$cid	= VmRequest::getInt( 'cid', array() );
+		//JArrayHelper::toInteger($cid);
 
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
@@ -116,8 +115,8 @@ class VirtuemartControllerCategory extends VmController {
 
 		//capturing virtuemart_category_id
 		$id = 0;
-		$cid	= VmRequest::getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger($cid);
+		$cid	= VmRequest::getInt( 'cid', array() );
+		//JArrayHelper::toInteger($cid);
 
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
@@ -152,13 +151,13 @@ class VirtuemartControllerCategory extends VmController {
 		// Check for request forgeries
 		JSession::checkToken() or jexit( 'Invalid Token' );
 
-		$cid	= VmRequest::getVar( 'cid', array(), 'post', 'array' );	//is sanitized
-		JArrayHelper::toInteger($cid);
+		$cid	= VmRequest::getInt( 'cid', array() );	//is sanitized
+		//JArrayHelper::toInteger($cid);
 
 		$model = VmModel::getModel('category');
 
-		$order	= VmRequest::getVar('order', array(), 'post', 'array');
-		JArrayHelper::toInteger($order);
+		$order	= VmRequest::getInt('order', array() );
+		//JArrayHelper::toInteger($order);
 
 		if ($model->setOrder($cid,$order)) {
 			$msg = JText::_('COM_VIRTUEMART_NEW_ORDERING_SAVED');

@@ -416,7 +416,7 @@ class VirtueMartModelConfig extends VmModel {
 
 	}
 
-	public function remove() {
+	public function remove($ids) {
 
 		$table = $this->getTable('configs');
 		$id = 1;

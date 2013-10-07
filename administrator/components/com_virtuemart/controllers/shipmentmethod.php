@@ -50,10 +50,10 @@ class VirtuemartControllerShipmentmethod extends VmController {
 	 * @author Max Milbers
 	 */
 	function save($data = 0){
-		$data = VmRequest::get('post');
+		$data = vmRequest::getRequest();
 		// TODO disallow shipment_name as HTML
-		$data['shipment_name'] = VmRequest::getVar('shipment_name','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['shipment_desc'] = VmRequest::getVar('shipment_desc','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['shipment_name'] = VmRequest::getHtml('shipment_name','');
+		$data['shipment_desc'] = VmRequest::getHtml('shipment_desc','');
 
 		parent::save($data);
 

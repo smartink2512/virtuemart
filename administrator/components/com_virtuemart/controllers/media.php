@@ -63,10 +63,10 @@ class VirtuemartControllerMedia extends VmController {
 		$fileModel = VmModel::getModel('media');
 
 		//Now we try to determine to which this media should be long to
-		$data = VmRequest::get('post');
+		$data = vmRequest::getRequest();
 
 		//$data['file_title'] = VmRequest::getVar('file_title','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['file_description'] = VmRequest::getVar('file_description','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['file_description'] = VmRequest::getHtml('file_description','');
 
 		$data['media_attributes'] = VmRequest::getCmd('media_attributes');
 		$data['file_type'] = VmRequest::getCmd('file_type');

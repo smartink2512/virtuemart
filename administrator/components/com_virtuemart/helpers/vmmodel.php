@@ -845,7 +845,7 @@ class VmModel extends JObject {
 		$table = $this->getTable($tablename);
 		//if(empty($cidName)) $cidName = $this->_cidName;
 
-		$ids = VmRequest::getVar( $cidname, VmRequest::getVar('cid',array(0)), 'post', 'array' );
+		$ids = VmRequest::getInt( $cidname, VmRequest::getInt('cid', array() ) );
 
 		foreach($ids as $id){
 			$table->load( (int)$id );

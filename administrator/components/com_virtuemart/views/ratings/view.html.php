@@ -41,15 +41,15 @@ class VirtuemartViewRatings extends VmView {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		/* Get the review IDs to retrieve (input variable may be cid, cid[] or virtuemart_rating_review_id */
-		$cids = VmRequest::getVar('cid', 0);
+		$cids = VmRequest::getInt('cid');
 		if (empty($cids)) {
-			$cids= VmRequest::getVar('virtuemart_rating_review_id',0);
+			$cids= VmRequest::getInt('virtuemart_rating_review_id',0);
 		}
 		if ($cids && !is_array($cids)) $cids = array($cids);
 
 
-		jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($cids);
+		//jimport( 'joomla.utilities.arrayhelper' );
+		//JArrayHelper::toInteger($cids);
 
 		// Figure out maximum rating scale (default is 5 stars)
 		$this->max_rating = VmConfig::get('vm_maximum_rating_scale',5);

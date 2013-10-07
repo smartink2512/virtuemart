@@ -1055,6 +1055,10 @@ class vmRequest {
 		return VmRequest::get($name, $default, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_FLAG_STRIP_LOW);
 	}
 
+	public static function getHtml($name, $default = ''){
+		$tmp = VmRequest::get($name, $default);
+		return JComponentHelper::filterText($tmp);
+	}
 	/**
 	 * Gets a filtered request value
 	 * - Strips all characters that has a numerical value <32 and >127.

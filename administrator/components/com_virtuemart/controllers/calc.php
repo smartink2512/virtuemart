@@ -52,10 +52,10 @@ class VirtuemartControllerCalc extends VmController {
 	 */
 	function save($data = 0){
 
-		$data = VmRequest::get('post');
+		$data = vmRequest::getRequest();
 
-		$data['calc_name'] = VmRequest::getVar('calc_name','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['calc_descr'] = VmRequest::getVar('calc_descr','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['calc_name'] = VmRequest::getHtml('calc_name','');
+		$data['calc_descr'] = VmRequest::getHtml('calc_descr','');
 
 		parent::save($data);
 	}
@@ -72,8 +72,8 @@ class VirtuemartControllerCalc extends VmController {
 		JSession::checkToken() or jexit( 'Invalid Token' );
 
 		$id = 0;
-		$cid	= VmRequest::getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger($cid);
+		$cid	= VmRequest::getInt( 'cid', array() );
+		//JArrayHelper::toInteger($cid);
 
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
@@ -106,8 +106,8 @@ class VirtuemartControllerCalc extends VmController {
 		JSession::checkToken() or jexit( 'Invalid Token' );
 
 		$id = 0;
-		$cid	= VmRequest::getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger($cid);
+		$cid	= VmRequest::getInt( 'cid', array() );
+		//JArrayHelper::toInteger($cid);
 
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
@@ -137,8 +137,8 @@ class VirtuemartControllerCalc extends VmController {
 		// Check for request forgeries
 		JSession::checkToken() or jexit( 'Invalid Token' );
 
-		$cid	= VmRequest::getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger($cid);
+		$cid	= VmRequest::getInt( 'cid', array() );
+		//JArrayHelper::toInteger($cid);
 
 		$model = VmModel::getModel('calc');
 

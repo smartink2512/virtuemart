@@ -28,18 +28,15 @@ defined('_JEXEC') or die('Restricted access');
  * @subpackage Helper
  * @author Oscar van Eijk
  * @deprecated
- */
+ *
 class ParamHelper {
 
-	/** @var array list with parameter=>value */
+	// @var array list with parameter=>value
 	private $_data;
 
-	/** @var char seperator */
+	// @var char seperator
 	private $_sep;
 
-    /*
-     * @deprecated
-     */
 	public function __construct($p = null, $s = '\n')
 	{
 		// initialise
@@ -54,7 +51,7 @@ class ParamHelper {
 	/**
 	 * Set the field seperator
 	 * @param char $s
-	 */
+	 *
 	public function setSeper($s)
 	{
 		$this->_sep = $s;
@@ -65,7 +62,7 @@ class ParamHelper {
 	 * @param $p parameter name
 	 * @param $d default value
 	 * @return mixed parameter value or default value if non existing
-	 */
+	 *
 	public function get($p, $d = null)
 	{
 		if (array_key_exists($p, $this->_data)) {
@@ -79,7 +76,7 @@ class ParamHelper {
 	 * Return a single parameter value
 	 * @param $p parameter name
 	 * @param $v value
-	 */
+	 *
 	public function set($p, $v = null)
 	{
 		$this->_data[$p] = $v;
@@ -89,7 +86,7 @@ class ParamHelper {
 	 * Parse a parameter string and fill the _data array with key/value pairs
 	 * @param string $p
      * @deprecated
-	 */
+	 *
 	public function parseParam  ($p)
 	{
 		if (!$p) {
@@ -110,7 +107,7 @@ class ParamHelper {
 	/**
 	 * Format the _data array for database storage
 	 * @return string or null when no parameters exist
-	 */
+	 *
 	public function paramString()
 	{
 		$s = array();
@@ -121,4 +118,4 @@ class ParamHelper {
 	}
 }
 
-// No closing tag
+// No closing tag  */

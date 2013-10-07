@@ -41,7 +41,7 @@ class VirtuemartViewCurrency extends VmView {
 
 		$layoutName = VmRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
-			$cid	= VmRequest::getVar( 'cid' );
+			$cid	= VmRequest::getInt( 'cid' );
 
 			$task = VmRequest::getCmd('task', 'add');
 			//JArrayHelper::toInteger($cid);

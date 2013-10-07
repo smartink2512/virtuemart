@@ -1053,7 +1053,7 @@ class VmTable extends JTable {
 
 		$k = $this->_tbl_key;
 		// problem here was that $this->$k returned (0)
-		$cid = VmRequest::getVar('cid');
+		$cid = VmRequest::getInt('cid');
 		if (!empty($cid) && (is_array($cid))) {
 			$cid = reset($cid);
 		} else {

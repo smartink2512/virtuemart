@@ -63,7 +63,7 @@ class VirtueMartModelUserfields extends VmModel {
 		$this->setToggleName('account');
 		// Instantiate the Helper class
 
-		$this->_params = new ParamHelper();
+		//$this->_params = new ParamHelper();	//This is some old stuff by oscar, we remove it now
 		self::$_cache_ordered = null;
 		self::$_cache_named = array();
 		// Form fields that must be translated to parameters
@@ -81,7 +81,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 * Prepare a user field for database update
 	 */
 	public function prepareFieldDataSave($field, &$data) {
-		//		$post = VmRequest::get('post');
+		//		$post = vmRequest::getRequest();
 		$fieldType = $field->type;
 		$fieldName = $field->name;
 		$value = $data[$field->name];
@@ -197,7 +197,7 @@ class VirtueMartModelUserfields extends VmModel {
 		}
 
 		// Parse the parameters, if any
-		else $this->_params->parseParam($this->_data->params);
+		//else $this->_params->parseParam($this->_data->params);
 
 		return $this->_data;
 	}
@@ -260,12 +260,13 @@ class VirtueMartModelUserfields extends VmModel {
 				}
 			}
 		}
-		//vmdebug ('SAVED userfields', $data);
+
+		//This is some old stuff by oscar, we remove it now
 		// Put the parameters, if any, in the correct format
-		if (array_key_exists($data['type'], $this->reqParam)) {
+		/*if (array_key_exists($data['type'], $this->reqParam)) {
 			$this->_params->set($this->reqParam[$data['type']], $data[$this->reqParam[$data['type']]]);
 			$data['params'] = $this->_params->paramString();
-		}
+		}*/
 
 		// Store the fieldvalues, if any, in a correct array
 		$fieldValues = $this->postData2FieldValues($data['vNames'], $data['vValues'], $data['virtuemart_userfield_id'] );

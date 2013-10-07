@@ -47,10 +47,10 @@ class VirtuemartControllerPaymentmethod extends VmController {
 
 
 	function save($data = 0){
-		$data = VmRequest::get('post');
+		$data = VmRequest::getRequest();
 		// TODO disallow html in paym_name ?
-		$data['payment_name'] = VmRequest::getVar('payment_name','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['payment_desc'] = VmRequest::getVar('payment_desc','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['payment_name'] = VmRequest::getHtml('payment_name','');
+		$data['payment_desc'] = VmRequest::getHtml('payment_desc','');
 
 		parent::save($data);
 	}

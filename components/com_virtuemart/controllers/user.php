@@ -172,7 +172,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$currentUser = JFactory::getUser();
 		$msg = '';
 
-		$data = VmRequest::get('post');
+		$data = vmRequest::getRequest();
 
 		$data['address_type'] = VmRequest::getCmd('addrtype','BT');
 		if($currentUser->guest!=1 || $register){
@@ -184,12 +184,12 @@ class VirtueMartControllerUser extends JControllerLegacy
 					$data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 				}
 
-				$data['vendor_store_name'] = VmRequest::getVar('vendor_store_name','','post','STRING',JREQUEST_ALLOWHTML);
-				$data['vendor_store_desc'] = VmRequest::getVar('vendor_store_desc','','post','STRING',JREQUEST_ALLOWHTML);
-				$data['vendor_terms_of_service'] = VmRequest::getVar('vendor_terms_of_service','','post','STRING',JREQUEST_ALLOWHTML);
-				$data['vendor_letter_css'] = VmRequest::getVar('vendor_letter_css','','post','STRING',JREQUEST_ALLOWHTML);
-				$data['vendor_letter_header_html'] = VmRequest::getVar('vendor_letter_header_html','','post','STRING',JREQUEST_ALLOWHTML);
-				$data['vendor_letter_footer_html'] = VmRequest::getVar('vendor_letter_footer_html','','post','STRING',JREQUEST_ALLOWHTML);
+				$data['vendor_store_name'] = VmRequest::getHtml('vendor_store_name');
+				$data['vendor_store_desc'] = VmRequest::getHtml('vendor_store_desc');
+				$data['vendor_terms_of_service'] = VmRequest::getHtml('vendor_terms_of_service');
+				$data['vendor_letter_css'] = VmRequest::getHtml('vendor_letter_css');
+				$data['vendor_letter_header_html'] = VmRequest::getHtml('vendor_letter_header_html');
+				$data['vendor_letter_footer_html'] = VmRequest::getHtml('vendor_letter_footer_html');
 			}
 
 			//It should always be stored
@@ -268,9 +268,6 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 	function removeAddressST(){
 
-		$virtuemart_userinfo_id = VmRequest::getVar('virtuemart_userinfo_id');
-
-		//Lets do it dirty for now
 		$userModel = VmModel::getModel('user');
 		$userModel->removeAddress();
 

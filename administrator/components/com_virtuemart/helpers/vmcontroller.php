@@ -156,7 +156,7 @@ class VmController extends JControllerLegacy{
 
 		JSession::checkToken() or jexit( 'Invalid Token save' );
 
-		if($data===0)$data = VmRequest::get('post');
+		if($data===0)$data = vmRequest::getRequest();
 
 		$model = VmModel::getModel($this->_cname);
 		$id = $model->store($data);
@@ -190,9 +190,9 @@ class VmController extends JControllerLegacy{
 
 		JSession::checkToken() or jexit( 'Invalid Token remove' );
 
-		$ids = VmRequest::getVar($this->_cidName, VmRequest::getVar('cid',array(),'', 'ARRAY'), '', 'ARRAY');
-		jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($ids);
+		$ids = VmRequest::getVar($this->_cidName, VmRequest::getInt('cid', array() ));
+		//jimport( 'joomla.utilities.arrayhelper' );
+		//JArrayHelper::toInteger($ids);
 
 		if(count($ids) < 1) {
 			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
@@ -319,10 +319,10 @@ class VmController extends JControllerLegacy{
 
 		JSession::checkToken() or jexit( 'Invalid Token' );
 
-		$cid 	= VmRequest::getVar( $this->_cidName, VmRequest::getVar('cid',array(0)), 'post', 'array' );
-		$order 	= VmRequest::getVar( 'order', array(), 'post', 'array' );
-		JArrayHelper::toInteger($cid);
-		JArrayHelper::toInteger($order);
+		$cid 	= VmRequest::getInt( $this->_cidName, VmRequest::getInt('cid', array() ) );
+		$order 	= VmRequest::getInt( 'order', array() );
+		//JArrayHelper::toInteger($cid);
+		//JArrayHelper::toInteger($order);
 
 		$model = VmModel::getModel($this->_cname);
 		if (!$model->saveorder($cid, $order)) $msg = 'error';
