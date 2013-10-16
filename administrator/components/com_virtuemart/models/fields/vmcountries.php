@@ -1,5 +1,5 @@
 <?php
-defined('_JEXEC') or die();
+defined('JPATH_PLATFORM') or die;
 
 /**
  *
@@ -13,37 +13,45 @@ defined('_JEXEC') or die();
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id$
+ * @version $Id: $
  */
 /*
  * This class is used by VirtueMart Payment or Shipment Plugins
  * which uses JParameter
- * So It should be an extension of JFormField
+ * So It should be an extension of JElement
  * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
-class JElementVmCountries extends JFormField {
+  JFormHelper::loadFieldClass('list');
+ 
+class JFormFieldVmCountries extends JFormFieldList {
 
-    /**
-     * Element name
-     * @access	protected
-     * @var		string
-     */
-    var $_name = 'countries';
+	/**
+	 * The form field type.
+	 *
+	 * @var    string
+	 * @since  11.1
+	 */
+	public $type = 'vmcountries';
 
-    function fetchElement($name, $value, &$node, $control_name) {
-
-        $db =  JFactory::getDBO();
+	protected function getOptions()
+	{ 
+		$options = array();
 
         $query = 'SELECT `virtuemart_country_id` AS value, `country_name` AS text FROM `#__virtuemart_countries`
                		WHERE `published` = 1 ORDER BY `country_name` ASC '
         ;
-
+		$db =   JFactory::getDBO();
         $db->setQuery($query);
-        $fields = $db->loadObjectList();
-        $class = '';
+        $values = $db->loadObjectList();
+		foreach ($values as $v) {
+			$options[] = JHtml::_('select.option', $v->value, $v->text);
+		}
 
-        $class = 'multiple="true" size="10"  ';
-        return JHTML::_('select.genericlist', $fields, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
-    }
+        //BAD $class = 'multiple="true" size="10"';
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
+
+		return $options;
+	}
 
 }

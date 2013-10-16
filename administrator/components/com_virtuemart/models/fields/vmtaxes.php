@@ -1,5 +1,5 @@
 <?php
-defined('_JEXEC') or die();
+defined('JPATH_PLATFORM') or die;
 /**
  *
  * @package	VirtueMart
@@ -14,30 +14,37 @@ defined('_JEXEC') or die();
  * other free or open source software licenses.
  * @version $Id$
  */
+
 if (!class_exists('VmConfig'))
     require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+
 if (!class_exists('ShopFunctions'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
-if (!class_exists('TableCategories'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'categories.php');
 
-if (!class_exists('VmElements'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'elements' . DS . 'vmelements.php');
+
 /*
- * This element is used by the menu manager
- * Should be that way
+ * This class is used by VirtueMart Payment or Shipment Plugins
+ * which uses JParameter
+ * So It should be an extension of JElement
+ * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
+class JFormFieldVmTaxes extends JFormField {
 
-class JElementVmvendormenu extends JFormField {
+	/**
+	 * The form field type.
+	 *
+	 * @var    string
+	 * @since  11.1
+	 */
+	public $type ='vmtaxes';
 
-    var $_name = 'vendormenu';
+    function getInput() {
 
-    function fetchElement($name, $value, &$node, $control_name) {
-	    $lang = JFactory::getLanguage();
-	    $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
-	$model = VmModel::getModel('Vendor');
-	$vendors = $model->getVendors(true, true, false);
-	return JHTML::_('select.genericlist', $vendors, $control_name . '[' . $name . ']', '', $name, 'vendor_name', $value, $control_name . $name);
+
+    return ShopFunctions::renderTaxList($this->value,  $this->name, '');
+
+        // $class = 'multiple="true" size="10"';
+       // return JHTML::_('select.genericlist', $taxrates, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
     }
 
 }

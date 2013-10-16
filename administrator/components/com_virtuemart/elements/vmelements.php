@@ -13,7 +13,7 @@ defined('_JEXEC') or die();
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: $
+ * @version $Id$
  */
 /*
  * This trick allows us to extend the correct class, based on whether it's Joomla! 1.5 or 1.6

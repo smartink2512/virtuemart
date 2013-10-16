@@ -20,18 +20,21 @@ defined ('_JEXEC') or die();
  * So It should be an extension of JFormField
  * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
-class JElementVmOrderState extends JFormField {
+class JFormFieldVmOrderState extends JFormFieldList {
 
 	/**
-	 * Element name
+	 * The form field type.
 	 *
-	 * @access    protected
-	 * @var        string
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $_name = 'OrderStates';
+	public $type = 'vmOrderStates';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
+	protected function getOptions()
+	{
+        VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 
+        $options = array();
 		$db = JFactory::getDBO ();
 
 		$query = 'SELECT `order_status_code` AS value, `order_status_name` AS text
@@ -40,13 +43,15 @@ class JElementVmOrderState extends JFormField {
                  ORDER BY `ordering` ASC ';
 
 		$db->setQuery ($query);
-		$fields = $db->loadObjectList ();
+		$values = $db->loadObjectList ();
 		$class = '';
-		foreach ($fields as $field) {
-			$field->text= JText::_ ($field->text);
+		foreach ($values as $v) {
+			$options[] = JHtml::_('select.option', $v->value, JText::_($v->text));
 		}
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
 
-		return JHTML::_ ('select.genericlist', $fields, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);
+		return $options;
 	}
 
 }

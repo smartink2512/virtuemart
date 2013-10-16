@@ -14,37 +14,43 @@ defined('_JEXEC') or die();
  * other free or open source software licenses.
  * @version $Id$
  */
-
-if (!class_exists('VmConfig'))
-    require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
-
-if (!class_exists('ShopFunctions'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
-
-
 /*
  * This class is used by VirtueMart Payment or Shipment Plugins
  * which uses JParameter
  * So It should be an extension of JFormField
  * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
+class JFormFieldVmjpluginwarning extends JFormField {
 
-class JElementVmTaxes extends JFormField {
+	/**
+	 * The form field type.
+	 *
+	 * @var    string
+	 * @since  11.1
+	 */
+	public $type = 'vmjpluginwarning';
+	
+	protected function getLabel()
+	{
+	
+	}
+	/**
+	 * Method to get the field input markup.
+	 *
+	 * @return  string  The field input markup.
+	 *
+	 * @since   11.1
+	 */
+	protected function getInput()
+	{
+	    $lang = JFactory::getLanguage();
+	    $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
 
-    /**
-     * Element name
-     * @access	protected
-     * @var		string
-     */
-    var $_name = 'taxes';
-
-    function fetchElement($name, $value, &$node, $control_name) {
-
-
-    return ShopFunctions::renderTaxList($value,  $control_name . '[' . $name . ']', '');
-
-        // $class = 'multiple="true" size="10"';
-       // return JHTML::_('select.genericlist', $taxrates, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
-    }
+		$option = JRequest::getWord('option');
+		if ($option == 'com_virtuemart')
+			return null;
+		else
+			return JText::_('COM_VIRTUEMART_PLUGIN_WARNING');
+	}
 
 }

@@ -70,11 +70,11 @@ abstract class vmPlugin extends JPlugin {
 		$filename = 'plg_' . $this->_type . '_' . $this->_name;
 
 		VmConfig::loadJLang($filename);
-
-		if (!class_exists ('JParameter')) {
-			require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php');
-		}
-
+        if (JVM_VERSION < 3) {
+            if (!class_exists ('JParameter')) {
+                require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php');
+            }
+        }
 		$this->_tablename = '#__virtuemart_' . $this->_psType . '_plg_' . $this->_name;
 		$this->_tableChecked = FALSE;
 	}

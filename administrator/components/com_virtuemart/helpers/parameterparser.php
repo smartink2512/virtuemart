@@ -621,6 +621,17 @@ class vmParameters extends JFormField {
 		return JHTML::_('select.genericlist', $db->loadObjectList(), '' . $control_name . '[' . $name . ']', 'class="inputbox"', $key, $val, $value, $control_name . $name);
 	}
 
+    /**
+     * Method to get the field input markup.
+     *
+     * @return  string  The field input markup.
+     *
+     * @since   11.1
+     */
+    protected function getInput()
+    {
+        // TODO: Implement getInput() method.
+    }
 }
 
 /**

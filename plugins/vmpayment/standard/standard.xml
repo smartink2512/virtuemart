@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<install version="1.5" type="plugin" group="vmpayment">
+    <extension type="plugin" version="2.5" method="upgrade" group="vmpayment">
+
     <name>Standard</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
@@ -35,6 +36,37 @@
         <param name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_STANDARD_TAX" description="VMPAYMENT_STANDARD_TAX_DESC"/>
         <param name="payment_info" type="textarea" cols="40" rows="30" label="VMPAYMENT_STANDARD_PAYMENTINFO" description="VMPAYMENT_STANDARD_PAYMENTINFO_EXPLAIN"/>
     </params>
+    <config>
+        <fields name="params">
+            <fieldset name="config" addfieldpath="/administrator/components/com_virtuemart/models/fields">
+                <field type="vmjpluginwarning"/>
+                <field
+                        name="payment_logos"
+                        type="media"
+                        directory="stories/virtuemart/payment"
+                        label="VMPAYMENT_STANDARD_LOGOS"
+                        description="VMPAYMENT_STANDARD_LOGOS_DESC"
+                        labelclass="control-label"/>
+
+                <field name="countries" type="vmcountries" scope="com_virtuemart" default="" label="VMPAYMENT_STANDARD_COUNTRIES" description="VMPAYMENT_STANDARD_COUNTRIES_DESC"/>
+                <field name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_STANDARD_CURRENCY" description="VMPAYMENT_STANDARD_CURRENCY_DESC"/>
+                <field name="status_pending" type="vmorderstate" scope="com_virtuemart" default="U" label="VMPAYMENT_STANDARD_STATUS_PENDING" description="VMPAYMENT_STANDARD_STATUS_PENDING_EXPLAIN"/>
+                <field name="send_invoice_on_order_null" type="radio" class="btn-group" default="1" label="VMPAYMENT_STANDARD_SEND_INVOICE_ON_ORDER_NULL" description="VMPAYMENT_STANDARD_SEND_INVOICE_ON_ORDER_NULL_EXPLAIN">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field name="min_amount" type="text" label="VMPAYMENT_STANDARD_MIN_AMOUNT" description="VMPAYMENT_STANDARD_MIN_AMOUNT_EXPLAIN"/>
+                <field name="max_amount" type="text" label="VMPAYMENT_STANDARD_MAX_AMOUNT" description="VMPAYMENT_STANDARD_MAX_AMOUNT_EXPLAIN"/>
+                <field name="cost_per_transaction" type="text" label="VMPAYMENT_STANDARD_COST_PER_TRANSACTION" description="VMPAYMENT_STANDARD_COST_PER_TRANSACTION_EXPLAIN"/>
+                <field name="cost_percent_total" type="text" label="VMPAYMENT_STANDARD_COST_PERCENT_TOTAL" description="VMPAYMENT_STANDARD_COST_PERCENT_TOTAL_EXPLAIN"/>
+                <field name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_STANDARD_TAX" description="VMPAYMENT_STANDARD_TAX_DESC"/>
+                <field name="payment_info" type="textarea" cols="40" rows="30" label="VMPAYMENT_STANDARD_PAYMENTINFO" description="VMPAYMENT_STANDARD_PAYMENTINFO_EXPLAIN"/>
+            </fieldset>
 
 
-</install>
+        </fields>
+    </config>
+
+
+
+    </extension>

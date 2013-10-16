@@ -39,40 +39,54 @@ abstract class vmPSPlugin extends vmPlugin {
 		$this->_tableChecked = TRUE;
 	}
 
-	public function getVarsToPush () {
+    public function getVarsToPush()
+    {
 
-		$black_list = array('spacer');
-		$data = array();
-		if (JVM_VERSION > 1) {
-			$filename = JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/' . $this->_name . '.xml';
-		} else {
-			$filename = JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '.xml';
-		}
-		// Check of the xml file exists
-		$filePath = JPath::clean ($filename);
-		if (is_file ($filePath)) {
-			$xml = JFactory::getXML ('simple');
-			$result = $xml->loadFile ($filename);
-			if ($result) {
-				if ($params = $xml->document->params) {
-					foreach ($params as $param) {
-						if ($param->_name = "params") {
-							if ($children = $param->_children) {
-								foreach ($children as $child) {
-									if (isset($child->_attributes['name'])) {
-										$data[$child->_attributes['name']] = array('', 'char');
-										$result = TRUE;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+        $black_list = array('spacer');
+        $fields = array();
+        $filename = JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/' . $this->_name . '.xml';
 
-		return $data;
-	}
+        // Check of the xml file exists
+        $filePath = JPath::clean($filename);
+
+        if (is_file($filePath)) {
+            $xml = simplexml_load_file($filename);
+            if ($xml) {
+                if (JVM_VERSION < 3) {
+                    if ($params = $xml->document->params) {
+                        foreach ($params as $param) {
+                            if ($param->_name = "params") {
+                                if ($children = $param->_children) {
+                                    foreach ($children as $child) {
+                                        if (isset($child->_attributes['name'])) {
+                                            $data[$child->_attributes['name']] = array('', 'char');
+                                            $result = TRUE;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                        if ($fields = $xml->config->fields) {
+                            foreach ($fields->fieldset as $fieldset) {
+                                foreach ($fieldset->field as $field) {
+                                    if(!isset($field['type'])) continue ;
+                                    // note : valid XML form fields have always a name
+                                    if(isset($field['name'])) {
+                                        if(!isset($field['type'])) continue ;
+                                        $type = (string)$field['type'];
+                                        $data[(string)$field['name']] = array('', 'char');
+                                    }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+        return $data;
+    }
 
 	/**
 	 * check if it is the correct type
