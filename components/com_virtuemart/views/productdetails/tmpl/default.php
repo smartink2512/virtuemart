@@ -32,6 +32,8 @@ JHTML::_('behavior.modal');
 // JHTML::_('behavior.tooltip');
 $MailLink = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&virtuemart_category_id=' . $this->product->virtuemart_category_id . '&tmpl=component';
 
+$boxFuncReco = '';
+$boxFuncAsk = '';
 if(VmConfig::get('usefancy',0)){
 	vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
 	vmJsApi::css('jquery.fancybox-1.3.4');
