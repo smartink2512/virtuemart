@@ -250,7 +250,7 @@ class VmView extends JView{
 		foreach ($allLanguages as $jlang) {
 			$languagesByCode[$jlang->lang_code]=$jlang;
 		}
-
+		vmdebug('What is the sense of this?',$allLanguages,$languagesByCode);
 		// only add if ID and view not null
 		if ($editView and $id and (count(vmconfig::get('active_languages'))>1) ) {
 
@@ -266,13 +266,21 @@ class VmView extends JView{
 				if (!in_array($joomlaLang['value'], $activeVmLangs) ) {
 					unset($languages[$k] );
 				} else {
+
 					$key=$joomlaLang['value'];
-					$img=$languagesByCode[$joomlaLang['value']]->image;
+					if(!isset($languagesByCode[$key])){
+						$img = substr($key,0,2);//We try a fallback
+						vmError('COM_VIRTUEMART_MISSING_FLAG',$img,$joomlaLang['text']);
+					} else {
+						$img=$languagesByCode[$key]->image;
+					}
 					$image_flag="../media/mod_languages/images/".$img.".gif";
+
 					if (!file_exists ($image_flag)) {
 						vmerror(JText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $image_flag,$joomlaLang['text'] ) );
+					} else {
+						$flagCss .="td.flag-".$key.",.flag-".$key."{background: url( ".$image_flag.") no-repeat 0 0; padding-left:20px !important;}\n";
 					}
-					$flagCss .="td.flag-".$key.",.flag-".$key."{background: url( ".$image_flag.") no-repeat 0 0; padding-left:20px !important;}\n";
 				}
 			}
 			JFactory::getDocument()->addStyleDeclaration($flagCss);

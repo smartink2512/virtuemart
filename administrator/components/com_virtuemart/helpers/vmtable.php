@@ -1052,18 +1052,19 @@ class VmTable extends JTable {
 
 		$k = $this->_tbl_key;
 		// problem here was that $this->$k returned (0)
-		$cid = JRequest::getVar('cid');
+
+		$cid = JRequest::getVar($this->_pkeyForm);
+		if(empty($cid)){
+			$cid = JRequest::getVar('cid');
+		}
+		if(empty($cid)){
+			// either we fix custom fields or fix it here:
+			$cid = JRequest::getVar('virtuemart_custom_id');
+		}
 		if (!empty($cid) && (is_array($cid))) {
 			$cid = reset($cid);
 		} else {
-			// either we fix custom fields or fix it here:
-			$cid = JRequest::getVar('virtuemart_custom_id');
-			if (!empty($cid) && (is_array($cid))) {
-				$cid = reset($cid);
-			} else {
-				vmError(get_class($this) . ' is missing cid information !');
-				return false;
-			}
+			vmError(get_class($this) . ' is missing cid information !');
 		}
 		// stAn: if somebody knows how to get current `ordering` of selected cid (i.e. virtuemart_userinfo_id or virtuemart_category_id from defined vars, you can review the code below)
 		$q = "SELECT `" . $this->_orderingKey . '` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . "` = '" . (int)$cid . "' limit 0,1";
