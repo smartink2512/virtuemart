@@ -118,6 +118,11 @@ class TableOrders extends VmTable {
 			$this->order_pass = 'p_'.substr( md5((string)time().$this->order_number ), 0, 5);
 		}
 
+		$adminID = JFactory::getSession()->get('vmAdminID');
+		if(isset($adminID)) {
+			$this->created_by = $adminID;
+		}
+
 		return parent::check();
 	}
 

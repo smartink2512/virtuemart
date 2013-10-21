@@ -395,7 +395,8 @@ class VmTable extends JTable {
 			//Lets check if the user is admin or the mainvendor
 			if (!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 			$admin = Permissions::getInstance()->check('admin');
-			if ($admin) {
+			$adminSessionID = JFactory::getSession()->get('vmAdminID');
+			if ($admin || JFactory::getUser($adminSessionID)->authorise('core.admin', 'com_virtuemart')) {
 //				vmdebug('setLoggableFieldsForStore ', $this->created_on);
 				if (empty($this->$pkey) and empty($this->created_on)) {
 					$this->created_on = $today;

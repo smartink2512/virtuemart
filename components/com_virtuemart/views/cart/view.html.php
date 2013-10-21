@@ -367,6 +367,17 @@ class VirtueMartViewCart extends VmView {
 		return true;
 	}
 
+	function getUserList() {
+		$db = JFactory::getDbo();
+		$q = 'SELECT * FROM #__users ORDER BY name';
+		$db->setQuery($q);
+		$result = $db->loadObjectList();
+		foreach($result as $user) {
+			$user->displayedName = $user->name .'&nbsp;&nbsp;( '. $user->username .' )';
+		}
+		return $result;
+	}
+
 }
 
 //no closing tag

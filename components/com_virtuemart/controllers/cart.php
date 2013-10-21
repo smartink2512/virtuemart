@@ -377,6 +377,48 @@ class VirtueMartControllerCart extends JController {
 	}
 
 	/**
+	 * Change the shopper
+	 *
+	 * @author Maik Künnemann
+	 *
+	 */
+	public function changeShopper() {
+		JRequest::checkToken () or jexit ('Invalid Token');
+
+		//check for permissions
+		if(!JFactory::getUser(JFactory::getSession()->get('vmAdminID'))->authorise('core.admin', 'com_virtuemart') || !VmConfig::get ('oncheckout_change_shopper')){
+			$mainframe = JFactory::getApplication();
+			$mainframe->enqueueMessage(JText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $newUser->name .' ('.$newUser->username.')'), 'error');
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
+		}
+
+		//get data of current and new user
+		$usermodel = VmModel::getModel('user');
+		$user = $usermodel->getCurrentUser();
+		$newUser = JFactory::getUser(JRequest::getCmd('userID'));
+
+		//update session
+		$session = JFactory::getSession();
+		$adminID = $session->get('vmAdminID');
+		if(!isset($adminID)) $session->set('vmAdminID', $user->virtuemart_user_id);
+		$session->set('user', $newUser);
+
+		//update cart data
+		$cart = VirtueMartCart::getCart();
+		$data = $usermodel->getUserAddressList(JRequest::getCmd('userID'), 'BT');
+		foreach($data[0] as $k => $v) {
+			$data[$k] = $v;
+		}
+		$cart->BT['email'] = $newUser->email;
+		unset($cart->ST);
+		$cart->saveAddressInCart($data, 'BT');
+
+		$mainframe = JFactory::getApplication();
+		$mainframe->enqueueMessage(JText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY', $newUser->name .' ('.$newUser->username.')'), 'info');
+		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
+	}
+
+	/**
 	 * Checks for the data that is needed to process the order
 	 *
 	 * @author Max Milbers

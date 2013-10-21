@@ -219,6 +219,18 @@ $document->addScriptDeclaration($js);
 				<?php echo VmHTML::checkbox('vmlang_js', VmConfig::get('vmlang_js',0)); ?>
 			</td>
 		</tr>
+		<tr>
+			<td class="key">
+            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_CHANGE_SHOPPER_TIP'); ?>">
+					<label for="oncheckout_change_shopper">
+						<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_CHANGE_SHOPPER'); ?>
+					</label>
+                </span>
+			</td>
+			<td>
+				<?php echo VmHTML::checkbox('oncheckout_change_shopper', VmConfig::get('oncheckout_change_shopper',0)); ?>
+			</td>
+		</tr>
 	</table>
 </fieldset>
 
