@@ -635,7 +635,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$value = str_replace('\r\n', "QQLINEBREAKQQ", $value);
 				$value = urlencode( stripslashes($value) );
 				$value = str_replace( "QQLINEBREAKQQ", "\r\n", $value );
-
 				$post_msg .= "&$key=$value";
 			}
 		}
@@ -653,7 +652,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		$valid_ipn = false;
 		if (!$fps) {
-			$this->sendEmailToVendorAndAdmins("error with paypal", JText::sprintf('VMPAYMENT_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno));
+			$this->sendEmailToVendorAndAdmins("error with PayPal", JText::sprintf('VMPAYMENT_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno)."/n".$post_msg);
 			$this->logInfo('_processIPN fsockopen FALSE', 'message');
 		} else {
 			fputs($fps, $header . $post_msg);

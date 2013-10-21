@@ -83,7 +83,7 @@ class VirtueMartCart {
 	 * @param null  $cartData: if not empty, do no get the cart data from session
 	 * @return null|VirtueMartCart
 	 */
-	public static function getCart($setCart=true, $options = array()) {
+	public static function getCart($setCart=true, $options = array(), $cartData=NULL) {
 
 		//What does this here? for json stuff?
 		if (!class_exists('JTable')
@@ -91,8 +91,12 @@ class VirtueMartCart {
 // 		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
 
 		if(empty(self::$_cart)){
-			$session = JFactory::getSession($options);
-			$cartSession = $session->get('vmcart', 0, 'vm');
+			if (empty($cartData)) {
+				$session = JFactory::getSession($options);
+				$cartSession = $session->get('vmcart', 0, 'vm');
+			} else {
+				$cartSession=$cartData;
+			}
 
 			if (!empty($cartSession)) {
 				$sessionCart = unserialize( $cartSession );
@@ -726,23 +730,20 @@ class VirtueMartCart {
 		if (!class_exists('CouponHelper')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
 		}
-		if(!isset($this->pricesUnformatted['salesPrice'])){
-			$this->getCartPrices();
-		}
+		$prices = $this->getCartPrices();
 
 		if(!in_array($coupon_code,$this->_triesValidateCoupon)){
 			$this->_triesValidateCoupon[] = $coupon_code;
 		}
 
 		if(count($this->_triesValidateCoupon)<8){
-			$msg = CouponHelper::ValidateCouponCode($coupon_code, $this->pricesUnformatted['salesPrice']);;
+			$msg = CouponHelper::ValidateCouponCode($coupon_code, $prices['salesPrice']);;
 		} else{
 			$msg = JText::_('COM_VIRTUEMART_CART_COUPON_TOO_MANY_TRIES');
 		}
 
 		if (!empty($msg)) {
 			$this->couponCode = '';
-			$this->getCartPrices();
 			$this->setCartIntoSession();
 			return $msg;
 		}
@@ -1303,17 +1304,10 @@ class VirtueMartCart {
 	 */
 	public function prepareCartData($checkAutomaticSelected=true){
 		vmSetStartTime('prepareCartData');
+		// Get the products for the cart
+		$product_prices = $this->getCartPrices($checkAutomaticSelected);
 
-		if(!empty($this->couponCode)){
-			$this->setCouponCode($this->couponCode);
-			vmdebug('ValidateCouponCode',$this->couponCode);
-			//CouponHelper::ValidateCouponCode($this->couponCode, $this->pricesUnformatted['salesPrice']);
-		} else{
-			// Get the products for the cart, the setCouponCode does it for us
-			$this->getCartPrices($checkAutomaticSelected);
-		}
-
-		if (empty($this->pricesUnformatted)) return null;
+		if (empty($product_prices)) return null;
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
 

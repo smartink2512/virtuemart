@@ -3,8 +3,8 @@
 <project name="VIRTUEMART2" default="VIRTUEMART2" basedir=".">
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
-    <property name="vm.version" value="2.0.TEST"/>
-    <property name="PHING.VM.CODENAME" value="Alcala"/>
+    <property name="vm.version" value="2.0.24"/>
+    <property name="PHING.VM.CODENAME" value="IceBear"/>
     <property file="build.properties"/>
     <target name="title">
         <echo message="BUILD VirtueMart 2 package FROM ${export.to}  TO ${package.abspath}"/>
@@ -473,7 +473,7 @@
         </zip>
         <echo msg="MAIN Component compressed OK!"/>
     </target>
-    <target name="AIO" depends="aio_files,LANGUAGE, delete.language.loop">
+    <target name="AIO" depends="aio_files">
         <echo msg="Creating AIO PACKAGE  ..."/>
         <tar destfile="${package.folder}/${component.name}.${vm.version}_ext_aio.tar.gz" compression="gzip">
             <fileset dir="${package.folder.aio}">
@@ -491,15 +491,11 @@
         </zip>
         <echo msg="AIO Component compressed OK!"/>
     </target>
+    <!-- wE ARE NOT INCLUDING THE LANGUAGE ANYLONGER , THEY ARE ON TRANSIFEX
     <target name="LANGUAGE" depends="build.language.loop">
-        <!-- echo msg="Creating Language PACKAGE  ..."/>
-        <zip destfile="${package.folder}/${component.name}.${vm.version}_languages_extract_first.zip">
-            <fileset dir="${package.folder.language}">
-                <include name="*.zip"/>
-            </fileset>
-        </zip>
-        <echo msg="Language package Component compressed OK!"/ -->
+
     </target>
+        -->
     <target name="VIRTUEMART2" depends="title, clean ,svn.export, Main, AIO">
         <echo msg="LATEST REVISION is ${svn.lastrevision}"/>
         <echo msg="DATE ${TODAY}, TIME ${TSTAMP}"/>

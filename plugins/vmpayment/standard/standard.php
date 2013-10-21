@@ -64,7 +64,7 @@ if (!class_exists ('vmPSPlugin')) {
 			'payment_name'                => 'varchar(5000)',
 			'payment_order_total'         => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
 			'payment_currency'            => 'char(3)',
-			'email_currency'            => 'char(3)',
+			'email_currency'              => 'char(3)',
 			'cost_per_transaction'        => 'decimal(10,2)',
 			'cost_percent_total'          => 'decimal(10,2)',
 			'tax_id'                      => 'smallint(1)'
@@ -388,6 +388,34 @@ if (!class_exists ('vmPSPlugin')) {
 		}
 
 	}
+		/**
+		 * @param $virtuemart_paymentmethod_id
+		 * @param $paymentCurrencyId
+		 * @return bool|null
+		 */
+		function plgVmgetEmailCurrency($virtuemart_paymentmethod_id, $virtuemart_order_id, &$emailCurrencyId) {
+
+			if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
+				return NULL; // Another method was selected, do nothing
+			}
+			if (!$this->selectedThisElement($method->payment_element)) {
+				return FALSE;
+			}
+			if (!($payments = $this->getDatasByOrderId($virtuemart_order_id))) {
+				// JError::raiseWarning(500, $db->getErrorMsg());
+				return '';
+			}
+			if (empty($payments[0]->email_currency)) {
+				$vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
+				$db = JFactory::getDBO();
+				$q = 'SELECT   `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`=' . $vendorId;
+				$db->setQuery($q);
+				$emailCurrencyId = $db->loadResult();
+			} else {
+				$emailCurrencyId = $payments[0]->email_currency;
+			}
+
+		}
 	/**
 	 * This event is fired during the checkout process. It can be used to validate the
 	 * method data as entered by the user.

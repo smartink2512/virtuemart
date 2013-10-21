@@ -421,7 +421,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 if ($this->totalInPaymentCurrency) {
 ?>
 
-<tr class="sectiontableentry2">
+<tr class="sectiontableentry2 totalInPaymentCurrency">
 	<td colspan="4" align="right"><?php echo JText::_ ('COM_VIRTUEMART_CART_TOTAL_PAYMENT') ?>:</td>
 
 	<?php if (VmConfig::get ('show_tax')) { ?>

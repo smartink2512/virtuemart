@@ -24,7 +24,7 @@ class JElementKlarnaCurl extends JElement {
 			return JTExt::_ ('VMPAYMENT_KLARNA_CURL_LIBRARY_NOT_INSTALLED');
 		}
 		else {
-			return JTExt::_ ('VMPAYMENT_KLARNA_CURL_LIBRARY_INSTALLED');
+			return "";
 		}
 	}
 

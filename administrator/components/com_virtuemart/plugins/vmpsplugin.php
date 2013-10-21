@@ -234,7 +234,6 @@ abstract class vmPSPlugin extends vmPlugin {
 			return NULL;
 		} else {
 			if ($nbMethod == 1) {
-
 				return $virtuemart_pluginmethod_id;
 			} else {
 				return 0;
@@ -1287,6 +1286,40 @@ abstract class vmPSPlugin extends vmPlugin {
 			$modelOrder->updateStatusForOneOrder ($virtuemart_order_id, $order, TRUE);
 			//$modelOrder->remove (array('virtuemart_order_id' => $virtuemart_order_id));
 		}
+	}
+	public function writelog($message, $title='', $type = 'message') {
+
+		// todo
+		jimport('joomla.log.log');
+		switch ($type) {
+			case 'critical':
+				$error_level 	= JLog::CRITICAL;
+				break;
+			case 'error':
+				$error_level 	= JLog::ERROR;
+				break;
+			case 'warning':
+				$error_level 	= JLog::WARNING;
+				break;
+			case 'debug':
+				$error_level 	= JLog::DEBUG;
+				if (!$this->method->debug) {
+					//Do not log debug messages if we are not in LOG mode
+					 return;
+				 }
+				break;
+			case 'message':
+			default:
+				$error_level 	= JLog::INFO;
+		}
+		$methodId=0;
+		if (isset($this->method)) {
+			$name=$this->_idName;
+			$methodId=$this->method->$name;
+		}
+
+		JLog::addLogger(array('text_file' => $this->_name. '.'.$methodId .'.log.php'),	JLog::ALL, $this->_name);
+		JLog::add($title.':'.print_r($message,true), $error_level, $this->_name);
 	}
 
 }

@@ -272,7 +272,7 @@ class VirtueMartControllerUser extends JController
 
 		//Lets do it dirty for now
 		$userModel = VmModel::getModel('user');
-		$userModel->removeAddress();
+		$userModel->removeAddress($virtuemart_userinfo_id);
 
 		$layout = JRequest::getWord('layout','edit');
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, $this->useXHTML,$this->useSSL) );

@@ -40,12 +40,8 @@ class JElementKlarnaLogo extends JElement {
 	function fetchElement($name, $value, &$node, $control_name) {
 		$countriesData = KlarnaHandler::countriesData();
 		$logo = '<a href="https://www.klarna.com" target="_blank"><img src="https://cdn.klarna.com/public/images/SE/logos/v1/basic/SE_basic_logo_std_blue-black.png?width=100&" /></a> ';
-		$flagImgHtml='';
-		foreach ($countriesData as $countryData) {
-			$flagImg = JURI::root(true) . '/administrator/components/com_virtuemart/assets/images/flag/' . strtolower($countryData['language_code']) . '.png';
-			$flagImgHtml.='<img style="margin-right: 5px;margin-top: 15px;" src="' . $flagImg . '"  alt="' . JText::_('VMPAYMENT_KLARNA_CONF_SETTINGS_' . $countryData['language_code']) . '"/>';
-		}
-		return $logo . $flagImgHtml;
+
+		return $logo ;
 
 
 
