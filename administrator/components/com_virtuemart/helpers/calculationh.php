@@ -652,7 +652,7 @@ class calculationHelper {
 				JError::raiseWarning(710, 'Error the quantity of the product for calculation is 0, please notify the shopowner, the product id ' . $product->virtuemart_product_id);
 				continue;
 			}
-
+			$this->productCurrency = isset($product->product_currency)? $product->product_currency:0;
 			$variantmods = $this->parseModifier($name);
 			$variantmod = $this->calculateModificators($product, $variantmods);
 
@@ -1612,7 +1612,9 @@ class calculationHelper {
 				}
 
 				if (!empty($productCustomsPrice->custom_price)) {
+					vmdebug('calculateModificators davor',$productCustomsPrice->custom_price);
 					$productCustomsPrice->custom_price = $this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $productCustomsPrice->custom_price,true);
+					vmdebug('calculateModificators danach',$productCustomsPrice->custom_price);
 
 					//TODO adding % and more We should use here $this->interpreteMathOp
 					$modificatorSum = $modificatorSum + $productCustomsPrice->custom_price;

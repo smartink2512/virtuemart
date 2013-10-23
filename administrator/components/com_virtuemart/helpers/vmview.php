@@ -250,7 +250,7 @@ class VmView extends JView{
 		foreach ($allLanguages as $jlang) {
 			$languagesByCode[$jlang->lang_code]=$jlang;
 		}
-		vmdebug('What is the sense of this?',$allLanguages,$languagesByCode);
+
 		// only add if ID and view not null
 		if ($editView and $id and (count(vmconfig::get('active_languages'))>1) ) {
 
@@ -270,7 +270,7 @@ class VmView extends JView{
 					$key=$joomlaLang['value'];
 					if(!isset($languagesByCode[$key])){
 						$img = substr($key,0,2);//We try a fallback
-						vmError('COM_VIRTUEMART_MISSING_FLAG',$img,$joomlaLang['text']);
+						vmdebug('COM_VIRTUEMART_MISSING_FLAG',$img,$joomlaLang['text']);
 					} else {
 						$img=$languagesByCode[$key]->image;
 					}

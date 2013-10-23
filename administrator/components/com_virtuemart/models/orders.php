@@ -317,6 +317,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 */
 	public function updateSingleItem($virtuemart_order_item_id, &$orderdata, $orderUpdate = false)
 	{
+		//vmdebug('updateSingleItem',$virtuemart_order_item_id,$orderdata);
 		$table = $this->getTable('order_items');
 		$table->load($virtuemart_order_item_id);
 		$oldOrderStatus = $table->order_status;
@@ -343,7 +344,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 
-		if ( $orderUpdate ) {
+		if ( $orderUpdate and !empty($data['virtuemart_order_item_id'])) {
 			$this->_currencyDisplay = CurrencyDisplay::getInstance();
 			$rounding = $this->_currencyDisplay->_priceConfig['salesPrice'][1];
 
@@ -353,11 +354,41 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$db->setQuery($sql);
 			$taxCalcValue = $db->loadResult();
 
-			//$data['product_basePriceWithTax'] = sprintf("%f",(round($orderdata->product_tax, $rounding)) + floatval(round($orderdata->product_item_price, $rounding)));
-			//$data['product_final_price'] = sprintf("%f",$data['product_basePriceWithTax']) + floatval(round($orderdata->product_subtotal_discount, $rounding) / $orderdata->product_quantity);
-
 			if($data['calculate_product_tax']) {
-				$data['product_tax'] = round(round($data['product_final_price'], $rounding) * $taxCalcValue / ($taxCalcValue + 100), $rounding);
+				if(!$taxCalcValue){
+					//Could be a new item, missing the tax rules, we try to get one of another product.
+					//get tax calc_value of product VatTax
+					$db = JFactory::getDBO();
+					$sql = "SELECT `calc_value` FROM `#__virtuemart_order_calc_rules` WHERE `virtuemart_order_id` = ".$data['virtuemart_order_id']." AND `calc_kind` = 'VatTax' ";
+					$db->setQuery($sql);
+					$taxCalcValue = $db->loadResult();
+				}
+
+				//We do two cases, either we have the final amount and discount
+				if(!empty($data['product_final_price']) and $data['product_final_price']!=0){
+
+					if(empty($data['product_tax']) or $data['product_tax']==0){
+						$data['product_tax'] = $data['product_final_price'] * $taxCalcValue / ($taxCalcValue + 100);
+						//vmdebug($data['product_final_price'] .' * '.$taxCalcValue.' / '.($taxCalcValue + 100).' = '.$data['product_tax']);
+					}
+
+					if(empty($data['product_item_price']) or $data['product_item_price']==0){
+						$data['product_item_price'] = round($data['product_final_price'], $rounding) - $data['product_tax'];
+						$data['product_discountedPriceWithoutTax'] = 0;// round($data['product_final_price'], $rounding) ;
+						$data['product_basePriceWithTax'] =  round($data['product_final_price'], $rounding) - $data['product_subtotal_discount'];
+					}
+
+				} else
+					//or we have the base price and a manually set discount.
+					if(!empty($data['product_item_price']) and $data['product_item_price']!=0){
+						if(empty($data['product_tax']) or $data['product_tax']==0){
+							$data['product_tax'] = ($data['product_item_price']-$data['product_subtotal_discount']) * ($taxCalcValue/100.0);
+						}
+						$data['product_discountedPriceWithoutTax'] = 0;
+						$data['product_final_price'] = round($data['product_item_price'], $rounding) + $data['product_tax'] + $data['product_subtotal_discount'];
+						$data['product_basePriceWithTax'] =  round($data['product_final_price'], $rounding) - $data['product_subtotal_discount'];
+				}
+
 			}
 			//$data['product_subtotal_discount'] = (round($orderdata->product_final_price, $rounding) - round($data['product_basePriceWithTax'], $rounding)) * $orderdata->product_quantity;
 			$data['product_subtotal_with_tax'] = round($data['product_final_price'], $rounding) * $orderdata->product_quantity;
@@ -474,7 +505,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			$db->setQuery($sql); 
 			if ($db->query() === false) {
-				vmError($db->getError());
+				vmError('updateSingleItem '.$db->getError(),$sql);
 			}
 
 		}
@@ -1121,9 +1152,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$calculation_kinds = array('DBTax','Tax','VatTax','DATax');
 
-		//vmdebug('_createOrderCalcRules $productKeys',$productKeys);
 		foreach($productKeys as $key){
 			foreach($calculation_kinds as $calculation_kind) {
+
 				if(!isset($_cart->pricesUnformatted[$key][$calculation_kind])) continue;
 				$productRules = $_cart->pricesUnformatted[$key][$calculation_kind];
 

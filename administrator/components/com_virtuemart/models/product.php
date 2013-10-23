@@ -59,8 +59,8 @@ class VirtueMartModelProduct extends VmModel {
 
 		$app = JFactory::getApplication ();
 		if ($app->isSite ()) {
+			$this->_validOrderingFieldName = array();
 			$browseOrderByFields = VmConfig::get ('browse_orderby_fields',array('product_sku','category_name','mf_name','product_name'));
-
 		}
 		else {
 			if (!class_exists ('shopFunctions')) {
@@ -72,6 +72,8 @@ class VirtueMartModelProduct extends VmModel {
 			// 	vmdebug('$browseOrderByFields',$browseOrderByFields);
 		}
 		$this->addvalidOrderingFieldName ((array)$browseOrderByFields);
+
+
 		$this->removevalidOrderingFieldName ('virtuemart_product_id');
 		$this->removevalidOrderingFieldName ('product_sales');
 		//unset($this->_validOrderingFieldName[0]);//virtuemart_product_id
@@ -2060,6 +2062,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		// foreach ($getArray as $key => $value )
 		// $fieldLink .= '&'.$key.'='.$value;
+		//vmdebug('getOrderByList',$getArray);
 		foreach ($getArray as $key => $value) {
 			if (is_array ($value)) {
 				foreach ($value as $k => $v) {
@@ -2165,6 +2168,12 @@ class VirtueMartModelProduct extends VmModel {
 						$link = JRoute::_ ($fieldLink . $manufacturerTxt,FALSE);
 					}
 					else {
+						$field = explode('.',$field);
+						if(isset($field[1])){
+							$field = $field[1];
+						} else {
+							$field = $field[0];
+						}
 						$link = JRoute::_ ($fieldLink . $manufacturerTxt . '&orderby=' . $field,FALSE);
 					}
 					$orderByLink .= '<div><a title="' . $text . '" href="' . $link . '">' . $text . '</a></div>';
