@@ -1142,7 +1142,7 @@ class vmrouterHelper {
 		if ($this->seo_translate ) {
 			if ($this->orderings == null) {
 				$this->orderings = array(
-					'p.virtuemart_product_id'=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_ID'),
+					'virtuemart_product_id'=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_ID'),
 					'product_sku'		=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_SKU'),
 					'product_price'		=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_PRICE'),
 					'category_name'		=> JText::_('COM_VIRTUEMART_SEF_CATEGORY_NAME'),
@@ -1167,14 +1167,15 @@ class vmrouterHelper {
 					'product_sales'		=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_SALES'),
 					'product_unit'		=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_UNIT'),
 					'product_packaging'	=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_PACKAGING'),
-					'p.intnotes'			=> JText::_('COM_VIRTUEMART_SEF_INTNOTES'),
-					'ordering' => JText::_('COM_VIRTUEMART_SEF_ORDERING')
+					'intnotes'			=> JText::_('COM_VIRTUEMART_SEF_INTNOTES'),
+					'pc.ordering' => JText::_('COM_VIRTUEMART_SEF_ORDERING')
 				);
 			}
 			if ($result = array_search($key,$this->orderings )) {
 				return $result;
 			}
 		}
+
 		return $key;
 	}
 	/*

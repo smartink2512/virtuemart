@@ -404,6 +404,10 @@ class VmConfig {
 			mb_internal_encoding('UTF-8');
 		}
 
+		if(ini_get('precision')<20){
+			ini_set('precision', 20);	//We need at least 20 for correct precision if json is using a bigInt ids
+			//But 17 has the best precision, using higher precision adds fantasy numbers to the end
+		}
 	}
 
 	static function getStartTime(){
@@ -471,7 +475,7 @@ class VmConfig {
 
 		$iniValue = ini_get('memory_limit');
 
-		if($iniValue===-1) return 2048;	//We assume 2048MB as unlimited setting
+		if($iniValue<=0) return 2048;	//We assume 2048MB as unlimited setting
 		$iniValue = strtoupper($iniValue);
 		if(strpos($iniValue,'M')!==FALSE){
 			$memory_limit = (int) substr($iniValue,0,-1);

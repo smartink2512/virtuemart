@@ -354,7 +354,6 @@ class GenericTableUpdater extends JModel{
 
 	public function createTable($tablename,$table){
 
-// 		vmdebug('hmm create table '.$tablename,$table);
 		$q = 'CREATE TABLE IF NOT EXISTS `'.$tablename.'` (
 				';
 		foreach($table[0] as $fieldname => $alterCommand){

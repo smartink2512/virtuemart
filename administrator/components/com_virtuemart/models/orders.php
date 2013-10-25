@@ -324,6 +324,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		if(empty($oldOrderStatus)){
 			$oldOrderStatus = $orderdata->current_order_status;
+			if($orderUpdate and empty($oldOrderStatus)){
+				$oldOrderStatus = 'P';
+			}
 		}
 
 // 		$table->order_status = $orderdata->orderstatus;
@@ -364,6 +367,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					$taxCalcValue = $db->loadResult();
 				}
 
+				if(empty($data['product_subtotal_discount']))$data['product_subtotal_discount'] = 0.0; // "",null,0,NULL, FALSE => 0.0
+
 				//We do two cases, either we have the final amount and discount
 				if(!empty($data['product_final_price']) and $data['product_final_price']!=0){
 
@@ -373,8 +378,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					}
 
 					if(empty($data['product_item_price']) or $data['product_item_price']==0){
+						if(empty($data['product_tax']))$data['product_tax'] = 0.0;
+
 						$data['product_item_price'] = round($data['product_final_price'], $rounding) - $data['product_tax'];
-						$data['product_discountedPriceWithoutTax'] = 0;// round($data['product_final_price'], $rounding) ;
+						$data['product_discountedPriceWithoutTax'] = 0.0;// round($data['product_final_price'], $rounding) ;
+						$data['product_priceWithoutTax'] = 0.0;
 						$data['product_basePriceWithTax'] =  round($data['product_final_price'], $rounding) - $data['product_subtotal_discount'];
 					}
 
@@ -384,7 +392,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 						if(empty($data['product_tax']) or $data['product_tax']==0){
 							$data['product_tax'] = ($data['product_item_price']-$data['product_subtotal_discount']) * ($taxCalcValue/100.0);
 						}
-						$data['product_discountedPriceWithoutTax'] = 0;
+						$data['product_discountedPriceWithoutTax'] = 0.0;
+						$data['product_priceWithoutTax'] = 0.0;
 						$data['product_final_price'] = round($data['product_item_price'], $rounding) + $data['product_tax'] + $data['product_subtotal_discount'];
 						$data['product_basePriceWithTax'] =  round($data['product_final_price'], $rounding) - $data['product_subtotal_discount'];
 				}
@@ -505,7 +514,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			$db->setQuery($sql); 
 			if ($db->query() === false) {
-				vmError('updateSingleItem '.$db->getError(),$sql);
+				vmError('updateSingleItem '.$db->getError().' and '.$sql);
 			}
 
 		}

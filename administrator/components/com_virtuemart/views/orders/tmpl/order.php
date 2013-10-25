@@ -546,9 +546,8 @@ $document->addScriptDeclaration ( "
 						&nbsp;&nbsp;
 						<a href="#" onClick="javascript:enableEdit(event);"><span class="icon-nofloat vmicon vmicon-16-edit"></span><?php echo '&nbsp;'. JText::_('COM_VIRTUEMART_EDIT'); ?></a>
 						&nbsp;&nbsp;
-						<a href="#" onClick="javascript:addNewLine(event,<?php echo $this->orderdetails['items'][0]->virtuemart_order_item_id ?>);"><span class="icon-nofloat vmicon vmicon-16-edit"></span><?php echo '&nbsp;'. JText::_('COM_VIRTUEMART_NEW'); ?></a>
+						<a href="#" onClick="javascript:addNewLine(event,<?php echo $this->orderdetails['items'][0]->virtuemart_order_item_id ?>);"><span class="icon-nofloat vmicon vmicon-16-new"></span><?php echo '&nbsp;'. JText::_('JTOOLBAR_NEW'); ?></a>
 					</td>
-
 
 					<td colspan="6">
 						<?php // echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/vm_witharrow.png', 'With selected'); $this->orderStatSelect; ?>
