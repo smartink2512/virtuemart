@@ -477,6 +477,7 @@ class shopFunctionsF {
 					JError::raiseWarning( 412, 'The chosen template couldnt find on the filesystem: '.$template );
 				}
 			}
+			return $template;
 		}
 
 	}

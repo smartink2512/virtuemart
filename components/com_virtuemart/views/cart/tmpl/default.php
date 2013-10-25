@@ -107,7 +107,7 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 	// This displays the form to change the current shopper
 	$adminID = JFactory::getSession()->get('vmAdminID');
 	if ((JFactory::getUser()->authorise('core.admin', 'com_virtuemart') || JFactory::getUser($adminID)->authorise('core.admin', 'com_virtuemart')) && (VmConfig::get ('oncheckout_change_shopper', 0))) { 
-		echo $this->loadTemplate ('shopperForm');
+		echo $this->loadTemplate ('shopperform');
 	}
 
 	// This displays the pricelist MUST be done with tables, because it is also used for the emails

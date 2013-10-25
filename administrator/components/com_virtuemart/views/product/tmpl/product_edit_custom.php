@@ -39,19 +39,19 @@ if (isset($this->product->customfields_fromParent)) { ?>
 						// R: related categories
 						$tables['categories'] .=  '
 							<div class="vm_thumb_image">
-								<span>'.$customfield->display.'</span>'.
+								<span>'.$customfield->display.'</span>
+								<div class="vmicon vmicon-16-remove"></div>'.
 								VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
-							  .'<div class="vmicon vmicon-16-remove"></div>
-							</div>';
+							  .'</div>';
 
 					} elseif ($customfield->field_type == 'R') {
 					// R: related products
 						$tables['products'] .=  '
 							<div class="vm_thumb_image">
-								<span>'.$customfield->display.'</span>'.
+								<span>'.$customfield->display.'</span>
+								<div class="vmicon vmicon-16-remove"></div>'.
 								VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
-							  .'<div class="vmicon vmicon-16-remove"></div>
-							</div>';
+							  .'</div>';
 
 					} elseif ($customfield->field_type == 'G') {
 						// no display (group of) child , handled by plugin;

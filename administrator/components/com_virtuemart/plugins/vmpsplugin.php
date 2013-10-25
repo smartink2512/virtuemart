@@ -1005,19 +1005,33 @@ abstract class vmPSPlugin extends vmPlugin {
 			$db->setQuery ($q);
 			$taxrules = $db->loadAssocList ();
 		} else {
-			//This construction makes trouble, if there are products with different vats in the cart
-			//on the other side, it is very unlikely to have different vats in the cart and simultan it is not possible to use a fixed tax rule for the shipment
-			if(!empty($calculator->_cartData['VatTax']) and count ($calculator->_cartData['VatTax']) == 1){
-				$taxrules = $calculator->_cartData['VatTax'];
-				foreach($taxrules as &$rule){
-					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
-				}
 
-			} else {
-				$taxrules = $calculator->_cartData['taxRulesBill'];
-				foreach($taxrules as &$rule){
-					unset($rule['subTotal']);
-				}
+			$taxrules = array();
+			if(!empty($calculator->_cartData['VatTax']) ){
+				$taxrules = $calculator->_cartData['VatTax'];
+			}
+			if(!empty($calculator->_cartData['taxRulesBill']) ){
+				$taxrules = array_merge($taxrules,$calculator->_cartData['taxRulesBill']);
+			}
+
+			$denominator = 0;
+			foreach($taxrules as &$rule){
+				//$rule['numerator'] = $rule['calc_value']/100.0 * $rule['subTotal'];
+				$denominator += ($rule['subTotal']-$rule['taxAmount']);
+				$rule['subTotalOld'] = $rule['subTotal'];
+				$rule['subTotal'] = 0;
+				$rule['taxAmountOld'] = $rule['taxAmount'];
+				$rule['taxAmount'] = 0;
+				//$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
+			}
+			if(empty($denominator)){
+				$denominator = 1;
+			}
+
+			foreach($taxrules as &$rule){
+				$frac = ($rule['subTotalOld']-$rule['taxAmountOld'])/$denominator;
+				$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'] * $frac;
+
 			}
 		}
 
@@ -1025,18 +1039,22 @@ abstract class vmPSPlugin extends vmPlugin {
 		if(empty($method->cost_percent_total)) $method->cost_percent_total = 0.0;
 
 		//If the taxing via unpublished categories is used, then the rules use the subtotal which is now overriden here
-		if (count ($taxrules) == 1 and isset($taxrules[1]['subTotal'] )) {
+		/*if (count ($taxrules) == 1 and isset($taxrules[1]['subTotal'] )) {
 			$taxrules[1]['subTotal'] = $cart_prices[$this->_psType . 'Value'];
-		}
+		}/*/
 
 		if (count ($taxrules) > 0 ) {
 
-			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value'],false,false), 'salesPrice');
+			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value'],true,false), 'salesPrice');
 			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] -  $cart_prices[$this->_psType . 'Value']), 'salesPrice');
-
 			reset($taxrules);
 			$taxrule =  current($taxrules);
 			$cart_prices[$this->_psType . '_calc_id'] = $taxrule['virtuemart_calc_id'];
+
+			foreach($taxrules as &$rule){
+				$rule['subTotal'] += $rule['subTotalOld'];
+				$rule['taxAmount'] += $rule['taxAmountOld'];
+			}
 
 		} else {
 			$cart_prices['salesPrice' . $_psType] = $cart_prices[$this->_psType . 'Value'];
