@@ -402,6 +402,9 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 			}
 			//return false;
 		}
+		if (!class_exists('VirtueMartModelOrders')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+		}
 		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number))) {
 			return NULL;
 		}
