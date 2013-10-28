@@ -738,7 +738,7 @@ class VmPagination extends JPagination {
 				$limits[$this->_perRow * 50] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 50, false) , $this->_perRow * 50 );
 			}
 			if(!array_key_exists($this->limit,$limits)){
-				$limits[] = JHTML::_('select.option', JRoute::_( $link.'&limit='.$this->limit,false),$this->limit);
+				$limits[$this->limit] = JHTML::_('select.option', JRoute::_( $link.'&limit='.$this->limit,false),$this->limit);
 				ksort($limits);
 			}
 			$selected= JRoute::_( $link.'&limit='. $selected,false) ;

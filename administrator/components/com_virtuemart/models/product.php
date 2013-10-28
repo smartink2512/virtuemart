@@ -561,6 +561,7 @@ class VirtueMartModelProduct extends VmModel {
 		$limit = (int)$app->getUserStateFromRequest ($limitString, 'limit');
 
 		$limitStartString  = 'com_virtuemart.' . $view . '.limitstart';
+
 		if ($app->isSite () and ($cateid != -1 or $manid != 0) ) {
 
 			//vmdebug('setPaginationLimits is site and $cateid,$manid ',$cateid,$manid);
@@ -590,7 +591,7 @@ class VirtueMartModelProduct extends VmModel {
 				$limitStart = $app->getUserStateFromRequest ($limitStartString, 'limitstart', JRequest::getInt ('limitstart', 0), 'int');
 			}
 
-			if(!empty($category->limit_list_initial)){
+			if(empty($limit) and !empty($category->limit_list_initial)){
 				$suglimit = $category->limit_list_initial;
 			}
 			else if(!empty($limit)){
@@ -598,6 +599,7 @@ class VirtueMartModelProduct extends VmModel {
 			} else {
 				$suglimit = VmConfig::get ('llimit_init_FE', 20);
 			}
+			
 			if(empty($category->products_per_row)){
 				$category->products_per_row = VmConfig::get ('products_per_row', 3);
 			}

@@ -1009,30 +1009,30 @@ abstract class vmPSPlugin extends vmPlugin {
 			$taxrules = array();
 			if(!empty($calculator->_cartData['VatTax']) ){
 				$taxrules = $calculator->_cartData['VatTax'];
-			}
-			if(!empty($calculator->_cartData['taxRulesBill']) ){
+
+				$denominator = 0;
+				foreach($taxrules as &$rule){
+					vmdebug('setCartPrices my tax rule',$rule);
+					//$rule['numerator'] = $rule['calc_value']/100.0 * $rule['subTotal'];
+					$denominator += ($rule['subTotal']-$rule['taxAmount']);
+					$rule['subTotalOld'] = $rule['subTotal'];
+					$rule['subTotal'] = 0;
+					$rule['taxAmountOld'] = $rule['taxAmount'];
+					$rule['taxAmount'] = 0;
+					//$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
+				}
+				if(empty($denominator)){
+					$denominator = 1;
+				}
+
+				foreach($taxrules as &$rule){
+					$frac = ($rule['subTotalOld']-$rule['taxAmountOld'])/$denominator;
+					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'] * $frac;
+				}
+			} else if(!empty($calculator->_cartData['taxRulesBill']) ){
 				$taxrules = array_merge($taxrules,$calculator->_cartData['taxRulesBill']);
 			}
 
-			$denominator = 0;
-			foreach($taxrules as &$rule){
-				//$rule['numerator'] = $rule['calc_value']/100.0 * $rule['subTotal'];
-				$denominator += ($rule['subTotal']-$rule['taxAmount']);
-				$rule['subTotalOld'] = $rule['subTotal'];
-				$rule['subTotal'] = 0;
-				$rule['taxAmountOld'] = $rule['taxAmount'];
-				$rule['taxAmount'] = 0;
-				//$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
-			}
-			if(empty($denominator)){
-				$denominator = 1;
-			}
-
-			foreach($taxrules as &$rule){
-				$frac = ($rule['subTotalOld']-$rule['taxAmountOld'])/$denominator;
-				$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'] * $frac;
-
-			}
 		}
 
 		if(empty($method->cost_per_transaction)) $method->cost_per_transaction = 0.0;
@@ -1052,8 +1052,8 @@ abstract class vmPSPlugin extends vmPlugin {
 			$cart_prices[$this->_psType . '_calc_id'] = $taxrule['virtuemart_calc_id'];
 
 			foreach($taxrules as &$rule){
-				$rule['subTotal'] += $rule['subTotalOld'];
-				$rule['taxAmount'] += $rule['taxAmountOld'];
+				if(isset($rule['subTotalOld'])) $rule['subTotal'] += $rule['subTotalOld'];
+				if(isset($rule['taxAmountOld'])) $rule['taxAmount'] += $rule['taxAmountOld'];
 			}
 
 		} else {
