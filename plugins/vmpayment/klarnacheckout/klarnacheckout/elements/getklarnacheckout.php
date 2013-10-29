@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Id: getklarna.php 6501 2012-10-04 13:16:05Z alatak $
+ * @version $Id$
  *
  * @author Valérie Isaksen
  * @package VirtueMart
