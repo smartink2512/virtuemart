@@ -305,7 +305,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 		// TODO ONE PARAM IS MISSING
 		$document = JFactory::getDocument();
-		$document->addScriptDeclaration('
+		$js = '
 		//<![CDATA[
 		jQuery( function($) {
 			//var customfield_id = {'. implode(',' , $js ) .'};
@@ -452,7 +452,9 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			}
 		});
 		//]]>
-		');
+		';
+        //$document->addScriptDeclaration($js);
+        $group->display .= '<script language="javascript">'.$js.'</script>';
 
 		// 'custom_param['.$keys.']'
 
