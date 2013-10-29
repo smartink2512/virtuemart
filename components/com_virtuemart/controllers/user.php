@@ -267,9 +267,10 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 
 	function removeAddressST(){
+        $virtuemart_userinfo_id = JRequest::getVar('virtuemart_userinfo_id');
 
 		$userModel = VmModel::getModel('user');
-		$userModel->removeAddress();
+		$userModel->removeAddress($virtuemart_userinfo_id);
 
 		$layout = VmRequest::getCmd('layout','edit');
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, $this->useXHTML,$this->useSSL) );
