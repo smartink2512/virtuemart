@@ -59,7 +59,7 @@ class VmPdf {
 
 		// Close and output PDF document
 		// This method has several options, check the source code documentation for more information.
-		$pdf->Output($path, 'F');
+		$pdf->Output($path, $dest);
 		return $path;
 	}
 }

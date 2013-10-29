@@ -352,6 +352,10 @@ class shopFunctionsF {
 			$app = JFactory::getApplication();
 			$sender[0] = $app->getCfg( 'mailfrom' );
 			$sender[1] = $app->getCfg( 'fromname' );
+			if(empty($sender[0])){
+				$config = JFactory::getConfig();
+				$sender = array( $config->getValue( 'config.mailfrom' ), $config->getValue( 'config.fromname' ) );
+			}
 		}
 		$mailer->setSender( $sender );
 

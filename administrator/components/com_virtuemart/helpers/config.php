@@ -405,10 +405,9 @@ class VmConfig {
 		}
 
 		if(ini_get('precision')<16){
-			ini_set('precision',16);	//We need at least 20 for correct precision if json is using a bigInt ids
-			//But 16 has the best precision, using higher precision adds fantasy numbers to the end
+			ini_set('precision', 16);	//We need at least 20 for correct precision if json is using a bigInt ids
+			//But 17 has the best precision, using higher precision adds fantasy numbers to the end
 		}
-
 	}
 
 	static function getStartTime(){

@@ -599,7 +599,7 @@ class VirtueMartModelProduct extends VmModel {
 			} else {
 				$suglimit = VmConfig::get ('llimit_init_FE', 20);
 			}
-			
+
 			if(empty($category->products_per_row)){
 				$category->products_per_row = VmConfig::get ('products_per_row', 3);
 			}

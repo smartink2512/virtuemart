@@ -43,7 +43,7 @@
   -moz-box-shadow   : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1);
   box-shadow        : 0 0 3px #ffffff inset, 0 1px 1px rgba(0,0,0,0.1);
   display: block;
-  overflow: hidden;
+  overflow: visible !important;
   white-space: nowrap;
   position: relative;
   height: 23px;
