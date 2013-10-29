@@ -39,8 +39,8 @@ if (isset($this->product->customfields_fromParent)) { ?>
 						// R: related categories
 						$tables['categories'] .=  '
 							<div class="vm_thumb_image">
-								<span>'.$customfield->display.'</span>
-								<div class="vmicon vmicon-16-remove"></div>'.
+								<div class="vmicon vmicon-16-remove"></div>
+								<span>'.$customfield->display.'</span>'.
 								VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 							  .'</div>';
 
@@ -48,8 +48,8 @@ if (isset($this->product->customfields_fromParent)) { ?>
 					// R: related products
 						$tables['products'] .=  '
 							<div class="vm_thumb_image">
-								<span>'.$customfield->display.'</span>
-								<div class="vmicon vmicon-16-remove"></div>'.
+								<div class="vmicon vmicon-16-remove"></div>
+								<span>'.$customfield->display.'</span>'.
 								VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 							  .'</div>';
 
@@ -73,7 +73,7 @@ if (isset($this->product->customfields_fromParent)) { ?>
 							<tr class="removable">
 								<td>'.JText::_($customfield->custom_title).'</td>
 								<td colspan="3"><span>'.$customfield->display.$customfield->custom_tip.'</span>'.
-								VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
+								VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i).'
 							  .'</td><span class="vmicon icon-nofloat vmicon-16-'.$cartIcone.'"></span>
 								<span class="vmicon vmicon-16-remove"></span>
 							</tr>';*/

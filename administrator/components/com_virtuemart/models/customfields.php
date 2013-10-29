@@ -668,7 +668,8 @@ class VirtueMartModelCustomfields extends VmModel {
 							$thumb = $this->displayCustomMedia ($media_id,'category');
 						}
 						$display = '<input type="hidden" value="' . $field->custom_value . '" name="field[' . $row . '][custom_value]" />';
-						return $display . JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . (int)$field->custom_value,FALSE), $thumb . ' ' . $category->category_name, array('title' => $category->category_name)) . $display;
+						$display .= JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . (int)$field->custom_value,FALSE), '<span class="custom_related_image">'.$thumb.'</span><span class="custom_related_title">' . $category->category_name, array('title' => $category->category_name)).'</span>';
+						return $display; 
 					}
 					else {
 						return 'no result';
@@ -687,7 +688,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$thumb = $this->displayCustomMedia (0).' ';
 					}
 					$display = '<input type="hidden" value="' . $field->custom_value . '" name="field[' . $row . '][custom_value]" />';
-					$display .= JHTML::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
+					$display .= JHTML::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, '<span class="custom_related_image">'.$thumb.'</span><span class="custom_related_title">'. $related->product_name, array('title' => $related->product_name,'target'=>'blank')).'</span>';
 					return $display;
 					break;
 				/* image */
@@ -958,7 +959,7 @@ class VirtueMartModelCustomfields extends VmModel {
 								//		$productCustom->virtuemart_custom_id . '" name="customPrice[' . $row . '][' . $productCustom->virtuemart_customfield_id . ']" /><label
 								//		for="' . $productCustom->virtuemart_custom_id . '">' . $this->displayProductCustomfieldFE ($productCustom, $row) . ' ' . $price . '</label>';
 						//MarkerVarMods
-									$group->display .= '<input id="' . $productCustom->virtuemart_customfield_id .$row. '" ' . $checked . ' type="radio" value="' .
+									$group->display .= '<input id="' . $productCustom->virtuemart_custom_id .$row. '" ' . $checked . ' type="radio" value="' .
 										$productCustom->virtuemart_customfield_id . '" name="customPrice[' . $row . '][' . $productCustom->virtuemart_custom_id . ']" /><label
 										for="' . $productCustom->virtuemart_custom_id .$row. '" class="other-customfield">' . $this->displayProductCustomfieldFE ($product, $productCustom, $row) . ' ' . $price . '</label>';
 

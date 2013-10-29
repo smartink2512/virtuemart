@@ -142,7 +142,7 @@ font-size: 12px;
     border-radius: 6px;
     display: block;
     float: left;
-    height: 120px;
+    height: 140px;
     margin: 2px;
     overflow: hidden;
     padding: 10px;
@@ -169,6 +169,13 @@ font-size: 12px;
     position: relative;
     text-align: center;
 }
+
+.custom_related_title,
+.custom_related_image {
+	display: block;
+	clear: both;
+}
+
 .remove{cursor:pointer;}
 .vm-order_comment{
     display: block;
