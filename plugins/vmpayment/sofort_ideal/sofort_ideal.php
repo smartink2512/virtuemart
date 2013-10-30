@@ -256,7 +256,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 
 		$cd = CurrencyDisplay::getInstance($cart->pricesCurrency);
 		if ($totalInPaymentCurrency <= 0) {
-			vmInfo(JText::_('VMPAYMENT_SOFORT_AMOUNT_INCORRECT'));
+			vmInfo(JText::sprintf('VMPAYMENT_SOFORT_AMOUNT_INCORRECT', $order['details']['BT']->order_total,  $totalInPaymentCurrency, $currency_code_3));
 			return FALSE;
 		}
 		// Prepare data that should be stored in the database

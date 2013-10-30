@@ -173,7 +173,6 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$security = self::getSecurityKey();
 		$dbValues['security'] = $security;
 
-
 		vmdebug('SOFORT sendTransactionRequest ... after storePSPluginInternalData', $security);
 
 		if (!class_exists('SofortLib')) {
