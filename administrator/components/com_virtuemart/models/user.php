@@ -173,13 +173,17 @@ class VirtueMartModelUser extends VmModel {
 			$shoppergroupmodel->appendShopperGroups($this->_data->shopper_groups,$this->_data->JUser,$site);
 		}
 
-		$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"';
-		$this->_db->setQuery($q);
-		$userInfo_ids = $this->_db->loadResultArray(0);
-		// 		vmdebug('my query',$this->_db->getQuery());
-		// 		vmdebug('my $_ui',$userInfo_ids,$this->_id);
-		$this->_data->userInfo = array ();
+		if(!empty($this->_id)) {
+			$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"';
+			$this->_db->setQuery($q);
+			$userInfo_ids = $this->_db->loadResultArray(0);
+		} else {
+			$userInfo_ids  = array();
+		}
 
+		// 		vmdebug('my query',$this->_db->getQuery());
+		//vmdebug('my $_ui',$userInfo_ids,$this->_id);
+		$this->_data->userInfo = array ();
 		$BTuid = 0;
 
 		foreach($userInfo_ids as $uid){
@@ -210,7 +214,6 @@ class VirtueMartModelUser extends VmModel {
 			$vendorModel->setId($this->_data->virtuemart_vendor_id);
 			$this->_data->vendor = $vendorModel->getVendor();
 		}
-
 
 		return $this->_data;
 	}
@@ -1127,7 +1130,7 @@ class VirtueMartModelUser extends VmModel {
 			$data = $this->getTable('userinfos');
 			$data->load($uid);
 
-// 			vmdebug('$data',$data);
+ 			//vmdebug('$data',$data);
 
 			if($data->virtuemart_user_id!==0 and !$isVendor){
 
@@ -1152,8 +1155,10 @@ class VirtueMartModelUser extends VmModel {
 			}
 // 			vmdebug('getUserInfoInUserFields ',$data);
 		} else {
+
 			//New Address is filled here with the data of the cart (we are in the userview)
 			if($cart){
+
 				if (!class_exists('VirtueMartCart'))
 				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 				$cart = VirtueMartCart::getCart();
@@ -1177,6 +1182,7 @@ class VirtueMartModelUser extends VmModel {
 				}
 				$data = (object)$data;
 			} else {
+
 				if($JUser){
 						if(empty($data['name'])){
 							$data['name'] = $JUser->name;
