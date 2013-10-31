@@ -111,6 +111,9 @@ class KlarnaHandler {
 			$cData['mode'] = KlarnaHandler::getKlarnaMode ($method, $country);
 			$cData['min_amount'] = $method->$min_amount;
 			$cData['active'] = $method->$active;
+			if (empty($method->$payment_activated)){
+				$method->$payment_activated=array('invoice', 'part');
+			}
 			$cData['payments_activated'] = $method->$payment_activated;
 			if (!class_exists ('VirtueMartModelVendor')) {
 				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
@@ -281,6 +284,7 @@ class KlarnaHandler {
 	 * @return array
 	 */
 	static function getDataFromEditPayment () {
+		VmConfig::loadJLang('com_virtuemart_shoppers', true);
 
 		$kIndex = 'klarna_';
 		$klarna['klarna_paymentmethod'] = JRequest::getVar ($kIndex . 'paymentmethod');
@@ -432,7 +436,7 @@ class KlarnaHandler {
 		$ssl = KlarnaHandler::getKlarnaSSL ($mode);
 		// Instantiate klarna object.
 		$klarna = new Klarna_virtuemart();
-		$klarna->config ($cData['eid'], $cData['secret'], $cData['country_code'], NULL, $cData['currency_code'], $mode, VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), $ssl);
+		$klarna->config ($cData['eid'], $cData['secret'], $cData['country_code'], $cData['language'], $cData['currency_code'], $mode, VMKLARNA_PC_TYPE, KlarnaHandler::getKlarna_pc_type (), $ssl);
 
 		// Sets order id's from other systems for the upcoming transaction.
 		$klarna->setEstoreInfo ($order['details']['BT']->order_number);

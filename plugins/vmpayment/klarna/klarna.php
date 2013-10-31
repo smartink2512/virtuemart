@@ -352,6 +352,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$html = '';
 		$checked = 'checked="checked"';
 		$payments = new klarna_payments($cData, KlarnaHandler::getShipToAddress ($cart));
+
 		if (in_array ('invoice', $cData['payments_activated'])) {
 			$payment_params = $payments->get_payment_params ($method, 'invoice', $cart);
 			$payment_form = $this->renderByLayout ('payment_form', array('payment_params' => $payment_params, 'payment_currency_info'       => $payment_params['payment_currency_info'],), 'klarna', 'payment');
@@ -547,7 +548,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				$dbValues['virtuemart_paymentmethod_id'] = $order['details']['BT']->virtuemart_paymentmethod_id;
 				$dbValues['order_payment'] = $order['details']['BT']->order_payment;
 				$dbValues['klarna_pclass'] = $sessionKlarnaData->KLARNA_DATA['PCLASS'];
-				$dbValues['klarna_log'] = $log;
+				$dbValues['klarna_log'] = '';
 				$dbValues['klarna_status_code'] = $result['status_code'];
 				$dbValues['klarna_status_text'] = $result['status_text'];
 				$this->storePSPluginInternalData ($dbValues);
@@ -1335,6 +1336,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$data['shipment'] = 0;
 			$data['vNames'] = array();
 			$data['vValues'] = array();
+			VmConfig::loadJLang('com_virtuemart_shoppers', true);
+
 			foreach ($klarna_required_not_found as $requiredfield) {
 				$data['name'] = $requiredfield;
 				$data['type'] = $shopperFieldsType[$requiredfield];
@@ -1909,9 +1912,11 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		JHTML::script ('klarna_general.js', $assetsPath . 'js/', FALSE);
 		JHTML::script ('klarnaConsentNew.js', 'http://static.klarna.com/external/js/', FALSE);
 		$document = JFactory::getDocument ();
+		/*
 		$document->addScriptDeclaration ('
 		 klarna.ajaxPath = "' . juri::root () . '/index.php?option=com_virtuemart&view=plugin&vmtype=vmpayment&name=klarna";
 	');
+		*/
 	}
 
 }
