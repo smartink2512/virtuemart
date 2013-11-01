@@ -638,57 +638,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		$data['invoice_number'] = 'reservedByPayment_' . $orderDetails['order_number']; // Nerver send the invoice via email
 	}
 
-	/**
-	 * @param $klarna_invoice_pdf
-	 * @param $vm_invoice_name
-	 * @return bool
-	 */
-	function copyInvoice ($klarna_invoice_pdf, &$vm_invoice_name) {
 
-		$path = VmConfig::get ('forSale_path', 0);
-		if ($path === 0) {
-			vmError ('No path set to store invoices', 'No path set to store invoices');
-			return FALSE;
-		} else {
-			$path .= DS . 'invoices' . DS;
-			if (!file_exists ($path)) {
-				vmError ('Path wrong to store invoices, folder invoices does not exist ' . $path, 'Path wrong to store invoices, folder invoices does not exist ' . $path);
-				return FALSE;
-			} else {
-				if (!is_writable ($path)) {
-					vmError ('Cannot store pdf, directory not writeable ' . $path, 'Cannot store pdf, directory not writeable ' . $path);
-					return FALSE;
-				}
-			}
-		}
-		$klarna_invoice = explode ('/', $klarna_invoice_pdf);
-		$klarna_invoice_name = $klarna_invoice[count ($klarna_invoice) - 1];
-		$vm_invoice_name = 'klarna_' . $klarna_invoice_name;
-		$path .= $vm_invoice_name;
-		if (file_exists ($path)) {
-			// invoice has already been copied , don't do it again
-			return FALSE;
-		}
-		$ch = curl_init ($klarna_invoice_pdf);
-		$timeout = 10;
-		curl_setopt ($ch, CURLOPT_TIMEOUT, $timeout);
-		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-		$pdf = curl_exec ($ch);
-		curl_close ($ch);
-		$f = fopen ($path, 'wb');
-		if (!$f) {
-			vmError ('Unable to create output file: ' . $path);
-			return FALSE;
-		}
-		if (fwrite ($f, $pdf) === FALSE) {
-			vmError ('Unable to write output file: ' . $path);
-			return FALSE;
-		}
-		fclose ($f);
-		return TRUE;
-	}
 
 	/**
 	 * @param $virtuemart_paymentmethod_id
@@ -1082,8 +1032,15 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				if ($value) {
 					if (substr ($key, 0, strlen ($code)) == $code) {
 						if ($key == 'klarna_pdf_invoice' and !empty($value)) {
-							$invoicePdfLink = JURI::root () . 'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=downloadInvoicePdf&payment_methodid=' . (int)$payment_method_id . '&order_number=' . $order['details']['BT']->order_number . '&order_pass=' . $order['details']['BT']->order_pass;
-							$value = '<a target="_blank" href="' . $invoicePdfLink . '">' . JText::_ ('VMPAYMENT_KLARNA_DOWNLOAD_INVOICE') . '</a>';
+							// backwards compatible
+							if (false) {
+								$invoicePdfLink = JURI::root () . 'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=downloadInvoicePdf&payment_methodid=' . (int)$payment_method_id . '&order_number=' . $order['details']['BT']->order_number . '&order_pass=' . $order['details']['BT']->order_pass;
+								$value = '<a target="_blank" href="' . $invoicePdfLink . '">' . JText::_ ('VMPAYMENT_KLARNA_DOWNLOAD_INVOICE') . '</a>';
+							} else {
+								$value = '<a target="_blank" href="' . $value . '">' . JText::_('VMPAYMENT_KLARNA_VIEW_INVOICE') . '</a>';
+
+							}
+
 						}
 						$html .= $this->getHtmlRowBE ($key, $value);
 					}
@@ -1185,9 +1142,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			try {
 				//You can specify a new pclass ID if the customer wanted to change it before you activate.
 
-				$invoice_url = $klarna_vm->activateInvoice ($invNo);
-				$vm_invoice_name = "";
-				$this->copyInvoice ($invoice_url, $vm_invoice_name);
+				 $klarna_vm->activateInvoice ($invNo);
+				$invoice_url=$this->getInvoice($invNo, $invoice_url);
 
 				//The url points to a PDF file for the invoice.
 				//Invoice activated, proceed accordingly.
@@ -1217,14 +1173,32 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$dbValues['klarna_eid'] = $cData['eid'];
 			//$dbValues['klarna_status_code'] = KLARNA_INVOICE_ACTIVE; // Invoice is active
 			//$dbValues['klarna_status_text'] = '';
-			$dbValues['klarna_pdf_invoice'] = $vm_invoice_name;
+			$dbValues['klarna_pdf_invoice'] = $invoice_url;
 
 			$this->storePSPluginInternalData ($dbValues);
 			return TRUE;
 		}
 		return NULL;
 	}
+	/**
+	 * @param $klarna_invoice_pdf
+	 * @param $vm_invoice_name
+	 * @return bool
+	 */
+	function getInvoice ($invoice_number, &$vm_invoice_name) {
 
+
+		//$klarna_invoice = explode ('/', $klarna_invoice_pdf);
+		if ($this->method->server =='live') {
+			$klarna_invoice_name = "https://online.klarna.com/invoices/" . $invoice_number . '.pdf';
+		} else {
+			$klarna_invoice_name = "https://online.testdrive.klarna.com/invoices/" . $invoice_number . '.pdf';
+		}
+
+		$vm_invoice_name = 'klarna_' . $invoice_number . '.pdf';
+
+		return $klarna_invoice_name;
+	}
 	private function emailInvoice ($method, $klarna_vm, $invNo, $force_emailInvoice) {
 
 		if ($method->send_invoice or $force_emailInvoice) {

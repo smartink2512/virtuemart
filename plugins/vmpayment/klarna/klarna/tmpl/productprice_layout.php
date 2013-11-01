@@ -16,11 +16,12 @@ JHTML::stylesheet('style.css', VMKLARNAPLUGINWEBROOT . '/klarna/assets/css/', fa
 JHTML::script('klarna_pp.js', VMKLARNAPLUGINWEBASSETS.'/js/', false);
 JHTML::script('klarnapart.js', 'https://static.klarna.com:444/external/js/', false);
 $document = JFactory::getDocument();
+
 $document->addScriptDeclaration("
 
 jQuery(function(){
 	jQuery('.klarna_PPBox_bottomMid_readMore a').click( function(){
-		InitKlarnaPartPaymentElements('klarna_partpayment', '". $viewData['eid'] ."', '". $viewData['country'] ."');
+		InitKlarnaPartPaymentElements('klarna_partpayment', '". $viewData['eid'] ."', '".strtolower($viewData['country'])  ."');
 		ShowKlarnaPartPaymentPopup();
 		return false;
 	});

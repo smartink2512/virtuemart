@@ -995,8 +995,6 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$invoicePdfLink=$this->getInvoicePdfLink($virtuemart_order_id);
 			$value = '<a target="_blank" href="' . $invoicePdfLink . '">' . JText::_('VMPAYMENT_KLARNACHECKOUT_VIEW_INVOICE') . '</a>';
 
-
-
 			$html .= $this->getHtmlRowBE("", $value);
 		}
 		return $html;
