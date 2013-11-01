@@ -27,9 +27,14 @@ if (empty($this->product)) {
 	return;
 }
 
+if(JRequest::getInt('print',false)){
+?>
+<body onload="javascript:print();">
+<?php }
+
 // addon for joomla modal Box
 JHTML::_('behavior.modal');
-// JHTML::_('behavior.tooltip');
+
 $MailLink = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&virtuemart_category_id=' . $this->product->virtuemart_category_id . '&tmpl=component';
 
 $boxFuncReco = '';
