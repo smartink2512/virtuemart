@@ -539,7 +539,7 @@ class GenericTableUpdater extends JModel{
 			$demandFieldNames[] = $i;
 		}
 
-		$query = 'SHOW FULL COLUMNS  FROM `'.$tablename.'` ';
+		$query = 'SHOW FULL COLUMNS  FROM `'.$tablename.'` ';	//$q = 'SHOW CREATE TABLE '.$this->_tbl;
 		$this->_db->setQuery($query);
 		$fullColumns = $this->_db->loadObjectList();
 		$columns = $this->_db->loadResultArray(0);

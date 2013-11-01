@@ -35,7 +35,7 @@ jQuery(document).ready(function() {
 		?>
 
 <li <?php echo $active_menu ?>>
-	<div >
+	<div>
 		<?php echo JHTML::link($caturl, $cattext);
 		if ($category->childs) {
 			?>

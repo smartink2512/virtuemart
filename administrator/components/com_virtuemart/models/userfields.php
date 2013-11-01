@@ -303,7 +303,6 @@ class VirtueMartModelUserfields extends VmModel {
 		// Get the fieldtype for the database
 		$_fieldType = $field->formatFieldType($data);
 
-
 		if(!in_array($data['name'],$coreFields) && $field->type != 'delimiter'){
 
 			// Alter the user_info table
@@ -1155,14 +1154,17 @@ class VirtueMartModelUserfields extends VmModel {
 			$field->load($fieldId);
 
 			if ($field->type != 'delimiter') {
+				// Get the fieldtype for the database
+				$_fieldType = $field->formatFieldType();
+
 				// Alter the user_info table
-				if ($userinfo->_modifyColumn ('DROP', $_fieldName) === false) {
+				if ($userinfo->_modifyColumn ('DROP', $_fieldName,$_fieldType) === false) {
 					vmError($userinfo->getError());
 					$ok = false;
 				}
 
 				// Alter the order_userinfo table
-				if ($orderinfo->_modifyColumn ('DROP', $_fieldName) === false) {
+				if ($orderinfo->_modifyColumn ('DROP', $_fieldName,$_fieldType) === false) {
 					vmError($orderinfo->getError());
 					$ok = false;
 				}
