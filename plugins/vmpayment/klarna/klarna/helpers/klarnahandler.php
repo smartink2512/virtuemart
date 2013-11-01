@@ -546,7 +546,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 
 		$klarna->setComment ($klarna_comment);
 		$klarna->setReference ($klarna_reference, "");
-		$pno = self::getPNOfromOrder ($billTo, $country);
+		$pno = self::getPNOfromSession ($sessionKlarnaData->KLARNA_DATA, $country);
 		try {
 			$klarna->setAddress (KlarnaFlags::IS_SHIPPING, $klarna_shipping);
 			$klarna->setAddress (KlarnaFlags::IS_BILLING, $klarna_billing);
@@ -1127,6 +1127,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		}
 	}
 
+
 	/**
 	 * Sweden: yymmdd-nnnn, it can be sent with or without dash "-" or with or without the two first numbers in the year.
 	 * Finland: ddmmyy-nnnn
@@ -1140,18 +1141,16 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 	 * @param $country
 	 * @return string
 	 */
-	static function getPNOfromOrder ($billTo, $country) {
+	static function getPNOfromSession ($sessionData, $country) {
 
 		if (($country == "NLD" || $country == "DEU")) {
-			$date = explode ("-", $billTo->birthday);
-			$pno = $date['2'] . $date['1'] . $date['0'];
+			$pno = $sessionData['pno_frombirthday'];
 		} else {
-			$pno = $billTo->socialNumber;
+			$pno = $sessionData['socialNumber'];
 		}
 
 		return $pno;
 	}
-
 	/**
 	 * @param $data
 	 * @return bool
@@ -1283,13 +1282,14 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 	static function getKlarnaSpecificShopperFields () {
 
 		return array(
-			"SWE" => array("socialNumber", "email"),
-			"DNK" => array("socialNumber"), // should not be given to the shopper  year_salary
-			"NOR" => array("socialNumber"),
-			"FIN" => array("socialNumber"),
-			"NLD" => array("birthday", "address_2", "house_no"),
-			"DEU" => array("birthday", "house_no")
+			"SWE" => array( "email"),
+			"DNK" => array(), // should not be given to the shopper  year_salary
+			"NOR" => array(),
+			"FIN" => array(),
+			"NLD" => array( "address_2", "house_no"),
+			"DEU" => array( "house_no")
 		);
+
 	}
 
 	/**

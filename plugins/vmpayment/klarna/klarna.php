@@ -1313,6 +1313,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		} else {
 			VmInfo (JText::_ ('VMPAYMENT_KLARNA_REQUIRED_USERFIELDS_OK'));
 		}
+		VmConfig::loadJLang('com_virtuemart_shoppers', true);
+
 		$klarna_required_not_found = array();
 		// TEST that all required Klarna shopper fields are there, if not create them
 		foreach ($required_shopperfields_bycountry as $key => $shopperfield_country) {
@@ -1483,8 +1485,8 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 			$prefix . 'phone_1'               => $klarnaData['phone'],
 			$prefix . 'phone_2'               => $st['phone_2'],
 			$prefix . 'fax'                   => $st['fax'],
-			$prefix . 'birthday'              => empty($klarnaData['birthday']) ? $st['birthday'] : $klarnaData['birthday'],
-			$prefix . 'socialNumber'          => empty($klarnaData['pno']) ? $klarnaData['socialNumber'] : $klarnaData['pno'],
+			//$prefix . 'birthday'              => empty($klarnaData['birthday']) ? $st['birthday'] : $klarnaData['birthday'],
+			//$prefix . 'socialNumber'          => empty($klarnaData['pno']) ? $klarnaData['socialNumber'] : $klarnaData['pno'],
 			'address_type'                    => $address_type
 		);
 		if ($address_type == 'BT') {
@@ -1905,7 +1907,10 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	 *
 	 */
 	function loadScriptAndCss () {
-
+		static $loaded = false;
+		if ($loaded) {
+			return;
+		}
 		$assetsPath = VMKLARNAPLUGINWEBROOT . '/klarna/assets/';
 		JHTML::stylesheet ('style.css', $assetsPath . 'css/', FALSE);
 		JHTML::stylesheet ('klarna.css', $assetsPath . 'css/', FALSE);
@@ -1917,6 +1922,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		 klarna.ajaxPath = "' . juri::root () . '/index.php?option=com_virtuemart&view=plugin&vmtype=vmpayment&name=klarna";
 	');
 		*/
+		$loaded=true;
 	}
 
 }

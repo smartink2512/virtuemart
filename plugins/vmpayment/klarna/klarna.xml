@@ -20,9 +20,12 @@
     <params addpath="/plugins/vmpayment/klarna/klarna/elements"/>
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning"/>
+
         <param type="spacer" default="VMPAYMENT_KLARNA_CONF_PAYMENT_TITLE" level="level1"/>
         <param type="klarnalogo" level="level1"/>
         <param type="klarnacurl"/>
+        <param type="vmtitle" default="" description="VMPAYMENT_KLARNA_PHP_WARNING" />
+
         <param name="documentation" type="klarnalabel" label="VMPAYMENT_KLARNA_DOCUMENTATION"
                default="&lt;a href=&quot;https://static.klarna.com/integration_sales/partner/VirtueMart/v1.0/Klarna_documentation.pdf&quot; target=&quot;_blank&quot;&gt;Documentation&lt;/a&gt;"/>/>
   <param type="getklarna" level="level1"/>

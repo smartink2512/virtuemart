@@ -1001,6 +1001,7 @@ class VirtueMartModelUser extends VmModel {
 		$i = 0 ;
 
 		$return = true;
+		VmConfig::loadJLang('com_virtuemart_shoppers', true);
 
 		foreach ($neededFields as $field) {
 
