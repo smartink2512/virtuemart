@@ -172,7 +172,7 @@ if ($sType=='part') {
 
 
 		</ol>
-		<input type="hidden" name="klarna_paymentPlan" value="<?php echo $viewData['payment_params']['paymentPlan']; ?>"
+		<input type="hidden" name="<?php echo $sType ?>_klarna_paymentPlan" value="<?php echo $viewData['payment_params']['paymentPlan']; ?>"
 		       class="paymentPlan"/>
 	<?php } ?>
 		<div class="klarna_box_bottom_content_listPriceInfo">
@@ -196,7 +196,7 @@ if ($sType=='part') {
 		<div class="klarna_box_bottom_radio_title" style="float: left">
 			<label for="private"><?php echo JText::_ ('VMPAYMENT_KLARNA_INVOICE_TYPE_PRIVATE'); ?></label>
 		</div>
-		<input type="radio" name="klarna_invoice_type" id="company" value="company" class="Klarna_radio"/>
+		<input type="radio" name="<?php echo $sType ?>_klarna_invoice_type" id="company" value="company" class="Klarna_radio"/>
 		<div class="klarna_box_bottom_radio_title" style="float: none">
 			<label for="company"><?php echo JText::_ ('VMPAYMENT_KLARNA_INVOICE_TYPE_COMPANY'); ?></label>
 		</div>
@@ -217,7 +217,7 @@ if ($sType=='part') {
 	<div class="klarna_box_bottom_title"
 	     id="invoice_perOrg_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_PERSON_NUMBER'); ?></div>
 	<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_SOCIALNUMBER_' . strtoupper ($code2)); ?>" type="text"
-	       name="klarna_socialNumber" value="<?php echo @$viewData['payment_params']['fields']['socialNumber']; ?>"
+	       name="<?php echo $sType ?>_klarna_socialNumber" value="<?php echo @$viewData['payment_params']['fields']['socialNumber']; ?>"
 	       class="Klarna_fullwidth"/>
 		<?php } ?>
 
@@ -225,12 +225,12 @@ if ($sType=='part') {
 <div class="klarna_box_bottom_input_combo">
 	<div class="klarna_left" style="width: 60%">
 		<div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_FIRST_NAME'); ?></div>
-		<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_FIRSTNAME'); ?>" type="text" name="klarna_firstName"
+		<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_FIRSTNAME'); ?>" type="text" name="<?php echo $sType ?>_klarna_firstName"
 		       value="<?php echo $viewData['payment_params']['fields']['first_name']; ?>" style="width: 98%"/>
 	</div>
 	<div class="klarna_right" style="width: 40%">
 		<div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_LAST_NAME'); ?></div>
-		<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_LASTNAME'); ?>" type="text" name="klarna_lastName"
+		<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_LASTNAME'); ?>" type="text" name="<?php echo $sType ?>_klarna_lastName"
 		       value="<?php echo $viewData['payment_params']['fields']['last_name']; ?>" style="width: 100%"/>
 	</div>
 </div>
@@ -248,7 +248,7 @@ if ($sType=='part') {
 	</div>
 	<?php } ?>
 <div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_PHONE_NUMBER'); ?></div>
-<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER'); ?>" type="text" name="klarna_phone"
+<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER'); ?>" type="text" name="<?php echo $sType ?>_klarna_phone"
        value="<?php echo $viewData['payment_params']['fields']['phone']; ?>" class="Klarna_fullwidth"/>
 	<?php
 	if ($code2 == 'de') {
@@ -270,13 +270,13 @@ if ($sType=='part') {
 <div class="klarna_box_bottom_input_combo">
 	<div class="klarna_left" style="width: <?php echo  $klarna_box_street ?>">
 		<div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_ADDRESS_STREET'); ?></div>
-		<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_STREETADDRESS'); ?>" type="text" name="klarna_street"
+		<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_STREETADDRESS'); ?>" type="text" name="<?php echo $sType ?>_klarna_street"
 		       value="<?php echo $viewData['payment_params']['fields']['street']; ?>" style="width: 98%"/>
 	</div>
 	<?php if ($code2 == 'de' || $code2 == 'nl') { ?>
 	<div class="<?php echo  $klarna_class ?>" style="width: <?php echo  $klarna_box_house ?>">
 		<div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_ADDRESS_HOMENUMBER'); ?></div>
-		<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_HOUSENUMBER'); ?>" type="text" name="klarna_homenumber"
+		<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_HOUSENUMBER'); ?>" type="text" name="<?php echo $sType ?>_klarna_homenumber"
 		       value="<?php echo $viewData['payment_params']['fields']['houseNr']; ?>" style="width: 100%"/>
 	</div>
 	<?php } ?>
@@ -285,7 +285,7 @@ if ($sType=='part') {
 		<div
 			class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_ADDRESS_HOUSENUMBER_ADDITION'); ?></div>
 		<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_HOUSE_EXTENSION'); ?>" type="text"
-		       name="klarna_house_extension"
+		       name="<?php echo $sType ?>_klarna_house_extension"
 		       value="<?php echo @$viewData['payment_params']['fields']['houseExt']; ?>" style="width: 95%"
 		       size="5"/>
 	</div>
@@ -294,12 +294,12 @@ if ($sType=='part') {
 <div class="klarna_box_bottom_input_combo" style="width: 100%">
 	<div class="klarna_left" style="width: 60%">
 		<div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_ADDRESS_ZIP'); ?></div>
-		<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_ZIP'); ?>" type="text" name="klarna_zipcode"
+		<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_ZIP'); ?>" type="text" name="<?php echo $sType ?>_klarna_zipcode"
 		       value="<?php echo $viewData['payment_params']['fields']['zip']; ?>" style="width: 98%"/>
 	</div>
 	<div class="klarna_right" style="width: 40%">
 		<div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_ADDRESS_CITY'); ?></div>
-		<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_CITY'); ?>" type="text" name="klarna_city"
+		<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_CITY'); ?>" type="text" name="<?php echo $sType ?>_klarna_city"
 		       value="<?php echo $viewData['payment_params']['fields']['city']; ?>" style="width: 100%"/>
 	</div>
 </div>
@@ -312,20 +312,20 @@ else {
 	<img src="<?php echo VMKLARNAPLUGINWEBASSETS . '/images/' ?>share/loader1.gif" alt=""/>
 </div>
 <input type="text" alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_SOCIALNUMBER_SE'); ?>"
-       name="klarna_socialNumber" value="<?php echo $viewData['payment_params']['fields']['socialNumber']; ?>"
+       name="<?php echo $sType ?>_klarna_socialNumber" value="<?php echo $viewData['payment_params']['fields']['socialNumber']; ?>"
        class="Klarna_pnoInputField"/>
 
 <div class="referenceDiv" style="display: none">
 	<div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_REFERENCE'); ?></div>
-	<input type="text" alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_REFERENCE'); ?>" name="klarna_reference"
+	<input type="text" alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_REFERENCE'); ?>" name="<?php echo $sType ?>_klarna_reference"
 	       value="<?php echo $viewData['payment_params']['fields']['reference']; ?>" class="Klarna_fullwidth"/>
 </div>
 <div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_EMAIL'); ?></div>
-<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_EMAIL'); ?>" type="text" name="klarna_emailAddress"
+<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_EMAIL'); ?>" type="text" name="<?php echo $sType ?>_klarna_emailAddress"
        value="<?php echo $viewData['payment_params']['fields']['email']; ?>" class="Klarna_fullwidth"/>
 <br/> <br/>
 <div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_PHONE_NUMBER'); ?></div>
-<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER'); ?>" type="text" name="klarna_phone"
+<input alt="<?php echo JText::_ ('VMPAYMENT_KLARNA_NOTICE_PHONENUMBER'); ?>" type="text" name="<?php echo $sType ?>_klarna_phone"
        value="<?php echo $viewData['payment_params']['fields']['phone']; ?>" class="Klarna_fullwidth"/>
 <br/> <br/>
 <div class="klarna_box_bottom_address" style="display: none">
@@ -343,7 +343,7 @@ if ($code2 == 'de' || $code2 == 'nl') {
 <div class="klarna_box_bottom_title"><?php echo JText::_ ('VMPAYMENT_KLARNA_BIRTHDAY'); ?></div>
 <div class="klarna_box_bottom_input_combo" style="width: 100%">
 	<div class="klarna_left" style="width: 30%">
-		<select style="width: 98%" name="klarna_birth_day"
+		<select style="width: 98%" name="<?php echo $sType ?>_klarna_birth_day"
 		        class="selectBox_bday">
 			<option value="0"><?php echo JText::_ ('VMPAYMENT_KLARNA_DATE_DAY'); ?></option>
 			<option value="01">01</option>
@@ -380,7 +380,7 @@ if ($code2 == 'de' || $code2 == 'nl') {
 		</select>
 	</div>
 	<div class="klarna_left" style="width: 40%">
-		<select style="width: 98%" name="klarna_birth_month" class="selectBox_bmonth">
+		<select style="width: 98%" name="<?php echo $sType ?>_klarna_birth_month" class="selectBox_bmonth">
 			<option value="0" selected="selected"><?php echo JText::_ ('VMPAYMENT_KLARNA_DATE_MONTH'); ?></option>
 			<option value="01"><?php echo JText::_ ('VMPAYMENT_KLARNA_MONTH_1'); ?></option>
 			<option value="02"><?php echo JText::_ ('VMPAYMENT_KLARNA_MONTH_2'); ?></option>
@@ -397,7 +397,7 @@ if ($code2 == 'de' || $code2 == 'nl') {
 		</select>
 	</div>
 	<div class="klarna_right" style="width: 30%">
-		<select style="width: 100%" name="klarna_birth_year" class="selectBox_year">
+		<select style="width: 100%" name="<?php echo $sType ?>_klarna_birth_year" class="selectBox_year">
 			<option selected="0"><?php echo JText::_ ('VMPAYMENT_KLARNA_DATE_YEAR'); ?></option>
 		</select>
 	</div>
@@ -427,7 +427,7 @@ if ($code2 == 'de') {
 ");
 	?>
 <div class="klarna_box_bottom_input_combo" style="width: 100%">
-	<input type="checkbox" name="klarna_consent"
+	<input type="checkbox" name="<?php echo $sType ?>_klarna_consent"
 	       id="box_klarna_consent_<?php echo $sType ?>"
 	       style="float: left; margin-right: 3px"/>
 
@@ -447,8 +447,8 @@ if ($code2 == 'de') {
 </div>
 </div>
 </div>
-<input type="hidden" name="klarna_country_2_code" value="<?php echo $viewData['payment_params']['countryCode']; ?>"/>
+<input type="hidden" name="<?php echo $sType ?>_klarna_country_2_code" value="<?php echo $viewData['payment_params']['countryCode']; ?>"/>
 <?php if ($code2 != 'se') { ?>
-<input type="hidden" name="klarna_emailAddress" value="<?php echo $viewData["payment_params"]["fields"]['email']; ?>"/>
+<input type="hidden" name="<?php echo $sType ?>_klarna_emailAddress" value="<?php echo $viewData["payment_params"]["fields"]['email']; ?>"/>
 <?php } ?>
 <!-- END KLARNA BOX -->

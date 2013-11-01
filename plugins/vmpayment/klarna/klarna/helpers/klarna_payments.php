@@ -106,11 +106,17 @@ class klarna_payments {
 	 */
 	private function setPreviouslyFilledIn ($klarna_data) {
 
-		if (($this->country == "nl" || $this->country == "de") && isset($klarna_data['pno'])) {
+		if (($this->country == "nl" ) && isset($klarna_data['pno'])) {
 			$pno = $klarna_data['pno'];
 			$this->klarna_bday['year'] = substr ($pno, 4, 4);
 			$this->klarna_bday['month'] = substr ($pno, 2, 2);
 			$this->klarna_bday['day'] = substr ($pno, 0, 2);
+		}
+		if ( $this->country == "de") {
+			$pno = $klarna_data['pno'];
+			$this->klarna_bday['year'] =  $klarna_data['birth_year'];
+			$this->klarna_bday['month'] =  $klarna_data['birth_month'];
+			$this->klarna_bday['day'] =  $klarna_data['birth_day'];
 		}
 		$this->klarna_street = ((isset($klarna_data['street']) &&
 			!isset($this->klarna_street)) ? $klarna_data['street'] :

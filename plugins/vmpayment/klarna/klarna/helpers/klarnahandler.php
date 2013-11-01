@@ -298,25 +298,26 @@ class KlarnaHandler {
 			return NULL;
 
 		}
+		$prefix=$klarna_option . '_' . $kIndex ;
 		//Removes spaces, tabs, and other delimiters.
-		$klarna['pno'] = preg_replace ('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', JRequest::getVar ($kIndex . 'pnum', ''));
-		$klarna['socialNumber'] = preg_replace ('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', JRequest::getVar ($kIndex . 'socialNumber'));
-		$klarna['phone'] = JRequest::getVar ($kIndex . 'phone');
-		$klarna['email'] = JRequest::getVar ($kIndex . 'emailAddress');
-		$klarna['street'] = JRequest::getVar ($kIndex . 'street');
-		$klarna['house_no'] = JRequest::getVar ($kIndex . 'homenumber');
-		$klarna['house_ext'] = JRequest::getVar ($kIndex . 'house_extension');
-		$klarna['year_salary'] = JRequest::getVar ($kIndex . 'ysalary');
-		$klarna['reference'] = JRequest::getVar ($kIndex . 'reference');
-		$klarna['city'] = JRequest::getVar ($kIndex . 'city');
-		$klarna['zip'] = JRequest::getVar ($kIndex . 'zipcode');
-		$klarna['first_name'] = JRequest::getVar ($kIndex . 'firstName');
-		$klarna['last_name'] = JRequest::getVar ($kIndex . 'lastName');
+		$klarna['pno'] = preg_replace ('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', JRequest::getVar ($prefix . 'pnum', ''));
+		$klarna['socialNumber'] = preg_replace ('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', JRequest::getVar ($prefix . 'socialNumber'));
+		$klarna['phone'] = JRequest::getVar ($prefix . 'phone');
+		$klarna['email'] = JRequest::getVar ($prefix . 'emailAddress');
+		$klarna['street'] = JRequest::getVar ($prefix . 'street');
+		$klarna['house_no'] = JRequest::getVar ($prefix . 'homenumber');
+		$klarna['house_ext'] = JRequest::getVar ($prefix . 'house_extension');
+		$klarna['year_salary'] = JRequest::getVar ($prefix . 'ysalary');
+		$klarna['reference'] = JRequest::getVar ($prefix . 'reference');
+		$klarna['city'] = JRequest::getVar ($prefix . 'city');
+		$klarna['zip'] = JRequest::getVar ($prefix . 'zipcode');
+		$klarna['first_name'] = JRequest::getVar ($prefix . 'firstName');
+		$klarna['last_name'] = JRequest::getVar ($prefix . 'lastName');
 		$klarna['invoice_type'] = JRequest::getVar ('klarna_invoice_type');
 		$klarna['company_name'] = JRequest::getVar ('klarna_company_name');
-		$klarna['phone'] = JRequest::getVar ($kIndex . 'phone');
-		$klarna['consent'] = JRequest::getVar ($kIndex . 'consent');
-		$klarna['gender'] = JRequest::getVar ($klarna_option . '_' . $kIndex . 'gender');
+		$klarna['phone'] = JRequest::getVar ($prefix . 'phone');
+		$klarna['consent'] = JRequest::getVar ($prefix . 'consent');
+		$klarna['gender'] = JRequest::getVar ($prefix . 'gender');
 		switch ($klarna['gender']) {
 			case KlarnaFlags::MALE :
 				$klarna['title'] = JText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MR');
@@ -326,16 +327,16 @@ class KlarnaHandler {
 				$klarna['title'] = JText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MRS');
 				break;
 		}
-		$klarna['birth_day'] = JRequest::getVar ($kIndex . 'birth_day', '');
-		$klarna['birth_month'] = JRequest::getVar ($kIndex . 'birth_month', '');
-		$klarna['birth_year'] = JRequest::getVar ($kIndex . 'birth_year', '');
+		$klarna['birth_day'] = JRequest::getVar ($prefix . 'birth_day', '');
+		$klarna['birth_month'] = JRequest::getVar ($prefix . 'birth_month', '');
+		$klarna['birth_year'] = JRequest::getVar ($prefix . 'birth_year', '');
 		if (isset($klarna['birth_year']) and !empty($klarna['birth_year'])) {
 			// due to the select list
 			if ($klarna['birth_month'] != 0 and $klarna['birth_month'] != 0) {
 				$klarna['birthday'] = $klarna['birth_year'] . "-" . $klarna['birth_month'] . "-" . $klarna['birth_day'];
-				$klarna['pno_frombirthday'] = JRequest::getVar ($kIndex . 'birth_day') .
-					JRequest::getVar ($kIndex . 'birth_month') .
-					JRequest::getVar ($kIndex . 'birth_year');
+				$klarna['pno_frombirthday'] = JRequest::getVar ($prefix . 'birth_day') .
+					JRequest::getVar ($prefix . 'birth_month') .
+					JRequest::getVar ($prefix . 'birth_year');
 			} else {
 				$klarna['birthday'] = '';
 			}
@@ -1203,7 +1204,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 					$errors[] = 'VMPAYMENT_KLARNA_COMPANY_NAME';
 				}
 			} else {
-				if (!KlarnaEncoding::checkPNO (JRequest::getVar ($kIndex . 'socialNumber'), KlarnaEncoding::PNO_SE)) {
+				if (!KlarnaEncoding::checkPNO ($data['socialNumber'], KlarnaEncoding::PNO_SE)) {
 					$errors[] = 'VMPAYMENT_KLARNA_PERSONALORORGANISATIO_NUMBER';
 				}
 			}
