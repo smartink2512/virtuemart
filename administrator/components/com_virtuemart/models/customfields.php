@@ -362,7 +362,9 @@ class VirtueMartModelCustomfields extends VmModel {
 						$thumb = $this->displayCustomMedia ($media_id,'category');
 					}
 					$display = '<input type="hidden" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" />';
-					return $display . JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . $field->customfield_value,FALSE), $thumb . ' ' . $category->category_name, array('title' => $category->category_name)) . $display;
+					//return $display . JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . $field->customfield_value,FALSE), $thumb . ' ' . $category->category_name, array('title' => $category->category_name)) . $display;
+					$display .= JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . (int)$field->customfield_value,FALSE), '<span class="custom_related_image">'.$thumb.'</span><span class="custom_related_title">' . $category->category_name, array('title' => $category->category_name)).'</span>';
+					return $display;
 				}
 				else {
 					return 'no result';
@@ -384,7 +386,8 @@ class VirtueMartModelCustomfields extends VmModel {
 					$thumb = $this->displayCustomMedia (0).' ';
 				}
 				$display = '<input type="hidden" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" />';
-				$display .= JHTML::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
+				//$display .= JHTML::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
+				$display .= JHTML::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, '<span class="custom_related_image">'.$thumb.'</span><span class="custom_related_title">'. $related->product_name, array('title' => $related->product_name,'target'=>'blank')).'</span>';
 				return $display;
 
 		}

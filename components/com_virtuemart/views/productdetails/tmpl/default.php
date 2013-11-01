@@ -32,6 +32,8 @@ JHTML::_('behavior.modal');
 // JHTML::_('behavior.tooltip');
 $MailLink = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&virtuemart_category_id=' . $this->product->virtuemart_category_id . '&tmpl=component';
 
+$boxFuncReco = '';
+$boxFuncAsk = '';
 if(VmConfig::get('usefancy',0)){
 	vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
 	vmJsApi::css('jquery.fancybox-1.3.4');
@@ -162,7 +164,13 @@ $this->row = 0;
 	    $link = 'index.php?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->virtuemart_product_id;
 
 		echo $this->linkIcon($link . '&format=pdf', 'COM_VIRTUEMART_PDF', 'pdf_button', 'pdf_icon', false);
-	    echo $this->linkIcon($link . '&print=1', 'COM_VIRTUEMART_PRINT', 'printButton', 'show_printicon');
+
+		if(vmRequest::getInt('print',false)){
+			$print = 'onclick="window.print(); return false;"';
+		} else {
+			$print = '';
+		}
+	    echo $this->linkIcon($link . '&print=1', 'COM_VIRTUEMART_PRINT', 'printButton', 'show_printicon',true,true,false,$print);
 	    echo $this->linkIcon($MailLink, 'COM_VIRTUEMART_EMAIL', 'emailButton', 'show_emailfriend', false,true,false,'class="recommened-to-friend"');
 	    ?>
     	<div class="clear"></div>

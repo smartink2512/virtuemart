@@ -24,9 +24,9 @@ jQuery(document).ready(function() {
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($js);?>
 
-<ul class="VMmenu<?php echo $class_sfx ?>" id="<?php echo "VMmenu".$ID ?>" >
+<ul class="VMmenu <?php echo $class_sfx ?>" id="<?php echo "VMmenu".$ID ?>" >
 <?php foreach ($categories as $category) {
-		 $active_menu = 'class="VmClose"';
+		$active_menu = 'class="VmClose"';
 		$caturl = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$category->virtuemart_category_id);
 		$cattext = $category->category_name;
 		//if ($active_category_id == $category->virtuemart_category_id) $active_menu = 'class="active"';
@@ -47,19 +47,20 @@ jQuery(document).ready(function() {
 <?php if ($category->childs) { ?>
 <ul class="menu<?php echo $class_sfx; ?>">
 <?php
-		foreach ($category->childs as $child) {
+	foreach ($category->childs as $child) {
 
+		$active_child_menu = 'class="VmClose"';
 		$caturl = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$child->virtuemart_category_id);
 		$cattext = $child->category_name;
+		if ($child->virtuemart_category_id == $active_category_id) $active_child_menu = 'class="VmOpen"';
 		?>
-
-<li>
-	<div ><?php echo JHTML::link($caturl, $cattext); ?></div>
-</li>
-<?php		} ?>
+		<li <?php echo $active_child_menu ?>>
+		<div ><?php echo JHTML::link($caturl, $cattext); ?></div>
+		</li>
+<?php } ?>
 </ul>
-<?php 	} ?>
+<?php } ?>
 </li>
 <?php
-	} ?>
+ } ?>
 </ul>

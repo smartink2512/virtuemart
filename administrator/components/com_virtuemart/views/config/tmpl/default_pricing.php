@@ -42,68 +42,13 @@ $document->addScriptDeclaration($js);
 			<fieldset>
 				<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CONFIGURATION'); ?></legend>
 				<table class="admintable">
-					<tr>
-						<td class="key">
-                            <span class="hasTip"
-                                  title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_TAX_TIP'); ?>">
-                            	<label for="show_tax">
-									<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_TAX'); ?>
-	                            </label>
-                            </span>
-						</td>
-						<td>
-							<?php echo VmHTML::checkbox('show_tax', VmConfig::get('show_tax', 1)); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-                            <span class="hasTip"
-                                  title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ASKPRICE_TIP'); ?>">
-                            	<label for="show_tax">
-									<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ASKPRICE'); ?>
-	                            </label>
-                            </span>
-						</td>
-						<td>
-							<?php echo VmHTML::checkbox('askprice', VmConfig::get('askprice', 0)); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-                            <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_RAPPENRUNDUNG_TIP'); ?>">
-                            	<label for="show_tax">
-									<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_RAPPENRUNDUNG'); ?>
-	                            </label>
-                            </span>
-						</td>
-						<td>
-							<?php echo VmHTML::checkbox('rappenrundung', VmConfig::get('rappenrundung', 0)); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-                            <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ROUNDINDIG_TIP'); ?>">
-                            	<label for="show_tax">
-									<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ROUNDINDIG'); ?>
-	                            </label>
-                            </span>
-						</td>
-						<td>
-							<?php echo VmHTML::checkbox('roundindig', VmConfig::get('roundindig', FALSE)); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-                            <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CVARSWT_EXPLAIN'); ?>">
-                            	<label for="show_tax">
-									<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CVARSWT'); ?>
-	                            </label>
-                            </span>
-						</td>
-						<td>
-							<?php echo VmHTML::checkbox('cVarswT', VmConfig::get('cVarswT', 1)); ?>
-						</td>
-					</tr>
+					<?php
+					echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_TAX','show_tax',VmConfig::get('show_tax',1));
+					echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_PRICE_ASKPRICE','askprice',VmConfig::get('askprice',0));
+					echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_PRICE_RAPPENRUNDUNG','rappenrundung',VmConfig::get('rappenrundung',0));
+					echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_PRICE_ROUNDINDIG','roundindig',VmConfig::get('roundindig',1));
+					echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_PRICE_CVARSWT','cVarswT',VmConfig::get('cVarswT',1));
+					?>
 				</table>
 			</fieldset>
 		</td>

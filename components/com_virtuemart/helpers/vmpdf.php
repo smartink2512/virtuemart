@@ -75,12 +75,13 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 		var $vendorImage = '';
 		var $vendorAddress = '';
 		var $css = '';
-		
+		var $virtuemart_vendor_id = 1;
+
 		public function __construct() {
 			// Load the vendor, so we have the data for the header/footer...
 			// The images are NOT loaded by default, so do it manually, just in case
 			$vendorModel = VmModel::getModel('vendor');
-			$this->vendor = $vendorModel->getVendor();
+			$this->vendor = $vendorModel->getVendor($this->virtuemart_vendor_id);
 			$vendorModel->addImages($this->vendor,1);
 			$this->vendor->vendorFields = $vendorModel->getVendorAddressFields();
 			

@@ -484,7 +484,7 @@ class VmMediaHandler {
 					} else {
 						$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
 						$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_SET').' '.$this->file_description;
-						return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox);
+						return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox, $effect);
 					}
 				}
 			}

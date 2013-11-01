@@ -1533,10 +1533,16 @@ class VmTable extends JTable {
 			case 'DRO': // Drop
 			case 'DEL': // Delete
 				//stAn, i strongly do not recommend to delete customer information only because a field was deleted
-				if (empty($_col2)) $_col2 = $_col . '_DELETED_' . time();
-				if (!$this->isMysql51Plus())
+				if (empty($_col2)){
+					$_col2 = $_col . '_DELETED_' . time();
+					vmInfo('Be aware the column of table '.$this->_tbl.' is not deleted, only renamed to '.$_col2);
+				}
+
+				if (!$this->isMysql51Plus()) {
 					if (empty($_type)) $_type = 'TEXT CHARACTER SET utf8';
-				// NOT NULL not allowed for deleted columns
+				}
+
+			// NOT NULL not allowed for deleted columns
 				//$t_type = str_ireplace(' NOT ', '', $_type);
 				$_sql .= "CHANGE $_col $_col2 $_type ";
 				//was: $_sql .= "DROP $_col ";

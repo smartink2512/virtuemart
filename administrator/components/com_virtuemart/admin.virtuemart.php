@@ -48,6 +48,12 @@ if(!Permissions::getInstance()->isSuperVendor()){
 	$app->redirect('index.php');
 }
 
+$bi = 18446744073709551615;
+$hi = 12345678;
+$low = 0.12345678;
+
+$sum = (float)$hi+(float)$low;
+vmdebug('my $hi + $low '.$sum.' unser BigInt '.$bi);
 // Require specific controller if requested
 if($_controller = VmRequest::getCmd('view', VmRequest::getCmd('controller', 'virtuemart'))) {
 	if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php')) {

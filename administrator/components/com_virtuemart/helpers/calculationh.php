@@ -663,6 +663,7 @@ class calculationHelper {
 				continue;
 			}
 
+      $this->productCurrency = isset($productCart->product_currency)? $productCart->product_currency:0;
 			$variantmod = $customfieldModel->calculateModificators($productCart);
 
 			//$cartproductkey = $name.serialize($productCart->customProductData); //$product->virtuemart_product_id.$variantmod;

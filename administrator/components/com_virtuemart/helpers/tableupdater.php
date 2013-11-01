@@ -355,7 +355,6 @@ class GenericTableUpdater extends VmModel{
 
 	public function createTable($tablename,$table){
 
-// 		vmdebug('hmm create table '.$tablename,$table);
 		$q = 'CREATE TABLE IF NOT EXISTS `'.$tablename.'` (
 				';
 		foreach($table[0] as $fieldname => $alterCommand){
@@ -541,7 +540,7 @@ class GenericTableUpdater extends VmModel{
 			$demandFieldNames[] = $i;
 		}
 
-		$query = 'SHOW FULL COLUMNS  FROM `'.$tablename.'` ';
+		$query = 'SHOW FULL COLUMNS  FROM `'.$tablename.'` ';	//$q = 'SHOW CREATE TABLE '.$this->_tbl;
 		$this->_db->setQuery($query);
 		$fullColumns = $this->_db->loadObjectList();
 		$columns = $this->_db->loadColumn(0);

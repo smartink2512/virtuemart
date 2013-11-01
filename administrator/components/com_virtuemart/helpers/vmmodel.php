@@ -540,16 +540,31 @@ class VmModel extends JObject {
 
 	function checkFilterOrder($toCheck){
 
+		//vmdebug('checkFilterOrder',$this->_validOrderingFieldName);
 		if(!in_array($toCheck, $this->_validOrderingFieldName)){
 
-			vmdebug('checkValidOrderingField:'.get_class($this).' programmer choosed invalid ordering '.$toCheck.', use '.$this->_selectedOrdering);
-			$toCheck = $this->_selectedOrdering;
-			$app = JFactory::getApplication();
-			$view = VmRequest::getCmd('view','virtuemart');
-			$app->setUserState( 'com_virtuemart.'.$view.'.filter_order',$this->_selectedOrdering);
+			$break = false;
+			vmSetStartTime();
+			foreach($this->_validOrderingFieldName as $name){
+				if(strpos($name,$toCheck)!==FALSE){
+					$this->_selectedOrdering = $name;
+					$break = true;
+					break;
+				}
+			}
+			vmTime('Time to find correct ordering '.$this->_selectedOrdering);
+			if(!$break){
+				$toCheck = $this->_selectedOrdering;
+				$app = JFactory::getApplication();
+				$view = JRequest::getWord('view','virtuemart');
+				$app->setUserState( 'com_virtuemart.'.$view.'.filter_order',$this->_selectedOrdering);
+			}
+			//vmdebug('checkValidOrderingField:'.get_class($this).' programmer choosed invalid ordering '.$toCheck.', use '.$this->_selectedOrdering);
+		} else {
+			$this->_selectedOrdering = $toCheck;
 		}
-		$this->_selectedOrdering = $toCheck;
-		return $toCheck;
+
+		return $this->_selectedOrdering;
 	}
 
 	var $_validFilterDir = array('ASC','DESC');
@@ -1060,7 +1075,7 @@ class VmPagination extends JPagination {
 				$limits[$this->_perRow * 50] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 50, false) , $this->_perRow * 50 );
 			}
 			if(!array_key_exists($this->limit,$limits)){
-				$limits[] = JHTML::_('select.option', JRoute::_( $link.'&limit='.$this->limit,false),$this->limit);
+				$limits[$this->limit] = JHTML::_('select.option', JRoute::_( $link.'&limit='.$this->limit,false),$this->limit);
 				ksort($limits);
 			}
 			$selected= JRoute::_( $link.'&limit='. $selected, false) ;

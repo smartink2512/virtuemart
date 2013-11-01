@@ -267,7 +267,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 
 	function removeAddressST(){
-        $virtuemart_userinfo_id = JRequest::getVar('virtuemart_userinfo_id');
+		$virtuemart_userinfo_id = JRequest::getVar('virtuemart_userinfo_id');
 
 		$userModel = VmModel::getModel('user');
 		$userModel->removeAddress($virtuemart_userinfo_id);

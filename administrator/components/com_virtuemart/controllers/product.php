@@ -266,7 +266,7 @@ class VirtuemartControllerProduct extends VmController {
 
 		$view->setLayout($layoutName);
 
-		$this->display();
+		$view->display();
 	}
 
 	/**

@@ -89,12 +89,14 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 			$view->headFooter = true;
 			$view->display();
 		} else {
-			$viewName='invoice';
-			$format="html";
-			/* Create the invoice PDF file on disk and send that back */
+		
+			//PDF needs more RAM than usual
++			VmConfig::ensureMemoryLimit(64);
+
+			// Create the invoice PDF file on disk and send that back 
 			$orderModel = VmModel::getModel('orders');
 			$orderDetails = $this->getOrderDetails();
-			$fileName = $this->getInvoicePDF($orderDetails, $viewName, $layout, $format);
+			$fileName = $this->getInvoicePDF($orderDetails);
 			if (file_exists ($fileName)) {
 				header ("Cache-Control: public");
 				header ("Content-Transfer-Encoding: binary\n");
@@ -178,7 +180,8 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 
 		$view->addTemplatePath( JPATH_VM_SITE.DS.'views'.DS.$viewName.DS.'tmpl' );
 		$vmtemplate = VmConfig::get('vmtemplate',0);
-		if($vmtemplate===0 or $vmtemplate == 'default'){
+		$templateName = shopFunctionsF::setTemplate($vmtemplate);
+		/*if($vmtemplate===0 or $vmtemplate == 'default'){
 			if(JVM_VERSION == 2){
 				$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
 			} else {
@@ -189,12 +192,16 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 			$templateName = $db->loadResult();
 		} else {
 			$templateName = $vmtemplate;
+		}*/
+
+
+		if(!empty($templateName)){
+			$TemplateOverrideFolder = JPATH_SITE.DS."templates".DS.$templateName.DS."html".DS."com_virtuemart".DS."invoice";
+			if(file_exists($TemplateOverrideFolder)){
+				$view->addTemplatePath( $TemplateOverrideFolder);
+			}
 		}
 
-		$TemplateOverrideFolder = JPATH_SITE.DS."templates".DS.$templateName.DS."html".DS."com_virtuemart".DS."invoice";
-		if(file_exists($TemplateOverrideFolder)){
-			$view->addTemplatePath( $TemplateOverrideFolder);
-		}
 
 		$view->invoiceNumber = $invoiceNumberDate[0];
 		$view->invoiceDate = $invoiceNumberDate[1];
@@ -204,14 +211,17 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 		$view->showHeaderFooter = false;
 
 		$vendorModel = VmModel::getModel('vendor');
-		$vendor = & $vendorModel->getVendor();
+		$virtuemart_vendor_id = 1;	//We could set this automatically by the vendorId stored in the order.
+		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 		
 		$metadata = array (
 			'title' => JText::sprintf('COM_VIRTUEMART_INVOICE_TITLE', 
 				$vendor->vendor_store_name, $view->invoiceNumber, 
 				$orderDetails['details']['BT']->order_number),
 			'keywords' => JText::_('COM_VIRTUEMART_INVOICE_CREATOR'));
-		
+
+		$view->display();
+
 		return VmPdf::createVmPdf($view, $path, 'F', $metadata);
 	}
 }

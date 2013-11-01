@@ -55,7 +55,6 @@ class VirtuemartViewCategory extends VmView {
 
 			$category = $model->getCategory('',false);
 
-
 			// Toolbar
 			$text='';
 			if (isset($category->category_name)) $name = $category->category_name; else $name ='';

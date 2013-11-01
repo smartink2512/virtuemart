@@ -91,6 +91,7 @@ browse_search_fields=array:product_sku|category_name|category_description|mf_nam
 
 
 ##Pricing
+	roundindig=1
     show_prices=1
     price_show_packaging_pricelabel=0
     show_tax=1

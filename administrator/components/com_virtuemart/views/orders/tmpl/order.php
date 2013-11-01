@@ -63,6 +63,20 @@ $document->addScriptDeclaration ( "
 			e.preventDefault();
 		};
 
+		function addNewLine(e,i) {
+
+			var row = jQuery('#itemTable').find('tbody tr:first').html();
+			var needle = 'item_id['+i+']';
+			//var needle = new RegExp('item_id['+i+']','igm');
+			while (row.contains(needle)){
+				row = row.replace(needle,'item_id[0]');
+			}
+
+			//alert(needle);
+			jQuery('#itemTable').find('tbody').prepend('<tr>'+row+'</tr>');
+			e.preventDefault();
+		};
+
 		function cancelEdit(e) {
 			jQuery('#orderItemForm').each(function(){
 				this.reset();
@@ -400,11 +414,11 @@ $document->addScriptDeclaration ( "
 	<tr>
 		<td colspan="2">
 		<form action="index.php" method="post" name="orderItemForm" id="orderItemForm"><!-- Update linestatus form -->
-		<table class="adminlist" cellspacing="0" cellpadding="0">
+		<table class="adminlist" cellspacing="0" cellpadding="0" id="itemTable" >
 			<thead>
 				<tr>
 					<!--<th class="title" width="5%" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_EDIT_ACTIONS') ?></th> -->
-					<th class="title" width="3" align="left">&nbsp;</th>
+					<th class="title" width="3" align="left">#</th>
 					<th class="title" width="47" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QUANTITY') ?></th>
 					<th class="title" width="*" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_NAME') ?></th>
 					<th class="title" width="10%" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
@@ -417,9 +431,10 @@ $document->addScriptDeclaration ( "
 					<th class="title" width="5%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></th>
 				</tr>
 			</thead>
-		<?php foreach ($this->orderdetails['items'] as $item) { ?>
+		<?php $i=1;
+		foreach ($this->orderdetails['items'] as $item) { ?>
 			<!-- Display the order item -->
-			<tr valign="top" id="showItem_<?php echo $item->virtuemart_order_item_id; ?>" data-itemid="<?php echo $item->virtuemart_order_item_id; ?>">
+			<tr valign="top" ><?php /*id="showItem_<?php echo $item->virtuemart_order_item_id; ?>" data-itemid="<?php echo $item->virtuemart_order_item_id; ?>">*/ ?>
 				<!--<td>
 					<?php $removeLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->virtuemart_order_id.'&orderLineId='.$item->virtuemart_order_item_id.'&task=removeOrderItem'); ?>
 					<a class="vmicon vmicon-16-bug" title="<?php echo JText::_('remove'); ?>" onclick="javascript:confirmation('<?php echo $removeLineLink; ?>');"></a>
@@ -427,15 +442,16 @@ $document->addScriptDeclaration ( "
 					<a href="javascript:enableItemEdit(<?php echo $item->virtuemart_order_item_id; ?>)"> <?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-category.png', "Edit", NULL, "Edit"); ?></a>
 				</td> -->
 				<td>
-
+					<?php echo ($i++)?>
 				</td>
 				<td>
 					<span class='ordereditI'><?php echo $item->product_quantity; ?></span>
 					<input class='orderedit' type="text" size="3" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_quantity]" value="<?php echo $item->product_quantity; ?>"/>
 				</td>
 				<td>
-					<?php
-						echo $item->order_item_name;
+					<span class='ordereditI'><?php echo $item->order_item_name; ?></span>
+					<input class='orderedit' type="text"  name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][order_item_name]" value="<?php echo $item->order_item_name; ?>"/><?php
+						//echo $item->order_item_name;
 						if (!empty($item->product_attribute)) {
 								if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 								$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'BE');
@@ -464,7 +480,8 @@ $document->addScriptDeclaration ( "
 					<?php } ?>
 				</td>
 				<td>
-					<?php echo $item->order_item_sku; ?>
+					<span class='ordereditI'><?php echo $item->order_item_sku; ?></span>
+					<input class='orderedit' type="text"  name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][order_item_sku]" value="<?php echo $item->order_item_sku; ?>"/>
 				</td>
 				<td align="center">
 					<!--<?php echo $this->orderstatuslist[$item->order_status]; ?><br />-->
@@ -516,38 +533,7 @@ $document->addScriptDeclaration ( "
 					<input class='orderedit' type="hidden" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_subtotal_with_tax]" value="<?php echo $item->product_subtotal_with_tax; ?>"/>
 				</td>
 			</tr>
-			<!-- TODO updating all correctly on do a new Cart<tr>
-				<td>
-					<input type="checkbox" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>]" value="<?php echo $item->virtuemart_order_item_id; ?>" />
-				</td>
-				<td>
-					<input type="text" size="3" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_quantity]" value="<?php echo $item->product_quantity; ?>"/>
-				</td>
-				<td>
-					<?php
-						echo $item->order_item_name;
-						if (!empty($item->product_attribute)) {
-							echo '<div>'.$item->product_attribute.'</div>';
-						}
-					?>
-				</td>
-				<td>
-					<?php echo $item->order_item_sku; ?>
-				</td>
-				<td align="center">
 
-
-				</td>
-				<td>
-					<input type="text" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_item_price]" value="<?php echo $item->product_item_price; ?>"/>
-				</td>
-				<td>
-					<input type="text" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_final_price]" value="<?php echo $item->product_final_price; ?>"/>
-				</td>
-				<td>
-					<?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price); ?>
-				</td>
-			</tr> -->
 		<?php } ?>
 			<tr id="updateOrderItemStatus">
 
@@ -561,8 +547,9 @@ $document->addScriptDeclaration ( "
 						<a href="#" onClick="javascript:cancelEdit(event);" ><span class="icon-nofloat vmicon vmicon-16-remove"></span><?php echo '&nbsp;'. JText::_('COM_VIRTUEMART_CANCEL'); ?></a>
 						&nbsp;&nbsp;
 						<a href="#" onClick="javascript:enableEdit(event);"><span class="icon-nofloat vmicon vmicon-16-edit"></span><?php echo '&nbsp;'. JText::_('COM_VIRTUEMART_EDIT'); ?></a>
+						&nbsp;&nbsp;
+						<a href="#" onClick="javascript:addNewLine(event,<?php echo $this->orderdetails['items'][0]->virtuemart_order_item_id ?>);"><span class="icon-nofloat vmicon vmicon-16-new"></span><?php echo '&nbsp;'. JText::_('JTOOLBAR_NEW'); ?></a>
 					</td>
-
 
 					<td colspan="6">
 						<?php // echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/vm_witharrow.png', 'With selected'); $this->orderStatSelect; ?>
