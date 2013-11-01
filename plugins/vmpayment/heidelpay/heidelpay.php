@@ -413,9 +413,12 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 		$order_number = JRequest::getVar ('on');
-		if (!$order_number) {
-			return FALSE;
+		$virtuemart_paymentmethod_id = JRequest::getInt ('pm', '');
+		if (empty($order_number) or empty($virtuemart_paymentmethod_id) or !$this->selectedThisByMethodId ($virtuemart_paymentmethod_id)) {
+			return NULL;
 		}
+
+
 		$db = JFactory::getDBO ();
 		$query = 'SELECT ' . $this->_tablename . '.`virtuemart_order_id` FROM ' . $this->_tablename . " WHERE  `order_number`= '" . $order_number . "'";
 
