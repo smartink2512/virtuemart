@@ -41,7 +41,7 @@ class VirtuemartViewInvoice extends VmView {
 	{
 
 		$document = JFactory::getDocument();
-
+		VmConfig::loadJLang('com_virtuemart_shoppers', true);
 		//We never want that the cart is indexed
 		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 

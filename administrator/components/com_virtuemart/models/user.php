@@ -998,7 +998,7 @@ class VirtueMartModelUser extends VmModel {
 		$i = 0 ;
 
 		$return = true;
-
+		VmConfig::loadJLang('com_virtuemart_shoppers', true);
 		foreach ($neededFields as $field) {
 
 			if($field->required && empty($data[$field->name]) && $field->name != 'virtuemart_state_id'){
