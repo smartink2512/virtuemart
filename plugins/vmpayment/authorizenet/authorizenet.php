@@ -630,7 +630,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		// send a request
 		$response = $this->_sendRequest($this->_getPostUrl($method), $poststring);
 
-		$this->logInfo($response);
+		$this->writelog($response , "plgVmConfirmedOrder", 'debug');
+
 
 		$authnet_values = array(); // to check the values???
 		// evaluate the response
@@ -949,7 +950,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 	function _sendRequest ($post_url, $post_string)
 	{
 
-		$this->logInfo("_sendRequest" . "\n\n", 'message');
+		$this->writelog($post_string , "_sendRequest", 'debug');
+
 		$curl_request = curl_init($post_url);
 		//Added the next line to fix SSL verification issue (CURL error verifying the far end SSL Cert)
 		curl_setopt($curl_request, CURLOPT_SSL_VERIFYPEER, 0);
@@ -966,7 +968,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		$response = curl_exec($curl_request);
 
 		if ($curl_error = curl_error($curl_request)) {
-			$this->logInfo("----CURL ERROR----\n" . $curl_error . "\n\n", 'message');
+			$this->writelog($curl_error, '_sendRequest CURL error', 'error');
+			vmError('Authorize.net: '."----CURL ERROR---- " . $curl_error);
 		}
 
 		curl_close($curl_request);
@@ -1086,10 +1089,12 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 			if (!$virtuemart_order_id) {
 				$this->approved = FALSE;
 				$this->error = TRUE;
-				$this->logInfo(JText::sprintf('VMPAYMENT_AUTHORIZENET_NO_ORDER_NUMBER', $authorizeNetResponse['invoice_number']), 'ERROR');
+				$this->writelog(JText::sprintf('VMPAYMENT_AUTHORIZENET_NO_ORDER_NUMBER', $authorizeNetResponse['invoice_number']), 'getOrderIdByOrderNumber', 'error');
+
 				//$this->sendEmailToVendorAndAdmins(JText::sprintf('VMPAYMENT_AUTHORIZENET_NO_ORDER_NUMBER', $authorizeNetResponse['invoice_number']), JText::sprintf('VMPAYMENT_AUTHORIZENET_ERROR_WHILE_PROCESSING_PAYMENT', $authorizeNetResponse['invoice_number']));
 				$html = Jtext::sprintf('VMPAYMENT_AUTHORIZENET_ERROR', $authorizeNetResponse['response_reason_text'], $authorizeNetResponse['response_code']) . "<br />";
-				$this->logInfo($html, 'PAYMENT DECLINED');
+				$this->writelog($html, '_handleResponse PAYMENT DECLINED', 'message');
+
 				return $html;
 			}
 			if ($this->error or $this->declined) {
@@ -1100,13 +1105,14 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 				$dbValues['authorizenet_response_response_reason_text'] = $authorizeNetResponse['response_reason_text'];
 				//$this->storePSPluginInternalData($dbValues, 'id', true);
 				$html = Jtext::sprintf('VMPAYMENT_AUTHORIZENET_ERROR', $authorizeNetResponse['response_reason_text'], $authorizeNetResponse['response_code']) . "<br />";
-				$this->logInfo($html, 'PAYMENT DECLINED');
+				$this->writelog($html, '_handleResponse PAYMENT DECLINED', 'message');
 				return $html;
 			}
 		} else {
 			$this->approved = FALSE;
 			$this->error = TRUE;
-			$this->logInfo(JText::_('VMPAYMENT_AUTHORIZENET_CONNECTING_ERROR'), 'ERROR');
+			$this->writelog(JText::_('VMPAYMENT_AUTHORIZENET_CONNECTING_ERROR'), '_handleResponse', 'error');
+
 			$this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_AUTHORIZENET_ERROR_EMAIL_SUBJECT'), JText::_('VMPAYMENT_AUTHORIZENET_CONNECTING_ERROR'));
 			return JText::_('VMPAYMENT_AUTHORIZENET_CONNECTING_ERROR');
 		}
@@ -1136,7 +1142,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		//$html .= $this->getHtmlRow('AUTHORIZENET_RESPONSE_AUTHORIZATION_CODE', $authorizeNetResponse['authorization_code']);
 		$html .= $this->getHtmlRow('AUTHORIZENET_RESPONSE_TRANSACTION_ID', $authorizeNetResponse['transaction_id']);
 		$html .= '</table>' . "\n";
-		$this->logInfo(JText::_('VMPAYMENT_AUTHORIZENET_ORDER_NUMBER') . " " . $authorizeNetResponse['invoice_number'] . ' payment approved', 'message');
+		$this->writelog(JText::_('VMPAYMENT_AUTHORIZENET_ORDER_NUMBER') . " " . $authorizeNetResponse['invoice_number'] . ' payment approved', '_handleResponse', 'debug');
+
 		return $html;
 	}
 
