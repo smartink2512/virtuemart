@@ -95,7 +95,7 @@ class VirtuemartViewCategory extends VmView {
 
 		if(!empty($category)){
 
-			if(empty($category->category_layout) or $category->category_layout != 'category') {
+			if(empty($category->category_layout) or $category->category_layout != 'categories') {
 				// Load the products in the given category
 				$ids = $productModel->sortSearchListQuery (TRUE, $categoryId);
 
@@ -184,7 +184,6 @@ class VirtuemartViewCategory extends VmView {
 			$categoryModel->addImages($category,1);
 			$cache = JFactory::getCache('com_virtuemart','callback');
 			$category->children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $categoryId, $categoryModel->getDefaultOrdering(), $categoryModel->_selectedOrderingDir );
-
 			$categoryModel->addImages($category->children,1);
 
 			if (VmConfig::get('enable_content_plugin', 0)) {
@@ -212,6 +211,11 @@ class VirtuemartViewCategory extends VmView {
 				$category->category_template = VmConfig::get('categorytemplate');
 			}
 
+			$menus	= $app->getMenu();
+			$menu = $menus->getActive();
+			if(!empty($menu->query['categorylayout'])){
+				$category->category_layout = $menu->query['categorylayout'];
+			}
 			shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
 		} else {
 			//Backward compatibility
@@ -256,6 +260,7 @@ class VirtuemartViewCategory extends VmView {
 	public function setTitleByJMenu($app){
 		$menus	= $app->getMenu();
 		$menu = $menus->getActive();
+
 		$title = 'VirtueMart Category View';
 		if ($menu) $title = $menu->title;
 		// $title = $this->params->get('page_title', '');

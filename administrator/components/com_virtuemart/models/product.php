@@ -1779,12 +1779,6 @@ class VirtueMartModelProduct extends VmModel {
 		if($preload){
 			//$product_table_Parent->setOrderable('ordering',false);
 			$orderingA = $product_table_Parent->load($data['virtuemart_product_id']);
-
-		/*	if(isset($orderingA) and isset($orderingA[0])){
-				$product_table_Parent->ordering = $orderingA[0];
-			}*/
-			//$product_table_Parent->ordering = $product_table_Parent->load($data['virtuemart_product_id']);
-			//vmdebug('my ordering ',$product_table_Parent->ordering);
 		}
 		$product_table_Parent->bindChecknStore ($data);
 		$errors = $product_table_Parent->getErrors ();

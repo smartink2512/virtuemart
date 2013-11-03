@@ -171,8 +171,9 @@ class VirtueMartViewProductdetails extends VmView {
 			}
 		}
 
-	    $vendorId = 1;
-	    $category->children = $category_model->getChildCategoryList($vendorId, $product->virtuemart_category_id);
+		$cache = JFactory::getCache('com_virtuemart','callback');
+		$category->children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$product->virtuemart_vendor_id, $product->virtuemart_category_id );
+	    //$category->children = $category_model->getChildCategoryList($vendorId, $product->virtuemart_category_id);
 	    $category_model->addImages($category->children, 1);
 	}
 
