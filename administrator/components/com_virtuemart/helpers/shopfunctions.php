@@ -509,11 +509,20 @@ class ShopFunctions {
 	}
 
 	/**
-	 * Convert Weigth Unit
+	 * typo problem with the function name. We must keep the other one for compatibility purposes
+	 * @param $value
+	 * @param $from
+	 * @param $to
+	 */
+	static function convertWeigthUnit ($value, $from, $to) {
+		self::convertWeightUnit ($value, $from, $to);
+	}
+	/**
+	 * Convert Weight Unit
 	 *
 	 * @author Valérie Isaksen
 	 */
-	static function convertWeigthUnit ($value, $from, $to) {
+	static function convertWeightUnit ($value, $from, $to) {
 
 		$from = strtoupper($from);
 		$to = strtoupper($to);
