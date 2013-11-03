@@ -20,6 +20,9 @@
 			<field name="virtuemart_category_id" type="category"
 				label="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_TITLE" required="true"
 				description="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_TITLE_DESC" />
+            <field name="categorylayout" type="layout"
+                   label="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_LAYOUT" required="true"
+                   description="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_LAYOUT_DESC" />
 		</fieldset>
 	</fields>
 </metadata>

@@ -88,7 +88,7 @@ class VirtuemartViewCategory extends VmView {
 
 		if(!empty($category)){
 
-			if(empty($category->category_layout) or $category->category_layout != 'category') {
+			if(empty($category->category_layout) or $category->category_layout != 'categories') {
 				// Load the products in the given category
 				$ids = $productModel->sortSearchListQuery (TRUE, $categoryId);
 
@@ -203,6 +203,12 @@ class VirtuemartViewCategory extends VmView {
 				$category->category_template = VmConfig::get('categorytemplate');
 			}
 
+			$menus	= $app->getMenu();
+			$menu = $menus->getActive();
+			if(!empty($menu->query['categorylayout'])){
+				$category->category_layout = $menu->query['categorylayout'];
+			}
+			
 			shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
 		} else {
 			//Backward compatibility

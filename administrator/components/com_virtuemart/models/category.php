@@ -127,7 +127,7 @@ class VirtueMartModelCategory extends VmModel {
 			//$query .= 'AND C.`virtuemart_category_id` = CC.`category_child_id` ';
 			$query .= 'AND C.`virtuemart_vendor_id` = ' . (int)$vendorId . ' ';
 			$query .= 'AND C.`published` = 1 ';
-			$query .= ' ORDER BY C.`ordering`, L.`'.$selectedOrdering.'` '.$orderDir;
+			$query .= ' ORDER BY L.`'.$selectedOrdering.'` '.$orderDir;
 
 			$db = JFactory::getDBO();
 			$db->setQuery( $query);
@@ -257,97 +257,6 @@ class VirtueMartModelCategory extends VmModel {
 
 		return $this->_category_tree;
 
-	}
-
-
-
-	/**
-	 * Sorts an array with categories so the order of the categories is the same as in a tree.
-	 *
-	 * @author jseros
-	 *
-	 * @param array $this->_category_tree
-	 * @return associative array ordering categories
-	 * @deprecated
-	 */
-	public function sortCategoryTree($categoryArr){
-
-		/** FIRST STEP
-	    * Order the Category Array and build a Tree of it
-	    **/
-		$idList = array();
-		$rowList = array();
-		$depthList = array();
-
-		$children = array();
-		$parentIds = array();
-		$parentIdsHash = array();
-		$parentId = 0;
-
-		for( $i = 0, $nrows = count($categoryArr); $i < $nrows; $i++ ) {
-			$parentIds[$i] = $categoryArr[$i]->category_parent_id;
-
-			if($categoryArr[$i]->category_parent_id == 0){
-				array_push($idList, $categoryArr[$i]->category_child_id);
-				array_push($rowList, $i);
-				array_push($depthList, 0);
-			}
-
-			$parentId = $parentIds[$i];
-
-			if( isset($parentIdsHash[$parentId] )){
-				$parentIdsHash[$parentId][$categoryArr[$i]->category_child_id] = $i;
-			}
-			else{
-				$parentIdsHash[$parentId] = array($categoryArr[$i]->category_child_id => $i);
-			}
-
-		}
-
-		$loopCount = 0;
-		$watch = array(); // Hash to store children
-
-		while( count($idList) < $nrows ){
-			if( $loopCount > $nrows ) break;
-
-			$idTemp = array();
-			$rowTemp = array();
-			$depthTemp = array();
-
-			for($i = 0, $cIdlist = count($idList); $i < $cIdlist ; $i++) {
-				$id = $idList[$i];
-				$row = $rowList[$i];
-				$depth = $depthList[$i];
-
-				array_push($idTemp, $id);
-				array_push($rowTemp, $row);
-				array_push($depthTemp, $depth);
-
-				$children = @$parentIdsHash[$id];
-
-				if( !empty($children) ){
-					foreach($children as $key => $value) {
-
-						if( !isset($watch[$id][$key]) ){
-							$watch[$id][$key] = 1;
-							array_push($idTemp, $key);
-							array_push($rowTemp, $value);
-							array_push($depthTemp, $depth + 1);
-						}
-					}
-				}
-			}
-			$idList = $idTemp;
-			$rowList = $rowTemp;
-			$depthList = $depthTemp;
-			$loopCount++;
-		}
-
-		return array('id_list' => $idList,
-					 'row_list' => $rowList,
-					 'depth_list' => $depthList,
-					 'categories' => $categoryArr
-		);
 	}
 
 
