@@ -80,26 +80,19 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 				 $description = $currItem->get_description();
 				preg_match('/<img[^>]+>/i',$description, $result);
 				?>
-				<div class="icon">
-
+				<div class="icon vmextimg" >
 					<a href="<?php echo $currItem->get_link(); ?>" target="_blank" title="<?php echo $currItem->get_title(); ?>">
 						<?php
 						if (is_array($result) and isset($result[0])){
 						//echo '<span class="vmicon48 vmextimg">'.$result[0]. "</span><br />";
-						echo '<div class="vmextimg">'.$result[0]. "</div><br />";
+						echo  $result[0]."<br />" ;
 						}
 						echo $currItem->get_title(); ?>
-
 					</a>
-
 				</div>
 			<?php
 			}
 		}
-		?>
-
-
-			<?php
 	}
 			?>
 	<div class="clear"></div>
