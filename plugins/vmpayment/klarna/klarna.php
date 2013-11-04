@@ -1480,7 +1480,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		// Store the Klarna data in a session variable so
 		// we can retrevie it later when we need it
 		//$klarnaData['pclass'] = ($klarnaData_paymentmethod == 'klarna_invoice' ? -1 : intval(JRequest::getVar($kIndex . "paymentPlan")));
-		$klarnaData['pclass'] = ($klarnaData_paymentmethod == 'klarna_invoice' ? -1 : intval (JRequest::getVar ("klarna_paymentPlan")));
+		$klarnaData['pclass'] = ($klarnaData_paymentmethod == 'klarna_invoice' ? -1 : intval (JRequest::getVar ("part_klarna_paymentPlan")));
 
 		$sessionKlarna->KLARNA_DATA = $klarnaData;
 
