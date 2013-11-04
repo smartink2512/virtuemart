@@ -1126,7 +1126,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		if (!($invNo = $this->_getKlarnaInvoiceNo ($payments))) {
 			return NULL;
 		}
-		// to actiavte the order
+		// to activate the order
 		if ($order->order_status == $method->status_shipped) {
 			$country = $this->getCountryCodeByOrderId ($order->virtuemart_order_id);
 			$klarna_vm = new Klarna_virtuemart();

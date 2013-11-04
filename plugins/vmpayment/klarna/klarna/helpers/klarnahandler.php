@@ -444,8 +444,7 @@ class KlarnaHandler {
 
 		// Fill the good list the we send to Klarna
 		foreach ($order['items'] as $item) {
-			$price = $basePriceWithTax = !empty($item->basePriceWithTax) ? $item->basePriceWithTax : $item->product_final_price;
-
+			$price = $basePriceWithTax =   $item->product_basePriceWithTax ;
 			$item_price = self::convertPrice ($price, $order['details']['BT']->order_currency, $cData['currency_code']);
 			$item_price = (double)(round ($item_price, 2));
 			$item_tax_percent=0;
@@ -455,9 +454,18 @@ class KlarnaHandler {
 					break;
 				}
 			}
-			$item_discount_percent = (double)(round (abs (($item->product_subtotal_discount / $item->product_quantity) * 100 / $price), 2));
-			//vmdebug('addarticle', $item->order_item_sku, $item,  $item_tax_percent);
+			//$item_discount_percent = (double)(round (abs (($item->product_subtotal_discount / $item->product_quantity) * 100 / $price), 2));
+			$item_discount_percent=0;
 			$klarna->addArticle ($item->product_quantity, utf8_decode ($item->order_item_sku), utf8_decode (strip_tags ($item->order_item_name)), $item_price, (double)$item_tax_percent, $item_discount_percent, KlarnaFlags::INC_VAT);
+
+			if (abs($item->product_subtotal_discount) > 0.0) {
+				$name=utf8_decode (strip_tags ($item->order_item_name)). ' ('.JText::_('VMPAYMENT_KLARNA_PRODUCTDISCOUNT'). ')';
+				$discount = self::convertPrice ($item->product_subtotal_discount, $order['details']['BT']->order_currency, $cData['currency_code']);
+				$discount = (double)(round ($discount, 2));
+				$klarna->addArticle (1, utf8_decode ($item->order_item_sku), $name, $discount, (double)$item_tax_percent, $item_discount_percent, KlarnaFlags::INC_VAT);
+
+			}
+
 		}
 		// Add shipping
 		$shipment = self::convertPrice ($order['details']['BT']->order_shipment + $order['details']['BT']->order_shipment_tax, $order['details']['BT']->order_currency, $cData['currency_code']);

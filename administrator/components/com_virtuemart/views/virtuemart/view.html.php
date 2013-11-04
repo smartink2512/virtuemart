@@ -67,6 +67,9 @@ class VirtuemartViewVirtuemart extends VmView {
 		$this->assignRef('recentOrders', $recentOrders);
 		$recentCustomers = $model->getRecentCustomers();
 		$this->assignRef('recentCustomers', $recentCustomers);
+
+		// RSS Feed
+		jimport('simplepie.simplepie');
 		$cache_time= 15*60;
 		$rssExtensionURL="http://extensions.virtuemart.net/?format=feed&type=rss";
 		$rssExtensionFeed = JFactory::getFeedParser($rssExtensionURL, $cache_time);
@@ -84,12 +87,12 @@ class VirtuemartViewVirtuemart extends VmView {
 			// items
 			$items = $rssExtensionFeed->get_items();
 			// feed elements
-			$feed->items = array_slice($items, 0,5);
+			$feed->items = array_slice($items, 0 );
 		} else {
 			$feed = false;
 		}
 		$this->assignRef('extensionsFeed', $feed);
-/*
+
 		$rssVirtueMartURL="http://virtuemart.net/news/list-all-news?format=feed&type=rss";
 		$rssVirtueMartFeed = JFactory::getFeedParser($rssVirtueMartURL, $cache_time);
 		$vmFeed = new stdclass();
@@ -106,12 +109,12 @@ class VirtuemartViewVirtuemart extends VmView {
 			// items
 			$items = $rssVirtueMartFeed->get_items();
 			// feed elements
-			$feed->items = array_slice($items, 0,5);
+			$vmFeed->items = array_slice($items, 0 );
 		} else {
 			$feed = false;
 		}
 		$this->assignRef('virtuemartFeed', $vmFeed);
-*/
+
 		// Options button.
 		// if ( !JVM_VERSION===1) {
 			// if (JFactory::getUser()->authorise('core.admin', 'com_virtuemart')) {
