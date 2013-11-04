@@ -245,7 +245,7 @@ class AdminUIHelper {
 					} else {
 						if (strncmp ( $link ['link'], 'http', 4 ) === 0) {
 							$url = $link ['link'];
-							$target='TARGET="_blank"';
+							$target='target="_blank"';
 						} else {
 							$url = ($link ['link'] === '') ? 'index.php?option=com_virtuemart' :$link ['link'] ;
 							$url .= $link ['view'] ? "&view=" . $link ['view'] : '';
