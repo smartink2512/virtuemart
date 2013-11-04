@@ -51,6 +51,50 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
     <?php if ($this->canDo->get('core.admin')) { ?>
 	<div class="icon"><?php echo LiveUpdate::getIcon(array(),'url'); ?></div>
     <?php } ?>
+	<div class="clear"></div>
+</div>
+<div>
+	<?php
+
+	$totalItems=5;
+	/*
+	?>
+	<h2><?php echo JText::_('COM_VIRTUEMART_FEED_LATEST_NEWS')?></h2>
+	<ul class="newsfeed">
+		<?php
+		for ($j = 0; $j < $totalItems; $j ++){
+			$currItem =  $this->virtuemartFeed->items[$j];
+			if (!is_null($currItem->get_link())) { ?>
+				<li class="newsfeed-item">
+					<a href="<?php echo $currItem->get_link(); ?>" target="_blank" title=" <?php echo $currItem->get_title(); ?>"> <?php echo $currItem->get_title(); ?></a>
+				</li>
+			<?php
+			}
+		}
+		?>
+	</ul>
+
+	<?php
+	*/
+	$totalItems=5;
+	?>
+	<h2><?php echo JText::_('COM_VIRTUEMART_FEED_LATEST_EXTENSION')?></h2>
+	<ul class="newsfeed">
+		<?php
+	for ($j = 0; $j < $totalItems; $j ++){
+		$currItem =  $this->extensionsFeed->items[$j];
+		if (!is_null($currItem->get_link())) { ?>
+			<li class="newsfeed-item">
+				<a href="<?php echo $currItem->get_link(); ?>" target="_blank" title="<?php echo $currItem->get_title(); ?>"> <?php echo $currItem->get_title(); ?></a>
+		</li>
+	<?php
+		}
+	}
+	?>
+	</ul>
+	<h3>
+	<a href="http://extensions.virtuemart.net" target="_blank" title="<?php echo JText::_('COM_VIRTUEMART_MORE_EXTENSIONS') ?>"> <?php echo JText::_('COM_VIRTUEMART_MORE_EXTENSIONS') ?></a>
+	</h3>
 
 <div class="clear"></div>
 </div>
