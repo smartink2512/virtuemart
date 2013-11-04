@@ -97,7 +97,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 			}
 		}
 		?>
-	</ul>
+
 
 			<?php
 	}
