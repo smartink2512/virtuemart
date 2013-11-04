@@ -30,6 +30,8 @@ if (isset($this->product->customfields_fromParent)) { ?>
 
 		<?php
 			$i=0;
+			$z=0;
+			$r=0;
 			$tables= array('categories'=>'','products'=>'','fields'=>'','customPlugins'=>'',);
 			if (isset($this->product->customfields)) {
 				foreach ($this->product->customfields as $customfield) {
@@ -40,7 +42,8 @@ if (isset($this->product->customfields_fromParent)) { ?>
 						$tables['categories'] .=  '
 							<div class="vm_thumb_image">
 								<div class="vmicon vmicon-16-remove"></div>
-								<span>'.$customfield->display.'</span>'.
+								<span>'.$customfield->display.'</span>
+								<input type="hidden" name="field['.$i.'][ordering]" value="'.$z++.'" class="ordering">'.
 								VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 							  .'</div>';
 
@@ -49,7 +52,8 @@ if (isset($this->product->customfields_fromParent)) { ?>
 						$tables['products'] .=  '
 							<div class="vm_thumb_image">
 								<div class="vmicon vmicon-16-remove"></div>
-								<span>'.$customfield->display.'</span>'.
+								<span>'.$customfield->display.'</span>
+								<input type="hidden" name="field['.$i.'][ordering]" value="'.$r++.'" class="ordering">'.
 								VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 							  .'</div>';
 

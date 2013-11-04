@@ -195,9 +195,10 @@ class VirtuemartViewProduct extends JView {
 			$customs->custom_value = $related->id;
 			$display = $this->model->displayProductCustomfieldBE($customs,$related->id,$this->row);
 			$html = '<div class="vm_thumb_image">
+				<div class="vmicon vmicon-16-remove"></div>
 				<span>'.$display.'</span>
 				'.$this->model->setEditCustomHidden($customs, $this->row).'
-				<div class="vmicon vmicon-16-remove"></div></div>';
+				</div>';
 
 			$related->label = $html;
 
