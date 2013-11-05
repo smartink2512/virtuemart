@@ -60,7 +60,7 @@
     cursor: pointer;
 }
 .klarna_PPBox_topMid_nl {
-    min-width: 163px;
+    min-width: 162px !important;
 }
 .klarna_PPBox_topMid p {
     padding: 0 3px 0 5px;

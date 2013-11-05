@@ -564,7 +564,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		$payment_logo = "";
 
 		if (!empty($method->payment_logos)) {
-			$payment_logo = '<a href="https://www.klarna.com" target="_blank"><img src="https://cdn.klarna.com/public/images/SE/logos/v1/basic/SE_basic_logo_std_blue-black.png?width=100&" /></a> ';
+			$payment_logo = '<img src="https://cdn.klarna.com/public/images/SE/logos/v1/basic/SE_basic_logo_std_blue-black.png?width=100&" /> ';
 
 		}
 		$payment_name = $method->payment_name;

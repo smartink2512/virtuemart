@@ -762,7 +762,7 @@ class KlarnaAPI {
 		$sBefore = "";
 		$sAfter = "";
 
-		switch ($this->sCountryCode) {
+		switch (strtolower($this->sCountryCode)) {
 			case 'se':
 				$sAfter = " kr";
 				break;

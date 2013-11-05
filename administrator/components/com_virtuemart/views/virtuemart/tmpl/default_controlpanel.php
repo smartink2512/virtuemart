@@ -56,12 +56,12 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 
 
 	<?php
+	if ( $this->extensionsFeed) {
 	$maxItems=15;
 	$totalItems=count($this->extensionsFeed->items);
 	$displayItems=min($totalItems,$maxItems);
 	VmConfig::loadJLang('com_virtuemart', true);
 
-	if ( $this->extensionsFeed) {
 	?>
 		<?php
 		for ($j = 0; $j < $displayItems; $j ++){
@@ -108,6 +108,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 			}
 		}
 	}
+
 			?>
 	<div class="clear"></div>
 	<h2>
