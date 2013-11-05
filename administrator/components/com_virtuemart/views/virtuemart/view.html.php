@@ -70,7 +70,7 @@ class VirtuemartViewVirtuemart extends VmView {
 
 		// RSS Feed
 		jimport('simplepie.simplepie');
-		$cache_time= 15*60;
+		$cache_time=86400*3; // 3 days
 		$rssExtensionURL="http://extensions.virtuemart.net/?format=feed&type=rss";
 		$rssExtensionFeed = JFactory::getFeedParser($rssExtensionURL, $cache_time);
 		$feed = new stdclass();

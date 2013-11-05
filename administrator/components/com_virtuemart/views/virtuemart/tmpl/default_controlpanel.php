@@ -35,9 +35,10 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
     <?php if ($this->canDo->get('core.admin') || $this->canDo->get('vm.orders')) { ?>
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=orders'), 'vm_shop_orders_48', JText::_('COM_VIRTUEMART_ORDER_S')); ?></div>
     <?php } ?>
-    <?php if ($this->canDo->get('core.admin') || $this->canDo->get('vm.paymentmethod')) { ?>
+
+    <?php /* if ($this->canDo->get('core.admin') || $this->canDo->get('vm.paymentmethod')) { ?>
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=paymentmethod'), 'vm_shop_payment_48', JText::_('COM_VIRTUEMART_PAYMENTMETHOD_S')); ?></div>
-    <?php } ?>
+    <?php } */ ?>
     <?php if ($this->canDo->get('core.admin') || $this->canDo->get('vm.user')) { ?>
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=user'), 'vm_shop_users_48', JText::_('COM_VIRTUEMART_USER_S')); ?></div>
     <?php } ?>
@@ -47,47 +48,59 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
     <?php if ($this->canDo->get('core.admin') || $this->canDo->get('vm.user.editshop')) { ?>
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=user&task=editshop'), 'vm_shop_mart_48', JText::_('COM_VIRTUEMART_STORE')); ?></div>
     <?php } ?>
-	<div class="icon"><?php VmImage::displayImageButton('http://virtuemart.org/index.php?option=com_content&amp;task=view&amp;id=248&amp;Itemid=125', 'vm_shop_help_48', JText::_('COM_VIRTUEMART_DOCUMENTATION')); ?></div>
+	<div class="icon"><?php VmImage::displayImageButton('http://docs.virtuemart.net', 'vm_shop_help_48', JText::_('COM_VIRTUEMART_DOCUMENTATION'), 'vmicon48','target="_blank"'); ?></div>
     <?php if ($this->canDo->get('core.admin')) { ?>
 	<div class="icon"><?php echo LiveUpdate::getIcon(array(),'url'); ?></div>
     <?php } ?>
 
 
 	<?php
-	$maxItems=15;
+	$maxItems=12;
 	$totalItems=count($this->extensionsFeed->items);
 	$displayItems=min($totalItems,$maxItems);
+	VmConfig::loadJLang('com_virtuemart', true);
+
 	if ( $this->extensionsFeed) {
 	?>
 		<?php
 		for ($j = 0; $j < $displayItems; $j ++){
 			// This is directly related to extensions.virtuemart.net
-			if (($j / 5) == 0) { ?>
+			if (($j / 4) == 0) { ?>
 				<div class="clear"></div>
 				<h2><?php echo JText::_('COM_VIRTUEMART_FEED_LATEST_EXTENSION')?></h2>
 				<?php
-			} elseif (($j / 5) == 1) { ?>
+			} elseif (($j / 4) == 1) { ?>
 				<div class="clear"></div>
 				<h2><?php echo JText::_('COM_VIRTUEMART_FEED_FEATURED_EXTENSION')?></h2>
 			<?php
-			} elseif (($j / 5) == 2) { ?>
+			} elseif (($j / 4) == 2) { ?>
 				<div class="clear"></div>
 				<h2><?php echo JText::_('COM_VIRTUEMART_FEED_POPULAR_EXTENSION')?></h2>
 			<?php
 			}
+
 			$currItem =  $this->extensionsFeed->items[$j];
+					$image="";
 			if (!is_null($currItem->get_link())) {
 				 $description = $currItem->get_description();
 				preg_match('/<img[^>]+>/i',$description, $result);
+				if (is_array($result) and isset($result[0])){
+					$image=$result[0];
+					$description=str_replace($image,"",$description);
+					$description=strip_tags($description);
+					$description=str_replace(JText::_ ('COM_VIRTUEMART_FEED_READMORE') ,"",$description);
+				} else {
+					$description="";
+				}
 				?>
 				<div class="icon vmextimg" >
-					<a href="<?php echo $currItem->get_link(); ?>" target="_blank" title="<?php echo $currItem->get_title(); ?>">
+					<a href="<?php echo $currItem->get_link(); ?>" target="_blank" title="<?php echo $description ?>">
 						<?php
-						if (is_array($result) and isset($result[0])){
-						//echo '<span class="vmicon48 vmextimg">'.$result[0]. "</span><br />";
-						echo  $result[0]."<br />" ;
+						if ($image){
+							echo  $image."<br />" ;
 						}
-						echo $currItem->get_title(); ?>
+						echo $currItem->get_title();
+						?>
 					</a>
 				</div>
 			<?php
@@ -114,9 +127,13 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 
 			for ($j = 0; $j < $totalItems; $j ++){
 				$currItem =  $this->virtuemartFeed->items[$j];
-				if (!is_null($currItem->get_link())) { ?>
+				if (!is_null($currItem->get_link())) {
+					$description = $currItem->get_description();
+					$description=strip_tags($description);
+					$description=substr($description, 0,200)."...";
+					?>
 					<li class="newsfeed-item">
-						<a href="<?php echo $currItem->get_link(); ?>" target="_blank" title=" <?php echo $currItem->get_title(); ?>"> <?php echo $currItem->get_title(); ?></a>
+						<a href="<?php echo $currItem->get_link(); ?>" target="_blank" title=" <?php echo $description; ?>"> <?php echo $currItem->get_title(); ?></a>
 					</li>
 				<?php
 				}
