@@ -68,52 +68,13 @@ class VirtuemartViewVirtuemart extends VmView {
 		$recentCustomers = $model->getRecentCustomers();
 		$this->assignRef('recentCustomers', $recentCustomers);
 
-		// RSS Feed
-		jimport('simplepie.simplepie');
-		$cache_time=86400*3; // 3 days
-		$rssExtensionURL="http://extensions.virtuemart.net/?format=feed&type=rss";
-		$rssExtensionFeed = JFactory::getFeedParser($rssExtensionURL, $cache_time);
-		$feed = new stdclass();
-		if ($rssExtensionFeed != false)
-		{
-			// channel header and link
-			$feed->title = $rssExtensionFeed->get_title();
-			$feed->link = $rssExtensionFeed->get_link();
-			//$feed->description = $rssExtensionFeed->get_description();
+		if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.'/helpers/shopfunctions.php');
 
-			// channel image if exists
-			//$feed->image->url = $rssExtensionFeed->get_image_url();
-			//$feed->image->title = $rssExtensionFeed->get_image_title();
-			// items
-			$items = $rssExtensionFeed->get_items();
-			// feed elements
-			$feed->items = array_slice($items, 0 );
-		} else {
-			$feed = false;
-		}
-		$this->assignRef('extensionsFeed', $feed);
+		$extensionsFeed = ShopFunctions::getExtensionsRssFeed();
+		$this->assignRef('extensionsFeed', $extensionsFeed);
 
-		$rssVirtueMartURL="http://virtuemart.net/news/list-all-news?format=feed&type=rss";
-		$rssVirtueMartFeed = JFactory::getFeedParser($rssVirtueMartURL, $cache_time);
-		$vmFeed = new stdclass();
-		if ($rssVirtueMartFeed != false)
-		{
-			// channel header and link
-			$vmFeed->title = $rssVirtueMartFeed->get_title();
-			$vmFeed->link = $rssVirtueMartFeed->get_link();
-			//$feed->description = $rssExtensionFeed->get_description();
-
-			// channel image if exists
-			//$feed->image->url = $rssExtensionFeed->get_image_url();
-			//$feed->image->title = $rssExtensionFeed->get_image_title();
-			// items
-			$items = $rssVirtueMartFeed->get_items();
-			// feed elements
-			$vmFeed->items = array_slice($items, 0 );
-		} else {
-			$vmFeed = false;
-		}
-		$this->assignRef('virtuemartFeed', $vmFeed);
+		$virtuemartFeed = ShopFunctions::getVirtueMartRssFeed();
+		$this->assignRef('virtuemartFeed', $virtuemartFeed);
 
 		// Options button.
 		// if ( !JVM_VERSION===1) {

@@ -783,7 +783,45 @@ class ShopFunctions {
 
 		return self::$categoryTree;
 	}
+	public static $extFeeds = 0;
+	static public function getCPsRssFeed($rssUrl,$max) {
 
+		$cache_time=86400*3;
+		$cache = JFactory::getCache ('_virtuemart');
+		$cached = $cache->getCaching();
+		$cache->setCaching (1);
+		$feeds=   $cache->call (array('ShopFunctions', 'getRssFeed'), $rssUrl, $max);
+		$cache->setCaching ($cached);
+		return $feeds;
+	}
+	static public function getExtensionsRssFeed() {
+		self::$extFeeds =  ShopFunctions::getCPsRssFeed("http://extensions.virtuemart.net/?format=feed&type=rss", 15);
+		return self::$extFeeds;
+
+	}
+	public static $vmFeeds = 0;
+	static public function getVirtueMartRssFeed() {
+
+		self::$extFeeds =  ShopFunctions::getCPsRssFeed("http://virtuemart.net/news/list-all-news?format=feed&type=rss", 5);
+		return self::$extFeeds;
+	}
+	static public function getRssFeed ($rssURL,$max) {
+		jimport('simplepie.simplepie');
+		$rssFeed = new SimplePie($rssURL);
+
+		$count = $rssFeed->get_item_quantity();
+		$limit=min($max,$count);
+			for ($i = 0; $i < $limit; $i++) {
+				$feed = new StdClass();
+				$item = $rssFeed->get_item($i);
+				$feed->link = $item->get_link();
+				$feed->title = $item->get_title();
+				$feed->description = $item->get_description();
+				$feeds[] = $feed;
+			}
+
+		return $feeds;
+	}
 	/**
 	 * Creates structured option fields for all categories
 	 *

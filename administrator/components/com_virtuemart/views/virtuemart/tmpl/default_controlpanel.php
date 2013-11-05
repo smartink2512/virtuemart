@@ -57,15 +57,9 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 
 
 	<?php
-	if ( $this->extensionsFeed) {
-	$maxItems=15;
-	$totalItems=count($this->extensionsFeed->items);
-	$displayItems=min($totalItems,$maxItems);
-	VmConfig::loadJLang('com_virtuemart', true);
-
-	?>
-		<?php
-		for ($j = 0; $j < $displayItems; $j ++){
+	if ( $this->extensionsFeed ) {
+		$j=0;
+		foreach ($this->extensionsFeed as $item){
 			// This is directly related to extensions.virtuemart.net
 			if (($j / 5) == 0) { ?>
 				<div class="clear"></div>
@@ -80,11 +74,9 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 				<h2><?php echo JText::_('COM_VIRTUEMART_FEED_POPULAR_EXTENSION')?></h2>
 			<?php
 			}
-
-			$currItem =  $this->extensionsFeed->items[$j];
-					$image="";
-			if (!is_null($currItem->get_link())) {
-				 $description = $currItem->get_description();
+			$image="";
+			if (!empty($item->link)) {
+				 $description = $item->description;
 				preg_match('/<img[^>]+>/i',$description, $result);
 				if (is_array($result) and isset($result[0])){
 					$image=$result[0];
@@ -96,17 +88,18 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 				}
 				?>
 				<div class="icon vmextimg" >
-					<a href="<?php echo $currItem->get_link(); ?>" target="_blank" title="<?php echo $description ?>">
+					<a href="<?php echo $currItem->link; ?>" target="_blank" title="<?php echo $description ?>">
 						<?php
 						if ($image){
 							echo  $image."<br />" ;
 						}
-						echo $currItem->get_title();
+						echo $item->title;
 						?>
 					</a>
 				</div>
 			<?php
 			}
+			$j++;
 		}
 	}
 
@@ -123,20 +116,17 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 
 	$totalItems=5;
 	if ( $this->virtuemartFeed) {
-	?>
+		?>
 	<h2><?php echo JText::_('COM_VIRTUEMART_FEED_LATEST_NEWS')?></h2>
 	<ul class="newsfeed">
 		<?php
-
-			for ($j = 0; $j < $totalItems; $j ++){
-				$currItem =  $this->virtuemartFeed->items[$j];
-				if (!is_null($currItem->get_link())) {
-					$description = $currItem->get_description();
-					$description=strip_tags($description);
+			foreach ($this->virtuemartFeed as $item) {
+				if (!empty($item->link)) {
+					$description=strip_tags($item->description);
 					$description=substr($description, 0,200)."...";
 					?>
 					<li class="newsfeed-item">
-						<a href="<?php echo $currItem->get_link(); ?>" target="_blank" title=" <?php echo $description; ?>"> <?php echo $currItem->get_title(); ?></a>
+						<a href="<?php echo $item->link; ?>" target="_blank" title=" <?php echo $description; ?>"> <?php echo $item->title; ?></a>
 					</li>
 				<?php
 				}
