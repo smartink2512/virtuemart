@@ -125,15 +125,15 @@ class VirtuemartViewProduct extends JView {
 					 }
 					 $html[] = '
 					<tr class="removable">
-						<td>'.$field->custom_title.'</td>
-						<td>'.$field->custom_tip.'</td>
+						<td><span class="hasTip" title="'.JText::_($field->custom_tip).'">'.$field->custom_title.'</td>
 						<td>'.$display.'
 						'.$this->model->setEditCustomHidden($field, $this->row).'
 						<p>'.JTEXT::_('COM_VIRTUEMART_CUSTOM_ACTIVATE_JAVASCRIPT').'</p></td>
-						<td>'.JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION').'</td>
-						<td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
-						<td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" /></td>
-						<td><span class="vmicon vmicon-16-move"></span></td>
+						<td><span class="vmicon vmicon-16-'.$cartIcone.'"></span>'.JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION').'</td>
+						<td><span class="vmicon vmicon-16-move"></span>
+						<span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" />
+						</td>
+
 					</tr>';
 					$this->row++;
 
@@ -143,15 +143,12 @@ class VirtuemartViewProduct extends JView {
 					 if ($field->is_cart_attribute) $cartIcone=  'default';
 					 else  $cartIcone= 'default-off';
 					 $html[] = '<tr class="removable">
-						<td>'.$field->custom_title.'</td>
-						<td>'.$field->custom_tip.'</td>
+						<td><span class="hasTip" title="'.JText::_($field->custom_tip).'">'.$field->custom_title.'</td>
 						 <td>'.$display.'</td>
-						 <td>'.JText::_($fieldTypes[$field->field_type]).'
+						 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span>'.JText::_($fieldTypes[$field->field_type]).'
 							'.$this->model->setEditCustomHidden($field, $this->row).'
 						</td>
-						 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
-						 <td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" /></td>
-						 <td><span class="vmicon vmicon-16-move"></span></td>
+						 <td><span class="vmicon vmicon-16-move"></span><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" /></td>
 						</tr>';
 					$this->row++;
 				}

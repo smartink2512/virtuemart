@@ -61,17 +61,12 @@ if (isset($this->product->customfields_fromParent)) { ?>
 						// no display (group of) child , handled by plugin;
 					} elseif ($customfield->field_type == 'E'){
 						$tables['fields'] .= '<tr class="removable">
-							<td>'.JText::_($customfield->custom_title).'</td>
-							<td>'.$customfield->custom_tip.'</td>
+							<td><span class="hasTip" title="'.JText::_($customfield->custom_tip).'">'.JText::_($customfield->custom_title).'</td>
 							<td>'.$customfield->display.'</td>'.
 							VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 							.'</td>
-							<td>'.JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION').'</td>
-							<td>
-							<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
-							</td>
-							<td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$customfield->ordering.'" name="field['.$i .'][ordering]" /></td>
-							<td ><span class="vmicon vmicon-16-move"></span></td>
+							<td><span class="vmicon vmicon-16-'.$cartIcone.' hasTip" title="'.JText::_($customfield->custom_tip).'" ></span>'.JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION').'</td>
+							<td><span class="vmicon vmicon-16-move"></span><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$customfield->ordering.'" name="field['.$i .'][ordering]" /></td>
 						 </tr>';
 						/*$tables['fields'] .= '
 							<tr class="removable">
@@ -83,17 +78,12 @@ if (isset($this->product->customfields_fromParent)) { ?>
 							</tr>';*/
 					} else {
 						$tables['fields'] .= '<tr class="removable">
-							<td>'.JText::_($customfield->custom_title).'</td>
-							<td>'.$customfield->custom_tip.'</td>
+							<td><span class="hasTip" title="'.JText::_($customfield->custom_tip).'">'.JText::_($customfield->custom_title).'</span></td>
 							<td>'.$customfield->display.'</td>
-							<td>'.JText::_($this->fieldTypes[$customfield->field_type]).
+							<td><span class="vmicon vmicon-16-'.$cartIcone.'"></span>'.JText::_($this->fieldTypes[$customfield->field_type]).
 							VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 							.'</td>
-							<td>
-							<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
-							</td>
-							<td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$customfield->ordering.'" name="field['.$i .'][ordering]" /></td>
-							<td ><span class="vmicon vmicon-16-move"></span></td>
+							<td><span class="vmicon vmicon-16-move"></span><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$customfield->ordering.'" name="field['.$i .'][ordering]" /></td>
 						 </tr>';
 						}
 
@@ -133,14 +123,10 @@ if (isset($this->product->customfields_fromParent)) { ?>
 					<thead>
 					<tr class="row1">
 						<th><?php echo JText::_('COM_VIRTUEMART_TITLE');?></th>
-						<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_TIP');?></th>
 						<th><?php echo JText::_('COM_VIRTUEMART_VALUE');?></th>
 						<th><?php echo JText::_('COM_VIRTUEMART_CART_PRICE');?></th>
 						<th><?php echo JText::_('COM_VIRTUEMART_TYPE');?></th>
-						<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE');?></th>
-						<th><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></th>
 						<th><?php echo JText::_('COM_VIRTUEMART_MOVE'); ?></th>
-
 					</tr>
 					</thead>
 					<tbody id="custom_field">

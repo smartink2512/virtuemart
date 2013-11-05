@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');?>
 			
 <fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DESCRIPTION') ?></legend>		
-	<?php echo $this->editor->display('product_desc',  $this->product->product_desc, '100%;', '550', '75', '20', array('pagebreak', 'readmore') ) ; ?>
+	<?php echo $this->editor->display('product_desc',  $this->product->product_desc, '100%;', '450', '75', '20', array('pagebreak', 'readmore') ) ; ?>
 </fieldset>
 
 <fieldset>

@@ -19,8 +19,6 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 /* Require the config */
 
-//Console::logSpeed('virtuemart start');
-
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
 
@@ -41,33 +39,31 @@ if(VmConfig::get('shop_is_offline',0)){
 	if(!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
 	if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
 
-	/* Loading jQuery and VM scripts. */
-	//vmJsApi::jPrice();    //in create button
-	vmJsApi::jQuery();
-	vmJsApi::jSite();
-	vmJsApi::cssSite();
-
 	$_controller = JRequest::getWord('view', JRequest::getWord('controller', 'virtuemart')) ;
 	$trigger = 'onVmSiteController';
 // 	$task = JRequest::getWord('task',JRequest::getWord('layout',$_controller) );		$this makes trouble!
 	$task = JRequest::getWord('task','') ;
 
-	if (($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit') ) {
+	if ((($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit')) || ($_controller == 'translate' && $task='paste') ) {
 		$app = JFactory::getApplication();
 
-		vmJsApi::js('vmsite');
-		vmJsApi::jQuery(FALSE);
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if	(Permissions::getInstance()->check("admin,storeadmin")) {
 			$jlang =JFactory::getLanguage();
 			$jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
 			$basePath = JPATH_VM_ADMINISTRATOR;
 			$trigger = 'onVmAdminController';
+
+			vmJsApi::jQuery(false);
+			//vmJsApi::js('vmsite');
 		} else {
 			$app->redirect('index.php?option=com_virtuemart', jText::_('COM_VIRTUEMART_RESTRICTED_ACCESS') );
 		}
 
 	} elseif($_controller) {
+			vmJsApi::jQuery();
+			vmJsApi::jSite();
+			vmJsApi::cssSite();
 			$basePath = JPATH_VM_SITE;
 	}
 }
