@@ -111,7 +111,7 @@ class VirtuemartViewVirtuemart extends VmView {
 			// feed elements
 			$vmFeed->items = array_slice($items, 0 );
 		} else {
-			$feed = false;
+			$vmFeed = false;
 		}
 		$this->assignRef('virtuemartFeed', $vmFeed);
 
