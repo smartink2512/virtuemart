@@ -42,6 +42,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
     <?php if ($this->canDo->get('core.admin') || $this->canDo->get('vm.user')) { ?>
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=user'), 'vm_shop_users_48', JText::_('COM_VIRTUEMART_USER_S')); ?></div>
     <?php } ?>
+	<div class="clear"></div>
     <?php if ($this->canDo->get('core.admin')) { ?>
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=config'), 'vm_shop_configuration_48', JText::_('COM_VIRTUEMART_CONFIG')); ?></div>
     <?php } ?>
