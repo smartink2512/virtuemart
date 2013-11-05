@@ -57,9 +57,9 @@
         <param name="status_cancelReservation" type="vmorderstate" default="X"
                label="VMPAYMENT_KLARNACHECKOUT_CANCEL_RESERVATION"
                description="VMPAYMENT_KLARNACHECKOUT_CANCEL_RESERVATION_DESC"/>
-        <param name="status_changeReservation" type="vmorderstate" default="X"
+        <!--param name="status_changeReservation" type="vmorderstate" default="X"
                label="VMPAYMENT_KLARNACHECKOUT_CHANGE_RESERVATION"
-               description="VMPAYMENT_KLARNACHECKOUT_CHANGE_RESERVATION_DESC"/>
+               description="VMPAYMENT_KLARNACHECKOUT_CHANGE_RESERVATION_DESC"/ -->
 
         <param type="spacer" default="" level="level1" />
         <param type="spacer" default="VMPAYMENT_KLARNACHECKOUT_TEMPLATING" level="level1" />

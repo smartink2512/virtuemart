@@ -571,7 +571,7 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		}
 		catch (Exception $e) {
 			$result['status_code'] = KlarnaFlags::DENIED;
-			$result['status_text'] = htmlentities ($e->getMessage ()) . "  (#" . $e->getCode () . ")";
+			$result['status_text'] = mb_convert_encoding ($e->getMessage (), 'UTF-8', 'ISO-8859-1'). "  (#" . $e->getCode () . ")";
 			return $result; //return $result;
 			//self::redirectPaymentMethod('error', htmlentities($e->getMessage()) .  "  (#" . $e->getCode() . ")");
 		}
