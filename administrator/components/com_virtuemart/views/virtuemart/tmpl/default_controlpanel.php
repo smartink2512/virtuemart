@@ -149,4 +149,9 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 	<?php
 	}
 	?>
+	<h2><?php echo JText::_('COM_VIRTUEMART_VOTE_JED')?></h2>
+
+		<a href="http://extensions.joomla.org/extensions/e-commerce/shopping-cart/129" target="_blank" title=" <?php echo JText::_('COM_VIRTUEMART_VOTE_JED_DESC') ?>"> <?php echo JText::_('COM_VIRTUEMART_VOTE_JED_DESC') ?></a>
+
+
 </div>
