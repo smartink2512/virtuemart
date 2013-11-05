@@ -36,9 +36,9 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=orders'), 'vm_shop_orders_48', JText::_('COM_VIRTUEMART_ORDER_S')); ?></div>
     <?php } ?>
 
-    <?php /* if ($this->canDo->get('core.admin') || $this->canDo->get('vm.paymentmethod')) { ?>
+    <?php  if ($this->canDo->get('core.admin') || $this->canDo->get('vm.paymentmethod')) { ?>
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=paymentmethod'), 'vm_shop_payment_48', JText::_('COM_VIRTUEMART_PAYMENTMETHOD_S')); ?></div>
-    <?php } */ ?>
+    <?php }  ?>
     <?php if ($this->canDo->get('core.admin') || $this->canDo->get('vm.user')) { ?>
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=user'), 'vm_shop_users_48', JText::_('COM_VIRTUEMART_USER_S')); ?></div>
     <?php } ?>
@@ -48,6 +48,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
     <?php if ($this->canDo->get('core.admin') || $this->canDo->get('vm.user.editshop')) { ?>
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=user&task=editshop'), 'vm_shop_mart_48', JText::_('COM_VIRTUEMART_STORE')); ?></div>
     <?php } ?>
+	<div class="icon"><?php VmImage::displayImageButton('http://virtuemart.net/community/translations', 'vm_country_48', JText::_('COM_VIRTUEMART_TRANSLATIONS'), 'vmicon48','target="_blank"'); ?></div>
 	<div class="icon"><?php VmImage::displayImageButton('http://docs.virtuemart.net', 'vm_shop_help_48', JText::_('COM_VIRTUEMART_DOCUMENTATION'), 'vmicon48','target="_blank"'); ?></div>
     <?php if ($this->canDo->get('core.admin')) { ?>
 	<div class="icon"><?php echo LiveUpdate::getIcon(array(),'url'); ?></div>
@@ -55,7 +56,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 
 
 	<?php
-	$maxItems=12;
+	$maxItems=15;
 	$totalItems=count($this->extensionsFeed->items);
 	$displayItems=min($totalItems,$maxItems);
 	VmConfig::loadJLang('com_virtuemart', true);
@@ -65,15 +66,15 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 		<?php
 		for ($j = 0; $j < $displayItems; $j ++){
 			// This is directly related to extensions.virtuemart.net
-			if (($j / 4) == 0) { ?>
+			if (($j / 5) == 0) { ?>
 				<div class="clear"></div>
 				<h2><?php echo JText::_('COM_VIRTUEMART_FEED_LATEST_EXTENSION')?></h2>
 				<?php
-			} elseif (($j / 4) == 1) { ?>
+			} elseif (($j / 5) == 1) { ?>
 				<div class="clear"></div>
 				<h2><?php echo JText::_('COM_VIRTUEMART_FEED_FEATURED_EXTENSION')?></h2>
 			<?php
-			} elseif (($j / 4) == 2) { ?>
+			} elseif (($j / 5) == 2) { ?>
 				<div class="clear"></div>
 				<h2><?php echo JText::_('COM_VIRTUEMART_FEED_POPULAR_EXTENSION')?></h2>
 			<?php
