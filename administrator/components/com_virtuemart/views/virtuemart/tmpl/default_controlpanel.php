@@ -88,7 +88,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 				}
 				?>
 				<div class="icon vmextimg" >
-					<a href="<?php echo $currItem->link; ?>" target="_blank" title="<?php echo $description ?>">
+					<a href="<?php echo $item->link; ?>" target="_blank" title="<?php echo $description ?>">
 						<?php
 						if ($image){
 							echo  $image."<br />" ;
