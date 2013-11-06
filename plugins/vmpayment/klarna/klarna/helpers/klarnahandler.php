@@ -461,7 +461,7 @@ class KlarnaHandler {
 			if (abs($item->product_subtotal_discount) > 0.0) {
 				$name=utf8_decode (strip_tags ($item->order_item_name)). ' ('.JText::_('VMPAYMENT_KLARNA_PRODUCTDISCOUNT'). ')';
 				$discount = self::convertPrice ($item->product_subtotal_discount, $order['details']['BT']->order_currency, $cData['currency_code']);
-				$discount = (double)(round ($discount, 2));
+				$discount = (double)(round ($discount, 2)) * -1 ;
 				$klarna->addArticle (1, utf8_decode ($item->order_item_sku), $name, $discount, (double)$item_tax_percent, $item_discount_percent, KlarnaFlags::INC_VAT);
 
 			}
