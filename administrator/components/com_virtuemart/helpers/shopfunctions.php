@@ -783,27 +783,49 @@ class ShopFunctions {
 
 		return self::$categoryTree;
 	}
-	public static $extFeeds = 0;
+
+	/**
+	 * Get feed
+	 * @author valerie isaksen
+	 * @param $rssUrl
+	 * @param $max
+	 * @return mixed
+	 */
 	static public function getCPsRssFeed($rssUrl,$max) {
 
-		$cache_time=86400*3;
+		$cache_time=86400*3; // 3days
 		$cache = JFactory::getCache ('_virtuemart');
 		$cached = $cache->getCaching();
+		$cache->setLifeTime($cache_time);
 		$cache->setCaching (1);
-		$feeds=   $cache->call (array('ShopFunctions', 'getRssFeed'), $rssUrl, $max);
+		$feeds = $cache->call (array('ShopFunctions', 'getRssFeed'), $rssUrl, $max);
 		$cache->setCaching ($cached);
 		return $feeds;
 	}
-	static public function getExtensionsRssFeed() {
-		self::$extFeeds =  ShopFunctions::getCPsRssFeed("http://extensions.virtuemart.net/?format=feed&type=rss", 15);
-		return self::$extFeeds;
 
+	/**
+	 * @author Valerie Isaksen
+	 * Returns the RSS feed from Extensions.virtuemart.net
+	 * @return mixed
+	 */
+	public static $extFeeds = 0;
+	static public function getExtensionsRssFeed() {
+		if (empty(self::$extFeeds)) {
+			self::$extFeeds =  ShopFunctions::getCPsRssFeed("http://extensions.virtuemart.net/?format=feed&type=rss", 15);
+		}
+		return self::$extFeeds;
 	}
+	/**
+	 * @author Valerie Isaksen
+	 * Returns the RSS feed from virtuemart.net
+	 * @return mixed
+	 */
 	public static $vmFeeds = 0;
 	static public function getVirtueMartRssFeed() {
-
-		self::$extFeeds =  ShopFunctions::getCPsRssFeed("http://virtuemart.net/news/list-all-news?format=feed&type=rss", 5);
-		return self::$extFeeds;
+		if (empty(self::$vmFeeds)) {
+			self::$vmFeeds =  ShopFunctions::getCPsRssFeed("http://virtuemart.net/news/list-all-news?format=feed&type=rss", 5);
+		}
+		return self::$vmFeeds;
 	}
 	static public function getRssFeed ($rssURL,$max) {
 		jimport('simplepie.simplepie');
