@@ -22,7 +22,8 @@
         <param type="customjs" default="" />
 
         <param type="spacer" default="VMPAYMENT_KLARNACHECKOUT_WARNING" level="level1" />
-
+        <param name="documentation" type="klarnalabel" label="VMPAYMENT_KLARNA_DOCUMENTATION"
+               default="&lt;a href=&quot;http://cdn.klarna.com/1.0/shared/content/integration/guide/virtuemart.pdf&quot; target=&quot;_blank&quot;&gt;Documentation&lt;/a&gt;"/>/>
         <param type="spacer" default="" level="level1" />
         <param type="spacer" default="VMPAYMENT_KLARNACHECKOUT_PAYMENT_PARAMS" level="level1" />
         <param name="purchase_country" type="vmcountry"   default=""
