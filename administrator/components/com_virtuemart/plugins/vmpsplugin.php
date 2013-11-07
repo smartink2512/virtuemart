@@ -877,7 +877,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		return FALSE;
 	}
 
-  /**
+  	/**
 	 * @param $method
 	 */
 	function convert_condition_amount (&$method) {
@@ -1188,6 +1188,18 @@ abstract class vmPSPlugin extends vmPlugin {
 				}
 			}
 		}
+	}
+
+	function getAmountInCurrency($amount, $currencyId){
+		$return = array();
+		$paymentCurrency = CurrencyDisplay::getInstance($currencyId);
+		if (!class_exists ('calculationHelper')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+		}
+		$calculator = calculationHelper::getInstance ();
+		$return['value'] = $calculator->roundInternal($paymentCurrency->convertCurrencyTo($currencyId, $amount, FALSE));
+		$return['display'] = $paymentCurrency->priceDisplay($amount,$currencyId) ;
+		return $return;
 	}
 
 

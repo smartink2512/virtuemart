@@ -99,11 +99,9 @@ if (!class_exists ('vmPSPlugin')) {
 		$currency_code_3 = shopFunctions::getCurrencyByID($method->payment_currency, 'currency_code_3');
 		$email_currency = $this->getEmailCurrency($method);
 
-		$paymentCurrency = CurrencyDisplay::getInstance($method->payment_currency);
-		$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($method->payment_currency, $order['details']['BT']->order_total, FALSE), 2);
-		$totalInPaymentCurrencyDisplay = $paymentCurrency->priceDisplay( $order['details']['BT']->order_total,$method->payment_currency) ;
-		$cd = CurrencyDisplay::getInstance($cart->pricesCurrency);
-
+		$myTotalPayment = $this->getAmountInCurrency($order['details']['BT']->order_total,$method->payment_currency);
+		$totalInPaymentCurrency = $myTotalPayment['value'];
+		$totalInPaymentCurrencyDisplay = $myTotalPayment['display'];
 
 		$dbValues['payment_name'] = $this->renderPluginName ($method) . '<br />' . $method->payment_info;
 		$dbValues['order_number'] = $order['details']['BT']->order_number;

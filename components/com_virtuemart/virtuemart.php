@@ -27,13 +27,21 @@ vmSetStartTime('Start');
 
 VmConfig::loadJLang('com_virtuemart', true);
 
+
+
+$cache = JFactory::getCache ('com_virtuemart');
+$cached = $cache->getCaching('com_virtuemart');
+
 if(VmConfig::get('shop_is_offline',0)){
+	$cache->setCaching (1);
 	$_controller = 'virtuemart';
 	require (JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
 	JRequest::setVar('view', 'virtuemart');
 	$task='';
 	$basePath = JPATH_VM_SITE;
 } else {
+
+	$cache->setCaching (0);
 
 	/* Front-end helpers */
 	if(!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
@@ -95,10 +103,10 @@ if (class_exists($_class)) {
     /* Perform the Request task */
     $controller->execute($task);
 
-    //Console::logSpeed('virtuemart start');
     vmTime($_class.' Finished task '.$task,'Start');
     vmRam('End');
     vmRamPeak('Peak');
+
     /* Redirect if set by the controller */
     $controller->redirect();
 } else {
