@@ -55,12 +55,12 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 	<div class="icon"><?php echo LiveUpdate::getIcon(array(),'url'); ?></div>
     <?php } ?>
 	<div class="clear"></div>
-	<div style="margin: auto;float: left;text-align: left;padding-bottom: 10px;">
+
 		<?php
 		$totalItems=5;
 		if ( $this->virtuemartFeed) {
 			?>
-			<h2 style="padding-left: 25px;"><?php echo JText::_('COM_VIRTUEMART_FEED_LATEST_NEWS')?></h2>
+			<h2 class="cpanel"><?php echo JText::_('COM_VIRTUEMART_FEED_LATEST_NEWS')?></h2>
 			<ul class="newsfeed">
 				<?php
 				foreach ($this->virtuemartFeed as $item) {
@@ -68,7 +68,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 						$description=strip_tags($item->description);
 						$description=substr($description, 0,200)."...";
 						?>
-						<li class="newsfeed-item" style="font-size:150%;line-height: 150%;">
+						<li class="newsfeed-item">
 							<a href="<?php echo $item->link; ?>" target="_blank" title=" <?php echo $description; ?>"> <?php echo $item->title; ?></a>
 						</li>
 					<?php
@@ -78,12 +78,12 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 
 				?>
 			</ul>
+			<a class="cpanel" style="display: block;" href="http://extensions.joomla.org/extensions/e-commerce/shopping-cart/129" target="_blank" title=" <?php echo JText::_('COM_VIRTUEMART_VOTE_JED_DESC') ?>"> <?php echo JText::_('COM_VIRTUEMART_VOTE_JED_DESC') ?></a>
 
 		<?php
 		}
 		?>
-	</div>
-	<div style="margin: auto;"><br>
+
 	<?php
 	if ( $this->extensionsFeed ) {
 		$j=0;
@@ -92,16 +92,16 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 			if (($j / 5) == 0) { ?>
 				<div class="clear"></div>
 
-				<h2 style="padding-left: 25px;text-align: left;padding-top: 15px"><?php echo JText::_('COM_VIRTUEMART_FEED_LATEST_EXTENSION')?></h2>
+				<h2 class="cpanel"><?php echo JText::_('COM_VIRTUEMART_FEED_LATEST_EXTENSION')?></h2>
 				<?php
 			} elseif (($j / 5) == 1) { ?>
 				<div class="clear"></div>
 
-				<h2 style="padding-left: 25px;text-align: left"><?php echo JText::_('COM_VIRTUEMART_FEED_FEATURED_EXTENSION')?></h2>
+				<h2 class="cpanel"><?php echo JText::_('COM_VIRTUEMART_FEED_FEATURED_EXTENSION')?></h2>
 			<?php
 			} elseif (($j / 5) == 2) { ?>
 				<div class="clear"></div>
-				<h2 style="padding-left: 25px;text-align: left"><?php echo JText::_('COM_VIRTUEMART_FEED_POPULAR_EXTENSION')?></h2>
+				<h2 class="cpanel"><?php echo JText::_('COM_VIRTUEMART_FEED_POPULAR_EXTENSION')?></h2>
 			<?php
 			}
 			$image="";
@@ -136,16 +136,11 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 	}
 	?>
 		<div class="clear"></div>
-		<h2>
+		<h2 class="cpanel" >
 			<a href="http://extensions.virtuemart.net" target="_blank" title="<?php echo JText::_('COM_VIRTUEMART_ALL_EXTENSIONS') ?>"> <?php echo JText::_('COM_VIRTUEMART_ALL_EXTENSIONS') ?></a>
 		</h2>
 
-	</div>
 </div>
 <div class="clear"></div>
-<div style="margin: auto;float: left;">
 
-	<h2 style="padding-left: 25px;"><?php echo JText::_('COM_VIRTUEMART_VOTE_JED')?></h2>
-	<a style="padding-left: 25px;" href="http://extensions.joomla.org/extensions/e-commerce/shopping-cart/129" target="_blank" title=" <?php echo JText::_('COM_VIRTUEMART_VOTE_JED_DESC') ?>"> <?php echo JText::_('COM_VIRTUEMART_VOTE_JED_DESC') ?></a>
-</div>
 
