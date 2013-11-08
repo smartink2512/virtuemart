@@ -124,7 +124,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $cart->pricesUnformatted);
 
 				if (!empty($method->payment_logos)) {
-					$logo = '<a href="https://www.klarna.com" target="_blank"><img src="https://cdn.klarna.com/public/images/SE/logos/v1/basic/SE_basic_logo_std_blue-black.png?width=100&" /></a> ';
+					$logo = '<img src="https://cdn.klarna.com/public/images/SE/logos/v1/basic/SE_basic_logo_std_blue-black.png?width=100&" />';
 				}
 				$payment_cost = '';
 				if ($methodSalesPrice) {
