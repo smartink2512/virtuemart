@@ -329,8 +329,14 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 					// Reset cart
 					$update['cart']['items'] = array();
 					$update['cart']['items'] = $this->getCartItems($cart );
-					$update['shipping_address']['email'] = $cart->BT['email'];
-					$update['shipping_address']['postal_code'] = $cart->BT['zip'];
+					if (!empty( $cart->BT['email'])) {
+						$update['shipping_address']['email'] = $cart->BT['email'];
+					}
+					$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
+					if (isset($address['zip']) and !empty($address['zip'])) {
+						$update['shipping_address']['postal_code'] = $cart->BT['zip'];
+					}
+
 
 					$klarnaOrder->update($update);
 					$this->writelog($update, 'plgVmOnCheckoutAdvertise update', 'debug');
@@ -355,8 +361,13 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 				$create['merchant']['confirmation_uri'] = substr(JURI::root(false, ''), 0, -1) . JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&t&pm=' . $virtuemart_paymentmethod_id . '&cartId=' . $cartIdInTable . '&klarna_order={checkout.order.uri}', false);
 				// You can not receive push notification on non publicly available uri
 				$create['merchant']['push_uri'] = substr(JURI::root(false, ''), 0, -1) . JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&pm=' . $virtuemart_paymentmethod_id . '&cartId=' . $cartIdInTable . '&klarna_order={checkout.order.uri}', false);
-				$create['shipping_address']['email'] = $cart->BT['email'];
-				$create['shipping_address']['postal_code'] = $cart->BT['zip'];
+				if (!empty( $cart->BT['email'])) {
+					$create['shipping_address']['email'] = $cart->BT['email'];
+				}
+				$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
+				if (isset($address['zip']) and !empty($address['zip'])) {
+					$create['shipping_address']['postal_code'] = $cart->BT['zip'];
+				}
 
 
 				$create['cart']['items'] = $this->getCartItems($cart, $method);
