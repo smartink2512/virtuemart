@@ -1012,7 +1012,6 @@ abstract class vmPSPlugin extends vmPlugin {
 
 				$denominator = 0;
 				foreach($taxrules as &$rule){
-					vmdebug('setCartPrices my tax rule',$rule);
 					//$rule['numerator'] = $rule['calc_value']/100.0 * $rule['subTotal'];
 					$denominator += ($rule['subTotal']-$rule['taxAmount']);
 					$rule['subTotalOld'] = $rule['subTotal'];

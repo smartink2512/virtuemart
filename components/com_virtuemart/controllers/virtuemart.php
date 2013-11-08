@@ -40,6 +40,26 @@ class VirtueMartControllerVirtuemart extends JController
 	    }
 	}
 
+	/**
+	 * Override of display to prevent caching
+	 *
+	 * @return  JController  A JController object to support chaining.
+	 */
+	public function display(){
+
+		$document = JFactory::getDocument();
+		$viewType = $document->getType();
+		$viewName = JRequest::getCmd('view', $this->default_view);
+		$viewLayout = JRequest::getCmd('layout', 'default');
+
+		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+		$view->assignRef('document', $document);
+
+		$view->display();
+
+		return $this;
+	}
+
 	function virtuemart() {
 
 		$view = $this->getView(JRequest::getWord('view', 'virtuemart'), 'html');
@@ -48,5 +68,7 @@ class VirtueMartControllerVirtuemart extends JController
 		$safeurlparams = array('virtuemart_category_id'=>'INT','virtuemart_currency_id'=>'INT','return'=>'BASE64','lang'=>'CMD');
 		parent::display(true, $safeurlparams);//$view->display();
 	}
+
+
 }
  //pure php no closing tag

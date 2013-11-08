@@ -49,7 +49,7 @@ class VirtueMartControllerCategory extends JController {
 	* @author George
 	* @access public
 	*/
-	public function display($cachable = false, $urlparams = false)  {
+	public function display()  {
 
 		if (JRequest::getvar('search')) {
 			$view = $this->getView('category', 'html');
@@ -57,7 +57,7 @@ class VirtueMartControllerCategory extends JController {
 		} else {
 			// Display it all
 			$safeurlparams = array('virtuemart_category_id'=>'INT','virtuemart_manufacturer_id'=>'INT','virtuemart_currency_id'=>'INT','return'=>'BASE64','lang'=>'CMD','orderby'=>'CMD','limitstart'=>'CMD','order'=>'CMD','limit'=>'CMD');
-			parent::display(true, $safeurlparams);
+			parent::display(false, $safeurlparams);
 		}
 		if($categoryId = JRequest::getInt('virtuemart_category_id',0)){
 			shopFunctionsF::setLastVisitedCategoryId($categoryId);

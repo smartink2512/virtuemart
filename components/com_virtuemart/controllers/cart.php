@@ -61,7 +61,7 @@ class VirtueMartControllerCart extends JController {
 	 *
 	 * @since   11.1
 	 */
-	public function display($cachable = false)
+	public function display()
 	{
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
@@ -379,7 +379,7 @@ class VirtueMartControllerCart extends JController {
 	/**
 	 * Change the shopper
 	 *
-	 * @author Maik Künnemann
+	 * @author Maik Kï¿½nnemann
 	 *
 	 */
 	public function changeShopper() {

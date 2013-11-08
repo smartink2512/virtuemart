@@ -55,7 +55,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 	<div class="icon"><?php echo LiveUpdate::getIcon(array(),'url'); ?></div>
     <?php } ?>
 	<div class="clear"></div>
-	<div style="margin: auto;float: left;text-align: left;">
+	<div style="margin: auto;float: left;text-align: left;padding-bottom: 10px;">
 		<?php
 		$totalItems=5;
 		if ( $this->virtuemartFeed) {
@@ -68,7 +68,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 						$description=strip_tags($item->description);
 						$description=substr($description, 0,200)."...";
 						?>
-						<li class="newsfeed-item">
+						<li class="newsfeed-item" style="font-size:150%;line-height: 150%;">
 							<a href="<?php echo $item->link; ?>" target="_blank" title=" <?php echo $description; ?>"> <?php echo $item->title; ?></a>
 						</li>
 					<?php
@@ -83,7 +83,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 		}
 		?>
 	</div>
-	<div style="margin: auto;float: left;">
+	<div style="margin: auto;"><br>
 	<?php
 	if ( $this->extensionsFeed ) {
 		$j=0;
@@ -92,16 +92,16 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 			if (($j / 5) == 0) { ?>
 				<div class="clear"></div>
 
-				<h2><?php echo JText::_('COM_VIRTUEMART_FEED_LATEST_EXTENSION')?></h2>
+				<h2 style="padding-left: 25px;text-align: left;padding-top: 15px"><?php echo JText::_('COM_VIRTUEMART_FEED_LATEST_EXTENSION')?></h2>
 				<?php
 			} elseif (($j / 5) == 1) { ?>
 				<div class="clear"></div>
 
-				<h2><?php echo JText::_('COM_VIRTUEMART_FEED_FEATURED_EXTENSION')?></h2>
+				<h2 style="padding-left: 25px;text-align: left"><?php echo JText::_('COM_VIRTUEMART_FEED_FEATURED_EXTENSION')?></h2>
 			<?php
 			} elseif (($j / 5) == 2) { ?>
 				<div class="clear"></div>
-				<h2><?php echo JText::_('COM_VIRTUEMART_FEED_POPULAR_EXTENSION')?></h2>
+				<h2 style="padding-left: 25px;text-align: left"><?php echo JText::_('COM_VIRTUEMART_FEED_POPULAR_EXTENSION')?></h2>
 			<?php
 			}
 			$image="";

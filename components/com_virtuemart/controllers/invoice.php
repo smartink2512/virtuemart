@@ -41,6 +41,46 @@ class VirtueMartControllerInvoice extends JController
 		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 	}
 
+	/**
+	 * Override of display to prevent caching
+	 *
+	 * @return  JController  A JController object to support chaining.
+	 */
+	public function display($cachable = false, $urlparams = false)  {
+		$format = JRequest::getWord('format','html');
+		$layout = JRequest::getWord('layout', 'invoice');
+
+		if ($format != 'pdf') {
+			$viewName='invoice';
+
+			$view = $this->getView($viewName, $format);
+			$view->headFooter = true;
+			$view->display();
+		} else {
+			//PDF needs more RAM than usual
+			VmConfig::ensureMemoryLimit(64);
+			$viewName='invoice';
+			$format="html";
+
+			// Create the invoice PDF file on disk and send that back
+			$orderDetails = $this->getOrderDetails();
+			$fileName = $this->getInvoicePDF($orderDetails);
+			if (file_exists ($fileName)) {
+				header ("Cache-Control: public");
+				header ("Content-Transfer-Encoding: binary\n");
+				header ('Content-Type: application/pdf');
+				$contentDisposition = 'attachment';
+				header ("Content-Disposition: $contentDisposition; filename=\"".basename($fileName)."\"");
+				$contents = file_get_contents ($fileName);
+				echo $contents;
+				JFactory::getApplication()->close();
+			} else {
+				// TODO: Error message
+				// vmError("File $fileName not found!");
+			}
+		}
+	}
+
 	public function getOrderDetails() {
 		$orderModel = VmModel::getModel('orders');
 		$orderDetails = 0;
@@ -79,40 +119,7 @@ class VirtueMartControllerInvoice extends JController
 		return $orderDetails;
 	}
 
-	public function display($cachable = false, $urlparams = false)  {
-		$format = JRequest::getWord('format','html');
-		$layout = JRequest::getWord('layout', 'invoice');
 
-		if ($format != 'pdf') {
-			$viewName='invoice';
-
-			$view = $this->getView($viewName, $format);
-			$view->headFooter = true;
-			$view->display();
-		} else {
-			//PDF needs more RAM than usual
-			VmConfig::ensureMemoryLimit(64);
-			$viewName='invoice';
-			$format="html";
-
-			// Create the invoice PDF file on disk and send that back
-			$orderDetails = $this->getOrderDetails();
-			$fileName = $this->getInvoicePDF($orderDetails);
-			if (file_exists ($fileName)) {
-				header ("Cache-Control: public");
-				header ("Content-Transfer-Encoding: binary\n");
-				header ('Content-Type: application/pdf');
-				$contentDisposition = 'attachment';
-				header ("Content-Disposition: $contentDisposition; filename=\"".basename($fileName)."\"");
-				$contents = file_get_contents ($fileName);
-				echo $contents;
-				JFactory::getApplication()->close();
-			} else {
-				// TODO: Error message 
-				// vmError("File $fileName not found!");
-			}
-		}
-	}
 	public function samplePDF() {
 		if(!class_exists('VmVendorPDF')){
 			vmError('vmPdf: For the pdf, you must install the tcpdf library at '.JPATH_VM_LIBRARIES.DS.'tcpdf');
