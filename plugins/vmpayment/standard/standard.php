@@ -99,9 +99,7 @@ if (!class_exists ('vmPSPlugin')) {
 		$currency_code_3 = shopFunctions::getCurrencyByID($method->payment_currency, 'currency_code_3');
 		$email_currency = $this->getEmailCurrency($method);
 
-		$myTotalPayment = $this->getAmountInCurrency($order['details']['BT']->order_total,$method->payment_currency);
-		$totalInPaymentCurrency = $myTotalPayment['value'];
-		$totalInPaymentCurrencyDisplay = $myTotalPayment['display'];
+		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$method->payment_currency);
 
 		$dbValues['payment_name'] = $this->renderPluginName ($method) . '<br />' . $method->payment_info;
 		$dbValues['order_number'] = $order['details']['BT']->order_number;
@@ -110,7 +108,7 @@ if (!class_exists ('vmPSPlugin')) {
 		$dbValues['cost_percent_total'] = $method->cost_percent_total;
 		$dbValues['payment_currency'] = $currency_code_3;
 		$dbValues['email_currency'] = $email_currency;
-		$dbValues['payment_order_total'] = $totalInPaymentCurrency;
+		$dbValues['payment_order_total'] = $totalInPaymentCurrency['value'];
 		$dbValues['tax_id'] = $method->tax_id;
 		$this->storePSPluginInternalData ($dbValues);
 
@@ -133,7 +131,7 @@ if (!class_exists ('vmPSPlugin')) {
 		$html .= $this->getHtmlRow ('STANDARD_AMOUNT', $currency->priceDisplay ($order['details']['BT']->order_total), "vmorder-done-amount");
 
 		if ($method->payment_currency != $order['details']['BT']->order_currency) {
-			$html .= $this->getHtmlRow ('COM_VIRTUEMART_CART_TOTAL_PAYMENT', $totalInPaymentCurrencyDisplay, "vmorder-done-amount");
+			$html .= $this->getHtmlRow ('COM_VIRTUEMART_CART_TOTAL_PAYMENT', $totalInPaymentCurrency['display'], "vmorder-done-amount");
 		}
 
 		//$html .= $this->getHtmlRow('STANDARD_INFO', $method->payment_info);

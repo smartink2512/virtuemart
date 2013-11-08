@@ -151,13 +151,10 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$this->getPaymentCurrency($method);
 		$email_currency = $this->getEmailCurrency($method);
 		$currency_code_3 = shopFunctions::getCurrencyByID($method->payment_currency, 'currency_code_3');
-		$paymentCurrency = CurrencyDisplay::getInstance($method->payment_currency);
-		$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($method->payment_currency, $order['details']['BT']->order_total, FALSE), 2);
+		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$method->payment_currency);
 		$cd = CurrencyDisplay::getInstance($cart->pricesCurrency);
-		if ($totalInPaymentCurrency <= 0) {
-			vmInfo(JText::sprintf('VMPAYMENT_SOFORT_AMOUNT_INCORRECT', $order['details']['BT']->order_total,  $totalInPaymentCurrency, $currency_code_3));
-			return FALSE;
-		}
+
+
 // Prepare data that should be stored in the database
 		$dbValues['order_number'] = $order['details']['BT']->order_number;
 		$dbValues['payment_name'] = $this->renderPluginName($method, 'create_order');
@@ -166,7 +163,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$dbValues['cost_percent_total'] = $method->cost_percent_total;
 		$dbValues['payment_currency'] = $method->payment_currency;
 		$dbValues['email_currency'] = $email_currency;
-		$dbValues['payment_order_total'] = $totalInPaymentCurrency;
+		$dbValues['payment_order_total'] = $totalInPaymentCurrency['value'];
 		$dbValues['tax_id'] = $method->tax_id;
 		$dbValues['sofort_custom'] = $return_context;
 
@@ -180,7 +177,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		}
 		$sofort = new SofortLib_Multipay($method->configuration_key);
 		$sofort->setVersion(self::RELEASE);
-		$sofort->setAmount($totalInPaymentCurrency, $currency_code_3);
+		$sofort->setAmount($totalInPaymentCurrency['value'], $currency_code_3);
 		$sofort->setReason($order['details']['BT']->order_number);
 		$sofort->setSuccessUrl(self::getSuccessUrl($order));
 		$sofort->setAbortUrl(self::getCancelUrl($order));
@@ -557,18 +554,20 @@ class plgVmPaymentSofort extends vmPSPlugin {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 
-		$cart = VirtueMartCart::getCart();
 
-		$paymentCurrency = CurrencyDisplay::getInstance($order['details']['BT']->order_currency);
-		$totalInPaymentCurrency = $paymentCurrency->priceDisplay($order['details']['BT']->order_total, $order['details']['BT']->order_currency);
+
+
+		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$order['details']['BT']->order_currency);
+		$cart = VirtueMartCart::getCart();
 		$currencyDisplay = CurrencyDisplay::getInstance($cart->pricesCurrency);
+
 		$nb = count($paymentTables);
 		$pluginName = $this->renderPluginName($method, $where = 'post_payment');
 		$html = $this->renderByLayout('post_payment', array(
 		                                                   'order' => $order,
 		                                                   'paymentInfos' => $paymentTables[$nb - 1],
 		                                                   'pluginName' => $pluginName,
-		                                                   'totalInPaymentCurrency' => $totalInPaymentCurrency
+		                                                   'displayTotalInPaymentCurrency' => $totalInPaymentCurrency['display']
 		                                              ));
 		//vmdebug('_getPaymentResponseHtml', $html,$pluginName,$paypalTable );
 

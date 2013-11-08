@@ -1131,6 +1131,23 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 	}
 
+	/**
+	 * @param $amount
+	 * @param $currencyId
+	 * @return array
+	 */
+	static function getAmountInCurrency($amount, $currencyId){
+		$return = array();
+		$paymentCurrency = CurrencyDisplay::getInstance($currencyId);
+		if (!class_exists ('calculationHelper')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+		}
+		$calculator = calculationHelper::getInstance ();
+		$return['value'] = $calculator->roundInternal($paymentCurrency->convertCurrencyTo($currencyId, $amount, FALSE));
+		$return['display'] = $paymentCurrency->priceDisplay($amount,$currencyId) ;
+		return $return;
+	}
+
 	function emptyCart ($session_id = NULL, $order_number = NULL) {
 
 		if (!class_exists ('VirtueMartCart')) {
@@ -1190,17 +1207,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 	}
 
-	function getAmountInCurrency($amount, $currencyId){
-		$return = array();
-		$paymentCurrency = CurrencyDisplay::getInstance($currencyId);
-		if (!class_exists ('calculationHelper')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-		}
-		$calculator = calculationHelper::getInstance ();
-		$return['value'] = $calculator->roundInternal($paymentCurrency->convertCurrencyTo($currencyId, $amount, FALSE));
-		$return['display'] = $paymentCurrency->priceDisplay($amount,$currencyId) ;
-		return $return;
-	}
+
 
 
 	private static function session_decode ($session_data) {

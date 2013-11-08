@@ -444,8 +444,9 @@ class KlarnaHandler {
 
 		// Fill the good list the we send to Klarna
 		foreach ($order['items'] as $item) {
-			$price = $basePriceWithTax =   $item->product_basePriceWithTax ;
+			$price = $basePriceWithTax = !empty($item->basePriceWithTax) ? $item->basePriceWithTax : $item->product_final_price;
 			$item_price = self::convertPrice ($price, $order['details']['BT']->order_currency, $cData['currency_code']);
+
 			$item_price = (double)(round ($item_price, 2));
 			$item_tax_percent=0;
 			foreach ($order['calc_rules'] as $calc_rule) {
@@ -461,7 +462,7 @@ class KlarnaHandler {
 			if (abs($item->product_subtotal_discount) > 0.0) {
 				$name=utf8_decode (strip_tags ($item->order_item_name)). ' ('.JText::_('VMPAYMENT_KLARNA_PRODUCTDISCOUNT'). ')';
 				$discount = self::convertPrice ($item->product_subtotal_discount, $order['details']['BT']->order_currency, $cData['currency_code']);
-				$discount = (double)(round ($discount, 2)) * -1 ;
+				$discount = (double)(round (abs($discount), 2)) * -1 ;
 				$klarna->addArticle (1, utf8_decode ($item->order_item_sku), $name, $discount, (double)$item_tax_percent, $item_discount_percent, KlarnaFlags::INC_VAT);
 
 			}
@@ -493,10 +494,11 @@ class KlarnaHandler {
 			}
 		}
 		// Add coupon if there is any
-		if ($order['details']['BT']->coupon_discount > 0) {
+		if (abs ($order['details']['BT']->coupon_discount) > 0.0) {
 			$coupon_discount = self::convertPrice (round ($order['details']['BT']->coupon_discount), $order['details']['BT']->order_currency, $cData['currency_code']);
+			$coupon_discount =(double)(round (abs($coupon_discount), 2)) * -1 ;
 			//vmdebug('discount', $coupon_discount);
-			$klarna->addArticle (1, 'discount',utf8_decode(JText::_ ('VMPAYMENT_KLARNA_DISCOUNT')) . ' ' . utf8_decode($order['details']['BT']->coupon_code), ((int)(round ($coupon_discount, 2) * -1)), 0, 0, KlarnaFlags::INC_VAT);
+			$klarna->addArticle (1, 'discount',utf8_decode(JText::_ ('VMPAYMENT_KLARNA_DISCOUNT')) . ' ' . utf8_decode($order['details']['BT']->coupon_code),  $coupon_discount , 0, 0, KlarnaFlags::INC_VAT);
 		}
 		/*
 $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true);
@@ -1083,16 +1085,16 @@ $test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true)
 		if ($fromCurrency == $toCurrency) {
 			return $price;
 		}
-		$currencyToConvert = CurrencyDisplay::getInstance ($toCurrency);
 		// product prices or total in cart is always in vendor currency
-		$priceInNewCurrency = round ($currencyToConvert->convertCurrencyTo ($toCurrency, $price, FALSE), 2);
+		$priceInNewCurrency = vmPSPlugin::getAmountInCurrency($price,$toCurrency);
+
 		// set back the currency display
 		if (empty($cartPricesCurrency)) {
 			$cartPricesCurrency = $fromCurrency;
 		}
 		$cd = CurrencyDisplay::getInstance ($cartPricesCurrency);
 		vmDebug ('convertPrice', $price,  $toCurrency, $fromCurrency, $cartPricesCurrency,$priceInNewCurrency);
-		return $priceInNewCurrency;
+		return $priceInNewCurrency['value'];
 	}
 
 	/*

@@ -54,8 +54,36 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
     <?php if ($this->canDo->get('core.admin')) { ?>
 	<div class="icon"><?php echo LiveUpdate::getIcon(array(),'url'); ?></div>
     <?php } ?>
+	<div class="clear"></div>
+	<div style="margin: auto;float: left;text-align: left;">
+		<?php
+		$totalItems=5;
+		if ( $this->virtuemartFeed) {
+			?>
+			<h2 style="padding-left: 25px;"><?php echo JText::_('COM_VIRTUEMART_FEED_LATEST_NEWS')?></h2>
+			<ul class="newsfeed">
+				<?php
+				foreach ($this->virtuemartFeed as $item) {
+					if (!empty($item->link)) {
+						$description=strip_tags($item->description);
+						$description=substr($description, 0,200)."...";
+						?>
+						<li class="newsfeed-item">
+							<a href="<?php echo $item->link; ?>" target="_blank" title=" <?php echo $description; ?>"> <?php echo $item->title; ?></a>
+						</li>
+					<?php
+					}
+				}
 
 
+				?>
+			</ul>
+
+		<?php
+		}
+		?>
+	</div>
+	<div style="margin: auto;float: left;">
 	<?php
 	if ( $this->extensionsFeed ) {
 		$j=0;
@@ -63,10 +91,12 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 			// This is directly related to extensions.virtuemart.net
 			if (($j / 5) == 0) { ?>
 				<div class="clear"></div>
+
 				<h2><?php echo JText::_('COM_VIRTUEMART_FEED_LATEST_EXTENSION')?></h2>
 				<?php
 			} elseif (($j / 5) == 1) { ?>
 				<div class="clear"></div>
+
 				<h2><?php echo JText::_('COM_VIRTUEMART_FEED_FEATURED_EXTENSION')?></h2>
 			<?php
 			} elseif (($j / 5) == 2) { ?>
@@ -100,48 +130,22 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 			<?php
 			}
 			$j++;
-		}
-	}
-
-			?>
-	<div class="clear"></div>
-	<h2>
-		<a href="http://extensions.virtuemart.net" target="_blank" title="<?php echo JText::_('COM_VIRTUEMART_ALL_EXTENSIONS') ?>"> <?php echo JText::_('COM_VIRTUEMART_ALL_EXTENSIONS') ?></a>
-	</h2>
-
-	<div class="clear"></div>
-</div>
-<div>
-	<?php
-
-	$totalItems=5;
-	if ( $this->virtuemartFeed) {
-		?>
-	<h2><?php echo JText::_('COM_VIRTUEMART_FEED_LATEST_NEWS')?></h2>
-	<ul class="newsfeed">
-		<?php
-			foreach ($this->virtuemartFeed as $item) {
-				if (!empty($item->link)) {
-					$description=strip_tags($item->description);
-					$description=substr($description, 0,200)."...";
-					?>
-					<li class="newsfeed-item">
-						<a href="<?php echo $item->link; ?>" target="_blank" title=" <?php echo $description; ?>"> <?php echo $item->title; ?></a>
-					</li>
-				<?php
-				}
-			}
-
-
-		?>
-	</ul>
+		} ?>
 
 	<?php
 	}
 	?>
-	<h2><?php echo JText::_('COM_VIRTUEMART_VOTE_JED')?></h2>
+		<div class="clear"></div>
+		<h2>
+			<a href="http://extensions.virtuemart.net" target="_blank" title="<?php echo JText::_('COM_VIRTUEMART_ALL_EXTENSIONS') ?>"> <?php echo JText::_('COM_VIRTUEMART_ALL_EXTENSIONS') ?></a>
+		</h2>
 
-		<a href="http://extensions.joomla.org/extensions/e-commerce/shopping-cart/129" target="_blank" title=" <?php echo JText::_('COM_VIRTUEMART_VOTE_JED_DESC') ?>"> <?php echo JText::_('COM_VIRTUEMART_VOTE_JED_DESC') ?></a>
-
-
+	</div>
 </div>
+<div class="clear"></div>
+<div style="margin: auto;float: left;">
+
+	<h2 style="padding-left: 25px;"><?php echo JText::_('COM_VIRTUEMART_VOTE_JED')?></h2>
+	<a style="padding-left: 25px;" href="http://extensions.joomla.org/extensions/e-commerce/shopping-cart/129" target="_blank" title=" <?php echo JText::_('COM_VIRTUEMART_VOTE_JED_DESC') ?>"> <?php echo JText::_('COM_VIRTUEMART_VOTE_JED_DESC') ?></a>
+</div>
+

@@ -153,14 +153,13 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		$this->getPaymentCurrency ($method);
 
 		$currency_code_3 = shopFunctions::getCurrencyByID ($method->payment_currency, 'currency_code_3');
-		$paymentCurrency = CurrencyDisplay::getInstance ($method->payment_currency);
-		$totalInPaymentCurrency = round ($paymentCurrency->convertCurrencyTo ($method->payment_currency, $order['details']['BT']->order_total, FALSE), 2);
+		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$method->payment_currency);
 		$cd = CurrencyDisplay::getInstance ($cart->pricesCurrency);
 
 		// prepare the post var values:
 		$languageTag = $this->getLang ();
 		$params = array();
-		$params['PRESENTATION.AMOUNT'] = $totalInPaymentCurrency;
+		$params['PRESENTATION.AMOUNT'] = $totalInPaymentCurrency['value'];
 		$params['PRESENTATION.CURRENCY'] = $currency_code_3;
 		$params['FRONTEND.LANGUAGE'] = $languageTag;
 		$params['CRITERION.LANG'] = $params['FRONTEND.LANGUAGE'];

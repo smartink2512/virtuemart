@@ -249,14 +249,14 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 
 		$currency_code_3 = self::PAYMENT_CURRENCY_CODE_3; //
 		$currency_id = shopFunctions::getCurrencyIDByName($currency_code_3);
-		$paymentCurrency = CurrencyDisplay::getInstance($currency_id);
-		$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($currency_id, $order['details']['BT']->order_total, FALSE), 2);
+		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$currency_id);
+		$cd = CurrencyDisplay::getInstance($cart->pricesCurrency);
 
 		$address = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
 
 		$cd = CurrencyDisplay::getInstance($cart->pricesCurrency);
 		if ($totalInPaymentCurrency <= 0) {
-			vmInfo(JText::sprintf('VMPAYMENT_SOFORT_AMOUNT_INCORRECT', $order['details']['BT']->order_total,  $totalInPaymentCurrency, $currency_code_3));
+			vmInfo(JText::sprintf('VMPAYMENT_SOFORT_AMOUNT_INCORRECT', $order['details']['BT']->order_total,  $totalInPaymentCurrency['value'], $currency_code_3));
 			return FALSE;
 		}
 		// Prepare data that should be stored in the database
@@ -266,7 +266,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
 		$dbValues['cost_percent_total'] = $method->cost_percent_total;
 		$dbValues['payment_currency'] = $currency_id;
-		$dbValues['payment_order_total'] = $totalInPaymentCurrency;
+		$dbValues['payment_order_total'] = $totalInPaymentCurrency['value'];
 		$dbValues['tax_id'] = $method->tax_id;
 		$dbValues['sofort_custom'] = $return_context;
 		$this->storePSPluginInternalData($dbValues);
@@ -282,7 +282,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 
 		$sofort_ideal = new SofortLib_iDealClassic($method->configuration_key, $method->project_password);
 		$sofort_ideal->setVersion(self::RELEASE);
-		$sofort_ideal->setAmount($totalInPaymentCurrency, $currency_code_3);
+		$sofort_ideal->setAmount($totalInPaymentCurrency['value'], $currency_code_3);
 		$sofort_ideal->setSenderCountryId(ShopFunctions::getCountryByID($address->virtuemart_country_id, 'country_2_code'));
 		$sofort_ideal->setReason($order['details']['BT']->order_number);
 		$sofort_ideal->addUserVariable($order['details']['BT']->virtuemart_paymentmethod_id);
@@ -360,16 +360,18 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		$orderModel = VmModel::getModel('orders');
 		$order = $orderModel->getOrder($virtuemart_order_id);
 		$paymentCurrency = CurrencyDisplay::getInstance($order['details']['BT']->order_currency);
-		$totalInPaymentCurrency = $paymentCurrency->priceDisplay($order['details']['BT']->order_total, $order['details']['BT']->order_currency);
+		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$method->payment_currency);
+
 		$cart = VirtueMartCart::getCart();
 		$currencyDisplay = CurrencyDisplay::getInstance($cart->pricesCurrency);
+
 		$nb = count($paymentTables);
 			$pluginName = $this->renderPluginName($method, $where = 'post_payment');
 			$html = $this->renderByLayout('post_payment', array(
 
 			                                                   'paymentInfos' => $paymentTables[$nb - 1],
 			                                                   'pluginName' => $pluginName,
-			                                                   'totalInPaymentCurrency' => $totalInPaymentCurrency
+			                                                   'displayTotalInPaymentCurrency' => $totalInPaymentCurrency['display']
 			                                              ));
 			vmdebug('_getPaymentResponseHtml' ,$paymentTables );
 
@@ -697,8 +699,8 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 
 		$cart = VirtueMartCart::getCart();
 
-		$paymentCurrency = CurrencyDisplay::getInstance($order['details']['BT']->order_currency);
-		$totalInPaymentCurrency = $paymentCurrency->priceDisplay($order['details']['BT']->order_total, $order['details']['BT']->order_currency);
+		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$method->payment_currency);
+		$cart = VirtueMartCart::getCart();
 		$currencyDisplay = CurrencyDisplay::getInstance($cart->pricesCurrency);
 
 
@@ -706,7 +708,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		$html = $this->renderByLayout('post_payment', array(
 		                                                   'order' => $order,
 		                                                   'pluginName' => $pluginName,
-		                                                   'totalInPaymentCurrency' => $totalInPaymentCurrency
+		                                                   'displayTotalInPaymentCurrency' => $totalInPaymentCurrency['display']
 
 		                                              ));
 		//vmdebug('_getPaymentResponseHtml', $html,$pluginName,$paypalTable );

@@ -114,8 +114,11 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		}
 		$htmla = array();
 		$html = '';
+
 		VmConfig::loadJLang('com_virtuemart');
 		$currency = CurrencyDisplay::getInstance();
+		$showallform=true;
+
 		foreach ($this->methods as $method) {
 			if ($this->checkConditions($cart, $method, $cart->pricesUnformatted)) {
 				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $cart->pricesUnformatted);
@@ -132,16 +135,37 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 				} else {
 					$checked = '';
 				}
+				if ($cart->virtuemart_paymentmethod_id == $method->virtuemart_paymentmethod_id) {
+					 $showallform=false;
+				}
 				$html = $this->renderByLayout('display_payment', array(
 				                                                      'plugin'       => $method,
 				                                                      'checked'      => $checked,
 				                                                      'payment_logo' => $logo,
 				                                                      'payment_cost' => $payment_cost,
+				                                                      'showallform'  => $showallform
 				                                                 ));
 
 				$htmla[] = $html;
 			}
 		}
+
+
+		if ( $showallform) {
+			$js = '
+	jQuery(document).ready(function( $ ) {
+
+		      $("#checkoutForm").show();
+		      $(".billto-shipto").show();
+		      $("#com-form-login").show();
+
+	});
+	';
+			$document = JFactory::getDocument();
+			$document->addScriptDeclaration ( $js);
+		}
+
+
 		if (!empty($htmla)) {
 			$htmlIn[] = $htmla;
 		}
@@ -154,23 +178,17 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		vmdebug('getProductItems', $cart->pricesUnformatted);
 		//self::includeKlarnaFiles();
 		$i = 0;
-		$vendor_currency = $this->_getVendorCurrencyId();
-		$currency = CurrencyDisplay::getInstance($this->method->payment_currency);
-		$rate = $currency->convertCurrencyTo($this->method->payment_currency, 1.0, false);
-		$currency = CurrencyDisplay::getInstance($cart->paymentCurrency);
+
 
 		foreach ($cart->products as $pkey => $product) {
 
 			$items[$i]['reference'] = !empty($product->sku) ? $product->sku : $product->virtuemart_product_id;
 			$items[$i]['name'] = $product->product_name;
 			$items[$i]['quantity'] = (int)$product->quantity;
+			$price = $basePriceWithTax = !empty($product->prices['basePriceWithTax']) ? $product->prices['basePriceWithTax'] : $product->prices['basePriceVariant'];
 
-			$unitPriceCents = plgVmPaymentKlarnaCheckout::getUnitPriceCents($cart->pricesUnformatted[$pkey]);
-			$unitPriceCentsInPaymentCurrency = plgVmPaymentKlarnaCheckout::convertPrice($unitPriceCents, $rate);
-			$salesPriceCents = plgVmPaymentKlarnaCheckout::getPriceCents($cart->pricesUnformatted[$pkey]['salesPrice']);
-			//$discountRate = plgVmPaymentKlarnaCheckout::getDiscountRate($unitPriceCents, $salesPriceCents);
-
-			$items[$i]['unit_price'] = $unitPriceCentsInPaymentCurrency;
+			$itemInPaymentCurrency = vmPSPlugin::getAmountInCurrency($price,$this->method->payment_currency);
+			$items[$i]['unit_price'] = round($itemInPaymentCurrency['value'] * 100, 0) ;
 			//$items[$i]['discount_rate'] = $discountRate;
 			// Bug indoc: discount is not supported
 			//$items[$i]['discount'] = abs($cart->pricesUnformatted[$pkey]['discountAmount']*100);
@@ -180,24 +198,24 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$this->writelog($items[$i], 'getCartItems', 'debug');
 			$i++;
 			// ADD A DISCOUNT AS A NEGATIVE VALUE FOR THAT PRODUCT
-			if ($unitPriceCents != $salesPriceCents) {
+			if ($cart->pricesUnformatted[$pkey]['discountAmount']) {
 				$items[$i]['reference'] = $items[$i-1]['reference'];;
 				$items[$i]['name'] = $items[$i-1]['name']. ' ('.JText::_('VMPAYMENT_KLARNACHECKOUT_PRODUCTDISCOUNT'). ')';
-				$items[$i]['quantity'] = $items[$i-1]['quantity'];
-				$discountInCents = plgVmPaymentKlarnaCheckout::getPriceCents($cart->pricesUnformatted[$pkey]['discountAmount']);
-				$discountCentsInPaymentCurrency = plgVmPaymentKlarnaCheckout::convertPrice($discountInCents, $rate);
-				$items[$i]['unit_price'] = ($discountCentsInPaymentCurrency);
+				$items[$i]['quantity'] =(int)$product->quantity;
+				$discountInPaymentCurrency = vmPSPlugin::getAmountInCurrency($cart->pricesUnformatted[$pkey]['discountAmount'],$this->method->payment_currency);
+
+				$items[$i]['unit_price'] = - abs( round($discountInPaymentCurrency['value'] * 100 , 0)) ;
 				$items[$i]['tax_rate'] =$items[$i-1]['tax_rate'];
 				$this->writelog($items[$i], 'getCartItems', 'debug');
 				$i++;
 			}
 		}
-		$this->writelog($rate, 'rate', 'debug');
 		if ($cart->pricesUnformatted['salesPriceCoupon']) {
 			$items[$i]['reference'] = 'COUPON';
 			$items[$i]['name'] = 'Coupon discount';
 			$items[$i]['quantity'] = 1;
-			$items[$i]['unit_price'] = plgVmPaymentKlarnaCheckout::convertPrice($cart->pricesUnformatted['salesPriceCoupon'] * 100, $rate);
+			$couponInPaymentCurrency = vmPSPlugin::getAmountInCurrency($cart->pricesUnformatted['salesPriceCoupon'],$this->method->payment_currency);
+			$items[$i]['unit_price'] = round( $couponInPaymentCurrency['value'] *100, 0);
 			$items[$i]['tax_rate'] = 0;
 			$this->writelog($cart->pricesUnformatted['salesPriceCoupon'], 'getCartItems Coupon', 'debug');
 			$this->writelog($items[$i], 'getCartItems', 'debug');
@@ -207,51 +225,20 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$items[$i]['reference'] = 'SHIPPING';
 			$items[$i]['name'] = 'Shipping Fee';
 			$items[$i]['quantity'] = 1;
-			$items[$i]['unit_price'] = plgVmPaymentKlarnaCheckout::convertPrice($cart->pricesUnformatted['salesPriceShipment'] * 100, $rate);
+			$shipmentInPaymentCurrency = vmPSPlugin::getAmountInCurrency($cart->pricesUnformatted['salesPriceShipment'],$this->method->payment_currency);
+			$items[$i]['unit_price'] = round( $shipmentInPaymentCurrency['value'] *100, 0);
 			$items[$i]['tax_rate'] = $this->getTaxShipment($cart->pricesUnformatted['shipment_calc_id']);
 			$this->writelog($cart->pricesUnformatted['salesPriceShipment'], 'getCartItems Shipment', 'debug');
 			$this->writelog($items[$i], 'getCartItems', 'debug');
 		}
+		$currency = CurrencyDisplay::getInstance($cart->paymentCurrency);
+
 		return $items;
 
 	}
 
 
-	static function getDiscountRate ($unitPrice, $salesPrice) {
-		$discountRate = ($unitPrice - $salesPrice) * 100 / $unitPrice;
-		$discountRate = round($discountRate * 100);
-		return $discountRate;
-	}
 
-	static function getPriceCents ($price) {
-
-		$price = (float)$price * 100;
-		$price = round($price);
-		return $price;
-
-	}
-
-	static function getUnitPriceCents ($pricesUnformatted) {
-
-		if ($pricesUnformatted['basePriceWithTax'] == 0) {
-			$price = $pricesUnformatted['basePrice'];
-		} else {
-			$price = $pricesUnformatted['basePriceWithTax'];
-		}
-		$price = (float)$price * 100;
-		$price = round($price);
-		return $price;
-
-	}
-
-	static function convertPrice ($price, $rate) {
-
-		$price = $price * $rate;
-		$price = round($price);
-
-		return $price;
-
-	}
 
 	function getTaxShipment ($shipment_calc_id) {
 		// TO DO add shipmentTaxRate in the cart
@@ -342,6 +329,9 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 					// Reset cart
 					$update['cart']['items'] = array();
 					$update['cart']['items'] = $this->getCartItems($cart );
+					$update['shipping_address']['email'] = $cart->BT['email'];
+					$update['shipping_address']['postal_code'] = $cart->BT['zip'];
+
 					$klarnaOrder->update($update);
 					$this->writelog($update, 'plgVmOnCheckoutAdvertise update', 'debug');
 
@@ -365,6 +355,10 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 				$create['merchant']['confirmation_uri'] = substr(JURI::root(false, ''), 0, -1) . JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&t&pm=' . $virtuemart_paymentmethod_id . '&cartId=' . $cartIdInTable . '&klarna_order={checkout.order.uri}', false);
 				// You can not receive push notification on non publicly available uri
 				$create['merchant']['push_uri'] = substr(JURI::root(false, ''), 0, -1) . JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&pm=' . $virtuemart_paymentmethod_id . '&cartId=' . $cartIdInTable . '&klarna_order={checkout.order.uri}', false);
+				$create['shipping_address']['email'] = $cart->BT['email'];
+				$create['shipping_address']['postal_code'] = $cart->BT['zip'];
+
+
 				$create['cart']['items'] = $this->getCartItems($cart, $method);
 				try {
 					$klarnaOrder = new Klarna_Checkout_Order($connector);

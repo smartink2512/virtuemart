@@ -15,8 +15,6 @@
  * http://virtuemart.net
  */
 
-
-
 ?>
 
 <input type="radio" name="virtuemart_paymentmethod_id"

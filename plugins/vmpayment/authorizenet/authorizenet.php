@@ -595,8 +595,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		}
 
 		$payment_currency_id = shopFunctions::getCurrencyIDByName(self::AUTHORIZE_PAYMENT_CURRENCY);
-		$paymentCurrency = CurrencyDisplay::getInstance($payment_currency_id);
-		$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo(self::AUTHORIZE_PAYMENT_CURRENCY, $order['details']['BT']->order_total, FALSE), 2);
+		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$payment_currency_id);
 		$cd = CurrencyDisplay::getInstance($cart->pricesCurrency);
 
 		// Set up data
@@ -605,7 +604,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		$formdata = array_merge($this->_setResponseConfiguration(), $formdata);
 		$formdata = array_merge($this->_setBillingInformation($usrBT), $formdata);
 		$formdata = array_merge($this->_setShippingInformation($usrST), $formdata);
-		$formdata = array_merge($this->_setTransactionData($order['details']['BT'], $method, $totalInPaymentCurrency), $formdata);
+		$formdata = array_merge($this->_setTransactionData($order['details']['BT'], $method, $totalInPaymentCurrency['value']), $formdata);
 		$formdata = array_merge($this->_setMerchantData($method), $formdata);
 		// prepare the array to post
 		$poststring = '';
@@ -622,7 +621,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		$dbValues['payment_name'] = parent::renderPluginName($method);
 		$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
 		$dbValues['cost_percent_total'] = $method->cost_percent_total;
-		$dbValues['payment_order_total'] = $totalInPaymentCurrency;
+		$dbValues['payment_order_total'] = $totalInPaymentCurrency['value'];
 		$dbValues['payment_currency'] = $payment_currency_id;
 
 		$this->storePSPluginInternalData($dbValues);

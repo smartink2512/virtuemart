@@ -244,11 +244,10 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		$db->setQuery ($q);
 		$currency_code_3 = $db->loadResult ();
 
-		$paymentCurrency = CurrencyDisplay::getInstance ($method->payment_currency);
-		$totalInPaymentCurrency = round ($paymentCurrency->convertCurrencyTo ($method->payment_currency,
-			$order['details']['BT']->order_total,
-			FALSE), 2);
-		if ($totalInPaymentCurrency <= 0) {
+		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$method->payment_currency);
+		$cartCurrency = CurrencyDisplay::getInstance($cart->pricesCurrency);
+
+		if ($totalInPaymentCurrency['value'] <= 0) {
 			vmInfo (JText::_ ('VMPAYMENT_MONEYBOOKERS_PAYMENT_AMOUNT_INCORRECT'));
 			return FALSE;
 		}
@@ -299,7 +298,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		                        "country"                  => ShopFunctions::getCountryByID ($address->virtuemart_country_id, 'country_3_code'),
 
 			// payment details section
-		                        'amount'                   => $totalInPaymentCurrency,
+		                        'amount'                   => $totalInPaymentCurrency['value'],
 		                        'currency'                 => $currency_code_3,
 		                        'detail1_description'
 		                                                   => JText::_ ('VMPAYMENT_MONEYBOOKERS_ORDER_NUMBER') . ': ', //ihh hardcoded colon
@@ -313,7 +312,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
 		$dbValues['cost_percent_total'] = $method->cost_percent_total;
 		$dbValues['payment_currency'] = $method->payment_currency;
-		$dbValues['payment_order_total'] = $totalInPaymentCurrency;
+		$dbValues['payment_order_total'] = $totalInPaymentCurrency['value'];
 		$dbValues['tax_id'] = $method->tax_id;
 		$this->storePSPluginInternalData ($dbValues);
 

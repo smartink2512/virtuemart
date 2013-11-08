@@ -158,8 +158,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$email_currency = $this->getEmailCurrency($method);
 		$currency_code_3 = shopFunctions::getCurrencyByID($method->payment_currency, 'currency_code_3');
 
-		$paymentCurrency = CurrencyDisplay::getInstance($method->payment_currency);
-		$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($method->payment_currency, $order['details']['BT']->order_total, FALSE), 2);
+		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$method->payment_currency);
 		$cd = CurrencyDisplay::getInstance($cart->pricesCurrency);
 		if ($totalInPaymentCurrency <= 0) {
 			vmInfo(JText::_('VMPAYMENT_PAYPAL_PAYMENT_AMOUNT_INCORRECT'));
@@ -186,7 +185,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'custom' => $return_context,
 			'item_name' => JText::_('VMPAYMENT_PAYPAL_ORDER_NUMBER') . ': ' . $order['details']['BT']->order_number,
 			//'quantity'          => $quantity,
-			"amount" => $totalInPaymentCurrency,
+			"amount" => $totalInPaymentCurrency['value'],
 			"currency_code" => $currency_code_3,
 			/*
 					 * 1 – L'adresse spécifiée dans les variables pré-remplies remplace l'adresse de livraison enregistrée auprès de PayPal.
@@ -231,7 +230,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$dbValues['cost_percent_total'] = $method->cost_percent_total;
 		$dbValues['payment_currency'] = $method->payment_currency;
 		$dbValues['email_currency'] = $email_currency;
-		$dbValues['payment_order_total'] = $totalInPaymentCurrency;
+		$dbValues['payment_order_total'] = $totalInPaymentCurrency['value'];
 		$dbValues['tax_id'] = $method->tax_id;
 		$this->storePSPluginInternalData($dbValues);
 
