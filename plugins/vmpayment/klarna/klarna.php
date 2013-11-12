@@ -613,7 +613,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 				$session->clear ('Klarna', 'vm');
 				//We delete the old stuff
 
-				//$cart->emptyCart ();
+				$cart->emptyCart ();
 				JRequest::setVar ('html', $html);
 				return TRUE;
 			} else {
