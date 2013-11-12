@@ -1,8 +1,9 @@
 <?php
 /**
+ *  * @version $Id$
  * Configuration helper class
  *
- * This class provides some functions that are used throughout the VirtueMart shop to access confgiuration values.
+ * This class provides some functions that are used throughout the VirtueMart shop to access configuration values.
  *
  * @package	VirtueMart
  * @subpackage Helpers

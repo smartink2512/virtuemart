@@ -154,7 +154,6 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		if ( $showallform) {
 			$js = '
 	jQuery(document).ready(function( $ ) {
-
 		      $("#checkoutForm").show();
 		      $(".billto-shipto").show();
 		      $("#com-form-login").show();
@@ -185,27 +184,35 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$items[$i]['reference'] = !empty($product->sku) ? $product->sku : $product->virtuemart_product_id;
 			$items[$i]['name'] = $product->product_name;
 			$items[$i]['quantity'] = (int)$product->quantity;
-			$price = $basePriceWithTax = !empty($product->prices['basePriceWithTax']) ? $product->prices['basePriceWithTax'] : $product->prices['basePriceVariant'];
+			$price  = !empty($product->prices['basePriceWithTax']) ? $product->prices['basePriceWithTax'] : $product->prices['basePriceVariant'];
 
 			$itemInPaymentCurrency = vmPSPlugin::getAmountInCurrency($price,$this->method->payment_currency);
 			$items[$i]['unit_price'] = round($itemInPaymentCurrency['value'] * 100, 0) ;
 			//$items[$i]['discount_rate'] = $discountRate;
 			// Bug indoc: discount is not supported
 			//$items[$i]['discount'] = abs($cart->pricesUnformatted[$pkey]['discountAmount']*100);
-			$items[$i]['tax_rate'] = round($this->getVatTaxProduct($cart->pricesUnformatted[$pkey]['VatTax']) * 100);
+			$tax_rate = round($this->getVatTaxProduct($cart->pricesUnformatted[$pkey]['VatTax']) );
+			$items[$i]['tax_rate'] = $tax_rate * 100;
 			//$this->writelog($unitPriceCentsInPaymentCurrency, 'getCartItems', 'debug');
 			//$this->writelog($cart->pricesUnformatted[$pkey], 'getCartItems Products', 'debug');
 			$this->writelog($items[$i], 'getCartItems', 'debug');
 			$i++;
 			// ADD A DISCOUNT AS A NEGATIVE VALUE FOR THAT PRODUCT
-			if ($cart->pricesUnformatted[$pkey]['discountAmount']) {
-				$items[$i]['reference'] = $items[$i-1]['reference'];;
+			if ($cart->pricesUnformatted[$pkey]['discountAmount'] != 0.0) {
+				$items[$i]['reference'] = $items[$i-1]['reference'];
 				$items[$i]['name'] = $items[$i-1]['name']. ' ('.JText::_('VMPAYMENT_KLARNACHECKOUT_PRODUCTDISCOUNT'). ')';
 				$items[$i]['quantity'] =(int)$product->quantity;
-				$discountInPaymentCurrency = vmPSPlugin::getAmountInCurrency($cart->pricesUnformatted[$pkey]['discountAmount'],$this->method->payment_currency);
+				$discount_tax_percent=0.0;
+				$discountInPaymentCurrency = vmPSPlugin::getAmountInCurrency(abs($cart->pricesUnformatted[$pkey]['discountAmount']),$this->method->payment_currency);
+				$discountAmount=- abs( round($discountInPaymentCurrency['value'] * 100 , 0));
+				if ($cart->pricesUnformatted[$pkey]['discountAmount'] > 0.0) {
+					$items[$i]['tax_rate'] =$items[$i-1]['tax_rate'];
+				} else {
+					$items[$i]['tax_rate'] =0.0;
+					$tax_rate =0.0;
+				}
+				$items[$i]['unit_price'] = round($discountAmount  * (1+ ($tax_rate*0.01)) , 0);
 
-				$items[$i]['unit_price'] = - abs( round($discountInPaymentCurrency['value'] * 100 , 0)) ;
-				$items[$i]['tax_rate'] =$items[$i-1]['tax_rate'];
 				$this->writelog($items[$i], 'getCartItems', 'debug');
 				$i++;
 			}
@@ -303,6 +310,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		}
 		$message = '';
 		$snippet = '';
+		$hide_BTST=true;
 		if ($cart->virtuemart_shipmentmethod_id == 0) {
 			$message = JText::sprintf('VMPAYMENT_KLARNACHECKOUT_SELECT_SHIPMENT_FIRST', $this->method->payment_name);
 		} else {
@@ -331,11 +339,13 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 					$update['cart']['items'] = $this->getCartItems($cart );
 					if (!empty( $cart->BT['email'])) {
 						$update['shipping_address']['email'] = $cart->BT['email'];
+						$hide_BTST=false;
+						$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
+						if (isset($address['zip']) and !empty($address['zip'])) {
+							$update['shipping_address']['postal_code'] = $cart->BT['zip'];
+						}
 					}
-					$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-					if (isset($address['zip']) and !empty($address['zip'])) {
-						$update['shipping_address']['postal_code'] = $cart->BT['zip'];
-					}
+
 
 
 					$klarnaOrder->update($update);
@@ -363,10 +373,11 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 				$create['merchant']['push_uri'] = substr(JURI::root(false, ''), 0, -1) . JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&pm=' . $virtuemart_paymentmethod_id . '&cartId=' . $cartIdInTable . '&klarna_order={checkout.order.uri}', false);
 				if (!empty( $cart->BT['email'])) {
 					$create['shipping_address']['email'] = $cart->BT['email'];
-				}
-				$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-				if (isset($address['zip']) and !empty($address['zip'])) {
-					$create['shipping_address']['postal_code'] = $cart->BT['zip'];
+					$hide_BTST=false;
+					$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
+					if (isset($address['zip']) and !empty($address['zip'])) {
+						$create['shipping_address']['postal_code'] = $cart->BT['zip'];
+					}
 				}
 
 
@@ -405,6 +416,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		$payment_advertise[] = $this->renderByLayout('cart_advertisement', array(
 		                                                                        'snippet' => $snippet,
 		                                                                        'message' => $message,
+		                                                                        'hide_BTST' => $hide_BTST,
 		                                                                   ));
 
 

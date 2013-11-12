@@ -444,7 +444,21 @@ class KlarnaHandler {
 
 		// Fill the good list the we send to Klarna
 		foreach ($order['items'] as $item) {
-			$price = $basePriceWithTax = !empty($item->basePriceWithTax) ? $item->basePriceWithTax : $item->product_final_price;
+
+			if ($item->product_basePriceWithTax!=0.0) {
+				if (  $item->product_basePriceWithTax != $item->product_final_price) {
+					$price= $item->product_basePriceWithTax;
+				} else {
+					$price= $item->product_final_price;
+				}
+			} else {
+				if (  $item->product_priceWithoutTax != $item->product_item_price) {
+					$price= $item->product_item_price;
+				} else {
+					$price= $item->product_discountedPriceWithoutTax;
+				}
+			}
+
 			$item_price = self::convertPrice ($price, $order['details']['BT']->order_currency, $cData['currency_code']);
 
 			$item_price = (double)(round ($item_price, 2));
@@ -456,19 +470,34 @@ class KlarnaHandler {
 				}
 			}
 			//$item_discount_percent = (double)(round (abs (($item->product_subtotal_discount / $item->product_quantity) * 100 / $price), 2));
-			$item_discount_percent=0;
+			$item_discount_percent=0.0;
+			$discount_tax_percent=0.0;
 			$klarna->addArticle ($item->product_quantity, utf8_decode ($item->order_item_sku), utf8_decode (strip_tags ($item->order_item_name)), $item_price, (double)$item_tax_percent, $item_discount_percent, KlarnaFlags::INC_VAT);
-
-			if (abs($item->product_subtotal_discount) > 0.0) {
+			$discount_tax_percent=0.0;
+			$includeVat=KlarnaFlags::INC_VAT;
+			if ($item->product_subtotal_discount != 0.0) {
+				if ($item->product_subtotal_discount > 0.0) {
+					$discount_tax_percent=$item_tax_percent;
+					$includeVat=0;
+				}
 				$name=utf8_decode (strip_tags ($item->order_item_name)). ' ('.JText::_('VMPAYMENT_KLARNA_PRODUCTDISCOUNT'). ')';
-				$discount = self::convertPrice ($item->product_subtotal_discount, $order['details']['BT']->order_currency, $cData['currency_code']);
+				$discount = self::convertPrice (abs($item->product_subtotal_discount), $order['details']['BT']->order_currency, $cData['currency_code']);
 				$discount = (double)(round (abs($discount), 2)) * -1 ;
-				$klarna->addArticle (1, utf8_decode ($item->order_item_sku), $name, $discount, (double)$item_tax_percent, $item_discount_percent, KlarnaFlags::INC_VAT);
+				$klarna->addArticle (1, utf8_decode ($item->order_item_sku), $name, $discount, (double)$discount_tax_percent, $item_discount_percent, $includeVat);
+			}
+		}
+// this is not correct yet
+/*
+		foreach($order['calc_rules'] as $rule){
+			if ($rule->calc_kind == 'DBTaxRulesBill' or $rule->calc_kind == 'taxRulesBill' or $rule->calc_kind == 'DATaxRulesBill') {
+				$klarna->addArticle (1, "", $rule->calc_rule_name, $rule->calc_amount, 0.0, 0.0, 0);
 
 			}
 
 		}
-		// Add shipping
+		*/
+
+// Add shipping
 		$shipment = self::convertPrice ($order['details']['BT']->order_shipment + $order['details']['BT']->order_shipment_tax, $order['details']['BT']->order_currency, $cData['currency_code']);
  			foreach ($order['calc_rules'] as $calc_rule) {
 				if ($calc_rule->calc_kind== 'shipment') {
@@ -477,6 +506,7 @@ class KlarnaHandler {
 				}
 			}
 		$klarna->addArticle (1, "shippingfee", JText::_ ('VMPAYMENT_KLARNA_SHIPMENT'), ((double)(round (($shipment), 2))), round ($shipment_tax_percent, 2), 0, KlarnaFlags::IS_SHIPMENT + KlarnaFlags::INC_VAT);
+
 
 		// Add invoice fee
 		if ($klarna_pclass == -1) { //Only for invoices!
@@ -500,14 +530,7 @@ class KlarnaHandler {
 			//vmdebug('discount', $coupon_discount);
 			$klarna->addArticle (1, 'discount',utf8_decode(JText::_ ('VMPAYMENT_KLARNA_DISCOUNT')) . ' ' . utf8_decode($order['details']['BT']->coupon_code),  $coupon_discount , 0, 0, KlarnaFlags::INC_VAT);
 		}
-		/*
-$test=  mb_detect_encoding(utf8_decode ($shipTo->address_1),  'ISO-8859-1',true);
-		$test2=  mb_detect_encoding ($shipTo->address_1,  'ISO-8859-1',true);
-		$test3=utf8_decode ($shipTo->address_1);
-		$test5=  mb_detect_encoding ($test3,  'ISO-8859-1',true);
-		$test6 = mb_convert_encoding($shipTo->address_1, 'ISO-8859-1' , 'UTF-8');
-		$test7=  mb_detect_encoding ($test6, 'ISO-8859-1',true);
-		vmDebug('mb_detect_encoding',$shipTo->address_1,$test,$test2,$test5,  $test7);*/
+
 
 		try {
 			$klarna_shipping = new KlarnaAddr(

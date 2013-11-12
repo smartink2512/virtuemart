@@ -23,13 +23,18 @@ $css =".totalInPaymentCurrency {display:none;}\n";
 JFactory::getDocument()->addStyleDeclaration($css);
 $js = '
 	jQuery(document).ready(function( $ ) {
-
 		      $("#checkoutForm").hide();
+	});
+	';
+if ($viewData ['hide_BTST']) {
+	$js .= '
+	jQuery(document).ready(function( $ ) {
 		      $(".billto-shipto").hide();
 		      $("#com-form-login").hide();
 
 	});
 	';
+}
 $document = JFactory::getDocument();
 
 $document->addScriptDeclaration ( $js);
