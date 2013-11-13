@@ -374,6 +374,9 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 						$calculationHelper->setCartPricesMerge(self::$_taxResult);
 					}
+				} else if($rule->prevCheckoutAddInv){
+					VmInfo('VMCALCULATION_AVALARA_INSUF_INFO');
+					$this->blockCheckout();
 				}
 			}
 		}
