@@ -224,6 +224,7 @@ class VirtuemartViewInvoice extends VmView {
 		if (VmConfig::get ('enable_content_plugin', 0)) {
 			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_store_desc');
 			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_terms_of_service');
+			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_legal_info');
 		}
 
 		$this->assignRef('vendor', $vendor);
