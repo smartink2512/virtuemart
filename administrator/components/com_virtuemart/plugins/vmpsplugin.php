@@ -821,7 +821,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		} else {
 			$key_text = JText::_ ($key);
 		}
-		$more_key = $complete_key . '_' . $value;
+		$more_key = strtoupper($complete_key . '_' . $value);
 		if ($lang->hasKey ($more_key)) {
 			$value .= " (" . JText::_ ($more_key) . ")";
 		}
@@ -829,7 +829,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $html;
 	}
 
-	protected function getHtmlRowBE ($key, $value) {
+	 function getHtmlRowBE ($key, $value) {
 
 		return $this->getHtmlRow ($key, $value, "class='key'");
 	}
@@ -889,7 +889,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param      $method
 	 * @param bool $getCurrency
 	 */
-	function getPaymentCurrency (&$method, $getCurrency = FALSE) {
+	static function getPaymentCurrency (&$method, $getCurrency = FALSE) {
 
 		if (!isset($method->payment_currency) or empty($method->payment_currency) or !$method->payment_currency or $getCurrency) {
 			// 	    if (!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
@@ -1139,9 +1139,18 @@ abstract class vmPSPlugin extends vmPlugin {
 		$return = array();
 		$paymentCurrency = CurrencyDisplay::getInstance($currencyId);
 
-		$return['value'] = $paymentCurrency->roundForDisplay($amount,$currencyId,1.0,false);
+		$return['value'] = $paymentCurrency->roundForDisplay($amount,$currencyId,1.0,false,2);
 		$return['display'] = $paymentCurrency->getFormattedCurrency($return['value']) ;
 		return $return;
+	}
+	/**
+	 * @param $amount
+	 * @param $currencyId
+	 * @return array
+	 */
+	static function getAmountValueInCurrency($amount, $currencyId){
+		$return= vmPSPlugin::getAmountInCurrency($amount, $currencyId);
+		return $return['value'];
 	}
 
 	function emptyCart ($session_id = NULL, $order_number = NULL) {
@@ -1320,6 +1329,12 @@ abstract class vmPSPlugin extends vmPlugin {
 			//$modelOrder->remove (array('virtuemart_order_id' => $virtuemart_order_id));
 		}
 	}
+
+	/**
+	 * @param $message
+	 * @param string $title
+	 * @param string $type
+	 */
 	public function writelog($message, $title='', $type = 'message') {
 
 		// todo
@@ -1336,7 +1351,7 @@ abstract class vmPSPlugin extends vmPlugin {
 				break;
 			case 'debug':
 				$error_level 	= JLog::DEBUG;
-				if (!$this->method->debug) {
+				if (isset($this->method) and !$this->method->debug) {
 					//Do not log debug messages if we are not in LOG mode
 					 return;
 				 }
