@@ -221,6 +221,11 @@ class VirtuemartViewInvoice extends VmView {
 		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 		$vendorModel->addImages($vendor);
 		$vendor->vendorFields = $vendorModel->getVendorAddressFields();
+		if (VmConfig::get ('enable_content_plugin', 0)) {
+			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_store_desc');
+			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_terms_of_service');
+		}
+
 		$this->assignRef('vendor', $vendor);
 
 // 		vmdebug('vendor', $vendor);
