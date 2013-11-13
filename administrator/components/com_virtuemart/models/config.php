@@ -354,8 +354,16 @@ class VirtueMartModelConfig extends JModel {
 				$created = JFolder::create($safePath);
 				$safePath = $safePath.DS;
 				if($created){
-
 					vmInfo('COM_VIRTUEMART_SAFE_PATH_DEFAULT_CREATED',$safePath);
+					/* create htaccess file */
+					$fileData = "order deny, allow\ndeny from all\nallow from none";
+					JLoader::import('joomla.filesystem.file');
+					$fileName = $safePath.DS.'.htaccess';
+					$result = JFile::write($fileName, $fileData);
+					if (!$result) {
+						VmWarn('COM_VIRTUEMART_HTACCESS_DEFAULT_NOT_CREATED',$safePath,$fileData);
+					}
+					$config->set('forSale_path',$safePath);
 				} else {
 					VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
 				}
