@@ -77,7 +77,7 @@ class VirtueMartModelMedia extends VmModel {
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
 		$app = JFactory::getApplication();
-		$lang =& JFactory::getLanguage();
+		$lang =  JFactory::getLanguage();
 		$medias = array();
 
 		static $_medias = array();

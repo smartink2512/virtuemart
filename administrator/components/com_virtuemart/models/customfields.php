@@ -1192,7 +1192,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 * the results are sometimes slighty different and makes it hard to work with it, therefore here the function for future proxy use
 	 *
 	 */
-	public function customFieldDisplay ($product, $variantmods, $html, $trigger) {
+	public static function customFieldDisplay ($product, $variantmods, $html, $trigger) {
 
 		//vmdebug('customFieldDisplay $variantmods',$variantmods);
 		$row = 0;
@@ -1266,7 +1266,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 * TODO This is html and view stuff and MUST NOT be in the model, notice by Max
 	 * render custom fields display cart module FE
 	 */
-	public function CustomsFieldCartModDisplay ($priceKey, $product) {
+	public static function CustomsFieldCartModDisplay ($priceKey, $product) {
 
 		if (empty($calculator)) {
 			if (!class_exists ('calculationHelper'))
@@ -1284,7 +1284,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 *  TODO This is html and view stuff and MUST NOT be in the model, notice by Max
 	 * render custom fields display cart FE
 	 */
-	public function CustomsFieldCartDisplay ($priceKey, $product) {
+	public static function CustomsFieldCartDisplay ($priceKey, $product) {
 
 		if (empty($calculator)) {
 			if (!class_exists ('calculationHelper'))
@@ -1325,7 +1325,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 *
 	 * custom fields for cart and cart module
 	 */
-	public function getProductCustomField ($selected) {
+	public static function getProductCustomField ($selected) {
 
 		$db = JFactory::getDBO ();
 		$query = 'SELECT C.`virtuemart_custom_id` , `custom_element` , `custom_parent_id` , `admin_only` , `custom_title` , `show_title` , `custom_tip` ,

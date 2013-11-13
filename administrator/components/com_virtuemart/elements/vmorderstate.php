@@ -31,7 +31,7 @@ class JElementVmOrderState extends JElement {
 	var $_name = 'OrderStates';
 
 	function fetchElement ($name, $value, &$node, $control_name) {
-
+        $class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
 		$db = JFactory::getDBO ();
 
 		$query = 'SELECT `order_status_code` AS value, `order_status_name` AS text
@@ -41,7 +41,7 @@ class JElementVmOrderState extends JElement {
 
 		$db->setQuery ($query);
 		$fields = $db->loadObjectList ();
-		$class = '';
+
 		foreach ($fields as $field) {
 			$field->text= JText::_ ($field->text);
 		}

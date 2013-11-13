@@ -666,7 +666,7 @@ class shopFunctionsF {
 
 	static function triggerContentPlugin(  $article, $context, $field) {
 	// add content plugin //
-		$dispatcher = & JDispatcher::getInstance ();
+		$dispatcher =   JDispatcher::getInstance ();
 		JPluginHelper::importPlugin ('content');
 		$article->text = $article->$field;
 		jimport ('joomla.html.parameter');

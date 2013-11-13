@@ -1012,7 +1012,9 @@ class VirtueMartModelUser extends VmModel {
 					vmInfo('COM_VIRTUEMART_CHECKOUT_PLEASE_ENTER_ADDRESS');
 					return false;
 				} else {
-					//vmdebug('validateUserData ',$field,$field->name,$data[$field->name],$data);
+                    VmConfig::loadJLang('com_virtuemart_shoppers',true);
+
+                    //vmdebug('validateUserData ',$field,$field->name,$data[$field->name],$data);
 					//vmTrace('validateUserData ');
 					vmInfo(JText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',JText::_($field->title)) );
 					$i++;

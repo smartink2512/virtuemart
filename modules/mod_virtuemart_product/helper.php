@@ -46,7 +46,7 @@ if (!class_exists ('calculationHelper')) {
 
 class mod_virtuemart_product {
 
-	function addtocart ($product) {
+	static function addtocart ($product) {
 
 		if (!VmConfig::get ('use_as_catalog', 0)) {
 			$stockhandle = VmConfig::get ('stockhandle', 'none');
