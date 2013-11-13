@@ -294,7 +294,7 @@ class CurrencyDisplay {
 	 */
 	public function priceDisplay($price, $currencyId=0,$quantity = 1.0,$inToShopCurrency = false,$nb= -1){
 
-		$price = $this->roundForDisplay($price,$currencyId, $quantity ,$nb);
+		$price = $this->roundForDisplay($price,$currencyId, $quantity ,$inToShopCurrency, $nb);
 		return $this->getFormattedCurrency($price,$nb);
 	}
 

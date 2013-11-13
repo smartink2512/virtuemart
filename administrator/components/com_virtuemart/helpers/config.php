@@ -369,6 +369,126 @@ function logInfo ($text, $type = 'message') {
 
 
 /**
+ * Text  handling class.
+ *
+ * @package     Joomla.Platform
+ * @subpackage  Language
+ * @since       11.1
+ */
+class VmText
+{
+	/**
+	 * javascript strings
+	 *
+	 * @var    array
+	 * @since  11.1
+	 */
+	protected static $strings = array();
+
+	/**
+	 * Translates a string into the current language.
+	 *
+	 * Examples:
+	 * <script>alert(Joomla.JText._('<?php echo JText::_("JDEFAULT", array("script"=>true));?>'));</script>
+	 * will generate an alert message containing 'Default'
+	 * <?php echo JText::_("JDEFAULT");?> it will generate a 'Default' string
+	 *
+	 * @param   string   $string                The string to translate.
+	 * @param   mixed    $jsSafe                Boolean: Make the result javascript safe.
+	 * @param   boolean  $interpretBackSlashes  To interpret backslashes (\\=\, \n=carriage return, \t=tabulation)
+	 * @param   boolean  $script                To indicate that the string will be push in the javascript language store
+	 *
+	 * @return  string  The translated string or the key is $script is true
+	 *
+	 * @since   11.1
+	 */
+	public static function _($string, $jsSafe = false, $interpretBackSlashes = true, $script = false)
+	{
+		$lang = JFactory::getLanguage();
+		if (is_array($jsSafe))
+		{
+			if (array_key_exists('interpretBackSlashes', $jsSafe))
+			{
+				$interpretBackSlashes = (boolean) $jsSafe['interpretBackSlashes'];
+			}
+			if (array_key_exists('script', $jsSafe))
+			{
+				$script = (boolean) $jsSafe['script'];
+			}
+			if (array_key_exists('jsSafe', $jsSafe))
+			{
+				$jsSafe = (boolean) $jsSafe['jsSafe'];
+			}
+			else
+			{
+				$jsSafe = false;
+			}
+		}
+		if ($script)
+		{
+			self::$strings[$string] = $lang->_($string, $jsSafe, $interpretBackSlashes);
+			return $string;
+		}
+		else
+		{
+			return $lang->_($string, $jsSafe, $interpretBackSlashes);
+		}
+	}
+
+	/**
+	 * Passes a string thru a sprintf.
+	 *
+	 * Note that this method can take a mixed number of arguments as for the sprintf function.
+	 *
+	 * The last argument can take an array of options:
+	 *
+	 * array('jsSafe'=>boolean, 'interpretBackSlashes'=>boolean, 'script'=>boolean)
+	 *
+	 * where:
+	 *
+	 * jsSafe is a boolean to generate a javascript safe strings.
+	 * interpretBackSlashes is a boolean to interpret backslashes \\->\, \n->new line, \t->tabulation.
+	 * script is a boolean to indicate that the string will be push in the javascript language store.
+	 *
+	 * @param   string  $string  The format string.
+	 *
+	 * @return  string  The translated strings or the key if 'script' is true in the array of options.
+	 *
+	 * @since   11.1
+	 */
+	public static function sprintf($string)
+	{
+		$lang = JFactory::getLanguage();
+		$args = func_get_args();
+		$count = count($args);
+		if ($count > 0)
+		{
+			if (is_array($args[$count - 1]))
+			{
+				$args[0] = $lang->_(
+					$string, array_key_exists('jsSafe', $args[$count - 1]) ? $args[$count - 1]['jsSafe'] : false,
+					array_key_exists('interpretBackSlashes', $args[$count - 1]) ? $args[$count - 1]['interpretBackSlashes'] : true
+				);
+
+				if (array_key_exists('script', $args[$count - 1]) && $args[$count - 1]['script'])
+				{
+					self::$strings[$string] = call_user_func_array('sprintf', $args);
+					return $string;
+				}
+			}
+			else
+			{
+				$args[0] = $lang->_($string);
+			}
+			$args[0] = preg_replace('/\[\[%([0-9]+):[^\]]*\]\]/', '%\1$s', $args[0]);
+			return call_user_func_array('sprintf', $args);
+		}
+		return '';
+	}
+
+}
+
+/**
 * The time how long the config in the session is valid.
 * While configuring the store, you should lower the time to 10 seconds.
 * Later in a big store it maybe useful to rise this time up to 1 hr.
