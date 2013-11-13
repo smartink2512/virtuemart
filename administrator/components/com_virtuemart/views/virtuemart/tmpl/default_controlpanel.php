@@ -76,7 +76,9 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 			}
 			?>
 			<li class="newsfeed-item" style="font-size: 100%;font-style: italic;">
-				<a href="http://virtuemart.net/news/list-all-news" target="_blank" title=" <?php echo JText::_('COM_VIRTUEMART_ALL_NEWS'); ?>"><?php echo JText::_('COM_VIRTUEMART_ALL_NEWS'); ?></a>
+				<button>
+					<a href="http://virtuemart.net/news/list-all-news" target="_blank" title=" <?php echo JText::_('COM_VIRTUEMART_ALL_NEWS'); ?>"><?php echo JText::_('COM_VIRTUEMART_ALL_NEWS'); ?></a>
+				</button>
 			</li>
 
 
