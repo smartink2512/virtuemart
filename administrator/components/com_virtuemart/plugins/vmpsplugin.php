@@ -631,7 +631,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		if(count($cart->products)>0 and empty($weight)){
 			foreach ($cart->products as $product) {
 				vmdebug('getOrderWeight',$product->product_weight);
-				$weight += (ShopFunctions::convertWeigthUnit ($product->product_weight, $product->product_weight_uom, $to_weight_unit) * $product->quantity);
+				$weight += (ShopFunctions::convertWeightUnit ($product->product_weight, $product->product_weight_uom, $to_weight_unit) * $product->quantity);
 			}
 		}
 		return $weight;

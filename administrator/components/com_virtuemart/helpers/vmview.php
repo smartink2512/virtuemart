@@ -415,22 +415,26 @@ class VmView extends JView{
 			'<link href="administrator/templates/bluestork/css/ie8.css" rel="stylesheet" type="text/css" />'."\n".
 			'<![endif]-->'."\n"
 			);
-		//load the JToolBar library and create a toolbar
-		jimport('joomla.html.toolbar');
-		JToolBarHelper::divider();
-		$view = JRequest::getCmd('view', JRequest::getCmd('controller','virtuemart'));
-		if ($vmView->canDo->get('core.admin') || $vmView->canDo->get('vm.'.$view.'.edit')) {
-			JToolBarHelper::save();
-			JToolBarHelper::apply();
-		}
-		JToolBarHelper::cancel();
-		$bar = new JToolBar( 'toolbar' );
-		//and make whatever calls you require
-		$bar->appendButton( 'Standard', 'save', 'Save', 'save', false );
-		$bar->appendButton( 'Separator' );
-		$bar->appendButton( 'Standard', 'cancel', 'Cancel', 'cancel', false );
-		//generate the html and return
-		return $bar->render();
+
+		$html = '<div class="toolbar-list" id="toolbar">';
+		$html .= '<ul>';
+		$html .= '<li id="toolbar-save" class="button">';
+		$html .= '<a class="toolbar" onclick="Joomla.submitbutton(\'save\')" >
+<span class="icon-32-save"> </span>
+		'.jText::_('COM_VIRTUEMART_SAVE').'
+</a>';
+		$html .= '</li>';
+		$html .= '<li id="toolbar-cancel" class="button">';
+		$html .= '<a class="toolbar" onclick="Joomla.submitbutton(\'cancel\')" >
+<span class="icon-32-cancel"> </span>
+		'.jText::_('COM_VIRTUEMART_CANCEL').'
+</a>';
+		$html .= '</li>';
+		$html .= '</ul>';
+		$html .= '<div class="clr"></div>';
+		$html .= '</div>';
+		return $html;
+
 	}
 
 	/**
