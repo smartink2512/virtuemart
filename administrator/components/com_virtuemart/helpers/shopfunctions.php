@@ -515,7 +515,7 @@ class ShopFunctions {
 	 * @param $to
 	 */
 	static function convertWeigthUnit ($value, $from, $to) {
-		self::convertWeightUnit ($value, $from, $to);
+		return self::convertWeightUnit ($value, $from, $to);
 	}
 	/**
 	 * Convert Weight Unit
