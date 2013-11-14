@@ -1,3 +1,5 @@
+				$error_level 	= JLog::DEBUG;
+				if (isset($this->method) and !$this->method->debug) {
 <?php
 
 defined ('_JEXEC') or die('Restricted access');
@@ -837,7 +839,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		} else {
 			$key_text = JText::_ ($key);
 		}
-		$more_key = $complete_key . '_' . $value;
+		$more_key = strtoupper($complete_key . '_' . $value);
 		if ($lang->hasKey ($more_key)) {
 			$value .= " (" . JText::_ ($more_key) . ")";
 		}
@@ -845,7 +847,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $html;
 	}
 
-	protected function getHtmlRowBE ($key, $value) {
+	 function getHtmlRowBE ($key, $value) {
 
 		return $this->getHtmlRow ($key, $value, "class='key'");
 	}
@@ -901,7 +903,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$method->max_amount = (float)str_replace(',','.',$method->max_amount);
 	}
 
-	function getPaymentCurrency (&$method, $getCurrency = FALSE) {
+	static function getPaymentCurrency (&$method, $getCurrency = FALSE) {
 
 		if (!isset($method->payment_currency) or empty($method->payment_currency) or !$method->payment_currency or $getCurrency) {
 			// 	    if (!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
@@ -994,7 +996,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param $tax_id :  tax id
 	 */
 
-function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
+    function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
 
 
 		if (!class_exists ('calculationHelper')) {
@@ -1147,6 +1149,28 @@ function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
 			$mainframe->enqueueMessage ($html);
 			$mainframe->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=cart',FALSE), JText::_ ('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 		}
+	}
+	/**
+	 * @param $amount
+	 * @param $currencyId
+	 * @return array
+	 */
+	static function getAmountInCurrency($amount, $currencyId){
+		$return = array();
+		$paymentCurrency = CurrencyDisplay::getInstance($currencyId);
+
+		$return['value'] = $paymentCurrency->roundForDisplay($amount,$currencyId,1.0,false,2);
+		$return['display'] = $paymentCurrency->getFormattedCurrency($return['value']) ;
+		return $return;
+	}
+	/**
+	 * @param $amount
+	 * @param $currencyId
+	 * @return array
+	 */
+	static function getAmountValueInCurrency($amount, $currencyId){
+		$return= vmPSPlugin::getAmountInCurrency($amount, $currencyId);
+		return $return['value'];
 	}
 
 	function emptyCart ($session_id = NULL, $order_number = NULL) {

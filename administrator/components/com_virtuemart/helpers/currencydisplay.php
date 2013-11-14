@@ -305,12 +305,15 @@ class CurrencyDisplay {
 			$price = round((float)$price * 2,1) * 0.5 * (float)$quantity;
 		} else {*/
 			$price = (float)$price * (float)$quantity;
-			$price = round($price,$nb);
+			
 		//}
 		$price = $this->convertCurrencyTo($currencyId,$price,$inToShopCurrency);
 
+		$price = (float)$price * (float)$quantity;
 		if($this->_numeric_code===756 and VmConfig::get('rappenrundung',FALSE)=="1"){
 			$price = round((float)$price * 2,1) * 0.5;
+		} else {
+			$price = round($price,$nb);
 		}//*/
 		return $this->getFormattedCurrency($price,$nb);
 	}
