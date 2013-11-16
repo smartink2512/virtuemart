@@ -124,6 +124,7 @@ class CurrencyDisplay {
 				self::$_instance->setCurrencyDisplayToStyleStr($style);
 			} else {
 				$uri = JFactory::getURI();
+				VmConfig::loadJLang('com_virtuemart');
 
 				if(empty(self::$_instance->_currency_id)){
 					$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=user&task=editshop';
