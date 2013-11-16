@@ -1,5 +1,3 @@
-				$error_level 	= JLog::DEBUG;
-				if (isset($this->method) and !$this->method->debug) {
 <?php
 
 defined ('_JEXEC') or die('Restricted access');
