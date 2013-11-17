@@ -97,21 +97,24 @@ class VirtuemartViewInvoice extends VmView {
 		$orderDetails = $this->orderDetails;
 
 		if($orderDetails==0){
-
 			$orderDetails = $orderModel ->getMyOrderDetails();
-
 			if(!$orderDetails or empty($orderDetails['details'])){
 				echo JText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
 				return;
 			}
-
-
 		}
 
 		if(empty($orderDetails['details'])){
 			echo JText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
 			return 0;
 		}
+		if(!empty($orderDetails['details']['BT']->order_language)) {
+			$jlang = JFactory::getLanguage();
+			$jlang->load( 'com_virtuemart', JPATH_SITE, $orderDetails['details']['BT']->order_language, true );
+			$jlang->load( 'com_virtuemart_shoppers', JPATH_SITE, $orderDetails['details']['BT']->order_language, true );
+			$jlang->load( 'com_virtuemart_orders', JPATH_SITE, $orderDetails['details']['BT']->order_language, true );
+		}
+
 		$this->assignRef('orderDetails', $orderDetails);
         // if it is order print, invoice number should not be created, either it is there, either it has not been created
 		if(empty($this->invoiceNumber) and !$order_print){

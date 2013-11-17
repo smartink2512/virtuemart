@@ -1207,7 +1207,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$productCustom = self::getProductCustomField ($selected);
 				//vmdebug('customFieldDisplay',$selected,$productCustom);
 				if (!empty($productCustom)) {
-					$html .= ' <span class="product-field-type-' . $productCustom->field_type . '">';
+					$html .= '<span class="product-field-type-' . $productCustom->field_type . '">';
 					if ($productCustom->field_type == "E") {
 
 						$product = self::addParam ($product);

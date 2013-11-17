@@ -309,13 +309,18 @@ class shopFunctionsF {
 		}
 		$jlang->load( 'com_virtuemart', JPATH_SITE, $jlang->getDefault(), TRUE );
 		$jlang->load( 'com_virtuemart', JPATH_SITE, NULL, TRUE );
+
 		if(!empty($view->orderDetails['details']['BT']->order_language)) {
 			$jlang->load( 'com_virtuemart', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
+			$jlang->load( 'com_virtuemart_shoppers', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
+			$jlang->load( 'com_virtuemart_orders', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
+		} else {
+			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+			VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 		}
 
 		ob_start();
-		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
-		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+
 		$view->renderMailLayout( $noVendorMail, $recipient );
 		$body = ob_get_contents();
 		ob_end_clean();
@@ -481,9 +486,9 @@ class shopFunctionsF {
 					JError::raiseWarning( 412, 'The chosen template couldnt find on the filesystem: '.$template );
 				}
 			}
-			return $template;
 		}
 
+		return $template;
 	}
 
 	/**

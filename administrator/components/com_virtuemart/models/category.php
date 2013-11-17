@@ -39,15 +39,14 @@ class VirtueMartModelCategory extends VmModel {
 		parent::__construct();
 		$this->setMainTable('categories');
 
-		$this->addvalidOrderingFieldName(array('category_name','category_description','c.ordering','cx.category_shared','c.published'));
+		$this->addvalidOrderingFieldName(array('category_name','category_description','cx.ordering','cx.category_shared','c.published'));
 
 		$toCheck = VmConfig::get('browse_cat_orderby_field','category_name');
 		if(!in_array($toCheck, $this->_validOrderingFieldName)){
 			$toCheck = 'category_name';
 		}
 		$this->_selectedOrdering = $toCheck;
-		$this->_selectedOrderingDir = VmConfig::get('cat_brws_orderby_dir', 'ASC');;
-
+		$this->_selectedOrderingDir = VmConfig::get('cat_brws_orderby_dir', 'ASC');
 		$this->setToggleName('shared');
 
 	}
@@ -113,26 +112,44 @@ class VirtueMartModelCategory extends VmModel {
 	 * @param int $virtuemart_category_id Category id to check for child categories
 	 * @return object List of objects containing the child categories
 	 */
-	static public function getChildCategoryList($vendorId, $virtuemart_category_id,$selectedOrdering = 'category_name', $orderDir='ASC') {
+	static public function getChildCategoryList($vendorId, $virtuemart_category_id,$selectedOrdering = null, $orderDir = null) {
 
 		$key = (int)$vendorId.'_'.(int)$virtuemart_category_id ;
+
+		if($selectedOrdering===null){
+			$selectedOrdering = VmConfig::get('browse_cat_orderby_field','category_name');
+		}
+
+		$validOrderingFieldName= array('category_name','category_description','cx.ordering','c.published');
+		if(!in_array($selectedOrdering, $validOrderingFieldName)){
+			$selectedOrdering = 'category_name';
+		}
+
+		if($orderDir===null){
+			$orderDir = VmConfig::get('cat_brws_orderby_dir', 'ASC');
+		}
+		$validOrderingDir = array('ASC','DESC');
+		if(!in_array(strtoupper($orderDir), $validOrderingDir)){
+			$orderDir = 'ASC';
+		}
+
 
 		static $_childCateogryList = array ();
       	if (! array_key_exists ($key,$_childCateogryList)){
 
 			$query = 'SELECT L.* FROM `#__virtuemart_categories_'.VMLANG.'` as L
 						JOIN `#__virtuemart_categories` as C using (`virtuemart_category_id`)';
-			$query .= ' LEFT JOIN `#__virtuemart_category_categories` as CC on C.`virtuemart_category_id` = CC.`category_child_id`';
-			$query .= 'WHERE CC.`category_parent_id` = ' . (int)$virtuemart_category_id . ' ';
+			$query .= ' LEFT JOIN `#__virtuemart_category_categories` as cx on C.`virtuemart_category_id` = cx.`category_child_id` ';
+			$query .= 'WHERE cx.`category_parent_id` = ' . (int)$virtuemart_category_id . ' ';
 			//$query .= 'AND C.`virtuemart_category_id` = CC.`category_child_id` ';
 			$query .= 'AND C.`virtuemart_vendor_id` = ' . (int)$vendorId . ' ';
 			$query .= 'AND C.`published` = 1 ';
-			$query .= ' ORDER BY L.`'.$selectedOrdering.'` '.$orderDir;
+			$query .= ' ORDER BY '.$selectedOrdering.' '.$orderDir;
 
 			$db = JFactory::getDBO();
 			$db->setQuery( $query);
 			$childList = $db->loadObjectList();
-// 			$childList = $this->_getList( $query );
+
 
 			if(!empty($childList)){
 				if(!class_exists('TableCategory_medias'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'category_medias.php');
@@ -213,7 +230,7 @@ class VirtueMartModelCategory extends VmModel {
 
 		$vendorId = 1;
 
-		$select = ' c.`virtuemart_category_id`, l.`category_description`, l.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
+		$select = ' c.`virtuemart_category_id`, l.`category_description`, l.`category_name`, cx.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
 
 		$joinedTables = ' FROM `#__virtuemart_categories_'.VMLANG.'` l
 				  JOIN `#__virtuemart_categories` AS c using (`virtuemart_category_id`)

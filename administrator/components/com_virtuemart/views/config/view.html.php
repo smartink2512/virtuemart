@@ -88,8 +88,11 @@ class VirtuemartViewConfig extends VmView {
 		$activeLanguages = $model->getActiveLanguages( VmConfig::get('active_languages') );
 		$this->assignRef('activeLanguages', $activeLanguages);
 
-		$orderByFields = $model->getProductFilterFields('browse_orderby_fields');
-		$this->assignRef('orderByFields', $orderByFields);
+		$orderByFieldsProduct = $model->getProductFilterFields('browse_orderby_fields');
+		$this->assignRef('orderByFieldsProduct', $orderByFieldsProduct);
+
+		$orderByFieldsCat = $model->getProductFilterFields('browse_cat_orderby_field');
+		$this->assignRef('orderByFieldsCat', $orderByFieldsCat);
 
 		$searchFields = $model->getProductFilterFields( 'browse_search_fields');
 		$this->assignRef('searchFields', $searchFields);

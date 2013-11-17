@@ -90,6 +90,7 @@ class TableOrders extends VmTable {
 	var $ip_address = 0;
 	/** @var char Order language */
 	var $order_language = NULL;
+	var $delivery_date = NULL;
 
 
 	/**

@@ -239,7 +239,18 @@ class VirtueMartControllerInvoice extends JController
 
 		$view->addTemplatePath( JPATH_VM_SITE.DS.'views'.DS.$viewName.DS.'tmpl' );
 		$vmtemplate = VmConfig::get('vmtemplate',0);
-		$templateName = shopFunctionsF::setTemplate($vmtemplate);
+		if(!empty($vmtemplate) and $vmtemplate=='default'){
+			if(JVM_VERSION == 2){
+				$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
+			} else {
+				$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id`="0" AND `menuid`="0"';
+			}
+			$db = JFactory::getDbo();
+			$db->setQuery($q);
+			$templateName = $db->loadResult();
+		} else {
+			$templateName = shopFunctionsF::setTemplate($vmtemplate);
+		}
 
 		if(!empty($templateName)){
 			$TemplateOverrideFolder = JPATH_SITE.DS."templates".DS.$templateName.DS."html".DS."com_virtuemart".DS."invoice";

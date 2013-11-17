@@ -328,6 +328,10 @@ $document->addScriptDeclaration ( "
 							?>
 						</td>
 					</tr>
+					<tr>
+						<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_DELIVERY_DATE') ?></strong></td>
+						<td><input type="text" maxlength="190" class="required" value="<?php echo $this->orderbt->delivery_date; ?>" size="30" name="delivery_date" id="delivery_date_field"></td>
+					</tr>
 					</table>
 				</td>
 	</tr>

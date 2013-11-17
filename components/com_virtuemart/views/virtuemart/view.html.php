@@ -160,12 +160,7 @@ class VirtueMartViewVirtueMart extends VmView {
 		}
 
 		$template = VmConfig::get('vmtemplate','default');
-		if (is_dir(JPATH_THEMES.DS.$template)) {
-			$mainframe = JFactory::getApplication();
-			$mainframe->set('setTemplate', $template);
-		}
-
-
+		shopfunctionsF::setTemplate($template);
 
 		parent::display($tpl);
 

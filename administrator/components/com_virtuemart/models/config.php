@@ -249,7 +249,11 @@ class VirtueMartModelConfig extends JModel {
 		if (!is_array($searchChecked)) {
 			$searchChecked = (array)$searchChecked;
 		}
-		$searchFieldsArray = ShopFunctions::getValidProductFilterArray ();
+		if($type!='browse_cat_orderby_field'){
+			$searchFieldsArray = ShopFunctions::getValidProductFilterArray ();
+		} else {
+			$searchFieldsArray = array('category_name','category_description','cx.ordering','c.published');
+		}
 
 		$searchFields= new stdClass();
 		$searchFields->checkbox ='<div class="threecols"><ul>';
@@ -270,7 +274,9 @@ class VirtueMartModelConfig extends JModel {
 
 			$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
 
-			if ($type == 'browse_orderby_fields' ) $searchFields->select[] =  JHTML::_('select.option', $field, $text) ;
+			if ($type == 'browse_orderby_fields' or $type == 'browse_cat_orderby_field'){
+				$searchFields->select[] =  JHTML::_('select.option', $field, $text) ;
+			}
 			$searchFields->checkbox .= '<li><input type="checkbox" id="' .$type.$fieldWithoutPrefix.$key. '" name="'.$type.'[]" value="' .$field. '" ' .$checked. ' /><label for="' .$type.$fieldWithoutPrefix.$key. '">' .$text. '</label></li>';
 		}
 		$searchFields->checkbox .='</ul></div>';

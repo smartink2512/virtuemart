@@ -214,9 +214,7 @@ class VmModel extends JModel {
 					break;
 				}
 			}
-			vmTime('Time to find correct ordering '.$this->_selectedOrdering);
 			if(!$break){
-				$toCheck = $this->_selectedOrdering;
 				$app = JFactory::getApplication();
 				$view = JRequest::getWord('view','virtuemart');
 				$app->setUserState( 'com_virtuemart.'.$view.'.filter_order',$this->_selectedOrdering);
