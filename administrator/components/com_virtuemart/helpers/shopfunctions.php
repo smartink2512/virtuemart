@@ -772,7 +772,7 @@ class ShopFunctions {
 
 		if (empty(self::$categoryTree)) {
 // 			vmTime('Start with categoryListTree');
-			$cache = JFactory::getCache ('_virtuemart');
+			$cache = JFactory::getCache ('com_virtuemart_cats');
 			$cached = $cache->getCaching();
 			$cache->setCaching (1);
 			self::$categoryTree = $cache->call (array('ShopFunctions', 'categoryListTreeLoop'), $selectedCategories, $cid, $level, $disabledFields);
@@ -794,7 +794,7 @@ class ShopFunctions {
 	static public function getCPsRssFeed($rssUrl,$max) {
 
 		$cache_time=86400*3; // 3days
-		$cache = JFactory::getCache ('_virtuemart');
+		$cache = JFactory::getCache ('com_virtuemart_rss');
 		$cached = $cache->getCaching();
 		$cache->setLifeTime($cache_time);
 		$cache->setCaching (1);

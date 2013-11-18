@@ -30,6 +30,7 @@ class VirtueMartModelCategory extends VmModel {
 	private $_category_tree;
 	public $_cleanCache = true ;
 
+	static $_validOrderingFields = array('category_name','category_description','c.ordering','c.category_shared','c.published');
 	/**
 	 * constructs a VmModel
 	 * setMainTable defines the maintable of the model
@@ -39,7 +40,7 @@ class VirtueMartModelCategory extends VmModel {
 		parent::__construct();
 		$this->setMainTable('categories');
 
-		$this->addvalidOrderingFieldName(array('category_name','category_description','cx.ordering','cx.category_shared','c.published'));
+		$this->addvalidOrderingFieldName(self::$_validOrderingFields);
 
 		$toCheck = VmConfig::get('browse_cat_orderby_field','category_name');
 		if(!in_array($toCheck, $this->_validOrderingFieldName)){
@@ -107,12 +108,40 @@ class VirtueMartModelCategory extends VmModel {
 	}
 
     /**
-	 * Get the list of child categories for a given category
+	 * Get the list of child categories for a given category, is cached
 	 *
 	 * @param int $virtuemart_category_id Category id to check for child categories
 	 * @return object List of objects containing the child categories
+	 *
 	 */
-	static public function getChildCategoryList($vendorId, $virtuemart_category_id,$selectedOrdering = null, $orderDir = null) {
+	public function getChildCategoryList($vendorId, $virtuemart_category_id,$selectedOrdering = null, $orderDir = null, $cache = true) {
+
+		if($selectedOrdering===null){
+			$selectedOrdering = $this->_selectedOrdering;
+		}
+		if($orderDir===null){
+			$orderDir = $this->_selectedOrderingDir;
+		}
+		$cache = JFactory::getCache('com_virtuemart_cats','callback');
+		$cache->setCaching(true);
+		$categories = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryListCached' ),$vendorId, $virtuemart_category_id, $selectedOrdering, $orderDir);
+
+		return $categories;
+	}
+
+	/**
+	 * Be aware we need the lang to assure that the cache works properly. The cache needs all paraemeters
+	 * in the function call to use the right hash
+	 *
+	 * @author Max Milbers
+	 * @param $vendorId
+	 * @param $virtuemart_category_id
+	 * @param null $selectedOrdering
+	 * @param null $orderDir
+	 * @param $lang
+	 * @return mixed
+	 */
+	static public function getChildCategoryListCached($vendorId, $virtuemart_category_id,$selectedOrdering = null, $orderDir = null,$lang = VMLANG) {
 
 		$key = (int)$vendorId.'_'.(int)$virtuemart_category_id ;
 
@@ -120,8 +149,7 @@ class VirtueMartModelCategory extends VmModel {
 			$selectedOrdering = VmConfig::get('browse_cat_orderby_field','category_name');
 		}
 
-		$validOrderingFieldName= array('category_name','category_description','cx.ordering','c.published');
-		if(!in_array($selectedOrdering, $validOrderingFieldName)){
+		if(!in_array($selectedOrdering, self::$_validOrderingFields)){
 			$selectedOrdering = 'category_name';
 		}
 
@@ -133,17 +161,15 @@ class VirtueMartModelCategory extends VmModel {
 			$orderDir = 'ASC';
 		}
 
+		static $_childCategoryList = array ();
+      	if (! array_key_exists ($key,$_childCategoryList)){
 
-		static $_childCateogryList = array ();
-      	if (! array_key_exists ($key,$_childCateogryList)){
-
-			$query = 'SELECT L.* FROM `#__virtuemart_categories_'.VMLANG.'` as L
-						JOIN `#__virtuemart_categories` as C using (`virtuemart_category_id`)';
-			$query .= ' LEFT JOIN `#__virtuemart_category_categories` as cx on C.`virtuemart_category_id` = cx.`category_child_id` ';
+			$query = 'SELECT L.* FROM `#__virtuemart_categories_'.$lang.'` as L
+						JOIN `#__virtuemart_categories` as c using (`virtuemart_category_id`)';
+			$query .= ' LEFT JOIN `#__virtuemart_category_categories` as cx on c.`virtuemart_category_id` = cx.`category_child_id` ';
 			$query .= 'WHERE cx.`category_parent_id` = ' . (int)$virtuemart_category_id . ' ';
-			//$query .= 'AND C.`virtuemart_category_id` = CC.`category_child_id` ';
-			$query .= 'AND C.`virtuemart_vendor_id` = ' . (int)$vendorId . ' ';
-			$query .= 'AND C.`published` = 1 ';
+			$query .= 'AND c.`virtuemart_vendor_id` = ' . (int)$vendorId . ' ';
+			$query .= 'AND c.`published` = 1 ';
 			$query .= ' ORDER BY '.$selectedOrdering.' '.$orderDir;
 
 			$db = JFactory::getDBO();
@@ -160,11 +186,12 @@ class VirtueMartModelCategory extends VmModel {
 				}
 			}
 
-			$_childCateogryList[$key]=$childList ;
+			$_childCategoryList[$key]=$childList ;
 		}
 
-		return $_childCateogryList[$key];
+		return $_childCategoryList[$key];
 	}
+
 
 // 	public sortArraysPerXref(){
 
@@ -230,7 +257,7 @@ class VirtueMartModelCategory extends VmModel {
 
 		$vendorId = 1;
 
-		$select = ' c.`virtuemart_category_id`, l.`category_description`, l.`category_name`, cx.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
+		$select = ' c.`virtuemart_category_id`, l.`category_description`, l.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
 
 		$joinedTables = ' FROM `#__virtuemart_categories_'.VMLANG.'` l
 				  JOIN `#__virtuemart_categories` AS c using (`virtuemart_category_id`)
@@ -368,6 +395,9 @@ class VirtueMartModelCategory extends VmModel {
 			$row->reorder($group);
 		}
 
+		$cache = JFactory::getCache();
+		$cache->clean('com_virtuemart_cats');
+
 		return true;
 	}
 
@@ -465,16 +495,14 @@ class VirtueMartModelCategory extends VmModel {
 		// Process the images
 		$mediaModel = VmModel::getModel('Media');
 		$file_id = $mediaModel->storeMedia($data,'category');
-      $errors = $mediaModel->getErrors();
+      	$errors = $mediaModel->getErrors();
 		foreach($errors as $error){
 			vmError($error);
 		}
-		if ($this->_cleanCache === true) {
-			$cache = JFactory::getCache();
-			$cache->clean('_virtuemart');
-			$this->_cleanCache = false;
-		}
-		//jexit();
+
+		$cache = JFactory::getCache();
+		$cache->clean('com_virtuemart_cats');
+
 		return $data['virtuemart_category_id'] ;
 	}
 
@@ -547,6 +575,9 @@ class VirtueMartModelCategory extends VmModel {
 		if(!$this->_db->query()){
 			vmError( $this->_db->getErrorMsg() );
 		}
+
+		$cache = JFactory::getCache();
+		$cache->clean('com_virtuemart_cats');
 
 		return true;
     }

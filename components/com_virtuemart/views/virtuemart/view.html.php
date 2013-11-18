@@ -49,14 +49,9 @@ class VirtueMartViewVirtueMart extends VmView {
 			$productModel = VmModel::getModel('product');
 			$products = array();
 			$categoryId = JRequest::getInt('catid', 0);
-			$cache = JFactory::getCache('com_virtuemart','callback');
 
-			$categoryChildren = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $categoryId );
-			// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
+			$categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
 
-			//$categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
-
-			//$categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
 			$categoryModel->addImages($categoryChildren,1);
 
 			$this->assignRef('categories',	$categoryChildren);

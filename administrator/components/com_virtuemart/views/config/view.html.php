@@ -91,7 +91,23 @@ class VirtuemartViewConfig extends VmView {
 		$orderByFieldsProduct = $model->getProductFilterFields('browse_orderby_fields');
 		$this->assignRef('orderByFieldsProduct', $orderByFieldsProduct);
 
-		$orderByFieldsCat = $model->getProductFilterFields('browse_cat_orderby_field');
+		VmModel::getModel('category');
+
+		foreach (VirtueMartModelCategory::$_validOrderingFields as $key => $field ) {
+			$fieldWithoutPrefix = $field;
+			$dotps = strrpos($fieldWithoutPrefix, '.');
+			if($dotps!==false){
+				$prefix = substr($field, 0,$dotps+1);
+				$fieldWithoutPrefix = substr($field, $dotps+1);
+			}
+
+			$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
+
+			$orderByFieldsCat[] =  JHTML::_('select.option', $field, $text) ;
+		}
+
+
+		//$orderByFieldsCat = $model->get;
 		$this->assignRef('orderByFieldsCat', $orderByFieldsCat);
 
 		$searchFields = $model->getProductFilterFields( 'browse_search_fields');
@@ -109,12 +125,6 @@ class VirtuemartViewConfig extends VmView {
 
 		shopFunctions::checkSafePath();
 		$this -> checkVmUserVendor();
-
-		$cache = JFactory::getCache ('_virtuemart');
-		$cached = $cache->getCaching();
-		if($cached){
-			vmInfo('COM_VIRTUEMART_CFG_CACHE_ACTIVE');
-		}
 
 		parent::display($tpl);
 	}
