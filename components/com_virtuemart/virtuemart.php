@@ -27,8 +27,6 @@ vmSetStartTime('Start');
 
 VmConfig::loadJLang('com_virtuemart', true);
 
-//$cache = JFactory::getCache ('com_virtuemart');
-//$cached = $cache->getCaching('com_virtuemart');
 
 if(VmConfig::get('shop_is_offline',0)){
 	//$cache->setCaching (1);

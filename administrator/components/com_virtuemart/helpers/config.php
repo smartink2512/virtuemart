@@ -375,7 +375,7 @@ function logInfo ($text, $type = 'message') {
  * @subpackage  Language
  * @since       11.1
  */
-class VmText
+class vmText
 {
 	/**
 	 * javascript strings

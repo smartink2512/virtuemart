@@ -96,14 +96,14 @@ static function vmGetCharset() {
 			}
 		$lang =JFactory::getLanguage();
 		if($lang->hasKey($label.'_TIP')){
-			$labelHint = JText::_($label.'_TIP');
-			$label = '<span class="hasTip" title="'.JText::_($label.'_TIP').'">'.JText::_($label).'</span>' ;
+			$labelHint = vmText::_($label.'_TIP');
+			$label = '<span class="hasTip" title="'.vmText::_($label.'_TIP').'">'.vmText::_($label).'</span>' ;
 		} //Fallback
 		else if($lang->hasKey($label.'_EXPLAIN')){
-			$labelHint = JText::_($label.'_EXPLAIN');
-			$label = '<span class="hasTip" title="'.JText::_($label.'_EXPLAIN').'">'.JText::_($label).'</span>' ;
+			$labelHint = vmText::_($label.'_EXPLAIN');
+			$label = '<span class="hasTip" title="'.vmText::_($label.'_EXPLAIN').'">'.vmText::_($label).'</span>' ;
 		} else {
-			$label = JText::_($label);
+			$label = vmText::_($label);
 		}
 
 		$html = '
@@ -120,7 +120,7 @@ static function vmGetCharset() {
 	/* simple value display */
 	static function value( $value ){
 		$lang =JFactory::getLanguage();
-		return $lang->hasKey($value) ? JText::_($value) : $value;
+		return $lang->hasKey($value) ? vmText::_($value) : $value;
 	}
 
 	/**
@@ -167,7 +167,7 @@ static function vmGetCharset() {
 	 */
 	public static function select($name, $options, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true, $chosenDropDowns=true,$tranlsate=true){
 		if ($zero==true) {
-			$option  = array($key =>"0", $text => VmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
+			$option  = array($key =>"0", $text => vmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
 			$options = array_merge(array($option), $options);
 		}
 		if ($chosenDropDowns) {
@@ -391,7 +391,7 @@ static function vmGetCharset() {
 
 			if ($options['list.translate'] && !empty($label))
 			{
-				$label = VmText::_($label);
+				$label = vmText::_($label);
 			}
 			if ($options['option.label.toHtml'])
 			{
@@ -425,7 +425,7 @@ static function vmGetCharset() {
 
 			if ($options['list.translate'])
 			{
-				$text = VmText::_($text);
+				$text = vmText::_($text);
 			}
 
 			// Generate the option, encoding as required
@@ -467,7 +467,7 @@ static function vmGetCharset() {
 	        }
 		}
 		if (!empty($data_placeholder)) {
-			$data_placeholder='data-placeholder="'.VmText::_($data_placeholder).'"';
+			$data_placeholder='data-placeholder="'.vmText::_($data_placeholder).'"';
 		}
 
 		$html = '<select class="inputbox" id="'.$name.'" name="'.$name.'" size="'.$size.'" '.$multiple.' '.$extra.' '.$data_placeholder.' >';

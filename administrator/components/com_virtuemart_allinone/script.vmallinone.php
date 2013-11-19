@@ -194,9 +194,8 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				}*/
 
 				echo "<H3>Installing Virtuemart Plugins and modules Success.</h3>";
-				echo "<H3>You may directly uninstall this component. Your plugins will remain</h3>";
+				echo "<H3>You may directly uninstall this component. Your plugins will remain. But we advice to keep the AIO installer for updating</h3>";
 
-				echo "<H3>Ignore the message " . JText::_ ('JLIB_INSTALLER_ABORT_COMP_BUILDADMINMENUS_FAILED') . "</h3>";
 			} else {
 				echo "<H3>Updated Virtuemart Plugin tables</h3>";
 			}

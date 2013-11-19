@@ -286,7 +286,7 @@ class VirtueMartModelConfig extends JModel {
 	/**
 	 * Save the configuration record
 	 *
-	 * @author RickG
+	 * @author Max Milbers
 	 * @return boolean True is successful, false otherwise
 	 */
 	function store(&$data,$replace = FALSE) {
@@ -298,6 +298,8 @@ class VirtueMartModelConfig extends JModel {
 
 		$config = VmConfig::loadConfig(TRUE);
 
+		$browse_cat_orderby_field = $config->get('browse_cat_orderby_field');
+		$cat_brws_orderby_dir = $config->get('cat_brws_orderby_dir');
 
 		$config->setParams($data,$replace);
 		$confData = array();
@@ -393,7 +395,7 @@ class VirtueMartModelConfig extends JModel {
 		}
 
 		$confData['config'] = $config->toString();
-		// 		vmdebug('config to store',$confData);
+
 		$confTable = $this->getTable('configs');
 		if (!$confTable->bindChecknStore($confData)) {
 			vmError($confTable->getError());
@@ -405,6 +407,13 @@ class VirtueMartModelConfig extends JModel {
 		if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 		$updater = new GenericTableUpdater();
 		$result = $updater->createLanguageTables();
+
+		$newbrowse_cat_orderby_field = $config->get('browse_cat_orderby_field');
+		$newcat_brws_orderby_dir = $config->get('cat_brws_orderby_dir');
+		if($browse_cat_orderby_field!=$newbrowse_cat_orderby_field or $newcat_brws_orderby_dir!=$cat_brws_orderby_dir){
+			$cache = JFactory::getCache('com_virtuemart_cats','callback');
+			$cache->clean();
+		}
 
 		return true;
 	}
