@@ -11,7 +11,7 @@
  * @license   http://opensource.org/licenses/BSD-2-Clause BSD-2
  * @link      http://integration.klarna.com/
  */
-
+defined ('_JEXEC') or die();
 require_once 'Exceptions.php';
 
 /**
