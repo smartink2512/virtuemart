@@ -161,7 +161,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				});
 		});
 
-		jQuery('input[name=field\\\\[$row\\\\]\\\\[custom_price\\\\]]').val('');
+		jQuery('input[name=field\\\\[$row\\\\]\\\\[custom_price\\\\]]').val('0.0');
 	});
 	";
 		//$document = JFactory::getDocument();
