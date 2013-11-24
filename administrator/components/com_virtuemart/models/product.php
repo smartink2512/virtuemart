@@ -71,6 +71,7 @@ class VirtueMartModelProduct extends VmModel {
 			//$this->addvalidOrderingFieldName (array('product_price'));
 			// 	vmdebug('$browseOrderByFields',$browseOrderByFields);
 		}
+
 		$this->addvalidOrderingFieldName ((array)$browseOrderByFields);
 
 
@@ -565,8 +566,8 @@ class VirtueMartModelProduct extends VmModel {
 		if ($app->isSite () and ($cateid != -1 or $manid != 0) ) {
 
 			//vmdebug('setPaginationLimits is site and $cateid,$manid ',$cateid,$manid);
-			$lastCatId = ShopFunctionsf::getLastVisitedCategoryId ();
-			$lastManId = ShopFunctionsf::getLastVisitedManuId ();
+			$lastCatId = ShopFunctionsF::getLastVisitedCategoryId ();
+			$lastManId = ShopFunctionsF::getLastVisitedManuId ();
 
 			if( !empty($cateid) and $cateid != -1) {
 				$gCatId = $cateid;

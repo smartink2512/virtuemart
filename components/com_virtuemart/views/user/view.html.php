@@ -362,7 +362,7 @@ class VirtuemartViewUser extends VmView {
 
 	if (!class_exists('shopFunctionsF'))
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-	$comUserOption = shopfunctionsF::getComUserOption();
+	$comUserOption = shopFunctionsF::getComUserOption();
 
 	$this->_lists['canBlock'] = ($this->_currentUser->authorize($comUserOption, 'block user')
 		&& ($this->_model->getId() != $this->_cuid)); // Can't block myself TODO I broke that, please retest if it is working again

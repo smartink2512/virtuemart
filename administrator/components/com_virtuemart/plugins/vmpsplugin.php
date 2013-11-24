@@ -630,7 +630,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		static $weight = 0.0;
 		if(count($cart->products)>0 and empty($weight)){
 			foreach ($cart->products as $product) {
-				vmdebug('getOrderWeight',$product->product_weight);
+
 				$weight += (ShopFunctions::convertWeightUnit ($product->product_weight, $product->product_weight_uom, $to_weight_unit) * $product->quantity);
 			}
 		}
@@ -1010,9 +1010,11 @@ abstract class vmPSPlugin extends vmPlugin {
 			if(!empty($calculator->_cartData['VatTax']) ){
 				$taxrules = $calculator->_cartData['VatTax'];
 
-				$denominator = 0;
+				$denominator = 0.0;
 				foreach($taxrules as &$rule){
 					//$rule['numerator'] = $rule['calc_value']/100.0 * $rule['subTotal'];
+					if(!isset($rule['subTotal'])) $rule['subTotal'] = 0;
+					if(!isset($rule['taxAmount'])) $rule['taxAmount'] = 0;
 					$denominator += ($rule['subTotal']-$rule['taxAmount']);
 					$rule['subTotalOld'] = $rule['subTotal'];
 					$rule['subTotal'] = 0;

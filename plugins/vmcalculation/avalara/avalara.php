@@ -313,6 +313,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	public function plgVmInterpreteMathOp ($calculationHelper, $rule, $price,$revert){
 
 		$rule = (object)$rule;
+		if(empty($rule->published)) return $price;
 
 		$mathop = $rule->calc_value_mathop;
 		$tax = 0.0;

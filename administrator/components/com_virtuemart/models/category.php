@@ -116,17 +116,29 @@ class VirtueMartModelCategory extends VmModel {
 	 */
 	public function getChildCategoryList($vendorId, $virtuemart_category_id,$selectedOrdering = null, $orderDir = null, $cache = true) {
 
-		if($selectedOrdering===null){
-			//$selectedOrdering = VmConfig::get('browse_cat_orderby_field','category_name');
-			$selectedOrdering = $this->_selectedOrdering;
+		$useCache = true;
+		if(empty($this) or get_class($this)!='VirtueMartModelCategory'){
+			$useCache = false;
 		}
+
+		if($selectedOrdering===null){
+			if($useCache){
+				$selectedOrdering = $this->_selectedOrdering;
+			} else {
+				$selectedOrdering = VmConfig::get('browse_cat_orderby_field','category_name');
+			}
+		}
+
 		if(!in_array($selectedOrdering, self::$_validOrderingFields)){
 			$selectedOrdering = 'category_name';
 		}
 
 		if($orderDir===null){
-			//$orderDir = VmConfig::get('cat_brws_orderby_dir', 'ASC');
-			$orderDir = $this->_selectedOrderingDir;
+			if($useCache){
+				$orderDir = $this->_selectedOrderingDir;
+			} else {
+				$orderDir = VmConfig::get('cat_brws_orderby_dir', 'ASC');
+			}
 		}
 
 		$validOrderingDir = array('ASC','DESC');
@@ -139,9 +151,13 @@ class VirtueMartModelCategory extends VmModel {
 		$key = (int)$vendorId.'_'.(int)$virtuemart_category_id.$selectedOrdering.$orderDir.VMLANG ;
 		//We have here our internal key to preven calling of the cache
 		if (! array_key_exists ($key,$_childCategoryList)){
-			$cache = JFactory::getCache('com_virtuemart_cats','callback');
-			$cache->setCaching(true);
-			$_childCategoryList[$key] = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryListCached' ),$vendorId, $virtuemart_category_id, $selectedOrdering, $orderDir);
+			if($useCache){
+				$cache = JFactory::getCache('com_virtuemart_cats','callback');
+				$cache->setCaching(true);
+				$_childCategoryList[$key] = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryListObject' ),$vendorId, $virtuemart_category_id, $selectedOrdering, $orderDir);
+			} else {
+				$_childCategoryList[$key] = VirtueMartModelCategory::getChildCategoryListObject($vendorId, $virtuemart_category_id, $selectedOrdering, $orderDir);
+			}
 
 		}
 
@@ -160,7 +176,7 @@ class VirtueMartModelCategory extends VmModel {
 	 * @param $lang
 	 * @return mixed
 	 */
-	static public function getChildCategoryListCached($vendorId, $virtuemart_category_id,$selectedOrdering = null, $orderDir = null,$lang = VMLANG) {
+	static public function getChildCategoryListObject($vendorId, $virtuemart_category_id,$selectedOrdering = null, $orderDir = null,$lang = VMLANG) {
 
 		$query = 'SELECT L.* FROM `#__virtuemart_categories_'.$lang.'` as L
 					JOIN `#__virtuemart_categories` as c using (`virtuemart_category_id`)';

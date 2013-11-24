@@ -351,7 +351,7 @@ class VmView extends JView{
 			if(isset($languagesByCode[$selectedLangue])){
 				$flagImg= JHtml::_('image', 'mod_languages/'. $languagesByCode[$selectedLangue]->image.'.gif',  $languagesByCode[$selectedLangue]->title_native, array('title'=> $languagesByCode[$selectedLangue]->title_native), true);
 			} else {
-				vmWarn('Flag for selected language '.$selectedLangue.' is missing');
+				vmWarn(vmText::sprintf('COM_VIRTUEMART_MISSING_FLAG',$selectedLangue,$selectedLangue));
 			}
 			$langList = '<input name ="vmlang" type="hidden" value="'.$selectedLangue.'" >'.$flagImg.' <b> '.$defautName.'</b>';
 			$this->assignRef('langList',$langList);

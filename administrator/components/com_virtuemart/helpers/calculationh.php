@@ -802,7 +802,7 @@ class calculationHelper {
 				$rule['DBTax'] = $sum;
 			}
 		}
-		
+
 		// calculate the new subTotal with discounts before tax, necessary for billTotal
 		$toTax = $this->_cartPrices['salesPrice'] + $cartdiscountBeforeTax;
 
@@ -1180,7 +1180,7 @@ class calculationHelper {
 		}
 
 		//Test rules in plugins
-		if(!empty($testedRules)){
+		if(!empty($testedRules) and count($testedRules)>0){
 			JPluginHelper::importPlugin('vmcalculation');
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('plgVmInGatherEffectRulesProduct',array(&$this,&$testedRules));
@@ -1200,6 +1200,8 @@ class calculationHelper {
 	 */
 	function gatherEffectingRulesForBill($entrypoint, $cartVendorId=1) {
 
+		$testedRules = array();
+
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
 		$q = 'SELECT * FROM #__virtuemart_calcs WHERE
@@ -1211,7 +1213,6 @@ class calculationHelper {
 		//			$shoppergrps .  $countries . $states ;
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();
-		$testedRules = array();
 
 		foreach ($rules as $rule) {
 
@@ -1255,7 +1256,7 @@ class calculationHelper {
 		}
 
 		//Test rules in plugins
-		if(!empty($testedRules)){
+		if(!empty($testedRules) and count($testedRules)>0){
 			JPluginHelper::importPlugin('vmcalculation');
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('plgVmInGatherEffectRulesBill', array(&$this, &$testedRules));

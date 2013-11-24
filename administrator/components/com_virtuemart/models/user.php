@@ -1244,7 +1244,7 @@ class VirtueMartModelUser extends VmModel {
 	}
 
 	/**
-	 * This uses the shopfunctionsF::renderAndSendVmMail function, which uses a controller and task to render the content
+	 * This uses the shopFunctionsF::renderAndSendVmMail function, which uses a controller and task to render the content
 	 * and sents it then.
 	 *
 	 *

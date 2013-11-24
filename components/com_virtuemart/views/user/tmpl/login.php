@@ -27,7 +27,7 @@ if (!isset( $this->order )) $this->order = FALSE ;
 
 
 if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-$comUserOption=shopfunctionsF::getComUserOption();
+$comUserOption=shopFunctionsF::getComUserOption();
 if (empty($this->url)){
 	$uri = JFactory::getURI();
 	$url = $uri->toString(array('path', 'query', 'fragment'));
