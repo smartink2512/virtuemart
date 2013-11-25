@@ -34,7 +34,7 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 <?php
 
 	echo "<h".$headerLevel.">".JText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT')."</h".$headerLevel.">";
-	if($this->cart->getInCheckOut()){
+	if($this->cart->getInCheckOut() OR   VmConfig::get('oncheckout_opc', 0) ){
 		$buttonclass = 'button vm-button-correct';
 	} else {
 		$buttonclass = 'default';
@@ -44,7 +44,13 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 	<div class="buttonBar-right">
 
 	        <button class="<?php echo $buttonclass ?>" type="submit" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>  &nbsp;
+		<?php
+		if(! VmConfig::get('oncheckout_opc', 0) ){
+			?>
 	<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
+		<?php
+		}
+		?>
 	</div>
 
 <?php

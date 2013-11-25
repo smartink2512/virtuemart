@@ -183,7 +183,7 @@ if (!class_exists ('vmPSPlugin')) {
 		$html .= $this->getHtmlRowBE ('COM_VIRTUEMART_PAYMENT_NAME', $paymentTable->payment_name);
 		$html .= $this->getHtmlRowBE ('STANDARD_PAYMENT_TOTAL_CURRENCY', $paymentTable->payment_order_total . ' ' . $paymentTable->payment_currency);
 		if ($paymentTable->email_currency) {
-			$html .= $this->getHtmlRowBE ('VMPAYMENT_STANDARD_PAYMENT_EMAIL_CURRENCY', $paymentTable->email_currency );
+			$html .= $this->getHtmlRowBE ('STANDARD_PAYMENT_EMAIL_CURRENCY', $paymentTable->email_currency );
 		}
 		$html .= '</table>' . "\n";
 		return $html;

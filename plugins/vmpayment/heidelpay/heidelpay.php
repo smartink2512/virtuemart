@@ -20,7 +20,6 @@ if (!class_exists ('vmPSPlugin')) {
 
 class plgVmPaymentHeidelpay extends vmPSPlugin {
 
-	public static $_this = FALSE;
 	protected $version = '13.07 Standard';
 
 	function __construct (& $subject, $config) {

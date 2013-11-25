@@ -61,7 +61,7 @@ class VirtueMartControllerCart extends JController {
 	 *
 	 * @since   11.1
 	 */
-	public function display()
+	public function display($cachable = false, $urlparams = false)
 	{
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();

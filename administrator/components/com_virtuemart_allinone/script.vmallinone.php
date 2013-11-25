@@ -62,7 +62,8 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('Klarna', 'plugin', 'klarna', 'vmpayment');
 			$this->installPlugin ('KlarnaCheckout', 'plugin', 'klarnacheckout', 'vmpayment');
 			$this->installPlugin ('Sofort Banking/Überweisung', 'plugin', 'sofort', 'vmpayment');
-			$this->installPlugin ('Paypal', 'plugin', 'paypal', 'vmpayment');
+			$this->installPlugin ('PayPal', 'plugin', 'paypal', 'vmpayment');
+			$this->installPlugin ('PayPal AIO', 'plugin', 'paypal_aio', 'vmpayment');
 			$this->installPlugin ('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
 			$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
 			$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
@@ -95,7 +96,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			// 						(0, 0, 'COM_VIRTUEMART_STOCKABLE_PRODUCT', 'COM_VIRTUEMART_STOCKABLE_PRODUCT_TIP', NULL,
 			// 					'COM_VIRTUEMART_STOCKABLE_PRODUCT_DESC', 'G', 0, 0, 0, 1 );");
 
-			$this->installPlugin ('Virtuemart Product', 'plugin', 'virtuemart', 'search');
+			$this->installPlugin ('VirtueMart Product', 'plugin', 'virtuemart', 'search');
 
 			$task = JRequest::getCmd ('task');
 			if ($task != 'updateDatabase') {

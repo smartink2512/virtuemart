@@ -29,8 +29,6 @@ else {
 
 class plgVMPaymentSystempay extends vmPSPlugin {
 
-	// instance of class
-	public static $_this = FALSE;
 
 	function __construct (& $subject, $config) {
 		parent::__construct ($subject, $config);
