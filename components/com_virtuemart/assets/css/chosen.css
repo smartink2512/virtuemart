@@ -398,8 +398,8 @@
 /* @end */
 
 /* overwrite the element.style only necessary for the beez standard template, you may remove it */
-/*div[style]{
+div[style]{
     overflow-x: visible !important;
     overflow-y: visible !important;
-}*/
+}
 
