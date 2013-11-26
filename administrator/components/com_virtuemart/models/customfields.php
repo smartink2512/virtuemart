@@ -183,14 +183,15 @@ class VirtueMartModelCustomfields extends VmModel {
 	}
 
 	/**
-	 * Displays a possibility to select created custom
+	 * Displays a possibility to select custom groups
 	 *
 	 * @author Max Milbers
+	 * @author Maik Künnemann
 	 * @author Patrick Kohl
 	 */
 	public function displayCustomSelection () {
 
-		$customslist = $this->getCustomsList ();
+		$customslist = $this->getParentList ();
 		if (isset($this->virtuemart_custom_id)) {
 			$value = $this->virtuemart_custom_id;
 		}
