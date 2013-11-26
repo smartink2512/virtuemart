@@ -89,15 +89,19 @@ function virtuemartBuildRoute(&$query) {
 			}
 			if ( isset($jmenu['category']) ) $query['Itemid'] = $jmenu['category'];
 
-
-			if ( isset($query['order']) ) {
-				if ($query['order'] =='DESC') $segments[] = $helper->lang('orderDesc') ;
-				unset($query['order']);
-			}
-
 			if ( isset($query['orderby']) ) {
 				$segments[] = $helper->lang('by').','.$helper->lang( $query['orderby']) ;
 				unset($query['orderby']);
+			}
+
+			if ( isset($query['dir']) ) {
+				if ($query['dir'] =='DESC'){
+					$dir = 'Desc';
+				} else {
+					$dir = 'Asc';
+				}
+				$segments[] = $helper->lang('dir'.$dir) ;
+				unset($query['dir']);
 			}
 
 			// Joomla replace before route limitstart by start but without SEF this is start !
@@ -360,8 +364,21 @@ function virtuemartParseRoute($segments) {
 			return $vars;
 		}
 	}
-	if (  $helper->compareKey(end($segments),'orderDesc') ){
-		$vars['order'] ='DESC' ;
+
+	//Translation of the ordering direction is not really useful and costs just energy
+	//if (  $helper->compareKey(end($segments),'dirDesc') ){
+	if ( end($segments) == 'dirDesc' ){
+		$vars['dir'] ='DESC' ;
+		array_pop($segments);
+		if (empty($segments)) {
+			$vars['view'] = 'category';
+			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+			return $vars;
+		}
+	} else
+		//if (  $helper->compareKey(end($segments),'dirAsc') ){
+		if ( end($segments) == 'dirAsc' ){
+		$vars['dir'] ='ASC' ;
 		array_pop($segments);
 		if (empty($segments)) {
 			$vars['view'] = 'category';

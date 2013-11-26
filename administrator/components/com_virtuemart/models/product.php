@@ -160,7 +160,7 @@ class VirtueMartModelProduct extends VmModel {
 				$this->setLastProductOrdering($filter_order);
 
 			}
-			$filter_order_Dir = strtoupper (JRequest::getWord ('order', VmConfig::get('prd_brws_orderby_dir', 'ASC')));
+			$filter_order_Dir = strtoupper (JRequest::getWord ('dir', VmConfig::get('prd_brws_orderby_dir', 'ASC')));
 			$valid_search_fields = VmConfig::get ('browse_search_fields');
 		}
 		else {
@@ -523,23 +523,6 @@ class VirtueMartModelProduct extends VmModel {
 		//vmdebug ( $joinedTables.' joined ? ',$select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir );		/* jexit();  */
 		$this->orderByString = $orderBy;
 		$product_ids = $this->exeSortSearchListQuery (2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir, $nbrReturnProducts);
-
-		// This makes products searchable, we decided that this is not good, because variant childs appear then in lists
-		//So the new convention is that products which should be shown on a category or a manufacturer page should have entered this data
-		/*		if ($joinCategory == true || $joinMf) {
-
-		$tmp = array();;
-		foreach($product_ids as $k=>$id){
-		$tmp[] = $id;
-		$children = $this->getProductChildIds($id);
-		if($children){
-		$tmp = array_merge($tmp,$children);
-		}
-		}
-		$product_ids = $tmp;
-		}*/
-
-		 //vmdebug('my product ids',$product_ids);
 
 		return $product_ids;
 
@@ -1348,17 +1331,14 @@ class VirtueMartModelProduct extends VmModel {
 	public function getProducts ($productIds, $front = TRUE, $withCalc = TRUE, $onlyPublished = TRUE, $single = FALSE) {
 
 		if (empty($productIds)) {
-			// 			vmdebug('getProducts has no $productIds','No ids given to get products');
-			// 			vmTrace('getProducts has no $productIds');
 			return array();
 		}
 
 		$maxNumber = VmConfig::get ('absMaxProducts', 700);
 		$products = array();
+		$i = 0;
 		if ($single) {
-
 			foreach ($productIds as $id) {
-				$i = 0;
 				if ($product = $this->getProductSingle ((int)$id, $front)) {
 					$products[] = $product;
 					$i++;
@@ -1370,7 +1350,6 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 		else {
-			$i = 0;
 			foreach ($productIds as $id) {
 				if ($product = $this->getProduct ((int)$id, $front, $withCalc, $onlyPublished)) {
 					$products[] = $product;
@@ -2067,16 +2046,19 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 			else {
+				if($key=='dir' or $key=='orderby') continue;
+				if(empty($value)) continue;
 				$fieldLink .= '&' . $key . '=' . $value;
 			}
 		}
 		$fieldLink[0] = "?";
 		$fieldLink = 'index.php' . $fieldLink;
-		$orderTxt = '';
 
-		$order = JRequest::getWord ('order', 'ASC');
-		if ($order == 'DESC') {
-			$orderTxt .= '&order=' . $order;
+		$orderDirLink = '';
+		$orderDirConf = VmConfig::get ('prd_brws_orderby_dir');
+		$orderDir = JRequest::getWord ('dir', $orderDirConf);
+		if ($orderDir != $orderDirConf ) {
+			$orderDirLink .= '&dir=' . $orderDir;	//was '&order='
 		}
 
 		$orderbyTxt = '';
@@ -2084,14 +2066,13 @@ class VirtueMartModelProduct extends VmModel {
 		$orderby = $this->checkFilterOrder ($orderby);
 
 		$orderbyCfg = VmConfig::get ('browse_orderby_field');
-		if ($orderby != '' && $orderby != $orderbyCfg) {
+		if ($orderby != $orderbyCfg) {
 			$orderbyTxt = '&orderby=' . $orderby;
 		}
 
 		$manufacturerTxt = '';
 		$manufacturerLink = '';
 		if (VmConfig::get ('show_manufacturers')) {
-
 
 			// manufacturer link list
 			$virtuemart_manufacturer_id = JRequest::getInt ('virtuemart_manufacturer_id', '');
@@ -2116,11 +2097,11 @@ class VirtueMartModelProduct extends VmModel {
 			if (count ($manufacturers) > 0) {
 				$manufacturerLink = '<div class="orderlist">';
 				if ($virtuemart_manufacturer_id > 0) {
-					$manufacturerLink .= '<div><a title="" href="' . JRoute::_ ($fieldLink . $orderTxt . $orderbyTxt, FALSE) . '">' . JText::_ ('COM_VIRTUEMART_SEARCH_SELECT_ALL_MANUFACTURER') . '</a></div>';
+					$manufacturerLink .= '<div><a title="" href="' . JRoute::_ ($fieldLink . $orderbyTxt . $orderDirLink , FALSE) . '">' . JText::_ ('COM_VIRTUEMART_SEARCH_SELECT_ALL_MANUFACTURER') . '</a></div>';
 				}
 				if (count ($manufacturers) > 1) {
 					foreach ($manufacturers as $mf) {
-						$link = JRoute::_ ($fieldLink . '&virtuemart_manufacturer_id=' . $mf->virtuemart_manufacturer_id . $orderTxt . $orderbyTxt,FALSE);
+						$link = JRoute::_ ($fieldLink . '&virtuemart_manufacturer_id=' . $mf->virtuemart_manufacturer_id . $orderbyTxt . $orderDirLink,FALSE);
 						if ($mf->virtuemart_manufacturer_id != $virtuemart_manufacturer_id) {
 							$manufacturerLink .= '<div><a title="' . $mf->mf_name . '" href="' . $link . '">' . $mf->mf_name . '</a></div>';
 						}
@@ -2161,40 +2142,43 @@ class VirtueMartModelProduct extends VmModel {
 
 					$text = JText::_ ('COM_VIRTUEMART_' . strtoupper ($fieldWithoutPrefix));
 
-					if ($field == $orderbyCfg) {
-						$link = JRoute::_ ($fieldLink . $manufacturerTxt,FALSE);
+					$field = explode('.',$field);
+					if(isset($field[1])){
+						$field = $field[1];
+					} else {
+						$field = $field[0];
 					}
-					else {
-						$field = explode('.',$field);
-						if(isset($field[1])){
-							$field = $field[1];
-						} else {
-							$field = $field[0];
-						}
-						$link = JRoute::_ ($fieldLink . $manufacturerTxt . '&orderby=' . $field,FALSE);
-					}
+					$link = JRoute::_ ($fieldLink . $manufacturerTxt . '&orderby=' . $field,FALSE);
+
 					$orderByLink .= '<div><a title="' . $text . '" href="' . $link . '">' . $text . '</a></div>';
 				}
 			}
 			$orderByLink .= '</div>';
 		}
 
-		/* invert order value set*/
-		if ($order == 'ASC') {
-			$orderlink = '&order=DESC';
-			$orderTxt = JText::_ ('COM_VIRTUEMART_SEARCH_ORDER_DESC');
-		}
-		else {
-			$orderTxt = JText::_ ('COM_VIRTUEMART_SEARCH_ORDER_ASC');
-			$orderlink = '';
+
+		if($orderDir == 'ASC'){
+			$orderDir = 'DESC';
+		} else {
+			$orderDir = 'ASC';
 		}
 
-		/* full string list */
+		if ($orderDir != $orderDirConf ) {
+			$orderDirLink = '&dir=' . $orderDir;	//was '&order='
+		} else {
+			$orderDirLink = '';
+		}
+
+		$orderDirTxt = JText::_ ('COM_VIRTUEMART_SEARCH_ORDER_'.$orderDir);
+
+		$link = JRoute::_ ($fieldLink . $orderbyTxt . $orderDirLink . $manufacturerTxt,FALSE);
+
+		// full string list
 		if ($orderby == '') {
 			$orderby = $orderbyCfg;
 		}
 		$orderby = strtoupper ($orderby);
-		$link = JRoute::_ ($fieldLink . $orderlink . $orderbyTxt . $manufacturerTxt,FALSE);
+
 
 		$dotps = strrpos ($orderby, '.');
 		if ($dotps !== FALSE) {
@@ -2207,7 +2191,7 @@ class VirtueMartModelProduct extends VmModel {
 			// 		$orderby = $orderby;
 		}
 
-		$orderByList = '<div class="orderlistcontainer"><div class="title">' . JText::_ ('COM_VIRTUEMART_ORDERBY') . '</div><div class="activeOrder"><a title="' . $orderTxt . '" href="' . $link . '">' . JText::_ ('COM_VIRTUEMART_SEARCH_ORDER_' . $orderby) . ' ' . $orderTxt . '</a></div>';
+		$orderByList = '<div class="orderlistcontainer"><div class="title">' . JText::_ ('COM_VIRTUEMART_ORDERBY') . '</div><div class="activeOrder"><a title="' . $orderDirTxt . '" href="' . $link . '">' . JText::_ ('COM_VIRTUEMART_SEARCH_ORDER_' . $orderby) . ' ' . $orderDirTxt . '</a></div>';
 		$orderByList .= $orderByLink . '</div>';
 
 		$manuList = '';

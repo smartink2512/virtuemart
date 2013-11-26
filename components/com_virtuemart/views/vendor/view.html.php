@@ -70,6 +70,7 @@ class VirtuemartViewVendor extends VmView {
 			$vendor = $model->getVendor($virtuemart_vendor_id);
 			$model->addImages($vendor);
 			if (VmConfig::get ('enable_content_plugin', 0)) {
+				if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 				shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_store_desc');
 				shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_terms_of_service');
 			}

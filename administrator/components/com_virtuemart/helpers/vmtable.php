@@ -402,7 +402,7 @@ class VmTable extends JTable {
 					$this->created_on = $today;
 				} else if (empty($this->created_on)) {
 					//If nothing is there, dont update it
-					$this->created_on = null;
+					unset($this->created_on);
 				} else //ADDED BY P2 PETER
 					if ($this->created_on == "0000-00-00 00:00:00") {
 						$this->created_on = $today;
@@ -414,7 +414,7 @@ class VmTable extends JTable {
 					$this->created_by = $user->id;
 				} else if (empty($this->created_by)) {
 					//If nothing is there, dont update it
-					$this->created_by = null;
+					unset($this->created_by);
 				}
 
 
@@ -425,8 +425,8 @@ class VmTable extends JTable {
 					$this->created_by = $user->id;
 				} else {
 					//If nothing is there, dont update it
-					$this->created_on = null;
-					$this->created_by = null;
+					unset($this->created_on);
+					unset($this->created_by);
 				}
 			}
 

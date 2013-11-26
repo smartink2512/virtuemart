@@ -40,6 +40,8 @@ class VirtuemartViewCategory extends VmView {
 		}
 		$this->assignRef('show_prices', $show_prices);
 
+		if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+
 		// add javascript for price and cart, need even for quantity buttons, so we need it almost anywhere
 		vmJsApi::jPrice();
 

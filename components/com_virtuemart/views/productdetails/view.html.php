@@ -82,14 +82,9 @@ class VirtueMartViewProductdetails extends VmView {
     }
     $product = $product_model->getProduct($virtuemart_product_id,TRUE,TRUE,TRUE,$quantity);
 
-// 		vmSetStartTime('customs');
-// 		for($k=0;$k<count($product->customfields);$k++){
-// 			$custom = $product->customfields[$k];
-
-
-// 		vmTime('Customs','customs');
-// 		vmdebug('my second $product->customfields',$product->customfields);
+	if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 	$last_category_id = shopFunctionsF::getLastVisitedCategoryId();
+
 	if (empty($product->slug)) {
 
 	    //Todo this should be redesigned to fit better for SEO

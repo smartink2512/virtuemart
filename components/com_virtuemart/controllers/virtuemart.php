@@ -45,7 +45,7 @@ class VirtueMartControllerVirtuemart extends JController
 	 *
 	 * @return  JController  A JController object to support chaining.
 	 */
-	public function display(){
+	public function display($cachable = false, $urlparams = false){
 
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();

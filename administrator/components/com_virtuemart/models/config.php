@@ -137,6 +137,17 @@ class VirtueMartModelConfig extends JModel {
 		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'assets'.DS.'images'.DS.'vmgeneral';
 
 		$tplpath = VmConfig::get('vmtemplate',0);
+		if(is_numeric($tplpath)){
+			$db = JFactory::getDbo();
+			$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$tplpath.'" ';
+			$db->setQuery($query);
+			$res = $db->loadAssoc();
+			if($res){
+				$registry = new JRegistry;
+				$registry->loadString($res['params']);
+				$tplpath = $res['template'];
+			}
+		}
 		if($tplpath){
 			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral')){
 				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral';

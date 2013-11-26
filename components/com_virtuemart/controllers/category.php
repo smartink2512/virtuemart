@@ -56,12 +56,21 @@ class VirtueMartControllerCategory extends JController {
 			$view->display();
 		} else {
 			// Display it all
-			$safeurlparams = array('virtuemart_category_id'=>'INT','virtuemart_manufacturer_id'=>'INT','virtuemart_currency_id'=>'INT','return'=>'BASE64','lang'=>'CMD','orderby'=>'CMD','limitstart'=>'CMD','order'=>'CMD','limit'=>'CMD');
-			parent::display(false, $safeurlparams);
+			$document = JFactory::getDocument();
+			$viewType = $document->getType();
+			$viewName = JRequest::getCmd('view', $this->default_view);
+			$viewLayout = JRequest::getCmd('layout', 'default');
+
+			$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+
+			$view->assignRef('document', $document);
+
+			$view->display();
 		}
 		if($categoryId = JRequest::getInt('virtuemart_category_id',0)){
 			shopFunctionsF::setLastVisitedCategoryId($categoryId);
 		}
+		return $this;
 	}
 }
 // pure php no closing tag
