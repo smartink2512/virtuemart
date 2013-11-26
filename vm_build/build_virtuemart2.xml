@@ -184,6 +184,8 @@
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
+        <exclude name="**/payzen/**"/>
+        <exclude name="**/systempay/**"/>
     </fileset>
  <fileset dir="${libraries.path}" id='libraries.aio.refid' defaultexcludes="true">
         <include name="**"/>

@@ -1,6 +1,4 @@
-/*////////////////////////////////////
-/////// VirtueMart Admin Area ////////
-////////////////////////////////////*/
+/* VirtueMart Admin Area */
 
 .virtuemart-admin-area {border: hidden #b4b4b4 1px;
     -moz-border-radius-bottomleft: 6px;
@@ -20,7 +18,6 @@
 #header {     background: url(../images/admin_ui/header_bg.png) repeat-x scroll 0 0 #F0F0F0;padding:3px;padding-left: 10px;padding-right: 10px;
 
 }
-
 
 .ratingbox {
 	position:relative;
@@ -43,9 +40,7 @@
 .stars-purple{background-position:0 -216px !important;}
 
 
-/*////////////////////////////////////
-/ Overwriting Joomla Admin Template //
-////////////////////////////////////*/
+/* Overwriting Joomla Admin Template */
 
 /* Toolbar */
 #element-box, #toolbar-box, #submenu-box {padding: 0 !important;
@@ -114,9 +109,7 @@ textarea {width: 100%;}
     border-left: 4px solid #1FBE42;
     padding-left: 8px ;
 }
-/*////////////////////////////////////
-/////////////// Tabs /////////////////
-////////////////////////////////////*/
+/* Tabs */
 
 /* The Navigation Area */
 /*#admin-ui-tabs {overflow: visible !important;}*/
@@ -135,22 +128,10 @@ textarea {width: 100%;}
 /* do not change the line below !!! */
 #admin-ui-tabs .dyn-tabs {overflow:auto;display:none;}
 
-/*////////////////////////////////////
-////////////// Table /////////////////
-////////////////////////////////////*/
+/* Table */
 table.adminlist .right{text-align: right;}
-/*form {overflow: auto;}
-table.admin-table {table-layout: auto;border-collapse: collapse;width: 100%;overflow: auto;}
-table.admin-table th {background: #7c7d7f url(../images/admin_ui/admin_table_th_header_background.png) bottom repeat-x;padding: 20px 5px 5px 5px;color: #fff;font-size: 12px;text-shadow: 0px -1px 1px #000;letter-spacing: 0px;font-weight: normal;vertical-align: top;}
-table.admin-table th a {color: #fff;font-size: 13px;text-shadow: 0px -1px 1px #000;cursor:pointer;letter-spacing: 1px;font-weight: normal;}
-table.admin-table tr td {padding: 6px 5px 6px 5px;letter-spacing: 0px;cursor: pointer;font-size: 11px;}
-table.admin-table tr.row0:hover, table.admin-table tr.row1:hover {background: #8297ba url(../images/admin_ui/admin_table_tr_hover_background.png) top repeat-x;color: #fff;}
-table.admin-table tr.row0:hover a, table.admin-table tr.row1:hover a {color: #fff;text-shadow: 0px -1px 1px #5a74a6;}
-table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}*/
 
-/*////////////////////////////////////
-//////////// Admin Menu //////////////
-////////////////////////////////////*/
+/* Admin Menu */
 #admin-ui-menu {border-bottom:1px solid #94B1CF;}
 #admin-ui-menu h3.menu-title {background: url("../images/admin_ui/page_bg_blue.png") repeat-x scroll center top #888;cursor:pointer;border-top: 1px solid #94B1CF;margin: 0px;padding: 6px 20px;color: #fff;font-size: 13px;font-weight: normal;color: #333;}
 .menu-vmlogo {background: url("../images/vm_logo.png") no-repeat scroll center bottom #707174;color: #333333;cursor: pointer;font-size: 13px;font-weight: normal;height: 30px;margin: 0;padding: 0;
@@ -177,15 +158,6 @@ table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}*
 font-weight: normal;
 }
 
-
-/*////////////////////////////////////
-////////// Update Notices ////////////
-////////////////////////////////////*/
-
-.update-notice {background: #59c418 url(../images/admin_ui/update_notice_background.png) top repeat-x;font-size: 13px;border-bottom: solid #66676b 1px;}
-.update-notice a:link, .update-notice a:visited {display: block;padding: 9px 20px;color: #fff;text-shadow: 0px -1px 1px #307606;letter-spacing: 1px;text-decoration: none;}
-.update-notice a:link span, .update-notice a:visited span {background: url(../images/admin_ui/icon_info.png) left top no-repeat;padding: 0px 0px 0px 32px;}
-
 /*////////////////////////////////////
 ////////////// Basics ////////////////
 ////////////////////////////////////*/
@@ -202,7 +174,7 @@ font-weight: normal;
 .width1{width:1%}.width2{width:2%}.width3{width:3%}.width4{width:4%}.width5{width:5%}.width6{width:6%}.width7{width:7%}.width8{width:8%}.width9{width:9%}.width10{width:10%}.width11{width:11%}.width12{width:12%}.width13{width:13%}.width14{width:14%}.width15{width:15%}.width16{width:16%}.width17{width:17%}.width18{width:18%}.width19{width:19%}.width20{width:20%}.width21{width:21%}.width22{width:22%}.width23{width:23%}.width24{width:24%}.width25{width:25%}.width26{width:26%}.width27{width:27%}.width28{width:28%}.width29{width:29%}.width30{width:30%}.width31{width:31%}.width32{width:32%}.width33{width:33%}.width34{width:34%}.width35{width:35%}.width36{width:36%}.width37{width:37%}.width38{width:38%}.width39{width:39%}.width40{width:40%}.width41{width:41%}.width42{width:42%}.width43{width:43%}.width44{width:44%}.width45{width:45%}.width46{width:46%}.width47{width:47%}.width48{width:48%}.width49{width:49%}.width50{width:50%}.width51{width:51%}.width52{width:52%}.width53{width:53%}.width54{width:54%}.width55{width:55%}.width56{width:56%}.width57{width:57%}.width58{width:58%}.width59{width:59%}.width60{width:60%}.width61{width:61%}.width62{width:62%}.width63{width:63%}.width64{width:64%}.width65{width:65%}.width66{width:66%}.width67{width:67%}.width68{width:68%}.width69{width:69%}.width70{width:70%}.width71{width:71%}.width72{width:72%}.width73{width:73%}.width74{width:74%}.width75{width:75%}.width76{width:76%}.width77{width:77%}.width78{width:78%}.width79{width:79%}.width80{width:80%}.width81{width:81%}.width82{width:82%}.width83{width:83%}.width84{width:84%}.width85{width:85%}.width86{width:86%}.width87{width:87%}.width88{width:88%}.width89{width:89%}.width90{width:90%}.width91{width:91%}.width92{width:92%}.width93{width:93%}.width94{width:94%}.width95{width:95%}.width96{width:96%}.width97{width:97%}.width98{width:98%}.width99{width:99%}.width100{width:100%}
 
 
-/* Icones */
+/* Icons */
 .print_32, .icon-32-print {background: url(../images/icon_32/printer.png) no-repeat transparent; float:left;height: 32px;margin: auto;text-align: center;width: 32px;}
 .invoice_32, .invoice-32-print {background: url(../images/icon_32/invoice.png) no-repeat transparent; float:left;height: 32px;margin: auto;text-align: center;width: 32px;}
 .invoicenew_32, .invoice-32-print {background: url(../images/icon_32/invoicenew.png) no-repeat transparent; float:left;height: 32px;margin: auto;text-align: center;width: 32px;}

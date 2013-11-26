@@ -65,8 +65,8 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('PayPal', 'plugin', 'paypal', 'vmpayment');
 			$this->installPlugin ('PayPal AIO', 'plugin', 'paypal_aio', 'vmpayment');
 			$this->installPlugin ('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
-			$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
-			$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
+			//$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
+			//$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
 			$this->installPlugin ('Moneybookers', 'plugin', 'moneybookers', 'vmpayment', 0, 0);
 			$this->installPlugin ('Moneybookers Credit Cards', 'plugin', 'moneybookers_acc', 'vmpayment');
 			$this->installPlugin ('Moneybookers Lastschrift', 'plugin', 'moneybookers_did', 'vmpayment');

@@ -1,15 +1,3 @@
-#content-box {
-	background: url(../images/admin_menu/vm_border.png) 0 0 repeat-y;
-}
-
-#content-box2 {
-	background: url(../images/admin_menu/vm_border.png) 100% 0 repeat-y;
-	background-color: Black;
-}
-
-#content-box3 {
-	background: url(../images/admin_menu/vm_border.png) 100% 0 repeat-y;
-}
 
 #content-pad {
 	padding: 0;
