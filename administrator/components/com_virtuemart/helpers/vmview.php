@@ -363,24 +363,25 @@ class VmView extends JView{
 
 
 
-	function SetViewTitle($name ='', $msg ='') {
-		$view = JRequest::getWord('view', JRequest::getWord('controller'));
+	function SetViewTitle($name ='', $msg ='',$icon ='') {
 
+		$view = JRequest::getWord('view', JRequest::getWord('controller'));
 		if ($name == '')
-		$name = $view;
-		if ($msg) {
+			$name = strtoupper($view);
+		if ($icon == '')
+			$icon = strtolower($view);
+		if (!$task = JRequest::getWord('task'))
+			$task = 'list';
+
+		if (!empty($msg)) {
 			$msg = ' <span style="color: #666666; font-size: large;">' . $msg . '</span>';
 		}
 
 		$viewText = JText::_('COM_VIRTUEMART_' . strtoupper($name));
-		if (!$task = JRequest::getWord('task'))
-		$task = 'list';
 
 		$taskName = ' <small><small>[ ' . JText::_('COM_VIRTUEMART_' . $task) . ' ]</small></small>';
-		$icon=$view;
-		if ($task=='editshop') {
-			$icon='shop_mart';
-		}
+
+		vmdebug('SetViewTitle',$name,$icon, $task);
 		JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $icon . '_48');
 		$this->assignRef('viewName',$viewText); //was $viewName?
 		$app = JFactory::getApplication();

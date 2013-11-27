@@ -1,8 +1,6 @@
 <?php
 /**
  *
- * Paypal payment plugin
- *
  * @author Jeremy Magne
  * @version $Id$
  * @package VirtueMart

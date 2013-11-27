@@ -204,6 +204,8 @@ class VmModel extends JModel {
 
 	function checkFilterOrder($toCheck){
 
+		if(empty($toCheck)) return $this->_selectedOrdering;
+
 		//vmdebug('checkFilterOrder',$this->_validOrderingFieldName);
 		if(!in_array($toCheck, $this->_validOrderingFieldName)){
 

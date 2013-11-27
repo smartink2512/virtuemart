@@ -237,6 +237,7 @@ if (!empty($this->products)) {
 
 					<!-- The "Average Customer Rating" Part -->
 					<?php if ($this->showRating) { ?>
+
 					<span class="contentpagetitle"><?php echo JText::_ ('COM_VIRTUEMART_CUSTOMER_RATING') ?>:</span>
 					<br/>
 					<?php

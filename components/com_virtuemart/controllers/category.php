@@ -49,7 +49,7 @@ class VirtueMartControllerCategory extends JController {
 	* @author George
 	* @access public
 	*/
-	public function display()  {
+	public function display($cachable = false, $urlparams = false)  {
 
 		if (JRequest::getvar('search')) {
 			$view = $this->getView('category', 'html');
