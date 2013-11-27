@@ -26,7 +26,7 @@
 .icon-48-vm_product_48, .vm_shop_products_48{ background-position: 0px -656px;  height: 39px;  }
 .icon-48-vm_user_48, .vm_shop_users_48{background-position: 0px -705px;   height: 37px;    }
 .icon-48-vm_shoppergroup_48{background-position: 0px -705px;   height: 37px;    }
-.vm_shop_mart_48{background-position: 0px -752px; width: 42px; height: 39px;    }
+.vm_shop_mart_48, .icon-48-vm_shop_mart_48{background-position: 0px -752px;  height: 39px;    }
 .vm_cpanel_48{background-position: 0px -801px;  height: 46px;   }
 
 .icon-32-lock{ background: url(../images/icon_32/icon-32-lock.png); }

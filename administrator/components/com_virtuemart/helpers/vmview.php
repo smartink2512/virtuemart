@@ -365,6 +365,7 @@ class VmView extends JView{
 
 	function SetViewTitle($name ='', $msg ='') {
 		$view = JRequest::getWord('view', JRequest::getWord('controller'));
+
 		if ($name == '')
 		$name = $view;
 		if ($msg) {
@@ -376,7 +377,11 @@ class VmView extends JView{
 		$task = 'list';
 
 		$taskName = ' <small><small>[ ' . JText::_('COM_VIRTUEMART_' . $task) . ' ]</small></small>';
-		JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $view . '_48');
+		$icon=$view;
+		if ($task=='editshop') {
+			$icon='shop_mart';
+		}
+		JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $icon . '_48');
 		$this->assignRef('viewName',$viewText); //was $viewName?
 		$app = JFactory::getApplication();
 		$doc = JFactory::getDocument();
