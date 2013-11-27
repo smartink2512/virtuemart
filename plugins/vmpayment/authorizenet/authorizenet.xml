@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" >
-    <name>VM Payment - authorize.net AIM</name>
+    <name>Authorize.net AIM</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
@@ -79,7 +79,13 @@
 	<param name="max_amount" type="text"  label="VMPAYMENT_AUTHORIZENET_MAX_AMOUNT" description="VMPAYMENT_AUTHORIZENET_MAX_AMOUNT_DESC" />
 	<param name="cost_per_transaction" type="text"  label="VMPAYMENT_AUTHORIZENET_COST_PER_TRANSACTION" description="VMPAYMENT_AUTHORIZENET_COST_TRANSACTION_DESC" />
 	<param name="cost_percent_total" type="text"  label="VMPAYMENT_AUTHORIZENET_COST_PERCENT_TOTAL" description="VMPAYMENT_AUTHORIZENET_COST_TOTAL_DESC" />
-
+        <param name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_AUTHORIZENET_PAYMENT_CURRENCY"
+               description="VMPAYMENT_AUTHORIZENET_PAYMENT_CURRENCY_DESC"/>
+        <param name="email_currency" type="list" default="vendor" label="VMPAYMENT_AUTHORIZENET_EMAIL_CURRENCY"
+               description="VMPAYMENT_AUTHORIZENET_EMAIL_CURRENCY_DESC">
+            <option value="vendor">VMPAYMENT_AUTHORIZENET_EMAIL_CURRENCY_VENDOR</option>
+            <option value="payment">VMPAYMENT_AUTHORIZENET_EMAIL_CURRENCY_PAYMENT</option>
+        </param>
 	<param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_AUTHORIZENET_TAX" description="VMPAYMENT_AUTHORIZENET_TAX_DESC" />
 
     </params>

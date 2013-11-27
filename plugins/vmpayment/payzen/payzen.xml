@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" method="upgrade">
-    <name>VM - Payment, PayZen</name>
+    <name>PayZen</name>
     <creationDate>January 27 2013</creationDate>
     <author>Lyra Network</author>
     <authorEmail>support@payzen.eu</authorEmail>
@@ -22,10 +22,7 @@
         <language tag="fr-FR">languageBE/fr-FR.plg_vmpayment_payzen.ini</language>
     </languages>
     
-    <media folder="images" destination="../images/stories/virtuemart/payment">
-		<filename>payzen.png</filename>
-	</media>
-    
+
    	<params addpath="/plugins/vmpayment/payzen/elements" />
    	<params addpath="/plugins/vmpayment/payzen/payzen/elements" />
     
