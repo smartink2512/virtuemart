@@ -72,8 +72,10 @@ class mod_virtuemart_product {
 							<?php foreach ($product->customfieldsCart as $field) { ?>
 
 							<div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
-								<span class="product-fields-title"><b><?php echo $field->custom_title ?></b></span>
-								<?php echo JHTML::tooltip ($field->custom_tip, $field->custom_title, 'tooltip.png'); ?>
+								<?php if($field->show_title == 1) { ?>
+									<span class="product-fields-title"><b><?php echo $field->custom_title ?></b></span>
+									<?php echo JHTML::tooltip ($field->custom_tip, $field->custom_title, 'tooltip.png'); ?>
+								<?php } ?>
 								<span class="product-field-display"><?php echo $field->display ?></span>
 								<span class="product-field-desc"><?php echo $field->custom_field_desc ?></span>
 							</div>
