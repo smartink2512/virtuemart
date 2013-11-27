@@ -1,7 +1,7 @@
 /* 16x16 images */
 
 /* 32x32 images */
-.icon-32-vm_new_32 {  background: url(../images/icon_32/vm_new_32.png); }
+.icon-32-lock{ background: url(../images/icon_32/icon-32-lock.png); }
 
 /* 48x48 images and joomla overide to use it*/
 #cpanel span.vmicon48 {    display: inline-block !important; height: 48px; width: 48px;margin-top: 10px;}
@@ -22,12 +22,12 @@
 .vm_shop_configuration_48{background-position: 0px -508px;  height: 38px; }
 .vm_shop_help_48{background-position: 0px -556px; height: 41px;}
 .icon-48-vm_orders_48, .vm_shop_orders_48{ background-position: 0px -304px;  height: 41px; }
-.icon-48-vm_paymentmethod_48, .vm_shop_payment_48{ background-position: 0px -607px;   height: 39px; }
-.icon-48-vm_product_48, .vm_shop_products_48{ background-position: 0px -656px;  height: 39px;  }
-.icon-48-vm_user_48, .vm_shop_users_48{background-position: 0px -705px;   height: 37px;    }
-.icon-48-vm_shoppergroup_48{background-position: 0px -705px;   height: 37px;    }
-.vm_shop_mart_48, .icon-48-vm_shop_mart_48{background-position: 0px -752px;  height: 39px;    }
-.vm_cpanel_48{background-position: 0px -801px;  height: 46px;   }
+.icon-48-vm_paymentmethod_48, .vm_shop_payment_48{ background-position: 0px -559px;   height: 39px;  }
+.icon-48-vm_product_48, .vm_shop_products_48{ background-position: 0px -608px; height: 39px;  }
+.icon-48-vm_user_48, .vm_shop_users_48{background-position: 0px -657px;  height: 37px;    }
+.icon-48-vm_shoppergroup_48{background-position: 0px -657px;  height: 37px;   }
+.icon-48-vm_shipmentmethod_48{ background-position: 0px -809px;  height: 42px;   }
+.vm_shop_mart_48, .icon-48-vm_shop_mart_48{background-position: 0px -704px;  height: 39px;    }
+.vm_cpanel_48{background-position: 0px -753px;   height: 46px;   }
 
-.icon-32-lock{ background: url(../images/icon_32/icon-32-lock.png); }
 
