@@ -127,11 +127,11 @@ if (!class_exists ('vmPSPlugin')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 		}
 		$currency = CurrencyDisplay::getInstance ('', $order['details']['BT']->virtuemart_vendor_id);
-		$html .= $this->getHtmlRow ('STANDARD_ORDER_NUMBER', $order['details']['BT']->order_number, "vmorder-done-nr");
-		$html .= $this->getHtmlRow ('STANDARD_AMOUNT', $currency->priceDisplay ($order['details']['BT']->order_total), "vmorder-done-amount");
+		$html .= $this->getHtmlRow ('STANDARD_ORDER_NUMBER', $order['details']['BT']->order_number, "class=vmorder-done-nr");
+		$html .= $this->getHtmlRow ('STANDARD_AMOUNT', $currency->priceDisplay ($order['details']['BT']->order_total), "class=vmorder-done-amount");
 
 		if ($method->payment_currency != $order['details']['BT']->order_currency) {
-			$html .= $this->getHtmlRow ('COM_VIRTUEMART_CART_TOTAL_PAYMENT', $totalInPaymentCurrency['display'], "vmorder-done-amount");
+			$html .= $this->getHtmlRow ('COM_VIRTUEMART_CART_TOTAL_PAYMENT', $totalInPaymentCurrency['display'], "class=vmorder-done-amount");
 		}
 
 		//$html .= $this->getHtmlRow('STANDARD_INFO', $method->payment_info);
