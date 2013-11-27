@@ -64,7 +64,7 @@ if(!VmConfig::get('dangeroustools', false)){
  	<td align="center" width="25%">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=portMedia&token='.JUtility::getToken() ); ?>
 	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING_CONFIRM', JText::_('COM_VIRTUEMART_MEDIA_S')); ?>', '<?php echo $link; ?>');">
-			<span class="vmicon48 vm_cpanel_48"></span>
+			<span class="vmicon48"></span>
 			<br /><?php echo JText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'); ?>
 
 		</a></div>
@@ -111,7 +111,7 @@ if(!VmConfig::get('dangeroustools', false)){
     <td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=refreshCompleteInstall&token='.JUtility::getToken() ); ?>
 	    <div class="icon"><a onclick="javascript:confirmation('<?php echo addslashes( JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH_CONFIRM_JS') ); ?>', '<?php echo $link; ?>');">
-		<span class="vmicon48 vm_trash_48"></span>
+		<span class="vmicon48"></span>
 	    <br />
             <?php echo Jtext::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>
 		</a></div>
@@ -119,7 +119,7 @@ if(!VmConfig::get('dangeroustools', false)){
 	   <td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=refreshCompleteInstallAndSample&token='.JUtility::getToken() ); ?>
 	    <div class="icon"><a onclick="javascript:confirmation('<?php echo addslashes( JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_SAMPLE_CONFIRM_JS') ); ?>', '<?php echo $link; ?>');">
-		<span class="vmicon48 vm_trash_48"></span>
+		<span class="vmicon48"></span>
 	    <br />
             <?php echo Jtext::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_SAMPLE'); ?>
 		</a></div>
@@ -128,7 +128,7 @@ if(!VmConfig::get('dangeroustools', false)){
 	   <td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=updateDatabase&token='.JUtility::getToken() ); ?>
 	    <div class="icon"><a onclick="javascript:confirmation('<?php echo addslashes( JText::_('COM_VIRTUEMART_UPDATEDATABASE_CONFIRM_JS') ); ?>', '<?php echo $link; ?>');">
-		<span class="vmicon48 vm_trash_48"></span>
+		<span class="vmicon48"></span>
 	    <br />
             <?php echo Jtext::_('COM_VIRTUEMART_UPDATEDATABASE'); ?>
 		</a></div>
@@ -148,14 +148,14 @@ if(!VmConfig::get('dangeroustools', false)){
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=deleteVmData&token='.JUtility::getToken() ); ?>
 	    <div class="icon"><a onclick="javascript:confirmation('<?php echo addslashes( JText::_('COM_VIRTUEMART_UPDATE_REMOVEDATA_CONFIRM_JS') ); ?>', '<?php echo $link; ?>');">
-		<span class="vmicon48 vm_trash_48"></span>
+		<span class="vmicon48"></span>
 	    <br /> <?php echo Jtext::_('COM_VIRTUEMART_UPDATE_REMOVEDATA'); ?>
 		</a></div>
 	</td>
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=deleteVmTables&token='.JUtility::getToken() ); ?>
 	    <div class="icon"><a onclick="javascript:confirmation('<?php echo addslashes( JText::_('COM_VIRTUEMART_UPDATE_REMOVETABLES_CONFIRM_JS') ); ?>', '<?php echo $link; ?>');">
-		<span class="vmicon48 vm_trash_48"></span>
+		<span class="vmicon48"></span>
 	    <br />
             <?php echo Jtext::_('COM_VIRTUEMART_UPDATE_REMOVETABLES'); ?>
 		</a></div>
