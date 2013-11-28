@@ -103,7 +103,7 @@ class VirtuemartViewShipmentmethod extends VmView {
 			$enable = 'enabled';
 			$ext_id = 'extension_id';
 		}
-		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmshipment" AND `'.$enable.'`="1" and `state`="0" ORDER BY name ASC';
+		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmshipment" AND `'.$enable.'`="1" and `state`="0" ORDER BY `name` ASC';
 		$db->setQuery($q);
 		$result = $db->loadAssocList($ext_id);
 		if(empty($result)){
