@@ -103,7 +103,9 @@ class VirtuemartViewShipmentmethod extends VmView {
 			$enable = 'enabled';
 			$ext_id = 'extension_id';
 		}
-		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmshipment" AND `'.$enable.'`="1" ';
+		// TODO  select all PLUGINS correctly installed, published or unpublished
+		//  when saving the plugin must then be enabled in joomla
+		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmshipment" AND `enabled`="1" AND `state`="0"';
 		$db->setQuery($q);
 		$result = $db->loadAssocList($ext_id);
 		if(empty($result)){

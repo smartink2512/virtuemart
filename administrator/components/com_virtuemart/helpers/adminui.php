@@ -38,7 +38,6 @@ class AdminUIHelper {
 
 		//loading defaut admin CSS
 		$document->addStyleSheet($admin.'css/admin_ui.css');
-		$document->addStyleSheet($admin.'css/admin_menu.css');
 		$document->addStyleSheet($admin.'css/admin.styles.css');
 		$document->addStyleSheet($admin.'css/toolbar_images.css');
 		$document->addStyleSheet($admin.'css/menu_images.css');

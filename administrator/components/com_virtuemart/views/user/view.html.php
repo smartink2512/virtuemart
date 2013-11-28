@@ -84,9 +84,9 @@ class VirtuemartViewUser extends VmView {
 			if($task == 'editshop' && $userDetails->user_is_vendor){
 // 				$model->setCurrent();
 				if(!empty($userDetails->vendor->vendor_store_name)){
-					$this->SetViewTitle('STORE',$userDetails->vendor->vendor_store_name );
+					$this->SetViewTitle('STORE',$userDetails->vendor->vendor_store_name , 'shop_mart');
 				} else {
-					$this->SetViewTitle('STORE',JText::_('COM_VIRTUEMART_NEW_VENDOR') );
+					$this->SetViewTitle('STORE',JText::_('COM_VIRTUEMART_NEW_VENDOR'), 'shop_mart' );
 				}
 				$vendorid = $userDetails->virtuemart_vendor_id;
 			} else {

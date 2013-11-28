@@ -1470,7 +1470,7 @@ class ShopFunctions {
 		$warn = FALSE;
 		$uri = JFactory::getURI();
 		$configlink = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
-
+		VmConfig::loadJLang('com_virtuemart');
 		if(empty($safePath)){
 			$warn = 'COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET';
 		} else {

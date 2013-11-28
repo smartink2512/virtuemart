@@ -61,11 +61,12 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('Standard', 'plugin', 'standard', 'vmpayment');
 			$this->installPlugin ('Klarna', 'plugin', 'klarna', 'vmpayment');
 			$this->installPlugin ('Sofort Banking/Überweisung', 'plugin', 'sofort', 'vmpayment');
-			//$this->installPlugin ('Sofort Ideal', 'plugin', 'sofort_ideal', 'vmpayment');
+			$this->installPlugin ('Sofort Ideal', 'plugin', 'sofort_ideal', 'vmpayment');
 			$this->installPlugin ('Paypal', 'plugin', 'paypal', 'vmpayment');
+			$this->installPlugin ('PayPal AIO', 'plugin', 'paypal_aio', 'vmpayment');
 			$this->installPlugin ('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
-			$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
-			$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
+			//$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
+			//$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
 			$this->installPlugin ('Moneybookers', 'plugin', 'moneybookers', 'vmpayment', 0, 0);
 			$this->installPlugin ('Moneybookers Credit Cards', 'plugin', 'moneybookers_acc', 'vmpayment');
 			$this->installPlugin ('Moneybookers Lastschrift', 'plugin', 'moneybookers_did', 'vmpayment');

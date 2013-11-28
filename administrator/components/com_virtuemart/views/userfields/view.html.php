@@ -153,7 +153,7 @@ class VirtuemartViewUserfields extends VmView {
 			$this->assignRef('userFieldValues', $userFieldValues);
 			$this->assignRef('editor', $editor);
 		} else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_MANAGE_USER_FIELDS'));
+			JToolBarHelper::title( JText::_('COM_VIRTUEMART_MANAGE_USER_FIELDS'),'vm_user_48 head');
 			JToolBarHelper::addNewX();
 			JToolBarHelper::editListX();
 			JToolBarHelper::divider();

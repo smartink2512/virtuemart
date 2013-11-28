@@ -122,8 +122,8 @@ class VirtuemartViewPaymentMethod extends VmView {
 
         $db = JFactory::getDBO();
         //Todo speed optimize that, on the other hand this function is NOT often used and then only by the vendors
-        //$q = 'SELECT * FROM `#__extensions` WHERE `folder` = "vmpayment" AND `enabled`="1" ';
-        $q = 'SELECT * FROM `#__extensions` WHERE `folder` = "vmpayment"   ';
+
+        $q = 'SELECT * FROM `#__extensions` WHERE `folder` = "vmpayment"  AND `enabled`="1" AND `state`="0" ';
         $db->setQuery($q);
         $payments = $db->loadAssocList('extension_id');
         if(empty($payments)){
