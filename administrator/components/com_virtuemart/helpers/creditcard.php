@@ -155,7 +155,7 @@ class Creditcard {
 	 * @author Valerie Isaksen
 	 */
 
-	function validate_credit_card_cvv($creditcard_type, $cvv, $required = true) {
+	static function validate_credit_card_cvv($creditcard_type, $cvv, $required = true) {
 
 		if ($required and empty($cvv)) return false;
 		return true;

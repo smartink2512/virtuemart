@@ -642,7 +642,7 @@ class shopFunctionsF {
 	 * Get Virtuemart itemID from joomla menu
 	 * @author Maik K�nnemann
 	 */
-	function getMenuItemId( $lang = '*' ) {
+	static function getMenuItemId( $lang = '*' ) {
 
 		$itemID = '';
 

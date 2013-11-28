@@ -23,7 +23,7 @@ $customerData = $viewData['customerData'];
 
 JHTML::_('behavior.tooltip');
 JHTML::script('vmcreditcard.js', 'components/com_virtuemart/assets/js/', false);
-JFactory::getLanguage()->load('com_virtuemart');
+VmConfig::loadJLang('com_virtuemart', true);
 vmJsApi::jCreditCard();
 
 $doc = JFactory::getDocument();
