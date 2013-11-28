@@ -545,7 +545,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		$html = '<table class="adminlist">' . "\n";
 		$html .= $this->getHtmlHeaderBE();
 		$html .= $this->getHtmlRowBE('COM_VIRTUEMART_PAYMENT_NAME', $paymentTable->payment_name);
-		$html .= $this->getHtmlRowBE('AUTHORIZENET_PAYMENT_ORDER_TOTAL', $paymentTable->payment_order_total . " " . shopFunctions::getCurrencyByID($payment->payment_currency, 'currency_code_3'));
+		$html .= $this->getHtmlRowBE('AUTHORIZENET_PAYMENT_ORDER_TOTAL', $paymentTable->payment_order_total . " " . self::AUTHORIZE_DEFAULT_PAYMENT_CURRENCY);
 		$html .= $this->getHtmlRowBE('AUTHORIZENET_COST_PER_TRANSACTION', $paymentTable->cost_per_transaction);
 		$html .= $this->getHtmlRowBE('AUTHORIZENET_COST_PERCENT_TOTAL', $paymentTable->cost_percent_total);
 		$code = "authorizenet_response_";
@@ -597,14 +597,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 			return FALSE;
 		}
 
-        if (!isset($method->payment_currency)) {
-			$paymentCurrencyId=  shopFunctions::getCurrencyByID(self::AUTHORIZE_DEFAULT_PAYMENT_CURRENCY);
-			$paymentCurrencyName=self::AUTHORIZE_DEFAULT_PAYMENT_CURRENCY;
-		} else {
-			$paymentCurrencyId=$method->payment_currency;
-			$paymentCurrencyName=  shopFunctions::getCurrencyByID($paymentCurrencyId, 'currency_code_3');
-		}
-		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$paymentCurrencyId);
+		$payment_currency_id = shopFunctions::getCurrencyIDByName(self::AUTHORIZE_DEFAULT_PAYMENT_CURRENCY);
+		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$payment_currency_id);
 		$cd = CurrencyDisplay::getInstance($cart->pricesCurrency);
 
 		// Set up data
@@ -613,7 +607,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		$formdata = array_merge($this->_setResponseConfiguration(), $formdata);
 		$formdata = array_merge($this->_setBillingInformation($usrBT), $formdata);
 		$formdata = array_merge($this->_setShippingInformation($usrST), $formdata);
-		$formdata = array_merge($this->_setTransactionData($order['details']['BT'], $method, $totalInPaymentCurrency['value'], $paymentCurrencyName),   $formdata);
+		$formdata = array_merge($this->_setTransactionData($order['details']['BT'], $method, $totalInPaymentCurrency['value']), $formdata);
 		$formdata = array_merge($this->_setMerchantData($method), $formdata);
 		// prepare the array to post
 		$poststring = '';
@@ -704,11 +698,17 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		if (!$this->selectedThisElement($method->payment_element)) {
 			return FALSE;
 		}
-		if (!isset($method->payment_currency)) {
 			$method->payment_currency= self::AUTHORIZE_DEFAULT_PAYMENT_CURRENCY;
+
+		if (!class_exists('VirtueMartModelVendor')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 		}
-		$this->getPaymentCurrency($method);
-		$paymentCurrencyId = $method->payment_currency;
+		$vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
+		$db = JFactory::getDBO();
+
+		$q = 'SELECT   `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `currency_code_3`= "'.self::AUTHORIZE_DEFAULT_PAYMENT_CURRENCY.'"';
+		$db->setQuery($q);
+		$paymentCurrencyId = $db->loadResult();
 	}
 
 	function _clearAuthorizeNetSession ()
@@ -924,7 +924,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		);
 	}
 
-	function _setTransactionData ($orderDetails, $method, $totalInPaymentCurrency, $paymentCurrency )
+	function _setTransactionData ($orderDetails, $method, $totalInPaymentCurrency)
 	{
 
 		// backward compatible
@@ -935,7 +935,6 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		}
 		return array(
 			'x_amount' => $totalInPaymentCurrency,
-			'x_currency_code' => $paymentCurrency,
 			'x_invoice_num' => $orderDetails->order_number,
 			'x_method' => 'CC',
 			'x_type' => $xtype,
@@ -1146,8 +1145,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		$html = '<table class="adminlist">' . "\n";
 		$html .= $this->getHtmlRow('AUTHORIZENET_PAYMENT_NAME', $payment_name);
 		$html .= $this->getHtmlRow('AUTHORIZENET_ORDER_NUMBER', $authorizeNetResponse['invoice_number']);
-		// NO CURRENCY RETURNED BY AUTHORIZE ???
-		//$html .= $this->getHtmlRow('AUTHORIZENET_AMOUNT', $authorizeNetResponse['amount']);
+		$html .= $this->getHtmlRow('AUTHORIZENET_AMOUNT', $authorizeNetResponse['amount'] . ' ' . self::AUTHORIZE_DEFAULT_PAYMENT_CURRENCY);
+		//$html .= $this->getHtmlRow('AUTHORIZENET_RESPONSE_AUTHORIZATION_CODE', $authorizeNetResponse['authorization_code']);
 		$html .= $this->getHtmlRow('AUTHORIZENET_RESPONSE_TRANSACTION_ID', $authorizeNetResponse['transaction_id']);
 		$html .= '</table>' . "\n";
 		$this->writelog(JText::_('VMPAYMENT_AUTHORIZENET_ORDER_NUMBER') . " " . $authorizeNetResponse['invoice_number'] . ' payment approved', '_handleResponse', 'debug');
