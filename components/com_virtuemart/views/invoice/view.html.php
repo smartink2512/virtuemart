@@ -141,9 +141,6 @@ class VirtuemartViewInvoice extends VmView {
 				}
 			}
 		}
-		$company= empty($orderDetails['details']['BT']->company) ?"":$orderDetails['details']['BT']->company.", ";
-		$shopperName =  $company. $orderDetails['details']['BT']->title.' '.$orderDetails['details']['BT']->first_name.' '.$orderDetails['details']['BT']->last_name;
-		$this->assignRef('shopperName', $shopperName);
 
 		//Todo multix
 		$vendorId=1;
@@ -183,6 +180,18 @@ class VirtuemartViewInvoice extends VmView {
 
 		$shipmentfields = $userFieldsModel->getUserFieldsFilled( $shipmentFieldset ,$orderst );
 		$this->assignRef('shipmentfields', $shipmentfields);
+
+		$title="";
+		foreach ($userfields['fields'] as  $field) {
+			if ($field['name']=="title") {
+				$title=$field['value'];
+				break;
+			}
+		}
+		$company= empty($orderDetails['details']['BT']->company) ?"":$orderDetails['details']['BT']->company.", ";
+		$shopperName =  $company. $title.' '.$orderDetails['details']['BT']->first_name.' '.$orderDetails['details']['BT']->last_name;
+		$this->assignRef('shopperName', $shopperName);
+
 
 
 		// Create an array to allow orderlinestatuses to be translated
