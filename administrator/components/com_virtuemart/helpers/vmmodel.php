@@ -39,6 +39,7 @@ class VmModel extends JModel {
 	var $_cidName		= 'cid';
 	var $_togglesName	= null;
 	var $_selectedOrderingDir = 'DESC';
+
 	private $_withCount = true;
 	var $_noLimit = false;
 
@@ -382,7 +383,7 @@ class VmModel extends JModel {
 			$this->_db->setQuery($q,$limitStart,$limit);
 // 			vmdebug('exeSortSearchListQuery '.get_class($this).' with limit');
 		}
- 	//	vmdebug('exeSortSearchListQuery '.$orderBy .$filter_order_Dir,$q);
+ 		//vmdebug('exeSortSearchListQuery '.$orderBy .$filter_order_Dir,$q);
 
 		if($object == 2){
 			 $this->ids = $this->_db->loadResultArray();

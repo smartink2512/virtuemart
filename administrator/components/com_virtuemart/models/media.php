@@ -313,13 +313,13 @@ class VirtueMartModelMedia extends VmModel {
 		}
 
 		//the active media id is not empty, so there should be something done with it
-		if( (!empty($data['active_media_id']) && !empty($data['virtuemart_media_id']) ) || $data['media_action']=='upload'){
-
+		//if( (!empty($data['active_media_id']) && !empty($data['virtuemart_media_id']) ) || $data['media_action']=='upload'){
+		if( !empty($data['active_media_id']) || $data['media_action']=='upload'){
 			$oldIds = $data['virtuemart_media_id'];
 			$data['file_type'] = $type;
-			$data['virtuemart_media_id'] = (int)$data['active_media_id'];
+			//$data['virtuemart_media_id'] = (int)$data['active_media_id'];	//done within the function now
 
-			$this -> setId($data['virtuemart_media_id']);
+			$this -> setId($data['active_media_id']);
 
 			$virtuemart_media_id = $this->store($data,$type);
 
@@ -389,6 +389,7 @@ class VirtueMartModelMedia extends VmModel {
 			unset($data['file_url_thumb']);
 		}*/
 		//unset($data['file_url_thumb']);
+		$data['virtuemart_media_id'] = $this->getId();
 		$table->bind($data);
 		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
 
