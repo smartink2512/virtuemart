@@ -13,8 +13,6 @@
     </description>
     <files>
         <filename plugin="paypal_aio">paypal_aio.php</filename>
-        <filename>index.html</filename>
-        <folder>paypal_aio</folder>
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements"/>
     <params addpath="/plugins/vmpayment/paypal_aio/paypal_aio/elements"/>
