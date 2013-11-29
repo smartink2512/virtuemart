@@ -915,6 +915,8 @@ class VirtueMartModelProduct extends VmModel {
 		}
 	}
 
+	var $withRating = false;
+
 	public function getProductSingle ($virtuemart_product_id = NULL, $front = TRUE, $quantity = 1,$customfields=TRUE) {
 
 		//$this->fillVoidProduct($front);
@@ -922,13 +924,13 @@ class VirtueMartModelProduct extends VmModel {
 			$virtuemart_product_id = $this->setId ($virtuemart_product_id);
 		}
 
-		$productKey = md5($virtuemart_product_id.$front.$quantity.$customfields);
+		$productKey = md5($virtuemart_product_id.$front.$quantity.$customfields.$this->withRating);
 		static $_productsSingle = array();
 		if (array_key_exists ($productKey, $_productsSingle)) {
 			//vmdebug('getProduct, take from cache '.$productKey);
 			return $_productsSingle[$productKey];
-		} else if(!$customfields){
-			$productKey = md5($virtuemart_product_id.$front.$quantity.TRUE);
+		} else if(!$customfields or !$this->withRating){
+			$productKey = md5($virtuemart_product_id.$front.$quantity.TRUE.TRUE);
 			//vmdebug('getProductSingle, recreate $productKey '.$productKey);
 			if (array_key_exists ($productKey, $_productsSingle)) {
 				//vmdebug('getProductSingle, take from cache recreated key',$_productsSingle[$productKey]);
@@ -937,9 +939,13 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		if (!empty($this->_id)) {
-
 // 			$joinIds = array('virtuemart_product_price_id' =>'#__virtuemart_product_prices','virtuemart_manufacturer_id' =>'#__virtuemart_product_manufacturers','virtuemart_customfield_id' =>'#__virtuemart_product_customfields');
-			$joinIds = array('virtuemart_manufacturer_id' => '#__virtuemart_product_manufacturers', 'virtuemart_customfield_id' => '#__virtuemart_product_customfields');
+			if($this->withRating){
+				$joinIds = array('rating' => '#__virtuemart_ratings','virtuemart_manufacturer_id' => '#__virtuemart_product_manufacturers', 'virtuemart_customfield_id' => '#__virtuemart_product_customfields');
+			} else {
+				$joinIds = array('virtuemart_manufacturer_id' => '#__virtuemart_product_manufacturers', 'virtuemart_customfield_id' => '#__virtuemart_product_customfields');
+			}
+
 
 			$product = $this->getTable ('products');
 			$product->load ($this->_id, 0, 0, $joinIds);
@@ -1415,20 +1421,17 @@ class VirtueMartModelProduct extends VmModel {
 		//with the product id and giving back the neighbours
 		foreach ($neighbors as &$neighbor) {
 
-
 			$queryArray =  $this->sortSearchListQuery($onlyPublished,(int)$product->virtuemart_category_id,false,1);
-			//vmdebug('my query ',$queryArray);
-			//return (array($select,$joinedTables,$where,$orderBy));
+
 			if(isset($queryArray[1])){
 				$joinT = $queryArray[1] ;
 				if(is_array($joinT)){
-					array_shift($joinT);//array_shift($joinT);
+					//array_shift($joinT);//array_shift($joinT);
 					$joinT = implode('',$joinT);
 				}
 
-				$q = 'SELECT l.`virtuemart_product_id`, l.`product_name`, `pc`.ordering FROM `#__virtuemart_products_' . VMLANG . '` as l';
-				$whereString = ' WHERE (' . implode (' AND ', $queryArray[2]) . ') AND l.`virtuemart_product_id`!="'.$product->virtuemart_product_id.'" ';
-				$q .=  implode('',$queryArray[1]) . $whereString;
+				$q = 'SELECT l.`virtuemart_product_id`, l.`product_name`, `pc`.ordering FROM `#__virtuemart_products_' . VMLANG . '` as l '.$joinT;
+				$q .= ' WHERE (' . implode (' AND ', $queryArray[2]) . ') AND l.`virtuemart_product_id`!="'.$product->virtuemart_product_id.'" ';
 
 				$pos= strpos($queryArray[3],'ORDER BY');
 				$sp = array();

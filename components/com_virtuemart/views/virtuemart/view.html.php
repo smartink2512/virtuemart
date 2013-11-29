@@ -49,6 +49,9 @@ class VirtueMartViewVirtueMart extends VmView {
 
 			$categoryModel = VmModel::getModel('category');
 			$productModel = VmModel::getModel('product');
+			$ratingModel = VmModel::getModel('ratings');
+			$productModel->withRating = $ratingModel->showRating();
+
 			$products = array();
 			$categoryId = JRequest::getInt('catid', 0);
 

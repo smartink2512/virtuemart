@@ -579,26 +579,38 @@ class VmTable extends JTable {
 			$q = 'SELECT `' . $name . '` FROM `' . $tbl_name . '` WHERE `' . $name . '` =  "' . $this->$name . '"  AND `' . $this->_tbl_key . '`!=' . $this->$tbl_key;
 
 			// stAn: using cache can be dangerous here if the function is called twice with an update in between
-			if (!isset(self::$_query_cache[md5($q)])) {
+			//if (!isset(self::$_query_cache[md5($q)])) {
 				$this->_db->setQuery($q);
 				$existingSlugName = $this->_db->loadResult();
-			} else $existingSlugName = self::$_query_cache[md5($q)];
-
+		//	} else $existingSlugName = self::$_query_cache[md5($q)];
+			vmdebug('vmtables ',$this->$name,$existingSlugName);
 			if (!empty($existingSlugName)) {
-				if ($i == 0) {
+				/*if ($i == 0) {
 					if (JVM_VERSION === 1) {
 						$this->$name = $this->$name . JFactory::getDate()->toFormat("%Y-%m-%d") . '-';
 					} else {
 						$this->$name .= '-' .JFactory::getDate()->format('Y-m-d') . '-';
 						//vmdebug('with date '.$this->$name);
 					}
-				} else {
+				} else {*/
 
-					$posNbr = strrpos($this->$name,'-');
-					$existingNbr = (int)substr($this->$name,$posNbr);
-					$existingNbr++;
-					$this->$name = substr($this->$name,0,-$posNbr) . '-' . $existingNbr;
-				}
+					if($posNbr = strrpos($this->$name,'-')){
+						$existingNbr = substr($this->$name,$posNbr+1);
+						vmdebug('vmtables $existingNbr',$existingNbr);
+						if(is_Int($existingNbr)){
+							$existingNbr++;
+							$this->$name = substr($this->$name,0,$posNbr) . '-' . $existingNbr;
+						} else{
+							$this->$name = $this->$name . '-1';
+						}
+
+
+					} else {
+						$this->$name = $this->$name . '-1';
+					}
+
+
+				//}
 			} else {
 				return true;
 			}

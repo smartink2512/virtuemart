@@ -160,7 +160,8 @@ span.bold,div.bold{font-weight:700;}
 .vm2-warning{background-position:0 -1383px;width:50px;height:40px;}
 .vendor-store-desc,.category-view,.featured-view,.latest-view,.topten-view,.recent-view,.related-products-view,.browse-view,.order-view{margin-bottom:25px;}
 .main-image,.featured-view .product,.latest-view .product,.topten-view .product,.recent-view .product,.related-products-view .product,.center,span.center{text-align:center;}
-.main-image img {max-width:100%;height:auto}
+/* .main-image img {max-width:100%;height:auto}*/
+.main-image img {max-width:100%;max-height:260px}
 .main-image img.product-image,.featured-view .spacer img,.latest-view .spacer img,.topten-view .spacer img,.recent-view .spacer img{max-width:100%;height:auto;width:auto;}
 .additional-images,.featured-view .product-price,.latest-view .product-price,.topten-view .product-price,.recent-view .product-price,.output-billto,.output-shipto{margin:10px 0;}
 .ask-a-question,.manufacturer,.manufacturer-details-view .email-weblink,.manufacturer-details-view .description{margin:10px 0 0;}

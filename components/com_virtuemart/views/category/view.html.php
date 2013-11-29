@@ -55,6 +55,7 @@ class VirtuemartViewCategory extends VmView {
 		$categoryModel = VmModel::getModel('category');
 		$productModel = VmModel::getModel('product');
 
+
 		// set search and keyword
 		if ($keyword = vmRequest::uword('keyword', false, ' ,-,+,.,_')) {
 			$pathway->addItem($keyword);
@@ -107,6 +108,12 @@ class VirtuemartViewCategory extends VmView {
 				$pagination = $productModel->getPagination($perRow);
 				$this->assignRef('vmPagination', $pagination);
 
+				$ratingModel = VmModel::getModel('ratings');
+				$showRating = $ratingModel->showRating();
+				$productModel->withRating = $showRating;
+
+				$this->assignRef('showRating', $showRating);
+
 				$products = $productModel->getProducts ($ids);
 				//$products = $productModel->getProductsInCategory($categoryId);
 				$productModel->addImages($products,1);
@@ -121,9 +128,7 @@ class VirtuemartViewCategory extends VmView {
 					}
 				}
 
-				$ratingModel = VmModel::getModel('ratings');
-				$showRating = $ratingModel->showRating();
-				$this->assignRef('showRating', $showRating);
+
 
 				$orderByList = $productModel->getOrderByList($categoryId);
 				$this->assignRef('orderByList', $orderByList);

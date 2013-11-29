@@ -60,6 +60,9 @@ $states = JText::_('COM_VIRTUEMART_STATE_S');
 		    <th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 		    </th>
+			<th width="20">
+				<?php echo $this->sort('virtuemart_country_id') ?>
+			</th>
 		</tr>
 	    </thead>
 	    <?php
@@ -102,6 +105,9 @@ $states = JText::_('COM_VIRTUEMART_STATE_S');
 		<td align="center">
 			<?php echo $published; ?>
 		</td>
+			<td align="center">
+				<?php echo $row->virtuemart_country_id; ?>
+			</td>
 	    </tr>
 		<?php
 		$k = 1 - $k;

@@ -730,20 +730,23 @@ class VirtueMartCart {
 		if (!class_exists('CouponHelper')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
 		}
-		$prices = $this->getCartPrices();
+		if(!isset($this->pricesUnformatted['salesPrice'])){
+			$this->getCartPrices();
+		}
 
 		if(!in_array($coupon_code,$this->_triesValidateCoupon)){
 			$this->_triesValidateCoupon[] = $coupon_code;
 		}
 
 		if(count($this->_triesValidateCoupon)<8){
-			$msg = CouponHelper::ValidateCouponCode($coupon_code, $prices['salesPrice']);;
+			$msg = CouponHelper::ValidateCouponCode($coupon_code, $this->pricesUnformatted['salesPrice']);;
 		} else{
 			$msg = JText::_('COM_VIRTUEMART_CART_COUPON_TOO_MANY_TRIES');
 		}
 
 		if (!empty($msg)) {
 			$this->couponCode = '';
+			$this->getCartPrices();
 			$this->setCartIntoSession();
 			return $msg;
 		}
@@ -825,6 +828,16 @@ class VirtueMartCart {
 		$this->cartData = $this->prepareCartData();
 		$this->prepareCartPrice();
 
+		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
+			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
+			$userModel = JModel::getInstance('user', 'VirtueMartModel');
+			$stData = $userModel->getUserAddressList(0, 'ST', $this->selected_shipto);
+			$stData = get_object_vars($stData[0]);
+			if($this->validateUserData('ST', $stData)){
+				$this->ST = $stData;
+			}
+		}
+
 		if (empty($this->tosAccepted)) {
 
 			$userFieldsModel = VmModel::getModel('Userfields');
@@ -842,15 +855,7 @@ class VirtueMartCart {
 			}
 		}
 
-		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
-			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
-			$userModel = JModel::getInstance('user', 'VirtueMartModel');
-			$stData = $userModel->getUserAddressList(0, 'ST', $this->selected_shipto);
-			$stData = get_object_vars($stData[0]);
-			if($this->validateUserData('ST', $stData)){
-				$this->ST = $stData;
-			}
-		}
+
 
 		if (count($this->products) == 0) {
 			return $this->redirecter('index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
@@ -1286,11 +1291,10 @@ class VirtueMartCart {
 	function prepareCartViewData(){
 
 		// Get the products for the cart
-		$this->prepareCartPrice( ) ;
-
-		$this->cartData = $this->prepareCartData();
-
 		$this->prepareAddressDataInCart();
+
+		$this->prepareCartPrice( ) ;
+		$this->cartData = $this->prepareCartData();
 		$this->prepareVendor();
 
 	}
@@ -1305,9 +1309,16 @@ class VirtueMartCart {
 	public function prepareCartData($checkAutomaticSelected=true){
 		vmSetStartTime('prepareCartData');
 		// Get the products for the cart
-		$product_prices = $this->getCartPrices($checkAutomaticSelected);
+		if(!empty($this->couponCode)){
+			$this->setCouponCode($this->couponCode);
+			vmdebug('ValidateCouponCode',$this->couponCode);
+		} else{
+			// Get the products for the cart, the setCouponCode does it for us
+			$this->getCartPrices($checkAutomaticSelected);
+		}
 
-		if (empty($product_prices)) return null;
+		if (empty($this->pricesUnformatted)) return null;
+
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
 
@@ -1391,12 +1402,34 @@ class VirtueMartCart {
 
 		$addresstype = $type.'address';
 		$userFieldsBT = $userFieldsModel->getUserFieldsFor('cart',$type);
-		$this->$addresstype = $userFieldsModel->getUserFieldsFilled(
+		$address = $this->$addresstype = $userFieldsModel->getUserFieldsFilled(
 		$userFieldsBT
 		,$data
 		,$preFix
 		);
 		//vmdebug('prepareAddressDataInCart',$this->$addresstype);
+		if(empty($this->$type)){
+			$tmp =&$this->$type ;
+			$tmp = array();
+			foreach($address['fields'] as $k =>$field){
+				//vmdebug('prepareAddressDataInCart',$k,$field);
+				if($k=='virtuemart_country_id'){
+					if(isset($address['fields'][$k]['virtuemart_country_id']) and !isset($tmp['virtuemart_country_id'])){
+						$tmp['virtuemart_country_id'] = $address['fields'][$k]['virtuemart_country_id'];
+					}
+				} else if($k=='virtuemart_state_id') {
+					if(isset($address['fields'][$k]['virtuemart_state_id']) and !isset($tmp['virtuemart_state_id'])){
+						$tmp['virtuemart_state_id'] = $address['fields'][$k]['virtuemart_state_id'];
+					}
+				} else if (!empty($address['fields'][$k]['value'])){
+					if(!isset($tmp[$k])){
+						$tmp[$k] = $address['fields'][$k]['value'];
+					}
+
+				}
+			}
+			//$this->$type = $tmp;
+		}
 		if(!empty($this->ST) && $type!=='ST'){
 			$data = (object)$this->ST;
 			if($new){
