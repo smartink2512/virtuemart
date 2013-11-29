@@ -28,35 +28,35 @@ $order = $viewData["order"];
 <br />
 <table>
 	<tr>
-    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_AIO_API_PAYMENT_NAME'); ?></td>
+    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_PAYMENT_NAME'); ?></td>
         <td><?php echo $payment_name; ?></td>
     </tr>
     <?php if ($success) { ?>
 	<tr>
-    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_AIO_ORDER_NUMBER'); ?></td>
+    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_ORDER_NUMBER'); ?></td>
         <td><?php echo $order['details']['BT']->order_number; ?></td>
     </tr>
 	<tr>
-    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_AIO_API_AMOUNT'); ?></td>
+    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_AMOUNT'); ?></td>
         <td><?php echo $payment->mc_gross . ' ' . $payment->mc_currency; ?></td>
     </tr>
 	<tr>
-    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_AIO_API_TRANSACTION_ID'); ?></td>
+    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_ID'); ?></td>
         <!--td><?php echo $payment->paypal_response_trx_id; ?></td -->
         <td><?php echo $payment->txn_id; ?></td>
     </tr>
     <?php } else { ?>
 	<tr>
-    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_AIO_API_ERROR_CODE'); ?></td>
+    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_ERROR_CODE'); ?></td>
         <td><?php echo $responseData['L_ERRORCODE0']; ?></td>
     </tr>
 	<tr>
-    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_AIO_API_ERROR_DESC'); ?></td>
+    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_ERROR_DESC'); ?></td>
         <td><?php echo $responseData['L_LONGMESSAGE0']; ?></td>
     </tr>
     <?php } ?>
 </table>
 <?php if ($success) { ?>
 	<br />
-	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$viewData["order"]['details']['BT']->order_number.'&order_pass='.$viewData["order"]['details']['BT']->order_pass)?>"><?php echo JText::_('VMPAYMENT_PAYPAL_AIO_VIEW_ORDER'); ?></a>
+	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$viewData["order"]['details']['BT']->order_number.'&order_pass='.$viewData["order"]['details']['BT']->order_pass)?>"><?php echo JText::_('VMPAYMENT_PAYPAL_VIEW_ORDER'); ?></a>
 <?php } ?>

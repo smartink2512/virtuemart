@@ -1,6 +1,6 @@
 /**
  *
- * Paypal AIO payment plugin
+ * Paypal payment plugin
  *
  * @author Jeremy Magne
  * @author Valérie Isaksen
@@ -25,7 +25,12 @@ jQuery().ready(function ($) {
     /************/
     handleCredentials = function () {
         var paypalproduct = $('#paramspaypalproduct').val();
-        var sandboxmode = $("input[name='params[sandbox]']:checked").val();
+        var sandbox = $("input[name='params[sandbox]']:checked").val();
+        if (sandbox) {
+            var sandboxmode = 'sandbox';
+        } else {
+            var sandboxmode = 'production';
+        }
 
 
         $('.std,.api,.live,.sandbox,.sandbox_warning, .accelerated_onboarding').parents('tr').hide();
@@ -199,7 +204,13 @@ jQuery().ready(function ($) {
     }
     handleAuthentication = function () {
         var paypalAuthentication = $('#paramsauthentication').val();
-        var sandboxmode = $("input[name='params[sandbox]']:checked").val();
+        var sandbox = $("input[name='params[sandbox]']:checked").val();
+        if (sandbox) {
+            var sandboxmode = 'sandbox';
+        } else {
+            var sandboxmode = 'production';
+        }
+
         var paypalproduct = $('#paramspaypalproduct').val();
         $('.authentication').parents('tr').hide();
         if (paypalproduct != 'std') {

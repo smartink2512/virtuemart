@@ -1,6 +1,6 @@
 /**
  *
- * Paypal AIO payment plugin
+ * Paypal payment plugin
  *
  * @author Jeremy Magne
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $

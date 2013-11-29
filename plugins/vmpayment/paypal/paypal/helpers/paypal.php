@@ -25,7 +25,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class PaypalIAOHelperPaypalAIO {
+class PaypalHelperPaypal {
 
 	var $_method;
 	var $cart;
@@ -237,7 +237,7 @@ class PaypalIAOHelperPaypalAIO {
 	public function getSSLCertificate(&$certifPath, &$passPhrase) {
 		$safePath = VmConfig::get('forSale_path', '');
 		if ($safePath) {
-			$sslCertifFolder = $safePath . "paypal_aio";
+			$sslCertifFolder = $safePath . "paypal";
 
 		}
 		$certifPath = $sslCertifFolder . DS . $this->api_certificate;
@@ -248,7 +248,7 @@ class PaypalIAOHelperPaypalAIO {
 	}
 
 	protected function _getPayPalUrl($protocol = 'https://', $includePath = true) {
-		$url = ($this->_method->sandbox == 'sandbox') ? $protocol . 'www.sandbox.paypal.com' : $protocol . 'www.paypal.com';
+		$url = ($this->_method->sandbox ) ? $protocol . 'www.sandbox.paypal.com' : $protocol . 'www.paypal.com';
 		if ($includePath) {
 			$url .= '/cgi-bin/webscr';
 		}
@@ -261,7 +261,7 @@ class PaypalIAOHelperPaypalAIO {
 			$url_auth = "-3t";
 		}
 		$url_environment = "";
-		if ($this->_method->sandbox == 'sandbox') {
+		if ($this->_method->sandbox ) {
 			$url_environment = ".sandbox";
 		}
 		//return ($this->_method->sandbox=='sandbox') ? 'https://api-3t.sandbox.paypal.com/nvp' : 'https://api-3t.paypal.com/nvp';
@@ -309,7 +309,7 @@ class PaypalIAOHelperPaypalAIO {
 		if ($this->_method->payment_type == '_xclick-auto-billing' && $this->customerData->getVar('autobilling_max_amount')) {
 			$cd = CurrencyDisplay::getInstance($this->_method->payment_currency);
 			$extraInfo .= '<br/>';
-			$extraInfo .= JText::_('VMPAYMENT_PAYPAL_AIO_PAYMENT_BILLING_MAX_AMOUNT') . ': ' . $cd->priceDisplay($this->customerData->getVar('autobilling_max_amount'));
+			$extraInfo .= JText::_('VMPAYMENT_PAYPAL_PAYMENT_BILLING_MAX_AMOUNT') . ': ' . $cd->priceDisplay($this->customerData->getVar('autobilling_max_amount'));
 		}
 		if ($this->_method->payment_type == '_xclick-subscriptions') {
 			$extraInfo .= '<br /><span class="vmpayment_cardinfo">';
@@ -343,14 +343,14 @@ class PaypalIAOHelperPaypalAIO {
 
 //		$recurringDesc = '';
 //		if ($this->_method->subcription_trials) {
-//			$recurringDesc .= JText::_('VMPAYMENT_PAYPAL_AIO_TRIAL_PERIODS') . $this->_method->trial1_duration . ': '.$this->_method->trial1_price.'<br />';
+//			$recurringDesc .= JText::_('VMPAYMENT_PAYPAL_TRIAL_PERIODS') . $this->_method->trial1_duration . ': '.$this->_method->trial1_price.'<br />';
 //		}
-//		$recurringDesc .= JText::_('VMPAYMENT_PAYPAL_AIO_SUBSCRIPTION_DURATION').': '.$this->_method->subscription_duration . '<br />';
-//		$recurringDesc .= JText::_('VMPAYMENT_PAYPAL_AIO_SUBSCRIPTION_TERM').': '.$this->_method->subscription_term . '<br />';
+//		$recurringDesc .= JText::_('VMPAYMENT_PAYPAL_SUBSCRIPTION_DURATION').': '.$this->_method->subscription_duration . '<br />';
+//		$recurringDesc .= JText::_('VMPAYMENT_PAYPAL_SUBSCRIPTION_TERM').': '.$this->_method->subscription_term . '<br />';
 
 		$durationValue = $this->getDurationValue($this->_method->subscription_duration);
 		$durationUnit = $this->getDurationUnit($this->_method->subscription_duration);
-		$recurringDesc = JText::sprintf('VMPAYMENT_PAYPAL_AIO_SUBSCRIPTION_DESCRIPTION', $durationValue, $durationUnit, $this->_method->subscription_term);
+		$recurringDesc = JText::sprintf('VMPAYMENT_PAYPAL_SUBSCRIPTION_DESCRIPTION', $durationValue, $durationUnit, $this->_method->subscription_term);
 		return $recurringDesc;
 	}
 
@@ -358,23 +358,23 @@ class PaypalIAOHelperPaypalAIO {
 
 //		$recurringDesc = '';
 //		if ($this->_method->subcription_trials) {
-//			$recurringDesc .= JText::_('VMPAYMENT_PAYPAL_AIO_TRIAL_PERIODS') . $this->_method->trial1_duration . ': '.$this->_method->trial1_price.'<br />';
+//			$recurringDesc .= JText::_('VMPAYMENT_PAYPAL_TRIAL_PERIODS') . $this->_method->trial1_duration . ': '.$this->_method->trial1_price.'<br />';
 //		}
-//		$recurringDesc .= JText::_('VMPAYMENT_PAYPAL_AIO_SUBSCRIPTION_DURATION').': '.$this->_method->subscription_duration . '<br />';
-//		$recurringDesc .= JText::_('VMPAYMENT_PAYPAL_AIO_SUBSCRIPTION_TERM').': '.$this->_method->subscription_term . '<br />';
+//		$recurringDesc .= JText::_('VMPAYMENT_PAYPAL_SUBSCRIPTION_DURATION').': '.$this->_method->subscription_duration . '<br />';
+//		$recurringDesc .= JText::_('VMPAYMENT_PAYPAL_SUBSCRIPTION_TERM').': '.$this->_method->subscription_term . '<br />';
 
 		$durationValue = $this->getDurationValue($this->_method->payment_plan_duration);
 		$durationUnit = $this->getDurationUnit($this->_method->payment_plan_duration);
-		$recurringDesc = JText::sprintf('VMPAYMENT_PAYPAL_AIO_PAYMENT_PLAN_DESCRIPTION', $this->_method->payment_plan_term, $durationValue, $durationUnit);
+		$recurringDesc = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_PLAN_DESCRIPTION', $this->_method->payment_plan_term, $durationValue, $durationUnit);
 		if ($this->_method->payment_plan_defer && $this->_method->paypalproduct == 'std') {
 			$defer_duration = $this->getDurationValue($this->_method->payment_plan_defer_duration);
 			$defer_unit = $this->getDurationUnit($this->_method->payment_plan_defer_duration);
 			$startDate = JFactory::getDate('+' . $defer_duration . ' ' . $defer_unit);
-			$recurringDesc .= '<br/>' . JText::sprintf('VMPAYMENT_PAYPAL_AIO_PAYMENT_PLAN_INITIAL_PAYMENT', JHTML::_('date', $startDate->toFormat(), JText::_('DATE_FORMAT_LC4')));
+			$recurringDesc .= '<br/>' . JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_PLAN_INITIAL_PAYMENT', JHTML::_('date', $startDate->toFormat(), JText::_('DATE_FORMAT_LC4')));
 		} else if ($this->_method->payment_plan_defer_strtotime) {
 			$startDate = JFactory::getDate($this->_method->payment_plan_defer_strtotime);
-			$recurringDesc .= '<br/>' . JText::sprintf('VMPAYMENT_PAYPAL_AIO_PAYMENT_PLAN_INITIAL_PAYMENT', JHTML::_('date', $startDate->toFormat(), JText::_('DATE_FORMAT_LC4')));
-			//$recurringDesc .= '<br/>'.JText::sprintf('VMPAYMENT_PAYPAL_AIO_PAYMENT_PLAN_INITIAL_PAYMENT',date(JText::_('DATE_FORMAT_LC4'),strtotime('first day of next month')));
+			$recurringDesc .= '<br/>' . JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_PLAN_INITIAL_PAYMENT', JHTML::_('date', $startDate->toFormat(), JText::_('DATE_FORMAT_LC4')));
+			//$recurringDesc .= '<br/>'.JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_PLAN_INITIAL_PAYMENT',date(JText::_('DATE_FORMAT_LC4'),strtotime('first day of next month')));
 		}
 		return $recurringDesc;
 	}
@@ -446,23 +446,23 @@ class PaypalIAOHelperPaypalAIO {
 			} else {
 				$order_history['order_status'] = $this->_method->status_success;
 			}
-			$order_history['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_AIO_PAYMENT_STATUS_CONFIRMED', $this->order['details']['BT']->order_number);
+			$order_history['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $this->order['details']['BT']->order_number);
 
 		} elseif (strcmp($paypal_data['payment_status'], 'Pending') == 0) {
 			$lang = JFactory::getLanguage();
-			$key = 'VMPAYMENT_PAYPAL_AIO_PENDING_REASON_FE_' . strtoupper($paypal_data['pending_reason']);
+			$key = 'VMPAYMENT_PAYPAL_PENDING_REASON_FE_' . strtoupper($paypal_data['pending_reason']);
 			if (!$lang->hasKey($key)) {
-				$key = 'VMPAYMENT_PAYPAL_AIO_PENDING_REASON_FE_DEFAULT';
+				$key = 'VMPAYMENT_PAYPAL_PENDING_REASON_FE_DEFAULT';
 			}
-			$order_history['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_AIO_PAYMENT_STATUS_PENDING', $this->order['details']['BT']->order_number) . JText::_($key);
+			$order_history['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PENDING', $this->order['details']['BT']->order_number) . JText::_($key);
 			$order_history['order_status'] = $this->_method->status_pending;
 
 		} elseif (strcmp($paypal_data['payment_status'], 'Refunded') == 0) {
 			if ($this->_is_full_refund($payments, $paypal_data)) {
-				$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_AIO_PAYMENT_STATUS_REFUNDED', $this->order['details']['BT']->order_number);
+				$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_REFUNDED', $this->order['details']['BT']->order_number);
 				$order['order_status'] = $this->_method->status_refunded;
 			} else {
-				$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_AIO_PAYMENT_STATUS_PARTIAL_REFUNDED', $this->order['details']['BT']->order_number);
+				$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PARTIAL_REFUNDED', $this->order['details']['BT']->order_number);
 				$order['order_status'] = isset($this->_method->status_partial_refunded) ? $this->_method->status_partial_refunded : 'R';
 			}
 
@@ -475,7 +475,7 @@ class PaypalIAOHelperPaypalAIO {
 			* but the IPN notification has no $paypal_data['payment_status']
 			* We just log the info in the order, and do not change the status, do not notify the customer
 			*/
-			$order_history['comments'] = JText::_('VMPAYMENT_PAYPAL_AIO_IPN_NOTIFICATION_RECEIVED');
+			$order_history['comments'] = JText::_('VMPAYMENT_PAYPAL_IPN_NOTIFICATION_RECEIVED');
 			$order_history['customer_notified'] = 0;
 		}
 		return $order_history;
@@ -491,7 +491,7 @@ class PaypalIAOHelperPaypalAIO {
 		// Get the list of IP addresses for www.paypal.com and notify.paypal.com
 
 
-		if ($this->_method->sandbox == 'sandbox') {
+		if ($this->_method->sandbox  ) {
 			$paypal_iplist = gethostbynamel('ipn.sandbox.paypal.com');
 			$paypal_iplist = (array)$paypal_iplist;
 		} else {
@@ -599,8 +599,8 @@ class PaypalIAOHelperPaypalAIO {
 
 		$valid_ipn = false;
 		if (!$fps) {
-			$this->writelog(JText::sprintf('VMPAYMENT_PAYPAL_AIO_ERROR_POSTING_IPN', $errstr, $errno), 'processIPN', 'error');
-			$this->sendEmailToVendorAndAdmins("error with paypal", JText::sprintf('VMPAYMENT_PAYPAL_AIO_ERROR_POSTING_IPN', $errstr, $errno));
+			$this->writelog(JText::sprintf('VMPAYMENT_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno), 'processIPN', 'error');
+			$this->sendEmailToVendorAndAdmins("error with paypal", JText::sprintf('VMPAYMENT_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno));
 		} else {
 			fputs($fps, $header . $post_msg);
 			$res = '';
@@ -618,13 +618,13 @@ class PaypalIAOHelperPaypalAIO {
 					foreach ($paypal_data as $key => $value) {
 						$emailBody .= $key . " = " . $value . "\n";
 					}
-					$this->writelog(JText::_('VMPAYMENT_PAYPAL_AIO_ERROR_IPN_VALIDATION') . " " . $res, 'processIPN', 'error');
-					$this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_PAYPAL_AIO_ERROR_IPN_VALIDATION') . " " . $res, $emailBody);
+					$this->writelog(JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . " " . $res, 'processIPN', 'error');
+					$this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . " " . $res, $emailBody);
 				} else {
-					$this->writelog(JText::_('VMPAYMENT_PAYPAL_AIO_ERROR_IPN_VALIDATION') . ": NO ANSWER FROM PAYPAL", 'processIPN', 'error');
+					$this->writelog(JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . ": NO ANSWER FROM PAYPAL", 'processIPN', 'error');
 					$emailBody = "Hello,
                 An error occured while processing a paypal transaction.";
-					$this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_PAYPAL_AIO_ERROR_IPN_VALIDATION') . " " . $res, $emailBody);
+					$this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . " " . $res, $emailBody);
 				}
 			}
 		}
@@ -737,7 +737,7 @@ class PaypalIAOHelperPaypalAIO {
 	function onShowOrderBEPayment($data) {
 
 		$showOrderBEFields = $this->getOrderBEFields();
-		$prefix = 'PAYPAL_AIO_RESPONSE_';
+		$prefix = 'PAYPAL_RESPONSE_';
 
 		$html = '';
 		if ($data->ACK == 'SuccessWithWarning' &&
@@ -770,7 +770,9 @@ class PaypalIAOHelperPaypalAIO {
 
 		return $html;
 	}
-
+	function onShowOrderBEPaymentByFields($payment) {
+		return NULL;
+	}
 	/*********************/
 	/* Log and Reporting */
 	/*********************/

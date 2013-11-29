@@ -27,7 +27,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 //API Reference
 //https://developer.paypal.com/webapps/developer/docs/classic/api/
 
-class PaypalHelperPayPalApi extends PaypalIAOHelperPaypalAIO {
+class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 	
 	var $api_login_id = '';
 	var $api_signature = '';
@@ -37,7 +37,7 @@ class PaypalHelperPayPalApi extends PaypalIAOHelperPaypalAIO {
 		parent::__construct($method,$paypalPlugin);
 
 		//Set the credentials
-		if ($this->_method->sandbox=='sandbox') {
+		if ($this->_method->sandbox ) {
 			$this->api_login_id = $this->_method->sandbox_api_login_id;
 			$this->api_signature = $this->_method->sandbox_api_signature;
 			$this->api_password = $this->_method->sandbox_api_password;
@@ -48,7 +48,7 @@ class PaypalHelperPayPalApi extends PaypalIAOHelperPaypalAIO {
 		}
 
 		if (empty($this->api_login_id) || empty($this->api_signature) || empty($this->api_password)) {
-            $text=JText::sprintf('VMPAYMENT_PAYPAL_AIO_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
+            $text=JText::sprintf('VMPAYMENT_PAYPAL_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
             vmError($text,$text);
 		}
 	}
@@ -261,7 +261,7 @@ class PaypalHelperPayPalApi extends PaypalIAOHelperPaypalAIO {
 	
 	function ManageRecurringPaymentsProfileStatus($payment) {
 		
-		$paypal_data = json_decode($payment->paypalresponse_raw);
+		$paypal_data = json_decode($payment->paypal_fullresponse);
 		$post_variables = $this->initPostVariables('ManageRecurringPaymentsProfileStatus');
 		$post_variables['PROFILEID']	= $paypal_data->PROFILEID;
 		$post_variables['ACTION']		= 'Cancel';
@@ -274,7 +274,7 @@ class PaypalHelperPayPalApi extends PaypalIAOHelperPaypalAIO {
 	
 	function DoCapture($payment) {
 		
-		$paypal_data = json_decode($payment->paypalresponse_raw);
+		$paypal_data = json_decode($payment->paypal_fullresponse);
 		//Only capture payment if it still pending
 		if (strcasecmp($paypal_data->PAYMENTSTATUS ,'Pending') !=0 && strcasecmp($paypal_data->PENDINGREASON, 'authorization') !=0) {
 			return false;
@@ -321,7 +321,7 @@ class PaypalHelperPayPalApi extends PaypalIAOHelperPaypalAIO {
 
 	function RefundTransaction($payment) {
 		
-		$paypal_data = json_decode($payment->paypalresponse_raw);
+		$paypal_data = json_decode($payment->paypal_fullresponse);
 		if ($paypal_data->PAYMENTSTATUS == 'Completed') {
 			$post_variables = $this->initPostVariables('RefundTransaction');
 			$post_variables['REFUNDTYPE'] 	= 'Full';
@@ -337,7 +337,7 @@ class PaypalHelperPayPalApi extends PaypalIAOHelperPaypalAIO {
 		return $this->handleResponse();
 	}
 	function doVoid($payment) {
-		$paypal_data = json_decode($payment->paypalresponse_raw);
+		$paypal_data = json_decode($payment->paypal_fullresponse);
 		$post_variables = $this->initPostVariables('DoVoid');
 		$post_variables['AuthorizationID']	= $paypal_data->TRANSACTIONID;
 		$this->sendRequest($post_variables);
@@ -362,7 +362,7 @@ class PaypalHelperPayPalApi extends PaypalIAOHelperPaypalAIO {
 		$cc_expire_year = $this->customerData->getVar('cc_expire_year');
 
 		if (!Creditcard::validate_credit_card_number($cc_type, $cc_number)) {
-			$errormessages[] = 'VMPAYMENT_PAYPAL_AIO_CC_CARD_NUMBER_INVALID';
+			$errormessages[] = 'VMPAYMENT_PAYPAL_CC_CARD_NUMBER_INVALID';
 			$cc_valid = false;
 		}
 		if ($this->_method->cvv_required or $cc_type=='Maestro') {
@@ -371,11 +371,11 @@ class PaypalHelperPayPalApi extends PaypalIAOHelperPaypalAIO {
 			$required=false;
 		}
 		if (!Creditcard::validate_credit_card_cvv($cc_type, $cc_cvv, $required)) {
-			$errormessages[] = 'VMPAYMENT_PAYPAL_AIO_CC_CARD_CVV_INVALID';
+			$errormessages[] = 'VMPAYMENT_PAYPAL_CC_CARD_CVV_INVALID';
 			$cc_valid = false;
 		}
 		if (!Creditcard::validate_credit_card_date($cc_type, $cc_expire_month, $cc_expire_year)) {
-			$errormessages[] = 'VMPAYMENT_PAYPAL_AIO_CC_CARD_DATE_INVALID';
+			$errormessages[] = 'VMPAYMENT_PAYPAL_CC_CARD_DATE_INVALID';
 			$cc_valid = false;
 		}
 		if (!$cc_valid) {
@@ -401,14 +401,14 @@ class PaypalHelperPayPalApi extends PaypalIAOHelperPaypalAIO {
 		//if ($this->customerData->getVar('cc_number') && $this->validate()) {
 		if ($this->customerData->getVar('cc_number') ) {
 			$cc_number = "**** **** **** " . substr($this->customerData->getVar('cc_number'), -4);
-			$creditCardInfos = '<br /><span class="vmpayment_cardinfo">' . JText::_('VMPAYMENT_PAYPAL_AIO_CC_CCTYPE') . $this->customerData->getVar('cc_type') . '<br />';
-			$creditCardInfos .=JText::_('VMPAYMENT_PAYPAL_AIO_CC_CCNUM') . $cc_number . '<br />';
-			$creditCardInfos .= JText::_('VMPAYMENT_PAYPAL_AIO_CC_CVV2') . '****' . '<br />';
-			$creditCardInfos .= JText::_('VMPAYMENT_PAYPAL_AIO_CC_EXDATE') . $this->customerData->getVar('cc_expire_month') . '/' . $this->customerData->getVar('cc_expire_year');
+			$creditCardInfos = '<br /><span class="vmpayment_cardinfo">' . JText::_('VMPAYMENT_PAYPAL_CC_CCTYPE') . $this->customerData->getVar('cc_type') . '<br />';
+			$creditCardInfos .=JText::_('VMPAYMENT_PAYPAL_CC_CCNUM') . $cc_number . '<br />';
+			$creditCardInfos .= JText::_('VMPAYMENT_PAYPAL_CC_CVV2') . '****' . '<br />';
+			$creditCardInfos .= JText::_('VMPAYMENT_PAYPAL_CC_EXDATE') . $this->customerData->getVar('cc_expire_month') . '/' . $this->customerData->getVar('cc_expire_year');
 			$creditCardInfos .="</span>";
 			$extraInfo .= $creditCardInfos;
 		} else {
-			$extraInfo .= '<br/><a href="'.JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment&Itemid=' . JRequest::getInt('Itemid')).'">'.JText::_('VMPAYMENT_PAYPAL_AIO_CC_ENTER_INFO').'</a>';
+			$extraInfo .= '<br/><a href="'.JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment&Itemid=' . JRequest::getInt('Itemid')).'">'.JText::_('VMPAYMENT_PAYPAL_CC_ENTER_INFO').'</a>';
 		}
 		$extraInfo .= parent::getExtraPluginInfo();
 		return $extraInfo;

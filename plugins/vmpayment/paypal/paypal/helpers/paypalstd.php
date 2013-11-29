@@ -24,24 +24,24 @@ defined('_JEXEC') or die('Restricted access');
 
 //https://cms.paypal.com/mx/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_Appx_websitestandard_htmlvariables
 
-class PaypalHelperPayPalStd extends PaypalIAOHelperPaypalAIO {
+class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 
 	var $merchant_email = '';
 
 	function __construct($method,$paypalPlugin) {
 		parent::__construct($method,$paypalPlugin);
 		//Set the credentials
-		if ($this->_method->sandbox == 'sandbox') {
+		if ($this->_method->sandbox  ) {
 			$this->merchant_email = $this->_method->sandbox_merchant_email;
 		} else {
 			$this->merchant_email = $this->_method->paypal_merchant_email;
 		}
 		if (empty($this->merchant_email)) {
 			$sandbox = "";
-			if ($this->_method->sandbox == 'sandbox') {
+			if ($this->_method->sandbox  ) {
 				$sandbox = 'SANDBOX_';
 			}
-			$text = JText::sprintf('VMPAYMENT_PAYPAL_AIO_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_AIO_' . $sandbox . 'MERCHANT'), $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
+			$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'MERCHANT'), $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
 			vmError($text, $text);
 			return FALSE;
 		}
@@ -61,11 +61,11 @@ class PaypalHelperPayPalStd extends PaypalIAOHelperPaypalAIO {
 		switch ($this->_method->payment_type) {
 			case '_xclick':
 			case '_donations':
-				$post_variables['item_name'] = JText::_('VMPAYMENT_PAYPAL_AIO_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
+				$post_variables['item_name'] = JText::_('VMPAYMENT_PAYPAL_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
 				$post_variables['amount'] = $this->total;
 				break;
 			case '_oe-gift-certificate':
-				$post_variables['item_name'] = JText::_('VMPAYMENT_PAYPAL_AIO_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
+				$post_variables['item_name'] = JText::_('VMPAYMENT_PAYPAL_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
 				//$post_variables['amount'] = round ($paymentCurrency->convertCurrencyTo ($this->_method->payment_currency, $this->order['details']['BT']->order_total, FALSE), 2);;
 				$post_variables['fixed_denom'] = vmPSPlugin::getAmountValueInCurrency($this->order['details']['BT']->order_salesPrice, $this->_method->payment_currency);
 				//$post_variables['min_denom'] = $this->total;
@@ -84,7 +84,7 @@ class PaypalHelperPayPalStd extends PaypalIAOHelperPaypalAIO {
 
 			case '_xclick-subscriptions':
 
-				$post_variables['item_name'] = JText::_('VMPAYMENT_PAYPAL_AIO_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
+				$post_variables['item_name'] = JText::_('VMPAYMENT_PAYPAL_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
 
 				if ($this->_method->subcription_trials) {
 					$post_variables['a1'] = ($this->_method->trial1_price) ? $this->_method->trial1_price : 0; //Trial1 price.
@@ -110,7 +110,7 @@ class PaypalHelperPayPalStd extends PaypalIAOHelperPaypalAIO {
 				break;
 
 			case '_xclick-auto-billing':
-				$post_variables['item_name'] = JText::_('VMPAYMENT_PAYPAL_AIO_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
+				$post_variables['item_name'] = JText::_('VMPAYMENT_PAYPAL_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
 				//A description of the automatic billing plan.
 				$post_variables['max_text'] = $this->_method->payment_desc;
 				//Specify whether to let buyers enter maximum billing limits in a text box or choose from a list of maximum billing limits that you specify.
@@ -142,7 +142,7 @@ class PaypalHelperPayPalStd extends PaypalIAOHelperPaypalAIO {
 
 			case '_xclick-payment-plan':
 
-				$post_variables['item_name'] = JText::_('VMPAYMENT_PAYPAL_AIO_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
+				$post_variables['item_name'] = JText::_('VMPAYMENT_PAYPAL_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
 				$post_variables['disp_tot'] = 'Y'; //Display the total payment amount to buyers during checkout
 				$post_variables['option_index'] = 0;
 				$post_variables['option_select0_type'] = 'E'; //F – pay in full, at checkout, E – pay in equal periods, beginning at checkout or sometime later, V – pay in variable periods, beginning at checkout
@@ -189,7 +189,7 @@ class PaypalHelperPayPalStd extends PaypalIAOHelperPaypalAIO {
 			$this->writelog($post_variables, 'PayPal request:', 'debug');
 
 		} else {
-			$html .= '<input type="submit"  value="' . JText::_('VMPAYMENT_PAYPAL_AIO_REDIRECT_MESSAGE') . '" />
+			$html .= '<input type="submit"  value="' . JText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />
 					<script type="text/javascript">
 						document.vm_paypal_form.submit();
 					</script>';
@@ -324,5 +324,20 @@ class PaypalHelperPayPalStd extends PaypalIAOHelperPaypalAIO {
 
 		return $showOrderBEFields;
 	}
+	function onShowOrderBEPaymentByFields($payment) {
+		$prefix = "paypal_response_";
+		$html="";
+		$showOrderBEFields=$this->getOrderBEFields();
+		foreach ($showOrderBEFields as $key => $showOrderBEField) {
+			$field=$prefix.$showOrderBEField;
+			// only displays if there is a value or the value is different from 0.00 and the value
+			if ($payment->$field) {
+				$html .= $this->paypalPlugin->getHtmlRowBE($prefix.$key, $payment->$field);
+			}
+		}
 
+
+
+		return $html;
+	}
 }

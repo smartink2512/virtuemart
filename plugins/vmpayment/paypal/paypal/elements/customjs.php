@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Paypal AIO payment plugin
+ * Paypal   payment plugin
  *
  * @author Jeremy Magne
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
@@ -36,8 +36,8 @@ class JElementCustomjs extends JElement {
 		JHtml::_('behavior.colorpicker');
 		
 		$doc = JFactory::getDocument();
-		$doc->addScript(JURI::root(true).'/plugins/vmpayment/paypal_aio/paypal_aio/assets/js/admin.js');
-		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/paypal_aio/paypal_aio/assets/css/paypal_aio.css');
+		$doc->addScript(JURI::root(true).'/plugins/vmpayment/paypal/paypal/assets/js/admin.js');
+		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/paypal/paypal/assets/css/paypal.css');
 
 		
 		return '';		

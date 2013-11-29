@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Paypal AIO payment plugin
+ * Paypal payment plugin
  *
  * @author Valerie Isaksen
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
@@ -24,7 +24,7 @@
 
 <div>
     <?php
-    if ($viewData['sandbox']=='sandbox') {
+    if ($viewData['sandbox'] ) {
         ?>
 		<span style="color:red;font-weight:bold">Sandbox (<?php echo $viewData['virtuemart_paymentmethod_id'] ?>)</span>
     <?php

@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Paypal AIO payment plugin
+ * Paypal  payment plugin
  *
  * @author Jeremy Magne
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
@@ -22,8 +22,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.'/helpers/shopfunctions.php');
-if (!class_exists('PaypalIAOHelperPaypalAIO')){
-	 require (JPATH_ROOT   . '/plugins/vmpayment/paypal_aio/paypal_aio/helpers/paypalaio.php');
+if (!class_exists('PaypalHelperPaypal')){
+	 require (JPATH_ROOT   . '/plugins/vmpayment/paypal/paypal/helpers/paypal.php');
 }
 
 class JElementPaypalCreditcards extends JElement {
@@ -31,11 +31,11 @@ class JElementPaypalCreditcards extends JElement {
     var $_name = 'Paypalcreditcards';
 
     function fetchElement($name, $value, &$node, $control_name) {
-		JFactory::getLanguage ()->load ('plg_vmpayment_paypal_aio', JPATH_ADMINISTRATOR);
+		JFactory::getLanguage ()->load ('plg_vmpayment_paypal', JPATH_ADMINISTRATOR);
 
-		$creditcards= PaypalIAOHelperPaypalAIO::getPaypalCreditCards();
+		$creditcards= PaypalHelperPaypal::getPaypalCreditCards();
 
-			$prefix = 'VMPAYMENT_PAYPAL_AIO_CC_';
+			$prefix = 'VMPAYMENT_PAYPAL_CC_';
 
 		$fields = array();
 		foreach ($creditcards as $creditcard) {

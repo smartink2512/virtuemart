@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 // http://www.paypalobjects.com/en_US/ebook/PP_ExpressCheckout_IntegrationGuide/HowExpressCheckoutWorks.html#1107932
 // http://www.paypalobjects.com/en_US/ebook/PP_ExpressCheckout_IntegrationGuide/toc.html
 
-class PaypalHelperPayPalExp extends PaypalIAOHelperPaypalAIO {
+class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 
 	var $api_login_id = '';
 	var $api_signature = '';
@@ -39,7 +39,7 @@ class PaypalHelperPayPalExp extends PaypalIAOHelperPaypalAIO {
 	function __construct($method,$paypalPlugin) {
 		parent::__construct($method,$paypalPlugin);
 		//Set the credentials
-		if ($this->_method->sandbox == 'sandbox') {
+		if ($this->_method->sandbox  ) {
 			$this->api_login_id = $this->_method->sandbox_api_login_id;
 			if ($this->_method->authentication == 'signature') {
 				$this->api_signature = $this->_method->sandbox_api_signature;
@@ -59,11 +59,11 @@ class PaypalHelperPayPalExp extends PaypalIAOHelperPaypalAIO {
 		}
 
 		if ((!$this->ExpCredentialsValid() and $this->isAacceleratedOnboarding())) {
-			$text = JText::sprintf('VMPAYMENT_PAYPAL_AIO_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
+			$text = JText::sprintf('VMPAYMENT_PAYPAL_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
 			vmError($text, $text);
 		}
 		if (empty ($this->_method->expected_maxamount)) {
-			$text = JText::sprintf('VMPAYMENT_PAYPAL_AIO_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_AIO_EXPECTEDMAXAMOUNT'), $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
+			$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_EXPECTEDMAXAMOUNT'), $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
 			vmError($text, $text);
 		}
 
@@ -480,7 +480,7 @@ class PaypalHelperPayPalExp extends PaypalIAOHelperPaypalAIO {
 
 	function ManageRecurringPaymentsProfileStatus($payment) {
 
-		$paypal_data = json_decode($payment->paypalresponse_raw);
+		$paypal_data = json_decode($payment->paypal_fullresponse);
 		$post_variables = $this->initPostVariables('ManageRecurringPaymentsProfileStatus');
 		$post_variables['PROFILEID'] = $paypal_data->PROFILEID;
 		$post_variables['ACTION'] = 'Cancel';
@@ -495,7 +495,7 @@ class PaypalHelperPayPalExp extends PaypalIAOHelperPaypalAIO {
 
 	function DoCapture($payment) {
 
-		$paypal_data = json_decode($payment->paypalresponse_raw);
+		$paypal_data = json_decode($payment->paypal_fullresponse);
 		//Only capture payment if it still pending
 		if (strcasecmp($paypal_data->PAYMENTINFO_0_PAYMENTSTATUS, 'Pending') != 0 && strcasecmp($paypal_data->PAYMENTINFO_0_PENDINGREASON, 'Authorization') != 0) {
 			return false;
@@ -556,7 +556,7 @@ class PaypalHelperPayPalExp extends PaypalIAOHelperPaypalAIO {
 
 	function RefundTransaction($payment) {
 
-		$paypal_data = json_decode($payment->paypalresponse_raw);
+		$paypal_data = json_decode($payment->paypal_fullresponse);
 		if ($payment->paypal_response_payment_status == 'Completed') {
 			$post_variables = $this->initPostVariables('RefundTransaction');
 			$post_variables['REFUNDTYPE'] = 'Full';
@@ -576,7 +576,7 @@ class PaypalHelperPayPalExp extends PaypalIAOHelperPaypalAIO {
 	}
 
 	function doVoid($payment) {
-		$paypal_data = json_decode($payment->paypalresponse_raw);
+		$paypal_data = json_decode($payment->paypal_fullresponse);
 		$post_variables = $this->initPostVariables('DoVoid');
 		$post_variables['AuthorizationID'] = $payment->paypal_response_txn_id;
 		$post_variables['TRANSACTIONID'] = $payment->paypal_response_txn_id;

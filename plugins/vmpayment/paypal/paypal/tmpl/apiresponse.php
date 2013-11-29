@@ -29,27 +29,27 @@ $responseData = $viewData['responseData'];
 </style>
 <table cellpadding="2" class="paypal_ordersummary">
 	<?php 
-	echo $this->getHtmlRow('VMPAYMENT_PAYPAL_AIO_API_PAYMENT_NAME', $payment_name);
+	echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_PAYMENT_NAME', $payment_name);
 	if ($viewData['success']) {
-		echo $this->getHtmlRow('VMPAYMENT_PAYPAL_AIO_ORDER_NUMBER', $viewData['order_number']);
+		echo $this->getHtmlRow('VMPAYMENT_PAYPAL_ORDER_NUMBER', $viewData['order_number']);
 		if ($viewData['method']->payment_type == '_xclick-subscriptions' || $viewData['method']->payment_type == '_xclick-payment-plan') {
-			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_AIO_PROFILEID', $responseData['PROFILEID']);
-			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_AIO_PROFILESTATUS', $responseData['STATUS']);
+			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_PROFILEID', $responseData['PROFILEID']);
+			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_PROFILESTATUS', $responseData['STATUS']);
 		} else {
-			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_AIO_API_AMOUNT', $responseData['AMT'] . ' ' . $responseData['CURRENCYCODE']);
-			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_AIO_API_TRANSACTION_ID', $responseData['TRANSACTIONID']);
+			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_AMOUNT', $responseData['AMT'] . ' ' . $responseData['CURRENCYCODE']);
+			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_TRANSACTION_ID', $responseData['TRANSACTIONID']);
 		}
-		//echo $this->getHtmlRow('VMPAYMENT_PAYPAL_AIO_API_AUTHORIZATION_CODE', $responseData['CORRELATIONID']);
+		//echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_AUTHORIZATION_CODE', $responseData['CORRELATIONID']);
 	} else {
 		for ($i = 0; isset($responseData["L_ERRORCODE".$i]); $i++) {
-			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_AIO_API_ERROR_CODE', $responseData["L_ERRORCODE".$i]);
+			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_ERROR_CODE', $responseData["L_ERRORCODE".$i]);
 			$message = isset($responseData["L_LONGMESSAGE".$i]) ? $responseData["L_LONGMESSAGE".$i]: $responseData["L_SHORTMESSAGE".$i];
-			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_AIO_API_ERROR_DESC', $message);
+			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_ERROR_DESC', $message);
 		}
 	}
 	?>
 </table>
 <?php if ($viewData['success']) { ?>
 	<br />
-	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$responseData['invoice'])?>"><?php echo JText::_('VMPAYMENT_PAYPAL_AIO_VIEW_ORDER'); ?></a>
+	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$responseData['invoice'])?>"><?php echo JText::_('VMPAYMENT_PAYPAL_VIEW_ORDER'); ?></a>
 <?php } ?>

@@ -21,7 +21,7 @@ $logo = '<img src="' .  $viewData['logo'] . '"/>';
 
 <div class="klarna_info">
     <span style="">
-	<a href="http://www.klarna.com/"><?php echo $logo ?></a><br /><?php echo $viewData['text'] ?>
+	<a href="http://www.klarna.com/" target="_blank"><?php echo $logo ?></a><br /><?php echo $viewData['text'] ?>
     </span>
 </div>
 

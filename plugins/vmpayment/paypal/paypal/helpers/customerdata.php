@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Paypal AIO payment plugin
+ * Paypal  payment plugin
  *
  * @author Jeremy Magne
  * @author Valérie Isaksen
@@ -51,7 +51,7 @@ class PaypalHelperCustomerData {
 		//$this->clear();
 
 		$session = JFactory::getSession();
-		$sessionData = $session->get('paypal_aio', 0, 'vm');
+		$sessionData = $session->get('paypal', 0, 'vm');
 
 		if (!empty($sessionData)) {
 			$data = unserialize($sessionData);
@@ -164,7 +164,7 @@ class PaypalHelperCustomerData {
 //		$sessionData->payment_status = $this->_payment_status;
 //		$sessionData->pending_reason = $this->_pending_reason;
 
-		$session->set('paypal_aio', serialize($sessionData), 'vm');
+		$session->set('paypal', serialize($sessionData), 'vm');
 	}
 
 	public function reset() {
@@ -194,7 +194,7 @@ class PaypalHelperCustomerData {
 
 	public function clear() {
 		$session = JFactory::getSession();
-		$session->clear('paypal_aio', 'vm');
+		$session->clear('paypal', 'vm');
 	}
 
 	public function getVar($var) {

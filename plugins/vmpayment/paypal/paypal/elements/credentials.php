@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Paypal AIO payment plugin
+ * Paypal payment plugin
  *
  * @author Valérie Isaksen
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
@@ -38,11 +38,11 @@ class JElementCredentials extends JElement {
 
        $html="<div class=\"get_paypal_credentials\">
 <a   href=\"javascript:window.open('Waiting for Paypal for the link', '','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, ,left=100, top=100, width=380, height=470'); return false;\" >
-".Jtext::_('VMPAYMENT_PAYPAL_AIO_GET_CREDENTIALS')."</a></div>";
+".Jtext::_('VMPAYMENT_PAYPAL_GET_CREDENTIALS')."</a></div>";
 
         $html.="<div class=\"get_sandbox_credentials\">
-<a title=\"".Jtext::_('VMPAYMENT_PAYPAL_AIO_SANDBOX_DEVELOPER')."\" class=\"get_sandbox_credentials\" href=\"javascript:window.open('https://www.paypal.com/webapps/auth/loginauth?execution=e1s1', '','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, ,left=100, top=100, width=380, height=470'); return false;\" >
-".Jtext::_('VMPAYMENT_PAYPAL_AIO_GET_SANDBOX_CREDENTIALS')."</a></div>";
+<a title=\"".Jtext::_('VMPAYMENT_PAYPAL_SANDBOX_DEVELOPER')."\" class=\"get_sandbox_credentials\" href=\"javascript:window.open('https://www.paypal.com/webapps/auth/loginauth?execution=e1s1', '','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, ,left=100, top=100, width=380, height=470'); return false;\" >
+".Jtext::_('VMPAYMENT_PAYPAL_GET_SANDBOX_CREDENTIALS')."</a></div>";
 
 
 		return $html;		

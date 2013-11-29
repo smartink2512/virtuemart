@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Paypal AIO payment plugin
+ * Paypal  payment plugin
  *
  * @author Jeremy Magne
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
@@ -27,38 +27,38 @@ VmConfig::loadJLang('com_virtuemart', true);
 vmJsApi::jCreditCard();
 
 $doc = JFactory::getDocument();
-$doc->addScript(JURI::root(true).'/plugins/vmpayment/paypal_aio/paypal_aio/assets/js/site.js');
+$doc->addScript(JURI::root(true).'/plugins/vmpayment/paypal/paypal/assets/js/site.js');
 
 ?>
 <div id="paymentMethodOptions_<?php echo $viewData['virtuemart_paymentmethod_id']; ?>" class="paymentMethodOptions" style="display:none;">
     <br />
     <span class="vmpayment_cardinfo">
         <?php 
-        echo JText::_('VMPAYMENT_PAYPAL_AIO_CC_COMPLETE_FORM');
-        if ($viewData['sandbox']=='sandbox') {
-            echo '<br />' . JText::_('VMPAYMENT_PAYPAL_AIO_CC_SANDBOX_INFO');
+        echo JText::_('VMPAYMENT_PAYPAL_CC_COMPLETE_FORM');
+        if ($viewData['sandbox'] ) {
+            echo '<br />' . JText::_('VMPAYMENT_PAYPAL_CC_SANDBOX_INFO');
         }
         ?>
         <table border="0" cellspacing="0" cellpadding="2" width="100%">
             <tr valign="top">
                 <td nowrap width="10%" align="right">
-                    <label for="creditcardtype"><?php echo JText::_('VMPAYMENT_PAYPAL_AIO_CC_CCTYPE'); ?></label>
+                    <label for="creditcardtype"><?php echo JText::_('VMPAYMENT_PAYPAL_CC_CCTYPE'); ?></label>
                 </td>
                 <td>
 
                 	<ul class="cards">
 						<?php
 						foreach ( $viewData['creditcards'] as $creditCard) {
-							echo '<li class="'.$creditCard.'">'.JText::_('VMPAYMENT_PAYPAL_AIO_CC_' . strtoupper($creditCard)).'</li>';
-							//$options[] = JHTML::_('select.option', $creditCard, JText::_('VMPAYMENT_PAYPAL_AIO_CC_' . strtoupper($creditCard)));
+							echo '<li class="'.$creditCard.'">'.JText::_('VMPAYMENT_PAYPAL_CC_' . strtoupper($creditCard)).'</li>';
+							//$options[] = JHTML::_('select.option', $creditCard, JText::_('VMPAYMENT_PAYPAL_CC_' . strtoupper($creditCard)));
 						}
 						?>                    	
                     </ul>
                     <?php
                     foreach ($viewData['creditcards'] as $creditCard) {
-                        $options[] = JHTML::_('select.option', $creditCard, JText::_('VMPAYMENT_PAYPAL_AIO_CC_' . strtoupper($creditCard)));
+                        $options[] = JHTML::_('select.option', $creditCard, JText::_('VMPAYMENT_PAYPAL_CC_' . strtoupper($creditCard)));
                     }
-					if ($viewData['method']->sandbox=='sandbox') {
+					if ($viewData['method']->sandbox ) {
 						$attribs = 'class="cc_type_sandbox" rel="'.$viewData['virtuemart_paymentmethod_id'].'"';
 					} else {
 						$attribs = 'class="cc_type" rel="'.$viewData['virtuemart_paymentmethod_id'].'"';
@@ -69,7 +69,7 @@ $doc->addScript(JURI::root(true).'/plugins/vmpayment/paypal_aio/paypal_aio/asset
             </tr>
             <tr valign="top">
                 <td nowrap width="10%" align="right">
-                    <label for="cc_type"><?php echo JText::_('VMPAYMENT_PAYPAL_AIO_CC_CCNUM'); ?></label>
+                    <label for="cc_type"><?php echo JText::_('VMPAYMENT_PAYPAL_CC_CCNUM'); ?></label>
                 </td>
                 <td>
                     <input type="text" size="30" class="inputbox" id="cc_number_<?php echo $viewData['virtuemart_paymentmethod_id']; ?>"
@@ -83,17 +83,17 @@ $doc->addScript(JURI::root(true).'/plugins/vmpayment/paypal_aio/paypal_aio/asset
             </tr>
             <tr valign="top">
                 <td nowrap width="10%" align="right">
-                    <label for="cc_cvv"><?php echo JText::_('VMPAYMENT_PAYPAL_AIO_CC_CVV2') ?></label>
+                    <label for="cc_cvv"><?php echo JText::_('VMPAYMENT_PAYPAL_CC_CVV2') ?></label>
                 </td>
                 <td>
                     <input type="text" class="inputbox" id="cc_cvv_<?php echo $viewData['virtuemart_paymentmethod_id']; ?>" name="cc_cvv_<?php echo $viewData['virtuemart_paymentmethod_id']; ?>" maxlength="4" size="5" value="<?php echo $customerData->getVar('cc_cvv'); ?>" autocomplete="off" />
-                    <span class="hasTip" title="<?php echo JText::_('VMPAYMENT_PAYPAL_AIO_CC_WHATISCVV') ?>::<?php echo JText::sprintf("VMPAYMENT_PAYPAL_AIO_CC_WHATISCVV_TOOLTIP", $this->_displayCVVImages($viewData['method'])) ?> ">
-                        <?php echo JText::_('VMPAYMENT_PAYPAL_AIO_CC_WHATISCVV'); ?>
+                    <span class="hasTip" title="<?php echo JText::_('VMPAYMENT_PAYPAL_CC_WHATISCVV') ?>::<?php echo JText::sprintf("VMPAYMENT_PAYPAL_CC_WHATISCVV_TOOLTIP", $this->_displayCVVImages($viewData['method'])) ?> ">
+                        <?php echo JText::_('VMPAYMENT_PAYPAL_CC_WHATISCVV'); ?>
                     </span>
                 </td>
             </tr>
             <tr>
-                <td nowrap width="10%" align="right"><?php echo JText::_('VMPAYMENT_PAYPAL_AIO_CC_EXDATE'); ?></td>
+                <td nowrap width="10%" align="right"><?php echo JText::_('VMPAYMENT_PAYPAL_CC_EXDATE'); ?></td>
                 <td>
                     <?php 
                     echo shopfunctions::listMonths('cc_expire_month_' . $viewData['virtuemart_paymentmethod_id'], $customerData->getVar('cc_expire_month'));

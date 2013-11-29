@@ -20,7 +20,7 @@
  ?>
 
 <?php
-if ($viewData['sandbox']=='sandbox') {
+if ($viewData['sandbox'] ) {
 	?>
 	<span style="color:red;font-weight:bold">Sandbox (<?php echo $viewData['virtuemart_paymentmethod_id'] ?>)</span>
 <?php

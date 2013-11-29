@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Paypal AIO payment plugin
+ * Paypal  payment plugin
  *
  * @author Jeremy Magne
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
@@ -58,10 +58,10 @@ class JElementDuration extends JElement {
 		$doc->addScriptDeclaration($js );
 
 		$options = array();
-		$options[] = JHTML::_('select.option', 'D', JText::_('VMPAYMENT_PAYPAL_AIO_DURATION_D'));
-		$options[] = JHTML::_('select.option', 'W', JText::_('VMPAYMENT_PAYPAL_AIO_DURATION_W'));
-		$options[] = JHTML::_('select.option', 'M', JText::_('VMPAYMENT_PAYPAL_AIO_DURATION_M'));
-		$options[] = JHTML::_('select.option', 'Y', JText::_('VMPAYMENT_PAYPAL_AIO_DURATION_Y'));
+		$options[] = JHTML::_('select.option', 'D', JText::_('VMPAYMENT_PAYPAL_DURATION_D'));
+		$options[] = JHTML::_('select.option', 'W', JText::_('VMPAYMENT_PAYPAL_DURATION_W'));
+		$options[] = JHTML::_('select.option', 'M', JText::_('VMPAYMENT_PAYPAL_DURATION_M'));
+		$options[] = JHTML::_('select.option', 'Y', JText::_('VMPAYMENT_PAYPAL_DURATION_Y'));
 
 		$html = '<input type="text" style="width:25px;position:relative;font-size:14px;margin-right:10px;" name="'.$duration_value_id.'" id="'.$duration_value_id.'" value="'.$duration_value.'" >';
 		$html .= JHTML::_ ('select.genericlist', $options, $duration_unit_id, '', 'value', 'text', $duration_unit, $duration_unit_id);

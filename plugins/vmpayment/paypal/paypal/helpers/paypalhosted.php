@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Paypal AIO Hosted Pro payment plugin
+ * Paypal  Hosted Pro payment plugin
  *
  * @author Valérie Isaksen
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 //https://developer.paypal.com/webapps/developer/docs/classic/api/
 // https://cms.paypal.com/cms_content/GB/en_GB/files/developer/HostedSolution.pdf
 
-class PaypalHelperPayPalHosted extends PaypalIAOHelperPaypalAIO {
+class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 
 	// Pay Now button; since version 65.1
 	const BM_BUTTON_TYPE = 'PAYMENT';
@@ -43,7 +43,7 @@ class PaypalHelperPayPalHosted extends PaypalIAOHelperPaypalAIO {
 	function __construct($method,$paypalPlugin) {
 		parent::__construct($method,$paypalPlugin);
 		//Set the credentials
-		if ($this->_method->sandbox == 'sandbox') {
+		if ($this->_method->sandbox  ) {
 			$this->api_login_id = $this->_method->sandbox_api_login_id;
 			$this->api_signature = $this->_method->sandbox_api_signature;
 			$this->api_password = $this->_method->sandbox_api_password;
@@ -54,15 +54,15 @@ class PaypalHelperPayPalHosted extends PaypalIAOHelperPaypalAIO {
 		}
 
 		if (empty($this->api_login_id) || empty($this->api_signature) || empty($this->api_password)) {
-			$text = JText::sprintf('VMPAYMENT_PAYPAL_AIO_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
+			$text = JText::sprintf('VMPAYMENT_PAYPAL_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
 			vmError($text, $text);
 		}
 		if ((empty ($this->_method->payflow_partner) OR empty($this->_method->sandbox_payflow_partner))) {
 			$sandbox = "";
-			if ($this->_method->sandbox == 'sandbox') {
+			if ($this->_method->sandbox  ) {
 				$sandbox = 'SANDBOX_';
 			}
-			$text = JText::sprintf('VMPAYMENT_PAYPAL_AIO_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_AIO_' . $sandbox . 'PAYFLOW_PARTNER'), $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
+			$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'PAYFLOW_PARTNER'), $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
 			vmError($text);
 		}
 	}
@@ -248,7 +248,7 @@ class PaypalHelperPayPalHosted extends PaypalIAOHelperPaypalAIO {
 
 	function DoCapture($payment) {
 
-		$paypal_data = json_decode($payment->paypalresponse_raw);
+		$paypal_data = json_decode($payment->paypal_fullresponse);
 		//Only capture payment if it still pending
 		if ($paypal_data->payment_status != 'Pending' && $paypal_data->pending_reason != 'Authorization') {
 			return false;
@@ -317,7 +317,7 @@ class PaypalHelperPayPalHosted extends PaypalIAOHelperPaypalAIO {
 
 	function RefundTransaction($payment) {
 
-		$paypal_data = json_decode($payment->paypalresponse_raw);
+		$paypal_data = json_decode($payment->paypal_fullresponse);
 		if (strcasecmp($paypal_data->payment_status, 'Completed') == 0) {
 			$post_variables = $this->initPostVariables('RefundTransaction');
 			$post_variables['REFUNDTYPE'] = 'Full';
@@ -339,7 +339,7 @@ class PaypalHelperPayPalHosted extends PaypalIAOHelperPaypalAIO {
 	}
 
 	function doVoid($payment) {
-		$paypal_data = json_decode($payment->paypalresponse_raw);
+		$paypal_data = json_decode($payment->paypal_fullresponse);
 		$post_variables = $this->initPostVariables('DoVoid');
 		$post_variables['AuthorizationID'] = $paypal_data->txn_id;
 		$this->sendRequest($post_variables);
