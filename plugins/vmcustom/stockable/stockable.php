@@ -478,7 +478,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	function plgVmOnViewCartModule( $product, $row,&$html) {
 		if (empty($product->productCustom->custom_element) or $product->productCustom->custom_element != $this->_name) return '';
 		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
-		foreach ($plgParam as $k => $attributes) {
+		foreach ($plgParam as $attributes) {
 			foreach ($attributes as $k => $attribute) {
 				if ($k =='child_id') continue;
 				$html .='<span class="stockablecartvariant_attribute"> '.JText::_($attribute).' </span>';
@@ -530,7 +530,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			$db = JFactory::getDBO();
 			$q = 'SELECT CONCAT( `product_name`, " [' .JText::_('COM_VIRTUEMART_PRODUCT_SKU').'"," : ",`product_sku`,"]") as product_name,`virtuemart_product_id` as id, `product_in_stock` as stock FROM `#__virtuemart_products_'.VMLANG.'` as l '
 			. ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)'
-			. 'WHERE `product_parent_id` ='.(int)$child_id ;
+			. ' WHERE `product_parent_id` ='.(int)$child_id
+			. ' ORDER BY `pordering`' ;
 			$db->setQuery($q);
 
 			$result = $db->loadObjectList();
@@ -562,13 +563,12 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @author Matt Lewis-Garner
 	 */
 	function getValideChild($child_id ) {
-		//TODO
-		//$productModel = VmModel::getModel('product');
-        //$child = $productModel->getProduct($child_id,true,false,true,1,false);
-		$db = JFactory::getDBO();
+		$productModel = VmModel::getModel('product');
+        $child = $productModel->getProduct($child_id,true,false,true,1,false);
+		/*$db = JFactory::getDBO();
 		$q = 'SELECT `product_sku`,`product_name`,`product_in_stock`,`product_ordered`,`product_availability`,`product_weight` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_'.VMLANG.'` as l using (`virtuemart_product_id`) WHERE `published`=1 and `virtuemart_product_id` ='.(int)$child_id ;
 		$db->setQuery($q);
-		$child = $db->loadObject();
+		$child = $db->loadObject();*/
 		if ($child) {
 			if ('disableit_children' === $this->stockhandle) {
 				$stock = $child->product_in_stock - $child->product_ordered ;
@@ -689,10 +689,19 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			$selected = $customPlugin[$productCustomsPrice->virtuemart_customfield_id]['stockable']['child_id'];
 
 			if (!$child = $this->plgVmCalculateCustomVariant($product, $productCustomsPrice,$selected) ) return false;
-			if ($child->product_sku)
+			/*if ($child->product_sku)
 				$product->product_sku = $child->product_sku;
 			if ($child->product_name)
 				$product->product_name = $child->product_name;
+			$product->product_in_stock = $child->product_in_stock;*/
+
+			foreach ($product as $key => $value) {
+				if ('virtuemart_product_id' != $key) {
+					if ($child->$key) {
+						$product->$key = $child->$key;
+					}
+				}
+			}
 			$product->product_in_stock = $child->product_in_stock;
 
 			$this->stockhandle = VmConfig::get('stockhandle','none');
@@ -704,7 +713,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 				$orderedQuantity = $product->quantity;
 				foreach ($cart->products as $cartProduct) {
-					if ($cartProduct->param[$productCustomsPrice->virtuemart_customfield_id]['stockable']['child_id'] == $selected) {
+					$cartProductParam = json_decode($cartProduct->customPlugin);
+					if ($cartProductParam->{$productCustomsPrice->virtuemart_customfield_id}->stockable->child_id == $selected) {
 						$orderedQuantity += $cartProduct->quantity;
 						if ($orderedQuantity > $product->product_in_stock) {
 							return false;
