@@ -245,15 +245,15 @@ if (!empty($this->products)) {
 							<span class="vote"><?php echo JText::_('COM_VIRTUEMART_RATING') . ' ' . JText::_('COM_VIRTUEMART_UNRATED') ?></span>
 						<?php
 						} else {
-							$ratingwidth = $product->rating * 24; //I don't use round as percetntage with works perfect, as for me
+							$ratingwidth = $product->rating * 12; //I don't use round as percetntage with works perfect, as for me
 							?>
 							<span class="vote">
-							<?php echo JText::_('COM_VIRTUEMART_RATING') . ' ' . round($product->rating) . '/' . $maxrating; ?><br/>
-							<span title=" <?php echo (JText::_("COM_VIRTUEMART_RATING_TITLE") . round($product->rating) . '/' . $maxrating) ?>" class="ratingbox" style="display:inline-block;">
-							<span class="stars-orange" style="width:<?php echo $ratingwidth.'px'; ?>">
-							</span>
-							</span>
-						</span>
+                                <?php echo JText::_('COM_VIRTUEMART_RATING') . ' ' . round($product->rating) . '/' . $maxrating; ?><br/>
+                                <span title=" <?php echo (JText::_("COM_VIRTUEMART_RATING_TITLE") . round($product->rating) . '/' . $maxrating) ?>" class="category-ratingbox" style="display:inline-block;">
+                                    <span class="stars-orange" style="width:<?php echo $ratingwidth.'px'; ?>">
+                                    </span>
+                                </span>
+                            </span>
 						<?php
 						}
 					}

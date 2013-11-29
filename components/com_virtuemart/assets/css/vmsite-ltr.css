@@ -225,6 +225,8 @@ div.spaceStyle{padding: 0px; margin: 5px; spacing: 0px;}
 .vm-notice{color: #CC0000;}
 .buttonBar-right{text-align: right; width: 100%;}
 .userfields_info{font-weight: bold;display: block;margin: 0px 0px 8px 0px;}
+
+
 .ratingbox {
 	position:relative;
 	display:block;
@@ -239,6 +241,26 @@ div.spaceStyle{padding: 0px; margin: 5px; spacing: 0px;}
 	height:24px;
 	position:absolute;
 }
+
+.vote {
+    display: block;
+    margin-bottom: 4px;
+}
+.category-ratingbox {
+    position:relative;
+    display:block;
+    width:60px;
+    height:12px;
+    background:url("../images/color-stars-small.png") repeat-x scroll 0 bottom transparent;
+}
+.category-ratingbox span {
+    background:url(../images/color-stars-small.png) repeat-x;
+    display:block;
+    width:1%;
+    height:12px;
+    position:absolute;
+}
+
 .stars-orange{background-position:0 0 !important;}
 .stars-red{background-position:0 -54px !important;}
 .stars-green{background-position:0 -108px !important; }
