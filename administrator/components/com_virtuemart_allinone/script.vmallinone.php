@@ -63,7 +63,6 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('KlarnaCheckout', 'plugin', 'klarnacheckout', 'vmpayment');
 			$this->installPlugin ('Sofort Banking/Überweisung', 'plugin', 'sofort', 'vmpayment');
 			$this->installPlugin ('PayPal', 'plugin', 'paypal', 'vmpayment');
-			$this->installPlugin ('PayPal AIO', 'plugin', 'paypal_aio', 'vmpayment');
 			$this->installPlugin ('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
 			//$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
 			//$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
