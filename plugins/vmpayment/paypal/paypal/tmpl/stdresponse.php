@@ -31,11 +31,12 @@ $order = $viewData["order"];
     	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_PAYMENT_NAME'); ?></td>
         <td><?php echo $payment_name; ?></td>
     </tr>
-    <?php if ($success) { ?>
+
 	<tr>
     	<td><?php echo JText::_('VMPAYMENT_PAYPAL_ORDER_NUMBER'); ?></td>
         <td><?php echo $order['details']['BT']->order_number;; ?></td>
     </tr>
+	<?php if ($success) { ?>
 	<tr>
     	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_AMOUNT'); ?></td>
         <td><?php echo $payment->mc_gross . ' ' . $payment->mc_currency; ?></td>
@@ -44,16 +45,8 @@ $order = $viewData["order"];
     	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_ID'); ?></td>
         <td><?php echo $payment->txn_id; ?></td>
     </tr>
-    <?php } else { ?>
-	<tr>
-    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_ERROR_CODE'); ?></td>
-        <td><?php echo $responseData['L_ERRORCODE0']; ?></td>
-    </tr>
-	<tr>
-    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_ERROR_DESC'); ?></td>
-        <td><?php echo $responseData['L_LONGMESSAGE0']; ?></td>
-    </tr>
-    <?php } ?>
+    <?php }  ?>
+
 </table>
 <?php if ($success) { ?>
 	<br />

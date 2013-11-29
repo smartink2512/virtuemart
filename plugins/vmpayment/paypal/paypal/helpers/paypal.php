@@ -386,9 +386,9 @@ class PaypalHelperPaypal {
 
 		// check that the remote IP is from Paypal.
 		if (!$this->checkPaypalIps($paypal_data)) {
+			$this->writelog('FALSE', 'checkPaypalIps', 'error');
 			return false;
 		}
-
 		// Validate the IPN content upon PayPal
 		if (!$this->validateIpnContent($paypal_data)) {
 			$this->writelog('Invalid IPN content', 'processIPN', 'error');
@@ -431,9 +431,12 @@ class PaypalHelperPaypal {
 			}
 
 		} else if (strcmp($paypal_data['payment_status'], 'Completed') == 0) {
+			$this->writelog('Completed', 'payment_status', 'debug');
+
 			// 1. check the payment_status is Completed
 			// 2. check that txn_id has not been previously processed
 			if ($this->_check_txn_id_already_processed($payments, $paypal_data['txn_id'])) {
+				$this->writelog('FALSE', '_check_txn_id_already_processed', 'debug');
 				return FALSE;
 			}
 			// 3. check email and amount currency is correct
@@ -482,10 +485,12 @@ class PaypalHelperPaypal {
 	}
 
 	protected function checkPaypalIps($paypal_data) {
+/*
 		$test_ipn = (array_key_exists('test_ipn', $paypal_data)) ? $paypal_data['test_ipn'] : 0;
 		if ($test_ipn == 1) {
 			return true;
 		}
+*/
 		$order_number = $paypal_data['invoice'];
 
 		// Get the list of IP addresses for www.paypal.com and notify.paypal.com
@@ -494,6 +499,8 @@ class PaypalHelperPaypal {
 		if ($this->_method->sandbox  ) {
 			$paypal_iplist = gethostbynamel('ipn.sandbox.paypal.com');
 			$paypal_iplist = (array)$paypal_iplist;
+			$this->writelog($paypal_iplist, 'checkPaypalIps SANDBOX', 'debug');
+
 		} else {
 			$paypal_iplist1 = gethostbynamel('www.paypal.com');
 			$paypal_iplist2 = gethostbynamel('notify.paypal.com');
@@ -542,7 +549,11 @@ class PaypalHelperPaypal {
 			);
 
 			$paypal_iplist = array_merge($paypal_iplist, $paypal_iplist2, $paypal_iplist3);
+			$this->writelog($paypal_iplist, 'checkPaypalIps PRODUCTION', 'debug');
+
 		}
+		$this->writelog($_SERVER['REMOTE_ADDR'], 'checkPaypalIps REMOTE ADDRESS', 'debug');
+
 		//  test if the remote IP connected here is a valid IP address
 		if (!in_array($_SERVER['REMOTE_ADDR'], $paypal_iplist)) {
 			$this->writelog('Invalid PayPal IP Address, request received from IP ' . $_SERVER['REMOTE_ADDR'], 'processIPN', 'error');
@@ -555,7 +566,6 @@ class PaypalHelperPaypal {
 			$this->sendEmailToVendorAndAdmins($mail_subject, $mail_body);
 			return false;
 		}
-		$this->writelog('IPN request received from IP ' . $_SERVER['REMOTE_ADDR'], 'processIPN', 'message');
 
 		return true;
 	}
@@ -563,12 +573,14 @@ class PaypalHelperPaypal {
 	protected function validateIpnContent($paypal_data) {
 		$test_ipn = (array_key_exists('test_ipn', $paypal_data)) ? $paypal_data['test_ipn'] : 0;
 		if ($test_ipn == 1) {
-			return true;
+			//return true;
 		}
 
 		// Paypal wants to open the socket in SSL
 		$port = 443;
 		$paypal_url = $this->_getPaypalURL('ssl://', false);
+		$paypal_url_header = $this->_getPaypalURL('', false);
+		$protocol = 'ssl://';
 		/*
 		 * Before we can trust the contents of the message, we must first verify that the message came from PayPal.
 		 * To verify the message, we must send back the contents in the exact order they
@@ -586,23 +598,30 @@ class PaypalHelperPaypal {
 			}
 		}
 
-		$header = "POST /cgi-bin/webscr HTTP/1.1\r\n";
-		$header .= "User-Agent: PHP/" . phpversion() . "\r\n";
+		$header="POST /cgi-bin/webscr HTTP/1.1\r\n";
+		$header .= "User-Agent: PHP/" . phpversion () . "\r\n";
 		$header .= "Referer: " . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . @$_SERVER['QUERY_STRING'] . "\r\n";
 		$header .= "Server: " . $_SERVER['SERVER_SOFTWARE'] . "\r\n";
-		$header .= "Host: " . $paypal_url . ":" . $port . "\r\n";
+		$header .= "Host: "  . $paypal_url_header . ":" . $port . "\r\n";
 		$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-		$header .= "Content-Length: " . strlen($post_msg) . "\r\n";
-		$header .= "Accept: */*\r\n\r\n";
+		$header .= "Content-Length: " . strlen ($post_msg) . "\r\n";
+		//$header .= "Accept: */*\r\n\r\n";
+		$header .="Connection: close\r\n\r\n";
+
+		//$fps = fsockopen($paypal_url, $port, $errno, $errstr, 30);
+
 
 		$fps = fsockopen($paypal_url, $port, $errno, $errstr, 30);
-
 		$valid_ipn = false;
 		if (!$fps) {
 			$this->writelog(JText::sprintf('VMPAYMENT_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno), 'processIPN', 'error');
 			$this->sendEmailToVendorAndAdmins("error with paypal", JText::sprintf('VMPAYMENT_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno));
 		} else {
-			fputs($fps, $header . $post_msg);
+			$return = fputs($fps, $header . $post_msg);
+			if ($return===false) {
+				$this->writelog("FALSE", 'validateIpnContent FPUTS', 'debug');
+				return FALSE;
+			}
 			$res = '';
 			while (!feof($fps)) {
 				$res .= fgets($fps, 1024);
@@ -629,7 +648,7 @@ class PaypalHelperPaypal {
 			}
 		}
 
-		$this->writelog('valid_ipn: ' . $valid_ipn, 'processIPN', 'message');
+		$this->writelog('valid_ipn: ' . $valid_ipn, 'processIPN', 'debug');
 		return $valid_ipn;
 	}
 

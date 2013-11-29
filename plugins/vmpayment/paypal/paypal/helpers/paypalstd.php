@@ -174,12 +174,14 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		if ($this->_method->debug) {
 			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" target="paypal">';
 		} else {
-			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" >';
+			$html .= '<form action="' . $url . '" method="post" name="vm_paypal_form" accept-charset="UTF-8">';
 		}
+		$html .= '<input type="hidden" name="charset" value="utf-8">';
+
 		foreach ($post_variables as $name => $value) {
 			$html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
 		}
-		if ($this->_method->debug OR $this->_method->log) {
+		if ($this->_method->debug ) {
 			if ($this->_method->debug) {
 
 				$html .= '<div style="background-color:red;color:white;padding:10px;">
@@ -189,10 +191,11 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 			$this->writelog($post_variables, 'PayPal request:', 'debug');
 
 		} else {
+
 			$html .= '<input type="submit"  value="' . JText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />
-					<script type="text/javascript">
-						document.vm_paypal_form.submit();
-					</script>';
+					<script type="text/javascript">';
+				$html .= '		document.vm_paypal_form.submit();';
+				$html .= '	</script>';
 		}
 		$html .= '</form></div>';
 		$html .= '</body></html>';
@@ -239,7 +242,7 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		$post_variables['cancel_return'] = substr(JURI::root(false, ''), 0, -1) . JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid'), false);
 
 		//$post_variables['undefined_quantity'] = "0";
-		$post_variables['test_ipn'] = $this->_method->debug;
+		//$post_variables['test_ipn'] = $this->_method->debug;
 		$post_variables['rm'] = '2'; // the buyer’s browser is redirected to the return URL by using the POST method, and all payment variables are included
 		// todo: check when in subdirectories
 		// todo add vendor image
