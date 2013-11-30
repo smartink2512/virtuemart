@@ -44,7 +44,7 @@
         <!-- ================== -->
         <!-- param type="vmtitle" default="VMPAYMENT_PAYPAL_CREDENTIALS"
                description="VMPAYMENT_PAYPAL_CREDENTIALS_DESC"/ -->
-        <param class="exp std hosted" type="credentials" default="" description=""/>
+        <!-- param class="exp std hosted" type="credentials" default="" description=""/ -->
 
         <param class="api live required" name="api_login_id" type="text" size="80" default=""
                label="VMPAYMENT_PAYPAL_USERNAME"/>
