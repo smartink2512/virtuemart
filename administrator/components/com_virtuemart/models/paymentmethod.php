@@ -1,10 +1,10 @@
 <?php
 /**
 *
-* Data module for shop calculation rules
+* Model paymentmethod
 *
 * @package	VirtueMart
-* @subpackage  Calculation tool
+* @subpackage  Payment
 * @author Max Milbers
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -227,43 +227,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		return $href;
 	}*/
 
-	/**
-	 * Publish/Unpublish all the ids selected
-     *
-     * @author jseros
-     *
-     * @return int 1 is the publishing action was successful, -1 is the unsharing action was successfully, 0 otherwise.
-     	* @deprecated
-     */
-	public function changeIsPercentagePublish($quotedId){
 
-//		foreach ($categories as $id){
-
-//			$quotedId = $this->_db->Quote($id);
-			$query = 'SELECT discount_is_percentage
-					  FROM #__virtuemart_paymentmethods
-					  WHERE virtuemart_paymentmethod_id = '. (int)$quotedId;
-
-			$this->_db->setQuery($query);
-			$calc = $this->_db->loadObject();
-
-			$publish = ($calc->calc_shopper_published > 0) ? 0 : 1;
-
-			$query = 'UPDATE #__virtuemart_paymentmethods
-					  SET discount_is_percentage = '.$publish.'
-					  WHERE virtuemart_paymentmethod_id = '.(int)$quotedId;
-
-			$this->_db->setQuery($query);
-
-			if( !$this->_db->query() ){
-				vmError( $this->_db->getErrorMsg() );
-				return false;
-			}
-
-//		}
-
-		return ($publish ? 1 : -1);
-	}
 
 
 	/**
@@ -292,39 +256,6 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
 	}
 
-	/**
-	 * function to render the creditcardlist
-	 *
-	 * @author Max Milbers
-	 *
-	 * @param radio list of creditcards
-	 * @return html
-	 * @deprecated
-	 */
 
-	public function renderCreditCardRadioList($selected,$creditcardIds=0){
-		$creditcardIds=0;
-		if(!$creditcardIds){
-			$creditcardIds = self::getPaymentAcceptedCreditCards();
-		}
-
-		$creditcardModel = VmModel::getModel('Creditcard');
-
-		$listHTML='';
-
-		if($creditcardIds){
-			foreach($creditcardIds as $ccId){
-				$item = $creditcardModel->getCreditCard($ccId);
-				$checked='';
-	//			foreach($selected as $select){
-					if($item->virtuemart_creditcard_id==$selected){
-						$checked='"checked"';
-					}
-	//			}
-				$listHTML .= '<input type="radio" name="creditcard" value="'.$item->virtuemart_creditcard_id.'" '.$checked.'>'.$item->creditcard_name.' <br />';
-			}
-		}
-		return $listHTML;
-	}
 
 }
