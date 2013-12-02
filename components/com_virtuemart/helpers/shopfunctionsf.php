@@ -654,6 +654,11 @@ class shopFunctionsF {
 		$q = 'SELECT * FROM `#__menu` WHERE `component_id` = "'. $component->id .'" and `language` = "'. $lang .'"';
 		$db->setQuery( $q );
 		$items = $db->loadObjectList();
+		if(empty($items)) {
+			$q = 'SELECT * FROM `#__menu` WHERE `component_id` = "'. $component->id .'" and `language` = "*"';
+			$db->setQuery( $q );
+			$items = $db->loadObjectList();
+		}
 
 		foreach ($items as $item) {
 			if(strstr($item->link, 'view=virtuemart')) {
