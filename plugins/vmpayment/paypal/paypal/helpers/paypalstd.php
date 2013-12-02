@@ -252,9 +252,9 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		$post_variables['no_shipping'] = $this->_method->no_shipping;
 		$post_variables['no_note'] = "1";
 
-		$post_variables['image_url'] = $this->getLogoImage();
-
-		if ($this->_method->headerimg and $this->_method->headerimg != -1) {
+		if (empty($this->_method->headerimg) OR $this->_method->headerimg == -1 ) {
+			$post_variables['image_url'] = $this->getLogoImage();
+		} else {
 			$post_variables['cpp_header_image'] = JURI::base() . 'images/stories/virtuemart/payment/' . $this->_method->headerimg;
 		}
 		/*

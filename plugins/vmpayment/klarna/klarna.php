@@ -1836,17 +1836,19 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 					return NULL;
 				}
 			}
-			$payments = new klarna_payments($cData, KlarnaHandler::getShipToAddress ($cart));
-			// TODO: change to there is a function in the API
-			$sFee = $payments->getCheapestMonthlyCost ($cart, $cData);
-			if ($sFee) {
-				$payment_advertise[] = $this->renderByLayout ('cart_advertisement',
-					array("sFee"   => $sFee,
-					      "eid"    => $cData['eid'],
-					      "country"=> $cData['country_code']
-					));
-			}
+			if (in_array ('part', $cData['payments_activated'])) {
+				$payments = new klarna_payments($cData, KlarnaHandler::getShipToAddress ($cart));
 
+				// TODO: change to there is a function in the API
+				$sFee = $payments->getCheapestMonthlyCost ($cart, $cData);
+				if ($sFee) {
+					$payment_advertise[] = $this->renderByLayout ('cart_advertisement',
+						array("sFee"   => $sFee,
+							  "eid"    => $cData['eid'],
+							  "country"=> $cData['country_code']
+						));
+				}
+			}
 		}
 
 	}

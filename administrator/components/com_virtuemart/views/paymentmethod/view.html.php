@@ -81,11 +81,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 			$payment = $model->getPayment();
 			$this->assignRef('payment',	$payment);
 			$this->assignRef('vmPPaymentList', self::renderInstalledPaymentPlugins($payment->payment_jplugin_id));
-			//			$this->assignRef('PaymentTypeList',self::renderPaymentRadioList($paym->payment_type));
 
-			//			$this->assignRef('creditCardList',self::renderCreditCardRadioList($paym->payment_creditcards));
-			//			echo 'humpf <pre>'.print_r($paym).'</pre>' ;
-			//$this->assignRef('creditCardList',ShopFunctions::renderCreditCardList($paym->payment_creditcards,true));
 			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($payment->virtuemart_shoppergroup_ids, true));
 
 			if(Vmconfig::get('multix','none')!=='none'){
@@ -110,52 +106,6 @@ class VirtuemartViewPaymentMethod extends VmView {
 	}
 
 
-	/**
-	 * Builds a list to choose the Payment type
-	 *
-	 * @copyright 	Copyright (c) 2009 VirtueMart Team. All rights reserved.
-	 * @author 		Max Milbers
-	 * @param 	$selected 	the selected values, may be single data or array
-	 * @return 	$list 		list of the Entrypoints
-	 * @deprecated
-	 */
-
-	function renderPaymentTypesList($selected){
-
-		$list = array(
-		'0' => array('payment_type' => 'C', 'payment_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_CREDIT')),
-		'1' => array('payment_type' => 'Y', 'payment_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_USE_PP')),
-		'2' => array('payment_type' => 'B', 'payment_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_BANK_DEBIT')),
-		'3' => array('payment_type' => 'N', 'payment_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_AO')),
-		'4' => array('payment_type' => 'P', 'payment_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_FORMBASED'))
-		);
-
-		$listHTML = JHTML::_('Select.genericlist', $list, 'payment_type', '', 'payment_type', 'payment_type_name', $selected );
-		return $listHTML;
-	}
-	/*
-	 *
-	* @deprecated
-	*/
-	function renderPaymentRadioList($selected){
-
-		$list = array(
-		'0' => array('payment_type' => 'C', 'payment_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_CREDIT')),
-		'1' => array('payment_type' => 'Y', 'payment_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_USE_PP')),
-		'2' => array('payment_type' => 'B', 'payment_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_BANK_DEBIT')),
-		'3' => array('payment_type' => 'N', 'payment_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_AO')),
-		'4' => array('payment_type' => 'P', 'payment_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_FORMBASED'))
-		);
-
-		$listHTML='';
-		foreach($list as $item){
-			if($item['payment_type']==$selected) $checked='checked="checked"'; else $checked='';
-			if($item['payment_type']=='Y' || $item['payment_type']=='C') $id = 'pam_type_CC_on'; else $id='pam_type_CC_off';
-			$listHTML .= '<input id="'.$id.'" type="radio" name="payment_type" value="'.$item['payment_type'].'" '.$checked.'>'.$item['payment_type_name'].' <br />';
-		}
-
-		return $listHTML;
-	}
 
 	function renderInstalledPaymentPlugins($selected){
 
