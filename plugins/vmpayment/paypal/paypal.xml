@@ -96,7 +96,7 @@
                description="VMPAYMENT_PAYPAL_MERCHANT_DESC"/>
         <param class="std exp sandbox" name="sandbox_merchant_email" type="text" size="80"
                default="" label="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT"
-               description="VMPAYMENT_PAYPAL_ACCELERATED_ONBOARDING_DESC"/>
+               description="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT_DESC"/>
 
         <!-- PayPal settings -->
         <param type="vmtitle" default="VMPAYMENT_PAYPAL_SETTINGS" description="VMPAYMENT_PAYPAL_SETTINGS_DESC"/>

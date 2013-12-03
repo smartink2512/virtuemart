@@ -107,7 +107,7 @@ class PaypalHelperPaypal {
 		if ($productPricesUnformatted['salesPriceWithDiscount']) {
 			return vmPSPlugin::getAmountValueInCurrency($productPricesUnformatted['salesPriceWithDiscount'], $this->_method->payment_currency);
 		} else {
-			return vmPSPlugin::getAmountValueInCurrency($productPricesUnformatted['basePriceWithTax'], $this->_method->payment_currency);
+			return vmPSPlugin::getAmountValueInCurrency($productPricesUnformatted['salesPrice'], $this->_method->payment_currency);
 		}
 	}
 

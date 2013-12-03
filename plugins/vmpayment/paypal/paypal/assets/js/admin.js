@@ -26,7 +26,7 @@ jQuery().ready(function ($) {
     handleCredentials = function () {
         var paypalproduct = $('#paramspaypalproduct').val();
         var sandbox = $("input[name='params[sandbox]']:checked").val();
-        if (sandbox) {
+        if (sandbox==1) {
             var sandboxmode = 'sandbox';
         } else {
             var sandboxmode = 'production';
@@ -205,7 +205,7 @@ jQuery().ready(function ($) {
     handleAuthentication = function () {
         var paypalAuthentication = $('#paramsauthentication').val();
         var sandbox = $("input[name='params[sandbox]']:checked").val();
-        if (sandbox) {
+        if (sandbox==1) {
             var sandboxmode = 'sandbox';
         } else {
             var sandboxmode = 'production';
