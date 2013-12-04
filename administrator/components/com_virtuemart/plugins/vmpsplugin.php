@@ -1001,8 +1001,18 @@ abstract class vmPSPlugin extends vmPlugin {
 			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $method->tax_id . '" ';
 			$db->setQuery ($q);
 			$taxrules = $db->loadAssocList ();
-		} else {
 
+			if(!empty($taxrules) ){
+				foreach($taxrules as &$rule){
+					if(!isset($rule['subTotal'])) $rule['subTotal'] = 0;
+					if(!isset($rule['taxAmount'])) $rule['taxAmount'] = 0;
+					$rule['subTotalOld'] = $rule['subTotal'];
+					$rule['taxAmountOld'] = $rule['taxAmount'];
+					$rule['taxAmount'] = 0;
+					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
+				}
+			}
+		} else {
 			$taxrules = array_merge($calculator->_cartData['VatTax'],$calculator->_cartData['taxRulesBill']);
 
 			if(!empty($taxrules) ){
@@ -1025,22 +1035,19 @@ abstract class vmPSPlugin extends vmPlugin {
 				foreach($taxrules as &$rule){
 					$frac = ($rule['subTotalOld']-$rule['taxAmountOld'])/$denominator;
 					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'] * $frac;
+					vmdebug('Part $denominator '.$denominator.' $frac '.$frac,$rule['subTotal']);
 				}
 			}
-
 		}
+
 
 		if(empty($method->cost_per_transaction)) $method->cost_per_transaction = 0.0;
 		if(empty($method->cost_percent_total)) $method->cost_percent_total = 0.0;
 
-		//If the taxing via unpublished categories is used, then the rules use the subtotal which is now overriden here
-		/*if (count ($taxrules) == 1 and isset($taxrules[1]['subTotal'] )) {
-			$taxrules[1]['subTotal'] = $cart_prices[$this->_psType . 'Value'];
-		}/*/
-
 		if (count ($taxrules) > 0 ) {
 
 			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value'],true,false), 'salesPrice');
+			//vmdebug('I am in '.get_class($this).' and have this rules now',$taxrules,$cart_prices[$this->_psType . 'Value'],$cart_prices['salesPrice' . $_psType]);
 			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] -  $cart_prices[$this->_psType . 'Value']), 'salesPrice');
 			reset($taxrules);
 			$taxrule =  current($taxrules);

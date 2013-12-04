@@ -231,6 +231,19 @@ $document->addScriptDeclaration($js);
 				<?php echo VmHTML::checkbox('oncheckout_change_shopper', VmConfig::get('oncheckout_change_shopper',0)); ?>
 			</td>
 		</tr>
+<?php
+		$_delivery_date_options = array(
+			'm' => '1 ' . JText::_('COM_VIRTUEMART_DELDATE_INV')
+		, 'osP' => '1 ' . JText::_('COM_VIRTUEMART_ORDER_STATUS_PENDING')
+		, 'osU' => '2 ' . JText::_('COM_VIRTUEMART_ORDER_STATUS_CONFIRMED_BY_SHOPPER')
+		, 'osC' => '1 ' . JText::_('COM_VIRTUEMART_ORDER_STATUS_CONFIRMED')
+		, 'osS' => '3 ' . JText::_('COM_VIRTUEMART_ORDER_STATUS_SHIPPED')
+		, 'osR' => '6 ' . JText::_('COM_VIRTUEMART_ORDER_STATUS_REFUNDED')
+		, 'osC' => '1 ' . JText::_('COM_VIRTUEMART_ORDER_STATUS_CANCELLED')
+		);
+		echo VmHTML::row('selectList','COM_VIRTUEMART_CFG_DELDATE_INV','del_date_type', VmConfig::get('del_date_type','m'), $_delivery_date_options);
+		?>
+
 	</table>
 </fieldset>
 
