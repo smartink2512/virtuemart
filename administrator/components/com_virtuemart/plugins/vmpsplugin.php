@@ -187,7 +187,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 
 		$id = $this->_idName;
-		vmTime('onSelectedCalculatePrice before test '.$cart->$id,'prepareCartData');
+		//vmTime('onSelectedCalculatePrice before test '.$cart->$id,'prepareCartData');
 		if (!($method = $this->selectedThisByMethodId ($cart->$id))) {
 			return NULL; // Another method was selected, do nothing
 		}
@@ -197,18 +197,15 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		$cart_prices_name = '';
-		//$cart_prices[$this->_psType . '_tax_id'] = 0;
 		$cart_prices['cost'] = 0;
 
 		if (!$this->checkConditions ($cart, $method, $cart_prices)) {
 			return FALSE;
 		}
-		//vmTime('onSelectedCalculatePrice after checkConditions'.$cart->$id,'prepareCartData');
-		$paramsName = $this->_psType . '_params';
+
 		$cart_prices_name = $this->renderPluginName ($method);
-		//vmTime('onSelectedCalculatePrice after renderPluginName'.$cart->$id,'prepareCartData');
 		$this->setCartPrices ($cart, $cart_prices, $method);
-		vmTime('onSelectedCalculatePrice after setCartPrices '.$cart_prices_name,'prepareCartData');
+
 		return TRUE;
 	}
 
@@ -1006,10 +1003,9 @@ abstract class vmPSPlugin extends vmPlugin {
 			$taxrules = $db->loadAssocList ();
 		} else {
 
-			$taxrules = array();
-			if(!empty($calculator->_cartData['VatTax']) ){
-				$taxrules = $calculator->_cartData['VatTax'];
+			$taxrules = array_merge($calculator->_cartData['VatTax'],$calculator->_cartData['taxRulesBill']);
 
+			if(!empty($taxrules) ){
 				$denominator = 0.0;
 				foreach($taxrules as &$rule){
 					//$rule['numerator'] = $rule['calc_value']/100.0 * $rule['subTotal'];
@@ -1030,8 +1026,6 @@ abstract class vmPSPlugin extends vmPlugin {
 					$frac = ($rule['subTotalOld']-$rule['taxAmountOld'])/$denominator;
 					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'] * $frac;
 				}
-			} else if(!empty($calculator->_cartData['taxRulesBill']) ){
-				$taxrules = array_merge($taxrules,$calculator->_cartData['taxRulesBill']);
 			}
 
 		}

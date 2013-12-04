@@ -9,9 +9,9 @@
 
     background: url(../images/admin_ui/container_bg_blue.png) repeat-y  scroll 0 0 ;}
 
-* html .virtuemart-admin-area { /*IE6 only*/overflow: visible;height: 1px;}
+* html .virtuemart-admin-area { /*IE6 only*/ overflow: visible;height: 1px;}
 .virtuemart-admin-area .menu-wrapper {width:190px ;float: left;}
-.virtuemart-admin-area #admin-content-wrapper {margin-left: auto;overflow:visible}
+/*.virtuemart-admin-area #admin-content-wrapper {margin-left: auto;overflow:visible}
 /*.virtuemart-admin-area .menu-wrapper, .virtuemart-admin-area #admin-content-wrapper {padding-bottom: 16000px;margin-bottom: -16000px;}*/
 .virtuemart-admin-area #admin-content-wrapper .admin-content {margin: 0;padding: 0;overflow: auto; background: left repeat-y #fff;border-left: solid #b4b4b4 1px;height:540px;}
 .virtuemart-admin-area #admin-content-wrapper .admin-content {height:auto;min-height: 540px;}
@@ -104,7 +104,8 @@ textarea {width: 100%;}
 /* The Content Area */
 /*#admin-content {overflow: visible;}
 #admin-ui-tabs {overflow: visible !important;}*/
-#admin-ui-tabs .tabs {padding: 10px 1px 10px; overflow: visible !important;}
+/*#admin-ui-tabs .tabs {padding: 10px 1px 10px; overflow: visible !important;}*/
+#admin-ui-tabs .tabs {padding: 10px 1px 10px; overflow: visible;}
 
 /*#admin-ui-tabs .tabs table {overflow: auto !important;}*/
 /* do not change the line below !!! */

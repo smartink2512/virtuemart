@@ -624,6 +624,18 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 		}
 
+		if(empty($data->delivery_date)){
+			$del_date_type = VmConfig::get('del_date_type','m');
+			if(strpos($del_date_type,'os')!==FALSE){	//for example osS
+				$os = substr($del_date_type,2);
+				if($data->order_status == $os){
+					$date = JFactory::getDate();
+					$data->delivery_date = $date->toMySQL();
+				}
+			} else {
+				$data->delivery_date = JText::_('COM_VIRTUEMART_DELDATE_INV');
+			}
+		}
 
 		if ($data->store()) {
 

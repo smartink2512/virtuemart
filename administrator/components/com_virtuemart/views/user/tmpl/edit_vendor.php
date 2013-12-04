@@ -20,9 +20,7 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 <?php echo $this->langList; ?>
 <div class="col50">
-	<table class="admintable">
-		<tr>
-			<td valign="top">
+
 				<fieldset>
 					<legend>
 						<?php echo JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
@@ -63,9 +61,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 					</table>
 				</fieldset>
-			</td>
 
-			<td valign="top">
 				<fieldset>
 					<legend>
 						<?php echo JText::_('COM_VIRTUEMART_STORE_CURRENCY_DISPLAY') ?>
@@ -89,10 +85,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						</tr>
 					</table>
 				</fieldset>
-			</td>
-		</tr>
-		<tr>
-		<td colspan="2">
+
 		<fieldset>
 			<legend>
 				<?php echo JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
@@ -104,45 +97,33 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 		</fieldset>
 
-		</td>
-		</tr>
-		<tr>
-		<td colspan="2">
+
 				<fieldset>
 					<legend>
 						<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_DESCRIPTION');?>
 					</legend>
-					<?php echo $this->editor->display('vendor_store_desc', $this->vendor->vendor_store_desc, '100%', 450, 70, 15)?>
+					<?php echo $this->editor->display('vendor_store_desc', $this->vendor->vendor_store_desc, '100%', 350, 70, 15)?>
 				</fieldset>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
+
 				<fieldset>
 					<legend>
 						<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_TOS');?>
 					</legend>
-					<?php echo $this->editor->display('vendor_terms_of_service', $this->vendor->vendor_terms_of_service, '100%', 450, 70, 15)?>
+					<?php echo $this->editor->display('vendor_terms_of_service', $this->vendor->vendor_terms_of_service, '100%', 350, 70, 15)?>
 				</fieldset>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
+
 				<fieldset>
 					<legend>
 						<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_LEGAL');?>
 					</legend>
-					<?php echo $this->editor->display('vendor_legal_info', $this->vendor->vendor_legal_info, '100%', 400, 70, 15)?>
+					<?php echo $this->editor->display('vendor_legal_info', $this->vendor->vendor_legal_info, '100%', 100, 70, 15)?>
 				</fieldset>
-			</td>
-		</tr>
-			<td valign="top" style="width: 20%;">
+
 			<fieldset>
 				<legend><?php echo JText::_('COM_VIRTUEMART_METAINFO'); ?></legend>
 				<?php echo shopFunctions::renderMetaEdit($this->vendor); ?>
 			</fieldset>
-		</td>
-	</table>
+
 </div>
 <input type="hidden" name="user_is_vendor" value="1" />
 <input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->vendor->virtuemart_vendor_id; ?>" />

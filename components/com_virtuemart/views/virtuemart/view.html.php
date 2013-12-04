@@ -45,6 +45,8 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		$this->assignRef('vendor',$vendor);
 
+		$document = JFactory::getDocument();
+
 		if(!VmConfig::get('shop_is_offline',0)){
 
 			$categoryModel = VmModel::getModel('category');
@@ -111,20 +113,20 @@ class VirtueMartViewVirtueMart extends VmView {
 			$layout = VmConfig::get('vmlayout','default');
 			$this->setLayout($layout);
 
+
+			// Add feed links
+			if ($products  && (VmConfig::get('feed_featured_published', 0)==1 or VmConfig::get('feed_topten_published', 0)==1 or VmConfig::get('feed_latest_published', 0)==1)) {
+				$link = '&format=feed&limitstart=';
+				$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+				$document->addHeadLink(JRoute::_($link . '&type=rss', FALSE), 'alternate', 'rel', $attribs);
+				$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+				$document->addHeadLink(JRoute::_($link . '&type=atom', FALSE), 'alternate', 'rel', $attribs);
+			}
 		} else {
 			$this->setLayout('off_line');
 		}
 
-		# Set the titles
-		$document = JFactory::getDocument();
-// Add feed links
-		if ($products  && (VmConfig::get('feed_featured_published', 0)==1 or VmConfig::get('feed_topten_published', 0)==1 or VmConfig::get('feed_latest_published', 0)==1)) {
-			$link = '&format=feed&limitstart=';
-			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-			$document->addHeadLink(JRoute::_($link . '&type=rss', FALSE), 'alternate', 'rel', $attribs);
-			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-			$document->addHeadLink(JRoute::_($link . '&type=atom', FALSE), 'alternate', 'rel', $attribs);
-		}
+
 		$error = JRequest::getInt('error',0);
 
 		//Todo this may not work everytime as expected, because the error must be set in the redirect links.

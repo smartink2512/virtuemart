@@ -213,7 +213,7 @@ class VmModel extends JModel {
 			$break = false;
 			vmSetStartTime();
 			foreach($this->_validOrderingFieldName as $name){
-				if(strpos($name,$toCheck)!==FALSE){
+				if(!empty($name) and strpos($name,$toCheck)!==FALSE){
 					$this->_selectedOrdering = $name;
 					$break = true;
 					break;

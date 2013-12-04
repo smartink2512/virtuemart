@@ -1602,8 +1602,8 @@ class ShopFunctions {
 		);
 		$html = '<table>
 					'.VmHTML::row('input','COM_VIRTUEMART_CUSTOM_PAGE_TITLE','customtitle',$obj->customtitle).'
-					'.VmHTML::row('textarea','COM_VIRTUEMART_METAKEY','metakey',$obj->metakey).'
-					'.VmHTML::row('textarea','COM_VIRTUEMART_METADESC','metadesc',$obj->metadesc).'
+					'.VmHTML::row('textarea','COM_VIRTUEMART_METAKEY','metakey',$obj->metakey,'class="inputbox"',80).'
+					'.VmHTML::row('textarea','COM_VIRTUEMART_METADESC','metadesc',$obj->metadesc,'class="inputbox"',80).'
 					'.VmHtml::row('selectList','COM_VIRTUEMART_METAROBOTS','metarobot',$obj->metarobot,$options).'
 					'.VmHTML::row('input','COM_VIRTUEMART_METAAUTHOR','metaauthor',$obj->metaauthor).'
 				</table>';
