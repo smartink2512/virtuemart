@@ -30,7 +30,7 @@ $response = $viewData['response'];
 	<?php 
 	echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_PAYMENT_NAME',  $viewData['payment_name']);
 	if ( $viewData['success']) {
-		echo $this->getHtmlRow('VMPAYMENT_PAYPAL_ORDER_NUMBER', $response['invoice']);
+		echo $this->getHtmlRow('COM_VIRTUEMART_ORDER_NUMBER', $response['invoice']);
 		if ($viewData['method']->payment_type == '_xclick-subscriptions' || $viewData['method']->payment_type == '_xclick-payment-plan') {
 			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_PROFILEID', $response['PROFILEID']);
 			echo $this->getHtmlRow('VMPAYMENT_PAYPAL_PROFILESTATUS', $response['STATUS']);
@@ -51,5 +51,5 @@ $response = $viewData['response'];
 </table>
 <?php if ( $viewData['success']) { ?>
 	<br />
-	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$response['invoice'])?>"><?php echo JText::_('VMPAYMENT_PAYPAL_VIEW_ORDER'); ?></a>
+	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$viewData["order"]['details']['BT']->order_number.'&order_pass='.$viewData["order"]['details']['BT']->order_pass, false)?>"><?php echo JText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
 <?php } ?>

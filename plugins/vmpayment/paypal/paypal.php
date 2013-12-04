@@ -398,6 +398,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$dbValues['payment_order_total'] = $paypalInterface->getTotal();
 		$dbValues['tax_id'] = $this->_currentMethod->tax_id;
 		$this->storePSPluginInternalData($dbValues);
+		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 
 
 		if ($this->_currentMethod->paypalproduct == 'std') {
@@ -440,7 +441,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$paypalInterface->writelog($response, 'plgVmConfirmedOrder, response:', 'debug');
 
 				$app = JFactory::getApplication();
-				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . JRequest::getInt('Itemid')));
+				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . JRequest::getInt('Itemid'), false));
 			}
 
 
@@ -466,7 +467,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$returnValue = 2;
 			}
 //			$this->customerData->clear();
-			$html = $this->renderByLayout('apiresponse', array('method' => $this->_currentMethod, 'success' => $success, 'payment_name' => $payment_name, 'responseData' => $response, 'order_number' => $order['details']['BT']->order_number));
+			$html = $this->renderByLayout('apiresponse', array('method' => $this->_currentMethod, 'success' => $success, 'payment_name' => $payment_name, 'responseData' => $response,  "order" => $order));
 			return $this->processConfirmedOrderPaymentResponse($returnValue, $cart, $order, $html, $payment_name, $new_status);
 		} else if ($this->_currentMethod->paypalproduct == 'hosted') {
 			$paypalInterface->ManageCheckout();
@@ -538,6 +539,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
+		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 
 		// the payment itself should send the parameter needed.
 		$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
@@ -1269,7 +1271,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return false;
 		} else {
 			$app = JFactory::getApplication();
-			$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . JRequest::getInt('Itemid')));
+			$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . JRequest::getInt('Itemid'), false));
 		}
 	}
 

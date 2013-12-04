@@ -1573,7 +1573,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		}
 		//vmdebug('plgVmDisplayLogin', $user);
 		//$html = $this->renderByLayout('displaylogin', array('klarna_pm' => $klarna_pm, 'virtuemart_paymentmethod_id' => $method->virtuemart_paymentmethod_id, 'klarna_paymentmethod' => $klarna_paymentmethod));
-		$link = JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=editpayment&klarna_country_2_code=se');
+		$link = JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=editpayment&klarna_country_2_code=se', false);
 		foreach ($this->methods as $method) {
 			if ($method->klarna_active_swe) {
 				$html .= $this->renderByLayout ('displaylogin', array('editpayment_link' => $link));

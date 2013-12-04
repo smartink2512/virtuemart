@@ -174,9 +174,9 @@ class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 	}
 
 	function addUrls(&$post_variables) {
-		$post_variables['L_BUTTONVAR']['return'] = substr(JURI::root(false, ''), 0, -1) . JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&paypalproduct=hosted&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid'), false);
-		$post_variables['L_BUTTONVAR']['notify_url'] = substr(JURI::root(false, ''), 0, -1) . JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component', false);
-		$post_variables['L_BUTTONVAR']['cancel_return'] = substr(JURI::root(false, ''), 0, -1) . JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&paypalproduct=hosted&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid'), false);
+		$post_variables['L_BUTTONVAR']['return'] = JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&paypalproduct=hosted&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid').'&lang='.  JRequest::getCmd('lang','');
+		$post_variables['L_BUTTONVAR']['notify_url'] = JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'.'&lang='.  JRequest::getCmd('lang','');
+		$post_variables['L_BUTTONVAR']['cancel_return'] =JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&paypalproduct=hosted&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid').'&lang='.  JRequest::getCmd('lang','');
 
 	}
 

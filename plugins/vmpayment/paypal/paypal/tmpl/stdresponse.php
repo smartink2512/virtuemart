@@ -33,7 +33,7 @@ $order = $viewData["order"];
     </tr>
 
 	<tr>
-    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_ORDER_NUMBER'); ?></td>
+    	<td><?php echo JText::_('COM_VIRTUEMART_ORDER_NUMBER'); ?></td>
         <td><?php echo $order['details']['BT']->order_number;; ?></td>
     </tr>
 	<?php if ($success) { ?>
@@ -50,5 +50,5 @@ $order = $viewData["order"];
 </table>
 <?php if ($success) { ?>
 	<br />
-	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$viewData["order"]['details']['BT']->order_number.'&order_pass='.$viewData["order"]['details']['BT']->order_pass)?>"><?php echo JText::_('VMPAYMENT_PAYPAL_VIEW_ORDER'); ?></a>
+	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$viewData["order"]['details']['BT']->order_number.'&order_pass='.$viewData["order"]['details']['BT']->order_pass, false)?>"><?php echo JText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
 <?php } ?>

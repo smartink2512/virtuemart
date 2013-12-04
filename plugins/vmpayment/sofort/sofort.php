@@ -543,7 +543,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	 * @param $order
 	 * @return string
 	 */
-	function _getPaymentResponseHtml ($method, $order, $paymentTables) {
+	function _getPaymentResponseHtml ($method, $order, $payments) {
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
 		if (!class_exists('CurrencyDisplay')
 		) {
@@ -554,18 +554,18 @@ class plgVmPaymentSofort extends vmPSPlugin {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 
-
-
+		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 
 		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$order['details']['BT']->order_currency);
 		$cart = VirtueMartCart::getCart();
 		$currencyDisplay = CurrencyDisplay::getInstance($cart->pricesCurrency);
 
-		$nb = count($paymentTables);
+		$payment = end($payments);
+
 		$pluginName = $this->renderPluginName($method, $where = 'post_payment');
 		$html = $this->renderByLayout('post_payment', array(
 		                                                   'order' => $order,
-		                                                   'paymentInfos' => $paymentTables[$nb - 1],
+		                                                   'paymentInfos' => $payment,
 		                                                   'pluginName' => $pluginName,
 		                                                   'displayTotalInPaymentCurrency' => $totalInPaymentCurrency['display']
 		                                              ));
@@ -930,16 +930,16 @@ class plgVmPaymentSofort extends vmPSPlugin {
 
 
 	static function   getSuccessUrl ($order) {
-		return substr(JURI::root(false,''),0,-1). JROUTE::_("index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . "&Itemid=" . JRequest::getInt('Itemid'), false);
+		return JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . "&Itemid=" . JRequest::getInt('Itemid'). '&lang='.JRequest::getCmd('lang',''); ;
 	}
 
 	static function   getCancelUrl ($order) {
-		return substr(JURI::root(false,''),0,-1). JROUTE::_("index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . '&Itemid=' . JRequest::getInt('Itemid'), false);
+		return  JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . '&Itemid=' . JRequest::getInt('Itemid').'&lang='.JRequest::getCmd('lang','');
 	}
 
 	static function   getNotificationUrl ($security, $order_number) {
 
-		return substr(JURI::root(false,''),0,-1) . JROUTE::_("index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&&security=" . $security . "&on=" . $order_number, false);
+		return JURI::root()  .  "index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&&security=" . $security . "&on=" . $order_number .'&lang='.JRequest::getCmd('lang','');
 	}
 
 	static function getSecurityKey () {

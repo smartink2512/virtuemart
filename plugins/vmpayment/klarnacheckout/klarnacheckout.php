@@ -367,10 +367,10 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 				$create['locale'] = $this->locale;
 				$create['merchant']['id'] = $this->merchantid;
 				$create['merchant']['terms_uri'] = $this->getTermsURI($cart->vendorId);
-				$create['merchant']['checkout_uri'] = substr(JURI::root(false, ''), 0, -1) . JROUTE::_('index.php?option=com_virtuemart&view=cart', false);
-				$create['merchant']['confirmation_uri'] = substr(JURI::root(false, ''), 0, -1) . JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&t&pm=' . $virtuemart_paymentmethod_id . '&cartId=' . $cartIdInTable . '&klarna_order={checkout.order.uri}', false);
+				$create['merchant']['checkout_uri'] = JURI::root(). 'index.php?option=com_virtuemart&view=cart';
+				$create['merchant']['confirmation_uri'] = JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&t&pm=' . $virtuemart_paymentmethod_id . '&cartId=' . $cartIdInTable . '&klarna_order={checkout.order.uri}';
 				// You can not receive push notification on non publicly available uri
-				$create['merchant']['push_uri'] = substr(JURI::root(false, ''), 0, -1) . JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&pm=' . $virtuemart_paymentmethod_id . '&cartId=' . $cartIdInTable . '&klarna_order={checkout.order.uri}', false);
+				$create['merchant']['push_uri'] = JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&pm=' . $virtuemart_paymentmethod_id . '&cartId=' . $cartIdInTable . '&klarna_order={checkout.order.uri}';
 				if (!empty( $cart->BT['email'])) {
 					$create['shipping_address']['email'] = $cart->BT['email'];
 					$hide_BTST=false;
@@ -474,7 +474,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 	function getTermsURI ($vendorId) {
 
-		return JURI::root() . 'index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $vendorId;
+		return JURI::root() . 'index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $vendorId . '&lang='.JRequest::getCmd('lang','') ;;
 
 	}
 
@@ -656,7 +656,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 		if ($order['status'] == 'checkout_incomplete') {
 			$app = JFactory::getApplication();
-			$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('VMPAYMENT_KLARNACHECKOUT_INCOMPLETE'));
+			$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart',false), JText::_('VMPAYMENT_KLARNACHECKOUT_INCOMPLETE'));
 		}
 
 		$snippet = $order['gui']['snippet'];
@@ -1591,16 +1591,16 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 
 
 	static function   getSuccessUrl ($order) {
-		return JURI::base() . JROUTE::_("index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . "&Itemid=" . JRequest::getInt('Itemid'), false);
+		return JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . "&Itemid=" . JRequest::getInt('Itemid').'&lang='.JRequest::getCmd('lang','');
 	}
 
 	static function   getCancelUrl ($order) {
-		return JURI::base() . JROUTE::_("index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . '&Itemid=' . JRequest::getInt('Itemid'), false);
+		return JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . '&Itemid=' . JRequest::getInt('Itemid'). '&lang='.JRequest::getCmd('lang','');
 	}
 
 	static function   getNotificationUrl ($order_number) {
 
-		return JURI::base() . JROUTE::_("index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&on=" . $order_number, false);
+		return JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&on=" . $order_number. '&lang='.JRequest::getCmd('lang','') ;
 	}
 
 	/**

@@ -250,9 +250,9 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$this->setTimeOut(self::TIMEOUT_SETEXPRESSCHECKOUT);
 		$post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
 
-		$post_variables['RETURNURL'] = substr(JURI::root(false, ''), 0, -1) . JROUTE::_('index.php?option=com_virtuemart&view=cart&task=setpayment&expresscheckout=done&virtuemart_paymentmethod_id=' . $this->_method->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid'));
+		$post_variables['RETURNURL'] =  JURI::root() . 'index.php?option=com_virtuemart&view=cart&task=setpayment&expresscheckout=done&virtuemart_paymentmethod_id=' . $this->_method->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid'). '&lang='.JRequest::getCmd('lang','') ;
 
-		$post_variables['CANCELURL'] = substr(JURI::root(false, ''), 0, -1) . JROUTE::_('index.php?option=com_virtuemart&view=cart&expresscheckout=cancel&Itemid=' . JRequest::getInt('Itemid'));
+		$post_variables['CANCELURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&expresscheckout=cancel&Itemid=' . JRequest::getInt('Itemid') . '&lang='.JRequest::getCmd('lang','') ;
 		//$post_variables['CANCELURL'] = substr(JURI::root(false,''),0,-1). JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&expresscheckout=cancel');
 		$post_variables['ADDROVERRIDE'] = $this->_method->address_override;
 		$post_variables['NOSHIPPING'] = $this->_method->no_shipping;

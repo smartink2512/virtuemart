@@ -408,7 +408,7 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 			$creditCardInfos .="</span>";
 			$extraInfo .= $creditCardInfos;
 		} else {
-			$extraInfo .= '<br/><a href="'.JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment&Itemid=' . JRequest::getInt('Itemid')).'">'.JText::_('VMPAYMENT_PAYPAL_CC_ENTER_INFO').'</a>';
+			$extraInfo .= '<br/><a href="'.JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment&Itemid=' . JRequest::getInt('Itemid'), false).'">'.JText::_('VMPAYMENT_PAYPAL_CC_ENTER_INFO').'</a>';
 		}
 		$extraInfo .= parent::getExtraPluginInfo();
 		return $extraInfo;

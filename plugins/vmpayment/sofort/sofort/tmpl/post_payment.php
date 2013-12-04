@@ -33,6 +33,8 @@ defined ('_JEXEC') or die();
 	<span class="post_payment_order_total_title"><?php echo JText::_ ('COM_VIRTUEMART_ORDER_PRINT_TOTAL'); ?> </span>
 	<?php echo  $viewData['displayTotalInPaymentCurrency']; ?>
 </div>
+<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$viewData["order"]['details']['BT']->order_number.'&order_pass='.$viewData["order"]['details']['BT']->order_pass, false)?>"><?php echo JText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
+
 
 
 
