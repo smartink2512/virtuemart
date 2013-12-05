@@ -1355,11 +1355,11 @@ abstract class vmPSPlugin extends vmPlugin {
 			//Do not log message messages if we are not in LOG mode
 			return;
 		}
-        /*
+
 		if ( $type == 'error') {
 			$this->sendEmailToVendorAndAdmins(JText::_('COM_VIRTUEMART_ERROR_SUBJECT') , JText::_('COM_VIRTUEMART_ERROR_BODY'));
 		}
-        */
+
 		$this->logInfo($title.': '.print_r($message,true), $type, true);
 
 	}
