@@ -466,18 +466,14 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 		if (empty($order_number)) {
-			$this->logInfo('plgVmOnPaymentNotification EMPTY order number' . $order_number, 'message');
 			return FALSE;
 		}
 		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number))) {
-			$this->logInfo('plgVmOnPaymentNotification NO getOrderIdByOrderNumber ' . $order_number, 'message');
 			return FALSE;
 		}
 		if (!($payments = $this->getDatasByOrderId($virtuemart_order_id))) {
-			$this->logInfo('plgVmOnPaymentNotification NO getDatasByOrderId ' . $virtuemart_order_id, 'message');
 			return FALSE;
 		}
-		$this->logInfo('plgVmOnPaymentNotification OK ', 'message');
 
 		$method = $this->getVmPluginMethod($payments[0]->virtuemart_paymentmethod_id);
 		if (!$this->selectedThisElement($method->payment_element)) {

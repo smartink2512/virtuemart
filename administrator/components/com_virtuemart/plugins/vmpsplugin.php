@@ -1083,22 +1083,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 
-	/**
-	 * logPaymentInfo
-	 * to help debugging Payment notification for example
-	 */
-	protected function logInfo ($text, $type = 'message') {
 
-		if ($this->_debug) {
-			$file = JPATH_ROOT . "/logs/" . $this->_name . ".log";
-			$date = JFactory::getDate ();
-
-			$fp = fopen ($file, 'a');
-			fwrite ($fp, "\n\n" . $date->toFormat ('%Y-%m-%d %H:%M:%S'));
-			fwrite ($fp, "\n" . $type . ': ' . $text);
-			fclose ($fp);
-		}
-	}
 
 	public function processConfirmedOrderPaymentResponse ($returnValue, $cart, $order, $html, $payment_name, $new_status = '') {
 
@@ -1314,7 +1299,9 @@ abstract class vmPSPlugin extends vmPlugin {
 			return FALSE;
 		}
 	}
-
+/**
+ *  @param integer $virtuemart_order_id the id of the order
+ */
 	function handlePaymentUserCancel ($virtuemart_order_id) {
 
 		if ($virtuemart_order_id) {
@@ -1334,43 +1321,49 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/**
-	 * @param $message
-	 * @param string $title
-	 * @param string $type
+	 * logInfo
+	 * to help debugging Payment notification for example
+	 * Keep it for compatibilty
 	 */
-	public function writelog($message, $title='', $type = 'message') {
-
-		// todo
-		jimport('joomla.log.log');
-		switch ($type) {
-			case 'critical':
-				$error_level 	= JLog::CRITICAL;
-				break;
-			case 'error':
-				$error_level 	= JLog::ERROR;
-				break;
-			case 'warning':
-				$error_level 	= JLog::WARNING;
-				break;
-			case 'debug':
-				$error_level 	= JLog::DEBUG;
-				if (isset($this->method) and !$this->method->debug) {
-					//Do not log debug messages if we are not in LOG mode
-					 return;
-				 }
-				break;
-			case 'message':
-			default:
-				$error_level 	= JLog::INFO;
-		}
-		$methodId=0;
-		if (isset($this->method)) {
+	protected function logInfo ($text, $type = 'message', $doLog=false) {
+		if ((isset($this->_debug) and $this->_debug) OR $doLog) {
 			$name=$this->_idName;
-			$methodId=$this->method->$name;
+			$methodId=0;
+			if (isset ($this->_currentMethod) ) {
+				$methodId=$this->_currentMethod->$name;
+			}
+			$oldLogFileName= 	VmConfig::$logFileName;
+			VmConfig::$logFileName = $this->_name. '.'.$methodId ;
+			logInfo($text, $type);
+			VmConfig::$logFileName =$oldLogFileName;
 		}
+	}
+	/**
+	 * log all messages of type ERROR
+	 * log in case the debug option is on, and the log option is on
+	* @param string $message the message to write
+	* @param string $title
+	* @param string $type message, deb-ug,  info, error
+	* @param boolean $doDebug in payment notification, we don't want to use vmdebug even if the debug option  is on
+	 *
+	 */
+	public function debugLog($message, $title='', $type = 'message', $doDebug=true) {
+		if ( isset($this->_currentMethod) and isset($this->_currentMethod->debug) and $this->_currentMethod->debug  AND $doDebug) {
+			//vmdebug($title, $message);
+		}
+		if ( isset($this->_currentMethod) and !$this->_currentMethod->log and $type !='error') {
+			//Do not log message messages if we are not in LOG mode
+			return;
+		}
+        /*
+		if ( $type == 'error') {
+			$this->sendEmailToVendorAndAdmins(JText::_('COM_VIRTUEMART_ERROR_SUBJECT') , JText::_('COM_VIRTUEMART_ERROR_BODY'));
+		}
+        */
+		$this->logInfo($title.': '.print_r($message,true), $type, true);
 
-		JLog::addLogger(array('text_file' => $this->_name. '.'.$methodId .'.log.php'),	JLog::ALL, $this->_name);
-		JLog::add($title.':'.print_r($message,true), $error_level, $this->_name);
 	}
 
+
 }
+

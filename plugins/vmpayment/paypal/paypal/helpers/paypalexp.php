@@ -259,7 +259,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$post_variables['MAXAMT'] = $this->_method->expected_maxamount;
 
 		$post_variables['LOGOIMG'] = $this->getLogoImage();
-		//$this->writelog($post_variables['LOGOIMG'], 'logoImg:', 'debug');
+		//$this->debugLog($post_variables['LOGOIMG'], 'logoImg:', 'debug');
 
 		$post_variables['LOCALECODE'] = $this->getLocaleCode();
 
@@ -593,7 +593,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			$this->response['L_ERRORCODE0'] == self::FMF_PENDED_ERROR_CODE &&
 			$this->response['PAYMENTSTATUS'] == "Pending"
 		) {
-			$this->writelog($this->response, 'Fraud Detected', 'error');
+			$this->debugLog($this->response, 'Fraud Detected', 'error');
 
 			return true;
 		} else {
@@ -634,7 +634,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 				if ($this->_method->debug) {
 					$public_error = $error;
 				}
-				$this->writelog($this->response, 'handleResponse:', 'debug');
+				$this->debugLog($this->response, 'handleResponse:', 'debug');
 				VmError($error, $public_error);
 
 				return false;
@@ -646,7 +646,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 				$error = '';
 				$public_error = '';
 				$error="Unexpected ACK type:". $this->response['ACK'];
-				$this->writelog($this->response, 'Unexpected ACK type:', 'debug');
+				$this->debugLog($this->response, 'Unexpected ACK type:', 'debug');
 				if ($this->_method->debug) {
 					$public_error = $error;
 				}

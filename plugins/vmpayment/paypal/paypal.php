@@ -379,7 +379,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$payment_name = $this->renderPluginName($this->_currentMethod, $order);
 
 		$paypalInterface = $this->_loadPayPalInterface();
-		$paypalInterface->writelog('order number: ' . $order['details']['BT']->order_number, 'plgVmConfirmedOrder', 'message');
+		$paypalInterface->debugLog('order number: ' . $order['details']['BT']->order_number, 'plgVmConfirmedOrder', 'message');
 		$paypalInterface->setCart($cart);
 		$paypalInterface->setOrder($order);
 		$paypalInterface->setTotal($order['details']['BT']->order_total);
@@ -438,7 +438,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$cart->setCartIntoSession();
 				$this->customerData->clear();
 				VmInfo('VMPAYMENT_PAYPAL_PAYMENT_NOT_VALID');
-				$paypalInterface->writelog($response, 'plgVmConfirmedOrder, response:', 'debug');
+				$paypalInterface->debugLog($response, 'plgVmConfirmedOrder, response:', 'error');
 
 				$app = JFactory::getApplication();
 				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . JRequest::getInt('Itemid'), false));
@@ -650,16 +650,16 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		$paypalInterface = $this->_loadPayPalInterface();
 		$paypalInterface->setOrder($order);
-		$paypalInterface->writelog($paypal_data, 'PaymentNotification, paypal_data:', 'debug');
-		$paypalInterface->writelog($order_number, 'PaymentNotification, order_number:', 'debug');
-		$paypalInterface->writelog($payments[0]->virtuemart_paymentmethod_id, 'PaymentNotification, virtuemart_paymentmethod_id:', 'debug');
-		$order_history = $paypalInterface->processIPN($paypal_data, $payments);
+		$paypalInterface->debugLog($paypal_data, 'PaymentNotification, paypal_data:', 'debug');
+		$paypalInterface->debugLog($order_number, 'PaymentNotification, order_number:', 'debug');
+		$paypalInterface->debugLog($payments[0]->virtuemart_paymentmethod_id, 'PaymentNotification, virtuemart_paymentmethod_id:', 'debug');
+        $order_history = $paypalInterface->processIPN($paypal_data, $payments);
 		if (!$order_history) {
-			$paypalInterface->writelog(' no order history', 'processIPN', 'debug');
+			$paypalInterface->debugLog('no order history', 'processIPN', 'error');
 			return false;
 		} else {
 			$this->_storePaypalInternalData( $paypal_data, $virtuemart_order_id, $payments[0]->virtuemart_paymentmethod_id);
-			$paypalInterface->writelog('new_status:' . $order_history['order_status'], 'plgVmOnPaymentNotification', 'message');
+			$paypalInterface->debugLog('order_number:'.$order_number.' new_status:' . $order_history['order_status'], 'plgVmOnPaymentNotification', 'debug');
 
 			$orderModel->updateStatusForOneOrder($virtuemart_order_id, $order_history, TRUE);
 			//// remove vmcart
@@ -1082,7 +1082,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$paypalInterface->setTotal($order->order_total);
 			$paypalInterface->loadCustomerData();
 			if ($paypalInterface->DoCapture($payment)) {
-				$paypalInterface->writelog(JText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_CAPTURED'), 'plgVmOnUpdateOrderShipment', 'message', true);
+				$paypalInterface->debugLog(JText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_CAPTURED'), 'plgVmOnUpdateOrderShipment', 'message', true);
 				$this->_storePaypalInternalData(  $paypalInterface->getResponse(false), $order->virtuemart_order_id, $payment->virtuemart_paymentmethod_id);
 			}
 
@@ -1093,11 +1093,11 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$paypalInterface->loadCustomerData();
 			if ($paypalInterface->RefundTransaction($payment)) {
 				if ($this->_currentMethod->payment_type == '_xclick-subscriptions') {
-					$paypalInterface->writelog(JText::_('VMPAYMENT_PAYPAL_SUBSCRIPTION_CANCELLED'), 'plgVmOnUpdateOrderPayment Refund', 'message', true);
+					$paypalInterface->debugLog(JText::_('VMPAYMENT_PAYPAL_SUBSCRIPTION_CANCELLED'), 'plgVmOnUpdateOrderPayment Refund', 'message', true);
 				} else {
 					//Mark the order as refunded
 					// $order->order_status = $method->status_refunded;
-					$paypalInterface->writelog(JText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_REFUNDED'), 'plgVmOnUpdateOrderPayment Refund', 'message', true);
+					$paypalInterface->debugLog(JText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_REFUNDED'), 'plgVmOnUpdateOrderPayment Refund', 'message', true);
 				}
 				$this->_storePaypalInternalData( $paypalInterface->getResponse(false), $order->virtuemart_order_id, $payment->virtuemart_paymentmethod_id);
 			}
@@ -1161,6 +1161,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$html .= $this->getPluginHtml($this->_currentMethod, $selected, $methodSalesPrice);
 
 
+
 				if ($this->_currentMethod->paypalproduct == 'api') {
 					if (empty($this->_currentMethod->creditcards)) {
 						$this->_currentMethod->creditcards = PaypalHelperPaypal::getPaypalCreditCards();
@@ -1184,6 +1185,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 					$paypalInterface = $this->_loadPayPalInterface();
 					$html .= '<br/><span class="vmpayment_cardinfo">' . $paypalInterface->getPaymentPlanDesc() . '</span>';
 				}
+
 				$htmla[] = $html;
 			}
 		}
@@ -1211,6 +1213,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		//If PayPal express, make sure we have a valid token.
 		//If not, redirect to PayPal to get one.
 		$paypalInterface = $this->_loadPayPalInterface();
+
 		$paypalInterface->setCart($cart);
 		$cart->getCartPrices();
 		$paypalInterface->setTotal($cart->pricesUnformatted['billTotal']);

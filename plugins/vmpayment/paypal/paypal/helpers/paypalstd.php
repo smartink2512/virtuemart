@@ -188,7 +188,7 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 						<input type="submit"  value="The method is in debug mode. Click here to be redirected to PayPal" />
 						</div>';
 			}
-			$this->writelog($post_variables, 'PayPal request:', 'debug');
+			$this->debugLog($post_variables, 'PayPal request:', 'debug');
 
 		} else {
 
@@ -238,7 +238,7 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		$post_variables['return'] =  JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid' ). '&lang='.JRequest::getCmd('lang','')  ;
 		//Keep this line, needed when testing
 		//$post_variables['return'] 		= JRoute::_(JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
-		$post_variables['notify_url'] = JURI::root() .  'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component' . '&lang='.$this->order_lang ;
+		$post_variables['notify_url'] = JURI::root() .  'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component' . '&lang='.JRequest::getCmd('lang','') ;
 		$post_variables['cancel_return'] =JURI::root(). 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid') . '&lang='.JRequest::getCmd('lang','')  ;
 
 		//$post_variables['undefined_quantity'] = "0";

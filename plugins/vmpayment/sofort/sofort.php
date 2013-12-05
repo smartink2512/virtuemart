@@ -374,15 +374,12 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		}
 		$order_number = JRequest::getString('on', '');
 		if (empty($order_number)) {
-			$this->logInfo('plgVmOnPaymentNotification EMPTY order number' . $order_number, 'message');
 			return FALSE;
 		}
 		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number))) {
-			$this->logInfo('plgVmOnPaymentNotification NO getOrderIdByOrderNumber ' . $order_number, 'message');
 			return FALSE;
 		}
 		if (!($payments = $this->getDatasByOrderId($virtuemart_order_id))) {
-			$this->logInfo('plgVmOnPaymentNotification NO getDatasByOrderId ' . $virtuemart_order_id, 'message');
 			return FALSE;
 		}
 		$this->logInfo('plgVmOnPaymentNotification OK ', 'message');

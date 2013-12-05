@@ -150,7 +150,7 @@ class PaypalHelperPaypal {
 	}
 
 	public function getRequest() {
-		$this->writelog($this->requestData, 'PayPal ' . $this->requestData['METHOD'] . ' Request variables ', 'debug');
+		$this->debugLog($this->requestData, 'PayPal ' . $this->requestData['METHOD'] . ' Request variables ', 'debug');
 		return $this->requestData;
 	}
 
@@ -189,17 +189,17 @@ class PaypalHelperPaypal {
 		$response = curl_exec($curl_request);
 
 		if ($curl_error = curl_error($curl_request)) {
-			$this->writelog($curl_error, '----CURL ERROR----', 'error');
+			$this->debugLog($curl_error, '----CURL ERROR----', 'error');
 		}
 		/*
 				$httpStatus = curl_getinfo($curl_request, CURLINFO_HTTP_CODE);
 				$retries = 0;
 				if(in_array($httpStatus, $retryCodes) && isset($this->retry)) {
-					$this->writelog("Got $httpStatus response from server. Retrying");
+					$this->debugLog("Got $httpStatus response from server. Retrying");
 
 					do 	{
-						$result = curl_exec(writelog);
-						$httpStatus = curl_getinfo(writelog, CURLINFO_HTTP_CODE);
+						$result = curl_exec(debugLog);
+						$httpStatus = curl_getinfo(debugLog, CURLINFO_HTTP_CODE);
 
 					} while (in_array($httpStatus, self::$retryCodes) && ++$retries < $this->retry );
 
@@ -222,8 +222,8 @@ class PaypalHelperPaypal {
 			$level = 'debug';
 		}
 
-		$this->writelog($post_data, 'PayPal ' . $post_data['METHOD'] . ' Request variables:', $level);
-		$this->writelog($this->response, 'PayPal response:', $level);
+		$this->debugLog($post_data, 'PayPal ' . $post_data['METHOD'] . ' Request variables:', $level);
+		$this->debugLog($this->response, 'PayPal response:', $level);
 
 		return $this->response;
 
@@ -386,12 +386,12 @@ class PaypalHelperPaypal {
 
 		// check that the remote IP is from Paypal.
 		if (!$this->checkPaypalIps($paypal_data)) {
-			$this->writelog('FALSE', 'checkPaypalIps', 'error');
+			$this->debugLog('FALSE', 'checkPaypalIps', 'error');
 			return false;
 		}
 		// Validate the IPN content upon PayPal
 		if (!$this->validateIpnContent($paypal_data)) {
-			$this->writelog('Invalid IPN content', 'processIPN', 'error');
+			$this->debugLog('Invalid IPN content', 'processIPN', 'error');
 			return false;
 		}
 		//Check the PayPal response
@@ -431,12 +431,12 @@ class PaypalHelperPaypal {
 			}
 
 		} else if (strcmp($paypal_data['payment_status'], 'Completed') == 0) {
-			$this->writelog('Completed', 'payment_status', 'debug');
+			$this->debugLog('Completed', 'payment_status', 'debug');
 
 			// 1. check the payment_status is Completed
 			// 2. check that txn_id has not been previously processed
 			if ($this->_check_txn_id_already_processed($payments, $paypal_data['txn_id'])) {
-				$this->writelog('FALSE', '_check_txn_id_already_processed', 'debug');
+				$this->debugLog('FALSE', '_check_txn_id_already_processed', 'debug');
 				return FALSE;
 			}
 			// 3. check email and amount currency is correct
@@ -499,7 +499,7 @@ class PaypalHelperPaypal {
 		if ($this->_method->sandbox  ) {
 			$paypal_iplist = gethostbynamel('ipn.sandbox.paypal.com');
 			$paypal_iplist = (array)$paypal_iplist;
-			$this->writelog($paypal_iplist, 'checkPaypalIps SANDBOX', 'debug');
+			$this->debugLog($paypal_iplist, 'checkPaypalIps SANDBOX', 'debug', false);
 
 		} else {
 			$paypal_iplist1 = gethostbynamel('www.paypal.com');
@@ -549,21 +549,19 @@ class PaypalHelperPaypal {
 			);
 
 			$paypal_iplist = array_merge($paypal_iplist, $paypal_iplist2, $paypal_iplist3);
-			$this->writelog($paypal_iplist, 'checkPaypalIps PRODUCTION', 'debug');
+			$this->debugLog($paypal_iplist, 'checkPaypalIps PRODUCTION', 'debug', false);
 
 		}
-		$this->writelog($_SERVER['REMOTE_ADDR'], 'checkPaypalIps REMOTE ADDRESS', 'debug');
+		$this->debugLog($_SERVER['REMOTE_ADDR'], 'checkPaypalIps REMOTE ADDRESS', 'debug', false);
 
 		//  test if the remote IP connected here is a valid IP address
 		if (!in_array($_SERVER['REMOTE_ADDR'], $paypal_iplist)) {
-			$this->writelog('Invalid PayPal IP Address, request received from IP ' . $_SERVER['REMOTE_ADDR'], 'processIPN', 'error');
-			$mail_subject = "PayPal IPN Transaction on your site: Possible fraud";
-			$mail_body = "Error code 506. Possible fraud. Error with REMOTE IP ADDRESS = " . $_SERVER['REMOTE_ADDR'] . ".
+
+			$text = "Error with REMOTE IP ADDRESS = " . $_SERVER['REMOTE_ADDR'] . ".
                         The remote address of the script posting to this notify script does not match a valid PayPal ip address\n
             These are the valid IP Addresses: " . implode(",", $paypal_iplist) .
 				"The Order ID received was: " . $order_number;
-			//TODO: Render mail from layout and send it
-			$this->sendEmailToVendorAndAdmins($mail_subject, $mail_body);
+			$this->debugLog($text, 'checkPaypalIps', 'error', false);
 			return false;
 		}
 
@@ -608,18 +606,14 @@ class PaypalHelperPaypal {
 		//$header .= "Accept: */*\r\n\r\n";
 		$header .="Connection: close\r\n\r\n";
 
-		//$fps = fsockopen($paypal_url, $port, $errno, $errstr, 30);
-
-
 		$fps = fsockopen($paypal_url, $port, $errno, $errstr, 30);
 		$valid_ipn = false;
 		if (!$fps) {
-			$this->writelog(JText::sprintf('VMPAYMENT_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno), 'processIPN', 'error');
-			$this->sendEmailToVendorAndAdmins("error with paypal", JText::sprintf('VMPAYMENT_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno));
+			$this->debugLog(JText::sprintf('VMPAYMENT_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno), 'validateIpnContent', 'error' , false);
 		} else {
 			$return = fputs($fps, $header . $post_msg);
 			if ($return===false) {
-				$this->writelog("FALSE", 'validateIpnContent FPUTS', 'debug');
+				$this->debugLog("FALSE", 'validateIpnContent FPUTS', 'debug', false);
 				return FALSE;
 			}
 			$res = '';
@@ -632,23 +626,16 @@ class PaypalHelperPaypal {
 			$valid_ipn = strstr($res, "VERIFIED");
 			if (!$valid_ipn) {
 				if (strstr($res, "INVALID")) {
-					$emailBody = "Hello,\n\nerror with paypal IPN NOTIFICATION" . " " . $res . "\n";
-					// If 'INVALID', send an email. TODO: Log for manual investigation.
-					foreach ($paypal_data as $key => $value) {
-						$emailBody .= $key . " = " . $value . "\n";
-					}
-					$this->writelog(JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . " " . $res, 'processIPN', 'error');
-					$this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . " " . $res, $emailBody);
+					$this->debugLog(JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . " " . $res, 'validateIpnContent', 'error', false);
+					$this->debugLog($paypal_data, 'validateIpnContent Paypal data receivedt', 'error', false);
 				} else {
-					$this->writelog(JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . ": NO ANSWER FROM PAYPAL", 'processIPN', 'error');
-					$emailBody = "Hello,
-                An error occured while processing a paypal transaction.";
-					$this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . " " . $res, $emailBody);
+					$this->debugLog(JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . ": NO ANSWER FROM PAYPAL", 'validateIpnContent', 'error', false);
+
 				}
 			}
 		}
 
-		$this->writelog('valid_ipn: ' . $valid_ipn, 'processIPN', 'debug');
+		$this->debugLog('valid_ipn: ' . $valid_ipn, 'processIPN', 'debug', false);
 		return $valid_ipn;
 	}
 
@@ -672,27 +659,20 @@ class PaypalHelperPaypal {
 		* If the payment is sent to a non-primary email address on your PayPal account,
 		* the receiver_email is still your primary email.
 		*/
-		/*
-		$email = $this->merchant_mail;
-		if ($payments[0]->payment_order_total==$email) {
-			return true;
-		}
-		*/
+
+        if ($this->_method->paypalproduct =="std") {
+            if ($paypal_data['receiver_email']!=$this->merchant_email and $paypal_data['business']!=$this->merchant_email) {
+                $this->debugLog($paypal_data, 'IPN notificationwrong received data', 'error', false);
+                $this->debugLog($this->merchant_email, 'IPN notificationwrong merchant_email', 'error', false);
+                return false;
+            }
+        }
+
+
 		if (($payments[0]->payment_order_total == $paypal_data['mc_gross']) and ($this->currency_code_3 == $paypal_data['mc_currency'])) {
 			return TRUE;
 		}
-		$this->writelog($paypal_data, '_check_email_amount_currency', 'error');
-
-		$mailsubject = "PayPal Transaction";
-		$mailbody = "Hello,
-		An IPN notification was received with an invalid amount or currency
-		----------------------------------
-		IPN Notification content:
-		";
-		foreach ($paypal_data as $key => $value) {
-			$mailbody .= $key . " = " . $value . "\n\n";
-		}
-		$this->sendEmailToVendorAndAdmins($mailsubject, $mailbody);
+		$this->debugLog($paypal_data, 'IPN notification with invalid amount or currency or email', 'error', false);
 
 		return FALSE;
 	}
@@ -730,7 +710,7 @@ class PaypalHelperPaypal {
 				if ($this->_method->debug) {
 					$public_error = $error;
 				}
-				$this->writelog($this->response, 'handleResponse:', 'debug');
+				$this->debugLog($this->response, 'handleResponse:', 'debug');
 				VmError($error, $public_error);
 
 				return false;
@@ -742,7 +722,7 @@ class PaypalHelperPaypal {
 				$error = '';
 				$public_error = '';
 				$error="Unexpected ACK type:". $this->response['ACK'];
-				$this->writelog($this->response, 'Unexpected ACK type:', 'debug');
+				$this->debugLog($this->response, 'Unexpected ACK type:', 'debug');
 				if ($this->_method->debug) {
 					$public_error = $error;
 				}
@@ -814,7 +794,7 @@ class PaypalHelperPaypal {
 		return '<span style="color:red;font-weight:bold">' . $string . '</span>';
 	}
 
-	public function writelog($message, $title = '', $type = 'message', $echo = false) {
+	public function debugLog($message, $title = '', $type = 'message', $echo = false, $doVmDebug=false) {
 
 		//Nerver log the full credit card number nor the CVV code.
 		if (is_array($message)) {
@@ -841,33 +821,7 @@ class PaypalHelperPaypal {
 		}
 
 
-		// todo
-		jimport('joomla.log.log');
-		switch ($type) {
-			case 'critical':
-				$error_level = JLog::CRITICAL;
-				break;
-			case 'error':
-				$error_level = JLog::ERROR;
-				break;
-			case 'warning':
-				$error_level = JLog::WARNING;
-				break;
-			case 'debug':
-				$error_level = JLog::DEBUG;
-				if (!$this->_method->log) {
-					//Do not log debug messages if we are not in LOG mode
-					return;
-				}
-				break;
-			case 'message':
-			default:
-				$error_level = JLog::INFO;
-		}
-
-		$this->paypalPlugin->writelog($message, $title, $type);
-		// JLog::addLogger(array('text_file' => 'paypal.' . $this->_method->virtuemart_paymentmethod_id . '.log.php'), JLog::ALL, 'paypal');
-		//JLog::add($title . ':' . print_r($message, true), $error_level, 'paypal');
+		$this->paypalPlugin->debugLog($message, $title, $type, $doVmDebug);
 	}
 
 

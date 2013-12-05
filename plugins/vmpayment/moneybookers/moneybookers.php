@@ -265,22 +265,24 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		                        'recipient_description'    => $vendorModel->getVendorName (),
 		                        'transaction_id'           => $order['details']['BT']->order_number,
 
-		                        'return_url'               => JROUTE::_ (JURI::root () .
+		                        'return_url'               => JURI::root () .
 			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' .
 			                        $order['details']['BT']->order_number .
 			                        '&pm=' .
 			                        $order['details']['BT']->virtuemart_paymentmethod_id .
-		                            '&Itemid=' . JRequest::getInt ('Itemid')
-		                        ),
-		                        'cancel_url'               => JROUTE::_ (JURI::root () .
+		                            '&Itemid=' . JRequest::getInt ('Itemid') .
+								    '&lang='.JRequest::getCmd('lang','')
+		                            ,
+		                        'cancel_url'               => JURI::root () .
 			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' .
 			                        $order['details']['BT']->order_number .
 			                        '&pm=' .
 			                        $order['details']['BT']->virtuemart_paymentmethod_id .
-		                            '&Itemid=' . JRequest::getInt ('Itemid')
-		                        ),
-		                        'status_url'               => JROUTE::_ (JURI::root () .
-			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
+		                            '&Itemid=' . JRequest::getInt ('Itemid') .
+									'&lang='.JRequest::getCmd('lang','')
+		                        ,
+		                        'status_url'               => JURI::root () .
+			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&lang='.JRequest::getCmd('lang','') ,
 		                        'platform'                 => '21477272',
 		                        'hide_login'               => $method->hide_login,
 		                        'prepare_only'             => 1,
@@ -473,24 +475,20 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		$mb_data = JRequest::get ('post');
 
 		if (!isset($mb_data['transaction_id'])) {
-			//$this->logInfo (__FUNCTION__ . ' transaction_id not set: ' . $mb_data['transaction_id'], 'message');
 			return;
 		}
 
 		$order_number = $mb_data['transaction_id'];
 		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber ($mb_data['transaction_id']))) {
-			$this->logInfo (__FUNCTION__ . ' Can\'t get VirtueMart order id', 'message');
 			return;
 		}
 
 		if (!($payment = $this->getDataByOrderId ($virtuemart_order_id))) {
-			$this->logInfo (__FUNCTION__ . ' Can\'t get payment type', 'message');
 			return;
 		}
 
 		$method = $this->getVmPluginMethod ($payment->virtuemart_paymentmethod_id);
 		if (!$this->selectedThisElement ($method->payment_element)) {
-			$this->logInfo (__FUNCTION__ . ' payment method not selected', 'message');
 			return FALSE;
 		}
 
