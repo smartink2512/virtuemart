@@ -335,8 +335,16 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	} else {
 		$i = 0;
 	}
-} ?>
+}
 
+if ($this->checkout_task) {
+$taskRoute = '&task=' . $this->checkout_task;
+}
+else {
+$taskRoute = '';
+}
+?>
+<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
 
 <tr class="sectiontableentry1" valign="top">
 	<?php if (!$this->cart->automaticSelectedShipment) { ?>

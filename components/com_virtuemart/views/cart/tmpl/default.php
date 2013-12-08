@@ -110,15 +110,10 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 		echo $this->loadTemplate ('shopperform');
 	}
 
+
+
 	// This displays the pricelist MUST be done with tables, because it is also used for the emails
 	echo $this->loadTemplate ('pricelist');
-	if ($this->checkout_task) {
-		$taskRoute = '&task=' . $this->checkout_task;
-	}
-	else {
-		$taskRoute = '';
-	}
-
 
 	// added in 2.0.8
 	?>
@@ -135,8 +130,6 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 		}
 		?>
 	</div>
-
-	<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
 
 		<?php // Leave A Comment Field ?>
 		<div class="customer-comment marginbottom15">
@@ -188,7 +181,7 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 		</div>
 		<?php // Continue and Checkout Button END ?>
 		<input type='hidden' name='order_language' value='<?php echo $this->order_language; ?>'/>
-		<input type='hidden' id='STsameAsBT' name='STsameAsBT' value='<?php echo $this->cart->STsameAsBT; ?>'/>
+		<!-- <input type='hidden' id='STsameAsBT' name='STsameAsBT' value='<?php echo $this->cart->STsameAsBT; ?>'/> -->
 		<input type='hidden' name='task' value='<?php echo $this->checkout_task; ?>'/>
 		<input type='hidden' name='option' value='com_virtuemart'/>
 		<input type='hidden' name='view' value='cart'/>

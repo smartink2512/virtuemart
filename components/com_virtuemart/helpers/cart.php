@@ -61,7 +61,7 @@ class VirtueMartCart {
 	var $pricesUnformatted = null;
 	var $pricesCurrency = null;
 	var $paymentCurrency = null;
-	var $STsameAsBT = 0;
+	var $STsameAsBT = TRUE;
 	var $productParentOrderable = TRUE;
 	var $_triesValidateCoupon = array();
 
@@ -810,52 +810,27 @@ class VirtueMartCart {
 		}
 	}
 
+	public function getFilterCustomerComment(){
+
+		$this->customer_comment = JRequest::getVar('customer_comment', $this->customer_comment);
+		// no HTML TAGS but permit all alphabet
+		$value = preg_replace('@<[\/\!]*?[^<>]*?>@si','',$this->customer_comment);//remove all html tags
+		$value = (string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
+		$value = trim(str_replace('"', ' ', $value),"'") ;
+		$this->customer_comment = (string)preg_replace('#^\'#si','',$value);//replace ' at start
+	}
+
 	private function checkoutData($redirect = true) {
 
 		$this->_redirect = $redirect;
 		$this->_inCheckOut = true;
 		$this->tosAccepted = JRequest::getInt('tosAccepted', $this->tosAccepted);
 		$this->STsameAsBT = JRequest::getInt('STsameAsBT', $this->STsameAsBT);
-		$this->customer_comment = JRequest::getVar('customer_comment', $this->customer_comment);
 		$this->order_language = JRequest::getVar('order_language', $this->order_language);
-
-		// no HTML TAGS but permit all alphabet
-		$value =	preg_replace('@<[\/\!]*?[^<>]*?>@si','',$this->customer_comment);//remove all html tags
-		$value =	(string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
-		$value = trim(str_replace('"', ' ', $value),"'") ;
-		$this->customer_comment=	(string)preg_replace('#^\'#si','',$value);//replace ' at start
+		$this->getFilterCustomerComment();
 
 		$this->cartData = $this->prepareCartData();
 		$this->prepareCartPrice();
-
-		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
-			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
-			$userModel = JModel::getInstance('user', 'VirtueMartModel');
-			$stData = $userModel->getUserAddressList(0, 'ST', $this->selected_shipto);
-			$stData = get_object_vars($stData[0]);
-			if($this->validateUserData('ST', $stData)){
-				$this->ST = $stData;
-			}
-		}
-
-		if (empty($this->tosAccepted)) {
-
-			$userFieldsModel = VmModel::getModel('Userfields');
-
-			//$required = $userFieldsModel->getIfRequired('agreed');
-			$agreed = $userFieldsModel->getUserfield('agreed','name');
-			//vmdebug('my new getUserfieldbyName',$agreed->default,$agreed->required);
-			if(!empty($agreed->required) and empty($agreed->default) and !empty($this->BT)){
-				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
-
-				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
-				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
-			} else if($agreed->default){
-				$this->tosAccepted = $agreed->default;
-			}
-		}
-
-
 
 		if (count($this->products) == 0) {
 			return $this->redirecter('index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
@@ -873,28 +848,49 @@ class VirtueMartCart {
 			return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 		}
 
-		//$this->prepareAddressDataInCart();
-		//But we check the data again to be sure
-		if (empty($this->BT)) {
-			$redirectMsg = '';
-			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
-		} else {
-			$redirectMsg = self::validateUserData();
-			if (!$redirectMsg) {
-				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , '');
+		$validUserDataBT = self::validateUserData();
+
+		if (empty($this->tosAccepted)) {
+
+			$userFieldsModel = VmModel::getModel('Userfields');
+
+			$agreed = $userFieldsModel->getUserfield('agreed','name');
+
+			if((!empty($agreed->required) and empty($agreed->default) and $validUserDataBT!=-1) or $redirect or $this->_dataValidated){
+				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+				$this->tosAccepted = false;
+				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
+			} else if($agreed->default){
+				$this->tosAccepted = $agreed->default;
+			} else {
+				$this->tosAccepted = false;
 			}
+		}
+
+		if (!$validUserDataBT or ($redirect and $validUserDataBT!==true)) {
+			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , '');
 		}
 
 		if($this->STsameAsBT!==0){
 			$this->ST = $this->BT;
 		} else {
-			//Only when there is an ST data, test if all necessary fields are filled
-			if (!empty($this->ST)) {
-				$redirectMsg = self::validateUserData('ST');
-				if (!$redirectMsg) {
-					return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST' , '');
+			if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
+				JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
+				$userModel = JModel::getInstance('user', 'VirtueMartModel');
+				$stData = $userModel->getUserAddressList(0, 'ST', $this->selected_shipto);
+				$stData = get_object_vars($stData[0]);
+				if($this->validateUserData('ST', $stData)){
+					$this->ST = $stData;
 				}
 			}
+
+			//Only when there is an ST data, test if all necessary fields are filled
+			$validUserDataST = self::validateUserData('ST');
+			if (!$validUserDataST or ($redirect and $validUserDataST!==true)) {
+				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST' , '');
+			}
+
 		}
 
 		if(VmConfig::get('oncheckout_only_registered',0)) {
@@ -904,7 +900,8 @@ class VirtueMartCart {
 				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
 			}
 		}
-		vmdebug('ValidateCouponCode ValidateCouponCode ValidateCouponCode',$this->couponCode);
+
+		//vmdebug('ValidateCouponCode ValidateCouponCode ValidateCouponCode',$this->couponCode);
 		// Test Coupon
 		if (!empty($this->couponCode)) {
 			//$prices = $this->getCartPrices();
@@ -1025,6 +1022,7 @@ class VirtueMartCart {
 		}
 
 		$usersModel = VmModel::getModel('user');
+
 		return $usersModel->validateUserData($obj,$type);
 
 	}

@@ -993,46 +993,52 @@ class VirtueMartModelUser extends VmModel {
 		, array('required' => true, 'delimiters' => true, 'captcha' => true, 'system' => false)
 		, array('delimiter_userinfo', 'name','username', 'password', 'password2', 'address_type_name', 'address_type', 'user_is_vendor', 'agreed'));
 
-		$app = JFactory::getApplication();
-		if($app->isSite()){
-			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-			$cart = VirtueMartCart::getCart();
-		}
-
-		$i = 0 ;
-
+		$i = 0;
+		$j = 0;
 		$return = true;
-		VmConfig::loadJLang('com_virtuemart_shoppers', true);
 
+		$required  = 0;
+		$objSize = count($data);
+		$missingFields = array();
 		foreach ($neededFields as $field) {
 
-			if($field->required && empty($data[$field->name]) && $field->name != 'virtuemart_state_id'){
-
-				//more than four fields missing, this is not a normal error (should be catche by js anyway, so show the address again.
-				if($i>3 && $type=='BT'){
-					vmInfo('COM_VIRTUEMART_CHECKOUT_PLEASE_ENTER_ADDRESS');
-					return false;
-				} else {
-                    VmConfig::loadJLang('com_virtuemart_shoppers',true);
-
-                    //vmdebug('validateUserData ',$field,$field->name,$data[$field->name],$data);
-					//vmTrace('validateUserData ');
-					vmInfo(JText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',JText::_($field->title)) );
-					$i++;
-					$return = false;
-				}
-			}
-
-			//This is a special test for the virtuemart_state_id. There is the speciality that the virtuemart_state_id could be 0 but is valid.
-			else if ($field->required and $field->name == 'virtuemart_state_id') {
-				if(!empty($data['virtuemart_country_id']) && !empty($data['virtuemart_state_id']) ){
-					if (!class_exists('VirtueMartModelState')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'state.php');
-					if (!$msg = VirtueMartModelState::testStateCountry($data['virtuemart_country_id'], $data['virtuemart_state_id'])) {
+			if($field->required ){
+				$required++;
+				if(empty($data[$field->name])){
+					//This is a special test for the virtuemart_state_id. There is the speciality that the virtuemart_state_id could be 0 but is valid.
+					if ($field->name == 'virtuemart_state_id') {
+						if(!empty($data['virtuemart_country_id'])){
+							$data['virtuemart_state_id'] = 0;
+							if (!class_exists('VirtueMartModelState')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'state.php');
+							if (!$msg = VirtueMartModelState::testStateCountry($data['virtuemart_country_id'], $data['virtuemart_state_id'])) {
+								$i++;
+								VmConfig::loadJLang('com_virtuemart_shoppers', true);
+								$missingFields[] = JText::_($field->title);
+								$return = false;
+							}
+						} else {
+							$i++;
+						}
+					} else {
+						$missingFields[] = JText::_($field->title);
 						$i++;
-						vmInfo(JText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',JText::_($field->title)) );
 						$return = false;
 					}
 				}
+				else if($data[$field->name] = $field->default){
+					$i++;
+				} else {
+
+				}
+			}
+		}
+
+		if($i==$required) $return = -1;
+		vmdebug('my i '.$i.' my data size '.$required,$return,$data);
+		if(!$return){
+			VmConfig::loadJLang('com_virtuemart_shoppers', true);
+			foreach($missingFields as $fieldname){
+				vmInfo(JText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',JText::_($fieldname)) );
 			}
 		}
 		return $return;

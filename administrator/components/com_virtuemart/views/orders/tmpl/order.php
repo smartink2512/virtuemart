@@ -505,6 +505,7 @@ $document->addScriptDeclaration ( "
 				</td>
 				<td align="right" style="padding-right: 5px;">
 					<?php echo $this->currency->priceDisplay($item->product_basePriceWithTax); ?>
+					<input class='orderedit' type="text" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_basePriceWithTax]" value="<?php echo $item->product_basePriceWithTax; ?>"/>
 				</td>
 				<td align="right" style="padding-right: 5px;">
 					<?php echo $this->currency->priceDisplay($item->product_final_price); ?>

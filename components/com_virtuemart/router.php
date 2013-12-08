@@ -96,11 +96,11 @@ function virtuemartBuildRoute(&$query) {
 
 			if ( isset($query['dir']) ) {
 				if ($query['dir'] =='DESC'){
-					$dir = 'Desc';
+					$dir = 'dirDesc';
 				} else {
-					$dir = 'Asc';
+					$dir = 'dirAsc';
 				}
-				$segments[] = $helper->lang('dir'.$dir) ;
+				$segments[] = $dir;//$helper->lang('dir'.$dir) ;
 				unset($query['dir']);
 			}
 
@@ -305,6 +305,7 @@ function virtuemartBuildRoute(&$query) {
 function virtuemartParseRoute($segments) {
 
 	$vars = array();
+
 	$helper = vmrouterHelper::getInstance();
 	if ($helper->router_disabled) {
 		$total = count($segments);
@@ -322,6 +323,10 @@ function virtuemartParseRoute($segments) {
 	foreach  ($segments as &$value) {
 		$value = str_replace(':', '-', $value);
 	}
+	/*$vars['view'] = 'category';
+	if(isset($helper->activeMenu->virtuemart_category_id)){
+		$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+	}*/
 
 	// $splitted = explode(',',$segments[0],2);
 	$splitted = explode(',',end($segments),2);
@@ -351,20 +356,6 @@ function virtuemartParseRoute($segments) {
 		return $vars;
 	}
 
-	// $orderby = explode(',',$segments[0],2);
-	$orderby = explode(',',end($segments),2);
-	if (  $helper->compareKey($orderby[0] , 'by') ) {
-		$vars['orderby'] =$helper->getOrderingKey($orderby[1]) ;
-		// array_shift($segments);
-		array_pop($segments);
-
-		if (empty($segments)) {
-			$vars['view'] = 'category';
-			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
-			return $vars;
-		}
-	}
-
 	//Translation of the ordering direction is not really useful and costs just energy
 	//if (  $helper->compareKey(end($segments),'dirDesc') ){
 	if ( end($segments) == 'dirDesc' ){
@@ -377,9 +368,23 @@ function virtuemartParseRoute($segments) {
 		}
 	} else
 		//if (  $helper->compareKey(end($segments),'dirAsc') ){
-		if ( end($segments) == 'dirAsc' ){
+	if ( end($segments) == 'dirAsc' ){
 		$vars['dir'] ='ASC' ;
 		array_pop($segments);
+		if (empty($segments)) {
+			$vars['view'] = 'category';
+			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+			return $vars;
+		}
+	}
+
+	// $orderby = explode(',',$segments[0],2);
+	$orderby = explode(',',end($segments),2);
+	if (  $helper->compareKey($orderby[0] , 'by') ) {
+		$vars['orderby'] = $helper->getOrderingKey($orderby[1]) ;
+		// array_shift($segments);
+		array_pop($segments);
+
 		if (empty($segments)) {
 			$vars['view'] = 'category';
 			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
@@ -1156,6 +1161,7 @@ class vmrouterHelper {
 	 * revert key or use $key in route
 	 */
 	public function getOrderingKey($key) {
+
 		if ($this->seo_translate ) {
 			if ($this->orderings == null) {
 				$this->orderings = array(
@@ -1188,6 +1194,7 @@ class vmrouterHelper {
 					'pc.ordering' => JText::_('COM_VIRTUEMART_SEF_ORDERING')
 				);
 			}
+
 			if ($result = array_search($key,$this->orderings )) {
 				return $result;
 			}

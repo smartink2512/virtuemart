@@ -679,14 +679,14 @@ class VirtueMartModelProduct extends VmModel {
 		$productKey = $virtuemart_product_id.$front.$onlyPublished.$quantity.$virtuemart_shoppergroup_idsString.$withCalc.$customfields.$this->withRating;
 
 		static $_products = array();
-		    vmdebug('$productKey, not from cache : '.$productKey);
+		   // vmdebug('$productKey, not from cache : '.$productKey);
 		if (array_key_exists ($productKey, $_products)) {
-			vmdebug('getProduct, take from cache : '.$productKey);
+			//vmdebug('getProduct, take from cache : '.$productKey);
 			return $_products[$productKey];
 		} else if(!$customfields or !$withCalc){
 			$productKeyTmp = $virtuemart_product_id.$front.$onlyPublished.$quantity.$virtuemart_shoppergroup_idsString.TRUE.TRUE.TRUE;
 			if (array_key_exists ($productKeyTmp, $_products)) {
-				vmdebug('getProduct, take from cache full product '.$productKeyTmp);
+				//vmdebug('getProduct, take from cache full product '.$productKeyTmp);
 				return $_products[$productKeyTmp];
 			}
 		}
@@ -698,7 +698,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$child = $this->getProductSingle ($virtuemart_product_id, $front,$quantity,$customfields,$virtuemart_shoppergroup_ids);
 		if (!$child->published && $onlyPublished) {
-			vmdebug('getProduct child is not published, returning zero');
+			//vmdebug('getProduct child is not published, returning zero');
 			$_products[$productKey] = FALSE;
 			return FALSE;
 		}

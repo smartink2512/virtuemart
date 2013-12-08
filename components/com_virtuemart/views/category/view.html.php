@@ -220,7 +220,7 @@ class VirtuemartViewCategory extends VmView {
 
 			$menus	= $app->getMenu();
 			$menu = $menus->getActive();
-			if(!empty($menu->query['categorylayout'])){
+			if(!empty($menu->query['categorylayout']) and $menu->query['virtuemart_category_id']==$categoryId){
 				$category->category_layout = $menu->query['categorylayout'];
 			}
 			shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);

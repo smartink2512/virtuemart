@@ -179,7 +179,7 @@ class VirtuemartModelReport extends VmModel {
 
 		$statusList = array();
 		// Filter by statut
-		if ($orderstates = JRequest::getVar ('order_status_code', NULL)) {
+		if ($orderstates = JRequest::getVar ('order_status_code', array('C,S'))) {
 			$query = 'SELECT `order_status_code`
 				FROM `#__virtuemart_orderstates`
 				WHERE published=1 ';

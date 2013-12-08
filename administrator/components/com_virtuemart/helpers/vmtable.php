@@ -748,27 +748,18 @@ class VmTable extends JTable {
 					}
 
 				} else {
-
+					//Admins are allowed to do anything. We just trhow some messages
 					if (!empty($virtuemart_vendor_id) and $loggedVendorId != $virtuemart_vendor_id) {
-						vmInfo('Admin with vendor id ' . $loggedVendorId . ' is using for storing vendor id ' . $this->virtuemart_vendor_id);
 						vmdebug('Admin with vendor id ' . $loggedVendorId . ' is using for storing vendor id ' . $this->virtuemart_vendor_id);
-						$this->virtuemart_vendor_id = $virtuemart_vendor_id;
 					}
-					//Admin forgot to select a vendor
 					else if (empty($virtuemart_vendor_id)) {
-						/*if ($className !== 'TableVmusers' and $this->_tbl!== '#__virtuemart_vendors') {
-							vmInfo('We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl.', Set to mainvendor '.$this->virtuemart_vendor_id);
+						if ($className !== 'TableVmusers' and $this->_tbl!== '#__virtuemart_vendors') {
+							vmInfo('We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl);//, Set to mainvendor '.$this->virtuemart_vendor_id
 							$this->virtuemart_vendor_id = 1;
-							//return false;
-						}*/
-
+						}
 					}
 				}
-
 			}
-
-			//tables to consider for multivendor
-			//if(get_class($this)!== 'TableOrders' and get_class($this)!== 'TableInvoices' and get_class($this)!== 'TableOrder_items'){
 		}
 
 		return true;

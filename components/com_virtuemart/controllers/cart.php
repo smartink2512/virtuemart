@@ -425,12 +425,26 @@ class VirtueMartControllerCart extends JController {
 	 *
 	 */
 	public function checkout() {
-		//Tests step for step for the necessary data, redirects to it, when something is lacking
+		vmdebug('my post, get and so on',$_POST,$_GET);
 
 		$cart = VirtueMartCart::getCart();
-		if ($cart && !VmConfig::get('use_as_catalog', 0)) {
-			$cart->checkout();
+		$cart->getFilterCustomerComment();
+		$cart->tosAccepted = JRequest::getInt('tosAccepted', $cart->tosAccepted);
+
+		if(isset($_POST['update'])){
+			$cart->updateProductCart();
+			$this->display();
+		} else if(isset($_POST['setshipment'])){
+			$this->setshipment();
+		} else if(isset($_POST['setpayment'])){
+			$this->setpayment();
+		} else {
+			if ($cart && !VmConfig::get('use_as_catalog', 0)) {
+				$cart->checkout();
+			}
 		}
+
+
 	}
 
 	/**
@@ -442,18 +456,25 @@ class VirtueMartControllerCart extends JController {
 	 */
 	public function confirm() {
 
-		//Use false to prevent valid boolean to get deleted
+		vmdebug('my post, get and so on',$_POST,$_GET);
 		$cart = VirtueMartCart::getCart();
-		if ($cart) {
+		$cart->getFilterCustomerComment();
+		$cart->tosAccepted = JRequest::getInt('tosAccepted', $cart->tosAccepted);
+
+		if(isset($_POST['update'])){
+			$cart->updateProductCart();
+			$this->display();
+		} else if(isset($_POST['setshipment'])){
+			$this->setshipment();
+		} else if(isset($_POST['setpayment'])){
+			$this->setpayment();
+		} else {
 			$cart->confirmDone();
 			$view = $this->getView('cart', 'html');
 			$view->setLayout('order_done');
-			// Display it all
 			$view->display();
-		} else {
-			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), JText::_('COM_VIRTUEMART_CART_DATA_NOT_VALID'));
 		}
+
 	}
 
 	function cancel() {

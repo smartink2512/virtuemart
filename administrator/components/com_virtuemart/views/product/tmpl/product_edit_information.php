@@ -324,8 +324,8 @@ $i=0;
 
 
 					$result = JText::_('COM_VIRTUEMART_EDIT').' ' . $this->product_parent->product_name;
-					echo ' | '.JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id
-						.'&option=com_virtuemart'), $this->product_parent->product_name, array('title' => $result)).' | '.$this->parentRelation;
+					echo ' | '.JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id),
+							$this->product_parent->product_name, array('title' => $result)).' | '.$this->parentRelation;
 				}
 				?>
 				</td>
@@ -370,7 +370,7 @@ $i=0;
 							 ?>
 							<tr class="row<?php echo $i ?>">
 								<td>
-									<?php echo JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_parent_id='.$this->product->virtuemart_product_id.'&virtuemart_product_id='.$child->virtuemart_product_id.'&option=com_virtuemart'), $child->slug, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name)) ?>
+									<?php echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$child->virtuemart_product_id), $child->slug, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name)) ?>
 									<input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][slug]" id="child<?php echo $child->virtuemart_product_id ?>slug" value="<?php echo $child->slug ?>" />
 								</td>
 								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_name]" id="child<?php echo $child->virtuemart_product_id ?>product_name" size="32" value="<?php echo htmlspecialchars($child->product_name) ?>" /></td>

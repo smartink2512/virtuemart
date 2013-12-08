@@ -30,9 +30,11 @@ if (VmConfig::get('oncheckout_opc', 0)) {
 if (VmConfig::get('oncheckout_show_steps', 1)) {
     echo '<div class="checkoutStep" id="checkoutStep3">' . JText::_('COM_VIRTUEMART_USER_FORM_CART_STEP3') . '</div>';
 }
-?>
-<form method="post" id="paymentForm" name="choosePaymentRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate <?php echo $addClass ?>">
-<?php
+
+if ($this->layoutName!='default') { ?>
+	<form method="post" id="paymentForm" name="choosePaymentRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate <?php echo $addClass ?>">
+<?php }
+
 	echo "<h".$headerLevel.">".JText::_('COM_VIRTUEMART_CART_SELECT_PAYMENT')."</h".$headerLevel.">";
 	if($this->cart->getInCheckOut()){
 		$buttonclass = 'button vm-button-correct';
@@ -43,7 +45,7 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 
 <div class="buttonBar-right">
 
-<button class="<?php echo $buttonclass ?>" type="submit"><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
+<button name="setpayment" class="<?php echo $buttonclass ?>" type="submit"><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
      &nbsp;
 <button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
     </div>
@@ -66,11 +68,12 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 	 echo "<h1>".$this->payment_not_found_text."</h1>";
     }
 
-
-    ?>
-
-    <input type="hidden" name="option" value="com_virtuemart" />
+if ($this->layoutName!='default') {
+?>    <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="view" value="cart" />
     <input type="hidden" name="task" value="setpayment" />
     <input type="hidden" name="controller" value="cart" />
 </form>
+<?php
+}
+?>

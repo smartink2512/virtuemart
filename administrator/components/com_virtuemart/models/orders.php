@@ -633,6 +633,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					$data->delivery_date = $date->toMySQL();
 				}
 			} else {
+				VmConfig::loadJLang('com_virtuemart_orders', true);
 				$data->delivery_date = JText::_('COM_VIRTUEMART_DELDATE_INV');
 			}
 		}
