@@ -22,26 +22,14 @@ if(typeof Virtuemart === "undefined")
 					});
 				return false; // prevent reload
 			},
-			productUpdate : function(mod) {
+			productUpdate : function() {
 
-				var $ = jQuery ;
-				$.ajaxSetup({ cache: false })
-				$.getJSON(window.vmSiteurl+"index.php?option=com_virtuemart&nosef=1&view=cart&task=viewJS&format=json"+window.vmLang,
-					function(datas, textStatus) {
-						if (datas.totalProduct >0) {
-							mod.find(".vm_cart_products").html("");
-							$.each(datas.products, function(key, val) {
-								$("#hiddencontainer .container").clone().appendTo(".vmCartModule .vm_cart_products");
-								$.each(val, function(key, val) {
-									if ($("#hiddencontainer .container ."+key)) mod.find(".vm_cart_products ."+key+":last").html(val) ;
-								});
-							});
-							mod.find(".total").html(datas.billTotal);
-							mod.find(".show_cart").html(datas.cart_show);
-						}
-						mod.find(".total_products").html(datas.totalProductTxt);
-					}
-				);
+                // This Event Gets Fired As Soon As The New Product
+                // Was Added To The Cart
+                // This Way Third Party Developer Can Include Their Own
+                // Add To Cart Module And Listen To The Event: "updateVirtueMartCartModule"
+                jQuery('body').trigger('updateVirtueMartCartModule');
+
 			},
 			sendtocart : function (form){
 
@@ -91,9 +79,8 @@ if(typeof Virtuemart === "undefined")
                         $.facebox({ text: txt }, 'my-groovy-style');
                     }
 
-                    if ($(".vmCartModule")[0]) {
-                        Virtuemart.productUpdate($(".vmCartModule"));
-                    }
+
+                    Virtuemart.productUpdate();
                 });
 
                 $.ajaxSetup({ cache: true });

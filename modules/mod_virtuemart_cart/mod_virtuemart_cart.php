@@ -18,6 +18,20 @@ defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allow
 * www.virtuemart.net
 */
 
+$doc = JFactory::getDocument();
+$doc->addScript("/modules/mod_virtuemart_cart/assets/js/update_cart.js");
+$js = '
+jQuery(document).ready(function(){
+    jQuery("body").live("updateVirtueMartCartModule", function(e) {
+        jQuery("#vmCartModule").updateVirtueMartCartModule();
+    });
+});
+';
+$doc->addScriptDeclaration($js);
+
+
+
+
 $jsVars  = ' jQuery(document).ready(function(){
 	jQuery(".vmCartModule").productUpdate();
 
