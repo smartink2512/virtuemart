@@ -361,7 +361,14 @@ function vmTime($descr,$name='current'){
  */
 function logInfo ($text, $type = 'message') {
 	jimport('joomla.filesystem.file');
-	$file = JPATH_ROOT . "/logs/" . VmConfig::$logFileName . ".log.php";
+	$config = JFactory::getConfig();
+	$log_path = $config->get('log_path');
+	if (!$log_path) {
+		$file = JPATH_ROOT . "/logs/" . VmConfig::$logFileName . VmConfig::LOGFILEEXT;
+	} else {
+		$file =$log_path . VmConfig::$logFileName . VmConfig::LOGFILEEXT;
+	}
+
 	$date = JFactory::getDate ();
 	$head=NULL;
 	if (!JFile::exists($file)) {
@@ -529,6 +536,7 @@ class VmConfig {
 	public static $echoDebug = FALSE;
 	public static $logDebug = FALSE;
 	public static $logFileName = 'com_virtuemart';
+	const LOGFILEEXT = '.log.php';
 
 	var $lang = FALSE;
 

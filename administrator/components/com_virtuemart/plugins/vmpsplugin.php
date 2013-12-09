@@ -678,35 +678,39 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param string subject of the mail
 	 * @param string message
 	 */
-	protected function sendEmailToVendorAndAdmins ($subject, $message) {
+	protected function sendEmailToVendorAndAdmins ($subject = NULL, $message = NULL) {
 
 		// recipient is vendor and admin
 		$vendorId = 1;
-		$vendorModel = VmModel::getModel ('vendor');
-		$vendorEmail = $vendorModel->getVendorEmail ($vendorId);
-		$vendorName = $vendorModel->getVendorName ($vendorId);
-		JUtility::sendMail ($vendorEmail, $vendorName, $vendorEmail, $subject, $message);
+		$vendorModel = VmModel::getModel('vendor');
+		$vendor = $vendorModel->getVendor($vendorId);
+		$vendorEmail = $vendorModel->getVendorEmail($vendorId);
+		$vendorName = $vendorModel->getVendorName($vendorId);
+		VmConfig::loadJLang('com_virtuemart');
+		if ($subject == NULL) {
+			$subject = JText::sprintf('COM_VIRTUEMART_ERROR_SUBJECT', $this->_name, $vendor->vendor_store_name);
+		}
+		if ($message == NULL) {
+			$message = JText::sprintf('COM_VIRTUEMART_ERROR_BODY', $subject, $this->getLogFilename().VmConfig::LOGFILEEXT);
+		}
+		JUtility::sendMail($vendorEmail, $vendorName, $vendorEmail, $subject, $message);
 		if (JVM_VERSION === 1) {
 			//get all super administrator
-			$query = 'SELECT name, email, sendEmail' .
-				' FROM #__users' .
-				' WHERE LOWER( usertype ) = "super administrator"';
+			$query = 'SELECT name, email, sendEmail' . ' FROM #__users' . ' WHERE LOWER( usertype ) = "super administrator"';
 		} else {
-			$query = 'SELECT name, email, sendEmail' .
-				' FROM #__users' .
-				' WHERE sendEmail=1';
+			$query = 'SELECT name, email, sendEmail' . ' FROM #__users' . ' WHERE sendEmail=1';
 		}
-		$db = JFactory::getDBO ();
-		$db->setQuery ($query);
-		$rows = $db->loadObjectList ();
+		$db = JFactory::getDBO();
+		$db->setQuery($query);
+		$rows = $db->loadObjectList();
 
-		$subject = html_entity_decode ($subject, ENT_QUOTES);
+		$subject = html_entity_decode($subject, ENT_QUOTES);
 
 		// get superadministrators id
 		foreach ($rows as $row) {
 			if ($row->sendEmail) {
-				$message = html_entity_decode ($message, ENT_QUOTES);
-				JUtility::sendMail ($vendorEmail, $vendorName, $row->email, $subject, $message);
+				$message = html_entity_decode($message, ENT_QUOTES);
+				JUtility::sendMail($vendorEmail, $vendorName, $row->email, $subject, $message);
 			}
 		}
 	}
@@ -1232,26 +1236,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $encoded_session;
 	}
 
-	/**
-	 * get_passkey
-	 * Retrieve the payment method-specific encryption key
-	 *
-	 * @author Oscar van Eijk
-	 * @author Valerie Isaksen
-	 * @return mixed
-	 * @deprecated
-	 */
-	function get_passkey () {
-
-		return TRUE;
-		$_db = JFactory::getDBO ();
-		$_q = 'SELECT ' . VM_DECRYPT_FUNCTION . "(secret_key, '" . ENCODE_KEY . "') as passkey "
-			. 'FROM #__virtuemart_paymentmethods '
-			. "WHERE virtuemart_paymentmethod_id='" . (int)$this->_virtuemart_paymentmethod_id . "'";
-		$_db->setQuery ($_q);
-		$_r = $_db->loadAssoc (); // TODO Error check
-		return $_r['passkey'];
-	}
 
 	/**
 	 * validateVendor
@@ -1299,9 +1283,9 @@ abstract class vmPSPlugin extends vmPlugin {
 			return FALSE;
 		}
 	}
-/**
- *  @param integer $virtuemart_order_id the id of the order
- */
+	/**
+	 *  @param integer $virtuemart_order_id the id of the order
+	 */
 	function handlePaymentUserCancel ($virtuemart_order_id) {
 
 		if ($virtuemart_order_id) {
@@ -1327,17 +1311,26 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	protected function logInfo ($text, $type = 'message', $doLog=false) {
 		if ((isset($this->_debug) and $this->_debug) OR $doLog) {
-			$name=$this->_idName;
-			$methodId=0;
-			if (isset ($this->_currentMethod) ) {
-				$methodId=$this->_currentMethod->$name;
-			}
 			$oldLogFileName= 	VmConfig::$logFileName;
-			VmConfig::$logFileName = $this->_name. '.'.$methodId ;
+			VmConfig::$logFileName =$this->getLogFileName() ;
 			logInfo($text, $type);
 			VmConfig::$logFileName =$oldLogFileName;
 		}
 	}
+
+	/**
+	 *
+	 */
+	function getLogFileName() {
+		$name=$this->_idName;
+		$methodId=0;
+		if (isset ($this->_currentMethod) ) {
+			$methodId=$this->_currentMethod->$name;
+		}
+
+		return $this->_name. '.'.$methodId ;
+	}
+
 	/**
 	 * log all messages of type ERROR
 	 * log in case the debug option is on, and the log option is on
@@ -1357,7 +1350,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		if ( $type == 'error') {
-			$this->sendEmailToVendorAndAdmins(JText::_('COM_VIRTUEMART_ERROR_SUBJECT') , JText::_('COM_VIRTUEMART_ERROR_BODY'));
+			$this->sendEmailToVendorAndAdmins();
 		}
 
 		$this->logInfo($title.': '.print_r($message,true), $type, true);
