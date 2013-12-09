@@ -1236,6 +1236,26 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $encoded_session;
 	}
 
+	/**
+	 * get_passkey
+	 * Retrieve the payment method-specific encryption key
+	 *
+	 * @author Oscar van Eijk
+	 * @author Valerie Isaksen
+	 * @return mixed
+	 * @deprecated
+	 */
+	function get_passkey () {
+
+		return TRUE;
+		$_db = JFactory::getDBO ();
+		$_q = 'SELECT ' . VM_DECRYPT_FUNCTION . "(secret_key, '" . ENCODE_KEY . "') as passkey "
+			. 'FROM #__virtuemart_paymentmethods '
+			. "WHERE virtuemart_paymentmethod_id='" . (int)$this->_virtuemart_paymentmethod_id . "'";
+		$_db->setQuery ($_q);
+		$_r = $_db->loadAssoc (); // TODO Error check
+		return $_r['passkey'];
+	}
 
 	/**
 	 * validateVendor
