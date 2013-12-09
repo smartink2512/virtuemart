@@ -355,7 +355,7 @@ $taskRoute = '';
 	<br/>
 	<?php
 	if (!empty($this->layoutName) && $this->layoutName == 'default' && !$this->cart->automaticSelectedShipment) {
-		if (VmConfig::get('oncheckout_opc', 0)) {
+		if (VmConfig::get('oncheckout_opc', 1)) {
 			$previouslayout = $this->setLayout('select');
 			echo $this->loadTemplate('shipment');
 			$this->setLayout($previouslayout);
@@ -388,7 +388,7 @@ $taskRoute = '';
 		<?php echo $this->cart->cartData['paymentName']; ?>
 		<br/>
 		<?php if (!empty($this->layoutName) && $this->layoutName == 'default') {
-			if (VmConfig::get('oncheckout_opc', 0)) {
+			if (VmConfig::get('oncheckout_opc', 1)) {
 				$previouslayout = $this->setLayout('select');
 				echo $this->loadTemplate('payment');
 				$this->setLayout($previouslayout);

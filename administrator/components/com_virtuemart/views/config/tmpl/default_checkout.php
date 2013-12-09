@@ -75,7 +75,7 @@ $document->addScriptDeclaration($js);
                 </span>
 			</td>
 			<td>
-				<?php echo VmHTML::checkbox('oncheckout_opc', VmConfig::get('oncheckout_opc',0)); ?>
+				<?php echo VmHTML::checkbox('oncheckout_opc', VmConfig::get('oncheckout_opc',1)); ?>
 			</td>
 		</tr>
 		<div id="not_opc_param">

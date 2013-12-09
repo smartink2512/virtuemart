@@ -19,7 +19,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 $addClass="";
-?>
+<<<<<<< .mineif (VmConfig::get('oncheckout_opc', 1)) {
+	$headerLevel = 3;
+} else {
+	$headerLevel =1;
+}
+=======>>>>>>> .theirs?>
 
 <?php
 if (VmConfig::get('oncheckout_show_steps', 1)) {
@@ -33,7 +38,7 @@ if ($this->layoutName!='default') {
 	} else {
 		$buttonclass = 'default';
 	}
-	?>
+?>
 	<form method="post" id="paymentForm" name="choosePaymentRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate <?php echo $addClass ?>">
 <?php } else {
 		$headerLevel = 3;
@@ -55,7 +60,7 @@ if ($this->layoutName!='default') {
     </div>
 
 <?php
-     if ($this->found_payment_method OR (VmConfig::get('oncheckout_opc', 0) )) {
+     if ($this->found_payment_method OR (VmConfig::get('oncheckout_opc', 1) )) {
 
 
     echo "<fieldset>";

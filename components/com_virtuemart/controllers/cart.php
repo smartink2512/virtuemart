@@ -425,18 +425,18 @@ class VirtueMartControllerCart extends JController {
 	 *
 	 */
 	public function checkout() {
-		vmdebug('my post, get and so on',$_POST,$_GET);
+		vmdebug('checkout my post, get and so on',$_POST,$_GET);
 
 		$cart = VirtueMartCart::getCart();
 		$cart->getFilterCustomerComment();
 		$cart->tosAccepted = JRequest::getInt('tosAccepted', $cart->tosAccepted);
-
-		if(isset($_POST['update'])){
+		$task = JRequest::getString('task');
+		if(isset($_POST['update']) or $task=='update'){
 			$cart->updateProductCart();
 			$this->display();
-		} else if(isset($_POST['setshipment'])){
+		} else if(isset($_POST['setshipment']) or $task=='setshipment'){
 			$this->setshipment();
-		} else if(isset($_POST['setpayment'])){
+		} else if(isset($_POST['setpayment']) or $task=='setpayment'){
 			$this->setpayment();
 		} else {
 			if ($cart && !VmConfig::get('use_as_catalog', 0)) {
@@ -456,19 +456,19 @@ class VirtueMartControllerCart extends JController {
 	 */
 	public function confirm() {
 
-		vmdebug('my post, get and so on',$_POST,$_GET);
+		vmdebug('confirm my post, get and so on',$_POST,$_GET);
 		$cart = VirtueMartCart::getCart();
 		$cart->getFilterCustomerComment();
 		$cart->tosAccepted = JRequest::getInt('tosAccepted', $cart->tosAccepted);
-
-		if(isset($_POST['update'])){
+		$task = JRequest::getString('task');
+		if(isset($_POST['update']) or $task=='update'){
 			$cart->updateProductCart();
 			$this->display();
-		} else if(isset($_POST['setshipment'])){
+		} else if(isset($_POST['setshipment']) or $task=='setshipment'){
 			$this->setshipment();
-		} else if(isset($_POST['setpayment'])){
+		} else if(isset($_POST['setpayment']) or $task=='setpayment'){
 			$this->setpayment();
-		} else {
+		} else if($task=='confirm'){
 			$cart->confirmDone();
 			$view = $this->getView('cart', 'html');
 			$view->setLayout('order_done');

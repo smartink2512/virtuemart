@@ -674,8 +674,8 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
-
-		if((int)$data['user_is_vendor']==1){
+		//The extra check for isset vendor_name prevents storing of the vendor if there is no form (edit address cart)
+		if((int)$data['user_is_vendor']==1 and isset($data['vendor_name'])){
 			vmdebug('vendor recognised '.$data['virtuemart_vendor_id']);
 			if($this ->storeVendorData($data)){
 				if ($new) {
@@ -726,10 +726,20 @@ class VirtueMartModelUser extends VmModel {
 
 		$alreadyStoredUserData = $usertable->load($this->_id);
 		$app = JFactory::getApplication();
-		unset($data['virtuemart_vendor_id']);
-		unset($data['user_is_vendor']);
-		$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
-		$data['virtuemart_vendor_id'] = $alreadyStoredUserData->virtuemart_vendor_id;
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if(!Permissions::getInstance()->check("admin")){
+			unset($data['virtuemart_vendor_id']);
+			unset($data['user_is_vendor']);
+			$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
+			$data['virtuemart_vendor_id'] = $alreadyStoredUserData->virtuemart_vendor_id;
+		} else {
+			if(!isset($data['user_is_vendor']) and !empty($alreadyStoredUserData->user_is_vendor)){
+				$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
+			}
+			if(!isset($data['virtuemart_vendor_id']) and !empty($alreadyStoredUserData->virtuemart_vendor_id)){
+				$data['virtuemart_vendor_id'] = $alreadyStoredUserData->virtuemart_vendor_id;
+			}
+		}
 
 		unset($data['customer_number']);
 		if(empty($alreadyStoredUserData->customer_number)){

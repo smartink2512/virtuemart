@@ -52,8 +52,8 @@ if($this->cart->getInCheckOut()){
 	</div>
 
 <?php
-    if ($this->found_shipment_method OR (VmConfig::get('oncheckout_opc', 0)) ) { ?>
-<?php
+    if ($this->found_shipment_method OR (VmConfig::get('oncheckout_opc', 1)) ) {
+
 	   echo "<fieldset>\n";
 	// if only one Shipment , should be checked by default
 	    foreach ($this->shipments_shipment_rates as $shipment_shipment_rates) {
