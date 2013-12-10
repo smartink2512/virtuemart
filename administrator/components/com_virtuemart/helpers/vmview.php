@@ -274,7 +274,7 @@ class VmView extends JView{
 					} else {
 						$img=$languagesByCode[$key]->image;
 					}
-					$image_flag="../media/mod_languages/images/".$img.".gif";
+						$image_flag=JPATH_SITE."/media/mod_languages/images/".$img.".gif";
 
 					if (!file_exists ($image_flag)) {
 						vmerror(JText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $image_flag,$joomlaLang['text'] ) );

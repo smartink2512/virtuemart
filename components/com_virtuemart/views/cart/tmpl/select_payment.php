@@ -19,11 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 $addClass="";
-if (VmConfig::get('oncheckout_opc', 1)) {
-	$headerLevel = 3;
-} else {
-	$headerLevel =1;
-}
+
 
 if (VmConfig::get('oncheckout_show_steps', 1)) {
     echo '<div class="checkoutStep" id="checkoutStep3">' . JText::_('COM_VIRTUEMART_USER_FORM_CART_STEP3') . '</div>';

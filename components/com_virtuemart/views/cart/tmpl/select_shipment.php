@@ -25,12 +25,12 @@ defined('_JEXEC') or die('Restricted access');
 	}
 
 	if ($this->layoutName!='default') {
-$headerLevel = 1;
-if($this->cart->getInCheckOut()){
-	$buttonclass = 'button vm-button-correct';
-} else {
-	$buttonclass = 'default';
-}
+		$headerLevel = 1;
+		if($this->cart->getInCheckOut()){
+			$buttonclass = 'button vm-button-correct';
+		} else {
+			$buttonclass = 'default';
+		}
 		?>
 <form method="post" id="userForm" name="chooseShipmentRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate">
 	<?php

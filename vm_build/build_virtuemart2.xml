@@ -3,7 +3,7 @@
 <project name="VIRTUEMART2" default="VIRTUEMART2" basedir=".">
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
-    <property name="vm.version" value="2.0.25e"/>
+    <property name="vm.version" value="2.0.25f"/>
     <property name="PHING.VM.CODENAME" value="IceBear"/>
     <property file="build.properties"/>
     <target name="title">
@@ -165,6 +165,22 @@
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
          <exclude name="install.xml"/>
+        <exclude name="**/da-DK/**"/>
+        <exclude name="**/de-DE/**"/>
+        <exclude name="**/es-ES/**"/>
+        <exclude name="**/el-GR/**"/>
+        <exclude name="**/fr-FR/**"/>
+        <exclude name="**/it-IT/**"/>
+        <exclude name="**/nb-NO/**"/>
+        <exclude name="**/no-NO/**"/>
+        <exclude name="**/nl-NL/**"/>
+        <exclude name="**/pl-PL/**"/>
+        <exclude name="**/pt-BR/**"/>
+        <exclude name="**/ru-RU/**"/>
+        <exclude name="**/sv-SE/**"/>
+        <exclude name="**/tr-TR/**"/>
+        <exclude name="**/uk-UA/**"/>
+        <exclude name="**/th-TH/**"/>
     </fileset>
 
     <fileset dir="${admin.aio.component.path}" id='root.aio.refid' defaultexcludes="true">
@@ -195,12 +211,30 @@
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
+        <exclude name="**/de-DE/**"/>
+        <exclude name="**/es-ES/**"/>
+        <exclude name="**/fr-FR/**"/>
+        <exclude name="**/it-IT/**"/>
+        <exclude name="**/nl-NL/**"/>
+        <exclude name="**/pl-PL/**"/>
+        <exclude name="**/pt-BR/**"/>
+        <exclude name="**/th-TH/**"/>
+        <exclude name="**/th-TH/**"/>
+        <exclude name="**/**vmpayment_payzen*/**"/>
+        <exclude name="**/**vmpayment_systempay*/**"/>
     </fileset>
     <fileset dir="${languageFE.path}" id='languageFE.aio.refid' defaultexcludes="true">
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
-
+        <exclude name="**/de-DE/**"/>
+        <exclude name="**/es-ES/**"/>
+        <exclude name="**/fr-FR/**"/>
+        <exclude name="**/it-IT/**"/>
+        <exclude name="**/nl-NL/**"/>
+        <exclude name="**/pl-PL/**"/>
+        <exclude name="**/pt-BR/**"/>
+        <exclude name="**/th-TH/**"/>
     </fileset>
     <fileset dir="${languageBE.path}" id='language.aio.refid' defaultexcludes="true">
         <include name="**"/>
@@ -474,7 +508,7 @@
         </zip>
         <echo msg="MAIN Component compressed OK!"/>
     </target>
-    <target name="AIO" depends="aio_files, delete.language.loop">
+    <target name="AIO" depends="aio_files">
         <echo msg="Creating AIO PACKAGE  ..."/>
         <tar destfile="${package.folder}/${component.name}.${vm.version}_ext_aio.tar.gz" compression="gzip">
             <fileset dir="${package.folder.aio}">
