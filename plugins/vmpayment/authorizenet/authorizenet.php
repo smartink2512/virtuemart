@@ -157,8 +157,13 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 					$this->_cc_expire_month = '';
 					$this->_cc_expire_year = '';
 				}
-				$creditCards = $this->_currentMethod->creditcards;
 
+				if (empty($this->_currentMethod->creditcards)) {
+					$this->_currentMethod->creditcards = self::getCreditCards();
+				} elseif (!is_array($this->_currentMethod->creditcards)) {
+					$this->_currentMethod->creditcards = (array)$this->_currentMethod->creditcards;
+				}
+				$creditCards = $this->_currentMethod->creditcards;
 				$creditCardList = '';
 				if ($creditCards) {
 					$creditCardList = ($this->_renderCreditCardList($creditCards, $this->_cc_type, $this->_currentMethod->virtuemart_paymentmethod_id, FALSE));
@@ -236,7 +241,20 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 
 		return TRUE;
 	}
+	/**
 
+	 */
+	static function getCreditCards() {
+		return array(
+			'Visa',
+			'Mastercard',
+			'AmericanExpress',
+			'Discover',
+			'DinersClub',
+			'JCB',
+		);
+
+	}
 	/**
 	 * Check if the payment conditions are fulfilled for this payment method
 	 *
