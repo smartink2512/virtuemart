@@ -343,8 +343,10 @@ $taskRoute = '&task=' . $this->checkout_task;
 else {
 $taskRoute = '';
 }
+if (VmConfig::get('oncheckout_opc', 1)) {
 ?>
 <form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
+<?php } ?>
 
 <tr class="sectiontableentry1" valign="top">
 	<?php if (!$this->cart->automaticSelectedShipment) { ?>

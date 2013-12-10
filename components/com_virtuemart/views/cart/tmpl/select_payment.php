@@ -19,9 +19,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 $addClass="";
-?>
+if (VmConfig::get('oncheckout_opc', 1)) {
+	$headerLevel = 3;
+} else {
+	$headerLevel =1;
+}
 
-<?php
 if (VmConfig::get('oncheckout_show_steps', 1)) {
     echo '<div class="checkoutStep" id="checkoutStep3">' . JText::_('COM_VIRTUEMART_USER_FORM_CART_STEP3') . '</div>';
 }
@@ -33,7 +36,7 @@ if ($this->layoutName!='default') {
 	} else {
 		$buttonclass = 'default';
 	}
-	?>
+?>
 	<form method="post" id="paymentForm" name="choosePaymentRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate <?php echo $addClass ?>">
 <?php } else {
 		$headerLevel = 3;

@@ -1887,6 +1887,11 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$product->slug = $product->slug . '-' . $id;
 		$product->save_customfields = 1;
+
+		JPluginHelper::importPlugin ('vmcustom');
+		$dispatcher = JDispatcher::getInstance ();
+		$result=$dispatcher->trigger ('plgVmCloneProduct', array(&$product));
+
 		$this->store ($product);
 		return $this->_id;
 	}

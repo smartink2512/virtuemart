@@ -130,7 +130,11 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 		}
 		?>
 	</div>
-
+	<?php
+	if (!VmConfig::get('oncheckout_opc', 1)) {
+	?>
+		<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
+	<?php } ?>
 		<?php // Leave A Comment Field ?>
 		<div class="customer-comment marginbottom15">
 			<span class="comment"><?php echo JText::_ ('COM_VIRTUEMART_COMMENT_CART'); ?></span><br/>

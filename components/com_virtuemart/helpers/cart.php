@@ -829,6 +829,7 @@ class VirtueMartCart {
 		$this->order_language = JRequest::getVar('order_language', $this->order_language);
 		$this->getFilterCustomerComment();
 
+
 		$this->cartData = $this->prepareCartData();
 		$this->prepareCartPrice();
 
@@ -873,18 +874,22 @@ class VirtueMartCart {
 		}
 
 		if($this->STsameAsBT!==0){
-			$this->ST = $this->BT;
+			if($validUserDataBT!=-1){
+				$this->ST = $this->BT;
+			} else {
+				$this->ST = 0;
+			}
+
 		} else {
 			if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
 				JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 				$userModel = JModel::getInstance('user', 'VirtueMartModel');
 				$stData = $userModel->getUserAddressList(0, 'ST', $this->selected_shipto);
 				$stData = get_object_vars($stData[0]);
-				if($this->validateUserData('ST', $stData)){
+				if($this->validateUserData('ST', $stData)!=-1 and $this->validateUserData('ST', $stData)>0){
 					$this->ST = $stData;
 				}
 			}
-
 			//Only when there is an ST data, test if all necessary fields are filled
 			$validUserDataST = self::validateUserData('ST');
 			if (!$validUserDataST or ($redirect and $validUserDataST!==true)) {
@@ -1406,7 +1411,7 @@ class VirtueMartCart {
 		,$preFix
 		);
 		//vmdebug('prepareAddressDataInCart',$this->$addresstype);
-		if(empty($this->$type)){
+		if(empty($this->$type) and $type=='BT'){
 			$tmp =&$this->$type ;
 			$tmp = array();
 			foreach($address['fields'] as $k =>$field){
@@ -1425,6 +1430,7 @@ class VirtueMartCart {
 					}
 
 				}
+
 			}
 			//$this->$type = $tmp;
 		}
