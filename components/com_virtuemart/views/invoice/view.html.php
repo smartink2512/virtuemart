@@ -181,16 +181,17 @@ class VirtuemartViewInvoice extends VmView {
 		$shipmentfields = $userFieldsModel->getUserFieldsFilled( $shipmentFieldset ,$orderst );
 		$this->assignRef('shipmentfields', $shipmentfields);
 
-		$title="";
+		$civility="";
 		foreach ($userfields['fields'] as  $field) {
 			if ($field['name']=="title") {
-				$title=$field['value'];
+				$civility=$field['value'];
 				break;
 			}
 		}
 		$company= empty($orderDetails['details']['BT']->company) ?"":$orderDetails['details']['BT']->company.", ";
-		$shopperName =  $company. $title.' '.$orderDetails['details']['BT']->first_name.' '.$orderDetails['details']['BT']->last_name;
+		$shopperName =  $company. $civility.' '.$orderDetails['details']['BT']->first_name.' '.$orderDetails['details']['BT']->last_name;
 		$this->assignRef('shopperName', $shopperName);
+		$this->assignRef('civility', $civility);
 
 
 
