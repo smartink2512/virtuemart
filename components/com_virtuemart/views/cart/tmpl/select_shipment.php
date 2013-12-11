@@ -57,11 +57,11 @@ defined('_JEXEC') or die('Restricted access');
 	   echo "<fieldset>\n";
 	// if only one Shipment , should be checked by default
 	    foreach ($this->shipments_shipment_rates as $shipment_shipment_rates) {
-		if (is_array($shipment_shipment_rates)) {
-		    foreach ($shipment_shipment_rates as $shipment_shipment_rate) {
-			echo $shipment_shipment_rate."<br />\n";
-		    }
-		}
+			if (is_array($shipment_shipment_rates)) {
+			    foreach ($shipment_shipment_rates as $shipment_shipment_rate) {
+					echo $shipment_shipment_rate."<br />\n";
+			    }
+			}
 	    }
 	    echo "</fieldset>\n";
     } else {

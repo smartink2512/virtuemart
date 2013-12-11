@@ -827,7 +827,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			} else {
 				$paypalInterface = $this->_loadPayPalInterface();
 
-				if (isset($payment->paypal_fullresponse) and $payment->paypal_fullresponse) {
+				if (isset($payment->paypal_fullresponse) and !empty($payment->paypal_fullresponse)) {
 					$paypal_data = json_decode($payment->paypal_fullresponse);
 					$paypalInterface = $this->_loadPayPalInterface();
 					$html .= $paypalInterface->onShowOrderBEPayment($paypal_data);
