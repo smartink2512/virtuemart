@@ -362,7 +362,7 @@ class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 			'MC_CURRENCY' => 'mc_currency',
 			'PAYMENT_STATUS' => 'payment_status',
 			'PENDING_REASON' => 'pending_reason',
-			'REASONCODE' => 'reasoncode',
+			'REASON_CODE' => 'reasoncode',
 			'PROTECTION_ELIGIBILITY' => 'protection_eligibility',
 			'CORRELATIONID' => 'CORRELATIONID',
 			'REFUND_AMOUNT' => 'TOTALREFUNDEDAMOUNT',
