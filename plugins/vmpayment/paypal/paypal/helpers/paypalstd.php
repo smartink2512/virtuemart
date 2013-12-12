@@ -319,7 +319,7 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 			'MC_CURRENCY' => 'mc_currency',
 			'PAYMENT_STATUS' => 'payment_status',
 			'PENDING_REASON' => 'pending_reason',
-			'REASONCODE' => 'reason_code',
+			'REASON_CODE' => 'reason_code',
 			'PROTECTION_ELIGIBILITY' => 'protection_eligibility',
 			'ADDRESS_STATUS' => 'address_status'
 		);
