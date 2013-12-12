@@ -366,7 +366,7 @@ function logInfo ($text, $type = 'message') {
 	if (!$log_path) {
 		$file = JPATH_ROOT . "/logs/" . VmConfig::$logFileName . VmConfig::LOGFILEEXT;
 	} else {
-		$file =$log_path . VmConfig::$logFileName . VmConfig::LOGFILEEXT;
+		$file =$log_path ."/". VmConfig::$logFileName . VmConfig::LOGFILEEXT;
 	}
 
 	$date = JFactory::getDate ();

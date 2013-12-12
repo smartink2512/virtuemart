@@ -655,7 +655,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$paypalInterface->debugLog($payments[0]->virtuemart_paymentmethod_id, 'PaymentNotification, virtuemart_paymentmethod_id:', 'debug');
         $order_history = $paypalInterface->processIPN($paypal_data, $payments);
 		if (!$order_history) {
-			$paypalInterface->debugLog('no order history', 'processIPN', 'error');
 			return false;
 		} else {
 			$this->_storePaypalInternalData( $paypal_data, $virtuemart_order_id, $payments[0]->virtuemart_paymentmethod_id);

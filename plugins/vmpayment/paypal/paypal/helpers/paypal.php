@@ -386,12 +386,10 @@ class PaypalHelperPaypal {
 
 		// check that the remote IP is from Paypal.
 		if (!$this->checkPaypalIps($paypal_data)) {
-			$this->debugLog('FALSE', 'checkPaypalIps', 'error');
 			return false;
 		}
 		// Validate the IPN content upon PayPal
 		if (!$this->validateIpnContent($paypal_data)) {
-			$this->debugLog('Invalid IPN content', 'processIPN', 'error');
 			return false;
 		}
 		//Check the PayPal response
@@ -436,7 +434,7 @@ class PaypalHelperPaypal {
 			// 1. check the payment_status is Completed
 			// 2. check that txn_id has not been previously processed
 			if ($this->_check_txn_id_already_processed($payments, $paypal_data['txn_id'])) {
-				$this->debugLog('FALSE', '_check_txn_id_already_processed', 'debug');
+				$this->debugLog($paypal_data['txn_id'], '_check_txn_id_already_processed', 'debug');
 				return FALSE;
 			}
 			// 3. check email and amount currency is correct
@@ -558,7 +556,7 @@ class PaypalHelperPaypal {
 		if (!in_array($_SERVER['REMOTE_ADDR'], $paypal_iplist)) {
 
 			$text = "Error with REMOTE IP ADDRESS = " . $_SERVER['REMOTE_ADDR'] . ".
-                        The remote address of the script posting to this notify script does not match a valid PayPal ip address\n
+                        The remote address of the script posting to this notify script does not match a valid PayPal IP address\n
             These are the valid IP Addresses: " . implode(",", $paypal_iplist) .
 				"The Order ID received was: " . $order_number;
 			$this->debugLog($text, 'checkPaypalIps', 'error', false);
@@ -584,17 +582,23 @@ class PaypalHelperPaypal {
 		 * To verify the message, we must send back the contents in the exact order they
 		*  were received and precede it with the command _notify-validate,
 		 */
+
+// read the post from PayPal system and add 'cmd'
 		$post_msg = 'cmd=_notify-validate';
+		if(function_exists('get_magic_quotes_gpc')) {
+			$get_magic_quotes_exists = true;
+		}
 		foreach ($paypal_data as $key => $value) {
-			if ($key != 'view' && $key != 'layout') {
-				// linebreak fix
+			if($get_magic_quotes_exists == true && get_magic_quotes_gpc() == 1) {
 				$value = str_replace('\r\n', "QQLINEBREAKQQ", $value);
 				$value = urlencode(stripslashes($value));
 				$value = str_replace("QQLINEBREAKQQ", "\r\n", $value);
-
-				$post_msg .= "&$key=$value";
+			} else {
+				$value = urlencode($value);
 			}
+			$post_msg .= "&$key=$value";
 		}
+
 
 		$header="POST /cgi-bin/webscr HTTP/1.1\r\n";
 		$header .= "User-Agent: PHP/" . phpversion () . "\r\n";
@@ -613,7 +617,7 @@ class PaypalHelperPaypal {
 		} else {
 			$return = fputs($fps, $header . $post_msg);
 			if ($return===false) {
-				$this->debugLog("FALSE", 'validateIpnContent FPUTS', 'debug', false);
+				$this->debugLog("FALSE", 'validateIpnContent FPUTS', 'error', false);
 				return FALSE;
 			}
 			$res = '';
@@ -626,16 +630,15 @@ class PaypalHelperPaypal {
 			$valid_ipn = strstr($res, "VERIFIED");
 			if (!$valid_ipn) {
 				if (strstr($res, "INVALID")) {
-					$this->debugLog(JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . " " . $res, 'validateIpnContent', 'error', false);
-					$this->debugLog($paypal_data, 'validateIpnContent Paypal data receivedt', 'error', false);
+					$errorInfo=array("paypal_data" =>$paypal_data, 'post_msg'=> $post_msg, 'paypal_res' =>$res);
+					$this->debugLog($errorInfo, JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION'), 'error', false);
 				} else {
 					$this->debugLog(JText::_('VMPAYMENT_PAYPAL_ERROR_IPN_VALIDATION') . ": NO ANSWER FROM PAYPAL", 'validateIpnContent', 'error', false);
-
 				}
 			}
 		}
 
-		$this->debugLog('valid_ipn: ' . $valid_ipn, 'processIPN', 'debug', false);
+		$this->debugLog('valid_ipn: ' . $valid_ipn, 'validateIpnContent', 'debug', false);
 		return $valid_ipn;
 	}
 
@@ -662,8 +665,8 @@ class PaypalHelperPaypal {
 
         if ($this->_method->paypalproduct =="std") {
             if ($paypal_data['receiver_email']!=$this->merchant_email and $paypal_data['business']!=$this->merchant_email) {
-                $this->debugLog($paypal_data, 'IPN notificationwrong received data', 'error', false);
-                $this->debugLog($this->merchant_email, 'IPN notificationwrong merchant_email', 'error', false);
+	            $errorInfo=array("paypal_data" =>$paypal_data, 'merchant_email' =>$this->merchant_email);
+                $this->debugLog($errorInfo, 'IPN notification: wrong merchant_email', 'error', false);
                 return false;
             }
         }
@@ -672,7 +675,8 @@ class PaypalHelperPaypal {
 		if (($payments[0]->payment_order_total == $paypal_data['mc_gross']) and ($this->currency_code_3 == $paypal_data['mc_currency'])) {
 			return TRUE;
 		}
-		$this->debugLog($paypal_data, 'IPN notification with invalid amount or currency or email', 'error', false);
+		$errorInfo=array("paypal_data" =>$paypal_data, 'payment_order_total' =>$payments[0]->payment_order_total, 'currency_code_3'=>$this->currency_code_3);
+		$this->debugLog($errorInfo, 'IPN notification with invalid amount or currency or email', 'error', false);
 
 		return FALSE;
 	}
