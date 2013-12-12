@@ -186,7 +186,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 * Displays a possibility to select custom groups
 	 *
 	 * @author Max Milbers
-	 * @author Maik Künnemann
+	 * @author Maik Kï¿½nnemann
 	 * @author Patrick Kohl
 	 */
 	public function displayCustomSelection () {
@@ -962,7 +962,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						//MarkerVarMods
 									$group->display .= '<input id="' . $productCustom->virtuemart_customfield_id .$row. '" ' . $checked . ' type="radio" value="' .
 										$productCustom->virtuemart_customfield_id . '" name="customPrice[' . $row . '][' . $productCustom->virtuemart_custom_id . ']" /><label
-										for="' . $productCustom->virtuemart_custom_id .$row. '" class="other-customfield">' . $this->displayProductCustomfieldFE ($product, $productCustom, $row) . ' ' . $price . '</label>';
+										for="' . $productCustom->virtuemart_customfield_id .$row. '" class="other-customfield">' . $this->displayProductCustomfieldFE ($product, $productCustom, $row) . ' ' . $price . '</label>';
 
 									$checked = '';
 								}

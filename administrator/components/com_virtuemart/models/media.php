@@ -312,10 +312,13 @@ class VirtueMartModelMedia extends VmModel {
 			$data['media_action'] = 'none';
 		}
 
+		vmdebug('storeMedia',$data);
 		//the active media id is not empty, so there should be something done with it
 		//if( (!empty($data['active_media_id']) && !empty($data['virtuemart_media_id']) ) || $data['media_action']=='upload'){
-		if( !empty($data['active_media_id']) || $data['media_action']=='upload'){
+		if( (!empty($data['active_media_id']) and isset($data['virtuemart_media_id']) ) || $data['media_action']=='upload'){
+
 			$oldIds = $data['virtuemart_media_id'];
+
 			$data['file_type'] = $type;
 			//$data['virtuemart_media_id'] = (int)$data['active_media_id'];	//done within the function now
 

@@ -75,8 +75,9 @@ if(typeof Virtuemart === "undefined")
                     if(usefancy){
                         $.fancybox({
                                 "titlePosition" : 	"inside",
-                                "transitionIn"	:	"elastic",
-                                "transitionOut"	:	"elastic",
+                                "transitionIn"	:	"fade",
+                                "transitionOut"	:	"fade",
+                                "changeFade"    :   "fast",
                                 "type"			:	"html",
                                 "autoCenter"    :   true,
                                 "closeBtn"      :   false,

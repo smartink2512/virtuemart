@@ -132,6 +132,12 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 	</div>
 	<?php
 	if (!VmConfig::get('oncheckout_opc', 1)) {
+		if ($this->checkout_task) {
+			$taskRoute = '&task=' . $this->checkout_task;
+		}
+		else {
+			$taskRoute = '';
+		}
 	?>
 		<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
 	<?php } ?>

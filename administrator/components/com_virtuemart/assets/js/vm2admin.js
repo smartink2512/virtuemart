@@ -184,8 +184,8 @@
                         oldIndex = $(this).addClass("current").siblings('li.current').removeClass("current").index();
                         if (oldIndex !== -1) {
                             if (cookie !== "") $.cookie(cookie, idx, options);
-                            div.eq(idx).slideDown();
-                            div.eq(oldIndex).slideUp();
+                            div.eq(idx).slideDown(0);
+                            div.eq(oldIndex).slideUp(0);
                         }
                     }
                 }
