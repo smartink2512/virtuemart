@@ -123,13 +123,14 @@ class VirtuemartViewPaymentMethod extends VmView {
 		//Todo speed optimize that, on the other hand this function is NOT often used and then only by the vendors
 		//		$q = 'SELECT * FROM #__plugins as pl JOIN `#__virtuemart_payment_method` AS pm ON `pl`.`id`=`pm`.`payment_jplugin_id` WHERE `folder` = "vmpayment" AND `published`="1" ';
 		//		$q = 'SELECT * FROM #__plugins as pl,#__virtuemart_payment_method as pm  WHERE `folder` = "vmpayment" AND `published`="1" AND pl.id=pm.payment_jplugin_id';
-		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmpayment" AND `'.$enable.'`="1" and `state`="0" ORDER BY `name` ASC';
+		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmpayment" and `state`="0" ORDER BY `ordering`,`name` ASC';
 		$db->setQuery($q);
 		$result = $db->loadAssocList($ext_id);
 		if(empty($result)){
 			$app = JFactory::getApplication();
 			$app -> enqueueMessage(JText::_('COM_VIRTUEMART_NO_PAYMENT_PLUGINS_INSTALLED'));
 		}
+
 		$listHTML='<select id="payment_jplugin_id" name="payment_jplugin_id">';
 		if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 		foreach($result as $paym){

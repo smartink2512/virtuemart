@@ -210,7 +210,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 			$db = JFactory::getDBO ();
 
-			$q = 'UPDATE `#__extensions` SET `ordering`= 2 WHERE `folder` ="vmpayment"';
+			$q = 'UPDATE `#__extensions` SET `ordering`= 5 WHERE `folder` ="vmpayment"';
 			$db->setQuery($q);
 			$db->query();
 
@@ -218,11 +218,27 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$db->setQuery($q);
 			$db->query();
 
-			$q = 'UPDATE `#__extensions` SET `ordering`= 2 WHERE `element` ="heidelpay"';
+			$q = 'UPDATE `#__extensions` SET `ordering`= 2 WHERE `element` ="sofort"';
 			$db->setQuery($q);
 			$db->query();
 
+			$q = 'UPDATE `#__extensions` SET `ordering`= 2 WHERE `element` ="sofort_ideal"';
+			$db->setQuery($q);
+			$db->query();
+
+			$q = 'UPDATE `#__extensions` SET `ordering`= 3 WHERE `element` ="paypal"';
+			$db->setQuery($q);
+			$db->query();
+
+			$q = 'UPDATE `#__extensions` SET `ordering`= 100 WHERE `element` ="payzen"';
+			$db->setQuery($q);
+			$db->query();
+
+			$q = 'UPDATE `#__extensions` SET `ordering`= 100 WHERE `element` ="systempay"';
+			$db->setQuery($q);
+			$db->query();
 		}
+
 		/**
 		 * Installs a vm plugin into the database
 		 *
