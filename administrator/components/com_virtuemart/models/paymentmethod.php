@@ -176,6 +176,17 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			$this->_db->setQuery($q);
 			$data['payment_element'] = $this->_db->loadResult();
 
+			$q = 'UPDATE `' . $tb . '` SET `enabled`= 1 WHERE `' . $ext_id . '` = "'.$data['payment_jplugin_id'].'"';
+			$this->_db->setQuery($q);
+			$this->_db->query();
+
+// special case moneybookers
+			if ( strpos($data['payment_element'] , "moneybookers"  ) !==false) {
+				$q = 'UPDATE `#__extensions` SET `enabled`= 1 WHERE  `element` ="moneybookers"';
+				$this->_db->setQuery($q);
+				$this->_db->query();
+			}
+
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
 			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsPayment',array( $data['payment_element'],$data['payment_jplugin_id'],&$table));

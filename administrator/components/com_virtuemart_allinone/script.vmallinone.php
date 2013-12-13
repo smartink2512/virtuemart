@@ -79,12 +79,12 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 			$this->installPlugin ('Sofort iDeal', 'plugin', 'sofort_ideal', 'vmpayment');
 
-			$this->installPlugin ('By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment');
+			$this->installPlugin ('By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment', 1);
 
-			$this->installPlugin ('Customer text input', 'plugin', 'textinput', 'vmcustom');
-			$this->installPlugin ('Product specification', 'plugin', 'specification', 'vmcustom');
-			$this->installPlugin ('Stockable variants', 'plugin', 'stockable', 'vmcustom');
-			$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation', 0);
+			$this->installPlugin ('Customer text input', 'plugin', 'textinput', 'vmcustom', 1);
+			$this->installPlugin ('Product specification', 'plugin', 'specification', 'vmcustom', 1);
+			$this->installPlugin ('Stockable variants', 'plugin', 'stockable', 'vmcustom', 1);
+			$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation' );
 
 			// 			$table = '#__virtuemart_customs';
 			// 			$fieldname = 'field_type';
@@ -243,7 +243,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 		 * Installs a vm plugin into the database
 		 *
 		 */
-		private function installPlugin ($name, $type, $element, $group, $published = 1, $createJPluginTable = 1) {
+		private function installPlugin ($name, $type, $element, $group, $published = 0, $createJPluginTable = 1) {
 
 			$task = JRequest::getCmd ('task');
 
