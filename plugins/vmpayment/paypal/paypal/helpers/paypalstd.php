@@ -229,7 +229,7 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		$post_variables['address2'] = isset($address->address_2) ? $address->address_2 : '';
 		$post_variables['zip'] = $address->zip;
 		$post_variables['city'] = $address->city;
-		$post_variables['state'] = isset($address->virtuemart_state_id) ? ShopFunctions::getStateByID($address->virtuemart_state_id) : '';
+		$post_variables['state'] = isset($address->virtuemart_state_id) ? ShopFunctions::getStateByID($address->virtuemart_state_id, 'state_2_code') : '';
 		$post_variables['country'] = ShopFunctions::getCountryByID($address->virtuemart_country_id, 'country_2_code');
 		$post_variables['email'] = $this->order['details']['BT']->email;
 		$post_variables['night_phone_b'] = $address->phone_1;

@@ -98,7 +98,7 @@ class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 		$post_variables['L_BUTTONVAR']['billing_address2'] = isset($addressBT->address_2) ? $this->truncate($addressBT->address_2, 60) : '';
 		$post_variables['L_BUTTONVAR']['billing_city'] = isset($addressBT->city) ? $this->truncate($addressBT->city, 40) : '';
 		$post_variables['L_BUTTONVAR']['billing_zip'] = isset($addressBT->zip) ? $this->truncate($addressBT->zip, 40) : '';
-		$post_variables['L_BUTTONVAR']['billing_state'] = isset($addressBT->virtuemart_state_id) ? $this->truncate(ShopFunctions::getStateByID($addressBT->virtuemart_state_id, 'state_2_code'), 20) : '';
+		$post_variables['L_BUTTONVAR']['billing_state'] = isset($addressBT->virtuemart_state_id) ? $this->truncate(ShopFunctions::getStateByID($addressBT->virtuemart_state_id), 20) : '';
 		$post_variables['L_BUTTONVAR']['billing_country'] = ShopFunctions::getCountryByID($addressBT->virtuemart_country_id, 'country_2_code');
 	}
 

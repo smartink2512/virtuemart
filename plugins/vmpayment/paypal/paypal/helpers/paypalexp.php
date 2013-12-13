@@ -124,7 +124,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$post_variables['STREET'] = isset($addressBT->address_1) ? $this->truncate($addressBT->address_1, 60) : '';
 		$post_variables['CITY'] = isset($addressBT->city) ? $this->truncate($addressBT->city, 40) : '';
 		$post_variables['ZIP'] = isset($addressBT->zip) ? $this->truncate($addressBT->zip, 40) : '';
-		$post_variables['STATE'] = isset($addressBT->virtuemart_state_id) ? $this->truncate(ShopFunctions::getStateByID($addressBT->virtuemart_state_id, 'state_2_code'), 20) : '';
+		$post_variables['STATE'] = isset($addressBT->virtuemart_state_id) ? ShopFunctions::getStateByID($addressBT->virtuemart_state_id, 'state_2_code') : '';
 		$post_variables['COUNTRYCODE'] = ShopFunctions::getCountryByID($addressBT->virtuemart_country_id, 'country_2_code');
 	}
 
@@ -137,7 +137,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$post_variables['SHIPTOSTREET'] = isset($addressST->first_name) ? $this->truncate($addressST->address_1, 60) : '';
 		$post_variables['SHIPTOCITY'] = isset($addressST->city) ? $this->truncate($addressST->city, 40) : '';
 		$post_variables['SHIPTOZIP'] = isset($addressST->zip) ? $this->truncate($addressST->zip, 40) : '';
-		$post_variables['SHIPTOSTATE'] = isset($addressST->virtuemart_state_id) ? $this->truncate(ShopFunctions::getStateByID($addressST->virtuemart_state_id, 'state_2_code'), 20) : '';
+		$post_variables['SHIPTOSTATE'] = isset($addressST->virtuemart_state_id) ? ShopFunctions::getStateByID($addressST->virtuemart_state_id, 'state_2_code') : '';
 		$post_variables['SHIPTOCOUNTRYCODE'] = ShopFunctions::getCountryByID($addressST->virtuemart_country_id, 'country_2_code');
 	}
 
