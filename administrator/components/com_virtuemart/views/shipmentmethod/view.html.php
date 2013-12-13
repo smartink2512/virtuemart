@@ -114,7 +114,8 @@ class VirtuemartViewShipmentmethod extends VmView {
 		foreach ($result as &$sh) {
 			$sh['name'] = JText::_($sh['name']);
 		}
-		return JHtml::_('select.genericlist', $result, 'shipment_jplugin_id', null, $ext_id, 'name', $selected);
+		$attribs='style= "width: 300px;"';
+		return JHtml::_('select.genericlist', $result, 'shipment_jplugin_id', $attribs, $ext_id, 'name', $selected);
 	}
 
 }

@@ -131,7 +131,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 			$app -> enqueueMessage(JText::_('COM_VIRTUEMART_NO_PAYMENT_PLUGINS_INSTALLED'));
 		}
 
-		$listHTML='<select id="payment_jplugin_id" name="payment_jplugin_id">';
+		$listHTML='<select id="payment_jplugin_id" name="payment_jplugin_id" style= "width: 300px;">';
 		if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 		foreach($result as $paym){
 			$params = new JParameter($paym['params']);
