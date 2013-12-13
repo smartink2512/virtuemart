@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="plugin" version="2.5" group="vmpayment"
            method="upgrade">
-    <name>Heidelpay</name>
+    <name>VMPAYMENT_HEIDELPAY</name>
     <creationDate>12-Sep-2012</creationDate>
     <author>Heidelberger Payment GmbH</author>
     <authorEmail>info@heidelpay.de</authorEmail>
     <authorUrl>http://www.heidelpay.de</authorUrl>
     <copyright>Copyright Heidelberger Payment GmbH</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-    <version>13.07</version>
+    <version>13.11</version>
     <description><![CDATA[<h2>Virtuemart Plugin von:</h2><p><a href="http://www.Heidelpay.de" target="_blank"><img src="http://www.heidelpay.de/gfx/logo.gif" style="margin-right:20px;"/></a></p> ]]></description>
     <languages folder="languages">
         <language tag="de-DE" client="administrator">de-DE.plg_vmpayment_heidelpay.ini
@@ -89,6 +89,14 @@
                label="VMPAYMENT_HEIDELPAY_PAYMENT_METHOD" description="VMPAYMENT_HEIDELPAY_PAYMENT_METHOD_DESC">
             <option value="DB">VMPAYMENT_HEIDELPAY_DEB</option>
             <option value="PA">VMPAYMENT_HEIDELPAY_PA</option>
+        </param>
+		<param type="spacer" default=""/>
+		<param name="HEIDELPAY_SEPA_FORM" type="radio" default="DB"
+               label="VMPAYMENT_HEIDELPAY_SEPA_FORM" description="VMPAYMENT_HEIDELPAY_SEPA_FORM_DESC">
+            <option value="1">VMPAYMENT_HEIDELPAY_SEPA1</option>
+            <option value="2">VMPAYMENT_HEIDELPAY_SEPA2</option>
+			<option value="3">VMPAYMENT_HEIDELPAY_SEPA3</option>
+			<option value="4">VMPAYMENT_HEIDELPAY_SEPA4</option>
         </param>
         <param type="spacer" default="" level="level1"/>
         <param type="spacer" default="" level="level1"/>

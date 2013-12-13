@@ -33,7 +33,7 @@ class JElementGetHeidelpay extends JElement {
 		$js = '
 //<![CDATA[
 		jQuery(document).ready(function( $ ) {
- $("#heidelpay_getheidelpay_show_hide").hide();
+
 		    jQuery("#heidelpay_getheidelpay_link").click( function() {
 				 if ( $("#heidelpay_getheidelpay_show_hide").is(":visible") ) {
 				  $("#heidelpay_getheidelpay_show_hide").hide("slow");

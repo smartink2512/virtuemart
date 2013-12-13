@@ -3,8 +3,6 @@
 defined ('_JEXEC') or die();
 
 /**
- * @version $Id$
-
  * Heidelpay credit card plugin
  *
  * @author Heidelberger Payment GmbH <Jens Richter>
@@ -20,7 +18,8 @@ if (!class_exists ('vmPSPlugin')) {
 
 class plgVmPaymentHeidelpay extends vmPSPlugin {
 
-	protected $version = '13.07 Standard';
+	public static $_this = FALSE;
+	protected $version = '13.11';
 
 	function __construct (& $subject, $config) {
 
@@ -121,6 +120,15 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 	}
 
 
+	function plgVmOnConfirmedOrderStorePaymentData ($virtuemart_order_id, $orderData, $priceData) {
+
+		if (!$this->selectedThisPayment ($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
+			return NULL; // Another method was selected, do nothing
+		}
+		return FALSE;
+	}
+
+
 	function plgVmConfirmedOrder ($cart, $order) {
 
 		if (!($method = $this->getVmPluginMethod ($order['details']['BT']->virtuemart_paymentmethod_id))) {
@@ -143,7 +151,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		$address = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
 
 		if (!class_exists ('TableVendors')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'vendors.php');
+			require(JPATH_VM_ADMINISTRATOR . DS . 'table' . DS . 'vendors.php');
 		}
 		$vendorModel = VmModel::getModel ('Vendor');
 		$vendorModel->setId (1);
@@ -152,13 +160,14 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		$this->getPaymentCurrency ($method);
 
 		$currency_code_3 = shopFunctions::getCurrencyByID ($method->payment_currency, 'currency_code_3');
-		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$method->payment_currency);
+		$paymentCurrency = CurrencyDisplay::getInstance ($method->payment_currency);
+		$totalInPaymentCurrency = round ($paymentCurrency->convertCurrencyTo ($method->payment_currency, $order['details']['BT']->order_total, FALSE), 2);
 		$cd = CurrencyDisplay::getInstance ($cart->pricesCurrency);
 
 		// prepare the post var values:
 		$languageTag = $this->getLang ();
 		$params = array();
-		$params['PRESENTATION.AMOUNT'] = $totalInPaymentCurrency['value'];
+		$params['PRESENTATION.AMOUNT'] = $totalInPaymentCurrency;
 		$params['PRESENTATION.CURRENCY'] = $currency_code_3;
 		$params['FRONTEND.LANGUAGE'] = $languageTag;
 		$params['CRITERION.LANG'] = $params['FRONTEND.LANGUAGE'];
@@ -212,6 +221,7 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		$params['ACCOUNT.HOLDER'] = $address->first_name . " " . $address->last_name;
 		$params['NAME.GIVEN'] = $address->first_name;
 		$params['NAME.FAMILY'] = $address->last_name;
+		if(!empty($address->company)) $params['NAME.COMPANY'] = $address->company ; 
 		$params['ADDRESS.STREET'] = $address->address_1;
 		isset($address->address_2) ? $params['ADDRESS.STREET'] .= " " . $address->address_2 : '';
 		$params['ADDRESS.ZIP'] = $address->zip;
@@ -274,6 +284,12 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		$params['SECURITY.SENDER'] = $method->HEIDELPAY_SECURITY_SENDER;
 		$params['USER.LOGIN'] = $method->HEIDELPAY_USER_LOGIN;
 		$params['USER.PWD'] = $method->HEIDELPAY_USER_PW;
+		
+		if(substr ($method->HEIDELPAY_PAYMENT_TYPE, 0, 2) == 'DD') {
+			$sepaform = array();
+			$sepaform = $this->switchDirectDebitFrom($method->HEIDELPAY_SEPA_FORM); 
+			$params = array_merge($sepaform , $params);
+		}
 
 		/*
 			 * send request to payment server
@@ -411,12 +427,9 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 		$order_number = JRequest::getVar ('on');
-		$virtuemart_paymentmethod_id = JRequest::getInt ('pm', '');
-		if (empty($order_number) or empty($virtuemart_paymentmethod_id) or !$this->selectedThisByMethodId ($virtuemart_paymentmethod_id)) {
-			return NULL;
+		if (!$order_number) {
+			return FALSE;
 		}
-
-
 		$db = JFactory::getDBO ();
 		$query = 'SELECT ' . $this->_tablename . '.`virtuemart_order_id` FROM ' . $this->_tablename . " WHERE  `order_number`= '" . $order_number . "'";
 
@@ -584,10 +597,9 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 
 	protected function checkConditions ($cart, $method, $cart_prices) {
 
-		$this->convert_condition_amount($method);
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-		$amount = $this->getCartAmount($cart_prices);
 
+		$amount = $cart_prices['salesPrice'];
 		$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
 			OR
 			($method->min_amount <= $amount AND ($method->max_amount == 0)));
@@ -623,6 +635,39 @@ class plgVmPaymentHeidelpay extends vmPSPlugin {
 		$hash = sha1 ($orderID . $secret);
 		return $hash;
 
+	}
+	
+		/**
+	 * methode to change the form fields of the hco(iframe)
+	 * nessuccary for support of SEPA (single euro payments area)
+	 * @param int $mode_id id to set version
+	 * @return array parameter for hco call
+	 */
+	public function switchDirectDebitFrom($mode_id)
+	{
+		$params = array();
+		switch ($mode_id){
+			// account and bank no:
+			case 1:
+				$params['FRONTEND.SEPA'] 		= 'NO';
+				$params['FRONTEND.SEPASWITCH'] 	= 'NO';
+				break;
+			// both methodes separeted with an or
+			case 3:
+				$params['FRONTEND.SEPA'] 		= 'YES';
+				$params['FRONTEND.SEPASWITCH'] 	= 'YES';
+				break;
+			// both methodes with a selector
+			case 4:
+				$params['FRONTEND.SEPA'] 		= 'NO';
+				$params['FRONTEND.SEPASWITCH'] 	= 'YES';
+				break;
+			//  IBAN and BIC
+			default:
+				$params['FRONTEND.SEPA'] 		= 'YES';
+				$params['FRONTEND.SEPASWITCH'] 	= 'NO';
+		}
+		return $params;
 	}
 
 }
