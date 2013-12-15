@@ -36,7 +36,7 @@ class GenericTableUpdater extends VmModel{
 		$this->starttime = microtime(true);
 
 		$max_execution_time = ini_get('max_execution_time');
-		$jrmax_execution_time= JRequest::getInt('max_execution_time',300);
+		$jrmax_execution_time= VmRequest::getInt('max_execution_time',300);
 
 		if(!empty($jrmax_execution_time)){
 			// 			vmdebug('$jrmax_execution_time',$jrmax_execution_time);
@@ -45,13 +45,12 @@ class GenericTableUpdater extends VmModel{
 
 		$this->maxScriptTime = ini_get('max_execution_time')*0.90-1;	//Lets use 10% of the execution time as reserve to store the progress
 
-		$memory_limit = ini_get('memory_limit');
-		if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
+		VmConfig::ensureMemoryLimit(128);
 
 		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) * 0.85;
 
 		$config = JFactory::getConfig();
-		$this->_prefix = $config->get('dbprefix');
+		$this->_prefix = $config->getValue('config.dbprefix');
 
 		$this->reCreaPri = VmConfig::get('reCreaPri',0);
 		$this->reCreaKey = VmConfig::get('reCreaKey',1);
@@ -324,7 +323,7 @@ class GenericTableUpdater extends VmModel{
 				$this->createTable($tablename,$table);
 			}
 			// 			$this->_db->setQuery('OPTIMIZE '.$tablename);
-			// 			$this->_db->execute();
+			// 			$this->_db->query();
 			$i++;
 
 		}
@@ -362,7 +361,7 @@ class GenericTableUpdater extends VmModel{
 			';
 		}
 
-		foreach($table[1] as $value){
+		foreach($table[1] as $name => $value){
 				$q .= $value.',
 						';
 		}
@@ -378,7 +377,7 @@ class GenericTableUpdater extends VmModel{
 		if(!$this->_db->execute()){
 			vmError('createTable ERROR :'.$this->_db->getErrorMsg() );
 		} else {
-			vmInfo('created table '.$tablename. ' '.$q);
+			vmInfo('created table '.$tablename);
 		}
 // 		$this->_app->enqueueMessage($q);
 	}
@@ -393,7 +392,7 @@ class GenericTableUpdater extends VmModel{
 		$q = substr($q,0,-1);
 
 		// 		$this->_db->setQuery($q);
-		// 		if(!$this->_db->execute()){
+		// 		if(!$this->_db->query()){
 		// 			$this->_app->enqueueMessage('dropTables ERROR :'.$this->_db->getErrorMsg() );
 		// 		}
 		$this->_app->enqueueMessage($q);

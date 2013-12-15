@@ -42,7 +42,7 @@ class VmTable extends JTable {
 	protected $_slugAutoName = '';
 	protected $_slugName = '';
 	protected $_loggable = false;
-	var $_xParams = 0;
+	protected $_xParams = 0;
 	protected $_varsToPushParam = array();
 	var $_translatable = false;
 	protected $_translatableFields = array();
@@ -66,7 +66,6 @@ class VmTable extends JTable {
 		$this->_pkey = $key;
 		self::$_cache = null;
 		self::$_query_cache = null;
-		parent::__construct($table, $key, $db);
 	}
 
 	function setPrimaryKey($key, $keyForm = 0) {
@@ -396,13 +395,14 @@ class VmTable extends JTable {
 			//Lets check if the user is admin or the mainvendor
 			if (!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 			$admin = Permissions::getInstance()->check('admin');
-			if ($admin) {
+			$adminSessionID = JFactory::getSession()->get('vmAdminID');
+			if ($admin || JFactory::getUser($adminSessionID)->authorise('core.admin', 'com_virtuemart')) {
 //				vmdebug('setLoggableFieldsForStore ', $this->created_on);
 				if (empty($this->$pkey) and empty($this->created_on)) {
 					$this->created_on = $today;
 				} else if (empty($this->created_on)) {
 					//If nothing is there, dont update it
-					$this->created_on = null;
+					unset($this->created_on);
 				} else //ADDED BY P2 PETER
 					if ($this->created_on == "0000-00-00 00:00:00") {
 						$this->created_on = $today;
@@ -414,7 +414,7 @@ class VmTable extends JTable {
 					$this->created_by = $user->id;
 				} else if (empty($this->created_by)) {
 					//If nothing is there, dont update it
-					$this->created_by = null;
+					unset($this->created_by);
 				}
 
 
@@ -425,8 +425,8 @@ class VmTable extends JTable {
 					$this->created_by = $user->id;
 				} else {
 					//If nothing is there, dont update it
-					$this->created_on = null;
-					$this->created_by = null;
+					unset($this->created_on);
+					unset($this->created_by);
 				}
 			}
 
@@ -578,27 +578,27 @@ class VmTable extends JTable {
 			$tbl_key = $this->_tbl_key;
 			$q = 'SELECT `' . $name . '` FROM `' . $tbl_name . '` WHERE `' . $name . '` =  "' . $this->$name . '"  AND `' . $this->_tbl_key . '`!=' . $this->$tbl_key;
 
-			// stAn: using cache can be dangerous here if the function is called twice with an update in between
-			if (!isset(self::$_query_cache[md5($q)])) {
-				$this->_db->setQuery($q);
-				$existingSlugName = $this->_db->loadResult();
-			} else $existingSlugName = self::$_query_cache[md5($q)];
+			$this->_db->setQuery($q);
+			$existingSlugName = $this->_db->loadResult();
 
 			if (!empty($existingSlugName)) {
-				if ($i == 0) {
-					if (JVM_VERSION === 1) {
-						$this->$name = $this->$name . JFactory::getDate()->toFormat("%Y-%m-%d") . '-';
-					} else {
-						$this->$name .= '-' .JFactory::getDate()->format('Y-m-d') . '-';
-						//vmdebug('with date '.$this->$name);
+
+				if($posNbr = strrpos($this->$name,'-')){
+					$existingNbr = substr($this->$name,$posNbr+1);
+
+					if(is_numeric($existingNbr)){
+						$existingNbr++;
+						if($i>10){
+							$existingNbr = $existingNbr +  rand (1, 9);
+						}
+						$this->$name = substr($this->$name,0,$posNbr+1) . $existingNbr;
+					} else{
+						$this->$name = $this->$name . '-1';
 					}
 				} else {
-
-					$posNbr = strrpos($this->$name,'-');
-					$existingNbr = (int)substr($this->$name,$posNbr);
-					$existingNbr++;
-					$this->$name = substr($this->$name,0,-$posNbr) . '-' . $existingNbr;
+					$this->$name = $this->$name . '-1';
 				}
+
 			} else {
 				return true;
 			}
@@ -748,27 +748,18 @@ class VmTable extends JTable {
 					}
 
 				} else {
-
+					//Admins are allowed to do anything. We just trhow some messages
 					if (!empty($virtuemart_vendor_id) and $loggedVendorId != $virtuemart_vendor_id) {
-						vmInfo('Admin with vendor id ' . $loggedVendorId . ' is using for storing vendor id ' . $this->virtuemart_vendor_id);
 						vmdebug('Admin with vendor id ' . $loggedVendorId . ' is using for storing vendor id ' . $this->virtuemart_vendor_id);
-						$this->virtuemart_vendor_id = $virtuemart_vendor_id;
 					}
-					//Admin forgot to select a vendor
 					else if (empty($virtuemart_vendor_id)) {
-						/*if ($className !== 'TableVmusers' and $this->_tbl!== '#__virtuemart_vendors') {
-							vmInfo('We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl.', Set to mainvendor '.$this->virtuemart_vendor_id);
+						if ($className !== 'TableVmusers' and $this->_tbl!== '#__virtuemart_vendors') {
+							vmInfo('We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl);//, Set to mainvendor '.$this->virtuemart_vendor_id
 							$this->virtuemart_vendor_id = 1;
-							//return false;
-						}*/
-
+						}
 					}
 				}
-
 			}
-
-			//tables to consider for multivendor
-			//if(get_class($this)!== 'TableOrders' and get_class($this)!== 'TableInvoices' and get_class($this)!== 'TableOrder_items'){
 		}
 
 		return true;
@@ -1053,7 +1044,8 @@ class VmTable extends JTable {
 
 		$k = $this->_tbl_key;
 		// problem here was that $this->$k returned (0)
-		$cid = VmRequest::getInt('cid');
+
+		$cid = VmRequest::getInt($this->_pkeyForm);
 		if (!empty($cid) && (is_array($cid))) {
 			$cid = reset($cid);
 		} else {
@@ -1065,8 +1057,7 @@ class VmTable extends JTable {
 				vmError(get_class($this) . ' is missing cid information !');
 				return false;
 			}
-		}
-		// stAn: if somebody knows how to get current `ordering` of selected cid (i.e. virtuemart_userinfo_id or virtuemart_category_id from defined vars, you can review the code below)
+		}		// stAn: if somebody knows how to get current `ordering` of selected cid (i.e. virtuemart_userinfo_id or virtuemart_category_id from defined vars, you can review the code below)
 		$q = "SELECT `" . $this->_orderingKey . '` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . "` = '" . (int)$cid . "' limit 0,1";
 
 		if (!isset(self::$_query_cache[md5($q)])) {
@@ -1446,22 +1437,22 @@ class VmTable extends JTable {
 
 	}
 
-	function checkAndDelete($table, $where = 0) {
+	function checkAndDelete($table, $whereField = 0, $andWhere = '') {
 
 		$ok = 1;
 		$k = $this->_tbl_key;
 
-		if ($where !== 0) {
-			$whereKey = $where;
+		if ($whereField !== 0) {
+			$whereKey = $whereField;
 		} else {
 			$whereKey = $this->_pkey;
 		}
 
-		$query = 'SELECT `' . $this->_tbl_key . '` FROM `' . $table . '` WHERE `' . $whereKey . '` = "' . $this->$k . '"';
+		$query = 'SELECT `' . $this->_tbl_key . '` FROM `' . $table . '` WHERE `' . $whereKey . '` = "' . $this->$k . '" '.$andWhere;
 		$this->_db->setQuery($query);
-		//vmdebug('checkAndDelete',$query);
+		// 		vmdebug('checkAndDelete',$query);
 		$list = $this->_db->loadColumn();
-		//vmdebug('checkAndDelete',$list);
+		// 		vmdebug('checkAndDelete',$list);
 
 
 		if ($list) {
@@ -1470,7 +1461,7 @@ class VmTable extends JTable {
 				$ok = $row;
 				$query = 'DELETE FROM `' . $table . '` WHERE ' . $this->_tbl_key . ' = "' . $row . '"';
 				$this->_db->setQuery($query);
-				//vmdebug('checkAndDelete',$query);
+
 				if (!$this->_db->execute()) {
 					$this->setError($this->_db->getErrorMsg());
 					vmError('checkAndDelete ' . $this->_db->getErrorMsg());
@@ -1542,7 +1533,7 @@ class VmTable extends JTable {
 					if (empty($_type)) $_type = 'TEXT CHARACTER SET utf8';
 				}
 
-			// NOT NULL not allowed for deleted columns
+				// NOT NULL not allowed for deleted columns
 				//$t_type = str_ireplace(' NOT ', '', $_type);
 				$_sql .= "CHANGE $_col $_col2 $_type ";
 				//was: $_sql .= "DROP $_col ";

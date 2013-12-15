@@ -12,9 +12,9 @@ defined ('_JEXEC') or die();
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id$
+ * @version $Id: $
  */
-class JElementVMFiles extends JFormField {
+class JElementVMFile extends JElement {
 
 	/**
 	 * Element name
@@ -22,7 +22,7 @@ class JElementVMFiles extends JFormField {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $_name = 'Files';
+	var $_name = 'File';
 
 
 	function fetchElement ($name, $value, &$node, $control_name) {
@@ -69,7 +69,7 @@ class JElementVMFiles extends JFormField {
 			}
 		}
 		$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
-		$class .= ' multiple="true" size="5" data-placeholder="'.JText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS').'"';
+		$class .= ' size="5" data-placeholder="'.JText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS').'"';
 		return JHTML::_ ('select.genericlist', $options, '' . $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
 	}
 

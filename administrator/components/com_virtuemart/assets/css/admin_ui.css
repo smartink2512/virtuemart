@@ -9,10 +9,8 @@
 
     background: url(../images/admin_ui/container_bg_blue.png) repeat-y  scroll 0 0 ;}
 
-* html .virtuemart-admin-area { /*IE6 only*/overflow: visible;height: 1px;}
+* html .virtuemart-admin-area { /*IE6 only*/ overflow: visible;height: 1px;}
 .virtuemart-admin-area .menu-wrapper {width:190px ;float: left;}
-.virtuemart-admin-area #admin-content-wrapper {margin-left: auto;overflow:visible}
-/*.virtuemart-admin-area .menu-wrapper, .virtuemart-admin-area #admin-content-wrapper {padding-bottom: 16000px;margin-bottom: -16000px;}*/
 .virtuemart-admin-area #admin-content-wrapper .admin-content {margin: 0;padding: 0;overflow: auto; background: left repeat-y #fff;border-left: solid #b4b4b4 1px;height:540px;}
 .virtuemart-admin-area #admin-content-wrapper .admin-content {height:auto;min-height: 540px;}
 #header {     background: url(../images/admin_ui/header_bg.png) repeat-x scroll 0 0 #F0F0F0;padding:3px;padding-left: 10px;padding-right: 10px;}
@@ -34,11 +32,11 @@
 #element-box .t, #element-box .b {display: none;}
 #content-box #element-box .m, #content-box .m {border: none;padding: 0px;background: none;}
 #content-box #toolbar-box {border-top: solid #b4b4b4 1px;border-left: solid #b4b4b4 1px;border-right: solid #b4b4b4 1px;margin: 0px;padding:0;-moz-border-radius: 6px 6px 0 0;
-    -webkit-border-radius:6px 6px 0 0;background: #fff url(../images/admin_ui/head_bg.png) center center repeat-x;}
+-webkit-border-radius:6px 6px 0 0;background: #fff url(../images/admin_ui/head_bg.png) center center repeat-x;}
 #content-box #toolbar-box .m {border: solid #fff 1px;padding: 7px 10px 4px 10px;background: none repeat scroll 0 0 transparent;
-    -moz-border-radius: 6px 6px 0 0;
-    -webkit-border-top-left-radius:6px;
-    -webkit-border-radius:6px 6px 0 0;text-shadow: 0px -1px 1px #fff;}
+-moz-border-radius: 6px 6px 0 0;
+-webkit-border-top-left-radius:6px;
+-webkit-border-radius:6px 6px 0 0;text-shadow: 0px -1px 1px #fff;}
 #content-box #toolbar-box a.toolbar {border: none;}
 #content-box #toolbar-box .m .header {color: #444444;font-weight: normal;padding: 0px 0px 0px 60px;margin: 3px 0px 0px 0px;background-position: left center;background-repeat: no-repeat;}
 #content-box #toolbar-box .t, #content-box #toolbar-box .b {display: none;}
@@ -104,7 +102,7 @@ textarea {width: 100%;}
 /* The Content Area */
 /*#admin-content {overflow: visible;}
 #admin-ui-tabs {overflow: visible !important;}*/
-#admin-ui-tabs .tabs {padding: 10px 1px 10px; overflow: visible !important;}
+#admin-ui-tabs .tabs {padding: 10px 1px 10px; overflow: visible;}
 
 /*#admin-ui-tabs .tabs table {overflow: auto !important;}*/
 /* do not change the line below !!! */
@@ -136,7 +134,7 @@ table.adminlist .right{text-align: right;}
     -moz-opacity : 0.5;
     -ms-filter: "alpha(opacity=50)"; /* IE 8 */
     filter : alpha(opacity=50); /* IE < 8 */
-    font-weight: normal;
+font-weight: normal;
 }
 
 /*////////////////////////////////////

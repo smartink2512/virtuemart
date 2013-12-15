@@ -4,7 +4,7 @@
     -ms-filter: "alpha(opacity=90)"; /* IE 8 */
     filter : alpha(opacity=90); /* IE < 8 */  }
 .vmicon:hover{opacity :1;}
-
+.vmextimg img{width:48px!important; float:none!important; margin:0 auto !important;padding:5px 0  !important;}
 /* to use inline with no float*/
 .icon-nofloat{ display: inline-block; float: none; vertical-align: middle;}
 

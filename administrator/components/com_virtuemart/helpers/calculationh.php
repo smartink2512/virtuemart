@@ -959,7 +959,7 @@ class calculationHelper {
 	protected function couponHandler($_code) {
 
 		JPluginHelper::importPlugin('vmcoupon');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmCouponHandler', array($_code,&$this->_cart->cartData, &$this->_cart->cartPrices));
 		if(!empty($returnValues)){
 			foreach ($returnValues as $returnValue) {
@@ -1202,9 +1202,9 @@ class calculationHelper {
 		}
 
 		//Test rules in plugins
-		if(!empty($testedRules)){
+		if(!empty($testedRules) and count($testedRules)>0){
 			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('plgVmInGatherEffectRulesProduct',array(&$this,&$testedRules));
 		}
 
@@ -1222,6 +1222,7 @@ class calculationHelper {
 	 */
 	function gatherEffectingRulesForBill($entrypoint, $cartVendorId=1) {
 
+		$testedRules = array();
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
 		$q = 'SELECT * FROM #__virtuemart_calcs WHERE
@@ -1233,7 +1234,6 @@ class calculationHelper {
 		//			$shoppergrps .  $countries . $states ;
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();
-		$testedRules = array();
 
 		foreach ($rules as $rule) {
 
@@ -1277,9 +1277,9 @@ class calculationHelper {
 		}
 
 		//Test rules in plugins
-		if(!empty($testedRules)){
+		if(!empty($testedRules) and count($testedRules)>0){
 			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('plgVmInGatherEffectRulesBill', array(&$this, &$testedRules));
 		}
 
@@ -1310,7 +1310,7 @@ class calculationHelper {
 		// Handling shipment plugins
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmonSelectedCalculatePriceShipment',array(  $cart, &$this->_cart->cartPrices, &$this->_cart->cartData['shipmentName']  ));
 
 		/*
@@ -1355,7 +1355,7 @@ class calculationHelper {
 
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmonSelectedCalculatePricePayment',array( $cart, &$this->_cart->cartPrices, &$this->_cart->cartData['paymentName']  ));
 
 		/*
@@ -1487,7 +1487,7 @@ class calculationHelper {
 		} else {
 
 			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			$calculated = $dispatcher->trigger('plgVmInterpreteMathOp', array($this, $rule, $price,$this->_revert));
 			//vmdebug('result of plgVmInterpreteMathOp',$calculated);

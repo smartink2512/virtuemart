@@ -1,6 +1,5 @@
 <?php
 /**
- * @version: $Id$
  * Administrator menu helper class
  *
  * This class was derived from the show_image_in_imgtag.php and imageTools.class.php files in VM.  It provides some
@@ -27,7 +26,7 @@ class AdminUIHelper {
      * in the left column and the content in the right column.  This function sets up the table and
      * displayes the admin menu in the left column.
      */
-   static function startAdminArea($vmView, $selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL') {
+   static function startAdminArea($vmView,$selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL') {
 		if (VmRequest::getCmd ( 'format') =='pdf') return;
 		if (VmRequest::getCmd ( 'tmpl') =='component') self::$backEnd=false;
     	if(self::$vmAdminAreaStarted) return;
@@ -44,7 +43,7 @@ class AdminUIHelper {
 		$document->addStyleSheet($front.'css/chosen.css');
 		$document->addStyleSheet($front.'css/vtip.css');
 		$document->addStyleSheet($front.'css/jquery.fancybox-1.3.4.css');
-        $document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
+		$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
 		//$document->addStyleSheet($admin.'css/jqtransform.css');
 
 		//loading defaut script
@@ -245,7 +244,7 @@ class AdminUIHelper {
 					} else {
 						if (strncmp ( $link ['link'], 'http', 4 ) === 0) {
 							$url = $link ['link'];
-							$target='TARGET="_blank"';
+							$target='target="_blank"';
 						} else {
 							$url = ($link ['link'] === '') ? 'index.php?option=com_virtuemart' :$link ['link'] ;
 							$url .= $link ['view'] ? "&view=" . $link ['view'] : '';

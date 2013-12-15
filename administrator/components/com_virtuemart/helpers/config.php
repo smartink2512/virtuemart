@@ -201,18 +201,23 @@ function vmWarn($publicdescr,$value=NULL){
 function vmError($descr,$publicdescr=''){
 
 	$msg = '';
+	$lang = JFactory::getLanguage();
+	$descr = $lang->_($descr);
+	$adminmsg =  'vmError: '.$descr;
+	if (empty($descr)) {
+		vmTrace ('vmError message empty');
+		return;
+	}
+	logInfo($adminmsg,'error');
 	if(VmConfig::$maxMessageCount< (VmConfig::$maxMessage+5)){
-		if (empty($descr)) {
-			vmTrace ('vmError message empty');
-		}
-		$lang = JFactory::getLanguage();
+
+
 		if (!class_exists ('Permissions')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 		}
+
 		if(Permissions::getInstance()->check('admin')){
-			//$app = JFactory::getApplication();
-			$descr = $lang->_($descr);
-			$msg = 'vmError: '.$descr;
+			$msg = $adminmsg;
 		} else {
 			if(!empty($publicdescr)){
 				$msg = $lang->_($publicdescr);
@@ -364,16 +369,157 @@ function vmTime($descr,$name='current'){
  * to help debugging Payment notification for example
  */
 function logInfo ($text, $type = 'message') {
-
-	if (VMConfig::showDebug()) {
-		$file = JPATH_ROOT . "/logs/" . VmConfig::$logFileName . ".log";
-		$date = JFactory::getDate ();
-
-		$fp = fopen ($file, 'a');
-		fwrite ($fp, "\n\n" . $date->toFormat ('%Y-%m-%d %H:%M:%S'));
-		fwrite ($fp, "\n" . $type . ': ' . $text);
-		fclose ($fp);
+	jimport('joomla.filesystem.file');
+	$config = JFactory::getConfig();
+	$log_path = $config->get('log_path');
+	if (!$log_path) {
+		$file = JPATH_ROOT . "/logs/" . VmConfig::$logFileName . VmConfig::LOGFILEEXT;
+	} else {
+		$file =$log_path ."/". VmConfig::$logFileName . VmConfig::LOGFILEEXT;
 	}
+
+	$date = JFactory::getDate ();
+	$head=NULL;
+	if (!JFile::exists($file)) {
+
+		// Make sure the folder exists in which to create the log file.
+		jimport('joomla.filesystem.folder');
+		JFolder::create(dirname($file));
+		// blank line to prevent information disclose: https://bugs.php.net/bug.php?id=60677
+		// from Joomla log file
+		$head = "#\n";
+		$head .= "#<?php die('Forbidden.'); ?>\n";
+	}
+	$fp = fopen ($file, 'a');
+	if ($head) {
+		fwrite ($fp,  $head);
+	}
+
+	fwrite ($fp, "\n" . $date->toFormat ('%Y-%m-%d %H:%M:%S'));
+	fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
+	fclose ($fp);
+
+}
+
+
+/**
+ * Text  handling class.
+ *
+ * @package     Joomla.Platform
+ * @subpackage  Language
+ * @since       11.1
+ */
+class vmText
+{
+	/**
+	 * javascript strings
+	 *
+	 * @var    array
+	 * @since  11.1
+	 */
+	protected static $strings = array();
+
+	/**
+	 * Translates a string into the current language.
+	 *
+	 * Examples:
+	 * <script>alert(Joomla.JText._('<?php echo JText::_("JDEFAULT", array("script"=>true));?>'));</script>
+	 * will generate an alert message containing 'Default'
+	 * <?php echo JText::_("JDEFAULT");?> it will generate a 'Default' string
+	 *
+	 * @param   string   $string                The string to translate.
+	 * @param   mixed    $jsSafe                Boolean: Make the result javascript safe.
+	 * @param   boolean  $interpretBackSlashes  To interpret backslashes (\\=\, \n=carriage return, \t=tabulation)
+	 * @param   boolean  $script                To indicate that the string will be push in the javascript language store
+	 *
+	 * @return  string  The translated string or the key is $script is true
+	 *
+	 * @since   11.1
+	 */
+	public static function _($string, $jsSafe = false, $interpretBackSlashes = true, $script = false)
+	{
+		$lang = JFactory::getLanguage();
+		if (is_array($jsSafe))
+		{
+			if (array_key_exists('interpretBackSlashes', $jsSafe))
+			{
+				$interpretBackSlashes = (boolean) $jsSafe['interpretBackSlashes'];
+			}
+			if (array_key_exists('script', $jsSafe))
+			{
+				$script = (boolean) $jsSafe['script'];
+			}
+			if (array_key_exists('jsSafe', $jsSafe))
+			{
+				$jsSafe = (boolean) $jsSafe['jsSafe'];
+			}
+			else
+			{
+				$jsSafe = false;
+			}
+		}
+		if ($script)
+		{
+			self::$strings[$string] = $lang->_($string, $jsSafe, $interpretBackSlashes);
+			return $string;
+		}
+		else
+		{
+			return $lang->_($string, $jsSafe, $interpretBackSlashes);
+		}
+	}
+
+	/**
+	 * Passes a string thru a sprintf.
+	 *
+	 * Note that this method can take a mixed number of arguments as for the sprintf function.
+	 *
+	 * The last argument can take an array of options:
+	 *
+	 * array('jsSafe'=>boolean, 'interpretBackSlashes'=>boolean, 'script'=>boolean)
+	 *
+	 * where:
+	 *
+	 * jsSafe is a boolean to generate a javascript safe strings.
+	 * interpretBackSlashes is a boolean to interpret backslashes \\->\, \n->new line, \t->tabulation.
+	 * script is a boolean to indicate that the string will be push in the javascript language store.
+	 *
+	 * @param   string  $string  The format string.
+	 *
+	 * @return  string  The translated strings or the key if 'script' is true in the array of options.
+	 *
+	 * @since   11.1
+	 */
+	public static function sprintf($string)
+	{
+		$lang = JFactory::getLanguage();
+		$args = func_get_args();
+		$count = count($args);
+		if ($count > 0)
+		{
+			if (is_array($args[$count - 1]))
+			{
+				$args[0] = $lang->_(
+					$string, array_key_exists('jsSafe', $args[$count - 1]) ? $args[$count - 1]['jsSafe'] : false,
+					array_key_exists('interpretBackSlashes', $args[$count - 1]) ? $args[$count - 1]['interpretBackSlashes'] : true
+				);
+
+				if (array_key_exists('script', $args[$count - 1]) && $args[$count - 1]['script'])
+				{
+					self::$strings[$string] = call_user_func_array('sprintf', $args);
+					return $string;
+				}
+			}
+			else
+			{
+				$args[0] = $lang->_($string);
+			}
+			$args[0] = preg_replace('/\[\[%([0-9]+):[^\]]*\]\]/', '%\1$s', $args[0]);
+			return call_user_func_array('sprintf', $args);
+		}
+		return '';
+	}
+
 }
 
 
@@ -399,8 +545,9 @@ class VmConfig {
 	public static $maxMessage = 100;
 	public static $echoDebug = FALSE;
 	public static $logDebug = FALSE;
-	public static $logFileName = 'vmdebug';
-	public static $vmFilter = false;
+	public static $logFileName = 'com_virtuemart';
+	const LOGFILEEXT = '.log.php';
+
 	var $lang = FALSE;
 
 	var $_params = array();
@@ -414,11 +561,8 @@ class VmConfig {
 			mb_internal_encoding('UTF-8');
 		}
 
-    if(ini_get('precision')<16){
-			ini_set('precision', 16);	//We need at least 20 for correct precision if json is using a bigInt ids
-			//But 17 has the best precision, using higher precision adds fantasy numbers to the end, but creates also errors in rounding
-		}
-		self::$vmFilter = JFactory::getApplication()->input;
+		ini_set('precision', 15);	//We need at least 20 for correct precision if json is using a bigInt ids
+		//But 17 has the best precision, using higher precision adds fantasy numbers to the end, but creates also errors in rounding
 	}
 
 	static function getStartTime(){

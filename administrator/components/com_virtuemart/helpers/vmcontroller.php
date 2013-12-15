@@ -156,7 +156,7 @@ class VmController extends JControllerLegacy{
 
 		JSession::checkToken() or jexit( 'Invalid Token save' );
 
-		if($data===0)$data = vmRequest::getRequest();
+		if($data===0)$data = VmRequest::getRequest();
 
 		$model = VmModel::getModel($this->_cname);
 		$id = $model->store($data);

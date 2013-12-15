@@ -1,9 +1,10 @@
 <?php
 /**
  * abstract controller class containing get,store,delete,publish and pagination
- ** @version $Id$
  *
  * This class provides the functions for the Views
+
+ * This class provides the functions for the calculations
  *
  * @package	VirtueMart
  * @subpackage Helpers
@@ -26,7 +27,6 @@ if (!class_exists('AdminUIHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.
 if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
 
 class VmView extends JViewLegacy {
-
 	/**
 	 * Sets automatically the shortcut for the language and the redirect path
 	 *
@@ -182,27 +182,27 @@ class VmView extends JViewLegacy {
 		<button onclick="document.getElementById(\'' . $name . '\').value=\'\';this.form.submit();">' . JText::_('COM_VIRTUEMART_RESET') . '</button>';
 	}
 
-    function addStandardEditViewCommands($id = 0,$object = null) {
+	function addStandardEditViewCommands($id = 0,$object = null) {
         $view = VmRequest::getCmd('view', VmRequest::getCmd('controller','virtuemart'));
 
         if (VmRequest::getCmd('tmpl') =='component' ) {
             if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
         } else {
             // 		VmRequest::setVar('hidemainmenu', true);
-            JToolBarHelper::divider();
-            if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit')) {
-                JToolBarHelper::save();
-                JToolBarHelper::apply();
-            }
-            JToolBarHelper::cancel();
-            self::showHelp();
-            self::showACLPref($view);
-        }
-        // javascript for cookies setting in case of press "APPLY"
-        $document = JFactory::getDocument();
+			JToolBarHelper::divider();
+			if ($this->canDo->get('core.admin') || $this->canDo->get('vm.'.$view.'.edit')) {
+				JToolBarHelper::save();
+				JToolBarHelper::apply();
+			}
+			JToolBarHelper::cancel();
+			self::showHelp();
+			self::showACLPref($view);
+		}
+		// javascript for cookies setting in case of press "APPLY"
+		$document = JFactory::getDocument();
 
-        if (JVM_VERSION===1) {
-            $j = "
+		if (JVM_VERSION===1) {
+			$j = "
 //<![CDATA[
 	function submitbutton(pressbutton) {
 
@@ -218,8 +218,8 @@ class VmView extends JViewLegacy {
 	};
 //]]>
 	" ;
-        }
-        else $j = "
+		}
+		else $j = "
 //<![CDATA[
 	Joomla.submitbutton=function(a){
 		var options = { path: '/', expires: 2}
@@ -234,38 +234,39 @@ class VmView extends JViewLegacy {
 	};
 //]]>
 	" ;
-        $document->addScriptDeclaration ( $j);
+		$document->addScriptDeclaration ( $j);
 
-        // LANGUAGE setting
+		// LANGUAGE setting
 
         $editView = VmRequest::getCmd('view',VmRequest::getCmd('controller','' ) );
 
-        $params = JComponentHelper::getParams('com_languages');
-        //$config =JFactory::getConfig();$config->getValue('language');
-        $selectedLangue = $params->get('site', 'en-GB');
+		$params = JComponentHelper::getParams('com_languages');
+		//$config =JFactory::getConfig();$config->getValue('language');
+		$selectedLangue = $params->get('site', 'en-GB');
 
-        $lang = strtolower(strtr($selectedLangue,'-','_'));
-        // Get all the published languages defined in Language manager > Content
-        $allLanguages	= JLanguageHelper::getLanguages();
-        foreach ($allLanguages as $jlang) {
-            $languagesByCode[$jlang->lang_code]=$jlang;
-        }
+		$lang = strtolower(strtr($selectedLangue,'-','_'));
+		// Get all the published languages defined in Language manager > Content
+		$allLanguages	= JLanguageHelper::getLanguages();
+		foreach ($allLanguages as $jlang) {
+			$languagesByCode[$jlang->lang_code]=$jlang;
+		}
 
-        // only add if ID and view not null
-        if ($editView and $id and (count(vmconfig::get('active_languages'))>1) ) {
+		// only add if ID and view not null
+		if ($editView and $id and (count(vmconfig::get('active_languages'))>1) ) {
 
-            if ($editView =='user') $editView ='vendor';
-            //$params = JComponentHelper::getParams('com_languages');
-            jimport('joomla.language.helper');
+			if ($editView =='user') $editView ='vendor';
+			//$params = JComponentHelper::getParams('com_languages');
+			jimport('joomla.language.helper');
             $lang = VmRequest::getVar('vmlang', $lang);
-            // list of languages installed in #__extensions (may be more than the ones in the Language manager > Content if the user did not added them)
-            $languages = JLanguageHelper::createLanguageList($selectedLangue, constant('JPATH_SITE'), true);
-            $activeVmLangs = (vmconfig::get('active_languages') );
-            $flagCss="";
-            foreach ($languages as $k => &$joomlaLang) {
-                if (!in_array($joomlaLang['value'], $activeVmLangs) ) {
-                    unset($languages[$k] );
-                } else {
+			// list of languages installed in #__extensions (may be more than the ones in the Language manager > Content if the user did not added them)
+			$languages = JLanguageHelper::createLanguageList($selectedLangue, constant('JPATH_SITE'), true);
+			$activeVmLangs = (vmconfig::get('active_languages') );
+			$flagCss="";
+			foreach ($languages as $k => &$joomlaLang) {
+				if (!in_array($joomlaLang['value'], $activeVmLangs) ) {
+					unset($languages[$k] );
+				} else {
+
 					$key=$joomlaLang['value'];
 					if(!isset($languagesByCode[$key])){
 						$img = substr($key,0,2);//We try a fallback
@@ -273,28 +274,28 @@ class VmView extends JViewLegacy {
 					} else {
 						$img=$languagesByCode[$key]->image;
 					}
-                    $image_flag="../media/mod_languages/images/".$img.".gif";
+						$image_flag=JPATH_SITE."/media/mod_languages/images/".$img.".gif";
 
-                    if (!file_exists ($image_flag)) {
-                      vmerror(JText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $image_flag,$joomlaLang['text'] ) );
-                    } else {
-                      $flagCss .="td.flag-".$key.",.flag-".$key."{background: url( ".$image_flag.") no-repeat 0 0; padding-left:20px !important;}\n";
-                    }
-                }
-            }
-            JFactory::getDocument()->addStyleDeclaration($flagCss);
+					if (!file_exists ($image_flag)) {
+						vmerror(JText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $image_flag,$joomlaLang['text'] ) );
+					} else {
+						$flagCss .="td.flag-".$key.",.flag-".$key."{background: url( ".$image_flag.") no-repeat 0 0; padding-left:20px !important;}\n";
+					}
+				}
+			}
+			JFactory::getDocument()->addStyleDeclaration($flagCss);
 
-            $langList = JHTML::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox"', 'value', 'text', $selectedLangue , 'vmlang');
-            $this->assignRef('langList',$langList);
-            $this->assignRef('lang',$lang);
+			$langList = JHTML::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox"', 'value', 'text', $selectedLangue , 'vmlang');
+			$this->assignRef('langList',$langList);
+			$this->assignRef('lang',$lang);
 
-            if ($editView =='product') {
-                $productModel = VmModel::getModel('product');
-                $childproducts = $productModel->getProductChilds($id) ? $productModel->getProductChilds($id) : '';
-            }
+			if ($editView =='product') {
+				$productModel = VmModel::getModel('product');
+				$childproducts = $productModel->getProductChilds($id) ? $productModel->getProductChilds($id) : '';
+			}
 
             $token = JSession::getFormToken();
-            $j = '
+			$j = '
 			jQuery(function($) {
 				var oldflag = "";
 				$("select#vmlang").chosen().change(function() {
@@ -315,9 +316,9 @@ class VmView extends JViewLegacy {
 
 							} else alert(data.msg);';
 
-            if($editView =='product' && !empty($childproducts)) {
-                foreach($childproducts as $child) {
-                    $j .= '
+			if($editView =='product' && !empty($childproducts)) {
+				foreach($childproducts as $child) {
+					$j .= '
 									$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$child->virtuemart_product_id.'&editView='.$editView.'&'.$token.'=1" ,
 										function(data) {
 											cible = jQuery("#child'. $child->virtuemart_product_id .'product_name");
@@ -330,45 +331,57 @@ class VmView extends JViewLegacy {
 										}
 									)
 								';
-                }
-            }
-            else $j .= 'oldflag = flagClass ;';
+				}
+			}
+			else $j .= 'oldflag = flagClass ;';
 
-            $j .= '
+			$j .= '
 						}
 					)
 				});
 			})';
-            $document->addScriptDeclaration ( $j);
-        } else {
-            // $params = JComponentHelper::getParams('com_languages');
-            // $lang = $params->get('site', 'en-GB');
-            $jlang = JFactory::getLanguage();
-            $langs = $jlang->getKnownLanguages();
-            $defautName = $langs[$selectedLangue]['name'];
-            $flagImg= JHtml::_('image', 'mod_languages/'. $languagesByCode[$selectedLangue]->image.'.gif',  $languagesByCode[$selectedLangue]->title_native, array('title'=> $languagesByCode[$selectedLangue]->title_native), true);
-            $langList = '<input name ="vmlang" type="hidden" value="'.$selectedLangue.'" >'.$flagImg.' <b> '.$defautName.'</b>';
-            $this->assignRef('langList',$langList);
-            $this->assignRef('lang',$lang);
-        }
+			$document->addScriptDeclaration ( $j);
+		} else {
+			// $params = JComponentHelper::getParams('com_languages');
+			// $lang = $params->get('site', 'en-GB');
+			$jlang = JFactory::getLanguage();
+			$langs = $jlang->getKnownLanguages();
+			$defautName = $langs[$selectedLangue]['name'];
+			$flagImg = $selectedLangue;
+			if(isset($languagesByCode[$selectedLangue])){
+				$flagImg= JHtml::_('image', 'mod_languages/'. $languagesByCode[$selectedLangue]->image.'.gif',  $languagesByCode[$selectedLangue]->title_native, array('title'=> $languagesByCode[$selectedLangue]->title_native), true);
+			} else {
+				vmWarn(vmText::sprintf('COM_VIRTUEMART_MISSING_FLAG',$selectedLangue,$selectedLangue));
+			}
+			$langList = '<input name ="vmlang" type="hidden" value="'.$selectedLangue.'" >'.$flagImg.' <b> '.$defautName.'</b>';
+			$this->assignRef('langList',$langList);
+			$this->assignRef('lang',$lang);
+		}
 
-    }
+	}
 
 
-    function SetViewTitle($name ='', $msg ='') {
+
+
+	function SetViewTitle($name ='', $msg ='',$icon ='') {
+
 		$view = VmRequest::getCmd('view', VmRequest::getCmd('controller'));
 		if ($name == '')
-		$name = $view;
-		if ($msg) {
+			$name = strtoupper($view);
+		if ($icon == '')
+			$icon = strtolower($view);
+		if (!$task = VmRequest::getCmd('task'))
+			$task = 'list';
+
+		if (!empty($msg)) {
 			$msg = ' <span style="color: #666666; font-size: large;">' . $msg . '</span>';
 		}
 
 		$viewText = JText::_('COM_VIRTUEMART_' . strtoupper($name));
-		if (!$task = VmRequest::getCmd('task'))
-		$task = 'list';
 
 		$taskName = ' <small><small>[ ' . JText::_('COM_VIRTUEMART_' . $task) . ' ]</small></small>';
-		JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $view . '_48');
+
+		JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $icon . '_48');
 		$this->assignRef('viewName',$viewText); //was $viewName?
 		$app = JFactory::getApplication();
 		$doc = JFactory::getDocument();
@@ -412,22 +425,26 @@ class VmView extends JViewLegacy {
 			'<link href="administrator/templates/bluestork/css/ie8.css" rel="stylesheet" type="text/css" />'."\n".
 			'<![endif]-->'."\n"
 			);
-		//load the JToolBar library and create a toolbar
-		jimport('joomla.html.toolbar');
-		JToolBarHelper::divider();
-		$view = VmRequest::getCmd('view', VmRequest::getCmd('controller','virtuemart'));
-		if ($vmView->canDo->get('core.admin') || $vmView->canDo->get('vm.'.$view.'.edit')) {
-			JToolBarHelper::save();
-			JToolBarHelper::apply();
-		}
-		JToolBarHelper::cancel();
-		$bar = new JToolBar( 'toolbar' );
-		//and make whatever calls you require
-		$bar->appendButton( 'Standard', 'save', 'Save', 'save', false );
-		$bar->appendButton( 'Separator' );
-		$bar->appendButton( 'Standard', 'cancel', 'Cancel', 'cancel', false );
-		//generate the html and return
-		return $bar->render();
+
+		$html = '<div class="toolbar-list" id="toolbar">';
+		$html .= '<ul>';
+		$html .= '<li id="toolbar-save" class="button">';
+		$html .= '<a class="toolbar" onclick="Joomla.submitbutton(\'save\')" >
+<span class="icon-32-save"> </span>
+		'.jText::_('COM_VIRTUEMART_SAVE').'
+</a>';
+		$html .= '</li>';
+		$html .= '<li id="toolbar-cancel" class="button">';
+		$html .= '<a class="toolbar" onclick="Joomla.submitbutton(\'cancel\')" >
+<span class="icon-32-cancel"> </span>
+		'.jText::_('COM_VIRTUEMART_CANCEL').'
+</a>';
+		$html .= '</li>';
+		$html .= '</ul>';
+		$html .= '<div class="clr"></div>';
+		$html .= '</div>';
+		return $html;
+
 	}
 
 	/**

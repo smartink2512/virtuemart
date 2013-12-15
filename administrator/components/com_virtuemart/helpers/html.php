@@ -21,6 +21,18 @@ defined('_JEXEC') or die();
  * @author RickG
  */
 class VmHTML{
+
+	/**
+	 * Default values for options. Organized by option group.
+	 *
+	 * @var     array
+	 * @since   11.1
+	 */
+	static protected $_optionDefaults = array(
+		'option' => array('option.attr' => null, 'option.disable' => 'disable', 'option.id' => null, 'option.key' => 'value',
+			'option.key.toHtml' => true, 'option.label' => null, 'option.label.toHtml' => true, 'option.text' => 'text',
+			'option.text.toHtml' => true));
+
 	/**
 	 * Converts all special chars to html entities
 	 *
@@ -84,14 +96,14 @@ static function vmGetCharset() {
 			}
 		$lang =JFactory::getLanguage();
 		if($lang->hasKey($label.'_TIP')){
-			$labelHint = JText::_($label.'_TIP');
-			$label = '<span class="hasTip" title="'.JText::_($label.'_TIP').'">'.JText::_($label).'</span>' ;
+			$labelHint = vmText::_($label.'_TIP');
+			$label = '<span class="hasTip" title="'.vmText::_($label.'_TIP').'">'.vmText::_($label).'</span>' ;
 		} //Fallback
 		else if($lang->hasKey($label.'_EXPLAIN')){
-			$labelHint = JText::_($label.'_EXPLAIN');
-			$label = '<span class="hasTip" title="'.JText::_($label.'_EXPLAIN').'">'.JText::_($label).'</span>' ;
+			$labelHint = vmText::_($label.'_EXPLAIN');
+			$label = '<span class="hasTip" title="'.vmText::_($label.'_EXPLAIN').'">'.vmText::_($label).'</span>' ;
 		} else {
-			$label = JText::_($label);
+			$label = vmText::_($label);
 		}
 
 		$html = '
@@ -108,7 +120,7 @@ static function vmGetCharset() {
 	/* simple value display */
 	static function value( $value ){
 		$lang =JFactory::getLanguage();
-		return $lang->hasKey($value) ? JText::_($value) : $value;
+		return $lang->hasKey($value) ? vmText::_($value) : $value;
 	}
 
 	/**
@@ -143,6 +155,291 @@ static function vmGetCharset() {
     }
 
 	/**
+	 *
+	 * @author Patrick Kohl
+	 * @param array $options( value & text)
+	 * @param string $name option name
+	 * @param string $defaut defaut value
+	 * @param string $key option value
+	 * @param string $text option text
+	 * @param boolean $zero add  a '0' value in the option
+	 * return a select list
+	 */
+	public static function select($name, $options, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true, $chosenDropDowns=true,$tranlsate=true){
+		if ($zero==true) {
+			$option  = array($key =>"0", $text => vmText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
+			$options = array_merge(array($option), $options);
+		}
+		if ($chosenDropDowns) {
+			vmJsApi::chosenDropDowns();
+			$attrib .= ' class="vm-chzn-select"';
+		}
+		return VmHTML::genericlist($options,$name,$attrib,$key,$text,$default,false,$tranlsate);
+	}
+
+	/**
+	 * Generates an HTML selection list.
+	 * @author Joomla 2.5.14
+	 * @param   array    $data       An array of objects, arrays, or scalars.
+	 * @param   string   $name       The value of the HTML name attribute.
+	 * @param   mixed    $attribs    Additional HTML attributes for the <select> tag. This
+	 *                               can be an array of attributes, or an array of options. Treated as options
+	 *                               if it is the last argument passed. Valid options are:
+	 *                               Format options, see {@see JHtml::$formatOptions}.
+	 *                               Selection options, see {@see JHtmlSelect::options()}.
+	 *                               list.attr, string|array: Additional attributes for the select
+	 *                               element.
+	 *                               id, string: Value to use as the select element id attribute.
+	 *                               Defaults to the same as the name.
+	 *                               list.select, string|array: Identifies one or more option elements
+	 *                               to be selected, based on the option key values.
+	 * @param   string   $optKey     The name of the object variable for the option value. If
+	 *                               set to null, the index of the value array is used.
+	 * @param   string   $optText    The name of the object variable for the option text.
+	 * @param   mixed    $selected   The key that is selected (accepts an array or a string).
+	 * @param   mixed    $idtag      Value of the field id or null by default
+	 * @param   boolean  $translate  True to translate
+	 *
+	 * @return  string  HTML for the select list.
+	 *
+	 * @since   11.1
+	 */
+	public static function genericlist($data, $name, $attribs = null, $optKey = 'value', $optText = 'text', $selected = null, $idtag = false,
+									   $translate = false)
+	{
+		// Set default options
+		$options = array_merge(JHtml::$formatOptions, array('format.depth' => 0, 'id' => false));
+		if (is_array($attribs) && func_num_args() == 3)
+		{
+			// Assume we have an options array
+			$options = array_merge($options, $attribs);
+		}
+		else
+		{
+			// Get options from the parameters
+			$options['id'] = $idtag;
+			$options['list.attr'] = $attribs;
+			$options['list.translate'] = $translate;
+			$options['option.key'] = $optKey;
+			$options['option.text'] = $optText;
+			$options['list.select'] = $selected;
+		}
+		$attribs = '';
+		if (isset($options['list.attr']))
+		{
+			if (is_array($options['list.attr']))
+			{
+				$attribs = JArrayHelper::toString($options['list.attr']);
+			}
+			else
+			{
+				$attribs = $options['list.attr'];
+			}
+			if ($attribs != '')
+			{
+				$attribs = ' ' . $attribs;
+			}
+		}
+
+		$id = $options['id'] !== false ? $options['id'] : $name;
+		$id = str_replace(array('[', ']'), '', $id);
+
+		$baseIndent = str_repeat($options['format.indent'], $options['format.depth']++);
+		$html = $baseIndent . '<select' . ($id !== '' ? ' id="' . $id . '"' : '') . ' name="' . $name . '"' . $attribs . '>' . $options['format.eol']
+			. self::options($data, $options) . $baseIndent . '</select>' . $options['format.eol'];
+		return $html;
+	}
+
+	/**
+	 * Generates the option tags for an HTML select list (with no select tag
+	 * surrounding the options).
+	 * @author Joomla 2.5.14
+	 * @param   array    $arr        An array of objects, arrays, or values.
+	 * @param   mixed    $optKey     If a string, this is the name of the object variable for
+	 *                               the option value. If null, the index of the array of objects is used. If
+	 *                               an array, this is a set of options, as key/value pairs. Valid options are:
+	 *                               -Format options, {@see JHtml::$formatOptions}.
+	 *                               -groups: Boolean. If set, looks for keys with the value
+	 *                                "&lt;optgroup>" and synthesizes groups from them. Deprecated. Defaults
+	 *                                true for backwards compatibility.
+	 *                               -list.select: either the value of one selected option or an array
+	 *                                of selected options. Default: none.
+	 *                               -list.translate: Boolean. If set, text and labels are translated via
+	 *                                JText::_(). Default is false.
+	 *                               -option.id: The property in each option array to use as the
+	 *                                selection id attribute. Defaults to none.
+	 *                               -option.key: The property in each option array to use as the
+	 *                                selection value. Defaults to "value". If set to null, the index of the
+	 *                                option array is used.
+	 *                               -option.label: The property in each option array to use as the
+	 *                                selection label attribute. Defaults to null (none).
+	 *                               -option.text: The property in each option array to use as the
+	 *                               displayed text. Defaults to "text". If set to null, the option array is
+	 *                               assumed to be a list of displayable scalars.
+	 *                               -option.attr: The property in each option array to use for
+	 *                                additional selection attributes. Defaults to none.
+	 *                               -option.disable: The property that will hold the disabled state.
+	 *                                Defaults to "disable".
+	 *                               -option.key: The property that will hold the selection value.
+	 *                                Defaults to "value".
+	 *                               -option.text: The property that will hold the the displayed text.
+	 *                               Defaults to "text". If set to null, the option array is assumed to be a
+	 *                               list of displayable scalars.
+	 * @param   string   $optText    The name of the object variable for the option text.
+	 * @param   mixed    $selected   The key that is selected (accepts an array or a string)
+	 * @param   boolean  $translate  Translate the option values.
+	 *
+	 * @return  string  HTML for the select list
+	 *
+	 * @since   11.1
+	 */
+	public static function options($arr, $optKey = 'value', $optText = 'text', $selected = null, $translate = false)
+	{
+		$options = array_merge(
+			JHtml::$formatOptions,
+			self::$_optionDefaults['option'],
+			array('format.depth' => 0, 'groups' => true, 'list.select' => null, 'list.translate' => false)
+		);
+
+		if (is_array($optKey))
+		{
+			// Set default options and overwrite with anything passed in
+			$options = array_merge($options, $optKey);
+		}
+		else
+		{
+			// Get options from the parameters
+			$options['option.key'] = $optKey;
+			$options['option.text'] = $optText;
+			$options['list.select'] = $selected;
+			$options['list.translate'] = $translate;
+		}
+
+		$html = '';
+		$baseIndent = str_repeat($options['format.indent'], $options['format.depth']);
+
+		foreach ($arr as $elementKey => &$element)
+		{
+			$attr = '';
+			$extra = '';
+			$label = '';
+			$id = '';
+			if (is_array($element))
+			{
+				$key = $options['option.key'] === null ? $elementKey : $element[$options['option.key']];
+				$text = $element[$options['option.text']];
+				if (isset($element[$options['option.attr']]))
+				{
+					$attr = $element[$options['option.attr']];
+				}
+				if (isset($element[$options['option.id']]))
+				{
+					$id = $element[$options['option.id']];
+				}
+				if (isset($element[$options['option.label']]))
+				{
+					$label = $element[$options['option.label']];
+				}
+				if (isset($element[$options['option.disable']]) && $element[$options['option.disable']])
+				{
+					$extra .= ' disabled="disabled"';
+				}
+			}
+			elseif (is_object($element))
+			{
+				$key = $options['option.key'] === null ? $elementKey : $element->$options['option.key'];
+				$text = $element->$options['option.text'];
+				if (isset($element->$options['option.attr']))
+				{
+					$attr = $element->$options['option.attr'];
+				}
+				if (isset($element->$options['option.id']))
+				{
+					$id = $element->$options['option.id'];
+				}
+				if (isset($element->$options['option.label']))
+				{
+					$label = $element->$options['option.label'];
+				}
+				if (isset($element->$options['option.disable']) && $element->$options['option.disable'])
+				{
+					$extra .= ' disabled="disabled"';
+				}
+			}
+			else
+			{
+				// This is a simple associative array
+				$key = $elementKey;
+				$text = $element;
+			}
+
+			// The use of options that contain optgroup HTML elements was
+			// somewhat hacked for J1.5. J1.6 introduces the grouplist() method
+			// to handle this better. The old solution is retained through the
+			// "groups" option, which defaults true in J1.6, but should be
+			// deprecated at some point in the future.
+
+			$key = (string) $key;
+
+			// if no string after hyphen - take hyphen out
+			$splitText = explode(' - ', $text, 2);
+			$text = $splitText[0];
+			if (isset($splitText[1]))
+			{
+				$text .= ' - ' . $splitText[1];
+			}
+
+			if ($options['list.translate'] && !empty($label))
+			{
+				$label = vmText::_($label);
+			}
+			if ($options['option.label.toHtml'])
+			{
+				$label = htmlentities($label);
+			}
+			if (is_array($attr))
+			{
+				$attr = JArrayHelper::toString($attr);
+			}
+			else
+			{
+				$attr = trim($attr);
+			}
+			$extra = ($id ? ' id="' . $id . '"' : '') . ($label ? ' label="' . $label . '"' : '') . ($attr ? ' ' . $attr : '') . $extra;
+			if (is_array($options['list.select']))
+			{
+				foreach ($options['list.select'] as $val)
+				{
+					$key2 = is_object($val) ? $val->$options['option.key'] : $val;
+					if ($key == $key2)
+					{
+						$extra .= ' selected="selected"';
+						break;
+					}
+				}
+			}
+			elseif ((string) $key == (string) $options['list.select'])
+			{
+				$extra .= ' selected="selected"';
+			}
+
+			if ($options['list.translate'])
+			{
+				$text = vmText::_($text);
+			}
+
+			// Generate the option, encoding as required
+			$html .= $baseIndent . '<option value="' . ($options['option.key.toHtml'] ? htmlspecialchars($key, ENT_COMPAT, 'UTF-8') : $key) . '"'
+				. $extra . '>';
+			$html .= $options['option.text.toHtml'] ? htmlentities(html_entity_decode($text, ENT_COMPAT, 'UTF-8'), ENT_COMPAT, 'UTF-8') : $text;
+			$html .= '</option>' . $options['format.eol'];
+
+		}
+
+		return $html;
+	}
+
+	/**
 	 * Prints an HTML dropdown box named $name using $arr to
 	 * load the drop down.  If $value is in $arr, then $value
 	 * will be the selected option in the dropdown.
@@ -170,7 +467,7 @@ static function vmGetCharset() {
 	        }
 		}
 		if (!empty($data_placeholder)) {
-			$data_placeholder='data-placeholder="'.JText::_($data_placeholder).'"';
+			$data_placeholder='data-placeholder="'.vmText::_($data_placeholder).'"';
 		}
 
 		$html = '<select class="inputbox" id="'.$name.'" name="'.$name.'" size="'.$size.'" '.$multiple.' '.$extra.' '.$data_placeholder.' >';
@@ -198,58 +495,6 @@ static function vmGetCharset() {
 
 		return $html;
 	}
-
-
-//	/**
-//	 *
-//	 */
-//    function selectListParamParser( $arrIn, $tag_name, $tag_attribs, $key, $text, $selected, $required=0 ) {
-////    function selectListParamParser($tag_name ,$tag_attribs ,$arrIn , $key, $text, $selected, $required=0 ) {
-//
-//        echo '<br />$tag_name '.$tag_name;
-//        echo '<br />$tag_attribs '.$tag_attribs;
-//        echo '<br />$key '.$key;
-//        echo '<br />$text '.$text;
-//        echo '<br />$selected '.$selected;
-//        if(empty($arrIn)){
-//        	 return 'Error selectListParamParser no first argument given';
-//        }
-//        if(!is_array($arrIn)){
-//        	 $arr=array($arrIn);
-//        } else {
-//        	 $arr=$arrIn;
-//        }
-//        reset( $arr );
-//        $html = "\n<select name=\"$tag_name\" id=\"".str_replace('[]', '', $tag_name)."\" $tag_attribs>";
-//        if(!$required) $html .= "\n\t<option value=\"\">".JText::_('COM_VIRTUEMART_SELECT')."</option>";
-//        $n=count( $arr );
-//        for ($i=0; $i < $n; $i++ ) {
-//
-//                $k = stripslashes($arr[$i]->$key);
-//                $t = stripslashes($arr[$i]->$text);
-//                $id = isset($arr[$i]->id) ? $arr[$i]->id : null;
-//
-//                $extra = '';
-//                $extra .= $id ? " id=\"" . $arr[$i]->id . "\"" : '';
-//                if (is_array( $selected )) {
-//                        foreach ($selected as $obj) {
-//                                $k2 = stripslashes($obj->$key);
-//                                if ($k == $k2) {
-//                                        $extra .= " selected=\"selected\"";
-//                                        break;
-//                                }
-//                        }
-//                } else {
-//                        $extra .= ($k == stripslashes($selected) ? " selected=\"selected\"" : '');
-//                }
-//                $html .= "\n\t<option value=\"".$k."\"$extra>";
-//				if( $t[0] == '_' ) $t = substr( $t, 1 );
-//				$html .= JText::_($t);
-//                $html .= "</option>";
-//        }
-//        $html .= "\n</select>\n";
-//        return $html;
-//	}
 
 	/**
 	 * Creates a Radio Input List
@@ -328,7 +573,7 @@ static function vmGetCharset() {
 	 * @param string $name
 	 * @param string $value
 	 */
-	public static function textarea($name,$value,$class='class="inputbox"',$cols='70',$rows="10"){
+	public static function textarea($name,$value,$class='class="inputbox"',$cols='100',$rows="4"){
 		return '<textarea '.$class.' id="'.$name.'" name="'.$name.'" cols="'.$cols.'" rows="'.$rows.'"/>'.$value.'</textarea >';
 	}
 	/**
@@ -344,28 +589,7 @@ static function vmGetCharset() {
 		return $editor->display($name, $value, $size, $height, null, null ,$hide )  ;
 	}
 
-	/**
-	 *
-	 * @author Patrick Kohl
-	 * @param array $options( value & text)
-	 * @param string $name option name
-	 * @param string $defaut defaut value
-	 * @param string $key option value
-	 * @param string $text option text
-	 * @param boolean $zero add  a '0' value in the option
-	 * return a select list
-	 */
-	public static function select($name, $options, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true, $chosenDropDowns=true){
-		if ($zero==true) {
-		$option  = array($key =>"0", $text => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
-		$options = array_merge(array($option), $options);
-		}
-		if ($chosenDropDowns) {
-			vmJsApi::chosenDropDowns();
-			$attrib .= ' class="vm-chzn-select"';
-		}
-		return JHTML::_('select.genericlist', $options,$name,$attrib,$key,$text,$default,false,true);
-	}
+
 	/**
 	 * renders the hidden input
 	 * @author Max Milbers

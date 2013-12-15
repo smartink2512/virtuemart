@@ -49,7 +49,7 @@ class VirtuemartControllerPlugin extends JController
 		$name = VmRequest::getString('name','');
 
 		JPluginHelper::importPlugin($type, $name);
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		// if you want only one render simple in the plugin use jExit();
 		// or $render is an array of code to echo as html or json Object!
 		$render = null ;

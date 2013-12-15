@@ -492,7 +492,9 @@ class VmModel extends JObject {
 
 	function removevalidOrderingFieldName($name){
 		$key=array_search($name, $this->_validOrderingFieldName);
-		unset($this->_validOrderingFieldName[$key]) ;
+		if($key!==false){
+			unset($this->_validOrderingFieldName[$key]) ;
+		}
 	}
 
 	var $_tablePreFix = '';
@@ -540,23 +542,23 @@ class VmModel extends JObject {
 
 	function checkFilterOrder($toCheck){
 
+		if(empty($toCheck)) return $this->_selectedOrdering;
+
 		//vmdebug('checkFilterOrder',$this->_validOrderingFieldName);
 		if(!in_array($toCheck, $this->_validOrderingFieldName)){
 
 			$break = false;
 			vmSetStartTime();
 			foreach($this->_validOrderingFieldName as $name){
-				if(strpos($name,$toCheck)!==FALSE){
+				if(!empty($name) and strpos($name,$toCheck)!==FALSE){
 					$this->_selectedOrdering = $name;
 					$break = true;
 					break;
 				}
 			}
-			vmTime('Time to find correct ordering '.$this->_selectedOrdering);
 			if(!$break){
-				$toCheck = $this->_selectedOrdering;
 				$app = JFactory::getApplication();
-				$view = JRequest::getWord('view','virtuemart');
+				$view = VmRequest::getCmd('view','virtuemart');
 				$app->setUserState( 'com_virtuemart.'.$view.'.filter_order',$this->_selectedOrdering);
 			}
 			//vmdebug('checkValidOrderingField:'.get_class($this).' programmer choosed invalid ordering '.$toCheck.', use '.$this->_selectedOrdering);
@@ -999,7 +1001,7 @@ class VmPagination extends JPagination {
 
 		// Initialize variables
 		$limits = array ();
-		//$selected = $this->_viewall ? 0 : $this->limit;
+		$selected = $this->_viewall ? 0 : $this->limit;
 		$selected = $this->limit;
 
 		// Build the select list
@@ -1078,7 +1080,7 @@ class VmPagination extends JPagination {
 				$limits[$this->limit] = JHTML::_('select.option', JRoute::_( $link.'&limit='.$this->limit,false),$this->limit);
 				ksort($limits);
 			}
-			$selected= JRoute::_( $link.'&limit='. $selected, false) ;
+			$selected= JRoute::_( $link.'&limit='. $selected,false) ;
 			$js = 'onchange="window.top.location.href=this.options[this.selectedIndex].value"';
 
 			$html = JHTML::_('select.genericlist',  $limits, '', 'class="inputbox" size="1" '.$js , 'value', 'text', $selected);

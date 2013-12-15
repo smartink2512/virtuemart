@@ -22,6 +22,20 @@ class ShopFunctions {
 
 	}
 
+	/*
+	 * Add simple search to form
+	* @param $searchLabel text to display before searchbox
+	* @param $name 		 lists and id name
+	* ??JText::_('COM_VIRTUEMART_NAME')
+	*/
+
+	static public function displayDefaultViewSearch ($searchLabel, $value, $name = 'search') {
+
+		return JText::_ ('COM_VIRTUEMART_FILTER') . ' ' . JText::_ ($searchLabel) . ':
+		<input type="text" name="' . $name . '" id="' . $name . '" value="' . $value . '" class="text_area" />
+		<button onclick="this.form.submit();">' . JText::_ ('COM_VIRTUEMART_GO') . '</button>
+		<button onclick="document.getElementById(\'' . $name . '\').value=\'\';this.form.submit();">' . JText::_ ('COM_VIRTUEMART_RESET') . '</button>';
+	}
 
 	/**
 	 * Builds an enlist for information (not chooseable)
@@ -300,6 +314,8 @@ class ShopFunctions {
 			$attrs[$_a[0]] = $_a[1];
 		}
 
+		//Todo remove inline style
+		//$attrs['style'] = 'width:270px;';
 		return JHTML::_ ('select.genericlist', $countries_list, $idA, $attrs, $id, $name, $countryId);
 	}
 
@@ -507,6 +523,7 @@ class ShopFunctions {
 	 * @author Valérie Isaksen
 	 */
 	static function convertWeightUnit ($value, $from, $to) {
+
 		$from = strtoupper($from);
 		$to = strtoupper($to);
 		$value = str_replace (',', '.', $value);
@@ -755,7 +772,7 @@ class ShopFunctions {
 
 		if (empty(self::$categoryTree)) {
 // 			vmTime('Start with categoryListTree');
-			$cache = JFactory::getCache ('_virtuemart');
+			$cache = JFactory::getCache ('com_virtuemart_cats');
 			$cached = $cache->getCaching();
 			$cache->setCaching (1);
 			self::$categoryTree = $cache->call (array('ShopFunctions', 'categoryListTreeLoop'), $selectedCategories, $cid, $level, $disabledFields);
@@ -766,6 +783,7 @@ class ShopFunctions {
 
 		return self::$categoryTree;
 	}
+
 	/**
 	 * Get feed
 	 * @author valerie isaksen
@@ -776,7 +794,7 @@ class ShopFunctions {
 	static public function getCPsRssFeed($rssUrl,$max) {
 
 		$cache_time=86400*3; // 3days
-		$cache = JFactory::getCache ('_virtuemart');
+		$cache = JFactory::getCache ('com_virtuemart_rss');
 		$cached = $cache->getCaching();
 		$cache->setLifeTime($cache_time);
 		$cache->setCaching (1);
@@ -815,14 +833,14 @@ class ShopFunctions {
 
 		$count = $rssFeed->get_item_quantity();
 		$limit=min($max,$count);
-		for ($i = 0; $i < $limit; $i++) {
-			$feed = new StdClass();
-			$item = $rssFeed->get_item($i);
-			$feed->link = $item->get_link();
-			$feed->title = $item->get_title();
-			$feed->description = $item->get_description();
-			$feeds[] = $feed;
-		}
+			for ($i = 0; $i < $limit; $i++) {
+				$feed = new StdClass();
+				$item = $rssFeed->get_item($i);
+				$feed->link = $item->get_link();
+				$feed->title = $item->get_title();
+				$feed->description = $item->get_description();
+				$feeds[] = $feed;
+			}
 
 		return $feeds;
 	}
@@ -1584,8 +1602,8 @@ class ShopFunctions {
 		);
 		$html = '<table>
 					'.VmHTML::row('input','COM_VIRTUEMART_CUSTOM_PAGE_TITLE','customtitle',$obj->customtitle).'
-					'.VmHTML::row('textarea','COM_VIRTUEMART_METAKEY','metakey',$obj->metakey).'
-					'.VmHTML::row('textarea','COM_VIRTUEMART_METADESC','metadesc',$obj->metadesc).'
+					'.VmHTML::row('textarea','COM_VIRTUEMART_METAKEY','metakey',$obj->metakey,'class="inputbox"',80).'
+					'.VmHTML::row('textarea','COM_VIRTUEMART_METADESC','metadesc',$obj->metadesc,'class="inputbox"',80).'
 					'.VmHtml::row('selectList','COM_VIRTUEMART_METAROBOTS','metarobot',$obj->metarobot,$options).'
 					'.VmHTML::row('input','COM_VIRTUEMART_METAAUTHOR','metaauthor',$obj->metaauthor).'
 				</table>';

@@ -43,7 +43,7 @@ class vmFile {
 		vmdebug('makeSafe',$str);
 		$str = filter_var($str, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
 
-		//$str = vmRequest::uword($str,'','_,-');
+		//$str = VmRequest::uword($str,'','_,-');
 		vmdebug('makeSafe',$str);
 		return $str;
 		/*if(function_exists('mb_ereg_replace')){
@@ -197,9 +197,8 @@ class VmMediaHandler {
 	 * @param array $data
 	 * @param string $type
 	 */
-	static public function prepareStoreMedia($table,$data){
+	static public function prepareStoreMedia($table,$data,$type){
 
-		$type= $data['file_type'];
 		$media = VmMediaHandler::createMedia($table,$type);
 
 		$data = $media->processAttributes($data);
@@ -617,9 +616,9 @@ class VmMediaHandler {
 				vmError('Not able to upload file, give path/url empty/too short '.$urlfolder.' please correct path in your virtuemart config');
 				return false;
 			}
-			$media = vmRequest::getFiles('upload');
-			$data = vmRequest::getRequest();
-			vmdebug('uploadFile',$data,$media);
+			$media = VmRequest::getFiles('upload');
+			//$data = VmRequest::getRequest();
+			//vmdebug('uploadFile',$data,$media);
 			$app = JFactory::getApplication();
 			switch ($media['error']) {
 				case 0:
@@ -692,12 +691,20 @@ class VmMediaHandler {
 		function deleteFile($url){
 
 			jimport('joomla.filesystem.file');
-			$file_path = str_replace('/',DS,$url);
+			$file_path = JPATH_ROOT.DS.str_replace('/',DS,$url);
 			$app = JFactory::getApplication();
-			if($res = JFile::delete( JPATH_ROOT.DS.$file_path )){
-				$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_DELETE_OK',$file_path));
+			if (!class_exists ('Permissions')) {
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+			}
+			$msg_path = '';
+			if(Permissions::getInstance()->check('admin')){
+				$msg_path = $file_path;
+			}
+
+			if($res = JFile::delete( $file_path )){
+				$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_DELETE_OK',$msg_path));
 			} else {
-				$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_DELETE_ERR',$res));
+				$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_DELETE_ERR',$res.' '.$msg_path));
 			}
 			return ;
 		}
@@ -726,21 +733,25 @@ class VmMediaHandler {
 				// 				$oldFileUrl = $data['file_url'];
 				// 				vmdebug('replace media',$this);
 				$oldFileUrl = $this->file_url;
+				$oldFileUrlThumb = $this->file_url_thumb;
 				$file_name = $this->uploadFile($this->file_url_folder,true);
 				$this->file_name = $file_name;
 				$this->file_url = $this->file_url_folder.$this->file_name;
 				if($this->file_url!=$oldFileUrl && !empty($this->file_name)){
 					$this->deleteFile($oldFileUrl);
 				}
+				//always delete the thumb
+				$this->deleteFile($oldFileUrlThumb);
 			}
 			else if( $data['media_action'] == 'replace_thumb' ){
 
+				$oldFileUrlThumb = $this->file_url_thumb;
 				$oldFileUrl = $this->file_url_folder_thumb;
 				$file_name = $this->uploadFile($this->file_url_folder_thumb,true);
 				$this->file_name = $file_name;
 				$this->file_url_thumb = $this->file_url_folder_thumb.$this->file_name;
 				if($this->file_url_thumb!=$oldFileUrl&& !empty($this->file_name)){
-					$this->deleteFile($oldFileUrl);
+					$this->deleteFile($oldFileUrlThumb);
 				}
 
 			}
@@ -829,25 +840,17 @@ class VmMediaHandler {
 
 			$this->addMediaAction(0,'COM_VIRTUEMART_NONE');
 
-			$this->addMediaAction('upload','COM_VIRTUEMART_FORM_MEDIA_UPLOAD');
-			if(empty($this->file_name)){
-
-			} else {
-				//			$this->addMediaAction('upload_delete','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_DELETE');
-				$this->addMediaAction('replace','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_REPLACE');
-				//			$this->addMediaAction('delete','COM_VIRTUEMART_FORM_MEDIA_DELETE');
+			$view = VmRequest::getCmd('view');
+			if($view!='media' || empty($this->file_name)){
+				$this->addMediaAction('upload','COM_VIRTUEMART_FORM_MEDIA_UPLOAD');
 			}
 
-			$this->addMediaAction('replace_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_REPLACE_THUMB');
-
-			//		$this->addMediaAction('replace_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_DELETE_THUMB');
-
-			//		if(empty($this->file_url_thumb)){
-			//			$this->addMediaAction('upload_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_THUMB');
-			//		} else {
-			//			$this->addMediaAction('upload_delete_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_DELETE_THUMB');
-			//			$this->addMediaAction('delete_thumb','COM_VIRTUEMART_FORM_MEDIA_DELETE_THUMB');
-			//		}
+			if(!empty($this->file_name)){
+				$this->addMediaAction('replace','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_REPLACE');
+				$this->addMediaAction('replace_thumb','COM_VIRTUEMART_FORM_MEDIA_UPLOAD_REPLACE_THUMB');
+				//			$this->addMediaAction('delete_thumb','COM_VIRTUEMART_FORM_MEDIA_DELETE_THUMB');
+				//			$this->addMediaAction('delete','COM_VIRTUEMART_FORM_MEDIA_DELETE');
+			}
 
 		}
 

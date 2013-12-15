@@ -295,28 +295,27 @@ class CurrencyDisplay {
 	 */
 	public function priceDisplay($price, $currencyId=0,$quantity = 1.0,$inToShopCurrency = false,$nb= -1){
 
-		$currencyId = $this->getCurrencyForDisplay($currencyId);
+		$price = $this->roundForDisplay($price,$currencyId, $quantity ,$inToShopCurrency, $nb);
+		return $this->getFormattedCurrency($price,$nb);
+	}
 
+	public function roundForDisplay($price, $currencyId=0,$quantity = 1.0,$inToShopCurrency = false,$nb= -1){
+
+		$currencyId = $this->getCurrencyForDisplay($currencyId);
 		if($nb==-1){
 			$nb = $this->_nbDecimal;
 		}
 
-		//vmdebug('priceDisplay',$quantity);
-	/*	if($this->_vendorCurrency_numeric===756){ // and $this->_numeric_code!==$this->_vendorCurrency_numeric){
-			$price = round((float)$price * 2,1) * 0.5 * (float)$quantity;
-		} else {*/
-			$price = (float)$price * (float)$quantity;
-			
-		//}
+		$price = (float)$price * (float)$quantity;
+
 		$price = $this->convertCurrencyTo($currencyId,$price,$inToShopCurrency);
 
-		$price = (float)$price * (float)$quantity;
 		if($this->_numeric_code===756 and VmConfig::get('rappenrundung',FALSE)=="1"){
 			$price = round((float)$price * 2,1) * 0.5;
 		} else {
 			$price = round($price,$nb);
-		}//*/
-		return $this->getFormattedCurrency($price,$nb);
+		}
+		return $price;
 	}
 
 	/**
@@ -324,7 +323,7 @@ class CurrencyDisplay {
 	 * @author Max Milbers
 	 * @param val number
 	 */
-	private function getFormattedCurrency( $nb, $nbDecimal=-1){
+	public function getFormattedCurrency( $nb, $nbDecimal=-1){
 
 		//TODO $this->_nbDecimal is the config of the currency and $nbDecimal is the config of the price type.
 		if($nbDecimal==-1) $nbDecimal = $this->_nbDecimal;
