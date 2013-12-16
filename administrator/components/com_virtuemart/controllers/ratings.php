@@ -88,7 +88,7 @@ class VirtuemartControllerRatings extends VmController {
 	 */
 	function publish(){
 
-		JSession::checkToken() or jexit( 'Invalid Token save' );
+		vmRequest::vmCheckToken();
 		$layout = VmRequest::getString('layout','default');
 
 		if($layout=='list_reviews'){
@@ -113,7 +113,7 @@ class VirtuemartControllerRatings extends VmController {
 
 	function unpublish(){
 
-		JSession::checkToken() or jexit( 'Invalid Token save' );
+		vmRequest::vmCheckToken();
 		$layout = VmRequest::getString('layout','default');
 
 		if($layout=='list_reviews'){
@@ -158,7 +158,8 @@ class VirtuemartControllerRatings extends VmController {
 
 
 	function storeReview($apply){
-		JSession::checkToken() or jexit( 'Invalid Token save' );
+
+		vmRequest::vmCheckToken();
 
 		if (empty($data)){
 			$data = VmRequest::get ('post');

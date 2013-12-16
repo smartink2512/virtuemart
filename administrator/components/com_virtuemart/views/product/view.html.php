@@ -163,8 +163,11 @@ class VirtuemartViewProduct extends VmView {
 				/* Load product types lists */
 				$customModel = VmModel::getModel ('custom');
 				$customsList = $customModel->getCustomsList ();
-                $attribs='style= "width: 300px;"';
-                $customlist = JHTML::_('select.genericlist', $customsList,'customlist', $attribs);
+				$attribs='style= "width: 300px;"';
+				$customlist = JHTML::_('select.genericlist', $customsList,'customlist', $attribs);
+
+
+
 				$this->assignRef('customsList', $customlist);
 
 				//$ChildCustomRelation = $field_model->getProductChildCustomRelation();
@@ -196,6 +199,22 @@ class VirtuemartViewProduct extends VmView {
 
 
 				$this->assignRef('product', $product);
+				$product_empty_price = array(
+					'virtuemart_product_price_id' => 0
+				, 'virtuemart_product_id'         => $virtuemart_product_id
+				, 'virtuemart_shoppergroup_id'    => NULL
+				, 'product_price'                 => NULL
+				, 'override'                      => NULL
+				, 'product_override_price'        => NULL
+				, 'product_tax_id'                => NULL
+				, 'product_discount_id'           => NULL
+				, 'product_currency'              => $vendor->vendor_currency
+				, 'product_price_publish_up'      => NULL
+				, 'product_price_publish_down'    => NULL
+				, 'price_quantity_start'          => NULL
+				, 'price_quantity_end'            => NULL
+				);
+				$this->assignRef ('product_empty_price', $product_empty_price);
 
 				$this->assignRef('product_parent', $product_parent);
 				/* Assign label values */
@@ -210,7 +229,9 @@ class VirtuemartViewProduct extends VmView {
 				if ($product->product_sku) $sku=' ('.$product->product_sku.')'; else $sku="";
 				if (!empty($product->canonCatLink)) $canonLink = '&virtuemart_category_id=' . $product->canonCatLink; else $canonLink = '';
 				if(!empty($product->virtuemart_product_id)){
-					$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'" target="_blank" >'. $product->product_name.$sku.'<span class="vm2-modallink"></span></a>';
+					if (!class_exists ('shopFunctionsF')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+					$menuItemID = shopFunctionsF::getMenuItemId(JFactory::getLanguage()->getTag());
+					$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.$canonLink.'&Itemid='. $menuItemID .'" target="_blank" >'. $product->product_name.$sku.'<span class="vm2-modallink"></span></a>';
 				} else {
 					$text = $product->product_name.$sku;
 				}

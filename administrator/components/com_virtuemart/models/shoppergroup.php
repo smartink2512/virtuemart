@@ -117,10 +117,11 @@ class VirtueMartModelShopperGroup extends VmModel {
 			vmError(JText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_CANT_MAKE_DEFAULT',$group->shopper_group_name,$id));
 			return false;
 		}
-		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 0 WHERE `default`<"2"');
-		if (!$this->_db->execute()) return ;
-		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = "'.$kind.'" WHERE virtuemart_shoppergroup_id='.(int)$id);
-		if (!$this->_db->execute()) return ;
+		$db = JFactory::getDBO();
+		$db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 0 WHERE `default`<"2"');
+		if (!$db->execute()) return ;
+		$db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = "'.$kind.'" WHERE virtuemart_shoppergroup_id='.(int)$id);
+		if (!$db->execute()) return ;
 		return true;
 	}
 
@@ -136,11 +137,12 @@ class VirtueMartModelShopperGroup extends VmModel {
 		if($onlyPublished){
 			$q .= ' AND `published`="1" ';
 		}
-		$this->_db->setQuery($q);
+		$db = JFactory::getDBO();
+		$db->setQuery($q);
 
-		if(!$res = $this->_db->loadObject()){
+		if(!$res = $db->loadObject()){
 			$app = JFactory::getApplication();
-			$app->enqueueMessage('Attention no standard shopper group set '.$this->_db->getErrorMsg());
+			$app->enqueueMessage('Attention no standard shopper group set '.$db->getErrorMsg());
 		} else {
 			//vmdebug('getDefault', $res);
 			return $res;
@@ -156,9 +158,9 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 			$_defaultShopperGroup = $this->getDefault($user->guest,$onlyPublished,$vendorId);
 			$shopperGroups[] = $_defaultShopperGroup->virtuemart_shoppergroup_id;
-		/*	$this->_db->setQuery('SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
+		/*	$db->setQuery('SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
 								WHERE `default`="'.($user->guest+1).'" AND `virtuemart_vendor_id`="' . (int) $vendorId . '"');
-			$this->_shopperGroupId = $this->_db->loadColumn();*/
+			$this->_shopperGroupId = $db->loadColumn();*/
 		}
 		$this->removeSessionSgrps($shopperGroups);
 
@@ -211,25 +213,26 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 			//Test if shoppergroup is default
 			if($id == $defaultSgId->virtuemart_shoppergroup_id){
-				$this->_db->setQuery('SELECT shopper_group_name FROM `#__virtuemart_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
-				$name = $this->_db->loadResult();
+				$db = JFactory::getDBO();
+				$db->setQuery('SELECT shopper_group_name FROM `#__virtuemart_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
+				$name = $db->loadResult();
 				vmError(JText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_DEFAULT',$name,$id));
 				continue;
 			}
 
 			//Test if shoppergroup is default
 			if($id == $anonymSgId->virtuemart_shoppergroup_id){
-				$this->_db->setQuery('SELECT shopper_group_name FROM `#__virtuemart_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
-				$name = $this->_db->loadResult();
+				$db->setQuery('SELECT shopper_group_name FROM `#__virtuemart_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
+				$name = $db->loadResult();
 				vmError(JText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_DEFAULT',$name,$id));
 				continue;
 			}
 
 			//Test if shoppergroup has members
-			$this->_db->setQuery('SELECT * FROM `#__virtuemart_vmuser_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
-			if($this->_db->loadResult()){
-				$this->_db->setQuery('SELECT shopper_group_name FROM `#__virtuemart_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
-				$name = $this->_db->loadResult();
+			$db->setQuery('SELECT * FROM `#__virtuemart_vmuser_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
+			if($db->loadResult()){
+				$db->setQuery('SELECT shopper_group_name FROM `#__virtuemart_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
+				$name = $db->loadResult();
 				vmError(JText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_WITH_MEMBERS',$name,$id));
 				continue;
 			}

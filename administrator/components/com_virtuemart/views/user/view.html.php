@@ -84,9 +84,9 @@ class VirtuemartViewUser extends VmView {
 			if($task == 'editshop' && $userDetails->user_is_vendor){
 // 				$model->setCurrent();
 				if(!empty($userDetails->vendor->vendor_store_name)){
-					$this->SetViewTitle('STORE',$userDetails->vendor->vendor_store_name , 'shop_mart');
+					$this->SetViewTitle('STORE',$userDetails->vendor->vendor_store_name, 'shop_mart' );
 				} else {
-					$this->SetViewTitle('STORE',JText::_('COM_VIRTUEMART_NEW_VENDOR'), 'shop_mart' );
+					$this->SetViewTitle('STORE',JText::_('COM_VIRTUEMART_NEW_VENDOR') , 'shop_mart');
 				}
 				$vendorid = $userDetails->virtuemart_vendor_id;
 			} else {
@@ -108,9 +108,9 @@ class VirtuemartViewUser extends VmView {
 				$this->lists['gid'] 	= JHTML::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $userDetails->JUser->get('gid'));
 			}
 
-			$this->lists['canBlock'] = ($currentUser->authorise('com_users', 'block user')
+			$this->lists['canBlock'] = ($currentUser->authorize('com_users', 'block user')
 			&& ($userDetails->JUser->get('id') != $currentUser->get('id'))); // Can't block myself
-			$this->lists['canSetMailopt'] = $currentUser->authorise('workflow', 'email_events');
+			$this->lists['canSetMailopt'] = $currentUser->authorize('workflow', 'email_events');
 			$this->lists['block'] = JHTML::_('select.booleanlist', 'block',      'class="inputbox"', $userDetails->JUser->get('block'),     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 			$this->lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail',  'class="inputbox"', $userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 			$this->lists['params'] = $userDetails->JUser->getParameters(true);

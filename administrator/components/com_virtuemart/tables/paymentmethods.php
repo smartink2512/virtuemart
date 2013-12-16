@@ -2,7 +2,7 @@
 
 /**
  *
- * Payment methods table
+ * Calc table ( for calculations)
  *
  * @package	VirtueMart
  * @subpackage Payment Methods

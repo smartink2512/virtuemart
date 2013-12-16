@@ -19,8 +19,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Load the model framework
-//if(!class_exists('JModel')) require JPATH_VM_LIBRARIES.DS.'joomla'.DS.'application'.DS.'component'.DS.'model.php';
 
 
 /**
@@ -226,9 +224,13 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 // 	$lang = $params->get('site', 'en-GB');//use default joomla
 // 	$this->installSampleSQL($lang);
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
-	if(!defined('VMLANG')){
-		Vmconfig::setdbLanguageTag();
-	}
+	    if(!defined('VMLANG')){
+		    $params = JComponentHelper::getParams('com_languages');
+		    $lang = $params->get('site', 'en-GB');//use default joomla
+		    $lang = strtolower(strtr($lang,'-','_'));
+	    } else {
+		    $lang = VMLANG;
+	    }
 	if(!$this->execSQLFile($filename)){
 		vmError(JText::_('Problems execution of SQL File '.$filename));
 	} else {
@@ -242,7 +244,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 			(1, 1, '.$shipment_plg_id.', "weight_countries", \'shipment_logos=""|countries=""|zip_start=""|zip_stop=""|weight_start=""|weight_stop=""|weight_unit="KG"|nbproducts_start=0|nbproducts_stop=0|orderamount_start=""|orderamount_stop=""|cost="0"|package_fee=""|tax_id="0"|free_shipment=""|\', 0, 0, 1, "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0,  "0000-00-00 00:00:00", 0)';
 			$db->setQuery($q);
 			$db->execute();
- 			$q = 'INSERT INTO `#__virtuemart_shipmentmethods_'.VMLANG.'` (`virtuemart_shipmentmethod_id`, `shipment_name`, `shipment_desc`, `slug`) VALUES (1, "Self pick-up", "", "Self-pick-up")';
+ 			$q = 'INSERT INTO `#__virtuemart_shipmentmethods_'.$lang.'` (`virtuemart_shipmentmethod_id`, `shipment_name`, `shipment_desc`, `slug`) VALUES (1, "Self pick-up", "", "Self-pick-up")';
 			$db->setQuery($q);
 			$db->execute();
 
@@ -267,7 +269,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 			$db->setQuery($q);
 			$db->execute();
 
-			$q="INSERT INTO `#__virtuemart_paymentmethods_".VMLANG."` (`virtuemart_paymentmethod_id`, `payment_name`, `payment_desc`, `slug`) VALUES	(1, 'Cash on delivery', '', 'Cash-on-delivery')";
+			$q="INSERT INTO `#__virtuemart_paymentmethods_".$lang."` (`virtuemart_paymentmethod_id`, `payment_name`, `payment_desc`, `slug`) VALUES	(1, 'Cash on delivery', '', 'Cash-on-delivery')";
 			$db->setQuery($q);
 			$db->execute();
 
@@ -310,7 +312,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 	    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='" . $tableComment . "' AUTO_INCREMENT=1 ;";
 		$db = JFactory::getDBO();
 		$db->setQuery($query);
-		if (!$db->query ()) {
+		if (!$db->execute ()) {
 			vmError ( $className.'::onStoreInstallPluginTable: ' . JText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE));
 		}
 
@@ -320,7 +322,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
     function restoreSystemDefaults() {
 
 		JPluginHelper::importPlugin('vmextended');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onVmSqlRemove', $this);
 
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_essential_data.sql';
@@ -344,7 +346,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 
 
 		JPluginHelper::importPlugin('vmextended');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onVmSqlRestore', $this);
     }
 
@@ -366,7 +368,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		$updater->createLanguageTables();
 
 		JPluginHelper::importPlugin('vmextended');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onVmSqlRestore', $this);
     }
 
@@ -429,7 +431,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		$db = JFactory::getDBO();
 		$config = JFactory::getConfig();
 
-		$prefix = $config->get('dbprefix').'virtuemart_%';
+		$prefix = $config->getValue('config.dbprefix').'virtuemart_%';
 		$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
 		if (!$tables = $db->loadColumn()) {
 		    vmError ($db->getErrorMsg());
@@ -447,6 +449,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		    	$app->enqueueMessage('Error drop virtuemart table ' . $table);
 		    }
 		}
+
 
 		if(!empty($droppedTables)){
 			$app->enqueueMessage('Dropped virtuemart table ' . implode(', ',$droppedTables));
@@ -468,20 +471,21 @@ class VirtueMartModelUpdatesMigration extends VmModel {
      */
     function removeAllVMData() {
 		JPluginHelper::importPlugin('vmextended');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onVmSqlRemove', $this);
 
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_data.sql';
 		$this->execSQLFile($filename);
 		$tables = array('products','categories','manufacturers','manufacturercategories');
-		$prefix = $this->_db->getPrefix();
+		$db = JFactory::getDBO();
+		$prefix = $db->getPrefix();
 		foreach ($tables as $table) {
 			$query = 'SHOW TABLES LIKE "'.$prefix.'virtuemart_'.$table.'_%"';
-			$this->_db->setQuery($query);
-			if($translatedTables= $this->_db->loadColumn()) {
+			$db->setQuery($query);
+			if($translatedTables= $db->loadColumn()) {
 				foreach ($translatedTables as $translatedTable) {
-					$this->_db->setQuery('TRUNCATE TABLE `'.$translatedTable.'`');
-					if($this->_db->execute()) vmInfo( $translatedTable.' empty');
+					$db->setQuery('TRUNCATE TABLE `'.$translatedTable.'`');
+					if($db->execute()) vmInfo( $translatedTable.' empty');
 					else vmError($translatedTable.' language table Cannot be deleted');
 				}
 			} else vmInfo('No '.$table.' language table found to delete '.$query);

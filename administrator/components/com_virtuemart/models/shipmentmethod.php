@@ -61,7 +61,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 
 			if($this->_data[$this->_id]->shipment_jplugin_id){
 				JPluginHelper::importPlugin('vmshipment');
-				$dispatcher = JEventDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsShipment',array($this->_data[$this->_id]->shipment_element,$this->_data[$this->_id]->shipment_jplugin_id,&$this->_data[$this->_id]));
 
 			}
@@ -74,8 +74,9 @@ class VirtueMartModelShipmentmethod extends VmModel {
  		//if(!empty($this->_id)){
 				/* Add the shipmentcarreir shoppergroups */
 				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shipmentmethod_shoppergroups WHERE `virtuemart_shipmentmethod_id` = "'.$this->_id.'"';
-				$this->_db->setQuery($q);
-				$this->_data[$this->_id]->virtuemart_shoppergroup_ids = $this->_db->loadColumn();#
+			$db = JFactory::getDBO();
+				$db->setQuery($q);
+				$this->_data[$this->_id]->virtuemart_shoppergroup_ids = $db->loadColumn();#
 				if(empty($this->_data[$this->_id]->virtuemart_shoppergroup_ids)) $this->_data[$this->_id]->virtuemart_shoppergroup_ids = 0;
 
 
@@ -118,8 +119,9 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			foreach ($this->_data as $data){
 				/* Add the shipment shoppergroups */
 				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shipmentmethod_shoppergroups WHERE `virtuemart_shipmentmethod_id` = "'.$data->virtuemart_shipmentmethod_id.'"';
-				$this->_db->setQuery($q);
-				$data->virtuemart_shoppergroup_ids = $this->_db->loadColumn();
+				$db = JFactory::getDBO();
+				$db->setQuery($q);
+				$data->virtuemart_shoppergroup_ids = $db->loadColumn();
 
 				/* Write the first 5 shoppergroups in the list */
 				$data->shipmentShoppersList = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_shipmentmethod_shoppergroups','virtuemart_shipmentmethod_id',$data->virtuemart_shipmentmethod_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup',4,0);
@@ -170,15 +172,16 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			$ext_id = 'extension_id';
 		}
 		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['shipment_jplugin_id'].'"';
-		$this->_db->setQuery($q);
-		$data['shipment_element'] = $this->_db->loadResult();
+		$db = JFactory::getDBO();
+		$db->setQuery($q);
+		$data['shipment_element'] = $db->loadResult();
 
 		$table = $this->getTable('shipmentmethods');
 
 		if(isset($data['shipment_jplugin_id'])){
 
 			JPluginHelper::importPlugin('vmshipment');
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			//bad trigger, we should just give it data, so that the plugins itself can check the data to be stored
 			//so this trigger is now deprecated and will be deleted in vm2.2
 			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsShipment',array( $data['shipment_element'],$data['shipment_jplugin_id'],&$table));
@@ -202,7 +205,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
 		//Add a hook here for other shipment methods, checking the data of the choosed plugin
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$retValues = $dispatcher->trigger('plgVmOnStoreInstallShipmentPluginTable', array(  $data['shipment_jplugin_id']));
 
 		return $table->virtuemart_shipmentmethod_id;

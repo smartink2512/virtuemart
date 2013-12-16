@@ -70,11 +70,11 @@ abstract class vmPlugin extends JPlugin {
 		$filename = 'plg_' . $this->_type . '_' . $this->_name;
 
 		VmConfig::loadJLang($filename);
-        if (JVM_VERSION < 3) {
-            if (!class_exists ('JParameter')) {
-                require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php');
-            }
-        }
+		if (JVM_VERSION < 3) {
+			if (!class_exists ('JParameter')) {
+				require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php');
+			}
+		}
 		$this->_tablename = '#__virtuemart_' . $this->_psType . '_plg_' . $this->_name;
 		$this->_tableChecked = FALSE;
 	}
@@ -118,14 +118,14 @@ abstract class vmPlugin extends JPlugin {
 
 		if ($psType !== 0) {
 			if ($psType != $this->_psType) {
-				//vmdebug ('selectedThis $psType does not fit');
+				vmdebug ('selectedThis $psType does not fit');
 				return FALSE;
 			}
 		}
 
 		if ($name !== 0) {
 			if ($name != $this->_name) {
-				//vmdebug ('selectedThis $name ' . $name . ' does not fit pluginname ' . $this->_name);
+				vmdebug ('selectedThis $name ' . $name . ' does not fit pluginname ' . $this->_name);
 				return FALSE;
 			}
 		}
@@ -139,13 +139,13 @@ abstract class vmPlugin extends JPlugin {
 			}
 			if (is_array ($jid)) {
 				if (!in_array ($this->_jid, $jid)) {
-					//vmdebug ('selectedThis id ' . $jid . ' not in array does not fit ' . $this->_jid);
+					vmdebug ('selectedThis id ' . $jid . ' not in array does not fit ' . $this->_jid);
 					return FALSE;
 				}
 			}
 			else {
 				if ($jid != $this->_jid) {
-					//vmdebug ('selectedThis $jid ' . $jid . ' does not fit ' . $this->_jid);
+					vmdebug ('selectedThis $jid ' . $jid . ' does not fit ' . $this->_jid);
 					return FALSE;
 				}
 			}
@@ -291,7 +291,7 @@ abstract class vmPlugin extends JPlugin {
 				// 				vmdebug('onStoreInstallPluginTable '.$query);
 				$db = JFactory::getDBO ();
 				$db->setQuery ($query);
-				if (!$db->query ()) {
+				if (!$db->execute ()) {
 					JError::raiseWarning (1, $this->_name . '::onStoreInstallPluginTable: ' . JText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE));
 					echo $this->_name . '::onStoreInstallPluginTable: ' . JText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE);
 				} else {
@@ -429,7 +429,6 @@ abstract class vmPlugin extends JPlugin {
 
 	/**
 	 * @param $int
-	 * @param $cache
 	 * @return mixed
 	 */
 	protected function getVmPluginMethod ($int, $cache = true) {
@@ -451,23 +450,23 @@ abstract class vmPlugin extends JPlugin {
 		return $this->_vmpCtable->load ($int);
 	}
 
-    /**
-     * This stores the data of the plugin, attention NOT the configuration of the pluginmethod,
-     * this function should never be triggered only called from triggered functions.
-     *
-     * @author Max Milbers
-     * @param array $values array or object with the data to store
+	/**
+	 * This stores the data of the plugin, attention NOT the configuration of the pluginmethod,
+	 * this function should never be triggered only called from triggered functions.
+	 *
+	 * @author Max Milbers
+	 * @param array  $values array or object with the data to store
      * @param int|string $primaryKey
      * @param int|string $id
      * @param boolean $preload
      * @return array
-     */
+	 */
 	protected function storePluginInternalData (&$values, $primaryKey = 0, $id = 0, $preload = FALSE) {
 
 		if ($primaryKey === 0) {
 			$primaryKey = $this->_tablepkey;
 		}
-		if ($this->_vmpItable === 0) {
+		if ($this->_vmpItable === 0 or $id==0) {
 			$this->_vmpItable = $this->createPluginTableObject ($this->_tablename, $this->tableFields, $primaryKey, $this->_tableId, $this->_loggable);
 		}
 
@@ -554,6 +553,7 @@ abstract class vmPlugin extends JPlugin {
 	/**
 	 * Get the path to a layout for a type
 	 *
+	 * @param   string  $type  The name of the type
 	 * @param   string  $layout  The name of the type layout. If alternative
 	 *                           layout, in the form template:filename.
 	 * @param   array   $viewData  The data you want to use in the layout

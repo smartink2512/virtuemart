@@ -113,7 +113,7 @@ class VirtueMartModelWaitingList extends VmModel {
 			$vars['user'] =  $waiting_user->name ;
 			if (shopFunctionsF::renderMail ('productdetails', $waiting_user->notify_email, $vars, 'productdetails')) {
 				$db->setQuery ('UPDATE #__virtuemart_waitingusers SET notified=1 WHERE virtuemart_waitinguser_id=' . $waiting_user->virtuemart_waitinguser_id);
-				$db->query ();
+				$db->execute ();
 				$i++;
 			}
 			if (!empty($max_number) && $i >= $max_number) {
@@ -132,7 +132,8 @@ class VirtueMartModelWaitingList extends VmModel {
 	public
 	function adduser ($data) {
 
-		JSession::checkToken () or jexit ('Invalid Token, in notify customer');
+		vmRequest::vmCheckToken('Invalid Token, in adduser to waitinglist');
+		JSession::checkToken () or jexit ('');
 
 		$field = $this->getTable ('waitingusers');
 

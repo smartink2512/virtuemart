@@ -90,6 +90,7 @@ class TableOrders extends VmTable {
 	var $ip_address = 0;
 	/** @var char Order language */
 	var $order_language = NULL;
+	var $delivery_date = NULL;
 
 
 	/**
@@ -116,6 +117,11 @@ class TableOrders extends VmTable {
 
 		if(empty($this->order_pass)){
 			$this->order_pass = 'p_'.substr( md5((string)time().$this->order_number ), 0, 5);
+		}
+
+		$adminID = JFactory::getSession()->get('vmAdminID');
+		if(isset($adminID)) {
+			$this->created_by = $adminID;
 		}
 
 		return parent::check();

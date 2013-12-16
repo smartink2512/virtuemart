@@ -170,7 +170,6 @@ $document->addScriptDeclaration ( "
 						$userlink = JROUTE::_ ('index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]=' . $this->orderbt->virtuemart_user_id);
 						echo JHTML::_ ('link', JRoute::_ ($userlink), $username, array('title' => JText::_ ('COM_VIRTUEMART_ORDER_EDIT_USER') . ' ' . $username));
 					} else {
-						vmdebug('my this',$this);
 						echo $this->orderbt->first_name.' '.$this->orderbt->last_name;
 					}
 					?>
@@ -243,7 +242,7 @@ $document->addScriptDeclaration ( "
 
 			<?php
 				// Load additional plugins
-				$_dispatcher = JEventDispatcher::getInstance();
+				$_dispatcher = JDispatcher::getInstance();
 				$_returnValues1 = $_dispatcher->trigger('plgVmOnUpdateOrderBEPayment',array($this->orderID));
 				$_returnValues2 = $_dispatcher->trigger('plgVmOnUpdateOrderBEShipment',array(  $this->orderID));
 				$_returnValues = array_merge($_returnValues1, $_returnValues2);
@@ -328,6 +327,10 @@ $document->addScriptDeclaration ( "
 							}
 							?>
 						</td>
+					</tr>
+					<tr>
+						<td class="key"><?php echo JText::_('COM_VIRTUEMART_DELIVERY_DATE') ?></td>
+						<td><input type="text" maxlength="190" class="required" value="<?php echo $this->orderbt->delivery_date; ?>" size="30" name="delivery_date" id="delivery_date_field"></td>
 					</tr>
 					</table>
 				</td>
@@ -457,7 +460,7 @@ $document->addScriptDeclaration ( "
 								$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'BE');
 							echo '<div>'.$product_attribute.'</div>';
 						}
-						$_dispatcher = JEventDispatcher::getInstance();
+						$_dispatcher = JDispatcher::getInstance();
 						$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderLineBEShipment',array(  $this->orderID,$item->virtuemart_order_item_id));
 						$_plg = '';
 						foreach ($_returnValues as $_returnValue) {
@@ -498,11 +501,11 @@ $document->addScriptDeclaration ( "
 						echo '<span >'.$this->currency->priceDisplay($item->product_item_price) .'</span><br />'; 
 					}
 					?>
-					<input class='orderedit' type="hidden" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_item_price]" value="<?php echo $item->product_item_price; ?>"/>
+					<input class='orderedit' type="text" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_item_price]" value="<?php echo $item->product_item_price; ?>"/>
 				</td>
 				<td align="right" style="padding-right: 5px;">
 					<?php echo $this->currency->priceDisplay($item->product_basePriceWithTax); ?>
-					<input class='orderedit' type="hidden" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_basePriceWithTax]" value="<?php echo $item->product_basePriceWithTax; ?>"/>
+					<input class='orderedit' type="text" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_basePriceWithTax]" value="<?php echo $item->product_basePriceWithTax; ?>"/>
 				</td>
 				<td align="right" style="padding-right: 5px;">
 					<?php echo $this->currency->priceDisplay($item->product_final_price); ?>
@@ -512,7 +515,7 @@ $document->addScriptDeclaration ( "
 					<?php echo $this->currency->priceDisplay( $item->product_tax); ?>
 					<input class='orderedit' type="text" size="12" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_tax]" value="<?php echo $item->product_tax; ?>"/>
 					<span style="display: block; font-size: 80%;" title="<?php echo JText::_('COM_VIRTUEMART_ORDER_EDIT_CALCULATE_DESC'); ?>">
-						<input class='orderedit' type="checkbox" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][calculate_product_tax]" value="1" checked /> <label class='orderedit' for="calculate_product_tax"><?php echo JText::_('COM_VIRTUEMART_ORDER_EDIT_CALCULATE'); ?></label>
+						<input class='orderedit' type="checkbox" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][calculate_product_tax]" value="1" /> <label class='orderedit' for="calculate_product_tax"><?php echo JText::_('COM_VIRTUEMART_ORDER_EDIT_CALCULATE'); ?></label>
 					</span>
 				</td>
 				<td align="right" style="padding-right: 5px;">
@@ -725,7 +728,7 @@ $document->addScriptDeclaration ( "
 	<tr>
 		<td valign="top" width="50%"><?php
 		JPluginHelper::importPlugin('vmshipment');
-		$_dispatcher = JEventDispatcher::getInstance();
+		$_dispatcher = JDispatcher::getInstance();
 		$returnValues = $_dispatcher->trigger('plgVmOnShowOrderBEShipment',array(  $this->orderID,$this->orderbt->virtuemart_shipmentmethod_id, $this->orderdetails));
 
 		foreach ($returnValues as $returnValue) {
@@ -737,7 +740,7 @@ $document->addScriptDeclaration ( "
 		</td>
 		<td valign="top"><?php
 		JPluginHelper::importPlugin('vmpayment');
-		$_dispatcher = JEventDispatcher::getInstance();
+		$_dispatcher = JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderBEPayment',array( $this->orderID,$this->orderbt->virtuemart_paymentmethod_id, $this->orderdetails));
 
 		foreach ($_returnValues as $_returnValue) {

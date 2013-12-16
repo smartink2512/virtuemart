@@ -71,7 +71,7 @@ class VirtuemartControllerCategory extends VmController {
 		}
 
 		// Check token
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		vmRequest::vmCheckToken();
 
 		//capturing virtuemart_category_id
 		$id = 0;
@@ -111,7 +111,7 @@ class VirtuemartControllerCategory extends VmController {
 		}
 		
 		// Check token
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		vmRequest::vmCheckToken();
 
 		//capturing virtuemart_category_id
 		$id = 0;
@@ -149,7 +149,7 @@ class VirtuemartControllerCategory extends VmController {
 		}
 		
 		// Check for request forgeries
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		vmRequest::vmCheckToken();
 
 		$cid	= VmRequest::getInt( 'cid', array() );	//is sanitized
 		//JArrayHelper::toInteger($cid);

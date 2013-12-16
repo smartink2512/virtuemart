@@ -71,7 +71,7 @@ class VirtuemartModelReport extends VmModel {
 	function correctTimeOffset(&$inputDate){
 
 		$config = JFactory::getConfig();
-		$this->siteOffset = $config->get('offset');
+		$this->siteOffset = $config->getValue('config.offset');
 
 		$date = new JDate($inputDate);
 
@@ -88,7 +88,7 @@ class VirtuemartModelReport extends VmModel {
 		$this->until_period = VmRequest::getVar ('until_period', $this->date_presets['last30']['until']);
 
 		$config = JFactory::getConfig();
-		$siteOffset = $config->get('offset');
+		$siteOffset = $config->getValue('config.offset');
 		$this->siteTimezone = new DateTimeZone($siteOffset);
 
 		$this->correctTimeOffset($this->from_period);
@@ -105,7 +105,7 @@ class VirtuemartModelReport extends VmModel {
 		$this->until_period = $this->date_presets[$this->period]['until'];
 
 		$config = JFactory::getConfig();
-		$siteOffset = $config->get('offset');
+		$siteOffset = $config->getValue('config.offset');
 		$this->siteTimezone = new DateTimeZone($siteOffset);
 
 		$this->correctTimeOffset($this->from_period);
@@ -115,9 +115,10 @@ class VirtuemartModelReport extends VmModel {
 	function  getItemsByRevenue ($revenue) {
 
 		$q = 'select SUM(`product_quantity`) as product_quantity from `#__virtuemart_order_items` as i LEFT JOIN #__virtuemart_orders as o ON o.virtuemart_order_id=i.virtuemart_order_id ' . $this->whereItem . ' CAST(' . $this->intervals . ' AS DATE) = CAST("' . $revenue['intervals'] . '" AS DATE) ';
-		$this->_db->setQuery ($q);
-		//echo $this->_db->_sql;
-		return $this->_db->loadResult ();
+		$db = JFactory::getDBO();
+		$db->setQuery ($q);
+
+		return $db->loadResult ();
 
 	}
 
@@ -179,12 +180,13 @@ class VirtuemartModelReport extends VmModel {
 
 		$statusList = array();
 		// Filter by statut
-		if ($orderstates = VmRequest::getVar ('order_status_code', NULL)) {
+		if ($orderstates = VmRequest::getVar ('order_status_code', array('C','S'))) {
 			$query = 'SELECT `order_status_code`
 				FROM `#__virtuemart_orderstates`
 				WHERE published=1 ';
-			$this->_db->setQuery ($query);
-			$list = $this->_db->loadColumn ();
+			$db = JFactory::getDBO();
+			$db->setQuery ($query);
+			$list = $db->loadColumn ();
 			foreach ($orderstates as $val) {
 				if (in_array ($val, $list)) {
 					$statusList[] = '`i`.`order_status` = "' . $val . '"';
@@ -405,8 +407,8 @@ class VirtuemartModelReport extends VmModel {
 
 	public function updateOrderItems () {
 		$q = 'UPDATE #__virtuemart_order_items SET `product_discountedPriceWithoutTax`=( (IF(product_final_price is NULL, 0.00,product_final_price)   - IF(product_tax is NULL, 0.00,product_tax)  )) WHERE `product_discountedPriceWithoutTax` IS NULL';
-		$this->_db = JFactory::getDBO();
-		$this->_db->setQuery($q);
-		$this->_db->execute();
+		$db = JFactory::getDBO();
+		$db->setQuery($q);
+		$db->execute();
 	}
 }

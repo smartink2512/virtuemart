@@ -27,7 +27,7 @@ AdminUIHelper::startAdminArea($this);
     <table>
 	<tr>
 	    <td width="100%">
-			<?php echo $this->displayDefaultViewSearch ('COM_VIRTUEMART_CURRENCY',$this->lists['search']) ; ?>
+			<?php echo $this->displayDefaultViewSearch ('COM_VIRTUEMART_CURRENCY','search') ; ?>
 	    </td>
 	</tr>
     </table>

@@ -151,7 +151,7 @@ class VirtueMartModelUserfields extends VmModel {
 				if (strpos($fieldType,'plugin')!==false){
 
 					JPluginHelper::importPlugin('vmuserfield');
-					$dispatcher = JEventDispatcher::getInstance();
+					$dispatcher = JDispatcher::getInstance();
 					// vmdebug('params',$params);
 					$dispatcher->trigger('plgVmPrepareUserfieldDataSave',array($fieldType, $fieldName, &$data, &$value, $params) );
 					return $value;
@@ -189,7 +189,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 		if(strpos($this->_data->type,'plugin')!==false){
   			JPluginHelper::importPlugin('vmuserfield');
-  			$dispatcher = JEventDispatcher::getInstance();
+  			$dispatcher = JDispatcher::getInstance();
 			$plgName = substr($this->_data->type,6);
 			$type = 'userfield';
   			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfield',array($type,$plgName,$this->_data->userfield_jplugin_id,&$this->_data));
@@ -260,7 +260,7 @@ class VirtueMartModelUserfields extends VmModel {
 				}
 			}
 		}
-
+		//vmdebug ('SAVED userfields', $data);
 		//This is some old stuff by oscar, we remove it now
 		// Put the parameters, if any, in the correct format
 		/*if (array_key_exists($data['type'], $this->reqParam)) {
@@ -282,10 +282,11 @@ class VirtueMartModelUserfields extends VmModel {
 			}
 			$plgName = substr($data['type'],6);
 			$q = 'SELECT `' . $ext_id . '` FROM `' . $tb . '` WHERE `element` = "'.$plgName.'"';
-			$this->_db->setQuery($q);
-			$data['userfield_jplugin_id'] = $this->_db->loadResult();
+			$db = JFactory::getDBO();
+			$db->setQuery($q);
+			$data['userfield_jplugin_id'] = $db->loadResult();
 			JPluginHelper::importPlugin('vmuserfield');
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('plgVmOnBeforeUserfieldSave',array( $plgName , &$data, &$field ) );
 		}
 
@@ -303,7 +304,6 @@ class VirtueMartModelUserfields extends VmModel {
 
 		// Get the fieldtype for the database
 		$_fieldType = $field->formatFieldType($data);
-
 
 		if(!in_array($data['name'],$coreFields) && $field->type != 'delimiter'){
 
@@ -338,7 +338,7 @@ class VirtueMartModelUserfields extends VmModel {
 		}
 		if(strpos($data['type'],'plugin')!==false){
 			JPluginHelper::importPlugin('vmuserfield');
-					$dispatcher = JEventDispatcher::getInstance();
+					$dispatcher = JDispatcher::getInstance();
 					$plgName = substr($data['type'],6);
 					$dispatcher->trigger('plgVmOnStoreInstallPluginTable',array( 'userfield' , $data  ) );
 		}
@@ -802,6 +802,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 						if(!empty($_return['fields'][$_fld->name]['value'])){
 							// Translate the value from ID to name
+							$_return['fields'][$_fld->name]['virtuemart_country_id'] = (int)$_return['fields'][$_fld->name]['value'];
 							$db = JFactory::getDBO ();
 							$q = 'SELECT * FROM `#__virtuemart_countries` WHERE virtuemart_country_id = "' . (int)$_return['fields'][$_fld->name]['value'] . '"';
 							$db->setQuery ($q);
@@ -836,6 +837,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 						if(!empty($_return['fields'][$_fld->name]['value'])){
 							// Translate the value from ID to name
+							$_return['fields'][$_fld->name]['virtuemart_state_id'] = (int)$_return['fields'][$_fld->name]['value'];
 							$db = JFactory::getDBO ();
 							$q = 'SELECT * FROM `#__virtuemart_states` WHERE virtuemart_state_id = "' . (int)$_return['fields'][$_fld->name]['value'] . '"';
 							$db->setQuery ($q);
@@ -874,7 +876,7 @@ class VirtueMartModelUserfields extends VmModel {
 						if(strpos($_fld->type,'plugin')!==false){
 
 							JPluginHelper::importPlugin('vmuserfield');
-							$dispatcher = JEventDispatcher::getInstance();
+							$dispatcher = JDispatcher::getInstance();
 							$dispatcher->trigger('plgVmOnUserfieldDisplay',array($_prefix, $_fld,isset($_userData['virtuemart_user_id'])?$_userData['virtuemart_user_id']:0,  &$_return) );
 							break;
 						}
@@ -951,7 +953,7 @@ class VirtueMartModelUserfields extends VmModel {
 							// /*##mygruz20120223193710 { :*/
 						// case 'userfieldplugin': //why not just vmuserfieldsplugin ?
 							// JPluginHelper::importPlugin('vmuserfield');
-							// $dispatcher = JEventDispatcher::getInstance();
+							// $dispatcher = JDispatcher::getInstance();
 							// //Todo to adjust to new pattern, using &
 							// $html = '' ;
 							// $dispatcher->trigger('plgVmOnUserFieldDisplay',array($_return['fields'][$_fld->name], &$html) );
@@ -1075,10 +1077,10 @@ class VirtueMartModelUserfields extends VmModel {
 	function getIfRequired($fieldname) {
 
 		$q = 'SELECT `required` FROM #__virtuemart_userfields WHERE `name` = "'.$fieldname.'" ';
-
-		$this->_db->setQuery($q);
-		$result = $this->_db->loadResult();
-		$error = $this->_db->getErrorMsg();
+		$db = JFactory::getDBO();
+		$db->setQuery($q);
+		$result = $db->loadResult();
+		$error = $db->getErrorMsg();
 		if(!empty($error)){
 			vmError('userfields getIfRequired '.$error,'Programmer used an unknown userfield '.$fieldname);
 		}
@@ -1156,7 +1158,6 @@ class VirtueMartModelUserfields extends VmModel {
 			$field->load($fieldId);
 
 			if ($field->type != 'delimiter') {
-
 				// Get the fieldtype for the database
 				$_fieldType = $field->formatFieldType();
 
@@ -1215,8 +1216,8 @@ class VirtueMartModelUserfields extends VmModel {
 	{
 		$db = JFactory::getDBO();
 		if ($search = VmRequest::getCmd('search', false)) {
-			$search = '"%' . $this->_db->escape( $search, true ) . '%"' ;
-			//$search = $this->_db->Quote($search, false);
+			$search = '"%' . $db->escape( $search, true ) . '%"' ;
+			//$search = $db->Quote($search, false);
 			return (' WHERE `name` LIKE ' .$search);
 		}
 		return ('');

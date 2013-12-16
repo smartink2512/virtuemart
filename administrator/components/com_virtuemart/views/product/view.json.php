@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 		// Load some common models
 if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 
@@ -30,7 +30,7 @@ if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.
  * @package		VirtueMart
  * @author
  */
-class VirtuemartViewProduct extends JViewLegacy {
+class VirtuemartViewProduct extends VmView {
 
 	var $json = array();
 
@@ -117,8 +117,6 @@ class VirtuemartViewProduct extends JViewLegacy {
 					}
 				} elseif ($field->field_type =='E') {
 					$this->json['table'] = 'customPlugins';
-
-					$this->model->bindCustomEmbeddedFieldParams($field,'E');
 					$display = $this->model->displayProductCustomfieldBE($field,$product_id,$this->row);
 					 if ($field->is_cart_attribute) {
 					     $cartIcone=  'default';
@@ -127,15 +125,15 @@ class VirtuemartViewProduct extends JViewLegacy {
 					 }
 					 $html[] = '
 					<tr class="removable">
-						<td>'.$field->custom_title.'</td>
-						<td>'.$field->custom_tip.'</td>
+						<td><span class="hasTip" title="'.JText::_($field->custom_tip).'">'.$field->custom_title.'</td>
 						<td>'.$display.'
 						'.$this->model->setEditCustomHidden($field, $this->row).'
 						<p>'.JTEXT::_('COM_VIRTUEMART_CUSTOM_ACTIVATE_JAVASCRIPT').'</p></td>
-						<td>'.JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION').'</td>
-						<td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
-						<td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" /></td>
-						<td><span class="vmicon vmicon-16-move"></span></td>
+						<td><span class="vmicon vmicon-16-'.$cartIcone.'"></span>'.JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION').'</td>
+						<td><span class="vmicon vmicon-16-move"></span>
+						<span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" />
+						</td>
+
 					</tr>';
 					$this->row++;
 
@@ -150,15 +148,12 @@ class VirtuemartViewProduct extends JViewLegacy {
 						$type = 'deprecated';
 					}
 					 $html[] = '<tr class="removable">
-						<td>'.$field->custom_title.'</td>
-						<td>'.$field->custom_tip.'</td>
+						<td><span class="hasTip" title="'.JText::_($field->custom_tip).'">'.$field->custom_title.'</td>
 						 <td>'.$display.'</td>
-						 <td>'.$type.'
+						 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span>'.JText::_($fieldTypes[$field->field_type]).'
 							'.$this->model->setEditCustomHidden($field, $this->row).'
 						</td>
-						 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
-						 <td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" /></td>
-						 <td><span class="vmicon vmicon-16-move"></span></td>
+						 <td><span class="vmicon vmicon-16-move"></span><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" /></td>
 						</tr>';
 					$this->row++;
 				}
@@ -200,12 +195,12 @@ class VirtuemartViewProduct extends JViewLegacy {
 		foreach ($this->json as &$related) {
 
 			$customs->customfield_value = $related->id;
-			//$customs->virtuemart_product_id  = $related->id;
 			$display = $this->model->displayProductCustomfieldBE($customs,$related->id,$this->row);
 			$html = '<div class="vm_thumb_image">
+				<div class="vmicon vmicon-16-remove"></div>
 				<span>'.$display.'</span>
 				'.$this->model->setEditCustomHidden($customs, $this->row).'
-				<div class="vmicon vmicon-16-remove"></div></div>';
+				</div>';
 
 			$related->label = $html;
 

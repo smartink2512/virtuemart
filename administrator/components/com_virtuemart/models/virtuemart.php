@@ -19,9 +19,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Load the model framework
-//if(!class_exists('JModel')) require JPATH_VM_LIBRARIES.DS.'joomla'.DS.'application'.DS.'component'.DS.'model.php';
-
 /**
  * Model for Macola
  *
@@ -114,11 +111,11 @@ class VirtueMartModelVirtueMart extends VmModel {
 		$query .= 'JOIN `#__virtuemart_userinfos` as ui ON u.id = ui.virtuemart_user_id ';
 		$query .= 'JOIN `#__virtuemart_orders` as uo ON u.id = uo.virtuemart_user_id ';
 		$query .= 'WHERE `perms` <> "admin" ';
-        $query .= 'AND `perms` <> "storeadmin" ';
-        //$query .= 'AND INSTR(`usertype`, "administrator") = 0 AND INSTR(`usertype`, "Administrator") = 0 ';
-        $query .= ' ORDER BY uo.`created_on` DESC';
-        return $this->_getList($query, 0, $nbrCusts);
-    }
+		$query .= 'AND `perms` <> "storeadmin" ';
+		//$query .= 'AND INSTR(`usertype`, "administrator") = 0 AND INSTR(`usertype`, "Administrator") = 0 ';
+		$query .= ' ORDER BY uo.`created_on` DESC';
+		return $this->_getList($query, 0, $nbrCusts);
+	}
 }
 
 //pure php no tag

@@ -154,7 +154,7 @@ class VmController extends JControllerLegacy{
 	 */
 	function save($data = 0){
 
-		JSession::checkToken() or jexit( 'Invalid Token save' );
+		vmRequest::vmCheckToken();
 
 		if($data===0)$data = VmRequest::getRequest();
 
@@ -188,7 +188,7 @@ class VmController extends JControllerLegacy{
 	 */
 	function remove(){
 
-		JSession::checkToken() or jexit( 'Invalid Token remove' );
+		vmRequest::vmCheckToken();
 
 		$ids = VmRequest::getVar($this->_cidName, VmRequest::getInt('cid', array() ));
 		//jimport( 'joomla.utilities.arrayhelper' );
@@ -234,7 +234,7 @@ class VmController extends JControllerLegacy{
 
 	public function toggle($field,$val=null){
 
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		vmRequest::vmCheckToken();
 
 		$model = VmModel::getModel($this->_cname);
 		if (!$model->toggle($field,$val,$this->_cidName)) {
@@ -253,7 +253,7 @@ class VmController extends JControllerLegacy{
 	 */
 	public function publish($cidname=0,$table=0,$redirect = 0){
 
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		vmRequest::vmCheckToken();
 
 		$model = VmModel::getModel($this->_cname);
 
@@ -278,7 +278,7 @@ class VmController extends JControllerLegacy{
 	 */
 	function unpublish($cidname=0,$table=0,$redirect = 0){
 
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		vmRequest::vmCheckToken();
 
 		$model = VmModel::getModel($this->_cname);
 
@@ -297,7 +297,7 @@ class VmController extends JControllerLegacy{
 
 	function orderup() {
 
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		vmRequest::vmCheckToken();
 
 		$model = VmModel::getModel($this->_cname);
 		$model->move(-1);
@@ -307,7 +307,7 @@ class VmController extends JControllerLegacy{
 
 	function orderdown() {
 
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		vmRequest::vmCheckToken();
 
 		$model = VmModel::getModel($this->_cname);
 		$model->move(1);
@@ -317,7 +317,7 @@ class VmController extends JControllerLegacy{
 
 	function saveorder() {
 
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		vmRequest::vmCheckToken();
 
 		$cid 	= VmRequest::getInt( $this->_cidName, VmRequest::getInt('cid', array() ) );
 		$order 	= VmRequest::getInt( 'order', array() );

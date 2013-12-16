@@ -1041,7 +1041,7 @@ class VmPagination extends JPagination {
 			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="'.$namespace.'submitform();"', 'value', 'text', $selected);
 		} else {
 
-			$getArray = (VmRequest::get( 'get' ));
+			$getArray = VmRequest::getRequest();
 			$link ='';
 			unset ($getArray['limit']);
 

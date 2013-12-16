@@ -80,11 +80,12 @@ class VirtuemartControllerProduct extends VmController {
 	}
 
 	function saveJS(){
-		$data = VmRequest::get('get');
-		VmRequest::setVar($data['token'], '1', 'post');
 
-		JSession::checkToken() or jexit( 'Invalid Token save' );
+		vmRequest::vmCheckToken();
+
 		$model = VmModel::getModel($this->_cname);
+
+		$data = VmRequest::getRequest();
 		$id = $model->store($data);
 
 		$errors = $model->getErrors();
@@ -149,20 +150,13 @@ class VirtuemartControllerProduct extends VmController {
 	*/
 	public function createVariant(){
 
-		$data = VmRequest::get('get');
-		VmRequest::setVar($data['token'], '1', 'post');
-		JSession::checkToken() or jexit('Invalid Token, in ' . VmRequest::getCmd('task'));
+		vmRequest::vmCheckToken();
 
 		$app = Jfactory::getApplication();
 
-		/* Load the view object */
-		$view = $this->getView('product', 'html');
-
 		$model = VmModel::getModel('product');
 
-		//$cids = VmRequest::getVar('cid');
-		//$cid = VmRequest::getInt('virtuemart_product_id',0);
-		$cid = VmRequest::getVar('virtuemart_product_id',array(),'', 'array');
+		$cid = VmRequest::getInt('virtuemart_product_id',array());
 		if(is_array($cid) && count($cid) > 0){
 			$cid = (int)$cid[0];
 		} else {
@@ -235,7 +229,7 @@ class VirtuemartControllerProduct extends VmController {
 	 */
 	public function massxref($layoutName){
 
-		JSession::checkToken() or jexit('Invalid Token, in ' . VmRequest::getCmd('task'));
+		vmRequest::vmCheckToken();
 
 		$cids = VmRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY');
 		JArrayHelper::toInteger($cids);

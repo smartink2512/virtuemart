@@ -1149,7 +1149,7 @@ class VmConfig {
 class vmRequest {
 
 	//static $filters = array( '' =>);
-	static function uword($field, $default='', $custom=''){
+	public static function uword($field, $default='', $custom=''){
 
 		$source = self::getVar($field,$default);
  		if(function_exists('mb_ereg_replace')){
@@ -1270,9 +1270,76 @@ class vmRequest {
 			$_REQUEST[$name] = $value;
 			return null;
 		}
-
-
 	}
+
+	/**
+	 * Checks for a form token in the request.
+	 *
+	 * Use in conjunction with JHtml::_('form.token') or JSession::getFormToken.
+	 *
+	 * @param   string  $method  The request method in which to look for the token key.
+	 *
+	 * @return  boolean  True if found and valid, false otherwise.
+	 *
+	 * @since   12.1
+	 */
+	public static function vmCheckToken($redirectMsg=0){
+
+		$token = self::getFormToken();
+
+		if (!self::uword($token, FALSE)){
+
+			if ($rToken = self::uword('token', FALSE)){
+				if($rToken == $token){
+					return true;
+				}
+			}
+
+			$session = JFactory::getSession();
+
+			if ($session->isNew()){
+				// Redirect to login screen.
+				$app = JFactory::getApplication();
+				$app->redirect(JRoute::_('index.php'), vmText::_('JLIB_ENVIRONMENT_SESSION_EXPIRED'));
+				$app->close();
+			}
+			else {
+				if($redirectMsg===0){
+					$redirectMsg = 'Invalid Token, in ' . VmRequest::getCmd('options') .' view='.VmRequest::getCmd('view'). ' task='.VmRequest::getCmd('task');
+					//jexit('Invalid Token, in ' . VmRequest::getCmd('options') .' view='.VmRequest::getCmd('view'). ' task='.VmRequest::getCmd('task'));
+				} else {
+					$redirectMsg =  vmText::_($redirectMsg);
+				}
+				// Redirect to login screen.
+				$app = JFactory::getApplication();
+				$app->redirect(JRoute::_('index.php'), vmText::_($redirectMsg));
+				$app->close();
+				return false;
+			}
+		}
+		else {
+			return true;
+		}
+	}
+
+	/**
+	 * Method to determine a hash for anti-spoofing variable names
+	 *
+	 * @param   boolean  $forceNew  If true, force a new token to be created
+	 *
+	 * @return  string  Hashed var name
+	 *
+	 * @since   11.1
+	 */
+	public static function getFormToken($forceNew = false){
+
+		$user = JFactory::getUser();
+		$session = JFactory::getSession();
+		$hash = JApplication::getHash($user->get('id', 0) . $session->getToken($forceNew));
+
+		return $hash;
+	}
+
 }
 
 

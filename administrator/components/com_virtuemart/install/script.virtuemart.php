@@ -217,27 +217,16 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$lang = strtolower(strtr($lang,'-','_'));
 
 			if(!class_exists('VirtueMartModelUpdatesMigration')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'updatesmigration.php');
-			$model = new VirtueMartModelUpdatesMigration(); //VmModel::getInstance('updatesmigration', 'VirtueMartModel');
+			$model = new VirtueMartModelUpdatesMigration(); //JModel::getInstance('updatesmigration', 'VirtueMartModel');
 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql',$lang);
-			// 			$this->displayFinished(true);
-			//return false;
 
 			$this -> joomlaSessionDBToMediumText();
 
-// 			$this->portOverwritePrices();
-/*			$table = '#__virtuemart_customs';
-			$fieldname = 'field_type';
-			$fieldvalue = 'G';
-			$this->addToRequired($table,$fieldname,$fieldvalue,"INSERT INTO `#__virtuemart_customs`
-					(`custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`,
-					 `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `published`) VALUES
-						(0, 0, 'COM_VIRTUEMART_STOCKABLE_PRODUCT', 'COM_VIRTUEMART_STOCKABLE_PRODUCT_TIP', NULL,
-					'COM_VIRTUEMART_STOCKABLE_PRODUCT_DESC', 'G', 0, 0, 0, 1 );");
-*/
 
-			$this->alterTable('#__virtuemart_product_prices',array(
-				'product_price_vdate' => ' `product_price_publish_up` DATETIME NULL DEFAULT NULL AFTER `product_currency`',
-				'product_price_edate' => ' `product_price_publish_down` DATETIME NULL DEFAULT NULL AFTER `product_price_publish_up`'
+			$this->alterTable('#__virtuemart_product_prices',
+				array(
+				'product_price_vdate' => '`product_price_publish_up` DATETIME NULL DEFAULT NULL AFTER `product_currency`',
+				'product_price_edate' => '`product_price_publish_down` DATETIME NULL DEFAULT NULL AFTER `product_price_publish_up`'
 			));
 			$this->alterTable('#__virtuemart_customs',array(
 				'custom_field_desc' => '`custom_desc` char(255) COMMENT \'description or unit\'',
@@ -263,10 +252,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				),
 				'DROP'
 			);
-
-			//$this->deleteReCreatePrimaryKey('#__virtuemart_userinfos','virtuemart_userinfo_id');
-
-			//$this->renameVdateToPublishDown();
 
 			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();
@@ -521,7 +506,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//Does not work, the keys must be regenerated
 // 			$query = 'ALTER TABLE `#__virtuemart_userinfos`  CHANGE COLUMN `virtuemart_userinfo_id` `virtuemart_userinfo_id` INT(1) NOT NULL AUTO_INCREMENT FIRST';
 // 			$this->_db->setQuery($query);
-// 			if(!$this->_db->execute()){
+// 			if(!$this->_db->query()){
 
 // 			} else {
 // 				$query = 'ALTER TABLE `#__virtuemart_userinfos` AUTO_INCREMENT = 1';
@@ -684,8 +669,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$res  = VirtueMartModelConfig::checkConfigTableExists();
 
 				if(!empty($res)){
-					JRequest::setVar(JSession::getFormToken(), '1', 'post');
-					$config = VmModel::getInstance('config', 'VirtueMartModel');
+					VmRequest::setVar(JSession::getFormToken(), '1', 'post');
+					$config = JModel::getInstance('config', 'VirtueMartModel');
 					$config->setDangerousToolsOff();
 				}
 

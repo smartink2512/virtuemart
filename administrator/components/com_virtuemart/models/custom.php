@@ -63,7 +63,7 @@ class VirtueMartModelCustom extends VmModel {
 
 		    if ($this->_data->field_type == 'E') {
 			    JPluginHelper::importPlugin ('vmcustom');
-			    $dispatcher = JEventDispatcher::getInstance ();
+			    $dispatcher = JDispatcher::getInstance ();
 			    $retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustom', array(&$this->_data));
 		    }
 
@@ -94,7 +94,8 @@ class VirtueMartModelCustom extends VmModel {
 		}
 
 		if($search){
-			$search = '"%' . $this->_db->escape( $search, true ) . '%"' ;
+			$db = JFactory::getDBO();
+			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			$query .= 'AND `custom_title` LIKE '.$search;
 		}
 	    $datas = new stdClass();
@@ -126,8 +127,9 @@ class VirtueMartModelCustom extends VmModel {
 	public function getCustomParentTitle ($custom_parent_id) {
 
 		$q = 'SELECT custom_title FROM `#__virtuemart_customs` WHERE virtuemart_custom_id =' . (int)$custom_parent_id;
-		$this->_db->setQuery ($q);
-		return $this->_db->loadResult ();
+		$db = JFactory::getDBO();
+		$db->setQuery ($q);
+		return $db->loadResult ();
 	}
 
 	/**
@@ -138,7 +140,7 @@ class VirtueMartModelCustom extends VmModel {
 	 */
 	public function displayCustomSelection () {
 
-		$customslist = $this->getCustomsList ();
+		$customslist = $this->getParentList ();
 		if (isset($this->virtuemart_custom_id)) {
 			$value = $this->virtuemart_custom_id;
 		}
@@ -168,17 +170,17 @@ class VirtueMartModelCustom extends VmModel {
 		if ($ID = VmRequest::getInt ('virtuemart_custom_id', 0)) {
 			$q .= ' AND `virtuemart_custom_id`!=' . (int)$ID;
 		}
-		//if (isset($this->virtuemart_custom_id)) $q.=' and virtuemart_custom_id !='.$this->virtuemart_custom_id;
-		$this->_db->setQuery ($q);
-		//		$result = $this->_db->loadAssocList();
-		$result = $this->_db->loadObjectList ();
+		$db = JFactory::getDBO();
+		$db->setQuery ($q);
 
-		$errMsg = $this->_db->getErrorMsg ();
-		$errs = $this->_db->getErrors ();
+		$result = $db->loadObjectList ();
+
+		$errMsg = $db->getErrorMsg ();
+		$errs = $db->getErrors ();
 
 		if (!empty($errMsg)) {
 			$app = JFactory::getApplication ();
-			$errNum = $this->_db->getErrorNum ();
+			$errNum = $db->getErrorNum ();
 			$app->enqueueMessage ('SQL-Error: ' . $errNum . ' ' . $errMsg);
 		}
 
@@ -201,8 +203,9 @@ class VirtueMartModelCustom extends VmModel {
 	 */
 	function getParentList ($excludedId = 0) {
 
-		$this->_db->setQuery (' SELECT virtuemart_custom_id as value,custom_title as text FROM `#__virtuemart_customs` WHERE `field_type` ="P" and virtuemart_custom_id!=' . $excludedId);
-		if ($results = $this->_db->loadObjectList ()) {
+		$db = JFactory::getDBO();
+		$db->setQuery (' SELECT virtuemart_custom_id as value,custom_title as text FROM `#__virtuemart_customs` WHERE `field_type` ="P" and virtuemart_custom_id!=' . $excludedId);
+		if ($results = $db->loadObjectList ()) {
 			return $results;
 		}
 		else {
@@ -240,18 +243,18 @@ class VirtueMartModelCustom extends VmModel {
 	 **/
 	public function saveChildCustomRelation($table,$datas) {
 
-		JSession::checkToken() or jexit( 'Invalid Token, in store customfields');
+		vmRequest::vmCheckToken('Invalid token in saveChildCustomRelation');
 		//Table whitelist
 		$tableWhiteList = array('product','category','manufacturer');
 		if(!in_array($table,$tableWhiteList)) return false;
 
-		$customfieldIds = array();
+		$db = JFactory::getDBO();
 		// delete existings from modelXref and table customfields
 		foreach ($datas as $child_id =>$fields) {
 			$fields['virtuemart_'.$table.'_id']=$child_id;
-			$this->_db->setQuery( 'DELETE PC FROM `#__virtuemart_'.$table.'_customfields` as `PC`, `#__virtuemart_customs` as `C` WHERE `PC`.`virtuemart_custom_id` = `C`.`virtuemart_custom_id` AND field_type="C" and virtuemart_'.$table.'_id ='.$child_id );
-			if(!$this->_db->execute()){
-				vmError('Error in deleting child relation '); //.$this->_db->getQuery()); Dont give hackers too much info
+			$db->setQuery( 'DELETE PC FROM `#__virtuemart_'.$table.'_customfields` as `PC`, `#__virtuemart_customs` as `C` WHERE `PC`.`virtuemart_custom_id` = `C`.`virtuemart_custom_id` AND field_type="C" and virtuemart_'.$table.'_id ='.$child_id );
+			if(!$db->execute()){
+				vmError('Error in deleting child relation '); //.$db->getQuery()); Dont give hackers too much info
 			}
 
 			$tableCustomfields = $this->getTable($table.'_customfields');
@@ -289,8 +292,9 @@ class VirtueMartModelCustom extends VmModel {
 			$ext_id = 'extension_id';
 		}
 		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['custom_jplugin_id'].'"';
-		$this->_db->setQuery($q);
-		$data['custom_element'] = $this->_db->loadResult();
+		$db = JFactory::getDBO();
+		$db->setQuery($q);
+		$data['custom_element'] = $db->loadResult();
 
 
 		if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');

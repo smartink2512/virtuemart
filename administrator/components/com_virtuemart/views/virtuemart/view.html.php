@@ -68,12 +68,6 @@ class VirtuemartViewVirtuemart extends VmView {
 		$recentCustomers = $model->getRecentCustomers();
 		$this->assignRef('recentCustomers', $recentCustomers);
 
-		// RSS Feed
-		jimport('simplepie.simplepie');
-		$cache_time=86400*3; // 3 days
-		$rssExtensionURL="http://extensions.virtuemart.net/?format=feed&type=rss";
-		$rssExtensionFeed = JFactory::getFeedParser($rssExtensionURL, $cache_time);
-		$feed = new stdclass();
 		if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.'/helpers/shopfunctions.php');
 
 		$extensionsFeed = ShopFunctions::getExtensionsRssFeed();

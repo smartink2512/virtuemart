@@ -50,7 +50,7 @@ class VirtuemartViewCalc extends VmView {
 		$this->SetViewTitle();
 
 
-		$layoutName = VmRequest::getString('layout', 'default');
+		$layoutName = VmRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 
 			$calc = $model->getCalc();
@@ -118,15 +118,15 @@ class VirtuemartViewCalc extends VmView {
 			$this->addStandardEditViewCommands();
 
         } else {
-			JToolBarHelper::custom('toggle.calc_shopper_published.0', 'unpublish', 'no', JText::_('COM_VIRTUEMART_CALC_SHOPPER_PUBLISH_TOGGLE_OFF'), true);
-			JToolBarHelper::custom('toggle.calc_shopper_published.1', 'publish', 'yes', JText::_('COM_VIRTUEMART_CALC_SHOPPER_PUBLISH_TOGGLE_ON'), true);
-			JToolBarHelper::custom('toggle.calc_vendor_published.0', 'unpublish', 'no', JText::_('COM_VIRTUEMART_CALC_VENDOR_PUBLISH_TOGGLE_OFF'), true);
-			JToolBarHelper::custom('toggle.calc_vendor_published.1', 'publish', 'yes', JText::_('COM_VIRTUEMART_CALC_VENDOR_PUBLISH_TOGGLE_ON'), true);
+			if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){
+				JToolBarHelper::custom('toggle.shared.1', 'publish', 'yes', JText::_('COM_VIRTUEMART_SHARED_TOGGLE_ON'), true);
+				JToolBarHelper::custom('toggle.shared.0', 'unpublish', 'no', JText::_('COM_VIRTUEMART_SHARED_TOGGLE_OFF'), true);
+			}
 
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
 
-			$search = VmRequest::getString('search', false);
+			$search = VmRequest::getCmd('search', false);
 			$calcs = $model->getCalcs(false, false, $search);
 
 			$this->assignRef('calcs',	$calcs);
@@ -192,7 +192,7 @@ class VirtuemartViewCalc extends VmView {
 
 		if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
 		JPluginHelper::importPlugin('vmcalculation');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 
 		$answer = $dispatcher->trigger('plgVmAddMathOp', array(&$mathOps));
 

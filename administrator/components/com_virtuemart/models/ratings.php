@@ -153,9 +153,10 @@ class VirtueMartModelRatings extends VmModel {
      	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`
 		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`pr`.`created_by`
       WHERE virtuemart_rating_review_id="'.(int)$cids[0].'" ' ;
-		$this->_db->setQuery($q);
-		vmdebug('getReview',$this->_db->getQuery());
-		return $this->_db->loadObject();
+		$db = JFactory::getDBO();
+		$db->setQuery($q);
+		vmdebug('getReview',$db->getQuery());
+		return $db->loadObject();
     }
 
 
@@ -168,8 +169,9 @@ class VirtueMartModelRatings extends VmModel {
 
     function getRatingByProduct($product_id){
     	$q = 'SELECT * FROM `#__virtuemart_ratings` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" ';
-		$this->_db->setQuery($q);
-		return $this->_db->loadObject();
+		$db = JFactory::getDBO();
+		$db->setQuery($q);
+		return $db->loadObject();
 
     }
 
@@ -186,8 +188,9 @@ class VirtueMartModelRatings extends VmModel {
 			$userId = $user->id;
     	}
 		$q = 'SELECT * FROM `#__virtuemart_rating_reviews` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" AND `created_by` = "'.(int)$userId.'" ';
-		$this->_db->setQuery($q);
-		return $this->_db->loadObject();
+		$db = JFactory::getDBO();
+		$db->setQuery($q);
+		return $db->loadObject();
     }
 
     /**
@@ -203,8 +206,9 @@ class VirtueMartModelRatings extends VmModel {
 			$userId = $user->id;
     	}
 		$q = 'SELECT * FROM `#__virtuemart_rating_reviews` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" ';
-		$this->_db->setQuery($q);
-		return $this->_db->loadObjectList();
+		$db = JFactory::getDBO();
+		$db->setQuery($q);
+		return $db->loadObjectList();
     }
 
     /**
@@ -221,8 +225,9 @@ class VirtueMartModelRatings extends VmModel {
 			$userId = $user->id;
     	}
 		$q = 'SELECT * FROM `#__virtuemart_rating_votes` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" AND `created_by` = "'.(int)$userId.'" ';
-		$this->_db->setQuery($q);
-		return $this->_db->loadObject();
+		$db = JFactory::getDBO();
+		$db->setQuery($q);
+		return $db->loadObject();
 
     }
 

@@ -30,120 +30,122 @@ if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmvie
  * @author valérie isaksen
  */
 if (!class_exists('VirtueMartModelCurrency'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
+require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 
 class VirtuemartViewPaymentMethod extends VmView {
 
-    function display($tpl = null) {
+	function display($tpl = null) {
 
-        // Load the helper(s)
-        $this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
+		// Load the helper(s)
+		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 
-        if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 
-        if (!class_exists('VmHTML'))
-            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+		if (!class_exists('VmHTML'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
-        if (!class_exists ('vmPlugin')) {
-            require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
-        }
+		if (!class_exists ('vmPlugin')) {
+			require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
+		}
 
-        $permsInstance=Permissions::getInstance();
-        $this->assignRef('perms', $permsInstance);
 
-        $model = VmModel::getModel('paymentmethod');
+		$this->assignRef('perms', Permissions::getInstance());
 
-        //@todo should be depended by loggedVendor
-        //		$vendorId=1;
-        //		$this->assignRef('vendorId', $vendorId);
-        // TODO logo
-        $this->SetViewTitle();
+		$model = VmModel::getModel('paymentmethod');
 
-        $layoutName = VmRequest::getCmd('layout', 'default');
+		//@todo should be depended by loggedVendor
+		//		$vendorId=1;
+		//		$this->assignRef('vendorId', $vendorId);
+		// TODO logo
+		$this->SetViewTitle();
 
-        $vendorModel = VmModel::getModel('vendor');
+		$layoutName = VmRequest::getCmd('layout', 'default');
 
-        $vendorModel->setId(1);
-        $vendor = $vendorModel->getVendor();
-        $currencyModel = VmModel::getModel('currency');
-        $currencyModel = $currencyModel->getCurrency($vendor->vendor_currency);
-        if (  JVM_VERSION < 3) {
-            $this->assignRef('vendor_currency', $currencyModel->currency_symbol);
-        }else {
-            $this->vendor_currency =$currencyModel->currency_symbol;
-        }
+		$vendorModel = VmModel::getModel('vendor');
 
-        if ($layoutName == 'edit') {
+		$vendorModel->setId(1);
+		$vendor = $vendorModel->getVendor();
+		$currencyModel = VmModel::getModel('currency');
+		$currencyModel = $currencyModel->getCurrency($vendor->vendor_currency);
+		$this->assignRef('vendor_currency', $currencyModel->currency_symbol);
 
-            // Load the helper(s)
-            if (!class_exists('VmImage'))
-                require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
+		if ($layoutName == 'edit') {
 
-            if (!class_exists('vmParameters'))
-                require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
+			// Load the helper(s)
+			if (!class_exists('VmImage'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 
-            $payment = $model->getPayment();
-            $this->assignRef('payment',	$payment);
-            $paymentPlugins= VirtuemartViewPaymentMethod::renderInstalledPaymentPlugins($payment->payment_jplugin_id);
-            $this->assignRef('vmPPaymentList', $paymentPlugins);
-            //			$this->assignRef('PaymentTypeList',self::renderPaymentRadioList($paym->payment_type));
+			if (!class_exists('vmParameters'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
 
-            //			$this->assignRef('creditCardList',self::renderCreditCardRadioList($paym->payment_creditcards));
-            //			echo 'humpf <pre>'.print_r($paym).'</pre>' ;
-            $virtuemart_shoppergroup_list =ShopFunctions::renderShopperGroupList($payment->virtuemart_shoppergroup_ids, true);
-            $this->assignRef('shopperGroupList', $virtuemart_shoppergroup_list);
+			$payment = $model->getPayment();
+			$this->assignRef('payment',	$payment);
+			$this->assignRef('vmPPaymentList', self::renderInstalledPaymentPlugins($payment->payment_jplugin_id));
 
-            if(Vmconfig::get('multix','none')!=='none'){
-                $vendorList= ShopFunctions::renderVendorList($payment->virtuemart_vendor_id);
-                $this->assignRef('vendorList', $vendorList);
-            }
+			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($payment->virtuemart_shoppergroup_ids, true));
 
-            $this->addStandardEditViewCommands( $payment->virtuemart_paymentmethod_id);
-        } else {
-            $this->addStandardDefaultViewCommands();
-            $this->addStandardDefaultViewLists($model);
+			if(Vmconfig::get('multix','none')!=='none'){
+				$vendorList= ShopFunctions::renderVendorList($payment->virtuemart_vendor_id);
+				$this->assignRef('vendorList', $vendorList);
+			}
 
-            $payments = $model->getPayments();
-            $this->assignRef('payments',	$payments);
+			$this->addStandardEditViewCommands( $payment->virtuemart_paymentmethod_id);
+		} else {
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model);
 
-            $pagination = $model->getPagination();
-            $this->assignRef('pagination', $pagination);
+			$payments = $model->getPayments();
+			$this->assignRef('payments',	$payments);
 
-        }
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
 
-        parent::display($tpl);
-    }
+		}
+
+		parent::display($tpl);
+	}
 
 
 
+	function renderInstalledPaymentPlugins($selected){
 
+		if ( JVM_VERSION===1) {
+			$table = '#__plugins';
+			$ext_id = 'id';
+			$enable = 'published';
+		} else {
+			$table = '#__extensions';
+			$ext_id = 'extension_id';
+			$enable = 'enabled';
+		}
 
-    function renderInstalledPaymentPlugins($selected){
+		$db = JFactory::getDBO();
+		//Todo speed optimize that, on the other hand this function is NOT often used and then only by the vendors
+		//		$q = 'SELECT * FROM #__plugins as pl JOIN `#__virtuemart_payment_method` AS pm ON `pl`.`id`=`pm`.`payment_jplugin_id` WHERE `folder` = "vmpayment" AND `published`="1" ';
+		//		$q = 'SELECT * FROM #__plugins as pl,#__virtuemart_payment_method as pm  WHERE `folder` = "vmpayment" AND `published`="1" AND pl.id=pm.payment_jplugin_id';
+		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmpayment" and `state`="0" AND `element`<>"moneybookers" ORDER BY `ordering`,`name` ASC';
+		$db->setQuery($q);
+		$result = $db->loadAssocList($ext_id);
+		if(empty($result)){
+			$app = JFactory::getApplication();
+			$app -> enqueueMessage(JText::_('COM_VIRTUEMART_NO_PAYMENT_PLUGINS_INSTALLED'));
+		}
 
-        $db = JFactory::getDBO();
-        //Todo speed optimize that, on the other hand this function is NOT often used and then only by the vendors
+		$listHTML='<select id="payment_jplugin_id" name="payment_jplugin_id" style= "width: 300px;">';
+		if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+		foreach($result as $paym){
+			$params = new JParameter($paym['params']);
+			if($paym[$ext_id]==$selected) $checked='selected="selected"'; else $checked='';
+			// Get plugin info
+			$pType = $params->getValue('pType');
+			if($pType=='Y' || $pType=='C') $id = 'pam_type_CC_on'; else $id='pam_type_CC_off';
+			$listHTML .= '<option id="'.$id.'" '.$checked.' value="'.$paym[$ext_id].'">'.JText::_($paym['name']).'</option>';
 
-        $q = 'SELECT * FROM `#__extensions` WHERE `folder` = "vmpayment"  AND `enabled`="1" AND `state`="0" ORDER BY `name` ASC';
-        $db->setQuery($q);
-        $payments = $db->loadAssocList('extension_id');
-        if(empty($payments)){
-            $app = JFactory::getApplication();
-            $app -> enqueueMessage(JText::_('COM_VIRTUEMART_NO_PAYMENT_PLUGINS_INSTALLED'));
-        }
-        $listHTML='<select id="payment_jplugin_id" name="payment_jplugin_id">';
-        foreach($payments as $payment){
-            if($payment['extension_id']==$selected) $checked='selected="selected"'; else $checked='';
-            $enabled='';
-            if(!$payment['enabled']) {
-                $enabled=' (disabled)';
-            }
-            $listHTML .= '<option   '.$checked.' value="'.$payment['extension_id'].'">'.JText::_($payment['name']).$enabled.'</option>';
+		}
+		$listHTML .= '</select>';
 
-        }
-        $listHTML .= '</select>';
-
-        return $listHTML;
-    }
+		return $listHTML;
+	}
 
 }
 // pure php not tag

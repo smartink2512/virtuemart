@@ -53,11 +53,10 @@ class VirtueMartModelCalc extends VmModel {
      */
 	public function getCalc(){
 
-  	if (empty($this->_data)) {
-  		if(empty($this->_db)) $this->_db = JFactory::getDBO();
+		if (empty($this->_data)) {
 
-   		$this->_data = $this->getTable('calcs');
-   		$this->_data->load((int)$this->_id);
+			$this->_data = $this->getTable('calcs');
+			$this->_data->load((int)$this->_id);
 
 			$xrefTable = $this->getTable('calc_categories');
 			$this->_data->calc_categories = $xrefTable->load($this->_id);
@@ -89,21 +88,12 @@ class VirtueMartModelCalc extends VmModel {
 				vmError(get_class( $this ).' calc_manufacturers '.$xrefTable->getError());
 			}
 
-			
 			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('plgVmGetPluginInternalDataCalc',array(&$this->_data));
 
-  	}
+  		}
 
-// 		if($errs = $this->getErrors()){
-// 			$app = JFactory::getApplication();
-// 			foreach($errs as $err){
-// 				$app->enqueueMessage($err);
-// 			}
-// 		}
-
-// 		vmdebug('my calc',$this->_data);
   		return $this->_data;
 	}
 
@@ -123,8 +113,8 @@ class VirtueMartModelCalc extends VmModel {
 		// add filters
 		if ($onlyPublished) $where[] = '`published` = 1';
 
+		$db = JFactory::getDBO();
 		if($search){
-			$db = JFactory::getDBO();
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			$where[] = ' `calc_name` LIKE '.$search.' OR `calc_descr` LIKE '.$search.' OR `calc_value` LIKE '.$search.' ';
 		}
@@ -153,11 +143,11 @@ class VirtueMartModelCalc extends VmModel {
 			$data->calcManufacturersList = shopfunctions::renderGuiList('virtuemart_manufacturer_id','#__virtuemart_calc_manufacturers','virtuemart_calc_id',$data->virtuemart_calc_id,'mf_name','#__virtuemart_manufacturers','virtuemart_manufacturer_id','manufacturer');
 
 			$query = 'SELECT `currency_name` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` = "'.(int)$data->calc_currency.'" ';
-			$this->_db->setQuery($query);
-			$data->currencyName = $this->_db->loadResult();
+			$db->setQuery($query);
+			$data->currencyName = $db->loadResult();
 
 			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$error = $dispatcher->trigger('plgVmGetPluginInternalDataCalcList',array(&$data));
 		}
 
@@ -172,17 +162,17 @@ class VirtueMartModelCalc extends VmModel {
 	 */
     public function store(&$data) {
 
-		JSession::checkToken() or jexit( 'Invalid Token, in store calc');
+		vmRequest::vmCheckToken();
 
 		$table = $this->getTable('calcs');
 
+		$db = JFactory::getDBO();
 		// Convert selected dates to MySQL format for storing.
 		$startDate = JFactory::getDate($data['publish_up']);
 		$data['publish_up'] = $startDate->toSQL();
 //		if ($data['publish_down'] == '' or $data['publish_down']==0){
 		if (empty($data['publish_down']) || trim($data['publish_down']) == JText::_('COM_VIRTUEMART_NEVER')){
-			if(empty($this->_db)) $this->_db = JFactory::getDBO();
-			$data['publish_down']	= $this->_db->getNullDate();
+			$data['publish_down']	= $db->getNullDate();
 		} else {
 			$expireDate = JFactory::getDate($data['publish_down']);
 			$data['publish_down']	= $expireDate->toSQL();
@@ -226,16 +216,16 @@ class VirtueMartModelCalc extends VmModel {
 
 		if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
 		JPluginHelper::importPlugin('vmcalculation');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$error = $dispatcher->trigger('plgVmStorePluginInternalDataCalc',array(&$data));
 
-    	$errMsg = $this->_db->getErrorMsg();
-		$errs = $this->_db->getErrors();
+    	$errMsg = $db->getErrorMsg();
+		$errs = $db->getErrors();
 
 		if(!empty($errMsg)){
 
-			$errNum = $this->_db->getErrorNum();
-			vmError('SQL-Error: '.$errNum.' '.$errMsg.' <br /> used query '.$this->_db->getQuery());
+			$errNum = $db->getErrorNum();
+			vmError('SQL-Error: '.$errNum.' '.$errMsg.' <br /> used query '.$db->getQuery());
 		}
 
 		if(!empty($errs)){
@@ -283,7 +273,7 @@ class VirtueMartModelCalc extends VmModel {
 	*/
 	public function remove($cids) {
 
-		JSession::checkToken() or jexit( 'Invalid Token, in remove category');
+		vmRequest::vmCheckToken();
 
 		$table = $this->getTable($this->_maintablename);
 		$cat = $this->getTable('calc_categories');
@@ -330,7 +320,7 @@ class VirtueMartModelCalc extends VmModel {
 
 // 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmcalculation');
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmDeleteCalculationRow', array( $id));
 
 		}

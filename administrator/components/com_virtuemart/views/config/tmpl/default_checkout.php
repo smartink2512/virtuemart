@@ -75,7 +75,7 @@ $document->addScriptDeclaration($js);
                 </span>
 			</td>
 			<td>
-				<?php echo VmHTML::checkbox('oncheckout_opc', VmConfig::get('oncheckout_opc',0)); ?>
+				<?php echo VmHTML::checkbox('oncheckout_opc', VmConfig::get('oncheckout_opc',1)); ?>
 			</td>
 		</tr>
 		<div id="not_opc_param">
@@ -219,6 +219,31 @@ $document->addScriptDeclaration($js);
 				<?php echo VmHTML::checkbox('vmlang_js', VmConfig::get('vmlang_js',0)); ?>
 			</td>
 		</tr>
+		<tr>
+			<td class="key">
+            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_CHANGE_SHOPPER_TIP'); ?>">
+					<label for="oncheckout_change_shopper">
+						<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_CHANGE_SHOPPER'); ?>
+					</label>
+                </span>
+			</td>
+			<td>
+				<?php echo VmHTML::checkbox('oncheckout_change_shopper', VmConfig::get('oncheckout_change_shopper',0)); ?>
+			</td>
+		</tr>
+<?php
+		$_delivery_date_options = array(
+			'm' => JText::_('COM_VIRTUEMART_DELDATE_INV')
+		, 'osP' => JText::_('COM_VIRTUEMART_ORDER_STATUS_PENDING')
+		, 'osU' => JText::_('COM_VIRTUEMART_ORDER_STATUS_CONFIRMED_BY_SHOPPER')
+		, 'osC' => JText::_('COM_VIRTUEMART_ORDER_STATUS_CONFIRMED')
+		, 'osS' => JText::_('COM_VIRTUEMART_ORDER_STATUS_SHIPPED')
+		, 'osR' => JText::_('COM_VIRTUEMART_ORDER_STATUS_REFUNDED')
+		, 'osC' => JText::_('COM_VIRTUEMART_ORDER_STATUS_CANCELLED')
+		);
+		echo VmHTML::row('selectList','COM_VIRTUEMART_CFG_DELDATE_INV','del_date_type', VmConfig::get('del_date_type','m'), $_delivery_date_options);
+		?>
+
 	</table>
 </fieldset>
 

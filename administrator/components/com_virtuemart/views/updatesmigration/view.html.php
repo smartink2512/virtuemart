@@ -57,7 +57,7 @@ class VirtuemartViewUpdatesMigration extends VmView {
 /*		$db = JFactory::getDBO();
 		$config = JFactory::getConfig();
 
-		$prefix = $config->get('dbprefix').'virtuemart_%';
+		$prefix = $config->getValue('config.dbprefix').'virtuemart_%';
 		$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
 		if (!$tables = $db->loadColumn()) {
 			vmError ($db->getErrorMsg());
@@ -70,7 +70,7 @@ class VirtuemartViewUpdatesMigration extends VmView {
 // 			$db->setQuery('SELECT * FROM '.$table.' PROCEDURE ANALYSE(); ');
 			$db->setQuery('SELECT * FROM #__virtuemart_countries PROCEDURE ANALYSE(); ');
 
-			if($db->execute()){
+			if($db->query()){
 				vmdebug('Analyse',$db->loadObjectList());
 			} else {
 				$app->enqueueMessage('Error drop virtuemart table ' . $db->getErrorMsg());

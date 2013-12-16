@@ -34,11 +34,15 @@ class VirtuemartViewCurrency extends VmView {
 	function display($tpl = null) {
 
 		// Load the helper(s)
+
+
 		if (!class_exists('VmHTML'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		$model = VmModel::getModel();
 
+
+		$config = JFactory::getConfig();
 		$layoutName = VmRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 			$cid	= VmRequest::getInt( 'cid' );
@@ -70,6 +74,7 @@ class VirtuemartViewCurrency extends VmView {
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination', $pagination);
+
 
 		}
 

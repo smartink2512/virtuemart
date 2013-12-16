@@ -159,7 +159,7 @@ class VirtueMartModelVendor extends VmModel {
 	function store (&$data) {
 
 		JPluginHelper::importPlugin ('vmvendor');
-		$dispatcher = JEventDispatcher::getInstance ();
+		$dispatcher = JDispatcher::getInstance ();
 		$plg_datas = $dispatcher->trigger ('plgVmOnVendorStore', $data);
 		foreach ($plg_datas as $plg_data) {
 			$data = array_merge ($plg_data);
@@ -266,8 +266,9 @@ class VirtueMartModelVendor extends VmModel {
 	function getVendorCategories () {
 
 		$_q = 'SELECT * FROM `#__vm_vendor_category`';
-		$this->_db->setQuery ($_q);
-		return $this->_db->loadObjectList ();
+		$db = JFactory::getDBO();
+		$db->setQuery ($_q);
+		return $db->loadObjectList ();
 	}
 
 	function getUserIdByOrderId ($virtuemart_order_id) {
@@ -277,13 +278,13 @@ class VirtueMartModelVendor extends VmModel {
 		}
 		$virtuemart_order_id = (int)$virtuemart_order_id;
 		$q = "SELECT `virtuemart_user_id` FROM `#__virtuemart_orders` WHERE `virtuemart_order_id`='.$virtuemart_order_id'";
-//		$db->execute( $q );
-		$this->_db->setQuery ($q);
+		$db = JFactory::getDBO();
+		$db->setQuery ($q);
 
 //		if($db->next_record()){
-		if ($this->_db->query ()) {
+		if ($db->execute ()) {
 //			$virtuemart_user_id = $db->f('virtuemart_user_id');
-			return $this->_db->loadResult ();
+			return $db->loadResult ();
 		} else {
 			JError::raiseNotice (1, 'Error in DB $virtuemart_order_id ' . $virtuemart_order_id . ' dont have a virtuemart_user_id');
 			return 0;
@@ -355,11 +356,11 @@ class VirtueMartModelVendor extends VmModel {
 	 * @author Max Milbers
 	 */
 	public function getVendorName ($virtuemart_vendor_id = 1) {
-
+		$db = JFactory::getDBO();
 		$query = 'SELECT `vendor_store_name` FROM `#__virtuemart_vendors_' . VMLANG . '` WHERE `virtuemart_vendor_id` = "' . (int)$virtuemart_vendor_id . '" ';
-		$this->_db->setQuery ($query);
-		if ($this->_db->query ()) {
-			return $this->_db->loadResult ();
+		$db->setQuery ($query);
+		if ($db->execute ()) {
+			return $db->loadResult ();
 		} else {
 			return '';
 		}
@@ -376,9 +377,10 @@ class VirtueMartModelVendor extends VmModel {
 		$virtuemart_user_id = self::getUserIdByVendorId ((int)$virtuemart_vendor_id);
 		if (!empty($virtuemart_user_id)) {
 			$query = 'SELECT `email` FROM `#__users` WHERE `id` = "' . $virtuemart_user_id . '" ';
-			$this->_db->setQuery ($query);
-			if ($this->_db->query ()) {
-				return $this->_db->loadResult ();
+			$db = JFactory::getDBO();
+			$db->setQuery ($query);
+			if ($db->execute ()) {
+				return $db->loadResult ();
 			} else {
 				return '';
 			}

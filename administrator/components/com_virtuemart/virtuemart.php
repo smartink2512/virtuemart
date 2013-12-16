@@ -38,7 +38,7 @@ vmSetStartTime('Start');
 );
 
 $testString = $test['test'].$test['test2'].$test['test3'].$test['test4'];
-vmRequest::setVar('test',$testString);
+VmRequest::setVar('test',$testString);
 
 $tmp = VmRequest::getVar('test');
 vmdebug('my getVar ',$tmp);
@@ -101,7 +101,7 @@ if($_controller = VmRequest::getCmd('view', VmRequest::getCmd('controller', 'vir
 	} else {
 		// try plugins
 		JPluginHelper::importPlugin('vmextended');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$results = $dispatcher->trigger('onVmAdminController', array($_controller));
 		if (empty($results)) {
 			$app = JFactory::getApplication();

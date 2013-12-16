@@ -73,7 +73,7 @@ class VirtuemartControllerCustom extends VmController {
 
 		$model = VmModel::getModel('custom');
 		$msgtype = '';
-		$cids = VmRequest::getVar($this->_cidName, VmRequest::getVar('virtuemart_custom_id',array(),'', 'ARRAY'), '', 'ARRAY');
+		$cids = VmRequest::getInt($this->_cidName, VmRequest::getInt('virtuemart_custom_id'));
 		jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($cids);
 		foreach ($cids as $custom_id) {

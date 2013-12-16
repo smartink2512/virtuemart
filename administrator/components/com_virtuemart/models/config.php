@@ -20,9 +20,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Load the model framework
-//if(!class_exists('JModel')) require JPATH_VM_LIBRARIES.DS.'joomla'.DS.'application'.DS.'component'.DS.'model.php';
-
 /**
  * Model class for shop configuration
  *
@@ -137,6 +134,17 @@ class VirtueMartModelConfig extends VmModel {
 		$dirs[] = JPATH_ROOT.DS.'components'.DS.'com_virtuemart'.DS.'assets'.DS.'images'.DS.'vmgeneral';
 
 		$tplpath = VmConfig::get('vmtemplate',0);
+		if(is_numeric($tplpath)){
+			$db = JFactory::getDbo();
+			$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$tplpath.'" ';
+			$db->setQuery($query);
+			$res = $db->loadAssoc();
+			if($res){
+				$registry = new JRegistry;
+				$registry->loadString($res['params']);
+				$tplpath = $res['template'];
+			}
+		}
 		if($tplpath){
 			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral')){
 				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'images'.DS.'vmgeneral';
@@ -249,7 +257,11 @@ class VirtueMartModelConfig extends VmModel {
 		if (!is_array($searchChecked)) {
 			$searchChecked = (array)$searchChecked;
 		}
-		$searchFieldsArray = ShopFunctions::getValidProductFilterArray ();
+		if($type!='browse_cat_orderby_field'){
+			$searchFieldsArray = ShopFunctions::getValidProductFilterArray ();
+		} else {
+			$searchFieldsArray = array('category_name','category_description','cx.ordering','c.published');
+		}
 
 		$searchFields= new stdClass();
 		$searchFields->checkbox ='<div class="threecols"><ul>';
@@ -270,7 +282,9 @@ class VirtueMartModelConfig extends VmModel {
 
 			$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
 
-			if ($type == 'browse_orderby_fields' ) $searchFields->select[] =  JHTML::_('select.option', $field, $text) ;
+			if ($type == 'browse_orderby_fields' or $type == 'browse_cat_orderby_field'){
+				$searchFields->select[] =  JHTML::_('select.option', $field, $text) ;
+			}
 			$searchFields->checkbox .= '<li><input type="checkbox" id="' .$type.$fieldWithoutPrefix.$key. '" name="'.$type.'[]" value="' .$field. '" ' .$checked. ' /><label for="' .$type.$fieldWithoutPrefix.$key. '">' .$text. '</label></li>';
 		}
 		$searchFields->checkbox .='</ul></div>';
@@ -280,23 +294,27 @@ class VirtueMartModelConfig extends VmModel {
 	/**
 	 * Save the configuration record
 	 *
-	 * @author RickG
+	 * @author Max Milbers
 	 * @return boolean True is successful, false otherwise
 	 */
 	function store(&$data,$replace = FALSE) {
 
-		JSession::checkToken() or jexit( 'Invalid Token, in store config');
+		vmRequest::vmCheckToken();
 
 		//$data['active_languages'] = strtolower(strtr($data['active_languages'],'-','_'));
 		//ATM we want to ensure that only one config is used
 
 		$config = VmConfig::loadConfig(TRUE);
 
+		$browse_cat_orderby_field = $config->get('browse_cat_orderby_field');
+		$cat_brws_orderby_dir = $config->get('cat_brws_orderby_dir');
+
 		$config->setParams($data,$replace);
 		$confData = array();
 		$query = 'SELECT * FROM `#__virtuemart_configs`';
-		$this->_db->setQuery($query);
-		if($this->_db->loadResult()){
+		$db = JFactory::getDBO();
+		$db->setQuery($query);
+		if($db->loadResult()){
 			$confData['virtuemart_config_id'] = 1;
 		} else {
 			$confData['virtuemart_config_id'] = 0;
@@ -336,28 +354,16 @@ class VirtueMartModelConfig extends VmModel {
 
 		$safePath = trim($config->get('forSale_path'));
 		if(!empty($safePath)){
+			if(DS!='/' and strpos($safePath,'/')!==false){
+				$safePath=str_replace('/',DS,$safePath);
+				vmdebug('$safePath',$safePath);
+			}
 			$length = strlen($safePath);
 			if(strrpos($safePath,DS)!=($length-1)){
 				$safePath = $safePath.DS;
-				$config->set('forSale_path',$safePath);
 				vmInfo('Corrected safe path added missing '.DS);
 			}
-		}
-
-		if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-		$safePath = shopFunctions::checkSafePath($safePath);
-
-		if(!empty($safePath)){
-
-			$exists = JFolder::exists($safePath.'invoices');
-			if(!$exists){
-				$created = JFolder::create($safePath.'invoices');
-				if($created){
-					vmInfo('COM_VIRTUEMART_SAFE_PATH_INVOICE_CREATED');
-				} else {
-					VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
-				}
-			}
+			$config->set('forSale_path',$safePath);
 		} else {
 			$safePath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'vmfiles';
 			$exists = JFolder::exists($safePath);
@@ -381,9 +387,24 @@ class VirtueMartModelConfig extends VmModel {
 			}
 		}
 
+		if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		$safePath = shopFunctions::checkSafePath($safePath);
+
+		if(!empty($safePath)){
+
+			$exists = JFolder::exists($safePath.'invoices');
+			if(!$exists){
+				$created = JFolder::create($safePath.'invoices');
+				if($created){
+					vmInfo('COM_VIRTUEMART_SAFE_PATH_INVOICE_CREATED');
+				} else {
+					VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
+				}
+			}
+		}
 
 		$confData['config'] = $config->toString();
-		// 		vmdebug('config to store',$confData);
+
 		$confTable = $this->getTable('configs');
 		if (!$confTable->bindChecknStore($confData)) {
 			vmError($confTable->getError());
@@ -395,6 +416,13 @@ class VirtueMartModelConfig extends VmModel {
 		if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 		$updater = new GenericTableUpdater();
 		$result = $updater->createLanguageTables();
+
+		$newbrowse_cat_orderby_field = $config->get('browse_cat_orderby_field');
+		$newcat_brws_orderby_dir = $config->get('cat_brws_orderby_dir');
+		if($browse_cat_orderby_field!=$newbrowse_cat_orderby_field or $newcat_brws_orderby_dir!=$cat_brws_orderby_dir){
+			$cache = JFactory::getCache('com_virtuemart_cats','callback');
+			$cache->clean();
+		}
 
 		return true;
 	}
@@ -437,7 +465,7 @@ class VirtueMartModelConfig extends VmModel {
 
 	}
 
-	public function remove($ids) {
+	public function remove() {
 
 		$table = $this->getTable('configs');
 		$id = 1;

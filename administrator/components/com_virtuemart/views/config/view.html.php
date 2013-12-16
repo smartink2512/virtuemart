@@ -58,8 +58,6 @@ class VirtuemartViewConfig extends VmView {
 		$mainframe = JFactory::getApplication();
 		$this->assignRef('joomlaconfig', $mainframe);
 
-		$app = JFactory::getApplication();
-		//$userparams =  & $app->getParams('com_users');
 		$userparams = JComponentHelper::getParams('com_users');
 		$this->assignRef('userparams', $userparams);
 
@@ -90,8 +88,27 @@ class VirtuemartViewConfig extends VmView {
 		$activeLanguages = $model->getActiveLanguages( VmConfig::get('active_languages') );
 		$this->assignRef('activeLanguages', $activeLanguages);
 
-		$orderByFields = $model->getProductFilterFields('browse_orderby_fields');
-		$this->assignRef('orderByFields', $orderByFields);
+		$orderByFieldsProduct = $model->getProductFilterFields('browse_orderby_fields');
+		$this->assignRef('orderByFieldsProduct', $orderByFieldsProduct);
+
+		VmModel::getModel('category');
+
+		foreach (VirtueMartModelCategory::$_validOrderingFields as $key => $field ) {
+			$fieldWithoutPrefix = $field;
+			$dotps = strrpos($fieldWithoutPrefix, '.');
+			if($dotps!==false){
+				$prefix = substr($field, 0,$dotps+1);
+				$fieldWithoutPrefix = substr($field, $dotps+1);
+			}
+
+			$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
+
+			$orderByFieldsCat[] =  JHTML::_('select.option', $field, $text) ;
+		}
+
+
+		//$orderByFieldsCat = $model->get;
+		$this->assignRef('orderByFieldsCat', $orderByFieldsCat);
 
 		$searchFields = $model->getProductFilterFields( 'browse_search_fields');
 		$this->assignRef('searchFields', $searchFields);
@@ -108,12 +125,6 @@ class VirtuemartViewConfig extends VmView {
 
 		shopFunctions::checkSafePath();
 		$this -> checkVmUserVendor();
-
-		$cache = JFactory::getCache ('_virtuemart');
-		$cached = $cache->getCaching();
-		if($cached){
-			vmInfo('COM_VIRTUEMART_CFG_CACHE_ACTIV');
-		}
 
 		parent::display($tpl);
 	}

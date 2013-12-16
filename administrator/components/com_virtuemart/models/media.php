@@ -77,7 +77,7 @@ class VirtueMartModelMedia extends VmModel {
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
 		$app = JFactory::getApplication();
-		$lang = JFactory::getLanguage();
+		$lang =  JFactory::getLanguage();
 		$medias = array();
 
 		static $_medias = array();
@@ -176,7 +176,7 @@ class VirtueMartModelMedia extends VmModel {
 
 		$this->_noLimit = $noLimit;
 
-		if(empty($this->_db)) $this->_db = JFactory::getDBO();
+		if(empty($db)) $db = JFactory::getDBO();
 		$vendorId = 1; //TODO set to logged user or requested vendorId, not easy later
 		$query = '';
 
@@ -229,7 +229,7 @@ class VirtueMartModelMedia extends VmModel {
 		}
 
 		if ($search = VmRequest::getString('searchMedia', false)){
-			$search = '"%' . $this->_db->escape( $search, true ) . '%"' ;
+			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			$where[] = ' (`file_title` LIKE '.$search.'
 								OR `file_description` LIKE '.$search.'
 								OR `file_meta` LIKE '.$search.'
@@ -305,24 +305,22 @@ class VirtueMartModelMedia extends VmModel {
 	 */
 	function storeMedia($data,$type){
 
-// 		vmdebug('my data in media to store start',$data['virtuemart_media_id']);
-		JSession::checkToken() or jexit( 'Invalid Token, while trying to save media' );
+		vmRequest::vmCheckToken('Invalid Token, while trying to save media '.$type);
 
 		if(empty($data['media_action'])){
 			$data['media_action'] = 'none';
 		}
 
 		//the active media id is not empty, so there should be something done with it
-		if( (!empty($data['active_media_id']) && !empty($data['virtuemart_media_id']) ) || $data['media_action']=='upload'){
+		if( (!empty($data['active_media_id']) and isset($data['virtuemart_media_id']) ) || $data['media_action']=='upload'){
 
 			$oldIds = $data['virtuemart_media_id'];
-			$data['file_type'] = $type;
-			$data['virtuemart_media_id'] = (int)$data['active_media_id'];
-
-			$this -> setId($data['virtuemart_media_id']);
 
 			$data['file_type'] = $type;
-			$virtuemart_media_id = $this->store($data);
+
+			$this -> setId($data['active_media_id']);
+
+			$virtuemart_media_id = $this->store($data,$type);
 
 			//added by Mike,   Mike why did you add this? This function storeMedia is extremely nasty
 			$this->setId($virtuemart_media_id);
@@ -374,7 +372,7 @@ class VirtueMartModelMedia extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	public function store(&$data) {
+	public function store(&$data,$type) {
 
 		VmConfig::loadJLang('com_virtuemart_media');
 		//if(empty($data['media_action'])) return $table->virtuemart_media_id;
@@ -382,13 +380,10 @@ class VirtueMartModelMedia extends VmModel {
 
 		$table = $this->getTable('medias');
 
-		$table->bind($data);
-		if(empty($data['file_type'])){
-			vmTrace('Media store function directly called without set type');
-			return false;
-		}
 
-		$data = VmMediaHandler::prepareStoreMedia($table,$data); //this does not store the media, it process the actions and prepares data
+		$data['virtuemart_media_id'] = $this->getId();
+		$table->bind($data);
+		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
 
 		// workarround for media published and product published two fields in one form.
 		$tmpPublished = false;

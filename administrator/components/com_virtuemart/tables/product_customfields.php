@@ -38,14 +38,12 @@ class TableProduct_customfields extends VmTable {
 	/** @var int group key */
 	var $virtuemart_custom_id		= 0;
 
-	var $override = null;
-	var $disabler = null;
     /** @var string custom value */
-	var $customfield_value	= null;
+	var $custom_value	= null;
     /** @var string price  */
-	var $customfield_price	= null;
+	var $custom_price	= null;
 
-    var $customfield_params = '';
+    var $custom_param = '';
 	/** @var int custom published or not */
 	var $published		= 0;
 
@@ -63,15 +61,15 @@ class TableProduct_customfields extends VmTable {
 		// $this->setSecondaryKey('virtuemart_customfield_id');
 		$this->setLoggable();
 		$this->setOrderable();
-		$this->_xParams='customfield_params';
+
 	}
 
 	function check(){
 
-		if(!empty($this->customfield_price)){
-			$this->customfield_price = str_replace(array(',',' '),array('.',''),$this->customfield_price);
+		if(!empty($this->custom_price)){
+			$this->custom_price = str_replace(array(',',' '),array('.',''),$this->custom_price);
 		} else {
-			$this->customfield_price = null;
+			$this->custom_price = null;
 		}
 
 		return parent::check();

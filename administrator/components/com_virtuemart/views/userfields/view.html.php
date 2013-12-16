@@ -55,8 +55,8 @@ class VirtuemartViewUserfields extends VmView {
 			$editor = JFactory::getEditor();
 
 			$userField = $model->getUserfield();
-                        $this->SetViewTitle('USERFIELD',$userField->name );
-                                $this->assignRef('viewName',$viewName);
+            $this->SetViewTitle('USERFIELD',$userField->name );
+            $this->assignRef('viewName',$viewName);
 			$userFieldPlugin = '';
 			if ($userField->virtuemart_userfield_id < 1) { // Insert new userfield
 

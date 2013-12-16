@@ -33,7 +33,8 @@ class JFormFieldLayout extends JFormField
 	protected $type = 'layout';
 
 	/**
-	 * Method to get the field input markup.
+	 * Method to get the field input markup. Use as name the view of the desired layout list + "layout".
+	 * For example <field name="categorylayout" for all layouts of hte category view.
 	 *
      * @author   Max Milbers
 	 * @return	string	The field input markup.

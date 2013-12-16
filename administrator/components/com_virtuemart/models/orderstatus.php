@@ -74,8 +74,9 @@ class VirtueMartModelOrderstatus extends VmModel {
 	public function getOrderStatusNames ()
 	{
 		$q = 'SELECT `order_status_name`,`order_status_code` FROM `#__virtuemart_orderstates` order by `ordering` ';
-		$this->_db->setQuery($q);
-		return $this->_db->loadAssocList('order_status_code');
+		$db = JFactory::getDBO();
+		$db->setQuery($q);
+		return $db->loadAssocList('order_status_code');
 
 	}
 

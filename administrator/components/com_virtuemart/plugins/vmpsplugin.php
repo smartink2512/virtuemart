@@ -39,54 +39,89 @@ abstract class vmPSPlugin extends vmPlugin {
 		$this->_tableChecked = TRUE;
 	}
 
-    public function getVarsToPush()
-    {
+	public function getVarsToPush () {
 
-        $black_list = array('spacer');
-        $fields = array();
-        $filename = JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/' . $this->_name . '.xml';
+		$black_list = array('spacer');
+		$data = array();
+		if (JVM_VERSION === 2) {
+			$filename = JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/' . $this->_name . '.xml';
+		} else {
+			$filename = JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '.xml';
+		}
+		// Check of the xml file exists
+		$filePath = JPath::clean ($filename);
+		if (is_file ($filePath)) {
+			$xml = JFactory::getXMLParser ('simple');
+			$result = $xml->loadFile ($filename);
+			if ($result) {
+				if ($params = $xml->document->params) {
+					foreach ($params as $param) {
+						if ($param->_name = "params") {
+							if ($children = $param->_children) {
+								foreach ($children as $child) {
+									if (isset($child->_attributes['name'])) {
+										$data[$child->_attributes['name']] = array('', 'char');
+										$result = TRUE;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 
-        // Check of the xml file exists
-        $filePath = JPath::clean($filename);
+		return $data;
+	}
 
-        if (is_file($filePath)) {
-            $xml = simplexml_load_file($filename);
-            if ($xml) {
-                if (JVM_VERSION < 3) {
-                    if ($params = $xml->document->params) {
-                        foreach ($params as $param) {
-                            if ($param->_name = "params") {
-                                if ($children = $param->_children) {
-                                    foreach ($children as $child) {
-                                        if (isset($child->_attributes['name'])) {
-                                            $data[$child->_attributes['name']] = array('', 'char');
-                                            $result = TRUE;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } else {
-                        if ($fields = $xml->config->fields) {
-                            foreach ($fields->fieldset as $fieldset) {
-                                foreach ($fieldset->field as $field) {
-                                    if(!isset($field['type'])) continue ;
-                                    // note : valid XML form fields have always a name
-                                    if(isset($field['name'])) {
-                                        if(!isset($field['type'])) continue ;
-                                        $type = (string)$field['type'];
-                                        $data[(string)$field['name']] = array('', 'char');
-                                    }
-                            }
-                        }
-                    }
-                }
-            }
+	/*public function getVarsToPush()
+	{
 
-        }
-        return $data;
-    }
+		$black_list = array('spacer');
+		$fields = array();
+		$filename = JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/' . $this->_name . '.xml';
+
+		// Check of the xml file exists
+		$filePath = JPath::clean($filename);
+
+		if (is_file($filePath)) {
+			$xml = simplexml_load_file($filename);
+			if ($xml) {
+				if (JVM_VERSION < 3) {
+					if ($params = $xml->document->params) {
+						foreach ($params as $param) {
+							if ($param->_name = "params") {
+								if ($children = $param->_children) {
+									foreach ($children as $child) {
+										if (isset($child->_attributes['name'])) {
+											$data[$child->_attributes['name']] = array('', 'char');
+											$result = TRUE;
+										}
+									}
+								}
+							}
+						}
+					}
+				} else {
+						if ($fields = $xml->config->fields) {
+							foreach ($fields->fieldset as $fieldset) {
+								foreach ($fieldset->field as $field) {
+									if(!isset($field['type'])) continue ;
+									// note : valid XML form fields have always a name
+									if(isset($field['name'])) {
+										if(!isset($field['type'])) continue ;
+										$type = (string)$field['type'];
+										$data[(string)$field['name']] = array('', 'char');
+									}
+							}
+						}
+					}
+				}
+			}
+
+		}
+		return $data;
+	}*/
 
 	/**
 	 * check if it is the correct type
@@ -201,7 +236,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 
 		$id = $this->_idName;
-		vmTime('onSelectedCalculatePrice before test '.$cart->$id,'prepareCartData');
+		//vmTime('onSelectedCalculatePrice before test '.$cart->$id,'prepareCartData');
 		if (!($method = $this->selectedThisByMethodId ($cart->$id))) {
 			return NULL; // Another method was selected, do nothing
 		}
@@ -211,18 +246,15 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		$cart_prices_name = '';
-		//$cart_prices[$this->_psType . '_tax_id'] = 0;
 		$cart_prices['cost'] = 0;
 
 		if (!$this->checkConditions ($cart, $method, $cart_prices)) {
 			return FALSE;
 		}
-		//vmTime('onSelectedCalculatePrice after checkConditions'.$cart->$id,'prepareCartData');
-		$paramsName = $this->_psType . '_params';
+
 		$cart_prices_name = $this->renderPluginName ($method);
-		//vmTime('onSelectedCalculatePrice after renderPluginName'.$cart->$id,'prepareCartData');
 		$this->setCartPrices ($cart, $cart_prices, $method);
-		vmTime('onSelectedCalculatePrice after setCartPrices '.$cart_prices_name,'prepareCartData');
+
 		return TRUE;
 	}
 
@@ -239,7 +271,6 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	function onCheckAutomaticSelected (VirtueMartCart $cart, array $cart_prices = array(), &$methodCounter = 0) {
 
-		$nbPlugin = 0;
 		$virtuemart_pluginmethod_id = 0;
 
 		$nbMethod = $this->getSelectable ($cart, $virtuemart_pluginmethod_id, $cart_prices);
@@ -249,7 +280,6 @@ abstract class vmPSPlugin extends vmPlugin {
 			return NULL;
 		} else {
 			if ($nbMethod == 1) {
-				vmdebug('onCheckAutomaticSelected return ',$methodCounter,$nbMethod,$virtuemart_pluginmethod_id);
 				return $virtuemart_pluginmethod_id;
 			} else {
 				return 0;
@@ -591,7 +621,7 @@ abstract class vmPSPlugin extends vmPlugin {
 				VmTable::bindParameterable ($method, $this->_xParams, $this->_varsToPushParam);
 			}
 		}
-		// 		vmdebug('getPluginMethods',$this->methods);
+
 		return count ($this->methods);
 	}
 
@@ -646,8 +676,8 @@ abstract class vmPSPlugin extends vmPlugin {
 		static $weight = 0.0;
 		if(count($cart->products)>0 and empty($weight)){
 			foreach ($cart->products as $product) {
-				vmdebug('getOrderWeight',$product->product_weight);
-				$weight += (ShopFunctions::convertWeigthUnit ($product->product_weight, $product->product_weight_uom, $to_weight_unit) * $product->quantity);
+
+				$weight += (ShopFunctions::convertWeightUnit ($product->product_weight, $product->product_weight_uom, $to_weight_unit) * $product->quantity);
 			}
 		}
 		return $weight;
@@ -697,35 +727,39 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param string subject of the mail
 	 * @param string message
 	 */
-	protected function sendEmailToVendorAndAdmins ($subject, $message) {
+	protected function sendEmailToVendorAndAdmins ($subject = NULL, $message = NULL) {
 
 		// recipient is vendor and admin
 		$vendorId = 1;
-		$vendorModel = VmModel::getModel ('vendor');
-		$vendorEmail = $vendorModel->getVendorEmail ($vendorId);
-		$vendorName = $vendorModel->getVendorName ($vendorId);
-		JUtility::sendMail ($vendorEmail, $vendorName, $vendorEmail, $subject, $message);
+		$vendorModel = VmModel::getModel('vendor');
+		$vendor = $vendorModel->getVendor($vendorId);
+		$vendorEmail = $vendorModel->getVendorEmail($vendorId);
+		$vendorName = $vendorModel->getVendorName($vendorId);
+		VmConfig::loadJLang('com_virtuemart');
+		if ($subject == NULL) {
+			$subject = JText::sprintf('COM_VIRTUEMART_ERROR_SUBJECT', $this->_name, $vendor->vendor_store_name);
+		}
+		if ($message == NULL) {
+			$message = JText::sprintf('COM_VIRTUEMART_ERROR_BODY', $subject, $this->getLogFilename().VmConfig::LOGFILEEXT);
+		}
+		JUtility::sendMail($vendorEmail, $vendorName, $vendorEmail, $subject, $message);
 		if (JVM_VERSION === 1) {
 			//get all super administrator
-			$query = 'SELECT name, email, sendEmail' .
-				' FROM #__users' .
-				' WHERE LOWER( usertype ) = "super administrator"';
+			$query = 'SELECT name, email, sendEmail' . ' FROM #__users' . ' WHERE LOWER( usertype ) = "super administrator"';
 		} else {
-			$query = 'SELECT name, email, sendEmail' .
-				' FROM #__users' .
-				' WHERE sendEmail=1';
+			$query = 'SELECT name, email, sendEmail' . ' FROM #__users' . ' WHERE sendEmail=1';
 		}
-		$db = JFactory::getDBO ();
-		$db->setQuery ($query);
-		$rows = $db->loadObjectList ();
+		$db = JFactory::getDBO();
+		$db->setQuery($query);
+		$rows = $db->loadObjectList();
 
-		$subject = html_entity_decode ($subject, ENT_QUOTES);
+		$subject = html_entity_decode($subject, ENT_QUOTES);
 
 		// get superadministrators id
 		foreach ($rows as $row) {
 			if ($row->sendEmail) {
-				$message = html_entity_decode ($message, ENT_QUOTES);
-				JUtility::sendMail ($vendorEmail, $vendorName, $row->email, $subject, $message);
+				$message = html_entity_decode($message, ENT_QUOTES);
+				JUtility::sendMail($vendorEmail, $vendorName, $row->email, $subject, $message);
 			}
 		}
 	}
@@ -893,7 +927,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		return FALSE;
 	}
 
-	/**
+  	/**
 	 * @param $method
 	 */
 	function convert_condition_amount (&$method) {
@@ -901,6 +935,10 @@ abstract class vmPSPlugin extends vmPlugin {
 		$method->max_amount = (float)str_replace(',','.',$method->max_amount);
 	}
 
+	/**
+	 * @param      $method
+	 * @param bool $getCurrency
+	 */
 	static function getPaymentCurrency (&$method, $getCurrency = FALSE) {
 
 		if (!isset($method->payment_currency) or empty($method->payment_currency) or !$method->payment_currency or $getCurrency) {
@@ -950,13 +988,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $html;
 	}
 
-    /**
-     * @param VirtueMartCart $cart
-     * @param $method
-     * @param $cart_prices
-     * @return int
-     */
-  function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
+	function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
 
 		if (preg_match ('/%$/', $method->cost_percent_total)) {
 			$method->cost_percent_total = substr ($method->cost_percent_total, 0, -1);
@@ -968,12 +1000,12 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 
-    /**
-     * Get the cart amount for checking conditions if the payment / shipment conditions are fullfilled
-     * @param $cart_prices
-     * @return mixed
-     */
-    function getCartAmount($cart_prices){
+	/**
+	 * Get the cart amount for checking conditions if the payment conditions are fullfilled
+	 * @param $cart_prices
+	 * @return mixed
+	 */
+	function getCartAmount($cart_prices){
 		if(empty($cart_prices['salesPrice'])) $cart_prices['salesPrice'] = 0.0;
 		$cartPrice = !empty($cart_prices['withTax'])? $cart_prices['withTax']:$cart_prices['salesPrice'];
 		if(empty($cart_prices['salesPriceShipment'])) $cart_prices['salesPriceShipment'] = 0.0;
@@ -983,18 +1015,18 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $amount;
 
 	}
-	
+
 	/**
 	 * update the plugin cart_prices
 	 *
 	 * @author Valérie Isaksen
 	 *
-	 * @param $cart_prices: is without effect, just legacy
+	 * @param $cart_prices: $cart_prices['salesPricePayment'] and $cart_prices['paymentTax'] updated. Displayed in the cart.
 	 * @param $value :   fee
 	 * @param $tax_id :  tax id
 	 */
 
-    function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
+	function setCartPrices (VirtueMartCart $cart, &$cart_prices, $method) {
 
 
 		if (!class_exists ('calculationHelper')) {
@@ -1022,48 +1054,53 @@ abstract class vmPSPlugin extends vmPlugin {
 			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $method->tax_id . '" ';
 			$db->setQuery ($q);
 			$taxrules = $db->loadAssocList ();
+
+			if(!empty($taxrules) ){
+				foreach($taxrules as &$rule){
+					if(!isset($rule['subTotal'])) $rule['subTotal'] = 0;
+					if(!isset($rule['taxAmount'])) $rule['taxAmount'] = 0;
+					$rule['subTotalOld'] = $rule['subTotal'];
+					$rule['taxAmountOld'] = $rule['taxAmount'];
+					$rule['taxAmount'] = 0;
+					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
+				}
+			}
 		} else {
+			$taxrules = array_merge($calculator->_cartData['VatTax'],$calculator->_cartData['taxRulesBill']);
 
-			$taxrules = array();
-			if(!empty($calculator->_cartData['VatTax']) ){
-				$taxrules = $calculator->_cartData['VatTax'];
-			
+			if(!empty($taxrules) ){
+				$denominator = 0.0;
+				foreach($taxrules as &$rule){
+					//$rule['numerator'] = $rule['calc_value']/100.0 * $rule['subTotal'];
+					if(!isset($rule['subTotal'])) $rule['subTotal'] = 0;
+					if(!isset($rule['taxAmount'])) $rule['taxAmount'] = 0;
+					$denominator += ($rule['subTotal']-$rule['taxAmount']);
+					$rule['subTotalOld'] = $rule['subTotal'];
+					$rule['subTotal'] = 0;
+					$rule['taxAmountOld'] = $rule['taxAmount'];
+					$rule['taxAmount'] = 0;
+					//$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
+				}
+				if(empty($denominator)){
+					$denominator = 1;
+				}
 
-        $denominator = 0;
-        foreach($taxrules as &$rule){
-          //$rule['numerator'] = $rule['calc_value']/100.0 * $rule['subTotal'];
-          $denominator += ($rule['subTotal']-$rule['taxAmount']);
-          $rule['subTotalOld'] = $rule['subTotal'];
-          $rule['subTotal'] = 0;
-          $rule['taxAmountOld'] = $rule['taxAmount'];
-          $rule['taxAmount'] = 0;
-          //$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'];
-        }
-        if(empty($denominator)){
-          $denominator = 1;
-        }
-
-        foreach($taxrules as &$rule){
-          $frac = ($rule['subTotalOld']-$rule['taxAmountOld'])/$denominator;
-          $rule['subTotal'] = $cart_prices[$this->_psType . 'Value'] * $frac;
-
-        }
-      } else if(!empty($calculator->_cartData['taxRulesBill']) ){
-				$taxrules = array_merge($taxrules,$calculator->_cartData['taxRulesBill']);
+				foreach($taxrules as &$rule){
+					$frac = ($rule['subTotalOld']-$rule['taxAmountOld'])/$denominator;
+					$rule['subTotal'] = $cart_prices[$this->_psType . 'Value'] * $frac;
+					vmdebug('Part $denominator '.$denominator.' $frac '.$frac,$rule['subTotal']);
+				}
 			}
 		}
+
 
 		if(empty($method->cost_per_transaction)) $method->cost_per_transaction = 0.0;
 		if(empty($method->cost_percent_total)) $method->cost_percent_total = 0.0;
 
-		//If the taxing via unpublished categories is used, then the rules use the subtotal which is now overriden here
-		/*if (count ($taxrules) == 1 and isset($taxrules[1]['subTotal'] )) {
-			$taxrules[1]['subTotal'] = $cart_prices[$this->_psType . 'Value'];
-		}/*/
-
 		if (count ($taxrules) > 0 ) {
 
 			$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal ($calculator->executeCalculation ($taxrules, $cart_prices[$this->_psType . 'Value'],true,false), 'salesPrice');
+			//vmdebug('I am in '.get_class($this).' and have this rules now',$taxrules,$cart_prices[$this->_psType . 'Value'],$cart_prices['salesPrice' . $_psType]);
 			$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal (($cart_prices['salesPrice' . $_psType] -  $cart_prices[$this->_psType . 'Value']), 'salesPrice');
 			reset($taxrules);
 			$taxrule =  current($taxrules);
@@ -1084,7 +1121,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $cart_prices['salesPrice' . $_psType];
 
 	}
-	
+
 	/**
 	 * calculateSalesPrice
 	 *
@@ -1099,22 +1136,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 
-	/**
-	 * logPaymentInfo
-	 * to help debugging Payment notification for example
-	 */
-	protected function logInfo ($text, $type = 'message') {
 
-		if ($this->_debug) {
-			$file = JPATH_ROOT . "/logs/" . $this->_name . ".log";
-			$date = JFactory::getDate ();
-
-			$fp = fopen ($file, 'a');
-			fwrite ($fp, "\n\n" . $date->toFormat ('%Y-%m-%d %H:%M:%S'));
-			fwrite ($fp, "\n" . $type . ': ' . $text);
-			fclose ($fp);
-		}
-	}
 
 	public function processConfirmedOrderPaymentResponse ($returnValue, $cart, $order, $html, $payment_name, $new_status = '') {
 
@@ -1148,6 +1170,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			$mainframe->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=cart',FALSE), JText::_ ('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 		}
 	}
+
 	/**
 	 * @param $amount
 	 * @param $currencyId
@@ -1229,6 +1252,8 @@ abstract class vmPSPlugin extends vmPlugin {
 			}
 		}
 	}
+
+
 
 
 	private static function session_decode ($session_data) {
@@ -1327,7 +1352,9 @@ abstract class vmPSPlugin extends vmPlugin {
 			return FALSE;
 		}
 	}
-
+	/**
+	 *  @param integer $virtuemart_order_id the id of the order
+	 */
 	function handlePaymentUserCancel ($virtuemart_order_id) {
 
 		if ($virtuemart_order_id) {
@@ -1346,4 +1373,59 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 	}
 
+	/**
+	 * logInfo
+	 * to help debugging Payment notification for example
+	 * Keep it for compatibilty
+	 */
+	protected function logInfo ($text, $type = 'message', $doLog=false) {
+		if ((isset($this->_debug) and $this->_debug) OR $doLog) {
+			$oldLogFileName= 	VmConfig::$logFileName;
+			VmConfig::$logFileName =$this->getLogFileName() ;
+			logInfo($text, $type);
+			VmConfig::$logFileName =$oldLogFileName;
+		}
+	}
+
+	/**
+	 *
+	 */
+	function getLogFileName() {
+		$name=$this->_idName;
+		$methodId=0;
+		if (isset ($this->_currentMethod) ) {
+			$methodId=$this->_currentMethod->$name;
+		}
+
+		return $this->_name. '.'.$methodId ;
+	}
+
+	/**
+	 * log all messages of type ERROR
+	 * log in case the debug option is on, and the log option is on
+	* @param string $message the message to write
+	* @param string $title
+	* @param string $type message, deb-ug,  info, error
+	* @param boolean $doDebug in payment notification, we don't want to use vmdebug even if the debug option  is on
+	 *
+	 */
+	public function debugLog($message, $title='', $type = 'message', $doDebug=true) {
+		if ( isset($this->_currentMethod) and isset($this->_currentMethod->debug) and $this->_currentMethod->debug  AND $doDebug) {
+			//vmdebug($title, $message);
+		}
+		if ( isset($this->_currentMethod) and !$this->_currentMethod->log and $type !='error') {
+			//Do not log message messages if we are not in LOG mode
+			return;
+		}
+
+		if ( $type == 'error') {
+			$this->sendEmailToVendorAndAdmins();
+		}
+
+		$this->logInfo($title.': '.print_r($message,true), $type, true);
+
+	}
+
+
 }
+

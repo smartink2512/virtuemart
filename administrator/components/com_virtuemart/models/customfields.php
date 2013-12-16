@@ -204,9 +204,9 @@ class VirtueMartModelCustomfields extends VmModel {
 	 * @return string|Ambigous <string, mixed, multitype:>
 	 */
 	function getProductParentRelation ($product_id) {
-
-		$this->_db->setQuery (' SELECT `customfield_value` FROM `#__virtuemart_product_customfields` WHERE  `virtuemart_product_id` =' . (int)$product_id);
-		if ($childcustom = $this->_db->loadResult ()) {
+		$db = JFactory::getDBO();
+		$db->setQuery (' SELECT `customfield_value` FROM `#__virtuemart_product_customfields` WHERE  `virtuemart_product_id` =' . (int)$product_id);
+		if ($childcustom = $db->loadResult ()) {
 			return '(' . $childcustom . ')';
 		}
 		else {
@@ -302,8 +302,9 @@ class VirtueMartModelCustomfields extends VmModel {
 				}
 				$q = 'SELECT `virtuemart_media_id` as value,`file_title` as text FROM `#__virtuemart_medias` WHERE `published`=1
 					AND (`virtuemart_vendor_id`= "' . $vendorId . '" OR `shared` = "1")';
-				$this->_db->setQuery ($q);
-				$options = $this->_db->loadObjectList ();
+				$db = JFactory::getDBO();
+				$db->setQuery ($q);
+				$options = $db->loadObjectList ();
 				return JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', '', 'value', 'text', $field->customfield_value) . '</td><td>' . $priceInput;
 				break;
 
@@ -339,7 +340,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				}
 				//vmdebug('displayProductCustomfieldBE $field',$field);
 				JPluginHelper::importPlugin ('vmcustom', $field->custom_element);
-				$dispatcher = JEventDispatcher::getInstance ();
+				$dispatcher = JDispatcher::getInstance ();
 				$retValue = '';
 				$dispatcher->trigger ('plgVmOnProductEdit', array($field, $product_id, &$row, &$retValue));
 
@@ -352,13 +353,14 @@ class VirtueMartModelCustomfields extends VmModel {
 					return '';
 				} // special case it's category ID !
 				$q = 'SELECT * FROM `#__virtuemart_categories_' . VMLANG . '` JOIN `#__virtuemart_categories` AS p using (`virtuemart_category_id`) WHERE `virtuemart_category_id`= "' . (int)$field->customfield_value . '" ';
-				$this->_db->setQuery ($q);
-				//echo $this->_db->_sql;
-				if ($category = $this->_db->loadObject ()) {
+				$db = JFactory::getDBO();
+				$db->setQuery ($q);
+				//echo $db->_sql;
+				if ($category = $db->loadObject ()) {
 					$q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_category_medias` WHERE `virtuemart_category_id`= "' . (int)$field->customfield_value . '" ';
-					$this->_db->setQuery ($q);
+					$db->setQuery ($q);
 					$thumb = '';
-					if ($media_id = $this->_db->loadResult ()) {
+					if ($media_id = $db->loadResult ()) {
 						$thumb = $this->displayCustomMedia ($media_id,'category');
 					}
 					$display = '<input type="hidden" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" />';
@@ -425,7 +427,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			if ($customfield->field_type == "E") {
 
 				JPluginHelper::importPlugin ('vmcustom');
-				$dispatcher = JEventDispatcher::getInstance ();
+				$dispatcher = JDispatcher::getInstance ();
 				$ret = $dispatcher->trigger ('plgVmOnDisplayProductFE', array(&$product, &$customfield));
 				//return; // $customfield->display;
 				continue;
@@ -603,12 +605,13 @@ class VirtueMartModelCustomfields extends VmModel {
 				case 'Z':
 					$html = '';
 					$q = 'SELECT * FROM `#__virtuemart_categories_' . VMLANG . '` as l JOIN `#__virtuemart_categories` AS c using (`virtuemart_category_id`) WHERE `published`=1 AND l.`virtuemart_category_id`= "' . (int)$customfield->customfield_value . '" ';
-					$this->_db->setQuery ($q);
-					if ($category = $this->_db->loadObject ()) {
+					$db = JFactory::getDBO();
+					$db->setQuery ($q);
+					if ($category = $db->loadObject ()) {
 						$q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_category_medias`WHERE `virtuemart_category_id`= "' . $category->virtuemart_category_id . '" ';
-						$this->_db->setQuery ($q);
+						$db->setQuery ($q);
 						$thumb = '';
-						if ($media_id = $this->_db->loadResult ()) {
+						if ($media_id = $db->loadResult ()) {
 							$thumb = $this->displayCustomMedia ($media_id,'category');
 						}
 						$customfield->display = JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id), $thumb . ' ' . $category->category_name, array('title' => $category->category_name));
@@ -690,7 +693,7 @@ class VirtueMartModelCustomfields extends VmModel {
 							if (!class_exists ('vmCustomPlugin'))
 								require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 							JPluginHelper::importPlugin ('vmcustom');
-							$dispatcher = JEventDispatcher::getInstance ();
+							$dispatcher = JDispatcher::getInstance ();
 							//vmdebug('displayProductCustomfieldSelected is PLUGIN use trigger '.$trigger,$customfield_id);
 							$dispatcher->trigger ($trigger, array(&$product, &$productCustom, &$html));
 
@@ -861,7 +864,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 					JPluginHelper::importPlugin('vmcustom');
-					$dispatcher = JEventDispatcher::getInstance();
+					$dispatcher = JDispatcher::getInstance();
 					$dispatcher->trigger('plgVmPrepareCartProduct',array(&$product, &$product->customfields[$k],$selected,&$modificatorSum));
 				} else {
 					if ($productCustom->customfield_price) {
@@ -891,7 +894,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		if ($type == 'E') {
 			JPluginHelper::importPlugin ('vmcustom');
-			$dispatcher = JEventDispatcher::getInstance ();
+			$dispatcher = JDispatcher::getInstance ();
 			$retValue = $dispatcher->trigger ('plgVmGetTablePluginParams', array('custom',$custom_element, $custom_jplugin_id, &$xParams, &$varsToPush));
 		}
 
@@ -908,7 +911,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$xParams = $table->_xParams;
 		if ($type == 'E') {
 			JPluginHelper::importPlugin ('vmcustom');
-			$dispatcher = JEventDispatcher::getInstance ();
+			$dispatcher = JDispatcher::getInstance ();
 			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustom', array(&$table));
 		}
 
@@ -940,7 +943,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	public function storeProductCustomfields($table,$datas, $id) {
 
 		//vmdebug('storeProductCustomfields',$datas);
-		JSession::checkToken() or jexit( 'Invalid Token, in store customfields');
+		vmRequest::vmCheckToken('Invalid token in storeProductCustomfields');
 		//Sanitize id
 		$id = (int)$id;
 
@@ -949,8 +952,9 @@ class VirtueMartModelCustomfields extends VmModel {
 		if(!in_array($table,$tableWhiteList)) return false;
 
 		// Get old IDS
-		$this->_db->setQuery( 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_'.$table.'_customfields` as `PC` WHERE `PC`.virtuemart_'.$table.'_id ='.$id );
-		$old_customfield_ids = $this->_db->loadColumn();
+		$db = JFactory::getDBO();
+		$db->setQuery( 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_'.$table.'_customfields` as `PC` WHERE `PC`.virtuemart_'.$table.'_id ='.$id );
+		$old_customfield_ids = $db->loadColumn();
 
 		if (array_key_exists('field', $datas)) {
 
@@ -1008,14 +1012,14 @@ class VirtueMartModelCustomfields extends VmModel {
 		vmdebug('Delete $old_customfield_ids',$old_customfield_ids);
 		if ( count($old_customfield_ids) ) {
 			// delete old unused Customfields
-			$this->_db->setQuery( 'DELETE FROM `#__virtuemart_'.$table.'_customfields` WHERE `virtuemart_customfield_id` in ("'.implode('","', $old_customfield_ids ).'") ');
-			$this->_db->execute();
+			$db->setQuery( 'DELETE FROM `#__virtuemart_'.$table.'_customfields` WHERE `virtuemart_customfield_id` in ("'.implode('","', $old_customfield_ids ).'") ');
+			$db->execute();
 			vmdebug('Deleted $old_customfield_ids',$old_customfield_ids);
 		}
 
 
 		JPluginHelper::importPlugin('vmcustom');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		if (isset($datas['plugin_param']) and is_array($datas['plugin_param'])) {
 			foreach ($datas['plugin_param'] as $key => $plugin_param ) {
 				$dispatcher->trigger('plgVmOnStoreProduct', array($datas, $plugin_param ));

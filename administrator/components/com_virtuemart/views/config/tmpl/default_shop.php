@@ -72,7 +72,7 @@ defined('_JEXEC') or die('Restricted access');?>
 				<?php echo $this->activeLanguages; ?>
 			</td>
 			<td>
-				<?php echo JText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
+				<?php echo JText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','<a href="http://virtuemart.net/community/translations" target="_blank" >Translations</a>'); ?>
 			</td>
 		</tr>
 		<?php

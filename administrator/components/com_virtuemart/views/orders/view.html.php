@@ -40,7 +40,6 @@ class VirtuemartViewOrders extends VmView {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-
 		$orderStatusModel=VmModel::getModel('orderstatus');
 		$orderStates = $orderStatusModel->getOrderStatusList();
 
@@ -51,6 +50,8 @@ class VirtuemartViewOrders extends VmView {
 		$curTask = VmRequest::getCmd('task');
 		if ($curTask == 'edit') {
 			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+			VmConfig::loadJLang('com_virtuemart_orders', true);
+
 			// Load addl models
 			$userFieldsModel = VmModel::getModel('userfields');
 			$productModel = VmModel::getModel('product');

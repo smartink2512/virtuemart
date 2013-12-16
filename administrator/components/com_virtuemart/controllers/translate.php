@@ -55,7 +55,7 @@ class VirtuemartControllerTranslate extends VmController {
 		$json['fields'] = 'error' ;
 		$json['msg'] = 'Invalid Token';
 		$json['structure'] = 'empty' ;
-		if (!JSession::checkToken( 'get' )) {
+		if (!vmRequest::vmCheckToken(-1)) {
 			echo json_encode($json) ;
 			jexit(  );
 		}

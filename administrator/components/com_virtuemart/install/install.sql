@@ -414,7 +414,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
   PRIMARY KEY (`virtuemart_media_id`),
   KEY `i_virtuemart_vendor_id` (`virtuemart_vendor_id`),
   KEY `i_published` (`published`),
-   KEY `i_shared` (`shared`)
+  KEY `i_shared` (`shared`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Additional Images and Files which are assigned to products' AUTO_INCREMENT=1 ;
 
 
@@ -493,7 +493,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `user_currency_rate` DECIMAL(10,5) NOT NULL DEFAULT '1.00000',
   `virtuemart_paymentmethod_id` mediumint(1) UNSIGNED,
   `virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED,
-  `customer_note` varchar(21000),
+  `customer_note` varchar(20000),
+  `delivery_date` varchar(200),
   `order_language` char(7),
   `ip_address` char(15) NOT NULL DEFAULT '',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -557,6 +558,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_items` (
   `order_item_currency` INT(11),
   `order_status` char(1),
   `product_attribute` text,
+  `delivery_date` varchar(200),
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -872,8 +874,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_prices` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds price records for a product' AUTO_INCREMENT=1 ;
 
 
--- --------------------------------------------------------
---
 -- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_rating_reviews`

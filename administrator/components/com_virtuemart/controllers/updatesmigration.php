@@ -52,11 +52,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	 * @author Max Milbers
 	 */
 	private function checkPermissionForTools(){
-		$token = JSession::getFormToken();
-		if(vmRequest::getCmd($token)){
-			JFactory::getApplication()->input->post->set($token,true);
-		}
-		JSession::checkToken() or jexit('Invalid Token, in ' . VmRequest::getCmd('task'));
+		vmRequest::vmCheckToken();
 		//Hardcore Block, we may do that better later
 		if(!class_exists('Permissions'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
@@ -99,12 +95,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	 */
 	function installSampleData(){
 
-		$token = JSession::getFormToken();
-		if(vmRequest::getCmd($token)){
-			JFactory::getApplication()->input->post->set($token,true);
-		}
-		JSession::checkToken() or jexit('Invalid Token, in ' . VmRequest::getCmd('task'));
-// 		$this->checkPermissionForTools();
+		vmRequest::vmCheckToken();
 
 		$model = $this->getModel('updatesMigration');
 
@@ -278,11 +269,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 	function updateDatabase(){
 
-		$token = JSession::getFormToken();
-		if(vmRequest::getCmd($token)){
-			JFactory::getApplication()->input->post->set($token,true);
-		}
-		JSession::checkToken() or jexit('Invalid Token, in ' . VmRequest::getCmd('task'));
+		VmRequest::vmCheckToken();
 
 		if(!class_exists('com_virtuemartInstallerScript')) require(JPATH_VM_ADMINISTRATOR . DS . 'install' . DS . 'script.virtuemart.php');
 		$updater = new com_virtuemartInstallerScript();

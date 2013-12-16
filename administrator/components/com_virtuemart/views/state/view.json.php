@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage State
  * @author RolandD, jseros
  */
-class VirtuemartViewState extends JViewLegacy {
+class VirtuemartViewState extends JView {
 
 	function display($tpl = null) {
 
