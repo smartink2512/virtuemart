@@ -16,28 +16,32 @@ defined('_JEXEC') or die();
  */
 if (!class_exists('VmConfig'))
     require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+
 if (!class_exists('ShopFunctions'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
-if (!class_exists('TableCategories'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'categories.php');
 
-if (!class_exists('VmElements'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'elements' . DS . 'vmelements.php');
+if(!class_exists('TableManufacturers')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'manufacturers.php');
+if (!class_exists( 'VirtueMartModelManufacturer' ))
+   JLoader::import( 'manufacturer', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models' );
 /*
  * This element is used by the menu manager
  * Should be that way
  */
 
-class JElementVmvendormenu extends JFormField {
+class JFormFieldManufacturersmenu extends JFormField{
 
-    var $_name = 'vendormenu';
 
-    function fetchElement($name, $value, &$node, $control_name) {
+	var $_name = 'manufacturersmenu';
+
+	function getInput() {
+
 	    $lang = JFactory::getLanguage();
 	    $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
-	$model = VmModel::getModel('Vendor');
-	$vendors = $model->getVendors(true, true, false);
-	return JHTML::_('select.genericlist', $vendors, $control_name . '[' . $name . ']', '', $name, 'vendor_name', $value, $control_name . $name);
-    }
+	$model =VmModel::getModel('Manufacturer');
+	$manufacturers = $model->getManufacturers(true, true, false);
+
+		return JHTML::_('select.genericlist',  $manufacturers, $this->name, 'class="inputbox"   ', 'value', 'text', $this->value, $this->id);
+
+	}
 
 }

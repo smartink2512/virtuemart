@@ -64,6 +64,7 @@ if (!class_exists ('vmPSPlugin')) {
 			'payment_name'                => 'varchar(5000)',
 			'payment_order_total'         => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
 			'payment_currency'            => 'char(3)',
+			'email_currency'              => 'char(3)',
 			'cost_per_transaction'        => 'decimal(10,2)',
 			'cost_percent_total'          => 'decimal(10,2)',
 			'tax_id'                      => 'smallint(1)'
@@ -93,16 +94,12 @@ if (!class_exists ('vmPSPlugin')) {
 		if (!class_exists ('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
-		$this->getPaymentCurrency ($method, TRUE);
 
-		// END printing out HTML Form code (Payment Extra Info)
-		$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $method->payment_currency . '" ';
-		$db = JFactory::getDBO ();
-		$db->setQuery ($q);
-		$currency_code_3 = $db->loadResult ();
-		$paymentCurrency = CurrencyDisplay::getInstance ($method->payment_currency);
-		$totalInPaymentCurrency = round ($paymentCurrency->convertCurrencyTo ($method->payment_currency, $order['details']['BT']->order_total, FALSE), 2);
-		$cd = CurrencyDisplay::getInstance ($cart->pricesCurrency);
+		$this->getPaymentCurrency($method);
+		$currency_code_3 = shopFunctions::getCurrencyByID($method->payment_currency, 'currency_code_3');
+		$email_currency = $this->getEmailCurrency($method);
+
+		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$method->payment_currency);
 
 		$dbValues['payment_name'] = $this->renderPluginName ($method) . '<br />' . $method->payment_info;
 		$dbValues['order_number'] = $order['details']['BT']->order_number;
@@ -110,7 +107,8 @@ if (!class_exists ('vmPSPlugin')) {
 		$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
 		$dbValues['cost_percent_total'] = $method->cost_percent_total;
 		$dbValues['payment_currency'] = $currency_code_3;
-		$dbValues['payment_order_total'] = $totalInPaymentCurrency;
+		$dbValues['email_currency'] = $email_currency;
+		$dbValues['payment_order_total'] = $totalInPaymentCurrency['value'];
 		$dbValues['tax_id'] = $method->tax_id;
 		$this->storePSPluginInternalData ($dbValues);
 
@@ -129,8 +127,13 @@ if (!class_exists ('vmPSPlugin')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 		}
 		$currency = CurrencyDisplay::getInstance ('', $order['details']['BT']->virtuemart_vendor_id);
-		$html .= $this->getHtmlRow ('STANDARD_ORDER_NUMBER', $order['details']['BT']->order_number, "vmorder-done-nr");
-		$html .= $this->getHtmlRow ('STANDARD_AMOUNT', $currency->priceDisplay ($order['details']['BT']->order_total), "vmorder-done-amount");
+		$html .= $this->getHtmlRow ('STANDARD_ORDER_NUMBER', $order['details']['BT']->order_number, 'class="vmorder-done-nr"');
+		$html .= $this->getHtmlRow ('STANDARD_AMOUNT', $currency->priceDisplay ($order['details']['BT']->order_total), 'class="vmorder-done-amount"');
+
+		if ($method->payment_currency != $order['details']['BT']->order_currency) {
+			$html .= $this->getHtmlRow ('COM_VIRTUEMART_CART_TOTAL_PAYMENT', $totalInPaymentCurrency['display'], 'class="vmorder-done-amount"');
+		}
+
 		//$html .= $this->getHtmlRow('STANDARD_INFO', $method->payment_info);
 		//$html .= $this->getHtmlRow('STANDARD_AMOUNT', $totalInPaymentCurrency.' '.$currency_code_3);
 		$html .= '</table>' . "\n";
@@ -173,32 +176,48 @@ if (!class_exists ('vmPSPlugin')) {
 		if (!($paymentTable = $this->getDataByOrderId ($virtuemart_order_id))) {
 			return NULL;
 		}
+		VmConfig::loadJLang('com_virtuemart');
 
 		$html = '<table class="adminlist">' . "\n";
 		$html .= $this->getHtmlHeaderBE ();
-		$html .= $this->getHtmlRowBE ('STANDARD_PAYMENT_NAME', $paymentTable->payment_name);
+		$html .= $this->getHtmlRowBE ('COM_VIRTUEMART_PAYMENT_NAME', $paymentTable->payment_name);
 		$html .= $this->getHtmlRowBE ('STANDARD_PAYMENT_TOTAL_CURRENCY', $paymentTable->payment_order_total . ' ' . $paymentTable->payment_currency);
+		if ($paymentTable->email_currency) {
+			$html .= $this->getHtmlRowBE ('STANDARD_EMAIL_CURRENCY', $paymentTable->email_currency );
+		}
 		$html .= '</table>' . "\n";
 		return $html;
 	}
 
-        /**
-         * Check if the payment conditions are fulfilled for this payment method
-         *
-         * @author: Valerie Isaksen
-         *
-         * @param \VirtueMartCart $cart
-         * @param int $method
-         * @param array $cart_prices
-         * @return true: if the conditions are fulfilled, false otherwise
-         */
+/*	function getCosts (VirtueMartCart $cart, $method, $cart_prices) {
+
+		if (preg_match ('/%$/', $method->cost_percent_total)) {
+			$cost_percent_total = substr ($method->cost_percent_total, 0, -1);
+		} else {
+			$cost_percent_total = $method->cost_percent_total;
+		}
+		return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
+	}
+*/
+	/**
+	 * Check if the payment conditions are fulfilled for this payment method
+	 *
+	 * @author: Valerie Isaksen
+	 *
+	 * @param $cart_prices: cart prices
+	 * @param $payment
+	 * @return true: if the conditions are fulfilled, false otherwise
+	 *
+	 */
 	protected function checkConditions ($cart, $method, $cart_prices) {
 
-        $this->convert_condition_amount($method);
-        $amount = $this->getCartAmount($cart_prices);
-        $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
+		$this->convert_condition_amount($method);
+		$amount = $this->getCartAmount($cart_prices);
+		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
-		$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
+
+		//vmdebug('standard checkConditions',  $amount, $cart_prices['salesPrice'],  $cart_prices['salesPriceCoupon']);
+ 		$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
 			OR
 			($method->min_amount <= $amount AND ($method->max_amount == 0)));
 		if (!$amount_cond) {
@@ -230,7 +249,6 @@ if (!class_exists ('vmPSPlugin')) {
 	}
 
 
-
 	/*
 * We must reimplement this triggers for joomla 1.7
 */
@@ -248,61 +266,57 @@ if (!class_exists ('vmPSPlugin')) {
 		return $this->onStoreInstallPluginTable ($jplugin_id);
 	}
 
-        /**
-         * This event is fired after the payment method has been selected. It can be used to store
-         * additional payment info in the cart.
-         *
-         * @author Max Milbers
-         * @author Valérie isaksen
-         *
-         * @param VirtueMartCart $cart: the actual cart
-         * @param $msg
-         * @return null if the payment was not selected, true if the data is valid, error message if the data is not valid
-         */
+	/**
+	 * This event is fired after the payment method has been selected. It can be used to store
+	 * additional payment info in the cart.
+	 *
+	 * @author Max Milbers
+	 * @author Valérie isaksen
+	 *
+	 * @param VirtueMartCart $cart: the actual cart
+	 * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
+	 *
+	 */
 	public function plgVmOnSelectCheckPayment (VirtueMartCart $cart, &$msg) {
 
 		return $this->OnSelectCheck ($cart);
 	}
 
-        /**
-         * plgVmDisplayListFEPayment
-         * This event is fired to display the plugin methods in the cart (edit shipment/payment) for example
-         *
-         * @param object|\VirtueMartCart $cart Cart object
-         * @param integer $selected ID of the method selected
-         * @param $htmlIn
-         * @return boolean True on success, false on failures, null when this plugin was not selected.
-         * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
-         *
-         * @author Valerie Isaksen
-         * @author Max Milbers
-         */
+	/**
+	 * plgVmDisplayListFEPayment
+	 * This event is fired to display the pluginmethods in the cart (edit shipment/payment) for exampel
+	 *
+	 * @param object  $cart Cart object
+	 * @param integer $selected ID of the method selected
+	 * @return boolean True on succes, false on failures, null when this plugin was not selected.
+	 * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
+	 *
+	 * @author Valerie Isaksen
+	 * @author Max Milbers
+	 */
 	public function plgVmDisplayListFEPayment (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
 
 		return $this->displayListFE ($cart, $selected, $htmlIn);
 	}
 
-        /**
-         * plgVmonSelectedCalculatePricePayment
-         * Calculate the price (value, tax_id) of the selected method
-         * It is called by the calculator
-         * This function does NOT to be reimplemented. If not reimplemented, then the default values from this function are taken.
-         * @author Valerie Isaksen
-         * @cart: VirtueMartCart the current cart
-         * @cart_prices: array the new cart prices
-         * @param VirtueMartCart $cart
-         * @param array $cart_prices
-         * @param $cart_prices_name
-         * @return null if the method was not selected, false if the payment rate is not valid any more, true otherwise
-         *
-         *
-         */
+	/*
+* plgVmonSelectedCalculatePricePayment
+* Calculate the price (value, tax_id) of the selected method
+* It is called by the calculator
+* This function does NOT to be reimplemented. If not reimplemented, then the default values from this function are taken.
+* @author Valerie Isaksen
+* @cart: VirtueMartCart the current cart
+* @cart_prices: array the new cart prices
+* @return null if the method was not selected, false if the shiiping rate is not valid any more, true otherwise
+*
+*
+*/
 
 	public function plgVmonSelectedCalculatePricePayment (VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
 
 		return $this->onSelectedCalculatePrice ($cart, $cart_prices, $cart_prices_name);
 	}
- 
+
 	function plgVmgetPaymentCurrency ($virtuemart_paymentmethod_id, &$paymentCurrencyId) {
 
 		if (!($method = $this->getVmPluginMethod ($virtuemart_paymentmethod_id))) {
@@ -324,8 +338,6 @@ if (!class_exists ('vmPSPlugin')) {
 	 *
 	 * @author Valerie Isaksen
 	 * @param VirtueMartCart cart: the cart object
-	 * @param array $cart_prices
-	 * @param integer $paymentCounter
 	 * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
 	 *
 	 */
@@ -334,22 +346,20 @@ if (!class_exists ('vmPSPlugin')) {
 		return $this->onCheckAutomaticSelected ($cart, $cart_prices, $paymentCounter);
 	}
 
-    /**
-     * This method is fired when showing the order details in the frontend.
-     * It displays the method-specific data.
-     *
-     * @param integer $virtuemart_order_id The order ID
-     * @param integer $virtuemart_paymentmethod_id The payment ID
-     * @param integer $payment_name The payment name
-     * @return mixed Null for methods that aren't active, text (HTML) otherwise
-     * @author Max Milbers
-     * @author Valerie Isaksen
-     */
+	/**
+	 * This method is fired when showing the order details in the frontend.
+	 * It displays the method-specific data.
+	 *
+	 * @param integer $order_id The order ID
+	 * @return mixed Null for methods that aren't active, text (HTML) otherwise
+	 * @author Max Milbers
+	 * @author Valerie Isaksen
+	 */
 	public function plgVmOnShowOrderFEPayment ($virtuemart_order_id, $virtuemart_paymentmethod_id, &$payment_name) {
 
 		$this->onShowOrderFE ($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
 	}
-    /**
+/**
 	 * @param $orderDetails
 	 * @param $data
 	 * @return null
@@ -374,6 +384,34 @@ if (!class_exists ('vmPSPlugin')) {
 		}
 
 	}
+		/**
+		 * @param $virtuemart_paymentmethod_id
+		 * @param $paymentCurrencyId
+		 * @return bool|null
+		 */
+		function plgVmgetEmailCurrency($virtuemart_paymentmethod_id, $virtuemart_order_id, &$emailCurrencyId) {
+
+			if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
+				return NULL; // Another method was selected, do nothing
+			}
+			if (!$this->selectedThisElement($method->payment_element)) {
+				return FALSE;
+			}
+			if (!($payments = $this->getDatasByOrderId($virtuemart_order_id))) {
+				// JError::raiseWarning(500, $db->getErrorMsg());
+				return '';
+			}
+			if (empty($payments[0]->email_currency)) {
+				$vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
+				$db = JFactory::getDBO();
+				$q = 'SELECT   `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`=' . $vendorId;
+				$db->setQuery($q);
+				$emailCurrencyId = $db->loadResult();
+			} else {
+				$emailCurrencyId = $payments[0]->email_currency;
+			}
+
+		}
 	/**
 	 * This event is fired during the checkout process. It can be used to validate the
 	 * method data as entered by the user.
@@ -386,15 +424,15 @@ if (!class_exists ('vmPSPlugin')) {
 	}
 	 */
 
-        /**
-         * This method is fired when showing when printing an Order
-         * It displays the the payment method-specific data.
-         *
-         * @param string $order_number The order number
-         * @param integer $method_id  method used for this order
-         * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
-         * @author Valerie Isaksen
-         */
+	/**
+	 * This method is fired when showing when priting an Order
+	 * It displays the the payment method-specific data.
+	 *
+	 * @param integer $_virtuemart_order_id The order ID
+	 * @param integer $method_id  method used for this order
+	 * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
+	 * @author Valerie Isaksen
+	 */
 	function plgVmonShowOrderPrintPayment ($order_number, $method_id) {
 
 		return $this->onShowOrderPrint ($order_number, $method_id);
@@ -402,7 +440,7 @@ if (!class_exists ('vmPSPlugin')) {
 
 	function plgVmDeclarePluginParamsPayment ($name, $id, &$data) {
 
-		return $this->declarePluginParams ('payment', $data);
+		return $this->declarePluginParams ('payment', $name, $id, $data);
 	}
 
 	function plgVmSetOnTablePluginParamsPayment ($name, $id, &$table) {
@@ -417,14 +455,14 @@ if (!class_exists ('vmPSPlugin')) {
 	 *
 	 * @param array   $_formData Form data
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be
-	 * skipped!), or null when this method is not activated.
+	 * skipped!), or null when this method is not actived.
 	 *
 	public function plgVmOnUpdateOrderPayment(  $_formData) {
 	return null;
 	}
 
 	/**
-	 * Save updated order line data to the method specific table
+	 * Save updated orderline data to the method specific table
 	 *
 	 * @param array   $_formData Form data
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be

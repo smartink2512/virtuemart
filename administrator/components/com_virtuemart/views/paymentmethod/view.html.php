@@ -79,6 +79,17 @@ class VirtuemartViewPaymentMethod extends VmView {
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
 
 			$payment = $model->getPayment();
+			$payment->params = $this-> getParams($payment->payment_params);//$registry->toArray();
+
+			// Get the payment XML.
+			$path	= JPath::clean( JPATH_PLUGINS.'/vmpayment/' . $payment->payment_element . '/' . $payment->payment_element . '.xml');
+			if (file_exists($path)){
+				$payment->form = JForm::getInstance('paymentForm', $path, array(),false, '//config');
+				$payment->form->bind($payment->params);
+			} else {
+				$payment->form = null;
+			}
+
 			$this->assignRef('payment',	$payment);
 			$this->assignRef('vmPPaymentList', self::renderInstalledPaymentPlugins($payment->payment_jplugin_id));
 
@@ -105,27 +116,32 @@ class VirtuemartViewPaymentMethod extends VmView {
 		parent::display($tpl);
 	}
 
+	function getParams($raw) {
 
+		if (!empty($raw)) {
+			$params = explode('|', substr($raw, 0,-1));
+			foreach($params as $param){
+				$item = explode('=',$param);
+				if(!empty($item[1])){
+					$pair[$item[0]] = $item[1];
+				} else {
+					$pair[$item[0]] ='';
+				}
+
+			}
+		}
+		return $pair;
+	}
 
 	function renderInstalledPaymentPlugins($selected){
-
-		if ( JVM_VERSION===1) {
-			$table = '#__plugins';
-			$ext_id = 'id';
-			$enable = 'published';
-		} else {
-			$table = '#__extensions';
-			$ext_id = 'extension_id';
-			$enable = 'enabled';
-		}
 
 		$db = JFactory::getDBO();
 		//Todo speed optimize that, on the other hand this function is NOT often used and then only by the vendors
 		//		$q = 'SELECT * FROM #__plugins as pl JOIN `#__virtuemart_payment_method` AS pm ON `pl`.`id`=`pm`.`payment_jplugin_id` WHERE `folder` = "vmpayment" AND `published`="1" ';
 		//		$q = 'SELECT * FROM #__plugins as pl,#__virtuemart_payment_method as pm  WHERE `folder` = "vmpayment" AND `published`="1" AND pl.id=pm.payment_jplugin_id';
-		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmpayment" and `state`="0" AND `element`<>"moneybookers" ORDER BY `ordering`,`name` ASC';
+		$q = 'SELECT * FROM `#__extensions` WHERE `folder` = "vmpayment" and `state`="0" AND `element`<>"moneybookers" ORDER BY `ordering`,`name` ASC';
 		$db->setQuery($q);
-		$result = $db->loadAssocList($ext_id);
+		$result = $db->loadAssocList('extension_id');
 		if(empty($result)){
 			$app = JFactory::getApplication();
 			$app -> enqueueMessage(JText::_('COM_VIRTUEMART_NO_PAYMENT_PLUGINS_INSTALLED'));
@@ -135,11 +151,11 @@ class VirtuemartViewPaymentMethod extends VmView {
 		if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 		foreach($result as $paym){
 			$params = new JParameter($paym['params']);
-			if($paym[$ext_id]==$selected) $checked='selected="selected"'; else $checked='';
+			if($paym['extension_id']==$selected) $checked='selected="selected"'; else $checked='';
 			// Get plugin info
 			$pType = $params->getValue('pType');
 			if($pType=='Y' || $pType=='C') $id = 'pam_type_CC_on'; else $id='pam_type_CC_off';
-			$listHTML .= '<option id="'.$id.'" '.$checked.' value="'.$paym[$ext_id].'">'.JText::_($paym['name']).'</option>';
+			$listHTML .= '<option id="'.$id.'" '.$checked.' value="'.$paym['extension_id'].'">'.JText::_($paym['name']).'</option>';
 
 		}
 		$listHTML .= '</select>';

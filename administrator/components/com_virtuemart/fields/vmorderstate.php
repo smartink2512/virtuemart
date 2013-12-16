@@ -6,7 +6,7 @@ defined ('_JEXEC') or die();
  * @subpackage Plugins  - Elements
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2011 VirtueMart Team. All rights reserved.
+ * @copyright ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -20,18 +20,21 @@ defined ('_JEXEC') or die();
  * So It should be an extension of JFormField
  * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
-class JElementVmOrderState extends JFormField {
+class JFormFieldVmOrderState extends JFormFieldList {
 
 	/**
-	 * Element name
+	 * The form field type.
 	 *
-	 * @access    protected
-	 * @var        string
+	 * @var    string
+	 * @since  11.1
 	 */
-	var $_name = 'OrderStates';
+	public $type = 'vmOrderStates';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
-		$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
+	protected function getOptions()
+	{
+		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+
+		$options = array();
 		$db = JFactory::getDBO ();
 
 		$query = 'SELECT `order_status_code` AS value, `order_status_name` AS text
@@ -40,13 +43,15 @@ class JElementVmOrderState extends JFormField {
                  ORDER BY `ordering` ASC ';
 
 		$db->setQuery ($query);
-		$fields = $db->loadObjectList ();
-
-		foreach ($fields as $field) {
-			$field->text= JText::_ ($field->text);
+		$values = $db->loadObjectList ();
+		$class = '';
+		foreach ($values as $v) {
+			$options[] = JHtml::_('select.option', $v->value, JText::_($v->text));
 		}
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
 
-		return JHTML::_ ('select.genericlist', $fields, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);
+		return $options;
 	}
 
 }

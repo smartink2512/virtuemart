@@ -54,55 +54,35 @@ class VirtueMartModelPaymentmethod extends VmModel{
      */
 	public function getPayment(){
 
-  		if (empty($this->_data)) {
-   			$this->_data = $this->getTable('paymentmethods');
-   			$this->_data->load((int)$this->_id);
-  		}
-
-  		if(empty($this->_data->virtuemart_vendor_id)){
-  		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-   			$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
-  		}
-
-  		if($this->_data->payment_jplugin_id){
-  			JPluginHelper::importPlugin('vmpayment');
-  			$dispatcher = JDispatcher::getInstance();
-  			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsPayment',array($this->_data->payment_element,$this->_data->payment_jplugin_id,&$this->_data));
+		if (empty($this->_data)) {
+			$this->_data = $this->getTable('paymentmethods');
+			$this->_data->load((int)$this->_id);
 		}
-  		if(!empty($this->_id)){
+
+		if(empty($this->_data->virtuemart_vendor_id)){
+			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+			$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
+		}
+
+		if($this->_data->payment_jplugin_id){
+			JPluginHelper::importPlugin('vmpayment');
+			$dispatcher = JDispatcher::getInstance();
+			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsPayment',array($this->_data->payment_element,$this->_data->payment_jplugin_id,&$this->_data));
+		}
+		if(!empty($this->_id)){
 
 			/* Add the paymentmethod shoppergroups */
 			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_paymentmethod_shoppergroups WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';
-			$db = JFactory::getDBO();
-			$db->setQuery($q);
-			$this->_data->virtuemart_shoppergroup_ids = $db->loadColumn();
-            if (JVM_VERSION < 3) {
-                $q = 'SELECT `params` FROM `#__extensions` WHERE `extension_id` = "'.$this->_data->payment_jplugin_id.'"';
-                $db->setQuery($q);
-                $this->_data->param = $db->loadResult();
-            } else {
-                // Convert the params field to an array.
-                $registry = new JRegistry;
-                // This one assumes that it is a json format
-                $registry->loadString($this->_data->payment_params);
-                $this->_data->param = $registry->toArray();
+			$this->_db->setQuery($q);
+			$this->_data->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
 
-                $filename = JPATH_SITE . '/plugins/vmpayment/' . $this->_data->payment_element . '/' . $this->_data->payment_element . '.xml';
-                if (file_exists($filename)) {
-
-                    $this->_data->form = JForm::getInstance('paymentForm', $filename, array(),true, '//config');
-                    $this->_data->form->bind($this->_data);
-                } else {
-                    $this->_data->form=NULL;
-                }
-            }
-        } else {
-            $this->_data->virtuemart_shoppergroup_ids = '';
-            $this->_data->form = null;
-  		}
+		} else {
+			$this->_data->virtuemart_shoppergroup_ids = '';
+			$this->_data->param = '';
+		}
 
 
-  		return $this->_data;
+		return $this->_data;
 	}
 
 	/**
@@ -174,20 +154,12 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
 		if(isset($data['payment_jplugin_id'])){
 
-			// missing string FIX, Bad way ?
-			if (JVM_VERSION===1) {
-				$tb = '#__plugins';
-				$ext_id = 'id';
-			} else {
-				$tb = '#__extensions';
-				$ext_id = 'extension_id';
-			}
-			$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['payment_jplugin_id'].'"';
+			$q = 'SELECT `element` FROM `#__extensions` WHERE `extension_id` = "'.$data['payment_jplugin_id'].'"';
 			$db = JFactory::getDBO();
 			$db->setQuery($q);
 			$data['payment_element'] = $db->loadResult();
 
-			$q = 'UPDATE `' . $tb . '` SET `enabled`= 1 WHERE `' . $ext_id . '` = "'.$data['payment_jplugin_id'].'"';
+			$q = 'UPDATE `#__extensions` SET `enabled`= 1 WHERE `extension_id` = "'.$data['payment_jplugin_id'].'"';
 			$db->setQuery($q);
 			$db->execute();
 

@@ -20,24 +20,37 @@ defined('_JEXEC') or die();
  * So It should be an extension of JFormField
  * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
+class JFormFieldVmjpluginwarning extends JFormField {
 
-if (!class_exists('VmConfig'))
-    require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+	/**
+	 * The form field type.
+	 *
+	 * @var    string
+	 * @since  11.1
+	 */
+	public $type = 'vmjpluginwarning';
 
-if (!class_exists('ShopFunctions'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+	protected function getLabel()
+	{
 
-class JElementVmWeightunit extends JFormField {
+	}
+	/**
+	 * Method to get the field input markup.
+	 *
+	 * @return  string  The field input markup.
+	 *
+	 * @since   11.1
+	 */
+	protected function getInput()
+	{
+		$lang = JFactory::getLanguage();
+		$lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
 
-    /**
-     * Element name
-     * @access	protected
-     * @var		string
-     */
-    var $_name = 'WeightUnit';
-
-    function fetchElement($name, $value, &$node, $control_name) {
-        return ShopFunctions::renderWeightUnitList(   $control_name . '[' . $name . ']', $value);
-    }
+		$option = JRequest::getWord('option');
+		if ($option == 'com_virtuemart')
+			return null;
+		else
+			return JText::_('COM_VIRTUEMART_PLUGIN_WARNING');
+	}
 
 }

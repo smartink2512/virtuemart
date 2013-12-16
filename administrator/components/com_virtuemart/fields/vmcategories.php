@@ -17,34 +17,40 @@ defined('_JEXEC') or die();
  */
 if (!class_exists('VmConfig'))
     require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+
 if (!class_exists('ShopFunctions'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 if (!class_exists('TableCategories'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'categories.php');
+jimport('joomla.form.formfield');
 
-if (!class_exists('VmElements'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'elements' . DS . 'vmelements.php');
 /*
  * This element is used by the menu manager
  * Should be that way
  */
+class JFormFieldCategories  extends JFormField {
 
-class JElementVmcategoriesmenu extends JFormField {
+    var $type = 'vmcategories';
 
-    var $_name = 'categoriesmenu';
+    // This line is required to keep Joomla! 1.6/1.7 from complaining
+    function getInput() {
+        $key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
+        $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
 
-
-
-    function fetchElement($name, $value, &$node, $control_name) {
 	    $lang = JFactory::getLanguage();
 	    $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
-        $categorylist = ShopFunctions::categoryListTree(array($value));
 
-        $html = '<select class="inputbox"   name="' . $control_name . '[' . $name . ']' . '" >';
+        $categorylist = ShopFunctions::categoryListTree(array($this->value));
+
+        $html = '<select class="inputbox"   name="' . $this->name . '" >';
         $html .= '<option value="0">' . JText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL') . '</option>';
         $html .= $categorylist;
         $html .="</select>";
         return $html;
     }
 
+
+
 }
+
+

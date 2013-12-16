@@ -14,14 +14,6 @@ defined('_JEXEC') or die();
  * other free or open source software licenses.
  * @version $Id$
  */
-
-if (!class_exists('VmConfig'))
-    require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
-
-if (!class_exists('ShopFunctions'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
-
-
 /*
  * This class is used by VirtueMart Payment or Shipment Plugins
  * which uses JParameter
@@ -29,22 +21,23 @@ if (!class_exists('ShopFunctions'))
  * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
 
-class JElementVmTaxes extends JFormField {
+if (!class_exists('VmConfig'))
+    require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+
+if (!class_exists('ShopFunctions'))
+    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+
+class JFormFieldVmWeightunit extends JFormField{
 
     /**
      * Element name
      * @access	protected
      * @var		string
      */
-    var $_name = 'taxes';
+    var $type = 'WeightUnit';
 
-    function fetchElement($name, $value, &$node, $control_name) {
-
-
-    return ShopFunctions::renderTaxList($value,  $control_name . '[' . $name . ']', '');
-
-        // $class = 'multiple="true" size="10"';
-       // return JHTML::_('select.genericlist', $taxrates, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
+    	function getInput() {
+        return ShopFunctions::renderWeightUnitList( $this->name, $this->value);
     }
 
 }

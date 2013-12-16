@@ -808,13 +808,14 @@ class ShopFunctions {
 	 */
 	public static $vmFeeds = 0;
 	static public function getVirtueMartRssFeed() {
-		if (empty(self::$vmFeeds)) {
+ 		if (empty(self::$vmFeeds)) {
 			self::$vmFeeds =  ShopFunctions::getCPsRssFeed("http://virtuemart.net/news/list-all-news?format=feed&type=rss", 5);
 		}
 		return self::$vmFeeds;
 	}
 	static public function getRssFeed ($rssURL,$max) {
 		jimport('simplepie.simplepie');
+
 		$rssFeed = new SimplePie($rssURL);
 
 		$count = $rssFeed->get_item_quantity();

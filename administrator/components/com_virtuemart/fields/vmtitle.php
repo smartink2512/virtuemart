@@ -5,7 +5,7 @@
  * @version $Id$
  * @package VirtueMart
  * @subpackage payment
- * ${PHING.VM.COPYRIGHT}
+ * @copyright ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -19,7 +19,7 @@
 
 defined ('_JEXEC') or die();
 
-class JElementVmtitle extends JElement {
+class JFormFieldVmtitle extends JFormFieldList {
 
 	/**
 	 * Element name
@@ -29,8 +29,9 @@ class JElementVmtitle extends JElement {
 	 */
 	var $_name = 'Vmtitle';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
-		
+	function getInput() {
+
+		/*
 		$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
         if (empty($class)) {
             $class="level2";
@@ -38,10 +39,10 @@ class JElementVmtitle extends JElement {
 		$description = ($node->attributes('description') ? JText::_($node->attributes('description')) : '');
 
 		$html = '';
-		if ($value) {
+		if ($this->value) {
 
             $html .= '<div '.$class.' style="margin: 10px 0 5px 0; font-weight: bold; padding: 5px; background-color: #cacaca; float:none; clear:both;">';
-			$html .= JText::_($value);
+			$html .= JText::_($this->value);
 			$html .= '</div>';
             if ($description){
                 $html .= $description.'<br/>';
@@ -49,7 +50,9 @@ class JElementVmtitle extends JElement {
 		} else {
 			$html .= '<div '.$class.'>'.$description.'</div>';
 		}
-		
+		*/
+		// todo
+		$html='';
 		return $html;
 	}
 

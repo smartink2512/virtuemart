@@ -20,11 +20,37 @@
 defined('_JEXEC') or die('Restricted access');
 
     if($this->payment->payment_jplugin_id){
-//     		vmdebug('my payment ',$this->payment);
-	        //$parameters = new vmParameters($this->paym->payment_params, JPATH_PLUGINS.DS.'vmpayment'.DS.basename($this->paym->payment_element).'.xml', 'plugin' );
-          $parameters = new vmParameters($this->payment,  $this->payment->payment_element , 'plugin' ,'vmpayment');
+$fieldSets = $this->payment->form->getFieldsets();
+?>
+<table width="100%" class="paramlist admintable" cellspacing="1">
+	<tbody>
+	<?php
+	foreach ($fieldSets as $name => $fieldSet) {
+		$label = !empty($fieldSet->label) ? $fieldSet->label : 'JGLOBAL_FIELDSET_'.$name;
+		$class = isset($fieldSet->class) && !empty($fieldSet->class) ? $fieldSet->class : '';
 
-	        echo $rendered = $parameters->render();
+		if (isset($fieldSet->description) && trim($fieldSet->description)) {
+			echo '<p class="tip">'.$this->escape(JText::_($fieldSet->description)).'</p>';
+		}
+		?>
+
+		<?php foreach ($this->payment->form->getFieldset($name) as $field) { ?>
+			<tr>
+				<td width="40%" class="paramlist_key">
+					<?php echo $field->label; ?>
+				</td>
+				<td class="paramlist_value">
+					<?php echo $field->input; ?>
+				</td>
+			</tr>
+		<?php }?>
+
+	<?php
+
+	}
+	?>
+	</tbody></table>
+<?php
 
         } else {
              echo JText::_('COM_VIRTUEMART_SELECT_PAYMENT_METHOD' );
