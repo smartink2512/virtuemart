@@ -47,7 +47,7 @@ class VirtuemartViewProduct extends VmView {
 		$filter = VmRequest::getVar('q', VmRequest::getVar('term', false) );
 
 		$id = VmRequest::getInt('id', false);
-		$virtuemart_product_id = VmRequest::getVar('virtuemart_product_id',array(),'', 'array');
+		$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id',array());
 		if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 			$product_id = (int)$virtuemart_product_id[0];
 		} else {

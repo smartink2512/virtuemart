@@ -1011,7 +1011,7 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				$commonShpgrps = array_intersect ($virtuemart_shoppergroup_ids, $product->shoppergroups);
 				if (empty($commonShpgrps)) {
-					vmdebug('getProductSingle creating void product, usergroup does not fit ',$product->shoppergroups);
+					vmdebug('getProductSingle creating void product, shoppergroups does not fit ',$product->shoppergroups);
 					return $this->fillVoidProduct ($front);
 				}
 			}
