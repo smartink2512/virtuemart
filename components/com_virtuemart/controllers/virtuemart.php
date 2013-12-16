@@ -27,7 +27,7 @@ jimport('joomla.application.component.controller');
  *
  * @package		VirtueMart
  */
-class VirtueMartControllerVirtuemart extends JControllerLegacy
+class VirtueMartControllerVirtuemart extends JController
 {
 
 	function __construct() {
@@ -40,13 +40,27 @@ class VirtueMartControllerVirtuemart extends JControllerLegacy
 	    }
 	}
 
-	function virtuemart() {
+	/**
+	 * Override of display to prevent caching
+	 *
+	 * @return  JController  A JController object to support chaining.
+	 */
+	public function display($cachable = false, $urlparams = false){
 
-		$view = $this->getView(VmRequest::getCmd('view', 'virtuemart'), 'html');
+		$document = JFactory::getDocument();
+		$viewType = $document->getType();
+		$viewName = VmRequest::getCmd('view', $this->default_view);
+		$viewLayout = VmRequest::getCmd('layout', 'default');
 
-		// Display it all
-		$safeurlparams = array('virtuemart_category_id'=>'INT','virtuemart_currency_id'=>'INT','return'=>'BASE64','lang'=>'CMD');
-		parent::display(true, $safeurlparams);//$view->display();
+		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+		$view->assignRef('document', $document);
+
+		$view->display();
+
+		return $this;
 	}
+
+
+
 }
  //pure php no closing tag

@@ -40,6 +40,8 @@ class VirtuemartViewCategory extends VmView {
 		}
 		$this->assignRef('show_prices', $show_prices);
 
+		if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+
 		// add javascript for price and cart, need even for quantity buttons, so we need it almost anywhere
 		vmJsApi::jPrice();
 
@@ -53,17 +55,25 @@ class VirtuemartViewCategory extends VmView {
 		$categoryModel = VmModel::getModel('category');
 		$productModel = VmModel::getModel('product');
 
+
 		// set search and keyword
-		if ($keyword = vmRequest::uword('keyword', '0', ' ,-,+,.,_')) {
+		if ($keyword = VmRequest::uword('keyword', false, ' ,-,+,.,_')) {
 			$pathway->addItem($keyword);
 			//$title .=' ('.$keyword.')';
 		}
 		//$search = VmRequest::uword('keyword', null);
-		if ($keyword !=='0') {
-			$searchcustom = $this->getSearchCustom();
+		$this->searchcustom = '';
+		$this->searchcustomvalues = '';
+		if (!empty($keyword)) {
+			$this->searchcustom = $this->getSearchCustom();
+			$search = $keyword;
+		} else {
+			$keyword ='';
+			$search = NULL;
 		}
+		
 		$this->assignRef('keyword', $keyword);
-		$this->assignRef('search', $keyword);
+		$this->assignRef('search', $search);
 
 		$categoryId = VmRequest::getInt('virtuemart_category_id', false);
 		$virtuemart_manufacturer_id = VmRequest::getInt('virtuemart_manufacturer_id', false );
@@ -98,6 +108,12 @@ class VirtuemartViewCategory extends VmView {
 				$pagination = $productModel->getPagination($perRow);
 				$this->assignRef('vmPagination', $pagination);
 
+				$ratingModel = VmModel::getModel('ratings');
+				$showRating = $ratingModel->showRating();
+				$productModel->withRating = $showRating;
+
+				$this->assignRef('showRating', $showRating);
+
 				$products = $productModel->getProducts ($ids);
 				//$products = $productModel->getProductsInCategory($categoryId);
 				$productModel->addImages($products,1);
@@ -112,9 +128,7 @@ class VirtuemartViewCategory extends VmView {
 					}
 				}
 
-				$ratingModel = VmModel::getModel('ratings');
-				$showRating = $ratingModel->showRating();
-				$this->assignRef('showRating', $showRating);
+
 
 				$orderByList = $productModel->getOrderByList($categoryId);
 				$this->assignRef('orderByList', $orderByList);
@@ -175,14 +189,14 @@ class VirtuemartViewCategory extends VmView {
 			}
 
 			$categoryModel->addImages($category,1);
-			$cache = JFactory::getCache('com_virtuemart','callback');
-			$category->children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $categoryId, $categoryModel->getDefaultOrdering(), $categoryModel->_selectedOrderingDir );
 
+			$category->children = $categoryModel->getChildCategoryList( $vendorId, $categoryId, $categoryModel->getDefaultOrdering(), $categoryModel->_selectedOrderingDir );
 			$categoryModel->addImages($category->children,1);
 
 			if (VmConfig::get('enable_content_plugin', 0)) {
-                shopFunctionsF::triggerContentPlugin($category, 'category','category_description');
+				shopFunctionsF::triggerContentPlugin($category, 'category','category_description');
 			}
+
 
 
 			if ($category->metadesc) {
@@ -195,6 +209,7 @@ class VirtuemartViewCategory extends VmView {
 				$document->setMetaData('robots', $category->metarobot);
 			}
 
+
 			if ($app->getCfg('MetaAuthor') == '1') {
 				$document->setMetaData('author', $category->metaauthor);
 			}
@@ -205,10 +220,9 @@ class VirtuemartViewCategory extends VmView {
 
 			$menus	= $app->getMenu();
 			$menu = $menus->getActive();
-			if(!empty($menu->query['categorylayout'])){
+			if(!empty($menu->query['categorylayout']) and $menu->query['virtuemart_category_id']==$categoryId){
 				$category->category_layout = $menu->query['categorylayout'];
 			}
-			
 			shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
 		} else {
 			//Backward compatibility
@@ -253,6 +267,7 @@ class VirtuemartViewCategory extends VmView {
 	public function setTitleByJMenu($app){
 		$menus	= $app->getMenu();
 		$menu = $menus->getActive();
+
 		$title = 'VirtueMart Category View';
 		if ($menu) $title = $menu->title;
 		// $title = $this->params->get('page_title', '');
@@ -307,7 +322,7 @@ class VirtuemartViewCategory extends VmView {
 
 		// add search for declared plugins
 		JPluginHelper::importPlugin('vmcustom');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$plgDisplay = $dispatcher->trigger('plgVmSelectSearchableCustom',array( &$this->options,&$this->searchCustomValues,$this->custom_parent_id ) );
 
 		if(!empty($this->options)){
@@ -319,8 +334,8 @@ class VirtuemartViewCategory extends VmView {
 			$this->searchCustomList = '';
 		}
 
-		$this->assignRef('searchcustom', $this->searchCustomList);
-		$this->assignRef('searchcustomvalues', $this->searchCustomValues);
+		//$this->assignRef('searchcustom', $this->searchCustomList);
+		//$this->assignRef('searchcustomvalues', $this->searchCustomValues);
 	}
 }
 

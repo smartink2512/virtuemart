@@ -38,6 +38,12 @@ if ($this->doctype == 'invoice') {
 	<td align="left"><?php echo vmJsApi::date($this->invoiceDate, 'LC4', true); ?></td>
     </tr>
 	    <?php } ?>
+	<?php if (!empty($this->orderDetails['details']['BT']->delivery_date)) { ?>
+		<tr>
+			<td class=""><?php echo JText::_('COM_VIRTUEMART_DELIVERY_DATE') ?></td>
+			<td align="left"><?php echo $this->orderDetails['details']['BT']->delivery_date ?></td>
+		</tr>
+	<?php } ?>
     <tr>
 	<td ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></td>
 	<td align="left"><strong>

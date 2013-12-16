@@ -36,27 +36,29 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		$vendorModel->setId(1);
 		$vendor = $vendorModel->getVendor();
+
+		if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		if (VmConfig::get ('enable_content_plugin', 0)) {
-            shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_store_desc');
+			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_store_desc');
 			shopFunctionsF::triggerContentPlugin($vendor, 'vendor','vendor_terms_of_service');
 		}
 
 		$this->assignRef('vendor',$vendor);
 
+		$document = JFactory::getDocument();
+
 		if(!VmConfig::get('shop_is_offline',0)){
 
 			$categoryModel = VmModel::getModel('category');
 			$productModel = VmModel::getModel('product');
+			$ratingModel = VmModel::getModel('ratings');
+			$productModel->withRating = $ratingModel->showRating();
+
 			$products = array();
 			$categoryId = VmRequest::getInt('catid', 0);
-			$cache = JFactory::getCache('com_virtuemart','callback');
 
-			$categoryChildren = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $categoryId );
-			// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
+			$categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
 
-			//$categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
-
-			//$categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
 			$categoryModel->addImages($categoryChildren,1);
 
 			$this->assignRef('categories',	$categoryChildren);
@@ -93,9 +95,9 @@ class VirtueMartViewVirtueMart extends VmView {
 			
 			$recent_products_rows = VmConfig::get('recent_products_rows');
 			$recent_products_count = $products_per_row * $recent_products_rows;
-			//$recent_products = $productModel->getProductListing('recent');
+			$recent_products = $productModel->getProductListing('recent');
 			
-			if (!empty($recent_products_count) and VmConfig::get('show_recent', 1)) { //and !empty($recent_products)) {
+			if (!empty($recent_products_count) and VmConfig::get('show_recent', 1) and !empty($recent_products)) {
 				$products['recent']= $productModel->getProductListing('recent', $recent_products_count);
 				$productModel->addImages($products['recent'],1);
 			}
@@ -111,20 +113,20 @@ class VirtueMartViewVirtueMart extends VmView {
 			$layout = VmConfig::get('vmlayout','default');
 			$this->setLayout($layout);
 
+
+			// Add feed links
+			if ($products  && (VmConfig::get('feed_featured_published', 0)==1 or VmConfig::get('feed_topten_published', 0)==1 or VmConfig::get('feed_latest_published', 0)==1)) {
+				$link = '&format=feed&limitstart=';
+				$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+				$document->addHeadLink(JRoute::_($link . '&type=rss', FALSE), 'alternate', 'rel', $attribs);
+				$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+				$document->addHeadLink(JRoute::_($link . '&type=atom', FALSE), 'alternate', 'rel', $attribs);
+			}
 		} else {
 			$this->setLayout('off_line');
 		}
 
-		# Set the titles
-		$document = JFactory::getDocument();
-// Add feed links
-		if ($products  && (VmConfig::get('feed_featured_published', 0)==1 or VmConfig::get('feed_topten_published', 0)==1 or VmConfig::get('feed_latest_published', 0)==1)) {
-			$link = '&format=feed&limitstart=';
-			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-			$document->addHeadLink(JRoute::_($link . '&type=rss', FALSE), 'alternate', 'rel', $attribs);
-			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-			$document->addHeadLink(JRoute::_($link . '&type=atom', FALSE), 'alternate', 'rel', $attribs);
-		}
+
 		$error = VmRequest::getInt('error',0);
 
 		//Todo this may not work everytime as expected, because the error must be set in the redirect links.
@@ -160,12 +162,7 @@ class VirtueMartViewVirtueMart extends VmView {
 		}
 
 		$template = VmConfig::get('vmtemplate','default');
-		if (is_dir(JPATH_THEMES.DS.$template)) {
-			$mainframe = JFactory::getApplication();
-			$mainframe->set('setTemplate', $template);
-		}
-
-
+		shopFunctionsF::setTemplate($template);
 
 		parent::display($tpl);
 

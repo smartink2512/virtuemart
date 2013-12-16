@@ -40,7 +40,7 @@ class VirtueMartViewProductdetails extends VmView {
     function display($tpl = null) {
 
 	//TODO get plugins running
-//		$dispatcher	= JEventDispatcher::getInstance();
+//		$dispatcher	= JDispatcher::getInstance();
 //		$limitstart	= VmRequest::getVar('limitstart', 0, '', 'int');
 
 	$show_prices = VmConfig::get('show_prices', 1);
@@ -82,6 +82,8 @@ class VirtueMartViewProductdetails extends VmView {
     }
     $product = $product_model->getProduct($virtuemart_product_id,TRUE,TRUE,TRUE,$quantity);
 
+	if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+	$last_category_id = shopFunctionsF::getLastVisitedCategoryId();
 		//vmdebug('my product',$product);
     if (!empty($product->virtuemart_customfield_id)) {
 	    $customfieldsModel = VmModel::getModel ('Customfields');
@@ -93,7 +95,6 @@ class VirtueMartViewProductdetails extends VmView {
 	    }
     }
 
-	$last_category_id = shopFunctionsF::getLastVisitedCategoryId();
 	if (empty($product->slug)) {
 
 	    //Todo this should be redesigned to fit better for SEO
@@ -113,7 +114,6 @@ class VirtueMartViewProductdetails extends VmView {
 	}
 
     if (!empty($product->customfields)) {
-
 	    foreach ($product->customfields as $k => $custom) {
 		    if (!empty($custom->layout_pos)) {
 			    $product->customfieldsSorted[$custom->layout_pos][] = $custom;
@@ -129,7 +129,7 @@ class VirtueMartViewProductdetails extends VmView {
 	$product->event->beforeDisplayContent = '';
 	$product->event->afterDisplayContent = '';
 	if (VmConfig::get('enable_content_plugin', 0)) {
-        shopFunctionsF::triggerContentPlugin($product, 'productdetails','product_desc');
+		shopFunctionsF::triggerContentPlugin($product, 'productdetails','product_desc');
 	}
 
 	$product_model->addImages($product);
@@ -176,9 +176,7 @@ class VirtueMartViewProductdetails extends VmView {
 			}
 		}
 
-	    $cache = JFactory::getCache('com_virtuemart','callback');
-			$category->children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$product->virtuemart_vendor_id, $product->virtuemart_category_id );
-
+	    $category->children = $category_model->getChildCategoryList($product->virtuemart_vendor_id, $product->virtuemart_category_id);
 	    $category_model->addImages($category->children, 1);
 	}
 
@@ -296,7 +294,7 @@ class VirtueMartViewProductdetails extends VmView {
 	    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 	JPluginHelper::importPlugin('vmshipment');
 	JPluginHelper::importPlugin('vmpayment');
-	$dispatcher = JEventDispatcher::getInstance();
+	$dispatcher = JDispatcher::getInstance();
 	$returnValues = $dispatcher->trigger('plgVmOnProductDisplayShipment', array($product, &$productDisplayShipments));
 	$returnValues = $dispatcher->trigger('plgVmOnProductDisplayPayment', array($product, &$productDisplayPayments));
 
@@ -315,6 +313,7 @@ class VirtueMartViewProductdetails extends VmView {
 	$this->assignRef('currency', $currency);
 
 	if(VmRequest::getCmd( 'layout', 'default' )=='notify') $this->setLayout('notify'); //Added by Seyi Awofadeju to catch notify layout
+
 
 	parent::display($tpl);
     }

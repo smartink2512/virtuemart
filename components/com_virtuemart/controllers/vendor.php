@@ -27,8 +27,28 @@ jimport('joomla.application.component.controller');
  *
  * @package		VirtueMart
  */
-class VirtueMartControllerVendor extends JControllerLegacy
+class VirtueMartControllerVendor extends JController
 {
+
+	/**
+	 * Override of display to prevent caching
+	 *
+	 * @return  JController  A JController object to support chaining.
+	 */
+	public function display(){
+
+		$document = JFactory::getDocument();
+		$viewType = $document->getType();
+		$viewName = VmRequest::getCmd('view', $this->default_view);
+		$viewLayout = VmRequest::getCmd('layout', 'default');
+
+		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+		$view->assignRef('document', $document);
+
+		$view->display();
+
+		return $this;
+	}
 
 	/**
 	* Send the ask question email.
@@ -36,7 +56,7 @@ class VirtueMartControllerVendor extends JControllerLegacy
 	*/
 	public function mailAskquestion () {
 
-		JSession::checkToken() or jexit( 'Invalid Token' );
+		vmRequest::vmCheckToken();
 
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 

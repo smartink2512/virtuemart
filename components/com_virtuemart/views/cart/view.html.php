@@ -151,7 +151,7 @@ class VirtueMartViewCart extends VmView {
 			}
 			$this->assignRef('select_payment_text', $paymentText);
 
-			if (VmConfig::get('oncheckout_opc', 0)) {
+			if (VmConfig::get('oncheckout_opc', 1)) {
 				if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 				JPluginHelper::importPlugin('vmshipment');
 				JPluginHelper::importPlugin('vmpayment');
@@ -161,7 +161,7 @@ class VirtueMartViewCart extends VmView {
 
 
 			if (!VmConfig::get('use_as_catalog')) {
-				$checkout_link_html = '<a class="vm-button-correct" href="javascript:document.checkoutForm.submit();" ><span>' . $text . '</span></a>';
+				$checkout_link_html = '<a  name="'.$checkout_task.'" class="vm-button-correct" href="javascript:document.checkoutForm.submit();" ><span>' . $text . '</span></a>';
 			} else {
 				$checkout_link_html = '';
 			}
@@ -183,7 +183,8 @@ class VirtueMartViewCart extends VmView {
 		$this->cart->setCartIntoSession();
 		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
 
-		
+		//We never want that the cart is indexed
+		$document->setMetaData('robots','NOINDEX, NOFOLLOW, NOARCHIVE, NOSNIPPET');
 
 		parent::display($tpl);
 	}
@@ -254,7 +255,7 @@ class VirtueMartViewCart extends VmView {
 		$shipments_shipment_rates = array();
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmDisplayListFEShipment', array( $this->cart, $selectedShipment, &$shipments_shipment_rates));
 		// if no shipment rate defined
 		$found_shipment_method =count($shipments_shipment_rates);
@@ -286,7 +287,7 @@ class VirtueMartViewCart extends VmView {
 		$paymentplugins_payments = array();
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmDisplayListFEPayment', array($this->cart, $selectedPayment, &$paymentplugins_payments));
 		// if no payment defined
 		$found_payment_method =count($paymentplugins_payments);
@@ -328,7 +329,7 @@ class VirtueMartViewCart extends VmView {
 		JPluginHelper::importPlugin('vmcoupon');
 		JPluginHelper::importPlugin('vmpayment');
 		JPluginHelper::importPlugin('vmshipment');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnCheckoutAdvertise', array( $this->cart, &$checkoutAdvertise));
 		return $checkoutAdvertise;
 }
@@ -390,6 +391,17 @@ class VirtueMartViewCart extends VmView {
 			return false;
 		}
 		return true;
+	}
+
+	function getUserList() {
+		$db = JFactory::getDbo();
+		$q = 'SELECT * FROM #__users ORDER BY name';
+		$db->setQuery($q);
+		$result = $db->loadObjectList();
+		foreach($result as $user) {
+			$user->displayedName = $user->name .'&nbsp;&nbsp;( '. $user->username .' )';
+		}
+		return $result;
 	}
 
 	function prepareAddressRadioSelection(){

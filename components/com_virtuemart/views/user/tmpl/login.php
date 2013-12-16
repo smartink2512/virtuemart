@@ -27,7 +27,7 @@ if (!isset( $this->order )) $this->order = FALSE ;
 
 
 if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-$comUserOption=shopfunctionsF::getComUserOption();
+$comUserOption=shopFunctionsF::getComUserOption();
 if (empty($this->url)){
 	$uri = JFactory::getURI();
 	$url = $uri->toString(array('path', 'query', 'fragment'));
@@ -66,7 +66,7 @@ JHTML::_ ( 'behavior.modal' );
 
     $html = '';
     JPluginHelper::importPlugin('vmpayment');
-    $dispatcher = JEventDispatcher::getInstance();
+    $dispatcher = JDispatcher::getInstance();
     $returnValues = $dispatcher->trigger('plgVmDisplayLogin', array($this, &$html, $this->from_cart));
 
     if (is_array($html)) {

@@ -28,7 +28,7 @@ jimport('joomla.application.component.controller');
 * @package VirtueMart
 * @author RolandD
 */
-class VirtueMartControllerCategory extends JControllerLegacy {
+class VirtueMartControllerCategory extends JController {
 
     /**
     * Method Description
@@ -56,12 +56,21 @@ class VirtueMartControllerCategory extends JControllerLegacy {
 			$view->display();
 		} else {
 			// Display it all
-			$safeurlparams = array('virtuemart_category_id'=>'INT','virtuemart_manufacturer_id'=>'INT','virtuemart_currency_id'=>'INT','return'=>'BASE64','lang'=>'CMD','orderby'=>'CMD','limitstart'=>'CMD','order'=>'CMD','limit'=>'CMD');
-			parent::display(true, $safeurlparams);
+			$document = JFactory::getDocument();
+			$viewType = $document->getType();
+			$viewName = VmRequest::getCmd('view', $this->default_view);
+			$viewLayout = VmRequest::getCmd('layout', 'default');
+
+			$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+
+			$view->assignRef('document', $document);
+
+			$view->display();
 		}
 		if($categoryId = VmRequest::getInt('virtuemart_category_id',0)){
 			shopFunctionsF::setLastVisitedCategoryId($categoryId);
 		}
+		return $this;
 	}
 }
 // pure php no closing tag

@@ -63,7 +63,7 @@ class VirtueMartCart {
 	//var $pricesUnformatted = null;
 	var $pricesCurrency = null;
 	var $paymentCurrency = null;
-	var $STsameAsBT = 0;
+	var $STsameAsBT = TRUE;
 	var $productParentOrderable = TRUE;
 	var $_triesValidateCoupon = array();
 
@@ -89,23 +89,24 @@ class VirtueMartCart {
 	 * @access public
 	 * @param array $cart the cart to store in the session
 	 */
-	public static function getCart($setCart=true, $options = array()) {
+	public static function getCart($setCart=true, $options = array(), $cartData=NULL) {
 
 		//What does this here? for json stuff?
-		if (!class_exists('JTable')
-		)require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'database' . DS . 'table.php');
-// 		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
+		if (!class_exists('JTable')) require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'database' . DS . 'table.php');
 
 		if(empty(self::$_cart)){
-			$session = JFactory::getSession($options);
-			$cartSession = $session->get('vmcart', 0, 'vm');
+
+			if (empty($cartData)) {
+				$session = JFactory::getSession($options);
+				$cartSession = $session->get('vmcart', 0, 'vm');
+			} else {
+				$cartSession=$cartData;
+			}
 
 			if (!empty($cartSession)) {
 				$sessionCart = unserialize( $cartSession );
 
 				self::$_cart = new VirtueMartCart;
-
-				//self::$_cart->products = $sessionCart->products;
 
 				self::$_cart->cartProductsData = $sessionCart->cartProductsData;
 				//vmdebug('getCart product',self::$_cart->cartProductsData);
@@ -487,7 +488,7 @@ class VirtueMartCart {
 			// hook for plugin action "remove from cart"
 			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 			JPluginHelper::importPlugin('vmcustom');
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$addToCartReturnValues = $dispatcher->trigger('plgVmOnRemoveFromCart',array($this,$prod_id));
 			unset($this->cartProductsData[$prod_id]);
 
@@ -644,6 +645,16 @@ class VirtueMartCart {
 		}
 	}
 
+	public function getFilterCustomerComment(){
+
+		$this->customer_comment = vmRequest::getVar('customer_comment', $this->customer_comment);
+		// no HTML TAGS but permit all alphabet
+		$value = preg_replace('@<[\/\!]*?[^<>]*?>@si','',$this->customer_comment);//remove all html tags
+		$value = (string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
+		$value = trim(str_replace('"', ' ', $value),"'") ;
+		$this->customer_comment = (string)preg_replace('#^\'#si','',$value);//replace ' at start
+	}
+
 	private function checkoutData($redirect = true) {
 
 		$this->_redirect = $redirect;
@@ -651,14 +662,10 @@ class VirtueMartCart {
 
 		$this->tosAccepted = VmRequest::getInt('tosAccepted', $this->tosAccepted);
 		$this->STsameAsBT = VmRequest::getInt('STsameAsBT', $this->STsameAsBT);
-		$this->customer_comment = VmRequest::getVar('customer_comment', $this->customer_comment);
+		$this->getFilterCustomerComment();
 		$this->order_language = VmRequest::getVar('order_language', $this->order_language);
 
-		// no HTML TAGS but permit all alphabet
-		$value =	preg_replace('@<[\/\!]*?[^<>]*?>@si','',$this->customer_comment);//remove all html tags
-		$value =	(string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
-		$value = trim(str_replace('"', ' ', $value),"'") ;
-		$this->customer_comment=	(string)preg_replace('#^\'#si','',$value);//replace ' at start
+
 
 		//Either we use here $this->_redirect, or we redirect always directly, atm we check the boolean _redirect
 		if (count($this->cartProductsData) ===0 and $this->_redirect) {
@@ -708,27 +715,53 @@ class VirtueMartCart {
 			return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 		}
 
-		//But we check the data again to be sure
-		if (empty($this->BT)) {
-			$redirectMsg = '';
-			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
-		} else {
-			$redirectMsg = self::validateUserData();
-			if (!$redirectMsg) {
-				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , '');
+		$validUserDataBT = self::validateUserData();
+
+		if (empty($this->tosAccepted)) {
+
+			$userFieldsModel = VmModel::getModel('Userfields');
+
+			$agreed = $userFieldsModel->getUserfield('agreed','name');
+
+			if((!empty($agreed->required) and empty($agreed->default) and $validUserDataBT!=-1) or $redirect or $this->_dataValidated){
+				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+				$this->tosAccepted = false;
+				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
+			} else if($agreed->default){
+				$this->tosAccepted = $agreed->default;
+			} else {
+				$this->tosAccepted = false;
 			}
 		}
 
+		if (!$validUserDataBT or ($redirect and $validUserDataBT!==true)) {
+			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , '');
+		}
+
 		if($this->STsameAsBT!==0){
-			$this->ST = $this->BT;
+			if($validUserDataBT!=-1){
+				$this->ST = $this->BT;
+			} else {
+				$this->ST = 0;
+			}
+
 		} else {
-			//Only when there is an ST data, test if all necessary fields are filled
-			if (!empty($this->ST)) {
-				$redirectMsg = self::validateUserData('ST');
-				if (!$redirectMsg) {
-					return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST' , '');
+			if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
+				JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
+				$userModel = JModel::getInstance('user', 'VirtueMartModel');
+				$stData = $userModel->getUserAddressList(0, 'ST', $this->selected_shipto);
+				$stData = get_object_vars($stData[0]);
+				if($this->validateUserData('ST', $stData)!=-1 and $this->validateUserData('ST', $stData)>0){
+					$this->ST = $stData;
 				}
 			}
+			//Only when there is an ST data, test if all necessary fields are filled
+			$validUserDataST = self::validateUserData('ST');
+			if (!$validUserDataST or ($redirect and $validUserDataST!==true)) {
+				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST' , '');
+			}
+
 		}
 
 		if(VmConfig::get('oncheckout_only_registered',0)) {
@@ -770,7 +803,7 @@ class VirtueMartCart {
 			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmshipment');
 			//Add a hook here for other shipment methods, checking the data of the choosed plugin
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckDataShipment', array(  $this));
 
 			foreach ($retValues as $retVal) {
@@ -792,7 +825,7 @@ class VirtueMartCart {
 				if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 				JPluginHelper::importPlugin('vmpayment');
 				//Add a hook here for other payment methods, checking the data of the choosed plugin
-				$dispatcher = JEventDispatcher::getInstance();
+				$dispatcher = JDispatcher::getInstance();
 				$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckDataPayment', array( $this));
 
 				foreach ($retValues as $retVal) {
@@ -892,7 +925,7 @@ class VirtueMartCart {
                 echo JText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
                 return;
             }
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			JPluginHelper::importPlugin('vmshipment');
 			JPluginHelper::importPlugin('vmcustom');
@@ -1027,7 +1060,7 @@ class VirtueMartCart {
 		}
 
 		$shipCounter=0;
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipment', array(  $this,$cart_prices, &$shipCounter));
 
 		foreach ($returnValues as $returnValue) {
@@ -1064,7 +1097,7 @@ class VirtueMartCart {
 
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 			$paymentCounter=0;
 			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedPayment', array( $this, $cart_prices, &$paymentCounter));
 			foreach ($returnValues as $returnValue) {
@@ -1103,7 +1136,7 @@ class VirtueMartCart {
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
 		JPluginHelper::importPlugin('vmshipment');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnCheckShipmentIsValid', array( $this));
 		foreach ($returnValues as $returnValue) {
 			$shipmentValid += $returnValue;
@@ -1180,7 +1213,7 @@ class VirtueMartCart {
 							if($field->field_type == 'E'){
 								if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 								JPluginHelper::importPlugin('vmcustom');
-								$dispatcher = JEventDispatcher::getInstance();
+								$dispatcher = JDispatcher::getInstance();
 								// on returning false the product have not to be added to cart
 								if ( $dispatcher->trigger('plgVmProductInCart',array(&$product,&$productdata)) === false );
 									//continue;							}
@@ -1213,7 +1246,7 @@ class VirtueMartCart {
 		//vmdebug('$this->cart prepareCartData ',$this->cartPrices);
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$this->paymentCurrency));
 
 		$this->_productAdded = false;
@@ -1330,11 +1363,33 @@ class VirtueMartCart {
 
 		$addresstype = $type.'address';
 		$userFieldsBT = $userFieldsModel->getUserFieldsFor('cart',$type);
-		$this->$addresstype = $userFieldsModel->getUserFieldsFilled(
+		$address = $this->$addresstype = $userFieldsModel->getUserFieldsFilled(
 		$userFieldsBT
 		,$data
 		,$preFix
 		);
+
+		if(empty($this->$type) and $type=='BT'){
+			$tmp =&$this->$type ;
+			$tmp = array();
+			//vmdebug('my address ',$address);
+			foreach($address['fields'] as $k =>$field){
+
+				if($k=='virtuemart_country_id'){
+					if(isset($address['fields'][$k]['virtuemart_country_id']) and !isset($tmp['virtuemart_country_id'])){
+						$tmp['virtuemart_country_id'] = $address['fields'][$k]['virtuemart_country_id'];
+					}
+				} else if($k=='virtuemart_state_id') {
+					if(isset($address['fields'][$k]['virtuemart_state_id']) and !isset($tmp['virtuemart_state_id'])){
+						$tmp['virtuemart_state_id'] = $address['fields'][$k]['virtuemart_state_id'];
+					}
+				} else if (!empty($address['fields'][$k]['value'])){
+					if(!isset($tmp[$k])){
+						$tmp[$k] = $address['fields'][$k]['value'];
+					}
+				}
+			}
+		}
 
 		if(!empty($this->ST) && $type!=='ST'){
 			$data = (object)$this->ST;

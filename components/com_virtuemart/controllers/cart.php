@@ -31,7 +31,7 @@ jimport('joomla.application.component.controller');
  * @author RolandD
  * @author Max Milbers
  */
-class VirtueMartControllerCart extends JControllerLegacy {
+class VirtueMartControllerCart extends JController {
 
 	/**
 	 * Construct the cart
@@ -57,11 +57,11 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	/**
 	 * Override of display
 	 *
-	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
+	 * @return  JController  A JController object to support chaining.
 	 *
 	 * @since   11.1
 	 */
-	public function display($cachable = false)
+	public function display($cachable = false, $urlparams = false)
 	{
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
@@ -170,7 +170,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		$cart = VirtueMartCart::getCart(false);
 		$cart -> prepareCartData();
-		$data = $cart -> prepareAjaxData();
+		$data = $cart -> prepareAjaxData(true);
 
 		echo json_encode($data);
 		Jexit();
@@ -249,7 +249,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			JPluginHelper::importPlugin('vmshipment');
 			$cart->setShipment($virtuemart_shipmentmethod_id);
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
-			$_dispatcher = JEventDispatcher::getInstance();
+			$_dispatcher = JDispatcher::getInstance();
 			$_retValues = $_dispatcher->trigger('plgVmOnSelectCheckShipment', array(   &$cart));
 			$dataValid = true;
 			foreach ($_retValues as $_retVal) {
@@ -309,7 +309,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$msg = '';
-			$_dispatcher = JEventDispatcher::getInstance();
+			$_dispatcher = JDispatcher::getInstance();
 			$_retValues = $_dispatcher->trigger('plgVmOnSelectCheckPayment', array( $cart, &$msg));
 			$dataValid = true;
 			foreach ($_retValues as $_retVal) {
@@ -371,18 +371,74 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	}
 
 	/**
+	 * Change the shopper
+	 *
+	 * @author Maik K�nnemann
+	 *
+	 */
+	public function changeShopper() {
+		JSession::checkToken () or jexit ('Invalid Token');
+
+		//check for permissions
+		if(!JFactory::getUser(JFactory::getSession()->get('vmAdminID'))->authorise('core.admin', 'com_virtuemart') || !VmConfig::get ('oncheckout_change_shopper')){
+			$mainframe = JFactory::getApplication();
+			$mainframe->enqueueMessage(JText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $newUser->name .' ('.$newUser->username.')'), 'error');
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
+		}
+
+		//get data of current and new user
+		$usermodel = VmModel::getModel('user');
+		$user = $usermodel->getCurrentUser();
+		$newUser = JFactory::getUser(VmRequest::getCmd('userID'));
+
+		//update session
+		$session = JFactory::getSession();
+		$adminID = $session->get('vmAdminID');
+		if(!isset($adminID)) $session->set('vmAdminID', $user->virtuemart_user_id);
+		$session->set('user', $newUser);
+
+		//update cart data
+		$cart = VirtueMartCart::getCart();
+		$data = $usermodel->getUserAddressList(VmRequest::getCmd('userID'), 'BT');
+		foreach($data[0] as $k => $v) {
+			$data[$k] = $v;
+		}
+		$cart->BT['email'] = $newUser->email;
+		unset($cart->ST);
+		$cart->saveAddressInCart($data, 'BT');
+
+		$mainframe = JFactory::getApplication();
+		$mainframe->enqueueMessage(JText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY', $newUser->name .' ('.$newUser->username.')'), 'info');
+		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
+	}
+
+	/**
 	 * Checks for the data that is needed to process the order
 	 *
 	 * @author Max Milbers
 	 *
 	 */
 	public function checkout() {
-		//Tests step for step for the necessary data, redirects to it, when something is lacking
+		vmdebug('checkout my post, get and so on',$_POST,$_GET);
 
 		$cart = VirtueMartCart::getCart();
-		if ($cart && !VmConfig::get('use_as_catalog', 0)) {
-			$cart->checkout();
+		$cart->getFilterCustomerComment();
+		$cart->tosAccepted = VmRequest::getInt('tosAccepted', $cart->tosAccepted);
+		$task = VmRequest::getCmd('task');
+		if(isset($_POST['update']) or $task=='update'){
+			$cart->updateProductCart();
+			$this->display();
+		} else if(isset($_POST['setshipment']) or $task=='setshipment'){
+			$this->setshipment();
+		} else if(isset($_POST['setpayment']) or $task=='setpayment'){
+			$this->setpayment();
+		} else {
+			if ($cart && !VmConfig::get('use_as_catalog', 0)) {
+				$cart->checkout();
+			}
 		}
+
+
 	}
 
 	/**
@@ -394,18 +450,25 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	 */
 	public function confirm() {
 
-		//Use false to prevent valid boolean to get deleted
+		vmdebug('confirm my post, get and so on',$_POST,$_GET);
 		$cart = VirtueMartCart::getCart();
-		if ($cart) {
+		$cart->getFilterCustomerComment();
+		$cart->tosAccepted = VmRequest::getInt('tosAccepted', $cart->tosAccepted);
+		$task = VmRequest::getCmd('task');
+		if(isset($_POST['update']) or $task=='update'){
+			$cart->updateProductCart();
+			$this->display();
+		} else if(isset($_POST['setshipment']) or $task=='setshipment'){
+			$this->setshipment();
+		} else if(isset($_POST['setpayment']) or $task=='setpayment'){
+			$this->setpayment();
+		} else if($task=='confirm'){
 			$cart->confirmDone();
 			$view = $this->getView('cart', 'html');
 			$view->setLayout('order_done');
-			// Display it all
 			$view->display();
-		} else {
-			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), JText::_('COM_VIRTUEMART_CART_DATA_NOT_VALID'));
 		}
+
 	}
 
 	function cancel() {

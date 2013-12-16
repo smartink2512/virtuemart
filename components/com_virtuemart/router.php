@@ -18,6 +18,7 @@ if(  !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not
  */
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 
+
 function virtuemartBuildRoute(&$query) {
 
 	$segments = array();
@@ -89,15 +90,19 @@ function virtuemartBuildRoute(&$query) {
 			}
 			if ( isset($jmenu['category']) ) $query['Itemid'] = $jmenu['category'];
 
-
-			if ( isset($query['order']) ) {
-				if ($query['order'] =='DESC') $segments[] = $helper->lang('orderDesc') ;
-				unset($query['order']);
-			}
-
 			if ( isset($query['orderby']) ) {
 				$segments[] = $helper->lang('by').','.$helper->lang( $query['orderby']) ;
 				unset($query['orderby']);
+			}
+
+			if ( isset($query['dir']) ) {
+				if ($query['dir'] =='DESC'){
+					$dir = 'dirDesc';
+				} else {
+					$dir = 'dirAsc';
+				}
+				$segments[] = $dir;//$helper->lang('dir'.$dir) ;
+				unset($query['dir']);
 			}
 
 			// Joomla replace before route limitstart by start but without SEF this is start !
@@ -301,6 +306,7 @@ function virtuemartBuildRoute(&$query) {
 function virtuemartParseRoute($segments) {
 
 	$vars = array();
+
 	$helper = vmrouterHelper::getInstance();
 	if ($helper->router_disabled) {
 		$total = count($segments);
@@ -318,6 +324,10 @@ function virtuemartParseRoute($segments) {
 	foreach  ($segments as &$value) {
 		$value = str_replace(':', '-', $value);
 	}
+	/*$vars['view'] = 'category';
+	if(isset($helper->activeMenu->virtuemart_category_id)){
+		$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+	}*/
 
 	// $splitted = explode(',',$segments[0],2);
 	$splitted = explode(',',end($segments),2);
@@ -347,23 +357,35 @@ function virtuemartParseRoute($segments) {
 		return $vars;
 	}
 
-	// $orderby = explode(',',$segments[0],2);
-	$orderby = explode(',',end($segments),2);
-	//echo $orderby[0];
-	if (  $helper->compareKey($orderby[0] , 'by') ) {
-		$vars['orderby'] =$helper->getOrderingKey($orderby[1]) ;
-		// array_shift($segments);
+	//Translation of the ordering direction is not really useful and costs just energy
+	//if (  $helper->compareKey(end($segments),'dirDesc') ){
+	if ( end($segments) == 'dirDesc' ){
+		$vars['dir'] ='DESC' ;
 		array_pop($segments);
-
+		if (empty($segments)) {
+			$vars['view'] = 'category';
+			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+			return $vars;
+		}
+	} else
+		//if (  $helper->compareKey(end($segments),'dirAsc') ){
+	if ( end($segments) == 'dirAsc' ){
+		$vars['dir'] ='ASC' ;
+		array_pop($segments);
 		if (empty($segments)) {
 			$vars['view'] = 'category';
 			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
 			return $vars;
 		}
 	}
-	if (  $helper->compareKey(end($segments),'orderDesc') ){
-		$vars['order'] ='DESC' ;
+
+	// $orderby = explode(',',$segments[0],2);
+	$orderby = explode(',',end($segments),2);
+	if (  $helper->compareKey($orderby[0] , 'by') ) {
+		$vars['orderby'] = $helper->getOrderingKey($orderby[1]) ;
+		// array_shift($segments);
 		array_pop($segments);
+
 		if (empty($segments)) {
 			$vars['view'] = 'category';
 			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
@@ -856,7 +878,7 @@ class vmrouterHelper {
 		$db = JFactory::getDBO();
 		$q = "SELECT `virtuemart_category_id`
 				FROM  `#__virtuemart_categories_".$this->vmlang."`
-				WHERE `slug` LIKE '".$db->escape($slug)."' ";
+				WHERE `slug` LIKE '".$db->getEscaped($slug)."' ";
 
 		$db->setQuery($q);
 		if (!$category_id = $db->loadResult()) {
@@ -927,7 +949,7 @@ class vmrouterHelper {
 		$q = 'SELECT `p`.`virtuemart_product_id`
 			FROM `#__virtuemart_products_'.$this->vmlang.'` AS `p`
 			LEFT JOIN `#__virtuemart_product_categories` AS `xref` ON `p`.`virtuemart_product_id` = `xref`.`virtuemart_product_id`
-			WHERE `p`.`slug` LIKE "'.$db->escape($productName).'" ';
+			WHERE `p`.`slug` LIKE "'.$db->getEscaped($productName).'" ';
 		//$q .= "	AND `xref`.`virtuemart_category_id` = ".(int)$product['virtuemart_category_id'];
 		$db->setQuery($q);
 		$product['virtuemart_product_id'] = $db->loadResult();
@@ -949,7 +971,7 @@ class vmrouterHelper {
 	/* Get Manufacturer id */
 	public function getManufacturerId($slug ){
 		$db = JFactory::getDBO();
-		$query = "SELECT `virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers_".$this->vmlang."` WHERE `slug` LIKE '".$db->escape($slug)."' ";
+		$query = "SELECT `virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers_".$this->vmlang."` WHERE `slug` LIKE '".$db->getEscaped($slug)."' ";
 		$db->setQuery($query);
 
 		return $db->loadResult();
@@ -967,7 +989,7 @@ class vmrouterHelper {
 	/* Get Manufacturer id */
 	public function getVendorId($slug ){
 		$db = JFactory::getDBO();
-		$query = "SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vendors_".$this->vmlang."` WHERE `slug` LIKE '".$db->escape($slug)."' ";
+		$query = "SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vendors_".$this->vmlang."` WHERE `slug` LIKE '".$db->getEscaped($slug)."' ";
 		$db->setQuery($query);
 
 		return $db->loadResult();
@@ -1002,7 +1024,7 @@ class vmrouterHelper {
 		$this->menuVmitems= $db->loadObjectList();
 		$homeid =0;
 		if(empty($this->menuVmitems)){
-            VmConfig::loadJLang('com_virtuemart', true);
+			VmConfig::loadJLang('com_virtuemart', true);
 			vmWarn(JText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
 		} else {
 
@@ -1071,8 +1093,8 @@ class vmrouterHelper {
 		$items = $menus->getItems('componentid', $component->id);
 
 		if(empty($items)){
-            VmConfig::loadJLang('com_virtuemart', true);
-            vmWarn(JText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
+			VmConfig::loadJLang('com_virtuemart', true);
+			vmWarn(JText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
 		} else {
 			// Search  Virtuemart itemID in joomla menu
 			foreach ($items as $item)	{
@@ -1140,6 +1162,7 @@ class vmrouterHelper {
 	 * revert key or use $key in route
 	 */
 	public function getOrderingKey($key) {
+
 		if ($this->seo_translate ) {
 			if ($this->orderings == null) {
 				$this->orderings = array(
@@ -1172,6 +1195,7 @@ class vmrouterHelper {
 					'pc.ordering' => JText::_('COM_VIRTUEMART_SEF_ORDERING')
 				);
 			}
+
 			if ($result = array_search($key,$this->orderings )) {
 				return $result;
 			}

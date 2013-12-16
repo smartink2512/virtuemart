@@ -103,7 +103,7 @@ class VirtuemartViewUser extends VmView {
 
 	//the cuid is the id of the current user
 	$this->_currentUser = JFactory::getUser();
-	$this->_cuid = $this->lists['current_id'] = $this->_currentUser->get('id');
+	$this->_cuid = $this->_lists['current_id'] = $this->_currentUser->get('id');
 	$this->assignRef('userId', $this->_cuid);
 
 	$this->_userDetails = $this->_model->getUser();
@@ -170,7 +170,8 @@ class VirtuemartViewUser extends VmView {
 	}
 
 
-	$this->lists['shipTo'] = ShopFunctions::generateStAddressList($this,$this->_model, $task);
+	$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this,$this->_model, $task);
+
 
 	if ($this->_openTab < 0) {
 	    $_paneOffset = array();
@@ -182,8 +183,15 @@ class VirtuemartViewUser extends VmView {
 	    }
 	}
 
+	// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
+	// In tmpl/edit.php, this is the 4th tab (0-based, so set to 3 above)
+	jimport('joomla.html.pane');
+	$pane = JPane::getInstance((__VM_USER_USE_SLIDERS ? 'Sliders' : 'Tabs'), $_paneOffset);
+
+	$this->assignRef('lists', $this->_lists);
+
 	$this->assignRef('editor', $editor);
-	//$this->assignRef('pane', $pane);
+	$this->assignRef('pane', $pane);
 
 	if ($layoutName == 'mailregisteruser') {
 	    $vendorModel = VmModel::getModel('vendor');
@@ -298,33 +306,33 @@ class VirtuemartViewUser extends VmView {
 		foreach($_shoppergroup as $group){
 			$shoppergrps[] = $group['virtuemart_shoppergroup_id'];
 		}
-	   $this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($shoppergrps);
-	   $this->lists['vendors'] = ShopFunctions::renderVendorList($this->_userDetails->virtuemart_vendor_id);
+	   $this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($shoppergrps);
+	   $this->_lists['vendors'] = ShopFunctions::renderVendorList($this->_userDetails->virtuemart_vendor_id);
 	} else {
-		$this->lists['shoppergroups'] = '';
+		$this->_lists['shoppergroups'] = '';
 		foreach($_shoppergroup as $group){
-			$this->lists['shoppergroups'] .= $group['shopper_group_name'].', ';
+			$this->_lists['shoppergroups'] .= $group['shopper_group_name'].', ';
 		}
-		$this->lists['shoppergroups'] = substr($this->lists['shoppergroups'],0,-2);
+		$this->_lists['shoppergroups'] = substr($this->_lists['shoppergroups'],0,-2);
 
 	    if (!empty($this->_userDetails->virtuemart_vendor_id)) {
-		$this->lists['vendors'] = $this->_userDetails->virtuemart_vendor_id;
+		$this->_lists['vendors'] = $this->_userDetails->virtuemart_vendor_id;
 	    }
 
-	    if (empty($this->lists['vendors'])) {
-		$this->lists['vendors'] = JText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR'); // . $_setVendor;
+	    if (empty($this->_lists['vendors'])) {
+		$this->_lists['vendors'] = JText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR'); // . $_setVendor;
 	    }
 	}
 
 	//todo here is something broken we use $_userDetailsList->perms and $this->_userDetailsList->perms and perms seems not longer to exist
 	if (Permissions::getInstance()->check("admin,storeadmin")) {
-	    $this->lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $this->_userDetails->perms);
+	    $this->_lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $this->_userDetails->perms);
 	} else {
 	    if (!empty($this->_userDetails->perms)) {
-		$this->lists['perms'] = $this->_userDetails->perms;
+		$this->_lists['perms'] = $this->_userDetails->perms;
 
-		$_hiddenInfo = '<input type="hidden" name="perms" value = "' . $this->lists['perms'] . '" />';
-		$this->lists['perms'] .= $_hiddenInfo;
+		$_hiddenInfo = '<input type="hidden" name="perms" value = "' . $this->_lists['perms'] . '" />';
+		$this->_lists['perms'] .= $_hiddenInfo;
 	    }
 	}
 
@@ -347,30 +355,30 @@ class VirtuemartViewUser extends VmView {
 	$_groupList = $this->_model->getGroupList();
 
 	if (!is_array($_groupList)) {
-	    $this->lists['gid'] = '<input type="hidden" name="gid" value="' . $this->_userDetails->JUser->get('gid') . '" /><strong>' . JText::_($_groupList) . '</strong>';
+	    $this->_lists['gid'] = '<input type="hidden" name="gid" value="' . $this->_userDetails->JUser->get('gid') . '" /><strong>' . JText::_($_groupList) . '</strong>';
 	} else {
-	    $this->lists['gid'] = JHTML::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $this->_userDetails->JUser->get('gid'));
+	    $this->_lists['gid'] = JHTML::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $this->_userDetails->JUser->get('gid'));
 	}
 
 	if (!class_exists('shopFunctionsF'))
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-	$comUserOption = shopfunctionsF::getComUserOption();
+	$comUserOption = shopFunctionsF::getComUserOption();
 
 	$this->lists['canBlock'] = ($this->_currentUser->authorise($comUserOption, 'block user')
 		&& ($this->_model->getId() != $this->_cuid)); // Can't block myself TODO I broke that, please retest if it is working again
 	$this->lists['canSetMailopt'] = $this->_currentUser->authorise('workflow', 'email_events');
-	$this->lists['block'] = JHTML::_('select.booleanlist', 'block', 'class="inputbox"', $this->_userDetails->JUser->get('block'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-	$this->lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 'class="inputbox"', $this->_userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+	$this->_lists['block'] = JHTML::_('select.booleanlist', 'block', 'class="inputbox"', $this->_userDetails->JUser->get('block'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+	$this->_lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 'class="inputbox"', $this->_userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 
-	$this->lists['params'] = $this->_userDetails->JUser->getParameters(true);
+	$this->_lists['params'] = $this->_userDetails->JUser->getParameters(true);
 
-	$this->lists['custnumber'] = $this->_model->getCustomerNumberById();
+	$this->_lists['custnumber'] = $this->_model->getCustomerNumberById();
 
 	//TODO I do not understand for what we have that by Max.
 	if ($this->_model->getId() < 1) {
-	    $this->lists['register_new'] = 1;
+	    $this->_lists['register_new'] = 1;
 	} else {
-	    $this->lists['register_new'] = 0;
+	    $this->_lists['register_new'] = 0;
 	}
     }
 

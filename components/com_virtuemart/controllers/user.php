@@ -27,7 +27,7 @@ jimport('joomla.application.component.controller');
  *
  * @package		VirtueMart
  */
-class VirtueMartControllerUser extends JControllerLegacy
+class VirtueMartControllerUser extends JController
 {
 
 	public function __construct()
@@ -38,6 +38,25 @@ class VirtueMartControllerUser extends JControllerLegacy
 		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 	}
 
+	/**
+	 * Override of display to prevent caching
+	 *
+	 * @return  JController  A JController object to support chaining.
+	 */
+	public function display(){
+
+		$document = JFactory::getDocument();
+		$viewType = $document->getType();
+		$viewName = VmRequest::getCmd('view', $this->default_view);
+		$viewLayout = VmRequest::getCmd('layout', 'default');
+
+		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+		$view->assignRef('document', $document);
+
+		$view->display();
+
+		return $this;
+	}
 
 	function edit(){
 
@@ -267,8 +286,10 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 
 	function removeAddressST(){
-		$virtuemart_userinfo_id = JRequest::getVar('virtuemart_userinfo_id');
 
+		$virtuemart_userinfo_id = VmRequest::getInt('virtuemart_userinfo_id');
+
+		//Lets do it dirty for now
 		$userModel = VmModel::getModel('user');
 		$userModel->removeAddress($virtuemart_userinfo_id);
 

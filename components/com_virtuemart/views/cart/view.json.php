@@ -54,7 +54,6 @@ class VirtueMartViewCart extends VmView {
 		$menuid = VmRequest::getVar('Itemid','');
 		if(!empty($menuid)){
 			$menuid = '&Itemid='.$menuid;
-			echo '$menuid';
 		}
 
 		$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();

@@ -5,7 +5,7 @@
  *
  * @package    VirtueMart
  * @subpackage
- * @author Max Milbers
+ * @author RolandD
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -28,7 +28,7 @@ jimport ('joomla.application.component.controller');
  * @package VirtueMart
  * @author Max Milbers
  */
-class VirtueMartControllerProductdetails extends JControllerLegacy {
+class VirtueMartControllerProductdetails extends JController {
 
 	public function __construct () {
 
@@ -37,7 +37,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 		$this->registerTask ('askquestion', 'MailForm');
 	}
 
-	function display($cachable = false, $urlparams = false)  {
+	function display($cachable = false, $urlparams = false) {
 
 		$format = VmRequest::getCmd ('format', 'html');
 		if ($format == 'pdf') {
@@ -75,6 +75,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 		if (!class_exists ('shopFunctionsF')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
+
 		$vars = array();
 		$min = VmConfig::get ('asks_minimum_comment_length', 50) + 1;
 		$max = VmConfig::get ('asks_maximum_comment_length', 2000) - 1;
@@ -86,12 +87,15 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			if ($commentSize < $min) {
 				vmdebug ('mailAskquestion', $min, $commentSize);
 				$errmsg = JText::_ ('COM_VIRTUEMART_ASKQU_CS_MIN');
+
 			} else {
 				if ($commentSize > $max) {
 					$errmsg = JText::_ ('COM_VIRTUEMART_ASKQU_CS_MAX');
+
 				} else {
 					if (!$validMail) {
 						$errmsg = JText::_ ('COM_VIRTUEMART_ASKQU_INV_MAIL');
+
 					}
 				}
 			}
@@ -159,11 +163,13 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 		}
 		// Display it all
 		$view = $this->getView ('recommend', 'html');
+
 		if (!class_exists ('shopFunctionsF')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		}
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
+		$mainframe = JFactory::getApplication ();
 		$vars = array();
 
 		$virtuemart_product_idArray = VmRequest::getInt ('virtuemart_product_id', 0);
@@ -182,7 +188,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 		$vars['vendorEmail'] = $user->email;
 		$vendorModel = VmModel::getModel ('vendor');
 		$vendor = $vendorModel->getVendor ($vars['product']->virtuemart_vendor_id);
-		$vars['vendor'] = $vendor;
+		$vars['vendor']=$vendor;
 		$vendorModel->addImages ($vars['vendor']);
 		$vendor->vendorFields = $vendorModel->getVendorAddressFields();
 		$vars['vendorAddress']= shopFunctions::renderVendorAddress($vars['product']->virtuemart_vendor_id);
@@ -199,7 +205,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 		} else {
 			$string = 'COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY';
 		}
-		$app->enqueueMessage (JText::_ ($string));
+		$mainframe->enqueueMessage (JText::_ ($string));
 
 // 		vmdebug('my email vars ',$vars,$TOMail);
 
@@ -267,7 +273,7 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 
 		//$post = VmRequest::get('request');
 
-//		//echo '<pre>'.print_r($post,1).'</pre>';
+//		echo '<pre>'.print_r($post,1).'</pre>';
 		jimport ('joomla.utilities.arrayhelper');
 		$virtuemart_product_idArray = VmRequest::getVar ('virtuemart_product_id', array()); //is sanitized then
 		if(is_array($virtuemart_product_idArray)){
@@ -313,7 +319,6 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			//vmdebug('recalculate',$customProductData);
 			jexit ();
 		}
-
 		$priceFormated = array();
 		if (!class_exists ('CurrencyDisplay')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');

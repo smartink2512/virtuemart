@@ -21,17 +21,17 @@ defined('_JEXEC') or die('Restricted access');
 
 if($this->format == 'pdf'){
 	$widthTable = '100';
-	$widtTitle = '27';
+	$widthTitle = '27';
 } else {
 	$widthTable = '100';
-	$widtTitle = '49';
+	$widthTitle = '49';
 }
 
 ?>
 <table width="<?php echo $widthTable ?>%" cellspacing="0" cellpadding="0" border="0">
 	<tr align="left" class="sectiontableheader">
 		<th align="left" width="5%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
-		<th align="left" colspan="2" width="<?php echo $widtTitle ?>%" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></th>
+		<th align="left" colspan="2" width="<?php echo $widthTitle ?>%" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></th>
 		<th align="center" width="10%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_STATUS') ?></th>
 		<th align="right" width="10%" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRICE') ?></th>
 		<th align="left" width="5%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></th>
@@ -51,7 +51,7 @@ if($this->format == 'pdf'){
 				<?php echo $item->order_item_sku; ?>
 			</td>
 			<td align="left" colspan="2" >
-				<a href="<?php echo $_link; ?>"><?php echo $item->order_item_name; ?></a>
+				<div><a href="<?php echo $_link; ?>"><?php echo $item->order_item_name; ?></a></div>
 				<?php
 // 				vmdebug('tmpl details_item $item',$item);
 					if (!empty($item->product_attribute)) {

@@ -34,7 +34,7 @@ abstract class CouponHelper
 		$couponData = 0;
 
 		JPluginHelper::importPlugin('vmcoupon');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmValidateCouponCode', array($_code, $_billTotal));
 		if(!empty($returnValues)){
 			foreach ($returnValues as $returnValue) {
@@ -51,7 +51,7 @@ abstract class CouponHelper
 			. ', IFNULL( 0, IF( NOW() > `coupon_expiry_date`, 1, 0 )) AS ended '
 			. ', `coupon_value_valid` '
 			. 'FROM `#__virtuemart_coupons` '
-			. 'WHERE `coupon_code` = "' . $_db->escape($_code) . '"';
+			. 'WHERE `coupon_code` = "' . $_db->getEscaped($_code) . '"';
 			$_db->setQuery($_q);
 			$couponData = $_db->loadObject();
 		}
@@ -66,6 +66,8 @@ abstract class CouponHelper
 			self::RemoveCoupon($_code, true);
 			return JText::_('COM_VIRTUEMART_COUPON_CODE_EXPIRED');
 		}
+
+
 		if ($_billTotal < $couponData->coupon_value_valid) {
 			if (!class_exists('CurrencyDisplay'))
 			    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
@@ -91,7 +93,7 @@ abstract class CouponHelper
 			. ', `coupon_type` '
 			. ', `coupon_value` '
 			. 'FROM `#__virtuemart_coupons` '
-			. 'WHERE `coupon_code` = "' . $_db->escape($_code) . '"';
+			. 'WHERE `coupon_code` = "' . $_db->getEscaped($_code) . '"';
 		$_db->setQuery($_q);
 		return $_db->loadObject();
 	}
@@ -106,7 +108,7 @@ abstract class CouponHelper
 	static public function RemoveCoupon($_code, $_force = false)
 	{
 		JPluginHelper::importPlugin('vmcoupon');
-		$dispatcher = JEventDispatcher::getInstance();
+		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmRemoveCoupon', array($_code, $_force));
 		if(!empty($returnValues)){
 			foreach ($returnValues as $returnValue) {
@@ -126,7 +128,7 @@ abstract class CouponHelper
 		}
 		$_db = JFactory::getDBO();
 		$_q = 'DELETE FROM `#__virtuemart_coupons` '
-			. 'WHERE `coupon_code` = "' . $_db->escape($_code) . '"';
+			. 'WHERE `coupon_code` = "' . $_db->getEscaped($_code) . '"';
 		$_db->setQuery($_q);
 		return ($_db->query() !== false);
 	}

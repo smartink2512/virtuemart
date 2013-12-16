@@ -21,8 +21,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-vmdebug('Whats up here in default layout? ',$this->keyword);
-
 if ($this->category->haschildren) {
 
 // Category and Columns Counter

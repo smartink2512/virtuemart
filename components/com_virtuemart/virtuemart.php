@@ -19,7 +19,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 /* Require the config */
 
-if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.'/administrator/components/com_virtuemart/helpers/config.php');
+if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
 
 vmRam('Start');
@@ -27,13 +27,17 @@ vmSetStartTime('Start');
 
 VmConfig::loadJLang('com_virtuemart', true);
 
+
 if(VmConfig::get('shop_is_offline',0)){
+	//$cache->setCaching (1);
 	$_controller = 'virtuemart';
 	require (JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
 	VmRequest::setVar('view', 'virtuemart');
 	$task='';
 	$basePath = JPATH_VM_SITE;
 } else {
+
+	//$cache->setCaching (0);
 
 	/* Front-end helpers */
 	if(!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
@@ -53,6 +57,7 @@ if(VmConfig::get('shop_is_offline',0)){
 			$jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
 			$basePath = JPATH_VM_ADMINISTRATOR;
 			$trigger = 'onVmAdminController';
+
 			vmJsApi::jQuery(false);
 			//vmJsApi::js('vmsite');
 		} else {
@@ -78,7 +83,7 @@ if (file_exists($basePath.DS.'controllers'.DS.$_controller.'.php')) {
 else {
 	// try plugins
 	JPluginHelper::importPlugin('vmextended');
-	$dispatcher = JEventDispatcher::getInstance();
+	$dispatcher = JDispatcher::getInstance();
 	$dispatcher->trigger($trigger, array($_controller));
 }
 
@@ -88,16 +93,16 @@ if (class_exists($_class)) {
 
 	// try plugins
 	JPluginHelper::importPlugin('vmuserfield');
-	$dispatcher = JEventDispatcher::getInstance();
+	$dispatcher = JDispatcher::getInstance();
 	$dispatcher->trigger('plgVmOnMainController', array($_controller));
 
     /* Perform the Request task */
     $controller->execute($task);
 
-    //Console::logSpeed('virtuemart start');
     vmTime($_class.' Finished task '.$task,'Start');
     vmRam('End');
     vmRamPeak('Peak');
+
     /* Redirect if set by the controller */
     $controller->redirect();
 } else {

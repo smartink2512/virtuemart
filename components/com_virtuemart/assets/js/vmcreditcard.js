@@ -166,7 +166,7 @@ function checkCreditCard  (cardnumber, cardType) {
     cards [10] = {
 	name: "Maestro",
 	length: "12,13,14,15,16,18,19",
-	prefixes: "5018,5020,5038,6304,6759,6761",
+	prefixes: "5018,5020,5038,5893,6304,6759,6761,6762,6763",
 	checkdigit: true
     };
     cards [11] = {

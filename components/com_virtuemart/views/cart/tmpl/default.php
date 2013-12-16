@@ -80,7 +80,6 @@ $document->addScriptDeclaration ("
 ");
 $document->addStyleDeclaration ('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
 
-//vmdebug('$this->cart',$this->cart);
 ?>
 
 <div class="cart-view">
@@ -94,7 +93,7 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 	} ?>
 		<div class="width50 floatleft right">
 			<?php // Continue Shopping Button
-			if ($this->continue_link_html != '') {
+			if (!empty($this->continue_link_html)) {
 				echo $this->continue_link_html;
 			} ?>
 		</div>
@@ -105,15 +104,16 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 
 	<?php echo shopFunctionsF::getLoginForm ($this->cart, FALSE);
 
-	// This displays the pricelist MUST be done with tables, because it is also used for the emails
-	echo $this->loadTemplate ('pricelist');
-	if ($this->checkout_task) {
-		$taskRoute = '&task=' . $this->checkout_task;
-	}
-	else {
-		$taskRoute = '';
+	// This displays the form to change the current shopper
+	$adminID = JFactory::getSession()->get('vmAdminID');
+	if ((JFactory::getUser()->authorise('core.admin', 'com_virtuemart') || JFactory::getUser($adminID)->authorise('core.admin', 'com_virtuemart')) && (VmConfig::get ('oncheckout_change_shopper', 0))) { 
+		echo $this->loadTemplate ('shopperform');
 	}
 
+
+
+	// This displays the pricelist MUST be done with tables, because it is also used for the emails
+	echo $this->loadTemplate ('pricelist');
 
 	// added in 2.0.8
 	?>
@@ -130,9 +130,17 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 		}
 		?>
 	</div>
-
-	<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
-
+	<?php
+	if (!VmConfig::get('oncheckout_opc', 1)) {
+		if ($this->checkout_task) {
+			$taskRoute = '&task=' . $this->checkout_task;
+		}
+		else {
+			$taskRoute = '';
+		}
+	?>
+		<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
+	<?php } ?>
 		<?php // Leave A Comment Field ?>
 		<div class="customer-comment marginbottom15">
 			<span class="comment"><?php echo JText::_ ('COM_VIRTUEMART_COMMENT_CART'); ?></span><br/>

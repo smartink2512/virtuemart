@@ -109,6 +109,7 @@ class virtuemartViewrecommend extends VmView {
 			if (array_key_exists('0', $product->categories)) $virtuemart_category_id = $product->categories[0];
 		}
 
+		if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		shopFunctionsF::setLastVisitedCategoryId($virtuemart_category_id);
 
 		if($category_model){

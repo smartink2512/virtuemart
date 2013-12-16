@@ -26,7 +26,7 @@ defined ('_JEXEC') or die('Restricted access');
 	//vmdebug('view productdetails layout default show prices, prices',$this->product);
 	if ($this->product->prices['salesPrice']<=0 and VmConfig::get ('askprice', 1) and isset($this->product->images[0]) and !$this->product->images[0]->file_is_downloadable) {
 		?>
-		<a class="ask-a-question bold" href="<?php echo $this->askquestion_url ?>"><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_ASKPRICE') ?></a>
+		<a class="ask-a-question bold" href="<?php echo $this->askquestion_url ?>" rel="nofollow" ><?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_ASKPRICE') ?></a>
 		<?php
 	} else {
 	if ($this->showBasePrice) {

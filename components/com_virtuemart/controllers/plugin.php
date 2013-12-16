@@ -23,7 +23,7 @@ jimport ('joomla.application.component.controller');
  *
  * @package        VirtueMart
  */
-class VirtuemartControllerPlugin extends JControllerLegacy {
+class VirtuemartControllerPlugin extends JController {
 
 	/**
 	 * Method to render the plugin datas
@@ -53,7 +53,7 @@ class VirtuemartControllerPlugin extends JControllerLegacy {
 		}
 
 		JPluginHelper::importPlugin ($type, $name);
-		$dispatcher = JEventDispatcher::getInstance ();
+		$dispatcher = JDispatcher::getInstance ();
 		// if you want only one render simple in the plugin use jExit();
 		// or $render is an array of code to echo as html or json Objects!
 		$render = NULL;

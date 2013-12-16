@@ -99,11 +99,10 @@ class shopFunctionsF {
 	static public function getAddToCartButton ($orderable) {
 
 		if($orderable) {
-			$html = '<input type="submit" name="addtocart" class="addtocart-button" value="'.JText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" title="'.JText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" />';
+			$html = '<input type="submit" name="addtocart" class="addtocart-button" rel="nofollow" value="'.JText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" title="'.JText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" />';
 		} else {
 			$html = '<input name="addtocart" class="addtocart-button-disabled" value="'.JText::_( 'COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT' ).'" title="'.JText::_( 'COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT' ).'" />';
 		}
-
 		return $html;
 	}
 
@@ -251,7 +250,7 @@ class shopFunctionsF {
 		$user = FALSE;
 		if(isset($vars['orderDetails'])){
 
-			//If the VmRequest is there, the update is done by the order list view BE and so the checkbox does override the defaults.
+			//If the JRequest is there, the update is done by the order list view BE and so the checkbox does override the defaults.
 			//$name = 'orders['.$order['details']['BT']->virtuemart_order_id.'][customer_notified]';
 			//$customer_notified = VmRequest::getVar($name,-1);
 			if(!$useDefault and isset($vars['newOrderData']['customer_notified']) and $vars['newOrderData']['customer_notified']==1 ){
@@ -304,19 +303,25 @@ class shopFunctionsF {
 
 	private static function sendVmMail (&$view, $recipient, $noVendorMail = FALSE) {
 
+		VmConfig::ensureMemoryLimit(96);
 		$jlang = JFactory::getLanguage();
 		if(VmConfig::get( 'enableEnglish', 1 )) {
 			$jlang->load( 'com_virtuemart', JPATH_SITE, 'en-GB', TRUE );
 		}
 		$jlang->load( 'com_virtuemart', JPATH_SITE, $jlang->getDefault(), TRUE );
 		$jlang->load( 'com_virtuemart', JPATH_SITE, NULL, TRUE );
+
 		if(!empty($view->orderDetails['details']['BT']->order_language)) {
 			$jlang->load( 'com_virtuemart', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
+			$jlang->load( 'com_virtuemart_shoppers', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
+			$jlang->load( 'com_virtuemart_orders', JPATH_SITE, $view->orderDetails['details']['BT']->order_language, true );
+		} else {
+			VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
+			VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 		}
 
 		ob_start();
-		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
-		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+
 		$view->renderMailLayout( $noVendorMail, $recipient );
 		$body = ob_get_contents();
 		ob_end_clean();
@@ -353,6 +358,10 @@ class shopFunctionsF {
 			$app = JFactory::getApplication();
 			$sender[0] = $app->getCfg( 'mailfrom' );
 			$sender[1] = $app->getCfg( 'fromname' );
+			if(empty($sender[0])){
+				$config = JFactory::getConfig();
+				$sender = array( $config->getValue( 'config.mailfrom' ), $config->getValue( 'config.fromname' ) );
+			}
 		}
 		$mailer->setSender( $sender );
 
@@ -443,11 +452,10 @@ class shopFunctionsF {
 	 *
 	 * @author Max Milbers
 	 */
-		static function setTemplate ($template) {
+	static function setTemplate ($template) {
 
 		if(!empty($template) && $template != 'default') {
 
-			//$this->addTemplatePath(JPATH_THEMES.DS.$template);
 			$app = JFactory::getApplication( 'site' );
 			if(JVM_VERSION === 1){
 				if(is_dir( JPATH_THEMES.DS.$template )) {
@@ -479,9 +487,9 @@ class shopFunctionsF {
 					JError::raiseWarning( 412, 'The chosen template couldnt find on the filesystem: '.$template );
 				}
 			}
-			return $template;
 		}
 
+		return $template;
 	}
 
 	/**
@@ -630,40 +638,69 @@ class shopFunctionsF {
 		}
 
 	}
+	
+	/**
+	 * Get Virtuemart itemID from joomla menu
+	 * @author Maik K�nnemann
+	 */
+	static function getMenuItemId( $lang = '*' ) {
 
-    /**
-     * Trigger Content plugin
-     * @author: Valerie Isaksen
-     * @param	object	$article The article object.  Note $article->text is also available
-     * @param	string	$context The context of the content to pass to the plugin.
-     * @param	string	$field the field to be triggered
-     */
-    static function triggerContentPlugin(  $article, $context, $field) {
-        // add content plugin //
-        $dispatcher = & JEventDispatcher::getInstance ();
-        JPluginHelper::importPlugin ('content');
-        $article->text = $article->$field;
-        jimport ('joomla.html.parameter');
-        $params = new JParameter('');
+		$itemID = '';
+
+		if(empty($lang)) $lang = '*';
+
+		$component	= JComponentHelper::getComponent('com_virtuemart');
+
+		$db = JFactory::getDbo();
+		$q = 'SELECT * FROM `#__menu` WHERE `component_id` = "'. $component->id .'" and `language` = "'. $lang .'"';
+		$db->setQuery( $q );
+		$items = $db->loadObjectList();
+		if(empty($items)) {
+			$q = 'SELECT * FROM `#__menu` WHERE `component_id` = "'. $component->id .'" and `language` = "*"';
+			$db->setQuery( $q );
+			$items = $db->loadObjectList();
+		}
+
+		foreach ($items as $item) {
+			if(strstr($item->link, 'view=virtuemart')) {
+				$itemID = $item->id;
+				break;
+			}
+		}
+
+		if(empty($itemID) && !empty($items[0]->id)) {
+			$itemID = $items[0]->id;
+		}
+
+		return $itemID;
+	}
+
+	static function triggerContentPlugin(  $article, $context, $field) {
+	// add content plugin //
+		$dispatcher = JDispatcher::getInstance ();
+		JPluginHelper::importPlugin ('content');
+		$article->text = $article->$field;
+		jimport ('joomla.html.parameter');
+		$params = new JParameter('');
 
         if (JVM_VERSION > 1) {
-            if (!isset($article->event)) {
-                $article->event = new stdClass();
-            }
-            $results = $dispatcher->trigger ('onContentPrepare', array('com_virtuemart.'.$context, &$article, &$params, 0));
-            // More events for 3rd party content plugins
-            // This do not disturb actual plugins, because we don't modify $vendor->text
-            $res = $dispatcher->trigger ('onContentAfterTitle', array('com_virtuemart.'.$context, &$article, &$params, 0));
-            $article->event->afterDisplayTitle = trim (implode ("\n", $res));
+			if (!isset($article->event)) {
+				$article->event = new stdClass();
+			}
+			$results = $dispatcher->trigger ('onContentPrepare', array('com_virtuemart.'.$context, &$article, &$params, 0));
+			// More events for 3rd party content plugins
+			// This do not disturb actual plugins, because we don't modify $vendor->text
+			$res = $dispatcher->trigger ('onContentAfterTitle', array('com_virtuemart.'.$context, &$article, &$params, 0));
+			$article->event->afterDisplayTitle = trim (implode ("\n", $res));
 
-            $res = $dispatcher->trigger ('onContentBeforeDisplay', array('com_virtuemart.'.$context, &$article, &$params, 0));
-            $article->event->beforeDisplayContent = trim (implode ("\n", $res));
+			$res = $dispatcher->trigger ('onContentBeforeDisplay', array('com_virtuemart.'.$context, &$article, &$params, 0));
+			$article->event->beforeDisplayContent = trim (implode ("\n", $res));
 
-            $res = $dispatcher->trigger ('onContentAfterDisplay', array('com_virtuemart.'.$context, &$article, &$params, 0));
-            $article->event->afterDisplayContent = trim (implode ("\n", $res));
-        } else {
-            $results = $dispatcher->trigger ('onPrepareContent', array(& $article, & $params, 0));
-        }
-        $article->$field = $article->text;
-    }
+			$res = $dispatcher->trigger ('onContentAfterDisplay', array('com_virtuemart.'.$context, &$article, &$params, 0));
+			$article->event->afterDisplayContent = trim (implode ("\n", $res));
+		} else {
+			$results = $dispatcher->trigger ('onPrepareContent', array(& $article, & $params, 0));
+		}
+		$article->$field = $article->text;
+	}
 }

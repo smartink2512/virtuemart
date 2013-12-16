@@ -68,6 +68,7 @@ if (VmConfig::get ('showCategory', 1) and empty($this->keyword)) {
 
 		<?php // Start the Output
 		if (!empty($this->category->children)) {
+
 			foreach ($this->category->children as $category) {
 
 				// Show the horizontal seperator
@@ -144,8 +145,8 @@ if (!empty($this->keyword)) {
 <h3><?php echo $this->keyword; ?></h3>
 	<?php
 } ?>
+<?php if ($this->search !== NULL) {
 
-<?php if ($this->search != false) {
 	$category_id  = VmRequest::getInt ('virtuemart_category_id', 0); ?>
 <form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=category&limitstart=0', FALSE); ?>" method="get">
 
@@ -235,23 +236,34 @@ if (!empty($this->products)) {
 					 </a>
 
 					<!-- The "Average Customer Rating" Part -->
-					<?php if ($this->showRating) { ?>
-					<span class="contentpagetitle"><?php echo JText::_ ('COM_VIRTUEMART_CUSTOMER_RATING') ?>:</span>
-					<br/>
-					<?php
-					// $img_url = JURI::root().VmConfig::get('assets_general_path').'/reviews/'.$product->votes->rating.'.gif';
-					// echo JHTML::image($img_url, $product->votes->rating.' '.JText::_('COM_VIRTUEMART_REVIEW_STARS'));
-					// echo JText::_('COM_VIRTUEMART_TOTAL_VOTES').": ". $product->votes->allvotes;
-					?>
-					<?php } ?>
- 					<?php
-						if ( VmConfig::get ('display_stock', 1)) { ?>
+					<?php // Output: Average Product Rating
+					if ($this->showRating) {
+						$maxrating = VmConfig::get('vm_maximum_rating_scale', 5);
+
+						if (empty($product->rating)) {
+							?>
+							<span class="vote"><?php echo JText::_('COM_VIRTUEMART_RATING') . ' ' . JText::_('COM_VIRTUEMART_UNRATED') ?></span>
+						<?php
+						} else {
+							$ratingwidth = $product->rating * 12; //I don't use round as percetntage with works perfect, as for me
+							?>
+							<span class="vote">
+                                <?php echo JText::_('COM_VIRTUEMART_RATING') . ' ' . round($product->rating) . '/' . $maxrating; ?><br/>
+                                <span title=" <?php echo (JText::_("COM_VIRTUEMART_RATING_TITLE") . round($product->rating) . '/' . $maxrating) ?>" class="category-ratingbox" style="display:inline-block;">
+                                    <span class="stars-orange" style="width:<?php echo $ratingwidth.'px'; ?>">
+                                    </span>
+                                </span>
+                            </span>
+						<?php
+						}
+					}
+					if ( VmConfig::get ('display_stock', 1)) { ?>
 						<!-- 						if (!VmConfig::get('use_as_catalog') and !(VmConfig::get('stockhandle','none')=='none')){?> -->
 						<div class="paddingtop8">
 							<span class="vmicon vm2-<?php echo $product->stock->stock_level ?>" title="<?php echo $product->stock->stock_tip ?>"></span>
 							<span class="stock-level"><?php echo JText::_ ('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_TITLE_TIP') ?></span>
 						</div>
-						<?php } ?>
+					<?php } ?>
 				</div>
 
 				<div class="width70 floatright">
