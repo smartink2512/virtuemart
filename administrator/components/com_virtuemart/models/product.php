@@ -2115,13 +2115,13 @@ class VirtueMartModelProduct extends VmModel {
 
 		$orderDirLink = '';
 		$orderDirConf = VmConfig::get ('prd_brws_orderby_dir');
-		$orderDir = JRequest::getWord ('dir', $orderDirConf);
+		$orderDir = vmRequest::getCmd ('dir', $orderDirConf);
 		if ($orderDir != $orderDirConf ) {
 			$orderDirLink .= '&dir=' . $orderDir;	//was '&order='
 		}
 
 		$orderbyTxt = '';
-		$orderby = JRequest::getVar ('orderby', VmConfig::get ('browse_orderby_field'));
+		$orderby = vmRequest::getString ('orderby', VmConfig::get ('browse_orderby_field'));
 		$orderby = $this->checkFilterOrder ($orderby);
 
 		$orderbyCfg = VmConfig::get ('browse_orderby_field');

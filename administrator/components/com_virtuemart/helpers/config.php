@@ -1472,13 +1472,15 @@ class vmJsApi{
 	 */
 	static function jQuery($isSite=-1) {
 
-		//Very important convention with other 3rd pary developers, must be kept. DOES NOT WORK IN J3
-		/*if (JFactory::getApplication ()->get ('jquery')) {
-			return FALSE;
-		}*/
+
 		if(JVM_VERSION>2){
 			JHtml::_('jquery.framework');
 			return true;
+		} else {
+			//Very important convention with other 3rd pary developers, must be kept. DOES NOT WORK IN J3
+			if (JFactory::getApplication ()->get ('jquery')) {
+				return FALSE;
+			}
 		}
 
 		if($isSite===-1)$isSite = JFactory::getApplication()->isSite();
@@ -1488,10 +1490,10 @@ class vmJsApi{
 		}
 
 		if(VmConfig::get('google_jquery',TRUE)){
-			vmJsApi::js('jquery','//ajax.googleapis.com/ajax/libs/jquery/1.6.4','',TRUE);
+			vmJsApi::js('jquery','//ajax.googleapis.com/ajax/libs/jquery/1.8.1','',TRUE);
 			//$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js');
 			if (!$isSite) {
-				vmJsApi::js ('jquery-ui', '//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16', '', TRUE);
+				vmJsApi::js ('jquery-ui', '//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23', '', TRUE);
 			}
 			// if (!$isSite) $document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js');
 		} else {
@@ -1506,7 +1508,7 @@ class vmJsApi{
 			vmJsApi::js ('jquery.ui.autocomplete.html');
 
 		}
-		vmJsApi::js( 'jquery.noConflict');
+		vmJsApi::js( 'jquery.noconflict');
 		//Very important convention with other 3rd pary developers, must be kept DOES NOT WORK IN J3
 		//JFactory::getApplication()->set('jquery',TRUE);
 		return TRUE;
