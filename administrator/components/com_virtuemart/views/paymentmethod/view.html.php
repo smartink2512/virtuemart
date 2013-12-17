@@ -74,18 +74,18 @@ class VirtuemartViewPaymentMethod extends VmView {
 			// Load the helper(s)
 			if (!class_exists('VmImage'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
-
 			if (!class_exists('vmParameters'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
 
 			$payment = $model->getPayment();
-			$payment->params = $this-> getParams($payment->payment_params);//$registry->toArray();
 
 			// Get the payment XML.
-			$path	= JPath::clean( JPATH_PLUGINS.'/vmpayment/' . $payment->payment_element . '/' . $payment->payment_element . '.xml');
-			if (file_exists($path)){
-				$payment->form = JForm::getInstance('paymentForm', $path, array(),false, '//config');
-				$payment->form->bind($payment->params);
+			$formFile	= JPath::clean( JPATH_PLUGINS.'/vmpayment/' . $payment->payment_element . '/' . $payment->payment_element . '.xml');
+			if (file_exists($formFile)){
+				$payment->form = JForm::getInstance($payment->payment_element, $formFile, array(),false, '//config');
+					$payment->params = $this->getParams($payment->payment_params);
+					$payment->form->bind($payment);
+
 			} else {
 				$payment->form = null;
 			}
@@ -123,7 +123,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 			foreach($params as $param){
 				$item = explode('=',$param);
 				if(!empty($item[1])){
-					$pair[$item[0]] = $item[1];
+					$pair[$item[0]] = str_replace('"','', $item[1]);
 				} else {
 					$pair[$item[0]] ='';
 				}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" method="upgrade">
-    <name>VM - Payment, Systempay</name>
+    <name>Systempay</name>
     <creationDate>January 27 2013</creationDate>
     <author>Lyra Network</author>
     <authorEmail>supportvad@lyra-network.com</authorEmail>
@@ -14,18 +14,15 @@
 
     <files>
         <filename plugin="systempay">systempay.php</filename>
-        <folder>systempay</folder>  
+        <folder>systempay</folder>
     </files>
-    
+
     <languages>
         <language tag="en-GB">languageBE/en-GB.plg_vmpayment_systempay.ini</language>
         <language tag="fr-FR">languageBE/fr-FR.plg_vmpayment_systempay.ini</language>
     </languages>
     
-    <media folder="images" destination="../images/stories/virtuemart/payment">
-		<filename>systempay.png</filename>
-	</media>
-    
+
    	<params addpath="/plugins/vmpayment/systempay/elements" />
    	<params addpath="/plugins/vmpayment/systempay/systempay/elements" />
     
@@ -49,7 +46,7 @@
 		<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_SYSTEMPAY_LOGOS"
              	description="VMPAYMENT_SYSTEMPAY_LOGOS_DESC"
              	directory="/images/stories/virtuemart/payment"
-             	default="systempay.png" hide_default="1" hide_none="1"
+             	default="" hide_default="1" hide_none="1"
              	stripext="0" exclude="^_" />
         <param name="cost_per_transaction" type="text" label="VMPAYMENT_SYSTEMPAY_COST_PER_TRANSACTION" description="VMPAYMENT_SYSTEMPAY_COST_PER_TRANSACTION_DESC" />
         <param name="cost_percent_total" type="text" label="VMPAYMENT_SYSTEMPAY_COST_PERCENT_TOTAL" description="VMPAYMENT_SYSTEMPAY_COST_PERCENT_TOTAL_DESC" />

@@ -1,5 +1,5 @@
 <?php
-defined('JPATH_PLATFORM') or die;
+defined('_JEXEC') or die();
 
 /**
  *
@@ -13,7 +13,7 @@ defined('JPATH_PLATFORM') or die;
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: $
+ * @version $Id: vmcountry.php 7301 2013-10-29 17:45:07Z alatak $
  */
 /*
  * This class is used by VirtueMart Payment or Shipment Plugins
@@ -21,37 +21,29 @@ defined('JPATH_PLATFORM') or die;
  * So It should be an extension of JElement
  * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
-JFormHelper::loadFieldClass('list');
+class JElementVmCountry extends JElement {
 
-class JFormFieldVmCountries extends JFormFieldList {
+    /**
+     * Element name
+     * @access	protected
+     * @var		string
+     */
+    var $_name = 'vmcountry';
 
-	/**
-	 * The form field type.
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	public $type = 'vmcountries';
+    function fetchElement($name, $value, &$node, $control_name) {
 
-	protected function getOptions()
-	{
-		$options = array();
+        $db =  JFactory::getDBO();
 
-		$query = 'SELECT `virtuemart_country_id` AS value, `country_name` AS text FROM `#__virtuemart_countries`
+        $query = 'SELECT `virtuemart_country_id` AS value, `country_name` AS text FROM `#__virtuemart_countries`
                		WHERE `published` = 1 ORDER BY `country_name` ASC '
-		;
-		$db =   JFactory::getDBO();
-		$db->setQuery($query);
-		$values = $db->loadObjectList();
-		foreach ($values as $v) {
-			$options[] = JHtml::_('select.option', $v->value, $v->text);
-		}
+        ;
 
-		//BAD $class = 'multiple="true" size="10"';
-		// Merge any additional options in the XML definition.
-		$options = array_merge(parent::getOptions(), $options);
+        $db->setQuery($query);
+        $fields = $db->loadObjectList();
+        $class = '';
 
-		return $options;
-	}
+        //$class = 'multiple="true" size="10"  ';
+        return JHTML::_('select.genericlist', $fields, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);
+    }
 
 }

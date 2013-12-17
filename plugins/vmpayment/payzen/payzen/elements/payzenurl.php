@@ -22,7 +22,7 @@ defined('JPATH_BASE') or die();
  * Renders a url element
  */
 
-class JElementPayzenUrl extends JFormField
+class JElementPayzenUrl extends JElement
 {
 	/**
 	* Element name

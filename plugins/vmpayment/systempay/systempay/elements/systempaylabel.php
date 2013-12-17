@@ -22,7 +22,7 @@ defined('JPATH_BASE') or die();
  * Renders a label element
  */
 
-class JElementSystempayLabel extends JFormField
+class JElementSystempayLabel extends JElement
 {
 	/**
 	* Element name

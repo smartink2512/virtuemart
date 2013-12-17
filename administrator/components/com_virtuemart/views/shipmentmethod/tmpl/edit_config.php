@@ -20,30 +20,47 @@
 defined('_JEXEC') or die('Restricted access');
 
 if ($this->shipment->shipment_name) {
-    $parameters = new vmParameters($this->shipment, $this->shipment->shipment_element, 'plugin', 'vmshipment');
+	if ($this->shipment->form) {
+		$fieldSets = $this->shipment->form->getFieldsets();
+		if (!empty($fieldSets)) {
 
-    echo $rendered = $parameters->render();
+			?>
+<table width="100%" class="paramlist admintable" cellspacing="1">
+	<tbody>
+	<?php
+	foreach ($fieldSets as $name => $fieldSet) {
+		$label = !empty($fieldSet->label) ? $fieldSet->label : 'JGLOBAL_FIELDSET_'.$name;
+		$class = isset($fieldSet->class) && !empty($fieldSet->class) ? $fieldSet->class : '';
+
+		if (isset($fieldSet->description) && trim($fieldSet->description)) {
+			echo '<p class="tip">'.$this->escape(JText::_($fieldSet->description)).'</p>';
+		}
+		?>
+
+		<?php foreach ($this->shipment->form->getFieldset($name) as $field) { ?>
+			<tr>
+				<td width="40%" class="paramlist_key">
+					<?php echo $field->label; ?>
+				</td>
+				<td class="paramlist_value">
+					<?php echo $field->input; ?>
+				</td>
+			</tr>
+		<?php }?>
+
+	<?php
+
+	}
+	?>
+	</tbody></table>
+<?php
+	} else {
+		$parameters = new vmParameters($this->shipment, $this->shipment->shipment_element, 'plugin', 'vmshipment');
+
+		echo $rendered = $parameters->render();
+		}
+	}
 } else {
     echo JText::_('COM_VIRTUEMART_SELECT_SHIPPING_METHOD');
 }
- /*
-  <script type="text/javascript">
-  function check() {
-  if (document.adminForm.type[0].checked == true || document.adminForm.type[1].checked == true) {
-  document.getElementById('accepted_creditcards1').innerHTML = '<strong><?php echo JText::_('COM_VIRTUEMART_PAYMENT_ACCEPTED_CREDITCARDS') ?>:';
-  if (document.getElementById('accepted_creditcards_store').innerHTML != '')
-  document.getElementById('accepted_creditcards2').innerHTML ='<input type="text" name="accepted_creditcards" value="' + document.getElementById('accepted_creditcards_store').innerHTML + '" class="inputbox" />';
-  else
-  document.getElementById('accepted_creditcards2').innerHTML = '<?php ps_creditcard::creditcard_checkboxes( $this->paym->payment_creditcards ); ?>';
-  }
-  else {
-  try {
-  document.getElementById('accepted_creditcards_store').innerHTML = document.adminForm.accepted_creditcards.value;
-  }
-  catch (e) {}
-  document.getElementById('accepted_creditcards1').innerHTML = '';
-  document.getElementById('accepted_creditcards2').innerHTML = '';
-  }
-  }
-  check();
-  </script> */
+

@@ -77,6 +77,8 @@ abstract class vmPlugin extends JPlugin {
 		}
 		$this->_tablename = '#__virtuemart_' . $this->_psType . '_plg_' . $this->_name;
 		$this->_tableChecked = FALSE;
+		$this->_xmlFile	= JPath::clean( JPATH_PLUGINS .'/'. $this->_type .'/'.  $this->_name . '/' . $this->_name . '.xml');
+
 	}
 
 	function setPluginLoggable($set=TRUE){
@@ -409,7 +411,6 @@ abstract class vmPlugin extends JPlugin {
 		if(!empty($this->_psType)){
 			$element = $this->_psType.'_element';
 			$jplugin_id = $this->_psType.'_jplugin_id';
-			//vmdebug('declarePluginParams $element '.$element.'  $jplugin_id '.$jplugin_id,$data->$element,$data->$jplugin_id);
 			if(!isset($data->$element) or !isset($data->$jplugin_id)) return FALSE;
 			if(!$this->selectedThis($psType,$data->$element,$data->$jplugin_id)){
 				return FALSE;
@@ -420,11 +421,7 @@ abstract class vmPlugin extends JPlugin {
 		}
 		VmTable::bindParameterable ($data, $this->_xParams, $this->_varsToPushParam);
 		return TRUE;
-		// 			vmdebug('getDeclaredPluginParams return '.$this->_xParams);
-		// 			return array($this->_xParams,$this->_varsToPushParam);
-		// 		} else {
-		// 			return false;
-		// 		}
+
 	}
 
 	/**

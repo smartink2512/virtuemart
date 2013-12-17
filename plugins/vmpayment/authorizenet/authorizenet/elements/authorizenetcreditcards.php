@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access');
 /*
  * This class is used by VirtueMart Payment  Plugins
  * which uses JParameter
- * So It should be an extension of JFormField
+ * So It should be an extension of JElement
  * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
@@ -37,7 +37,7 @@ defined('JPATH_BASE') or die();
  *
  */
 
-class JElementAuthorizenetCreditCards extends JFormField {
+class JElementAuthorizenetCreditCards extends JElement {
 
     /**
      * Element name

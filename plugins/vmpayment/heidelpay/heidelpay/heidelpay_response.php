@@ -1,8 +1,6 @@
 <?php
 
 /**
- * @version $Id$
-
  * Heidelpay response page for Heidelpay plugin
  * @author Heidelberger Paymenrt GmbH <Jens Richter> 
  * @version 13.07
@@ -47,7 +45,7 @@ function updateHeidelpay($orderID, $connect) {
 	if ( preg_match('/^[A-Za-z0-9 -]+$/', $orderID , $str)) {
 		$link = mysql_connect($connect->host, $connect->user , $connect->password);
 		mysql_select_db($connect->db);	
-		$result = mysql_query("SELECT virtuemart_order_id FROM ".$connect->dbprefix."virtuemart_orders"." WHERE  order_number = '".$orderID."';");
+		$result = mysql_query("SELECT virtuemart_order_id FROM ".$connect->dbprefix."virtuemart_orders"." WHERE  order_number = '".mysql_real_escape_string($orderID)."';");
 		$row = mysql_fetch_object($result);
 		$paymentCode = explode('.' , $_POST['PAYMENT_CODE']);
 		if ($_POST['PROCESSING_RESULT'] == "NOK") {
@@ -100,20 +98,20 @@ function updateHeidelpay($orderID, $connect) {
 		}
 		if (!empty($row->virtuemart_order_id)) {
 			$sql = "INSERT ".$connect->dbprefix."virtuemart_payment_plg_heidelpay SET " .
-					"virtuemart_order_id			= \"".$row->virtuemart_order_id			. "\"," .
-					"order_number					= \"".$_GET['on']						. "\"," .
-					"virtuemart_paymentmethod_id	= \"".$_GET['pm']						. "\"," .
-					"unique_id 						= \"".$_POST['IDENTIFICATION_UNIQUEID']	. "\"," .
-					"short_id						= \"".$_POST['IDENTIFICATION_SHORTID']	. "\"," .
-					"payment_code					= \"".$_POST['PROCESSING_REASON_CODE']	. "\"," .
-					"comment						= \"".$comment							. "\"," .
-					"payment_methode				= \"".$paymentCode[0]					. "\"," .
-					"payment_type					= \"".$paymentCode[1]					. "\"," .
-					"transaction_mode				= \"".$_POST['TRANSACTION_MODE']		. "\"," .
-					"payment_name					= \"".$_POST['CRITERION_PAYMENT_NAME']	. "\"," .
-					"processing_result				= \"".$_POST['PROCESSING_RESULT']		. "\"," .
-					"secret_hash					= \"".$_POST['CRITERION_SECRET']		. "\"," .
-					"response_ip					= \"".$_SERVER['REMOTE_ADDR']			. "\";" ;
+					"virtuemart_order_id			= \"".mysql_real_escape_string($row->virtuemart_order_id). "\"," .
+					"order_number					= \"".mysql_real_escape_string($_GET['on']). "\"," .
+					"virtuemart_paymentmethod_id	= \"".mysql_real_escape_string($_GET['pm']). "\"," .
+					"unique_id 						= \"".mysql_real_escape_string($_POST['IDENTIFICATION_UNIQUEID']). "\"," .
+					"short_id						= \"".mysql_real_escape_string($_POST['IDENTIFICATION_SHORTID']). "\"," .
+					"payment_code					= \"".mysql_real_escape_string($_POST['PROCESSING_REASON_CODE']). "\"," .
+					"comment						= \"".mysql_real_escape_string($comment). "\"," .
+					"payment_methode				= \"".mysql_real_escape_string($paymentCode[0]). "\"," .
+					"payment_type					= \"".mysql_real_escape_string($paymentCode[1]). "\"," .
+					"transaction_mode				= \"".mysql_real_escape_string($_POST['TRANSACTION_MODE']). "\"," .
+					"payment_name					= \"".mysql_real_escape_string($_POST['CRITERION_PAYMENT_NAME']). "\"," .
+					"processing_result				= \"".mysql_real_escape_string($_POST['PROCESSING_RESULT']). "\"," .
+					"secret_hash					= \"".mysql_real_escape_string($_POST['CRITERION_SECRET']). "\"," .
+					"response_ip					= \"".mysql_real_escape_string($_SERVER['REMOTE_ADDR']). "\";" ;
 			$dbEerror = mysql_query($sql);
 		}
 	}

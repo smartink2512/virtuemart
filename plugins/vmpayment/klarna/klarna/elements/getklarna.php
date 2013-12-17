@@ -16,7 +16,7 @@ defined ('JPATH_BASE') or die();
 /**
  * Renders a label element
  */
-if (JVM_VERSION > 1) {
+if (JVM_VERSION === 2) {
 	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
 	if (!class_exists ('KlarnaHandler')) {
 		require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
@@ -28,7 +28,7 @@ if (JVM_VERSION > 1) {
 	}
 }
 
-class JElementGetKlarna extends JFormField {
+class JElementGetKlarna extends JElement {
 
 	/**
 	 * Element name
@@ -52,36 +52,12 @@ class JElementGetKlarna extends JFormField {
 				break;
 			}
 		}
-		/*
-		$logo = '<a href="https://merchants.klarna.com/signup?locale=' . $signLang . '&partner_id=7829355537eae268a17667c199e7c7662d3391f7" target="_blank">
-	             <img src="' . JURI::root () . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/get_klarna_now.png" /></a> ';
-*/
-		$logo = '<img src="' . JURI::root () . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/get_klarna_now.jpg" />';
-		$html = '<a href="#" id="klarna_getklarna_link" ">' . $logo . '</a>';
-// https://merchants.klarna.com/signup?locale=en&partner_id=7829355537eae268a17667c199e7c7662d3391f7&utm_campaign=Platform&utm_medium=Partners&utm_source=Virtuemart
-		$html .= '<div id="klarna_getklarna_show_hide" >';
+
 		$url = "https://merchants.klarna.com/signup/?locale=" . $signLang . "&partner_id=7829355537eae268a17667c199e7c7662d3391f7&utm_campaign=Platform&utm_medium=Partners&utm_source=Virtuemart";
 
-		$js = '
-		jQuery(document).ready(function( $ ) {
-			$("#klarna_getklarna_show_hide").hide();
-			jQuery("#klarna_getklarna_link").click( function() {
-				 if ( $("#klarna_getklarna_show_hide").is(":visible") ) {
-				  $("#klarna_getklarna_show_hide").hide("slow");
-			        $("#klarna_getklarna_link").html("' . addslashes ($logo) . '");
-				} else {
-				 $("#klarna_getklarna_show_hide").show("slow");
-			       $("#klarna_getklarna_link").html("' . addslashes (JText::_ ('VMPAYMENT_KLARNA_GET_KLARNA_HIDE')) . '");
-			    }
-		    });
-		});
-';
+		$logo = '<img src="' . JURI::root () . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/get_klarna_now.jpg" />';
+		$html = '<a target="_blank" href="'.$url.'" id="klarna_getklarna_link" ">' . $logo . '</a>';
 
-		$doc = JFactory::getDocument ();
-		$doc->addScriptDeclaration ($js);
-
-		$html .= '<iframe src="' . $url . '" scrolling="yes" style="x-overflow: none;" frameborder="0" height="600px" width="850px"></iframe>';
-		$html .= '</div>';
 		return $html;
 	}
 

@@ -5,8 +5,7 @@
     margin-right: 10px; /* Place it under the add to cart */
     text-align: right;
     font-size: 11px;
-
-    z-index: 10000;
+    z-index: 1000;
 }
 
 .klarna_PPBox_inner {
@@ -61,7 +60,7 @@
     cursor: pointer;
 }
 .klarna_PPBox_topMid_nl {
-    min-width: 163px;
+    min-width: 162px !important;
 }
 .klarna_PPBox_topMid p {
     padding: 0 3px 0 5px;

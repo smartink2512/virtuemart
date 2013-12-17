@@ -16,7 +16,7 @@ defined ('_JEXEC') or die('Restricted access');
  * @version $Id$
  */
 
-class JElementAuthorizenetCurl extends JFormField {
+class JElementAuthorizenetCurl extends JElement {
 	var $_name = 'authorizenetcurl';
 	function fetchElement ($name, $value, &$node, $control_name) {
 

@@ -1,6 +1,5 @@
 <?php
 defined ('_JEXEC') or die();
-
 /**
  * @author Valérie Isaksen
  * @version $Id$
@@ -18,26 +17,26 @@ defined ('_JEXEC') or die();
  */
 if (!empty($viewData['payment_logo_link'] )) {
 // addon for joomla modal Box
-    JHTML::_('behavior.modal');
+	JHTML::_('behavior.modal');
 // JHTML::_('behavior.tooltip');
-    if(VmConfig::get('usefancy',0)){
-        vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
-        vmJsApi::css('jquery.fancybox-1.3.4');
-        $box = "$.fancybox({
+	if(VmConfig::get('usefancy',0)){
+		vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
+		vmJsApi::css('jquery.fancybox-1.3.4');
+		$box = "$.fancybox({
 				href: '" .$viewData['payment_logo_link']  . "',
 				type: 'iframe',
 				height: '550'
 			});";
-    } else {
-        vmJsApi::js( 'facebox' );
-        vmJsApi::css( 'facebox' );
-        $box = "$.facebox({
+	} else {
+		vmJsApi::js( 'facebox' );
+		vmJsApi::css( 'facebox' );
+		$box = "$.facebox({
 				iframe: '" .$viewData['payment_logo_link']  . "',
 				rev: 'iframe|550|550'
 			});";
-    }
-    $document = JFactory::getDocument();
-    $document->addScriptDeclaration("
+	}
+	$document = JFactory::getDocument();
+	$document->addScriptDeclaration("
 //<![CDATA[
 	jQuery(document).ready(function($) {
 		$('a.payment-logo-link').click( function(){
@@ -57,20 +56,20 @@ if (!empty($viewData['payment_logo_link'] )) {
 <label for="payment_id_<?php echo $viewData['plugin']->virtuemart_paymentmethod_id; ?>">
     <span class="vmpayment">
         <?php if (!empty($viewData['payment_logo_link'] )) { ?>
-        <a class="payment-logo-link" title="<?php echo JText::_('VMPAYMENT_SOFORT_READMORE')?>" href="<?php echo $viewData ["payment_logo_link"]; ?>" >
-            <?php } ?>
-            <?php if (!empty($viewData['payment_logo'] )) { ?>
-                <span class="vmCartPaymentLogo"><?php echo $viewData ['payment_logo']; ?> </span>
-            <?php } ?>
-            <?php if (!empty($viewData['payment_logo_link'] )) { ?>
-        </a>
-    <?php } ?>
-        <span class="vmpayment_name"><?php echo $viewData['plugin']->payment_name; ?></span>
-        <?php if (!empty($viewData['plugin']->payment_desc )) { ?>
-            <span class="vmpayment_description"><?php echo $viewData['plugin']->payment_desc; ?></span>
+	        <a class="payment-logo-link" title="<?php echo JText::_('VMPAYMENT_SOFORT_READMORE')?>" href="<?php echo $viewData ["payment_logo_link"]; ?>" >
         <?php } ?>
-        <?php if (!empty($viewData['payment_cost']  )) { ?>
-            <span class="vmpayment_cost"><?php echo JText::_ ('COM_VIRTUEMART_PLUGIN_COST_DISPLAY') .  $viewData['payment_cost']  ?></span>
+        <?php if (!empty($viewData['payment_logo'] )) { ?>
+	        <span class="vmCartPaymentLogo"><?php echo $viewData ['payment_logo']; ?> </span>
         <?php } ?>
+	    <?php if (!empty($viewData['payment_logo_link'] )) { ?>
+		    </a>
+	    <?php } ?>
+	    <span class="vmpayment_name"><?php echo $viewData['plugin']->payment_name; ?></span>
+	    <?php if (!empty($viewData['plugin']->payment_desc )) { ?>
+		    <span class="vmpayment_description"><?php echo $viewData['plugin']->payment_desc; ?></span>
+	    <?php } ?>
+	    <?php if (!empty($viewData['payment_cost']  )) { ?>
+		    <span class="vmpayment_cost"><?php echo JText::_ ('COM_VIRTUEMART_PLUGIN_COST_DISPLAY') .  $viewData['payment_cost']  ?></span>
+	    <?php } ?>
     </span>
 </label>

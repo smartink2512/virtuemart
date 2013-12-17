@@ -20,7 +20,7 @@ defined('JPATH_BASE') or die();
  *
  */
 
-class JElementKlarnaMultiList extends JFormField
+class JElementKlarnaMultiList extends JElement
 {
 	/**
 	 * Element name

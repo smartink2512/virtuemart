@@ -50,11 +50,26 @@ class VirtuemartViewShipmentmethod extends VmView {
 		$layoutName = VmRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
 		        $shipment = $model->getShipment();
+			$shipment->params = $this->getParams($shipment->shipment_params);
+
+			// Get the payment XML.
+			$formFile	= JPath::clean( JPATH_PLUGINS.'/vmshipment/' . $shipment->shipment_element . '/' . $shipment->shipment_element . '.xml');
+			if (file_exists($formFile)){
+				$shipment->form = JForm::getInstance($shipment->payment_element, $formFile, array(),false, '//config');
+				if (!empty($shipment->form->xml )){
+					$shipment->params = $this->getParams($shipment->payment_params);
+					$shipment->form->bind($shipment);
+				} else {
+					$shipment->form = null;
+				}
+			} else {
+				$shipment->form = null;
+			}
 			if (!class_exists('VmImage'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
-
-				if (!class_exists('vmParameters'))
+			if (!class_exists('vmParameters'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
+
 
 			 if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 			 $vendor_id = 1;
@@ -87,6 +102,22 @@ class VirtuemartViewShipmentmethod extends VmView {
 		}
 
 		parent::display($tpl);
+	}
+	function getParams($raw) {
+
+		if (!empty($raw)) {
+			$params = explode('|', substr($raw, 0,-1));
+			foreach($params as $param){
+				$item = explode('=',$param);
+				if(!empty($item[1])){
+					$pair[$item[0]] = str_replace('"','', $item[1]);
+				} else {
+					$pair[$item[0]] ='';
+				}
+
+			}
+		}
+		return $pair;
 	}
 
 	function renderInstalledShipmentPlugins($selected)

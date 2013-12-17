@@ -17,7 +17,7 @@ defined('JPATH_BASE') or die();
  * Renders a label element
  */
 
-class JElementKlarnaLabel extends JFormField
+class JElementKlarnaLabel extends JElement
 {
 	/**
 	* Element name

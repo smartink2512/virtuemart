@@ -106,11 +106,19 @@ class klarna_payments {
 	 */
 	private function setPreviouslyFilledIn ($klarna_data) {
 
-		if (($this->country == "nl" || $this->country == "de") && isset($klarna_data['pno'])) {
+		if (($this->country == "nl" ) && isset($klarna_data['pno'])) {
 			$pno = $klarna_data['pno'];
 			$this->klarna_bday['year'] = substr ($pno, 4, 4);
 			$this->klarna_bday['month'] = substr ($pno, 2, 2);
 			$this->klarna_bday['day'] = substr ($pno, 0, 2);
+		}
+		elseif ( $this->country == "de") {
+			$pno = $klarna_data['pno'];
+			$this->klarna_bday['year'] =  $klarna_data['birth_year'];
+			$this->klarna_bday['month'] =  $klarna_data['birth_month'];
+			$this->klarna_bday['day'] =  $klarna_data['birth_day'];
+		} else {
+			$this->socialNumber=$klarna_data['socialNumber'];
 		}
 		$this->klarna_street = ((isset($klarna_data['street']) &&
 			!isset($this->klarna_street)) ? $klarna_data['street'] :
@@ -267,6 +275,8 @@ class klarna_payments {
 		$payment_params['invoice_name'] = 'klarna_invoice';
 		$payment_params['part_name'] = 'klarna_partPayment';
 		$payment_params['spec_name'] = 'klarna_SpecCamp';
+		$payment_params['fields']['socialNumber'] = isset($this->socialNumber)?$this->socialNumber:"";
+
 		return $payment_params;
 	}
 

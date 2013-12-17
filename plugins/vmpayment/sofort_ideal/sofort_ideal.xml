@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment">
-    <name>VMPAYMENT_SOFORT</name>
+    <name>Sofort Ideal</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
@@ -27,6 +27,7 @@
         <param type="vmjpluginwarning"/>
         <param type="spacer" default="VMPAYMENT_SOFORT_IDEAL_PAYMENT_TITLE" level="level1"/>
         <param type="getsofort" level="level1"/>
+        <param type="manual" level="level1"/>
 
         <param type="spacer" default="" level="level1"/>
         <param type="spacer" default="VMPAYMENT_SOFORT_PAYMENT_SETTINGS" level="level1"/>
@@ -80,10 +81,10 @@
                description="VMPAYMENT_SOFORT_COST_PERCENT_TOTAL_DESC"/>
         <param name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_SOFORT_TAX"
                description="VMPAYMENT_SOFORT_TAX_DESC"/>
-        <!--param name="log_ipn" type="list" default="0" label="VMPAYMENT_SOFORT_LOG_IPN" description="VMPAYMENT_SOFORT_LOG_IPN_DESC" >
-       <option value="0">COM_VIRTUEMART_NO</option>
-       <option value="1">COM_VIRTUEMART_YES</option>
-   </param-->
+         <!--param name="log_ipn" type="list" default="0" label="VMPAYMENT_SOFORT_LOG_IPN" description="VMPAYMENT_SOFORT_LOG_IPN_DESC" >
+        <option value="0">COM_VIRTUEMART_NO</option>
+        <option value="1">COM_VIRTUEMART_YES</option>
+    </param-->
         <param name="debug" type="radio" default="0" label="VMPAYMENT_SOFORT_DEBUG"
                description="VMPAYMENT_SOFORT_DEBUG_DESC">
             <option value="0">COM_VIRTUEMART_NO</option>

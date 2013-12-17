@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment">
-    <name>Sofort Gateway</name>
+    <name>Sofort</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
@@ -21,9 +21,10 @@
     <params addpath="/plugins/vmpayment/sofort/sofort/elements"/>
 
     <params addpath="/administrator/components/com_virtuemart/elements">
-
         <param type="vmjpluginwarning"/>
         <param type="spacer" default="VMPAYMENT_SOFORT_PAYMENT_TITLE" level="level1"/>
+        <param type="getsofort" level="level1"/>
+        <param type="manual" level="level1"/>
 
         <param type="spacer" default="" level="level1"/>
         <param type="spacer" default="VMPAYMENT_SOFORT_PAYMENT_SETTINGS" level="level1"/>
@@ -32,7 +33,6 @@
                directory="/images/stories/virtuemart/payment"
                default="default" hide_default="1" hide_none="1"
                stripext="0" exclude="^_"/>
-        <param type="getsofort" level="level1"/>
         <param type="spacer" default="" level="level1"/>
         <param type="spacer" default="VMPAYMENT_SOFORT_PARAMS" level="level1"/>
         <param type="text" name="configuration_key" size="100" label="VMPAYMENT_SOFORT_CONFIGURATION_KEY"
@@ -42,11 +42,17 @@
             <option value="0">COM_VIRTUEMART_NO</option>
             <option value="1">COM_VIRTUEMART_YES</option>
         </param>
+        <param type="spacer" default="" level="level1"/>
+        <param type="spacer" default="" level="level1"/>
+        <param type="spacer" default="VMPAYMENT_SOFORT_PAYMENT_PAGE" level="level1"/>
+        <param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="U" label="VMPAYMENT_SOFORT_STATUS_PENDING" description="VMPAYMENT_SOFORT_STATUS_PENDING_DESC"/>
+        <param name="status_received" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_SOFORT_STATUS_RECEIVED" description="VMPAYMENT_SOFORT_STATUS_RECEIVED_DESC"/>
+        <param name="status_loss" type="vmorderstate" scope="com_virtuemart" default="X"  label="VMPAYMENT_SOFORT_STATUS_LOSS" description="VMPAYMENT_SOFORT_STATUS_LOSS_DESC"/>
+        <param name="status_refunded" type="vmorderstate" scope="com_virtuemart" default="R" label="VMPAYMENT_SOFORT_STATUS_REFUNDED" description="VMPAYMENT_SOFORT_STATUS_REFUNDED_DESC"/>
 
         <param type="spacer" default="" level="level1"/>
         <param type="spacer" default="" level="level1"/>
 
-        <param type="spacer" default="" level="level1"/>
         <param type="spacer" default="VMPAYMENT_SOFORT_CURRENCIES" level="level1"/>
         <!-- BY DEFAULT paypal currency= vendor currency -->
         <param name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_SOFORT_CURRENCY"
@@ -71,17 +77,8 @@
                description="VMPAYMENT_SOFORT_COST_PERCENT_TOTAL_DESC"/>
         <param name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_SOFORT_TAX"
                description="VMPAYMENT_SOFORT_TAX_DESC"/>
-        <param type="spacer" default="" level="level1"/>
-        <param type="spacer" default="VMPAYMENT_SOFORT_PAYMENT_PAGE" level="level1"/>
-        <param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="U" label="VMPAYMENT_SOFORT_STATUS_PENDING" description="VMPAYMENT_SOFORT_STATUS_PENDING_DESC"/>
-        <param name="status_received" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_SOFORT_STATUS_RECEIVED" description="VMPAYMENT_SOFORT_STATUS_RECEIVED_DESC"/>
-        <param name="status_loss" type="vmorderstate" scope="com_virtuemart" default="X"  label="VMPAYMENT_SOFORT_STATUS_LOSS" description="VMPAYMENT_SOFORT_STATUS_LOSS_DESC"/>
-        <param name="status_refunded" type="vmorderstate" scope="com_virtuemart" default="R" label="VMPAYMENT_SOFORT_STATUS_REFUNDED" description="VMPAYMENT_SOFORT_STATUS_REFUNDED_DESC"/>
-        <param type="spacer" default="" level="level1"/>
-        <!--param name="log_ipn" type="list" default="0" label="VMPAYMENT_SOFORT_LOG_IPN" description="VMPAYMENT_SOFORT_LOG_IPN_DESC" >
-        <option value="0">COM_VIRTUEMART_NO</option>
-        <option value="1">COM_VIRTUEMART_YES</option>
-    </param-->
+          <param type="spacer" default="" level="level1"/>
+
         <param name="debug" type="radio" default="0" label="VMPAYMENT_SOFORT_DEBUG"
                description="VMPAYMENT_SOFORT_DEBUG_DESC">
             <option value="0">COM_VIRTUEMART_NO</option>

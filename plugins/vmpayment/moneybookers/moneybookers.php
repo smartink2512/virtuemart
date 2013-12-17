@@ -48,7 +48,6 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		                    'min_amount'          => array('', 'int'),
 		                    'max_amount'          => array('', 'int'),
 		                    'tax_id'              => array(0, 'int'),
-		                    'countries'           => array('', 'char'),
 		                    'status_pending'      => array('', 'char'),
 		                    'status_success'      => array('', 'char'),
 		                    'status_canceled'     => array('', 'char'));
@@ -101,9 +100,10 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 	}
 
 	function _getPaymentResponseHtml ($paymentTable, $payment_name) {
+		VmConfig::loadJLang('com_virtuemart');
 
 		$html = '<table>' . "\n";
-		$html .= $this->getHtmlRow ('MONEYBOOKERS_PAYMENT_NAME', $payment_name);
+		$html .= $this->getHtmlRow ('COM_VIRTUEMART_PAYMENT_NAME', $payment_name);
 		if (!empty($paymentTable)) {
 			$html .= $this->getHtmlRow ('MONEYBOOKERS_ORDER_NUMBER', $paymentTable->order_number);
 		}
@@ -136,7 +136,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		$db = JFactory::getDBO ();
 		$query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
 		$db->setQuery ($query);
-		$columns = $db->loadColumn (0);
+		$columns = $db->loadResultArray (0);
 
 		$post_msg = '';
 		foreach ($mb_data as $key => $value) {
@@ -230,7 +230,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		$address = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
 
 		if (!class_exists ('TableVendors')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'table' . DS . 'vendors.php');
+			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'vendors.php');
 		}
 		$vendorModel = VmModel::getModel ('Vendor');
 		$vendorModel->setId (1);
@@ -244,11 +244,10 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		$db->setQuery ($q);
 		$currency_code_3 = $db->loadResult ();
 
-		$paymentCurrency = CurrencyDisplay::getInstance ($method->payment_currency);
-		$totalInPaymentCurrency = round ($paymentCurrency->convertCurrencyTo ($method->payment_currency,
-			$order['details']['BT']->order_total,
-			FALSE), 2);
-		if ($totalInPaymentCurrency <= 0) {
+		$totalInPaymentCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total,$method->payment_currency);
+		$cartCurrency = CurrencyDisplay::getInstance($cart->pricesCurrency);
+
+		if ($totalInPaymentCurrency['value'] <= 0) {
 			vmInfo (JText::_ ('VMPAYMENT_MONEYBOOKERS_PAYMENT_AMOUNT_INCORRECT'));
 			return FALSE;
 		}
@@ -266,22 +265,24 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		                        'recipient_description'    => $vendorModel->getVendorName (),
 		                        'transaction_id'           => $order['details']['BT']->order_number,
 
-		                        'return_url'               => JROUTE::_ (JURI::root () .
+		                        'return_url'               => JURI::root () .
 			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' .
 			                        $order['details']['BT']->order_number .
 			                        '&pm=' .
 			                        $order['details']['BT']->virtuemart_paymentmethod_id .
-		                            '&Itemid=' . JRequest::getInt ('Itemid')
-		                        ),
-		                        'cancel_url'               => JROUTE::_ (JURI::root () .
+		                            '&Itemid=' . JRequest::getInt ('Itemid') .
+								    '&lang='.JRequest::getCmd('lang','')
+		                            ,
+		                        'cancel_url'               => JURI::root () .
 			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' .
 			                        $order['details']['BT']->order_number .
 			                        '&pm=' .
 			                        $order['details']['BT']->virtuemart_paymentmethod_id .
-		                            '&Itemid=' . JRequest::getInt ('Itemid')
-		                        ),
-		                        'status_url'               => JROUTE::_ (JURI::root () .
-			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
+		                            '&Itemid=' . JRequest::getInt ('Itemid') .
+									'&lang='.JRequest::getCmd('lang','')
+		                        ,
+		                        'status_url'               => JURI::root () .
+			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&lang='.JRequest::getCmd('lang','') ,
 		                        'platform'                 => '21477272',
 		                        'hide_login'               => $method->hide_login,
 		                        'prepare_only'             => 1,
@@ -299,7 +300,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		                        "country"                  => ShopFunctions::getCountryByID ($address->virtuemart_country_id, 'country_3_code'),
 
 			// payment details section
-		                        'amount'                   => $totalInPaymentCurrency,
+		                        'amount'                   => $totalInPaymentCurrency['value'],
 		                        'currency'                 => $currency_code_3,
 		                        'detail1_description'
 		                                                   => JText::_ ('VMPAYMENT_MONEYBOOKERS_ORDER_NUMBER') . ': ', //ihh hardcoded colon
@@ -313,7 +314,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
 		$dbValues['cost_percent_total'] = $method->cost_percent_total;
 		$dbValues['payment_currency'] = $method->payment_currency;
-		$dbValues['payment_order_total'] = $totalInPaymentCurrency;
+		$dbValues['payment_order_total'] = $totalInPaymentCurrency['value'];
 		$dbValues['tax_id'] = $method->tax_id;
 		$this->storePSPluginInternalData ($dbValues);
 
@@ -474,24 +475,20 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		$mb_data = JRequest::get ('post');
 
 		if (!isset($mb_data['transaction_id'])) {
-			//$this->logInfo (__FUNCTION__ . ' transaction_id not set: ' . $mb_data['transaction_id'], 'message');
 			return;
 		}
 
 		$order_number = $mb_data['transaction_id'];
 		if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber ($mb_data['transaction_id']))) {
-			$this->logInfo (__FUNCTION__ . ' Can\'t get VirtueMart order id', 'message');
 			return;
 		}
 
 		if (!($payment = $this->getDataByOrderId ($virtuemart_order_id))) {
-			$this->logInfo (__FUNCTION__ . ' Can\'t get payment type', 'message');
 			return;
 		}
 
 		$method = $this->getVmPluginMethod ($payment->virtuemart_paymentmethod_id);
 		if (!$this->selectedThisElement ($method->payment_element)) {
-			$this->logInfo (__FUNCTION__ . ' payment method not selected', 'message');
 			return FALSE;
 		}
 
@@ -589,9 +586,10 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 	protected function checkConditions ($cart, $method, $cart_prices) {
 
 		$this->convert_condition_amount($method);
-        $amount = $this->getCartAmount($cart_prices);
-        $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
+		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
+
+		$amount = $this->getCartAmount($cart_prices);
 		$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
 			OR
 			($method->min_amount <= $amount AND ($method->max_amount == 0)));
@@ -622,6 +620,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 
 		return FALSE;
 	}
+
 
 	/**
 	 * We must reimplement this triggers for joomla 1.7
@@ -797,7 +796,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 	 */
 	function plgVmDeclarePluginParamsPayment ($name, $id, &$data) {
 
-		return $this->declarePluginParams ('payment', $data);
+		return $this->declarePluginParams ('payment', $name, $id, $data);
 	}
 
 	function plgVmSetOnTablePluginParamsPayment ($name, $id, &$table) {

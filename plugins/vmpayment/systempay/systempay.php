@@ -20,7 +20,7 @@ defined ('_JEXEC') or die('Restricted access');
 if (!class_exists ('vmPSPlugin')) {
 	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 }
-if (JVM_VERSION > 1) {
+if (JVM_VERSION === 2) {
 	define('JPATH_VMPAYMENTPLUGIN_SYSTEMPAY', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'systempay');
 }
 else {
@@ -29,8 +29,6 @@ else {
 
 class plgVMPaymentSystempay extends vmPSPlugin {
 
-	// instance of class
-	public static $_this = FALSE;
 
 	function __construct (& $subject, $config) {
 		parent::__construct ($subject, $config);
@@ -611,7 +609,7 @@ class plgVMPaymentSystempay extends vmPSPlugin {
 		return $pkey;
 	}
 
-	function emptyCart ($session_id) {
+	function emptyCart ($session_id = NULL, $order_number = NULL) {
 		if ($session_id != NULL) {
 			$session = JFactory::getSession ();
 			$session->close ();

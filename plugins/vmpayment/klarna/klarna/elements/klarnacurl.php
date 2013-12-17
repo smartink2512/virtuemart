@@ -14,7 +14,7 @@ defined ('_JEXEC') or die('Restricted access');
  * other free or open source software licenses.
  */
 
-class JElementKlarnaCurl extends JFormField {
+class JElementKlarnaCurl extends JElement {
 
 	var $_name = 'klarnacurl';
 
@@ -24,7 +24,7 @@ class JElementKlarnaCurl extends JFormField {
 			return JTExt::_ ('VMPAYMENT_KLARNA_CURL_LIBRARY_NOT_INSTALLED');
 		}
 		else {
-			return JTExt::_ ('VMPAYMENT_KLARNA_CURL_LIBRARY_INSTALLED');
+			return "";
 		}
 	}
 

@@ -23,7 +23,7 @@ defined('JPATH_BASE') or die();
  *
  */
  
-class JElementPayzenMultiList extends JFormField
+class JElementPayzenMultiList extends JElement
 {
         /**
         * Element name
