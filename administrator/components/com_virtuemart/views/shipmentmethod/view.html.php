@@ -55,13 +55,9 @@ class VirtuemartViewShipmentmethod extends VmView {
 			// Get the payment XML.
 			$formFile	= JPath::clean( JPATH_PLUGINS.'/vmshipment/' . $shipment->shipment_element . '/' . $shipment->shipment_element . '.xml');
 			if (file_exists($formFile)){
-				$shipment->form = JForm::getInstance($shipment->payment_element, $formFile, array(),false, '//config');
-				if (!empty($shipment->form->xml )){
-					$shipment->params = $this->getParams($shipment->payment_params);
-					$shipment->form->bind($shipment);
-				} else {
-					$shipment->form = null;
-				}
+				$shipment->form = JForm::getInstance($shipment->shipment_element, $formFile, array(),false, '//config');
+				$shipment->params = $this->getParams($shipment->shipment_params);
+				$shipment->form->bind($shipment);
 			} else {
 				$shipment->form = null;
 			}
