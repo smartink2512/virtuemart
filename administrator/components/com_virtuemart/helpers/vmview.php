@@ -274,12 +274,13 @@ class VmView extends JView{
 					} else {
 						$img=$languagesByCode[$key]->image;
 					}
-						$image_flag=JPATH_SITE."/media/mod_languages/images/".$img.".gif";
+					$image_flag=JPATH_SITE."/media/mod_languages/images/".$img.".gif";
+					$image_flag_url= JURI::root()."/media/mod_languages/images/".$img.".gif";
 
 					if (!file_exists ($image_flag)) {
 						vmerror(JText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $image_flag,$joomlaLang['text'] ) );
 					} else {
-						$flagCss .="td.flag-".$key.",.flag-".$key."{background: url( ".$image_flag.") no-repeat 0 0; padding-left:20px !important;}\n";
+						$flagCss .="td.flag-".$key.",.flag-".$key."{background: url( ".$image_flag_url.") no-repeat 0 0; padding-left:20px !important;}\n";
 					}
 				}
 			}

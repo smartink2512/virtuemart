@@ -112,7 +112,7 @@ class VirtueMartViewCart extends VmView {
 			$totalInPaymentCurrency = $this->getTotalInPaymentCurrency();
 
 			$checkoutAdvertise =$this->getCheckoutAdvertise();
-			if (!$cart->_redirect and !VmConfig::get('use_as_catalog', 0)) {
+			if (!$cart->_inCheckOut and !VmConfig::get('use_as_catalog', 0)) {
 				$cart->checkout(false);
 			}
 
