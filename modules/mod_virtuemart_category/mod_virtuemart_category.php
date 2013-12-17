@@ -37,9 +37,8 @@ $moduleclass_sfx = $params->get('moduleclass_sfx','');
 $layout = $params->get('layout','default');
 $active_category_id = JRequest::getInt('virtuemart_category_id', '0');
 $vendorId = '1';
-		$cache = JFactory::getCache('com_virtuemart','callback');
-		$categories = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $category_id );
-// $categories = $categoryModel->getChildCategoryList($vendorId, $category_id);
+
+$categories = $categoryModel->getChildCategoryList($vendorId, $category_id);
 // We dont use image here
 //$categoryModel->addImages($categories);
 
@@ -47,9 +46,9 @@ if(empty($categories)) return false;
 
 
 foreach ($categories as $category) {
-
-		$category->childs = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $category->virtuemart_category_id );
-   // $category->childs = $categoryModel->getChildCategoryList($vendorId, $category->virtuemart_category_id) ;
+	//$category->childs = VirtueMartModelCategory::getChildCategoryList($vendorId, $category->virtuemart_category_id);
+	//$category->childs = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $category->virtuemart_category_id );
+   	$category->childs = $categoryModel->getChildCategoryList($vendorId, $category->virtuemart_category_id) ;
 	// No image used here
 	//$categoryModel->addImages($category->childs);
 }

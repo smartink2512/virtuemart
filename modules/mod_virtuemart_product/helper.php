@@ -24,11 +24,29 @@ JFactory::getLanguage ()->load ('com_virtuemart');
 if (!class_exists ('calculationHelper')) {
 	require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'calculationh.php');
 }
+	if (!class_exists ('CurrencyDisplay')) {
+		require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'currencydisplay.php');
+	}
+	if (!class_exists ('VirtueMartModelVendor')) {
+		require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models' . DS . 'vendor.php');
+	}
+	if (!class_exists ('VmImage')) {
+		require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'image.php');
+	}
+	if (!class_exists ('shopFunctionsF')) {
+		require(JPATH_SITE . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'shopfunctionsf.php');
+	}
+	if (!class_exists ('calculationHelper')) {
+		require(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'cart.php');
+	}
+	if (!class_exists ('VirtueMartModelProduct')) {
+		JLoader::import ('product', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models');
+	}
 
 
 class mod_virtuemart_product {
 
-	function addtocart ($product) {
+	static function addtocart ($product) {
 
 		if (!VmConfig::get ('use_as_catalog', 0)) {
 			$stockhandle = VmConfig::get ('stockhandle', 'none');
@@ -54,8 +72,10 @@ class mod_virtuemart_product {
 							<?php foreach ($product->customfieldsCart as $field) { ?>
 
 							<div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
-								<span class="product-fields-title"><b><?php echo $field->custom_title ?></b></span>
-								<?php echo JHTML::tooltip ($field->custom_tip, $field->custom_title, 'tooltip.png'); ?>
+								<?php if($field->show_title == 1) { ?>
+									<span class="product-fields-title"><b><?php echo $field->custom_title ?></b></span>
+									<?php echo JHTML::tooltip ($field->custom_tip, $field->custom_title, 'tooltip.png'); ?>
+								<?php } ?>
 								<span class="product-field-display"><?php echo $field->display ?></span>
 								<span class="product-field-desc"><?php echo $field->custom_field_desc ?></span>
 							</div>

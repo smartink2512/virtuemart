@@ -1,7 +1,7 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-//dump ($data,'mod cart');
+//dump ($cart,'mod cart');
 // Ajax is displayed in vm_cart_products
 // ALL THE DISPLAY IS Done by Ajax using "hiddencontainer" ?>
 
@@ -50,7 +50,7 @@ if ($show_product_list) {
 	</div>
 <?php } ?>
 <div class="total_products"><?php echo  $data->totalProductTxt ?></div>
-<div class="show_cart">
+<div class="show_cart" rel="nofollow">
 	<?php if ($data->totalProduct) echo  $data->cart_show; ?>
 </div>
 <div style="clear:both;"></div>

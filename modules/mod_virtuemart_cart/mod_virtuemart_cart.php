@@ -10,6 +10,11 @@ defined('_JEXEC') or  die( 'Direct Access to '.basename(__FILE__).' is not allow
 * www.virtuemart.net
 */
 
+$jsVars  = ' jQuery(document).ready(function(){
+	jQuery(".vmCartModule").productUpdate();
+
+});' ;
+
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
 
 VmConfig::loadConfig();
@@ -19,6 +24,7 @@ VmConfig::loadJLang('com_virtuemart', true);
 //This is strange we have the whole thing again in controllers/cart.php public function viewJS()
 if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 $cart = VirtueMartCart::getCart(false);
+
 $viewName = JRequest::getString('view',0);
 if($viewName=='cart'){
 	$checkAutomaticPS = true;
@@ -26,10 +32,8 @@ if($viewName=='cart'){
 	$checkAutomaticPS = false;
 }
 $data = $cart->prepareAjaxData($checkAutomaticPS);
-
-if (!class_exists('CurrencyDisplay'))
-	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-$currencyDisplay = CurrencyDisplay::getInstance();
+if (!class_exists('CurrencyDisplay')) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'currencydisplay.php');
+$currencyDisplay = CurrencyDisplay::getInstance( );
 
 vmJsApi::cssSite();
 
