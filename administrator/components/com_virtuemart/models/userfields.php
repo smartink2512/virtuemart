@@ -21,10 +21,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the helpers
-if(!class_exists('ParamHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'paramhelper.php');
-
 if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
-
 
 /**
  * Model class for user fields

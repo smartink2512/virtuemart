@@ -1312,6 +1312,7 @@ class vmRequest {
 				}
 				// Redirect to login screen.
 				$app = JFactory::getApplication();
+				$session->close();
 				$app->redirect(JRoute::_('index.php'), vmText::_($redirectMsg));
 				$app->close();
 				return false;

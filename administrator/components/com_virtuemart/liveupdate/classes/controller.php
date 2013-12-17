@@ -1,27 +1,21 @@
 <?php
 /**
  * @package LiveUpdate
- * @copyright Copyright (c)2010-2013 Nicholas K. Dionysopoulos / AkeebaBackup.com
+ * @copyright Copyright ©2011 Nicholas K. Dionysopoulos / AkeebaBackup.com
  * @license GNU LGPLv3 or later <http://www.gnu.org/copyleft/lesser.html>
  */
 
 defined('_JEXEC') or die();
 
-JLoader::import('joomla.application.component.controller');
-
-if(!class_exists('JoomlaCompatController')) {
-	if(interface_exists('JController')) {
-		abstract class JoomlaCompatController extends JControllerLegacy {}
-	} else {
-		class JoomlaCompatController extends JController {}
-	}
-}
+jimport('joomla.application.component.controller');
 
 /**
  * The Live Update MVC controller
  */
-class LiveUpdateController extends JoomlaCompatController
+class LiveUpdateController extends JController
 {
+	private $jversion = '15';
+
 	/**
 	 * Object contructor 
 	 * @param array $config
@@ -32,6 +26,18 @@ class LiveUpdateController extends JoomlaCompatController
 	{
 		parent::__construct();
 
+		// Do we have Joomla! 1.6?
+		if( version_compare( JVERSION, '1.6.0', 'ge' ) ) {
+			$this->jversion = '16';
+		}
+		
+		$basePath = dirname(__FILE__);
+		if($this->jversion == '15') {
+			$this->_basePath = $basePath;
+		} else {
+			$this->basePath = $basePath;
+		}
+		
 		$this->registerDefaultTask('overview');
 	}
 	
@@ -48,15 +54,6 @@ class LiveUpdateController extends JoomlaCompatController
 	 */
 	public function startupdate()
 	{
-		$updateInfo = LiveUpdate::getUpdateInformation();
-		if($updateInfo->stability != 'stable') {
-			$skipNag = JRequest::getBool('skipnag', false);
-			if(!$skipNag) {
-				$this->setRedirect('index.php?option='.JRequest::getCmd('option','').'&view='.JRequest::getCmd('view','liveupdate').'&task=nagscreen');
-				$this->redirect();
-			}
-		}
-		
 		$ftp = $this->setCredentialsFromRequest('ftp');
 		if($ftp === true) {
 			// The user needs to supply the FTP credentials
@@ -149,8 +146,10 @@ class LiveUpdateController extends JoomlaCompatController
 			$this->redirect();
 		} else {
 			// Installation successful. Show the installation message.
-			$cache = JFactory::getCache('mod_menu');
-			$cache->clean();				
+			if(version_compare(JVERSION,'1.6.0','ge')) {
+				$cache = JFactory::getCache('mod_menu');
+				$cache->clean();				
+			}
 			
 			$this->display();
 		}
@@ -173,7 +172,7 @@ class LiveUpdateController extends JoomlaCompatController
 	 * Displays the current view
 	 * @param bool $cachable Ignored!
 	 */
-	public final function display($cachable = false, $urlparams = false)
+	public final function display($cachable = false)
 	{
 		$viewLayout	= JRequest::getCmd( 'layout', 'default' );
 
@@ -184,7 +183,7 @@ class LiveUpdateController extends JoomlaCompatController
 		$view->setModel($model, true);
 
 		// Assign the FTP credentials from the request, or return TRUE if they are required
-		JLoader::import('joomla.client.helper');
+		jimport('joomla.client.helper');
 		$ftp	= $this->setCredentialsFromRequest('ftp');
 		$view->assignRef('ftp', $ftp);
 
@@ -201,7 +200,7 @@ class LiveUpdateController extends JoomlaCompatController
 		
 		if(is_null($view))
 		{
-			$basePath = $this->basePath;
+			$basePath = ($this->jversion == '15') ? $this->_basePath : $this->basePath;
 			$tPath = dirname(__FILE__).'/tmpl';
 			
 			require_once('view.php');
@@ -219,7 +218,7 @@ class LiveUpdateController extends JoomlaCompatController
 		{
 			require_once('model.php');
 			$model = new LiveUpdateModel();
-			$task = $this->task;
+			$task = ($this->jversion == '15') ? $this->_task : $this->task;
 			
 			$model->setState( 'task', $task );
 			
@@ -227,10 +226,9 @@ class LiveUpdateController extends JoomlaCompatController
 			$menu	= $app->getMenu();
 			if (is_object( $menu ))
 			{
-				$item = $menu->getActive();
-				if ($item)
+				if ($item = $menu->getActive())
 				{
-					$params	= $menu->getParams($item->id);
+					$params	=& $menu->getParams($item->id);
 					// Set Default State Data
 					$model->setState( 'parameters.menu', $params );
 				}
@@ -244,7 +242,7 @@ class LiveUpdateController extends JoomlaCompatController
 	private function setCredentialsFromRequest($client)
 	{
 		// Determine wether FTP credentials have been passed along with the current request
-		JLoader::import('joomla.client.helper');
+		jimport('joomla.client.helper');
 		$user = JRequest::getString('username', null, 'GET', JREQUEST_ALLOWRAW);
 		$pass = JRequest::getString('password', null, 'GET', JREQUEST_ALLOWRAW);
 		if ($user != '' && $pass != '')
@@ -253,7 +251,7 @@ class LiveUpdateController extends JoomlaCompatController
 			if (JClientHelper::setCredentials($client, $user, $pass)) {
 				$return = false;
 			} else {
-				$return = JError::raiseWarning('SOME_ERROR_CODE', 'JClientHelper::setCredentialsFromRequest failed');
+				$return =& JError::raiseWarning('SOME_ERROR_CODE', 'JClientHelper::setCredentialsFromRequest failed');
 			}
 		}
 		else
