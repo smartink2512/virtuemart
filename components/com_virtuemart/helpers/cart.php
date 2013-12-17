@@ -625,10 +625,12 @@ class VirtueMartCart {
 	function checkout($redirect=true) {
 
 		$this->checkoutData($redirect);
+
 		if ($this->_dataValidated && $redirect) {
 			$mainframe = JFactory::getApplication();
 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
 		}
+
 	}
 
 	private function redirecter($relUrl,$redirectMsg){
@@ -636,6 +638,7 @@ class VirtueMartCart {
 		$this->_dataValidated = false;
 		$app = JFactory::getApplication();
 		if($this->_redirect and !$this->_redirect_disabled){
+
 			$this->setCartIntoSession();
 			$app->redirect(JRoute::_($relUrl,$this->useXHTML,$this->useSSL), $redirectMsg);
 		} else {
@@ -723,7 +726,7 @@ class VirtueMartCart {
 
 			$agreed = $userFieldsModel->getUserfield('agreed','name');
 
-			if((!empty($agreed->required) and empty($agreed->default) and $validUserDataBT!=-1) or $redirect or $this->_dataValidated){
+			if(!empty($agreed->required) and $agreed->default!=='' and $validUserDataBT!==-1){
 				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				$this->tosAccepted = false;
 				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
@@ -735,12 +738,12 @@ class VirtueMartCart {
 			}
 		}
 
-		if (!$validUserDataBT or ($redirect and $validUserDataBT!==true)) {
+		if ($validUserDataBT!==true) {	//Important, we can have as result -1,false and true.
 			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , '');
 		}
 
 		if($this->STsameAsBT!==0){
-			if($validUserDataBT!=-1){
+			if($validUserDataBT!==-1){
 				$this->ST = $this->BT;
 			} else {
 				$this->ST = 0;
@@ -758,7 +761,7 @@ class VirtueMartCart {
 			}
 			//Only when there is an ST data, test if all necessary fields are filled
 			$validUserDataST = self::validateUserData('ST');
-			if (!$validUserDataST or ($redirect and $validUserDataST!==true)) {
+			if ($validUserDataST!==true) {
 				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST' , '');
 			}
 
@@ -848,6 +851,7 @@ class VirtueMartCart {
 		if($this->_blockConfirm){
 			return $this->redirecter('index.php?option=com_virtuemart&view=cart','');
 		} else {
+
 			$this->_dataValidated = true;
 			$this->setCartIntoSession();
 

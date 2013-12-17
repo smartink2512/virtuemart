@@ -93,7 +93,7 @@ class VirtueMartViewCart extends VmView {
 
 			$this->prepareContinueLink();
 
-			if (!$this->cart->_redirect and !VmConfig::get('use_as_catalog', 0)) {
+			if (!$this->cart->_inCheckOut and !VmConfig::get('use_as_catalog', 0)) {
 				$this->cart->checkout(false);
 			} else if(!VmConfig::get('use_as_catalog', 0)) {
 				$this->cart->prepareCartData();
