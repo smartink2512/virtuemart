@@ -175,6 +175,7 @@ class VirtuemartControllerRatings extends VmController {
 			$msg = ($error).'<br />';
 		}
 
+
 		$redir = $this->redirectPath;
 		if($apply){
 			$redir = 'index.php?option=com_virtuemart&view=ratings&task=edit_review&virtuemart_rating_review_id='.$id;

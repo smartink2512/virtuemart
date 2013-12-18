@@ -92,7 +92,7 @@ defined('_JEXEC') or die('Restricted access');?>
 				 </span>
 		</td>
 		<td>
-			<?php echo $this->orderStatusModel->renderOSList(VmConfig::get('cp_rm',array('C')),'cp_rm',TRUE); ?>
+			<?php echo $this->orderStatusModel->renderOSList(VmConfig::get('cp_rm',array('C')),'cp_rm',TRUE) ; ?>
 		</td>
 	</tr>
 
