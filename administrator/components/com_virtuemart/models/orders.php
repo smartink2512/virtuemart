@@ -588,7 +588,11 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$data->load($virtuemart_order_id);
 		$old_order_status = $data->order_status;
 		$data->bind($inputOrder);
-		if 	(  VmConfig::get('cp_rm',array('C'))) {
+
+		$cp_rm = VmConfig::get('cp_rm',array('C'));
+		if(!is_array($cp_rm)) $cp_rm = array($cp_rm);
+
+		if ( in_array((string) $data->order_status,$cp_rm) ){
 			if (!empty($data->coupon_code)) {
 				if (!class_exists('CouponHelper'))
 					require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
