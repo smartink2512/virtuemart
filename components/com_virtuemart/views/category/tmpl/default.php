@@ -156,7 +156,7 @@ if (!empty($this->keyword)) {
 		<br/>
 		<?php echo $this->searchcustomvalues ?>
 		<input name="keyword" class="inputbox" type="text" size="20" value="<?php echo $this->keyword ?>"/>
-		<input type="submit" value="<?php echo JText::_ ('COM_VIRTUEMART_SEARCH') ?>" class="button" onclick="this.form.keyword.focus();"/>
+		<input type="submit" value="<?php echo vmText::_ ('COM_VIRTUEMART_SEARCH') ?>" class="button" onclick="this.form.keyword.focus();"/>
 	</div>
 	<input type="hidden" name="search" value="true"/>
 	<input type="hidden" name="view" value="category"/>
@@ -242,14 +242,14 @@ if (!empty($this->products)) {
 
 						if (empty($product->rating)) {
 							?>
-							<span class="vote"><?php echo JText::_('COM_VIRTUEMART_RATING') . ' ' . JText::_('COM_VIRTUEMART_UNRATED') ?></span>
+							<span class="vote"><?php echo vmText::_('COM_VIRTUEMART_RATING') . ' ' . vmText::_('COM_VIRTUEMART_UNRATED') ?></span>
 						<?php
 						} else {
 							$ratingwidth = $product->rating * 12; //I don't use round as percetntage with works perfect, as for me
 							?>
 							<span class="vote">
-                                <?php echo JText::_('COM_VIRTUEMART_RATING') . ' ' . round($product->rating) . '/' . $maxrating; ?><br/>
-                                <span title=" <?php echo (JText::_("COM_VIRTUEMART_RATING_TITLE") . round($product->rating) . '/' . $maxrating) ?>" class="category-ratingbox" style="display:inline-block;">
+                                <?php echo vmText::_('COM_VIRTUEMART_RATING') . ' ' . round($product->rating) . '/' . $maxrating; ?><br/>
+                                <span title=" <?php echo (vmText::_("COM_VIRTUEMART_RATING_TITLE") . round($product->rating) . '/' . $maxrating) ?>" class="category-ratingbox" style="display:inline-block;">
                                     <span class="stars-orange" style="width:<?php echo $ratingwidth.'px'; ?>">
                                     </span>
                                 </span>
@@ -261,7 +261,7 @@ if (!empty($this->products)) {
 						<!-- 						if (!VmConfig::get('use_as_catalog') and !(VmConfig::get('stockhandle','none')=='none')){?> -->
 						<div class="paddingtop8">
 							<span class="vmicon vm2-<?php echo $product->stock->stock_level ?>" title="<?php echo $product->stock->stock_tip ?>"></span>
-							<span class="stock-level"><?php echo JText::_ ('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_TITLE_TIP') ?></span>
+							<span class="stock-level"><?php echo vmText::_ ('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_TITLE_TIP') ?></span>
 						</div>
 					<?php } ?>
 				</div>
@@ -282,7 +282,7 @@ if (!empty($this->products)) {
 						<?php
 						if ($this->show_prices == '1') {
 							if ($product->prices['salesPrice']<=0 and VmConfig::get ('askprice', 1) and  !$product->images[0]->file_is_downloadable) {
-								echo JText::_ ('COM_VIRTUEMART_PRODUCT_ASKPRICE');
+								echo vmText::_ ('COM_VIRTUEMART_PRODUCT_ASKPRICE');
 							}
 							//todo add config settings
 							if ($this->showBasePrice) {
@@ -304,7 +304,7 @@ if (!empty($this->products)) {
 							}
 							echo $this->currency->createPriceDiv ('discountAmount', 'COM_VIRTUEMART_PRODUCT_DISCOUNT_AMOUNT', $product->prices);
 							echo $this->currency->createPriceDiv ('taxAmount', 'COM_VIRTUEMART_PRODUCT_TAX_AMOUNT', $product->prices);
-							$unitPriceDescription = JText::sprintf ('COM_VIRTUEMART_PRODUCT_UNITPRICE', $product->product_unit);
+							$unitPriceDescription = vmText::sprintf ('COM_VIRTUEMART_PRODUCT_UNITPRICE', $product->product_unit);
 							echo $this->currency->createPriceDiv ('unitPrice', $unitPriceDescription, $product->prices);
 						} ?>
 
@@ -312,7 +312,7 @@ if (!empty($this->products)) {
 
 					<p>
 						<?php // Product Details Button
-						echo JHTML::link ($product->link, JText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS'), array('title' => $product->product_name, 'class' => 'product-details'));
+						echo JHTML::link ($product->link, vmText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS'), array('title' => $product->product_name, 'class' => 'product-details'));
 						?>
 					</p>
 
@@ -349,7 +349,7 @@ if (!empty($this->products)) {
 
 	<?php
 } elseif ($this->search !== NULL) {
-	echo JText::_ ('COM_VIRTUEMART_NO_RESULT') . ($this->keyword ? ' : (' . $this->keyword . ')' : '');
+	echo vmText::_ ('COM_VIRTUEMART_NO_RESULT') . ($this->keyword ? ' : (' . $this->keyword . ')' : '');
 }
 ?>
 </div><!-- end browse-view -->

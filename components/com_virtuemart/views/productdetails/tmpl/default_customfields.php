@@ -30,14 +30,14 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 			if ($field->display) {
 	    ?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
 		    <?php if ($field->custom_title != $custom_title && $field->show_title) { ?>
-			    <span class="product-fields-title" ><?php echo JText::_($field->custom_title); ?></span>
+			    <span class="product-fields-title" ><?php echo vmText::_($field->custom_title); ?></span>
 			    <?php
 			    if ($field->custom_tip)
-				echo JHTML::tooltip($field->custom_tip, JText::_($field->custom_title), 'tooltip.png');
+				echo JHTML::tooltip($field->custom_tip, vmText::_($field->custom_title), 'tooltip.png');
 			}
 			?>
 	    	    <span class="product-field-display"><?php echo $field->display ?></span>
-	    	    <span class="product-field-desc"><?php echo jText::_($field->custom_desc) ?></span>
+	    	    <span class="product-field-desc"><?php echo vmText::_($field->custom_desc) ?></span>
 	    	</div>
 		    <?php
 		    $custom_title = $field->custom_title;

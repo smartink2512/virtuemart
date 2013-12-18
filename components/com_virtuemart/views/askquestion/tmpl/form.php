@@ -33,12 +33,12 @@ $document->addScriptDeclaration('
 ');
 /* Let's see if we found the product */
 if (empty ( $this->product )) {
-	echo JText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
+	echo vmText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
 	echo '<br /><br />  ' . $this->continue_link_html;
 } else { ?>
 
 <div class="ask-a-question-view">
-	<h1><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')  ?></h1>
+	<h1><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')  ?></h1>
 
 	<div class="product-summary">
 		<div class="width70 floatleft">
@@ -65,23 +65,23 @@ if (empty ( $this->product )) {
 
 		<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component', FALSE) ; ?>" name="askform" id="askform">
 
-			<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_NAME')  ?> : <input type="text" class="validate[required,minSize[4],maxSize[64]]" value="<?php echo $this->user->name ?>" name="name" id="name" size="30"  validation="required name"/></label>
+			<label><?php echo vmText::_('COM_VIRTUEMART_USER_FORM_NAME')  ?> : <input type="text" class="validate[required,minSize[4],maxSize[64]]" value="<?php echo $this->user->name ?>" name="name" id="name" size="30"  validation="required name"/></label>
 			<br />
-			<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" class="validate[required,custom[email]]" value="<?php echo $this->user->email ?>" name="email" id="email" size="30"  validation="required email"/></label>
+			<label><?php echo vmText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" class="validate[required,custom[email]]" value="<?php echo $this->user->email ?>" name="email" id="email" size="30"  validation="required email"/></label>
 			<br/>
 			<label>
 				<?php
-				$ask_comment = JText::sprintf('COM_VIRTUEMART_ASK_COMMENT', $min, $max);
+				$ask_comment = vmText::sprintf('COM_VIRTUEMART_ASK_COMMENT', $min, $max);
 				echo $ask_comment;
 				?>
 				<br />
 				<textarea title="<?php echo $ask_comment ?>" class="validate[required,minSize[<?php echo $min ?>],maxSize[<?php echo $max ?>]] field" id="comment" name="comment" rows="10"></textarea>
 			</label>
 			<div class="submit">
-				<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" />
+				<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo vmText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" value="<?php echo vmText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" />
 
 				<div class="width50 floatright right paddingtop">
-					<?php echo JText::_('COM_VIRTUEMART_ASK_COUNT')  ?>
+					<?php echo vmText::_('COM_VIRTUEMART_ASK_COUNT')  ?>
 					<input type="text" value="0" size="4" class="counter" id="counter" name="counter" maxlength="4" readonly="readonly" />
 				</div>
 			</div>

@@ -50,18 +50,18 @@ class VirtuemartViewOrders extends VmView {
 		$this->assignRef('format', $format);
 
 		if($format=='pdf'){
-			$document->setTitle( JText::_('COM_VIRTUEMART_INVOICE') );
+			$document->setTitle( vmText::_('COM_VIRTUEMART_INVOICE') );
 
 			//PDF needs more RAM than usual
 			VmConfig::ensureMemoryLimit(96);
 
 		} else {
 		    if ($layoutName == 'details') {
-			$document->setTitle( JText::_('COM_VIRTUEMART_ACC_ORDER_INFO') );
-			$pathway->additem(JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'));
+			$document->setTitle( vmText::_('COM_VIRTUEMART_ACC_ORDER_INFO') );
+			$pathway->additem(vmText::_('COM_VIRTUEMART_ACC_ORDER_INFO'));
 		    } else {
-			$document->setTitle( JText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE') );
-			$pathway->additem(JText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE'));
+			$document->setTitle( vmText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE') );
+			$pathway->additem(vmText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE'));
 		    }
 		}
 
@@ -77,7 +77,7 @@ class VirtuemartViewOrders extends VmView {
 			$orderDetails = $orderModel ->getMyOrderDetails();
 
 			if(!$orderDetails or empty($orderDetails['details'])){
-				echo JText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
+				echo vmText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
 				return;
 			}
 
@@ -217,7 +217,7 @@ class VirtuemartViewOrders extends VmView {
 		$_orderstatuses = $orderStatusModel->getOrderStatusList();
 		$orderstatuses = array();
 		foreach ($_orderstatuses as $_ordstat) {
-			$orderstatuses[$_ordstat->order_status_code] = JText::_($_ordstat->order_status_name);
+			$orderstatuses[$_ordstat->order_status_code] = vmText::_($_ordstat->order_status_name);
 		}
 
 

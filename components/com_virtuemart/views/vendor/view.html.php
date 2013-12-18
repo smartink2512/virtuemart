@@ -57,8 +57,8 @@ class VirtuemartViewVendor extends VmView {
 
 // 		if ($layoutName=='default') {
 		if (empty($virtuemart_vendor_id)) {
-			$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_LIST') );
-			$pathway->addItem(JText::_('COM_VIRTUEMART_VENDOR_LIST'));
+			$document->setTitle( vmText::_('COM_VIRTUEMART_VENDOR_LIST') );
+			$pathway->addItem(vmText::_('COM_VIRTUEMART_VENDOR_LIST'));
 
 			$vendors = $model->getVendors();
 			$model->addImages($vendors);
@@ -87,25 +87,25 @@ class VirtuemartViewVendor extends VmView {
 			//$this->assignRef('userFields', $userFields);
 
 			if ($layoutName=='tos') {
-				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_TOS') );
-				$pathway->addItem(JText::_('COM_VIRTUEMART_VENDOR_TOS'));
+				$document->setTitle( vmText::_('COM_VIRTUEMART_VENDOR_TOS') );
+				$pathway->addItem(vmText::_('COM_VIRTUEMART_VENDOR_TOS'));
 			}
 			elseif ($layoutName=='contact') {
 				$user = JFactory::getUser();
-				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_CONTACT') );
-				$pathway->addItem(JText::_('COM_VIRTUEMART_VENDOR_CONTACT'));
+				$document->setTitle( vmText::_('COM_VIRTUEMART_VENDOR_CONTACT') );
+				$pathway->addItem(vmText::_('COM_VIRTUEMART_VENDOR_CONTACT'));
 				$this->assignRef('user', $user);
 
 			} else {
-				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_DETAILS') );
-				$pathway->addItem(JText::_('COM_VIRTUEMART_VENDOR_DETAILS'));
+				$document->setTitle( vmText::_('COM_VIRTUEMART_VENDOR_DETAILS') );
+				$pathway->addItem(vmText::_('COM_VIRTUEMART_VENDOR_DETAILS'));
 				$this->setLayout('details');
 			}
 
 			$linkdetails = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=details&virtuemart_vendor_id=' .
-				$virtuemart_vendor_id, FALSE).'">'.JText::_('COM_VIRTUEMART_VENDOR_DETAILS').'</a>';
-			$linkcontact = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=contact&virtuemart_vendor_id=' . $virtuemart_vendor_id, FALSE).'">'.JText::_('COM_VIRTUEMART_VENDOR_CONTACT').'</a>';
-			$linktos = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $virtuemart_vendor_id, FALSE).'">'.JText::_('COM_VIRTUEMART_VENDOR_TOS').'</a>';
+				$virtuemart_vendor_id, FALSE).'">'.vmText::_('COM_VIRTUEMART_VENDOR_DETAILS').'</a>';
+			$linkcontact = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=contact&virtuemart_vendor_id=' . $virtuemart_vendor_id, FALSE).'">'.vmText::_('COM_VIRTUEMART_VENDOR_CONTACT').'</a>';
+			$linktos = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $virtuemart_vendor_id, FALSE).'">'.vmText::_('COM_VIRTUEMART_VENDOR_TOS').'</a>';
 
 
 			//$this->assignRef('lineSeparator', $lineSeparator);
@@ -130,7 +130,7 @@ class VirtuemartViewVendor extends VmView {
 		$this->vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 		// in this particular case, overwrite the value for fix the recipient name
 		$this->vendor->vendor_name= $this->user['name'];
-		$this->subject = JText::_('COM_VIRTUEMART_VENDOR_CONTACT') .' '.$this->user['name'];
+		$this->subject = vmText::_('COM_VIRTUEMART_VENDOR_CONTACT') .' '.$this->user['name'];
 		$this->vendorEmail= $this->user['email'];
 		//$this->vendorName= $this->user['email'];
 		if (VmConfig::get('order_mail_html')) {

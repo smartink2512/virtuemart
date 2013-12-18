@@ -21,10 +21,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-<h1><?php echo JText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE'); ?></h1>
+<h1><?php echo vmText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE'); ?></h1>
 <?php
 if (count($this->orderlist) == 0) {
-	//echo JText::_('COM_VIRTUEMART_ACC_NO_ORDER');
+	//echo vmText::_('COM_VIRTUEMART_ACC_NO_ORDER');
 	 echo shopFunctionsF::getLoginForm(false,true);
 } else {
  ?>
@@ -33,19 +33,19 @@ if (count($this->orderlist) == 0) {
 	<thead>
 	<tr>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_ORDER_NUMBER'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_ORDER_LIST_ORDER_NUMBER'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_CDATE'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_ORDER_LIST_CDATE'); ?>
 		</th>
 		<!--th>
-			<?php //echo JText::_('COM_VIRTUEMART_ORDER_LIST_MDATE'); ?>
+			<?php //echo vmText::_('COM_VIRTUEMART_ORDER_LIST_MDATE'); ?>
 		</th -->
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_STATUS'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_ORDER_LIST_STATUS'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_TOTAL'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_ORDER_LIST_TOTAL'); ?>
 		</th>
 	</thead>
 	<?php

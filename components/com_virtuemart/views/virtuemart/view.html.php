@@ -131,7 +131,7 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		//Todo this may not work everytime as expected, because the error must be set in the redirect links.
 		if(!empty($error)){
-			$document->setTitle(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND').JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name));
+			$document->setTitle(vmText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND').vmText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name));
 		} else {
 
 			if(empty($vendor->customtitle)){
@@ -142,11 +142,11 @@ class VirtueMartViewVirtueMart extends VmView {
 				if ($menu){
 					$menuTitle = $menu->params->get('page_title');
 					if(empty($menuTitle)) {
-						$menuTitle = JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name);
+						$menuTitle = vmText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name);
 					}
 					$document->setTitle($menuTitle);
 				} else {
-					$title = JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name);
+					$title = vmText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name);
 					$document->setTitle($title);
 				}
 			} else {

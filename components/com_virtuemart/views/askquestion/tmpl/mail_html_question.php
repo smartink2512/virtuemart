@@ -29,7 +29,7 @@ defined('_JEXEC') or die('');
 			    <tr>
 				<td >
 
-				    <?php echo JText::sprintf('COM_VIRTUEMART_WELCOME_VENDOR', $this->vendor->vendor_store_name); ?>
+				    <?php echo vmText::sprintf('COM_VIRTUEMART_WELCOME_VENDOR', $this->vendor->vendor_store_name); ?>
 				    <br />
 				</td>
 			    </tr>
@@ -37,20 +37,20 @@ defined('_JEXEC') or die('');
 
 			<table class="html-email" cellspacing="0" cellpadding="0" border="0" width="100%">  <tr >
 				<th width="100%">
-				<?php echo JText::_('COM_VIRTUEMART_QUESTION_ABOUT').' ' ?>
+				<?php echo vmText::_('COM_VIRTUEMART_QUESTION_ABOUT').' ' ?>
 					<?php
 					$menuItemID = shopFunctionsF::getMenuItemId(JFactory::getLanguage()->getTag());
 					$product_link = JURI::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $this->product->virtuemart_category_id .
 									'&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&Itemid=' . $menuItemID;
 					?>
 					<a href="<?php echo $product_link ?>"><?php echo $this->product->product_name ?></a>
-					<?php if ($this->product->product_sku) echo ' ('.JText::_('COM_VIRTUEMART_PRODUCT_SKU').' '.$this->product->product_sku .')' ; ?>
+					<?php if ($this->product->product_sku) echo ' ('.vmText::_('COM_VIRTUEMART_PRODUCT_SKU').' '.$this->product->product_sku .')' ; ?>
 				</th>
 			    </tr>
 			    <tr>
 				<td valign="top" width="100%">
 				    <?php
-				    echo JText::sprintf('COM_VIRTUEMART_QUESTION_MAIL_FROM', $this->user['name'], $this->user['email']) . "<br />";
+				    echo vmText::sprintf('COM_VIRTUEMART_QUESTION_MAIL_FROM', $this->user['name'], $this->user['email']) . "<br />";
 				    echo $this->comment. "<br />";
 				    ?>
 				</td>

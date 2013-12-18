@@ -87,7 +87,7 @@ class VirtueMartControllerCart extends JController {
 	public function add() {
 		$mainframe = JFactory::getApplication();
 		if (VmConfig::get('use_as_catalog', 0)) {
-			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_ADDED_SUCCESSFULLY');
+			$msg = vmText::_('COM_VIRTUEMART_PRODUCT_NOT_ADDED_SUCCESSFULLY');
 			$type = 'error';
 			$mainframe->redirect('index.php', $msg, $type);
 		}
@@ -96,10 +96,10 @@ class VirtueMartControllerCart extends JController {
 			$virtuemart_product_ids = VmRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
 			$success = true;
 			if ($cart->add($virtuemart_product_ids,$success)) {
-				$msg = JText::_('COM_VIRTUEMART_PRODUCT_ADDED_SUCCESSFULLY');
+				$msg = vmText::_('COM_VIRTUEMART_PRODUCT_ADDED_SUCCESSFULLY');
 				$type = '';
 			} else {
-				$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_ADDED_SUCCESSFULLY');
+				$msg = vmText::_('COM_VIRTUEMART_PRODUCT_NOT_ADDED_SUCCESSFULLY');
 				$type = 'error';
 			}
 
@@ -134,7 +134,7 @@ class VirtueMartControllerCart extends JController {
 			//vmdebug('vmRequest get ',$virtuemart_product_ids);
 			//VmConfig::$echoDebug=false;jExit();
 			$view = $this->getView ('cart', 'json');
-			$errorMsg = 0;//JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
+			$errorMsg = 0;//vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
 
 			$product = $cart->add($virtuemart_product_ids, $errorMsg );
 			if ($product) {
@@ -150,8 +150,8 @@ class VirtueMartControllerCart extends JController {
 			$view->display ();
 			$this->json->msg = ob_get_clean();
 		} else {
-			$this->json->msg = '<a href="' . JRoute::_('index.php?option=com_virtuemart', FALSE) . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
-			$this->json->msg .= '<p>' . JText::_('COM_VIRTUEMART_MINICART_ERROR') . '</p>';
+			$this->json->msg = '<a href="' . JRoute::_('index.php?option=com_virtuemart', FALSE) . '" >' . vmText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
+			$this->json->msg .= '<p>' . vmText::_('COM_VIRTUEMART_MINICART_ERROR') . '</p>';
 			$this->json->stat = '0';
 		}
 		echo json_encode($this->json);
@@ -345,9 +345,9 @@ class VirtueMartControllerCart extends JController {
 		/* Load the cart helper */
 		$cart = VirtueMartCart::getCart();
 		if ($cart->removeProductCart())
-		$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_REMOVED_SUCCESSFULLY'));
+		$mainframe->enqueueMessage(vmText::_('COM_VIRTUEMART_PRODUCT_REMOVED_SUCCESSFULLY'));
 		else
-		$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_REMOVED_SUCCESSFULLY'), 'error');
+		$mainframe->enqueueMessage(vmText::_('COM_VIRTUEMART_PRODUCT_NOT_REMOVED_SUCCESSFULLY'), 'error');
 
 		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
 	}
@@ -363,9 +363,9 @@ class VirtueMartControllerCart extends JController {
 		/* Load the cart helper */
 		$cartModel = VirtueMartCart::getCart();
 		if ($cartModel->updateProductCart())
-		$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_UPDATED_SUCCESSFULLY'));
+		$mainframe->enqueueMessage(vmText::_('COM_VIRTUEMART_PRODUCT_UPDATED_SUCCESSFULLY'));
 		else
-		$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_UPDATED_SUCCESSFULLY'), 'error');
+		$mainframe->enqueueMessage(vmText::_('COM_VIRTUEMART_PRODUCT_NOT_UPDATED_SUCCESSFULLY'), 'error');
 
 		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
 	}
@@ -382,7 +382,7 @@ class VirtueMartControllerCart extends JController {
 		//check for permissions
 		if(!JFactory::getUser(JFactory::getSession()->get('vmAdminID'))->authorise('core.admin', 'com_virtuemart') || !VmConfig::get ('oncheckout_change_shopper')){
 			$mainframe = JFactory::getApplication();
-			$mainframe->enqueueMessage(JText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $newUser->name .' ('.$newUser->username.')'), 'error');
+			$mainframe->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $newUser->name .' ('.$newUser->username.')'), 'error');
 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
 		}
 
@@ -408,7 +408,7 @@ class VirtueMartControllerCart extends JController {
 		$cart->saveAddressInCart($data, 'BT');
 
 		$mainframe = JFactory::getApplication();
-		$mainframe->enqueueMessage(JText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY', $newUser->name .' ('.$newUser->username.')'), 'info');
+		$mainframe->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGED_SHOPPER_SUCCESSFULLY', $newUser->name .' ('.$newUser->username.')'), 'info');
 		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
 	}
 

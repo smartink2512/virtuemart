@@ -90,7 +90,7 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 			$this->css = $this->vendor->vendor_letter_css;
 			
 			// set document information
-			$this->SetCreator(JText::_('COM_VIRTUEMART_PDF_CREATOR'));
+			$this->SetCreator(vmText::_('COM_VIRTUEMART_PDF_CREATOR'));
 			if(empty($this->vendor->images[0])){
 				vmError('Vendor image given path empty ');
 			} else if(empty($this->vendor->images[0]->file_url_folder) or empty($this->vendor->images[0]->file_name) or empty($this->vendor->images[0]->file_extension) ){

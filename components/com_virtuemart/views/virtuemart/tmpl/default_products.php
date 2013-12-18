@@ -13,7 +13,7 @@ $cellwidth = ' width'.floor ( 100 / $products_per_row );
 $col = 1;
 $nb = 1;
 
-$productTitle = JText::_('COM_VIRTUEMART_'.$type.'_PRODUCT')
+$productTitle = vmText::_('COM_VIRTUEMART_'.$type.'_PRODUCT')
 
 ?>
 
@@ -65,8 +65,8 @@ foreach ( $productList as $product ) {
 					<?php
 					if (VmConfig::get ( 'show_prices' ) == '1') {
 					//				if( $featProduct->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
-					//						echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE_PER_UNIT').' ('.$featProduct->product_unit."):</strong>";
-					//					} else echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE'). ": </strong>";
+					//						echo "<strong>". vmText::_('COM_VIRTUEMART_CART_PRICE_PER_UNIT').' ('.$featProduct->product_unit."):</strong>";
+					//					} else echo "<strong>". vmText::_('COM_VIRTUEMART_CART_PRICE'). ": </strong>";
 
 					if ($this->showBasePrice) {
 						echo $this->currency->createPriceDiv( 'basePrice', 'COM_VIRTUEMART_PRODUCT_BASEPRICE', $product->prices );
@@ -92,7 +92,7 @@ foreach ( $productList as $product ) {
 
 					<div>
 					<?php // Product Details Button
-					echo JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id , FALSE), JText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $product->product_name, 'class' => 'product-details' ) );
+					echo JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $product->virtuemart_product_id . '&virtuemart_category_id=' . $product->virtuemart_category_id , FALSE), vmText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $product->product_name, 'class' => 'product-details' ) );
 					?>
 					</div>
 			</div>

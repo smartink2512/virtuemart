@@ -51,7 +51,7 @@ defined('_JEXEC') or die('');
 	</tr>
 	<tr>
 		<td colspan="2">
-			<strong><?php echo JText::sprintf ('COM_VIRTUEMART_MAIL_SHOPPER_NAME', $this->user); ?></strong><br/>
+			<strong><?php echo vmText::sprintf ('COM_VIRTUEMART_MAIL_SHOPPER_NAME', $this->user); ?></strong><br/>
 		</td>
 	</tr>
 </table>
@@ -64,7 +64,7 @@ defined('_JEXEC') or die('');
 						<td >
 							<?php
 							if(!empty($this->mailbody)) echo nl2br($this->mailbody);
-							else echo JText::sprintf('COM_VIRTUEMART_CART_NOTIFY_MAIL_HTML', $this->productName,$this->link);
+							else echo vmText::sprintf('COM_VIRTUEMART_CART_NOTIFY_MAIL_HTML', $this->productName,$this->link);
 							?>
 						</td>
 					</tr>
@@ -80,7 +80,7 @@ defined('_JEXEC') or die('');
 	/* GENERAL FOOTER FOR ALL MAILS */
 		$link = JURI::root().'index.php?option=com_virtuemart';
 
-		echo JText::_('COM_VIRTUEMART_MAIL_FOOTER' ) . '<a href="'.$link.'">'.$this->vendor->vendor_name.'</a>';
+		echo vmText::_('COM_VIRTUEMART_MAIL_FOOTER' ) . '<a href="'.$link.'">'.$this->vendor->vendor_name.'</a>';
 	echo '<br/>';
 	echo $this->vendor->vendor_name .'<br />'.$this->vendor->vendor_phone .' '.$this->vendor->vendor_store_name .'<br /> '.$this->vendor->vendor_store_desc.'<br />'.$this->vendor->vendor_legal_info;
 	?>

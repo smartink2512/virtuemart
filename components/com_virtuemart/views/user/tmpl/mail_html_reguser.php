@@ -46,11 +46,11 @@ $li = '<br />';
 			    <tr>
 				<td >
 
-				    <?php echo JText::sprintf('COM_VIRTUEMART_WELCOME_USER', $this->user->name); ?>
+				    <?php echo vmText::sprintf('COM_VIRTUEMART_WELCOME_USER', $this->user->name); ?>
 				    <br />
 				    <?php
 				    if (!empty($this->activationLink)) {
-					$activationLink = '<a class="default" href="' . JURI::root() . $this->activationLink . '">' . JText::_('COM_VIRTUEMART_LINK_ACTIVATE_ACCOUNT') . '</a>';
+					$activationLink = '<a class="default" href="' . JURI::root() . $this->activationLink . '">' . vmText::_('COM_VIRTUEMART_LINK_ACTIVATE_ACCOUNT') . '</a>';
 					echo $li;
 					echo $activationLink . $li;
 				    }
@@ -62,17 +62,17 @@ $li = '<br />';
 			<table class="html-email" cellspacing="0" cellpadding="0" border="0" width="100%">
 			    <tr>
 				<th width="100%">
-				    <?php echo JText::_('COM_VIRTUEMART_SHOPPER_REGISTRATION_DATA') ?>
+				    <?php echo vmText::_('COM_VIRTUEMART_SHOPPER_REGISTRATION_DATA') ?>
 				</th>
 
 			    </tr>
 			    <tr>
 				<td valign="top" width="100%">
 				    <?php
-				    echo JText::_('COM_VIRTUEMART_YOUR_LOGINAME')   . $this->user->username . $li;
-				    echo JText::_('COM_VIRTUEMART_YOUR_DISPLAYED_NAME')   . $this->user->name . $li;
-				    echo JText::_('COM_VIRTUEMART_YOUR_PASSWORD')  . $this->user->password_clear . $li. $li;
-				    echo JText::_('COM_VIRTUEMART_YOUR_ADDRESS')  . $li;
+				    echo vmText::_('COM_VIRTUEMART_YOUR_LOGINAME')   . $this->user->username . $li;
+				    echo vmText::_('COM_VIRTUEMART_YOUR_DISPLAYED_NAME')   . $this->user->name . $li;
+				    echo vmText::_('COM_VIRTUEMART_YOUR_PASSWORD')  . $this->user->password_clear . $li. $li;
+				    echo vmText::_('COM_VIRTUEMART_YOUR_ADDRESS')  . $li;
 
 				    foreach ($this->userFields['fields'] as $userField) {
 					if (!empty($userField['value']) && $userField['type'] != 'delimiter' && $userField['type'] != 'BT' && $userField['type'] != 'hidden') {

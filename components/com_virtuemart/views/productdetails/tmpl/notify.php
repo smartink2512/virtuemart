@@ -22,16 +22,16 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 
 <form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id, FALSE) ; ?>" name="notifyform" id="notifyform">
-	<h4><?php echo JText::_('COM_VIRTUEMART_CART_NOTIFY') ?></h4>
+	<h4><?php echo vmText::_('COM_VIRTUEMART_CART_NOTIFY') ?></h4>
 
 	<div class="list-reviews">
-		<?php echo JText::sprintf('COM_VIRTUEMART_CART_NOTIFY_DESC', $this->product->product_name); ?>
+		<?php echo vmText::sprintf('COM_VIRTUEMART_CART_NOTIFY_DESC', $this->product->product_name); ?>
 		<br /><br />
 	<div class="clear"></div>
 	</div>
 	
 	<div><span class="floatleft"><input type="text" name="notify_email" value="<?php echo $this->user->email; ?>" /></span>
-		 <span class="addtocart-button"><input type="submit" name="notifycustomer"  class="notify-button" value="<?php echo JText::_('COM_VIRTUEMART_CART_NOTIFY') ?>" title="<?php echo JText::_('COM_VIRTUEMART_CART_NOTIFY') ?>" /></span>
+		 <span class="addtocart-button"><input type="submit" name="notifycustomer"  class="notify-button" value="<?php echo vmText::_('COM_VIRTUEMART_CART_NOTIFY') ?>" title="<?php echo vmText::_('COM_VIRTUEMART_CART_NOTIFY') ?>" /></span>
 	</div>
 
 	<input type="hidden" name="virtuemart_product_id" value="<?php echo $this->product->virtuemart_product_id; ?>" />

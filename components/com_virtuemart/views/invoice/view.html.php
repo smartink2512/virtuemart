@@ -53,17 +53,17 @@ class VirtuemartViewInvoice extends VmView {
 		switch ($layout) {
 			case 'invoice':
 				$this->doctype = $layout;
-				$title = JText::_('COM_VIRTUEMART_INVOICE');
+				$title = vmText::_('COM_VIRTUEMART_INVOICE');
 				break;
 			case 'deliverynote':
 				$this->doctype = $layout;
 				$layout = 'invoice';
-				$title = JText::_('COM_VIRTUEMART_DELIVERYNOTE');
+				$title = vmText::_('COM_VIRTUEMART_DELIVERYNOTE');
 				break;
 			case 'confirmation':
 				$this->doctype = $layout;
 				$layout = 'confirmation';
-				$title = JText::_('COM_VIRTUEMART_CONFIRMATION');
+				$title = vmText::_('COM_VIRTUEMART_CONFIRMATION');
 				break;
 			case 'mail':
 				if (VmConfig::get('order_mail_html')) {
@@ -83,7 +83,7 @@ class VirtuemartViewInvoice extends VmView {
 
 		$this->format = VmRequest::getCmd('format','html');
 		if($layout == 'invoice'){
-			$document->setTitle( JText::_('COM_VIRTUEMART_INVOICE') );
+			$document->setTitle( vmText::_('COM_VIRTUEMART_INVOICE') );
 		}
 		$order_print=false;
 
@@ -99,13 +99,13 @@ class VirtuemartViewInvoice extends VmView {
 		if($orderDetails==0){
 			$orderDetails = $orderModel ->getMyOrderDetails();
 			if(!$orderDetails or empty($orderDetails['details'])){
-				echo JText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
+				echo vmText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
 				return;
 			}
 		}
 
 		if(empty($orderDetails['details'])){
-			echo JText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
+			echo vmText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
 			return 0;
 		}
 		if(!empty($orderDetails['details']['BT']->order_language)) {
@@ -122,7 +122,7 @@ class VirtuemartViewInvoice extends VmView {
 			if (  $orderModel->createInvoiceNumber($orderDetails['details']['BT'], $invoiceNumberDate)) {
                 if (ShopFunctions::InvoiceNumberReserved( $invoiceNumberDate[0])) {
 	                if  ($this->uselayout!='mail') {
-		                $document->setTitle( JText::_('COM_VIRTUEMART_PAYMENT_INVOICE') );
+		                $document->setTitle( vmText::_('COM_VIRTUEMART_PAYMENT_INVOICE') );
                         return ;
 	                }
                 }
@@ -201,7 +201,7 @@ class VirtuemartViewInvoice extends VmView {
 		$_orderstatuses = $orderStatusModel->getOrderStatusList();
 		$orderstatuses = array();
 		foreach ($_orderstatuses as $_ordstat) {
-			$orderstatuses[$_ordstat->order_status_code] = JText::_($_ordstat->order_status_name);
+			$orderstatuses[$_ordstat->order_status_code] = vmText::_($_ordstat->order_status_name);
 		}
 		$this->assignRef('orderstatuslist', $orderstatuses);
 		$this->assignRef('orderstatuses', $orderstatuses);
@@ -266,10 +266,10 @@ class VirtuemartViewInvoice extends VmView {
 		if (strpos($layout,'mail') !== false) {
 		    if ($this->doVendor) {
 		    	 //Old text key COM_VIRTUEMART_MAIL_SUBJ_VENDOR_C
-			    $this->subject = JText::sprintf('COM_VIRTUEMART_MAIL_SUBJ_VENDOR_'.$orderDetails['details']['BT']->order_status, $this->shopperName, strip_tags($currency->priceDisplay($orderDetails['details']['BT']->order_total, $currency)), $orderDetails['details']['BT']->order_number);
+			    $this->subject = vmText::sprintf('COM_VIRTUEMART_MAIL_SUBJ_VENDOR_'.$orderDetails['details']['BT']->order_status, $this->shopperName, strip_tags($currency->priceDisplay($orderDetails['details']['BT']->order_total, $currency)), $orderDetails['details']['BT']->order_number);
 			    $recipient = 'vendor';
 		    } else {
-			    $this->subject = JText::sprintf('COM_VIRTUEMART_MAIL_SUBJ_SHOPPER_'.$orderDetails['details']['BT']->order_status, $vendor->vendor_store_name, strip_tags($currency->priceDisplay($orderDetails['details']['BT']->order_total, $currency)), $orderDetails['details']['BT']->order_number );
+			    $this->subject = vmText::sprintf('COM_VIRTUEMART_MAIL_SUBJ_SHOPPER_'.$orderDetails['details']['BT']->order_status, $vendor->vendor_store_name, strip_tags($currency->priceDisplay($orderDetails['details']['BT']->order_total, $currency)), $orderDetails['details']['BT']->order_number );
 			    $recipient = 'shopper';
 		    }
 		    $this->assignRef('recipient', $recipient);

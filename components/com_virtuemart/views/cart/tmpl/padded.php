@@ -20,10 +20,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-echo '<a class="continue" href="' . $this->continue_link . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
-echo '<a class="showcart floatright" href="' . $this->cart_link . '">' . JText::_('COM_VIRTUEMART_CART_SHOW') . '</a>';
+echo '<a class="continue" href="' . $this->continue_link . '" >' . vmText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
+echo '<a class="showcart floatright" href="' . $this->cart_link . '">' . vmText::_('COM_VIRTUEMART_CART_SHOW') . '</a>';
 if($this->product){
-	echo '<h4>'.JText::sprintf('COM_VIRTUEMART_CART_PRODUCT_ADDED',$this->product->product_name,$this->product->quantity).'</h4>';
+	echo '<h4>'.vmText::sprintf('COM_VIRTUEMART_CART_PRODUCT_ADDED',$this->product->product_name,$this->product->quantity).'</h4>';
 }
 
 if ($this->errorMsg) echo '<div>'.$this->errorMsg.'</div>';
@@ -32,7 +32,7 @@ if(VmConfig::get('popup_rel',1)){
 	if($this->product and !empty($this->product->customfieldsRelatedProducts)){
 		?>
 		<div class="product-related-products">
-				<h4><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS'); ?></h4>
+				<h4><?php echo vmText::_('COM_VIRTUEMART_RELATED_PRODUCTS'); ?></h4>
 		<?php
 		foreach ($this->product->customfieldsRelatedProducts as $field) {
 			if(!empty($field->display)) {

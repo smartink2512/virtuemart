@@ -53,9 +53,9 @@ JHTML::_ ( 'behavior.modal' );
         $langScript = '
 //<![CDATA[
 '.'var JLanguage = {};' .
-                ' JLanguage.WHAT_IS_OPENID = \'' . JText::_('WHAT_IS_OPENID') . '\';' .
-                ' JLanguage.LOGIN_WITH_OPENID = \'' . JText::_('LOGIN_WITH_OPENID') . '\';' .
-                ' JLanguage.NORMAL_LOGIN = \'' . JText::_('NORMAL_LOGIN') . '\';' .
+                ' JLanguage.WHAT_IS_OPENID = \'' . vmText::_('WHAT_IS_OPENID') . '\';' .
+                ' JLanguage.LOGIN_WITH_OPENID = \'' . vmText::_('LOGIN_WITH_OPENID') . '\';' .
+                ' JLanguage.NORMAL_LOGIN = \'' . vmText::_('NORMAL_LOGIN') . '\';' .
                 ' var comlogin = 1;
 //]]>
                 ';
@@ -86,20 +86,20 @@ JHTML::_ ( 'behavior.modal' );
 
 	    <div class="order-view">
 
-	    <h1><?php echo JText::_('COM_VIRTUEMART_ORDER_ANONYMOUS') ?></h1>
+	    <h1><?php echo vmText::_('COM_VIRTUEMART_ORDER_ANONYMOUS') ?></h1>
 
 	    <form action="<?php echo JRoute::_( 'index.php', 1, $this->useSSL); ?>" method="post" name="com-login" >
 
 	    	<div class="width30 floatleft" id="com-form-order-number">
-	    		<label for="order_number"><?php echo JText::_('COM_VIRTUEMART_ORDER_NUMBER') ?></label><br />
+	    		<label for="order_number"><?php echo vmText::_('COM_VIRTUEMART_ORDER_NUMBER') ?></label><br />
 	    		<input type="text" id="order_number" name="order_number" class="inputbox" size="18" alt="order_number" />
 	    	</div>
 	    	<div class="width30 floatleft" id="com-form-order-pass">
-	    		<label for="order_pass"><?php echo JText::_('COM_VIRTUEMART_ORDER_PASS') ?></label><br />
+	    		<label for="order_pass"><?php echo vmText::_('COM_VIRTUEMART_ORDER_PASS') ?></label><br />
 	    		<input type="text" id="order_pass" name="order_pass" class="inputbox" size="18" alt="order_pass" value="p_"/>
 	    	</div>
 	    	<div class="width30 floatleft" id="com-form-order-submit">
-	    		<input type="submit" name="Submitbuton" class="button" value="<?php echo JText::_('COM_VIRTUEMART_ORDER_BUTTON_VIEW') ?>" />
+	    		<input type="submit" name="Submitbuton" class="button" value="<?php echo vmText::_('COM_VIRTUEMART_ORDER_BUTTON_VIEW') ?>" />
 	    	</div>
 	    	<div class="clr"></div>
 	    	<input type="hidden" name="option" value="com_virtuemart" />
@@ -119,28 +119,28 @@ JHTML::_ ( 'behavior.modal' );
     <fieldset class="userdata">
 	<?php if (!$this->from_cart ) { ?>
 	<div>
-		<h2><?php echo JText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM'); ?></h2>
+		<h2><?php echo vmText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM'); ?></h2>
 	</div>
 <div class="clear"></div>
 <?php } else { ?>
-        <p><?php echo JText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM'); ?></p>
+        <p><?php echo vmText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM'); ?></p>
 <?php }   ?>
         <p class="width30 floatleft" id="com-form-login-username">
-            <input type="text" name="username" class="inputbox" size="18" alt="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" value="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" onblur="if(this.value=='') this.value='<?php echo addslashes(JText::_('COM_VIRTUEMART_USERNAME')); ?>';" onfocus="if(this.value=='<?php echo addslashes(JText::_('COM_VIRTUEMART_USERNAME')); ?>') this.value='';" />
+            <input type="text" name="username" class="inputbox" size="18" alt="<?php echo vmText::_('COM_VIRTUEMART_USERNAME'); ?>" value="<?php echo vmText::_('COM_VIRTUEMART_USERNAME'); ?>" onblur="if(this.value=='') this.value='<?php echo addslashes(vmText::_('COM_VIRTUEMART_USERNAME')); ?>';" onfocus="if(this.value=='<?php echo addslashes(vmText::_('COM_VIRTUEMART_USERNAME')); ?>') this.value='';" />
 	</p>
 
         <p class="width30 floatleft" id="com-form-login-password">
             <?php if ( JVM_VERSION===1 ) { ?>
-            <input type="password" id="passwd" name="passwd" class="inputbox" size="18" alt="<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>" value="<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>" onblur="if(this.value=='') this.value='<?php echo addslashes(JText::_('COM_VIRTUEMART_PASSWORD')); ?>';" onfocus="if(this.value=='<?php echo addslashes(JText::_('COM_VIRTUEMART_PASSWORD')); ?>') this.value='';" />
+            <input type="password" id="passwd" name="passwd" class="inputbox" size="18" alt="<?php echo vmText::_('COM_VIRTUEMART_PASSWORD'); ?>" value="<?php echo vmText::_('COM_VIRTUEMART_PASSWORD'); ?>" onblur="if(this.value=='') this.value='<?php echo addslashes(vmText::_('COM_VIRTUEMART_PASSWORD')); ?>';" onfocus="if(this.value=='<?php echo addslashes(vmText::_('COM_VIRTUEMART_PASSWORD')); ?>') this.value='';" />
             <?php } else { ?>
-            <input id="modlgn-passwd" type="password" name="password" class="inputbox" size="18" alt="<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>" value="<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>" onblur="if(this.value=='') this.value='<?php echo addslashes(JText::_('COM_VIRTUEMART_PASSWORD')); ?>';" onfocus="if(this.value=='<?php echo addslashes(JText::_('COM_VIRTUEMART_PASSWORD')); ?>') this.value='';" />
+            <input id="modlgn-passwd" type="password" name="password" class="inputbox" size="18" alt="<?php echo vmText::_('COM_VIRTUEMART_PASSWORD'); ?>" value="<?php echo vmText::_('COM_VIRTUEMART_PASSWORD'); ?>" onblur="if(this.value=='') this.value='<?php echo addslashes(vmText::_('COM_VIRTUEMART_PASSWORD')); ?>';" onfocus="if(this.value=='<?php echo addslashes(vmText::_('COM_VIRTUEMART_PASSWORD')); ?>') this.value='';" />
             <?php } ?>
 		</p>
 
         <p class="width30 floatleft" id="com-form-login-remember">
-            <input type="submit" name="Submit" class="default" value="<?php echo JText::_('COM_VIRTUEMART_LOGIN') ?>" />
+            <input type="submit" name="Submit" class="default" value="<?php echo vmText::_('COM_VIRTUEMART_LOGIN') ?>" />
             <?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
-            <label for="remember"><?php echo $remember_me = JVM_VERSION===1? JText::_('Remember me') : JText::_('JGLOBAL_REMEMBER_ME') ?></label>
+            <label for="remember"><?php echo $remember_me = JVM_VERSION===1? vmText::_('Remember me') : vmText::_('JGLOBAL_REMEMBER_ME') ?></label>
             <input type="checkbox" id="remember" name="remember" class="inputbox" value="yes" alt="Remember Me" />
             <?php endif; ?>
         </p>
@@ -149,11 +149,11 @@ JHTML::_ ( 'behavior.modal' );
 
         <div class="width30 floatleft">
             <a href="<?php echo JRoute::_('index.php?option='.$comUserOption.'&view=remind'); ?>" rel="nofollow">
-            <?php echo JText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_USERNAME'); ?></a>
+            <?php echo vmText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_USERNAME'); ?></a>
         </div>
         <div class="width30 floatleft">
             <a href="<?php echo JRoute::_('index.php?option='.$comUserOption.'&view=reset'); ?>" rel="nofollow">
-            <?php echo JText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_PASSWORD'); ?></a>
+            <?php echo vmText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_PASSWORD'); ?></a>
         </div>
 
 
@@ -163,7 +163,7 @@ JHTML::_ ( 'behavior.modal' );
           if ($usersConfig->get('allowUserRegistration')) { ?>
           <div class="width30 floatleft">
           <a  class="details" href="<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=user' ); ?>">
-          <?php echo JText::_('COM_VIRTUEMART_ORDER_REGISTER'); ?></a>
+          <?php echo vmText::_('COM_VIRTUEMART_ORDER_REGISTER'); ?></a>
           </div>
           <?php }
          */ ?>
@@ -184,8 +184,8 @@ JHTML::_ ( 'behavior.modal' );
 <?php  } else if ( $user->id ) { ?>
 
    <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="login" id="form-login">
-        <?php echo JText::sprintf( 'COM_VIRTUEMART_HINAME', $user->name ); ?>
-	<input type="submit" name="Submit" class="button" value="<?php echo JText::_( 'COM_VIRTUEMART_BUTTON_LOGOUT'); ?>" />
+        <?php echo vmText::sprintf( 'COM_VIRTUEMART_HINAME', $user->name ); ?>
+	<input type="submit" name="Submit" class="button" value="<?php echo vmText::_( 'COM_VIRTUEMART_BUTTON_LOGOUT'); ?>" />
         <input type="hidden" name="option" value="<?php echo $comUserOption ?>" />
         <?php if ( JVM_VERSION===1 ) { ?>
             <input type="hidden" name="task" value="logout" />

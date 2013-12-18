@@ -17,7 +17,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 echo '<p>' . $this->cart->getError() . '</p>';
-echo '<a class="continue" href="' . $this->continue_link . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
+echo '<a class="continue" href="' . $this->continue_link . '" >' . vmText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 echo '<div>'.$this->errorMsg.'</div>';
 ?>
 <br style="clear:both">

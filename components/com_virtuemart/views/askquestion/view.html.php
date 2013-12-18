@@ -95,7 +95,7 @@ class VirtueMartViewAskquestion extends VmView {
 
 
 		// Set the titles
-		$document->setTitle (JText::sprintf ('COM_VIRTUEMART_PRODUCT_DETAILS_TITLE', $product->product_name . ' - ' . JText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')));
+		$document->setTitle (vmText::sprintf ('COM_VIRTUEMART_PRODUCT_DETAILS_TITLE', $product->product_name . ' - ' . vmText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')));
 
 		$this->assignRef ('product', $product);
 
@@ -122,11 +122,11 @@ class VirtueMartViewAskquestion extends VmView {
 			$pathway->addItem ($category->category_name, JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $virtuemart_category_id, FALSE));
 		}
 
-		//$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
+		//$pathway->addItem(vmText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
 		$pathway->addItem ($product->product_name, JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $product->virtuemart_product_id, FALSE));
 
 		// for askquestion
-		$pathway->addItem (JText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION'));
+		$pathway->addItem (vmText::_ ('COM_VIRTUEMART_PRODUCT_ASK_QUESTION'));
 
 		$this->assignRef ('user', JFactory::getUser ());
 
@@ -158,7 +158,7 @@ class VirtueMartViewAskquestion extends VmView {
 		$vendorModel = VmModel::getModel ('vendor');
 		$this->vendor = $vendorModel->getVendor ();
 
-		$this->subject = Jtext::_ ('COM_VIRTUEMART_QUESTION_ABOUT') . $this->product->product_name;
+		$this->subject = vmText::_ ('COM_VIRTUEMART_QUESTION_ABOUT') . $this->product->product_name;
 		$this->vendorEmail = $this->user['email'];
 		// in this particular case, overwrite the value for fix the recipient name
 		$this->vendor->vendor_name = $this->user['name'];
@@ -181,7 +181,7 @@ class VirtueMartViewAskquestion extends VmView {
 		}
 		$continue_link = JRoute::_ ('index.php?option=com_virtuemart&view=category' . $categoryLink, FALSE);
 
-		$continue_link_html = '<a href="' . $continue_link . '" />' . JText::_ ('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
+		$continue_link_html = '<a href="' . $continue_link . '" />' . vmText::_ ('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 		$this->assignRef ('continue_link_html', $continue_link_html);
 		// Display it all
 		parent::display ($tpl);

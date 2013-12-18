@@ -69,10 +69,10 @@ class VirtueMartControllerPluginresponse extends JController {
 	$return_context = "";
 	$dispatcher = JDispatcher::getInstance();
 	$html = "";
-	$paymentResponse = Jtext::_('COM_VIRTUEMART_CART_THANKYOU');
+	$paymentResponse = vmText::_('COM_VIRTUEMART_CART_THANKYOU');
 	$returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array( 'html' => &$html,&$paymentResponse));
 
-// 	VmRequest::setVar('paymentResponse', Jtext::_('COM_VIRTUEMART_CART_THANKYOU'));
+// 	VmRequest::setVar('paymentResponse', vmText::_('COM_VIRTUEMART_CART_THANKYOU'));
 // 	VmRequest::setVar('paymentResponseHtml', $html);
 	$view = $this->getView('pluginresponse', 'html');
 	$layoutName = VmRequest::getVar('layout', 'default');
@@ -96,10 +96,10 @@ class VirtueMartControllerPluginresponse extends JController {
 	    $dispatcher = JDispatcher::getInstance();
 
 	    $html = "";
-	    $shipmentResponse = Jtext::_('COM_VIRTUEMART_CART_THANKYOU');
+	    $shipmentResponse = vmText::_('COM_VIRTUEMART_CART_THANKYOU');
 	    $dispatcher->trigger('plgVmOnShipmentResponseReceived', array( 'html' => &$html,&$shipmentResponse));
 /*
-// 	VmRequest::setVar('paymentResponse', Jtext::_('COM_VIRTUEMART_CART_THANKYOU'));
+// 	VmRequest::setVar('paymentResponse', vmText::_('COM_VIRTUEMART_CART_THANKYOU'));
 // 	VmRequest::setVar('paymentResponseHtml', $html);
 	    $view = $this->getView('pluginresponse', 'html');
 	    $layoutName = VmRequest::getVar('layout', 'default');

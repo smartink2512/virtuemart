@@ -31,11 +31,11 @@ class VmView extends JView{
 		}
 		$folder = (JVM_VERSION===1) ? '/images/M_images/' : '/media/system/images/';
 		$text='';
-		if ( $use_icon ) $text .= JHtml::_('image.site', $boutonName.'.png', $folder, null, null, JText::_($altText));
-		if ( $use_text ) $text .= '&nbsp;'. JText::_($altText);
-		if ( $text=='' )  $text .= '&nbsp;'. JText::_($altText);
-		if ($modal) return '<a '.$class.' class="modal" rel="{handler: \'iframe\', size: {x: 700, y: 550}}" title="'. JText::_($altText).'" href="'.JRoute::_($link, FALSE).'">'.$text.'</a>';
-		else 		return '<a '.$class.' title="'. JText::_($altText).'" href="'.JRoute::_($link, FALSE).'">'.$text.'</a>';
+		if ( $use_icon ) $text .= JHtml::_('image.site', $boutonName.'.png', $folder, null, null, vmText::_($altText));
+		if ( $use_text ) $text .= '&nbsp;'. vmText::_($altText);
+		if ( $text=='' )  $text .= '&nbsp;'. vmText::_($altText);
+		if ($modal) return '<a '.$class.' class="modal" rel="{handler: \'iframe\', size: {x: 700, y: 550}}" title="'. vmText::_($altText).'" href="'.JRoute::_($link, FALSE).'">'.$text.'</a>';
+		else 		return '<a '.$class.' title="'. vmText::_($altText).'" href="'.JRoute::_($link, FALSE).'">'.$text.'</a>';
 	}
 
 	public function escape($var)

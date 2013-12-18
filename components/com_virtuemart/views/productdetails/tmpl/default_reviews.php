@@ -28,7 +28,7 @@ if ($this->allowRating || $this->showReview) {
 	$ratingWidth = $maxrating * 24;
 	for ($num = 0; $num <= $maxrating; $num++) {
 		$stars[] = '
-				<span title="' . (JText::_ ("COM_VIRTUEMART_RATING_TITLE") . $num . '/' . $maxrating) . '" class="vmicon ratingbox" style="display:inline-block;width:' . 24 * $maxrating . 'px;">
+				<span title="' . (vmText::_ ("COM_VIRTUEMART_RATING_TITLE") . $num . '/' . $maxrating) . '" class="vmicon ratingbox" style="display:inline-block;width:' . 24 * $maxrating . 'px;">
 					<span class="stars-orange" style="width:' . (24 * $num) . 'px">
 					</span>
 				</span>';
@@ -46,7 +46,7 @@ if ($this->allowRating || $this->showReview) {
 if ($this->showReview) {
 
 	?>
-	<h4><?php echo JText::_ ('COM_VIRTUEMART_REVIEWS') ?></h4>
+	<h4><?php echo vmText::_ ('COM_VIRTUEMART_REVIEWS') ?></h4>
 
 	<div class="list-reviews">
 		<?php
@@ -73,7 +73,7 @@ if ($this->showReview) {
 					$reviews_published++;
 					?>
 					<div class="<?php echo $color ?>">
-						<span class="date"><?php echo JHTML::date ($review->created_on, JText::_ ('DATE_FORMAT_LC')); ?></span>
+						<span class="date"><?php echo JHTML::date ($review->created_on, vmText::_ ('DATE_FORMAT_LC')); ?></span>
 						<span class="vote"><?php echo $stars[(int)$review->review_rating] ?></span>
 						<blockquote><?php echo $review->comment; ?></blockquote>
 						<span class="bold"><?php echo $review->customer ?></span>
@@ -84,8 +84,8 @@ if ($this->showReview) {
 				if ($i == $ratingsShow && !$showall) {
 					/* Show all reviews ? */
 					if ($reviews_published >= $ratingsShow) {
-						$attribute = array('class'=> 'details', 'title'=> JText::_ ('COM_VIRTUEMART_MORE_REVIEWS'));
-						echo JHTML::link ($this->more_reviews, JText::_ ('COM_VIRTUEMART_MORE_REVIEWS'), $attribute);
+						$attribute = array('class'=> 'details', 'title'=> vmText::_ ('COM_VIRTUEMART_MORE_REVIEWS'));
+						echo JHTML::link ($this->more_reviews, vmText::_ ('COM_VIRTUEMART_MORE_REVIEWS'), $attribute);
 					}
 					break;
 				}
@@ -94,7 +94,7 @@ if ($this->showReview) {
 		} else {
 			// "There are no reviews for this product"
 			?>
-			<span class="step"><?php echo JText::_ ('COM_VIRTUEMART_NO_REVIEWS') ?></span>
+			<span class="step"><?php echo vmText::_ ('COM_VIRTUEMART_NO_REVIEWS') ?></span>
 			<?php
 		}  ?>
 		<div class="clear"></div>
@@ -119,16 +119,16 @@ if ($this->showReview) {
 					// }
 				// }
 					// if (!ausgewaehlt)  {
-						// alert('" . JText::_ ('COM_VIRTUEMART_REVIEW_ERR_RATE', FALSE) . "');
+						// alert('" . vmText::_ ('COM_VIRTUEMART_REVIEW_ERR_RATE', FALSE) . "');
 						// return false;
 					// }
 					//else
 					if (form.comment.value.length < " . VmConfig::get ('reviews_minimum_comment_length', 100) . ") {
-						alert('" . addslashes (JText::sprintf ('COM_VIRTUEMART_REVIEW_ERR_COMMENT1_JS', VmConfig::get ('reviews_minimum_comment_length', 100))) . "');
+						alert('" . addslashes (vmText::sprintf ('COM_VIRTUEMART_REVIEW_ERR_COMMENT1_JS', VmConfig::get ('reviews_minimum_comment_length', 100))) . "');
 						return false;
 					}
 					else if (form.comment.value.length > " . VmConfig::get ('reviews_maximum_comment_length', 2000) . ") {
-						alert('" . addslashes (JText::sprintf ('COM_VIRTUEMART_REVIEW_ERR_COMMENT2_JS', VmConfig::get ('reviews_maximum_comment_length', 2000))) . "');
+						alert('" . addslashes (vmText::sprintf ('COM_VIRTUEMART_REVIEW_ERR_COMMENT2_JS', VmConfig::get ('reviews_maximum_comment_length', 2000))) . "');
 						return false;
 					}
 					else {
@@ -166,8 +166,8 @@ if ($this->showReview) {
 			if ($this->showRating) {
 				if ($this->allowRating && $review_editable) {
 					?>
-					<h4><?php echo JText::_ ('COM_VIRTUEMART_WRITE_REVIEW')  ?><span><?php echo JText::_ ('COM_VIRTUEMART_WRITE_FIRST_REVIEW') ?></span></h4>
-					<span class="step"><?php echo JText::_ ('COM_VIRTUEMART_RATING_FIRST_RATE') ?></span>
+					<h4><?php echo vmText::_ ('COM_VIRTUEMART_WRITE_REVIEW')  ?><span><?php echo vmText::_ ('COM_VIRTUEMART_WRITE_FIRST_REVIEW') ?></span></h4>
+					<span class="step"><?php echo vmText::_ ('COM_VIRTUEMART_RATING_FIRST_RATE') ?></span>
 					<div class="rating">
 						<label for="vote"><?php echo $stars[$maxrating]; ?></label>
 						<input type="hidden" id="vote" value="<?php echo $maxrating ?>" name="vote">
@@ -179,21 +179,21 @@ if ($this->showReview) {
 			}
 			if ($review_editable) {
 				?>
-				<span class="step"><?php echo JText::sprintf ('COM_VIRTUEMART_REVIEW_COMMENT', VmConfig::get ('reviews_minimum_comment_length', 100), VmConfig::get ('reviews_maximum_comment_length', 2000)); ?></span>
+				<span class="step"><?php echo vmText::sprintf ('COM_VIRTUEMART_REVIEW_COMMENT', VmConfig::get ('reviews_minimum_comment_length', 100), VmConfig::get ('reviews_maximum_comment_length', 2000)); ?></span>
 				<br/>
-				<textarea class="virtuemart" title="<?php echo JText::_ ('COM_VIRTUEMART_WRITE_REVIEW') ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="60"><?php if (!empty($this->review->comment)) {
+				<textarea class="virtuemart" title="<?php echo vmText::_ ('COM_VIRTUEMART_WRITE_REVIEW') ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="60"><?php if (!empty($this->review->comment)) {
 					echo $this->review->comment;
 				} ?></textarea>
 				<br/>
-				<span><?php echo JText::_ ('COM_VIRTUEMART_REVIEW_COUNT') ?>
+				<span><?php echo vmText::_ ('COM_VIRTUEMART_REVIEW_COUNT') ?>
 					<input type="text" value="0" size="4" class="vm-default" name="counter" maxlength="4" readonly="readonly"/>
 				</span>
 				<br/><br/>
-				<input class="highlight-button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_ ('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_ ('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>"/>
+				<input class="highlight-button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo vmText::_ ('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" value="<?php echo vmText::_ ('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>"/>
 				<?php
 			} else {
-				echo '<strong>' . JText::_ ('COM_VIRTUEMART_DEAR') . $this->user->name . ',</strong><br />';
-				echo JText::_ ('COM_VIRTUEMART_REVIEW_ALREADYDONE');
+				echo '<strong>' . vmText::_ ('COM_VIRTUEMART_DEAR') . $this->user->name . ',</strong><br />';
+				echo vmText::_ ('COM_VIRTUEMART_REVIEW_ALREADYDONE');
 			}
 			?></div><?php
 	}

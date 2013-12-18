@@ -57,14 +57,14 @@ abstract class CouponHelper
 		}
 
 		if (!$couponData) {
-			return JText::_('COM_VIRTUEMART_COUPON_CODE_INVALID');
+			return vmText::_('COM_VIRTUEMART_COUPON_CODE_INVALID');
 		}
 		if (!$couponData->started) {
-			return JText::_('COM_VIRTUEMART_COUPON_CODE_NOTYET') . $couponData->coupon_start_date;
+			return vmText::_('COM_VIRTUEMART_COUPON_CODE_NOTYET') . $couponData->coupon_start_date;
 		}
 		if ($couponData->ended) {
 			self::RemoveCoupon($_code, true);
-			return JText::_('COM_VIRTUEMART_COUPON_CODE_EXPIRED');
+			return vmText::_('COM_VIRTUEMART_COUPON_CODE_EXPIRED');
 		}
 
 
@@ -74,7 +74,7 @@ abstract class CouponHelper
 			$currency = CurrencyDisplay::getInstance();
 
 			$coupon_value_valid = $currency->priceDisplay($couponData->coupon_value_valid);
-			return JText::_('COM_VIRTUEMART_COUPON_CODE_TOOLOW') . " ".$coupon_value_valid;
+			return vmText::_('COM_VIRTUEMART_COUPON_CODE_TOOLOW') . " ".$coupon_value_valid;
 		}
 
 		return '';

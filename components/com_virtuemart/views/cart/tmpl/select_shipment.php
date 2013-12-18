@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 
 	if (VmConfig::get('oncheckout_show_steps', 1)) {
-		echo '<div class="checkoutStep" id="checkoutStep2">' . JText::_('COM_VIRTUEMART_USER_FORM_CART_STEP2') . '</div>';
+		echo '<div class="checkoutStep" id="checkoutStep2">' . vmText::_('COM_VIRTUEMART_USER_FORM_CART_STEP2') . '</div>';
 	}
 
 	if ($this->layoutName!='default') {
@@ -39,15 +39,15 @@ defined('_JEXEC') or die('Restricted access');
 		$buttonclass = 'vm-button-correct';
 	}
 
-	echo "<h".$headerLevel.">".JText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT')."</h".$headerLevel.">";
+	echo "<h".$headerLevel.">".vmText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT')."</h".$headerLevel.">";
 
 	?>
 
 	<div class="buttonBar-right">
 
-	        <button  name="setshipment" class="<?php echo $buttonclass ?>" type="submit" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>  &nbsp;
+	        <button  name="setshipment" class="<?php echo $buttonclass ?>" type="submit" ><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>  &nbsp;
 		<?php   if ($this->layoutName!='default') { ?>
-		<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
+		<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 		<?php  } ?>
 	</div>
 

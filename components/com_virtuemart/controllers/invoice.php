@@ -139,7 +139,7 @@ class VirtueMartControllerInvoice extends JController
 		if ($orderPass = VmRequest::getString('order_pass',false) and $orderNumber = VmRequest::getString('order_number',false)){
 			$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
 			if(empty($orderId)){
-				vmDebug ('Invalid order_number/password '.JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'));
+				vmDebug ('Invalid order_number/password '.vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS'));
 				return 0;
 			}
 			$orderDetails = $orderModel->getOrder($orderId);
@@ -161,7 +161,7 @@ class VirtueMartControllerInvoice extends JController
 			if(!Permissions::getInstance()->check("admin")) {
 				if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
 					if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
-						echo 'view '.JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+						echo 'view '.vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
 						return ;
 					}
 				}
@@ -179,7 +179,7 @@ class VirtueMartControllerInvoice extends JController
 
 		$pdf = new VmVendorPDF();
 		$pdf->AddPage();
-		$pdf->PrintContents(JText::_('COM_VIRTUEMART_PDF_SAMPLEPAGE'));
+		$pdf->PrintContents(vmText::_('COM_VIRTUEMART_PDF_SAMPLEPAGE'));
 		$pdf->Output("vminvoice_sample.pdf", 'I');
 		JFactory::getApplication()->close();
 	}
@@ -271,10 +271,10 @@ class VirtueMartControllerInvoice extends JController
 		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 		
 		$metadata = array (
-			'title' => JText::sprintf('COM_VIRTUEMART_INVOICE_TITLE', 
+			'title' => vmText::sprintf('COM_VIRTUEMART_INVOICE_TITLE',
 				$vendor->vendor_store_name, $view->invoiceNumber, 
 				$orderDetails['details']['BT']->order_number),
-			'keywords' => JText::_('COM_VIRTUEMART_INVOICE_CREATOR'));
+			'keywords' => vmText::_('COM_VIRTUEMART_INVOICE_CREATOR'));
 
 		return VmPdf::createVmPdf($view, $path, 'F', $metadata);
 	}

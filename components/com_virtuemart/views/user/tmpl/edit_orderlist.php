@@ -24,19 +24,19 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<thead>
 	<tr>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_ORDER_NUMBER'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_ORDER_LIST_ORDER_NUMBER'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_CDATE'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_ORDER_LIST_CDATE'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_MDATE'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_ORDER_LIST_MDATE'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_STATUS'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_ORDER_LIST_STATUS'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_TOTAL'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_ORDER_LIST_TOTAL'); ?>
 		</th>
 	</thead>
 	<?php

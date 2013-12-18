@@ -83,18 +83,18 @@ class VirtueMartControllerProductdetails extends JController {
 		$validMail = filter_var (VmRequest::getVar ('email'), FILTER_VALIDATE_EMAIL);
 
 		if ($commentSize < $min or $commentSize > $max or !$validMail) {
-			$errmsg = JText::_ ('COM_VIRTUEMART_COMMENT_NOT_VALID_JS');
+			$errmsg = vmText::_ ('COM_VIRTUEMART_COMMENT_NOT_VALID_JS');
 			if ($commentSize < $min) {
 				vmdebug ('mailAskquestion', $min, $commentSize);
-				$errmsg = JText::_ ('COM_VIRTUEMART_ASKQU_CS_MIN');
+				$errmsg = vmText::_ ('COM_VIRTUEMART_ASKQU_CS_MIN');
 
 			} else {
 				if ($commentSize > $max) {
-					$errmsg = JText::_ ('COM_VIRTUEMART_ASKQU_CS_MAX');
+					$errmsg = vmText::_ ('COM_VIRTUEMART_ASKQU_CS_MAX');
 
 				} else {
 					if (!$validMail) {
-						$errmsg = JText::_ ('COM_VIRTUEMART_ASKQU_INV_MAIL');
+						$errmsg = vmText::_ ('COM_VIRTUEMART_ASKQU_INV_MAIL');
 
 					}
 				}
@@ -135,7 +135,7 @@ class VirtueMartControllerProductdetails extends JController {
 		} else {
 			$string = 'COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY';
 		}
-		$app->enqueueMessage (JText::_ ($string));
+		$app->enqueueMessage (vmText::_ ($string));
 
 
 		$view->setLayout ('mail_confirmed');
@@ -205,7 +205,7 @@ class VirtueMartControllerProductdetails extends JController {
 		} else {
 			$string = 'COM_VIRTUEMART_MAIL_NOT_SEND_SUCCESSFULLY';
 		}
-		$mainframe->enqueueMessage (JText::_ ($string));
+		$mainframe->enqueueMessage (vmText::_ ($string));
 
 // 		vmdebug('my email vars ',$vars,$TOMail);
 
@@ -224,7 +224,7 @@ class VirtueMartControllerProductdetails extends JController {
 		if (VmConfig::get ('recommend_unauth', 0) == '0') {
 			$user = JFactory::getUser ();
 			if (empty($user->id)) {
-				VmInfo (JText::_ ('JGLOBAL_YOU_MUST_LOGIN_FIRST'));
+				VmInfo (vmText::_ ('JGLOBAL_YOU_MUST_LOGIN_FIRST'));
 				return;
 			}
 		}
@@ -252,7 +252,7 @@ class VirtueMartControllerProductdetails extends JController {
 		$model->saveRating ($data);
 		$errors = $model->getErrors ();
 		if (empty($errors)) {
-			$msg = JText::sprintf ('COM_VIRTUEMART_STRING_SAVED', JText::_ ('COM_VIRTUEMART_REVIEW'));
+			$msg = vmText::sprintf ('COM_VIRTUEMART_STRING_SAVED', vmText::_ ('COM_VIRTUEMART_REVIEW'));
 		}
 		foreach ($errors as $error) {
 			$msg = ($error) . '<br />';
@@ -373,7 +373,7 @@ class VirtueMartControllerProductdetails extends JController {
 			}
 			$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&layout=notify&virtuemart_product_id=' . $data['virtuemart_product_id'], FALSE), $msg);
 		} else {
-			$msg = JText::sprintf ('COM_VIRTUEMART_STRING_SAVED', JText::_ ('COM_VIRTUEMART_CART_NOTIFY'));
+			$msg = vmText::sprintf ('COM_VIRTUEMART_STRING_SAVED', vmText::_ ('COM_VIRTUEMART_CART_NOTIFY'));
 			$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $data['virtuemart_product_id'], FALSE), $msg);
 		}
 

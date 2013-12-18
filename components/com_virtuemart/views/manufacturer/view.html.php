@@ -56,7 +56,7 @@ class VirtuemartViewManufacturer extends VmView {
 				shopFunctionsF::triggerContentPlugin($manufacturer, 'manufacturer','mf_desc');
 			}
 
-			$document->setTitle(JText::_('COM_VIRTUEMART_MANUFACTURER_DETAILS').' '.strip_tags($manufacturer->mf_name));
+			$document->setTitle(vmText::_('COM_VIRTUEMART_MANUFACTURER_DETAILS').' '.strip_tags($manufacturer->mf_name));
 //added so that the canonical points to page with visible products thx to P2Peter
 			$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_manufacturer_id='.$virtuemart_manufacturer_id, FALSE) , 'canonical', 'rel', '' );
 			$this->assignRef('manufacturerImage', $manufacturerImage);
@@ -67,7 +67,7 @@ class VirtuemartViewManufacturer extends VmView {
 			$this->setLayout('details');
 // 			vmdebug('$manufacturer',$manufacturer);
 		} else {
-			$document->setTitle(JText::_('COM_VIRTUEMART_MANUFACTURER_PAGE')) ;
+			$document->setTitle(vmText::_('COM_VIRTUEMART_MANUFACTURER_PAGE')) ;
 			$manufacturers = $model->getManufacturers(true, true,  true);
 			$model->addImages($manufacturers,1);
 			$this->assignRef('manufacturers',	$manufacturers);

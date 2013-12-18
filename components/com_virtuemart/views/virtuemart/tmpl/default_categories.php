@@ -16,7 +16,7 @@ $verticalseparator = " vertical-separator";
 
 <div class="category-view">
 
-    <h4><?php echo JText::_('COM_VIRTUEMART_CATEGORIES') ?></h4>
+    <h4><?php echo vmText::_('COM_VIRTUEMART_CATEGORIES') ?></h4>
 
     <?php
     // Start the Output

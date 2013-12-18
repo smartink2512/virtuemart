@@ -22,7 +22,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 ?>
 
         <div class="product-related-categories">
-    	<h4><?php echo JText::_('COM_VIRTUEMART_RELATED_CATEGORIES'); ?></h4>
+    	<h4><?php echo vmText::_('COM_VIRTUEMART_RELATED_CATEGORIES'); ?></h4>
 	    <?php foreach ($this->product->customfieldsRelatedCategories as $field) { ?>
 		<div class="product-field product-field-type-<?php echo $field->field_type ?>">
 		    <span class="product-field-display"><?php echo $field->display ?></span>

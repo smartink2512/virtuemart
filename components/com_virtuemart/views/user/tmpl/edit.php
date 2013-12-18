@@ -44,7 +44,7 @@ function myValidator(f, t)
 		f.submit();
 		return true;
 	} else {
-		var msg = '<?php echo addslashes( JText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS') ); ?>';
+		var msg = '<?php echo addslashes( vmText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS') ); ?>';
 		alert (msg);
 	}
 	return false;
@@ -54,14 +54,14 @@ function myValidator(f, t)
 <?php echo shopFunctionsF::getLoginForm(false); ?>
 
 <h2><?php if($this->userDetails->virtuemart_user_id==0) {
-	echo JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_REG');
+	echo vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_REG');
 }?></h2>
 <form method="post" id="adminForm" name="userForm" action="<?php echo JRoute::_('index.php?view=user',$this->useXHTML,$this->useSSL) ?>" class="form-validate">
 <?php if($this->userDetails->user_is_vendor){ ?>
     <div class="buttonBar-right">
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'saveUser');" ><?php echo $this->button_lbl ?></button>
 	&nbsp;
-<button class="button" type="reset" onclick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=user', FALSE); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button></div>
+<button class="button" type="reset" onclick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=user', FALSE); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button></div>
     <?php } ?>
 <?php // Loading Templates in Tabs
 if($this->userDetails->virtuemart_user_id!=0) {
@@ -92,30 +92,30 @@ if($this->userDetails->virtuemart_user_id!=0) {
  * So maybe we should place here a method (joomla plugin hook) which loads all published plugins, which already used by the user and display
  * them.
  */
-//	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_SHOPPER_PAYMENT_FORM_LBL'), 'edit_payment' );
+//	echo $this->pane->startPanel( vmText::_('COM_VIRTUEMART_SHOPPER_PAYMENT_FORM_LBL'), 'edit_payment' );
 //	echo $this->loadTemplate('payment');
 //	echo $this->pane->endPanel();
 
-//	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_SHOPPER_SHIPMENT_FORM_LBL'), 'edit_shipto' );
+//	echo $this->pane->startPanel( vmText::_('COM_VIRTUEMART_SHOPPER_SHIPMENT_FORM_LBL'), 'edit_shipto' );
 //	echo $this->loadTemplate('shipto');
 //	echo $this->pane->endPanel();
 //	if ($this->shipto !== 0) {
 //		// Note:
 //		// Of the order of the tabs change here, change the startOffset value for
 //		// JPane::getInstance() as well in view.html.php!
-//		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'), 'edit_shipto' );
+//		echo $this->pane->startPanel( vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'), 'edit_shipto' );
 //		echo $this->loadTemplate('shipto');
 //		echo $this->pane->endPanel();
 //	}
 
 // 	if (($_ordcnt = count($this->orderlist)) > 0) {
-// 		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_ORDER_LIST_LBL') . ' (' . $_ordcnt . ')', 'edit_orderlist' );
+// 		echo $this->pane->startPanel( vmText::_('COM_VIRTUEMART_ORDER_LIST_LBL') . ' (' . $_ordcnt . ')', 'edit_orderlist' );
 // 		echo $this->loadTemplate('orderlist');
 // 		echo $this->pane->endPanel();
 // 	}
 
 // 	if (!empty($this->userDetails->user_is_vendor)) {
-// 		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_VENDOR_MOD'), 'edit_vendor' );
+// 		echo $this->pane->startPanel( vmText::_('COM_VIRTUEMART_VENDOR_MOD'), 'edit_vendor' );
 // 		echo $this->loadTemplate('vendor');
 // 		echo $this->pane->endPanel();
 // 	}

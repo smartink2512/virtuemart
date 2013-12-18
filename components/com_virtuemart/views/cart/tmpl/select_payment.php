@@ -22,7 +22,7 @@ $addClass="";
 
 
 if (VmConfig::get('oncheckout_show_steps', 1)) {
-    echo '<div class="checkoutStep" id="checkoutStep3">' . JText::_('COM_VIRTUEMART_USER_FORM_CART_STEP3') . '</div>';
+    echo '<div class="checkoutStep" id="checkoutStep3">' . vmText::_('COM_VIRTUEMART_USER_FORM_CART_STEP3') . '</div>';
 }
 
 if ($this->layoutName!='default') {
@@ -40,16 +40,16 @@ if ($this->layoutName!='default') {
 	}
 
 
-	echo "<h".$headerLevel.">".JText::_('COM_VIRTUEMART_CART_SELECT_PAYMENT')."</h".$headerLevel.">";
+	echo "<h".$headerLevel.">".vmText::_('COM_VIRTUEMART_CART_SELECT_PAYMENT')."</h".$headerLevel.">";
 
 ?>
 
 <div class="buttonBar-right">
 
-<button name="setpayment" class="<?php echo $buttonclass ?>" type="submit"><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
+<button name="setpayment" class="<?php echo $buttonclass ?>" type="submit"><?php echo vmText::_('COM_VIRTUEMART_SAVE'); ?></button>
      &nbsp;
    <?php   if ($this->layoutName!='default') { ?>
-<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
+<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo vmText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 	<?php  } ?>
     </div>
 

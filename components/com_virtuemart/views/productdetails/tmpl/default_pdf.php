@@ -32,7 +32,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 /* Let's see if we found the product */
 if (empty ( $this->product )) {
-	echo JText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
+	echo vmText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
 	echo '<br /><br />  ' . $this->continue_link_html;
 	return;
 }
@@ -71,22 +71,22 @@ if (empty ( $this->product )) {
 
 				<?php // TO DO in Multi-Vendor not needed at the moment and just would lead to confusion
 				/* $link = JRoute::_('index2.php?option=com_virtuemart&view=virtuemart&task=vendorinfo&virtuemart_vendor_id='.$this->product->virtuemart_vendor_id);
-				$text = JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL');
-				echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_VENDOR_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a><br />
+				$text = vmText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL');
+				echo '<span class="bold">'. vmText::_('COM_VIRTUEMART_PRODUCT_DETAILS_VENDOR_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a><br />
 				*/ ?>
 
 				<?php
-				$rating = empty($this->rating)? JText::_('COM_VIRTUEMART_UNRATED'):$this->rating->rating;
-				echo JText::_('COM_VIRTUEMART_RATING') . $rating;
+				$rating = empty($this->rating)? vmText::_('COM_VIRTUEMART_UNRATED'):$this->rating->rating;
+				echo vmText::_('COM_VIRTUEMART_RATING') . $rating;
 
 				// Product Price
 				if ($this->show_prices) { ?>
 				<div class="product-price" id="productPrice<?php echo $this->product->virtuemart_product_id ?>">
 				<?php
 				if ($this->product->product_unit && VmConfig::get ( 'price_show_packaging_pricelabel' )) {
-					echo "<strong>" . JText::_ ( 'COM_VIRTUEMART_CART_PRICE_PER_UNIT' ) . ' (' . $this->product->product_unit . "):</strong>";
+					echo "<strong>" . vmText::_ ( 'COM_VIRTUEMART_CART_PRICE_PER_UNIT' ) . ' (' . $this->product->product_unit . "):</strong>";
 				} else {
-					echo "<strong>" . JText::_ ( 'COM_VIRTUEMART_CART_PRICE' ) . "</strong>";
+					echo "<strong>" . vmText::_ ( 'COM_VIRTUEMART_CART_PRICE' ) . "</strong>";
 				}
 				echo $this->currency->createPriceDiv ( 'variantModification', 'COM_VIRTUEMART_PRODUCT_VARIANT_MOD', $this->product->prices );
 				echo $this->currency->createPriceDiv ( 'basePriceWithTax', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_WITHTAX', $this->product->prices );
@@ -110,7 +110,7 @@ if (empty ( $this->product )) {
 				<?php // Ask a question about this product
 				$url = JRoute::_(juri::root().'index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component'); ?>
 				<div class="ask-a-question">
-					<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
+					<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $url ?>"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
 				</div>
 
 				<?php // Manufacturer of the Product
@@ -124,7 +124,7 @@ if (empty ( $this->product )) {
 					if (strtolower(VmRequest::getCmd('output')) == "pdf"){
 						echo JHTML::_('link', $link, $text);
 					} else { ?>
-						<span class="bold"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') ?></span><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a>
+						<span class="bold"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') ?></span><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a>
 				<?PHP } ?>
 				</div>
 				<?php } ?>
@@ -138,7 +138,7 @@ if (empty ( $this->product )) {
 	if (!empty($this->product->product_desc)) { ?>
 	<div class="product-description">
 		<?php /** @todo Test if content plugins modify the product description */ ?>
-		<span class="title"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_DESC_TITLE') ?></span>
+		<span class="title"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_DESC_TITLE') ?></span>
 		<?php echo $this->product->product_desc; ?>
 	</div>
 	<?php } // Product Description END ?>
@@ -150,11 +150,11 @@ if (empty ( $this->product )) {
 		foreach ($this->product->customfields as $field){
 			?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
 			<?php if ($field->custom_title != $custom_title) { ?>
-				<span class="product-fields-title" ><strong><?php echo JText::_($field->custom_title); ?></strong></span>
+				<span class="product-fields-title" ><strong><?php echo vmText::_($field->custom_title); ?></strong></span>
 				<?php //echo JHTML::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png');
 			} ?>
 			<span class="product-field-display"><?php echo $field->display ?></span>
-			<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>
+			<span class="product-field-desc"><?php echo vmText::_($field->custom_field_desc) ?></span>
 			</div>
 			<?php
 			$custom_title = $field->custom_title;
@@ -168,7 +168,7 @@ if (empty ( $this->product )) {
 	if ($this->product->product_box) { ?>
 	<div class="product-box">
 		<?php
-	        echo JText::_('COM_VIRTUEMART_PRODUCT_UNITS_IN_BOX') .$this->product->product_box;
+	        echo vmText::_('COM_VIRTUEMART_PRODUCT_UNITS_IN_BOX') .$this->product->product_box;
 	    ?>
 	</div>
 	<?php } // Product Packaging END ?>
@@ -195,7 +195,7 @@ if (empty ( $this->product )) {
 		$verticalseparator = " vertical-separator"; ?>
 
 		<div class="related-products-view">
-			<h4><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS_HEADING') ?></h4>
+			<h4><?php echo vmText::_('COM_VIRTUEMART_RELATED_PRODUCTS_HEADING') ?></h4>
 
 		<?php // Start the Output
 		foreach ($this->product->related as $rkey => $related) {
@@ -233,7 +233,7 @@ if (empty ( $this->product )) {
 
 								<div>
 								<?php // Product Details Button
-								echo JHTML::link($related->link, JText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $related->product_name, 'class' => 'product-details' ) ); ?>
+								echo JHTML::link($related->link, vmText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $related->product_name, 'class' => 'product-details' ) ); ?>
 								</div>
 							</div>
 						<div class="clear"></div>
@@ -268,8 +268,8 @@ if (empty ( $this->product )) {
 		$stars = array();
 		$showall = VmRequest::getBool('showall', false);
 		for ($num=0 ; $num <= $maxrating; $num++  ) {
-			$title = (JText::_("VM_RATING_TITLE").' : '. $num . '/' . $maxrating) ;
-			$stars[] = JHTML::image($starsPath.$num.'.gif', JText::_($num.'_STARS'), array("title" => $title) );
+			$title = (vmText::_("VM_RATING_TITLE").' : '. $num . '/' . $maxrating) ;
+			$stars[] = JHTML::image($starsPath.$num.'.gif', vmText::_($num.'_STARS'), array("title" => $title) );
 		} ?>
 
 	<div class="customer-reviews">
@@ -279,7 +279,7 @@ if (empty ( $this->product )) {
 	if($this->showReview) {
 		$alreadycommented = false;
 		?>
-		<h4><?php echo JText::_('COM_VIRTUEMART_REVIEWS') ?></h4>
+		<h4><?php echo vmText::_('COM_VIRTUEMART_REVIEWS') ?></h4>
 
 		<div class="list-reviews">
 			<?php
@@ -295,7 +295,7 @@ if (empty ( $this->product )) {
 				<?php // Loop through all reviews
 				if (!empty($this->rating_reviews)) { ?>
 				<div class="<?php echo $color ?>">
-					<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
+					<span class="date"><?php echo JHTML::date($review->created_on, vmText::_('DATE_FORMAT_LC')); ?></span>
 					<?php //echo $stars[ $review->review_rating ] //Attention the review rating is the rating of the review itself, rating for the product is the vote !?>
 					<blockquote><?php echo $review->comment; ?></blockquote>
 					<span class="bold"><?php echo $review->customer ?></span>
@@ -308,13 +308,13 @@ if (empty ( $this->product )) {
 
 			if (count($this->rating_reviews) < 1) {
 				// "There are no reviews for this product" ?>
-				<span class="step"><?php echo JText::_('COM_VIRTUEMART_NO_REVIEWS') ?></span>
+				<span class="step"><?php echo vmText::_('COM_VIRTUEMART_NO_REVIEWS') ?></span>
 			<?php
 			} else {
 				/* Show all reviews */
 				if (!$showall && count($this->rating_reviews) >= $ratingsShow ) {
-					$attribute = array('class'=>'details', 'title'=>JText::_('COM_VIRTUEMART_MORE_REVIEWS'));
-					echo JHTML::link($this->more_reviews, JText::_('COM_VIRTUEMART_MORE_REVIEWS'),$attribute);
+					$attribute = array('class'=>'details', 'title'=>vmText::_('COM_VIRTUEMART_MORE_REVIEWS'));
+					echo JHTML::link($this->more_reviews, vmText::_('COM_VIRTUEMART_MORE_REVIEWS'),$attribute);
 				}
 			} ?>
 		<div class="clear"></div>

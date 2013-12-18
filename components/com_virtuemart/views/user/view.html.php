@@ -155,9 +155,9 @@ class VirtuemartViewUser extends VmView {
 	if ($layoutName == 'edit') {
 
 	    if ($this->_model->getId() == 0 && $this->_cuid == 0) {
-		$button_lbl = JText::_('COM_VIRTUEMART_REGISTER');
+		$button_lbl = vmText::_('COM_VIRTUEMART_REGISTER');
 	    } else {
-		$button_lbl = JText::_('COM_VIRTUEMART_SAVE');
+		$button_lbl = vmText::_('COM_VIRTUEMART_SAVE');
 	    }
 
 	    $this->assignRef('button_lbl', $button_lbl);
@@ -206,38 +206,38 @@ class VirtuemartViewUser extends VmView {
 	}
 
 	if (!$this->userDetails->JUser->get('id')) {
-	    $corefield_title = JText::_('COM_VIRTUEMART_USER_CART_INFO_CREATE_ACCOUNT');
+	    $corefield_title = vmText::_('COM_VIRTUEMART_USER_CART_INFO_CREATE_ACCOUNT');
 	} else {
-	    $corefield_title = JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS');
+	    $corefield_title = vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS');
 	}
 	if ((strpos($this->fTask, 'cart') || strpos($this->fTask, 'checkout'))) {
-	    $pathway->addItem(JText::_('COM_VIRTUEMART_CART_OVERVIEW'), JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
+	    $pathway->addItem(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'), JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
 	} else {
-	    //$pathway->addItem(JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS'), JRoute::_('index.php?option=com_virtuemart&view=user&&layout=edit'));
+	    //$pathway->addItem(vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS'), JRoute::_('index.php?option=com_virtuemart&view=user&&layout=edit'));
 	}
-	$pathway_text = JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS');
+	$pathway_text = vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS');
 	if (!$this->userDetails->JUser->get('id')) {
 	    if ((strpos($this->fTask, 'cart') || strpos($this->fTask, 'checkout'))) {
 		if ($address_type == 'BT') {
-		    $vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
+		    $vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
 		} else {
-		    $vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
+		    $vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
 		}
 	    } else {
 		if ($address_type == 'BT') {
-		    $vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
-		    $title = JText::_('COM_VIRTUEMART_REGISTER');
+		    $vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
+		    $title = vmText::_('COM_VIRTUEMART_REGISTER');
 		} else {
-		    $vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
+		    $vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
 		}
 	    }
 	} else {
 
 	    if ($address_type == 'BT') {
-		$vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL');
+		$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL');
 	    } else {
 
-		$vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
+		$vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
 	    }
 	}
 	  $add_product_link="";
@@ -320,7 +320,7 @@ class VirtuemartViewUser extends VmView {
 	    }
 
 	    if (empty($this->_lists['vendors'])) {
-		$this->_lists['vendors'] = JText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR'); // . $_setVendor;
+		$this->_lists['vendors'] = vmText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR'); // . $_setVendor;
 	    }
 	}
 
@@ -355,7 +355,7 @@ class VirtuemartViewUser extends VmView {
 	$_groupList = $this->_model->getGroupList();
 
 	if (!is_array($_groupList)) {
-	    $this->_lists['gid'] = '<input type="hidden" name="gid" value="' . $this->_userDetails->JUser->get('gid') . '" /><strong>' . JText::_($_groupList) . '</strong>';
+	    $this->_lists['gid'] = '<input type="hidden" name="gid" value="' . $this->_userDetails->JUser->get('gid') . '" /><strong>' . vmText::_($_groupList) . '</strong>';
 	} else {
 	    $this->_lists['gid'] = JHTML::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $this->_userDetails->JUser->get('gid'));
 	}
@@ -442,10 +442,10 @@ class VirtuemartViewUser extends VmView {
     $this->assignRef('vendor', $vendor);
 
 	if (!$doVendor) {
-	    $this->subject = JText::sprintf('COM_VIRTUEMART_NEW_SHOPPER_SUBJECT', $this->user->username, $this->vendor->vendor_store_name);
+	    $this->subject = vmText::sprintf('COM_VIRTUEMART_NEW_SHOPPER_SUBJECT', $this->user->username, $this->vendor->vendor_store_name);
 	    $tpl = 'mail_' . $mailFormat . '_reguser';
 	} else {
-	    $this->subject = JText::sprintf('COM_VIRTUEMART_VENDOR_NEW_SHOPPER_SUBJECT', $this->user->username, $this->vendor->vendor_store_name);
+	    $this->subject = vmText::sprintf('COM_VIRTUEMART_VENDOR_NEW_SHOPPER_SUBJECT', $this->user->username, $this->vendor->vendor_store_name);
 	    $tpl = 'mail_' . $mailFormat . '_regvendor';
 	}
 

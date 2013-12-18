@@ -49,7 +49,7 @@ defined('_JEXEC') or die('');
 			</tr>
 			<tr>
 				<td colspan="2">
-					<strong><?php echo JText::sprintf ('COM_VIRTUEMART_MAIL_SHOPPER_NAME', $this->user['email']); ?></strong><br/>
+					<strong><?php echo vmText::sprintf ('COM_VIRTUEMART_MAIL_SHOPPER_NAME', $this->user['email']); ?></strong><br/>
 				</td>
 			</tr>
 		</table>
@@ -60,7 +60,7 @@ defined('_JEXEC') or die('');
 					<table width="100%" border="0" cellpadding="0" cellspacing="0" class="html-email">
 						<tr>
 							<td >
-								<?php echo JText::sprintf('COM_VIRTUEMART_RECOMMEND_MAIL_MSG', $this->product->product_name,   $this->comment); ?>
+								<?php echo vmText::sprintf('COM_VIRTUEMART_RECOMMEND_MAIL_MSG', $this->product->product_name,   $this->comment); ?>
 							</td>
 						</tr>
 					</table>
@@ -74,7 +74,7 @@ defined('_JEXEC') or die('');
 		echo '<br/><br/>';
 
 		/* GENERAL FOOTER FOR ALL MAILS */
-		echo JText::_('COM_VIRTUEMART_MAIL_FOOTER' ) . '<a href="'.$link.'">'.$this->vendor->vendor_name.'</a>';
+		echo vmText::_('COM_VIRTUEMART_MAIL_FOOTER' ) . '<a href="'.$link.'">'.$this->vendor->vendor_name.'</a>';
 		echo '<br/>';
 		echo $this->vendor->vendor_name .'<br />'.$this->vendor->vendor_phone .' '.$this->vendor->vendor_store_name .'<br /> '.$this->vendor->vendor_store_desc.'<br />'.$this->vendor->vendor_legal_info;
 		?>

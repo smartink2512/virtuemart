@@ -23,10 +23,10 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <table class="html-email" cellspacing="0" cellpadding="0" border="0" width="100%">  <tr  >
 	<th width="50%">
-	    <?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?>
+	    <?php echo vmText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?>
 	</th>
 	<th width="50%" >
-	    <?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
+	    <?php echo vmText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
 	</th>
     </tr>
     <tr>

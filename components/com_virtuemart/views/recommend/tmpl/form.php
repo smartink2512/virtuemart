@@ -34,12 +34,12 @@ $document->addScriptDeclaration('
 ');
 /* Let's see if we found the product */
 if (empty ( $this->product )) {
-	echo JText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
+	echo vmText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
 	echo '<br /><br />  ' . $this->continue_link_html;
 } else { ?>
 
 <div class="ask-a-question-view">
-	<h1><?php echo JText::_('COM_VIRTUEMART_PRODUCT_RECOMMEND')  ?></h1>
+	<h1><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_RECOMMEND')  ?></h1>
 
 	<div class="product-summary">
 		<div class="width70 floatleft">
@@ -65,11 +65,11 @@ if (empty ( $this->product )) {
 	<div class="form-field">
 
 		<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component', FALSE) ; ?>" name="askform" id="askform" >
-			<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" value="" name="email" id="email" size="30" class="validate[required,custom[email]]"/></label>
+			<label><?php echo vmText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" value="" name="email" id="email" size="30" class="validate[required,custom[email]]"/></label>
 				<br />
 			<label>
 				<?php
-				$ask_comment = JText::sprintf('COM_VIRTUEMART_COMMENT', $min, $max);
+				$ask_comment = vmText::sprintf('COM_VIRTUEMART_COMMENT', $min, $max);
 				echo $ask_comment;
 				?>
 				<br />
@@ -77,10 +77,10 @@ if (empty ( $this->product )) {
 			</label>
 
 				<div class="submit">
-					<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo JText::_('COM_VIRTUEMART_RECOMMEND_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_RECOMMEND_SUBMIT')  ?>" />
+					<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo vmText::_('COM_VIRTUEMART_RECOMMEND_SUBMIT')  ?>" value="<?php echo vmText::_('COM_VIRTUEMART_RECOMMEND_SUBMIT')  ?>" />
 
 					<div class="width50 floatright right paddingtop">
-						<?php echo JText::_('COM_VIRTUEMART_ASK_COUNT')  ?>
+						<?php echo vmText::_('COM_VIRTUEMART_ASK_COUNT')  ?>
 						<input type="text" value="0" size="4" class="counter" id="counter" name="counter" maxlength="4" readonly="readonly" />
 					</div>
 				</div>

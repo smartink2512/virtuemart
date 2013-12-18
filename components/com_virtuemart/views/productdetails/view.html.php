@@ -98,7 +98,7 @@ class VirtueMartViewProductdetails extends VmView {
 	if (empty($product->slug)) {
 
 	    //Todo this should be redesigned to fit better for SEO
-	    $mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND'));
+	    $mainframe->enqueueMessage(vmText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND'));
 
 	    $categoryLink = '';
 	    if (!$last_category_id) {
@@ -324,7 +324,7 @@ class VirtueMartViewProductdetails extends VmView {
 		$this->doVendor=$doVendor;
 		$this->fromPdf=false;
 		$this->uselayout = $tpl;
-		$this->subject = !empty($this->subject) ? $this->subject : JText::_('COM_VIRTUEMART_CART_NOTIFY_MAIL_SUBJECT');
+		$this->subject = !empty($this->subject) ? $this->subject : vmText::_('COM_VIRTUEMART_CART_NOTIFY_MAIL_SUBJECT');
 		$this->layoutName = $tpl;
 		$this->setLayout($tpl);
 		parent::display();
@@ -338,7 +338,7 @@ class VirtueMartViewProductdetails extends VmView {
 		}
 		$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink, FALSE);
 
-		$continue_link_html = '<a href="' . $continue_link . '" />' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
+		$continue_link_html = '<a href="' . $continue_link . '" />' . vmText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 		$this->assignRef('continue_link_html', $continue_link_html);
 		// Display it all
 		parent::display($tpl);

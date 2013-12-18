@@ -25,10 +25,10 @@ defined('_JEXEC') or die('Restricted access');
 <table width="100%">
   <tr>
     <td width="50%" bgcolor="#ccc">
-		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?>
+		<?php echo vmText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?>
 	</td>
 	<td width="50%" bgcolor="#ccc">
-		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
+		<?php echo vmText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
 	</td>
   </tr>
   <tr>

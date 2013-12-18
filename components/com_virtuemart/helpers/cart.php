@@ -580,7 +580,7 @@ class VirtueMartCart {
 
 			$msg = CouponHelper::ValidateCouponCode($coupon_code, $this->cartPrices['salesPrice']);;
 		} else{
-			$msg = JText::_('COM_VIRTUEMART_CART_COUPON_TOO_MANY_TRIES');
+			$msg = vmText::_('COM_VIRTUEMART_CART_COUPON_TOO_MANY_TRIES');
 		}
 		if (!empty($msg)) {
 			$this->couponCode = '';
@@ -590,7 +590,7 @@ class VirtueMartCart {
 		}
 		$this->couponCode = $coupon_code;
 		$this->setCartIntoSession();
-		return JText::_('COM_VIRTUEMART_CART_COUPON_VALID');
+		return vmText::_('COM_VIRTUEMART_CART_COUPON_VALID');
 	}
 
 	/**
@@ -618,7 +618,7 @@ class VirtueMartCart {
 			$this->confirmedOrder();
 		} else {
 			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
 		}
 	}
 
@@ -628,7 +628,7 @@ class VirtueMartCart {
 
 		if ($this->_dataValidated && $redirect) {
 			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE), vmText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
 		}
 
 	}
@@ -672,7 +672,7 @@ class VirtueMartCart {
 
 		//Either we use here $this->_redirect, or we redirect always directly, atm we check the boolean _redirect
 		if (count($this->cartProductsData) ===0 and $this->_redirect) {
-			return $this->redirecter('index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
+			return $this->redirecter('index.php?option=com_virtuemart', vmText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
 		} else {
 
 			$redirectMsg = $this->prepareCartData();
@@ -692,7 +692,7 @@ class VirtueMartCart {
 			$agreed = $userFieldsModel->getUserfield('agreed','name');
 			//vmdebug('my new getUserfieldbyName',$agreed->default,$agreed->required);
 			if(!empty($agreed->required) and empty($agreed->default) and !empty($this->BT)){
-				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+				$redirectMsg = null;// vmText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 
 				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
@@ -727,7 +727,7 @@ class VirtueMartCart {
 			$agreed = $userFieldsModel->getUserfield('agreed','name');
 
 			if(!empty($agreed->required) and $agreed->default!=='' and $validUserDataBT!==-1){
-				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+				$redirectMsg = null;// vmText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				$this->tosAccepted = false;
 				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
@@ -770,7 +770,7 @@ class VirtueMartCart {
 		if(VmConfig::get('oncheckout_only_registered',0)) {
 			$currentUser = JFactory::getUser();
 			if(empty($currentUser->id)){
-				$redirectMsg = JText::_('COM_VIRTUEMART_CART_ONLY_REGISTERED');
+				$redirectMsg = vmText::_('COM_VIRTUEMART_CART_ONLY_REGISTERED');
 				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
 			}
 		}
@@ -787,7 +787,7 @@ class VirtueMartCart {
 			if(count($this->_triesValidateCoupon)<8){
 				$redirectMsg = CouponHelper::ValidateCouponCode($this->couponCode, $this->cartPrices['salesPrice']);
 			} else{
-				$redirectMsg = JText::_('COM_VIRTUEMART_CART_COUPON_TOO_MANY_TRIES');
+				$redirectMsg = vmText::_('COM_VIRTUEMART_CART_COUPON_TOO_MANY_TRIES');
 			}
 
 			if (!empty($redirectMsg)) {
@@ -876,7 +876,7 @@ class VirtueMartCart {
 				if (!class_exists('CurrencyDisplay'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 				$currency = CurrencyDisplay::getInstance();
-				return JText::sprintf('COM_VIRTUEMART_CART_MIN_PURCHASE', $currency->priceDisplay($store->vendor_min_pov));
+				return vmText::sprintf('COM_VIRTUEMART_CART_MIN_PURCHASE', $currency->priceDisplay($store->vendor_min_pov));
 			}
 		}
 		return null;
@@ -926,7 +926,7 @@ class VirtueMartCart {
             $orderDetails = $orderModel ->getMyOrderDetails($orderID);
 
             if(!$orderDetails or empty($orderDetails['details'])){
-                echo JText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
+                echo vmText::_('COM_VIRTUEMART_CART_ORDER_NOTFOUND');
                 return;
             }
 			$dispatcher = JDispatcher::getInstance();
@@ -1284,14 +1284,14 @@ class VirtueMartCart {
 		$mainframe = JFactory::getApplication();
 		// Check for a valid quantity
 		if (!is_numeric( $quantity)) {
-			$errorMsg = JText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
+			$errorMsg = vmText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
 			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
 			return false;
 		}
 		// Check for negative quantity
 		if ($quantity < 1) {
-			$errorMsg = JText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
+			$errorMsg = vmText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
 			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
 			return false;
@@ -1307,12 +1307,12 @@ class VirtueMartCart {
 				vmdebug('my products left '.$productsleft.' and my quantity '.$quantity);
 				if($productsleft>0 and $stockhandle=='disableadd'){
 					$quantity = $productsleft;
-					$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_QUANTITY',$quantity);
+					$errorMsg = vmText::sprintf('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_QUANTITY',$quantity);
 					$this->setError($errorMsg);
 					vmInfo($errorMsg.' '.$product->product_name);
 					// $mainframe->enqueueMessage($errorMsg);
 				} else {
-					$errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
+					$errorMsg = vmText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
 					$this->setError($errorMsg); // Private error retrieved with getError is used only by addJS, so only the latest is fine
 					// todo better key string
 					vmInfo($errorMsg. ' '.$product->product_name);
@@ -1325,7 +1325,7 @@ class VirtueMartCart {
 		// Check for the minimum and maximum quantities
 		$min = $product->min_order_level;
 		if ($min != 0 && $quantity < $min) {
-			$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_MIN_ORDER', $min);
+			$errorMsg = vmText::sprintf('COM_VIRTUEMART_CART_MIN_ORDER', $min);
 			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
 			return false;
@@ -1333,7 +1333,7 @@ class VirtueMartCart {
 
 		$max = $product->max_order_level;
 		if ($max != 0 && $quantity > $max) {
-			$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_MAX_ORDER', $max);
+			$errorMsg = vmText::sprintf('COM_VIRTUEMART_CART_MAX_ORDER', $max);
 			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
 			return false;
@@ -1341,7 +1341,7 @@ class VirtueMartCart {
 
 		$step = $product->step_order_level;
 		if ($step != 0 && ($quantity%$step)!= 0) {
-			$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_STEP_ORDER', $step);
+			$errorMsg = vmText::sprintf('COM_VIRTUEMART_CART_STEP_ORDER', $step);
 			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
 			return false;
@@ -1478,19 +1478,19 @@ class VirtueMartCart {
 		$data->dataValidated = $this->_dataValidated ;
 
 
-		if ($data->totalProduct>1) $data->totalProductTxt = JText::sprintf('COM_VIRTUEMART_CART_X_PRODUCTS', $data->totalProduct);
-		else if ($data->totalProduct == 1) $data->totalProductTxt = JText::_('COM_VIRTUEMART_CART_ONE_PRODUCT');
-		else $data->totalProductTxt = JText::_('COM_VIRTUEMART_EMPTY_CART');
+		if ($data->totalProduct>1) $data->totalProductTxt = vmText::sprintf('COM_VIRTUEMART_CART_X_PRODUCTS', $data->totalProduct);
+		else if ($data->totalProduct == 1) $data->totalProductTxt = vmText::_('COM_VIRTUEMART_CART_ONE_PRODUCT');
+		else $data->totalProductTxt = vmText::_('COM_VIRTUEMART_EMPTY_CART');
 		if (false && $data->dataValidated == true) {
 			$taskRoute = '&task=confirm';
-			$linkName = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
+			$linkName = vmText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
 		} else {
 			$taskRoute = '';
-			$linkName = JText::_('COM_VIRTUEMART_CART_SHOW');
+			$linkName = vmText::_('COM_VIRTUEMART_CART_SHOW');
 		}
 
 		$data->cart_show = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart".$taskRoute,true,VmConfig::get('useSSL',0)).'" rel="nofollow" >'.$linkName.'</a>';
-		$data->billTotal = JText::_('COM_VIRTUEMART_CART_TOTAL').' : <strong>'. $data->billTotal .'</strong>';
+		$data->billTotal = vmText::_('COM_VIRTUEMART_CART_TOTAL').' : <strong>'. $data->billTotal .'</strong>';
 
 		return $data ;
 	}

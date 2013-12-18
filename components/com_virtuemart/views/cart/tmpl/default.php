@@ -85,11 +85,11 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 <div class="cart-view">
 	<div>
 		<div class="width50 floatleft">
-			<h1><?php echo JText::_ ('COM_VIRTUEMART_CART_TITLE'); ?></h1>
+			<h1><?php echo vmText::_ ('COM_VIRTUEMART_CART_TITLE'); ?></h1>
 		</div>
 		<?php if (VmConfig::get ('oncheckout_show_steps', 1) && $this->checkout_task === 'confirm') {
 		vmdebug ('checkout_task', $this->checkout_task);
-		echo '<div class="checkoutStep" id="checkoutStep4">' . JText::_ ('COM_VIRTUEMART_USER_FORM_CART_STEP4') . '</div>';
+		echo '<div class="checkoutStep" id="checkoutStep4">' . vmText::_ ('COM_VIRTUEMART_USER_FORM_CART_STEP4') . '</div>';
 	} ?>
 		<div class="width50 floatleft right">
 			<?php // Continue Shopping Button
@@ -143,7 +143,7 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 	<?php } ?>
 		<?php // Leave A Comment Field ?>
 		<div class="customer-comment marginbottom15">
-			<span class="comment"><?php echo JText::_ ('COM_VIRTUEMART_COMMENT_CART'); ?></span><br/>
+			<span class="comment"><?php echo vmText::_ ('COM_VIRTUEMART_COMMENT_CART'); ?></span><br/>
 			<textarea class="customer-comment" name="customer_comment" cols="60" rows="1"><?php echo $this->cart->customer_comment; ?></textarea>
 		</div>
 		<?php // Leave A Comment Field END ?>
@@ -172,19 +172,19 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 								<a href="<?php JRoute::_ ('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=1', FALSE) ?>" class="terms-of-service" id="terms-of-service" rel="facebox"
 							  	 target="_blank">
 									<span class="vmicon vm2-termsofservice-icon"></span>
-									<?php echo JText::_ ('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED'); ?>
+									<?php echo vmText::_ ('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED'); ?>
 								</a>
 							</label>
 
 							<div id="full-tos">
-								<h2><?php echo JText::_ ('COM_VIRTUEMART_CART_TOS'); ?></h2>
+								<h2><?php echo vmText::_ ('COM_VIRTUEMART_CART_TOS'); ?></h2>
 								<?php echo $this->cart->vendor->vendor_terms_of_service; ?>
 							</div>
 
 						</div>
 						<?php
 					} // VmConfig::get('oncheckout_show_legal_info',1)
-					//echo '<span class="tos">'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
+					//echo '<span class="tos">'. vmText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
 			}
 			echo $this->checkout_link_html;
 			?>

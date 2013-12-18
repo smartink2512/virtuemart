@@ -99,9 +99,9 @@ class shopFunctionsF {
 	static public function getAddToCartButton ($orderable) {
 
 		if($orderable) {
-			$html = '<input type="submit" name="addtocart" class="addtocart-button" rel="nofollow" value="'.JText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" title="'.JText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" />';
+			$html = '<input type="submit" name="addtocart" class="addtocart-button" rel="nofollow" value="'.vmText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" title="'.vmText::_( 'COM_VIRTUEMART_CART_ADD_TO' ).'" />';
 		} else {
-			$html = '<input name="addtocart" class="addtocart-button-disabled" value="'.JText::_( 'COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT' ).'" title="'.JText::_( 'COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT' ).'" />';
+			$html = '<input name="addtocart" class="addtocart-button-disabled" value="'.vmText::_( 'COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT' ).'" title="'.vmText::_( 'COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT' ).'" />';
 		}
 		return $html;
 	}
@@ -326,7 +326,7 @@ class shopFunctionsF {
 		$body = ob_get_contents();
 		ob_end_clean();
 
-		$subject = (isset($view->subject)) ? $view->subject : JText::_( 'COM_VIRTUEMART_DEFAULT_MESSAGE_SUBJECT' );
+		$subject = (isset($view->subject)) ? $view->subject : vmText::_( 'COM_VIRTUEMART_DEFAULT_MESSAGE_SUBJECT' );
 		$mailer = JFactory::getMailer();
 		$mailer->addRecipient( $recipient );
 		$mailer->setSubject(  html_entity_decode( $subject) );
@@ -537,7 +537,7 @@ class shopFunctionsF {
 		$html = '<div id="ui-tabs">';
 		$i = 1;
 		foreach( $load_template as $tab_content => $tab_title ) {
-			$html .= '<div id="tab-'.$i.'" class="tabs" title="'.JText::_( $tab_title ).'">';
+			$html .= '<div id="tab-'.$i.'" class="tabs" title="'.vmText::_( $tab_title ).'">';
 			$html .= $view->loadTemplate( $tab_content );
 			$html .= '<div class="clear"></div>
 			    </div>';
@@ -569,10 +569,10 @@ class shopFunctionsF {
 	static function translateTwoLangKeys ($pkey, $skey) {
 
 		$upper = strtoupper( $pkey ).'_2STRINGS';
-		if(JText::_( $upper ) !== $upper) {
-			return JText::sprintf( $upper, JText::_( $skey ) );
+		if(vmText::_( $upper ) !== $upper) {
+			return vmText::sprintf( $upper, vmText::_( $skey ) );
 		} else {
-			return JText::_( $pkey ).' '.JText::_( $skey );
+			return vmText::_( $pkey ).' '.vmText::_( $skey );
 		}
 	}
 
@@ -618,22 +618,22 @@ class shopFunctionsF {
 			// checks template image directory for image, if non found default are loaded
 			if($use_icon) {
 				$filter = JFilterInput::getInstance();
-				$text = JHtml::_( 'image.site', 'printButton.png', $folder, NULL, NULL, JText::_( 'COM_VIRTUEMART_PRINT' ) );
+				$text = JHtml::_( 'image.site', 'printButton.png', $folder, NULL, NULL, vmText::_( 'COM_VIRTUEMART_PRINT' ) );
 				$text .= $filter->clean( $add_text );
 			} else {
-				$text = '|&nbsp;'.JText::_( 'COM_VIRTUEMART_PRINT' ).'&nbsp;|';
+				$text = '|&nbsp;'.vmText::_( 'COM_VIRTUEMART_PRINT' ).'&nbsp;|';
 			}
 			$isPopup = VmRequest::getVar( 'pop' );
 			if($isPopup) {
 				// Print Preview button - used when viewing page
 				$html = '<span class="vmNoPrint">
-					<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'.JText::_( 'COM_VIRTUEMART_PRINT' ).'" rel="nofollow">
+					<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'.vmText::_( 'COM_VIRTUEMART_PRINT' ).'" rel="nofollow">
 					'.$text.'
 					</a></span>';
 				return $html;
 			} else {
 				// Print Button - used in pop-up window
-				return self::vmPopupLink( $link, $text, 640, 480, '_blank', JText::_( 'COM_VIRTUEMART_PRINT' ) );
+				return self::vmPopupLink( $link, $text, 640, 480, '_blank', vmText::_( 'COM_VIRTUEMART_PRINT' ) );
 			}
 		}
 

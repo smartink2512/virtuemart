@@ -61,7 +61,7 @@ if(VmConfig::get('shop_is_offline',0)){
 			vmJsApi::jQuery(false);
 			//vmJsApi::js('vmsite');
 		} else {
-			$app->redirect('index.php?option=com_virtuemart', jText::_('COM_VIRTUEMART_RESTRICTED_ACCESS') );
+			$app->redirect('index.php?option=com_virtuemart', vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS') );
 		}
 
 	} elseif($_controller) {

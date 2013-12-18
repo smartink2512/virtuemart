@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <fieldset>
 	<span class="userfields_info">
-		<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_LBL') ?>
+		<?php echo vmText::_('COM_VIRTUEMART_SHOPPER_FORM_LBL') ?>
 	</span>
 	<table class="adminForm user-details">
 <?php	if(Vmconfig::get('multix','none')!=='none'){ ?>
@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td class="key">
 				<label for="virtuemart_vendor_id">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR') ?>:
+					<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_VENDOR') ?>:
 				</label>
 			</td>
 			<td>
@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td class="key">
 				<label for="perms">
-					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_PERMS') ?>:
+					<?php echo vmText::_('COM_VIRTUEMART_USER_FORM_PERMS') ?>:
 				</label>
 			</td>
 			<td>
@@ -54,7 +54,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td class="key">
 				<label for="customer_number">
-					<?php echo JText::_('COM_VIRTUEMART_USER_FORM_CUSTOMER_NUMBER') ?>:
+					<?php echo vmText::_('COM_VIRTUEMART_USER_FORM_CUSTOMER_NUMBER') ?>:
 				</label>
 			</td>
 			<td>
@@ -70,7 +70,7 @@ defined('_JEXEC') or die('Restricted access');
 		<tr>
 			<td class="key">
 				<label for="virtuemart_shoppergroup_id">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?>:
+					<?php echo vmText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?>:
 				</label>
 			</td>
 			<td>
