@@ -1563,7 +1563,7 @@ class ShopFunctions {
 			$html .= $order_info['quantity'];
 			$html .= '</td>';
 			$html .= '<td class="order_status">';
-			$html .= $order_info['order_item_status_name'];
+			$html .= JText::_($order_info['order_item_status_name']);
 			$html .= '</td>
 			<td class="order_number">';
 				$uri = JFactory::getURI();
