@@ -39,18 +39,16 @@ abstract class vmPSPlugin extends vmPlugin {
 		$this->_tableChecked = TRUE;
 	}
 
-	public function getVarsToPush () {
-
-		$black_list = array('spacer');
+	static public function getVarsToPushByXML ($xmlFile,$name){
 		$data = array();
 
-		if (is_file ( $this->_xmlFile)) {
+		if (is_file ( $xmlFile )) {
 
 			$xml = JFactory::getXMLParser ('simple');
-			$result = $xml->loadFile ($this->_xmlFile);
+			$result = $xml->loadFile ($xmlFile);
 			if ($result) {
 				if (isset( $xml->document->params) ){
-				 $params = $xml->document->params;
+					$params = $xml->document->params;
 					foreach ($params as $param) {
 						if ($param->_name = "params") {
 							if ($children = $param->_children) {
@@ -64,7 +62,7 @@ abstract class vmPSPlugin extends vmPlugin {
 						}
 					}
 				} else {
-					$form = JForm::getInstance($this->_psType.'Form', $this->_xmlFile, array(),false, '//config');
+					$form = JForm::getInstance($name, $xmlFile, array(),false, '//config');
 					$fieldSets = $form->getFieldsets();
 					foreach ($fieldSets as $name => $fieldSet) {
 						foreach ($form->getFieldset($name) as $field) {
@@ -78,6 +76,12 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		return $data;
+	}
+
+	public function getVarsToPush () {
+
+		return self::getVarsToPushByXML($this->_xmlFile,$this->_psType.'Form');
+
 	}
 
 
