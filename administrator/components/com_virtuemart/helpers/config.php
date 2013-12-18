@@ -383,13 +383,14 @@ function logInfo ($text, $type = 'message') {
 	}
 	if (JFile::exists($file)) {
 		$fp = fopen ($file, 'a');
-		if ($head) {
-			fwrite ($fp,  $head);
+		if ($fp) {
+			if ($head) {
+				fwrite ($fp,  $head);
+			}
+			fwrite ($fp, "\n" . $date->toFormat ('%Y-%m-%d %H:%M:%S'));
+			fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
+			fclose ($fp);
 		}
-
-		fwrite ($fp, "\n" . $date->toFormat ('%Y-%m-%d %H:%M:%S'));
-		fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
-		fclose ($fp);
 	} else {
 		vmError('Could not use path '.$file.' to store log');
 	}
