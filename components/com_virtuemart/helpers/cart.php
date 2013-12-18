@@ -746,6 +746,7 @@ class VirtueMartCart {
 
 		if (!empty($msg)) {
 			$this->couponCode = '';
+			$this->_blockConfirm = true;
 			$this->getCartPrices();
 			$this->setCartIntoSession();
 			return $msg;
