@@ -12,7 +12,7 @@ jimport('joomla.application.component.model');
 /**
  * The Live Update MVC model
  */
-class LiveUpdateModel extends VmModel
+class LiveUpdateModel extends JModel
 {
 	public function download()
 	{

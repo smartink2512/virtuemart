@@ -144,7 +144,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 		$result = $db->loadAssocList('extension_id');
 		if(empty($result)){
 			$app = JFactory::getApplication();
-			$app -> enqueueMessage(JText::_('COM_VIRTUEMART_NO_PAYMENT_PLUGINS_INSTALLED'));
+			$app -> enqueueMessage(vmText::_('COM_VIRTUEMART_NO_PAYMENT_PLUGINS_INSTALLED'));
 		}
 
 		$listHTML='<select id="payment_jplugin_id" name="payment_jplugin_id" style= "width: 300px;">';
@@ -155,7 +155,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 			// Get plugin info
 			$pType = $params->getValue('pType');
 			if($pType=='Y' || $pType=='C') $id = 'pam_type_CC_on'; else $id='pam_type_CC_off';
-			$listHTML .= '<option id="'.$id.'" '.$checked.' value="'.$paym['extension_id'].'">'.JText::_($paym['name']).'</option>';
+			$listHTML .= '<option id="'.$id.'" '.$checked.' value="'.$paym['extension_id'].'">'.vmText::_($paym['name']).'</option>';
 
 		}
 		$listHTML .= '</select>';

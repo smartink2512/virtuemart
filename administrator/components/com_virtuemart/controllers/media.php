@@ -75,7 +75,7 @@ class VirtuemartControllerMedia extends VmController {
 		}
 
 		if ($id = $fileModel->store($data,$data['file_type'])) {
-			$msg = JText::_('COM_VIRTUEMART_FILE_SAVED_SUCCESS');
+			$msg = vmText::_('COM_VIRTUEMART_FILE_SAVED_SUCCESS');
 		} else {
 			$msg = $fileModel->getError();
 		}

@@ -40,13 +40,13 @@ $document->addScriptDeclaration($js);
 <td valign="top" width="50%"> */
 ?>
 <fieldset>
-	<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECKOUT_SETTINGS'); ?></legend>
+	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_CHECKOUT_SETTINGS'); ?></legend>
 	<table class="admintable">
     	<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ADDTOCART_POPUP_EXPLAIN'); ?>">
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_ADDTOCART_POPUP_EXPLAIN'); ?>">
 					<label for="addtocart_popup">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ADDTOCART_POPUP'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_ADDTOCART_POPUP'); ?>
 					</label>
 				</span>
 			</td>
@@ -56,9 +56,9 @@ $document->addScriptDeclaration($js);
 		</tr>
 		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_POPUP_REL_TIP'); ?>">
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_CFG_POPUP_REL_TIP'); ?>">
 					<label for="popup_rel">
-						<?php echo JText::_('COM_VIRTUEMART_CFG_POPUP_REL'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_CFG_POPUP_REL'); ?>
 					</label>
 				</span>
 			</td>
@@ -68,9 +68,9 @@ $document->addScriptDeclaration($js);
 		</tr>
 		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CHECKOUT_OPC_TIP'); ?>">
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CHECKOUT_OPC_TIP'); ?>">
 					<label for="oncheckout_opc">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CHECKOUT_OPC'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CHECKOUT_OPC'); ?>
 					</label>
                 </span>
 			</td>
@@ -81,9 +81,9 @@ $document->addScriptDeclaration($js);
 		<div id="not_opc_param">
 		<tr class="not_opc_param">
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS_TIP'); ?>">
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS_TIP'); ?>">
 					<label for="oncheckout_show_steps">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS'); ?>
 					</label>
                 </span>
 			</td>
@@ -93,9 +93,9 @@ $document->addScriptDeclaration($js);
 		</tr>
 		<tr  class="not_opc_param">
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT_EXPLAIN'); ?>">
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT_EXPLAIN'); ?>">
 					<label for="automatic_shipment">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT'); ?>
 					</label>
 				</span>
 			</td>
@@ -105,9 +105,9 @@ $document->addScriptDeclaration($js);
 		</tr>
 		<tr  class="not_opc_param">
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENT_EXPLAIN'); ?>">
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENT_EXPLAIN'); ?>">
 					<label for="automatic_payment">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENT'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENT'); ?>
 					</label>
 				</span>
 			</td>
@@ -118,9 +118,9 @@ $document->addScriptDeclaration($js);
 		</div>
 		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN'); ?>">
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN'); ?>">
 					<label for="agree_to_tos_onorder">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER'); ?>
 					</label>
 				</span>
 			</td>
@@ -130,9 +130,9 @@ $document->addScriptDeclaration($js);
 		</tr>
 		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP'); ?>">
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP'); ?>">
 					<label for="oncheckout_show_legal_info">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO'); ?>
 					</label>
                 </span>
 			</td>
@@ -142,9 +142,9 @@ $document->addScriptDeclaration($js);
 		</tr>
 		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER_TIP'); ?>">
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER_TIP'); ?>">
 					<label for="oncheckout_show_register">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER'); ?>
 					</label>
                 </span>
 			</td>
@@ -154,9 +154,9 @@ $document->addScriptDeclaration($js);
 		</tr>
 		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_ONLY_REGISTERED_TIP'); ?>">
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_ONLY_REGISTERED_TIP'); ?>">
 					<label for="oncheckout_only_registered">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_ONLY_REGISTERED'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_ONLY_REGISTERED'); ?>
 					</label>
 				</span>
 			</td>
@@ -167,9 +167,9 @@ $document->addScriptDeclaration($js);
 
 		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_PRODUCTIMAGES_TIP'); ?>">
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_PRODUCTIMAGES_TIP'); ?>">
 					<label for="oncheckout_show_images">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_PRODUCTIMAGES'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_PRODUCTIMAGES'); ?>
 					</label>
                 </span>
 			</td>
@@ -179,8 +179,8 @@ $document->addScriptDeclaration($js);
 		</tr>
 		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_STATUS_PDF_INVOICES_TIP'); ?>">
-					<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_STATUS_PDF_INVOICES'); ?>
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_STATUS_PDF_INVOICES_TIP'); ?>">
+					<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_STATUS_PDF_INVOICES'); ?>
 				</span>
 			</td>
 			<td>
@@ -189,8 +189,8 @@ $document->addScriptDeclaration($js);
 		</tr>
 		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_SHOPPER_TIP'); ?>">
-					<?php echo JText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_SHOPPER'); ?>
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_SHOPPER_TIP'); ?>">
+					<?php echo vmText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_SHOPPER'); ?>
 				 </span>
 			</td>
 			<td>
@@ -199,8 +199,8 @@ $document->addScriptDeclaration($js);
 		</tr>
 		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_VENDOR_TIP'); ?>">
-					<?php echo JText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_VENDOR'); ?>
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_VENDOR_TIP'); ?>">
+					<?php echo vmText::_('COM_VIRTUEMART_CFG_OSTATUS_EMAILS_VENDOR'); ?>
 				</span>
 			</td>
 			<td>
@@ -209,9 +209,9 @@ $document->addScriptDeclaration($js);
 		</tr>
 		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LANGFIX_EXPLAIN'); ?>">
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_LANGFIX_EXPLAIN'); ?>">
 					<label for="addtocart_popup">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LANGFIX'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_LANGFIX'); ?>
 					</label>
 				</span>
 			</td>
@@ -221,9 +221,9 @@ $document->addScriptDeclaration($js);
 		</tr>
 		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_CHANGE_SHOPPER_TIP'); ?>">
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_CHANGE_SHOPPER_TIP'); ?>">
 					<label for="oncheckout_change_shopper">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_CHANGE_SHOPPER'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_CHANGE_SHOPPER'); ?>
 					</label>
                 </span>
 			</td>
@@ -233,13 +233,13 @@ $document->addScriptDeclaration($js);
 		</tr>
 <?php
 		$_delivery_date_options = array(
-			'm' => JText::_('COM_VIRTUEMART_DELDATE_INV')
-		, 'osP' => JText::_('COM_VIRTUEMART_ORDER_STATUS_PENDING')
-		, 'osU' => JText::_('COM_VIRTUEMART_ORDER_STATUS_CONFIRMED_BY_SHOPPER')
-		, 'osC' => JText::_('COM_VIRTUEMART_ORDER_STATUS_CONFIRMED')
-		, 'osS' => JText::_('COM_VIRTUEMART_ORDER_STATUS_SHIPPED')
-		, 'osR' => JText::_('COM_VIRTUEMART_ORDER_STATUS_REFUNDED')
-		, 'osC' => JText::_('COM_VIRTUEMART_ORDER_STATUS_CANCELLED')
+			'm' => vmText::_('COM_VIRTUEMART_DELDATE_INV')
+		, 'osP' => vmText::_('COM_VIRTUEMART_ORDER_STATUS_PENDING')
+		, 'osU' => vmText::_('COM_VIRTUEMART_ORDER_STATUS_CONFIRMED_BY_SHOPPER')
+		, 'osC' => vmText::_('COM_VIRTUEMART_ORDER_STATUS_CONFIRMED')
+		, 'osS' => vmText::_('COM_VIRTUEMART_ORDER_STATUS_SHIPPED')
+		, 'osR' => vmText::_('COM_VIRTUEMART_ORDER_STATUS_REFUNDED')
+		, 'osC' => vmText::_('COM_VIRTUEMART_ORDER_STATUS_CANCELLED')
 		);
 		echo VmHTML::row('selectList','COM_VIRTUEMART_CFG_DELDATE_INV','del_date_type', VmConfig::get('del_date_type','m'), $_delivery_date_options);
 		?>
@@ -252,12 +252,12 @@ $document->addScriptDeclaration($js);
  <td valign="top">
 
 <fieldset>
-<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES') ?></legend>
+<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES') ?></legend>
 <table class="admintable">
 <tr>
 <td class="key">
-<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES_LBL_TIP'); ?>">
-<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES_LBL') ?>
+<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES_LBL_TIP'); ?>">
+<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES_LBL') ?>
 </span>
 </td>
 <td><fieldset class="checkbox">

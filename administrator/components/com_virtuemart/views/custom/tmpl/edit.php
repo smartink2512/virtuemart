@@ -22,7 +22,7 @@ AdminUIHelper::startAdminArea($this);
 ?>
 <form name="adminForm" id="adminForm" method="post" action="">
     <fieldset>
-	<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD'); ?></legend>
+	<legend><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD'); ?></legend>
 	<?php
 	$this->customfields->addHidden('view', 'custom');
 	$this->customfields->addHidden('task', '');
@@ -36,7 +36,7 @@ AdminUIHelper::startAdminArea($this);
 	    <?php echo $this->customfields->displayCustomFields($this->custom); ?>
 
 	    <tr id="custom_plg">
-		<td valign="top"><?php echo JText::_('COM_VIRTUEMART_SELECT_CUSTOM_PLUGIN') ?></td>
+		<td valign="top"><?php echo vmText::_('COM_VIRTUEMART_SELECT_CUSTOM_PLUGIN') ?></td>
 		<td>
 		    <fieldset>
 			<?php echo $this->pluginList ?>

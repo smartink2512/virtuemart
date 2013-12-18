@@ -43,7 +43,7 @@ class JElementVmOrderState extends JElement {
 		$fields = $db->loadObjectList ();
 
 		foreach ($fields as $field) {
-			$field->text= JText::_ ($field->text);
+			$field->text= vmText::_ ($field->text);
 		}
 
 		return JHTML::_ ('select.genericlist', $fields, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);

@@ -71,7 +71,7 @@ class Creditcard {
 		  } */
 
 		if (empty($this->number) || !self::mod10($this->number)) {
-			//JError::raiseWarning('', JText::_('COM_VIRTUEMART_CC_ENUMBER'));
+			//JError::raiseWarning('', vmText::_('COM_VIRTUEMART_CC_ENUMBER'));
 //			$this->errno = CC_ENUMBER;
 //			$d['error'] = $this->errno;
 			return false;

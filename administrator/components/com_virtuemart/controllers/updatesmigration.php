@@ -137,7 +137,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			$model = $this->getModel('updatesMigration');
 			$model->restoreSystemDefaults();
 
-			$msg = JText::_('COM_VIRTUEMART_SYSTEM_DEFAULTS_RESTORED');
+			$msg = vmText::_('COM_VIRTUEMART_SYSTEM_DEFAULTS_RESTORED');
 			$msg .= ' User id of the main vendor is ' . $model->setStoreOwner();
 			$this->setDangerousToolsOff();
 		}else {
@@ -157,7 +157,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 		$this->checkPermissionForTools();
 
-		$msg = JText::_('COM_VIRTUEMART_SYSTEM_VMTABLES_DELETED');
+		$msg = vmText::_('COM_VIRTUEMART_SYSTEM_VMTABLES_DELETED');
 		if(VmConfig::get('dangeroustools', false)){
 			$model = $this->getModel('updatesMigration');
 
@@ -181,7 +181,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 		$this->checkPermissionForTools();
 
-		$msg = JText::_('COM_VIRTUEMART_SYSTEM_VMDATA_DELETED');
+		$msg = vmText::_('COM_VIRTUEMART_SYSTEM_VMDATA_DELETED');
 		if(VmConfig::get('dangeroustools', false)){
 			$model = $this->getModel('updatesMigration');
 
@@ -200,7 +200,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 		$this->checkPermissionForTools();
 
-		$msg = JText::_('COM_VIRTUEMART_SYSTEM_ALLVMDATA_DELETED');
+		$msg = vmText::_('COM_VIRTUEMART_SYSTEM_ALLVMDATA_DELETED');
 		if(VmConfig::get('dangeroustools', false)){
 
 			$this->installer->populateVmDatabase("delete_essential.sql");
@@ -217,7 +217,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 		$this->checkPermissionForTools();
 
-		$msg = JText::_('COM_VIRTUEMART_SYSTEM_RESTVMDATA_DELETED');
+		$msg = vmText::_('COM_VIRTUEMART_SYSTEM_RESTVMDATA_DELETED');
 		if(VmConfig::get('dangeroustools', false)){
 			$this->installer->populateVmDatabase("delete_restoreable.sql");
 			$this->setDangerousToolsOff();
@@ -319,7 +319,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$uri = JFactory::getURI();
 		VmConfig::loadJLang('com_virtuemart_config');
 		$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
-		$msg = JText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED', JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'), $link);
+		$msg = vmText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED', vmText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'), $link);
 		return $msg;
 	}
 

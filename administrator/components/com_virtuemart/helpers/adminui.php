@@ -55,7 +55,7 @@ class AdminUIHelper {
 		$document->addScript($front.'js/chosen.jquery.min.js');
 		$document->addScript($admin.'js/vm2admin.js');
 
-		$vm2string = "editImage: 'edit image',select_all_text: '".JText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".JText::_($selectText)."'" ;
+		$vm2string = "editImage: 'edit image',select_all_text: '".vmText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".vmText::_($selectText)."'" ;
 		$document->addScriptDeclaration ( "
 //<![CDATA[
 		var tip_image='".JURI::root(true)."/components/com_virtuemart/assets/js/images/vtip_arrow.png';
@@ -147,7 +147,7 @@ class AdminUIHelper {
 		$html = '<div id="admin-ui-tabs">';
 
 		foreach ( $load_template as $tab_content => $tab_title ) {
-			$html .= '<div class="tabs" title="' . JText::_ ( $tab_title ) . '">';
+			$html .= '<div class="tabs" title="' . vmText::_ ( $tab_title ) . '">';
 			$html .= $view->loadTemplate ( $tab_content );
 			$html .= '<div class="clear"></div></div>';
 		}
@@ -169,7 +169,7 @@ class AdminUIHelper {
 			');
 			$html = 	'<div id="admin-ui-tabs">
 
-							<div class="tabs" title="'.JText::_($language).'">';
+							<div class="tabs" title="'.vmText::_($language).'">';
 			echo $html;
 		}
 		if ($return == 'end') {
@@ -231,7 +231,7 @@ class AdminUIHelper {
 		foreach ( $menuItems as $item ) { ?>
 
 			<h3 class="menu-title">
-				<?php echo JText::_ ( $item ['title'] )?>
+				<?php echo vmText::_ ( $item ['title'] )?>
 			</h3>
 
 			<div class="menu-list">
@@ -254,7 +254,7 @@ class AdminUIHelper {
 						if ($user->authorise('core.admin', 'com_virtuemart') || $user->authorise('vm.'.$link ['view'], 'com_virtuemart') || $target || $link ['view']=='about' || $link ['view']=='virtuemart') {
 							?>
 							<li>
-								<a href="<?php echo $url; ?>" <?php echo $target; ?>><span class="<?php echo $link ['icon_class'] ?>"></span><?php echo JText::_ ( $link ['name'] )?></a>
+								<a href="<?php echo $url; ?>" <?php echo $target; ?>><span class="<?php echo $link ['icon_class'] ?>"></span><?php echo vmText::_ ( $link ['name'] )?></a>
 							</li>
 							<?php
 						}

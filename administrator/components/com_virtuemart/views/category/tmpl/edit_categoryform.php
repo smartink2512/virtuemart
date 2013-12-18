@@ -26,13 +26,13 @@ echo $this->langList ?>
 	<tr>
 		<td valign="top" colspan="2">
 			<fieldset>
-				<legend><?php echo JText::_('COM_VIRTUEMART_FORM_GENERAL'); ?></legend>
+				<legend><?php echo vmText::_('COM_VIRTUEMART_FORM_GENERAL'); ?></legend>
 				<table width="100%" border="0">
 					<!-- Commented out for future use
 				<tr>
 					<td class="key">
 						<label for="shared">
-							<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_SHARED'); ?>:
+							<?php echo vmText::_('COM_VIRTUEMART_CATEGORY_FORM_SHARED'); ?>:
 						</label>
 					</td>
 					<td>
@@ -54,12 +54,12 @@ echo $this->langList ?>
 	<tr>
 		<td valign="top" style="width: 50%;">
 			<fieldset>
-				<legend><?php echo JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
+				<legend><?php echo vmText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
 				<table>
 					<?php echo VmHTML::row('raw','COM_VIRTUEMART_ORDERING', ShopFunctions::getEnumeratedCategories(true, true, $this->parent->virtuemart_category_id, 'ordering', '', 'ordering', 'category_name', $this->category->ordering) ); ?>
 					<?php $categorylist = '
 						<select name="category_parent_id" id="category_parent_id" class="inputbox">
-							<option value="">'.JText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL').'</option>
+							<option value="">'.vmText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL').'</option>
 							'.$this->categorylist.'
 						</select>';
 					echo VmHTML::row('raw','COM_VIRTUEMART_CATEGORY_ORDERING', $categorylist ); ?>
@@ -74,7 +74,7 @@ echo $this->langList ?>
 		</td>
 		<td valign="top" style="width: 50%;">
 			<fieldset>
-				<legend><?php echo JText::_('COM_VIRTUEMART_METAINFO'); ?></legend>
+				<legend><?php echo vmText::_('COM_VIRTUEMART_METAINFO'); ?></legend>
 				<?php echo shopFunctions::renderMetaEdit($this->category); ?>
 			</fieldset>
 		</td>

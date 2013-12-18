@@ -711,7 +711,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 *     <thead>
 	 *       <tr>
 	 *         <td class="key" style="text-align: center;"  colspan="2">
-	 *            <?php echo JText::_('COM_VIRTUEMART_TABLE_HEADER') ?>
+	 *            <?php echo vmText::_('COM_VIRTUEMART_TABLE_HEADER') ?>
 	 *         </td>
 	 *       </tr>
 	 *     </thead>
@@ -762,12 +762,12 @@ class VirtueMartModelUserfields extends VmModel {
 				,'value' => (($_userData == null || !array_key_exists($_fld->name, $_userData))
 				? $_fld->default
 				: @html_entity_decode($_userData[$_fld->name],ENT_COMPAT,'UTF-8'))
-				,'title' => JText::_($_fld->title)
+				,'title' => vmText::_($_fld->title)
 				,'type' => $_fld->type
 				,'required' => $_fld->required
 				,'hidden' => false
 				,'formcode' => ''
-				,'description' => JText::_($_fld->description)
+				,'description' => vmText::_($_fld->description)
 				);
 
 				$readonly = '';
@@ -817,8 +817,8 @@ class VirtueMartModelUserfields extends VmModel {
 							$_return['fields'][$_fld->name]['country_3_code'] = '' ;
 						}
 
-						//$_return['fields'][$_fld->name]['value'] = JText::_(shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']));
-						//$_return['fields'][$_fld->name]['state_2_code'] = JText::_(shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']));
+						//$_return['fields'][$_fld->name]['value'] = vmText::_(shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']));
+						//$_return['fields'][$_fld->name]['state_2_code'] = vmText::_(shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']));
 						break;
 
 					case 'virtuemart_state_id':
@@ -944,7 +944,7 @@ class VirtueMartModelUserfields extends VmModel {
 							. $_prefix.$_fld->name . '" id="' . $_prefix.$_fld->name . '_field" value="1" '
 							. ($_return['fields'][$_fld->name]['value'] ? 'checked="checked"' : '') .'/>';
 							 if($_return['fields'][$_fld->name]['value']) {
-								 $_return['fields'][$_fld->name]['value'] = JText::_($_prefix.$_fld->title);
+								 $_return['fields'][$_fld->name]['value'] = vmText::_($_prefix.$_fld->title);
 							 }
 							break;
 							// /*##mygruz20120223193710 { :*/
@@ -970,7 +970,7 @@ class VirtueMartModelUserfields extends VmModel {
 							// must be translated.
 							// Don't check on the field name though, since others might be added in the future :-(
 							foreach ($_values as $_v) {
-								$_v->fieldtitle = JText::_($_v->fieldtitle);
+								$_v->fieldtitle = vmText::_($_v->fieldtitle);
 							}
 							$_attribs = array();
 							if ($_fld->readonly and !$admin) {
@@ -1005,13 +1005,13 @@ class VirtueMartModelUserfields extends VmModel {
 									foreach ($_values as $_val) {
 										 if ( in_array($_val->fieldvalue, $_selected)) {
 											 $is_selected='checked="checked"';
-											 $field_values.= JText::_($_val->fieldtitle). $separator_title;
+											 $field_values.= vmText::_($_val->fieldtitle). $separator_title;
 										 }  else {
 											 $is_selected='';
 										 }
 										$formcode .= '<input type="checkbox" name="'
 										. $_prefix.$_fld->name . '[]" id="' . $_prefix.$_fld->name . '_field' . $_idx . '" value="'. $_val->fieldvalue . '" '
-										. $is_selected .'/> <label for="' . $_prefix.$_fld->name . '_field' . $_idx . '">'.JText::_($_val->fieldtitle) .'</label>'. $separator_form;
+										. $is_selected .'/> <label for="' . $_prefix.$_fld->name . '_field' . $_idx . '">'.vmText::_($_val->fieldtitle) .'</label>'. $separator_form;
 										$_idx++;
 									}
 									// remove last br
@@ -1027,7 +1027,7 @@ class VirtueMartModelUserfields extends VmModel {
 									$separator_title = ',';
 									foreach ($_values as $_val) {
 										 if ( in_array($_val->fieldvalue, $_selected)) {
-											 $field_values.= JText::_($_val->fieldtitle). $separator_title;
+											 $field_values.= vmText::_($_val->fieldtitle). $separator_title;
 										 }
 										}
 									$_return['fields'][$_fld->name]['value'] = substr($field_values,0,-strlen($separator_title));
@@ -1038,7 +1038,7 @@ class VirtueMartModelUserfields extends VmModel {
 									$_return['fields'][$_fld->name]['formcode'] = JHTML::_('select.genericlist', $_values, $_prefix.$_fld->name, $_attribs, 'fieldvalue', 'fieldtitle', $_selected);
 									foreach ($_values as $_val) {
 										 if (  $_val->fieldvalue==$_selected) {
-											 $_return['fields'][$_fld->name]['value'] = JText::_($_val->fieldtitle);
+											 $_return['fields'][$_fld->name]['value'] = vmText::_($_val->fieldtitle);
 										 }
 									}
 									break;
@@ -1047,7 +1047,7 @@ class VirtueMartModelUserfields extends VmModel {
 									$_return['fields'][$_fld->name]['formcode'] =  JHTML::_('select.radiolist', $_values, $_prefix.$_fld->name, $_attribs, 'fieldvalue', 'fieldtitle', $_selected);
 									foreach ($_values as $_val) {
 										 if (  $_val->fieldvalue==$_selected) {
-											 $_return['fields'][$_fld->name]['value'] = JText::_($_val->fieldtitle);
+											 $_return['fields'][$_fld->name]['value'] = vmText::_($_val->fieldtitle);
 										 }
 									}
 									break;

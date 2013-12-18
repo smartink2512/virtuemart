@@ -40,7 +40,7 @@ class JElementVMFile extends JElement {
 		$pattern = implode ( "|", $exclude);
 		$stripExt = $node->attributes ('stripext');
 		if (!JFolder::exists ($path)) {
-			return JText::sprintf ('COM_VIRTUEMART_FOLDER_NOT_EXIST', $node->attributes ('directory'));
+			return vmText::sprintf ('COM_VIRTUEMART_FOLDER_NOT_EXIST', $node->attributes ('directory'));
 		}
 
 		$files = JFolder::files ($path, $filter, FALSE, FALSE, $exclude);
@@ -48,11 +48,11 @@ class JElementVMFile extends JElement {
 		$options = array();
 
 		if (!$node->attributes ('hide_none')) {
-			$options[] = JHTML::_ ('select.option', '-1', '- ' . JText::_ ('Do not use') . ' -');
+			$options[] = JHTML::_ ('select.option', '-1', '- ' . vmText::_ ('Do not use') . ' -');
 		}
 
 		if (!$node->attributes ('hide_default')) {
-			$options[] = JHTML::_ ('select.option', '', '- ' . JText::_ ('Use default') . ' -');
+			$options[] = JHTML::_ ('select.option', '', '- ' . vmText::_ ('Use default') . ' -');
 		}
 
 		if (is_array ($files)) {
@@ -69,7 +69,7 @@ class JElementVMFile extends JElement {
 			}
 		}
 		$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
-		$class .= ' size="5" data-placeholder="'.JText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS').'"';
+		$class .= ' size="5" data-placeholder="'.vmText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS').'"';
 		return JHTML::_ ('select.genericlist', $options, '' . $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
 	}
 

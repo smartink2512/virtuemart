@@ -341,31 +341,31 @@ class VirtuemartModelReport extends VmModel {
 		$curDate = mktime (0, 0, 0, date ('m', $curDate), date ('d', $curDate), date ('Y', $curDate));
 		$monday = (date ('w', $curDate) == 1) ? $curDate : strtotime ('last Monday', $curDate);
 		$this->date_presets['last90'] = array(
-			'name'  => JText::_ ('COM_VIRTUEMART_REPORT_PERIOD_LAST90'),
+			'name'  => vmText::_ ('COM_VIRTUEMART_REPORT_PERIOD_LAST90'),
 			'from'  => date ('Y-m-d', strtotime ('-89 day', $curDate)),
 			'until' => date ('Y-m-d', $curDate));
 		$this->date_presets['last60'] = array(
-			'name'  => JText::_ ('COM_VIRTUEMART_REPORT_PERIOD_LAST60'),
+			'name'  => vmText::_ ('COM_VIRTUEMART_REPORT_PERIOD_LAST60'),
 			'from'  => date ('Y-m-d', strtotime ('-59 day', $curDate)),
 			'until' => date ('Y-m-d', $curDate));
 		$this->date_presets['last30'] = array(
-			'name'  => JText::_ ('COM_VIRTUEMART_REPORT_PERIOD_LAST30'),
+			'name'  => vmText::_ ('COM_VIRTUEMART_REPORT_PERIOD_LAST30'),
 			'from'  => date ('Y-m-d', strtotime ('-29 day', $curDate)),
 			'until' => date ('Y-m-d', $curDate));
 		$this->date_presets['today'] = array(
-			'name'  => JText::_ ('COM_VIRTUEMART_REPORT_PERIOD_TODAY'),
+			'name'  => vmText::_ ('COM_VIRTUEMART_REPORT_PERIOD_TODAY'),
 			'from'  => date ('Y-m-d', $curDate),
 			'until' => date ('Y-m-d', $curDate));
 		$this->date_presets['this-week'] = array(
-			'name'  => JText::_ ('COM_VIRTUEMART_REPORT_PERIOD_THIS_WEEK'),
+			'name'  => vmText::_ ('COM_VIRTUEMART_REPORT_PERIOD_THIS_WEEK'),
 			'from'  => date ('Y-m-d', $monday),
 			'until' => date ('Y-m-d', strtotime ('+6 day', $monday)));
 		$this->date_presets['this-month'] = array(
-			'name'  => JText::_ ('COM_VIRTUEMART_REPORT_PERIOD_THIS_MONTH'),
+			'name'  => vmText::_ ('COM_VIRTUEMART_REPORT_PERIOD_THIS_MONTH'),
 			'from'  => date ('Y-m-d', mktime (0, 0, 0, date ('n', $curDate), 1, date ('Y', $curDate))),
 			'until' => date ('Y-m-d', mktime (0, 0, 0, date ('n', $curDate) + 1, 0, date ('Y', $curDate))));
 		$this->date_presets['this-year'] = array(
-			'name'  => JText::_ ('COM_VIRTUEMART_REPORT_PERIOD_THIS_YEAR'),
+			'name'  => vmText::_ ('COM_VIRTUEMART_REPORT_PERIOD_THIS_YEAR'),
 			'from'  => date ('Y-m-d', mktime (0, 0, 0, 1, 1, date ('Y', $curDate))),
 			'until' => date ('Y-m-d', mktime (0, 0, 0, 12, 31, date ('Y', $curDate))));
 
@@ -375,13 +375,13 @@ class VirtuemartModelReport extends VmModel {
 
 		// simpledate select
 		$select = '';
-		$options = array(JHTML::_ ('select.option', 'none', '- ' . JText::_ ('COM_VIRTUEMART_REPORT_SET_PERIOD') . ' -', 'text', 'value'));
+		$options = array(JHTML::_ ('select.option', 'none', '- ' . vmText::_ ('COM_VIRTUEMART_REPORT_SET_PERIOD') . ' -', 'text', 'value'));
 
 		$app = JFactory::getApplication ();
 		$select = $app->getUserStateFromRequest ('com_virtuemart.revenue.period', 'period', 'last30', 'string');
 
 		foreach ($this->date_presets as $name => $value) {
-			$options[] = JHTML::_ ('select.option', $name, JText::_ ($value['name']), 'text', 'value');
+			$options[] = JHTML::_ ('select.option', $name, vmText::_ ($value['name']), 'text', 'value');
 		}
 		$listHTML = JHTML::_ ('select.genericlist', $options, 'period', 'size="7" class="inputbox" onchange="this.form.submit();" ', 'text', 'value', $select);
 		//$listHTML = JHTML::_ ('select.genericlist', $options, 'period', 'size="7" class="inputbox" ', 'text', 'value', $select);
@@ -394,12 +394,12 @@ class VirtuemartModelReport extends VmModel {
 		$intervals = VmRequest::getCmd ('intervals', 'day');
 
 		$options = array();
-		$options[] = JHTML::_ ('select.option', JText::_ ('COM_VIRTUEMART_PRODUCT_S'), 'product_s');
-		$options[] = JHTML::_ ('select.option', JText::_ ('COM_VIRTUEMART_ORDERS'), 'orders');
-		$options[] = JHTML::_ ('select.option', JText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_DAILY'), 'day');
-		$options[] = JHTML::_ ('select.option', JText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_WEEKLY'), 'week');
-		$options[] = JHTML::_ ('select.option', JText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_MONTHLY'), 'month');
-		$options[] = JHTML::_ ('select.option', JText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_YEARLY'), 'year');
+		$options[] = JHTML::_ ('select.option', vmText::_ ('COM_VIRTUEMART_PRODUCT_S'), 'product_s');
+		$options[] = JHTML::_ ('select.option', vmText::_ ('COM_VIRTUEMART_ORDERS'), 'orders');
+		$options[] = JHTML::_ ('select.option', vmText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_DAILY'), 'day');
+		$options[] = JHTML::_ ('select.option', vmText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_WEEKLY'), 'week');
+		$options[] = JHTML::_ ('select.option', vmText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_MONTHLY'), 'month');
+		$options[] = JHTML::_ ('select.option', vmText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_YEARLY'), 'year');
 		//$listHTML = JHTML::_ ('select.genericlist', $options, 'intervals', 'class="inputbox" onchange="this.form.submit();" size="5"', 'text', 'value', $intervals);
 		$listHTML = JHTML::_ ('select.genericlist', $options, 'intervals', 'class="inputbox" size="6"', 'text', 'value', $intervals);
 		return $listHTML;

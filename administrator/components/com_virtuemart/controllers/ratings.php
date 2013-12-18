@@ -170,7 +170,7 @@ class VirtuemartControllerRatings extends VmController {
 
 		$errors = $model->getErrors();
 		if (empty($errors)) {
-			$msg = JText::sprintf ('COM_VIRTUEMART_STRING_SAVED', $this->mainLangKey);
+			$msg = vmText::sprintf ('COM_VIRTUEMART_STRING_SAVED', $this->mainLangKey);
 		}
 		foreach($errors as $error){
 			$msg = ($error).'<br />';
@@ -204,7 +204,7 @@ class VirtuemartControllerRatings extends VmController {
 		} else {
 			$virtuemart_product_id = (int)$virtuemart_product_id;
 		}
-		$msg = JText::sprintf('COM_VIRTUEMART_STRING_CANCELLED',$this->mainLangKey); //'COM_VIRTUEMART_OPERATION_CANCELED'
+		$msg = vmText::sprintf('COM_VIRTUEMART_STRING_CANCELLED',$this->mainLangKey); //'COM_VIRTUEMART_OPERATION_CANCELED'
 		$this->setRedirect('index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$virtuemart_product_id, $msg);
 	}
 

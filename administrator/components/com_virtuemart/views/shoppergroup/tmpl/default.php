@@ -32,20 +32,20 @@ AdminUIHelper::startAdminArea($this);
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shoppergroups); ?>);" />
 				</th>
 				<th>
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME'); ?>
+					<?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME'); ?>
 				</th>
 				<th>
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION'); ?>
+					<?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION'); ?>
 				</th>
 				<th width="20">
-					<?php echo JText::_('COM_VIRTUEMART_DEFAULT'); ?>
+					<?php echo vmText::_('COM_VIRTUEMART_DEFAULT'); ?>
 				</th>
 				<th width="30px" >
-					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
+					<?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 				</th>
 				<?php if((Vmconfig::get('multix','none')!='none') && $this->showVendors){ ?>
 				<th>
-					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
+					<?php echo vmText::_('COM_VIRTUEMART_VENDOR'); ?>
 				</th>
 				<?php } ?>
 					  <th><?php echo $this->sort('virtuemart_shoppergroup_id', 'COM_VIRTUEMART_ID')  ?></th>
@@ -75,10 +75,10 @@ AdminUIHelper::startAdminArea($this);
 					if ($row->default == 1) {
 					    if (JVM_VERSION===1) {
 						?>
-						<img src="templates/khepri/images/menu/icon-16-default.png" alt="<?php echo JText::_( 'COM_VIRTUEMART_SHOPPERGROUP_DEFAULT' ); ?>" />
+						<img src="templates/khepri/images/menu/icon-16-default.png" alt="<?php echo vmText::_( 'COM_VIRTUEMART_SHOPPERGROUP_DEFAULT' ); ?>" />
 						<?php
 					    }  else {
-						echo JHtml::_('image','menu/icon-16-default.png', JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'), NULL, true);
+						echo JHtml::_('image','menu/icon-16-default.png', vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'), NULL, true);
 						}
 					} else {
 						?>

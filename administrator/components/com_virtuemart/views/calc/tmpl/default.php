@@ -48,33 +48,33 @@ AdminUIHelper::startAdminArea($this);
 			<th><?php echo $this->sort('calc_name', 'COM_VIRTUEMART_NAME') ; ?></th>
 			<?php if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){ ?>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_VENDOR');  ?>
+				<?php echo vmText::_('COM_VIRTUEMART_VENDOR');  ?>
 			</th><?php }  ?>
 			<th><?php echo $this->sort('calc_descr' , 'COM_VIRTUEMART_DESCRIPTION'); ?></th>
 			<th><?php echo $this->sort('ordering') ; ?></th>
 			<th><?php echo $this->sort('calc_kind') ; ?></th>
-			<th><?php echo JText::_('COM_VIRTUEMART_CALC_VALUE_MATHOP'); ?></th>
+			<th><?php echo vmText::_('COM_VIRTUEMART_CALC_VALUE_MATHOP'); ?></th>
 			<th><?php echo $this->sort('calc_value' , 'COM_VIRTUEMART_VALUE'); ?></th>
 			<th><?php echo $this->sort('calc_currency' , 'COM_VIRTUEMART_CURRENCY'); ?></th>
-			<th><?php echo JText::_('COM_VIRTUEMART_CATEGORY_S'); ?></th>
-			<th><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER'); // Mod. <mediaDESIGN> St.Kraft 2013-02-24  ?></th>
-			<th><?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_IDS'); ?></th>
-			<?php /*		<th><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_SHOPPER'); ?></th>
-			<th width="10"><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_VENDOR'); ?></th> */  ?>
+			<th><?php echo vmText::_('COM_VIRTUEMART_CATEGORY_S'); ?></th>
+			<th><?php echo vmText::_('COM_VIRTUEMART_MANUFACTURER'); // Mod. <mediaDESIGN> St.Kraft 2013-02-24  ?></th>
+			<th><?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_IDS'); ?></th>
+			<?php /*		<th><?php echo vmText::_('COM_VIRTUEMART_CALC_VIS_SHOPPER'); ?></th>
+			<th width="10"><?php echo vmText::_('COM_VIRTUEMART_CALC_VIS_VENDOR'); ?></th> */  ?>
 			<th><?php echo $this->sort('publish_up' , 'COM_VIRTUEMART_START_DATE'); ?></th>
 			<th><?php echo $this->sort('publish_down' , 'COM_VIRTUEMART_END_DATE'); ?></th>
-<?php /*	<th width="20"><?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_COND'); ?></th>
-			<th width="10"><?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_DIMUNIT'); ?></th> */  ?>
-			<th><?php echo JText::_('COM_VIRTUEMART_COUNTRY_S'); ?></th>
-			<th><?php echo JText::_('COM_VIRTUEMART_STATE_IDS'); ?></th>
-			<th><?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>
+<?php /*	<th width="20"><?php echo vmText::_('COM_VIRTUEMART_CALC_AMOUNT_COND'); ?></th>
+			<th width="10"><?php echo vmText::_('COM_VIRTUEMART_CALC_AMOUNT_DIMUNIT'); ?></th> */  ?>
+			<th><?php echo vmText::_('COM_VIRTUEMART_COUNTRY_S'); ?></th>
+			<th><?php echo vmText::_('COM_VIRTUEMART_STATE_IDS'); ?></th>
+			<th><?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>
 			<?php if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){ ?>
 			<th width="20">
-				<?php echo JText::_( 'COM_VIRTUEMART_SHARED')  ?>
+				<?php echo vmText::_( 'COM_VIRTUEMART_SHARED')  ?>
 			</th><?php }  ?>
 			<th><?php echo $this->sort('virtuemart_calc_id', 'COM_VIRTUEMART_ID')  ?></th>
 		<?php /*	<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_SHARED'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_SHARED'); ?>
 			</th> */ ?>
 		</tr>
 		</thead>
@@ -130,12 +130,12 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo $row->calcShoppersList; ?>
 				</td>
 				<?php /*				<td align="center">
-					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggle.calc_shopper_published')" title="<?php echo ( $row->calc_shopper_published == '1' ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
+					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggle.calc_shopper_published')" title="<?php echo ( $row->calc_shopper_published == '1' ) ? vmText::_('COM_VIRTUEMART_YES') : vmText::_('COM_VIRTUEMART_NO');?>">
 						<?php echo JHtml::_('image.administrator', ((JVM_VERSION===1) ? '' : 'admin/') . ($row->calc_shopper_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>
 				</td>
 				<td align="center">
-					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggle.calc_vendor_published')" title="<?php echo ( $row->calc_vendor_published == '1' ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
+					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggle.calc_vendor_published')" title="<?php echo ( $row->calc_vendor_published == '1' ) ? vmText::_('COM_VIRTUEMART_YES') : vmText::_('COM_VIRTUEMART_NO');?>">
 						<?php echo JHtml::_('image.administrator', ((JVM_VERSION===1) ? '' : 'admin/') . ($row->calc_vendor_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>
 				</td> */  ?>
@@ -153,13 +153,13 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo $row->calc_amount_cond; ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calc_amount_dimunit); ?>
+					<?php echo vmText::_($row->calc_amount_dimunit); ?>
 				</td> */  ?>
 				<td>
-					<?php echo JText::_($row->calcCountriesList); ?>
+					<?php echo vmText::_($row->calcCountriesList); ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calcStatesList); ?>
+					<?php echo vmText::_($row->calcStatesList); ?>
 				</td>
 				<td align="center">
 					<?php echo $published; ?>

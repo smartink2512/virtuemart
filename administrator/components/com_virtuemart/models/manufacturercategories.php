@@ -108,7 +108,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 				.' FROM #__virtuemart_manufacturercategories_'.VMLANG.'`';
 		$db->setQuery($query);
 
-		$categoryFilter[] = JHTML::_('select.option',  '0', '- '. JText::_('COM_VIRTUEMART_SELECT_MANUFACTURER_CATEGORY') .' -' );
+		$categoryFilter[] = JHTML::_('select.option',  '0', '- '. vmText::_('COM_VIRTUEMART_SELECT_MANUFACTURER_CATEGORY') .' -' );
 
 		$categoryFilter = array_merge($categoryFilter, (array)$db->loadObjectList());
 

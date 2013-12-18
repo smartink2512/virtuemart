@@ -34,23 +34,23 @@ if ( JVM_VERSION == 2 )
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
     <div id="header">
-        <h2><?php echo JText::sprintf('COM_VIRTUEMART_REPORT_TITLE', vmJsApi::date( $this->from_period, 'LC',true) , vmJsApi::date( $this->until_period, 'LC',true) ); ?></h2>
+        <h2><?php echo vmText::sprintf('COM_VIRTUEMART_REPORT_TITLE', vmJsApi::date( $this->from_period, 'LC',true) , vmJsApi::date( $this->until_period, 'LC',true) ); ?></h2>
         <div id="filterbox">
 
             <table>
                 <tr>
                     <td align="left" width="100%">
-						<?php echo JText::_('COM_VIRTUEMART_ORDERSTATUS') . $this->lists['state_list']; ?>
-						<?php echo JText::_('COM_VIRTUEMART_REPORT_INTERVAL') . $this->lists['intervals']; ?>
-                        <?php echo JText::_('COM_VIRTUEMART_REPORT_SET_PERIOD') . $this->lists['select_date'];
+						<?php echo vmText::_('COM_VIRTUEMART_ORDERSTATUS') . $this->lists['state_list']; ?>
+						<?php echo vmText::_('COM_VIRTUEMART_REPORT_INTERVAL') . $this->lists['intervals']; ?>
+                        <?php echo vmText::_('COM_VIRTUEMART_REPORT_SET_PERIOD') . $this->lists['select_date'];
 
-                    echo JText::_('COM_VIRTUEMART_REPORT_FROM_PERIOD') .  vmJsApi::jDate($this->from_period, 'from_period');
-                   echo JText::_('COM_VIRTUEMART_REPORT_UNTIL_PERIOD') . vmJsApi::jDate($this->until_period, 'until_period');
+                    echo vmText::_('COM_VIRTUEMART_REPORT_FROM_PERIOD') .  vmJsApi::jDate($this->from_period, 'from_period');
+                   echo vmText::_('COM_VIRTUEMART_REPORT_UNTIL_PERIOD') . vmJsApi::jDate($this->until_period, 'until_period');
                         if(VmConfig::get('multix','none')!='none'){
                         	$vendorId = VmRequest::getInt('virtuemart_vendor_id',1);
                         	echo ShopFunctions::renderVendorList($vendorId,false);
                         } ?>
-                        <button onclick="this.form.period.value='';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?>
+                        <button onclick="this.form.period.value='';this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?>
                         </button>
                     </td>
                 </tr>
@@ -144,7 +144,7 @@ if ( JVM_VERSION == 2 )
             </tbody>
            <thead>
                 <tr>
-                    <th  class="right"><?php echo JText::_('COM_VIRTUEMART_TOTAL').' : '; ?></th>
+                    <th  class="right"><?php echo vmText::_('COM_VIRTUEMART_TOTAL').' : '; ?></th>
                     <th><?php echo $this->totalReport['number_of_ordersTotal']?></th>
                     <th><?php echo $this->totalReport['itemsSoldTotal'];?></th>
                     <th class="right"><?php echo $this->totalReport['revenueTotal_netto'];?></th>

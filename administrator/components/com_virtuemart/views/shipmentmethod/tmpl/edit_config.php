@@ -33,7 +33,7 @@ if ($this->shipment->shipment_name) {
 		$class = isset($fieldSet->class) && !empty($fieldSet->class) ? $fieldSet->class : '';
 
 		if (isset($fieldSet->description) && trim($fieldSet->description)) {
-			echo '<p class="tip">'.$this->escape(JText::_($fieldSet->description)).'</p>';
+			echo '<p class="tip">'.$this->escape(vmText::_($fieldSet->description)).'</p>';
 		}
 		?>
 
@@ -61,6 +61,6 @@ if ($this->shipment->shipment_name) {
 		}
 	}
 } else {
-    echo JText::_('COM_VIRTUEMART_SELECT_SHIPPING_METHOD');
+    echo vmText::_('COM_VIRTUEMART_SELECT_SHIPPING_METHOD');
 }
 

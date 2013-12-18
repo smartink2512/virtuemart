@@ -67,7 +67,7 @@ class VmView extends JViewLegacy {
         }
 
 		if (!$this->canDo->get('vm.'.$view)) {
-			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', JText::_('JERROR_ALERTNOAUTHOR'), 'error');
+			JFactory::getApplication()->redirect( 'index.php?option=com_virtuemart', vmText::_('JERROR_ALERTNOAUTHOR'), 'error');
 		}
 
 		parent::display($tpl);
@@ -172,14 +172,14 @@ class VmView extends JViewLegacy {
 	 * Add simple search to form
 	* @param $searchLabel text to display before searchbox
 	* @param $name 		 lists and id name
-	* ??JText::_('COM_VIRTUEMART_NAME')
+	* ??vmText::_('COM_VIRTUEMART_NAME')
 	*/
 
 	function displayDefaultViewSearch($searchLabel='COM_VIRTUEMART_NAME',$name ='search') {
-		return JText::_('COM_VIRTUEMART_FILTER') . ' ' . JText::_($searchLabel) . ':
+		return vmText::_('COM_VIRTUEMART_FILTER') . ' ' . vmText::_($searchLabel) . ':
 		<input type="text" name="' . $name . '" id="' . $name . '" value="' .$this->lists[$name] . '" class="text_area" />
-		<button onclick="this.form.submit();">' . JText::_('COM_VIRTUEMART_GO') . '</button>
-		<button onclick="document.getElementById(\'' . $name . '\').value=\'\';this.form.submit();">' . JText::_('COM_VIRTUEMART_RESET') . '</button>';
+		<button onclick="this.form.submit();">' . vmText::_('COM_VIRTUEMART_GO') . '</button>
+		<button onclick="document.getElementById(\'' . $name . '\').value=\'\';this.form.submit();">' . vmText::_('COM_VIRTUEMART_RESET') . '</button>';
 	}
 
 	function addStandardEditViewCommands($id = 0,$object = null) {
@@ -278,7 +278,7 @@ class VmView extends JViewLegacy {
 					$image_flag_url= JURI::root()."/media/mod_languages/images/".$img.".gif";
 
 					if (!file_exists ($image_flag)) {
-						vmerror(JText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $image_flag,$joomlaLang['text'] ) );
+						vmerror(vmText::sprintf('COM_VIRTUEMART_MISSING_FLAG', $image_flag,$joomlaLang['text'] ) );
 					} else {
 						$flagCss .="td.flag-".$key.",.flag-".$key."{background: url( ".$image_flag_url.") no-repeat 0 0; padding-left:20px !important;}\n";
 					}
@@ -378,20 +378,20 @@ class VmView extends JViewLegacy {
 			$msg = ' <span style="color: #666666; font-size: large;">' . $msg . '</span>';
 		}
 
-		$viewText = JText::_('COM_VIRTUEMART_' . strtoupper($name));
+		$viewText = vmText::_('COM_VIRTUEMART_' . strtoupper($name));
 
-		$taskName = ' <small><small>[ ' . JText::_('COM_VIRTUEMART_' . $task) . ' ]</small></small>';
+		$taskName = ' <small><small>[ ' . vmText::_('COM_VIRTUEMART_' . $task) . ' ]</small></small>';
 
 		JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $icon . '_48');
 		$this->assignRef('viewName',$viewText); //was $viewName?
 		$app = JFactory::getApplication();
 		$doc = JFactory::getDocument();
-		$doc->setTitle($app->getCfg('sitename'). ' - ' .JText::_('JADMINISTRATION').' - '.strip_tags($msg));
+		$doc->setTitle($app->getCfg('sitename'). ' - ' .vmText::_('JADMINISTRATION').' - '.strip_tags($msg));
 	}
 
 	function sort($orderby ,$name=null ){
 		if (!$name) $name= 'COM_VIRTUEMART_'.strtoupper ($orderby);
-		return JHTML::_('grid.sort' , JText::_($name) , $orderby , $this->lists['filter_order_Dir'] , $this->lists['filter_order']);
+		return JHTML::_('grid.sort' , vmText::_($name) , $orderby , $this->lists['filter_order_Dir'] , $this->lists['filter_order']);
 	}
 
 	public function addStandardHiddenToForm($controller=null, $task=''){
@@ -432,13 +432,13 @@ class VmView extends JViewLegacy {
 		$html .= '<li id="toolbar-save" class="button">';
 		$html .= '<a class="toolbar" onclick="Joomla.submitbutton(\'save\')" >
 <span class="icon-32-save"> </span>
-		'.jText::_('COM_VIRTUEMART_SAVE').'
+		'.vmText::_('COM_VIRTUEMART_SAVE').'
 </a>';
 		$html .= '</li>';
 		$html .= '<li id="toolbar-cancel" class="button">';
 		$html .= '<a class="toolbar" onclick="Joomla.submitbutton(\'cancel\')" >
 <span class="icon-32-cancel"> </span>
-		'.jText::_('COM_VIRTUEMART_CANCEL').'
+		'.vmText::_('COM_VIRTUEMART_CANCEL').'
 </a>';
 		$html .= '</li>';
 		$html .= '</ul>';
@@ -460,12 +460,12 @@ class VmView extends JViewLegacy {
 		if ($toggle == 'published') {
 			// Stay compatible with grid.published
 			$task 	= $field ? 'unpublish' : 'publish';
-			$alt 	= $field ? JText::_('COM_VIRTUEMART_PUBLISHED') : JText::_('COM_VIRTUEMART_UNPUBLISHED');
-			$action = $field ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : JText::_('COM_VIRTUEMART_PUBLISH_ITEM');
+			$alt 	= $field ? vmText::_('COM_VIRTUEMART_PUBLISHED') : vmText::_('COM_VIRTUEMART_UNPUBLISHED');
+			$action = $field ? vmText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : vmText::_('COM_VIRTUEMART_PUBLISH_ITEM');
 		} else {
 			$task 	= $field ? $toggle.'.0' : $toggle.'.1';
-			$alt 	= $field ? JText::_('COM_VIRTUEMART_PUBLISHED') : JText::_('COM_VIRTUEMART_DISABLED');
-			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM') : JText::_('COM_VIRTUEMART_ENABLE_ITEM');
+			$alt 	= $field ? vmText::_('COM_VIRTUEMART_PUBLISHED') : vmText::_('COM_VIRTUEMART_DISABLED');
+			$action = $field ? vmText::_('COM_VIRTUEMART_DISABLE_ITEM') : vmText::_('COM_VIRTUEMART_ENABLE_ITEM');
 		}
 
 		if (JVM_VERSION>1) {
@@ -494,7 +494,7 @@ class VmView extends JViewLegacy {
  		    $lang = JFactory::getLanguage();
  	        $key=  'COM_VIRTUEMART_HELP_'.$view.$task;
 	         if ($lang->hasKey($key)) {
-					$help_url  = JTEXT::_($key)."?tmpl=component";
+					$help_url  = vmText::_($key)."?tmpl=component";
  		            $bar = JToolBar::getInstance('toolbar');
 					$bar->appendButton( 'Popup', 'help', 'JTOOLBAR_HELP', $help_url, 960, 500 );
 	        }

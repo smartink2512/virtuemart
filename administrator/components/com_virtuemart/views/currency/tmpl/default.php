@@ -45,28 +45,28 @@ AdminUIHelper::startAdminArea($this);
 			<?php echo $this->sort('currency_exchange_rate') ?>
 		    </th>
 		    <th width="20">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_SYMBOL'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_CURRENCY_SYMBOL'); ?>
 		    </th>
 <?php /*		    <th width="10">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_CODE_2'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_CURRENCY_LIST_CODE_2'); ?>
 		    </th> */?>
 		    <th width="20">
 			<?php  echo $this->sort('currency_code_3') ?>
 		    </th>
              <th width="20">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NUMERIC_CODE'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_CURRENCY_NUMERIC_CODE'); ?>
 		    </th>
 <?php /*		    <th >
-				<?php echo JText::_('COM_VIRTUEMART_CURRENCY_START_DATE'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_CURRENCY_START_DATE'); ?>
 			</th>
 			<th >
-				<?php echo JText::_('COM_VIRTUEMART_CURRENCY_END_DATE'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_CURRENCY_END_DATE'); ?>
 			</th> */?>
 			<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 			</th>
 		<?php /*	<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_SHARED'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_SHARED'); ?>
 			</th> */ ?>
 		</tr>
 	    </thead>

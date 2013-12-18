@@ -56,10 +56,10 @@ class VirtuemartViewOrderstatus extends VmView {
 
 		if ($layoutName == 'edit') {
 			$orderStatus = $model->getData();
-			$this->SetViewTitle('',JText::_($orderStatus->order_status_name) );
+			$this->SetViewTitle('',vmText::_($orderStatus->order_status_name) );
 			if ($orderStatus->virtuemart_orderstate_id < 1) {
 
-				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
+				$this->assignRef('ordering', vmText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
 			} else {
 				// Ordering dropdown
 				$qry = 'SELECT ordering AS value, order_status_name AS text'

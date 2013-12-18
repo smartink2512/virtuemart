@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 	<div>
 		<?php
-			//echo '<div width="100px">'.JText::_('COM_VIRTUEMART_RTB_AD').'</div>';
+			//echo '<div width="100px">'.vmText::_('COM_VIRTUEMART_RTB_AD').'</div>';
 			$jlang =JFactory::getLanguage();
 			$tag = $jlang->getTag();
 			$imgUrl = 'http://www.removethebackground.de//images/logoremove.png';
@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 			} else {
 				$url = 'http://www.removethebackground.co.uk/virtuemart.aspx';
 			}
-			echo '<a href="'.$url.'" target="_blank" alt="'.JText::_('COM_VIRTUEMART_RTB_AD').'"><img  height="60" src="'.$imgUrl.'" title="'.JText::_('COM_VIRTUEMART_RTB_AD').'"></a>';
+			echo '<a href="'.$url.'" target="_blank" alt="'.vmText::_('COM_VIRTUEMART_RTB_AD').'"><img  height="60" src="'.$imgUrl.'" title="'.vmText::_('COM_VIRTUEMART_RTB_AD').'"></a>';
 		?>
 	</div>
 </div>

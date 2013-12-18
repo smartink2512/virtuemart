@@ -32,8 +32,8 @@ $rowColor = 0;
             <div style="text-align: right; font-weight: bold;">
 								<span
                                         class="hasTip"
-                                        title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP'); ?>">
-									<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST') ?>
+                                        title="<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP'); ?>">
+									<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST') ?>
 								</span>
             </div>
         </td>
@@ -57,8 +57,8 @@ $rowColor = 0;
 
         <td colspan="2">
  			<span class="hasTip" style="font-weight: bold;"
-               title="<?php echo JText::_ ('COM_VIRTUEMART_SHOPPER_FORM_GROUP_PRICE_TIP'); ?>">
-						<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?></span>
+               title="<?php echo vmText::_ ('COM_VIRTUEMART_SHOPPER_FORM_GROUP_PRICE_TIP'); ?>">
+						<?php echo vmText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?></span>
 			<?php echo $this->lists['shoppergroups'];  ?>
         </td>
     </tr>
@@ -68,8 +68,8 @@ $rowColor = 0;
             <div style="text-align: right; font-weight: bold;">
 								<span
                                         class="hasTip"
-                                        title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE_TIP'); ?>">
-									<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE') ?>
+                                        title="<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE_TIP'); ?>">
+									<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE') ?>
 								</span>
             </div>
         </td>
@@ -83,14 +83,14 @@ $rowColor = 0;
 			<?php echo $this->vendor_currency;   ?>
         </td>
 		<?php /*    <td width="17%"><div style="text-align: right; font-weight: bold;">
-							<?php echo JText::_('COM_VIRTUEMART_RATE_FORM_VAT_ID') ?></div>
+							<?php echo vmText::_('COM_VIRTUEMART_RATE_FORM_VAT_ID') ?></div>
                         </td> */ ?>
         <td  >
 			<?php echo $this->lists['taxrates']; ?><br/>
         </td>
         <td>
-	                        <span class="hasTip" title="<?php echo JText::_ ('COM_VIRTUEMART_RULES_EFFECTING_TIP') ?>">
-							<?php echo JText::_ ('COM_VIRTUEMART_TAX_EFFECTING') . '<br />' . $this->taxRules ?>
+	                        <span class="hasTip" title="<?php echo vmText::_ ('COM_VIRTUEMART_RULES_EFFECTING_TIP') ?>">
+							<?php echo vmText::_ ('COM_VIRTUEMART_TAX_EFFECTING') . '<br />' . $this->taxRules ?>
 		                    </span>
         </td>
 		<td style="background: #d5d5d5;padding:0;width:1px;"></td>
@@ -107,8 +107,8 @@ $rowColor = 0;
             <div style="text-align: right; font-weight: bold;">
 				<span
                         class="hasTip"
-                        title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP'); ?>">
-					<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>
+                        title="<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP'); ?>">
+					<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>
 				</span>
             </div>
         </td>
@@ -121,22 +121,22 @@ $rowColor = 0;
 			<?php echo $this->vendor_currency;   ?>
         </td>
 		<?php /*  <td width="17%"><div style="text-align: right; font-weight: bold;">
-							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_TYPE') ?></div>
+							<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_TYPE') ?></div>
                         </td>*/ ?>
         <td  >
 			<?php echo $this->lists['discounts']; ?> <br/>
         </td>
         <td>
-	                    <span class="hasTip" title="<?php echo JText::_ ('COM_VIRTUEMART_RULES_EFFECTING_TIP') ?>">
+	                    <span class="hasTip" title="<?php echo vmText::_ ('COM_VIRTUEMART_RULES_EFFECTING_TIP') ?>">
 						<?php if (!empty($this->DBTaxRules)) {
-		                    echo JText::_ ('COM_VIRTUEMART_RULES_EFFECTING') . '</span><br />' . $this->DBTaxRules . '<br />';
+		                    echo vmText::_ ('COM_VIRTUEMART_RULES_EFFECTING') . '</span><br />' . $this->DBTaxRules . '<br />';
 
 	                    }
 		                if (!empty($this->DATaxRules)) {
-			               echo JText::_ ('COM_VIRTUEMART_RULES_EFFECTING') . '<br />' . $this->DATaxRules;
+			               echo vmText::_ ('COM_VIRTUEMART_RULES_EFFECTING') . '<br />' . $this->DATaxRules;
 		                }
 
-		                    // 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
+		                    // 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
 						</span>
         </td>
 		<td style="background: #d5d5d5;padding:0;width:1px;"></td>
@@ -155,8 +155,8 @@ $rowColor = 0;
             <div style="text-align: right; font-weight: bold;">
 				<span
                         class="hasTip"
-                        title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_DISCOUNT_OVERRIDE_TIP'); ?>">
-					<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_DISCOUNT_OVERRIDE') ?>
+                        title="<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_DISCOUNT_OVERRIDE_TIP'); ?>">
+					<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_DISCOUNT_OVERRIDE') ?>
 				</span>
             </div>
         </td>
@@ -169,22 +169,22 @@ $rowColor = 0;
 			<?php echo $this->vendor_currency;   ?>
 </div>
 			<?php
-			$options = array(0 => JText::_ ('JNO'), 1 => JText::_ ('JYES'));
+			$options = array(0 => vmText::_ ('JNO'), 1 => vmText::_ ('JYES'));
 			// echo VmHtml::radioList ('mprices[use_desired_price][' . $this->priceCounter . ']', $this->product->override, $options);
 			echo '<input type="checkbox" name="mprices[use_desired_price][' . $this->priceCounter . ']" value="1"/>'
 			?>
 			<strong>
 			<span
 				class="hasTip"
-				title="<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL_TIP'); ?>">
-			<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL'); ?>
+				title="<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL_TIP'); ?>">
+			<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL'); ?>
 			</span>
 			</strong>
 
 			<br />
  <?php
 			// 							echo VmHtml::checkbox('override',$this->product->override);
-			$options = array(0 => JText::_ ('COM_VIRTUEMART_DISABLED'), 1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_FINAL'), -1 => JText::_ ('COM_VIRTUEMART_OVERWRITE_PRICE_TAX'));
+			$options = array(0 => vmText::_ ('COM_VIRTUEMART_DISABLED'), 1 => vmText::_ ('COM_VIRTUEMART_OVERWRITE_FINAL'), -1 => vmText::_ ('COM_VIRTUEMART_OVERWRITE_PRICE_TAX'));
 
 			echo VmHtml::radioList ('mprices[override][' . $this->priceCounter . ']', $this->product->allPrices[$this->product->selectedPrice]['override'], $options,'',' ');
 			?>
@@ -192,7 +192,7 @@ $rowColor = 0;
 		<td style="background: #d5d5d5;padding:0;width:1px;"></td>
         <td>
             <div style="font-weight: bold;">
-				<?php echo JText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_QUANTITY_RANGE') ?>
+				<?php echo vmText::_ ('COM_VIRTUEMART_PRODUCT_PRICE_QUANTITY_RANGE') ?>
             </div>
             <input type="text"
                    size="12"

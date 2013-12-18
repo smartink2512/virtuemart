@@ -63,7 +63,7 @@ class VirtuemartControllerOrders extends VmController {
 		$id = VmRequest::getInt('virtuemart_order_id');
 		if (!$order_id = $model->getOrderId($id, $dir)) {
 			$order_id  = $id;
-			$msg = JText::_('COM_VIRTUEMART_NO_MORE_ORDERS');
+			$msg = vmText::_('COM_VIRTUEMART_NO_MORE_ORDERS');
 		} else {
 			$msg ='';
 		}
@@ -134,11 +134,11 @@ class VirtuemartControllerOrders extends VmController {
 
 		$msg='';
 		if ($result['updated'] > 0)
-		$msg = JText::sprintf('COM_VIRTUEMART_ORDER_UPDATED_SUCCESSFULLY', $result['updated'] );
+		$msg = vmText::sprintf('COM_VIRTUEMART_ORDER_UPDATED_SUCCESSFULLY', $result['updated'] );
 		else if ($result['error'] == 0)
-		$msg .= JText::_('COM_VIRTUEMART_ORDER_NOT_UPDATED');
+		$msg .= vmText::_('COM_VIRTUEMART_ORDER_NOT_UPDATED');
 		if ($result['error'] > 0)
-		$msg .= JText::sprintf('COM_VIRTUEMART_ORDER_NOT_UPDATED_SUCCESSFULLY', $result['error'] , $result['total']);
+		$msg .= vmText::sprintf('COM_VIRTUEMART_ORDER_NOT_UPDATED_SUCCESSFULLY', $result['error'] , $result['total']);
 		if ('updatestatus'== $lastTask ) {
 			$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$virtuemart_order_id , $msg);
 		}

@@ -29,10 +29,10 @@ AdminUIHelper::startAdminArea($this);
 		<table>
 			<tr>
 				<td width="100%">
-					<?php echo JText::_('COM_VIRTUEMART_FILTER'); ?>:
+					<?php echo vmText::_('COM_VIRTUEMART_FILTER'); ?>:
 					<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
-					<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
-					<button onclick="document.adminForm.search.value='';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
+					<button onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
+					<button onclick="document.adminForm.search.value='';this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_RESET'); ?></button>
 				</td>
 			</tr>
 		</table>
@@ -53,25 +53,25 @@ AdminUIHelper::startAdminArea($this);
 			<?php  echo $this->sort('name','COM_VIRTUEMART_FIELDMANAGER_NAME')  ?>
 			</th>
 			<th>
-			<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_TITLE'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_FIELDMANAGER_TITLE'); ?>
 			</th>
 			<th>
 			<?php echo $this->sort('type','COM_VIRTUEMART_FIELDMANAGER_TYPE') ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_REQUIRED'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_FIELDMANAGER_REQUIRED'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_REGISTRATION'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_REGISTRATION'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_SHIPPING'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_SHIPPING'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_ACCOUNT'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_ACCOUNT'); ?>
 			</th>
 			<th>
 			<?php echo $this->sort('ordering','COM_VIRTUEMART_FIELDMANAGER_REORDER') ?>
@@ -87,14 +87,14 @@ AdminUIHelper::startAdminArea($this);
 // 			vmdebug('my rows',$row);
 			$coreField = (in_array($row->name, $this->lists['coreFields']));
 			$image = (JVM_VERSION===1) ? 'checked_out.png' : 'admin/checked_out.png';
-			$image = JHtml::_('image.administrator', $image, '/images/', null, null, JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'));
+			$image = JHtml::_('image.administrator', $image, '/images/', null, null, vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'));
 			//$checked = '<div style="position: relative;">'.JHTML::_('grid.id', $i, null,$row->virtuemart_userfield_id);
 			$checked = JHTML::_('grid.id', $i ,$row->virtuemart_userfield_id,null,'virtuemart_userfield_id');
-			if ($coreField) $checked.='<span class="hasTip" style="position: absolute; margin-left:-3px;" title="'. JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>';
+			if ($coreField) $checked.='<span class="hasTip" style="position: absolute; margin-left:-3px;" title="'. vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>';
 			$checked .= '</div>';
 			// There is no reason not to allow moving of the core fields. We only need to disable deletion of them
 			// ($coreField) ?
-			// 	'<span class="hasTip" title="'. JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>' :
+			// 	'<span class="hasTip" title="'. vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>' :
 				
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=userfields&task=edit&virtuemart_userfield_id=' . $row->virtuemart_userfield_id);
 			$required = $this->toggle($row->required, $i, 'toggle.required', $coreField);
@@ -112,13 +112,13 @@ AdminUIHelper::startAdminArea($this);
 				</td>
 
 				<td align="left">
-					<a href="<?php echo $editlink; ?>"><?php echo JText::_($row->name); ?></a>
+					<a href="<?php echo $editlink; ?>"><?php echo vmText::_($row->name); ?></a>
 				</td>
 				<td align="left">
-					<?php echo JText::_($row->title); ?>
+					<?php echo vmText::_($row->title); ?>
 				</td>
 				<td align="left">
-					<?php echo JText::_($row->type); ?>
+					<?php echo vmText::_($row->type); ?>
 				</td>
 				<td align="center">
 					<?php echo $required; ?>
@@ -136,8 +136,8 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo $account; ?>
 				</td>
 				<td class="order">
-					<span><?php echo $this->pagination->orderUpIcon( $i, true, 'orderup', JText::_('COM_VIRTUEMART_MOVE_UP'), $ordering ); ?></span>
-					<span><?php echo $this->pagination->orderDownIcon( $i, $n, true, 'orderdown', JText::_('COM_VIRTUEMART_MOVE_DOWN'), $ordering ); ?></span>
+					<span><?php echo $this->pagination->orderUpIcon( $i, true, 'orderup', vmText::_('COM_VIRTUEMART_MOVE_UP'), $ordering ); ?></span>
+					<span><?php echo $this->pagination->orderDownIcon( $i, $n, true, 'orderdown', vmText::_('COM_VIRTUEMART_MOVE_DOWN'), $ordering ); ?></span>
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 			</td>
 			<td width="10">

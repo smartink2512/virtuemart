@@ -216,8 +216,8 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 
 	//Save the VM user stuff
 	if(!$usermodel->store($fields)){
-		vmError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA')  );
-		JError::raiseWarning('', JText::_('COM_VIRTUEMART_RAISEWARNING_NOT_ABLE_TO_SAVE_USER_DATA'));
+		vmError(vmText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA')  );
+		JError::raiseWarning('', vmText::_('COM_VIRTUEMART_RAISEWARNING_NOT_ABLE_TO_SAVE_USER_DATA'));
 	}
 
 // 	$params = JComponentHelper::getParams('com_languages');
@@ -232,7 +232,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		    $lang = VMLANG;
 	    }
 	if(!$this->execSQLFile($filename)){
-		vmError(JText::_('Problems execution of SQL File '.$filename));
+		vmError(vmText::_('Problems execution of SQL File '.$filename));
 	} else {
 		//update jplugin_id from shipment and payment
 		$db = JFactory::getDBO();
@@ -281,7 +281,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 			if (!class_exists ('plgVmPaymentStandard')) require(JPATH_ROOT . DS . $url . DS . 'standard.php');
 			$this->installPluginTable('plgVmPaymentStandard','#__virtuemart_payment_plg_standard','Payment Standard Table');
 		}
-		vmInfo(JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED'));
+		vmInfo(vmText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED'));
 	}
 
 	return true;
@@ -313,7 +313,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		$db = JFactory::getDBO();
 		$db->setQuery($query);
 		if (!$db->execute ()) {
-			vmError ( $className.'::onStoreInstallPluginTable: ' . JText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE));
+			vmError ( $className.'::onStoreInstallPluginTable: ' . vmText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE));
 		}
 
 	}
@@ -413,7 +413,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		    	}
 			$db->setQuery($query);
 				if (!$db->execute()) {
-				    JError::raiseWarning(1, 'JInstaller::install: '.$sqlfile.' '.JText::_('COM_VIRTUEMART_SQL_ERROR')." ".$db->stderr(true));
+				    JError::raiseWarning(1, 'JInstaller::install: '.$sqlfile.' '.vmText::_('COM_VIRTUEMART_SQL_ERROR')." ".$db->stderr(true));
 				    $ok = false;
 				}
 		    }

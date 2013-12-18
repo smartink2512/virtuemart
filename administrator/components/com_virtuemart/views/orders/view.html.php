@@ -99,7 +99,7 @@ class VirtuemartViewOrders extends VmView {
 			foreach ($orderStates as $orderState) {
 				//$_orderStatusList[$orderState->virtuemart_orderstate_id] = $orderState->order_status_name;
 				//When I use update, I have to use this?
-				$_orderStatusList[$orderState->order_status_code] = JText::_($orderState->order_status_name);
+				$_orderStatusList[$orderState->order_status_code] = vmText::_($orderState->order_status_name);
 			}
 
 			$_itemStatusUpdateFields = array();
@@ -113,7 +113,7 @@ class VirtuemartViewOrders extends VmView {
 				if(empty($orderbt->order_status)){
 					$orderbt->order_status = 'unknown';
 				}
-				$_orderStatusList[$orderbt->order_status] = JText::_('COM_VIRTUEMART_UNKNOWN_ORDER_STATUS');
+				$_orderStatusList[$orderbt->order_status] = vmText::_('COM_VIRTUEMART_UNKNOWN_ORDER_STATUS');
 			}
 
 			/* Assign the data */
@@ -203,7 +203,7 @@ class VirtuemartViewOrders extends VmView {
 
 			/* Toolbar */
 			//JToolBarHelper::customX( 'CreateOrderHead', 'new','new','New',false);
-			JToolBarHelper::save('updatestatus', JText::_('COM_VIRTUEMART_UPDATE_STATUS'));
+			JToolBarHelper::save('updatestatus', vmText::_('COM_VIRTUEMART_UPDATE_STATUS'));
 
 			JToolBarHelper::deleteListX();
 

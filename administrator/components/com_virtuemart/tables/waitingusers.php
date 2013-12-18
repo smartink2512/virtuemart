@@ -50,7 +50,7 @@ class TableWaitingUsers extends VmTable {
 
 	function check() {
 		if(empty($this->notify_email) || !filter_var($this->notify_email, FILTER_VALIDATE_EMAIL)) {
-			vmError(JText::_('COM_VIRTUEMART_ENTER_A_VALID_EMAIL_ADDRESS'),JText::_('COM_VIRTUEMART_ENTER_A_VALID_EMAIL_ADDRESS'));
+			vmError(vmText::_('COM_VIRTUEMART_ENTER_A_VALID_EMAIL_ADDRESS'),vmText::_('COM_VIRTUEMART_ENTER_A_VALID_EMAIL_ADDRESS'));
 			return false;
 		}
 		return parent::check();

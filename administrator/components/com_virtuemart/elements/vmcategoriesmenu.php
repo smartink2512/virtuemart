@@ -41,7 +41,7 @@ class JElementVmcategoriesmenu extends JElement {
         $categorylist = ShopFunctions::categoryListTree(array($value));
 
         $html = '<select class="inputbox"   name="' . $control_name . '[' . $name . ']' . '" >';
-        $html .= '<option value="0">' . JText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL') . '</option>';
+        $html .= '<option value="0">' . vmText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL') . '</option>';
         $html .= $categorylist;
         $html .="</select>";
         return $html;

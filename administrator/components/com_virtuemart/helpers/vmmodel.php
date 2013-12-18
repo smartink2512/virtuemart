@@ -49,7 +49,7 @@ class VmModel extends JObject {
 
 			if (!preg_match('/(.*)Model/i', get_class($this), $r))
 			{
-				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_MODEL_GET_NAME'), 500);
+				throw new Exception(vmText::_('JLIB_APPLICATION_ERROR_MODEL_GET_NAME'), 500);
 			}
 
 			$this->option = 'com_' . strtolower($r[1]);
@@ -155,7 +155,7 @@ class VmModel extends JObject {
 			$r = null;
 			if (!preg_match('/Model(.*)/i', get_class($this), $r))
 			{
-				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_MODEL_GET_NAME'), 500);
+				throw new Exception(vmText::_('JLIB_APPLICATION_ERROR_MODEL_GET_NAME'), 500);
 			}
 			$this->name = strtolower($r[1]);
 		}
@@ -287,7 +287,7 @@ class VmModel extends JObject {
 			return $table;
 		}
 
-		JError::raiseError(0, JText::sprintf('JLIB_APPLICATION_ERROR_TABLE_NAME_NOT_SUPPORTED', $name));
+		JError::raiseError(0, vmText::sprintf('JLIB_APPLICATION_ERROR_TABLE_NAME_NOT_SUPPORTED', $name));
 
 		return null;
 	}
@@ -350,7 +350,7 @@ class VmModel extends JObject {
 
 				if (!class_exists($modelClass))
 				{
-					JError::raiseWarning(0, JText::sprintf('JLIB_APPLICATION_ERROR_MODELCLASS_NOT_FOUND', $modelClass));
+					JError::raiseWarning(0, vmText::sprintf('JLIB_APPLICATION_ERROR_MODELCLASS_NOT_FOUND', $modelClass));
 					return false;
 				}
 			}

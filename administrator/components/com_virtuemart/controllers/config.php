@@ -65,7 +65,7 @@ class VirtuemartControllerConfig extends VmController {
 		}
 
 		if ($model->store($data)) {
-			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
+			$msg = vmText::_('COM_VIRTUEMART_CONFIG_SAVED');
 			// Load the newly saved values into the session.
 			VmConfig::loadConfig();
 		}
@@ -91,7 +91,7 @@ class VirtuemartControllerConfig extends VmController {
 	 */
 	function remove(){
 
-		$msg = JText::_('COM_VIRTUEMART_ERROR_CONFIGS_COULD_NOT_BE_DELETED');
+		$msg = vmText::_('COM_VIRTUEMART_ERROR_CONFIGS_COULD_NOT_BE_DELETED');
 
 		$this->setRedirect( $this->redirectPath , $msg);
 	}

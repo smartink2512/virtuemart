@@ -32,19 +32,19 @@ AdminUIHelper::startAdminArea($this);
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->coupons); ?>);" />
 		    </th>
 		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_COUPON_CODE'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_COUPON_CODE'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_COUPON_PERCENT_TOTAL'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_COUPON_PERCENT_TOTAL'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_COUPON_TYPE'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_COUPON_TYPE'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_VALUE'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_VALUE'); ?>
 		    </th>
 		    <th>
-			<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_VALID_AT'); ?>
+			<?php echo vmText::_('COM_VIRTUEMART_COUPON_VALUE_VALID_AT'); ?>
 		    </th>
 		     <th><?php echo $this->sort('virtuemart_coupon_id', 'COM_VIRTUEMART_ID')  ?></th>
 		</tr>
@@ -65,21 +65,21 @@ AdminUIHelper::startAdminArea($this);
 		    <a href="<?php echo $editlink; ?>"><?php echo $row->coupon_code; ?></a>
 		</td>
 		<td>
-			<?php echo JText::_($row->percent_or_total); ?>
+			<?php echo vmText::_($row->percent_or_total); ?>
 		</td>
 		<td align="left">
-			<?php echo JText::_($row->coupon_type); ?>
+			<?php echo vmText::_($row->coupon_type); ?>
 		</td>
 		<td>
-			<?php echo JText::_($row->coupon_value); ?>
+			<?php echo vmText::_($row->coupon_value); ?>
 		    <?php if ( $row->percent_or_total=='percent') echo '%' ;
 		    else echo $this->vendor_currency;   ?>
 		</td>
 		<td align="left">
-			<?php echo JText::_($row->coupon_value_valid); ?> <?php echo $this->vendor_currency; ?>
+			<?php echo vmText::_($row->coupon_value_valid); ?> <?php echo $this->vendor_currency; ?>
 		</td>
 		<td align="left">
-			<?php echo JText::_($row->virtuemart_coupon_id); ?>
+			<?php echo vmText::_($row->virtuemart_coupon_id); ?>
 		</td>
 	    </tr>
 		<?php

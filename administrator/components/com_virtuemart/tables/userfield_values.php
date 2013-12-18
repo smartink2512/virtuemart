@@ -65,7 +65,7 @@ class TableUserfield_values extends VmTable {
 	function check()
 	{
 		if (preg_match('/[^a-z0-9\._\-]/i', $this->fieldvalue) > 0) {
-			vmError(JText::_('COM_VIRTUEMART_TITLE_IN_FIELDVALUES_CONTAINS_INVALID_CHARACTERS'));
+			vmError(vmText::_('COM_VIRTUEMART_TITLE_IN_FIELDVALUES_CONTAINS_INVALID_CHARACTERS'));
 			return false;
 		}
 

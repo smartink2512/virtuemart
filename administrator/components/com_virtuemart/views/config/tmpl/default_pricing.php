@@ -40,7 +40,7 @@ $document->addScriptDeclaration($js);
 	<tr>
 		<td valign="top">
 			<fieldset>
-				<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CONFIGURATION'); ?></legend>
+				<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CONFIGURATION'); ?></legend>
 				<table class="admintable">
 					<?php
 					echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_TAX','show_tax',VmConfig::get('show_tax',1));
@@ -54,13 +54,13 @@ $document->addScriptDeclaration($js);
 		</td>
 		<td valign="top">
 			<fieldset>
-				<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES'); ?></legend>
+				<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES'); ?></legend>
 				<table class="admintable">
 					<tr>
 						<td class="key">
-							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES_EXPLAIN'); ?>">
+							<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES_EXPLAIN'); ?>">
 							<label for="show_prices">
-								<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES'); ?>
+								<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES'); ?>
 							</label>
 							</span>
 						</td>
@@ -72,9 +72,9 @@ $document->addScriptDeclaration($js);
 				<table class="admintable" id="show_hide_prices">
 					<tr>
 						<th></th>
-						<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_LABEL'); ?></th>
-						<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_TEXT'); ?></th>
-						<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_ROUNDING'); ?></th>
+						<th><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_LABEL'); ?></th>
+						<th><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_TEXT'); ?></th>
+						<th><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_ROUNDING'); ?></th>
 					</tr>
 					<?php
 					echo ShopFunctions::writePriceConfigLine($this->config, 'basePrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE');

@@ -133,7 +133,7 @@ class VirtueMartModelOrders extends VmModel {
                 $orderNumber = VmRequest::getString('order_number',$orderNumber);
                 $orderId = $this->getOrderIdByOrderPass($orderNumber,$orderPass);
                 if(empty($orderId)){
-                    echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+                    echo vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
                     return false;
                 }
                 $orderDetails = $this->getOrder($orderId);
@@ -155,7 +155,7 @@ class VirtueMartModelOrders extends VmModel {
                 //if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
                 vmdebug('getMyOrderDetails',$cuid,$orderDetails['details']['BT']->virtuemart_user_id);
                 if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
-                    echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+                    echo vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
                     return false;
                 }
                 //}
@@ -634,7 +634,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				}
 			} else {
 				VmConfig::loadJLang('com_virtuemart_orders', true);
-				$data->delivery_date = JText::_('COM_VIRTUEMART_DELDATE_INV');
+				$data->delivery_date = vmText::_('COM_VIRTUEMART_DELDATE_INV');
 			}
 		}
 
@@ -1501,7 +1501,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
 		}
 		if($res!=-1){
-			vmInfo( JText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
+			vmInfo( vmText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
 		}
 
 		return true;

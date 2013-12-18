@@ -45,7 +45,7 @@ class VirtuemartViewCustom extends JView {
 				$json->msg =  'OK';
 				echo json_encode($json);
 			} else {
-				$json->msg =  '<b>'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b>';
+				$json->msg =  '<b>'.vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b>';
 				echo json_encode($json);
 			}
 		}

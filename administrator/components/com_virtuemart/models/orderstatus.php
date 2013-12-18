@@ -87,7 +87,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 		if ($multiple) {
 			$attrs .= ' multiple="multiple" ';
 			if(empty($langkey)) $langkey = 'COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS';
-			$attrs .=  ' data-placeholder="'.JText::_($langkey).'"';
+			$attrs .=  ' data-placeholder="'.vmText::_($langkey).'"';
 			$idA .= '[]';
 		} else {
 			if(empty($langkey)) $langkey = 'COM_VIRTUEMART_LIST_EMPTY_OPTION';
@@ -102,7 +102,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 		$hash = md5($hashValue.$name.$attrs);
 		if (!isset($this->_renderStatusList[$hash])) {
 			$orderStates = $this->getOrderStatusNames();
-			$emptyOption = JHTML::_ ('select.option', -1, JText::_ ($langkey), 'order_status_code', 'order_status_name');
+			$emptyOption = JHTML::_ ('select.option', -1, vmText::_ ($langkey), 'order_status_code', 'order_status_name');
 			array_unshift ($orderStates, $emptyOption);
 			if ($multiple) {
 				$attrs .=' size="'.count($orderStates).'" ';

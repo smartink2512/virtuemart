@@ -43,7 +43,7 @@ AdminUIHelper::startAdminArea($this);
 		<th><?php echo $this->sort('product_name') ?></th>
 		<th><?php echo $this->sort('product_sku')?></th>
 		<th><?php echo $this->sort('product_in_stock','COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK') ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK') ?> </th>
+		<th><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK') ?> </th>
 		<th><?php echo $this->sort('product_price','COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST') ?></th>
 		<th><?php echo $this->sort('product_price', 'COM_VIRTUEMART_PRODUCT_INVENTORY_PRICE') ?></th>
 		<th><?php echo $this->sort('product_weight','COM_VIRTUEMART_PRODUCT_INVENTORY_WEIGHT') ?></th>
@@ -65,7 +65,7 @@ AdminUIHelper::startAdminArea($this);
 			elseif ( $product->product_in_stock - $product->product_ordered < $product->low_stock_notification ) $stockstatut ="low";
 			else $stockstatut = "normal";
 			
-			$stockstatut='class="stock-'.$stockstatut.'" title="'.jText::_('COM_VIRTUEMART_STOCK_LEVEL_'.$stockstatut).'"';
+			$stockstatut='class="stock-'.$stockstatut.'" title="'.vmText::_('COM_VIRTUEMART_STOCK_LEVEL_'.$stockstatut).'"';
 			?>
 			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->
@@ -74,7 +74,7 @@ AdminUIHelper::startAdminArea($this);
 				<?php
 				$link = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id.'&product_parent_id='.$product->product_parent_id;
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link, FALSE), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_($link, FALSE), $product->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)); ?></td>
 				<td><?php echo $product->product_sku; ?></td>
 				<td <?php echo $stockstatut; ?>><?php echo $product->product_in_stock; ?></td>
 				<td <?php echo $stockstatut; ?> width="5%"><?php echo $product->product_ordered; ?></td>

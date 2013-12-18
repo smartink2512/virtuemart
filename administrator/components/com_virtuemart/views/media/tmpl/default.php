@@ -45,12 +45,12 @@ $productfileslist = $this->files;
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productfileslist ); ?>')" /></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME'); ?></th>
+		<th><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_NAME'); ?></th>
 		<th><?php echo $this->sort('file_title', 'COM_VIRTUEMART_FILES_LIST_FILETITLE') ?></th>
 		<th><?php echo $this->sort('file_type', 'COM_VIRTUEMART_FILES_LIST_ROLE') ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_VIEW'); ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILENAME'); ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILETYPE'); ?></th>
+		<th><?php echo vmText::_('COM_VIRTUEMART_VIEW'); ?></th>
+		<th><?php echo vmText::_('COM_VIRTUEMART_FILES_LIST_FILENAME'); ?></th>
+		<th><?php echo vmText::_('COM_VIRTUEMART_FILES_LIST_FILETYPE'); ?></th>
 		<th><?php echo $this->sort('published', 'COM_VIRTUEMART_PUBLISHED'); ?></th>
 	  <th><?php echo $this->sort('virtuemart_media_id', 'COM_VIRTUEMART_ID')  ?></th>
 	</tr>
@@ -78,13 +78,13 @@ $productfileslist = $this->files;
 				<?php
 				$link = 'index.php?option='.$option.'&view=media&task=edit&virtuemart_media_id[]='.$productfile->virtuemart_media_id;
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link, FALSE), $productfile->file_title, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$productfile->file_title)); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_($link, FALSE), $productfile->file_title, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$productfile->file_title)); ?></td>
 				<!-- File role -->
 				<td><?php
 					//Just to have something, we could make this nicer with Icons
-					if(!empty($productfile->file_is_product_image)) echo JText::_('COM_VIRTUEMART_'.strtoupper($productfile->file_type).'_IMAGE') ;
-					if(!empty($productfile->file_is_downloadable)) echo JText::_('COM_VIRTUEMART_DOWNLOADABLE') ;
-					if(!empty($productfile->file_is_forSale)) echo  JText::_('COM_VIRTUEMART_FOR_SALE');
+					if(!empty($productfile->file_is_product_image)) echo vmText::_('COM_VIRTUEMART_'.strtoupper($productfile->file_type).'_IMAGE') ;
+					if(!empty($productfile->file_is_downloadable)) echo vmText::_('COM_VIRTUEMART_DOWNLOADABLE') ;
+					if(!empty($productfile->file_is_forSale)) echo  vmText::_('COM_VIRTUEMART_FOR_SALE');
 
 					?>
 				</td>

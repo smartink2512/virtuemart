@@ -60,14 +60,13 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->updateShipperToShipment ();
 			$this->installPlugin ('Standard', 'plugin', 'standard', 'vmpayment');
 			$this->installPlugin ('Klarna', 'plugin', 'klarna', 'vmpayment');
+			$this->installPlugin ('KlarnaCheckout', 'plugin', 'klarnacheckout', 'vmpayment');
 			$this->installPlugin ('Sofort Banking/Überweisung', 'plugin', 'sofort', 'vmpayment');
-			$this->installPlugin ('Sofort Ideal', 'plugin', 'sofort_ideal', 'vmpayment');
-			$this->installPlugin ('Paypal', 'plugin', 'paypal', 'vmpayment');
-			$this->installPlugin ('PayPal AIO', 'plugin', 'paypal_aio', 'vmpayment');
+			$this->installPlugin ('PayPal', 'plugin', 'paypal', 'vmpayment');
 			$this->installPlugin ('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
 			//$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
 			//$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
-			$this->installPlugin ('Moneybookers', 'plugin', 'moneybookers', 'vmpayment', 0, 0);
+			$this->installPlugin ('Moneybookers', 'plugin', 'moneybookers', 'vmpayment');
 			$this->installPlugin ('Moneybookers Credit Cards', 'plugin', 'moneybookers_acc', 'vmpayment');
 			$this->installPlugin ('Moneybookers Lastschrift', 'plugin', 'moneybookers_did', 'vmpayment');
 			$this->installPlugin ('Moneybookers iDeal', 'plugin', 'moneybookers_idl', 'vmpayment');
@@ -78,14 +77,14 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('Moneybookers Skrill Digital Wallet', 'plugin', 'moneybookers_wlt', 'vmpayment');
 			$this->installPlugin ('Authorize.net', 'plugin', 'authorizenet', 'vmpayment');
 
+			$this->installPlugin ('Sofort iDeal', 'plugin', 'sofort_ideal', 'vmpayment');
 
+			$this->installPlugin ('By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment', 1);
 
-			$this->installPlugin ('By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment');
-
-			$this->installPlugin ('Customer text input', 'plugin', 'textinput', 'vmcustom');
-			$this->installPlugin ('Product specification', 'plugin', 'specification', 'vmcustom');
-			$this->installPlugin ('Stockable variants', 'plugin', 'stockable', 'vmcustom');
-			$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation', 0);
+			$this->installPlugin ('Customer text input', 'plugin', 'textinput', 'vmcustom', 1);
+			$this->installPlugin ('Product specification', 'plugin', 'specification', 'vmcustom', 1);
+			$this->installPlugin ('Stockable variants', 'plugin', 'stockable', 'vmcustom', 1);
+			$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation' );
 
 			// 			$table = '#__virtuemart_customs';
 			// 			$fieldname = 'field_type';
@@ -96,7 +95,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			// 						(0, 0, 'COM_VIRTUEMART_STOCKABLE_PRODUCT', 'COM_VIRTUEMART_STOCKABLE_PRODUCT_TIP', NULL,
 			// 					'COM_VIRTUEMART_STOCKABLE_PRODUCT_DESC', 'G', 0, 0, 0, 1 );");
 
-			$this->installPlugin ('Virtuemart Product', 'plugin', 'virtuemart', 'search');
+			$this->installPlugin ('VirtueMart Product', 'plugin', 'virtuemart', 'search');
 
 			$task = JRequest::getCmd ('task');
 			if ($task != 'updateDatabase') {
@@ -195,9 +194,8 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				}*/
 
 				echo "<H3>Installing Virtuemart Plugins and modules Success.</h3>";
-				echo "<H3>You may directly uninstall this component. Your plugins will remain</h3>";
+				echo "<H3>You may directly uninstall this component. Your plugins will remain. But we advice to keep the AIO installer for updating</h3>";
 
-				echo "<H3>Ignore the message " . JText::_ ('JLIB_INSTALLER_ABORT_COMP_BUILDADMINMENUS_FAILED') . "</h3>";
 			} else {
 				echo "<H3>Updated Virtuemart Plugin tables</h3>";
 			}
@@ -212,7 +210,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 			$db = JFactory::getDBO ();
 
-			$q = 'UPDATE `#__extensions` SET `ordering`= 2 WHERE `folder` ="vmpayment"';
+			$q = 'UPDATE `#__extensions` SET `ordering`= 5 WHERE `folder` ="vmpayment"';
 			$db->setQuery($q);
 			$db->query();
 
@@ -220,16 +218,32 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$db->setQuery($q);
 			$db->query();
 
-			$q = 'UPDATE `#__extensions` SET `ordering`= 2 WHERE `element` ="heidelpay"';
+			$q = 'UPDATE `#__extensions` SET `ordering`= 2 WHERE `element` ="sofort"';
 			$db->setQuery($q);
 			$db->query();
 
+			$q = 'UPDATE `#__extensions` SET `ordering`= 2 WHERE `element` ="sofort_ideal"';
+			$db->setQuery($q);
+			$db->query();
+
+			$q = 'UPDATE `#__extensions` SET `ordering`= 3 WHERE `element` ="paypal"';
+			$db->setQuery($q);
+			$db->query();
+
+			$q = 'UPDATE `#__extensions` SET `ordering`= 100 WHERE `element` ="payzen"';
+			$db->setQuery($q);
+			$db->query();
+
+			$q = 'UPDATE `#__extensions` SET `ordering`= 100 WHERE `element` ="systempay"';
+			$db->setQuery($q);
+			$db->query();
 		}
+
 		/**
 		 * Installs a vm plugin into the database
 		 *
 		 */
-		private function installPlugin ($name, $type, $element, $group, $published = 1, $createJPluginTable = 1) {
+		private function installPlugin ($name, $type, $element, $group, $published = 0, $createJPluginTable = 1) {
 
 			$task = JRequest::getCmd ('task');
 
@@ -360,7 +374,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				$pluginClassname = 'plg' . ucfirst ($group) . ucfirst ($element);
 
 				//Let's get the global dispatcher
-				$dispatcher = JEventDispatcher::getInstance ();
+				$dispatcher = JDispatcher::getInstance ();
 				$config = array('type' => $group, 'name' => $group, 'params' => '');
 				$plugin = new $pluginClassname($dispatcher, $config);
 				;
@@ -524,7 +538,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 						$manifest_cache = json_encode (JApplicationHelper::parseXMLInstallFile ($src . DS . $module . '.xml'));
 					}
 					$q = 'INSERT INTO `#__extensions` 	(`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `ordering`) VALUES
-																	( "' . $module . '" , "module", "' . $module . '", "", "0", "1","' . $access . '", "0", "' . $db->escape ($manifest_cache) . '", "' . $params . '","' . $ordering . '");';
+																	( "' . $module . '" , "module", "' . $module . '", "", "0", "1","' . $access . '", "0", "' . $db->getEscaped ($manifest_cache) . '", "' . $params . '","' . $ordering . '");';
 				} else {
 
 					/*					$q = 'UPDATE `#__extensions` SET 	`name`= "'.$module.'",
@@ -573,7 +587,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 			$query = 'SHOW COLUMNS FROM `' . $tablename . '` ';
 			$this->db->setQuery ($query);
-			$columns = $this->db->loadColumn (0);
+			$columns = $this->db->loadResultArray (0);
 
 			foreach ($fields as $fieldname => $alterCommand) {
 				if (in_array ($fieldname, $columns)) {
@@ -598,7 +612,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 			$query = 'SHOW COLUMNS FROM `' . $table . '` ';
 			$this->db->setQuery ($query);
-			$columns = $this->db->loadColumn (0);
+			$columns = $this->db->loadResultArray (0);
 
 			if (!in_array ($field, $columns)) {
 

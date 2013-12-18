@@ -92,7 +92,7 @@ class VirtueMartModelWaitingList extends VmModel {
 
 
 		if (empty($subject)) {
-			$subject = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_SUBJECT', $item->product_name);
+			$subject = vmText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_SUBJECT', $item->product_name);
 		}
 		$vars['subject'] = $subject;
 		$vars['mailbody'] = $mailbody;

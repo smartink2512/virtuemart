@@ -35,10 +35,10 @@ AdminUIHelper::startAdminArea($this);
 				<?php echo $this->sort('shipment_name', 'COM_VIRTUEMART_SHIPMENT_NAME_LBL'); ?>
 			</th>
                         <th>
-				<?php echo JText::_('COM_VIRTUEMART_SHIPMENT_LIST_DESCRIPTION_LBL'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_SHIPMENT_LIST_DESCRIPTION_LBL'); ?>
 			</th>
                         <th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_SHIPPING_SHOPPERGROUPS'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_SHIPPING_SHOPPERGROUPS'); ?>
 			</th>
                         <th>
 				<?php echo $this->sort('shipment_element', 'COM_VIRTUEMART_SHIPMENTMETHOD'); ?>
@@ -67,7 +67,7 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo $checked; ?>
 				</td>
 				<td align="left">
-					<?php echo JHTML::_('link', $editlink, JText::_($row->shipment_name)); ?>
+					<?php echo JHTML::_('link', $editlink, vmText::_($row->shipment_name)); ?>
 				</td>
                                 <td align="left">
 					<?php echo $row->shipment_desc; ?>
@@ -76,10 +76,10 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo $row->shipmentShoppersList; ?>
 				</td>
                                 <td align="left">
-					<?php echo $row->shipment_element; //JHTML::_('link', $editlink, JText::_($row->shipment_element)); ?>
+					<?php echo $row->shipment_element; //JHTML::_('link', $editlink, vmText::_($row->shipment_element)); ?>
 				</td>
 				<td align="left">
-					<?php echo JText::_($row->ordering); ?>
+					<?php echo vmText::_($row->ordering); ?>
 				</td>
 				<td><?php echo $published; ?></td>
 				<td align="center">

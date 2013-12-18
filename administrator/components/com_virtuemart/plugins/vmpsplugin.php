@@ -151,7 +151,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			if (empty($this->_name)) {
 				vmAdminInfo ('displayListFE cartVendorId=' . $cart->vendorId);
 				$app = JFactory::getApplication ();
-				$app->enqueueMessage (JText::_ ('COM_VIRTUEMART_CART_NO_' . strtoupper ($this->_psType)));
+				$app->enqueueMessage (vmText::_ ('COM_VIRTUEMART_CART_NO_' . strtoupper ($this->_psType)));
 				return FALSE;
 			} else {
 				return FALSE;
@@ -365,11 +365,11 @@ abstract class vmPSPlugin extends vmPlugin {
 		$html = '<table class="admintable">' . "\n"
 			. '	<thead>' . "\n"
 			. '		<tr>' . "\n"
-			. '			<td class="key" style="text-align: center;" colspan="2">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . strtoupper($this->_type) . '_LBL') . '</td>' . "\n"
+			. '			<td class="key" style="text-align: center;" colspan="2">' . vmText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . strtoupper($this->_type) . '_LBL') . '</td>' . "\n"
 			. '		</tr>' . "\n"
 			. '	</thead>' . "\n"
 			. '	<tr>' . "\n"
-			. '		<td class="key">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . strtoupper($this->_type) . '_LBL') . ': </td>' . "\n"
+			. '		<td class="key">' . vmText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . strtoupper($this->_type) . '_LBL') . ': </td>' . "\n"
 			. '		<td align="left">' . $order_name . '</td>' . "\n"
 			. '	</tr>' . "\n";
 
@@ -696,10 +696,10 @@ abstract class vmPSPlugin extends vmPlugin {
 		$vendorName = $vendorModel->getVendorName($vendorId);
 		VmConfig::loadJLang('com_virtuemart');
 		if ($subject == NULL) {
-			$subject = JText::sprintf('COM_VIRTUEMART_ERROR_SUBJECT', $this->_name, $vendor->vendor_store_name);
+			$subject = vmText::sprintf('COM_VIRTUEMART_ERROR_SUBJECT', $this->_name, $vendor->vendor_store_name);
 		}
 		if ($message == NULL) {
-			$message = JText::sprintf('COM_VIRTUEMART_ERROR_BODY', $subject, $this->getLogFilename().VmConfig::LOGFILEEXT);
+			$message = vmText::sprintf('COM_VIRTUEMART_ERROR_BODY', $subject, $this->getLogFilename().VmConfig::LOGFILEEXT);
 		}
 		JUtility::sendMail($vendorEmail, $vendorName, $vendorEmail, $subject, $message);
 		if (JVM_VERSION === 1) {
@@ -789,7 +789,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$costDisplay = "";
 		if ($pluginSalesPrice) {
 			$costDisplay = $currency->priceDisplay ($pluginSalesPrice);
-			$costDisplay = '<span class="' . $this->_type . '_cost"> (' . JText::_ ('COM_VIRTUEMART_PLUGIN_COST_DISPLAY') . $costDisplay . ")</span>";
+			$costDisplay = '<span class="' . $this->_type . '_cost"> (' . vmText::_ ('COM_VIRTUEMART_PLUGIN_COST_DISPLAY') . $costDisplay . ")</span>";
 		}
 
 		$html = '<input type="radio" name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '"   value="' . $plugin->$pluginmethod_id . '" ' . $checked . ">\n"
@@ -807,7 +807,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$class = "class='key'";
 		$html = ' 	<thead>' . "\n"
 			. '		<tr>' . "\n"
-			. '			<th ' . $class . ' style="text-align: center;" colspan="2">' . JText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . strtoupper($this->_psType) . '_LBL') . '</th>' . "\n"
+			. '			<th ' . $class . ' style="text-align: center;" colspan="2">' . vmText::_ ('COM_VIRTUEMART_ORDER_PRINT_' . strtoupper($this->_psType) . '_LBL') . '</th>' . "\n"
 			. '		</tr>' . "\n"
 			. '	</thead>' . "\n";
 
@@ -826,13 +826,13 @@ abstract class vmPSPlugin extends vmPlugin {
 		// vmdebug('getHtmlRow',$key,$complete_key);
 		// vmdebug('getHtmlRow',$key,$complete_key);
 		if ($lang->hasKey($complete_key)) {
-			$key_text = JText::_ ($complete_key);
+			$key_text = vmText::_ ($complete_key);
 		} else {
-			$key_text = JText::_ ($key);
+			$key_text = vmText::_ ($key);
 		}
 		$more_key = strtoupper($complete_key . '_' . $value);
 		if ($lang->hasKey ($more_key)) {
-			$value .= " (" . JText::_ ($more_key) . ")";
+			$value .= " (" . vmText::_ ($more_key) . ")";
 		}
 		$html = "<tr>\n<td " . $class . ">" . $key_text . "</td>\n <td align='left'>" . $value . "</td>\n</tr>\n";
 		return $html;
@@ -1126,7 +1126,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			// error while processing the payment
 			$mainframe = JFactory::getApplication ();
 			$mainframe->enqueueMessage ($html);
-			$mainframe->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=cart',FALSE), JText::_ ('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
+			$mainframe->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=cart',FALSE), vmText::_ ('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 		}
 	}
 
@@ -1326,7 +1326,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			$order['order_status'] = 'X';
 			$order['virtuemart_order_id'] = $virtuemart_order_id;
 			$order['customer_notified'] = 0;
-			$order['comments'] = JText::_ ('COM_VIRTUEMART_PAYMENT_CANCELLED_BY_SHOPPER');
+			$order['comments'] = vmText::_ ('COM_VIRTUEMART_PAYMENT_CANCELLED_BY_SHOPPER');
 			$modelOrder->updateStatusForOneOrder ($virtuemart_order_id, $order, TRUE);
 			//$modelOrder->remove (array('virtuemart_order_id' => $virtuemart_order_id));
 		}

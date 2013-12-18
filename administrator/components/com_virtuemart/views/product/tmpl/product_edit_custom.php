@@ -20,7 +20,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 if (isset($this->product->customfields_fromParent)) { ?>
-	<label><?php echo JText::_('COM_VIRTUEMART_CUSTOM_SAVE_FROM_CHILD');?><input type="checkbox" name="save_customfields" value="1" /></label>
+	<label><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_SAVE_FROM_CHILD');?><input type="checkbox" name="save_customfields" value="1" /></label>
 <?php } else {
 	?> <input type="hidden" name="save_customfields" value="1" />
 <?php }  ?>
@@ -69,12 +69,12 @@ if (isset($this->product->customfields_fromParent)) { ?>
 						// no display (group of) child , handled by plugin;
 					} elseif ($customfield->field_type == 'E'){
 						$tables['fields'] .= '<tr class="removable">
-							<td>'.JText::_($customfield->custom_title).'</td>
+							<td>'.vmText::_($customfield->custom_title).'</td>
 							<td>'.$customfield->custom_tip.'</td>
 							<td>'.$customfield->display.'</td>'.
 							VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 							.'</td>
-							<td>'.JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION').'</td>
+							<td>'.vmText::_('COM_VIRTUEMART_CUSTOM_EXTENSION').'</td>
 							<td>
 							<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
 							</td>
@@ -83,7 +83,7 @@ if (isset($this->product->customfields_fromParent)) { ?>
 						 </tr>';
 						/*$tables['fields'] .= '
 							<tr class="removable">
-								<td>'.JText::_($customfield->custom_title).'</td>
+								<td>'.vmText::_($customfield->custom_title).'</td>
 								<td colspan="3"><span>'.$customfield->display.$customfield->custom_tip.'</span>'.
 								VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 							  .'</td><span class="vmicon icon-nofloat vmicon-16-'.$cartIcone.'"></span>
@@ -92,13 +92,13 @@ if (isset($this->product->customfields_fromParent)) { ?>
 					} else {
 						$fromParent = '';
 						if($customfield->virtuemart_product_id==$this->product->product_parent_id){
-							$fromParent = JText::_('COM_VIRTUEMART_CUSTOM_INHERITED');
+							$fromParent = vmText::_('COM_VIRTUEMART_CUSTOM_INHERITED');
 							$fromParent .= ' d:'.VmHtml::checkbox('field[' . $i . '][disabler]',0).' o:'.VmHtml::checkbox('field['.$i.'][override]',0,$customfield->virtuemart_customfield_id);
 
 						}
 						$override = '';
 						if($customfield->override){
-							$override = JText::sprintf('COM_VIRTUEMART_CUSTOM_OVERRIDE',$customfield->override);
+							$override = vmText::sprintf('COM_VIRTUEMART_CUSTOM_OVERRIDE',$customfield->override);
 							if($customfield->disabler!=0){
 								$override .= ' d:'.VmHtml::checkbox('field[' . $i . '][disabler]', $customfield->disabler, $customfield->disabler);
 							} else {
@@ -112,10 +112,10 @@ if (isset($this->product->customfields_fromParent)) { ?>
 							}
 						}
 						$tables['fields'] .= '<tr class="removable">
-							<td>'.$fromParent.$override.JText::_($customfield->custom_title).'</td>
+							<td>'.$fromParent.$override.vmText::_($customfield->custom_title).'</td>
 							<td>'.$customfield->custom_tip.'</td>
 							<td>'.$customfield->display.'</td>
-							<td>'.JText::_($this->fieldTypes[$customfield->field_type]).
+							<td>'.vmText::_($this->fieldTypes[$customfield->field_type]).
 							VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 							.'</td>
 							<td>
@@ -132,43 +132,43 @@ if (isset($this->product->customfields_fromParent)) { ?>
 
 			 $emptyTable = '
 				<tr>
-					<td colspan="8">'.JText::_( 'COM_VIRTUEMART_CUSTOM_NO_TYPES').'</td>
+					<td colspan="8">'.vmText::_( 'COM_VIRTUEMART_CUSTOM_NO_TYPES').'</td>
 				<tr>';
 			?>
 			<fieldset style="background-color:#F9F9F9;">
-				<legend><?php echo JText::_('COM_VIRTUEMART_RELATED_CATEGORIES'); ?></legend>
-				<?php echo JText::_('COM_VIRTUEMART_CATEGORIES_RELATED_SEARCH'); ?>
+				<legend><?php echo vmText::_('COM_VIRTUEMART_RELATED_CATEGORIES'); ?></legend>
+				<?php echo vmText::_('COM_VIRTUEMART_CATEGORIES_RELATED_SEARCH'); ?>
 				<div class="jsonSuggestResults" style="width: auto;">
 					<input type="text" size="40" name="search" id="relatedcategoriesSearch" value="" />
-					<button class="reset-value"><?php echo JText::_('COM_VIRTUEMART_RESET') ?></button>
+					<button class="reset-value"><?php echo vmText::_('COM_VIRTUEMART_RESET') ?></button>
 				</div>
 				<div id="custom_categories"><?php echo  $tables['categories']; ?></div>
 			</fieldset>
 			<fieldset style="background-color:#F9F9F9;">
-				<legend><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS'); ?></legend>
-				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_RELATED_SEARCH'); ?>
+				<legend><?php echo vmText::_('COM_VIRTUEMART_RELATED_PRODUCTS'); ?></legend>
+				<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_RELATED_SEARCH'); ?>
 				<div class="jsonSuggestResults" style="width: auto;">
 					<input type="text" size="40" name="search" id="relatedproductsSearch" value="" />
-					<button class="reset-value"><?php echo JText::_('COM_VIRTUEMART_RESET') ?></button>
+					<button class="reset-value"><?php echo vmText::_('COM_VIRTUEMART_RESET') ?></button>
 				</div>
 				<div id="custom_products"><?php echo  $tables['products']; ?></div>
 			</fieldset>
 
 			<fieldset style="background-color:#F9F9F9;">
-				<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE' );?></legend>
+				<legend><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE' );?></legend>
 				<div><?php echo  '<div class="inline">'.$this->customsList; ?></div>
 
 				<table id="custom_fields" class="adminlist" cellspacing="0" cellpadding="0">
 					<thead>
 					<tr class="row1">
-						<th><?php echo JText::_('COM_VIRTUEMART_TITLE');?></th>
-						<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_TIP');?></th>
-						<th><?php echo JText::_('COM_VIRTUEMART_VALUE');?></th>
-						<th><?php echo JText::_('COM_VIRTUEMART_CART_PRICE');?></th>
-						<th><?php echo JText::_('COM_VIRTUEMART_TYPE');?></th>
-						<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE');?></th>
-						<th><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></th>
-						<th><?php echo JText::_('COM_VIRTUEMART_MOVE'); ?></th>
+						<th><?php echo vmText::_('COM_VIRTUEMART_TITLE');?></th>
+						<th><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_TIP');?></th>
+						<th><?php echo vmText::_('COM_VIRTUEMART_VALUE');?></th>
+						<th><?php echo vmText::_('COM_VIRTUEMART_CART_PRICE');?></th>
+						<th><?php echo vmText::_('COM_VIRTUEMART_TYPE');?></th>
+						<th><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE');?></th>
+						<th><?php echo vmText::_('COM_VIRTUEMART_DELETE'); ?></th>
+						<th><?php echo vmText::_('COM_VIRTUEMART_MOVE'); ?></th>
 
 					</tr>
 					</thead>
@@ -181,7 +181,7 @@ if (isset($this->product->customfields_fromParent)) { ?>
 				</table><!-- custom_fields -->
 			</fieldset>
 			<!--fieldset style="background-color:#F9F9F9;">
-				<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION'); ?></legend>
+				<legend><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_EXTENSION'); ?></legend>
 				<div id="custom_customPlugins"><?php echo  $tables['customPlugins']; ?></div>
 			</fieldset-->
 		</td>

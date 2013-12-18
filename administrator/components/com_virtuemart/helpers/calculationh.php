@@ -1296,7 +1296,7 @@ class calculationHelper {
 	 */
 	function calculateShipmentPrice( $cart, $checkAutomaticSelected=true) {
 
-		$this->_cart->cartData['shipmentName'] = JText::_('COM_VIRTUEMART_CART_NO_SHIPMENT_SELECTED');
+		$this->_cart->cartData['shipmentName'] = vmText::_('COM_VIRTUEMART_CART_NO_SHIPMENT_SELECTED');
 		$this->_cart->cartPrices['shipmentValue'] = 0; //could be automatically set to a default set in the globalconfig
 		$this->_cart->cartPrices['shipmentTax'] = 0;
 		$this->_cart->cartPrices['salesPriceShipment'] = 0;
@@ -1343,7 +1343,7 @@ class calculationHelper {
 	function calculatePaymentPrice($cart, $checkAutomaticSelected=true) {
 		//		if (empty($code)) return 0.0;
 		//		$code=4;
-		$this->_cart->cartData['paymentName'] = JText::_('COM_VIRTUEMART_CART_NO_PAYMENT_SELECTED');
+		$this->_cart->cartData['paymentName'] = vmText::_('COM_VIRTUEMART_CART_NO_PAYMENT_SELECTED');
 		$this->_cart->cartPrices['paymentValue'] = 0; //could be automatically set to a default set in the globalconfig
 		$this->_cart->cartPrices['paymentTax'] = 0;
 		$this->_cart->cartPrices['paymentTotal'] = 0;

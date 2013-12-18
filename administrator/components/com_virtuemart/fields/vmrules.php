@@ -81,7 +81,7 @@ class JFormFieldVmRules extends JFormFieldRules
 		$html = array();
 		$html[] = '<div id="permissions-sliders-'.$section.'">';
 		$html[] = '<div id="permissions-sliders" class="pane-sliders">';
-		$html[] = '<p class="rule-desc">' . JText::_('JLIB_RULES_SETTINGS_DESC') . '</p>';
+		$html[] = '<p class="rule-desc">' . vmText::_('JLIB_RULES_SETTINGS_DESC') . '</p>';
 		$html[] = '<ul id="rules">';
 
 		// Start a row for each user group.
@@ -111,11 +111,11 @@ class JFormFieldVmRules extends JFormFieldRules
 			$html[] = '<tr>';
 
 			$html[] = '<th class="actions" id="actions-th' . $group->value . '">';
-			$html[] = '<span class="acl-action">' . JText::_('JLIB_RULES_ACTION') . '</span>';
+			$html[] = '<span class="acl-action">' . vmText::_('JLIB_RULES_ACTION') . '</span>';
 			$html[] = '</th>';
 
 			$html[] = '<th class="settings" id="settings-th' . $group->value . '">';
-			$html[] = '<span class="acl-action">' . JText::_('JLIB_RULES_SELECT_SETTING') . '</span>';
+			$html[] = '<span class="acl-action">' . vmText::_('JLIB_RULES_SELECT_SETTING') . '</span>';
 			$html[] = '</th>';
 
 			// The calculated setting is not shown for the root group of global configuration.
@@ -123,7 +123,7 @@ class JFormFieldVmRules extends JFormFieldRules
 			if ($canCalculateSettings)
 			{
 				$html[] = '<th id="aclactionth' . $group->value . '">';
-				$html[] = '<span class="acl-action">' . JText::_('JLIB_RULES_CALCULATED_SETTING') . '</span>';
+				$html[] = '<span class="acl-action">' . vmText::_('JLIB_RULES_CALCULATED_SETTING') . '</span>';
 				$html[] = '</th>';
 			}
 
@@ -136,8 +136,8 @@ class JFormFieldVmRules extends JFormFieldRules
 				$html[] = '<tr>';
 				$html[] = '<td headers="actions-th' . $group->value . '">';
 				$html[] = '<label class="hasTip" for="' . $this->id . '_' . $action->name . '_' . $group->value . '" title="'
-					. htmlspecialchars(JText::_($action->title) . '::' . JText::_($action->description), ENT_COMPAT, 'UTF-8') . '">';
-				$html[] = JText::_($action->title);
+					. htmlspecialchars(vmText::_($action->title) . '::' . vmText::_($action->description), ENT_COMPAT, 'UTF-8') . '">';
+				$html[] = vmText::_($action->title);
 				$html[] = '</label>';
 				$html[] = '</td>';
 
@@ -146,7 +146,7 @@ class JFormFieldVmRules extends JFormFieldRules
 				$this->name = $this->formControl.'[rules]';
 				$html[] = '<select name="' . $this->name . '[' . $action->name . '][' . $group->value . ']" id="' . $this->id . '_' . $action->name
 					. '_' . $group->value . '" title="'
-					. JText::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', JText::_($action->title), trim($group->text)) . '">';
+					. vmText::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', vmText::_($action->title), trim($group->text)) . '">';
 
 				$inheritedRule = JAccess::checkGroup($group->value, $action->name, $assetId);
 
@@ -157,10 +157,10 @@ class JFormFieldVmRules extends JFormFieldRules
 
 				// The parent group has "Not Set", all children can rightly "Inherit" from that.
 				$html[] = '<option value=""' . ($assetRule === null ? ' selected="selected"' : '') . '>'
-					. JText::_(empty($group->parent_id) && empty($component) ? 'JLIB_RULES_NOT_SET' : 'JLIB_RULES_INHERITED') . '</option>';
-				$html[] = '<option value="1"' . ($assetRule === true ? ' selected="selected"' : '') . '>' . JText::_('JLIB_RULES_ALLOWED')
+					. vmText::_(empty($group->parent_id) && empty($component) ? 'JLIB_RULES_NOT_SET' : 'JLIB_RULES_INHERITED') . '</option>';
+				$html[] = '<option value="1"' . ($assetRule === true ? ' selected="selected"' : '') . '>' . vmText::_('JLIB_RULES_ALLOWED')
 					. '</option>';
-				$html[] = '<option value="0"' . ($assetRule === false ? ' selected="selected"' : '') . '>' . JText::_('JLIB_RULES_DENIED')
+				$html[] = '<option value="0"' . ($assetRule === false ? ' selected="selected"' : '') . '>' . vmText::_('JLIB_RULES_DENIED')
 					. '</option>';
 
 				$html[] = '</select>&#160; ';
@@ -168,7 +168,7 @@ class JFormFieldVmRules extends JFormFieldRules
 				// If this asset's rule is allowed, but the inherited rule is deny, we have a conflict.
 				if (($assetRule === true) && ($inheritedRule === false))
 				{
-					$html[] = JText::_('JLIB_RULES_CONFLICT');
+					$html[] = vmText::_('JLIB_RULES_CONFLICT');
 				}
 
 				$html[] = '</td>';
@@ -186,28 +186,28 @@ class JFormFieldVmRules extends JFormFieldRules
 					{
 						if ($inheritedRule === null)
 						{
-							$html[] = '<span class="icon-16-unset">' . JText::_('JLIB_RULES_NOT_ALLOWED') . '</span>';
+							$html[] = '<span class="icon-16-unset">' . vmText::_('JLIB_RULES_NOT_ALLOWED') . '</span>';
 						}
 						elseif ($inheritedRule === true)
 						{
-							$html[] = '<span class="icon-16-allowed">' . JText::_('JLIB_RULES_ALLOWED') . '</span>';
+							$html[] = '<span class="icon-16-allowed">' . vmText::_('JLIB_RULES_ALLOWED') . '</span>';
 						}
 						elseif ($inheritedRule === false)
 						{
 							if ($assetRule === false)
 							{
-								$html[] = '<span class="icon-16-denied">' . JText::_('JLIB_RULES_NOT_ALLOWED') . '</span>';
+								$html[] = '<span class="icon-16-denied">' . vmText::_('JLIB_RULES_NOT_ALLOWED') . '</span>';
 							}
 							else
 							{
-								$html[] = '<span class="icon-16-denied"><span class="icon-16-locked">' . JText::_('JLIB_RULES_NOT_ALLOWED_LOCKED')
+								$html[] = '<span class="icon-16-denied"><span class="icon-16-locked">' . vmText::_('JLIB_RULES_NOT_ALLOWED_LOCKED')
 									. '</span></span>';
 							}
 						}
 					}
 					elseif (!empty($component))
 					{
-						$html[] = '<span class="icon-16-allowed"><span class="icon-16-locked">' . JText::_('JLIB_RULES_ALLOWED_ADMIN')
+						$html[] = '<span class="icon-16-allowed"><span class="icon-16-locked">' . vmText::_('JLIB_RULES_ALLOWED_ADMIN')
 							. '</span></span>';
 					}
 					else
@@ -216,17 +216,17 @@ class JFormFieldVmRules extends JFormFieldRules
 						// The admin rights can be changed.
 						if ($action->name === 'core.admin')
 						{
-							$html[] = '<span class="icon-16-allowed">' . JText::_('JLIB_RULES_ALLOWED') . '</span>';
+							$html[] = '<span class="icon-16-allowed">' . vmText::_('JLIB_RULES_ALLOWED') . '</span>';
 						}
 						elseif ($inheritedRule === false)
 						{
 							// Other actions cannot be changed.
 							$html[] = '<span class="icon-16-denied"><span class="icon-16-locked">'
-								. JText::_('JLIB_RULES_NOT_ALLOWED_ADMIN_CONFLICT') . '</span></span>';
+								. vmText::_('JLIB_RULES_NOT_ALLOWED_ADMIN_CONFLICT') . '</span></span>';
 						}
 						else
 						{
-							$html[] = '<span class="icon-16-allowed"><span class="icon-16-locked">' . JText::_('JLIB_RULES_ALLOWED_ADMIN')
+							$html[] = '<span class="icon-16-allowed"><span class="icon-16-locked">' . vmText::_('JLIB_RULES_ALLOWED_ADMIN')
 								. '</span></span>';
 						}
 					}
@@ -249,11 +249,11 @@ class JFormFieldVmRules extends JFormFieldRules
 		$html[] = '</ul><div class="rule-notes">';
 		if ($section == 'component' || $section == null)
 		{
-			$html[] = JText::_('JLIB_RULES_SETTING_NOTES');
+			$html[] = vmText::_('JLIB_RULES_SETTING_NOTES');
 		}
 		else
 		{
-			$html[] = JText::_('JLIB_RULES_SETTING_NOTES_ITEM');
+			$html[] = vmText::_('JLIB_RULES_SETTING_NOTES_ITEM');
 		}
 		$html[] = '</div></div></div>';
 

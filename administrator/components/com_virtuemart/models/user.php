@@ -341,7 +341,7 @@ class VirtueMartModelUser extends VmModel {
 			$user_groups				=	array();
 
 			for ( $i = 0, $n = count( $groups ); $i < $n; $i++ ) {
-				$groups[$i]->text		=	str_repeat( '- ', $groups[$i]->level ) . JText::_( $groups[$i]->text );
+				$groups[$i]->text		=	str_repeat( '- ', $groups[$i]->level ) . vmText::_( $groups[$i]->text );
 
 				if ( $var_4 ) {
 					$user_groups[$i]	=	JHtml::_( 'select.option', $groups[$i]->value, $groups[$i]->text );
@@ -569,7 +569,7 @@ class VirtueMartModelUser extends VmModel {
 
 			foreach($user->getErrors() as $error) {
 				// 				vmError('user bind '.$error);
-				vmError('user bind '.$error,JText::sprintf('COM_VIRTUEMART_USER_STORE_ERROR',$error));
+				vmError('user bind '.$error,vmText::sprintf('COM_VIRTUEMART_USER_STORE_ERROR',$error));
 			}
 			$message = 'Couldnt bind data to joomla user';
 			array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId,'success'=>false);
@@ -583,7 +583,7 @@ class VirtueMartModelUser extends VmModel {
 
 			if (!Permissions::getInstance()->check("admin,storeadmin") && $usersConfig->get('allowUserRegistration') == '0') {
 				VmConfig::loadJLang('com_virtuemart');
-				JError::raiseError( 403, JText::_('COM_VIRTUEMART_ACCESS_FORBIDDEN'));
+				JError::raiseError( 403, vmText::_('COM_VIRTUEMART_ACCESS_FORBIDDEN'));
 				return;
 			}
 			$authorize	= JFactory::getACL();
@@ -636,14 +636,14 @@ class VirtueMartModelUser extends VmModel {
 		// If an exising superadmin gets a new group, make sure enough admins are left...
 		if (!$new && $user->get('gid') != $gid && $gid == __SUPER_ADMIN_GID) {
 			if ($this->getSuperAdminCount() <= 1) {
-				vmError(JText::_('COM_VIRTUEMART_USER_ERR_ONLYSUPERADMIN'));
+				vmError(vmText::_('COM_VIRTUEMART_USER_ERR_ONLYSUPERADMIN'));
 				return false;
 			}
 		}
 
 		// Save the JUser object
 		if (!$user->save()) {
-			vmError(JText::_( $user->getError()) , JText::_( $user->getError()));
+			vmError(vmText::_( $user->getError()) , vmText::_( $user->getError()));
 			return false;
 		}
 		//vmdebug('my user, why logged in? ',$user);
@@ -655,7 +655,7 @@ class VirtueMartModelUser extends VmModel {
 		//Save the VM user stuff
 		if(!$this->saveUserData($data) || !self::storeAddress($data)){
 			vmError('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA');
-			// 			vmError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
+			// 			vmError(vmText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
 		} else {
 			if ($new) {
 				$this->sendRegistrationEmail($user,$user->password_clear, $doUserActivation);
@@ -1014,14 +1014,14 @@ class VirtueMartModelUser extends VmModel {
 							if (!$msg = VirtueMartModelState::testStateCountry($data['virtuemart_country_id'], $data['virtuemart_state_id'])) {
 								$i++;
 								VmConfig::loadJLang('com_virtuemart_shoppers', true);
-								$missingFields[] = JText::_($field->title);
+								$missingFields[] = vmText::_($field->title);
 								$return = false;
 							}
 						} else {
 							$i++;
 						}
 					} else {
-						$missingFields[] = JText::_($field->title);
+						$missingFields[] = vmText::_($field->title);
 						$i++;
 						$return = false;
 					}
@@ -1039,7 +1039,7 @@ class VirtueMartModelUser extends VmModel {
 		if(!$return){
 			VmConfig::loadJLang('com_virtuemart_shoppers', true);
 			foreach($missingFields as $fieldname){
-				vmInfo(JText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',JText::_($fieldname)) );
+				vmInfo(vmText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',vmText::_($fieldname)) );
 			}
 		}
 		return $return;
@@ -1298,7 +1298,7 @@ class VirtueMartModelUser extends VmModel {
 		{
 			if ($row->sendEmail)
 			{
-				//$message2 = sprintf ( JText::_( 'COM_VIRTUEMART_SEND_MSG_ADMIN' ), $row->name, $sitename, $name, $email, $username);
+				//$message2 = sprintf ( vmText::_( 'COM_VIRTUEMART_SEND_MSG_ADMIN' ), $row->name, $sitename, $name, $email, $username);
 				//$message2 = html_entity_decode($message2, ENT_QUOTES);
 				//JUtility::sendMail($mailfrom, $fromname, $row->email, $subject2, $message2);
 				//shopFunctionsF::renderMail('user', $row->email, $vars);
@@ -1330,7 +1330,7 @@ class VirtueMartModelUser extends VmModel {
 					// Prevent deletion of the only Super Admin
 					//$_u = JUser::getInstance($userId);
 					if ($_JUser->get('gid') == __SUPER_ADMIN_GID) {
-						vmError(JText::_('COM_VIRTUEMART_USER_ERR_LASTSUPERADMIN'));
+						vmError(vmText::_('COM_VIRTUEMART_USER_ERR_LASTSUPERADMIN'));
 						$_status = false;
 						continue;
 					}
@@ -1338,7 +1338,7 @@ class VirtueMartModelUser extends VmModel {
 
 				if(Permissions::getInstance()->check('storeadmin')) {
 					if ($_JUser->get('gid') == __SUPER_ADMIN_GID) {
-						vmError(JText::_('COM_VIRTUEMART_USER_ERR_LASTSUPERADMIN'));
+						vmError(vmText::_('COM_VIRTUEMART_USER_ERR_LASTSUPERADMIN'));
 						$_status = false;
 						continue;
 					}

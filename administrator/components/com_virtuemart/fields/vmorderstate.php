@@ -46,7 +46,7 @@ class JFormFieldVmOrderState extends JFormFieldList {
 		$values = $db->loadObjectList ();
 		$class = '';
 		foreach ($values as $v) {
-			$options[] = JHtml::_('select.option', $v->value, JText::_($v->text));
+			$options[] = JHtml::_('select.option', $v->value, vmText::_($v->text));
 		}
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

@@ -75,7 +75,7 @@ class VirtuemartViewCategory extends VmView {
 			$this->assignRef('parent', $parent);
 
 			if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-			$templateList = ShopFunctions::renderTemplateList(JText::_('COM_VIRTUEMART_CATEGORY_TEMPLATE_DEFAULT'));
+			$templateList = ShopFunctions::renderTemplateList(vmText::_('COM_VIRTUEMART_CATEGORY_TEMPLATE_DEFAULT'));
 
 			$this->assignRef('jTemplateList', $templateList);
 

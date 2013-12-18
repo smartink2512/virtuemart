@@ -219,7 +219,7 @@ class vmParameters extends JParameter {
 		{
 			$result = array();
 			$result[0] = $node->attributes('name');
-			$result[1] = JText::_('Element not defined for type').' = '.$type;
+			$result[1] = vmText::_('Element not defined for type').' = '.$type;
 			$result[5] = $result[0];
 			return $result;
 		}
@@ -256,7 +256,7 @@ class vmParameters extends JParameter {
 
 		if ($description = $this->_xml[$group]->attributes('description')) {
 			// add the params description to the display
-			$desc	= JText::_($description);
+			$desc	= vmText::_($description);
 			$html[]	= '<tr><td class="paramlist_description" colspan="2">'.$desc.'</td></tr>';
 		}
 
@@ -275,7 +275,7 @@ class vmParameters extends JParameter {
 		}
 
 		if (count($params) < 1) {
-			$html[] = "<tr><td colspan=\"2\"><i>".JText::_('There are no Parameters for this item')."</i></td></tr>";
+			$html[] = "<tr><td colspan=\"2\"><i>".vmText::_('There are no Parameters for this item')."</i></td></tr>";
 		}
 
 		$html[] = '</table>';
@@ -297,15 +297,15 @@ class vmParameters extends JParameter {
 		$name = $param->attributes('name');
 		$type = $param->attributes('type');
 		if ($param->attributes('label') != '') {
-			$label = JText::_($param->attributes('label'));
+			$label = vmText::_($param->attributes('label'));
 		} else {
 			$label = '';
 		}
 
 		if ($param->attributes('description')) {
-			$description = JText::_($param->attributes('description'));
+			$description = vmText::_($param->attributes('description'));
 		} else {
-			//$description = JText::_('COM_VIRTUEMART_NO_DESCRIPTION_FOUND');
+			//$description = vmText::_('COM_VIRTUEMART_NO_DESCRIPTION_FOUND');
 		}
 
 		$result[0] = $label ? $label : $name;
@@ -415,7 +415,7 @@ class vmParameters extends JParameter {
 		foreach ($node->_children as $option) {
 			$val = $option->attributes('value');
 			$text = trim($option->data());
-			$options[$val] = JText::_($text);
+			$options[$val] = vmText::_($text);
 		}
 
 
@@ -435,7 +435,7 @@ class vmParameters extends JParameter {
 		foreach ($node->_children as $option) {
 			$val = $option->attributes('value');
 			$text = trim($option->data());
-			$options[$val] = JText::_($text);
+			$options[$val] = vmText::_($text);
 		}
 
 
@@ -590,7 +590,7 @@ class vmParameters extends JParameter {
 	function _form_spacer($name, $value, &$node, $control_name) {
 
 		if ($value) {
-			return '<h3>' . JText::_($value) . '</h3>';
+			return '<h3>' . vmText::_($value) . '</h3>';
 		} else {
 			return '<hr />';
 		}

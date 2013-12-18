@@ -38,17 +38,17 @@ AdminUIHelper::startAdminArea($this);
 			<?php echo $this->sort('order_status_code') ?>
 			</th>
 			<th>
-				<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_STOCK_HANDLE'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_ORDER_STATUS_STOCK_HANDLE'); ?>
 			</th>
 			<th>
-				<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
 			</th>
 			<th>
 			<?php  echo $this->sort('ordering')  ?>
 			<?php echo JHTML::_('grid.order',  $this->orderStatusList ); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 			</th>
 			<th><?php echo $this->sort('virtuemart_orderstate_id', 'COM_VIRTUEMART_ID')  ?></th>
 		</tr>
@@ -63,9 +63,9 @@ AdminUIHelper::startAdminArea($this);
 
                         $coreStatus = (in_array($row->order_status_code, $this->lists['vmCoreStatusCode']));
 			$image = ((JVM_VERSION===1)) ? 'checked_out.png' : 'admin/checked_out.png';
-			$image = JHtml::_('image.administrator', $image, '/images/', null, null, JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_CORE'));
+			$image = JHtml::_('image.administrator', $image, '/images/', null, null, vmText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_CORE'));
 			$checked = ($coreStatus) ?
-				'<span class="hasTip" title="'. JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_CORE').'">'. $image .'</span>' :
+				'<span class="hasTip" title="'. vmText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_CORE').'">'. $image .'</span>' :
 				JHTML::_('grid.id', $i, $row->virtuemart_orderstate_id);
 
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=orderstatus&task=edit&cid[]=' . $row->virtuemart_orderstate_id);
@@ -81,7 +81,7 @@ AdminUIHelper::startAdminArea($this);
 					<?php
 					$lang =JFactory::getLanguage();
 					if ($lang->hasKey($row->order_status_name)) {
-						echo " (".JText::_($row->order_status_name).")";
+						echo " (".vmText::_($row->order_status_name).")";
 					}
 					?>
 				</td>
@@ -89,14 +89,14 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo $row->order_status_code; ?>
 				</td>
 				<td align="left">
-					<?php echo  JText::_($this->stockHandelList[$row->order_stock_handle]); ?>
+					<?php echo  vmText::_($this->stockHandelList[$row->order_stock_handle]); ?>
 				</td>
 				<td align="left">
-					<?php echo JText::_($row->order_status_description); ?>
+					<?php echo vmText::_($row->order_status_description); ?>
 				</td>
 				<td align="center" class="order">
-					<span><?php echo $this->pagination->orderUpIcon($i, true, 'orderUp', JText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
-					<span><?php echo $this->pagination->orderDownIcon( $i, $n, true, 'orderDown', JText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
+					<span><?php echo $this->pagination->orderUpIcon($i, true, 'orderUp', vmText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
+					<span><?php echo $this->pagination->orderDownIcon( $i, $n, true, 'orderDown', vmText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
 					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $row->ordering; ?>" style="text-align: center" />
 				</td>
 				<td align="center"><?php echo $published; ?></td>

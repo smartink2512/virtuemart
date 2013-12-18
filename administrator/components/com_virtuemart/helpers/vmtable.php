@@ -70,7 +70,7 @@ class VmTable extends JTable {
 
 	function setPrimaryKey($key, $keyForm = 0) {
 
-		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($key)));
+		$error = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($key)));
 		$this->setObligatoryKeys('_pkey', $error);
 		$this->_pkey = $key;
 		$this->_pkeyForm = empty($keyForm) ? $key : $keyForm;
@@ -79,13 +79,13 @@ class VmTable extends JTable {
 
 	public function setObligatoryKeys($key) {
 
-		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($key)));
+		$error = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($key)));
 		$this->_obkeys[$key] = $error;
 	}
 
 	public function setUniqueName($name) {
 
-		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+		$error = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 		$this->_unique = true;
 		$this->_obkeys[$name] = $error;
 		$this->_unique_name[$name] = $error;
@@ -293,7 +293,7 @@ class VmTable extends JTable {
 			}
 
 			if (empty($fields)) {
-				$e = new JException(JText::_('JLIB_DATABASE_ERROR_COLUMNS_NOT_FOUND'));
+				$e = new JException(vmText::_('JLIB_DATABASE_ERROR_COLUMNS_NOT_FOUND'));
 				$this->setError($e);
 				return false;
 			}
@@ -654,7 +654,7 @@ class VmTable extends JTable {
 				if (empty($error)) {
 					$error = 'Serious error cant save ' . $this->_tbl . ' without ' . $obkeys;
 				} else {
-					//	$error = get_class($this).' '.JText::_($error);
+					//	$error = get_class($this).' '.vmText::_($error);
 					$error = get_class($this) . ' ' . $error;
 				}
 				$this->setError($error);
@@ -668,7 +668,7 @@ class VmTable extends JTable {
 			foreach ($this->_unique_name as $obkeys => $error) {
 
 				if (empty($this->$obkeys)) {
-					// 					vmError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE_KEY',$this->$obkeys));
+					// 					vmError(vmText::sprintf('COM_VIRTUEMART_NON_UNIQUE_KEY',$this->$obkeys));
 					$this->setError($error);
 					vmError('Non unique ' . $this->_unique_name . ' ' . $error);
 					return false;
@@ -799,14 +799,14 @@ class VmTable extends JTable {
 					unset($this->$name);
 
 					if (!empty($this->_unique_name[$name])) {
-						$langUniqueKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langUniqueKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 						unset($this->_unique_name[$name]);
-						$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 						unset($this->_obkeys[$name]);
 					}
 
 					if (!empty($this->_obkeys[$name])) {
-						$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 						unset($this->_obkeys[$name]);
 					}
 
@@ -823,14 +823,14 @@ class VmTable extends JTable {
 					unset($this->$name);
 
 					if (!empty($this->_unique_name[$name])) {
-						$langUniqueKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langUniqueKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 						unset($this->_unique_name[$name]);
-						$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 						unset($this->_obkeys[$name]);
 					}
 
 					if (!empty($this->_obkeys[$name])) {
-						$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						$langObKeys[$name] = vmText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', vmText::_('COM_VIRTUEMART_' . strtoupper($name)));
 						unset($this->_obkeys[$name]);
 					}
 

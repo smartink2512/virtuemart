@@ -50,7 +50,7 @@ class JFormFieldVmjpluginwarning extends JFormField {
 		if ($option == 'com_virtuemart')
 			return null;
 		else
-			return JText::_('COM_VIRTUEMART_PLUGIN_WARNING');
+			return vmText::_('COM_VIRTUEMART_PLUGIN_WARNING');
 	}
 
 }

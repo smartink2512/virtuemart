@@ -171,7 +171,7 @@ class VirtueMartModelCalc extends VmModel {
 		$startDate = JFactory::getDate($data['publish_up']);
 		$data['publish_up'] = $startDate->toSQL();
 //		if ($data['publish_down'] == '' or $data['publish_down']==0){
-		if (empty($data['publish_down']) || trim($data['publish_down']) == JText::_('COM_VIRTUEMART_NEVER')){
+		if (empty($data['publish_down']) || trim($data['publish_down']) == vmText::_('COM_VIRTUEMART_NEVER')){
 			$data['publish_down']	= $db->getNullDate();
 		} else {
 			$expireDate = JFactory::getDate($data['publish_down']);

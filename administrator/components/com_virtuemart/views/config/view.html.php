@@ -44,7 +44,7 @@ class VirtuemartViewConfig extends VmView {
 		$model = VmModel::getModel();
 		$usermodel = VmModel::getModel('user');
 
-		JToolBarHelper::title( JText::_('COM_VIRTUEMART_CONFIG') , 'head vm_config_48');
+		JToolBarHelper::title( vmText::_('COM_VIRTUEMART_CONFIG') , 'head vm_config_48');
 
 		$this->addStandardEditViewCommands();
 
@@ -61,7 +61,7 @@ class VirtuemartViewConfig extends VmView {
 		$userparams = JComponentHelper::getParams('com_users');
 		$this->assignRef('userparams', $userparams);
 
-		$templateList = ShopFunctions::renderTemplateList(JText::_('COM_VIRTUEMART_ADMIN_CFG_JOOMLA_TEMPLATE_DEFAULT'));
+		$templateList = ShopFunctions::renderTemplateList(vmText::_('COM_VIRTUEMART_ADMIN_CFG_JOOMLA_TEMPLATE_DEFAULT'));
 
 		$this->assignRef('jTemplateList', $templateList);
 
@@ -101,7 +101,7 @@ class VirtuemartViewConfig extends VmView {
 				$fieldWithoutPrefix = substr($field, $dotps+1);
 			}
 
-			$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
+			$text = vmText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
 
 			$orderByFieldsCat[] =  JHTML::_('select.option', $field, $text) ;
 		}

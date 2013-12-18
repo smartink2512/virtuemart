@@ -73,7 +73,7 @@ class ShopFunctions {
 					} else {
 						$cid = 'virtuemart_user_id';
 					}
-					$links .= JHTML::_ ('link', JRoute::_ ('index.php?option=com_virtuemart&view=' . $view . '&task=edit&' . $cid . '[]=' . $value, FALSE), JText::_($tmp)) . ', ';
+					$links .= JHTML::_ ('link', JRoute::_ ('index.php?option=com_virtuemart&view=' . $view . '&task=edit&' . $cid . '[]=' . $value, FALSE), vmText::_($tmp)) . ', ';
 				}
 				$ttip .= $tmp . ', ';
 
@@ -111,7 +111,7 @@ class ShopFunctions {
 			$attrs = 'multiple="multiple"';
 			$idA .= '[]';
 		} else {
-			$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+			$emptyOption = JHTML::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 			array_unshift ($creditcards, $emptyOption);
 		}
 		$listHTML = JHTML::_ ('select.genericlist', $creditcards, $idA, $attrs, $id, $name, $ccId);
@@ -169,7 +169,7 @@ class ShopFunctions {
 					$attrs = ' multiple="multiple" ';
 					$idA .= '[]';
 				} else {
-					$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+					$emptyOption = JHTML::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 					array_unshift ($vendors, $emptyOption);
 				}
 				$listHTML = JHTML::_ ('select.genericlist', $vendors, $idA, $attrs, $id, $name, $vendorId);
@@ -197,12 +197,12 @@ class ShopFunctions {
 		//$idA = $id = 'virtuemart_shoppergroup_id';
 
 		if ($multiple) {
-			$attrs = 'multiple="multiple" data-placeholder="'.JText::_($select_attribute).'"';
+			$attrs = 'multiple="multiple" data-placeholder="'.vmText::_($select_attribute).'"';
 			if($name=='virtuemart_shoppergroup_id'){
 				$name.= '[]';
 			}
 		} else {
-			$emptyOption = JHTML::_ ('select.option', '', JText::_ ($select_attribute), 'virtuemart_shoppergroup_id', 'shopper_group_name');
+			$emptyOption = JHTML::_ ('select.option', '', vmText::_ ($select_attribute), 'virtuemart_shoppergroup_id', 'shopper_group_name');
 			array_unshift ($shoppergrps, $emptyOption);
 		}
 		//vmdebug('renderShopperGroupList',$name,$shoppergrps);
@@ -226,7 +226,7 @@ class ShopFunctions {
 			$attrs = 'multiple="multiple"';
 			if($name=='virtuemart_manufacturer_id')	$name.= '[]';
 		} else {
-			$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), 'virtuemart_manufacturer_id', 'mf_name');
+			$emptyOption = JHTML::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), 'virtuemart_manufacturer_id', 'mf_name');
 			array_unshift ($manufacturers, $emptyOption);
 		}
 		// vmdebug('renderManufacturerList',$name,$manufacturers);
@@ -266,7 +266,7 @@ class ShopFunctions {
 		$lang = JFactory::getLanguage();
 		$prefix="COM_VIRTUEMART_COUNTRY_";
         foreach ($countries as  $country) {
-	        $country_string = $lang->hasKey($prefix.$country->country_3_code) ?   JText::_($prefix.$country->country_3_code)  : $country->country_name;
+	        $country_string = $lang->hasKey($prefix.$country->country_3_code) ?   vmText::_($prefix.$country->country_3_code)  : $country->country_name;
             $sorted_countries[$country->virtuemart_country_id] = $country_string;
         }
 
@@ -289,7 +289,7 @@ class ShopFunctions {
 			$attrs['multiple'] = 'multiple';
 			$idA .= '[]';
 		} else {
-			$emptyOption = JHTML::_ ('select.option', '', JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+			$emptyOption = JHTML::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 			array_unshift ($countries_list, $emptyOption);
 		}
 
@@ -344,7 +344,7 @@ class ShopFunctions {
 
 
 		$listHTML = '<select  id="'.$_prefix.'virtuemart_state_id" ' . $attrs . '>
-						<option value="">' . JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>
+						<option value="">' . vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>
 						</select>';
 
 		return $listHTML;
@@ -363,8 +363,8 @@ class ShopFunctions {
 		$taxes = VirtueMartModelCalc::getTaxes ();
 
 		$taxrates = array();
-		$taxrates[] = JHTML::_ ('select.option', '-1', JText::_ ('COM_VIRTUEMART_PRODUCT_TAX_NONE'), $name);
-		$taxrates[] = JHTML::_ ('select.option', '0', JText::_ ('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), $name);
+		$taxrates[] = JHTML::_ ('select.option', '-1', vmText::_ ('COM_VIRTUEMART_PRODUCT_TAX_NONE'), $name);
+		$taxrates[] = JHTML::_ ('select.option', '0', vmText::_ ('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), $name);
 		foreach ($taxes as $tax) {
 			$taxrates[] = JHTML::_ ('select.option', $tax->virtuemart_calc_id, $tax->calc_name, $name);
 		}
@@ -384,7 +384,7 @@ class ShopFunctions {
 	static public function renderTemplateList ($defaultText = 0, $defaultOption = TRUE) {
 
 		if (empty($defaultText)) {
-			$defaultText = JText::_ ('COM_VIRTUEMART_TEMPLATE_DEFAULT');
+			$defaultText = vmText::_ ('COM_VIRTUEMART_TEMPLATE_DEFAULT');
 		}
 
 		$defaulttemplate = array();
@@ -433,11 +433,11 @@ class ShopFunctions {
 			return $weigth_unit;
 		}
 		return $weigth_unit = array(
-			'KG' => JText::_ ('COM_VIRTUEMART_UNIT_NAME_KG')
-		, 'G'   => JText::_ ('COM_VIRTUEMART_UNIT_NAME_G')
-		, 'MG'   => JText::_ ('COM_VIRTUEMART_UNIT_NAME_MG')
-		, 'LB'   => JText::_ ('COM_VIRTUEMART_UNIT_NAME_LB')
-		, 'OZ'   => JText::_ ('COM_VIRTUEMART_UNIT_NAME_ONCE')
+			'KG' => vmText::_ ('COM_VIRTUEMART_UNIT_NAME_KG')
+		, 'G'   => vmText::_ ('COM_VIRTUEMART_UNIT_NAME_G')
+		, 'MG'   => vmText::_ ('COM_VIRTUEMART_UNIT_NAME_MG')
+		, 'LB'   => vmText::_ ('COM_VIRTUEMART_UNIT_NAME_LB')
+		, 'OZ'   => vmText::_ ('COM_VIRTUEMART_UNIT_NAME_ONCE')
 		);
 	}
 
@@ -479,13 +479,13 @@ class ShopFunctions {
 	static function renderUnitIsoList($name, $selected){
 
 		$weight_unit_default = array(
-			'KG' => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_KG')
-		, '100G' => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100G')
-		, 'M'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_M')
-		, 'SM'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_SM')
-		, 'CUBM'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_CUBM')
-		, 'L'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_L')
-		, '100ML'   => JText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100ML')
+			'KG' => vmText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_KG')
+		, '100G' => vmText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100G')
+		, 'M'   => vmText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_M')
+		, 'SM'   => vmText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_SM')
+		, 'CUBM'   => vmText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_CUBM')
+		, 'L'   => vmText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_L')
+		, '100ML'   => vmText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100ML')
 		);
 		foreach ($weight_unit_default as  $key => $value) {
 			$wu_list[] = JHTML::_ ('select.option', $key, $value, $name);
@@ -620,12 +620,12 @@ class ShopFunctions {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 		}
 
-		$lwh_unit_default = array('M' => JText::_ ('COM_VIRTUEMART_UNIT_NAME_M')
-		, 'CM'                        => JText::_ ('COM_VIRTUEMART_UNIT_NAME_CM')
-		, 'MM'                        => JText::_ ('COM_VIRTUEMART_UNIT_NAME_MM')
-		, 'YD'                        => JText::_ ('COM_VIRTUEMART_UNIT_NAME_YARD')
-		, 'FT'                        => JText::_ ('COM_VIRTUEMART_UNIT_NAME_FOOT')
-		, 'IN'                        => JText::_ ('COM_VIRTUEMART_UNIT_NAME_INCH')
+		$lwh_unit_default = array('M' => vmText::_ ('COM_VIRTUEMART_UNIT_NAME_M')
+		, 'CM'                        => vmText::_ ('COM_VIRTUEMART_UNIT_NAME_CM')
+		, 'MM'                        => vmText::_ ('COM_VIRTUEMART_UNIT_NAME_MM')
+		, 'YD'                        => vmText::_ ('COM_VIRTUEMART_UNIT_NAME_YARD')
+		, 'FT'                        => vmText::_ ('COM_VIRTUEMART_UNIT_NAME_FOOT')
+		, 'IN'                        => vmText::_ ('COM_VIRTUEMART_UNIT_NAME_INCH')
 		);
 		foreach ($lwh_unit_default as  $key => $value) {
 			$lu_list[] = JHTML::_ ('select.option', $key, $value, $name);
@@ -651,8 +651,8 @@ class ShopFunctions {
 		$html =
 			'<tr>
 				<td class="key">
-					<span class="editlinktip hasTip" title="' . JText::_ ($langkey . '_EXPLAIN') . '">
-						<label>' . JText::_ ($langkey) .
+					<span class="editlinktip hasTip" title="' . vmText::_ ($langkey . '_EXPLAIN') . '">
+						<label>' . vmText::_ ($langkey) .
 						'</label>
 					</span>
 				</td>
@@ -680,7 +680,7 @@ class ShopFunctions {
 		// Shipment address(es)
 		$_addressList = $userModel->getUserAddressList ($userModel->getId (), 'ST');
 		if (count ($_addressList) == 1 && empty($_addressList[0]->address_type_name)) {
-			return JText::_ ('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
+			return vmText::_ ('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
 		} else {
 			$_shipTo = array();
 			$useXHTTML = empty($view->useXHTML) ? TRUE : $view->useXHTML;
@@ -706,13 +706,13 @@ class ShopFunctions {
 					. '&virtuemart_userinfo_id=' . $_addressList[$_i]->virtuemart_userinfo_id
 					. '">' . $_addressList[$_i]->address_type_name . '</a> ' ;
 
-				$_shipTo[] = '&nbsp;&nbsp;<a href="'.JRoute::_ ('index.php?option=com_virtuemart&view=user&task=removeAddressST&virtuemart_user_id[]=' . $_addressList[$_i]->virtuemart_user_id . '&virtuemart_userinfo_id=' . $_addressList[$_i]->virtuemart_userinfo_id, $useXHTTML, $useSSL ). '" class="icon_delete">'.JText::_('COM_VIRTUEMART_USER_DELETE_ST').'</a></li>';
+				$_shipTo[] = '&nbsp;&nbsp;<a href="'.JRoute::_ ('index.php?option=com_virtuemart&view=user&task=removeAddressST&virtuemart_user_id[]=' . $_addressList[$_i]->virtuemart_user_id . '&virtuemart_userinfo_id=' . $_addressList[$_i]->virtuemart_userinfo_id, $useXHTTML, $useSSL ). '" class="icon_delete">'.vmText::_('COM_VIRTUEMART_USER_DELETE_ST').'</a></li>';
 
 			}
 
 
 			$addLink = '<a href="' . JRoute::_ ('index.php?option=com_virtuemart&view=user&task=' . $task . '&new=1&addrtype=ST&virtuemart_user_id[]=' . $userModel->getId (), $useXHTTML, $useSSL) . '"><span class="vmicon vmicon-16-editadd"></span> ';
-			$addLink .= JText::_ ('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL') . ' </a>';
+			$addLink .= vmText::_ ('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL') . ' </a>';
 
 			return $addLink . '<ul>' . join ('', $_shipTo) . '</ul>';
 		}
@@ -1126,7 +1126,7 @@ class ShopFunctions {
 			vmError ('getOrderStatusName: couldnt find order_status_name for ' . $_code);
 			return 'current order status broken';
 		} else {
-			return JText::_($_r->order_status_name);
+			return vmText::_($_r->order_status_name);
 		}
 
 	}
@@ -1158,7 +1158,7 @@ class ShopFunctions {
 		}
 		$start = $start ? $start : 1;
 		$end = $end ? $end : $start + 30;
-		$options[] = JHTML::_ ('select.option', 0, JText::_ ('DAY'));
+		$options[] = JHTML::_ ('select.option', 0, vmText::_ ('DAY'));
 		for ($i = $start; $i <= $end; $i++) {
 			$options[] = JHTML::_ ('select.option', $i, $i);
 		}
@@ -1180,19 +1180,19 @@ class ShopFunctions {
 			$selected = date ('m');
 		}
 
-		$options[] = JHTML::_ ('select.option', 0, JText::_ ('MONTH'));
-		$options[] = JHTML::_ ('select.option', "01", JText::_ ('JANUARY'));
-		$options[] = JHTML::_ ('select.option', "02", JText::_ ('FEBRUARY'));
-		$options[] = JHTML::_ ('select.option', "03", JText::_ ('MARCH'));
-		$options[] = JHTML::_ ('select.option', "04", JText::_ ('APRIL'));
-		$options[] = JHTML::_ ('select.option', "05", JText::_ ('MAY'));
-		$options[] = JHTML::_ ('select.option', "06", JText::_ ('JUNE'));
-		$options[] = JHTML::_ ('select.option', "07", JText::_ ('JULY'));
-		$options[] = JHTML::_ ('select.option', "08", JText::_ ('AUGUST'));
-		$options[] = JHTML::_ ('select.option', "09", JText::_ ('SEPTEMBER'));
-		$options[] = JHTML::_ ('select.option', "10", JText::_ ('OCTOBER'));
-		$options[] = JHTML::_ ('select.option', "11", JText::_ ('NOVEMBER'));
-		$options[] = JHTML::_ ('select.option', "12", JText::_ ('DECEMBER'));
+		$options[] = JHTML::_ ('select.option', 0, vmText::_ ('MONTH'));
+		$options[] = JHTML::_ ('select.option', "01", vmText::_ ('JANUARY'));
+		$options[] = JHTML::_ ('select.option', "02", vmText::_ ('FEBRUARY'));
+		$options[] = JHTML::_ ('select.option', "03", vmText::_ ('MARCH'));
+		$options[] = JHTML::_ ('select.option', "04", vmText::_ ('APRIL'));
+		$options[] = JHTML::_ ('select.option', "05", vmText::_ ('MAY'));
+		$options[] = JHTML::_ ('select.option', "06", vmText::_ ('JUNE'));
+		$options[] = JHTML::_ ('select.option', "07", vmText::_ ('JULY'));
+		$options[] = JHTML::_ ('select.option', "08", vmText::_ ('AUGUST'));
+		$options[] = JHTML::_ ('select.option', "09", vmText::_ ('SEPTEMBER'));
+		$options[] = JHTML::_ ('select.option', "10", vmText::_ ('OCTOBER'));
+		$options[] = JHTML::_ ('select.option', "11", vmText::_ ('NOVEMBER'));
+		$options[] = JHTML::_ ('select.option', "12", vmText::_ ('DECEMBER'));
 		return JHTML::_ ('select.genericlist', $options, $list_name, '', 'value', 'text', $selected);
 
 	}
@@ -1211,7 +1211,7 @@ class ShopFunctions {
 		}
 		$start = $start ? $start : date ('Y');
 		$end = $end ? $end : $start + 7;
-		$options[] = JHTML::_ ('select.option', 0, JText::_ ('YEAR'));
+		$options[] = JHTML::_ ('select.option', 0, vmText::_ ('YEAR'));
 		for ($i = $start; $i <= $end; $i++) {
 			$options[] = JHTML::_ ('select.option', $i, $i);
 		}
@@ -1242,7 +1242,7 @@ class ShopFunctions {
 				$extra .= ($k == $selected ? " checked=\"checked\"" : '');
 			}
 			$tmp = "<input type=\"checkbox\" name=\"$tag_name\" id=\"" . str_replace ('[]', '', $tag_name) . "_field$i\" value=\"" . $k . "\"$extra $tag_attribs />" . "<label for=\"" . str_replace ('[]', '', $tag_name) . "_field$i\">";
-			$tmp .= JText::_ ($t);
+			$tmp .= vmText::_ ($t);
 			$tmp .= "</label>";
 			$html[] = $tmp;
 		}
@@ -1350,7 +1350,7 @@ class ShopFunctions {
 	 */
 	function orderUpIcon ($i, $condition = TRUE, $task = 'orderup', $alt = 'COM_VIRTUEMART_MOVE_UP', $enabled = TRUE) {
 
-		$alt = JText::_ ($alt);
+		$alt = vmText::_ ($alt);
 
 		$html = '&nbsp;';
 		if ($i > 0) {
@@ -1380,7 +1380,7 @@ class ShopFunctions {
 	 */
 	function orderDownIcon ($i, $n, $condition = TRUE, $task = 'orderdown', $alt = 'Move Down', $enabled = TRUE) {
 
-		$alt = JText::_ ($alt);
+		$alt = vmText::_ ($alt);
 
 		$html = '&nbsp;';
 		if ($i < $n - 1) {
@@ -1445,9 +1445,9 @@ class ShopFunctions {
 
 		$html = $intro;
 
-		$html .= self::displayLinkButton(JText::sprintf('COM_VIRTUEMART_THRD_PARTY_CONTACT',$developer),$contactlink, $logolink.'/contact.png',$width,$height,$linesHeight);
+		$html .= self::displayLinkButton(vmText::sprintf('COM_VIRTUEMART_THRD_PARTY_CONTACT',$developer),$contactlink, $logolink.'/contact.png',$width,$height,$linesHeight);
 		$html .='<br />';
-		$html .= self::displayLinkButton(JText::sprintf('COM_VIRTUEMART_THRD_PARTY_MANUAL',$title),$manlink, $logolink.'/manual.png',$width,$height,$linesHeight);
+		$html .= self::displayLinkButton(vmText::sprintf('COM_VIRTUEMART_THRD_PARTY_MANUAL',$title),$manlink, $logolink.'/manual.png',$width,$height,$linesHeight);
 
 		return $html;
 	}
@@ -1485,11 +1485,11 @@ class ShopFunctions {
 			} else{
 				if(!is_writable( $safePath )){
 					VmConfig::loadJLang('com_virtuemart_config');
-					VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NOT_WRITEABLE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath,$configlink);
+					VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NOT_WRITEABLE',vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath,$configlink);
 				} else {
 					if(!is_writable(self::getInvoicePath($safePath) )){
 						VmConfig::loadJLang('com_virtuemart_config');
-						VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_INV_NOT_WRITEABLE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath,$configlink);
+						VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_INV_NOT_WRITEABLE',vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$safePath,$configlink);
 					}
 				}
 			}
@@ -1498,7 +1498,7 @@ class ShopFunctions {
 		if($warn){
 			$suggestedPath=shopFunctions::getSuggestedSafePath();
 			VmConfig::loadJLang('com_virtuemart_config');
-			VmWarn($warn,JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath,$configlink);
+			VmWarn($warn,vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath,$configlink);
 			return FALSE;
 		}
 
@@ -1555,7 +1555,7 @@ class ShopFunctions {
 			<td class="order_number">';
 				$uri = JFactory::getURI();
 				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $order_info['order_id'];
-				$html .= JHTML::_ ('link', $link, $order_info['order_number'], array('title' => JText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $order_info['order_number']));
+				$html .= JHTML::_ ('link', $link, $order_info['order_number'], array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $order_info['order_number']));
 			$first=FALSE;
 			$html .= '
 					</td>
@@ -1568,7 +1568,7 @@ class ShopFunctions {
 			$html = '
 				<tr class="customer">
 					<td colspan="4">
-						' . JText::_ ('COM_VIRTUEMART_NO_SEARCH_RESULT') . '
+						' . vmText::_ ('COM_VIRTUEMART_NO_SEARCH_RESULT') . '
 					</td>
 				</tr>
 				';
@@ -1580,12 +1580,12 @@ class ShopFunctions {
 	static public function renderMetaEdit($obj){
 
 		$options = array(
-			''	=>	JText::_('JGLOBAL_INDEX_FOLLOW'),
-			'noindex, follow'	=>	JText::_('JGLOBAL_NOINDEX_FOLLOW'),
-			'index, nofollow'	=>	JText::_('JGLOBAL_INDEX_NOFOLLOW'),
-			'noindex, nofollow'	=>	JText::_('JGLOBAL_NOINDEX_NOFOLLOW'),
-			'noodp, noydir'	=>	JText::_('COM_VIRTUEMART_NOODP_NOYDIR'),
-			'noodp, noydir, nofollow'	=>	JText::_('COM_VIRTUEMART_NOODP_NOYDIR_NOFOLLOW'),
+			''	=>	vmText::_('JGLOBAL_INDEX_FOLLOW'),
+			'noindex, follow'	=>	vmText::_('JGLOBAL_NOINDEX_FOLLOW'),
+			'index, nofollow'	=>	vmText::_('JGLOBAL_INDEX_NOFOLLOW'),
+			'noindex, nofollow'	=>	vmText::_('JGLOBAL_NOINDEX_NOFOLLOW'),
+			'noodp, noydir'	=>	vmText::_('COM_VIRTUEMART_NOODP_NOYDIR'),
+			'noodp, noydir, nofollow'	=>	vmText::_('COM_VIRTUEMART_NOODP_NOYDIR_NOFOLLOW'),
 		);
 		$html = '<table>
 					'.VmHTML::row('input','COM_VIRTUEMART_CUSTOM_PAGE_TITLE','customtitle',$obj->customtitle).'

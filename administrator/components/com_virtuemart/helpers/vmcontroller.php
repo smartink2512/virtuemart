@@ -41,7 +41,7 @@ class VmController extends JControllerLegacy{
 
 		//VirtuemartController
 		$this->_cname = strtolower(substr(get_class( $this ), 20));
-		$this->mainLangKey = JText::_('COM_VIRTUEMART_'.strtoupper($this->_cname));
+		$this->mainLangKey = vmText::_('COM_VIRTUEMART_'.strtoupper($this->_cname));
 		$this->redirectPath = 'index.php?option=com_virtuemart&view='.$this->_cname;
 		$task = explode ('.',VmRequest::getCmd( 'task'));
 		if ($task[0] == 'toggle') {
@@ -163,7 +163,7 @@ class VmController extends JControllerLegacy{
 
 		$errors = $model->getErrors();
 		if(empty($errors)) {
-			$msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
+			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
 			$type = 'save';
 		}
 		else $type = 'error';
@@ -195,15 +195,15 @@ class VmController extends JControllerLegacy{
 		//JArrayHelper::toInteger($ids);
 
 		if(count($ids) < 1) {
-			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
+			$msg = vmText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
 			$type = 'notice';
 		} else {
 			$model = VmModel::getModel($this->_cname);
 			$ret = $model->remove($ids);
 			$errors = $model->getErrors();
-			$msg = JText::sprintf('COM_VIRTUEMART_STRING_DELETED',$this->mainLangKey);
+			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_DELETED',$this->mainLangKey);
 			if(!empty($errors) or $ret==false) {
-				$msg = JText::sprintf('COM_VIRTUEMART_STRING_COULD_NOT_BE_DELETED',$this->mainLangKey);
+				$msg = vmText::sprintf('COM_VIRTUEMART_STRING_COULD_NOT_BE_DELETED',$this->mainLangKey);
 						$type = 'error';
 			}
 			else $type = 'remove';
@@ -222,7 +222,7 @@ class VmController extends JControllerLegacy{
 	 * @author Max Milbers
 	 */
 	public function cancel(){
-		$msg = JText::sprintf('COM_VIRTUEMART_STRING_CANCELLED',$this->mainLangKey); //'COM_VIRTUEMART_OPERATION_CANCELED'
+		$msg = vmText::sprintf('COM_VIRTUEMART_STRING_CANCELLED',$this->mainLangKey); //'COM_VIRTUEMART_OPERATION_CANCELED'
 		$this->setRedirect($this->redirectPath, $msg,'cancel');
 	}
 
@@ -238,9 +238,9 @@ class VmController extends JControllerLegacy{
 
 		$model = VmModel::getModel($this->_cname);
 		if (!$model->toggle($field,$val,$this->_cidName)) {
-			$msg = JText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_ERROR',$this->mainLangKey);
+			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_ERROR',$this->mainLangKey);
 		} else{
-			$msg = JText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_SUCCESS',$this->mainLangKey);
+			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_SUCCESS',$this->mainLangKey);
 		}
 
 		$this->setRedirect( $this->redirectPath, $msg);
@@ -260,9 +260,9 @@ class VmController extends JControllerLegacy{
 		if($cidname === 0) $cidname = $this->_cidName;
 
 		if (!$model->toggle('published', 1, $cidname, $table)) {
-			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_ERROR',$this->mainLangKey);
+			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_ERROR',$this->mainLangKey);
 		} else{
-			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_SUCCESS',$this->mainLangKey);
+			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_SUCCESS',$this->mainLangKey);
 		}
 
 		if($redirect === 0) $redirect = $this->redirectPath;
@@ -285,9 +285,9 @@ class VmController extends JControllerLegacy{
 		if($cidname === 0) $cidname = $this->_cidName;
 
 		if (!$model->toggle('published', 0, $cidname, $table)) {
-			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_ERROR',$this->mainLangKey);
+			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_ERROR',$this->mainLangKey);
 		} else{
-			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_SUCCESS',$this->mainLangKey);
+			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_SUCCESS',$this->mainLangKey);
 		}
 
 		if($redirect === 0) $redirect = $this->redirectPath;
@@ -301,7 +301,7 @@ class VmController extends JControllerLegacy{
 
 		$model = VmModel::getModel($this->_cname);
 		$model->move(-1);
-		$msg = JText::sprintf('COM_VIRTUEMART_STRING_ORDER_UP_SUCCESS',$this->mainLangKey);
+		$msg = vmText::sprintf('COM_VIRTUEMART_STRING_ORDER_UP_SUCCESS',$this->mainLangKey);
 		$this->setRedirect( $this->redirectPath, $msg);
 	}
 
@@ -311,7 +311,7 @@ class VmController extends JControllerLegacy{
 
 		$model = VmModel::getModel($this->_cname);
 		$model->move(1);
-		$msg = JText::sprintf('COM_VIRTUEMART_STRING_ORDER_DOWN_SUCCESS',$this->mainLangKey);
+		$msg = vmText::sprintf('COM_VIRTUEMART_STRING_ORDER_DOWN_SUCCESS',$this->mainLangKey);
 		$this->setRedirect( $this->redirectPath, $msg);
 	}
 
@@ -326,7 +326,7 @@ class VmController extends JControllerLegacy{
 
 		$model = VmModel::getModel($this->_cname);
 		if (!$model->saveorder($cid, $order)) $msg = 'error';
-		else $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVE_ORDER_SUCCESS',$this->mainLangKey);
+		else $msg = vmText::sprintf('COM_VIRTUEMART_STRING_SAVE_ORDER_SUCCESS',$this->mainLangKey);
 		$this->setRedirect( $this->redirectPath, $msg);
 	}
 

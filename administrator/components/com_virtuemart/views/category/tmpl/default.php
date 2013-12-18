@@ -58,7 +58,7 @@ AdminUIHelper::startAdminArea($this);
 				<?php echo $this->sort('category_description', 'COM_VIRTUEMART_DESCRIPTION') ; ?>
 			</th>
 			<th align="left" width="11%">
-				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_S'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_S'); ?>
 			</th>
 
 			<th align="left" width="13%">
@@ -141,7 +141,7 @@ AdminUIHelper::startAdminArea($this);
 				</td>
 				<td>
 					<?php echo  $this->catmodel->countProducts($cat->virtuemart_category_id);//ShopFunctions::countProductsByCategory($row->virtuemart_category_id);?>
-					&nbsp;<a href="<?php echo $showProductsLink; ?>">[ <?php echo JText::_('COM_VIRTUEMART_SHOW');?> ]</a>
+					&nbsp;<a href="<?php echo $showProductsLink; ?>">[ <?php echo vmText::_('COM_VIRTUEMART_SHOW');?> ]</a>
 				</td>
 				<td align="center" class="order">
 					<span><?php 
@@ -149,8 +149,8 @@ AdminUIHelper::startAdminArea($this);
 					
 					$cond = (($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$i - 1]->category_parent_id));
 					$cond2= ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$i + 1]->category_parent_id);
-					echo $this->catpagination->orderUpIcon( $i, $cond, 'orderUp', JText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
-					<span><?php echo $this->catpagination->orderDownIcon( $i, $nrows, $cond2, 'orderDown', JText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
+					echo $this->catpagination->orderUpIcon( $i, $cond, 'orderUp', vmText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
+					<span><?php echo $this->catpagination->orderDownIcon( $i, $nrows, $cond2, 'orderDown', vmText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
 					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $cat->ordering; ?>" style="text-align: center" />
 				</td>
 				<td align="center">

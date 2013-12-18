@@ -33,7 +33,7 @@ vmJsApi::jDate();
 
 <div class="col50">
 	<fieldset>
-	<legend><?php echo JText::_('COM_VIRTUEMART_CALC_DETAILS'); ?></legend>
+	<legend><?php echo vmText::_('COM_VIRTUEMART_CALC_DETAILS'); ?></legend>
 	<table class="admintable">
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CALC_NAME','calc_name',$this->calc->calc_name); ?>
 		<?php echo VmHTML::row('checkbox','COM_VIRTUEMART_PUBLISHED','published',$this->calc->published); ?>
@@ -50,7 +50,7 @@ vmJsApi::jDate();
 		<tr>
 			<td width="110" class="key">
 				<label for="calc_categories">
-					<?php echo JText::_('COM_VIRTUEMART_CATEGORY'); ?>
+					<?php echo vmText::_('COM_VIRTUEMART_CATEGORY'); ?>
 				</label>
 			</td>
 			<td colspan="3">

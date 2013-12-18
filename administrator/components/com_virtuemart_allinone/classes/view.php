@@ -12,7 +12,7 @@ jimport('joomla.application.component.view');
 /**
  * The Live Update MVC view
  */
-class LiveUpdateView extends JViewLegacy
+class LiveUpdateView extends JView
 {
 	public function display($tpl = null)
 	{

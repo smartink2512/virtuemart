@@ -33,7 +33,7 @@ class VirtuemartViewAbout extends VmView {
 
 	function display ($tpl = null) {
 
-		JToolBarHelper::title( JText::_( 'COM_VIRTUEMART_ABOUT' )."::".JText::_( 'COM_VIRTUEMART_CONTROL_PANEL' ), 'vm_store_48' );
+		JToolBarHelper::title( vmText::_( 'COM_VIRTUEMART_ABOUT' )."::".vmText::_( 'COM_VIRTUEMART_CONTROL_PANEL' ), 'vm_store_48' );
 
 		parent::display( $tpl );
 	}

@@ -77,9 +77,9 @@ class VirtuemartControllerShipmentmethod extends VmController {
 		JArrayHelper::toInteger($cids);
 
 		foreach($cids as $cid){
-			if ($model->createClone($cid)) $msg = JText::_('COM_VIRTUEMART_SHIPMENT_CLONED_SUCCESSFULLY');
+			if ($model->createClone($cid)) $msg = vmText::_('COM_VIRTUEMART_SHIPMENT_CLONED_SUCCESSFULLY');
 			else {
-				$msg = JText::_('COM_VIRTUEMART_SHIPMENT_NOT_CLONED_SUCCESSFULLY');
+				$msg = vmText::_('COM_VIRTUEMART_SHIPMENT_NOT_CLONED_SUCCESSFULLY');
 				$msgtype = 'error';
 			}
 		}

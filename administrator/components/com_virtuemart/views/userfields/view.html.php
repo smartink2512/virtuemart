@@ -61,7 +61,7 @@ class VirtuemartViewUserfields extends VmView {
 			if ($userField->virtuemart_userfield_id < 1) { // Insert new userfield
 
 
-				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
+				$this->assignRef('ordering', vmText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
 				$userFieldValues = array();
 				$attribs = '';
 				$lists['type'] = JHTML::_('select.genericlist', $this->_getTypes(), 'type', $attribs, 'type', 'text', $userField->type);
@@ -105,14 +105,14 @@ class VirtuemartViewUserfields extends VmView {
 			// Minimum age select
 			$ages = array();
 			for ($i = 13; $i <= 25; $i++) {
-				$ages[] = array('key' => $i, 'value' => $i.' '.JText::_('COM_VIRTUEMART_YEAR_S'));
+				$ages[] = array('key' => $i, 'value' => $i.' '.vmText::_('COM_VIRTUEMART_YEAR_S'));
 			}
 			$lists['minimum_age'] = JHTML::_('select.genericlist', $ages, 'minimum_age', '', 'key', 'value', $model->_params->get('minimum_age', 18));
 
 			// Web address types
 			$webaddress_types = array(
-				 array('key' => 0, 'value' => JText::_('COM_VIRTUEMART_USERFIELDS_URL_ONLY'))
-				,array('key' => 2, 'value' => JText::_('COM_VIRTUEMART_USERFIELDS_HYPERTEXT_URL'))
+				 array('key' => 0, 'value' => vmText::_('COM_VIRTUEMART_USERFIELDS_URL_ONLY'))
+				,array('key' => 2, 'value' => vmText::_('COM_VIRTUEMART_USERFIELDS_HYPERTEXT_URL'))
 			);
 			$lists['webaddresstypes'] = JHTML::_('select.genericlist', $webaddress_types, 'webaddresstype', '', 'key', 'value', $model->_params->get('webaddresstype'));
 
@@ -128,7 +128,7 @@ class VirtuemartViewUserfields extends VmView {
 				$lists['userfield_values'] = '';
 				$lang =JFactory::getLanguage();
 				for ($i = 0; $i < $n; $i++) {
-					$translate= $lang->hasKey($userFieldValues[$i]->fieldtitle) ? " (".JText::_($userFieldValues[$i]->fieldtitle).")" : "";
+					$translate= $lang->hasKey($userFieldValues[$i]->fieldtitle) ? " (".vmText::_($userFieldValues[$i]->fieldtitle).")" : "";
 					$lists['userfield_values'] .=
 						 '<tr>'
 						 .'<td><input type="text" value="'.$userFieldValues[$i]->fieldvalue.'" name="vValues['.$i.']" /></td>'
@@ -153,7 +153,7 @@ class VirtuemartViewUserfields extends VmView {
 			$this->assignRef('userFieldValues', $userFieldValues);
 			$this->assignRef('editor', $editor);
 		} else {
-			JToolBarHelper::title( JText::_('COM_VIRTUEMART_MANAGE_USER_FIELDS'),'vm_user_48 head');
+			JToolBarHelper::title( vmText::_('COM_VIRTUEMART_MANAGE_USER_FIELDS'),'vm_user_48 head');
 			JToolBarHelper::addNewX();
 			JToolBarHelper::editListX();
 			JToolBarHelper::divider();
@@ -162,7 +162,7 @@ class VirtuemartViewUserfields extends VmView {
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::divider();
-			$barText = JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_HIDE');
+			$barText = vmText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_HIDE');
 
 			$bar= JToolBar::getInstance( 'toolbar' );
 			$bar->appendButton( 'Separator', '"><span class="bartext">'.$barText.'</span><hr style="display: none;' );
@@ -204,12 +204,12 @@ class VirtuemartViewUserfields extends VmView {
 		$img 	= $field ? $imgY : $imgX;
 		if ($toggle == 'published') { // Stay compatible with grid.published
 			$task 	= $field ? 'unpublish' : 'publish';
-			$alt 	= $field ? JText::_('COM_VIRTUEMART_PUBLISHED') : JText::_('COM_VIRTUEMART_UNPUBLISHED');
-			$action = $field ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : JText::_('COM_VIRTUEMART_PUBLISH_ITEM');
+			$alt 	= $field ? vmText::_('COM_VIRTUEMART_PUBLISHED') : vmText::_('COM_VIRTUEMART_UNPUBLISHED');
+			$action = $field ? vmText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : vmText::_('COM_VIRTUEMART_PUBLISH_ITEM');
 		} else {
 			$task 	= $field ? $toggle.'.0' : $toggle.'.1';
-			$alt 	= $field ? JText::_('COM_VIRTUEMART_ENABLED') : JText::_('COM_VIRTUEMART_DISABLED');
-			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM') : JText::_('COM_VIRTUEMART_ENABLE_ITEM');
+			$alt 	= $field ? vmText::_('COM_VIRTUEMART_ENABLED') : vmText::_('COM_VIRTUEMART_DISABLED');
+			$action = $field ? vmText::_('COM_VIRTUEMART_DISABLE_ITEM') : vmText::_('COM_VIRTUEMART_ENABLE_ITEM');
 		}
 
 		if (JVM_VERSION>1) {
@@ -240,20 +240,20 @@ class VirtuemartViewUserfields extends VmView {
 	function _getTypes ($value = null)
 	{
 		$types = array(
-			 array('type' => 'text'             , 'text' => JText::_('COM_VIRTUEMART_FIELDS_TEXTFIELD'))
-			,array('type' => 'checkbox'         , 'text' => JText::_('COM_VIRTUEMART_FIELDS_CHECKBOX_SINGLE'))
-			,array('type' => 'multicheckbox'    , 'text' => JText::_('COM_VIRTUEMART_FIELDS_CHECKBOX_MULTIPLE'))
-			,array('type' => 'date'             , 'text' => JText::_('COM_VIRTUEMART_FIELDS_DATE'))
-			,array('type' => 'age_verification' , 'text' => JText::_('COM_VIRTUEMART_FIELDS_AGEVERIFICATION'))
-			,array('type' => 'select'           , 'text' => JText::_('COM_VIRTUEMART_FIELDS_DROPDOWN_SINGLE'))
-			,array('type' => 'multiselect'      , 'text' => JText::_('COM_VIRTUEMART_FIELDS_DROPDOWN_MULTIPLE'))
-			,array('type' => 'emailaddress'     , 'text' => JText::_('COM_VIRTUEMART_FIELDS_EMAIL'))
-// 			,array('type' => 'euvatid'          , 'text' => JText::_('COM_VIRTUEMART_FIELDS_EUVATID'))
-			,array('type' => 'editorta'         , 'text' => JText::_('COM_VIRTUEMART_FIELDS_EDITORAREA'))
-			,array('type' => 'textarea'         , 'text' => JText::_('COM_VIRTUEMART_FIELDS_TEXTAREA'))
-			,array('type' => 'radio'            , 'text' => JText::_('COM_VIRTUEMART_FIELDS_RADIOBUTTON'))
-			,array('type' => 'webaddress'       , 'text' => JText::_('COM_VIRTUEMART_FIELDS_WEBADDRESS'))
-			,array('type' => 'delimiter'        , 'text' => JText::_('COM_VIRTUEMART_FIELDS_DELIMITER'))
+			 array('type' => 'text'             , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_TEXTFIELD'))
+			,array('type' => 'checkbox'         , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_CHECKBOX_SINGLE'))
+			,array('type' => 'multicheckbox'    , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_CHECKBOX_MULTIPLE'))
+			,array('type' => 'date'             , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_DATE'))
+			,array('type' => 'age_verification' , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_AGEVERIFICATION'))
+			,array('type' => 'select'           , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_DROPDOWN_SINGLE'))
+			,array('type' => 'multiselect'      , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_DROPDOWN_MULTIPLE'))
+			,array('type' => 'emailaddress'     , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_EMAIL'))
+// 			,array('type' => 'euvatid'          , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_EUVATID'))
+			,array('type' => 'editorta'         , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_EDITORAREA'))
+			,array('type' => 'textarea'         , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_TEXTAREA'))
+			,array('type' => 'radio'            , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_RADIOBUTTON'))
+			,array('type' => 'webaddress'       , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_WEBADDRESS'))
+			,array('type' => 'delimiter'        , 'text' => vmText::_('COM_VIRTUEMART_FIELDS_DELIMITER'))
 
 		);
 		$this->renderInstalledUserfieldPlugins($types);
@@ -266,24 +266,24 @@ class VirtuemartViewUserfields extends VmView {
 
 		//This should be done via plugins !
 /*		if (file_exists(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_securityimages'.DS.'client.php')) {
-			$types[] = array('type' => 'captcha', 'text' => JText::_('COM_VIRTUEMART_FIELDS_CAPTCHA'));
+			$types[] = array('type' => 'captcha', 'text' => vmText::_('COM_VIRTUEMART_FIELDS_CAPTCHA'));
 		}
 		if (file_exists(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_securityimages'.DS.'class'.DS.'SecurityImagesHelper.php')) {
-			$types[] = array('type' => 'captcha', 'text' => JText::_('COM_VIRTUEMART_FIELDS_CAPTCHA'));
+			$types[] = array('type' => 'captcha', 'text' => vmText::_('COM_VIRTUEMART_FIELDS_CAPTCHA'));
 		}
 		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_yanc'.DS.'yanc.php')) {
-			$types[] = array('type' => 'yanc_subscription', 'text' => JText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (YaNC)');
+			$types[] = array('type' => 'yanc_subscription', 'text' => vmText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (YaNC)');
 		}
 		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_anjel'.DS.'anjel.php')) {
-			$types[] = array('type' => 'anjel_subscription', 'text' => JText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (ANJEL)');
+			$types[] = array('type' => 'anjel_subscription', 'text' => vmText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (ANJEL)');
 		}
 		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_letterman'.DS.'letterman.php')) {
-			$types[] = array('type' => 'letterman_subscription', 'text' => JText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (Letterman)');
+			$types[] = array('type' => 'letterman_subscription', 'text' => vmText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (Letterman)');
 		}
 		if (file_exists(JPATH_ROOT.DS.'components'.DS.'com_ccnewsletter'.DS.'ccnewsletter.php')) {
-			$types[] = array('type' => 'ccnewsletter_subscription', 'text' => JText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (ccNewsletter)');
+			$types[] = array('type' => 'ccnewsletter_subscription', 'text' => vmText::_('COM_VIRTUEMART_FIELDS_NEWSLETTER').' (ccNewsletter)');
 		}
-		$types[] = array('type' => 'delimiter', 'text' => JText::_('COM_VIRTUEMART_FIELDS_DELIMITER'));
+		$types[] = array('type' => 'delimiter', 'text' => vmText::_('COM_VIRTUEMART_FIELDS_DELIMITER'));
 */
 		if ($value === null) {
 			return $types;

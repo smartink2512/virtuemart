@@ -37,7 +37,7 @@ AdminUIHelper::startAdminArea($this);
 				<?php echo $this->sort('payment_name', 'COM_VIRTUEMART_PAYMENT_LIST_NAME'); ?>
 			</th>
 			 <th>
-				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_LIST_DESCRIPTION_LBL'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_PAYMENT_LIST_DESCRIPTION_LBL'); ?>
 			</th>
 			<?php if($this->perms->check( 'admin' )){ ?>
 			<th >
@@ -45,7 +45,7 @@ AdminUIHelper::startAdminArea($this);
 			</th><?php }?>
 
 			<th  >
-				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_SHOPPERGROUPS'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_PAYMENT_SHOPPERGROUPS'); ?>
 			</th>
 			<th >
 				<?php echo $this->sort('payment_element', 'COM_VIRTUEMART_PAYMENT_ELEMENT'); ?>
@@ -58,7 +58,7 @@ AdminUIHelper::startAdminArea($this);
 			</th>
 			<?php if(Vmconfig::get('multix','none')!=='none'){ ?>
 			<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_SHARED'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_SHARED'); ?>
 			</th>
 			<?php } ?>
 			 <th><?php echo $this->sort('virtuemart_paymentmethod_id', 'COM_VIRTUEMART_ID')  ?></th>
@@ -87,7 +87,7 @@ AdminUIHelper::startAdminArea($this);
 				</td>
 				<?php if($this->perms->check( 'admin' )){?>
 				<td align="left">
-					<?php echo JText::_($row->virtuemart_vendor_id); ?>
+					<?php echo vmText::_($row->virtuemart_vendor_id); ?>
 				</td>
 				<?php } ?>
 

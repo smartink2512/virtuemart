@@ -49,11 +49,11 @@ abstract class LiveUpdateAbstractConfig extends JObject
 	/** @var bool Does the download URL require authorization to download the package? */
 	protected $_requiresAuthorization = false;
 	
-	/** @var string The username to authorise a download on your site */
+	/** @var string The username to authorize a download on your site */
 	protected $_username = '';
-	/** @var string The password to authorise a download on your site */
+	/** @var string The password to authorize a download on your site */
 	protected $_password = '';
-	/** @var string The Download ID to authorise a download on your site; use it instead of the username/password pair */
+	/** @var string The Download ID to authorize a download on your site; use it instead of the username/password pair */
 	protected $_downloadID = '';
 	
 	/** @var string The path to a local copy of cacert.pem, required if you plan on using HTTPS URLs to fetch live udpate information or download files from */

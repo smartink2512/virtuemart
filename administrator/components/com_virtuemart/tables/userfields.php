@@ -59,13 +59,13 @@ class TableUserfields extends VmTable {
 	{
 
 		if (preg_match('/[^a-z0-9\._\-]/i', $this->name) > 0) {
-			vmError(JText::_('COM_VIRTUEMART_NAME_OF_USERFIELD_CONTAINS_INVALID_CHARACTERS'));
+			vmError(vmText::_('COM_VIRTUEMART_NAME_OF_USERFIELD_CONTAINS_INVALID_CHARACTERS'));
 			return false;
 		}
 		if($this->name !='virtuemart_country_id' and $this->name !='virtuemart_state_id'){
 			$reqValues = array('select', 'multiselect', 'radio', 'multicheckbox');
 			if (in_array($this->type, $reqValues) and $nrOfValues == 0 ) {
-				vmError(JText::_('COM_VIRTUEMART_VALUES_ARE_REQUIRED_FOR_THIS_TYPE'));
+				vmError(vmText::_('COM_VIRTUEMART_VALUES_ARE_REQUIRED_FOR_THIS_TYPE'));
 				return false;
 			}
 		}

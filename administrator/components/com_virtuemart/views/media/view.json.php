@@ -50,7 +50,7 @@ class VirtuemartViewMedia extends VmView {
 				$this->json->msg =  'OK';
 				echo @json_encode($this->json);
 			} else {
-				$this->json->msg =  '<b>'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b>';
+				$this->json->msg =  '<b>'.vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b>';
 				echo @json_encode($this->json);
 			}
 		}

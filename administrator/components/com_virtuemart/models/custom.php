@@ -112,7 +112,7 @@ class VirtueMartModelCustom extends VmModel {
 				$data->custom_parent_title =  '-' ;
 			}
 			if(!empty($datas->field_types[$data->field_type ])){
-				$data->field_type_display = JText::_( $datas->field_types[$data->field_type ] );
+				$data->field_type_display = vmText::_( $datas->field_types[$data->field_type ] );
 			} else {
 				$data->field_type_display = 'not valid, delete this line';
 				vmError('The field with id '.$data->virtuemart_custom_id.' and title '.$data->custom_title.' is not longer valid, please delete it from the list');

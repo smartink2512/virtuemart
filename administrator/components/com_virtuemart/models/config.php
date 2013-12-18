@@ -66,7 +66,7 @@ class VirtueMartModelConfig extends VmModel {
 		}
 
 		$result = array();
-		$emptyOption = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_ADMIN_CFG_NO_OVERRIDE'));
+		$emptyOption = JHTML::_('select.option', '0', vmText::_('COM_VIRTUEMART_ADMIN_CFG_NO_OVERRIDE'));
 		$result[] = $emptyOption;
 
 		$alreadyAddedFile = array();
@@ -109,7 +109,7 @@ class VirtueMartModelConfig extends VmModel {
 			$fontxml = @simpleXML_load_file($file);
 			if ($fontxml) {
 				if (file_exists($dir . DS . $fontxml->filename . '.php')) {
-					$result[] = JHTML::_('select.option', $fontxml->filename, JText::_($fontxml->fontname.' ('.$fontxml->fonttype.')'));
+					$result[] = JHTML::_('select.option', $fontxml->filename, vmText::_($fontxml->fontname.' ('.$fontxml->fonttype.')'));
 				} else {
 					vmError ('A font master file is missing: ' . $dir . DS . 	$fontxml->filename . '.php');
 				}
@@ -158,7 +158,7 @@ class VirtueMartModelConfig extends VmModel {
 				while (false !== ($file = readdir($handle))) {
 					if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
 						if (filetype($dir.DS.$file) != 'dir') {
-							$result[] = JHTML::_('select.option', $file, JText::_(str_replace('.php', '', $file)));
+							$result[] = JHTML::_('select.option', $file, vmText::_(str_replace('.php', '', $file)));
 						}
 					}
 				}
@@ -183,7 +183,7 @@ class VirtueMartModelConfig extends VmModel {
 				if ($file != "." && $file != ".." && $file != '.svn') {
 					$info = pathinfo($file);
 					if ((filetype($dir.DS.$file) == 'file') && ($info['extension'] == 'php')) {
-						$result[] = JHTML::_('select.option', $file, JText::_($file));
+						$result[] = JHTML::_('select.option', $file, vmText::_($file));
 					}
 				}
 			}
@@ -240,7 +240,7 @@ class VirtueMartModelConfig extends VmModel {
 			$activeLangs[] = JHTML::_('select.option', $jLang['tag'] , $jLang['name']) ;
 		}
 
-		return JHTML::_('select.genericlist', $activeLangs, 'active_languages[]', 'size=10 multiple="multiple" data-placeholder="'.JText::_('COM_VIRTUEMART_DRDOWN_NOTMULTILINGUAL').'"', 'value', 'text', $active_languages );// $activeLangs;
+		return JHTML::_('select.genericlist', $activeLangs, 'active_languages[]', 'size=10 multiple="multiple" data-placeholder="'.vmText::_('COM_VIRTUEMART_DRDOWN_NOTMULTILINGUAL').'"', 'value', 'text', $active_languages );// $activeLangs;
 	}
 
 
@@ -280,7 +280,7 @@ class VirtueMartModelConfig extends VmModel {
 				$fieldWithoutPrefix = substr($field, $dotps+1);
 			}
 
-			$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
+			$text = vmText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
 
 			if ($type == 'browse_orderby_fields' or $type == 'browse_cat_orderby_field'){
 				$searchFields->select[] =  JHTML::_('select.option', $field, $text) ;
@@ -382,7 +382,7 @@ class VirtueMartModelConfig extends VmModel {
 					}
 					$config->set('forSale_path',$safePath);
 				} else {
-					VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
+					VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
 				}
 			}
 		}
@@ -398,7 +398,7 @@ class VirtueMartModelConfig extends VmModel {
 				if($created){
 					vmInfo('COM_VIRTUEMART_SAFE_PATH_INVOICE_CREATED');
 				} else {
-					VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
+					VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
 				}
 			}
 		}
@@ -455,7 +455,7 @@ class VirtueMartModelConfig extends VmModel {
 		if( $dangerousTools){
 			$uri = JFactory::getURI();
 			$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
-			$lang = JText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_STILL_ENABLED',JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'),$link);
+			$lang = vmText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_STILL_ENABLED',vmText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'),$link);
 			VmInfo($lang);
 		} else {
 			$data['dangeroustools'] = 0;

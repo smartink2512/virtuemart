@@ -97,7 +97,7 @@ class VirtuemartControllerTranslate extends VmController {
 		$db->setQuery($q);
 		if ($json['fields'] = $db->loadAssoc()) {
 			$json['structure'] = 'filled' ;
-			$json['msg'] = jText::_('COM_VIRTUEMART_SELECTED_LANG').':'.$lang;
+			$json['msg'] = vmText::_('COM_VIRTUEMART_SELECTED_LANG').':'.$lang;
 
 		} else {
 			$json['structure'] = 'empty' ;
@@ -107,7 +107,7 @@ class VirtuemartControllerTranslate extends VmController {
 			$fields=array();
 			foreach ($tableDescribe as $key =>$val) $fields[$val['Field']] = $val['Field'] ;
 			$json['fields'] = $fields;
-			$json['msg'] = JText::sprintf('COM_VIRTUEMART_LANG_IS_EMPTY',$lang ,jText::_('COM_VIRTUEMART_'.strtoupper( $viewKey)) ) ;
+			$json['msg'] = vmText::sprintf('COM_VIRTUEMART_LANG_IS_EMPTY',$lang ,vmText::_('COM_VIRTUEMART_'.strtoupper( $viewKey)) ) ;
 		}
 		echo json_encode($json);
 		jExit();

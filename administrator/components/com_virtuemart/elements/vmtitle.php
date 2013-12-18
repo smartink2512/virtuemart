@@ -35,13 +35,13 @@ class JElementVmtitle extends JElement {
         if (empty($class)) {
             $class="level2";
         }
-		$description = ($node->attributes('description') ? JText::_($node->attributes('description')) : '');
+		$description = ($node->attributes('description') ? vmText::_($node->attributes('description')) : '');
 
 		$html = '';
 		if ($value) {
 
             $html .= '<div '.$class.' style="margin: 10px 0 5px 0; font-weight: bold; padding: 5px; background-color: #cacaca; float:none; clear:both;">';
-			$html .= JText::_($value);
+			$html .= vmText::_($value);
 			$html .= '</div>';
             if ($description){
                 $html .= $description.'<br/>';

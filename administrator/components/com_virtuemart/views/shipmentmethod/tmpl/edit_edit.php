@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php echo $this->langList; ?>
 <div class="col50">
     <fieldset>
-        <legend><?php echo JText::_('COM_VIRTUEMART_SHIPMENTMETHOD'); ?></legend>
+        <legend><?php echo vmText::_('COM_VIRTUEMART_SHIPMENTMETHOD'); ?></legend>
         <table class="admintable">
 	    <?php echo VmHTML::row('input', 'COM_VIRTUEMART_SHIPPING_FORM_NAME', 'shipment_name', $this->shipment->shipment_name); ?>
 		<?php echo VmHTML::row('input', 'COM_VIRTUEMART_SLUG', 'slug', $this->shipment->slug); ?>

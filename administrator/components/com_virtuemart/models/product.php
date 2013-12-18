@@ -1539,10 +1539,10 @@ class VirtueMartModelProduct extends VmModel {
 			$i++;
 		}
 		if ($ordered) {
-			$msg = JText::sprintf ('COM_VIRTUEMART_ITEMS_MOVED', $ordered);
+			$msg = vmText::sprintf ('COM_VIRTUEMART_ITEMS_MOVED', $ordered);
 		}
 		else {
-			$msg = JText::_ ('COM_VIRTUEMART_ITEMS_NOT_MOVED');
+			$msg = vmText::_ ('COM_VIRTUEMART_ITEMS_NOT_MOVED');
 		}
 		JFactory::getApplication ()->redirect ('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . $virtuemart_category_id, $msg);
 
@@ -1957,7 +1957,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$childIds = $this->getProductChildIds ($id);
 			if (!empty($childIds)) {
-				vmError (JText::_ ('COM_VIRTUEMART_PRODUCT_CANT_DELETE_CHILD'));
+				vmError (vmText::_ ('COM_VIRTUEMART_PRODUCT_CANT_DELETE_CHILD'));
 				$ok = FALSE;
 				continue;
 			}
@@ -2156,7 +2156,7 @@ class VirtueMartModelProduct extends VmModel {
 			if (count ($manufacturers) > 0) {
 				$manufacturerLink = '<div class="orderlist">';
 				if ($virtuemart_manufacturer_id > 0) {
-					$manufacturerLink .= '<div><a title="" href="' . JRoute::_ ($fieldLink . $orderbyTxt . $orderDirLink , FALSE) . '">' . JText::_ ('COM_VIRTUEMART_SEARCH_SELECT_ALL_MANUFACTURER') . '</a></div>';
+					$manufacturerLink .= '<div><a title="" href="' . JRoute::_ ($fieldLink . $orderbyTxt . $orderDirLink , FALSE) . '">' . vmText::_ ('COM_VIRTUEMART_SEARCH_SELECT_ALL_MANUFACTURER') . '</a></div>';
 				}
 				if (count ($manufacturers) > 1) {
 					foreach ($manufacturers as $mf) {
@@ -2165,15 +2165,15 @@ class VirtueMartModelProduct extends VmModel {
 							$manufacturerLink .= '<div><a title="' . $mf->mf_name . '" href="' . $link . '">' . $mf->mf_name . '</a></div>';
 						}
 						else {
-							$currentManufacturerLink = '<div class="title">' . JText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') . '</div><div class="activeOrder">' . $mf->mf_name . '</div>';
+							$currentManufacturerLink = '<div class="title">' . vmText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') . '</div><div class="activeOrder">' . $mf->mf_name . '</div>';
 						}
 					}
 				}
 				elseif ($virtuemart_manufacturer_id > 0) {
-					$currentManufacturerLink = '<div class="title">' . JText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') . '</div><div class="activeOrder">' . $manufacturers[0]->mf_name . '</div>';
+					$currentManufacturerLink = '<div class="title">' . vmText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') . '</div><div class="activeOrder">' . $manufacturers[0]->mf_name . '</div>';
 				}
 				else {
-					$currentManufacturerLink = '<div class="title">' . JText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') . '</div><div class="Order"> ' . $manufacturers[0]->mf_name . '</div>';
+					$currentManufacturerLink = '<div class="title">' . vmText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') . '</div><div class="Order"> ' . $manufacturers[0]->mf_name . '</div>';
 				}
 				$manufacturerLink .= '</div>';
 			}
@@ -2199,7 +2199,7 @@ class VirtueMartModelProduct extends VmModel {
 						$fieldWithoutPrefix = $field;
 					}
 
-					$text = JText::_ ('COM_VIRTUEMART_' . strtoupper ($fieldWithoutPrefix));
+					$text = vmText::_ ('COM_VIRTUEMART_' . strtoupper ($fieldWithoutPrefix));
 
 					$field = explode('.',$field);
 					if(isset($field[1])){
@@ -2228,7 +2228,7 @@ class VirtueMartModelProduct extends VmModel {
 			$orderDirLink = '';
 		}
 
-		$orderDirTxt = JText::_ ('COM_VIRTUEMART_SEARCH_ORDER_'.$orderDir);
+		$orderDirTxt = vmText::_ ('COM_VIRTUEMART_SEARCH_ORDER_'.$orderDir);
 
 		$link = JRoute::_ ($fieldLink . $orderbyTxt . $orderDirLink . $manufacturerTxt,FALSE);
 
@@ -2250,13 +2250,13 @@ class VirtueMartModelProduct extends VmModel {
 			// 		$orderby = $orderby;
 		}
 
-		$orderByList = '<div class="orderlistcontainer"><div class="title">' . JText::_ ('COM_VIRTUEMART_ORDERBY') . '</div><div class="activeOrder"><a title="' . $orderDirTxt . '" href="' . $link . '">' . JText::_ ('COM_VIRTUEMART_SEARCH_ORDER_' . $orderby) . ' ' . $orderDirTxt . '</a></div>';
+		$orderByList = '<div class="orderlistcontainer"><div class="title">' . vmText::_ ('COM_VIRTUEMART_ORDERBY') . '</div><div class="activeOrder"><a title="' . $orderDirTxt . '" href="' . $link . '">' . vmText::_ ('COM_VIRTUEMART_SEARCH_ORDER_' . $orderby) . ' ' . $orderDirTxt . '</a></div>';
 		$orderByList .= $orderByLink . '</div>';
 
 		$manuList = '';
 		if (VmConfig::get ('show_manufacturers')) {
 			if (empty ($currentManufacturerLink)) {
-				$currentManufacturerLink = '<div class="title">' . JText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') . '</div><div class="activeOrder">' . JText::_ ('COM_VIRTUEMART_SEARCH_SELECT_MANUFACTURER') . '</div>';
+				$currentManufacturerLink = '<div class="title">' . vmText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') . '</div><div class="activeOrder">' . vmText::_ ('COM_VIRTUEMART_SEARCH_SELECT_MANUFACTURER') . '</div>';
 			}
 			$manuList = ' <div class="orderlistcontainer">' . $currentManufacturerLink;
 			$manuList .= $manufacturerLink . '</div><div class="clear"></div>';
@@ -2285,14 +2285,14 @@ class VirtueMartModelProduct extends VmModel {
 		$stock_level = $product->product_in_stock - $product->product_ordered;
 		$reorder_level = $product->low_stock_notification;
 		$level = 'normalstock';
-		$stock_tip = JText::_ ('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_NORMAL_TIP');
+		$stock_tip = vmText::_ ('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_NORMAL_TIP');
 		if ($stock_level <= $reorder_level) {
 			$level = 'lowstock';
-			$stock_tip = JText::_ ('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_LOW_TIP');
+			$stock_tip = vmText::_ ('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_LOW_TIP');
 		}
 		if ($stock_level <= 0) {
 			$level = 'nostock';
-			$stock_tip = JText::_ ('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_OUT_TIP');
+			$stock_tip = vmText::_ ('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_OUT_TIP');
 		}
 		$stock = new Stdclass();
 		$stock->stock_tip = $stock_tip;
@@ -2373,8 +2373,8 @@ function lowStockWarningEmail($virtuemart_product_id) {
 
 		$url = JURI::root () . 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $virtuemart_product_id;
 		$link = '<a href="'. $url.'">'. $vars['product_name'].'</a>';
-		$vars['subject'] = JText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_SUBJECT',$vars['product_name']);
-		$vars['mailbody'] =JText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_BODY',$link, $vars['product_in_stock']);
+		$vars['subject'] = vmText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_SUBJECT',$vars['product_name']);
+		$vars['mailbody'] =vmText::sprintf('COM_VIRTUEMART_PRODUCT_LOW_STOCK_EMAIL_BODY',$link, $vars['product_in_stock']);
 
 		$virtuemart_vendor_id = 1;
 		$vendorModel = VmModel::getModel ('vendor');
@@ -2539,7 +2539,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 				$orderModel->_updateOrderHist ($order_info['order_id'], $order_info['order_status'], 1, $vars['subject'] . ' ' . $vars['mailbody']);
 			}
 			// todo: when there is an error while sending emails
-			//vmInfo (JText::sprintf ($string, $productShopper['email']));
+			//vmInfo (vmText::sprintf ($string, $productShopper['email']));
 		}
 
 	}

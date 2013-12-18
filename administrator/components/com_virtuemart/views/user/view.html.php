@@ -86,7 +86,7 @@ class VirtuemartViewUser extends VmView {
 				if(!empty($userDetails->vendor->vendor_store_name)){
 					$this->SetViewTitle('STORE',$userDetails->vendor->vendor_store_name, 'shop_mart' );
 				} else {
-					$this->SetViewTitle('STORE',JText::_('COM_VIRTUEMART_NEW_VENDOR') , 'shop_mart');
+					$this->SetViewTitle('STORE',vmText::_('COM_VIRTUEMART_NEW_VENDOR') , 'shop_mart');
 				}
 				$vendorid = $userDetails->virtuemart_vendor_id;
 			} else {
@@ -103,7 +103,7 @@ class VirtuemartViewUser extends VmView {
 			$_groupList = $model->getGroupList();
 
 			if (!is_array($_groupList)) {
-				$this->lists['gid'] = '<input type="hidden" name="gid" value="'. $userDetails->JUser->get('gid') .'" /><strong>'. JText::_($_groupList) .'</strong>';
+				$this->lists['gid'] = '<input type="hidden" name="gid" value="'. $userDetails->JUser->get('gid') .'" /><strong>'. vmText::_($_groupList) .'</strong>';
 			} else {
 				$this->lists['gid'] 	= JHTML::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $userDetails->JUser->get('gid'));
 			}
@@ -256,7 +256,7 @@ class VirtuemartViewUser extends VmView {
 		$vendorModel->setId($vendorId);
 		$vendor = $vendorModel->getVendor();
 		$vendorModel->addImages($vendor);
-		$this->assignRef('subject', ($doVendor) ? JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE_VENDOR_SUBJECT', $this->user->get('email')) : JText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE_SUBJECT',$vendor->vendor_store_name));
+		$this->assignRef('subject', ($doVendor) ? vmText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE_VENDOR_SUBJECT', $this->user->get('email')) : vmText::sprintf('COM_VIRTUEMART_NEW_USER_MESSAGE_SUBJECT',$vendor->vendor_store_name));
 		parent::display();
 	}
 

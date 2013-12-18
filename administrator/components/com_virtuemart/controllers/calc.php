@@ -78,7 +78,7 @@ class VirtuemartControllerCalc extends VmController {
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
 		} else {
-			$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', JText::_('COM_VIRTUEMART_NO_ITEMS_SELECTED') );
+			$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', vmText::_('COM_VIRTUEMART_NO_ITEMS_SELECTED') );
 			return false;
 		}
 
@@ -86,7 +86,7 @@ class VirtuemartControllerCalc extends VmController {
 		$model = VmModel::getModel('calc');
 
 		if ($model->orderCalc($id, -1)) {
-			$msg = JText::_('COM_VIRTUEMART_ITEM_MOVED_UP');
+			$msg = vmText::_('COM_VIRTUEMART_ITEM_MOVED_UP');
 		} else {
 			$msg = $model->getError();
 		}
@@ -112,7 +112,7 @@ class VirtuemartControllerCalc extends VmController {
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
 		} else {
-			$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', JText::_('COM_VIRTUEMART_NO_ITEMS_SELECTED') );
+			$this->setRedirect( 'index.php?option=com_virtuemart&view=calc', vmText::_('COM_VIRTUEMART_NO_ITEMS_SELECTED') );
 			return false;
 		}
 
@@ -120,7 +120,7 @@ class VirtuemartControllerCalc extends VmController {
 		$model = VmModel::getModel('calc');
 
 		if ($model->orderCalc($id, 1)) {
-			$msg = JText::_('COM_VIRTUEMART_ITEM_MOVED_DOWN');
+			$msg = vmText::_('COM_VIRTUEMART_ITEM_MOVED_DOWN');
 		} else {
 			$msg = $model->getError();
 		}
@@ -146,7 +146,7 @@ class VirtuemartControllerCalc extends VmController {
 		JArrayHelper::toInteger($order);
 
 		if ($model->setOrder($cid,$order)) {
-			$msg = JText::_('COM_VIRTUEMART_NEW_ORDERING_SAVED');
+			$msg = vmText::_('COM_VIRTUEMART_NEW_ORDERING_SAVED');
 		} else {
 			$msg = $model->getError();
 		}

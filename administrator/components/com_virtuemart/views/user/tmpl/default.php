@@ -28,18 +28,18 @@ AdminUIHelper::startAdminArea($this);
 		<table>
 			<tr>
 				<td width="100%">
-					<?php echo JText::_('COM_VIRTUEMART_FILTER'); ?>:
+					<?php echo vmText::_('COM_VIRTUEMART_FILTER'); ?>:
 					<input type="text" name="search" id="search" value="<?php echo $this->lists['search'];?>" class="text_area" onchange="document.adminForm.submit();" />
 					<?php
 					$selected = VmRequest::getString('searchTable','juser');
 					$searchOptionTables = array(
-						'0' => array('searchTable' => 'juser', 'searchTable_name' => JText::_('COM_VIRTUEMART_ONLY_JUSER')),
-						'1' => array('searchTable' => 'all', 'searchTable_name' => JText::_('JALL'))
+						'0' => array('searchTable' => 'juser', 'searchTable_name' => vmText::_('COM_VIRTUEMART_ONLY_JUSER')),
+						'1' => array('searchTable' => 'all', 'searchTable_name' => vmText::_('JALL'))
 					);
 					echo JHTML::_('Select.genericlist', $searchOptionTables, 'searchTable', '', 'searchTable', 'searchTable_name', $selected );
 					?>
-					<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
-					<button onclick="document.adminForm.search.value='';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
+					<button onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
+					<button onclick="document.adminForm.search.value='';this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_RESET'); ?></button>
 				</td>
 			</tr>
 		</table>
@@ -56,13 +56,13 @@ AdminUIHelper::startAdminArea($this);
 
 			<th><?php echo $this->sort('ju.username', 'COM_VIRTUEMART_USERNAME')  ?></th>
 			<th><?php echo $this->sort('ju.name', 'COM_VIRTUEMART_USER_DISPLAYED_NAME')  ?></th>
-			<th><?php echo JText::_('COM_VIRTUEMART_EMAIL'); ?></th>
-			<th><?php echo JText::_('COM_VIRTUEMART_USER_GROUP'); ?></th>
+			<th><?php echo vmText::_('COM_VIRTUEMART_EMAIL'); ?></th>
+			<th><?php echo vmText::_('COM_VIRTUEMART_USER_GROUP'); ?></th>
 			<th><?php echo $this->sort('shopper_group_name', 'COM_VIRTUEMART_SHOPPERGROUP')  ?></th>
 			<?php if(Vmconfig::get('multix','none')!=='none'){ ?>
-			<th width="80"><?php echo JText::_('COM_VIRTUEMART_USER_IS_VENDOR'); ?></th>
+			<th width="80"><?php echo vmText::_('COM_VIRTUEMART_USER_IS_VENDOR'); ?></th>
 			<?php } ?>
-			<th><?php echo  JText::_('COM_VIRTUEMART_ID') ?></th>
+			<th><?php echo  vmText::_('COM_VIRTUEMART_ID') ?></th>
 		</tr>
 		</thead>
 		<?php

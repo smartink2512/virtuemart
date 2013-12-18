@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea($this);
-$states = JText::_('COM_VIRTUEMART_STATE_S');
+$states = vmText::_('COM_VIRTUEMART_STATE_S');
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -29,9 +29,9 @@ $states = JText::_('COM_VIRTUEMART_STATE_S');
 		<table>
 			<tr>
 				<td align="left" width="100%">
-					<?php echo JText::_('COM_VIRTUEMART_FILTER') ?>:
+					<?php echo vmText::_('COM_VIRTUEMART_FILTER') ?>:
 					&nbsp;<input type="text" value="<?php echo VmRequest::getVar('filter_country'); ?>" name="filter_country" size="25" />
-					<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
+					<button onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
 				</td>
 			</tr>
 		</table>
@@ -49,7 +49,7 @@ $states = JText::_('COM_VIRTUEMART_STATE_S');
 				<?php echo $this->sort('country_name') ?>
 		    </th>
 				<?php /* TODO not implemented				    <th>
-				<?php echo JText::_('COM_VIRTUEMART_ZONE_ASSIGN_CURRENT_LBL'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_ZONE_ASSIGN_CURRENT_LBL'); ?>
 				</th> */ ?>
 		    <th>
 				<?php echo $this->sort('country_2_code') ?>
@@ -58,7 +58,7 @@ $states = JText::_('COM_VIRTUEMART_STATE_S');
 				<?php echo $this->sort('country_3_code') ?>
 		    </th>
 		    <th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 		    </th>
 			<th width="20">
 				<?php echo $this->sort('virtuemart_country_id') ?>
@@ -82,7 +82,7 @@ $states = JText::_('COM_VIRTUEMART_STATE_S');
 		<td align="left">
 			<?php
 			$prefix="COM_VIRTUEMART_COUNTRY_";
-			$country_string= Jtext::_($prefix.$row->country_3_code); ?>
+			$country_string= vmText::_($prefix.$row->country_3_code); ?>
 		    <a href="<?php echo $editlink; ?>"><?php echo $row->country_name ?> </a>&nbsp;
 			<?php
 			$lang =JFactory::getLanguage();
@@ -91,7 +91,7 @@ $states = JText::_('COM_VIRTUEMART_STATE_S');
 			}
 			?>
 
-		    <a title="<?php echo JText::sprintf('COM_VIRTUEMART_STATES_VIEW_LINK', $country_string ); ?>" href="<?php echo $statelink; ?>">[<?php echo $states ?>]</a>
+		    <a title="<?php echo vmText::sprintf('COM_VIRTUEMART_STATES_VIEW_LINK', $country_string ); ?>" href="<?php echo $statelink; ?>">[<?php echo $states ?>]</a>
 		</td>
 		<?php /* TODO not implemented				<td align="left">
 			<?php echo $row->virtuemart_worldzone_id; ?>

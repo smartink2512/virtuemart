@@ -404,8 +404,8 @@ class VmMediaHandler {
 			foreach( $this->_foldersToTest as $dir ) {
 				$result .= $dir . ' :: ';
 				$result .= is_writable( $dir )
-				? '<span style="font-weight:bold;color:green;">'.JText::_('COM_VIRTUEMART_WRITABLE').'</span>'
-				: '<span style="font-weight:bold;color:red;">'.JText::_('COM_VIRTUEMART_UNWRITABLE').'</span>';
+				? '<span style="font-weight:bold;color:green;">'.vmText::_('COM_VIRTUEMART_WRITABLE').'</span>'
+				: '<span style="font-weight:bold;color:red;">'.vmText::_('COM_VIRTUEMART_UNWRITABLE').'</span>';
 				$result .= '<br/>';
 			}
 			$result .= '</div>';
@@ -441,12 +441,12 @@ class VmMediaHandler {
 
 			$supportedTypes = '';
 			if(function_exists('mime_content_type')){
-				$supportedTypes .= JText::_('COM_VIRTUEMART_FILES_FORM_MIME_CONTENT_TYPE_SUPPORTED').'<br />';
+				$supportedTypes .= vmText::_('COM_VIRTUEMART_FILES_FORM_MIME_CONTENT_TYPE_SUPPORTED').'<br />';
 			} else {
-				$supportedTypes .= JText::_('COM_VIRTUEMART_FILES_FORM_MIME_CONTENT_TYPE_NOT_SUPPORTED').'<br />';
+				$supportedTypes .= vmText::_('COM_VIRTUEMART_FILES_FORM_MIME_CONTENT_TYPE_NOT_SUPPORTED').'<br />';
 			}
 
-			$supportedTypes .= JText::_('COM_VIRTUEMART_FILES_FORM_IMAGETYPES_SUPPORTED'). implode($aSupportedTypes,', ');
+			$supportedTypes .= vmText::_('COM_VIRTUEMART_FILES_FORM_IMAGETYPES_SUPPORTED'). implode($aSupportedTypes,', ');
 
 			return $supportedTypes;
 		}
@@ -478,11 +478,11 @@ class VmMediaHandler {
 				if($return){
 					if($this->file_is_downloadable){
 						$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('downloadable','zip.png');
-						$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_SET').' '.$this->file_description;
+						$file_alt = vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').' '.$this->file_description;
 						return $this->displayIt($file_url, $file_alt, '',true,'',$withDescr);
 					} else {
 						$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
-						$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_SET').' '.$this->file_description;
+						$file_alt = vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').' '.$this->file_description;
 						return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox, $effect);
 					}
 				}
@@ -556,7 +556,7 @@ class VmMediaHandler {
 				$file_alt = $this->file_description;
 			} else {
 				$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
-				$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_FOUND').' '.$this->file_description;
+				$file_alt = vmText::_('COM_VIRTUEMART_NO_IMAGE_FOUND').' '.$this->file_description;
 			}
 			if($return){
 				if($this->file_is_downloadable){
@@ -661,17 +661,17 @@ class VmMediaHandler {
 
 					$this->file_mimetype = $media['type'];
 					$this->media_published = 1;
-					$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_UPLOAD_OK',JPATH_ROOT.DS.$path_folder.$media['name']));
+					$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_FILE_UPLOAD_OK',JPATH_ROOT.DS.$path_folder.$media['name']));
 					return $media['name'];
 
 				case 1: //uploaded file exceeds the upload_max_filesize directive in php.ini
-					$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_PRODUCT_FILES_ERR_UPLOAD_MAX_FILESIZE',$media['name'],$media['tmp_name']), 'warning');
+					$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_PRODUCT_FILES_ERR_UPLOAD_MAX_FILESIZE',$media['name'],$media['tmp_name']), 'warning');
 					break;
 				case 2: //uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the html form
-					$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_PRODUCT_FILES_ERR_MAX_FILE_SIZE',$media['name'],$media['tmp_name']), 'warning');
+					$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_PRODUCT_FILES_ERR_MAX_FILE_SIZE',$media['name'],$media['tmp_name']), 'warning');
 					break;
 				case 3: //uploaded file was only partially uploaded
-					$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_PRODUCT_FILES_ERR_PARTIALLY',$media['name'],$media['tmp_name']), 'warning');
+					$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_PRODUCT_FILES_ERR_PARTIALLY',$media['name'],$media['tmp_name']), 'warning');
 					break;
 				case 4: //no file was uploaded
 					//$vmLogger->warning( "You have not selected a file/image for upload." );
@@ -702,9 +702,9 @@ class VmMediaHandler {
 			}
 
 			if($res = JFile::delete( $file_path )){
-				$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_DELETE_OK',$msg_path));
+				$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_FILE_DELETE_OK',$msg_path));
 			} else {
-				$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_DELETE_ERR',$res.' '.$msg_path));
+				$app->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_FILE_DELETE_ERR',$res.' '.$msg_path));
 			}
 			return ;
 		}
@@ -1012,11 +1012,11 @@ class VmMediaHandler {
 
 			$html='';
 			$html .= '<fieldset class="checkboxes">' ;
-			$html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGES').'</legend>';
-			$html .=  '<span style="height:18px;vertical-align: middle;margin:4px" class="hasTip always-left" title="'.JText::_('COM_VIRTUEMART_SEARCH_MEDIA_TIP').'">'.JText::_('COM_VIRTUEMART_SEARCH_MEDIA') . '</span>';
+			$html .= '<legend>'.vmText::_('COM_VIRTUEMART_IMAGES').'</legend>';
+			$html .=  '<span style="height:18px;vertical-align: middle;margin:4px" class="hasTip always-left" title="'.vmText::_('COM_VIRTUEMART_SEARCH_MEDIA_TIP').'">'.vmText::_('COM_VIRTUEMART_SEARCH_MEDIA') . '</span>';
 			$html .=   '
 					<input type="text" name="searchMedia" id="searchMedia" style="height:18px;vertical-align: middle;margin:4px;width:250px" data-start="0" value="' .VmRequest::getString('searchMedia') . '" class="text_area always-left" />
-					<button class="reset-value fg-button" style="height:18px;vertical-align: middle;margin:4px">'.JText::_('COM_VIRTUEMART_RESET') .'</button>
+					<button class="reset-value fg-button" style="height:18px;vertical-align: middle;margin:4px">'.vmText::_('COM_VIRTUEMART_RESET') .'</button>
 					<a style="height:18px;vertical-align: middle;margin:4px" class="js-pages js-previous fg-button ui-state-default fg-button-icon-left ui-corner-all" ><span class="ui-icon ui-icon-circle-minus" style="display:inline-block;"></span> 16 </a>
 					<a style="height:18px;vertical-align: middle;margin:4px" class="js-pages js-next fg-button ui-state-default fg-button-icon-right ui-corner-all"> 16 <span class="ui-icon ui-icon-circle-plus" style="display:inline-block;"></span></a>';
 			$html .='<br class="clear"/>';
@@ -1046,10 +1046,10 @@ class VmMediaHandler {
 				<input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value="'.$key.'">
 			<a class="vm_thumb" rel="group1" title ="'.$image->file_title.'"href="'.JURI::root(true).'/'.$image->file_url.'" >
 			'.JHTML::image($image->file_url_thumb, $image->file_title, '').'
-			</a><div class="vmicon vmicon-16-remove" title="'.JText::_('COM_VIRTUEMART_IMAGE_REMOVE').'"></div><div class="edit-24-grey" title="'.JText::_('COM_VIRTUEMART_IMAGE_EDIT_INFO').'"></div></div>';
+			</a><div class="vmicon vmicon-16-remove" title="'.vmText::_('COM_VIRTUEMART_IMAGE_REMOVE').'"></div><div class="edit-24-grey" title="'.vmText::_('COM_VIRTUEMART_IMAGE_EDIT_INFO').'"></div></div>';
 			} else {
 				$fileTitle = empty($image->file_title)? 'no  title':$image->file_title;
-				return  '<div  class="vm_thumb_image"><b>'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b><br />'.$fileTitle.'</div>';
+				return  '<div  class="vm_thumb_image"><b>'.vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b><br />'.$fileTitle.'</div>';
 			}
 
 		}
@@ -1060,7 +1060,7 @@ class VmMediaHandler {
 			$Images = array();
 			$list = VmMediaHandler::getImagesList($types,$page,$max);
 			if (empty($list['images'])){
-				return JText::_('COM_VIRTUEMART_NO_MEDIA_FILES');
+				return vmText::_('COM_VIRTUEMART_NO_MEDIA_FILES');
 			}
 
 			foreach ($list['images'] as $key =>$image) {
@@ -1072,7 +1072,7 @@ class VmMediaHandler {
 					<span><a class="vm_thumb" rel="group1" title ="'.$image->file_title.'"href="'.JURI::root(true).'/'.$image->file_url.'" >'
 					.JHTML::image($image->file_url_thumb,$image->file_title, 'class="vm_thumb" ').'</span></a>';
 				} else {
-					$htmlImages .=  '<div class="vm_thumb_image">'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'<br />'.$image->file_title ;
+					$htmlImages .=  '<div class="vm_thumb_image">'.vmText::_('COM_VIRTUEMART_NO_IMAGE_SET').'<br />'.$image->file_title ;
 				}
 				$Images[$key ]['label'] = $htmlImages.'<input type="hidden" value="'.$image->virtuemart_media_id.'" name="virtuemart_media_id['.$image->virtuemart_media_id.']"><input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value=""><div class="vmicon vmicon-16-remove" title="remove"></div><div title="edit image information" class="edit-24-grey"></div></div>';
 				$Images[$key ]['value'] = $image->file_title.' :: '.$image->virtuemart_media_id;
@@ -1152,7 +1152,7 @@ class VmMediaHandler {
 			$this->addHiddenByType();
 
 			$html = '<fieldset class="checkboxes">' ;
-			$html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGE_INFORMATION').'</legend>';
+			$html .= '<legend>'.vmText::_('COM_VIRTUEMART_IMAGE_INFORMATION').'</legend>';
 			$html .= '<div class="vm__img_autocrop">';
 			$imageArgs = 'id="vm_display_image" ';
 			$html .=  $this->displayMediaFull($imageArgs,false,'',false).'</div>';
@@ -1172,7 +1172,7 @@ class VmMediaHandler {
 			//  The following was removed bacause the check box (publish/unpublish) was not functioning...
 			// 			$this->media_published = $this->published;
 			$html .= '<td class="labelcell">
-		<label for="published">'. JText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>
+		<label for="published">'. vmText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>
 	</td>
 	<td>';
 		if(!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
@@ -1188,7 +1188,7 @@ class VmMediaHandler {
 			$html .= '</tr>';
 
 			// 			$html .= '<tr>
-			// 	<td class="labelcell">'. JText::_('COM_VIRTUEMART_FILES_FORM_CURRENT_FILE') .'</td>
+			// 	<td class="labelcell">'. vmText::_('COM_VIRTUEMART_FILES_FORM_CURRENT_FILE') .'</td>
 			// 	<td>'.$this->file_name.'.'.$this->file_extension .'</td>
 			// </tr>';
 
@@ -1206,7 +1206,7 @@ class VmMediaHandler {
 				//vmdebug('my displayFileHandler ',$this,$file_url_thumb);
 
 				if($this->file_url_thumb == $file_url_thumb){
-					$this->file_url_thumb = JText::sprintf('COM_VIRTUEMART_DEFAULT_URL',$file_url_thumb);
+					$this->file_url_thumb = vmText::sprintf('COM_VIRTUEMART_DEFAULT_URL',$file_url_thumb);
 				}
 			}
 			$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL_THUMB','file_url_thumb',$readonly);
@@ -1214,7 +1214,7 @@ class VmMediaHandler {
 			$this->addMediaAttributesByType();
 
 			$html .= '<tr>
-					<td class="labelcell">'.JText::_('COM_VIRTUEMART_FILES_FORM_ROLE').'</td>
+					<td class="labelcell">'.vmText::_('COM_VIRTUEMART_FILES_FORM_ROLE').'</td>
 					<td><fieldset class="checkboxes">'.JHTML::_('select.radiolist', $this->getOptions($this->_mRoles), 'media_roles'.$identify, '', 'value', 'text', $this->media_role).'</fieldset></td></tr>';
 
 			// 			$html .= '<tr><td class="labelcell">'.VmHTML::checkbox('file_is_forSale', $this->file_is_forSale);
@@ -1223,15 +1223,15 @@ class VmMediaHandler {
 			if(!empty($this->file_type)){
 
 				$html .= '<tr>
-						<td class="labelcell">'.JText::_('COM_VIRTUEMART_FILES_FORM_LOCATION').'</td>
-						<td><fieldset class="checkboxes">'.JText::_('COM_VIRTUEMART_FORM_MEDIA_SET_'.strtoupper($this->file_type)).'</fieldset></td></tr>';
+						<td class="labelcell">'.vmText::_('COM_VIRTUEMART_FILES_FORM_LOCATION').'</td>
+						<td><fieldset class="checkboxes">'.vmText::_('COM_VIRTUEMART_FORM_MEDIA_SET_'.strtoupper($this->file_type)).'</fieldset></td></tr>';
 			} else {
 				$mediaattribtemp = $this->media_attributes;
 				if(empty($this->media_attributes)){
 					$mediaattribtemp = 'product';
 				}
 				$html .= '<tr>
-						<td class="labelcell">'.JText::_('COM_VIRTUEMART_FILES_FORM_LOCATION').'</td>
+						<td class="labelcell">'.vmText::_('COM_VIRTUEMART_FILES_FORM_LOCATION').'</td>
 						<td><fieldset class="checkboxes">'.JHTML::_('select.radiolist', $this->getOptions($this->_mLocation), 'media_attributes'.$identify, '', 'value', 'text', $mediaattribtemp).'</fieldset></td></tr>';
 			}
 			
@@ -1240,7 +1240,7 @@ class VmMediaHandler {
 				$selectedLangue = explode(",", $this->file_lang);
 				$languages = JLanguageHelper::createLanguageList($selectedLangue, constant('JPATH_SITE'), true);
 				$html .= '<tr>
-						<td class="labelcell"><span class="hasTip" title="' . JText::_ ('COM_VIRTUEMART_FILES_FORM_LANGUAGE_TIP') . '">' . JText::_ ('COM_VIRTUEMART_FILES_FORM_LANGUAGE') . '</span></td>
+						<td class="labelcell"><span class="hasTip" title="' . vmText::_ ('COM_VIRTUEMART_FILES_FORM_LANGUAGE_TIP') . '">' . vmText::_ ('COM_VIRTUEMART_FILES_FORM_LANGUAGE') . '</span></td>
 						<td><fieldset class="inputbox">'.JHTML::_('select.genericlist',  $languages, 'vmlangimg[]', 'size="10" multiple="multiple"', 'value', 'text', $selectedLangue ).'</fieldset></td>
 						</tr>';
 			}
@@ -1251,11 +1251,11 @@ class VmMediaHandler {
 			$this->addMediaActionByType();
 
 			$html .= '<fieldset class="checkboxes">' ;
-			$html .= '<legend>'.JText::_('COM_VIRTUEMART_FILE_UPLOAD').'</legend>';
-			$html .= JText::_('COM_VIRTUEMART_IMAGE_ACTION'). JHTML::_('select.radiolist', $this->getOptions($this->_actions), 'media_action'.$identify, '', 'value', 'text', 0).'<br /><br style="clear:both" />';
+			$html .= '<legend>'.vmText::_('COM_VIRTUEMART_FILE_UPLOAD').'</legend>';
+			$html .= vmText::_('COM_VIRTUEMART_IMAGE_ACTION'). JHTML::_('select.radiolist', $this->getOptions($this->_actions), 'media_action'.$identify, '', 'value', 'text', 0).'<br /><br style="clear:both" />';
 
 
-			$html .= JText::_('COM_VIRTUEMART_FILE_UPLOAD').' <input type="file" name="upload" id="upload" size="50" class="inputbox" /><br />';
+			$html .= vmText::_('COM_VIRTUEMART_FILE_UPLOAD').' <input type="file" name="upload" id="upload" size="50" class="inputbox" /><br />';
 
 			$html .= '<br />'.$this->displaySupportedImageTypes();
 			$html .='<br /></fieldset>';
@@ -1277,7 +1277,7 @@ class VmMediaHandler {
 
 			$options=array();
 			foreach($optionsarray as $optionName=>$langkey){
-				$options[] = JHTML::_('select.option',  $optionName, JText::_( $langkey ) );
+				$options[] = JHTML::_('select.option',  $optionName, vmText::_( $langkey ) );
 			}
 			return $options;
 		}
@@ -1291,7 +1291,7 @@ class VmMediaHandler {
 		 */
 		private function displayRow($descr, $name,$readonly=''){
 			$html = '<tr>
-		<td class="labelcell">'.JText::_($descr).'</td>
+		<td class="labelcell">'.vmText::_($descr).'</td>
 		<td> <input type="text" '.$readonly.'class="inputbox" name="'.$name.'" size="70" value="'.$this->$name.'" /></td>
 	</tr>';
 			return $html;

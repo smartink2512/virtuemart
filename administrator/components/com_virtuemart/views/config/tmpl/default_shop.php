@@ -19,14 +19,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');?>
 <fieldset>
-	<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_SETTINGS'); ?></legend>
+	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_SETTINGS'); ?></legend>
 	<table class="admintable">
 		<?php
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE','shop_is_offline',VmConfig::get('shop_is_offline',0));
 		?>
 		<tr>
 			<td class="key">
-				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE_MSG'); ?>
+				<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE_MSG'); ?>
 			</td>
 			<td>
 				<textarea rows="6" cols="50" name="offline_message"
@@ -38,8 +38,8 @@ defined('_JEXEC') or die('Restricted access');?>
 		?>
 		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_CURRENCY_MODULE_TIP'); ?>">
-            		<?php echo JText::_('COM_VIRTUEMART_CFG_CURRENCY_MODULE'); ?>
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_CFG_CURRENCY_MODULE_TIP'); ?>">
+            		<?php echo vmText::_('COM_VIRTUEMART_CFG_CURRENCY_MODULE'); ?>
             	</span>
 			</td>
 			<td>
@@ -60,19 +60,19 @@ defined('_JEXEC') or die('Restricted access');?>
 </fieldset>
 
 <fieldset>
-	<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_LANGUAGES'); ?></legend>
+	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_LANGUAGES'); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td class="key">
-					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MULTILANGUE_EXPLAIN'); ?>">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MULTILANGUE'); ?>
+					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MULTILANGUE_EXPLAIN'); ?>">
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MULTILANGUE'); ?>
 					</span>
 			</td>
 			<td>
 				<?php echo $this->activeLanguages; ?>
 			</td>
 			<td>
-				<?php echo JText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','<a href="http://virtuemart.net/community/translations" target="_blank" >Translations</a>'); ?>
+				<?php echo vmText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','<a href="http://virtuemart.net/community/translations" target="_blank" >Translations</a>'); ?>
 			</td>
 		</tr>
 		<?php
@@ -83,12 +83,12 @@ defined('_JEXEC') or die('Restricted access');?>
 </fieldset>
 
 <fieldset>
-	<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_EMAILS'); ?></legend>
+	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_EMAILS'); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td class="key">
-					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_EXPLAIN'); ?>">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT'); ?>
+					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_EXPLAIN'); ?>">
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT'); ?>
 					</span>
 			</td>
 			<td>
@@ -96,12 +96,12 @@ defined('_JEXEC') or die('Restricted access');?>
 					<option value="0" <?php if (VmConfig::get('order_mail_html') == '0') {
 						echo 'selected="selected"';
 					} ?>>
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_TEXT'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_TEXT'); ?>
 					</option>
 					<option value="1" <?php if (VmConfig::get('order_mail_html') == '1') {
 						echo 'selected="selected"';
 					} ?>>
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_HTML'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_HTML'); ?>
 					</option>
 				</select>
 			</td>
@@ -113,8 +113,8 @@ defined('_JEXEC') or die('Restricted access');?>
 		<?php /*?>		<!-- NOT YET -->
 	    <!--tr>
 		    <td class="key">
-			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_RECIPIENT_EXPLAIN'); ?>">
-			<label for="mail_from_recipient"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_RECIPIENT') ?></span>
+			<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_RECIPIENT_EXPLAIN'); ?>">
+			<label for="mail_from_recipient"><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_RECIPIENT') ?></span>
 			    </span>
 		    </td>
 		    <td>
@@ -123,8 +123,8 @@ defined('_JEXEC') or die('Restricted access');?>
 	    </tr>
 	    <tr>
 		    <td class="key">
-			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_SETSENDER_EXPLAIN'); ?>">
-			<label for="mail_from_setsender"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_SETSENDER') ?></span>
+			<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_SETSENDER_EXPLAIN'); ?>">
+			<label for="mail_from_setsender"><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FROM_SETSENDER') ?></span>
 			    </span>
 		    </td>
 		    <td>
@@ -136,20 +136,20 @@ defined('_JEXEC') or die('Restricted access');?>
 </fieldset>
 
 <fieldset>
-	<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_ADVANCED'); ?></legend>
+	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_ADVANCED'); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td class="key">
-					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_EXPLAIN'); ?>">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG'); ?>
+					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_EXPLAIN'); ?>">
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG'); ?>
 					</span>
 			</td>
 			<td>
 				<?php
 				$options = array(
-					'none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_NONE'),
-					'admin' => JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ADMIN'),
-					'all' => JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
+					'none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_NONE'),
+					'admin' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ADMIN'),
+					'all' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
 				);
 				echo VmHTML::radioList('debug_enable', VmConfig::get('debug_enable', 'none'), $options);
 				?>
@@ -161,16 +161,16 @@ defined('_JEXEC') or die('Restricted access');?>
 
 		<tr>
 			<td class="key">
-					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_EXPLAIN'); ?>">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX'); ?>
+					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_EXPLAIN'); ?>">
+						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX'); ?>
 					</span>
 			</td>
 			<td>
 				<?php
 				$options = array(
-					'none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_NONE'),
-					'admin' => JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_ADMIN')
-					// 				'all'	=> JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
+					'none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_NONE'),
+					'admin' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_ADMIN')
+					// 				'all'	=> vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
 				);
 				echo VmHTML::radioList('multix', VmConfig::get('multix', 'none'), $options);
 				?>

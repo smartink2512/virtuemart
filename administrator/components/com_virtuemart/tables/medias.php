@@ -92,24 +92,24 @@ class TableMedias extends VmTable {
 
 		if (empty($this->file_type) and empty($this->file_is_forSale)) {
 			$ok = FALSE;
-			vmError (JText::sprintf ('COM_VIRTUEMART_MEDIA_NO_TYPE'), $this->file_name);
+			vmError (vmText::sprintf ('COM_VIRTUEMART_MEDIA_NO_TYPE'), $this->file_name);
 		}
 
 		if (!empty($this->file_url)) {
 			if (function_exists ('mb_strlen')) {
 				if (mb_strlen ($this->file_url) > 254) {
-					vmError (JText::sprintf ('COM_VIRTUEMART_URL_TOO_LONG', mb_strlen ($this->file_url)));
+					vmError (vmText::sprintf ('COM_VIRTUEMART_URL_TOO_LONG', mb_strlen ($this->file_url)));
 				}
 			}
 			else {
 				if (strlen ($this->file_url) > 254) {
-					vmError (JText::sprintf ('COM_VIRTUEMART_URL_TOO_LONG', strlen ($this->file_url)));
+					vmError (vmText::sprintf ('COM_VIRTUEMART_URL_TOO_LONG', strlen ($this->file_url)));
 				}
 			}
 
 			if (strpos ($this->file_url, '..') !== FALSE) {
 				$ok = FALSE;
-				vmError (JText::sprintf ('COM_VIRTUEMART_URL_NOT_VALID', $this->file_url));
+				vmError (vmText::sprintf ('COM_VIRTUEMART_URL_NOT_VALID', $this->file_url));
 			}
 
 			if (empty($this->virtuemart_media_id)) {
@@ -125,13 +125,13 @@ class TableMedias extends VmTable {
 							$this->virtuemart_media_id = $unique_id[0]['virtuemart_media_id'];
 						}
 						else {
-							vmError (JText::_ ('COM_VIRTUEMART_MEDIA_IS_ALREADY_IN_DB'));
+							vmError (vmText::_ ('COM_VIRTUEMART_MEDIA_IS_ALREADY_IN_DB'));
 							$ok = FALSE;
 						}
 					}
 					else {
-						//      			vmError(JText::_('COM_VIRTUEMART_MEDIA_IS_DOUBLED_IN_DB'));
-						vmError (JText::_ ('COM_VIRTUEMART_MEDIA_IS_DOUBLED_IN_DB'));
+						//      			vmError(vmText::_('COM_VIRTUEMART_MEDIA_IS_DOUBLED_IN_DB'));
+						vmError (vmText::_ ('COM_VIRTUEMART_MEDIA_IS_DOUBLED_IN_DB'));
 						$ok = FALSE;
 					}
 				}
@@ -139,7 +139,7 @@ class TableMedias extends VmTable {
 
 		}
 		else {
-			vmError (JText::_ ('COM_VIRTUEMART_MEDIA_MUST_HAVE_URL'));
+			vmError (vmText::_ ('COM_VIRTUEMART_MEDIA_MUST_HAVE_URL'));
 			$ok = FALSE;
 		}
 
@@ -149,7 +149,7 @@ class TableMedias extends VmTable {
 
 		if (!empty($this->file_title)) {
 			if (strlen ($this->file_title) > 126) {
-				vmError (JText::sprintf ('COM_VIRTUEMART_TITLE_TOO_LONG', strlen ($this->file_title)));
+				vmError (vmText::sprintf ('COM_VIRTUEMART_TITLE_TOO_LONG', strlen ($this->file_title)));
 			}
 
 			$q = 'SELECT * FROM `' . $this->_tbl . '` ';
@@ -175,13 +175,13 @@ class TableMedias extends VmTable {
 			}
 		}
 		else {
-			vmError (JText::_ ('COM_VIRTUEMART_MEDIA_MUST_HAVE_TITLE'));
+			vmError (vmText::_ ('COM_VIRTUEMART_MEDIA_MUST_HAVE_TITLE'));
 			$ok = FALSE;
 		}
 
 		if (!empty($this->file_description)) {
 			if (strlen ($this->file_description) > 254) {
-				vmError (JText::sprintf ('COM_VIRTUEMART_DESCRIPTION_TOO_LONG', strlen ($this->file_description)));
+				vmError (vmText::sprintf ('COM_VIRTUEMART_DESCRIPTION_TOO_LONG', strlen ($this->file_description)));
 			}
 		}
 
@@ -251,7 +251,7 @@ class TableMedias extends VmTable {
 				}
 
 				if (empty($name)) {
-					vmError (JText::_ ('COM_VIRTUEMART_NO_MEDIA'));
+					vmError (vmText::_ ('COM_VIRTUEMART_NO_MEDIA'));
 				}
 
 				//images
@@ -265,7 +265,7 @@ class TableMedias extends VmTable {
 					$this->file_mimetype = 'image/png';
 				}
 				elseif($file_extension === 'bmp'){
-					vmInfo(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_NOT_BMP',$name));
+					vmInfo(vmText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_NOT_BMP',$name));
 					$notice = true;
 				}
 
@@ -365,7 +365,7 @@ class TableMedias extends VmTable {
 				}
 
 				else {
-					vmInfo (JText::sprintf ('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE', $name));
+					vmInfo (vmText::sprintf ('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE', $name));
 					$notice = TRUE;
 				}
 			//}
@@ -375,7 +375,7 @@ class TableMedias extends VmTable {
 		//letter should be always / or something like this
 		//It prevents storing of the default path
 		$a = trim(substr($this->file_url_thumb,0,4));
-		$b = trim(substr(JText::_('COM_VIRTUEMART_DEFAULT_URL'),0,4));
+		$b = trim(substr(vmText::_('COM_VIRTUEMART_DEFAULT_URL'),0,4));
 
 		if( strpos($a,$b)!==FALSE ){
 			$this->file_url_thumb = null;

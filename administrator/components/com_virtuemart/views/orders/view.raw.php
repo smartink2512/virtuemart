@@ -85,7 +85,7 @@ class VirtuemartViewOrders extends VmView {
 		$_orderStats = $this->get('OrderStatusList');
 		$_orderStatusList = array();
 		foreach ($_orderStats as $orderState) {
-				$_orderStatusList[$orderState->order_status_code] = JText::_($orderState->order_status_name);
+				$_orderStatusList[$orderState->order_status_code] = vmText::_($orderState->order_status_name);
 		}
 
 		/*foreach($order['items'] as $_item) {

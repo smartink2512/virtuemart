@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');?>
 <tr>
 <td valign="top" width="50%">
 <fieldset>
-<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MORE_CORE_SETTINGS'); ?></legend>
+<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_MORE_CORE_SETTINGS'); ?></legend>
 <table class="admintable">
 	<?php echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_SHOW_PRINTICON','show_printicon',VmConfig::get('show_printicon',1));
 	echo VmHTML::row('checkbox','COM_VIRTUEMART_PDF_ICON_SHOW','pdf_icon',VmConfig::get('pdf_icon',0));
@@ -32,9 +32,9 @@ defined('_JEXEC') or die('Restricted access');?>
 	?>
 	<tr>
 		<td class="key">
-		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MIN_LENGTH_EXPLAIN'); ?>">
+		<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ASK_QUESTION_MIN_LENGTH_EXPLAIN'); ?>">
 									<label for="ask_question">
-										<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MIN_LENGTH'); ?>
+										<?php echo vmText::_('COM_VIRTUEMART_ASK_QUESTION_MIN_LENGTH'); ?>
 									</label>
 	</span>
 		</td>
@@ -44,9 +44,9 @@ defined('_JEXEC') or die('Restricted access');?>
 	</tr>
 	<tr>
 		<td class="key">
-		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MAX_LENGTH_EXPLAIN'); ?>">
+		<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ASK_QUESTION_MAX_LENGTH_EXPLAIN'); ?>">
 									<label for="ask_question">
-										<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_MAX_LENGTH'); ?>
+										<?php echo vmText::_('COM_VIRTUEMART_ASK_QUESTION_MAX_LENGTH'); ?>
 									</label>
 								</span>
 		</td>
@@ -63,9 +63,9 @@ defined('_JEXEC') or die('Restricted access');?>
 
 <tr>
 	<td class="key">
-<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_EXPIRE_EXPLAIN'); ?>">
+<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_COUPONS_EXPIRE_EXPLAIN'); ?>">
 	<label for="coupons_default_expire">
-		<?php echo JText::_('COM_VIRTUEMART_COUPONS_EXPIRE'); ?>
+		<?php echo vmText::_('COM_VIRTUEMART_COUPONS_EXPIRE'); ?>
 	</label>
 </span>
 	</td>
@@ -73,13 +73,13 @@ defined('_JEXEC') or die('Restricted access');?>
 		<?php
 		// TODO This must go to the view.html.php.... but then... that goes for most of the config sruff I'ld say :-S
 		$_defaultExpTime = array(
-			'1,D' => '1 ' . JText::_('COM_VIRTUEMART_DAY')
-		, '1,W' => '1 ' . JText::_('COM_VIRTUEMART_WEEK')
-		, '2,W' => '2 ' . JText::_('COM_VIRTUEMART_WEEK_S')
-		, '1,M' => '1 ' . JText::_('COM_VIRTUEMART_MONTH')
-		, '3,M' => '3 ' . JText::_('COM_VIRTUEMART_MONTH_S')
-		, '6,M' => '6 ' . JText::_('COM_VIRTUEMART_MONTH_S')
-		, '1,Y' => '1 ' . JText::_('COM_VIRTUEMART_YEAR')
+			'1,D' => '1 ' . vmText::_('COM_VIRTUEMART_DAY')
+		, '1,W' => '1 ' . vmText::_('COM_VIRTUEMART_WEEK')
+		, '2,W' => '2 ' . vmText::_('COM_VIRTUEMART_WEEK_S')
+		, '1,M' => '1 ' . vmText::_('COM_VIRTUEMART_MONTH')
+		, '3,M' => '3 ' . vmText::_('COM_VIRTUEMART_MONTH_S')
+		, '6,M' => '6 ' . vmText::_('COM_VIRTUEMART_MONTH_S')
+		, '1,Y' => '1 ' . vmText::_('COM_VIRTUEMART_YEAR')
 		);
 		echo VmHTML::selectList('coupons_default_expire', VmConfig::get('coupons_default_expire'), $_defaultExpTime);
 		?>
@@ -87,9 +87,9 @@ defined('_JEXEC') or die('Restricted access');?>
 </tr>
 <tr>
 	<td class="key">
-<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_WEIGHT_UNIT_DEFAULT_EXPLAIN'); ?>">
+<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_WEIGHT_UNIT_DEFAULT_EXPLAIN'); ?>">
 	<label for="weight_unit_default">
-		<?php echo JText::_('COM_VIRTUEMART_WEIGHT_UNIT_DEFAULT'); ?>
+		<?php echo vmText::_('COM_VIRTUEMART_WEIGHT_UNIT_DEFAULT'); ?>
 	</label>
 </span>
 	</td>
@@ -99,9 +99,9 @@ defined('_JEXEC') or die('Restricted access');?>
 </tr>
 <tr>
 	<td class="key">
-<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_LWH_UNIT_DEFAULT_EXPLAIN'); ?>">
+<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_LWH_UNIT_DEFAULT_EXPLAIN'); ?>">
 	<label for="weight_unit_default">
-		<?php echo JText::_('COM_VIRTUEMART_LWH_UNIT_DEFAULT'); ?>
+		<?php echo vmText::_('COM_VIRTUEMART_LWH_UNIT_DEFAULT'); ?>
 	</label>
 </span>
 	</td>
@@ -111,9 +111,9 @@ defined('_JEXEC') or die('Restricted access');?>
 </tr>
 <tr>
 	<td class="key">
-<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_LATEST_PRODUCTS_DAYS_EXPLAIN'); ?>">
+<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_LATEST_PRODUCTS_DAYS_EXPLAIN'); ?>">
 	<label for="latest_products_weeks">
-		<?php echo JText::_('COM_VIRTUEMART_LATEST_PRODUCTS_DAYS'); ?>
+		<?php echo vmText::_('COM_VIRTUEMART_LATEST_PRODUCTS_DAYS'); ?>
 	</label>
 </span>
 	</td>
@@ -123,17 +123,17 @@ defined('_JEXEC') or die('Restricted access');?>
 </tr>
 <tr>
 	<td class="key">
-<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY_EXPLAIN'); ?>">
+<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY_EXPLAIN'); ?>">
 	<label for="latest_products_orderBy">
-		<?php echo JText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY'); ?>
+		<?php echo vmText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY'); ?>
 	</label>
 </span>
 	</td>
 	<td>
 		<?php
 		$latest_products_orderBy = array(
-			'modified_on' => JText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY_MODIFIED'),
-			'created_on' => JText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY_CREATED')
+			'modified_on' => vmText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY_MODIFIED'),
+			'created_on' => vmText::_('COM_VIRTUEMART_LATEST_PRODUCTS_ORDERBY_CREATED')
 		);
 		echo VmHTML::selectList('latest_products_orderBy', VmConfig::get('latest_products_orderBy', 'created_on'), $latest_products_orderBy);
 		?>
@@ -145,53 +145,53 @@ defined('_JEXEC') or die('Restricted access');?>
 <td>
 	<fieldset class="checkboxes">
 		<legend>
-			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_POOS_ENABLE_EXPLAIN'); ?>">
-				<?php echo JText::_('COM_VIRTUEMART_CFG_POOS_ENABLE'); ?>
+			<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_CFG_POOS_ENABLE_EXPLAIN'); ?>">
+				<?php echo vmText::_('COM_VIRTUEMART_CFG_POOS_ENABLE'); ?>
 			</span>
 		</legend>
 		<div>
 			<?php echo VmHTML::checkbox('lstockmail', VmConfig::get('lstockmail')); ?>
-			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_LOWSTOCK_NOTIFY_TIP'); ?>">
+			<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_CFG_LOWSTOCK_NOTIFY_TIP'); ?>">
 				<label for="reviews_autopublish">
-					<?php echo JText::_('COM_VIRTUEMART_CFG_LOWSTOCK_NOTIFY'); ?>
+					<?php echo vmText::_('COM_VIRTUEMART_CFG_LOWSTOCK_NOTIFY'); ?>
 				</label>
 			</span>
 		</div>
 		<?php
 		$options = array(
-			'none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_NONE'),
-			'disableit' => JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_IT'),
-			'disableit_children' => JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_IT_CHILDREN'),
-			'disableadd' => JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_ADD'),
-			'risetime' => JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_RISE_AVATIME')
+			'none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_NONE'),
+			'disableit' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_IT'),
+			'disableit_children' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_IT_CHILDREN'),
+			'disableadd' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_ADD'),
+			'risetime' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_RISE_AVATIME')
 		);
 		echo VmHTML::radioList('stockhandle', VmConfig::get('stockhandle', 'none'), $options);
 		?>
 		<div style="font-weight:bold;">
-					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_AVAILABILITY_EXPLAIN'); ?>">
-						<?php echo JText::_('COM_VIRTUEMART_AVAILABILITY'); ?>
+					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_AVAILABILITY_EXPLAIN'); ?>">
+						<?php echo vmText::_('COM_VIRTUEMART_AVAILABILITY'); ?>
 					</span>
 		</div>
 		<input type="text" class="inputbox" id="product_availability" name="rised_availability" value="<?php echo VmConfig::get('rised_availability'); ?>"/>
-		<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>' . JText::_('COM_VIRTUEMART_AVAILABILITY') . '</b><br/ >' . JText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP1') ?>"></span>
+		<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>' . vmText::_('COM_VIRTUEMART_AVAILABILITY') . '</b><br/ >' . vmText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP1') ?>"></span>
 
 		<div class="clr"></div>
 		<?php echo JHTML::_('list.images', 'image', VmConfig::get('rised_availability'), " ", $this->imagePath); ?>
-		<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>' . JText::_('COM_VIRTUEMART_AVAILABILITY') . '</b><br/ >' . JText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP2', $this->imagePath) ?>"></span>
+		<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>' . vmText::_('COM_VIRTUEMART_AVAILABILITY') . '</b><br/ >' . vmText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP2', $this->imagePath) ?>"></span>
 
 		<div class="clr"></div>
-		<img border="0" id="imagelib" alt="<?php echo JText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php if (VmConfig::get('rised_availability')) {
+		<img border="0" id="imagelib" alt="<?php echo vmText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php if (VmConfig::get('rised_availability')) {
 			echo JURI::root(true) . $this->imagePath . VmConfig::get('rised_availability');
 		}?>"/>
 	</fieldset>
 	<fieldset>
-		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_TITLE'); ?></legend>
+		<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_TITLE'); ?></legend>
 		<table class="admintable">
 			<tr>
 				<td class="key">
-					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH_TIP'); ?>">
+					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH_TIP'); ?>">
 						<label for="reviews_autopublish">
-							<?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH'); ?>
+							<?php echo vmText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH'); ?>
 						</label>
 					</span>
 				</td>
@@ -201,9 +201,9 @@ defined('_JEXEC') or die('Restricted access');?>
 			</tr>
 			<tr>
 				<td class="key">
-					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP'); ?>">
+					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP'); ?>">
 						<label for="reviews_minimum_comment_length">
-							<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH'); ?>
+							<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH'); ?>
 						</label>
 					</span>
 				</td>
@@ -213,9 +213,9 @@ defined('_JEXEC') or die('Restricted access');?>
 			</tr>
 			<tr>
 				<td class="key">
-					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP'); ?>">
+					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP'); ?>">
 						<label>
-							<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH'); ?>
+							<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH'); ?>
 						</label>
 					</span>
 				</td>
@@ -225,18 +225,18 @@ defined('_JEXEC') or die('Restricted access');?>
 			</tr>
 			<tr>
 				<td class="key">
-					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_EXPLAIN'); ?>">
+					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_EXPLAIN'); ?>">
 						<label>
-							<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW'); ?>
+							<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW'); ?>
 						</label>
 					</span>
 				</td>
 				<td>
 					<fieldset class="checkboxes">
 						<?php
-						$showReviewFor = array('none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_NONE'),
-							'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_REGISTERED'),
-							'all' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_ALL')
+						$showReviewFor = array('none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_NONE'),
+							'registered' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_REGISTERED'),
+							'all' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_ALL')
 						); //showReviewFor
 						echo VmHTML::radioList('showReviewFor', VmConfig::get('showReviewFor', 2), $showReviewFor); ?>
 
@@ -245,19 +245,19 @@ defined('_JEXEC') or die('Restricted access');?>
 			</tr>
 			<tr>
 				<td class="key">
-					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
+					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
 						<label>
-							<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW'); ?>
+							<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW'); ?>
 						</label>
 					</span>
 				</td>
 				<td>
 					<fieldset class="checkboxes">
 						<?php
-						$showReviewFor = array('none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_NONE'),
-							'bought' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_BOUGHT_PRODUCT'),
-							'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_REGISTERED')
-							//	3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_ALL')
+						$showReviewFor = array('none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_NONE'),
+							'bought' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_BOUGHT_PRODUCT'),
+							'registered' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_REGISTERED')
+							//	3 => vmText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_ALL')
 						);
 						echo VmHTML::radioList('reviewMode', VmConfig::get('reviewMode', 2), $showReviewFor); ?>
 					</fieldset>
@@ -265,18 +265,18 @@ defined('_JEXEC') or die('Restricted access');?>
 			</tr>
 			<tr>
 				<td class="key">
-					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_EXPLAIN'); ?>">
+					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_EXPLAIN'); ?>">
 						<label>
-							<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW'); ?>
+							<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW'); ?>
 						</label>
 					</span>
 				</td>
 				<td>
 					<fieldset class="checkboxes">
 						<?php
-						$showReviewFor = array('none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_NONE'),
-							'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_REGISTERED'),
-							'all' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_ALL')
+						$showReviewFor = array('none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_NONE'),
+							'registered' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_REGISTERED'),
+							'all' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_ALL')
 						);
 						echo VmHTML::radioList('showRatingFor', VmConfig::get('showRatingFor', 2), $showReviewFor); ?>
 					</fieldset>
@@ -284,19 +284,19 @@ defined('_JEXEC') or die('Restricted access');?>
 			</tr>
 			<tr>
 				<td class="key">
-					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_EXPLAIN'); ?>">
+					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_EXPLAIN'); ?>">
 						<label>
-							<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING'); ?>
+							<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_RATING'); ?>
 						</label>
 					</span>
 				</td>
 				<td>
 					<fieldset class="checkboxes">
 						<?php
-						$showReviewFor = array('none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_NONE'),
-							'bought' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_BOUGHT_PRODUCT'),
-							'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_REGISTERED')
-							//	3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_ALL')	//TODO write system for all users (cookies)
+						$showReviewFor = array('none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_NONE'),
+							'bought' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_BOUGHT_PRODUCT'),
+							'registered' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_REGISTERED')
+							//	3 => vmText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_ALL')	//TODO write system for all users (cookies)
 						);
 						echo VmHTML::radioList('ratingMode', VmConfig::get('ratingMode', 2), $showReviewFor); ?>
 					</fieldset>

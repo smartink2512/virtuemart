@@ -61,7 +61,7 @@ if (!class_exists ('VmModel')) {
 }
 
 /**
- * This function shows an info message, the messages gets translated with JText::,
+ * This function shows an info message, the messages gets translated with vmText::,
  * you can overload the function, so that automatically sprintf is taken, when needed.
  * So this works vmInfo('COM_VIRTUEMART_MEDIA_NO_PATH_TYPE',$type,$link )
  * and also vmInfo('COM_VIRTUEMART_MEDIA_NO_PATH_TYPE');
@@ -87,9 +87,9 @@ function vmInfo($publicdescr,$value=NULL){
 				$msg = call_user_func_array('sprintf', $args);
 			}
 		}	else {
-			// 		$app ->enqueueMessage('Info: '.JText::_($publicdescr));
+			// 		$app ->enqueueMessage('Info: '.vmText::_($publicdescr));
 			//$publicdescr = $lang->_($publicdescr);
-			$msg = JText::_($publicdescr);
+			$msg = vmText::_($publicdescr);
 			// 		debug_print_backtrace();
 		}
 	}
@@ -136,9 +136,9 @@ function vmAdminInfo($publicdescr,$value=NULL){
 				}
 			}	else {
 				VmConfig::$maxMessageCount++;
-				// 		$app ->enqueueMessage('Info: '.JText::_($publicdescr));
+				// 		$app ->enqueueMessage('Info: '.vmText::_($publicdescr));
 				$publicdescr = $lang->_($publicdescr);
-				$app ->enqueueMessage('Info: '.JText::_($publicdescr),'info');
+				$app ->enqueueMessage('Info: '.vmText::_($publicdescr),'info');
 				// 		debug_print_backtrace();
 			}
 		}
@@ -169,7 +169,7 @@ function vmWarn($publicdescr,$value=NULL){
 
 			}
 		}	else {
-			// 		$app ->enqueueMessage('Info: '.JText::_($publicdescr));
+			// 		$app ->enqueueMessage('Info: '.vmText::_($publicdescr));
 			$msg = $lang->_($publicdescr);
 			//$app ->enqueueMessage('Info: '.$publicdescr,'warning');
 			// 		debug_print_backtrace();
@@ -358,10 +358,7 @@ function vmTime($descr,$name='current'){
 		}
 		}
 
-		if(ini_get('precision')<20){
-			ini_set('precision', 20);	//We need at least 20 for correct precision if json is using a bigInt ids
-			//But 17 has the best precision, using higher precision adds fantasy numbers to the end
-		}
+
 	}
 
 /**
@@ -390,14 +387,22 @@ function logInfo ($text, $type = 'message') {
 		$head = "#\n";
 		$head .= "#<?php die('Forbidden.'); ?>\n";
 	}
-	$fp = fopen ($file, 'a');
-	if ($head) {
-		fwrite ($fp,  $head);
-	}
+	if (JFile::exists($file)) {
+		$fp = fopen ($file, 'a');
+		if ($fp) {
+			if ($head) {
+				fwrite ($fp,  $head);
+			}
 
-	fwrite ($fp, "\n" . $date->toFormat ('%Y-%m-%d %H:%M:%S'));
-	fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
-	fclose ($fp);
+			fwrite ($fp, "\n" . $date->toFormat ('%Y-%m-%d %H:%M:%S'));
+			fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
+			fclose ($fp);
+		}
+	} else {
+		$msg = 'Could not use path '.$file.' to store log';
+		$app = JFactory::getApplication();
+		$app ->enqueueMessage($msg,'error');
+	}
 
 }
 
@@ -423,9 +428,9 @@ class vmText
 	 * Translates a string into the current language.
 	 *
 	 * Examples:
-	 * <script>alert(Joomla.JText._('<?php echo JText::_("JDEFAULT", array("script"=>true));?>'));</script>
+	 * <script>alert(Joomla.vmText._('<?php echo vmText::_("JDEFAULT", array("script"=>true));?>'));</script>
 	 * will generate an alert message containing 'Default'
-	 * <?php echo JText::_("JDEFAULT");?> it will generate a 'Default' string
+	 * <?php echo vmText::_("JDEFAULT");?> it will generate a 'Default' string
 	 *
 	 * @param   string   $string                The string to translate.
 	 * @param   mixed    $jsSafe                Boolean: Make the result javascript safe.
@@ -1036,8 +1041,8 @@ class VmConfig {
 
 		$_db->setQuery($qry);
 		if (!$_db->execute()) {
-			JError::raiseWarning(1, 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE));
-			echo 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE);
+			JError::raiseWarning(1, 'VmConfig::installVMConfig: '.vmText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE));
+			echo 'VmConfig::installVMConfig: '.vmText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE);
 			die;
 		}else {
 			//vmdebug('Config installed file, store values '.$_value);
@@ -1551,8 +1556,8 @@ class vmJsApi{
 				vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
 				vmJsApi::css('jquery.fancybox-1.3.4');
 			} else {//This is just there for the backward compatibility
-				$jsVars .= "vmCartText = '". addslashes( JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED') )."' ;\n" ;
-				$jsVars .= "vmCartError = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
+				$jsVars .= "vmCartText = '". addslashes( vmText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED') )."' ;\n" ;
+				$jsVars .= "vmCartError = '". addslashes( vmText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
 				$jsVars .= "loadingImage = '".JURI::root(TRUE) ."/components/com_virtuemart/assets/images/facebox/loading.gif' ;\n" ;
 				$jsVars .= "closeImage = '".$closeimage."' ; \n";
 				//This is necessary though and should not be removed without rethinking the whole construction
@@ -1615,7 +1620,7 @@ class vmJsApi{
 
 				$document = JFactory::getDocument();
 				$selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL';
-				$vm2string = "editImage: 'edit image',select_all_text: '".JText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".JText::_($selectText)."'" ;
+				$vm2string = "editImage: 'edit image',select_all_text: '".vmText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".vmText::_($selectText)."'" ;
 				$document->addScriptDeclaration ( '
 //<![CDATA[
 		var vm2string ={'.$vm2string.'} ;
@@ -1683,12 +1688,12 @@ class vmJsApi{
 		$js = "
 //<![CDATA[
 		var ccErrors = new Array ()
-		ccErrors [0] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_UNKNOWN_TYPE') ). "';
-		ccErrors [1] =  '" . addslashes( JText::_("COM_VIRTUEMART_CREDIT_CARD_NO_NUMBER") ). "';
-		ccErrors [2] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_FORMAT')) . "';
-		ccErrors [3] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_NUMBER')) . "';
-		ccErrors [4] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_WRONG_DIGIT')) . "';
-		ccErrors [5] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_EXPIRE_DATE')) . "';
+		ccErrors [0] =  '" . addslashes( vmText::_('COM_VIRTUEMART_CREDIT_CARD_UNKNOWN_TYPE') ). "';
+		ccErrors [1] =  '" . addslashes( vmText::_("COM_VIRTUEMART_CREDIT_CARD_NO_NUMBER") ). "';
+		ccErrors [2] =  '" . addslashes( vmText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_FORMAT')) . "';
+		ccErrors [3] =  '" . addslashes( vmText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_NUMBER')) . "';
+		ccErrors [4] =  '" . addslashes( vmText::_('COM_VIRTUEMART_CREDIT_CARD_WRONG_DIGIT')) . "';
+		ccErrors [5] =  '" . addslashes( vmText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_EXPIRE_DATE')) . "';
 //]]>
 		";
 
@@ -1740,7 +1745,7 @@ class vmJsApi{
 		}
 		static $jDate;
 
-		$dateFormat = JText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_J16');//="m/d/y"
+		$dateFormat = vmText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_J16');//="m/d/y"
 		$search  = array('m', 'd', 'Y');
 		$replace = array('mm', 'dd', 'yy');
 		$jsDateFormat = str_replace($search, $replace, $dateFormat);
@@ -1754,7 +1759,7 @@ class vmJsApi{
 			$formatedDate = JHTML::_('date', $date, $dateFormat );
 		}
 		else {
-			$formatedDate = JText::_('COM_VIRTUEMART_NEVER');
+			$formatedDate = vmText::_('COM_VIRTUEMART_NEVER');
 		}
 		$display  = '<input class="datepicker-db" id="'.$id.'" type="hidden" name="'.$name.'" value="'.$date.'" />';
 		$display .= '<input id="'.$id.'_text" class="datepicker" type="text" value="'.$formatedDate.'" />';
@@ -1783,7 +1788,7 @@ class vmJsApi{
 				});
 			});
 			$(".js-date-reset").click(function() {
-				$(this).prev("input").val("'.JText::_('COM_VIRTUEMART_NEVER').'").prev("input").val("0");
+				$(this).prev("input").val("'.vmText::_('COM_VIRTUEMART_NEVER').'").prev("input").val("0");
 			});
 		});
 //]]>
@@ -1818,10 +1823,10 @@ class vmJsApi{
 	static function date($date , $format ='LC2', $joomla=FALSE ,$revert=FALSE ){
 
 		if (!strcmp ($date, '0000-00-00 00:00:00')) {
-			return JText::_ ('COM_VIRTUEMART_NEVER');
+			return vmText::_ ('COM_VIRTUEMART_NEVER');
 		}
 		If ($joomla) {
-			$formatedDate = JHTML::_('date', $date, JText::_('DATE_FORMAT_'.$format));
+			$formatedDate = JHTML::_('date', $date, vmText::_('DATE_FORMAT_'.$format));
 		} else {
 			if (!JVM_VERSION === 1) {
 				$J16 = "_J16";
@@ -1829,7 +1834,7 @@ class vmJsApi{
 			else {
 				$J16 = "";
 			}
-			$formatedDate = JHTML::_('date', $date, JText::_('COM_VIRTUEMART_DATE_FORMAT_'.$format.$J16));
+			$formatedDate = JHTML::_('date', $date, vmText::_('COM_VIRTUEMART_DATE_FORMAT_'.$format.$J16));
 		}
 		return $formatedDate;
 	}

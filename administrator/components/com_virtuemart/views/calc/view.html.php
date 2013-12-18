@@ -119,8 +119,8 @@ class VirtuemartViewCalc extends VmView {
 
         } else {
 			if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){
-				JToolBarHelper::custom('toggle.shared.1', 'publish', 'yes', JText::_('COM_VIRTUEMART_SHARED_TOGGLE_ON'), true);
-				JToolBarHelper::custom('toggle.shared.0', 'unpublish', 'no', JText::_('COM_VIRTUEMART_SHARED_TOGGLE_OFF'), true);
+				JToolBarHelper::custom('toggle.shared.1', 'publish', 'yes', vmText::_('COM_VIRTUEMART_SHARED_TOGGLE_ON'), true);
+				JToolBarHelper::custom('toggle.shared.0', 'unpublish', 'no', vmText::_('COM_VIRTUEMART_SHARED_TOGGLE_OFF'), true);
 			}
 
 			$this->addStandardDefaultViewCommands();
@@ -155,14 +155,14 @@ class VirtuemartViewCalc extends VmView {
 
 		//MathOp array
 		$entryPoints = array(
-		'0' => array('calc_kind' => 'Marge', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_PMARGIN')),
-		'1' => array('calc_kind' => 'DBTax', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_DBTAX')),
-		'2' => array('calc_kind' => 'Tax', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_TAX')),
-		'3' => array('calc_kind' => 'VatTax', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_VATTAX')),
-		'4' => array('calc_kind' => 'DATax', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_DATAX')),
-		'5' => array('calc_kind' => 'DBTaxBill', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_DBTAXBILL')),
-		'6' => array('calc_kind' => 'TaxBill', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_TAXBILL')),
-		'7' => array('calc_kind' => 'DATaxBill', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_DATAXBILL')),
+		'0' => array('calc_kind' => 'Marge', 'calc_kind_name' => vmText::_('COM_VIRTUEMART_CALC_EPOINT_PMARGIN')),
+		'1' => array('calc_kind' => 'DBTax', 'calc_kind_name' => vmText::_('COM_VIRTUEMART_CALC_EPOINT_DBTAX')),
+		'2' => array('calc_kind' => 'Tax', 'calc_kind_name' => vmText::_('COM_VIRTUEMART_CALC_EPOINT_TAX')),
+		'3' => array('calc_kind' => 'VatTax', 'calc_kind_name' => vmText::_('COM_VIRTUEMART_CALC_EPOINT_VATTAX')),
+		'4' => array('calc_kind' => 'DATax', 'calc_kind_name' => vmText::_('COM_VIRTUEMART_CALC_EPOINT_DATAX')),
+		'5' => array('calc_kind' => 'DBTaxBill', 'calc_kind_name' => vmText::_('COM_VIRTUEMART_CALC_EPOINT_DBTAXBILL')),
+		'6' => array('calc_kind' => 'TaxBill', 'calc_kind_name' => vmText::_('COM_VIRTUEMART_CALC_EPOINT_TAXBILL')),
+		'7' => array('calc_kind' => 'DATaxBill', 'calc_kind_name' => vmText::_('COM_VIRTUEMART_CALC_EPOINT_DATAXBILL')),
 		);
 
 		$listHTML = JHTML::_('Select.genericlist', $entryPoints, 'calc_kind', '', 'calc_kind', 'calc_kind_name', $selected );

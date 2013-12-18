@@ -767,22 +767,22 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					alt="Cart" /> </a> <br /> <br />
 				<h2>
 
-				<?php echo JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>
+				<?php echo vmText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>
 			</td>
 			<td>
 				<h2>
 				<?php
 				if($update){
-					echo JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
+					echo vmText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
 					/*					if($this->renewConfigManually){
-						echo '<br />'.JText::_('When you got an error deleting the virtuemart.cfg file <br />
+						echo '<br />'.vmText::_('When you got an error deleting the virtuemart.cfg file <br />
 					Delete this file manually (administrator/components/com_virtuemart/virtuemart.cfg) and please use
 					"renew config from file" in Tools => Updates/Migration');
 					}*/
-					echo '<br />'.JText::_('COM_VIRTUEMART_EXTENSION_UPGRADE_REMIND');
+					echo '<br />'.vmText::_('COM_VIRTUEMART_EXTENSION_UPGRADE_REMIND');
 
 				} else {
-					echo JText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
+					echo vmText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
 				}
 				?>
 				</h2> <br />
@@ -796,7 +796,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 						<a
 							href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JSession::getFormToken()) ?>">
 							<span class="vmicon48 vm_install_48"></span> <br />
-						<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
+						<?php echo vmText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
 							</a>
 					</div>
 
@@ -805,14 +805,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				<div class="icon">
 				<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&task=disableDangerousTools&token='.JSession::getFormToken() ) ?>">
 					<span class="vmicon48 vm_frontpage_48"></span>
-					<br /><?php echo JText::_('COM_VIRTUEMART_INSTALL_GO_SHOP') ?>
+					<br /><?php echo vmText::_('COM_VIRTUEMART_INSTALL_GO_SHOP') ?>
 				</a>
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<?php echo JText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
+				<?php echo vmText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
 			</td>
 		</tr>
 	</table>
