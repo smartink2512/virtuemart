@@ -224,6 +224,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_coupons` (
   `coupon_start_date` datetime,
   `coupon_expiry_date` datetime,
   `coupon_value_valid` decimal(15,5) NOT NULL DEFAULT '0.00000',
+  `coupon_used` varchar(200) NOT NULL DEFAULT '',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',

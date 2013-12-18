@@ -480,11 +480,11 @@ class VirtueMartModelRatings extends VmModel {
 						if (empty($product_id)) {
 							return FALSE;
 						}
-
 						$db = JFactory::getDBO ();
 						$q = 'SELECT COUNT(*) as total FROM `#__virtuemart_orders` AS o LEFT JOIN `#__virtuemart_order_items` AS oi ';
 						$q .= 'ON `o`.`virtuemart_order_id` = `oi`.`virtuemart_order_id` ';
 						$q .= 'WHERE o.virtuemart_user_id = "' . $user->id . '" AND oi.virtuemart_product_id = "' . $product_id . '" ';
+						$q .= 'AND o.order_status IN (\'' . implode("','",VmConfig::get('rr_os',array('C'))). '\') ';
 
 						$db->setQuery ($q);
 						$count = $db->loadResult ();

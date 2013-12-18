@@ -46,6 +46,9 @@ AdminUIHelper::startAdminArea($this);
 		    <th>
 			<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_VALID_AT'); ?>
 		    </th>
+			<th>
+				<?php echo JText::_('COM_VIRTUEMART_COUPON_USED'); ?>
+			</th>
 		     <th><?php echo $this->sort('virtuemart_coupon_id', 'COM_VIRTUEMART_ID')  ?></th>
 		</tr>
 	    </thead>
@@ -78,6 +81,13 @@ AdminUIHelper::startAdminArea($this);
 		<td align="left">
 			<?php echo JText::_($row->coupon_value_valid); ?> <?php echo $this->vendor_currency; ?>
 		</td>
+		    <td align="center">
+			    <?php if ($row->coupon_used) {
+				    echo JText::_('JYES');
+			    } else  {
+				    echo JText::_('JNO');
+			    }?>
+		    </td>
 		<td align="left">
 			<?php echo JText::_($row->virtuemart_coupon_id); ?>
 		</td>

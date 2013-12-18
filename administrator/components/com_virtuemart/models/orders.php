@@ -566,6 +566,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			foreach ($orders as $virtuemart_order_id => $order) {
 				if  ($order_id >0) $virtuemart_order_id= $order_id;
 				$this->useDefaultEmailOrderStatus = false;
+
 				if($this->updateStatusForOneOrder($virtuemart_order_id,$order)){
 					$updated ++;
 				} else {
@@ -587,7 +588,13 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$data->load($virtuemart_order_id);
 		$old_order_status = $data->order_status;
 		$data->bind($inputOrder);
-
+		if 	(  VmConfig::get('cp_rm',array('C'))) {
+			if (!empty($data->coupon_code)) {
+				if (!class_exists('CouponHelper'))
+					require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
+				CouponHelper::RemoveCoupon($data->coupon_code);
+			}
+		}
 		//First we must call the payment, the payment manipulates the result of the order_status
 		if($useTriggers){
 				if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
@@ -859,7 +866,8 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			//set the virtuemart_order_id in the Request for 3rd party coupon components (by Seyi and Max)
 			JRequest::setVar ( 'virtuemart_order_id', $_orderData->virtuemart_order_id );
 			// If a gift coupon was used, remove it now
-			CouponHelper::RemoveCoupon($_cart->couponCode);
+			//CouponHelper::RemoveCoupon($_cart->couponCode);
+			CouponHelper::setInUseCoupon($_cart->couponCode, true);
 		}
 		// the order number is saved into the session to make sure that the correct cart is emptied with the payment notification
 		$_cart->order_number=$_orderData->order_number;

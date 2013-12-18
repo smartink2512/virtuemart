@@ -362,7 +362,7 @@ function vmTime($descr,$name='current'){
 function logInfo ($text, $type = 'message') {
 	jimport('joomla.filesystem.file');
 	$config = JFactory::getConfig();
-	$log_path = $config->get('log_path');
+	$log_path = $config->get('log_path',false);
 	if (!$log_path) {
 		$file = JPATH_ROOT . "/logs/" . VmConfig::$logFileName . VmConfig::LOGFILEEXT;
 	} else {
@@ -381,14 +381,19 @@ function logInfo ($text, $type = 'message') {
 		$head = "#\n";
 		$head .= "#<?php die('Forbidden.'); ?>\n";
 	}
-	$fp = fopen ($file, 'a');
-	if ($head) {
-		fwrite ($fp,  $head);
+	if (JFile::exists($file)) {
+		$fp = fopen ($file, 'a');
+		if ($head) {
+			fwrite ($fp,  $head);
+		}
+
+		fwrite ($fp, "\n" . $date->toFormat ('%Y-%m-%d %H:%M:%S'));
+		fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
+		fclose ($fp);
+	} else {
+		vmError('Could not use path '.$file.' to store log');
 	}
 
-	fwrite ($fp, "\n" . $date->toFormat ('%Y-%m-%d %H:%M:%S'));
-	fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
-	fclose ($fp);
 
 }
 
@@ -514,11 +519,11 @@ class vmText
 }
 
 /**
-* The time how long the config in the session is valid.
-* While configuring the store, you should lower the time to 10 seconds.
-* Later in a big store it maybe useful to rise this time up to 1 hr.
-* That would mean that changing something in the config can take up to 1 hour until this change is effecting the shoppers.
-*/
+ * The time how long the config in the session is valid.
+ * While configuring the store, you should lower the time to 10 seconds.
+ * Later in a big store it maybe useful to rise this time up to 1 hr.
+ * That would mean that changing something in the config can take up to 1 hour until this change is effecting the shoppers.
+ */
 
 /**
  * We use this Class STATIC not dynamically !
@@ -552,8 +557,8 @@ class VmConfig {
 		}
 
 		//if(ini_get('precision')!=15){
-			ini_set('precision', 15);	//We need at least 20 for correct precision if json is using a bigInt ids
-			//But 17 has the best precision, using higher precision adds fantasy numbers to the end
+		ini_set('precision', 15);	//We need at least 20 for correct precision if json is using a bigInt ids
+		//But 17 has the best precision, using higher precision adds fantasy numbers to the end
 		//}
 	}
 
@@ -668,7 +673,7 @@ class VmConfig {
 		//vmdebug('loadJLang',$name);
 		$jlang->load($name, $path,$tag,true);
 
- 	}
+	}
 
 	/**
 	 * Loads the configuration and works as singleton therefore called static. The call using the program cache
@@ -715,9 +720,9 @@ class VmConfig {
 		$configTable  = VirtueMartModelConfig::checkConfigTableExists();
 
 		$db = JFactory::getDBO();
-	/*	$query = 'SHOW TABLES LIKE "%virtuemart_configs%"';
-		$db->setQuery($query);
-		$configTable = $db->loadResult();/*/
+		/*	$query = 'SHOW TABLES LIKE "%virtuemart_configs%"';
+			$db->setQuery($query);
+			$configTable = $db->loadResult();/*/
 // 		self::$_debug = true;
 
 		if(empty($configTable)){
@@ -845,7 +850,7 @@ class VmConfig {
 		defined('VMLANG') or define('VMLANG', self::$_jpConfig->lang );
 
 		return self::$_jpConfig->lang;
- 	}
+	}
 
 	/**
 	 * Find the configuration value for a given key
@@ -1138,18 +1143,18 @@ class vmRequest{
 
 	static function uword($field, $default, $custom=''){
 
- 		$source = JRequest::getVar($field,$default);
+		$source = JRequest::getVar($field,$default);
 
- 		if(function_exists('mb_ereg_replace')){
- 			//$source is string that will be filtered, $custom is string that contains custom characters
- 			return mb_ereg_replace('[^\w'.preg_quote($custom).']', '', $source);
- 		} else {
- 			//return preg_replace('/[^\w'.preg_quote($custom).']/', '', $source);	//creates error Warning: preg_replace(): Unknown modifier ']'
+		if(function_exists('mb_ereg_replace')){
+			//$source is string that will be filtered, $custom is string that contains custom characters
+			return mb_ereg_replace('[^\w'.preg_quote($custom).']', '', $source);
+		} else {
+			//return preg_replace('/[^\w'.preg_quote($custom).']/', '', $source);	//creates error Warning: preg_replace(): Unknown modifier ']'
 			//return preg_replace('/([^\w'.preg_quote($custom).'])/', '', $source);	//Warning: preg_replace(): Unknown modifier ']'
 			//return preg_replace("[^\w".preg_quote($custom)."]", '', $source);	//This seems to work even there is no seperator, the change is just the use of " instead '
 			return preg_replace("~[^\w".preg_quote($custom,'~')."]~", '', $source);	//We use Tilde as separator, and give the preq_quote function the used separator
- 		}
- 	}
+		}
+	}
 }
 
 class vmURI{
