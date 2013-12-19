@@ -130,7 +130,14 @@ class VirtueMartControllerPluginresponse extends JController {
 	if (!class_exists('VirtueMartCart'))
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 
-	JPluginHelper::importPlugin('vmpayment');
+    $cart = VirtueMartCart::getCart ();
+    if (!empty($cart->couponCode)) {
+	    if (!class_exists('CouponHelper'))
+		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
+	    CouponHelper::setInUseCoupon($cart->couponCode, false);
+    }
+
+	    JPluginHelper::importPlugin('vmpayment');
 	$dispatcher = JDispatcher::getInstance();
 	$dispatcher->trigger('plgVmOnUserPaymentCancel', array());
 

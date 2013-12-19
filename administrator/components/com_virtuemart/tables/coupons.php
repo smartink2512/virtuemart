@@ -46,7 +46,8 @@ class TableCoupons extends VmTable {
 	var $coupon_expiry_date 	= '';
 	/** @var decimal Coupon valid value */
 	var $coupon_value_valid 	= 0;
-
+	/** @var decimal Coupon valid value */
+	var $coupon_used			= 0;
 	/**
 	 * @author RickG, Max Milbers
 	 * @param JDataBase $db

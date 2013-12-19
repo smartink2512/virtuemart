@@ -257,7 +257,10 @@ class VirtueMartControllerProductdetails extends JController {
 		foreach ($errors as $error) {
 			$msg = ($error) . '<br />';
 		}
-
+		if (!class_exists ('ShopFunctionsF')) {
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+		}
+		shopFunctionsF::sendRatingEmailToVendor($data);
 		$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . (int)$data['virtuemart_product_id'], FALSE), $msg);
 
 	}

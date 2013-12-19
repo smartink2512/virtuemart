@@ -447,6 +447,26 @@ class shopFunctionsF {
 
 	}
 
+	function sendRatingEmailToVendor ($data) {
+
+		$vars = array();
+		$productModel = VmModel::getModel ('product');
+		$product = $productModel->getProduct ($data['virtuemart_product_id']);
+		$vars['subject'] = JText::sprintf('COM_VIRTUEMART_RATING_EMAIL_SUBJECT', $product->product_name);
+		$vars['mailbody'] = JText::sprintf('COM_VIRTUEMART_RATING_EMAIL_BODY', $product->product_name);
+
+		$vendorModel = VmModel::getModel ('vendor');
+		$vendor = $vendorModel->getVendor ($product->virtuemart_vendor_id);
+		$vendorModel->addImages ($vendor);
+		$vars['vendor'] = $vendor;
+		$vars['vendorEmail'] = $vendorModel->getVendorEmail ($product->virtuemart_vendor_id);
+		$vars['vendorAddress'] = shopFunctions::renderVendorAddress ($product->virtuemart_vendor_id);
+
+		$orderModel = VmModel::getModel ('orders');
+	    shopFunctionsF::renderMail ('productdetails', $vars['vendorEmail'], $vars, 'productdetails', TRUE);
+
+	}
+
 	/**
 	 * Final setting of template
 	 *

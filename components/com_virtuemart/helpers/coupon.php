@@ -50,6 +50,7 @@ abstract class CouponHelper
 			. ', `coupon_start_date` '
 			. ', IFNULL( 0, IF( NOW() > `coupon_expiry_date`, 1, 0 )) AS ended '
 			. ', `coupon_value_valid` '
+			. ', `coupon_used` '
 			. 'FROM `#__virtuemart_coupons` '
 			. 'WHERE `coupon_code` = "' . $_db->getEscaped($_code) . '"';
 			$_db->setQuery($_q);
@@ -59,6 +60,13 @@ abstract class CouponHelper
 		if (!$couponData) {
 			return vmText::_('COM_VIRTUEMART_COUPON_CODE_INVALID');
 		}
+		if ($couponData->coupon_used) {
+			$session = JFactory::getSession();
+			$session_id = $session->getId();
+			if ($couponData->coupon_used != $session_id) {
+				return JText::_('COM_VIRTUEMART_COUPON_CODE_INVALID');
+			}
+		}
 		if (!$couponData->started) {
 			return vmText::_('COM_VIRTUEMART_COUPON_CODE_NOTYET') . $couponData->coupon_start_date;
 		}
@@ -66,7 +74,6 @@ abstract class CouponHelper
 			self::RemoveCoupon($_code, true);
 			return vmText::_('COM_VIRTUEMART_COUPON_CODE_EXPIRED');
 		}
-
 
 		if ($_billTotal < $couponData->coupon_value_valid) {
 			if (!class_exists('CurrencyDisplay'))
@@ -131,5 +138,35 @@ abstract class CouponHelper
 			. 'WHERE `coupon_code` = "' . $_db->getEscaped($_code) . '"';
 		$_db->setQuery($_q);
 		return ($_db->query() !== false);
+	}
+	/**
+	 * Remove a coupon from the database
+	 * @param $_code Coupon code
+	 * @param $_force True if the remove is forced. By default, only gift coupons are removed
+	 * @author Valérie Isaksen
+	 * @return boolean True on success
+	 */
+	static public function setInUseCoupon($code, $in_use=true){
+		$session = JFactory::getSession();
+		$coupon_used = $session->getId();
+		$db = JFactory::getDBO();
+		if (!$in_use) {
+			$db = JFactory::getDBO();
+			$q = 'SELECT `coupon_used` '
+				. 'FROM `#__virtuemart_coupons` '
+				. 'WHERE `coupon_code` = "' . $db->getEscaped($code) . '"';
+			$db->setQuery($q);
+			$coupon_session_id=$db->loadResult();
+			if ($coupon_used !=$coupon_session_id) {
+				return;
+			}
+			$coupon_used=0;
+		}
+
+
+		$q = 'UPDATE `#__virtuemart_coupons` SET `coupon_used` = "' . $coupon_used . '" WHERE `coupon_type`= \'gift\' AND `coupon_code` = "' . $db->getEscaped($code) . '"';
+		$db->setQuery($q);
+
+		return ($db->query() !== false);
 	}
 }

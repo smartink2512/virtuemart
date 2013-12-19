@@ -85,6 +85,18 @@ defined('_JEXEC') or die('Restricted access');?>
 		?>
 	</td>
 </tr>
+	<tr>
+		<td class="key">
+            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_REMOVE_TIP'); ?>">
+					<?php echo JText::_('COM_VIRTUEMART_COUPONS_REMOVE'); ?>
+				 </span>
+		</td>
+		<td>
+			<?php echo $this->orderStatusModel->renderOSList(VmConfig::get('cp_rm',array('C')),'cp_rm',TRUE) ; ?>
+		</td>
+	</tr>
+
+
 <tr>
 	<td class="key">
 <span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_WEIGHT_UNIT_DEFAULT_EXPLAIN'); ?>">
@@ -300,6 +312,16 @@ defined('_JEXEC') or die('Restricted access');?>
 						);
 						echo VmHTML::radioList('ratingMode', VmConfig::get('ratingMode', 2), $showReviewFor); ?>
 					</fieldset>
+				</td>
+			</tr>
+			<tr>
+				<td class="key">
+            	<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_REVIEWS_OS_TIP'); ?>">
+					<?php echo JText::_('COM_VIRTUEMART_REVIEWS_OS'); ?>
+				 </span>
+				</td>
+				<td>
+					<?php echo $this->orderStatusModel->renderOSList(VmConfig::get('rr_os',array('C')),'rr_os',TRUE); ?>
 				</td>
 			</tr>
 		</table>

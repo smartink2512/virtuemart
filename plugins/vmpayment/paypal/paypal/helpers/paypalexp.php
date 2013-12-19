@@ -316,7 +316,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			$this->customerData->setVar('payer_email', $this->response['EMAIL']);
 			$this->customerData->setVar('paypal_response', $this->response);
 			$this->customerData->save();
-
+			$this->storeAddresses();
 			return true;
 		} else {
 			return false;
@@ -675,6 +675,11 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			$addressBT['email'] = $this->response['EMAIL'];
 			$addressBT['first_name'] = $firstName;
 			$addressBT['last_name'] = $lastName;
+			$addressST['shipto_address_1'] = $this->response['SHIPTOSTREET'];
+			$addressST['shipto_city'] = $this->response['SHIPTOCITY'];
+			$addressST['shipto_zip'] = $this->response['SHIPTOZIP'];
+			$addressST['shipto_virtuemart_state_id'] = ShopFunctions::getStateIDByName($this->response['SHIPTOSTATE']);
+			$addressST['shipto_virtuemart_country_id'] = ShopFunctions::getCountryIDByName($this->response['SHIPTOCOUNTRYCODE']);
 			$this->cart->saveAddressInCart($addressBT, 'BT', true);
 		}
 
@@ -687,6 +692,8 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$addressST['shipto_zip'] = $this->response['SHIPTOZIP'];
 		$addressST['shipto_virtuemart_state_id'] = ShopFunctions::getStateIDByName($this->response['SHIPTOSTATE']);
 		$addressST['shipto_virtuemart_country_id'] = ShopFunctions::getCountryIDByName($this->response['SHIPTOCOUNTRYCODE']);
+		$this->cart->STsameAsBT = 0;
+		$this->cart->setCartIntoSession ();
 		$this->cart->saveAddressInCart($addressST, 'ST', true);
 
 

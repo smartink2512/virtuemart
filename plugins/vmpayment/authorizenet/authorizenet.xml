@@ -31,8 +31,8 @@
 
 	<param   type="vmtitle" default="VMPAYMENT_AUTHORIZENET_SANDBOX_PARAMS" level="level1" />
 	<param name="sandbox" type="radio" default="0" label="VMPAYMENT_AUTHORIZENET_USE_SANDBOX" description="VMPAYMENT_AUTHORIZENET_USE_SANDBOX_DESC">
-	    <option value="0">COM_VIRTUEMART_NO</option>
-	    <option value="1">COM_VIRTUEMART_YES</option>
+	    <option value="0">JNO</option>
+	    <option value="1">JYES</option>
 	</param>
 	<param name="sandbox_hostname" type="text" size="50" default="https://test.authorize.net/gateway/transact.dll" label="VMPAYMENT_AUTHORIZENET_SANDBOX_HOSTNAME" description="VMPAYMENT_AUTHORIZENET_SANDBOX_HOSTNAME_DESC"/>
 
