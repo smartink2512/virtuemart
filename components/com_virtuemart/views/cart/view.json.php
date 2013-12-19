@@ -50,11 +50,12 @@ class VirtueMartViewCart extends VmView {
 	}
 
 	private function prepareContinueLink() {
+
 		// Get a continue link
-		$menuid = JRequest::getVar('Itemid','');
+		$menuid = JRequest::getInt('Itemid','');
 		if(!empty($menuid)){
 			$menuid = '&Itemid='.$menuid;
-		}
+		} else $menuid = '';
 
 		$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
 		$categoryLink = '';

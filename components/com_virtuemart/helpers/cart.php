@@ -985,6 +985,7 @@ class VirtueMartCart {
 		$this->_inCheckOut = false;
 
 		if($this->_blockConfirm){
+			$this->_dataValidated = false;
 			return $this->redirecter('index.php?option=com_virtuemart&view=cart','');
 		} else {
 
