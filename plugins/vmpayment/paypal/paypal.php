@@ -56,7 +56,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	private $_cc_valid = false;
 	private $_user_data_valid = false;
 	private $_errormessage = array();
-	var $_currentMethod="";
 
 	function __construct(& $subject, $config) {
 
