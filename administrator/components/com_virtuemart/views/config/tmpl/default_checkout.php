@@ -42,42 +42,12 @@ $document->addScriptDeclaration($js);
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_CHECKOUT_SETTINGS'); ?></legend>
 	<table class="admintable">
-    	<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_ADDTOCART_POPUP_EXPLAIN'); ?>">
-					<label for="addtocart_popup">
-						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_ADDTOCART_POPUP'); ?>
-					</label>
-				</span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('addtocart_popup', VmConfig::get('addtocart_popup',1)); ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_CFG_POPUP_REL_TIP'); ?>">
-					<label for="popup_rel">
-						<?php echo vmText::_('COM_VIRTUEMART_CFG_POPUP_REL'); ?>
-					</label>
-				</span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('popup_rel', VmConfig::get('popup_rel',1)); ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CHECKOUT_OPC_TIP'); ?>">
-					<label for="oncheckout_opc">
-						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CHECKOUT_OPC'); ?>
-					</label>
-                </span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('oncheckout_opc', VmConfig::get('oncheckout_opc',1)); ?>
-			</td>
-		</tr>
+		<?php
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_ADDTOCART_POPUP','addtocart_popup',VmConfig::get('addtocart_popup',1));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_CFG_POPUP_REL','popup_rel',VmConfig::get('popup_rel',1));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CHECKOUT_OPC','oncheckout_opc',VmConfig::get('oncheckout_opc',1));
+		?>
+
 		<div id="not_opc_param">
 		<tr class="not_opc_param">
 			<td class="key">
@@ -116,67 +86,14 @@ $document->addScriptDeclaration($js);
 			</td>
 		</tr>
 		</div>
-		<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN'); ?>">
-					<label for="agree_to_tos_onorder">
-						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER'); ?>
-					</label>
-				</span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('agree_to_tos_onorder', VmConfig::get('agree_to_tos_onorder',1)); ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP'); ?>">
-					<label for="oncheckout_show_legal_info">
-						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO'); ?>
-					</label>
-                </span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('oncheckout_show_legal_info', VmConfig::get('oncheckout_show_legal_info',1)); ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER_TIP'); ?>">
-					<label for="oncheckout_show_register">
-						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER'); ?>
-					</label>
-                </span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('oncheckout_show_register', VmConfig::get('oncheckout_show_register',1)); ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_ONLY_REGISTERED_TIP'); ?>">
-					<label for="oncheckout_only_registered">
-						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_ONLY_REGISTERED'); ?>
-					</label>
-				</span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('oncheckout_only_registered', VmConfig::get('oncheckout_only_registered',0)); ?>
-			</td>
-		</tr>
+		<?php
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER','agree_to_tos_onorder',VmConfig::get('agree_to_tos_onorder',1));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO','oncheckout_show_legal_info',VmConfig::get('oncheckout_show_legal_info',1));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER','oncheckout_show_register',VmConfig::get('oncheckout_show_register',1));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_ONLY_REGISTERED','oncheckout_only_registered',VmConfig::get('oncheckout_only_registered',0));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_PRODUCTIMAGES','oncheckout_show_images',VmConfig::get('oncheckout_only_registered',0));
+		?>
 
-		<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_PRODUCTIMAGES_TIP'); ?>">
-					<label for="oncheckout_show_images">
-						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_PRODUCTIMAGES'); ?>
-					</label>
-                </span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('oncheckout_show_images', VmConfig::get('oncheckout_show_images',0)); ?>
-			</td>
-		</tr>
 		<tr>
 			<td class="key">
             	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_STATUS_PDF_INVOICES_TIP'); ?>">
@@ -207,31 +124,10 @@ $document->addScriptDeclaration($js);
 				<?php echo $this->orderStatusModel->renderOSList(VmConfig::get('email_os_v',array('U','C','R','X')),'email_os_v',TRUE); ?>
 			</td>
 		</tr>
-		<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_LANGFIX_EXPLAIN'); ?>">
-					<label for="addtocart_popup">
-						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_LANGFIX'); ?>
-					</label>
-				</span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('vmlang_js', VmConfig::get('vmlang_js',0)); ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_CHANGE_SHOPPER_TIP'); ?>">
-					<label for="oncheckout_change_shopper">
-						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_CHANGE_SHOPPER'); ?>
-					</label>
-                </span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('oncheckout_change_shopper', VmConfig::get('oncheckout_change_shopper',0)); ?>
-			</td>
-		</tr>
-<?php
+		<?php
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_LANGFIX','vmlang_js',VmConfig::get('vmlang_js',1));
+		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_CHANGE_SHOPPER','oncheckout_change_shopper',VmConfig::get('oncheckout_change_shopper',1));
+
 		$_delivery_date_options = array(
 			'm' => vmText::_('COM_VIRTUEMART_DELDATE_INV')
 		, 'osP' => vmText::_('COM_VIRTUEMART_ORDER_STATUS_PENDING')
@@ -246,25 +142,3 @@ $document->addScriptDeclaration($js);
 
 	</table>
 </fieldset>
-
-
-<?php /*	</td>
- <td valign="top">
-
-<fieldset>
-<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES') ?></legend>
-<table class="admintable">
-<tr>
-<td class="key">
-<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES_LBL_TIP'); ?>">
-<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES_LBL') ?>
-</span>
-</td>
-<td><fieldset class="checkbox">
-<?php echo $this->titlesFields ; ?>
-</fieldset></td>
-</tr>
-</table>
-</td>
-</tr>
-</table> */ ?>

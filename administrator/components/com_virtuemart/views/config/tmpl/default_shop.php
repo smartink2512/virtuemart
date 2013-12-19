@@ -35,25 +35,9 @@ defined('_JEXEC') or die('Restricted access');?>
 		</tr>
 		<?php
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_USE_ONLY_AS_CATALOGUE','use_as_catalog',VmConfig::get('use_as_catalog',0));
-		?>
-		<tr>
-			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_CFG_CURRENCY_MODULE_TIP'); ?>">
-            		<?php echo vmText::_('COM_VIRTUEMART_CFG_CURRENCY_MODULE'); ?>
-            	</span>
-			</td>
-			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->currConverterList, 'currency_converter_module', 'size=1', 'value', 'text', VmConfig::get('currency_converter_module', 'convertECB.php')); ?>
-			</td>
-		</tr>
-		<?php
+			echo VmHTML::row('genericlist','COM_VIRTUEMART_CFG_CURRENCY_MODULE',$this->currConverterList, 'currency_converter_module', 'size=1', 'value', 'text', VmConfig::get('currency_converter_module', 'convertECB.php'));
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_ENABLE_CONTENT_PLUGIN','enable_content_plugin',VmConfig::get('enable_content_plugin',0));
-		?>
 
-		<?php    /*
-     		echo VmHTML::row('input','COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT','dateformat',VmConfig::get('dateformat'));
-    		*/ ?>
-		<?php
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SSL','useSSL',VmConfig::get('useSSL',0));
 		?>
 	</table>
@@ -138,43 +122,22 @@ defined('_JEXEC') or die('Restricted access');?>
 <fieldset>
 	<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_ADVANCED'); ?></legend>
 	<table class="admintable">
-		<tr>
-			<td class="key">
-					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_EXPLAIN'); ?>">
-						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG'); ?>
-					</span>
-			</td>
-			<td>
-				<?php
-				$options = array(
-					'none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_NONE'),
-					'admin' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ADMIN'),
-					'all' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
-				);
-				echo VmHTML::radioList('debug_enable', VmConfig::get('debug_enable', 'none'), $options);
-				?>
-			</td>
-		</tr>
 		<?php
+			$optDebug = array(
+				'none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_NONE'),
+				'admin' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ADMIN'),
+				'all' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
+			);
+			echo VmHTML::row('radiolist','COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG','debug_enable',VmConfig::get('debug_enable','none'), $optDebug);
 			echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS','dangeroustools',VmConfig::get('dangeroustools',0));
+
+			$optMultiX = array(
+				'none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_NONE'),
+				'admin' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_ADMIN')
+				// 				'all'	=> vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
+			);
+			echo VmHTML::row('radiolist','COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX','multix',VmConfig::get('multix','none'), $optMultiX);
 		?>
 
-		<tr>
-			<td class="key">
-					<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_EXPLAIN'); ?>">
-						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX'); ?>
-					</span>
-			</td>
-			<td>
-				<?php
-				$options = array(
-					'none' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_NONE'),
-					'admin' => vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_ADMIN')
-					// 				'all'	=> vmText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
-				);
-				echo VmHTML::radioList('multix', VmConfig::get('multix', 'none'), $options);
-				?>
-			</td>
-		</tr>
 	</table>
 </fieldset>

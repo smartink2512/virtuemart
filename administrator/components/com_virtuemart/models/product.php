@@ -2134,7 +2134,7 @@ class VirtueMartModelProduct extends VmModel {
 		if (VmConfig::get ('show_manufacturers')) {
 
 			// manufacturer link list
-			$virtuemart_manufacturer_id = JRequest::getInt ('virtuemart_manufacturer_id', '');
+			$virtuemart_manufacturer_id = vmRequest::getInt ('virtuemart_manufacturer_id', '');
 			if ($virtuemart_manufacturer_id != '') {
 				$manufacturerTxt = '&virtuemart_manufacturer_id=' . $virtuemart_manufacturer_id;
 			}

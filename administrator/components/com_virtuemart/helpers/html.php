@@ -106,15 +106,23 @@ static function vmGetCharset() {
 			$label = vmText::_($label);
 		}
 
+		vmdebug('my func',$func);
 		$html = '
 		<tr>
 			<td class="key">
 				'.$label.'
 			</td>
-			<td>
-				'.call_user_func_array($func, $args).'
-			</td>
-		</tr>';
+			<td>';
+		if($func[1]=='radioList'){
+			$html .= '<fieldset class="checkboxes">';
+		}
+
+		$html .= call_user_func_array($func, $args).'
+			</td>';
+		if($func[1]=='radioList'){
+			$html .= '</fieldset>';
+		}
+		$html .= '</tr>';
 		return $html ;
 	}
 	/* simple value display */
