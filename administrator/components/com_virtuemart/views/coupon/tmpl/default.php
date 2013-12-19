@@ -82,11 +82,15 @@ AdminUIHelper::startAdminArea($this);
 			<?php echo JText::_($row->coupon_value_valid); ?> <?php echo $this->vendor_currency; ?>
 		</td>
 		    <td align="center">
-			    <?php if ($row->coupon_used) {
-				    echo JText::_('JYES');
-			    } else  {
-				    echo JText::_('JNO');
-			    }?>
+			    <?php
+			    if( $row->coupon_type=='gift'){
+				    if ($row->coupon_used ) {
+					    echo JText::_('COM_VIRTUEMART_YES');
+				    } else  {
+					    echo JText::_('COM_VIRTUEMART_NO');
+				    }
+			     }
+			    ?>
 		    </td>
 		<td align="left">
 			<?php echo JText::_($row->virtuemart_coupon_id); ?>
