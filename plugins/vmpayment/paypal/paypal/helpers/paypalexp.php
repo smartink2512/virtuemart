@@ -52,13 +52,12 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			$this->merchant_email = $this->_method->sandbox_merchant_email;
 		} else {
 			$this->api_login_id = $this->_method->api_login_id;
-			$this->api_signature = '';
+			$this->api_signature = $this->_method->api_signature;
 			$this->api_certificate = $this->_method->api_certificate;
 			$this->api_password = $this->_method->api_password;
 			$this->merchant_email = $this->_method->paypal_merchant_email;
 		}
-
-		if ((!$this->ExpCredentialsValid() and $this->isAacceleratedOnboarding())) {
+		if ((!$this->ExpCredentialsValid() OR !$this->isAacceleratedOnboardingValid())) {
 			$text = JText::sprintf('VMPAYMENT_PAYPAL_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
 			vmError($text, $text);
 		}
@@ -79,9 +78,19 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 	 * @return bool
 	 */
 	function isAacceleratedOnboarding() {
-		return $this->_method->accelerated_onboarding && $this->merchant_email;
+		return $this->_method->accelerated_onboarding;
 	}
-
+	/**
+	 *      * Check if it is  Accelerated Boarding  possible for Express Checkout
+	 * @return bool
+	 */
+	function isAacceleratedOnboardingValid() {
+		if ($this->_method->accelerated_onboarding AND empty($this->merchant_email)) {
+				return false;
+		} else {
+			return true;
+		}
+	}
 	function initPostVariables($paypalMethod) {
 		$post_variables = Array();
 		$post_variables['METHOD'] = $paypalMethod;
