@@ -56,6 +56,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	private $_cc_valid = false;
 	private $_user_data_valid = false;
 	private $_errormessage = array();
+	var $_currentMethod="";
 
 	function __construct(& $subject, $config) {
 
@@ -429,7 +430,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 					array("method"=>$this->_currentMethod,
 						"success"=>$success,
 						"payment_name"=>$payment_name,
-						"response" =>$response));
+						"response" =>$response,
+						"order" =>$order));
 				return $this->processConfirmedOrderPaymentResponse($returnValue, $cart, $order, $html, $payment_name, $new_status);
 			} else {
 				$new_status = $this->_currentMethod->status_canceled;
