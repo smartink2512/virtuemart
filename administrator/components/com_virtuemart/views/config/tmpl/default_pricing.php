@@ -56,18 +56,9 @@ $document->addScriptDeclaration($js);
 			<fieldset>
 				<legend><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES'); ?></legend>
 				<table class="admintable">
-					<tr>
-						<td class="key">
-							<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES_EXPLAIN'); ?>">
-							<label for="show_prices">
-								<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES'); ?>
-							</label>
-							</span>
-						</td>
-						<td>
-							<?php echo VmHTML::checkbox('show_prices', VmConfig::get('show_prices', 1)); ?>
-						</td>
-					</tr>
+					<?php
+					echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES','show_prices',VmConfig::get('show_prices',1));
+					?>
 				</table>
 				<table class="admintable" id="show_hide_prices">
 					<tr>

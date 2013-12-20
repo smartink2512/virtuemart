@@ -113,13 +113,6 @@ class VirtueMartModelOrderstatus extends VmModel {
 		return $this->_renderStatusList[$hash] ;
 	}
 
-	function renderOrderStatusList($value, $name = 'order_status[]' )
-	{
-		$id = substr($name,0,-2);
-		return $this->renderOSList($value,$id,TRUE);
-
-	}
-
 }
 
 //No Closing tag

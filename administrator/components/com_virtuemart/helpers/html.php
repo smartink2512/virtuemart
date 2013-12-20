@@ -106,7 +106,6 @@ static function vmGetCharset() {
 			$label = vmText::_($label);
 		}
 
-		vmdebug('my func',$func);
 		$html = '
 		<tr>
 			<td class="key">

@@ -23,7 +23,7 @@ $js = '
 					$(".not_opc_param").show();
 				}
 			 $("#oncheckout_opc").click(function() {
-				if ( $(".not_opc_param").is(\':checked\') ) {
+				if ( $("#oncheckout_opc").is(\':checked\') ) {
 					$(".not_opc_param").hide();
 				} else {
 					$(".not_opc_param").show();
@@ -48,7 +48,6 @@ $document->addScriptDeclaration($js);
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CHECKOUT_OPC','oncheckout_opc',VmConfig::get('oncheckout_opc',1));
 		?>
 
-		<div id="not_opc_param">
 		<tr class="not_opc_param">
 			<td class="key">
             	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS_TIP'); ?>">
@@ -61,9 +60,9 @@ $document->addScriptDeclaration($js);
 				<?php echo VmHTML::checkbox('oncheckout_show_steps', VmConfig::get('oncheckout_show_steps',0)); ?>
 			</td>
 		</tr>
-		<tr  class="not_opc_param">
+		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT_EXPLAIN'); ?>">
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT_TIP'); ?>">
 					<label for="automatic_shipment">
 						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT'); ?>
 					</label>
@@ -73,9 +72,9 @@ $document->addScriptDeclaration($js);
 				<?php echo VmHTML::checkbox('automatic_shipment', VmConfig::get('automatic_shipment',1)); ?>
 			</td>
 		</tr>
-		<tr  class="not_opc_param">
+		<tr>
 			<td class="key">
-            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENT_EXPLAIN'); ?>">
+            	<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENT_TIP'); ?>">
 					<label for="automatic_payment">
 						<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENT'); ?>
 					</label>
@@ -85,7 +84,7 @@ $document->addScriptDeclaration($js);
 				<?php echo VmHTML::checkbox('automatic_payment', VmConfig::get('automatic_payment',1)); ?>
 			</td>
 		</tr>
-		</div>
+
 		<?php
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER','agree_to_tos_onorder',VmConfig::get('agree_to_tos_onorder',1));
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO','oncheckout_show_legal_info',VmConfig::get('oncheckout_show_legal_info',1));
