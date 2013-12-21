@@ -162,12 +162,9 @@ if (isset($this->product->customfields_fromParent)) { ?>
 					<thead>
 					<tr class="row1">
 						<th><?php echo vmText::_('COM_VIRTUEMART_TITLE');?></th>
-						<th><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_TIP');?></th>
 						<th><?php echo vmText::_('COM_VIRTUEMART_VALUE');?></th>
 						<th><?php echo vmText::_('COM_VIRTUEMART_CART_PRICE');?></th>
 						<th><?php echo vmText::_('COM_VIRTUEMART_TYPE');?></th>
-						<th><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE');?></th>
-						<th><?php echo vmText::_('COM_VIRTUEMART_DELETE'); ?></th>
 						<th><?php echo vmText::_('COM_VIRTUEMART_MOVE'); ?></th>
 
 					</tr>

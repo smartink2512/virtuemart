@@ -665,7 +665,7 @@ class VirtueMartCart {
 		$this->_redirect = $redirect;
 		$this->_inCheckOut = true;
 
-		$this->tosAccepted = VmRequest::getInt('tosAccepted', $this->tosAccepted);
+
 		$this->STsameAsBT = VmRequest::getInt('STsameAsBT', $this->STsameAsBT);
 		$this->getFilterCustomerComment();
 		$this->order_language = VmRequest::getVar('order_language', $this->order_language);
@@ -722,13 +722,24 @@ class VirtueMartCart {
 
 		$validUserDataBT = self::validateUserData();
 
+		$this->tosAccepted = VmRequest::getInt('tosAccepted', $this->tosAccepted);
 		if (empty($this->tosAccepted)) {
 
 			$userFieldsModel = VmModel::getModel('Userfields');
 
 			$agreed = $userFieldsModel->getUserfield('agreed','name');
-
-			if(!empty($agreed->required) and $agreed->default!=='' and $validUserDataBT!==-1){
+			vmdebug('my field',$agreed);
+			if(!empty($agreed->required)){
+				if($agreed->default=='1'){
+					$this->tosAccepted = true;
+				} else if($validUserDataBT!==-1) {
+					$redirectMsg = null;// vmText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+					$this->tosAccepted = false;
+					vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+					return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
+				}
+			}
+			/*if(!empty($agreed->required) and $agreed->default!=='' and $validUserDataBT!==-1){
 				$redirectMsg = null;// vmText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				$this->tosAccepted = false;
 				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
@@ -737,7 +748,7 @@ class VirtueMartCart {
 				$this->tosAccepted = $agreed->default;
 			} else {
 				$this->tosAccepted = false;
-			}
+			}*/
 		}
 
 		if ($validUserDataBT!==true) {	//Important, we can have as result -1,false and true.

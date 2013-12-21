@@ -144,55 +144,6 @@ class shopFunctionsF {
 
 
 	/**
-	 * function to create a hyperlink
-	 *
-	 * @author RolandD
-	 * @param string $link
-	 * @param string $text
-	 * @param string $target
-	 * @param string $title
-	 * @param array $attributes
-	 * @return string
-	 */
-	public function hyperLink ($link, $text, $target = '', $title = '', $attributes = '') {
-
-		$options = array();
-		if($target) {
-			$options['target'] = $target;
-		}
-		if($title) {
-			$options['title'] = $title;
-		}
-		if($attributes) {
-			$options = array_merge( $options, $attributes );
-		}
-		return JHTML::_( 'link', $link, $text, $options );
-	}
-
-	/**
-	 * A function to create a XHTML compliant and JS-disabled-safe pop-up link
-	 *
-	 * @author RolandD
-	 * @param string $link The HREF attribute
-	 * @param string $text The link text
-	 * @param int $popupWidth
-	 * @param int $popupHeight
-	 * @param string $target The value of the target attribute
-	 * @param string $title
-	 * @param string $windowAttributes
-	 * @return string
-	 */
-	public function vmPopupLink ($link, $text, $popupWidth = 640, $popupHeight = 480, $target = '_blank', $title = '', $windowAttributes = '') {
-
-		if($windowAttributes) {
-			$windowAttributes = ','.$windowAttributes;
-		}
-		return self::hyperLink( $link, $text, '', $title, array("onclick" => "void window.open('$link', '$target', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=$popupWidth,height=$popupHeight,directories=no,location=no".$windowAttributes."');return false;") );
-
-	}
-
-
-	/**
 	 * Prepares a view for rendering email, then renders and sends
 	 *
 	 * @param object $controller
@@ -462,7 +413,6 @@ class shopFunctionsF {
 		$vars['vendorEmail'] = $vendorModel->getVendorEmail ($product->virtuemart_vendor_id);
 		$vars['vendorAddress'] = shopFunctions::renderVendorAddress ($product->virtuemart_vendor_id);
 
-		$orderModel = VmModel::getModel ('orders');
 	    shopFunctionsF::renderMail ('productdetails', $vars['vendorEmail'], $vars, 'productdetails', TRUE);
 
 	}
@@ -568,7 +518,6 @@ class shopFunctionsF {
 	}
 
 
-
 	static function getComUserOption () {
 
 		if(JVM_VERSION === 1) {
@@ -596,68 +545,6 @@ class shopFunctionsF {
 		}
 	}
 
-	/**
-	 * Writes a PDF icon
-	 * @author Patrick Kohl
-	 * @param string $link
-	 * @param boolean $use_icon
-	 * @deprecated
-	 */
-	function PdfIcon ($link, $use_icon = TRUE, $modal = TRUE) {
-
-		return VmView::linkIcon( $link, 'COM_VIRTUEMART_PDF', 'pdf_button', 'pdf_button_enable', $modal, $use_icon );
-
-	}
-
-	/**
-	 * Writes an Email icon
-	 * @author Patrick Kohl
-	 * @param string $link
-	 * @param boolean $use_icon
-	 * @deprecated
-	 */
-	function EmailIcon ($virtuemart_product_id, $use_icon, $modal) {
-
-		if($virtuemart_product_id>0) {
-			$link = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$virtuemart_product_id.'&tmpl=component';
-			return VmView::linkIcon( $link, 'COM_VIRTUEMART_EMAIL', 'emailButton', 'show_emailfriend', $modal, $use_icon );
-		}
-	}
-
-	/**
-	 * @author RolandD, Christopher Roussel
-	 *
-	 * @deprecated
-	 */
-	function PrintIcon ($link = '', $use_icon = TRUE, $add_text = '') {
-
-		if(VmConfig::get( 'show_printicon', 1 ) == '1') {
-
-			$folder = (JVM_VERSION === 1) ? '/images/M_images/' : '/media/system/images/';
-
-			// checks template image directory for image, if non found default are loaded
-			if($use_icon) {
-				$filter = JFilterInput::getInstance();
-				$text = JHtml::_( 'image.site', 'printButton.png', $folder, NULL, NULL, vmText::_( 'COM_VIRTUEMART_PRINT' ) );
-				$text .= $filter->clean( $add_text );
-			} else {
-				$text = '|&nbsp;'.vmText::_( 'COM_VIRTUEMART_PRINT' ).'&nbsp;|';
-			}
-			$isPopup = VmRequest::getVar( 'pop' );
-			if($isPopup) {
-				// Print Preview button - used when viewing page
-				$html = '<span class="vmNoPrint">
-					<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'.vmText::_( 'COM_VIRTUEMART_PRINT' ).'" rel="nofollow">
-					'.$text.'
-					</a></span>';
-				return $html;
-			} else {
-				// Print Button - used in pop-up window
-				return self::vmPopupLink( $link, $text, 640, 480, '_blank', vmText::_( 'COM_VIRTUEMART_PRINT' ) );
-			}
-		}
-
-	}
 	
 	/**
 	 * Get Virtuemart itemID from joomla menu

@@ -77,7 +77,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 	function getManufacturerCategories($onlyPublished=false, $noLimit=false)
 	{
 		$this->_noLimit = $noLimit;
-		$select = '* FROM `#__virtuemart_manufacturercategories_'.VMLANG.'` as l';
+		$select = '* FROM `#__virtuemart_manufacturercategories_'.VmConfig::$vmlang.'` as l';
 		$joinedTables = ' JOIN `#__virtuemart_manufacturercategories` as mc using (`virtuemart_manufacturercategories_id`)';
 		$where = array();
 		if ($onlyPublished) {
@@ -105,7 +105,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 	function getCategoryFilter(){
 		$db = JFactory::getDBO();
 		$query = 'SELECT `virtuemart_manufacturercategories_id` as `value`, `mf_category_name` as text'
-				.' FROM #__virtuemart_manufacturercategories_'.VMLANG.'`';
+				.' FROM #__virtuemart_manufacturercategories_'.VmConfig::$vmlang.'`';
 		$db->setQuery($query);
 
 		$categoryFilter[] = JHTML::_('select.option',  '0', '- '. vmText::_('COM_VIRTUEMART_SELECT_MANUFACTURER_CATEGORY') .' -' );

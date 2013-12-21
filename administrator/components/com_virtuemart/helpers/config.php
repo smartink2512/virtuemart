@@ -545,7 +545,7 @@ class VmConfig {
 	private static $_debug = NULL;
 	public static $_starttime = array();
 	public static $loaded = FALSE;
-
+	public static $vmlang = false;
 	public static $maxMessageCount = 0;
 	public static $maxMessage = 100;
 	public static $echoDebug = FALSE;
@@ -813,8 +813,8 @@ class VmConfig {
 	 */
 	static public function setdbLanguageTag($langTag = 0) {
 
-		if (self::$_jpConfig->lang) {
-			return self::$_jpConfig->lang;
+		if (self::$vmlang) {
+			return self::$vmlang;
 		}
 
 		$langs = (array)self::$_jpConfig->get('active_languages',array());
@@ -852,11 +852,11 @@ class VmConfig {
 			}
 		}
 
-		self::$_jpConfig->lang = strtolower(strtr($siteLang,'-','_'));
-		vmdebug('self::$_jpConfig->lang '.self::$_jpConfig->lang);
-		defined('VMLANG') or define('VMLANG', self::$_jpConfig->lang );
+		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
+		vmdebug('self::$_jpConfig->lang '.self::$vmlang);
+		//defined('VMLANG') or define('VMLANG', self::$_jpConfig->lang );
 
-		return self::$_jpConfig->lang;
+		return self::$vmlang;
  	}
 
 	/**
@@ -1542,8 +1542,8 @@ class vmJsApi{
 		$jsVars = "//<![CDATA[ \n";
 		$jsVars .= "vmSiteurl = '". JURI::root( ) ."' ;\n" ;
 		if (VmConfig::get ('vmlang_js', 1))  {
-			//$jsVars .= "vmLang = '" . substr (VMLANG, 0, 2) . "' ;\n";
-			$jsVars .= "vmLang = '&amp;lang=" . substr (VMLANG, 0, 2) . "' ;\n";
+			//$jsVars .= "vmLang = '" . substr (VmConfig::$vmlang, 0, 2) . "' ;\n";
+			$jsVars .= "vmLang = '&amp;lang=" . substr (VmConfig::$vmlang, 0, 2) . "' ;\n";
 		}
 		else {
 			$jsVars .= 'vmLang = "";' . "\n";

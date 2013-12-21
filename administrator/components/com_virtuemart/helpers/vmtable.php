@@ -42,7 +42,7 @@ class VmTable extends JTable {
 	protected $_slugAutoName = '';
 	protected $_slugName = '';
 	protected $_loggable = false;
-	protected $_xParams = 0;
+	public $_xParams = 0;
 	protected $_varsToPushParam = array();
 	var $_translatable = false;
 	protected $_translatableFields = array();
@@ -111,11 +111,10 @@ class VmTable extends JTable {
 		$this->_translatableFields['slug'] = 'slug';
 		$this->_translatable = true;
 
-		if (!defined('VMLANG')) {
-			if (!class_exists('VmConfig')) require(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'config.php');
-			VmConfig::loadConfig();
-		}
-		$this->_langTag = VMLANG;
+		if (!class_exists('VmConfig')) require(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'config.php');
+		VmConfig::loadConfig();
+
+		$this->_langTag = VmConfig::$vmlang;
 		$this->_tbl_lang = $this->_tbl . '_' . $this->_langTag;
 	}
 
@@ -453,7 +452,6 @@ class VmTable extends JTable {
 			$k = $this->_pkey;
 		}
 
-
 		if ($oid !== null) {
 			$this->$k = $oid;
 		} else {
@@ -473,12 +471,9 @@ class VmTable extends JTable {
 			return $this;
 		}
 
-		//Why we have this reset? it is calling getFields, which is calling getTableColumns, which is calling SHOW COLUMNS, which is slow
-		//$this->reset();
-
 		//Version load the tables using JOIN
 		if ($this->_translatable) {
-			$mainTable = $this->_tbl . '_' . VMLANG;
+			$mainTable = $this->_tbl . '_' . VmConfig::$vmlang;
 			$select = 'SELECT `' . $mainTable . '`.* ,`' . $this->_tbl . '`.* ';
 			$from = ' FROM `' . $mainTable . '` JOIN ' . $this->_tbl . ' using (`' . $this->_tbl_key . '`)';
 		} else {
@@ -622,7 +617,7 @@ class VmTable extends JTable {
 			$slugName = $this->_slugName;
 
 			if (in_array($slugAutoName, $this->_translatableFields)) {
-				$checkTable = $this->_tbl . '_' . VMLANG;
+				$checkTable = $this->_tbl . '_' . VmConfig::$vmlang;
 			} else {
 				$checkTable = $this->_tbl;
 			}
@@ -1405,7 +1400,7 @@ class VmTable extends JTable {
 		if ($this->_translatable) {
 
 			$langs = VmConfig::get('active_languages', array());
-			if (!$langs) $langs[] = VMLANG;
+			if (!$langs) $langs[] = VmConfig::$vmlang;
 			if (!class_exists('VmTableData')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtabledata.php');
 			foreach ($langs as $lang) {
 				$lang = strtolower(strtr($lang, '-', '_'));

@@ -224,12 +224,12 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 // 	$lang = $params->get('site', 'en-GB');//use default joomla
 // 	$this->installSampleSQL($lang);
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
-	    if(!defined('VMLANG')){
+	    if(!VmConfig::$vmlang){
 		    $params = JComponentHelper::getParams('com_languages');
 		    $lang = $params->get('site', 'en-GB');//use default joomla
 		    $lang = strtolower(strtr($lang,'-','_'));
 	    } else {
-		    $lang = VMLANG;
+		    $lang = VmConfig::$vmlang;
 	    }
 	if(!$this->execSQLFile($filename)){
 		vmError(vmText::_('Problems execution of SQL File '.$filename));
@@ -385,12 +385,12 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		    return false;
 		}
 
-		if(!defined('VMLANG')){
+		if(!VmConfig::$vmlang){
 			$params = JComponentHelper::getParams('com_languages');
 			$lang = $params->get('site', 'en-GB');//use default joomla
 			$lang = strtolower(strtr($lang,'-','_'));
 		} else {
-			$lang = VMLANG;
+			$lang = VmConfig::$vmlang;
 		}
 
 		// Create an array of queries from the sql file

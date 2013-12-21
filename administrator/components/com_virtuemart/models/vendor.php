@@ -114,7 +114,7 @@ class VirtueMartModelVendor extends VmModel {
 	public function getVendors () {
 
 		$this->setId (0); //This is important ! notice by Max Milbers
-		$query = 'SELECT * FROM `#__virtuemart_vendors_' . VMLANG . '` as l JOIN `#__virtuemart_vendors` as v using (`virtuemart_vendor_id`)';
+		$query = 'SELECT * FROM `#__virtuemart_vendors_' . VmConfig::$vmlang . '` as l JOIN `#__virtuemart_vendors` as v using (`virtuemart_vendor_id`)';
 		$query .= ' ORDER BY l.`virtuemart_vendor_id`';
 		$this->_data = $this->_getList ($query, $this->getState ('limitstart'), $this->getState ('limit'));
 		return $this->_data;
@@ -357,7 +357,7 @@ class VirtueMartModelVendor extends VmModel {
 	 */
 	public function getVendorName ($virtuemart_vendor_id = 1) {
 		$db = JFactory::getDBO();
-		$query = 'SELECT `vendor_store_name` FROM `#__virtuemart_vendors_' . VMLANG . '` WHERE `virtuemart_vendor_id` = "' . (int)$virtuemart_vendor_id . '" ';
+		$query = 'SELECT `vendor_store_name` FROM `#__virtuemart_vendors_' . VmConfig::$vmlang . '` WHERE `virtuemart_vendor_id` = "' . (int)$virtuemart_vendor_id . '" ';
 		$db->setQuery ($query);
 		if ($db->execute ()) {
 			return $db->loadResult ();

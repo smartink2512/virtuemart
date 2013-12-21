@@ -148,7 +148,7 @@ class VirtueMartModelCategory extends VmModel {
 
 		static $_childCategoryList = array ();
 
-		$key = (int)$vendorId.'_'.(int)$virtuemart_category_id.$selectedOrdering.$orderDir.VMLANG ;
+		$key = (int)$vendorId.'_'.(int)$virtuemart_category_id.$selectedOrdering.$orderDir.VmConfig::$vmlang ;
 		//We have here our internal key to preven calling of the cache
 		if (! array_key_exists ($key,$_childCategoryList)){
 			if($useCache){
@@ -176,8 +176,11 @@ class VirtueMartModelCategory extends VmModel {
 	 * @param $lang
 	 * @return mixed
 	 */
-	static public function getChildCategoryListObject($vendorId, $virtuemart_category_id,$selectedOrdering = null, $orderDir = null,$lang = VMLANG) {
+	static public function getChildCategoryListObject($vendorId, $virtuemart_category_id,$selectedOrdering = null, $orderDir = null,$lang) {
 
+		if(!$lang){
+			$lang = VmConfig::$vmlang;
+		}
 		$query = 'SELECT L.* FROM `#__virtuemart_categories_'.$lang.'` as L
 					JOIN `#__virtuemart_categories` as c using (`virtuemart_category_id`)';
 		$query .= ' LEFT JOIN `#__virtuemart_category_categories` as cx on c.`virtuemart_category_id` = cx.`category_child_id` ';
@@ -266,7 +269,7 @@ class VirtueMartModelCategory extends VmModel {
 
 		$select = ' c.`virtuemart_category_id`, l.`category_description`, l.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
 
-		$joinedTables = ' FROM `#__virtuemart_categories_'.VMLANG.'` l
+		$joinedTables = ' FROM `#__virtuemart_categories_'.VmConfig::$vmlang.'` l
 				  JOIN `#__virtuemart_categories` AS c using (`virtuemart_category_id`)
 				  LEFT JOIN `#__virtuemart_category_categories` AS cx
 				  ON l.`virtuemart_category_id` = cx.`category_child_id` ';
@@ -641,7 +644,7 @@ class VirtueMartModelCategory extends VmModel {
 		$parents_id = array_reverse($this->getCategoryRecurse($virtuemart_category_id,$menuCatid));
 		foreach ($parents_id as $id ) {
 			$q = 'SELECT `category_name`,`virtuemart_category_id`
-				FROM  `#__virtuemart_categories_'.VMLANG.'`
+				FROM  `#__virtuemart_categories_'.VmConfig::$vmlang.'`
 				WHERE  `virtuemart_category_id`='.(int)$id;
 
 			$db->setQuery($q);

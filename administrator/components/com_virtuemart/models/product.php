@@ -480,22 +480,20 @@ class VirtueMartModelProduct extends VmModel {
 		//$selectFindRows = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';
 		//$selectFindRows = 'SELECT COUNT(*) FROM `#__virtuemart_products` ';
 		$joinedTables = array();
+		$select = ' p.`virtuemart_product_id` FROM `#__virtuemart_products` as p';
 		if ($joinLang) {
-			$select = ' l.`virtuemart_product_id` FROM `#__virtuemart_products_' . VMLANG . '` as l';
-			$joinedTables[] = ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)';
-		}
-		else {
-			$select = ' p.`virtuemart_product_id` FROM `#__virtuemart_products` as p';
-			//$joinedTables = '';
+			//$select = ' l.`virtuemart_product_id` FROM `#__virtuemart_products_' . VMLANG . '` as l';
+			//$joinedTables[] = ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)';
+			$joinedTables[] = ' LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`)';
 		}
 
 		if ($joinCategory == TRUE) {
 			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_categories` as pc ON p.`virtuemart_product_id` = `pc`.`virtuemart_product_id`
-			 LEFT JOIN `#__virtuemart_categories_' . VMLANG . '` as c ON c.`virtuemart_category_id` = `pc`.`virtuemart_category_id`';
+			 LEFT JOIN `#__virtuemart_categories_' . VmConfig::$vmlang . '` as c ON c.`virtuemart_category_id` = `pc`.`virtuemart_category_id`';
 		}
 		if ($joinMf == TRUE) {
 			$joinedTables[] = ' LEFT JOIN `#__virtuemart_product_manufacturers` ON p.`virtuemart_product_id` = `#__virtuemart_product_manufacturers`.`virtuemart_product_id`
-			 LEFT JOIN `#__virtuemart_manufacturers_' . VMLANG . '` as m ON m.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
+			 LEFT JOIN `#__virtuemart_manufacturers_' . VmConfig::$vmlang . '` as m ON m.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
 		}
 
 		if ($joinPrice == TRUE) {
@@ -533,8 +531,9 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$joinedTables = implode('',$joinedTables);
 
+		vmSetStartTime('sortSearchQuery');
 		$product_ids = $this->exeSortSearchListQuery (2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir, $nbrReturnProducts);
-
+		vmTime('sortSearchQuery','sortSearchQuery');
 		// This makes products searchable, we decided that this is not good, because variant childs appear then in lists
 		//So the new convention is that products which should be shown on a category or a manufacturer page should have entered this data
 		/*		if ($joinCategory == true || $joinMf) {
@@ -550,7 +549,7 @@ class VirtueMartModelProduct extends VmModel {
 		$product_ids = $tmp;
 		}*/
 
-		 //vmdebug('my product ids',$product_ids);
+		 vmdebug('my product ids',$product_ids);
 
 		return $product_ids;
 
@@ -1449,7 +1448,7 @@ class VirtueMartModelProduct extends VmModel {
 					$joinT = implode('',$joinT);
 				}
 
-				$q = 'SELECT l.`virtuemart_product_id`, l.`product_name`, `pc`.ordering FROM `#__virtuemart_products_' . VMLANG . '` as l '.$joinT;
+				$q = 'SELECT l.`virtuemart_product_id`, l.`product_name`, `pc`.ordering FROM `#__virtuemart_products_' . VmConfig::$vmlang . '` as l '.$joinT;
 				$q .= ' WHERE (' . implode (' AND ', $queryArray[2]) . ') AND l.`virtuemart_product_id`!="'.$product->virtuemart_product_id.'" ';
 
 				$pos= strpos($queryArray[3],'ORDER BY');
@@ -1832,7 +1831,7 @@ class VirtueMartModelProduct extends VmModel {
 		$db = JFactory::getDBO ();
 		$vendorId = 1;
 		$childs = count ($this->getProductChildIds ($id));
-		$db->setQuery ('SELECT `product_name`,`slug` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_' . VMLANG . '` as l using (`virtuemart_product_id`) WHERE `virtuemart_product_id`=' . (int)$id);
+		$db->setQuery ('SELECT `product_name`,`slug` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as l using (`virtuemart_product_id`) WHERE `virtuemart_product_id`=' . (int)$id);
 		$parent = $db->loadObject ();
 		$newslug = $parent->slug . $id . rand (1, 9);
 		$data = array('product_name' => $parent->product_name, 'slug' => $newslug, 'virtuemart_vendor_id' => (int)$vendorId, 'product_parent_id' => (int)$id);
@@ -2140,7 +2139,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			// if ($mf_virtuemart_product_ids) {
-			$query = 'SELECT DISTINCT l.`mf_name`,l.`virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers_' . VMLANG . '` as l';
+			$query = 'SELECT DISTINCT l.`mf_name`,l.`virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers_' . VmConfig::$vmlang . '` as l';
 			$query .= ' JOIN `#__virtuemart_product_manufacturers` AS pm using (`virtuemart_manufacturer_id`)';
 			$query .= ' LEFT JOIN `#__virtuemart_products` as p ON p.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
 			$query .= ' LEFT JOIN `#__virtuemart_product_categories` as c ON c.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
@@ -2364,7 +2363,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 		}
 
 		/* Load the product details */
-		$q = "SELECT l.product_name,product_in_stock FROM `#__virtuemart_products_" . VMLANG . "` l
+		$q = "SELECT l.product_name,product_in_stock FROM `#__virtuemart_products_" . VmConfig::$vmlang . "` l
 				JOIN `#__virtuemart_products` p ON p.virtuemart_product_id=l.virtuemart_product_id
 			   WHERE p.virtuemart_product_id = " . $virtuemart_product_id;
 		$db = JFactory::getDbo();
@@ -2400,7 +2399,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 
 			//Todo add check for shoppergroup depended product display
 			$q = 'SELECT * FROM `#__virtuemart_products` as p
-				LEFT JOIN `#__virtuemart_products_' . VMLANG . '` as pl
+				LEFT JOIN `#__virtuemart_products_' . VmConfig::$vmlang . '` as pl
 				USING (`virtuemart_product_id`)
 				LEFT JOIN `#__virtuemart_product_categories` as pc
 				USING (`virtuemart_product_id`) ';
@@ -2467,7 +2466,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 			return array();
 		}
 		$db = JFactory::getDBO ();
-		$db->setQuery (' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products_' . VMLANG . '`
+		$db->setQuery (' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products_' . VmConfig::$vmlang . '`
 			JOIN `#__virtuemart_products` as C using (`virtuemart_product_id`)
 			WHERE `product_parent_id` =' . (int)$product_id);
 		return $db->loadObjectList ();
@@ -2493,7 +2492,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 		}
 		$product_parent_id = (int)$product_parent_id;
 		$db = JFactory::getDBO ();
-		$db->setQuery (' SELECT * FROM `#__virtuemart_products_' . VMLANG . '` WHERE `virtuemart_product_id` =' . $product_parent_id);
+		$db->setQuery (' SELECT * FROM `#__virtuemart_products_' . VmConfig::$vmlang . '` WHERE `virtuemart_product_id` =' . $product_parent_id);
 		return $db->loadObject ();
 	}
 

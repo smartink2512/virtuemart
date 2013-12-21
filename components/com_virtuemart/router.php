@@ -734,10 +734,10 @@ class vmrouterHelper {
 		VmConfig::loadConfig();
 
 		if (isset($query['langswitch']) ) {
-			if ($query['langswitch'] != VMLANG ) $instanceKey = $query['langswitch'] ;
+			if ($query['langswitch'] != VmConfig::$vmlang ) $instanceKey = $query['langswitch'] ;
 			unset ($query['langswitch']);
 
-		} else $instanceKey = VMLANG ;
+		} else $instanceKey = VmConfig::$vmlang ;
 		if (! array_key_exists ($instanceKey, self::$_instances)){
 			self::$_instances[$instanceKey] = new vmrouterHelper ($instanceKey,$query);
 
@@ -757,13 +757,13 @@ class vmrouterHelper {
 		$langs = VmConfig::get('active_languages',false);
 		if(count($langs)> 1) {
 			if(!in_array($instanceKey, $langs)) {
-				$this->vmlang = VMLANG ;
-				$this->langTag = strtr(VMLANG,'_','-');
+				$this->vmlang = VmConfig::$vmlang ;
+				$this->langTag = strtr(VmConfig::$vmlang,'_','-');
 			} else {
 				$this->vmlang = strtolower(strtr($instanceKey,'-','_'));
 				$this->langTag= $instanceKey;
 			}
-		} else $this->vmlang = $this->langTag = VMLANG ;
+		} else $this->vmlang = $this->langTag = VmConfig::$vmlang ;
 		$this->setLang($instanceKey);
 		$this->Jlang = JFactory::getLanguage();
 	}

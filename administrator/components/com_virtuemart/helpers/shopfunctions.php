@@ -60,7 +60,7 @@ class ShopFunctions {
 			$i = 0;
 			foreach ($tempArray as $value) {
 				if ($translate) {
-					$mainTable = $table . '_' . VMLANG;
+					$mainTable = $table . '_' . VmConfig::$vmlang;
 					$q = 'SELECT ' . $db->escape ($fieldname) . ' FROM ' . $db->escape ($mainTable) . ' JOIN ' . $table . ' using (`' . $fieldnameXref . '`) WHERE ' . $db->escape ($fieldId) . ' = "' . (int)$value . '"';
 				} else {
 					$q = 'SELECT ' . $db->escape ($fieldname) . ' FROM ' . $db->escape ($table) . ' WHERE ' . $db->escape ($fieldId) . ' = "' . (int)$value . '"';

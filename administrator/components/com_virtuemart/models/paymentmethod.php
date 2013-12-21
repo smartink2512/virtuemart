@@ -102,7 +102,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		$select = ' * FROM `#__virtuemart_paymentmethods_'.VMLANG.'` as l ';
+		$select = ' * FROM `#__virtuemart_paymentmethods_'.VmConfig::$vmlang.'` as l ';
 		$joinedTables = ' JOIN `#__virtuemart_paymentmethods`   USING (`virtuemart_paymentmethod_id`) ';
 		$this->_data =$this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,' ',$this->_getOrdering() );
 

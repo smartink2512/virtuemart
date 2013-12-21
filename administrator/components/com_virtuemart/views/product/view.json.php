@@ -57,7 +57,7 @@ class VirtuemartViewProduct extends VmView {
 		/* Get the task */
 		if ($this->type=='relatedproducts') {
 			$query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
-				FROM #__virtuemart_products_".VMLANG."
+				FROM #__virtuemart_products_".VmConfig::$vmlang."
 				 JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)";
 			if ($filter) $query .= " WHERE product_name LIKE '%". $this->db->escape( $filter, true ) ."%' or product_sku LIKE '%". $this->db->escape( $filter, true ) ."%' limit 0,10";
 			self::setRelatedHtml($query,'R');
@@ -65,7 +65,7 @@ class VirtuemartViewProduct extends VmView {
 		else if ($this->type=='relatedcategories')
 		{
 			$query = "SELECT virtuemart_category_id AS id, CONCAT(category_name, '::', virtuemart_category_id) AS value
-				FROM #__virtuemart_categories_".VMLANG;
+				FROM #__virtuemart_categories_".VmConfig::$vmlang;
 			if ($filter) $query .= " WHERE category_name LIKE '%". $this->db->escape( $filter, true ) ."%' limit 0,10";
 			self::setRelatedHtml($query,'Z');
 		}
@@ -117,6 +117,7 @@ class VirtuemartViewProduct extends VmView {
 					}
 				} elseif ($field->field_type =='E') {
 					$this->json['table'] = 'customPlugins';
+					$this->model->bindCustomEmbeddedFieldParams($field,'E');
 					$display = $this->model->displayProductCustomfieldBE($field,$product_id,$this->row);
 					 if ($field->is_cart_attribute) {
 					     $cartIcone=  'default';
@@ -151,7 +152,7 @@ class VirtuemartViewProduct extends VmView {
 						<td><span class="hasTip" title="'.vmText::_($field->custom_tip).'">'.$field->custom_title.'</td>
 						 <td>'.$display.'</td>
 						 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span>'.vmText::_($fieldTypes[$field->field_type]).'
-							'.$this->model->setEditCustomHidden($field, $this->row).'
+							'.$type.$this->model->setEditCustomHidden($field, $this->row).'
 						</td>
 						 <td><span class="vmicon vmicon-16-move"></span><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" /></td>
 						</tr>';

@@ -435,7 +435,7 @@ class VirtuemartViewProduct extends VmView {
 	static function displayLinkToParent($product_parent_id) {
 
 		$db = JFactory::getDBO();
-		$db->setQuery(' SELECT * FROM `#__virtuemart_products_'.VMLANG.'` as l JOIN `#__virtuemart_products` using (`virtuemart_product_id`) WHERE `virtuemart_product_id` = '.$product_parent_id);
+		$db->setQuery(' SELECT * FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` as l JOIN `#__virtuemart_products` using (`virtuemart_product_id`) WHERE `virtuemart_product_id` = '.$product_parent_id);
 		if ($parent = $db->loadObject()){
 			$result = vmText::sprintf('COM_VIRTUEMART_LIST_CHILDREN_FROM_PARENT', $parent->product_name);
 			echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.'&option=com_virtuemart'), $parent->product_name, array('title' => $result));

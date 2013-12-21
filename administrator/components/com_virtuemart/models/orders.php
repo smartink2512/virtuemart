@@ -304,7 +304,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		return ' FROM #__virtuemart_orders as o
 			LEFT JOIN #__virtuemart_order_userinfos as u
 			ON u.virtuemart_order_id = o.virtuemart_order_id AND u.address_type="BT"
-			LEFT JOIN #__virtuemart_paymentmethods_'.VMLANG.' as pm
+			LEFT JOIN #__virtuemart_paymentmethods_'.VmConfig::$vmlang.' as pm
 			ON o.virtuemart_paymentmethod_id = pm.virtuemart_paymentmethod_id ';
 	}
 
@@ -410,7 +410,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			{
 				//update product identification
 				$db = JFactory::getDBO();
-				$prolang = '#__virtuemart_products_' . VMLANG;
+				$prolang = '#__virtuemart_products_' . VmConfig::$vmlang;
 				$oi = " #__virtuemart_order_items";
 				$protbl = "#__virtuemart_products";
 				$sql = "UPDATE $oi, $protbl,  $prolang" .
