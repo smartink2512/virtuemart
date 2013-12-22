@@ -98,7 +98,11 @@ class VirtueMartViewProductdetails extends VmView {
 		$categoryLink = '&virtuemart_category_id=' . $last_category_id;
 	    }
 
-	    $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink . '&error=404', FALSE));
+	    if (VmConfig::get('handle_404',1)) {
+		    $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=category' . $categoryLink . '&error=404', FALSE));
+		} else {
+			JError::raise(E_ERROR,'404','Not found');
+		}
 
 	    return;
 	}
