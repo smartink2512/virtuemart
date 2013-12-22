@@ -176,7 +176,7 @@ class VirtueMartModelCategory extends VmModel {
 	 * @param $lang
 	 * @return mixed
 	 */
-	static public function getChildCategoryListObject($vendorId, $virtuemart_category_id,$selectedOrdering = null, $orderDir = null,$lang) {
+	static public function getChildCategoryListObject($vendorId, $virtuemart_category_id,$selectedOrdering = null, $orderDir = null,$lang=false) {
 
 		if(!$lang){
 			$lang = VmConfig::$vmlang;

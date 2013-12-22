@@ -473,7 +473,8 @@ class VmTable extends JTable {
 
 		//Version load the tables using JOIN
 		if ($this->_translatable) {
-			$mainTable = $this->_tbl . '_' . VmConfig::$vmlang;
+			vmdebug('in load ',$this->_langTag);
+			$mainTable = $this->_tbl . '_' . $this->_langTag;
 			$select = 'SELECT `' . $mainTable . '`.* ,`' . $this->_tbl . '`.* ';
 			$from = ' FROM `' . $mainTable . '` JOIN ' . $this->_tbl . ' using (`' . $this->_tbl_key . '`)';
 		} else {
@@ -522,6 +523,18 @@ class VmTable extends JTable {
 					if (isset($result[$tableId])) $this->$tableId = $result[$tableId];
 				}
 			}
+		} else {
+			$params = JComponentHelper::getParams('com_languages');
+			$defaultLang = $params->get('site', 'en-GB');//use default joomla
+			$defaultLang= strtolower(strtr($defaultLang,'-','_'));
+
+			if($defaultLang!=$this->_langTag and Vmconfig::$langCount>1){
+				$this->_langTag = $defaultLang;
+
+				$this->load($oid, $overWriteLoadName, $andWhere, $tableJoins, $joinKey) ;
+			}
+
+
 		}
 
 

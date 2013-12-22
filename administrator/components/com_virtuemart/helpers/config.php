@@ -817,8 +817,8 @@ class VmConfig {
 			return self::$vmlang;
 		}
 
-		$langs = (array)self::$_jpConfig->get('active_languages',array());
-
+		self::$langs = (array)self::$_jpConfig->get('active_languages',array());
+		self::$langCount = count(self::$langs);
 		$siteLang = VmRequest::getString('vmlang',FALSE );
 
 		$params = JComponentHelper::getParams('com_languages');

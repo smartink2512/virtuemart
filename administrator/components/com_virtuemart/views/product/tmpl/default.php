@@ -118,7 +118,11 @@ if ($product_parent_id=VmRequest::getInt('product_parent_id', false))   $col_pro
 
 				<td align ="left>">
 					<!--<span style="float:left; clear:left"> -->
-  				<?php echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)); ?>
+  				<?php
+				if(empty($product->product_name)){
+					$product->product_name = 'Language Missing id '.$product->virtuemart_product_id;
+				}
+				echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)); ?>
 					<!-- </span>  -->
 				</td>
 
