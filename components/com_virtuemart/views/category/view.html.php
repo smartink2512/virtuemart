@@ -71,7 +71,7 @@ class VirtuemartViewCategory extends VmView {
 			$keyword ='';
 			$search = NULL;
 		}
-		
+
 		$this->assignRef('keyword', $keyword);
 		$this->assignRef('search', $search);
 
@@ -173,7 +173,11 @@ class VirtuemartViewCategory extends VmView {
 					}
 				}
 
-				$app->redirect(JRoute::_('index.php?option=com_virtuemart' . $categoryLink . '&error=404', FALSE));
+			    if (VmConfig::get('handle_404',1)) {
+					$app->redirect(JRoute::_('index.php?option=com_virtuemart' . $categoryLink . '&error=404', FALSE));
+				} else {
+					JError::raise(E_ERROR,'404','Not found');
+				}
 
 				return;
 			}
