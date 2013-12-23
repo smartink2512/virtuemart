@@ -460,11 +460,11 @@ class PaypalHelperPaypal {
 
 		} elseif (strcmp($paypal_data['payment_status'], 'Refunded') == 0) {
 			if ($this->_is_full_refund($payments, $paypal_data)) {
-				$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_REFUNDED', $this->order['details']['BT']->order_number);
-				$order['order_status'] = $this->_method->status_refunded;
+				$order_history['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_REFUNDED', $this->order['details']['BT']->order_number);
+				$order_history['order_status'] = $this->_method->status_refunded;
 			} else {
-				$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PARTIAL_REFUNDED', $this->order['details']['BT']->order_number);
-				$order['order_status'] = isset($this->_method->status_partial_refunded) ? $this->_method->status_partial_refunded : 'R';
+				$order_history['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PARTIAL_REFUNDED', $this->order['details']['BT']->order_number);
+				$order_history['order_status'] = isset($this->_method->status_partial_refunded) ? $this->_method->status_partial_refunded : 'R';
 			}
 
 		} elseif (isset ($paypal_data['payment_status'])) {

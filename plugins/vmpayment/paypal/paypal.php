@@ -77,7 +77,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'api_signature' => array('', 'int'),
 			'api_certificate' => array('', 'char'),
 
-			'sandbox' => array('sandbox', 'int'),
+			'sandbox' => array(0, 'int'),
 			'sandbox_merchant_email' => array('', 'char'),
 			'sandbox_api_login_id' => array('', 'char'),
 			'sandbox_api_password' => array('', 'char'),
