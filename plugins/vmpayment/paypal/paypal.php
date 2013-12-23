@@ -1148,7 +1148,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$htmla = array();
 		foreach ($this->methods as $this->_currentMethod) {
 			if ($this->checkConditions($cart, $this->_currentMethod, $cart->pricesUnformatted)) {
-				$this->debugLog('plgVmDisplayListFEPayment','plgVmDisplayListFEPayment','debug');
 
 				$html = '';
 				$cart_prices = array();
