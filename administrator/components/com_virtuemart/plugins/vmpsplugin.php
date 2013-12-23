@@ -1330,6 +1330,8 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * Keep it for compatibilty
 	 */
 	protected function logInfo ($text, $type = 'message', $doLog=false) {
+		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+		VmConfig::loadConfig();
 		if ((isset($this->_debug) and $this->_debug) OR $doLog) {
 			$oldLogFileName= 	VmConfig::$logFileName;
 			VmConfig::$logFileName =$this->getLogFileName() ;
