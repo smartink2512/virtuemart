@@ -392,7 +392,9 @@ function logInfo ($text, $type = 'message') {
 			fclose ($fp);
 		}
 	} else {
-		vmError('Could not use path '.$file.' to store log');
+		$msg = 'Could not use path '.$file.' to store log';
+		$app = JFactory::getApplication();
+		$app ->enqueueMessage($msg,'error');
 	}
 
 

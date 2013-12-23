@@ -646,7 +646,8 @@ class PaypalHelperPaypal {
 
 		if ($this->order['details']['BT']->order_status == $this->_method->status_success) {
 			foreach ($payments as $payment) {
-				if ($payment->paypal_response_txn_id == $txn_id) {
+				$paypal_data = json_decode($payment->paypal_fullresponse);
+				if ($paypal_data->txn_id == $txn_id) {
 					return true;
 				}
 			}
