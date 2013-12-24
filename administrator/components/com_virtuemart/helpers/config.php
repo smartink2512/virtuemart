@@ -362,39 +362,60 @@ function vmTime($descr,$name='current'){
 function logInfo ($text, $type = 'message') {
 	jimport('joomla.filesystem.file');
 	$config = JFactory::getConfig();
-	$log_path = $config->get('log_path',false);
-	if (!$log_path) {
-		$file = JPATH_ROOT . "/logs/" . VmConfig::$logFileName . VmConfig::LOGFILEEXT;
+	$log_path = $config->get('log_path', JPATH_ROOT . "/log" );
+	$file = $log_path . "/" . VmConfig::$logFileName . VmConfig::LOGFILEEXT;
+
+	if (!class_exists ('Permissions')) {
+		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+	}
+	if(Permissions::getInstance()->check('admin')){
+		$show_error_msg = TRUE;
 	} else {
-		$file =$log_path ."/". VmConfig::$logFileName . VmConfig::LOGFILEEXT;
+		$show_error_msg = FALSE;
 	}
 
-	$date = JFactory::getDate ();
-	$head=NULL;
-	if (!JFile::exists($file)) {
-
-		// Make sure the folder exists in which to create the log file.
+	if (!is_dir($log_path)) {
 		jimport('joomla.filesystem.folder');
-		JFolder::create(dirname($file));
+		if (!JFolder::create($log_path)) {
+			if ($show_error_msg){
+				$msg = 'Could not create path ' . $log_path . ' to store log information. Check your folder ' . $log_path . ' permissions.';
+				$app = JFactory::getApplication();
+				$app->enqueueMessage($msg, 'error');
+			}
+			return;
+		}
+	}
+	if (!is_writable($log_path)) {
+		if ($show_error_msg){
+			$msg = 'Path ' . $log_path . ' to store log information is not writable. Check your folder ' . $log_path . ' permissions.';
+			$app = JFactory::getApplication();
+			$app->enqueueMessage($msg, 'error');
+		}
+		return;
+	}
+	if (!JFile::exists($file)) {
 		// blank line to prevent information disclose: https://bugs.php.net/bug.php?id=60677
 		// from Joomla log file
 		$head = "#\n";
 		$head .= "#<?php die('Forbidden.'); ?>\n";
-	}
-	if (JFile::exists($file)) {
-		$fp = fopen ($file, 'a');
-		if ($fp) {
-			if ($head) {
-				fwrite ($fp,  $head);
+		if (!JFile::write($file, $head)) {
+			if ($show_error_msg){
+				$msg = 'Could not create / write file  ' . $file . ' to store log information. Check your folder ' . $log_path . ' and file '.$file.' permissions.';
+				$app = JFactory::getApplication();
+				$app->enqueueMessage($msg, 'error');
 			}
-			fwrite ($fp, "\n" . $date->toFormat ('%Y-%m-%d %H:%M:%S'));
-			fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
-			fclose ($fp);
+			return;
 		}
-	} else {
-		$msg = 'Could not use path '.$file.' to store log';
-		$app = JFactory::getApplication();
-		$app ->enqueueMessage($msg,'error');
+	}
+	$buffer = "\n" .  JFactory::getDate()->toFormat('%Y-%m-%d %H:%M:%S');
+	$buffer .= " " . strtoupper($type) . ' ' . $text;
+	if (!JFile::write($file, $buffer)) {
+		if ($show_error_msg){
+			$msg = 'Could not write in file  ' . $file . ' to store log information. Check your file ' . $file . ' permissions.';
+			$app = JFactory::getApplication();
+			$app->enqueueMessage($msg, 'error');
+		}
+		return;
 	}
 
 
