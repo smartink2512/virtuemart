@@ -1138,7 +1138,7 @@ class VirtueMartCart {
 		//STaddress may be obsolete
 		if ($type == 'STaddress' || $type =='ST') {
 			$prefix = 'shipto_';
-
+			$this->STsameAsBT = 0;
 		} else { // BT
 			if(!empty($data['agreed'])){
 				$this->tosAccepted = $data['agreed'];
