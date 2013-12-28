@@ -1008,18 +1008,33 @@ class VirtueMartModelUser extends VmModel {
 		$return = true;
 
 		$required  = 0;
-		$objSize = count($data);
+		//$objSize = count($data);
 		$missingFields = array();
 		foreach ($neededFields as $field) {
+
+			//This is a special test for the virtuemart_state_id. There is the speciality that the virtuemart_state_id could be 0 but is valid.
+			if ($field->name == 'virtuemart_state_id') {
+				if (!class_exists('VirtueMartModelState')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'state.php');
+				if(!empty($data['virtuemart_country_id'])){
+					if(!isset($data['virtuemart_state_id'])) $data['virtuemart_state_id'] = 0;
+
+					if (!$msg = VirtueMartModelState::testStateCountry($data['virtuemart_country_id'], $data['virtuemart_state_id'])) {
+						$data['virtuemart_state_id'] = 0;
+					} else {
+						$field->required = false;
+					}
+				}
+			}
 
 			if($field->required ){
 				$required++;
 				if(empty($data[$field->name])){
 					//This is a special test for the virtuemart_state_id. There is the speciality that the virtuemart_state_id could be 0 but is valid.
-					if ($field->name == 'virtuemart_state_id') {
+					/*if ($field->name == 'virtuemart_state_id') {
 						if(!empty($data['virtuemart_country_id'])){
 							$data['virtuemart_state_id'] = 0;
 							if (!class_exists('VirtueMartModelState')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'state.php');
+							vmdebug('I test on country, is empty ');
 							if (!$msg = VirtueMartModelState::testStateCountry($data['virtuemart_country_id'], $data['virtuemart_state_id'])) {
 								$i++;
 								VmConfig::loadJLang('com_virtuemart_shoppers', true);
@@ -1029,13 +1044,13 @@ class VirtueMartModelUser extends VmModel {
 						} else {
 							$i++;
 						}
-					} else {
+					} else {*/
 						$missingFields[] = JText::_($field->title);
 						$i++;
 						$return = false;
-					}
+					//}
 				}
-				else if($data[$field->name] = $field->default){
+				else if($data[$field->name] == $field->default){
 					$i++;
 				} else {
 
@@ -1048,7 +1063,8 @@ class VirtueMartModelUser extends VmModel {
 		if(!$return){
 			VmConfig::loadJLang('com_virtuemart_shoppers', true);
 			foreach($missingFields as $fieldname){
-				vmInfo(JText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',JText::_($fieldname)) );
+				vmInfo(JText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',$fieldname) );
+				vmdebug('');
 			}
 		}
 		return $return;

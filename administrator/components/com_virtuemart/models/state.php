@@ -100,7 +100,7 @@ class VirtueMartModelState extends VmModel {
 
 		$countryId = (int)$countryId;
 		$stateId = (int)$stateId;
-
+		vmdebug('testStateCountry country '.$countryId.' $stateId '.$stateId);
 		$db = JFactory::getDBO();
 		$q = 'SELECT * FROM `#__virtuemart_countries` WHERE `virtuemart_country_id`= "'.$countryId.'" AND `published`="1"';
 		$db->setQuery($q);
@@ -108,7 +108,8 @@ class VirtueMartModelState extends VmModel {
 			//Test if country has states
 			$q = 'SELECT * FROM `#__virtuemart_states`  WHERE `virtuemart_country_id`= "'.$countryId.'" ';
 			$db->setQuery($q);
-			if($db->loadResult()){
+			if($res = $db->loadResult()){
+				vmdebug('testStateCountry country has states ',$res);
 				//Test if virtuemart_state_id fits to virtuemart_country_id
 				$q = 'SELECT * FROM `#__virtuemart_states` WHERE `virtuemart_country_id`= "'.$countryId.'" AND `virtuemart_state_id`="'.$stateId.'" and `published`="1"';
 				$db->setQuery($q);
@@ -119,6 +120,7 @@ class VirtueMartModelState extends VmModel {
 					return false;
 				}
 			} else {
+				vmdebug('testStateCountry country has no states listed');
 				//This country has no states listed
 				return true;
 			}
