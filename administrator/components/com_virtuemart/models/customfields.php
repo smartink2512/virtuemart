@@ -658,7 +658,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					if (!$field->custom_value) {
 						return '';
 					} // special case it's category ID !
-					$q = 'SELECT * FROM `#__virtuemart_categories_' . VMLANG . '` JOIN `#__virtuemart_categories` AS p using (`virtuemart_category_id`) WHERE `published`=1 AND `virtuemart_category_id`= "' . (int)$field->custom_value . '" ';
+					$q = 'SELECT * FROM `#__virtuemart_categories_' . VMLANG . '` JOIN `#__virtuemart_categories` AS p using (`virtuemart_category_id`) WHERE `virtuemart_category_id`= "' . (int)$field->custom_value . '" ';
 					$this->_db->setQuery ($q);
 					//echo $this->_db->_sql;
 					if ($category = $this->_db->loadObject ()) {
