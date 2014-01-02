@@ -270,7 +270,7 @@ class VirtueMartControllerCart extends JController {
 				}
 			}
 
-			if ($cart->getInCheckOut()) {
+			if ($cart->getInCheckOut() && !VmConfig::get('oncheckout_opc', 1)) {
 
 				$mainframe = JFactory::getApplication();
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout', FALSE) );
@@ -331,7 +331,7 @@ class VirtueMartControllerCart extends JController {
 			}
 			//			$cart->setDataValidation();	//Not needed already done in the getCart function
 // 			vmdebug('setpayment $cart',$cart);
-			if ($cart->getInCheckOut()) {
+			if ($cart->getInCheckOut() && !VmConfig::get('oncheckout_opc', 1)) {
 				$app = JFactory::getApplication();
 				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout', FALSE), $msg);
 			}
@@ -439,6 +439,12 @@ class VirtueMartControllerCart extends JController {
 		} else if(isset($_POST['setpayment']) or $task=='setpayment'){
 			$this->setpayment();
 		} else {
+			if (VmConfig::get('oncheckout_opc', 1) && $cart->virtuemart_shipmentmethod_id != JRequest::getInt('virtuemart_shipmentmethod_id')) {
+				$this->setshipment();
+			}
+			if (VmConfig::get('oncheckout_opc', 1) && $cart->virtuemart_paymentmethod_id != JRequest::getInt('virtuemart_paymentmethod_id')) {
+				$this->setpayment();
+			}
 			if ($cart && !VmConfig::get('use_as_catalog', 0)) {
 				$cart->checkout();
 			}
