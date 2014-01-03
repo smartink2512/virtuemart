@@ -399,31 +399,44 @@ function logInfo ($text, $type = 'message') {
 		}
 		return;
 	}
+	$head = false;
 	if (!JFile::exists($file)) {
 		// blank line to prevent information disclose: https://bugs.php.net/bug.php?id=60677
 		// from Joomla log file
 		$head = "#\n";
-		$head .= "#<?php die('Forbidden.'); ?>\n";
-		if (!JFile::write($file, $head)) {
+		$head .= '#<?php die("Forbidden."); ?>'."\n";
+
+	}
+
+	// Initialise variables.
+	$FTPOptions = JClientHelper::getCredentials('ftp');
+
+	if ($FTPOptions['enabled'] == 0){
+		static $fp;
+
+		$fp = fopen ($file, 'a');
+
+		if ($fp) {
+			if ($head) {
+				fwrite ($fp,  $head);
+			}
+
+			fwrite ($fp, "\n" . JFactory::getDate()->toFormat ('%Y-%m-%d %H:%M:%S'));
+			fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
+			fclose ($fp);
+		} else {
 			if ($show_error_msg){
-				$msg = 'Could not create / write file  ' . $file . ' to store log information. Check your folder ' . $log_path . ' and file '.$file.' permissions.';
+				$msg = 'Could not write in file  ' . $file . ' to store log information. Check your file ' . $file . ' permissions.';
 				$app = JFactory::getApplication();
 				$app->enqueueMessage($msg, 'error');
 			}
-			return;
 		}
-	}
-	$buffer = "\n" .  JFactory::getDate()->toFormat('%Y-%m-%d %H:%M:%S');
-	$buffer .= " " . strtoupper($type) . ' ' . $text;
-	if (!JFile::write($file, $buffer)) {
-		if ($show_error_msg){
-			$msg = 'Could not write in file  ' . $file . ' to store log information. Check your file ' . $file . ' permissions.';
-			$app = JFactory::getApplication();
-			$app->enqueueMessage($msg, 'error');
-		}
-		return;
+	} else {
+		//For logging we do not support FTP. For loggin without file permissions using FTP, we need to load the file,..
+		//append the text and replace the file. This cannot be fast per FTP and therefore we disable it.
 	}
 
+	return;
 
 }
 
@@ -566,7 +579,7 @@ class VmConfig {
 	private static $_debug = NULL;
 	public static $_starttime = array();
 	public static $loaded = FALSE;
-	public static $vmlang = false;
+
 	public static $maxMessageCount = 0;
 	public static $maxMessage = 100;
 	public static $echoDebug = FALSE;
@@ -574,8 +587,9 @@ class VmConfig {
 	public static $logFileName = 'com_virtuemart';
 	const LOGFILEEXT = '.log.php';
 
-	var $lang = FALSE;
-
+	public static $vmlang = false;
+	public static $langs = array();
+	public static $langCount = 0;
 	var $_params = array();
 	var $_raw = array();
 
@@ -588,7 +602,7 @@ class VmConfig {
 		}
 
 		ini_set('precision', 15);	//We need at least 20 for correct precision if json is using a bigInt ids
-		//But 17 has the best precision, using higher precision adds fantasy numbers to the end, but creates also errors in rounding
+		//But 15 has the best precision, using higher precision adds fantasy numbers to the end, but creates also errors in rounding
 	}
 
 	static function getStartTime(){
@@ -832,7 +846,7 @@ class VmConfig {
 	 * @author Max Milbers
 	 * @return string valid langtag
 	 */
-	static public function setdbLanguageTag($langTag = 0) {
+	static public function setdbLanguageTag($siteLang = 0) {
 
 		if (self::$vmlang) {
 			return self::$vmlang;
@@ -840,7 +854,7 @@ class VmConfig {
 
 		self::$langs = (array)self::$_jpConfig->get('active_languages',array());
 		self::$langCount = count(self::$langs);
-		$siteLang = VmRequest::getString('vmlang',FALSE );
+		if(empty($siteLang)) $siteLang = VmRequest::getString('vmlang',FALSE );
 
 		$params = JComponentHelper::getParams('com_languages');
 		$defaultLang = $params->get('site', 'en-GB');//use default joomla
@@ -848,7 +862,6 @@ class VmConfig {
 		if( JFactory::getApplication()->isSite()){
 			if (!$siteLang) {
 				if ( JVM_VERSION===1 ) {
-					// try to find in session lang
 					// this work with joomfish j1.5 (application.data.lang)
 					$session  =JFactory::getSession();
 					$registry = $session->get('registry');
@@ -865,17 +878,16 @@ class VmConfig {
 			}
 		}
 
-		if(!in_array($siteLang, $langs)) {
-			if(count($langs)===0){
+		if(!in_array($siteLang, self::$langs)) {
+			if(count(self::$langs)===0){
 				$siteLang = $defaultLang;
 			} else {
-				$siteLang = $langs[0];
+				$siteLang = self::$langs[0];
 			}
 		}
 
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
-		vmdebug('self::$_jpConfig->lang '.self::$vmlang);
-		//defined('VMLANG') or define('VMLANG', self::$_jpConfig->lang );
+		vmdebug('self::$vmlang '.self::$vmlang);
 
 		return self::$vmlang;
  	}

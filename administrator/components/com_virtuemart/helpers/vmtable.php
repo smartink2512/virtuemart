@@ -700,7 +700,7 @@ class VmTable extends JTable {
 			if ($multix == 'none' and get_class($this) !== 'TableVmusers') {
 
 				$this->virtuemart_vendor_id = 1;
-
+				return true;
 			} else {
 
 				$loggedVendorId = Permissions::getInstance()->isSuperVendor();
@@ -708,7 +708,7 @@ class VmTable extends JTable {
 
 				$tbl_key = $this->_tbl_key;
 				$className = get_class($this);
-				if ($className !== 'TableVmusers') {
+				if (strpos($this->_tbl,'virtuemart_vmusers')===FALSE) {
 					$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` WHERE `' . $this->_tbl_key . '`="' . $this->$tbl_key . '" ';
 					if (!isset(self::$_query_cache[md5($q)])) {
 						$this->_db->setQuery($q);
@@ -738,6 +738,9 @@ class VmTable extends JTable {
 								return true;
 							}
 						}
+					} else {
+						//New User
+						//vmInfo('We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl);//, Set to mainvendor '.$this->virtuemart_vendor_id
 					}
 				}
 
@@ -761,9 +764,8 @@ class VmTable extends JTable {
 						vmdebug('Admin with vendor id ' . $loggedVendorId . ' is using for storing vendor id ' . $this->virtuemart_vendor_id);
 					}
 					else if (empty($virtuemart_vendor_id)) {
-						if ($className !== 'TableVmusers' and $this->_tbl!== '#__virtuemart_vendors') {
-							vmInfo('We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl);//, Set to mainvendor '.$this->virtuemart_vendor_id
-							$this->virtuemart_vendor_id = 1;
+						if(strpos($this->_tbl,'virtuemart_vendors')===FALSE and strpos($this->_tbl,'virtuemart_vmusers')===FALSE){
+							vmInfo('We run in multivendor mode and you did not set any vendor for '.$className.' and '.$this->_tbl);
 						}
 					}
 				}

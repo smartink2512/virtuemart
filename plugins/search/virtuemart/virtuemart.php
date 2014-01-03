@@ -5,7 +5,7 @@
  * a special type of 'cash on delivey':
  *
  * @author Valérie Isaksen
- * @version $Id: authorise.php 5122 2011-12-18 22:24:49Z alatak $
+ * @version $Id: authorize.php 5122 2011-12-18 22:24:49Z alatak $
  * @package VirtueMart
  * @subpackage payment
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
@@ -163,10 +163,10 @@ if (!version_compare (JVERSION, '1.6.0', 'ge')) {
 			$text = $db->Quote ('%' . $db->escape ($text, TRUE) . '%', FALSE);
 			$query = "SELECT DISTINCT CONCAT( a.product_name,' (',p.product_sku,')' ) AS title, a.virtuemart_product_id , b.virtuemart_category_id ,   a.product_s_desc   AS text, b.category_name as section,
 					 p.created_on as created, '2' AS browsernav
-					FROM `#__virtuemart_products_" . VMLANG . "` AS a
+					FROM `#__virtuemart_products_" . VmConfig::$vmlang . "` AS a
 					JOIN #__virtuemart_products as p using (`virtuemart_product_id`)
 					LEFT JOIN `#__virtuemart_product_categories` AS xref ON xref.`virtuemart_product_id` = a.`virtuemart_product_id`
-					LEFT JOIN `#__virtuemart_categories_" . VMLANG . "` AS b ON b.`virtuemart_category_id` = xref.`virtuemart_category_id`
+					LEFT JOIN `#__virtuemart_categories_" . VmConfig::$vmlang . "` AS b ON b.`virtuemart_category_id` = xref.`virtuemart_category_id`
 					LEFT JOIN `#__virtuemart_product_shoppergroups` as `psgr` on (`psgr`.`virtuemart_product_id`=`a`.`virtuemart_product_id`) "
 				. ' WHERE ' . $where . ' and p.published=1 ' .$where_shopper_group
 				. (VmConfig::get ('show_uncat_child_products') ? '' : ' and b.virtuemart_category_id>0 ')
@@ -290,10 +290,10 @@ function plgSearchVirtuemart ($text, $phrase = '', $ordering = '', $areas = NULL
 	$text = $db->Quote ('%' . $db->escape ($text, TRUE) . '%', FALSE);
 	$query = "SELECT DISTINCT CONCAT( a.product_name,' (',p.product_sku,')' ) AS title, a.virtuemart_product_id , b.virtuemart_category_id ,   a.product_s_desc   AS text, b.category_name as section,
 		 p.created_on as created, '2' AS browsernav
-		FROM `#__virtuemart_products_" . VMLANG . "` AS a
+		FROM `#__virtuemart_products_" . VmConfig::$vmlang . "` AS a
 		JOIN `#__virtuemart_products` as p using (`virtuemart_product_id`)
 		LEFT JOIN `#__virtuemart_product_categories` AS xref ON xref.virtuemart_product_id = a.virtuemart_product_id
-		LEFT JOIN `#__virtuemart_categories_" . VMLANG . "` AS b ON b.virtuemart_category_id = xref.virtuemart_category_id"
+		LEFT JOIN `#__virtuemart_categories_" . VmConfig::$vmlang . "` AS b ON b.virtuemart_category_id = xref.virtuemart_category_id"
 		. ' WHERE ' . $where . ' and p.published=1 and b.virtuemart_category_id>0 '
 		. ' ORDER BY ' . $order;
 	$db->setQuery ($query, 0, $limit);

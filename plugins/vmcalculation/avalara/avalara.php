@@ -10,7 +10,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  * @package VirtueMart
  * @subpackage Plugins - avalara
  * @author Max Milbers
- * @copyright Copyright (C) 2012 iStraxx - All rights reserved.
+ * @copyright Copyright (C) 2012 - 2013 iStraxx - All rights reserved.
  * @license http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL
  *
  *
@@ -18,7 +18,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcalculationplugin.php');
 
-defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 1);
+defined('AVATAX_DEBUG') or define('AVATAX_DEBUG', 0);
 
 function avadebug($string,$arg=NULL){
 	if(AVATAX_DEBUG) vmdebug($string,$arg);
@@ -54,7 +54,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$this->_tableId = 'id';
 		$this->_tablepkey = 'id';
 		$this->_tableId = 'id';
-		if (JVM_VERSION > 1) {
+		if (JVM_VERSION === 2) {
 			define ('VMAVALARA_PATH', JPATH_ROOT . DS . 'plugins' . DS . 'vmcalculation' . DS . 'avalara' );
 		} else {
 			define ('VMAVALARA_PATH', JPATH_ROOT . DS . 'plugins' . DS . 'vmcalculation' );
@@ -313,6 +313,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 	public function plgVmInterpreteMathOp ($calculationHelper, $rule, $price,$revert){
 
 		$rule = (object)$rule;
+		if(empty($rule->published)) return $price;
 
 		$mathop = $rule->calc_value_mathop;
 		$tax = 0.0;
@@ -374,6 +375,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 						$calculationHelper->setCartPricesMerge(self::$_taxResult);
 					}
+				} else if($rule->prevCheckoutAddInv){
+					if($calculationHelper->inCart){
+						VmInfo('VMCALCULATION_AVALARA_INVALID_INFO');
+					}
+					$this->blockCheckout();
 				}
 			}
 		}
@@ -733,7 +739,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			avadebug('Request as SalesInvoice with invoiceNumber '.$invoiceNumber);
 		} else {
 
-			$hash .= serialize(self::$vmadd). serialize($products);
+			$hash = serialize(self::$vmadd). serialize($request->getLines()). serialize($request->getDiscount());
 			$hash = md5($hash);
 
 			$request->setDocType(DocumentType::$SalesOrder);
@@ -837,11 +843,13 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			avadebug('I set tax override ',self::$vmadd['taxOverride']);
 		}
 
+		$setAllDiscounted = false;
 		if(isset($products['discountAmount'])){
 			if(!empty($products['discountAmount'])){
 				//$request->setDiscount($sign * $products['discountAmount'] * (-1));            //decimal
 				$request->setDiscount($sign * $products['discountAmount'] );            //decimal
 				vmdebug('We sent as discount '.$request->getDiscount());
+				$setAllDiscounted = true;
 			}
 			unset($products['discountAmount']);
 		}
@@ -889,12 +897,11 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$line->setQty($product['amount']);                 //decimal
 			$line->setAmount($sign * $product['price'] * $product['amount']);              //decimal // TotalAmmount
 
-			if(!empty($product['discount']) or !empty($products['discountAmount'])){
-				$line->setDiscounted(true);
+			if($setAllDiscounted or !empty($product['discount'])) {
+				$line->setDiscounted(1);
 			} else {
-				$line->setDiscounted(false);
+				$line->setDiscounted(0);
 			}
-
 
 			$line->setRevAcct("");             //string
 			$line->setRef1("");                //string
@@ -1105,7 +1112,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 			$shipment['discount'] = 0.0;
 			$products[] = $shipment;
 		}
-		$products['discountAmount'] = $orderDetails['details']['BT']->order_discountAmount;
+		$products['discountAmount'] = $orderDetails['details']['BT']->order_discountAmount - $orderDetails['details']['BT']->coupon_discount;
 
 		if($data->order_status=='R') {
 			$sign = -1;
@@ -1126,6 +1133,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		JRequest::setVar('create_invoice',1);
 		$orderModel -> createInvoiceNumber($orderDetails['details']['BT'],$invoiceNumber);
 		if(is_array($invoiceNumber)) $invoiceNumber = $invoiceNumber[0];
+
 		if($calc['committ'] and $invoiceNumber){
 			if($data->order_status=='R') {
 				$request->setDocType(DocumentType::$ReturnInvoice);

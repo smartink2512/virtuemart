@@ -106,7 +106,7 @@ class VirtueMartModelState extends VmModel {
 		$db->setQuery($q);
 		if($db->loadResult()){
 			//Test if country has states
-			$q = 'SELECT * FROM `#__virtuemart_states`  WHERE `virtuemart_country_id`= "'.$countryId.'" ';
+			$q = 'SELECT * FROM `#__virtuemart_states`  WHERE `virtuemart_country_id`= "'.$countryId.'" AND `published`="1"';
 			$db->setQuery($q);
 			if($db->loadResult()){
 				//Test if virtuemart_state_id fits to virtuemart_country_id
