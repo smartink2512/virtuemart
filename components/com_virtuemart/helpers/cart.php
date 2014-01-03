@@ -815,6 +815,10 @@ class VirtueMartCart {
 		//Test Shipment and show shipment plugin
 		if (empty($this->virtuemart_shipmentmethod_id)) {
 			return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=edit_shipment' , $redirectMsg);
+		} else if ($this->virtuemart_shipmentmethod_id != VmRequest::getInt('virtuemart_shipmentmethod_id', $this->virtuemart_shipmentmethod_id)) {
+			$obj = new VirtueMartControllerCart();
+			$obj->setshipment();
+			return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 		} else {
 			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmshipment');
@@ -837,6 +841,10 @@ class VirtueMartCart {
 		if($this->cartPrices['salesPrice']>0.0){
 				if (empty($this->virtuemart_paymentmethod_id)) {
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=editpayment' , $redirectMsg);
+			} else if ($this->virtuemart_paymentmethod_id != VmRequest::getInt('virtuemart_paymentmethod_id', $this->virtuemart_paymentmethod_id)) {
+				$obj = new VirtueMartControllerCart();
+				$obj->setpayment();
+				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 			} else {
 				if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 				JPluginHelper::importPlugin('vmpayment');
