@@ -393,31 +393,33 @@ function logInfo ($text, $type = 'message') {
 		}
 		return;
 	}
+	$head = false;
 	if (!JFile::exists($file)) {
 		// blank line to prevent information disclose: https://bugs.php.net/bug.php?id=60677
 		// from Joomla log file
 		$head = "#\n";
-		$head .= "#<?php die('Forbidden.'); ?>\n";
-		if (!JFile::write($file, $head)) {
-			if ($show_error_msg){
-				$msg = 'Could not create / write file  ' . $file . ' to store log information. Check your folder ' . $log_path . ' and file '.$file.' permissions.';
-				$app = JFactory::getApplication();
-				$app->enqueueMessage($msg, 'error');
-			}
-			return;
-		}
+		$head .= '#<?php die("Forbidden."); ?>'."\n";
+
 	}
-	$buffer = "\n" .  JFactory::getDate()->toFormat('%Y-%m-%d %H:%M:%S');
-	$buffer .= " " . strtoupper($type) . ' ' . $text;
-	if (!JFile::write($file, $buffer)) {
+
+	$fp = fopen ($file, 'a');
+	if ($fp) {
+		if ($head) {
+			fwrite ($fp,  $head);
+		}
+
+		fwrite ($fp, "\n" . JFactory::getDate()->toFormat ('%Y-%m-%d %H:%M:%S'));
+		fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
+		fclose ($fp);
+	} else {
 		if ($show_error_msg){
 			$msg = 'Could not write in file  ' . $file . ' to store log information. Check your file ' . $file . ' permissions.';
 			$app = JFactory::getApplication();
 			$app->enqueueMessage($msg, 'error');
 		}
-		return;
-	}
 
+	}
+	return;
 
 }
 
