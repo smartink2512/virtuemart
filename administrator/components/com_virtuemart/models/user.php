@@ -838,7 +838,7 @@ class VirtueMartModelUser extends VmModel {
 				vmdebug('no multivendor, set virtuemart_vendor_id = 1');
 			}
 			$vendorModel->setId($data['virtuemart_vendor_id']);
-
+			if(empty($data['vendor_store_name']) and !empty($data['company'])) $data['vendor_store_name'] = $data['company'];
 			if (!$vendorModel->store($data)) {
 				vmError('storeVendorData '.$vendorModel->getError());
 				vmdebug('Error storing vendor',$vendorModel);

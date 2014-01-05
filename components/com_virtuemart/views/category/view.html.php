@@ -75,21 +75,26 @@ class VirtuemartViewCategory extends VmView {
 		$this->assignRef('keyword', $keyword);
 
 
-		$categoryId = JRequest::getInt('virtuemart_category_id', false);
-		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', false );
-		if ($categoryId === false and $virtuemart_manufacturer_id === false){
+		$categoryId = JRequest::getInt('virtuemart_category_id', -1);
+		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', -1 );
+		if ($categoryId === -1 and $virtuemart_manufacturer_id === -1){
+			$categoryId = ShopFunctionsF::getLastVisitedCategoryId();
+		}
+		$this->setCanonicalLink($tpl,$document,$categoryId,$virtuemart_manufacturer_id);
+
+		/*if ($categoryId === -1 and $virtuemart_manufacturer_id === false){
 
 			$categoryId = ShopFunctionsF::getLastVisitedCategoryId();
 			$catType = 'category';
 			$this->setCanonicalLink($tpl,$document,$categoryId,$catType);
-		} else if ($categoryId === false and $virtuemart_manufacturer_id){
+		} else if ($categoryId === -1 and $virtuemart_manufacturer_id){
 
 			$catType = 'manufacturer';
 			$this->setCanonicalLink($tpl,$document,$virtuemart_manufacturer_id,$catType);
 		} else {
 			$catType = 'category';
 			$this->setCanonicalLink($tpl,$document,$categoryId,$catType);
-		}
+		}*/
 
 		if($categoryId!==-1){
 			$vendorId = 1;
@@ -201,8 +206,6 @@ class VirtuemartViewCategory extends VmView {
 				shopFunctionsF::triggerContentPlugin($category, 'category','category_description');
 			}
 
-
-
 			if ($category->metadesc) {
 				$document->setDescription( $category->metadesc );
 			}
@@ -256,10 +259,10 @@ class VirtuemartViewCategory extends VmView {
 			$title .=' ('.$keyword.')';
 		}
 
-		if ($virtuemart_manufacturer_id and !empty($products[0])) $title .=' '.$products[0]->mf_name ;
+		if ($virtuemart_manufacturer_id>0 and !empty($products[0])) $title .=' '.$products[0]->mf_name ;
 		$document->setTitle( $title );
 		// Override Category name when viewing manufacturers products !IMPORTANT AFTER page title.
-		if (JRequest::getInt('virtuemart_manufacturer_id' ) and !empty($products[0]) and isset($category->category_name)) $category->category_name =$products[0]->mf_name ;
+		if ($virtuemart_manufacturer_id>0 and !empty($products[0]) and isset($category->category_name)) $category->category_name =$products[0]->mf_name ;
 
 		if ($app->getCfg('MetaTitle') == '1') {
 			$document->setMetaData('title',  $title);
@@ -288,7 +291,7 @@ class VirtuemartViewCategory extends VmView {
 		return $title;
 	}
 
-	public function setCanonicalLink($tpl,$document,$categoryId,$catType){
+	public function setCanonicalLink($tpl,$document,$categoryId,$manId){
 		// Set Canonic link
 		if (!empty($tpl)) {
 			$format = $tpl;
@@ -297,7 +300,15 @@ class VirtuemartViewCategory extends VmView {
 		}
 		if ($format == 'html') {
 
-			$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_'.$catType.'_id='.$categoryId, FALSE) , 'canonical', 'rel', '' );
+			$link = 'index.php?option=com_virtuemart&view=category';
+			if($categoryId!==-1){
+				$link .= '&virtuemart_category_id='.$categoryId;
+			}
+			if($manId!==-1){
+				$link .= '&virtuemart_manufacturer_id='.$manId;
+			}
+
+			$document->addHeadLink( JRoute::_($link, FALSE) , 'canonical', 'rel', '' );
 
 		}
 	}

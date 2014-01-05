@@ -393,32 +393,88 @@ function logInfo ($text, $type = 'message') {
 		}
 		return;
 	}
+
+	// Initialise variables.
+	$FTPOptions = JClientHelper::getCredentials('ftp');
 	$head = false;
+	$fsize = false;
+	$amount = 32768;
+	$offset = 0;
 	if (!JFile::exists($file)) {
 		// blank line to prevent information disclose: https://bugs.php.net/bug.php?id=60677
 		// from Joomla log file
 		$head = "#\n";
 		$head .= '#<?php die("Forbidden."); ?>'."\n";
 
-	}
-
-	$fp = fopen ($file, 'a');
-	if ($fp) {
-		if ($head) {
-			fwrite ($fp,  $head);
-		}
-
-		fwrite ($fp, "\n" . JFactory::getDate()->toFormat ('%Y-%m-%d %H:%M:%S'));
-		fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
-		fclose ($fp);
 	} else {
-		if ($show_error_msg){
-			$msg = 'Could not write in file  ' . $file . ' to store log information. Check your file ' . $file . ' permissions.';
-			$app = JFactory::getApplication();
-			$app->enqueueMessage($msg, 'error');
-		}
+		$fsize = @ filesize($file);
 
+		if($FTPOptions['enabled']){
+			$maxSizeLogFile = 32768;	//32kb
+		} else {
+			$maxSizeLogFile = 524288;//1048576;	//1MB
+		}
+		if($fsize and $fsize>$maxSizeLogFile){
+			$disk_free_space = disk_free_space($log_path);
+			if($disk_free_space<VmConfig::get('minHDD',67108864)){
+
+				$offset= $maxSizeLogFile/4;
+
+			} else {
+				$fileRename = $log_path . "/" . VmConfig::$logFileName.'_'.JFactory::getDate()->toFormat ('%Y-%m-%d_%H-%M') . VmConfig::LOGFILEEXT;
+				JFile::move($file,$fileRename);
+				$head = "#\n";
+				$head .= '#<?php die("Forbidden."); ?>'."\n";
+			}
+		}
 	}
+
+
+	if ($FTPOptions['enabled'] == 0){
+		static $fp;
+
+
+		$fp = fopen ($file, 'a+');
+
+		if(!empty($offset)){
+			//not a good solution yet, we just delete the ending and add the other stuff again.
+			ftruncate($fp,$offset);
+		}
+		if ($fp) {
+			if ($head) {
+				fwrite ($fp,  $head);
+			}
+
+			fwrite ($fp, "\n" . JFactory::getDate()->toFormat ('%Y-%m-%d %H:%M:%S'));
+			fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
+			fclose ($fp);
+		} else {
+			if ($show_error_msg){
+				$msg = 'Could not write in file  ' . $file . ' to store log information. Check your file ' . $file . ' permissions.';
+				$app = JFactory::getApplication();
+				$app->enqueueMessage($msg, 'error');
+			}
+		}
+	} else {
+
+		$buffer = JFile::read($file,false,$amount,8192,$offset);
+		if ($head) {
+			$buffer .= $head;
+		}
+		//This can make trouble if people use FTP and get a lot errors. We strongly recommened to get a hosting which works without the FTP help construction
+		$buffer .= "\n" .  JFactory::getDate()->toFormat('%Y-%m-%d %H:%M:%S');
+		$buffer .= " " . strtoupper($type) . ' ' . $text;
+		if (!JFile::write($file, $buffer)) {
+			if ($show_error_msg){
+				$msg = 'Could not write in file  ' . $file . ' to store log information. Check your file ' . $file . ' permissions.';
+				$app = JFactory::getApplication();
+				$app->enqueueMessage($msg, 'error');
+			}
+			return;
+		}
+	}
+
+
 	return;
 
 }
@@ -811,7 +867,8 @@ class VmConfig {
 			self::$_jpConfig->_params = $pair;
 
 			self::$_jpConfig->set('sctime',microtime(TRUE));
-			self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
+			self::setdbLanguageTag();
+			//self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
 
 			vmTime('loadConfig db '.$install,'loadConfig');
 

@@ -546,6 +546,9 @@ abstract class vmPSPlugin extends vmPlugin {
 				j.`params`, j.`custom_data`, j.`system_data`, j.`checked_out`, j.`checked_out_time`, j.`state`,  s.virtuemart_shoppergroup_id ';
 		}
 
+		if(!defined(VMLANG)){
+			VmConfig::setdbLanguageTag();
+		}
 		$q = $select . ' FROM   `#__virtuemart_' . $this->_psType . 'methods_' . VMLANG . '` as l ';
 		$q .= ' JOIN `#__virtuemart_' . $this->_psType . 'methods` AS v   USING (`virtuemart_' . $this->_psType . 'method_id`) ';
 		$q .= ' LEFT JOIN `' . $extPlgTable . '` as j ON j.`' . $extField1 . '` =  v.`' . $this->_psType . '_jplugin_id` ';

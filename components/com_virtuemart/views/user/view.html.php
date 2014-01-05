@@ -384,28 +384,41 @@ class VirtuemartViewUser extends VmView {
 
     function lVendor() {
 
-	// If the current user is a vendor, load the store data
-	if ($this->_userDetails->user_is_vendor) {
+		// If the current user is a vendor, load the store data
+		if ($this->_userDetails->user_is_vendor) {
 
-	    $currencymodel = VmModel::getModel('currency', 'VirtuemartModel');
-	    $currencies = $currencymodel->getCurrencies();
-	    $this->assignRef('currencies', $currencies);
+			$front = JURI::root(true).'/components/com_virtuemart/assets/';
+			$admin = JURI::root(true).'/administrator/components/com_virtuemart/assets/';
 
-	    if (!$this->_orderList) {
-			$this->lOrderlist();
-	    }
+			$document = JFactory::getDocument();
+			$document->addScript($front.'js/fancybox/jquery.mousewheel-3.0.4.pack.js');
+			$document->addScript($front.'js/fancybox/jquery.easing-1.3.pack.js');
+			$document->addScript($front.'js/fancybox/jquery.fancybox-1.3.4.pack.js');
 
-	    $vendorModel = VmModel::getModel('vendor');
+			vmJsApi::js ('jquery-ui', FALSE, '', TRUE);
+			vmJsApi::js ('jquery.ui.autocomplete.html');
+			vmJsApi::js( 'jquery.noConflict');
+			$document->addScript($admin.'js/vm2admin.js');
 
-	    if (Vmconfig::get('multix', 'none') === 'none') {
-		$vendorModel->setId(1);
-	    } else {
-		$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
-	    }
-	    $vendor = $vendorModel->getVendor();
-	    $vendorModel->addImages($vendor);
-	    $this->assignRef('vendor', $vendor);
-	}
+			$currencymodel = VmModel::getModel('currency', 'VirtuemartModel');
+			$currencies = $currencymodel->getCurrencies();
+			$this->assignRef('currencies', $currencies);
+
+			if (!$this->_orderList) {
+				$this->lOrderlist();
+			}
+
+			$vendorModel = VmModel::getModel('vendor');
+
+			if (Vmconfig::get('multix', 'none') === 'none') {
+			$vendorModel->setId(1);
+			} else {
+			$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
+			}
+			$vendor = $vendorModel->getVendor();
+			$vendorModel->addImages($vendor);
+			$this->assignRef('vendor', $vendor);
+		}
     }
 
     /*
