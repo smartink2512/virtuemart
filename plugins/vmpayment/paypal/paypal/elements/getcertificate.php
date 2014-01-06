@@ -27,6 +27,7 @@ class JElementGetcertificate extends JElement {
 
 
 		function fetchElement ($name, $value, &$node, $control_name) {
+
 			jimport ('joomla.filesystem.folder');
 			jimport ('joomla.filesystem.file');
 			$lang = JFactory::getLanguage ();
@@ -36,6 +37,13 @@ class JElementGetcertificate extends JElement {
 			$safePath = VmConfig::get ('forSale_path', '');
 
 			$certificatePath=$safePath.$folder;
+			$certificatePath = JPath::clean($certificatePath);
+			$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
+
+			// Is the path a folder?
+			if (!is_dir($certificatePath)){
+				return '<span '.$class.'>'.JText::sprintf ('VMPAYMENT_PAYPAL_CERTIFICATE_FOLDER_NOT_EXIST', $certificatePath).'</span>';
+			}
 
 			$path = str_replace ('/', DS, $certificatePath);
 			$filter = $node->attributes ('filter');
@@ -60,7 +68,6 @@ class JElementGetcertificate extends JElement {
 					$options[] = JHTML::_ ('select.option', $file, $file);
 				}
 			}
-			$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
 			$class .= ' size="5" data-placeholder="'.JText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS').'"';
 			return JHTML::_ ('select.genericlist', $options, '' . $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);
 		}
