@@ -1,5 +1,5 @@
 <?php
-defined ('_JEXEC') or die();
+defined('_JEXEC') or die();
 /**
  *
  * @package    VirtueMart
@@ -15,54 +15,73 @@ defined ('_JEXEC') or die();
  * @version $Id:$
  */
 
-class JElementGetcertificate extends JElement {
+jimport('joomla.filesystem.folder');
+jimport('joomla.filesystem.file');
+JFormHelper::loadFieldClass('list');
 
-	/**
-	 * Element name
-	 *
-	 * @access    protected
-	 * @var        string
-	 */
-	var $_name = 'Getcertificate';
+class JFormFieldGetcertificate extends JFormFieldList {
 
+	protected $type = 'Getcertificate';
 
-		function fetchElement ($name, $value, &$node, $control_name) {
-			jimport ('joomla.filesystem.folder');
-			jimport ('joomla.filesystem.file');
-			$lang = JFactory::getLanguage ();
-			$lang->load ('com_virtuemart', JPATH_ADMINISTRATOR);
-			// path to images directory
-			$folder = $node->attributes ('directory');
-			$safePath = VmConfig::get ('forSale_path', '');
+	protected function getOptions() {
 
-			$certificatePath=$safePath.$folder;
+		$lang = JFactory::getLanguage();
+		$lang->load('com_virtuemart', JPATH_ADMINISTRATOR);
 
-			$path = str_replace ('/', DS, $certificatePath);
-			$filter = $node->attributes ('filter');
-			$exclude = array($node->attributes ('exclude'), '.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html');
-			$pattern = implode ( "|", $exclude);
-			$stripExt = $node->attributes ('stripext');
+		$filter = (string)$this->element['filter'];
+		$exclude = (string)$this->element['exclude'];
+		$stripExt = (string)$this->element['stripext'];
+		$hideNone = (string)$this->element['hide_none'];
+		$hideDefault = (string)$this->element['hide_default'];
+		$class = $this->element['class'] ? ' class="' . (string)$this->element['class'] . '"' : '';
 
-			$files = JFolder::files ($path, $filter, FALSE, FALSE, $exclude);
+		// Get the path in which to search for file options.
+		$folder = (string)$this->element['directory'];
+		$safePath = VmConfig::get('forSale_path', '');
 
-			$options = array();
+		$certificatePath = $safePath . $folder;
 
-			if (is_array ($files)) {
-				foreach ($files as $file) {
-					if ($exclude) {
-						if (preg_match (chr (1) . $pattern . chr (1), $file)) {
-							continue;
-						}
+		// Is the path a folder?
+		if (!is_dir($certificatePath)) {
+			return '<span ' . $class . '>' . JText::sprintf('VMPAYMENT_PAYPAL_CERTIFICATE_FOLDER_NOT_EXIST', $certificatePath) . '</span>';
+		}
+		$path = str_replace('/', DS, $certificatePath);
+		// Get a list of files in the search path with the given filter.
+		$files = JFolder::files($path, $filter);
+
+		// Build the options list from the list of files.
+		if (is_array($files)) {
+			foreach ($files as $file) {
+				// Check to see if the file is in the exclude mask.
+				if ($exclude) {
+					if (preg_match(chr(1) . $exclude . chr(1), $file)) {
+						continue;
 					}
-					if ($stripExt) {
-						$file = JFile::stripExt ($file);
-					}
-					$options[] = JHTML::_ ('select.option', $file, $file);
 				}
+
+				// If the extension is to be stripped, do it.
+				if ($stripExt) {
+					$file = JFile::stripExt($file);
+				}
+				$options[] = JHtml::_('select.option', $file, $file);
 			}
-			$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
-			$class .= ' size="5" data-placeholder="'.vmText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS').'"';
-			return JHTML::_ ('select.genericlist', $options, '' . $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);
 		}
 
+		// Merge any additional options in the XML definition.
+		$options = array_merge(parent::getOptions(), $options);
+
+		return $options;
+	}
+
+
+	/**
+	 * Method to get the field input markup.
+	 *
+	 * @return  string  The field input markup.
+	 *
+	 * @since   11.1
+	 */
+	protected function getInput() {
+		// TODO: Implement getInput() method.
+	}
 }

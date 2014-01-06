@@ -8,7 +8,7 @@
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
+ * ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -259,9 +259,9 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$this->setTimeOut(self::TIMEOUT_SETEXPRESSCHECKOUT);
 		$post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
 
-		$post_variables['RETURNURL'] =  JURI::root() . 'index.php?option=com_virtuemart&view=cart&task=setpayment&expresscheckout=done&virtuemart_paymentmethod_id=' . $this->_method->virtuemart_paymentmethod_id . '&Itemid=' . vmRequest::getInt('Itemid'). '&lang='vmRequest:::getCmd('lang','') ;
+		$post_variables['RETURNURL'] =  JURI::root() . 'index.php?option=com_virtuemart&view=cart&task=setpayment&expresscheckout=done&virtuemart_paymentmethod_id=' . $this->_method->virtuemart_paymentmethod_id . '&Itemid=' . VmRequest::getInt('Itemid'). '&lang='.VmRequest::getCmd('lang','') ;
 
-		$post_variables['CANCELURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&expresscheckout=cancel&Itemid=' vmRequest::::getInt('Itemid') . '&langvmRequest::t::getCmd('lang','') ;
+		$post_variables['CANCELURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&expresscheckout=cancel&Itemid=' . VmRequest::getInt('Itemid') . '&lang='.VmRequest::getCmd('lang','') ;
 		//$post_variables['CANCELURL'] = substr(JURI::root(false,''),0,-1). JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&expresscheckout=cancel');
 		$post_variables['ADDROVERRIDE'] = $this->_method->address_override;
 		$post_variables['NOSHIPPING'] = $this->_method->no_shipping;
@@ -808,7 +808,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$extraInfo = '';
 
 		//Are we coming back from Express Checkout?
-		$expressCheckouvmRequest::st::getVar('expresscheckout', '');
+		$expressCheckout = VmRequest::getVar('expresscheckout', '');
 		if ($expressCheckout == 'cancel') {
 			$this->customerData->clear();
 			if (!class_exists('VirtueMartCart')) {

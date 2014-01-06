@@ -7,7 +7,7 @@
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
+ * ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -26,11 +26,14 @@ if (!class_exists('PaypalHelperPaypal')){
 	 require (JPATH_ROOT   . '/plugins/vmpayment/paypal/paypal/helpers/paypal.php');
 }
 
-class JElementPaypalCreditcards extends JElement {
+jimport('joomla.form.formfield');
 
-    var $_name = 'Paypalcreditcards';
 
-    function fetchElement($name, $value, &$node, $control_name) {
+class JFormFieldPaypalcreditcards extends JFormField {
+
+	protected $type = 'Paypalcreditcards';
+
+	protected function getInput() {
 		JFactory::getLanguage ()->load ('plg_vmpayment_paypal', JPATH_ADMINISTRATOR);
 
 		$creditcards= PaypalHelperPaypal::getPaypalCreditCards();
@@ -43,12 +46,8 @@ class JElementPaypalCreditcards extends JElement {
 			$fields[$creditcard]['text'] = vmText::_($prefix . strtoupper($fields[$creditcard]['value']));
 		}
 
-		$attribs = ' ';
-		$attribs .= ' multiple="multiple"';
-		$attribs .= ($node->attributes('class') ? ' class="' . $node->attributes('class') . '"' : '');
 
-
-		return JHTML::_('select.genericlist', $fields, $control_name . '[' . $name . '][]', $attribs, 'value', 'text', $value, $control_name . $name);
+		return JHTML::_('select.genericlist', $fields, $this->text, 'class="inputbox"   ', 'value', 'text', $this->value, $this->id);
 
     }
 

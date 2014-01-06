@@ -8,7 +8,7 @@
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
+ * ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -313,7 +313,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$this->_currentMethod=$currentMethod;
 			$paypalExpInterface = $this->_loadPayPalInterface();
 			$paypalExpInterface->loadCustomerData();
-			$expressCheckout = vmRequest:::getVar('expresscheckout', '');
+			$expressCheckout = VmRequest::getVar('expresscheckout', '');
 			if ($expressCheckout == 'cancel') {
 				$paypalExpInterface->customerData->clear();
 				if (!class_exists('VirtueMartCart')) {
@@ -407,7 +407,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$cart->_confirmDone = FALSE;
 			$cart->_dataValidated = FALSE;
 			$cart->setCartIntoSession();
-	vmRequest:::::setVar('html', $html);
+			VmRequest::setVar('html', $html);
 
 		} else if ($this->_currentMethod->paypalproduct == 'exp') {
 			$success = $paypalInterface->ManageCheckout();
@@ -442,7 +442,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$paypalInterface->debugLog($response, 'plgVmConfirmedOrder, response:', 'error');
 
 				$app = JFactory::getApplication();
-				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=vmRequest::t::::getInt('Itemid'), false));
+				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . VmRequest::getInt('Itemid'), false));
 			}
 
 
@@ -485,7 +485,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			// 	2 = don't delete the cart, don't send email and don't redirect
 			$cart->_confirmDone = FALSE;
 			$cart->_dataValidated = FALSE;
-			$cart->setCartIntoSession(vmRequest::st::t::setVar('html', $html);
+			$cart->setCartIntoSession();
+			VmRequest::setVar('html', $html);
 		} else {
 			vmError('Unknown Paypal mode');
 		}
@@ -542,13 +543,13 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 
 		// the payment itself should send the parameter needed.
-		$virtuemart_paymentmethvmRequest::est::st::getInt('pm', 0);
-		$expresscvmRequest::uest::est::getVar('expresscheckout', '');
+		$virtuemart_paymentmethod_id = VmRequest::getInt('pm', 0);
+		$expresscheckout = VmRequest::getVar('expresscheckout', '');
 		if ($expresscheckout) {
 			return;
 
 		}
-		$ordvmRequest::quest::uest::getString('on', 0);
+		$order_number = VmRequest::getString('on', 0);
 		$vendorId = 0;
 		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
@@ -593,8 +594,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 
-		$ovmRequest::equest::quest::getString('on', '');
-		$virtuemart_payvmRequest::Request::equest::getInt('pm', '');
+		$order_number = VmRequest::getString('on', '');
+		$virtuemart_paymentmethod_id = VmRequest::getInt('pm', '');
 		if (empty($order_number) or empty($virtuemart_paymentmethod_id) or !$this->selectedThisByMethodId($virtuemart_paymentmethod_id)) {
 			return NULL;
 		}
@@ -620,7 +621,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
-		}vmRequest::mRequest::Request::get('post');
+		}
+		$paypal_data = VmRequest::get('post');
 
 		//Recuring payment return rp_invoice_id instead of invoice
 		if (array_key_exists('rp_invoice_id', $paypal_data)) {
@@ -652,7 +654,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$paypalInterface->debugLog($paypal_data, 'PaymentNotification, paypal_data:', 'debug');
 		$paypalInterface->debugLog($order_number, 'PaymentNotification, order_number:', 'debug');
 		$paypalInterface->debugLog($payments[0]->virtuemart_paymentmethod_id, 'PaymentNotification, virtuemart_paymentmethod_id:', 'debug');
-        $order_history = $paypalInterface->processIPN($paypal_data, $payments);
+		$order_history = $paypalInterface->processIPN($paypal_data, $payments);
 		if (!$order_history) {
 			return false;
 		} else {
@@ -938,7 +940,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if ($jplugin_id != $this->_jid) {
 			return FALSE;
 		}
-		$this->_currentMethod = $thvmRequest::vmRequest::JRequest::getInt('virtuemart_paymentmethod_id'));
+		$this->_currentMethod = $this->getPluginMethod(VmRequest::getInt('virtuemart_paymentmethod_id'));
 		if ($this->_currentMethod->published) {
 
 			$sandbox = "";
@@ -996,7 +998,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$text = vmText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', vmText::_('VMPAYMENT_PAYPAL_EXPECTEDMAXAMOUNT'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
 				vmError($text);
 			}
-			
+
 		}
 
 		return $this->onStoreInstallPluginTable($jplugin_id);
@@ -1146,7 +1148,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$htmla = array();
 		foreach ($this->methods as $this->_currentMethod) {
 			if ($this->checkConditions($cart, $this->_currentMethod, $cart->pricesUnformatted)) {
-
 				$html = '';
 				$cart_prices = array();
 				$cart_prices['withTax'] = '';
@@ -1244,8 +1245,10 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 	function plgVmOnSelfCallFE($type, $name, &$render) {
 		if ($name != $this->_name || $type != 'vmpayment') {
-			return FvmRequest::	vmRequest:: jRequest::getWord('action');
-		$virtuevmRequest::ntvmRequest::= JRequest::getInt('virtuemart_paymentmethod_id');
+			return FALSE;
+		}
+		$action = VmRequest::getWord('action');
+		$virtuemart_paymentmethod_id = VmRequest::getInt('virtuemart_paymentmethod_id');
 		//Load the method
 		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
@@ -1271,7 +1274,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return false;
 		} else {
 			$app = JFactory::getApplication();
-			$app->redirect(JRoute::_('index.php?option=com_virtuevmRequest::carvmRequest:: . JRequest::getInt('Itemid'), false));
+			$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . VmRequest::getInt('Itemid'), false));
 		}
 	}
 

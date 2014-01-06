@@ -8,7 +8,7 @@
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
+ * ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -85,56 +85,56 @@ class PaypalHelperCustomerData {
 	public function loadPost() {
 
 		// card information
-		$virtuemart_paymentmethod_id = vmRequest:::getVar('virtuemart_paymentmethod_id', 0);
+		$virtuemart_paymentmethod_id = VmRequest::getVar('virtuemart_paymentmethod_id', 0);
 		//if ($virtuemart_paymentmethod_id) {
 		//	print_trace();
 		//$this->clear();
 		//}
 
 		$this->_selected_method = $virtuemart_paymentmethod_id;
-		$cctype vmRequest:::::getVar('cc_type_' . $virtuemart_paymentmethod_id, '');
+		$cctype = VmRequest::getVar('cc_type_' . $virtuemart_paymentmethod_id, '');
 		if ($cctype) {
 			$this->_cc_type = $cctype;
 		}
 
-		$cc_namvmRequest::t::::getVar('cc_name_' . $virtuemart_paymentmethod_id, '');
+		$cc_name = VmRequest::getVar('cc_name_' . $virtuemart_paymentmethod_id, '');
 		if ($cc_name) {
 			$this->_cc_name = $cc_name;
 		}
 
-		$cc_numvmRequest::st::t::getVar('cc_number_' . $virtuemart_paymentmethod_id, '');
+		$cc_number = VmRequest::getVar('cc_number_' . $virtuemart_paymentmethod_id, '');
 		if ($cc_number) {
 			$this->_cc_number = $cc_number;
 		}
 
-		$cvmRequest::est::st::getVar('cc_cvv_' . $virtuemart_paymentmethod_id, '');
+		$cc_cvv = VmRequest::getVar('cc_cvv_' . $virtuemart_paymentmethod_id, '');
 		if ($cc_cvv) {
 			$this->_cc_cvv = $cc_cvv;
 		}
 
-		$cc_expirvmRequest::uest::est::getVar('cc_expire_month_' . $virtuemart_paymentmethod_id, '');
+		$cc_expire_month = VmRequest::getVar('cc_expire_month_' . $virtuemart_paymentmethod_id, '');
 		if ($cc_expire_month) {
 			$this->_cc_expire_month = $cc_expire_month;
 		}
 
-		$cc_exvmRequest::quest::uest::getVar('cc_expire_year_' . $virtuemart_paymentmethod_id, '');
+		$cc_expire_year = VmRequest::getVar('cc_expire_year_' . $virtuemart_paymentmethod_id, '');
 		if ($cc_expire_year) {
 			$this->_cc_expire_year = $cc_expire_year;
 		}
 
 		//Customer settings
-		$autobillingvmRequest::equest::quest::getVar('autobilling_max_amount_' . $virtuemart_paymentmethod_id, '');
+		$autobilling_max_amount = VmRequest::getVar('autobilling_max_amount_' . $virtuemart_paymentmethod_id, '');
 		if ($autobilling_max_amount) {
 			$this->_autobilling_max_amount = $autobilling_max_amount;
 		}
 
-//		$tvmRequest::Request::equest::getVar('cc_name_' . $virtuemart_paymentmethod_id, '');
-//		$this->_cc_number = svmRequest::mRequest::Request::getVar('cc_number_' . $virtuemart_paymentmethod_id, ''));
-/vmRequest::vmRequest::JRequest::getVar('cc_cvv_' . $virtuemart_paymentmethod_id, '');
-//		$thivmRequest::ivmRequest:: JRequest::getVar('cc_expire_month_' . $virtuemart_paymentmethod_id, '');
-//		$vmRequest::exvmRequest::= JRequest::getVar('cc_expire_year_' . $virtuemart_paymentmethod_id, '');
+//		$tVmRequest::Request::equest::getVar('cc_name_' . $virtuemart_paymentmethod_id, '');
+//		$this->_cc_number = sVmRequest::mRequest::Request::getVar('cc_number_' . $virtuemart_paymentmethod_id, ''));
+//		$this->_cc_cvv = VmRequest::getVar('cc_cvv_' . $virtuemart_paymentmethod_id, '');
+//		$thiVmRequest::iVmRequest:: JRequest::getVar('cc_expire_month_' . $virtuemart_paymentmethod_id, '');
+//		$VmRequest::exVmRequest::= JRequest::getVar('cc_expire_year_' . $virtuemart_paymentmethod_id, '');
 //		//Customer settings
-//		$this->vmRequest::ng_vmRequest:: = JRequest::getVar('autobilling_max_amount_' . $virtuemart_paymentmethod_id, '');
+//		$this->VmRequest::ng_VmRequest:: = JRequest::getVar('autobilling_max_amount_' . $virtuemart_paymentmethod_id, '');
 
 		$this->save();
 	}

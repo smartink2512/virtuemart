@@ -7,7 +7,7 @@
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
+ * ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -20,20 +20,16 @@
 
 
 defined ('_JEXEC') or die();
+jimport('joomla.form.formfield');
 
-class JElementDuration extends JElement {
+class JFormFieldDuration extends JFormField {
 
-	/**
-	 * Element name
-	 *
-	 * @access    protected
-	 * @var        string
-	 */
-	var $_name = 'Duration';
+	protected $type = 'Duration';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
-		
-		$class = ($node->attributes('class') ? $node->attributes('class') : '');
+	protected function getInput() {
+
+		//$class = ($node->attributes('class') ? $node->attributes('class') : '');
+		$class = (string) $this->element['class'];
 		$field_id = uniqid('duration');
 		$duration_value_id = $field_id.'_value';
 		$duration_unit_id = $field_id.'_unit';
@@ -67,7 +63,8 @@ class JElementDuration extends JElement {
 		$html .= JHTML::_ ('select.genericlist', $options, $duration_unit_id, '', 'value', 'text', $duration_unit, $duration_unit_id);
 		$html .= '<input type="hidden" name="'.$control_name.'['.$name.']'.'" id="'.$control_name . $name.'" value="'.$value.'" class="'.$class.'" >';
 		
-		return $html;		
+		return $html;
+
 	}
 
 }
