@@ -699,19 +699,19 @@ class vmrouterHelper {
 	public $router_disabled = false ;
 
 	/* instance of class */
-	private static $_instances = array ();
+	private static $_instance = false;
 
 	private static $_catRoute = array ();
 
 	public $CategoryName = array();
 	private $dbview = array('vendor' =>'vendor','category' =>'category','virtuemart' =>'virtuemart','productdetails' =>'product','cart' => 'cart','manufacturer' => 'manufacturer','user'=>'user');
 
-	private function __construct($instanceKey,$query) {
+	private function __construct($query) {
 
 		if (!$this->router_disabled = VmConfig::get('seo_disabled', false)) {
 
 			$this->seo_translate = VmConfig::get('seo_translate', false);
-			$this->setLangs($instanceKey);
+			$this->setLangs();
 			if ( JVM_VERSION===1 ) $this->setMenuItemId();
 			else $this->setMenuItemIdJ17();
 			$this->setActiveMenu();
@@ -732,13 +732,8 @@ class vmrouterHelper {
 		}
 		VmConfig::loadConfig();
 
-		if (isset($query['langswitch']) ) {
-			if ($query['langswitch'] != VMLANG ) $instanceKey = $query['langswitch'] ;
-			unset ($query['langswitch']);
-
-		} else $instanceKey = VMLANG ;
-		if (! array_key_exists ($instanceKey, self::$_instances)){
-			self::$_instances[$instanceKey] = new vmrouterHelper ($instanceKey,$query);
+		if (! self::$_instance){
+			self::$_instance = new vmrouterHelper ($query);
 
 			if (self::$limit===null){
 				$mainframe = Jfactory::getApplication(); ;
@@ -748,23 +743,22 @@ class vmrouterHelper {
 				// 				self::$limit= $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
 			}
 		}
-		return self::$_instances[$instanceKey];
+		return self::$_instance;
 	}
 
-	/* multi language routing ? */
-	public function setLangs($instanceKey){
-		$langs = VmConfig::get('active_languages',false);
-		if(count($langs)> 1) {
-			if(!in_array($instanceKey, $langs)) {
-				$this->vmlang = VMLANG ;
-				$this->langTag = strtr(VMLANG,'_','-');
-			} else {
-				$this->vmlang = strtolower(strtr($instanceKey,'-','_'));
-				$this->langTag= $instanceKey;
-			}
-		} else $this->vmlang = $this->langTag = VMLANG ;
-		$this->setLang($instanceKey);
-		$this->Jlang = JFactory::getLanguage();
+	/* Set $this-lang (Translator for language from virtuemart string) to load only once*/
+	public function setLangs(){
+
+		$this->vmlang = VMLANG;
+
+		if ( $this->seo_translate ) {
+			// use translator
+			$this->Jlang =JFactory::getLanguage();
+			$extension = 'com_virtuemart.sef';
+			$base_dir = JPATH_SITE;
+			$this->Jlang->load($extension, $base_dir);
+
+		}
 	}
 
 	public function getCategoryRoute($virtuemart_category_id){
@@ -777,6 +771,7 @@ class vmrouterHelper {
 		}
 		return $CategoryRoute ;
 	}
+
 	/* Get Joomla menu item and the route for category */
 	public function getCategoryRouteNocache($virtuemart_category_id){
 		if (! array_key_exists ($virtuemart_category_id . $this->vmlang, self::$_catRoute)){
@@ -994,18 +989,7 @@ class vmrouterHelper {
 		return $db->loadResult();
 
 	}
-	/* Set $this-lang (Translator for language from virtuemart string) to load only once*/
-	private function setLang($instanceKey){
 
-		if ( $this->seo_translate ) {
-			/* use translator */
-			$lang =JFactory::getLanguage();
-			$extension = 'com_virtuemart.sef';
-			$base_dir = JPATH_SITE;
-			$lang->load($extension, $base_dir);
-
-		}
-	}
 
 	/* Set $this->menu with the Item ID from Joomla Menus */
 	private function setMenuItemIdJ17(){
@@ -1017,7 +1001,12 @@ class vmrouterHelper {
 		//get all vm menus
 
 		$db			= JFactory::getDBO();
-		$query = 'SELECT * FROM `#__menu`  where `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language LIKE "'.$this->langTag.'")'  ;
+		$fallback = '';
+		$jLangTag = $this->Jlang->getTag();
+		if($jLangTag!=VmConfig::$langTag){
+			$fallback= 'or language = "'.$jLangTag.'"';
+		}
+		$query = 'SELECT * FROM `#__menu`  where `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language = "'.VmConfig::$langTag.'" '.$fallback.' )'  ;
 		$db->setQuery($query);
 		// 		vmdebug('setMenuItemIdJ17 q',$query);
 		$this->menuVmitems= $db->loadObjectList();

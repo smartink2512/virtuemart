@@ -625,7 +625,8 @@ class VmConfig {
 	public static $logFileName = 'com_virtuemart';
 	const LOGFILEEXT = '.log.php';
 
-	var $lang = FALSE;
+	public static $lang = FALSE;
+	public static $langTag = FALSE;
 
 	var $_params = array();
 	var $_raw = array();
@@ -887,16 +888,15 @@ class VmConfig {
 	 * @author Max Milbers
 	 * @return string valid langtag
 	 */
-	static public function setdbLanguageTag($langTag = 0) {
+	static public function setdbLanguageTag() {
 
-		if (self::$_jpConfig->lang) {
-			return self::$_jpConfig->lang;
+		if (self::$lang) {
+			return self::$lang;
 		}
 
 		$langs = (array)self::$_jpConfig->get('active_languages',array());
 
 		$siteLang = JRequest::getString('vmlang',FALSE );
-
 		$params = JComponentHelper::getParams('com_languages');
 		$defaultLang = $params->get('site', 'en-GB');//use default joomla
 
@@ -927,12 +927,12 @@ class VmConfig {
 				$siteLang = $langs[0];
 			}
 		}
+		self::$langTag = $siteLang;
+		self::$lang = strtolower(strtr($siteLang,'-','_'));
+		vmdebug('self::$_jpConfig->lang '.self::$lang);
+		defined('VMLANG') or define('VMLANG', self::$lang );
 
-		self::$_jpConfig->lang = strtolower(strtr($siteLang,'-','_'));
-		vmdebug('self::$_jpConfig->lang '.self::$_jpConfig->lang);
-		defined('VMLANG') or define('VMLANG', self::$_jpConfig->lang );
-
-		return self::$_jpConfig->lang;
+		return self::$lang;
 	}
 
 	/**
