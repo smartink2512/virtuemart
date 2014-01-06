@@ -52,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 
 <?php
-    if ($this->found_shipment_method OR (VmConfig::get('oncheckout_opc', 1)) ) {
+    if ($this->found_shipment_method  ) {
 
 	   echo "<fieldset>\n";
 	// if only one Shipment , should be checked by default

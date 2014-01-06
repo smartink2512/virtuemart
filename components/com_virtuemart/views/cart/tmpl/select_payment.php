@@ -54,7 +54,7 @@ if ($this->layoutName!='default') {
     </div>
 
 <?php
-     if ($this->found_payment_method OR (VmConfig::get('oncheckout_opc', 1) )) {
+     if ($this->found_payment_method) {
 
 
     echo "<fieldset>";
