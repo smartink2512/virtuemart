@@ -368,7 +368,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		$nb = count($paymentTables);
 			$pluginName = $this->renderPluginName($method, $where = 'post_payment');
 			$html = $this->renderByLayout('post_payment', array(
-
+				'order' =>$order,
 			                                                   'paymentInfos' => $paymentTables[$nb - 1],
 			                                                   'pluginName' => $pluginName,
 			                                                   'displayTotalInPaymentCurrency' => $totalInPaymentCurrency['display']
