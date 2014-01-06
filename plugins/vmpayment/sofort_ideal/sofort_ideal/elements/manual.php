@@ -17,29 +17,22 @@ defined ('JPATH_BASE') or die();
  * Renders a label element
  */
 
-class JElementManual extends JElement {
-
+class JFormFieldManual extends JFormField
+{
 	/**
 	 * Element name
 	 *
 	 * @access    protected
 	 * @var        string
 	 */
-	var $_name = 'Manual';
+	protected $type  = 'Manual';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
+	protected function getInput(){
 
 		$jlang = JFactory::getLanguage ();
 		$lang = $jlang->getTag ();
 		$langArray = explode ("-", $lang);
 		$lang = strtolower ($langArray[1]);
-		$getSofortLang='eng-DE';
-		 if ($lang=='de') {
-			 $getSofortLang = "ger-DE";
-	}
-
-
-
 
 		//iDEAL (EN): https://www.sofort.com/integrationCenter-eng-DE/content/view/full/4945
 // iDEAL (DE): https://www.sofort.com/integrationCenter-ger-DE/content/view/full/4945

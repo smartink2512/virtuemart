@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
  * @version $Id$
  * @package VirtueMart
  * @subpackage payment
- * @copyright Copyright (C) 2004-Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.   - All rights reserved.
+ * @copyright Copyright (C) 2004-${PHING.VM.COPYRIGHT}   - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -21,7 +21,7 @@ if (!class_exists('vmPSPlugin')) {
 }
 
 class plgVmPaymentSofort_Ideal extends vmPSPlugin {
-	const RELEASE = 'VM 2.0.26b';
+	const RELEASE = 'VM ${PHING.VM.RELEASE}';
 	const PAYMENT_CURRENCY_CODE_3 = 'EUR';
 
 	function __construct (& $subject, $config) {
@@ -339,8 +339,8 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 
-		$virtuemart_paymentmethod_id = vmRequest::getInt('pm', 0);
-		$order_number =vmRequest:::getString('on', 0);
+		$virtuemart_paymentmethod_id = VmRequest::getInt('pm', 0);
+		$order_number = VmRequest::getString('on', 0);
 
 		if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
@@ -384,12 +384,12 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 	 */
 	function plgVmOnUserPaymentCancel () {
 
-		$order_number vmRequest::::getString('on', '');
-		$virtuemart_paymentmethod_idvmRequest::t::getInt('pm', '');
+		$order_number = VmRequest::getString('on', '');
+		$virtuemart_paymentmethod_id = VmRequest::getInt('pm', '');
 		// cancel / abort link must be insterted in the SOFORT BE
 		// must be http://mysite.com/index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=-REASON1-
 
-		$error_codevmRequest::st::getString('error_codes', '');
+		$error_codes = VmRequest::getString('error_codes', '');
 		if (!empty($error_codes)) {
 			$errors = explode(",", $error_codes);
 			foreach ($errors as $error) {
@@ -457,10 +457,10 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 
 					 $this->logInfo('plgVmOnPaymentNotification '.var_export($_POST, true) , 'message')	;
 					 $this->logInfo('plgVmOnPaymentNotification  '.var_export($_REQUEST, true) , 'message');
-					// $paymentmethod_vmRequest::est::getString('reason_2');
+					// $paymentmethod_id = VmRequest::getString('reason_2');
 */
 
-		$order_numvmRequest::uest::getString('reason_1'); // is order number
+		$order_number = VmRequest::getString('reason_1'); // is order number
 
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
@@ -514,7 +514,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		);
 
 		foreach ($hash_keys as $key) {
-			$hash_data[$vmRequest::quest::getString($key, '');
+			$hash_data[$key] = VmRequest::getString($key, '');
 		}
 		$hash_data['notification_password'] = $method->notification_password;
 
@@ -539,13 +539,13 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		foreach ($columns as $key) {
 			if (substr($key, 0, $prefix_len) == $prefix) {
 				$postKey = substr($key, $prefix_len);
-				$dbvalues[vmRequest::equest::getString($postKey, '');
+				$dbvalues[$key] = VmRequest::getString($postKey, '');
 			} elseif (substr($key, 0, $prefix_hidden_len) == $prefix_hidden) {
 				$postKey = substr($key, $prefix_hidden_len);
-				$dbvaluesvmRequest::Request::getString($postKey, '');
+				$dbvalues[$key] = VmRequest::getString($postKey, '');
 			}
 		}
-		$dbvalues['hiddenvmRequest::JRequest::getString('hash', '');;
+		$dbvalues['hidden_hash'] = VmRequest::getString('hash', '');;
 		$dbvalues['virtuemart_paymentmethod_id'] = $payments[0]->virtuemart_paymentmethod_id;
 		$dbvalues['virtuemart_order_id'] = $virtuemart_order_id;
 		$dbvalues['order_number'] = $order_number;
@@ -574,7 +574,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 
 	function checkHash ($data) {
 
-		$hash_vmRequest:: JRequest::getString('hash');
+		$hash_received = VmRequest::getString('hash');
 		$data_implode = implode('|', $data);
 		$hash_calculated = sha1($data_implode);
 
@@ -837,7 +837,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 			return NULL; // Another method was selected, do nothing
 		}
 		// 1. Step 1: check the data
-		$payment_params['sofort_ideal_bank_selected_' . $cart->virtuemart_paymentmvmRequest::= JRequest::getVar('sofort_ideal_bank_selected_' . $cart->virtuemart_paymentmethod_id);
+		$payment_params['sofort_ideal_bank_selected_' . $cart->virtuemart_paymentmethod_id] = VmRequest::getVar('sofort_ideal_bank_selected_' . $cart->virtuemart_paymentmethod_id);
 
 		if (empty($payment_params['sofort_ideal_bank_selected_' . $cart->virtuemart_paymentmethod_id])) {
 			vmInfo('VMPAYMENT_SOFORT_IDEAL_PLEASE_SELECT_BANK');
@@ -1049,11 +1049,11 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 	}
 
 	static function   getSuccessUrl ($order) {
-		return JURI::base() . JROUTE::_("index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . vmRequest:: . JRequest::getInt('Itemid'), false);
+		return JURI::base() . JROUTE::_("index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . "&Itemid=" . VmRequest::getInt('Itemid'), false);
 	}
 
 	static function   getCancelUrl ($order) {
-		return JURI::base() . JROUTE::_("index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number .vmRequest::' . JRequest::getInt('Itemid'), false);
+		return JURI::base() . JROUTE::_("index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . '&Itemid=' . VmRequest::getInt('Itemid'), false);
 	}
 
 	static function   getNotificationUrl ($order_number) {

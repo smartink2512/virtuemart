@@ -6,7 +6,7 @@
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>Copyright (C) 2004-2013 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <version>2.0.22a</version>
+    <version>${PHING.VM.RELEASE}</version>
     <description>Standard payment plugin</description>
     <languages>
         <language tag="en-GB">en-GB.plg_vmpayment_standard.ini</language>
@@ -16,27 +16,43 @@
     </files>
     <config>
         <fields name="params">
-            <fieldset name="basic" addfieldpath="/administrator/components/com_virtuemart/fields">
+            <fieldset name="payment"  addfieldpath="/administrator/components/com_virtuemart/fields">
                 <field type="vmjpluginwarning"/>
-                <field name="payment_logos" type="media" directory="/images/stories/virtuemart/payment"
-                       hide_none="1" label="VMPAYMENT_STANDARD_LOGOS"
-                       size="40"
-                       description="VMPAYMENT_STANDARD_LOGOS_DESC" />
-                <field name="countries" multiple="true" type="vmcountries" scope="com_virtuemart" default="" label="VMPAYMENT_STANDARD_COUNTRIES" description="VMPAYMENT_STANDARD_COUNTRIES_DESC"/>
-                <field name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_STANDARD_CURRENCY" description="VMPAYMENT_STANDARD_CURRENCY_DESC"/>
-                <field name="status_pending" type="vmorderstate" scope="com_virtuemart" default="U" label="VMPAYMENT_STANDARD_STATUS_PENDING" description="VMPAYMENT_STANDARD_STATUS_PENDING_EXPLAIN"/>
-                <field name="send_invoice_on_order_null" type="radio" scope="com_virtuemart" default="1" label="VMPAYMENT_STANDARD_SEND_INVOICE_ON_ORDER_NULL" description="VMPAYMENT_STANDARD_SEND_INVOICE_ON_ORDER_NULL_EXPLAIN">
+                <field name="payment_currency" type="vmacceptedcurrency" default="" label="COM_VIRTUEMART_PS_CURRENCY"
+                       description="COM_VIRTUEMART_PS_CURRENCY_TIP"/>
+                <field name="status_pending" type="vmorderstate" scope="com_virtuemart" default="U"
+                       label="COM_VIRTUEMART_PS_STATUS_PENDING" description="COM_VIRTUEMART_PS_STATUS_PENDING_TIP"/>
+                <field name="send_invoice_on_order_null" type="radio" scope="com_virtuemart" default="1"
+                       label="VMPAYMENT_STANDARD_SEND_INVOICE_ON_ORDER_NULL"
+                       description="VMPAYMENT_STANDARD_SEND_INVOICE_ON_ORDER_NULL_TIP">
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
-                <field name="min_amount" type="text" label="VMPAYMENT_STANDARD_MIN_AMOUNT" description="VMPAYMENT_STANDARD_MIN_AMOUNT_EXPLAIN"/>
-                <field name="max_amount" type="text" label="VMPAYMENT_STANDARD_MAX_AMOUNT" description="VMPAYMENT_STANDARD_MAX_AMOUNT_EXPLAIN"/>
-                <field name="cost_per_transaction" type="text" label="VMPAYMENT_STANDARD_COST_PER_TRANSACTION" description="VMPAYMENT_STANDARD_COST_PER_TRANSACTION_EXPLAIN"/>
-                <field name="cost_percent_total" type="text" label="VMPAYMENT_STANDARD_COST_PERCENT_TOTAL" description="VMPAYMENT_STANDARD_COST_PERCENT_TOTAL_EXPLAIN"/>
-                <field name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_STANDARD_TAX" description="VMPAYMENT_STANDARD_TAX_DESC"/>
-                <field name="payment_info" type="textarea" cols="40" rows="30" label="VMPAYMENT_STANDARD_PAYMENTINFO" description="VMPAYMENT_STANDARD_PAYMENTINFO_EXPLAIN"/>
+            </fieldset>
+            <fieldset name="template">
+                <field name="payment_logos" type="media" directory="/images/stories/virtuemart/payment"
+                       hide_none="1" label="COM_VIRTUEMART_PS_LOGOS"
+                       size="40"
+                       description="COM_VIRTUEMART_PS_LOGOS_TIP"/>
+                <field name="payment_info" type="editor" cols="40" rows="30" label="VMPAYMENT_STANDARD_PAYMENTINFO"
+                       description="VMPAYMENT_STANDARD_PAYMENTINFO_TIP"/>
+            </fieldset>
+            <fieldset name="restrictions" >
+                <field name="countries" multiple="true" type="vmcountries" scope="com_virtuemart" default=""
+                       label="COM_VIRTUEMART_PS_COUNTRIES" description="COM_VIRTUEMART_PS_COUNTRIES_TIP"/>
+                <field name="min_amount" type="text" label="COM_VIRTUEMART_PS_MIN_AMOUNT"
+                       description="COM_VIRTUEMART_PS_MIN_AMOUNT_TIP"/>
+                <field name="max_amount" type="text" label="COM_VIRTUEMART_PS_MAX_AMOUNT"
+                       description="COM_VIRTUEMART_PS_MAX_AMOUNT_TIP"/>
+            </fieldset>
+            <fieldset name="fee">
+                <field name="cost_per_transaction" type="text" label="COM_VIRTUEMART_PS_COST_PER_TRANSACTION"
+                       description="COM_VIRTUEMART_PS_COST_PER_TRANSACTION_TIP"/>
+                <field name="cost_percent_total" type="text" label="COM_VIRTUEMART_PS_COST_PERCENT_TOTAL"
+                       description="COM_VIRTUEMART_PS_COST_PERCENT_TOTAL_TIP"/>
+                <field name="tax_id" type="vmtaxes" scope="com_virtuemart" label="COM_VIRTUEMART_PS_TAX"
+                       description="COM_VIRTUEMART_PS_TAX_TIP"/>
             </fieldset>
         </fields>
     </config>
-
 </extension>

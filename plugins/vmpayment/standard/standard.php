@@ -145,7 +145,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 
 		//We delete the old stuff
 		$cart->emptyCart ();
-		vmRequest::setVar ('html', $html);
+		VmRequest::setVar ('html', $html);
 		return TRUE;
 	}
 
