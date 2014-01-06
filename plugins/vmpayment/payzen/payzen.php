@@ -154,14 +154,14 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		$uri = JURI::getInstance ($url_return);
 		//$uri->setVar('pelement', $this->payment_element);
 		$uri->setVar ('pm', $order['details']['BT']->virtuemart_paymentmethod_id);
-		$uri->setVar ('Itemid', vmRequest::getInt ('Itemid'));
+		$uri->setVar ('Itemid', VmRequest::getInt ('Itemid'));
 		$api->set ('url_return', $uri->toString ());
 
 		$url_cancel = JROUTE::_ (JURI::root () . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel');
 		$uri = JURI::getInstance ($url_cancel);
 		$uri->setVar ('on', $order['details']['BT']->order_number);
 		$uri->setVar ('pm', $order['details']['BT']->virtuemart_paymentmethod_id);
-		$uri->setVar ('Itemid',vmRequest:::getInt ('Itemid'));
+		$uri->setVar ('Itemid',VmRequest::getInt ('Itemid'));
 		$api->set ('url_cancel', $uri->toString ());
 
 		// Set the language code
@@ -296,7 +296,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 		}
 		// the payment itself should send the parameter needed.
-		$virtuemart_paymentmethod_id vmRequest::::getInt ('pm', 0);
+		$virtuemart_paymentmethod_id = VmRequest::getInt ('pm', 0);
 		//vmDebug($this->_name.'  plgVmOnPaymentResponseReceived',$virtuemart_paymentmethod_id);
 		$vendorId = 0;
 		if (!($method = $this->getVmPluginMethod ($virtuemart_paymentmethod_id))) {
@@ -311,7 +311,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		//$this->_debug = true; // enable debug
 		$this->logInfo ('plgVmOnPaymentResponseReceived -- user returned back from ' . $this->_name, 'message');
 
-		$datavmRequest::t::get ('request');
+		$data = VmRequest::get ('request');
 
 		// Load API
 		if (!class_exists ('PayzenResponse')) {
@@ -338,7 +338,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 			// vmdebug('plgVmOnPaymentResponseReceived ' . $this->_name, $data, $resp->get('order_id'));
 			$this->logInfo ('plgVmOnPaymentResponseReceived -- payment check attempted on non existing order : ' . $resp->get ('order_id'), 'error');
 			$html = $this->_getHtmlPaymentResponse ('VMPAYMENT_' . $this->_name . '_ERROR_MSG', FALSE);
-			// 	vmRequest::st::setVar('paymentResponseHtml', $html, 'post');
+			// 	    VmRequest::setVar('paymentResponseHtml', $html, 'post');
 			return NULL;
 		}
 
@@ -349,13 +349,13 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 			$currency = $resp->api->findCurrencyByNumCode ($resp->get ('currency'))->alpha3;
 			$amount = ($resp->get ('amount') / 100) . ' ' . $currency;
 			$html = $this->_getHtmlPaymentResponse ('VMPAYMENT_' . $this->_name . '_SUCCESS_MSG', TRUE, $resp->get ('order_id'), $amount);
-vmRequest::est::setVar('paymentResponseHtml', $html, 'post');
+			//VmRequest::setVar('paymentResponseHtml', $html, 'post');
 
 			$new_status = $method->order_success_status;
 		}
 		else {
 			$html = $this->_getHtmlPaymentResponse ('VMPAYMENT_' . $this->_name . '_FAILURE_MSG', FALSE);
-			//vmRequest::uest::setVar('paymentResponseHtml', $html, 'post');
+			// 	    VmRequest::setVar('paymentResponseHtml', $html, 'post');
 			$new_status = $method->order_failure_status;
 		}
 
@@ -401,7 +401,7 @@ vmRequest::est::setVar('paymentResponseHtml', $html, 'post');
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 
-		$order_nuvmRequest::quest::getString ('on');
+		$order_number = VmRequest::getString ('on');
 		if (!$order_number) {
 			return FALSE;
 		}
@@ -417,7 +417,8 @@ vmRequest::est::setVar('paymentResponseHtml', $html, 'post');
 		$field = $this->_name . '_custom';
 		if (strcmp ($paymentTable->$field, $return_context) === 0) {
 			$this->handlePaymentUserCancel ($virtuemart_order_id);
-vmRequest::equest::setVar('paymentResponse', $returnValue);
+		}
+		//VmRequest::setVar('paymentResponse', $returnValue);
 		return TRUE;
 	}
 
@@ -431,7 +432,7 @@ vmRequest::equest::setVar('paymentResponse', $returnValue);
 	 */
 	function plgVmOnPaymentNotification () {
 		// platform params and payment data
-	vmRequest::Request::get ('post');
+		$data = VmRequest::get ('post');
 
 		$this->logInfo ('plgVmOnPaymentNotification START ', 'error');
 		if (!array_key_exists ('vads_order_id', $data) || !isset($data['vads_order_id'])) {
