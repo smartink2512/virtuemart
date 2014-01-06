@@ -258,6 +258,16 @@ class VirtueMartViewCart extends VmView {
 		$returnValues = $dispatcher->trigger('plgVmDisplayListFEShipment', array( $this->cart, $selectedShipment, &$shipments_shipment_rates));
 		// if no shipment rate defined
 		$found_shipment_method =count($shipments_shipment_rates);
+
+		if ($found_shipment_method== 0 AND empty($this->cart->BT))  {
+			$redirectMsg = JText::_('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST');
+			if (VmConfig::get('oncheckout_opc', 1)) {
+				vmInfo($redirectMsg);
+			} else {
+				$mainframe = JFactory::getApplication();
+				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $redirectMsg);
+			}
+		}
 		$shipment_not_found_text = vmText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');
 		$this->assignRef('shipment_not_found_text', $shipment_not_found_text);
 		$this->assignRef('shipments_shipment_rates', $shipments_shipment_rates);
@@ -297,7 +307,16 @@ class VirtueMartViewCart extends VmView {
 			$link=''; // todo
 			$payment_not_found_text = vmText::sprintf('COM_VIRTUEMART_CART_NO_PAYMENT_METHOD_PUBLIC', '<a href="'.$link.'" rel="nofollow">'.$link.'</a>');
 		}
+		if ($found_payment_method== 0 AND empty($this->cart->BT))  {
+			$redirectMsg = JText::_('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST');
+			if (VmConfig::get('oncheckout_opc', 1)) {
+				vmInfo($redirectMsg);
+			} else {
+				$mainframe = JFactory::getApplication();
+				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $redirectMsg);
+			}
 
+		}
 		$this->assignRef('payment_not_found_text', $payment_not_found_text);
 		$this->assignRef('paymentplugins_payments', $paymentplugins_payments);
 		$this->assignRef('found_payment_method', $found_payment_method);
