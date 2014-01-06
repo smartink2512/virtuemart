@@ -750,10 +750,9 @@ class vmrouterHelper {
 	public function setLangs(){
 
 		$this->vmlang = VMLANG;
-
+		$this->Jlang =JFactory::getLanguage();
 		if ( $this->seo_translate ) {
 			// use translator
-			$this->Jlang =JFactory::getLanguage();
 			$extension = 'com_virtuemart.sef';
 			$base_dir = JPATH_SITE;
 			$this->Jlang->load($extension, $base_dir);

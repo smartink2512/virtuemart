@@ -868,8 +868,8 @@ class VmConfig {
 			self::$_jpConfig->_params = $pair;
 
 			self::$_jpConfig->set('sctime',microtime(TRUE));
-			self::setdbLanguageTag();
-			//self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
+			//self::setdbLanguageTag();
+			self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
 
 			vmTime('loadConfig db '.$install,'loadConfig');
 
@@ -894,9 +894,10 @@ class VmConfig {
 			return self::$lang;
 		}
 
-		$langs = (array)self::$_jpConfig->get('active_languages',array());
+		$langs = (array)self::get('active_languages',array());
 
 		$siteLang = JRequest::getString('vmlang',FALSE );
+		//vmdebug('My $siteLang by JRequest::getString("vmlang",JRequest::getString("lang")) '.$siteLang);
 		$params = JComponentHelper::getParams('com_languages');
 		$defaultLang = $params->get('site', 'en-GB');//use default joomla
 
@@ -929,7 +930,7 @@ class VmConfig {
 		}
 		self::$langTag = $siteLang;
 		self::$lang = strtolower(strtr($siteLang,'-','_'));
-		vmdebug('self::$_jpConfig->lang '.self::$lang);
+		vmdebug('$siteLang: '.$siteLang.' self::$_jpConfig->lang '.self::$lang);
 		defined('VMLANG') or define('VMLANG', self::$lang );
 
 		return self::$lang;
