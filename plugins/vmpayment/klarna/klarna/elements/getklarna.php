@@ -11,24 +11,25 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  */
-defined ('JPATH_BASE') or die();
+defined('JPATH_BASE') or die();
 
 /**
  * Renders a label element
  */
 if (JVM_VERSION === 2) {
-	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
-	if (!class_exists ('KlarnaHandler')) {
-		require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
+	require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
+	if (!class_exists('KlarnaHandler')) {
+		require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
 	}
 } else {
-	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
-	if (!class_exists ('KlarnaHandler')) {
-		require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
+	require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
+	if (!class_exists('KlarnaHandler')) {
+		require(JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'klarnahandler.php');
 	}
 }
+jimport('joomla.form.formfield');
 
-class JElementGetKlarna extends JElement {
+class JFormFieldGetklarna extends JFormField {
 
 	/**
 	 * Element name
@@ -36,15 +37,21 @@ class JElementGetKlarna extends JElement {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $_name = 'getKlarna';
+	protected $type = 'GetKlarna';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
+	protected function getLabel() {
+		$countriesData = KlarnaHandler::countriesData();
+		$logo = '<a href="https://www.klarna.com" target="_blank"><img src="https://cdn.klarna.com/public/images/SE/logos/v1/basic/SE_basic_logo_std_blue-black.png?width=100&" /></a> ';
+		return $logo ;
 
-		$jlang = JFactory::getLanguage ();
-		$lang = $jlang->getTag ();
-		$langArray = explode ("-", $lang);
-		$lang = strtolower ($langArray[1]);
-		$countriesData = KlarnaHandler::countriesData ();
+	}
+	protected function getInput() {
+
+		$jlang = JFactory::getLanguage();
+		$lang = $jlang->getTag();
+		$langArray = explode("-", $lang);
+		$lang = strtolower($langArray[1]);
+		$countriesData = KlarnaHandler::countriesData();
 		$signLang = "en";
 		foreach ($countriesData as $countryData) {
 			if ($countryData['country_code'] == $lang) {
@@ -55,8 +62,8 @@ class JElementGetKlarna extends JElement {
 
 		$url = "https://merchants.klarna.com/signup/?locale=" . $signLang . "&partner_id=7829355537eae268a17667c199e7c7662d3391f7&utm_campaign=Platform&utm_medium=Partners&utm_source=Virtuemart";
 
-		$logo = '<img src="' . JURI::root () . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/get_klarna_now.jpg" />';
-		$html = '<a target="_blank" href="'.$url.'" id="klarna_getklarna_link" ">' . $logo . '</a>';
+		$logo = '<img src="' . JURI::root() . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/get_klarna_now.jpg" />';
+		$html = '<a target="_blank" href="' . $url . '" id="klarna_getklarna_link" ">' . $logo . '</a>';
 
 		return $html;
 	}

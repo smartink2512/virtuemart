@@ -18,7 +18,9 @@ defined ('JPATH_BASE') or die();
  */
 
 
-class JElementGetHeidelpay extends JElement {
+jimport('joomla.form.formfield');
+
+class JFormFieldgetHeidelpay extends JFormField {
 
 	/**
 	 * Element name
@@ -26,9 +28,9 @@ class JElementGetHeidelpay extends JElement {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $_name = 'getHeidelpay';
+	protected $type =  'getHeidelpay';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
+	protected function getInput() {
 
 		$js = '
 //<![CDATA[
@@ -49,7 +51,7 @@ class JElementGetHeidelpay extends JElement {
 
 		$doc = JFactory::getDocument ();
 		$doc->addScriptDeclaration ($js);
-		$cid = vmRequest::getvar ('cid', NULL, 'array');
+		$cid = VmRequest::getvar ('cid', NULL, 'array');
 		if (is_Array ($cid)) {
 			$virtuemart_paymentmethod_id = $cid[0];
 		} else {
