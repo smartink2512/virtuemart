@@ -6,7 +6,7 @@
  * @version $Id: authorize.php 5122 2011-12-18 22:24:49Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
+ * @copyright ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -347,7 +347,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 			return NULL; // Another method was selected, do nothing
 		}
 		$this->_getAuthorizeNetFromSession();
-        return $this->_validate_creditcard_data(TRUE);
+		return $this->_validate_creditcard_data(TRUE);
 
 	}
 
@@ -380,13 +380,13 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 			return NULL; // Another method was selected, do nothing
 		}
 
-		//$cart->creditcard_id = vmRequest::getVar('creditcard', '0');
-		$this->_cc_type = vmRequest::getVar('cc_type_' . $cart->virtuemart_paymentmethod_id, '');
-		$this->_cc_name = vmRequest::getVar('cc_name_' . $cart->virtuemart_paymentmethod_id, '');
-		$this->_cc_number = str_replace(" ", "", vmRequest::getVar('cc_number_' . $cart->virtuemart_paymentmethod_id, ''));
-		$this->_cc_cvv = vmRequest::getVar('cc_cvv_' . $cart->virtuemart_paymentmethod_id, '');
-		$this->_cc_expire_month = vmRequest::getVar('cc_expire_month_' . $cart->virtuemart_paymentmethod_id, '');
-		$this->_cc_expire_year = vmRequest::getVar('cc_expire_year_' . $cart->virtuemart_paymentmethod_id, '');
+		//$cart->creditcard_id = VmRequest::getVar('creditcard', '0');
+		$this->_cc_type = VmRequest::getVar('cc_type_' . $cart->virtuemart_paymentmethod_id, '');
+		$this->_cc_name = VmRequest::getVar('cc_name_' . $cart->virtuemart_paymentmethod_id, '');
+		$this->_cc_number = str_replace(" ", "", VmRequest::getVar('cc_number_' . $cart->virtuemart_paymentmethod_id, ''));
+		$this->_cc_cvv = VmRequest::getVar('cc_cvv_' . $cart->virtuemart_paymentmethod_id, '');
+		$this->_cc_expire_month = VmRequest::getVar('cc_expire_month_' . $cart->virtuemart_paymentmethod_id, '');
+		$this->_cc_expire_year = VmRequest::getVar('cc_expire_year_' . $cart->virtuemart_paymentmethod_id, '');
 
 		if (!$this->_validate_creditcard_data(TRUE)) {
 			return FALSE; // returns string containing errors
@@ -438,7 +438,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		}
 		$sandboxWarning='';
 		if ($plugin->sandbox ) {
-		$sandboxWarning .= ' <span style="color:red;font-weight:bold">Sandbox (' . $plugin->virtuemart_paymentmethod_id . ')</span><br />';
+			$sandboxWarning .= ' <span style="color:red;font-weight:bold">Sandbox (' . $plugin->virtuemart_paymentmethod_id . ')</span><br />';
 		}
 		if (!empty($plugin->$plugin_desc)) {
 			$description = '<span class="' . $this->_type . '_description">' . $plugin->$plugin_desc  . '</span>';
@@ -572,7 +572,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 				$new_status = $this->_currentMethod->payment_approved_status;
 			} else {
 				if ($this->declined) {
-					vmRequest::setVar('html', $html);
+					VmRequest::setVar('html', $html);
 					$new_status = $this->_currentMethod->payment_declined_status;
 					$this->_handlePaymentCancel($order['details']['BT']->virtuemart_order_id, $html);
 					return;
@@ -592,7 +592,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 
 		//We delete the old stuff
 		$cart->emptyCart();
-		vmRequest::setVar('html', $html);
+		VmRequest::setVar('html', $html);
 	}
 
 	function _handlePaymentCancel ($virtuemart_order_id, $html)
@@ -1213,15 +1213,15 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 	}
 	function removeCC($data) {
 		$keys=array('x_card_num=','x_card_code=');
-		 foreach($keys as $key) {
-			 preg_match('/'.$key.'[^&]+&/i',$data, $result);
-			 if (is_array($result) and isset($result[0])){
-				 $field=$result[0];
-				 $old_value=substr($field,strlen($key), -1);
-				 $new_value=str_repeat('*', strlen($old_value));
-				 $data=str_replace($old_value,$new_value,$data);
-			 }
-		 }
+		foreach($keys as $key) {
+			preg_match('/'.$key.'[^&]+&/i',$data, $result);
+			if (is_array($result) and isset($result[0])){
+				$field=$result[0];
+				$old_value=substr($field,strlen($key), -1);
+				$new_value=str_repeat('*', strlen($old_value));
+				$data=str_replace($old_value,$new_value,$data);
+			}
+		}
 
 		return $data;
 	}
