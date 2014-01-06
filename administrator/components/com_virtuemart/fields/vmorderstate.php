@@ -1,5 +1,5 @@
 <?php
-defined ('_JEXEC') or die();
+defined('_JEXEC') or die();
 /**
  *
  * @package    VirtueMart
@@ -14,12 +14,7 @@ defined ('_JEXEC') or die();
  * other free or open source software licenses.
  * @version $Id$
  */
-/*
- * This class is used by VirtueMart Payment or Shipment Plugins
- * which uses JParameter
- * So It should be an extension of JFormField
- * Those plugins cannot be configured througth the Plugin Manager anyway.
- */
+
 class JFormFieldVmOrderState extends JFormFieldList {
 
 	/**
@@ -28,22 +23,21 @@ class JFormFieldVmOrderState extends JFormFieldList {
 	 * @var    string
 	 * @since  11.1
 	 */
-	public $type = 'vmOrderStates';
+	protected $type = 'vmOrderStates';
 
-	protected function getOptions()
-	{
-		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
+	protected function getOptions() {
+		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
 
 		$options = array();
-		$db = JFactory::getDBO ();
+		$db = JFactory::getDBO();
 
 		$query = 'SELECT `order_status_code` AS value, `order_status_name` AS text
                  FROM `#__virtuemart_orderstates`
                  WHERE `virtuemart_vendor_id` = 1
                  ORDER BY `ordering` ASC ';
 
-		$db->setQuery ($query);
-		$values = $db->loadObjectList ();
+		$db->setQuery($query);
+		$values = $db->loadObjectList();
 		$class = '';
 		foreach ($values as $v) {
 			$options[] = JHtml::_('select.option', $v->value, vmText::_($v->text));

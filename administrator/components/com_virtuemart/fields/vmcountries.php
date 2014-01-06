@@ -3,7 +3,7 @@ defined('_JEXEC') or die();
 
 /**
  *
- * @package	VirtueMart
+ * @package    VirtueMart
  * @subpackage Plugins  - Elements
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
@@ -26,29 +26,27 @@ jimport('joomla.form.formfield');
 
 class JFormFieldVmCountries extends JFormFieldList {
 
-    /**
-     * Element name
-     * @access	protected
-     * @var		string
-     */
-	public $type = 'countries';
+	/**
+	 * Element name
+	 * @access    protected
+	 * @var        string
+	 */
+	protected $type = 'countries';
 
-	protected function getOptions()
-	{
+	protected function getOptions() {
 		$options = array();
 		$attr = '';
 
 		// Initialize some field attributes.
-		$attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-		$attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
-		$attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
+		$attr .= $this->element['class'] ? ' class="' . (string)$this->element['class'] . '"' : '';
+		$attr .= ((string)$this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
+		$attr .= $this->element['size'] ? ' size="' . (int)$this->element['size'] . '"' : '';
 		$attr .= $this->multiple ? ' multiple="multiple"' : '';
 
 
 		$query = 'SELECT `virtuemart_country_id` AS value, `country_name` AS text FROM `#__virtuemart_countries`
-               		WHERE `published` = 1 ORDER BY `country_name` ASC '
-		;
-		$db =   JFactory::getDBO();
+               		WHERE `published` = 1 ORDER BY `country_name` ASC ';
+		$db = JFactory::getDBO();
 		$db->setQuery($query);
 		$values = $db->loadObjectList();
 		foreach ($values as $v) {

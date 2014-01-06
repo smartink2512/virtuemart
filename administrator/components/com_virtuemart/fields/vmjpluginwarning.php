@@ -2,7 +2,7 @@
 defined('_JEXEC') or die();
 /**
  *
- * @package	VirtueMart
+ * @package    VirtueMart
  * @subpackage Plugins  - Elements
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
@@ -14,12 +14,9 @@ defined('_JEXEC') or die();
  * other free or open source software licenses.
  * @version $Id$
  */
-/*
- * This class is used by VirtueMart Payment or Shipment Plugins
- * which uses JParameter
- * So It should be an extension of JFormField
- * Those plugins cannot be configured througth the Plugin Manager anyway.
- */
+
+if (!class_exists('vmRequest')) require(JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/config.php');
+
 class JFormFieldVmjpluginwarning extends JFormField {
 
 	/**
@@ -28,12 +25,12 @@ class JFormFieldVmjpluginwarning extends JFormField {
 	 * @var    string
 	 * @since  11.1
 	 */
-	public $type = 'vmjpluginwarning';
+	protected $type = 'vmjpluginwarning';
 
-	protected function getLabel()
-	{
+	protected function getLabel() {
 
 	}
+
 	/**
 	 * Method to get the field input markup.
 	 *
@@ -41,16 +38,15 @@ class JFormFieldVmjpluginwarning extends JFormField {
 	 *
 	 * @since   11.1
 	 */
-	protected function getInput()
-	{
+	protected function getInput() {
 		$lang = JFactory::getLanguage();
-		$lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
+		$lang->load('com_virtuemart', JPATH_ADMINISTRATOR);
 
 		$option = vmRequest::getCmd('option');
 		if ($option == 'com_virtuemart')
 			return null;
 		else
-			return vmText::_('COM_VIRTUEMART_PLUGIN_WARNING');
+			return '<span class="alert alert-info">'.vmText::_('COM_VIRTUEMART_PLUGIN_WARNING').'</span>';
 	}
 
 }

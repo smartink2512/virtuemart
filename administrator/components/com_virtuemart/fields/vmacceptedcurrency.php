@@ -3,7 +3,7 @@ defined('JPATH_PLATFORM') or die;
 
 /**
  *
- * @package	VirtueMart
+ * @package    VirtueMart
  * @subpackage Plugins  - Elements
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
@@ -22,7 +22,7 @@ if (!class_exists('VmConfig'))
  * This class is used by VirtueMart Payment or Shipment Plugins
  * which uses JParameter
  * So It should be an extension of JFormField
- * Those plugins cannot be configured througth the Plugin Manager anyway.
+ * Those plugins cannot be configured through the Plugin Manager anyway.
  */
 JFormHelper::loadFieldClass('list');
 jimport('joomla.form.formfield');
@@ -35,14 +35,13 @@ class JFormFieldVmAcceptedCurrency extends JFormFieldList {
 	 * @var    string
 	 * @since  11.1
 	 */
-	public $type = 'vmacceptedcurrency';
+	protected $type = 'vmacceptedcurrency';
 
-	protected function getOptions()
-	{
+	protected function getOptions() {
 		$options = array();
 		if (!class_exists('VirtueMartModelVendor'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-		$vendorId = 1;//VirtueMartModelVendor::getLoggedVendor();
+		$vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
 		$db = JFactory::getDBO();
 
 		$q = 'SELECT `vendor_accepted_currencies`, `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`=' . $vendorId;
@@ -56,7 +55,7 @@ class JFormFieldVmAcceptedCurrency extends JFormFieldList {
 		$db->setQuery($q);
 		$values = $db->loadObjectList();
 
-		$options[] = JHtml::_('select.option', 0 , vmText::_('COM_VIRTUEMART_DEFAULT_VENDOR_CURRENCY'));
+		$options[] = JHtml::_('select.option', 0, vmText::_('COM_VIRTUEMART_DEFAULT_VENDOR_CURRENCY'));
 		foreach ($values as $v) {
 			$options[] = JHtml::_('select.option', $v->value, $v->text);
 		}

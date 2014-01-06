@@ -2,7 +2,7 @@
 defined('_JEXEC') or die();
 /**
  *
- * @package	VirtueMart
+ * @package    VirtueMart
  * @subpackage Plugins  - Elements
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
@@ -22,22 +22,22 @@ defined('_JEXEC') or die();
  */
 
 if (!class_exists('VmConfig'))
-    require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+	require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 
 if (!class_exists('ShopFunctions'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 
-class JFormFieldVmWeightunit extends JFormField{
+class JFormFieldVmWeightunit extends JFormField {
 
-    /**
-     * Element name
-     * @access	protected
-     * @var		string
-     */
-    var $type = 'WeightUnit';
+	/**
+	 * Element name
+	 * @access    protected
+	 * @var        string
+	 */
+	protected $type = 'WeightUnit';
 
-    	function getInput() {
-        return ShopFunctions::renderWeightUnitList( $this->name, $this->value);
-    }
+	protected function getInput() {
+		return ShopFunctions::renderWeightUnitList($this->name, $this->value);
+	}
 
 }

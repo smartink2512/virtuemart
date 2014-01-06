@@ -2,7 +2,7 @@
 defined('JPATH_PLATFORM') or die;
 /**
  *
- * @package	VirtueMart
+ * @package    VirtueMart
  * @subpackage Plugins  - Elements
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
@@ -36,12 +36,12 @@ class JFormFieldVmTaxes extends JFormField {
 	 * @var    string
 	 * @since  11.1
 	 */
-	public $type ='vmtaxes';
+	protected $type = 'vmtaxes';
 
-	function getInput() {
+	protected function getInput() {
 
 
-		return ShopFunctions::renderTaxList($this->value,  $this->name, '');
+		return ShopFunctions::renderTaxList($this->value, $this->name, '');
 
 		// $class = 'multiple="true" size="10"';
 		// return JHTML::_('select.genericlist', $taxrates, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);

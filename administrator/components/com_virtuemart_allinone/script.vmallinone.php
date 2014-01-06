@@ -66,15 +66,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
 			//$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
 			//$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
-			$this->installPlugin ('Moneybookers', 'plugin', 'moneybookers', 'vmpayment');
-			$this->installPlugin ('Moneybookers Credit Cards', 'plugin', 'moneybookers_acc', 'vmpayment');
-			$this->installPlugin ('Moneybookers Lastschrift', 'plugin', 'moneybookers_did', 'vmpayment');
-			$this->installPlugin ('Moneybookers iDeal', 'plugin', 'moneybookers_idl', 'vmpayment');
-			$this->installPlugin ('Moneybookers Giropay', 'plugin', 'moneybookers_gir', 'vmpayment');
-			$this->installPlugin ('Moneybookers Sofortueberweisung', 'plugin', 'moneybookers_sft', 'vmpayment');
-			$this->installPlugin ('Moneybookers Przelewy24', 'plugin', 'moneybookers_pwy', 'vmpayment');
-			$this->installPlugin ('Moneybookers Online Bank Transfer', 'plugin', 'moneybookers_obt', 'vmpayment');
-			$this->installPlugin ('Moneybookers Skrill Digital Wallet', 'plugin', 'moneybookers_wlt', 'vmpayment');
+			$this->installPlugin ('Skrill', 'plugin', 'skrill', 'vmpayment');
 			$this->installPlugin ('Authorize.net', 'plugin', 'authorizenet', 'vmpayment');
 
 			$this->installPlugin ('Sofort iDeal', 'plugin', 'sofort_ideal', 'vmpayment');
@@ -85,6 +77,9 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('Product specification', 'plugin', 'specification', 'vmcustom', 1);
 			$this->installPlugin ('Stockable variants', 'plugin', 'stockable', 'vmcustom', 1);
 			$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation' );
+
+			$this->moneyBookersToSkrill ();
+
 
 			// 			$table = '#__virtuemart_customs';
 			// 			$fieldname = 'field_type';
@@ -193,11 +188,11 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				$this->checkAddFieldToTable('#__virtuemart_shipment_weight_countries',$key,$value);
 				}*/
 
-				echo "<H3>Installing Virtuemart Plugins and modules Success.</h3>";
+				echo "<H3>Installing VirtueMart Plugins and modules Success.</h3>";
 				echo "<H3>You may directly uninstall this component. Your plugins will remain. But we advice to keep the AIO installer for updating</h3>";
 
 			} else {
-				echo "<H3>Updated Virtuemart Plugin tables</h3>";
+				echo "<H3>Updated VirtueMart Plugin tables</h3>";
 			}
 			$this->updateOrderingExtensions();
 
@@ -356,6 +351,33 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 		}
 
+		function moneyBookersToSkrill() {
+			// check if there is one money bookers payment
+			$db = JFactory::getDBO();
+			$q = 'SELECT * FROM `#__virtuemart_paymentmethod` WHERE `payment_element` LIKE "moneybookers_%"  ';
+			$db->setQuery($q);
+			$moneybookersList = $db->loadObjectList();
+
+			if ($moneybookersList) {
+				// get the Skrill joomla plugin id
+				$q = 'SELECT `extension_id` FROM `#__extensions` WHERE `element` = "skrill" and folder = "vmpayment" ';
+				$db->setQuery($q);
+				$skrill_jplugin_id = $db->loadResult();
+				foreach ($moneybookersList as $moneybookers) {
+					$skrill_element = str_replace("moneybookers_", "", $moneybookers->payment_element);
+					$skrill_params = $moneybookers->payment_element . "product=" . strtoupper($skrill_element) . "|";
+					$q = 'UPDATE `#__virtuemart_paymentmethod` SET `payment_params`="' . $skrill_params . '" , `payment_jplugin_id`="' . $skrill_jplugin_id . '" `payment_element`="skrill"  WHERE ``virtuemart_paymentmethod_id``= ' . $moneybookers->virtuemart_paymentmethod_id;
+					$db->setQuery($q);
+					$db->query();
+					//  set the money bookers plugin in Joomla INVALID
+					$q = 'UPDATE `#__extensions` SET `state`="-1", `enabled`=0   WHERE ``extension_id``= ' . $moneybookers->payment_jplugin_id;
+					$db->setQuery($q);
+					$db->query();
+
+				}
+			}
+
+		}
 
 		public function updatePluginTable ($name, $type, $element, $group, $dst) {
 

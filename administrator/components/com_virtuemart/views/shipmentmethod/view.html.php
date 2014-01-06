@@ -49,7 +49,8 @@ class VirtuemartViewShipmentmethod extends VmView {
 
 		$layoutName = VmRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
-		        $shipment = $model->getShipment();
+			VmConfig::loadJLang('plg_vmshipment', false);
+			$shipment = $model->getShipment();
 			$shipment->params = $this->getParams($shipment->shipment_params);
 
 			// Get the payment XML.

@@ -3,7 +3,7 @@ defined('JPATH_PLATFORM') or die;
 
 /**
  *
- * @package	VirtueMart
+ * @package    VirtueMart
  * @subpackage Plugins  - Elements
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
@@ -33,25 +33,23 @@ class JFormFieldVmCurrencies extends JFormFieldList {
 	 * @var    string
 	 * @since  11.1
 	 */
-	public $type = 'vmCurrencies';
+	protected $type = 'vmCurrencies';
 
-	protected function getOptions()
-	{
+	protected function getOptions() {
 		$options = array();
 
-		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		if (!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 		$vendor_id = VirtueMartModelVendor::getLoggedVendor();
 		// set currency_id to logged vendor
 		if (empty($this->value)) {
-			$currency=VirtueMartModelVendor::getVendorCurrency ($vendor_id);
-			$this->value= $currency->virtuemart_currency_id;
+			$currency = VirtueMartModelVendor::getVendorCurrency($vendor_id);
+			$this->value = $currency->virtuemart_currency_id;
 		}
 		// why not logged vendor ?
-		$db =   JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = 'SELECT `virtuemart_currency_id` AS value, `currency_name` AS text
 			FROM `#__virtuemart_currencies`
-			WHERE `virtuemart_vendor_id` = "1"  AND `published` = "1" ORDER BY `currency_name` ASC '
-		;
+			WHERE `virtuemart_vendor_id` = "1"  AND `published` = "1" ORDER BY `currency_name` ASC ';
 		// default value should be vendor currency
 		$db->setQuery($query);
 		$values = $db->loadObjectList();

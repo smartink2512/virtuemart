@@ -2,7 +2,7 @@
 defined('_JEXEC') or die();
 /**
  *
- * @package	VirtueMart
+ * @package    VirtueMart
  * @subpackage Plugins  - Elements
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
@@ -15,32 +15,32 @@ defined('_JEXEC') or die();
  * @version $Id$
  */
 if (!class_exists('VmConfig'))
-    require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+	require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 
 if (!class_exists('ShopFunctions'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 
-if(!class_exists('TableManufacturers')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'manufacturers.php');
-if (!class_exists( 'VirtueMartModelManufacturer' ))
-   JLoader::import( 'manufacturer', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models' );
+if (!class_exists('TableManufacturers')) require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'manufacturers.php');
+if (!class_exists('VirtueMartModelManufacturer'))
+	JLoader::import('manufacturer', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models');
 /*
  * This element is used by the menu manager
  * Should be that way
  */
 
-class JFormFieldManufacturersmenu extends JFormField{
+class JFormFieldManufacturersmenu extends JFormField {
 
 
-	var $_name = 'manufacturersmenu';
+	protected $_name = 'manufacturersmenu';
 
 	function getInput() {
 
-	    $lang = JFactory::getLanguage();
-	    $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
-	$model =VmModel::getModel('Manufacturer');
-	$manufacturers = $model->getManufacturers(true, true, false);
+		$lang = JFactory::getLanguage();
+		$lang->load('com_virtuemart', JPATH_ADMINISTRATOR);
+		$model = VmModel::getModel('Manufacturer');
+		$manufacturers = $model->getManufacturers(true, true, false);
 
-		return JHTML::_('select.genericlist',  $manufacturers, $this->name, 'class="inputbox"   ', 'value', 'text', $this->value, $this->id);
+		return JHTML::_('select.genericlist', $manufacturers, $this->name, 'class="inputbox"   ', 'value', 'text', $this->value, $this->id);
 
 	}
 

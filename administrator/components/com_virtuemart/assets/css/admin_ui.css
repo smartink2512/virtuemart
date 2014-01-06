@@ -159,7 +159,8 @@ font-weight: normal;
 .invoicenew_32, .invoice-32-print {background: url(../images/icon_32/invoicenew.png) no-repeat transparent; float:left;height: 32px;margin: auto;text-align: center;width: 32px;}
 .deliverynote_32, .deliverynote-32-print {background: url(../images/icon_32/deliverynote.png) no-repeat transparent; float:left;height: 32px;margin: auto;text-align: center;width: 32px;}
 .deliverynotenew_32, .deliverynote-32-print {background: url(../images/icon_32/deliverynotenew.png) no-repeat transparent; float:left;height: 32px;margin: auto;text-align: center;width: 32px;}
-
+.control-group{display: table;margin-top: 15px;}
+.control-field h3 {font-weight: bold;padding:5px;background-color: #cacaca}
 #limit {width:60px;}
 
 /* jqeury ui autocomplete */

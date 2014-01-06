@@ -75,6 +75,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
 			if (!class_exists('vmParameters'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
+			VmConfig::loadJLang('plg_vmpayment', false);
 
 			$payment = $model->getPayment();
 
@@ -141,7 +142,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 		//Todo speed optimize that, on the other hand this function is NOT often used and then only by the vendors
 		//		$q = 'SELECT * FROM #__plugins as pl JOIN `#__virtuemart_payment_method` AS pm ON `pl`.`id`=`pm`.`payment_jplugin_id` WHERE `folder` = "vmpayment" AND `published`="1" ';
 		//		$q = 'SELECT * FROM #__plugins as pl,#__virtuemart_payment_method as pm  WHERE `folder` = "vmpayment" AND `published`="1" AND pl.id=pm.payment_jplugin_id';
-		$q = 'SELECT * FROM `#__extensions` WHERE `folder` = "vmpayment" and `state`="0" AND `element`<>"moneybookers" ORDER BY `ordering`,`name` ASC';
+		$q = 'SELECT * FROM `#__extensions` WHERE `folder` = "vmpayment" and `state`="0"  ORDER BY `ordering`,`name` ASC';
 		$db->setQuery($q);
 		$result = $db->loadAssocList('extension_id');
 		if(empty($result)){

@@ -18,41 +18,66 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+if (JVM_VERSION < 3){
+	$control_field_class="width100 floatleft control-field";
+	$control_group_class="width100 control-group";
+	$control_label_class="width25 floatleft control-label";
+	$control_input_class="width74 floatright control-input";
+} else {
+	$control_field_class="control-field";
+	$control_group_class="control-group";
+	$control_label_class="control-label";
+	$control_input_class="control-input";
+}
 if ($this->payment->payment_jplugin_id) {
+	?>
+	<h2 style="text-align: center;"><?php echo $this->payment->payment_name ?></h2>
+	<div style="text-align: center;"><?php echo  VmText::_('COM_VIRTUEMART_PAYMENT_CLASS_NAME').": ".$this->payment->payment_element ?></div>
+	<?php
 	if ($this->payment->form) {
 		$fieldSets = $this->payment->form->getFieldsets();
 		if (!empty($fieldSets)) {
 			?>
-			<table width="100%" class="paramlist admintable" cellspacing="1">
-				<tbody>
+
 				<?php
 				foreach ($fieldSets as $name => $fieldSet) {
-					$label = !empty($fieldSet->label) ? $fieldSet->label : 'JGLOBAL_FIELDSET_' . $name;
-					$class = isset($fieldSet->class) && !empty($fieldSet->class) ? $fieldSet->class : '';
+					?>
+					<div class="<?php echo $control_field_class ?>">
+						<?php
+					$label = !empty($fieldSet->label) ? $fieldSet->label : strtoupper('VMPAYMENT_FIELDSET_' . $name);
 
-					if (isset($fieldSet->description) && trim($fieldSet->description)) {
-						echo '<p class="tip">' . $this->escape(vmText::_($fieldSet->description)) . '</p>';
-					}
+						if (!empty($label)) {
+							$class = isset($fieldSet->class) && !empty($fieldSet->class) ? "class=\"".$fieldSet->class."\"" : '';
+							?>
+							<h3> <span<?php echo $class  ?>><?php echo vmText::_($label) ?></span></h3>
+							<?php
+							if (isset($fieldSet->description) && trim($fieldSet->description)) {
+								echo '<p class="tip">' . $this->escape(vmText::_($fieldSet->description)) . '</p>';
+							}
+						}
 					?>
 
+					<?php $i=0; ?>
 					<?php foreach ($this->payment->form->getFieldset($name) as $field) { ?>
-						<tr>
-							<td width="40%" class="paramlist_key">
-								<?php echo $field->label; ?>
-							</td>
-							<td class="paramlist_value">
-								<?php echo $field->input; ?>
-							</td>
-						</tr>
+						<?php if (!$field->hidden) {
+							?>
+						<div class="<?php echo $control_group_class ?>">
+							<div class="<?php echo $control_label_class ?>">
+									<?php echo $field->label; ?>
+							</div>
+							<div class="<?php echo $control_input_class ?>">
+									<?php echo $field->input; ?>
+							</div>
+						</div>
+					<?php } ?>
 					<?php } ?>
 
+				</div>
 				<?php
 
 				}
 				?>
-				</tbody>
-			</table>
+
 		<?php
 
 

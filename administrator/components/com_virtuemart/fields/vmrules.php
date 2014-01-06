@@ -11,45 +11,41 @@ defined('JPATH_PLATFORM') or die;
 
 JFormHelper::loadFieldClass('rules');
 
-if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.'/administrator/components/com_virtuemart/helpers/config.php');
+if (!class_exists('VmConfig')) require(JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/config.php');
 /**
-* This is an overload of the core Rules form field
-* It address the issue where several rules cannot be used in the same configuration file
+ * This is an overload of the core Rules form field
+ * It address the issue where several rules cannot be used in the same configuration file
  */
-class JFormFieldVmRules extends JFormFieldRules
-{
+class JFormFieldVmRules extends JFormFieldRules {
 	/**
 	 * The form field type.
 	 *
 	 * @var    string
 	 * @since  11.1
 	 */
-	public $type = 'VMRules';
+	protected $type = 'VMRules';
 
 	/**
 	 * Method to get the field input markup for Access Control Lists.
 	 * This is an overload of the core Rules form field
 	 * It address the issue where several rules cannot be used in the same configuration file
 	 */
-	protected function getInput()
-	{
+	protected function getInput() {
 		JHtml::_('behavior.tooltip');
 
 		// Initialise some field attributes.
-		$section = $this->element['section'] ? (string) $this->element['section'] : '';
-		$component = $this->element['component'] ? (string) $this->element['component'] : '';
-		$assetField = $this->element['asset_field'] ? (string) $this->element['asset_field'] : 'asset_id';
-		
+		$section = $this->element['section'] ? (string)$this->element['section'] : '';
+		$component = $this->element['component'] ? (string)$this->element['component'] : '';
+		$assetField = $this->element['asset_field'] ? (string)$this->element['asset_field'] : 'asset_id';
+
 		// Get the actions for the asset.
 		$actions = JAccess::getActions($component, $section);
 
 		// Iterate over the children and add to the actions.
-		foreach ($this->element->children() as $el)
-		{
-			if ($el->getName() == 'action')
-			{
-				$actions[] = (object) array('name' => (string) $el['name'], 'title' => (string) $el['title'],
-					'description' => (string) $el['description']);
+		foreach ($this->element->children() as $el) {
+			if ($el->getName() == 'action') {
+				$actions[] = (object)array('name' => (string)$el['name'], 'title' => (string)$el['title'],
+					'description' => (string)$el['description']);
 			}
 		}
 
@@ -61,7 +57,7 @@ class JFormFieldVmRules extends JFormFieldRules
 		$query->from($db->quoteName('#__assets'));
 		$query->where($db->quoteName('name') . ' = ' . $db->quote($component));
 		$db->setQuery($query);
-		$assetId = (int) $db->loadResult();
+		$assetId = (int)$db->loadResult();
 		if ($error = $db->getErrorMsg()) {
 			JError::raiseNotice(500, $error);
 		}
@@ -79,22 +75,18 @@ class JFormFieldVmRules extends JFormFieldRules
 
 		// Prepare output
 		$html = array();
-		$html[] = '<div id="permissions-sliders-'.$section.'">';
+		$html[] = '<div id="permissions-sliders-' . $section . '">';
 		$html[] = '<div id="permissions-sliders" class="pane-sliders">';
 		$html[] = '<p class="rule-desc">' . vmText::_('JLIB_RULES_SETTINGS_DESC') . '</p>';
 		$html[] = '<ul id="rules">';
 
 		// Start a row for each user group.
-		foreach ($groups as $group)
-		{
+		foreach ($groups as $group) {
 			$difLevel = $group->level - $curLevel;
 
-			if ($difLevel > 0)
-			{
+			if ($difLevel > 0) {
 				$html[] = '<li><ul>';
-			}
-			elseif ($difLevel < 0)
-			{
+			} elseif ($difLevel < 0) {
 				$html[] = str_repeat('</ul></li>', -$difLevel);
 			}
 
@@ -120,8 +112,7 @@ class JFormFieldVmRules extends JFormFieldRules
 
 			// The calculated setting is not shown for the root group of global configuration.
 			$canCalculateSettings = ($group->parent_id || !empty($component));
-			if ($canCalculateSettings)
-			{
+			if ($canCalculateSettings) {
 				$html[] = '<th id="aclactionth' . $group->value . '">';
 				$html[] = '<span class="acl-action">' . vmText::_('JLIB_RULES_CALCULATED_SETTING') . '</span>';
 				$html[] = '</th>';
@@ -131,8 +122,7 @@ class JFormFieldVmRules extends JFormFieldRules
 			$html[] = '</thead>';
 			$html[] = '<tbody>';
 
-			foreach ($actions as $action)
-			{
+			foreach ($actions as $action) {
 				$html[] = '<tr>';
 				$html[] = '<td headers="actions-th' . $group->value . '">';
 				$html[] = '<label class="hasTip" for="' . $this->id . '_' . $action->name . '_' . $group->value . '" title="'
@@ -143,7 +133,7 @@ class JFormFieldVmRules extends JFormFieldRules
 
 				$html[] = '<td headers="settings-th' . $group->value . '">';
 				//$html[] = $this->formControl.'-'.$this->fieldname;
-				$this->name = $this->formControl.'[rules]';
+				$this->name = $this->formControl . '[rules]';
 				$html[] = '<select name="' . $this->name . '[' . $action->name . '][' . $group->value . ']" id="' . $this->id . '_' . $action->name
 					. '_' . $group->value . '" title="'
 					. vmText::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', vmText::_($action->title), trim($group->text)) . '">';
@@ -166,8 +156,7 @@ class JFormFieldVmRules extends JFormFieldRules
 				$html[] = '</select>&#160; ';
 
 				// If this asset's rule is allowed, but the inherited rule is deny, we have a conflict.
-				if (($assetRule === true) && ($inheritedRule === false))
-				{
+				if (($assetRule === true) && ($inheritedRule === false)) {
 					$html[] = vmText::_('JLIB_RULES_CONFLICT');
 				}
 
@@ -175,57 +164,38 @@ class JFormFieldVmRules extends JFormFieldRules
 
 				// Build the Calculated Settings column.
 				// The inherited settings column is not displayed for the root group in global configuration.
-				if ($canCalculateSettings)
-				{
+				if ($canCalculateSettings) {
 					$html[] = '<td headers="aclactionth' . $group->value . '">';
 
 					// This is where we show the current effective settings considering currrent group, path and cascade.
 					// Check whether this is a component or global. Change the text slightly.
 
-					if (JAccess::checkGroup($group->value, 'core.admin', $assetId) !== true)
-					{
-						if ($inheritedRule === null)
-						{
+					if (JAccess::checkGroup($group->value, 'core.admin', $assetId) !== true) {
+						if ($inheritedRule === null) {
 							$html[] = '<span class="icon-16-unset">' . vmText::_('JLIB_RULES_NOT_ALLOWED') . '</span>';
-						}
-						elseif ($inheritedRule === true)
-						{
+						} elseif ($inheritedRule === true) {
 							$html[] = '<span class="icon-16-allowed">' . vmText::_('JLIB_RULES_ALLOWED') . '</span>';
-						}
-						elseif ($inheritedRule === false)
-						{
-							if ($assetRule === false)
-							{
+						} elseif ($inheritedRule === false) {
+							if ($assetRule === false) {
 								$html[] = '<span class="icon-16-denied">' . vmText::_('JLIB_RULES_NOT_ALLOWED') . '</span>';
-							}
-							else
-							{
+							} else {
 								$html[] = '<span class="icon-16-denied"><span class="icon-16-locked">' . vmText::_('JLIB_RULES_NOT_ALLOWED_LOCKED')
 									. '</span></span>';
 							}
 						}
-					}
-					elseif (!empty($component))
-					{
+					} elseif (!empty($component)) {
 						$html[] = '<span class="icon-16-allowed"><span class="icon-16-locked">' . vmText::_('JLIB_RULES_ALLOWED_ADMIN')
 							. '</span></span>';
-					}
-					else
-					{
+					} else {
 						// Special handling for  groups that have global admin because they can't  be denied.
 						// The admin rights can be changed.
-						if ($action->name === 'core.admin')
-						{
+						if ($action->name === 'core.admin') {
 							$html[] = '<span class="icon-16-allowed">' . vmText::_('JLIB_RULES_ALLOWED') . '</span>';
-						}
-						elseif ($inheritedRule === false)
-						{
+						} elseif ($inheritedRule === false) {
 							// Other actions cannot be changed.
 							$html[] = '<span class="icon-16-denied"><span class="icon-16-locked">'
 								. vmText::_('JLIB_RULES_NOT_ALLOWED_ADMIN_CONFLICT') . '</span></span>';
-						}
-						else
-						{
+						} else {
 							$html[] = '<span class="icon-16-allowed"><span class="icon-16-locked">' . vmText::_('JLIB_RULES_ALLOWED_ADMIN')
 								. '</span></span>';
 						}
@@ -247,28 +217,25 @@ class JFormFieldVmRules extends JFormFieldRules
 
 		$html[] = str_repeat('</ul></li>', $curLevel);
 		$html[] = '</ul><div class="rule-notes">';
-		if ($section == 'component' || $section == null)
-		{
+		if ($section == 'component' || $section == null) {
 			$html[] = vmText::_('JLIB_RULES_SETTING_NOTES');
-		}
-		else
-		{
+		} else {
 			$html[] = vmText::_('JLIB_RULES_SETTING_NOTES_ITEM');
 		}
 		$html[] = '</div></div></div>';
 
-		$js = "window.addEvent('domready', function(){ new Fx.Accordion($$('div#permissions-sliders-".$section." div#permissions-sliders.pane-sliders .panel h3.pane-toggler'),"
-			. "$$('div#permissions-sliders-".$section." div#permissions-sliders.pane-sliders .panel div.pane-slider'), {onActive: function(toggler, i) {toggler.addClass('pane-toggler-down');"
-			. "toggler.removeClass('pane-toggler');i.addClass('pane-down');i.removeClass('pane-hide');Cookie.write('jpanesliders_permissions-sliders-".$section
+		$js = "window.addEvent('domready', function(){ new Fx.Accordion($$('div#permissions-sliders-" . $section . " div#permissions-sliders.pane-sliders .panel h3.pane-toggler'),"
+			. "$$('div#permissions-sliders-" . $section . " div#permissions-sliders.pane-sliders .panel div.pane-slider'), {onActive: function(toggler, i) {toggler.addClass('pane-toggler-down');"
+			. "toggler.removeClass('pane-toggler');i.addClass('pane-down');i.removeClass('pane-hide');Cookie.write('jpanesliders_permissions-sliders-" . $section
 			. $component
-			. "',$$('div#permissions-sliders-".$section." div#permissions-sliders.pane-sliders .panel h3').indexOf(toggler));},"
+			. "',$$('div#permissions-sliders-" . $section . " div#permissions-sliders.pane-sliders .panel h3').indexOf(toggler));},"
 			. "onBackground: function(toggler, i) {toggler.addClass('pane-toggler');toggler.removeClass('pane-toggler-down');i.addClass('pane-hide');"
 			. "i.removeClass('pane-down');}, duration: 300, display: "
 			. VmRequest::getInt('jpanesliders_permissions-sliders' . $component, 0, 'cookie') . ", show: "
 			. VmRequest::getInt('jpanesliders_permissions-sliders' . $component, 0, 'cookie') . ", alwaysHide:true, opacity: false}); });";
 
 		JFactory::getDocument()->addScriptDeclaration($js);
-		
+
 		return implode("\n", $html);
 	}
 
