@@ -7,7 +7,7 @@
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * ${PHING.VM.COPYRIGHT}
+ * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -28,21 +28,21 @@ $order = $viewData["order"];
 <br />
 <table>
 	<tr>
-    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_PAYMENT_NAME'); ?></td>
+    	<td><?php echo vmText::_('VMPAYMENT_PAYPAL_API_PAYMENT_NAME'); ?></td>
         <td><?php echo $payment_name; ?></td>
     </tr>
 
 	<tr>
-    	<td><?php echo JText::_('COM_VIRTUEMART_ORDER_NUMBER'); ?></td>
+    	<td><?php echo vmText::_('COM_VIRTUEMART_ORDER_NUMBER'); ?></td>
         <td><?php echo $order['details']['BT']->order_number;; ?></td>
     </tr>
 	<?php if ($success) { ?>
 	<tr>
-    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_AMOUNT'); ?></td>
+    	<td><?php echo vmText::_('VMPAYMENT_PAYPAL_API_AMOUNT'); ?></td>
         <td><?php echo $payment->mc_gross . ' ' . $payment->mc_currency; ?></td>
     </tr>
 	<tr>
-    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_ID'); ?></td>
+    	<td><?php echo vmText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_ID'); ?></td>
         <td><?php echo $payment->txn_id; ?></td>
     </tr>
     <?php }  ?>
@@ -50,5 +50,5 @@ $order = $viewData["order"];
 </table>
 <?php if ($success) { ?>
 	<br />
-	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$viewData["order"]['details']['BT']->order_number.'&order_pass='.$viewData["order"]['details']['BT']->order_pass, false)?>"><?php echo JText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
+	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$viewData["order"]['details']['BT']->order_number.'&order_pass='.$viewData["order"]['details']['BT']->order_pass, false)?>"><?php echo vmText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
 <?php } ?>

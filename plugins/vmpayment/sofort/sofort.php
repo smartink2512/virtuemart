@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
  * @version $Id$
  * @package VirtueMart
  * @subpackage payment
- * @copyright Copyright (C) 2004-${PHING.VM.COPYRIGHT}   - All rights reserved.
+ * @copyright Copyright (C) 2004-Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.   - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -21,7 +21,7 @@ if (!class_exists('vmPSPlugin')) {
 }
 
 class plgVmPaymentSofort extends vmPSPlugin {
-	const RELEASE = 'VM ${PHING.VM.RELEASE}';
+	const RELEASE = 'VM 2.0.26b';
 	const SU_SOFORTBANKING = 'su';
 
 
@@ -116,8 +116,8 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	function displayErrors ($errors) {
 
 		foreach ($errors as $error) {
-			vmError(JText::sprintf('VMPAYMENT_SOFORT_ERROR_FROM', $error ['message'], $error ['field'], $error ['code']));
-			vmInfo(JText::sprintf('VMPAYMENT_SOFORT_ERROR_FROM', $error ['message'], $error ['field'], $error ['code']));
+			vmError(vmText::sprintf('VMPAYMENT_SOFORT_ERROR_FROM', $error ['message'], $error ['field'], $error ['code']));
+			vmInfo(vmText::sprintf('VMPAYMENT_SOFORT_ERROR_FROM', $error ['message'], $error ['field'], $error ['code']));
 			if ($error ['message'] == 401) {
 				vmdebug('check you payment parameters: custom_id, project_id, api key');
 			}
@@ -278,8 +278,8 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		}
 
 		// the payment itself should send the parameter needed.
-		$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
-		$order_number = JRequest::getString('on', 0);
+		$virtuemart_paymentmethod_id = vmRequest::getInt('pm', 0);
+		$order_number =vmRequest:::getString('on', 0);
 
 		if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 			//vmdebug('plgVmOnPaymentResponseReceived NOT getVmPluginMethod');
@@ -324,8 +324,8 @@ class plgVmPaymentSofort extends vmPSPlugin {
 	function plgVmOnUserPaymentCancel () {
 
 
-		$order_number = JRequest::getString('on', '');
-		$virtuemart_paymentmethod_id = JRequest::getInt('pm', '');
+		$order_number vmRequest::::getString('on', '');
+		$virtuemart_paymentmethod_idvmRequest::t::getInt('pm', '');
 		if (empty($order_number) or empty($virtuemart_paymentmethod_id) or !$this->selectedThisByMethodId($virtuemart_paymentmethod_id)) {
 			vmdebug('plgVmOnUserPaymentCancel', $order_number, $virtuemart_paymentmethod_id);
 			return NULL;
@@ -341,7 +341,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		}
 		vmdebug('plgVmOnUserPaymentCancel', 'VMPAYMENT_SOFORT_PAYMENT_CANCELLED');
 
-		VmInfo(Jtext::_('VMPAYMENT_SOFORT_PAYMENT_CANCELLED'));
+		VmInfo(vmText::_('VMPAYMENT_SOFORT_PAYMENT_CANCELLED'));
 		$session = JFactory::getSession();
 		$return_context = $session->getId();
 		if (strcmp($paymentTable->sofort_custom, $return_context) === 0) {
@@ -372,7 +372,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
-		$order_number = JRequest::getString('on', '');
+		$order_numbevmRequest::st::getString('on', '');
 		if (empty($order_number)) {
 			return FALSE;
 		}
@@ -408,7 +408,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$this->logInfo('plgVmOnPaymentNotification setTransaction OK', 'message');
 
 		// check that secret , and order are identical
-		$security = JRequest::getString('security', '');
+		$securivmRequest::est::getString('security', '');
 		if ($security != $payments[0]->security) {
 			$this->logInfo('plgVmOnPaymentNotification SECURITY not the one expected GOT: ' . $security . ' stored: ' . $payments[0]->security, 'message');
 
@@ -416,7 +416,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 			$emailBody .= "for order number: " . $order_number . "\n";
 			$emailBody .= "security token received: " . $security . "\n";
 			$emailBody .= "security token expected: " . $payments[0]->security . "\n";
-			$this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_SOFORT_ERROR_NOTIFICATION'), $emailBody);
+			$this->sendEmailToVendorAndAdmins(vmText::_('VMPAYMENT_SOFORT_ERROR_NOTIFICATION'), $emailBody);
 			return false;
 		}
 
@@ -426,7 +426,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 			$this->logInfo('plgVmOnPaymentNotification not the one one expected?' . $paymentMethod . ' ' . self::SU_SOFORTBANKING, 'message');
 			$emailBody = "Hello,\n\nerror while receiving a SOFORT NOTIFICATION" . "\n";
 			$emailBody .= "Payment method is " . $paymentMethod . " Should be SU \n";
-			$this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_SOFORT_ERROR_NOTIFICATION'), $emailBody);
+			$this->sendEmailToVendorAndAdmins(vmText::_('VMPAYMENT_SOFORT_ERROR_NOTIFICATION'), $emailBody);
 			return false;
 		}
 		$this->logInfo('plgVmOnPaymentNotification so', 'message');
@@ -446,7 +446,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 
 		$order['customer_notified'] = true;
 		$order['order_status'] = $method->$status;
-		$order['comments'] = JText::_('VMPAYMENT_SOFORT_RESPONSE_STATUS_REASON_' . $sofortLib_TransactionData->getStatusReason());
+		$order['comments'] = vmText::_('VMPAYMENT_SOFORT_RESPONSE_STATUS_REASON_' . $sofortLib_TransactionData->getStatusReason());
 
 		$sofort_data['sofort_response_status_reason'] = $sofortLib_TransactionData->getStatusReason();
 		$sofort_data['sofort_response_transaction'] = $sofortLib_TransactionData->getTransaction();
@@ -475,7 +475,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 			$emailBody .= "Amount expected: " . $payments[0]->payment_order_total . "\n";
 			$emailBody .= "Currency received: " . $sofort_data['sofort_response_currency'] . "\n";
 			$emailBody .= "Currency expected: " . $payment_currency_code_3 . "\n";
-			$this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_SOFORT_ERROR_NOTIFICATION'), $emailBody);
+			$this->sendEmailToVendorAndAdmins(vmText::_('VMPAYMENT_SOFORT_ERROR_NOTIFICATION'), $emailBody);
 
 			return false;
 		}
@@ -504,7 +504,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		$code = "sofort_response_";
 		$first = TRUE;
 		foreach ($payments as $payment) {
-			$html .= '<tr class="row1"><td>' . JText::_('COM_VIRTUEMART_DATE') . '</td><td align="left">' . $payment->created_on . '</td></tr>';
+			$html .= '<tr class="row1"><td>' . vmText::_('COM_VIRTUEMART_DATE') . '</td><td align="left">' . $payment->created_on . '</td></tr>';
 			// Now only the first entry has this data when creating the order
 			if ($first) {
 				$html .= $this->getHtmlRowBE('SOFORT_PAYMENT_NAME', $payment->payment_name);
@@ -707,7 +707,7 @@ class plgVmPaymentSofort extends vmPSPlugin {
 		if ($this->getPluginMethods($cart->vendorId) === 0) {
 			if (empty($this->_name)) {
 				$app = JFactory::getApplication();
-				$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_' . strtoupper($this->_psType)));
+				$app->enqueueMessage(vmText::_('COM_VIRTUEMART_CART_NO_' . strtoupper($this->_psType)));
 				return false;
 			} else {
 				return false;
@@ -927,16 +927,16 @@ class plgVmPaymentSofort extends vmPSPlugin {
 
 
 	static function   getSuccessUrl ($order) {
-		return JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . "&Itemid=" . JRequest::getInt('Itemid'). '&lang='.JRequest::getCmd('lang',''); ;
+		return JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . "&ItemivmRequest::uest::getInt('Itemid'). '&vmRequest::quest::getCmd('lang',''); ;
 	}
 
 	static function   getCancelUrl ($order) {
-		return  JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . '&Itemid=' . JRequest::getInt('Itemid').'&lang='.JRequest::getCmd('lang','');
+		return  JURI::root()."index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . '&ItevmRequest::equest::getInt('Itemid').vmRequest::Request::getCmd('lang','');
 	}
 
 	static function   getNotificationUrl ($security, $order_number) {
 
-		return JURI::root()  .  "index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&&security=" . $security . "&on=" . $order_number .'&lang='.JRequest::getCmd('lang','');
+		return JURI::root()  .  "index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&&security=" . $security . "&on=" . $order_number vmRequest::JRequest::getCmd('lang','');
 	}
 
 	static function getSecurityKey () {

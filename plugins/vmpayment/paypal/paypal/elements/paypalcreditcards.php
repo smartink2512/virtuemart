@@ -7,7 +7,7 @@
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * ${PHING.VM.COPYRIGHT}
+ * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -40,7 +40,7 @@ class JElementPaypalCreditcards extends JElement {
 		$fields = array();
 		foreach ($creditcards as $creditcard) {
 			$fields[$creditcard]['value'] = $creditcard;
-			$fields[$creditcard]['text'] = JText::_($prefix . strtoupper($fields[$creditcard]['value']));
+			$fields[$creditcard]['text'] = vmText::_($prefix . strtoupper($fields[$creditcard]['value']));
 		}
 
 		$attribs = ' ';

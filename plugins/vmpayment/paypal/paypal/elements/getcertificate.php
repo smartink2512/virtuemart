@@ -14,13 +14,8 @@ defined ('_JEXEC') or die();
  * other free or open source software licenses.
  * @version $Id:$
  */
-/*
- * This class is used by VirtueMart Payment or Shipment Plugins
- * which uses JParameter
- * So It should be an extension of JElement
- * Those plugins cannot be configured througth the Plugin Manager anyway.
- */
-class JElementgetcertificate extends JElement {
+
+class JElementGetcertificate extends JElement {
 
 	/**
 	 * Element name
@@ -28,11 +23,10 @@ class JElementgetcertificate extends JElement {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $_name = 'getcertificate';
+	var $_name = 'Getcertificate';
 
 
 		function fetchElement ($name, $value, &$node, $control_name) {
-
 			jimport ('joomla.filesystem.folder');
 			jimport ('joomla.filesystem.file');
 			$lang = JFactory::getLanguage ();
@@ -40,27 +34,18 @@ class JElementgetcertificate extends JElement {
 			// path to images directory
 			$folder = $node->attributes ('directory');
 			$safePath = VmConfig::get ('forSale_path', '');
-			if (!JFolder::exists ($safePath)) {
-				return JText::sprintf ('COM_VIRTUEMART_FOLDER_NOT_EXIST', $safePath);
-			}
+
 			$certificatePath=$safePath.$folder;
-			if (!JFolder::exists ($certificatePath)) {
-				if (!JFolder::create ($certificatePath)) {
-					return JText::sprintf ('COM_VIRTUEMART_FOLDER_COULD_NOT_CREATE', $certificatePath);
-				}
-			}
+
 			$path = str_replace ('/', DS, $certificatePath);
 			$filter = $node->attributes ('filter');
 			$exclude = array($node->attributes ('exclude'), '.svn', 'CVS', '.DS_Store', '__MACOSX', 'index.html');
 			$pattern = implode ( "|", $exclude);
 			$stripExt = $node->attributes ('stripext');
 
-
 			$files = JFolder::files ($path, $filter, FALSE, FALSE, $exclude);
 
 			$options = array();
-
-
 
 			if (is_array ($files)) {
 				foreach ($files as $file) {
@@ -76,10 +61,8 @@ class JElementgetcertificate extends JElement {
 				}
 			}
 			$class = ($node->attributes('class') ? 'class="' . $node->attributes('class') . '"' : '');
-			$class .= ' size="5" data-placeholder="'.JText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS').'"';
+			$class .= ' size="5" data-placeholder="'.vmText::_('COM_VIRTUEMART_DRDOWN_SELECT_SOME_OPTIONS').'"';
 			return JHTML::_ ('select.genericlist', $options, '' . $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);
 		}
-
-
 
 }

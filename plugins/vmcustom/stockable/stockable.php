@@ -305,7 +305,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 		// TODO ONE PARAM IS MISSING
 		$document = JFactory::getDocument();
-        $js = '
+		$js = '
 		//<![CDATA[
 		jQuery( function($) {
 			//var customfield_id = {'. implode(',' , $js ) .'};
@@ -528,7 +528,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 		if ($child_id) {
 			$db = JFactory::getDBO();
-			$q = 'SELECT CONCAT( `product_name`, " [' .JText::_('COM_VIRTUEMART_PRODUCT_SKU').'"," : ",`product_sku`,"]") as product_name,`virtuemart_product_id` as id, `product_in_stock` as stock FROM `#__virtuemart_products_'.VMLANG.'` as l '
+			$q = 'SELECT CONCAT( `product_name`, " [' .JText::_('COM_VIRTUEMART_PRODUCT_SKU').'"," : ",`product_sku`,"]") as product_name,`virtuemart_product_id` as id, `product_in_stock` as stock FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` as l '
 			. ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)'
 			. ' WHERE `product_parent_id` ='.(int)$child_id
 			. ' ORDER BY `pordering`' ;
@@ -566,7 +566,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		$productModel = VmModel::getModel('product');
         $child = $productModel->getProduct($child_id,true,false,true,1,false);
 		/*$db = JFactory::getDBO();
-		$q = 'SELECT `product_sku`,`product_name`,`product_in_stock`,`product_ordered`,`product_availability`,`product_weight` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_'.VMLANG.'` as l using (`virtuemart_product_id`) WHERE `published`=1 and `virtuemart_product_id` ='.(int)$child_id ;
+		$q = 'SELECT `product_sku`,`product_name`,`product_in_stock`,`product_ordered`,`product_availability`,`product_weight` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_'.VmConfig::$vmlang.'` as l using (`virtuemart_product_id`) WHERE `published`=1 and `virtuemart_product_id` ='.(int)$child_id ;
 		$db->setQuery($q);
 		$child = $db->loadObject();*/
 		if ($child) {
@@ -613,7 +613,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		return $this->onDisplayEditBECustom($virtuemart_custom_id,$customPlugin);
 	}
 
-	public function plgVmPrepareCartProduct($product, &$productCustomsPrice,$selected){
+	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected){
 
 		if ($productCustomsPrice->custom_element != $this->_name) return false;
 

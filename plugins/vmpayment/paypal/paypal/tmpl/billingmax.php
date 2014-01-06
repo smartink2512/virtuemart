@@ -7,7 +7,7 @@
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * ${PHING.VM.COPYRIGHT}
+ * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -26,6 +26,6 @@ $pmid = $method->virtuemart_paymentmethod_id;
 ?>
 <div id="paymentMethodOptions_<?php echo $pmid; ?>" class="paymentMethodOptions" style="display:none;">
     <br />
-    <label for="autobilling_max_amount_<?php echo $pmid; ?>"><?php echo JText::_('VMPAYMENT_PAYPAL_PAYMENT_BILLING_MAX_AMOUNT'); ?>:</label>
+    <label for="autobilling_max_amount_<?php echo $pmid; ?>"><?php echo vmText::_('VMPAYMENT_PAYPAL_PAYMENT_BILLING_MAX_AMOUNT'); ?>:</label>
     <input type="text" class="inputbox" id="autobilling_max_amount_<?php echo $pmid; ?>" name="autobilling_max_amount_<?php echo $pmid; ?>" maxlength="4" size="5" value="<?php echo $customerData->getVar('autobilling_max_amount'); ?>" autocomplete="off" />
 </div>

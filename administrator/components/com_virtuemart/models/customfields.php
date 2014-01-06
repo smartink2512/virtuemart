@@ -865,7 +865,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 					JPluginHelper::importPlugin('vmcustom');
 					$dispatcher = JDispatcher::getInstance();
-					$dispatcher->trigger('plgVmPrepareCartProduct',array(&$product, &$product->customfields[$k],$selected,&$modificatorSum));
+					$dispatcher->trigger('plgVmCalculateCustomVariant',array(&$product, &$product->customfields[$k],$selected,&$modificatorSum));
 				} else {
 					if ($productCustom->customfield_price) {
 						//TODO adding % and more We should use here $this->interpreteMathOp

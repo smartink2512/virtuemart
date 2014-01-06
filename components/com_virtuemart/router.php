@@ -700,26 +700,28 @@ class vmrouterHelper {
 	public $router_disabled = false ;
 
 	/* instance of class */
-	private static $_instances = array ();
+	private static $_instance = false;
 
 	private static $_catRoute = array ();
 
 	public $CategoryName = array();
 	private $dbview = array('vendor' =>'vendor','category' =>'category','virtuemart' =>'virtuemart','productdetails' =>'product','cart' => 'cart','manufacturer' => 'manufacturer','user'=>'user');
 
-	private function __construct($instanceKey,$query) {
+	private function __construct($query) {
 
 		if (!$this->router_disabled = VmConfig::get('seo_disabled', false)) {
 
 			$this->seo_translate = VmConfig::get('seo_translate', false);
-			$this->setLangs($instanceKey);
+
+			$this->setLang();
+			//$this->setLangs($instanceKey);
 			if ( JVM_VERSION===1 ) $this->setMenuItemId();
 			else $this->setMenuItemIdJ17();
 			$this->setActiveMenu();
 			$this->use_id = VmConfig::get('seo_use_id', false);
 			$this->seo_sufix = VmConfig::get('seo_sufix', '-detail');
 			$this->seo_sufix_size = strlen($this->seo_sufix) ;
-			$this->edit = ('edit' == VmRequest::getCmd('task') );
+			$this->edit = ('edit' == JRequest::getCmd('task') );
 			// if language switcher we must know the $query
 			$this->query = $query;
 		}
@@ -733,54 +735,46 @@ class vmrouterHelper {
 		}
 		VmConfig::loadConfig();
 
-		if (isset($query['langswitch']) ) {
-			if ($query['langswitch'] != VmConfig::$vmlang ) $instanceKey = $query['langswitch'] ;
-			unset ($query['langswitch']);
-
-		} else $instanceKey = VmConfig::$vmlang ;
-		if (! array_key_exists ($instanceKey, self::$_instances)){
-			self::$_instances[$instanceKey] = new vmrouterHelper ($instanceKey,$query);
+		if (!self::$_instance){
+			self::$_instance= new vmrouterHelper ($query);
 
 			if (self::$limit===null){
 				$mainframe = Jfactory::getApplication(); ;
 				$view = 'virtuemart';
 				if(isset($query['view'])) $view = $query['view'];
 				self::$limit= $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', VmConfig::get('list_limit', 20), 'int');
-				// 				self::$limit= $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
 			}
 		}
-		return self::$_instances[$instanceKey];
+		return self::$_instance;
 	}
 
-	/* multi language routing ? */
-	public function setLangs($instanceKey){
-		$langs = VmConfig::get('active_languages',false);
-		if(count($langs)> 1) {
-			if(!in_array($instanceKey, $langs)) {
-				$this->vmlang = VmConfig::$vmlang ;
-				$this->langTag = strtr(VmConfig::$vmlang,'_','-');
-			} else {
-				$this->vmlang = strtolower(strtr($instanceKey,'-','_'));
-				$this->langTag= $instanceKey;
-			}
-		} else $this->vmlang = $this->langTag = VmConfig::$vmlang ;
-		$this->setLang($instanceKey);
-		$this->Jlang = JFactory::getLanguage();
+	/* Set $this-lang (Translator for language from virtuemart string) to load only once*/
+	public function setLang(){
+
+		if ( $this->seo_translate ) {
+			// use translator
+			$this->Jlang =JFactory::getLanguage();
+			$extension = 'com_virtuemart.sef';
+			$base_dir = JPATH_SITE;
+			$this->Jlang->load($extension, $base_dir);
+
+		}
 	}
 
 	public function getCategoryRoute($virtuemart_category_id){
 
 		$cache = JFactory::getCache('_virtuemart','');
-		$key = $virtuemart_category_id. $this->vmlang ; // internal cache key
+		$key = $virtuemart_category_id. VmConfig::$vmlang ; // internal cache key
 		if (!($CategoryRoute = $cache->get($key))) {
 			$CategoryRoute = $this->getCategoryRouteNocache($virtuemart_category_id);
 			$cache->store($CategoryRoute, $key);
 		}
 		return $CategoryRoute ;
 	}
+
 	/* Get Joomla menu item and the route for category */
 	public function getCategoryRouteNocache($virtuemart_category_id){
-		if (! array_key_exists ($virtuemart_category_id . $this->vmlang, self::$_catRoute)){
+		if (! array_key_exists ($virtuemart_category_id . VmConfig::$vmlang, self::$_catRoute)){
 			$category = new stdClass();
 			$category->route = '';
 			$category->itemId = 0;
@@ -813,10 +807,10 @@ class vmrouterHelper {
 				$category->route .= $this->CategoryName[$virtuemart_category_id] ;
 				if ($menuCatid == 0  && $this->menu['virtuemart']) $category->itemId = $this->menu['virtuemart'] ;
 			}
-			self::$_catRoute[$virtuemart_category_id . $this->vmlang] = $category;
+			self::$_catRoute[$virtuemart_category_id . VmConfig::$vmlang] = $category;
 		}
 
-		return self::$_catRoute[$virtuemart_category_id . $this->vmlang] ;
+		return self::$_catRoute[$virtuemart_category_id . VmConfig::$vmlang] ;
 	}
 
 	/*get url safe names of category and parents categories  */
@@ -830,7 +824,7 @@ class vmrouterHelper {
 		foreach ($parents_id as $id ) {
 			if(!isset($categoryNamesCache[$id])){
 				$q = 'SELECT `slug` as name
-					FROM  `#__virtuemart_categories_'.$this->vmlang.'`
+					FROM  `#__virtuemart_categories_'.VmConfig::$vmlang.'`
 					WHERE  `virtuemart_category_id`='.(int)$id;
 
 				$db->setQuery($q);
@@ -877,7 +871,7 @@ class vmrouterHelper {
 	public function getCategoryId($slug,$virtuemart_category_id ){
 		$db = JFactory::getDBO();
 		$q = "SELECT `virtuemart_category_id`
-				FROM  `#__virtuemart_categories_".$this->vmlang."`
+				FROM  `#__virtuemart_categories_".VmConfig::$vmlang."`
 				WHERE `slug` LIKE '".$db->getEscaped($slug)."' ";
 
 		$db->setQuery($q);
@@ -895,7 +889,7 @@ class vmrouterHelper {
 
 		if(!isset($productNamesCache[$id])){
 			$db = JFactory::getDBO();
-			$query = 'SELECT `slug` FROM `#__virtuemart_products_'.$this->vmlang.'`  ' .
+			$query = 'SELECT `slug` FROM `#__virtuemart_products_'.VmConfig::$vmlang.'`  ' .
 				' WHERE `virtuemart_product_id` = ' . (int) $id;
 			$db->setQuery($query);
 			$name = $db->loadResult();
@@ -947,7 +941,7 @@ class vmrouterHelper {
 		$product['virtuemart_category_id'] = $this->getCategoryId($categoryName,$virtuemart_category_id ) ;
 		$db = JFactory::getDBO();
 		$q = 'SELECT `p`.`virtuemart_product_id`
-			FROM `#__virtuemart_products_'.$this->vmlang.'` AS `p`
+			FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` AS `p`
 			LEFT JOIN `#__virtuemart_product_categories` AS `xref` ON `p`.`virtuemart_product_id` = `xref`.`virtuemart_product_id`
 			WHERE `p`.`slug` LIKE "'.$db->getEscaped($productName).'" ';
 		//$q .= "	AND `xref`.`virtuemart_category_id` = ".(int)$product['virtuemart_category_id'];
@@ -961,7 +955,7 @@ class vmrouterHelper {
 	/* Get URL safe Manufacturer name */
 	public function getManufacturerName($virtuemart_manufacturer_id ){
 		$db = JFactory::getDBO();
-		$query = 'SELECT `slug` FROM `#__virtuemart_manufacturers_'.$this->vmlang.'` WHERE virtuemart_manufacturer_id='.(int)$virtuemart_manufacturer_id;
+		$query = 'SELECT `slug` FROM `#__virtuemart_manufacturers_'.VmConfig::$vmlang.'` WHERE virtuemart_manufacturer_id='.(int)$virtuemart_manufacturer_id;
 		$db->setQuery($query);
 
 		return $db->loadResult();
@@ -971,7 +965,7 @@ class vmrouterHelper {
 	/* Get Manufacturer id */
 	public function getManufacturerId($slug ){
 		$db = JFactory::getDBO();
-		$query = "SELECT `virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers_".$this->vmlang."` WHERE `slug` LIKE '".$db->getEscaped($slug)."' ";
+		$query = "SELECT `virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers_".VmConfig::$vmlang."` WHERE `slug` LIKE '".$db->getEscaped($slug)."' ";
 		$db->setQuery($query);
 
 		return $db->loadResult();
@@ -980,7 +974,7 @@ class vmrouterHelper {
 	/* Get URL safe Manufacturer name */
 	public function getVendorName($virtuemart_vendor_id ){
 		$db = JFactory::getDBO();
-		$query = 'SELECT `slug` FROM `#__virtuemart_vendors_'.$this->vmlang.'` WHERE virtuemart_vendor_id='.(int)$virtuemart_vendor_id;
+		$query = 'SELECT `slug` FROM `#__virtuemart_vendors_'.VmConfig::$vmlang.'` WHERE virtuemart_vendor_id='.(int)$virtuemart_vendor_id;
 		$db->setQuery($query);
 
 		return $db->loadResult();
@@ -989,24 +983,13 @@ class vmrouterHelper {
 	/* Get Manufacturer id */
 	public function getVendorId($slug ){
 		$db = JFactory::getDBO();
-		$query = "SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vendors_".$this->vmlang."` WHERE `slug` LIKE '".$db->getEscaped($slug)."' ";
+		$query = "SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vendors_".VmConfig::$vmlang."` WHERE `slug` LIKE '".$db->getEscaped($slug)."' ";
 		$db->setQuery($query);
 
 		return $db->loadResult();
 
 	}
-	/* Set $this-lang (Translator for language from virtuemart string) to load only once*/
-	private function setLang($instanceKey){
 
-		if ( $this->seo_translate ) {
-			/* use translator */
-			$lang =JFactory::getLanguage();
-			$extension = 'com_virtuemart.sef';
-			$base_dir = JPATH_SITE;
-			$lang->load($extension, $base_dir);
-
-		}
-	}
 
 	/* Set $this->menu with the Item ID from Joomla Menus */
 	private function setMenuItemIdJ17(){
@@ -1018,7 +1001,12 @@ class vmrouterHelper {
 		//get all vm menus
 
 		$db			= JFactory::getDBO();
-		$query = 'SELECT * FROM `#__menu`  where `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language LIKE "'.$this->langTag.'")'  ;
+		$fallback = '';
+		$jLangTag = $this->Jlang->getTag();
+		if($jLangTag!=VmConfig::$langTag){
+			$fallback= 'or language = "'.$jLangTag.'"';
+		}
+		$query = 'SELECT * FROM `#__menu`  where `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language = "'.VmConfig::$langTag.'" '.$fallback.' )'  ;
 		$db->setQuery($query);
 		// 		vmdebug('setMenuItemIdJ17 q',$query);
 		$this->menuVmitems= $db->loadObjectList();

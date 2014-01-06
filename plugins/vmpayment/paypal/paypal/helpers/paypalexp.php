@@ -8,7 +8,7 @@
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * ${PHING.VM.COPYRIGHT}
+ * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -52,18 +52,17 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 			$this->merchant_email = $this->_method->sandbox_merchant_email;
 		} else {
 			$this->api_login_id = $this->_method->api_login_id;
-			$this->api_signature = '';
+			$this->api_signature = $this->_method->api_signature;
 			$this->api_certificate = $this->_method->api_certificate;
 			$this->api_password = $this->_method->api_password;
 			$this->merchant_email = $this->_method->paypal_merchant_email;
 		}
-
-		if ((!$this->ExpCredentialsValid() and $this->isAacceleratedOnboarding())) {
-			$text = JText::sprintf('VMPAYMENT_PAYPAL_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
+		if ((!$this->ExpCredentialsValid() OR !$this->isAacceleratedOnboardingValid())) {
+			$text = vmText::sprintf('VMPAYMENT_PAYPAL_CREDENTIALS_NOT_SET', $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
 			vmError($text, $text);
 		}
 		if (empty ($this->_method->expected_maxamount)) {
-			$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_EXPECTEDMAXAMOUNT'), $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
+			$text = vmText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', vmText::_('VMPAYMENT_PAYPAL_EXPECTEDMAXAMOUNT'), $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
 			vmError($text, $text);
 		}
 
@@ -79,9 +78,19 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 	 * @return bool
 	 */
 	function isAacceleratedOnboarding() {
-		return $this->_method->accelerated_onboarding && $this->merchant_email;
+		return $this->_method->accelerated_onboarding;
 	}
-
+	/**
+	 *      * Check if it is  Accelerated Boarding  possible for Express Checkout
+	 * @return bool
+	 */
+	function isAacceleratedOnboardingValid() {
+		if ($this->_method->accelerated_onboarding AND empty($this->merchant_email)) {
+				return false;
+		} else {
+			return true;
+		}
+	}
 	function initPostVariables($paypalMethod) {
 		$post_variables = Array();
 		$post_variables['METHOD'] = $paypalMethod;
@@ -250,9 +259,9 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$this->setTimeOut(self::TIMEOUT_SETEXPRESSCHECKOUT);
 		$post_variables['PAYMENTREQUEST_0_CURRENCYCODE'] = $this->currency_code_3;
 
-		$post_variables['RETURNURL'] =  JURI::root() . 'index.php?option=com_virtuemart&view=cart&task=setpayment&expresscheckout=done&virtuemart_paymentmethod_id=' . $this->_method->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid'). '&lang='.JRequest::getCmd('lang','') ;
+		$post_variables['RETURNURL'] =  JURI::root() . 'index.php?option=com_virtuemart&view=cart&task=setpayment&expresscheckout=done&virtuemart_paymentmethod_id=' . $this->_method->virtuemart_paymentmethod_id . '&Itemid=' . vmRequest::getInt('Itemid'). '&lang='vmRequest:::getCmd('lang','') ;
 
-		$post_variables['CANCELURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&expresscheckout=cancel&Itemid=' . JRequest::getInt('Itemid') . '&lang='.JRequest::getCmd('lang','') ;
+		$post_variables['CANCELURL'] = JURI::root() . 'index.php?option=com_virtuemart&view=cart&expresscheckout=cancel&Itemid=' vmRequest::::getInt('Itemid') . '&langvmRequest::t::getCmd('lang','') ;
 		//$post_variables['CANCELURL'] = substr(JURI::root(false,''),0,-1). JROUTE::_('index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&expresscheckout=cancel');
 		$post_variables['ADDROVERRIDE'] = $this->_method->address_override;
 		$post_variables['NOSHIPPING'] = $this->_method->no_shipping;
@@ -799,7 +808,7 @@ class PaypalHelperPayPalExp extends PaypalHelperPaypal {
 		$extraInfo = '';
 
 		//Are we coming back from Express Checkout?
-		$expressCheckout = JRequest::getVar('expresscheckout', '');
+		$expressCheckouvmRequest::st::getVar('expresscheckout', '');
 		if ($expressCheckout == 'cancel') {
 			$this->customerData->clear();
 			if (!class_exists('VirtueMartCart')) {

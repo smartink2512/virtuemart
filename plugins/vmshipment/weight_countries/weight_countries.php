@@ -43,7 +43,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$this->tableFields = array_keys ($this->getTableSQLFields ());
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
-
+		//vmdebug('Muh constructed plgVmShipmentWeight_countries');
 	}
 
 	/**
@@ -206,8 +206,9 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	protected function checkConditions ($cart, $method, $cart_prices) {
 
 		$this->convert ($method);
-
+	//vmTrace('checkConditions');
 		$orderWeight = $this->getOrderWeight ($cart, $method->weight_unit);
+
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 		$type = (($cart->ST == 0) ? 'BT' : 'ST');
 		$countries = array();
@@ -229,6 +230,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 				$mainframe->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $redirectMsg);
 			}
 			*/
+			vmdebug('checkConditions $address is not an array, set zip and country id = 0');
 			$address = array();
 			$address['zip'] = 0;
 			$address['virtuemart_country_id'] = 0;
@@ -244,13 +246,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 		$userFieldsModel =VmModel::getModel('Userfields');
 		if ($userFieldsModel->fieldPublished('zip', $type)){
-			if (isset($address['zip'])) {
-
-				$zip_cond = $this->testRange($address['zip'],$method,'zip_start','zip_stop','zip');
-			} else {
-
-				$zip_cond = false;
+			if (!isset($address['zip'])) {
+				$address['zip'] = '';
 			}
+			$zip_cond = $this->testRange($address['zip'],$method,'zip_start','zip_stop','zip');
 		} else {
 			$zip_cond = true;
 		}
@@ -261,15 +260,14 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 				$address['virtuemart_country_id'] = 0;
 			}
 
-
 			if (in_array ($address['virtuemart_country_id'], $countries) || count ($countries) == 0) {
 
 				//vmdebug('checkConditions '.$method->shipment_name.' fit ',$weight_cond,(int)$zip_cond,$nbproducts_cond,$orderamount_cond);
-				vmdebug('shipmentmethod '.$method->shipment_name.' = TRUE for variable virtuemart_country_id = '.implode($countries,', ').', Reason: Country in rule or none set');
+				vmdebug('shipmentmethod '.$method->shipment_name.' = TRUE for variable virtuemart_country_id = '.$address['virtuemart_country_id'].', Reason: Countries in rule '.implode($countries,', ').' or none set');
 				$country_cond = true;
 			}
 			else{
-				vmdebug('shipmentmethod '.$method->shipment_name.' = FALSE for variable virtuemart_country_id = '.implode($countries,', ').', Reason: Country does not fit');
+				vmdebug('shipmentmethod '.$method->shipment_name.' = FALSE for variable virtuemart_country_id = '.$address['virtuemart_country_id'].', Reason: Country '.implode($countries,', ').' does not fit');
 				$country_cond = false;
 			}
 		} else {
@@ -281,29 +279,29 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		if($allconditions === 5){
 			return TRUE;
 		} else {
-
+			vmdebug('checkConditions '.$method->name.' does not fit',(int)$nbproducts_cond,(int)$zip_cond);
 			return FALSE;
 		}
 
-		vmdebug('checkConditions '.$method->name.' does not fit');
+
 		return FALSE;
 	}
 
 	/**
 	 * @param $method
 	 */
-    function convert (&$method) {
+	function convert (&$method) {
 
-        //$method->weight_start = (float) $method->weight_start;
-        //$method->weight_stop = (float) $method->weight_stop;
-        $method->orderamount_start =  (float)str_replace(',','.',$method->orderamount_start);
-        $method->orderamount_stop =   (float)str_replace(',','.',$method->orderamount_stop);
-        $method->zip_start = (int)$method->zip_start;
-        $method->zip_stop = (int)$method->zip_stop;
-        $method->nbproducts_start = (int)$method->nbproducts_start;
-        $method->nbproducts_stop = (int)$method->nbproducts_stop;
-        $method->free_shipment = (float)str_replace(',','.',$method->free_shipment);
-    }
+		//$method->weight_start = (float) $method->weight_start;
+		//$method->weight_stop = (float) $method->weight_stop;
+		$method->orderamount_start =  (float)str_replace(',','.',$method->orderamount_start);
+		$method->orderamount_stop =   (float)str_replace(',','.',$method->orderamount_stop);
+		$method->zip_start = (int)$method->zip_start;
+		$method->zip_stop = (int)$method->zip_stop;
+		$method->nbproducts_start = (int)$method->nbproducts_start;
+		$method->nbproducts_stop = (int)$method->nbproducts_stop;
+		$method->free_shipment = (float)str_replace(',','.',$method->free_shipment);
+	}
 
 	/**
 	 * @param $cart
@@ -312,8 +310,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 */
 	private function _nbproductsCond ($cart, $method) {
 
-		if (!isset($method->nbproducts_start) and !isset($method->nbproducts_stop)) {
-			vmdebug('_nbproductsCond',$method);
+		if (empty($method->nbproducts_start) and empty($method->nbproducts_stop)) {
+			//vmdebug('_nbproductsCond',$method);
 			return true;
 		}
 
@@ -433,7 +431,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
 	 *
 	 */
-	function plgVmOnCheckAutomaticSelectedShipment (VirtueMartCart $cart, array $cart_prices = array(), &$shipCounter) {
+	function plgVmOnCheckAutomaticSelectedShipment (VirtueMartCart $cart, array $cart_prices, &$shipCounter) {
 
 		if ($shipCounter > 1) {
 			return 0;
@@ -458,7 +456,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	function plgVmDeclarePluginParamsShipment ($name, $id, &$data) {
 
-		return $this->declarePluginParams ('shipment', $data);
+		return $this->declarePluginParams ('shipment', $name, $id, $data);
 	}
 
 

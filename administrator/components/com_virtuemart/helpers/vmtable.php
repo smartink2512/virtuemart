@@ -473,7 +473,6 @@ class VmTable extends JTable {
 
 		//Version load the tables using JOIN
 		if ($this->_translatable) {
-			vmdebug('in load ',$this->_langTag);
 			$mainTable = $this->_tbl . '_' . $this->_langTag;
 			$select = 'SELECT `' . $mainTable . '`.* ,`' . $this->_tbl . '`.* ';
 			$from = ' FROM `' . $mainTable . '` JOIN ' . $this->_tbl . ' using (`' . $this->_tbl_key . '`)';

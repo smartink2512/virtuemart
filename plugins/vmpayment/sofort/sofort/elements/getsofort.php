@@ -41,7 +41,7 @@ class JElementGetSofort extends JElement {
 		// MOre information
 	$getSofortLInk="https://www.sofort.com/".$getSofortLang."/merchant/products/";
 		//$getSofortLInk="https://www.sofort.com/payment/users/register/688";
-		$html = '<a href="#" id="sofortmoreinfo_link" ">' . JText::_ ('VMPAYMENT_SOFORT_READMORE') . '</a>';
+		$html = '<a href="#" id="sofortmoreinfo_link" ">' . vmText::_ ('VMPAYMENT_SOFORT_READMORE') . '</a>';
 		$html .= '<div id="sofortmoreinfo_show_hide" >';
 
 		$js = '
@@ -50,10 +50,10 @@ class JElementGetSofort extends JElement {
 			jQuery("#sofortmoreinfo_link").click( function() {
 				 if ( $("#sofortmoreinfo_show_hide").is(":visible") ) {
 				  $("#sofortmoreinfo_show_hide").hide("slow");
-			        $("#sofortmoreinfo_link").html("' . addslashes (JText::_ ('VMPAYMENT_SOFORT_READMORE')) . '");
+			        $("#sofortmoreinfo_link").html("' . addslashes (vmText::_ ('VMPAYMENT_SOFORT_READMORE')) . '");
 				} else {
 				 $("#sofortmoreinfo_show_hide").show("slow");
-			       $("#sofortmoreinfo_link").html("' . addslashes (JText::_ ('VMPAYMENT_SOFORT_HIDE')) . '");
+			       $("#sofortmoreinfo_link").html("' . addslashes (vmText::_ ('VMPAYMENT_SOFORT_HIDE')) . '");
 			    }
 		    });
 		});
@@ -68,7 +68,7 @@ class JElementGetSofort extends JElement {
 
 		// MOre information
 		$getSofortLInk="https://www.sofort.com/payment/users/register/688";
-		$html .= '<div><a target="_blank" href="'.$getSofortLInk.'" id="getsogort_link" ">' . JText::_ ('VMPAYMENT_SOFORT_REGISTERNOW') . '</a>';
+		$html .= '<div><a target="_blank" href="'.$getSofortLInk.'" id="getsogort_link" ">' . vmText::_ ('VMPAYMENT_SOFORT_REGISTERNOW') . '</a>';
 		$html .= '</div>';
 
 		return $html;

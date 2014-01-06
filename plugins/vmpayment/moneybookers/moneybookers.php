@@ -248,13 +248,13 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		$cartCurrency = CurrencyDisplay::getInstance($cart->pricesCurrency);
 
 		if ($totalInPaymentCurrency['value'] <= 0) {
-			vmInfo (JText::_ ('VMPAYMENT_MONEYBOOKERS_PAYMENT_AMOUNT_INCORRECT'));
+			vmInfo (vmText::_ ('VMPAYMENT_MONEYBOOKERS_PAYMENT_AMOUNT_INCORRECT'));
 			return FALSE;
 		}
 
 		$merchant_email = $method->pay_to_email;
 		if (empty($merchant_email)) {
-			vmInfo (JText::_ ('VMPAYMENT_MONEYBOOKERS_MERCHANT_EMAIL_NOT_SET'));
+			vmInfo (vmText::_ ('VMPAYMENT_MONEYBOOKERS_MERCHANT_EMAIL_NOT_SET'));
 			return FALSE;
 		}
 		$lang = JFactory::getLanguage ();
@@ -270,19 +270,19 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 			                        $order['details']['BT']->order_number .
 			                        '&pm=' .
 			                        $order['details']['BT']->virtuemart_paymentmethod_id .
-		                            '&Itemid=' . JRequest::getInt ('Itemid') .
-								    '&lang='.JRequest::getCmd('lang','')
+		                            '&Itemid=' . vmRequest:::getInt ('Itemid') .
+								    '&lang=vmRequest:::::getCmd('lang','')
 		                            ,
 		                        'cancel_url'               => JURI::root () .
 			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' .
 			                        $order['details']['BT']->order_number .
 			                        '&pm=' .
 			                        $order['details']['BT']->virtuemart_paymentmethod_id .
-		                            '&Itemid=' . JRequest::getInt ('Itemid') .
-									'&lang='.JRequest::getCmd('lang','')
+		                            '&Itemid=vmRequest::t::::getInt ('Itemid') .
+									'&lvmRequest::st::t::getCmd('lang','')
 		                        ,
 		                        'status_url'               => JURI::root () .
-			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&lang='.JRequest::getCmd('lang','') ,
+			                        'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=componentvmRequest::est::st::getCmd('lang','') ,
 		                        'platform'                 => '21477272',
 		                        'hide_login'               => $method->hide_login,
 		                        'prepare_only'             => 1,
@@ -303,7 +303,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		                        'amount'                   => $totalInPaymentCurrency['value'],
 		                        'currency'                 => $currency_code_3,
 		                        'detail1_description'
-		                                                   => JText::_ ('VMPAYMENT_MONEYBOOKERS_ORDER_NUMBER') . ': ', //ihh hardcoded colon
+		                                                   => vmText::_ ('VMPAYMENT_MONEYBOOKERS_ORDER_NUMBER') . ': ', //ihh hardcoded colon
 		                        'detail1_text'             => $order['details']['BT']->order_number);
 
 		// Prepare data that should be stored in the database
@@ -330,11 +330,11 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 		$sid = '';
 		if (!$fps || !stream_set_blocking ($fps, 0)) {
 			$this->sendEmailToVendorAndAdmins ("Error with Moneybookers: ",
-				JText::sprintf ('VMPAYMENT_MONEYBOOKERS_ERROR_POSTING_IPN', $errstr, $errno));
-			$this->logInfo ('Process IPN ' . JText::sprintf ('VMPAYMENT_MONEYBOOKERS_ERROR_POSTING_IPN', $errstr, $errno),
+				vmText::sprintf ('VMPAYMENT_MONEYBOOKERS_ERROR_POSTING_IPN', $errstr, $errno));
+			$this->logInfo ('Process IPN ' . vmText::sprintf ('VMPAYMENT_MONEYBOOKERS_ERROR_POSTING_IPN', $errstr, $errno),
 				'message');
 
-			vmInfo (JText::_ ('VMPAYMENT_MONEYBOOKERS_DISPLAY_GWERROR'));
+			vmInfo (vmText::_ ('VMPAYMENT_MONEYBOOKERS_DISPLAY_GWERROR'));
 			return NULL;
 		} else {
 			fwrite ($fps, $header);
@@ -352,7 +352,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 
 			if (!count ($response)) {
 				$this->logInfo ('Process IPN (empty or bad response) ' . $msg, 'message');
-				vmInfo (JText::_ ('VMPAYMENT_MONEYBOOKERS_DISPLAY_GWERROR'));
+				vmInfo (vmText::_ ('VMPAYMENT_MONEYBOOKERS_DISPLAY_GWERROR'));
 				return NULL;
 			}
 			$sid = $response[0];
@@ -372,8 +372,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 
 		$cart->_confirmDone = FALSE;
 		$cart->_dataValidated = FALSE;
-		$cart->setCartIntoSession ();
-		JRequest::setVar ('html', $html);
+		$cart->setCartIntoSessvmRequest::uest::est::setVar ('html', $html);
 	}
 
 	function plgVmgetPaymentCurrency ($virtuemart_paymentmethod_id, &$paymentCurrencyId) {
@@ -402,12 +401,12 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 
-		$mb_data = JRequest::get ('post');
+	vmRequest::quest::uest::get ('post');
 
 
 		// the payment itself should send the parameter needed.
-		$virtuemart_paymentmethod_id = JRequest::getInt ('pm', 0);
-		$order_number = JRequest::getString ('on', 0);
+		$virtuemart_paymevmRequest::equest::quest::getInt ('pm', 0);
+		vmRequest::Request::equest::getString ('on', 0);
 		if (!($method = $this->getVmPluginMethod ($virtuemart_paymentmethod_id))) {
 			return NULL;
 		} // Another method was selected, do nothing
@@ -439,8 +438,8 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 
-		$order_number = JRequest::getString ('on', '');
-		$virtuemart_paymentmethod_id = JRequest::getInt ('pm', '');
+vmRequest::mRequest::Request::getString ('on', '');
+		$virtuemartvmRequest::vmRequest::JRequest::getInt ('pm', '');
 		if (empty($order_number) or
 			empty($virtuemart_paymentmethod_id) or
 			!$this->selectedThisByMethodId ($virtuemart_paymentmethod_id)
@@ -456,7 +455,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 			return NULL;
 		}
 
-		VmInfo (Jtext::_ ('VMPAYMENT_MONEYBOOKERS_PAYMENT_CANCELLED'));
+		VmInfo (vmText::_ ('VMPAYMENT_MONEYBOOKERS_PAYMENT_CANCELLED'));
 		$session = JFactory::getSession ();
 		$return_context = $session->getId ();
 		if (strcmp ($paymentTable->user_session, $return_context) === 0) {
@@ -469,10 +468,7 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 	function plgVmOnPaymentNotification () {
 
 		if (!class_exists ('VirtueMartModelOrders')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
-		}
-
-		$mb_data = JRequest::get ('post');
+			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.phpvmRequest::	vmRequest:: JRequest::get ('post');
 
 		if (!isset($mb_data['transaction_id'])) {
 			return;
@@ -523,9 +519,9 @@ class plgVmpaymentMoneybookers extends vmPSPlugin {
 
 		if (strcmp ($mb_data['payment_status'], 'Completed') == 0) {
 			$order['order_status'] = $method->status_success;
-			$order['comments'] = JText::sprintf ('VMPAYMENT_MONEYBOOKERS_PAYMENT_STATUS_CONFIRMED', $order_number);
+			$order['comments'] = vmText::sprintf ('VMPAYMENT_MONEYBOOKERS_PAYMENT_STATUS_CONFIRMED', $order_number);
 		} elseif (strcmp ($mb_data['payment_status'], 'Pending') == 0) {
-			$order['comments'] = JText::sprintf ('VMPAYMENT_MONEYBOOKERS_PAYMENT_STATUS_PENDING', $order_number);
+			$order['comments'] = vmText::sprintf ('VMPAYMENT_MONEYBOOKERS_PAYMENT_STATUS_PENDING', $order_number);
 			$order['order_status'] = $method->status_pending;
 		}
 		else {

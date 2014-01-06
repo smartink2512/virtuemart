@@ -534,22 +534,6 @@ class VirtueMartModelProduct extends VmModel {
 		vmSetStartTime('sortSearchQuery');
 		$product_ids = $this->exeSortSearchListQuery (2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir, $nbrReturnProducts);
 		vmTime('sortSearchQuery','sortSearchQuery');
-		// This makes products searchable, we decided that this is not good, because variant childs appear then in lists
-		//So the new convention is that products which should be shown on a category or a manufacturer page should have entered this data
-		/*		if ($joinCategory == true || $joinMf) {
-
-		$tmp = array();;
-		foreach($product_ids as $k=>$id){
-		$tmp[] = $id;
-		$children = $this->getProductChildIds($id);
-		if($children){
-		$tmp = array_merge($tmp,$children);
-		}
-		}
-		$product_ids = $tmp;
-		}*/
-
-		 vmdebug('my product ids',$product_ids);
 
 		return $product_ids;
 

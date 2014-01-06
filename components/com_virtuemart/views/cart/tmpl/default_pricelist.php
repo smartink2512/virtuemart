@@ -190,21 +190,16 @@ foreach ($this->cart->products as $pkey => $prow) {
  				return true;
  				}
 				</script>
-		<form action="<?php echo JRoute::_ ('index.php'); ?>" method="post" class="inline">
-			<input type="hidden" name="option" value="com_virtuemart"/>
-				<!--<input type="text" title="<?php echo  vmText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="inputbox" size="3" maxlength="4" name="quantity" value="<?php echo $prow->quantity ?>" /> -->
-            <input type="text"
+		   <input type="text"
 				   onblur="check<?php echo $step?>(this);"
 				   onclick="check<?php echo $step?>(this);"
 				   onchange="check<?php echo $step?>(this);"
 				   onsubmit="check<?php echo $step?>(this);"
-				   title="<?php echo  vmText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="quantity-input js-recalculate" size="3" maxlength="4" name="quantity" value="<?php echo $prow->quantity ?>" />
-			<input type="hidden" name="view" value="cart"/>
-			<input type="hidden" name="task" value="update"/>
-			<input type="hidden" name="cart_virtuemart_product_id" value="<?php echo $prow->cart_item_id  ?>"/>
-			<input type="submit" class="vmicon vm2-add_quantity_cart" name="update" title="<?php echo  vmText::_ ('COM_VIRTUEMART_CART_UPDATE') ?>" align="middle" value=" "/>
-		</form>
-		<a class="vmicon vm2-remove_from_cart" title="<?php echo vmText::_ ('COM_VIRTUEMART_CART_DELETE') ?>" align="middle" href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=delete&cart_virtuemart_product_id=' . $prow->cart_item_id) ?>" rel="nofollow"> </a>
+				   title="<?php echo  vmText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="quantity-input js-recalculate" size="3" maxlength="4" name="quantity[]" value="<?php echo $prow->quantity ?>" />
+
+			<button type="submit" class="vmicon vm2-add_quantity_cart" name="update.<?php echo $pkey ?>" title="<?php echo  vmText::_ ('COM_VIRTUEMART_CART_UPDATE') ?>" />
+
+			<button type="submit" class="vmicon vm2-remove_from_cart" name="delete.<?php echo $pkey ?>" title="<?php echo vmText::_ ('COM_VIRTUEMART_CART_DELETE') ?>" />
 	</td>
 
 	<?php if (VmConfig::get ('show_tax')) { ?>

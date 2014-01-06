@@ -287,7 +287,7 @@ class KlarnaHandler {
 		VmConfig::loadJLang('com_virtuemart_shoppers', true);
 
 		$kIndex = 'klarna_';
-		$klarna['klarna_paymentmethod'] = JRequest::getVar ($kIndex . 'paymentmethod');
+		$klarna['klarna_paymentmethod'] = vmRequest::getVar ($kIndex . 'paymentmethod');
 		if ($klarna['klarna_paymentmethod'] == 'klarna_invoice') {
 			$klarna_option = 'invoice';
 		} elseif ($klarna['klarna_paymentmethod'] == 'klarna_partPayment') {
@@ -300,43 +300,43 @@ class KlarnaHandler {
 		}
 		$prefix=$klarna_option . '_' . $kIndex ;
 		//Removes spaces, tabs, and other delimiters.
-		$klarna['pno'] = preg_replace ('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', JRequest::getVar ($prefix . 'pnum', ''));
-		$klarna['socialNumber'] = preg_replace ('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', JRequest::getVar ($prefix . 'socialNumber'));
-		$klarna['phone'] = JRequest::getVar ($prefix . 'phone');
-		$klarna['email'] = JRequest::getVar ($prefix . 'emailAddress');
-		$klarna['street'] = JRequest::getVar ($prefix . 'street');
-		$klarna['house_no'] = JRequest::getVar ($prefix . 'homenumber');
-		$klarna['house_ext'] = JRequest::getVar ($prefix . 'house_extension');
-		$klarna['year_salary'] = JRequest::getVar ($prefix . 'ysalary');
-		$klarna['reference'] = JRequest::getVar ($prefix . 'reference');
-		$klarna['city'] = JRequest::getVar ($prefix . 'city');
-		$klarna['zip'] = JRequest::getVar ($prefix . 'zipcode');
-		$klarna['first_name'] = JRequest::getVar ($prefix . 'firstName');
-		$klarna['last_name'] = JRequest::getVar ($prefix . 'lastName');
-		$klarna['invoice_type'] = JRequest::getVar ('klarna_invoice_type');
-		$klarna['company_name'] = JRequest::getVar ('klarna_company_name');
-		$klarna['phone'] = JRequest::getVar ($prefix . 'phone');
-		$klarna['consent'] = JRequest::getVar ($prefix . 'consent');
-		$klarna['gender'] = JRequest::getVar ($prefix . 'gender');
+		$klarna['pno'] = preg_replace ('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', vmRequest::getVar ($prefix . 'pnum', ''));
+		$klarna['socialNumber'] = preg_replace ('/[ \t\,\.\!\#\;\:\r\n\v\f]/', '', vmRequest::getVar ($prefix . 'socialNumber'));
+		$klarna['phone'] = vmRequest::getVar ($prefix . 'phone');
+		$klarna['email'] = vmRequest::getVar ($prefix . 'emailAddress');
+		$klarna['street'] = vmRequest::getVar ($prefix . 'street');
+		$klarna['house_no'] = vmRequest::getVar ($prefix . 'homenumber');
+		$klarna['house_ext'] = vmRequest::getVar ($prefix . 'house_extension');
+		$klarna['year_salary'] = vmRequest::getVar ($prefix . 'ysalary');
+		$klarna['reference'] = vmRequest::getVar ($prefix . 'reference');
+		$klarna['city'] = vmRequest::getVar ($prefix . 'city');
+		$klarna['zip'] = vmRequest::getVar ($prefix . 'zipcode');
+		$klarna['first_name'] = vmRequest::getVar ($prefix . 'firstName');
+		$klarna['last_name'] = vmRequest::getVar ($prefix . 'lastName');
+		$klarna['invoice_type'] = vmRequest::getVar ('klarna_invoice_type');
+		$klarna['company_name'] = vmRequest::getVar ('klarna_company_name');
+		$klarna['phone'] = vmRequest::getVar ($prefix . 'phone');
+		$klarna['consent'] = vmRequest::getVar ($prefix . 'consent');
+		$klarna['gender'] = vmRequest::getVar ($prefix . 'gender');
 		switch ($klarna['gender']) {
 			case KlarnaFlags::MALE :
-				$klarna['title'] = JText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MR');
+				$klarna['title'] = vmText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MR');
 				break;
 			case KlarnaFlags::FEMALE:
 				//$this->klarna_gender = KlarnaFlags::FEMALE;
-				$klarna['title'] = JText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MRS');
+				$klarna['title'] = vmText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MRS');
 				break;
 		}
-		$klarna['birth_day'] = JRequest::getVar ($prefix . 'birth_day', '');
-		$klarna['birth_month'] = JRequest::getVar ($prefix . 'birth_month', '');
-		$klarna['birth_year'] = JRequest::getVar ($prefix . 'birth_year', '');
+		$klarna['birth_day'] = vmRequest::getVar ($prefix . 'birth_day', '');
+		$klarna['birth_month'] = vmRequest::getVar ($prefix . 'birth_month', '');
+		$klarna['birth_year'] = vmRequest::getVar ($prefix . 'birth_year', '');
 		if (isset($klarna['birth_year']) and !empty($klarna['birth_year'])) {
 			// due to the select list
 			if ($klarna['birth_month'] != 0 and $klarna['birth_month'] != 0) {
 				$klarna['birthday'] = $klarna['birth_year'] . "-" . $klarna['birth_month'] . "-" . $klarna['birth_day'];
-				$klarna['pno_frombirthday'] = JRequest::getVar ($prefix . 'birth_day') .
-					JRequest::getVar ($prefix . 'birth_month') .
-					JRequest::getVar ($prefix . 'birth_year');
+				$klarna['pno_frombirthday'] = vmRequest::getVar ($prefix . 'birth_day') .
+					vmRequest::getVar ($prefix . 'birth_month') .
+					vmRequest::getVar ($prefix . 'birth_year');
 			} else {
 				$klarna['birthday'] = '';
 			}
@@ -367,11 +367,11 @@ class KlarnaHandler {
 			$bill_street = $splitAddress[0];
 			$bill_number = $splitAddress[1];
 			switch ($bt['title']) {
-				case JText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MR'):
+				case vmText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MR'):
 					//$this->klarna_gender = KlarnaFlags::MALE;
 					break;
-				case JText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MISS'):
-				case JText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MRS'):
+				case vmText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MISS'):
+				case vmText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MRS'):
 					//$this->klarna_gender = KlarnaFlags::FEMALE;
 					break;
 				default:
@@ -480,7 +480,7 @@ class KlarnaHandler {
 					$discount_tax_percent=$item_tax_percent;
 					$includeVat=0;
 				}
-				$name=utf8_decode (strip_tags ($item->order_item_name)). ' ('.JText::_('VMPAYMENT_KLARNA_PRODUCTDISCOUNT'). ')';
+				$name=utf8_decode (strip_tags ($item->order_item_name)). ' ('.vmText::_('VMPAYMENT_KLARNA_PRODUCTDISCOUNT'). ')';
 				$discount = self::convertPrice (abs($item->product_subtotal_discount), $order['details']['BT']->order_currency, $cData['currency_code']);
 				$discount = (double)(round (abs($discount), 2)) * -1 ;
 				$klarna->addArticle (1, utf8_decode ($item->order_item_sku), $name, $discount, (double)$discount_tax_percent, $item_discount_percent, $includeVat);
@@ -505,7 +505,7 @@ class KlarnaHandler {
 					break;
 				}
 			}
-		$klarna->addArticle (1, "shippingfee", JText::_ ('VMPAYMENT_KLARNA_SHIPMENT'), ((double)(round (($shipment), 2))), round ($shipment_tax_percent, 2), 0, KlarnaFlags::IS_SHIPMENT + KlarnaFlags::INC_VAT);
+		$klarna->addArticle (1, "shippingfee", vmText::_ ('VMPAYMENT_KLARNA_SHIPMENT'), ((double)(round (($shipment), 2))), round ($shipment_tax_percent, 2), 0, KlarnaFlags::IS_SHIPMENT + KlarnaFlags::INC_VAT);
 
 
 		// Add invoice fee
@@ -520,7 +520,7 @@ class KlarnaHandler {
 			}
  			if ($payment_without_tax > 0) {
 				//vmdebug('invoicefee', $payment, $payment_tax);
-				$klarna->addArticle (1, "invoicefee", utf8_decode(JText::_ ('VMPAYMENT_KLARNA_INVOICE_FEE_TITLE')), ((double)(round (($payment_with_tax), 2))), (double)round ($payment_tax_percent, 2), 0, KlarnaFlags::IS_HANDLING + KlarnaFlags::INC_VAT);
+				$klarna->addArticle (1, "invoicefee", utf8_decode(vmText::_ ('VMPAYMENT_KLARNA_INVOICE_FEE_TITLE')), ((double)(round (($payment_with_tax), 2))), (double)round ($payment_tax_percent, 2), 0, KlarnaFlags::IS_HANDLING + KlarnaFlags::INC_VAT);
 			}
 		}
 		// Add coupon if there is any
@@ -528,7 +528,7 @@ class KlarnaHandler {
 			$coupon_discount = self::convertPrice (round ($order['details']['BT']->coupon_discount), $order['details']['BT']->order_currency, $cData['currency_code']);
 			$coupon_discount =(double)(round (abs($coupon_discount), 2)) * -1 ;
 			//vmdebug('discount', $coupon_discount);
-			$klarna->addArticle (1, 'discount',utf8_decode(JText::_ ('VMPAYMENT_KLARNA_DISCOUNT')) . ' ' . utf8_decode($order['details']['BT']->coupon_code),  $coupon_discount , 0, 0, KlarnaFlags::INC_VAT);
+			$klarna->addArticle (1, 'discount',utf8_decode(vmText::_ ('VMPAYMENT_KLARNA_DISCOUNT')) . ' ' . utf8_decode($order['details']['BT']->coupon_code),  $coupon_discount , 0, 0, KlarnaFlags::INC_VAT);
 		}
 
 
@@ -591,7 +591,7 @@ class KlarnaHandler {
 			$result = $klarna->addTransaction ($pno, ($klarna->getCountry () == KlarnaCountry::DE || $klarna->getCountry () == KlarnaCountry::NL) ? $klarnaData['gender'] : NULL, $klarna_flags, $klarna_pclass);
 			$result['eid'] = $cData['eid'];
 			$result['status_code'] = $result[2];
-			$result['status_text'] = JText::_ ('VMPAYMENT_KLARNA_ORDER_STATUS_TEXT_' . $result[2]);
+			$result['status_text'] = vmText::_ ('VMPAYMENT_KLARNA_ORDER_STATUS_TEXT_' . $result[2]);
 			return $result; //return $result;
 		}
 		catch (Exception $e) {
@@ -716,7 +716,7 @@ class KlarnaHandler {
 		}
 		$uri = JFactory::getURI ();
 		$link = $uri->root () . 'administrator/index.php?option=com_virtuemart&view=config';
-		VmError (JText::sprintf ('VMPAYMENT_KLARNA_CANNOT_STORE_CONFIG', '<a href="' . $link . '">' . $link . '</a>', JText::_ ('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH')));
+		VmError (vmText::sprintf ('VMPAYMENT_KLARNA_CANNOT_STORE_CONFIG', '<a href="' . $link . '">' . $link . '</a>', vmText::_ ('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH')));
 		return FALSE;
 	}
 
@@ -735,7 +735,7 @@ class KlarnaHandler {
 				$type = 'message';
 			}
 			$app = JFactory::getApplication ();
-			$app->enqueueMessage (JText::_ (urldecode ($log)), $type);
+			$app->enqueueMessage (vmText::_ (urldecode ($log)), $type);
 		}
 		//Redirect to previous page.
 		$session = JFactory::getSession ();
@@ -749,7 +749,7 @@ class KlarnaHandler {
 		//$_SESSION['klarna_error'] = addslashes($message);
 		$app = JFactory::getApplication ();
 		$app->enqueueMessage ($message);
-		$app->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=cart',FALSE), JText::_ ('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
+		$app->redirect (JRoute::_ ('index.php?option=com_virtuemart&view=cart',FALSE), vmText::_ ('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 	}
 
 	/**
@@ -1156,7 +1156,7 @@ class KlarnaHandler {
 		} else {
 			$uri = JFactory::getURI ();
 			$link = $uri->root () . 'administrator/index.php?option=com_virtuemart&view=config';
-			VmError (JText::sprintf ('VMPAYMENT_KLARNA_CANNOT_STORE_CONFIG', '<a href="' . $link . '">' . $link . '</a>', JText::_ ('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH')));
+			VmError (vmText::sprintf ('VMPAYMENT_KLARNA_CANNOT_STORE_CONFIG', '<a href="' . $link . '">' . $link . '</a>', vmText::_ ('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH')));
 			return NULL;
 		}
 	}
@@ -1198,9 +1198,9 @@ class KlarnaHandler {
 
 		/*
 		if ($country3 == "DEU") {
-			$consent = JRequest::getVar ('klarna_consent');
+			$consent = vmRequest::getVar ('klarna_consent');
 			if ($consent != 'on') {
-				$errors = JText::_ ('VMPAYMENT_KLARNA_NO_CONSENT');
+				$errors = vmText::_ ('VMPAYMENT_KLARNA_NO_CONSENT');
 			}
 		}
 
@@ -1223,7 +1223,7 @@ class KlarnaHandler {
 		foreach ($userFields as $userField) {
 			if (in_array ($userField->name, $required_shopperfields)) {
 				if (empty($data[$userField->name])) {
-					$errors[] = JText::_($userField->title);
+					$errors[] = vmText::_($userField->title);
 				}
 			}
 		}
@@ -1232,8 +1232,8 @@ class KlarnaHandler {
 		// Quick and durty .. but it works
 		$kIndex = "klarna_";
 		if ($country3 == "SWE") {
-			if (JRequest::getVar ('klarna_invoice_type') == 'company') {
-				if (strlen (trim ((string)JRequest::getVar ('klarna_company_name'))) == 0) {
+			if (vmRequest::getVar ('klarna_invoice_type') == 'company') {
+				if (strlen (trim ((string)vmRequest::getVar ('klarna_company_name'))) == 0) {
 					$errors[] = 'VMPAYMENT_KLARNA_COMPANY_NAME';
 				}
 			} else {
@@ -1296,9 +1296,9 @@ class KlarnaHandler {
 		}
 
 		if (!empty($errors)) {
-			$msg = JText::_ ('VMPAYMENT_KLARNA_ERROR_TITLE_2');
+			$msg = vmText::_ ('VMPAYMENT_KLARNA_ERROR_TITLE_2');
 			foreach ($errors as $error) {
-				$msg .= "<li>" . JText::_ ($error) . "</li>";
+				$msg .= "<li>" . vmText::_ ($error) . "</li>";
 			}
 			$option=NULL;
 			self::setKlarnaErrorInSession ($msg, $option);
@@ -1390,11 +1390,11 @@ class KlarnaHandler {
 
 		$klarnaFields = array();
 		switch ($from['title']) {
-			case JText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MR'):
+			case vmText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MR'):
 				$klarnaFields['gender'] = KlarnaFlags::MALE;
 				break;
-			case JText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MISS'):
-			case JText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MRS'):
+			case vmText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MISS'):
+			case vmText::_ ('COM_VIRTUEMART_SHOPPER_TITLE_MRS'):
 				$klarnaFields['gender'] = KlarnaFlags::FEMALE;
 				break;
 			default:

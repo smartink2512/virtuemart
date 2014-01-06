@@ -104,12 +104,19 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 
 	<?php echo shopFunctionsF::getLoginForm ($this->cart, FALSE);
 
+	/*if ($this->checkout_task) {
+		$taskRoute = '&task=' . $this->checkout_task;
+	}
+	else {*/
+		$taskRoute = '';
+	//}
+	?><form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
+	<?php
 	// This displays the form to change the current shopper
 	$adminID = JFactory::getSession()->get('vmAdminID');
 	if ((JFactory::getUser()->authorise('core.admin', 'com_virtuemart') || JFactory::getUser($adminID)->authorise('core.admin', 'com_virtuemart')) && (VmConfig::get ('oncheckout_change_shopper', 0))) { 
 		echo $this->loadTemplate ('shopperform');
 	}
-
 
 
 	// This displays the pricelist MUST be done with tables, because it is also used for the emails
@@ -130,17 +137,6 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 		}
 		?>
 	</div>
-	<?php
-	if (!VmConfig::get('oncheckout_opc', 1)) {
-		if ($this->checkout_task) {
-			$taskRoute = '&task=' . $this->checkout_task;
-		}
-		else {
-			$taskRoute = '';
-		}
-	?>
-		<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
-	<?php } ?>
 		<?php // Leave A Comment Field ?>
 		<div class="customer-comment marginbottom15">
 			<span class="comment"><?php echo vmText::_ ('COM_VIRTUEMART_COMMENT_CART'); ?></span><br/>
@@ -192,7 +188,7 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 		<?php // Continue and Checkout Button END ?>
 		<input type='hidden' name='order_language' value='<?php echo $this->order_language; ?>'/>
 		<input type='hidden' id='STsameAsBT' name='STsameAsBT' value='<?php echo $this->cart->STsameAsBT; ?>'/>
-		<input type='hidden' name='task' value='<?php echo $this->checkout_task; ?>'/>
+		<input type='hidden' name='task' value='updateCart'/>
 		<input type='hidden' name='option' value='com_virtuemart'/>
 		<input type='hidden' name='view' value='cart'/>
 	</form>

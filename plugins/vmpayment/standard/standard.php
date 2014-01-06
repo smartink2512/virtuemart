@@ -24,7 +24,7 @@ if (!class_exists ('vmPSPlugin')) {
 	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 }
 
-	class plgVmPaymentStandard extends vmPSPlugin {
+class plgVmPaymentStandard extends vmPSPlugin {
 
 	function __construct (& $subject, $config) {
 
@@ -36,7 +36,6 @@ if (!class_exists ('vmPSPlugin')) {
 		$this->_tableId = 'id';
 		$varsToPush = $this->getVarsToPush ();
 		$this->setConfigParameterable ($this->_configTableFieldName, $varsToPush);
-
 	}
 
 	/**
@@ -117,7 +116,7 @@ if (!class_exists ('vmPSPlugin')) {
 		if (!empty($payment_info)) {
 			$lang = JFactory::getLanguage ();
 			if ($lang->hasKey ($method->payment_info)) {
-				$payment_info = JText::_ ($method->payment_info);
+				$payment_info = vmText::_ ($method->payment_info);
 			} else {
 				$payment_info = $method->payment_info;
 			}
@@ -146,7 +145,7 @@ if (!class_exists ('vmPSPlugin')) {
 
 		//We delete the old stuff
 		$cart->emptyCart ();
-		JRequest::setVar ('html', $html);
+		vmRequest::setVar ('html', $html);
 		return TRUE;
 	}
 
@@ -294,7 +293,7 @@ if (!class_exists ('vmPSPlugin')) {
 	 * @author Valerie Isaksen
 	 * @author Max Milbers
 	 */
-	public function plgVmDisplayListFEPayment (VirtueMartCart $cart, $selected = 0, &$htmlIn) {
+	public function plgVmDisplayListFEPayment (VirtueMartCart $cart, $selected, &$htmlIn) {
 
 		return $this->displayListFE ($cart, $selected, $htmlIn);
 	}

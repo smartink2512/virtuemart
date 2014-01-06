@@ -8,7 +8,7 @@
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * ${PHING.VM.COPYRIGHT}
+ * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -56,7 +56,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	private $_cc_valid = false;
 	private $_user_data_valid = false;
 	private $_errormessage = array();
-	var $_currentMethod="";
 
 	function __construct(& $subject, $config) {
 
@@ -78,7 +77,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'api_signature' => array('', 'int'),
 			'api_certificate' => array('', 'char'),
 
-			'sandbox' => array('sandbox', 'int'),
+			'sandbox' => array(0, 'int'),
 			'sandbox_merchant_email' => array('', 'char'),
 			'sandbox_api_login_id' => array('', 'char'),
 			'sandbox_api_password' => array('', 'char'),
@@ -251,7 +250,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$product = $paypalInterface->getExpressProduct();
 				$productDisplayHtml = $this->renderByLayout('expproduct',
 					array(
-						'text' => JText::_('VMPAYMENT_PAYPAL_EXPCHECKOUT_AVAILABALE'),
+						'text' => vmText::_('VMPAYMENT_PAYPAL_EXPCHECKOUT_AVAILABALE'),
 						'img' => $product['img'],
 						'link' => $product['link'],
 						'sandbox' => $this->_currentMethod->sandbox,
@@ -314,7 +313,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$this->_currentMethod=$currentMethod;
 			$paypalExpInterface = $this->_loadPayPalInterface();
 			$paypalExpInterface->loadCustomerData();
-			$expressCheckout = JRequest::getVar('expresscheckout', '');
+			$expressCheckout = vmRequest:::getVar('expresscheckout', '');
 			if ($expressCheckout == 'cancel') {
 				$paypalExpInterface->customerData->clear();
 				if (!class_exists('VirtueMartCart')) {
@@ -346,7 +345,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$button = $paypalInterface->getExpressCheckoutButton();
 				$html .= $this->renderByLayout('expcheckout',
 					array(
-						'text' => JText::_('VMPAYMENT_PAYPAL_EXPCHECKOUT_BUTTON'),
+						'text' => vmText::_('VMPAYMENT_PAYPAL_EXPCHECKOUT_BUTTON'),
 						'img' => $button['img'],
 						'link' => $button['link'],
 						'sandbox' => $this->_currentMethod->sandbox,
@@ -408,7 +407,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$cart->_confirmDone = FALSE;
 			$cart->_dataValidated = FALSE;
 			$cart->setCartIntoSession();
-			JRequest::setVar('html', $html);
+	vmRequest:::::setVar('html', $html);
 
 		} else if ($this->_currentMethod->paypalproduct == 'exp') {
 			$success = $paypalInterface->ManageCheckout();
@@ -443,7 +442,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 				$paypalInterface->debugLog($response, 'plgVmConfirmedOrder, response:', 'error');
 
 				$app = JFactory::getApplication();
-				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . JRequest::getInt('Itemid'), false));
+				$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=vmRequest::t::::getInt('Itemid'), false));
 			}
 
 
@@ -486,8 +485,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			// 	2 = don't delete the cart, don't send email and don't redirect
 			$cart->_confirmDone = FALSE;
 			$cart->_dataValidated = FALSE;
-			$cart->setCartIntoSession();
-			JRequest::setVar('html', $html);
+			$cart->setCartIntoSession(vmRequest::st::t::setVar('html', $html);
 		} else {
 			vmError('Unknown Paypal mode');
 		}
@@ -544,13 +542,13 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 
 		// the payment itself should send the parameter needed.
-		$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
-		$expresscheckout = JRequest::getVar('expresscheckout', '');
+		$virtuemart_paymentmethvmRequest::est::st::getInt('pm', 0);
+		$expresscvmRequest::uest::est::getVar('expresscheckout', '');
 		if ($expresscheckout) {
 			return;
 
 		}
-		$order_number = JRequest::getString('on', 0);
+		$ordvmRequest::quest::uest::getString('on', 0);
 		$vendorId = 0;
 		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
@@ -595,8 +593,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		}
 
-		$order_number = JRequest::getString('on', '');
-		$virtuemart_paymentmethod_id = JRequest::getInt('pm', '');
+		$ovmRequest::equest::quest::getString('on', '');
+		$virtuemart_payvmRequest::Request::equest::getInt('pm', '');
 		if (empty($order_number) or empty($virtuemart_paymentmethod_id) or !$this->selectedThisByMethodId($virtuemart_paymentmethod_id)) {
 			return NULL;
 		}
@@ -607,7 +605,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return NULL;
 		}
 
-		VmInfo(Jtext::_('VMPAYMENT_PAYPAL_PAYMENT_CANCELLED'));
+		VmInfo(vmText::_('VMPAYMENT_PAYPAL_PAYMENT_CANCELLED'));
 		$session = JFactory::getSession();
 		$return_context = $session->getId();
 		if (strcmp($paymentTable->paypal_custom, $return_context) === 0) {
@@ -622,8 +620,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		if (!class_exists('VirtueMartModelOrders')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
-		}
-		$paypal_data = JRequest::get('post');
+		}vmRequest::mRequest::Request::get('post');
 
 		//Recuring payment return rp_invoice_id instead of invoice
 		if (array_key_exists('rp_invoice_id', $paypal_data)) {
@@ -815,7 +812,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$code = "paypal_response_";
 		$first = TRUE;
 		foreach ($payments as $payment) {
-			$html .= '<tr class="row1"><td>' . JText::_('VMPAYMENT_PAYPAL_DATE') . '</td><td align="left">' . $payment->created_on . '</td></tr>';
+			$html .= '<tr class="row1"><td>' . vmText::_('VMPAYMENT_PAYPAL_DATE') . '</td><td align="left">' . $payment->created_on . '</td></tr>';
 			// Now only the first entry has this data when creating the order
 			if ($first) {
 				$html .= $this->getHtmlRowBE('COM_VIRTUEMART_PAYMENT_NAME', $payment->payment_name);
@@ -843,7 +840,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 					$html .= ' </div>
         <span class="icon-nofloat vmicon vmicon-16-xml"></span>&nbsp;';
-					$html .= JText::_('VMPAYMENT_PAYPAL_VIEW_TRANSACTION_LOG');
+					$html .= vmText::_('VMPAYMENT_PAYPAL_VIEW_TRANSACTION_LOG');
 					$html .= '  </a>';
 					$html .= ' </td></tr>';
 				} else {
@@ -941,7 +938,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if ($jplugin_id != $this->_jid) {
 			return FALSE;
 		}
-		$this->_currentMethod = $this->getPluginMethod(JRequest::getInt('virtuemart_paymentmethod_id'));
+		$this->_currentMethod = $thvmRequest::vmRequest::JRequest::getInt('virtuemart_paymentmethod_id'));
 		if ($this->_currentMethod->published) {
 
 			$sandbox = "";
@@ -958,32 +955,32 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 					$param = 'paypal_merchant_email';
 				}
 				if (empty ($this->_currentMethod->$param)) {
-					$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'MERCHANT'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
+					$text = vmText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', vmText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'MERCHANT'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
 					vmError($text);
 				}
 			}
 			if ($this->_currentMethod->paypalproduct == 'exp' OR $this->_currentMethod->paypalproduct == 'hosted' OR $this->_currentMethod->paypalproduct == 'api') {
 				$param = $sandbox_param . 'api_login_id';
 				if (empty ($this->_currentMethod->$param)) {
-					$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'USERNAME'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
+					$text = vmText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', vmText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'USERNAME'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
 					vmError($text);
 				}
 				$param = $sandbox_param . 'api_password';
 				if (empty ($this->_currentMethod->$param)) {
-					$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'PASSWORD'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
+					$text = vmText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', vmText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'PASSWORD'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
 					vmError($text);
 				}
 
 				if ($this->_currentMethod->authentication == 'signature') {
 					$param = $sandbox_param . 'api_signature';
 					if (empty ($this->_currentMethod->$param)) {
-						$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'SIGNATURE'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
+						$text = vmText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', vmText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'SIGNATURE'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
 						vmError($text);
 					}
 				} else {
 					$param = $sandbox_param . 'api_certificate';
 					if (empty ($this->_currentMethod->$param)) {
-						$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'CERTIFICATE'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
+						$text = vmText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', vmText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'CERTIFICATE'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
 						vmError($text);
 					}
 				}
@@ -991,12 +988,12 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			if ($this->_currentMethod->paypalproduct == 'hosted') {
 				$param = $sandbox_param . 'payflow_partner';
 				if (empty ($this->_currentMethod->$param)) {
-					$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'PAYFLOW_PARTNER'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
+					$text = vmText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', vmText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'PAYFLOW_PARTNER'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
 					vmError($text);
 				}
 			}
 			if ($this->_currentMethod->paypalproduct == 'exp' AND empty ($this->_currentMethod->expected_maxamount)) {
-				$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_EXPECTEDMAXAMOUNT'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
+				$text = vmText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', vmText::_('VMPAYMENT_PAYPAL_EXPECTEDMAXAMOUNT'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
 				vmError($text);
 			}
 			
@@ -1083,7 +1080,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$paypalInterface->setTotal($order->order_total);
 			$paypalInterface->loadCustomerData();
 			if ($paypalInterface->DoCapture($payment)) {
-				$paypalInterface->debugLog(JText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_CAPTURED'), 'plgVmOnUpdateOrderShipment', 'message', true);
+				$paypalInterface->debugLog(vmText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_CAPTURED'), 'plgVmOnUpdateOrderShipment', 'message', true);
 				$this->_storePaypalInternalData(  $paypalInterface->getResponse(false), $order->virtuemart_order_id, $payment->virtuemart_paymentmethod_id);
 			}
 
@@ -1094,11 +1091,11 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$paypalInterface->loadCustomerData();
 			if ($paypalInterface->RefundTransaction($payment)) {
 				if ($this->_currentMethod->payment_type == '_xclick-subscriptions') {
-					$paypalInterface->debugLog(JText::_('VMPAYMENT_PAYPAL_SUBSCRIPTION_CANCELLED'), 'plgVmOnUpdateOrderPayment Refund', 'message', true);
+					$paypalInterface->debugLog(vmText::_('VMPAYMENT_PAYPAL_SUBSCRIPTION_CANCELLED'), 'plgVmOnUpdateOrderPayment Refund', 'message', true);
 				} else {
 					//Mark the order as refunded
 					// $order->order_status = $method->status_refunded;
-					$paypalInterface->debugLog(JText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_REFUNDED'), 'plgVmOnUpdateOrderPayment Refund', 'message', true);
+					$paypalInterface->debugLog(vmText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_REFUNDED'), 'plgVmOnUpdateOrderPayment Refund', 'message', true);
 				}
 				$this->_storePaypalInternalData( $paypalInterface->getResponse(false), $order->virtuemart_order_id, $payment->virtuemart_paymentmethod_id);
 			}
@@ -1138,7 +1135,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if ($this->getPluginMethods($cart->vendorId) === 0) {
 			if (empty($this->_name)) {
 				$app = JFactory::getApplication();
-				$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_' . strtoupper($this->_psType)));
+				$app->enqueueMessage(vmText::_('COM_VIRTUEMART_CART_NO_' . strtoupper($this->_psType)));
 				return false;
 			} else {
 				return false;
@@ -1149,6 +1146,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$htmla = array();
 		foreach ($this->methods as $this->_currentMethod) {
 			if ($this->checkConditions($cart, $this->_currentMethod, $cart->pricesUnformatted)) {
+
 				$html = '';
 				$cart_prices = array();
 				$cart_prices['withTax'] = '';
@@ -1230,7 +1228,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		//Validate amount
 		//if ($totalInPaymentCurrency <= 0) {
-		//	vmInfo (JText::_ ('VMPAYMENT_PAYPAL_PAYMENT_AMOUNT_INCORRECT'));
+		//	vmInfo (vmText::_ ('VMPAYMENT_PAYPAL_PAYMENT_AMOUNT_INCORRECT'));
 		//	return FALSE;
 		//}
 	}
@@ -1246,10 +1244,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 	function plgVmOnSelfCallFE($type, $name, &$render) {
 		if ($name != $this->_name || $type != 'vmpayment') {
-			return FALSE;
-		}
-		$action = jRequest::getWord('action');
-		$virtuemart_paymentmethod_id = JRequest::getInt('virtuemart_paymentmethod_id');
+			return FvmRequest::	vmRequest:: jRequest::getWord('action');
+		$virtuevmRequest::ntvmRequest::= JRequest::getInt('virtuemart_paymentmethod_id');
 		//Load the method
 		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 			return NULL; // Another method was selected, do nothing
@@ -1275,7 +1271,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return false;
 		} else {
 			$app = JFactory::getApplication();
-			$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . JRequest::getInt('Itemid'), false));
+			$app->redirect(JRoute::_('index.php?option=com_virtuevmRequest::carvmRequest:: . JRequest::getInt('Itemid'), false));
 		}
 	}
 

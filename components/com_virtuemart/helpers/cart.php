@@ -507,34 +507,32 @@ class VirtueMartCart {
 	 * @param array $cart_id the cart IDs to remove from the cart
 	 * @access public
 	 */
-	public function updateProductCart($cart_virtuemart_product_id=0) {
+	public function updateProductCart() {
 
-		if (empty($cart_virtuemart_product_id))
-		$cart_virtuemart_product_id = VmRequest::getInt('cart_virtuemart_product_id');
-		if (empty($quantity))
-		$quantity = VmRequest::getInt('quantity');
-
-		//		foreach($cart_virtuemart_product_ids as $cart_virtuemart_product_id){
+		$quantities = VmRequest::getInt('quantity');
+		if(empty($quantities)) return false;
 		$updated = false;
 
-		if (array_key_exists($cart_virtuemart_product_id, $this->cartProductsData)) {
-			if (!empty($quantity)) {
-				$productModel = VmModel::getModel('product');
+		foreach($quantities as $key=>$quantity){
+			if (!empty($quantity) and !isset($_POST['delete'.$key])) {
+				if($quantity!=$this->cartProductsData[$key]['quantity']){
+					$productModel = VmModel::getModel('product');
 
-				$product = $productModel -> getProduct($this->cartProductsData[$cart_virtuemart_product_id]['virtuemart_product_id'], $quantity);
-				if ($this->checkForQuantities($product, $quantity)) {
-					$this->cartProductsData[$cart_virtuemart_product_id]['quantity'] = $quantity;
-					$updated = true;
+					$product = $productModel -> getProduct($this->cartProductsData[$key]['virtuemart_product_id'], $quantity);
+					if ($this->checkForQuantities($product, $quantity)) {
+						$this->cartProductsData[$key]['quantity'] = $quantity;
+						$updated = true;
+					}
 				}
+
 			} else {
 				//Todo when quantity is 0,  the product should be removed, maybe necessary to gather in array and execute delete func
-				unset($this->cartProductsData[$cart_virtuemart_product_id]);
+				unset($this->cartProductsData[$key]);
 				$updated = true;
 			}
-			// Save the cart
-			$this->setCartIntoSession();
 		}
 
+		$this->setCartIntoSession();
 		if ($updated)
 		return true;
 		else
@@ -598,18 +596,62 @@ class VirtueMartCart {
 	/**
 	 * Check the selected shipment data and store the info in the cart
 	 * @param integer $shipment_id Shipment ID taken from the form data
-	 * @author Oscar van Eijk
+	 * @author Max Milbers
 	 */
-	public function setShipment($shipment_id) {
+	public function setShipment($virtuemart_shipmentmethod_id, $force=false) {
 
-	    $this->virtuemart_shipmentmethod_id = $shipment_id;
-	    $this->setCartIntoSession();
+		if($this->virtuemart_shipmentmethod_id != $virtuemart_shipmentmethod_id or $force){
+			//Now set the shipment ID into the cart
+			$this->virtuemart_shipmentmethod_id = $virtuemart_shipmentmethod_id;
+			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+			JPluginHelper::importPlugin('vmshipment');
 
+			//Add a hook here for other payment methods, checking the data of the choosed plugin
+			$_dispatcher = JDispatcher::getInstance();
+			$_retValues = $_dispatcher->trigger('plgVmOnSelectCheckShipment', array( &$this));
+			$dataValid = true;
+			foreach ($_retValues as $_retVal) {
+				if ($_retVal === true ) {
+					// Plugin completed successfull; nothing else to do
+					break;
+				} else if ($_retVal === false ) {
+					$mainframe = JFactory::getApplication();
+					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $_retVal);
+					break;
+				}
+			}
+			$this->setCartIntoSession();
+		}
 	}
 
-	public function setPaymentMethod($virtuemart_paymentmethod_id) {
-		$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;
-		$this->setCartIntoSession();
+	public function setPaymentMethod($virtuemart_paymentmethod_id, $force=false) {
+
+		if($this->virtuemart_paymentmethod_id != $virtuemart_paymentmethod_id or $force){
+
+			$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;
+			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+			JPluginHelper::importPlugin('vmpayment');
+
+			$this->setPaymentMethod($virtuemart_paymentmethod_id);
+
+			//Add a hook here for other payment methods, checking the data of the choosed plugin
+			$msg = '';
+			$_dispatcher = JDispatcher::getInstance();
+			$_retValues = $_dispatcher->trigger('plgVmOnSelectCheckPayment', array( $this, &$msg));
+			$dataValid = true;
+			foreach ($_retValues as $_retVal) {
+				if ($_retVal === true ) {
+					// Plugin completed succesfull; nothing else to do
+					break;
+				} else if ($_retVal === false ) {
+					$app = JFactory::getApplication();
+					$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $msg);
+					break;
+				}
+			}
+			$this->setCartIntoSession();
+		}
+
 	}
 
 	function confirmDone() {
@@ -728,7 +770,7 @@ class VirtueMartCart {
 			$userFieldsModel = VmModel::getModel('Userfields');
 
 			$agreed = $userFieldsModel->getUserfield('agreed','name');
-			vmdebug('my field',$agreed);
+
 			if(!empty($agreed->required)){
 				if($agreed->default=='1'){
 					$this->tosAccepted = true;
@@ -1180,7 +1222,6 @@ class VirtueMartCart {
 	 * @param array $cart the cart to get the products for
 	 * @return array of product objects
 	 */
-// 	$this->pricesUnformatted = $product_prices;
 
 	public function getCartPrices($checkAutomaticSelected=true) {
 

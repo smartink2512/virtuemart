@@ -6,7 +6,7 @@
  * @version $Id: authorize.php 5122 2011-12-18 22:24:49Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * @copyright ${PHING.VM.COPYRIGHT}
+ * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -129,7 +129,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		if ($this->getPluginMethods($cart->vendorId) === 0) {
 			if (empty($this->_name)) {
 				$app = JFactory::getApplication();
-				$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_' . strtoupper($this->_psType)));
+				$app->enqueueMessage(vmText::_('COM_VIRTUEMART_CART_NO_' . strtoupper($this->_psType)));
 				return FALSE;
 			} else {
 				return FALSE;
@@ -170,22 +170,22 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 				}
 				$sandbox_msg = "";
 				if ($this->_currentMethod->sandbox) {
-					$sandbox_msg .= '<br />' . JText::_('VMPAYMENT_AUTHORIZENET_SANDBOX_TEST_NUMBERS');
+					$sandbox_msg .= '<br />' . vmText::_('VMPAYMENT_AUTHORIZENET_SANDBOX_TEST_NUMBERS');
 				}
 
 				$cvv_images = $this->_displayCVVImages($this->_currentMethod);
-				$html .= '<br /><span class="vmpayment_cardinfo">' . JText::_('VMPAYMENT_AUTHORIZENET_COMPLETE_FORM') . $sandbox_msg . '
+				$html .= '<br /><span class="vmpayment_cardinfo">' . vmText::_('VMPAYMENT_AUTHORIZENET_COMPLETE_FORM') . $sandbox_msg . '
 		    <table border="0" cellspacing="0" cellpadding="2" width="100%">
 		    <tr valign="top">
 		        <td nowrap width="10%" align="right">
-		        	<label for="creditcardtype">' . JText::_('VMPAYMENT_AUTHORIZENET_CCTYPE') . '</label>
+		        	<label for="creditcardtype">' . vmText::_('VMPAYMENT_AUTHORIZENET_CCTYPE') . '</label>
 		        </td>
 		        <td>' . $creditCardList .
 					'</td>
 		    </tr>
 		    <tr valign="top">
 		        <td nowrap width="10%" align="right">
-		        	<label for="cc_type">' . JText::_('VMPAYMENT_AUTHORIZENET_CCNUM') . '</label>
+		        	<label for="cc_type">' . vmText::_('VMPAYMENT_AUTHORIZENET_CCNUM') . '</label>
 		        </td>
 		        <td>
 				<script type="text/javascript">
@@ -205,17 +205,17 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		    </tr>
 		    <tr valign="top">
 		        <td nowrap width="10%" align="right">
-		        	<label for="cc_cvv">' . JText::_('VMPAYMENT_AUTHORIZENET_CVV2') . '</label>
+		        	<label for="cc_cvv">' . vmText::_('VMPAYMENT_AUTHORIZENET_CVV2') . '</label>
 		        </td>
 		        <td>
 		            <input type="text" class="inputbox" id="cc_cvv_' . $this->_currentMethod->virtuemart_paymentmethod_id . '" name="cc_cvv_' . $this->_currentMethod->virtuemart_paymentmethod_id . '" maxlength="4" size="5" value="' . $this->_cc_cvv . '" autocomplete="off" />
 
-			<span class="hasTip" title="' . JText::_('VMPAYMENT_AUTHORIZENET_WHATISCVV') . '::' . JText::sprintf("VMPAYMENT_AUTHORIZENET_WHATISCVV_TOOLTIP", $cvv_images) . ' ">' .
-					JText::_('VMPAYMENT_AUTHORIZENET_WHATISCVV') . '
+			<span class="hasTip" title="' . vmText::_('VMPAYMENT_AUTHORIZENET_WHATISCVV') . '::' . vmText::sprintf("VMPAYMENT_AUTHORIZENET_WHATISCVV_TOOLTIP", $cvv_images) . ' ">' .
+					vmText::_('VMPAYMENT_AUTHORIZENET_WHATISCVV') . '
 			</span></td>
 		    </tr>
 		    <tr>
-		        <td nowrap width="10%" align="right">' . JText::_('VMPAYMENT_AUTHORIZENET_EXDATE') . '</td>
+		        <td nowrap width="10%" align="right">' . vmText::_('VMPAYMENT_AUTHORIZENET_EXDATE') . '</td>
 		        <td> ';
 				$html .= shopfunctions::listMonths('cc_expire_month_' . $this->_currentMethod->virtuemart_paymentmethod_id, $this->_cc_expire_month);
 				$html .= " / ";
@@ -380,13 +380,13 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 			return NULL; // Another method was selected, do nothing
 		}
 
-		//$cart->creditcard_id = JRequest::getVar('creditcard', '0');
-		$this->_cc_type = JRequest::getVar('cc_type_' . $cart->virtuemart_paymentmethod_id, '');
-		$this->_cc_name = JRequest::getVar('cc_name_' . $cart->virtuemart_paymentmethod_id, '');
-		$this->_cc_number = str_replace(" ", "", JRequest::getVar('cc_number_' . $cart->virtuemart_paymentmethod_id, ''));
-		$this->_cc_cvv = JRequest::getVar('cc_cvv_' . $cart->virtuemart_paymentmethod_id, '');
-		$this->_cc_expire_month = JRequest::getVar('cc_expire_month_' . $cart->virtuemart_paymentmethod_id, '');
-		$this->_cc_expire_year = JRequest::getVar('cc_expire_year_' . $cart->virtuemart_paymentmethod_id, '');
+		//$cart->creditcard_id = vmRequest::getVar('creditcard', '0');
+		$this->_cc_type = vmRequest::getVar('cc_type_' . $cart->virtuemart_paymentmethod_id, '');
+		$this->_cc_name = vmRequest::getVar('cc_name_' . $cart->virtuemart_paymentmethod_id, '');
+		$this->_cc_number = str_replace(" ", "", vmRequest::getVar('cc_number_' . $cart->virtuemart_paymentmethod_id, ''));
+		$this->_cc_cvv = vmRequest::getVar('cc_cvv_' . $cart->virtuemart_paymentmethod_id, '');
+		$this->_cc_expire_month = vmRequest::getVar('cc_expire_month_' . $cart->virtuemart_paymentmethod_id, '');
+		$this->_cc_expire_year = vmRequest::getVar('cc_expire_year_' . $cart->virtuemart_paymentmethod_id, '');
 
 		if (!$this->_validate_creditcard_data(TRUE)) {
 			return FALSE; // returns string containing errors
@@ -572,7 +572,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 				$new_status = $this->_currentMethod->payment_approved_status;
 			} else {
 				if ($this->declined) {
-					JRequest::setVar('html', $html);
+					vmRequest::setVar('html', $html);
 					$new_status = $this->_currentMethod->payment_declined_status;
 					$this->_handlePaymentCancel($order['details']['BT']->virtuemart_order_id, $html);
 					return;
@@ -592,7 +592,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 
 		//We delete the old stuff
 		$cart->emptyCart();
-		JRequest::setVar('html', $html);
+		vmRequest::setVar('html', $html);
 	}
 
 	function _handlePaymentCancel ($virtuemart_order_id, $html)
@@ -606,7 +606,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		// error while processing the payment
 		$mainframe = JFactory::getApplication();
 		$mainframe->enqueueMessage($html);
-		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',FALSE), JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
+		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',FALSE), vmText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 	}
 
 	/**
@@ -656,10 +656,10 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		$creditCardInfos = '';
 		if ($this->_validate_creditcard_data(FALSE)) {
 			$cc_number = "**** **** **** " . substr($this->_cc_number, -4);
-			$creditCardInfos .= '<br /><span class="vmpayment_cardinfo">' . JText::_('VMPAYMENT_AUTHORIZENET_CCTYPE') . $this->_cc_type . '<br />';
-			$creditCardInfos .= JText::_('VMPAYMENT_AUTHORIZENET_CCNUM') . $cc_number . '<br />';
-			$creditCardInfos .= JText::_('VMPAYMENT_AUTHORIZENET_CVV2') . '****' . '<br />';
-			$creditCardInfos .= JText::_('VMPAYMENT_AUTHORIZENET_EXDATE') . $this->_cc_expire_month . '/' . $this->_cc_expire_year;
+			$creditCardInfos .= '<br /><span class="vmpayment_cardinfo">' . vmText::_('VMPAYMENT_AUTHORIZENET_CCTYPE') . $this->_cc_type . '<br />';
+			$creditCardInfos .= vmText::_('VMPAYMENT_AUTHORIZENET_CCNUM') . $cc_number . '<br />';
+			$creditCardInfos .= vmText::_('VMPAYMENT_AUTHORIZENET_CVV2') . '****' . '<br />';
+			$creditCardInfos .= vmText::_('VMPAYMENT_AUTHORIZENET_EXDATE') . $this->_cc_expire_month . '/' . $this->_cc_expire_year;
 			$creditCardInfos .= "</span>";
 		}
 		return $creditCardInfos;
@@ -674,12 +674,12 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 	{
 
 		$idA = $id = 'cc_type_' . $paymentmethod_id;
-		//$options[] = JHTML::_('select.option', '', JText::_('VMPAYMENT_AUTHORIZENET_SELECT_CC_TYPE'), 'creditcard_type', $name);
+		//$options[] = JHTML::_('select.option', '', vmText::_('VMPAYMENT_AUTHORIZENET_SELECT_CC_TYPE'), 'creditcard_type', $name);
 		if (!is_array($creditCards)) {
 			$creditCards = (array)$creditCards;
 		}
 		foreach ($creditCards as $creditCard) {
-			$options[] = JHTML::_('select.option', $creditCard, JText::_('VMPAYMENT_AUTHORIZENET_' . strtoupper($creditCard)));
+			$options[] = JHTML::_('select.option', $creditCard, vmText::_('VMPAYMENT_AUTHORIZENET_' . strtoupper($creditCard)));
 		}
 		if ($multiple) {
 			$attrs = 'multiple="multiple"';
@@ -715,8 +715,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		if (!$this->_cc_valid) {
 			//$html.= "<ul>";
 			foreach ($this->_errormessage as $msg) {
-				//$html .= "<li>" . Jtext::_($msg) . "</li>";
-				$html .= Jtext::_($msg) . "<br/>";
+				//$html .= "<li>" . vmText::_($msg) . "</li>";
+				$html .= vmText::_($msg) . "<br/>";
 			}
 			//$html.= "</ul>";
 		}
@@ -938,7 +938,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 			if (count($response_array) < 10) {
 				$this->approved = FALSE;
 				$this->error = TRUE;
-				$error_message = JText::_('VMPAYMENT_AUTHORIZENET_UNKNOWN') . $response;
+				$error_message = vmText::_('VMPAYMENT_AUTHORIZENET_UNKNOWN') . $response;
 				$this->debugLog( $error_message, 'getOrderIdByOrderNumber', 'error');
 				return $error_message;
 			}
@@ -1020,8 +1020,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 			if (!$virtuemart_order_id) {
 				$this->approved = FALSE;
 				$this->error = TRUE;
-				$this->debugLog(JText::sprintf('VMPAYMENT_AUTHORIZENET_NO_ORDER_NUMBER', $authorizeNetResponse['invoice_number']), 'getOrderIdByOrderNumber', 'error');
-				$html = Jtext::sprintf('VMPAYMENT_AUTHORIZENET_ERROR', $authorizeNetResponse['response_reason_text'], $authorizeNetResponse['response_code']) . "<br />";
+				$this->debugLog(vmText::sprintf('VMPAYMENT_AUTHORIZENET_NO_ORDER_NUMBER', $authorizeNetResponse['invoice_number']), 'getOrderIdByOrderNumber', 'error');
+				$html = vmText::sprintf('VMPAYMENT_AUTHORIZENET_ERROR', $authorizeNetResponse['response_reason_text'], $authorizeNetResponse['response_code']) . "<br />";
 				$this->debugLog($html, '_handleResponse PAYMENT DECLINED', 'message');
 
 				return $html;
@@ -1033,15 +1033,15 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 				$dbValues['authorizenet_response_response_reason_code'] = $authorizeNetResponse['response_reason_code'];
 				$dbValues['authorizenet_response_response_reason_text'] = $authorizeNetResponse['response_reason_text'];
 				//$this->storePSPluginInternalData($dbValues, 'id', true);
-				$html = Jtext::sprintf('VMPAYMENT_AUTHORIZENET_ERROR', $authorizeNetResponse['response_reason_text'], $authorizeNetResponse['response_code']) . "<br />";
+				$html = vmText::sprintf('VMPAYMENT_AUTHORIZENET_ERROR', $authorizeNetResponse['response_reason_text'], $authorizeNetResponse['response_code']) . "<br />";
 				$this->debugLog($html, '_handleResponse PAYMENT DECLINED', 'message');
 				return $html;
 			}
 		} else {
 			$this->approved = FALSE;
 			$this->error = TRUE;
-			$this->debugLog(JText::_('VMPAYMENT_AUTHORIZENET_CONNECTING_ERROR'), '_handleResponse', 'error');
-			return JText::_('VMPAYMENT_AUTHORIZENET_CONNECTING_ERROR');
+			$this->debugLog(vmText::_('VMPAYMENT_AUTHORIZENET_CONNECTING_ERROR'), '_handleResponse', 'error');
+			return vmText::_('VMPAYMENT_AUTHORIZENET_CONNECTING_ERROR');
 		}
 		// Prep
 		// get all know columns of the table
@@ -1069,7 +1069,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		//$html .= $this->getHtmlRow('AUTHORIZENET_RESPONSE_AUTHORIZATION_CODE', $authorizeNetResponse['authorization_code']);
 		$html .= $this->getHtmlRow('AUTHORIZENET_RESPONSE_TRANSACTION_ID', $authorizeNetResponse['transaction_id']);
 		$html .= '</table>' . "\n";
-		$this->debugLog(JText::_('VMPAYMENT_AUTHORIZENET_ORDER_NUMBER') . " " . $authorizeNetResponse['invoice_number'] . ' payment approved', '_handleResponse', 'debug');
+		$this->debugLog(vmText::_('VMPAYMENT_AUTHORIZENET_ORDER_NUMBER') . " " . $authorizeNetResponse['invoice_number'] . ' payment approved', '_handleResponse', 'debug');
 
 		return $html;
 	}

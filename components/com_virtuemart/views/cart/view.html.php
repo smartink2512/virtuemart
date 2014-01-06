@@ -61,8 +61,7 @@ class VirtueMartViewCart extends VmView {
 
 		if ($layoutName == 'select_shipment') {
 			$this->prepareCartViewData();
-			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-			JPluginHelper::importPlugin('vmshipment');
+
 			$this->lSelectShipment();
 
 			$pathway->addItem(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'), JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
@@ -70,9 +69,8 @@ class VirtueMartViewCart extends VmView {
 			$document->setTitle(vmText::_('COM_VIRTUEMART_CART_SELECTSHIPMENT'));
 		} else if ($layoutName == 'select_payment') {
 
-			/* Load the cart helper */
-			//			$this->cartModel = VmModel::getModel('cart');
 			$this->prepareCartViewData();
+
 			$this->lSelectPayment();
 
 			$pathway->addItem(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'), JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
@@ -161,7 +159,7 @@ class VirtueMartViewCart extends VmView {
 
 
 			if (!VmConfig::get('use_as_catalog')) {
-				$checkout_link_html = '<a  name="'.$checkout_task.'" class="vm-button-correct" href="javascript:document.checkoutForm.submit();" ><span>' . $text . '</span></a>';
+				$checkout_link_html = '<button  name="'.$checkout_task.'" class="vm-button-correct" ><span>' . $text . '</span> </button>';
 			} else {
 				$checkout_link_html = '';
 			}
@@ -256,6 +254,7 @@ class VirtueMartViewCart extends VmView {
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();
+		vmdebug('Triggering lSelectShipment');
 		$returnValues = $dispatcher->trigger('plgVmDisplayListFEShipment', array( $this->cart, $selectedShipment, &$shipments_shipment_rates));
 		// if no shipment rate defined
 		$found_shipment_method =count($shipments_shipment_rates);
@@ -277,17 +276,19 @@ class VirtueMartViewCart extends VmView {
 
 		$payment_not_found_text='';
 		$payments_payment_rates=array();
-		if (!$this->checkPaymentMethodsConfigured()) {
+		/*if (!$this->checkPaymentMethodsConfigured()) {
 			$this->assignRef('paymentplugins_payments', $payments_payment_rates);
 			$this->assignRef('found_payment_method', $found_payment_method);
-		}
-
+		}*/
+		$tmp = 1;
+		$this->assignRef('found_payment_method', $tmp);
 		$selectedPayment = empty($this->cart->virtuemart_paymentmethod_id) ? 0 : $this->cart->virtuemart_paymentmethod_id;
 
 		$paymentplugins_payments = array();
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
+		vmdebug('Triggering lSelectPayment');	//plgVmDisplayListFEPayment	//plgvmdisplaylistfepayment
 		$returnValues = $dispatcher->trigger('plgVmDisplayListFEPayment', array($this->cart, $selectedPayment, &$paymentplugins_payments));
 		// if no payment defined
 		$found_payment_method =count($paymentplugins_payments);

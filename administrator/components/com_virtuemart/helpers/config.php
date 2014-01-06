@@ -588,6 +588,7 @@ class VmConfig {
 	const LOGFILEEXT = '.log.php';
 
 	public static $vmlang = false;
+	public static $vmlangTag = '';
 	public static $langs = array();
 	public static $langCount = 0;
 	var $_params = array();
@@ -846,7 +847,7 @@ class VmConfig {
 	 * @author Max Milbers
 	 * @return string valid langtag
 	 */
-	static public function setdbLanguageTag($siteLang = 0) {
+	static public function setdbLanguageTag() {
 
 		if (self::$vmlang) {
 			return self::$vmlang;
@@ -854,7 +855,7 @@ class VmConfig {
 
 		self::$langs = (array)self::$_jpConfig->get('active_languages',array());
 		self::$langCount = count(self::$langs);
-		if(empty($siteLang)) $siteLang = VmRequest::getString('vmlang',FALSE );
+		$siteLang = VmRequest::getString('vmlang',FALSE );
 
 		$params = JComponentHelper::getParams('com_languages');
 		$defaultLang = $params->get('site', 'en-GB');//use default joomla
@@ -885,7 +886,7 @@ class VmConfig {
 				$siteLang = self::$langs[0];
 			}
 		}
-
+		self::$vmlangTag = $siteLang;
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
 		vmdebug('self::$vmlang '.self::$vmlang);
 

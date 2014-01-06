@@ -8,7 +8,7 @@
  * @version $Id: paypal.php 7217 2013-09-18 13:42:54Z alatak $
  * @package VirtueMart
  * @subpackage payment
- * ${PHING.VM.COPYRIGHT}
+ * Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -41,7 +41,7 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 			if ($this->_method->sandbox  ) {
 				$sandbox = 'SANDBOX_';
 			}
-			$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'MERCHANT'), $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
+			$text = vmText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', vmText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'MERCHANT'), $this->_method->payment_name, $this->_method->virtuemart_paymentmethod_id);
 			vmError($text, $text);
 			return FALSE;
 		}
@@ -61,11 +61,11 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		switch ($this->_method->payment_type) {
 			case '_xclick':
 			case '_donations':
-				$post_variables['item_name'] = JText::_('COM_VIRTUEMART_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
+				$post_variables['item_name'] = vmText::_('COM_VIRTUEMART_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
 				$post_variables['amount'] = $this->total;
 				break;
 			case '_oe-gift-certificate':
-				$post_variables['item_name'] = JText::_('COM_VIRTUEMART_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
+				$post_variables['item_name'] = vmText::_('COM_VIRTUEMART_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
 				//$post_variables['amount'] = round ($paymentCurrency->convertCurrencyTo ($this->_method->payment_currency, $this->order['details']['BT']->order_total, FALSE), 2);;
 				$post_variables['fixed_denom'] = vmPSPlugin::getAmountValueInCurrency($this->order['details']['BT']->order_salesPrice, $this->_method->payment_currency);
 				//$post_variables['min_denom'] = $this->total;
@@ -84,7 +84,7 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 
 			case '_xclick-subscriptions':
 
-				$post_variables['item_name'] = JText::_('COM_VIRTUEMART_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
+				$post_variables['item_name'] = vmText::_('COM_VIRTUEMART_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
 
 				if ($this->_method->subcription_trials) {
 					$post_variables['a1'] = ($this->_method->trial1_price) ? $this->_method->trial1_price : 0; //Trial1 price.
@@ -110,7 +110,7 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 				break;
 
 			case '_xclick-auto-billing':
-				$post_variables['item_name'] = JText::_('COM_VIRTUEMART_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
+				$post_variables['item_name'] = vmText::_('COM_VIRTUEMART_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
 				//A description of the automatic billing plan.
 				$post_variables['max_text'] = $this->_method->payment_desc;
 				//Specify whether to let buyers enter maximum billing limits in a text box or choose from a list of maximum billing limits that you specify.
@@ -142,7 +142,7 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 
 			case '_xclick-payment-plan':
 
-				$post_variables['item_name'] = JText::_('COM_VIRTUEMART_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
+				$post_variables['item_name'] = vmText::_('COM_VIRTUEMART_ORDER_NUMBER') . ': ' . $this->order['details']['BT']->order_number;
 				$post_variables['disp_tot'] = 'Y'; //Display the total payment amount to buyers during checkout
 				$post_variables['option_index'] = 0;
 				$post_variables['option_select0_type'] = 'E'; //F – pay in full, at checkout, E – pay in equal periods, beginning at checkout or sometime later, V – pay in variable periods, beginning at checkout
@@ -192,7 +192,7 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 
 		} else {
 
-			$html .= '<input type="submit"  value="' . JText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />
+			$html .= '<input type="submit"  value="' . vmText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />
 					<script type="text/javascript">';
 				$html .= '		document.vm_paypal_form.submit();';
 				$html .= '	</script>';
@@ -235,11 +235,11 @@ class PaypalHelperPayPalStd extends PaypalHelperPaypal {
 		$post_variables['night_phone_b'] = $address->phone_1;
 
 
-		$post_variables['return'] =  JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid' ). '&lang='.JRequest::getCmd('lang','')  ;
+		$post_variables['return'] =  JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . vmRequest::getInt('Itemid' ). '&lang='vmRequest:::getCmd('lang','')  ;
 		//Keep this line, needed when testing
 		//$post_variables['return'] 		= JRoute::_(JURI::root().'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
-		$post_variables['notify_url'] = JURI::root() .  'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component' . '&lang='.JRequest::getCmd('lang','') ;
-		$post_variables['cancel_return'] =JURI::root(). 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . JRequest::getInt('Itemid') . '&lang='.JRequest::getCmd('lang','')  ;
+		$post_variables['notify_url'] = JURI::root() .  'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component' . '&lang=vmRequest::::getCmd('lang','') ;
+		$post_variables['cancel_return'] =JURI::root(). 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid='vmRequest::t::getInt('Itemid') . '&lanvmRequest::st::getCmd('lang','')  ;
 
 		//$post_variables['undefined_quantity'] = "0";
 		//$post_variables['test_ipn'] = $this->_method->debug;

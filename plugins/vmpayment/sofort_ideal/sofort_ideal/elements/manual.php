@@ -48,7 +48,7 @@ class JElementManual extends JElement {
 		} else {
 			$manualLink="https://www.sofort.com/integrationCenter-eng-DE/content/view/full/4945";
 		}
-		$html = '<div><a target="_blank" href="'.$manualLink.'" id="getsogort_link" ">' . JText::_ ('VMPAYMENT_SOFORT_DOCUMENTATION') . '</a>';
+		$html = '<div><a target="_blank" href="'.$manualLink.'" id="getsogort_link" ">' . vmText::_ ('VMPAYMENT_SOFORT_DOCUMENTATION') . '</a>';
 		$html .= '</div>';
 
 		return $html;
