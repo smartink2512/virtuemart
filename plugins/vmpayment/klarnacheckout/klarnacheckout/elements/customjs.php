@@ -3,7 +3,7 @@
  *
  * Paypal payment plugin
  *
- * @author Jeremy Magne
+ * @author Valérie Isaksen
  * @version $Id: customjs.php 7301 2013-10-29 17:45:07Z alatak $
  * @package VirtueMart
  * @subpackage payment
@@ -21,26 +21,18 @@
 
 defined ('_JEXEC') or die();
 
-class JElementCustomjs extends JElement {
 
-	/**
-	 * Element name
-	 *
-	 * @access    protected
-	 * @var        string
-	 */
-	var $_name = 'Customjs';
+class JFormFieldCustomjs extends JFormField {
 
-	function fetchElement ($name, $value, &$node, $control_name) {
-		
+	protected $type = 'Customjs';
 
+	protected function getInput() {
 		
 		$doc = JFactory::getDocument();
 		$doc->addScript(JURI::root(true).'/plugins/vmpayment/klarnacheckout/klarnacheckout/assets/js/admin.js');
 		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/klarnacheckout/klarnacheckout/assets/css/klarnacheckout.css');
 
-		
-		return '';		
+		return '';
 	}
 
 }

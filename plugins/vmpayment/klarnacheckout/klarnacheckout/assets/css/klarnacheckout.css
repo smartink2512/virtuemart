@@ -4,7 +4,6 @@
 .show_payment_logo {
     margin: 10px 0 5px 0; font-weight: bold; padding: 5px;  float:none; clear:both;
     background-color: #FFFFFF !important;
-    background:url(https://cdn.klarna.com/public/images/SE/logos/v1/basic/SE_basic_logo_std_blue-black.png?width=100) no-repeat;
+    background:url(https://cdn.klarna.com/public/images/SE/logos/v1/basic/SE_basic_logo_std_blue-black.png?width=100) no-repeat 100px;
     height: 40px;
-    padding-left:100px !important;
 }

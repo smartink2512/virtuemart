@@ -28,7 +28,9 @@ if (JVM_VERSION === 2) {
 	}
 }
 
-class JElementGetKlarnacheckout extends JElement {
+jimport('joomla.form.formfield');
+
+class JFormFieldGetKlarnacheckout extends JFormField {
 
 	/**
 	 * Element name
@@ -36,12 +38,9 @@ class JElementGetKlarnacheckout extends JElement {
 	 * @access    protected
 	 * @var        string
 	 */
-	var $_name = 'getKlarnacheckout';
+	protected $type =  'GetKlarnacheckout';
 
-	function fetchElement ($name, $value, &$node, $control_name) {
-
-
-		return "TO DO ";
+	protected function getInput() {
 
 		$jlang = JFactory::getLanguage ();
 		$lang = $jlang->getTag ();

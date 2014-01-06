@@ -28,17 +28,14 @@ if (JVM_VERSION === 2) {
 	}
 }
 
-class JElementPaymentlogo extends JElement {
+jimport('joomla.form.formfield');
 
-	/**
-	 * Element name
-	 *
-	 * @access    protected
-	 * @var        string
-	 */
-	var $_name = 'getPaymentlogo';
+class JFormFieldPaymentlogo extends JFormField {
 
-	function fetchElement ($name, $value, &$node, $control_name) {
+
+	protected $type = 'getPaymentlogo';
+
+	protected function getInput() {
 
 		function fetchElement($name, $value, &$node, $control_name) {
 			$countriesData = KlarnaHandler::countriesData();
