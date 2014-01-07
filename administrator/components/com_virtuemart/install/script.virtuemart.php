@@ -208,6 +208,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				return $this->install($loadVm);
 			}
 
+			//Delete Cache
+			$cache = JFactory::getCache();
+			$cache->clean();
+
 			$this->_db = JFactory::getDBO();
 
 			if(empty($this->path)) $this->path = JPATH_VM_ADMINISTRATOR;

@@ -254,7 +254,7 @@ class VirtueMartViewCart extends VmView {
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();
-		vmdebug('Triggering lSelectShipment');
+
 		$returnValues = $dispatcher->trigger('plgVmDisplayListFEShipment', array( $this->cart, $selectedShipment, &$shipments_shipment_rates));
 		// if no shipment rate defined
 		$found_shipment_method =count($shipments_shipment_rates);
@@ -298,7 +298,7 @@ class VirtueMartViewCart extends VmView {
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
-		vmdebug('Triggering lSelectPayment');	//plgVmDisplayListFEPayment	//plgvmdisplaylistfepayment
+
 		$returnValues = $dispatcher->trigger('plgVmDisplayListFEPayment', array($this->cart, $selectedPayment, &$paymentplugins_payments));
 		// if no payment defined
 		$found_payment_method =count($paymentplugins_payments);

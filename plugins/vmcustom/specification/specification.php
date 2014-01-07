@@ -145,7 +145,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 		// Here the plugin values
 		//$html =JTEXT::_($group->custom_title) ;
 
-		$group->display .=  $this->renderByLayout('default',array($this->params,&$idx,&$group ) );
+		$group->display .=  $this->renderByLayout('default',array($this->params,&$group ) );
 
 		return true;
 	}

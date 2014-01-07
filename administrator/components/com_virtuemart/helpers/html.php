@@ -149,16 +149,22 @@ static function vmGetCharset() {
      * @return string HTML code for checkbox
      */
     static function checkbox($name, $value, $checkedValue=1, $uncheckedValue=0, $extraAttribs = '', $id = null) {
-		if (!$id) $id=$name ;
-	if ($value == $checkedValue) {
-	    $checked = 'checked="checked"';
-	}
-	else {
-	    $checked = '';
-	}
-	$htmlcode = '<input type="hidden" name="' . $name . '" value="' . $uncheckedValue . '" />';
-	$htmlcode .= '<input '.$extraAttribs.' id="' . $id . '" type="checkbox" name="' . $name . '" value="' . $checkedValue . '" ' . $checked . ' />';
-	return $htmlcode;
+		if (!$id){
+			$id ='';
+		} else {
+			$id = 'id="' . $id.'"';
+		}
+
+		if ($value == $checkedValue) {
+			$checked = 'checked="checked"';
+		}
+		else {
+			$checked = '';
+		}
+
+		$htmlcode = '<input type="hidden" name="' . $name . '" value="' . $uncheckedValue . '" />';
+		$htmlcode .= '<input '.$extraAttribs.' ' . $id . ' type="checkbox" name="' . $name . '" value="' . $checkedValue . '" ' . $checked . ' />';
+		return $htmlcode;
     }
 
 	/**

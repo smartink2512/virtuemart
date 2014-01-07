@@ -1273,6 +1273,7 @@ class VirtueMartCart {
 					$product->cart_item_id = $k ;
 
 					$customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
+
 					/*if($customfields){
 						foreach($customfields as $field){
 

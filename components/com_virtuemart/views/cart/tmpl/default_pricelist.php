@@ -132,7 +132,7 @@
 
 <?php
 $i = 1;
-
+vmdebug('cart',$this->cart->cartProductsData);
 foreach ($this->cart->products as $pkey => $prow) {
 
 

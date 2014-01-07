@@ -150,7 +150,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		if ($productCustomsPrice->custom_element !==$this->_name) return ;
 
 		$product->product_name = 'Ice Saw';
-		//vmdebug('plgVmCalculateCustomVariant we can modify the product here',$product);
+		//vmdebug('plgVmPrepareCartProduct we can modify the product here',$product);
 
 		if (!empty($selected['comment'])) {
 			if ($productCustomsPrice->custom_price_by_letter ==1) {

@@ -1055,7 +1055,7 @@ abstract class vmPSPlugin extends vmPlugin {
 				foreach($taxrules as &$rule){
 					$frac = ($rule['subTotalOld']-$rule['taxAmountOld'])/$denominator;
 					$rule['subTotal'] = $cart->cartPrices[$this->_psType . 'Value'] * $frac;
-					vmdebug('Part $denominator '.$denominator.' $frac '.$frac,$rule['subTotal']);
+					//vmdebug('Part $denominator '.$denominator.' $frac '.$frac,$rule['subTotal']);
 				}
 			}
 		}

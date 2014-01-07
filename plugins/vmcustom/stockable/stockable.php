@@ -613,7 +613,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		return $this->onDisplayEditBECustom($virtuemart_custom_id,$customPlugin);
 	}
 
-	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected){
+	public function plgVmPrepareCartProduct($product, &$productCustomsPrice,$selected){
 
 		if ($productCustomsPrice->custom_element != $this->_name) return false;
 
@@ -688,7 +688,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			// if ( !in_array($this->_name,$customPlugin[$productCustomsPrice->virtuemart_custom_id]) ) return false;
 			$selected = $customPlugin[$productCustomsPrice->virtuemart_customfield_id]['stockable']['child_id'];
 
-			if (!$child = $this->plgVmCalculateCustomVariant($product, $productCustomsPrice,$selected) ) return false;
+			if (!$child = $this->plgVmPrepareCartProduct($product, $productCustomsPrice,$selected) ) return false;
 			/*if ($child->product_sku)
 				$product->product_sku = $child->product_sku;
 			if ($child->product_name)

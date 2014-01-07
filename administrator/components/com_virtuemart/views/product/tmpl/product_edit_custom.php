@@ -19,11 +19,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-if (isset($this->product->customfields_fromParent)) { ?>
-	<label><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_SAVE_FROM_CHILD');?><input type="checkbox" name="save_customfields" value="1" /></label>
-<?php } else {
-	?> <input type="hidden" name="save_customfields" value="1" />
-<?php }  ?>
+?>
 <table id="customfieldsTable" width="100%">
 	<tr>
 		<td valign="top" width="%100">
@@ -51,78 +47,58 @@ if (isset($this->product->customfields_fromParent)) { ?>
 						// R: related categories
 						$tables['categories'] .=  '
 							<div class="vm_thumb_image">
+								<span class="vmicon vmicon-16-move"></span>
+								<div class="vmicon vmicon-16-remove"></div>
 								<span>'.$customfield->display.'</span>
-								<div class="vmicon vmicon-16-remove"></div>'.
-								VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
+								'.VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 							  .'</div>';
 
 					} elseif ($customfield->field_type == 'R') {
 					// R: related products
 						$tables['products'] .=  '
 							<div class="vm_thumb_image">
+								<span class="vmicon vmicon-16-move"></span>
+								<div class="vmicon vmicon-16-remove"></div>
 								<span>'.$customfield->display.'</span>
-								<div class="vmicon vmicon-16-remove"></div>'.
-								VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
+								'.VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
 							  .'</div>';
 
-					} elseif ($customfield->field_type == 'G') {
-						// no display (group of) child , handled by plugin;
-					} elseif ($customfield->field_type == 'E'){
-						$tables['fields'] .= '<tr class="removable">
-							<td>'.vmText::_($customfield->custom_title).'</td>
-							<td>'.$customfield->custom_tip.'</td>
-							<td>'.$customfield->display.'</td>'.
-							VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
-							.'</td>
-							<td>'.vmText::_('COM_VIRTUEMART_CUSTOM_EXTENSION').'</td>
-							<td>
-							<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
-							</td>
-							<td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$customfield->ordering.'" name="field['.$i .'][ordering]" /></td>
-							<td ><span class="vmicon vmicon-16-move"></span></td>
-						 </tr>';
-						/*$tables['fields'] .= '
-							<tr class="removable">
-								<td>'.vmText::_($customfield->custom_title).'</td>
-								<td colspan="3"><span>'.$customfield->display.$customfield->custom_tip.'</span>'.
-								VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
-							  .'</td><span class="vmicon icon-nofloat vmicon-16-'.$cartIcone.'"></span>
-								<span class="vmicon vmicon-16-remove"></span>
-							</tr>';*/
 					} else {
-						$fromParent = '';
-						if($customfield->virtuemart_product_id==$this->product->product_parent_id){
-							$fromParent = vmText::_('COM_VIRTUEMART_CUSTOM_INHERITED');
-							$fromParent .= ' d:'.VmHtml::checkbox('field[' . $i . '][disabler]',0).' o:'.VmHtml::checkbox('field['.$i.'][override]',0,$customfield->virtuemart_customfield_id);
 
-						}
-						$override = '';
-						if($customfield->override){
-							$override = vmText::sprintf('COM_VIRTUEMART_CUSTOM_OVERRIDE',$customfield->override);
+						$checkValue = $customfield->virtuemart_customfield_id;
+						$titel = '';
+						$text = '';
+						if($customfield->override!=0 or $customfield->disabler!=0){
+
+							if(!empty($customfield->disabler)) $checkValue = $customfield->disabler;
+							if(!empty($customfield->override)) $checkValue = $customfield->override;
+							$titel = vmText::sprintf('COM_VIRTUEMART_CUSTOM_OVERRIDE',$checkValue);
 							if($customfield->disabler!=0){
-								$override .= ' d:'.VmHtml::checkbox('field[' . $i . '][disabler]', $customfield->disabler, $customfield->disabler);
-							} else {
-								$override .= ' d:'.VmHtml::checkbox('field[' . $i . '][disabler]', $customfield->disabler, $customfield->virtuemart_customfield_id);
+								$titel = vmText::sprintf('COM_VIRTUEMART_CUSTOM_DISABLED',$checkValue);
 							}
 
 							if($customfield->override!=0){
-								$override .= ' o:'.VmHtml::checkbox('field[' . $i . '][override]', $customfield->override, $customfield->override);
-							} else {
-								$override .= ' o:'.VmHtml::checkbox('field[' . $i . '][override]', $customfield->override, $customfield->virtuemart_customfield_id);
+								$titel = vmText::sprintf('COM_VIRTUEMART_CUSTOM_OVERRIDE',$checkValue);
 							}
+
+						} else if($customfield->virtuemart_product_id==$this->product->product_parent_id){
+							$titel = vmText::_('COM_VIRTUEMART_CUSTOM_INHERITED');
+						}
+
+						if(!empty($titel)){
+							$text = ' d:'.VmHtml::checkbox('field[' . $i . '][disabler]',$customfield->disabler,$checkValue).' o:'.VmHtml::checkbox('field['.$i.'][override]',$customfield->override,$checkValue);
 						}
 						$tables['fields'] .= '<tr class="removable">
-							<td>'.$fromParent.$override.vmText::_($customfield->custom_title).'</td>
-							<td>'.$customfield->custom_tip.'</td>
+							<td><span >'.$titel.$text.vmText::_($customfield->custom_title).'</span></td>
 							<td>'.$customfield->display.'</td>
-							<td>'.vmText::_($this->fieldTypes[$customfield->field_type]).
-							VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
-							.'</td>
 							<td>
-							<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
-							</td>
-							<td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$customfield->ordering.'" name="field['.$i .'][ordering]" /></td>
-							<td ><span class="vmicon vmicon-16-move"></span></td>
+								<span class="vmicon vmicon-16-'.$cartIcone.'"></span>'.vmText::_($this->fieldTypes[$customfield->field_type]).
+								VirtueMartModelCustomfields::setEditCustomHidden($customfield, $i)
+							.'</td>
+							<td><span class="vmicon vmicon-16-move"></span>
+								<span class="vmicon vmicon-16-remove"></span>'.
+								//<input class="ordering" type="hidden" value="'.$customfield->ordering.'" name="field['.$i .'][ordering]" />
+							'</td>
 						 </tr>';
 						}
 
@@ -142,7 +118,7 @@ if (isset($this->product->customfields_fromParent)) { ?>
 					<input type="text" size="40" name="search" id="relatedcategoriesSearch" value="" />
 					<button class="reset-value"><?php echo vmText::_('COM_VIRTUEMART_RESET') ?></button>
 				</div>
-				<div id="custom_categories"><?php echo  $tables['categories']; ?></div>
+				<div id="custom_categories" class="ui-sortable" ><?php echo  $tables['categories']; ?></div>
 			</fieldset>
 			<fieldset style="background-color:#F9F9F9;">
 				<legend><?php echo vmText::_('COM_VIRTUEMART_RELATED_PRODUCTS'); ?></legend>
@@ -151,7 +127,7 @@ if (isset($this->product->customfields_fromParent)) { ?>
 					<input type="text" size="40" name="search" id="relatedproductsSearch" value="" />
 					<button class="reset-value"><?php echo vmText::_('COM_VIRTUEMART_RESET') ?></button>
 				</div>
-				<div id="custom_products"><?php echo  $tables['products']; ?></div>
+				<div id="custom_products" class="ui-sortable"><?php echo  $tables['products']; ?></div>
 			</fieldset>
 
 			<fieldset style="background-color:#F9F9F9;">
@@ -189,7 +165,9 @@ if (isset($this->product->customfields_fromParent)) { ?>
 
 <div style="clear:both;"></div>
 
-
+<?php
+$jsonLink = JURI::root(false).'administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&virtuemart_product_id='.$this->product->virtuemart_product_id;
+?>
 <script type="text/javascript">
 	nextCustom = <?php echo $i ?>;
 
@@ -204,10 +182,22 @@ if (isset($this->product->customfields_fromParent)) { ?>
 
 			});
 		});
+		jQuery('#custom_categories').sortable({handle: ".vmicon-16-move"});
+		jQuery('#custom_categories').bind('sortupdate', function(event, ui) {
+			jQuery(this).find('.ordering').each(function(index,element) {
+				jQuery(element).val(index);
+			});
+		});
+		jQuery('#custom_products').sortable({handle: ".vmicon-16-move"});
+		jQuery('#custom_products').bind('sortupdate', function(event, ui) {
+			jQuery(this).find('.ordering').each(function(index,element) {
+				jQuery(element).val(index);
+			});
+		});
 	});
 	jQuery('select#customlist').chosen().change(function() {
 		selected = jQuery(this).find( 'option:selected').val() ;
-		jQuery.getJSON('<?php echo JURI::root(false) ?>administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=fields&id='+selected+'&row='+nextCustom+'&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>',
+		jQuery.getJSON('<?php echo $jsonLink ?>&type=fields&id='+selected+'&row='+nextCustom,
 		function(data) {
 			jQuery.each(data.value, function(index, value){
 				jQuery("#custom_field").append(value);
@@ -219,11 +209,12 @@ if (isset($this->product->customfields_fromParent)) { ?>
 
 		jQuery('input#relatedproductsSearch').autocomplete({
 
-		source: '<?php echo JURI::root(false) ?>administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts&row='+nextCustom,
+		source: '<?php echo $jsonLink ?>&type=relatedproducts&row='+nextCustom,
 		select: function(event, ui){
 			jQuery("#custom_products").append(ui.item.label);
+			jQuery('#custom_products').trigger('sortupdate');
 			nextCustom++;
-			jQuery(this).autocomplete( "option" , 'source' , '<?php echo JURI::root(false) ?>administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts&row='+nextCustom )
+			jQuery(this).autocomplete( "option" , 'source' , '<?php echo $jsonLink ?>&type=relatedproducts&row='+nextCustom )
 			jQuery('input#relatedproductsSearch').autocomplete( "option" , 'source' , '<?php echo JURI::root(false) ?>administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts&row='+nextCustom )
 		},
 		minLength:1,
@@ -231,11 +222,12 @@ if (isset($this->product->customfields_fromParent)) { ?>
 	});
 	jQuery('input#relatedcategoriesSearch').autocomplete({
 
-		source: '<?php echo JURI::root(false) ?>administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom,
+		source: '<?php echo $jsonLink ?>&type=relatedcategories&row='+nextCustom,
 		select: function(event, ui){
 			jQuery("#custom_categories").append(ui.item.label);
+			jQuery('#custom_categories').trigger('sortupdate');
 			nextCustom++;
-			jQuery(this).autocomplete( "option" , 'source' , '<?php echo JURI::root(false) ?>administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
+			jQuery(this).autocomplete( "option" , 'source' , '<?php echo $jsonLink ?>&type=relatedcategories&row='+nextCustom )
 			jQuery('input#relatedcategoriesSearch').autocomplete( "option" , 'source' , '<?php echo JURI::root(false) ?>administrator/index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
 		},
 		minLength:1,

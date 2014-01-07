@@ -73,8 +73,7 @@ class VirtueMartViewProductdetails extends VmView {
 	    $virtuemart_product_id = (int)$virtuemart_product_idArray;
 	}
 
-    $quantityArray = VmRequest::getVar ('quantity', array()); //is sanitized then
-    JArrayHelper::toInteger ($quantityArray);
+    $quantityArray = VmRequest::getInt ('quantity', array()); //is sanitized then
 
     $quantity = 1;
     if (!empty($quantityArray[0])) {

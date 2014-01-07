@@ -60,14 +60,14 @@ class VirtuemartViewProduct extends VmView {
 				FROM #__virtuemart_products_".VmConfig::$vmlang."
 				 JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)";
 			if ($filter) $query .= " WHERE product_name LIKE '%". $this->db->escape( $filter, true ) ."%' or product_sku LIKE '%". $this->db->escape( $filter, true ) ."%' limit 0,10";
-			self::setRelatedHtml($query,'R');
+			self::setRelatedHtml($product_id,$query,'R');
 		}
 		else if ($this->type=='relatedcategories')
 		{
 			$query = "SELECT virtuemart_category_id AS id, CONCAT(category_name, '::', virtuemart_category_id) AS value
 				FROM #__virtuemart_categories_".VmConfig::$vmlang;
 			if ($filter) $query .= " WHERE category_name LIKE '%". $this->db->escape( $filter, true ) ."%' limit 0,10";
-			self::setRelatedHtml($query,'Z');
+			self::setRelatedHtml($product_id,$query,'Z');
 		}
 		else if ($this->type=='custom')
 		{
@@ -185,22 +185,25 @@ class VirtuemartViewProduct extends VmView {
 
 	}
 
-	function setRelatedHtml($query,$fieldType) {
+	function setRelatedHtml($product_id,$query,$fieldType) {
 
 		$this->db->setQuery($query);
 		$this->json = $this->db->loadObjectList();
 
 		$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type ="'.$fieldType.'" ';
 		$this->db->setQuery($query);
-		$customs = $this->db->loadObject();
+		$custom = $this->db->loadObject();
+		$custom->virtuemart_product_id = $product_id;
 		foreach ($this->json as &$related) {
 
-			$customs->customfield_value = $related->id;
-			$display = $this->model->displayProductCustomfieldBE($customs,$related->id,$this->row);
+			$custom->customfield_value = $related->id;
+
+			$display = $this->model->displayProductCustomfieldBE($custom,$related->id,$this->row);
 			$html = '<div class="vm_thumb_image">
+				<span class="vmicon vmicon-16-move"></span>
 				<div class="vmicon vmicon-16-remove"></div>
 				<span>'.$display.'</span>
-				'.$this->model->setEditCustomHidden($customs, $this->row).'
+				'.$this->model->setEditCustomHidden($custom, $this->row).'
 				</div>';
 
 			$related->label = $html;
