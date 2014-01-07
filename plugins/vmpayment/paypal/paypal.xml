@@ -16,15 +16,10 @@
     </files>
     <config>
         <fields name="params">
-            <fieldset class="paypal_title" name="VMPAYMENT_PAYPAL_PAYMENT_TITLE"
-                      description="VMPAYMENT_PAYPAL_REGISTER_TIP"
-                      addfieldpath="/plugins/vmpayment/paypal/paypal/elements"
-                    >
+
+            <fieldset name="payment"  addfieldpath="/plugins/vmpayment/paypal/paypal/elements" >
                 <field type="customjs" />
-            </fieldset>
-            <fieldset name="payment" >
-            <field name="paypalproduct" type="list" default="std" label="VMPAYMENT_PAYPAL_PRODUCTS"
-                       description="VMPAYMENT_PAYPAL_PRODUCTS_TIP">
+            <field name="paypalproduct" type="list" default="std" label="VMPAYMENT_PAYPAL_PRODUCTS">
                     <option value="std">VMPAYMENT_PAYPAL_PRODUCTS_STANDARD</option>
                     <option value="exp">VMPAYMENT_PAYPAL_PRODUCTS_EXPRESS</option>
                     <option value="api">VMPAYMENT_PAYPAL_PRODUCTS_API</option>
@@ -102,8 +97,7 @@
                 <field class="std exp sandbox" name="sandbox_merchant_email" type="text" size="80"
                        default="" label="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT"
                        description="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT_TIP"/>
-</fieldset>
-            <fieldset name="settings" >
+
 
                 <!-- For _xclick mandatory, for _cart remove it -->
                 <field name="address_override" type="list" default="0" label="VMPAYMENT_PAYPAL_ADDRESS_OVERRIDE"
@@ -226,7 +220,7 @@
                 <!-- Order status -->
                 <!-- ============ -->
             </fieldset>
-            <fieldset  name="orderstatus" description="VMPAYMENT_FIELDSET_ORDERSTATUS_TIP">
+            <fieldset  name="orderstatus" addfieldpath="/administrator/components/com_virtuemart/fields">
                 <!--param class="paypal_vm" name="paypal_vm" type="radio" default="1" label="VMPAYMENT_PAYPAL_VM"
                        description="VMPAYMENT_PAYPAL_VM_TIP">
                     <option value="0">COM_VIRTUEMART_NO</option>
@@ -270,7 +264,7 @@
         -->
 
             </fieldset>
-            <fieldset  name="currencies" description="VMPAYMENT_FIELDSET_CURRENCIES_TIP">
+            <fieldset  name="currencies" >
                 <field name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_PAYPAL_CURRENCY"
                        description="VMPAYMENT_PAYPAL_CURRENCY_TIP"/>
                 <field name="email_currency" type="list" default="vendor" label="VMPAYMENT_PAYPAL_EMAIL_CURRENCY"
@@ -279,7 +273,7 @@
                     <option value="payment">VMPAYMENT_PAYPAL_EMAIL_CURRENCY_PAYMENT</option>
                 </field>
             </fieldset>
-            <fieldset  name="restrictions" description="VMPAYMENT_RESTRICTIONS_TIP">
+            <fieldset  name="restrictions" >
                 <field name="countries" multiple="true" type="vmcountries" scope="com_virtuemart" default=""
                        label="VMPAYMENT_COUNTRIES" description="VMPAYMENT_COUNTRIES_TIP"/>
                 <field name="min_amount" type="text" label="VMPAYMENT_MIN_AMOUNT"
@@ -293,7 +287,7 @@
 
             </fieldset>
 
-            <fieldset  name="fee" description="VMPAYMENT_FEE_TIP">
+            <fieldset  name="fee" >
                 <field name="cost_per_transaction" type="text" label="VMPAYMENT_COST_PER_TRANSACTION"
                        description="VMPAYMENT_COST_PER_TRANSACTION_EXPLAIN"/>
                 <field name="cost_percent_total" type="text" label="VMPAYMENT_COST_PERCENT_TOTAL"
@@ -432,7 +426,7 @@
                 </field-->
             </fieldset>
 
-            <fieldset class="paypal_title" name="debug" description="VMPAYMENT_DEBUG_TIP">
+            <fieldset class="paypal_title" name="debug" >
                 <field name="debug" type="radio" default="0" label="VMPAYMENT_DEBUG">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>

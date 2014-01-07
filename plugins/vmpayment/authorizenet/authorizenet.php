@@ -78,6 +78,11 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 		$varsToPush = $this->getVarsToPush();
 
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
+		if ( !JFactory::getApplication ()->isSite () ) {
+			$doc = JFactory::getDocument();
+			$doc->addScript(JURI::root(true).'/plugins/vmpayment/authorizenet/authorizenet/assets/js/admin.js');
+		}
+
 	}
 
 	protected function getVmPluginCreateTableSQL ()

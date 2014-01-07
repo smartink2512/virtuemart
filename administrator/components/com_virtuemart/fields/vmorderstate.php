@@ -14,7 +14,8 @@ defined('_JEXEC') or die();
  * other free or open source software licenses.
  * @version $Id$
  */
-
+JFormHelper::loadFieldClass('list');
+jimport('joomla.form.formfield');
 class JFormFieldVmOrderState extends JFormFieldList {
 
 	/**
@@ -23,7 +24,7 @@ class JFormFieldVmOrderState extends JFormFieldList {
 	 * @var    string
 	 * @since  11.1
 	 */
-	protected $type = 'vmOrderStates';
+	protected $type = 'vmOrderState';
 
 	protected function getOptions() {
 		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
@@ -39,8 +40,8 @@ class JFormFieldVmOrderState extends JFormFieldList {
 		$db->setQuery($query);
 		$values = $db->loadObjectList();
 		$class = '';
-		foreach ($values as $v) {
-			$options[] = JHtml::_('select.option', $v->value, vmText::_($v->text));
+		foreach ($values as $value) {
+			$options[] = JHtml::_('select.option', $value->value, vmText::_($value->text));
 		}
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

@@ -26,13 +26,10 @@
     </files>
     <config>
         <fields name="params">
-            <fieldset name="title" label="VMPAYMENT_HEIDELPAY_PAYMENT"
-                      addfieldpath="/administrator/components/com_virtuemart/fields">
+
+            <fieldset name="payment" addfieldpath="/plugins/vmpayment/heidelpay/heidelpay/elements">
                 <field type="vmjpluginwarning"/>
                 <field type="getheidelpay" />
-            </fieldset>
-            <fieldset name="payment" addfieldpath="/plugins/vmpayment/heidelpay/heidelpay/elements">
-
                 <field type="text" name="HEIDELPAY_PAYMENT_URL" size="50"
                        label="VMPAYMENT_HEIDELPAY_PAYMENT_URL" description="VMPAYMENT_HEIDELPAY_PAYMENT_URL_DESC"
                        default="https://test-heidelpay.hpcgw.net/sgw/gtw"/>
@@ -105,7 +102,7 @@
 
             </fieldset>
 
-            <fieldset name="orderstatus" >
+            <fieldset name="orderstatus" addfieldpath="/administrator/components/com_virtuemart/fields">
                 <field name="HEIDELPAY_STATUS_PENDING" type="vmorderstate" scope="com_virtuemart"
                        default="U" label="VMPAYMENT_HEIDELPAY_STATUS_PENDING"
                        description="VMPAYMENT_HEIDELPAY_STATUS_PENDING_DESC"/>
@@ -120,7 +117,7 @@
 
 
             <fieldset name="template">
-                <field name="payment_logos" type="imagelist" label="VMPAYMENT_LOGOS" multiple="true"
+                <field name="payment_logos" type="media" label="VMPAYMENT_LOGOS" multiple="true"
                        description="VMPAYMENT_LOGOS_TIP"
                        directory="/images/stories/virtuemart/payment"
                        default="" hide_default="1" hide_none="1"

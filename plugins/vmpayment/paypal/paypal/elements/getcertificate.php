@@ -19,11 +19,11 @@ jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 JFormHelper::loadFieldClass('list');
 
-class JFormFieldGetcertificate extends JFormFieldList {
+class JFormFieldGetcertificate extends JFormField{
 
 	protected $type = 'Getcertificate';
 
-	protected function getOptions() {
+	protected function getInput() {
 
 		$lang = JFactory::getLanguage();
 		$lang->load('com_virtuemart', JPATH_ADMINISTRATOR);
@@ -66,7 +66,9 @@ class JFormFieldGetcertificate extends JFormFieldList {
 				$options[] = JHtml::_('select.option', $file, $file);
 			}
 		}
-
+		if (empty($options)) {
+			return '<span ' . $class . '>' . JText::sprintf('VMPAYMENT_PAYPAL_CERTIFICATE_FOLDER_NOT_EXIST', $certificatePath) . '</span>';
+		}
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);
 
@@ -74,14 +76,4 @@ class JFormFieldGetcertificate extends JFormFieldList {
 	}
 
 
-	/**
-	 * Method to get the field input markup.
-	 *
-	 * @return  string  The field input markup.
-	 *
-	 * @since   11.1
-	 */
-	protected function getInput() {
-		// TODO: Implement getInput() method.
-	}
 }

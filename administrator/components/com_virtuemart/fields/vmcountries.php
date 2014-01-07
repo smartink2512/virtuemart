@@ -31,7 +31,7 @@ class JFormFieldVmCountries extends JFormFieldList {
 	 * @access    protected
 	 * @var        string
 	 */
-	protected $type = 'countries';
+	protected $type = 'vmCountries';
 
 	protected function getOptions() {
 		$options = array();

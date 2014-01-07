@@ -13,44 +13,41 @@
     </files>
     <config>
         <fields name="params">
-            <fieldset name="title" label="VMPAYMENT_AUTHORIZENET_AIM"
-                      addfieldpath="/administrator/components/com_virtuemart/fields">
+
+            <fieldset name="payment" addfieldpath="/administrator/components/com_virtuemart/fields">
                 <field type="vmjpluginwarning"/>
                 <field type="vmcurl"/>
                 <field type="spacer" default="VMPAYMENT_AUTHORIZENET_MUST_SSL" level="level1"/>
-            </fieldset>
-            <fieldset name="payment" >
                 <field name="sandbox" type="list" default="0" label="VMPAYMENT_AUTHORIZENET_MODE"
                        description="VMPAYMENT_AUTHORIZENET_MODE_TIP">
                     <option value="0">VMPAYMENT_AUTHORIZENET_MODE_PRODUCTION</option>
                     <option value="1">VMPAYMENT_AUTHORIZENET_MODE_SANDBOX</option>
                 </field>
-                <field name="hostname" required="true" type="text" size="70" default="https://secure.authorize.net/gateway/transact.dll"
+                <field name="hostname" class="live" required="true" type="text" size="70" default="https://secure.authorize.net/gateway/transact.dll"
                        label="VMPAYMENT_AUTHORIZENET_HOSTNAME" description="VMPAYMENT_AUTHORIZENET_HOSTNAME_DESC"/>
-                <field name="login_id" required="true" type="text" size="70" default="" label="VMPAYMENT_AUTHORIZENET_LOGIN_ID"
+                <field name="login_id" class="live" required="true" type="text" size="70" default="" label="VMPAYMENT_AUTHORIZENET_LOGIN_ID"
                        description="VMPAYMENT_AUTHORIZENET_LOGIN_ID_DESC"/>
-                <field name="transaction_key" required="true" type="text" size="70" default=""
+                <field name="transaction_key" class="live" required="true" type="text" size="70" default=""
                        label="VMPAYMENT_AUTHORIZENET_TRANSACTION_KEY"
                        description="VMPAYMENT_AUTHORIZENET_TRANSACTION_KEY_DESC"/>
+
+                <field name="sandbox_hostname" class="sandbox" type="text" size="70" required="true"
+                       default="https://test.authorize.net/gateway/transact.dll"
+                       label="VMPAYMENT_AUTHORIZENET_SANDBOX_HOSTNAME"
+                       description="VMPAYMENT_AUTHORIZENET_SANDBOX_HOSTNAME_DESC"/>
+
+                <field name="sandbox_login_id" class="sandbox" type="text" size="70" default="" required="true"
+                       label="VMPAYMENT_AUTHORIZENET_SANDBOX_LOGIN_ID"
+                       description="VMPAYMENT_AUTHORIZENET_SANDBOX_LOGIN_ID_DESC"/>
+                <field name="sandbox_transaction_key" class="sandbox" type="text" size="70" default="" required="true"
+                       label="VMPAYMENT_AUTHORIZENET_SANDBOX_TRANSACTION_KEY"
+                       description="VMPAYMENT_AUTHORIZENET_SANDBOX_TRANSACTION_KEY_DESC"/>
+
                 <field name="secure_post" type="list" default="0" label="VMPAYMENT_AUTHORIZENET_SECURE_POST"
                        description="VMPAYMENT_AUTHORIZENET_SECURE_POST_DESC">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>
-
-
-                <field name="sandbox_hostname" type="text" size="70" required="true"
-                       default="https://test.authorize.net/gateway/transact.dll"
-                       label="VMPAYMENT_AUTHORIZENET_SANDBOX_HOSTNAME"
-                       description="VMPAYMENT_AUTHORIZENET_SANDBOX_HOSTNAME_DESC"/>
-
-                <field name="sandbox_login_id" type="text" size="70" default="" required="true"
-                       label="VMPAYMENT_AUTHORIZENET_SANDBOX_LOGIN_ID"
-                       description="VMPAYMENT_AUTHORIZENET_SANDBOX_LOGIN_ID_DESC"/>
-                <field name="sandbox_transaction_key" type="text" size="70" default="" required="true"
-                       label="VMPAYMENT_AUTHORIZENET_SANDBOX_TRANSACTION_KEY"
-                       description="VMPAYMENT_AUTHORIZENET_SANDBOX_TRANSACTION_KEY_DESC"/>
-
                 <field name="xtype" type="list" default="AUTH_CAPTURE" label="VMPAYMENT_AUTHORIZENET_TRANSACTION_TYPE"
                        description="VMPAYMENT_AUTHORIZENET_TRANSACTION_TYPE_DESC">
                     <option value="AUTH_CAPTURE">VMPAYMENT_AUTHORIZENET_TRANSACTION_TYPE_AUTH_CAPTURE</option>
@@ -77,9 +74,7 @@
                 <field name="payment_held_status" type="vmorderstate" scope="com_virtuemart" default="P"
                        label="VMPAYMENT_AUTHORIZENET_ORDERSTATUS_HELD"
                        description="VMPAYMENT_AUTHORIZENET_ORDERSTATUS_CANCEL_DESC"/>
-
             </fieldset>
-
 
             <fieldset name="template">
                 <field name="payment_logos" type="imagelist" label="VMPAYMENT_LOGOS" multiple="true"

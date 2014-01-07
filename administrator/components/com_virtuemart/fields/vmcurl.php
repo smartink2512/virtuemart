@@ -1,5 +1,6 @@
 <?php
-defined('_JEXEC') or die();
+defined('_JEXEC') or die('Restricted access');
+
 /**
  *
  * @package    VirtueMart
@@ -14,22 +15,11 @@ defined('_JEXEC') or die();
  * other free or open source software licenses.
  * @version $Id$
  */
+jimport('joomla.form.formfield');
 
-if (!class_exists('vmRequest')) require(JPATH_ROOT . '/administrator/components/com_virtuemart/helpers/config.php');
+class JFormFieldVmCurl extends JFormField {
 
-class JFormFieldVmjpluginwarning extends JFormField {
-
-	/**
-	 * The form field type.
-	 *
-	 * @var    string
-	 * @since  11.1
-	 */
-	protected $type = 'vmjpluginwarning';
-
-	protected function getLabel() {
-
-	}
+	protected $type = 'vmcurl';
 
 	/**
 	 * Method to get the field input markup.
@@ -43,20 +33,21 @@ class JFormFieldVmjpluginwarning extends JFormField {
 		$lang->load('com_virtuemart', JPATH_ADMINISTRATOR);
 
 		$option = vmRequest::getCmd('option');
-		if ($option == 'com_virtuemart') {
-			$js = "
+		if (!function_exists('curl_init') or !function_exists('curl_exec')) {
+			return vmText::_('COM_VIRTUEMART_PS_CURL_LIBRARY_NOT_INSTALLED');
+		} else {
+
+				$js = "
  jQuery(document).ready(function( $ ) {
-   $( '#vmjpluginwarning' ) .closest('.control-group').hide();
+   $( '#vmcurl' ) .closest('.control-group').hide();
  });
  ";
 
-			$doc = JFactory::getDocument();
-			$doc->addScriptDeclaration($js);
-			return '<span id="vmjpluginwarning"></span>';
-		} else {
+				$doc = JFactory::getDocument();
+				$doc->addScriptDeclaration($js);
+				return '<span id="vmcurl"></span>';
 
-			return '<span class="alert alert-info">'.vmText::_('COM_VIRTUEMART_PLUGIN_WARNING').'</span>';
+		}
 	}
 
-}
 }

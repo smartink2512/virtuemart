@@ -14,12 +14,7 @@ defined('_JEXEC') or die();
  * other free or open source software licenses.
  * @version $Id$
  */
-/*
- * This class is used by VirtueMart Payment or Shipment Plugins
- * which uses JParameter
- * So It should be an extension of JFormField
- * Those plugins cannot be configured througth the Plugin Manager anyway.
- */
+
 
 if (!class_exists('VmConfig'))
 	require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
@@ -34,7 +29,7 @@ class JFormFieldVmWeightunit extends JFormField {
 	 * @access    protected
 	 * @var        string
 	 */
-	protected $type = 'WeightUnit';
+	protected $type = 'vmWeightUnit';
 
 	protected function getInput() {
 		return ShopFunctions::renderWeightUnitList($this->name, $this->value);
