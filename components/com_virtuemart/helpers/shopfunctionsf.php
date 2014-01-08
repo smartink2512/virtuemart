@@ -107,6 +107,122 @@ class shopFunctionsF {
 	}
 
 	/**
+	 * Render a simple country list
+	 *
+	 * @author jseros, Max Milbers, Valérie Isaksen
+	 *
+	 * @param int $countryId Selected country id
+	 * @param boolean $multiple True if multiple selections are allowed (default: false)
+	 * @param mixed $_attrib string or array with additional attributes,
+	 * e.g. 'onchange=somefunction()' or array('onchange'=>'somefunction()')
+	 * @param string $_prefix Optional prefix for the formtag name attribute
+	 * @return string HTML containing the <select />
+	 */
+	static public function renderCountryList ($countryId = 0, $multiple = FALSE, $_attrib = array(), $_prefix = '', $required = 0) {
+
+		$countryModel = VmModel::getModel ('country');
+		$countries = $countryModel->getCountries (TRUE, TRUE, FALSE);
+		$attrs = array();
+		$name = 'country_name';
+		$id = 'virtuemart_country_id';
+		$idA = $_prefix . 'virtuemart_country_id';
+		$attrs['class'] = 'virtuemart_country_id';
+		$attrs['class'] = 'vm-chzn-select';
+		// Load helpers and  languages files
+		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+		VmConfig::loadConfig();
+		VmConfig::loadJLang('com_virtuemart_countries');
+		vmJsApi::chosenDropDowns();
+
+		$sorted_countries = array();
+		$lang = JFactory::getLanguage();
+		$prefix="COM_VIRTUEMART_COUNTRY_";
+		foreach ($countries as  $country) {
+			$country_string = $lang->hasKey($prefix.$country->country_3_code) ?   vmText::_($prefix.$country->country_3_code)  : $country->country_name;
+			$sorted_countries[$country->virtuemart_country_id] = $country_string;
+		}
+
+		asort($sorted_countries);
+
+		$countries_list=array();
+		$i=0;
+		foreach ($sorted_countries as  $key=>$value) {
+			$countries_list[$i] = new stdClass();
+			$countries_list[$i]->$id = $key;
+			$countries_list[$i]->$name = $value;
+			$i++;
+		}
+
+		if ($required != 0) {
+			$attrs['class'] .= ' required';
+		}
+
+		if ($multiple) {
+			$attrs['multiple'] = 'multiple';
+			$idA .= '[]';
+		} else {
+			$emptyOption = JHTML::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+			array_unshift ($countries_list, $emptyOption);
+		}
+
+		if (is_array ($_attrib)) {
+			$attrs = array_merge ($attrs, $_attrib);
+		} else {
+			$_a = explode ('=', $_attrib, 2);
+			$attrs[$_a[0]] = $_a[1];
+		}
+
+		//Todo remove inline style
+		//$attrs['style'] = 'width:270px;';
+		return JHTML::_ ('select.genericlist', $countries_list, $idA, $attrs, $id, $name, $countryId);
+	}
+
+	/**
+	 * Render a simple state list
+	 *
+	 * @author jseros, Patrick Kohl
+	 *
+	 * @param int $stateID Selected state id
+	 * @param int $countryID Selected country id
+	 * @param string $dependentField Parent <select /> ID attribute
+	 * @param string $_prefix Optional prefix for the formtag name attribute
+	 * @return string HTML containing the <select />
+	 */
+	static public function renderStateList ($stateId = '0', $_prefix = '', $multiple = FALSE, $required = 0) {
+
+		if (is_array ($stateId)) {
+			$stateId = implode (",", $stateId);
+		}
+
+		vmJsApi::JcountryStateList ($stateId,$_prefix);
+
+		if ($multiple) {
+			$attrs = 'multiple="multiple" size="12" name="' . $_prefix . 'virtuemart_state_id[]" ';
+			//$class = 'class="inputbox multiple"';
+		} else {
+			/*$app = JFactory::getApplication();
+			if($app->isSite()) {
+				$class = 'class="chzn-select"';
+			} else {
+				$class = 'class="inputbox multiple"';
+			}*/
+			$attrs = 'name="' . $_prefix . 'virtuemart_state_id" ';
+		}
+
+		if ($required != 0) {
+			$attrs .= ' required';
+		}
+		$attrs .= ' class="vm-chzn-select"';
+
+
+		$listHTML = '<select  id="'.$_prefix.'virtuemart_state_id" ' . $attrs . '>
+						<option value="">' . vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>
+						</select>';
+
+		return $listHTML;
+	}
+
+	/**
 	 *
 	 * @author Max Milbers
 	 */
@@ -610,4 +726,6 @@ class shopFunctionsF {
 		}
 		$article->$field = $article->text;
 	}
+
+
 }

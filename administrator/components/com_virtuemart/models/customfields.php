@@ -657,7 +657,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		$variantmods = isset($product -> customProductData)?$product -> customProductData:$product -> product_attribute;
 		//$variantmods = $product -> customProductData;
-
+		//vmdebug('displayProductCustomfieldSelected $variantmods',$variantmods);
 		if(!is_array($variantmods)){
 			$variantmods = json_decode($variantmods);
 		}
@@ -665,7 +665,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$productCustoms = array();
 		foreach($product->customfields as $prodcustom){
 			//We just add the customfields to be shown in the cart to the variantmods
-			if($prodcustom->is_cart_attribute){
+			if($prodcustom->is_cart_attribute and !$prodcustom->is_input){
 				$variantmods[$prodcustom->virtuemart_custom_id] = $prodcustom->virtuemart_customfield_id;
 			} else if(!empty($variantmods) and !empty($variantmods[$prodcustom->virtuemart_custom_id])){
 
@@ -673,11 +673,11 @@ class VirtueMartModelCustomfields extends VmModel {
 			$productCustoms[$prodcustom->virtuemart_customfield_id] = $prodcustom;
 		}
 		//if(empty($productCustoms)) return $html . '</div>';
-		vmdebug('displayProductCustomfieldSelected $variantmods ',$variantmods,$product);
-		foreach ($variantmods as $custom_id => $selected) {
+		vmdebug('displayProductCustomfieldSelected $variantmods ',$variantmods,$productCustoms);
+		foreach ($variantmods as $custom_id => $customfield_id) {
 
-			if(is_object($selected)) $selected = (array)$selected;
-			if(is_array($selected)){
+			//if(is_object($selected)) $selected = (array)$selected;
+			/*if(is_array($selected)){
 				reset($selected);
 				$keys = array_keys($selected);
 				foreach($keys as &$key){
@@ -692,11 +692,12 @@ class VirtueMartModelCustomfields extends VmModel {
 			} else {
 				$customfield_ids = array($selected);
 			//	vmdebug('displayProductCustomfieldSelected NO PARAMS $custom_id ',$custom_id,$customfield_id);
-			}
-			//vmdebug('displayProductCustomfieldSelected',$customfield_ids);
-			foreach($customfield_ids as $customfield_id){
+			}*/
 
-				if ($customfield_id) {
+			//vmdebug('displayProductCustomfieldSelected',$customfield_ids);
+			//foreach($selected as $customfield_id){
+
+				//if ($customfield_id) {
 					//$productCustom = self::getCustomEmbeddedProductCustomField ($customfield_id);
 					if(!isset($productCustoms[$customfield_id])){
 						continue;
@@ -748,14 +749,14 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 					else {
 						// falldown method if customfield are deleted
-						foreach ((array)$selected as $key => $value) {
+						foreach ((array)$customfield_id as $key => $value) {
 							$html .= '<br/ >Couldnt find customfield' . ($key ? '<span>' . $key . ' </span>' : '') . $value;
 						}
 						//vmdebug ('CustomsFieldOrderDisplay, $item->productCustom empty? ' . $variant);
 						vmdebug ('customFieldDisplay, $productCustom is EMPTY ');
 					}
-				}
-			}
+				//}
+			//}
 
 		}
 

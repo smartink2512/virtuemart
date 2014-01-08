@@ -1006,7 +1006,7 @@ class vmrouterHelper {
 		if($jLangTag!=VmConfig::$langTag){
 			$fallback= 'or language = "'.$jLangTag.'"';
 		}
-		$query = 'SELECT * FROM `#__menu`  where `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language = "'.VmConfig::$langTag.'" '.$fallback.' )'  ;
+		$query = 'SELECT * FROM `#__menu`  where `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language = "'.VmConfig::$vmlangTag.'" '.$fallback.' )'  ;
 		$db->setQuery($query);
 		// 		vmdebug('setMenuItemIdJ17 q',$query);
 		$this->menuVmitems= $db->loadObjectList();

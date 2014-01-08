@@ -32,10 +32,6 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  */
 class VirtueMartModelUserfields extends VmModel {
 
-	/** @var object parameter parsers */
-	var $_params;
-	/** @var array type=>fieldname with formfields that are saved as parameters */
-	var $reqParam;
 	// stAn, this variable is a cached result of  getUserFields
 	// where array key is $cache_hash = md5($sec.serialize($_switches).serialize($_skip).$this->_selectedOrdering.$this->_selectedOrderingDir);
     static $_cache_ordered;
@@ -60,15 +56,9 @@ class VirtueMartModelUserfields extends VmModel {
 		$this->setToggleName('account');
 		// Instantiate the Helper class
 
-		//$this->_params = new ParamHelper();	//This is some old stuff by oscar, we remove it now
 		self::$_cache_ordered = null;
 		self::$_cache_named = array();
-		// Form fields that must be translated to parameters
-		$this->reqParam = array (
-			 'age_verification' => 'minimum_age'
-		,'euvatid'          => 'virtuemart_shoppergroup_id'
-		,'webaddress'       => 'webaddresstype'
-		);
+
 		$this->_selectedOrdering = 'ordering';
 		$this->_selectedOrderingDir = 'ASC';
 	}
@@ -193,9 +183,6 @@ class VirtueMartModelUserfields extends VmModel {
 			// vmdebug('pluginGet',$type,$plgName,$this->_id,$this->_data);
 		}
 
-		// Parse the parameters, if any
-		//else $this->_params->parseParam($this->_data->params);
-
 		return $this->_data;
 	}
 
@@ -257,13 +244,6 @@ class VirtueMartModelUserfields extends VmModel {
 				}
 			}
 		}
-		//vmdebug ('SAVED userfields', $data);
-		//This is some old stuff by oscar, we remove it now
-		// Put the parameters, if any, in the correct format
-		/*if (array_key_exists($data['type'], $this->reqParam)) {
-			$this->_params->set($this->reqParam[$data['type']], $data[$this->reqParam[$data['type']]]);
-			$data['params'] = $this->_params->paramString();
-		}*/
 
 		// Store the fieldvalues, if any, in a correct array
 		$fieldValues = $this->postData2FieldValues($data['vNames'], $data['vValues'], $data['virtuemart_userfield_id'] );
@@ -737,7 +717,7 @@ class VirtueMartModelUserfields extends VmModel {
 	public function getUserFieldsFilled($_selection, $_userData = null, $_prefix = ''){
 
 
-		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		//if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		$_return = array(
 				 'fields' => array()
 		,'functions' => array()
@@ -786,16 +766,10 @@ class VirtueMartModelUserfields extends VmModel {
 					// 					break;
 					case 'virtuemart_country_id':
 
-						//For nice lists in the FE
-					/*	$app = JFactory::getApplication();
-						if($app->isSite()) {
-							$attrib = array('class'=>'chzn-select');
-						} else {
-							$attrib = array();
-						}*/
+						if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 						$attrib = array();
 						$_return['fields'][$_fld->name]['formcode'] =
-							ShopFunctions::renderCountryList($_return['fields'][$_fld->name]['value'], false, $attrib , $_prefix, $_fld->required);
+							ShopFunctionsF::renderCountryList($_return['fields'][$_fld->name]['value'], false, $attrib , $_prefix, $_fld->required);
 
 						if(!empty($_return['fields'][$_fld->name]['value'])){
 							// Translate the value from ID to name
@@ -825,7 +799,7 @@ class VirtueMartModelUserfields extends VmModel {
 						if (!class_exists ('shopFunctionsF'))
 							require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 						$_return['fields'][$_fld->name]['formcode'] =
-						shopFunctions::renderStateList(	$_return['fields'][$_fld->name]['value'],
+						shopFunctionsF::renderStateList(	$_return['fields'][$_fld->name]['value'],
 						$_prefix,
 						false,
 						$_fld->required

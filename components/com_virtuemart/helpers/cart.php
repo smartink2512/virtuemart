@@ -707,12 +707,9 @@ class VirtueMartCart {
 		$this->_redirect = $redirect;
 		$this->_inCheckOut = true;
 
-
 		$this->STsameAsBT = VmRequest::getInt('STsameAsBT', $this->STsameAsBT);
 		$this->getFilterCustomerComment();
 		$this->order_language = VmRequest::getVar('order_language', $this->order_language);
-
-
 
 		//Either we use here $this->_redirect, or we redirect always directly, atm we check the boolean _redirect
 		if (count($this->cartProductsData) ===0 and $this->_redirect) {
@@ -727,21 +724,29 @@ class VirtueMartCart {
 
 		}
 
+		// Check if a minimun purchase value is set
+		if (($redirectMsg = $this->checkPurchaseValue()) != null) {
+			return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
+		}
 
+		$validUserDataBT = self::validateUserData();
+
+		$this->tosAccepted = VmRequest::getInt('tosAccepted', $this->tosAccepted);
+		if(!isset($this->tosAccepted)){
+			$userFieldsModel = VmModel::getModel('Userfields');
+			$agreed = $userFieldsModel->getUserfield('agreed','name');
+			$this->tosAccepted = $agreed->default;
+		}
 		if (empty($this->tosAccepted)) {
 
 			$userFieldsModel = VmModel::getModel('Userfields');
-
-			//$required = $userFieldsModel->getIfRequired('agreed');
 			$agreed = $userFieldsModel->getUserfield('agreed','name');
-			//vmdebug('my new getUserfieldbyName',$agreed->default,$agreed->required);
-			if(!empty($agreed->required) and empty($agreed->default) and !empty($this->BT)){
-				$redirectMsg = null;// vmText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 
+			if(empty($this->tosAccepted) and !empty($agreed->required) and $validUserDataBT!==-1){
+				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+				$this->tosAccepted = false;
 				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
-			} else if($agreed->default){
-				$this->tosAccepted = $agreed->default;
 			}
 		}
 
@@ -753,44 +758,6 @@ class VirtueMartCart {
 			if($this->validateUserData('ST', $stData)){
 				$this->ST = $stData;
 			}
-		}
-
-		$this->getCartPrices();
-
-		// Check if a minimun purchase value is set
-		if (($redirectMsg = $this->checkPurchaseValue()) != null) {
-			return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
-		}
-
-		$validUserDataBT = self::validateUserData();
-
-		$this->tosAccepted = VmRequest::getInt('tosAccepted', $this->tosAccepted);
-		if (empty($this->tosAccepted)) {
-
-			$userFieldsModel = VmModel::getModel('Userfields');
-
-			$agreed = $userFieldsModel->getUserfield('agreed','name');
-
-			if(!empty($agreed->required)){
-				if($agreed->default=='1'){
-					$this->tosAccepted = true;
-				} else if($validUserDataBT!==-1) {
-					$redirectMsg = null;// vmText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
-					$this->tosAccepted = false;
-					vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
-					return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
-				}
-			}
-			/*if(!empty($agreed->required) and $agreed->default!=='' and $validUserDataBT!==-1){
-				$redirectMsg = null;// vmText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
-				$this->tosAccepted = false;
-				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
-				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
-			} else if($agreed->default){
-				$this->tosAccepted = $agreed->default;
-			} else {
-				$this->tosAccepted = false;
-			}*/
 		}
 
 		if ($validUserDataBT!==true) {	//Important, we can have as result -1,false and true.
@@ -1265,6 +1232,7 @@ class VirtueMartCart {
 					/*foreach($productdata as $key => $data){
 						$product ->$key = $data;
 					}*/
+
 					$product -> customProductData = $productdata['customProductData'];
 					$product -> quantity = $productdata['quantity'];
 
@@ -1288,6 +1256,7 @@ class VirtueMartCart {
 						}
 					}*/
 					$product->customfields = $customfields;
+					vmdebug('prepareCartData',$customfields);
 					$this->products[$k] = $product;
 					$this->totalProduct += $product -> quantity;
 

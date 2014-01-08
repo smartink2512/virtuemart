@@ -24,6 +24,47 @@ define('USE_SQL_CALC_FOUND_ROWS' , true);
 
 class VmModel extends JObject {
 
+	/**
+	 * Indicates if the internal state has been set
+	 *
+	 * @var    boolean
+	 * @since  11.1
+	 */
+	protected $__state_set = null;
+	/**
+	 * The model (base) name
+	 *
+	 * @var    string
+	 * @note   Replaces _name variable in 11.1
+	 * @since  11.1
+	 */
+	protected $name;
+
+	/**
+	 * The URL option for the component.
+	 *
+	 * @var    string
+	 * @since  11.1
+	 */
+	protected $option = null;
+
+	/**
+	 * A state object
+	 *
+	 * @var    string
+	 * @note   Replaces _state variable in 11.1
+	 * @since  11.1
+	 */
+	protected $state;
+
+	/**
+	 * The event to trigger when cleaning cache.
+	 *
+	 * @var      string
+	 * @since    11.1
+	 */
+	protected $event_clean_cache = null;
+
 	var $_id 			= 0;
 	var $_data			= null;
 	var $_query 		= null;
@@ -143,6 +184,8 @@ class VmModel extends JObject {
 	 * The model name. By default parsed using the classname or it can be set
 	 * by passing a $config['name'] in the class constructor
 	 *
+	 * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+	 * @license     GNU General Public License version 2 or later; see LICENSE
 	 * @return  string  The name of the model
 	 *
 	 * @since   12.2
@@ -165,6 +208,8 @@ class VmModel extends JObject {
 
 	/**
 	 * Adds to the stack of model table paths in LIFO order.
+	 * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+	 * @license     GNU General Public License version 2 or later; see LICENSE
 	 *
 	 * @param   mixed  $path  The directory as a string or directories as an array to add.
 	 *
@@ -179,6 +224,8 @@ class VmModel extends JObject {
 
 	/**
 	 * Create the filename for a resource
+	 * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+	 * @license     GNU General Public License version 2 or later; see LICENSE
 	 *
 	 * @param   string  $type   The resource type to create the filename for.
 	 * @param   array   $parts  An associative array of filename information.
@@ -204,6 +251,9 @@ class VmModel extends JObject {
 	/**
 	 * Method to set model state variables
 	 *
+	 * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+	 * @license     GNU General Public License version 2 or later; see LICENSE
+	 *
 	 * @param   string  $property  The name of the property.
 	 * @param   mixed   $value     The value of the property to set or null.
 	 *
@@ -217,8 +267,54 @@ class VmModel extends JObject {
 	}
 
 	/**
+	 * Method to get model state variables
+	 *
+	 * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+	 * @license     GNU General Public License version 2 or later; see LICENSE
+	 *
+	 * @param   string  $property  Optional parameter name
+	 * @param   mixed   $default   Optional default value
+	 *
+	 * @return  object  The property where specified, the state object where omitted
+	 *
+	 * @since   11.1
+	 */
+	public function getState($property = null, $default = null)
+	{
+		if (!$this->__state_set)
+		{
+			// Protected method to auto-populate the model state.
+			$this->populateState();
+
+			// Set the model state set flag to true.
+			$this->__state_set = true;
+		}
+
+		return $property === null ? $this->state : $this->state->get($property, $default);
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * This method should only be called once per instantiation and is designed
+	 * to be called on the first call to the getState() method unless the model
+	 * configuration flag to ignore the request is set.
+	 *
+	 * @return  void
+	 *
+	 * @note    Calling getState in this method will result in recursion.
+	 * @since   11.1
+	 */
+	protected function populateState()
+	{
+	}
+
+	/**
 	 * Add a directory where JModel should search for models. You may
 	 * either pass a string or an array of directories.
+	 *
+	 * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+	 * @license     GNU General Public License version 2 or later; see LICENSE
 	 *
 	 * @param   mixed   $path    A path or array[sting] of paths to search.
 	 * @param   string  $prefix  A prefix for models.
@@ -267,6 +363,9 @@ class VmModel extends JObject {
 	/**
 	 * Method to get a table object, load it if necessary.
 	 *
+	 * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+	 * @license     GNU General Public License version 2 or later; see LICENSE
+	 *
 	 * @param   string  $name     The table name. Optional.
 	 * @param   string  $prefix   The class prefix. Optional.
 	 * @param   array   $options  Configuration array for model. Optional.
@@ -296,6 +395,9 @@ class VmModel extends JObject {
 	/**
 	 * Method to load and return a model object.
 	 *
+	 * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+	 * @license     GNU General Public License version 2 or later; see LICENSE
+	 *
 	 * @param   string  $name    The name of the view
 	 * @param   string  $prefix  The class prefix. Optional.
 	 * @param   array   $config  Configuration settings to pass to JTable::getInstance
@@ -322,6 +424,9 @@ class VmModel extends JObject {
 
 	/**
 	 * Returns a Model object, always creating it
+	 *
+	 * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+	 * @license     GNU General Public License version 2 or later; see LICENSE
 	 *
 	 * @param   string  $type    The model type to instantiate
 	 * @param   string  $prefix  Prefix for the model class name. Optional.
@@ -366,6 +471,9 @@ class VmModel extends JObject {
 	/**
 	 * Gets an array of objects from the results of database query.
 	 *
+	 * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+	 * @license     GNU General Public License version 2 or later; see LICENSE
+	 *
 	 * @param   string   $query       The query.
 	 * @param   integer  $limitstart  Offset.
 	 * @param   integer  $limit       The number of records.
@@ -384,6 +492,9 @@ class VmModel extends JObject {
 
 	/**
 	 * Returns a record count for the query
+	 *
+	 * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
+	 * @license     GNU General Public License version 2 or later; see LICENSE
 	 *
 	 * @param   string  $query  The query.
 	 *

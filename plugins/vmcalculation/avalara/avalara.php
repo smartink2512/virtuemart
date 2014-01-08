@@ -126,7 +126,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
                     '.$label.'
                 </td>
                 <td>
-                    '.shopfunctions::renderCountryList($calc->avatax_virtuemart_country_id,TRUE,array(),'avatax_').'
+                    '.shopfunctionsF::renderCountryList($calc->avatax_virtuemart_country_id,TRUE,array(),'avatax_').'
                 </td>';
 
     /*   $countriesList = ShopFunctions::renderCountryList($calc->calc_countries,True);

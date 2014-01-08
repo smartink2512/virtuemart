@@ -66,7 +66,7 @@ class VirtueMartViewProductdetails extends VmView {
 	//$product = $this->get('product');	//Why it is sensefull to use this construction? Imho it makes it just harder
 	$product_model = VmModel::getModel('product');
 	$this->assignRef('product_model', $product_model);
-	$virtuemart_product_idArray = VmRequest::getVar('virtuemart_product_id', 0);
+	$virtuemart_product_idArray = VmRequest::getInt('virtuemart_product_id', 0);
 	if (is_array($virtuemart_product_idArray) and count($virtuemart_product_idArray) > 0) {
 	    $virtuemart_product_id = (int)$virtuemart_product_idArray[0];
 	} else {

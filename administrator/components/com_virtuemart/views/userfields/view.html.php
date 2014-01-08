@@ -92,29 +92,26 @@ class VirtuemartViewUserfields extends VmView {
 			if(Vmconfig::get('multix','none')!=='none'){
 				$lists['vendors']= ShopFunctions::renderVendorList($userField->virtuemart_vendor_id);
 			}
-// 			$vendor_model = VmModel::getModel('vendor');
-// 			$vendor_list = $vendor_model->getVendors();
-// 			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $userField->virtuemart_vendor_id);
 
 			// Shopper groups for EU VAT Id
 			$shoppergroup_model = VmModel::getModel('shoppergroup');
 			$shoppergroup_list = $shoppergroup_model->getShopperGroups(true);
 			array_unshift($shoppergroup_list,'0');
-			$lists['shoppergroups'] = JHTML::_('select.genericlist', $shoppergroup_list, 'virtuemart_shoppergroup_id', '', 'virtuemart_shoppergroup_id', 'shopper_group_name', $model->_params->get('virtuemart_shoppergroup_id'));
+			$lists['shoppergroups'] = JHTML::_('select.genericlist', $shoppergroup_list, 'virtuemart_shoppergroup_id', '', 'virtuemart_shoppergroup_id', 'shopper_group_name', $userField->get('virtuemart_shoppergroup_id'));
 
 			// Minimum age select
 			$ages = array();
 			for ($i = 13; $i <= 25; $i++) {
 				$ages[] = array('key' => $i, 'value' => $i.' '.vmText::_('COM_VIRTUEMART_YEAR_S'));
 			}
-			$lists['minimum_age'] = JHTML::_('select.genericlist', $ages, 'minimum_age', '', 'key', 'value', $model->_params->get('minimum_age', 18));
+			$lists['minimum_age'] = JHTML::_('select.genericlist', $ages, 'minimum_age', '', 'key', 'value', $userField->get('minimum_age', 18));
 
 			// Web address types
 			$webaddress_types = array(
 				 array('key' => 0, 'value' => vmText::_('COM_VIRTUEMART_USERFIELDS_URL_ONLY'))
 				,array('key' => 2, 'value' => vmText::_('COM_VIRTUEMART_USERFIELDS_HYPERTEXT_URL'))
 			);
-			$lists['webaddresstypes'] = JHTML::_('select.genericlist', $webaddress_types, 'webaddresstype', '', 'key', 'value', $model->_params->get('webaddresstype'));
+			$lists['webaddresstypes'] = JHTML::_('select.genericlist', $webaddress_types, 'webaddresstype', '', 'key', 'value', $userField->get('webaddresstype'));
 
 			// Userfield values
 			if (($n = count($userFieldValues)) < 1) {
