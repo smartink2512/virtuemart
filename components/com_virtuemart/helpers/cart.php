@@ -856,21 +856,21 @@ class VirtueMartCart {
 
 		$validUserDataBT = self::validateUserData();
 
+		if(!isset($this->tosAccepted)){
+			$userFieldsModel = VmModel::getModel('Userfields');
+			$agreed = $userFieldsModel->getUserfield('agreed','name');
+			$this->tosAccepted = $agreed->default;
+		}
 		if (empty($this->tosAccepted)) {
 
 			$userFieldsModel = VmModel::getModel('Userfields');
-
 			$agreed = $userFieldsModel->getUserfield('agreed','name');
 
-			if(!empty($agreed->required) and $agreed->default!=='' and $validUserDataBT!==-1){
+			if(empty($this->tosAccepted) and !empty($agreed->required) and $validUserDataBT!==-1){
 				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				$this->tosAccepted = false;
 				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
-			} else if($agreed->default){
-				$this->tosAccepted = $agreed->default;
-			} else {
-				$this->tosAccepted = false;
 			}
 		}
 
