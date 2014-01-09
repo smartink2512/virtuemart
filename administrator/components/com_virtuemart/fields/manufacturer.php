@@ -12,8 +12,7 @@ require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 if (!class_exists('VirtueMartModelManufacturer'))
 JLoader::import('manufacturer', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models');
 
-if (!class_exists('VmElements'))
-require(JPATH_VM_ADMINISTRATOR . DS . 'elements' . DS . 'vmelements.php');
+
 if(!class_exists('TableManufacturers')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'manufacturers.php');
 if (!class_exists( 'VirtueMartModelManufacturer' ))
 JLoader::import( 'manufacturer', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models' );

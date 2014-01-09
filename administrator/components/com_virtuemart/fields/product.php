@@ -12,8 +12,7 @@ require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 if (!class_exists('TableCategories'))
 require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'categories.php');
 
-if (!class_exists('VmElements'))
-require(JPATH_VM_ADMINISTRATOR . DS . 'elements' . DS . 'vmelements.php');
+
 if (!class_exists('JFormFieldVmModal'))
 	require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'fields' . DS . 'modal.php');
 /**
