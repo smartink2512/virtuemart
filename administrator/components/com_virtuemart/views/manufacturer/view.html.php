@@ -81,8 +81,11 @@ class VirtuemartViewManufacturer extends VmView {
 
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model,'mf_name');
-
-			$manufacturers = $model->getManufacturers();
+			$onlyPublished=false;
+			if (VmRequest::getCmd('layout','' )) {
+				$onlyPublished=true;
+			}
+			$manufacturers = $model->getManufacturers($onlyPublished);
 			$this->assignRef('manufacturers',	$manufacturers);
 
 			$pagination = $model->getPagination();

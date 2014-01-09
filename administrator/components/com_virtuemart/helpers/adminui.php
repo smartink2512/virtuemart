@@ -24,7 +24,7 @@ class AdminUIHelper {
      *
      * The entire administrator area with contained in a table which include the admin ribbon menu
      * in the left column and the content in the right column.  This function sets up the table and
-     * displayes the admin menu in the left column.
+     * displays the admin menu in the left column.
      */
    static function startAdminArea($vmView,$selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL') {
 		if (VmRequest::getCmd ( 'format') =='pdf') return;
@@ -55,6 +55,7 @@ class AdminUIHelper {
 		$document->addScript($front.'js/chosen.jquery.min.js');
 		$document->addScript($admin.'js/vm2admin.js');
 
+
 		$vm2string = "editImage: 'edit image',select_all_text: '".vmText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".vmText::_($selectText)."'" ;
 		$document->addScriptDeclaration ( "
 //<![CDATA[
@@ -83,7 +84,7 @@ class AdminUIHelper {
 //]]>
 		");
 		?>
-		<?php if (!self::$backEnd) echo '<div class="toolbar" style="height: 84px;position: relative;">'.vmView::getToolbar($vmView).'</div>'; ?>
+		<?php if (!self::$backEnd AND VmRequest::getCmd ( 'layout')!=='modal') echo '<div class="toolbar" style="height: 84px;position: relative;">'.vmView::getToolbar($vmView).'</div>'; ?>
 		<div class="virtuemart-admin-area">
 		<?php
 		// Include ALU System
