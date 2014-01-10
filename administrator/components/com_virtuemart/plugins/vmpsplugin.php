@@ -744,7 +744,9 @@ abstract class vmPSPlugin extends vmPlugin {
 		$img = "";
 
 		if (!(empty($logo_list))) {
-			$url = JURI::root () . 'images/stories/virtuemart/' . $this->_psType . '/';
+			//$url = JURI::root () . 'images/stories/virtuemart/' . $this->_psType . '/';
+			// VM 2.1 , the logos are of type media, and field include the path
+			$url = JURI::root () . '/';
 			if (!is_array ($logo_list)) {
 				$logo_list = (array)$logo_list;
 			}

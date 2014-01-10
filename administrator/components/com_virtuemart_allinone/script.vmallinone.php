@@ -79,7 +79,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation' );
 
 			$this->moneyBookersToSkrill ();
-
+			$this->migratePluginParams ();
 
 			// 			$table = '#__virtuemart_customs';
 			// 			$fieldname = 'field_type';
@@ -379,6 +379,14 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 		}
 
+		/**
+		 * TODO:
+		 * - migrate logos: we use now the type "media" that includes the path /images/stories/virtuemart/payment/
+		 */
+		function migratePluginParams() {
+
+
+		}
 		public function updatePluginTable ($name, $type, $element, $group, $dst) {
 
 			$app = JFactory::getApplication ();

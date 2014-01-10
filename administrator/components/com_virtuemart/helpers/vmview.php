@@ -105,9 +105,6 @@ class VmView extends JViewLegacy {
 	* return $list filter_order and
 	*/
 	function addStandardDefaultViewCommands($showNew=true, $showDelete=true, $showHelp=true) {
-		if ($this->getLayout() == 'modal') {
-			return;
-		}
 
 
 		$view = VmRequest::getCmd('view', VmRequest::getCmd('controller','virtuemart'));
@@ -407,17 +404,6 @@ class VmView extends JViewLegacy {
 			<input type="hidden" name="filter_order" value="'.$this->lists['filter_order'].'" />
 			<input type="hidden" name="filter_order_Dir" value="'.$this->lists['filter_order_Dir'].'" />';
 		}
-		$layout = VmRequest::getCmd('layout','' );
-		if ($layout) {
-			$hidden .='
-			<input type="hidden" name="layout" value="'.$layout.'" />';
-		}
-		$tmpl = VmRequest::getCmd('tmpl','' );
-		if ($tmpl) {
-			$hidden .='
-			<input type="hidden" name="tmpl" value="'.$tmpl.'" />';
-		}
-
 
 		return  $hidden.'
 		<input type="hidden" name="task" value="'.$task.'" />

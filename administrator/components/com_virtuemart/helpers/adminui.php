@@ -84,7 +84,7 @@ class AdminUIHelper {
 //]]>
 		");
 		?>
-		<?php if (!self::$backEnd AND VmRequest::getCmd ( 'layout')!=='modal') echo '<div class="toolbar" style="height: 84px;position: relative;">'.vmView::getToolbar($vmView).'</div>'; ?>
+		<?php if (!self::$backEnd ) echo '<div class="toolbar" style="height: 84px;position: relative;">'.vmView::getToolbar($vmView).'</div>'; ?>
 		<div class="virtuemart-admin-area">
 		<?php
 		// Include ALU System

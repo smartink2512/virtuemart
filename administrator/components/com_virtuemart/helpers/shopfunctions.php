@@ -40,7 +40,7 @@ class ShopFunctions {
 	 * @param $quantity The number of items in the list
 	 * @return List as String
 	 */
-	static public function renderGuiList ($fieldnameXref, $tableXref, $fieldIdXref, $idXref, $fieldname, $table, $fieldId, $view, $quantity = 4, $translate = 1, $addLink=true) {
+	static public function renderGuiList ($fieldnameXref, $tableXref, $fieldIdXref, $idXref, $fieldname, $table, $fieldId, $view, $quantity = 4, $translate = 1 ) {
 
 		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 		VmConfig::loadConfig();
@@ -73,11 +73,9 @@ class ShopFunctions {
 					} else {
 						$cid = 'virtuemart_user_id';
 					}
-					if ($addLink) {
-						$links .= JHTML::_ ('link', JRoute::_ ('index.php?option=com_virtuemart&view=' . $view . '&task=edit&' . $cid . '[]=' . $value, FALSE), vmText::_($tmp)) . ', ';
-					} else {
-						$links .=vmText::_($tmp) . ', ';
-					}
+
+					$links .= JHTML::_ ('link', JRoute::_ ('index.php?option=com_virtuemart&view=' . $view . '&task=edit&' . $cid . '[]=' . $value, FALSE), vmText::_($tmp)) . ', ';
+
 				}
 				$ttip .= $tmp . ', ';
 

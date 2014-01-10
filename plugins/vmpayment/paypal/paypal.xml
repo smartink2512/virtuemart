@@ -265,21 +265,21 @@
 
             </fieldset>
             <fieldset  name="currencies" >
-                <field name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_PAYPAL_CURRENCY"
-                       description="VMPAYMENT_PAYPAL_CURRENCY_TIP"/>
-                <field name="email_currency" type="list" default="vendor" label="VMPAYMENT_PAYPAL_EMAIL_CURRENCY"
-                       description="VMPAYMENT_PAYPAL_EMAIL_CURRENCY_TIP">
-                    <option value="vendor">VMPAYMENT_PAYPAL_EMAIL_CURRENCY_VENDOR</option>
-                    <option value="payment">VMPAYMENT_PAYPAL_EMAIL_CURRENCY_PAYMENT</option>
+                <field name="payment_currency" type="vmacceptedcurrency" default="" label="VMPSPLUGIN_CURRENCY"
+                       description="VMPSPLUGIN_PAYPAL_CURRENCY_TIP"/>
+                <field name="email_currency" type="list" default="vendor" label="VMPSPLUGIN_EMAIL_CURRENCY"
+                       description="VMPSPLUGIN_EMAIL_CURRENCY_TIP">
+                    <option value="vendor">VMPSPLUGIN_EMAIL_CURRENCY_VENDOR</option>
+                    <option value="payment">VMPSPLUGIN_EMAIL_CURRENCY_PAYMENT</option>
                 </field>
             </fieldset>
             <fieldset  name="restrictions" >
                 <field name="countries" multiple="true" type="vmcountries" scope="com_virtuemart" default=""
-                       label="VMPAYMENT_COUNTRIES" description="VMPAYMENT_COUNTRIES_TIP"/>
-                <field name="min_amount" type="text" label="VMPAYMENT_MIN_AMOUNT"
-                       description="VMPAYMENT_MIN_AMOUNT_TIP"/>
-                <field name="max_amount" type="text" label="VMPAYMENT_MAX_AMOUNT"
-                       description="VMPAYMENT_MAX_AMOUNT_TIP"/>
+                       label="VMPSPLUGIN_COUNTRIES" description="VMPSPLUGIN_COUNTRIES_TIP"/>
+                <field name="min_amount" type="text" label="VMPSPLUGIN_MIN_AMOUNT"
+                       description="VMPSPLUGIN_MIN_AMOUNT_TIP"/>
+                <field name="max_amount" type="text" label="VMPSPLUGIN_MAX_AMOUNT"
+                       description="VMPSPLUGIN_MAX_AMOUNT_TIP"/>
                 <field name="publishup" type="calendar" default="" label="VMPAYMENT_PAYPAL_PUBLISH_UP"
                        description="VMPAYMENT_PAYPAL_PUBLISH_UP_TIP"/>
                 <field name="publishdown" type="calendar" default="" label="VMPAYMENT_PAYPAL_PUBLISH_DOWN"
@@ -288,16 +288,16 @@
             </fieldset>
 
             <fieldset  name="fee" >
-                <field name="cost_per_transaction" type="text" label="VMPAYMENT_COST_PER_TRANSACTION"
-                       description="VMPAYMENT_COST_PER_TRANSACTION_EXPLAIN"/>
-                <field name="cost_percent_total" type="text" label="VMPAYMENT_COST_PERCENT_TOTAL"
-                       description="VMPAYMENT_COST_PERCENT_TOTAL_EXPLAIN"/>
-                <field name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_TAX"
-                       description="VMPAYMENT_TAX_TIP"/>
+                <field name="cost_per_transaction" type="text" label="VMPSPLUGIN_COST_PER_TRANSACTION"
+                       description="VMPSPLUGIN_COST_PER_TRANSACTION_EXPLAIN"/>
+                <field name="cost_percent_total" type="text" label="VMPSPLUGIN_COST_PERCENT_TOTAL"
+                       description="VMPSPLUGIN_COST_PERCENT_TOTAL_EXPLAIN"/>
+                <field name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPSPLUGIN_TAX"
+                       description="VMPSPLUGIN_TAX_TIP"/>
             </fieldset>
 
             <fieldset  name="template">
-                <field name="payment_logos" type="media" scope="com_virtuemart" label="VMPAYMENT_LOGOS"
+                <field name="payment_logos" type="media" scope="com_virtuemart" label="VMPSPLUGIN_LOGOS"
                        description="VMPAYMENT_LOGOS_TIP" directory="/images/stories/virtuemart/payment"
                        default="" hide_default="1" hide_none="1" stripext="0" exclude="^_"/>
                 <!--param class="creditcard" name="cvv_images" type="media" label="VMPAYMENT_PAYPAL_CC_CVVIMAGES" description="VMPAYMENT_PAYPAL_CC_CVVIMAGES_TIP" directory="/images/stories/virtuemart/payment" default="default" hide_default="1" hide_none="1" stripext="0" exclude="^_" / -->
@@ -427,11 +427,11 @@
             </fieldset>
 
             <fieldset class="paypal_title" name="debug" >
-                <field name="debug" type="radio" default="0" label="VMPAYMENT_DEBUG">
+                <field name="debug" type="radio" default="0" label="VMPSPLUGIN_DEBUG">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>
-                <field name="log" type="radio" default="0" label="VMPAYMENT_PAYPAL_LOG"
+                <field name="log" type="radio" default="0" label="VMPSPLUGIN_PAYPAL_LOG"
                        description="VMPAYMENT_PAYPAL_LOG_TIP">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>

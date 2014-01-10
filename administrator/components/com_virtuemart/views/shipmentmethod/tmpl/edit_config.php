@@ -32,7 +32,7 @@ if (JVM_VERSION < 3){
 if ($this->shipment->shipment_jplugin_id) {
 	?>
 	<h2 style="text-align: center;"><?php echo $this->shipment->shipment_name ?></h2>
-	<div style="text-align: center;"><?php echo  VmText::_('COM_VIRTUEMART_shipment_CLASS_NAME').": ".$this->shipment->shipment_element ?></div>
+	<div style="text-align: center;"><?php echo  VmText::_('COM_VIRTUEMART_SHIPPING_CLASS_NAME').": ".$this->shipment->shipment_element ?></div>
 	<?php
 	if ($this->shipment->form) {
 		$fieldSets = $this->shipment->form->getFieldsets();
@@ -44,7 +44,7 @@ if ($this->shipment->shipment_jplugin_id) {
 				?>
 				<div class="<?php echo $control_field_class ?>">
 					<?php
-					$label = !empty($fieldSet->label) ? $fieldSet->label : strtoupper('VMSHIPMENT_FIELDSET_' . $name);
+					$label = !empty($fieldSet->label) ? $fieldSet->label : strtoupper('VMPSPLUGIN_FIELDSET_' . $name);
 
 					if (!empty($label)) {
 						$class = isset($fieldSet->class) && !empty($fieldSet->class) ? "class=\"".$fieldSet->class."\"" : '';
@@ -81,9 +81,6 @@ if ($this->shipment->shipment_jplugin_id) {
 		<?php
 
 
-		} else {
-			$parameters = new vmParameters($this->shipment, $this->shipment->shipment_element, 'plugin', 'vmshipment');
-			echo $rendered = $parameters->render();
 		}
 	}
 } else {

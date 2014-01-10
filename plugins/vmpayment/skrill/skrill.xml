@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension version="2.5" type="plugin" group="vmpayment">
-    <name>VMPAYMENT_SKRILL</name>
+    <name>VMPSPLUGIN_SKRILL</name>
     <creationDate>April 2012</creationDate>
     <author>Skrill Holdings Limited</author>
     <authorUrl>http://www.skrill.com</authorUrl>
@@ -15,7 +15,7 @@
         <filename plugin="skrill">skrill.php</filename>
     </files>
     <languages>
-        <language tag="en-GB">en-GB.plg_vmpayment_skrill.ini</language>
+        <language tag="en-GB">en-GB.plg_VMPSPLUGIN_skrill.ini</language>
     </languages>
     <config>
         <fields name="params">
@@ -23,7 +23,7 @@
                 <field type="vmjpluginwarning"/>
                 <field type="spacer" default="VMPAYMENT_SKRILL_PAYMENT_TITLE" level="level1"/>
                 <field type="list" name="product" label="VMPAYMENT_SKRILL_PRODUCT"
-                       default="" description="VMPAYMENT_LOGOURL_TIP">
+                       default="" description="VMPSPLUGIN_LOGOURL_TIP">
                     <option value="acc">VMPAYMENT_SKRILL_PRODUCT_ACC</option>
                     <option value="did">VMPAYMENT_SKRILL_PRODUCT_DID</option>
                     <option value="gir">VMPAYMENT_SKRILL_PRODUCT_GIR</option>
@@ -38,22 +38,22 @@
                 <field type="text" required="true" name="secret_word" size="50" label="VMPAYMENT_SKRILL_SECRET_WORD"
                        default="" description="VMPAYMENT_SKRILL_SECRET_WORD_TIP"/>
 
-                <field name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_CURRENCY"
-                       description="VMPAYMENT_CURRENCY_TIP"/>
+                <field name="payment_currency" type="vmacceptedcurrency" default="" label="VMPSPLUGIN_CURRENCY"
+                       description="VMPSPLUGIN_CURRENCY_TIP"/>
             </fieldset>
 
             <fieldset name="orderstatus" >
                 <field name="status_pending" type="vmorderstate" scope="com_virtuemart" default="P"
-                       label="VMPAYMENT_STATUS_PENDING" description="VMPAYMENT_STATUS_PENDING_TIP"/>
+                       label="VMPSPLUGIN_STATUS_PENDING" description="VMPSPLUGIN_STATUS_PENDING_TIP"/>
                 <field name="status_success" type="vmorderstate" scope="com_virtuemart" default="C"
-                       label="VMPAYMENT_STATUS_SUCCESS" description="VMPAYMENT_STATUS_SUCCESS_TIP"/>
+                       label="VMPSPLUGIN_STATUS_SUCCESS" description="VMPSPLUGIN_STATUS_SUCCESS_TIP"/>
                 <field name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X"
-                       label="VMPAYMENT_STATUS_FAILED" description="VMPAYMENT_STATUS_FAILED_TIP"/>
+                       label="VMPSPLUGIN_STATUS_FAILED" description="VMPSPLUGIN_STATUS_FAILED_TIP"/>
             </fieldset>
 
             <fieldset name="template">
-                <field name="payment_logos" type="imagelist" label="VMPAYMENT_LOGOS" multiple="true"
-                description="VMPAYMENT_LOGOS_TIP"
+                <field name="payment_logos" type="imagelist" label="VMPSPLUGIN_LOGOS" multiple="true"
+                description="VMPSPLUGIN_LOGOS_TIP"
                        directory="/images/stories/virtuemart/payment"
                        default="" hide_default="1" hide_none="1"
                        stripext="0" exclude="^_"/>
@@ -63,30 +63,30 @@
             </fieldset>
             <fieldset name="restrictions">
                 <field name="countries" multiple="true" type="vmcountries" scope="com_virtuemart" default=""
-                       label="VMPAYMENT_COUNTRIES" description="VMPAYMENT_COUNTRIES_TIP"/>
-                <field name="min_amount" type="text" label="VMPAYMENT_MIN_AMOUNT"
-                       description="VMPAYMENT_MIN_AMOUNT_TIP"/>
-                <field name="max_amount" type="text" label="VMPAYMENT_MAX_AMOUNT"
-                       description="VMPAYMENT_MAX_AMOUNT_TIP"/>
+                       label="VMPSPLUGIN_COUNTRIES" description="VMPSPLUGIN_COUNTRIES_TIP"/>
+                <field name="min_amount" type="text" label="VMPSPLUGIN_MIN_AMOUNT"
+                       description="VMPSPLUGIN_MIN_AMOUNT_TIP"/>
+                <field name="max_amount" type="text" label="VMPSPLUGIN_MAX_AMOUNT"
+                       description="VMPSPLUGIN_MAX_AMOUNT_TIP"/>
             </fieldset>
 
             <fieldset name="fee" >
-                <field name="cost_per_transaction" type="text" label="VMPAYMENT_COST_PER_TRANSACTION"
-                       description="VMPAYMENT_COST_PER_TRANSACTION_TIP"/>
-                <field name="cost_percent_total" type="text" label="VMPAYMENT_COST_PERCENT_TOTAL"
-                       description="VMPAYMENT_COST_PERCENT_TOTAL_TIP"/>
-                <field name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_TAX"
-                       description="VMPAYMENT_TAX_TIP"/>
+                <field name="cost_per_transaction" type="text" label="VMPSPLUGIN_COST_PER_TRANSACTION"
+                       description="VMPSPLUGIN_COST_PER_TRANSACTION_TIP"/>
+                <field name="cost_percent_total" type="text" label="VMPSPLUGIN_COST_PERCENT_TOTAL"
+                       description="VMPSPLUGIN_COST_PERCENT_TOTAL_TIP"/>
+                <field name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPSPLUGIN_TAX"
+                       description="VMPSPLUGIN_TAX_TIP"/>
             </fieldset>
 
             <fieldset name="debug">
-                <field name="debug" type="list" default="0" label="VMPAYMENT_DEBUG"
-                       description="VMPAYMENT_DEBUG_TIP">
+                <field name="debug" type="list" default="0" label="VMPSPLUGIN_DEBUG"
+                       description="VMPSPLUGIN_DEBUG_TIP">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>
-                <field name="log" type="list" default="0" label="VMPAYMENT_LOG"
-                       description="VMPAYMENT_LOG_TIP">
+                <field name="log" type="list" default="0" label="VMPSPLUGIN_LOG"
+                       description="VMPSPLUGIN_LOG_TIP">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>

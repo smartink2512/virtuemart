@@ -68,23 +68,23 @@
 
 
             <fieldset name="restrictions">
-                <field name="min_amount" type="text" label="VMPAYMENT_MIN_AMOUNT"
-                       description="VMPAYMENT_MIN_AMOUNT_TIP"/>
-                <field name="max_amount" type="text" label="VMPAYMENT_MAX_AMOUNT"
-                       description="VMPAYMENT_MAX_AMOUNT_TIP"/>
+                <field name="min_amount" type="text" label="VMPSPLUGIN_MIN_AMOUNT"
+                       description="VMPSPLUGIN_MIN_AMOUNT_TIP"/>
+                <field name="max_amount" type="text" label="VMPSPLUGIN_MAX_AMOUNT"
+                       description="VMPSPLUGIN_MAX_AMOUNT_TIP"/>
             </fieldset>
 
             <field name="cost_percent_total" type="hidden"/>
             <field name="cost_per_transaction" type="hidden"/>
 
             <fieldset name="debug">
-                <field name="debug" type="hidden" default="0" label="VMPAYMENT_DEBUG"
-                       description="VMPAYMENT_AUTHORIZENET_DEBUG_DESC">
+                <field name="debug" type="hidden" default="0" label="VMPSPLUGIN_DEBUG"
+                       description="VMPSPLUGIN_AUTHORIZENET_DEBUG_DESC">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>
-                <field name="log" type="list" default="0" label="VMPAYMENT_LOG"
-                       description="VMPAYMENT_AUTHORIZENET_LOG_DESC">
+                <field name="log" type="list" default="0" label="VMPSPLUGIN_LOG"
+                       description="VMPSPLUGIN_AUTHORIZENET_LOG_DESC">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>

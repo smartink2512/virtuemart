@@ -13,14 +13,12 @@ if (!class_exists('TableCategories'))
 require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'categories.php');
 
 
-if (!class_exists('JFormFieldVmModal'))
-	require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'fields' . DS . 'modal.php');
 /**
  * Supports a modal product picker.
  *
  *
  */
-class JFormFieldProduct extends JFormFieldVmModal
+class JFormFieldProduct extends JFormField
 {
 	/**
 	 * The form field type.
@@ -39,10 +37,28 @@ class JFormFieldProduct extends JFormFieldVmModal
 	 */
 
 
-	protected function getInput()
-	{
+	function getInput() {
 
-		return $this->getModalInput('product','product_name', 'virtuemart_product_id','products');
+		$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
+		$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
 
+		return JHTML::_('select.genericlist',  $this->_getProducts(), $this->name, 'class="inputbox"   ', 'value', 'text', $this->value, $this->id);
 	}
+	private function _getProducts() {
+		if (!class_exists('VmModel'))
+		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
+		$productModel = VmModel::getModel('Product');
+		$productModel->_noLimit = true;
+		$products = $productModel->getProductListing(false, false, false, false, true,false);
+		$productModel->_noLimit = false;
+		$i = 0;
+		$list = array();
+		foreach ($products as $product) {
+			$list[$i]['value'] = $product->virtuemart_product_id;
+			$list[$i]['text'] = $product->product_name. " (". $product->product_sku.")";
+			$i++;
+		}
+		return $list;
+	}
+
 }

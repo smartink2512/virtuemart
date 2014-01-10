@@ -55,12 +55,12 @@
                 </field>
                 <field name="creditcards" type="list" default=""
                        label="VMPAYMENT_AUTHORIZENET_CREDITCARDS" description="VMPAYMENT_AUTHORIZENET_CREDITCARDS_DESC" multiple="true">
-                    <option value="Visa">VMPAYMENT_VISA</option>
-                    <option value="Mastercard">VMPAYMENT_MASTERCARD</option>
-                    <option value="AmericanExpress">VMPAYMENT_AMERICANEXPRESS</option>
-                    <option value="Discover">VMPAYMENT_DISCOVER</option>
-                    <option value="DinersClub">VMPAYMENT_DINERSCLUB</option>
-                    <option value="JCB">VMPAYMENT_JCB</option>
+                    <option value="Visa">VMPSPLUGIN_VISA</option>
+                    <option value="Mastercard">VMPSPLUGIN_MASTERCARD</option>
+                    <option value="AmericanExpress">VMPSPLUGIN_AMERICANEXPRESS</option>
+                    <option value="Discover">VMPSPLUGIN_DISCOVER</option>
+                    <option value="DinersClub">VMPSPLUGIN_DINERSCLUB</option>
+                    <option value="JCB">VMPSPLUGIN_JCB</option>
                 </field>
             </fieldset>
 
@@ -77,8 +77,8 @@
             </fieldset>
 
             <fieldset name="template">
-                <field name="payment_logos" type="imagelist" label="VMPAYMENT_LOGOS" multiple="true"
-                       description="VMPAYMENT_LOGOS_TIP"
+                <field name="payment_logos" type="imagelist" label="VMPSPLUGIN_LOGOS" multiple="true"
+                       description="VMPSPLUGIN_LOGOS_TIP"
                        directory="/images/stories/virtuemart/payment"
                        default="" hide_default="1" hide_none="1"
                        stripext="0" exclude="^_"/>
@@ -91,29 +91,29 @@
             </fieldset>
             <fieldset name="restrictions">
                 <field name="countries" multiple="true" type="vmcountries" scope="com_virtuemart" default=""
-                       label="VMPAYMENT_COUNTRIES" description="VMPAYMENT_COUNTRIES_TIP"/>
-                <field name="min_amount" type="text" label="VMPAYMENT_MIN_AMOUNT"
-                       description="VMPAYMENT_MIN_AMOUNT_TIP"/>
-                <field name="max_amount" type="text" label="VMPAYMENT_MAX_AMOUNT"
-                       description="VMPAYMENT_MAX_AMOUNT_TIP"/>
+                       label="VMPSPLUGIN_COUNTRIES" description="VMPSPLUGIN_COUNTRIES_TIP"/>
+                <field name="min_amount" type="text" label="VMPSPLUGIN_MIN_AMOUNT"
+                       description="VMPSPLUGIN_MIN_AMOUNT_TIP"/>
+                <field name="max_amount" type="text" label="VMPSPLUGIN_MAX_AMOUNT"
+                       description="VMPSPLUGIN_MAX_AMOUNT_TIP"/>
             </fieldset>
 
             <fieldset name="fee" >
-                <field name="cost_per_transaction" type="text" label="VMPAYMENT_COST_PER_TRANSACTION"
-                       description="VMPAYMENT_COST_PER_TRANSACTION_TIP"/>
-                <field name="cost_percent_total" type="text" label="VMPAYMENT_COST_PERCENT_TOTAL"
-                       description="VMPAYMENT_COST_PERCENT_TOTAL_TIP"/>
-                <field name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPAYMENT_TAX"
-                       description="VMPAYMENT_TAX_TIP"/>
+                <field name="cost_per_transaction" type="text" label="VMPSPLUGIN_COST_PER_TRANSACTION"
+                       description="VMPSPLUGIN_COST_PER_TRANSACTION_TIP"/>
+                <field name="cost_percent_total" type="text" label="VMPSPLUGIN_COST_PERCENT_TOTAL"
+                       description="VMPSPLUGIN_COST_PERCENT_TOTAL_TIP"/>
+                <field name="tax_id" type="vmtaxes" scope="com_virtuemart" label="VMPSPLUGIN_TAX"
+                       description="VMPSPLUGIN_TAX_TIP"/>
             </fieldset>
 
             <fieldset name="debug">
-                <field name="debug" type="list" default="0" label="VMPAYMENT_DEBUG"
+                <field name="debug" type="list" default="0" label="VMPSPLUGIN_DEBUG"
                        description="VMPAYMENT_AUTHORIZENET_DEBUG_DESC">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>
-                <field name="log" type="list" default="0" label="VMPAYMENT_LOG"
+                <field name="log" type="list" default="0" label="VMPSPLUGIN_LOG"
                        description="VMPAYMENT_AUTHORIZENET_LOG_DESC">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>

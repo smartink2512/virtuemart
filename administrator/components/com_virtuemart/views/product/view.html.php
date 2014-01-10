@@ -304,16 +304,11 @@ class VirtuemartViewProduct extends VmView {
 			$this->db = JFactory::getDBO();
 
 			$this->SetViewTitle($title, $msg );
-                $this->addStandardDefaultViewLists($model,'created_on');
-			//$this->addStandardDefaultViewLists($model,'created_on');
-			$addCategoryLink=true;
-			$onlyPublished=false;
-			if (VmRequest::getCmd('layout','' )) {
-				$addCategoryLink=false;
-				$onlyPublished=true;
-			}
+
+			$this->addStandardDefaultViewLists($model,'created_on');
+
 			/* Get the list of products */
-			$productlist = $model->getProductListing(false,false,false,$onlyPublished,true);
+			$productlist = $model->getProductListing(false,false,false,false,true);
 
 			//The pagination must now always set AFTER the model load the listing
 			$pagination = $model->getPagination();
@@ -349,7 +344,7 @@ class VirtuemartViewProduct extends VmView {
 				}
 
 				/* Write the first 5 categories in the list */
-				$product->categoriesList = shopfunctions::renderGuiList('virtuemart_category_id','#__virtuemart_product_categories','virtuemart_product_id',$product->virtuemart_product_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category', 4,1,$addCategoryLink);
+				$product->categoriesList = shopfunctions::renderGuiList('virtuemart_category_id','#__virtuemart_product_categories','virtuemart_product_id',$product->virtuemart_product_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category');
 
 			}
 
@@ -427,23 +422,23 @@ class VirtuemartViewProduct extends VmView {
 
 	}
 
-	static function displayLinkToChildList($product_id, $product_name, $tmpl=NULL) {
+	static function displayLinkToChildList($product_id, $product_name) {
 
         $db = JFactory::getDBO();
         $db->setQuery(' SELECT COUNT( * ) FROM `#__virtuemart_products` WHERE `product_parent_id` ='.$product_id);
 		if ($result = $db->loadResult()){
 			$result = vmText::sprintf('COM_VIRTUEMART_X_CHILD_PRODUCT', $result);
-			echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_id.$tmpl.'&option=com_virtuemart'), $result, array('title' => vmText::sprintf('COM_VIRTUEMART_PRODUCT_LIST_X_CHILDREN',$product_name) ));
+			echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_id.'&option=com_virtuemart'), $result, array('title' => vmText::sprintf('COM_VIRTUEMART_PRODUCT_LIST_X_CHILDREN',$product_name) ));
 		}
 	}
 
-	static function displayLinkToParent($product_parent_id, $tmpl=NULL) {
+	static function displayLinkToParent($product_parent_id) {
 
 		$db = JFactory::getDBO();
 		$db->setQuery(' SELECT * FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` as l JOIN `#__virtuemart_products` using (`virtuemart_product_id`) WHERE `virtuemart_product_id` = '.$product_parent_id);
 		if ($parent = $db->loadObject()){
 			$result = vmText::sprintf('COM_VIRTUEMART_LIST_CHILDREN_FROM_PARENT', $parent->product_name);
-			echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.$tmpl.'&option=com_virtuemart'), $parent->product_name, array('title' => $result));
+			echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.'&option=com_virtuemart'), $parent->product_name, array('title' => $result));
 		}
 	}
 

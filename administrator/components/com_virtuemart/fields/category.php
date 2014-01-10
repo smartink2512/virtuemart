@@ -21,10 +21,6 @@ if (!class_exists('ShopFunctions'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 if (!class_exists('TableCategories'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'categories.php');
-
-if (!class_exists('JFormFieldVmModal'))
-	require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'fields' . DS . 'modal.php');
-
 jimport('joomla.form.formfield');
 
 /**
@@ -32,7 +28,7 @@ jimport('joomla.form.formfield');
  *
  *
  */
-class JFormFieldCategory extends JFormFieldVmModal
+class JFormFieldCategory extends JFormField
 { 
 	protected $type = 'category';
 
@@ -43,8 +39,18 @@ class JFormFieldCategory extends JFormFieldVmModal
 	 * @since	1.6
 	 */
 
-	protected function getInput() {
-		return $this->getModalInput('category','category_name', 'virtuemart_category_id','categories');
-	}
+     function getInput() {
+        $key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
+        $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
+	     $lang = JFactory::getLanguage();
+	     $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
+	     $categorylist = ShopFunctions::categoryListTree(array($this->value));
+        $html = '<select class="inputbox"   name="' . $this->name . '" >';
+        $html .= '<option value="0">' . JText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL') . '</option>';
+        $html .= $categorylist;
+        $html .="</select>";
+        return $html;
+
+    }
 
 }

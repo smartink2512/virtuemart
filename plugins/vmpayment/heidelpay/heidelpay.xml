@@ -117,8 +117,8 @@
 
 
             <fieldset name="template">
-                <field name="payment_logos" type="media" label="VMPAYMENT_LOGOS" multiple="true"
-                       description="VMPAYMENT_LOGOS_TIP"
+                <field name="payment_logos" type="media" label="VMPSPLUGIN_LOGOS" multiple="true"
+                       description="VMPSPLUGIN_LOGOS_TIP"
                        directory="/images/stories/virtuemart/payment"
                        default="" hide_default="1" hide_none="1"
                        stripext="0" exclude="^_"/>
@@ -127,22 +127,22 @@
                        default="heidelpay_default.css"/>
             </fieldset>
             <fieldset name="restrictions">
-                <field name="min_amount" type="text" label="VMPAYMENT_MIN_AMOUNT"
-                       description="VMPAYMENT_MIN_AMOUNT_TIP"/>
-                <field name="max_amount" type="text" label="VMPAYMENT_MAX_AMOUNT"
-                       description="VMPAYMENT_MAX_AMOUNT_TIP"/>
+                <field name="min_amount" type="text" label="VMPSPLUGIN_MIN_AMOUNT"
+                       description="VMPSPLUGIN_MIN_AMOUNT_TIP"/>
+                <field name="max_amount" type="text" label="VMPSPLUGIN_MAX_AMOUNT"
+                       description="VMPSPLUGIN_MAX_AMOUNT_TIP"/>
             </fieldset>
 
 
 
             <fieldset name="debug">
-                <field name="debug" type="list" default="0" label="VMPAYMENT_DEBUG"
-                       description="VMPAYMENT_AUTHORIZENET_DEBUG_DESC">
+                <field name="debug" type="list" default="0" label="VMPSPLUGIN_DEBUG"
+                       description="VMPSPLUGIN_AUTHORIZENET_DEBUG_DESC">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>
-                <field name="log" type="list" default="0" label="VMPAYMENT_LOG"
-                       description="VMPAYMENT_AUTHORIZENET_LOG_DESC">
+                <field name="log" type="list" default="0" label="VMPSPLUGIN_LOG"
+                       description="VMPSPLUGIN_AUTHORIZENET_LOG_DESC">
                     <option value="0">COM_VIRTUEMART_NO</option>
                     <option value="1">COM_VIRTUEMART_YES</option>
                 </field>

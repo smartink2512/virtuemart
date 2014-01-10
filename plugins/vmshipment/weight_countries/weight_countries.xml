@@ -16,14 +16,17 @@
         <folder>weight_countries</folder>
     </files>
     <config>
-        <fields name="fields">
-            <fieldset name="basic" addfieldpath="/administrator/components/com_virtuemart/fields">
-                <param type="vmjpluginwarning"/>
+        <fields name="params">
+            <fieldset name="template" addfieldpath="/administrator/components/com_virtuemart/fields">
+                <field type="vmjpluginwarning"/>
 
                 <field name="shipment_logos" type="media" directory="/images/stories/virtuemart/shipment"
                        hide_none="1" label="VMSHIPMENT_WEIGHT_COUNTRIES_LOGOS"
                        size="40"
                        description="VMSHIPMENT_WEIGHT_COUNTRIES_LOGOS_DESC"/>
+            </fieldset>
+
+            <fieldset name="restrictions" >
                 <field name="countries" multiple="true" type="vmcountries" scope="com_virtuemart" default=""
                        label="VMSHIPMENT_WEIGHT_COUNTRIES_COUNTRIES" description="VMSHIPMENT_WEIGHT_COUNTRIES_COUNTRIES_DESC"/>
                 <field name="zip_start" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_START"
@@ -51,7 +54,8 @@
                 <field name="orderamount_stop" type="text" size="10" default=""
                        label="VMSHIPMENT_WEIGHT_COUNTRIES_ORDERAMOUNT_STOP"
                        description="VMSHIPMENT_WEIGHT_COUNTRIES_ORDERAMOUNT_STOP_DESC"/>
-
+            </fieldset>
+            <fieldset name="fee">
                 <field name="cost" type="text" label="VMSHIPMENT_WEIGHT_COUNTRIES_COST"
                        description="VMSHIPMENT_WEIGHT_COUNTRIES_COST_DESC"/>
                 <field name="package_fee" type="text" label="VMSHIPMENT_WEIGHT_COUNTRIES_PACKAGE_FEE"

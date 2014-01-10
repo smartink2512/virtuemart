@@ -44,7 +44,7 @@ if ($this->payment->payment_jplugin_id) {
 					?>
 					<div class="<?php echo $control_field_class ?>">
 						<?php
-					$label = !empty($fieldSet->label) ? $fieldSet->label : strtoupper('VMPAYMENT_FIELDSET_' . $name);
+					$label = !empty($fieldSet->label) ? $fieldSet->label : strtoupper('VMPSPLUGIN_FIELDSET_' . $name);
 
 						if (!empty($label)) {
 							$class = isset($fieldSet->class) && !empty($fieldSet->class) ? "class=\"".$fieldSet->class."\"" : '';
@@ -81,9 +81,6 @@ if ($this->payment->payment_jplugin_id) {
 		<?php
 
 
-		} else {
-			$parameters = new vmParameters($this->payment, $this->payment->payment_element, 'plugin', 'vmpayment');
-			echo $rendered = $parameters->render();
 		}
 	}
 } else {

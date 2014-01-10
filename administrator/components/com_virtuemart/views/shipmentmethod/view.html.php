@@ -49,24 +49,24 @@ class VirtuemartViewShipmentmethod extends VmView {
 
 		$layoutName = VmRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {
-			VmConfig::loadJLang('plg_vmshipment', false);
+			VmConfig::loadJLang('plg_vmpsplugin', false);
 			$shipment = $model->getShipment();
-			$shipment->params = $this->getParams($shipment->shipment_params);
 
 			// Get the payment XML.
 			$formFile	= JPath::clean( JPATH_PLUGINS.'/vmshipment/' . $shipment->shipment_element . '/' . $shipment->shipment_element . '.xml');
 			if (file_exists($formFile)){
 				$shipment->form = JForm::getInstance($shipment->shipment_element, $formFile, array(),false, '//config');
-				$shipment->params = $this->getParams($shipment->shipment_params);
+				$shipment->params = new stdClass();
+				$varsToPush = vmPSPlugin::getVarsToPushByXML($formFile,'shipmentForm');
+				$shipment->params->shipment_params = $shipment->shipment_params;
+				VmTable::bindParameterable($shipment->params,'shipment_params',$varsToPush);
 				$shipment->form->bind($shipment);
+
 			} else {
 				$shipment->form = null;
 			}
 			if (!class_exists('VmImage'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
-			if (!class_exists('vmParameters'))
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
-
 
 			 if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 			 $vendor_id = 1;

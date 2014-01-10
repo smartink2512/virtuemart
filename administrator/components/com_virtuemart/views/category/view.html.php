@@ -107,11 +107,8 @@ class VirtuemartViewCategory extends VmView {
 			$this->assignRef('catmodel',	$model);
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model,'category_name');
-			$onlyPublished=false;
-			if (VmRequest::getCmd('layout','' )) {
-				$onlyPublished=true;
-			}
-			$categories = $model->getCategoryTree(0,0,$onlyPublished,$this->lists['search']);
+
+			$categories = $model->getCategoryTree(0,0,false,$this->lists['search']);
 			$this->assignRef('categories', $categories);
 
 			$pagination = $model->getPagination();

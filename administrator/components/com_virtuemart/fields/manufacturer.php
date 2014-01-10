@@ -16,14 +16,12 @@ JLoader::import('manufacturer', JPATH_ADMINISTRATOR . DS . 'components' . DS . '
 if(!class_exists('TableManufacturers')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'manufacturers.php');
 if (!class_exists( 'VirtueMartModelManufacturer' ))
 JLoader::import( 'manufacturer', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models' );
-if (!class_exists('JFormFieldVmModal'))
-	require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'fields' . DS . 'modal.php');
 /**
  * Supports a modal Manufacturer picker.
  *
  *
  */
-class JFormFieldManufacturer extends JFormFieldVmModal
+class JFormFieldManufacturer extends JFormField
 {
 	/**
 	 * The form field type.
@@ -41,9 +39,14 @@ class JFormFieldManufacturer extends JFormFieldVmModal
 	 * @since	1.6
 	 */
 
-	protected function getInput()
-	{
-		return $this->getModalInput('manufacturer','mf_name', 'virtuemart_manufacturer_id','manufacturers');
+
+	function getInput() {
+
+		$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
+		$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
+		$model = VmModel::getModel('Manufacturer');
+		$manufacturers = $model->getManufacturers(true, true, false);
+		return JHTML::_('select.genericlist', $manufacturers, $this->name, 'class="inputbox"  size="1"', 'virtuemart_manufacturer_id', 'mf_name', $this->value, $this->id);
 	}
 
 

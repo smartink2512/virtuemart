@@ -163,12 +163,6 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			$db->setQuery($q);
 			$db->execute();
 
-// special case moneybookers
-			if ( strpos($data['payment_element'] , "moneybookers"  ) !==false) {
-				$q = 'UPDATE `#__extensions` SET `enabled`= 1 WHERE  `element` ="moneybookers"';
-				$db->setQuery($q);
-				$db->execute();
-			}
 
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
@@ -233,7 +227,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	 * @param radio list of creditcards
 	 * @return html
 	 */
-	public function renderPaymentList($selectedPaym=0,$selecedCC=0){
+	public function renderPaymentList($selectedPaym=0){
 
 		$payms = self::getPayments(false,true);
 		$listHTML='';
