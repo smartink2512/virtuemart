@@ -879,7 +879,7 @@ class VirtueMartCart {
 		}
 
 		if($this->STsameAsBT!==0){
-			if($validUserDataBT!==-1){
+			if($this->_confirmDone){
 				$this->ST = $this->BT;
 			} else {
 				$this->ST = 0;

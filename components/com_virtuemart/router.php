@@ -675,7 +675,6 @@ class vmrouterHelper {
 
 	/* language array */
 	public $lang = null ;
-	public $langTag = null ;
 	public $query = array();
 	/* Joomla menus ID object from com_virtuemart */
 	public $menu = null ;

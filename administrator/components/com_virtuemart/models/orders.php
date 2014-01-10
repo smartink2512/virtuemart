@@ -126,6 +126,7 @@ class VirtueMartModelOrders extends VmModel {
         $_currentUser = JFactory::getUser();
         $cuid = $_currentUser->get('id');
 
+		$orderDetails = false;
         // If the user is not logged in, we will check the order number and order pass
         if(empty($orderID) and empty($cuid)){
             // If the user is not logged in, we will check the order number and order pass

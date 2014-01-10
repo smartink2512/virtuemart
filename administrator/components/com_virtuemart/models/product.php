@@ -570,9 +570,10 @@ class VirtueMartModelProduct extends VmModel {
 				$category = new stdClass();
 			}
 
-			if ((!empty($lastCatId) and $lastCatId != $cateid) or $lastManId != $manid) {
+			if ((!empty($lastCatId) and $lastCatId != $cateid) or (!empty($manid) and $lastManId != $manid)) {
 				//We are in a new category or another manufacturer, so we start at page 1
 				$limitStart = 0;
+				vmdebug('using limitstart = 0');
 			}
 			else {
 				//We were already in the category/manufacturer, so we take the value stored in the session
