@@ -80,6 +80,11 @@ AdminUIHelper::startAdminArea($this);
 			<?php echo $checked; ?>
 		</td>
 		<td align="left">
+			<?php
+			if(empty($row->mf_name)){
+				$row->mf_name = 'Language Missing id '.$row->virtuemart_manufacturer_id;
+			}
+			?>
 		    <a href="<?php echo $editlink; ?>"><?php echo $row->mf_name; ?></a>
 
 		</td>
@@ -87,10 +92,10 @@ AdminUIHelper::startAdminArea($this);
 			<?php if (!empty($row->mf_email)) echo  '<a href="mailto:'.$row->mf_name.'<'.$row->mf_email.'>">'.$row->mf_email ; ?>
 		</td>
 		<td>
-			<?php echo $row->mf_desc; ?>
+			<?php if (!empty($row->mf_desc)) echo $row->mf_desc; ?>
 		</td>
 		<td>
-			<?php echo $row->mf_category_name; ?>
+			<?php if (!empty($row->mf_category_name)) echo $row->mf_category_name; ?>
 		</td>
 		<td>
 			<?php if (!empty($row->mf_url)) echo '<a href="'. $row->mf_url.'">'. $row->mf_url ; ?>

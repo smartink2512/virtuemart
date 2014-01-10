@@ -29,13 +29,14 @@ if($this->product){
 if ($this->errorMsg) echo '<div>'.$this->errorMsg.'</div>';
 
 if(VmConfig::get('popup_rel',1)){
-	if($this->product and !empty($this->product->customfieldsRelatedProducts)){
+	echo 'is on';
+	if($this->product and !empty($this->product->customs)){		//or directly customfieldsSorted not by Max Milbers
 		?>
 		<div class="product-related-products">
 				<h4><?php echo vmText::_('COM_VIRTUEMART_RELATED_PRODUCTS'); ?></h4>
 		<?php
-		foreach ($this->product->customfieldsRelatedProducts as $field) {
-			if(!empty($field->display)) {
+		foreach ($this->product->customs as $field) {
+			if($field->field_type=='R' and !empty($field->display)) {
 				?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
 				<span class="product-field-display"><?php echo $field->display ?></span>
 				</div>

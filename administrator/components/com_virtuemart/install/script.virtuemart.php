@@ -415,6 +415,24 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			}
 
 			$db = JFactory::getDBO();
+			$q = "UPDATE `#__virtuemart_customs` SET `layout_pos`='related_products' WHERE `field_type`='R'";
+			$db->setQuery($q);
+			$db->execute();
+			$err = $db->getErrorMsg();
+			if(!empty($err)){
+				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
+			}
+
+			$db = JFactory::getDBO();
+			$q = "UPDATE `#__virtuemart_customs` SET `layout_pos`='related_categories' WHERE `field_type`='Z'";
+			$db->setQuery($q);
+			$db->execute();
+			$err = $db->getErrorMsg();
+			if(!empty($err)){
+				vmError('updateCustomfieldsPublished migrateCustoms '.$err);
+			}
+
+			$db = JFactory::getDBO();
 			$q = "UPDATE `#__virtuemart_customs` SET `field_type`='G' WHERE `field_type`='P'";
 			$db->setQuery($q);
 			$db->execute();

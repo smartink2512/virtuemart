@@ -72,10 +72,6 @@ defined('_JEXEC') or die();
 				<span class="liveupdate-label"><?php echo JText::_('LIVEUPDATE_DOWNLOADURL') ?></span>
 				<span class="liveupdate-data"><a href="<?php echo $this->updateInfo->downloadURL.$auth?>"><?php echo $this->escape($this->updateInfo->downloadURL)?></a></span>
 			</div>
-			<div class="liveupdate-row row1">
-			<?php require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'version.php'); ?>
-				<span ><?php echo $myVersion ?></span>
-			</div>
 			<div class="liveupdate-row row0">
 			<iframe src="http://virtuemart.net/index.php?option=com_content&id=416&tmpl=component" width="90%" height="400" name="Live update information">
   <p>Your browser blocks to display iFrames, please use the following link instead: <a href="http://virtuemart.net/index.php?option=com_content&id=416&tmpl=component">Live update information</a></p>

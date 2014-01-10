@@ -622,6 +622,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 					break;
 				case 'R':
+					if(empty($customfield->customfield_value)) break;
 					$pModel = VmModel::getModel('product');
 					$related = $pModel->getProduct((int)$customfield->customfield_value,FALSE,FALSE,FALSE,1);
 					//$thumb ='';

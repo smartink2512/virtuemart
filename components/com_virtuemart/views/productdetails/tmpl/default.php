@@ -345,30 +345,10 @@ if (VmConfig::get('ask_question', 0) == 1) {
 	    ?>
         </div>
     <?php } // Product Packaging END
-    ?>
 
-    <?php
-    // Product Files
-    // foreach ($this->product->images as $fkey => $file) {
-    // Todo add downloadable files again
-    // if( $file->filesize > 0.5) $filesize_display = ' ('. number_format($file->filesize, 2,',','.')." MB)";
-    // else $filesize_display = ' ('. number_format($file->filesize*1024, 2,',','.')." KB)";
-
-    /* Show pdf in a new Window, other file types will be offered as download */
-    // $target = stristr($file->file_mimetype, "pdf") ? "_blank" : "_self";
-    // $link = JRoute::_('index.php?view=productdetails&task=getfile&virtuemart_media_id='.$file->virtuemart_media_id.'&virtuemart_product_id='.$this->product->virtuemart_product_id);
-    // echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
-    // }
-    if (!empty($this->product->customfieldsRelatedProducts)) {
-	echo $this->loadTemplate('relatedproducts');
-    } // Product customfieldsRelatedProducts END
-
-    if (!empty($this->product->customfieldsRelatedCategories)) {
-	echo $this->loadTemplate('relatedcategories');
-    } // Product customfieldsRelatedCategories END
     // Show child categories
     if (VmConfig::get('showCategory', 1)) {
-	echo $this->loadTemplate('showcategory');
+		echo $this->loadTemplate('showcategory');
     }
     if (!empty($this->product->customfieldsSorted['onbot'])) {
     	$this->position='onbot';
