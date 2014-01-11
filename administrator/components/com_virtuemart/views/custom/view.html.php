@@ -48,7 +48,8 @@ class VirtuemartViewCustom extends VmView {
 		if ($layoutName == 'edit') {
 			$this->addStandardEditViewCommands();
 			$customPlugin = '';
-
+			if (!class_exists('vmParameters'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
 			$custom = $model->getCustom();
 			$customfields = VmModel::getModel('customfields');
 // 			vmdebug('VirtuemartViewCustom',$custom);
