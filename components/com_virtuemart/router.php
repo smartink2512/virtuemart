@@ -224,7 +224,7 @@ function virtuemartBuildRoute(&$query) {
 			}
 			break;
 		case 'vendor';
-/* VM208 */
+			/* VM208 */
 			if(isset($query['virtuemart_vendor_id'])) {
 				if (isset($jmenu['virtuemart_vendor_id'][ $query['virtuemart_vendor_id'] ] ) ) {
 					$query['Itemid'] = $jmenu['virtuemart_vendor_id'][$query['virtuemart_vendor_id']];
@@ -294,11 +294,11 @@ function virtuemartBuildRoute(&$query) {
 		unset($query['layout']);
 	}
 	// sef the slimbox View
-/*	if (isset($query['tmpl'])) {
-		//if ( $query['tmpl'] = 'component') $segments[] = 'modal' ;
-		$segments[] = $query['tmpl'] ;
-		unset($query['tmpl']);
-	}*/
+	/*	if (isset($query['tmpl'])) {
+			//if ( $query['tmpl'] = 'component') $segments[] = 'modal' ;
+			$segments[] = $query['tmpl'] ;
+			unset($query['tmpl']);
+		}*/
 	return $segments;
 }
 
@@ -422,7 +422,7 @@ function virtuemartParseRoute($segments) {
 		}
 
 	}
-/* added in vm208 */
+	/* added in vm208 */
 // if no joomla link: vendor/vendorname/layout
 // if joomla link joomlalink/vendorname/layout
 	if (  $helper->compareKey($segments[0] ,'vendor') ) {
@@ -556,17 +556,17 @@ function virtuemartParseRoute($segments) {
 
 	}
 	elseif ( $helper->compareKey($segments[0] ,'pluginresponse') ) {
-			$vars['view'] = 'pluginresponse';
+		$vars['view'] = 'pluginresponse';
+		array_shift($segments);
+		if ( !empty ($segments) ) {
+			$vars['task'] = $segments[0];
 			array_shift($segments);
-			if ( !empty ($segments) ) {
-				$vars['task'] = $segments[0];
-				array_shift($segments);
-			}
-			if ( isset($segments[0]) && $segments[0] == 'modal') {
-				$vars['tmpl'] = 'component';
-				array_shift($segments);
-			}
-			return $vars;
+		}
+		if ( isset($segments[0]) && $segments[0] == 'modal') {
+			$vars['tmpl'] = 'component';
+			array_shift($segments);
+		}
+		return $vars;
 	}
 	else if ( $helper->compareKey($view,'cart') || $helper->activeMenu->view == 'cart') {
 		$vars['view'] = 'cart';
@@ -676,7 +676,6 @@ class vmrouterHelper {
 
 	/* language array */
 	public $lang = null ;
-	public $langTag = null ;
 	public $query = array();
 	/* Joomla menus ID object from com_virtuemart */
 	public $menu = null ;
@@ -1003,7 +1002,7 @@ class vmrouterHelper {
 		$db			= JFactory::getDBO();
 		$fallback = '';
 		$jLangTag = $this->Jlang->getTag();
-		if($jLangTag!=VmConfig::$langTag){
+		if($jLangTag!=VmConfig::$vmlangTag){
 			$fallback= 'or language = "'.$jLangTag.'"';
 		}
 		$query = 'SELECT * FROM `#__menu`  where `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language = "'.VmConfig::$vmlangTag.'" '.$fallback.' )'  ;
@@ -1122,7 +1121,7 @@ class vmrouterHelper {
 			$this->activeMenu->virtuemart_category_id	= (empty($menuItem->query['virtuemart_category_id'])) ? 0 : $menuItem->query['virtuemart_category_id'];
 			$this->activeMenu->virtuemart_product_id	= (empty($menuItem->query['virtuemart_product_id'])) ? null : $menuItem->query['virtuemart_product_id'];
 			$this->activeMenu->virtuemart_manufacturer_id	= (empty($menuItem->query['virtuemart_manufacturer_id'])) ? null : $menuItem->query['virtuemart_manufacturer_id'];
-/* added in 208 */
+			/* added in 208 */
 			$this->activeMenu->virtuemart_vendor_id	= (empty($menuItem->query['virtuemart_vendor_id'])) ? null : $menuItem->query['virtuemart_vendor_id'];
 
 			$this->activeMenu->Component	= (empty($menuItem->component)) ? null : $menuItem->component;

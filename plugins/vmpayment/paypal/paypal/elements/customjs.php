@@ -32,7 +32,6 @@ class JFormFieldCustomjs extends JFormField {
 		
 		$doc = JFactory::getDocument();
 		$doc->addScript(JURI::root(true).'/plugins/vmpayment/paypal/paypal/assets/js/admin.js');
-		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/paypal/paypal/assets/css/paypal.css');
 
 		
 		return '';		
