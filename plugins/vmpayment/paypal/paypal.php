@@ -86,6 +86,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'sandbox_payflow_vendor' => array('', 'char'),
 			'sandbox_payflow_partner' => array('', 'char'),
 			'creditcards' => array('', 'int'),
+			'cvv_required' => array('', 'int'),
 			'cvv_images' => array('', 'int'),
 
 			'paypalproduct' => array('', 'char'),
