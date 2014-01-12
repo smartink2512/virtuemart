@@ -68,7 +68,7 @@ class TableShoppergroups extends VmTable
 		$varsToPushParam = array('show_prices' => array(0,'int'));
 		foreach($myfields as $field){
 			$varsToPushParam[$field] = array(1,'int');
-			$varsToPushParam[$field.'Text'] = array(0,'int');
+			$varsToPushParam[$field.'Text'] = array(1,'int');
 			$varsToPushParam[$field.'Rounding'] = array(-1,'int');
 		}
 

@@ -309,6 +309,7 @@ class VirtueMartModelConfig extends VmModel {
 		$browse_cat_orderby_field = $config->get('browse_cat_orderby_field');
 		$cat_brws_orderby_dir = $config->get('cat_brws_orderby_dir');
 
+		if(!isset($data['replace'])) $data['replace'] = 0;
 		$config->setParams($data,$data['replace']);
 		$confData = array();
 		$query = 'SELECT * FROM `#__virtuemart_configs`';
@@ -366,6 +367,8 @@ class VirtueMartModelConfig extends VmModel {
 			$config->set('forSale_path',$safePath);
 		} else {
 			$safePath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'vmfiles';
+
+			if(!class_exists('JFolder')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 			$exists = JFolder::exists($safePath);
 			if(!$exists){
 				$created = JFolder::create($safePath);

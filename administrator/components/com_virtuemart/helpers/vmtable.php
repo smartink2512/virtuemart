@@ -61,8 +61,39 @@ class VmTable extends JTable {
 	function __construct($table, $key, &$db) {
 
 		$this->_tbl = $table;
-		$this->_tbl_key = $key;
 		$this->_db =& $db;
+
+		if(JVM_VERSION<3){
+			$this->_tbl_key = $key;
+		} else {
+			if (!is_array($key)){
+				$key = array($key);
+			}else if (is_object($key)){
+				$key = (array) $key;
+			}
+			$this->_tbl_keys = $key;
+
+			// Set the singular table key for backwards compatibility.
+			$this->_tbl_key = $this->getKeyName();
+		}
+
+		// If we are tracking assets, make sure an access field exists and initially set the default.
+		if (property_exists($this, 'asset_id')){
+			$this->_trackAssets = true;
+		}
+
+		// If the access property exists, set the default.
+		if (property_exists($this, 'access')){
+			$this->access = (int) JFactory::getConfig()->get('access');
+		}
+
+		if(JVM_VERSION>2){
+			// Implement JObservableInterface: //by joomla 3
+			// Create observer updater and attaches all observers interested by $this class:
+			$this->_observers = new JObserverUpdater($this);
+			JObserverMapper::attachAllObservers($this);
+		}
+
 		$this->_pkey = $key;
 		self::$_cache = null;
 		self::$_query_cache = null;

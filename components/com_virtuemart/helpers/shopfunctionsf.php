@@ -427,7 +427,7 @@ class shopFunctionsF {
 			$sender[1] = $app->getCfg( 'fromname' );
 			if(empty($sender[0])){
 				$config = JFactory::getConfig();
-				$sender = array( $config->getValue( 'config.mailfrom' ), $config->getValue( 'config.fromname' ) );
+				$sender = array( $config->get( 'mailfrom' ), $config->get( 'fromname' ) );
 			}
 		}
 		$mailer->setSender( $sender );

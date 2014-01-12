@@ -29,7 +29,7 @@ if($this->product){
 if ($this->errorMsg) echo '<div>'.$this->errorMsg.'</div>';
 
 if(VmConfig::get('popup_rel',1)){
-	VmConfig::$echoDebug=true;
+	//VmConfig::$echoDebug=true;
 	if($this->product){
 		$customFieldsModel = VmModel::getModel('customfields');
 		$this->product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($this->product->allIds,'R');

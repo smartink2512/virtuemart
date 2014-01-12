@@ -504,11 +504,12 @@ class ShopFunctions {
 	 * @param string $name
 	 * @param string $langkey
 	 */
-	static function writePriceConfigLine ($obj, $name, $langkey) {
+	static function writePriceConfigLine ($array, $name, $langkey) {
 
 		if (!class_exists ('VmHTML')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 		}
+		if(is_object($array)) $array = get_object_vars($array);
 		$html =
 			'<tr>
 				<td class="key">
@@ -519,13 +520,13 @@ class ShopFunctions {
 				</td>
 
 				<td>' .
-				VmHTML::checkbox ($name, $obj->$name) . '
+				VmHTML::checkbox ($name, $array[$name]) . '
 				</td>
 				<td align="center">' .
-				VmHTML::checkbox ($name . 'Text', $obj->{$name . 'Text'}) . '
+				VmHTML::checkbox ($name . 'Text', $array[$name . 'Text']) . '
 				</td>
 				<td align="center">
-				<input type="text" value="' . $obj->{$name . 'Rounding'} . '" class="inputbox" size="4" name="' . $name . 'Rounding">
+				<input type="text" value="' . $array[$name . 'Rounding'] . '" class="inputbox" size="4" name="' . $name . 'Rounding">
 				</td>
 			</tr>';
 		return $html;

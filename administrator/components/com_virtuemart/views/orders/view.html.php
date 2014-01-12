@@ -205,7 +205,9 @@ class VirtuemartViewOrders extends VmView {
 			//JToolBarHelper::customX( 'CreateOrderHead', 'new','new','New',false);
 			JToolBarHelper::save('updatestatus', vmText::_('COM_VIRTUEMART_UPDATE_STATUS'));
 
-			JToolBarHelper::deleteListX();
+			if ($this->canDo->get('core.admin') || $this->canDo->get('vm.orders.delete')) {
+				JToolBarHelper::deleteList();
+			}
 
 			/* Assign the data */
 			$this->assignRef('orderslist', $orderslist);
