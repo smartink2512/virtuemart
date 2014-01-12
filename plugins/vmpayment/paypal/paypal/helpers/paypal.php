@@ -370,10 +370,10 @@ class PaypalHelperPaypal {
 			$defer_duration = $this->getDurationValue($this->_method->payment_plan_defer_duration);
 			$defer_unit = $this->getDurationUnit($this->_method->payment_plan_defer_duration);
 			$startDate = JFactory::getDate('+' . $defer_duration . ' ' . $defer_unit);
-			$recurringDesc .= '<br/>' . vmText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_PLAN_INITIAL_PAYMENT', JHTML::_('date', $startDate->toFormat(), vmText::_('DATE_FORMAT_LC4')));
+			$recurringDesc .= '<br/>' . vmText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_PLAN_INITIAL_PAYMENT', JHTML::_('date', $startDate->format('%Y-%m-%d %H:%M:%S'), vmText::_('DATE_FORMAT_LC4')));
 		} else if ($this->_method->payment_plan_defer_strtotime) {
 			$startDate = JFactory::getDate($this->_method->payment_plan_defer_strtotime);
-			$recurringDesc .= '<br/>' . vmText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_PLAN_INITIAL_PAYMENT', JHTML::_('date', $startDate->toFormat(), vmText::_('DATE_FORMAT_LC4')));
+			$recurringDesc .= '<br/>' . vmText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_PLAN_INITIAL_PAYMENT', JHTML::_('date', $startDate->format('%Y-%m-%d %H:%M:%S'), vmText::_('DATE_FORMAT_LC4')));
 			//$recurringDesc .= '<br/>'.vmText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_PLAN_INITIAL_PAYMENT',date(vmText::_('DATE_FORMAT_LC4'),strtotime('first day of next month')));
 		}
 		return $recurringDesc;

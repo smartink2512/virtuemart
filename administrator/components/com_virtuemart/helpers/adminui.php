@@ -98,9 +98,14 @@ class AdminUIHelper {
 				?>
 				<div class="menu-notice">
 				<?php
-				echo LiveUpdate::getIcon(array(),'notice');
+				if(JVM_VERSION<2){
+					echo LiveUpdate::getIcon(array(),'notice');
+				}
+
+				if(JVM_VERSION<2){
+					echo VmConfig::getInstalledVersion();
+				}
 				?>
-				<?php echo VmConfig::getInstalledVersion(); ?>
 				</div>
 
 			</div>

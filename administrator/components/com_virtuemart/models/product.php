@@ -1555,16 +1555,17 @@ class VirtueMartModelProduct extends VmModel {
      * @param bool $isChild Means not that the product is child or not. It means if the product should be threated as child
      * @return bool
      */
-    public function store (&$product, $isChild = FALSE) {
+    public function store (&$product) {
 
 		vmRequest::vmCheckToken();
 
 		if ($product) {
 			$data = (array)$product;
 		}
+		$isChild = FALSE;
+		if(!empty($data['isChild'])) $isChild = $data['isChild'];
 
 		if (!class_exists ('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-
 		$perm = Permissions::getInstance();
 		$superVendor = $perm->isSuperVendor();
 		if(empty($superVendor)){
@@ -1735,7 +1736,8 @@ class VirtueMartModelProduct extends VmModel {
 			foreach ($data['childs'] as $productId => $child) {
 				$child['product_parent_id'] = $data['virtuemart_product_id'];
 				$child['virtuemart_product_id'] = $productId;
-				$this->store ($child, TRUE);
+				$child['isChild'] = TRUE;
+				$this->store ($child);
 			}
 		}
 

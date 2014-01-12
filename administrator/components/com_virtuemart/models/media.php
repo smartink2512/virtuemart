@@ -320,7 +320,7 @@ class VirtueMartModelMedia extends VmModel {
 
 			$this -> setId($data['active_media_id']);
 
-			$virtuemart_media_id = $this->store($data,$type);
+			$virtuemart_media_id = $this->store($data);
 
 			//added by Mike,   Mike why did you add this? This function storeMedia is extremely nasty
 			$this->setId($virtuemart_media_id);
@@ -372,7 +372,7 @@ class VirtueMartModelMedia extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	public function store(&$data,$type) {
+	public function store(&$data) {
 
 		VmConfig::loadJLang('com_virtuemart_media');
 		//if(empty($data['media_action'])) return $table->virtuemart_media_id;
@@ -380,10 +380,9 @@ class VirtueMartModelMedia extends VmModel {
 
 		$table = $this->getTable('medias');
 
-
 		$data['virtuemart_media_id'] = $this->getId();
 		$table->bind($data);
-		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
+		$data = VmMediaHandler::prepareStoreMedia($table,$data,$data['file_type']); //this does not store the media, it process the actions and prepares data
 
 		// workarround for media published and product published two fields in one form.
 		$tmpPublished = false;

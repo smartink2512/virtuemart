@@ -297,7 +297,7 @@ class VirtueMartModelConfig extends VmModel {
 	 * @author Max Milbers
 	 * @return boolean True is successful, false otherwise
 	 */
-	function store(&$data,$replace = FALSE) {
+	function store(&$data) {
 
 		vmRequest::vmCheckToken();
 
@@ -309,7 +309,7 @@ class VirtueMartModelConfig extends VmModel {
 		$browse_cat_orderby_field = $config->get('browse_cat_orderby_field');
 		$cat_brws_orderby_dir = $config->get('cat_brws_orderby_dir');
 
-		$config->setParams($data,$replace);
+		$config->setParams($data,$data['replace']);
 		$confData = array();
 		$query = 'SELECT * FROM `#__virtuemart_configs`';
 		$db = JFactory::getDBO();
@@ -465,7 +465,7 @@ class VirtueMartModelConfig extends VmModel {
 
 	}
 
-	public function remove() {
+	public function remove($id) {
 
 		$table = $this->getTable('configs');
 		$id = 1;

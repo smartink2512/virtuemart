@@ -178,8 +178,6 @@ class CurrencyDisplay {
 
 		if(count($this->_priceConfig)>0)return true;
 
-		//if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
-
 		$user = JFactory::getUser();
 
 		$result = false;
@@ -206,63 +204,78 @@ class CurrencyDisplay {
 			$result = $this->_db->loadRow();
 		}
 
-		if(!empty($result[0])){
-			$result[0] = unserialize($result[0]);
-		}
+		if(!class_exists('TableShoppergroups')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'shoppergroups.php');
+		$db = JFactory::getDbo();
+		$table = new TableShoppergroups($db);
 
-		$custom_price_display = 0;
-		if(!empty($result[1])){
-			$custom_price_display = $result[1];
-		}
+		if($result){
 
-		if($custom_price_display && !empty($result[0])){
-			$show_prices = $result[0]->get('show_prices',VmConfig::get('show_prices', 1));
-			// 			vmdebug('$result[0]',$result[0],$show_prices);
-		} else {
-			$show_prices = VmConfig::get('show_prices', 1);
-		}
+			$priceFieldsRoots = array('basePrice','variantModification','basePriceVariant',
+				'basePriceWithTax','discountedPriceWithoutTax',
+				'salesPrice','priceWithoutTax',
+				'salesPriceWithDiscount','discountAmount','taxAmount','unitPrice');
 
+			$custom_price_display = 0;
+			if(!empty($result[1])){
+				$custom_price_display = $result[1];
+			}
 
+			if($custom_price_display && !empty($result[0])){
+				$show_prices = $result[0]['show_prices'];
+			} else {
+				$show_prices = VmConfig::get('show_prices', 1);
+			}
 
-		$priceFields = array('basePrice','variantModification','basePriceVariant',
-											'basePriceWithTax','discountedPriceWithoutTax',
-											'salesPrice','priceWithoutTax',
-											'salesPriceWithDiscount','discountAmount','taxAmount','unitPrice');
+			if($show_prices==1){
 
-		if($show_prices==1){
-			foreach($priceFields as $name){
-				$show = 0;
-				$round = 0;
-				$text = 0;
-
-				//Here we check special settings of the shoppergroup
-				// 				$result = unserialize($result);
 				if($custom_price_display==1){
-					$show = (int)$result[0]->get($name);
-					$round = (int)$result[0]->get($name.'Rounding');
-					$text = $result[0]->get($name.'Text');
-					// 					vmdebug('$custom_price_display');
+
+					if(empty($result[0])) vmdebug('currencydisplay set array query ',$q);
+					$priceFields = array();
+					$priceFields['params'] = $result[0];
+					$table->bindParameterable($priceFields,'params',$table->_varsToPushParam);
+					unset($priceFields['params']);
+
+					foreach($priceFieldsRoots as $name){
+						$show = (int)$priceFields[$name];
+						$round = (int)$priceFields[$name.'Rounding'];
+						$text = $priceFields[$name.'Text'];
+						if($round==-1){
+							$round = $this->_nbDecimal;
+							//vmdebug('Use currency rounding '.$round);
+						}
+						$this->_priceConfig[$name] = array($show,$round,$text);
+					}
 				} else {
-					$show = VmConfig::get($name,0);
-					$round = VmConfig::get($name.'Rounding',2);
-					$text = VmConfig::get($name.'Text',0);
-					// 					vmdebug('$config_price_display');
+					foreach($priceFieldsRoots as $name){
+						$show = VmConfig::get($name,0);
+						$round = VmConfig::get($name.'Rounding',$this->_nbDecimal);
+						$text = VmConfig::get($name.'Text',0);
+						if($round==-1){
+							$round = $this->_nbDecimal;
+						}
+						$this->_priceConfig[$name] = array($show,$round,$text);
+					}
 				}
 
-				//Map to currency
+			} else {
+				foreach($table->_varsToPushParam as $name){
+					$this->_priceConfig[$name] = array(0,0,0);
+				}
+			}
+
+		} else {
+			foreach($table->_varsToPushParam as $name){
+				$show = VmConfig::get($name,0);
+				$round = VmConfig::get($name.'Rounding',$this->_nbDecimal);
+				$text = VmConfig::get($name.'Text',0);
 				if($round==-1){
 					$round = $this->_nbDecimal;
-					//vmdebug('Use currency rounding '.$round);
 				}
 				$this->_priceConfig[$name] = array($show,$round,$text);
 			}
-		} else {
-			foreach($priceFields as $name){
-				$this->_priceConfig[$name] = array(0,0,0);
-			}
 		}
 
-		// 		vmdebug('$this->_priceConfig',$this->_priceConfig);
 	}
 
 	/**

@@ -638,7 +638,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		$order['virtuemart_order_id'] = $virtuemart_order_id;
 		$order['customer_notified'] = 1;
 		$date = JFactory::getDate ();
-		$order['comments'] = vmText::sprintf ('VMPAYMENT_' . $this->_name . '_NOTIFICATION_RECEVEIVED', $date->toFormat ('%Y-%m-%d %H:%M:%S'));
+		$order['comments'] = vmText::sprintf ('VMPAYMENT_' . $this->_name . '_NOTIFICATION_RECEVEIVED', $date->format ('%Y-%m-%d %H:%M:%S'));
 		//vmdebug($this->_name . ' - managePaymentResponse', $order);
 
 		// la fonction updateStatusForOneOrder fait l'envoie de l'email à partir de VM2.0.2

@@ -214,10 +214,12 @@ class VmTable extends JTable {
 				if (empty($xParams)) {
 					vmError('There are bindParameterables, but $xParams is empty, this is a programmers error '.$xParams);
 					vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ',$xParams , $obj);
+					vmTrace('$xParams is empty');
 				}
 				if(!isset($obj->$xParams)){
 					vmError('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error '.$xParams);
 					vmdebug('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error ',$xParams , $obj);
+					vmTrace('$obj->$xParams is empty');
 				}
 			}
 
@@ -1297,9 +1299,9 @@ class VmTable extends JTable {
 		$siteOffset = $config->get('offset');
 		$date = JFactory::getDate('now', $siteOffset);
 
-		$time = $date->toMysql();
+		$time = $date->toSql();
 
-		$query = 'UPDATE ' . $this->_db->nameQuote($this->_tbl) .
+		$query = 'UPDATE ' . $this->_db->quoteName($this->_tbl) .
 			' SET locked_by = ' . (int)$who . ', locked_on = "' . $this->_db->escape($time) . '"
 			 WHERE ' . $this->_tbl_key . ' = "' . $this->_db->escape($this->$k) . '"';
 		$this->_db->setQuery($query);
@@ -1337,7 +1339,7 @@ class VmTable extends JTable {
 			return false;
 		}
 
-		$query = 'UPDATE ' . $this->_db->nameQuote($this->_tbl) .
+		$query = 'UPDATE ' . $this->_db->quoteName($this->_tbl) .
 			' SET locked_by = 0, locked_on = "' . $this->_db->escape($this->_db->getNullDate()) . '"
 				 WHERE ' . $this->_tbl_key . ' = "' . $this->_db->escape($this->$k) . '"';
 		$this->_db->setQuery($query);

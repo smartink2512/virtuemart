@@ -1112,7 +1112,6 @@ class VmPagination extends JPagination {
 
 		// Initialize variables
 		$limits = array ();
-		$selected = $this->_viewall ? 0 : $this->limit;
 		$selected = $this->limit;
 
 		// Build the select list

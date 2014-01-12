@@ -2,10 +2,10 @@
 
 <project name="VIRTUEMART2" default="VIRTUEMART2" basedir=".">
     <!-- value can be: major, minor, bugfix -->
-    <property name="releasetype" value="MAYOR"/>
+    <property name="releasetype" value="MINOR"/>
     <property name="vm.version" value="2.1.0"/>
-    <property name="svn.lastrevision" value="7235"/>
-    <property name="PHING.VM.CODENAME" value="Firebat"/>
+    <property name="svn.lastrevision" value="7566"/>
+    <property name="PHING.VM.CODENAME" value="PolarFox"/>
     <property file="build.properties"/>
     <target name="title">
         <echo message="BUILD VirtueMart 2 package FROM ${export.to}  TO ${package.abspath}"/>
@@ -49,15 +49,18 @@
     <property name="package.libraries.aio" value="${package.admin.aio}/libraries"/>
 
     <!-- loop through languages, delete those languages from the AIO, create a language package with them -->
-    <!--property name="languages" value="cs-CZ,da-DK,et-EE,lt-LT,hu-HU,nb-NO,nl-NL,pl-PL,pt-PT,sl-SI,sv-SE,tr-TR,sk-SK,zh-TW,zh-CN,el-GR,ru-RU,fi-FI,it-IT,bg-BG"/-->
-    <property name="languages" value=""/>
+    <property name="languages" value="de-DE,es-ES,fr-FR,it-IT,nl-NL,pl-PL,pt-BR,th-TH,cs-CZ,da-DK,et-EE,lt-LT,hu-HU,nb-NO,nl-NL,pl-PL,pt-PT,sl-SI,sv-SE,tr-TR,sk-SK,zh-TW,zh-CN,el-GR,ru-RU,fi-FI,it-IT"/>
 
     <!-- ============================================  -->
     <!-- SVN EXPORT variables -->
     <!-- ============================================  -->
-    <property name="svn.main.repository" value="https://dev.virtuemart.net/svn/virtuemart/branches/com_virtuemart2.0.14mp"/>
+    <property name="svn.main.repository" value="https://dev.virtuemart.net/svn/virtuemart/branches/com_virtuemart2.0.14mp/"/>
     <property name="svn.main.path" value="virtuemart"/>
 
+    <svnlastrevision
+            svnpath="{$svn.path}"
+            repositoryurl="${svn.main.repository}"
+            propertyname="svn.lastrevision"/>
 
     <!-- ============================================  -->
     <!-- used in version.php , and .xml files variables -->
@@ -163,6 +166,22 @@
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
          <exclude name="install.xml"/>
+        <exclude name="**/da-DK/**"/>
+        <exclude name="**/de-DE/**"/>
+        <exclude name="**/es-ES/**"/>
+        <exclude name="**/el-GR/**"/>
+        <exclude name="**/fr-FR/**"/>
+        <exclude name="**/it-IT/**"/>
+        <exclude name="**/nb-NO/**"/>
+        <exclude name="**/no-NO/**"/>
+        <exclude name="**/nl-NL/**"/>
+        <exclude name="**/pl-PL/**"/>
+        <exclude name="**/pt-BR/**"/>
+        <exclude name="**/ru-RU/**"/>
+        <exclude name="**/sv-SE/**"/>
+        <exclude name="**/tr-TR/**"/>
+        <exclude name="**/uk-UA/**"/>
+        <exclude name="**/th-TH/**"/>
     </fileset>
 
     <fileset dir="${admin.aio.component.path}" id='root.aio.refid' defaultexcludes="true">
@@ -181,6 +200,8 @@
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
+        <exclude name="**/payzen/**"/>
+        <exclude name="**/systempay/**"/>
     </fileset>
  <fileset dir="${libraries.path}" id='libraries.aio.refid' defaultexcludes="true">
         <include name="**"/>
@@ -191,12 +212,30 @@
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
+        <exclude name="**/de-DE/**"/>
+        <exclude name="**/es-ES/**"/>
+        <exclude name="**/fr-FR/**"/>
+        <exclude name="**/it-IT/**"/>
+        <exclude name="**/nl-NL/**"/>
+        <exclude name="**/pl-PL/**"/>
+        <exclude name="**/pt-BR/**"/>
+        <exclude name="**/th-TH/**"/>
+        <exclude name="**/th-TH/**"/>
+        <exclude name="**/**vmpayment_payzen*/**"/>
+        <exclude name="**/**vmpayment_systempay*/**"/>
     </fileset>
     <fileset dir="${languageFE.path}" id='languageFE.aio.refid' defaultexcludes="true">
         <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
-
+        <exclude name="**/de-DE/**"/>
+        <exclude name="**/es-ES/**"/>
+        <exclude name="**/fr-FR/**"/>
+        <exclude name="**/it-IT/**"/>
+        <exclude name="**/nl-NL/**"/>
+        <exclude name="**/pl-PL/**"/>
+        <exclude name="**/pt-BR/**"/>
+        <exclude name="**/th-TH/**"/>
     </fileset>
     <fileset dir="${languageBE.path}" id='language.aio.refid' defaultexcludes="true">
         <include name="**"/>
@@ -281,22 +320,22 @@
                 <expandproperties/>
             </filterchain>
         </copy>
-        <!--zip destfile="${package.language.dst.languageFE.name}">
+        <zip destfile="${package.language.dst.languageFE.name}">
             <fileset dir="${package.language.dst.languageFE}">
                 <include name="**"/>
             </fileset>
-        </zip-->
+        </zip>
         <copy todir="${package.language.dst.languageBE}" overwrite="true">
             <fileset refid="languageBE.files"/>
             <filterchain>
                 <expandproperties/>
             </filterchain>
         </copy>
-        <!--zip destfile="${package.language.dst.languageBE.name}">
+        <zip destfile="${package.language.dst.languageBE.name}">
             <fileset dir="${package.language.dst.languageBE}">
                 <include name="**"/>
             </fileset>
-        </zip-->
+        </zip>
         <copy todir="${package.language.dst.folder}" overwrite="true">
             <fileset refid="languageFE.xml"/>
             <filterchain>
@@ -470,7 +509,7 @@
         </zip>
         <echo msg="MAIN Component compressed OK!"/>
     </target>
-    <target name="AIO" depends="aio_files,LANGUAGE, delete.language.loop">
+    <target name="AIO" depends="aio_files">
         <echo msg="Creating AIO PACKAGE  ..."/>
         <tar destfile="${package.folder}/${component.name}.${vm.version}_ext_aio.tar.gz" compression="gzip">
             <fileset dir="${package.folder.aio}">
@@ -488,15 +527,17 @@
         </zip>
         <echo msg="AIO Component compressed OK!"/>
     </target>
+    <!-- wE ARE NOT INCLUDING THE LANGUAGE ANYLONGER , THEY ARE ON TRANSIFEX
     <target name="LANGUAGE" depends="build.language.loop">
-        <!-- echo msg="Creating Language PACKAGE  ..."/>
+        <echo msg="Creating Language PACKAGE  ..."/>
         <zip destfile="${package.folder}/${component.name}.${vm.version}_languages_extract_first.zip">
             <fileset dir="${package.folder.language}">
                 <include name="*.zip"/>
             </fileset>
         </zip>
-        <echo msg="Language package Component compressed OK!"/ -->
+        <echo msg="Language package Component compressed OK!"/>
     </target>
+        -->
     <target name="VIRTUEMART2" depends="title, clean ,svn.export, Main, AIO">
         <echo msg="LATEST REVISION is ${svn.lastrevision}"/>
         <echo msg="DATE ${TODAY}, TIME ${TSTAMP}"/>

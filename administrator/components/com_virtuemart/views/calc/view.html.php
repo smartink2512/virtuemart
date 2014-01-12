@@ -101,6 +101,10 @@ class VirtuemartViewCalc extends VmView {
 			$shopperGroupList= ShopFunctions::renderShopperGroupList($calc->virtuemart_shoppergroup_ids,True);
 			$this->assignRef('shopperGroupList', $shopperGroupList);
 
+			if (!class_exists ('ShopFunctionsF')) {
+				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			}
+			
 			$countriesList = ShopFunctionsF::renderCountryList($calc->calc_countries,True);
 			$this->assignRef('countriesList', $countriesList);
 

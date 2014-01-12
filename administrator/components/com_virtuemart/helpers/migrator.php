@@ -401,6 +401,7 @@ class Migrator extends VmModel{
 			if($type == 'forSale') $data['file_is_forSale'] = 1;
 
 			$this->mediaModel->setId(0);
+			$data['file_type'] = $type;
 			$success = $this->mediaModel->store($data, $type);
 			$errors = $this->mediaModel->getErrors();
 			foreach($errors as $error){
@@ -1896,7 +1897,7 @@ class Migrator extends VmModel{
 					$restoreTable = str_replace($prefix, '#__vm_', $table);
 
 					// Drop the current active table.
-					$this->_db->setQuery('DROP TABLE IF EXISTS '.$this->_db->nameQuote($restoreTable));
+					$this->_db->setQuery('DROP TABLE IF EXISTS '.$this->_db->quoteName($restoreTable));
 					$this->_db->execute();
 
 					// Check for errors.
