@@ -50,7 +50,7 @@ class GenericTableUpdater extends VmModel{
 		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) * 0.85;
 
 		$config = JFactory::getConfig();
-		$this->_prefix = $config->getValue('config.dbprefix');
+		$this->_prefix = $config->get('config.dbprefix');
 
 		$this->reCreaPri = VmConfig::get('reCreaPri',0);
 		$this->reCreaKey = VmConfig::get('reCreaKey',1);

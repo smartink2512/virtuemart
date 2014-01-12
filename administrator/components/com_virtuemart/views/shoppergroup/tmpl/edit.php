@@ -94,7 +94,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 		    </td>
 		    <td>
 <?php
-			     $attributes='';
+			     $attributes='id="custom_price_display"';
 			    echo VmHTML::checkbox('custom_price_display', $this->shoppergroup->custom_price_display,1,0,$attributes) ?>
 		    </td>
 		</tr>
@@ -106,7 +106,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 <?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES'); ?>
 		    </td>
 		    <td>
-<?php echo VmHTML::checkbox('show_prices', $this->shoppergroup->price_display->get('show_prices')); ?>
+<?php echo VmHTML::checkbox('show_prices', $this->shoppergroup->show_prices); ?>
 		    </td>
 		</tr>
 
@@ -117,16 +117,16 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_SHOPPERGROUP_NAME');
 			<th><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_ROUNDING'); ?></th>
 		    </tr>
 <?php
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display, 'basePrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display, 'variantModification', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_VARMOD');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display, 'basePriceVariant', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_VAR');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display, 'basePriceWithTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_WTAX');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display, 'discountedPriceWithoutTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISCPRICE_WOTAX');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display, 'salesPriceWithDiscount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WD');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display, 'salesPrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display, 'priceWithoutTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WOTAX');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display, 'discountAmount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISC_AMOUNT');
-echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display, 'taxAmount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT');
+echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'basePrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE');
+echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'variantModification', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_VARMOD');
+echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'basePriceVariant', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_VAR');
+echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'basePriceWithTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_WTAX');
+echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'discountedPriceWithoutTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISCPRICE_WOTAX');
+echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'salesPriceWithDiscount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WD');
+echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'salesPrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE');
+echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'priceWithoutTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WOTAX');
+echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'discountAmount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISC_AMOUNT');
+echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'taxAmount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT');
 ?>
 		</table>
 

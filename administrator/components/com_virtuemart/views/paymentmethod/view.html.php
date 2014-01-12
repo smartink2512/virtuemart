@@ -73,8 +73,8 @@ class VirtuemartViewPaymentMethod extends VmView {
 			// Load the helper(s)
 			if (!class_exists('VmImage'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'image.php');
-			if (!class_exists('vmParameters'))
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
+			/*if (!class_exists('vmParameters'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');*/
 			VmConfig::loadJLang('plg_vmpsplugin', false);
 
 			$payment = $model->getPayment();
@@ -120,23 +120,6 @@ class VirtuemartViewPaymentMethod extends VmView {
 		parent::display($tpl);
 	}
 
-	function getParams($raw) {
-
-		if (!empty($raw)) {
-			$params = explode('|', substr($raw, 0,-1));
-			foreach($params as $param){
-				$item = explode('=',$param);
-				if(!empty($item[1])){
-					$pair[$item[0]] = str_replace('"','', $item[1]);
-				} else {
-					$pair[$item[0]] ='';
-				}
-
-			}
-		}
-		return $pair;
-	}
-
 	function renderInstalledPaymentPlugins($selected){
 
 		$db = JFactory::getDBO();
@@ -152,14 +135,11 @@ class VirtuemartViewPaymentMethod extends VmView {
 		}
 
 		$listHTML='<select id="payment_jplugin_id" name="payment_jplugin_id" style= "width: 300px;">';
-		if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+
 		foreach($result as $paym){
-			$params = new JParameter($paym['params']);
 			if($paym['extension_id']==$selected) $checked='selected="selected"'; else $checked='';
 			// Get plugin info
-			$pType = $params->getValue('pType');
-			if($pType=='Y' || $pType=='C') $id = 'pam_type_CC_on'; else $id='pam_type_CC_off';
-			$listHTML .= '<option id="'.$id.'" '.$checked.' value="'.$paym['extension_id'].'">'.vmText::_($paym['name']).'</option>';
+			$listHTML .= '<option '.$checked.' value="'.$paym['extension_id'].'">'.vmText::_($paym['name']).'</option>';
 
 		}
 		$listHTML .= '</select>';

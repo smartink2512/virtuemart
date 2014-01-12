@@ -58,11 +58,11 @@ class VirtuemartViewProduct extends VmView {
 
 				$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
 
-				/*if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
+				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 					$virtuemart_product_id = (int)$virtuemart_product_id[0];
 				} else {
 					$virtuemart_product_id = (int)$virtuemart_product_id;
-				}*/
+				}
 
 				$product = $model->getProductSingle($virtuemart_product_id,false);
 				$product_parent= $model->getProductParent($product->product_parent_id);
@@ -72,7 +72,7 @@ class VirtuemartViewProduct extends VmView {
 				$product->allIds[] = $product->virtuemart_product_id;
 				$product->allIds[] = $product->product_parent_id;
 
-				$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->allIds,0);
+				$product->customfields = $customfields->getCustomEmbeddedProductCustomFields ($product->allIds);
 
 				$mf_model = VmModel::getModel('manufacturer');
 				$this->manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);

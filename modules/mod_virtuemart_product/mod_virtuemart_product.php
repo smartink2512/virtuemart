@@ -50,7 +50,7 @@ if (!($output = $cache->get($key))) {
 	/* Load  VM fonction */
 	if (!class_exists( 'mod_virtuemart_product' )) require('helper.php');
 
-	$vendorId = JRequest::getInt('vendorid', 1);
+	$vendorId = vmRequest::getInt('vendorid', 1);
 
 	if ($filter_category ) $filter_category = TRUE;
 

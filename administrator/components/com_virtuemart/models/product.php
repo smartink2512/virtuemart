@@ -575,7 +575,7 @@ class VirtueMartModelProduct extends VmModel {
 				$category = new stdClass();
 			}
 
-			if ((!empty($lastCatId) and $lastCatId != $cateid) or $lastManId != $manid) {
+			if ((!empty($lastCatId) and $lastCatId != $cateid) or (!empty($manid) and $lastManId != $manid)) {
 				//We are in a new category or another manufacturer, so we start at page 1
 				$limitStart = 0;
 			}
@@ -2036,10 +2036,10 @@ class VirtueMartModelProduct extends VmModel {
 			$product = $this->getProduct ($product, TRUE, FALSE, TRUE,$quantity);
 		}
 
-		if (empty($product->customfields) and !empty($product->virtuemart_customfield_id)) {
+		/*if (empty($product->customfields) and !empty($product->virtuemart_customfield_id)) {
 			$customfieldsModel = VmModel::getModel ('Customfields');
 			$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
-		}
+		}*/
 
 		// Loads the product price details
 		if (!class_exists ('calculationHelper')) {

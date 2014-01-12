@@ -43,7 +43,7 @@ class VmTable extends JTable {
 	protected $_slugName = '';
 	protected $_loggable = false;
 	public $_xParams = 0;
-	protected $_varsToPushParam = array();
+	public $_varsToPushParam = array();
 	var $_translatable = false;
 	protected $_translatableFields = array();
 	protected $_langTag = null;
@@ -212,7 +212,12 @@ class VmTable extends JTable {
 
 			} else {
 				if (empty($xParams)) {
-					vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error ' . $obj);
+					vmError('There are bindParameterables, but $xParams is empty, this is a programmers error '.$xParams);
+					vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ',$xParams , $obj);
+				}
+				if(!isset($obj->$xParams)){
+					vmError('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error '.$xParams);
+					vmdebug('There are bindParameterables, but $obj->$xParams is empty, this is a programmers error ',$xParams , $obj);
 				}
 			}
 
@@ -239,7 +244,12 @@ class VmTable extends JTable {
 				}
 			} else {
 				if (empty($xParams)) {
-					vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error ' . $obj);
+					vmError('There are bindParameterables, but $xParams is empty, this is a programmers error '.$xParams);
+					vmdebug('There are bindParameterables, but $xParams is empty, this is a programmers error ',$xParams , $obj);
+				}
+				if(!isset($obj[$xParams])){
+					vmError('There are bindParameterables, but $obj[$xParams] is empty, this is a programmers error '.$xParams);
+					vmdebug('There are bindParameterables, but $obj[$xParams] is empty, this is a programmers error ',$xParams , $obj);
 				}
 			}
 

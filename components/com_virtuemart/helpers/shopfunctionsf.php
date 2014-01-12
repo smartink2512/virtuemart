@@ -703,10 +703,11 @@ class shopFunctionsF {
 		$dispatcher = JDispatcher::getInstance ();
 		JPluginHelper::importPlugin ('content');
 		$article->text = $article->$field;
-		jimport ('joomla.html.parameter');
-		$params = new JParameter('');
 
         if (JVM_VERSION > 1) {
+
+			jimport ('joomla.registry.registry');
+			$params = new JRegistry('');
 			if (!isset($article->event)) {
 				$article->event = new stdClass();
 			}
@@ -722,6 +723,8 @@ class shopFunctionsF {
 			$res = $dispatcher->trigger ('onContentAfterDisplay', array('com_virtuemart.'.$context, &$article, &$params, 0));
 			$article->event->afterDisplayContent = trim (implode ("\n", $res));
 		} else {
+			jimport ('joomla.html.parameter');
+			$params = new JParameter('');
 			$results = $dispatcher->trigger ('onPrepareContent', array(& $article, & $params, 0));
 		}
 		$article->$field = $article->text;

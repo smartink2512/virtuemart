@@ -20,7 +20,6 @@ if (!class_exists('VmConfig'))
 	require(JPATH_ADMINISTRATOR . '/components/com_virtuemart/helpers/config.php');
 /*
  * This class is used by VirtueMart Payment or Shipment Plugins
- * which uses JParameter
  * So It should be an extension of JFormField
  * Those plugins cannot be configured through the Plugin Manager anyway.
  */

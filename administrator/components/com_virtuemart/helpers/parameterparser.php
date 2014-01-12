@@ -3,6 +3,7 @@
 if (!defined('_JEXEC'))
 die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
+vmTrace('Loading vmParameters seek and destry '.basename(__FILE__));
 /**
  *
  * @version $Id: parameterparser.php 6080 2012-06-07 08:28:57Z alatak $

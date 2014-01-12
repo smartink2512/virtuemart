@@ -32,7 +32,7 @@ $set_Itemid = intval ($params->get ('set_itemid', 0));
 $moduleclass_sfx = $params->get ('moduleclass_sfx', '');
 
 if ($params->get ('filter_category', 0)) {
-	$category_id = JRequest::getInt ('virtuemart_category_id', 0);
+	$category_id = vmRequest::getInt ('virtuemart_category_id', 0);
 } else {
 	$category_id = 0;
 }

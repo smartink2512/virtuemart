@@ -29,16 +29,29 @@ if($this->product){
 if ($this->errorMsg) echo '<div>'.$this->errorMsg.'</div>';
 
 if(VmConfig::get('popup_rel',1)){
-	echo 'is on';
-	if($this->product and !empty($this->product->customs)){		//or directly customfieldsSorted not by Max Milbers
+	VmConfig::$echoDebug=true;
+	if($this->product){
+		$customFieldsModel = VmModel::getModel('customfields');
+		$this->product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($this->product->allIds,'R');
+
 		?>
 		<div class="product-related-products">
 				<h4><?php echo vmText::_('COM_VIRTUEMART_RELATED_PRODUCTS'); ?></h4>
 		<?php
-		foreach ($this->product->customs as $field) {
-			if($field->field_type=='R' and !empty($field->display)) {
-				?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
-				<span class="product-field-display"><?php echo $field->display ?></span>
+		/*$fields = array();
+		foreach ($this->product->customfields as $field) {
+			//
+			if($field->field_type=='R') {
+				$fields[] = $field;
+			}
+		}/*/
+
+		$customFieldsModel->displayProductCustomfieldFE($this->product,$this->product->customfields);
+		foreach($this->product->customfields as $rFields){
+
+				if(!empty($rFields->display)){
+				?><div class="product-field product-field-type-<?php echo $rFields->field_type ?>">
+				<span class="product-field-display"><?php echo $rFields->display ?></span>
 				</div>
 			<?php }
 		} ?>

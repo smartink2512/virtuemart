@@ -366,11 +366,11 @@ class VirtueMartCart {
 			//if(!$product)
 			$product = $productModel->getProduct($virtuemart_product_id, true, false,true,$productData['quantity']);
 			//$product = $this->getProduct( $productData['virtuemart_product_id'],$productData['quantity']);
-			$customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
+			$product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
 			$customProductDataTmp=array();
 			//VmConfig::$echoDebug=true;
 			//vmdebug('cart add product $customProductData',$customProductData);
-			foreach($customfields as $customfield){
+			foreach($product->customfields as $customfield){
 
 				if($customfield->is_input==1){
 					if(isset($customProductData[$customfield->virtuemart_custom_id][$customfield->virtuemart_customfield_id])){
@@ -772,7 +772,7 @@ class VirtueMartCart {
 			}
 
 		} else {
-			if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
+			if (($this->selected_shipto = vmRequest::getVar('shipto', null)) !== null) {
 				JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 				$userModel = JModel::getInstance('user', 'VirtueMartModel');
 				$stData = $userModel->getUserAddressList(0, 'ST', $this->selected_shipto);
@@ -1240,7 +1240,7 @@ class VirtueMartCart {
 					$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHTML::link($url, $product->product_name);
 					$product->cart_item_id = $k ;
 
-					$customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
+					$product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
 
 					/*if($customfields){
 						foreach($customfields as $field){
@@ -1255,8 +1255,8 @@ class VirtueMartCart {
 							}
 						}
 					}*/
-					$product->customfields = $customfields;
-					vmdebug('prepareCartData',$customfields);
+
+					vmdebug('prepareCartData',$product->customfields);
 					$this->products[$k] = $product;
 					$this->totalProduct += $product -> quantity;
 

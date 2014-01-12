@@ -409,6 +409,7 @@ function logInfo ($text, $type = 'message') {
 	}
 
 	// Initialise variables.
+	if(!class_exists('JClientHelper')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'client'.DS.'helper.php');
 	$FTPOptions = JClientHelper::getCredentials('ftp');
 
 	if ($FTPOptions['enabled'] == 0){
@@ -866,7 +867,7 @@ class VmConfig {
 					// this work with joomfish j1.5 (application.data.lang)
 					$session  =JFactory::getSession();
 					$registry = $session->get('registry');
-					$siteLang = $registry->getValue('application.data.lang') ;
+					$siteLang = $registry->get('application.data.lang') ;
 				} else  {
 					jimport('joomla.language.helper');
 					$siteLang = JFactory::getLanguage()->getTag();
@@ -1266,7 +1267,7 @@ class vmRequest {
 
 	public static function get($name, $default = null, $filter = FILTER_UNSAFE_RAW, $flags = FILTER_FLAG_STRIP_LOW){
 		//vmSetStartTime();
-		if($name !== null){
+		if(!empty($name)){
 
 			if(!isset($_REQUEST[$name])) return $default;
 
@@ -1279,6 +1280,7 @@ class vmRequest {
 			}
 
 		} else {
+			vmTrace('empty name in vmRequest::get');
 			return $default;
 		}
 

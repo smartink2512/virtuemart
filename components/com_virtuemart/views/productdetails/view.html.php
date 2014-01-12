@@ -83,16 +83,18 @@ class VirtueMartViewProductdetails extends VmView {
 
 	if(!class_exists('shopFunctionsF'))require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 	$last_category_id = shopFunctionsF::getLastVisitedCategoryId();
-		//vmdebug('my product',$product);
-    if (!empty($product->virtuemart_customfield_id)) {
-	    $customfieldsModel = VmModel::getModel ('Customfields');
-	    if ($product->customfields){
-		    if (!class_exists ('vmCustomPlugin')) {
-			    require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
-		    }
-			$customfieldsModel -> displayProductCustomfieldFE ($product, $product->customfields);
-	    }
-    }
+
+	$product_model->attachProductCustomFields($product);
+	$customfieldsModel = VmModel::getModel ('Customfields');
+	$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
+	if ($product->customfields){
+
+		if (!class_exists ('vmCustomPlugin')) {
+			require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+		}
+		$customfieldsModel -> displayProductCustomfieldFE ($product, $product->customfields);
+	}
+
 
 	if (empty($product->slug)) {
 

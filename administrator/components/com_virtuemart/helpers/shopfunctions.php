@@ -519,13 +519,13 @@ class ShopFunctions {
 				</td>
 
 				<td>' .
-				VmHTML::checkbox ($name, $obj->get ($name)) . '
+				VmHTML::checkbox ($name, $obj->$name) . '
 				</td>
 				<td align="center">' .
-				VmHTML::checkbox ($name . 'Text', $obj->get ($name . 'Text', 1)) . '
+				VmHTML::checkbox ($name . 'Text', $obj->{$name . 'Text'}) . '
 				</td>
 				<td align="center">
-				<input type="text" value="' . $obj->get ($name . 'Rounding', 2) . '" class="inputbox" size="4" name="' . $name . 'Rounding">
+				<input type="text" value="' . $obj->{$name . 'Rounding'} . '" class="inputbox" size="4" name="' . $name . 'Rounding">
 				</td>
 			</tr>';
 		return $html;

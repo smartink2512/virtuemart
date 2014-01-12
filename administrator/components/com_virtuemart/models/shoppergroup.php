@@ -51,12 +51,6 @@ class VirtueMartModelShopperGroup extends VmModel {
 	    if (empty($this->_data)) {
 	      $this->_data = $this->getTable('shoppergroups');
 	      $this->_data->load((int) $this->_id);
-	      if(!empty($this->_data->price_display)){
-	      	$this->_data->price_display = unserialize($this->_data->price_display);
-	      } else{
-	      	if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
-	      	$this->_data->price_display = new JParameter('');
-	      }
 	   }
 
 		return $this->_data;
@@ -85,27 +79,6 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 	    return $this->_data;
     }
-
-   function store(&$data){
-
-   	$myfields = array('basePrice','variantModification','basePriceVariant',
-   										'basePriceWithTax','basePriceWithTax','discountedPriceWithoutTax',
-   										'salesPrice','priceWithoutTax',
-   										'salesPriceWithDiscount','discountAmount','taxAmount');
-
-   	$param ='show_prices='.$data['show_prices']."\n";
-   	foreach($myfields as $fields){
-   		$param .= $fields.'='.$data[$fields]."\n";		//attention there must be doublequotes
-   		$param .= $fields.'Text='.$data[$fields.'Text']."\n";
-   		$param .= $fields.'Rounding='.$data[$fields.'Rounding']."\n";
-   	}
-
-   	if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
-		$jparam = new JParameter($param);
-   	$data['price_display'] = serialize(new JParameter($param));
-
-   	return parent::store($data);
-   }
 
 	function makeDefault($id,$kind = 1) {
 

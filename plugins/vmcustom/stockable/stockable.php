@@ -617,7 +617,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 		if ($productCustomsPrice->custom_element != $this->_name) return false;
 
-		if (!$customPlugin = JRequest::getVar('customPlugin',0)) {
+		if (!$customPlugin = vmRequest::getVar('customPlugin',0)) {
 			$customPlugin = json_decode($product->customPlugin,true);
 		}
 		$selected = $customPlugin[$productCustomsPrice->virtuemart_customfield_id]['stockable']['child_id'];
@@ -673,7 +673,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	}
 
 	public function plgVmOnAddToCart(&$product){
-		$customPlugin = JRequest::getVar('customPlugin',0);
+		$customPlugin = vmRequest::getVar('customPlugin',0);
 
 		if ($customPlugin) {
 			$db = JFactory::getDBO();

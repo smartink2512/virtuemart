@@ -134,7 +134,13 @@ class VirtueMartModelCustomfields extends VmModel {
 			return array();
 		}
 		if(!empty($virtuemart_custom_id)){
-			$q .= ' AND c.`virtuemart_custom_id`= "' . (int)$virtuemart_custom_id.'"';
+			if(is_numeric($virtuemart_custom_id)){
+				$q .= ' AND c.`virtuemart_custom_id`= "' . (int)$virtuemart_custom_id.'" ';
+			} else {
+				$virtuemart_custom_id = substr($virtuemart_custom_id,0,1); //just in case
+				$q .= ' AND c.`field_type`= "' .$virtuemart_custom_id.'" ';
+			}
+
 		}
 		if($cartattribute!=-1){
 			$q .= ' AND ( `is_cart_attribute` = 1 OR `is_input` = 1) ';
@@ -415,7 +421,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		$selectList = array();
 
-		foreach($customfields as $k => $customfield){
+		foreach($customfields as $k => &$customfield){
 
 			if(!isset($customfield->display))$customfield->display = '';
 
@@ -622,18 +628,23 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 					break;
 				case 'R':
-					if(empty($customfield->customfield_value)) break;
+					if(empty($customfield->customfield_value)){
+						$customfield->display = 'customfield related product has no value';
+						break;
+					}
 					$pModel = VmModel::getModel('product');
 					$related = $pModel->getProduct((int)$customfield->customfield_value,FALSE,FALSE,FALSE,1);
 					//$thumb ='';
 					//$tmp = get_object_vars($related);
-					//vmdebug('Mist',$tmp);
+
 					if (!empty($related->virtuemart_media_id[0])) {
 						$thumb = $this->displayCustomMedia ($related->virtuemart_media_id[0]).' ';
 					} else {
 						$thumb = $this->displayCustomMedia (0).' ';
 					}
+
 					$customfield->display = JHTML::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
+					//
 					break;
 			}
 		}

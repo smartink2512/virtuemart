@@ -75,8 +75,8 @@ class VirtuemartViewCategory extends VmView {
 		$this->assignRef('keyword', $keyword);
 		$this->assignRef('search', $search);
 
-		$categoryId = JRequest::getInt('virtuemart_category_id', -1);
-		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', -1 );
+		$categoryId = vmRequest::getInt('virtuemart_category_id', -1);
+		$virtuemart_manufacturer_id = vmRequest::getInt('virtuemart_manufacturer_id', -1 );
 		if ($categoryId === -1 and $virtuemart_manufacturer_id === -1){
 			$categoryId = ShopFunctionsF::getLastVisitedCategoryId();
 		}
@@ -284,7 +284,7 @@ class VirtuemartViewCategory extends VmView {
 		if (!empty($tpl)) {
 			$format = $tpl;
 		} else {
-			$format = JRequest::getWord('format', 'html');
+			$format = vmRequest::getWord('format', 'html');
 		}
 		if ($format == 'html') {
 

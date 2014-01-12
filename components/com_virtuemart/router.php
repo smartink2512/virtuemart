@@ -720,7 +720,7 @@ class vmrouterHelper {
 			$this->use_id = VmConfig::get('seo_use_id', false);
 			$this->seo_sufix = VmConfig::get('seo_sufix', '-detail');
 			$this->seo_sufix_size = strlen($this->seo_sufix) ;
-			$this->edit = ('edit' == JRequest::getCmd('task') );
+			$this->edit = ('edit' == vmRequest::getCmd('task') );
 			// if language switcher we must know the $query
 			$this->query = $query;
 		}

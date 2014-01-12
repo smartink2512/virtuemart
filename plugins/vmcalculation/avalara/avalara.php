@@ -319,7 +319,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$tax = 0.0;
 
 		if ($mathop=='avalara') {
-			$requestedProductId = JRequest::getVar ('virtuemart_product_id',0);
+			$requestedProductId = vmRequest::getVar ('virtuemart_product_id',0);
 			if(is_array($requestedProductId) and count($requestedProductId) > 0) {
 				$requestedProductId = $requestedProductId[0];
 			}
@@ -418,7 +418,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 					$calculator = calculationHelper::getInstance ();
 					$orderModel = VmModel::getModel('orders');
 					$invoiceNumber = 'onr_'.$order['details']['BT']->order_number;
-					JRequest::setVar('create_invoice',1);
+					vmRequest::setVar('create_invoice',1);
 					$orderModel -> createInvoiceNumber($order['details']['BT'],$invoiceNumber);
 
 
@@ -444,7 +444,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		if(!isset(self::$vmadd)){
 
-			$view = JRequest::getWord('view',0);
+			$view = vmRequest::getWord('view',0);
 			if($calc->only_cart == 1 and $view != 'cart'){
 				self::$vmadd = FALSE;
 				return self::$vmadd;
@@ -1130,7 +1130,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 		$totalTax = 0.0;
 
 		$invoiceNumber = 'onr_'.$orderDetails['details']['BT']->order_number;
-		JRequest::setVar('create_invoice',1);
+		vmRequest::setVar('create_invoice',1);
 		$orderModel -> createInvoiceNumber($orderDetails['details']['BT'],$invoiceNumber);
 		if(is_array($invoiceNumber)) $invoiceNumber = $invoiceNumber[0];
 

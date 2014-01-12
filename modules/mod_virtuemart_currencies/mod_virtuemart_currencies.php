@@ -29,7 +29,7 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components'
 VmConfig::loadConfig();
 VmConfig::loadJLang('mod_virtuemart_currencies', true);
 $mainframe = Jfactory::getApplication();
-$vendorId = JRequest::getInt('vendorid', 1);
+$vendorId = vmRequest::getInt('vendorid', 1);
 $text_before = $params->get( 'text_before', '');
 /* table vm_vendor */
 $db = JFactory::getDBO();

@@ -768,8 +768,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		$plugin_name = $this->_psType . '_name';
 		$plugin_desc = $this->_psType . '_desc';
 		$description = '';
-		// 		$params = new JParameter($plugin->$plugin_params);
-		// 		$logo = $params->get($this->_psType . '_logos');
 		$logosFieldName = $this->_psType . '_logos';
 		$logos = $plugin->$logosFieldName;
 		if (!empty($logos)) {

@@ -26,11 +26,11 @@ defined('_JEXEC') or die();
 require_once dirname(__FILE__).'/classes/abstractconfig.php';
 require_once dirname(__FILE__).'/config.php';
 
-$task = JRequest::getCmd('task');
+$task = vmRequest::getCmd('task');
 if($task=='updateDatabase'){
-	$data = JRequest::get('get');
-	JRequest::setVar($data['token'], '1', 'post');
-	JSession::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
+	$data = vmRequest::getRequest;
+	vmRequest::setVar($data['token'], '1', 'post');
+	JSession::checkToken() or jexit('Invalid Token, in ' . vmRequest::getCmd('task'));
 
 	//Update Tables
 	if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
@@ -76,7 +76,7 @@ $jlang = JFactory::getLanguage();
 		$jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true); // Load the currently selected language
 
 		?>
-<?php $link=JROUTE::_('index.php?option=com_virtuemart_allinone&task=updateDatabase&token='.JUtility::getToken() ); ?>
+<?php $link=JROUTE::_('index.php?option=com_virtuemart_allinone&task=updateDatabase&'.JSession::getFormToken().'=1' ); ?>
 	    <button onclick="javascript:confirmation('<?php echo addslashes( JText::_('COM_VIRTUEMART_UPDATE_VMPLUGINTABLES') ); ?>', '<?php echo $link; ?>');">
 
             <?php echo JText::_('COM_VIRTUEMART_UPDATE_VMPLUGINTABLES'); ?>
@@ -115,7 +115,7 @@ class LiveUpdate
 		// Load the controller and let it run the show
 		require_once dirname(__FILE__).'/classes/controller.php';
 		$controller = new LiveUpdateController();
-		$controller->execute(JRequest::getCmd('task','overview'));
+		$controller->execute(vmRequest::getCmd('task','overview'));
 		$controller->redirect();
 	}
 
@@ -145,9 +145,9 @@ class LiveUpdate
 		self::loadLanguage();
 
 		$defaultConfig = array(
-			'option'			=> JRequest::getCmd('option',''),
+			'option'			=> vmRequest::getCmd('option',''),
 			'view'				=> 'liveupdate',
-			'mediaurl'			=> JURI::base().'components/'.JRequest::getCmd('option','').'/liveupdate/assets/'
+			'mediaurl'			=> JURI::base().'components/'.vmRequest::getCmd('option','').'/liveupdate/assets/'
 		);
 		$c = array_merge($defaultConfig, $config);
 
