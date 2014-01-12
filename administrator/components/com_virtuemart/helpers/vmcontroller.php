@@ -78,7 +78,7 @@ class VmController extends JControllerLegacy{
 			$viewName	= VmRequest::getCmd('view', '');
 			$viewLayout	= VmRequest::getCmd('layout', 'default');
 
-			$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->_basePath));
+			$view = $this->getView($viewName, $viewType, '', array('layout' => $viewLayou));
 		}
 
 		// Set the layout

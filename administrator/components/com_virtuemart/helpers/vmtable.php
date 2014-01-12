@@ -63,10 +63,10 @@ class VmTable extends JTable {
 		$this->_tbl = $table;
 		$this->_db =& $db;
 
-		if(JVM_VERSION<3){
+		//if(JVM_VERSION<3){
 			$this->_tbl_key = $key;
-		} else {
-			if (!is_array($key)){
+		/*} else {
+			if (!is_string($key)){
 				$key = array($key);
 			}else if (is_object($key)){
 				$key = (array) $key;
@@ -75,17 +75,17 @@ class VmTable extends JTable {
 
 			// Set the singular table key for backwards compatibility.
 			$this->_tbl_key = $this->getKeyName();
-		}
+		}*/
 
 		// If we are tracking assets, make sure an access field exists and initially set the default.
-		if (property_exists($this, 'asset_id')){
+		/*if (property_exists($this, 'asset_id')){
 			$this->_trackAssets = true;
 		}
 
 		// If the access property exists, set the default.
 		if (property_exists($this, 'access')){
 			$this->access = (int) JFactory::getConfig()->get('access');
-		}
+		}/*/
 
 		if(JVM_VERSION>2){
 			// Implement JObservableInterface: //by joomla 3

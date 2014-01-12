@@ -44,9 +44,10 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		if (is_file ( $xmlFile )) {
 
-			$xml = JFactory::getXML ('simple');
-			$result = $xml->loadFile ($xmlFile);
-			if ($result) {
+			//$xml = JFactory::getXML ('simple');
+			//$result = $xml->loadFile ($xmlFile);
+			$xml =  JFactory::getXML($xmlFile);
+			if ($xml) {
 				if (isset( $xml->document->params) ){
 					$params = $xml->document->params;
 					foreach ($params as $param) {

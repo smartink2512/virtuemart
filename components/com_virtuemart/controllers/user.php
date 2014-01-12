@@ -27,7 +27,7 @@ jimport('joomla.application.component.controller');
  *
  * @package		VirtueMart
  */
-class VirtueMartControllerUser extends JController
+class VirtueMartControllerUser extends JControllerLegacy
 {
 
 	public function __construct()
@@ -47,10 +47,10 @@ class VirtueMartControllerUser extends JController
 
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
-		$viewName = VmRequest::getCmd('view', $this->default_view);
+		$viewName = VmRequest::getCmd('view', 'user');
 		$viewLayout = VmRequest::getCmd('layout', 'default');
 
-		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+		$view = $this->getView($viewName, $viewType, '', array('layout' => $viewLayout));
 		$view->assignRef('document', $document);
 
 		$view->display();

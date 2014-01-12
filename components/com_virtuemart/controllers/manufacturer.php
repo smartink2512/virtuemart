@@ -28,7 +28,7 @@ jimport('joomla.application.component.controller');
  * @package		VirtueMart
  */
 
-class VirtueMartControllerManufacturer extends JController
+class VirtueMartControllerManufacturer extends JControllerLegacy
 {
 
 	/**
@@ -36,20 +36,20 @@ class VirtueMartControllerManufacturer extends JController
 	 *
 	 * @return  JController  A JController object to support chaining.
 	 */
-	public function display(){
+	/*public function display(){
 
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$viewName = VmRequest::getCmd('view', $this->default_view);
 		$viewLayout = VmRequest::getCmd('layout', 'default');
 
-		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+		$view = $this->getView($viewName, $viewType, '', array('layout' => $viewLayout));
 		$view->assignRef('document', $document);
 
 		$view->display();
 
 		return $this;
-	}
+	}*/
 }
 
 // No closing tag

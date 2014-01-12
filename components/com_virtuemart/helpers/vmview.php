@@ -23,7 +23,7 @@ defined('_JEXEC') or die('');
 jimport( 'joomla.application.component.view');
 // Load default helpers
 
-class VmView extends JView{
+class VmView extends JViewLegacy{
 
 	function linkIcon($link,$altText ='',$boutonName,$verifyConfigValue=false, $modal = true, $use_icon=true,$use_text=false,$class = ''){
 		if ($verifyConfigValue) {

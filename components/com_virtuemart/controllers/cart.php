@@ -31,7 +31,7 @@ jimport('joomla.application.component.controller');
  * @author RolandD
  * @author Max Milbers
  */
-class VirtueMartControllerCart extends JController {
+class VirtueMartControllerCart extends JControllerLegacy {
 
 	/**
 	 * Construct the cart
@@ -68,7 +68,7 @@ class VirtueMartControllerCart extends JController {
 		$viewName = VmRequest::getCmd('view', $this->default_view);
 		$viewLayout = VmRequest::getCmd('layout', 'default');
 
-		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+		$view = $this->getView($viewName, $viewType, '', array('layout' => $viewLayout));
 
 		$view->assignRef('document', $document);
 
