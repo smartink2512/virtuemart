@@ -217,7 +217,7 @@ class VirtuemartViewUserfields extends VmView {
 		} else {
 			$attribs='';
 		}
-		$retImgSrc =  JHtml::_('image.administrator', $img, '/images/', null, null, $alt, $attribs);
+		$retImgSrc =  JHtml::_('image', $img, '/images/', null, null, $alt, $attribs);
 
 		if ($untoggleable) {
 			return ($retImgSrc);

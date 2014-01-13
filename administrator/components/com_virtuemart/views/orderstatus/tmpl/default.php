@@ -63,7 +63,7 @@ AdminUIHelper::startAdminArea($this);
 
                         $coreStatus = (in_array($row->order_status_code, $this->lists['vmCoreStatusCode']));
 			$image = ((JVM_VERSION===1)) ? 'checked_out.png' : 'admin/checked_out.png';
-			$image = JHtml::_('image.administrator', $image, '/images/', null, null, vmText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_CORE'));
+			$image = JHtml::_('image', $image, '/images/', null, null, vmText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_CORE'));
 			$checked = ($coreStatus) ?
 				'<span class="hasTip" title="'. vmText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_CORE').'">'. $image .'</span>' :
 				JHtml::_('grid.id', $i, $row->virtuemart_orderstate_id);

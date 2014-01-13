@@ -87,7 +87,7 @@ AdminUIHelper::startAdminArea($this);
 // 			vmdebug('my rows',$row);
 			$coreField = (in_array($row->name, $this->lists['coreFields']));
 			$image = (JVM_VERSION===1) ? 'checked_out.png' : 'admin/checked_out.png';
-			$image = JHtml::_('image.administrator', $image, '/images/', null, null, vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'));
+			$image = JHtml::_('image', $image, '/images/', null, null, vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'));
 			//$checked = '<div style="position: relative;">'.JHtml::_('grid.id', $i, null,$row->virtuemart_userfield_id);
 			$checked = JHtml::_('grid.id', $i ,$row->virtuemart_userfield_id,null,'virtuemart_userfield_id');
 			if ($coreField) $checked.='<span class="hasTip" style="position: absolute; margin-left:-3px;" title="'. vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>';
