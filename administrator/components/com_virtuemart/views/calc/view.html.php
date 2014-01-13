@@ -169,7 +169,7 @@ class VirtuemartViewCalc extends VmView {
 		'7' => array('calc_kind' => 'DATaxBill', 'calc_kind_name' => vmText::_('COM_VIRTUEMART_CALC_EPOINT_DATAXBILL')),
 		);
 
-		$listHTML = JHTML::_('Select.genericlist', $entryPoints, 'calc_kind', '', 'calc_kind', 'calc_kind_name', $selected );
+		$listHTML = JHtml::_('Select.genericlist', $entryPoints, 'calc_kind', '', 'calc_kind', 'calc_kind_name', $selected );
 		return $listHTML;
 
 	}
@@ -200,7 +200,7 @@ class VirtuemartViewCalc extends VmView {
 
 		$answer = $dispatcher->trigger('plgVmAddMathOp', array(&$mathOps));
 
-		$listHTML = JHTML::_('Select.genericlist', $mathOps, 'calc_value_mathop', '', 'calc_value_mathop', 'calc_value_mathop_name', $selected );
+		$listHTML = JHtml::_('Select.genericlist', $mathOps, 'calc_value_mathop', '', 'calc_value_mathop', 'calc_value_mathop_name', $selected );
 		return $listHTML;
 	}
 

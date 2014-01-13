@@ -55,7 +55,7 @@ $alert=vmText::sprintf ('COM_VIRTUEMART_WRONG_AMOUNT_ADDED', $step);
 				<div class="product-field product-field-type-<?php echo $field->field_type ?>">
 					<span class="product-fields-title-wrapper"><span class="product-fields-title"><strong><?php echo vmText::_ ($field->custom_title) ?></strong></span>
 					<?php if ($field->custom_tip) {
-					echo JHTML::tooltip ($field->custom_tip, vmText::_ ($field->custom_title), 'tooltip.png');
+					echo JHtml::tooltip ($field->custom_tip, vmText::_ ($field->custom_title), 'tooltip.png');
 				} ?></span>
 					<span class="product-field-display"><?php echo $field->display ?></span>
 

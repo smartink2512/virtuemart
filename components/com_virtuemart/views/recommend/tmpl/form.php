@@ -91,7 +91,7 @@ if (empty ( $this->product )) {
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="hidden" name="virtuemart_category_id" value="<?php echo VmRequest::getInt('virtuemart_category_id'); ?>" />
 				<input type="hidden" name="task" value="mailRecommend" />
-				<?php echo JHTML::_( 'form.token' ); ?>
+				<?php echo JHtml::_( 'form.token' ); ?>
 			</form>
 
 	</div>

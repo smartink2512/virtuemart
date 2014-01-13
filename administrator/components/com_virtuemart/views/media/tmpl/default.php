@@ -62,8 +62,8 @@ $productfileslist = $this->files;
 		$k = 0;
 		foreach ($productfileslist as $key => $productfile) {
 
-			$checked = JHTML::_('grid.id', $i , $productfile->virtuemart_media_id,null,'virtuemart_media_id');
-			if (!is_null($productfile->virtuemart_media_id)) $published = JHTML::_('grid.published', $productfile, $i );
+			$checked = JHtml::_('grid.id', $i , $productfile->virtuemart_media_id,null,'virtuemart_media_id');
+			if (!is_null($productfile->virtuemart_media_id)) $published = JHtml::_('grid.published', $productfile, $i );
 			else $published = '';
 			?>
 			<tr class="row<?php echo $k ; ?>">
@@ -73,12 +73,12 @@ $productfileslist = $this->files;
 				<?php
 				$link = ""; //"index.php?view=media&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&option=".$option;
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link, FALSE), empty($productfile->product_name)? '': $productfile->product_name); ?></td>
+				<td><?php echo JHtml::_('link', JRoute::_($link, FALSE), empty($productfile->product_name)? '': $productfile->product_name); ?></td>
 				<!-- File name -->
 				<?php
 				$link = 'index.php?option='.$option.'&view=media&task=edit&virtuemart_media_id[]='.$productfile->virtuemart_media_id;
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link, FALSE), $productfile->file_title, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$productfile->file_title)); ?></td>
+				<td><?php echo JHtml::_('link', JRoute::_($link, FALSE), $productfile->file_title, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$productfile->file_title)); ?></td>
 				<!-- File role -->
 				<td><?php
 					//Just to have something, we could make this nicer with Icons

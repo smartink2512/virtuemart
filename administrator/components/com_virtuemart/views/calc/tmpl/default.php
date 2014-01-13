@@ -84,8 +84,8 @@ AdminUIHelper::startAdminArea($this);
 		for ($i=0, $n=count( $this->calcs ); $i < $n; $i++) {
 
 			$row = $this->calcs[$i];
-			$checked = JHTML::_('grid.id', $i, $row->virtuemart_calc_id);
-			$published = JHTML::_('grid.published', $row, $i);
+			$checked = JHtml::_('grid.id', $i, $row->virtuemart_calc_id);
+			$published = JHtml::_('grid.published', $row, $i);
 			$shared = $this->toggle($row->shared, $i, 'toggle.shared');
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=calc&task=edit&cid[]=' . $row->virtuemart_calc_id);
 			?>

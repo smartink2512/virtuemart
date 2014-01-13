@@ -108,7 +108,7 @@ echo VmHTML::row('input','COM_VIRTUEMART_MIGRATION_DCAT_FLY','migration_default_
     <!-- Hidden Fields -->
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="view" value="updatesmigration" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHtml::_( 'form.token' ); ?>
 </form>
 
 <form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" >
@@ -131,7 +131,7 @@ echo VmHTML::row('input','COM_VIRTUEMART_MIGRATION_DCAT_FLY','migration_default_
 <!-- Hidden Fields -->
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="updatesmigration" />
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo JHtml::_( 'form.token' ); ?>
 </form>
 <?php /*
 <form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" >
@@ -150,5 +150,5 @@ echo VmHTML::row('input','COM_VIRTUEMART_MIGRATION_DCAT_FLY','migration_default_
     <!-- Hidden Fields -->
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="view" value="updatesmigration" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHtml::_( 'form.token' ); ?>
 </form> */ ?>

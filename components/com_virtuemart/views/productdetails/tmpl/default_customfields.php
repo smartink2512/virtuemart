@@ -33,7 +33,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 			    <span class="product-fields-title" ><?php echo vmText::_($field->custom_title); ?></span>
 			    <?php
 			    if ($field->custom_tip)
-				echo JHTML::tooltip($field->custom_tip, vmText::_($field->custom_title), 'tooltip.png');
+				echo JHtml::tooltip($field->custom_tip, vmText::_($field->custom_title), 'tooltip.png');
 			}
 			?>
 	    	    <span class="product-field-display"><?php echo $field->display ?></span>

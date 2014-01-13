@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-JHTML::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/');
+JHtml::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/');
 if($this->print){
 	?>
 

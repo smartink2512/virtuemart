@@ -124,8 +124,8 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 							</td>
 							<td>
 								<?php
-									echo JHTML::_('Select.genericlist', $this->pdfFonts, 'vendor_letter_font', 'size', 'value', 'text', $this->vendor->vendor_letter_font);
-// 									echo JHTML::link('http://dev.virtuemart.net/','Get More Fonts!','target="_blank"');
+									echo JHtml::_('Select.genericlist', $this->pdfFonts, 'vendor_letter_font', 'size', 'value', 'text', $this->vendor->vendor_letter_font);
+// 									echo JHtml::link('http://dev.virtuemart.net/','Get More Fonts!','target="_blank"');
 								?>
 							</td>
 						</tr>

@@ -22,7 +22,7 @@
 //vmdebug ('$this->category ' . $this->category->category_name);
 // Check to ensure this file is included in Joomla!
 defined ('_JEXEC') or die('Restricted access');
-JHTML::_ ('behavior.modal');
+JHtml::_ ('behavior.modal');
 /* javascript for list Slide
   Only here for the order list
   can be changed by the template maker
@@ -268,7 +268,7 @@ if (!empty($this->products)) {
 
 				<div class="width70 floatright">
 
-					<h2><?php echo JHTML::link ($product->link, $product->product_name); ?></h2>
+					<h2><?php echo JHtml::link ($product->link, $product->product_name); ?></h2>
 
 					<?php // Product Short Description
 					if (!empty($product->product_s_desc)) {
@@ -312,7 +312,7 @@ if (!empty($this->products)) {
 
 					<p>
 						<?php // Product Details Button
-						echo JHTML::link ($product->link, vmText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS'), array('title' => $product->product_name, 'class' => 'product-details'));
+						echo JHtml::link ($product->link, vmText::_ ('COM_VIRTUEMART_PRODUCT_DETAILS'), array('title' => $product->product_name, 'class' => 'product-details'));
 						?>
 					</p>
 

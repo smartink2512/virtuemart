@@ -63,7 +63,7 @@ AdminUIHelper::startAdminArea($this);
 
 			<th align="left" width="13%">
 				<?php echo $this->sort( 'c.ordering' , 'COM_VIRTUEMART_ORDERING') ?>
-				<?php echo JHTML::_('grid.order', $this->categories, 'filesave.png', 'saveOrder' ); ?>
+				<?php echo JHtml::_('grid.order', $this->categories, 'filesave.png', 'saveOrder' ); ?>
 			</th>
 			<th align="center" width="20px">
 				<?php echo $this->sort('c.published' , 'COM_VIRTUEMART_PUBLISHED') ?>
@@ -103,8 +103,8 @@ AdminUIHelper::startAdminArea($this);
 
 // 			$row = $this->categories[$this->rowList[$i]];
 
-			$checked = JHTML::_('grid.id', $i, $cat->virtuemart_category_id);
-			$published = JHTML::_('grid.published', $cat, $i);
+			$checked = JHtml::_('grid.id', $i, $cat->virtuemart_category_id);
+			$published = JHtml::_('grid.published', $cat, $i);
 			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid=' . $cat->virtuemart_category_id, FALSE);
 // 			$statelink	= JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $cat->virtuemart_category_id);
 			$showProductsLink = JRoute::_('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . $cat->virtuemart_category_id, FALSE);

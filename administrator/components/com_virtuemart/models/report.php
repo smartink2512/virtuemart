@@ -375,16 +375,16 @@ class VirtuemartModelReport extends VmModel {
 
 		// simpledate select
 		$select = '';
-		$options = array(JHTML::_ ('select.option', 'none', '- ' . vmText::_ ('COM_VIRTUEMART_REPORT_SET_PERIOD') . ' -', 'text', 'value'));
+		$options = array(JHtml::_ ('select.option', 'none', '- ' . vmText::_ ('COM_VIRTUEMART_REPORT_SET_PERIOD') . ' -', 'text', 'value'));
 
 		$app = JFactory::getApplication ();
 		$select = $app->getUserStateFromRequest ('com_virtuemart.revenue.period', 'period', 'last30', 'string');
 
 		foreach ($this->date_presets as $name => $value) {
-			$options[] = JHTML::_ ('select.option', $name, vmText::_ ($value['name']), 'text', 'value');
+			$options[] = JHtml::_ ('select.option', $name, vmText::_ ($value['name']), 'text', 'value');
 		}
-		$listHTML = JHTML::_ ('select.genericlist', $options, 'period', 'size="7" class="inputbox" onchange="this.form.submit();" ', 'text', 'value', $select);
-		//$listHTML = JHTML::_ ('select.genericlist', $options, 'period', 'size="7" class="inputbox" ', 'text', 'value', $select);
+		$listHTML = JHtml::_ ('select.genericlist', $options, 'period', 'size="7" class="inputbox" onchange="this.form.submit();" ', 'text', 'value', $select);
+		//$listHTML = JHtml::_ ('select.genericlist', $options, 'period', 'size="7" class="inputbox" ', 'text', 'value', $select);
 
 		return $listHTML;
 	}
@@ -394,14 +394,14 @@ class VirtuemartModelReport extends VmModel {
 		$intervals = VmRequest::getCmd ('intervals', 'day');
 
 		$options = array();
-		$options[] = JHTML::_ ('select.option', vmText::_ ('COM_VIRTUEMART_PRODUCT_S'), 'product_s');
-		$options[] = JHTML::_ ('select.option', vmText::_ ('COM_VIRTUEMART_ORDERS'), 'orders');
-		$options[] = JHTML::_ ('select.option', vmText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_DAILY'), 'day');
-		$options[] = JHTML::_ ('select.option', vmText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_WEEKLY'), 'week');
-		$options[] = JHTML::_ ('select.option', vmText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_MONTHLY'), 'month');
-		$options[] = JHTML::_ ('select.option', vmText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_YEARLY'), 'year');
-		//$listHTML = JHTML::_ ('select.genericlist', $options, 'intervals', 'class="inputbox" onchange="this.form.submit();" size="5"', 'text', 'value', $intervals);
-		$listHTML = JHTML::_ ('select.genericlist', $options, 'intervals', 'class="inputbox" size="6"', 'text', 'value', $intervals);
+		$options[] = JHtml::_ ('select.option', vmText::_ ('COM_VIRTUEMART_PRODUCT_S'), 'product_s');
+		$options[] = JHtml::_ ('select.option', vmText::_ ('COM_VIRTUEMART_ORDERS'), 'orders');
+		$options[] = JHtml::_ ('select.option', vmText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_DAILY'), 'day');
+		$options[] = JHtml::_ ('select.option', vmText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_WEEKLY'), 'week');
+		$options[] = JHtml::_ ('select.option', vmText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_MONTHLY'), 'month');
+		$options[] = JHtml::_ ('select.option', vmText::_ ('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_YEARLY'), 'year');
+		//$listHTML = JHtml::_ ('select.genericlist', $options, 'intervals', 'class="inputbox" onchange="this.form.submit();" size="5"', 'text', 'value', $intervals);
+		$listHTML = JHtml::_ ('select.genericlist', $options, 'intervals', 'class="inputbox" size="6"', 'text', 'value', $intervals);
 		return $listHTML;
 	}
 

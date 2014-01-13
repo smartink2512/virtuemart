@@ -75,7 +75,7 @@ AdminUIHelper::startAdminArea($this);
 			</th>
 			<th>
 			<?php echo $this->sort('ordering','COM_VIRTUEMART_FIELDMANAGER_REORDER') ?>
-			<?php echo JHTML::_('grid.order',  $this->userfieldsList ); ?>
+			<?php echo JHtml::_('grid.order',  $this->userfieldsList ); ?>
 			</th>
 			 <th><?php echo $this->sort('virtuemart_userfield_id', 'COM_VIRTUEMART_ID')  ?></th>
 		</tr>
@@ -88,8 +88,8 @@ AdminUIHelper::startAdminArea($this);
 			$coreField = (in_array($row->name, $this->lists['coreFields']));
 			$image = (JVM_VERSION===1) ? 'checked_out.png' : 'admin/checked_out.png';
 			$image = JHtml::_('image.administrator', $image, '/images/', null, null, vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'));
-			//$checked = '<div style="position: relative;">'.JHTML::_('grid.id', $i, null,$row->virtuemart_userfield_id);
-			$checked = JHTML::_('grid.id', $i ,$row->virtuemart_userfield_id,null,'virtuemart_userfield_id');
+			//$checked = '<div style="position: relative;">'.JHtml::_('grid.id', $i, null,$row->virtuemart_userfield_id);
+			$checked = JHtml::_('grid.id', $i ,$row->virtuemart_userfield_id,null,'virtuemart_userfield_id');
 			if ($coreField) $checked.='<span class="hasTip" style="position: absolute; margin-left:-3px;" title="'. vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>';
 			$checked .= '</div>';
 			// There is no reason not to allow moving of the core fields. We only need to disable deletion of them
@@ -98,7 +98,7 @@ AdminUIHelper::startAdminArea($this);
 				
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=userfields&task=edit&virtuemart_userfield_id=' . $row->virtuemart_userfield_id);
 			$required = $this->toggle($row->required, $i, 'toggle.required', $coreField);
-//			$published = JHTML::_('grid.published', $row, $i);
+//			$published = JHtml::_('grid.published', $row, $i);
 			$published = $this->toggle($row->published, $i, 'toggle.published', $coreField);
 			$registration = $this->toggle($row->registration, $i, 'toggle.registration', $coreField);
 			$shipment = $this->toggle($row->shipment, $i, 'toggle.shipment', $coreField);

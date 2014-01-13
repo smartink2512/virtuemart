@@ -41,7 +41,7 @@ if ($product_parent_id=VmRequest::getInt('product_parent_id', false))   $col_pro
 					<option value=""><?php echo vmText::sprintf( 'COM_VIRTUEMART_SELECT' ,  vmText::_('COM_VIRTUEMART_CATEGORY')) ; ?></option>
 					<?php echo $this->category_tree; ?>
 				</select>
-					 <?php echo JHTML::_('select.genericlist', $this->manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox" onchange="document.adminForm.submit(); return false;"', 'value', 'text',
+					 <?php echo JHtml::_('select.genericlist', $this->manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox" onchange="document.adminForm.submit(); return false;"', 'value', 'text',
 					 	$this->model->virtuemart_manufacturer_id );
 					?>
 
@@ -81,7 +81,7 @@ if ($product_parent_id=VmRequest::getInt('product_parent_id', false))   $col_pro
                 <th width="80px"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_MEDIA'); ?></th>
 		<th><?php echo $this->sort('product_sku') ?></th>
 		<th width="80px" ><?php echo $this->sort('product_price', 'COM_VIRTUEMART_PRODUCT_PRICE_TITLE') ; ?></th>
-<?php /*		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY', 'c.category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th> */ ?>
+<?php /*		<th><?php echo JHtml::_('grid.sort', 'COM_VIRTUEMART_CATEGORY', 'c.category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th> */ ?>
 <th><?php echo vmText::_( 'COM_VIRTUEMART_CATEGORY'); ?></th>
 		<!-- Only show reordering fields when a category ID is selected! -->
 		<?php
@@ -89,7 +89,7 @@ if ($product_parent_id=VmRequest::getInt('product_parent_id', false))   $col_pro
 		if( $this->virtuemart_category_id ) { ?>
 			<th width="50px">
 				<?php echo $this->sort('pc.ordering', 'COM_VIRTUEMART_FIELDMANAGER_REORDER'); ?>
-				<?php echo JHTML::_('grid.order', $this->productlist); //vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?>
+				<?php echo JHtml::_('grid.order', $this->productlist); //vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?>
 			</th>
 		<?php } ?>
 		<th><?php echo $this->sort('mf_name', 'COM_VIRTUEMART_MANUFACTURER_S') ; ?></th>
@@ -107,8 +107,8 @@ if ($product_parent_id=VmRequest::getInt('product_parent_id', false))   $col_pro
 		$k = 0;
 		$keyword = VmRequest::getCmd('keyword');
 		foreach ($this->productlist as $key => $product) {
-			$checked = JHTML::_('grid.id', $i , $product->virtuemart_product_id,null,'virtuemart_product_id');
-			$published = JHTML::_('grid.published', $product, $i );
+			$checked = JHtml::_('grid.id', $i , $product->virtuemart_product_id,null,'virtuemart_product_id');
+			$published = JHtml::_('grid.published', $product, $i );
 			$is_featured = $this->toggle($product->product_special, $i, 'toggle.product_special');
 			$link = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id;
 			?>
@@ -122,7 +122,7 @@ if ($product_parent_id=VmRequest::getInt('product_parent_id', false))   $col_pro
 				if(empty($product->product_name)){
 					$product->product_name = 'Language Missing id '.$product->virtuemart_product_id;
 				}
-				echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)); ?>
+				echo JHtml::_('link', JRoute::_($link), $product->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name)); ?>
 					<!-- </span>  -->
 				</td>
 
@@ -151,12 +151,12 @@ if ($product_parent_id=VmRequest::getInt('product_parent_id', false))   $col_pro
 						// Product list should be ordered
 						$this->model->addImages($product,1);
 						$img = '<span >('.$product->mediaitems.')</span>'.$product->images[0]->displayMediaThumb('class="vm_mini_image"',false );
-						//echo JHTML::_('link', $link, $img,  array('title' => vmText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name));
+						//echo JHtml::_('link', $link, $img,  array('title' => vmText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name));
 					} else {
-						//echo JHTML::_('link', $link, '<span class="icon-nofloat vmicon vmicon-16-media"></span> ('.$product->mediaitems.')', array('title' => vmText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name) );
+						//echo JHtml::_('link', $link, '<span class="icon-nofloat vmicon vmicon-16-media"></span> ('.$product->mediaitems.')', array('title' => vmText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name) );
 						$img = '<span class="icon-nofloat vmicon vmicon-16-media"></span> ('.$product->mediaitems.')';
 					}
-					echo JHTML::_('link', $link, $img,  array('title' => vmText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name));
+					echo JHtml::_('link', $link, $img,  array('title' => vmText::_('COM_VIRTUEMART_MEDIA_MANAGER').' '.$product->product_name));
 					?>
 					</td>
 				<!-- Product SKU -->
@@ -168,7 +168,7 @@ if ($product_parent_id=VmRequest::getInt('product_parent_id', false))   $col_pro
 					}
 				?></td>
 				<!-- Category name -->
-				<td><?php //echo JHTML::_('link', JRoute::_('index.php?view=category&task=edit&virtuemart_category_id='.$product->virtuemart_category_id.'&option=com_virtuemart'), $product->category_name);
+				<td><?php //echo JHtml::_('link', JRoute::_('index.php?view=category&task=edit&virtuemart_category_id='.$product->virtuemart_category_id.'&option=com_virtuemart'), $product->category_name);
 					echo $product->categoriesList;
 				?></td>
 				<!-- Reorder only when category ID is present -->
@@ -183,10 +183,10 @@ if ($product_parent_id=VmRequest::getInt('product_parent_id', false))   $col_pro
 					</td>
 				<?php }  ?>
 				<!-- Manufacturer name -->
-				<td><?php if ($product->virtuemart_manufacturer_id) { echo JHTML::_('link', JRoute::_('index.php?view=manufacturer&task=edit&virtuemart_manufacturer_id[]='.$product->virtuemart_manufacturer_id.'&option=com_virtuemart'), $product->mf_name); } ?></td>
+				<td><?php if ($product->virtuemart_manufacturer_id) { echo JHtml::_('link', JRoute::_('index.php?view=manufacturer&task=edit&virtuemart_manufacturer_id[]='.$product->virtuemart_manufacturer_id.'&option=com_virtuemart'), $product->mf_name); } ?></td>
 				<!-- Reviews -->
 				<?php $link = 'index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$product->virtuemart_product_id; ?>
-				<td align="center" ><?php echo JHTML::_('link', $link, $product->reviews); ?></td>
+				<td align="center" ><?php echo JHtml::_('link', $link, $product->reviews); ?></td>
 				<td align="center" >
 					<?php
 						echo $is_featured;

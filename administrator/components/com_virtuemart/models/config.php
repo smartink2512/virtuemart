@@ -66,7 +66,7 @@ class VirtueMartModelConfig extends VmModel {
 		}
 
 		$result = array();
-		$emptyOption = JHTML::_('select.option', '0', vmText::_('COM_VIRTUEMART_ADMIN_CFG_NO_OVERRIDE'));
+		$emptyOption = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_ADMIN_CFG_NO_OVERRIDE'));
 		$result[] = $emptyOption;
 
 		$alreadyAddedFile = array();
@@ -83,8 +83,8 @@ class VirtueMartModelConfig extends VmModel {
 						if ($path_info['extension'] == 'php' && !in_array($file,$alreadyAddedFile)) {
 							$alreadyAddedFile[] = $file;
 							//There is nothing to translate here
-// 							$result[] = JHTML::_('select.option', $file, $path_info['filename']);
-							$result[] = JHTML::_('select.option', $path_info['filename'], $path_info['filename']);
+// 							$result[] = JHtml::_('select.option', $file, $path_info['filename']);
+							$result[] = JHtml::_('select.option', $path_info['filename'], $path_info['filename']);
 						}
 					}
 				}
@@ -109,7 +109,7 @@ class VirtueMartModelConfig extends VmModel {
 			$fontxml = @simpleXML_load_file($file);
 			if ($fontxml) {
 				if (file_exists($dir . DS . $fontxml->filename . '.php')) {
-					$result[] = JHTML::_('select.option', $fontxml->filename, vmText::_($fontxml->fontname.' ('.$fontxml->fonttype.')'));
+					$result[] = JHtml::_('select.option', $fontxml->filename, vmText::_($fontxml->fontname.' ('.$fontxml->fonttype.')'));
 				} else {
 					vmError ('A font master file is missing: ' . $dir . DS . 	$fontxml->filename . '.php');
 				}
@@ -158,7 +158,7 @@ class VirtueMartModelConfig extends VmModel {
 				while (false !== ($file = readdir($handle))) {
 					if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
 						if (filetype($dir.DS.$file) != 'dir') {
-							$result[] = JHTML::_('select.option', $file, vmText::_(str_replace('.php', '', $file)));
+							$result[] = JHtml::_('select.option', $file, vmText::_(str_replace('.php', '', $file)));
 						}
 					}
 				}
@@ -183,7 +183,7 @@ class VirtueMartModelConfig extends VmModel {
 				if ($file != "." && $file != ".." && $file != '.svn') {
 					$info = pathinfo($file);
 					if ((filetype($dir.DS.$file) == 'file') && ($info['extension'] == 'php')) {
-						$result[] = JHTML::_('select.option', $file, vmText::_($file));
+						$result[] = JHtml::_('select.option', $file, vmText::_($file));
 					}
 				}
 			}
@@ -237,10 +237,10 @@ class VirtueMartModelConfig extends VmModel {
 
 		foreach ($jLangs as $jLang) {
 			$jlangTag = strtolower(strtr($jLang['tag'],'-','_'));
-			$activeLangs[] = JHTML::_('select.option', $jLang['tag'] , $jLang['name']) ;
+			$activeLangs[] = JHtml::_('select.option', $jLang['tag'] , $jLang['name']) ;
 		}
 
-		return JHTML::_('select.genericlist', $activeLangs, 'active_languages[]', 'size=10 multiple="multiple" data-placeholder="'.vmText::_('COM_VIRTUEMART_DRDOWN_NOTMULTILINGUAL').'"', 'value', 'text', $active_languages );// $activeLangs;
+		return JHtml::_('select.genericlist', $activeLangs, 'active_languages[]', 'size=10 multiple="multiple" data-placeholder="'.vmText::_('COM_VIRTUEMART_DRDOWN_NOTMULTILINGUAL').'"', 'value', 'text', $active_languages );// $activeLangs;
 	}
 
 
@@ -283,7 +283,7 @@ class VirtueMartModelConfig extends VmModel {
 			$text = vmText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
 
 			if ($type == 'browse_orderby_fields' or $type == 'browse_cat_orderby_field'){
-				$searchFields->select[] =  JHTML::_('select.option', $field, $text) ;
+				$searchFields->select[] =  JHtml::_('select.option', $field, $text) ;
 			}
 			$searchFields->checkbox .= '<li><input type="checkbox" id="' .$type.$fieldWithoutPrefix.$key. '" name="'.$type.'[]" value="' .$field. '" ' .$checked. ' /><label for="' .$type.$fieldWithoutPrefix.$key. '">' .$text. '</label></li>';
 		}

@@ -273,7 +273,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$options[] = array('value' => 'product_height', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_HEIGHT'));
 				$options[] = array('value' => 'product_weight', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_WEIGHT'));
 
-				$html .= JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', '', 'value', 'text', $field->customfield_value) . '</td><td>' . $priceInput;
+				$html .= JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', '', 'value', 'text', $field->customfield_value) . '</td><td>' . $priceInput;
 				return $html;
 				// 					return 'Automatic Childvariant creation (later you can choose here attributes to show, now product name) </td><td>';
 				break;
@@ -290,7 +290,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					}
 
 					$currentValue = $field->customfield_value;
-					return JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', NULL, 'value', 'text', $currentValue) . '</td><td>' . $priceInput;
+					return JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', NULL, 'value', 'text', $currentValue) . '</td><td>' . $priceInput;
 				} else{
 					return '<input type="text" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" /></td><td>' . $priceInput;
 					break;
@@ -314,7 +314,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$db = JFactory::getDBO();
 				$db->setQuery ($q);
 				$options = $db->loadObjectList ();
-				return JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', '', 'value', 'text', $field->customfield_value) . '</td><td>' . $priceInput;
+				return JHtml::_ ('select.genericlist', $options, 'field[' . $row . '][customfield_value]', '', 'value', 'text', $field->customfield_value) . '</td><td>' . $priceInput;
 				break;
 
 			case 'D':
@@ -374,8 +374,8 @@ class VirtueMartModelCustomfields extends VmModel {
 						$thumb = $this->displayCustomMedia ($media_id,'category');
 					}
 					$display = '<input type="hidden" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" />';
-					//return $display . JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . $field->customfield_value,FALSE), $thumb . ' ' . $category->category_name, array('title' => $category->category_name)) . $display;
-					$display .= JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . (int)$field->customfield_value,FALSE), '<span class="custom_related_image">'.$thumb.'</span><span class="custom_related_title">' . $category->category_name, array('title' => $category->category_name)).'</span>';
+					//return $display . JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . $field->customfield_value,FALSE), $thumb . ' ' . $category->category_name, array('title' => $category->category_name)) . $display;
+					$display .= JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . (int)$field->customfield_value,FALSE), '<span class="custom_related_image">'.$thumb.'</span><span class="custom_related_title">' . $category->category_name, array('title' => $category->category_name)).'</span>';
 					return $display;
 				}
 				else {
@@ -398,8 +398,8 @@ class VirtueMartModelCustomfields extends VmModel {
 					$thumb = $this->displayCustomMedia (0).' ';
 				}
 				$display = '<input type="hidden" value="' . $field->customfield_value . '" name="field[' . $row . '][customfield_value]" />';
-				//$display .= JHTML::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
-				$display .= JHTML::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, '<span class="custom_related_image">'.$thumb.'</span><span class="custom_related_title">'. $related->product_name, array('title' => $related->product_name,'target'=>'blank')).'</span>';
+				//$display .= JHtml::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
+				$display .= JHtml::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, '<span class="custom_related_image">'.$thumb.'</span><span class="custom_related_title">'. $related->product_name, array('title' => $related->product_name,'target'=>'blank')).'</span>';
 				return $display;
 
 		}
@@ -497,7 +497,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						}
 					}
 					//if($customfield->is_list){
-					$html .= JHTML::_ ('select.genericlist', $options, $fieldname, 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="inputbox"', "value", "text",
+					$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="inputbox"', "value", "text",
 						JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $selected));
 					//} else {
 					//the idea is that we can provide instead of a list a multi add possibility, atm this is possible, but needs another layout, we may connect it
@@ -552,7 +552,7 @@ class VirtueMartModelCustomfields extends VmModel {
 							}
 
 							$currentValue = $customfield->customfield_value;
-							$customfield->display = JHTML::_ ('select.genericlist', $options, $customProductDataName, NULL, 'value', 'text', $currentValue);
+							$customfield->display = JHtml::_ ('select.genericlist', $options, $customProductDataName, NULL, 'value', 'text', $currentValue);
 
 							//$customfield->display =  '<input type="text" readonly value="' . vmText::_ ($customfield->customfield_value) . '" name="'.$customProductDataName.'" /> ' . vmText::_ ('COM_VIRTUEMART_CART_PRICE') . $price . ' ';
 						} else {
@@ -624,7 +624,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						if ($media_id = $db->loadResult ()) {
 							$thumb = $this->displayCustomMedia ($media_id,'category');
 						}
-						$customfield->display = JHTML::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id), $thumb . ' ' . $category->category_name, array('title' => $category->category_name));
+						$customfield->display = JHtml::link (JRoute::_ ('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id), $thumb . ' ' . $category->category_name, array('title' => $category->category_name));
 					}
 					break;
 				case 'R':
@@ -643,7 +643,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$thumb = $this->displayCustomMedia (0).' ';
 					}
 
-					$customfield->display = JHTML::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
+					$customfield->display = JHtml::link (juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $related->virtuemart_product_id . '&virtuemart_category_id=' . $related->virtuemart_category_id, $thumb   . $related->product_name, array('title' => $related->product_name,'target'=>'blank'));
 					//
 					break;
 			}

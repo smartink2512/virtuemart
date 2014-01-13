@@ -287,7 +287,7 @@ class VmView extends JViewLegacy {
 			}
 			JFactory::getDocument()->addStyleDeclaration($flagCss);
 
-			$langList = JHTML::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox"', 'value', 'text', $selectedLangue , 'vmlang');
+			$langList = JHtml::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox"', 'value', 'text', $selectedLangue , 'vmlang');
 			$this->assignRef('langList',$langList);
 			$this->assignRef('lang',$lang);
 
@@ -392,7 +392,7 @@ class VmView extends JViewLegacy {
 
 	function sort($orderby ,$name=null ){
 		if (!$name) $name= 'COM_VIRTUEMART_'.strtoupper ($orderby);
-		return JHTML::_('grid.sort' , vmText::_($name) , $orderby , $this->lists['filter_order_Dir'] , $this->lists['filter_order']);
+		return JHtml::_('grid.sort' , vmText::_($name) , $orderby , $this->lists['filter_order_Dir'] , $this->lists['filter_order']);
 	}
 
 	public function addStandardHiddenToForm($controller=null, $task=''){
@@ -411,7 +411,7 @@ class VmView extends JViewLegacy {
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="controller" value="'.$controller.'" />
 		<input type="hidden" name="view" value="'.$controller.'" />
-		'. JHTML::_( 'form.token' );
+		'. JHtml::_( 'form.token' );
 	}
 
 	static function getToolbar($vmView) {
@@ -474,7 +474,7 @@ class VmView extends JViewLegacy {
 
 		if (JVM_VERSION>1) {
 			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
-				.JHTML::_('image', 'admin/' .$img, $alt, null, true) .'</a>');
+				.JHtml::_('image', 'admin/' .$img, $alt, null, true) .'</a>');
 		} else {
 			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
 				.'<img src="images/'. $img .'" border="0" alt="'. $alt .'" /></a>');

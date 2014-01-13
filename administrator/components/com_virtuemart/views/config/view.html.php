@@ -103,7 +103,7 @@ class VirtuemartViewConfig extends VmView {
 
 			$text = vmText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
 
-			$orderByFieldsCat[] =  JHTML::_('select.option', $field, $text) ;
+			$orderByFieldsCat[] =  JHtml::_('select.option', $field, $text) ;
 		}
 
 

@@ -38,7 +38,7 @@ echo $this->langList ?>
 					<td>
 						<?php
 							$categoryShared = isset($this->relationInfo->category_shared) ? $this->relationInfo->category_shared : 1;
-							echo JHTML::_('select.booleanlist', 'shared', $categoryShared, $categoryShared);
+							echo JHtml::_('select.booleanlist', 'shared', $categoryShared, $categoryShared);
 						?>
 					</td>
 				</tr>

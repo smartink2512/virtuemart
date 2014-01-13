@@ -188,7 +188,7 @@ class VirtuemartViewCustom extends VmView {
 
 		$options = array();
 		foreach ($field_types as $optionName=> $langkey) {
-			$options[] = JHTML::_ ('select.option', $optionName, vmText::_ ($langkey));
+			$options[] = JHtml::_ ('select.option', $optionName, vmText::_ ($langkey));
 		}
 		return $options;
 	}

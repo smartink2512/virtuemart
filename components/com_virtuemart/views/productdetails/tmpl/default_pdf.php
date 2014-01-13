@@ -103,7 +103,7 @@ if (empty ( $this->product )) {
 				/* TO DO add width and height to the image */
 				if (!empty($this->product->product_availability)) { ?>
 				<div class="availability">
-					<?php echo JHTML::image(JURI::root().VmConfig::get('assets_general_path').'images/availability/'.$this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
+					<?php echo JHtml::image(JURI::root().VmConfig::get('assets_general_path').'images/availability/'.$this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
 				</div>
 				<?php } ?>
 
@@ -122,7 +122,7 @@ if (empty ( $this->product )) {
 
 					/* Avoid JavaScript on PDF Output */
 					if (strtolower(VmRequest::getCmd('output')) == "pdf"){
-						echo JHTML::_('link', $link, $text);
+						echo JHtml::_('link', $link, $text);
 					} else { ?>
 						<span class="bold"><?php echo vmText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') ?></span><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a>
 				<?PHP } ?>
@@ -151,7 +151,7 @@ if (empty ( $this->product )) {
 			?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
 			<?php if ($field->custom_title != $custom_title) { ?>
 				<span class="product-fields-title" ><strong><?php echo vmText::_($field->custom_title); ?></strong></span>
-				<?php //echo JHTML::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png');
+				<?php //echo JHtml::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png');
 			} ?>
 			<span class="product-field-display"><?php echo $field->display ?></span>
 			<span class="product-field-desc"><?php echo vmText::_($field->custom_field_desc) ?></span>
@@ -198,7 +198,7 @@ if (empty ( $this->product )) {
 		$showall = VmRequest::getBool('showall', false);
 		for ($num=0 ; $num <= $maxrating; $num++  ) {
 			$title = (vmText::_("VM_RATING_TITLE").' : '. $num . '/' . $maxrating) ;
-			$stars[] = JHTML::image($starsPath.$num.'.gif', vmText::_($num.'_STARS'), array("title" => $title) );
+			$stars[] = JHtml::image($starsPath.$num.'.gif', vmText::_($num.'_STARS'), array("title" => $title) );
 		} ?>
 
 	<div class="customer-reviews">
@@ -224,7 +224,7 @@ if (empty ( $this->product )) {
 				<?php // Loop through all reviews
 				if (!empty($this->rating_reviews)) { ?>
 				<div class="<?php echo $color ?>">
-					<span class="date"><?php echo JHTML::date($review->created_on, vmText::_('DATE_FORMAT_LC')); ?></span>
+					<span class="date"><?php echo JHtml::date($review->created_on, vmText::_('DATE_FORMAT_LC')); ?></span>
 					<?php //echo $stars[ $review->review_rating ] //Attention the review rating is the rating of the review itself, rating for the product is the vote !?>
 					<blockquote><?php echo $review->comment; ?></blockquote>
 					<span class="bold"><?php echo $review->customer ?></span>
@@ -243,7 +243,7 @@ if (empty ( $this->product )) {
 				/* Show all reviews */
 				if (!$showall && count($this->rating_reviews) >= $ratingsShow ) {
 					$attribute = array('class'=>'details', 'title'=>vmText::_('COM_VIRTUEMART_MORE_REVIEWS'));
-					echo JHTML::link($this->more_reviews, vmText::_('COM_VIRTUEMART_MORE_REVIEWS'),$attribute);
+					echo JHtml::link($this->more_reviews, vmText::_('COM_VIRTUEMART_MORE_REVIEWS'),$attribute);
 				}
 			} ?>
 		<div class="clear"></div>

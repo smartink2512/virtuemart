@@ -1248,7 +1248,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if ($name != $this->_name || $type != 'vmpayment') {
 			return FALSE;
 		}
-		$action = VmRequest::getWord('action');
+		$action = VmRequest::getCmd('action');
 		$virtuemart_paymentmethod_id = VmRequest::getInt('virtuemart_paymentmethod_id');
 		//Load the method
 		if (!($this->_currentMethod = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {

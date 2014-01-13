@@ -22,8 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 //AdminMenuHelper::startAdminArea($this);
 // vmdebug('User edit',$this);
 // Implement Joomla's form validation
-JHTML::_('behavior.formvalidation');
-JHTML::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/'); // VM_THEMEURL
+JHtml::_('behavior.formvalidation');
+JHtml::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/'); // VM_THEMEURL
 ?>
 <style type="text/css">
 .invalid {
@@ -124,6 +124,6 @@ if($this->userDetails->virtuemart_user_id!=0) {
 ?>
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="controller" value="user" />
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo JHtml::_( 'form.token' ); ?>
 </form>
 

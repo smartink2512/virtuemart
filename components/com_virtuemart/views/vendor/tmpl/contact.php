@@ -102,7 +102,7 @@ defined('_JEXEC') or die('Restricted access');
 				<input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->vendor->virtuemart_vendor_id ?>" />
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="hidden" name="task" value="mailAskquestion" />
-				<?php echo JHTML::_( 'form.token' ); ?>
+				<?php echo JHtml::_( 'form.token' ); ?>
 			</form>
 
 		</div>

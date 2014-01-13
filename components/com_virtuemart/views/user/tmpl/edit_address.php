@@ -19,8 +19,8 @@
 defined ('_JEXEC') or die('Restricted access');
 // vmdebug('user edit address',$this->userFields['fields']);
 // Implement Joomla's form validation
-JHTML::_ ('behavior.formvalidation');
-JHTML::stylesheet ('vmpanels.css', JURI::root () . 'components/com_virtuemart/assets/css/');
+JHtml::_ ('behavior.formvalidation');
+JHtml::stylesheet ('vmpanels.css', JURI::root () . 'components/com_virtuemart/assets/css/');
 
 if ($this->fTask === 'savecartuser') {
 	$rtask = 'registercartuser';
@@ -160,6 +160,6 @@ if ($this->userDetails->JUser->get ('id')) {
 <?php if (!empty($this->virtuemart_userinfo_id)) {
 	echo '<input type="hidden" name="shipto_virtuemart_userinfo_id" value="' . (int)$this->virtuemart_userinfo_id . '" />';
 }
-echo JHTML::_ ('form.token');
+echo JHtml::_ ('form.token');
 ?>
 </form>

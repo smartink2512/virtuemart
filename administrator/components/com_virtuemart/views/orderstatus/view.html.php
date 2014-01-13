@@ -65,7 +65,7 @@ class VirtuemartViewOrderstatus extends VmView {
 				$qry = 'SELECT ordering AS value, order_status_name AS text'
 				. ' FROM #__virtuemart_orderstates'
 				. ' ORDER BY ordering';
-				$ordering = JHTML::_('list.specificordering',  $orderStatus, $orderStatus->virtuemart_orderstate_id, $qry);
+				$ordering = JHtml::_('list.specificordering',  $orderStatus, $orderStatus->virtuemart_orderstate_id, $qry);
 				$this->assignRef('ordering', $ordering);
 
 
@@ -76,7 +76,7 @@ class VirtuemartViewOrderstatus extends VmView {
 			// Vendor selection
 			$vendor_model = VmModel::getModel('vendor');
 			$vendor_list = $vendor_model->getVendors();
-			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $orderStatus->virtuemart_vendor_id);
+			$lists['vendors'] = JHtml::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $orderStatus->virtuemart_vendor_id);
 
 
 			$this->assignRef('orderStatus', $orderStatus);

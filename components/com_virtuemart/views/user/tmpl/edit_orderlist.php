@@ -49,10 +49,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<a href="<?php echo $editlink; ?>" rel="nofollow"><?php echo $row->order_number; ?></a>
 				</td>
 				<td align="left">
-					<?php echo JHTML::_('date', $row->created_on); ?>
+					<?php echo JHtml::_('date', $row->created_on); ?>
 				</td>
 				<td align="left">
-					<?php echo JHTML::_('date', $row->modified_on); ?>
+					<?php echo JHtml::_('date', $row->modified_on); ?>
 				</td>
 				<td align="left">
 					<?php echo ShopFunctions::getOrderStatusName($row->order_status); ?>

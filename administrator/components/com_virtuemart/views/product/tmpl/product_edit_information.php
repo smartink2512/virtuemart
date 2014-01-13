@@ -145,7 +145,7 @@ $i=0;
 					<?php echo vmText::_('COM_VIRTUEMART_PRODUCT_DETAILS_PAGE') ?>
 					</th>
 					<td colspan="3">
-						<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'value', 'text', $this->product->layout); ?>
+						<?php echo JHtml::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'value', 'text', $this->product->layout); ?>
 					</td>
 				</tr>
             </table>
@@ -189,7 +189,7 @@ $i=0;
 			$this->product->allPrices[$k] = array_merge($this->product->allPrices[$k],$this->calculatedPrices);
 
 			$currency_model = VmModel::getModel ('currency');
-			$this->lists['currencies'] = JHTML::_ ('select.genericlist', $currencies, 'mprices[product_currency][' . $this->priceCounter . ']', '', 'virtuemart_currency_id', 'currency_name', $this->product->allPrices[$k]['product_currency']);
+			$this->lists['currencies'] = JHtml::_ ('select.genericlist', $currencies, 'mprices[product_currency][' . $this->priceCounter . ']', '', 'virtuemart_currency_id', 'currency_name', $this->product->allPrices[$k]['product_currency']);
 
 			$DBTax = ''; //vmText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
 			foreach ($calculator->rules['DBTax'] as $rule) {
@@ -308,7 +308,7 @@ $i=0;
 				<td width="71%"> <?php
 				if ($this->product->product_parent_id) {
 					$result = vmText::_('COM_VIRTUEMART_EDIT').' ' . $this->product_parent->product_name;
-					echo ' | '.JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id),
+					echo ' | '.JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id),
 							$this->product_parent->product_name, array('title' => $result)).' | '.$this->parentRelation;
 				}
 				?>
@@ -354,7 +354,7 @@ $i=0;
 							 ?>
 							<tr class="row<?php echo $i ?>">
 								<td>
-									<?php echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$child->virtuemart_product_id), $child->slug, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name)) ?>
+									<?php echo JHtml::_('link', JRoute::_('index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$child->virtuemart_product_id), $child->slug, array('title' => vmText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name)) ?>
 									<input type="hidden" name="childs[<?php echo $child->virtuemart_product_id ?>][slug]" id="child<?php echo $child->virtuemart_product_id ?>slug" value="<?php echo $child->slug ?>" />
 								</td>
 								<td><input type="text" class="inputbox" name="childs[<?php echo $child->virtuemart_product_id ?>][product_name]" id="child<?php echo $child->virtuemart_product_id ?>product_name" size="32" value="<?php echo htmlspecialchars($child->product_name) ?>" /></td>

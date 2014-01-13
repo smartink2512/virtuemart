@@ -1131,16 +1131,16 @@ class VmPagination extends JPagination {
 			}
 
 			if(empty($limits)){
-				$limits[15] = JHTML::_('select.option', 15);
-				$limits[30] = JHTML::_('select.option', 30);
-				$limits[50] = JHTML::_('select.option', 50);
-				$limits[100] = JHTML::_('select.option', 100);
-				$limits[200] = JHTML::_('select.option', 200);
-				$limits[400] = JHTML::_('select.option', 400);
+				$limits[15] = JHtml::_('select.option', 15);
+				$limits[30] = JHtml::_('select.option', 30);
+				$limits[50] = JHtml::_('select.option', 50);
+				$limits[100] = JHtml::_('select.option', 100);
+				$limits[200] = JHtml::_('select.option', 200);
+				$limits[400] = JHtml::_('select.option', 400);
 			}
 
 			if(!array_key_exists($this->limit,$limits)){
-				$limits[$this->limit] = JHTML::_('select.option', $this->limit);
+				$limits[$this->limit] = JHtml::_('select.option', $this->limit);
 				ksort($limits);
 			}
 			$namespace = '';
@@ -1148,7 +1148,7 @@ class VmPagination extends JPagination {
 				$namespace = 'Joomla.';
 			}
 
-			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="'.$namespace.'submitform();"', 'value', 'text', $selected);
+			$html = JHtml::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="'.$namespace.'submitform();"', 'value', 'text', $selected);
 		} else {
 
 			$getArray = VmRequest::getRequest();
@@ -1182,18 +1182,18 @@ class VmPagination extends JPagination {
 			if(empty($limits) or !is_array($limits)){
 				if($this->_perRow===1) $this->_perRow = 5;
 				$limits[$this->_perRow * 5] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 5, false) ,$this->_perRow * 5);
-				$limits[$this->_perRow * 10] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 10, false) , $this->_perRow * 10 );
-				$limits[$this->_perRow * 20] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 20, false) , $this->_perRow * 20 );
-				$limits[$this->_perRow * 50] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 50, false) , $this->_perRow * 50 );
+				$limits[$this->_perRow * 10] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 10, false) , $this->_perRow * 10 );
+				$limits[$this->_perRow * 20] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 20, false) , $this->_perRow * 20 );
+				$limits[$this->_perRow * 50] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 50, false) , $this->_perRow * 50 );
 			}
 			if(!array_key_exists($this->limit,$limits)){
-				$limits[$this->limit] = JHTML::_('select.option', JRoute::_( $link.'&limit='.$this->limit,false),$this->limit);
+				$limits[$this->limit] = JHtml::_('select.option', JRoute::_( $link.'&limit='.$this->limit,false),$this->limit);
 				ksort($limits);
 			}
 			$selected= JRoute::_( $link.'&limit='. $selected,false) ;
 			$js = 'onchange="window.top.location.href=this.options[this.selectedIndex].value"';
 
-			$html = JHTML::_('select.genericlist',  $limits, '', 'class="inputbox" size="1" '.$js , 'value', 'text', $selected);
+			$html = JHtml::_('select.genericlist',  $limits, '', 'class="inputbox" size="1" '.$js , 'value', 'text', $selected);
 		}
 		return $html;
 	}

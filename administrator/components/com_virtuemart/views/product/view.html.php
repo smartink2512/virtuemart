@@ -128,14 +128,14 @@ class VirtuemartViewProduct extends VmView {
 				/*if(empty($product->product_currency)){
 					$product->product_currency = $vendor->vendor_currency;
 				}*/
-				//$currencies = JHTML::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'virtuemart_currency_id', 'currency_name', $product->product_currency);
+				//$currencies = JHtml::_('select.genericlist', $currency_model->getCurrencies(), 'product_currency', '', 'virtuemart_currency_id', 'currency_name', $product->product_currency);
 				//$currency = $currency_model->getCurrency($product->product_currency);
 				//$this->assignRef('product_currency', $currency->currency_symbol);
 				$currency = $currency_model->getCurrency($vendor->vendor_currency);
 				$this->vendor_currency = $currency->currency_symbol;
 
 				if(count($this->manufacturers)>0 ){
-					$lists['manufacturers'] = JHTML::_('select.genericlist', $this->manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
+					$lists['manufacturers'] = JHtml::_('select.genericlist', $this->manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
 				}
 
 				$lists['product_weight_uom'] = ShopFunctions::renderWeightUnitList('product_weight_uom',$task=='add'? VmConfig::get('weight_unit_default'): $product->product_weight_uom);
@@ -164,7 +164,7 @@ class VirtuemartViewProduct extends VmView {
 				$customModel = VmModel::getModel ('custom');
 				$customsList = $customModel->getCustomsList ();
 				$attribs='style= "width: 300px;"';
-				$customlist = JHTML::_('select.genericlist', $customsList,'customlist', $attribs);
+				$customlist = JHtml::_('select.genericlist', $customsList,'customlist', $attribs);
 
 
 
@@ -290,7 +290,7 @@ class VirtuemartViewProduct extends VmView {
 
 				if($product_parent){
 					$title='PRODUCT_CHILDREN_LIST' ;
-					$link_to_parent =  JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$product_parent->virtuemart_product_id.'&option=com_virtuemart'), $product_parent->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT_PARENT').' '.$product_parent->product_name));
+					$link_to_parent =  JHtml::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$product_parent->virtuemart_product_id.'&option=com_virtuemart'), $product_parent->product_name, array('title' => vmText::_('COM_VIRTUEMART_EDIT_PARENT').' '.$product_parent->product_name));
 					$msg= vmText::_('COM_VIRTUEMART_PRODUCT_OF'). " ".$link_to_parent;
 				} else {
 					$title='PRODUCT_CHILDREN_LIST' ;
@@ -411,13 +411,13 @@ class VirtuemartViewProduct extends VmView {
 		$discounts = VirtueMartModelCalc::getDiscounts();
 
 		$discountrates = array();
-		$discountrates[] = JHTML::_('select.option', '-1', vmText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_NONE'), 'product_discount_id' );
-		$discountrates[] = JHTML::_('select.option', '0', vmText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_NO_SPECIAL'), 'product_discount_id' );
-		//		$discountrates[] = JHTML::_('select.option', 'override', vmText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_OVERRIDE'), 'product_discount_id');
+		$discountrates[] = JHtml::_('select.option', '-1', vmText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_NONE'), 'product_discount_id' );
+		$discountrates[] = JHtml::_('select.option', '0', vmText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_NO_SPECIAL'), 'product_discount_id' );
+		//		$discountrates[] = JHtml::_('select.option', 'override', vmText::_('COM_VIRTUEMART_PRODUCT_DISCOUNT_OVERRIDE'), 'product_discount_id');
 		foreach($discounts as $discount){
-			$discountrates[] = JHTML::_('select.option', $discount->virtuemart_calc_id, $discount->calc_name, 'product_discount_id');
+			$discountrates[] = JHtml::_('select.option', $discount->virtuemart_calc_id, $discount->calc_name, 'product_discount_id');
 		}
-		$listHTML = JHTML::_('Select.genericlist', $discountrates, $name, '', 'product_discount_id', 'text', $selected );
+		$listHTML = JHtml::_('Select.genericlist', $discountrates, $name, '', 'product_discount_id', 'text', $selected );
 		return $listHTML;
 
 	}
@@ -428,7 +428,7 @@ class VirtuemartViewProduct extends VmView {
         $db->setQuery(' SELECT COUNT( * ) FROM `#__virtuemart_products` WHERE `product_parent_id` ='.$product_id);
 		if ($result = $db->loadResult()){
 			$result = vmText::sprintf('COM_VIRTUEMART_X_CHILD_PRODUCT', $result);
-			echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_id.'&option=com_virtuemart'), $result, array('title' => vmText::sprintf('COM_VIRTUEMART_PRODUCT_LIST_X_CHILDREN',$product_name) ));
+			echo JHtml::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_id.'&option=com_virtuemart'), $result, array('title' => vmText::sprintf('COM_VIRTUEMART_PRODUCT_LIST_X_CHILDREN',$product_name) ));
 		}
 	}
 
@@ -438,7 +438,7 @@ class VirtuemartViewProduct extends VmView {
 		$db->setQuery(' SELECT * FROM `#__virtuemart_products_'.VmConfig::$vmlang.'` as l JOIN `#__virtuemart_products` using (`virtuemart_product_id`) WHERE `virtuemart_product_id` = '.$product_parent_id);
 		if ($parent = $db->loadObject()){
 			$result = vmText::sprintf('COM_VIRTUEMART_LIST_CHILDREN_FROM_PARENT', $parent->product_name);
-			echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.'&option=com_virtuemart'), $parent->product_name, array('title' => $result));
+			echo JHtml::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.'&option=com_virtuemart'), $parent->product_name, array('title' => $result));
 		}
 	}
 

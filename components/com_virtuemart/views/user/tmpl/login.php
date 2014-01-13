@@ -39,7 +39,7 @@ $user = JFactory::getUser();
 
 if ($this->show and $user->id == 0  ) {
 JHtml::_('behavior.formvalidation');
-JHTML::_ ( 'behavior.modal' );
+JHtml::_ ( 'behavior.modal' );
 
 
 //$uri = JFactory::getURI();
@@ -61,7 +61,7 @@ JHTML::_ ( 'behavior.modal' );
                 ';
         $document = JFactory::getDocument();
         $document->addScriptDeclaration($langScript);
-        JHTML::_('script', 'openid.js');
+        JHtml::_('script', 'openid.js');
     }
 
     $html = '';
@@ -178,7 +178,7 @@ JHTML::_ ( 'behavior.modal' );
         <?php } ?>
         <input type="hidden" name="option" value="<?php echo $comUserOption ?>" />
         <input type="hidden" name="return" value="<?php echo base64_encode($url) ?>" />
-        <?php echo JHTML::_('form.token'); ?>
+        <?php echo JHtml::_('form.token'); ?>
     </form>
 
 <?php  } else if ( $user->id ) { ?>

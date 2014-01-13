@@ -29,7 +29,7 @@ if (empty($this->vendor)) {
 $link = JURI::root().'index.php?option=com_virtuemart';
 
 echo '<br/><br/>';
-//$link='<b>'.JHTML::_('link', JURI::root().$link, $this->vendor->vendor_name).'</b> ';
+//$link='<b>'.JHtml::_('link', JURI::root().$link, $this->vendor->vendor_name).'</b> ';
 
 //	echo vmText::_('COM_VIRTUEMART_MAIL_VENDOR_TITLE').$this->vendor->vendor_name.'<br/>';
 /* GENERAL FOOTER FOR ALL MAILS */

@@ -284,7 +284,7 @@ class VirtuemartViewCategory extends VmView {
 		if (!empty($tpl)) {
 			$format = $tpl;
 		} else {
-			$format = vmRequest::getWord('format', 'html');
+			$format = vmRequest::getCmd('format', 'html');
 		}
 		if ($format == 'html') {
 
@@ -319,7 +319,7 @@ class VirtuemartViewCategory extends VmView {
 				$this->_db->setQuery('SELECT `custom_value` as virtuemart_custom_id,`custom_value` as custom_title FROM `#__virtuemart_product_customfields` WHERE virtuemart_custom_id='.$selected->virtuemart_custom_id);
 				 $valueOptions= $this->_db->loadAssocList();
 				 $valueOptions = array_merge(array($emptyOption), $valueOptions);
-				$this->searchCustomValues .= vmText::_($selected->custom_title).' '.JHTML::_('select.genericlist', $valueOptions, 'customfields['.$selected->virtuemart_custom_id.']', 'class="inputbox"', 'virtuemart_custom_id', 'custom_title', 0);
+				$this->searchCustomValues .= vmText::_($selected->custom_title).' '.JHtml::_('select.genericlist', $valueOptions, 'customfields['.$selected->virtuemart_custom_id.']', 'class="inputbox"', 'virtuemart_custom_id', 'custom_title', 0);
 			}
 		}
 
@@ -332,7 +332,7 @@ class VirtuemartViewCategory extends VmView {
 			$this->options = array_merge(array($emptyOption), $this->options);
 			// render List of available groups
 			vmJsApi::chosenDropDowns();
-			$this->searchCustomList = vmText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHTML::_('select.genericlist',$this->options, 'custom_parent_id', 'class="inputbox vm-chzn-select"', 'virtuemart_custom_id', 'custom_title', $this->custom_parent_id);
+			$this->searchCustomList = vmText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHtml::_('select.genericlist',$this->options, 'custom_parent_id', 'class="inputbox vm-chzn-select"', 'virtuemart_custom_id', 'custom_title', $this->custom_parent_id);
 		} else {
 			$this->searchCustomList = '';
 		}

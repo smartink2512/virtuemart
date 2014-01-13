@@ -148,7 +148,7 @@ foreach ($this->cart->products as $pkey => $prow) {
 			?>
 						</span>
 		<?php } ?>
-		<?php echo JHTML::link ($prow->url, $prow->product_name);
+		<?php echo JHtml::link ($prow->url, $prow->product_name);
 			echo $this->customfieldsModel->CustomsFieldCartDisplay ($prow);
 		 ?>
 
@@ -248,7 +248,7 @@ if (VmConfig::get ('coupons_enable')) {
 <tr class="sectiontableentry2">
 <td colspan="4" align="left">
 	<?php if (!empty($this->layoutName) && $this->layoutName == 'default') {
-	// echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_coupon',$this->useXHTML,$this->useSSL), vmText::_('COM_VIRTUEMART_CART_EDIT_COUPON'));
+	// echo JHtml::_('link', JRoute::_('index.php?view=cart&task=edit_coupon',$this->useXHTML,$this->useSSL), vmText::_('COM_VIRTUEMART_CART_EDIT_COUPON'));
 	echo $this->loadTemplate ('coupon');
 }
 	?>
@@ -351,7 +351,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 			echo $this->loadTemplate('shipment');
 			$this->setLayout($previouslayout);
 		} else {
-			echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_shipment', $this->useXHTML, $this->useSSL), $this->select_shipment_text, 'class=""');
+			echo JHtml::_('link', JRoute::_('index.php?view=cart&task=edit_shipment', $this->useXHTML, $this->useSSL), $this->select_shipment_text, 'class=""');
 		}
 	} else {
 		echo vmText::_ ('COM_VIRTUEMART_CART_SHIPPING');
@@ -382,7 +382,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 				echo $this->loadTemplate('payment');
 				$this->setLayout($previouslayout);
 			} else {
-				echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment', $this->useXHTML, $this->useSSL), $this->select_payment_text, 'class=""');
+				echo JHtml::_('link', JRoute::_('index.php?view=cart&task=editpayment', $this->useXHTML, $this->useSSL), $this->select_payment_text, 'class=""');
 			}
 		} else {
 		echo vmText::_ ('COM_VIRTUEMART_CART_PAYMENT');

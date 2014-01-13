@@ -46,7 +46,7 @@ class FileUtilities {
 			}
 			$list[] = array('file' => basename($filename, '.php'), 'fileName' => $filename);
 		}
-		return JHTML::_('select.genericlist', $list, 'file', '', 'file', 'fileName', $preselected);
+		return JHtml::_('select.genericlist', $list, 'file', '', 'file', 'fileName', $preselected);
 	}
 
 	/**
@@ -314,7 +314,7 @@ class vmParameters extends JParameter {
 		if ($type == 'spacer' || $type == 'checkbox') {
 			$result[0] = '&nbsp;';
 		} else {
-			//			$result[0] = JHTML::tooltip( addslashes( $description ), addslashes( $result[0] ), '', '', $result[0], '#', 0 );
+			//			$result[0] = JHtml::tooltip( addslashes( $description ), addslashes( $result[0] ), '', '', $result[0], '#', 0 );
 			//$result[0] = $description;
 		}
 
@@ -329,8 +329,8 @@ class vmParameters extends JParameter {
 		}
 
 		if ($description) {
-			$result[2] = JHTML::tooltip($description, $result[0], '', $result[0]);
-			//$result[2] = JHTML::tooltip( $description);
+			$result[2] = JHtml::tooltip($description, $result[0], '', $result[0]);
+			//$result[2] = JHtml::tooltip( $description);
 			//			$result[2] =  $description;
 		} else {
 			$result[2] = '';
@@ -627,7 +627,7 @@ class vmParameters extends JParameter {
 		$key = ($node->attributes('key_field') ? $node->attributes('key_field') : 'value');
 		$val = ($node->attributes('value_field') ? $node->attributes('value_field') : $name);
 
-		return JHTML::_('select.genericlist', $db->loadObjectList(), '' . $control_name . '[' . $name . ']', 'class="inputbox"', $key, $val, $value, $control_name . $name);
+		return JHtml::_('select.genericlist', $db->loadObjectList(), '' . $control_name . '[' . $name . ']', 'class="inputbox"', $key, $val, $value, $control_name . $name);
 	}
 
 }

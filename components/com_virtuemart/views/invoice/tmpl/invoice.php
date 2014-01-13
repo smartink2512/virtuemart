@@ -19,7 +19,7 @@
 //
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/assets/css/');
+JHtml::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/assets/css/');
 if ($this->_layout == "invoice") {
     $document = JFactory::getDocument();
     $document->setTitle(vmText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') . ' ' . $this->orderDetails['details']['BT']->order_number . ' ' . $this->vendor->vendor_store_name);

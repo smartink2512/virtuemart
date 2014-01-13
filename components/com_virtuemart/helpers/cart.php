@@ -1237,7 +1237,7 @@ class VirtueMartCart {
 					$product -> quantity = $productdata['quantity'];
 
 					// No full link because Mail want absolute path and in shop is better relative path
-					$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHTML::link($url, $product->product_name);
+					$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHtml::link($url, $product->product_name);
 					$product->cart_item_id = $k ;
 
 					$product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
@@ -1472,7 +1472,7 @@ class VirtueMartCart {
 			$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$category_id, FALSE);
 
 			// @todo Add variants
-			$data->products[$i]['product_name'] = JHTML::link($url, $product->product_name);
+			$data->products[$i]['product_name'] = JHtml::link($url, $product->product_name);
 
 			// Add the variants
 			//if (!is_numeric($priceKey)) {

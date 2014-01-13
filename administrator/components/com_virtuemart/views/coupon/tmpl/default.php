@@ -57,7 +57,7 @@ AdminUIHelper::startAdminArea($this);
 	    for ($i=0, $n=count($this->coupons); $i < $n; $i++) {
 		$row = $this->coupons[$i];
 
-		$checked = JHTML::_('grid.id', $i, $row->virtuemart_coupon_id);
+		$checked = JHtml::_('grid.id', $i, $row->virtuemart_coupon_id);
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=coupon&task=edit&cid[]=' . $row->virtuemart_coupon_id);
 		?>
 	    <tr class="row<?php echo $k; ?>">
@@ -115,7 +115,7 @@ AdminUIHelper::startAdminArea($this);
     <input type="hidden" name="view" value="coupon" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
-    <?php echo JHTML::_( 'form.token' ); ?>
+    <?php echo JHtml::_( 'form.token' ); ?>
 </form>
 
 

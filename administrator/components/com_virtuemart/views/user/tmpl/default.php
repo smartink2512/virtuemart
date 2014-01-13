@@ -36,7 +36,7 @@ AdminUIHelper::startAdminArea($this);
 						'0' => array('searchTable' => 'juser', 'searchTable_name' => vmText::_('COM_VIRTUEMART_ONLY_JUSER')),
 						'1' => array('searchTable' => 'all', 'searchTable_name' => vmText::_('JALL'))
 					);
-					echo JHTML::_('Select.genericlist', $searchOptionTables, 'searchTable', '', 'searchTable', 'searchTable_name', $selected );
+					echo JHtml::_('Select.genericlist', $searchOptionTables, 'searchTable', '', 'searchTable', 'searchTable_name', $selected );
 					?>
 					<button onclick="this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_GO'); ?></button>
 					<button onclick="document.adminForm.search.value='';this.form.submit();"><?php echo vmText::_('COM_VIRTUEMART_RESET'); ?></button>
@@ -69,7 +69,7 @@ AdminUIHelper::startAdminArea($this);
 		$k = 0;
 		for ($i = 0, $n = count($this->userList); $i < $n; $i++) {
 			$row = $this->userList[$i];
-			$checked = JHTML::_('grid.id', $i, $row->id);
+			$checked = JHtml::_('grid.id', $i, $row->id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=user&task=edit&virtuemart_user_id[]=' . $row->id);
 			$is_vendor = $this->toggle($row->is_vendor, $i, 'toggle.user_is_vendor');
 		?>

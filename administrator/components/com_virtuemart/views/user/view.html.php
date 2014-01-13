@@ -105,14 +105,14 @@ class VirtuemartViewUser extends VmView {
 			if (!is_array($_groupList)) {
 				$this->lists['gid'] = '<input type="hidden" name="gid" value="'. $userDetails->JUser->get('gid') .'" /><strong>'. vmText::_($_groupList) .'</strong>';
 			} else {
-				$this->lists['gid'] 	= JHTML::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $userDetails->JUser->get('gid'));
+				$this->lists['gid'] 	= JHtml::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $userDetails->JUser->get('gid'));
 			}
 
 			$this->lists['canBlock'] = ($currentUser->authorise('com_users', 'block user')
 			&& ($userDetails->JUser->get('id') != $currentUser->get('id'))); // Can't block myself
 			$this->lists['canSetMailopt'] = $currentUser->authorise('workflow', 'email_events');
-			$this->lists['block'] = JHTML::_('select.booleanlist', 'block',      'class="inputbox"', $userDetails->JUser->get('block'),     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-			$this->lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail',  'class="inputbox"', $userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$this->lists['block'] = JHtml::_('select.booleanlist', 'block',      'class="inputbox"', $userDetails->JUser->get('block'),     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$this->lists['sendEmail'] = JHtml::_('select.booleanlist', 'sendEmail',  'class="inputbox"', $userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 			$this->lists['params'] = $userDetails->JUser->getParameters(true);
 
 			// Shopper info
@@ -134,18 +134,18 @@ class VirtuemartViewUser extends VmView {
 			$userFieldsBT = $userFieldsArray[$virtuemart_userinfo_id_BT];
 
 
-			//$this->lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $userDetails->perms);
+			//$this->lists['perms'] = JHtml::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $userDetails->perms);
 
 			// Load the required scripts
 			if (count($userFieldsBT['scripts']) > 0) {
 				foreach ($userFieldsBT['scripts'] as $_script => $_path) {
-					JHTML::script($_script, $_path);
+					JHtml::script($_script, $_path);
 				}
 			}
 			// Load the required stylesheets
 			if (count($userFieldsBT['links']) > 0) {
 				foreach ($userFieldsBT['links'] as $_link => $_path) {
-					JHTML::stylesheet($_link, $_path);
+					JHtml::stylesheet($_link, $_path);
 				}
 			}
 

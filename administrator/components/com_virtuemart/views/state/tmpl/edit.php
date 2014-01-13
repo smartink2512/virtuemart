@@ -27,7 +27,7 @@ AdminUIHelper::startAdminArea($this);
 <div class="col50">
 	<fieldset>
 <?php /*	<legend><?php echo vmText::_('COM_VIRTUEMART_STATE_DETAILS'); ?></legend> */?>
-	<legend><?php echo JHTML::_('link','index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$this->virtuemart_country_id,vmText::sprintf('COM_VIRTUEMART_STATE_COUNTRY',$this->country_name).' '. vmText::_('COM_VIRTUEMART_DETAILS') ); ?></legend>
+	<legend><?php echo JHtml::_('link','index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$this->virtuemart_country_id,vmText::sprintf('COM_VIRTUEMART_STATE_COUNTRY',$this->country_name).' '. vmText::_('COM_VIRTUEMART_DETAILS') ); ?></legend>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
@@ -47,7 +47,7 @@ AdminUIHelper::startAdminArea($this);
 			</td>
 			<td><fieldset class="radio">
 
-				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->state->published); ?>
+				<?php echo JHtml::_('select.booleanlist',  'published', 'class="inputbox"', $this->state->published); ?>
 
 			</fieldset></td>
 		</tr>
@@ -58,7 +58,7 @@ AdminUIHelper::startAdminArea($this);
 				</label>
 			</td>
 			<td>
-				<?php echo JHTML::_('Select.genericlist', $this->worldZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->state->virtuemart_worldzone_id); ?>
+				<?php echo JHtml::_('Select.genericlist', $this->worldZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->state->virtuemart_worldzone_id); ?>
 			</td>
 		</tr>
 		<tr>
@@ -78,7 +78,7 @@ AdminUIHelper::startAdminArea($this);
 				</label>
 			</td>
 			<td>
-				<?php /* echo JHTML::_('Select.radiolist', $this->worldZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->country->virtuemart_worldzone_id);*/ ?>
+				<?php /* echo JHtml::_('Select.radiolist', $this->worldZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->country->virtuemart_worldzone_id);*/ ?>
 				<input class="inputbox" type="text" name="state_2_code" id="state_2_code" size="10" value="<?php echo $this->state->state_2_code; ?>" />
 			</td>
 		</tr>

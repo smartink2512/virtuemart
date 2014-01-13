@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 				$userList = $this->getUserList();
 				$currentUser = $this->cart->user->_data->virtuemart_user_id;
 
-				echo JHTML::_('Select.genericlist', $userList, 'userID', 'class="vm-chzn-select" style="width: 200px"', 'id', 'displayedName', $currentUser); 
+				echo JHtml::_('Select.genericlist', $userList, 'userID', 'class="vm-chzn-select" style="width: 200px"', 'id', 'displayedName', $currentUser);
 
 				$adminID = JFactory::getSession()->get('vmAdminID');
 				$instance = JFactory::getUser();
@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php if(isset($adminID) && $instance->id != $adminID) { ?>
 					<span style="margin-left: 20px;"><b><?php echo vmText::_('COM_VIRTUEMART_CART_ACTIVE_ADMIN') .' '.JFactory::getUser($adminID)->name; ?></b></span>
 				<?php } ?>
-				<?php echo JHTML::_( 'form.token' ); ?>
+				<?php echo JHtml::_( 'form.token' ); ?>
 				<input type="hidden" name="view" value="cart"/>
 				<input type="hidden" name="task" value="changeShopper"/>
 			</td>

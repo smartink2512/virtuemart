@@ -552,7 +552,7 @@ static function vmGetCharset() {
 	 * @return string
 	 */
 	static function radio( $name, $radios, $default,$key='value',$text='text') {
-		return '<fieldset class="radio">'.JHTML::_('select.radiolist', $radios, $name, '', $key, $text, $default).'</fieldset>';
+		return '<fieldset class="radio">'.JHtml::_('select.radiolist', $radios, $name, '', $key, $text, $default).'</fieldset>';
 	}
 	/**
 	 * Creating rows with boolean list
@@ -564,7 +564,7 @@ static function vmGetCharset() {
 	 *
 	 */
 	public static function booleanlist (  $name, $value,$class='class="inputbox"'){
-		return '<fieldset class="radio">'.JHTML::_( 'select.booleanlist',  $name , $class , $value).'</fieldset>' ;
+		return '<fieldset class="radio">'.JHtml::_( 'select.booleanlist',  $name , $class , $value).'</fieldset>' ;
 	}
 		/**
 	 * Creating rows with input fields

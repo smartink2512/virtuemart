@@ -444,7 +444,7 @@ class plgVmCalculationAvalara extends vmCalculationPlugin {
 
 		if(!isset(self::$vmadd)){
 
-			$view = vmRequest::getWord('view',0);
+			$view = vmRequest::getCmd('view',0);
 			if($calc->only_cart == 1 and $view != 'cart'){
 				self::$vmadd = FALSE;
 				return self::$vmadd;

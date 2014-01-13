@@ -326,7 +326,7 @@ class VirtuemartViewUser extends VmView {
 
 	//todo here is something broken we use $_userDetailsList->perms and $this->_userDetailsList->perms and perms seems not longer to exist
 	if (Permissions::getInstance()->check("admin,storeadmin")) {
-	    $this->_lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $this->_userDetails->perms);
+	    $this->_lists['perms'] = JHtml::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $this->_userDetails->perms);
 	} else {
 	    if (!empty($this->_userDetails->perms)) {
 		$this->_lists['perms'] = $this->_userDetails->perms;
@@ -339,13 +339,13 @@ class VirtuemartViewUser extends VmView {
 	// Load the required scripts
 	if (count($userFields['scripts']) > 0) {
 	    foreach ($userFields['scripts'] as $_script => $_path) {
-		JHTML::script($_script, $_path);
+		JHtml::script($_script, $_path);
 	    }
 	}
 	// Load the required styresheets
 	if (count($userFields['links']) > 0) {
 	    foreach ($userFields['links'] as $_link => $_path) {
-		JHTML::stylesheet($_link, $_path);
+		JHtml::stylesheet($_link, $_path);
 	    }
 	}
     }
@@ -357,7 +357,7 @@ class VirtuemartViewUser extends VmView {
 	if (!is_array($_groupList)) {
 	    $this->_lists['gid'] = '<input type="hidden" name="gid" value="' . $this->_userDetails->JUser->get('gid') . '" /><strong>' . vmText::_($_groupList) . '</strong>';
 	} else {
-	    $this->_lists['gid'] = JHTML::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $this->_userDetails->JUser->get('gid'));
+	    $this->_lists['gid'] = JHtml::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $this->_userDetails->JUser->get('gid'));
 	}
 
 	if (!class_exists('shopFunctionsF'))
@@ -367,8 +367,8 @@ class VirtuemartViewUser extends VmView {
 	$this->lists['canBlock'] = ($this->_currentUser->authorise($comUserOption, 'block user')
 		&& ($this->_model->getId() != $this->_cuid)); // Can't block myself TODO I broke that, please retest if it is working again
 	$this->lists['canSetMailopt'] = $this->_currentUser->authorise('workflow', 'email_events');
-	$this->_lists['block'] = JHTML::_('select.booleanlist', 'block', 'class="inputbox"', $this->_userDetails->JUser->get('block'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-	$this->_lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 'class="inputbox"', $this->_userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+	$this->_lists['block'] = JHtml::_('select.booleanlist', 'block', 'class="inputbox"', $this->_userDetails->JUser->get('block'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+	$this->_lists['sendEmail'] = JHtml::_('select.booleanlist', 'sendEmail', 'class="inputbox"', $this->_userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 
 	$this->_lists['params'] = $this->_userDetails->JUser->getParameters(true);
 

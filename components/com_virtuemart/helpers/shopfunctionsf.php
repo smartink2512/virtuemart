@@ -161,7 +161,7 @@ class shopFunctionsF {
 			$attrs['multiple'] = 'multiple';
 			$idA .= '[]';
 		} else {
-			$emptyOption = JHTML::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+			$emptyOption = JHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 			array_unshift ($countries_list, $emptyOption);
 		}
 
@@ -174,7 +174,7 @@ class shopFunctionsF {
 
 		//Todo remove inline style
 		//$attrs['style'] = 'width:270px;';
-		return JHTML::_ ('select.genericlist', $countries_list, $idA, $attrs, $id, $name, $countryId);
+		return JHtml::_ ('select.genericlist', $countries_list, $idA, $attrs, $id, $name, $countryId);
 	}
 
 	/**

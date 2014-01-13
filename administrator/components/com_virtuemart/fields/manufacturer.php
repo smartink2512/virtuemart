@@ -46,7 +46,7 @@ class JFormFieldManufacturer extends JFormField
 		$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
 		$model = VmModel::getModel('Manufacturer');
 		$manufacturers = $model->getManufacturers(true, true, false);
-		return JHTML::_('select.genericlist', $manufacturers, $this->name, 'class="inputbox"  size="1"', 'virtuemart_manufacturer_id', 'mf_name', $this->value, $this->id);
+		return JHtml::_('select.genericlist', $manufacturers, $this->name, 'class="inputbox"  size="1"', 'virtuemart_manufacturer_id', 'mf_name', $this->value, $this->id);
 	}
 
 

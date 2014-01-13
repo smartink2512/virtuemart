@@ -25,7 +25,7 @@ AdminUIHelper::startAdminArea($this);
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
     <div id="editcell">
-    <div><?php echo JHTML::_('link','index.php?option=com_virtuemart&view=country&virtuemart_country_id='.$this->virtuemart_country_id,vmText::sprintf('COM_VIRTUEMART_STATES_COUNTRY',$this->country_name)); ?></div>
+    <div><?php echo JHtml::_('link','index.php?option=com_virtuemart&view=country&virtuemart_country_id='.$this->virtuemart_country_id,vmText::sprintf('COM_VIRTUEMART_STATES_COUNTRY',$this->country_name)); ?></div>
 	<table class="adminlist" cellspacing="0" cellpadding="0">
 	    <thead>
 		<tr>
@@ -55,8 +55,8 @@ AdminUIHelper::startAdminArea($this);
 	    for ($i=0, $n=count( $this->states ); $i < $n; $i++) {
 		$row = $this->states[$i];
 
-		$checked = JHTML::_('grid.id', $i, $row->virtuemart_state_id,null,'virtuemart_state_id');
-		$published = JHTML::_('grid.published', $row, $i);
+		$checked = JHtml::_('grid.id', $i, $row->virtuemart_state_id,null,'virtuemart_state_id');
+		$published = JHtml::_('grid.published', $row, $i);
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=state&task=edit&virtuemart_state_id=' . $row->virtuemart_state_id);
 
 		?>

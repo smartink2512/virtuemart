@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 	    <td class="key">
 		<span class="hasTip" title="<?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE_TIP'); ?>">
-		<?php echo JHTML::tooltip(vmText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE_TIP'), vmText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE_TIP')); ?>
+		<?php echo JHtml::tooltip(vmText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE_TIP'), vmText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE_TIP')); ?>
 		<label for="feed_published"><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_ENABLE') ?></label>
 		</span>
 	    </td>
@@ -107,9 +107,9 @@ defined('_JEXEC') or die('Restricted access');
 	    <td>
 		<?php
 		$options = array();
-		$options[] = JHTML::_('select.option', 'product_s_desc', vmText::_('COM_VIRTUEMART_PRODUCT_FORM_S_DESC'));
-		$options[] = JHTML::_('select.option', 'product_desc', vmText::_('COM_VIRTUEMART_PRODUCT_FORM_DESCRIPTION'));
-		echo JHTML::_('Select.genericlist', $options, 'feed_description_type', 'size=1', 'value', 'text', $this->config->get('feed_description_type'));
+		$options[] = JHtml::_('select.option', 'product_s_desc', vmText::_('COM_VIRTUEMART_PRODUCT_FORM_S_DESC'));
+		$options[] = JHtml::_('select.option', 'product_desc', vmText::_('COM_VIRTUEMART_PRODUCT_FORM_DESCRIPTION'));
+		echo JHtml::_('Select.genericlist', $options, 'feed_description_type', 'size=1', 'value', 'text', $this->config->get('feed_description_type'));
 		?>
 	    </td>
 	</tr>

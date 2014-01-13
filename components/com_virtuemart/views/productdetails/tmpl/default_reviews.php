@@ -73,7 +73,7 @@ if ($this->showReview) {
 					$reviews_published++;
 					?>
 					<div class="<?php echo $color ?>">
-						<span class="date"><?php echo JHTML::date ($review->created_on, vmText::_ ('DATE_FORMAT_LC')); ?></span>
+						<span class="date"><?php echo JHtml::date ($review->created_on, vmText::_ ('DATE_FORMAT_LC')); ?></span>
 						<span class="vote"><?php echo $stars[(int)$review->review_rating] ?></span>
 						<blockquote><?php echo $review->comment; ?></blockquote>
 						<span class="bold"><?php echo $review->customer ?></span>
@@ -85,7 +85,7 @@ if ($this->showReview) {
 					/* Show all reviews ? */
 					if ($reviews_published >= $ratingsShow) {
 						$attribute = array('class'=> 'details', 'title'=> vmText::_ ('COM_VIRTUEMART_MORE_REVIEWS'));
-						echo JHTML::link ($this->more_reviews, vmText::_ ('COM_VIRTUEMART_MORE_REVIEWS'), $attribute);
+						echo JHtml::link ($this->more_reviews, vmText::_ ('COM_VIRTUEMART_MORE_REVIEWS'), $attribute);
 					}
 					break;
 				}

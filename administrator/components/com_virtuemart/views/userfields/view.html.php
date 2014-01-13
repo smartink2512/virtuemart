@@ -64,13 +64,13 @@ class VirtuemartViewUserfields extends VmView {
 				$this->assignRef('ordering', vmText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
 				$userFieldValues = array();
 				$attribs = '';
-				$lists['type'] = JHTML::_('select.genericlist', $this->_getTypes(), 'type', $attribs, 'type', 'text', $userField->type);
+				$lists['type'] = JHtml::_('select.genericlist', $this->_getTypes(), 'type', $attribs, 'type', 'text', $userField->type);
 			} else { // Update existing userfield
 				// Ordering dropdown
 				$qry = 'SELECT ordering AS value, name AS text'
 					. ' FROM #__virtuemart_userfields'
 					. ' ORDER BY ordering';
-				$ordering = JHTML::_('list.specificordering',  $userField, $userField->virtuemart_userfield_id, $qry);
+				$ordering = JHtml::_('list.specificordering',  $userField, $userField->virtuemart_userfield_id, $qry);
 				$this->assignRef('ordering', $ordering);
 
 				$userFieldValues = $model->getUserfieldValues();
@@ -97,21 +97,21 @@ class VirtuemartViewUserfields extends VmView {
 			$shoppergroup_model = VmModel::getModel('shoppergroup');
 			$shoppergroup_list = $shoppergroup_model->getShopperGroups(true);
 			array_unshift($shoppergroup_list,'0');
-			$lists['shoppergroups'] = JHTML::_('select.genericlist', $shoppergroup_list, 'virtuemart_shoppergroup_id', '', 'virtuemart_shoppergroup_id', 'shopper_group_name', $userField->get('virtuemart_shoppergroup_id'));
+			$lists['shoppergroups'] = JHtml::_('select.genericlist', $shoppergroup_list, 'virtuemart_shoppergroup_id', '', 'virtuemart_shoppergroup_id', 'shopper_group_name', $userField->get('virtuemart_shoppergroup_id'));
 
 			// Minimum age select
 			$ages = array();
 			for ($i = 13; $i <= 25; $i++) {
 				$ages[] = array('key' => $i, 'value' => $i.' '.vmText::_('COM_VIRTUEMART_YEAR_S'));
 			}
-			$lists['minimum_age'] = JHTML::_('select.genericlist', $ages, 'minimum_age', '', 'key', 'value', $userField->get('minimum_age', 18));
+			$lists['minimum_age'] = JHtml::_('select.genericlist', $ages, 'minimum_age', '', 'key', 'value', $userField->get('minimum_age', 18));
 
 			// Web address types
 			$webaddress_types = array(
 				 array('key' => 0, 'value' => vmText::_('COM_VIRTUEMART_USERFIELDS_URL_ONLY'))
 				,array('key' => 2, 'value' => vmText::_('COM_VIRTUEMART_USERFIELDS_HYPERTEXT_URL'))
 			);
-			$lists['webaddresstypes'] = JHTML::_('select.genericlist', $webaddress_types, 'webaddresstype', '', 'key', 'value', $userField->get('webaddresstype'));
+			$lists['webaddresstypes'] = JHtml::_('select.genericlist', $webaddress_types, 'webaddresstype', '', 'key', 'value', $userField->get('webaddresstype'));
 
 			// Userfield values
 			if (($n = count($userFieldValues)) < 1) {
@@ -151,8 +151,8 @@ class VirtuemartViewUserfields extends VmView {
 			$this->assignRef('editor', $editor);
 		} else {
 			JToolBarHelper::title( vmText::_('COM_VIRTUEMART_MANAGE_USER_FIELDS'),'vm_user_48 head');
-			JToolBarHelper::addNewX();
-			JToolBarHelper::editListX();
+			JToolBarHelper::addNew();
+			JToolBarHelper::editList();
 			JToolBarHelper::divider();
 			JToolBarHelper::custom('toggle.required.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_REQUIRE');
 			JToolBarHelper::custom('toggle.required.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_UNREQUIRE');
@@ -217,7 +217,7 @@ class VirtuemartViewUserfields extends VmView {
 		} else {
 			$attribs='';
 		}
-		$retImgSrc =  JHTML::_('image.administrator', $img, '/images/', null, null, $alt, $attribs);
+		$retImgSrc =  JHtml::_('image.administrator', $img, '/images/', null, null, $alt, $attribs);
 
 		if ($untoggleable) {
 			return ($retImgSrc);

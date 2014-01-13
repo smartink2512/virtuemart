@@ -74,7 +74,7 @@ class ShopFunctions {
 						$cid = 'virtuemart_user_id';
 					}
 
-					$links .= JHTML::_ ('link', JRoute::_ ('index.php?option=com_virtuemart&view=' . $view . '&task=edit&' . $cid . '[]=' . $value, FALSE), vmText::_($tmp)) . ', ';
+					$links .= JHtml::_ ('link', JRoute::_ ('index.php?option=com_virtuemart&view=' . $view . '&task=edit&' . $cid . '[]=' . $value, FALSE), vmText::_($tmp)) . ', ';
 
 				}
 				$ttip .= $tmp . ', ';
@@ -145,10 +145,10 @@ class ShopFunctions {
 					$attrs = ' multiple="multiple" ';
 					$idA .= '[]';
 				} else {
-					$emptyOption = JHTML::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+					$emptyOption = JHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
 					array_unshift ($vendors, $emptyOption);
 				}
-				$listHTML = JHTML::_ ('select.genericlist', $vendors, $idA, $attrs, $id, $name, $vendorId);
+				$listHTML = JHtml::_ ('select.genericlist', $vendors, $idA, $attrs, $id, $name, $vendorId);
 				return $listHTML;
 			}
 		}
@@ -178,11 +178,11 @@ class ShopFunctions {
 				$name.= '[]';
 			}
 		} else {
-			$emptyOption = JHTML::_ ('select.option', '', vmText::_ ($select_attribute), 'virtuemart_shoppergroup_id', 'shopper_group_name');
+			$emptyOption = JHtml::_ ('select.option', '', vmText::_ ($select_attribute), 'virtuemart_shoppergroup_id', 'shopper_group_name');
 			array_unshift ($shoppergrps, $emptyOption);
 		}
 		//vmdebug('renderShopperGroupList',$name,$shoppergrps);
-		$listHTML = JHTML::_ ('select.genericlist', $shoppergrps, $name, $attrs, 'virtuemart_shoppergroup_id', 'shopper_group_name', $shopperGroupId);
+		$listHTML = JHtml::_ ('select.genericlist', $shoppergrps, $name, $attrs, 'virtuemart_shoppergroup_id', 'shopper_group_name', $shopperGroupId);
 		return $listHTML;
 	}
 
@@ -202,11 +202,11 @@ class ShopFunctions {
 			$attrs = 'multiple="multiple"';
 			if($name=='virtuemart_manufacturer_id')	$name.= '[]';
 		} else {
-			$emptyOption = JHTML::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), 'virtuemart_manufacturer_id', 'mf_name');
+			$emptyOption = JHtml::_ ('select.option', '', vmText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION'), 'virtuemart_manufacturer_id', 'mf_name');
 			array_unshift ($manufacturers, $emptyOption);
 		}
 		// vmdebug('renderManufacturerList',$name,$manufacturers);
-		$listHTML = JHTML::_ ('select.genericlist', $manufacturers, $name, $attrs, 'virtuemart_manufacturer_id', 'mf_name', $manufacturerId);
+		$listHTML = JHtml::_ ('select.genericlist', $manufacturers, $name, $attrs, 'virtuemart_manufacturer_id', 'mf_name', $manufacturerId);
 		return $listHTML;
 	}
 
@@ -224,12 +224,12 @@ class ShopFunctions {
 		$taxes = VirtueMartModelCalc::getTaxes ();
 
 		$taxrates = array();
-		$taxrates[] = JHTML::_ ('select.option', '-1', vmText::_ ('COM_VIRTUEMART_PRODUCT_TAX_NONE'), $name);
-		$taxrates[] = JHTML::_ ('select.option', '0', vmText::_ ('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), $name);
+		$taxrates[] = JHtml::_ ('select.option', '-1', vmText::_ ('COM_VIRTUEMART_PRODUCT_TAX_NONE'), $name);
+		$taxrates[] = JHtml::_ ('select.option', '0', vmText::_ ('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), $name);
 		foreach ($taxes as $tax) {
-			$taxrates[] = JHTML::_ ('select.option', $tax->virtuemart_calc_id, $tax->calc_name, $name);
+			$taxrates[] = JHtml::_ ('select.option', $tax->virtuemart_calc_id, $tax->calc_name, $name);
 		}
-		$listHTML = JHTML::_ ('Select.genericlist', $taxrates, $name, $class, $name, 'text', $selected);
+		$listHTML = JHtml::_ ('Select.genericlist', $taxrates, $name, $class, $name, 'text', $selected);
 		return $listHTML;
 	}
 
@@ -326,9 +326,9 @@ class ShopFunctions {
 
 		$weight_unit_default = self::getWeightUnit ();
 		foreach ($weight_unit_default as  $key => $value) {
-			$wu_list[] = JHTML::_ ('select.option', $key, $value, $name);
+			$wu_list[] = JHtml::_ ('select.option', $key, $value, $name);
 		}
-		$listHTML = JHTML::_ ('Select.genericlist', $wu_list, $name, '', $name, 'text', $selected);
+		$listHTML = JHtml::_ ('Select.genericlist', $wu_list, $name, '', $name, 'text', $selected);
 		return $listHTML;
 		/*
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
@@ -349,9 +349,9 @@ class ShopFunctions {
 		, '100ML'   => vmText::_ ('COM_VIRTUEMART_UNIT_SYMBOL_100ML')
 		);
 		foreach ($weight_unit_default as  $key => $value) {
-			$wu_list[] = JHTML::_ ('select.option', $key, $value, $name);
+			$wu_list[] = JHtml::_ ('select.option', $key, $value, $name);
 		}
-		$listHTML = JHTML::_ ('Select.genericlist', $wu_list, $name, '', $name, 'text', $selected);
+		$listHTML = JHtml::_ ('Select.genericlist', $wu_list, $name, '', $name, 'text', $selected);
 		return $listHTML;
 	}
 
@@ -489,9 +489,9 @@ class ShopFunctions {
 		, 'IN'                        => vmText::_ ('COM_VIRTUEMART_UNIT_NAME_INCH')
 		);
 		foreach ($lwh_unit_default as  $key => $value) {
-			$lu_list[] = JHTML::_ ('select.option', $key, $value, $name);
+			$lu_list[] = JHtml::_ ('select.option', $key, $value, $name);
 		}
-		$listHTML = JHTML::_ ('Select.genericlist', $lu_list, $name, '', $name, 'text', $selected);
+		$listHTML = JHtml::_ ('Select.genericlist', $lu_list, $name, '', $name, 'text', $selected);
 		return $listHTML;
 
 	}
@@ -965,7 +965,7 @@ class ShopFunctions {
 			$cat->category_name = $cat->ordering . '. ' . $cat->category_name;
 			$categories[$index] = $cat;
 		}
-		return JHTML::_ ('Select.genericlist', $categories, $name, $attribs, $key, $text, $selected, $name);
+		return JHtml::_ ('Select.genericlist', $categories, $name, $attribs, $key, $text, $selected, $name);
 	}
 
 	/**
@@ -1020,11 +1020,11 @@ class ShopFunctions {
 		}
 		$start = $start ? $start : 1;
 		$end = $end ? $end : $start + 30;
-		$options[] = JHTML::_ ('select.option', 0, vmText::_ ('DAY'));
+		$options[] = JHtml::_ ('select.option', 0, vmText::_ ('DAY'));
 		for ($i = $start; $i <= $end; $i++) {
-			$options[] = JHTML::_ ('select.option', $i, $i);
+			$options[] = JHtml::_ ('select.option', $i, $i);
 		}
-		return JHTML::_ ('select.genericlist', $options, $list_name, '', 'value', 'text', $selected);
+		return JHtml::_ ('select.genericlist', $options, $list_name, '', 'value', 'text', $selected);
 	}
 
 
@@ -1042,20 +1042,20 @@ class ShopFunctions {
 			$selected = date ('m');
 		}
 
-		$options[] = JHTML::_ ('select.option', 0, vmText::_ ('MONTH'));
-		$options[] = JHTML::_ ('select.option', "01", vmText::_ ('JANUARY'));
-		$options[] = JHTML::_ ('select.option', "02", vmText::_ ('FEBRUARY'));
-		$options[] = JHTML::_ ('select.option', "03", vmText::_ ('MARCH'));
-		$options[] = JHTML::_ ('select.option', "04", vmText::_ ('APRIL'));
-		$options[] = JHTML::_ ('select.option', "05", vmText::_ ('MAY'));
-		$options[] = JHTML::_ ('select.option', "06", vmText::_ ('JUNE'));
-		$options[] = JHTML::_ ('select.option', "07", vmText::_ ('JULY'));
-		$options[] = JHTML::_ ('select.option', "08", vmText::_ ('AUGUST'));
-		$options[] = JHTML::_ ('select.option', "09", vmText::_ ('SEPTEMBER'));
-		$options[] = JHTML::_ ('select.option', "10", vmText::_ ('OCTOBER'));
-		$options[] = JHTML::_ ('select.option', "11", vmText::_ ('NOVEMBER'));
-		$options[] = JHTML::_ ('select.option', "12", vmText::_ ('DECEMBER'));
-		return JHTML::_ ('select.genericlist', $options, $list_name, '', 'value', 'text', $selected);
+		$options[] = JHtml::_ ('select.option', 0, vmText::_ ('MONTH'));
+		$options[] = JHtml::_ ('select.option', "01", vmText::_ ('JANUARY'));
+		$options[] = JHtml::_ ('select.option', "02", vmText::_ ('FEBRUARY'));
+		$options[] = JHtml::_ ('select.option', "03", vmText::_ ('MARCH'));
+		$options[] = JHtml::_ ('select.option', "04", vmText::_ ('APRIL'));
+		$options[] = JHtml::_ ('select.option', "05", vmText::_ ('MAY'));
+		$options[] = JHtml::_ ('select.option', "06", vmText::_ ('JUNE'));
+		$options[] = JHtml::_ ('select.option', "07", vmText::_ ('JULY'));
+		$options[] = JHtml::_ ('select.option', "08", vmText::_ ('AUGUST'));
+		$options[] = JHtml::_ ('select.option', "09", vmText::_ ('SEPTEMBER'));
+		$options[] = JHtml::_ ('select.option', "10", vmText::_ ('OCTOBER'));
+		$options[] = JHtml::_ ('select.option', "11", vmText::_ ('NOVEMBER'));
+		$options[] = JHtml::_ ('select.option', "12", vmText::_ ('DECEMBER'));
+		return JHtml::_ ('select.genericlist', $options, $list_name, '', 'value', 'text', $selected);
 
 	}
 
@@ -1073,11 +1073,11 @@ class ShopFunctions {
 		}
 		$start = $start ? $start : date ('Y');
 		$end = $end ? $end : $start + 7;
-		$options[] = JHTML::_ ('select.option', 0, vmText::_ ('YEAR'));
+		$options[] = JHtml::_ ('select.option', 0, vmText::_ ('YEAR'));
 		for ($i = $start; $i <= $end; $i++) {
-			$options[] = JHTML::_ ('select.option', $i, $i);
+			$options[] = JHtml::_ ('select.option', $i, $i);
 		}
-		return JHTML::_ ('select.genericlist', $options, $list_name, $attr, 'value', 'text', $selected);
+		return JHtml::_ ('select.genericlist', $options, $list_name, $attr, 'value', 'text', $selected);
 	}
 
 
@@ -1329,7 +1329,7 @@ class ShopFunctions {
 			<td class="order_number">';
 				$uri = JFactory::getURI();
 				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id=' . $order_info['order_id'];
-				$html .= JHTML::_ ('link', $link, $order_info['order_number'], array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $order_info['order_number']));
+				$html .= JHtml::_ ('link', $link, $order_info['order_number'], array('title' => vmText::_ ('COM_VIRTUEMART_ORDER_EDIT_ORDER_NUMBER') . ' ' . $order_info['order_number']));
 			$first=FALSE;
 			$html .= '
 					</td>

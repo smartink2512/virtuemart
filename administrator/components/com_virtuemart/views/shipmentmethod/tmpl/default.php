@@ -54,12 +54,12 @@ AdminUIHelper::startAdminArea($this);
 		$k = 0;
 		for ($i=0, $n=count( $this->shipments ); $i < $n; $i++) {
 			$row = $this->shipments[$i];
-			$published = JHTML::_('grid.published', $row, $i );
+			$published = JHtml::_('grid.published', $row, $i );
 			/**
 			 * @todo Add to database layout published column
 			 */
 			$row->published = 1;
-			$checked = JHTML::_('grid.id', $i, $row->virtuemart_shipmentmethod_id);
+			$checked = JHtml::_('grid.id', $i, $row->virtuemart_shipmentmethod_id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=shipmentmethod&task=edit&cid[]=' . $row->virtuemart_shipmentmethod_id);
 			?>
 			<tr class="row<?php echo $k ; ?>">
@@ -67,7 +67,7 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo $checked; ?>
 				</td>
 				<td align="left">
-					<?php echo JHTML::_('link', $editlink, vmText::_($row->shipment_name)); ?>
+					<?php echo JHtml::_('link', $editlink, vmText::_($row->shipment_name)); ?>
 				</td>
                                 <td align="left">
 					<?php echo $row->shipment_desc; ?>
@@ -76,7 +76,7 @@ AdminUIHelper::startAdminArea($this);
 					<?php echo $row->shipmentShoppersList; ?>
 				</td>
                                 <td align="left">
-					<?php echo $row->shipment_element; //JHTML::_('link', $editlink, vmText::_($row->shipment_element)); ?>
+					<?php echo $row->shipment_element; //JHtml::_('link', $editlink, vmText::_($row->shipment_element)); ?>
 				</td>
 				<td align="left">
 					<?php echo vmText::_($row->ordering); ?>
