@@ -191,44 +191,6 @@ class VirtuemartViewUserfields extends VmView {
 	}
 
 	/**
-	 * Additional grid function for custom toggles
-	 *
-	 * @return string HTML code to write the toggle button
-	 */
-	function toggle( $field, $i, $toggle, $untoggleable = false, $imgY = 'tick.png', $imgX = 'publish_x.png', $prefix='' )
-	{
-
-		$img 	= $field ? $imgY : $imgX;
-		if ($toggle == 'published') { // Stay compatible with grid.published
-			$task 	= $field ? 'unpublish' : 'publish';
-			$alt 	= $field ? vmText::_('COM_VIRTUEMART_PUBLISHED') : vmText::_('COM_VIRTUEMART_UNPUBLISHED');
-			$action = $field ? vmText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : vmText::_('COM_VIRTUEMART_PUBLISH_ITEM');
-		} else {
-			$task 	= $field ? $toggle.'.0' : $toggle.'.1';
-			$alt 	= $field ? vmText::_('COM_VIRTUEMART_ENABLED') : vmText::_('COM_VIRTUEMART_DISABLED');
-			$action = $field ? vmText::_('COM_VIRTUEMART_DISABLE_ITEM') : vmText::_('COM_VIRTUEMART_ENABLE_ITEM');
-		}
-
-		if (JVM_VERSION>1) {
-			$img = 'admin/' . $img;
-		}
-		  if ($untoggleable) {
-			$attribs='style="opacity: 0.6;"';
-		} else {
-			$attribs='';
-		}
-		$retImgSrc =  JHtml::_('image', $img, '/images/', null, null, $alt, $attribs);
-
-		if ($untoggleable) {
-			return ($retImgSrc);
-		} else {
-			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
-				.$retImgSrc. '</a>');
-
-		}
-	}
-
-	/**
 	 * Create an array with userfield types and the visible text in the format expected by the Joomla select class
 	 *
 	 * @param string $value If not null, the type of which the text should be returned

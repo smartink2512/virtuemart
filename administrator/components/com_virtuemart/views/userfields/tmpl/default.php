@@ -87,7 +87,7 @@ AdminUIHelper::startAdminArea($this);
 // 			vmdebug('my rows',$row);
 			$coreField = (in_array($row->name, $this->lists['coreFields']));
 			$image = (JVM_VERSION===1) ? 'checked_out.png' : 'admin/checked_out.png';
-			$image = JHtml::_('image', $image, '/images/', null, null, vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'));
+			$image = JHtml::_('image', $image, vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'),null,true);
 			//$checked = '<div style="position: relative;">'.JHtml::_('grid.id', $i, null,$row->virtuemart_userfield_id);
 			$checked = JHtml::_('grid.id', $i ,$row->virtuemart_userfield_id,null,'virtuemart_userfield_id');
 			if ($coreField) $checked.='<span class="hasTip" style="position: absolute; margin-left:-3px;" title="'. vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>';
@@ -97,12 +97,12 @@ AdminUIHelper::startAdminArea($this);
 			// 	'<span class="hasTip" title="'. vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>' :
 				
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=userfields&task=edit&virtuemart_userfield_id=' . $row->virtuemart_userfield_id);
-			$required = $this->toggle($row->required, $i, 'toggle.required', $coreField);
+			$required = $this->toggle($row->required, $i, 'toggle.required','tick.png','publish_x.png',$coreField );
 //			$published = JHtml::_('grid.published', $row, $i);
-			$published = $this->toggle($row->published, $i, 'toggle.published', $coreField);
-			$registration = $this->toggle($row->registration, $i, 'toggle.registration', $coreField);
-			$shipment = $this->toggle($row->shipment, $i, 'toggle.shipment', $coreField);
-			$account = $this->toggle($row->account, $i, 'toggle.account', $coreField);
+			$published = $this->toggle($row->published, $i, 'toggle.published','tick.png','publish_x.png', $coreField);
+			$registration = $this->toggle($row->registration, $i, 'toggle.registration','tick.png','publish_x.png', $coreField);
+			$shipment = $this->toggle($row->shipment, $i, 'toggle.shipment','tick.png','publish_x.png', $coreField);
+			$account = $this->toggle($row->account, $i, 'toggle.account','tick.png','publish_x.png', $coreField);
 			$ordering = ($this->lists['filter_order'] == 'ordering');
 			$disabled = ($ordering ?  '' : 'disabled="disabled"');
 		?>

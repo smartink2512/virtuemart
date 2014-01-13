@@ -457,7 +457,7 @@ class VmView extends JViewLegacy {
 	 *
 	 * @return string HTML code to write the toggle button
 	 */
-	function toggle( $field, $i, $toggle, $imgY = 'tick.png', $imgX = 'publish_x.png', $prefix='' )
+	function toggle( $field, $i, $toggle, $imgY = 'tick.png', $imgX = 'publish_x.png', $untoggleable = false )
 	{
 
 		$img 	= $field ? $imgY : $imgX;
@@ -473,8 +473,21 @@ class VmView extends JViewLegacy {
 		}
 
 		if (JVM_VERSION>1) {
+			$img = 'admin/' . $img;
+		}
+
+		if ($untoggleable) {
+			$attribs='style="opacity: 0.6;"';
+		} else {
+			$attribs='';
+		}
+		$image = JHtml::_('image', $img, $alt, $attribs, true);
+
+		if($untoggleable) return $image;
+
+		if (JVM_VERSION>1) {
 			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
-				.JHtml::_('image', 'admin/' .$img, $alt, null, true) .'</a>');
+				. $image .'</a>');
 		} else {
 			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
 				.'<img src="images/'. $img .'" border="0" alt="'. $alt .'" /></a>');
