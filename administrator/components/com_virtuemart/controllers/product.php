@@ -124,10 +124,7 @@ class VirtuemartControllerProduct extends VmController {
 
 		$model = VmModel::getModel('product');
 
-		//$cids = VmRequest::getVar('cid');
-		$cids = VmRequest::getVar($this->_cidName, VmRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
-		//jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($cids);
+		$cids = VmRequest::getInt($this->_cidName, VmRequest::getint('virtuemart_product_id'));
 
 		foreach($cids as $cid){
 			if ($id=$model->createChild($cid)){
@@ -188,8 +185,7 @@ class VirtuemartControllerProduct extends VmController {
 
 	public function massxref_sgrps_exe(){
 
-		$virtuemart_shoppergroup_ids = VmRequest::getVar('virtuemart_shoppergroup_id',array(),'', 'ARRAY');
-		JArrayHelper::toInteger($virtuemart_shoppergroup_ids);
+		$virtuemart_shoppergroup_ids = VmRequest::getInt('virtuemart_shoppergroup_id');
 
 		$session = JFactory::getSession();
 		$cids = unserialize($session->get('vm_product_ids', array(), 'vm'));
@@ -210,7 +206,6 @@ class VirtuemartControllerProduct extends VmController {
 	public function massxref_cats_exe(){
 
 		$virtuemart_cat_ids = VmRequest::getInt('cid', array() );
-		//JArrayHelper::toInteger($virtuemart_cat_ids);
 
 		$session = JFactory::getSession();
 		$cids = unserialize($session->get('vm_product_ids', array(), 'vm'));
@@ -231,8 +226,8 @@ class VirtuemartControllerProduct extends VmController {
 
 		vmRequest::vmCheckToken();
 
-		$cids = VmRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY');
-		JArrayHelper::toInteger($cids);
+		$cids = VmRequest::getInt('virtuemart_product_id');
+
 		if(empty($cids)){
 			$session = JFactory::getSession();
 			$cids = unserialize($session->get('vm_product_ids', '', 'vm'));
@@ -277,9 +272,8 @@ class VirtuemartControllerProduct extends VmController {
 		$model = VmModel::getModel('product');
 		$msgtype = '';
 		//$cids = VmRequest::getInt('virtuemart_product_id',0);
-		$cids = VmRequest::getVar($this->_cidName, VmRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
-		//jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($cids);
+		$cids = VmRequest::getInt($this->_cidName, VmRequest::getInt('virtuemart_product_id'));
+
 
 		foreach($cids as $cid){
 			if ($model->createClone($cid)) {
@@ -316,12 +310,8 @@ class VirtuemartControllerProduct extends VmController {
 	public function addRating() {
 		$mainframe = Jfactory::getApplication();
 
-		/* Get the product ID */
-		// 		$cids = array();
-		$cids = VmRequest::getVar($this->_cidName, VmRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
-		jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($cids);
-		// 		if (!is_array($cids)) $cids = array($cids);
+		// Get the product ID
+		$cids = VmRequest::getInt($this->_cidName, VmRequest::getInt('virtuemart_product_id'));
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=ratings&task=add&virtuemart_product_id='.$cids[0]);
 	}
@@ -330,7 +320,7 @@ class VirtuemartControllerProduct extends VmController {
 	public function ajax_notifyUsers(){
 
 		//vmdebug('updatestatus');
-		$virtuemart_product_id = VmRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY');
+		$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
 		if(is_array($virtuemart_product_id) and count($virtuemart_product_id) > 0){
 			$virtuemart_product_id = (int)$virtuemart_product_id[0];
 		} else {
@@ -348,7 +338,7 @@ class VirtuemartControllerProduct extends VmController {
 	
 	public function ajax_waitinglist() {
 
-		$virtuemart_product_id = VmRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY');
+		$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
 		if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 			$virtuemart_product_id = (int)$virtuemart_product_id[0];
 		} else {

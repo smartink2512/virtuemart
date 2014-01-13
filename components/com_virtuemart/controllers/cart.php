@@ -121,7 +121,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		}
 		$cart = VirtueMartCart::getCart();
 		if ($cart) {
-			$virtuemart_product_ids = VmRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
+			$virtuemart_product_ids = VmRequest::getInt('virtuemart_product_id');
 			$success = true;
 			if ($cart->add($virtuemart_product_ids,$success)) {
 				$msg = vmText::_('COM_VIRTUEMART_PRODUCT_ADDED_SUCCESSFULLY');

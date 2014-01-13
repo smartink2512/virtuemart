@@ -100,7 +100,7 @@ class VirtueMartModelRatings extends VmModel {
 
 		/* Add some variables for a new rating */
 		if (VmRequest::getCmd('task') == 'add') {
-			$virtuemart_product_id = VmRequest::getVar('virtuemart_product_id',array(),'', 'array');
+			$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
 			if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 				$virtuemart_product_id = (int)$virtuemart_product_id[0];
 			} else {

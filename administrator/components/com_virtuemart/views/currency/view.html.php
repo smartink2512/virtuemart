@@ -48,7 +48,7 @@ class VirtuemartViewCurrency extends VmView {
 			$cid	= VmRequest::getInt( 'cid' );
 
 			$task = VmRequest::getCmd('task', 'add');
-			//JArrayHelper::toInteger($cid);
+
 			if($task!='add' && !empty($cid) && !empty($cid[0])){
 				$cid = (int)$cid[0];
 			} else {

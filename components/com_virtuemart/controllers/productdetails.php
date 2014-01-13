@@ -276,11 +276,9 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 
 		//$post = VmRequest::get('request');
 
-//		echo '<pre>'.print_r($post,1).'</pre>';
-		jimport ('joomla.utilities.arrayhelper');
-		$virtuemart_product_idArray = VmRequest::getVar ('virtuemart_product_id', array()); //is sanitized then
+
+		$virtuemart_product_idArray = VmRequest::getInt ('virtuemart_product_id', array()); //is sanitized then
 		if(is_array($virtuemart_product_idArray)){
-			JArrayHelper::toInteger ($virtuemart_product_idArray);
 			$virtuemart_product_id = $virtuemart_product_idArray[0];
 		} else {
 			$virtuemart_product_id = $virtuemart_product_idArray;
@@ -302,12 +300,15 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			}
 		}*/
 
-		$quantityArray = VmRequest::getVar ('quantity', array()); //is sanitized then
-		JArrayHelper::toInteger ($quantityArray);
-
-		$quantity = 1;
-		if (!empty($quantityArray[0])) {
+		$quantityArray = VmRequest::getInt ('quantity', array()); //is sanitized then
+		if(is_array($quantityArray) and !empty($quantityArray[0])){
 			$quantity = $quantityArray[0];
+		} else {
+			$quantity = $quantityArray;
+		}
+
+		if (empty($quantity)) {
+			$quantity = 1;
 		}
 
 		$product_model = VmModel::getModel ('product');

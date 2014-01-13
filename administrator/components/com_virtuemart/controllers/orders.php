@@ -205,7 +205,6 @@ class VirtuemartControllerOrders extends VmController {
 		$mainframe = Jfactory::getApplication();
 		$model = VmModel::getModel();
 		$_items = VmRequest::getVar('item_id',  0, '', 'array');
-		//JArrayHelper::toInteger($_items);
 
 		$_orderID = VmRequest::getInt('virtuemart_order_id', '');
 

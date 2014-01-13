@@ -174,9 +174,6 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 	function remove($ids){
 
-		jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($ids);
-
 		$table = $this->getTable($this->_maintablename);
 
 		$defaultSgId = $this->getDefault(0);

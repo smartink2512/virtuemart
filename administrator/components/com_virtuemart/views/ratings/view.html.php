@@ -41,15 +41,8 @@ class VirtuemartViewRatings extends VmView {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		/* Get the review IDs to retrieve (input variable may be cid, cid[] or virtuemart_rating_review_id */
-		$cids = VmRequest::getVar('cid', 0);
-		if (empty($cids)) {
-			$cids= VmRequest::getVar('virtuemart_rating_review_id',0);
-		}
+		$cids = VmRequest::getInt('cid', VmRequest::getVar('virtuemart_rating_review_id',0));
 		if ($cids && !is_array($cids)) $cids = array($cids);
-
-
-		jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($cids);
 
 		// Figure out maximum rating scale (default is 5 stars)
 		$this->max_rating = VmConfig::get('vm_maximum_rating_scale',5);
@@ -65,7 +58,7 @@ class VirtuemartViewRatings extends VmView {
 			case 'listreviews':
 				/* Get the data */
 				$this->addStandardDefaultViewLists($model);
-				$virtuemart_product_id = VmRequest::getVar('virtuemart_product_id',array(),'', 'array');
+				$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
 				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 					$virtuemart_product_id = (int)$virtuemart_product_id[0];
 				} else {

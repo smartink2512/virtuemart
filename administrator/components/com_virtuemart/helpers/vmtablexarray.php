@@ -66,9 +66,10 @@ class VmTableXarray extends VmTable {
 		$skeyId = VmRequest::getInt($this->_skey, 0);
 		// Initialize variables
 		$db		= JFactory::getDBO();
-		$cid	= VmRequest::getVar( $this->_pkey , array(), 'post', 'array' );
-		$order	= VmRequest::getVar( 'order', array(), 'post', 'array' );
+		$cid	= VmRequest::getInt( $this->_pkey );
+		$order	= VmRequest::getInt( 'order' ); //I found now two times "order" instead of ordering.
 
+		//This sql is broken
 		$query = 'SELECT `id` FROM `' . $this->_tbl . '` WHERE $this->_pkey = '.(int)$cid[0].' AND `virtuemart_category_id` = '.(int)$skeyId ;
 		$db->setQuery( $query );
 		$id = $db->loadResult();

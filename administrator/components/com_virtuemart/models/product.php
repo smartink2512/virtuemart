@@ -185,7 +185,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$this->search_type = VmRequest::getVar ('search_type', '');
 
-		$this->searchcustoms = VmRequest::getVar ('customfields', array(), 'default', 'array');
+		$this->searchcustoms = VmRequest::getInt ('customfields');
 
 		$this->searchplugin = VmRequest::getInt ('custom_parent_id', 0);
 
@@ -2496,7 +2496,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 		$vars['subject'] = VmRequest::getVar ('subject');
 		$vars['mailbody'] = VmRequest::getVar ('mailbody');
 
-		$order_states = VmRequest::getVar ('statut', array(), '', 'ARRAY');
+		$order_states = VmRequest::getInt ('statut');
 		$productShoppers = $this->getProductShoppersByStatus ($product_id, $order_states);
 		vmdebug ('productShoppers ', $productShoppers);
 

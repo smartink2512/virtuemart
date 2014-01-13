@@ -71,10 +71,8 @@ class VirtuemartControllerShipmentmethod extends VmController {
 
 		$model = VmModel::getModel('shipmentmethod');
 		$msgtype = '';
-		//$cids = VmRequest::getInt('virtuemart_product_id',0);
-		$cids = VmRequest::getVar($this->_cidName, VmRequest::getVar('virtuemart_shipment_id',array(),'', 'ARRAY'), '', 'ARRAY');
-		//jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($cids);
+
+		$cids = VmRequest::getVar($this->_cidName, VmRequest::getInt('virtuemart_shipment_id'));
 
 		foreach($cids as $cid){
 			if ($model->createClone($cid)) $msg = vmText::_('COM_VIRTUEMART_SHIPMENT_CLONED_SUCCESSFULLY');

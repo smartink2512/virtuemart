@@ -51,7 +51,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
     <?php } ?>
 	<div class="icon"><?php VmImage::displayImageButton('http://virtuemart.net/community/translations', 'vm_country_48', vmText::_('COM_VIRTUEMART_TRANSLATIONS'), 'vmicon48','target="_blank"'); ?></div>
 	<div class="icon"><?php VmImage::displayImageButton('http://docs.virtuemart.net', 'vm_shop_help_48', vmText::_('COM_VIRTUEMART_DOCUMENTATION'), 'vmicon48','target="_blank"'); ?></div>
-    <?php if ($this->canDo->get('core.admin') and JVM_VERSION<2) { ?>
+    <?php if ($this->canDo->get('core.admin') and JVM_VERSION<3) { ?>
 	<div class="icon"><?php echo LiveUpdate::getIcon(array(),'url'); ?></div>
     <?php } ?>
 	<div class="clear"></div>

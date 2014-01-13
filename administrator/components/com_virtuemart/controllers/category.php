@@ -76,7 +76,6 @@ class VirtuemartControllerCategory extends VmController {
 		//capturing virtuemart_category_id
 		$id = 0;
 		$cid	= VmRequest::getInt( 'cid', array() );
-		//JArrayHelper::toInteger($cid);
 
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
@@ -116,7 +115,6 @@ class VirtuemartControllerCategory extends VmController {
 		//capturing virtuemart_category_id
 		$id = 0;
 		$cid	= VmRequest::getInt( 'cid', array() );
-		//JArrayHelper::toInteger($cid);
 
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
@@ -152,12 +150,10 @@ class VirtuemartControllerCategory extends VmController {
 		vmRequest::vmCheckToken();
 
 		$cid	= VmRequest::getInt( 'cid', array() );	//is sanitized
-		//JArrayHelper::toInteger($cid);
 
 		$model = VmModel::getModel('category');
 
 		$order	= VmRequest::getInt('order', array() );
-		//JArrayHelper::toInteger($order);
 
 		if ($model->setOrder($cid,$order)) {
 			$msg = vmText::_('COM_VIRTUEMART_NEW_ORDERING_SAVED');

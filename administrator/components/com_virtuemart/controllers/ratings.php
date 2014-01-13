@@ -93,7 +93,7 @@ class VirtuemartControllerRatings extends VmController {
 
 		if($layout=='list_reviews'){
 
-			$virtuemart_product_id = VmRequest::getVar('virtuemart_product_id',array(),'', 'array');
+			$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
 			if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 				$virtuemart_product_id = (int)$virtuemart_product_id[0];
 			} else {
@@ -118,7 +118,7 @@ class VirtuemartControllerRatings extends VmController {
 
 		if($layout=='list_reviews'){
 
-			$virtuemart_product_id = VmRequest::getVar('virtuemart_product_id',array(),'', 'array');
+			$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
 			if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 				$virtuemart_product_id = (int)$virtuemart_product_id[0];
 			} else {
@@ -180,7 +180,7 @@ class VirtuemartControllerRatings extends VmController {
 		if($apply){
 			$redir = 'index.php?option=com_virtuemart&view=ratings&task=edit_review&virtuemart_rating_review_id='.$id;
 		} else {
-			$virtuemart_product_id = VmRequest::getVar('virtuemart_product_id',array(),'', 'array');
+			$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
 			if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 				$virtuemart_product_id = (int)$virtuemart_product_id[0];
 			} else {
@@ -198,7 +198,7 @@ class VirtuemartControllerRatings extends VmController {
 	 */
 	function cancelEditReview(){
 
-		$virtuemart_product_id = VmRequest::getVar('virtuemart_product_id',array(),'', 'array');
+		$virtuemart_product_id = VmRequest::getInt('virtuemart_product_id');
 		if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0){
 			$virtuemart_product_id = (int)$virtuemart_product_id[0];
 		} else {

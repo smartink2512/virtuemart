@@ -73,7 +73,6 @@ class VirtuemartControllerCalc extends VmController {
 
 		$id = 0;
 		$cid	= VmRequest::getInt( 'cid', array() );
-		//JArrayHelper::toInteger($cid);
 
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
@@ -107,7 +106,6 @@ class VirtuemartControllerCalc extends VmController {
 
 		$id = 0;
 		$cid	= VmRequest::getInt( 'cid', array() );
-		//JArrayHelper::toInteger($cid);
 
 		if (isset($cid[0]) && $cid[0]) {
 			$id = $cid[0];
@@ -138,12 +136,10 @@ class VirtuemartControllerCalc extends VmController {
 		vmRequest::vmCheckToken();
 
 		$cid	= VmRequest::getInt( 'cid', array() );
-		//JArrayHelper::toInteger($cid);
 
 		$model = VmModel::getModel('calc');
 
-		$order	= VmRequest::getVar('order', array(), 'post', 'array');
-		JArrayHelper::toInteger($order);
+		$order	= VmRequest::getInt('order');
 
 		if ($model->setOrder($cid,$order)) {
 			$msg = vmText::_('COM_VIRTUEMART_NEW_ORDERING_SAVED');

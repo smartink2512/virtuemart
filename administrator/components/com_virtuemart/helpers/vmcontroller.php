@@ -191,8 +191,6 @@ class VmController extends JControllerLegacy{
 		vmRequest::vmCheckToken();
 
 		$ids = VmRequest::getVar($this->_cidName, VmRequest::getInt('cid', array() ));
-		//jimport( 'joomla.utilities.arrayhelper' );
-		//JArrayHelper::toInteger($ids);
 
 		if(count($ids) < 1) {
 			$msg = vmText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
@@ -321,8 +319,6 @@ class VmController extends JControllerLegacy{
 
 		$cid 	= VmRequest::getInt( $this->_cidName, VmRequest::getInt('cid', array() ) );
 		$order 	= VmRequest::getInt( 'order', array() );
-		//JArrayHelper::toInteger($cid);
-		//JArrayHelper::toInteger($order);
 
 		$model = VmModel::getModel($this->_cname);
 		if (!$model->saveorder($cid, $order)) $msg = 'error';
