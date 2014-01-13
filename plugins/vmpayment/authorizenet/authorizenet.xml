@@ -13,7 +13,6 @@
     </files>
     <config>
         <fields name="params">
-
             <fieldset name="payment" addfieldpath="/administrator/components/com_virtuemart/fields">
                 <field type="vmjpluginwarning"/>
                 <field type="vmcurl"/>

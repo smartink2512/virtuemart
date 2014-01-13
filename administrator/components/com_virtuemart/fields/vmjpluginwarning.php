@@ -54,8 +54,21 @@ class JFormFieldVmjpluginwarning extends JFormField {
 			$doc->addScriptDeclaration($js);
 			return '<span id="vmjpluginwarning"></span>';
 		} else {
+						$js = "
+			window.addEvent('domready', function() {
+			   $$( '.panel h3 a' ) .hide();
+			   $$( '.panel h3#warning-options a' ) .show();
+			    $$( '.panel .content' ) .hide();
+			      $$( '.panel .alert alert-info' ) .show();
+			 });
+			 ";
+			$doc = JFactory::getDocument();
+			//$doc->addScriptDeclaration($js);
 
-			return '<span class="alert alert-info">'.vmText::_('COM_VIRTUEMART_PLUGIN_WARNING').'</span>';
+			$css =".panel {display:none;}\n";
+			JFactory::getDocument()->addStyleDeclaration($css);
+
+			return '<div id="vmjpluginwarning">'.vmText::_('COM_VIRTUEMART_PLUGIN_WARNING').'</div>';
 	}
 
 }

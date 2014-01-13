@@ -676,9 +676,9 @@ class ShopFunctions {
 		return self::$vmFeeds;
 	}
 	static public function getRssFeed ($rssURL,$max) {
-		jimport('simplepie.simplepie');
-
-		$rssFeed = new SimplePie($rssURL);
+		// prevent Strict Standards errors in simplepie
+		error_reporting(E_ALL ^ E_STRICT);
+		$rssFeed = JFactory::getFeedParser($rssURL);
 
 		$count = $rssFeed->get_item_quantity();
 		$limit=min($max,$count);
