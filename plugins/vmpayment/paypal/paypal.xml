@@ -32,7 +32,7 @@
             <option value="api">VMPAYMENT_PAYPAL_PRODUCTS_API</option>
             <option value="hosted">VMPAYMENT_PAYPAL_PRODUCTS_HOSTED</option>
         </param>
-        <param class="sandbox" name="sandbox" type="radio" default="1" label="VMPAYMENT_PAYPAL_SHOP_MODE"
+        <param class="sandbox" name="sandbox" type="radio" default="0" label="VMPAYMENT_PAYPAL_SHOP_MODE"
                description="VMPAYMENT_PAYPAL_SHOP_MODE_DESC">
             <option value="0">VMPAYMENT_PAYPAL_PRODUCTION</option>
             <option value="1">VMPAYMENT_PAYPAL_SANDBOX</option>
@@ -76,9 +76,9 @@
         <param class="authentication sandbox certificate" name="sandbox_api_certificate" type="getcertificate" directory="paypal" stripext="0"  exclude="^_" default=""
                label="VMPAYMENT_PAYPAL_SANDBOX_CERTIFICATE"/>
 
-        <param class="hosted live" name="live_payflow_vendor" type="text" size="50" default=""
+        <param class="hosted live" name="payflow_vendor" type="text" size="50" default=""
                label="VMPAYMENT_PAYPAL_PAYFLOW_VENDOR" description="VMPAYMENT_PAYPAL_PAYFLOW_VENDOR_DESC"/>
-        <param class="hosted live required" name="live_payflow_partner" type="text" size="50" default=""
+        <param class="hosted live required" name="payflow_partner" type="text" size="50" default=""
                label="VMPAYMENT_PAYPAL_PAYFLOW_PARTNER" description="VMPAYMENT_PAYPAL_PAYFLOW_PARTNER_DESC"/>
         <param class="hosted sandbox" name="sandbox_payflow_vendor" type="text" size="50" default=""
                label="VMPAYMENT_PAYPAL_PAYFLOW_VENDOR" description="VMPAYMENT_PAYPAL_PAYFLOW_VENDOR_DESC"/>
