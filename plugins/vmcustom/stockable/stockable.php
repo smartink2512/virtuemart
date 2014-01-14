@@ -376,7 +376,6 @@ class plgVmCustomStockable extends vmCustomPlugin {
 					}
 				});
 
-//				if ("disableadd" == stockhandle && stockable_'.$js_suffix.'[found_id].in_stock <= 0) {
 				if ("disableadd" == stockhandle && found_child.in_stock <= 0) {
 					$(".addtocart-bar>span").remove();
 					$(".addtocart-bar>div").remove();
@@ -403,11 +402,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				// recalculate the price by found product child id;
 				formProduct = Opt.parents("form.product");
 				virtuemart_product_id = formProduct.find(\'input[name="virtuemart_product_id[]"]\').val();
-				//formProduct.find("#selectedStockable").remove();
-				//formProduct.append(\'<input id="stockableChild" type="hidden" value="\'+customfield_id[found_id]+\'" name="customPrice['.$row.'][\'+found_id+\']">\');
 				formProduct.find(\'input[name*="customPlugin['.$field->virtuemart_customfield_id.']['.$this->_name.'][child_id]"]\').val(found_id);
 
-				//(\'<input id="stockableChild" type="hidden" value="\'+customfield_id[found_id]+\'" name="customPrice['.$row.'][\'+found_id+\']">\');
 				Virtuemart.setproducttype(formProduct,virtuemart_product_id);
 			}
 			function isChildValid_'.$js_suffix.'(stockableBlockIndex, child_attrib, currentIndex) {
