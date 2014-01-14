@@ -222,6 +222,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		$customfield_id = array();
 		$selects = array();
 		$js = array();
+		$ordered_childs = array();
+
 		// generate option with valid child results
 		foreach($field->child as $child_id => &$attribut) {
 
@@ -263,6 +265,9 @@ class plgVmCustomStockable extends vmCustomPlugin {
 					}
 				}
 			} else unset ($attribut);
+
+			$field->child[$child_id]['child_id'] = $child_id;
+			array_push($ordered_childs, $field->child[$child_id]);
 		}
 
 		// Javascript can be added multiple times for multiple products on a page,
@@ -308,23 +313,12 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		$js = '
 		//<![CDATA[
 		jQuery( function($) {
-			//var customfield_id = {'. implode(',' , $js ) .'};
-			//var selecteds = [];//all selected options
-			//var found_id=0;//found child id
 			var stockhandle = "'.$this->stockhandle.'";
-			var stockable_'.$js_suffix.' =$.parseJSON(\'' .str_replace('\"', '\\\"', json_encode($field->child)). '\') ;
+			var stockable_ordered_'.$js_suffix.' =$.parseJSON(\'' .str_replace('\"', '\\\"', json_encode($ordered_childs)). '\') ;
 			var selections_'.$js_suffix.' = [];
-			//var original=[];
-//			var totalattribut_'.$js_suffix.' = $("select.attribute_list.customfield_id_'.$js_suffix.'").length+1;
 			var totalattribut_'.$js_suffix.' = [];
-			// get all initial select list values
-			/*$.each($(".attribute_list"), function(idx,selec) {
-				original[selec.name] = $.map($(this).find("option"), function(idx, opt) {
-						return [[ idx.value ,idx.text ]];
-					});
-			});*/
 
-//			if ( $("#selectoptions1.attribute_list.customfield_id_'.$js_suffix.'").length ) {
+			// If there are selects, go thru each block, number them, record the number of selects in each, the "recalculate"
 			if ( $("select.attribute_list.customfield_id_'.$js_suffix.'").length ) {
 					var stockableBlockIndex = 0;
 					$(".stockable_block_'.$js_suffix.'").each(function() {
@@ -334,12 +328,16 @@ class plgVmCustomStockable extends vmCustomPlugin {
 						stockableBlockIndex++;
 					});
 			}
+
+			// Unbind any previous change events from the selects, then rebind our change event to them
 			$("select.attribute_list.customfield_id_'.$js_suffix.'").unbind("change");
 			$("select.attribute_list.customfield_id_'.$js_suffix.'").change(function(){
 				var stockableBlockIndex = $(this).parents(".stockable_block_'.$js_suffix.'").attr("id").split("_");
 				recalculate_'.$js_suffix.'(stockableBlockIndex[stockableBlockIndex.length-1], $(this));
 
 			});
+
+			// The main recalculate function (select change event handler)
 			function recalculate_'.$js_suffix.'(stockableBlockIndex, Opt){
 				var found_id = 0;
 				var currentIndex = $("#stockableBlockIndex_'.$js_suffix.'_"+stockableBlockIndex+" select.attribute_list.customfield_id_'.$js_suffix.'").index(Opt) +1;
@@ -356,25 +354,15 @@ class plgVmCustomStockable extends vmCustomPlugin {
 					i++;
 				});
 
-				// Find current values
-				/*for(var i=1; i<totalattribut_'.$js_suffix.'[stockableBlockIndex]; i++){
-					selections_'.$js_suffix.'[stockableBlockIndex][i] = $("#selectoptions"+i+".customfield_id_'.$js_suffix.'").val();
-				}*/
-
-				// Clear the following selects
-				/*for(var i=currentIndex+1; i<totalattribut_'.$js_suffix.'[stockableBlockIndex]; i++){
-					$("#stockableBlockIndex_'.$js_suffix.'_"+stockableBlockIndex+" #selectoptions"+i+".customfield_id_'.$js_suffix.'").empty();
-				}*/
-
 				// Repopulate the following selects
-				jQuery.each(stockable_'.$js_suffix.', function(child_id, child_attrib) {
+				jQuery.each(stockable_ordered_'.$js_suffix.', function(index, child_attrib) {
 					if (isChildValid_'.$js_suffix.'(stockableBlockIndex, child_attrib, currentIndex)) {
 						populateNextSelect_'.$js_suffix.'(stockableBlockIndex, child_attrib, currentIndex+1);
 					}
 				});
 
 				// Identify the current child
-				jQuery.each(stockable_'.$js_suffix.', function(child_id, child_attrib) {
+				jQuery.each(stockable_ordered_'.$js_suffix.', function(index, child_attrib) {
 					var i;
 					for(i = 1; i < totalattribut_'.$js_suffix.'[stockableBlockIndex]; i++){
 						if (child_attrib["selectoptions"+i][0] != selections_'.$js_suffix.'[stockableBlockIndex][i]) {
@@ -382,12 +370,14 @@ class plgVmCustomStockable extends vmCustomPlugin {
 						}
 					}
 					if (totalattribut_'.$js_suffix.'[stockableBlockIndex] == i) {
-						found_id = child_id;
+						found_id = child_attrib["child_id"];
+						found_child = child_attrib;
 						return false;
 					}
 				});
 
-				if ("disableadd" == stockhandle && stockable_'.$js_suffix.'[found_id].in_stock <= 0) {
+//				if ("disableadd" == stockhandle && stockable_'.$js_suffix.'[found_id].in_stock <= 0) {
+				if ("disableadd" == stockhandle && found_child.in_stock <= 0) {
 					$(".addtocart-bar>span").remove();
 					$(".addtocart-bar>div").remove();
 					$(".addtocart-bar>a.notify").remove();
@@ -406,8 +396,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 				$(".availability").remove();
 
-				if ("risetime" == stockhandle && stockable_'.$js_suffix.'[found_id].product_availability) {
-					$(".addtocart-area").after(\'<div class="availability">\' + stockable_'.$js_suffix.'[found_id].product_availability + \'</div>\');
+				if ("risetime" == stockhandle && found_child.product_availability) {
+					$(".addtocart-area").after(\'<div class="availability">\' + found_child.product_availability + \'</div>\');
 				}
 
 				// recalculate the price by found product child id;
