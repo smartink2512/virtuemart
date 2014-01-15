@@ -315,9 +315,10 @@ class VirtueMartCart {
 		$post = VmRequest::getRequest();
 
 		if(empty($virtuemart_product_ids)){
-			$virtuemart_product_ids = VmRequest::getInt('virtuemart_product_id',array()); //is sanitized then
+			$virtuemart_product_ids = VmRequest::getInt('virtuemart_product_id'); //is sanitized then
 		}
-
+		//vmConfig::$echoDebug = 1;
+		//vmdebug('cart add ',$virtuemart_product_ids);
 		if (empty($virtuemart_product_ids)) {
 			vmWarn('COM_VIRTUEMART_CART_ERROR_NO_PRODUCT_IDS');
 			vmdebug('cart helper add No product ids found');

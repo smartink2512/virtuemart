@@ -194,23 +194,6 @@ class VirtueMartModelConfig extends VmModel {
 
 
 	/**
-	 * Retrieve a list of modules.
-	 *
-	 * @author RickG
-	 * @return object List of module objects
-	 */
-	function getModuleList() {
-		$db = JFactory::getDBO();
-
-		$query = 'SELECT `module_id`, `module_name` FROM `#__virtuemart_modules` ';
-		$query .= 'ORDER BY `module_id`';
-		$db->setQuery($query);
-
-		return $db->loadObjectList();
-	}
-
-
-	/**
 	 * Retrieve a list of Joomla content items.
 	 *
 	 * @author RickG
@@ -309,7 +292,7 @@ class VirtueMartModelConfig extends VmModel {
 		$browse_cat_orderby_field = $config->get('browse_cat_orderby_field');
 		$cat_brws_orderby_dir = $config->get('cat_brws_orderby_dir');
 
-		if(!isset($data['replace'])) $data['replace'] = 0;
+		if(!isset($data['replace'])) $data['replace'] = FALSE;
 		$config->setParams($data,$data['replace']);
 		$confData = array();
 		$query = 'SELECT * FROM `#__virtuemart_configs`';
@@ -404,6 +387,11 @@ class VirtueMartModelConfig extends VmModel {
 					VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
 				}
 			}
+		}
+
+		$active_langs = $config->get('active_languages');
+		if(empty($active_langs)){
+			$config->set('active_languages',array(VmConfig::$vmlangTag));
 		}
 
 		$confData['config'] = $config->toString();

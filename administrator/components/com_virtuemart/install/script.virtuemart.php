@@ -21,7 +21,7 @@ if($maxtime < 140){
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('JPATH_VM_ADMINISTRATOR') or define('JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart');
 
-if(!class_exists('VmModel')) require JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php';
+
 
 // hack to prevent defining these twice in 1.6 installation
 if (!defined('_VM_SCRIPT_INCLUDED')) {
@@ -127,6 +127,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$lang = $params->get('site', 'en-GB');//use default joomla
 			$lang = strtolower(strtr($lang,'-','_'));
 
+			if(!class_exists('VmModel')) require $this->path.DS.'helpers'.DS.'vmmodel.php';
+
 			$model = VmModel::getInstance('updatesmigration', 'VirtueMartModel');
 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql',$lang);
 			$model->execSQLFile($this->path.DS.'install'.DS.'install_essential_data.sql',$lang);
@@ -208,6 +210,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				return $this->install($loadVm);
 			}
 
+			if(!class_exists('VmModel')) require JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php';
 			//Delete Cache
 			$cache = JFactory::getCache();
 			$cache->clean();
@@ -250,12 +253,13 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
    				)
  			);
 
-			$this->alterTable('#__virtuemart_order_items',
+			//todo Maik, please take a look, this should not be anylonger necessary
+			/*$this->alterTable('#__virtuemart_order_items',
 				array(
 					'product_discountedPriceWithoutTax' => '',
 				),
 				'DROP'
-			);
+			);*/
 
 			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();
@@ -295,7 +299,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$data['pagseq_4'] = $pagseq;
 				$data['pagseq_5'] = $pagseq;
 			}
-
+			$data['replace'] = 0;
 			$configModel = VmModel::getModel('config');
 			$configModel->store($data);
 		}

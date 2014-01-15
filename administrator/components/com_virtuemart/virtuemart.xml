@@ -59,7 +59,7 @@
 			<filename>access.xml</filename>
 			<folder>assets</folder>
 			<folder>controllers</folder>
-			<folder>elements</folder>
+			<folder>fields</folder>
 			<folder>helpers</folder>
 			<folder>install</folder>
 			<folder>liveupdate</folder>

@@ -408,7 +408,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		foreach ($queries as $query) {
 		    $query = trim($query);
 		    if ($query != '' && $query{0} != '#') {
-		    	if(strpos($query, 'CREATE' )!==false or strpos( $query, 'INSERT INTO')!==false){
+		    	if(strpos($query, 'CREATE' )!==false or strpos( $query, 'INSERT')!==false){
 		    		$query = str_replace('XLANG',$lang,$query);
 		    	}
 			$db->setQuery($query);

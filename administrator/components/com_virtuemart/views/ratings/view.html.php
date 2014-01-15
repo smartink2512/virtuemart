@@ -96,14 +96,14 @@ class VirtuemartViewRatings extends VmView {
 				if(!empty($rating)){
 					$this->SetViewTitle('REVIEW_RATE',$rating->product_name." (". $rating->customer.")" );
 
-					JToolBarHelper::customX('saveReview', 'save', 'save',  vmText::_('COM_VIRTUEMART_SAVE'), false);
-					JToolBarHelper::customX('applyReview', 'apply', 'apply',  vmText::_('COM_VIRTUEMART_APPLY'), false);
+					JToolBarHelper::custom('saveReview', 'save', 'save',  vmText::_('COM_VIRTUEMART_SAVE'), false);
+					JToolBarHelper::custom('applyReview', 'apply', 'apply',  vmText::_('COM_VIRTUEMART_APPLY'), false);
 
 				} else {
 					$this->SetViewTitle('REVIEW_RATE','ERROR' );
 				}
 
-				JToolBarHelper::customX('cancelEditReview', 'cancel', 'cancel',  vmText::_('COM_VIRTUEMART_CANCEL'), false);
+				JToolBarHelper::custom('cancelEditReview', 'cancel', 'cancel',  vmText::_('COM_VIRTUEMART_CANCEL'), false);
 
 				/* Assign the data */
 				$this->assignRef('rating', $rating);

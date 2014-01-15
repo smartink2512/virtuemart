@@ -82,8 +82,8 @@ class VirtuemartViewConfig extends VmView {
 
 		$currConverterList = $model->getCurrencyConverterList();
 		$this->assignRef('currConverterList', $currConverterList);
-		$moduleList = $model->getModuleList();
-		$this->assignRef('moduleList', $moduleList);
+		//$moduleList = $model->getModuleList();
+		//$this->assignRef('moduleList', $moduleList);
 
 		$activeLanguages = $model->getActiveLanguages( VmConfig::get('active_languages') );
 		$this->assignRef('activeLanguages', $activeLanguages);

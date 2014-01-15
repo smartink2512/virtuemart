@@ -208,12 +208,12 @@ class CurrencyDisplay {
 		$db = JFactory::getDbo();
 		$table = new TableShoppergroups($db);
 
-		if($result){
+		$priceFieldsRoots = array('basePrice','variantModification','basePriceVariant',
+			'basePriceWithTax','discountedPriceWithoutTax',
+			'salesPrice','priceWithoutTax',
+			'salesPriceWithDiscount','discountAmount','taxAmount','unitPrice');
 
-			$priceFieldsRoots = array('basePrice','variantModification','basePriceVariant',
-				'basePriceWithTax','discountedPriceWithoutTax',
-				'salesPrice','priceWithoutTax',
-				'salesPriceWithDiscount','discountAmount','taxAmount','unitPrice');
+		if($result){
 
 			$custom_price_display = 0;
 			if(!empty($result[1])){
@@ -259,13 +259,13 @@ class CurrencyDisplay {
 				}
 
 			} else {
-				foreach($table->_varsToPushParam as $name){
+				foreach($priceFieldsRoots as $name){
 					$this->_priceConfig[$name] = array(0,0,0);
 				}
 			}
 
 		} else {
-			foreach($table->_varsToPushParam as $name){
+			foreach($priceFieldsRoots as $name){
 				$show = VmConfig::get($name,0);
 				$round = VmConfig::get($name.'Rounding',$this->_nbDecimal);
 				$text = VmConfig::get($name.'Text',0);

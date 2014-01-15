@@ -1,15 +1,6 @@
 -- VirtueMart table data SQL script
 -- This will insert all sample data into the VirtueMart tables
 
---
--- Dumping data for table `#__virtuemart_permgroups`
---
-
-INSERT INTO `#__virtuemart_permgroups` (`virtuemart_permgroup_id`, `group_name`, `group_level`) VALUES
-(1, 'admin', 0),
-(2, 'storeadmin', 250),
-(3, 'shopper', 500),
-(4, 'demo', 750);
 
 INSERT INTO `#__virtuemart_userfield_values` ( `virtuemart_userfield_id`, `fieldtitle`, `fieldvalue`, `sys`, `ordering`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 	( 10, 'Mr', 'Mr', 0, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),

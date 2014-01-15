@@ -833,6 +833,7 @@ class VmConfig {
 		if (!class_exists ('Permissions')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 		}
+		unset($this->_params['replace']);
 		if(Permissions::getInstance()->check('admin')){
 			//The idea with the merge was that 3rd party use the config to store stuff there,
 			//But we doubt that anyone does it, because the vm team itself never uses it.
@@ -847,8 +848,6 @@ class VmConfig {
 			} else {
 				self::$_jpConfig->_params = array_merge($this->_params,$params);
 			}
-
-			//self::$_jpConfig->_params = $params;
 		}
 
 	}

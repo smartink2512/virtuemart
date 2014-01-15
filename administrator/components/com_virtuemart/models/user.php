@@ -1032,7 +1032,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		if($i==$required) $return = -1;
-		vmdebug('my i '.$i.' my data size '.$required,$return,$data);
+		//vmdebug('my i '.$i.' my data size '.$required,$return,$data);
 		if(!$return){
 			VmConfig::loadJLang('com_virtuemart_shoppers', true);
 			foreach($missingFields as $fieldname){
