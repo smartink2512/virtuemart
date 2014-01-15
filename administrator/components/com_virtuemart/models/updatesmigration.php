@@ -385,6 +385,11 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		    return false;
 		}
 
+		if(!class_exists('VmConfig')){
+			require_once(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+			VmConfig::loadConfig(false,true);
+		}
+
 		if(!VmConfig::$vmlang){
 			$params = JComponentHelper::getParams('com_languages');
 			$lang = $params->get('site', 'en-GB');//use default joomla

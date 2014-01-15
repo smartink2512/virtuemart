@@ -130,9 +130,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if(!class_exists('VmModel')) require $this->path.DS.'helpers'.DS.'vmmodel.php';
 
 			$model = VmModel::getInstance('updatesmigration', 'VirtueMartModel');
-			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql',$lang);
-			$model->execSQLFile($this->path.DS.'install'.DS.'install_essential_data.sql',$lang);
-			$model->execSQLFile($this->path.DS.'install'.DS.'install_required_data.sql',$lang);
+			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
+			$model->execSQLFile($this->path.DS.'install'.DS.'install_essential_data.sql');
+			$model->execSQLFile($this->path.DS.'install'.DS.'install_required_data.sql');
 
 			//$id = $model->determineStoreOwner();
 			$model->setStoreOwner();
@@ -161,7 +161,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->recurse_copy($src,$dst);
 
-			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
+			if(!class_exists('GenericTableUpdater')) require($this->path . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();
 			$updater->createLanguageTables();
 
@@ -210,7 +210,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				return $this->install($loadVm);
 			}
 
-			if(!class_exists('VmModel')) require JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php';
+
 			//Delete Cache
 			$cache = JFactory::getCache();
 			$cache->clean();
@@ -223,9 +223,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$lang = $params->get('site', 'en-GB');//use default joomla
 			$lang = strtolower(strtr($lang,'-','_'));
 
-			if(!class_exists('VirtueMartModelUpdatesMigration')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'updatesmigration.php');
+			if(!class_exists('VmModel')) require $this->path.DS.'helpers'.DS.'vmmodel.php';
+			if(!class_exists('VirtueMartModelUpdatesMigration')) require($this->path . DS . 'models' . DS . 'updatesmigration.php');
 			$model = new VirtueMartModelUpdatesMigration(); //JModel::getInstance('updatesmigration', 'VirtueMartModel');
-			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql',$lang);
+			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
 
 			$this -> joomlaSessionDBToMediumText();
 
@@ -261,7 +262,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				'DROP'
 			);*/
 
-			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
+			if(!class_exists('GenericTableUpdater')) require($this->path . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();
 
 			$updater->updateMyVmTables();
@@ -632,7 +633,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$sgroup = $this->_db->loadAssoc();
 
 			if($sgroup['default']!=2){
-				if(!class_exists('TableShoppergroups')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'shoppergroups.php');
+				if(!class_exists('TableShoppergroups')) require($this->path.DS.'tables'.DS.'shoppergroups.php');
 				$db = JFactory::getDBO();
 				$table = new TableShoppergroups($db);
 				$stdgroup = null;

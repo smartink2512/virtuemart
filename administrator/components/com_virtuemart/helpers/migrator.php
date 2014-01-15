@@ -572,9 +572,9 @@ class Migrator extends VmModel{
 		//vmdebug('muhh',$JUserString);
 		//$continue=false;
 
-		$q = 'SELECT * FROM `#__vm_auth_group` ';
+		/*$q = 'SELECT * FROM `#__vm_auth_group` ';
 		$this->_db->setQuery($q);
-		$groups = $this->_db->loadAssocList();
+		$groups = $this->_db->loadAssocList();*/
 
 		while($continue){
 
@@ -602,8 +602,8 @@ class Migrator extends VmModel{
 					$user['virtuemart_shoppergroups_id'] = $oldToNewShoppergroups[$user['shopper_group_id']];
 				}
 
-				if(!empty($user['id'])){
-					$user['virtuemart_user_id'] = $user['id'];
+				if(!empty($user['user_id'])){
+					$user['virtuemart_user_id'] = $user['user_id'];
 				}
 
 				if(!empty($user['user_email'])){
@@ -611,7 +611,7 @@ class Migrator extends VmModel{
 				}
 
 				//$userModel->setUserId($user['id']);
-				$userModel->setId($user['id']);		//Should work with setId, because only administrators are allowed todo the migration
+				$userModel->setId($user['user_id']);		//Should work with setId, because only administrators are allowed todo the migration
 
 
 				//Joomla user does exist
