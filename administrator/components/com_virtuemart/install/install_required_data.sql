@@ -2,7 +2,7 @@
 -- This will insert all sample data into the VirtueMart tables
 
 
-INSERT INTO `#__virtuemart_userfield_values` ( `virtuemart_userfield_id`, `fieldtitle`, `fieldvalue`, `sys`, `ordering`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
+INSERT IGNORE INTO `#__virtuemart_userfield_values` ( `virtuemart_userfield_id`, `fieldtitle`, `fieldvalue`, `sys`, `ordering`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 	( 10, 'Mr', 'Mr', 0, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
 	( 10, 'Mrs', 'Mrs', 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
 	( 26, 'None', '', 0, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
@@ -27,13 +27,13 @@ INSERT INTO `#__virtuemart_userfield_values` ( `virtuemart_userfield_id`, `field
 -- Dumping data for table `#__virtuemart_customs`
 --
 
-INSERT INTO `#__virtuemart_customs` ( `virtuemart_custom_id`, `custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
+INSERT IGNORE INTO `#__virtuemart_customs` ( `virtuemart_custom_id`, `custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 (1,0, 0, 'COM_VIRTUEMART_RELATED_PRODUCTS', 'COM_VIRTUEMART_RELATED_PRODUCTS_TIP', 'related_products', 'COM_VIRTUEMART_RELATED_PRODUCTS_DESC', 'R', 0, 0, 0, 1, '2011-05-25 21:52:43', 62, '2011-05-25 21:52:43', 62, '0000-00-00 00:00:00', 0),
 (2,0, 0, 'COM_VIRTUEMART_RELATED_CATEGORIES', 'COM_VIRTUEMART_RELATED_CATEGORIES_TIP', 'related_categories', 'COM_VIRTUEMART_RELATED_CATEGORIES_DESC', 'Z', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0);
 
 
 
-INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`, `published`) VALUES
+INSERT IGNORE INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`, `published`) VALUES
 (2, 1, '-default-', 'This is the default shopper group.', 1, 1, 1),
 (1, 1, '-anonymous-', 'Shopper group for anonymous shoppers', 2, 1, 1);
 
@@ -41,7 +41,7 @@ INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtue
 --
 -- Dumping data for table `#__virtuemart_countries`
 --
-INSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_worldzone_id`, `country_name`, `country_3_code`, `country_2_code`) VALUES
+INSERT IGNORE INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_worldzone_id`, `country_name`, `country_3_code`, `country_2_code`) VALUES
 (1, 1, 'Afghanistan', 'AFG', 'AF'),
 (2, 1, 'Albania', 'ALB', 'AL'),
 (3, 1, 'Algeria', 'DZA', 'DZ'),
@@ -294,7 +294,7 @@ INSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_worl
 -- Dumping data for table `#__virtuemart_currencies`
 --
 
-INSERT INTO `#__virtuemart_currencies` (`virtuemart_currency_id`, `virtuemart_vendor_id`, `currency_name`, `currency_code_2`, `currency_code_3`, `currency_numeric_code`, `currency_exchange_rate`, `currency_symbol`, `currency_decimal_place`, `currency_decimal_symbol`, `currency_thousands`, `currency_positive_style`, `currency_negative_style`, `ordering`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
+INSERT IGNORE INTO `#__virtuemart_currencies` (`virtuemart_currency_id`, `virtuemart_vendor_id`, `currency_name`, `currency_code_2`, `currency_code_3`, `currency_numeric_code`, `currency_exchange_rate`, `currency_symbol`, `currency_decimal_place`, `currency_decimal_symbol`, `currency_thousands`, `currency_positive_style`, `currency_negative_style`, `ordering`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 (2, 1, 'United Arab Emirates dirham', '', 'AED', 784, 0, 'د.إ', '2', ',', '', '{number} {symbol}', '{sign}{number} {symbol}', 0, 1, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
 (4, 1, 'Albanian lek', '', 'ALL', 8, 0, 'Lek', '2', ',', '', '{number} {symbol}', '{sign}{number} {symbol}', 0, 1, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
 (5, 1, 'Netherlands Antillean gulden', '', 'ANG', 532, 0, 'ƒ', '2', ',', '', '{number} {symbol}', '{sign}{number} {symbol}', 0, 1, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
@@ -464,7 +464,7 @@ INSERT INTO `#__virtuemart_currencies` (`virtuemart_currency_id`, `virtuemart_ve
 -- Dumping data for table `#__virtuemart_states`
 --
 
-INSERT INTO `#__virtuemart_states` (`virtuemart_state_id`, `virtuemart_vendor_id`, `virtuemart_country_id`, `virtuemart_worldzone_id`, `state_name`,
+INSERT IGNORE INTO `#__virtuemart_states` (`virtuemart_state_id`, `virtuemart_vendor_id`, `virtuemart_country_id`, `virtuemart_worldzone_id`, `state_name`,
 `state_3_code`, `state_2_code`, `ordering`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 	(1, 1, 223, 0, 'Alabama', 'ALA', 'AL', 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
 	(2, 1, 223, 0, 'Alaska', 'ALK', 'AK', 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
@@ -1090,7 +1090,7 @@ INSERT INTO `#__virtuemart_states` (`virtuemart_state_id`, `virtuemart_vendor_id
 	(652, 1, 176, 0, 'Ярославская область', 'YAR', '76', 83, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0);
 
 -- By : Khemakorn Chaiyapruck from Thailand
-INSERT INTO `#__virtuemart_states` (`virtuemart_state_id`, `virtuemart_vendor_id`, `virtuemart_country_id`, `state_name`, `state_3_code`, `state_2_code`, `published`) VALUES
+INSERT IGNORE INTO `#__virtuemart_states` (`virtuemart_state_id`, `virtuemart_vendor_id`, `virtuemart_country_id`, `state_name`, `state_3_code`, `state_2_code`, `published`) VALUES
 (653, 1, 209, 'กระบี่', 'กบ', 'กบ', 1),
 (654, 1, 209, 'กรุงเทพมหานคร', 'กทม', 'กท', 1),
 (655, 1, 209, 'กาญจนบุรี', 'กจ', 'กจ', 1),

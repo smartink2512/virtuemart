@@ -68,7 +68,6 @@ $document->addScriptDeclaration($js);
 						<th><?php echo vmText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_ROUNDING'); ?></th>
 					</tr>
 					<?php
-					vmdebug('my config',$this->config);
 					echo ShopFunctions::writePriceConfigLine($this->config->_params, 'basePrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE');
 					echo ShopFunctions::writePriceConfigLine($this->config->_params, 'variantModification', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_VARMOD');
 					echo ShopFunctions::writePriceConfigLine($this->config->_params, 'basePriceVariant', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_VAR');

@@ -642,10 +642,6 @@ class VmConfig {
 		$configTable  = VirtueMartModelConfig::checkConfigTableExists();
 
 		$db = JFactory::getDBO();
-	/*	$query = 'SHOW TABLES LIKE "%virtuemart_configs%"';
-		$db->setQuery($query);
-		$configTable = $db->loadResult();/*/
-// 		self::$_debug = true;
 
 		if(empty($configTable)){
 			self::$_jpConfig->installVMconfig();
@@ -673,38 +669,8 @@ class VmConfig {
 
 		$pair = array();
 		if (!empty(self::$_jpConfig->_raw)) {
-			$config = explode('|', self::$_jpConfig->_raw);
-			foreach($config as $item){
-				$item = explode('=',$item);
-				if(!empty($item[1])){
-					// if($item[0]!=='offline_message' && $item[0]!=='dateformat' ){
-					if($item[0]!=='offline_message' ){
-						try {
-							$value = @unserialize($item[1] );
 
-							if($value===FALSE){
-								$app ->enqueueMessage('Exception in loadConfig for unserialize '.$item[0]. ' '.$item[1]);
-								//$uri = JFactory::getURI();
-								$configlink = JURI::root() . 'administrator/index.php?option=com_virtuemart&view=config';
-								$app ->enqueueMessage('To avoid this message, enter your virtuemart <a href="'.$configlink.'">config</a> and just save it one time');
-							} else {
-								$pair[$item[0]] = $value;
-							}
-						}catch (Exception $e) {
-							vmdebug('Exception in loadConfig for unserialize '. $e->getMessage(),$item);
-						}
-					} else {
-						$pair[$item[0]] = unserialize(base64_decode($item[1]) );
-					}
-
-				} else {
-					$pair[$item[0]] ='';
-				}
-
-			}
-
-// 			$pair['sctime'] = microtime(true);
-			self::$_jpConfig->_params = $pair;
+			self::setParams(self::$_jpConfig->_raw);
 
 			self::$_jpConfig->set('sctime',microtime(TRUE));
 			self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
@@ -828,9 +794,49 @@ class VmConfig {
 	 * For setting params, needs assoc array
 	 * @author Max Milbers
 	 */
-	function setParams($params,$replace=FALSE){
+	function setParams($params){
 
-		if (!class_exists ('Permissions')) {
+		$config = explode('|', $params);
+		$app = JFactory::getApplication();
+		foreach($config as $item){
+			$item = explode('=',$item);
+			if(!empty($item[1])){
+				// if($item[0]!=='offline_message' && $item[0]!=='dateformat' ){
+				if($item[0]!=='offline_message' ){
+					try {
+						$value = @unserialize($item[1] );
+
+						if($value===FALSE){
+							$app ->enqueueMessage('Exception in loadConfig for unserialize '.$item[0]. ' '.$item[1]);
+							//$uri = JFactory::getURI();
+							$configlink = JURI::root() . 'administrator/index.php?option=com_virtuemart&view=config';
+							$app ->enqueueMessage('To avoid this message, enter your virtuemart <a href="'.$configlink.'">config</a> and just save it one time');
+						} else {
+							$pair[$item[0]] = $value;
+						}
+					}catch (Exception $e) {
+						vmdebug('Exception in loadConfig for unserialize '. $e->getMessage(),$item);
+					}
+				} else {
+					$pair[$item[0]] = unserialize(base64_decode($item[1]) );
+				}
+
+			} else {
+				$pair[$item[0]] ='';
+			}
+
+		}
+
+// 			$pair['sctime'] = microtime(true);
+		self::$_jpConfig->_params = $pair;
+
+		//remove old params
+		unset(self::$_jpConfig->_params['hidemainmenu']);
+		unset(self::$_jpConfig->_params['pdf_invoice']); // parameter remove and replaced by inv_os
+		unset(self::$_jpConfig->_params['list_limit']);
+		unset(self::$_jpConfig->_params['pagination_sequence']);
+
+/*		if (!class_exists ('Permissions')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 		}
 		unset($this->_params['replace']);
@@ -848,9 +854,10 @@ class VmConfig {
 			} else {
 				self::$_jpConfig->_params = array_merge($this->_params,$params);
 			}
-		}
+		}*/
 
 	}
+
 
 	/**
 	 * Writes the params as string and escape them before

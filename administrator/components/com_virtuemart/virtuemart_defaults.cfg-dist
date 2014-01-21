@@ -125,6 +125,9 @@ browse_search_fields=array:product_sku|category_name|category_description|mf_nam
     taxAmount=1
     taxAmountText=1
     taxAmountRounding=-1
+    unitPrice=1
+    unitPriceText=1
+    unitPriceRounding=1
 
 ##Check stock
     addtocart_popup=1

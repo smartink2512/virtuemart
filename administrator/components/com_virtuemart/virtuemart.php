@@ -80,7 +80,8 @@ if(VmConfig::get('enableEnglish', 1)){
     $jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
     $jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
 }
-vmJsApi::jQuery();
+
+vmJsApi::jQuery(0);
 vmJsApi::jSite();
 
 // check for permission Only vendor and Admin can use VM2 BE

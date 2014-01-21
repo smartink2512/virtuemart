@@ -196,7 +196,15 @@ class AdminUIHelper {
 
 		$filter [] = "jmmod.published='1'";
 		$filter [] = "item.published='1'";
-		$filter [] = "jmmod.is_admin='1'";
+
+		if (!class_exists ('Permissions')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+		}
+
+		if(!Permissions::getInstance()->check('admin')){
+			$filter [] = "jmmod.is_admin='0'";
+		}
+
 		if (! empty ( $moduleId )) {
 			$filter [] = 'vmmod.module_id=' . ( int ) $moduleId;
 		}

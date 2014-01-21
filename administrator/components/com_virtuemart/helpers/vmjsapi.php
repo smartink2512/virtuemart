@@ -102,14 +102,13 @@ class vmJsApi{
 			$uri = JPATH_THEMES .'/'. $template.'/'.$ext ;
 			$path= 'templates/'. $template .'/'.$ext ;
 		}
-
-		if (strpos($path, 'templates/'. $template ) !== FALSE)
-		{
+		//vmdebug('my js path setPath',$path);
+		if (strpos($path, 'templates/'. $template ) !== FALSE){
 			// Search in template or fallback
 			if (!file_exists($uri.'/'. $file)) {
 				$assets_path = VmConfig::get('assets_general_path','components/com_virtuemart/assets/') ;
 				$path = str_replace('templates/'. $template.'/',$assets_path, $path);
-				// vmdebug('setPath',$assets_path,$path);
+				vmdebug('setPath file not found ',$assets_path,$uri);
 				// vmWarn('file not found in tmpl :'.$file );
 			}
 			if ($absolute_path) {
@@ -127,6 +126,7 @@ class vmJsApi{
 				$path = JURI::root(TRUE) .'/'.$path;
 			}
 		}
+		vmdebug('my js path setPath',$path);
 		return $path.'/'.$file ;
 	}
 	/**
@@ -149,15 +149,16 @@ class vmJsApi{
 
 		if($isSite===-1)$isSite = JFactory::getApplication()->isSite();
 
-		if (!VmConfig::get ('jquery', TRUE) and $isSite) {
+		if (!VmConfig::get ('jquery', true) and $isSite) {
+			vmdebug('Common jQuery is disabled');
 			return FALSE;
 		}
 
-		if(VmConfig::get('google_jquery',TRUE)){
-			vmJsApi::js('jquery','//ajax.googleapis.com/ajax/libs/jquery/1.8.1','',TRUE);
+		if(VmConfig::get('google_jquery',true)){
+			vmJsApi::js('jquery','//ajax.googleapis.com/ajax/libs/jquery/1.8.1','',true);
 			//$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js');
 			if (!$isSite) {
-				vmJsApi::js ('jquery-ui', '//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23', '', TRUE);
+				vmJsApi::js ('jquery-ui', '//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23', '', true);
 			}
 			// if (!$isSite) $document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js');
 		} else {

@@ -62,39 +62,48 @@ class VmTable extends JTable {
 
 		$this->_tbl = $table;
 		$this->_db =& $db;
+		$this->_pkey = $key;
 
-		//if(JVM_VERSION<3){
+		if(JVM_VERSION<3){
 			$this->_tbl_key = $key;
-		/*} else {
-			if (!is_string($key)){
+		} else {
+			// Set the key to be an array.
+			if (is_string($key)){
 				$key = array($key);
-			}else if (is_object($key)){
+			} elseif (is_object($key)){
 				$key = (array) $key;
 			}
+
 			$this->_tbl_keys = $key;
+
+			if (count($key) == 1) {
+				$this->_autoincrement = true;
+			} else {
+				$this->_autoincrement = false;
+			}
 
 			// Set the singular table key for backwards compatibility.
 			$this->_tbl_key = $this->getKeyName();
-		}*/
+		}
 
 		// If we are tracking assets, make sure an access field exists and initially set the default.
-		/*if (property_exists($this, 'asset_id')){
+		if (property_exists($this, 'asset_id')){
 			$this->_trackAssets = true;
 		}
 
 		// If the access property exists, set the default.
 		if (property_exists($this, 'access')){
 			$this->access = (int) JFactory::getConfig()->get('access');
-		}/*/
+		}
 
 		if(JVM_VERSION>2){
-			// Implement JObservableInterface: //by joomla 3
+			// Implement JObservableInterface:
 			// Create observer updater and attaches all observers interested by $this class:
 			$this->_observers = new JObserverUpdater($this);
 			JObserverMapper::attachAllObservers($this);
 		}
 
-		$this->_pkey = $key;
+
 		self::$_cache = null;
 		self::$_query_cache = null;
 	}

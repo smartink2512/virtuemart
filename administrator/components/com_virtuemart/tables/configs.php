@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 
 /**
  * Coupon table class
@@ -29,7 +29,7 @@ if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmta
  * @subpackage Config
  * @author RickG
  */
-class TableConfigs extends VmTable {
+class TableConfigs extends VmTableData {
 
 	/** @var int Primary key */
 	var $virtuemart_config_id			= 0;

@@ -416,7 +416,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		    	if(strpos($query, 'CREATE' )!==false or strpos( $query, 'INSERT')!==false){
 		    		$query = str_replace('XLANG',$lang,$query);
 		    	}
-			$db->setQuery($query);
+				$db->setQuery($query);
 				if (!$db->execute()) {
 				    JError::raiseWarning(1, 'JInstaller::install: '.$sqlfile.' '.vmText::_('COM_VIRTUEMART_SQL_ERROR')." ".$db->stderr(true));
 				    $ok = false;

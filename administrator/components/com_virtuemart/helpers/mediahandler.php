@@ -262,8 +262,9 @@ class VmMediaHandler {
 				$rdspos = strrpos($this->file_url,DS);
 				if($rdspos!==false){
 					$name = substr($this->file_url,$rdspos+1);
+				}else {
+					vmdebug('$name',$this->file_url,$rdspos);
 				}
-				//vmdebug('$name',$this->file_url,$rdspos,$name);
 			} else {
 				//This construction is only valid for the images, it is for own structuring using folders
 				$name = str_replace($this->file_url_folder,'',$this->file_url);

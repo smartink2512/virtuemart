@@ -283,31 +283,35 @@ class VirtueMartModelConfig extends VmModel {
 	function store(&$data) {
 
 		vmRequest::vmCheckToken();
+		//We create a fresh config
+		$config = VmConfig::loadConfig(false,true);
 
-		//$data['active_languages'] = strtolower(strtr($data['active_languages'],'-','_'));
-		//ATM we want to ensure that only one config is used
+		//We load the config file
+		$_raw = VmConfig::readConfigFile(FALSE);
+		$_value = join('|', $_raw);
+		//We set the config file values as parameters into the config
+		$config->setParams($_value);
 
-		$config = VmConfig::loadConfig(TRUE);
+		//We merge the array from the file with the array from the form
+		//in case it the form has the same key as the file, the value is taken from the form
+		$config->_params = array_merge($config->_params,$data);
 
 		$browse_cat_orderby_field = $config->get('browse_cat_orderby_field');
 		$cat_brws_orderby_dir = $config->get('cat_brws_orderby_dir');
 
-		if(!isset($data['replace'])) $data['replace'] = FALSE;
-		$config->setParams($data,$data['replace']);
-		$confData = array();
-		$query = 'SELECT * FROM `#__virtuemart_configs`';
-		$db = JFactory::getDBO();
-		$db->setQuery($query);
-		if($db->loadResult()){
-			$confData['virtuemart_config_id'] = 1;
-		} else {
-			$confData['virtuemart_config_id'] = 0;
-		}
+		//ATM we want to ensure that only one config is used
+		$confData['virtuemart_config_id'] = 1;
 
 		$urls = array('assets_general_path','media_category_path','media_product_path','media_manufacturer_path','media_vendor_path');
 		foreach($urls as $urlkey){
 			$url = trim($config->get($urlkey));
 			$length = strlen($url);
+
+			if($length<=1){
+				vmdebug('Urlkey was TOO SHORT '.$urlkey.' = '.$url.' and length '.$length,$_raw[$urlkey]);
+				unset($config->_params[$urlkey]);
+				continue;
+			}
 			if(strrpos($url,'/')!=($length-1)){
 				$config->set($urlkey,$url.'/');
 				vmInfo('Corrected media url '.$urlkey.' added missing /');
@@ -340,12 +344,12 @@ class VirtueMartModelConfig extends VmModel {
 		if(!empty($safePath)){
 			if(DS!='/' and strpos($safePath,'/')!==false){
 				$safePath=str_replace('/',DS,$safePath);
-				vmdebug('$safePath',$safePath);
+				vmInfo('Corrected safe path, replaced / by '.DS);
 			}
 			$length = strlen($safePath);
 			if(strrpos($safePath,DS)!=($length-1)){
 				$safePath = $safePath.DS;
-				vmInfo('Corrected safe path added missing '.DS);
+				vmInfo('Corrected safe path, added missing '.DS);
 			}
 			$config->set('forSale_path',$safePath);
 		} else {
@@ -475,7 +479,7 @@ class VirtueMartModelConfig extends VmModel {
 	 */
 	function deleteConfig(){
 
-		if($this->remove()){
+		if($this->remove(1)){
 			return VmConfig::loadConfig(true,true);
 		} else {
 			return false;

@@ -55,7 +55,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$update = false;
 			$this->_db = JFactory::getDBO();
-			$q = 'SHOW TABLES LIKE "%virtuemart_adminmenuentries%"'; //=>jos_virtuemart_shipment_plg_weight_countries
+			$q = 'SHOW TABLES LIKE "#__virtuemart_adminmenuentries"'; //=>jos_virtuemart_shipment_plg_weight_countries
 			$this->_db->setQuery($q);
 			if($this->_db->loadResult()){
 
@@ -300,7 +300,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$data['pagseq_4'] = $pagseq;
 				$data['pagseq_5'] = $pagseq;
 			}
-			$data['replace'] = 0;
 			$configModel = VmModel::getModel('config');
 			$configModel->store($data);
 		}
@@ -697,7 +696,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 				if(!empty($res)){
 					VmRequest::setVar(JSession::getFormToken(), '1', 'post');
-					$config = JModel::getInstance('config', 'VirtueMartModel');
+					$config = VmModel::getModel('config');
+
 					$config->setDangerousToolsOff();
 				}
 

@@ -82,6 +82,10 @@ class VmImage extends VmMediaHandler {
 	public function createThumbFileUrl(){
 
 		$file_name = $this->createThumbName();
+		if(empty($this->file_name_thumb)) {
+			vmdebug('createThumbFileUrl empty file_name_thumb ',$this);
+			return false;
+		}
 		$file_url_thumb = $this->file_url_folder.'resized/'.$this->file_name_thumb.'.'.$this->file_extension;
 		return $file_url_thumb;
 	}
@@ -112,6 +116,12 @@ class VmImage extends VmMediaHandler {
 			vmError('Couldnt create thumb, no directory given. Activate vmdebug to understand which database entry is creating this error');
 			vmdebug('createThumb, no directory given',$this);
 			return FALSE;
+		}
+
+		if(empty($this->file_name)){
+			vmError('Couldnt create thumb, no name given. Activate vmdebug to understand which database entry is creating this error');
+			vmdebug('createThumb, no name given',$this);
+			return false;
 		}
 
 		$synchronise = VmRequest::getString('synchronise',false);
