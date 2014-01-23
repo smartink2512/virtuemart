@@ -572,8 +572,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			if ((!empty($lastCatId) and $lastCatId != $cateid) or (!empty($manid) and $lastManId != $manid)) {
 				//We are in a new category or another manufacturer, so we start at page 1
-				$limitStart = 0;
-				vmdebug('using limitstart = 0');
+				$limitStart = JRequest::getInt ('limitstart', 0);
 			}
 			else {
 				//We were already in the category/manufacturer, so we take the value stored in the session
@@ -948,9 +947,10 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-		if($virtuemart_shoppergroup_ids !=null and is_array($virtuemart_shoppergroup_ids)){
+		$virtuemart_shoppergroup_idsString = 0;
+		if(!empty($virtuemart_shoppergroup_ids) and is_array($virtuemart_shoppergroup_ids)){
 			$virtuemart_shoppergroup_idsString = implode('',$virtuemart_shoppergroup_ids);
-		} else {
+		} else if(!empty($virtuemart_shoppergroup_ids)){
 			$virtuemart_shoppergroup_idsString = $virtuemart_shoppergroup_ids;
 		}
 

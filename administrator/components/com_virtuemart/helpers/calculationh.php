@@ -193,6 +193,7 @@ class calculationHelper {
 			$this->_shopperGroupId = $shopperGroupIds;
 		} else {
 			$user = JFactory::getUser();
+			$this->_shopperGroupId = array();
 			if (!empty($user->id)) {
 				$this->_db->setQuery('SELECT `usgr`.`virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups as `usgr`
  										JOIN `#__virtuemart_shoppergroups` as `sg` ON (`usgr`.`virtuemart_shoppergroup_id`=`sg`.`virtuemart_shoppergroup_id`)
@@ -203,16 +204,16 @@ class calculationHelper {
 					$this->_db->setQuery('SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
 								WHERE `default`="'.($user->guest+1).'" AND `virtuemart_vendor_id`="' . (int) $vendorId . '"');
 					$this->_shopperGroupId = $this->_db->loadResultArray();
+
 				}
 			}
-			else if (empty($this->_shopperGroupId)) {
 
-				$shoppergroupmodel = VmModel::getModel('ShopperGroup');
-				$site = JFactory::getApplication ()->isSite ();
-				$this->_shopperGroupId = array();
-				$shoppergroupmodel->appendShopperGroups($this->_shopperGroupId,$user,$site,$vendorId);
+			if(!$this->_shopperGroupId) $this->_shopperGroupId = array();
 
-			}
+			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
+			$site = JFactory::getApplication ()->isSite ();
+				
+			$shoppergroupmodel->appendShopperGroups($this->_shopperGroupId,$user,$site,$vendorId);
 		}
 	}
 

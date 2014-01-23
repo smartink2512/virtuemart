@@ -603,8 +603,8 @@ class Migrator extends VmModel{
 					$user['virtuemart_shoppergroups_id'] = $oldToNewShoppergroups[$user['shopper_group_id']];
 				}
 
-				if(!empty($user['id'])){
-					$user['virtuemart_user_id'] = $user['id'];
+				if(!empty($user['user_id'])){
+					$user['virtuemart_user_id'] = $user['user_id'];
 				}
 
 				if(!empty($user['user_email'])){
@@ -612,7 +612,7 @@ class Migrator extends VmModel{
 				}
 
 				//$userModel->setUserId($user['id']);
-				$userModel->setId($user['id']);		//Should work with setId, because only administrators are allowed todo the migration
+				$userModel->setId($user['user_id']);		//Should work with setId, because only administrators are allowed todo the migration
 
 
 				//Joomla user does exist

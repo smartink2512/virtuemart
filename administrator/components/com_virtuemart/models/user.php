@@ -156,22 +156,22 @@ class VirtueMartModelUser extends VmModel {
 		$this->_data->JUser = JUser::getInstance($this->_id);
 		// 		vmdebug('$this->_data->JUser',$this->_data->JUser);
 
-		//if(empty($this->_data->perms)){
 
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			$this->_data->perms = Permissions::getInstance()->getPermissions((int)$this->_id);
 
-		//}
 
 		// Add the virtuemart_shoppergroup_ids
 		$xrefTable = $this->getTable('vmuser_shoppergroups');
 		$this->_data->shopper_groups = $xrefTable->load($this->_id);
-		if(empty($this->_data->shopper_groups)){
-			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
-			$site = JFactory::getApplication ()->isSite ();
-			$this->_data->shopper_groups = array();
+
+		$shoppergroupmodel = VmModel::getModel('ShopperGroup');
+		$site = JFactory::getApplication ()->isSite ();
+		if($site){
+			if(empty($this->_data->shopper_groups)) $this->_data->shopper_groups = array();
 			$shoppergroupmodel->appendShopperGroups($this->_data->shopper_groups,$this->_data->JUser,$site);
 		}
+
 
 		if(!empty($this->_id)) {
 			$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"';

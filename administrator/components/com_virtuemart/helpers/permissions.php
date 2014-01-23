@@ -49,6 +49,8 @@ class Permissions extends JObject{
  		$this->getUserGroups();
  		$this->_perms = $this->doAuthentication();
 
+		$user = JFactory::getUser();
+
 	}
 
 	static public function getInstance() {
@@ -150,20 +152,9 @@ class Permissions extends JObject{
 		$session = JFactory::getSession();
 		$user = JFactory::getUser($user_id);
 
-		if (VmConfig::get('vm_price_access_level') != '') {
-			// Is the user allowed to see the prices?
-			$this->_show_prices  = $user->authorize( 'virtuemart', 'prices' );
-		}
-		else {
-			$this->_show_prices = 1;
-		}
 
 		if(!empty($user->id)){
 			$this->_virtuemart_user_id   = $user->id;
-			$q = 'SELECT `perms` FROM #__virtuemart_vmusers
-					WHERE virtuemart_user_id="'.(int)$this->_virtuemart_user_id.'"';
-			$this->_db->setQuery($q);
-			$perm = $this->_db->loadResult();
 
 			//We must prevent that Administrators or Managers are 'just' shoppers
 			//TODO rewrite it working correctly with jooomla ACL
@@ -223,12 +214,34 @@ class Permissions extends JObject{
 	 * @example $perm->check( 'admin,storeadmin' );
 	 * 			returns true when the user is admin or storeadmin
 	 */
-	public function check($perms,$acl=0) {
+	public function check($perms) {
+
+		$user = JFactory::getUser();
+
+		if(strpos($perms,',')!==FALSE){
+			$perms = explode('c',$perms);
+		} else {
+			$perms = array($perms);
+		}
+
+		foreach($perms as $perm){
+			if($perm=='admin'){
+				if($user->authorise('core.admin')){
+					return true;
+				}
+			}
+			if($perm=='storeadmin'){
+				if($user->authorise('core.manage')){
+					return true;
+				}
+			}
+		}
+		return false;
 		/* Set the authorization for use */
 
 		// Parse all permissions in argument, comma separated
 		// It is assumed auth_user only has one group per user.
-			$p1 = explode(",", $this->_perms);
+/*			$p1 = explode(",", $this->_perms);
 			$p2 = explode(",", $perms);
 // 			vmdebug('check '.$perms,$p1,$p2);
 			while (list($key1, $value1) = each($p1)) {
@@ -238,7 +251,7 @@ class Permissions extends JObject{
 					}
 				}
 			}
-		return false;
+		return false;*/
 	}
 
 	/**
@@ -251,9 +264,9 @@ class Permissions extends JObject{
 
 	public function isSuperVendor(){
 
-
+		$user = JFactory::getUser();
 		if(!$this->_vendorId){
-			$user = JFactory::getUser();
+			
 
 			if(!empty( $user->id)){
 				$q='SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vmusers` `au`
@@ -276,7 +289,7 @@ class Permissions extends JObject{
 		if($this->_vendorId!=0){
 			return $this->_vendorId;
 		} else {
-			if($this->check('admin,storeadmin') ){
+			if($user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manage', 'com_virtuemart') ){
 				$this->_vendorId = 1;
 				return $this->_vendorId;
 			}
