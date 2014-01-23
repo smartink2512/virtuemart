@@ -75,9 +75,9 @@
                        directory="paypal" stripext="0" exclude="^_" default=""
                        label="VMPAYMENT_PAYPAL_SANDBOX_CERTIFICATE"/>
 
-                <field class="hosted live" name="live_payflow_vendor" type="text" size="50" default=""
+                <field class="hosted live" name="payflow_vendor" type="text" size="50" default=""
                        label="VMPAYMENT_PAYPAL_PAYFLOW_VENDOR" description="VMPAYMENT_PAYPAL_PAYFLOW_VENDOR_TIP"/>
-                <field class="hosted live required" name="live_payflow_partner" type="text" size="50" default=""
+                <field class="hosted live required" name="payflow_partner" type="text" size="50" default=""
                        label="VMPAYMENT_PAYPAL_PAYFLOW_PARTNER" description="VMPAYMENT_PAYPAL_PAYFLOW_PARTNER_TIP"/>
                 <field class="hosted sandbox" name="sandbox_payflow_vendor" type="text" size="50" default=""
                        label="VMPAYMENT_PAYPAL_PAYFLOW_VENDOR" description="VMPAYMENT_PAYPAL_PAYFLOW_VENDOR_TIP"/>

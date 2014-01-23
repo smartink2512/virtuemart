@@ -249,18 +249,21 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 		$data = VmRequest::get ('post');
 
 		$model = VmModel::getModel ('ratings');
-		$model->saveRating ($data);
-		$errors = $model->getErrors ();
-		if (empty($errors)) {
-			$msg = vmText::sprintf ('COM_VIRTUEMART_STRING_SAVED', vmText::_ ('COM_VIRTUEMART_REVIEW'));
+		$return= $model->saveRating ($data);
+		if ($return !== FALSE) {
+			$errors = $model->getErrors ();
+			if (empty($errors)) {
+				$msg = vmText::sprintf ('COM_VIRTUEMART_STRING_SAVED', JText::_ ('COM_VIRTUEMART_REVIEW'));
+			}
+			foreach ($errors as $error) {
+				$msg = ($error) . '<br />';
+			}
+			if (!class_exists ('ShopFunctionsF')) {
+				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+			}
+			shopFunctionsF::sendRatingEmailToVendor($data);
 		}
-		foreach ($errors as $error) {
-			$msg = ($error) . '<br />';
-		}
-		if (!class_exists ('ShopFunctionsF')) {
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-		}
-		shopFunctionsF::sendRatingEmailToVendor($data);
+
 		$this->setRedirect (JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . (int)$data['virtuemart_product_id'], FALSE), $msg);
 
 	}

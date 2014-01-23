@@ -24,8 +24,8 @@ if ($viewData['isMobile'] ) {
     $width="100%";
     $height="100%";
 } else {
-    $width="570px";
-    $height="540px";
+    $width="100%";
+    $height="600px";
 }
  ?>
 <iframe name="hss_iframe" width="<?php echo $width ?>" height="<?php echo $height ?>"  src="<?php echo $viewData['url'] ?>"></iframe>
