@@ -47,6 +47,8 @@ class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 			$this->api_login_id = $this->_method->sandbox_api_login_id;
 			$this->api_signature = $this->_method->sandbox_api_signature;
 			$this->api_password = $this->_method->sandbox_api_password;
+			$this->payflow_partner = $this->_method->sandbox_payflow_partner;
+			$this->payflow_vendor = $this->_method->sandbox_payflow_vendor;
 		} else {
 			$this->api_login_id = $this->_method->api_login_id;
 			$this->api_signature = $this->_method->api_signature;
@@ -85,7 +87,10 @@ class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 		$post_variables['BUTTONCODE'] = self::BM_BUTTON_CODE;
 		$post_variables['BUTTONIMAGEURL'] = 'https://www.paypal.com/en_US/i/btn/btn_paynow_SM.gif'; //we automatically redirect to paypal
 		$post_variables['L_BUTTONVAR']['bn'] = self::BNCODE; // Identifies the source that built the code.
+		$post_variables['L_BUTTONVAR']['custom'] = $this->context;
 
+		$post_variables['L_BUTTONVAR']['partner'] = $this->payflow_partner;
+		$post_variables['L_BUTTONVAR']['vendor'] = $this->payflow_vendor;
 		return $post_variables;
 	}
 
@@ -94,6 +99,9 @@ class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 		$addressBT = $this->order['details']['BT'];
 
 		//Bill To
+		$post_variables['L_BUTTONVAR']['billing_first_name'] = isset($addressBT->first_name) ? $this->truncate($addressBT->first_name, 50) : ''; // First name of person the item is being shipped to.
+		$post_variables['L_BUTTONVAR']['billing_last_name'] = isset($addressBT->last_name) ? $this->truncate($addressBT->last_name, 60) : ''; // Last name of person the item is being shipped to.
+
 		$post_variables['L_BUTTONVAR']['billing_address1'] = isset($addressBT->address_1) ? $this->truncate($addressBT->address_1, 60) : '';
 		$post_variables['L_BUTTONVAR']['billing_address2'] = isset($addressBT->address_2) ? $this->truncate($addressBT->address_2, 60) : '';
 		$post_variables['L_BUTTONVAR']['billing_city'] = isset($addressBT->city) ? $this->truncate($addressBT->city, 40) : '';
@@ -108,13 +116,18 @@ class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 
 		//Ship To
 		$post_variables['L_BUTTONVAR']['first_name'] = isset($addressST->first_name) ? $this->truncate($addressST->first_name, 50) : ''; // First name of person the item is being shipped to.
-		$post_variables['L_BUTTONVAR']['last_name'] = isset($addressST->first_name) ? $this->truncate($addressST->address_1, 60) : ''; // Last name of person the item is being shipped to.
+		$post_variables['L_BUTTONVAR']['last_name'] = isset($addressST->last_name) ? $this->truncate($addressST->last_name, 60) : ''; // Last name of person the item is being shipped to.
 		$post_variables['L_BUTTONVAR']['address1'] = isset($addressST->address_1) ? $this->truncate($addressST->address_1, 60) : '';
 		$post_variables['L_BUTTONVAR']['address2'] = isset($addressST->address_2) ? $this->truncate($addressST->address_2, 60) : '';
+		$post_variables['L_BUTTONVAR']['city'] = isset($addressST->city) ? $this->truncate($addressST->city, 40) : '';
+		$post_variables['L_BUTTONVAR']['zip'] = isset($addressST->zip) ? $this->truncate($addressST->zip, 40) : '';
+		$post_variables['L_BUTTONVAR']['state'] = isset($addressST->virtuemart_state_id) ? $this->truncate(ShopFunctions::getStateByID($addressST->virtuemart_state_id), 20) : '';
+		$post_variables['L_BUTTONVAR']['country'] = ShopFunctions::getCountryByID($addressST->virtuemart_country_id, 'country_2_code');
 	}
 
 	function addPaymentPageParams(&$post_variables) {
 		$post_variables['L_BUTTONVAR']['template'] = $this->_method->template;
+		$post_variables['L_BUTTONVAR']['showHostedThankyouPage'] = 'false';
 
 		if ($this->_method->bordercolor) {
 			$post_variables['L_BUTTONVAR']['bodyBgColor'] = strtoupper($this->_method->bordercolor);
@@ -126,8 +139,8 @@ class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 		$post_variables['L_BUTTONVAR']['logoFont'] = $this->_method->logoFont;
 		$post_variables['L_BUTTONVAR']['logoFontSize'] = $this->_method->logoFontSize;
 		$post_variables['L_BUTTONVAR']['logoFontColor'] = $this->_method->logoFontColor;
-		if ($this->_method->bodyBgImg) {
-			$post_variables['L_BUTTONVAR']['bodyBgImg'] = JURI::base() . 'images/stories/virtuemart/payment/' . $this->_method->bodyBgImg;
+		if ($this->_method->bodyBgImg[0]) {
+			$post_variables['L_BUTTONVAR']['bodyBgImg'] = JURI::base() . 'images/stories/virtuemart/payment/' . $this->_method->bodyBgImg[0];
 
 		}
 		$post_variables['L_BUTTONVAR']['logoImage'] = $this->getLogoImage();
@@ -137,8 +150,8 @@ class PaypalHelperPayPalHosted extends PaypalHelperPaypal {
 		$post_variables['L_BUTTONVAR']['PageCollapseBgColor'] = $this->_method->PageCollapseBgColor;
 		//$post_variables['L_BUTTONVAR']['PageCollapseTextColor'] =    $this->_method->PageCollapseTextColor;
 		$post_variables['L_BUTTONVAR']['orderSummaryBgColor'] = $this->_method->orderSummaryBgColor;
-		if ($this->_method->orderSummaryBgImage) {
-			$post_variables['L_BUTTONVAR']['orderSummaryBgImage'] = JURI::base() . 'images/stories/virtuemart/payment/' . $this->_method->orderSummaryBgImage;
+		if ($this->_method->orderSummaryBgImage[0]) {
+			$post_variables['L_BUTTONVAR']['orderSummaryBgImage'] = JURI::base() . 'images/stories/virtuemart/payment/' . $this->_method->orderSummaryBgImage[0];
 		}
 		$post_variables['L_BUTTONVAR']['footerTextColor'] = $this->_method->footerTextColor;
 		$post_variables['L_BUTTONVAR']['footerTextlinkColor'] = $this->_method->footerTextlinkColor;

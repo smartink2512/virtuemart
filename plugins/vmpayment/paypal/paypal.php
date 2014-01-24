@@ -73,7 +73,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			'accelerated_onboarding' => array('', 'int'),
 			'api_login_id' => array('', 'char'),
 			'api_password' => array('', 'char'),
-			'authentication' => array('signature', 'char'),
+			'authentication' => array('', 'char'),
 			'api_signature' => array('', 'int'),
 			'api_certificate' => array('', 'char'),
 
@@ -574,6 +574,10 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		$orderModel = VmModel::getModel('orders');
 		$order = $orderModel->getOrder($virtuemart_order_id);
 		// to do: this
+vmdebug('plgVmOnPaymentResponseReceived',$payment );
+		if (!class_exists('CurrencyDisplay'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+		$currency = CurrencyDisplay::getInstance('',$order['details']['BT']->virtuemart_vendor_id);
 
 		if ($payment->paypal_fullresponse) {
 			$paypal_data = json_decode($payment->paypal_fullresponse);
@@ -582,7 +586,12 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$success=false;
 		}
 
-		$html = $this->renderByLayout($this->_currentMethod->paypalproduct . 'response', array("success" => $success, "payment_name" => $payment_name, "payment" => $paypal_data, "order" => $order));
+		$html = $this->renderByLayout($this->_currentMethod->paypalproduct . 'response', array("success" => $success,
+		                                                                                      "payment_name" => $payment_name,
+		                                                                                      "payment" => $paypal_data,
+		                                                                                      "order" => $order,
+		                                                                                      "currency" => $currency,
+		                                                                                 ));
 
 		//We delete the old stuff
 		// get the correct cart / session
@@ -667,7 +676,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$orderModel->updateStatusForOneOrder($virtuemart_order_id, $order_history, TRUE);
 			//// remove vmcart
 			if (isset($paypal_data['custom'])) {
-				$this->emptyCart($this->_currentMethod, $paypal_data['custom'], $order_number);
+				$this->emptyCart( $paypal_data['custom'], $order_number );
 			}
 		}
 	}
@@ -1230,7 +1239,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			return false;
 		}
 
-
+return true;
 		//Validate amount
 		//if ($totalInPaymentCurrency <= 0) {
 		//	vmInfo (JText::_ ('VMPAYMENT_PAYPAL_PAYMENT_AMOUNT_INCORRECT'));

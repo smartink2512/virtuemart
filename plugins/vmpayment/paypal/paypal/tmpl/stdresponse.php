@@ -23,6 +23,7 @@ $success = $viewData["success"];
 $payment_name = $viewData["payment_name"];
 $payment = $viewData["payment"];
 $order = $viewData["order"];
+$currency = $viewData["currency"];
 
 ?>
 <br />
@@ -36,11 +37,11 @@ $order = $viewData["order"];
     	<td><?php echo JText::_('COM_VIRTUEMART_ORDER_NUMBER'); ?></td>
         <td><?php echo $order['details']['BT']->order_number;; ?></td>
     </tr>
-	<?php if ($success) { ?>
 	<tr>
-    	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_AMOUNT'); ?></td>
-        <td><?php echo $payment->mc_gross . ' ' . $payment->mc_currency; ?></td>
-    </tr>
+		<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_AMOUNT'); ?></td>
+		<td><?php echo $currency->priceDisplay($order['details']['BT']->order_total); ?></td>
+	</tr>
+	<?php if ($success) { ?>
 	<tr>
     	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_TRANSACTION_ID'); ?></td>
         <td><?php echo $payment->txn_id; ?></td>
