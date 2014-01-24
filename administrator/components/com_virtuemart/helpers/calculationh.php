@@ -211,7 +211,7 @@ class calculationHelper {
 			if(!$this->_shopperGroupId) $this->_shopperGroupId = array();
 
 			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
-			$site = JFactory::getApplication ()->isSite ();
+			//$site = JFactory::getApplication ()->isSite ();
 				
 			$shoppergroupmodel->appendShopperGroups($this->_shopperGroupId,$user,$site,$vendorId);
 		}

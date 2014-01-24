@@ -219,7 +219,7 @@ class Permissions extends JObject{
 		$user = JFactory::getUser();
 
 		if(strpos($perms,',')!==FALSE){
-			$perms = explode('c',$perms);
+			$perms = explode(',',$perms);
 		} else {
 			$perms = array($perms);
 		}

@@ -197,3 +197,5 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 		<input type='hidden' name='view' value='cart'/>
 	</form>
 </div>
+
+<?php vmTime('Cart view Finished task ','Start'); ?>

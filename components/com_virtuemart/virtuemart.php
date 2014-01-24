@@ -99,7 +99,7 @@ if (class_exists($_class)) {
     /* Perform the Request task */
     $controller->execute($task);
 
-    vmTime($_class.' Finished task '.$task,'Start');
+  //  vmTime($_class.' Finished task '.$task,'Start');
     vmRam('End');
     vmRamPeak('Peak');
 
