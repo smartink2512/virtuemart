@@ -617,8 +617,9 @@ class VmMediaHandler {
 				vmError('Not able to upload file, give path/url empty/too short '.$urlfolder.' please correct path in your virtuemart config');
 				return false;
 			}
+			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 			$media = VmRequest::getFiles('upload');
-			//$data = VmRequest::getRequest();
+
 			//vmdebug('uploadFile',$data,$media);
 			$app = JFactory::getApplication();
 			switch ($media['error']) {
@@ -691,14 +692,13 @@ class VmMediaHandler {
 		 */
 		function deleteFile($url){
 
-			jimport('joomla.filesystem.file');
+			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 			$file_path = JPATH_ROOT.DS.str_replace('/',DS,$url);
 			$app = JFactory::getApplication();
-			if (!class_exists ('Permissions')) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-			}
+
 			$msg_path = '';
-			if(Permissions::getInstance()->check('admin')){
+			$user = JFactory::getUser();
+			if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
 				$msg_path = $file_path;
 			}
 
@@ -807,6 +807,7 @@ class VmMediaHandler {
 				vmdebug('the Urls',$data['media_roles'],$typelessUrl,$this->file_url_folder.$this->file_name);
 				if(!file_exists($this->file_url_folder.$this->file_name) and file_exists($typelessUrl)){
 					vmdebug('Execute move');
+					if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 					JFile::move($typelessUrl, $this->file_url_folder.$this->file_name);
 				}
 			}
@@ -1101,14 +1102,15 @@ class VmMediaHandler {
 			if(!empty($type)){
 				$q .= ' AND `file_type` = "'.$type.'" ';
 			}
-			if ($search = VmRequest::getString('term', false)){
+			$search = trim(VmRequest::getString('term', false));
+			if (!empty($search)){
 				$search = '"%' . $db->escape( $search, true ) . '%"' ;
 				$q .=  ' AND (`file_title` LIKE '.$search.' OR `file_description` LIKE '.$search.' OR `file_meta` LIKE '.$search.') ';
 			}
 			$q .= ' LIMIT '.(int)$limit.', '.(int)$max;
 
 			$db->setQuery($q);
-			//		$result = $this->_db->loadAssocList();
+
 			if ($virtuemart_media_ids = $db->loadColumn()) {
 				$errMsg = $db->getErrorMsg();
 				$errs = $db->getErrors();
@@ -1188,13 +1190,13 @@ class VmMediaHandler {
 
 			$html .= '</tr>';
 
-			// 			$html .= '<tr>
-			// 	<td class="labelcell">'. vmText::_('COM_VIRTUEMART_FILES_FORM_CURRENT_FILE') .'</td>
-			// 	<td>'.$this->file_name.'.'.$this->file_extension .'</td>
-			// </tr>';
+			$user = JFactory::getUser();
+			if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+				$readonly='readonly';
+			} else {
+				$readonly ='';
+			}
 
-			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-			if(!Permissions::getInstance()->check('admin') ) $readonly='readonly'; else $readonly ='';
 			$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_TITLE','file_title');
 			$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_DESCRIPTION','file_description');
 			$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_META','file_meta');

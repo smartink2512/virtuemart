@@ -36,7 +36,6 @@ class VirtuemartViewShipmentmethod extends VmView {
 		// Load the helper(s)
 		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 
 		if (!class_exists('VmHTML'))

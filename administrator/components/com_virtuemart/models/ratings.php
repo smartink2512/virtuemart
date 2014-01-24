@@ -240,8 +240,6 @@ class VirtueMartModelRatings extends VmModel {
 		//Check user_rating
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
 
-// 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-// 		if(!Permissions::getInstance()->check('admin')){
 		$app = JFactory::getApplication();
 		if( $app->isSite() ){
 			$user = JFactory::getUser();
@@ -329,10 +327,8 @@ class VirtueMartModelRatings extends VmModel {
 				//
 				$app = JFactory::getApplication();
 				if( $app->isSite() ){
-					if (!class_exists ('Permissions')) {
-						require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-					}
-					if(!Permissions::getInstance()->check('admin')){
+					$user = JFactory::getUser();
+					if(!$user->authorise('core.admin','com_virtuemart') or !$user->authorise('core.manage','com_virtuemart')){
 						if (VmConfig::get ('reviews_autopublish', 1)) {
 							$data['published'] = 1;
 						}

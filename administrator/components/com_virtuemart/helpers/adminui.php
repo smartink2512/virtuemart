@@ -197,11 +197,9 @@ class AdminUIHelper {
 		$filter [] = "jmmod.published='1'";
 		$filter [] = "item.published='1'";
 
-		if (!class_exists ('Permissions')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-		}
+		$user = JFactory::getUser();
 
-		if(!Permissions::getInstance()->check('admin')){
+		if(!$user->authorise('core.admin', 'com_virtuemart') and !$user->authorise('core.manage', 'com_virtuemart') ){
 			$filter [] = "jmmod.is_admin='0'";
 		}
 
@@ -265,7 +263,7 @@ class AdminUIHelper {
 							$url .= $link ['task'] ? "&task=" . $link ['task'] : '';
 							// $url .= $link['extra'] ? $link['extra'] : '';
 						}
-						if ($user->authorise('core.admin', 'com_virtuemart') || $user->authorise('vm.'.$link ['view'], 'com_virtuemart') || $target || $link ['view']=='about' || $link ['view']=='virtuemart') {
+						if ($user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manage', 'com_virtuemart')|| $user->authorise('vm.'.$link ['view'], 'com_virtuemart') || $target || $link ['view']=='about' || $link ['view']=='virtuemart') {
 							?>
 							<li>
 								<a href="<?php echo $url; ?>" <?php echo $target; ?>><span class="<?php echo $link ['icon_class'] ?>"></span><?php echo vmText::_ ( $link ['name'] )?></a>

@@ -54,9 +54,8 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	private function checkPermissionForTools(){
 		vmRequest::vmCheckToken();
 		//Hardcore Block, we may do that better later
-		if(!class_exists('Permissions'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-		if(!Permissions::getInstance()->check('admin')){
+		$user = JFactory::getUser();
+		if(!$user->authorise('core.admin','com_virtuemart') ){
 			$msg = 'Forget IT';
 			$this->setRedirect('index.php?option=com_virtuemart', $msg);
 		}

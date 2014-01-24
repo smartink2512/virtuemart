@@ -331,11 +331,20 @@ class VirtueMartControllerProductdetails extends JControllerLegacy {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		}
 		$currency = CurrencyDisplay::getInstance ();
-		foreach ($prices as $name => $product_price) {
+
+		$priceFieldsRoots = array('basePrice','variantModification','basePriceVariant',
+			'basePriceWithTax','discountedPriceWithoutTax',
+			'salesPrice','priceWithoutTax',
+			'salesPriceWithDiscount','discountAmount','taxAmount','unitPrice');
+
+		foreach ($priceFieldsRoots as $name) {
 // 		echo 'Price is '.print_r($name,1).'<br />';
-			if ($name != 'costPrice') {
-				$priceFormated[$name] = $currency->createPriceDiv ($name, '', $prices, TRUE);
-			}
+			//if ($name != 'costPrice') {
+				if(isset($prices[$name])){
+					$priceFormated[$name] = $currency->createPriceDiv ($name, '', $prices, TRUE);
+				}
+
+			//}
 		}
 
 		// Get the document object.

@@ -46,7 +46,7 @@ AdminUIHelper::startAdminArea($this);
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->calcs); ?>);" />
 			</th>
 			<th><?php echo $this->sort('calc_name', 'COM_VIRTUEMART_NAME') ; ?></th>
-			<?php if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){ ?>
+			<?php if($this->showVendors){ ?>
 			<th width="20">
 				<?php echo vmText::_('COM_VIRTUEMART_VENDOR');  ?>
 			</th><?php }  ?>
@@ -68,7 +68,7 @@ AdminUIHelper::startAdminArea($this);
 			<th><?php echo vmText::_('COM_VIRTUEMART_COUNTRY_S'); ?></th>
 			<th><?php echo vmText::_('COM_VIRTUEMART_STATE_IDS'); ?></th>
 			<th><?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>
-			<?php if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){ ?>
+			<?php if($this->showVendors){ ?>
 			<th width="20">
 				<?php echo vmText::_( 'COM_VIRTUEMART_SHARED')  ?>
 			</th><?php }  ?>
@@ -97,7 +97,7 @@ AdminUIHelper::startAdminArea($this);
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo $row->calc_name; ?></a>
 				</td>
-				<?php  if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){ ?>
+				<?php  if($this->showVendors){ ?>
 				<td align="left">
 					<?php echo $row->virtuemart_vendor_id; ?>
 				</td>

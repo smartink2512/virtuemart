@@ -121,9 +121,7 @@ class VirtuemartViewProduct extends VmView {
 				// Load the currencies
 				$currency_model = VmModel::getModel('currency');
 
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-
-				$vendor_model->setId(Permissions::getInstance()->isSuperVendor());
+				$vendor_model->setId(VmConfig::isSuperVendor());
 				$vendor = $vendor_model->getVendor();
 				/*if(empty($product->product_currency)){
 					$product->product_currency = $vendor->vendor_currency;
@@ -244,8 +242,7 @@ class VirtuemartViewProduct extends VmView {
 			case 'massxref_cats_exe':
 				$this->SetViewTitle('PRODUCT_MASSXREF');
 
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-				$showVendors = Permissions::getInstance()->check('admin');
+				$showVendors = $this->showVendors();
 				$this->assignRef('showVendors',$showVendors);
 
 				$keyWord ='';

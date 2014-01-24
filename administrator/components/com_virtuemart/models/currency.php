@@ -66,10 +66,9 @@ class VirtueMartModelCurrency extends VmModel {
 	function getCurrenciesList($search,$vendorId=1) {
 
 		$where = array();
-		// 		$this->_query = 'SELECT * FROM `#__virtuemart_currencies` ';
 
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		if( !Permissions::getInstance()->check('admin') ){
+		$user = JFactory::getUser();
+		if($user->authorise('core.admin','com_virtuemart') ){
 			$where[]  = '(`virtuemart_vendor_id` = "'.(int)$vendorId.'" OR `shared`="1")';
 		}
 

@@ -26,24 +26,22 @@ defined('_JEXEC') or die();
 require_once dirname(__FILE__).'/classes/abstractconfig.php';
 require_once dirname(__FILE__).'/config.php';
 
+if(!class_exists('vmRequest')) require(JPATH_ROOT.'/administrator/components/com_virtuemart/helpers/vmrequest.php');
+
 $task = vmRequest::getCmd('task');
 if($task=='updateDatabase'){
-	$data = vmRequest::getRequest;
-	vmRequest::setVar($data['token'], '1', 'post');
-	JSession::checkToken() or jexit('Invalid Token, in ' . vmRequest::getCmd('task'));
-
+	vmRequest::vmCheckToken() or jexit('Invalid Token, in ' . $task);
+	$app = JFactory::getApplication();
 	//Update Tables
 	if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
-	if(!class_exists('Permissions'))
-	require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' . DS . 'helpers' . DS . 'permissions.php');
-	if(!Permissions::getInstance()->check('admin')){
+	$user = JFactory::getUser();
+	if(!($user->authorise('core.admin'))){
 		$msg = 'Forget IT';
-		$this->setRedirect('index.php?option=com_virtuemart_allinone', $msg);
+		$app->redirect('index.php?option=com_virtuemart_allinone', $msg);
 	} else {
 		if(!class_exists('com_virtuemart_allinoneInstallerScript')) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart_allinone'.DS.'script.vmallinone.php');
 		$updater = new com_virtuemart_allinoneInstallerScript();
 		$updater->vmInstall();
-		$app = JFactory::getApplication();
 		$app->redirect('index.php?option=com_virtuemart_allinone', 'Database updated');
 	}
 

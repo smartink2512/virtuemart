@@ -38,14 +38,10 @@ class VirtuemartViewUser extends VmView {
 		// Load the helper(s)
 		if (!class_exists('VmHTML'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		$perm = Permissions::getInstance();
-		$this->assignRef('perm',$perm);
 
 		$model = VmModel::getModel();
 
 		$currentUser = JFactory::getUser();
-
 
 		$task = VmRequest::getCmd('task', 'edit');
 		if($task == 'editshop'){
@@ -132,9 +128,6 @@ class VirtuemartViewUser extends VmView {
 			$virtuemart_userinfo_id_BT = $model->getBTuserinfo_id($userId);
 			$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'BT',$virtuemart_userinfo_id_BT,false);
 			$userFieldsBT = $userFieldsArray[$virtuemart_userinfo_id_BT];
-
-
-			//$this->lists['perms'] = JHtml::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $userDetails->perms);
 
 			// Load the required scripts
 			if (count($userFieldsBT['scripts']) > 0) {

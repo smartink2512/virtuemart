@@ -80,7 +80,7 @@ echo $this->langList ?>
 		</td>
 	</tr>
 	<tr>
-		<?php if(Vmconfig::get('multix','none')!=='none' && $this->perms->check('admin') ){
+		<?php if($this->showVendors() ){
 			echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->vendorList );
 		} ?>
 	</tr>

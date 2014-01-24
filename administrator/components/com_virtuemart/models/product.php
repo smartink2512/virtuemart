@@ -577,7 +577,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			if ((!empty($lastCatId) and $lastCatId != $cateid) or (!empty($manid) and $lastManId != $manid)) {
 				//We are in a new category or another manufacturer, so we start at page 1
-				$limitStart = 0;
+				$limitStart = VmRequest::getInt ('limitstart', 0);
 			}
 			else {
 				//We were already in the category/manufacturer, so we take the value stored in the session
@@ -767,6 +767,10 @@ class VirtueMartModelProduct extends VmModel {
 		if ($withCalc) {
 
 			$child->allPrices[$child->selectedPrice] = $this->getPrice ($child, 1);
+			$app = JFactory::getApplication();
+			if($app->isSite()){	//Todo remove this for stable release, just in case 3rd party use it
+				$child->prices = &$child->allPrices[$child->selectedPrice];
+			}
 		}
 
 		if (empty($child->product_template)) {
@@ -913,11 +917,12 @@ class VirtueMartModelProduct extends VmModel {
 			$product->selectedPrice = 0;
 			$product->allPrices[$product->selectedPrice] = $this->fillVoidPrice();
 		}
+
 		//We map the new price to the old variable for easy updating
-		$app = JFactory::getApplication();
-		if($app->isSite()){	//Todo remove this for stable release, just in case 3rd party use it
-			$product->prices = &$product->allPrices[$product->selectedPrice];
-		}
+		//We cannot use this here, cause it creates trouble in the cart calculator,
+		//even a product can have different prices, this construction would link them, we need another place for the
+		//fallback
+
 
 	}
 
@@ -939,9 +944,10 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-		if($virtuemart_shoppergroup_ids !=null and is_array($virtuemart_shoppergroup_ids)){
+		$virtuemart_shoppergroup_idsString = 0;
+		if(!empty($virtuemart_shoppergroup_ids) and is_array($virtuemart_shoppergroup_ids)){
 			$virtuemart_shoppergroup_idsString = implode('',$virtuemart_shoppergroup_ids);
-		} else {
+		} else if(!empty($virtuemart_shoppergroup_ids)){
 			$virtuemart_shoppergroup_idsString = $virtuemart_shoppergroup_ids;
 		}
 
@@ -1266,10 +1272,9 @@ class VirtueMartModelProduct extends VmModel {
 		$app = JFactory::getApplication ();
 		if ($app->isSite ()) {
 			$front = TRUE;
-			if (!class_exists ('Permissions')) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-			}
-			if (!Permissions::getInstance ()->check ('admin', 'storeadmin')) {
+
+			$user = JFactory::getUser();
+			if (!($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'))) {
 				$onlyPublished = TRUE;
 				if ($show_prices = VmConfig::get ('show_prices', 1) == '0') {
 					$withCalc = FALSE;
@@ -1565,9 +1570,7 @@ class VirtueMartModelProduct extends VmModel {
 		$isChild = FALSE;
 		if(!empty($data['isChild'])) $isChild = $data['isChild'];
 
-		if (!class_exists ('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-		$perm = Permissions::getInstance();
-		$superVendor = $perm->isSuperVendor();
+		$superVendor = VmConfig::isSuperVendor();
 		if(empty($superVendor)){
 			vmError('You are not a vendor or administrator, storing of product cancelled');
 			return FALSE;
@@ -1862,9 +1865,8 @@ class VirtueMartModelProduct extends VmModel {
 		$product->mprices = $this->productPricesClone ($id);
 
 		//Lets check if the user is admin or the mainvendor
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		$admin = Permissions::getInstance()->check('admin');
-		if($admin){
+		$user = JFactory::getUser();
+		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
 			$product->created_on = "0000-00-00 00:00:00";
 			$product->created_by = 0;
 		}
@@ -2038,10 +2040,10 @@ class VirtueMartModelProduct extends VmModel {
 			$product = $this->getProduct ($product, TRUE, FALSE, TRUE,$quantity);
 		}
 
-		/*if (empty($product->customfields) and !empty($product->virtuemart_customfield_id)) {
+		if (empty($product->customfields) and !empty($product->virtuemart_customfield_id)) {
 			$customfieldsModel = VmModel::getModel ('Customfields');
 			$product->customfields = $customfieldsModel->getCustomEmbeddedProductCustomFields ($product->allIds);
-		}*/
+		}
 
 		// Loads the product price details
 		if (!class_exists ('calculationHelper')) {

@@ -20,7 +20,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea($this);
-//if($virtuemart_vendor_id==1 || $perm->check( 'admin' )){
 
 ?>
 
@@ -39,7 +38,7 @@ AdminUIHelper::startAdminArea($this);
 			 <th>
 				<?php echo vmText::_('COM_VIRTUEMART_PAYMENT_LIST_DESCRIPTION_LBL'); ?>
 			</th>
-			<?php if($this->perms->check( 'admin' )){ ?>
+			<?php if($this->showVendors()){ ?>
 			<th >
 				<?php echo $this->sort('virtuemart_vendor_id', 'COM_VIRTUEMART_VENDOR');  ?>
 			</th><?php }?>
@@ -85,7 +84,7 @@ AdminUIHelper::startAdminArea($this);
 				 <td align="left">
 					<?php echo $row->payment_desc; ?>
 				</td>
-				<?php if($this->perms->check( 'admin' )){?>
+				<?php if($this->showVendors()){?>
 				<td align="left">
 					<?php echo vmText::_($row->virtuemart_vendor_id); ?>
 				</td>

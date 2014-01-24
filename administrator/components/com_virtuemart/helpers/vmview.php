@@ -36,7 +36,7 @@ class VmView extends JViewLegacy {
 		// parent::construct();
 	// }
 	var $lists = array();
-
+	var $showVendors = null;
 	protected $canDo;
 	function __construct($config = array()) {
 		parent::__construct($config);
@@ -527,6 +527,23 @@ class VmView extends JViewLegacy {
 			$bar->appendButton('Popup', 'lock', 'JCONFIG_PERMISSIONS_LABEL', 'index.php?option=com_config&amp;view=component&amp;component=com_virtuemart&amp;tmpl=component', 875, 550, 0, 0, '');
 		}
 
+	}
+
+	/**
+	 * Checks if we show multivendor related stuff for admins
+	 * @return bool|null
+	 */
+	public function showVendors(){
+		$user=JFactory::getUser();
+
+		if($this->showVendors===null){
+			if(VmConfig::get('multix','none')!=='none' and $user->authorise('core.admin','com_virtuemart')){
+				$this->showVendors = true;
+			} else {
+				$this->showVendors = false;
+			}
+		}
+		return $this->showVendors;
 	}
 
 }

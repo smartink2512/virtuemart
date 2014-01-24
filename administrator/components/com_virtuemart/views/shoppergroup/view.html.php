@@ -32,12 +32,9 @@ if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmvie
 class VirtuemartViewShopperGroup extends VmView {
 
 	function display($tpl = null) {
+
 		// Load the helper(s)
-
-
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-
-// 		$this->assignRef('perms', Permissions::getInstance());
 
 		$model = VmModel::getModel();
 
@@ -53,7 +50,6 @@ class VirtuemartViewShopperGroup extends VmView {
 			$shoppergroup = $model->getShopperGroup();
 			$this->SetViewTitle('SHOPPERGROUP',$shoppergroup->shopper_group_name);
 
-
 			$vendors = ShopFunctions::renderVendorList($shoppergroup->virtuemart_vendor_id);
 			$this->assignRef('vendorList',	$vendors);
 
@@ -61,15 +57,12 @@ class VirtuemartViewShopperGroup extends VmView {
 
 			$this->addStandardEditViewCommands();
 
-
 		} else {
 			$this->SetViewTitle();
 
 			JToolBarHelper::makeDefault();
 
-
-			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-			$showVendors = Permissions::getInstance()->check('admin');
+			$showVendors = $this->showVendors();
 			$this->assignRef('showVendors',$showVendors);
 
 			$this->addStandardDefaultViewCommands();

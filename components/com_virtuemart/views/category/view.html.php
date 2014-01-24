@@ -133,8 +133,8 @@ class VirtuemartViewCategory extends VmView {
 					$document->addHeadLink(JRoute::_($link . '&type=atom', FALSE), 'alternate', 'rel', $attribs);
 				}
 
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-				$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
+				$user = JFactory::getUser();
+				$showBasePrice = ($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor());
 				$this->assignRef('showBasePrice', $showBasePrice);
 
 			}

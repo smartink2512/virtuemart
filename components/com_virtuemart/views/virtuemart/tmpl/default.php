@@ -37,4 +37,4 @@ if (!empty($this->products) ) { ?>
 	<?php echo $this->loadTemplate('products');
 }
 
-?>
+?> <?php vmTime('vm view Finished task ','Start'); ?>

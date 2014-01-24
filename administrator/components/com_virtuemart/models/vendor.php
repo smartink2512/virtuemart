@@ -200,11 +200,6 @@ class VirtueMartModelVendor extends VmModel {
 
 			//update user table
 			$usertable = $this->getTable ('vmusers');
-// 		$vendorsUserData =$usertable->load($this->_id);
-// 		$vendorsUserData =$usertable->load($data['virtuemart_user_id']);
-// 		$vendorsUserData->virtuemart_vendor_id = $virtuemart_vendor_id;
-			//$vmusersData = array('virtuemart_user_id'=>$data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$data['customer_number'],'perms'=>$data['perms']);
-
 			$usertable->bindChecknStore ($data, TRUE);
 
 			$errors = $usertable->getErrors ();

@@ -128,11 +128,11 @@ class CurrencyDisplay {
 
 				if(empty(self::$_instance->_currency_id)){
 					$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=user&task=editshop';
-					JError::raiseWarning('1', vmText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_CURRENCY_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
+					vmWarn(vmText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_CURRENCY_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
 				} else{
 					if(VmRequest::getCmd('view')!='currency'){
 						$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.self::$_instance->_currency_id;
-						JError::raiseWarning('1', vmText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_FORMAT_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
+						vmWarn(vmText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_FORMAT_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
 					}
 				}
 

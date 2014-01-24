@@ -39,8 +39,6 @@ class VirtuemartViewPaymentMethod extends VmView {
 		// Load the helper(s)
 		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-
 		if (!class_exists('VmHTML'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
@@ -48,13 +46,9 @@ class VirtuemartViewPaymentMethod extends VmView {
 			require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		}
 
-		$this->assignRef('perms', Permissions::getInstance());
-
+		$this->user = JFactory::getUser();
 		$model = VmModel::getModel('paymentmethod');
 
-		//@todo should be depended by loggedVendor
-		//		$vendorId=1;
-		//		$this->assignRef('vendorId', $vendorId);
 		// TODO logo
 		$this->SetViewTitle();
 

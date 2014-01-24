@@ -287,7 +287,7 @@ class VirtueMartModelConfig extends VmModel {
 		$config = VmConfig::loadConfig(false,true);
 
 		//We load the config file
-		$_raw = VmConfig::readConfigFile(FALSE);
+		$_raw = self::readConfigFile(FALSE);
 		$_value = join('|', $_raw);
 		//We set the config file values as parameters into the config
 		$config->setParams($_value);
@@ -296,11 +296,9 @@ class VirtueMartModelConfig extends VmModel {
 		//in case it the form has the same key as the file, the value is taken from the form
 		$config->_params = array_merge($config->_params,$data);
 
+		//We need this to know if we should delete the cache
 		$browse_cat_orderby_field = $config->get('browse_cat_orderby_field');
 		$cat_brws_orderby_dir = $config->get('cat_brws_orderby_dir');
-
-		//ATM we want to ensure that only one config is used
-		$confData['virtuemart_config_id'] = 1;
 
 		$urls = array('assets_general_path','media_category_path','media_product_path','media_manufacturer_path','media_vendor_path');
 		foreach($urls as $urlkey){
@@ -340,6 +338,8 @@ class VirtueMartModelConfig extends VmModel {
 			}
 		}
 
+		if(!class_exists('JFolder')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
+
 		$safePath = trim($config->get('forSale_path'));
 		if(!empty($safePath)){
 			if(DS!='/' and strpos($safePath,'/')!==false){
@@ -353,16 +353,16 @@ class VirtueMartModelConfig extends VmModel {
 			}
 			$config->set('forSale_path',$safePath);
 		} else {
-			$safePath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'vmfiles';
+			VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
+		/*	$safePath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'vmfiles';
 
-			if(!class_exists('JFolder')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 			$exists = JFolder::exists($safePath);
 			if(!$exists){
 				$created = JFolder::create($safePath);
 				$safePath = $safePath.DS;
 				if($created){
 					vmInfo('COM_VIRTUEMART_SAFE_PATH_DEFAULT_CREATED',$safePath);
-					/* create htaccess file */
+					// create htaccess file
 					$fileData = "order deny, allow\ndeny from all\nallow from none";
 					JLoader::import('joomla.filesystem.file');
 					$fileName = $safePath.DS.'.htaccess';
@@ -374,7 +374,7 @@ class VirtueMartModelConfig extends VmModel {
 				} else {
 					VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',vmText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
 				}
-			}
+			}*/
 		}
 
 		if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
@@ -398,6 +398,9 @@ class VirtueMartModelConfig extends VmModel {
 			$config->set('active_languages',array(VmConfig::$vmlangTag));
 		}
 
+		//ATM we want to ensure that only one config is used
+		$confData = array();
+		$confData['virtuemart_config_id'] = 1;
 		$confData['config'] = $config->toString();
 
 		$confTable = $this->getTable('configs');
@@ -405,8 +408,7 @@ class VirtueMartModelConfig extends VmModel {
 			vmError($confTable->getError());
 		}
 
-		// Load the newly saved values into the session.
-		$config = VmConfig::loadConfig(true);
+		VmConfig::loadConfig(true);
 
 		if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 		$updater = new GenericTableUpdater();
@@ -428,11 +430,133 @@ class VirtueMartModelConfig extends VmModel {
 		$query = 'SHOW TABLES LIKE "'.$db->getPrefix().'virtuemart_configs"';
 		$db->setQuery($query);
 		$configTable = $db->loadResult();
-		$err = $db->getErrorMsg();
-		if(!empty($err) or !$configTable){
+
+		if(!$configTable){
 			return false;
 		} else {
 			return true;
+		}
+	}
+
+	/**
+	 * Creates the config table, if it does not exist
+	 *
+	 * @param $_section Section from the virtuemart_defaults.cfg file to be parsed. Currently, only 'config' is implemented
+	 * @return Boolean; true on success, false otherwise
+	 * @author Oscar van Eijk
+	 */
+	public function installVMconfigTable(){
+
+		$qry = self::getCreateConfigTableQuery();
+		$_db = JFactory::getDBO();
+		$_db->setQuery($qry);
+		$_db->execute();
+		vmdebug('installVMconfigTable executed');
+	}
+
+	function getCreateConfigTableQuery(){
+
+		return "CREATE TABLE IF NOT EXISTS `#__virtuemart_configs` (
+  `virtuemart_config_id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
+  `config` text,
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`virtuemart_config_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Holds configuration settings' AUTO_INCREMENT=1 ;";
+	}
+
+	/**
+	 * We should this move out of this file, because it is usually only used one time in a shop life
+	 * @author Oscar van Eijk
+	 * @author Max Milbers
+	 */
+	static function readConfigFile($returnDangerousTools){
+
+		$_datafile = JPATH_VM_ADMINISTRATOR.DS.'virtuemart.cfg';
+		if (!file_exists($_datafile)) {
+			if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'virtuemart_defaults.cfg-dist')) {
+				if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+				JFile::copy('virtuemart_defaults.cfg-dist','virtuemart.cfg',JPATH_VM_ADMINISTRATOR);
+			} else {
+				vmWarn('The data file with the default configuration could not be found. You must configure the shop manually.');
+				return FALSE;
+			}
+
+		} else {
+			vmInfo('Taking config from file');
+			//vmTrace('read config file',TRUE);
+		}
+
+		$_section = '[CONFIG]';
+		$_data = fopen($_datafile, 'r');
+		$_configData = array();
+		$_switch = FALSE;
+		while ($_line = fgets ($_data)) {
+			$_line = trim($_line);
+
+			if (strpos($_line, '#') === 0) {
+				continue; // Commentline
+			}
+			if ($_line == '') {
+				continue; // Empty line
+			}
+			if (strpos($_line, '[') === 0) {
+				// New section, check if it's what we want
+				if (strtoupper($_line) == $_section) {
+					$_switch = TRUE; // Ok, right section
+				} else {
+					$_switch = FALSE;
+				}
+				continue;
+			}
+			if (!$_switch) {
+				continue; // Outside a section or inside the wrong one.
+			}
+
+			if (strpos($_line, '=') !== FALSE) {
+
+				$pair = explode('=',$_line);
+				if(isset($pair[1])){
+					if(strpos($pair[1], 'array:') !== FALSE){
+						$pair[1] = substr($pair[1],6);
+						$pair[1] = explode('|',$pair[1]);
+					}
+					// if($pair[0]!=='offline_message' && $pair[0]!=='dateformat'){
+					if($pair[0]!=='offline_message'){
+						$_line = $pair[0].'='.serialize($pair[1]);
+					} else {
+						$_line = $pair[0].'='.base64_encode(serialize($pair[1]));
+					}
+
+					if($returnDangerousTools && $pair[0] == 'dangeroustools' ){
+						vmdebug('dangeroustools'.$pair[1]);
+						if ($pair[1] == "0") {
+							return FALSE;
+						}
+						else {
+							return TRUE;
+						}
+					}
+
+				} else {
+					$_line = $pair[0].'=';
+				}
+				$_configData[] = $_line;
+
+			}
+
+		}
+
+		fclose ($_data);
+
+		if (!$_configData) {
+			return FALSE; // Nothing to do
+		} else {
+			return $_configData;
 		}
 	}
 
@@ -445,7 +569,7 @@ class VirtueMartModelConfig extends VmModel {
 	function setDangerousToolsOff(){
 
 // 		VmConfig::loadConfig(true);
-		$dangerousTools = VmConfig::readConfigFile(true);
+		$dangerousTools = VirtueMartModelConfig::readConfigFile(true);
 
 		if( $dangerousTools){
 			$uri = JFactory::getURI();

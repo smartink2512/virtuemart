@@ -55,7 +55,7 @@ class VirtuemartViewState extends VmView {
         $isNew = (count($state) < 1);
 
 		if(empty($countryId) && $isNew){
-			JError::raiseWarning(412,'Country id is 0');
+			vmWarn('Country id is 0');
 			return false;
 		}
 

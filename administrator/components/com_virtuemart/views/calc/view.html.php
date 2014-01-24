@@ -37,9 +37,6 @@ class VirtuemartViewCalc extends VmView {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 		$model = VmModel::getModel('calc');
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		$perms = Permissions::getInstance();
-		$this->assignRef('perms', $perms);
 
 		//@todo should be depended by loggedVendor
 		$vendorId=1;
@@ -114,7 +111,7 @@ class VirtuemartViewCalc extends VmView {
 			$manufacturerList= ShopFunctions::renderManufacturerList($calc->virtuemart_manufacturers,true);
 			$this->assignRef('manufacturerList', $manufacturerList);
 
-			if(Vmconfig::get('multix','none')!=='none'){
+			if($this->showVendors()){
 				$vendorList= ShopFunctions::renderVendorList($calc->virtuemart_vendor_id,false);
 				$this->assignRef('vendorList', $vendorList);
 			}
@@ -122,7 +119,7 @@ class VirtuemartViewCalc extends VmView {
 			$this->addStandardEditViewCommands();
 
         } else {
-			if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){
+			if($this->showVendors()){
 				JToolBarHelper::custom('toggle.shared.1', 'publish', 'yes', vmText::_('COM_VIRTUEMART_SHARED_TOGGLE_ON'), true);
 				JToolBarHelper::custom('toggle.shared.0', 'unpublish', 'no', vmText::_('COM_VIRTUEMART_SHARED_TOGGLE_OFF'), true);
 			}

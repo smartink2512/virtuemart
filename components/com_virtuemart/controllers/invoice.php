@@ -157,8 +157,8 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 			}
 			$orderDetails = $orderModel->getOrder($virtuemart_order_id);
 
-			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-			if(!Permissions::getInstance()->check("admin")) {
+			$user = JFactory::getUser();
+			if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') ) {
 				if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
 					if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
 						echo 'view '.vmText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');

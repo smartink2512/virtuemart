@@ -110,8 +110,10 @@ class VirtueMartModelVirtueMart extends VmModel {
 		$query .= 'JOIN `#__virtuemart_vmusers` as uv ON u.id = uv.virtuemart_user_id ';
 		$query .= 'JOIN `#__virtuemart_userinfos` as ui ON u.id = ui.virtuemart_user_id ';
 		$query .= 'JOIN `#__virtuemart_orders` as uo ON u.id = uo.virtuemart_user_id ';
-		$query .= 'WHERE `perms` <> "admin" ';
-		$query .= 'AND `perms` <> "storeadmin" ';
+
+		//todo write a replacement
+		//$query .= 'WHERE `perms` <> "admin" ';
+		//$query .= 'AND `perms` <> "storeadmin" ';
 		//$query .= 'AND INSTR(`usertype`, "administrator") = 0 AND INSTR(`usertype`, "Administrator") = 0 ';
 		$query .= ' ORDER BY uo.`created_on` DESC';
 		return $this->_getList($query, 0, $nbrCusts);

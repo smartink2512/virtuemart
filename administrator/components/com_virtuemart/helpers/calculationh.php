@@ -192,6 +192,7 @@ class calculationHelper {
 			$this->_shopperGroupId = $shopperGroupIds;
 		} else {
 			$user = JFactory::getUser();
+			$this->_shopperGroupId = array();
 			if (!empty($user->id)) {
 				$this->_db->setQuery('SELECT `usgr`.`virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups as `usgr`
  										JOIN `#__virtuemart_shoppergroups` as `sg` ON (`usgr`.`virtuemart_shoppergroup_id`=`sg`.`virtuemart_shoppergroup_id`)
@@ -204,14 +205,10 @@ class calculationHelper {
 					$this->_shopperGroupId = $this->_db->loadColumn();
 				}
 			}
-			else if (empty($this->_shopperGroupId)) {
-
-				$shoppergroupmodel = VmModel::getModel('ShopperGroup');
-				$site = JFactory::getApplication ()->isSite ();
-				$this->_shopperGroupId = array();
-				$shoppergroupmodel->appendShopperGroups($this->_shopperGroupId,$user,$site,$vendorId);
-
-			}
+			if(!$this->_shopperGroupId) $this->_shopperGroupId = array();
+			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
+			$site = JFactory::getApplication ()->isSite ();
+			$shoppergroupmodel->appendShopperGroups($this->_shopperGroupId,$user,$site,$vendorId);
 		}
 	}
 
@@ -468,6 +465,7 @@ class calculationHelper {
 
 		$this->productPrices = array_merge($prices,$this->productPrices);
 // 		vmdebug('getProductPrices',$this->productPrices);
+
 		return $this->productPrices;
 	}
 
@@ -622,7 +620,7 @@ class calculationHelper {
 		//vmdebug('in function getCheckoutPrices in function getCheckoutPrices');
 		$this->_cart =&$cart;
 		$this->inCart = TRUE;
-		$pricesPerId = array();
+		//$pricesPerId = array();
 
 		$resultWithTax = 0.0;
 		$resultWithOutTax = 0.0;
@@ -648,10 +646,11 @@ class calculationHelper {
 		//$this->_cart->cartData['totalProduct'] = count($this->_cart->products);
 
 		$customfieldModel = VmModel::getModel('customfields');
-
-		foreach ($this->_cart->products as $cartproductkey => &$productCart) {
+		//vmdebug('my variant mod',$this->_cart->products);
+		foreach ($this->_cart->products as $cartproductkey => $productCart) {
 			//$product = $productModel->getProduct($product->virtuemart_product_id,false,false,true);
 			//$productId = $product->virtuemart_product_id;
+
 			if (empty($productCart->quantity) || empty($productCart->virtuemart_product_id)) {
 				if(!is_object($productCart)) {
 					//vmError( 'Error the product for calculation is not an object');
@@ -663,18 +662,25 @@ class calculationHelper {
 				continue;
 			}
 
-      $this->productCurrency = isset($productCart->product_currency)? $productCart->product_currency:0;
+      		$this->productCurrency = isset($productCart->product_currency)? $productCart->product_currency:0;
 			$variantmod = $customfieldModel->calculateModificators($productCart);
 
 			//$cartproductkey = $name.serialize($productCart->customProductData); //$product->virtuemart_product_id.$variantmod;
 			//$cartproductkey = $productCart->cart_item_id;
 			//$product->allPrices = $pricesPerId[$cartproductkey] = $this->getProductPrices($product, $variantmod, $product->quantity, true, false);
-			$productCart->allPrices[$productCart->selectedPrice] = $this->getProductPrices($productCart,$variantmod, $productCart->quantity);
-			$pricesPerId[$cartproductkey] = $productCart->allPrices[$productCart->selectedPrice];
+			$producPrice = $this->getProductPrices($productCart,$variantmod, $productCart->quantity);
+			$this->_cart->products[$cartproductkey]->allPrices[$productCart->selectedPrice] = $producPrice;
+			//$cart = VirtueMartCart::getCart();
+			//$this->_cart->products[$cartproductkey]->prices['basePriceVariant'] = 'is doch scheisse '.$cartproductkey;
+			//$this->_cart->products[$cartproductkey]->allPrices[$productCart->selectedPrice]['test'] = 'schooter '.$cartproductkey;
+			//vmdebug('getCheckoutPrices my actual cart '.$cartproductkey,$this->_cart->products[$cartproductkey]->allPrices[$productCart->selectedPrice]['test']);
+			//continue;
+			//vmdebug('getCheckoutPrices prices of product in calc',$productCart->allPrices[$productCart->selectedPrice]['basePriceVariant'],$productCart->prices['basePriceVariant']);
 
 			$this->_amountCart += $productCart->quantity;
 
 			$this->_cart->cartPrices[$cartproductkey] = $productCart->allPrices[$productCart->selectedPrice];
+
 
 			if($this->_currencyDisplay->_priceConfig['basePrice']) $this->_cart->cartPrices['basePrice'] += self::roundInternal($productCart->allPrices[$productCart->selectedPrice]['basePrice'],'basePrice') * $productCart->quantity;
 			//				$this->_cart->cartPrices['basePriceVariant'] = $this->_cart->cartPrices['basePriceVariant'] + $pricesPerId[$product->virtuemart_product_id]['basePriceVariant']*$product->quantity;
@@ -709,6 +715,12 @@ class calculationHelper {
 			}
 
 		}
+
+		/*//$cart = VirtueMartCart::getCart();
+		foreach($this->_cart->products as $cartproductkey=>$prod){
+			//vmdebug('getCheckoutPrices my actual cart extra loop '.$cartproductkey,$prod->allPrices[$prod->selectedPrice]['test']);
+		}*/
+
 
 		$this->_product = null;
 		$this->_cart->cartData['DBTaxRulesBill'] = $this->gatherEffectingRulesForBill('DBTaxBill');
@@ -798,6 +810,7 @@ class calculationHelper {
 					}
 				}
 			}
+
 		}
 
 		// Calculate the discount from all rules before tax to calculate billTotal

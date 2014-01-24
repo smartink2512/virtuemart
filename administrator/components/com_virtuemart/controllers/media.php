@@ -92,18 +92,19 @@ class VirtuemartControllerMedia extends VmController {
 
 	function synchronizeMedia(){
 
-		if(!class_exists('Permissions'))
-	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-		if(!Permissions::getInstance()->check('admin')){
-		    $msg = 'Forget IT';
-		    $this->setRedirect('index.php?option=com_virtuemart', $msg);
+		$user = JFactory::getUser();
+		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+			if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+			$migrator = new Migrator();
+			$result = $migrator->portMedia();
+
+			$this->setRedirect($this->redirectPath, $result);
+		} else {
+			$msg = 'Forget IT';
+			$this->setRedirect('index.php?option=com_virtuemart', $msg);
 		}
 
-		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
-		$migrator = new Migrator();
-		$result = $migrator->portMedia();
 
-		$this->setRedirect($this->redirectPath, $result);
 	}
 
 }

@@ -35,17 +35,13 @@ class VirtuemartViewMedia extends VmView {
 		if (!class_exists('VmHTML'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		//@todo should be depended by loggedVendor
-		$vendorId=1;
+		$vendorId=VmConfig::isSuperVendor();
 		$this->assignRef('vendorId', $vendorId);
 
 		// TODO add icon for media view
 		$this->SetViewTitle();
 
 		$model = VmModel::getModel('media');
-		$perms = Permissions::getInstance();
-		$this->assignRef('perms', $perms);
 
 		$layoutName = VmRequest::getCmd('layout', 'default');
 		if ($layoutName == 'edit') {

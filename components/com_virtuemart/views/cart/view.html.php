@@ -48,8 +48,8 @@ class VirtueMartViewCart extends VmView {
 
 		if (!class_exists('VirtueMartCart'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-		$cart = VirtueMartCart::getCart();
-		$this->assignRef('cart', $cart);
+		$this->cart = VirtueMartCart::getCart();
+		//$this->assignRef('cart', $cart);
 
 		//Why is this here, when we have view.raw.php
 		if ($format == 'raw') {
@@ -103,7 +103,7 @@ class VirtueMartViewCart extends VmView {
 			$this->cart->vendor = $vendorModel->getVendor(1);
 			$vendorModel->addImages($this->cart->vendor,1);
             if (VmConfig::get('enable_content_plugin', 0)) {
-				shopFunctionsF::triggerContentPlugin($cart->vendor, 'vendor','vendor_terms_of_service');
+				shopFunctionsF::triggerContentPlugin($this->cart->vendor, 'vendor','vendor_terms_of_service');
 			}
 			if (!class_exists ('CurrencyDisplay'))
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
@@ -158,8 +158,8 @@ class VirtueMartViewCart extends VmView {
 			}
 
 
-			if (!VmConfig::get('use_as_catalog')) {
-				$checkout_link_html = '<button  name="'.$checkout_task.'" class="vm-button-correct" ><span>' . $text . '</span> </button>';
+			if (!VmConfig::get('use_as_catalog',0)) {
+				$checkout_link_html = '<button type="submit" name="'.$checkout_task.'" class="vm-button-correct" ><span>' . $text . '</span> </button>';
 			} else {
 				$checkout_link_html = '';
 			}
@@ -369,9 +369,8 @@ class VirtueMartViewCart extends VmView {
 		if (empty($payments)) {
 
 			$text = '';
-			if (!class_exists('Permissions'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-			if (Permissions::getInstance()->check("admin,storeadmin")) {
+			$user = JFactory::getUser();
+			if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor()) {
 				$uri = JFactory::getURI();
 				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=paymentmethod';
 				$text = vmText::sprintf('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED_LINK', '<a href="' . $link . '" rel="nofollow">' . $link . '</a>');
@@ -395,9 +394,8 @@ class VirtueMartViewCart extends VmView {
 		if (empty($shipments)) {
 
 			$text = '';
-			if (!class_exists('Permissions'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-			if (Permissions::getInstance()->check("admin,storeadmin")) {
+			$user = JFactory::getUser();
+			if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor()) {
 				$uri = JFactory::getURI();
 				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=shipmentmethod';
 				$text = vmText::sprintf('COM_VIRTUEMART_NO_SHIPPING_METHODS_CONFIGURED_LINK', '<a href="' . $link . '" rel="nofollow">' . $link . '</a>');

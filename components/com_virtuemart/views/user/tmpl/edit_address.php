@@ -22,22 +22,28 @@ defined ('_JEXEC') or die('Restricted access');
 JHtml::_ ('behavior.formvalidation');
 JHtml::stylesheet ('vmpanels.css', JURI::root () . 'components/com_virtuemart/assets/css/');
 
-if ($this->fTask === 'savecartuser') {
+/*if ($this->fTask === 'savecartuser') {
 	$rtask = 'registercartuser';
-	$url = 0;
+
 }
 else {
 	$rtask = 'registercheckoutuser';
 	$url = JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=checkout', $this->useXHTML, $this->useSSL);
-}
+}*/
 ?>
 <h1><?php echo $this->page_title ?></h1>
 <?php
+if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+$this->cart = VirtueMartCart::getCart();
+$url = 0;
+if ($this->cart->fromCart or $this->cart->getInCheckOut()){
+	$url = JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=checkout', $this->useXHTML, $this->useSSL);
+}
 echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 ?>
 <script language="javascript">
-	function myValidator(f, t) {
-		f.task.value = t; //this is a method to set the task of the form on the fTask.
+	function myValidator(f) {
+		//f.task.value = t; //this is a method to set the task of the form on the fTask.
 		if (document.formvalidator.isValid(f)) {
 			f.submit();
 			return true;
@@ -64,7 +70,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 
 		var elem = jQuery('#userForm');
 
-		return myValidator(f, '<?php echo $rtask ?>');
+		return myValidator(f);
 
 	}
 </script>
@@ -84,7 +90,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 		<!--<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_ ('index.php'); ?>" class="form-validate">-->
 		<div class="control-buttons">
 			<?php
-			if (strpos ($this->fTask, 'cart') || strpos ($this->fTask, 'checkout')) {
+			if ($this->cart->fromCart or $this->cart->getInCheckOut()) {
 				$rview = 'cart';
 			}
 			else {
@@ -92,7 +98,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 			}
 // echo 'rview = '.$rview;
 
-			if (strpos ($this->fTask, 'checkout') || $this->address_type == 'ST') {
+			if ($this->cart->getInCheckOut() || $this->address_type == 'ST') {
 				$buttonclass = 'default';
 			}
 			else {
@@ -109,15 +115,14 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 			if (VmConfig::get ('oncheckout_show_register', 1) && $this->userId == 0 && $this->address_type == 'BT' and $rview == 'cart') {
 				?>
 
-				<button class="<?php echo $buttonclass ?>" type="submit" onclick="javascript:return callValidatorForRegister(userForm);"
+				<button name="register" class="<?php echo $buttonclass ?>" type="submit" onclick="javascript:return callValidatorForRegister(userForm);"
 				        title="<?php echo vmText::_ ('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?>"><?php echo vmText::_ ('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?></button>
 				<?php if (!VmConfig::get ('oncheckout_only_registered', 0)) { ?>
-					<button class="<?php echo $buttonclass ?>" title="<?php echo vmText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?>" type="submit"
-					        onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');"><?php echo vmText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?></button>
+					<button name="save" class="<?php echo $buttonclass ?>" title="<?php echo vmText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?>" type="submit"
+					        onclick="javascript:return myValidator(userForm);"><?php echo vmText::_ ('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?></button>
 					<?php } ?>
 				<button class="default" type="reset"
 				        onclick="window.location.href='<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=' . $rview); ?>'"><?php echo vmText::_ ('COM_VIRTUEMART_CANCEL'); ?></button>
-
 
 				<?php
 			}
@@ -125,7 +130,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 				?>
 
 				<button class="<?php echo $buttonclass ?>" type="submit"
-				        onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');"><?php echo vmText::_ ('COM_VIRTUEMART_SAVE'); ?></button>
+				        onclick="javascript:return myValidator(userForm);"><?php echo vmText::_ ('COM_VIRTUEMART_SAVE'); ?></button>
 				<button class="default" type="reset"
 				        onclick="window.location.href='<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=' . $rview); ?>'"><?php echo vmText::_ ('COM_VIRTUEMART_CANCEL'); ?></button>
 
@@ -146,7 +151,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 		echo $this->loadTemplate ('userfields');
 
 		?>
-</fieldset>
+
 <?php // }
 if ($this->userDetails->JUser->get ('id')) {
 	echo $this->loadTemplate ('addshipto');
@@ -154,7 +159,7 @@ if ($this->userDetails->JUser->get ('id')) {
 <input type="hidden" name="option" value="com_virtuemart"/>
 <input type="hidden" name="view" value="user"/>
 <input type="hidden" name="controller" value="user"/>
-<input type="hidden" name="task" value="<?php echo $this->fTask; // I remember, we removed that, but why?   ?>"/>
+<input type="hidden" name="task" value="saveUser"/>
 <input type="hidden" name="layout" value="<?php echo $this->getLayout (); ?>"/>
 <input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>"/>
 <?php if (!empty($this->virtuemart_userinfo_id)) {
@@ -163,3 +168,4 @@ if ($this->userDetails->JUser->get ('id')) {
 echo JHtml::_ ('form.token');
 ?>
 </form>
+</fieldset>

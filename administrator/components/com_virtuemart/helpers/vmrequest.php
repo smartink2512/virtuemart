@@ -207,7 +207,7 @@ class vmRequest {
 			}
 		}
 		else {
-			return true;
+			return false;
 		}
 	}
 

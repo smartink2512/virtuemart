@@ -39,20 +39,6 @@ defined('_JEXEC') or die('Restricted access');
 
 		<tr>
 			<td class="key">
-				<label for="perms">
-					<?php echo vmText::_('COM_VIRTUEMART_USER_FORM_PERMS') ?>:
-				</label>
-			</td>
-			<td>
-				<?php
-				echo $this->userDetails->perms;
-
-				?>
-			</td>
-		</tr>
-
-		<tr>
-			<td class="key">
 				<label for="customer_number">
 					<?php echo vmText::_('COM_VIRTUEMART_USER_FORM_CUSTOMER_NUMBER') ?>:
 				</label>

@@ -40,6 +40,7 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  */
 class VirtueMartModelUser extends VmModel {
 
+
 	/**
 	 * Constructor for the user model.
 	 *
@@ -77,12 +78,12 @@ class VirtueMartModelUser extends VmModel {
 				// vmdebug('setId setCurrent $user',$user->get('id'));
 			} else {
 				if($cid != $user->id){
-					if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-					if(Permissions::getInstance()->check("admin")) {
+					$user = JFactory::getUser();
+					if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
 						$userId = $cid;
 						// 						vmdebug('Admin watches user, setId '.$cid);
 					} else {
-						JError::raiseWarning(1,'Hacking attempt');
+						vmError('Hacking attempt setId '.$cid.' '.$user->id);
 						$userId = $user->id;
 					}
 				}else {
@@ -140,6 +141,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 	}
 
+
 	/**
 	 * Retrieve the detail record for the current $id if the data has not already been loaded.
 	 * @author Max Milbers
@@ -154,16 +156,14 @@ class VirtueMartModelUser extends VmModel {
 		$this->_data->load((int)$this->_id);
 		$this->_data->JUser = JUser::getInstance($this->_id);
 
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		$this->_data->perms = Permissions::getInstance()->getPermissions((int)$this->_id);
-
 		// Add the virtuemart_shoppergroup_ids
 		$xrefTable = $this->getTable('vmuser_shoppergroups');
 		$this->_data->shopper_groups = $xrefTable->load($this->_id);
-		if(empty($this->_data->shopper_groups)){
-			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
-			$site = JFactory::getApplication ()->isSite ();
-			$this->_data->shopper_groups = array();
+
+		$shoppergroupmodel = VmModel::getModel('ShopperGroup');
+		$site = JFactory::getApplication ()->isSite ();
+		if ($site) {
+			if(empty($this->_data->shopper_groups)) $this->_data->shopper_groups = array();
 			$shoppergroupmodel->appendShopperGroups($this->_data->shopper_groups,$this->_data->JUser,$site);
 		}
 
@@ -579,11 +579,11 @@ class VirtueMartModelUser extends VmModel {
 			// If user registration is not allowed, show 403 not authorized.
 			// But it is possible for admins and storeadmins to save
 			$usersConfig = JComponentHelper::getParams( 'com_users' );
-			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 
-			if (!Permissions::getInstance()->check("admin,storeadmin") && $usersConfig->get('allowUserRegistration') == '0') {
+			$user = JFactory::getUser();
+			if(!($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')) and $usersConfig->get('allowUserRegistration') == '0') {
 				VmConfig::loadJLang('com_virtuemart');
-				JError::raiseError( 403, vmText::_('COM_VIRTUEMART_ACCESS_FORBIDDEN'));
+				vmError( vmText::_('COM_VIRTUEMART_ACCESS_FORBIDDEN'));
 				return;
 			}
 			$authorize	= JFactory::getACL();
@@ -721,8 +721,8 @@ class VirtueMartModelUser extends VmModel {
 
 		$alreadyStoredUserData = $usertable->load($this->_id);
 		$app = JFactory::getApplication();
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		if(!Permissions::getInstance()->check("admin")){
+		$user = JFactory::getUser();
+		if(!$user->authorise('core.admin','com_virtuemart')){
 			unset($data['virtuemart_vendor_id']);
 			unset($data['user_is_vendor']);
 			$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
@@ -745,23 +745,10 @@ class VirtueMartModelUser extends VmModel {
 			$data['customer_number_bycore'] = 1;
 			//}
 		} else {
-			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-			if(!Permissions::getInstance()->check("admin,storeadmin")) {
+			$user = JFactory::getUser();
+			if(!($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'))){
 				$data['customer_number'] = $alreadyStoredUserData->customer_number;
 			}
-		}
-
-		if($app->isSite()){
-			unset($data['perms']);
-
-			if(!empty($alreadyStoredUserData->perms)){
-				$data['perms'] = $alreadyStoredUserData->perms;
-			} else {
-				$data['perms'] = 'shopper';
-			}
-
-		} else {
-
 		}
 
 
@@ -784,7 +771,7 @@ class VirtueMartModelUser extends VmModel {
 			$noError = false;
 		}
 
-		if(Permissions::getInstance()->check("admin,storeadmin")) {
+		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
 			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
 			if(empty($this->_defaultShopperGroup)){
 				$this->_defaultShopperGroup = $shoppergroupmodel->getDefault(0);
@@ -859,14 +846,12 @@ class VirtueMartModelUser extends VmModel {
 
 		$userinfo   = $this->getTable('userinfos');
 
-
+		$manager = ($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'));
 		if($data['address_type'] == 'BT'){
 
 			if(isset($data['virtuemart_userinfo_id']) and $data['virtuemart_userinfo_id']!=0){
 
-				$data['virtuemart_userinfo_id'] = (int)$data['virtuemart_userinfo_id'];
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-				if(!Permissions::getInstance()->check('admin')){
+				if(!$manager ){
 
 					$userinfo->load($data['virtuemart_userinfo_id']);
 
@@ -877,9 +862,7 @@ class VirtueMartModelUser extends VmModel {
 				}
 			} else {
 
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-				//Todo multi-x, also vendors should be allowed to change the user address.
-				if(!Permissions::getInstance()->check('admin')){
+				if(!$manager){
 					$userId = $user->id;
 				} else {
 					$userId = (int)$data['virtuemart_user_id'];
@@ -927,8 +910,8 @@ class VirtueMartModelUser extends VmModel {
 			$userinfo   = $this->getTable('userinfos');
 			if(isset($dataST['virtuemart_userinfo_id']) and $dataST['virtuemart_userinfo_id']!=0){
 				$dataST['virtuemart_userinfo_id'] = (int)$dataST['virtuemart_userinfo_id'];
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-				if(!Permissions::getInstance()->check('admin')){
+
+				if(!$manager){
 
 					$userinfo->load($dataST['virtuemart_userinfo_id']);
 
@@ -941,8 +924,7 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 			if(empty($userinfo->virtuemart_user_id)){
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-				if(!Permissions::getInstance()->check('admin')){
+				if(!$manager){
 					$dataST['virtuemart_user_id'] = $user->id;
 				} else {
 					if(isset($data['virtuemart_user_id'])){
@@ -1063,17 +1045,14 @@ class VirtueMartModelUser extends VmModel {
 
 		}
 
-		$admin = false;
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		if(Permissions::getInstance()->check('admin','storeadmin')){
-			$admin  = true;
-		}
+		$user = JFactory::getUser();
+		$manager = ($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'));
 
 		// Format the data
 		foreach ($prepareUserFields as $fld) {
 			if(empty($data[$fld->name])) $data[$fld->name] = '';
 
-			if(!$admin and $fld->readonly){
+			if(!$manager and $fld->readonly){
 				$fldName = $fld->name;
 				unset($data[$fldName]);
 				if($userinfo!==0){
@@ -1142,8 +1121,8 @@ class VirtueMartModelUser extends VmModel {
 
 			if($data->virtuemart_user_id!==0 and !$isVendor){
 
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-				if(!Permissions::getInstance()->check("admin")) {
+				$user = JFactory::getUser();
+				if(!($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'))){
 					if($data->virtuemart_user_id!=$this->_id){
 						vmError('Hacking attempt loading userinfo, you got logged');
 						echo 'Hacking attempt loading userinfo, you got logged';
@@ -1312,8 +1291,8 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	function remove($userIds)
 	{
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		if(Permissions::getInstance()->check('admin','storeadmin')) {
+		$user = JFactory::getUser();
+		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
 
 			$userInfo = $this->getTable('userinfos');
 			$vm_shoppergroup_xref = $this->getTable('vmuser_shoppergroups');
@@ -1333,7 +1312,8 @@ class VirtueMartModelUser extends VmModel {
 					}
 				}
 
-				if(Permissions::getInstance()->check('storeadmin')) {
+				$user = JFactory::getUser();
+				if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
 					if ($_JUser->get('gid') == __SUPER_ADMIN_GID) {
 						vmError(vmText::_('COM_VIRTUEMART_USER_ERR_LASTSUPERADMIN'));
 						$_status = false;
@@ -1400,7 +1380,7 @@ function removeAddress($virtuemart_userinfo_id){
 		if ($search) {
 			$where = ' WHERE ';
 
-			$searchArray = array('ju.name','username','email','perms','usertype','shopper_group_name');
+			$searchArray = array('ju.name','username','email','usertype','shopper_group_name');
 			if($tableToUse!='juser'){
 
 				if(!class_exists('TableUserinfos'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'userinfos.php');
@@ -1465,14 +1445,13 @@ function removeAddress($virtuemart_userinfo_id){
 			$db = JFactory::getDBO();
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
 			//$search = $db->Quote($search, false);
-			$searchArray = array('name','username','email','perms','usertype','shopper_group_name');
+			$searchArray = array('name','username','email','usertype','shopper_group_name');
 
 			$where = ' WHERE ';
 			foreach($searchArray as $field){
 				$where.= ' `'.$field.'` LIKE '.$search.' OR ';
 			}
 			$where = substr($where,0,-3);
-			//$where = ' WHERE `name` LIKE '.$search.' OR `username` LIKE ' .$search.' OR `email` LIKE ' .$search.' OR `perms` LIKE ' .$search.' OR `usertype` LIKE ' .$search.' OR `shopper_group_name` LIKE ' .$search;
 			return ($where);
 		}
 		return ('');

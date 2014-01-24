@@ -84,23 +84,23 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		$oldUserId = $db->loadResult();
 
 		if (!empty($oldUserId) and !empty($userId)) {
-		    $db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "0", `user_is_vendor` = "0", `perms` = "" WHERE `virtuemart_vendor_id` ="1" ');
+		    $db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "0", `user_is_vendor` = "0" WHERE `virtuemart_vendor_id` ="1" ');
 		    if ($db->execute() == false ) {
-			    JError::raiseWarning(1, 'UPDATE __vmusers failed for virtuemart_user_id '.$userId);
+			    vmWarn( 'UPDATE __vmusers failed for virtuemart_user_id '.$userId);
 			    return false;
 		    }
 
-			$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_user_id` ="'.$userId.'" ');
+			$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "1", `user_is_vendor` = "1" WHERE `virtuemart_user_id` ="'.$userId.'" ');
 			if ($db->execute() === false ) {
-				JError::raiseWarning(1, 'UPDATE __vmusers failed for virtuemart_user_id '.$userId);
+				vmWarn( 'UPDATE __vmusers failed for virtuemart_user_id '.$userId);
 				return false;
 			} else {
 				vmInfo('setStoreOwner VmUser updated new main vendor has user id  '.$userId);
 			}
 		} else if($allowInsert){
-			$db->setQuery('INSERT `#__virtuemart_vmusers` (`virtuemart_user_id`, `user_is_vendor`, `virtuemart_vendor_id`, `perms`) VALUES ("' . $userId . '", "1","1","admin")');
+			$db->setQuery('INSERT `#__virtuemart_vmusers` (`virtuemart_user_id`, `user_is_vendor`, `virtuemart_vendor_id`) VALUES ("' . $userId . '", "1","1")');
 			if ($db->execute() === false ) {
-				JError::raiseWarning(1, 'setStoreOwner was not possible to execute INSERT __vmusers for virtuemart_user_id '.$userId);
+				vmWarn( 'setStoreOwner was not possible to execute INSERT __vmusers for virtuemart_user_id '.$userId);
 				return false;
 			} else {
 				vmInfo('setStoreOwner VmUser inserted new main vendor has user id  '.$userId);
@@ -119,13 +119,9 @@ class VirtueMartModelUpdatesMigration extends VmModel {
      * @author Christopher Roussel
      */
     function setUserToPermissionGroup ($userId=0) {
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 
 		$usersTable = $this->getTable('vmusers');
 		$usersTable->load((int)$userId);
-
-		$perm = Permissions::getInstance();
-		$usersTable->perms = $perm->getPermissions($userId);
 
 		$result = $usersTable->check();
 		if ($result) {
@@ -202,7 +198,6 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 	$fields['vendor_terms_of_service'] =  '<h5>You haven&#39;t configured any terms of service yet. Click <a href="'.JURI::base(true).'/index.php?option=com_virtuemart&view=user&task=editshop">here</a> to change this text.</h5>';
 	$fields['vendor_url'] = JURI::root();
 	$fields['vendor_name'] =  'Washupito';
-	$fields['perms']='admin';
 	$fields['vendor_legal_info']="VAT-ID: XYZ-DEMO<br />Reg.Nr: DEMONUMBER";
 	$fields['vendor_letter_css']='.vmdoc-header { }
 .vmdoc-footer { }
@@ -217,12 +212,8 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 	//Save the VM user stuff
 	if(!$usermodel->store($fields)){
 		vmError(vmText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA')  );
-		JError::raiseWarning('', vmText::_('COM_VIRTUEMART_RAISEWARNING_NOT_ABLE_TO_SAVE_USER_DATA'));
 	}
 
-// 	$params = JComponentHelper::getParams('com_languages');
-// 	$lang = $params->get('site', 'en-GB');//use default joomla
-// 	$this->installSampleSQL($lang);
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
 	    if(!VmConfig::$vmlang){
 		    $params = JComponentHelper::getParams('com_languages');
@@ -418,7 +409,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		    	}
 				$db->setQuery($query);
 				if (!$db->execute()) {
-				    JError::raiseWarning(1, 'JInstaller::install: '.$sqlfile.' '.vmText::_('COM_VIRTUEMART_SQL_ERROR')." ".$db->stderr(true));
+				    vmWarn( 'JInstaller::install: '.$sqlfile.' '.vmText::_('COM_VIRTUEMART_SQL_ERROR')." ".$db->stderr(true));
 				    $ok = false;
 				}
 		    }
@@ -543,12 +534,12 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		if(!empty($resized)) $resized = DS.$resized;
 		$typePath = VmConfig::get($type);
 		if(!empty($typePath)){
+			if(!class_exists('JFolder')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 			$path = JPATH_ROOT.DS.str_replace('/',DS,$typePath).$resized;
 			$msg = JFolder::delete($path);
 			if(!$msg){
 				vmWarn('Problem deleting '.$type);
 			}
-			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 			$msg = JFolder::create($path);
 			return $msg;
 		} else {

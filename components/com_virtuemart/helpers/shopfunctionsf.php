@@ -547,7 +547,7 @@ class shopFunctionsF {
 				if(is_dir( JPATH_THEMES.DS.$template )) {
 					$app->set( 'setTemplate', $template );
 				} else {
-					JError::raiseWarning( 412, 'The chosen template couldnt find on the filesystem: '.$template );
+					vmError( 'The chosen template couldnt find on the filesystem: '.$template );
 				}
 
 			} else {
@@ -570,7 +570,7 @@ class shopFunctionsF {
 				if(is_dir( JPATH_THEMES.DS.$template )) {
 					$app->setTemplate($template,$registry);
 				} else {
-					JError::raiseWarning( 412, 'The chosen template couldnt find on the filesystem: '.$template );
+					vmError( 'The chosen template couldnt find on the filesystem: '.$template );
 				}
 			}
 		}

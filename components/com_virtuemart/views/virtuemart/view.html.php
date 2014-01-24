@@ -104,8 +104,8 @@ class VirtueMartViewVirtueMart extends VmView {
 			
 			$this->assignRef('products', $products);
 
-			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-			$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
+			$user = JFactory::getUser();
+			$showBasePrice = ($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor());
 			$this->assignRef('showBasePrice', $showBasePrice);
 
 			//		$layoutName = VmConfig::get('vmlayout','default');

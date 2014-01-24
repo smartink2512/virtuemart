@@ -37,7 +37,7 @@ vmJsApi::jDate();
 	<table class="admintable">
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CALC_NAME','calc_name',$this->calc->calc_name); ?>
 		<?php echo VmHTML::row('checkbox','COM_VIRTUEMART_PUBLISHED','published',$this->calc->published); ?>
-		<?php if(Vmconfig::get('multix','none')!=='none' and $this->perms->check('admin') ){
+		<?php if($this->showVendors() ){
 		echo VmHTML::row('checkbox','COM_VIRTUEMART_SHARED', 'shared', $this->calc->shared );
 		} ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_ORDERING','ordering',$this->calc->ordering,'class="inputbox"','',4,4); ?>
@@ -81,7 +81,7 @@ vmJsApi::jDate();
 		$returnValues = $dispatcher->trigger('plgVmOnDisplayEdit', array(&$this->calc,&$html));
 		echo $html;
 
-		if(Vmconfig::get('multix','none')!=='none' and $this->perms->check('admin') ){
+		if($this->showVendors() ){
 			echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->vendorList );
 		}
 		?>

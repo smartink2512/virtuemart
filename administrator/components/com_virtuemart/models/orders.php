@@ -148,8 +148,8 @@ class VirtueMartModelOrders extends VmModel {
             }
             $orderDetails = $this->getOrder($virtuemart_order_id);
 
-            if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-            if(!Permissions::getInstance()->check("admin")) {
+			$user = JFactory::getUser();
+			if(!$user->authorise('core.admin','com_virtuemart')){
                 if(!isset($orderDetails['details']['BT']->virtuemart_user_id)){
                     $orderDetails['details']['BT']->virtuemart_user_id = 0;
                 }
@@ -235,13 +235,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$select = " o.*, CONCAT_WS(' ',u.first_name,u.middle_name,u.last_name) AS order_name "
 		.',u.email as order_email,pm.payment_name AS payment_method ';
 		$from = $this->getOrdersListQuery();
-		/*		$_filter = array();
-		 if ($uid > 0) {
-		$_filter[] = ('u.virtuemart_user_id = ' . (int)$uid);
-		}*/
 
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		if(!Permissions::getInstance()->check('admin')){
+		$user = JFactory::getUser();
+		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
 			$myuser		=JFactory::getUser();
 			$where[]= ' u.virtuemart_user_id = ' . (int)$myuser->id.' AND o.virtuemart_vendor_id = "1" ';
 		} else {
@@ -251,7 +247,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				$where[]= ' u.virtuemart_user_id = ' . (int)$uid.' AND o.virtuemart_vendor_id = "1" ';
 			}
 		}
-
 
 		if ($search = VmRequest::getString('search', false)){
 			$db = JFactory::getDBO();

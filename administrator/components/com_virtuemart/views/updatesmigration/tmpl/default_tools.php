@@ -41,9 +41,7 @@ if(!VmConfig::get('dangeroustools', false)){
              <h3> <?php echo vmText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'); ?> </h3>
 	</td>
 
-	<td align="left" colspan="2" >
-            <h3> <?php echo vmText::_('COM_VIRTUEMART_TOOLS_RENEW_CONFIG'); ?> </h3>
-	</td>
+
     </tr>
     <tr>
 <?php /*	<td align="center">
@@ -76,19 +74,7 @@ if(!VmConfig::get('dangeroustools', false)){
         </td>
 
 
-	<td align="center" width="25%">
-		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=renewConfig&'.JSession::getFormToken().'=1' ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo vmText::_('COM_VIRTUEMART_TOOLS_RENEW_CONFIG_CONFIRM'); ?>', '<?php echo $link; ?>');">
-		<span class="vmicon48 vm_install_48"></span>
-	    <br />
-            <?php echo vmText::_('COM_VIRTUEMART_TOOLS_RENEW_CONFIG'); ?>
 
-		</a></div>
-	</td>
-	<td align="left" width="25%" >
-		<?php echo vmText::sprintf('COM_VIRTUEMART_TOOLS_RENEW_CONFIG_EXPLAIN'); ?>
-
-	</td>
     </tr>
   <tr>
 	  <td align="center" width="25%">

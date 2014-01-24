@@ -102,14 +102,12 @@ class vmJsApi{
 			$uri = JPATH_THEMES .'/'. $template.'/'.$ext ;
 			$path= 'templates/'. $template .'/'.$ext ;
 		}
-		//vmdebug('my js path setPath',$path);
+
 		if (strpos($path, 'templates/'. $template ) !== FALSE){
 			// Search in template or fallback
 			if (!file_exists($uri.'/'. $file)) {
 				$assets_path = VmConfig::get('assets_general_path','components/com_virtuemart/assets/') ;
 				$path = str_replace('templates/'. $template.'/',$assets_path, $path);
-				vmdebug('setPath file not found ',$assets_path,$uri);
-				// vmWarn('file not found in tmpl :'.$file );
 			}
 			if ($absolute_path) {
 				$path = JPATH_BASE .'/'.$path;
@@ -126,7 +124,7 @@ class vmJsApi{
 				$path = JURI::root(TRUE) .'/'.$path;
 			}
 		}
-		vmdebug('my js path setPath',$path);
+
 		return $path.'/'.$file ;
 	}
 	/**

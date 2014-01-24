@@ -1591,7 +1591,7 @@ class Migrator extends VmModel{
 			$this->_db->setQuery($q);
 			$currInt = $this->_db->loadResult();
 			if(empty($currInt)){
-				JError::raiseWarning(E_WARNING, 'Attention, couldnt find currency id in the table for id = ' . $curr);
+				vmWarn('Attention, couldnt find currency id in the table for id = ' . $curr);
 			}
 		}
 

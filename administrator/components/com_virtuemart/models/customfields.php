@@ -337,7 +337,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				break;
 			//'Y'=>'COM_VIRTUEMART_CUSTOM_TEXTAREA'
 			case 'Y':
-				return '<textarea id="field[' . $row . '][customfield_value]" name="field[' . $row . '][customfield_value]" class="inputbox" cols=80 rows=50 >' . $field->customfield_value . '</textarea></td><td>' . $priceInput;
+				return '<textarea id="field[' . $row . '][customfield_value]" name="field[' . $row . '][customfield_value]" class="inputbox" cols=80 rows=6 >' . $field->customfield_value . '</textarea></td><td>' . $priceInput;
 				//return '<input type="text" value="'.$field->customfield_value.'" name="field['.$row.'][customfield_value]" /></td><td>'.$priceInput;
 				break;
 			/*Extended by plugin*/
@@ -685,7 +685,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			$productCustoms[$prodcustom->virtuemart_customfield_id] = $prodcustom;
 		}
 		//if(empty($productCustoms)) return $html . '</div>';
-		vmdebug('displayProductCustomfieldSelected $variantmods ',$variantmods,$productCustoms);
+		//vmdebug('displayProductCustomfieldSelected $variantmods ',$variantmods,$productCustoms);
 		foreach ($variantmods as $custom_id => $customfield_id) {
 
 			//if(is_object($selected)) $selected = (array)$selected;
@@ -853,6 +853,8 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		$modificatorSum = 0.0;
 
+		//VmConfig::$echoDebug=true;
+		//vmdebug('my $productCustom->customfield_price',$product->customfields);
 		if (!empty($product->customfields)){
 
 			foreach($product->customfields as $k=>$productCustom){
@@ -862,9 +864,10 @@ class VirtueMartModelCustomfields extends VmModel {
 					if (!class_exists('VirtueMartCart'))
 						require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 					$cart = VirtueMartCart::getCart();
-
+					//vmdebug('my $productCustom->customfield_price '.$productCustom->virtuemart_customfield_id,$cart->cartProductsData,$cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id]);
 					if(isset($cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id])){
 						$selected = $cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id][$productCustom->virtuemart_customfield_id];
+
 					} else if( isset($cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id])){
 						if($cart->cartProductsData[$product->cart_item_id]['customProductData'][$productCustom->virtuemart_custom_id]== $productCustom->virtuemart_customfield_id){
 							$selected = 1;
@@ -892,7 +895,8 @@ class VirtueMartModelCustomfields extends VmModel {
 				if($selected === -1) {
 					continue;
 				}
-				vmdebug('my $productCustom->customfield_price',$selected,$productCustom->customfield_price);
+
+				//vmdebug('my $productCustom->customfield_price',$selected,$productCustom->customfield_price);
 				if (!empty($productCustom) and $productCustom->field_type =='E') {
 
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
@@ -901,6 +905,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$dispatcher->trigger('plgVmPrepareCartProduct',array(&$product, &$product->customfields[$k],$selected,&$modificatorSum));
 				} else {
 					if ($productCustom->customfield_price) {
+						//vmdebug('calculateModificators $productCustom->customfield_price ',$productCustom->customfield_price);
 						//TODO adding % and more We should use here $this->interpreteMathOp
 						$modificatorSum = $modificatorSum + $productCustom->customfield_price;
 					}
@@ -1030,13 +1035,11 @@ class VirtueMartModelCustomfields extends VmModel {
 						$fields = array_merge ((array)$fields, (array)$datas['custom_params'][$key]);
 					}
 				}
-
+				$tableCustomfields->_xParams = 'customfield_params';
 				VirtueMartModelCustomfields::setParameterableByFieldType($tableCustomfields,$fields['field_type'],$fields['custom_element'],$fields['custom_jplugin_id']);
-				$tmpObj = get_object_vars($tableCustomfields);
-				vmdebug('storeProductCustomfields I am in field ',$fields);
+
 				$tableCustomfields->bindChecknStore($fields);
 				$errors = $tableCustomfields->getErrors();
-
 				foreach($errors as $error){
 					vmError($error);
 				}

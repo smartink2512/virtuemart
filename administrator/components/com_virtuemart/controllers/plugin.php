@@ -37,9 +37,8 @@ class VirtuemartControllerPlugin extends JController
 	function Plugin()
 	{
 
-		if(!class_exists('Permissions'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-		if(!Permissions::getInstance()->check('admin')){
+		$user = JFactory::getUser();
+		if(!($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'))){
 			return false;
 		}
 

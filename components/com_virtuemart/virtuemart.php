@@ -51,8 +51,8 @@ if(VmConfig::get('shop_is_offline',0)){
 	if ((($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit')) || ($_controller == 'translate' && $task='paste') ) {
 		$app = JFactory::getApplication();
 
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		if	(Permissions::getInstance()->check("admin,storeadmin")) {
+		$user = JFactory::getUser();
+		if	($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor()) {
 			$jlang =JFactory::getLanguage();
 			$jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
 			$basePath = JPATH_VM_ADMINISTRATOR;
@@ -99,7 +99,7 @@ if (class_exists($_class)) {
     /* Perform the Request task */
     $controller->execute($task);
 
-    vmTime($_class.' Finished task '.$task,'Start');
+    //vmTime($_class.' Finished task '.$task,'Start');
     vmRam('End');
     vmRamPeak('Peak');
 

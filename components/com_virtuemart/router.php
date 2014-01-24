@@ -84,7 +84,12 @@ function virtuemartBuildRoute(&$query) {
 				else {
 					$categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
 					if ($categoryRoute->route) $segments[] = $categoryRoute->route;
-					if ($categoryRoute->itemId) $query['Itemid'] = $categoryRoute->itemId;
+					//http://forum.virtuemart.net/index.php?topic=121642.0
+					if (!empty($categoryRoute->itemId)) {
+						$query['Itemid'] = $categoryRoute->itemId;
+					} else {
+						$query['Itemid'] = false;
+					}
 				}
 				unset($query['virtuemart_category_id']);
 			}
@@ -973,7 +978,7 @@ class vmrouterHelper {
 	/* Get URL safe Manufacturer name */
 	public function getVendorName($virtuemart_vendor_id ){
 		$db = JFactory::getDBO();
-		$query = 'SELECT `slug` FROM `#__virtuemart_vendors_'.VmConfig::$vmlang.'` WHERE virtuemart_vendor_id='.(int)$virtuemart_vendor_id;
+		$query = 'SELECT `slug` FROM `#__virtuemart_vendors_'.VmConfig::$vmlang.'` WHERE `virtuemart_vendor_id`='.(int)$virtuemart_vendor_id;
 		$db->setQuery($query);
 
 		return $db->loadResult();

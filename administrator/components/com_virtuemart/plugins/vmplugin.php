@@ -294,7 +294,7 @@ abstract class vmPlugin extends JPlugin {
 				$db = JFactory::getDBO ();
 				$db->setQuery ($query);
 				if (!$db->execute ()) {
-					JError::raiseWarning (1, $this->_name . '::onStoreInstallPluginTable: ' . vmText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE));
+					vmWarn($this->_name . '::onStoreInstallPluginTable: ' . vmText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE));
 					echo $this->_name . '::onStoreInstallPluginTable: ' . vmText::_ ('COM_VIRTUEMART_SQL_ERROR') . ' ' . $db->stderr (TRUE);
 				} else {
 					return true;
@@ -594,7 +594,7 @@ abstract class vmPlugin extends JPlugin {
 		}
 
 		// if the site template has a layout override, use it
-		jimport ('joomla.filesystem.file');
+		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 		if (JFile::exists ($templatePath)) {
 			return $templatePath;
 		}

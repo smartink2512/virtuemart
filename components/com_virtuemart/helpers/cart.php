@@ -35,6 +35,7 @@ class VirtueMartCart {
 	var $products = array();
 	var $_productAdded = false;
 	var $_inCheckOut = false;
+	var $fromCart = false;
 	var $_dataValidated = false;
 	var $_blockConfirm = false;
 	var $_confirmDone = false;
@@ -134,7 +135,7 @@ class VirtueMartCart {
 				self::$_cart->_dataValidated						= $sessionCart->_dataValidated;
 				self::$_cart->_confirmDone							= $sessionCart->_confirmDone;
 				self::$_cart->STsameAsBT							= $sessionCart->STsameAsBT;
-
+				self::$_cart->fromCart						= $sessionCart->fromCart;
 				$lang = JFactory::getLanguage();
 				self::$_cart->order_language = $lang->getTag();
 			}
@@ -239,7 +240,7 @@ class VirtueMartCart {
 		$sessionCart->_dataValidated						= $this->_dataValidated;
 		$sessionCart->_confirmDone							= $this->_confirmDone;
 		$sessionCart->STsameAsBT							= $this->STsameAsBT;
-
+		$sessionCart->fromCart						= $this->fromCart;
 		$session->set('vmcart', serialize($sessionCart),'vm');
 
 	}
@@ -949,7 +950,7 @@ class VirtueMartCart {
 
 			if (($orderID = $orderModel->createOrderFromCart($this)) === false) {
 				$mainframe = JFactory::getApplication();
-				JError::raiseWarning(500, 'No order created '.$orderModel->getError());
+				vmError('No order created '.$orderModel->getError());
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE) );
 			}
 			$this->virtuemart_order_id = $orderID;
@@ -1201,6 +1202,11 @@ class VirtueMartCart {
 
 		$calculator->getCheckoutPrices($this, $checkAutomaticSelected);
 
+		//We must do this here, otherwise if we have a product more than one time in the cart
+		//it has always the same price
+		foreach($this->products as $k => $product){
+			$this->products[$k]->prices = &$product->allPrices[$product->selectedPrice];
+		}
 	}
 
 	function prepareCartData($checkAutomaticSelected=true){
@@ -1229,11 +1235,6 @@ class VirtueMartCart {
 					$productdata['quantity'] = (int)$productdata['quantity'];
 					$productdata['virtuemart_product_id'] = (int)$productdata['virtuemart_product_id'];
 
-
-					/*foreach($productdata as $key => $data){
-						$product ->$key = $data;
-					}*/
-
 					$product -> customProductData = $productdata['customProductData'];
 					$product -> quantity = $productdata['quantity'];
 
@@ -1243,21 +1244,7 @@ class VirtueMartCart {
 
 					$product->customfields = $customFieldsModel->getCustomEmbeddedProductCustomFields($product->allIds,0,1);
 
-					/*if($customfields){
-						foreach($customfields as $field){
-
-							if($field->field_type == 'E'){
-								if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-								JPluginHelper::importPlugin('vmcustom');
-								$dispatcher = JDispatcher::getInstance();
-								// on returning false the product have not to be added to cart
-								if ( $dispatcher->trigger('plgVmProductInCart',array(&$product,&$productdata)) === false );
-									//continue;							}
-							}
-						}
-					}*/
-
-					vmdebug('prepareCartData',$product->customfields);
+					//vmdebug('prepareCartData',$product->customfields);
 					$this->products[$k] = $product;
 					$this->totalProduct += $product -> quantity;
 
@@ -1280,7 +1267,7 @@ class VirtueMartCart {
 		$this->checkCartQuantities();
 
 		$this->getCartPrices($checkAutomaticSelected);
-		//vmdebug('$this->cart prepareCartData ',$this->cartPrices);
+
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();

@@ -23,7 +23,7 @@ class JFormFieldVmRules extends JFormFieldRules {
 	 * @var    string
 	 * @since  11.1
 	 */
-	protected $type = 'VMRules';
+	public $type = 'VMRules';
 
 	/**
 	 * Method to get the field input markup for Access Control Lists.

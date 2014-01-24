@@ -62,7 +62,21 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 	}
 
-	function editAddressST(){
+	function editAddressCart(){
+		$view = $this->getView('user', 'html');
+
+		$view->setLayout('edit_address');
+
+		if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		$cart = VirtueMartCart::getCart();
+		$cart->fromCart = true;
+		$cart->setCartIntoSession();
+		// Display it all
+		$view->display();
+
+	}
+
+/*	function editAddressST(){
 
 		$view = $this->getView('user', 'html');
 
@@ -83,7 +97,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 * @author Max Milbers
 	 */
 
-	function editAddressCart(){
+/*	function editAddressCart(){
 
 		$view = $this->getView('user', 'html');
 
@@ -104,7 +118,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 *
 	 * @author Max Milbers
 	 */
-	function editAddressCheckout(){
+/*	function editAddressCheckout(){
 
 		$view = $this->getView('user', 'html');
 
@@ -123,7 +137,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 *
 	 * @author Max Milbers
 	 */
-	function saveCheckoutUser(){
+/*	function saveCheckoutUser(){
 
 		$msg = $this->saveData(true,VmConfig::get('reg_silent',0));
 
@@ -142,7 +156,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 *
 	 * @author Max Milbers
 	 */
-	function saveCartUser(){
+/*	function saveCartUser(){
 
 		$msg = $this->saveData(true,VmConfig::get('reg_silent',0));
 		$this->setRedirect(JRoute::_( 'index.php?option=com_virtuemart&view=cart', FALSE ),$msg);
@@ -163,9 +177,26 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 */
 	function saveUser(){
 
-		$msg = $this->saveData(false,true);
+		if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		$cart = VirtueMartCart::getCart();
+
 		$layout = VmRequest::getCmd('layout','edit');
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
+		if (isset($_POST['register'])) {
+			$msg = $this->saveData(true, true);
+		} else {
+			if($cart->fromCart or $this->cart->getInCheckOut()){
+				$msg = $this->saveData(true,VmConfig::get('reg_silent',0));
+			} else {
+				$msg = $this->saveData(false,true);
+			}
+		}
+
+		if($cart->fromCart or $this->cart->getInCheckOut()){
+			$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE) , $msg);
+		} else {
+			$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
+		}
+
 	}
 
 	function saveAddressST(){
@@ -269,7 +300,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 *
 	 * @author Oscar van Eijk
 	 */
-	function cancelCheckoutUser(){
+/*	function cancelCheckoutUser(){
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout',$this->useXHTML,$this->useSSL) );
 	}
 

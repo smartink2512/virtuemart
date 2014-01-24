@@ -42,20 +42,12 @@ class VirtuemartViewUser extends VmView {
     private $_currentUser = 0;
     private $_cuid = 0;
     private $_userDetails = 0;
-    private $_userFieldsModel = 0;
-    private $_userInfoID = 0;
-    private $_list = 0;
     private $_orderList = 0;
     private $_openTab = 0;
 
     /**
      * Displays the view, collects needed data for the different layouts
      *
-     * Okey I try now a completly new idea.
-     * We make a function for every tab and the display is getting the right tabs by an own function
-     * putting that in an array and after that we call the preparedataforlayoutBlub
-     *
-     * @author Oscar van Eijk
      * @author Max Milbers
      */
     function display($tpl = null) {
@@ -76,11 +68,6 @@ class VirtuemartViewUser extends VmView {
 			$layoutName = 'edit';
 		}
 		$this->setLayout($layoutName);
-	}
-
-	if (empty($this->fTask)) {
-	    $ftask = 'saveUser';
-	    $this->assignRef('fTask', $ftask);
 	}
 
 
@@ -127,17 +114,19 @@ class VirtuemartViewUser extends VmView {
 	$this->assignRef('virtuemart_userinfo_id', $virtuemart_userinfo_id);
 
 	$userFields = null;
-	if ((strpos($this->fTask, 'cart') || strpos($this->fTask, 'checkout')) && empty($virtuemart_userinfo_id)) {
+
+	if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+	$this->cart = VirtueMartCart::getCart();
+
+	if (($this->cart->fromCart or $this->cart->getInCheckOut()) && empty($virtuemart_userinfo_id)) {
 
 	    //New Address is filled here with the data of the cart (we are in the cart)
-	    if (!class_exists('VirtueMartCart'))
-		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-	    $cart = VirtueMartCart::getCart();
+
 
 	    $fieldtype = $address_type . 'address';
-	    $cart->prepareAddressDataInCart($address_type, $new);
+		$this->cart->prepareAddressDataInCart($address_type, $new);
 
-	    $userFields = $cart->$fieldtype;
+	    $userFields = $this->cart->$fieldtype;
 
 	    $task = VmRequest::getCmd('task', '');
 	} else {
@@ -210,14 +199,14 @@ class VirtuemartViewUser extends VmView {
 	} else {
 	    $corefield_title = vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS');
 	}
-	if ((strpos($this->fTask, 'cart') || strpos($this->fTask, 'checkout'))) {
+	if ($this->cart->fromCart or $this->cart->getInCheckOut()) {
 	    $pathway->addItem(vmText::_('COM_VIRTUEMART_CART_OVERVIEW'), JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE));
 	} else {
 	    //$pathway->addItem(vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS'), JRoute::_('index.php?option=com_virtuemart&view=user&&layout=edit'));
 	}
 	$pathway_text = vmText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS');
 	if (!$this->userDetails->JUser->get('id')) {
-	    if ((strpos($this->fTask, 'cart') || strpos($this->fTask, 'checkout'))) {
+	    if ($this->cart->fromCart or $this->cart->getInCheckOut()) {
 		if ($address_type == 'BT') {
 		    $vmfield_title = vmText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
 		} else {
@@ -241,8 +230,8 @@ class VirtuemartViewUser extends VmView {
 	    }
 	}
 	  $add_product_link="";
-	 if(!class_exists('Permissions')) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' . DS . 'helpers' . DS . 'permissions.php');
-	if(!Permissions::getInstance()->isSuperVendor() or Vmconfig::get('multix','none')!=='none' ){
+
+	if(VmConfig::isSuperVendor() ){
 	    $add_product_link = JRoute::_( 'index.php?option=com_virtuemart&tmpl=component&view=product&view=product&task=edit&virtuemart_product_id=0' );
 	    $add_product_link = $this->linkIcon($add_product_link, 'COM_VIRTUEMART_PRODUCT_ADD_PRODUCT', 'new', false, false, true, true);
 	}
@@ -297,10 +286,8 @@ class VirtuemartViewUser extends VmView {
 
 	$_shoppergroup = VirtueMartModelShopperGroup::getShoppergroupById($this->_model->getId());
 
-	if (!class_exists('Permissions'))
-	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-
-	if (Permissions::getInstance()->check('admin,storeadmin')) {
+		$user = JFactory::getUser();
+		if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')) {
 
 		$shoppergrps = array();
 		foreach($_shoppergroup as $group){
@@ -326,16 +313,6 @@ class VirtuemartViewUser extends VmView {
 
 	//todo here is something broken we use $_userDetailsList->perms and $this->_userDetailsList->perms and perms seems not longer to exist
 	//todo we should list here the joomla ACL groups
-/*	if (Permissions::getInstance()->check("admin,storeadmin")) {
-	    $this->_lists['perms'] = JHtml::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $this->_userDetails->perms);
-	} else {
-	    if (!empty($this->_userDetails->perms)) {
-		$this->_lists['perms'] = $this->_userDetails->perms;
-
-		$_hiddenInfo = '<input type="hidden" name="perms" value = "' . $this->_lists['perms'] . '" />';
-		$this->_lists['perms'] .= $_hiddenInfo;
-	    }
-	}*/
 
 	// Load the required scripts
 	if (count($userFields['scripts']) > 0) {

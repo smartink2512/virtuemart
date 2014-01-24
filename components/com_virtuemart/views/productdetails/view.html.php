@@ -234,20 +234,9 @@ class VirtueMartViewProductdetails extends VmView {
 
 	// Check for editing access
 	// @todo build edit page
-	if (!class_exists('Permissions'))
-	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-	//if (Permissions::getInstance()->check("admin,storeadmin")) {
-	$perm = Permissions::getInstance();
-	$admin = $perm->check("admin");
-	    if(!$admin) vmdebug('No admin');
 
-	$storeadmin = $perm->check("admin,storeadmin");
-	if(!$storeadmin) vmdebug('No $storeadmin');
-
-	$superVendor = $perm->isSuperVendor();
-	if(!$superVendor) vmdebug('No $superVendor');
-
-	if($admin or ($perm->isSuperVendor()==$product->virtuemart_vendor_id and $storeadmin)){
+	$user = JFactory::getUser();
+	if($user->authorise('core.admin','com_virtuemart') or (VmConfig::isSuperVendor()==$product->virtuemart_vendor_id and $user->authorise('core.manage','com_virtuemart'))){
 	    $edit_link = JURI::root() . 'index.php?option=com_virtuemart&tmpl=component&view=product&task=edit&virtuemart_product_id=' . $product->virtuemart_product_id;
 	    $edit_link = $this->linkIcon($edit_link, 'COM_VIRTUEMART_PRODUCT_FORM_EDIT_PRODUCT', 'edit', false, false);
 	} else {
@@ -288,7 +277,8 @@ class VirtueMartViewProductdetails extends VmView {
 	}
 
 
-	$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
+	$user = JFactory::getUser();
+	$showBasePrice = ($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart') or VmConfig::isSuperVendor());
 	$this->assignRef('showBasePrice', $showBasePrice);
 
 	$productDisplayShipments = array();

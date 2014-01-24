@@ -40,7 +40,7 @@ class VirtuemartViewCustom extends VmView {
 		if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 
 		$model = VmModel::getModel();
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+
 		// TODO Make an Icon for custom
 		$this->SetViewTitle('PRODUCT_CUSTOM_FIELD');
 
@@ -140,18 +140,10 @@ class VirtuemartViewCustom extends VmView {
 		}
 		$this->addHiddenByType ($datas);
 
-		//$html = '<div id="custom_title">'.$datas->custom_title.'</div>';
 		$html = "";
-		//$html = ' <table class="admintable"> ';
 
 		$model = VmModel::getModel();
 
-		if (!Permissions::getInstance ()->check ('admin')) {
-			$readonly = 'readonly';
-		}
-		else {
-			$readonly = '';
-		}
 		// only input when not set else display
 		if ($datas->field_type) {
 			$html .= VmHTML::row ('value', 'COM_VIRTUEMART_CUSTOM_FIELD_TYPE', $datas->field_types[$datas->field_type]);

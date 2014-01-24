@@ -89,13 +89,6 @@ AdminUIHelper::startAdminArea($this);
 				</td>
 				<td align="left">
 					<?php
-					echo $this->perm->getPermissions($row->id);
-				//	if(empty($row->perms)) $row->perms = 'shopper';
-				//	echo $row->perms . ' / (' . $row->usertype . ')';
-					?>
-				</td>
-				<td align="left">
-					<?php
 					if(empty($row->shopper_group_name)) $row->shopper_group_name = $this->defaultShopperGroup;
 					echo $row->shopper_group_name;
 					?>

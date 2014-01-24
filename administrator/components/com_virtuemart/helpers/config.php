@@ -118,8 +118,7 @@ function vmInfo($publicdescr,$value=NULL){
  */
 function vmAdminInfo($publicdescr,$value=NULL){
 
-	if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-	if(Permissions::getInstance()->isSuperVendor()){
+	if(VmConfig::$echoAdmin){
 
 		$app = JFactory::getApplication();
 
@@ -210,12 +209,7 @@ function vmError($descr,$publicdescr=''){
 	logInfo($adminmsg,'error');
 	if(VmConfig::$maxMessageCount< (VmConfig::$maxMessage+5)){
 
-
-		if (!class_exists ('Permissions')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-		}
-
-		if(Permissions::getInstance()->check('admin')){
+		if(VmConfig::$echoAdmin){
 			$msg = $adminmsg;
 		} else {
 			if(!empty($publicdescr)){
@@ -365,24 +359,17 @@ function vmTime($descr,$name='current'){
  * to help debugging Payment notification for example
  */
 function logInfo ($text, $type = 'message') {
-	jimport('joomla.filesystem.file');
+
+	if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+
 	$config = JFactory::getConfig();
 	$log_path = $config->get('log_path', JPATH_ROOT . "/log" );
 	$file = $log_path . "/" . VmConfig::$logFileName . VmConfig::LOGFILEEXT;
 
-	if (!class_exists ('Permissions')) {
-		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-	}
-	if(Permissions::getInstance()->check('admin')){
-		$show_error_msg = TRUE;
-	} else {
-		$show_error_msg = FALSE;
-	}
-
 	if (!is_dir($log_path)) {
 		jimport('joomla.filesystem.folder');
 		if (!JFolder::create($log_path)) {
-			if ($show_error_msg){
+			if (VmConfig::$echoAdmin){
 				$msg = 'Could not create path ' . $log_path . ' to store log information. Check your folder ' . $log_path . ' permissions.';
 				$app = JFactory::getApplication();
 				$app->enqueueMessage($msg, 'error');
@@ -391,7 +378,7 @@ function logInfo ($text, $type = 'message') {
 		}
 	}
 	if (!is_writable($log_path)) {
-		if ($show_error_msg){
+		if (VmConfig::$echoAdmin){
 			$msg = 'Path ' . $log_path . ' to store log information is not writable. Check your folder ' . $log_path . ' permissions.';
 			$app = JFactory::getApplication();
 			$app->enqueueMessage($msg, 'error');
@@ -425,7 +412,7 @@ function logInfo ($text, $type = 'message') {
 			fwrite ($fp,  " ".strtoupper($type) . ' ' . $text);
 			fclose ($fp);
 		} else {
-			if ($show_error_msg){
+			if (VmConfig::$echoAdmin){
 				$msg = 'Could not write in file  ' . $file . ' to store log information. Check your file ' . $file . ' permissions.';
 				$app = JFactory::getApplication();
 				$app->enqueueMessage($msg, 'error');
@@ -463,8 +450,10 @@ class VmConfig {
 	public static $echoDebug = FALSE;
 	public static $logDebug = FALSE;
 	public static $logFileName = 'com_virtuemart';
+	public static $echoAdmin = FALSE;
 	const LOGFILEEXT = '.log.php';
 
+	private static $_virtuemart_vendor_id = null;
 	public static $vmlang = false;
 	public static $vmlangTag = '';
 	public static $langs = array();
@@ -479,7 +468,7 @@ class VmConfig {
 			mb_regex_encoding('UTF-8');
 			mb_internal_encoding('UTF-8');
 		}
-
+		self::echoAdmin();
 		ini_set('precision', 15);	//We need at least 20 for correct precision if json is using a bigInt ids
 		//But 15 has the best precision, using higher precision adds fantasy numbers to the end, but creates also errors in rounding
 	}
@@ -492,19 +481,30 @@ class VmConfig {
 		self::$_starttime[$name] = $value;
 	}
 
+	static function echoAdmin(){
+
+		if(self::$echoAdmin===FALSE){
+			$user = JFactory::getUser();
+			if($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart')){
+				self::$echoAdmin = true;
+			} else {
+				self::$echoAdmin = false;
+			}
+		}
+
+	}
+
 	static function showDebug(){
 
 		//return self::$_debug = true;	//this is only needed, when you want to debug THIS file
 		if(self::$_debug===NULL){
 
-			$debug = 'all'; VmConfig::get('debug_enable','none');
+			$debug = VmConfig::get('debug_enable','none');
 
 			// 1 show debug only to admins
 			if($debug === 'admin' ){
-				if (!class_exists ('Permissions')) {
-					require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-				}
-				if(Permissions::getInstance()->check('admin')){
+
+				if(VmConfig::$echoAdmin){
 					self::$_debug = TRUE;
 				} else {
 					self::$_debug = FALSE;
@@ -631,7 +631,7 @@ class VmConfig {
 		vmSetStartTime('loadConfig');
 		if(!$force){
 			if(!empty(self::$_jpConfig) && !empty(self::$_jpConfig->_params)){
-
+				//vmTime('time to load config','loadConfig');
 				return self::$_jpConfig;
 			}
 		}
@@ -640,46 +640,56 @@ class VmConfig {
 
 		if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'config.php');
 		$configTable  = VirtueMartModelConfig::checkConfigTableExists();
+		if(empty($configTable)){
+			VirtueMartModelConfig::installVMconfigTable();
+		}
 
 		$db = JFactory::getDBO();
 
-		if(empty($configTable)){
-			self::$_jpConfig->installVMconfig();
-		}
-
 		$app = JFactory::getApplication();
-		$install = 'no';
+
+		$store = false;
 		if(empty(self::$_jpConfig->_raw)){
+
 			$query = ' SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1";';
 			$db->setQuery($query);
 			self::$_jpConfig->_raw = $db->loadResult();
+
 			if(empty(self::$_jpConfig->_raw)){
-				if(self::installVMconfig()){
-					$install = 'yes';
-					$db->setQuery($query);
-					self::$_jpConfig->_raw = $db->loadResult();
-					self::$_jpConfig->_params = NULL;
-				} else {
-					$app ->enqueueMessage('Error loading configuration file','Error loading configuration file, please contact the storeowner');
+				$_value = VirtueMartModelConfig::readConfigFile(FALSE);
+				if (!$_value) {
+					vmError('Serious error, config file could not be filled with data');
+					return FALSE;
 				}
+				$_value = join('|', $_value);
+				VmConfig::$_jpConfig->_raw = $_value;
+				$store = true;
 			}
 		}
 
-		$i = 0;
-
-		$pair = array();
 		if (!empty(self::$_jpConfig->_raw)) {
 
-			self::setParams(self::$_jpConfig->_raw);
+			VmConfig::$_jpConfig->setParams(VmConfig::$_jpConfig->_raw);
 
+			if($store){
+				$confData = array();
+				$confData['virtuemart_config_id'] = 1;
+				$confData['config'] = VmConfig::$_jpConfig->toString();
+
+				$confTable = JTable::getInstance('configs', 'Table', array());
+				//$confTable = $this->getTable('configs');
+				//vmdebug('storing config entry ',$confTable);
+				if (!$confTable->bindChecknStore($confData)) {
+					vmError($confTable->getError());
+				}
+			}
 			self::$_jpConfig->set('sctime',microtime(TRUE));
 			self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
 
-			vmTime('loadConfig db '.$install,'loadConfig');
+			vmTime('time to load config','loadConfig');
 
 			return self::$_jpConfig;
 		}
-
 
 		$app ->enqueueMessage('Attention config is empty');
 		return self::$_jpConfig;
@@ -779,10 +789,7 @@ class VmConfig {
 			self::loadConfig();
 		}
 
-		if (!class_exists ('Permissions')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-		}
-		if(Permissions::getInstance()->check('admin')){
+		if($admin = JFactory::getUser()->authorise('core.admin', 'com_virtuemart')){
 			if (!empty(self::$_jpConfig->_params)) {
 				self::$_jpConfig->_params[$key] = $value;
 			}
@@ -827,34 +834,7 @@ class VmConfig {
 
 		}
 
-// 			$pair['sctime'] = microtime(true);
 		self::$_jpConfig->_params = $pair;
-
-		//remove old params
-		unset(self::$_jpConfig->_params['hidemainmenu']);
-		unset(self::$_jpConfig->_params['pdf_invoice']); // parameter remove and replaced by inv_os
-		unset(self::$_jpConfig->_params['list_limit']);
-		unset(self::$_jpConfig->_params['pagination_sequence']);
-
-/*		if (!class_exists ('Permissions')) {
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-		}
-		unset($this->_params['replace']);
-		if(Permissions::getInstance()->check('admin')){
-			//The idea with the merge was that 3rd party use the config to store stuff there,
-			//But we doubt that anyone does it, because the vm team itself never uses it.
-			//To avoid errors like unserialize hidemainmenu b:0;, we just replace now the config with the data,
-			//Hmm does not work, because people may use config values, not in the config form
-			unset($this->_params['hidemainmenu']);
-			unset($this->_params['pdf_invoice']); // parameter remove and replaced by inv_os
-			unset($this->_params['list_limit']);
-			unset($this->_params['pagination_sequence']);
-			if($replace){
-				self::$_jpConfig->_params = $params;
-			} else {
-				self::$_jpConfig->_params = array_merge($this->_params,$params);
-			}
-		}*/
 
 	}
 
@@ -905,161 +885,40 @@ class VmConfig {
 		return (strpos(JVERSION,'1.5') === 0);
 	}
 
-
-	function getCreateConfigTableQuery(){
-
-		return "CREATE TABLE IF NOT EXISTS `#__virtuemart_configs` (
-  `virtuemart_config_id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
-  `config` text,
-  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT 0,
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) NOT NULL DEFAULT 0,
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_config_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Holds configuration settings' AUTO_INCREMENT=1 ;";
-	}
-
 	/**
-	 * Read the file vm_config.dat from the install directory, compose the SQL to write
-	 * the config record and store it to the dabase.
+	 * Checks if user is admin or has vendorId=1,
+	 * if superadmin, but not a vendor it gives back vendorId=1 (single vendor, but multiuser administrated)
 	 *
-	 * @param $_section Section from the virtuemart_defaults.cfg file to be parsed. Currently, only 'config' is implemented
-	 * @return Boolean; true on success, false otherwise
-	 * @author Oscar van Eijk
-	 */
-	public function installVMconfig($_section = 'config'){
-
-		$_value = self::readConfigFile(FALSE);
-
-		if (!$_value) {
-			return FALSE;
-		}
-
-		$qry = self::$_jpConfig->getCreateConfigTableQuery();
-		$_db = JFactory::getDBO();
-		$_db->setQuery($qry);
-		$_db->execute();
-
-		$query = 'SELECT `virtuemart_config_id` FROM `#__virtuemart_configs`
-						 WHERE `virtuemart_config_id` = 1';
-		$_db->setQuery( $query );
-		if ($_db->execute()){
-			$qry = 'DELETE FROM `#__virtuemart_configs` WHERE `virtuemart_config_id`=1';
-			$_db->setQuery($qry);
-			$_db->execute();
-		}
-
-
-		$_value = join('|', $_value);
-		$qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES ('1', '$_value')";
-
-		self::$_jpConfig->_raw = $_value;
-
-		$_db->setQuery($qry);
-		if (!$_db->execute()) {
-			JError::raiseWarning(1, 'VmConfig::installVMConfig: '.vmText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE));
-			echo 'VmConfig::installVMConfig: '.vmText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE);
-			die;
-		}else {
-			//vmdebug('Config installed file, store values '.$_value);
-			return TRUE;
-		}
-
-	}
-
-	/**
-	 * We should this move out of this file, because it is usually only used one time in a shop life
-	 * @author Oscar van Eijk
+	 * @author Mattheo Vicini
 	 * @author Max Milbers
 	 */
-	static function readConfigFile($returnDangerousTools){
+	static public function isSuperVendor(){
 
-		$_datafile = JPATH_VM_ADMINISTRATOR.DS.'virtuemart.cfg';
-		if (!file_exists($_datafile)) {
-			if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'virtuemart_defaults.cfg-dist')) {
-				if (!class_exists ('JFile')) {
-					require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
+		if(self::$_virtuemart_vendor_id===null){
+			$user = JFactory::getUser();
+
+			if(!empty( $user->id)){
+				$q='SELECT `virtuemart_vendor_id` FROM `#__virtuemart_vmusers` `au`
+				WHERE `au`.`virtuemart_user_id`="' .$user->id.'" AND `au`.`user_is_vendor` = "1" ';
+
+				$db= JFactory::getDbo();
+				$db->setQuery($q);
+				$virtuemart_vendor_id = $db->loadResult();
+
+				if ($virtuemart_vendor_id) {
+					self::$_virtuemart_vendor_id = $virtuemart_vendor_id;
+				} else {
+					if($user->authorise('core.admin', 'com_virtuemart') or $user->authorise('core.manage', 'com_virtuemart') ){
+						self::$_virtuemart_vendor_id = 1;
+					}
 				}
-				JFile::copy('virtuemart_defaults.cfg-dist','virtuemart.cfg',JPATH_VM_ADMINISTRATOR);
 			} else {
-				JError::raiseWarning(500, 'The data file with the default configuration could not be found. You must configure the shop manually.');
-				return FALSE;
-			}
-
-		} else {
-			vmInfo('Taking config from file');
-			//vmTrace('read config file, why?',TRUE);
-		}
-
-		$_section = '[CONFIG]';
-		$_data = fopen($_datafile, 'r');
-		$_configData = array();
-		$_switch = FALSE;
-		while ($_line = fgets ($_data)) {
-			$_line = trim($_line);
-
-			if (strpos($_line, '#') === 0) {
-				continue; // Commentline
-			}
-			if ($_line == '') {
-				continue; // Empty line
-			}
-			if (strpos($_line, '[') === 0) {
-				// New section, check if it's what we want
-				if (strtoupper($_line) == $_section) {
-					$_switch = TRUE; // Ok, right section
-				} else {
-					$_switch = FALSE;
-				}
-				continue;
-			}
-			if (!$_switch) {
-				continue; // Outside a section or inside the wrong one.
-			}
-
-			if (strpos($_line, '=') !== FALSE) {
-
-				$pair = explode('=',$_line);
-				if(isset($pair[1])){
-					if(strpos($pair[1], 'array:') !== FALSE){
-						$pair[1] = substr($pair[1],6);
-						$pair[1] = explode('|',$pair[1]);
-					}
-					// if($pair[0]!=='offline_message' && $pair[0]!=='dateformat'){
-					if($pair[0]!=='offline_message'){
-						$_line = $pair[0].'='.serialize($pair[1]);
-					} else {
-						$_line = $pair[0].'='.base64_encode(serialize($pair[1]));
-					}
-
-					if($returnDangerousTools && $pair[0] == 'dangeroustools' ){
-						vmdebug('dangeroustools'.$pair[1]);
-						if ($pair[1] == "0") {
-							return FALSE;
-						}
-						else {
-							return TRUE;
-						}
-					}
-
-				} else {
-					$_line = $pair[0].'=';
-				}
-				$_configData[] = $_line;
-
+				self::$_virtuemart_vendor_id = 0;
 			}
 
 		}
+		return self::$_virtuemart_vendor_id;
 
-		fclose ($_data);
-
-		if (!$_configData) {
-			return FALSE; // Nothing to do
-		} else {
-			return $_configData;
-		}
 	}
 
 }

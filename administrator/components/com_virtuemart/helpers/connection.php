@@ -175,7 +175,7 @@ class VmConnector {
 	    }
 	    if(!$fp) {
 			//error tell us
-			JError::raiseWarning(1, 'Possible server error! - '.$errstr .'('.$errno.')\n' );
+			vmWarn( 'Possible server error! - '.$errstr .'('.$errno.')\n' );
 			return false;
 	    }
 	    else {
@@ -227,7 +227,7 @@ class VmConnector {
 
 	    // If didnt get content-lenght, something is wrong, return false.
 	    if ( trim($data) == '' ) {
-			JError::raiseWarning(E_WARNING,'An error occured while communicating with the server '.$urlParts['host'].'. It didn\'t reply (correctly). Please try again later, thank you.' );
+			vmWarn('An error occured while communicating with the server '.$urlParts['host'].'. It didn\'t reply (correctly). Please try again later, thank you.' );
 			return false;
 	    }
 	    $result = trim( $data );

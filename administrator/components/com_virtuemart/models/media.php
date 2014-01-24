@@ -217,8 +217,8 @@ class VirtueMartModelMedia extends VmModel {
 			$mainTable = '`#__virtuemart_medias`';
 			$selectFields[] = ' `virtuemart_media_id` ';
 
-			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-			if(!Permissions::getInstance()->check('admin') ){
+			$user = JFactory::getUser();
+			if($user->authorise('core.admin','com_virtuemart')){
 				$whereItems[] = '(`virtuemart_vendor_id` = "'.(int)$vendorId.'" OR `shared`="1")';
 			}
 

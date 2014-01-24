@@ -58,8 +58,8 @@ class VirtuemartControllerProduct extends VmController {
 
 		$data = VmRequest::getRequest();
 
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		if(Permissions::getInstance()->check('admin')){
+		$user = JFactory::getUser();
+		if(!($user->authorise('core.admin','com_virtuemart') or $user->authorise('core.manage','com_virtuemart'))){
 			$data['product_desc'] = VmRequest::get('product_desc','');
 			$data['product_s_desc'] = VmRequest::get('product_s_desc','');
 			$data['customtitle'] = VmRequest::get('customtitle','');

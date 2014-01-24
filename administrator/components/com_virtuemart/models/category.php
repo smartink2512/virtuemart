@@ -287,8 +287,8 @@ class VirtueMartModelCategory extends VmModel {
 			$where[] = ' cx.`category_child_id` = '. (int)$childId;
 		}
 
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		if( !Permissions::getInstance()->check('admin') ){
+		$user = JFactory::getUser();
+		if($user->authorise('core.admin','com_virtuemart')){
 			$where[] = ' (c.`virtuemart_vendor_id` = "'. (int)$vendorId. '" OR c.`shared` = "1") ';
 		}
 

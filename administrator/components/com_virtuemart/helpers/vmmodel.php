@@ -455,7 +455,7 @@ class VmModel extends JObject {
 
 				if (!class_exists($modelClass))
 				{
-					JError::raiseWarning(0, vmText::sprintf('JLIB_APPLICATION_ERROR_MODELCLASS_NOT_FOUND', $modelClass));
+					vmWarn(vmText::sprintf('JLIB_APPLICATION_ERROR_MODELCLASS_NOT_FOUND', $modelClass));
 					return false;
 				}
 			}
@@ -534,7 +534,7 @@ class VmModel extends JObject {
 					require( $modelPath );
 				}
 				else{
-					JError::raiseWarning( 0, 'Model '. $name .' not found.' );
+					vmWarn( 'Model '. $name .' not found.' );
 					echo 'File for Model '. $name .' not found.';
 					return false;
 				}

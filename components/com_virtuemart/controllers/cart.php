@@ -75,6 +75,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		vmdebug('checkout my post, get and so on',$_POST,$_GET);
 
 		$cart = VirtueMartCart::getCart();
+		$cart->fromCart = true;
 		$cart->getFilterCustomerComment();
 		$cart->tosAccepted = VmRequest::getInt('tosAccepted', $cart->tosAccepted);
 
@@ -87,7 +88,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$virtuemart_paymentmethod_id = VmRequest::getInt('virtuemart_paymentmethod_id', 0);
 		$cart->setPaymentMethod($virtuemart_paymentmethod_id);
 
-
 		if($cart && !VmConfig::get('use_as_catalog', 0)){
 			if (isset($_POST['checkout'])) {
 				$cart->checkout();
@@ -95,10 +95,12 @@ class VirtueMartControllerCart extends JControllerLegacy {
 				$cart->confirmDone();
 				$view = $this->getView('cart', 'html');
 				$view->setLayout('order_done');
+				$cart->fromCart = false;
 				$view->display();
 				return true;
 			}
 		}
+		$cart->fromCart = false;
 		//$this->display();
 		$view->display();
 
@@ -302,16 +304,16 @@ class VirtueMartControllerCart extends JControllerLegacy {
 	public function changeShopper() {
 		JSession::checkToken () or jexit ('Invalid Token');
 
-		//check for permissions
-		if(!JFactory::getUser(JFactory::getSession()->get('vmAdminID'))->authorise('core.admin', 'com_virtuemart') || !VmConfig::get ('oncheckout_change_shopper')){
-			$mainframe = JFactory::getApplication();
-			$mainframe->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $newUser->name .' ('.$newUser->username.')'), 'error');
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
-		}
-
 		//get data of current and new user
 		$usermodel = VmModel::getModel('user');
 		$user = $usermodel->getCurrentUser();
+		//check for permissions
+		if(!JFactory::getUser(JFactory::getSession()->get('vmAdminID'))->authorise('core.admin', 'com_virtuemart') || !VmConfig::get ('oncheckout_change_shopper')){
+			$mainframe = JFactory::getApplication();
+			$mainframe->enqueueMessage(vmText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $user->name .' ('.$user->username.')'), 'error');
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
+		}
+
 		$newUser = JFactory::getUser(VmRequest::getCmd('userID'));
 
 		//update session

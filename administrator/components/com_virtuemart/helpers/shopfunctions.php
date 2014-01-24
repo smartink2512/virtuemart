@@ -111,21 +111,19 @@ class ShopFunctions {
 
 			$vendorId = 1;
 
-			$q = 'SELECT `vendor_name` FROM #__virtuemart_vendors WHERE `virtuemart_vendor_id` = "' . (int)$vendorId . '" ';
+			$q = 'SELECT `vendor_name` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id` = "' . (int)$vendorId . '" ';
 			$db->setQuery ($q);
 			$vendor = $db->loadResult ();
 			$html = '<input type="text" size="14" name="vendor_name" class="inputbox" value="' . $vendor . '" readonly="">';
 		} else {
-			if (!class_exists ('Permissions')) {
-						require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-					}
-			if (!Permissions::getInstance ()->check ('admin')) {
+
+			if (!JFactory::getUser()->authorise('core.admin', 'com_virtuemart')) {
 				if (empty($vendorId)) {
 					$vendorId = 1;
 					//Dont delete this message, we need it later for multivendor
-					//JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the virtuemart_vendor_id to the logged Vendor');
+					//vmWarn('renderVendorList $vendorId is empty, please correct your used model to automatically set the virtuemart_vendor_id to the logged Vendor');
 				}
-				$q = 'SELECT `vendor_name` FROM #__virtuemart_vendors WHERE `virtuemart_vendor_id` = "' . (int)$vendorId . '" ';
+				$q = 'SELECT `vendor_name` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id` = "' . (int)$vendorId . '" ';
 				$db->setQuery ($q);
 				$vendor = $db->loadResult ();
 				$html = '<input type="text" size="14" name="vendor_name" class="inputbox" value="' . $vendor . '" readonly="">';
@@ -1253,6 +1251,8 @@ class ShopFunctions {
 		if(empty($safePath)){
 			$warn = 'COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET';
 		} else {
+			//jimport('joomla.filesystem.folder');
+			if(!class_exists('JFolder')) require_once(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 			$exists = JFolder::exists($safePath);
 			if(!$exists){
 				$warn = 'COM_VIRTUEMART_WARN_SAFE_PATH_WRONG';

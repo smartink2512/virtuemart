@@ -43,6 +43,6 @@ defined('_JEXEC') or die('Restricted access');
 	echo '<input type="hidden" name="virtuemart_userinfo_id" value="'.(int)$this->virtuemart_userinfo_id.'" />';
 }
 ?>
-<input type="hidden" name="task" value="<?php echo $this->fTask; // I remember, we removed that, but why?   ?>" />
+<input type="hidden" name="task" value="saveUser" />
 <input type="hidden" name="address_type" value="BT" />
 

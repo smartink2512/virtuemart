@@ -86,9 +86,8 @@ vmJsApi::jSite();
 
 // check for permission Only vendor and Admin can use VM2 BE
 // this makes trouble somehow, we need to check if the perm object works not too strict maybe
-if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-if(!Permissions::getInstance()->isSuperVendor()){
-// if(!Permissions::getInstance()->check('admin','storeowner')){
+
+if(!VmConfig::isSuperVendor()){
 	$app = JFactory::getApplication();
 	vmError( 'Access restricted to Vendor and Administrator only (you are admin and should not see this messsage?)','Access restricted to Vendors and Administrator only' );
 	$app->redirect('index.php');

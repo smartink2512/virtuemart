@@ -49,4 +49,5 @@ class VmView extends JViewLegacy{
 
 		return $result;
 	}
+
 }

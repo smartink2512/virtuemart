@@ -444,8 +444,7 @@ class VmTable extends JTable {
 
 			$pkey = $this->_pkey;
 			//Lets check if the user is admin or the mainvendor
-			if (!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-			$admin = Permissions::getInstance()->check('admin');
+			$admin = JFactory::getUser()->authorise('core.admin', 'com_virtuemart');
 			$adminSessionID = JFactory::getSession()->get('vmAdminID');
 			if ($admin || JFactory::getUser($adminSessionID)->authorise('core.admin', 'com_virtuemart')) {
 //				vmdebug('setLoggableFieldsForStore ', $this->created_on);
@@ -527,7 +526,7 @@ class VmTable extends JTable {
 		if ($this->_translatable) {
 			$mainTable = $this->_tbl . '_' . $this->_langTag;
 			$select = 'SELECT `' . $mainTable . '`.* ,`' . $this->_tbl . '`.* ';
-			$from = ' FROM `' . $mainTable . '` JOIN ' . $this->_tbl . ' using (`' . $this->_tbl_key . '`)';
+			$from = ' FROM `' . $mainTable . '` JOIN `' . $this->_tbl . '` using (`' . $this->_tbl_key . '`)';
 		} else {
 			$mainTable = $this->_tbl;
 			$select = 'SELECT `' . $mainTable . '`.* ';
@@ -544,7 +543,7 @@ class VmTable extends JTable {
 		//the cast to int here destroyed the query for keys like virtuemart_userinfo_id, so no cast on $oid
 		// 		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = "'.$oid.'"';
 		if ($andWhere === 0) $andWhere = '';
-		$query = $select . $from . ' WHERE ' . $mainTable . '.`' . $k . '` = "' . $oid . '" ' . $andWhere;
+		$query = $select . $from . ' WHERE `' . $mainTable . '`.`' . $k . '` = "' . $oid . '" ' . $andWhere;
 
 		if (!isset(self::$_query_cache[md5($query)])) {
 			$db = $this->getDBO();
@@ -745,17 +744,15 @@ class VmTable extends JTable {
 
 			$multix = Vmconfig::get('multix', 'none');
 			//Lets check if the user is admin or the mainvendor
-			if (!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-
 			$virtuemart_vendor_id = false;
 			if ($multix == 'none' and get_class($this) !== 'TableVmusers') {
 
 				$this->virtuemart_vendor_id = 1;
 				return true;
 			} else {
-
-				$loggedVendorId = Permissions::getInstance()->isSuperVendor();
-				$admin = Permissions::getInstance()->check('admin');
+				$loggedVendorId = VmConfig::isSuperVendor();
+				$user = JFactory::getUser();
+				$admin = $user->authorise('core.admin','com_virtuemart');
 
 				$tbl_key = $this->_tbl_key;
 				$className = get_class($this);

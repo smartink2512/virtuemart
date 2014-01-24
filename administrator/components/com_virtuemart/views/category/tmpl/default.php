@@ -68,14 +68,11 @@ AdminUIHelper::startAdminArea($this);
 			<th align="center" width="20px">
 				<?php echo $this->sort('c.published' , 'COM_VIRTUEMART_PUBLISHED') ?>
 			</th>
-			<?php if(Vmconfig::get('multix','none')!=='none'){
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-				if(Permissions::getInstance()->check('admin') ){ ?>
+			<?php if($this->showVendors()){ ?>
 					<th width="20px">
 					<?php echo $this->sort( 'cx.category_shared' , 'COM_VIRTUEMART_SHARED') ?>
 					</th>
-			<?php }
-			}?>
+			<?php } ?>
 
 			<th><?php echo $this->sort('virtuemart_category_id', 'COM_VIRTUEMART_ID')  ?></th>
 			<!--th></th-->

@@ -55,7 +55,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$update = false;
 			$this->_db = JFactory::getDBO();
-			$q = 'SHOW TABLES LIKE "#__virtuemart_adminmenuentries"'; //=>jos_virtuemart_shipment_plg_weight_countries
+			$q = 'SHOW TABLES LIKE "'.$this->_db->getPrefix().'virtuemart_adminmenuentries"'; //=>jos_virtuemart_shipment_plg_weight_countries
 			$this->_db->setQuery($q);
 			if($this->_db->loadResult()){
 
@@ -117,6 +117,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if($this->checkIfUpdate()){
 				return $this->update($loadVm);
 			}
+
+			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+			if(!class_exists('JFolder')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 
 			$this -> joomlaSessionDBToMediumText();
 
@@ -185,7 +188,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 *
 		 */
 		public function createIndexFolder($path){
-			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+
 			if(JFolder::create($path)) {
 				if(!JFile::exists($path .DS. 'index.html')){
 					JFile::copy(JPATH_ROOT.DS.'components'.DS.'index.html', $path .DS. 'index.html');
@@ -210,6 +213,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				return $this->install($loadVm);
 			}
 
+			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+			if(!class_exists('JFolder')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 
 			//Delete Cache
 			$cache = JFactory::getCache();
@@ -274,34 +279,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->fixOrdersVendorId();
 
-			$this->fixConfigValues();
 			$this->migrateCustoms();
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
-		}
-
-		private function fixConfigValues(){
-			if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
-			VmConfig::loadConfig();
-
-			$data = array();
-			$list_limit = VmConfig::get('list_limit',0);
-			if(!empty($list_limit)){
-				$data['llimit_init_BE'] = $list_limit;
-				$data['llimit_init_FE'] = $list_limit;
-			}
-			$pagseq = VmConfig::get('pagination_sequence',0);
-			if(!empty($pagseq)){
-				$data['pagseq'] = $pagseq;
-				$data['pagseq_1'] = $pagseq;
-				$data['pagseq_2'] = $pagseq;
-				$data['pagseq_3'] = $pagseq;
-				$data['pagseq_4'] = $pagseq;
-				$data['pagseq_5'] = $pagseq;
-			}
-			$configModel = VmModel::getModel('config');
-			$configModel->store($data);
 		}
 
 		private function fixOrdersVendorId(){
@@ -703,6 +684,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			}
 
+			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 			//Test if vm1.1 is installed and rename file to avoid conflicts
 			if(JFile::exists(JPATH_VM_ADMINISTRATOR.DS.'toolbar.php')){
 				JFile::move('toolbar.php','toolbar.vm1.php',JPATH_VM_ADMINISTRATOR);
