@@ -856,11 +856,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$vmInstall->postflight($method);
 		}
 
-		/*		if ((JVM_VERSION===1)) {
-			$method = ($upgrade) ? 'update' : 'install';
-		$vmInstall->$method();
-		$vmInstall->postflight($method);
-		}*/
 
 		return true;
 	}
@@ -881,11 +876,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$vmInstall->uninstall();
 			$vmInstall->postflight('uninstall');
 		}
-
-		/*		if (JVM_VERSION===1) {
-			$vmInstall->uninstall();
-		$vmInstall->postflight('uninstall');
-		}*/
 
 		return true;
 	}

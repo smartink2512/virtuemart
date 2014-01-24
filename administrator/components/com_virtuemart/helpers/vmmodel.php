@@ -1143,11 +1143,8 @@ class VmPagination extends JPagination {
 				$limits[$this->limit] = JHtml::_('select.option', $this->limit);
 				ksort($limits);
 			}
-			$namespace = '';
-			if (JVM_VERSION!==1) {
-				$namespace = 'Joomla.';
-			}
 
+			$namespace = 'Joomla.';
 			$html = JHtml::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="'.$namespace.'submitform();"', 'value', 'text', $selected);
 		} else {
 

@@ -240,11 +240,9 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 		$view->addTemplatePath( JPATH_VM_SITE.DS.'views'.DS.$viewName.DS.'tmpl' );
 		$vmtemplate = VmConfig::get('vmtemplate',0);
 		if(!empty($vmtemplate) and $vmtemplate=='default'){
-			if(JVM_VERSION == 2){
-				$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
-			} else {
-				$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id`="0" AND `menuid`="0"';
-			}
+
+			$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
+
 			$db = JFactory::getDbo();
 			$db->setQuery($q);
 			$templateName = $db->loadResult();

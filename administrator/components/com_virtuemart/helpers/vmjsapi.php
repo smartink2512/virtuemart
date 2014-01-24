@@ -408,11 +408,6 @@ class vmJsApi{
 		$jsDateFormat = str_replace($search, $replace, $dateFormat);
 
 		if ($date) {
-			if ( JVM_VERSION===1) {
-				$search  = array('m', 'd', 'y');
-				$replace = array('%m', '%d', '%y');
-				$dateFormat = str_replace($search, $replace, $dateFormat);
-			}
 			$formatedDate = JHtml::_('date', $date, $dateFormat );
 		}
 		else {
@@ -485,12 +480,9 @@ class vmJsApi{
 		If ($joomla) {
 			$formatedDate = JHtml::_('date', $date, vmText::_('DATE_FORMAT_'.$format));
 		} else {
-			if (!JVM_VERSION === 1) {
-				$J16 = "_J16";
-			}
-			else {
-				$J16 = "";
-			}
+
+			$J16 = "_J16";
+
 			$formatedDate = JHtml::_('date', $date, vmText::_('COM_VIRTUEMART_DATE_FORMAT_'.$format.$J16));
 		}
 		return $formatedDate;

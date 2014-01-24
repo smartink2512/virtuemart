@@ -34,13 +34,9 @@ class VirtuemartViewUserfields extends VmView {
 		$db = JFactory::getDBO();
 		if ( $field = VmRequest::getVar('field') ) {
 			if (strpos($field, 'plugin') !==false) {
-				if (JVM_VERSION===1) {
-					$table = '#__plugins';
-					//$ext_id = 'id';
-				} else {
-					$table = '#__extensions';
-					//$ext_id = 'extension_id';
-				}
+
+				$table = '#__extensions';
+
 				$field = substr($field, 6);
 				$q = 'SELECT `params`,`element` FROM `' . $table . '` WHERE `element` = "'.$field.'"';
 				$db ->setQuery($q);

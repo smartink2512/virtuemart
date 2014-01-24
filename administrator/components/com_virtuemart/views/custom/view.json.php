@@ -50,13 +50,10 @@ class VirtuemartViewCustom extends JView {
 			}
 		}
 		elseif ( $custom_jplugin_id = VmRequest::getInt('custom_jplugin_id') ) {
-			if (JVM_VERSION===1) {
-				$table = '#__plugins';
-				$ext_id = 'id';
-			} else {
-				$table = '#__extensions';
-				$ext_id = 'extension_id';
-			}
+
+			$table = '#__extensions';
+			$ext_id = 'extension_id';
+
 			$q = 'SELECT `params`,`element` FROM `' . $table . '` WHERE `' . $ext_id . '` = "'.$custom_jplugin_id.'"';
 			$db ->setQuery($q);
 			$this->plugin = $db ->loadObject();

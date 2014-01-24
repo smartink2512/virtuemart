@@ -259,13 +259,9 @@ class VirtuemartViewUserfields extends VmView {
 	{
 		$db = JFactory::getDBO();
 
-		if (JVM_VERSION===1) {
-			$table = '#__plugins';
-			$jelement = 'element';
-		} else {
-			$table = '#__extensions';
-			$jelement = 'element';
-		}
+		$table = '#__extensions';
+		$jelement = 'element';
+
 		$q = 'SELECT `params`,`element` FROM `' . $table . '` WHERE `' . $jelement . '` = "'.$element.'"';
 		$db ->setQuery($q);
 		$this->plugin = $db ->loadObject();
@@ -283,15 +279,10 @@ class VirtuemartViewUserfields extends VmView {
 
 	function renderInstalledUserfieldPlugins(&$plugins){
 
-		if ( JVM_VERSION===1) {
-			$table = '#__plugins';
-			$ext_id = 'id';
-			$enable = 'published';
-		} else {
-			$table = '#__extensions';
-			$ext_id = 'extension_id';
-			$enable = 'enabled';
-		}
+
+		$table = '#__extensions';
+		$ext_id = 'extension_id';
+		$enable = 'enabled';
 
 		$db = JFactory::getDBO();
  		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmuserfield" AND `'.$enable.'`="1" ';

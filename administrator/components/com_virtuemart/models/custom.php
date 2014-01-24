@@ -283,14 +283,9 @@ class VirtueMartModelCustom extends VmModel {
 			$data['virtuemart_vendor_id'] = (int) $data['virtuemart_vendor_id'];
 		}
 
-		// missing string FIX, Bad way ?
-		if (JVM_VERSION===1) {
-			$tb = '#__plugins';
-			$ext_id = 'id';
-		} else {
-			$tb = '#__extensions';
-			$ext_id = 'extension_id';
-		}
+		$tb = '#__extensions';
+		$ext_id = 'extension_id';
+
 		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['custom_jplugin_id'].'"';
 		$db = JFactory::getDBO();
 		$db->setQuery($q);

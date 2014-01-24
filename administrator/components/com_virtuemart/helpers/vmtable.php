@@ -337,11 +337,8 @@ class VmTable extends JTable {
 		if (self::$_cache === null) {
 			// Lookup the fields for this table only once.
 			$name = $this->_tbl;
-			if(JVM_VERSION===1){
-				$fields = $this->getTableColumns($name, false);
-			} else {
-				$fields = $this->_db->getTableColumns($name, false);
-			}
+
+			$fields = $this->_db->getTableColumns($name, false);
 
 			if (empty($fields)) {
 				$e = new JException(vmText::_('JLIB_DATABASE_ERROR_COLUMNS_NOT_FOUND'));
@@ -696,8 +693,7 @@ class VmTable extends JTable {
 
 			}
 
-			if (JVM_VERSION === 1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
-			else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
+			$this->$slugName = JApplication::stringURLSafe($this->$slugName);
 
 			$valid = $this->checkCreateUnique($checkTable, $slugName);
 			if (!$valid) {
@@ -1551,12 +1547,8 @@ class VmTable extends JTable {
 
 		$_check_act = strtoupper(substr($_act, 0, 3));
 		//Check if a column is there
-		$db = JFactory::getDbo();
-		if(JVM_VERSION===1){
-			$columns = $this->getTableColumns($this->_tbl);
-		} else {
-			$columns = $this->_db->getTableColumns($this->_tbl);
-		}
+
+		$columns = $this->_db->getTableColumns($this->_tbl);
 
 		$res = array_key_exists($_col, $columns);
 

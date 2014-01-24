@@ -202,25 +202,7 @@ class VmView extends JViewLegacy {
 		// javascript for cookies setting in case of press "APPLY"
 		$document = JFactory::getDocument();
 
-		if (JVM_VERSION===1) {
-			$j = "
-//<![CDATA[
-	function submitbutton(pressbutton) {
-
-		jQuery( '#media-dialog' ).remove();
-		var options = { path: '/', expires: 2}
-		if (pressbutton == 'apply') {
-			var idx = jQuery('#tabs li.current').index();
-			jQuery.cookie('vmapply', idx, options);
-		} else {
-			jQuery.cookie('vmapply', '0', options);
-		}
-		 submitform(pressbutton);
-	};
-//]]>
-	" ;
-		}
-		else $j = "
+		$j = "
 //<![CDATA[
 	Joomla.submitbutton=function(a){
 		var options = { path: '/', expires: 2}
@@ -472,9 +454,7 @@ class VmView extends JViewLegacy {
 			$action = $field ? vmText::_('COM_VIRTUEMART_DISABLE_ITEM') : vmText::_('COM_VIRTUEMART_ENABLE_ITEM');
 		}
 
-		if (JVM_VERSION>1) {
-			$img = 'admin/' . $img;
-		}
+		$img = 'admin/' . $img;
 
 		if ($untoggleable) {
 			$attribs='style="opacity: 0.6;"';
@@ -485,13 +465,10 @@ class VmView extends JViewLegacy {
 
 		if($untoggleable) return $image;
 
-		if (JVM_VERSION>1) {
-			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
+
+		return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
 				. $image .'</a>');
-		} else {
-			return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
-				.'<img src="images/'. $img .'" border="0" alt="'. $alt .'" /></a>');
-		}
+
 
 	}
 	function showhelp(){

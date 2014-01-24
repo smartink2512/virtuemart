@@ -17,7 +17,7 @@ defined('JPATH_BASE') or die();
  * http://virtuemart.net
  */
 
-if (JVM_VERSION === 2) {
+if (JVM_VERSION > 1) {
     if (!defined('JPATH_VMKLARNAPLUGIN'))
 	define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna');
     if (!defined('VMKLARNAPLUGINWEBROOT'))

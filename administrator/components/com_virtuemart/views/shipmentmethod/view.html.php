@@ -120,16 +120,10 @@ class VirtuemartViewShipmentmethod extends VmView {
 	{
 		$db = JFactory::getDBO();
 
-		if (JVM_VERSION===1) {
-			$table = '#__plugins';
-			$enable = 'published';
-			$ext_id = 'id';
-		}
-		else {
-			$table = '#__extensions';
-			$enable = 'enabled';
-			$ext_id = 'extension_id';
-		}
+		$table = '#__extensions';
+		$enable = 'enabled';
+		$ext_id = 'extension_id';
+
 		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmshipment" AND `state`="0" ORDER BY `ordering`,`name` ASC';
 		$db->setQuery($q);
 		$result = $db->loadAssocList($ext_id);

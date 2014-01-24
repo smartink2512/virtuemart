@@ -229,239 +229,6 @@ class VirtueMartModelUser extends VmModel {
 		return null;
 	}
 
-	/**
-	 * Functions belonging to get_groups_below_me Taken with correspondence from CommunityBuilder
-	 * adjusted to the our needs
-	 * @version $Id$
-	 * @package Community Builder
-	 * @subpackage cb.acl.php
-	 * @author Beat and mambojoe
-	 * @author Max Milbers
-	 * @copyright (C) Beat, www.joomlapolis.com
-	 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
-	 */
-
-	function get_object_id( $var_1 = null, $var_2 = null, $var_3 = null ) {
-		if ( JVM_VERSION > 1) {
-			$return		=	$var_2;
-		} else {
-			$return		=	$this->_acl->get_object_id( $var_1, $var_2, $var_3 );
-		}
-
-		return $return;
-	}
-
-	/**
-	 *  Taken with correspondence from CommunityBuilder
-	 * adjusted to the our needs
-	 * @version $Id$
-	 * @package Community Builder
-	 * @subpackage cb.acl.php
-	 * @author Beat and mambojoe
-	 * @author Max Milbers
-	 * @copyright (C) Beat, www.joomlapolis.com
-	 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
-	 */
-
-	function get_object_groups( $var_1 = null, $var_2 = null, $var_3 = null ) {
-		if ( version_compare(JVERSION,'1.6.0','ge') ) {
-			$user_id	=	( is_integer( $var_1 ) ? $var_1 : $var_2 );
-			$recurse	=	( $var_3 == 'RECURSE' ? true : false );
-			$return		=	$this->_acl->getGroupsByUser( $user_id, $recurse );
-		} else {
-			if ( ! $var_2 ) {
-				$var_2	=	'ARO';
-			}
-
-			if ( ! $var_3 ) {
-				$var_3	=	'NO_RECURSE';
-			}
-
-			$return		=	$this->_acl->get_object_groups( $var_1, $var_2, $var_3 );
-		}
-
-		return $return;
-	}
-
-	/**	 * Remap literal groups (such as in default values) to the hardcoded CMS values
-	 *
-	 * @param  string|array  $name  of int|string
-	 * @return int|array of int
-	 */
-	function mapGroupNamesToValues( $name ) {
-		static $ps						=	null;
-
-		$selected						=	(array) $name;
-		foreach ( $selected as $k => $v ) {
-			if ( ! is_numeric( $v ) ) {
-				if ( ! $ps ) {
-					if ( JVM_VERSION > 1 ) {
-						$ps				=	array( 'Root' => 0 , 'Users' => 0 , 'Public' =>  1, 'Registered' =>  2, 'Author' =>  3, 'Editor' =>  4, 'Publisher' =>  5, 'Backend' => 0 , 'Manager' =>  6, 'Administrator' =>  7, 'Superadministrator' =>  8 );
-					} else {
-						$ps				=	array( 'Root' => 17, 'Users' => 28, 'Public' => 29, 'Registered' => 18, 'Author' => 19, 'Editor' => 20, 'Publisher' => 21, 'Backend' => 30, 'Manager' => 23, 'Administrator' => 24, 'Superadministrator' => 25 );
-					}
-				}
-				if ( array_key_exists( $v, $ps ) ) {
-					if ( $ps[$v] != 0 ) {
-						$selected[$k]	=	$ps[$v];
-					} else {
-						unset( $selected[$k] );
-					}
-				} else {
-					$selected[$k]		=	(int) $v;
-				}
-			}
-		}
-		if ( ! is_array( $name ) ) {
-			$selected					=	$selected[0];
-		}
-		return $selected;
-	}
-
-	function get_group_children_tree( $var_1 = null, $var_2 = null, $var_3 = null, $var_4 = null ) {
-		$_CB_database = &$this->getDbo();
-
-		if ( ! $var_4 ) {
-			$var_4						=	true;
-		}
-
-		if ( JVM_VERSION > 1 ) {
-			$query						=	'SELECT a.' . $_CB_database->NameQuote( 'id' ) . ' AS value'
-			.	', a.' . $_CB_database->NameQuote( 'title' ) . ' AS text'
-			.	', COUNT( DISTINCT b.' . $_CB_database->NameQuote( 'id' ) . ' ) AS level'
-			.	"\n FROM " . $_CB_database->NameQuote( '#__usergroups' ) . " AS a"
-			.	"\n LEFT JOIN " . $_CB_database->NameQuote( '#__usergroups' ) . " AS b"
-			.	' ON a.' . $_CB_database->NameQuote( 'lft' ) . ' > b.' . $_CB_database->NameQuote( 'lft' )
-			.	' AND a.' . $_CB_database->NameQuote( 'rgt' ) . ' < b.' . $_CB_database->NameQuote( 'rgt' )
-			.	"\n GROUP BY a." . $_CB_database->NameQuote( 'id' )
-			.	"\n ORDER BY a." . $_CB_database->NameQuote( 'lft' ) . " ASC";
-			$_CB_database->setQuery( $query );
-			$groups						=	$_CB_database->loadObjectList();
-
-			$user_groups				=	array();
-
-			for ( $i = 0, $n = count( $groups ); $i < $n; $i++ ) {
-				$groups[$i]->text		=	str_repeat( '- ', $groups[$i]->level ) . vmText::_( $groups[$i]->text );
-
-				if ( $var_4 ) {
-					$user_groups[$i]	=	JHtml::_( 'select.option', $groups[$i]->value, $groups[$i]->text );
-				} else {
-					$user_groups[$i]	=	array( 'value' => $groups[$i]->value, 'text' => $groups[$i]->text );
-				}
-			}
-
-			$return						=	$user_groups;
-		} else {
-			if ( ! $var_3 ) {
-				$var_3					=	true;
-			}
-
-			$return						=	$this->_acl->get_group_children_tree( $var_1, $var_2, $var_3, $var_4 );
-		}
-
-		return $return;
-	}
-
-	/**
-	 * Return a list with groups that can be set by the current user
-	 *
-	 * @return mixed Array with groups that can be set, or the groupname (string) if it cannot be changed.
-	 */
-	function getGroupList()
-	{
-
-		if(JVM_VERSION > 1) {
-
-			//hm CB thing also not help
-			// 			$_grpList = $this->get_groups_below_me();
-			// 			return $_grpList;
-
-
-			/*			if(!class_exists('UsersModelUser')) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_users'.DS.'models'.DS.'user.php');
-			 $jUserModel = new UsersModelUser();
-			$list = $jUserModel->getGroups();
-
-			$user = JFactory::getUser();
-			if ($user->authorise('core.edit', 'com_users') && $user->authorise('core.manage', 'com_users'))
-			{
-			$model = VmModel::getInstance('Groups', 'UsersModel', array('ignore_request' => true));
-			return $model->getItems();
-			}
-			else
-			{
-			return null;
-			}*/
-			$user = JFactory::getUser();
-			$authGroups = JAccess::getGroupsByUser($user->id);
-			// 			$authGroups = $user->getAuthorisedGroups();
-			// 			vmdebug('getGroupList j17',$authGroups);
-
-			$db		= JFactory::getDbo();
-			$where = implode($authGroups,'" OR `id` = "').'"';
-			$q = 'SELECT `id` as value,`title` as text FROM #__usergroups WHERE `id` = "'.$where;
-
-			$db->setQuery($q);
-			$list = $db->loadAssocList();
-
-			// 			foreach($list as $item){
-			// 				vmdebug('getGroupList $item ',$item);
-			// 			}
-
-			// 			vmdebug('getGroupList $q '.$list);
-			return $list;
-		} else {
-
-			$_aclObject = JFactory::getACL();
-
-			if(empty($this->_data)) $this->getUser();
-
-			if (JVM_VERSION>1){
-				//TODO fix this latter. It's just an workarround to make it working on 1.6
-				$gids = $this->_data->JUser->get('groups');
-				return array_flip($gids);
-			}
-
-			$_usr = $_aclObject->get_object_id ('users', $this->_data->JUser->get('id'), 'ARO');
-			$_grp = $_aclObject->get_object_groups ($_usr, 'ARO');
-			$_grpName = strtolower ($_aclObject->get_group_name($_grp[0], 'ARO'));
-
-			$_currentUser = JFactory::getUser();
-			$_my_usr = $_aclObject->get_object_id ('users', $_currentUser->get('id'), 'ARO');
-			$_my_grp = $_aclObject->get_object_groups ($_my_usr, 'ARO');
-			$_my_grpName = strtolower ($_aclObject->get_group_name($_my_grp[0], 'ARO'));
-
-			// administrators can't change each other and frontend-only users can only see groupnames
-			if (( $_grpName == $_my_grpName && $_my_grpName == 'administrator' ) ||
-			!$_aclObject->is_group_child_of($_my_grpName, 'Public Backend')) {
-				return $_grpName;
-			} else {
-				$_grpList = $_aclObject->get_group_children_tree(null, 'USERS', false);
-
-				$_remGroups = $_aclObject->get_group_children( $_my_grp[0], 'ARO', 'RECURSE' );
-				if (!$_remGroups) {
-					$_remGroups = array();
-				}
-
-				// Make sure privs higher than my own can't be granted
-				if (in_array($_grp[0], $_remGroups)) {
-					// nor can privs of users with higher privs be decreased.
-					return $_grpName;
-				}
-				$_i = 0;
-				$_j = count($_grpList);
-				while ($_i <  $_j) {
-					if (in_array($_grpList[$_i]->value, $_remGroups)) {
-						array_splice( $_grpList, $_i, 1 );
-						$_j = count($_grpList);
-					} else {
-						$_i++;
-					}
-				}
-
-				return $_grpList;
-			}
-		}
-	}
 
 	/**
 	 * Bind the post data to the JUser object and the VM tables, then saves it
@@ -586,26 +353,16 @@ class VirtueMartModelUser extends VmModel {
 				vmError( vmText::_('COM_VIRTUEMART_ACCESS_FORBIDDEN'));
 				return;
 			}
-			$authorize	= JFactory::getACL();
-
 			// Initialize new usertype setting
 			$newUsertype = $usersConfig->get( 'new_usertype' );
 			if (!$newUsertype) {
-				if ( JVM_VERSION===1){
-					$newUsertype = 'Registered';
-
-				} else {
-					$newUsertype=2;
-				}
+				$newUsertype=2;
 			}
+
 			// Set some initial user values
 			$user->set('usertype', $newUsertype);
 
-			if ( JVM_VERSION===1){
-				$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
-			} else {
-				$user->groups[] = $newUsertype;
-			}
+			$user->groups[] = $newUsertype;
 
 			$date = JFactory::getDate();
 			$user->set('registerDate', $date->toSQL());
@@ -613,15 +370,10 @@ class VirtueMartModelUser extends VmModel {
 			// If user activation is turned on, we need to set the activation information
 			$useractivation = $usersConfig->get( 'useractivation' );
 			$doUserActivation=false;
-			if ( JVM_VERSION===1){
-				if ($useractivation == '1' ) {
-					$doUserActivation=true;
-				}
-			} else {
-				if ($useractivation == '1' or $useractivation == '2') {
-					$doUserActivation=true;
-				}
+			if ($useractivation == '1' or $useractivation == '2') {
+				$doUserActivation=true;
 			}
+
 			vmdebug('user',$useractivation , $doUserActivation);
 			if ($doUserActivation )
 			{
@@ -1247,13 +999,8 @@ class VirtueMartModelUser extends VmModel {
 
 		if ($doUserActivation) {
 			jimport('joomla.user.helper');
-			if(JVM_VERSION > 1) {
-				$com_users = 'com_users';
-				$activationLink = 'index.php?option='.$com_users.'&task=registration.activate&token='.$user->get('activation');
-			} else {
-				$com_users = 'com_user';
-				$activationLink = 'index.php?option='.$com_users.'&task=activate&activation='.$user->get('activation');
-			}
+			$activationLink = 'index.php?option=com_users&task=registration.activate&token='.$user->get('activation');
+
 			$vars['activationLink'] = $activationLink;
 		}
 		$vars['doVendor']=true;
@@ -1534,18 +1281,12 @@ function removeAddress($virtuemart_userinfo_id){
 	function getAclGroupIndentedTree(){
 
 		//TODO check this out
-		if (JVM_VERSION===1) {
-			$name = 'name';
-			$as = '` AS `title`';
-			$table = '#__core_acl_aro_groups';
-			$and = 'AND `parent`.`lft` > 2 ';
-		}
-		else {
-			$name = 'title';
-			$as = '`';
-			$table = '#__usergroups';
-			$and = '';
-		}
+
+		$name = 'title';
+		$as = '`';
+		$table = '#__usergroups';
+		$and = '';
+
 		//Ugly thing, produces Select_full_join
 		$query = 'SELECT `node`.`' . $name . $as . ', CONCAT(REPEAT("&nbsp;&nbsp;&nbsp;", (COUNT(`parent`.`' . $name . '`) - 1)), `node`.`' . $name . '`) AS `text` ';
 		$query .= 'FROM `' . $table . '` AS node, `' . $table . '` AS parent ';

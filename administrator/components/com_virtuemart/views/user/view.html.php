@@ -96,13 +96,6 @@ class VirtuemartViewUser extends VmView {
 
 			// User details
 			$_contactDetails = $model->getContactDetails();
-			$_groupList = $model->getGroupList();
-
-			if (!is_array($_groupList)) {
-				$this->lists['gid'] = '<input type="hidden" name="gid" value="'. $userDetails->JUser->get('gid') .'" /><strong>'. vmText::_($_groupList) .'</strong>';
-			} else {
-				$this->lists['gid'] 	= JHtml::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $userDetails->JUser->get('gid'));
-			}
 
 			$this->lists['canBlock'] = ($currentUser->authorise('com_users', 'block user')
 			&& ($userDetails->JUser->get('id') != $currentUser->get('id'))); // Can't block myself

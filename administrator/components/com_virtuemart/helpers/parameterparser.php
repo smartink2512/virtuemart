@@ -161,19 +161,11 @@ class vmParameters extends JParameter {
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_'.$pluginfolder.'_' . $element,JPATH_ADMINISTRATOR);
 
-		if (JVM_VERSION === 2) {
-			$path = JPATH_PLUGINS . DS . $pluginfolder . DS . basename($element). DS . basename($element) . '.xml';
-		} else {
-			$path = JPATH_PLUGINS . DS . $pluginfolder . DS . basename($element) . '.xml';
-		}
+		$path = JPATH_PLUGINS . DS . $pluginfolder . DS . basename($element). DS . basename($element) . '.xml';
+
 		parent::__construct($element, $path);
 		$this->_type = $type;
-		if (JVM_VERSION === 2) {
 
-		} else {
-
-		}
-// 		$this->_raw = $data;
 		$this->bind($data);
 	}
 

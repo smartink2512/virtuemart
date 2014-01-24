@@ -718,9 +718,8 @@ class vmrouterHelper {
 			$this->seo_translate = VmConfig::get('seo_translate', false);
 
 			$this->setLang();
-			//$this->setLangs($instanceKey);
-			if ( JVM_VERSION===1 ) $this->setMenuItemId();
-			else $this->setMenuItemIdJ17();
+
+			$this->setMenuItemId();
 			$this->setActiveMenu();
 			$this->use_id = VmConfig::get('seo_use_id', false);
 			$this->seo_sufix = VmConfig::get('seo_sufix', '-detail');
@@ -994,9 +993,12 @@ class vmrouterHelper {
 
 	}
 
+	private function setMenuItemIdJ17(){
+		return $this->setMenuItemId();
+	}
 
 	/* Set $this->menu with the Item ID from Joomla Menus */
-	private function setMenuItemIdJ17(){
+	private function setMenuItemId(){
 
 		$home 	= false ;
 		$component	= JComponentHelper::getComponent('com_virtuemart');
@@ -1076,38 +1078,6 @@ class vmrouterHelper {
 
 	}
 
-	/* Set $this->menu with the Item ID from Joomla Menus */
-	private function setMenuItemId(){
-
-		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu('site');
-		$component	= JComponentHelper::getComponent('com_virtuemart');
-		$items = $menus->getItems('componentid', $component->id);
-
-		if(empty($items)){
-			VmConfig::loadJLang('com_virtuemart', true);
-			vmWarn(vmText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
-		} else {
-			// Search  Virtuemart itemID in joomla menu
-			foreach ($items as $item)	{
-				$view = $item->query['view'] ;
-				if ($view=='virtuemart') $this->menu['virtuemart'] = $item->id;
-				$dbKey = $this->dbview[$view];
-				if ( isset($item->query['virtuemart_'.$dbKey.'_id']) )
-					$this->menu['virtuemart_'.$dbKey.'_id'][ $item->query['virtuemart_'.$dbKey.'_id'] ] = $item->id;
-				else $this->menu[$view]= $item->id ;
-			}
-		}
-
-		// init unsetted views  to defaut front view or nothing(prevent duplicates routes)
-		if ( !isset( $this->menu['virtuemart'][0]) ) {
-			$this->menu['virtuemart'][0] = null;
-		}
-		if ( !isset( $this->menu['manufacturer']) ) {
-			$this->menu['manufacturer'] = $this->menu['virtuemart'][0] ;
-		}
-
-	}
 	/* Set $this->activeMenu to current Item ID from Joomla Menus */
 	private function setActiveMenu(){
 		if ($this->activeMenu === null ) {

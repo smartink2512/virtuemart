@@ -24,13 +24,8 @@ $intervalTitle = VmRequest::getVar('intervals','day');
 if ( ($intervalTitle =='week') or ($intervalTitle =='month') ) $addDateInfo = true ;
 else $addDateInfo = false;
 
-// if( $this->pagination->limit < $rows ){
-	// if( ($this->pagination->limitstart + $this->pagination->limit) < $rows ) {
-		// $rows = $this->pagination->limitstart + $this->pagination->limit;
-	// }
-// }
-if ( JVM_VERSION == 2 )
-	JHtml::_('behavior.framework', true);
+JHtml::_('behavior.framework', true);
+
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
     <div id="header">

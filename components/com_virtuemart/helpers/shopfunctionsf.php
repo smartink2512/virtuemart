@@ -287,11 +287,9 @@ class shopFunctionsF {
 
 		$vmtemplate = VmConfig::get( 'vmtemplate', 'default' );
 		if($vmtemplate == 'default') {
-			if(JVM_VERSION == 2) {
-				$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
-			} else {
-				$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id`="0" AND `menuid`="0"';
-			}
+
+			$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
+
 			$db = JFactory::getDbo();
 			$db->setQuery( $q );
 			$template = $db->loadResult();
@@ -543,35 +541,26 @@ class shopFunctionsF {
 		if(!empty($template) && $template != 'default') {
 
 			$app = JFactory::getApplication( 'site' );
-			if(JVM_VERSION === 1){
-				if(is_dir( JPATH_THEMES.DS.$template )) {
-					$app->set( 'setTemplate', $template );
-				} else {
-					vmError( 'The chosen template couldnt find on the filesystem: '.$template );
-				}
 
+			$registry = null;
+			if(is_numeric($template)){
+				$db = JFactory::getDbo();
+				$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$template.'" ';
+				$db->setQuery($query);
+				$res = $db->loadAssoc();
+				if($res){
+					$registry = new JRegistry;
+					$registry->loadString($res['params']);
+					$template = $res['template'];
+				}
 			} else {
-
-				$registry = null;
-				if(is_numeric($template)){
-					$db = JFactory::getDbo();
-					$query = 'SELECT `template`,`params` FROM `#__template_styles` WHERE `id`="'.$template.'" ';
-					$db->setQuery($query);
-					$res = $db->loadAssoc();
-					if($res){
-						$registry = new JRegistry;
-						$registry->loadString($res['params']);
-						$template = $res['template'];
-					}
-				} else {
-					vmAdminInfo('Your template settings are old, please check your template settings in the vm config and in your categories');
-					vmdebug('Your template settings are old, please check your template settings in the vm config and in your categories');
-				}
-				if(is_dir( JPATH_THEMES.DS.$template )) {
-					$app->setTemplate($template,$registry);
-				} else {
-					vmError( 'The chosen template couldnt find on the filesystem: '.$template );
-				}
+				vmAdminInfo('Your template settings are old, please check your template settings in the vm config and in your categories');
+				vmdebug('Your template settings are old, please check your template settings in the vm config and in your categories');
+			}
+			if(is_dir( JPATH_THEMES.DS.$template )) {
+				$app->setTemplate($template,$registry);
+			} else {
+				vmError( 'The chosen template couldnt find on the filesystem: '.$template );
 			}
 		}
 
@@ -634,15 +623,6 @@ class shopFunctionsF {
 	}
 
 
-	static function getComUserOption () {
-
-		if(JVM_VERSION === 1) {
-			return 'com_user';
-		} else {
-			return 'com_users';
-		}
-	}
-
 	/**
 	 * Checks if Joomla language keys exist and combines it according to existing keys.
 	 * @string $pkey : primary string to search for Language key (must have %s in the string to work)
@@ -704,29 +684,23 @@ class shopFunctionsF {
 		JPluginHelper::importPlugin ('content');
 		$article->text = $article->$field;
 
-        if (JVM_VERSION > 1) {
-
-			jimport ('joomla.registry.registry');
-			$params = new JRegistry('');
-			if (!isset($article->event)) {
-				$article->event = new stdClass();
-			}
-			$results = $dispatcher->trigger ('onContentPrepare', array('com_virtuemart.'.$context, &$article, &$params, 0));
-			// More events for 3rd party content plugins
-			// This do not disturb actual plugins, because we don't modify $vendor->text
-			$res = $dispatcher->trigger ('onContentAfterTitle', array('com_virtuemart.'.$context, &$article, &$params, 0));
-			$article->event->afterDisplayTitle = trim (implode ("\n", $res));
-
-			$res = $dispatcher->trigger ('onContentBeforeDisplay', array('com_virtuemart.'.$context, &$article, &$params, 0));
-			$article->event->beforeDisplayContent = trim (implode ("\n", $res));
-
-			$res = $dispatcher->trigger ('onContentAfterDisplay', array('com_virtuemart.'.$context, &$article, &$params, 0));
-			$article->event->afterDisplayContent = trim (implode ("\n", $res));
-		} else {
-			jimport ('joomla.html.parameter');
-			$params = new JParameter('');
-			$results = $dispatcher->trigger ('onPrepareContent', array(& $article, & $params, 0));
+		jimport ('joomla.registry.registry');
+		$params = new JRegistry('');
+		if (!isset($article->event)) {
+			$article->event = new stdClass();
 		}
+		$results = $dispatcher->trigger ('onContentPrepare', array('com_virtuemart.'.$context, &$article, &$params, 0));
+		// More events for 3rd party content plugins
+		// This do not disturb actual plugins, because we don't modify $vendor->text
+		$res = $dispatcher->trigger ('onContentAfterTitle', array('com_virtuemart.'.$context, &$article, &$params, 0));
+		$article->event->afterDisplayTitle = trim (implode ("\n", $res));
+
+		$res = $dispatcher->trigger ('onContentBeforeDisplay', array('com_virtuemart.'.$context, &$article, &$params, 0));
+		$article->event->beforeDisplayContent = trim (implode ("\n", $res));
+
+		$res = $dispatcher->trigger ('onContentAfterDisplay', array('com_virtuemart.'.$context, &$article, &$params, 0));
+		$article->event->afterDisplayContent = trim (implode ("\n", $res));
+
 		$article->$field = $article->text;
 	}
 

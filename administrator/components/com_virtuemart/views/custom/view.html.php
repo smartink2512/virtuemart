@@ -98,16 +98,11 @@ class VirtuemartViewCustom extends VmView {
 	{
 		$db = JFactory::getDBO();
 
-		if (JVM_VERSION===1) {
-			$table = '#__plugins';
-			$enable = 'published';
-			$ext_id = 'id';
-		}
-		else {
-			$table = '#__extensions';
-			$enable = 'enabled';
-			$ext_id = 'extension_id';
-		}
+
+		$table = '#__extensions';
+		$enable = 'enabled';
+		$ext_id = 'extension_id';
+
 		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmcustom" AND `'.$enable.'`="1" ';
 		$db->setQuery($q);
 

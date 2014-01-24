@@ -26,8 +26,6 @@ if (!isset( $this->from_cart )) $this->from_cart = FALSE;
 if (!isset( $this->order )) $this->order = FALSE ;
 
 
-if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-$comUserOption=shopFunctionsF::getComUserOption();
 if (empty($this->url)){
 	$uri = JFactory::getURI();
 	$url = $uri->toString(array('path', 'query', 'fragment'));
@@ -130,17 +128,13 @@ JHtml::_ ( 'behavior.modal' );
 	</p>
 
         <p class="width30 floatleft" id="com-form-login-password">
-            <?php if ( JVM_VERSION===1 ) { ?>
-            <input type="password" id="passwd" name="passwd" class="inputbox" size="18" alt="<?php echo vmText::_('COM_VIRTUEMART_PASSWORD'); ?>" value="<?php echo vmText::_('COM_VIRTUEMART_PASSWORD'); ?>" onblur="if(this.value=='') this.value='<?php echo addslashes(vmText::_('COM_VIRTUEMART_PASSWORD')); ?>';" onfocus="if(this.value=='<?php echo addslashes(vmText::_('COM_VIRTUEMART_PASSWORD')); ?>') this.value='';" />
-            <?php } else { ?>
             <input id="modlgn-passwd" type="password" name="password" class="inputbox" size="18" alt="<?php echo vmText::_('COM_VIRTUEMART_PASSWORD'); ?>" value="<?php echo vmText::_('COM_VIRTUEMART_PASSWORD'); ?>" onblur="if(this.value=='') this.value='<?php echo addslashes(vmText::_('COM_VIRTUEMART_PASSWORD')); ?>';" onfocus="if(this.value=='<?php echo addslashes(vmText::_('COM_VIRTUEMART_PASSWORD')); ?>') this.value='';" />
-            <?php } ?>
 		</p>
 
         <p class="width30 floatleft" id="com-form-login-remember">
             <input type="submit" name="Submit" class="default" value="<?php echo vmText::_('COM_VIRTUEMART_LOGIN') ?>" />
             <?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
-            <label for="remember"><?php echo $remember_me = JVM_VERSION===1? vmText::_('Remember me') : vmText::_('JGLOBAL_REMEMBER_ME') ?></label>
+            <label for="remember"><?php echo $remember_me = vmText::_('JGLOBAL_REMEMBER_ME') ?></label>
             <input type="checkbox" id="remember" name="remember" class="inputbox" value="yes" alt="Remember Me" />
             <?php endif; ?>
         </p>
@@ -148,11 +142,11 @@ JHtml::_ ( 'behavior.modal' );
         <div class="clr"></div>
 
         <div class="width30 floatleft">
-            <a href="<?php echo JRoute::_('index.php?option='.$comUserOption.'&view=remind'); ?>" rel="nofollow">
+            <a href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>" rel="nofollow">
             <?php echo vmText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_USERNAME'); ?></a>
         </div>
         <div class="width30 floatleft">
-            <a href="<?php echo JRoute::_('index.php?option='.$comUserOption.'&view=reset'); ?>" rel="nofollow">
+            <a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>" rel="nofollow">
             <?php echo vmText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_PASSWORD'); ?></a>
         </div>
 
@@ -170,28 +164,21 @@ JHtml::_ ( 'behavior.modal' );
 
         <div class="clr"></div>
 
-
-        <?php if ( JVM_VERSION===1 ) { ?>
-        <input type="hidden" name="task" value="login" />
-        <?php } else { ?>
-	<input type="hidden" name="task" value="user.login" />
-        <?php } ?>
-        <input type="hidden" name="option" value="<?php echo $comUserOption ?>" />
+		<input type="hidden" name="task" value="user.login" />
+        <input type="hidden" name="option" value="com_users" />
         <input type="hidden" name="return" value="<?php echo base64_encode($url) ?>" />
         <?php echo JHtml::_('form.token'); ?>
     </form>
 
 <?php  } else if ( $user->id ) { ?>
 
-   <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="login" id="form-login">
+	<form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="login" id="form-login">
         <?php echo vmText::sprintf( 'COM_VIRTUEMART_HINAME', $user->name ); ?>
 	<input type="submit" name="Submit" class="button" value="<?php echo vmText::_( 'COM_VIRTUEMART_BUTTON_LOGOUT'); ?>" />
-        <input type="hidden" name="option" value="<?php echo $comUserOption ?>" />
-        <?php if ( JVM_VERSION===1 ) { ?>
-            <input type="hidden" name="task" value="logout" />
-        <?php } else { ?>
-            <input type="hidden" name="task" value="user.logout" />
-        <?php } ?>
+        <input type="hidden" name="option" value="com_users" />
+
+        <input type="hidden" name="task" value="user.logout" />
+
         <?php echo JHtml::_('form.token'); ?>
 	<input type="hidden" name="return" value="<?php echo base64_encode($url) ?>" />
     </form>

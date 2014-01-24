@@ -189,7 +189,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 				}*/
 
 				echo "<H3>Installing VirtueMart Plugins and modules Success.</h3>";
-				echo "<H3>You may directly uninstall this component. Your plugins will remain. But we advice to keep the AIO installer for updating</h3>";
+				echo "<H3>We advice to keep the AIO installer for updating</h3>";
 
 			} else {
 				echo "<H3>Updated VirtueMart Plugin tables</h3>";
@@ -354,7 +354,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 		function moneyBookersToSkrill() {
 			// check if there is one money bookers payment
 			$db = JFactory::getDBO();
-			$q = 'SELECT * FROM `#__virtuemart_paymentmethod` WHERE `payment_element` LIKE "moneybookers_%"  ';
+			$q = 'SELECT * FROM `#__virtuemart_paymentmethods` WHERE `payment_element` LIKE "moneybookers_%"  ';
 			$db->setQuery($q);
 			$moneybookersList = $db->loadObjectList();
 
@@ -398,7 +398,15 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 			if (class_exists ('VmConfig')) {
 				$pluginfilename = $dst . DS . $element . '.php';
-				require ($pluginfilename);
+
+				if(JFile::exists($pluginfilename)){
+					require ($pluginfilename);
+				} else {
+					$app = JFactory::getApplication ();
+					$app->enqueueMessage (get_class ($this) . ':: pluginfile could not be found '.$pluginfilename);
+					return false;
+				}
+
 
 				//plgVmpaymentPaypal
 				$pluginClassname = 'plg' . ucfirst ($group) . ucfirst ($element);

@@ -94,16 +94,11 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	 * @return object List of shipment  objects
 	 */
 	public function getShipments() {
-		if (JVM_VERSION===1) {
-			$table = '#__plugins';
-			$enable = 'published';
-			$ext_id = 'id';
-		}
-		else {
-			$table = '#__extensions';
-			$enable = 'enabled';
-			$ext_id = 'extension_id';
-		}
+
+		$table = '#__extensions';
+		$enable = 'enabled';
+		$ext_id = 'extension_id';
+
 		$query = ' `#__virtuemart_shipmentmethods`.* ,  `'.$table.'`.`name` as shipmentmethod_name FROM `#__virtuemart_shipmentmethods` ';
 		$query .= 'JOIN `'.$table.'`   ON  `'.$table.'`.`'.$ext_id.'` = `#__virtuemart_shipmentmethods`.`shipment_jplugin_id` ';
 
@@ -163,14 +158,9 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			$data['virtuemart_vendor_id'] = (int) $data['virtuemart_vendor_id'];
 		}
 
-		// missing string FIX, Bad way ?
-		if (JVM_VERSION===1) {
-			$tb = '#__plugins';
-			$ext_id = 'id';
-		} else {
-			$tb = '#__extensions';
-			$ext_id = 'extension_id';
-		}
+		$tb = '#__extensions';
+		$ext_id = 'extension_id';
+
 		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['shipment_jplugin_id'].'"';
 		$db = JFactory::getDBO();
 		$db->setQuery($q);

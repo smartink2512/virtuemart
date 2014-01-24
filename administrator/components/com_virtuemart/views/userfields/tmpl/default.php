@@ -86,7 +86,7 @@ AdminUIHelper::startAdminArea($this);
 			$row = $this->userfieldsList[$i];
 // 			vmdebug('my rows',$row);
 			$coreField = (in_array($row->name, $this->lists['coreFields']));
-			$image = (JVM_VERSION===1) ? 'checked_out.png' : 'admin/checked_out.png';
+			$image = 'admin/checked_out.png';
 			$image = JHtml::_('image', $image, vmText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'),null,true);
 			//$checked = '<div style="position: relative;">'.JHtml::_('grid.id', $i, null,$row->virtuemart_userfield_id);
 			$checked = JHtml::_('grid.id', $i ,$row->virtuemart_userfield_id,null,'virtuemart_userfield_id');

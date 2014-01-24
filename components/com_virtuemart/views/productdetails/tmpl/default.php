@@ -165,7 +165,7 @@ $this->row = 0;
 	?>
         <div class="icons">
 	    <?php
-	    //$link = (JVM_VERSION===1) ? 'index2.php' : 'index.php';
+
 	    $link = 'index.php?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->virtuemart_product_id;
 
 		echo $this->linkIcon($link . '&format=pdf', 'COM_VIRTUEMART_PDF', 'pdf_button', 'pdf_icon', false);

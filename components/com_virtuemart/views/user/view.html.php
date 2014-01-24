@@ -330,19 +330,7 @@ class VirtuemartViewUser extends VmView {
 
     function lUser() {
 
-	$_groupList = $this->_model->getGroupList();
-
-	if (!is_array($_groupList)) {
-	    $this->_lists['gid'] = '<input type="hidden" name="gid" value="' . $this->_userDetails->JUser->get('gid') . '" /><strong>' . vmText::_($_groupList) . '</strong>';
-	} else {
-	    $this->_lists['gid'] = JHtml::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $this->_userDetails->JUser->get('gid'));
-	}
-
-	if (!class_exists('shopFunctionsF'))
-	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-	$comUserOption = shopFunctionsF::getComUserOption();
-
-	$this->lists['canBlock'] = ($this->_currentUser->authorise($comUserOption, 'block user')
+	$this->lists['canBlock'] = ($this->_currentUser->authorise('com_users', 'block user')
 		&& ($this->_model->getId() != $this->_cuid)); // Can't block myself TODO I broke that, please retest if it is working again
 	$this->lists['canSetMailopt'] = $this->_currentUser->authorise('workflow', 'email_events');
 	$this->_lists['block'] = JHtml::_('select.booleanlist', 'block', 'class="inputbox"', $this->_userDetails->JUser->get('block'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');

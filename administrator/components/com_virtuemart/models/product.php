@@ -1405,13 +1405,6 @@ class VirtueMartModelProduct extends VmModel {
 			$virtuemart_shoppergroup_ids = (array)$currentVMuser->shopper_groups;
 		}
 
-		if(!empty($this->orderByString)){
-			$orderBy = $this->orderByString;
-
-		} else {
-			$orderBy = ' ORDER BY '.$this->filter_order.' ';
-		}
-
 		$oldDir = $this->filter_order_Dir;
 
 		$this->_onlyQuery = true;
@@ -1424,6 +1417,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$this->filter_order_Dir = $direction;
 
+
 		//We try the method to get exact the next product, the other method would be to get the list of the browse view again and do a match
 		//with the product id and giving back the neighbours
 		foreach ($neighbors as &$neighbor) {
@@ -1432,12 +1426,12 @@ class VirtueMartModelProduct extends VmModel {
 
 			if(isset($queryArray[1])){
 				$joinT = $queryArray[1] ;
-				if(is_array($joinT)){
-					//array_shift($joinT);//array_shift($joinT);
+
+				if(is_array($queryArray[1])){
 					$joinT = implode('',$joinT);
 				}
 
-				$q = 'SELECT l.`virtuemart_product_id`, l.`product_name`, `pc`.ordering FROM `#__virtuemart_products_' . VmConfig::$vmlang . '` as l '.$joinT;
+				$q = 'SELECT l.`virtuemart_product_id`, l.`product_name`, `pc`.ordering FROM `#__virtuemart_products` as p '.$joinT;
 				$q .= ' WHERE (' . implode (' AND ', $queryArray[2]) . ') AND l.`virtuemart_product_id`!="'.$product->virtuemart_product_id.'" ';
 
 				$pos= strpos($queryArray[3],'ORDER BY');
@@ -1478,8 +1472,8 @@ class VirtueMartModelProduct extends VmModel {
 				$direction = 'ASC';
 				$op = '>=';
 			}
-
 		}
+
 		$this->filter_order_Dir = $oldDir;
 		$this->_onlyQuery = false;
 		return $neighbors;

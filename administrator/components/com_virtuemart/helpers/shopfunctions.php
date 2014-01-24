@@ -254,27 +254,16 @@ class ShopFunctions {
 			$defaulttemplate[0]->value = 'default';
 		}
 
-		if (JVM_VERSION === 1) {
-			if (!class_exists ('TemplatesHelper')) {
-						require (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_templates' . DS . 'helpers' . DS . 'template.php');
-					}
-			$jtemplates = TemplatesHelper::parseXMLTemplateFiles (JPATH_SITE . DS . 'templates');
-			foreach ($jtemplates as $key => $template) {
-				$template->value = $template->name;
-			}
-		} else {
+		$q = 'SELECT * FROM `#__template_styles` WHERE `client_id`="0"';
+		$db = JFactory::getDbo();
+		$db->setQuery($q);
 
-			$q = 'SELECT * FROM `#__template_styles` WHERE `client_id`="0"';
-			$db = JFactory::getDbo();
-			$db->setQuery($q);
+		$jtemplates = $db->loadObjectList();
 
-			$jtemplates = $db->loadObjectList();
-
-			foreach ($jtemplates as $key => $template) {
-				$template->name = $template->title;
-				$template->value = $template->id;
-				$template->directory = $template->template;
-			}
+		foreach ($jtemplates as $key => $template) {
+			$template->name = $template->title;
+			$template->value = $template->id;
+			$template->directory = $template->template;
 		}
 
 		return array_merge ($defaulttemplate, $jtemplates);

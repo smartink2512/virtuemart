@@ -249,14 +249,10 @@ class VirtueMartModelUserfields extends VmModel {
 		$fieldValues = $this->postData2FieldValues($data['vNames'], $data['vValues'], $data['virtuemart_userfield_id'] );
 
 		if(strpos($data['type'],'plugin')!==false){
-			// missing string FIX, Bad way ?
-			if (JVM_VERSION===1) {
-				$tb = '#__plugins';
-				$ext_id = 'id';
-			} else {
-				$tb = '#__extensions';
-				$ext_id = 'extension_id';
-			}
+
+			$tb = '#__extensions';
+			$ext_id = 'extension_id';
+
 			$plgName = substr($data['type'],6);
 			$q = 'SELECT `' . $ext_id . '` FROM `' . $tb . '` WHERE `element` = "'.$plgName.'"';
 			$db = JFactory::getDBO();

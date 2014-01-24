@@ -716,16 +716,9 @@ class VmConfig {
 
 		if( JFactory::getApplication()->isSite()){
 			if (!$siteLang) {
-				if ( JVM_VERSION===1 ) {
-					// this work with joomfish j1.5 (application.data.lang)
-					$session  =JFactory::getSession();
-					$registry = $session->get('registry');
-					$siteLang = $registry->get('application.data.lang') ;
-				} else  {
-					jimport('joomla.language.helper');
-					$siteLang = JFactory::getLanguage()->getTag();
-					vmdebug('My selected language by JFactory::getLanguage()->getTag() '.$siteLang);
-				}
+				jimport('joomla.language.helper');
+				$siteLang = JFactory::getLanguage()->getTag();
+				vmdebug('My selected language by JFactory::getLanguage()->getTag() '.$siteLang);
 			}
 		} else {
 			if(!$siteLang){

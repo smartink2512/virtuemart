@@ -24,34 +24,34 @@ AdminUIHelper::startAdminArea($this);
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-  <div id="editcell">
-	  <table class="adminlist" cellspacing="0" cellpadding="0">
-	    <thead>
-		    <tr>
-				<th width="10">
-					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shoppergroups); ?>);" />
-				</th>
-				<th>
-					<?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME'); ?>
-				</th>
-				<th>
-					<?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION'); ?>
-				</th>
-				<th width="20">
-					<?php echo vmText::_('COM_VIRTUEMART_DEFAULT'); ?>
-				</th>
-				<th width="30px" >
-					<?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?>
-				</th>
-				<?php if((Vmconfig::get('multix','none')!='none') && $this->showVendors){ ?>
-				<th>
-					<?php echo vmText::_('COM_VIRTUEMART_VENDOR'); ?>
-				</th>
-				<?php } ?>
-					  <th><?php echo $this->sort('virtuemart_shoppergroup_id', 'COM_VIRTUEMART_ID')  ?></th>
+	<div id="editcell">
+	  	<table class="adminlist" cellspacing="0" cellpadding="0">
+	  	<thead>
+		<tr>
+			<th width="10">
+				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shoppergroups); ?>);" />
+			</th>
+			<th>
+				<?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME'); ?>
+			</th>
+			<th>
+				<?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION'); ?>
+			</th>
+			<th width="20">
+				<?php echo vmText::_('COM_VIRTUEMART_DEFAULT'); ?>
+			</th>
+			<th width="30px" >
+				<?php echo vmText::_('COM_VIRTUEMART_PUBLISHED'); ?>
+			</th>
+			<?php if((Vmconfig::get('multix','none')!='none') && $this->showVendors){ ?>
+			<th>
+				<?php echo vmText::_('COM_VIRTUEMART_VENDOR'); ?>
+			</th>
+			<?php } ?>
+				  <th><?php echo $this->sort('virtuemart_shoppergroup_id', 'COM_VIRTUEMART_ID')  ?></th>
 
-		    </tr>
-	    </thead><?php
+		</tr>
+		</thead><?php
 
 	    $k = 0;
 	    for ($i = 0, $n = count( $this->shoppergroups ); $i < $n; $i++) {
@@ -60,7 +60,7 @@ AdminUIHelper::startAdminArea($this);
 		    $checked = JHtml::_('grid.id', $i, $row->virtuemart_shoppergroup_id,null,'virtuemart_shoppergroup_id');
 		    $editlink = JROUTE::_('index.php?option=com_virtuemart&view=shoppergroup&task=edit&virtuemart_shoppergroup_id[]=' . $row->virtuemart_shoppergroup_id); ?>
 
-	      <tr class="row<?php echo $k ; ?>">
+			<tr class="row<?php echo $k ; ?>">
 			    <td width="10">
 				    <?php echo $checked; ?>
 			    </td>
@@ -73,13 +73,8 @@ AdminUIHelper::startAdminArea($this);
 			    <td>
 					<?php
 					if ($row->default == 1) {
-					    if (JVM_VERSION===1) {
-						?>
-						<img src="templates/khepri/images/menu/icon-16-default.png" alt="<?php echo vmText::_( 'COM_VIRTUEMART_SHOPPERGROUP_DEFAULT' ); ?>" />
-						<?php
-					    }  else {
 						echo JHtml::_('image','menu/icon-16-default.png', vmText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'), NULL, true);
-						}
+
 					} else {
 						?>
 						&nbsp;

@@ -544,21 +544,12 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$select = 'SELECT l.*, v.*, ';
 
-		if (JVM_VERSION === 1) {
-			$extPlgTable = '#__plugins';
-			$extField1 = 'id';
-			$extField2 = 'element';
+		$extPlgTable = '#__extensions';
+		$extField1 = 'extension_id';
+		$extField2 = 'element';
 
-			$select .= 'j.`' . $extField1 . '`, j.`name`, j.`element`, j.`folder`, j.`client_id`, j.`access`,
-				j.`params`,  j.`checked_out`, j.`checked_out_time`,  s.virtuemart_shoppergroup_id ';
-		} else {
-			$extPlgTable = '#__extensions';
-			$extField1 = 'extension_id';
-			$extField2 = 'element';
-
-			$select .= 'j.`' . $extField1 . '`,j.`name`, j.`type`, j.`element`, j.`folder`, j.`client_id`, j.`enabled`, j.`access`, j.`protected`, j.`manifest_cache`,
-				j.`params`, j.`custom_data`, j.`system_data`, j.`checked_out`, j.`checked_out_time`, j.`state`,  s.virtuemart_shoppergroup_id ';
-		}
+		$select .= 'j.`' . $extField1 . '`,j.`name`, j.`type`, j.`element`, j.`folder`, j.`client_id`, j.`enabled`, j.`access`, j.`protected`, j.`manifest_cache`,
+			j.`params`, j.`custom_data`, j.`system_data`, j.`checked_out`, j.`checked_out_time`, j.`state`,  s.virtuemart_shoppergroup_id ';
 
 		if(!VmConfig::$vmlang){
 			VmConfig::setdbLanguageTag();
@@ -711,12 +702,9 @@ abstract class vmPSPlugin extends vmPlugin {
 			$message = vmText::sprintf('COM_VIRTUEMART_ERROR_BODY', $subject, $this->getLogFilename().VmConfig::LOGFILEEXT);
 		}
 		JUtility::sendMail($vendorEmail, $vendorName, $vendorEmail, $subject, $message);
-		if (JVM_VERSION === 1) {
-			//get all super administrator
-			$query = 'SELECT name, email, sendEmail' . ' FROM #__users' . ' WHERE LOWER( usertype ) = "super administrator"';
-		} else {
-			$query = 'SELECT name, email, sendEmail' . ' FROM #__users' . ' WHERE sendEmail=1';
-		}
+
+		$query = 'SELECT name, email, sendEmail FROM #__users WHERE sendEmail=1';
+
 		$db = JFactory::getDBO();
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
@@ -1292,24 +1280,14 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$_db = JFactory::getDBO ();
 
-		if (JVM_VERSION === 1) {
-			$_q = 'SELECT 1 '
-				. 'FROM   #__virtuemart_' . $this->_psType . 'methods v '
-				. ',      #__plugins             j '
-				. 'WHERE j.`element` = "' . $this->_name . '" '
-				. 'AND   v.`' . $this->_psType . '_jplugin_id` = j.`id` '
-				. 'AND   v.`virtuemart_vendor_id` = "' . $_vendorId . '" '
-				. 'AND   v.`published` = 1 ';
-		} else {
-			$_q = 'SELECT 1 '
-				. 'FROM   #__virtuemart_' . $this->_psType . 'methods AS v '
-				. ',      #__extensions   AS     j '
-				. 'WHERE j.`folder` = "' . $this->_type . '" '
-				. 'AND j.`element` = "' . $this->_name . '" '
-				. 'AND   v.`' . $this->_psType . '_jplugin_id` = j.`extension_id` '
-				. 'AND   v.`virtuemart_vendor_id` = "' . $_vendorId . '" '
-				. 'AND   v.`published` = 1 ';
-		}
+		$_q = 'SELECT 1 '
+			. 'FROM   #__virtuemart_' . $this->_psType . 'methods AS v '
+			. ',      #__extensions   AS     j '
+			. 'WHERE j.`folder` = "' . $this->_type . '" '
+			. 'AND j.`element` = "' . $this->_name . '" '
+			. 'AND   v.`' . $this->_psType . '_jplugin_id` = j.`extension_id` '
+			. 'AND   v.`virtuemart_vendor_id` = "' . $_vendorId . '" '
+			. 'AND   v.`published` = 1 ';
 
 		$_db->setQuery ($_q);
 		$_r = $_db->loadAssoc ();

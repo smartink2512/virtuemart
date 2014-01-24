@@ -29,7 +29,7 @@ class VmView extends JViewLegacy{
 		if ($verifyConfigValue) {
 			if ( !VmConfig::get($verifyConfigValue, 0) ) return '';
 		}
-		$folder = (JVM_VERSION===1) ? '/images/M_images/' : '/media/system/images/';
+		$folder = '/media/system/images/';
 		$text='';
 		if ( $use_icon ) $text .= JHtml::_('image', $boutonName.'.png', $folder, null, null, vmText::_($altText));
 		if ( $use_text ) $text .= '&nbsp;'. vmText::_($altText);

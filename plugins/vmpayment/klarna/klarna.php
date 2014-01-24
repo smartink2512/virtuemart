@@ -19,11 +19,8 @@ if (!class_exists ('vmPSPlugin')) {
 	require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 }
 
-if (JVM_VERSION > 1) {
-	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
-} else {
-	require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
-}
+require (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna' . DS . 'klarna' . DS . 'helpers' . DS . 'define.php');
+
 if (!class_exists ('Klarna')) {
 	require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
 }
