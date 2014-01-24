@@ -122,12 +122,12 @@ class TableUserfields extends VmTable {
 		}
 	}
 	
-	function checkAndDelete($table,$where = 0){
+	function checkAndDelete($table, $whereField = 0, $andWhere = ''){
 		$ok = 1;
 		$k = $this->_tbl_key;
 
-		if($where!==0){
-			$whereKey = $where;
+		if($whereField!==0){
+			$whereKey = $whereField;
 		} else {
 			$whereKey = $this->_pkey;
 		}

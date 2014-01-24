@@ -108,36 +108,40 @@ class VirtueMartCart {
 				$sessionCart = unserialize( $cartSession );
 
 				self::$_cart = new VirtueMartCart;
-
-				self::$_cart->cartProductsData = $sessionCart->cartProductsData;
-				//vmdebug('getCart product',self::$_cart->cartProductsData);
-				self::$_cart->vendorId	 							= $sessionCart->vendorId;
-				self::$_cart->lastVisitedCategoryId	 			= $sessionCart->lastVisitedCategoryId;
-				self::$_cart->virtuemart_shipmentmethod_id	= $sessionCart->virtuemart_shipmentmethod_id;
-				self::$_cart->virtuemart_paymentmethod_id 	= $sessionCart->virtuemart_paymentmethod_id;
-				self::$_cart->automaticSelectedShipment 		= $sessionCart->automaticSelectedShipment;
-				self::$_cart->automaticSelectedPayment 		= $sessionCart->automaticSelectedPayment;
-				self::$_cart->BT 										= $sessionCart->BT;
-				self::$_cart->ST 										= $sessionCart->ST;
-				self::$_cart->tosAccepted 							= $sessionCart->tosAccepted;
-				self::$_cart->customer_comment 					= base64_decode($sessionCart->customer_comment);
-				self::$_cart->couponCode 							= $sessionCart->couponCode;
-				self::$_cart->_triesValidateCoupon					= $sessionCart->_triesValidateCoupon;
-				self::$_cart->cartData 								= $sessionCart->cartData;
-				self::$_cart->order_number							= $sessionCart->order_number;
-
-				self::$_cart->lists 									= $sessionCart->lists;
-
-				self::$_cart->pricesCurrency						= $sessionCart->pricesCurrency;
-				self::$_cart->paymentCurrency						= $sessionCart->paymentCurrency;
-
-				self::$_cart->_inCheckOut 							= $sessionCart->_inCheckOut;
-				self::$_cart->_dataValidated						= $sessionCart->_dataValidated;
-				self::$_cart->_confirmDone							= $sessionCart->_confirmDone;
-				self::$_cart->STsameAsBT							= $sessionCart->STsameAsBT;
-				self::$_cart->fromCart						= $sessionCart->fromCart;
 				$lang = JFactory::getLanguage();
 				self::$_cart->order_language = $lang->getTag();
+
+				if(isset($sessionCart->cartProductsData)){
+					self::$_cart->cartProductsData = $sessionCart->cartProductsData;
+					//vmdebug('getCart product',self::$_cart->cartProductsData);
+					self::$_cart->vendorId	 					= $sessionCart->vendorId;
+					self::$_cart->lastVisitedCategoryId	 		= $sessionCart->lastVisitedCategoryId;
+					self::$_cart->virtuemart_shipmentmethod_id	= $sessionCart->virtuemart_shipmentmethod_id;
+					self::$_cart->virtuemart_paymentmethod_id 	= $sessionCart->virtuemart_paymentmethod_id;
+					self::$_cart->automaticSelectedShipment 	= $sessionCart->automaticSelectedShipment;
+					self::$_cart->automaticSelectedPayment 		= $sessionCart->automaticSelectedPayment;
+					self::$_cart->BT 							= $sessionCart->BT;
+					self::$_cart->ST 							= $sessionCart->ST;
+					self::$_cart->tosAccepted 					= $sessionCart->tosAccepted;
+					self::$_cart->customer_comment 				= base64_decode($sessionCart->customer_comment);
+					self::$_cart->couponCode 					= $sessionCart->couponCode;
+					self::$_cart->_triesValidateCoupon			= $sessionCart->_triesValidateCoupon;
+					self::$_cart->cartData 						= $sessionCart->cartData;
+					self::$_cart->order_number					= $sessionCart->order_number;
+
+					self::$_cart->lists 						= $sessionCart->lists;
+
+					self::$_cart->pricesCurrency				= $sessionCart->pricesCurrency;
+					self::$_cart->paymentCurrency				= $sessionCart->paymentCurrency;
+
+					self::$_cart->_inCheckOut 					= $sessionCart->_inCheckOut;
+					self::$_cart->_dataValidated				= $sessionCart->_dataValidated;
+					self::$_cart->_confirmDone					= $sessionCart->_confirmDone;
+					self::$_cart->STsameAsBT					= $sessionCart->STsameAsBT;
+					self::$_cart->fromCart						= $sessionCart->fromCart;
+				}
+
+
 			}
 
 		}

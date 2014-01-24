@@ -200,11 +200,10 @@ class vmJsApi{
 		$jsVars .= "vmSiteurl = '". JURI::root( ) ."' ;\n" ;
 		if (VmConfig::get ('vmlang_js', 1))  {
 			//$jsVars .= "vmLang = '" . substr (VmConfig::$vmlang, 0, 2) . "' ;\n";
-			$jsVars .= "vmLang = '&amp;lang=" . substr (VmConfig::$vmlang, 0, 2) . "' ;\n";
+			$jsVars .= "vmLang = '&lang=" . substr (VmConfig::$vmlang, 0, 2) . "' ;\n";
 		}
 		else {
-			$jsVars .= 'vmLang = "";' . "\n";
-		}
+			$jsVars .= 'vmLang = "";' . "\n";		}
 
 		if(VmConfig::get('addtocart_popup',1)){
 			$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
