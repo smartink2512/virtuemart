@@ -709,7 +709,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin
 			$this->_cc_valid = FALSE;
 		}
 		if (!Creditcard::validate_credit_card_date($this->_cc_type, $this->_cc_expire_month, $this->_cc_expire_year)) {
-			$this->_errormessage[] = 'VMPAYMENT_AUTHORIZENET_CARD_CVV_INVALID';
+			$this->_errormessage[] = 'VMPAYMENT_AUTHORIZENET_CARD_EXPIRATION_DATE_INVALID';
 			$this->_cc_valid = FALSE;
 		}
 		if (!$this->_cc_valid) {
