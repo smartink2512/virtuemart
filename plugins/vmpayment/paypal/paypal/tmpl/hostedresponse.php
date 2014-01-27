@@ -39,7 +39,7 @@ $currency = $viewData["currency"];
     </tr>
 	<tr>
     	<td><?php echo JText::_('VMPAYMENT_PAYPAL_API_AMOUNT'); ?></td>
-        <td><?php echo $currency->priceDisplay($order['details']['BT']->order_total); ?></td>
+        <td><?php echo $payment->mc_gross . ' ' . $payment->mc_currency; ?></td>
     </tr>
 	<?php if ($success) { ?>
 	<tr>

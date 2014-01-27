@@ -30,7 +30,7 @@ $currency = $viewData["currency"];
 	<?php 
 	echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_PAYMENT_NAME',  $viewData['payment_name']);
 	echo $this->getHtmlRow('COM_VIRTUEMART_ORDER_NUMBER', $response['invoice']);
-	echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_AMOUNT',$currency->priceDisplay($order['details']['BT']->order_total));
+	echo $this->getHtmlRow('VMPAYMENT_PAYPAL_API_AMOUNT', $response['PAYMENTINFO_0_AMT'] . ' ' . $response['PAYMENTINFO_0_CURRENCYCODE']);
 
 
 	if ( $viewData['success']) {
