@@ -60,6 +60,11 @@ if(!class_exists('vmRequest')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'v
 if(!class_exists('vmText')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtext.php');
 if(!class_exists('vmJsApi')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmjsapi.php');
 /**
+ * Where type can be one of
+ * 'warning' - yellow
+ * 'notice' - blue
+ * 'error' - red
+ * 'message' (or empty) - green
  * This function shows an info message, the messages gets translated with vmText::,
  * you can overload the function, so that automatically sprintf is taken, when needed.
  * So this works vmInfo('COM_VIRTUEMART_MEDIA_NO_PATH_TYPE',$type,$link )

@@ -33,6 +33,7 @@ jQuery(document).ready(function() {
 		jQuery(".main-image img").attr("alt",this.alt );
 		jQuery(".main-image a").attr("href",this.src );
 		jQuery(".main-image a").attr("title",this.alt );
+		jQuery(".main-image .vm-img-desc").html(this.alt);
 	}); 
 });
 ';
