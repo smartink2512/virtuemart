@@ -43,7 +43,7 @@ AdminUIHelper::startAdminArea($this);
 		<tr>
 
 			<th>
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->calcs); ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
 			<th><?php echo $this->sort('calc_name', 'COM_VIRTUEMART_NAME') ; ?></th>
 			<?php if($this->showVendors){ ?>

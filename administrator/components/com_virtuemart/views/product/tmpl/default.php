@@ -71,7 +71,7 @@ if ($product_parent_id=VmRequest::getInt('product_parent_id', false))   $col_pro
 	<table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
-		<th width="20px"><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->productlist); ?>')" /></th>
+		<th width="20px"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>
 
 		<th><?php echo $this->sort('product_name',$col_product_name) ?> </th>
 		<?php if (!$product_parent_id ) { ?>

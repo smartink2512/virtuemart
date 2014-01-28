@@ -48,7 +48,7 @@ $option = VmRequest::getCmd('option');
 	<table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
-		<th width="20"><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->reviewslist); ?>')" /></th>
+		<th width="20"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>
 		<th><?php echo $this->sort('pr.created_on', 'COM_VIRTUEMART_DATE') ; ?></th>
 		<th><?php echo $this->sort('product_name') ; ?></th>
 		<th><?php echo $this->sort('vote', 'COM_VIRTUEMART_RATE_NOM') ; ?></th>

@@ -51,7 +51,7 @@ AdminUIHelper::startAdminArea($this);
 		<thead>
 		<tr>
 			<th width="10">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->userList); ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
 
 			<th><?php echo $this->sort('ju.username', 'COM_VIRTUEMART_USERNAME')  ?></th>

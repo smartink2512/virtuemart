@@ -28,7 +28,7 @@ AdminUIHelper::startAdminArea($this);
 		<thead>
 		<tr>
 			<th width="10">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->orderStatusList); ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
 
 			<th>

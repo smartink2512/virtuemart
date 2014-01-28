@@ -29,7 +29,7 @@ AdminUIHelper::startAdminArea($this);
 	  	<thead>
 		<tr>
 			<th width="10">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shoppergroups); ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
 			<th>
 				<?php echo vmText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME'); ?>

@@ -39,7 +39,7 @@ AdminUIHelper::startAdminArea($this);
 	<table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
-		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->inventorylist); ?>')" /></th>
+		<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>
 		<th><?php echo $this->sort('product_name') ?></th>
 		<th><?php echo $this->sort('product_sku')?></th>
 		<th><?php echo $this->sort('product_in_stock','COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK') ?></th>

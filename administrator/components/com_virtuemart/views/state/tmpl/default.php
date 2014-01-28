@@ -30,7 +30,7 @@ AdminUIHelper::startAdminArea($this);
 	    <thead>
 		<tr>
 		    <th width="10">
-			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->states ); ?>);" />
+			<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 		    </th>
 		    <th>
 			<?php echo   vmText::_('COM_VIRTUEMART_STATE_NAME'); ?>

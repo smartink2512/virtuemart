@@ -675,4 +675,12 @@ class VirtueMartModelCategory extends VmModel {
 		return $idsArr;
 	}
 
+	function toggle($field,$val = NULL, $cidname = 0,$tablename = 0  ) {
+
+		$result = parent::toggle($field,$val, $cidname, $tablename );
+		$cache = JFactory::getCache('com_virtuemart_cats','callback');
+		$cache->clean();
+		return $result;
+	}
+
 }

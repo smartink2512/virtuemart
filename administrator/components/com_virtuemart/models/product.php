@@ -1160,7 +1160,7 @@ class VirtueMartModelProduct extends VmModel {
 		//$product->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
 		$product->selectedPrice = 0;
 		$product->allPrices[0] = $this->fillVoidPrice();
-
+		$product->categories = array();
 		if ($front) {
 			$product->link = '';
 			$product->virtuemart_category_id = 0;

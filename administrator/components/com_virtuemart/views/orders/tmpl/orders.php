@@ -39,7 +39,7 @@ AdminUIHelper::startAdminArea ($this);
 	<table class="adminlist" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
-			<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count ($this->orderslist); ?>')"/></th>
+			<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)"/></th>
 			<th><?php echo $this->sort ('order_number', 'COM_VIRTUEMART_ORDER_LIST_NUMBER')  ?></th>
 			<th><?php echo $this->sort ('order_name', 'COM_VIRTUEMART_ORDER_PRINT_NAME')  ?></th>
 			<th><?php echo $this->sort ('order_email', 'COM_VIRTUEMART_EMAIL')  ?></th>

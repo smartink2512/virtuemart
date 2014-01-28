@@ -30,7 +30,7 @@ AdminUIHelper::startAdminArea($this);
 		<tr>
 
 			<th width="2">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->payments); ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
 			<th >
 				<?php echo $this->sort('payment_name', 'COM_VIRTUEMART_PAYMENT_LIST_NAME'); ?>

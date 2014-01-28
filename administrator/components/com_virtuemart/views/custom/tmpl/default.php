@@ -51,7 +51,7 @@ $customs = $this->customs->items;
 <table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
-		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($customs); ?>')" /></th>
+		<th><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" /></th>
 		<th><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_GROUP'); ?></th>
 		<th><?php echo vmText::_('COM_VIRTUEMART_TITLE'); ?></th>
 		<th><?php echo vmText::_('COM_VIRTUEMART_CUSTOM_FIELD_DESCRIPTION'); ?></th>

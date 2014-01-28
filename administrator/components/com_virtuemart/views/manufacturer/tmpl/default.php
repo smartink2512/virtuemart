@@ -43,7 +43,7 @@ AdminUIHelper::startAdminArea($this);
 	    <thead>
 		<tr>
 		    <th width="10">
-			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->manufacturers); ?>);" />
+			<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 		    </th>
 		    <th>
 				<?php echo $this->sort('mf_name', 'COM_VIRTUEMART_MANUFACTURER_NAME') ; ?>

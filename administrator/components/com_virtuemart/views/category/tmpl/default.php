@@ -49,7 +49,7 @@ AdminUIHelper::startAdminArea($this);
 		<tr>
 
 			<th width="20px">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->categories); ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
 			<th align="left" width="12%">
 				<?php echo $this->sort('category_name') ?>

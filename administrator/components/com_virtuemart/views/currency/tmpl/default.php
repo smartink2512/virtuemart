@@ -36,7 +36,7 @@ AdminUIHelper::startAdminArea($this);
 	    <thead>
 		<tr>
 		    <th width="10">
-			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->currencies); ?>);" />
+			<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 		    </th>
 		    <th >
 				<?php  echo $this->sort('currency_name','COM_VIRTUEMART_CURRENCY') ; ?>

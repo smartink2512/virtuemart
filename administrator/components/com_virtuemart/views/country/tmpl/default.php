@@ -43,7 +43,7 @@ $states = vmText::_('COM_VIRTUEMART_STATE_S');
 	    <thead>
 		<tr>
 			<th width="10">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->countries); ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
 			<th>
 				<?php echo $this->sort('country_name') ?>

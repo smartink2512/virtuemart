@@ -52,7 +52,7 @@ abstract class CouponHelper
 			. ', `coupon_value_valid` '
 			. ', `coupon_used` '
 			. 'FROM `#__virtuemart_coupons` '
-			. 'WHERE `coupon_code` = "' . $_db->getEscaped($_code) . '"';
+			. 'WHERE `coupon_code` = "' . $_db->escape($_code) . '"';
 			$_db->setQuery($_q);
 			$couponData = $_db->loadObject();
 		}
@@ -100,7 +100,7 @@ abstract class CouponHelper
 			. ', `coupon_type` '
 			. ', `coupon_value` '
 			. 'FROM `#__virtuemart_coupons` '
-			. 'WHERE `coupon_code` = "' . $_db->getEscaped($_code) . '"';
+			. 'WHERE `coupon_code` = "' . $_db->escape($_code) . '"';
 		$_db->setQuery($_q);
 		return $_db->loadObject();
 	}
@@ -135,7 +135,7 @@ abstract class CouponHelper
 		}
 		$_db = JFactory::getDBO();
 		$_q = 'DELETE FROM `#__virtuemart_coupons` '
-			. 'WHERE `coupon_code` = "' . $_db->getEscaped($_code) . '"';
+			. 'WHERE `coupon_code` = "' . $_db->escape($_code) . '"';
 		$_db->setQuery($_q);
 		return ($_db->query() !== false);
 	}
@@ -164,7 +164,7 @@ abstract class CouponHelper
 			$db = JFactory::getDBO();
 			$q = 'SELECT `coupon_used` '
 				. 'FROM `#__virtuemart_coupons` '
-				. 'WHERE `coupon_code` = "' . $db->getEscaped($code) . '"';
+				. 'WHERE `coupon_code` = "' . $db->escape($code) . '"';
 			$db->setQuery($q);
 			$coupon_session_id=$db->loadResult();
 			if ($coupon_used !=$coupon_session_id) {
@@ -174,7 +174,7 @@ abstract class CouponHelper
 		}
 
 
-		$q = 'UPDATE `#__virtuemart_coupons` SET `coupon_used` = "' . $coupon_used . '" WHERE `coupon_type`= \'gift\' AND `coupon_code` = "' . $db->getEscaped($code) . '"';
+		$q = 'UPDATE `#__virtuemart_coupons` SET `coupon_used` = "' . $coupon_used . '" WHERE `coupon_type`= \'gift\' AND `coupon_code` = "' . $db->escape($code) . '"';
 		$db->setQuery($q);
 
 		return ($db->query() !== false);
