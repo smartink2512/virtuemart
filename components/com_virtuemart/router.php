@@ -46,7 +46,7 @@ function virtuemartBuildRoute(&$query) {
 	$view = '';
 
 	$jmenu = $helper->menu ;
-
+	//vmdebug('virtuemartBuildRoute $jmenu',$helper->query,$helper->activeMenu,$helper->menuVmitems);
 	if(isset($query['langswitch'])) unset($query['langswitch']);
 
 	if(isset($query['view'])){
@@ -287,7 +287,7 @@ function virtuemartBuildRoute(&$query) {
 
 	}
 
-	//	if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
+	//	if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR .'/administrator/components/com_virtuemart/helpers/config.php');
 	//	vmdebug("case 'productdetails'",$query);
 
 	if (isset($query['task'])) {
@@ -734,7 +734,7 @@ class vmrouterHelper {
 	public static function getInstance(&$query = null) {
 
 		if (!class_exists( 'VmConfig' )) {
-			require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
+			require(JPATH_ADMINISTRATOR .'/administrator/components/com_virtuemart/helpers/config.php');
 		}
 		VmConfig::loadConfig();
 

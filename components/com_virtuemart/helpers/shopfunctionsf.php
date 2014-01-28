@@ -129,7 +129,7 @@ class shopFunctionsF {
 		$attrs['class'] = 'virtuemart_country_id';
 		$attrs['class'] = 'vm-chzn-select';
 		// Load helpers and  languages files
-		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR .'/helpers/config.php');
 		VmConfig::loadConfig();
 		VmConfig::loadJLang('com_virtuemart_countries');
 		vmJsApi::chosenDropDowns();

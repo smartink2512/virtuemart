@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension version="2.5" type="plugin" group="vmpayment">
-    <name>Authorize.net AIM</name>
+<extension version="2.5.0" type="plugin" group="vmpayment">
+    <name>plgvm_authorizenet</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>${PHING.VM.COPYRIGHT}</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <version>${PHING.VM.RELEASE}</version>
-    <element>authorizenet</element>
-    <files>settongs
+    <description>Authorize.net AIM; text input plugin for product</description>
+    <files>
         <filename plugin="authorizenet">authorizenet.php</filename>
     </files>
     <config>

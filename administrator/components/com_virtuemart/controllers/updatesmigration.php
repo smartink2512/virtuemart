@@ -300,7 +300,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	 */
 	function setDangerousToolsOff(){
 
-		if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'config.php');
+		if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR .'/models/config.php');
 		$res  = VirtueMartModelConfig::checkConfigTableExists();
 		if(!empty($res)){
 			$model = $this->getModel('config');

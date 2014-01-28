@@ -35,6 +35,8 @@ class VirtuemartViewCategory extends VmView {
 
 	function display($tpl = null) {
 
+		if(!class_exists('VirtueMartModelConfig'))require(JPATH_VM_ADMINISTRATOR .'models/config.php');
+
 		if (!class_exists('VmHTML'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
@@ -76,7 +78,7 @@ class VirtuemartViewCategory extends VmView {
 
 			$this->assignRef('jTemplateList', $templateList);
 
-			if(!class_exists('VirtueMartModelConfig'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'config.php');
+
 			$categoryLayoutList = VirtueMartModelConfig::getLayoutList('category');
 			$this->assignRef('categoryLayouts', $categoryLayoutList);
 

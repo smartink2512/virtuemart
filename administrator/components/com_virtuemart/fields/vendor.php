@@ -16,7 +16,7 @@
  */
 defined('JPATH_BASE') or die;
 if (!class_exists('VmConfig'))
-    require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+    require(JPATH_ROOT .'/administrator/components/com_virtuemart/helpers/config.php');
 if (!class_exists('ShopFunctions'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 

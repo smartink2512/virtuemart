@@ -377,7 +377,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		}
 
 		if(!class_exists('VmConfig')){
-			require_once(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+			require_once(JPATH_VM_ADMINISTRATOR .'/helpers/config.php');
 			VmConfig::loadConfig(false,true);
 		}
 

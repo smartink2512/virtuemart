@@ -158,7 +158,7 @@ class VmController extends JControllerLegacy{
 		$errors = $model->getErrors();
 		if(empty($errors)) {
 			$msg = vmText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
-			$type = 'save';
+			$type = 'message';
 		}
 		else $type = 'error';
 		foreach($errors as $error){

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension version="2.5" type="plugin" group="vmpayment" method="upgrade">
-    <description>PLG_VMPAYMENT_PAYPALDESC</description>
-    <name>VMPAYMENT_PAYPAL</name>
+    <name>plgvm_paypal</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>

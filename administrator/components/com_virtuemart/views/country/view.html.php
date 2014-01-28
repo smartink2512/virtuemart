@@ -34,7 +34,7 @@ class VirtuemartViewCountry extends VmView {
     function display($tpl = null) {
 
 		// Load the helper(s)
-		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR .'/helpers/config.php');
 		VmConfig::loadConfig();
 		if(VmConfig::get('enableEnglish', 1)){
 		    $jlang =JFactory::getLanguage();

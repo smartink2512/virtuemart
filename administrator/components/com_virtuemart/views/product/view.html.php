@@ -98,7 +98,7 @@ class VirtuemartViewProduct extends VmView {
 				}
 				$this->product_childs = $product_childs;
 
-				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'config.php');
+				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR .'/models/config.php');
 				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
 				$this->productLayouts = $productLayouts;
 

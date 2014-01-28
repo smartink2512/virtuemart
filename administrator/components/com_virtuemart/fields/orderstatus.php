@@ -20,7 +20,7 @@ class JFormFieldOrderstatus extends JFormField {
 	function getInput () {
 
 		if (!class_exists ('VmConfig')) {
-			require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+			require(JPATH_ADMINISTRATOR . '/components/com_virtuemart/helpers/config.php');
 		}
 		if (!class_exists ('VmModel')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');

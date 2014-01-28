@@ -44,7 +44,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if(empty($this->path)){
 				$this->path = JPATH_VM_ADMINISTRATOR;
 			}
-			if(!class_exists('VmConfig')) require_once($this->path.DS.'helpers'.DS.'config.php');
+			if(!class_exists('VmConfig')) require_once($this->path .'/helpers/config.php');
 			VmConfig::loadConfig(false,true);
 			JTable::addIncludePath($this->path.DS.'tables');
 			VmModel::addIncludePath($this->path.DS.'models');
@@ -672,7 +672,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 				$this->loadVm();
 				// 				VmConfig::loadConfig(true);
-				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'config.php');
+				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR .'/models/config.php');
 				$res  = VirtueMartModelConfig::checkConfigTableExists();
 
 				if(!empty($res)){

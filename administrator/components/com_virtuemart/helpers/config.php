@@ -643,7 +643,7 @@ class VmConfig {
 
 		self::$_jpConfig = new VmConfig();
 
-		if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'config.php');
+		if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR .'/models/config.php');
 		$configTable  = VirtueMartModelConfig::checkConfigTableExists();
 		if(empty($configTable)){
 			VirtueMartModelConfig::installVMconfigTable();

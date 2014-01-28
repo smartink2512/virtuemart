@@ -77,7 +77,7 @@ if (!version_compare (JVERSION, '1.6.0', 'ge')) {
 			// $limit = $pluginParams->def('search_limit', 50);
 			$limit = $this->params->def ('search_limit', 50);
 			if (!class_exists ('VmConfig')) {
-				require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+				require(JPATH_ADMINISTRATOR . 'components/com_virtuemart/helpers/config.php');
 			}
 			VmConfig::loadConfig ();
 			/* TO do it work with date
@@ -222,7 +222,7 @@ function plgSearchVirtuemart ($text, $phrase = '', $ordering = '', $areas = NULL
 	$plugin = & JPluginHelper::getPlugin ('search', 'virtuemart');
 	$pluginParams = new JParameter($plugin->params);
 	if (!class_exists ('VmConfig')) {
-		require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+		require(JPATH_ADMINISTRATOR . 'components/com_virtuemart/helpers/config.php');
 	}
 	VmConfig::loadConfig ();
 

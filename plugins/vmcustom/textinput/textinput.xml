@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<install method="upgrade" version="1.5" type="plugin" group="vmcustom" >
+<extension method="upgrade" version="1.5" type="plugin" group="vmcustom" >
     <name>VMCustom - textinput</name>
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
-    <copyright>Copyright (C) 2004-2012 Virtuemart Team. All rights reserved.</copyright>
+    <copyright>Copyright (C) 2004-2014 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <version>${PHING.VM.RELEASE}</version>
     <description>text input plugin for product</description>
@@ -25,4 +25,4 @@
 			<option value="1">VMCUSTOM_TEXTINPUT_PRICE_BY_LETTER</option>
 		</param>
     </params>
-</install>
+</extension>

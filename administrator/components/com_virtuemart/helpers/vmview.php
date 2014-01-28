@@ -482,7 +482,7 @@ class VmView extends JViewLegacy {
 				}
 				$task ="_".$task;
 			}
-			if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+			if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR .'/helpers/config.php');
 			VmConfig::loadConfig();
 			VmConfig::loadJLang('com_virtuemart_help');
  		    $lang = JFactory::getLanguage();
