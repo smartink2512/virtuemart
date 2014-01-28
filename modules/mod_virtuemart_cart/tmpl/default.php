@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 if ($show_product_list) {
 	?>
 	<div id="hiddencontainer" style=" display: none; ">
-		<div class="container">
+		<div class="vmcontainer">
 			<div class="product_row">
 				<span class="quantity"></span>&nbsp;x&nbsp;<span class="product_name"></span>
 
@@ -23,7 +23,7 @@ if ($show_product_list) {
 		</div>
 	</div>
 	<div class="vm_cart_products">
-		<div class="container">
+		<div class="vmcontainer">
 
 		<?php
 			foreach ($data->products as $product){

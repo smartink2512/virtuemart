@@ -298,7 +298,7 @@ function virtuemartBuildRoute(&$query) {
 		$segments[] = $helper->lang($query['layout']) ;
 		unset($query['layout']);
 	}
-	vmdebug('virtuemartBuildRoute $query j2',$query,$segments);
+	//vmdebug('virtuemartBuildRoute $query j2',$query,$segments);
 	// sef the slimbox View
 	/*	if (isset($query['tmpl'])) {
 			//if ( $query['tmpl'] = 'component') $segments[] = 'modal' ;
@@ -728,7 +728,7 @@ class vmrouterHelper {
 			$this->edit = ('edit' == vmRequest::getCmd('task') );
 			// if language switcher we must know the $query
 			$this->query = $query;
-			vmdebug('Router construct my query j2',$this->query,$query);
+			//vmdebug('Router construct my query j2',$this->query,$query);
 		}
 
 	}

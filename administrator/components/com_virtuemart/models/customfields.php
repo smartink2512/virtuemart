@@ -657,7 +657,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 * the results are sometimes slighty different and makes it hard to work with it, therefore here the function for future proxy use
 	 *
 	 */
-	public function displayProductCustomfieldSelected ($product, $html, $trigger) {
+	static public function displayProductCustomfieldSelected ($product, $html, $trigger) {
 
 		if(isset($product->param)){
 			vmTrace('param found, seek and destroy');
@@ -781,7 +781,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 * TODO This is html and view stuff and MUST NOT be in the model, notice by Max
 	 * render custom fields display cart module FE
 	 */
-	public function CustomsFieldCartModDisplay ($product) {
+	static public function CustomsFieldCartModDisplay ($product) {
 
 		return self::displayProductCustomfieldSelected ($product, '<div class="vm-customfield-mod">', 'plgVmOnViewCartModule');
 
@@ -791,7 +791,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 *  TODO This is html and view stuff and MUST NOT be in the model, notice by Max
 	 * render custom fields display cart FE
 	 */
-	public function CustomsFieldCartDisplay ($product) {
+	static public function CustomsFieldCartDisplay ($product) {
 
 		return self::displayProductCustomfieldSelected ($product, '<div class="vm-customfield-cart">', 'plgVmOnViewCart');
 
@@ -800,7 +800,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	/*
 	 * render custom fields display order BE/FE
 	*/
-	public function CustomsFieldOrderDisplay ($item, $view = 'FE', $absUrl = FALSE) {
+	static public function CustomsFieldOrderDisplay ($item, $view = 'FE', $absUrl = FALSE) {
 
 		if (!empty($item->product_attribute)) {
 			$item->customProductData = json_decode ($item->product_attribute, TRUE);
@@ -818,7 +818,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		if (!class_exists ('TableMedias'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'medias.php');
-		//$data = $this->getTable('medias');
+
 		$db = JFactory::getDBO ();
 		$data = new TableMedias($db);
 		$data->load ((int)$media_id);
