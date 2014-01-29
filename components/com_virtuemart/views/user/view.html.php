@@ -162,25 +162,9 @@ class VirtuemartViewUser extends VmView {
 	$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this,$this->_model, $task);
 
 
-	if ($this->_openTab < 0) {
-	    $_paneOffset = array();
-	} else {
-	    if (__VM_USER_USE_SLIDERS) {
-		$_paneOffset = array('startOffset' => $this->_openTab, 'startTransition' => 1, 'allowAllClose' => true);
-	    } else {
-		$_paneOffset = array('startOffset' => $this->_openTab);
-	    }
-	}
-
-	// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
-	// In tmpl/edit.php, this is the 4th tab (0-based, so set to 3 above)
-	jimport('joomla.html.pane');
-	$pane = JPane::getInstance((__VM_USER_USE_SLIDERS ? 'Sliders' : 'Tabs'), $_paneOffset);
-
 	$this->assignRef('lists', $this->_lists);
 
 	$this->assignRef('editor', $editor);
-	$this->assignRef('pane', $pane);
 
 	if ($layoutName == 'mailregisteruser') {
 	    $vendorModel = VmModel::getModel('vendor');

@@ -87,40 +87,6 @@ if($this->userDetails->virtuemart_user_id!=0) {
     echo $this->loadTemplate ( 'shopper' );
  }
 
-/*
- * TODO this Stuff should be converted in a payment module. But the idea to show already saved payment information to the user is a good one
- * So maybe we should place here a method (joomla plugin hook) which loads all published plugins, which already used by the user and display
- * them.
- */
-//	echo $this->pane->startPanel( vmText::_('COM_VIRTUEMART_SHOPPER_PAYMENT_FORM_LBL'), 'edit_payment' );
-//	echo $this->loadTemplate('payment');
-//	echo $this->pane->endPanel();
-
-//	echo $this->pane->startPanel( vmText::_('COM_VIRTUEMART_SHOPPER_SHIPMENT_FORM_LBL'), 'edit_shipto' );
-//	echo $this->loadTemplate('shipto');
-//	echo $this->pane->endPanel();
-//	if ($this->shipto !== 0) {
-//		// Note:
-//		// Of the order of the tabs change here, change the startOffset value for
-//		// JPane::getInstance() as well in view.html.php!
-//		echo $this->pane->startPanel( vmText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'), 'edit_shipto' );
-//		echo $this->loadTemplate('shipto');
-//		echo $this->pane->endPanel();
-//	}
-
-// 	if (($_ordcnt = count($this->orderlist)) > 0) {
-// 		echo $this->pane->startPanel( vmText::_('COM_VIRTUEMART_ORDER_LIST_LBL') . ' (' . $_ordcnt . ')', 'edit_orderlist' );
-// 		echo $this->loadTemplate('orderlist');
-// 		echo $this->pane->endPanel();
-// 	}
-
-// 	if (!empty($this->userDetails->user_is_vendor)) {
-// 		echo $this->pane->startPanel( vmText::_('COM_VIRTUEMART_VENDOR_MOD'), 'edit_vendor' );
-// 		echo $this->loadTemplate('vendor');
-// 		echo $this->pane->endPanel();
-// 	}
-
-// 	echo $this->pane->endPane();
 ?>
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="controller" value="user" />
