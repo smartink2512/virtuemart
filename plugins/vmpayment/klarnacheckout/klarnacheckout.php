@@ -64,7 +64,7 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 		$varsToPush = $this->getVarsToPush();
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
 		plgVmPaymentKlarnaCheckout::includeKlarnaFiles();
-
+		VmConfig::loadJLang('plg_vmpayment_klarna');
 	}
 
 	/**
@@ -317,9 +317,12 @@ class plgVmPaymentKlarnaCheckout extends vmPSPlugin {
 			$session = JFactory::getSession();
 
 			$cartIdInTable = $this->storeCartInTable($cart);
+			if ($this->method->server == 'beta') {
+				Klarna_Checkout_Order::$baseUri = 'https://checkout.testdrive.klarna.com/checkout/orders';
+			} else {
+				Klarna_Checkout_Order::$baseUri = 'https://checkout.klarna.com/checkout/orders';
+			}
 			require_once 'klarnacheckout/library/Checkout.php';
-
-			Klarna_Checkout_Order::$baseUri = 'https://checkout.testdrive.klarna.com/checkout/orders';
 			Klarna_Checkout_Order::$contentType = "application/vnd.klarna.checkout.aggregated-order-v2+json";
 
 			//session_start();
