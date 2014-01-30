@@ -279,7 +279,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		if($allconditions === 5){
 			return TRUE;
 		} else {
-			vmdebug('checkConditions '.$method->name.' does not fit',(int)$nbproducts_cond,(int)$zip_cond);
+			vmdebug('checkConditions '.$method->shipment_name.' does not fit',(int)$nbproducts_cond,(int)$zip_cond);
 			return FALSE;
 		}
 

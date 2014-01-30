@@ -211,8 +211,7 @@ class calculationHelper {
 			if(!$this->_shopperGroupId) $this->_shopperGroupId = array();
 
 			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
-			//$site = JFactory::getApplication ()->isSite ();
-				
+			$site = JFactory::getApplication ()->isSite ();
 			$shoppergroupmodel->appendShopperGroups($this->_shopperGroupId,$user,$site,$vendorId);
 		}
 	}
@@ -311,11 +310,11 @@ class calculationHelper {
 		$basePriceMargin = $this->roundInternal($this->executeCalculation($this->rules['Marge'], $basePriceShopCurrency));
 		$this->basePrice = $basePriceShopCurrency = $this->productPrices['basePrice'] = !empty($basePriceMargin) ? $basePriceMargin : $basePriceShopCurrency;
 
-		$this->rules['Tax'] = $this->gatherEffectingRulesForProductPrice('Tax', $this->product_tax_id);
-		$this->rules['VatTax'] = $this->gatherEffectingRulesForProductPrice('VatTax', $this->product_tax_id);
 
-		$this->rules['DBTax'] = $this->gatherEffectingRulesForProductPrice('DBTax', $this->product_discount_id);
-		$this->rules['DATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
+
+
+
+
 
 		if (!empty($variant)) {
 			$basePriceShopCurrency = $basePriceShopCurrency + doubleval($variant);
@@ -328,13 +327,16 @@ class calculationHelper {
 			$this->productPrices['basePriceVariant'] = $this->productPrices['basePrice'];
 		}
 
-
+		$this->rules['Tax'] = $this->gatherEffectingRulesForProductPrice('Tax', $this->product_tax_id);
 		$this->productPrices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $this->productPrices['basePrice'], true),'basePriceWithTax');
+
+		$this->rules['VatTax'] = $this->gatherEffectingRulesForProductPrice('VatTax', $this->product_tax_id);
 		if(!empty($this->rules['VatTax'])){
 			$price = !empty($this->productPrices['basePriceWithTax']) ? $this->productPrices['basePriceWithTax'] : $this->productPrices['basePrice'];
 			$this->productPrices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['VatTax'], $price,true),'basePriceWithTax');
 		}
 
+		$this->rules['DBTax'] = $this->gatherEffectingRulesForProductPrice('DBTax', $this->product_discount_id);
 		$this->productPrices['discountedPriceWithoutTax'] = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $this->productPrices['basePrice']),'discountedPriceWithoutTax');
 
 		if ($override==-1) {
@@ -355,6 +357,7 @@ class calculationHelper {
 			$salesPrice = !empty($this->productPrices['salesPrice']) ? $this->productPrices['salesPrice'] : $salesPrice;
 		}
 
+		$this->rules['DATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
 		$this->productPrices['salesPriceWithDiscount'] = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $salesPrice),'salesPriceWithDiscount');
 
 // 		vmdebug('$$override salesPriceWithDiscount',$override,$this->productPrices['salesPriceWithDiscount'],$salesPrice);

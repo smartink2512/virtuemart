@@ -500,7 +500,7 @@ class VirtueMartModelUser extends VmModel {
 		//The constructor sets automatically the right id.
 		$new = ($this->_id < 1);
 		if(empty($this->_id)){
-			$user = JFactory::getUser();
+			$user = new JUser();	//thealmega http://forum.virtuemart.net/index.php?topic=99755.msg393758#msg393758
 		} else {
 			$user = JFactory::getUser($this->_id);
 		}
@@ -1059,7 +1059,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		if($i==$required) $return = -1;
-		vmdebug('my i '.$i.' my data size '.$required,$return,$data);
+		//vmdebug('my i '.$i.' my data size '.$required,$return,$data);
 		if(!$return){
 			VmConfig::loadJLang('com_virtuemart_shoppers', true);
 			foreach($missingFields as $fieldname){

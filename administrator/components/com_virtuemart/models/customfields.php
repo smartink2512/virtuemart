@@ -1127,7 +1127,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$pModel = VmModel::getModel('product');
 					$related = $pModel->getProduct((int)$value,TRUE,TRUE,TRUE,1,FALSE);
 					if(!$related){
-						vmError('related product is missing, maybe unpublished');
+						vmError('related product is missing, maybe unpublished '.$product->product_name.' id: '.$product->virtuemart_product_id);
 						return false;
 					}
 					$thumb ='';

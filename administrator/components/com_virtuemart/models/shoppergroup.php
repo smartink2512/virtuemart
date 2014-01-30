@@ -148,17 +148,16 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 	}
 
-	function appendShopperGroups(&$shopperGroups,$user,$onlyPublished = FALSE,$vendorId=1){
+	function appendShopperGroups(&$shopperGroups,$user,$onlyPublished = FALSE,$vendorId=1,$keepDefault = false){
 
 		$this->mergeSessionSgrps($shopperGroups);
 
-		if(count($shopperGroups)<1){
+		if(count($shopperGroups)<1 or $keepDefault){
 
 			$_defaultShopperGroup = $this->getDefault($user->guest,$onlyPublished,$vendorId);
-			$shopperGroups[] = $_defaultShopperGroup->virtuemart_shoppergroup_id;
-		/*	$this->_db->setQuery('SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
-								WHERE `default`="'.($user->guest+1).'" AND `virtuemart_vendor_id`="' . (int) $vendorId . '"');
-			$this->_shopperGroupId = $this->_db->loadResultArray();*/
+			if(!empty($shopperGroups[$_defaultShopperGroup])){
+				$shopperGroups[] = $_defaultShopperGroup->virtuemart_shoppergroup_id;
+			}
 		}
 		$this->removeSessionSgrps($shopperGroups);
 
