@@ -1214,6 +1214,9 @@ class VirtueMartModelUser extends VmModel {
 						if(empty($data['username'])){
 							$data['username'] = $JUser->username;
 						}
+						if(empty($data['virtuemart_user_id'])){
+							$data['virtuemart_user_id'] = $JUser->id;
+						}
 					}
 				}
 				$data = (object)$data;
@@ -1228,6 +1231,9 @@ class VirtueMartModelUser extends VmModel {
 						}
 						if(empty($data['username'])){
 							$data['username'] = $JUser->username;
+						}
+						if(empty($data['virtuemart_user_id'])){
+							$data['virtuemart_user_id'] = $JUser->id;
 						}
 					$data = (object)$data;
 				} else {
