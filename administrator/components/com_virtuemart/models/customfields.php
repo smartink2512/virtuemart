@@ -312,7 +312,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		$options = array();
 		foreach ($field_types as $optionName=> $langkey) {
-			$options[] = JHTML::_ ('select.option', $optionName, JText::_ ($langkey));
+			$options[] = JHTML::_ ('select.option', $optionName, vmText::_ ($langkey));
 		}
 		return $options;
 	}
@@ -327,7 +327,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	private function displayRow ($descr, $name, $readonly = '') {
 
 		$html = '<tr>
-		<td class="labelcell">' . JText::_ ($descr) . '</td>
+		<td class="labelcell">' . vmText::_ ($descr) . '</td>
 		<td> <input type="text" ' . $readonly . 'class="inputbox ' . $readonly . '" name="' . $name . '" size="70" value="' . $this->$name . '" /></td>
 	</tr>';
 		return $html;
@@ -400,7 +400,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			return '(' . $childcustom . ')';
 		}
 		else {
-			return JText::_ ('COM_VIRTUEMART_CUSTOM_NO_PARENT_RELATION');
+			return vmText::_ ('COM_VIRTUEMART_CUSTOM_NO_PARENT_RELATION');
 		}
 	}
 
@@ -566,17 +566,17 @@ class VirtueMartModelCustomfields extends VmModel {
 					if(!isset($field->parentOrderable)) $field->parentOrderable = 0;
 					//vmdebug('displayProductCustomfieldFE',$field);
 					if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-					$html = JText::_('COM_VIRTUEMART_CUSTOM_WP').VmHTML::checkbox('field[' . $row . '][withParent]',$field->withParent,1,0,'').'<br />';
-					$html .= JText::_('COM_VIRTUEMART_CUSTOM_PO').VmHTML::checkbox('field[' . $row . '][parentOrderable]',$field->parentOrderable,1,0,'');
+					$html = vmText::_('COM_VIRTUEMART_CUSTOM_WP').VmHTML::checkbox('field[' . $row . '][withParent]',$field->withParent,1,0,'').'<br />';
+					$html .= vmText::_('COM_VIRTUEMART_CUSTOM_PO').VmHTML::checkbox('field[' . $row . '][parentOrderable]',$field->parentOrderable,1,0,'');
 
 					$options = array();
-// 					$options[] = array( 'value' => 'product_name' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME')); Is anyway displayed there
-					$options[] = array('value' => 'product_sku', 'text' => JText::_ ('COM_VIRTUEMART_PRODUCT_SKU'));
-					$options[] = array('value' => 'slug', 'text' => JText::_ ('COM_VIRTUEMART_PRODUCT_ALIAS'));
-					$options[] = array('value' => 'product_length', 'text' => JText::_ ('COM_VIRTUEMART_PRODUCT_LENGTH'));
-					$options[] = array('value' => 'product_width', 'text' => JText::_ ('COM_VIRTUEMART_PRODUCT_WIDTH'));
-					$options[] = array('value' => 'product_height', 'text' => JText::_ ('COM_VIRTUEMART_PRODUCT_HEIGHT'));
-					$options[] = array('value' => 'product_weight', 'text' => JText::_ ('COM_VIRTUEMART_PRODUCT_WEIGHT'));
+// 					$options[] = array( 'value' => 'product_name' ,'text' =>vmText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME')); Is anyway displayed there
+					$options[] = array('value' => 'product_sku', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_SKU'));
+					$options[] = array('value' => 'slug', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_ALIAS'));
+					$options[] = array('value' => 'product_length', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_LENGTH'));
+					$options[] = array('value' => 'product_width', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_WIDTH'));
+					$options[] = array('value' => 'product_height', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_HEIGHT'));
+					$options[] = array('value' => 'product_weight', 'text' => vmText::_ ('COM_VIRTUEMART_PRODUCT_WEIGHT'));
 
 					$html .= JHTML::_ ('select.genericlist', $options, 'field[' . $row . '][custom_value]', '', 'value', 'text', $field->custom_value) . '</td><td>' . $priceInput;
 					return $html;
@@ -721,12 +721,12 @@ class VirtueMartModelCustomfields extends VmModel {
 				   $this->_db->setQuery($q);
 				   if ($child = $this->_db->loadObject()) {
 				   $html .= JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$field->custom_value), $child->text.' ('.$field->custom_value.')', array ('title' => $child->text ));
-				   $html .= ' '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK').':'.$child->product_in_stock ;
+				   $html .= ' '.vmText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK').':'.$child->product_in_stock ;
 				   $html .= '<input type="hidden" value="'.$child->virtuemart_product_id.'" name="field['.$row.'][custom_value]" /></div><div>'.$priceInput;
 				   return $html;
 				   //					return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" />';
 				   }
-				   else return JText::_('COM_VIRTUEMART_CUSTOM_NO_CHILD_PRODUCT');
+				   else return vmText::_('COM_VIRTUEMART_CUSTOM_NO_CHILD_PRODUCT');
 				   break;*/
 			}
 
@@ -856,7 +856,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 		}
 
-		//$free = JText::_ ('COM_VIRTUEMART_CART_PRICE_FREE');
+		//$free = vmText::_ ('COM_VIRTUEMART_CART_PRICE_FREE');
 		// render select list
 		foreach ($groups as $group) {
 
@@ -883,7 +883,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$default = current ($group->options);
 				foreach ($group->options as $productCustom) {
 					$price = self::_getCustomPrice($productCustom->custom_price, $currency, $calculator);
-					$productCustom->text = JText::_($productCustom->custom_value) . ' ' . $price;
+					$productCustom->text = vmText::_($productCustom->custom_value) . ' ' . $price;
 				}
 				$group->display = VmHTML::select ('customPrice[' . $row . '][' . $group->virtuemart_custom_id . ']', $group->options, $default->custom_value, '', 'virtuemart_customfield_id', 'text', FALSE, false);
 			}
@@ -913,7 +913,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						//	$group->display .= '<input type="hidden" value="' . $k . '" name="customPrice[' . $row . '][' . $group->virtuemart_custom_id . ']" /> ';
 							$group->display .= '<input type="hidden" value="' . $productCustom->virtuemart_customfield_id . '" name="customPrice[' . $row . '][' . $productCustom->virtuemart_custom_id . ']" /> ';
 							if (!empty($currency->_priceConfig['variantModification'][0]) and $price !== '') {
-								$group->display .= '<div class="price-plugin">' . JText::_ ('COM_VIRTUEMART_CART_PRICE') . '<span class="price-plugin">' . $price . '</span></div>';
+								$group->display .= '<div class="price-plugin">' . vmText::_ ('COM_VIRTUEMART_CART_PRICE') . '<span class="price-plugin">' . $price . '</span></div>';
 							}
 							$row++;
 						}
@@ -925,9 +925,9 @@ class VirtueMartModelCustomfields extends VmModel {
 								$price = self::_getCustomPrice($productCustom->custom_price, $currency, $calculator);
 								$productCustom->text = $productCustom->custom_value . ' ' . $price;
 
-								$group->display .= '<input type="text" value="' . JText::_ ($productCustom->custom_value) . '" name="customPrice[' . $row . '][' . $group->virtuemart_custom_id . '][' . $productCustom->value . ']" /> ';
+								$group->display .= '<input type="text" value="' . vmText::_ ($productCustom->custom_value) . '" name="customPrice[' . $row . '][' . $group->virtuemart_custom_id . '][' . $productCustom->value . ']" /> ';
 								if (!empty($currency->_priceConfig['variantModification'][0]) and $price !== '') {
-									$group->display .= '<div class="price-plugin">' . JText::_ ('COM_VIRTUEMART_CART_PRICE') . '<span class="price-plugin">' . $price . '</span></div>';
+									$group->display .= '<div class="price-plugin">' . vmText::_ ('COM_VIRTUEMART_CART_PRICE') . '<span class="price-plugin">' . $price . '</span></div>';
 								}
 							}
 						}
@@ -986,7 +986,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 		}
 		else {
-			$price = ($customPrice === '') ? '' :  JText::_ ('COM_VIRTUEMART_CART_PRICE_FREE');
+			$price = ($customPrice === '') ? '' :  vmText::_ ('COM_VIRTUEMART_CART_PRICE_FREE');
 		}
 		return $price;
 	}
@@ -1093,16 +1093,16 @@ class VirtueMartModelCustomfields extends VmModel {
 				/* variants*/
 				case 'V':
 					if ($price == 0)
-						$price = JText::_ ('COM_VIRTUEMART_CART_PRICE_FREE');
+						$price = vmText::_ ('COM_VIRTUEMART_CART_PRICE_FREE');
 
 					/* Loads the product price details */
-					return '<input type="text" value="' . JText::_ ($value) . '" name="field[' . $row . '][custom_value]" /> ' . JText::_ ('COM_VIRTUEMART_CART_PRICE') . $price . ' ';
+					return '<input type="text" value="' . vmText::_ ($value) . '" name="field[' . $row . '][custom_value]" /> ' . vmText::_ ('COM_VIRTUEMART_CART_PRICE') . $price . ' ';
 					break;
 				/*Date variant*/
 				case 'D':
 					return '<span class="product_custom_date">' . vmJsApi::date ($value, 'LC1', TRUE) . '</span>'; //vmJsApi::jDate($field->custom_value, 'field['.$row.'][custom_value]','field_'.$row.'_customvalue').$priceInput;
 					break;
-				/* text area or editor No JText, only displayed in BE */
+				/* text area or editor No vmText, only displayed in BE */
 				case 'X':
 				case 'Y':
 					return $value;
@@ -1110,17 +1110,17 @@ class VirtueMartModelCustomfields extends VmModel {
 				/* string or integer */
 				case 'S':
 				case 'I':
-					return JText::_ ($value);
+					return vmText::_ ($value);
 					break;
 				/* bool */
 				case 'B':
 					if ($value == 0)
-						return JText::_ ('COM_VIRTUEMART_NO');
-					return JText::_ ('COM_VIRTUEMART_YES');
+						return vmText::_ ('COM_VIRTUEMART_NO');
+					return vmText::_ ('COM_VIRTUEMART_YES');
 					break;
 				/* parent */
 				case 'P':
-					return '<span class="product_custom_parent">' . JText::_ ($value) . '</span>';
+					return '<span class="product_custom_parent">' . vmText::_ ($value) . '</span>';
 					break;
 				/* related */
 				case 'R':
@@ -1160,7 +1160,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						  * this have no direct display , used for stockable product
 						 */
 				case 'G':
-					return ''; //'<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
+					return ''; //'<input type="text" value="'.vmText::_($value).'" name="field['.$row.'][custom_value]" /> '.vmText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
 					break;
 					break;
 			}
@@ -1236,7 +1236,7 @@ class VirtueMartModelCustomfields extends VmModel {
 							$value = self::displayCustomMedia ($productCustom->custom_value);
 						}
 						elseif (($productCustom->field_type == "S")) {
-							// 					q	$html .= $productCustom->custom_title.' '.JText::_($productCustom->custom_value);
+							// 					q	$html .= $productCustom->custom_title.' '.vmText::_($productCustom->custom_value);
 							$value = $productCustom->custom_value;
 						}
 						else {

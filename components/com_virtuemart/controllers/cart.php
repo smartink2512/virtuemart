@@ -247,9 +247,10 @@ class VirtueMartControllerCart extends JController {
 	public function setshipment() {
 
 		/* Get the shipment ID from the cart */
-		$virtuemart_shipmentmethod_id = JRequest::getInt('virtuemart_shipmentmethod_id', '0');
+
 		$cart = VirtueMartCart::getCart();
 		if ($cart) {
+			$virtuemart_shipmentmethod_id = JRequest::getInt('virtuemart_shipmentmethod_id', $cart->virtuemart_shipmentmethod_id);
 			//Now set the shipment ID into the cart
 			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmshipment');
@@ -310,7 +311,7 @@ class VirtueMartControllerCart extends JController {
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			//Some Paymentmethods needs extra Information like
-			$virtuemart_paymentmethod_id = JRequest::getInt('virtuemart_paymentmethod_id', '0');
+			$virtuemart_paymentmethod_id = JRequest::getInt('virtuemart_paymentmethod_id', $cart->virtuemart_paymentmethod_id);
 			$cart->setPaymentMethod($virtuemart_paymentmethod_id);
 
 			//Add a hook here for other payment methods, checking the data of the choosed plugin

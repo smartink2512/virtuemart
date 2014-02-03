@@ -32,26 +32,41 @@ $i=0;
         <td width="50%">
 			<table width="100%" class="adminform">
 				<tr class="row<?php echo $i?>">
-					<th >
+					<th>
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PUBLISH') ?>
 					</th>
-					<td >
+					<td>
 						<?php echo  VmHTML::checkbox('published', $this->product->published); ?>
 					</td>
 					<th style="text-align:right;">
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?></div>
                     </th>
-                    <td >
+                    <td>
 						<?php echo VmHTML::checkbox('product_special', $this->product->product_special); ?>
                     </td>
 				</tr>
 				<?php $i = 1 - $i; ?>
 				<tr class="row<?php echo $i?>">
-					<th >
+					<th>
 						 <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SKU') ?>
 					</th>
 					<td  height="2" colspan="3" >
 						<input type="text" class="inputbox" name="product_sku" id="product_sku" value="<?php echo $this->product->product_sku; ?>" size="32" maxlength="64" />
+					</td>
+				</tr>
+				<?php $i = 1 - $i; ?>
+				<tr class="row<?php echo $i?>">
+					<th>
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_GTIN') ?>
+					</th>
+					<td height="2" >
+						<input type="text" class="inputbox" name="product_gtin" id="product_gtin" value="<?php echo $this->product->product_gtin; ?>" size="32" maxlength="64" />
+					</td>
+					<td>
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_MPN') ?>
+					</td>
+					<td height="2" >
+						<input type="text" class="inputbox" name="product_mpn" id="product_mpn" value="<?php echo $this->product->product_mpn; ?>" size="32" maxlength="64" />
 					</td>
 				</tr>
 				<?php $i = 1 - $i; ?>

@@ -155,7 +155,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 		if(count($shopperGroups)<1 or $keepDefault){
 
 			$_defaultShopperGroup = $this->getDefault($user->guest,$onlyPublished,$vendorId);
-			if(!empty($shopperGroups[$_defaultShopperGroup])){
+			if(!in_array($_defaultShopperGroup->virtuemart_shoppergroup_id,$shopperGroups)){
 				$shopperGroups[] = $_defaultShopperGroup->virtuemart_shoppergroup_id;
 			}
 		}
