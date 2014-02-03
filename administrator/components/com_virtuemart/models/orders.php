@@ -1951,7 +1951,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		if(!file_exists($invoice_name_src)){
 			// may be it was already deleted when changing order items
-			$data['invoice_number'] = "";
+			$data['invoice_number'] = $data['invoice_number'].' not found.';
 		} else {
 			$date = date("Ymd");
 			$data['invoice_number'] = $data['invoice_number'].'_'.$date;

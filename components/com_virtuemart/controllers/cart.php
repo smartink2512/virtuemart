@@ -426,7 +426,7 @@ class VirtueMartControllerCart extends JController {
 	 *
 	 */
 	public function checkout() {
-		vmdebug('checkout my post, get and so on',$_POST,$_GET);
+		//vmdebug('checkout my post, get and so on',$_POST,$_GET);
 
 		$cart = VirtueMartCart::getCart();
 		$cart->getFilterCustomerComment();

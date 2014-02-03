@@ -1287,7 +1287,7 @@ class calculationHelper {
 		// check if there is only one possible shipment method
 
 		if (empty($cart->virtuemart_shipmentmethod_id)){
-			$cart->CheckAutomaticSelectedShipment($cart->cartPrices, $checkAutomaticSelected);
+			$cart->CheckAutomaticSelectedShipment($this->_cartPrices, $checkAutomaticSelected);
 			if (empty($cart->virtuemart_shipmentmethod_id)) return;
 		}
 
