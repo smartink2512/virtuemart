@@ -444,6 +444,26 @@ class VirtueMartModelConfig extends JModel {
 		}
 	}
 
+	public function checkVirtuemartInstalled(){
+
+		$db = JFactory::getDBO();
+		$query = 'SHOW TABLES LIKE "'.$db->getPrefix().'virtuemart%"';
+		$db->setQuery($query);
+		$configTable = $db->loadResult();
+		$err = $db->getErrorMsg();
+
+		if(!empty($err) or !$configTable or count($configTable)<2){
+			$app = JFactory::getApplication();
+			if($app->isSite()){
+				$app->redirect(JURI::root(true).'/administrator/index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
+			} else {
+				$app->redirect('index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
+			}
+
+		}
+		return true;
+	}
+
 	/**
 	 * Dangerous tools get disabled after execution an operation which needed that rights.
 	 * This is the function actually doing it.

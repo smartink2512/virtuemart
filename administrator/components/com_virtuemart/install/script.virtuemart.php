@@ -53,7 +53,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		public function checkIfUpdate(){
 
 			$update = false;
-			$this->_db = JFactory::getDBO();
+			if(empty($this->_db)) $this->_db = JFactory::getDBO();
 			$q = 'SHOW TABLES LIKE "%virtuemart_adminmenuentries%"'; //=>jos_virtuemart_shipment_plg_weight_countries
 			$this->_db->setQuery($q);
 			if($this->_db->loadResult()){
@@ -211,7 +211,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$cache = JFactory::getCache();
 			$cache->clean();
 
-			$this->_db = JFactory::getDBO();
+			if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
 			if(empty($this->path)) $this->path = JPATH_VM_ADMINISTRATOR;
 
@@ -536,14 +536,15 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 		private function changeShoppergroupDataSetAnonShopperToOne(){
 
+			if(empty($this->_db))  $this->_db = JFactory::getDBO();
 			$q = 'SELECT * FROM `#__virtuemart_shoppergroups` WHERE virtuemart_shoppergroup_id = "1" ';
 			$this->_db->setQuery($q);
 			$sgroup = $this->_db->loadAssoc();
 
 			if($sgroup['default']!=2){
 				if(!class_exists('TableShoppergroups')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'shoppergroups.php');
-				$db = JFactory::getDBO();
-				$table = new TableShoppergroups($db);
+
+				$table = new TableShoppergroups($this->_db);
 				$stdgroup = null;
 				$stdgroup = array('virtuemart_shoppergroup_id' => 1,
 									'virtuemart_vendor_id'	=> 1,

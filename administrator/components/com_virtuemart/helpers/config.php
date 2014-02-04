@@ -808,18 +808,28 @@ class VmConfig {
 			$configTable = $db->loadResult();/*/
 // 		self::$_debug = true;
 
-		if(empty($configTable)){
-			self::$_jpConfig->installVMconfig();
+		$freshInstall = JRequest::getInt('install',false);
+		if(empty($configTable) or $freshInstall){
+			if(!$freshInstall){
+				$installed = VirtueMartModelConfig::checkVirtuemartInstalled();
+				if($installed){
+					self::$_jpConfig->installVMconfig();
+				}
+			} else {
+				self::$_jpConfig->installVMconfig($freshInstall);
+			}
+
 		}
 
 		$app = JFactory::getApplication();
 		$install = 'no';
+
 		if(empty(self::$_jpConfig->_raw)){
 			$query = ' SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1";';
 			$db->setQuery($query);
 			self::$_jpConfig->_raw = $db->loadResult();
 			if(empty(self::$_jpConfig->_raw)){
-				if(self::installVMconfig()){
+				if(self::installVMconfig($freshInstall)){
 					$install = 'yes';
 					$db->setQuery($query);
 					self::$_jpConfig->_raw = $db->loadResult();
@@ -1088,12 +1098,18 @@ class VmConfig {
 	 * @return Boolean; true on success, false otherwise
 	 * @author Oscar van Eijk
 	 */
-	public function installVMconfig($_section = 'config'){
+	public function installVMconfig($freshInstall=false){
 
-		$_value = self::readConfigFile(FALSE);
+		$_value = self::readConfigFile(FALSE,$freshInstall);
 
 		if (!$_value) {
 			return FALSE;
+		}
+		$_value = join('|', $_value);
+		self::$_jpConfig->_raw = $_value;
+
+		if($freshInstall){
+			return true;
 		}
 
 		$qry = self::$_jpConfig->getCreateConfigTableQuery();
@@ -1110,21 +1126,22 @@ class VmConfig {
 			$_db->query();
 		}
 
-
-		$_value = join('|', $_value);
 		$qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES ('1', '$_value')";
 
-		self::$_jpConfig->_raw = $_value;
-
-		$_db->setQuery($qry);
-		if (!$_db->query()) {
-			JError::raiseWarning(1, 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE));
-			echo 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE);
-			die;
-		}else {
-			//vmdebug('Config installed file, store values '.$_value);
-			return TRUE;
+		if(!$freshInstall){
+			$_db->setQuery($qry);
+			if (!$_db->query()) {
+				JError::raiseWarning(1, 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE));
+				echo 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(TRUE);
+				die;
+			}else {
+				//vmdebug('Config installed file, store values '.$_value);
+				return TRUE;
+			}
+		} else {
+			return false;
 		}
+
 
 	}
 
@@ -1133,7 +1150,7 @@ class VmConfig {
 	 * @author Oscar van Eijk
 	 * @author Max Milbers
 	 */
-	static function readConfigFile($returnDangerousTools){
+	static function readConfigFile($returnDangerousTools,$freshInstall = false){
 
 		$_datafile = JPATH_VM_ADMINISTRATOR.DS.'virtuemart.cfg';
 		if (!file_exists($_datafile)) {
@@ -1193,14 +1210,22 @@ class VmConfig {
 						$_line = $pair[0].'='.base64_encode(serialize($pair[1]));
 					}
 
-					if($returnDangerousTools && $pair[0] == 'dangeroustools' ){
-						vmdebug('dangeroustools'.$pair[1]);
-						if ($pair[1] == "0") {
-							return FALSE;
+					if(($freshInstall or $returnDangerousTools) && $pair[0] == 'dangeroustools' ){
+
+						if($returnDangerousTools){
+							if ($pair[1] == "0") {
+								return FALSE;
+							}
+							else {
+								return TRUE;
+							}
 						}
-						else {
-							return TRUE;
+						if($freshInstall){
+							vmdebug('$freshInstall');
+							$pair[1]="1";
+							$_line = $pair[0].'='.serialize($pair[1]);
 						}
+						vmdebug('dangeroustools '.$pair[1]);
 					}
 
 				} else {

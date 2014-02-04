@@ -291,6 +291,56 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->setRedirect($this->redirectPath, $msg);
 	}
 
+	function installCompleteSamples(){
+		$this->installComplete(true);
+	}
+
+	function installComplete($sample=false){
+
+		$data = JRequest::get('get');
+		JRequest::setVar($data['token'], '1', 'post');
+		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
+		$this->checkPermissionForTools();
+
+		if(VmConfig::get('dangeroustools', true)){
+
+			if(!class_exists('com_virtuemartInstallerScript')) require(JPATH_VM_ADMINISTRATOR . DS . 'install' . DS . 'script.virtuemart.php');
+			$updater = new com_virtuemartInstallerScript();
+			$updater->install(true);
+
+			$model = $this->getModel('updatesMigration');
+
+			$sid = $model->setStoreOwner();
+			$model->setUserToPermissionGroup($sid);
+
+			if($sample) $model->installSampleData($sid);
+
+			$msg = '';
+			if(empty($errors)){
+				$msg = 'System succesfull restored and sampledata installed, user id of the mainvendor is ' . $sid;
+			} else {
+				foreach($errors as $error){
+					$msg .= ( $error) . '<br />';
+				}
+			}
+
+			if(!class_exists('com_virtuemart_allinoneInstallerScript')) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart_allinone' . DS . 'script.vmallinone.php');
+			$updater = new com_virtuemart_allinoneInstallerScript();
+
+			$updater->vmInstall(true);
+			VmConfig::installVMconfig();
+			//$this->setDangerousToolsOff();
+		}else {
+			$msg = $this->_getMsgDangerousTools();
+		}
+
+		$this->setRedirect($this->redirectPath, $msg);
+	}
+
+	/**
+	 * This is executing the update table commands to adjust tables to the latest layout
+	 * @author Max Milbers
+	 */
 	function updateDatabase(){
 
 		$data = JRequest::get('get');
@@ -548,31 +598,6 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$session->set('migration_task', JRequest::getString('task',''), 'vm');
 		$session->set('migration_default_category_browse', JRequest::getString('migration_default_category_browse',''), 'vm');
 		$session->set('migration_default_category_fly', JRequest::getString('migration_default_category_fly',''), 'vm');
-	}
-
-
-
-	/**
-	 * This is executing the update table commands to adjust tables to the latest layout
-	 *
-	 * @author Max Milbers
-	 */
-	function updateTable(){
-
-		$db = JFactory::getDBO();
-		$query = 'SHOW TABLES LIKE "%virtuemart_adminmenuentries"';
-
-		$db->setQuery($query);
-		$result = $db->loadResult();
-
-		$update = false;
-		if (!empty($result) ) {
-			$update = true;
-// 			vmdebug('is an update',$result);
-		}
-
-		$this->setRedirect($this->redirectPath, 'is an update '.$update);
-
 	}
 
 

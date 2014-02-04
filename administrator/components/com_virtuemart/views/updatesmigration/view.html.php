@@ -47,36 +47,14 @@ class VirtuemartViewUpdatesMigration extends VmView {
 		$this->assignRef('downloadbutton_style', $downloadbutton_style);
 		$this->assignRef('latestVersion', $latestVersion);
 
-		$analyse =$this->analyseTables();
-		$this->assignRef('analyse', $analyse);
+		$freshInstall = JRequest::getInt('install',0);
+		if($freshInstall){
+			$this->setLayout('install');
+		}
 
 		parent::display($tpl);
 	}
 
-	function analyseTables() {
-/*		$db = JFactory::getDBO();
-		$config = JFactory::getConfig();
 
-		$prefix = $config->getValue('config.dbprefix').'virtuemart_%';
-		$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
-		if (!$tables = $db->loadResultArray()) {
-			vmError ($db->getErrorMsg());
-			return false;
-		}
-		$html ='<pre>';
-		$app = JFactory::getApplication();
-// 		foreach ($tables as $table) {
-
-// 			$db->setQuery('SELECT * FROM '.$table.' PROCEDURE ANALYSE(); ');
-			$db->setQuery('SELECT * FROM #__virtuemart_countries PROCEDURE ANALYSE(); ');
-
-			if($db->query()){
-				vmdebug('Analyse',$db->loadObjectList());
-			} else {
-				$app->enqueueMessage('Error drop virtuemart table ' . $db->getErrorMsg());
-			}
-// 		}
-		return $html.'</pre>';*/
-	}
 }
 // pure php no closing tag

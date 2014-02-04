@@ -22,9 +22,9 @@ if ($memory_limit < 128) {
 }
 
 // hack to prevent defining these twice in 1.6 installation
-if (!defined ('_VM_SCRIPT_INCLUDED')) {
+if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
-	define('_VM_SCRIPT_INCLUDED', TRUE);
+	define('_VM_AIO_SCRIPT_INCLUDED', TRUE);
 
 	class com_virtuemart_allinoneInstallerScript {
 
@@ -45,7 +45,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->vmInstall ();
 		}
 
-		public function vmInstall () {
+		public function vmInstall ($dontMove=0) {
 
 			jimport ('joomla.filesystem.file');
 			jimport ('joomla.installer.installer');
@@ -55,7 +55,12 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmshipment');
 
-			$this->path = JInstaller::getInstance ()->getPath ('extension_administrator');
+			if(empty($dontMove)){
+				$this->path = JInstaller::getInstance ()->getPath ('extension_administrator');
+			} else {
+				$this->path = JPATH_ROOT;
+			}
+			$this->dontMove = $dontMove;
 
 			$this->updateShipperToShipment ();
 			$this->installPlugin ('Standard', 'plugin', 'standard', 'vmpayment');
@@ -249,6 +254,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 			if ($task != 'updateDatabase') {
 				$data = array();
+
 				$src = $this->path . DS . 'plugins' . DS . $group . DS . $element;
 
 				if ($createJPluginTable) {
@@ -368,7 +374,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 			if (class_exists ('VmConfig')) {
 				$pluginfilename = $dst . DS . $element . '.php';
-				require ($pluginfilename);
+				require_once ($pluginfilename);	//require_once cause is more failproof and is just for install
 
 				//plgVmpaymentPaypal
 				$pluginClassname = 'plg' . ucfirst ($group) . ucfirst ($element);
@@ -667,6 +673,7 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 		 */
 		private function recurse_copy ($src, $dst) {
 
+			if($this->dontMove) return true;
 			$dir = opendir ($src);
 			$this->createIndexFolder ($dst);
 
@@ -725,21 +732,21 @@ if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 	}
 
+	if (!defined ('_VM_SCRIPT_INCLUDED')) {
+		// PLZ look in #vminstall.php# to add your plugin and module
+		function com_install () {
 
-	// PLZ look in #vminstall.php# to add your plugin and module
-	function com_install () {
-
-		if (!version_compare (JVERSION, '1.6.0', 'ge')) {
-			$vmInstall = new com_virtuemart_allinoneInstallerScript();
-			$vmInstall->vmInstall ();
+			if (!version_compare (JVERSION, '1.6.0', 'ge')) {
+				$vmInstall = new com_virtuemart_allinoneInstallerScript();
+				$vmInstall->vmInstall ();
+			}
+			return TRUE;
 		}
-		return TRUE;
+
+		function com_uninstall () {
+
+			return TRUE;
+		}
 	}
-
-	function com_uninstall () {
-
-		return TRUE;
-	}
-
 } //if defined
 // pure php no tag
