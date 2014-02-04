@@ -93,8 +93,8 @@ class PaypalHelperPayPalApi extends PaypalHelperPaypal {
 		$addressST = ((isset($this->order['details']['ST'])) ? $this->order['details']['ST'] : $this->order['details']['BT']);
 
 		//Ship To
-		$post_variables['SHIPTONAME']	= isset($addressST->first_name) ? $this->truncate($addressST->first_name, 50) : '';
-		$post_variables['SHIPTOSTREET']	= isset($addressST->first_name) ? $this->truncate($addressST->address_1, 60) : '';
+		$post_variables['SHIPTONAME']	=  (isset($addressST->first_name) || isset($addressST->last_name)) ? $this->truncate($addressST->first_name.' '.$addressST->last_name, 50) : '';
+		$post_variables['SHIPTOSTREET']	= isset($addressST->address_1) ? $this->truncate($addressST->address_1, 60) : '';
 		$post_variables['SHIPTOCITY']	= isset($addressST->city) ? $this->truncate($addressST->city, 40) : '';
 		$post_variables['SHIPTOZIP']	= isset($addressST->zip) ? $this->truncate($addressST->zip, 40) : '';
 		$post_variables['SHIPTOSTATE']	= isset($addressST->virtuemart_state_id) ?  ShopFunctions::getStateByID($addressST->virtuemart_state_id, 'state_2_code')  : '';
