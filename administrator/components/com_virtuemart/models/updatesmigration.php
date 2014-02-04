@@ -387,6 +387,11 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		    return false;
 		}
 
+		if(!class_exists('VmConfig')){
+			require_once(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+			VmConfig::loadConfig(false,true);
+		}
+
 		if(!defined('VMLANG')){
 			$params = JComponentHelper::getParams('com_languages');
 			$lang = $params->get('site', 'en-GB');//use default joomla
@@ -409,7 +414,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		foreach ($queries as $query) {
 		    $query = trim($query);
 		    if ($query != '' && $query{0} != '#') {
-		    	if(strpos($query, 'CREATE' )!==false or strpos( $query, 'INSERT INTO')!==false){
+		    	if(strpos($query, 'CREATE' )!==false or strpos( $query, 'INSERT')!==false){
 		    		$query = str_replace('XLANG',$lang,$query);
 		    	}
 			$db->setQuery($query);

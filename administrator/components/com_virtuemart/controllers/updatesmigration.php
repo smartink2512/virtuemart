@@ -282,7 +282,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 					$msg .= ( $error) . '<br />';
 				}
 			}
-
+			VmConfig::installVMconfig();
 			$this->setDangerousToolsOff();
 		}else {
 			$msg = $this->_getMsgDangerousTools();

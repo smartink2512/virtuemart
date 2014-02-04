@@ -870,19 +870,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_prices` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds price records for a product' AUTO_INCREMENT=1 ;
 
 
--- --------------------------------------------------------
---
--- Table structure for table `#__virtuemart_product_relations`
--- is that needed that way?
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_product_relations` (
-  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `virtuemart_product_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `related_products` int(11),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`related_products`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
 
 -- --------------------------------------------------------
 --
