@@ -1315,25 +1315,6 @@ class VirtueMartModelUser extends VmModel {
 		// public function renderMail ($viewName, $recipient, $vars=array(),$controllerName = null)
 		shopFunctionsF::renderMail('user', $user->get('email'), $vars);
 
-		//get all super administrator
-		$query = 'SELECT name, email, sendEmail' .
-				' FROM #__users' .
-				' WHERE LOWER( usertype ) = "super administrator"';
-		$this->_db->setQuery( $query );
-		$rows = $this->_db->loadObjectList();
-
-		$vars['doVendor']=false;
-		// get superadministrators id
-		foreach ( $rows as $row )
-		{
-			if ($row->sendEmail)
-			{
-				//$message2 = sprintf ( JText::_( 'COM_VIRTUEMART_SEND_MSG_ADMIN' ), $row->name, $sitename, $name, $email, $username);
-				//$message2 = html_entity_decode($message2, ENT_QUOTES);
-				//JUtility::sendMail($mailfrom, $fromname, $row->email, $subject2, $message2);
-				//shopFunctionsF::renderMail('user', $row->email, $vars);
-			}
-		}
 
 
 	}
