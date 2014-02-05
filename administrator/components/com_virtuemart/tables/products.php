@@ -39,6 +39,9 @@ class TableProducts extends VmTable {
 	var $product_parent_id		= 0;
 	/** @var string File title */
 	var $product_sku= null;
+	var $product_gtin = null;
+	var $product_mpn = null;
+
     /** @var string Name of the product */
 	var $product_name	= '';
 	var $slug			= '';

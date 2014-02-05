@@ -474,8 +474,8 @@ class VirtueMartModelCustomfields extends VmModel {
 					//Note by Jeremy Magne (Daycounts) 2013-08-31
 					//Previously the the product model is loaded but we need to ensure the correct product id is set because the getUncategorizedChildren does not get the product id as parameter.
 					//In case the product model was previously loaded, by a related product for example, this would generate wrong uncategorized children list
-					$productModel->setId($product->virtuemart_product_id);
-
+					$productModel->setId($customfield->virtuemart_product_id);
+					//vmdebug('Type A, my customfield',$customfield);
 					//Todo preselection as dropdown of children
 					//Note by Max Milbers: This is not necessary, in this case it is better to unpublish the parent and to give the child which should be preselected a category
 					//Or it is withParent, in that case there exists the case, that a parent should be used as a kind of mini category and not be orderable.
@@ -633,9 +633,9 @@ class VirtueMartModelCustomfields extends VmModel {
 						break;
 					}
 					$pModel = VmModel::getModel('product');
-					$related = $pModel->getProduct((int)$customfield->customfield_value,FALSE,FALSE,FALSE,1);
-					//$thumb ='';
-					//$tmp = get_object_vars($related);
+					$related = $pModel->getProduct((int)$customfield->customfield_value,FALSE,FALSE,TRUE,1);
+
+					if(!$related) break;
 
 					if (!empty($related->virtuemart_media_id[0])) {
 						$thumb = $this->displayCustomMedia ($related->virtuemart_media_id[0]).' ';

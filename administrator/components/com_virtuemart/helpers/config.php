@@ -645,38 +645,47 @@ class VmConfig {
 
 		if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR .'/models/config.php');
 		$configTable  = VirtueMartModelConfig::checkConfigTableExists();
-		if(empty($configTable)){
-			VirtueMartModelConfig::installVMconfigTable();
+
+		$freshInstall = vmRequest::getInt('install',0);
+		if(empty($configTable) and $freshInstall==0){
+			VirtueMartModelConfig::checkVirtuemartInstalled();
 		}
 
 		$db = JFactory::getDBO();
-
 		$app = JFactory::getApplication();
 
 		$store = false;
-		if(empty(self::$_jpConfig->_raw)){
+		if(empty(self::$_jpConfig->_raw) and !$freshInstall){
 
 			$query = ' SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1";';
 			$db->setQuery($query);
 			self::$_jpConfig->_raw = $db->loadResult();
-
-			if(empty(self::$_jpConfig->_raw)){
-				$_value = VirtueMartModelConfig::readConfigFile(FALSE);
-				if (!$_value) {
-					vmError('Serious error, config file could not be filled with data');
-					return FALSE;
-				}
-				$_value = join('|', $_value);
-				VmConfig::$_jpConfig->_raw = $_value;
-				$store = true;
-			}
 		}
+
+		if(empty(self::$_jpConfig->_raw)){
+			$_value = VirtueMartModelConfig::readConfigFile(false,$freshInstall);
+			if (!$_value) {
+				vmError('Serious error, config file could not be filled with data');
+				return FALSE;
+			}
+			$_value = join('|', $_value);
+			VmConfig::$_jpConfig->_raw = $_value;
+			$store = true;
+		}
+
 
 		if (!empty(self::$_jpConfig->_raw)) {
 
 			VmConfig::$_jpConfig->setParams(VmConfig::$_jpConfig->_raw);
 
-			if($store){
+			if($freshInstall==0 and empty($configTable)){
+				VirtueMartModelConfig::installVMconfigTable();
+				$configTable = true;
+			}
+
+			if($store and !empty($configTable)){
+				vmdebug('I wanna store and no fresh install');
+
 				$confData = array();
 				$confData['virtuemart_config_id'] = 1;
 				$confData['config'] = VmConfig::$_jpConfig->toString();
@@ -741,6 +750,7 @@ class VmConfig {
 		self::$vmlangTag = $siteLang;
 		self::$vmlang = strtolower(strtr($siteLang,'-','_'));
 		vmdebug('self::$vmlang '.self::$vmlang);
+		defined('VMLANG') or define('VMLANG', self::$vmlang);	//Fallback
 
 		return self::$vmlang;
  	}

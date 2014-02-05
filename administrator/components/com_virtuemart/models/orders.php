@@ -965,7 +965,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		// new product is statut N
 		$StatutWhiteList['N'] = Array ( 'order_status_id' => 0 , 'order_status_code' => 'N' , 'order_stock_handle' => 'A');
 		if(!array_key_exists($oldState,$StatutWhiteList) or !array_key_exists($newState,$StatutWhiteList)) {
-			vmError('The workflow for '.$newState.' or  '.$oldState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Can\'t process workflow, contact the shopowner. Status is'.$newState);
+			vmError('The workflow for '.$newState.' or  '.$oldState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Can\'t process workflow, contact the shopowner. Status is '.$newState);
 			return ;
 		}
 		//vmdebug( 'updatestock qt :' , $quantity.' id :'.$productId);
@@ -1934,14 +1934,23 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$invoice_name_src = $path.DS.$invoice_prefix.$data['invoice_number'].'.pdf';
 
 		if(!file_exists($invoice_name_src)){
-			// was already deleted by a previoous change
-			return;
+			// may be it was already deleted when changing order items
+			$data['invoice_number'] = $data['invoice_number'].' not found.';
+		} else {
+			$date = date("Ymd");
+			$data['invoice_number'] = $data['invoice_number'].'_'.$date;
+			$invoice_name_dst = $path.DS.$data['invoice_number'].'.pdf';
+
+			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+			if (!JFile::move($invoice_name_src, $invoice_name_dst)) {
+				vmError ('Could not rename Invoice '.$invoice_name_src.'to '. $invoice_name_dst );
+			}
 		}
 
-		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-		if (!JFile::delete($invoice_name_src )) {
-			vmError ('Could not delete Invoice '.$invoice_name_src  );
-		}
+		$table = $this->getTable('invoices');
+		$table->bindChecknStore($data);
+
+		return true;
 
 	}
 

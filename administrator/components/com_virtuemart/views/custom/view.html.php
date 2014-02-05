@@ -33,8 +33,6 @@ class VirtuemartViewCustom extends VmView {
 	function display($tpl = null) {
 
 		// Load the helper(s)
-
-
 		if (!class_exists('VmHTML'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 		if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
@@ -48,8 +46,7 @@ class VirtuemartViewCustom extends VmView {
 		if ($layoutName == 'edit') {
 			$this->addStandardEditViewCommands();
 			$customPlugin = '';
-			if (!class_exists('vmParameters'))
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
+
 			$custom = $model->getCustom();
 			$customfields = VmModel::getModel('customfields');
 // 			vmdebug('VirtuemartViewCustom',$custom);

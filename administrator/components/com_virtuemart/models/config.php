@@ -30,6 +30,14 @@ defined('_JEXEC') or die('Restricted access');
  */
 class VirtueMartModelConfig extends VmModel {
 
+	function __construct() {
+		parent::__construct();
+		//$this->setMainTable('configs');
+		$this->_cidName = 'id';
+
+	}
+
+
 
 	/**
 	 * Retrieve a list of layouts from the default and chosen templates directory.
@@ -435,6 +443,26 @@ class VirtueMartModelConfig extends VmModel {
 		}
 	}
 
+	public function checkVirtuemartInstalled(){
+
+		$db = JFactory::getDBO();
+		$query = 'SHOW TABLES LIKE "'.$db->getPrefix().'virtuemart%"';
+		$db->setQuery($query);
+		$configTable = $db->loadColumn();
+		$err = $db->getErrorMsg();
+
+		if(!empty($err) or (!$configTable and count($configTable)<2)){
+			$app = JFactory::getApplication();
+			if($app->isSite()){
+				$app->redirect(JURI::root(true).'/administrator/index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
+			} else {
+				$app->redirect('index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
+			}
+
+		}
+		return true;
+	}
+
 	/**
 	 * Creates the config table, if it does not exist
 	 *
@@ -442,12 +470,13 @@ class VirtueMartModelConfig extends VmModel {
 	 * @return Boolean; true on success, false otherwise
 	 * @author Oscar van Eijk
 	 */
-	public function installVMconfigTable(){
+	static public function installVMconfigTable(){
 
 		$qry = self::getCreateConfigTableQuery();
 		$_db = JFactory::getDBO();
 		$_db->setQuery($qry);
 		$_db->execute();
+		return true;
 		vmdebug('installVMconfigTable executed');
 	}
 
@@ -471,7 +500,7 @@ class VirtueMartModelConfig extends VmModel {
 	 * @author Oscar van Eijk
 	 * @author Max Milbers
 	 */
-	static function readConfigFile($returnDangerousTools){
+	static function readConfigFile($returnDangerousTools,$freshInstall=false){
 
 		$_datafile = JPATH_VM_ADMINISTRATOR.DS.'virtuemart.cfg';
 		if (!file_exists($_datafile)) {
@@ -529,14 +558,22 @@ class VirtueMartModelConfig extends VmModel {
 						$_line = $pair[0].'='.base64_encode(serialize($pair[1]));
 					}
 
-					if($returnDangerousTools && $pair[0] == 'dangeroustools' ){
-						vmdebug('dangeroustools'.$pair[1]);
-						if ($pair[1] == "0") {
-							return FALSE;
+					if(($freshInstall or $returnDangerousTools) && $pair[0] == 'dangeroustools' ){
+
+						if($returnDangerousTools){
+							if ($pair[1] == "0") {
+								return FALSE;
+							}
+							else {
+								return TRUE;
+							}
 						}
-						else {
-							return TRUE;
+						if($freshInstall){
+							vmdebug('$freshInstall');
+							$pair[1]="1";
+							$_line = $pair[0].'='.serialize($pair[1]);
 						}
+						vmdebug('dangeroustools '.$pair[1]);
 					}
 
 				} else {

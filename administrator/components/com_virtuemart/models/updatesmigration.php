@@ -430,7 +430,7 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 		$prefix = $config->get('dbprefix').'virtuemart_%';
 		$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
 		if (!$tables = $db->loadColumn()) {
-		    vmError ($db->getErrorMsg());
+			vmInfo ('removeAllVMTables no tables found '.$db->getErrorMsg());
 		    return false;
 		}
 

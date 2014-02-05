@@ -72,8 +72,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$view->assignRef('document', $document);
 
-		vmdebug('checkout my post, get and so on',$_POST,$_GET);
-
 		$cart = VirtueMartCart::getCart();
 		$cart->fromCart = true;
 		$cart->getFilterCustomerComment();
@@ -82,10 +80,10 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart->updateProductCart();
 		$this->setcoupon();
 
-		$virtuemart_shipmentmethod_id = VmRequest::getInt('virtuemart_shipmentmethod_id', 0);
+		$virtuemart_shipmentmethod_id = VmRequest::getInt('virtuemart_shipmentmethod_id', $cart->virtuemart_shipmentmethod_id);
 		$cart->setShipment($virtuemart_shipmentmethod_id);
 
-		$virtuemart_paymentmethod_id = VmRequest::getInt('virtuemart_paymentmethod_id', 0);
+		$virtuemart_paymentmethod_id = VmRequest::getInt('virtuemart_paymentmethod_id', $cart->virtuemart_paymentmethod_id);
 		$cart->setPaymentMethod($virtuemart_paymentmethod_id);
 
 		if($cart && !VmConfig::get('use_as_catalog', 0)){

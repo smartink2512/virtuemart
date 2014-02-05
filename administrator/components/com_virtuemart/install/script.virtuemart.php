@@ -110,7 +110,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * @param object JInstallerComponent parent
 		 * @return boolean True on success
 		 */
-		public function install ($loadVm = true) {
+		public function install ($loadVm = true,$redirect = true) {
 
 			if($loadVm) $this->loadVm();
 
@@ -170,7 +170,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->checkAddDefaultShoppergroups();
 
-			$this->displayFinished(false);
+			$this->displayFinished(false,$redirect);
 
 			//include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
 
@@ -280,7 +280,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->fixOrdersVendorId();
 
 			$this->migrateCustoms();
-			if($loadVm) $this->displayFinished(true);
+			if($loadVm) $this->displayFinished(true,true);
 
 			return true;
 		}
@@ -708,131 +708,53 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 */
 		private function recurse_copy($src,$dst ) {
 
-			$dir = opendir($src);
-			$this->createIndexFolder($dst);
+			$dir = '';
+			if(JFolder::exists($src)){
+				$dir = opendir($src);
+				$this->createIndexFolder($dst);
 
-			if(is_resource($dir)){
-				while(false !== ( $file = readdir($dir)) ) {
-					if (( $file != '.' ) && ( $file != '..' )) {
-						if ( is_dir($src .DS. $file) ) {
-							$this->recurse_copy($src .DS. $file,$dst .DS. $file);
-						}
-						else {
-							if(JFile::exists($dst .DS. $file)){
-								if(!JFile::delete($dst .DS. $file)){
-									$app = JFactory::getApplication();
-									$app -> enqueueMessage('Couldnt delete '.$dst .DS. $file);
-								}
+				if(is_resource($dir)){
+					while(false !== ( $file = readdir($dir)) ) {
+						if (( $file != '.' ) && ( $file != '..' )) {
+							if ( is_dir($src .DS. $file) ) {
+								$this->recurse_copy($src .DS. $file,$dst .DS. $file);
 							}
-							if(!JFile::move($src .DS. $file,$dst .DS. $file)){
-								$app = JFactory::getApplication();
-								$app -> enqueueMessage('Couldnt move '.$src .DS. $file.' to '.$dst .DS. $file);
+							else {
+								if(JFile::exists($dst .DS. $file)){
+									if(!JFile::delete($dst .DS. $file)){
+										$app = JFactory::getApplication();
+										$app -> enqueueMessage('Couldnt delete '.$dst .DS. $file);
+									}
+								}
+								if(!JFile::move($src .DS. $file,$dst .DS. $file)){
+									$app = JFactory::getApplication();
+									$app -> enqueueMessage('Couldnt move '.$src .DS. $file.' to '.$dst .DS. $file);
+								}
 							}
 						}
 					}
+					closedir($dir);
+					if (is_dir($src)) JFolder::delete($src);
+					return true;
 				}
-				closedir($dir);
-				if (is_dir($src)) JFolder::delete($src);
-			} else {
-				$app = JFactory::getApplication();
-				$app -> enqueueMessage('Couldnt read dir '.$dir.' source '.$src);
 			}
+
+			$app = JFactory::getApplication();
+			$app -> enqueueMessage('Couldnt read dir '.$dir.' source '.$src);
 
 		}
 
-		public function displayFinished($update){
+		public function displayFinished($update,$redirect){
 
-			$lang = JFactory::getLanguage();
-			//Load first english files
-			$lang->load('com_virtuemart.sys',JPATH_ADMINISTRATOR,'en_GB',true);
-			$lang->load('com_virtuemart',JPATH_ADMINISTRATOR,'en_GB',true);
+			if(!$redirect) return;
+			if($update){
+				$update = '&update=1';
+			} else {
+				$update = '';
+			}
+			$app = JFactory::getApplication();
+			$app ->redirect('index.php?option=com_virtuemart&view=updatesmigration&layout=insfinished'.$update);
 
-			//load specific language
-			$lang->load('com_virtuemart.sys',JPATH_ADMINISTRATOR,null,true);
-			$lang->load('com_virtuemart',JPATH_ADMINISTRATOR,null,true);
-			?>
-<link
-	rel="stylesheet"
-	href="components/com_virtuemart/assets/css/install.css"
-	type="text/css" />
-<link
-	rel="stylesheet"
-	href="components/com_virtuemart/assets/css/toolbar_images.css"
-	type="text/css" />
-
-<div align="center">
-	<table
-		width="100%"
-		border="0">
-		<tr>
-			<td
-				valign="top"
-				align="center"><a
-				href="http://virtuemart.net"
-				target="_blank"> <img
-					border="0"
-					align="center"
-					src="components/com_virtuemart/assets/images/vm_menulogo.png"
-					alt="Cart" /> </a> <br /> <br />
-				<h2>
-
-				<?php echo vmText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>
-			</td>
-			<td>
-				<h2>
-				<?php
-				if($update){
-					echo vmText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
-					/*					if($this->renewConfigManually){
-						echo '<br />'.vmText::_('When you got an error deleting the virtuemart.cfg file <br />
-					Delete this file manually (administrator/components/com_virtuemart/virtuemart.cfg) and please use
-					"renew config from file" in Tools => Updates/Migration');
-					}*/
-					echo '<br />'.vmText::_('COM_VIRTUEMART_EXTENSION_UPGRADE_REMIND');
-
-				} else {
-					echo vmText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
-				}
-				?>
-				</h2> <br />
-
-				<div id="cpanel">
-
-				<?php
-				if(!$update){
-					?>
-					<div class="icon">
-						<a
-							href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&'.JSession::getFormToken().'=1') ?>">
-							<span class="vmicon48 vm_install_48"></span> <br />
-						<?php echo vmText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
-							</a>
-					</div>
-
-		<?php } ?>
-
-				<div class="icon">
-				<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&task=disableDangerousTools&'.JSession::getFormToken().'=1' ) ?>">
-					<span class="vmicon48 vm_frontpage_48"></span>
-					<br /><?php echo vmText::_('COM_VIRTUEMART_INSTALL_GO_SHOP') ?>
-				</a>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<?php echo vmText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
-			</td>
-		</tr>
-	</table>
-</div>
-
-
-
-
-
-
-<?php
 		}
 
 	}

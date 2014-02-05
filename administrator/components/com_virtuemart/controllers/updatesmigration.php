@@ -266,6 +266,53 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->setRedirect($this->redirectPath, $msg);
 	}
 
+	function installCompleteSamples(){
+		$this->installComplete(true);
+	}
+
+	function installComplete($sample=false){
+
+		$this->checkPermissionForTools();
+
+		if(VmConfig::get('dangeroustools', true)){
+
+			if(!class_exists('com_virtuemartInstallerScript')) require(JPATH_VM_ADMINISTRATOR . DS . 'install' . DS . 'script.virtuemart.php');
+			$updater = new com_virtuemartInstallerScript();
+			$updater->install(true,false);
+
+			$model = $this->getModel('updatesMigration');
+
+			$sid = $model->setStoreOwner();
+			$model->setUserToPermissionGroup($sid);
+
+			if($sample) $model->installSampleData($sid);
+
+			$msg = 'System and sampledata succesfull installed, user id of the mainvendor is ' . $sid;
+
+			if(!class_exists('com_virtuemart_allinoneInstallerScript')) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart_allinone' . DS . 'script.vmallinone.php');
+			$updater = new com_virtuemart_allinoneInstallerScript(false);
+			$updater->vmInstall(true);
+			vmRequest::setVar('install',0);
+
+			$db = JFactory::getDbo();
+			//We set here the home menu item to virtuemart, because it gets overriden by the sampledata of joomla
+			$q = 'UPDATE `#__menu` SET `link`="index.php?option=com_virtuemart&view=virtuemart",`type`="component",`component_id`="10000" WHERE `home`="1" and `language`="*";';
+			$db->setQuery($q);
+			$db->query();
+
+			if(!class_exists('VmConfig')) require_once(JPATH_VM_ADMINISTRATOR .'/models/config.php');
+			VirtueMartModelConfig::installVMconfigTable();
+		}else {
+			$msg = $this->_getMsgDangerousTools();
+		}
+
+		$this->setRedirect('index.php?option=com_virtuemart&view=updatesmigration&layout=insfinished', $msg);
+	}
+
+	/**
+	 * This is executing the update table commands to adjust tables to the latest layout
+	 * @author Max Milbers
+	 */
 	function updateDatabase(){
 
 		VmRequest::vmCheckToken();
@@ -489,7 +536,6 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$updater = new GenericTableUpdater();
 		$result = $updater->reOrderChilds();
 
-		//$msg = 'reOrderDone';
 		$this->setRedirect($this->redirectPath, $result);
 	}
 
@@ -500,31 +546,6 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$session->set('migration_task', VmRequest::getString('task',''), 'vm');
 		$session->set('migration_default_category_browse', VmRequest::getString('migration_default_category_browse',''), 'vm');
 		$session->set('migration_default_category_fly', VmRequest::getString('migration_default_category_fly',''), 'vm');
-	}
-
-
-
-	/**
-	 * This is executing the update table commands to adjust tables to the latest layout
-	 *
-	 * @author Max Milbers
-	 */
-	function updateTable(){
-
-		$db = JFactory::getDBO();
-		$query = 'SHOW TABLES LIKE "%virtuemart_adminmenuentries"';
-
-		$db->setQuery($query);
-		$result = $db->loadResult();
-
-		$update = false;
-		if (!empty($result) ) {
-			$update = true;
-// 			vmdebug('is an update',$result);
-		}
-
-		$this->setRedirect($this->redirectPath, 'is an update '.$update);
-
 	}
 
 

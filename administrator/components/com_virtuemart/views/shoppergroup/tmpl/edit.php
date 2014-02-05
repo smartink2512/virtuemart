@@ -127,6 +127,7 @@ echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'salesPrice', 'COM
 echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'priceWithoutTax', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WOTAX');
 echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'discountAmount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_DISC_AMOUNT');
 echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'taxAmount', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT');
+echo ShopFunctions::writePriceConfigLine($this->shoppergroup, 'unitPrice', 'COM_VIRTUEMART_ADMIN_CFG_PRICE_UNITPRICE');
 ?>
 		</table>
 
