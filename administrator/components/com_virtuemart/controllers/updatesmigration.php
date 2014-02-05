@@ -245,7 +245,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			$model->restoreSystemTablesCompletly();
 
 			$sid = $model->setStoreOwner();
-			$model->setUserToPermissionGroup($sid);
+			//$model->setUserToPermissionGroup($sid);
 
 			if($sample)$model->installSampleData($sid);
 
@@ -281,24 +281,24 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			$updater->install(true,false);
 
 			$model = $this->getModel('updatesMigration');
-
 			$sid = $model->setStoreOwner();
-			$model->setUserToPermissionGroup($sid);
 
-			if($sample) $model->installSampleData($sid);
+
 
 			$msg = 'System and sampledata succesfull installed, user id of the mainvendor is ' . $sid;
 
 			if(!class_exists('com_virtuemart_allinoneInstallerScript')) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart_allinone' . DS . 'script.vmallinone.php');
 			$updater = new com_virtuemart_allinoneInstallerScript(false);
 			$updater->vmInstall(true);
-			vmRequest::setVar('install',0);
+
+			if($sample) $model->installSampleData($sid);
 
 			$db = JFactory::getDbo();
+
 			//We set here the home menu item to virtuemart, because it gets overriden by the sampledata of joomla
-			$q = 'UPDATE `#__menu` SET `link`="index.php?option=com_virtuemart&view=virtuemart",`type`="component",`component_id`="10000" WHERE `home`="1" and `language`="*";';
+			/*$q = 'UPDATE `#__menu` SET `link`="index.php?option=com_virtuemart&view=virtuemart",`type`="component",`component_id`="10000" WHERE `home`="1" and `language`="*";';
 			$db->setQuery($q);
-			$db->query();
+			$db->query();*/
 
 			if(!class_exists('VmConfig')) require_once(JPATH_VM_ADMINISTRATOR .'/models/config.php');
 			VirtueMartModelConfig::installVMconfigTable();

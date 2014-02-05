@@ -160,7 +160,7 @@ class VmModel extends JObject {
 
 		// Get the task
 		$task = VmRequest::getCmd('task','');
-		if($task!=='add' and isset($this->_cidName)){
+		if($task!=='add' and !empty($this->_cidName)){
 			// Get the id or array of ids.
 			$idArray = VmRequest::getVar($this->_cidName,  0);
 			if($idArray){

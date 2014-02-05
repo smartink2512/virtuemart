@@ -110,7 +110,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * @param object JInstallerComponent parent
 		 * @return boolean True on success
 		 */
-		public function install ($loadVm = true,$redirect = true) {
+		public function install ($loadVm = true) {
 
 			if($loadVm) $this->loadVm();
 
@@ -137,7 +137,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$model->execSQLFile($this->path.DS.'install'.DS.'install_essential_data.sql');
 			$model->execSQLFile($this->path.DS.'install'.DS.'install_required_data.sql');
 
-			//$id = $model->determineStoreOwner();
 			$model->setStoreOwner();
 
 			//copy sampel media
@@ -170,7 +169,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->checkAddDefaultShoppergroups();
 
-			$this->displayFinished(false,$redirect);
+			$this->displayFinished(false);
 
 			//include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
 
@@ -280,7 +279,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->fixOrdersVendorId();
 
 			$this->migrateCustoms();
-			if($loadVm) $this->displayFinished(true,true);
+			if($loadVm) $this->displayFinished(true);
 
 			return true;
 		}
@@ -744,16 +743,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 		}
 
-		public function displayFinished($update,$redirect){
+		public function displayFinished($update){
 
-			if(!$redirect) return;
-			if($update){
-				$update = '&update=1';
-			} else {
-				$update = '';
-			}
-			$app = JFactory::getApplication();
-			$app ->redirect('index.php?option=com_virtuemart&view=updatesmigration&layout=insfinished'.$update);
+			include(JPATH_VM_ADMINISTRATOR.'/views/updatesmigration/tmpl/insfinished.php');
 
 		}
 

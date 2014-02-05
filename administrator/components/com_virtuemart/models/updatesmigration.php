@@ -112,50 +112,6 @@ class VirtueMartModelUpdatesMigration extends VmModel {
 
 
     /**
-     * Syncs user permission
-     *
-     * @param int virtuemart_user_id
-     * @return bool true on success
-     * @author Christopher Roussel
-     */
-    function setUserToPermissionGroup ($userId=0) {
-
-		$usersTable = $this->getTable('vmusers');
-		$usersTable->load((int)$userId);
-
-		$result = $usersTable->check();
-		if ($result) {
-			$result = $usersTable->store();
-		}
-
-		if (!$result) {
-			$errors = $usersTable->getErrors();
-			foreach($errors as $error) {
-				vmError(get_class( $this ).'::setUserToPermissionGroup user '.$error);
-			}
-			return false;
-		}
-
-		$xrefTable = $this->getTable('vmuser_shoppergroups');
-		$data = $xrefTable->load((int)$userId);
-
-		if (empty($data)) {
-			$data = array('virtuemart_user_id'=>$userId, 'virtuemart_shoppergroup_id'=>'0');
-
-			if (!$xrefTable->save($data)) {
-				$errors = $xrefTable->getErrors();
-				foreach($errors as $error){
-					vmError(get_class( $this ).'::setUserToPermissionGroup xref '.$error);
-				}
-				return false;
-			}
-		}
-
-		return true;
-    }
-
-
-    /**
      * Installs sample data to the current database.
      *
      * @author Max Milbers, RickG

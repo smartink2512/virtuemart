@@ -569,7 +569,7 @@ class VirtueMartModelConfig extends VmModel {
 							}
 						}
 						if($freshInstall){
-							vmdebug('$freshInstall');
+							//vmdebug('$freshInstall');
 							$pair[1]="1";
 							$_line = $pair[0].'='.serialize($pair[1]);
 						}

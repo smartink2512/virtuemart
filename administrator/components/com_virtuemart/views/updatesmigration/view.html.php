@@ -47,7 +47,7 @@ class VirtuemartViewUpdatesMigration extends VmView {
 		$this->assignRef('downloadbutton_style', $downloadbutton_style);
 		$this->assignRef('latestVersion', $latestVersion);
 
-		$freshInstall = JRequest::getInt('install',0);
+		$freshInstall = vmRequest::getInt('install',0);
 		if($freshInstall){
 			$this->setLayout('install');
 		}
