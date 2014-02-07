@@ -831,16 +831,17 @@ class ShopFunctions {
 		jimport('simplepie.simplepie');
 		$rssFeed = new SimplePie($rssURL);
 
+		$feeds = array();
 		$count = $rssFeed->get_item_quantity();
 		$limit=min($max,$count);
-			for ($i = 0; $i < $limit; $i++) {
-				$feed = new StdClass();
-				$item = $rssFeed->get_item($i);
-				$feed->link = $item->get_link();
-				$feed->title = $item->get_title();
-				$feed->description = $item->get_description();
-				$feeds[] = $feed;
-			}
+		for ($i = 0; $i < $limit; $i++) {
+			$feed = new StdClass();
+			$item = $rssFeed->get_item($i);
+			$feed->link = $item->get_link();
+			$feed->title = $item->get_title();
+			$feed->description = $item->get_description();
+			$feeds[] = $feed;
+		}
 
 		return $feeds;
 	}

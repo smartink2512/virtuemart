@@ -2051,6 +2051,7 @@ class Migrator extends VmModel{
 		}
 
 		$this->storeMigrationProgress('attributes',$alreadyKnownIds);
+		return true;
 	}
 
 	/**

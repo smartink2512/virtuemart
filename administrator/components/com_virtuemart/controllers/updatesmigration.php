@@ -313,8 +313,6 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			$sid = $model->setStoreOwner();
 			$model->setUserToPermissionGroup($sid);
 
-			if($sample) $model->installSampleData($sid);
-
 			$msg = '';
 			if(empty($errors)){
 				$msg = 'System succesfull restored and sampledata installed, user id of the mainvendor is ' . $sid;
@@ -328,6 +326,9 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			$updater = new com_virtuemart_allinoneInstallerScript();
 
 			$updater->vmInstall(true);
+
+			if($sample) $model->installSampleData($sid);
+			
 			VmConfig::installVMconfig();
 			//$this->setDangerousToolsOff();
 		}else {
