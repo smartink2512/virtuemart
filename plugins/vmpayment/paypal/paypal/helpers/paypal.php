@@ -665,7 +665,7 @@ class PaypalHelperPaypal {
 		*/
 
         if ($this->_method->paypalproduct =="std") {
-            if (strcasecmp($paypal_data['receiver_email'],$this->merchant_email)!=0 ) {
+            if (strcasecmp($paypal_data['business'],$this->merchant_email)!=0 ) {
 	            $errorInfo=array("paypal_data" =>$paypal_data, 'merchant_email' =>$this->merchant_email);
                 $this->debugLog($errorInfo, 'IPN notification: wrong merchant_email', 'error', false);
                 return false;

@@ -32,7 +32,7 @@
             <option value="api">VMPAYMENT_PAYPAL_PRODUCTS_API</option>
             <option value="hosted">VMPAYMENT_PAYPAL_PRODUCTS_HOSTED</option>
         </param>
-        <param class="sandbox" name="sandbox" type="radio" default="0" label="VMPAYMENT_PAYPAL_SHOP_MODE"
+        <param class="sandbox" name="sandbox" type="radio" default="1" label="VMPAYMENT_PAYPAL_SHOP_MODE"
                description="VMPAYMENT_PAYPAL_SHOP_MODE_DESC">
             <option value="0">VMPAYMENT_PAYPAL_PRODUCTION</option>
             <option value="1">VMPAYMENT_PAYPAL_SANDBOX</option>

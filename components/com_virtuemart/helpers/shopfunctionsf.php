@@ -448,6 +448,7 @@ class shopFunctionsF {
 	}
 
 	function sendRatingEmailToVendor ($data) {
+		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
 		$vars = array();
 		$productModel = VmModel::getModel ('product');

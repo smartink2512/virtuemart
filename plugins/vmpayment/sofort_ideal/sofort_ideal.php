@@ -261,7 +261,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		}
 		// Prepare data that should be stored in the database
 		$dbValues['order_number'] = $order['details']['BT']->order_number;
-		$dbValues['payment_name'] = $this->renderPluginName($method, $order);
+		$dbValues['payment_name'] = $this->renderPluginName($method, 'order');
 		$dbValues['virtuemart_paymentmethod_id'] = $cart->virtuemart_paymentmethod_id;
 		$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
 		$dbValues['cost_percent_total'] = $method->cost_percent_total;
@@ -366,7 +366,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		$currencyDisplay = CurrencyDisplay::getInstance($cart->pricesCurrency);
 
 		$nb = count($paymentTables);
-			$pluginName = $this->renderPluginName($method, $where = 'post_payment');
+			$pluginName = $this->renderPluginName($method,  'post_payment');
 			$html = $this->renderByLayout('post_payment', array(
 																'order' =>$order,
 			                                                   'paymentInfos' => $paymentTables[$nb - 1],
@@ -700,7 +700,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		$currencyDisplay = CurrencyDisplay::getInstance($cart->pricesCurrency);
 
 
-		$pluginName = $this->renderPluginName($method, $where = 'post_payment');
+		$pluginName = $this->renderPluginName($method,   'post_payment');
 		$html = $this->renderByLayout('post_payment', array(
 		                                                   'order' => $order,
 		                                                   'pluginName' => $pluginName,

@@ -970,32 +970,32 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 				}
 				if (empty ($this->_currentMethod->$param)) {
 					$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'MERCHANT'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
-					vmError($text);
+					vmWarn($text);
 				}
 			}
 			if ($this->_currentMethod->paypalproduct == 'exp' OR $this->_currentMethod->paypalproduct == 'hosted' OR $this->_currentMethod->paypalproduct == 'api') {
 				$param = $sandbox_param . 'api_login_id';
 				if (empty ($this->_currentMethod->$param)) {
 					$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'USERNAME'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
-					vmError($text);
+					vmWarn($text);
 				}
 				$param = $sandbox_param . 'api_password';
 				if (empty ($this->_currentMethod->$param)) {
 					$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'PASSWORD'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
-					vmError($text);
+					vmWarn($text);
 				}
 
 				if ($this->_currentMethod->authentication == 'signature') {
 					$param = $sandbox_param . 'api_signature';
 					if (empty ($this->_currentMethod->$param)) {
 						$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'SIGNATURE'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
-						vmError($text);
+						vmWarn($text);
 					}
 				} else {
 					$param = $sandbox_param . 'api_certificate';
 					if (empty ($this->_currentMethod->$param)) {
 						$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'CERTIFICATE'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
-						vmError($text);
+						vmWarn($text);
 					}
 				}
 			}
@@ -1003,12 +1003,12 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 				$param = $sandbox_param . 'payflow_partner';
 				if (empty ($this->_currentMethod->$param)) {
 					$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_' . $sandbox . 'PAYFLOW_PARTNER'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
-					vmError($text);
+					vmWarn($text);
 				}
 			}
 			if ($this->_currentMethod->paypalproduct == 'exp' AND empty ($this->_currentMethod->expected_maxamount)) {
 				$text = JText::sprintf('VMPAYMENT_PAYPAL_PARAMETER_REQUIRED', JText::_('VMPAYMENT_PAYPAL_EXPECTEDMAXAMOUNT'), $this->_currentMethod->payment_name, $this->_currentMethod->virtuemart_paymentmethod_id);
-				vmError($text);
+				vmWarn($text);
 			}
 			
 		}
@@ -1166,9 +1166,7 @@ vmdebug('plgVmOnPaymentResponseReceived',$payment );
 				$cart_prices['withTax'] = '';
 				$cart_prices['salesPrice'] = '';
 				$methodSalesPrice = $this->setCartPrices($cart,  $cart_prices, $this->_currentMethod);
-				//if ($selected == $method->virtuemart_paymentmethod_id) {
-				//	$this->customerData->load();
-				//}
+
 				$html .= '<br />';
 				$this->_currentMethod->$method_name = $this->renderPluginName($this->_currentMethod);
 				$html .= $this->getPluginHtml($this->_currentMethod, $selected, $methodSalesPrice);

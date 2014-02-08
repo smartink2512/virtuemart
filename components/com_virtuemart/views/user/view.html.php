@@ -135,7 +135,7 @@ class VirtuemartViewUser extends VmView {
 	    $cart = VirtueMartCart::getCart();
 
 	    $fieldtype = $address_type . 'address';
-	    $cart->prepareAddressDataInCart($address_type, $new);
+	    $cart->prepareAddressDataInCart($address_type, $new, $this->_cuid);
 
 	    $userFields = $cart->$fieldtype;
 
