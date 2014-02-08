@@ -1022,7 +1022,7 @@ class ShopFunctions {
 	 * @param string $selected_item The pre-selected value
 	 *
 	 */
-	static function listMonths ($list_name, $selected = FALSE, $class = '') {
+	static function listMonths ($list_name, $selected = FALSE, $attr = '') {
 
 		$options = array();
 		if (!$selected) {
@@ -1042,7 +1042,7 @@ class ShopFunctions {
 		$options[] = JHtml::_ ('select.option', "10", vmText::_ ('OCTOBER'));
 		$options[] = JHtml::_ ('select.option', "11", vmText::_ ('NOVEMBER'));
 		$options[] = JHtml::_ ('select.option', "12", vmText::_ ('DECEMBER'));
-		return JHtml::_ ('select.genericlist', $options, $list_name, '', 'value', 'text', $selected);
+		return JHtml::_ ('select.genericlist', $options, $list_name, $attr, 'value', 'text', $selected);
 
 	}
 

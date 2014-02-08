@@ -355,7 +355,7 @@ class VirtueMartViewCart extends VmView {
 }
 
 	private function lOrderDone() {
-		$html = VmRequest::getVar('html', vmText::_('COM_VIRTUEMART_ORDER_PROCESSED'), 'default', 'STRING', JREQUEST_ALLOWRAW);
+		$html = VmRequest::getVar('html', '', 'default', 'STRING', JREQUEST_ALLOWRAW);
 		$this->assignRef('html', $html);
 
 		//Show Thank you page or error due payment plugins like paypal express

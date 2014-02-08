@@ -63,25 +63,30 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$this->dontMove = $dontMove;
 
 			$this->updateShipperToShipment ();
-			$this->installPlugin ('Standard', 'plugin', 'standard', 'vmpayment');
-			$this->installPlugin ('Klarna', 'plugin', 'klarna', 'vmpayment');
-			$this->installPlugin ('KlarnaCheckout', 'plugin', 'klarnacheckout', 'vmpayment');
-			$this->installPlugin ('Sofort Banking/Überweisung', 'plugin', 'sofort', 'vmpayment');
-			$this->installPlugin ('PayPal', 'plugin', 'paypal', 'vmpayment');
-			$this->installPlugin ('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
+			$plugins[]=array (
+				array ('VM - Standard', 'plugin', 'standard', 'vmpayment'),
+				array ('VM - Klarna', 'plugin', 'klarna', 'vmpayment'),
+				array ('VM - KlarnaCheckout', 'plugin', 'klarnacheckout', 'vmpayment'),
+				array ('VM - Sofort Banking/Überweisung', 'plugin', 'sofort', 'vmpayment'),
+				array ('VM - PayPal', 'plugin', 'paypal', 'vmpayment'),
+				array ('VM - Heidelpay', 'plugin', 'heidelpay', 'vmpayment'),
 			//$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
 			//$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
-			$this->installPlugin ('Skrill', 'plugin', 'skrill', 'vmpayment');
-			$this->installPlugin ('Authorize.net', 'plugin', 'authorizenet', 'vmpayment');
+				array ('VM - Skrill', 'plugin', 'skrill', 'vmpayment'),
+				array ('VM - Authorize.net', 'plugin', 'authorizenet', 'vmpayment'),
 
-			$this->installPlugin ('Sofort iDeal', 'plugin', 'sofort_ideal', 'vmpayment');
+				array ('VM - Sofort iDeal', 'plugin', 'sofort_ideal', 'vmpayment'),
 
-			$this->installPlugin ('By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment', 1);
+				array ('VM - By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment', 1),
 
-			$this->installPlugin ('Customer text input', 'plugin', 'textinput', 'vmcustom', 1);
-			$this->installPlugin ('Product specification', 'plugin', 'specification', 'vmcustom', 1);
-			$this->installPlugin ('Stockable variants', 'plugin', 'stockable', 'vmcustom', 1);
-			$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation' );
+				array ('VM - Customer text input', 'plugin', 'textinput', 'vmcustom', 1),
+				array ('VM - Product specification', 'plugin', 'specification', 'vmcustom', 1),
+				array ('VM - Stockable variants', 'plugin', 'stockable', 'vmcustom', 1),
+				array ('VM - Avalara Tax', 'plugin', 'avalara', 'vmcalculation' ),
+			);
+				foreach ($plugins as $plugin) {
+					$this->installPlugin ($plugin[0], $plugin[1], $plugin[2], $plugin[3]);
+				}
 
 			$this->moneyBookersToSkrill ();
 			$this->migratePluginParams ();
