@@ -1104,8 +1104,8 @@ class VirtueMartModelProduct extends VmModel {
 					$product->id = $ordering->id;
 				} else {
 					$product->ordering = $this->_autoOrder++;
-					$product->id = $ordering->id;
-					vmdebug('$product->virtuemart_category_id no ordering stored for '.$ordering->id);
+					$product->id = $this->_autoOrder;
+					vmdebug('$product->virtuemart_category_id no ordering stored for product '.$this->_id);
 				}
 
 				$catTable = $this->getTable ('categories');
@@ -1178,6 +1178,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$prices = array();
 		$prices['product_price'] = 0;
+		$prices['virtuemart_product_price_id'] = 0;
 		$prices['product_currency'] = NULL;
 		$prices['price_quantity_start'] = NULL;
 		$prices['price_quantity_end'] = NULL;
@@ -2377,7 +2378,8 @@ function lowStockWarningEmail($virtuemart_product_id) {
 }
 
 	public function getUncategorizedChildren ($withParent) {
-		if (empty($this->_uncategorizedChildren)) {
+
+		if (empty($this->_uncategorizedChildren[$this->_id])) {
 
 			//Todo add check for shoppergroup depended product display
 			$q = 'SELECT * FROM `#__virtuemart_products` as p
@@ -2407,7 +2409,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 			$q .= ' GROUP BY `virtuemart_product_id` ORDER BY p.pordering ASC';
 			$db = JFactory::getDbo();
 			$db->setQuery ($q);
-			$this->_uncategorizedChildren = $db->loadAssocList ();
+			$this->_uncategorizedChildren[$this->_id] = $db->loadAssocList ();
 
 			$err = $db->getErrorMsg ();
 			if (!empty($err)) {
@@ -2417,7 +2419,7 @@ function lowStockWarningEmail($virtuemart_product_id) {
 			}
  //			vmdebug('getUncategorizedChildren '.$db->getQuery(),$this->_uncategorizedChildren);
 		}
-		return $this->_uncategorizedChildren;
+		return $this->_uncategorizedChildren[$this->_id];
 	}
 
 	/**

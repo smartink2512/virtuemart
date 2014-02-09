@@ -24,7 +24,7 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR .'/administrator/co
 VmConfig::loadConfig();
 if(!class_exists('VmModel')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 if(!class_exists('shopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-if (!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
+if(!class_exists('VmImage')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php');
 
 class VmPdf {
 	/** Function to create a nice vendor-styled PDF for the output of the given view.
@@ -106,10 +106,20 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 					$this->vendorImage=$imagePath;
 				}
 			}
-			$this->setHeaderData(($this->vendor->vendor_letter_header_image?$this->vendorImage:''), 
-					     ($this->vendor->vendor_letter_header_image?$this->vendor->vendor_letter_header_imagesize:0), 
-					     '', $this->vendor->vendor_letter_header_html,
-					     array(0,0,0), $this->convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color));
+			if (!class_exists ('JFile')) {
+				require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
+			}
+			$tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_color.php');
+			if($tcpdf6){
+				$vlfooterlcolor = TCPDF_COLORS::convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color);
+			} else {
+				$vlfooterlcolor = $this->convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color);
+			}
+
+			$this->setHeaderData(($this->vendor->vendor_letter_header_image?$this->vendorImage:''),
+				($this->vendor->vendor_letter_header_image?$this->vendor->vendor_letter_header_imagesize:0),
+				'', $this->vendor->vendor_letter_header_html,
+				array(0,0,0),$vlfooterlcolor );
 			$this->vendorAddress = shopFunctions::renderVendorAddress($this->vendor->virtuemart_vendor_id, "<br/>");
 			// Trim the final <br/> from the address, which is inserted by renderVendorAddress automatically!
 			if (substr($this->vendorAddress, -5, 5) == '<br/>') {
@@ -188,13 +198,22 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 
 				$currentCHRF = $this->getCellHeightRatio();
 				$this->setCellHeightRatio($this->vendor->vendor_letter_footer_cell_height_ratio);
-			
-			
+
+				if (!class_exists ('JFile')) {
+					require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
+				}
+				$tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_color.php');
+				if($tcpdf6){
+					$vlfooterlcolor = TCPDF_COLORS::convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color);
+				} else {
+					$vlfooterlcolor = $this->convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color);
+				}
+
 				//set style for cell border
 				$border = 0;
 				if ($this->vendor->vendor_letter_footer_line == 1) {
 					$line_width = 0.85 / $this->getScaleFactor();
-					$this->SetLineStyle(array('width' => $line_width, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => $this->convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color)));
+					$this->SetLineStyle(array('width' => $line_width, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => $vlfooterlcolor));
 					$border = 'T';
 				}
 			

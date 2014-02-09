@@ -584,7 +584,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 // 		return $this->onStoreInstallPluginTable($psType);
 	}
 
-	function plgVmDeclarePluginParamsCustom(&$data){
+	function plgVmDeclarePluginParamsCustomVM3(&$data){
 		return $this->declarePluginParams('custom', $data);
 	}
 

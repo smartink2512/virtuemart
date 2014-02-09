@@ -501,7 +501,7 @@ class VmConfig {
 
 	static function showDebug(){
 
-		return self::$_debug = true;	//this is only needed, when you want to debug THIS file
+		//return self::$_debug = true;	//this is only needed, when you want to debug THIS file
 		if(self::$_debug===NULL){
 
 			$debug = VmConfig::get('debug_enable','none');

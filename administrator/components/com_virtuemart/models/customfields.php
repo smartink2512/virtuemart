@@ -166,7 +166,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		if($err){
 			vmError('getCustomEmbeddedProductCustomFields error in query '.$err);
 		}
-		//vmdebug('getCustomEmbeddedProductCustomGroup ',$productIds,$productCustoms,$q);
+		vmdebug('getCustomEmbeddedProductCustomGroup ',$productIds,$q);
 		if($productCustoms){
 
 			$customfield_ids = array();
@@ -412,8 +412,6 @@ class VirtueMartModelCustomfields extends VmModel {
 	 */
 	public function displayProductCustomfieldFE (&$product, &$customfields) {
 
-		//if(!is_array($customfields)) $customfields = array($customfields);
-
 		if (!class_exists ('calculationHelper')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 		}
@@ -421,13 +419,15 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		$selectList = array();
 
+		$dynChilds = 1; //= array();
+		$session = JFactory::getSession ();
+		$virtuemart_category_id = $session->get ('vmlastvisitedcategoryid', 0, 'vm');
+
+
+		vmdebug('$customfields count ('.count($customfields).')$product->allIds',$product->allIds);
 		foreach($customfields as $k => &$customfield){
 
 			if(!isset($customfield->display))$customfield->display = '';
-
-			//if (!class_exists ('VmHTML')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
-			//if (!class_exists ('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-			//$currency = CurrencyDisplay::getInstance ();
 
 			$calculator ->_product = $product;
 			if (!class_exists ('vmCustomPlugin')) {
@@ -439,7 +439,6 @@ class VirtueMartModelCustomfields extends VmModel {
 				JPluginHelper::importPlugin ('vmcustom');
 				$dispatcher = JDispatcher::getInstance ();
 				$ret = $dispatcher->trigger ('plgVmOnDisplayProductFE', array(&$product, &$customfield));
-				//return; // $customfield->display;
 				continue;
 			}
 
@@ -455,58 +454,65 @@ class VirtueMartModelCustomfields extends VmModel {
 				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 			$currency = CurrencyDisplay::getInstance ();
 
-			/*if ($customfield->customfield_price > 0) {
-
-				$price = $currency->priceDisplay ((float)$customfield->customfield_price);
-			}*/
-
 			switch ($type) {
 
 				case 'A':
-
+					//if($selectedFound) continue;
 					$options = array();
-
-					$session = JFactory::getSession ();
-					$virtuemart_category_id = $session->get ('vmlastvisitedcategoryid', 0, 'vm');
-
 					$productModel = VmModel::getModel ('product');
 
 					//Note by Jeremy Magne (Daycounts) 2013-08-31
 					//Previously the the product model is loaded but we need to ensure the correct product id is set because the getUncategorizedChildren does not get the product id as parameter.
 					//In case the product model was previously loaded, by a related product for example, this would generate wrong uncategorized children list
 					$productModel->setId($customfield->virtuemart_product_id);
-					//vmdebug('Type A, my customfield',$customfield);
-					//Todo preselection as dropdown of children
-					//Note by Max Milbers: This is not necessary, in this case it is better to unpublish the parent and to give the child which should be preselected a category
-					//Or it is withParent, in that case there exists the case, that a parent should be used as a kind of mini category and not be orderable.
-					//There exists already other customs and in special plugins which wanna disable or change the add to cart button.
-					$selected = VmRequest::getInt ('virtuemart_product_id',0);
 
 					$html = '';
 					$uncatChildren = $productModel->getUncategorizedChildren ($customfield->withParent);
-
+					vmdebug($customfield->virtuemart_product_id.' $child productId ');
 
 					if(!$customfield->withParent or ($customfield->withParent and $customfield->parentOrderable)){
-						$options[0] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $product->virtuemart_product_id,FALSE), 'text' => vmText::_ ('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT'));
+						$options[0] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $customfield->virtuemart_product_id,FALSE), 'text' => vmText::_ ('COM_VIRTUEMART_ADDTOCART_CHOOSE_VARIANT'));
 					}
+
+					$selected = VmRequest::getInt ('virtuemart_product_id',0);
+					$selectedFound = false;
 					foreach ($uncatChildren as $k => $child) {
 						if(!isset($child[$customfield->customfield_value])){
 							vmdebug('The child has no value at index '.$customfield->customfield_value,$customfield,$child);
 						} else {
 							$options[] = array('value' => JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $child['virtuemart_product_id']), 'text' => $child[$customfield->customfield_value]);
+							if($selected==$child['virtuemart_product_id']){
+								$selectedFound = true;
+								vmdebug($customfield->virtuemart_product_id.' $selectedFound by VmRequest '.$selected);
+							}
+							//vmdebug('$child productId '.$child['virtuemart_product_id']);
 						}
 					}
-					//if($customfield->is_list){
+					if(!$selectedFound){
+						$pos = array_search($customfield->virtuemart_product_id, $product->allIds);
+						if(isset($product->allIds[$pos-1])){
+							$selected = $product->allIds[$pos-1];
+							vmdebug($customfield->virtuemart_product_id.' Set selected to - 1 allIds['.($pos-1).'] = '.$selected.' and count '.$dynChilds);
+							//break;
+						} elseif(isset($product->allIds[$pos])){
+							$selected = $product->allIds[$pos];
+							vmdebug($customfield->virtuemart_product_id.' Set selected to allIds['.$pos.'] = '.$selected.' and count '.$dynChilds);
+
+						} else {
+							$selected = $customfield->virtuemart_product_id;
+							vmdebug($customfield->virtuemart_product_id.' Set selected to $customfield->virtuemart_product_id ',$selected,$product->allIds);
+						}
+					}
+					//vmdebug('muh',$customfield->virtuemart_product_id, $product->allIds,$selected);
+
 					$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="inputbox"', "value", "text",
 						JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $selected));
-					//} else {
-					//the idea is that we can provide instead of a list a multi add possibility, atm this is possible, but needs another layout, we may connect it
-					//}
+
 
 					if($customfield->parentOrderable==0 and $product->product_parent_id==0){
 						$product->orderable = FALSE;
 					}
-
+					$dynChilds++;
 					$customfield->display = $html;
 					break;
 
@@ -650,8 +656,6 @@ class VirtueMartModelCustomfields extends VmModel {
 		}
 
 	}
-
-
 	/**
 	 * There are too many functions doing almost the same for my taste
 	 * the results are sometimes slighty different and makes it hard to work with it, therefore here the function for future proxy use
@@ -728,7 +732,7 @@ class VirtueMartModelCustomfields extends VmModel {
 							JPluginHelper::importPlugin ('vmcustom');
 							$dispatcher = JDispatcher::getInstance ();
 							//vmdebug('displayProductCustomfieldSelected is PLUGIN use trigger '.$trigger,$customfield_id);
-							$dispatcher->trigger ($trigger, array(&$product, &$productCustom, &$html));
+							$dispatcher->trigger ($trigger.'VM3', array(&$product, &$productCustom, &$html));
 
 						}
 						else {
@@ -950,7 +954,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		if ($type == 'E') {
 			JPluginHelper::importPlugin ('vmcustom');
 			$dispatcher = JDispatcher::getInstance ();
-			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustom', array(&$table));
+			$retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$table));
 		}
 
 		if(!empty($varsToPush)){

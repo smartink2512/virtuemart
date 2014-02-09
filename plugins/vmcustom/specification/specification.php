@@ -167,7 +167,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 		return $this->setOnTablePluginParams($name, $id, $table);
 	}
 
-	function plgVmDeclarePluginParamsCustom(&$data){
+	function plgVmDeclarePluginParamsCustomVM3(&$data){
 		return $this->declarePluginParams('custom', $data);
 	}
 

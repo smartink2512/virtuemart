@@ -64,7 +64,7 @@ class VirtueMartModelCustom extends VmModel {
 		    if ($this->_data->field_type == 'E') {
 			    JPluginHelper::importPlugin ('vmcustom');
 			    $dispatcher = JDispatcher::getInstance ();
-			    $retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustom', array(&$this->_data));
+			    $retValue = $dispatcher->trigger ('plgVmDeclarePluginParamsCustomVM3', array(&$this->_data));
 		    }
 
 		    if(!empty($varsToPush)){
@@ -291,7 +291,6 @@ class VirtueMartModelCustom extends VmModel {
 		$db->setQuery($q);
 		$data['custom_element'] = $db->loadResult();
 
-
 		if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 
 		$table = $this->getTable('customs');
@@ -309,11 +308,6 @@ class VirtueMartModelCustom extends VmModel {
 		//We are in the custom and so the table contains the field_type, else not!!
 		VirtueMartModelCustomfields::setParameterableByFieldType($table,$table->field_type);
 
-
-	/*	if(!isset($data['clone'])){
-			VirtueMartModelCustomfields::bindParameterableByFieldType($table,$data['field_type']);
-		}*/
-
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();
 
@@ -324,29 +318,6 @@ class VirtueMartModelCustom extends VmModel {
 
 		return $table->virtuemart_custom_id ;
 
-	/*	$table = $this->getTable('customs');
-
-		if(isset($data['custom_jplugin_id'])){
-			//vmdebug('$data store custom',$data);
-			JPluginHelper::importPlugin('vmcustom');
-			$dispatcher = JDispatcher::getInstance();
-// 			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsCustom',array($data['custom_value'],$data['custom_jplugin_id'],&$table));
-			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsCustom',array($data['custom_element'],$data['custom_jplugin_id'],&$table));
-		}
-		vmdebug('store',$table);
-		$table->bindChecknStore($data);
-		$errors = $table->getErrors();
-		if(!empty($errors)){
-			foreach($errors as $error){
-				vmError($error);
-			}
-		}
-
-		JPluginHelper::importPlugin('vmcustom');
-		$dispatcher = JDispatcher::getInstance();
-		$error = $dispatcher->trigger('plgVmOnStoreInstallPluginTable', array('custom' , $data, $data['custom_element']));
-
-		return $table->virtuemart_custom_id ;*/
 	}
 
 
