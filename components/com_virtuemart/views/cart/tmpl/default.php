@@ -146,12 +146,26 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
 			}
 			$userFieldsModel = VmModel::getModel ('userfields');
-			if ($userFieldsModel->getIfRequired ('agreed')) {
+
+			$userFieldsCart = $userFieldsModel->getUserFields(
+				'cart'
+				, array('captcha' => true, 'delimiters' => true) // Ignore these types
+				, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
+			);
+
+			$this->userFieldsCart = $userFieldsModel->getUserFieldsFilled(
+				$userFieldsCart
+				,$this->cart->BT
+			);
+			vmdebug('$this->userFieldsCart',$this->userFieldsCart);
+			echo $this->loadTemplate ('cartfields');
+
+			/*if ($userFieldsModel->getIfRequired ('agreed')) {
 					if (!class_exists ('VmHtml')) {
 						require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 					}
 					echo VmHtml::checkbox ('tosAccepted', $this->cart->tosAccepted, 1, 0, 'class="terms-of-service"');
-
+			*/
 					if (VmConfig::get ('oncheckout_show_legal_info', 1)) {
 						?>
 						<div class="terms-of-service">
@@ -173,7 +187,7 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 						<?php
 					} // VmConfig::get('oncheckout_show_legal_info',1)
 					//echo '<span class="tos">'. vmText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
-			}
+		//	}
 			echo $this->checkout_link_html;
 			?>
 		</div>

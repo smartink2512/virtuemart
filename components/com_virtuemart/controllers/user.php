@@ -58,9 +58,6 @@ class VirtueMartControllerUser extends JControllerLegacy
 		return $this;
 	}
 
-	function edit(){
-
-	}
 
 	function editAddressCart(){
 		$view = $this->getView('user', 'html');
@@ -76,40 +73,6 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 	}
 
-/*	function editAddressST(){
-
-		$view = $this->getView('user', 'html');
-
-		$view->setLayout('edit_address');
-
-		$ftask ='saveAddressST';
-		$view->assignRef('fTask', $ftask);
-		// Display it all
-		$view->display();
-
-	}
-
-	/**
-	 * This is for use in the cart, it calls a standard template for editing user adresses. It sets the task following into the form
-	 * of the template to saveCartUser, the task saveCartUser just sets the right redirect in the js save(). This is done just to have the
-	 * controll flow in the controller and not in the layout. The layout is everytime calling a standard joomla task.
-	 *
-	 * @author Max Milbers
-	 */
-
-/*	function editAddressCart(){
-
-		$view = $this->getView('user', 'html');
-
-		$view->setLayout('edit_address');
-
-		$ftask ='savecartuser';
-		$view->assignRef('fTask', $ftask);
-
-		// Display it all
-		$view->display();
-
-	}
 
 	/**
 	 * This is for use in the checkout process, it is the same like editAddressCart, but it sets the save task
@@ -118,53 +81,19 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 *
 	 * @author Max Milbers
 	 */
-/*	function editAddressCheckout(){
+	function editAddressCheckout(){
 
 		$view = $this->getView('user', 'html');
 
 		$view->setLayout('edit_address');
 
-		$ftask ='savecheckoutuser';
-		$view->assignRef('fTask', $ftask);
+		if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		$cart = VirtueMartCart::getCart();
+		$cart->fromCart = true;
+		$cart->setCartIntoSession();
 
 		// Display it all
 		$view->display();
-	}
-
-	/**
-	 * This function is called from the layout edit_adress and just sets the right redirect back to the cart
-	 * We use here the saveData(true) function, because within the cart shouldnt be done any registration.
-	 *
-	 * @author Max Milbers
-	 */
-/*	function saveCheckoutUser(){
-
-		$msg = $this->saveData(true,VmConfig::get('reg_silent',0));
-
-		//We may add here the option for silent registration.
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout',$this->useXHTML,$this->useSSL), $msg );
-	}
-
-	function registerCheckoutUser(){
-		$msg = $this->saveData(true,true);
-		$this->setRedirect(JRoute::_( 'index.php?option=com_virtuemart&view=cart&task=checkout',$this->useXHTML,$this->useSSL ),$msg);
-	}
-
-	/**
-	 * This function is called from the layout edit_adress and just sets the right redirect back to the cart.
-	 * We use here the saveData(true) function, because within the cart shouldnt be done any registration.
-	 *
-	 * @author Max Milbers
-	 */
-/*	function saveCartUser(){
-
-		$msg = $this->saveData(true,VmConfig::get('reg_silent',0));
-		$this->setRedirect(JRoute::_( 'index.php?option=com_virtuemart&view=cart', FALSE ),$msg);
-	}
-
-	function registerCartuser(){
-		$msg = $this->saveData(true, true);
-		$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE) , $msg);
 	}
 
 
@@ -191,8 +120,12 @@ class VirtueMartControllerUser extends JControllerLegacy
 			}
 		}
 
-		if($cart->fromCart or $this->cart->getInCheckOut()){
-			$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE) , $msg);
+		if($cart->fromCart or $cart->getInCheckOut()){
+			$task = '';
+			if ($cart->getInCheckOut()){
+				$task = '&task=checkout';
+			}
+			$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart'.$task, FALSE) , $msg);
 		} else {
 			$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
 		}
@@ -307,12 +240,20 @@ class VirtueMartControllerUser extends JControllerLegacy
 	/**
 	 * Action cancelled; return to the previous view
 	 *
-	 * @author Oscar van Eijk
+	 * @author Max Milbers
 	 */
 	function cancel()
 	{
-		$return = JURI::base();
-		$this->setRedirect( $return );
+		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+		$cart = VirtueMartCart::getCart();
+		vmdebug('cancel executed' );
+		if($cart->fromCart){
+			$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE)  );
+		} else {
+			$return = JURI::base();
+			$this->setRedirect( $return );
+		}
+
 	}
 
 

@@ -28,9 +28,20 @@ JHtml::stylesheet ('vmpanels.css', JURI::root () . 'components/com_virtuemart/as
 if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 $this->cart = VirtueMartCart::getCart();
 $url = 0;
-if ($this->cart->fromCart or $this->cart->getInCheckOut()){
-	$url = JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=checkout', $this->useXHTML, $this->useSSL);
+if ($this->cart->fromCart or $this->cart->getInCheckOut()) {
+	$rview = 'cart';
 }
+else {
+	$rview = 'user';
+}
+vmdebug('rview = '.$rview);
+
+$task = '';
+if ($this->cart->getInCheckOut()){
+	$task = '&task=checkout';
+}
+$url = JRoute::_ ('index.php?option=com_virtuemart&view='.$rview.$task, $this->useXHTML, $this->useSSL);
+vmdebug('hmmm',$url);
 echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 ?>
 <script language="javascript">
@@ -82,13 +93,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 		<!--<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_ ('index.php'); ?>" class="form-validate">-->
 		<div class="control-buttons">
 			<?php
-			if ($this->cart->fromCart or $this->cart->getInCheckOut()) {
-				$rview = 'cart';
-			}
-			else {
-				$rview = 'user';
-			}
-// echo 'rview = '.$rview;
+
 
 			if ($this->cart->getInCheckOut() || $this->address_type == 'ST') {
 				$buttonclass = 'default';

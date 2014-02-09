@@ -75,7 +75,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 		$cart = VirtueMartCart::getCart();
 		$cart->fromCart = true;
 		$cart->getFilterCustomerComment();
-		$cart->tosAccepted = VmRequest::getInt('tosAccepted', $cart->tosAccepted);
+		$cart->BT['tos'] = VmRequest::getInt('tos', $cart->tosAccepted);
 
 		$cart->updateProductCart();
 		$this->setcoupon();

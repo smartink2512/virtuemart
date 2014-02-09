@@ -61,7 +61,7 @@ foreach($this->userFields['fields'] as $field) {
 			$openTable = false;
 			?>
 
-			<table  class="adminForm user-details">
+			<table class="adminForm user-details">
 
 		<?php
 		}

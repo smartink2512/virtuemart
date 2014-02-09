@@ -719,7 +719,9 @@ class VirtueMartModelUser extends VmModel {
 
 		if ($type == 'BT') {
 			$fieldtype = 'account';
-		}else {
+		} else if($type == 'cart'){
+			$fieldtype = 'cart';
+		} else {
 			$fieldtype = 'shipment';
 		}
 

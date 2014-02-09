@@ -122,7 +122,7 @@ class VirtueMartCart {
 					self::$_cart->automaticSelectedPayment 		= $sessionCart->automaticSelectedPayment;
 					self::$_cart->BT 							= $sessionCart->BT;
 					self::$_cart->ST 							= $sessionCart->ST;
-					self::$_cart->tosAccepted 					= $sessionCart->tosAccepted;
+					//self::$_cart->tosAccepted 					= $sessionCart->tosAccepted;
 					self::$_cart->customer_comment 				= base64_decode($sessionCart->customer_comment);
 					self::$_cart->couponCode 					= $sessionCart->couponCode;
 					self::$_cart->_triesValidateCoupon			= $sessionCart->_triesValidateCoupon;
@@ -185,7 +185,8 @@ class VirtueMartCart {
 
 		//$this->tosAccepted is due session stuff always set to 0, so testing for null does not work
 		if((!empty($user->agreed) || !empty($this->BT['agreed'])) && !VmConfig::get('agree_to_tos_onorder',0) ){
-				$this->tosAccepted = 1;
+			//$this->tosAccepted = 1;
+			$this->BT['tos'] = 1;
 		}
 		//if(empty($this->customer_number) or ($user->virtuemart_user_id!=0 and strpos($this->customer_number,'nonreg_')!==FALSE ) ){
 		if($user->virtuemart_user_id!=0 and empty($this->customer_number) or strpos($this->customer_number,'nonreg_')!==FALSE){
@@ -228,7 +229,7 @@ class VirtueMartCart {
 
 		$sessionCart->BT 										= $this->BT;
 		$sessionCart->ST 										= $this->ST;
-		$sessionCart->tosAccepted 							= $this->tosAccepted;
+		//$sessionCart->tosAccepted 							= $this->tosAccepted;
 		$sessionCart->customer_comment 					= base64_encode($this->customer_comment);
 		$sessionCart->couponCode 							= $this->couponCode;
 		$sessionCart->_triesValidateCoupon				= $this->_triesValidateCoupon;
@@ -737,24 +738,25 @@ class VirtueMartCart {
 
 		$validUserDataBT = self::validateUserData();
 
-		$this->tosAccepted = VmRequest::getInt('tosAccepted', $this->tosAccepted);
-		if(!isset($this->tosAccepted)){
+		$validUserDataCart = self::validateUserData('cart',$this->BT);
+		//$this->tosAccepted = VmRequest::getInt('tosAccepted', $this->tosAccepted);
+		/*if(!isset($this->tosAccepted)){
 			$userFieldsModel = VmModel::getModel('Userfields');
 			$agreed = $userFieldsModel->getUserfield('agreed','name');
 			$this->tosAccepted = $agreed->default;
-		}
-		if (empty($this->tosAccepted)) {
+		}*/
+		//if (empty($this->BT['tos'])) {
 
-			$userFieldsModel = VmModel::getModel('Userfields');
-			$agreed = $userFieldsModel->getUserfield('agreed','name');
+			//$userFieldsModel = VmModel::getModel('Userfields');
+			//$agreed = $userFieldsModel->getUserfield('agreed','name');
 
-			if(empty($this->tosAccepted) and !empty($agreed->required) and $validUserDataBT!==-1){
+			if(empty($this->BT['tos']) and $validUserDataBT!==-1){
 				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
-				$this->tosAccepted = false;
+				$this->BT['tos'] = false;
 				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 			}
-		}
+		//}
 
 		if (($this->selected_shipto = VmRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
@@ -928,7 +930,7 @@ class VirtueMartCart {
 	 */
 	private function validateUserData($type='BT', $obj = null) {
 
-		if(empty($obj)){
+		if($obj!=null){
 			$obj = $this->{$type};
 		}
 
@@ -1012,7 +1014,7 @@ class VirtueMartCart {
 		$cart->customer_comment = '';
 		$cart->couponCode = '';
 		$cart->order_language = '';
-		$cart->tosAccepted = null;
+	//$cart->tosAccepted = null;
 		$cart->virtuemart_shipmentmethod_id = 0; //OSP 2012-03-14
 		$cart->virtuemart_paymentmethod_id = 0;
 		$cart->order_number=null;
@@ -1037,9 +1039,9 @@ class VirtueMartCart {
 			$prefix = 'shipto_';
 			$this->STsameAsBT = 0;
 		} else { // BT
-			if(!empty($data['agreed'])){
+			/*if(!empty($data['agreed'])){
 				$this->tosAccepted = $data['agreed'];
-			}
+			}*/
 
 			if(empty($data['email'])){
 				$jUser = JFactory::getUser();
