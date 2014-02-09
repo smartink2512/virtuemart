@@ -655,7 +655,7 @@ class VmConfig {
 		$app = JFactory::getApplication();
 
 		$store = false;
-		if(empty(self::$_jpConfig->_raw) and !$freshInstall){
+		if(empty(self::$_jpConfig->_raw) and $configTable){
 
 			$query = ' SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1";';
 			$db->setQuery($query);

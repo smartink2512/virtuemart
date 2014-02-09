@@ -137,7 +137,7 @@ class vmJsApi{
 
 		if(JVM_VERSION>2){
 			JHtml::_('jquery.framework');
-			return true;
+			//return true;
 		} else {
 			//Very important convention with other 3rd pary developers, must be kept. DOES NOT WORK IN J3
 			if (JFactory::getApplication ()->get ('jquery')) {

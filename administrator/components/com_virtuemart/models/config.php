@@ -429,7 +429,7 @@ class VirtueMartModelConfig extends VmModel {
 		return true;
 	}
 
-	public static function checkConfigTableExists(){
+	static public function checkConfigTableExists(){
 
 		$db = JFactory::getDBO();
 		$query = 'SHOW TABLES LIKE "'.$db->getPrefix().'virtuemart_configs"';
@@ -443,7 +443,7 @@ class VirtueMartModelConfig extends VmModel {
 		}
 	}
 
-	public function checkVirtuemartInstalled(){
+	static public function checkVirtuemartInstalled(){
 
 		$db = JFactory::getDBO();
 		$query = 'SHOW TABLES LIKE "'.$db->getPrefix().'virtuemart%"';
@@ -480,7 +480,7 @@ class VirtueMartModelConfig extends VmModel {
 		vmdebug('installVMconfigTable executed');
 	}
 
-	function getCreateConfigTableQuery(){
+	static public function getCreateConfigTableQuery(){
 
 		return "CREATE TABLE IF NOT EXISTS `#__virtuemart_configs` (
   `virtuemart_config_id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
