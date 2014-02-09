@@ -7,9 +7,8 @@
  *
  * @package	VirtueMart
  * @subpackage Helpers
- * @author RickG
  * @author Max Milbers
- * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009-2014 VirtueMart Team. All rights reserved.
  */
 defined('_JEXEC') or die('Restricted access');
 
@@ -55,6 +54,10 @@ JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
 if (!class_exists ('VmModel')) {
 	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
 }
+
+if(!class_exists('vmRequest')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmrequest.php');
+if(!class_exists('vmText')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtext.php');
+if(!class_exists('vmJsApi')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmjsapi.php');
 
 /**
  * This function shows an info message, the messages gets translated with JText::,
@@ -481,126 +484,6 @@ function logInfo ($text, $type = 'message') {
 
 
 /**
- * Text  handling class.
- *
- * @package     Joomla.Platform
- * @subpackage  Language
- * @since       11.1
- */
-class vmText
-{
-	/**
-	 * javascript strings
-	 *
-	 * @var    array
-	 * @since  11.1
-	 */
-	protected static $strings = array();
-
-	/**
-	 * Translates a string into the current language.
-	 *
-	 * Examples:
-	 * <script>alert(Joomla.JText._('<?php echo JText::_("JDEFAULT", array("script"=>true));?>'));</script>
-	 * will generate an alert message containing 'Default'
-	 * <?php echo JText::_("JDEFAULT");?> it will generate a 'Default' string
-	 *
-	 * @param   string   $string                The string to translate.
-	 * @param   mixed    $jsSafe                Boolean: Make the result javascript safe.
-	 * @param   boolean  $interpretBackSlashes  To interpret backslashes (\\=\, \n=carriage return, \t=tabulation)
-	 * @param   boolean  $script                To indicate that the string will be push in the javascript language store
-	 *
-	 * @return  string  The translated string or the key is $script is true
-	 *
-	 * @since   11.1
-	 */
-	public static function _($string, $jsSafe = false, $interpretBackSlashes = true, $script = false)
-	{
-		$lang = JFactory::getLanguage();
-		if (is_array($jsSafe))
-		{
-			if (array_key_exists('interpretBackSlashes', $jsSafe))
-			{
-				$interpretBackSlashes = (boolean) $jsSafe['interpretBackSlashes'];
-			}
-			if (array_key_exists('script', $jsSafe))
-			{
-				$script = (boolean) $jsSafe['script'];
-			}
-			if (array_key_exists('jsSafe', $jsSafe))
-			{
-				$jsSafe = (boolean) $jsSafe['jsSafe'];
-			}
-			else
-			{
-				$jsSafe = false;
-			}
-		}
-		if ($script)
-		{
-			self::$strings[$string] = $lang->_($string, $jsSafe, $interpretBackSlashes);
-			return $string;
-		}
-		else
-		{
-			return $lang->_($string, $jsSafe, $interpretBackSlashes);
-		}
-	}
-
-	/**
-	 * Passes a string thru a sprintf.
-	 *
-	 * Note that this method can take a mixed number of arguments as for the sprintf function.
-	 *
-	 * The last argument can take an array of options:
-	 *
-	 * array('jsSafe'=>boolean, 'interpretBackSlashes'=>boolean, 'script'=>boolean)
-	 *
-	 * where:
-	 *
-	 * jsSafe is a boolean to generate a javascript safe strings.
-	 * interpretBackSlashes is a boolean to interpret backslashes \\->\, \n->new line, \t->tabulation.
-	 * script is a boolean to indicate that the string will be push in the javascript language store.
-	 *
-	 * @param   string  $string  The format string.
-	 *
-	 * @return  string  The translated strings or the key if 'script' is true in the array of options.
-	 *
-	 * @since   11.1
-	 */
-	public static function sprintf($string)
-	{
-		$lang = JFactory::getLanguage();
-		$args = func_get_args();
-		$count = count($args);
-		if ($count > 0)
-		{
-			if (is_array($args[$count - 1]))
-			{
-				$args[0] = $lang->_(
-					$string, array_key_exists('jsSafe', $args[$count - 1]) ? $args[$count - 1]['jsSafe'] : false,
-					array_key_exists('interpretBackSlashes', $args[$count - 1]) ? $args[$count - 1]['interpretBackSlashes'] : true
-				);
-
-				if (array_key_exists('script', $args[$count - 1]) && $args[$count - 1]['script'])
-				{
-					self::$strings[$string] = call_user_func_array('sprintf', $args);
-					return $string;
-				}
-			}
-			else
-			{
-				$args[0] = $lang->_($string);
-			}
-			$args[0] = preg_replace('/\[\[%([0-9]+):[^\]]*\]\]/', '%\1$s', $args[0]);
-			return call_user_func_array('sprintf', $args);
-		}
-		return '';
-	}
-
-}
-
-/**
  * The time how long the config in the session is valid.
  * While configuring the store, you should lower the time to 10 seconds.
  * Later in a big store it maybe useful to rise this time up to 1 hr.
@@ -626,7 +509,9 @@ class VmConfig {
 	const LOGFILEEXT = '.log.php';
 
 	public static $lang = FALSE;
+	public static $vmlang = FALSE;
 	public static $langTag = FALSE;
+	public static $vmlangTag = FALSE;
 
 	var $_params = array();
 	var $_raw = array();
@@ -803,10 +688,6 @@ class VmConfig {
 		$configTable  = VirtueMartModelConfig::checkConfigTableExists();
 
 		$db = JFactory::getDBO();
-		/*	$query = 'SHOW TABLES LIKE "%virtuemart_configs%"';
-			$db->setQuery($query);
-			$configTable = $db->loadResult();/*/
-// 		self::$_debug = true;
 
 		$freshInstall = JRequest::getInt('install',false);
 		if(empty($configTable) or $freshInstall){
@@ -818,7 +699,6 @@ class VmConfig {
 			} else {
 				self::$_jpConfig->installVMconfig($freshInstall);
 			}
-
 		}
 
 		$app = JFactory::getApplication();
@@ -938,8 +818,8 @@ class VmConfig {
 				$siteLang = $langs[0];
 			}
 		}
-		self::$langTag = $siteLang;
-		self::$lang = strtolower(strtr($siteLang,'-','_'));
+		self::$vmlangTag = self::$langTag = $siteLang;
+		self::$vmlang = self::$lang = strtolower(strtr($siteLang,'-','_'));
 		vmdebug('$siteLang: '.$siteLang.' self::$_jpConfig->lang '.self::$lang);
 		defined('VMLANG') or define('VMLANG', self::$lang );
 
@@ -1248,24 +1128,6 @@ class VmConfig {
 
 }
 
-class vmRequest{
-
-	static function uword($field, $default, $custom=''){
-
-		$source = JRequest::getVar($field,$default);
-
-		if(function_exists('mb_ereg_replace')){
-			//$source is string that will be filtered, $custom is string that contains custom characters
-			return mb_ereg_replace('[^\w'.preg_quote($custom).']', '', $source);
-		} else {
-			//return preg_replace('/[^\w'.preg_quote($custom).']/', '', $source);	//creates error Warning: preg_replace(): Unknown modifier ']'
-			//return preg_replace('/([^\w'.preg_quote($custom).'])/', '', $source);	//Warning: preg_replace(): Unknown modifier ']'
-			//return preg_replace("[^\w".preg_quote($custom)."]", '', $source);	//This seems to work even there is no seperator, the change is just the use of " instead '
-			return preg_replace("~[^\w".preg_quote($custom,'~')."]~", '', $source);	//We use Tilde as separator, and give the preq_quote function the used separator
-		}
-	}
-}
-
 class vmURI{
 
 	static function getCleanUrl ($JURIInstance = 0,$parts = array('scheme', 'user', 'pass', 'host', 'port', 'path', 'query', 'fragment')) {
@@ -1274,488 +1136,6 @@ class vmURI{
 		$_filter = JFilterInput::getInstance(array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
 		if($JURIInstance===0)$JURIInstance = JURI::getInstance();
 		return $_filter->clean($JURIInstance->toString($parts));
-	}
-}
-
-/**
- *
- * Class to provide js API of vm
- * @author Patrick Kohl
- * @author Max Milbers
- */
-class vmJsApi{
-
-
-	private function __construct() {
-
-	}
-	/**
-	 * Write a <script></script> element
-	 * @param   string   path to file
-	 * @param   string   library name
-	 * @param   string   library version
-	 * @param   boolean  load minified version
-	 * @return  nothing
-	 */
-
-	public static function js($namespace,$path=FALSE,$version='', $minified = NULL)
-	{
-
-		static $loaded = array();
-		// Only load once
-		// using of namespace assume same library have same namespace
-		// NEVER WRITE FULL NAME AS $namespace IN CASE OF REVISION NUMBER IF YOU WANT PREVENT MULTI LOAD !!!
-		// eg. $namespace = 'jquery.1.8.6' and 'jquery.1.6.2' does not prevent load it
-		// use $namespace = 'jquery',$revision ='1.8.6' , $namespace = 'jquery',$revision ='1.6.2' ...
-		// loading 2 time a JS file with this method simply return and do not load it the second time
-
-
-		if (!empty($loaded[$namespace])) {
-			return;
-		}
-		$file = vmJsApi::setPath($namespace,$path,$version, $minified , 'js');
-		$document = JFactory::getDocument();
-		$document->addScript( $file );
-		$loaded[$namespace] = TRUE;
-	}
-
-	/**
-	 * Write a <link ></link > element
-	 * @param   string   path to file
-	 * @param   string   library name
-	 * @param   string   library version
-	 * @param   boolean   library version
-	 * @return  nothing
-	 */
-
-	public static function css($namespace,$path = FALSE ,$version='', $minified = NULL)
-	{
-
-		static $loaded = array();
-
-		// Only load once
-		// using of namespace assume same css have same namespace
-		// loading 2 time css with this method simply return and do not load it the second time
-
-		if (!empty($loaded[$namespace])) {
-			return;
-		}
-		$file = vmJsApi::setPath( $namespace,$path,  $version='', $minified , 'css');
-
-		$document = JFactory::getDocument();
-		$document->addStyleSheet($file);
-		$loaded[$namespace] = TRUE;
-
-	}
-
-	/*
-	 * Set file path(look in template if relative path)
-	 */
-	public static function setPath( $namespace ,$path = FALSE ,$version='' ,$minified = NULL , $ext = 'js', $absolute_path=false)
-	{
-
-		$version = $version ? '.'.$version : '';
-		$min	 = $minified ? '.min' : '';
-		$file 	 = $namespace.$version.$min.'.'.$ext ;
-		$template = JFactory::getApplication()->getTemplate() ;
-		if ($path === FALSE) {
-			$uri = JPATH_THEMES .'/'. $template.'/'.$ext ;
-			$path= 'templates/'. $template .'/'.$ext ;
-		}
-
-		if (strpos($path, 'templates/'. $template ) !== FALSE)
-		{
-			// Search in template or fallback
-			if (!file_exists($uri.'/'. $file)) {
-				$assets_path = VmConfig::get('assets_general_path','components/com_virtuemart/assets/') ;
-				$path = str_replace('templates/'. $template.'/',$assets_path, $path);
-				// vmdebug('setPath',$assets_path,$path);
-				// vmWarn('file not found in tmpl :'.$file );
-			}
-			if ($absolute_path) {
-				$path = JPATH_BASE .'/'.$path;
-			} else {
-				$path = JURI::root(TRUE) .'/'.$path;
-			}
-
-		}
-		elseif (strpos($path, '//') === FALSE)
-		{
-			if ($absolute_path) {
-				$path = JPATH_BASE .'/'.$path;
-			} else {
-				$path = JURI::root(TRUE) .'/'.$path;
-			}
-		}
-		return $path.'/'.$file ;
-	}
-	/**
-	 * ADD some javascript if needed
-	 * Prevent duplicate load of script
-	 * @ Author KOHL Patrick
-	 */
-	static function jQuery($isSite=-1) {
-
-		//Very important convention with other 3rd pary developers, must be kept
-		if (JFactory::getApplication ()->get ('jquery')) {
-			return FALSE;
-		}
-		if($isSite===-1)$isSite = JFactory::getApplication()->isSite();
-
-		if (!VmConfig::get ('jquery', TRUE) and $isSite) {
-			return FALSE;
-		}
-
-		if(VmConfig::get('google_jquery',TRUE)){
-			vmJsApi::js('jquery','//ajax.googleapis.com/ajax/libs/jquery/1.6.4','',TRUE);
-			//$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js');
-			if (!$isSite) {
-				vmJsApi::js ('jquery-ui', '//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16', '', TRUE);
-			}
-			// if (!$isSite) $document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js');
-		} else {
-			vmJsApi::js( 'jquery',FALSE,'',TRUE);
-			//$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.min.js');
-			if (!$isSite) {
-				vmJsApi::js ('jquery-ui', FALSE, '', TRUE);
-			}
-			//if (!$isSite) $document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery-ui.min.js');
-		}
-		if (!$isSite) {
-			vmJsApi::js ('jquery.ui.autocomplete.html');
-
-		}
-		vmJsApi::js( 'jquery.noConflict');
-		//Very important convention with other 3rd pary developers, must be kept
-		JFactory::getApplication()->set('jquery',TRUE);
-		return TRUE;
-	}
-	// Virtuemart product and price script
-	static function jPrice()
-	{
-
-		if (!VmConfig::get ('jprice', TRUE) and JFactory::getApplication ()->isSite ()) {
-			return FALSE;
-		}
-		static $jPrice;
-		// If exist exit
-		if ($jPrice) {
-			return;
-		}
-		vmJsApi::jQuery();
-
-		$lang = JFactory::getLanguage();
-		$lang->load('com_virtuemart');
-		vmJsApi::jSite();
-
-		$closeimage = JURI::root(TRUE) .'/components/com_virtuemart/assets/images/fancybox/fancy_close.png';
-
-		$uri = JURI::getInstance();
-
-		$jsVars = "//<![CDATA[ \n";
-		if(VmConfig::get('useSSL',false)){
-			$jsVars .= "vmSiteurl = '". $uri->root( true ) ."/' ;\n" ;
-		} else {
-			$jsVars .= "vmSiteurl = '". $uri->root( ) ."' ;\n" ;
-		}
-
-
-		if (VmConfig::get ('vmlang_js', 1))  {
-			//$jsVars .= "vmLang = '" . substr (VMLANG, 0, 2) . "' ;\n";
-			$jsVars .= "vmLang = '&lang=" . substr (VMLANG, 0, 2) . "' ;\n";
-		}
-		else {
-			$jsVars .= 'vmLang = "";' . "\n";
-		}
-
-		if(VmConfig::get('addtocart_popup',1)){
-			$jsVars .= "Virtuemart.addtocart_popup = '".VmConfig::get('addtocart_popup',1)."' ; \n";
-			if(VmConfig::get('usefancy',0)){
-				$jsVars .= "usefancy = true;";
-				vmJsApi::js( 'fancybox/jquery.fancybox-1.3.4.pack');
-				vmJsApi::css('jquery.fancybox-1.3.4');
-			} else {//This is just there for the backward compatibility
-				$jsVars .= "vmCartText = '". addslashes( JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED') )."' ;\n" ;
-				$jsVars .= "vmCartError = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
-				$jsVars .= "loadingImage = '".JURI::root(TRUE) ."/components/com_virtuemart/assets/images/facebox/loading.gif' ;\n" ;
-				$jsVars .= "closeImage = '".$closeimage."' ; \n";
-				//This is necessary though and should not be removed without rethinking the whole construction
-
-				$jsVars .= "usefancy = false;";
-				vmJsApi::js( 'facebox' );
-				vmJsApi::css( 'facebox' );
-			}
-		}
-
-		$jsVars .= '
-//]]>
-';
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration ($jsVars);
-		vmJsApi::js( 'vmprices');
-
-		$jPrice = TRUE;
-		return TRUE;
-	}
-
-	// Virtuemart Site Js script
-	static function jSite()
-	{
-
-		if (!VmConfig::get ('jsite', TRUE) and JFactory::getApplication ()->isSite ()) {
-			return FALSE;
-		}
-		vmJsApi::js('vmsite');
-	}
-
-	static function JcountryStateList($stateIds, $prefix='') {
-		static $JcountryStateList = array();
-		// If exist exit
-		if (isset($JcountryStateList[$prefix]) or !VmConfig::get ('jsite', TRUE)) {
-			return;
-		}
-		$document = JFactory::getDocument();
-		VmJsApi::jSite();
-		$document->addScriptDeclaration('
-//<![CDATA[
-		jQuery( function($) {
-			$("#'.$prefix.'virtuemart_country_id").vm2front("list",{dest : "#'.$prefix.'virtuemart_state_id",ids : "'.$stateIds.'",prefiks : "'.$prefix.'"});
-		});
-//]]>
-		');
-		$JcountryStateList[$prefix] = TRUE;
-		return;
-	}
-
-	static function chosenDropDowns(){
-
-		static $chosenDropDowns = false;
-
-		if(!$chosenDropDowns){
-
-			if(VmConfig::get ('jchosen', 0)){
-				vmJsApi::js('chosen.jquery.min');
-				vmJsApi::css('chosen');
-
-				$document = JFactory::getDocument();
-				$selectText = 'COM_VIRTUEMART_DRDOWN_AVA2ALL';
-				$vm2string = "editImage: 'edit image',select_all_text: '".JText::_('COM_VIRTUEMART_DRDOWN_SELALL')."',select_some_options_text: '".JText::_($selectText)."'" ;
-				$document->addScriptDeclaration ( '
-//<![CDATA[
-		var vm2string ={'.$vm2string.'} ;
-		 jQuery( function($) {
-			$(".vm-chzn-select").chosen({enable_select_all: true,select_all_text : vm2string.select_all_text,select_some_options_text:vm2string.select_some_options_text});
-		});
-//]]>
-				');
-			}
-			$chosenDropDowns = true;
-		}
-		return;
-	}
-
-	static function JvalideForm($name='#adminForm')
-	{
-		static $jvalideForm;
-		// If exist exit
-		if ($jvalideForm === $name) {
-			return;
-		}
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration( "
-//<![CDATA[
-			jQuery(document).ready(function() {
-				jQuery('".$name."').validationEngine();
-			});
-//]]>
-"  );
-		if ($jvalideForm) {
-			return;
-		}
-		vmJsApi::js( 'jquery.validationEngine');
-
-		$lg = JFactory::getLanguage();
-		$lang = substr($lg->getTag(), 0, 2);
-		/*$existingLang = array("cz", "da", "de", "en", "es", "fr", "it", "ja", "nl", "pl", "pt", "ro", "ru", "tr");
-		if (!in_array ($lang, $existingLang)) {
-			$lang = "en";
-		}*/
-		$vlePath = vmJsApi::setPath('languages/jquery.validationEngine-'.$lang, FALSE , '' ,$minified = NULL ,   'js', true);
-		if(file_exists($vlePath) and !is_dir($vlePath)){
-			vmJsApi::js( 'languages/jquery.validationEngine-'.$lang );
-		} else {
-			vmJsApi::js( 'languages/jquery.validationEngine-en' );
-		}
-
-		vmJsApi::css ( 'validationEngine.template' );
-		vmJsApi::css ( 'validationEngine.jquery' );
-		$jvalideForm = $name;
-	}
-
-	// Virtuemart product and price script
-	static function jCreditCard()
-	{
-
-		static $jCreditCard;
-		// If exist exit
-		if ($jCreditCard) {
-			return;
-		}
-		JFactory::getLanguage()->load('com_virtuemart');
-
-
-		$js = "
-//<![CDATA[
-		var ccErrors = new Array ()
-		ccErrors [0] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_UNKNOWN_TYPE') ). "';
-		ccErrors [1] =  '" . addslashes( JText::_("COM_VIRTUEMART_CREDIT_CARD_NO_NUMBER") ). "';
-		ccErrors [2] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_FORMAT')) . "';
-		ccErrors [3] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_NUMBER')) . "';
-		ccErrors [4] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_WRONG_DIGIT')) . "';
-		ccErrors [5] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_EXPIRE_DATE')) . "';
-//]]>
-		";
-
-		$doc = JFactory::getDocument();
-		$doc->addScriptDeclaration($js);
-
-		$jCreditCard = TRUE;
-		return TRUE;
-	}
-
-	/**
-	 * ADD some CSS if needed
-	 * Prevent duplicate load of CSS stylesheet
-	 * @ Author KOHL Patrick
-	 */
-
-	static function cssSite() {
-
-		if (!VmConfig::get ('css', TRUE)) {
-			return FALSE;
-		}
-		static $cssSite;
-		if ($cssSite) {
-			return;
-		}
-		// Get the Page direction for right to left support
-		$document = JFactory::getDocument ();
-		$direction = $document->getDirection ();
-		$cssFile = 'vmsite-' . $direction ;
-
-		// If exist exit
-		vmJsApi::css ( $cssFile ) ;
-		$cssSite = TRUE;
-		return TRUE;
-	}
-
-	// $yearRange format >> 1980:2010
-	// Virtuemart Datepicker script
-	static function jDate($date='',$name="date",$id=NULL,$resetBt = TRUE, $yearRange='') {
-
-		if ($yearRange) {
-			$yearRange = 'yearRange: "' . $yearRange . '",';
-		}
-		if ($date == "0000-00-00 00:00:00") {
-			$date = 0;
-		}
-		if (empty($id)) {
-			$id = $name;
-		}
-		static $jDate;
-
-		$dateFormat = JText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_J16');//="m/d/y"
-		$search  = array('m', 'd', 'Y');
-		$replace = array('mm', 'dd', 'yy');
-		$jsDateFormat = str_replace($search, $replace, $dateFormat);
-
-		if ($date) {
-			if ( JVM_VERSION===1) {
-				$search  = array('m', 'd', 'y');
-				$replace = array('%m', '%d', '%y');
-				$dateFormat = str_replace($search, $replace, $dateFormat);
-			}
-			$formatedDate = JHTML::_('date', $date, $dateFormat );
-		}
-		else {
-			$formatedDate = JText::_('COM_VIRTUEMART_NEVER');
-		}
-		$display  = '<input class="datepicker-db" id="'.$id.'" type="hidden" name="'.$name.'" value="'.$date.'" />';
-		$display .= '<input id="'.$id.'_text" class="datepicker" type="text" value="'.$formatedDate.'" />';
-		if ($resetBt) {
-			$display .= '<span class="vmicon vmicon-16-logout icon-nofloat js-date-reset"></span>';
-		}
-
-		// If exist exit
-		if ($jDate) {
-			return $display;
-		}
-		$front = 'components/com_virtuemart/assets/';
-
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration('
-//<![CDATA[
-			jQuery(document).ready( function($) {
-			$(".datepicker").live( "focus", function() {
-				$( this ).datepicker({
-					changeMonth: true,
-					changeYear: true,
-					'.$yearRange.'
-					dateFormat:"'.$jsDateFormat.'",
-					altField: $(this).prev(),
-					altFormat: "yy-mm-dd"
-				});
-			});
-			$(".js-date-reset").click(function() {
-				$(this).prev("input").val("'.JText::_('COM_VIRTUEMART_NEVER').'").prev("input").val("0");
-			});
-		});
-//]]>
-		');
-		vmJsApi::js ('jquery.ui.core',FALSE,'',TRUE);
-		vmJsApi::js ('jquery.ui.datepicker',FALSE,'',TRUE);
-
-		vmJsApi::css ('jquery.ui.all',$front.'css/ui' ) ;
-		$lg = JFactory::getLanguage();
-		$lang = $lg->getTag();
-
-		$existingLang = array("af","ar","ar-DZ","az","bg","bs","ca","cs","da","de","el","en-AU","en-GB","en-NZ","eo","es","et","eu","fa","fi","fo","fr","fr-CH","gl","he","hr","hu","hy","id","is","it","ja","ko","kz","lt","lv","ml","ms","nl","no","pl","pt","pt-BR","rm","ro","ru","sk","sl","sq","sr","sr-SR","sv","ta","th","tj","tr","uk","vi","zh-CN","zh-HK","zh-TW");
-		if (!in_array ($lang, $existingLang)) {
-			$lang = substr ($lang, 0, 2);
-		}
-		elseif (!in_array ($lang, $existingLang)) {
-			$lang = "en-GB";
-		}
-		vmJsApi::js ('jquery.ui.datepicker-'.$lang, $front.'js/i18n' ) ;
-		$jDate = TRUE;
-		return $display;
-	}
-
-
-	/*
-	 * Convert formated date;
-	 * @ $date the date to convert
-	 * @ $format Joomla DATE_FORMAT Key endding eg. 'LC2' for DATE_FORMAT_LC2
-	 * @ revert date format for database- TODO ?
-	 */
-
-	static function date($date , $format ='LC2', $joomla=FALSE ,$revert=FALSE ){
-
-		if (!strcmp ($date, '0000-00-00 00:00:00')) {
-			return JText::_ ('COM_VIRTUEMART_NEVER');
-		}
-		If ($joomla) {
-			$formatedDate = JHTML::_('date', $date, JText::_('DATE_FORMAT_'.$format));
-		} else {
-			if (!JVM_VERSION === 1) {
-				$J16 = "_J16";
-			}
-			else {
-				$J16 = "";
-			}
-			$formatedDate = JHTML::_('date', $date, JText::_('COM_VIRTUEMART_DATE_FORMAT_'.$format.$J16));
-		}
-		return $formatedDate;
 	}
 }
 

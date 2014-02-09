@@ -51,7 +51,7 @@ class VirtueMartControllerCart extends JController {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 		}
 		$this->useSSL = VmConfig::get('useSSL', 0);
-		$this->useXHTML = true;
+		$this->useXHTML = false;
 	}
 
 	/**
@@ -384,18 +384,20 @@ class VirtueMartControllerCart extends JController {
 	 *
 	 */
 	public function changeShopper() {
-		JRequest::checkToken () or jexit ('Invalid Token');
 
-		//check for permissions
-		if(!JFactory::getUser(JFactory::getSession()->get('vmAdminID'))->authorise('core.admin', 'com_virtuemart') || !VmConfig::get ('oncheckout_change_shopper')){
-			$mainframe = JFactory::getApplication();
-			$mainframe->enqueueMessage(JText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $newUser->name .' ('.$newUser->username.')'), 'error');
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
-		}
+		JRequest::checkToken () or jexit ('Invalid Token');
 
 		//get data of current and new user
 		$usermodel = VmModel::getModel('user');
 		$user = $usermodel->getCurrentUser();
+
+		//check for permissions
+		if(!JFactory::getUser(JFactory::getSession()->get('vmAdminID'))->authorise('core.admin', 'com_virtuemart') || !VmConfig::get ('oncheckout_change_shopper')){
+			$mainframe = JFactory::getApplication();
+			$mainframe->enqueueMessage(JText::sprintf('COM_VIRTUEMART_CART_CHANGE_SHOPPER_NO_PERMISSIONS', $user->name .' ('.$user->username.')'), 'error');
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
+		}
+
 		$newUser = JFactory::getUser(JRequest::getCmd('userID'));
 
 		//update session

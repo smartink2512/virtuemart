@@ -25,12 +25,10 @@ if (!isset( $this->show )) $this->show = TRUE;
 if (!isset( $this->from_cart )) $this->from_cart = FALSE;
 if (!isset( $this->order )) $this->order = FALSE ;
 
-
 if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 $comUserOption=shopFunctionsF::getComUserOption();
 if (empty($this->url)){
-	$uri = JFactory::getURI();
-	$url = $uri->toString(array('path', 'query', 'fragment'));
+	$url = vmURI::getCleanUrl();
 } else{
 	$url = $this->url;
 }
@@ -40,11 +38,6 @@ $user = JFactory::getUser();
 if ($this->show and $user->id == 0  ) {
 JHtml::_('behavior.formvalidation');
 JHTML::_ ( 'behavior.modal' );
-
-
-//$uri = JFactory::getURI();
-//$url = $uri->toString(array('path', 'query', 'fragment'));
-
 
 	//Extra login stuff, systems like openId and plugins HERE
     if (JPluginHelper::isEnabled('authentication', 'openid')) {

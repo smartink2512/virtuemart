@@ -28,7 +28,7 @@ if ($this->fTask === 'savecartuser') {
 }
 else {
 	$rtask = 'registercheckoutuser';
-	$url = JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=checkout', $this->useXHTML, $this->useSSL);
+	$url = JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout', 0, $this->useSSL);
 }
 ?>
 <h1><?php echo $this->page_title ?></h1>
