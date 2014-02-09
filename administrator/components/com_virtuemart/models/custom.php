@@ -204,7 +204,7 @@ class VirtueMartModelCustom extends VmModel {
 	function getParentList ($excludedId = 0) {
 
 		$db = JFactory::getDBO();
-		$db->setQuery (' SELECT virtuemart_custom_id as value,custom_title as text FROM `#__virtuemart_customs` WHERE `field_type` ="P" and virtuemart_custom_id!=' . $excludedId);
+		$db->setQuery (' SELECT virtuemart_custom_id as value,custom_title as text FROM `#__virtuemart_customs` WHERE `field_type` ="G" and virtuemart_custom_id!=' . $excludedId);
 		if ($results = $db->loadObjectList ()) {
 			return $results;
 		}
