@@ -169,7 +169,7 @@ class VirtuemartViewOrders extends VmView {
 
 		} else { // 'list' -. default
 			$useSSL = VmConfig::get('useSSL',0);
-			$useXHTML = true;
+			$useXHTML = false;
 			$this->assignRef('useSSL', $useSSL);
 			$this->assignRef('useXHTML', $useXHTML);
 			if ($_currentUser->get('id') == 0) {

@@ -36,7 +36,7 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 	{
 		parent::__construct();
 		$this->useSSL = VmConfig::get('useSSL',0);
-		$this->useXHTML = true;
+		$this->useXHTML = false;
 		VmConfig::loadJLang('com_virtuemart_shoppers',TRUE);
 		VmConfig::loadJLang('com_virtuemart_orders',TRUE);
 	}
@@ -59,6 +59,9 @@ class VirtueMartControllerInvoice extends JControllerLegacy
 		} else {
 			//PDF needs more RAM than usual
 			VmConfig::ensureMemoryLimit(64);
+
+			//PDF needs xhtml links
+			$this->useXHTML = true;
 			$viewName='invoice';
 			$format="html";
 

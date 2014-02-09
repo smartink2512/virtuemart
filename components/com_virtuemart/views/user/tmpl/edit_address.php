@@ -22,14 +22,6 @@ defined ('_JEXEC') or die('Restricted access');
 JHtml::_ ('behavior.formvalidation');
 JHtml::stylesheet ('vmpanels.css', JURI::root () . 'components/com_virtuemart/assets/css/');
 
-/*if ($this->fTask === 'savecartuser') {
-	$rtask = 'registercartuser';
-
-}
-else {
-	$rtask = 'registercheckoutuser';
-	$url = JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=checkout', $this->useXHTML, $this->useSSL);
-}*/
 ?>
 <h1><?php echo $this->page_title ?></h1>
 <?php

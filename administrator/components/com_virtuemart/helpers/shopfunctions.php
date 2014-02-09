@@ -532,7 +532,7 @@ class ShopFunctions {
 			return vmText::_ ('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
 		} else {
 			$_shipTo = array();
-			$useXHTTML = empty($view->useXHTML) ? TRUE : $view->useXHTML;
+			$useXHTTML = empty($view->useXHTML) ? false : $view->useXHTML;
 			$useSSL = empty($view->useSSL) ? FALSE : $view->useSSL;
 
 			for ($_i = 0; $_i < count ($_addressList); $_i++) {

@@ -27,8 +27,7 @@ if (!isset( $this->order )) $this->order = FALSE ;
 
 
 if (empty($this->url)){
-	$uri = JFactory::getURI();
-	$url = $uri->toString(array('path', 'query', 'fragment'));
+	$url = vmURI::getCleanUrl();
 } else{
 	$url = $this->url;
 }

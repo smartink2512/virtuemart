@@ -51,7 +51,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 		}
 		$this->useSSL = VmConfig::get('useSSL', 0);
-		$this->useXHTML = true;
+		$this->useXHTML = false;
 	}
 
 	/**
