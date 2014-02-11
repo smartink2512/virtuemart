@@ -147,6 +147,17 @@ abstract class CouponHelper
 	 * @return boolean True on success
 	 */
 	static public function setInUseCoupon($code, $in_use=true){
+
+		JPluginHelper::importPlugin('vmcoupon');
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmCouponInUse', array($code));
+		if(!empty($returnValues)){
+			foreach ($returnValues as $returnValue) {
+				if ($returnValue !== null  ) {
+					return $returnValue;
+				}
+			}
+		}
 		$session = JFactory::getSession();
 		$coupon_used = $session->getId();
 		$db = JFactory::getDBO();
