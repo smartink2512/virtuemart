@@ -667,100 +667,16 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 		}
 
+		/**
+		 * The param update IS used in the layout, do not remove
+		 * @param $update
+		 */
 		public function displayFinished($update){
 
-			$lang = JFactory::getLanguage();
-			//Load first english files
-			$lang->load('com_virtuemart.sys',JPATH_ADMINISTRATOR,'en_GB',true);
-			$lang->load('com_virtuemart',JPATH_ADMINISTRATOR,'en_GB',true);
+			include(JPATH_VM_ADMINISTRATOR.'/views/updatesmigration/tmpl/insfinished.php');
 
-			//load specific language
-			$lang->load('com_virtuemart.sys',JPATH_ADMINISTRATOR,null,true);
-			$lang->load('com_virtuemart',JPATH_ADMINISTRATOR,null,true);
-			?>
-<link
-	rel="stylesheet"
-	href="components/com_virtuemart/assets/css/install.css"
-	type="text/css" />
-<link
-	rel="stylesheet"
-	href="components/com_virtuemart/assets/css/toolbar_images.css"
-	type="text/css" />
-
-<div align="center">
-	<table
-		width="100%"
-		border="0">
-		<tr>
-			<td
-				valign="top"
-				align="center"><a
-				href="http://virtuemart.net"
-				target="_blank"> <img
-					border="0"
-					align="center"
-					src="components/com_virtuemart/assets/images/vm_menulogo.png"
-					alt="Cart" /> </a> <br /> <br />
-				<h2>
-
-				<?php echo JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>
-			</td>
-			<td>
-				<h2>
-				<?php
-				if($update){
-					echo JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
-					/*					if($this->renewConfigManually){
-						echo '<br />'.JText::_('When you got an error deleting the virtuemart.cfg file <br />
-					Delete this file manually (administrator/components/com_virtuemart/virtuemart.cfg) and please use
-					"renew config from file" in Tools => Updates/Migration');
-					}*/
-					echo '<br />'.JText::_('COM_VIRTUEMART_EXTENSION_UPGRADE_REMIND');
-
-				} else {
-					echo JText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
-				}
-				?>
-				</h2> <br />
-
-				<div id="cpanel">
-
-				<?php
-				if(!$update){
-					?>
-					<div class="icon">
-						<a
-							href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()) ?>">
-							<span class="vmicon48 vm_install_48"></span> <br />
-						<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
-							</a>
-					</div>
-
-		<?php } ?>
-
-				<div class="icon">
-				<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&task=disableDangerousTools&token='.JUtility::getToken() ) ?>">
-					<span class="vmicon48 vm_frontpage_48"></span>
-					<br /><?php echo JText::_('COM_VIRTUEMART_INSTALL_GO_SHOP') ?>
-				</a>
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<?php echo JText::sprintf('COM_VIRTUEMART_MORE_LANGUAGES','http://virtuemart.net/community/translations'); ?>
-			</td>
-		</tr>
-	</table>
-</div>
-
-
-
-
-
-
-<?php
 		}
+
 
 	}
 

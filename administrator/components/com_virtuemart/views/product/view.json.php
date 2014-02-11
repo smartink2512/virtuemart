@@ -82,9 +82,9 @@ class VirtuemartViewProduct extends JView {
 		{
 			$fieldTypes= $this->model->getField_types() ;
 
-			$query = "SELECT *,custom_value as value FROM #__virtuemart_customs
-			WHERE (`virtuemart_custom_id`=".$id." or `custom_parent_id`=".$id.")";
-			$query .=" order by custom_parent_id asc";
+			$query = 'SELECT *,`custom_value` as value FROM `#__virtuemart_customs`
+			WHERE (`virtuemart_custom_id`='.$id.' or `custom_parent_id`='.$id.' ';
+			$query .= 'order by `ordering` asc';
 			$this->db->setQuery($query);
 			$rows = $this->db->loadObjectlist();
 
