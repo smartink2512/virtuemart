@@ -75,29 +75,6 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 
 	/**
-	 * This is for use in the checkout process, it is the same like editAddressCart, but it sets the save task
-	 * to saveCheckoutUser, the task saveCheckoutUser just sets the right redirect. This is done just to have the
-	 * controll flow in the controller and not in the layout. The layout is everytime calling a standard joomla task.
-	 *
-	 * @author Max Milbers
-	 */
-	function editAddressCheckout(){
-
-		$view = $this->getView('user', 'html');
-
-		$view->setLayout('edit_address');
-
-		if (!class_exists('VirtueMartCart')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-		$cart = VirtueMartCart::getCart();
-		$cart->fromCart = true;
-		$cart->setCartIntoSession();
-
-		// Display it all
-		$view->display();
-	}
-
-
-	/**
 	 * This is the save function for the normal user edit.php layout.
 	 * We use here directly the userModel store function, because this view is for registering also
 	 * it redirects to the standard user view.
@@ -201,41 +178,12 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 		}
 
-		$this->saveToCart($data);
-		return $msg;
-	}
-
-	/**
-	 * This function just gets the post data and put the data if there is any to the cart
-	 *
-	 * @author Max Milbers
-	 */
-	private function saveToCart($data){
-
 		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 		$cart = VirtueMartCart::getCart();
 		$cart->saveAddressInCart($data, $data['address_type']);
-
+		return $msg;
 	}
 
-	/**
-	 * Editing a user address was cancelled when called from the cart; return to the cart
-	 *
-	 * @author Oscar van Eijk
-	 */
-	function cancelCartUser(){
-
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart', FALSE)  );
-	}
-
-	/**
-	 * Editing a user address was cancelled during chaeckout; return to the cart
-	 *
-	 * @author Oscar van Eijk
-	 */
-/*	function cancelCheckoutUser(){
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout',$this->useXHTML,$this->useSSL) );
-	}
 
 	/**
 	 * Action cancelled; return to the previous view

@@ -79,27 +79,35 @@ class VirtueMartModelCustom extends VmModel {
 
 
     /**
-	 * Retireve a list of customs from the database. This is meant only for backend use
+	 * Retrieve a list of customs from the database. This is meant only for backend use
 	 *
 	 * @author Kohl Patrick
+	 * @author Max Milbers
 	 * @return object List of custom objects
 	 */
     function getCustoms($custom_parent_id,$search = false){
 
-    	vmdebug('for model');
-		//$query='* FROM `#__virtuemart_customs` WHERE field_type <> "R" AND field_type <> "Z" AND field_type <> "G" ';
 	    $query='* FROM `#__virtuemart_customs` ';
+
+		$where = array();
 		if($custom_parent_id){
-			$query .= 'AND `custom_parent_id` ='.(int)$custom_parent_id;
+			$where[] = ' `custom_parent_id` ='.(int)$custom_parent_id;
 		}
 
 		if($search){
 			$db = JFactory::getDBO();
 			$search = '"%' . $db->escape( $search, true ) . '%"' ;
-			$query .= 'AND `custom_title` LIKE '.$search;
+			$where[] = ' `custom_title` LIKE '.$search;
+		}
+
+		if (count ($where) > 0) {
+			$whereString = ' WHERE (' . implode (' AND ', $where) . ') ';
+		}
+		else {
+			$whereString = '';
 		}
 	    $datas = new stdClass();
-		$datas->items = $this->exeSortSearchListQuery(0, $query, '');
+		$datas->items = $this->exeSortSearchListQuery(0, $query, '',$whereString,$this->_getOrdering());
 
 		$customfields = VmModel::getModel('Customfields');
 

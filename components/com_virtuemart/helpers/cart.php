@@ -769,7 +769,7 @@ class VirtueMartCart {
 		}
 
 		if ($validUserDataBT!==true) {	//Important, we can have as result -1,false and true.
-			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , '');
+			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT' , '');
 		}
 
 		if($this->STsameAsBT!==0){
@@ -792,7 +792,7 @@ class VirtueMartCart {
 			//Only when there is an ST data, test if all necessary fields are filled
 			$validUserDataST = self::validateUserData('ST');
 			if ($validUserDataST!==true) {
-				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST' , '');
+				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST' , '');
 			}
 
 		}
@@ -801,7 +801,7 @@ class VirtueMartCart {
 			$currentUser = JFactory::getUser();
 			if(empty($currentUser->id)){
 				$redirectMsg = vmText::_('COM_VIRTUEMART_CART_ONLY_REGISTERED');
-				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
+				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT' , $redirectMsg);
 			}
 		}
 		// Test Coupon
@@ -1375,16 +1375,20 @@ class VirtueMartCart {
 		return true;
 	}
 
-	function prepareAddressDataInCart($type='BT',$new = false,$virtuemart_user_id=0){
+	function prepareAddressDataInCart($type='BT',$new = false,$virtuemart_user_id = null){
 
 		$userFieldsModel =VmModel::getModel('Userfields');
 
 		if($new){
-			$data = null;
+			$data = new stdClass();;
 		} else {
 			$data = (object)$this->$type;
 		}
-		$data->virtuemart_user_id=$virtuemart_user_id;
+
+		if($virtuemart_user_id!==null){
+			$data->virtuemart_user_id = $virtuemart_user_id;
+		}
+
 		if($type=='ST'){
 			$preFix = 'shipto_';
 		} else {

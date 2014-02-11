@@ -206,6 +206,7 @@ class VirtuemartViewOrders extends VmView {
 			JToolBarHelper::save('updatestatus', vmText::_('COM_VIRTUEMART_UPDATE_STATUS'));
 
 			if ($this->canDo->get('core.admin') || $this->canDo->get('vm.orders.delete')) {
+				JToolBarHelper::spacer('100');
 				JToolBarHelper::deleteList();
 			}
 
