@@ -16,7 +16,7 @@
  * @package	VirtueMart
  * @subpackage Cart
  * @author Max Milbers, Valerie Isaksen
- *
+ * @author Yagendoo Media Team
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -26,58 +26,76 @@
  * other free or open source software licenses.
  *
  */
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-?>
 
+defined('_JEXEC') or die('Restricted access'); ?>
 <html>
-    <head>
+<head>	
 	<style type="text/css">
-            body, td, span, p, th {  }
-	    table.html-email {margin:10px auto;background:#fff;border:solid #dad8d8 1px;}
-	    .html-email tr{border-bottom : 1px solid #eee;}
-	    span.grey {color:#666;}
-	    span.date {color:#666; }
-	    a.default:link, a.default:hover, a.default:visited {color:#666;line-height:25px;background: #f2f2f2;margin: 10px ;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;}
-	    a.default:hover {color:#888;background: #f8f8f8;}
-	    .cart-summary{ }
-	    .html-email th { background: #ccc;margin: 0px;padding: 10px;}
-	    .sectiontableentry2, .html-email th, .cart-summary th{ background: #ccc;margin: 0px;padding: 10px;}
-	    .sectiontableentry1, .html-email td, .cart-summary td {background: #fff;margin: 0px;padding: 10px;}
-	    .line-through{text-decoration:line-through}
-	    <?php if ($this->vendor->vendor_letter_header==1 || $this->vendor->vendor_letter_footer==1) { echo $this->vendor->vendor_letter_css; } ?> 
-	    /* Firefox has a hard-coded font-size style for tables, so it won't by default inherit the surrounding div's font-size! */
-	    #vmdoc-footer table, #vmdoc-header table, .vmdoc-footer table, .vmdoc-header table { font-size: inherit; }
-	    #vmdoc-header h1, #vmdoc-footer h1, #vmdoc-header p, #vmdoc-footer p { margin-top: 0; margin-bottom: 0; }
-	    .vmdoc-header-image { padding: 0; vertical-align: top; }
-	    .vmdoc-header-vendor { width: 100%; }
-	    td.vmdoc-header-separator, td.vmdoc-header-separator hr { padding: 0; margin-top: 0; margin-bottom: 0; }
-	    td.vmdoc-header-separator { padding: 0; }
+		body, table {
+			font-size: <?php echo $this->vendor->vendor_mail_font_size; ?>px;
+		}
+		tr, td	{
+			border: 0 none;
+		}
+		<?php if(!empty($this->vendor->vendor_mail_css)) : ?>
+			<?php echo $this->vendor->vendor_mail_css; ?>
+		<?php endif; ?>
 	</style>
+</head>
 
-    </head>
+<body style="margin: 0; padding: 0; font-family: '<?php echo ucfirst($this->vendor->vendor_mail_font); ?>', 'Arial', sans-serif;">
+	<table style="width: 100%; background-color: #E0E0E0; border: 0;" bgcolor="#E0E0E0" border="0">
+		<tr>
+			<td>
+				<table style="width: <?php echo $this->vendor->vendor_mail_width; ?>px; margin: 15px auto; background-color: #FFFFFF; border: 1px solid #D5D5D5; -webkit-border-radius: 3px; -moz-border-radius: 3px; -o-border-radius: 3px; border-radius: 3px;" width="<?php echo $this->vendor->vendor_mail_width; ?>" bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td width="<?php echo $this->vendor->vendor_mail_width; ?>">
+							<table style="width: 96%; margin: 2%; border: 0;" border="0" cellpadding="0" cellspacing="0">
+								<?php if($this->recipient == 'shopper'): ?>
+									<?php echo $this->loadTemplate('header'); ?>
+								<?php endif; ?>
 
-    <body style="background: #F2F2F2;word-wrap: break-word;">
-	<div style="background-color: #e6e6e6;" width="100%">
-	    <table style="margin: auto;" cellpadding="0" cellspacing="0"  ><tr><td>
-			<?php
-// Shop desc for shopper and vendor
-			if ($this->recipient == 'shopper') {
-			    echo $this->loadTemplate('header');
-			}
-// Message for shopper or vendor
-			echo $this->loadTemplate($this->recipient);
-// render shipto billto adresses
-			echo $this->loadTemplate('shopperaddresses');
-// render price list
-			echo $this->loadTemplate('pricelist');
-// more infos
-			echo $this->loadTemplate($this->recipient . '_more');
-// end of mail
-			echo $this->loadTemplate('footer');
-			?>
-		    </td></tr>
-	    </table>
-	</div>
-    </body>
+								<?php echo $this->loadTemplate($this->recipient); ?>
+
+								<?php if($this->recipient == 'vendor'): ?>
+									<?php echo $this->loadTemplate('shopperaddresses'); ?>
+								<?php endif; ?>
+
+								<?php echo $this->loadTemplate('pricelist'); ?>
+
+								<?php echo $this->loadTemplate($this->recipient . '_more'); ?>
+							</table>
+						</td>
+					</tr>
+
+					<?php if($this->recipient === "shopper") : ?>
+						<tr>
+							<td width="<?php echo $this->vendor->vendor_mail_width; ?>">
+								<table style="width: 96%; margin: 2%; border: 0;" border="0" cellpadding="0" cellspacing="0">
+									<tr>
+										<td style="font-size: <?php echo $this->vendor->vendor_mail_footer_font_size; ?>px;">
+											<?php echo $this->loadTemplate('footer'); ?>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					<?php endif; ?>
+				</table>
+			</td>
+		</tr>
+
+		<?php if($this->recipient === "shopper" && $this->vendor->vendor_mail_tos === "1") : ?>
+			<tr>
+				<td>
+					<table style="width: <?php echo $this->vendor->vendor_mail_width; ?>px; margin: 0 auto 15px auto;" width="<?php echo $this->vendor->vendor_mail_width; ?>" border="0" cellpadding="0" cellspacing="0">
+						<td style="padding: 0 0 0 30px; color: #8D8D8D;" color="#8D8D8D">
+							<?php echo $this->vendor->vendor_terms_of_service; ?>
+						</td>
+					</table>
+				</td>
+			</tr>
+		<?php endif; ?>
+	</table>
+</body>
 </html>
