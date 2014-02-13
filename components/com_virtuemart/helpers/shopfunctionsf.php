@@ -461,6 +461,8 @@ class shopFunctionsF {
 		$vendorModel->addImages ($vendor);
 		$vars['vendor'] = $vendor;
 		$vars['vendorEmail'] = $vendorModel->getVendorEmail ($product->virtuemart_vendor_id);
+
+		if (!class_exists ('shopFunctions')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctions.php');
 		$vars['vendorAddress'] = shopFunctions::renderVendorAddress ($product->virtuemart_vendor_id);
 
 		$orderModel = VmModel::getModel ('orders');
