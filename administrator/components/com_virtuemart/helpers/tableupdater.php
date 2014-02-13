@@ -35,7 +35,7 @@ class GenericTableUpdater extends JModel{
 		// 		$this->_oldToNew = new stdClass();
 		$this->starttime = microtime(true);
 
-		$max_execution_time = ini_get('max_execution_time');
+		$max_execution_time = VmConfig::getExecutionTime();
 		$jrmax_execution_time= JRequest::getInt('max_execution_time',300);
 
 		if(!empty($jrmax_execution_time)){
@@ -43,7 +43,7 @@ class GenericTableUpdater extends JModel{
 			if($max_execution_time!==$jrmax_execution_time) @ini_set( 'max_execution_time', $jrmax_execution_time );
 		}
 
-		$this->maxScriptTime = ini_get('max_execution_time')*0.90-1;	//Lets use 10% of the execution time as reserve to store the progress
+		$this->maxScriptTime = VmConfig::getExecutionTime() * 0.90-1;	//Lets use 10% of the execution time as reserve to store the progress
 
 		VmConfig::ensureMemoryLimit(128);
 

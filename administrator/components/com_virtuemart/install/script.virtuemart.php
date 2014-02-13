@@ -14,7 +14,7 @@ $memory_limit = (int) substr(ini_get('memory_limit'),0,-1);
 if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
 
 $maxtime = (int) ini_get('max_execution_time');
-if($maxtime < 140){
+if(!empty($maxtime) and $maxtime < 140){
 	@ini_set( 'max_execution_time', '140' );
 }
 

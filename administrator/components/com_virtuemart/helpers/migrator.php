@@ -36,7 +36,7 @@ class Migrator extends VmModel{
 		$this->_oldToNew = new stdClass();
 		$this->starttime = microtime(true);
 
-		$max_execution_time = (int)ini_get('max_execution_time');
+		$max_execution_time = VmConfig::getExecutionTime();
 		$jrmax_execution_time= JRequest::getInt('max_execution_time');
 
 		if(!empty($jrmax_execution_time)){
@@ -46,7 +46,7 @@ class Migrator extends VmModel{
 			@ini_set( 'max_execution_time', 60 );
 		}
 
-		$this->maxScriptTime = ini_get('max_execution_time')*0.80-1;	//Lets use 30% of the execution time as reserve to store the progress
+		$this->maxScriptTime = VmConfig::getExecutionTime()*0.80-1;	//Lets use 30% of the execution time as reserve to store the progress
 
 		$jrmemory_limit= JRequest::getInt('memory_limit');
 		if(!empty($jrmemory_limit)){
