@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_categories` (
   `id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_calc_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
-  `virtuemart_category_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_category_id` mediumint(1) UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_virtuemart_calc_id` (`virtuemart_calc_id`,`virtuemart_category_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_states` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
-  `virtuemart_category_id` smallint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_category_id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   `category_template` char(128),
   `category_layout` char(64),
@@ -184,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_category_categories` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_category_medias` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `virtuemart_category_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_category_id` mediumint(1) UNSIGNED NOT NULL DEFAULT '0',
   `virtuemart_media_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `ordering` int(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -795,7 +795,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_product_categories` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_product_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `virtuemart_category_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_category_id` mediumint(1) UNSIGNED NOT NULL DEFAULT '0',
   `ordering` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_category_id`),
@@ -844,6 +844,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
   PRIMARY KEY (`virtuemart_customfield_id`),
   KEY `idx_virtuemart_product_id` (`virtuemart_product_id`),
   KEY `idx_virtuemart_custom_id` (`virtuemart_custom_id`),
+  KEY `idx_customfield_value` (`customfield_value`),
   KEY `idx_published` (`published`),
   KEY `idx_ordering` (`ordering`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields' AUTO_INCREMENT=1 ;
@@ -1173,7 +1174,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userfields` (
   KEY `i_shared` (`shared`),
   KEY `i_published` (`published`),
   KEY `i_account` (`account`),
-  KEY `i_shipment` (`shipment`)
+  KEY `i_shipment` (`shipment`),
+  KEY `i_cart` (`cart`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds the fields for the user information' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------

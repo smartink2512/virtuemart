@@ -39,7 +39,7 @@ $db->setQuery($q);
 $vendor_currency = $db->loadAssoc();
 
 
-$virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',JRequest::getInt('virtuemart_currency_id', $vendor_currency['vendor_currency']) );
+$virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',vmRequest::getInt('virtuemart_currency_id', $vendor_currency['vendor_currency']) );
 
 //if (!$vendor_currency['vendor_accepted_currencies']) return;
 //$currency_codes = explode(',' , $currencies->vendor_accepted_currencies );
