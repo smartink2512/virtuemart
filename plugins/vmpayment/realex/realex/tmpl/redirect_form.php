@@ -18,15 +18,15 @@
 ?>
 
 <input type="radio" name="virtuemart_paymentmethod_id"
-       id="payment_id_<?php echo $viewData['method']->virtuemart_paymentmethod_id; ?>"
-       value="<?php echo $viewData['method']->virtuemart_paymentmethod_id; ?>" <?php echo $viewData ['checked']; ?>>
-<label for="payment_id_<?php echo $viewData['method']->virtuemart_paymentmethod_id; ?>">
+       id="payment_id_<?php echo $viewData['virtuemart_paymentmethod_id']; ?>"
+       value="<?php echo $viewData['virtuemart_paymentmethod_id']; ?>" <?php echo $viewData ['checked']; ?>>
+<label for="payment_id_<?php echo $viewData['virtuemart_paymentmethod_id']; ?>">
 
     <span class="vmpayment">
         <?php if (!empty($viewData['payment_logo'] )) { ?>
 	        <span class="vmpayment_logo"><?php echo $viewData ['payment_logo']; ?> </span>
         <?php } ?>
-	    <span class="vmpayment_name"><?php echo $viewData['method']->payment_name; ?></span>
+	    <span class="vmpayment_name"><?php echo $viewData['payment_name']; ?></span>
 
 
 	    <?php if (!empty($viewData['payment_cost']  )) { ?>

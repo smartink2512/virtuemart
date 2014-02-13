@@ -1402,7 +1402,7 @@ class VirtueMartCart {
 		return $this->pricesUnformatted;
 	}
 
-	function prepareAddressDataInCart($type='BT',$new = false, $virtuemart_user_id=0){
+	function prepareAddressDataInCart($type='BT',$new = false, $virtuemart_user_id=null){
 
 		$userFieldsModel =VmModel::getModel('Userfields');
 
@@ -1411,7 +1411,9 @@ class VirtueMartCart {
 		} else {
 			$data = (object)$this->$type;
 		}
-		$data->virtuemart_user_id=$virtuemart_user_id;
+		if($virtuemart_user_id!==null){
+			$data->virtuemart_user_id=$virtuemart_user_id;
+		}
 		if($type=='ST'){
 			$preFix = 'shipto_';
 		} else {

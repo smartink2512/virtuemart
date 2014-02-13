@@ -1187,26 +1187,37 @@ class ShopFunctions {
 	 * @param string $selected_item The pre-selected value
 	 *
 	 */
-	static function listMonths ($list_name, $selected = FALSE, $attr = '') {
+	static function listMonths ($list_name, $selected = FALSE, $attr = '', $format='F') {
 
 		$options = array();
 		if (!$selected) {
 			$selected = date ('m');
 		}
+$months=array(
+	"01"=>JText::_ ('JANUARY'),
+	"02"=>JText::_ ('FEBRUARY'),
+	"03"=>JText::_ ('MARCH'),
+	"04"=>JText::_ ('APRIL'),
+	"05"=>JText::_ ('MAY'),
+	"06"=>JText::_ ('JUNE'),
+	"07"=>JText::_ ('JULY'),
+	"08"=>JText::_ ('AUGUST'),
+	"09"=>JText::_ ('SEPTEMBER'),
+	"10"=>JText::_ ('OCTOBER'),
+	"11"=>JText::_ ('NOVEMBER'),
+	"12"=>JText::_ ('DECEMBER')
+);
 
 		$options[] = JHTML::_ ('select.option', 0, JText::_ ('MONTH'));
-		$options[] = JHTML::_ ('select.option', "01", JText::_ ('JANUARY'));
-		$options[] = JHTML::_ ('select.option', "02", JText::_ ('FEBRUARY'));
-		$options[] = JHTML::_ ('select.option', "03", JText::_ ('MARCH'));
-		$options[] = JHTML::_ ('select.option', "04", JText::_ ('APRIL'));
-		$options[] = JHTML::_ ('select.option', "05", JText::_ ('MAY'));
-		$options[] = JHTML::_ ('select.option', "06", JText::_ ('JUNE'));
-		$options[] = JHTML::_ ('select.option', "07", JText::_ ('JULY'));
-		$options[] = JHTML::_ ('select.option', "08", JText::_ ('AUGUST'));
-		$options[] = JHTML::_ ('select.option', "09", JText::_ ('SEPTEMBER'));
-		$options[] = JHTML::_ ('select.option', "10", JText::_ ('OCTOBER'));
-		$options[] = JHTML::_ ('select.option', "11", JText::_ ('NOVEMBER'));
-		$options[] = JHTML::_ ('select.option', "12", JText::_ ('DECEMBER'));
+		foreach($months as  $key => $value) {
+			if ($format=='F') {
+				$text=$value;
+			} else {
+				$text=$key;
+			}
+			$options[] = JHTML::_ ('select.option',$key, $text);
+		}
+
 		return JHTML::_ ('select.genericlist', $options, $list_name, $attr, 'value', 'text', $selected);
 
 	}

@@ -212,18 +212,9 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 		if ($userId == 0) {
 			return;
 		}
-		if (JFactory::getApplication()->isSite()) {
-			$display_fields = array('realex_saved_pmt_type', 'realex_saved_pmt_digits', 'realex_saved_pmt_name');
-		} else {
-			$display_fields = array(
-				'virtuemart_paymentmethod_id',
-				'realex_saved_payer_ref',
-				'realex_saved_pmt_type',
-				'realex_saved_pmt_ref',
-				'realex_saved_pmt_digits',
-				'realex_saved_pmt_name'
-			);
-		}
+		$display_fields = array('realex_saved_pmt_type', 'realex_saved_pmt_digits', 'realex_saved_pmt_name');
+
+
 		$storedCreditCards = $this->getStoredCreditCards($userId);
 		if (empty ($storedCreditCards)) {
 			return vmText::_('VMUSERFIELD_REALEX_NO_CARD_SAVED');
@@ -242,7 +233,11 @@ class plgVmUserfieldRealex extends vmUserfieldPlugin {
 				$class = 'class="row' . $i . '"';
 				$html .= '<tr class="row1"><td>' . JText::_('COM_VIRTUEMART_DATE') . '</td><td align="left">' . $storedCreditCard->created_on . '</td></tr>';
 				$checked = JHTML::_('grid.id', $i, $storedCreditCard->id, null, 'card_id');
-				$html .= "<tr>\n<td>" . $checked . "</td>\n <td align='left'>" . 'DELETE' . "</td>\n</tr>\n";
+				$view=vmRequest::getCmd('view');
+				if ($view =='user') {
+					$html .= "<tr>\n<td>" . $checked . "</td>\n <td align='left'>" . 'DELETE' . "</td>\n</tr>\n";
+				}
+
 				foreach ($display_fields as $display_field) {
 					$complete_key = strtoupper('VMUSERFIELD_' . $display_field);
 

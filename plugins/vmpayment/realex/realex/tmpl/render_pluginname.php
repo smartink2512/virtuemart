@@ -46,21 +46,26 @@ vmJsApi::chosenDropDowns();
 	?>
 	<?php if (isset($viewData['extraInfo']) AND isset($viewData['extraInfo']['cc_number']) AND $viewData['extraInfo']['cc_number']) { ?>
 	<div class="vmpayment_selected_cc">
-		(<?php
-		echo Jtext::_('VMPAYMENT_REALEX_CC_'.$viewData['extraInfo']['cc_type'] ). ' ' ;
-		if ($viewData['where']!= 'order'){
-			echo $viewData['extraInfo']['cc_number'];
-		} else {
-			$this->cc_mask($viewData['extraInfo']['cc_number']);
-		}
-		if ($viewData['extraInfo']['cc_expire_month']) {
-			echo " ".$viewData['extraInfo']['cc_expire_month'] .'/'.$viewData['extraInfo']['cc_expire_year'];
-		}
-		if ($viewData['extraInfo']['cc_name']) {
-			echo ' ('.$viewData['extraInfo']['cc_name'] . ')' ;
-		}
+		<?php
+		if ($viewData['extraInfo']['cc_type']) {
+			echo "(". Jtext::_('VMPAYMENT_REALEX_CC_'.$viewData['extraInfo']['cc_type'] ). ' ' ;
+			if ($viewData['where']!= 'order'){
+				echo $viewData['extraInfo']['cc_number'];
+			} else {
+				$this->cc_mask($viewData['extraInfo']['cc_number']);
+			}
+			if ($viewData['extraInfo']['cc_expire_month']) {
+				echo " ".$viewData['extraInfo']['cc_expire_month'] .'/'.$viewData['extraInfo']['cc_expire_year'];
+			}
+			if ($viewData['extraInfo']['cc_name']) {
+				echo ' ('.$viewData['extraInfo']['cc_name'] . ')' ;
+			}
 		?>
 		)
+		<?php
+		}
+		?>
+
 	</div>
 	<?php
 	}

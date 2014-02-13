@@ -18,27 +18,32 @@
  * http://virtuemart.net
  */
 defined('_JEXEC') or die();
-
-$success = $viewData["success"];
-$payment_name = $viewData["payment_name"];
-$payment = $viewData["payment"];
-$order = $viewData["order"];
-
+$doc = JFactory::getDocument();
+$doc->addStyleSheet(JURI::root(true) . '/plugins/vmpayment/realex/realex/assets/css/realex.css');
 ?>
-<br />
-<div class="realex_response">
-<div class="realex_comment"><?php echo $viewData["comment"] ?></div>
 
-	<?php if ($success) { ?>
-<div class="realex_pasref">
-	<span class="realex_pasref_label"><?php echo JText::_('VMPAYMENT_REALEX_RESPONSE_PASREF'); ?></span>
-        <span class="realex_pasref_value"><?php echo  $viewData["payment"]['realex_response_pasref']; ?></span>
-    </div>
-    <?php }  ?>
+<div class="realex response">
 
-
-<?php if ($success) { ?>
-	<br />
-	<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$viewData["order"]['details']['BT']->order_number.'&order_pass='.$viewData["order"]['details']['BT']->order_pass, false)?>"><?php echo JText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
-<?php } ?>
+	<?php if ( $viewData['success']) { ?>
+		<div class="realex_auth_info">
+			<span class="realex_auth_value"><?php echo $viewData['auth_info']; ?></span>
+		</div>
+		<div class="realex_dcc_info">
+			<span class="realex_dcc_value"><?php echo $viewData['dcc_info']; ?></span>
+		</div>
+		<div class="realex_payer_info">
+			<span class="realex_payer_value"><?php echo $viewData['payer_info']; ?></span>
+		</div>
+		<div class="realex_pasref">
+			<span class="realex_pasref_label"><?php echo JText::_('VMPAYMENT_REALEX_RESPONSE_PASREF'); ?></span>
+			<span class="realex_pasref_value"><?php echo $viewData['pasref']; ?></span>
+		</div>
+		<div class="realex_vieworder">
+			<a class="vm-button-correct" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number=' . $viewData["order_number"] . '&order_pass=' . $viewData["order_pass"], false) ?>"><?php echo JText::_('COM_VIRTUEMART_ORDER_VIEW_ORDER'); ?></a>
+		</div>
+	<?php } else { ?>
+	<div class="realex_auth_info">
+	<span class="realex_auth_value"><?php echo $viewData['auth_info']; ?></span>
+</div>
+	<?php } ?>
 </div>

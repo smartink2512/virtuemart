@@ -23,132 +23,137 @@ defined('_JEXEC') or die('Restricted access');
 
 class RealexHelperCustomerData {
 	const REALEX_FOLDERNAME = "realex";
-	var $_selected_paymentmethod = '';
-	var $_remote_cc_name = '';
-	var $_remote_cc_type = '';
-	var $_remote_cc_number = '';
-	var $_remote_cc_cvv = '';
-	var $_remote_cc_expire_month = '';
-	var $_remote_cc_expire_year = '';
-	var $_remote_cc_valid = false;
-	var $_redirect_cc_selected = '';
-	var $_remote_save_card = '';
-	private $_errormessage = array();
-	private $_remote_first_name = '';
-	private $_remote_last_name = '';
+	const REALEX_SESSION = "RealexCustomerData";
+	private $_cc_name = '';
+	private $_cc_type = '';
+	private $_cc_number = '';
+	private $_cc_cvv = '';
+	private $_cc_expire_month = '';
+	private $_cc_expire_year = '';
+	private $_cc_valid = false;
+	private $_selected_method = '';
+	private $_redirect_cc_selected = '';
+	private $_save_card = '';
 
 
+	public function load () {
 
-	public function load ($virtuemart_paymentmethod_id) {
-
-		//$this->clear();
-
+		//$this->_clear();
+		/* TODO
+		$store = 'none';
+		$options['expire']= 60* 60;
+		$session = JFactory::getSession($store,$options);
+		*/
 		$session = JFactory::getSession();
-		$sessionData = $session->get('realex_customer', 0, 'vm');
+		$sessionData = $session->get(self::REALEX_SESSION, 0, 'vm');
 
 		if (!empty($sessionData)) {
 			$data = unserialize($sessionData);
-			if ($data['selected_paymentmethod']==$virtuemart_paymentmethod_id) {
-				$this->_selected_paymentmethod = $data['selected_paymentmethod'];
-				$this->redirect_cc_selected_ = $data['redirect_cc_selected_' . $virtuemart_paymentmethod_id];
-				// card information
-				$this->_remote_cc_type = $data['remote_cc_type_' . $virtuemart_paymentmethod_id];
-				$this->_remote_cc_number = $this->decrypt($data['remote_cc_number_' . $virtuemart_paymentmethod_id]);
-				$this->_remote_cc_cvv = $data['remote_cc_cvv_' . $virtuemart_paymentmethod_id];
-				$this->_remote_cc_expire_month = $data['remote_cc_expire_month_' . $virtuemart_paymentmethod_id];
-				$this->_remote_cc_expire_year = $data['remote_cc_expire_year_' . $virtuemart_paymentmethod_id];
-				$this->_remote_cc_name = $data['remote_cc_name_' . $virtuemart_paymentmethod_id];
-				$this->_remote_cc_valid = $data['remote_cc_valid_' . $virtuemart_paymentmethod_id];
-				$this->_redirect_cc_selected = $data['redirect_cc_selected_' . $virtuemart_paymentmethod_id];
-				$this->_remote_save_card = $data['remote_save_card_' . $virtuemart_paymentmethod_id];
-			} else {
-				$this->_selected_paymentmethod = 0;
-				$this->redirect_cc_selected_ = '';
-				// card information
-				$this->_remote_cc_type = '';
-				$this->_remote_cc_number = '';
-				$this->_remote_cc_cvv = '';
-				$this->_remote_cc_expire_month = '';
-				$this->_remote_cc_expire_year = '';
-				$this->_remote_cc_name = '';
-				$this->_remote_cc_valid ='';
-				$this->_redirect_cc_selected = '';
-				$this->_remote_save_card = '';
-			}
+			$this->_redirect_cc_selected = $data->redirect_cc_selected;
+			$this->_save_card = $data->save_card;
+			$this->_selected_method = $data->selected_method;
+			$this->_cc_type = $data->cc_type;
+			$this->_cc_name = $data->cc_name;
+			$this->_cc_number = $this->decrypt($data->cc_number);
+			$this->_cc_cvv = $data->cc_cvv;
+			$this->_cc_expire_month = $data->cc_expire_month;
+			$this->_cc_expire_year = $data->cc_expire_year;
+			$this->_cc_valid = $data->cc_valid;
 		}
 
 	}
 
-	public function loadPost ($virtuemart_paymentmethod_id) {
+	public function loadPost () {
 
+		$this->_selected_method =vmRequest::getInt('virtuemart_paymentmethod_id', 0);
+		$this->_save_card =vmRequest::getInt('save_card', 0);
+		$redirect_cc_selected =vmRequest::getInt('redirect_cc_selected_'.$this->_selected_method, 0);
+		if ($redirect_cc_selected) {
+			$this->_redirect_cc_selected = $redirect_cc_selected;
+		}
+		$cctype = vmRequest::getString('cc_type', '');
+		if ($cctype) {
+			$this->_cc_type = $cctype;
+		}
+		$cc_name = vmRequest::getVar('cc_name', '');
+		if ($cc_name) {
+			$this->_cc_name = $cc_name;
+		}
+
+		$cc_number = vmRequest::getString('cc_number', '');
+		if ($cc_number) {
+			$this->_cc_number = $cc_number;
+		}
+
+		$cc_cvv = vmRequest::getInt('cc_cvv', '');
+		if ($cc_cvv) {
+			$this->_cc_cvv = $cc_cvv;
+		}
+
+		$cc_expire_month = vmRequest::getInt('cc_expire_month', '');
+		if ($cc_expire_month) {
+			$this->_cc_expire_month = $cc_expire_month;
+		}
+
+		$cc_expire_year = vmRequest::getInt('cc_expire_year', '');
+		if ($cc_expire_year) {
+			$this->_cc_expire_year = $cc_expire_year;
+		}
+		$this->save();
+
+	}
+
+	public function save () {
+		$session = JFactory::getSession();
+		$sessionData = new stdClass();
+		$sessionData->selected_method = $this->_selected_method;
+		$sessionData->redirect_cc_selected = $this->_redirect_cc_selected;
+		$sessionData->save_card = $this->_save_card;
 		// card information
-		//$virtuemart_paymentmethod_id = JRequest::getVar('virtuemart_paymentmethod_id', 0);
-if ($virtuemart_paymentmethod_id== JRequest::getVar('virtuemart_paymentmethod_id', 0)) {
-	$data['selected_paymentmethod'] = $virtuemart_paymentmethod_id;
-	$data['redirect_cc_selected_' . $virtuemart_paymentmethod_id] = JRequest::getVar('redirect_cc_selected_' . $virtuemart_paymentmethod_id, '');
-	$data['remote_cc_type_' . $virtuemart_paymentmethod_id] = JRequest::getVar('remote_cc_type_' . $virtuemart_paymentmethod_id, '');
-	$data['remote_cc_name_' . $virtuemart_paymentmethod_id] =  JRequest::getVar('remote_cc_name_' . $virtuemart_paymentmethod_id);
-	$data['remote_cc_number_' . $virtuemart_paymentmethod_id] = $this->encrypt(str_replace(" ", "", JRequest::getVar('remote_cc_number_' . $virtuemart_paymentmethod_id, '')));
-	$data['remote_cc_cvv_' . $virtuemart_paymentmethod_id] = JRequest::getInt('remote_cc_cvv_' . $virtuemart_paymentmethod_id, '');
-	$data['remote_cc_expire_month_' . $virtuemart_paymentmethod_id] = JRequest::getVar('remote_cc_expire_month_' . $virtuemart_paymentmethod_id, '');
-	$data['remote_cc_expire_year_' . $virtuemart_paymentmethod_id] = JRequest::getInt('remote_cc_expire_year_' . $virtuemart_paymentmethod_id, '');
-	$data['remote_save_card_' . $virtuemart_paymentmethod_id] = JRequest::getInt('remote_save_card_' . $virtuemart_paymentmethod_id, '');
-	$this->save($data);
-}
-
+		$sessionData->cc_type = $this->_cc_type;
+		$sessionData->cc_name = $this->_cc_name;
+		$sessionData->cc_number = $this->encrypt($this->_cc_number);
+		$sessionData->cc_cvv = $this->_cc_cvv;
+		$sessionData->cc_expire_month = $this->_cc_expire_month;
+		$sessionData->cc_expire_year = $this->_cc_expire_year;
+		$sessionData->cc_valid = $this->_cc_valid;
+		$session->set(self::REALEX_SESSION, serialize($sessionData), 'vm');
 	}
 
-	public function save ($data) {
-		$session = JFactory::getSession();
-		$session->set('realex_customer', serialize($data), 'vm');
-	}
-
-
-	public function clear () {
-		$session = JFactory::getSession();
-		$session->clear('realex_customer', 'vm');
-	}
-
-	public function getVar ($var, $virtuemart_paymentmethod_id) {
-		$data = $this->load($virtuemart_paymentmethod_id);
+	public function getVar($var) {
+		$this->load();
 		return $this->{'_' . $var};
 	}
 
-	public function setVar ($var, $val) {
+	public function setVar($var, $val) {
 		$this->{'_' . $var} = $val;
+	}
+
+	public function clear () {
+		$session = JFactory::getSession();
+		$session->clear(self::REALEX_SESSION, 'vm');
 	}
 
 	static function encrypt ($string) {
 
 		$key = self::getKey();
-		return base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+		$crypt = new JCrypt(new JCryptCipherSimple, $key);
+		return $crypt->encrypt($string);
 	}
 
 	static function decrypt ($string) {
 
 		$key = self::getKey();
-		return rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($string), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+		$crypt = new JCrypt(new JCryptCipherSimple, $key);
+		return $crypt->decrypt($string);
 	}
 
 	static function getKey () {
+		jimport('joomla.utilities.simplecrypt');
 
-		$filename = self::_getRealexSafepath() . DS . 'key.php';
-		if (file_exists($filename)) {
-			include_once $filename;
-		}
-
-		return base64_decode(USERFIELD_REALEX_KEY);
+		$privateKey = JApplication::getHash(JFactory::getUser()->id);
+		$key = new JCryptKey('simple', $privateKey, $privateKey);
+		return $key;
 
 	}
-
-	static function _getRealexSafepath () {
-
-		$safePath = VmConfig::get('forSale_path', '');
-		if (empty($safePath)) {
-			return NULL;
-		}
-		$realexSafePath = $safePath . self::REALEX_FOLDERNAME;
-		return $realexSafePath;
-	}
-
 }

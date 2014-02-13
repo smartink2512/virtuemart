@@ -59,6 +59,7 @@ class VirtueMartViewCart extends VmView {
 			$this->setLayout('mini_cart');
 			$this->prepareContinueLink();
 		}
+
 		/*
 	  if($layoutName=='edit_coupon'){
 
@@ -105,7 +106,9 @@ class VirtueMartViewCart extends VmView {
 
 			$this->prepareContinueLink();
 			$this->lSelectCoupon();
-
+			if (!class_exists ('CurrencyDisplay')) {
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+			}
 			$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
 			$this->assignRef('currencyDisplay',$currencyDisplay);
 
@@ -327,7 +330,11 @@ class VirtueMartViewCart extends VmView {
 }
 
 	private function lOrderDone() {
-		$html = JRequest::getVar('html', '', 'default', 'STRING', JREQUEST_ALLOWRAW);
+		$display_title = vmRequest::getBool('display_title',true);
+		$this->assignRef('display_title', $display_title);
+
+		$html = vmRequest::get('html', JText::_('COM_VIRTUEMART_ORDER_PROCESSED') );
+
 		$this->assignRef('html', $html);
 
 		//Show Thank you page or error due payment plugins like paypal express

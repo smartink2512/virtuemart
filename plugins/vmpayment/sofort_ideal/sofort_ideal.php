@@ -169,7 +169,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		return true;
 	}
 
-	function _getSelectedBank ($paymentmethod_id) {
+	private function _getSelectedBank ($paymentmethod_id) {
 		$session_params = self::_getSofortIdealFromSession();
 
 		if (!isset($session_params['sofort_ideal_bank_selected_' . $paymentmethod_id])) {
@@ -178,7 +178,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		return $session_params['sofort_ideal_bank_selected_' . $paymentmethod_id];
 	}
 
-	function getRelatedBanksDropDown ($relatedBanks, $paymentmethod_id, $selected_bank) {
+	private function getRelatedBanksDropDown ($relatedBanks, $paymentmethod_id, $selected_bank) {
 		//vmdebug('getRelatedBanks', $relatedBanks);
 
 		$attrs = '';
@@ -572,7 +572,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		}
 	}
 
-	function checkHash ($data) {
+	private function checkHash ($data) {
 
 		$hash_received = JRequest::getString('hash');
 		$data_implode = implode('|', $data);
@@ -594,7 +594,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 	 * Not documented functionality
 	 *
 	 */
-	function getNewOrderStatus ($dbvalues) {
+	private function getNewOrderStatus ($dbvalues) {
 		$newOrderStatus = array(
 			'pending' => array('not_credited_yet' => 'status_pending'),
 			'received' => array('credited' => 'status_confirmed'),
@@ -1001,7 +1001,7 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		return $this->setOnTablePluginParams($name, $id, $table);
 	}
 
-	function _validate_sofortideal_data ($payment_params, $paymentmethod_id, &$error_msg) {
+	private function _validate_sofortideal_data ($payment_params, $paymentmethod_id, &$error_msg) {
 
 		$errors = array();
 		if (empty($payment_params['sofort_ideal_bank_selected_' . $paymentmethod_id])) {
@@ -1018,26 +1018,26 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		return TRUE;
 	}
 
-	static function getEmptyPaymentParams ($paymentmethod_id) {
+	private static function getEmptyPaymentParams ($paymentmethod_id) {
 
 		$payment_params['sofort_ideal_bank_selected_' . $paymentmethod_id] = "";
 
 		return $payment_params;
 	}
 
-	static function _clearSofortIdealSession () {
+	private static function _clearSofortIdealSession () {
 
 		$session = JFactory::getSession();
 		$session->clear('SofortIdeal', 'vm');
 	}
 
-	static function _setSofortIdealIntoSession ($data) {
+	private static function _setSofortIdealIntoSession ($data) {
 
 		$session = JFactory::getSession();
 		$session->set('SofortIdeal', serialize($data), 'vm');
 	}
 
-	static function _getSofortIdealFromSession () {
+	private static function _getSofortIdealFromSession () {
 
 		$session = JFactory::getSession();
 		$data = $session->get('SofortIdeal', 0, 'vm');
@@ -1048,15 +1048,15 @@ class plgVmPaymentSofort_Ideal extends vmPSPlugin {
 		return unserialize($data);
 	}
 
-	static function   getSuccessUrl ($order) {
+	private static function   getSuccessUrl ($order) {
 		return JURI::base() . JROUTE::_("index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . "&Itemid=" . JRequest::getInt('Itemid'), false);
 	}
 
-	static function   getCancelUrl ($order) {
+	private static function   getCancelUrl ($order) {
 		return JURI::base() . JROUTE::_("index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&pm=" . $order['details']['BT']->virtuemart_paymentmethod_id . '&on=' . $order['details']['BT']->order_number . '&Itemid=' . JRequest::getInt('Itemid'), false);
 	}
 
-	static function   getNotificationUrl ($order_number) {
+	private static function   getNotificationUrl ($order_number) {
 
 		return JURI::base() . JROUTE::_("index.php?option=com_virtuemart&view=pluginresponse&tmpl=component&task=pluginnotification&on=" . $order_number, false);
 	}

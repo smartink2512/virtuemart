@@ -31,29 +31,29 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 
 	}
 
-	public function confirmedOrder (  &$postRequest) {
-		$selectedCCParams=array();
-		if (! $this->doRealvault($selectedCCParams)) {
+	public function confirmedOrder (&$postRequest) {
+		$selectedCCParams = array();
+		if (!$this->doRealvault($selectedCCParams)) {
 			$response = $this->sendPostRequest();
-			$postRequest=true;
+			$postRequest = true;
 		} else {
 			$response = $this->realvaultReceiptIn($selectedCCParams);
 		}
 		return $response;
-}
-
-
-function doRealVault(&$selectedCCParams) {
-	$redirect_cc_selected=$this->customerData->_redirect_cc_selected;
-	$selectedCCParams = $this->getSelectedCCParams($redirect_cc_selected,$this->cart->virtuemart_paymentmethod_id);
-	$doRealVault = false;
-	if ($this->_method->realvault and !empty($selectedCCParams)) {
-		if (!$selectedCCParams->addNew) {
-			$doRealVault = true;
-		}
 	}
-	return $doRealVault;
-}
+
+
+	function doRealVault (&$selectedCCParams) {
+		$redirect_cc_selected = $this->customerData->getVar('redirect_cc_selected');
+		$selectedCCParams = $this->getSelectedCCParams($redirect_cc_selected, $this->cart->virtuemart_paymentmethod_id);
+		$doRealVault = false;
+		if ($this->_method->realvault and !empty($selectedCCParams)) {
+			if (!$selectedCCParams->addNew) {
+				$doRealVault = true;
+			}
+		}
+		return $doRealVault;
+	}
 
 	function sendPostRequest () {
 		$post_variables = $this->getPostVariables();
@@ -113,14 +113,14 @@ function doRealVault(&$selectedCCParams) {
 		$post_variables['TIMESTAMP'] = $this->getTimestamp();
 		$post_variables['DCC_ENABLE'] = $this->_method->dcc;
 
-		$post_variables['MERCHANT_RESPONSE_URL'] = JURI::root() . 'index.php?option=com_virtuemart&format=raw&view=pluginresponse&task=pluginnotification&tmpl=component';
+		$post_variables['MERCHANT_RESPONSE_URL'] = JURI::root() . 'index.php?option=com_virtuemart&format=raw&view=pluginresponse&task=pluginnotification&notificationTask=handleRedirect&tmpl=component';
 		$post_variables['AUTO_SETTLE_FLAG'] = $this->_method->settlement;
 		if ($BT->virtuemart_user_id != 0) {
 			$post_variables['VAR_REF'] = $BT->customer_number;
 			$post_variables['PAYER_EXIST'] = 0;
 			$post_variables['CARD_STORAGE_ENABLE'] = $this->_method->realvault;
 			if ($this->_method->realvault) {
-				if ($this->customerData->_redirect_cc_selected == -1) {
+				if ($this->customerData->getVar('redirect_cc_selected') == -1) {
 					$post_variables['PAYER_EXIST'] = 1;
 					$post_variables['PAYER_REF'] = $this->getExistingPayerRef();;
 					$post_variables['PMT_REF'] = '';
@@ -141,9 +141,9 @@ function doRealVault(&$selectedCCParams) {
 		}
 
 		if ($this->_method->offer_save_card and $BT->virtuemart_user_id != 0) {
-			$post_variables['SHA1HASH'] = $this->getSha1Hash( $this->_method->shared_secret, $post_variables['TIMESTAMP'], $post_variables['MERCHANT_ID'], $post_variables['ORDER_ID'], $post_variables['AMOUNT'], $post_variables['CURRENCY'], $post_variables['PAYER_REF'],$post_variables['PMT_REF'] );
+			$post_variables['SHA1HASH'] = $this->getSha1Hash($this->_method->shared_secret, $post_variables['TIMESTAMP'], $post_variables['MERCHANT_ID'], $post_variables['ORDER_ID'], $post_variables['AMOUNT'], $post_variables['CURRENCY'], $post_variables['PAYER_REF'], $post_variables['PMT_REF']);
 		} else {
-			$post_variables['SHA1HASH'] = $this->getSha1Hash( $this->_method->shared_secret, $post_variables['TIMESTAMP'], $post_variables['MERCHANT_ID'], $post_variables['ORDER_ID'], $post_variables['AMOUNT'], $post_variables['CURRENCY']);
+			$post_variables['SHA1HASH'] = $this->getSha1Hash($this->_method->shared_secret, $post_variables['TIMESTAMP'], $post_variables['MERCHANT_ID'], $post_variables['ORDER_ID'], $post_variables['AMOUNT'], $post_variables['CURRENCY']);
 		}
 
 		// use_tss? if uk
@@ -160,44 +160,37 @@ function doRealVault(&$selectedCCParams) {
 		return $post_variables;
 
 	}
-function  getExistingPayerRef(){
-	$storedCCs=$this->getStoredCCsByPaymentMethod(JFactory::getUser()->id, $this->_method->virtuemart_paymentmethod_id);
-	if (is_array($storedCCs)) {
-		return $storedCCs[0]->realex_saved_payer_ref;
-	}
-	return NULL;
 
-}
-	function  getExistingPmtRef(){
-		$storedCCs=$this->getStoredCCsByPaymentMethod(JFactory::getUser()->id, $this->_method->virtuemart_paymentmethod_id);
+	function  getExistingPayerRef () {
+		$storedCCs = $this->getStoredCCsByPaymentMethod(JFactory::getUser()->id, $this->_method->virtuemart_paymentmethod_id);
 		if (is_array($storedCCs)) {
 			return $storedCCs[0]->realex_saved_payer_ref;
 		}
 		return NULL;
 
 	}
-	/**
-	 * Return result of payment via RealVault
-	 * @param array   $selectedCCParams
-	 * @param boolean $ask_dcc (optional)
-	 * @param boolean $set_dcc (optional)
-	 * @return xml
-	 */
 
-	function realvaultReceiptIn ($selectedCCParams) {
-		$response = $this->requestRealvaultReceiptIn($selectedCCParams);
+	function  getExistingPmtRef () {
+		$storedCCs = $this->getStoredCCsByPaymentMethod(JFactory::getUser()->id, $this->_method->virtuemart_paymentmethod_id);
+		if (is_array($storedCCs)) {
+			return $storedCCs[0]->realex_saved_payer_ref;
+		}
+		return NULL;
 
-		return $response;
 	}
 
 
+	/**
+	 * @param bool $enqueueMessage
+	 * @return bool
+	 */
 
-
-	function validate ($enqueueMessage = true) {
+	function validateConfirmedOrder ($enqueueMessage = true) {
 
 		if ($this->_method->realvault) {
-			if (	$storedCCs=$this->getStoredCCsByPaymentMethod(JFactory::getUser()->id, $this->_method->virtuemart_paymentmethod_id)	) {
-				if ($this->customerData->_selected_paymentmethod AND empty($this->customerData->_redirect_cc_selected)) {
+			if ($storedCCs = $this->getStoredCCsByPaymentMethod(JFactory::getUser()->id, $this->_method->virtuemart_paymentmethod_id)) {
+				$redirect_cc_selected = $this->customerData->getVar('redirect_cc_selected');
+				if ($this->customerData->getVar('selected_paymentmethod')  and empty($redirect_cc_selected)) {
 					vmInfo('VMPAYMENT_REALEX_PLEASE_SELECT_OPTION');
 					return false;
 				}
@@ -207,9 +200,40 @@ function  getExistingPayerRef(){
 
 	}
 
+	/**
+	 * @param bool $enqueueMessage
+	 * @return bool
+	 */
+	public function validate ($enqueueMessage = true) {
+		if ($this->_method->realvault) {
+			if ($storedCCs = $this->getStoredCCsByPaymentMethod(JFactory::getUser()->id, $this->_method->virtuemart_paymentmethod_id)) {
+				$redirect_cc_selected=$this->customerData->getVar('redirect_cc_selected');
+				if ($this->customerData->getVar('selected_method') AND empty($redirect_cc_selected)) {
+					vmInfo('VMPAYMENT_REALEX_PLEASE_SELECT_OPTION');
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * @param bool $enqueueMessage
+	 * @return bool
+	 */
+	public function validateSelectCheckPayment ($enqueueMessage = true) {
+		return $this->validate();
+	}
+
+	/**
+	 * @return bool
+	 */
+	function validateCheckoutCheckDataPayment ( ) {
+		return $this->validate();
+	}
 	function getExtraPluginInfo () {
-		$extraPluginInfo=array();
-		$redirect_cc_selected = $this->customerData->_redirect_cc_selected;
+		$extraPluginInfo = array();
+		$redirect_cc_selected = $this->customerData->getVar('redirect_cc_selected');
 		if ($redirect_cc_selected != -1) {
 			$selected_cc = $this->getSelectedCCParams($redirect_cc_selected);
 			if (!empty($selected_cc)) {
@@ -232,24 +256,14 @@ function  getExistingPayerRef(){
 	 * Validate the response hash from Realex.
 	 * timestamp.merchantid.orderid.amount.curr.payerref.pmtref
 	 */
-	function validateResponseHash($post)
-	{
+	function validateResponseHash ($post) {
 		if (is_array($post)) {
-			$hash = $this->getSha1Hash(
-				$this->_method->shared_secret,
-				$post['TIMESTAMP'],
-				$this->_method->merchant_id,
-				$post['ORDER_ID'],
-				$post['RESULT'],
-				$post['MESSAGE'],
-				$post['PASREF'],
-				$post['AUTHCODE']
-			);
+			$hash = $this->getSha1Hash($this->_method->shared_secret, $post['TIMESTAMP'], $this->_method->merchant_id, $post['ORDER_ID'], $post['RESULT'], $post['MESSAGE'], $post['PASREF'], $post['AUTHCODE']);
 
-			if ($hash != 	$post['SHA1HASH']) {
+			if ($hash != $post['SHA1HASH']) {
 				//$this->displayError(vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash,$post['SHA1HASH'] ));
-				echo vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash,$post['SHA1HASH'] );
-return FALSE;
+				echo vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash, $post['SHA1HASH']);
+				return FALSE;
 			}
 		} else {
 			return parent::validateResponseHash($post);

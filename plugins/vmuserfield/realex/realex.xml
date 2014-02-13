@@ -4,7 +4,6 @@
     <creationDate>${PHING.VM.RELDATE}</creationDate>
     <author>Valérie Isaksen</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
-    <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>${PHING.VM.COPYRIGHT}</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <version>${PHING.VM.RELEASE}</version>

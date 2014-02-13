@@ -35,7 +35,7 @@ class JElementCustomjs extends JElement {
 		
 		$doc = JFactory::getDocument();
 		$doc->addScript(JURI::root(true).'/plugins/vmpayment/realex/realex/assets/js/admin.js');
-		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/realex/realex/assets/css/realex.css');
+		//$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/realex/realex/assets/css/realex.css');
 
 		
 		return '';		

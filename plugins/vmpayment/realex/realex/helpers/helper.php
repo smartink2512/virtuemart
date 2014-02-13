@@ -51,8 +51,19 @@ class  RealexHelperRealex {
 	const REQUEST_TYPE_PAYER_NEW = "payer-new";
 	const REQUEST_TYPE_CARD_NEW = "card-new";
 
-	const RESPONSE_DCC_CHOICE_YES="Yes";
-	const DCCRATE_RESULT_SUCCESS='00';
+	const RESPONSE_DCC_CHOICE_YES = "Yes";
+	const DCCRATE_RESULT_SUCCESS = '00';
+
+
+	const RESPONSE_CODE_SUCCESS = '00';
+	const RESPONSE_CODE_DECLINED = '101';
+	const RESPONSE_CODE_REFERRAL_B = '102';
+	const RESPONSE_CODE_REFERRAL_A = '103';
+	const RESPONSE_CODE_INVALID_ORDER_ID = '501'; // This order ID has already been used - please use another one
+	const RESPONSE_CODE_PAYER_REF_NOTEXIST = '501'; // This Payer Ref payerref does not exist
+	const RESPONSE_CODE_INVALID_PAYER_REF_USED = '501'; // This Payer Ref payerref has already been used - please use another one
+	const PAYER_SETUP_SUCCESS = "00";
+
 
 	function __construct ($method, $plugin) {
 		if ($method->dcc) {
@@ -207,11 +218,50 @@ class  RealexHelperRealex {
 		}
 	}
 
-	public function validate ($enqueueMessage = true) {
-		return true;
+	/**
+	 * @param $response
+	 */
+
+	function manageResponse2Request ($response) {
+		if ($response == NULL) {
+			$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_ERROR_TRY_AGAIN'));
+		}
+		if (!$this->validateResponseHash($response)) {
+			$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_ERROR_TRY_AGAIN'));
+		}
+		$this->plugin->_storeRealexInternalData($response, $this->_method->virtuemart_paymentmethod_id, $this->order['details']['BT']->virtuemart_order_id, $this->order['details']['BT']->order_number, $this->request_type);
+
+		$xml_response = simplexml_load_string($response);
+
+		$success = $this->isResponseSuccess($xml_response);
+
+		if (!$success) {
+			$error = (string)$xml_response->message . " (" . (string)$xml_response->result . ")";
+			$this->displayError($error);
+			$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_ERROR_TRY_AGAIN'));
+		}
 	}
 
+	/**
+	 * @param $response
+	 */
+	function manageResponse2RequestReceiptIn ($response) {
+		$this->manageResponse2Request($response);
+	}
 
+	public function validateConfirmedOrder ($enqueueMessage = true) {
+		return true;
+	}
+	public function validateSelectCheckPayment ($enqueueMessage = true) {
+		return true;
+	}
+	/**
+	 * @param bool $enqueueMessage
+	 * @return bool
+	 */
+	function validateCheckoutCheckDataPayment ( ) {
+		return true;
+	}
 	function getOrderBEFields () {
 		$showOrderBEFields = array(
 
@@ -310,20 +360,107 @@ class  RealexHelperRealex {
 		}
 		return $html;
 	}
+	/**
+	 * @param $response
+	 * @param $order
+	 * @return null|string
+	 */
+	 function getResponseHTML ($payments) {
 
-	public function loadCustomerData ($virtuemart_paymentmethod_id,$loadPost = true) {
+		$payment_name = $this->plugin->renderPluginName($this->_method, 'order');
+		$dcc_info = "";
+		$payer_info = "";
+		$auth_info = "";
+		if ($payments) {
+			foreach ($payments as $payment) {
+				if (isset($payment->realex_fullresponse) and !empty($payment->realex_fullresponse)) {
+					if ($payment->realex_fullresponse_format == 'xml') {
+						$xml_response = simplexml_load_string($payment->realex_fullresponse);
+						if ($payment->realex_request_type_response == $this::REQUEST_TYPE_AUTH OR $payment->realex_request_type_response == $this::REQUEST_TYPE_RECEIPT_IN) {
+							$success = $this->isResponseSuccess($xml_response);
+
+							if ($success) {
+								if (isset($xml_response->dccinfo) AND isset($xml_response->dccinfo->cardholderrate)) {
+									if ($xml_response->dccinfo->cardholderrate != 1.0) {
+										$dcc_info = vmText::sprintf('VMPAYMENT_REALEX_DCC_PAY_OWN_CURRENCY_CHARGED', $this->plugin->getCardHolderAmount($xml_response->dccinfo->merchantamount), $xml_response->dccinfo->merchantcurrency, $this->plugin->getCardHolderAmount($xml_response->dccinfo->cardholderamount), $xml_response->dccinfo->cardholdercurrency);
+									} else {
+										$dcc_info = vmText::sprintf('VMPAYMENT_REALEX_DCC_PAY_MERCHANT_CURRENCY', $this->plugin->getCardHolderAmount($xml_response->dccinfo->merchantamount), $xml_response->dccinfo->merchantcurrency);
+									}
+								}
+								$amountValue = vmPSPlugin::getAmountInCurrency($this->order['details']['BT']->order_total, $this->order['details']['BT']->order_currency);
+
+								$auth_info = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CONFIRMED', $amountValue['display'], $this->order['details']['BT']->order_number);
+								$pasref = $payment->realex_response_pasref;
+							} else {
+								$auth_info = JText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED', $this->order['details']['BT']->order_number);
+							}
+
+						} elseif ($payment->realex_request_type_response == $this::REQUEST_TYPE_CARD_NEW) {
+							$success = $this->isResponseSuccess($xml_response);
+							if ($success) {
+								$payer_info = vmText::_('VMPAYMENT_REALEX_CARD_STORAGE_SUCCESS');
+							} else {
+								$payer_info = vmText::_('VMPAYMENT_REALEX_CARD_STORAGE_FAILED');
+							}
+						}
+
+					} else {
+						if ($payment->realex_fullresponse_format == 'json') {
+							$realex_data = json_decode($payment->realex_fullresponse);
+							$result = $payment->realex_response_result;
+
+							$success = ($result == $this::RESPONSE_CODE_SUCCESS);
+							if ($success) {
+								$amountValue = vmPSPlugin::getAmountInCurrency($this->order['details']['BT']->order_total, $this->order['details']['BT']->order_currency) * 100;
+								$auth_info = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CONFIRMED', $amountValue['display'], $this->order['details']['BT']->order_number);
+								if (isset($realex_data->DCCCHOICE) and $realex_data->DCCCHOICE == $this::RESPONSE_DCC_CHOICE_YES) {
+									$dcc_info = vmText::sprintf('VMPAYMENT_REALEX_DCC_PAY_OWN_CURRENCY_CHARGED', $this->plugin->getCardHolderAmount($realex_data['DCCMERCHANTAMOUNT']), $realex_data['DCCMERCHANTCURRENCY'], $this->plugin->getCardHolderAmount($realex_data['DCCCARDHOLDERAMOUNT']), $realex_data['DCCCARDHOLDERCURRENCY']);
+								}
+								if (isset($realex_data->REALWALLET_CHOSEN) and  $realex_data->REALWALLET_CHOSEN == 1) {
+									$payer_info = vmText::_('VMPAYMENT_REALEX_CARD_STORAGE_SUCCESS');
+								}
+								$pasref = $realex_data->PASREF;
+
+
+							} else {
+								$auth_info = JText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CANCELLED',  $this->order['details']['BT']->order_number);
+							}
+						}
+					}
+				}
+			}
+		}
+		VmConfig::loadJLang('com_virtuemart_orders', TRUE);
+
+
+		$html = $this->plugin->renderByLayout('response', array(
+		                                                       "success"      => $success,
+		                                                       "payment_name" => $payment_name,
+		                                                       "dcc_info"     => $dcc_info,
+		                                                       "auth_info"    => $auth_info,
+		                                                       "payer_info"   => $payer_info,
+		                                                       "pasref"       => $pasref,
+		                                                       "order_number" => $this->order['details']['BT']->order_number,
+		                                                       "order_pass" => $this->order['details']['BT']->order_pass,
+		                                                  ));
+		return $html;
+
+
+	}
+	public function loadCustomerData () {
+		if (!class_exists('RealexHelperCustomerData')) {
+			require(JPATH_SITE . '/plugins/vmpayment/realex/realex/helpers/customerdata.php');
+		}
+		$this->getCustomerData();
+		$this->customerData->loadPost();
+	}
+	public function getCustomerData () {
 		if (!class_exists('RealexHelperCustomerData')) {
 			require(JPATH_SITE . '/plugins/vmpayment/realex/realex/helpers/customerdata.php');
 		}
 		$this->customerData = new RealexHelperCustomerData();
-		if ($loadPost) {
-			$this->customerData->loadPost($virtuemart_paymentmethod_id);
-		}
-
-		$this->customerData->load($virtuemart_paymentmethod_id);
-
+		$this->customerData->load();
 	}
-
 	static function getRealexCreditCards () {
 		return array(
 			'AMEX',
@@ -473,7 +610,7 @@ class  RealexHelperRealex {
 			$options[] = JHTML::_('select.option', $storeCC->id, $name);
 		}
 
-		return JHTML::_('select.genericlist', $options, $idA, 'class="inputbox vm-chzn-select"', 'value', 'text', $selected_cc);
+		return JHTML::_('select.genericlist', $options, $idA, 'class="inputbox vm-chzn-select" style="width: 250px;"', 'value', 'text', $selected_cc);
 	}
 
 	function getOfferSaveCard ($checked, $paymentmethod_id) {
@@ -488,22 +625,38 @@ class  RealexHelperRealex {
 		$html .= ' <label for="' . $id . '">' . vmText::_('VMPAYMENT_REALEX_OFFERSAVECARD_YES') . '</label>';
 		return $html;
 	}
-	function doRealVault() {
+
+	function doRealVault () {
 		if ($this->_method->realvault AND $this->_method->integration == 'remote') {
-			if (! ($this->_method->offer_save_card) OR
-				($this->_method->offer_save_card AND $this->customerData->_remote_save_card) ) {
+			if (!($this->_method->offer_save_card) OR
+				($this->_method->offer_save_card AND $this->customerData->getVar('save_card') )
+			) {
 				return true;
 			}
 			return false;
 		}
 		return false;
 	}
+
 	/**
 	 * @return string
 	 */
 	function getRemoteURL () {
 		return "https://epage.payandshop.com/epage-remote-plugins.cgi";
 
+	}
+
+	/**
+	 * @return string
+	 */
+
+	function getPaymentButton () {
+		if (empty($this->_method->card_payment_button)) {
+			$card_payment_button = vmText::_('VMPAYMENT_REALEX_DCC_PAY_NOW');
+		} else {
+			$card_payment_button = $this->_method->card_payment_button;
+		}
+		return $card_payment_button;
 	}
 
 	/**
@@ -514,9 +667,6 @@ class  RealexHelperRealex {
 	 */
 	public function requestRealvaultReceiptIn ($selectedCCParams, $ask_dcc = true, $set_dcc = false) {
 		$xm = new stdClass();
-		$BT = $this->order['details']['BT'];
-		$ST = ((isset($this->order['details']['ST'])) ? $this->order['details']['ST'] : $this->order['details']['BT']);
-
 
 		$timestamp = $this->getTimestamp();
 
@@ -526,7 +676,8 @@ class  RealexHelperRealex {
 					<cvn>
 						<number>' . $selectedCCParams->realex_saved_cvn . '</number>
 					</cvn>
-				</paymentdata>';
+				</paymentdata>
+				';
 		}
 		if ($this->_method->dcc) {
 			$xml_request .= '<autosettle flag="1" />
@@ -557,8 +708,9 @@ class  RealexHelperRealex {
 				<amount currency="' . $xm->cardholdercurrency . '">' . $xm->cardholderamount . '</amount>
 			</dccinfo>';
 		}
-		$xml_request .= '<md5hash />';
-		$hash = $this->getSha1Hash($this->_method->shared_secret, $timestamp, $this->order['details']['BT']->order_number, $this->getTotalInPaymentCurrency(), $this->getPaymentCurrency(), $selectedCCParams->realex_saved_payer_ref);
+		$xml_request .= '<md5hash />
+		';
+		$hash = $this->getSha1Hash($this->_method->shared_secret, $timestamp,  $this->_method->merchant_id,$this->order['details']['BT']->order_number, $this->getTotalInPaymentCurrency(), $this->getPaymentCurrency(), $selectedCCParams->realex_saved_payer_ref);
 		$xml_request .= $this->setSha1($hash);
 		$xml_request .= $this->setComments();
 		$xml_request .= $this->setTSSinfo();
@@ -649,19 +801,112 @@ class  RealexHelperRealex {
 	}
 
 	/**
+	 * @return bool|mixed
+	 */
+	function setNewPayer (&$newPayerRef) {
+		$timestamp = $this->getTimestamp();
+
+		$xml_request = $this->setHeader($timestamp, self::REQUEST_TYPE_PAYER_NEW, false);
+
+		$BT = $this->order['details']['BT'];
+		$newPayerRef = $this->getUniqueId($BT->customer_number);
+		$xml_request .= '<payer type="Business" ref="' . $newPayerRef . '">
+				<firstname>' . $BT->first_name . '</firstname>
+				<surname>' . $BT->last_name . '</surname>
+				';
+		if (!empty($BT->company)) {
+			$xml_request .= '<company>' . $BT->company . '</company>
+		';
+		}
+
+		$xml_request .= '<address>
+				<line1>' . $BT->address_1 . '</line1>
+				<line2 >' . $BT->address_2 . '</line2>
+				<line3 />
+				<city>' . $BT->city . '</city>
+				<county>' . ShopFunctions::getCountryByID($BT->virtuemart_country_id, 'country_2_code') . '</county>
+				<postcode>' . $this->stripnonnumeric($BT->zip) . '</postcode>
+				<country code="' . ShopFunctions::getCountryByID($BT->virtuemart_country_id, 'country_2_code') . '"> ' . ShopFunctions::getCountryByID($BT->virtuemart_country_id, 'country_name') . ' </country>
+				</address>
+				<phonenumbers>
+				<home />
+				<work>' . $BT->phone_1 . '</work>
+				<fax />
+				<mobile>' . $BT->phone_2 . '</mobile>
+				</phonenumbers>
+				<email>' . $BT->email . '</email>
+				<comments>
+				<comment id="1" />
+				<comment id="2" />
+				</comments>
+				</payer>
+				';
+		$sha1 = $this->getSha1Hash($this->_method->shared_secret, $timestamp, $this->_method->merchant_id, $this->order['details']['BT']->order_number, '', '', $newPayerRef);
+		$xml_request .= $this->setSha1($sha1);
+		$xml_request .= '</request>';
+		$response = $this->getXmlResponse($xml_request);
+		return $response;
+
+
+	}
+
+	/**
+	 * @return bool|mixed
+	 */
+	function setNewPayment ($newPayerRef, &$newPaymentRef) {
+		$timestamp = $this->getTimestamp();
+		$xml_request = $this->setHeader($timestamp, self::REQUEST_TYPE_CARD_NEW, false);
+		$newPaymentRef = $this->getUniqueId($this->order['details']['BT']->order_number);
+		$xml_request .= '<card>
+		 <ref>' . $newPaymentRef . '</ref>
+		<payerref>' . $newPayerRef . '</payerref>
+		<number>' . $this->customerData->getVar('cc_number') . '</number>
+		<expdate>' . $this->getFormattedExpiryDateForRequest() . '</expdate>
+		<chname>' . $this->customerData->getVar('cc_name') . '</chname>
+		<type>' . $this->customerData->getVar('cc_type') . '</type>
+		<issueno />
+		</card>
+		';
+		$sha1 = $this->getSha1Hash($this->_method->shared_secret, $timestamp, $this->_method->merchant_id, $this->order['details']['BT']->order_number, '', '', $newPayerRef, $this->customerData->getVar('cc_name'), $this->customerData->getVar('cc_number'));
+		$xml_request .= $this->setSha1($sha1);
+		$xml_request .= '</request>';
+		$response = $this->getXmlResponse($xml_request);
+		return $response;
+
+	}
+
+	/**
+	 * @param $value
+	 * @return string
+	 */
+	function getUniqueId ($value) {
+		return $value . '-' . time();
+	}
+
+	/**
+	 * @return string
+	 */
+	function getFormattedExpiryDateForRequest () {
+		return $this->customerData->getVar('cc_expire_month') . substr($this->customerData->getVar('cc_expire_year'), -2);
+	}
+
+	/**
 	 * set header request
 	 * @param $timestamp
 	 * @param $type
 	 * @return string
 	 */
-	function setHeader ($timestamp, $type) {
+	function setHeader ($timestamp, $type, $include_amount = true) {
 		$this->request_type = $type;
 		$xml_request = '<request timestamp="' . $timestamp . '" type="' . $type . '">
 						<merchantid>' . $this->_method->merchant_id . '</merchantid>
 						 <account>' . $this->_method->subaccount . '</account>
 						 <orderid>' . $this->order['details']['BT']->order_number . '</orderid>
-						 <amount currency="' . $this->getPaymentCurrency() . '">' . $this->getTotalInPaymentCurrency() . '</amount>
 						 ';
+		if ($include_amount) {
+			$xml_request .= '<amount currency="' . $this->getPaymentCurrency() . '">' . $this->getTotalInPaymentCurrency() . '</amount>
+			';
+		}
 		return $xml_request;
 	}
 
@@ -698,7 +943,8 @@ class  RealexHelperRealex {
 
 		$sha1 = $this->getSha1Hash($this->_method->shared_secret, $timestamp, $this->_method->merchant_id, $this->order['details']['BT']->order_number, $this->getTotalInPaymentCurrency(), $this->getPaymentCurrency(), "");
 		$xml_request .= $this->setSha1($sha1);
-		$xml_request .= '<md5hash></md5hash>';
+		$xml_request .= '<md5hash></md5hash>
+		';
 		$xml_request .= '</request>';
 		$response = $this->getXmlResponse($xml_request);
 
@@ -721,7 +967,8 @@ class  RealexHelperRealex {
 		$xml_request .= $this->setComments();
 		$sha1 = $this->getSha1Hash($this->_method->shared_secret, $timestamp, $this->_method->merchant_id, $this->order['details']['BT']->order_number, $this->getTotalInPaymentCurrency(), $this->getPaymentCurrency(), "");
 		$xml_request .= $this->setSha1($sha1);
-		$xml_request .= '<md5hash></md5hash>';
+		$xml_request .= '<md5hash></md5hash>
+		';
 		$xml_request .= '</request>';
 		$response = $this->getXmlResponse($xml_request);
 
@@ -745,7 +992,8 @@ class  RealexHelperRealex {
 
 		$sha1 = $this->getSha1Hash($this->_method->shared_secret, $timestamp, $this->_method->merchant_id, $this->order['details']['BT']->order_number, $this->getTotalInPaymentCurrency(), $this->getPaymentCurrency(), "");
 		$xml_request .= $this->setSha1($sha1);
-		$xml_request .= '<md5hash></md5hash>';
+		$xml_request .= '<md5hash></md5hash>
+		';
 		$xml_request .= '</request>';
 		$response = $this->getXmlResponse($xml_request);
 
@@ -760,6 +1008,11 @@ class  RealexHelperRealex {
 		}
 		return NULL;
 	}
+	function  isResponseSuccess ($xml_response) {
+		$result = (string)$xml_response->result;
+		$success = ($result == self::RESPONSE_CODE_SUCCESS);
+		return $success;
+	}
 
 	/**
 	 * get HASH for Realex
@@ -768,12 +1021,19 @@ class  RealexHelperRealex {
 	 * @return string
 	 */
 	public function getSha1Hash ($secret, $args = null) {
+		if (empty($secret)) {
+			vmError('no secret value for getSha1Hash', 'no secret value for getSha1Hash');
+		}
 		$args = func_get_args();
 		array_shift($args);
-		//$tmp = $args;
+		$tmp = $args;
 		//$this->debugLog($tmp, 'getSha1Hash', 'debug');
-
+	//	$this->debugLog($secret, 'getSha1Hash', 'debug');
+		//$temp2 = implode('.', $args);
+		//$this->debugLog($temp2, 'getSha1Hash', 'debug');
 		$hash = sha1(implode('.', $args));
+		$temp3 = "{$hash}.{$secret}";
+		//$this->debugLog($temp3, 'getSha1Hash', 'debug');
 		$hash = sha1("{$hash}.{$secret}");
 
 		return $hash;
@@ -812,7 +1072,16 @@ class  RealexHelperRealex {
 	 */
 	function getXmlResponse ($xml_request) {
 		$this->xml_request = $xml_request;
-		$this->debugLog('<textarea style="margin: 0px; width: 100%; height: 250px;">' . $xml_request . '</textarea>', 'Request', 'debug');
+
+			$request = simplexml_load_string($xml_request);
+		if (isset($request->card)) {
+			$card_number=$request->card->number;
+			$cc_length=strlen($card_number);
+			$request->card->number=str_repeat("*", $cc_length);
+		}
+
+		//$this->debugLog(print_r($request, true), 'debug');
+		$this->debugLog('<textarea style="margin: 0px; width: 100%; height: 250px;">' . $request->asXML() . '</textarea>', 'Request', 'debug');
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $this->getRemoteURL());
@@ -839,14 +1108,14 @@ class  RealexHelperRealex {
 	 * @param $message
 	 */
 
-	function displayError ($admin,$public='') {
+	function displayError ($admin, $public = '') {
 		if ($admin == NULL) {
 			$admin = "an error occurred";
 		}
 
-		if (!empty($public) AND $this->_method->debug) {
+		if (empty($public) AND $this->_method->debug) {
 			$public = $admin;
 		}
-		vmError((string)$admin, $public);
+		vmError((string)$admin, (string)$public);
 	}
 }
