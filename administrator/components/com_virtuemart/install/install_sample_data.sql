@@ -71,10 +71,6 @@ INSERT IGNORE INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_pare
 	(18, 17, 1, 0, '0', 0, 'Clothing Composit', 1, '', '', '', 'S', 0, 0, 0, '', '0', 0, 1, '0000-00-00 00:00:00', 635, 0, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
 	(19, 17, 1, 0, '0', 0, 'Clothing textarea', 1, '', '', '', 'Y', 0, 0, 0, '', '0', 0, 1, '0000-00-00 00:00:00', 635, 0, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
 
-INSERT IGNORE INTO `#__virtuemart_invoices` (`virtuemart_invoice_id`, `virtuemart_vendor_id`, `virtuemart_order_id`, `invoice_number`, `order_status`, `xhtml`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-	(1, 1, 1, '140213eba01', 'C', '', '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
-	(2, 1, 2, '140213a5a02', 'U', '', '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
-
 INSERT IGNORE INTO `#__virtuemart_manufacturercategories` (`virtuemart_manufacturercategories_id`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 	(1, 1, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
 
@@ -117,10 +113,6 @@ INSERT IGNORE INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_ve
 	(19, 1, 'poncho.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/poncho.jpg', '', 0, 0, 0, '', '', 0, 1, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
 	(20, 1, 'dress.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/dress.jpg', '', 0, 0, 0, '', '', 0, 1, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
 
-INSERT IGNORE INTO `#__virtuemart_orders` (`virtuemart_order_id`, `virtuemart_user_id`, `virtuemart_vendor_id`, `order_number`, `customer_number`, `order_pass`, `order_total`, `order_salesPrice`, `order_billTaxAmount`, `order_billTax`, `order_billDiscountAmount`, `order_discountAmount`, `order_subtotal`, `order_tax`, `order_shipment`, `order_shipment_tax`, `order_payment`, `order_payment_tax`, `coupon_discount`, `coupon_code`, `order_discount`, `order_currency`, `order_status`, `user_currency_id`, `user_currency_rate`, `virtuemart_paymentmethod_id`, `virtuemart_shipmentmethod_id`, `customer_note`, `delivery_date`, `order_language`, `ip_address`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-	(1, 635, 1, '20be03', 'AD21232f297', 'p_31019', 123.03000, 130.56000, 21.76000, '{"1":{"virtuemart_calc_id":1,"calc_name":"Tax 20%","calc_value":"20.0000","result":21.76}}', -7.53000, 0.00000, 108.80000, 21.76000, 0.00, 0.00000, -1.00, 0.00000, 0.00, '', 0.00, 47, 'C', 47, 1.00000, 2, 1, '', 'Same as invoice date', 'en-GB', '::1', '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
-	(2, 635, 1, '377204', 'AD21232f297', 'p_f8b5e', 99.25000, 88.68000, 14.78000, '{"1":{"virtuemart_calc_id":1,"calc_name":"Tax 20%","calc_value":"20.0000","result":14.78}}', -4.43000, 0.00000, 73.90000, 14.78000, 10.00, 0.00000, 5.00, 0.00000, 0.00, NULL, 0.00, 47, 'U', 47, 1.00000, 1, 2, '', 'Same as invoice date', 'en-GB', '::1', '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
-
 INSERT IGNORE INTO `#__virtuemart_order_calc_rules` (`virtuemart_order_calc_rule_id`, `virtuemart_calc_id`, `virtuemart_order_id`, `virtuemart_vendor_id`, `virtuemart_order_item_id`, `calc_rule_name`, `calc_kind`, `calc_mathop`, `calc_amount`, `calc_result`, `calc_value`, `calc_currency`, `calc_params`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 	(1, 1, 1, 1, 1, 'Tax 20%', 'VatTax', '+%', 5.80000, 21.76000, 20.00000, 47, '', '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
 	(2, 1, 1, 1, 2, 'Tax 20%', 'VatTax', '+%', 8.98000, 21.76000, 20.00000, 47, '', '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
@@ -134,13 +126,6 @@ INSERT IGNORE INTO `#__virtuemart_order_calc_rules` (`virtuemart_order_calc_rule
 	(10, 0, 2, 1, NULL, '', 'payment', '', 0.00000, 0.00000, 0.00000, 0, '', '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
 	(11, 0, 2, 1, NULL, '', 'shipment', '', 0.00000, 0.00000, 0.00000, 0, '', '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
 
-INSERT IGNORE INTO `#__virtuemart_order_histories` (`virtuemart_order_history_id`, `virtuemart_order_id`, `order_status_code`, `customer_notified`, `comments`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-	(1, 1, 'P', 0, '', 1, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
-	(2, 1, 'U', 1, '', 1, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
-	(3, 2, 'P', 0, '', 1, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
-	(4, 2, 'U', 1, '', 1, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
-	(5, 1, 'C', 1, '', 1, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
-
 INSERT IGNORE INTO `#__virtuemart_order_items` (`virtuemart_order_item_id`, `virtuemart_order_id`, `virtuemart_vendor_id`, `virtuemart_product_id`, `order_item_sku`, `order_item_name`, `product_quantity`, `product_item_price`, `product_priceWithoutTax`, `product_tax`, `product_basePriceWithTax`, `product_discountedPriceWithoutTax`, `product_final_price`, `product_subtotal_discount`, `product_subtotal_with_tax`, `order_item_currency`, `order_status`, `product_attribute`, `delivery_date`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 	(1, 1, 1, 61, '', 'Classic Hat', 1, 29.00000, 29.00000, 5.80000, 34.80000, 29.00000, 34.80000, 0.00000, 34.80000, NULL, 'C', NULL, NULL, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
 	(2, 1, 1, 63, '', 'Derby Hat', 1, 44.90000, 44.90000, 8.98000, 53.88000, 44.90000, 53.88000, 0.00000, 53.88000, NULL, 'C', NULL, NULL, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
@@ -151,18 +136,6 @@ INSERT IGNORE INTO `#__virtuemart_order_items` (`virtuemart_order_item_id`, `vir
 INSERT IGNORE INTO `#__virtuemart_order_userinfos` (`virtuemart_order_userinfo_id`, `virtuemart_order_id`, `virtuemart_user_id`, `address_type`, `address_type_name`, `company`, `title`, `last_name`, `first_name`, `middle_name`, `phone_1`, `phone_2`, `fax`, `address_1`, `address_2`, `city`, `virtuemart_state_id`, `virtuemart_country_id`, `zip`, `email`, `agreed`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 	(1, 1, 635, 'BT', NULL, NULL, 'Mr', 'Jakobs', 'Jonas', NULL, '555-555-555', NULL, NULL, 'Vendorra road 8', NULL, 'Seattle', 48, 223, '050555', 'sample@store.com', 0, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
 	(2, 2, 635, 'BT', NULL, NULL, 'Mr', 'Jakobs', 'Jonas', NULL, '555-555-555', NULL, NULL, 'Vendorra road 8', NULL, 'Seattle', 48, 223, '050555', 'sample@store.com', 0, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
-
-INSERT IGNORE INTO `#__virtuemart_paymentmethods` (`virtuemart_paymentmethod_id`, `virtuemart_vendor_id`, `payment_jplugin_id`, `payment_element`, `payment_params`, `shared`, `ordering`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-	(1, 1, 10002, 'standard', 'payment_logos=""|countries=""|payment_currency="0"|email_currency="vendor"|status_pending="U"|send_invoice_on_order_null="1"|min_amount=""|max_amount=""|cost_per_transaction="5"|cost_percent_total=""|tax_id="-1"|payment_info=""|', 0, 0, 1, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
-	(2, 1, 10002, 'standard', 'payment_logos=""|countries=""|payment_currency="0"|email_currency="vendor"|status_pending="U"|send_invoice_on_order_null="1"|min_amount=""|max_amount=""|cost_per_transaction="-1"|cost_percent_total=""|tax_id="-1"|payment_info=""|', 0, 0, 1, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
-
-INSERT IGNORE INTO `#__virtuemart_paymentmethods_XLANG` (`virtuemart_paymentmethod_id`, `payment_name`, `payment_desc`, `slug`) VALUES
-	(1, 'Cash', '', 'cash'),
-	(2, 'Advance payment', '', 'advance-payment');
-
-INSERT IGNORE INTO `#__virtuemart_payment_plg_standard` (`id`, `virtuemart_order_id`, `order_number`, `virtuemart_paymentmethod_id`, `payment_name`, `payment_order_total`, `payment_currency`, `email_currency`, `cost_per_transaction`, `cost_percent_total`, `tax_id`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-	(1, 1, '20be03', 2, '<span class="vmpayment_name">Advance payment</span><br />', 123.03000, 'EUR', '47', -1.00, 0.00, -1, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
-	(2, 2, '377204', 1, '<span class="vmpayment_name">Cash</span><br />', 99.25000, 'EUR', '47', 5.00, 0.00, -1, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
 
 INSERT IGNORE INTO `#__virtuemart_products` (`virtuemart_product_id`, `virtuemart_vendor_id`, `product_parent_id`, `product_sku`, `product_weight`, `product_weight_uom`, `product_length`, `product_width`, `product_height`, `product_lwh_uom`, `product_url`, `product_in_stock`, `product_ordered`, `low_stock_notification`, `product_available_date`, `product_availability`, `product_special`, `product_sales`, `product_unit`, `product_packaging`, `product_params`, `hits`, `intnotes`, `metarobot`, `metaauthor`, `layout`, `published`, `pordering`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 	(1, 1, 0, '', 50.0000, 'KG', 45.0000, 5.0000, 5.0000, 'M', '', 78, 0, 5, '0000-00-00 00:00:00', '', 0, 0, 'KG', NULL, 'min_order_level=""|max_order_level=""|step_order_level=""|product_box=""|', NULL, '', '', '', '0', 1, 0, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
@@ -698,18 +671,6 @@ INSERT IGNORE INTO `#__virtuemart_rating_votes` (`virtuemart_rating_vote_id`, `v
 	(25, 73, 4, '::1', '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635),
 	(26, 70, 5, '::1', '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635),
 	(27, 69, 4, '::1', '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635);
-
-INSERT IGNORE INTO `#__virtuemart_shipmentmethods` (`virtuemart_shipmentmethod_id`, `virtuemart_vendor_id`, `shipment_jplugin_id`, `shipment_element`, `shipment_params`, `ordering`, `shared`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-	(1, 1, 10019, 'weight_countries', 'shipment_logos=""|countries=""|zip_start=""|zip_stop=""|weight_start=""|weight_stop=""|weight_unit=""|nbproducts_start=0|nbproducts_stop=0|orderamount_start=""|orderamount_stop=""|cost=""|package_fee=""|tax_id=""|free_shipment=""|', 0, 0, 1, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
-	(2, 1, 10019, 'weight_countries', 'shipment_logos=""|countries=""|zip_start=""|zip_stop=""|weight_start=""|weight_stop=""|weight_unit="KG"|nbproducts_start=0|nbproducts_stop=0|orderamount_start=""|orderamount_stop=""|cost="10"|package_fee=""|tax_id="-1"|free_shipment=""|', 0, 0, 1, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
-
-INSERT IGNORE INTO `#__virtuemart_shipmentmethods_XLANG` (`virtuemart_shipmentmethod_id`, `shipment_name`, `shipment_desc`, `slug`) VALUES
-	(1, 'Self pick-up', '', 'self-pick-up'),
-	(2, 'Express Self pick-up', '', 'express-self-pick-up');
-
-INSERT IGNORE INTO `#__virtuemart_shipment_plg_weight_countries` (`id`, `virtuemart_order_id`, `order_number`, `virtuemart_shipmentmethod_id`, `shipment_name`, `order_weight`, `shipment_weight_unit`, `shipment_cost`, `shipment_package_fee`, `tax_id`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-	(1, 1, '20be03', 1, '<span class="vmshipment_name">Self pick-up</span>', 475.0000, '', 0.00, 0.00, 0, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0),
-	(2, 2, '377204', 2, '<span class="vmshipment_name">Express Self pick-up</span>', 325.0000, 'KG', 10.00, 0.00, -1, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
 
 INSERT IGNORE INTO `#__virtuemart_userinfos` (`virtuemart_userinfo_id`, `virtuemart_user_id`, `address_type`, `address_type_name`, `name`, `company`, `title`, `last_name`, `first_name`, `middle_name`, `phone_1`, `phone_2`, `fax`, `address_1`, `address_2`, `city`, `virtuemart_state_id`, `virtuemart_country_id`, `zip`, `agreed`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
 	(1, 635, 'BT', '', 'Super User', '', 'Mr', 'Jakobs', 'Jonas', '', '555-555-555', '', '', 'Vendorra road 8', '', 'Seattle', 48, 223, '050555', 0, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
