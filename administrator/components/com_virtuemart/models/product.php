@@ -54,7 +54,7 @@ class VirtueMartModelProduct extends VmModel {
 		parent::__construct ('virtuemart_product_id');
 		$this->setMainTable ('products');
 		$this->starttime = microtime (TRUE);
-		$this->maxScriptTime = ini_get ('max_execution_time') * 0.95 - 1;
+		$this->maxScriptTime = VmConfig::getExecutionTime() * 0.95 - 1;
 		$memoryLimit = ini_get('memory_limit');
 		if($memoryLimit!=-1){
 			$this->memory_limit = (int) substr($memoryLimit,0,-1) -4; // 4 MB reserve

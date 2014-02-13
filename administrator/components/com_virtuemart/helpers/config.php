@@ -571,11 +571,20 @@ class VmConfig {
 	static function ensureExecutionTime($minTime=0){
 
 		if($minTime === 0) $minTime = (int) VmConfig::get('minTime',120);
-		$max_execution_time = ini_get('max_execution_time');
+		$max_execution_time = self::getExecutionTime();
 		if((int)$max_execution_time<$minTime) {
 			@ini_set( 'max_execution_time', $minTime );
 		}
 	}
+
+	static function getExecutionTime(){
+		$max_execution_time = (int) ini_get('max_execution_time');
+		if(empty($max_execution_time)){
+			$max_execution_time = (int) VmConfig::get('minTime',120);
+		}
+		return $max_execution_time;
+	}
+
 	/**
 	 * loads a language file, the trick for us is that always the config option enableEnglish is tested
 	 * and the path are already set and the correct order is used

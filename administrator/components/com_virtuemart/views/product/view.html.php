@@ -65,7 +65,7 @@ class VirtuemartViewProduct extends VmView {
 				}
 
 				$product = $model->getProductSingle($virtuemart_product_id,false);
-				$product_parent= $model->getProductParent($product->product_parent_id);
+				$product_parent= $model->getProductSingle($product->product_parent_id,false);
 
 				$customfields = VmModel::getModel ('Customfields');
 
@@ -136,9 +136,23 @@ class VirtuemartViewProduct extends VmView {
 					$lists['manufacturers'] = JHtml::_('select.genericlist', $this->manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
 				}
 
-				$lists['product_weight_uom'] = ShopFunctions::renderWeightUnitList('product_weight_uom',$task=='add'? VmConfig::get('weight_unit_default'): $product->product_weight_uom);
-				$lists['product_iso_uom'] = ShopFunctions::renderUnitIsoList('product_unit',$task=='add'? VmConfig::get('weight_unit_default'): $product->product_unit);
-				$lists['product_lwh_uom'] = ShopFunctions::renderLWHUnitList('product_lwh_uom', $task=='add'?VmConfig::get('lwh_unit_default') : $product->product_lwh_uom);
+				if(!empty($product->product_weight_uom)){	// or !$task=='add'
+					$product_weight_uom = $product->product_weight_uom;
+					$product_unit = $product->product_unit;
+					$product_lwh_uom = $product->product_lwh_uom;
+				} else if(!empty($product_parent)){
+					$product_weight_uom = $product_parent->product_weight_uom;
+					$product_unit = $product_parent->product_unit;
+					$product_lwh_uom = $product_parent->product_lwh_uom;
+				} else {
+					$product_weight_uom = VmConfig::get('weight_unit_default');
+					$product_unit = VmConfig::get('weight_unit_default');
+					$product_lwh_uom= VmConfig::get('lwh_unit_default');
+				}
+				vmdebug('my parent product',$product_weight_uom,$product_unit,$product_lwh_uom);
+				$lists['product_weight_uom'] = ShopFunctions::renderWeightUnitList('product_weight_uom',$product_weight_uom);
+				$lists['product_iso_uom'] = ShopFunctions::renderUnitIsoList('product_unit',$product_unit);
+				$lists['product_lwh_uom'] = ShopFunctions::renderLWHUnitList('product_lwh_uom', $product_lwh_uom);
 
 				if( empty( $product->product_available_date )) {
 					$product->product_available_date = date("Y-m-d") ;

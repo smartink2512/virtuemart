@@ -114,6 +114,12 @@ class VirtuemartControllerUser extends VmController {
 			$data['vendor_letter_header_html'] = VmRequest::getHtml('vendor_letter_header_html');
 			$data['vendor_letter_footer_html'] = VmRequest::getHtml('vendor_letter_footer_html');
 
+			$data['vendor_invoice_free1'] = VmRequest::getHtml('vendor_invoice_free1');
+			$data['vendor_invoice_free2'] = VmRequest::getHtml('vendor_invoice_free2');
+			$data['vendor_mail_free1'] = VmRequest::getHtml('vendor_mail_free1');
+			$data['vendor_mail_free2'] = VmRequest::getHtml('vendor_mail_free2');
+			$data['vendor_mail_css'] = VmRequest::getHtml('vendor_mail_css');
+
 			$ret=$model->store($data);
 			if(!$ret){
 				$msg = '';

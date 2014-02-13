@@ -750,7 +750,7 @@ class VirtueMartCart {
 			//$userFieldsModel = VmModel::getModel('Userfields');
 			//$agreed = $userFieldsModel->getUserfield('agreed','name');
 
-			if(empty($this->BT['tos']) and $validUserDataBT!==-1){
+			if(!$validUserDataCart and $validUserDataBT!==-1){
 				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				$this->BT['tos'] = false;
 				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');

@@ -90,7 +90,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 		if (isset($_POST['register'])) {
 			$msg = $this->saveData(true, true);
 		} else {
-			if($cart->fromCart or $this->cart->getInCheckOut()){
+			if($cart->fromCart or $cart->getInCheckOut()){
 				$msg = $this->saveData(true,VmConfig::get('reg_silent',0));
 			} else {
 				$msg = $this->saveData(false,true);
