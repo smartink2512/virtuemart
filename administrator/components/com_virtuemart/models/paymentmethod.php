@@ -56,21 +56,18 @@ class VirtueMartModelPaymentmethod extends VmModel{
   		if (empty($this->_data[$this->_id])) {
    			$this->_data[$this->_id] = $this->getTable('paymentmethods');
    			$this->_data[$this->_id]->load((int)$this->_id);
-  		}
 
-  		if(empty($this->_data->virtuemart_vendor_id)){
-  		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-   			$this->_data[$this->_id]->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
-  		}
+			if(empty($this->_data->virtuemart_vendor_id)){
+				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+				$this->_data[$this->_id]->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
+			}
 
-  		if($this->_data[$this->_id]->payment_jplugin_id){
-  			JPluginHelper::importPlugin('vmpayment');
-  			$dispatcher = JDispatcher::getInstance();
-  			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsPayment',array($this->_data->payment_element,$this->_data->payment_jplugin_id,&$this->_data));
-		}
-  		//if(!empty($this->_id)){
+			if($this->_data[$this->_id]->payment_jplugin_id){
+				JPluginHelper::importPlugin('vmpayment');
+				$dispatcher = JDispatcher::getInstance();
+				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsPayment',array($this->_data[$this->_id]->payment_element,$this->_data[$this->_id]->payment_jplugin_id,&$this->_data[$this->_id]));
+			}
 
-			/* Add the paymentmethod shoppergroups */
 			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_paymentmethod_shoppergroups WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';
 			$this->_db->setQuery($q);
 			$this->_data[$this->_id]->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
@@ -87,15 +84,10 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			$q = 'SELECT `params` FROM `' . $table . '` WHERE `' . $ext_id . '` = "'.$this->_data->payment_jplugin_id.'"';
 			$this->_db->setQuery($q);
 
-			$this->_data->param = $this->_db->loadResult();
+			$this->_data->param = $this->_db->loadResult();*/
+  		}
 
-  		} else {
-  			$this->_data->virtuemart_shoppergroup_ids = '';
-  			$this->_data->param = '';
-  		}*/
-
-
-  		return $this->_data;
+  		return $this->_data[$this->_id];
 	}
 
 	/**
