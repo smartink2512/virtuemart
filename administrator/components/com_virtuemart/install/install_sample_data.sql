@@ -672,21 +672,3 @@ INSERT IGNORE INTO `#__virtuemart_rating_votes` (`virtuemart_rating_vote_id`, `v
 	(26, 70, 5, '::1', '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635),
 	(27, 69, 4, '::1', '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635);
 
-INSERT IGNORE INTO `#__virtuemart_userinfos` (`virtuemart_userinfo_id`, `virtuemart_user_id`, `address_type`, `address_type_name`, `name`, `company`, `title`, `last_name`, `first_name`, `middle_name`, `phone_1`, `phone_2`, `fax`, `address_1`, `address_2`, `city`, `virtuemart_state_id`, `virtuemart_country_id`, `zip`, `agreed`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-	(1, 635, 'BT', '', 'Super User', '', 'Mr', 'Jakobs', 'Jonas', '', '555-555-555', '', '', 'Vendorra road 8', '', 'Seattle', 48, 223, '050555', 0, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
-
-INSERT IGNORE INTO `#__virtuemart_vendors` (`virtuemart_vendor_id`, `vendor_name`, `vendor_currency`, `vendor_accepted_currencies`, `vendor_params`, `metarobot`, `metaauthor`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-	(1, 'Sample Company', 47, '52,26,47,144', 'vendor_min_pov="0"|vendor_min_poq=1|vendor_freeshipment=0|vendor_address_format=""|vendor_date_format=""|vendor_letter_format="A4"|vendor_letter_orientation="P"|vendor_letter_margin_top="45"|vendor_letter_margin_left="25"|vendor_letter_margin_right="25"|vendor_letter_margin_bottom="25"|vendor_letter_margin_header="12"|vendor_letter_margin_footer="20"|vendor_letter_font="helvetica"|vendor_letter_font_size="8"|vendor_letter_header_font_size="7"|vendor_letter_footer_font_size="6"|vendor_letter_header="1"|vendor_letter_header_line="1"|vendor_letter_header_line_color="#000000"|vendor_letter_header_image="1"|vendor_letter_header_imagesize="60"|vendor_letter_header_cell_height_ratio="1"|vendor_letter_footer="1"|vendor_letter_footer_line="1"|vendor_letter_footer_line_color="#000000"|vendor_letter_footer_cell_height_ratio="1"|vendor_letter_add_tos="0"|vendor_letter_add_tos_newpage="1"|', '', '', '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
-
-INSERT IGNORE INTO `#__virtuemart_vendors_XLANG` (`virtuemart_vendor_id`, `vendor_store_desc`, `vendor_terms_of_service`, `vendor_legal_info`, `vendor_letter_css`, `vendor_letter_header_html`, `vendor_letter_footer_html`, `vendor_store_name`, `vendor_phone`, `vendor_url`, `metadesc`, `metakey`, `customtitle`, `slug`) VALUES
-	(1, '<p>We have the best clothing for up-to-date people. Check it out!</p>\r\n<p>We were established in 1869 in a time when getting good clothes was expensive, but the quality was good. Now that only a select few of those authentic clothes survive, we have dedicated this store to bringing the experience alive for collectors and master carrier everywhere.</p>\r\n<p>You can easily find products selecting the category you would like to browse above.</p>', '<h5>You haven\'t configured any terms of service yet. Click <a href="administrator/index.php?option=com_virtuemart&view=user&task=editshop">here</a> to change this text.</h5>', '<p>VAT-ID: XYZ-DEMO<br />Reg.Nr: DEMONUMBER</p>', '', '', '', 'VM2 Sample store', '', '', '', '', '', 'vm2-sample-store');
-
-INSERT IGNORE INTO `#__virtuemart_vendor_medias` (`id`, `virtuemart_vendor_id`, `virtuemart_media_id`, `ordering`) VALUES
-	(1, 1, 1, 1);
-
-INSERT IGNORE INTO `#__virtuemart_vmusers` (`virtuemart_user_id`, `virtuemart_vendor_id`, `user_is_vendor`, `customer_number`, `perms`, `virtuemart_paymentmethod_id`, `virtuemart_shipmentmethod_id`, `agreed`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-	(635, 1, 1, 'AD21232f297', 'admin', 0, 0, 0, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 635, '0000-00-00 00:00:00', 0);
-
-INSERT IGNORE INTO `#__virtuemart_vmuser_shoppergroups` (`id`, `virtuemart_user_id`, `virtuemart_shoppergroup_id`) VALUES
-	(1, 635, 2);
-

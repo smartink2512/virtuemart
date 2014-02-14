@@ -16,7 +16,6 @@
  * other free or open source software licenses.
  *
  */
-
 ?>
 <div class="billto-shipto">
 	<div class="width50 floatleft">
@@ -184,20 +183,16 @@ foreach ($this->cart->products as $pkey => $prow) {
  				return true;
  				}
 				</script>
-		<form action="<?php echo JRoute::_ ('index.php'); ?>" method="post" class="inline">
-			<input type="hidden" name="option" value="com_virtuemart"/>
+
 				<!--<input type="text" title="<?php echo  JText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="inputbox" size="3" maxlength="4" name="quantity" value="<?php echo $prow->quantity ?>" /> -->
             <input type="text"
 				   onblur="check<?php echo $step?>(this);"
 				   onclick="check<?php echo $step?>(this);"
 				   onchange="check<?php echo $step?>(this);"
 				   onsubmit="check<?php echo $step?>(this);"
-				   title="<?php echo  JText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="quantity-input js-recalculate" size="3" maxlength="4" name="quantity" value="<?php echo $prow->quantity ?>" />
-			<input type="hidden" name="view" value="cart"/>
-			<input type="hidden" name="task" value="update"/>
-			<input type="hidden" name="cart_virtuemart_product_id" value="<?php echo $prow->cart_item_id  ?>"/>
-			<input type="submit" class="vmicon vm2-add_quantity_cart" name="update" title="<?php echo  JText::_ ('COM_VIRTUEMART_CART_UPDATE') ?>" align="middle" value=" "/>
-		</form>
+				   title="<?php echo  JText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="quantity-input js-recalculate" size="3" maxlength="4" name="quantity[<?php echo $prow->cart_item_id ?>]" value="<?php echo $prow->quantity ?>" />
+			<input type="submit" class="vmicon vm2-add_quantity_cart" name="update[<?php echo $prow->cart_item_id ?>]" title="<?php echo  JText::_ ('COM_VIRTUEMART_CART_UPDATE') ?>" align="middle" value=""/>
+
 		<a class="vmicon vm2-remove_from_cart" title="<?php echo JText::_ ('COM_VIRTUEMART_CART_DELETE') ?>" align="middle" href="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=delete&cart_virtuemart_product_id=' . $prow->cart_item_id) ?>" rel="nofollow"> </a>
 	</td>
 
@@ -335,20 +330,7 @@ foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
 	}
 }
 
-if ($this->checkout_task) {
-$taskRoute = '&task=' . $this->checkout_task;
-}
-else {
-$taskRoute = '';
-}
-if (VmConfig::get('oncheckout_opc', 1)) {
 ?>
-
-
-<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
-
-
-	<?php } ?>
 <tr class="sectiontableentry1" valign="top" >
 	<?php if (!$this->cart->automaticSelectedShipment) { ?>
 

@@ -428,14 +428,20 @@ class VirtueMartControllerCart extends JController {
 	 *
 	 */
 	public function checkout() {
-		//vmdebug('checkout my post, get and so on',$_POST,$_GET);
+
 
 		$cart = VirtueMartCart::getCart();
 		$cart->getFilterCustomerComment();
 		$cart->tosAccepted = JRequest::getInt('tosAccepted', $cart->tosAccepted);
 		$task = JRequest::getString('task');
-		if(isset($_POST['update']) or $task=='update'){
-			$cart->updateProductCart();
+
+		$update = vmRequest::getString('update',false);
+
+		if(($update and is_array($update)) or $task=='update'){
+			reset($update);
+			$key = key($update);
+			$quantity = vmRequest::getInt('quantity');
+			$cart->updateProductCart(key($update),$quantity[$key]);
 			$this->display();
 		} else if(isset($_POST['setshipment']) or $task=='setshipment'){
 			$this->setshipment();
@@ -470,8 +476,13 @@ class VirtueMartControllerCart extends JController {
 		$cart->getFilterCustomerComment();
 		$cart->tosAccepted = JRequest::getInt('tosAccepted', $cart->tosAccepted);
 		$task = JRequest::getString('task');
-		if(isset($_POST['update']) or $task=='update'){
-			$cart->updateProductCart();
+		$update = vmRequest::getString('update',false);
+
+		if(($update and is_array($update)) or $task=='update'){
+			reset($update);
+			$key = key($update);
+			$quantity = vmRequest::getInt('quantity');
+			$cart->updateProductCart(key($update),$quantity[$key]);
 			$this->display();
 		} else if(isset($_POST['setshipment']) or $task=='setshipment'){
 			$this->setshipment();

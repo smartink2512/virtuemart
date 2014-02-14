@@ -595,14 +595,11 @@ class VirtueMartCart {
 	 * @param array $cart_id the cart IDs to remove from the cart
 	 * @access public
 	 */
-	public function updateProductCart($cart_virtuemart_product_id=0) {
+	public function updateProductCart($cart_virtuemart_product_id=0,$quantity = null) {
 
-		if (empty($cart_virtuemart_product_id))
-		$cart_virtuemart_product_id = JRequest::getString('cart_virtuemart_product_id');
-		if (empty($quantity))
-		$quantity = JRequest::getInt('quantity');
+		if (empty($cart_virtuemart_product_id)) $cart_virtuemart_product_id = vmRequest::getString('cart_virtuemart_product_id');
+		if ($quantity === null) $quantity = vmRequest::getInt('quantity');
 
-		//		foreach($cart_virtuemart_product_ids as $cart_virtuemart_product_id){
 		$updated = false;
 		if (array_key_exists($cart_virtuemart_product_id, $this->products)) {
 			if (!empty($quantity)) {
