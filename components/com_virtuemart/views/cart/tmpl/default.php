@@ -100,8 +100,6 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 		<div class="clear"></div>
 	</div>
 
-
-
 	<?php echo shopFunctionsF::getLoginForm ($this->cart, FALSE);
 
 	// This displays the form to change the current shopper
@@ -110,6 +108,16 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 		echo $this->loadTemplate ('shopperform');
 	}
 
+	if ($this->checkout_task) {
+		$taskRoute = '&task=' . $this->checkout_task;
+	}
+	else {
+		$taskRoute = '';
+	}
+
+	?>
+	<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
+	<?php
 
 
 	// This displays the pricelist MUST be done with tables, because it is also used for the emails
@@ -130,18 +138,8 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 		}
 		?>
 	</div>
-	<?php
-	if (!VmConfig::get('oncheckout_opc', 1)) {
-		if ($this->checkout_task) {
-			$taskRoute = '&task=' . $this->checkout_task;
-		}
-		else {
-			$taskRoute = '';
-		}
-	?>
-		<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=cart' . $taskRoute, $this->useXHTML, $this->useSSL); ?>">
-	<?php } ?>
-		<?php // Leave A Comment Field ?>
+
+	<?php // Leave A Comment Field ?>
 		<div class="customer-comment marginbottom15">
 			<span class="comment"><?php echo JText::_ ('COM_VIRTUEMART_COMMENT_CART'); ?></span><br/>
 			<textarea class="customer-comment" name="customer_comment" cols="60" rows="1"><?php echo $this->cart->customer_comment; ?></textarea>
@@ -183,8 +181,7 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 
 						</div>
 						<?php
-					} // VmConfig::get('oncheckout_show_legal_info',1)
-					//echo '<span class="tos">'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
+					}
 			}
 			echo $this->checkout_link_html;
 			?>

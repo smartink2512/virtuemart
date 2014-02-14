@@ -5,7 +5,7 @@
  *
  * @package	VirtueMart
  * @subpackage Cart
- * @author Maik Künnemann
+ * @author Maik KÃ¼nnemann
  *
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2013 VirtueMart Team. All rights reserved.

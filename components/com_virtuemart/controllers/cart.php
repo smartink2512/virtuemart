@@ -443,6 +443,8 @@ class VirtueMartControllerCart extends JController {
 			$quantity = vmRequest::getInt('quantity');
 			$cart->updateProductCart(key($update),$quantity[$key]);
 			$this->display();
+		} else if(isset($_POST['setcoupon']) or $task=='setcoupon'){
+			$this->setcoupon();
 		} else if(isset($_POST['setshipment']) or $task=='setshipment'){
 			$this->setshipment();
 		} else if(isset($_POST['setpayment']) or $task=='setpayment'){
@@ -484,6 +486,8 @@ class VirtueMartControllerCart extends JController {
 			$quantity = vmRequest::getInt('quantity');
 			$cart->updateProductCart(key($update),$quantity[$key]);
 			$this->display();
+		} else if(isset($_POST['setcoupon']) or $task=='setcoupon'){
+			$this->setcoupon();
 		} else if(isset($_POST['setshipment']) or $task=='setshipment'){
 			$this->setshipment();
 		} else if(isset($_POST['setpayment']) or $task=='setpayment'){
