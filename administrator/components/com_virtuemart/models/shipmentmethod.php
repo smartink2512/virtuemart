@@ -59,18 +59,19 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			$this->_data[$this->_id] = $this->getTable('shipmentmethods');
 			$this->_data[$this->_id]->load((int)$this->_id);
 
-			if($this->_data[$this->_id]->shipment_jplugin_id){
-				JPluginHelper::importPlugin('vmshipment');
-				$dispatcher = JDispatcher::getInstance();
-				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsShipment',array($this->_data[$this->_id]->shipment_element,$this->_data[$this->_id]->shipment_jplugin_id,&$this->_data[$this->_id]));
-
-			}
-// 			vmdebug('$$this->_data getShipment',$this->_data);
-
 			if(empty($this->_data[$this->_id]->virtuemart_vendor_id)){
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 				$this->_data[$this->_id]->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();;
 			}
+
+			if($this->_data[$this->_id]->shipment_jplugin_id){
+				JPluginHelper::importPlugin('vmshipment');
+				$dispatcher = JDispatcher::getInstance();
+				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsShipment',array($this->_data[$this->_id]->shipment_element,$this->_data[$this->_id]->shipment_jplugin_id,&$this->_data[$this->_id]));
+			}
+// 			vmdebug('$$this->_data getShipment',$this->_data);
+
+
  		//if(!empty($this->_id)){
 				/* Add the shipmentcarreir shoppergroups */
 				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shipmentmethod_shoppergroups WHERE `virtuemart_shipmentmethod_id` = "'.$this->_id.'"';

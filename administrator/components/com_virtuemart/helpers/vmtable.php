@@ -638,10 +638,14 @@ class VmTable extends JTable {
 
 			}
 
-			if (JVM_VERSION === 1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
-			else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
-
+			//if (JVM_VERSION === 1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
+			//else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
+			//pro+#'!"§$%&/()=?duct-w-| ||cu|st|omfield-|str<ing>
+			//vmdebug('my slugName '.$slugName,$this->slugName);
+			$this->$slugName = vmRequest::uword($slugName,$this->slugName,'-,_,.,|');
+			///vmdebug('my slug',$this);
 			$valid = $this->checkCreateUnique($checkTable, $slugName);
+			//vmdebug('my slugName '.$slugName,$this->slugName);
 			if (!$valid) {
 				return false;
 			}

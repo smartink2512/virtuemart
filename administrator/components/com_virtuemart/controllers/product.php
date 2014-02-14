@@ -77,6 +77,7 @@ class VirtuemartControllerProduct extends VmController {
 			}
 
 		}
+
 		parent::save($data);
 	}
 
