@@ -3,19 +3,23 @@
 defined('_JEXEC') or die();
 
 /**
- * @version $Id$
  *
- * @author Valérie Isaksen
+ * Realex payment plugin
+ *
+ * @author Valerie Isaksen
+ * @version $Id$
  * @package VirtueMart
- * @link http://www.virtuemart.net
- * @copyright Copyright (C) 2012 iStraxx - All rights reserved.
+ * @subpackage payment
+ * ${PHING.VM.COPYRIGHT}
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
+ * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+ *
+ * http://virtuemart.net
  */
-
 
 defined('_JEXEC') or die('Restricted access');
 if (!class_exists('vmPSPlugin')) {
@@ -156,13 +160,10 @@ class plgVmPaymentRealex extends vmPSPlugin {
 			} else {
 				$response = $realexInterface->requestReceiptIn($selectedCCParams);
 				$realexInterface->manageResponseRequestReceiptIn($response);
-				if (!($payments = $this->getDatasByOrderId($realexInterface->order['details']['BT']->virtuemart_order_id))) {
-					return '';
-				}
+				 $payments = $this->getDatasByOrderId($realexInterface->order['details']['BT']->virtuemart_order_id);
 				$html = $realexInterface->getResponseHTML($payments);
 				JRequest::setVar('html', $html);
 				$this->customerData->clear();
-				$cart = VirtueMartCart::getCart();
 				$cart->emptyCart();
 			}
 		} else {
@@ -189,7 +190,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		$success = $realexInterface->isResponseSuccess($xml_response);
 		if ($success) {
 			$status = $this->_currentMethod->status_success;
-			$amountValue = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total, $order['details']['BT']->order_currency) * 100;
+			$amountValue = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total, $order['details']['BT']->order_currency);
 
 			$order_history['comments'] = JText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CONFIRMED', $amountValue['display'], $order['details']['BT']->order_number);
 			$order_history['success'] = true;
@@ -220,12 +221,10 @@ class plgVmPaymentRealex extends vmPSPlugin {
 	}
 
 	function redirectToCart () {
+		$this->customerData->clear();
 		$app = JFactory::getApplication();
 		$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&Itemid=' . vmRequest::getInt('Itemid'), false), vmText::_('VMPAYMENT_REALEX_ERROR_TRY_AGAIN'));
 	}
-
-
-
 
 
 	protected function cc_mask ($cc) {
@@ -499,6 +498,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 			return false;
 		}
 		if (strtotime('+1 day', strtotime($authTime)) > time()) {
+			vmDebug('canDoVoid',$authTime, strtotime('+1 day', strtotime($authTime)), time() );
 			vmInfo('VMPAYMENT_REALEX_ERROR_CANNOT_VOID');
 			return false;
 		}
@@ -790,6 +790,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 			return;
 		}
 		$realexInterface->getCustomerData();
+		$extraInfo='';
 		if ($realexInterface->customerData->getVar('selected_method')==$method->virtuemart_paymentmethod_id){
 			$extraInfo = $realexInterface->getExtraPluginInfo();
 		}
@@ -934,17 +935,19 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		$this->debugLog('plgVmOnPaymentNotification :' . var_export($realex_data, true), 'debug');
 
 		if (!$realexInterface->validateResponseHash($realex_data)) {
+			//$this->redirectToCart();
 			return FALSE;
 		}
 
 		$result = $realex_data['RESULT'];
-
+		$orderModel = VmModel::getModel('orders');
+		$order = $orderModel->getOrder($virtuemart_order_id);
+		$realexInterface->setOrder($order);
 		$order_history = array();
 		$success = ($result == $realexInterface::RESPONSE_CODE_SUCCESS);
 		if ($success) {
 			$status = $this->_currentMethod->status_success;
-			$orderModel = VmModel::getModel('orders');
-			$order = $orderModel->getOrder($virtuemart_order_id);
+
 			$amountInCurrency = vmPSPlugin::getAmountInCurrency($order['details']['BT']->order_total, $order['details']['BT']->order_currency);
 			$order_history['comments'] = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CONFIRMED', $amountInCurrency['display'], $order_number);
 
@@ -990,8 +993,8 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		$modelOrder = VmModel::getModel('orders');
 		$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order_history, TRUE);
 		if ($result == $realexInterface::RESPONSE_CODE_SUCCESS) {
-			if (isset($realex_data['realex_custom'])) {
-				$this->emptyCart($realex_data['realex_custom'], $order_number);
+			if (isset($payments[0]->realex_custom)) {
+				$this->emptyCart($payments[0]->realex_custom, $order_number);
 			}
 		}
 
@@ -1129,7 +1132,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 
 		if ($success) {
 			$status = $this->_currentMethod->status_success;
-			$amountValue = vmPSPlugin::getAmountInCurrency($realexInterface->order['details']['BT']->order_total, $realexInterface->order['details']['BT']->order_currency) * 100;
+			$amountValue = vmPSPlugin::getAmountInCurrency($realexInterface->order['details']['BT']->order_total, $realexInterface->order['details']['BT']->order_currency)  ;
 			$order_history['comments'] = JText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CONFIRMED', $amountValue['display'], $realexInterface->order['details']['BT']->order_number);
 
 		} else {
@@ -1179,7 +1182,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 
 		if ($success) {
 			$status = $this->_currentMethod->status_success;
-			$amountValue = vmPSPlugin::getAmountInCurrency($realexInterface->order['details']['BT']->order_total, $realexInterface->order['details']['BT']->order_currency) * 100;
+			$amountValue = vmPSPlugin::getAmountInCurrency($realexInterface->order['details']['BT']->order_total, $realexInterface->order['details']['BT']->order_currency)  ;
 			$order_history['comments'] = JText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CONFIRMED', $amountValue['display'], $realexInterface->order['details']['BT']->order_number);
 
 		} else {
@@ -1236,8 +1239,9 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		$userfield['virtuemart_user_id'] = $virtuemart_user_id;
 		$userfield['virtuemart_paymentmethod_id'] = $this->_currentMethod->virtuemart_paymentmethod_id;
 		foreach ($fields as $field) {
-			$userfield['realex_' . strtolower($field)] = $realex_data[$field];
-
+			if (isset($realex_data[$field])) {
+				$userfield['realex_' . strtolower($field)] = $realex_data[$field];
+			}
 		}
 		if (!class_exists('VmTableData')) {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmtabledata.php');
@@ -1260,13 +1264,13 @@ class plgVmPaymentRealex extends vmPSPlugin {
 
 	private function displayMessageToRealex ($realexInterface, $realex_data, $success, $order_history_comments, $virtuemart_paymentmethod_id) {
 
-
+		$declined_message='';
 		if (!$success) {
 			$try_again = $this->processResult($realex_data['RESULT'], $declined_message);
 		}
 
 		$return_success = JURI::root(false) . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $realex_data['ORDER_ID'] . '&pm=' . $virtuemart_paymentmethod_id . '&Itemid=' . vmRequest::getInt('Itemid') . '&lang=' . vmRequest::getCmd('lang', '');
-		$return_declined = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $this->order['details']['BT']->order_number . '&pm=' . $this->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . vmRequest::getInt('Itemid') . '&lang=' . vmRequest::getCmd('lang', '');
+		$return_declined = JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $realexInterface->order['details']['BT']->order_number . '&pm=' . $realexInterface->order['details']['BT']->virtuemart_paymentmethod_id . '&Itemid=' . vmRequest::getInt('Itemid') . '&lang=' . vmRequest::getCmd('lang', '');
 		$shop_name = $realexInterface->getVendorInfo('vendor_store_name');
 		$html = $this->renderByLayout($this->_currentMethod->integration . '_notify', array(
 		                                                                                   "success"                => $success,

@@ -54,6 +54,33 @@ class VirtuemartControllerPaymentmethod extends VmController {
 
 		parent::save($data);
 	}
+	/**
+	 * Clone a payment
+	 *
+	 * @author Valérie Isaksen
+	 */
+	public function ClonePayment() {
+		$mainframe = Jfactory::getApplication();
 
+		/* Load the view object */
+		$view = $this->getView('paymentmethod', 'html');
+
+		$model = VmModel::getModel('paymentmethod');
+		$msgtype = '';
+		//$cids = JRequest::getInt('virtuemart_product_id',0);
+		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_payment_id',array(),'', 'ARRAY'), '', 'ARRAY');
+		//jimport( 'joomla.utilities.arrayhelper' );
+		JArrayHelper::toInteger($cids);
+
+		foreach($cids as $cid){
+			if ($model->createClone($cid)) $msg = JText::_('COM_VIRTUEMART_PAYMENT_CLONED_SUCCESSFULLY');
+			else {
+				$msg = JText::_('COM_VIRTUEMART_PAYMENT_NOT_CLONED_SUCCESSFULLY');
+				$msgtype = 'error';
+			}
+		}
+
+		$mainframe->redirect('index.php?option=com_virtuemart&view=paymentmethod', $msg, $msgtype);
+	}
 }
 // pure php no closing tag

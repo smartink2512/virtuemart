@@ -91,11 +91,13 @@ class VirtuemartViewPaymentMethod extends VmView {
 
 			$this->addStandardEditViewCommands( $payment->virtuemart_paymentmethod_id);
 		} else {
+			JToolBarHelper::custom('clonepayment', 'copy', 'copy', JText::_('COM_VIRTUEMART_PAYMENT_CLONE'), true);
+
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
 
 			$payments = $model->getPayments();
-			$this->assignRef('payments',	$payments);
+			$this->assignRef('payments', $payments);
 
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination', $pagination);

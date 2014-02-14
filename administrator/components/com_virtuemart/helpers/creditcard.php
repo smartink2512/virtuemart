@@ -172,6 +172,29 @@ class Creditcard {
 	}
 
 
+	static function encrypt ($string) {
+
+		$key = self::getKey();
+		$crypt = new JCrypt(new JCryptCipherSimple, $key);
+		return $crypt->encrypt($string);
+	}
+
+	static function decrypt ($string) {
+
+		$key = self::getKey();
+		$crypt = new JCrypt(new JCryptCipherSimple, $key);
+		return $crypt->decrypt($string);
+	}
+
+	static function getKey () {
+		jimport('joomla.utilities.simplecrypt');
+
+		$privateKey = JApplication::getHash(JFactory::getUser()->id);
+		$key = new JCryptKey('simple', $privateKey, $privateKey);
+		return $key;
+
+	}
+
 }
 
 // pure php no closing tag

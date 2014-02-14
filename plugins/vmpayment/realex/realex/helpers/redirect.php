@@ -52,6 +52,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 				$doRealVault = true;
 			}
 		}
+		$this->debugLog((int)$doRealVault, 'Realex doRealVault:', 'debug');
 		return $doRealVault;
 	}
 
@@ -71,17 +72,15 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 		$html .= '<input type="hidden" name="charset" value="utf-8">';
 
 		foreach ($post_variables as $name => $value) {
-			$html .= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
+			$html .= '<input type="hidden" name="' . $name . '" value="' . $value . '" />';
 		}
 
 		if ($this->_method->debug) {
-			if ($this->_method->debug) {
 
-				$html .= '<div style="background-color:red;color:white;padding:10px;">
+			$html .= '<div style="background-color:red;color:white;padding:10px;">
 						<input type="submit"  value="The method is in debug mode. Click here to be redirected to Realex" />
 						</div>';
-			}
-			$this->debugLog($post_variables, 'Realex request:', 'debug');
+			$this->debugLog($post_variables, 'sendPostRequest:', 'debug');
 
 		} else {
 
@@ -113,6 +112,9 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 		$post_variables['TIMESTAMP'] = $this->getTimestamp();
 		$post_variables['DCC_ENABLE'] = $this->_method->dcc;
 
+		$post_variables['COMMENT1'] = $this->setComment1();
+		//$post_variables['COMMENT2'] = $this->setComment2();
+
 		$post_variables['MERCHANT_RESPONSE_URL'] = JURI::root() . 'index.php?option=com_virtuemart&format=raw&view=pluginresponse&task=pluginnotification&notificationTask=handleRedirect&tmpl=component';
 		$post_variables['AUTO_SETTLE_FLAG'] = $this->_method->settlement;
 		if ($BT->virtuemart_user_id != 0) {
@@ -140,7 +142,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 			$post_variables['CARD_PAYMENT_BUTTON'] = $this->getCardPaymentButton($this->_method->card_payment_button);
 		}
 
-		if ($this->_method->offer_save_card and $BT->virtuemart_user_id != 0) {
+		if ($this->_method->offer_save_card  and $BT->virtuemart_user_id != 0) {
 			$post_variables['SHA1HASH'] = $this->getSha1Hash($this->_method->shared_secret, $post_variables['TIMESTAMP'], $post_variables['MERCHANT_ID'], $post_variables['ORDER_ID'], $post_variables['AMOUNT'], $post_variables['CURRENCY'], $post_variables['PAYER_REF'], $post_variables['PMT_REF']);
 		} else {
 			$post_variables['SHA1HASH'] = $this->getSha1Hash($this->_method->shared_secret, $post_variables['TIMESTAMP'], $post_variables['MERCHANT_ID'], $post_variables['ORDER_ID'], $post_variables['AMOUNT'], $post_variables['CURRENCY']);
@@ -190,7 +192,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 		if ($this->_method->realvault) {
 			if ($storedCCs = $this->getStoredCCsByPaymentMethod(JFactory::getUser()->id, $this->_method->virtuemart_paymentmethod_id)) {
 				$redirect_cc_selected = $this->customerData->getVar('redirect_cc_selected');
-				if ($this->customerData->getVar('selected_paymentmethod')  and empty($redirect_cc_selected)) {
+				if ($this->customerData->getVar('selected_method')  and empty($redirect_cc_selected)) {
 					vmInfo('VMPAYMENT_REALEX_PLEASE_SELECT_OPTION');
 					return false;
 				}
@@ -207,7 +209,7 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	public function validate ($enqueueMessage = true) {
 		if ($this->_method->realvault) {
 			if ($storedCCs = $this->getStoredCCsByPaymentMethod(JFactory::getUser()->id, $this->_method->virtuemart_paymentmethod_id)) {
-				$redirect_cc_selected=$this->customerData->getVar('redirect_cc_selected');
+				$redirect_cc_selected = $this->customerData->getVar('redirect_cc_selected');
 				if ($this->customerData->getVar('selected_method') AND empty($redirect_cc_selected)) {
 					vmInfo('VMPAYMENT_REALEX_PLEASE_SELECT_OPTION');
 					return false;
@@ -228,9 +230,10 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	/**
 	 * @return bool
 	 */
-	function validateCheckoutCheckDataPayment ( ) {
+	function validateCheckoutCheckDataPayment () {
 		return $this->validate();
 	}
+
 	function getExtraPluginInfo () {
 		$extraPluginInfo = array();
 		$redirect_cc_selected = $this->customerData->getVar('redirect_cc_selected');
@@ -257,12 +260,18 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 	 * timestamp.merchantid.orderid.amount.curr.payerref.pmtref
 	 */
 	function validateResponseHash ($post) {
+		$post=$_POST;
 		if (is_array($post)) {
-			$hash = $this->getSha1Hash($this->_method->shared_secret, $post['TIMESTAMP'], $this->_method->merchant_id, $post['ORDER_ID'], $post['RESULT'], $post['MESSAGE'], $post['PASREF'], $post['AUTHCODE']);
+			if ($post['RESULT'] == self::RESPONSE_CODE_SUCCESS) {
+				$hash = $this->getSha1Hash($this->_method->shared_secret, $post['TIMESTAMP'], $this->_method->merchant_id, $post['ORDER_ID'], $post['RESULT'], $post['MESSAGE'], isset($post['PASREF']) ? $post['PASREF'] : "", isset($post['AUTHCODE']) ? $post['AUTHCODE'] : "");
+			} else {
+				$hash = $this->getSha1Hash($this->_method->shared_secret, $post['TIMESTAMP'], $this->_method->merchant_id, $post['ORDER_ID'], $post['RESULT'], $post['MESSAGE'], isset($post['PASREF']) ? $post['PASREF'] : "");
 
+			}
 			if ($hash != $post['SHA1HASH']) {
-				//$this->displayError(vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash,$post['SHA1HASH'] ));
+				$this->displayError(vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash,$post['SHA1HASH'] ));
 				echo vmText::sprintf('VMPAYMENT_REALEX_ERROR_WRONG_HASH', $hash, $post['SHA1HASH']);
+				print_r($_POST);
 				return FALSE;
 			}
 		} else {
@@ -271,6 +280,17 @@ class RealexHelperRealexRedirect extends RealexHelperRealex {
 
 
 		return true;
+	}
+
+	function setComment1 () {
+		$amountValue = vmPSPlugin::getAmountInCurrency($this->order['details']['BT']->order_total, $this->order['details']['BT']->order_currency);
+		$shop_name = $this->getVendorInfo('vendor_store_name');
+		return vmText::sprintf('VMPAYMENT_REALEX_COMMENT1', $amountValue['display'], $this->order['details']['BT']->order_number, $shop_name);
+	}
+
+	function setComment2 () {
+		$shop_name = $this->getVendorInfo('vendor_store_name');
+		return vmText::sprintf('VMPAYMENT_REALEX_NOTIFY_RETURN_URL', $shop_name);
 	}
 
 	/**

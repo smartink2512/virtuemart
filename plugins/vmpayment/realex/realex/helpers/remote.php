@@ -364,15 +364,15 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	function getExtraPluginInfo () {
 
 		$extraPluginInfo = array();
-		if ($this->_method->virtuemart_paymentmethod_id == $this->customerData->_selected_paymentmethod) {
-			$extraPluginInfo['cc_type'] = $this->customerData->_cc_type;
-			$extraPluginInfo['cc_number'] = $this->customerData->_cc_number;
-			$extraPluginInfo['cc_name'] = $this->customerData->_cc_name;
-			$extraPluginInfo['cc_valid'] = $this->customerData->_cc_valid;
-			$extraPluginInfo['cc_expire_month'] = $this->customerData->_cc_expire_month;
-			$extraPluginInfo['cc_expire_year'] = $this->customerData->_cc_expire_year;
-			$extraPluginInfo['cc_cvv'] = $this->customerData->_cc_cvv;
-			$extraPluginInfo['save_card'] = $this->customerData->_save_card;
+		if ($this->_method->virtuemart_paymentmethod_id == $this->customerData->getVar('selected_method')) {
+			$extraPluginInfo['cc_type'] = $this->customerData->getVar('cc_type') ;
+			$extraPluginInfo['cc_number'] =$this->customerData->getVar('cc_number') ;
+			$extraPluginInfo['cc_name'] = $this->customerData->getVar('cc_name') ;
+			$extraPluginInfo['cc_valid'] = $this->customerData->getVar('cc_valid') ;
+			$extraPluginInfo['cc_expire_month'] = $this->customerData->getVar('cc_expire_month') ;
+			$extraPluginInfo['cc_expire_year'] = $this->customerData->getVar('cc_expire_year') ;
+			$extraPluginInfo['cc_cvv'] = $this->customerData->getVar('cc_cvv') ;
+			$extraPluginInfo['save_card'] = $this->customerData->getVar('save_card') ;
 
 			$extraPluginInfo['from_realvault'] = false;
 			$extraPluginInfo['dcc'] = false;
@@ -775,7 +775,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 			}
 		}
 		if (!$cc_valid) {
-			$app = & JFactory::getApplication();
+			$app = JFactory::getApplication();
 			$app->enqueueMessage($html, 'error');
 			return false;
 		}

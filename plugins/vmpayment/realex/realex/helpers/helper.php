@@ -48,6 +48,7 @@ class  RealexHelperRealex {
 	const REQUEST_TYPE_DCCRATE = "dccrate";
 	const REQUEST_TYPE_REALVAULT_DCCRATE = "realvault-dccrate";
 	const REQUEST_TYPE_CARD_CANCEL_CARD = "card-cancel-card";
+	const REQUEST_TYPE_CARD_UPDATE_CARD = "card-update-card";
 	const REQUEST_TYPE_PAYER_NEW = "payer-new";
 	const REQUEST_TYPE_CARD_NEW = "card-new";
 
@@ -69,6 +70,9 @@ class  RealexHelperRealex {
 		if ($method->dcc) {
 			$method->settlement = 1;
 			$method->rebate_password = "";
+		}
+		if (!$method->realvault) {
+			$method->offer_save_card=0;
 		}
 		$this->_method = $method;
 		$this->plugin = $plugin;
@@ -411,7 +415,7 @@ class  RealexHelperRealex {
 
 							$success = ($result == $this::RESPONSE_CODE_SUCCESS);
 							if ($success) {
-								$amountValue = vmPSPlugin::getAmountInCurrency($this->order['details']['BT']->order_total, $this->order['details']['BT']->order_currency) * 100;
+								$amountValue = vmPSPlugin::getAmountInCurrency($this->order['details']['BT']->order_total, $this->order['details']['BT']->order_currency) ;
 								$auth_info = vmText::sprintf('VMPAYMENT_REALEX_PAYMENT_STATUS_CONFIRMED', $amountValue['display'], $this->order['details']['BT']->order_number);
 								if (isset($realex_data->DCCCHOICE) and $realex_data->DCCCHOICE == $this::RESPONSE_DCC_CHOICE_YES) {
 									$dcc_info = vmText::sprintf('VMPAYMENT_REALEX_DCC_PAY_OWN_CURRENCY_CHARGED', $this->plugin->getCardHolderAmount($realex_data['DCCMERCHANTAMOUNT']), $realex_data['DCCMERCHANTCURRENCY'], $this->plugin->getCardHolderAmount($realex_data['DCCCARDHOLDERAMOUNT']), $realex_data['DCCCARDHOLDERCURRENCY']);
@@ -626,7 +630,7 @@ class  RealexHelperRealex {
 		return $html;
 	}
 
-	function doRealVault () {
+	function doRealVault (&$selectedCCParams) {
 		if ($this->_method->realvault AND $this->_method->integration == 'remote') {
 			if (!($this->_method->offer_save_card) OR
 				($this->_method->offer_save_card AND $this->customerData->getVar('save_card') )
@@ -767,7 +771,7 @@ class  RealexHelperRealex {
 	 */
 	function setComments () {
 		$xml_request = '<comments>
-				<comment id="1" />
+				<comment id="1"></comment>
 				<comment id="2" />
 			</comments>
 			';
@@ -1027,15 +1031,15 @@ class  RealexHelperRealex {
 		$args = func_get_args();
 		array_shift($args);
 		$tmp = $args;
-		//$this->debugLog($tmp, 'getSha1Hash', 'debug');
-	//	$this->debugLog($secret, 'getSha1Hash', 'debug');
-		//$temp2 = implode('.', $args);
-		//$this->debugLog($temp2, 'getSha1Hash', 'debug');
+		$this->debugLog($tmp, 'getSha1Hash', 'debug');
+	$this->debugLog($secret, 'getSha1Hash', 'debug');
+		$temp2 = implode('.', $args);
+		$this->debugLog($temp2, 'getSha1Hash', 'debug');
 		$hash = sha1(implode('.', $args));
 		$temp3 = "{$hash}.{$secret}";
-		//$this->debugLog($temp3, 'getSha1Hash', 'debug');
+		$this->debugLog($temp3, 'getSha1Hash', 'debug');
 		$hash = sha1("{$hash}.{$secret}");
-
+		$this->debugLog($hash, 'getSha1Hash', 'debug');
 		return $hash;
 	}
 

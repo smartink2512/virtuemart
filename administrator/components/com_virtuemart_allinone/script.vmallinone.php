@@ -54,6 +54,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmcustom');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmshipment');
+			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmuserfield');
 
 			if(empty($dontMove)){
 				$this->path = JInstaller::getInstance ()->getPath ('extension_administrator');
@@ -63,33 +64,35 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$this->dontMove = $dontMove;
 
 			$this->updateShipperToShipment ();
-			$this->installPlugin ('Standard', 'plugin', 'standard', 'vmpayment');
-			$this->installPlugin ('Klarna', 'plugin', 'klarna', 'vmpayment');
-			$this->installPlugin ('KlarnaCheckout', 'plugin', 'klarnacheckout', 'vmpayment');
-			$this->installPlugin ('Sofort Banking/Überweisung', 'plugin', 'sofort', 'vmpayment');
-			$this->installPlugin ('PayPal', 'plugin', 'paypal', 'vmpayment');
-			$this->installPlugin ('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
+			$this->installPlugin ('VM Payment - Standard', 'plugin', 'standard', 'vmpayment');
+			$this->installPlugin ('VM Payment - Klarna', 'plugin', 'klarna', 'vmpayment');
+			$this->installPlugin ('VM Payment - KlarnaCheckout', 'plugin', 'klarnacheckout', 'vmpayment');
+			$this->installPlugin ('vSofort Banking/Überweisung', 'plugin', 'sofort', 'vmpayment');
+			$this->installPlugin ('vPayPal', 'plugin', 'paypal', 'vmpayment');
+			$this->installPlugin ('VM Payment - Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
+			$this->installPlugin ('VM Payment - Realex', 'plugin', 'realex', 'vmpayment');
 			//$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
 			//$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
-			$this->installPlugin ('Moneybookers', 'plugin', 'moneybookers', 'vmpayment');
-			$this->installPlugin ('Moneybookers Credit Cards', 'plugin', 'moneybookers_acc', 'vmpayment');
-			$this->installPlugin ('Moneybookers Lastschrift', 'plugin', 'moneybookers_did', 'vmpayment');
-			$this->installPlugin ('Moneybookers iDeal', 'plugin', 'moneybookers_idl', 'vmpayment');
-			$this->installPlugin ('Moneybookers Giropay', 'plugin', 'moneybookers_gir', 'vmpayment');
-			$this->installPlugin ('Moneybookers Sofortueberweisung', 'plugin', 'moneybookers_sft', 'vmpayment');
-			$this->installPlugin ('Moneybookers Przelewy24', 'plugin', 'moneybookers_pwy', 'vmpayment');
-			$this->installPlugin ('Moneybookers Online Bank Transfer', 'plugin', 'moneybookers_obt', 'vmpayment');
-			$this->installPlugin ('Moneybookers Skrill Digital Wallet', 'plugin', 'moneybookers_wlt', 'vmpayment');
-			$this->installPlugin ('Authorize.net', 'plugin', 'authorizenet', 'vmpayment');
+			$this->installPlugin ('VM Payment - Moneybookers', 'plugin', 'moneybookers', 'vmpayment');
+			$this->installPlugin ('VM Payment - Moneybookers Credit Cards', 'plugin', 'moneybookers_acc', 'vmpayment');
+			$this->installPlugin ('VM Payment - Moneybookers Lastschrift', 'plugin', 'moneybookers_did', 'vmpayment');
+			$this->installPlugin ('VM Payment - Moneybookers iDeal', 'plugin', 'moneybookers_idl', 'vmpayment');
+			$this->installPlugin ('VM Payment - Moneybookers Giropay', 'plugin', 'moneybookers_gir', 'vmpayment');
+			$this->installPlugin ('VM Payment - Moneybookers Sofortueberweisung', 'plugin', 'moneybookers_sft', 'vmpayment');
+			$this->installPlugin ('VM Payment - Moneybookers Przelewy24', 'plugin', 'moneybookers_pwy', 'vmpayment');
+			$this->installPlugin ('VM Payment - Moneybookers Online Bank Transfer', 'plugin', 'moneybookers_obt', 'vmpayment');
+			$this->installPlugin ('VM Payment - Moneybookers Skrill Digital Wallet', 'plugin', 'moneybookers_wlt', 'vmpayment');
+			$this->installPlugin ('VM Payment - Authorize.net', 'plugin', 'authorizenet', 'vmpayment');
 
-			$this->installPlugin ('Sofort iDeal', 'plugin', 'sofort_ideal', 'vmpayment');
+			$this->installPlugin ('VM Payment - Sofort iDeal', 'plugin', 'sofort_ideal', 'vmpayment');
 
-			$this->installPlugin ('By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment', 1);
+			$this->installPlugin ('VM Shipment - By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment', 1);
 
-			$this->installPlugin ('Customer text input', 'plugin', 'textinput', 'vmcustom', 1);
-			$this->installPlugin ('Product specification', 'plugin', 'specification', 'vmcustom', 1);
-			$this->installPlugin ('Stockable variants', 'plugin', 'stockable', 'vmcustom', 1);
-			$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation' );
+			$this->installPlugin ('VM Custom - Customer text input', 'plugin', 'textinput', 'vmcustom', 1);
+			$this->installPlugin ('VM Custom - Product specification', 'plugin', 'specification', 'vmcustom', 1);
+			$this->installPlugin ('VM Custom - Stockable variants', 'plugin', 'stockable', 'vmcustom', 1);
+			$this->installPlugin ('VM Calculation - Avalara Tax', 'plugin', 'avalara', 'vmcalculation' );
+			$this->installPlugin ('VM Userfield - Realex', 'plugin', 'realex', 'vmuserfield' );
 
 			// 			$table = '#__virtuemart_customs';
 			// 			$fieldname = 'field_type';
