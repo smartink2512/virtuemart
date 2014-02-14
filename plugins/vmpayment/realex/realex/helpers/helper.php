@@ -222,7 +222,7 @@ class  RealexHelperRealex {
 	 * @param $response
 	 */
 
-	function manageResponse2Request ($response) {
+	function manageResponseRequest ($response) {
 		if ($response == NULL) {
 			$this->plugin->redirectToCart(vmText::_('VMPAYMENT_REALEX_ERROR_TRY_AGAIN'));
 		}
@@ -245,8 +245,8 @@ class  RealexHelperRealex {
 	/**
 	 * @param $response
 	 */
-	function manageResponse2RequestReceiptIn ($response) {
-		$this->manageResponse2Request($response);
+	function manageResponseRequestReceiptIn ($response) {
+		$this->manageResponseRequest($response);
 	}
 
 	public function validateConfirmedOrder ($enqueueMessage = true) {
@@ -665,7 +665,7 @@ class  RealexHelperRealex {
 	 * @param bool $set_dcc
 	 * @return bool|mixed
 	 */
-	public function requestRealvaultReceiptIn ($selectedCCParams, $ask_dcc = true, $set_dcc = false) {
+	public function requestReceiptIn ($selectedCCParams, $ask_dcc = true, $set_dcc = false) {
 		$xm = new stdClass();
 
 		$timestamp = $this->getTimestamp();

@@ -37,31 +37,6 @@ class plgVmPaymentRealex extends vmPSPlugin {
 
 	private $customerData;
 
-	var $callback_fields = array(
-		'ORDER_ID',
-		'RESULT',
-		'PASREF',
-		'MERCHANT_ID',
-		'ACCOUNT',
-		'MESSAGE',
-		'AUTHCODE'
-	);
-
-
-	var $ary_to_show = array(
-		'account',
-		'timestamp',
-		'result',
-		'authcode',
-		'message',
-		'pasref',
-		'avspostcoderesult',
-		'avsaddressresult',
-		'cvnresult',
-		'batchid',
-		'tss'
-	);
-
 	function __construct (& $subject, $config) {
 		parent::__construct($subject, $config);
 		if (!class_exists('RealexHelperCustomerData')) {
@@ -179,8 +154,8 @@ class plgVmPaymentRealex extends vmPSPlugin {
 				$cart->_dataValidated = FALSE;
 				$cart->setCartIntoSession();
 			} else {
-				$response = $realexInterface->requestRealvaultReceiptIn($selectedCCParams);
-				$realexInterface->manageResponse2RequestReceiptIn($response);
+				$response = $realexInterface->requestReceiptIn($selectedCCParams);
+				$realexInterface->manageResponseRequestReceiptIn($response);
 				if (!($payments = $this->getDatasByOrderId($realexInterface->order['details']['BT']->virtuemart_order_id))) {
 					return '';
 				}
@@ -573,28 +548,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		return $payment->created_on;
 	}
 
-	/**
-	 * function xml2array
-	 *
-	 * This function is part of the PHP manual.
-	 *
-	 * The PHP manual text and comments are covered by the Creative Commons
-	 * Attribution 3.0 License, copyright (c) the PHP Documentation Group
-	 *
-	 * @author  k dot antczak at livedata dot pl
-	 * @date    2011-04-22 06:08 UTC
-	 * @link    http://www.php.net/manual/en/ref.simplexml.php#103617
-	 * @license http://www.php.net/license/index.php#doc-lic
-	 * @license http://creativecommons.org/licenses/by/3.0/
-	 * @license CC-BY-3.0 <http://spdx.org/licenses/CC-BY-3.0>
-	 */
-	function xml2array ($xmlObject, $out = array()) {
-		foreach ((array)$xmlObject as $index => $node) {
-			$out[$index] = (is_object($node)) ? $this->xml2array($node) : $node;
-		}
 
-		return $out;
-	}
 
 	/**
 	 * Create the table for this plugin if it does not yet exist.
@@ -1125,12 +1079,12 @@ class plgVmPaymentRealex extends vmPSPlugin {
 				$xml_response = simplexml_load_string($response);
 				$xml_response->addChild('eci', $eci);
 				$response = $realexInterface->requestAuth(NULL, $xml_response);
-				$realexInterface->manageResponse2RequestAuth($response);
+				$realexInterface->manageResponseRequestAuth($response);
 			}
 
 		} else {
 			$response = $realexInterface->requestAuth();
-			$realexInterface->manageResponse2RequestAuth($response);
+			$realexInterface->manageResponseRequestAuth($response);
 		}
 		//$payments = $this->getDatasByOrderId($realexInterface->order['details']['BT']->virtuemart_order_id);
 		$this->updateOrderStatus($realexInterface->order);
@@ -1164,7 +1118,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		if ($eci !== false) {
 			$xml_response3DSVerifyEnrolled = simplexml_load_string($response3DSVerifyEnrolled);
 			$response = $realexInterface->requestAuth(NULL, $xml_response3DSVerifyEnrolled);
-			$realexInterface->manageResponse2RequestAuth($response);
+			$realexInterface->manageResponseRequestAuth($response);
 			$xml_response = simplexml_load_string($response);
 			$success = $realexInterface->isResponseSuccess($xml_response);
 		} else {
@@ -1214,7 +1168,7 @@ class plgVmPaymentRealex extends vmPSPlugin {
 		if ($eci !== false) {
 			$xml_response3D = simplexml_load_string($response3DSVerifysig);
 			$response = $realexInterface->requestAuth(NULL, $xml_response3D);
-			$realexInterface->manageResponse2RequestAuth($response);
+			$realexInterface->manageResponseRequestAuth($response);
 			$xml_response = simplexml_load_string($response);
 			$success = $realexInterface->isResponseSuccess($xml_response);
 		} else {

@@ -402,7 +402,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 			$xml_response_dcc = simplexml_load_string($response_dcc);
 
 			$response = $this->requestAuth($xml_response_dcc);
-			$this->manageResponse2RequestAuth($response);
+			$this->manageResponseRequestAuth($response);
 		}
 
 
@@ -433,7 +433,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 		} else {
 			$xml_response_3DSecure->addChild('eci', $eci);
 			$responseAuth = $this->requestAuth(NULL, $xml_response_3DSecure);
-			$this->manageResponse2RequestAuth($response);
+			$this->manageResponseRequestAuth($response);
 		}
 
 
@@ -659,30 +659,30 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	 * @return bool|mixed
 	 */
 	function manageResponse3DSVerifyEnrolled ($response3D) {
-		$this->manageResponse2Request($response3D);
+		$this->manageResponseRequest($response3D);
 		$eci = $this->getEciFrom3DSVerifyEnrolled($response3D);
 		return $eci;
 
 	}
 
 	function manageResponse3DSVerifysig ($response3DSVerifysig) {
-		$this->manageResponse2Request($response3DSVerifysig);
+		$this->manageResponseRequest($response3DSVerifysig);
 
 	}
 
 	/**
 	 * @param $response
 	 */
-	function manageResponse2RequestAuth ($response) {
-		$this->manageResponse2Request($response);
+	function manageResponseRequestAuth ($response) {
+		$this->manageResponseRequest($response);
 	}
 
 	/**
 	 * @param $response
 	 */
 
-	function manageResponse2Request3DSecure ($response) {
-		$this->manageResponse2Request($response);
+	function manageResponseRequest3DSecure ($response) {
+		$this->manageResponseRequest($response);
 
 
 	}
@@ -693,7 +693,7 @@ class RealexHelperRealexRemote extends RealexHelperRealex {
 	 * @return null|string
 	 */
 	function manageResponseDccRate ($response) {
-		$this->manageResponse2Request($response);
+		$this->manageResponseRequest($response);
 	}
 
 	function getXmlRequestCard () {
