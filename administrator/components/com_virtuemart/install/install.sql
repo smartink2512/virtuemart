@@ -844,7 +844,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
   PRIMARY KEY (`virtuemart_customfield_id`),
   KEY `idx_virtuemart_product_id` (`virtuemart_product_id`),
   KEY `idx_virtuemart_custom_id` (`virtuemart_custom_id`),
-  KEY `idx_customfield_value` (`customfield_value`),
   KEY `idx_published` (`published`),
   KEY `idx_ordering` (`ordering`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields' AUTO_INCREMENT=1 ;

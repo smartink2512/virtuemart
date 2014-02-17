@@ -166,7 +166,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		if($err){
 			vmError('getCustomEmbeddedProductCustomFields error in query '.$err);
 		}
-		vmdebug('getCustomEmbeddedProductCustomGroup ',$productIds,$q);
+		//vmdebug('getCustomEmbeddedProductCustomGroup ',$productIds,$q);
 		if($productCustoms){
 
 			$customfield_ids = array();

@@ -262,6 +262,8 @@ class VirtueMartModelUser extends VmModel {
 		//The constructor sets automatically the right id.
 		$new = ($this->_id < 1);
 		if(empty($this->_id)){
+			//$user = JFactory::getUser();
+
 			$user = new JUser();	//thealmega http://forum.virtuemart.net/index.php?topic=99755.msg393758#msg393758
 		} else {
 			$user = JFactory::getUser($this->_id);
@@ -291,7 +293,7 @@ class VirtueMartModelUser extends VmModel {
 				$data['email'] = $email;
 			}
 		} else {
-			$data['email'] =  VmRequest::getString('email', '', 'post', 'email');
+			$data['email'] =  VmRequest::getString('email', '');
 		}
 		$data['email'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['email']);
 
@@ -305,7 +307,7 @@ class VirtueMartModelUser extends VmModel {
 				$data['name'] = $name;
 			}
 		} else {
-			$data['name'] = VmRequest::getString('name', '', 'post', 'name');
+			$data['name'] = VmRequest::getString('name', '');
 		}
 		$data['name'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['name']);
 
@@ -314,16 +316,16 @@ class VirtueMartModelUser extends VmModel {
 			if(!empty($username)){
 				$data['username'] = $username;
 			} else {
-				$data['username'] = VmRequest::getVar('username', '', 'post', 'username');
+				$data['username'] = VmRequest::getString('username', '');
 			}
 		}
 
 		if(empty ($data['password'])){
-			$data['password'] = VmRequest::getVar('password', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
+			$data['password'] = VmRequest::getString('password', '');
 		}
 
 		if(empty ($data['password2'])){
-			$data['password2'] = VmRequest::getVar('password2', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
+			$data['password2'] = VmRequest::getString('password2', '');
 		}
 
 		if(!$new && !empty($data['password']) && empty($data['password2'])){
@@ -415,6 +417,9 @@ class VirtueMartModelUser extends VmModel {
 					vmInfo('COM_VIRTUEMART_REG_COMPLETE_ACTIVATE');
 				} else {
 					vmInfo('COM_VIRTUEMART_REG_COMPLETE');
+					$user->set('activation', '' );
+					$user->set('block', '0');
+					$user->set('guest', '0');
 				}
 			} else {
 				vmInfo('COM_VIRTUEMART_USER_DATA_STORED');
@@ -635,8 +640,8 @@ class VirtueMartModelUser extends VmModel {
 				$userinfo->load($data['virtuemart_userinfo_id']);
 				//unset($data['virtuemart_userinfo_id']);
 			}
-
-			if(!$this->validateUserData((array)$data,'BT')){
+			$data = (array)$data;
+			if(!$this->validateUserData($data,'BT')){
 				return false;
 			}
 
@@ -711,7 +716,7 @@ class VirtueMartModelUser extends VmModel {
 	* @param Object If given, an object with data address data that must be formatted to an array
 	* @return redirectMsg, if there is a redirectMsg, the redirect should be executed after
 	*/
-	public function validateUserData($data,$type='BT') {
+	public function validateUserData(&$data,$type='BT') {
 
 		if (!class_exists('VirtueMartModelUserfields'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
@@ -719,7 +724,7 @@ class VirtueMartModelUser extends VmModel {
 
 		if ($type == 'BT') {
 			$fieldtype = 'account';
-		} else if($type == 'cart'){
+		} else if($type == 'cartfields'){
 			$fieldtype = 'cart';
 		} else {
 			$fieldtype = 'shipment';
@@ -731,7 +736,7 @@ class VirtueMartModelUser extends VmModel {
 		, array('delimiter_userinfo', 'name','username', 'password', 'password2', 'address_type_name', 'address_type', 'user_is_vendor', 'agreed'));
 
 		$i = 0;
-		$j = 0;
+
 		$return = true;
 
 		$required  = 0;
@@ -759,7 +764,7 @@ class VirtueMartModelUser extends VmModel {
 					$i++;
 					$return = false;
 				}
-				else if($data[$field->name] = $field->default){
+				else if($data[$field->name] == $field->default){
 					$i++;
 				} else {
 
@@ -847,7 +852,7 @@ class VirtueMartModelUser extends VmModel {
 		// 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		// 		$userFieldsModel = new VirtuemartModelUserfields();
 		$userFieldsModel = VmModel::getModel('userfields');
-		$prepareUserFields = $userFieldsModel->getUserFieldsFor( $layoutName, $type, $uid );
+		$prepareUserFields = $userFieldsModel->getUserFieldsFor( $layoutName, $type );
 
 		if($type=='ST'){
 			$preFix = 'shipto_';
@@ -959,7 +964,7 @@ class VirtueMartModelUser extends VmModel {
 
 
 	/**
-	 * This should store the userdata given in userfields
+	 * This stores the userdata given in userfields
 	 *
 	 * @author Max Milbers
 	 */

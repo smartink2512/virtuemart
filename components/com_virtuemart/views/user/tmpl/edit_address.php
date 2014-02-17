@@ -34,14 +34,13 @@ if ($this->cart->fromCart or $this->cart->getInCheckOut()) {
 else {
 	$rview = 'user';
 }
-vmdebug('rview = '.$rview);
 
 $task = '';
 if ($this->cart->getInCheckOut()){
 	$task = '&task=checkout';
 }
 $url = JRoute::_ ('index.php?option=com_virtuemart&view='.$rview.$task, $this->useXHTML, $this->useSSL);
-vmdebug('hmmm',$url);
+
 echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 ?>
 <script language="javascript">
@@ -78,6 +77,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 	}
 </script>
 
+<form method="post" id="userForm" name="userForm" class="form-validate">
 <fieldset>
 	<h2><?php
 		if ($this->address_type == 'BT') {
@@ -89,7 +89,7 @@ echo shopFunctionsF::getLoginForm (TRUE, FALSE, $url);
 		?>
 	</h2>
 
-	<form method="post" id="userForm" name="userForm" class="form-validate">
+
 		<!--<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_ ('index.php'); ?>" class="form-validate">-->
 		<div class="control-buttons">
 			<?php
@@ -164,5 +164,6 @@ if ($this->userDetails->JUser->get ('id')) {
 }
 echo JHtml::_ ('form.token');
 ?>
-</form>
+
 </fieldset>
+</form>

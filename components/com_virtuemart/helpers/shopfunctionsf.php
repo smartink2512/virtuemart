@@ -30,10 +30,6 @@ class shopFunctionsF {
 
 	static public function getLoginForm ($cart = FALSE, $order = FALSE, $url = 0) {
 
-		if(!class_exists( 'VirtuemartViewUser' )) require(JPATH_VM_SITE.DS.'views'.DS.'user'.DS.'view.html.php');
-		$view = new VirtuemartViewUser();
-		$view->setLayout( 'login' );
-
 		$body = '';
 		$show = TRUE;
 
@@ -42,6 +38,9 @@ class shopFunctionsF {
 		}
 		if($show == 1) {
 
+			if(!class_exists( 'VirtuemartViewUser' )) require(JPATH_VM_SITE.DS.'views'.DS.'user'.DS.'view.html.php');
+			$view = new VirtuemartViewUser();
+			$view->setLayout( 'login' );
 			$view->assignRef( 'show', $show );
 
 			$view->assignRef( 'order', $order );

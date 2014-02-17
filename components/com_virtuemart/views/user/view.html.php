@@ -52,7 +52,6 @@ class VirtuemartViewUser extends VmView {
      */
     function display($tpl = null) {
 
-
 	$useSSL = VmConfig::get('useSSL', 0);
 	$useXHTML = false;
 	$this->assignRef('useSSL', $useSSL);

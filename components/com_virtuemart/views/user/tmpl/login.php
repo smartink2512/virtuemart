@@ -34,6 +34,7 @@ if (empty($this->url)){
 
 $user = JFactory::getUser();
 
+//vmdebug('login form my user ',$user);
 if ($this->show and $user->id == 0  ) {
 JHtml::_('behavior.formvalidation');
 JHtml::_ ( 'behavior.modal' );

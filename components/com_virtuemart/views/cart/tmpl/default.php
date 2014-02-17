@@ -142,22 +142,7 @@ $document->addStyleDeclaration ('#facebox .content {display: block !important; h
 		<div class="checkout-button-top">
 
 			<?php // Terms Of Service Checkbox
-			if (!class_exists ('VirtueMartModelUserfields')) {
-				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
-			}
-			$userFieldsModel = VmModel::getModel ('userfields');
 
-			$userFieldsCart = $userFieldsModel->getUserFields(
-				'cart'
-				, array('captcha' => true, 'delimiters' => true) // Ignore these types
-				, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
-			);
-
-			$this->userFieldsCart = $userFieldsModel->getUserFieldsFilled(
-				$userFieldsCart
-				,$this->cart->BT
-			);
-			vmdebug('$this->userFieldsCart',$this->userFieldsCart);
 			echo $this->loadTemplate ('cartfields');
 
 			/*if ($userFieldsModel->getIfRequired ('agreed')) {

@@ -51,7 +51,7 @@ class VirtueMartCart {
 	var $automaticSelectedPayment  = false;
 	var $BT = 0;
 	var $ST = 0;
-	var $tosAccepted = null;
+	var $cartfields = null;
 	var $customer_comment = '';
 	var $couponCode = '';
 	var $order_language = '';
@@ -122,7 +122,8 @@ class VirtueMartCart {
 					self::$_cart->automaticSelectedPayment 		= $sessionCart->automaticSelectedPayment;
 					self::$_cart->BT 							= $sessionCart->BT;
 					self::$_cart->ST 							= $sessionCart->ST;
-					//self::$_cart->tosAccepted 					= $sessionCart->tosAccepted;
+					self::$_cart->cartfields					= $sessionCart->cartfields;
+
 					self::$_cart->customer_comment 				= base64_decode($sessionCart->customer_comment);
 					self::$_cart->couponCode 					= $sessionCart->couponCode;
 					self::$_cart->_triesValidateCoupon			= $sessionCart->_triesValidateCoupon;
@@ -229,7 +230,8 @@ class VirtueMartCart {
 
 		$sessionCart->BT 										= $this->BT;
 		$sessionCart->ST 										= $this->ST;
-		//$sessionCart->tosAccepted 							= $this->tosAccepted;
+		$sessionCart->cartfields					= $this->cartfields;
+
 		$sessionCart->customer_comment 					= base64_encode($this->customer_comment);
 		$sessionCart->couponCode 							= $this->couponCode;
 		$sessionCart->_triesValidateCoupon				= $this->_triesValidateCoupon;
@@ -738,25 +740,16 @@ class VirtueMartCart {
 
 		$validUserDataBT = self::validateUserData();
 
-		$validUserDataCart = self::validateUserData('cart',$this->BT);
-		//$this->tosAccepted = VmRequest::getInt('tosAccepted', $this->tosAccepted);
-		/*if(!isset($this->tosAccepted)){
-			$userFieldsModel = VmModel::getModel('Userfields');
-			$agreed = $userFieldsModel->getUserfield('agreed','name');
-			$this->tosAccepted = $agreed->default;
-		}*/
-		//if (empty($this->BT['tos'])) {
-
-			//$userFieldsModel = VmModel::getModel('Userfields');
-			//$agreed = $userFieldsModel->getUserfield('agreed','name');
-
-			if(!$validUserDataCart and $validUserDataBT!==-1){
-				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
-				$this->BT['tos'] = false;
-				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
-				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
-			}
-		//}
+		$validUserDataCart = self::validateUserData('cartfields');
+		vmdebug('CheckoutData my cart ',$validUserDataBT,$validUserDataCart);
+		if($validUserDataCart!==true and $validUserDataBT!==true and $redirect){
+			$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+			vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+			return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
+		}
+		//Atm a bit dirty. We store this information in the BT order_userinfo, so we merge it here, it gives also
+		// the advantage, that plugins can easily deal with it.
+		$this->BT = array_merge($this->BT,$this->cartfields);
 
 		if (($this->selected_shipto = VmRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
@@ -785,7 +778,7 @@ class VirtueMartCart {
 				$userModel = JModel::getInstance('user', 'VirtueMartModel');
 				$stData = $userModel->getUserAddressList(0, 'ST', $this->selected_shipto);
 				$stData = get_object_vars($stData[0]);
-				if($this->validateUserData('ST', $stData)!=-1 and $this->validateUserData('ST', $stData)>0){
+				if($this->validateUserData('ST', $stData)>0){
 					$this->ST = $stData;
 				}
 			}
@@ -930,12 +923,12 @@ class VirtueMartCart {
 	 */
 	private function validateUserData($type='BT', $obj = null) {
 
-		if($obj!=null){
+		if($obj==null){
 			$obj = $this->{$type};
 		}
 
 		$usersModel = VmModel::getModel('user');
-		return $usersModel->validateUserData($obj,$type);
+		return $usersModel->validateUserData($obj,$type,true);
 
 	}
 
@@ -1022,6 +1015,49 @@ class VirtueMartCart {
 		$cart->setCartIntoSession();
 	}
 
+	function saveCartFieldsInCart(){
+
+		if (!class_exists('VirtueMartModelUserfields'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
+		$userFieldsModel = VmModel::getModel('userfields');
+
+		$cartFields = $userFieldsModel->getUserFields(
+			'cart'
+			, array('required' => true, 'delimiters' => true, 'captcha' => true, 'system' => false)
+			, array('delimiter_userinfo', 'name','username', 'password', 'password2', 'address_type_name', 'address_type', 'user_is_vendor', 'agreed'));
+
+		foreach ($cartFields as $fld) {
+			if(!empty($fld->name)){
+				$name = $fld->name;
+				if(!isset($data[$name])){
+
+					if($fld->type=='text'){
+						$tmp = vmRequest::getString($name,false);
+						if($tmp){
+							$data[$name] = $tmp;
+						}
+					} else if($fld->type=='checkbox'){
+						$tmp = vmRequest::getInt($name,false);
+						if($tmp){
+							$data[$name] = $tmp;
+							vmdebug('SET TOS by REQUEST ',$tmp);
+						}
+					} else {
+						vmdebug('my fld ',$fld);
+					}
+
+				}
+
+				if(isset($data[$name])){
+					$this->cartfields[$name] = $data[$name];
+					vmdebug('Store $this->cartfields[$name] '.$name.' '.$data[$name]);
+				}
+			}
+		}
+		vmdebug('my cartfields',$this->cartfields);
+		$this->setCartIntoSession();
+	}
+
 	function saveAddressInCart($data, $type, $putIntoSession = true) {
 
 		// VirtueMartModelUserfields::getUserFields() won't work
@@ -1039,9 +1075,6 @@ class VirtueMartCart {
 			$prefix = 'shipto_';
 			$this->STsameAsBT = 0;
 		} else { // BT
-			/*if(!empty($data['agreed'])){
-				$this->tosAccepted = $data['agreed'];
-			}*/
 
 			if(empty($data['email'])){
 				$jUser = JFactory::getUser();
@@ -1055,19 +1088,22 @@ class VirtueMartCart {
 		foreach ($prepareUserFields as $fld) {
 			if(!empty($fld->name)){
 				$name = $fld->name;
-				/*if($fld->readonly){
-					vmdebug(' saveAddressInCart ',$data[$prefix.$name]);
-				}*/
 
-				//vmdebug('saveAddressInCart $prefix='.$prefix.' $name='.$name,$data);
-				if(!empty($data[$prefix.$name])){
+				if(!isset($data[$prefix.$name])){
+					$tmp = vmRequest::getString($prefix.$name,false);
+					if($tmp){
+						$data[$prefix.$name] = $tmp;
+					}
+					/*if($fld->type=='text'){
+					} else {
+						vmdebug('my fld ',$fld);
+					}*/
+				}
+
+				if(isset($data[$prefix.$name])){
 					$address[$name] = $data[$prefix.$name];
 				} else {
-					if($fld->required){	//Why we have this fallback to the already stored value?
-						$address[$name] = $this->{$type}[$name];
-					} else {
-						$address[$name] = '';
-					}
+					vmdebug('Data not found for '.$name.' ');
 				}
 			}
 		}
@@ -1402,7 +1438,7 @@ class VirtueMartCart {
 		,$data
 		,$preFix
 		);
-
+		//vmdebug('$this->userFieldsCart',$address);
 		if(empty($this->$type) and $type=='BT'){
 			$tmp =&$this->$type ;
 			$tmp = array();

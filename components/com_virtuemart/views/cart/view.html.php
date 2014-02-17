@@ -91,11 +91,28 @@ class VirtueMartViewCart extends VmView {
 
 			$this->prepareContinueLink();
 
+			if (!class_exists ('VirtueMartModelUserfields')) {
+				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
+			}
+			$userFieldsModel = VmModel::getModel ('userfields');
+
+			$userFieldsCart = $userFieldsModel->getUserFields(
+				'cart'
+				, array('captcha' => true, 'delimiters' => true) // Ignore these types
+				, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
+			);
+
+			$this->userFieldsCart = $userFieldsModel->getUserFieldsFilled(
+				$userFieldsCart
+				,$this->cart->cartfields
+			);
+
 			if (!$this->cart->_inCheckOut and !VmConfig::get('use_as_catalog', 0)) {
 				$this->cart->checkout(false);
 			} else if(!VmConfig::get('use_as_catalog', 0)) {
 				$this->cart->prepareCartData();
 			} else {
+				vmInfo('This is a catalogue, you cannot acccess the cart');
 				$mainframe->redirect($this->continue_link);
 			}
 
@@ -286,10 +303,7 @@ class VirtueMartViewCart extends VmView {
 
 		$payment_not_found_text='';
 		$payments_payment_rates=array();
-		/*if (!$this->checkPaymentMethodsConfigured()) {
-			$this->assignRef('paymentplugins_payments', $payments_payment_rates);
-			$this->assignRef('found_payment_method', $found_payment_method);
-		}*/
+		//
 		$tmp = 1;
 		$this->assignRef('found_payment_method', $tmp);
 		$selectedPayment = empty($this->cart->virtuemart_paymentmethod_id) ? 0 : $this->cart->virtuemart_paymentmethod_id;

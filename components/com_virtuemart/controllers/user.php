@@ -76,8 +76,6 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 	/**
 	 * This is the save function for the normal user edit.php layout.
-	 * We use here directly the userModel store function, because this view is for registering also
-	 * it redirects to the standard user view.
 	 *
 	 * @author Max Milbers
 	 */
@@ -87,16 +85,8 @@ class VirtueMartControllerUser extends JControllerLegacy
 		$cart = VirtueMartCart::getCart();
 
 		$layout = VmRequest::getCmd('layout','edit');
-		if (isset($_POST['register'])) {
-			$msg = $this->saveData(true, true);
-		} else {
-			if($cart->fromCart or $cart->getInCheckOut()){
-				$msg = $this->saveData(true,VmConfig::get('reg_silent',0));
-			} else {
-				$msg = $this->saveData(false,true);
-			}
-		}
 
+		$msg = $this->saveData($cart);
 		if($cart->fromCart or $cart->getInCheckOut()){
 			$task = '';
 			if ($cart->getInCheckOut()){
@@ -111,7 +101,7 @@ class VirtueMartControllerUser extends JControllerLegacy
 
 	function saveAddressST(){
 
-		$msg = $this->saveData(false,true,true);
+		$msg = $this->saveData(false);
 		$layout = 'edit';// VmRequest::getCmd('layout','edit');
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user&layout='.$layout, FALSE), $msg );
 
@@ -127,20 +117,46 @@ class VirtueMartControllerUser extends JControllerLegacy
 	 * @param boolean Defaults to false, the param is for the userModel->store function, which needs it to determine how to handle the data.
 	 * @return String it gives back the messages.
 	 */
-	private function saveData($cart=false,$register=false, $onlyAddress=false) {
+	private function saveData($cartObj) {
 		$mainframe = JFactory::getApplication();
 		$currentUser = JFactory::getUser();
 		$msg = '';
 
 		$data = vmRequest::getRequest();
 
+		if($cartObj){
+			if($cartObj->fromCart or $cartObj->getInCheckOut()){
+				$cart = true;
+			} else {
+				$cart = false;
+			}
+		} else {
+			$cart = false;
+		}
+
+
+		if (isset($_POST['register'])) {
+			$register = true;
+		} else {
+			$register = false;
+		}
+
+
 		$data['address_type'] = VmRequest::getCmd('addrtype','BT');
+
+		if(!$register and !$cart and $data['address_type'] == 'ST'){
+			$onlyAddress = true;
+		} else {
+			$onlyAddress = false;
+		}
+
+
 		if($currentUser->guest!=1 || $register){
 			$userModel = VmModel::getModel('user');
 
 			if(!$cart){
 				// Store multiple selectlist entries as a ; separated string
-				if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
+				if (array_key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 					$data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 				}
 

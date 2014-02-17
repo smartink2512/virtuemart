@@ -427,7 +427,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	public function getUserFieldsFor($layoutName, $type,$userId = -1){
+	public function getUserFieldsFor($layoutName, $type){
 
  		//vmdebug('getUserFieldsFor '.$layoutName.' '. $type .' ' . $userId);
 		$register = false;
@@ -518,16 +518,9 @@ class VirtueMartModelUserfields extends VmModel {
 
 		$_q = 'SELECT * FROM `#__virtuemart_userfields` WHERE 1 = 1 ';
 
-		if( $_sec != 'bank' && $_sec != '') {
+		if( !empty($_sec)) {
 			$_q .= 'AND `'.$_sec.'`=1 ';
-		} elseif ($_sec == 'bank' ) {
-			$_q .= "AND name LIKE '%bank%' ";
 		}
-
-		/*		if (($_skipBank = array_search('bank', $_skip)) !== false ) {
-			$_q .= "AND name NOT LIKE '%bank%' ";
-		unset ($_skip[$_skipBank]);
-		}*/
 
 		if(array_key_exists('published',$_switches)){
 			if ($_switches['published'] !== false ) {
@@ -752,7 +745,7 @@ class VirtueMartModelUserfields extends VmModel {
 						$readonly = ' readonly="readonly" ';
 					}
 				}
-// 				vmdebug ('getUserFieldsFilled',$_fld->name);
+ 				//vmdebug ('getUserFieldsFilled',$_fld->name,$_return['fields'][$_fld->name]['value']);
 				// 			if($_fld->name==='email') vmdebug('user data email getuserfieldbyuser',$_userData);
 				// First, see if there are predefined fields by checking the name
 				switch( $_fld->name ) {
@@ -834,6 +827,7 @@ class VirtueMartModelUserfields extends VmModel {
 						break;
 
 					case 'agreed':
+					case 'tos':
 						$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" name="'
 						. $_prefix.$_fld->name . '" id="' . $_prefix.$_fld->name . '_field" value="1" '
 						. ($_return['fields'][$_fld->name]['value'] ? 'checked="checked"' : '') .'/>';

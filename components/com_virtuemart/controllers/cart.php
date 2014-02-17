@@ -74,8 +74,8 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		$cart = VirtueMartCart::getCart();
 		$cart->fromCart = true;
+		$cart->saveCartFieldsInCart();
 		$cart->getFilterCustomerComment();
-		//$cart->BT['tos'] = VmRequest::getInt('tos', $cart->tosAccepted);
 
 		$cart->updateProductCart();
 		$this->setcoupon();
@@ -88,6 +88,7 @@ class VirtueMartControllerCart extends JControllerLegacy {
 
 		if($cart && !VmConfig::get('use_as_catalog', 0)){
 			if (isset($_POST['checkout'])) {
+				//vmdebug('isset($_POST["checkout"] isset($_POST["checkout"] isset($_POST["checkout"] isset($_POST["checkout"] ');
 				$cart->checkout();
 			} else if(isset($_POST['confirm'])){
 				$cart->confirmDone();
@@ -99,7 +100,6 @@ class VirtueMartControllerCart extends JControllerLegacy {
 			}
 		}
 		$cart->fromCart = false;
-		//$this->display();
 		$view->display();
 
 		return $this;
