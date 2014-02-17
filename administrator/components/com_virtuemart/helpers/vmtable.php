@@ -641,9 +641,18 @@ class VmTable extends JTable {
 			//if (JVM_VERSION === 1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
 			//else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
 			//pro+#'!"§$%&/()=?duct-w-| ||cu|st|omfield-|str<ing>
-			//vmdebug('my slugName '.$slugName,$this->slugName);
-			$this->$slugName = vmRequest::uword($slugName,$this->slugName,'-,_,.,|');
-			///vmdebug('my slug',$this);
+			vmdebug('my slugName '.$slugName,$this->$slugName);
+			$this->$slugName = str_replace('-', ' ', $this->$slugName);
+
+			$lang = JFactory::getLanguage();
+			$this->$slugName = $lang->transliterate($this->$slugName);
+
+			// Trim white spaces at beginning and end of alias and make lowercase
+			$this->$slugName = trim(JString::strtolower($this->$slugName));
+			$this->$slugName = vmRequest::filterUword($this->$slugName,'-,_,.,|','-');
+			// Trim dashes at beginning and end of alias
+			$this->$slugName = trim($this->$slugName, '-');
+			vmdebug('my slug',$this->slugName);
 			$valid = $this->checkCreateUnique($checkTable, $slugName);
 			//vmdebug('my slugName '.$slugName,$this->slugName);
 			if (!$valid) {

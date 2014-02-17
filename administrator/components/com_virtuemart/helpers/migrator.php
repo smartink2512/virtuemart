@@ -570,7 +570,6 @@ class Migrator extends VmModel{
 		}
 
 		$JUserString = '`p`.`'.implode('`,`p`.`',$jUserArray).'`';
-		//vmdebug('muhh',$JUserString);
 		//$continue=false;
 
 		$q = 'SELECT * FROM `#__vm_auth_group` ';
@@ -638,7 +637,7 @@ class Migrator extends VmModel{
 				/*} else //There is no joomla user, but there is a user
 					if(!empty($user['user_email'])){
 
-						//vmdebug('Hmm joomla user is missing, what todo?',$user['user_id']);
+						//vmdebug('joomla user is missing, what todo?',$user['user_id']);
 				}*/
 
 

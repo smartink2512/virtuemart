@@ -154,7 +154,7 @@ if ($this->userDetails->JUser->get ('id')) {
 <input type="hidden" name="option" value="com_virtuemart"/>
 <input type="hidden" name="view" value="user"/>
 <input type="hidden" name="controller" value="user"/>
-<input type="hidden" name="task" value="<?php echo $this->fTask; // I remember, we removed that, but why?   ?>"/>
+<input type="hidden" name="task" value="<?php echo $this->fTask; ?>"/>
 <input type="hidden" name="layout" value="<?php echo $this->getLayout (); ?>"/>
 <input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>"/>
 <?php if (!empty($this->virtuemart_userinfo_id)) {

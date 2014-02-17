@@ -24,20 +24,32 @@
  */
 class vmRequest {
 
+	public static function getUword($field, $default='', $custom=''){
+		$source = self::getVar($field,$default);
+		return self::filterUword($source,$custom);
+	}
+
 	//static $filters = array( '' =>);
 	public static function uword($field, $default='', $custom=''){
-
 		$source = self::getVar($field,$default);
- 		if(function_exists('mb_ereg_replace')){
- 			//$source is string that will be filtered, $custom is string that contains custom characters
- 			return mb_ereg_replace('[^\w'.preg_quote($custom).']', '', $source);
- 		} else {
- 			//return preg_replace('/[^\w'.preg_quote($custom).']/', '', $source);	//creates error Warning: preg_replace(): Unknown modifier ']'
+		return self::filterUword($source,$custom);
+	}
+
+	public static function filterUword($source, $custom,$replace=''){
+
+
+		if(function_exists('mb_ereg_replace')){
+			//$source is string that will be filtered, $custom is string that contains custom characters
+			return mb_ereg_replace('[^\w'.preg_quote($custom).']', $replace, $source);
+		} else {
+			//return preg_replace('/[^\w'.preg_quote($custom).']/', '', $source);	//creates error Warning: preg_replace(): Unknown modifier ']'
 			//return preg_replace('/([^\w'.preg_quote($custom).'])/', '', $source);	//Warning: preg_replace(): Unknown modifier ']'
 			//return preg_replace("[^\w".preg_quote($custom)."]", '', $source);	//This seems to work even there is no seperator, the change is just the use of " instead '
-			return preg_replace("~[^\w".preg_quote($custom,'~')."]~", '', $source);	//We use Tilde as separator, and give the preq_quote function the used separator
- 		}
- 	}
+			return preg_replace("~[^\w".preg_quote($custom,'~')."]~", $replace, $source);	//We use Tilde as separator, and give the preq_quote function the used separator
+		}
+	}
+
+
 
 	public static function getBool($name, $default = 0){
 		$tmp = self::get($name, $default, FILTER_SANITIZE_NUMBER_INT);

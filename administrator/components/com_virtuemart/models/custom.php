@@ -230,5 +230,28 @@ class VirtueMartModelCustom extends VmModel {
 	}
 
 
+	/**
+	 * Delete all record ids selected
+	 *
+	 * @author Max Milbers
+	 * @return boolean True is the delete was successful, false otherwise.
+	 */
+	public function remove($ids) {
+
+		$table = $this->getTable($this->_maintablename);
+		foreach($ids as $id) {
+			if (!$table->delete((int)$id)) {
+				vmError(get_class( $this ).'::remove '.$id.' '.$table->getError());
+				return false;
+			} else {
+				//Delete this customfield also in all product_customfield tables
+
+
+			}
+		}
+
+		return true;
+	}
+
 }
 // pure php no closing tag
