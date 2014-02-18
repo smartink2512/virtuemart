@@ -330,7 +330,33 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			if($sample) $model->installSampleData($sid);
 			
 			VmConfig::installVMconfig();
-			//$this->setDangerousToolsOff();
+
+			//Now lets set some joomla variables
+			//Caching should be enabled, set to files and for 15 minutes
+			if (!class_exists( 'ConfigModelApplication' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_config'.DS.'models'.DS.'application.php');
+			$jConfModel = new ConfigModelApplication();
+			$jConfig = $jConfModel->getData();
+
+			$jConfig['caching'] = 1;
+			$jConfig['lifetime'] = 60;
+			$jConfig['list_limit'] = 25;
+			$jConfig['MetaDesc'] = 'VirtueMart works with Joomla! - the dynamic portal engine and content management system';
+			$jConfig['MetaKeys'] = 'virtuemart, vm2, joomla, Joomla';
+
+			$app = JFactory::getApplication();
+			$return = $jConfModel->save($jConfig);
+
+			// Check the return value.
+			if ($return === false) {
+				// Save the data in the session.
+				$app->setUserState('com_config.config.global.data', $jConfig);
+				vmError(vmText::sprintf('JERROR_SAVE_FAILED', $model->getError()));
+				//return false;
+			} else {
+				// Set the success message.
+				vmInfo('COM_CONFIG_SAVE_SUCCESS');
+			}
+
 		}else {
 			$msg = $this->_getMsgDangerousTools();
 		}

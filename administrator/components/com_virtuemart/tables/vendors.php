@@ -117,7 +117,7 @@ class TableVendors extends VmTableData {
 		    				'vendor_letter_footer_cell_height_ratio'=>array(1,'float'),
 		    				
 		    				'vendor_letter_add_tos' => array(0,'int'),
-		    				'vendor_letter_add_tos_newpage' => array(1,'int'),
+		    				'vendor_letter_add_tos_newpage' => array(1,'int')
 		    			);
 
 		$this->setParameterable('vendor_params',$varsToPushParam);

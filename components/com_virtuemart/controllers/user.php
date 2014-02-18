@@ -199,7 +199,7 @@ class VirtueMartControllerUser extends JController
 
 			if(!$cart){
 				// Store multiple selectlist entries as a ; separated string
-				if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
+				if (array_key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 					$data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 				}
 

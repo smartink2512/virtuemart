@@ -652,7 +652,7 @@ class VmTable extends JTable {
 			$this->$slugName = vmRequest::filterUword($this->$slugName,'-,_,.,|','-');
 			// Trim dashes at beginning and end of alias
 			$this->$slugName = trim($this->$slugName, '-');
-			vmdebug('my slug',$this->slugName);
+
 			$valid = $this->checkCreateUnique($checkTable, $slugName);
 			//vmdebug('my slugName '.$slugName,$this->slugName);
 			if (!$valid) {

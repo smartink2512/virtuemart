@@ -1411,7 +1411,7 @@ function removeAddress($virtuemart_userinfo_id){
 				//We must validate if the userfields actually exists, they could be removed
 				$userFieldsValid = array();
 				foreach($userFieldSearchArray as $ufield){
-					if(key_exists($ufield,$userfieldFields)){
+					if(array_key_exists($ufield,$userfieldFields)){
 						$userFieldsValid[] = $ufield;
 					}
 				}

@@ -181,8 +181,8 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	// Don't change this company name; it's used in install_sample_data.sql
 	$fields['company'] =  "Sample Company";
 	$fields['title'] =  'Mr';
-	$fields['last_name'] =  'Jakobson';
-	$fields['first_name'] =  'Jonas';
+	$fields['last_name'] =  'John';
+	$fields['first_name'] =  'Doe';
 	$fields['middle_name'] =  '';
 	$fields['phone_1'] =  '555-555-555';
 	$fields['address_1'] =  'PO Box 123';
@@ -196,7 +196,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['virtuemart_vendor_id'] = '1';
 	$fields['vendor_name'] =  'Sample Company';
 	$fields['vendor_phone'] =  '555-555-1212';
-	$fields['vendor_store_name'] =  "VM2 Sample store";
+	$fields['vendor_store_name'] =  "VirtueMart 2 Sample store";
 	$fields['vendor_store_desc'] =  '<p>We have the best clothing for up-to-date people. Check it out!</p> <p>We were established in 1869 in a time when getting good clothes was expensive, but the quality was good. Now that only a select few of those authentic clothes survive, we have dedicated this store to bringing the experience alive for collectors and master carrier everywhere.</p> <p>You can easily find products selecting the category you would like to browse above.</p>';
 	$fields['virtuemart_media_id'] =  1;
 	$fields['vendor_currency'] = '47';

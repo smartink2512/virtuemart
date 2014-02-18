@@ -85,6 +85,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 */
 		public function preflight ($type, $parent=null) {
 
+			//We want disable the redirect in the installation process
+			$_REQUEST['install'] = 1;
 			if(version_compare(JVERSION,'1.6.0','ge')) {
 
 				$q = 'DELETE FROM `#__menu` WHERE `menutype` = "main" AND
@@ -597,20 +599,24 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * @param object JInstallerComponent parent
 		 */
 		public function postflight ($type, $parent=null) {
+
+			//We want disable the redirect in the installation process
+
 			if ($type != 'uninstall') {
 
 				$this->loadVm();
 				// 				VmConfig::loadConfig(true);
-				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'config.php');
+				//if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'config.php');
 				$res  = VirtueMartModelConfig::checkConfigTableExists();
 
-				if(!empty($res)){
+				//if($res){
 					JRequest::setVar(JUtility::getToken(), '1', 'post');
 					$config = JModel::getInstance('config', 'VirtueMartModel');
 					$config->setDangerousToolsOff();
-				}
+				//}
 
 			}
+			$_REQUEST['install'] = 0;
 
 			//Test if vm1.1 is installed and rename file to avoid conflicts
 			if(JFile::exists(JPATH_VM_ADMINISTRATOR.DS.'toolbar.php')){

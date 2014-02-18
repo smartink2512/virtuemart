@@ -309,6 +309,10 @@ class VirtueMartModelConfig extends JModel {
 
 		$config = VmConfig::loadConfig(TRUE);
 
+		if(!self::checkConfigTableExists()){
+			VmConfig::installVMconfig(false);
+		}
+
 		$browse_cat_orderby_field = $config->get('browse_cat_orderby_field');
 		$cat_brws_orderby_dir = $config->get('cat_brws_orderby_dir');
 
@@ -472,20 +476,19 @@ class VirtueMartModelConfig extends JModel {
 	 */
 	function setDangerousToolsOff(){
 
-// 		VmConfig::loadConfig(true);
-		$dangerousTools = VmConfig::readConfigFile(true);
-
-		if( $dangerousTools){
-			$uri = JFactory::getURI();
-			$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
-			$lang = JText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_STILL_ENABLED',JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'),$link);
-			VmInfo($lang);
-		} else {
-			$data['dangeroustools'] = 0;
-			$data['virtuemart_config_id'] = 1;
-			$this->store($data);
+		if(self::checkConfigTableExists()){
+			$dangerousTools = VmConfig::readConfigFile(true);
+			if( $dangerousTools){
+				$uri = JFactory::getURI();
+				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
+				$lang = JText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_STILL_ENABLED',JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'),$link);
+				VmInfo($lang);
+			} else {
+				$data['dangeroustools'] = 0;
+				$data['virtuemart_config_id'] = 1;
+				$this->store($data);
+			}
 		}
-
 	}
 
 	public function remove() {
