@@ -668,6 +668,9 @@ class VirtueMartModelUser extends VmModel {
 					vmInfo('COM_VIRTUEMART_REG_COMPLETE_ACTIVATE');
 				} else {
 					vmInfo('COM_VIRTUEMART_REG_COMPLETE');
+					$user->set('activation', '' );
+					$user->set('block', '0');
+					$user->set('guest', '0');
 				}
 			} else {
 				vmInfo('COM_VIRTUEMART_USER_DATA_STORED');

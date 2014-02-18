@@ -269,14 +269,6 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 						$data['access'] = 1;
 						$tableName = '#__extensions';
 						$idfield = 'extension_id';
-					} elseif (version_compare (JVERSION, '1.6.0', 'ge')) {
-
-						// Joomla! 1.6 code here
-						$table = JTable::getInstance ('extension');
-						$data['enabled'] = $published;
-						$data['access'] = 1;
-						$tableName = '#__extensions';
-						$idfield = 'extension_id';
 					} else {
 
 						// Joomla! 1.5 code here
