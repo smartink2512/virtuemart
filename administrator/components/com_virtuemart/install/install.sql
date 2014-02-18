@@ -849,7 +849,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields' AUTO_INCREMENT=1 ;
 
 
-
 -- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_product_medias`

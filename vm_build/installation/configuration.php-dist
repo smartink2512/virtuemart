@@ -25,7 +25,7 @@ class JConfig {
 	public $sitename = 'Joomla!';				// Name of Joomla site
 	public $editor = 'tinymce';
 	public $captcha = '0';
-	public $list_limit = '20';
+	public $list_limit = '25';
 	public $root_user = '42';
 	public $access = '1';
 
@@ -71,8 +71,8 @@ class JConfig {
 	public $smtphost = 'localhost';
 
 	/* Cache Settings */
-	public $caching = '0';
-	public $cachetime = '15';
+	public $caching = '1';
+	public $cachetime = '60';
 	public $cache_handler = 'file';
 
 	/* Debug Settings */
@@ -80,8 +80,8 @@ class JConfig {
 	public $debug_lang = '0';
 
 	/* Meta Settings */
-	public $MetaDesc = 'Joomla! - the dynamic portal engine and content management system';
-	public $MetaKeys = 'joomla, Joomla';
+	public $MetaDesc = 'VirtueMart works with Joomla! - the dynamic portal engine and content management system';
+	public $MetaKeys = 'virtuemart, vm2, joomla, Joomla';
 	public $MetaTitle = '1';
 	public $MetaAuthor = '1';
 	public $MetaVersion = '0';

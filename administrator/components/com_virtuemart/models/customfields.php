@@ -503,7 +503,6 @@ class VirtueMartModelCustomfields extends VmModel {
 							vmdebug($customfield->virtuemart_product_id.' Set selected to $customfield->virtuemart_product_id ',$selected,$product->allIds);
 						}
 					}
-					//vmdebug('muh',$customfield->virtuemart_product_id, $product->allIds,$selected);
 
 					$html .= JHtml::_ ('select.genericlist', $options, $fieldname, 'onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="inputbox"', "value", "text",
 						JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $virtuemart_category_id . '&virtuemart_product_id=' . $selected));

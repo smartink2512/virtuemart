@@ -37,14 +37,14 @@ $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=inst
 <div id="cpanel">
 	<table  >
 
-<div class="icon"><a onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH_CONFIRM_JS'); ?>)', '<?php echo $link; ?>');">
+<div class="icon"><a onclick="javascript:confirmation('<?php echo $link; ?>');">
 		<span class="vmicon48"></span>
 		<br /><?php echo JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>
 
 	</a></div>
 
 <?php	$link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installCompleteSamples&'.JUtility::getToken().'=1&token='.JUtility::getToken() .'&install=1'); ?>
-	<div class="icon"><a onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_SAMPLE_CONFIRM_JS'); ?>)', '<?php echo $link; ?>');">
+	<div class="icon"><a onclick="javascript:confirmation('<?php echo $link; ?>');">
 			<span class="vmicon48"></span>
 			<br /><?php echo JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_SAMPLE'); ?>
 
@@ -56,10 +56,7 @@ AdminUIHelper::endAdminArea();
 <script type="text/javascript">
 <!--
 function confirmation(message, destnUrl) {
-	var answer = confirm(message);
-	//if (answer) {
 		window.location = destnUrl;
-	//}
 }
 //-->
 </script>

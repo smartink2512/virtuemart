@@ -1134,6 +1134,9 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	static function getAmountInCurrency($amount, $currencyId){
 		$return = array();
+		if (!class_exists ('CurrencyDisplay')) {
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+		}
 		$paymentCurrency = CurrencyDisplay::getInstance($currencyId);
 
 		$return['value'] = $paymentCurrency->roundForDisplay($amount,$currencyId,1.0,false,2);

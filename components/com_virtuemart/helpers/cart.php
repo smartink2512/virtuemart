@@ -742,14 +742,18 @@ class VirtueMartCart {
 
 		$validUserDataCart = self::validateUserData('cartfields');
 		vmdebug('CheckoutData my cart ',$validUserDataBT,$validUserDataCart);
-		if($validUserDataCart!==true and $validUserDataBT!==true and $redirect){
-			$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
-			vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
-			return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
+		if($validUserDataCart!==true and $validUserDataBT!==true){
+			if($redirect){
+				$redirectMsg = null;// JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+				vmInfo('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS','COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
+				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
+			}
+		} else {
+			//Atm a bit dirty. We store this information in the BT order_userinfo, so we merge it here, it gives also
+			// the advantage, that plugins can easily deal with it.
+			$this->BT = array_merge($this->BT,$this->cartfields);
 		}
-		//Atm a bit dirty. We store this information in the BT order_userinfo, so we merge it here, it gives also
-		// the advantage, that plugins can easily deal with it.
-		$this->BT = array_merge($this->BT,$this->cartfields);
+
 
 		if (($this->selected_shipto = VmRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');

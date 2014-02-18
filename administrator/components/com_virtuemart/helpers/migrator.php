@@ -569,7 +569,7 @@ class Migrator extends VmModel{
 		}
 
 		$JUserString = '`p`.`'.implode('`,`p`.`',$jUserArray).'`';
-		//vmdebug('muhh',$JUserString);
+
 		//$continue=false;
 
 		/*$q = 'SELECT * FROM `#__vm_auth_group` ';

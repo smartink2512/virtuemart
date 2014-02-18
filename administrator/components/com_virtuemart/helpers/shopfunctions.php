@@ -1022,27 +1022,38 @@ class ShopFunctions {
 	 * @param string $selected_item The pre-selected value
 	 *
 	 */
-	static function listMonths ($list_name, $selected = FALSE, $attr = '') {
+	static function listMonths ($list_name, $selected = FALSE, $attr = '', $format='F') {
 
 		$options = array();
 		if (!$selected) {
 			$selected = date ('m');
 		}
+		$months=array(
+			"01"=>JText::_ ('JANUARY'),
+			"02"=>JText::_ ('FEBRUARY'),
+			"03"=>JText::_ ('MARCH'),
+			"04"=>JText::_ ('APRIL'),
+			"05"=>JText::_ ('MAY'),
+			"06"=>JText::_ ('JUNE'),
+			"07"=>JText::_ ('JULY'),
+			"08"=>JText::_ ('AUGUST'),
+			"09"=>JText::_ ('SEPTEMBER'),
+			"10"=>JText::_ ('OCTOBER'),
+			"11"=>JText::_ ('NOVEMBER'),
+			"12"=>JText::_ ('DECEMBER')
+		);
 
-		$options[] = JHtml::_ ('select.option', 0, vmText::_ ('MONTH'));
-		$options[] = JHtml::_ ('select.option', "01", vmText::_ ('JANUARY'));
-		$options[] = JHtml::_ ('select.option', "02", vmText::_ ('FEBRUARY'));
-		$options[] = JHtml::_ ('select.option', "03", vmText::_ ('MARCH'));
-		$options[] = JHtml::_ ('select.option', "04", vmText::_ ('APRIL'));
-		$options[] = JHtml::_ ('select.option', "05", vmText::_ ('MAY'));
-		$options[] = JHtml::_ ('select.option', "06", vmText::_ ('JUNE'));
-		$options[] = JHtml::_ ('select.option', "07", vmText::_ ('JULY'));
-		$options[] = JHtml::_ ('select.option', "08", vmText::_ ('AUGUST'));
-		$options[] = JHtml::_ ('select.option', "09", vmText::_ ('SEPTEMBER'));
-		$options[] = JHtml::_ ('select.option', "10", vmText::_ ('OCTOBER'));
-		$options[] = JHtml::_ ('select.option', "11", vmText::_ ('NOVEMBER'));
-		$options[] = JHtml::_ ('select.option', "12", vmText::_ ('DECEMBER'));
-		return JHtml::_ ('select.genericlist', $options, $list_name, $attr, 'value', 'text', $selected);
+		$options[] = JHTML::_ ('select.option', 0, JText::_ ('MONTH'));
+		foreach($months as  $key => $value) {
+			if ($format=='F') {
+				$text=$value;
+			} else {
+				$text=$key;
+			}
+			$options[] = JHTML::_ ('select.option',$key, $text);
+		}
+
+		return JHTML::_ ('select.genericlist', $options, $list_name, $attr, 'value', 'text', $selected);
 
 	}
 
