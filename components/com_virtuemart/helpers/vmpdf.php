@@ -106,27 +106,21 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 					$this->vendorImage=$imagePath;
 				}
 			}
-			// Generate PDF header
+
 			if (!class_exists ('JFile')) {
 				require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
 			}
 			$tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_color.php');
 			if($tcpdf6){
-				$getAllSpotColors = TCPDF::getAllSpotColors();
-				$vlfooterlcolor = TCPDF_COLORS::convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color,$getAllSpotColors);
+				$vlfooterlcolor = TCPDF_COLORS::convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color);
 			} else {
 				$vlfooterlcolor = $this->convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color);
 			}
-			//Image included
-			$this->setHeaderData(
-				'',
-				0,
-				'',
-				$this->vendor->vendor_letter_header_html,
-				array(0,0,0),
-				$vlfooterlcolor
-			);
 
+			$this->setHeaderData(($this->vendor->vendor_letter_header_image?$this->vendorImage:''),
+					     ($this->vendor->vendor_letter_header_image?$this->vendor->vendor_letter_header_imagesize:0), 
+					     '', $this->vendor->vendor_letter_header_html,
+					     array(0,0,0),$vlfooterlcolor );
 			$this->vendorAddress = shopFunctions::renderVendorAddress($this->vendor->virtuemart_vendor_id, "<br/>");
 			// Trim the final <br/> from the address, which is inserted by renderVendorAddress automatically!
 			if (substr($this->vendorAddress, -5, 5) == '<br/>') {
@@ -148,20 +142,14 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 				'table' => array(0 => array('h' => 0, 'n' => 0), 1 => array('h' => 0, 'n' => 0)),
 				);
 			$this->setHtmlVSpace($tagvs);
-
+			
 			// set default font subsetting mode
 			$this->setFontSubsetting(true);
 			// set default monospaced font
 // 			$this->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 			//set margins
-			if($this->vendor->vendor_letter_header === "1" && (!empty($this->vendor->vendor_letter_header_html) || $this->vendor->vendor_letter_header_image === "1"))
-			{
-				$this->SetMargins($this->vendor->vendor_letter_margin_left, $this->vendor->vendor_letter_margin_top, $this->vendor->vendor_letter_margin_right);	
-			} else {
-				// Do not add top margin if header is disabled or empty
-				$this->SetMargins($this->vendor->vendor_letter_margin_left, $this->vendor->vendor_letter_margin_header, $this->vendor->vendor_letter_margin_right);
-			}
+			$this->SetMargins($this->vendor->vendor_letter_margin_left, $this->vendor->vendor_letter_margin_top, $this->vendor->vendor_letter_margin_right);
 			$this->SetHeaderMargin($this->vendor->vendor_letter_margin_header);
 			$this->SetFooterMargin($this->vendor->vendor_letter_margin_footer);
 			$this->SetAutoPageBreak(TRUE, $this->vendor->vendor_letter_margin_bottom);
@@ -211,18 +199,18 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 
 				$currentCHRF = $this->getCellHeightRatio();
 				$this->setCellHeightRatio($this->vendor->vendor_letter_footer_cell_height_ratio);
-			
-			
+
+
 				if (!class_exists ('JFile')) {
 					require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'filesystem' . DS . 'file.php');
 				}
 				$tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_color.php');
 				if($tcpdf6){
-					$getAllSpotColors = TCPDF::getAllSpotColors();
-					$vlfooterlcolor = TCPDF_COLORS::convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color,$getAllSpotColors);
+					$vlfooterlcolor = TCPDF_COLORS::convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color);
 				} else {
 					$vlfooterlcolor = $this->convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color);
 				}
+
 				//set style for cell border
 				$border = 0;
 				if ($this->vendor->vendor_letter_footer_line == 1) {

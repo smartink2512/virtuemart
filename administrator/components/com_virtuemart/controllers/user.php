@@ -6,7 +6,6 @@
 * @package	VirtueMart
 * @subpackage User
 * @author Oscar van Eijk
-* @author Yagendoo Media Team
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -83,8 +82,7 @@ class VirtuemartControllerUser extends VmController {
 	/**
 	 * Handle the save task
 	 * Checks already in the controller the rights todo so and sets the data by filtering the post
-	 * 
-	 * @author Yagendoo Media Team
+	 *
 	 * @author Max Milbers
 	 */
 	function save($data = 0){
@@ -115,11 +113,6 @@ class VirtuemartControllerUser extends VmController {
 			$data['vendor_letter_css'] = JRequest::getVar('vendor_letter_css','','post','STRING',JREQUEST_ALLOWHTML);
 			$data['vendor_letter_header_html'] = JRequest::getVar('vendor_letter_header_html','','post','STRING',JREQUEST_ALLOWHTML);
 			$data['vendor_letter_footer_html'] = JRequest::getVar('vendor_letter_footer_html','','post','STRING',JREQUEST_ALLOWHTML);
-			$data['vendor_invoice_free1'] = JRequest::getVar('vendor_invoice_free1','','post','STRING',JREQUEST_ALLOWHTML);
-			$data['vendor_invoice_free2'] = JRequest::getVar('vendor_invoice_free2','','post','STRING',JREQUEST_ALLOWHTML);
-			$data['vendor_mail_free1'] = JRequest::getVar('vendor_mail_free1','','post','STRING',JREQUEST_ALLOWHTML);
-			$data['vendor_mail_free2'] = JRequest::getVar('vendor_mail_free2','','post','STRING',JREQUEST_ALLOWHTML);
-			$data['vendor_mail_css'] = JRequest::getVar('vendor_mail_css','','post','STRING',JREQUEST_ALLOWHTML);
 
 			$ret=$model->store($data);
 			if(!$ret){
@@ -127,6 +120,7 @@ class VirtuemartControllerUser extends VmController {
 			} else {
 				$msg = $ret['message'];
 			}
+
 		}
 		$cmd = JRequest::getCmd('task');
 		$lastTask = JRequest::getWord('last_task');
