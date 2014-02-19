@@ -131,8 +131,20 @@ class VirtueMartViewCart extends VmView {
 				$checkout_task = 'checkout';
 			}
 			$this->assignRef('checkout_task', $checkout_task);
-			$this->checkPaymentMethodsConfigured();
-			$this->checkShipmentMethodsConfigured();
+
+
+
+			if (VmConfig::get('oncheckout_opc', 1)) {
+				if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+				JPluginHelper::importPlugin('vmshipment');
+				JPluginHelper::importPlugin('vmpayment');
+				$this->lSelectShipment();
+				$this->lSelectPayment();
+			} else {
+				$this->checkPaymentMethodsConfigured();
+				$this->checkShipmentMethodsConfigured();
+			}
+
 			if ($cart->virtuemart_shipmentmethod_id) {
 				$shippingText =  JText::_('COM_VIRTUEMART_CART_CHANGE_SHIPPING');
 			} else {
@@ -146,15 +158,6 @@ class VirtueMartViewCart extends VmView {
 				$paymentText = JText::_('COM_VIRTUEMART_CART_EDIT_PAYMENT');
 			}
 			$this->assignRef('select_payment_text', $paymentText);
-
-			if (VmConfig::get('oncheckout_opc', 1)) {
-				if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-				JPluginHelper::importPlugin('vmshipment');
-				JPluginHelper::importPlugin('vmpayment');
-				$this->lSelectShipment();
-				$this->lSelectPayment();
-			}
-
 
 			if (!VmConfig::get('use_as_catalog')) {
 				$checkout_link_html = '<a name="'.$checkout_task.'" class="vm-button-correct" href="javascript:document.checkoutForm.submit();" ><span>' . $text . '</span></a>';
@@ -238,12 +241,15 @@ class VirtueMartViewCart extends VmView {
 		$found_shipment_method =count($shipments_shipment_rates);
 		if ($found_shipment_method== 0 AND empty($this->cart->BT))  {
 			$redirectMsg = JText::_('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST');
+			$this->cart->setShipment(0);
 			if (VmConfig::get('oncheckout_opc', 1)) {
 				vmInfo($redirectMsg);
 			} else {
 				$mainframe = JFactory::getApplication();
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $redirectMsg);
 			}
+		} else {
+
 		}
 		$shipment_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');
 		$this->assignRef('shipment_not_found_text', $shipment_not_found_text);
@@ -262,27 +268,42 @@ class VirtueMartViewCart extends VmView {
 	private function lSelectPayment() {
 
 		$payment_not_found_text='';
-		$payments_payment_rates=array();
-		if (!$this->checkPaymentMethodsConfigured()) {
-			$this->assignRef('paymentplugins_payments', $payments_payment_rates);
-			$this->assignRef('found_payment_method', $found_payment_method);
-		}
-
-		$selectedPayment = empty($this->cart->virtuemart_paymentmethod_id) ? 0 : $this->cart->virtuemart_paymentmethod_id;
-
+		$this->assignRef('payment_not_found_text', $payment_not_found_text);
 		$paymentplugins_payments = array();
-		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmDisplayListFEPayment', array($this->cart, $selectedPayment, &$paymentplugins_payments));
-		// if no payment defined
-		$found_payment_method =count($paymentplugins_payments);
+		$this->assignRef('paymentplugins_payments', $paymentplugins_payments);
+		if (!$found_payment_method = $this->checkPaymentMethodsConfigured()) {
 
+			//return false;
+		} else {
+			$selectedPayment = empty($this->cart->virtuemart_paymentmethod_id) ? 0 : $this->cart->virtuemart_paymentmethod_id;
+
+			if(empty($selectedPayment)){
+				if(is_array($this->payments)){
+					if(isset($this->payments[0])){
+						vmdebug('hmmm',$selectedPayment,$this->payments);
+						$this->cart->setPaymentMethod($this->payments[0]->virtuemart_paymentmethod_id);
+						$selectedPayment = $this->payments[0]->virtuemart_paymentmethod_id;
+					}
+				}
+			}
+
+			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+			JPluginHelper::importPlugin('vmpayment');
+			$dispatcher = JDispatcher::getInstance();
+			$returnValues = $dispatcher->trigger('plgVmDisplayListFEPayment', array($this->cart, $selectedPayment, &$paymentplugins_payments));
+			// if no payment defined
+			$found_payment_method =count($paymentplugins_payments);
+		}
+		$this->assignRef('found_payment_method', $found_payment_method);
 		if (!$found_payment_method) {
 			$link=''; // todo
 			$payment_not_found_text = JText::sprintf('COM_VIRTUEMART_CART_NO_PAYMENT_METHOD_PUBLIC', '<a href="'.$link.'" rel="nofollow" >'.$link.'</a>');
+			$this->assignRef('payment_not_found_text', $payment_not_found_text);
+			$this->cart->setPaymentMethod(0);
 		}
-		if ($found_payment_method== 0 AND empty($this->cart->BT))  {
+
+		else if ($found_payment_method== 0 AND empty($this->cart->BT))  {
+
 			$redirectMsg = JText::_('COM_VIRTUEMART_CART_ENTER_ADDRESS_FIRST');
 			if (VmConfig::get('oncheckout_opc', 1)) {
 				vmInfo($redirectMsg);
@@ -291,10 +312,11 @@ class VirtueMartViewCart extends VmView {
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $redirectMsg);
 			}
 
+		} else {
+
+
 		}
-		$this->assignRef('payment_not_found_text', $payment_not_found_text);
-		$this->assignRef('paymentplugins_payments', $paymentplugins_payments);
-		$this->assignRef('found_payment_method', $found_payment_method);
+
 	}
 
 	private function getTotalInPaymentCurrency() {
@@ -341,8 +363,9 @@ class VirtueMartViewCart extends VmView {
 
 		//For the selection of the payment method we need the total amount to pay.
 		$paymentModel = VmModel::getModel('Paymentmethod');
-		$payments = $paymentModel->getPayments(true, false);
-		if (empty($payments)) {
+		$this->payments = $paymentModel->getPayments(true, false);
+		//vmdebug('checkPaymentMethodsConfigured',$this->payments);
+		if (empty($this->payments)) {
 
 			$text = '';
 			if (!class_exists('Permissions'))
@@ -357,7 +380,7 @@ class VirtueMartViewCart extends VmView {
 
 			$tmp = 0;
 			$this->assignRef('found_payment_method', $tmp);
-
+			$this->cart->virtuemart_paymentmethod_id = 0;
 			return false;
 		}
 		return true;
@@ -368,6 +391,7 @@ class VirtueMartViewCart extends VmView {
 		//For the selection of the shipment method we need the total amount to pay.
 		$shipmentModel = VmModel::getModel('Shipmentmethod');
 		$shipments = $shipmentModel->getShipments();
+		//vmdebug('checkShipmentMethodsConfigured',$shipments);
 		if (empty($shipments)) {
 
 			$text = '';
@@ -383,7 +407,7 @@ class VirtueMartViewCart extends VmView {
 
 			$tmp = 0;
 			$this->assignRef('found_shipment_method', $tmp);
-
+			$this->cart->virtuemart_shipmentmethod_id = 0;
 			return false;
 		}
 		return true;

@@ -692,7 +692,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		if ($this->memory_limit<$mem = round(memory_get_usage(FALSE)/(1024*1024),2)) {
 			vmdebug ('Memory limit reached in model product getProduct('.$virtuemart_product_id.'), $customfields= '.$customfields.' consumed: '.$mem.'M');
-			vmError ('Memory limit reached in model product getProduct() ' . $virtuemart_product_id);
+			vmError ('Memory limit '.$this->memory_limit.' reached in model product getProduct() ' . $virtuemart_product_id. ' tried to allocate '.$mem);
 			return false;
 		}
 		$child = $this->getProductSingle ($virtuemart_product_id, $front,$quantity,$customfields,$virtuemart_shoppergroup_ids);

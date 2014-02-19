@@ -112,7 +112,8 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 			}
 			$tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_color.php');
 			if($tcpdf6){
-				$vlfooterlcolor = TCPDF_COLORS::convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color);
+				$getAllSpotColors = TCPDF::getAllSpotColors();
+				$vlfooterlcolor = TCPDF_COLORS::convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color,$getAllSpotColors);
 			} else {
 				$vlfooterlcolor = $this->convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color);
 			}
@@ -149,7 +150,7 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 // 			$this->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 			//set margins
-			$this->SetMargins($this->vendor->vendor_letter_margin_left, $this->vendor->vendor_letter_margin_top, $this->vendor->vendor_letter_margin_right);
+			$this->SetMargins($this->vendor->vendor_letter_margin_left, $this->vendor->vendor_letter_margin_top, $this->vendor->vendor_letter_margin_right);	
 			$this->SetHeaderMargin($this->vendor->vendor_letter_margin_header);
 			$this->SetFooterMargin($this->vendor->vendor_letter_margin_footer);
 			$this->SetAutoPageBreak(TRUE, $this->vendor->vendor_letter_margin_bottom);
@@ -206,7 +207,8 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 				}
 				$tcpdf6 = JFile::exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'include'.DS.'tcpdf_color.php');
 				if($tcpdf6){
-					$vlfooterlcolor = TCPDF_COLORS::convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color);
+					$getAllSpotColors = TCPDF::getAllSpotColors();
+					$vlfooterlcolor = TCPDF_COLORS::convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color,$getAllSpotColors);
 				} else {
 					$vlfooterlcolor = $this->convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color);
 				}

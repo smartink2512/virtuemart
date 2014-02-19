@@ -354,7 +354,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 				//return false;
 			} else {
 				// Set the success message.
-				vmInfo('COM_CONFIG_SAVE_SUCCESS');
+				//vmInfo('COM_CONFIG_SAVE_SUCCESS');
 			}
 
 		}else {

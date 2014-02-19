@@ -142,6 +142,9 @@ class VirtueMartModelPaymentmethod extends VmModel{
     public function store(&$data)
 	{
 
+		if(is_object($data)){
+			$data = (array)$data;
+		}
 		if(!empty($data['params'])){
 			foreach($data['params'] as $k=>$v){
 				$data[$k] = $v;
@@ -261,6 +264,24 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
 	}
 
+	/**
+	 * Creates a clone of a given shipmentmethod id
+	 *
+	 * @author Valérie Isaksen
+	 * @param int $virtuemart_shipmentmethod_id
+	 */
 
+	public function createClone ($id) {
+
+		$this->setId ($id);
+		$payment = $this->getPayment ();
+		$payment->virtuemart_paymentmethod_id = 0;
+		$payment->payment_name = $payment->payment_name.' Copy';
+
+		if (!$clone = $this->store($payment)) {
+			vmError( 'createClone '. $payment->getError() );
+		}
+		return $clone;
+	}
 
 }

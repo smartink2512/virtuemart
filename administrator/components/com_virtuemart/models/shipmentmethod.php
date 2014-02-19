@@ -208,6 +208,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 
 		return $table->virtuemart_shipmentmethod_id;
 	}
+
 	/**
 	 * Creates a clone of a given shipmentmethod id
 	 *
@@ -217,16 +218,16 @@ class VirtueMartModelShipmentmethod extends VmModel {
 
 	public function createClone ($id) {
 
-		//	if (is_array($cids)) $cids = array($cids);
 		$this->setId ($id);
 		$shipment = $this->getShipment ();
 		$shipment->virtuemart_shipmentmethod_id = 0;
 		$shipment->shipment_name = $shipment->shipment_name.' Copy';
 		if (!$clone = $this->store($shipment)) {
-			JError::raiseError(500, 'createClone '. $shipment->getError() );
+			vmError( 'createClone '. $shipment->getError() );
 		}
 		return $clone;
 	}
+
 }
 
 //no closing tag
