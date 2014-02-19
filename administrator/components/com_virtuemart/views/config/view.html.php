@@ -94,6 +94,7 @@ class VirtuemartViewConfig extends VmView {
 		VmModel::getModel('category');
 
 		foreach (VirtueMartModelCategory::$_validOrderingFields as $key => $field ) {
+			if($field=='c.category_shared') continue;
 			$fieldWithoutPrefix = $field;
 			$dotps = strrpos($fieldWithoutPrefix, '.');
 			if($dotps!==false){

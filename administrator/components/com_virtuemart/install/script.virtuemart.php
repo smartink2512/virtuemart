@@ -257,6 +257,12 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->fixOrdersVendorId();
 
 			$this->fixConfigValues();
+
+			//copy sampel media
+			$src = $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampleimages';
+			$dst = JPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
+			$this->recurse_copy($src,$dst);
+
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
