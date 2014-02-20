@@ -21,11 +21,19 @@
 defined('_JEXEC') or die('Restricted access');
 JHtml::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/assets/css/');
 if ($this->_layout == "invoice") {
-    $document = JFactory::getDocument();
-    $document->setTitle(vmText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') . ' ' . $this->orderDetails['details']['BT']->order_number . ' ' . $this->vendor->vendor_store_name);
-//$document->setName( vmText::_('COM_VIRTUEMART_ACC_ORDER_INFO').' '.$this->orderDetails['details']['BT']->order_number);
-//$document->setDescription( vmText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER').' '.$this->orderDetails['details']['BT']->order_number);
+	$document = JFactory::getDocument();
+	$document->setTitle(vmText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') . ' ' . $this->orderDetails['details']['BT']->order_number . ' ' . $this->vendor->vendor_store_name);
 }
+
+$vendorCompanyName = (!empty($this->vendor->vendorFields["fields"]["company"]["value"])) ? $this->vendor->vendorFields["fields"]["company"]["value"] : $this->vendor->vendor_store_name;
+
+if(!empty($this->vendor->vendor_letter_css)) { ?>
+	<style type="text/css">
+		<?php echo $this->vendor->vendor_letter_css; ?>
+	</style>
+<?php }
+
+$this->vendor->vendor_letter_header_image;
 
 if ($this->headFooter) {
     ?>

@@ -54,6 +54,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmcustom');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
 			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmshipment');
+			$this->createIndexFolder (JPATH_ROOT . DS . 'plugins' . DS . 'vmuserfield');
 
 			if(empty($dontMove)){
 				$this->path = JInstaller::getInstance ()->getPath ('extension_administrator');
@@ -63,29 +64,30 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			$this->dontMove = $dontMove;
 
 			$this->updateShipperToShipment ();
-			$this->installPlugin ('Standard', 'plugin', 'standard', 'vmpayment');
-			$this->installPlugin ('Klarna', 'plugin', 'klarna', 'vmpayment');
-			$this->installPlugin ('KlarnaCheckout', 'plugin', 'klarnacheckout', 'vmpayment');
-			$this->installPlugin ('Sofort Banking/Überweisung', 'plugin', 'sofort', 'vmpayment');
-			$this->installPlugin ('PayPal', 'plugin', 'paypal', 'vmpayment');
-			$this->installPlugin ('Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
+			$this->installPlugin ('VM Payment - Standard', 'plugin', 'standard', 'vmpayment',1);
+			$this->installPlugin ('VM Payment - Klarna', 'plugin', 'klarna', 'vmpayment');
+			$this->installPlugin ('VM Payment - KlarnaCheckout', 'plugin', 'klarnacheckout', 'vmpayment');
+			$this->installPlugin ('VM Payment - Sofort Banking/Überweisung', 'plugin', 'sofort', 'vmpayment');
+			$this->installPlugin ('VM Payment - PayPal', 'plugin', 'paypal', 'vmpayment');
+			$this->installPlugin ('VM Payment - Heidelpay', 'plugin', 'heidelpay', 'vmpayment');
+			$this->installPlugin ('VM Payment - Realex', 'plugin', 'realex', 'vmpayment');
 			//$this->installPlugin ('PayZen', 'plugin', 'payzen', 'vmpayment');
 			//$this->installPlugin ('SystemPay', 'plugin', 'systempay', 'vmpayment');
 			$this->installPlugin ('Skrill', 'plugin', 'skrill', 'vmpayment');
 			$this->installPlugin ('Authorize.net', 'plugin', 'authorizenet', 'vmpayment');
 
-			$this->installPlugin ('Sofort iDeal', 'plugin', 'sofort_ideal', 'vmpayment');
+			$this->installPlugin ('VM Payment - Sofort iDeal', 'plugin', 'sofort_ideal', 'vmpayment');
 
-			$this->installPlugin ('By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment', 1);
+			$this->installPlugin ('VM Shipment - By weight, ZIP and countries', 'plugin', 'weight_countries', 'vmshipment', 1);
 
-			$this->installPlugin ('Customer text input', 'plugin', 'textinput', 'vmcustom', 1);
-			$this->installPlugin ('Product specification', 'plugin', 'specification', 'vmcustom', 1);
-			$this->installPlugin ('Stockable variants', 'plugin', 'stockable', 'vmcustom', 1);
-			$this->installPlugin ('Avalara Tax', 'plugin', 'avalara', 'vmcalculation' );
+			$this->installPlugin ('VM Custom - Customer text input', 'plugin', 'textinput', 'vmcustom', 1);
+			$this->installPlugin ('VM Custom - Product specification', 'plugin', 'specification', 'vmcustom', 1);
+			$this->installPlugin ('VM Custom - Stockable variants', 'plugin', 'stockable', 'vmcustom', 1);
+			$this->installPlugin ('VM Calculation - Avalara Tax', 'plugin', 'avalara', 'vmcalculation' );
+			$this->installPlugin ('VM Userfield - Realex', 'plugin', 'realex', 'vmuserfield' );
 
 			$this->moneyBookersToSkrill ();
 			$this->migratePluginParams ();
-
 			// 			$table = '#__virtuemart_customs';
 			// 			$fieldname = 'field_type';
 			// 			$fieldvalue = 'G';
@@ -113,7 +115,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					} else {
 						$defaultParams = "text_before=\nproduct_currency=\ncache=1\nmoduleclass_sfx=\nclass_sfx=\n";
 					}
-					$this->installModule ('VM - Currencies Selector', 'mod_virtuemart_currencies', 4, $defaultParams);
+					$this->installModule ('VM - Currencies Selector', 'mod_virtuemart_currencies', 5, $defaultParams);
 
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
 						$defaultParams = '{"product_group":"featured","max_items":"1","products_per_row":"1","display_style":"list","show_price":"1","show_addtocart":"1","headerText":"Best products","footerText":"","filter_category":"0","virtuemart_category_id":"0","cache":"0","moduleclass_sfx":"","class_sfx":""}';
@@ -143,7 +145,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					} else {
 						$defaultParams = "show=all\ndisplay_style=div\nmanufacturers_per_row=1\nheaderText=\nfooterText=\ncache=0\nmoduleclass_sfx=\nclass_sfx=";
 					}
-					$this->installModule ('VM - Manufacturer', 'mod_virtuemart_manufacturer', 5, $defaultParams);
+					$this->installModule ('VM - Manufacturer', 'mod_virtuemart_manufacturer', 8, $defaultParams);
 
 					if (version_compare (JVERSION, '1.6.0', 'ge')) {
 						$defaultParams = '{"moduleclass_sfx":"","show_price":"1","show_product_list":"1"}';
@@ -157,7 +159,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					} else {
 						$defaultParams = "moduleclass_sfx=\nclass_sfx=\ncategory_name=default\ncache=no\n";
 					}
-					$this->installModule ('VM - Category', 'mod_virtuemart_category', 6, $defaultParams);
+					$this->installModule ('VM - Category', 'mod_virtuemart_category', 4, $defaultParams);
 				} else {
 					echo "VirtueMart2 modules already installed<br/ >";
 				}
@@ -249,20 +251,13 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 			if ($task != 'updateDatabase') {
 				$data = array();
+
 				$src = $this->path . DS . 'plugins' . DS . $group . DS . $element;
 
 				if ($createJPluginTable) {
 					if (version_compare (JVERSION, '1.7.0', 'ge')) {
 
 						// Joomla! 1.7 code here
-						$table = JTable::getInstance ('extension');
-						$data['enabled'] = $published;
-						$data['access'] = 1;
-						$tableName = '#__extensions';
-						$idfield = 'extension_id';
-					} elseif (version_compare (JVERSION, '1.6.0', 'ge')) {
-
-						// Joomla! 1.6 code here
 						$table = JTable::getInstance ('extension');
 						$data['enabled'] = $published;
 						$data['access'] = 1;
@@ -398,12 +393,11 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 			//Update Tables
 			if (!class_exists ('VmConfig')) {
-				require(JPATH_ROOT.DS.'administrator'. DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+				require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 			}
 
 			if (class_exists ('VmConfig')) {
 				$pluginfilename = $dst . DS . $element . '.php';
-
 				if(JFile::exists($pluginfilename)){
 					require_once ($pluginfilename);	//require_once cause is more failproof and is just for install
 				} else {
@@ -411,7 +405,6 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 					$app->enqueueMessage (get_class ($this) . ':: pluginfile could not be found '.$pluginfilename);
 					return false;
 				}
-
 
 				//plgVmpaymentPaypal
 				$pluginClassname = 'plg' . ucfirst ($group) . ucfirst ($element);
@@ -519,6 +512,7 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 				$table->client_id = $client_id = 0;
 			}
 
+			$table->language = '*';
 			// 			$data['manifest_cache'] ='';
 			// 			if(!empty($id)){
 			// 				unset($data['manifest_cache']);
@@ -769,7 +763,6 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 
 	}
 
-
 	if (!defined ('_VM_SCRIPT_INCLUDED')) {
 
 		function com_install () {
@@ -786,7 +779,5 @@ if (!defined ('_VM_AIO_SCRIPT_INCLUDED')) {
 			return TRUE;
 		}
 	}
-
-
 } //if defined
 // pure php no tag

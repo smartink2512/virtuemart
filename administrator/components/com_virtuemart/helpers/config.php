@@ -640,7 +640,7 @@ class VmConfig {
 	static public function loadConfig($force = FALSE,$fresh = FALSE) {
 
 		if($fresh){
-			return self::$_jpConfig = new VmConfig();
+			return new VmConfig();
 		}
 		vmSetStartTime('loadConfig');
 		if(!$force){
@@ -655,13 +655,24 @@ class VmConfig {
 		if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR .'/models/config.php');
 		$configTable  = VirtueMartModelConfig::checkConfigTableExists();
 
+		$app = JFactory::getApplication();
+
 		$freshInstall = vmRequest::getInt('install',0);
-		if(empty($configTable) and $freshInstall==0){
-			VirtueMartModelConfig::checkVirtuemartInstalled();
+		$installed = true;
+		if(empty($configTable) ){
+			$installed = VirtueMartModelConfig::checkVirtuemartInstalled();
+			vmdebug('loadConfig '.$freshInstall.' i '.$installed);
+			if(!$installed and $freshInstall===0){
+				vmdebug('loadConfig doing redirect '.$freshInstall.' i '.$installed);
+				if($app->isSite()){
+					$app->redirect(JURI::root().'administrator/index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
+				} else {
+					$app->redirect('index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
+				}
+			}
 		}
 
 		$db = JFactory::getDBO();
-		$app = JFactory::getApplication();
 
 		$store = false;
 		if(empty(self::$_jpConfig->_raw) and $configTable){
@@ -687,7 +698,7 @@ class VmConfig {
 
 			VmConfig::$_jpConfig->setParams(VmConfig::$_jpConfig->_raw);
 
-			if($freshInstall==0 and empty($configTable)){
+			if($installed and empty($configTable)){
 				VirtueMartModelConfig::installVMconfigTable();
 				$configTable = true;
 			}

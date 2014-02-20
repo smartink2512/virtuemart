@@ -102,7 +102,7 @@ class VirtuemartControllerUser extends VmController {
 			$data = vmRequest::getRequest();
 
 			// Store multiple selectlist entries as a ; separated string
-			if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
+			if (array_key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 			    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 			}
 			// TODO disallow vendor_store_name as HTML ?
@@ -113,12 +113,6 @@ class VirtuemartControllerUser extends VmController {
 			$data['vendor_letter_css'] = VmRequest::getHtml('vendor_letter_css');
 			$data['vendor_letter_header_html'] = VmRequest::getHtml('vendor_letter_header_html');
 			$data['vendor_letter_footer_html'] = VmRequest::getHtml('vendor_letter_footer_html');
-
-			$data['vendor_invoice_free1'] = VmRequest::getHtml('vendor_invoice_free1');
-			$data['vendor_invoice_free2'] = VmRequest::getHtml('vendor_invoice_free2');
-			$data['vendor_mail_free1'] = VmRequest::getHtml('vendor_mail_free1');
-			$data['vendor_mail_free2'] = VmRequest::getHtml('vendor_mail_free2');
-			$data['vendor_mail_css'] = VmRequest::getHtml('vendor_mail_css');
 
 			$ret=$model->store($data);
 			if(!$ret){

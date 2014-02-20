@@ -86,6 +86,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 */
 		public function preflight ($type, $parent=null) {
 
+			//We want disable the redirect in the installation process
 			if(version_compare(JVERSION,'1.6.0','ge')) {
 
 				$q = 'DELETE FROM `#__menu` WHERE `menutype` = "main" AND
@@ -117,7 +118,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if($this->checkIfUpdate()){
 				return $this->update($loadVm);
 			}
-
+			$_REQUEST['install'] = 1;
 			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 			if(!class_exists('JFolder')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'folder.php');
 
@@ -279,6 +280,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->fixOrdersVendorId();
 
 			$this->migrateCustoms();
+
+			//copy sampel media
+			$src = $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampleimages';
+			if(JFolder::exists($src)){
+				$dst = JPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
+				$this->recurse_copy($src,$dst);
+			}
+
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
@@ -667,6 +676,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * @param object JInstallerComponent parent
 		 */
 		public function postflight ($type, $parent=null) {
+			$_REQUEST['install'] = 0;
 			if ($type != 'uninstall') {
 
 				$this->loadVm();
@@ -675,7 +685,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$res  = VirtueMartModelConfig::checkConfigTableExists();
 
 				if(!empty($res)){
-					VmRequest::setVar(JSession::getFormToken(), '1', 'post');
+					VmRequest::setVar(JSession::getFormToken(), '1');
 					$config = VmModel::getModel('config');
 
 					$config->setDangerousToolsOff();

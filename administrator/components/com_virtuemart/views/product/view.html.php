@@ -169,10 +169,19 @@ class VirtuemartViewProduct extends VmView {
 				$orderstatusModel = VmModel::getModel('orderstatus');
 				$lists['OrderStatus'] = $orderstatusModel->renderOSList(array(),'order_status',TRUE);
 
+				// Add the virtuemart_shoppergroup_ids
+				$cid = JFactory::getUser()->id;
+				$this->activeShoppergroups = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_vmuser_shoppergroups','virtuemart_user_id',$cid,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergoup_id','category');
+				if(!$this->activeShoppergroups or (is_array($this->activeShoppergroups) and count($this->activeShoppergroups)==0)){
+					//vmdebug('$this->activeShoppergroups',$this->activeShoppergroups);
+					$shoppergroupModel = VmModel::getModel('shoppergroup');
+					$this->activeShoppergroups = $shoppergroupModel->getDefault(0)->shopper_group_name;
+				}
+
 				$fieldTypes = $customfields->getField_types();
 				$this->assignRef('fieldTypes', $fieldTypes);
 
-				/* Load product types lists */
+				// Load protocustom lists
 				$customModel = VmModel::getModel ('custom');
 				$customsList = $customModel->getCustomsList ();
 				$attribs='style= "width: 300px;"';

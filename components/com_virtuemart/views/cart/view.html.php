@@ -150,8 +150,18 @@ class VirtueMartViewCart extends VmView {
 				$checkout_task = 'checkout';
 			}
 			$this->assignRef('checkout_task', $checkout_task);
-			$this->checkPaymentMethodsConfigured();
-			$this->checkShipmentMethodsConfigured();
+
+			if (VmConfig::get('oncheckout_opc', 1)) {
+				if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+				JPluginHelper::importPlugin('vmshipment');
+				JPluginHelper::importPlugin('vmpayment');
+				$this->lSelectShipment();
+				$this->lSelectPayment();
+			} else {
+				$this->checkPaymentMethodsConfigured();
+				$this->checkShipmentMethodsConfigured();
+			}
+
 			if ($this->cart->virtuemart_shipmentmethod_id) {
 				$shippingText =  vmText::_('COM_VIRTUEMART_CART_CHANGE_SHIPPING');
 			} else {
@@ -165,14 +175,6 @@ class VirtueMartViewCart extends VmView {
 				$paymentText = vmText::_('COM_VIRTUEMART_CART_EDIT_PAYMENT');
 			}
 			$this->assignRef('select_payment_text', $paymentText);
-
-			if (VmConfig::get('oncheckout_opc', 1)) {
-				if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-				JPluginHelper::importPlugin('vmshipment');
-				JPluginHelper::importPlugin('vmpayment');
-				$this->lSelectShipment();
-				$this->lSelectPayment();
-			}
 
 
 			if (!VmConfig::get('use_as_catalog',0)) {
@@ -309,6 +311,11 @@ class VirtueMartViewCart extends VmView {
 		$selectedPayment = empty($this->cart->virtuemart_paymentmethod_id) ? 0 : $this->cart->virtuemart_paymentmethod_id;
 
 		$paymentplugins_payments = array();
+		if (!$this->checkPaymentMethodsConfigured()) {
+			$this->assignRef('payments_payment_rates',$paymentplugins_payments);
+			return;
+		}
+
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
@@ -395,7 +402,7 @@ class VirtueMartViewCart extends VmView {
 
 			$tmp = 0;
 			$this->assignRef('found_payment_method', $tmp);
-
+			$this->cart->virtuemart_paymentmethod_id = 0;
 			return false;
 		}
 		return true;
@@ -420,7 +427,7 @@ class VirtueMartViewCart extends VmView {
 
 			$tmp = 0;
 			$this->assignRef('found_shipment_method', $tmp);
-
+			$this->cart->virtuemart_shipmentmethod_id = 0;
 			return false;
 		}
 		return true;

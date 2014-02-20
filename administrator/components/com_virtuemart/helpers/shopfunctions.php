@@ -53,8 +53,8 @@ class ShopFunctions {
 		$q = 'SELECT ' . $db->escape ($fieldnameXref) . ' FROM ' . $db->escape ($tableXref) . ' WHERE ' . $db->escape ($fieldIdXref) . ' = "' . (int)$idXref . '"';
 		$db->setQuery ($q);
 		$tempArray = $db->loadColumn ();
-		//echo $db->_sql;
-		if (isset($tempArray)) {
+
+		if ($tempArray) {
 			$links = '';
 			$ttip = '';
 			$i = 0;

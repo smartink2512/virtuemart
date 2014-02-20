@@ -641,7 +641,7 @@ class VirtueMartCart {
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 
-			$this->setPaymentMethod($virtuemart_paymentmethod_id);
+
 
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$msg = '';

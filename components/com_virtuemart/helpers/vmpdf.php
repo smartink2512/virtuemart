@@ -117,15 +117,11 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 			} else {
 				$vlfooterlcolor = $this->convertHTMLColorToDec($this->vendor->vendor_letter_footer_line_color);
 			}
-			//Image included
-			$this->setHeaderData(
-				'',
-				0,
-				'',
-				$this->vendor->vendor_letter_header_html,
-				array(0,0,0),
-				$vlfooterlcolor
-			);
+
+			$this->setHeaderData(($this->vendor->vendor_letter_header_image?$this->vendorImage:''),
+				($this->vendor->vendor_letter_header_image?$this->vendor->vendor_letter_header_imagesize:0),
+				'', $this->vendor->vendor_letter_header_html,
+				array(0,0,0),$vlfooterlcolor );
 			$this->vendorAddress = shopFunctions::renderVendorAddress($this->vendor->virtuemart_vendor_id, "<br/>");
 			// Trim the final <br/> from the address, which is inserted by renderVendorAddress automatically!
 			if (substr($this->vendorAddress, -5, 5) == '<br/>') {

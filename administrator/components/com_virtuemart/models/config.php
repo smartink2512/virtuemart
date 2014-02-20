@@ -448,19 +448,15 @@ class VirtueMartModelConfig extends VmModel {
 		$db = JFactory::getDBO();
 		$query = 'SHOW TABLES LIKE "'.$db->getPrefix().'virtuemart%"';
 		$db->setQuery($query);
-		$configTable = $db->loadColumn();
-		$err = $db->getErrorMsg();
-
-		if(!empty($err) or (!$configTable and count($configTable)<2)){
-			$app = JFactory::getApplication();
-			if($app->isSite()){
-				$app->redirect(JURI::root(true).'/administrator/index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
-			} else {
-				$app->redirect('index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
-			}
-
+		$vmTables = $db->loadColumn();
+		$err = $db->getError();
+		if(!empty($err) or !$vmTables or count($vmTables)<4){
+			vmdebug('checkVirtuemartInstalled, return false ');
+			return false;
+		} else {
+			return true;
 		}
-		return true;
+
 	}
 
 	/**
@@ -471,7 +467,7 @@ class VirtueMartModelConfig extends VmModel {
 	 * @author Oscar van Eijk
 	 */
 	static public function installVMconfigTable(){
-
+		vmdebug('installVMconfigTable');
 		$qry = self::getCreateConfigTableQuery();
 		$_db = JFactory::getDBO();
 		$_db->setQuery($qry);
@@ -602,7 +598,6 @@ class VirtueMartModelConfig extends VmModel {
 	 */
 	function setDangerousToolsOff(){
 
-// 		VmConfig::loadConfig(true);
 		$dangerousTools = VirtueMartModelConfig::readConfigFile(true);
 
 		if( $dangerousTools){
@@ -611,11 +606,12 @@ class VirtueMartModelConfig extends VmModel {
 			$lang = vmText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_STILL_ENABLED',vmText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'),$link);
 			VmInfo($lang);
 		} else {
-			$data['dangeroustools'] = 0;
-			$data['virtuemart_config_id'] = 1;
-			$this->store($data);
+			if(self::checkConfigTableExists()){
+				$data['dangeroustools'] = 0;
+				$data['virtuemart_config_id'] = 1;
+				$this->store($data);
+			}
 		}
-
 	}
 
 	public function remove($id) {

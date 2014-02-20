@@ -291,15 +291,34 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 			if($sample) $model->installSampleData($sid);
 
-			$db = JFactory::getDbo();
-
-			//We set here the home menu item to virtuemart, because it gets overriden by the sampledata of joomla
-			/*$q = 'UPDATE `#__menu` SET `link`="index.php?option=com_virtuemart&view=virtuemart",`type`="component",`component_id`="10000" WHERE `home`="1" and `language`="*";';
-			$db->setQuery($q);
-			$db->query();*/
-
 			if(!class_exists('VmConfig')) require_once(JPATH_VM_ADMINISTRATOR .'/models/config.php');
 			VirtueMartModelConfig::installVMconfigTable();
+
+			//Now lets set some joomla variables
+			//Caching should be enabled, set to files and for 15 minutes
+			if (!class_exists( 'ConfigModelApplication' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_config'.DS.'models'.DS.'application.php');
+			$jConfModel = new ConfigModelApplication();
+			$jConfig = $jConfModel->getData();
+
+			$jConfig['caching'] = 1;
+			$jConfig['lifetime'] = 60;
+			$jConfig['list_limit'] = 25;
+			$jConfig['MetaDesc'] = 'VirtueMart works with Joomla! - the dynamic portal engine and content management system';
+			$jConfig['MetaKeys'] = 'virtuemart, vm2, joomla, Joomla';
+
+			$app = JFactory::getApplication();
+			$return = $jConfModel->save($jConfig);
+
+			// Check the return value.
+			if ($return === false) {
+				// Save the data in the session.
+				$app->setUserState('com_config.config.global.data', $jConfig);
+				vmError(vmText::sprintf('JERROR_SAVE_FAILED', $model->getError()));
+				//return false;
+			} else {
+				// Set the success message.
+				//vmInfo('COM_CONFIG_SAVE_SUCCESS');
+			}
 		}else {
 			$msg = $this->_getMsgDangerousTools();
 		}

@@ -71,15 +71,14 @@ class TableVendors extends VmTableData {
     var $vendor_letter_header_html = '';
     /** @var text Vendor letter footer */
     var $vendor_letter_footer_html = '';
-	/** @var text Vendor invoice freetext 1 */
+
+
 	var $vendor_invoice_free1 = '';
-	/** @var text Vendor invoice freetext 2 */
 	var $vendor_invoice_free2 = '';
-	/** @var text Vendor mail freetext 1 */
+
 	var $vendor_mail_free1 = '';
-	/** @var text Vendor mail freetext 2 */
 	var $vendor_mail_free2 = '';
-	/** @var text Vendor mail CSS */
+
 	var $vendor_mail_css = '';
 
     /** @author RickG, Max Milbers
