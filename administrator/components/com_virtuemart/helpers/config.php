@@ -497,7 +497,7 @@ class VmConfig {
 
 	// instance of class
 	private static $_jpConfig = NULL;
-	private static $_debug = NULL;
+	public static $_debug = NULL;
 	public static $_starttime = array();
 	public static $loaded = FALSE;
 
@@ -702,6 +702,14 @@ class VmConfig {
 		if(empty($configTable) or $freshInstall){
 			if(!$freshInstall){
 				$installed = VirtueMartModelConfig::checkVirtuemartInstalled();
+				if(!$installed){
+					$app = JFactory::getApplication();
+					if($app->isSite()){
+						$app->redirect(JURI::root(true).'/administrator/index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
+					} else {
+						$app->redirect('index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
+					}
+				}
 				if($installed){
 					self::$_jpConfig->installVMconfig();
 				}

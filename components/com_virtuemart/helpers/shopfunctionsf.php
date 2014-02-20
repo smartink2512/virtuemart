@@ -221,7 +221,7 @@ class shopFunctionsF {
 		$vmtemplate = VmConfig::get( 'vmtemplate', 'default' );
 		if($vmtemplate == 'default') {
 			if(JVM_VERSION == 2) {
-				$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
+				$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`= 0 AND `home`= 1';
 			} else {
 				$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id`="0" AND `menuid`="0"';
 			}

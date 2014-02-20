@@ -448,24 +448,19 @@ class VirtueMartModelConfig extends JModel {
 		}
 	}
 
-	public function checkVirtuemartInstalled(){
+	static public function checkVirtuemartInstalled(){
 
 		$db = JFactory::getDBO();
 		$query = 'SHOW TABLES LIKE "'.$db->getPrefix().'virtuemart%"';
 		$db->setQuery($query);
-		$configTable = $db->loadResult();
+		$vmTables = $db->loadColumn();
 		$err = $db->getErrorMsg();
-
-		if(!empty($err) or !$configTable or count($configTable)<2){
-			$app = JFactory::getApplication();
-			if($app->isSite()){
-				$app->redirect(JURI::root(true).'/administrator/index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
-			} else {
-				$app->redirect('index.php?option=com_virtuemart&view=updatesmigration&install=1','Install Virtuemart first, use the menu component');
-			}
-
+		if(!empty($err) or !$vmTables or count($vmTables)<2){
+			return false;
+		} else {
+			return true;
 		}
-		return true;
+
 	}
 
 	/**
