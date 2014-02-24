@@ -4,7 +4,7 @@
     <!-- value can be: major, minor, bugfix -->
     <property name="releasetype" value="MINOR"/>
     <property name="vm.version" value="2.9.0"/>
-    <property name="PHING.VM.CODENAME" value="IceBear"/>
+    <property name="PHING.VM.CODENAME" value="eComCat"/>
     <property file="build.properties"/>
     <target name="title">
         <echo message="BUILD VirtueMart 2 package FROM ${export.to}  TO ${package.abspath}"/>

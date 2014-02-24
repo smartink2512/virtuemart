@@ -1057,7 +1057,7 @@ class VirtueMartModelProduct extends VmModel {
 							//vmdebug('I take for product the requested category ',$virtuemart_category_id,$product->categories);
 						} else {
 							if (!empty($product->categories) and is_array ($product->categories) and array_key_exists (0, $product->categories)) {
-								$product->virtuemart_category_id = $product->canonCatLink;
+								$product->virtuemart_category_id = $product->categories[0];
 								//vmdebug('I take for product the main category ',$product->virtuemart_category_id,$product->categories);
 							}
 						}

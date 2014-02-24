@@ -55,7 +55,7 @@ AdminUIHelper::endAdminArea();
 ?>
 <script type="text/javascript">
 <!--
-function confirmation(message, destnUrl) {
+function confirmation(destnUrl) {
 		window.location = destnUrl;
 }
 //-->
