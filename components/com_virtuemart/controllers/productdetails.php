@@ -65,12 +65,12 @@ class VirtueMartControllerProductdetails extends JController {
 			$app->redirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . JRequest::getInt ('virtuemart_product_id', 0)), 'Function disabled');
 		}
 
-		if(!VmConfig::get('recommend_unauth',false)){
+		/*if(!VmConfig::get('recommend_unauth',false)){
 			$user = JFactory::getUser();
 			if($user->guest){
 				$app->redirect(JRoute::_('index.php?option=com_virtuemart','JGLOBAL_YOU_MUST_LOGIN_FIRST'));
 			}
-		}
+		}*/
 		$view = $this->getView ('askquestion', 'html');
 		if (!class_exists ('shopFunctionsF')) {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
@@ -155,12 +155,7 @@ class VirtueMartControllerProductdetails extends JController {
 		if(!VmConfig::get('show_emailfriend',false)){
 			$app->redirect (JRoute::_ ('index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id=' . JRequest::getInt ('virtuemart_product_id', 0)), 'Function disabled');
 		}
-		if(!VmConfig::get('recommend_unauth',false)){
-			$user = JFactory::getUser();
-			if($user->guest){
-				$app->redirect(JRoute::_('index.php?option=com_virtuemart','JGLOBAL_YOU_MUST_LOGIN_FIRST'));
-			}
-		}
+
 		// Display it all
 		$view = $this->getView ('recommend', 'html');
 
@@ -220,14 +215,6 @@ class VirtueMartControllerProductdetails extends JController {
 	 */
 	public function MailForm () {
 
-		/*OSP 2012-03-14 ...Track #375; allowed by setting */
-		if (VmConfig::get ('recommend_unauth', 0) == '0') {
-			$user = JFactory::getUser ();
-			if (empty($user->id)) {
-				VmInfo (JText::_ ('JGLOBAL_YOU_MUST_LOGIN_FIRST'));
-				return;
-			}
-		}
 		if (JRequest::getCmd ('task') == 'recommend') {
 			$view = $this->getView ('recommend', 'html');
 		} else {
@@ -240,7 +227,6 @@ class VirtueMartControllerProductdetails extends JController {
 		// Display it all
 		$view->display ();
 	}
-
 	/**
 	 * Add or edit a review
 	 */

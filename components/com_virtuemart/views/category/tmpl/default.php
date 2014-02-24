@@ -145,7 +145,7 @@ if (!empty($this->keyword)) {
 <h3><?php echo $this->keyword; ?></h3>
 	<?php
 } ?>
-<?php if ($this->search !== NULL) {
+<?php if (!empty($this->keyword)) {
 
 	$category_id  = JRequest::getInt ('virtuemart_category_id', 0); ?>
 <form action="<?php echo JRoute::_ ('index.php?option=com_virtuemart&view=category&limitstart=0', FALSE); ?>" method="get">
@@ -348,7 +348,7 @@ if (!empty($this->products)) {
 <div class="vm-pagination"><?php echo $this->vmPagination->getPagesLinks (); ?><span style="float:right"><?php echo $this->vmPagination->getPagesCounter (); ?></span></div>
 
 	<?php
-} elseif ($this->search !== NULL) {
+} elseif (!empty($this->keyword)) {
 	echo JText::_ ('COM_VIRTUEMART_NO_RESULT') . ($this->keyword ? ' : (' . $this->keyword . ')' : '');
 }
 ?>

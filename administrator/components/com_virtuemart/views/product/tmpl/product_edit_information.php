@@ -110,9 +110,10 @@ $i=0;
 			<?php
 			// It is important to have all product information in the form, since we do not preload the parent
 			// I place the ordering here, maybe we make it editable later.
-			if(!isset($this->product->ordering)) $this->product->ordering = 0;
-			?>
-			<input type="hidden" value="<?php echo $this->product->ordering ?>" name="ordering">
+			if(!isset($this->product->ordering)) {
+				$this->product->ordering = 0;
+				?><input type="hidden" value="<?php echo $this->product->ordering ?>" name="ordering"> <?php
+			} ?>
 			<td>
 				<span class="hasTip" title="<?php echo vmText::_ ('COM_VIRTUEMART_SHOPPER_FORM_GROUP_PRODUCT_TIP'); ?>">
 				<?php echo vmText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?></span>

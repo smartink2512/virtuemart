@@ -36,7 +36,9 @@ $document->addScriptDeclaration('
 if (empty ( $this->product )) {
 	echo JText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
 	echo '<br /><br />  ' . $this->continue_link_html;
-} else { ?>
+} else {
+	echo $this->login;
+	?>
 
 <div class="ask-a-question-view">
 	<h1><?php echo JText::_('COM_VIRTUEMART_PRODUCT_RECOMMEND')  ?></h1>

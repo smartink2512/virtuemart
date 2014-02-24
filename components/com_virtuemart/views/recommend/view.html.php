@@ -46,7 +46,10 @@ class virtuemartViewrecommend extends VmView {
 		if(!VmConfig::get('recommend_unauth',false)){
 			$user = JFactory::getUser();
 			if($user->guest){
-				$app->redirect(JRoute::_('index.php?option=com_virtuemart','JGLOBAL_YOU_MUST_LOGIN_FIRST'));
+				$this->login = shopFunctionsF::getLoginForm(false);
+				//$app->redirect(JRoute::_('index.php?option=com_virtuemart','JGLOBAL_YOU_MUST_LOGIN_FIRST'));
+			} else {
+				$this->login = '';
 			}
 		}
 		$show_prices  = VmConfig::get('show_prices',1);

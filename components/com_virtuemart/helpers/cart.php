@@ -371,7 +371,8 @@ class VirtueMartCart {
 			if($quantityPost === 0) continue;
 			//$pModel->setId($virtuemart_product_id);
 			$tmpProduct = $pModel->getProduct($virtuemart_product_id, true, false,true,$quantityPost);
-
+			//VmConfig::$logDebug = true;
+			//vmdebug('add to cart product',$tmpProduct->customfieldsCart);
 			if ( VmConfig::get('oncheckout_show_images')){
 				$pModel->addImages($tmpProduct,1);
 			}
@@ -432,10 +433,8 @@ class VirtueMartCart {
 
 			$product -> link = $tmpProduct -> link;
 			$product -> packaging = $tmpProduct -> packaging;
-			//$product -> customfields = empty($tmpProduct -> customfields)? array():$tmpProduct -> customfields ;
-			//$product -> customfieldsCart = empty($tmpProduct -> customfieldsCart)? array(): $tmpProduct -> customfieldsCart;
-			if (!empty($tmpProduct -> customfieldsCart) ) $product -> customfieldsCart = true;
-			//$product -> customsChilds = empty($tmpProduct -> customsChilds)? array(): $tmpProduct -> customsChilds;
+
+			if (!empty($tmpProduct -> customfieldsCart) ) $product -> customfieldsCart = true; //why do we have this here?
 
 
 			//Why reloading the product wiht same name $product ?
@@ -453,6 +452,7 @@ class VirtueMartCart {
 				}
 
 				$productKey = $product->virtuemart_product_id;
+				//vmdebug('$post["customPrice"] ',$post['customPrice']);
 				// INDEX NOT FOUND IN JSON HERE
 				// changed name field you know exactly was this is
 				if (isset($post['customPrice'])) {
@@ -488,24 +488,52 @@ class VirtueMartCart {
 						}
 
 						$product->customPlugin = json_encode($customPluginPost);
+
 					}
 
 					$productKey .= '::';
 
 					foreach ($product->customPrices as $customPrice) {
+						$found = false;
 						foreach ($customPrice as $customId => $custom_fieldId) {
 
 							//MarkerVarMods
 							if ( is_array($custom_fieldId) ) {
 								foreach ($custom_fieldId as $userfieldId => $userfield) {
 									//$productKey .= (int)$customId . ':' . (int)$userfieldId . ';';
-									$productKey .= (int)$custom_fieldId . ':' .(int)$customId . ';';
+									//$productKey .= (int)$custom_fieldId . ':' .(int)$customId . ';';
+									foreach($tmpProduct -> customfieldsCart as $k => $customfieldsCart){
+										if($customfieldsCart->virtuemart_customfield_id==$custom_fieldId){
+											$productKey .= (int)$custom_fieldId . ':' .(int)$customId . ';';
+											unset($tmpProduct -> customfieldsCart[$k]);
+											$found = true;
+										}
+									}
 								}
 							} else {
 								//TODO productCartId
-								$productKey .= (int)$custom_fieldId . ':' .(int)$customId . ';';
+								foreach($tmpProduct -> customfieldsCart as $k => $customfieldsCart){
+									if($customfieldsCart->virtuemart_customfield_id==$custom_fieldId){
+										$productKey .= (int)$custom_fieldId . ':' .(int)$customId . ';';
+										unset($tmpProduct -> customfieldsCart[$k]);
+										$found = true;
+									}
+								}
+
 							}
 
+							if(!$found){
+
+								foreach($tmpProduct -> customfieldsCart as $k => $cfCart){
+									if($cfCart->field_type=='E'){
+
+										$productKey .= (int)$cfCart->virtuemart_customfield_id . ':' . (int)  $cfCart->virtuemart_custom_id . ';';
+										vmdebug('The $product->customPrice as $customId => $custom_fieldId '.$productKey,$cfCart);
+									}
+
+								}
+
+							}
 						}
 					}
 
