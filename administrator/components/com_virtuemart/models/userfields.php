@@ -786,15 +786,11 @@ class VirtueMartModelUserfields extends VmModel {
 					// 					$_return['fields'][$_fld->name]['formcode'] = $_userData->email;
 					// 					break;
 					case 'virtuemart_country_id':
-
-						//For nice lists in the FE
-					/*	$app = JFactory::getApplication();
-						if($app->isSite()) {
-							$attrib = array('class'=>'chzn-select');
-						} else {
-							$attrib = array();
-						}*/
 						$attrib = array();
+						//For nice lists in the FE
+						if ($_fld->size) {
+							$attrib = array('style'=>"width: ".$_fld->size."px");
+						}
 						$_return['fields'][$_fld->name]['formcode'] =
 							ShopFunctions::renderCountryList($_return['fields'][$_fld->name]['value'], false, $attrib , $_prefix, $_fld->required);
 
@@ -825,12 +821,17 @@ class VirtueMartModelUserfields extends VmModel {
 					case 'virtuemart_state_id':
 						if (!class_exists ('shopFunctionsF'))
 							require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+						$attrib = array();
+						if ($_fld->size) {
+							$attrib = array('style'=>"width: ".$_fld->size."px");
+						}
 						$_return['fields'][$_fld->name]['formcode'] =
 						shopFunctions::renderStateList(	$_return['fields'][$_fld->name]['value'],
-						$_prefix,
-						false,
-						$_fld->required
-						);
+									$_prefix,
+									false,
+									$_fld->required,
+									$attrib
+									);
 
 
 						if(!empty($_return['fields'][$_fld->name]['value'])){
@@ -1036,6 +1037,9 @@ class VirtueMartModelUserfields extends VmModel {
 									break;
 								case 'select':
 									$_attribs['class'] = 'vm-chzn-select';
+									if ($_fld->size) {
+										$_attribs['style']= "width: ".$_fld->size."px";
+									}
 									$_return['fields'][$_fld->name]['formcode'] = JHTML::_('select.genericlist', $_values, $_prefix.$_fld->name, $_attribs, 'fieldvalue', 'fieldtitle', $_selected);
 									foreach ($_values as $_val) {
 										 if (  $_val->fieldvalue==$_selected) {

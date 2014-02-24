@@ -463,31 +463,42 @@ class VirtueMartCart {
 						//if(!class_exists('vmFilter'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmfilter.php');
 
 						if(!is_array($post['customPlugin'])){
-							$customPluginPost = (array)	$post['customPlugin'];
+							$customPlugins = (array)	$post['customPlugin'];
 						} else {
-							$customPluginPost = $post['customPlugin'];
+							$customPlugins = $post['customPlugin'];
 						}
 
-						foreach($customPluginPost as &$customPlugin){
+						foreach($customPlugins as &$customPlugin){
 							if(is_array($customPlugin)){
-								foreach($customPlugin as &$customPlug){
-									if(is_array($customPlug)){
-										foreach($customPlug as &$customPl){
+								foreach($customPlugin as &$customParams){
+									if(is_array($customParams)){
+										foreach($customParams as &$customParam){
+											/* the plugin returned an array of values */
+											if(is_array($customParam)){
+												foreach ($customParam as &$customParamItem) {
+													$value = JComponentHelper::filterText($customParamItem);
+													$value = (string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
+													$value = trim(str_replace('"', ' ', $value),"'") ;
+													$customParamItem = (string)preg_replace('#^\'#si','',$value);
+												}
+											} else {
+												$value = JComponentHelper::filterText($customParam);
+												$value = (string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
+												$value = trim(str_replace('"', ' ', $value),"'") ;
+												$customParam = (string)preg_replace('#^\'#si','',$value);
+											}
 											//$value = vmFilter::hl( $customPl,array('deny_attribute'=>'*'));
 											//to strong
 											/* $value = preg_replace('@<[\/\!]*?[^<>]*?>@si','',$value);//remove all html tags  */
 											//lets use instead
-											$value = JComponentHelper::filterText($customPl);
-											$value = (string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
-											$value = trim(str_replace('"', ' ', $value),"'") ;
-											$customPl = (string)preg_replace('#^\'#si','',$value);
+
 										}
 									}
 								}
 							}
 						}
 
-						$product->customPlugin = json_encode($customPluginPost);
+						$product->customPlugin = json_encode($customPlugins);
 
 					}
 

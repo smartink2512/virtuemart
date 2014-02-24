@@ -34,10 +34,9 @@ class JElementCustomjs extends JElement {
 	function fetchElement ($name, $value, &$node, $control_name) {
 		
 		JHtml::_('behavior.colorpicker');
-		
 		$doc = JFactory::getDocument();
-		$doc->addScript(JURI::root(true).'/plugins/vmpayment/paypal/paypal/assets/js/admin.js');
-		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/paypal/paypal/assets/css/paypal.css');
+		$doc->addScript(JURI::root(true).'/plugins/vmpayment/'.$this->_name.'/'.   $this->_name.'/assets/js/admin.js');
+		$doc->addStyleSheet(JURI::root(true).'/plugins/vmpayment/'.$this->_name.'/'.$this->_name.'/assets/css/'.$this->_name.'.css');
 
 		
 		return '';		

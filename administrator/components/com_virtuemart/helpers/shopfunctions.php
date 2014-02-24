@@ -268,7 +268,6 @@ class ShopFunctions {
 		$name = 'country_name';
 		$id = 'virtuemart_country_id';
 		$idA = $_prefix . 'virtuemart_country_id';
-		$attrs['class'] = 'virtuemart_country_id';
 		$attrs['class'] = 'vm-chzn-select';
 		// Load helpers and  languages files
 		if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
@@ -330,34 +329,34 @@ class ShopFunctions {
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 * @return string HTML containing the <select />
 	 */
-	static public function renderStateList ($stateId = '0', $_prefix = '', $multiple = FALSE, $required = 0) {
+	static public function renderStateList ($stateId = '0', $_prefix = '', $multiple = FALSE, $required = 0,$attribs=array()) {
 
 		if (is_array ($stateId)) {
 					$stateId = implode (",", $stateId);
 		}
 
 		vmJsApi::JcountryStateList ($stateId,$_prefix);
-
+		$attrs['name'] = $_prefix . 'virtuemart_state_id[]';
 		if ($multiple) {
-			$attrs = 'multiple="multiple" size="12" name="' . $_prefix . 'virtuemart_state_id[]" ';
+			$attrs['multiple'] = 'multiple';
+			//$attrs[''] = 'multiple="multiple" size="12" name="' . $_prefix . 'virtuemart_state_id[]" ';
 			//$class = 'class="inputbox multiple"';
-		} else {
-			/*$app = JFactory::getApplication();
-			if($app->isSite()) {
-				$class = 'class="chzn-select"';
-			} else {
-				$class = 'class="inputbox multiple"';
-			}*/
-			$attrs = 'name="' . $_prefix . 'virtuemart_state_id" ';
 		}
 
 		if ($required != 0) {
-			$attrs .= ' required';
+			$attrs[''] = 'required';
+
 		}
-		$attrs .= ' class="vm-chzn-select"';
+		$attrs['class'] = 'vm-chzn-select';
+		if (is_array ($attribs)) {
+			$attrs = array_merge ($attrs, $attribs);
 
-
-		$listHTML = '<select  id="'.$_prefix.'virtuemart_state_id" ' . $attrs . '>
+		} else {
+			$_a = explode ('=', $attribs, 2);
+			$attrs[$_a[0]] = $_a[1];
+		}
+		$attrString= JArrayHelper::toString($attrs);
+		$listHTML = '<select  id="'.$_prefix.'virtuemart_state_id" ' . $attrString . '>
 						<option value="">' . JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>
 						</select>';
 
