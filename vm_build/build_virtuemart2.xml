@@ -165,7 +165,22 @@
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
          <exclude name="install.xml"/>
-
+        <exclude name="**/da-DK/**"/>
+        <exclude name="**/de-DE/**"/>
+        <exclude name="**/es-ES/**"/>
+        <exclude name="**/el-GR/**"/>
+        <exclude name="**/fr-FR/**"/>
+        <exclude name="**/it-IT/**"/>
+        <exclude name="**/nb-NO/**"/>
+        <exclude name="**/no-NO/**"/>
+        <exclude name="**/nl-NL/**"/>
+        <exclude name="**/pl-PL/**"/>
+        <exclude name="**/pt-BR/**"/>
+        <exclude name="**/ru-RU/**"/>
+        <exclude name="**/sv-SE/**"/>
+        <exclude name="**/tr-TR/**"/>
+        <exclude name="**/uk-UA/**"/>
+        <exclude name="**/th-TH/**"/>
     </fileset>
 
     <fileset dir="${admin.aio.component.path}" id='root.aio.refid' defaultexcludes="true">
@@ -193,20 +208,33 @@
         <exclude name=".DS_Store"/>
     </fileset>
     <fileset dir="${languageBE.path}" id='languageBE.aio.refid' defaultexcludes="true">
-        <include name="**/en-GB/**" />
-        <exclude name="**/en-GB.${component.name}**"/>
+        <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
-
+        <exclude name="**/de-DE/**"/>
+        <exclude name="**/es-ES/**"/>
+        <exclude name="**/fr-FR/**"/>
+        <exclude name="**/it-IT/**"/>
+        <exclude name="**/nl-NL/**"/>
+        <exclude name="**/pl-PL/**"/>
+        <exclude name="**/pt-BR/**"/>
+        <exclude name="**/th-TH/**"/>
+        <exclude name="**/th-TH/**"/>
         <exclude name="**/**vmpayment_payzen*/**"/>
         <exclude name="**/**vmpayment_systempay*/**"/>
     </fileset>
     <fileset dir="${languageFE.path}" id='languageFE.aio.refid' defaultexcludes="true">
-        <include name="**/en-GB/**" />
-        <exclude name="**/en-GB.${component.name}**"/>
+        <include name="**"/>
         <exclude name=".svn"/>
         <exclude name=".DS_Store"/>
-
+        <exclude name="**/de-DE/**"/>
+        <exclude name="**/es-ES/**"/>
+        <exclude name="**/fr-FR/**"/>
+        <exclude name="**/it-IT/**"/>
+        <exclude name="**/nl-NL/**"/>
+        <exclude name="**/pl-PL/**"/>
+        <exclude name="**/pt-BR/**"/>
+        <exclude name="**/th-TH/**"/>
     </fileset>
     <fileset dir="${languageBE.path}" id='language.aio.refid' defaultexcludes="true">
         <include name="**"/>
