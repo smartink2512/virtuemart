@@ -126,15 +126,20 @@ class VirtueMartControllerCart extends JController {
 			$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
 			$view = $this->getView ('cart', 'json');
 			$errorMsg = 0;//JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
-			$product = $cart->add($virtuemart_product_ids, $errorMsg );
-			if ($product) {
+			$products = $cart->add($virtuemart_product_ids, $errorMsg );
+			if ($products) {
+				if(is_array($products) and isset($products[0])){
+					$view->assignRef('product',$products[0]);
+				}
 				$view->setLayout('padded');
 				$this->json->stat = '1';
 			} else {
 				$view->setLayout('perror');
 				$this->json->stat = '2';
+				$tmp = false;
+				$view->assignRef('product',$tmp);
 			}
-			$view->assignRef('product',$product);
+			$view->assignRef('products',$products);
 			$view->assignRef('errorMsg',$errorMsg);
 			ob_start();
 			$view->display ();

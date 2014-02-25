@@ -336,25 +336,23 @@ class ShopFunctions {
 		}
 
 		vmJsApi::JcountryStateList ($stateId,$_prefix);
-		$attrs['name'] = $_prefix . 'virtuemart_state_id[]';
+
+		$attrs['class'] = 'vm-chzn-select';
 		if ($multiple) {
+			$attrs['name'] = $_prefix . 'virtuemart_state_id[]';
 			$attrs['multiple'] = 'multiple';
-			//$attrs[''] = 'multiple="multiple" size="12" name="' . $_prefix . 'virtuemart_state_id[]" ';
-			//$class = 'class="inputbox multiple"';
+		} else {
+			$attrs['name'] = $_prefix . 'virtuemart_state_id';
 		}
 
 		if ($required != 0) {
-			$attrs[''] = 'required';
-
+			$attrs['class'] .= ' required';
 		}
-		$attrs['class'] = 'vm-chzn-select';
+
 		if (is_array ($attribs)) {
 			$attrs = array_merge ($attrs, $attribs);
-
-		} else {
-			$_a = explode ('=', $attribs, 2);
-			$attrs[$_a[0]] = $_a[1];
 		}
+
 		$attrString= JArrayHelper::toString($attrs);
 		$listHTML = '<select  id="'.$_prefix.'virtuemart_state_id" ' . $attrString . '>
 						<option value="">' . JText::_ ('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</option>

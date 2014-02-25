@@ -171,7 +171,7 @@ class vmJsApi{
 			vmJsApi::js ('jquery.ui.autocomplete.html');
 
 		}
-		vmJsApi::js( 'jquery.noConflict');
+		vmJsApi::js( 'jquery.noconflict');
 		//Very important convention with other 3rd pary developers, must be kept DOES NOT WORK IN J3
 		//JFactory::getApplication()->set('jquery',TRUE);
 		return TRUE;

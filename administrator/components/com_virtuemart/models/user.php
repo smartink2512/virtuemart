@@ -1022,9 +1022,14 @@ class VirtueMartModelUser extends VmModel {
 					if(!isset($data['virtuemart_state_id'])) $data['virtuemart_state_id'] = 0;
 
 					if (!$msg = VirtueMartModelState::testStateCountry($data['virtuemart_country_id'], $data['virtuemart_state_id'])) {
+						//The state is invalid, so we set the state 0 here.
 						$data['virtuemart_state_id'] = 0;
-					} else {
+						vmdebug('State was not fitting to country, set to 0');
+					} else if(empty($data['virtuemart_state_id'])){
+						vmdebug('virtuemart_state_id is empty, but valid (country has not states, set to unrequired');
 						$field->required = false;
+					} else {
+						vmdebug('validateUserData my country '.$data['virtuemart_country_id'].' my state '.$data['virtuemart_state_id']);
 					}
 				}
 			}

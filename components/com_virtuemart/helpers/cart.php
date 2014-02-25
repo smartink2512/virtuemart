@@ -363,16 +363,18 @@ class VirtueMartCart {
 		}
 
 		$pModel = VmModel::getModel('product');
+		$products = array();
+
 		//Iterate through the prod_id's and perform an add to cart for each one
 		foreach ($virtuemart_product_ids as $p_key => $virtuemart_product_id) {
 
 			$quantityPost = (int) $post['quantity'][$p_key];
 
 			if($quantityPost === 0) continue;
-			//$pModel->setId($virtuemart_product_id);
+
 			$tmpProduct = $pModel->getProduct($virtuemart_product_id, true, false,true,$quantityPost);
-			//VmConfig::$logDebug = true;
-			//vmdebug('add to cart product',$tmpProduct->customfieldsCart);
+			$products[] = $tmpProduct;
+
 			if ( VmConfig::get('oncheckout_show_images')){
 				$pModel->addImages($tmpProduct,1);
 			}
@@ -600,7 +602,7 @@ class VirtueMartCart {
 		if ($success== false) return false ;
 		// End Iteration through Prod id's
 		$this->setCartIntoSession();
-		return $tmpProduct;
+		return $products;
 	}
 
 	/**

@@ -277,16 +277,6 @@ class VirtueMartViewCart extends VmView {
 		} else {
 			$selectedPayment = empty($this->cart->virtuemart_paymentmethod_id) ? 0 : $this->cart->virtuemart_paymentmethod_id;
 
-			if(empty($selectedPayment)){
-				if(is_array($this->payments)){
-					if(isset($this->payments[0])){
-						vmdebug('hmmm',$selectedPayment,$this->payments);
-						//$this->cart->setPaymentMethod($this->payments[0]->virtuemart_paymentmethod_id);
-						//$selectedPayment = $this->payments[0]->virtuemart_paymentmethod_id;
-					}
-				}
-			}
-
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
