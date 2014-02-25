@@ -281,8 +281,8 @@ class VirtueMartViewCart extends VmView {
 				if(is_array($this->payments)){
 					if(isset($this->payments[0])){
 						vmdebug('hmmm',$selectedPayment,$this->payments);
-						$this->cart->setPaymentMethod($this->payments[0]->virtuemart_paymentmethod_id);
-						$selectedPayment = $this->payments[0]->virtuemart_paymentmethod_id;
+						//$this->cart->setPaymentMethod($this->payments[0]->virtuemart_paymentmethod_id);
+						//$selectedPayment = $this->payments[0]->virtuemart_paymentmethod_id;
 					}
 				}
 			}
